@@ -1,78 +1,77 @@
-projects	common	en	Projects
-Account	projects	en	Account
 accountancy	common	en	Accountancy
+Account	projects	en	Account
 Active	projects	en	Active
-Activities	projects	en	Activities
 Activities list	projects	en	Activities list
-Activity	projects	en	Activity
+Activities	projects	en	Activities
 Activity ID	projects	en	Activity ID
+Activity	projects	en	Activity
 Activity x has been added !	projects	en	Activity %1 has been added !
 Activity x has been updated !	projects	en	Activity %1 has been updated !
 Add Activity	projects	en	Add activity
-Add work hours	projects	en	Add work hours
 Add job	projects	en	Add job
-Add project	projects	en	Add project
 Add project hours	projects	en	Add project hours
+Add project	projects	en	Add project
+Add work hours	projects	en	Add work hours
 Administrator	projects	en	Administrator
+All delivery notes	projects	en	ALL delivery notes
 All invoices	projects	en	All invoices
 All	projects	en	All
-All delivery notes	projects	en	ALL delivery notes
 archive	projects	en	Archive
 arial	projects	en	Arial
-billed	projects	en	Billed
-Billed only	projects	en	Billed only
-Billing	projects	en	Billing
-Bookable activities	projects	en	Bookable activities
 Billable activities	projects	en	Billable activities
+Billed only	projects	en	Billed only
+billed	projects	en	Billed
+Billing	projects	en	Billing
 bill per hour	projects	en	Bill per hour
 Bill per workunit	projects	en	Bill per workunit
+Bookable activities	projects	en	Bookable activities
 bookkeeper	projects	en	Bookkeeper
+bookkeeping	common	en	bookkeeping
 Budget	projects	en	Budget
 Calculate	projects	en	Calculate
 closed	projects	en	Closed
 Coordinator	projects	en	Coordinator
+courier new	projects	en	Courier New
 Create delivery	projects	en	Create delivery
 Create invoice	projects	en	Create invoice
-courier new	projects	en	Courier New
 customer	projects	en	Customer
 Delete hours	projects	en	Delete hours
 Deliveries	projects	en	Deliveries
-Delivery	projects	en	Delivery
 Delivery date	projects	en	Delivery date
-Delivery note	projects	en	Delivery note
-delivery note for project	projects	en	Delivery note for project
 Delivery ID	projects	en	Delivery ID
 Delivery list	projects	en	Delivery list
+delivery note for project	projects	en	Delivery note for project
+Delivery note	projects	en	Delivery note
 Delivery notes	projects	en	Delivery notes
+Delivery	projects	en	Delivery
 Delivery x has been created !	projects	en	Delivery %1 has been created !
 Delivery x has been updated !	projects	en	Delivery %1 has been updated !
 Edit Activity	projects	en	Edit activity
-Edit work hours	projects	en	Edit work hours
 Edit project administrator list	projects	en	Edit project administrator list
 edit project bookkeeper list	projects	en	Edit project bookkeeper list
-Edit project	projects	en	Edit project
 Edit project hours	projects	en	Edit project hours
+Edit project	projects	en	Edit project
+Edit work hours	projects	en	Edit work hours
 Employee	projects	en	Employee
 Ending date can not be after main projects ending date !	projects	en	Ending date can not be after main projects ending date !
 Generate Activity ID ?	projects	en	Generate Activity ID ?
 Generate Delivery ID ?	projects	en	Generate Delivery ID ?
-Generate Project ID ?	projects	en	Generate Project ID ?
 Generate Invoice ID ?	projects	en	Generate Invoice ID ?
 Generate Job ID ?	projects	en	Generate Job ID ?
+Generate Project ID ?	projects	en	Generate Project ID ?
 georgia	projects	en	Georgia
 helvetica	projects	en	Helvetica
 Hours	projects	en	Hours
-Invoice	projects	en	Invoice
 Invoice date	projects	en	Invoice date
 invoice for project	projects	en	Invoice for project
 Invoice ID	projects	en	Invoice ID
 Invoice layout	projects	en	Invoice layout
 Invoice list	projects	en	Invoice list
+Invoice	projects	en	Invoice
 Invoices	projects	en	Invoices
 Invoice x has been created !	projects	en	Invoice %1 has been created !
 Invoice x has been updated !	projects	en	Invoice %1 has been updated !
 invoicing	projects	en	Invoicing
-Job	projects	en	Job
 job archive	projects	en	Job archive
 Job date	projects	en	Job date
 Job description	projects	en	Job description
@@ -80,6 +79,7 @@ Job has been added !	projects	en	Job has been added !
 Job has been updated !	projects	en	Job has been updated !
 Job ID	projects	en	Job ID
 Job list	projects	en	Job list
+Job	projects	en	Job
 Jobs	projects	en	Jobs
 large	projects	en	Large
 Main project:	projects	en	Main project:
@@ -92,8 +92,8 @@ open	projects	en	Open
 Overall	projects	en	Overall
 per hour	projects	en	per hour
 per workunit	projects	en	per workunit
-Please enter an ID !	projects	en	Please enter an ID !
 Please choose activities for that project first !	projects	en	Please choose activities for that project first !
+Please enter an ID !	projects	en	Please enter an ID !
 Please enter a remark !	projects	en	Please enter a remark !
 Please enter the bill !	projects	en	Please enter the bill !
 Please enter the minutes per workunit !	projects	en	Please enter the minutes per workunit !
@@ -101,66 +101,66 @@ Please set the minutes per workunit for each activity now !	projects	en	Please s
 Position	projects	en	Position
 Print delivery	projects	en	Print delivery
 Print invoice	projects	en	Print invoice
-Project	projects	en	Project
 Project archive	projects	en	Project archive
 Project billing	projects	en	Project billing
-bookkeeping	common	en	bookkeeping
 Project delivery	projects	en	Project delivery
 Project ID	projects	en	Project ID
 Project list	projects	en	Project list
 Project name	projects	en	Project name
 Project preferences	projects	en	Project preferences
+Project	projects	en	Project
+projects	common	en	Projects
 projects preferences	preferences	en	Projects preferences
 Project statistic	projects	en	Project statistic
 project statistics	projects	en	Project statistics
 Remark	projects	en	Remark
 Remark required	projects	en	Remark required
 select font	projects	en	Select font
-Select font size for own address	projects	en	Select font size for own address
 Select font size for customer address	projects	en	Select font size for customer address
-select	projects	en	Select
+Select font size for own address	projects	en	Select font size for own address
+Select groups	projects	en	Select groups
 Select main project	projects	en	Select main project
 Select per button !	projects	en	Select per button !
 Select project	projects	en	Select project
+select	projects	en	Select
 Select tax for workhours	projects	en	Select tax for workhours
 Select users	projects	en	Select users
-Select groups	projects	en	Select groups
 Select your address	projects	en	Select your address
+Short description	projects	en	Short description
 small	projects	en	Small
+Sorry, no preferences to set for you :)	projects	en	Sorry, no preferences to set for you :)
 Start date can not be before main projects start date !	projects	en	Start date can not be before main projects start date !
 Statistic	projects	en	Statistic
 statistics	projects	en	Statistics
-Short description	projects	en	Short description
-Sorry, no preferences to set for you :)	projects	en	Sorry, no preferences to set for you :)
-sum net	projects	en	Sum net
 sum hours	projects	en	Sum hours
+sum net	projects	en	Sum net
 Sum	projects	en	Sum
 Sum workunits	projects	en	Sum workunits
 tahoma	projects	en	Tahoma
 tax	projects	en	tax
 That ID has been used already !	projects	en	That ID has been used already !
 times new roman	projects	en	Times New Roman
-Update invoice	projects	en	Update invoice
 Update delivery	projects	en	Update delivery
+Update invoice	projects	en	Update invoice
 Username / Group	projects	en	Username / Group
 User statistic	projects	en	User statistic
 user statistics	projects	en	User statistics
 verdana	projects	en	Verdana
 very large	projects	en	Very Large
 very small	projects	en	Very Small
-View work hours	projects	en	View work hours
 View job	projects	en	View job
 View project	projects	en	View project
+View work hours	projects	en	View work hours
 Work date	projects	en	Work date
-Work hours	projects	en	Work hours
 Work hours archive	projects	en	Work hours archive
 Work hours list	projects	en	Work hours list
+Work hours	projects	en	Work hours
 Work time	projects	en	Work time
 Workunit	projects	en	Workunit
 Workunits	projects	en	Workunits
 written by:	projects	en	Written by:
-You have entered an invalid start date !	projects	en	You have entered an invalid start date !
 You have entered an invalid end date !	projects	en	You have entered an invalid end date !
-You have selected an invalid activity !	projects	en	You have selected an invalid activity !
+You have entered an invalid start date !	projects	en	You have entered an invalid start date !
 You have no customer selected !	projects	en	You have no customer selected !
+You have selected an invalid activity !	projects	en	You have selected an invalid activity !
 You have to CREATE a delivery or invoice first !	projects	en	You have to CREATE a delivery or invoice first !
