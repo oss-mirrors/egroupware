@@ -1,6 +1,6 @@
 /*************************************************************************\
-* phpGroupWare - jinn                                           *
-* http://www.phpgroupware.org                                             *
+* eGroupWare - jinn                                                       *
+* http://www.egroupware.org                                               *
 * This application is written by Pim Snel <pim@lingewoud.nl>              *
 * --------------------------------------------                            *
 * Funding for this program was provided by http://www.lingewoud.nl        *
@@ -10,7 +10,7 @@
 * Free Software Foundation; either version 2 of the License, or (at your  *
 * option) any later version.                                              *
 *                                                                         *
-* Ontwerpnotities voor jinn                                     *
+* Ontwerpnotities voor jinn                                               *
 *                                                                         *
 \*************************************************************************/
 

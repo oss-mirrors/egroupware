@@ -1,9 +1,9 @@
 <?php
    /*
-   JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for phpGroupWare
+   JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare
    Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
 
-   phpGroupWare - http://www.phpgroupware.org
+   eGroupWare - http://www.egroupware.org
 
    This file is part of JiNN
 
