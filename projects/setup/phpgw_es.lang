@@ -82,6 +82,7 @@ ending date can not be after main projects ending date !	projects	es	La fecha de
 ending date can not be before start date	projects	es	La fecha de finalización no puede ser antes que la fecha de inicio
 error in calculation sum does not match !	projects	es	Error al calcular. La suma no coincide.
 exactly accounting	projects	es	Contabilidad exacta
+failed sending message to '%1' #%2 subject='%3', sender='%4' !!!	projects	es	Fallo al enviar mensaje para '%1' #%2 asunto='%3', remitente='%4'
 gantt chart for project %1	projects	es	Diagrama de Gantt para el proyecto %1
 gantt chart from %1 to %2	projects	es	Diagrama de Gantt de %1 a %2
 generate activity id ?	projects	es	¿Generar ID de actividad?

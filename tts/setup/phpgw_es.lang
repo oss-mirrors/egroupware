@@ -39,6 +39,7 @@ detail	tts	es	Detalle
 duplicate	tts	es	DUPLICADA
 edit the state	tts	es	Editar el estado
 edit the transition	tts	es	Editar la transición
+error: the subject of the ticket is not specified.	tts	es	ERROR: No se indicó un asunto para la incidencia.
 force	tts	es	Forzar
 global categories	tts	es	Categorías globales
 group ownership changed	tts	es	El propietario del grupo ha cambiado
@@ -76,6 +77,7 @@ opened	tts	es	Abierta
 opened by	tts	es	Abierta por
 original ticket details	tts	es	Detalles de la inicidencia original
 perform irregular transition into the following state	tts	es	Realizar transición irregular en el siguiente estado
+please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	es	Por favor, introduzca el asunto de la incidencia. Si no, la incidencia no se almacenará.
 prio	tts	es	Prioridad
 priority	tts	es	Prioridad
 priority changed	tts	es	Prioridad modificada
@@ -151,5 +153,6 @@ view all tickets	tts	es	Ver todas las incidencias
 view job detail	tts	es	Ver el detalle del trabajo
 view only open tickets	tts	es	Ver sólo incidencias abiertas
 you can only close a ticket if it is assigned to you.	tts	es	Sólo puede cerrar una incidencia si está asignada a usted.
+you want to delete the state %1 and associated transitions. are you sure?	tts	es	¿Seguro que desea borrar el estado %1 y las transiciones asociadas?
 you want to delete the state %1. are you sure?	tts	es	¿Está seguro de que desea borrar el estado %!?
 you want to delete the transition %1. are you sure?	tts	es	¿Está seguro de que desea borrar la transición %!?

@@ -1,5 +1,6 @@
 %1 by %2	comic	es	%1 por %2
 %1 by %2 (%3)	comic	es	%1 por %2 (%3)
+are you sure you want to reset all	comic	es	¿Seguro que quiere restablecer todo?
 are you sure you want to reset all comic dates and resolved image urls?	comic	es	¿Seguro que quiere restablecer todas las fechas de las tiras cómicas y urls de imágenes resueltas?
 censorship level	comic	es	Nivel de censura
 censorship override enabled	comic	es	Ignorar censura activado

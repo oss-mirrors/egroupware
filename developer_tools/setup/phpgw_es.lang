@@ -13,7 +13,7 @@ changelogs	developer_tools	es	Registros de cambios
 clears the internal buffer, all changes made sofar are lost	developer_tools	es	Vacía el búfer interno, perdiendo los cambios realizados
 create new language file	developer_tools	es	Crea un nuevo fichero de idioma
 create sgml file	developer_tools	es	Crear fichero SGML
-developer tools - preferences	developer_tools	es	Herramientas del idioma - Preferencias
+developer tools - preferences	developer_tools	es	Herramientas de desarrollo - Preferencias
 developer_tools	common	es	Herramientas de traducción
 diary	developer_tools	es	Diario
 done	developer_tools	es	Hecho
