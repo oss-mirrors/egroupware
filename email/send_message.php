@@ -658,17 +658,18 @@
 		// NEEDED:  "folder_exists()" function for this and the "Trash" folder option as well
 		
 		// NOTE: should we use the existing mailbox stream or initiate a new one just for the append?
-		if (!$mailbox)
-		{
+		// NEW stream *seems* faster - TEST for now
+		//if (!$mailbox)
+		//{
 			$stream = $phpgw->dcom->login($sent_folder_name);
 			$phpgw->dcom->append($stream, $sent_folder_name,  $phpgw->mail_send->assembled_copy, "\\Seen");
 			$phpgw->dcom->close($stream);
-		}
-		else
-		{
-			$phpgw->dcom->append($mailbox, $sent_folder_name,  $phpgw->mail_send->assembled_copy, "\\Seen");
+		//}
+		//else
+		//{
+		//	$phpgw->dcom->append($mailbox, $sent_folder_name,  $phpgw->mail_send->assembled_copy, "\\Seen");
 			//echo 'used existing stream for trash folder';
-		}
+		//}
 	}
 
 	// ----  Redirect on Success, else show Error Report   -----

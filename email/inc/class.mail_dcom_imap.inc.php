@@ -197,7 +197,7 @@
 	return imap_status($stream,$mailbox,$options);
     }
 
-    function append($stream, $folder = "Sent", $header, $body, $flags = "")
+    function append($stream, $folder = "Sent", $message, $flags = "")
     {
 	global $phpgw_info, $phpgw;
 
@@ -234,7 +234,7 @@
 	}
 
 	$folder = $this->construct_folder_str($folder);
-	return imap_append($stream, $server_str.$folder, $header ."\n". $body, $flags);
+	return imap_append($stream, $server_str.$folder, $message, $flags);
     }
 
     function login( $folder = "INBOX")
