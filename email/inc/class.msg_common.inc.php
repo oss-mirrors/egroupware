@@ -680,6 +680,8 @@
 		$data = ereg_replace("\r\n", "\n", $data);
 		$data = ereg_replace("\r", "\n", $data);
 		$data = ereg_replace("\n", "\r\n", $data);
+		//$data = preg_replace("/(?<!\r)\n/m", "\r\n", $data);
+		//$data = preg_replace("/\r(?!\n)/m", "\r\n", $data);
 		return $data;
 	}
 

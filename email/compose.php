@@ -60,9 +60,19 @@
 				{
 					$from = $msg->from[0];
 				}
-				$to = $phpgw->msg->make_rfc2822_address($from);
+				$from_or_reply_to = $phpgw->msg->make_rfc2822_address($from);
 				// these spaces after the comma will be taken out in send_message, they are only for user readability here
-				$to = $to.', ' . implode(", ", $tolist);
+				$to = implode(", ", $tolist);
+				// sometimes, the "To:" and the "Reply-To:" are the same, such as with mailing lists
+				//if (!stristr($from_or_reply_to, $to))
+				//if ((!stristr($from->mailbox.'@'.$from->host, $to))
+				//&& (!stristr('&lt;'.$from->mailbox.'@'.$from->host.'&gt;', $to)))
+				$no_dupes = $from->mailbox.'@'.$from->host;
+				if (!ereg(".*$no_dupes.*", $to))
+				{
+					// it's ok to add from_or_reply_to, it is not a duplicate
+					$to = $from_or_reply_to.', '.$to;
+				}
 			}
 
 			if ($msg->cc)
@@ -117,13 +127,18 @@
 			// sig = "CRLF dash dash space(0or1) CRLF anyWordChar anything CRLF (anything and CRLF) repeated 0 to 4 times"
 
 			//now is a good time to trim the body
-			trim($body);
+			//trim($body);
+			trim($bodystring);
 
 			// ----- Quote The Body You Are Replying To With >  ------
 			$body_array = array();
+			if (!ereg("\r\n", $bodystring))
+			{
+				$bodystring = $phpgw->msg->body_hard_wrap($bodystring, 74);
+			}
 			$body_array = explode("\r\n", $bodystring);
 			$bodycount = count ($body_array);
-			for ($bodyidx = 0; $bodyidx < ($bodycount -1); ++$bodyidx)
+			for ($bodyidx = 0; $bodyidx < ($bodycount); ++$bodyidx)
 			{
 				// I think the email needs to be sent out as if it were PLAIN text
 				// i.e. with NO ENCODED HTML ENTITIES, so use > instead of $gt; 
