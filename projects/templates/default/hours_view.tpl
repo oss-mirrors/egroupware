@@ -3,7 +3,7 @@
 <hr noshade width="98%" align="center" size="1">
 <center>
 {error}
-<table width="75%" border="0" cellspacing="0" cellpadding="0">
+<table width="85%" border="0" cellspacing="3" cellpadding="3">
 	<tr bgcolor="{tr_color1}">
 		<td colspan="2">{lang_project}:</td>
 		<td>{project}</td>
@@ -35,9 +35,6 @@
 		<td colspan="2"><b>{lang_work_date}</b></td>
 		<td>&nbsp;</td>
 	</tr>
-	<tr height="5">
-		<td>&nbsp;</td>
-	</tr>
 	<tr bgcolor="{tr_color2}">
 		<td colspan="2">{lang_start_date}:</td>
 		<td>{sdate}</td>
@@ -51,9 +48,6 @@
 	</tr>
 	<tr bgcolor="{tr_color2}">
 		<td colspan="2"><b>{lang_work_time}</b></td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr height="5"> 
 		<td>&nbsp;</td>
 	</tr>
 	<tr bgcolor="{tr_color1}">
@@ -83,7 +77,7 @@
         
 <!-- BEGIN done -->
 
-<table width="75%" border="0" cellspacing="2" cellpadding="2">
+<table width="85%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
 		<td height="50">
 			<form method="POST" action="{doneurl}">

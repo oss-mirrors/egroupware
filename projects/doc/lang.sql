@@ -33,6 +33,7 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Activities','proj
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Job','projects','en','Job');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Jobs','projects','en','Jobs');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('View job','projects','en','View job');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('View project','projects','en','View project');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Job date','projects','en','Job date');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Job description','projects','en','Job description');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project','projects','en','Project');

@@ -11,12 +11,14 @@
 	\**************************************************************************/
 	/* $Id$ */
 
-	$phpgw_info['flags']['currentapp'] = 'projects';
+	$phpgw_info['flags'] = array('currentapp' => 'projects',
+					'enable_nextmatchs_class' => True);
 	include('../header.inc.php');
 
 	if (!$id)
 	{
-		Header('Location: ' . $phpgw->link('/projects/index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+		Header('Location: ' . $phpgw->link('/projects/index.php','sort=' . $sort . '&order=' . $order . '&query=' . $query
+											. '&start=' . $start . '&filter=' . $filter));
 	}
 
 	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
@@ -28,7 +30,6 @@
 				. '<input type="hidden" name="start" value="' . $start . '">' . "\n"
 				. '<input type="hidden" name="filter" value="' . $filter . '">' . "\n"
 				. '<input type="hidden" name="id" value="' . $id . '">' . "\n";
-
 
 	if ($phpgw_info['server']['db_type']=='pgsql')
 	{
@@ -56,6 +57,11 @@
 
 	$t->set_var('done_action',$phpgw->link('/projects/index.php','sort=' . $sort . '&order=' . $order . '&query=' . $query
 											. '&start=' . $start . '&filter=' . $filter));
+  
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+    $t->set_var('tr_color',$tr_color);
+    $t->set_var('tr_color1',$phpgw_info['theme']['row_on']);
+    $t->set_var('tr_color2',$phpgw_info['theme']['row_off']);
 	$t->set_var('lang_done',lang('Done'));
 	$t->set_var('lang_action',lang('View project'));
 	$t->set_var('hidden_vars',$hidden_vars);

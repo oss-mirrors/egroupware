@@ -68,6 +68,7 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Date due','projec
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project statistics','projects','de','Projektstatistiken');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Admin','projects','de','Admin');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('View hours','projects','de','Jobs anzeigen');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('View project','projects','de','Projekt anzeigen');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Search','projects','de','Suche');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Submit','projects','de','Abschicken');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Date','projects','de','Datum');
