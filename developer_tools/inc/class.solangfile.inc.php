@@ -32,7 +32,7 @@
 			$this->db = $GLOBALS['phpgw']->db;
 		}
 
-		//Known Issue, if a phrase contains a ' or a " the parse will be thrown off. unless ' are nesed inside "
+		//Known Issue, if a phrase contains a ' or a " the parse will be thrown off. unless ' are nested inside " or vice versa
 		function parse_php_app($fd,$plist)
 		{
 			define('SEP',filesystem_separator());
@@ -53,23 +53,19 @@
 					while (!feof($fp))
 					{
 						$str=fgets($fp,8192);
-						while ($pos=strpos($str,'lang('))
+						while (strlen($str=$this->strstr_multiple($str,'lang','(','')))
 						{
-							$str=substr($str,$pos);
-							if (strpos($str,'$')==5)
+							if ($str[0]=="\"" || $str[0]=="'")
 							{
-								$str=substr($str,6);
-							}
-							else
-							{
-								$str=substr($str,6);
-								if (!strpos($str,'\")'))
+								if ($str[0] == "'")
 								{
-									$s2=substr($str,0,strpos($str,'\')'));
+									$str=substr($str,1);
+									$s2=substr($str,0,strpos($str,"'"));
 								}
 								else
 								{
-									$s2=substr($str,0,strpos($str,'\")'));
+									$str=substr($str,1);
+									$s2=substr($str,0,strpos($str,"\""));                                                                 
 								}
 								if ($s2!='')
 								{
@@ -83,6 +79,43 @@
 			}
 			$d->close();
 			return ($plist);
+		}
+
+		/*!
+		 @function strstr_multiple
+		 @abstract search for a substring consisted of parts separated by whitespaces
+		 @param $str original string
+		 @param $sub1 first part of substring
+		 @param $sub2 second part of substring
+		 @result returns portion of $str from the end of substring to the end of $str, or empty string if substring was not found
+		*/
+		function strstr_multiple($str,$sub1,$sub2)
+		{
+			if (isset($sub1))
+			{
+				if(is_integer($pos=strpos($str,$sub1)))
+				{
+					$str=substr($str,$pos+strlen($sub1));
+					if (isset($sub2))
+					{
+						$str=ltrim($str);
+						if(substr($str,0,strlen($sub2)) == $sub2)
+						{
+							$str=substr($str,strlen($sub2));
+							return $str;
+						}
+					}
+					else
+					{
+						return $str;
+					}
+				}
+			}
+			else
+			{
+				return $str;
+			}
+			return "";
 		}
 
 		function missing_app($app,$userlang=en)
@@ -128,9 +161,10 @@
 						continue;
 					}
 					//echo '<br>add_app(): adding phrase: $this->langarray["'.$message_id.'"]=' . trim($content);
-					$this->langarray[$message_id]['message_id'] = trim($message_id);
-					$this->langarray[$message_id]['app_name']   = trim($app_name);
-					$this->langarray[$message_id]['content']    = trim($content);
+					$_mess_id = strtolower(trim($message_id));
+					$this->langarray[$_mess_id]['message_id'] = $_mess_id;
+					$this->langarray[$_mess_id]['app_name']   = trim($app_name);
+					$this->langarray[$_mess_id]['content']    = trim($content);
 				}
 				fclose($fp);
 			}
@@ -148,7 +182,7 @@
 		}
 
 		/*!
-		@function add_app
+		@function load_app
 		@abstract loads all app phrases into langarray
 		@param $lang user lang variable (defaults to en)
 		*/
@@ -179,9 +213,10 @@
 						continue;
 					}
 					//echo '<br>add_app(): adding phrase: $this->langarray["'.$message_id.'"]=' . trim($content);
-					$langarray[$message_id]['message_id'] = trim($message_id);
-					$langarray[$message_id]['app_name']   = trim($app_name);
-					$langarray[$message_id]['content']    = trim($content);
+					$_mess_id = strtolower(trim($message_id));
+					$langarray[$_mess_id]['message_id'] = $mess_id;
+					$langarray[$_mess_id]['app_name']   = trim($app_name);
+					$langarray[$_mess_id]['content']    = trim($content);
 				}
 				fclose($fp);
 			}
@@ -255,8 +290,10 @@
 			while (list($x,$data) = @each($langarray))
 			{
 				$addit = False;
-				/* echo '<pre> checking ' . $data['message_id'] . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $data['content']; */
-				$this->db->query("SELECT COUNT(*) FROM phpgw_lang WHERE message_id='" . $this->db->db_addslashes($data['message_id']) . "' and lang='$userlang'",__LINE__,__FILE__);
+				/*echo '<br><br><pre> checking ' . $data['message_id'] . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $data['content'];*/
+				$this->db->query('SELECT COUNT(*) FROM phpgw_lang'
+					."  WHERE message_id='" . $this->db->db_addslashes($data['message_id'])
+					."' AND lang='$userlang' AND app_name='$app_name'",__LINE__,__FILE__);                                $this->db->next_record();
 				$this->db->next_record();
 
 				if ($this->db->f(0) == 0)
@@ -275,9 +312,26 @@
 					{
 						/* echo "<br>adding - insert into phpgw_lang values ('" . $data['message_id'] . "','$app_name','$userlang','" . $data['content'] . "')"; */
 						$this->db->query("INSERT into phpgw_lang VALUES ('"
-							. $this->db->db_addslashes($data['message_id']) . "','"
-							. $data['app_name'] . "','$userlang','"
+							. $this->db->db_addslashes($data['message_id'])
+							. "','$app_name','$userlang','"
 							. $this->db->db_addslashes($data['content']) . "')",__LINE__,__FILE__);
+					}
+				}
+				else
+				{
+					if($data['message_id'] && $data['content'])
+					{
+						$this->db->query("UPDATE phpgw_lang SET content='". $this->db->db_addslashes($data['content']) . "'"
+							. " WHERE message_id='" . $this->db->db_addslashes($data['message_id']) . "'"
+							. " AND app_name='$app_name' AND lang='$userlang'",__LINE__,__FILE__);
+						if ($this->db->affected_rows() > 0)
+						{
+/*
+							echo "<br>changing - update lang set content='". $data['content'] . "'"
+								. " where message_id='" . $data['message_id'] ."'"
+								. " and app_name='$app_name' and lang='$userlang'";
+*/
+						}
 					}
 				}
 			}

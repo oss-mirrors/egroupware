@@ -144,9 +144,10 @@
 				{
 					if($_checked == 'on')
 					{
+						$_mess = $this->reverse_htmlspecialchars($_mess);
 						$this->bo->movephrase($_mess);
 						/* _debug_array($missingarray[$_mess]); */
-						unset($missingarray[strtolower($_mess)]);
+						unset($missingarray[$_mess]);
 						/* _debug_array($missingarray[$_mess]); */
 					}
 				}
@@ -225,16 +226,17 @@
 					)
 				);
 				$this->template->pfp('out','postheader');
+				//Is this needed? $translation is never used and bo->load_app() does nothing here.
 				$translation = $this->bo->load_app($app_name,$targetlang);
 				// $this->template->set_var('src_file',$this->bo->src_file);
 				while(list($key,$data) = @each($missingarray))
 				{
-					$mess_id  = $data['message_id'];
+					$mess_id  = $key;
 					$content  = $data['content'];
 					$transapp = $data['app_name'];
 					// $transy   = $content;
-					$this->template->set_var('mess_id',$GLOBALS['phpgw']->strip_html($mess_id));
-					$this->template->set_var('source_content',$GLOBALS['phpgw']->strip_html($content));
+					$this->template->set_var('mess_id',htmlspecialchars($mess_id));
+					$this->template->set_var('source_content',htmlspecialchars($content));
 					// $this->template->set_var('content',$GLOBALS['phpgw']->strip_html($transy));
 					$this->template->set_var('transapp',$this->lang_option($app_name,$transapp,$mess_id));
 					$this->template->set_var('tr_color',$this->nextmatchs->alternate_row_color());
@@ -417,6 +419,7 @@
 				{
 					if($_mess)
 					{
+						$_mess = $this->reverse_htmlspecialchars($_mess);
 						$this->bo->source_langarray[$_mess]['app_name'] = $_app;
 						$this->bo->target_langarray[$_mess]['app_name'] = $_app;
 					}
@@ -425,11 +428,15 @@
 				{
 					if($_mess && $_cont)
 					{
+						$_mess = $this->reverse_htmlspecialchars(strtolower(trim($_mess)));
+						//Known issue: if a message containing a ] is used as index of array, when the array is posted the index gets truncated;
 						$this->bo->target_langarray[$_mess]['message_id'] = $_mess;
-						$this->bo->target_langarray[$_mess]['content'] = $_cont;
+						//POST method adds slashes
+						$this->bo->target_langarray[$_mess]['content'] = stripslashes($_cont);
 						if($sourcelang == $targetlang)
 						{
-							$this->bo->source_langarray[$_mess]['content'] = $_cont;
+							//POST method adds slashes
+							$this->bo->source_langarray[$_mess]['content'] = stripslashes($_cont);
 						}
 					}
 				}
@@ -437,6 +444,7 @@
 				{
 					if($_checked == 'on')
 					{
+						$_mess = $this->reverse_htmlspecialchars($_mess);
 						unset($this->bo->source_langarray[$_mess]);
 						unset($this->bo->target_langarray[$_mess]);
 					}
@@ -478,11 +486,11 @@
 					$mess_id  = $data['message_id'];
 					$content  = $data['content'];
 					$transapp = $data['app_name'];
-					$transy   = $translation[$mess_id]['content'];
-					$this->template->set_var('mess_id',$GLOBALS['phpgw']->strip_html($mess_id));
-					$this->template->set_var('source_content',$GLOBALS['phpgw']->strip_html($content));
-					$this->template->set_var('content',$GLOBALS['phpgw']->strip_html($transy));
-					$this->template->set_var('transapp',$this->lang_option($app_name,$transapp,$mess_id));
+					$transy   = $translation[$key]['content'];
+					$this->template->set_var('mess_id',htmlspecialchars($key));
+					$this->template->set_var('source_content',htmlspecialchars($content));
+					$this->template->set_var('content',htmlspecialchars($transy));
+					$this->template->set_var('transapp',$this->lang_option($app_name,$transapp,htmlspecialchars($key)));
 					$this->template->set_var('tr_color',$this->nextmatchs->alternate_row_color());
 					$this->template->pfp('out','detail');
 				}
@@ -512,6 +520,19 @@
 			}
 			/* _debug_array($this->bo->loaded_apps); */
 			$this->bo->save_sessiondata($this->bo->source_langarray,$this->bo->target_langarray);
+		}
+
+		/*!
+		@function reverse_htmlspecialchars
+		@abstract reverts a string converted by htmlspecialchars() to its original form
+		@param $text
+		*/
+		function reverse_htmlspecialchars($text)
+		{
+			$text=ereg_replace('&gt;', '>', $text);
+			$text=ereg_replace('&lt;', '<', $text);
+			$text=ereg_replace('&quot;', "\"", $text);
+			return ereg_replace('&amp;', '&', $text);
 		}
 
 		function save($which,$userlang)

@@ -25,6 +25,7 @@
 		var $target_langarray = '';
 		var $src_file;
 		var $tgt_file;
+		var $tgt_lang;
 
 		function bolangfile()
 		{
@@ -54,6 +55,8 @@
 			$GLOBALS['phpgw']->session->appsession('developer_target_lang','developer_tools',$target);
 			$GLOBALS['phpgw']->session->appsession('developer_source_file','developer_tools',$this->src_file);
 			$GLOBALS['phpgw']->session->appsession('developer_target_file','developer_tools',$this->tgt_file);
+			$GLOBALS['phpgw']->session->appsession('developer_t_lang','developer_tools',$this->tgt_lang);
+			$GLOBALS['phpgw']->session->appsession('developer_loaded_apps','developer_tools',$this->loaded_apps);
 		}
 
 		function read_sessiondata()
@@ -66,17 +69,21 @@
 
 			$src_file = $GLOBALS['phpgw']->session->appsession('developer_source_file','developer_tools');
 			$tgt_file = $GLOBALS['phpgw']->session->appsession('developer_target_file','developer_tools');
+			$tgt_lang = $GLOBALS['phpgw']->session->appsession('developer_t_lang','developer_tools');
+			$loaded_apps = $GLOBALS['phpgw']->session->appsession('developer_loaded_apps','developer_tools');
 
-			$this->set_sessiondata($source,$target,$src_file,$tgt_file);
+			$this->set_sessiondata($source,$target,$src_file,$tgt_file,$tgt_lang,$loaded_apps);
 			return;
 		}
 
-		function set_sessiondata($source,$target,$src_file,$tgt_file)
+		function set_sessiondata($source,$target,$src_file,$tgt_file,$tgt_lang,$loaded_apps)
 		{
 			$this->source_langarray = $source;
 			$this->target_langarray = $target;
 			$this->src_file = $src_file;
 			$this->tgt_file = $tgt_file;
+			$this->tgt_lang = $tgt_lang;
+			$this->loaded_apps = $loaded_apps;
 		}
 
 		function clear_sessiondata()
@@ -85,6 +92,7 @@
 			$GLOBALS['phpgw']->session->appsession('developer_target_lang','developer_tools','');
 			$GLOBALS['phpgw']->session->appsession('developer_source_file','developer_tools','');
 			$GLOBALS['phpgw']->session->appsession('developer_target_file','developer_tools','');
+			$GLOBALS['phpgw']->session->appsession('developer_loaded_apps','developer_tools','');
 		}
 
 		function list_apps()
@@ -102,9 +110,9 @@
 		function addphrase($entry)
 		{
 			/* _debug_array($this->source_langarray);exit; */
-			$mess_id = $entry['message_id'];
+			$mess_id = strtolower(trim($entry['message_id']));
 			$this->source_langarray[$mess_id] = array(
-				'message_id' => $entry['message_id'],
+				'message_id' => $mess_id,
 				'content'    => $entry['content'],
 				'app_name'   => $entry['app_name'],
 				'lang'       => 'en'
@@ -116,13 +124,12 @@
 
 		function movephrase($mess='')
 		{
-			if ($mess !='' && ($this->missing_langarray[strtolower($mess)]['message_id']))
+			if ($mess !='' && ($this->missing_langarray[$mess]['message_id']))
 			{
-				$_mess = strtolower($mess);
 				$this->source_langarray[$mess] = array(
-					'message_id' => $this->missing_langarray[$_mess]['message_id'],
-					'content'    => $this->missing_langarray[$_mess]['content'],
-					'app_name'   => $this->missing_langarray[$_mess]['app_name'],
+					'message_id' => $this->missing_langarray[$mess]['message_id'],
+					'content'    => $this->missing_langarray[$mess]['content'],
+					'app_name'   => $this->missing_langarray[$mess]['app_name'],
 					'lang'       => 'en'
 				);
 				@ksort($this->source_langarray);
@@ -139,24 +146,25 @@
 		function missing_app($app,$userlang='en')
 		{
 			//$this->src_file = $this->so->src_file;
-			$this->loaded_apps = $this->so->loaded_apps;
 			//if ($this->missing_langarray=='')
 			//{
 			//$this->missing_langarray=array();
 			$plist = $this->so->missing_app($app,$userlang);
 			while (list($p,$loc) = each($plist))
 			{
-				if ((!$this->source_langarray[strtolower($p)])&&(!$this->source_langarray[$p]))
+				$_mess_id = strtolower(trim($p));
+				if (!$this->source_langarray[$_mess_id])
 				{
-					$this->missing_langarray[strtolower(trim($p))]['message_id'] = strtolower(trim($p));
-					$this->missing_langarray[strtolower(trim($p))]['app_name']   = trim($app);
-					$this->missing_langarray[strtolower(trim($p))]['content']    = $p;
+					$this->missing_langarray[$_mess_id]['message_id'] = $_mess_id;
+					$this->missing_langarray[$_mess_id]['app_name']   = trim($app);
+					$this->missing_langarray[$_mess_id]['content']    = $p;
 				}
 			}
-			//}        
-			reset ($this->missing_langarray);
-			@ksort($this->missing_langarray);
-			$this->save_sessiondata($this->source_langarray,$this->target_langarray);
+			if (is_array($this->missing_langarray))
+			{
+				reset ($this->missing_langarray);
+				@ksort($this->missing_langarray);
+			}
 			return $this->missing_langarray;
 		}
 
@@ -176,10 +184,14 @@
 		{
 			if(gettype($this->target_langarray) == 'array')
 			{
-				/* return $this->target_langarray; */
+				if ($this->tgt_lang == $userlang)
+				{
+					return $this->target_langarray;
+				}
 			}
 			$this->target_langarray = $this->so->load_app($app,$userlang);
 			$this->tgt_file = $this->so->tgt_file;
+			$this->tgt_lang = $userlang;
 			$this->loaded_apps = $this->so->loaded_apps;
 			return $this->target_langarray;
 		}
