@@ -91,7 +91,7 @@
 
  <script>
     self.name="first_Window";
-    function addressbook()
+    function addybook()
     {
 <!--   Window1=window.open('<?php echo $phpgw->link("/".$phpgw_info['flags']['currentapp']."/addressbook.php","query="); ?>+document.doit.to.value',"Search","width=800,height=600","toolbar=yes,resizable=yes");  -->
        Window1=window.open('<?php echo $phpgw->link("/".$phpgw_info['flags']['currentapp']."/addressbook.php"); ?>',"Search","width=800,height=600,toolbar=yes,scrollbars=yes,resizable=yes");
@@ -114,7 +114,7 @@
      <table border=0 cellpadding=4 cellspacing=1 width=100%>
       <tr>
        <td align="left" bgcolor="<?php echo $phpgw_info["theme"]["em_folder"] ?>">
-	<input type="button" value="<?php echo lang("addressbook"); ?>" onclick="addressbook();">
+	<input type="button" value="<?php echo lang("addressbook"); ?>" onclick="addybook();">
        </td>
        <td align="right" bgcolor="<?php echo $phpgw_info["theme"]["em_folder"] ?>">
 	<input type="submit" value="<?php echo lang("send"); ?>">
