@@ -262,7 +262,7 @@
 		{
 			if($this->mbAvailable)
 			{
-				return mb_convert_encoding( $_folderName, "UTF7-IMAP", $this->displayCharset );
+				return mb_convert_encoding( $_folderName, "UTF7-IMAP", $GLOBALS['phpgw']->translation->charset() );
 			}
 			
 			// if not
