@@ -23,7 +23,7 @@
 	$passwd = 'anonymous1';
 
 	$phpgw_info['flags'] = array(
-		'disable_template_class' => True,
+		'disable_Template_class' => True,
 		'login' => True,
 		'currentapp' => 'soap',
 		'noheader'  => True);
@@ -33,6 +33,10 @@
 
 	$sessionid = $phpgw->session->create($login,$passwd);
 
+	if (!$symbol)
+	{
+		$symbol = 'LNUX';
+	}
 	$soapclient = CreateObject('phpgwapi.soapclient',"http://services.xmethods.net:80/soap");
 	echo $soapclient->call("getQuote",array("symbol"=>$symbol),"urn:xmethods-delayed-quotes","urn:xmethods-delayed-quotes#getQuote");
 
