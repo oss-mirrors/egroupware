@@ -12,8 +12,8 @@
 	/* $Id$ */
 
 	$yes_and_no = array(
-		'True' => 'Yes',
-		''     => 'No'
+		'True' => lang('Yes'),
+		''     => lang('No')
 	);
 	create_select_box('show new/updated tickets on main screen','mainscreen_show_new_updated',$yes_and_no);
 
