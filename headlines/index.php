@@ -13,9 +13,7 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"]["currentapp"] = "headlines";
-  $phpgw_info["flags"]["disable_vfs_class"] = True;
-  $phpgw_info["flags"]["disable_msg_class"] = True;
+  $phpgw_info["flags"] = array("currentapp" => "headlines", "enable_network_class" => True);
   include("../header.inc.php");
 
   $i = 0;
