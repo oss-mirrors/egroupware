@@ -324,6 +324,9 @@
 //backward compatibility
       $folder = $phpgw_info["user"]["preferences"]["email"]["folder"];
   }
+
+  if(!$folder) $folder="INBOX";
+  
       //echo "<b>TEST:</b> ".$phpgw_info["user"]["preferences"]["email"]["folder"];
 
   // Its better then them using a ton of PHP errors.
