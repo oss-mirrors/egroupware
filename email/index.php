@@ -13,6 +13,8 @@
 
   /* $Id$ */
 
+  if(empty($folder)){ $folder="INBOX"; }
+
   Header("Cache-Control: no-cache");
   Header("Pragma: no-cache");
   Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
@@ -71,8 +73,7 @@ function check_all()
 ?>
 
 
-<form name="switchbox" action="index.php" method="GET">
- <?php echo $phpgw->session->hidden_var(); ?>
+<form name="switchbox" action="<?php echo $phpgw->link("index.php")?>" method="GET">
  <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
   <tr bgcolor="<?php echo $phpgw_info["theme"]["bg_color"]; ?>" align="center">
     <td>&nbsp;</td>
@@ -182,8 +183,7 @@ function check_all()
 
   <tr>
   </form>
- <form name="delmov" action="action.php" method="GET">
-  <?php echo $phpgw->session->hidden_var(); ?>
+ <form name="delmov" action="<?php echo $phpgw->link("action.php")?>" method="GET">
   <input type="hidden" name="what" value="">
   <input type="hidden" name="folder" value="<?php echo $folder; ?>">
 
