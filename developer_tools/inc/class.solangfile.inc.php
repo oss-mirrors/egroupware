@@ -290,12 +290,16 @@
 				{
 				   while ($data = fgets($fp,8000))
 				   {
-						list($message_id,$app_name,$null,$content) = explode("\t",$data);
+						list($message_id,$app_name,,$content) = explode("\t",$data);
 						if(!$message_id)
 						{
 							continue;
 						}
-						//echo '<br>load_app(): adding phrase: $this->langarray["'.$message_id.'"]=' . trim($content);
+						if (empty($app_name))
+						{
+							$app_name = $app;	// fix missing app_name
+						}
+						//echo '<br>load_app(): adding phrase: $this->langarray["'.$message_id.'"]=' . trim($content)."' for $app_name";
 						$_mess_id = strtolower(trim($message_id));
 						$langarray[$_mess_id]['message_id'] = $_mess_id;
 						$app_name   = trim($app_name);
