@@ -1,8 +1,8 @@
 #!{php_path} -q
 <?php
 	/*******************************************************************\
-	* phpGroupWare - Backup                                             *
-	* http://www.phpgroupware.org                                       *
+	* eGroupWare - Backup                                               *
+	* http://www.egroupware.org                                         *
 	*                                                                   *
 	* Administration Tool for data backup                               *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
