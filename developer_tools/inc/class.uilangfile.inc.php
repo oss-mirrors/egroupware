@@ -94,6 +94,15 @@
 			}
 			$this->bo->read_sessiondata();
 
+			if($dlsource)
+			{
+				$this->download('source',$sourcelang);
+			}
+			if($dltarget)
+			{
+				$this->download('target',$targetlang);
+			}
+
 			$phpgw->common->phpgw_header();
 			echo parse_navbar();
 			include(PHPGW_APP_INC . '/header.inc.php');
@@ -203,7 +212,7 @@
 				{
 					$this->bo->target_langarray[$_mess]['content'] = $_cont;
 				}
-				$this->bo->save_sessiondata($this->bo->source_langarray,$this->bo->target_langarray);
+				/* $this->bo->save_sessiondata($this->bo->source_langarray,$this->bo->target_langarray); */
 				unset($transapp);
 				unset($translations);
 			}
@@ -232,6 +241,7 @@
 					$this->template->set_var('transapp',$this->lang_option($app_name,$transapp,$mess_id));
 					$this->template->pfp('out','detail');
 				}
+				$this->template->set_var('sourcelang',$sourcelang);
 				$this->template->set_var('targetlang',$targetlang);
 				$this->template->set_var('app_name',$app_name);
 				$this->template->set_var('lang_write',lang('Write'));
@@ -244,7 +254,7 @@
 				{
 					$this->template->pfp('out','srcwrite');
 				}
-
+				$this->template->set_var('targetlang',$targetlang);
 				$this->template->pfp('out','tgtdownload');
 				if($this->bo->loaded_apps[$targetlang]['writeable'])
 				{
@@ -269,13 +279,28 @@
 			$this->bo->write_file($appname,$exportlang);
 		}
 
-		function download()
+		function download($which,$lang)
 		{
-			global $appname,$exportlang;
+			global $phpgw;
 
+			switch ($which)
+			{
+				case 'source':
+					$langarray = $this->bo->source_langarray;
+					break;
+				case 'target':
+					$langarray = $this->bo->target_langarray;
+					break;
+				default:
+					break;
+			}
 			$browser = CreateObject('phpgwapi.browser');
-			$this->bo->export_file($appname,$exportlang);
-			$browser->content_header($langfile);
+			$browser->content_header('phpgw_' . $lang . '.lang');
+			while(list($mess_id,$data) = each($langarray))
+			{
+				echo $mess_id . "\t" . $data['app_name'] . "\t" . $lang . "\t" . $data['content'] . "\n";
+			}
+			$phpgw->common->phpgw_exit();
 		}
 
 		function index()
