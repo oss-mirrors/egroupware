@@ -36,7 +36,8 @@
 		'admin',
 		'about',
 		'manual',
-		'add_def_pref'
+		'add_def_pref',
+		'deleteaccount'
 	);
 
 /* Dependacies for this app to work */

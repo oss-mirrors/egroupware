@@ -921,13 +921,15 @@
 
 			if ($confirm)
 			{
+				$del['id'] = $pa_id;
+
 				if ($subs)
 				{
-					$this->boprojects->delete_pa($action, $pa_id, True);
+					$this->boprojects->delete_pa($action, $del, True);
 				}
 				else 
 				{
-					$this->boprojects->delete_pa($action, $pa_id, False);
+					$this->boprojects->delete_pa($action, $del, False);
 				}
 				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php',$link_data));
 			}

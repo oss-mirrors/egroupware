@@ -61,7 +61,8 @@
 			'return_value'				=> True,
 			'select_activities_list'	=> True,
 			'select_pro_activities'		=> True,
-			'select_hours_activities'	=> True
+			'select_hours_activities'	=> True,
+			'change_owner'				=> True
 		);
 
 		function boprojects($session=False, $action = '')
@@ -555,6 +556,11 @@
 		function delete_pa($action, $pa_id, $subs)
 		{
 			$this->soprojects->delete_pa($action, $pa_id, $subs);
+		}
+
+		function change_owner($old, $new)
+		{
+			$this->soprojects->change_owner($old, $new);
 		}
 	}
 ?>
