@@ -1,17 +1,12 @@
 /***************************************************************************
-*   copyright            : (C) 2001,2002 Advanced Internet Designs Inc.
-*   email                : forum@prohost.org
+* copyright            : (C) 2001-2003 Advanced Internet Designs Inc.
+* email                : forum@prohost.org
+* $Id$
 *
-*   $Id$
-****************************************************************************
-          
-****************************************************************************
-*
-*	This program is free software; you can redistribute it and/or modify
-*	it under the terms of the GNU General Public License as published by
-*	the Free Software Foundation; either version 2 of the License, or
-*	(at your option) any later version.
-*
+* This program is free software; you can redistribute it and/or modify it 
+* under the terms of the GNU General Public License as published by the 
+* Free Software Foundation; either version 2 of the License, or 
+* (at your option) any later version.
 ***************************************************************************/
 
 JS_HELPOFF = false;
@@ -26,16 +21,16 @@ function insertTag(obj, stag, etag)
 {
 	if (navigator.userAgent.indexOf("MSIE") > -1 && !OPERA) {
 		insertTagIE(obj, stag, etag);
-	} else if (window.getSelection) {
-		insertTagMoz(obj, stag, etag);	
+	} else if (window.getSelection && navigator.userAgent.indexOf("Safari") == -1) {
+		insertTagMoz(obj, stag, etag);
 	} else {
-		insertTagNS(obj, stag, etag);	
+		insertTagNS(obj, stag, etag);
 	}
 }
 
 function insertTagNS(obj, stag, etag)
 {
-	obj.value = obj.value+stag+etag;	
+	obj.value = obj.value+stag+etag;
 }
 
 function insertTagMoz(obj, stag, etag)
@@ -212,16 +207,18 @@ function fud_msg_focus(mid_hash)
 // The code comes from youngpup.net. Thanks youngpup!
 
 if (navigator.platform == "Win32" && navigator.appName == "Microsoft Internet Explorer" && window.attachEvent) {
-	document.writeln('<style type="text/css">img { visibility:hidden; } </style>');
-	window.attachEvent("onload", fnLoadPngs);
+	rslt = navigator.appVersion.match(/MSIE (\d+\.\d+)/, '');
+	itsAllGood = (rslt != null && Number(rslt[1]) >= 5.5);
+
+	if (itsAllGood) {
+		document.writeln('<style type="text/css">img { visibility:hidden; } </style>');
+		window.attachEvent("onload", fnLoadPngs);
+	}
 }
 
 function fnLoadPngs() {
-	var rslt = navigator.appVersion.match(/MSIE (\d+\.\d+)/, '');
-	var itsAllGood = (rslt != null && Number(rslt[1]) >= 5.5);
-
 	for (var i = document.images.length - 1, img = null; (img = document.images[i]); i--) {
-		if (itsAllGood && img.src.match(/\.png$/i) != null) {
+		if (img.src.match(/\.png$/i) != null) {
 			var src = img.src;
 			img.style.width = img.width + "px";
 			img.style.height = img.height + "px";
