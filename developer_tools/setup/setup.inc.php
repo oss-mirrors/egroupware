@@ -20,11 +20,13 @@
 
 	/* The tables this app creates */
 	$setup_info['developer_tools']['tables']    = array(
-		'phpgw_devtools_diary'
+		'phpgw_devtools_diary',
+		'phpgw_devtools_sf_cache'
 	);
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['developer_tools']['hooks'][] = 'preferences';
+	$setup_info['developer_tools']['hooks'][] = 'admin';
 
 	/* Dependencies for this app to work */
 	$setup_info['developer_tools']['depends'][] = array(

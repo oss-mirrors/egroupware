@@ -6,7 +6,7 @@
     <tr>
      <td>
 
-      <table border="0" cellspacing="5" cellpadding="0">
+      <table border="0" cellspacing="5" cellpadding="5">
        <tr>
         <td>{lang_diary}</td>
         <td>{lang_sourceforge_project}</td>
