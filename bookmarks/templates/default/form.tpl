@@ -42,7 +42,7 @@
 			{edit_button}
 			&nbsp;&nbsp;&nbsp;
 			{cancel_button}
-			{form_link}
+			{save_button}
 		</td>
 	</tr>
 </table>

@@ -373,10 +373,6 @@ define('SEARCH',4);
 					) :
 					''
 				),
-				'cancel_button' => ('<input type="image" name="cancel" title="' . lang('Done') . '" src="'
-					. $GLOBALS['phpgw']->common->image('bookmarks','cancel') . '" border="0">'),
-				'save_button' => ('<input type="image" name="save" title="' . lang('Save') . '" src="'
-					. $GLOBALS['phpgw']->common->image('bookmarks','save') . '" border="0">')
 			));
 			$this->t->fp('body','form');
 			$this->app_messages();
