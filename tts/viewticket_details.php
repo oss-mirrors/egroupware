@@ -11,15 +11,16 @@
 
   /* $Id$ */
 
+	$phpgw_info["flags"] = array("currentapp" => "tts");
+
 	if ($submit)
 	{
-		$phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
+		$phpgw_info["flags"]["noheader"] = True;
+		$phpgw_info["flags"]["nonavbar"] = True;
+		$phpgw_info["flags"]["enable_config_class"] = True;
 	}
 
-	$phpgw_info["flags"]["currentapp"] = "tts";
 	include("../header.inc.php");
-	
-
 
 	if (! $submit)
 	{
