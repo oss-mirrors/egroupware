@@ -35,7 +35,7 @@
 	{
 		$GLOBALS['phpgw']->preferences->add('headlines','headlines_layout','basic');
 		$GLOBALS['phpgw']->preferences->save_repository();
-		$GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'] = 'basic';
+		$GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'] = 'gray';
 	}
 
 	foreach($GLOBALS['phpgw_info']['user']['preferences']['headlines'] as $n => $name)
@@ -56,11 +56,7 @@
 
 	$j = 0;
 	$i = count($sites);
-	if(!$i)
-	{
-		echo '<center>' . lang('please set your preferences for this application') . '.</center>';
-	}
-	elseif (is_array($sites))
+	if (is_array($sites))
 	{
 		foreach($sites as $site)
 		{
