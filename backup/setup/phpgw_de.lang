@@ -5,6 +5,7 @@ Configuration backup	backup	de	Konfiguration der Datensicherung
 Configuration localhost	backup	de	Konfiguration des lokalen Rechners
 Create backups of your data ?	backup	de	Erstellen von Datensicherungen ?
 daily	backup	de	täglich
+httpd	backup	de	HTTPD
 Interval	backup	de	Intervall
 Select interval	backup	de	Intervall auswählen
 Data	backup	de	Daten
@@ -15,10 +16,13 @@ Operating system	backup	de	Betriebssystem
 Configuration remote host	backup	de	Konfiguration des entfernten Hosts
 Save backup locally ?	backup	de	Daten lokal sichern ?
 Save backup to a remote host ?	backup	de	Daten auf einen entfernten Host sichern ?
+scp	backup	en	SCP
 Select archive type	backup	de	Archiv Typ auswählen
+Select transport application	backup	de	Transport Programm auswählen
 Show backup archives in phpGroupWare ?	backup	de	Datensicherungs-Archive in phpGroupWare anzeigen ?
 tar.gz	backup	de	tar.gz
 tar.bz2	backup	de	tar.bz2
+Transport application	backup	de	Transport Programm
 Absolute path of the backup directory	backup	de	Absoluter Pfad des Backup-Verzeichnisses
 IP	backup	de	IP
 monthly	backup	de	monatlich

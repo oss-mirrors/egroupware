@@ -11,14 +11,18 @@ Data	backup	en	Data
 SQL	backup	en	SQL
 LDAP	backup	en	LDAP
 E-MAIL	backup	en	E-MAIL
+httpd	backup	en	HTTPD
 Operating system	backup	en	Operating system
 Configuration remote host	backup	en	Configuration remote host
 Save backup locally ?	backup	en	Save backup locally ?
 Save backup to a remote host ?	backup	en	Save backup to a remote host ?
+scp	backup	en	SCP
 Select archive type	backup	en	Select archive type
+Select transport application	backup	en	Select transport application
 Show backup archives in phpGroupWare ?	backup	en	Show backup archives in phpGroupWare ?
 tar.gz	backup	en	tar.gz
 tar.bz2	backup	en	tar.bz2
+Transport application	backup	en	Transport application
 Absolute path of the backup directory	backup	en	Absolute path of the backup directory
 IP	backup	en	IP
 monthly	backup	en	monthly

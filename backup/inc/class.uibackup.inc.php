@@ -62,6 +62,8 @@
 			$this->t->set_var('lang_b_config',lang('Configuration backup'));
 			$this->t->set_var('lang_b_type',lang('Archive type'));
 			$this->t->set_var('lang_select_b_type',lang('Select archive type'));
+			$this->t->set_var('lang_app',lang('Transport application'));
+			$this->t->set_var('lang_select_app',lang('Select transport application'));
 			$this->t->set_var('lang_save',lang('Save'));
 		}
 
@@ -127,6 +129,32 @@
 						. '<option value="zip"' . $b_type_sel[2] . '>' . lang('zip') . '</option>' . "\n";
 
 			$this->t->set_var('type_list',$type_list);
+
+			switch($values['l_app'])
+			{
+				case 'ftp': $l_type_sel[0]=' selected';break;
+				case 'scp': $l_type_sel[1]=' selected';break;
+				case 'httpd': $l_type_sel[2]=' selected';break;
+			}
+
+			$l_app_list = '<option value="ftp"' . $l_type_sel[0] . '>' . lang('ftp') . '</option>' . "\n"
+						. '<option value="scp"' . $l_type_sel[1] . '>' . lang('scp') . '</option>' . "\n"
+						. '<option value="httpd"' . $l_type_sel[2] . '>' . lang('httpd') . '</option>' . "\n";
+
+			$this->t->set_var('l_app_list',$l_app_list);
+
+			switch($values['r_app'])
+			{
+				case 'ftp': $r_type_sel[0]=' selected';break;
+				case 'scp': $r_type_sel[1]=' selected';break;
+				case 'samba': $r_type_sel[2]=' selected';break;
+			}
+
+			$r_app_list = '<option value="ftp"' . $r_type_sel[0] . '>' . lang('ftp') . '</option>' . "\n"
+						. '<option value="scp"' . $r_type_sel[1] . '>' . lang('scp') . '</option>' . "\n"
+						. '<option value="samba"' . $r_type_sel[2] . '>' . lang('samba') . '</option>' . "\n";
+
+			$this->t->set_var('r_app_list',$r_app_list);
 
 			$this->t->set_var('b_sql','<input type="checkbox" name="values[b_sql]" value="True"' . ($values['b_sql'] == 'yes'?' checked':'') . '>');
 			$this->t->set_var('b_ldap','<input type="checkbox" name="values[b_ldap]" value="True"' . ($values['b_ldap'] == 'yes'?' checked':'') . '>');
