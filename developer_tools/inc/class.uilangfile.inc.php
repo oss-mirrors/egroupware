@@ -40,9 +40,9 @@
 
 		function load()
 		{
-			$app_name   = $GLOBALS['HTTP_POST_VARS']['app_name'];
-			$sourcelang = $GLOBALS['HTTP_POST_VARS']['sourcelang'];
-			$targetlang = $GLOBALS['HTTP_POST_VARS']['targetlang'];
+			$app_name   = get_var('app_name',Array('POST'));
+			$sourcelang = get_var('sourcelang',Array('POST'));
+			$targetlang = get_var('targetlang',Array('POST'));
 
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
@@ -58,11 +58,11 @@
 
 		function addphrase()
 		{
-			$app_name   = $GLOBALS['HTTP_POST_VARS']['app_name'];
-			$sourcelang = $GLOBALS['HTTP_POST_VARS']['sourcelang'];
-			$targetlang = $GLOBALS['HTTP_POST_VARS']['targetlang'];
-			$entry      = $GLOBALS['HTTP_POST_VARS']['entry'];
-			$submit     = $GLOBALS['HTTP_POST_VARS']['submit'];
+			$app_name   = get_var('app_name',Array('POST'));
+			$sourcelang = get_var('sourcelang',Array('POST'));
+			$targetlang = get_var('targetlang',Array('POST'));
+			$entry      = get_var('entry',Array('POST'));
+			$submit     = get_var('submit',Array('POST'));
 
 			$this->bo->read_sessiondata();
 			if($submit)
@@ -104,17 +104,18 @@
 
 		function missingphrase()
 		{
-			$app_name    = $GLOBALS['HTTP_POST_VARS']['app_name'] ? $GLOBALS['HTTP_POST_VARS']['app_name'] : $GLOBALS['HTTP_GET_VARS']['app_name'];
-			$newlang     = $GLOBALS['HTTP_POST_VARS']['newlang'];
-			$sourcelang  = $GLOBALS['HTTP_POST_VARS']['sourcelang'];
-			$targetlang  = $GLOBALS['HTTP_POST_VARS']['targetlang'];
-			$dlsource    = $GLOBALS['HTTP_POST_VARS']['dlsource'];
-			$writesource = $GLOBALS['HTTP_POST_VARS']['writesource'];
-			$dltarget    = $GLOBALS['HTTP_POST_VARS']['dltarget'];
-			$writetarget = $GLOBALS['HTTP_POST_VARS']['writetarget'];
-			$update      = $GLOBALS['HTTP_POST_VARS']['update'];
-			$entry       = $GLOBALS['HTTP_POST_VARS']['entry'];
-			$submit      = $GLOBALS['HTTP_POST_VARS']['submit'];
+			$app_name    = get_var('app_name',Array('GET','POST'));
+			$newlang     = get_var('newlang',Array('POST'));
+			$sourcelang  = get_var('sourcelang',Array('POST'));
+			$targetlang  = get_var('targetlang',Array('POST'));
+			$dlsource    = get_var('dlsource',Array('POST'));
+			$writesource = get_var('writesource',Array('POST'));
+			$dltarget    = get_var('dltarget',Array('POST'));
+			$writetarget = get_var('writetarget',Array('POST'));
+			$update     = get_var('update',Array('POST'));
+			$entry      = get_var('entry',Array('POST'));
+			$submit     = get_var('submit',Array('POST'));
+			
 			$this->bo->read_sessiondata();
 
 			$this->template->set_file(array('langfile' => 'langmissing.tpl'));
@@ -138,7 +139,7 @@
 			$missingarray = $this->bo->missing_app($app_name,$sourcelang);
 			if ($update)
 			{
-				$deleteme     = $GLOBALS['HTTP_POST_VARS']['delete'];
+				$deleteme     = get_var('delete',Array('POST'));
 				while (list($_mess,$_checked) = @each($deleteme))
 				{
 					if($_checked == 'on')
@@ -264,19 +265,19 @@
 
 		function edit()
 		{
-			$app_name    = $GLOBALS['HTTP_POST_VARS']['app_name'] ? $GLOBALS['HTTP_POST_VARS']['app_name'] : $GLOBALS['HTTP_GET_VARS']['app_name'];
-			$newlang     = $GLOBALS['HTTP_POST_VARS']['newlang'];
-			$sourcelang  = $GLOBALS['HTTP_POST_VARS']['sourcelang'] ? $GLOBALS['HTTP_POST_VARS']['sourcelang'] : $GLOBALS['HTTP_GET_VARS']['sourcelang'];
-			$targetlang  = $GLOBALS['HTTP_POST_VARS']['targetlang'] ? $GLOBALS['HTTP_POST_VARS']['targetlang'] : $GLOBALS['HTTP_GET_VARS']['targetlang'];
-			$dlsource    = $GLOBALS['HTTP_POST_VARS']['dlsource'];
-			$writesource = $GLOBALS['HTTP_POST_VARS']['writesource'];
-			$dltarget    = $GLOBALS['HTTP_POST_VARS']['dltarget'];
-			$writetarget = $GLOBALS['HTTP_POST_VARS']['writetarget'];
-			$add_phrase  = $GLOBALS['HTTP_POST_VARS']['add_phrase'];
-			$update      = $GLOBALS['HTTP_POST_VARS']['update'];
-			$revert      = $GLOBALS['HTTP_POST_VARS']['revert'];
-			$entry       = $GLOBALS['HTTP_POST_VARS']['entry'];
-			$submit      = $GLOBALS['HTTP_POST_VARS']['submit'];
+			$app_name    = get_var('app_name',Array('GET','POST'));
+			$newlang     = get_var('newlang',Array('POST'));
+			$sourcelang  = get_var('sourcelang',Array('GET','POST'));
+			$targetlang  = get_var('targetlang',Array('GET','POST'));
+			$dlsource    = get_var('dlsource',Array('POST'));
+			$writesource = get_var('writesource',Array('POST'));
+			$dltarget    = get_var('dltarget',Array('POST'));
+			$writetarget = get_var('writetarget',Array('POST'));
+			$add_phrase  = get_var('add_phrase',Array('POST'));
+			$update      = get_var('update',Array('POST'));
+			$revert      = get_var('revert',Array('POST'));
+			$entry       = get_var('entry',Array('POST'));
+			$submit      = get_var('submit',Array('POST'));
 
 			if($add_phrase)
 			{
@@ -409,9 +410,9 @@
 
 			if ($update)
 			{
-				$transapp     = $GLOBALS['HTTP_POST_VARS']['transapp'];
-				$translations = $GLOBALS['HTTP_POST_VARS']['translations'];
-				$deleteme     = $GLOBALS['HTTP_POST_VARS']['delete'];
+				$transapp     = get_var('transapp',Array('POST'));
+				$translations = get_var('translations',Array('POST'));
+				$deleteme     = get_var('delete',Array('POST'));
 				while (list($_mess,$_app) = each($transapp))
 				{
 					if($_mess)
@@ -515,9 +516,9 @@
 
 		function save($which,$userlang)
 		{
-			$app_name = $GLOBALS['HTTP_POST_VARS']['app_name'];
-			$sourcelang = $GLOBALS['HTTP_POST_VARS']['sourcelang'];
-			$targetlang = $GLOBALS['HTTP_POST_VARS']['targetlang'];
+			$app_name    = get_var('app_name',Array('POST'));
+			$newlang     = get_var('newlang',Array('POST'));
+			$sourcelang  = get_var('sourcelang',Array('POST'));
 
 			$this->bo->write_file($which,$app_name,$userlang);
 			Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.edit&app_name='.$app_name
@@ -548,10 +549,10 @@
 
 		function index()
 		{
-			$start = $GLOBALS['HTTP_POST_VARS']['start'];
-			$sort  = $GLOBALS['HTTP_POST_VARS']['sort'];
-			$order = $GLOBALS['HTTP_POST_VARS']['order'];
-			$query = $GLOBALS['HTTP_POST_VARS']['query'];
+			$start = get_var('start',Array('POST'));
+			$sort  = get_var('sort',Array('POST'));
+			$order = get_var('order',Array('POST'));
+			$query = get_var('query',Array('POST'));
 
 			$this->bo->save_sessiondata('','');
 			$GLOBALS['phpgw']->common->phpgw_header();

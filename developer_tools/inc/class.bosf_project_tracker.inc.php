@@ -54,7 +54,7 @@
 
 		function preferences()
 		{
-			$preferences = $GLOBALS['HTTP_POST_VARS']['preferences'];
+			$preferences = get_var('preferences',Array('POST'));
 
 			$ui =	createobject('developer_tools.uisf_project_tracker');
 			while (is_array($preferences) && list($preference) = each($preferences))

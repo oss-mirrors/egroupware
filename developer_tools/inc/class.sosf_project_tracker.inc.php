@@ -67,7 +67,7 @@
 			// If there running in SSL mode, replace the icons with local ones
 			// This might not work with the CGI binary or webservers other then apache.
 			// I might move this part over to bo or ui, I am not sure yet. (jengo)
-			if ($GLOBALS['HTTP_SERVER_VARS']['HTTPS'])
+			if (get_var('HTTPS',Array('SERVER')))
 			{
 				$data = ereg_replace('http://a248.e.akamai.net/7/248/1710/949111342/sourceforge.net/images/ic',PHPGW_IMAGES,$data);
 			}

@@ -34,7 +34,7 @@
 
 		function add()
 		{
-			$fields = $GLOBALS['HTTP_POST_VARS']['fields'];
+			$fields = get_var('qfields',Array('POST'));
 
 			$this->ui = createobject('developer_tools.uichangelogs');
 			if (! $fields['project'])
