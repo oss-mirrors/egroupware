@@ -523,7 +523,7 @@
 				'menuaction'    => 'felamimail.uicompose.compose',
 				'mailbox'	=> $urlMailbox,
 				'startMessage'	=> $this->startMessage,
-				'sort'		=> $this->sort,
+				'sort'		=> $this->sort
 			);
 			$this->t->set_var('url_compose_empty',$GLOBALS['phpgw']->link('/index.php',$linkData));
 
