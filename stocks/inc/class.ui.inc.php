@@ -112,7 +112,7 @@
 
 			//_debug_array($data);
 
-			$values['xextrabox'] = array
+			$values = array
 			(
 				'lang_name'		=> lang('Name'),
 				'lang_symbol'	=> lang('Symbol'),

@@ -31,7 +31,6 @@
 		));
 
 		$stocks = CreateObject('stocks.ui');
-		$GLOBALS['phpgw']->template->set_var('phpgw_body',$portalbox->xdraw($stocks->return_quotes()),True);
+		$portalbox->xdraw($stocks->return_quotes());
 	}
-	flush();
 ?>
