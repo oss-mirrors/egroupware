@@ -8,7 +8,8 @@
   *  Free Software Foundation; either version 2 of the License, or (at your  *
   *  option) any later version.                                              *
   \**************************************************************************/
-
+/* $Id$ */
+   
    {
    $img = "/" . $appname . "/images/" . $appname .".gif";
    if (file_exists($phpgw_info["server"]["server_root"].$img)) 

@@ -10,7 +10,7 @@
   *  Free Software Foundation; either version 2 of the License, or (at your  *
   *  option) any later version.                                              *
   \**************************************************************************/
-
+/* $Id$ */
 
   $phpgw_info["flags"]["currentapp"] = "projects";
   include("../header.inc.php");
