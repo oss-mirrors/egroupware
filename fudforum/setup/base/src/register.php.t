@@ -16,7 +16,7 @@
 function create_theme_select($name, $def=null)
 {
 	$theme_select_values = '';
-	$r = uq("SELECT id, name FROM {SQL_TABLE_PREFIX}themes WHERE theme_opt>=1 AND (theme_opt & 1) > 0 ORDER BY id ASC");
+	$r = uq("SELECT id, name FROM {SQL_TABLE_PREFIX}themes WHERE theme_opt>=1 AND (theme_opt & 1) > 0 ORDER BY ((theme_opt & 2) > 0) DESC");
 	while ($t = db_rowarr($r)) {
 		$selected = $t[0] == $def ? ' selected' : '';
 		$theme_select_values .= '{TEMPLATE: theme_select_value}';
@@ -58,7 +58,7 @@ function check_passwd($id, $passwd)
 function sanitize_url($url)
 {
 	if (!$url) {
-		return;
+		return '';
 	}
 
 	if (strncasecmp($url, 'http://', strlen('http://')) && strncasecmp($url, 'https://', strlen('https://')) && strncasecmp($url, 'ftp://', strlen('ftp://'))) {
@@ -71,10 +71,18 @@ function sanitize_url($url)
 	return $url;
 }
 
+function sanitize_login($login)
+{
+	for ($i = 0; $i < 32; $i++) $list[] = chr($i);
+	for ($i = 127; $i < 160; $i++) $list[] = chr($i);
+
+	return str_replace($list, array_fill(0, count($list), ''), $login);
+}
+
 function register_form_check($user_id)
 {
 	$_POST['reg_home_page'] = sanitize_url(trim($_POST['reg_home_page']));
-	$_POST['reg_user_image'] = isset($_POST['reg_user_image']) ? sanitize_url(trim($_POST['reg_user_image'])) : '';
+	$_POST['reg_user_image'] = !empty($_POST['reg_user_image']) ? sanitize_url(trim($_POST['reg_user_image'])) : '';
 
 	if (!empty($_POST['reg_icq']) && !(int)$_POST['reg_icq']) { /* ICQ # can only be an integer */
 		$_POST['reg_icq'] = '';
@@ -88,6 +96,18 @@ function register_form_check($user_id)
 	/* Url Avatar check */
 	if (!empty($_POST['reg_avatar_loc']) && !($GLOBALS['reg_avatar_loc_file'] = fetch_img($_POST['reg_avatar_loc'], $user_id))) {
 		set_err('avatar', '{TEMPLATE: register_err_not_valid_img}');
+	}
+
+	/* Alias Check */
+	if ($GLOBALS['FUD_OPT_2'] & 128 && isset($_POST['reg_alias'])) {
+		if (($_POST['reg_alias'] = trim(sanitize_login($_POST['reg_alias'])))) {
+			if (strlen($_POST['reg_alias']) > $GLOBALS['MAX_LOGIN_SHOW']) {
+				$_POST['reg_alias'] = substr($_POST['reg_alias'], 0, $GLOBALS['MAX_LOGIN_SHOW']);
+			}
+			if (q_singleval("SELECT id FROM {SQL_TABLE_PREFIX}users WHERE alias='".addslashes(htmlspecialchars($_POST['reg_alias']))."' AND id!=".$user_id)) {
+				set_err('reg_alias', '{TEMPLATE: register_err_taken_alias}');
+			}
+		}
 	}
 
 	if ($GLOBALS['FORUM_SIG_ML'] && strlen($_POST['reg_sig']) > $GLOBALS['FORUM_SIG_ML']) {

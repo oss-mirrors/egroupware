@@ -11,10 +11,10 @@
 ***************************************************************************/
 
 if (!isset($th)) {
-	$th = '';
+	$th = 0;
 }
 if (!isset($frm->id)) {
-	$frm->id = '';
+	$frm->id = 0;
 }
 
 $unread_posts = _uid ? '{TEMPLATE: unread_posts}' : '';

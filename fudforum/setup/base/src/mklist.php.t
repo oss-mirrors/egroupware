@@ -37,7 +37,7 @@
 
 		$tag = '[LIST TYPE='.$list_type.']\n';
 		foreach ($_POST['opt_list'] as $o) {
-			$tag .= '[*]'.$o.'\n';
+			$tag .= '[*]'.addslashes($o).'\n';
 		}
 		$tag .= '[/LIST]';
 

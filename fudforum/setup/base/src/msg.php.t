@@ -158,6 +158,7 @@
 	}
 
 	$post_reply = (!($frm->thread_opt & 1) || $perms & 4096) ? '{TEMPLATE: post_reply}' : '';
+	$threaded_view = $FUD_OPT_3 & 2 ? '' : '{TEMPLATE: threaded_view}';
 	$email_page_to_friend = $FUD_OPT_2 & 1073741824 ? '{TEMPLATE: email_page_to_friend}' : '';
 
 	if ($perms & 4096) {

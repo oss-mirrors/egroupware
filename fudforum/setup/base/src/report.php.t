@@ -15,6 +15,10 @@
 	if ((!isset($_GET['msg_id']) || !($msg_id = (int)$_GET['msg_id'])) && (!isset($_POST['msg_id']) || !($msg_id = (int)$_POST['msg_id']))) {
 		error_dialog('{TEMPLATE: report_err_nosuchmsg_title}', '{TEMPLATE: report_err_nosuchmsg_msg}');
 	}
+	if (!_uid) {
+		std_error('access');
+	}
+
 	/* permission check */
 	is_allowed_user($usr);
 

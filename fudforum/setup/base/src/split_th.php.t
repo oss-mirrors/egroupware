@@ -42,6 +42,7 @@
 			if (!(int)$v) {
 				unset($_POST['sel_th'][$k]);
 			}
+			$_POST['sel_th'][$k] = (int) $v;
 		}
 		/* sanity check */
 		if (!count($_POST['sel_th'])) {

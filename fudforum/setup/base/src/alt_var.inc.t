@@ -13,12 +13,14 @@
 function alt_var($key)
 {
 	if (!isset($GLOBALS['_ALTERNATOR_'][$key])) {
-		$args = func_get_args(); unset($args[0]);
-		$GLOBALS['_ALTERNATOR_'][$key] = array('p' => 0, 't' => count($args), 'v' => array_values($args));
-	} else if ($GLOBALS['_ALTERNATOR_'][$key]['p'] == $GLOBALS['_ALTERNATOR_'][$key]['t']) {
-		$GLOBALS['_ALTERNATOR_'][$key]['p'] = 0;
+		$args = func_get_args(); array_shift($args);
+		$GLOBALS['_ALTERNATOR_'][$key] = array('p' => 1, 't' => count($args), 'v' => $args);
+		return $args[0];
 	}
-
-	return $GLOBALS['_ALTERNATOR_'][$key]['v'][$GLOBALS['_ALTERNATOR_'][$key]['p']++];
+	$k =& $GLOBALS['_ALTERNATOR_'][$key];
+	if ($k['p'] == $k['t']) {
+		$k['p'] = 0;
+	}
+	return $k['v'][$k['p']++];
 }
 ?>

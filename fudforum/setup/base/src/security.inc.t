@@ -10,7 +10,7 @@
 * (at your option) any later version.
 ***************************************************************************/
 
-	if (!defined('__index_page_start__')) {
+	if (_uid === '_uid') {
 		exit('sorry, you can not access this page');
 	}
 ?>

@@ -39,6 +39,7 @@
 			if (!(int)$v) {
 				unset($_POST['sel_th'][$k]);
 			}
+			$_POST['sel_th'][$k] = (int) $v;
 		}
 		if (count($_POST['sel_th']) != q_singleval("SELECT count(*) FROM {SQL_TABLE_PREFIX}thread WHERE forum_id={$frm} AND id IN(".implode(',', $_POST['sel_th']).")")) {
 			std_error('access');

@@ -102,7 +102,7 @@ function flood_check()
 			std_error('perms');
 		} else if ($msg_id && $msg->poster_id != $usr->id && !($perms & 16)) {
 			std_error('perms');
-		} else if ($msg_id && $EDIT_TIME_LIMIT && ($msg->post_stamp + $EDIT_TIME_LIMIT * 60 <__request_timestamp__)) {
+		} else if ($msg_id && $EDIT_TIME_LIMIT && !$MOD && ($msg->post_stamp + $EDIT_TIME_LIMIT * 60 <__request_timestamp__)) {
 			error_dialog('{TEMPLATE: post_err_edttimelimit_title}', '{TEMPLATE: post_err_edttimelimit_msg}');
 		}
 	} else {
@@ -110,7 +110,7 @@ function flood_check()
 			error_dialog('{TEMPLATE: post_err_noannontopics_title}', '{TEMPLATE: post_err_noannontopics_msg}');
 		} else if ($reply_to && !($perms & 8)) {
 			error_dialog('{TEMPLATE: post_err_noannonposts_title}', '{TEMPLATE: post_err_noannonposts_msg}');
-		} else if ($msg_id && !($perms & 16)) {
+		} else if (($msg_id && !($perms & 16)) || is_ip_blocked(get_ip())) {
 			invl_inp_err();
 		}
 	}
@@ -331,7 +331,7 @@ function flood_check()
 			$msg_post->poll_id = $pl_id;
 			$msg_post->subject = $msg_subject;
 			$msg_post->body = $msg_body;
-			$msg_post->icon = isset($_POST['msg_icon']) ? $_POST['msg_icon'] : '';
+			$msg_post->icon = (isset($_POST['msg_icon']) && basename($_POST['msg_icon']) == $_POST['msg_icon'] && @file_exists($WWW_ROOT_DISK.'images/message_icons/'.$_POST['msg_icon'])) ? $_POST['msg_icon'] : '';
 		 	$msg_post->msg_opt =  $msg_smiley_disabled ? 2 : 0;
 		 	$msg_post->msg_opt |= $msg_show_sig ? 1 : 0;
 		 	$msg_post->attach_cnt = (int) $attach_cnt;
@@ -602,7 +602,7 @@ function flood_check()
 			}
 			$frm->max_file_attachments = 100;
 		}
-		$file_attachments = draw_post_attachments((isset($attach_list) ? $attach_list : ''), $frm->max_attach_size, $frm->max_file_attachments, $attach_control_error);
+		$file_attachments = draw_post_attachments((isset($attach_list) ? $attach_list : ''), $frm->max_attach_size, $frm->max_file_attachments, $attach_control_error, '', $msg_id);
 	} else {
 		$file_attachments = '';
 	}

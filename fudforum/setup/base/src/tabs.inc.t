@@ -15,7 +15,9 @@ if (_uid) {
 	$tablist = array(
 '{TEMPLATE: tabs_register}'=>'register',
 '{TEMPLATE: tabs_subscriptions}'=>'subscribed',
-'{TEMPLATE: tabs_buddy_list}'=>'buddy_list'
+'{TEMPLATE: tabs_referrals}'=>'referals',
+'{TEMPLATE: tabs_buddy_list}'=>'buddy_list',
+'{TEMPLATE: tabs_ignore_list}'=>'ignore_list'
 );
 	if (isset($_POST['mod_id'])) {
 		$mod_id_chk = $_POST['mod_id'];
@@ -26,9 +28,6 @@ if (_uid) {
 	}
 
 	if (!$mod_id_chk) {
-		if (!($FUD_OPT_3 & 2)) {
-			$tablist['{TEMPLATE: tabs_ignore_list}'] = 'ignore_list';
-		}
 		if ($FUD_OPT_1 & 1024) {
 			$tablist['{TEMPLATE: tabs_private_messaging}'] = 'pmsg';
 		}
@@ -37,6 +36,9 @@ if (_uid) {
 		foreach($tablist as $tab_name => $tab) {
 			$tab_url = '{ROOT}?t='.$tab.'&amp;'._rsid;
 			if ($tab == 'referals') {
+				if (!($FUD_OPT_2 & 8192)) {
+					continue;
+				}
 				$tab_url .= '&amp;id='._uid;
 			}
 			$tabs .= $pg == $tab ? '{TEMPLATE: active_tab}' : '{TEMPLATE: inactive_tab}';

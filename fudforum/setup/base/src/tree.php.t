@@ -12,6 +12,10 @@
 
 /*{PRE_HTML_PHP}*/
 
+	if ($FUD_OPT_3 & 2) {
+		std_error('disabled');
+	}
+
 	if (!isset($_GET['th']) || !($th = (int)$_GET['th'])) {
 		$th = 0;
 	}

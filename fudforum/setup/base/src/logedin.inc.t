@@ -53,7 +53,7 @@ if ($FUD_OPT_1 & 1073741824 || $FUD_OPT_2 & 16) {
 	if ($FUD_OPT_1 & 1073741824) {
 		if (@count($st_obj->online_users_text)) {
 			foreach($st_obj->online_users_text as $k => $v) {
-				$logedin .= '{TEMPLATE: online_user_link}' . '{TEMPLATE: online_user_separator}';
+				$logedin .= '{TEMPLATE: online_user_link}' . ' ';
 			}
 		} else {
 			$logedin = '';

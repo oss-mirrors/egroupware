@@ -37,7 +37,7 @@ class fud_user_reg extends fud_user
 			aim=".ssn(urlencode($this->aim)).",
 			yahoo=".ssn(urlencode($this->yahoo)).",
 			msnm=".ssn(urlencode($this->msnm)).",
-			jabber=".ssn(urlencode($this->jabber)).",
+			jabber=".ssn(htmlspecialchars($this->jabber)).",
 			affero=".ssn(urlencode($this->affero)).",
 			posts_ppg='".iz($this->posts_ppg)."',
 			time_zone='".addslashes($this->time_zone)."',

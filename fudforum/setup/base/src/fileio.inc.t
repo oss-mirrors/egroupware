@@ -21,13 +21,10 @@ function register_fp($id)
 
 function un_register_fps()
 {
-	if (!isset($GLOBALS['__MSG_FP__']) || !is_array($GLOBALS['__MSG_FP__'])) {
+	if (!isset($GLOBALS['__MSG_FP__'])) {
 		return;
 	}
-
-	foreach($GLOBALS['__MSG_FP__'] as $k => $v) {
-		unset($GLOBALS['__MSG_FP__'][$k]);
-	}
+	unset($GLOBALS['__MSG_FP__']);
 }
 
 function read_msg_body($off, $len, $file_id)

@@ -31,14 +31,14 @@
 		INNER JOIN {SQL_TABLE_PREFIX}msg m ON t.id=m.thread_id AND m.apr=1
 		LEFT JOIN {SQL_TABLE_PREFIX}users u ON m.poster_id=u.id
 		LEFT JOIN {SQL_TABLE_PREFIX}read r ON t.id=r.thread_id AND r.user_id="._uid."
-		WHERE tv.forum_id=".$frm->id." AND tv.page=".$cur_frm_page." ORDER by pos ASC");
+		WHERE tv.forum_id=".$frm->id." AND tv.page=".$cur_frm_page." ORDER by pos ASC, m.id");
 
 	if (!db_count($r)) {
 		$thread_list_table_data = '{TEMPLATE: no_messages}';
 	} else {
 		$thread_list_table_data = '';
 		$p = $cur_th_id = 0;
-
+		error_reporting(0);
 		while ($obj = db_rowobj($r)) {
 			unset($stack, $tree, $arr, $cur);
 			db_seek($r, $p);
@@ -79,7 +79,7 @@
 							$thread_icon			= $cur->icon		? '{TEMPLATE: thread_icon}'		: '{TEMPLATE: thread_icon_none}';
 							$user_link			= $cur->poster_id	? '{TEMPLATE: reg_user_link}'		: '{TEMPLATE: unreg_user_link}';
 
-							if (strlen($cur->subject) > $TREE_THREADS_MAX_SUBJ_LEN) {
+							if (isset($cur->subject[$TREE_THREADS_MAX_SUBJ_LEN])) {
 								$cur->subject = substr($cur->subject, 0, $TREE_THREADS_MAX_SUBJ_LEN).'...';
 							}
 							if ($lev == 1 && $cur->thread_opt > 1) {

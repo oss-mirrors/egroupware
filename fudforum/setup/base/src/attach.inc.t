@@ -49,7 +49,7 @@ function attach_finalize($attach_list, $mid, $attach_opt=0)
 			@unlink($GLOBALS['FILE_STORE'].(int)$key.'.atch');
 		} else {
 			$attach_count++;
-			$id_list .= $key.',';
+			$id_list .= (int)$key.',';
 		}
 	}
 
@@ -64,7 +64,7 @@ function attach_finalize($attach_list, $mid, $attach_opt=0)
 
 	/* delete any temp attachments created during message creation */
 	if (isset($del)) {
-		q('DELETE FROM {SQL_TABLE_PREFIX}attach WHERE id IN('.implode(',', $del).')');
+		q('DELETE FROM {SQL_TABLE_PREFIX}attach WHERE id IN('.implode(',', $del).') AND message_id='.$mid.' AND attach_opt='.$attach_opt);
 	}
 
 	/* delete any prior (removed) attachments if there are any */

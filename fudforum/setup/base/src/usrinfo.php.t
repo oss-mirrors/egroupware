@@ -71,13 +71,13 @@ function convert_bdate($val, $month_fmt)
 	$last_post = '';
 	if ($u->u_last_post_id) {
 		$r = db_saq('SELECT m.subject, m.id, m.post_stamp, t.forum_id FROM {SQL_TABLE_PREFIX}msg m INNER JOIN {SQL_TABLE_PREFIX}thread t ON m.thread_id=t.id WHERE m.id='.$u->u_last_post_id);
-		if (!empty($frm_perms[$r[3]])) {
+		if ($usr->users_opt & 1048576 || !empty($frm_perms[$r[3]])) {
 			$last_post = '{TEMPLATE: last_post}';
 		}
 	}
 
 	$user_image = ($FUD_OPT_2 & 65536 && $u->user_image && strpos($u->user_image, '://')) ? '{TEMPLATE: user_image}' : '';
-	
+
 
 	if ($u->users_opt & 1) {
 		$email_link = '{TEMPLATE: email_link}';
@@ -92,6 +92,12 @@ function convert_bdate($val, $month_fmt)
 		$referals = '{TEMPLATE: referals}';
 	} else {
 		$referals = '';
+	}
+
+	if (_uid && _uid != $u->id && !q_singleval("SELECT id FROM {SQL_TABLE_PREFIX}buddy WHERE user_id="._uid." AND bud_id=".$u->id)) {
+		$buddy = '{TEMPLATE: ui_buddy}';
+	} else {
+		$buddy = '';
 	}
 
 	if (($polls = q_singleval('SELECT count(*) FROM {SQL_TABLE_PREFIX}poll p INNER JOIN {SQL_TABLE_PREFIX}forum f ON p.forum_id=f.id WHERE p.owner='.$u->id.' AND f.cat_id>0 '.($usr->users_opt & 1048576 ? '' : ' AND f.id IN('.implode(',', array_keys($frm_perms)).')')))) {

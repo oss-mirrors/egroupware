@@ -75,7 +75,7 @@
 	}
 
 	header('Content-type: '.$r[0]);
-	header('Content-Disposition: '.$append.'filename='.$r[1]);
+	header('Content-Disposition: '.$append.'filename="'.$r[1].'"');
 
 	if (!$r[2]) {
 		$r[2] = $GLOBALS['FILE_STORE'] . $id . '.atch';

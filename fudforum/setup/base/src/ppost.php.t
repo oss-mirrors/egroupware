@@ -150,7 +150,7 @@ function export_msg_data($m, &$msg_subject, &$msg_body, &$msg_icon, &$msg_smiley
 		$msg_subject = $_POST['msg_subject'];
 		$old_subject = $_POST['old_subject'];
 		$msg_body = $_POST['msg_body'];
-		$msg_icon = isset($_POST['msg_icon']) ? $_POST['msg_icon'] : '';
+		$msg_icon = (isset($_POST['msg_icon']) && basename($_POST['msg_icon']) == $_POST['msg_icon'] && @file_exists($WWW_ROOT_DISK.'images/message_icons/'.$_POST['msg_icon'])) ? $_POST['msg_icon'] : '';
 		$msg_track = isset($_POST['msg_track']) ? '4' : '';
 		$msg_smiley_disabled = isset($_POST['msg_smiley_disabled']) ? '2' : '';
 		$msg_show_sig = isset($_POST['msg_show_sig']) ? '1' : '';
@@ -352,7 +352,7 @@ function export_msg_data($m, &$msg_subject, &$msg_body, &$msg_icon, &$msg_smiley
 		}
 
 		if ($FUD_OPT_1 & 6144) {
-			char_fix($text);		
+			char_fix($text);
 		}
 
 		if ($FUD_OPT_1 & 8192 && !$msg_smiley_disabled) {
@@ -389,10 +389,14 @@ function export_msg_data($m, &$msg_subject, &$msg_body, &$msg_icon, &$msg_smiley
 
 	$post_options = tmpl_post_options('private');
 
-	$private = '&amp;private=1';
+	if ($FUD_OPT_2 & 32768) {
+		$private = '1';
+	} else {
+		$private = '&amp;private=1';
+	}
 
 	if ($PRIVATE_ATTACHMENTS > 0) {
-		$file_attachments = draw_post_attachments((isset($attach_list) ? $attach_list : ''), round($PRIVATE_ATTACH_SIZE / 1024), $PRIVATE_ATTACHMENTS, $attach_control_error, $private);
+		$file_attachments = draw_post_attachments((isset($attach_list) ? $attach_list : ''), round($PRIVATE_ATTACH_SIZE / 1024), $PRIVATE_ATTACHMENTS, $attach_control_error, $private, $msg_id);
 	} else {
 		$file_attachments = '';
 	}

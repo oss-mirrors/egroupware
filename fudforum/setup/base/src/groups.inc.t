@@ -18,13 +18,7 @@ function grp_delete_member($id, $user_id)
 
 	q('DELETE FROM {SQL_TABLE_PREFIX}group_members WHERE group_id='.$id.' AND user_id='.$user_id);
 
-	$list = array();
-	$r = uq("SELECT resource_id FROM {SQL_TABLE_PREFIX}group_members gm INNER JOIN {SQL_TABLE_PREFIX}group_resources gr ON gm.group_id=gr.group_id WHERE gm.user_id=".$user_id);
-	while ($o = db_rowarr($r)) {
-		$list[] = $o[0];
-	}
-
-	if ($o) {
+	if (q_singleval("SELECT id FROM {SQL_TABLE_PREFIX}group_members WHERE user_id=".$user_id." LIMIT 1")) {
 		/* we rebuild cache, since this user's permission for a particular resource are controled by
 		 * more the one group. */
 		grp_rebuild_cache(array($user_id));
@@ -71,10 +65,13 @@ function grp_rebuild_cache($user_id=null)
 			$tmp[] = $k.", ".$p.", ".$u;
 		}
 	}
-	if (__dbtype__ == 'mysql') {
-		ins_m($tmp_t, "a,b,c", $tmp, 1);
-	} else {
-		ins_m($tmp_t, "a,b,c", $tmp, "integer, integer, integer");
+
+	if ($tmp) {
+		if (__dbtype__ == 'mysql') {
+			ins_m($tmp_t, "a,b,c", $tmp, 1);
+		} else {
+			ins_m($tmp_t, "a,b,c", $tmp, "integer, integer, integer");
+		}
 	}
 
 	if (!db_locked()) {

@@ -167,7 +167,7 @@ function write_pmsg_body($text)
 	if (!db_locked()) {
 		$ll = 1;
 		db_lock('{SQL_TABLE_PREFIX}pmsg WRITE');
-	}	
+	}
 
 	$fp = fopen($GLOBALS['MSG_STORE_DIR'].'private', 'ab');
 

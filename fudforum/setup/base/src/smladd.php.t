@@ -13,7 +13,7 @@
 /*{PRE_HTML_PHP}*/
 /*{POST_HTML_PHP}*/
 
-	$col_count = 5;
+	$col_count = '{TEMPLATE: sml_per_row}' - 2;
 	$col_pos = -1;
 
 	$sml_smiley_entry = $sml_smiley_row = '';

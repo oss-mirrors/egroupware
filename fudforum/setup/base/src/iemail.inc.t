@@ -23,6 +23,9 @@ function send_email($from, $to, $subj, $body, $header='')
 	$body = str_replace('\n', "\n", $body);
 
 	if ($GLOBALS['FUD_OPT_1'] & 512) {
+		if (!class_exists('fud_smtp')) {
+			fud_use('smtp.inc');
+		}
 		$smtp = new fud_smtp;
 		$smtp->msg = str_replace("\n.", "\n..", $body);
 		$smtp->subject = $subj;

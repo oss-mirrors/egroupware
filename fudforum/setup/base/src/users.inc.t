@@ -93,7 +93,7 @@ function init_user()
 	define('t_thread_view', $u->users_opt & 128 ? 'thread' : 'threadt');
 
 	/* theme path */
-	@define('fud_theme', 'theme/' . str_replace(' ', '_', $u->theme_name) . '/');
+	@define('fud_theme', 'theme/' . ($u->theme_name ? $u->theme_name : 'default') . '/');
 
 	/* define _uid, which, will tell us if this is a 'real' user or not */
 	define('_uid', !($u->users_opt & 2097152) ? $u->id : 0);
@@ -119,12 +119,8 @@ function user_register_forum_view($frm_id)
 	}
 }
 
-function user_register_thread_view($thread_id, $tm=0, $msg_id=0)
+function user_register_thread_view($thread_id, $tm=__request_timestamp__, $msg_id=0)
 {
-	if (!$tm) {
-		$tm = __request_timestamp__;
-	}
-
 	if (!db_li('INSERT INTO {SQL_TABLE_PREFIX}read (last_view, msg_id, thread_id, user_id) VALUES('.$tm.', '.$msg_id.', '.$thread_id.', '._uid.')', $ef)) {
 		q('UPDATE {SQL_TABLE_PREFIX}read SET last_view='.$tm.', msg_id='.$msg_id.' WHERE thread_id='.$thread_id.' AND user_id='._uid);
 	}
