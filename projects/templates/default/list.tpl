@@ -59,9 +59,7 @@
 
 		<!-- END pro_sort_cols -->
 
-		<td width="16" align="center">&nbsp;</td>
-		<td width="16" align="center">&nbsp;</td>
-		<td width="16" align="center">&nbsp;</td>
+		<td width="16" align="center" colspan="3">&nbsp;</td>
 	</tr>
 
 <!-- BEGIN projects_list -->

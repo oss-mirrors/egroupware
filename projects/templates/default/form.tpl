@@ -45,6 +45,15 @@
 
 <center>
 <p>{message}</p>
+<table width="100%" border="0" cellspacing="0" cellpading="0" bgcolor="white">
+	<tr>
+		<th width="33%" id="tab1" class="activetab" onclick="javascript:tab.display(1);"><a href="#" tabindex="0" accesskey="1" onfocus="tab.display(1);" onclick="tab.display(1); return(false);" style="font-size:10px;">{lang_project_overview}</a></th>
+		<th width="33%" id="tab2" class="activetab" onclick="javascript:tab.display(2);"><a href="#" tabindex="0" accesskey="2" onfocus="tab.display(2);" onclick="tab.display(2); return(false);" style="font-size:10px;">{lang_milestones}</a></th>
+		<th width="33%" id="tab3" class="activetab" onclick="javascript:tab.display(3);"><a href="#" tabindex="0" accesskey="3" onfocus="tab.display(3);" onclick="tab.display(3); return(false);" style="font-size:10px;">{lang_files}</a></th>
+	</tr>
+</table>
+<br>
+<div id="tabcontent1" class="inactivetab" bgcolor="white">
 <form method="POST" name="app_form" action="{action_url}">
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
 
@@ -360,4 +369,42 @@ end msfield2 -->
 	</tr>
 </table>
 </form>
+</div>
+<div id="tabcontent2" class="inactivetab" bgcolor="white">
+</div>
+<div id="tabcontent3" class="inactivetab" bgcolor="white">
+<form method="POST" name="form_manage_files" action="{action_url_files}">
+{files_table}
+<table width="100%">
+	<tr>
+		<td>
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
+			<input type="submit" name="delete_files" value="{lang_delete_selected}">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			&nbsp;
+		</td>
+	</tr>
+<table>
+</form>
+
+<form method="POST" name="form_add_file" action="{action_url_files}" ENCTYPE="multipart/form-data">
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+	<tr>
+	<td width="80%" align="left">
+		<INPUT class="input_text" NAME="attachfile" SIZE=48 TYPE="file">
+	</td>
+	<td align="right" width="20%">
+		<input class="input_text" type="submit" name="addfile" value="{lang_add}">
+	</td>
+	</tr>
+</table>
+</form>
+</div>
 </center>

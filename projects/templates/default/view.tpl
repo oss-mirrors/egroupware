@@ -2,6 +2,16 @@
 
 {app_header}
 
+<table width="100%" border="0" cellspacing="0" cellpading="0" bgcolor="white">
+	<tr>
+		<th width="33%" id="tab1" class="activetab" onclick="javascript:tab.display(1);"><a href="#" tabindex="0" accesskey="1" onfocus="tab.display(1);" onclick="tab.display(1); return(false);" style="font-size:10px;">{lang_project_overview}</a></th>
+		<th width="33%" id="tab2" class="activetab" onclick="javascript:tab.display(2);"><a href="#" tabindex="0" accesskey="2" onfocus="tab.display(2);" onclick="tab.display(2); return(false);" style="font-size:10px;">{lang_milestones}</a></th>
+		<th width="33%" id="tab3" class="activetab" onclick="javascript:tab.display(3);"><a href="#" tabindex="0" accesskey="3" onfocus="tab.display(3);" onclick="tab.display(3); return(false);" style="font-size:10px;">{lang_files}</a></th>
+	</tr>
+</table>
+<br>
+
+<div id="tabcontent1" class="inactivetab" bgcolor="white">
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
 <form method="POST" action="{action_url}">
 <!-- BEGIN sub -->
@@ -203,8 +213,12 @@
 	</tr>
 </form>
 </table>
-</center>
-
+</div>
+<div id="tabcontent2" class="inactivetab" bgcolor="white">
+</div>
+<div id="tabcontent3" class="inactivetab" bgcolor="white">
+{files_table}
+</div>
 <!-- END done -->
 
 

@@ -43,6 +43,7 @@
 		(
 			'edit_resources'	=> True,
 			'export_project'	=> True,
+			'handle_fileupload'	=> True,
 			'list_projects'		=> True,
 			'list_projects_home'	=> True,
 			'edit_project'		=> True,
@@ -161,6 +162,30 @@
 					break;
 			} 
 			
+		}
+		
+		function handle_fileupload()
+		{
+			$bolink		= CreateObject('infolog.bolink');
+			$project_id	= get_var('project_id',array('GET','POST'));
+			
+			if($_POST['delete_files'])
+			{
+				if(is_array($selectedFiles = get_var('selected_file')))
+				{
+					#_debug_array($selectedFiles);
+					foreach($selectedFiles as $bolinkID => $bolinkData)
+					{
+						$bolink->unlink($bolinkID);
+					}
+				}
+			}
+			elseif($_POST['addfile'])
+			{
+				$bolink->link('projects',$project_id,$bolink->vfs_appname,$_FILES['attachfile']);
+			}
+			
+			$this->edit_project();
 		}
 
 		function save_sessiondata($action)
@@ -288,6 +313,11 @@
 
 			$GLOBALS['phpgw']->template->set_var('lang_billable',lang('billable'));
 			$GLOBALS['phpgw']->template->set_var('lang_send',lang('send'));
+			$GLOBALS['phpgw']->template->set_var('lang_project_overview',lang('Project overview'));
+			$GLOBALS['phpgw']->template->set_var('lang_milestones',lang('Milestones'));
+			$GLOBALS['phpgw']->template->set_var('lang_files',lang('Files'));
+			$GLOBALS['phpgw']->template->set_var('lang_add',lang('add file'));
+			$GLOBALS['phpgw']->template->set_var('lang_delete_selected',lang('delete selected files'));
 		}
 
 		function display_app_header()
@@ -322,6 +352,15 @@
 
 				$GLOBALS['phpgw']->template->fp('app_header','projects_header');
 			}
+
+			if(!@is_object($GLOBALS['phpgw']->js))
+			{
+				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+			}
+			$GLOBALS['phpgw']->js->validate_file('tabs','tabs');
+			$GLOBALS['phpgw']->js->validate_file('jscode','edit_project','projects');
+			$GLOBALS['phpgw']->js->set_onload('javascript:initAll();');
+
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 			$this->set_app_langs();
@@ -865,13 +904,10 @@
 
 		function edit_project()
 		{
-
-//ndee 140504
 			if (!is_object($this->jscal))
-				{
-					$tihs->jscal = CreateObject('phpgwapi.jscalendar');
-				}
-//ndee
+			{
+				$tihs->jscal = CreateObject('phpgwapi.jscalendar');
+			}
 
 			$action			= get_var('action',array('GET','POST'));
 			$pro_main		= get_var('pro_main',array('GET','POST'));
@@ -1399,8 +1435,42 @@
 				$GLOBALS['phpgw']->template->set_var('delete_button','<input type="submit" name="delete" value="' . lang('Delete') .'">');
 			}
 
+			// the file manager part
+			$uiwidgets	= CreateObject('projects.uiwidgets');
+			$bolink		= CreateObject('infolog.bolink');
+			
+			$headValues = array(lang('name'),lang('size'),'');
+			$attachedFiles = $bolink->get_links('projects',$project_id,'file');
+
+			if(is_array($attachedFiles))
+			{
+				foreach($attachedFiles as $fileData)
+				{
+					$fileLinkData = array
+					(
+						'menuaction'	=> 'infolog.bolink.get_file',
+						'app'		=> 'projects',
+						'id'		=> $project_id,
+						'filename'	=> $fileData['id']
+					);
+					$rowID = $uiwidgets->tableViewAddRow();
+					$uiwidgets->tableViewAddTextCell($rowID,'<a href="'.
+						$GLOBALS['phpgw']->link('/index.php',$fileLinkData).'">'.
+						$fileData['id'].'</a>');
+					$uiwidgets->tableViewAddTextCell($rowID,$fileData['size'],'center');
+					$uiwidgets->tableViewAddTextCell($rowID,'<input type="checkbox" name="selected_file['.$fileData['link_id'].']">','center');
+				}
+			}
+			
+			$GLOBALS['phpgw']->template->set_var('files_table',$uiwidgets->tableView($headValues));
+
+			$link_data['menuaction'] = 'projects.uiprojects.handle_fileupload';
+			$GLOBALS['phpgw']->template->set_var('action_url_files',$GLOBALS['phpgw']->link('/index.php',$link_data));
+
 			$this->save_sessiondata($action);
 			$GLOBALS['phpgw']->template->pfp('out','edit_form');
+
+			
 		}
 
 		function view_project()
@@ -1665,7 +1735,37 @@
 			$GLOBALS['phpgw']->template->set_var('ownhandle','');
 			$GLOBALS['phpgw']->template->set_var('acthandle','');
 			$GLOBALS['phpgw']->template->set_var('bothhandle','');
+
+			// the file manager part
+			$uiwidgets	= CreateObject('projects.uiwidgets');
+			$bolink		= CreateObject('infolog.bolink');
+			
+			$headValues = array(lang('name'),lang('size'));
+			$attachedFiles = $bolink->get_links('projects',$project_id,'file');
+
+			if(is_array($attachedFiles))
+			{
+				foreach($attachedFiles as $fileData)
+				{
+					$fileLinkData = array
+					(
+						'menuaction'	=> 'infolog.bolink.get_file',
+						'app'		=> 'projects',
+						'id'		=> $project_id,
+						'filename'	=> $fileData['id']
+					);
+					$rowID = $uiwidgets->tableViewAddRow();
+					$uiwidgets->tableViewAddTextCell($rowID,'<a href="'.
+						$GLOBALS['phpgw']->link('/index.php',$fileLinkData).'">'.
+						$fileData['id'].'</a>');
+					$uiwidgets->tableViewAddTextCell($rowID,$fileData['size'],'center');
+				}
+			}
+			
+			$GLOBALS['phpgw']->template->set_var('files_table',$uiwidgets->tableView($headValues));
+
 			$GLOBALS['phpgw']->template->pfp('out','view');
+
 
 			if (!isset($public_view))
 			{
