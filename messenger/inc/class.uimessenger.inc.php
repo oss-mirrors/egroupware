@@ -109,7 +109,7 @@
 			if (! is_array($messages))
 			{
 				$this->template->set_var('lang_empty',lang('You have no messages'));
-				$this->template->fp('rows','row_empty',True);				
+				$this->template->fp('rows','row_empty',True);
 			}
 			else
 			{
@@ -223,9 +223,9 @@
 
 			switch($message['status'])
 			{
-				case 'N': $this->template->set_var('value_status',lang('New'));		break;
-				case 'R': $this->template->set_var('value_status',lang('Replied'));	break;
-				case 'F': $this->template->set_var('value_status',lang('Forwarded'));	break;
+				case 'N': $this->template->set_var('value_status',lang('New'));       break;
+				case 'R': $this->template->set_var('value_status',lang('Replied'));   break;
+				case 'F': $this->template->set_var('value_status',lang('Forwarded')); break;
 			}
 
 			if ($message['global_message'])
@@ -234,7 +234,7 @@
 			}
 			else
 			{
-				$this->template->fp('read_buttons','form_read_buttons');			
+				$this->template->fp('read_buttons','form_read_buttons');
 			}
 
 			$this->template->fp('date','form_date');
