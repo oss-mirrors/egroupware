@@ -1,10 +1,10 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - E-Mail Message Processing Functions			*
-  * http://www.phpgroupware.org							*
+  * phpGroupWare - E-Mail Message Processing Functions		*
+  * http://www.phpgroupware.org				*
   */
   /**************************************************************************\
-  * phpGroupWare API - E-Mail Message Processing Functions			*
+  * phpGroupWare API - E-Mail Message Processing Functions		*
   * This file written by Angelo Tony Puglisi (Angles) <angles@phpgroupware.org> *
   * Handles specific operations in manipulating email messages			*
   * Copyright (C) 2001 Angelo Tony Puglisi (Angles)				*
@@ -191,9 +191,15 @@
 		// ----  Things To Be Done Whether You Login Or Not  -----
 		// obtain the preferences from the database
 		$GLOBALS['phpgw_info']['user']['preferences'] = $GLOBALS['phpgw']->preferences->create_email_preferences();
+		//if ($debug_logins) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw_info][user][preferences] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']) ; echo '</pre>';}
+		//if ($debug_logins) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw_info][user] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']) ; echo '</pre>';}
+		//if ($debug_logins) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw_info] dump:<pre>'; print_r($GLOBALS['phpgw_info']) ; echo '</pre>';}
+		//if ($debug_logins) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw] dump:<pre>'; print_r($GLOBALS['phpgw']) ; echo '</pre>';}
 		// Get Email Password
 		if (!isset($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd']))
 		{
+			if ($debug_logins) { echo 'mail_msg: begin_request: GLOBALS[phpgw_info][user][preferences][email][passwd] NOT set, fallback to $GLOBALS[phpgw_info][user][passwd]'.'<br>'; }
+			//if ($debug_logins) { echo 'mail_msg: begin_request: GLOBALS[phpgw_info][user][passwd] = '.htmlspecialchars(serialize($GLOBALS['phpgw_info']['user']['passwd'])).'<br>'; }
 			$GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'] = $GLOBALS['phpgw_info']['user']['passwd'];
 		}
 		else
@@ -252,7 +258,13 @@
 			else
 			{
 				// problem - invalid or nonexistant info for userid and/or passwd
-				  if ($debug_logins) { echo 'ERROR: userid or passwd empty <br>';}
+				//if ($debug_logins) {
+					echo 'mail_msg: begin_request: ERROR: userid or passwd empty'."<br>\r\n"
+						.' * * GLOBALS[phpgw_info][user][preferences][email][userid] = '
+							.$GLOBALS['phpgw_info']['user']['preferences']['email']['userid']."<br>\r\n"
+						.' * * if the userid is filled, then it must be the password that is missing'."<br>\r\n"
+						.' * * tell your admin if a) you have a custom email password or not when reporting this error'."<br>\r\n";
+				//}
 				return False;
 			}
 		
@@ -1171,7 +1183,8 @@
 			$cryptovars[0] = md5($GLOBALS['phpgw_info']['server']['encryptkey']);
 			$cryptovars[1] = $GLOBALS['phpgw_info']['server']['mcrypt_iv'];
 			$crypto = CreateObject('phpgwapi.crypto', $cryptovars);
-			$encrypted_passwd = $crypto->encrypt($encrypted_passwd);
+			//$encrypted_passwd = $crypto->encrypt($encrypted_passwd);
+			$encrypted_passwd = $crypto->encrypt_mail_pass($encrypted_passwd);
 		}
 		else
 		{
@@ -1212,7 +1225,8 @@
 			$cryptovars[0] = md5($GLOBALS['phpgw_info']['server']['encryptkey']);
 			$cryptovars[1] = $GLOBALS['phpgw_info']['server']['mcrypt_iv'];
 			$crypto = CreateObject('phpgwapi.crypto', $cryptovars);
-			$passwd = $crypto->decrypt($passwd);
+			//$passwd = $crypto->decrypt($passwd);
+			$passwd = $crypto->decrypt_mail_pass($passwd);
 		}
 		else
 		{
