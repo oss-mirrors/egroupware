@@ -27,9 +27,11 @@
   $t->set_var(bg_color,$phpgw_info["theme"]["bg_color"]);
   $t->set_var(lang_addressbook_action,lang("Address book"));
   
-  if (! $start)
+  if (! $start) {
      $start = 0;
-
+     $query = "";
+       }
+  
   if ($order)
      $ordermethod = "order by $order $sort";
   else
@@ -56,12 +58,8 @@
        . "WHERE $filtermethod AND (ab_lastname like '"
        . "%$query%' OR ab_firstname like '%$query%' OR ab_email like '%$query%')");
     
-
     $phpgw->db->next_record();
 
-     if ($phpgw->db->f(0) == 0) 
-       $t->set_var(total_matchs,lang("there are no email addresses in your addressbook"));
-         
      if ($phpgw->db->f(0) == 1)
        $t->set_var(total_matchs,lang("your search returned 1 match"));
      
