@@ -57,7 +57,9 @@
 			{
 				$flags |= FT_UID;
 			}
-			return imap_delete($stream,$msg_num,$flags);
+			$retval = imap_delete($stream,$msg_num,$flags);
+			imap_expunge($stream);
+			return $retval;
 		}
      
 		function expunge($stream)
