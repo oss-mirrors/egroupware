@@ -33,7 +33,9 @@
 		(
 			'index'			=> True,
 			'preferences'	=> True,
-			'edit_stock'	=> True
+			'edit_stock'	=> True,
+			'list_stocks'	=> True,
+			'add_stock'		=> True
 		);
 
 		function ui()
@@ -55,6 +57,24 @@
 			$this->t->set_var('lang_add_stock',lang('Add new stock'));
 			$this->t->set_var('lang_delete',lang('Delete'));
 			$this->t->set_var('lang_save',lang('Save'));
+			$this->t->set_var('lang_stocks',lang('Stock Quotes'));
+			$this->t->set_var('lang_done',lang('Done'));
+		}
+
+		function display_app_header()
+		{
+			$this->t->set_file(array('header' => 'header.tpl'));
+			$this->t->set_block('header','stock_header');
+
+			$this->set_app_langs();
+
+			$this->t->set_var('link_stocks',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.list_stocks'));
+			$this->t->set_var('lang_select_stocks',lang('Select stocks to display'));
+
+			$this->t->fp('app_header','stock_header');
+
+			$GLOBALS['phpgw']->common->phpgw_header();
+			echo parse_navbar();
 		}
 
 		function return_html($quotes)
@@ -62,7 +82,7 @@
 			$return_html = '<table cellspacing="1" cellpadding="0" border="0" bgcolor="black"><tr><td>'
 			. '<table cellspacing="1" cellpadding="2" border="0" bgcolor="white">'
 			. '<tr><td><b>' . lang('Name') . '</b></td><td><b>' . lang('Symbol') . '</b></td><td align="right"><b>' . lang('Price') . '</b></td><td align="right">'
-			. '<b>&nbsp;' . lang('Change') . '</b></td><td align="right"><b>' . lang('%') . '&nbsp;' . lang('Change') . '</b></td><td align="center"><b>' . lang('Date') . '</b></td><td align="center">'
+			. '<b>&nbsp;' . lang('Change') . '</b></td><td align="right"><b>%&nbsp;' . lang('Change') . '</b></td><td align="center"><b>' . lang('Date') . '</b></td><td align="center">'
 					. '<b>' . lang('Time') . '</b></td></tr>';
 
 			for ($i=0;$i<count($quotes);$i++)
@@ -106,36 +126,75 @@
 
 		function index()
 		{
-			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
-
+			$this->display_app_header();
 			$this->t->set_file(array('quotes_list' => 'main.tpl'));
 			$this->t->set_var('quotes',$this->return_quotes());
 			$this->t->pfp('out','quotes_list');
 		}
 
-		function preferences()
+		function list_stocks()
 		{
-			$action		= $GLOBALS['HTTP_GET_VARS']['action'] ? $GLOBALS['HTTP_GET_VARS']['action'] : $GLOBALS['HTTP_POST_VARS']['action'];
-			$name		= $GLOBALS['HTTP_POST_VARS']['name'];
-			$symbol		= $GLOBALS['HTTP_POST_VARS']['symbol'];
-			$mainscreen = $GLOBALS['HTTP_POST_VARS']['mainscreen'];
-			$stock_id	= $GLOBALS['HTTP_POST_VARS']['stock_id'];
-			$submit		= $GLOBALS['HTTP_POST_VARS']['submit'];
+			$action 	= $GLOBALS['HTTP_GET_VARS']['action'] ? $GLOBALS['HTTP_GET_VARS']['action'] : $GLOBALS['HTTP_POST_VARS']['action'];
+			$stock_id	= $GLOBALS['HTTP_GET_VARS']['stock_id'];
 
-			if ($submit)
-			{
-				$this->bo->save_stock(array('access' => 'public','name' => $name,'symbol' => $symbol));
-				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences'));
-				$GLOBALS['phpgw']->common->phpgw_exit();
-			}
+			$link_data = array
+			(
+				'menuaction'	=> 'stocks.ui.list_stocks'
+			);
 
 			if ($action == 'delete')
 			{
 				$this->bo->delete_stock($stock_id);
-				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences'));
+				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php',$link_data));
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
+
+			$this->display_app_header();
+
+			$this->t->set_file(array('stock_list_t' => 'list.tpl'));
+			$this->t->set_block('stock_list_t','stock_list','list');
+
+			$this->t->set_var('lang_list',lang('Stock Quotes list'));
+			$this->t->set_var('h_lang_edit',lang('Edit'));
+			$this->t->set_var('h_lang_delete',lang('Delete'));
+			$this->t->set_var('doneurl',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.index'));
+
+			$stocks = $this->bo->read_stocks();
+
+			if (is_array($stocks))
+			{
+				while (list($null,$stock) = each($stocks))
+				{
+					$this->nextmatchs->template_alternate_row_color(&$this->t);
+
+					$this->t->set_var(array
+					(
+						'dsymbol' => rawurldecode($stock['symbol']),
+						'dname' => rawurldecode($stock['name'])
+					));
+
+					$this->t->set_var('delete',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.list_stocks&action=delete&stock_id='
+																		. $stock['id']));
+
+					$this->t->set_var('edit',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.edit_stock&stock_id='
+																	. $stock['id']));
+
+					$this->t->fp('list','stock_list',True);
+				}
+			}
+			$link_data['menuaction'] = 'stocks.ui.add_stock';
+			$this->t->set_var('addurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->t->pfp('out','stock_list_t',True);
+		}
+
+		function preferences()
+		{
+			$mainscreen = $GLOBALS['HTTP_POST_VARS']['mainscreen'];
+
+			$link_data = array
+			(
+				'menuaction' => 'stocks.ui.preferences'
+			);
 
 			if ($mainscreen)
 			{
@@ -153,52 +212,21 @@
 				}
 
 				$GLOBALS['phpgw']->preferences->save_repository(True);
-				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences'));
+				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php',$link_data));
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 
-			$this->t->set_file(array('stock_prefs' => 'preferences.tpl',
-								'stock_prefs_t' => 'preferences.tpl'));
-			$this->t->set_block('stock_prefs_t','stock_prefs','prefs');
+			$this->t->set_file(array('stock_prefs' => 'preferences.tpl'));
 
 			$this->set_app_langs();
 
 			$prefs = $this->bo->read_prefs();
 
-			$hidden_vars = '<input type="hidden" name="symbol" value="' . $symbol . '">' . "\n"
-						. '<input type="hidden" name="name" value="' . $name . '">' . "\n"
-						. '<input type="hidden" name="stock_id" value="' . $stock_id . '">' . "\n";
-
-			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/stocks/preferences.php'));
+			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('lang_action',lang('Stock Quote preferences'));
-			$this->t->set_var('h_lang_edit',lang('Edit'));
-			$this->t->set_var('hidden_vars',$hidden_vars);
-			$this->t->set_var('h_lang_delete',lang('Delete'));
-
-			$stocks = $this->bo->read_stocks();
-
-			if (is_array($stocks))
-			{
-				while (list($null,$stock) = each($stocks))
-				{
-					$this->nextmatchs->template_alternate_row_color(&$this->t);
-
-					$this->t->set_var(array
-					(
-						'dsymbol' => rawurldecode($stock['symbol']),
-						'dname' => rawurldecode($stock['name'])
-					));
-
-					$this->t->set_var('edit',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.edit_stock&stock_id='
-																	. $stock['id']));
-					$this->t->set_var('delete',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences&action=delete&stock_id='
-												. $stock['id']));
-					$this->t->fp('prefs','stock_prefs',True);
-				}
-			}
 
 			if ($prefs['mainscreen'] == 'enabled')
 			{
@@ -213,10 +241,32 @@
 
 			$this->t->set_var('newstatus',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences&mainscreen=' . $newstatus));
 			$this->t->set_var('lang_newstatus',lang($newstatus));
+			$this->t->pfp('out','stock_prefs',True);
+		}
 
-			$this->t->set_var('add_action',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences&name=' . $name
-																	. '&symbol=' . $symbol));
-			$this->t->pfp('out','stock_prefs_t',True);
+		function add_stock()
+		{
+			$submit		= $GLOBALS['HTTP_POST_VARS']['submit'];
+			$values		= $GLOBALS['HTTP_POST_VARS']['values'];
+
+			if ($submit)
+			{
+				$values['symbol']	= urlencode(strtoupper($values['symbol']));
+				$values['name']		= urlencode($values['name']);
+				$this->bo->save_stock(array('access' => 'public','name' => $values['name'],'symbol' => $values['symbol']));
+				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.list_stocks'));
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+
+			$this->display_app_header();
+			$this->t->set_file(array('edit' => 'preferences_edit.tpl'));
+			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.add_stock'));
+			$this->t->set_var('h_lang_edit',lang('Add stock'));
+
+			$this->t->set_var('symbol',$symbol);
+			$this->t->set_var('name',$name);
+
+			$this->t->pfp('out','edit');
 		}
 
 		function edit_stock()
@@ -225,9 +275,15 @@
 			$values		= $GLOBALS['HTTP_POST_VARS']['values'];
 			$stock_id	= $GLOBALS['HTTP_GET_VARS']['stock_id'];
 
+			$link_data = array
+			(
+				'menuaction'	=> 'stocks.ui.list_stocks',
+				'stock_id'		=> $stock_id
+			);
+
 			if (! $stock_id)
 			{
-				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences'));
+				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php',$link_data));
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 
@@ -238,18 +294,15 @@
 				$values['id']		= $stock_id;
 
 				$this->bo->save_stock($values);
-				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences'));
+				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php',$link_data));
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 
-			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
-
-			$this->set_app_langs();
+			$this->display_app_header();
 
 			$this->t->set_file(array('edit' => 'preferences_edit.tpl'));
-			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.edit_stock&stock_id=' . $stock_id));
-			$this->t->set_var('lang_action',lang('Stock Quote preferences'));
+			$link_data['menuaction'] = 'stocks.ui.edit_stock';
+			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
 			$this->t->set_var('hidden_vars','<input type="hidden" name="stock_id" value="' . $stock_id . '">' . "\n");
 			$this->t->set_var('h_lang_edit',lang('Edit stock'));

@@ -128,16 +128,20 @@
 			if ($GLOBALS['phpgw_info']['user']['preferences']['stocks'])
 			{
 				$prefs['mainscreen']	= $GLOBALS['phpgw_info']['user']['preferences']['stocks']['mainscreen'];
-				$prefs['LNUX']			= $GLOBALS['phpgw_info']['user']['preferences']['stocks']['LNUX'];
-				$prefs['RHAT']			= $GLOBALS['phpgw_info']['user']['preferences']['stocks']['RHAT'];
 			}
 			else
 			{
-				$prefs['mainscreen']	= 'enabled';
-				$prefs['LNUX']			= 'VA%20Linux';
-				$prefs['RHAT']			= 'RedHat';
+				$prefs['mainscreen']	= 'disabled';
 			}
 			return $prefs;
+		}
+
+		function get_default()
+		{
+			$def = array();
+			$def['LNUX']	= 'VA%20Linux';
+			$def['RHAT']	= 'Redhat';
+			return $def;
 		}
 
 		function read_stocks()
@@ -152,6 +156,8 @@
 
 		function save_stock($values)
 		{
+			$values['sysmbol']	= urlencode(strtoupper($values['symbol']));
+
 			if ($values['id'] && $values['id'] != 0)
 			{
 				$this->so->edit_stock($values);
@@ -175,8 +181,8 @@
 			{
 				while (list($null,$stock) = each($stocks))
 				{
-					$symbol = rawurldecode($stock['symbol']);
-					$name = rawurldecode($stock['name']);
+					$symbol	= rawurldecode($stock['symbol']);
+					$name	= rawurldecode($stock['name']);
 
 					if ($symbol)
 					{
@@ -190,9 +196,9 @@
 			}
 			else
 			{
-				$prefs = $this->read_prefs();
-				$stocklist['LNUX'] = rawurldecode($prefs['LNUX']);
-				$stocklist['RHAT'] = rawurldecode($prefs['RHAT']);
+				$def = $this->get_default();
+				$stocklist['LNUX'] = rawurldecode($def['LNUX']);
+				$stocklist['RHAT'] = rawurldecode($def['RHAT']);
 			}
 			return $stocklist;
 		}

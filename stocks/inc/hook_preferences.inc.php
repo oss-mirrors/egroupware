@@ -16,7 +16,7 @@
 		$title = 'Stock Quotes';
 		$file = Array
 		(
-			'Select displayed stocks' => $GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences')
+			'Preferences' => $GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences')
 		);
 
 //Do not modify below this line

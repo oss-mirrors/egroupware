@@ -12,6 +12,4 @@
 
 	global $pref;
 	$pref->change('stocks','mainscreen','disabled');
-	$pref->change('stocks','LNUX','VA%20Linux');
-	$pref->change('stocks','RHAT','RedHat');
 ?>

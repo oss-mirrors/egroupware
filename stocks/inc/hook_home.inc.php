@@ -18,14 +18,13 @@
 	}
 	unset($d1);
 
-	$tmp_app_inc = $GLOBALS['phpgw']->common->get_inc_dir('stocks');
-
 	if ($GLOBALS['phpgw_info']['user']['apps']['stocks'] && $GLOBALS['phpgw_info']['user']['preferences']['stocks']['mainscreen']['enabled'])
 	{
 		$title = '<font color="#FFFFFF">'.lang('Stocks').'</font>';
 		
 		$portalbox = CreateObject('phpgwapi.listbox',
-			Array(
+			Array
+			(
 				'title'	=> $title,
 				'primary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
 				'secondary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
@@ -38,7 +37,8 @@
 
 		$app_id = $GLOBALS['phpgw']->applications->name2id('stocks');
 		$GLOBALS['portal_order'][] = $app_id;
-		$var = Array(
+		$var = Array
+		(
 			'up'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
 			'down'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
 			'close'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),

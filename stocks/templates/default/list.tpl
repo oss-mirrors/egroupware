@@ -1,0 +1,38 @@
+<!-- $Id$ -->
+
+{app_header}
+
+<center>
+<table width="60%" border="0" cellspacing="2" cellpadding="2">
+	<tr bgcolor="{tr_color2}">
+		<td colspan="4"><b>{lang_list}</b></td>
+	</tr>
+	<tr bgcolor="{th_bg}">
+		<td width="30%">{lang_symbol}</td>
+		<td width="40%">{lang_company}</td>
+		<td width="10%" align="center">{h_lang_edit}</td>
+		<td width="10%" align="center">{h_lang_delete}</td>
+	</tr>
+
+<!-- BEGIN stock_list -->
+
+	<tr bgcolor="{tr_color}">
+		<td>{dsymbol}</td>
+		<td>{dname}</td>
+		<td align="center"><a href="{edit}">{lang_edit}</a></td>
+		<td align="center"><a href="{delete}">{lang_delete}</a></td>
+	</tr>
+
+<!-- END stock_list -->
+
+</table>
+<table width="60%" border="0" cellspacing="2" cellpadding="2">
+<form method="POST" action="{addurl}">
+	<tr valign="bottom">
+		<td><input type="submit" name="add" value="{lang_add}"></form></td>
+	</tr>
+<form method="POST" action="{doneurl}">
+	<tr valign="bottom">
+		<td><input type="submit" name="done" value="{lang_done}"></form></td>
+	</tr>
+</table>

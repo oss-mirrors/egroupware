@@ -1,14 +1,13 @@
 <!-- $Id$ -->
 
-<p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
-<hr noshade width="98%" align="center" size="1">
+{app_header}
 
 <center>
 <form method="POST" name="preferences_edit" action="{actionurl}">
 {hidden_vars}
 <table border="0" cellspacing="2" cellpadding="2" width="40%">
 	<tr bgcolor="{th_bg}">
-		<td colspan="2" align="center">{h_lang_edit}</td>
+		<td colspan="2"><b>{h_lang_edit}</b></td>
 	</tr>
 	<tr bgcolor="{tr_color1}">
 		<td>{lang_symbol}:</td>
@@ -22,7 +21,7 @@
 <!-- BEGIN edit -->
 
 	<tr valign="bottom">
-		<td colspan="2" align="center">
+		<td colspan="2">
 			<input type="submit" name="submit" value="{lang_save}">
 		</td>
 	</tr>
