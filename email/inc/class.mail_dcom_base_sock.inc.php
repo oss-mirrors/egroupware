@@ -52,6 +52,11 @@
   define ('ENCQUOTEDPRINTABLE',4);
   define ('ENCOTHER',5);
   define ('ENCUU',6);
+  
+  define ('FT_UID',0);
+  define ('FT_PEEK',1);
+  define ('FT_INTERNAL',2);
+  define ('FT_PREFETCHTEXT',3);
 
   class mailbox_status
   {
@@ -143,7 +148,19 @@
 	parts		Array of objects describing each message part
 	*/
   }
+  
+  // gonna have to decide on one of the next two
+  class msg_params
+  {
+	var $attribute;
+	var $value;
 
+	function msg_params($attrib,$val)
+	{
+		$this->attribute = $attrib;
+		$this->value     = $val;
+	}
+  }
   class att_parameter
   {
 	var $attribute;
@@ -158,7 +175,7 @@
 	var $adl;
   }
 
-  class msg_headinfo
+  class envelope
   {
 	// see PHP function:  imap_headerinfo -- Read the header of the message
 	// which is the same as PHP function imap_header
@@ -199,7 +216,6 @@
 	// --- Specially Formatted Data ---
 	var $fetchfrom = '';	// from line formatted to fit arg "fromlength" characters
 	var $fetchsubject = '';	// subject line formatted to fit arg "subjectlength" characters
-	// --- I added these
 	var $lines = '';
 	var $Size = '';
   }
@@ -221,6 +237,8 @@
 	// DEBUG FLAG
 	//var $debug_dcom=True;
 	var $debug_dcom=False;
+	//var $debug_dcom_extra=True;
+	var $debug_dcom_extra=False;
 	
 	function mail_dcom_base()
 	{
@@ -248,6 +266,26 @@
 		$phpgw->common->phpgw_exit();
 	}
 
+	// REDUNDANT FUNCTION FROM NON-SOCK CLASS
+	function get_flag($stream,$msg_num,$flag)
+	{
+		$header = $this->fetchheader($stream,$msg_num);
+		$flag = strtolower($flag);
+		for ($i=0;$i<count($header);$i++)
+		{
+			$pos = strpos($header[$i],":");
+			if (is_int($pos) && $pos)
+			{
+				$keyword = trim(substr($header[$i],0,$pos));
+				$content = trim(substr($header[$i],$pos+1));
+				if (strtolower($keyword) == $flag)
+				{
+					return $content;
+				}
+			}
+		}
+		return false;
+	}
 	function distill_fq_folder($fq_folder)
 	{
 		// initialize return structure array
@@ -315,6 +353,61 @@
 
 		return $svr_data;
 	}
+
+	function read_port_glob($end='.')
+	{
+		$glob_response = '';
+		while ($line = $this->read_port())
+		{
+			//echo $line."<br>\r\n";
+			if (chop($line) == $end)
+			{
+				break;
+			}
+			$glob_response .= $line;
+		}
+		return $glob_response;
+	}
+
+	function glob_to_array($data,$keep_blank_lines=True,$cut_from_here='',$keep_received_lines=False)
+	{
+		
+		$data_array = explode("\r\n",$data);
+		$return_array = Array();
+		for($i=0;$i < count($data_array);$i++)
+		{
+			$new_str = $data_array[$i];
+			if ($cut_from_here != '')
+			{
+				$cut_here = strpos($new_str,$cut_from_here);
+				if ($cut_here > 0)
+				{
+					$new_str = substr($new_str,0,$cut_here);
+				}
+				else
+				{
+					$new_str = '';
+				}
+			}
+			if (($keep_blank_lines == False)
+			&& (trim($new_str) == ''))
+			{
+				// do noting
+			}
+			elseif (($keep_received_lines == False)
+			&& (stristr($new_str, 'received:'))
+			&& (strpos(strtolower($new_str),'received:') == 0))
+			{
+				// do noting
+			}			
+			else
+			{
+				$return_array[count($return_array)] = $new_str;
+			}
+		}
+		return $return_array;
+	}
+
 
 	function create_header($line,$header,$line2='')
 	{
@@ -642,51 +735,6 @@
 		return 1;
 	}
 
-	function read_port_glob($end)
-	{
-		$glob_response = '';
-		while ($line = $this->read_port())
-		{
-//			echo $line."<br>\n";
-			if (chop($line) == $end) break;
-			$glob_response .= $line;
-		}
-		return $glob_response;
-	}
-
-	function glob_to_array($data,$keep_blank_lines=True,$cut_from_here='')
-	{
-		
-		$data_array = explode("\r\n",$data);
-		$return_array = Array();
-		for($i=0;$i < count($data_array);$i++)
-		{
-			$new_str = $data_array[$i];
-			if ($cut_from_here != '')
-			{
-				$cut_here = strpos($new_str,$cut_from_here);
-				if ($cut_here > 0)
-				{
-					$new_str = substr($new_str,0,$cut_here);
-				}
-				else
-				{
-					$new_str = '';
-				}
-			}
-			if (($keep_blank_lines == False)
-			&& (trim($new_str) == ''))
-			{
-				// do noting
-			}
-			else
-			{
-				$return_array[count($return_array)] = $new_str;
-			}
-		}
-		return $return_array;
-	}
-
 
 	/*
 	 * PHP `quoted_printable_decode` function does not work properly:
@@ -778,32 +826,60 @@
 		{
 			return 'unknown';
 		}
-
-		switch ($de_part->type)
+		else
 		{
-			case 0:		$mime_type = 'text'; break;
-			case 1:		$mime_type = 'multipart'; break;
-			case 2:		$mime_type = 'message'; break;
-			case 3:		$mime_type = 'application'; break;
-			case 4:		$mime_type = 'audio'; break;
-			case 5:		$mime_type = 'image'; break;
-			case 6:		$mime_type = 'video'; break;
-			case 7:		$mime_type = 'other'; break;
-			default:		$mime_type = 'unknown';
+			return $this->type_int_to_str($de_part->type);
 		}
-		return $mime_type;
+	}
+
+	function type_int_to_str($type_int)
+	{
+		switch ($type_int)
+		{
+			case TYPETEXT		: $type_str = 'text'; break;
+			case TYPEMULTIPART	: $type_str = 'multipart'; break;
+			case TYPEMESSAGE		: $type_str = 'message'; break;
+			case TYPEAPPLICATION	: $type_str = 'application'; break;
+			case TYPEAUDIO		: $type_str = 'audio'; break;
+			case TYPEIMAGE		: $type_str = 'image'; break;
+			case TYPEVIDEO		: $type_str = 'video'; break;
+			case TYPEOTHER		: $type_str = 'other'; break;
+			default			: $type_str = 'unknown';
+		}
+		return $type_str;
 	}
 
 	function get_mime_encoding($de_part)
 	{
-		switch ($de_part->encoding)
+		if (!isset($de_part->encoding))
 		{
-			case 3:	$mime_encoding = 'base64'; break;
-			case 4:	$mime_encoding = 'qprint'; break;
-			case 5:	$mime_encoding = 'other';  break;
-			default:	$mime_encoding = 'other';
+			return 'other';
 		}
-		return $mime_encoding;
+		else
+		{
+			$encoding_str = $this->type_int_to_str($de_part->encoding);
+			if ($encoding_str == 'quoted-printable')
+			{
+				$encoding_str = 'qprint';
+			}
+			return $encoding_str;
+		}
+	}
+
+	function encoding_int_to_str($encoding_int)
+	{
+		switch ($encoding_int)
+		{
+			case ENC7BIT	: $encoding_str = '7bit'; break;
+			case ENC8BIT	: $encoding_str = '8bit'; break;
+			case ENCBINARY	: $encoding_str = 'binary';  break;
+			case ENCBASE64	: $encoding_str = 'base64'; break;
+			case ENCQUOTEDPRINTABLE : $encoding_str = 'quoted-printable'; break;
+			case ENCOTHER	: $encoding_str = 'other';  break;
+			case ENCUU	: $encoding_str = 'uu';  break;
+			default		: $encoding_str = 'other';
+		}
+		return $encoding_str;
 	}
 
 	function get_att_name($de_part)
@@ -830,6 +906,7 @@
 		return $att_name;
 	}
 
+	/*
 	function attach_display($de_part,$part_no,$mailbox,$folder,$msgnum)
 	{
 		global $phpgw, $phpgw_info;
@@ -860,7 +937,6 @@
 				.'">'.$att_name.'</a>';
 	}
 
-	/*
 	function inline_display($de_part,$dsp,$mime_section,$folder)
 	{
 		global $phpgw;

@@ -23,45 +23,9 @@
 
   class mail_dcom extends mail_dcom_base
   {
-	/*
-	function login( $folder = "INBOX")
-	{
-		global $phpgw, $phpgw_info;
-
-		//error_reporting(error_reporting() - 2);
-
-		if ($folder != "INBOX")
-		{
-			$folder = $phpgw->msg->get_folder_long($folder);
-		}
-
-		// === ISSET CHECK ==
-		if ( (isset($phpgw_info['user']['preferences']['email']['userid']))
-		&& ($phpgw_info['user']['preferences']['email']['userid'] != '')
-		&& (isset($phpgw_info['user']['preferences']['email']['passwd']))
-		&& ($phpgw_info['user']['preferences']['email']['passwd'] != '') )
-		{
-			$user = $phpgw_info['user']['preferences']['email']['userid'];
-			$pass = $phpgw_info['user']['preferences']['email']['passwd'];
-		}
-		else
-		{
-			// problem - invalid or nonexistant info for userid and/or passwd
-			//echo "POP3 - LOGIN - NO USER AND OR NO PASSWD";
-			return False;
-		}
-
-		$mail_server = $phpgw_info['user']['preferences']['email']['mail_server'];
-		$mail_port = $phpgw->msg->get_mailsvr_port();
-	
-		$mbox = $this->open($mail_server, $mail_port, $user , $pass);
-
-		//error_reporting(error_reporting() + 2);
-		return $mbox;
-	}
-	*/
-
-	// = = = Functions that DO NOTHING in POP3 = = =
+	// = = = = = = = = = = = =
+	//   Functions that DO NOTHING in POP3
+	// = = = = = = = = = = = =	
 	function createmailbox($stream,$mailbox) 
 	{
 		// N/A for pop3
@@ -111,7 +75,9 @@
 		return False;
 	}
 
-
+	// = = = = = = = = = = = =
+	//  OPEN and CLOSE Server Connection
+	// = = = = = = = = = = = =
 	function open ($fq_folder, $user, $pass, $flags='')
 	{
 		global $phpgw;
@@ -163,19 +129,9 @@
 		}
 	}
 
-	// returns number of messages in the mailbox
-	function num_msg($stream_notused='')
-	{
-		if ($this->debug_dcom) { echo 'pop3: Entering num_msg<br>'; }
-		// Most Efficient Method:
-		//	call mailboxmsginfo and fill THIS size data from that
-		$mb_msg_info = $this->mailboxmsginfo($stream_notused);
-		$return_num_msg = $mb_msg_info->Nmsgs;
-		if ($this->debug_dcom) { echo 'pop3: num_msg: '.$return_num_msg.'<br>'; }
-		if ($this->debug_dcom) { echo 'pop3: Leaving num_msg<br>'; }
-		return $return_num_msg;
-	}
-
+	// = = = = = = = = = = = =
+	//  Mailbox Status and Information
+	// = = = = = = = = = = = =
 	function mailboxmsginfo($stream_notused='')
 	{
 		if ($this->debug_dcom) { echo 'pop3: Entering mailboxmsginfo<br>'; }
@@ -203,8 +159,11 @@
 		$info->Size  = trim($num_msg[2]);
 		if ($info->Nmsgs)
 		{
-			if ($this->debug_dcom) { echo 'pop3: mailboxmsginfo: info->Nmsgs: '.$info->Nmsgs.'<br>'; }
-			if ($this->debug_dcom) { echo 'pop3: mailboxmsginfo: info->Size: '.$info->Size.'<br>'; }
+			if ($this->debug_dcom_extra)
+			{
+				echo 'pop3: mailboxmsginfo: info->Nmsgs: '.$info->Nmsgs.'<br>';
+				echo 'pop3: mailboxmsginfo: info->Size: '.$info->Size.'<br>';
+			}
 			if ($this->debug_dcom) { echo 'pop3: Leaving mailboxmsginfo<br>'; }
 			return $info;
 		}
@@ -244,6 +203,22 @@
 		return $info;
 	}
 
+	// returns number of messages in the mailbox
+	function num_msg($stream_notused='')
+	{
+		if ($this->debug_dcom) { echo 'pop3: Entering num_msg<br>'; }
+		// Most Efficient Method:
+		//	call mailboxmsginfo and fill THIS size data from that
+		$mb_msg_info = $this->mailboxmsginfo($stream_notused);
+		$return_num_msg = $mb_msg_info->Nmsgs;
+		if ($this->debug_dcom) { echo 'pop3: num_msg: '.$return_num_msg.'<br>'; }
+		if ($this->debug_dcom) { echo 'pop3: Leaving num_msg<br>'; }
+		return $return_num_msg;
+	}
+
+	// = = = = = = = = = = = =
+	//  Message Sorting
+	// = = = = = = = = = = = =
 	function sort($stream_notused='',$criteria=SORTDATE,$reverse=False,$options='')
 	{
 		if ($this->debug_dcom) { echo 'pop3: Entering sort<br>'; }
@@ -274,7 +249,7 @@
 				}
 				$response = $this->read_port_glob('.');
 				$field_list = $this->glob_to_array($response, False, ' ');
-				if ($this->debug_dcom) { echo 'pop3: sort: field_list: '.serialize($field_list).'<br><br><br>'; }
+				//if ($this->debug_dcom) { echo 'pop3: sort: field_list: '.serialize($field_list).'<br><br><br>'; }
 				break;
 			case SORTFROM:
 				if ($this->debug_dcom) { echo 'pop3: sort: case SORTFROM<br>'; }
@@ -297,7 +272,6 @@
 				$field_list = $this->fetch_header_element(1,$msg_num,'Size');
 				break;
 		}
-
 		@reset($field_list);
 		if($criteria == SORTSUBJECT)
 		{
@@ -324,7 +298,7 @@
 		while(list($key,$value) = each($field_list))
 		{
 			$return_array[] = $key;
-//			echo '('.$i.') Field: <b>'.$value."</b>\t\tMsg Num: <b>".$key."</b><br>\n";
+			//echo '('.$i.') Field: <b>'.$value."</b>\t\tMsg Num: <b>".$key."</b><br>\n";
 			$i++;
 		}
 		@reset($return_array);
@@ -362,32 +336,73 @@
 		return $field_element;
 	}
 
-	function get_header($stream_notused,$msg_num)
+	// = = = = = = = = = = = =
+	//  Message Structure and Information
+	// = = = = = = = = = = = =
+	function fetchstructure($stream_notused,$msg_num,$flags="")
 	{
-		return $this->get_header_raw($stream_notused,$msg_num);
-	}
-
-	function get_header_raw($stream_notused,$msg_num)
-	{
-		if ($this->debug_dcom) { echo 'pop3: Entering get_header_raw<br>'; }
-
-		if (!$this->msg2socket('TOP '.$msg_num.' 0',"^\+ok",&$response))
+		if ($this->debug_dcom) { echo 'pop3: Entering fetchstructure<br>'; }
+		// first get the raw glob header
+		$headers_raw = $this->get_header_raw($stream_notused,$msg_num);
+		// unwrap any wrapped headers - using CR_LF_TAB as rfc822 "whitespace"
+		$headers_raw = str_replace("\r\n\t"," ",$headers_raw);
+		// unwrap any wrapped headers - using CR_LF_SPACE as rfc822 "whitespace"
+		$headers_raw = str_replace("\r\n "," ",$headers_raw);
+		// make raw headers into an array, throw away blank lines and "Received:" lines
+		$header_array = Array();
+		$header_array = $this->glob_to_array($headers_raw, False, '', False);
+		if ($this->debug_dcom_extra)
 		{
-			$this->error();
-			if ($this->debug_dcom) { echo 'pop3: Leaving get_header_raw with error<br>'; }
+			echo 'pop3: fetchstructure iteration:<br>';
+			for($i=0;$i < count($header_array);$i++)
+			{
+				echo '+'.htmlspecialchars($header_array[$i]).'<br>';
+			}
+		}
+		if (!$header_array)
+		{
+			if ($this->debug_dcom) { echo 'pop3: Leaving fetchstructure with error<br>'; }
 			return False;
 		}
-		$response = $this->read_port_glob('.');
-		$msg_header_raw = $this->glob_to_array($response, False, '');
-		
-		if ($this->debug_dcom) { echo 'pop3: Leaving get_header_raw<br>'; }
-		return $msg_header_raw;
+		$info = $this->sub_get_structure($header_array,1);
+		if ((string)$info->type == '')
+		{
+			// default type - RFC says is Text (unless you are dealing with an attachment)
+			$info->type = $this->default_type(True);
+			// if no type we should NOT have a subtype, or else something is wrong
+			$info->subtype = $this->default_subtype($info->type);
+			$info->ifsubtype = true;
+		}
+		if ($info->encoding == '')
+		{
+			$info->encoding = $this->default_encoding();
+		}
+		if ($info->bytes == '')
+		{
+			if (!$this->msg2socket('LIST '.$msg_num,"^\+ok",&$response))
+			{
+				$this->error();
+				if ($this->debug_dcom) { echo 'pop3: Leaving fetchstructure with error<br>'; }
+				return False;
+			}
+			$list_response = explode(' ',$response);
+			$info->bytes = (int)trim($list_response[2]);
+		}
+		if ($this->debug_dcom_extra)
+		{
+			echo '<br>dumping fetchstructure return info: <br>';
+			var_dump($info);
+			echo '<br><br><br>';
+		}
+		if ($this->debug_dcom) { echo 'pop3: Leaving fetchstructure<br>'; }
+		return $info;
 	}
 
 	function sub_get_structure($header_array,$line_nr,$is_multi=false)
 	{
+		$debug_mime = $this->debug_dcom_extra;
 		//$debug_mime = True;
-		$debug_mime = False;
+		//$debug_mime = False;
 		
 		if ($this->debug_dcom) { echo 'pop3: Entering sub_get_structure<br>'; }
 		// initialize the structure
@@ -409,26 +424,18 @@
 		$info->ifparameters = False;
 		$info->parameters = array();
 		$info->parts = array();
+		/*
 		// FILL THE DATA
 		if ($is_multi)
 		{
 			$info->type = 0;
 			$info->encoding = 0;
 		}
+		*/
 		for ($i=0; $i < count($header_array) ;$i++)
 		{
 			$pos = strpos($header_array[$i]," ");
 			if ($debug_mime) { echo 'header_array['.$i.']: '.$header_array[$i].'<br>'; }
-			// need to capture "boundry=" keywords too
-			if ((!is_int($pos) || ($pos==0))
-			&& (stristr($header_array[$i], 'boundary=')))
-			{
-				$header_array[$i] = trim($header_array[$i]);
-				$header_array[$i] = eregi_replace('boundary="', 'boundary ', $header_array[$i]);
-				$header_array[$i] = eregi_replace('".*$', '', $header_array[$i]);
-				$pos = strpos($header_array[$i]," ");
-				if ($debug_mime) { echo 'header_array['.$i.']: '.$header_array[$i].'<br>'; }
-			}
 			if (is_int($pos) && ($pos==0))
 			{
 				continue;
@@ -437,62 +444,74 @@
 			$content = trim(substr($header_array[$i],$pos+1));
 			if ($debug_mime) { echo 'pos: '.$pos.'<br>'; }
 			if ($debug_mime) { echo 'keyword: ['.$keyword.']<br>'; }
-			if ($debug_mime) { echo 'content: ['.$content.']<br>'.'<br>'; }
+			if ($debug_mime) { echo 'content: ['.$content.']<br>- - - -<br>'; }
 			switch ($keyword)
 			{
-			  case "content-transfer-encoding:" :
-				switch (strtolower($content))
+			  case "content-type:" :
+				// this will fill type and (hopefully) subtype
+				$this->parse_type_subtype(&$info,$content);
+				// ALSO, typically Paramaters are on this line as well
+				$pos_param = strpos($content,";");
+				if ($pos_param > 0)
 				{
-				  case "7bit"             : $info->encoding = 0; break;
-				  case "8bit"             : $info->encoding = 1; break;
-				  case "binary"           : $info->encoding = 2; break;
-				  case "base64"           : $info->encoding = 3; break;
-				  case "quoted-printable" : $info->encoding = 4; break;
-				  default                 : $info->encoding = 5; break;
+					// feed the whole param line into this function
+					$content = substr($content,$pos_param+1);
+					$this->parse_msg_params(&$info,$content);
 				}
 				break;
-			  case "content-type:" :
-				//$this->get_ctype($header_array[$i],&$info,&$i,$content);
-				$info->type = $content;
-				$info->subtype = 'FIX_ME';
-				$info->ifsubtype = True;
+			  case "content-transfer-encoding:" :
+				$info->encoding = $this->encoding_str_to_int($content);
 				break;
 			  case "content-description:" :
 				$info->description   = $content;
 				//$i = $this->more_info($msg_part,$i,&$info,"description");
 				$info->ifdescription = true;
 				break;
+			  case "content-disposition:" :
+				// disposition MAY have Paramaters on this line as well
+				$pos_param = strpos($content,";");
+				if ($pos_param > 0)
+				{
+					$content = substr($content,0,$pos_param);
+				}
+				$info->disposition = $content;
+				$info->ifdisposition = True;
+				// parse paramaters if any
+				if ($pos_param > 0)
+				{
+					// feed the whole param line into this function
+					$content = substr($content,$pos_param+1);
+					$this->parse_msg_params(&$info,$content,False);
+				}
+				break;
 			  case "content-identifier:" :
+			  case "content-id:" :
 			  case "message-id:" :
-				$info->id   = $content;
+				if ((strstr($content, '<'))
+				&& (strstr($content, '>')))
+				{
+					$content = str_replace('<','',$content);
+					$content = str_replace('>','',$content);
+				}
 				//$i = $this->more_info($msg_part,$i,&$info,"id");
+				$info->id   = $content;
 				$info->ifid = true;
 				break;
-			  case "lines:" :
-				$info->lines = $content;
-				break;
 			  case "content-length:" :
-				$info->bytes = $content;
+				$info->bytes = (int)$content;
 				break;
 			  case "content-disposition:" :
 				$info->disposition   = $content;
 				//$i = $this->more_info($msg_part,$i,&$info,"disposition");
 				$info->ifdisposition = true;
 				break;
-			  case "mime-version:" :
-				//$pos = strpos($content,"=");
-				//$info->parameters[] = new msg_params("MIME-Version",substr($content,$pos+1));
-				$new_idx = count($info->parameters);
-				$info->parameters[$new_idx] = new att_parameter;
-				$info->parameters[$new_idx]->attribute = 'Mime-Version';
-				$info->parameters[$new_idx]->value = $content;
-				$info->ifparameters = true;
+			  case "lines:" :
+				$info->lines = (int)$content;
 				break;
-			  case "boundary" :
+			  case "mime-version:" :
 				$new_idx = count($info->parameters);
-				$info->parameters[$new_idx] = new att_parameter;
-				$info->parameters[$new_idx]->attribute = 'boundary';
-				$info->parameters[$new_idx]->value = trim($content);
+				$info->parameters[$new_idx] = new msg_params("Mime-Version",$content);
+				$info->ifparameters = true;
 				break;
 			  default : break;
 			}
@@ -501,8 +520,175 @@
 		return $info;
 	}
 
+	// used to get type and subtype
+	function parse_type_subtype($info,$content)
+	{
+		if ($this->debug_dcom) { echo 'pop3: Entering parse_type_subtype<br>'; }
+		// used by pop_fetchstructure only
+		// get rid of any other params that might be here
+		$pos = strpos($content,";");
+		if ($pos > 0)
+		{
+			$content = substr($content,0,$pos);
+		}
+		// split type from subtype
+		$pos = strpos($content,"/");
+		if ($pos > 0)
+		{
+			$prim_type = strtolower(substr($content,0,$pos));
+			$info->subtype = strtolower(substr($content,$pos+1));
+			$info->ifsubtype = True;
+		}
+		else
+		{
+			$prim_type = strtolower($content);
+		}
+		$info->type = $this->type_str_to_int($prim_type);
+		if ($info->ifsubtype == False)
+		{
+			// use RFC default for subtype
+			$info->subtype = $this->default_subtype($info->type);
+			$info->ifsubtype = True;
+		}
+		if ($this->debug_dcom_extra)
+		{
+			echo 'pop3: info->type '.$info->type.'<br>';
+			echo 'pop3: info->ifsubtype '.$info->ifsubtype.'<br>';
+			echo 'pop3: info->subtype '.$info->subtype.'<br>';
+		}
+
+		if ($this->debug_dcom) { echo 'pop3: Leaving parse_type_subtype<br>'; }
+	}
+
+	function parse_msg_params($info,$content,$is_disposition_param=False)
+	{
+		// seperate param strings into an string list array
+		$param_list = Array();
+		if (strstr($content, ';'))
+		{
+			$param_list = explode(";",$content);
+		}
+		else
+		{
+			$param_list[0] = $content;
+		}
+		// process each param string
+		for ($x=0; $x < count($param_list) ;$x++)
+		{
+			$pos_token = strpos($param_list[$x],"=");
+			if ($pos_token == 0)
+			{
+				// error - not a regular param=value pair
+				$param_attrib = trim($param_list[$x]);
+				$param_value = 'UNKNOWN_PARAM_VALUE';
+			}
+			else
+			{
+				$param_attrib = trim(substr($param_list[$x],0,$pos_token));
+				$param_value = trim(substr($param_list[$x],$pos_token+1));
+				$param_value = str_replace("\"","",$param_value);
+			}
+			// are these typical message paramaters or the more rare "disposition" params
+			if ($is_disposition_param == False)
+			{
+				// typical msg params
+				$new_idx = count($info->parameters);
+				$info->parameters[$new_idx] = new msg_params($param_attrib,$param_value);
+				$info->ifparameters = true;
+			}
+			else
+			{
+				// content-disposition paramaters are pretty rare
+				$new_idx = count($info->dparameters);
+				$info->dparameters[$new_idx] = new msg_params($param_attrib,$param_value);
+				$info->ifparameters = true;
+			}
+		}
+	}
+
+	function type_str_to_int($type_str)
+	{
+		switch ($prim_type)
+		{
+			case "text"	: $type_int = TYPETEXT; break;
+			case "multipart"	: $type_int = TYPEMULTIPART; break;
+			case "message"	: $type_int = TYPEMESSAGE; break;
+			case "application" : $type_int = TYPEAPPLICATION; break;
+			case "audio"	: $type_int = TYPEAUDIO; break;
+			case "image"	: $type_int = TYPEIMAGE; break;
+			case "video"	: $type_int = TYPEVIDEO; break;
+			default		: $type_int = TYPEOTHER; break;
+		}
+		return $type_int;
+	}
+
+	function default_type($probably_text=True)
+	{
+		if ($probably_text)
+		{
+			return TYPETEXT;
+		}
+		else
+		{
+			return TYPEAPPLICATION;
+		}
+	}
+
+	function default_subtype($type_int=TYPEAPPLICATION)
+	{
+		// APPLICATION/OCTET-STREAM is the default when NO info is available
+		switch ($type_int)
+		{
+			case TYPETEXT		: return 'plain'; break;
+			case TYPEMULTIPART	: return 'mixed'; break;
+			case TYPEMESSAGE		: return 'rfc822'; break;
+			case TYPEAPPLICATION	: return 'octet-stream'; break;
+			case TYPEAUDIO		: return 'basic'; break;
+			default			: return 'unknown'; break;
+		}
+	}
+
+	function default_encoding()
+	{
+		return ENC7BIT;
+	}
+
+	// MAY BE OBSOLETED
+	function more_info($header,$i,$info,$infokey)
+	{
+		// used by pop_fetchstructure only
+		do
+		{
+			$pos = strpos($header[$i+1]," ");
+			if (is_int($pos) && !$pos)
+			{
+				$i++;
+				$info->$infokey .= ltrim($header[$i]);
+			}
+		}
+		while (is_int($pos) && !$pos);
+		return $i;
+	}
+
+	function encoding_str_to_int($encoding_str)
+	{
+		switch (strtolower($encoding_str))
+		{
+			case "7bit"		: $encoding_int = ENC7BIT; break;
+			case "8bit"		: $encoding_int = ENC8BIT; break;
+			case "binary"		: $encoding_int = ENCBINARY; break;
+			case "base64"		: $encoding_int = ENCBASE64; break;
+			case "quoted-printable" : $encoding_int = ENCQUOTEDPRINTABLE; break;
+			case "other"		: $encoding_int = ENCOTHER; break;
+			case "uu"		: $encoding_int = ENCUU; break;
+			default			: $encoding_int = ENCOTHER; break;
+		}
+		return $encoding_int;
+	}
+
 	function size_msg($stream_notused,$msg_num)
 	{
+		if ($this->debug_dcom) { echo 'pop3: Entering size_msg<br>'; }
 		if (!$this->msg2socket('LIST '.$msg_num,"^\+ok",&$response))
 		{
 			$this->error();
@@ -512,65 +698,17 @@
 		$return_size = trim($list_response[2]);
 		$return_size = (int)$return_size * 1;
 		if ($this->debug_dcom) { echo 'pop3: size_msg: '.$return_size.'<br>'; }
+		if ($this->debug_dcom) { echo 'pop3: Leaving size_msg<br>'; }
 		return $return_size;
 	}
 
-	function fetchstructure($stream_notused,$msg_num,$flags="")
-	{
-		if ($this->debug_dcom) { echo 'pop3: Entering fetchstructure<br>'; }
-		$header_array = $this->get_header($stream_notused,$msg_num);
-		if (!$header_array)
-		{
-			if ($this->debug_dcom) { echo 'pop3: Leaving fetchstructure with error<br>'; }
-			return false;
-		}
-		$info = $this->sub_get_structure($header_array,1);
-		if (!$info->bytes)
-		{
-			if (!$this->msg2socket('LIST '.$msg_num,"^\+ok",&$response))
-			{
-				$this->error();
-				if ($this->debug_dcom) { echo 'pop3: Leaving fetchstructure with error<br>'; }
-				return False;
-			}
-			$list_response = explode(' ',$response);
-			$info->bytes = trim($list_response[2]);
-		}
-		/*
-		if ($info->type == 1)
-		{ 
-			// multipart
-			$body = $this->get_body($stream,$msg_num);
-			$boundary = $this->get_boundary(&$info);
-			$boundary = str_replace("\"","",$boundary);
-			$this->boundary = $boundary;
-			for ($i=1;$i<=$body[0];$i++)
-			{
-				$pos1 = strpos($body[$i],"--$boundary");
-				$pos2 = strpos($body[$i],"--$boundary--");
-				if (is_int($pos2) && !$pos2)
-				{
-					break;
-				}
-				if (is_int($pos1) && !$pos1)
-				{
-					$info->parts[] = $this->sub_get_structure($body,&$i,true);
-				}
-			}
-		}
-		//$this->got_structure = true;
-		*/
-		echo '<br>dumping fetchstructure return info: <br>';
-		var_dump($info);
-		echo '<br><br><br>';
-		if ($this->debug_dcom) { echo 'pop3: Leaving fetchstructure<br>'; }
-		return $info;
-	}
-
+	// = = = = = = = = = = = =
+	//  Message Envelope Data
+	// = = = = = = = = = = = =
 	function header($stream_notused,$msg_num,$fromlength="",$tolength="",$defaulthost="")
 	{
 		if ($this->debug_dcom) { echo 'pop3: Entering header<br>'; }
-		$info = new msg_headinfo;
+		$info = new envelope;
 		$info->Size = $this->size_msg($stream_notused,$msg_num);
 		$header_array = $this->get_header($stream_notused,$msg_num);
 		if (!$header_array)
@@ -759,6 +897,165 @@
 		return $details;
 	}
 
+	// ----  DataCommunications With POP3 Server  ------
+
+	// = = = = = = = = = = = =
+	//  Get Message Headers From Server
+	// = = = = = = = = = = = =
+	function fetchheader($stream_notused,$msg_num,$flags='')
+	{
+		// NEEDED: code for flags: FT_UID; FT_INTERNAL; FT_PREFETCHTEXT
+		if ($this->debug_dcom) { echo 'pop3: Entering fetchheader<br>'; }
+		
+		$header_glob = $this->get_header_raw($stream_notused,$msg_num,$flags);
+		
+		// do we also need to get the text of the message?
+		if ((int)$flags == FT_PREFETCHTEXT)
+		{
+			// what the user really wants here is the whole enchalada, i.e. the headers AND the message
+			$header_glob = $header_glob
+				."\r\n"
+				.$this->get_body($stream_notused,$msg_num,$flags);
+		}
+		
+		if ($this->debug_dcom) { echo 'pop3: Leaving fetchheader<br>'; }
+		return $header_glob;
+	}
+
+	// returns headers exploded into a string list
+	function get_header($stream_notused,$msg_num,$flags='')
+	{
+		if ($this->debug_dcom) { echo 'pop3: Entering get_header<br>'; }
+		// get header glob
+		$header_glob = $this->get_header_raw($stream_notused,$msg_num,$flags);
+		// make the header blob into an array of strings, one array element per header line
+		$header_array = $this->glob_to_array($header_glob, False, '', True);
+		if ($this->debug_dcom) { echo 'pop3: Leaving get_header<br>'; }
+		return $header_array;
+	}
+
+	// returns unprocessed glob header string
+	function get_header_raw($stream_notused,$msg_num,$flags='')
+	{
+		if ($this->debug_dcom) { echo 'pop3: Entering get_header_raw<br>'; }
+		if (!$this->msg2socket('TOP '.$msg_num.' 0',"^\+ok",&$response))
+		{
+			$this->error();
+			if ($this->debug_dcom) { echo 'pop3: Leaving get_header_raw with error<br>'; }
+			return False;
+		}
+		$glob = $this->read_port_glob('.');
+		if ($this->debug_dcom) { echo 'pop3: Leaving get_header_raw<br>'; }
+		return $glob;
+	}
+
+
+	// = = = = = = = = = = = =
+	//  Get Message Body (Parts) From Server
+	// = = = = = = = = = = = =
+
+/*
+   function fetchbody($stream,$msgnr,$partnr="",$flags="")
+    {
+	if ($this->msg2socket($stream,"RETR $msgnr\n")): return false; endif;
+	$message = "";
+	$retr = fgets($stream,100); $i=1;
+	if (strtolower(substr($retr,0,3)) != "+ok") return false;
+	$bodystart = false;
+	if (!$this->got_structure) $struct = $this->fetchstructure($stream,$msgnr);
+	if ($this->boundary)
+	{
+		$thispart  = 0; $partstart = false; $partstop = false;
+		$multipart = true; $boundary = "--".$this->boundary;
+	}
+	do
+	{
+		$retr = fgets($stream,4096);
+		if (trim($retr) == "")
+		{
+			if ($multipart && ($thispart == $partnr))
+			{
+				$partstart = true;
+			} 
+			else
+			{
+				$bodystart = true;
+			}
+		}
+		if ($multipart && is_int(strpos($retr,$boundary)) && !strpos($retr,$boundary))
+		{
+			if ($thispart == $partnr) $partstop = true;
+			$thispart++;
+		}
+		if (chop($retr) == ".")
+		{
+			$retr = "";
+		}
+		else
+		{
+			$pos = strpos($retr,".");
+			if (is_int($pos) && !$pos):
+			$retr = substr($retr,1);
+			endif;
+		}
+		if (!$multipart)
+		{
+			if (is_string($retr) && $retr && $bodystart) $message .= $retr;
+		}
+		else
+		{
+			if (is_string($retr) && $retr && $partstart && !$partstop) $message .= $retr;
+		}
+	}
+	while (is_string($retr) && $retr);
+	return $message;
+    }
+*/
+
+	function fetchbody($stream_notused,$msg_num,$part_num="",$flags="")
+	{
+		if ($this->debug_dcom) { echo 'pop3: Entering fetchbody (pass thru)<br>'; }
+
+		// totally under construction
+		if ($this->debug_dcom) { echo 'pop3: Leaving fetchbody (pass thru)<br>'; }
+		return $this->get_body($stream_notused,$msg_num,$flags);
+	}
+
+	function get_body($stream_notused,$msg_num,$flags='')
+	{
+		// implements IMAP_BODY
+		// NEEDED: code for flags: FT_UID; maybe FT_INTERNAL; flag FT_PEEK has no effect on POP3
+		if ($this->debug_dcom) { echo 'pop3: Entering get_body<br>'; }
+		if (!$this->msg2socket('RETR '.$msg_num,"^\+ok",&$response))
+		{
+			$this->error();
+			if ($this->debug_dcom) { echo 'pop3: Leaving get_body with error<br>'; }
+			return False;
+		}
+		// skip header
+		$glob_header = '';
+		while ($line = $this->read_port())
+		{
+			if ((chop($line) == '.')
+			|| (chop($line) == ''))
+			{
+				break;
+			}
+			$glob_header .= $line;
+		}
+		// now get the body
+		$glob_body = '';
+		$glob_body = $this->read_port_glob('.');
+		if ($this->debug_dcom_extra)
+		{
+			echo 'pop3: get_body DUMP<br>= = = First DUMP: glob_header<br>';
+			echo htmlspecialchars($glob_header).'<br>';
+			echo 'pop3: get_body DUMP<br>= = = Second DUMP: glob_body<br>';
+			echo htmlspecialchars($glob_body).'<br><br>';
+		}
+		if ($this->debug_dcom) { echo 'pop3: Leaving get_body<br>'; }
+		return $glob_body;
+	}
 
 
 
