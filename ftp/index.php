@@ -138,7 +138,7 @@
 				}
 				elseif(!$_POST['cancel'])
 				{
-				  $GLOBALS['phpgw']->template->set_var('misc_data',confirmDeleteForm($action,$file,$olddir),true);
+				  $GLOBALS['phpgw']->template->set_var('misc_data',confirmDeleteForm($action,$file,$olddir,$action),true);
 	       // $olddir = $remotedir;				  
 				}
 			}
@@ -203,8 +203,13 @@
 				{
 					if(ftp_size($ftp,$newfile)==-1)
 					{
-						if(ftp_mkdir($ftp,$remoteuploaddir . '/' . $remotenewdirname))
+						if(ftp_mkdir($ftp,$remoteuploaddir . '/' . $remotenewdirname)) 
+						{
+							$olddir = $remoteuploaddir;
+							$newdir = $remotenewdirname;
+							$action = 'cwd';
 							$GLOBALS['phpgw']->template->set_var('misc_data',lang('successfully created directory %1',"$remoteuploaddir/$remotenewdirname"), True);
+						}
 						else
 							$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to create directory %1',"$remoteuploaddir/$remotenewdirname"), True);
 					}
@@ -219,15 +224,21 @@
 			/* here's where most of the work takes place */
 			if($action == 'cwd')
 			{
-				if($olddir == $newdir)
+				if($olddir != $newdir)
 				{
-					ftp_chdir($ftp,$newdir);
+					if ($newdir == '..')
+					{
+						$parts = explode('/',$olddir);
+						array_pop($parts);
+						$olddir = implode('/',$parts);
+						if ($olddir[0] != '/') $olddir = '/'.$olddir;
+					}
+					else
+					{
+						$olddir .= ($olddir != '/' ? '/' : '') . $newdir;
+					}
 				}
-				else
-				{
-					ftp_chdir($ftp,$olddir . '/' . $newdir);
-					$olddir .= '/' . $newdir;
-				}
+				ftp_chdir($ftp,$olddir);
 			}
 			elseif($action == '' && $connInfo['cwd'] != '')
 			{

@@ -75,15 +75,15 @@
 		return $GLOBALS['phpgw']->template->get('return');
 	}
 
-	function confirmDeleteForm($session,$filename,$directory,$type ='')
+	function confirmDeleteForm($session,$filename,$directory,$type ='delete')
 	{
 		$delete_form_begin = '<form action="' . createLink($GLOBALS['target']) . '" method="post">'."\n"
-			. '<input type="hidden" name="action" value="delete">' . "\n"
+			. '<input type="hidden" name="action" value="'.$type.'">' . "\n"
 			. '<input type="hidden" name="olddir" value="' . $directory . '">' . "\n"
 			. '<input type="hidden" name="newdir" value="' . $directory . '">' . "\n"
 			. '<input type="hidden" name="file" value="' . $filename.'">' . "\n";
 		$delete_form_end = '</form>'."\n";
-		$delete_form_question = lang('Are you sure you want to delete %1 ?', $filename);
+		$delete_form_question = lang('Are you sure you want to delete %1 ?', $directory.'/'.$filename);
 		$delete_form_from = $directory . '/' . $filename;
 		$delete_form_to = '<input type="text" name="newname" size=20" value="">';
 		$delete_form_confirm = '<input type="submit" name="confirm" value="' . lang('delete') . '">'."\n";
