@@ -40,8 +40,6 @@
 					=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'settings')),
                 'Show Questions'
 					=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'show','type'=>'question')),
-                'Show Answers'
-					=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'show','type'=>'answer')),
                 'Add Questions'
 					=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'add','type'=>'question')),
                 'Add Answers'
