@@ -145,9 +145,9 @@
 
 // -------------------------------- calculate statistics -------------------------------------------                                                                                                                                         
 
-//    $filter="";                                                                                                                                                   
+//    $filter= '';
 
-	if($billed) { $filter .= " AND phpgw_p_hours.status='billed' "; }                                                                                                                 
+	if($billed) { $filter .= " AND phpgw_p_hours.status='billed' "; }
 
 	if (checkdate($smonth,$sday,$syear))
 	{
@@ -156,13 +156,13 @@
 	}
 
 	if (checkdate($emonth,$eday,$eyear))
-	{ 
+	{
 		$edate = mktime(2,0,0,$emonth,$eday,$eyear);
 		$filter .= " AND end_date <= '$edate' ";
 	}
 
-	$phpgw->db->query("SELECT employee,account_firstname,account_lastname FROM phpgw_p_hours"
-					. ",phpgw_accounts WHERE project_id=$id AND phpgw_p_hours.employee=account_id $filter GROUP BY employee");
+	$phpgw->db->query("SELECT employee,account_firstname,account_lastname FROM phpgw_p_hours,phpgw_accounts "
+					. "WHERE project_id='$id' AND phpgw_p_hours.employee=account_id $filter GROUP BY employee,account_firstname,account_lastname");
 
 	$t->set_var('hd_account',lang('Account'));
 	$t->set_var('hd_activity',lang('Activity'));
@@ -178,9 +178,9 @@
 		$t->set_var('e_hours','');
 		$t->parse('list','stat_list',True);
 
-		$db2->query("SELECT SUM(minutes) as min,descr FROM phpgw_p_hours,phpgw_p_activities WHERE "
-					. "project_id=$id AND employee='" . $phpgw->db->f("employee") . "' AND "
-					. "phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_hours.activity_id");
+		$db2->query("SELECT SUM(minutes) as min,descr FROM phpgw_p_hours,phpgw_p_activities WHERE project_id='$id' AND employee='"
+					. $phpgw->db->f('employee') . "' AND "
+					. "phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_hours.activity_id,phpgw_p_activities.descr");
 
 		while ($db2->next_record())
 		{
@@ -203,8 +203,8 @@
 		$t->parse('list','stat_list',True);
 	}
 
-	$db2->query("SELECT SUM(minutes) as min,descr FROM phpgw_p_hours,phpgw_p_activities WHERE project_id=$id AND "
-				. "phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_hours.activity_id");
+	$db2->query("SELECT SUM(minutes) as min,descr FROM phpgw_p_hours,phpgw_p_activities WHERE project_id='$id' AND "
+				. "phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_hours.activity_id,phpgw_p_activities.descr");
 
 	$summin=0;
 	$t->set_var('e_account',lang('Overall'));

@@ -96,12 +96,12 @@
 
 // -------------- calculate statistics --------------------------
 
-	if($billed) { $filter .= " AND p_hours.status='billed' "; }                                                                                                           
+	if($billed) { $filter .= " AND p_hours.status='billed' "; }
 
 	if (checkdate($smonth,$sday,$syear))
-	{                                                                                                               
-		$sdate = mktime(2,0,0,$smonth,$sday,$syear);                                                                                                     
-		$filter .= " AND phpgw_p_hours.start_date>='$sdate' ";                                                                                                          
+	{
+		$sdate = mktime(2,0,0,$smonth,$sday,$syear);
+		$filter .= " AND phpgw_p_hours.start_date>='$sdate' ";
 	}
 
 	if (checkdate($emonth,$eday,$eyear))
@@ -126,7 +126,7 @@
 		$t->parse('list','stat_list',True);
 
 		$db2->query("SELECT SUM(minutes) as min,descr FROM phpgw_p_hours,phpgw_p_activities WHERE employee='$account_id' AND project_id='"
-					. $phpgw->db->f('id') . "' AND phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_hours.activity_id");
+					. $phpgw->db->f('id') . "' AND phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_hours.activity_id,phpgw_p_activities.descr");
 
 		while ($db2->next_record())
 		{
@@ -148,7 +148,9 @@
 	}
 
 	$db2->query("SELECT SUM(minutes) as min,descr FROM phpgw_p_hours,phpgw_p_activities WHERE employee='$account_id' AND "
-			. "phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_hours.activity_id");$t->set_var("lang_calcb",lang("Calculate"));
+			. "phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_hours.activity_id,phpgw_p_activities.descr");
+
+	$t->set_var('lang_calcb',lang('Calculate'));
 
 	$summin=0;
 	$t->set_var('e_project',lang('Overall'));
