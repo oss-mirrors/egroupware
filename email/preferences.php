@@ -51,7 +51,7 @@
      }
      $phpgw->preferences->commit();
 
-     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/preferences/index.php"));
+     Header("Location: " . $phpgw->link("/preferences/index.php"));
   }
 
   $phpgw->common->phpgw_header();
