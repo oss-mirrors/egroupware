@@ -1,0 +1,10 @@
+TODO:
+
+01) admin hook for link editing
+02) tweak out parsing functions
+03) generate data from phpcomic and netcomics ~70% done
+04) about hook
+05) consider a mixed mode of static and
+    snarfed (or a by image basis) - king may make this required
+06) get the pgsql table built
+07) investigate using libcurl with php

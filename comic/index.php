@@ -22,9 +22,7 @@
                       ."WHERE comic_owner='"
                       .$phpgw_info["user"]["userid"]."'");
 
-    $count = $phpgw->db->num_rows();
-
-    if ($count == 0)
+    if ($phpgw->db->num_rows() == 0)
     {
         $phpgw->db->query("insert into phpgw_comic (comic_owner) values ".
                           "('".$phpgw_info["user"]["userid"]."')");

@@ -21,6 +21,7 @@
     $imgsrc_label      = lang("Image Source");
     $remote_label      = lang("Remote (Parse/Snarf) Enabled");
     $censor_label      = lang("Censorship Level");
+    $filesize_label    = lang("Max File size");
     $override_label    = lang("Censorship Override Enabled");
     $action_label      = lang("Submit");
     $reset_label       = lang("Reset");
@@ -40,28 +41,17 @@
                           ."admin_imgsrc='".$image_source."', "
                           ."admin_rmtenabled='".$remote_enabled."', "
                           ."admin_censorlvl='".$censor_level."', "
-                          ."admin_coverride='".$override_enabled."'");
+                          ."admin_coverride='".$override_enabled."', "
+                          ."admin_filesize='".$filesize."'");
         $phpgw->db->unlock();
     }
 
-    $phpgw->db->query("select * from phpgw_comic_admin");
-
-    $count = $phpgw->db->num_rows();
-
-    if ($count == 0)
-    {
-        comic_initialize_admin();
-        
-        $phpgw->db->query("select * from phpgw_comic_admin");
-    }
-
-    $phpgw->db->next_record();
-
-    $image_source      = $phpgw->db->f("admin_imgsrc");
-    $remote_enabled    = $phpgw->db->f("admin_rmtenabled");
-    $censor_level      = $phpgw->db->f("admin_censorlvl");
-    $override_enabled  = $phpgw->db->f("admin_coverride");
-
+    comic_admin_data(&$image_source,
+                     &$censor_level,
+                     &$override_enabled,
+                     &$remote_enabled,
+                     &$filesize);
+    
     $remote_checked = "";
     if ($remote_enabled == 1)
     {
@@ -123,6 +113,8 @@
 		 done_label       => $done_label,
 		 reset_label      => $reset_label,
 
+                 filesize_label   => $filesize_label,
+                 filesize         => $filesize,
                  override_label   => $override_label,
                  override_checked => $override_checked,
                  remote_label     => $remote_label,

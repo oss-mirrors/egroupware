@@ -67,21 +67,27 @@
                       ."WHERE comic_owner='"
                       .$phpgw_info["user"]["userid"]."'");
 
-    $indexlimit = 0;
-    
-    if($phpgw->db->next_record())
+    if ($phpgw->db->num_rows() == 0)
     {
-        $comic_id        = $phpgw->db->f("comic_id");
-        $data_ids        = explode(":", $phpgw->db->f("comic_list"));
-        $scale_enabled   = $phpgw->db->f("comic_scale");
-        $perpage         = $phpgw->db->f("comic_perpage");
-        $frontpage       = $phpgw->db->f("comic_frontpage");
-        $fpscale_enabled = $phpgw->db->f("comic_fpscale");
-        $censor_level    = $phpgw->db->f("comic_censorlvl");
-        $comic_template  = $phpgw->db->f("comic_template");
-
-        $indexlimit = count($data_ids);
+        $phpgw->db->query("insert into phpgw_comic (comic_owner) values ".
+                          "('".$phpgw_info["user"]["userid"]."')");
+        $phpgw->db->query("select * from phpgw_comic "
+                          ."WHERE comic_owner='"
+                          .$phpgw_info["user"]["userid"]."'");
     }
+
+    $phpgw->db->next_record();
+
+    $comic_id        = $phpgw->db->f("comic_id");
+    $data_ids        = explode(":", $phpgw->db->f("comic_list"));
+    $scale_enabled   = $phpgw->db->f("comic_scale");
+    $perpage         = $phpgw->db->f("comic_perpage");
+    $frontpage       = $phpgw->db->f("comic_frontpage");
+    $fpscale_enabled = $phpgw->db->f("comic_fpscale");
+    $censor_level    = $phpgw->db->f("comic_censorlvl");
+    $comic_template  = $phpgw->db->f("comic_template");
+    
+    $indexlimit = count($data_ids);
 
     if ($scale_enabled == 1)
     {
@@ -159,7 +165,8 @@
         $prefs_tpl->parse(fpage_list, "frontpage", TRUE);
     }
 
-    $phpgw->db->query("select * from phpgw_comic_data order by data_name");
+    $phpgw->db->query("select * from phpgw_comic_data "
+                      ."where data_enabled='T' order by data_name");
 
     while ($phpgw->db->next_record())
     {
