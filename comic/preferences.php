@@ -61,6 +61,14 @@
 		$censor_level = intval($_POST['censor_level']);
 		$comic_template = intval($_POST['comic_template']);
 		$comic_id = intval($_POST['comic_id']);
+		$GLOBALS['phpgw']->preferences->read_repository();
+	               if( $frontpage == -1 ) {
+        	               $GLOBALS['phpgw']->preferences->delete('comic','homepage_display','True');
+               		} else {
+                       		$GLOBALS['phpgw']->preferences->add('comic','homepage_display','True');
+               		}
+                $GLOBALS['phpgw']->preferences->save_repository(True);
+
 
         $GLOBALS['phpgw']->db->lock("phpgw_comic");
         $GLOBALS['phpgw']->db->query("update phpgw_comic set "

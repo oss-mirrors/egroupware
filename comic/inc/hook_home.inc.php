@@ -34,8 +34,7 @@
 
 		if ($data_id != -1)
 		{
-			$title = '<font color="#FFFFFF">'.lang('Comic').'</font>';
-
+                        $title = lang('Comic');
 			$portalbox = CreateObject('phpgwapi.listbox',
 				Array(
 					'title'	=> $title,
