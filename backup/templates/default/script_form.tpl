@@ -115,8 +115,11 @@
 				{
 					if ($archive[$i]['bdate'] <= $rdate)
 					{
-						unlink($dir . '/' . $archive[$i]['file']);
-						echo 'removed ' . $dir . '/' . $archive[$i]['file'] . "\n";
+						if ($archive[$i]['file'] && $archive[$i]['file'] != '')
+						{
+							unlink($dir . '/' . $archive[$i]['file']);
+							echo 'removed ' . $dir . '/' . $archive[$i]['file'] . "\n";
+						}
 					}
 				}
 			}
