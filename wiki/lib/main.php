@@ -6,6 +6,8 @@
 // (Which is better form in case the admin has warnings cranked all the
 // way up).
 
+require('lib/init.php');	// includes the header.inc.php, to prevent XSS attacks it has to be before setting the vars
+
 $HTTP_REFERER = isset($_SERVER['HTTP_REFERER'])
                 ? $_SERVER['HTTP_REFERER'] : '';
 $REMOTE_ADDR  = isset($_SERVER['REMOTE_ADDR'])
@@ -14,7 +16,7 @@ $REMOTE_ADDR  = isset($_SERVER['REMOTE_ADDR'])
 $action       = isset($_GET['action'])
                 ? $_GET['action'] : '';
 $page         = isset($_GET['page'])
-                ? $_GET['page'] : '';
+                ? $_GET['page'] : ''; 
 if (isset($_GET['lang']))
 {
 	$page = array(
@@ -74,7 +76,6 @@ $user         = isset($_POST['user'])
 $referrer     = isset($_POST['referrer'])
                 ? $_POST['referrer'] : '';
 
-require('lib/init.php');
 require('parse/transforms.php');
 
 // To add an action=x behavior, add an entry to this array.  First column
