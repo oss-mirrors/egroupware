@@ -52,7 +52,7 @@
 			$xml_doc = new xmldoc();
 			$xml_doc->add_comment('$'.'Id$');	// to be able to comit the file
 			$xml_doc->add_comment("eGroupWare wiki-pages matching '$name%'".
-				($lang ? " and lang in(".explode(',',$lang).')':'').
+				($lang ? " and lang in(".implode(',',$lang).')':'').
 				($modified ? " modified since ".date('Y-m-d H:m:i',$modified):'').
 				", exported ".date('Y-m-d H:m:i',$exported=time())." from $_SERVER[HTTP_HOST]");
 
@@ -122,8 +122,8 @@
 			{
 				// use our network class, as it deals with proxies and the proxy-config in admin->configuration
 				$network = CreateObject('phpgwapi.network');
-				$xmldata = $network->gethttpsocketfile($url,'','',True);
-				$xmldata = strstr($xmldata,'<?xml');	// discard everything before the start of the xml-file
+				$xmldata = $network->gethttpsocketfile($url);
+				$xmldata = strstr(implode('',$xmldata),'<?xml');	// discard everything before the start of the xml-file
 			}
 			else
 			{
