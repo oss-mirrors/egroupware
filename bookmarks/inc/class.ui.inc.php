@@ -87,7 +87,7 @@ define('SEARCH',4);
 		}
 
 		function app_header($where=0)
-		{ 
+		{
 			$tabs[1]['label'] = lang('Tree view');
 			$tabs[1]['link']  = $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.tree');
 
@@ -193,7 +193,7 @@ define('SEARCH',4);
 			$this->location_info['bookmark'] = False;
 			$this->location_info['returnto2'] = 'create';
 			$this->bo->save_session_data($this->location_info);
-			
+
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 			$this->app_header(CREATE);
@@ -226,19 +226,19 @@ define('SEARCH',4);
 					. ' <option value="10"' . $selected[10] . '>10 - ' . lang('Highest') . '</option>'
 					. '</select>'
 				),
-				'input_url' => ('<input name="bookmark[url]" size="60" maxlength="255" value="' . 
+				'input_url' => ('<input name="bookmark[url]" size="60" maxlength="255" value="' .
 					($bookmark['url']?$bookmark['url']:'http://') . '">'
 				),
-				'input_name' => ('<input name="bookmark[name]" size="60" maxlength="255" value="' . 
+				'input_name' => ('<input name="bookmark[name]" size="60" maxlength="255" value="' .
 					$bookmark['name'] . '">'
 				),
-				'input_desc' => ('<textarea name="bookmark[desc]" rows="3" cols="60" wrap="virtual">' . 
+				'input_desc' => ('<textarea name="bookmark[desc]" rows="3" cols="60" wrap="virtual">' .
 					$bookmark['desc'] . '</textarea>'
 				),
-				'input_keywords' => ('<input type="text" name="bookmark[keywords]" size="60" maxlength="255" value="' . 
+				'input_keywords' => ('<input type="text" name="bookmark[keywords]" size="60" maxlength="255" value="' .
 					$bookmark['keywords'] . '">'
 				),
-				'input_access' => ('<input type="checkbox" name="bookmark[access]" value="private"' . 
+				'input_access' => ('<input type="checkbox" name="bookmark[access]" value="private"' .
 					($bookmark['access'] ?' checked' : '') . '>'
 				),
 			));
@@ -358,21 +358,21 @@ define('SEARCH',4);
 				'form_info' => '',
 				'form_action' => $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.edit&bm_id=' . $bm_id),
 				'lang_access' => lang('Private'),
-				'input_access' => ('<input type="checkbox" name="bookmark[access]" value="private"' . 
+				'input_access' => ('<input type="checkbox" name="bookmark[access]" value="private"' .
 					($bookmark['access']=='private'?' checked':'') . '>'
 				),
 				'input_rating' => $rating_select,
 				'input_category' => $this->bo->categories_list($bookmark['category']),
-				'input_url' => ('<input name="bookmark[url]" size="60" maxlength="255" value="' . 
+				'input_url' => ('<input name="bookmark[url]" size="60" maxlength="255" value="' .
 					$bookmark['url'] . '">'
 				),
-				'input_name' => ('<input name="bookmark[name]" size="60" maxlength="255" value="' . 
+				'input_name' => ('<input name="bookmark[name]" size="60" maxlength="255" value="' .
 					$bookmark['name'] . '">'
 				),
-				'input_desc' => ('<textarea name="bookmark[desc]" rows="3" cols="60" wrap="virtual">' . 
+				'input_desc' => ('<textarea name="bookmark[desc]" rows="3" cols="60" wrap="virtual">' .
 					$bookmark['desc'] . '</textarea>'
 				),
-				'input_keywords' => ('<input type="text" name="bookmark[keywords]" size="60" maxlength="255" value="' . 
+				'input_keywords' => ('<input type="text" name="bookmark[keywords]" size="60" maxlength="255" value="' .
 					$bookmark['keywords'] . '">'
 				),
 				'delete_button' => ($this->bo->check_perms($bm_id,PHPGW_ACL_DELETE,$bookmark['owner']) ?
@@ -429,7 +429,7 @@ define('SEARCH',4);
 			));
 
 			// We need to send the $start var instead of the page number
-			// Use appsession() to remeber the return page,instead of always passing it 
+			// Use appsession() to remeber the return page,instead of always passing it
 			$this->print_list($where_clause,$start,$bm_cat,$bookmark_list);
 
 			$this->t->set_var('BOOKMARK_LIST', $bookmark_list);
@@ -447,9 +447,9 @@ define('SEARCH',4);
 			}
 			if ($bm_cat)
 			{
-				$total_matchs .= ' ' . 
+				$total_matchs .= ' ' .
 					lang('from category %1',$GLOBALS['phpgw']->strip_html($this->bo->categories->id2name($bm_cat))) .
-					' - <a href="' . 
+					' - <a href="' .
 					$GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui._list&bm_cat=0&start=0') .
 					'">' .
 					lang('All bookmarks') .
@@ -491,13 +491,13 @@ define('SEARCH',4);
 				$this->location_info['searchstart'] = $start;
 			}
 			$this->location_info['returnto'] = 'search';
-			
+
 			$this->bo->save_session_data($this->location_info);
 
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 			$this->app_header(SEARCH);
-			
+
 			$q = createobject('bookmarks.sqlquery');
 
 			$this->t->set_file(array(
@@ -551,27 +551,27 @@ define('SEARCH',4);
 			{
 				$this->print_list($q->query, $start,0,$bookmark_list);
 
-			$total_bookmarks = $this->bo->so->total_records;
-			if ($total_bookmarks > $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
-			{
-				$next = $start + $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
-				$total_matchs = lang('showing %1 - %2 of %3',($start + 1),
+				$total_bookmarks = $this->bo->so->total_records;
+				if ($total_bookmarks > $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
+				{
+					$next = $start + $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
+					$total_matchs = lang('showing %1 - %2 of %3',($start + 1),
 					($next <= $total_bookmarks) ? $next : $total_bookmarks,$total_bookmarks);
-			}
-			else
-			{
-				$total_matchs = lang('showing %1',$total_bookmarks);
-			}
-			$link_data = array
-			(
-				'menuaction' => 'bookmarks.ui.search',
-			);
+				}
+				else
+				{
+					$total_matchs = lang('showing %1',$total_bookmarks);
+				}
+				$link_data = array
+				(
+					'menuaction' => 'bookmarks.ui.search',
+				);
 
-			$this->t->set_var(array(
-				'next_matchs_left' =>  $this->nextmatchs->left('/index.php',$start,$total_bookmarks,$link_data),
-				'next_matchs_right' => $this->nextmatchs->right('/index.php',$start,$total_bookmarks,$link_data),
-				'showing' => $total_matchs
-			));
+				$this->t->set_var(array(
+					'next_matchs_left' =>  $this->nextmatchs->left('/index.php',$start,$total_bookmarks,$link_data),
+					'next_matchs_right' => $this->nextmatchs->right('/index.php',$start,$total_bookmarks,$link_data),
+					'showing' => $total_matchs
+				));
 
 				$this->t->set_var(array(
 					'QUERY_CONDITION' => $GLOBALS['phpgw']->strip_html($q->query),
@@ -614,117 +614,117 @@ define('SEARCH',4);
 			$this->t->set_var('CATEGORY',$GLOBALS['phpgw']->strip_html($category));
 
 			$this->t->fp('LIST_HDR','list_header');
-			$this->t->fp('LIST_FTR','list_footer');        
+			$this->t->fp('LIST_FTR','list_footer');
 			$this->t->fp('CONTENT','list_section',TRUE);
 			$this->t->set_var('LIST_ITEMS','');
 		}
 
-	function print_list($where_clause, $start, $bm_cat, &$content)
-	{
-		$page_header_shown = $GLOBALS['page_header_shown'];
-
-		$this->t->set_file(array(
-			'list' => 'list.tpl'
-		));
-		$this->t->set_block('list','list_section');
-		$this->t->set_block('list','list_header');
-		$this->t->set_block('list','list_footer');
-		$this->t->set_block('list','list_item');
-		$this->t->set_block('list','list_keyw');
-		$this->t->set_block('list','page_header');
-		$this->t->set_block('list','page_footer');
-
-		$this->t->set_var('list_mass_select_form',$GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.mass'));
-
-		if (! $page_header_shown)
+		function print_list($where_clause, $start, $bm_cat, &$content)
 		{
-			$this->t->fp('header','page_header');
-			$page_header_shown = True;
-		}
-		else
-		{
-			$this->t->set_var('header','');
-		}
+			$page_header_shown = $GLOBALS['page_header_shown'];
 
-		$bm_list = $this->bo->_list($bm_cat,$start,$where_clause);
-
-		$prev_category_id = -1;
-		$rows_printed = 0;
-
-		while (list($bm_id,$bookmark) = @each($bm_list))
-		{
-			$rows_printed++;
-
-			if ($bookmark['category'] != $prev_category_id)
-			{
-				if ($rows_printed > 1)
-				{
-					$this->print_list_break($prev_category_id);
-				}
-				$prev_category_id       = $bookmark['category'];
-			}
-
-			if ($bookmark['keywords'])
-			{
-				$this->t->set_var(BOOKMARK_KEYW, $bookmark['keywords']);
-				$this->t->parse('bookmark_keywords','list_keyw');
-			}
-			else
-			{
-				$this->t->set_var('bookmark_keywords','');
-			}
-
-			// Check owner
-			if ($this->bo->check_perms2($bookmark['owner'],$bookmark['access'],PHPGW_ACL_EDIT))
-			{
-				$maintain_url  = $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.edit&bm_id=' . $bm_id);
-				$maintain_link = sprintf(
-					'<a href="%s"><img src="%s" align="top" border="0" alt="%s"></a>', 
-					$maintain_url,
-					$this->img['edit'],
-					lang('Edit this bookmark')
-				);
-			}
-			else
-			{
-				$maintain_link = '';
-			}
-
-			$view_url      = $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.view&bm_id=' . $bm_id);
-			$view_link     = sprintf(
-				'<a href="%s"><img src="%s" align="top" border="0" alt="%s"></a>', 
-				$view_url,
-				$this->img['view'],
-				lang('View this bookmark')
-			);
-
-			$mail_link = sprintf(
-				'<a href="%s"><img align="top" border="0" src="%s" alt="%s"></a>',
-				$GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.mail&bm_id='.$bm_id),
-				$this->img['mail'],
-				lang('Mail this bookmark')
-				);
-
-			$this->t->set_var(array(
-				'maintain_link' => $maintain_link,
-				'bookmark_url' => $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.redirect&bm_id='.$bm_id),
-				'view_link' => $view_link,
-				'mail_link' => $mail_link,
-				'checkbox' => '<input type="checkbox" name="item_cb[]" value="' . $bm_id . '">',
-				'bookmark_name' => $bookmark['name'],
-				'bookmark_desc' => nl2br($bookmark['desc']),
-				'bookmark_rating' => sprintf('<img src="%s/bar-%s.jpg">',PHPGW_IMAGES,$bookmark['rating'])
+			$this->t->set_file(array(
+				'list' => 'list.tpl'
 			));
-			$this->t->parse(LIST_ITEMS,'list_item',True);
-		}
+			$this->t->set_block('list','list_section');
+			$this->t->set_block('list','list_header');
+			$this->t->set_block('list','list_footer');
+			$this->t->set_block('list','list_item');
+			$this->t->set_block('list','list_keyw');
+			$this->t->set_block('list','page_header');
+			$this->t->set_block('list','page_footer');
 
-		if ($rows_printed > 0)
-		{
-			$this->print_list_break($prev_category_id);
-			$content = $this->t->get('CONTENT');
-			$this->t->fp('footer','page_footer');
+			$this->t->set_var('list_mass_select_form',$GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.mass'));
+
+			if (! $page_header_shown)
+			{
+				$this->t->fp('header','page_header');
+				$page_header_shown = True;
+			}
+			else
+			{
+				$this->t->set_var('header','');
+			}
+
+			$bm_list = $this->bo->_list($bm_cat,$start,$where_clause);
+
+			$prev_category_id = -1;
+			$rows_printed = 0;
+
+			while (list($bm_id,$bookmark) = @each($bm_list))
+			{
+				$rows_printed++;
+
+				if ($bookmark['category'] != $prev_category_id)
+				{
+					if ($rows_printed > 1)
+					{
+						$this->print_list_break($prev_category_id);
+					}
+					$prev_category_id       = $bookmark['category'];
+				}
+
+				if ($bookmark['keywords'])
+				{
+					$this->t->set_var(BOOKMARK_KEYW, $bookmark['keywords']);
+					$this->t->parse('bookmark_keywords','list_keyw');
+				}
+				else
+				{
+					$this->t->set_var('bookmark_keywords','');
+				}
+
+				// Check owner
+				if ($this->bo->check_perms2($bookmark['owner'],$bookmark['access'],PHPGW_ACL_EDIT))
+				{
+					$maintain_url  = $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.edit&bm_id=' . $bm_id);
+					$maintain_link = sprintf(
+						'<a href="%s"><img src="%s" align="top" border="0" alt="%s"></a>',
+						$maintain_url,
+						$this->img['edit'],
+						lang('Edit this bookmark')
+					);
+				}
+				else
+				{
+					$maintain_link = '';
+				}
+
+				$view_url      = $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.view&bm_id=' . $bm_id);
+				$view_link     = sprintf(
+					'<a href="%s"><img src="%s" align="top" border="0" alt="%s"></a>',
+					$view_url,
+					$this->img['view'],
+					lang('View this bookmark')
+				);
+
+				$mail_link = sprintf(
+					'<a href="%s"><img align="top" border="0" src="%s" alt="%s"></a>',
+					$GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.mail&bm_id='.$bm_id),
+					$this->img['mail'],
+					lang('Mail this bookmark')
+				);
+
+				$this->t->set_var(array(
+					'maintain_link' => $maintain_link,
+					'bookmark_url' => $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.redirect&bm_id='.$bm_id),
+					'view_link' => $view_link,
+					'mail_link' => $mail_link,
+					'checkbox' => '<input type="checkbox" name="item_cb[]" value="' . $bm_id . '">',
+					'bookmark_name' => $bookmark['name'],
+					'bookmark_desc' => nl2br($bookmark['desc']),
+					'bookmark_rating' => sprintf('<img src="%s/bar-%s.jpg">',PHPGW_IMAGES,$bookmark['rating'])
+				));
+				$this->t->parse(LIST_ITEMS,'list_item',True);
+			}
+
+			if ($rows_printed > 0)
+			{
+				$this->print_list_break($prev_category_id);
+				$content = $this->t->get('CONTENT');
+				$this->t->fp('footer','page_footer');
+			}
 		}
-	}
 
 		function tree()
 		{
@@ -794,7 +794,7 @@ function toggle(image, catid)
 		}
 	}
 }
-</script>" . 
+</script>" .
 				'<table border="0" cellspacing="0" cellpadding="0" width="100%">' .
 				$this->showcat($categories) .
 				'</table>' .
@@ -811,19 +811,19 @@ function toggle(image, catid)
 			{
 				$cat_id = $cat['id'];
 				$status = in_array($cat_id,$this->expandedcats);
-				$tree .= "\n" . 
-					'<tr><td width="10%">' . 
+				$tree .= "\n" .
+					'<tr><td width="10%">' .
 					'<img src="' .
 					$this->img[$status ? "collapse" : "expand"] .
 					'" onclick="toggle(this, \'' .
-					$cat_id . 
+					$cat_id .
 					'\')"></td><td><a style="font-weight:bold" title="' .
 					$GLOBALS['phpgw']->strip_html($cat['description']) .
 					'" href="' .
 					$GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui._list&start=0&bm_cat=' . $cat_id) .
 					'">' .
-					$GLOBALS['phpgw']->strip_html($cat['name']) . 
-					'</a></td></tr>' . 
+					$GLOBALS['phpgw']->strip_html($cat['name']) .
+					'</a></td></tr>' .
 					"\n";
 				$subcats = $this->bo->categories->return_array('subs',0,False,'','','',True,$cat_id);
 		 		$bookmarks = $this->bo->_list($cat_id,False,False,False);
@@ -842,7 +842,7 @@ function toggle(image, catid)
 						{
 							$maintain_url  = $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.edit&bm_id=' . $bm_id);
 							$maintain_link = sprintf(
-								'<a href="%s"><img src="%s" align="top" border="0" alt="%s"></a>', 
+								'<a href="%s"><img src="%s" align="top" border="0" alt="%s"></a>',
 								$maintain_url,
 								$this->img['edit'],
 								lang('Edit this bookmark')
@@ -855,7 +855,7 @@ function toggle(image, catid)
 
 						$view_url      = $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.view&bm_id=' . $bm_id);
 						$view_link     = sprintf(
-							'<a href="%s"><img src="%s" align="top" border="0" alt="%s"></a>', 
+							'<a href="%s"><img src="%s" align="top" border="0" alt="%s"></a>',
 							$view_url,
 							$this->img['view'],
 							lang('View this bookmark')
@@ -962,7 +962,7 @@ function toggle(image, catid)
 				'input_name' => $bookmark['name'],
 				'input_desc' => $bookmark['desc'],
 				'input_keywords' => $bookmark['keywords'],
-				'input_rating' => ('<img src="' . $GLOBALS['phpgw']->common->get_image_path('bookmarks') . 
+				'input_rating' => ('<img src="' . $GLOBALS['phpgw']->common->get_image_path('bookmarks') .
 					'/bar-' . $bookmark['rating'] . '.jpg">'
 				),
 				'input_category' => $category,

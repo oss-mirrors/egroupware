@@ -131,7 +131,7 @@
 
 			$query = sprintf("insert into phpgw_bookmarks (bm_url, bm_name, bm_desc, bm_keywords, bm_category,"
 				. "bm_rating, bm_owner, bm_access, bm_info, bm_visits) "
-				. "values ('%s','%s','%s','%s',%s,%s,'%s','%s','%s',0)", 
+				. "values ('%s','%s','%s','%s',%s,%s,'%s','%s','%s',0)",
 				$values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']),
 				$values['category'], $values['rating'], $GLOBALS['phpgw_info']['user']['account_id'], $values['access'],
 				$values['timestamps']);
@@ -157,21 +157,20 @@
 			$this->db->query("select bm_info from phpgw_bookmarks where bm_id='$id'",__LINE__,__FILE__);
 			$this->db->next_record();
 			$ts = explode(',',$GLOBALS['phpgw']->db->f('bm_info'));
-	
+
 			$timestamps = sprintf('%s,%s,%s',$ts[0],$ts[1],time());
 
 			// Update bookmark information.
 			$query = sprintf("update phpgw_bookmarks set bm_url='%s', bm_name='%s', bm_desc='%s', "
 //				. "bm_keywords='%s', bm_category='%s', bm_subcategory='%s', bm_rating='%s',"
 				. "bm_keywords='%s', bm_category=%s, bm_rating='%s',"
-				. "bm_info='%s', bm_access='%s' where bm_id='%s'", 
-					$values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']), 
+				. "bm_info='%s', bm_access='%s' where bm_id='%s'",
+					$values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']),
 //					$category, $subcategory, $values['rating'], $timestamps, $values['access'], $id);
 					$values['category'],$values['rating'], $timestamps, $values['access'], $id);
 
 			if ($this->db->query($query,__LINE__,__FILE__))
 			{
-				
 				return true;
 			}
 			else

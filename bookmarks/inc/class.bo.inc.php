@@ -71,8 +71,8 @@
 
 		function _list($cat_id,$start=False,$where_clause=False,$subcatsalso=True)
 		{
-			$cat_list = $cat_id ? 
-				($subcatsalso ? $this->getcatnested($cat_id,True,True) : array($cat_id)): 
+			$cat_list = $cat_id ?
+				($subcatsalso ? $this->getcatnested($cat_id,True,True) : array($cat_id)):
 				False;
 			return $this->so->_list($cat_list,$this->get_user_grant_list(),$start,$where_clause);
 		}
@@ -134,7 +134,7 @@
 				'>' . $option['display'] . '</option>' . "\n";
 			}
 			return '<select name="bookmark[category]' .
-				($multiple ? '[]" multiple="multiple" ' : '" ') . 
+				($multiple ? '[]" multiple="multiple" ' : '" ') .
 				'size="5">' . $s . '</select>';
 		}
 
@@ -244,8 +244,8 @@
 			{
 				if (! $this->validate->is_url($values['url']))
 				{
-					$this->error_msg = '<br>URL invalid. Format must be <strong>http://</strong> or 
-                            <strong>ftp://</strong> followed by a valid hostname and 
+					$this->error_msg = '<br>URL invalid. Format must be <strong>http://</strong> or
+                            <strong>ftp://</strong> followed by a valid hostname and
                             URL!<br><small>' .  $this->validate->ERROR . '</small>';
 					$result = False;
 				}
@@ -280,7 +280,7 @@
 		function get_category($catname,$parent)
 		{
 			$this->_debug('<br>Testing for category: ' . $catname);
-     
+
 			$catid = $this->cat_exists($catname,$parent);
 			if ($catid)
 			{
@@ -336,9 +336,9 @@
 						elseif (eregi('<A HREF="([^"]*)[^>]*>(.*)</A>', $line, $match))
 						{
 							$url_parts = @parse_url($match[1]);
-							if 
+							if
 							(
-									$url_parts[scheme] == 'http' || $url_parts[scheme] == 'https' || 
+									$url_parts[scheme] == 'http' || $url_parts[scheme] == 'https' ||
 									$url_parts[scheme] == 'ftp' || $url_parts[scheme] == 'news'
 							)
 							{
