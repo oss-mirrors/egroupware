@@ -41,15 +41,13 @@
 
     if (checkdate($smonth,$sday,$syear)) { $sdate = mktime(2,0,0,$smonth,$sday,$syear); } 
     else {
-	if ($smonth && $sday && $syear) { $error[$errorcount++] = lang('You have entered an invalid start date ! :') . " " . "$smonth - $sday - $syear"; }
+	if ($smonth && $sday && $syear) { $error[$errorcount++] = lang('You have entered an invalid start date !') . " : " . "$smonth - $sday - $syear"; }
     }
 
     if (checkdate($emonth,$eday,$eyear)) { $edate = mktime(2,0,0,$emonth,$eday,$eyear); } 
       else {
-	if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang("You have entered an invailed end date ! :") . " " . "$emonth - $eday - $eyear"; }                                                   
+	if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang('You have entered an invalid end date !') . " : " . "$emonth - $eday - $eyear"; }                                                   
     }                                                                                                                                                                                
-
-    if ((!$ba_activities) && (!$bill_activities)) { $error[$errorcount++] = lang('Please choose an activity for that project first !'); }
 
     if (! $error) {
     $owner = $phpgw_info["user"]["account_id"];
@@ -78,7 +76,7 @@
       }
     }                                                                                                                                                                                  
     if ($errorcount) { $t->set_var('message',$phpgw->common->error_list($error)); }
-    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang("Project $num - $title has been added !")); }
+    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang("Project $num $title has been added !")); }
     if ((! $submit) && (! $error) && (! $errorcount)) { $t->set_var('message',""); }
 
     $t->set_var("actionurl",$phpgw->link("/projects/add.php"));

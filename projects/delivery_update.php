@@ -39,7 +39,7 @@
 
     if (checkdate($month,$day,$year)) { $date = mktime(2,0,0,$month,$day,$year); }
     else {
-        if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid delivery date ! :') . " " . "$month - $day - $year"; }
+        if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid delivery date !') . " : " . "$month - $day - $year"; }
     }
 
     if (! $error) {

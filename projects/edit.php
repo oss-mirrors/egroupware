@@ -45,11 +45,11 @@
 
     if (checkdate($smonth,$sday,$syear)) { $sdate = mktime(2,0,0,$smonth,$sday,$syear); }
     else {
-        if ($smonth && $sday && $syear) { $error[$errorcount++] = lang('You have entered an invalid date !'). "<br>" . "$smonth - $sday - $syear" . "</b></center>"; }
+        if ($smonth && $sday && $syear) { $error[$errorcount++] = lang('You have entered an invalid date !') . " : " . "$smonth - $sday - $syear"; }
     }
     if (checkdate($emonth,$eday,$eyear)) { $edate = mktime(2,0,0,$emonth,$eday,$eyear); }
       else {
-        if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang("You have entered an invailed date"). "<br>" . "$emonth - $eday - $eyear" . "</b></center>"; }
+        if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang("You have entered an invalid date") . " : " . "$emonth - $eday - $eyear"; }
     }
 
     if (! $error) {
@@ -83,7 +83,7 @@
     }
 
     if ($errorcount) { $t->set_var('message',$phpgw->common->error_list($error)); }
-    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang("Project $num - $title has been updated !")); }
+    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang("Project $num $title has been updated !")); }
     if ((! $submit) && (! $error) && (! $errorcount)) { $t->set_var('message',""); }
 
 

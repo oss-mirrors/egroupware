@@ -43,13 +43,13 @@
         else { $invoice_num = addslashes($invoice_num); }
 
         $phpgw->db->query("SELECT num FROM phpgw_p_invoice WHERE num='$invoice_num'");
-        if ($phpgw->db->next_record()) { $error[$errorcount++] = lang("That Invoice ID has been used already !"); }
-        if (!$invoice_num) { $error[$errorcount++] = lang("Please enter a Invoice ID for that invoice !"); }
+        if ($phpgw->db->next_record()) { $error[$errorcount++] = lang('That Invoice ID has been used already !'); }
+        if (!$invoice_num) { $error[$errorcount++] = lang('Please enter an Invoice ID for that invoice !'); }
         if (!$customer) { $error[$errorcount++] = lang("You have no customer selected !"); }
 
     if (checkdate($month,$day,$year)) { $date = mktime(2,0,0,$month,$day,$year); }
     else {
-        if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid invoice date ! :') . " " . "$month - $day - $year"; }
+        if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid invoice date !') . " : " . "$month - $day - $year"; }
     }
 
     if (! $error) {

@@ -34,15 +34,14 @@
 
         if ($choose) { $delivery_num = create_deliveryid($year); }
         else { $delivery_num = addslashes($delivery_num); }
-
+        if (!$delivery_num) { $error[$errorcount++] = lang('Please enter a Delivery ID for that delivery !'); }
         $phpgw->db->query("SELECT num FROM phpgw_p_delivery WHERE num='$delivery_num'");
         if ($phpgw->db->next_record()) { $error[$errorcount++] = lang('That Delivery ID has been used already !'); }
-        if (!$delivery_num) { $error[$errorcount++] = lang('Please enter a Delivery ID for that delivery !'); } 
         if (!$customer) { $error[$errorcount++] = lang('You have no customer selected !'); }
 
     if (checkdate($month,$day,$year)) { $date = mktime(2,0,0,$month,$day,$year); }
     else {
-        if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid delivery date ! :') . " " . "$month - $day - $year"; }
+        if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid delivery date !') . " : " . "$month - $day - $year"; }
     }
 
     if (! $error) {
@@ -135,9 +134,11 @@
     if(!$delivery_id) {
     $date=0;
     $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,phpgw_p_hours.status,phpgw_p_hours.start_date,"
-                  . "phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
-                  . "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id "
-		  . "WHERE (phpgw_p_hours.status='done' OR phpgw_p_hours.status='billed') AND phpgw_p_hours.project_id='$project_id' $ordermethod");
+		    . "phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
+		    . "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id "
+		    . "$join phpgw_p_deliverypos ON phpgw_p_hours.id=phpgw_p_deliverypos.hours_id "
+		    . "WHERE (phpgw_p_hours.status='done' OR phpgw_p_hours.status='billed') AND phpgw_p_hours.project_id='$project_id' "
+		    . "AND p_deliverypos.id IS NULL $ordermethod");
     } 
     else {
     $phpgw->db->query("SELECT date FROM phpgw_p_delivery WHERE id='$delivery_id'");

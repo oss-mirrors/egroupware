@@ -38,11 +38,11 @@
     $errorcount = 0;
     if (checkdate($smonth,$sday,$syear)) { $sdate = mktime(2,0,0,$smonth,$sday,$syear); }
     else {
-       if ($smonth && $sday && $syear) { $error[$errorcount++] = lang("You have entered an invalid date ! :") . " " . "$smonth - $sday - $syear"; }
+       if ($smonth && $sday && $syear) { $error[$errorcount++] = lang('You have entered an invalid start date !') . " : " . "$smonth - $sday - $syear"; }
     }
     if (checkdate($emonth,$eday,$eyear)) { $edate = mktime(2,0,0,$emonth,$eday,$eyear); }
     else {
-       if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang("You have entered an invailed end date ! :") . " " . "$emonth - $eday - $eyear"; }
+       if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang(You have entered an invalid end date !') . " : " . "$emonth - $eday - $eyear"; }
     }
 
     if ($activity) {
@@ -50,7 +50,7 @@
     $phpgw->db->next_record();
     $billperae = $phpgw->db->f("billperae");
     $minperae = $phpgw->db->f("minperae");
-    if (($phpgw->db->f("remarkreq")=="Y") and (!$remark)) { $error[$errorcount++] = lang('You have to enter a remark !'); }
+    if (($phpgw->db->f("remarkreq")=="Y") and (!$remark)) { $error[$errorcount++] = lang('Please enter a remark !'); }
     }
 
     if (! $error) {

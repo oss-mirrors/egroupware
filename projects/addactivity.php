@@ -32,8 +32,8 @@
     $phpgw->db->next_record();
     if ($phpgw->db->f(0) != 0) { $error[$errorcount++] = lang('That Activity ID has been used already !'); }
 
-    if (!$billperae) { $error[$errorcount++] = lang('Please enter the bill per workunit !'); }
-    if (!$minperae) { $error[$errorcount++] = lang('Please enter the minutes per workunit !'); }
+    if ((!$billperae) || ($billperae==0)) { $error[$errorcount++] = lang('Please enter the bill per workunit !'); }
+    if ((!$minperae) || ($minperae==0)) { $error[$errorcount++] = lang('Please enter the minutes per workunit !'); }
 
     if (! $error) {
     $descr = addslashes($descr);

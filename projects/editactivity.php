@@ -35,16 +35,17 @@
 
     if ($submit) {
     $errorcount = 0;
-    $phpgw->db->query("select count(*) from phpgw_p_activities where num='$num'");
+    if (!$num) { $error[$errorcount++] = lang('Please enter an ID for that Activity !'); }
+    $phpgw->db->query("select count(*) from phpgw_p_activities where num='$num' AND id != '$id'");
     $phpgw->db->next_record();
     if ($phpgw->db->f(0) != 0) { $error[$errorcount++] = lang('That Activity ID has been used already !'); }
-
-    if (!$num) { $error[$errorcount++] = lang('Please enter an ID for that Activity !'); }
+    if ((!$billperae) || ($billperae==0)) { $error[$errorcount++] = lang('Please enter the bill per workunit !'); }
+    if ((!$minperae) || ($minperae==0)) { $error[$errorcount++] = lang('Please enter the minutes per workunit !'); }
 
     if (! $error) {
     $num = addslashes($num);
     $descr = addslashes($descr);
-    $phpgw->db->query("update p_activities set num='$num',remarkreq='$remarkreq',descr='$descr',billperae='$billperae',"
+    $phpgw->db->query("update phpgw_p_activities set num='$num',remarkreq='$remarkreq',descr='$descr',billperae='$billperae',"
                     . "minperae='$minperae' where id='$id'");
       }
     } 
