@@ -559,7 +559,7 @@ function comic_match_bar($start, $end, $indexlimit,
       case 1:
         {
             $showstring =
-                lang("showing x", $comics_displayed);
+                lang("showing %1", $comics_displayed);
         }
         break;
 

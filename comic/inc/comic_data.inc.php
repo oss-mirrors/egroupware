@@ -107,11 +107,11 @@
 			{
 				$max_turn = $start + $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
 			}
-			$match_comment = lang('showing x - x of x',($start + 1),$max_turn,$total_records);
+			$match_comment = lang('showing %1 - %2 of %3',($start + 1),$max_turn,$total_records);
 		}
 		else
 		{
-			$match_comment = lang('showing x',$total_records);
+			$match_comment = lang('showing %1',$total_records);
 		}
     
 		if(!$query)
