@@ -25,7 +25,7 @@ descending	bookmarks	es-es	Descendente
 edit bookmark	bookmarks	es-es	Editar marcador
 edit this bookmark	bookmarks	es-es	Editar este marcador
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	es-es	Introduzca el nombre del fichero de marcadores de Netscaep<br>que quiera ver importado debajo.
-export bookmarks	bookmarks	es-es	Exportar marcadores
+export bookmarks	common	es-es	Exportar marcadores
 fewer	bookmarks	es-es	Menos
 filter by	bookmarks	es-es	Filtrar por
 found a link you might like	bookmarks	es-es	Encontré un enlace que le puede gustar
@@ -33,7 +33,7 @@ from	bookmarks	es-es	De
 from category %1	bookmarks	es-es	de categoría %º
 highest	bookmarks	es-es	La más alta
 i thought you would be interested in the following link(s):	bookmarks	es-es	Pensé que le interesarían los siguientes enlaces:
-import bookmarks	bookmarks	es-es	Importar marcadores
+import bookmarks	common	es-es	Importar marcadores
 like	bookmarks	es-es	como
 list	bookmarks	es-es	Lista
 lowest	bookmarks	es-es	La más baja
@@ -68,3 +68,4 @@ view this bookmark	bookmarks	es-es	Ver este marcador
 warning	bookmarks	es-es	Aviso
 you are viewing this site outside of phpgroupware	bookmarks	es-es	Está viendo este sito desde fuera de eGroupWare
 you must select a category	bookmarks	es-es	Debe seleccionar una categoría
+you need to select a category!	bookmarks	es-es	¡Necesita seleccionar una categoría!

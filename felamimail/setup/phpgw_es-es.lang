@@ -57,11 +57,13 @@ dark yellow	felamimail	es-es	Amarillo oscuro
 date	felamimail	es-es	Fecha
 date(newest first)	felamimail	es-es	Fecha (la más reciente primero)
 date(oldest first)	felamimail	es-es	Fecha (la más antigua primero)
+days	felamimail	es-es	días
 deactivate script	felamimail	es-es	desactivar script
 default sorting order	felamimail	es-es	Modo de ordenar predeterminado
 delete	felamimail	es-es	Borrar
 delete all	felamimail	es-es	Borrar todos
 delete folder	felamimail	es-es	Borrar carpeta
+delete script	felamimail	es-es	borrar script
 delete selected	felamimail	es-es	Borrar la selección
 delete selected messages	felamimail	es-es	Borrar mensajes seleccionados
 deleted	felamimail	es-es	Borrado
@@ -94,6 +96,7 @@ edit	felamimail	es-es	Editar
 edit filter	felamimail	es-es	Editar filtro
 edit rule	felamimail	es-es	Añadir regla
 edit selected	felamimail	es-es	Editar selección
+edit vacation settings	felamimail	es-es	editar configuración de vacaciones
 email address	felamimail	es-es	Dirección de correo electrónico
 email signature	felamimail	es-es	Firma de correo
 empty trash	felamimail	es-es	Vaciar papelera
@@ -108,12 +111,15 @@ erro	felamimail	es-es	ERROR
 error	felamimail	es-es	ERROR
 error connecting to imap serv	felamimail	es-es	Error al conectar al servidor IMAP
 error opening	felamimail	es-es	Error al abrir
+every	felamimail	es-es	cada
+every %1 days	felamimail	es-es	cada %1 días
 expunge	felamimail	es-es	Suprimir
 felamimail	common	es-es	FelaMiMail
 file into	felamimail	es-es	Información del fichero
 files	felamimail	es-es	Ficheros
 filter active	felamimail	es-es	Filtro activo
 filter name	felamimail	es-es	Nombre del filtro
+filter rules	felamimail	es-es	reglas de filtrado
 first name	felamimail	es-es	Nombre de pila
 flagged	felamimail	es-es	marcado
 flags	felamimail	es-es	Marcas
@@ -221,6 +227,7 @@ no valid emailprofile selected!!	felamimail	es-es	No se ha seleccionado un perfi
 none	felamimail	es-es	ninguno
 number of messages to index	felamimail	es-es	Número de mensajes a indexar
 on behalf of	felamimail	es-es	en nombre de
+one address is not valid	felamimail	es-es	Una dirección no es válida
 only inbox	felamimail	es-es	Sólo la Bandeja de entrada
 only unseen	felamimail	es-es	Sólo los no vistos
 open all	felamimail	es-es	abrir todas
@@ -231,6 +238,9 @@ organization name	admin	es-es	Nombre de la organización
 oth	felamimail	es-es	Otros
 participants	felamimail	es-es	Participantes
 personal information	felamimail	es-es	Información personal
+please select a address	felamimail	es-es	Por favor, seleccione una dirección
+please select the number of days to wait between responses	felamimail	es-es	Por favor, seleccione el número de días a esperar entre las respuestas
+please supply the message to send with auto-responses	felamimail	es-es	Por favor, indique el mensaje a enviar para respuestas automáticas
 posting	felamimail	es-es	enviar
 preference file %1 not found. exiting abnormally	felamimail	es-es	El fichero de preferencias %1 no se ha encontrado. Saliendo de forma anormal.
 preference file, %1, does not exist. log out, and log back in to create a default preference file.	felamimail	es-es	El fichero de preferencias %1 no existe. Cierre la sesión y vuelva a iniciarla para crear un fichero de preferencias predeterminado.
@@ -259,6 +269,8 @@ reply	felamimail	es-es	Responder
 reply all	felamimail	es-es	Responder a todos
 reply to	felamimail	es-es	Responder A
 replyto	felamimail	es-es	Responder A
+respond	felamimail	es-es	Responder
+respond to mail sent to	felamimail	es-es	Responder al correo enviado a
 return	felamimail	es-es	Volver
 return to options page	felamimail	es-es	Volver a la página de opciones
 right	felamimail	es-es	Derecha
@@ -266,6 +278,9 @@ rule	felamimail	es-es	Regla
 running squirrelmail version %1 (c) 1999-2000.	felamimail	es-es	Ejecutando SquirrelMail versión %1 (c) 1999-2000
 same window - not functional yet	felamimail	es-es	En la misma ventana - no funciona todavía
 save	felamimail	es-es	Guardar
+save changes	felamimail	es-es	guardar cambios
+script name	felamimail	es-es	nombre del script
+script status	felamimail	es-es	estado del script
 search	felamimail	es-es	Buscar
 search for	felamimail	es-es	Buscar
 seconds	felamimail	es-es	Segundos
@@ -320,6 +335,7 @@ this folder is empty	felamimail	es-es	ESTA CARPETA ESTA VACIA
 this php has no imap support compiled in!!	felamimail	es-es	¡Esta instalación de PHP no tiene soporte IMAP!
 this port is based on squirrelmail, which is a standalone imap client.<br>	felamimail	es-es	El puerto en el que está basado Squirrelmail, que es un cliente IMAP.<br>
 to	felamimail	es-es	Para
+to mail sent to	felamimail	es-es	al correo enviado a
 to the left	felamimail	es-es	a la izquierda
 to the right	felamimail	es-es	a la derecha
 top	felamimail	es-es	Superior
@@ -353,6 +369,7 @@ use custom settings	felamimail	es-es	Usar opciones personalizadas
 use javascript or html addressbook?	felamimail	es-es	Usar javascript o libreta de direcciones HTML
 use smtp auth	admin	es-es	Usar identificación SMTP
 users can define their own emailaccounts	admin	es-es	Los usuarios pueden definir sus propias cuentas de correo
+vacation notice	felamimail	es-es	aviso de vacaciones
 view full header	felamimail	es-es	Ver la cabecera completa
 view message	felamimail	es-es	Ver mensaje
 viewing full header	felamimail	es-es	Viendo la cabecera completa
@@ -363,6 +380,8 @@ welcome to %1\'s webmail system	felamimail	es-es	Bienvenido al sistema de WebMai
 when deleting messages	felamimail	es-es	Al borrar mensajes
 white	felamimail	es-es	Blanco
 width of folder list	felamimail	es-es	Ancho de la lista de carpetas
+with message	felamimail	es-es	con mensaje
+with message "%1"	felamimail	es-es	con mensaje "%1"
 wrap incoming text at	felamimail	es-es	Ajustar el texto entrante a
 writing	felamimail	es-es	escribiendo
 wrote	felamimail	es-es	escribió

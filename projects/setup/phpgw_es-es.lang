@@ -93,6 +93,7 @@ delete factor	projects	es-es	borrar factor
 delete hours	projects	es-es	Eliminar horas
 delete job	projects	es-es	borrar trabajo
 delete project	projects	es-es	borrar proyecto
+delete selected files	projects	es-es	borrar ficheros seleccionados
 delete work hours	projects	es-es	borrar horas de trabajo
 deliveries	projects	es-es	Envíos
 delivery	projects	es-es	Envío
@@ -272,6 +273,7 @@ please choose activities for the project	projects	es-es	Por favor, elija activid
 please choose the accounting system for the project	projects	es-es	Por favor, elija el sistema de contabilidad para el proyecto
 please choose the columns to list in the projects preferences section	projects	es-es	Por favor, elija las columnas a listar en la sección de preferencias de los proyectos
 please choose the discount type	projects	es-es	Por favor, elija el tipo de descuento
+please enable html view of emails.	projects	es-es	Por favor, active la vista HTML de los correos electrónicos.
 please enter a remark	projects	es-es	Por favor, introduzca un comentario
 please enter a remark !	projects	es-es	Por favor, introduzca un comentario
 please enter an id	projects	es-es	Por favor, indique un ID
@@ -352,7 +354,10 @@ sequencing project	projects	es-es	Proyecto de secuencia
 settings	admin	es-es	Opciones
 short description	projects	es-es	Descripción corta
 show gantt chart	projects	es-es	Mostrar diagrama de Gantt
+show milestones	projects	es-es	mostrar versiones
+show planned resources	projects	es-es	mostrar recursos planificados
 site configuration	projects	es-es	Configuración del sitio
+size	projects	es-es	tamaño
 small	projects	es-es	Pequeño
 sorry, no preferences to set for you :)	projects	es-es	Lo siento, no hay preferencias que configurar
 start	projects	es-es	Inicio
