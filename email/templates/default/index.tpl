@@ -34,7 +34,7 @@ function check_all()
 }
 </script>
 
- {report_deleted}
+ {V_any_deleted}
 
 <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
 <tr bgcolor="{arrows_backcolor}" align="center">
@@ -64,11 +64,11 @@ function check_all()
 				<tr>
 				<form name="switchbox" action="{switchbox_action}" method="post">
 					<td>
-						{folder_listbox}
+						{switchbox_listbox}
 					</td>
 					<td>
 						&nbsp;&nbsp;
-						{folder_button}
+						{folder_maint_button}
 					</td>
 				</form>
 				</tr>
@@ -111,6 +111,37 @@ function check_all()
 	</td>
 </tr>
 
-<!-- this form element will be moved inside the table -->
- {form_delmov_init}
+{V_msg_list}
+
+<tr>
+	<td bgcolor="{ftr_backcolor}" align="center">
+		<a href="javascript:check_all()">
+		<img src="{app_images}/check.gif" border="0" height="16" width="21"></a>
+	</td>
+	<td bgcolor="{ftr_backcolor}" colspan="5">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td>
+				<input type="button" value="{delmov_button}" onClick="do_action('delall')">
+				<a href="{ftr_compose_link}">{ftr_compose_txt}</a>
+			</td>
+			<td align="right">
+				{delmov_listbox}
+			</td>
+			</form>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
+
+<br> 
+
+<table border="0" align="center" width="95%">
+<tr>
+	<td align="left">
+		<font color="{mlist_newmsg_color}">{mlist_newmsg_char}</font>&nbsp;{mlist_newmsg_txt}
+	</td>
+</tr>
+</table>
 <!-- end email_index.tpl -->
