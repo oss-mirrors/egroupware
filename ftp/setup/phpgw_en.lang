@@ -27,7 +27,7 @@ save	ftp	en	save
 save to filemanager	ftp	en	save to filemanager
 size	ftp	en	Size
 successfully created directory %1	ftp	en	Successfully created directory %1
-successfully deleted %1	ftp	en	Succsessfully deleted %1
+successfully deleted %1	ftp	en	Successfully deleted %1
 successfully uploaded %1	ftp	en	Successfully uploaded %1
 upload	ftp	en	upload
 username	ftp	en	Username
