@@ -11,13 +11,7 @@ $phpgw_info["flags"] = array ("currentapp" => "wiki",
 include ("../../header.inc.php"); #PHP Groupware header
 
 include ("../config.php");
-include("../dbconnect.php");
 
-$accountid = get_account_id();
-$result = mysql_query("SELECT account_lid FROM phpgw_accounts WHERE account_id='$accountid'");
-$row = mysql_fetch_array($result);
-$account_lid = $row["account_lid"];
-	
 if ($GLOBALS['phpgw_info']['user']['apps']['admin']) {
 	chdir('..');
 	require('action/admin.php');

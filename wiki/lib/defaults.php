@@ -84,10 +84,7 @@ $EditRows = 20;
 $EditCols = 65;
 
 // Initialize the default user name to empty.
-$accountid = get_account_id();
-$result = mysql_query("SELECT account_lid FROM phpgw_accounts WHERE account_id='$accountid'");
-$row = mysql_fetch_array($result);
-$UserName = $row["account_lid"];
+$UserName = ExecMethod('phpgwapi.accounts.id2name',get_account_id());
 #$UserName = '';
 
 // Default time zone offset (in minutes) for visitors who haven't yet set their
