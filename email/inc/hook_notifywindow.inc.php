@@ -83,14 +83,7 @@
 			 	echo '<a href="JavaScript:CheckEmail();"><b>Unread:</b> None</a><br>'."\r\n";
 			}
 
-			if($inbox_data['number_all']<100)
-			{
-		 	 	echo '<a href="JavaScript:CheckEmail();"><b>INBOX:</b> '.$inbox_data['number_all'].'</a>'."\r\n";
-			}
-			else
-			{
-		 	 	echo '<a href="JavaScript:CheckEmail();"><nobr><b>INBOX: TOO MANY</b></a></nobr>'."\r\n";
-			}
+			echo '<a href="JavaScript:CheckEmail();"><b>INBOX:</b> '.$inbox_data['number_all'].'</a>'."\r\n";
 
 			if($urgent)
 			{
