@@ -1,9 +1,11 @@
 <!-- $Id$ -->
-<P><B>Select mode and {CODETABLE} to work with</B>
+<P><B>{header_message}</B><br><p>
 
-<table border="0" align="center">
+<table border="0" align="center" width="50%">
  <tr bgcolor="{th_bg}">
-  <td>&nbsp;</td>
+  <td>{sort_name}</td>
+  <td width="5%">{lang_edit}</td>
+  <td width="5%">{lang_delete}</td>
  </tr>
 
  {CODE_LIST}

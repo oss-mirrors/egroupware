@@ -161,6 +161,12 @@
 } /* end while */
 
 $phpgw->template->set_var(CODETABLE, $codetable);
+$phpgw->template->set_var(th_bg, $phpgw_info["theme"]["th_bg"]);
+$phpgw->template->set_var(sort_name,$phpgw->nextmatchs->show_sort_order($sort,"name",$order,"codes.php",lang("Name")));
+$phpgw->template->set_var(lang_edit,lang("Edit"));
+$phpgw->template->set_var(lang_delete,lang("Delete"));
+$phpgw->template->set_var(header_message,lang("Bookmark " . ereg_replace("bookmarks_","",$codetable) . "s"));
+
 $phpgw->template->set_var(FORM_ACTION, $phpgw->link("codes.php","mode=$mode&codetable=$codetable"));
 
 # if no mode specified, or mode is S (Select)
@@ -198,7 +204,7 @@ if (!isset($mode) || $mode=="S") {
          } */
        }
     }
-    $phpgw->template->set_var(CREATE_LINK, '<a href="' . $phpgw->link("codes.php","mode=C&codetable=$codetable") . '"> ' . $codetable . '</a>');
+    $phpgw->template->set_var(CREATE_LINK, '<a href="' . $phpgw->link("codes.php","mode=C&codetable=$codetable") . '">' . lang("Create new " . ereg_replace("bookmarks_","",$codetable)) . '</a>');
     $phpgw->template->parse(BODY, "select_form");
   }
 
