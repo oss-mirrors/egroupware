@@ -93,8 +93,8 @@
 		
 		/*!
 		@function imap_read_port
-		@abstract reads data from an IMAP server until the line that begins with the specified param "tag"
-		@param $end_begins_with : string is the special string that indicates a server is done sending data
+		@abstract reads data from an IMAP server until the line that begins with the specified param "cmd_tag"
+		@param $cmd_tag : string is the special string that indicates a server is done sending data
 		this is generally the same "tag" identifier that the client sent when initiate the command, ex. "A001"
 		@result  array where each line of the server data exploded at every CRLF pair into an array
 		@discussion IMAP servers send out data that is fairly well "typed", meaning RFC2060
@@ -113,56 +113,100 @@
 		@author Angles, skeeter
 		@access	private
 		*/
-		function imap_read_port($end_begins_with='')
+		function imap_read_port($cmd_tag='')
 		{
+			// the $cmd_tag OK, BAD, NO line that marks the completion of server data
+			// is not actually considered data
+			// to put this line in the return data array may confuse the calling function
+			// so it will go in $this->server_last_ok_response
+			// for inspection by the calling function if so desired
+			// so clear it of any left over value from a previous request
+			$this->server_last_ok_response = '';
+			
+			// we return an array of strings, so initialize an empty array
 			$return_me = Array();
 			// is we do not know what to look for as an end tag, then abort
-			if ($end_begins_with == '')
+			if ($cmd_tag == '')
 			{
 				return $return_me;
 			}
 			// read the data until a tagged command completion is encountered
 			while ($line = $this->read_port())
 			{
-				if ($this->str_begins_with($line, $end_begins_with))
+				if ($this->str_begins_with($line, $cmd_tag) == False)
 				{
-					// error analysis if not OK
-					// put that error string into $this->server_last_error_str
-					if ((stristr($line, 'NO'))
-					|| (stristr($line, 'BAD')))
+					// continue reading from this port
+					// each line of data from the server goes into an array
+					$next_pos = count($return_me);
+					$return_me[$next_pos] = $line;
+				}
+				// so we have a cmd_tag, is it followed by OK ?
+				elseif ($this->str_begins_with($line, $cmd_tag.' OK'))
+				{
+					// we got a tagged command response OK
+					// but if we send an empty array under this test error scheme
+					// calling function will think there was an error
+					// DECISION: if array is count zero, put this OK line in it
+					// otherwise array already had valid server data in it
+					// FIXME: and we do not want to add this OK line which is NOT actually data
+					// FIXME: OR we ALWAYS add the final OK line and expect calling function
+					// to ignore it ????
+					if (count($return_me) == 0)
 					{
-						$this->server_last_error_str = $line;
-						// what should we return here IF there was a NO or BAD error ?
-						// how about an empty array, how about FALSE ??
-						
-						// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
-						// empty the array
-						$return_me = Array();
+						// add this OK line just to return a NON empty array
+						$return_me[0] = $line;
 					}
 					else
 					{
-						// we got a tagged command response OK
-						// but if we send an empty array under this test error scheme
-						// calling function will think there was an error
-						// DECISION: if array is count zero, put this OK line in it
-						// otherwise array already had valid server data in it
-						// and we do not want to add this OK line which is NOT actually data
-						if (count($return_me) == 0)
-						{
-							// add this OK line just to return a NON empty array
-							$return_me[0] = $line;
-						}
-						else
-						{
-							// do nothing, valid server data exists
-						}
+						// valid server data ALREADY exists in the return array
+						// to add this final OK line *MAY* confuse the calling function
+						// because this final OK line is NOT actually server data
+						// THEREFOR: put the OK line in $this->server_last_ok_response for inspection
+						// by the calling function if so desired
+						$this->server_last_ok_response = $line;
 					}
-					// in any case (OK, BAD or NO) we reached the end of server data
+					// END READING THE PORT
+					// in any case, we reached the end of server data
 					// so we must break out of this loop
 					break;
 				}
-				$next_pos = count($return_me);
-				$return_me[$next_pos] = $line;
+				// not an OK tag, was it an understandable error NO or BAD ?
+				elseif (($this->str_begins_with($line, $cmd_tag.' NO'))
+				|| ($this->str_begins_with($line, $cmd_tag.' BAD')))
+				{
+					// error analysis, we have a useful error response from the server
+					// put that error string into $this->server_last_error_str
+					$this->server_last_error_str = $line;
+					// what should we return here IF there was a NO or BAD error ?
+					// how about an empty array, how about FALSE ??
+						
+					// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
+					// empty the array
+					$return_me = Array();
+					// END READING THE PORT
+					// in any case (BAD or NO)
+					// we reached the end of server data
+					// so we must break out of this loop
+					break;
+				}
+				else
+				// so not OK and not a known error, log the unknown error
+				{
+					// error analysis, generic record of unknown error situation
+					// put that error string into $this->server_last_error_str
+					$this->server_last_error_str = 'imap unknown error in imap_read_port: "'.$line.'"';
+					// what should we return here IF there was a NO or BAD error ?
+					// how about an empty array, how about FALSE ??
+						
+					// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
+					// empty the array
+					$return_me = Array();
+					// END READING THE PORT
+					// in any case (unknown data after $cmd_tag completion)
+					// we reached the end of server data
+					// so we must break out of this loop
+					break;
+				}
 			}
 			return $return_me;
 		}
@@ -179,7 +223,6 @@
 		function server_last_error()
 		{
 			if ($this->debug_dcom) { echo 'imap: call to server_last_error<br>'; }
-			//return 'unimplemented error detection in class imap sock';
 			return $this->server_last_error_str;
 		}
 		
@@ -246,6 +289,19 @@
 		/**************************************************************************\
 		*	OPEN and CLOSE Server Connection
 		\**************************************************************************/
+		/*!
+		@function open
+		@abstract implements php function IMAP_OPEN
+		@param $fq_folder : string : {SERVER_NAME:PORT/OPTIONS}FOLDERNAME
+		@param $user :  string : account name to log into on the server
+		@param $pass :  string : password for this account on the mail server
+		@param $flags :  NOT YET IMPLEMENTED
+		@discussion implements the functionality of php function IMAP_OPEN
+		note that php's IMAP_OPEN applies to IMAP, POP3 and NNTP servers
+		@syntax ?
+		@author Angles, skeeter
+		@access	public
+		*/
 		function open ($fq_folder, $user, $pass, $flags='')
 		{
 			if ($this->debug_dcom) { echo 'imap: Entering open<br>'; }
@@ -268,30 +324,55 @@
 				$junk = $this->read_port();
 				if ($this->debug_dcom_extra) { echo 'imap: open: open port server hello: "' .htmlspecialchars($this->show_crlf($junk)) .'"<br>'; }
 			}
+
+
+			$cmd_tag = 'L001';
+			$full_command = $cmd_tag.' LOGIN "'.quotemeta($user).'" "'.quotemeta($pass).'"';
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
-			if ($this->debug_dcom_extra) { echo 'imap: open: msg2socket: will issue: '. 'L001 LOGIN "'.quotemeta($user).'" "'.quotemeta($pass).'"' .'<br>'; }
-			if ($this->debug_dcom_extra) { echo 'imap: open: msg2socket: will expect: '. '^L001 OK' .'<br>'; }
+			if ($this->debug_dcom_extra) { echo 'imap: open: write_port: '. htmlspecialchars($full_command) .'<br>'; }
+			if ($this->debug_dcom_extra) { echo 'imap: open: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
 			
-			if(!$this->msg2socket('L001 LOGIN "'.quotemeta($user).'" "'.quotemeta($pass).'"','^L001 OK',&$response))
+			if(!$this->write_port($full_command))
 			{
-				if ($this->debug_dcom_extra) { echo 'imap: open: response: "'. htmlspecialchars($response) .'"<br>'; }
-				if ($this->debug_dcom) { echo 'imap: Leaving open with Error<br>'; }
+				if ($this->debug_dcom) { echo 'imap: open: could not write_port<br>'; }
 				$this->error();
+				// does $this->error() ever continue onto next line?
+				return False;
+			}
+			// server can spew some b.s. hello messages before the official response
+			// read the server data
+			$response_array = $this->imap_read_port($expecting);
+			
+			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
+			if (count($response_array) == 0)
+			{
+				if ($this->debug_dcom_extra)
+				{
+					echo 'imap: open: error in Open<br>';
+					echo 'imap: open: last recorded error:<br>';
+					echo  $this->server_last_error().'<br>';
+				}
+				if ($this->debug_dcom) { echo 'imap: Leaving Open with error<br>'; }
 				return False;
 			}
 			else
 			{
-				if ($this->debug_dcom_extra) { echo 'imap: open: response: '. htmlspecialchars($response) .'<br>'; }
+				if ($this->debug_dcom_extra)
+				{
+					echo 'imap: open: response_array line by line:<br>';
+					for ($i=0; $i<count($response_array); $i++)
+					{
+						echo '-ArrayPos['.$i.'] data: ' .htmlspecialchars($response_array[$i]) .'<br>';
+					}
+					echo 'imap: open: =ENDS= response_array line by line:<br>';
+					echo 'imap: open: last server completion line: "'.htmlspecialchars($this->server_last_ok_response).'"<br>';
+				}
 				if ($this->debug_dcom) { echo 'imap: open: Successful IMAP Login<br>'; }
 			}
 			
-			//if($folder != '')
-			//{
-			//	$this->folder = $folder;
-			//	if ($this->debug_dcom) { echo 'imap: open: attempt to open folder ['.$folder.']<br>'; }
-			//	$this->open_folder($folder);
-			//	$this->num_msgs = $this->status_query($folder,'MESSAGES');
-			//}
+			// now that we have logged in, php's IMAP_OPEN would now select the desired folder
+			if ($this->debug_dcom_extra) { echo 'imap: open: php IMAP_OPEN would now select desired folder: "'. htmlspecialchars($folder) .'"<br>'; }
 			// php's IMAP_OPEN also selects the desired folder (mailbox) after the connection is established
 			if($folder != '')
 			{
@@ -300,55 +381,37 @@
 			if ($this->debug_dcom) { echo 'imap: Leaving open<br>'; }
 			return $this->socket;
 		}
-		
+
 		function close($flags="")
 		{
 			if ($this->debug_dcom) { echo 'imap: Entering Close<br>'; }
 			
-			$issue_command = 'c001 LOGOUT';
-			//$expecting = 'c001 OK';
-			$expecting = 'c001 '; // may not be OK, could be BAD or NO
+			$cmd_tag = 'c001';
+			$full_command = $cmd_tag.' LOGOUT';
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
-			if ($this->debug_dcom_extra) { echo 'imap: close: write_port: "'. htmlspecialchars($issue_command) .'"<br>'; }			
-			if ($this->debug_dcom_extra) { echo 'imap: close: expecting: "'. htmlspecialchars($expecting) .'"<br>'; }
-
-			if(!$this->write_port($issue_command))
+			if ($this->debug_dcom_extra) { echo 'imap: close: write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom_extra) { echo 'imap: close: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			
+			if(!$this->write_port($full_command))
 			{
 				if ($this->debug_dcom) { echo 'imap: close: could not write_port<br>'; }
 				$this->error();
 			}
 			
-			/*
-			// server can spew some bs goodbye message before the official response
-			// so TRY THIS 3 TIMES before failing
-			for ($i=1; $i<4; $i++)
-			{
-				if ($this->debug_dcom_extra) { echo 'imap: close: reading port try # '.$i.'<br>'; }
-				
-				$response = $this->read_port();
-				// do this for debugging, it will not effect this statement anyway
-				$response = $this->show_crlf($response);
-				if ($this->str_begins_with($response, $expecting) == False)
-				{
-					if ($this->debug_dcom_extra) { echo 'imap: close: NOT expecting: "'. htmlspecialchars($response) .'"<br>'; }
-				}
-				else
-				{
-					if ($this->debug_dcom_extra) { echo 'imap: close: got expecting: "'. htmlspecialchars($response) .'"<br>'; }
-					if ($this->debug_dcom) { echo 'imap: Leaving Close<br>'; }
-					return True;
-					// return implicitly breaks us out of this loop and exits this function
-				}
-			}
-			if ($this->debug_dcom_extra) { echo 'imap: Leaving Close with Error: could not logout<br>'; }
-			return False;
-			*/
+			// server can spew some b.s. goodbye message before the official response
 			// read the server data
 			$response_array = $this->imap_read_port($expecting);
 			
 			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
 			if (count($response_array) == 0)
 			{
+				if ($this->debug_dcom_extra)
+				{
+					echo 'imap: close: error in Close<br>';
+					echo 'imap: close: last recorded error:<br>';
+					echo  $this->server_last_error().'<br>';
+				}
 				if ($this->debug_dcom) { echo 'imap: Leaving Close with error<br>'; }
 				return False;				
 			}
@@ -362,13 +425,13 @@
 						echo '-ArrayPos['.$i.'] data: ' .htmlspecialchars($response_array[$i]) .'<br>';
 					}
 					echo 'imap: close: =ENDS= response_array line by line:<br>';
+					echo 'imap: close: last server completion line: "'.htmlspecialchars($this->server_last_ok_response).'"<br>';
 				}
 				if ($this->debug_dcom) { echo 'imap: Leaving Close<br>'; }
 				return True;
 			}
-
 		}
-		
+
 		/*!
 		@function reopen
 		@abstract implements last part of IMAP_OPEN and all of IMAP_REOPEN
@@ -389,25 +452,33 @@
 			$svr_data = $this->distill_fq_folder($fq_folder);
 			$folder = $svr_data['folder'];
 			if ($this->debug_dcom) { echo 'imap: reopen: folder value is: ['.$folder.']<br>'; }
+
+
+			$cmd_tag = 'r001';
+			$full_command = $cmd_tag.' SELECT "'.$folder.'"';
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
-			$issue_command = 'r001 SELECT "'.$folder.'"';
-			//$expecting = 'r001 OK';
-			$expecting = 'r001 '; // may not be OK, could be BAD or NO
+			if ($this->debug_dcom_extra) { echo 'imap: reopen: write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom_extra) { echo 'imap: reopen: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
 			
-			if ($this->debug_dcom_extra) { echo 'imap: reopen: write_port: "'. htmlspecialchars($issue_command) .'"<br>'; }			
-			if ($this->debug_dcom_extra) { echo 'imap: reopen: expecting: "'. htmlspecialchars($expecting) .'"<br>'; }
-			
-			if(!$this->write_port($issue_command))
+			if(!$this->write_port($full_command))
 			{
-				if ($this->debug_dcom) { echo 'imap: Leaving reopen with error, could not write to port<br>'; }
+				if ($this->debug_dcom) { echo 'imap: reopen: could not write_port<br>'; }
 				$this->error();
 			}
+			
 			// read the server data
 			$response_array = $this->imap_read_port($expecting);
 			
 			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
 			if (count($response_array) == 0)
 			{
+				if ($this->debug_dcom_extra)
+				{
+					echo 'imap: reopen: error in reopen<br>';
+					echo 'imap: reopen: last recorded error:<br>';
+					echo  $this->server_last_error().'<br>';
+				}
 				if ($this->debug_dcom) { echo 'imap: Leaving reopen with error<br>'; }
 				return False;				
 			}
@@ -421,6 +492,7 @@
 						echo '-ArrayPos['.$i.'] data: ' .htmlspecialchars($response_array[$i]) .'<br>';
 					}
 					echo 'imap: reopen: =ENDS= response_array line by line:<br>';
+					echo 'imap: reopen: last server completion line: "'.htmlspecialchars($this->server_last_ok_response).'"<br>';
 				}
 				if ($this->debug_dcom) { echo 'imap: Leaving reopen<br>'; }
 				return True;

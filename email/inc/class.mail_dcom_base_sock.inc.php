@@ -304,6 +304,9 @@
 		var $hdr_info_envelope;
 		// server error strings *should* get stored here
 		var $server_last_error_str = '';
+		// server data returned to the calling function does NOT include the final OK line
+		// because this line is not actually data, so put this line here for inspection if necessary
+		var $server_last_ok_response = '';
 		
 		// future use
 		var $refto_msg_parent;

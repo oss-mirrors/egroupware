@@ -104,6 +104,19 @@
 		/**************************************************************************\
 		*	OPEN and CLOSE Server Connection
 		\**************************************************************************/
+		/*!
+		@function open
+		@abstract implements php function IMAP_OPEN
+		@param $fq_folder : string : {SERVER_NAME:PORT/OPTIONS}FOLDERNAME
+		@param $user :  string : account name to log into on the server
+		@param $pass :  string : password for this account on the mail server
+		@param $flags :  NOT YET IMPLEMENTED
+		@discussion implements the functionality of php function IMAP_OPEN
+		note that php's IMAP_OPEN applies to IMAP, POP3 and NNTP servers
+		@syntax ?
+		@author Angles, skeeter
+		@access	public
+		*/
 		function open ($fq_folder, $user, $pass, $flags='')
 		{
 			if ($this->debug_dcom) { echo 'pop3: Entering open<br>'; }
