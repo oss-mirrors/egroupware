@@ -96,9 +96,16 @@
     $t->set_var("lang_num",lang("Project ID"));
     
     $t->set_var("num",$num);
+
+    if (! $submit) {
     $choose = "<input type=\"checkbox\" name=\"choose\" value=\"True\">";
     $t->set_var("lang_choose",lang("Auto generate Project ID ?"));
     $t->set_var("choose",$choose);
+    }
+    else {
+    $t->set_var('lang_choose','');
+    $t->set_var('choose',''); 
+    }
 
     $t->set_var("lang_title",lang("Title"));
     $t->set_var("title",$title);

@@ -3,7 +3,7 @@
     self.name="first_Window";
     function addressbook()                                                                                                                                                                       
     {                                                                                                                                                                                          
-       Window1=window.open('{addressbook_link}',"Search","width=800,height=600","scrolling=yes,toolbar=yes,resizable=yes");                                      
+       Window1=window.open('{addressbook_link}',"Search","width=800,height=600,toolbar=no,scrollbars=yes,resizable=yes");
     }                                                                                                                                                                                          
    </script>      
 <br><br>    

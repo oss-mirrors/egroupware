@@ -1,7 +1,9 @@
 DELETE from lang WHERE app_name='projects' and lang='de';
 DELETE from lang WHERE app_name='common' and message_id='Projects' and lang='de';                                            
 DELETE from lang WHERE message_id='Project preferences' and app_name='preferences' and lang='de';
+DELETE from lang WHERE message_id='Projects' and app_name='admin' and lang='de' and content='Projekte';
 
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select tax for work hours','projects','de','Mehrwertsteuer f&uuml Arbeitsstunden');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects','projects','de','Projekte');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project preferences','projects','de','Projekt Einstellungen');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project preferences','preferences','de','Projekt Einstellungen');
@@ -10,9 +12,8 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Please select you
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Please select your currency in preferences!','projects','de','Bitte w&auml;hlen Sie Ihre W&auml;hrung in den Einstellungen!');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects','common','de','Projekte');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Return to projects','projects','de','Zur&uuml;ck zu Projekte');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project billing','common','de','Projekt Abrechnung');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Duplicate Delivery ID !','projects','en','Doppelte Lieferschein NR !');                                                           
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Duplicate Invoice ID !','projects','en','Doppelte Rechnungs NR !');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Duplicate Delivery ID !','projects','de','Doppelte Lieferschein NR !');                                                           
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Duplicate Invoice ID !','projects','de','Doppelte Rechnungs NR !');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('All open hours','projects','de','Alle offenen Stunden');     
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('All done hours','projects','de','Alle erledigten Stunden');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects','admin','de','Projekte');                                                                
@@ -58,9 +59,7 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'per workunit','p
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Minutes per workunit','projects','de','Minuten pro Arbeitseinheit');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Project list','projects','de','Projektliste');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Edit project','projects','de','Projekt bearbeiten');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Add project','projects','de','Projekt hinzuf&uuml;gen');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Add project hours','projects','de','Projektstunden hinzuf&uuml;gen');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Status','projects','de','Status');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Entry date','projects','de','Eintragsdatum');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Nonactive','projects','de','Nicht-Aktiv');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Description','projects','de','Beschreibung');
@@ -83,9 +82,6 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'You have selecte
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'You have selected an invalid date','projects','de','Sie haben ein ung&uuml;ltiges Datum ausgew&auml;hlt!');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'You have to enter a remark','projects','de','Bitte geben Sie eine Bemerkung ein!');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Are you sure you want to delete this entry','projects','de','Sind Sie sicher, da&szlig; Sie diesen Eintrag l&ouml;schen wollen?');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Projects preferences','projects','de','ProjeKt Einstellungen');                                                                  
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Projects','preferences','de','Projekte');                                                                                        
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Return to projects','projects','de','Zur&uuml;ck zu Projekte');                                                                  
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Invoice','projects','de','Rechnung');  
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Invoice ID','projects','de','Rechnungs ID');                                                                                            
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Invoice list','projects','de','Rechnung Liste');                                                                                  
@@ -93,19 +89,11 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'All invoices','p
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Invoice date','projects','de','Rechnung Datum');                                                                                 
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Create invoice','projects','de','Erstelle Rechnung');                                                                             
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Update','projects','de','Aktualisieren');                                                                                        
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Activity','projects','de','Kategorie');                                                                                          
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Active','projects','de','Aktiv');                                                                                                
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Select','projects','de','Ausw&auml;hlen');                                                                                       
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Workunits','projects','de','Arbeitseinheiten');                                                                                        
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Sum','projects','de','Summe');                                                                                                   
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Edit','projects','de','Bearbeiten');                                                                                             
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Add project','projects','de','Projekt hinzuf&uuml;gen');                                                                         
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Update project','projects','de','Projekt aktualisieren');                                                                        
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Status','projects','de','Status');                                                                                               
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Project hours','projects','de','Projektstunden');   
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Project delivery','projects','de','Projektlieferung');                                                                                
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Billed','projects','de','Abgerechnet');                                                                                          
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Employee','projects','de','Mitarbeiter');                                                                                        
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Delivery','projects','de','Lieferung'); 
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Delivery ID','projects','de','Lieferungs ID');                                                                                        
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'Delivery note','projects','de','Lieferschein');                                                                                
