@@ -114,9 +114,9 @@
 			$this->t->set_var('lang_start_time',lang('Start time'));
 			$this->t->set_var('lang_end_time',lang('End time'));
 			$this->t->set_var('lang_select_project',lang('Select project'));
-			$t->set_var('lang_minperae',lang('Minutes per workunit'));
-			$t->set_var('lang_billperae',lang('Bill per workunit'));
-			$t->set_var('lang_reset',lang('Clear Form'));
+			$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
+			$this->t->set_var('lang_billperae',lang('Bill per workunit'));
+			$this->t->set_var('lang_reset',lang('Clear Form'));
 		}
 
 		function display_app_header()
@@ -529,7 +529,7 @@
 			$this->t->set_var('hours',$values['hours']);
 			$this->t->set_var('minutes',$values['minutes']);
 
-			$this->t->set_var('status_list',$this->status_format($values['status']);
+			$this->t->set_var('status_list',$this->status_format($values['status']));
 
 			$this->t->set_var('employee_list',$this->employee_format($values['employee']));
 
