@@ -427,6 +427,7 @@
 			$this->kses->AddHTML("strike");
 			$this->kses->AddHTML("center");
 			$this->kses->AddHTML("hr");
+			$this->kses->AddHTML("div");
 			$this->kses->AddHTML("ul");
 			$this->kses->AddHTML("li");
 			$this->kses->AddHTML("h1");
