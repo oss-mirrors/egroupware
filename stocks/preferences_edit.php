@@ -19,10 +19,10 @@
 	$GLOBALS['phpgw_info']['flags']['currentapp'] = 'stocks';
 	include('../header.inc.php');
 
-	$edit   = $HTTP_GET_VARS['edit'] ? $HTTP_GET_VARS['edit'] : $HTTP_POST_VARS['edit'];
+	$edit   = $HTTP_POST_VARS['edit'];
 	$sym    = $HTTP_GET_VARS['sym'] ? $HTTP_GET_VARS['sym'] : $HTTP_POST_VARS['sym'];
-	$name   = $HTTP_GET_VARS['name'] ? $HTTP_GET_VARS['name'] : $HTTP_POST_VARS['name'];
-	$symbol = $HTTP_GET_VARS['symbol'] ? $HTTP_GET_VARS['symbol'] : $HTTP_POST_VARS['symbol'];
+	$name   = $HTTP_POST_VARS['name'];
+	$symbol = $HTTP_POST_VARS['symbol'];
 
 	if ($edit)
 	{

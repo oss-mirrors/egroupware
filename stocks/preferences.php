@@ -17,10 +17,12 @@
 	$GLOBALS['phpgw_info']['flags']['currentapp'] = 'stocks';
 	include('../header.inc.php');
 
-	$action = $HTTP_GET_VARS['action'];
-	$name   = $HTTP_GET_VARS['name'];
-	$symbol = $HTTP_GET_VARS['symbol'];
+	$action = $HTTP_GET_VARS['action'] ? $HTTP_GET_VARS['action'] : $HTTP_POST_VARS['action'];
+	$name   = $HTTP_POST_VARS['name'];
+	$symbol = $HTTP_POST_VARS['symbol'];
 	$mainscreen = $HTTP_GET_VARS['mainscreen'];
+	$sym    = $HTTP_GET_VARS['sym'];
+	$value  = $HTTP_GET_VARS['value'];
 
 	if ($action == 'add')
 	{
