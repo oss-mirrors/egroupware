@@ -222,6 +222,6 @@ $lstCategory=$phpgw->db->f(1);
       }
 
     }
-    Header("Location: " . $phpgw_info["server"]["webserver_url"] . "/tts/?sessionid=" . $sessionid);
+    Header("Location: " . $phpgw->link("index.php"));
   }
 ?>
