@@ -1,0 +1,54 @@
+absolute path of the backup directory	backup	bg	Пълен път до директорията за архивите
+absolute path of the directory to store the backup script	backup	bg	Пълен път до диркторията за съхранение на архивиращия скрипт
+archive type	backup	bg	Вид на архива
+backup	common	bg	Архивиране
+backup administration	common	bg	Управление на архивирането
+bzip2	admin	bg	bzip2
+configuration backup	backup	bg	Настройки на архивирането
+configuration localhost	backup	bg	Настройки на локалния хост
+configuration remote host	backup	bg	Настройки на отдалечения хост
+create backups of your data ?	backup	bg	Да се архивират ли данните ви?
+daily	backup	bg	ежедневно
+data	backup	bg	Данни
+directory locations	admin	bg	местоположения на директориите
+directory names	admin	bg	имена на директориите
+e-mail	backup	bg	ЕПоща
+homedirs	admin	bg	Домашни директории
+interval	backup	bg	Интервал
+ip or hostname	backup	bg	IP адрес или име на хост
+ldap	common	bg	LDAP
+ldap database	admin	bg	LDAP база данни
+maildir	admin	bg	Пощенска директория
+monthly	backup	bg	всеки месец
+mysql	admin	bg	MySQL
+nfs	backup	bg	NFS
+no backup archives available !	backup	bg	Няма налични архиви!
+number of stored backup versions	backup	bg	Брой запазвани версии на архивите
+operating system	backup	bg	Операционна система
+password	backup	bg	Парола
+pgsql	admin	bg	PostgreSQL
+php cgi	admin	bg	php cgi
+please specify the ip of the remote host !	backup	bg	Моля задайте IР адреса на отдалечената машина!
+please specify the path to the backup directory !	backup	bg	Моля, задайте пътя до директорията за архивите!
+program locations	admin	bg	местоположения на програмите
+save backup locally ?	backup	bg	Да се запазват ли архивите локално?
+save backup to a remote host ?	backup	bg	Да се запазват ли архивите на отдалечен хост?
+select archive type	backup	bg	Изберете вид на архива
+select interval	backup	bg	Изберете интервал
+select transport application	backup	bg	Изберете приложение за прехвърляне на данните
+settings	admin	bg	настройки
+show backup archives in phpgroupware ?	backup	bg	Да се показват ли архивите в phpGroupWare?
+smbmount	backup	bg	SMBMOUNT
+sql	backup	bg	SQL
+tar	admin	bg	tar
+tar.bz2	backup	bg	tar.bz2
+tar.gz	backup	bg	tar.gz
+the backup application is not configured for showing the archives in phpgroupware yet !	backup	bg	Приложението за архивиране още не е настроено да показва архивите в phpGroupWare!
+the directory to store the backup script must be outside of the webservers *documentroot* !	backup	bg	Директорията за архивиращия скрипт трябва да бъде извън зоната за документи на уеб-сървъра!
+the ftp connection failed ! please check your configuration !	backup	bg	FTP връзката се провали! Моля, проверете настройките си!
+transport application	backup	bg	Приложение за прехвърляне на данните
+user	backup	bg	Потребител
+versions can only be a number !	backup	bg	Версиите може да бъдат само числа!
+weekly	backup	bg	всяка седмица
+your sql database isnt supported by this application !	backup	bg	SQL базата ви данни не се поддържа от това приложение!
+zip	common	bg	zip

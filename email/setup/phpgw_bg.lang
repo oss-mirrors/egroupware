@@ -1,0 +1,53 @@
+%1 messages have been deleted	email	bg	%1 писма бяха изтрити
+(required)	email	bg	(задължително)
+1 message has been deleted	email	bg	1 писмо беше изтрито
+1 message has been moved to	email	bg	1 писмо беше преместено в
+address book	email	bg	Адресник
+after	email	bg	След
+all messages	email	bg	Всички писма
+apr	email	bg	Април
+arrival date	email	bg	Дата на пристигане
+attachment	email	bg	Прикрепен файл
+aug	email	bg	Август
+before	email	bg	Преди
+company	email	bg	Фирма
+dec	email	bg	Декември
+default sorting order	email	bg	Сортиране по подразбиране
+feb	email	bg	Февруари
+file	email	bg	Файл
+folders	email	bg	Папки
+forward	email	bg	Препращане
+from	email	bg	От
+image	email	bg	Изображение
+jan	email	bg	Януари
+jul	email	bg	Юли
+jun	email	bg	Юни
+keyword	email	bg	ключова дума
+keywords	email	bg	Ключови думи
+mail server	email	bg	Пощенски сървър
+mar	email	bg	Март
+messages	email	bg	Писма
+next message	email	bg	Следващо писмо
+nov	email	bg	Ноември
+oct	email	bg	Октомври
+or	common	bg	или
+organization	email	bg	Организация
+phone	email	bg	Телефон
+previous message	email	bg	Предишно писмо
+recipient	email	bg	Получател
+rename a folder	email	bg	Преименуване на папка
+reply	email	bg	Отговор
+reply all	email	bg	Отговор на всички
+required	email	bg	задължително
+send	email	bg	Изпращане
+sender	email	bg	Подател
+sent	common	bg	изпратени
+sent folder	email	bg	папка за изпратени
+sep	email	bg	Септември
+settings	common	bg	Настройки
+to	email	bg	До
+total messages	email	bg	Общо писма
+trash	email	bg	кошче
+trash folder	email	bg	папка за кошче
+unanswered	email	bg	Неотговорени
+unknown error	email	bg	Неизвестна грешка
