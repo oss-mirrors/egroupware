@@ -65,9 +65,11 @@
 			if (!isset($_GET['page']))
 			{
 				// use the referer
-				list($referer,$query) = explode('?',$_SERVER['HTTP_REFERER']);
+				$referer = isset($_GET['referer']) ? $_GET['referer'] : $_SERVER['HTTP_REFERER'];
+				list($referer,$query) = explode('?',$referer);
 				parse_str($query,$query);
-
+				//echo "<p>_GET[referer]='$_GET[referer]', referer='$referer', query=".print_r($query,True)."</p>\n";
+				
 				if (isset($query['menuaction']) && $query['menuaction'])
 				{
 					list($app,$class,$function) = explode('.',$query['menuaction']);
