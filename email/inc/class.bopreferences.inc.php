@@ -241,7 +241,7 @@
 				'accts_usage'	=> 'default, extra_accounts',
 				'write_props'	=> '',
 				'lang_blurb'	=> lang('Icon Theme'),
-				'init_default'	=> 'string,evo',
+				'init_default'	=> 'string,idots',
 				'values'	=> array(
 					'evo' => lang('Evolution Style'),
 					'moz' => lang('Mozilla Modern Style'),
