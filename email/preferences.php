@@ -12,7 +12,9 @@
   /* $Id$ */
 
   $phpgw_info["flags"] = array("currentapp" => "email", "enable_message_class" => True, 
-                                "noheader" => True, "nonavbar" => True);
+                                "noheader" => True, "nonavbar" => True,
+				"enable_nextmatchs_class" => True);
+
   include("../header.inc.php");
 
   if ($submit) {
