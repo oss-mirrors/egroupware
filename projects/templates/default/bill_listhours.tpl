@@ -1,9 +1,12 @@
 <!-- $Id$ -->
+
+{app_header}
+
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
 <hr noshade width="98%" align="center" size="1">
 <center>
-{error}<br>
 {message}
+{pref_message}
 <form method="POST" action="{actionurl}">
 <table border="0" cellspacing="2" cellpadding="2">
 	<tr>
@@ -11,15 +14,15 @@
 		<td>{choose}</td>
 	</tr>
 	<tr>
-		<td>{title_invoice_num}&nbsp;:</td>
+		<td>{lang_invoice_num}&nbsp;:</td>
 		<td><input type=text name="invoice_num" value="{invoice_num}"></td>
 	</tr>
 	<tr>
-		<td>{title_customer}&nbsp;:</td>
+		<td>{lang_customer}&nbsp;:</td>
 		<td>{customer}</td>
 	</tr>
 	<tr>
-		<td>{title_project}&nbsp;:</td>
+		<td>{lang_project}&nbsp;:</td>
 		<td>{project}</td>
 	</tr>
 	<tr>
@@ -27,21 +30,20 @@
 		<td>{date_select}</td>
 	</tr>
 </table>
-{hidden_vars}
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
 	<tr bgcolor="{th_bg}">
-		<td width="3%" bgcolor="{th_bg}" align="center">{h_lang_select}</td>
-		<td width="20%" bgcolor="{th_bg}">{sort_activity}</td>
-		<td width="20%" bgcolor="{th_bg}">{sort_hours_descr}</td>
-		<td width="9%" bgcolor="{th_bg}" align="center">{sort_status}</td>
-		<td width="9%" bgcolor="{th_bg}" align="center">{sort_start_date}</td>
-		<td width="10%" bgcolor="{th_bg}" align="right">{sort_aes}</td>
-		<td width="9%" bgcolor="{th_bg}" align="right">{currency}&nbsp;{sort_billperae}</td>
-		<td width="10%" bgcolor="{th_bg}" align="right">{currency}&nbsp;{sort_sum}</td>
-		<td width="10%" bgcolor="{th_bg}" align="center">{h_lang_edithour}</td>
+		<td width="3%" bgcolor="{th_bg}" align="center">{lang_select}</td>
+		<td width="20%" bgcolor="{th_bg}">{lang_activity}</td>
+		<td width="20%" bgcolor="{th_bg}">{lang_hours}</td>
+		<td width="9%" bgcolor="{th_bg}" align="center">{lang_status}</td>
+		<td width="9%" bgcolor="{th_bg}" align="center">{lang_start_date}</td>
+		<td width="10%" bgcolor="{th_bg}" align="right">{lang_aes}</td>
+		<td width="9%" bgcolor="{th_bg}" align="right">{currency}&nbsp;{lang_billperae}</td>
+		<td width="10%" bgcolor="{th_bg}" align="right">{currency}&nbsp;{lang_sum}</td>
+		<td width="10%" bgcolor="{th_bg}" align="center">{lang_edit}</td>
 	</tr>
 
-<!-- BEGIN projecthours_list -->
+<!-- BEGIN hours_list -->
 
 	<tr bgcolor="{tr_color}">
 		<td align="center">{select}</td>
@@ -55,7 +57,7 @@
 		<td align="center"><a href="{edithour}">{lang_edit_entry}</a></td>
 	</tr>
 
-<!-- END projecthours_list -->
+<!-- END hours_list -->
 
 </table><br><br>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -64,7 +66,7 @@
 		<td width="20%">&nbsp;</td>
 		<td width="20%">&nbsp;</td>
 		<td width="10%">&nbsp;</td>
-		<td width="10%" align="center"><font size="4"><b>{currency}&nbsp;{title_netto}</b></font></td>
+		<td width="10%" align="center"><font size="4"><b>{currency}&nbsp;{lang_netto}</b></font></td>
 		<td width="10%" align="right"><font size="4"><b>{sum_aes}</b></font></td>
 		<td width="10%">&nbsp;</td>
 		<td width="7%" align="right"><font size="4"><b>{sum_sum}</b></font></td>

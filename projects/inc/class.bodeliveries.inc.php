@@ -42,6 +42,7 @@
 		function bodeliveries()
 		{
 			$this->sodeliveries	= CreateObject('projects.sodeliveries');
+			$this->soprojects	= CreateObject('projects.soprojects');
 			$this->contacts		= CreateObject('phpgwapi.contacts');
 		}
 
@@ -111,9 +112,14 @@
 				}
 			}
 
+			if (! is_array($values['select']))
+			{
+				$error[] = lang('The delivery note contains no items !');				
+			}
+
 			if (! $values['customer'])
 			{
-				$error[] = lang('You have no customer selected !');				
+				$error[] = lang('You have no customer selected !');
 			}
 
 			if (! checkdate($values['month'],$values['day'],$values['year']))
@@ -131,7 +137,7 @@
 		{
 			if ($values['choose'])
 			{
-				$values['delivery_num'] = $this->sodeliveries->create_deliveryid();
+				$values['delivery_num'] = $this->soprojects->create_deliveryid();
 			}
 
 			$values['date'] = mktime(2,0,0,$values['month'],$values['day'],$values['year']);

@@ -36,7 +36,10 @@
 
 		var $public_functions = array
 		(
-			'list_projects'		=> True
+			'list_projects'		=> True,
+			'invoice'			=> True,
+			'list_invoices'		=> True,
+			'fail'				=> True
 		);
 
 		function uibilling()
@@ -108,6 +111,13 @@
 			$this->t->set_var('lang_invoices',lang('Invoices'));
 			$this->t->set_var('lang_deliveries',lang('Deliveries'));
 			$this->t->set_var('lang_stats',lang('Statistics'));
+			$this->t->set_var('lang_activity',lang('Activity'));
+			$this->t->set_var('lang_status',lang('Status'));
+			$this->t->set_var('lang_aes',lang('Workunits'));
+			$this->t->set_var('lang_billperae',lang('Bill per workunit'));
+			$this->t->set_var('lang_sum',lang('Sum'));
+			$this->t->set_var('lang_print_invoice',lang('Print invoice'));
+			$this->t->set_var('lang_netto',lang('Sum net'));
 		}
 
 		function display_app_header()
@@ -308,11 +318,13 @@
 				));
 
 				$link_data['project_id'] = $pro[$i]['project_id'];
+				$link_data['menuaction'] = 'projects.uibilling.invoice';
 
-				$this->t->set_var('part',$GLOBALS['phpgw']->link('/projects/bill_invoice.php','project_id=' . $pro[$i]['project_id']));
+				$this->t->set_var('part',$GLOBALS['phpgw']->link('/index.php',$link_data));
 				$this->t->set_var('lang_part',lang('Invoice'));
 
-				$this->t->set_var('partlist',$GLOBALS['phpgw']->link('/projects/bill_invoicelist.php','project_id=' . $pro[$i]['project_id']));
+				$this->t->set_var('partlist',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_invoices&action=bill'
+											. '&project_id=' . $pro[$i]['project_id']));
 				$this->t->set_var('lang_partlist',lang('Invoice list'));
 
 				if ($action == 'mains')
@@ -333,8 +345,8 @@
 // ------------------------- end record declaration ------------------------
 
 			$this->t->set_var('lang_all_partlist',lang('All invoices'));
-			$this->t->set_var('all_partlist',$GLOBALS['phpgw']->link('/projects/bill_invoicelist.php','project_id='));
-
+			$this->t->set_var('all_partlist',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_invoices&action=bill'
+											. '&project_id='));
 			$this->t->set_var('lang_all_part2list','');
 			$this->t->set_var('all_part2list','');
 
@@ -432,11 +444,14 @@
 							'customer' => $customerout,
 								'title' => $title,
 								'date' => $dateout));
-				$this->t->set_var('td_data',$GLOBALS['phpgw']->link('/projects/invoice_update.php','invoice_id=' . $bill[$i]['invoice_id'] 
-						. '&sort=' . $sort . '&order=' . $order . '&query=' . $query . '&start=' . $start . '&filter=' . $filter . '&project_id='
-						. $bill[$i]'project_id') . '&invoice_num=' . $bill[$i]['invoice_num']));
-
-				$this->t->set_var('lang_td_data',lang('Invoice'));
+				if ($bill[$i]['invoice_id'])
+				{
+					$link_data['invoice_id']	= $bill[$i]['invoice_id'];
+					$link_data['project_id']	= $del[$i]['project_id'];
+					$link_data['menuaction']	= 'projects.uibilling.invoice';
+					$link_data['action']		= 'ubill';
+					$this->t->set_var('td_data',$GLOBALS['phpgw']->link('/index.php',$link_data));
+					$this->t->set_var('lang_td_data',lang('Invoice'));
 
 				$this->t->fp('list','projects_list',True);
 
@@ -444,6 +459,224 @@
 			}
 			$this->t->pfp('out','projects_list_t',True);
 			$this->save_sessiondata($action);
+		}
+
+		function invoice()
+		{
+			global $action, $Invoice, $project_id, $invoice_id;
+
+			$this->display_app_header();
+
+			$this->t->set_file(array('hours_list_t' => 'bill_listhours.tpl'));
+			$this->t->set_block('hours_list_t','hours_list','list');
+
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uibilling.invoice',
+				'action'		=> $action,
+				'project_id'	=> $project_id,
+				'invoice_id'	=> $invoice_id
+			);
+
+			$nopref = $this->boprojects->check_prefs();
+			if (is_array($nopref))
+			{
+				$this->t->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
+			}
+			else
+			{
+				$prefs = $this->boprojects->get_prefs();
+			}
+
+			if ($Invoice)
+			{
+				$values['project_id']	= $project_id;
+
+				$error = $this->bobilling->check_values($values);
+				if (is_array($error))
+				{
+					$this->t->set_var('message',$GLOBALS['phpgw']->common->error_list($error));
+				}
+				else
+				{
+					if ($action == 'ubill')
+					{
+						$values['invoice_id'] = $invoice_id;
+						$this->bobilling->update_invoice($values);
+					}
+					else
+					{
+						$invoice_id = $this->bobilling->invoice($values);
+						$link_data['invoice_id'] = $invoice_id;
+					}
+				}
+			}
+
+			$this->t->set_var('lang_action',lang('Invoice'));
+			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->t->set_var('currency',$prefs['currency']);
+
+			if (!$invoice_id)
+			{
+				$this->t->set_var('print_invoice',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.fail'));
+			}
+			else
+			{
+				$this->t->set_var('print_invoice',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.show_invoice'
+																		. '&invoice_id=' . $invoice_id));
+			}
+
+			$pro = $this->boprojects->read_single_project($project_id);
+
+			$title = $GLOBALS['phpgw']->strip_html($pro['title']);
+			if (! $title)  $title  = '&nbsp;';
+			$this->t->set_var('project',$title . ' [' . $GLOBALS['phpgw']->strip_html($pro['number']) . ']');
+
+			if (!$pro['customer'])
+			{
+				$this->t->set_var('customer',lang('You have no customer selected !'));
+			}
+			else
+			{
+				$customer = $this->boprojects->read_single_contact($pro['customer']);
+				$values['customer'] = $pro['customer'];
+				if ($customer[0]['org_name'] = '') { $customername = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+				else { $customername = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
+				$this->t->set_var('customer',$customername);
+			}
+
+			if(!$Invoice)
+			{
+				$this->t->set_var('lang_choose',lang('Generate Invoice ID ?'));
+				$this->t->set_var('choose','<input type="checkbox" name="values[choose]" value="True">');
+			}
+			else
+			{
+				$this->t->set_var('lang_choose','');
+				$this->t->set_var('choose','');
+			}
+
+			if(!$invoice_id)
+			{
+				$this->t->set_var('invoice_num',$values['invoice_num']);
+				$hours = $this->bobilling->read_hours($project_id);
+			}
+			else
+			{
+				$bill = $this->bobilling->read_single_invoice($invoice_id);
+				$this->t->set_var('invoice_num',$bill['invoice_num']);
+				$hours = $this->bobilling->read_invoice_hours($project_id,$invoice_id);
+			}
+
+			if ($bill['date'])
+			{
+				$values['month'] = date('m',$bill['date']);
+				$values['day'] = date('d',$bill['date']);
+				$values['year'] = date('Y',$bill['date']);
+			}
+			else
+			{
+				$values['month'] = date('m',time());
+				$values['day'] = date('d',time());
+				$values['year'] = date('Y',time());
+			}
+
+			$this->t->set_var('date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[year]',$values['year']),
+																				$this->sbox->getMonthText('values[month]',$values['month']),
+																				$this->sbox->getDays('values[day]',$values['day'])));    
+
+			$sumaes=0;
+			if (is_array($hours))
+			{
+				for ($i=0;$i<=count($hours);$i++)
+				{
+					$this->nextmatchs->template_alternate_row_color(&$this->t);
+
+					$select = '<input type="checkbox" name="values[select[' . $hours[$i]['hours_id'] . ']]" value="True" checked>';
+
+					$activity = $GLOBALS['phpgw']->strip_html($hours[$i]['descr']);
+					if (! $activity)  $activity  = '&nbsp;';
+
+					$hours_descr = $GLOBALS['phpgw']->strip_html($hours[$i]['hours_descr']);
+					if (! $hours_descr)  $hours_descr  = '&nbsp;';
+
+					$start_date = $hours[$i]['sdate'];
+					if ($start_date == 0) { $start_dateout = '&nbsp;'; }
+					else
+					{
+						$start_date = $start_date + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+						$start_dateout = $GLOBALS['phpgw']->common->show_date($start_date,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+					}
+
+					if ($hours[$i]['minperae'] != 0)
+					{
+						$aes = ceil($hours[$i]['minutes']/$hours[$i]['minperae']);
+					}
+					$sumaes += $aes;
+					$summe += $hours[$i]['billperae']*$aes;
+
+
+// --------------------- template declaration for list records ---------------------------
+
+					$this->t->set_var(array('select' => $select,
+										'activity' => $activity,
+									'hours_descr' => $hours_descr,
+										'status' => lang($hours[$i]['status']),
+									'start_date' => $start_dateout,
+											'aes' => $aes,
+									'billperae' => $hours[$i]['billperae'],
+										'sum' => sprintf ("%01.2f",$hours[$i]['billperae']*$aes)));
+
+					if (($hours[$i]['status'] != 'billed') && ($hours[$i]['status'] != 'closed'))
+					{
+						if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_EDIT) || $pro['coordinator'] == $this->account)
+						{
+							$link_data['menuaction']	= 'projects.uiprojecthours.edit_hours';
+							$link_data['hours_id']		= $hours[$i]['hours_id'];
+							$this->t->set_var('edithour',$GLOBALS['phpgw']->link('/index.php',$link_data));
+							$this->t->set_var('lang_edit_entry',lang('Edit'));
+						}
+					}
+					else
+					{
+						$this->t->set_var('edithour','');
+						$this->t->set_var('lang_edit_entry','&nbsp;');
+					}
+					$this->t->fp('list','hours_list',True);
+
+// -------------------------- end record declaration --------------------------
+				}
+			}
+			$this->t->set_var('sum_aes',$sumaes);
+			$t->set_var('sum_sum',sprintf("%01.2f",$summe));
+
+			if (! $invoice_id)
+			{
+				if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
+				{
+					$this->t->set_var('invoice','<input type="submit" name="Invoice" value="' . lang('Create invoice') . '">');
+				}
+			}
+ 			else if ($action = 'ubill')
+			{
+				if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
+				{
+					$this->t->set_var('invoice','<input type="submit" name="Invoice" value="' . lang('Update invoice') . '">');
+				}
+			}
+			else
+			{
+				$this->t->set_var('invoice','');
+			}
+
+			$this->t->pfp('out','hours_list_t',True);
+		}
+
+		function fail()
+		{
+			echo '<p><center>' . lang('You have to CREATE a delivery or invoice first !');
+			echo '</center>';
+			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
 	}
 ?>

@@ -28,12 +28,16 @@
 	{
 		var $public_functions = array
 		(
-			'read_invoices'	=> True
+			'read_invoices'			=> True,
+			'check_values'			=> True,
+			'read_hours'			=> True,
+			'read_invoice_hours'	=> True
 		);
 
 		function bobilling()
 		{
 			$this->sobilling	= CreateObject('projects.sobilling');
+			$this->soprojects	= CreateObject('projects.soprojects');
 			$this->contacts		= CreateObject('phpgwapi.contacts');
 		}
 
@@ -42,6 +46,70 @@
 			$bill = $this->sobilling->read_invoices($start, $query, $sort, $order, $limit, $project_id);
 			$this->total_records = $this->sobilling->total_records;
 			return $bill;
+		}
+
+		function check_values($values)
+		{
+			if (!$values['choose'])
+			{
+				if (!$values['invoice_num'])
+				{
+					$error[] = lang('Please enter an ID !');
+				}
+				else
+				{
+					$num = $this->sobilling->exists($values['invoice_num']);
+					if ($num)
+					{
+						$error[] = lang('That ID has been used already !');
+					}
+				}
+			}
+
+			if (! is_array($values['select']))
+			{
+				$error[] = lang('The invoice contains no items !');				
+			}
+
+			if (! $values['customer'])
+			{
+				$error[] = lang('You have no customer selected !');
+			}
+
+			if (! checkdate($values['month'],$values['day'],$values['year']))
+			{
+				$error[] = lang('You have entered an invalid date !');
+			}
+
+			if (is_array($error))
+			{
+				return $error;
+			}
+		}
+
+		function invoice($values)
+		{
+			if ($values['choose'])
+			{
+				$values['invoice_num'] = $this->soprojects->create_invoiceid();
+			}
+
+			$values['date'] = mktime(2,0,0,$values['month'],$values['day'],$values['year']);
+
+			$invoice_id = $this->sobilling->invoice($values);
+			return $invoice_id;
+		}
+
+		function read_hours($project_id)
+		{
+			$hours = $this->sobilling->read_hours($project_id);
+			return $hours;
+		}
+
+		function read_invoice_hours($project_id,$invoice_id)
+		{
+			$hours = $this->sobilling->read_hours($project_id,$invoice_id);
+			return $hours;
 		}
 	}
 ?>

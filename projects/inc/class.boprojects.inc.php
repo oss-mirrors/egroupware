@@ -97,6 +97,7 @@
 				case 'asubs'	: $column = 'projects_asubs'; break;
 				case 'ustat'	: $column = 'projects_ustat'; break;
 				case 'del'		: $column = 'projects_del'; break;
+				case 'bill'		: $column = 'projects_bill'; break;
 			}
 			return $column;
 		}
