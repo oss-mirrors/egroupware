@@ -13,6 +13,13 @@
   /* $Id$ */
 {
 
+	$menu_title = lang('JiNN Editors Menu');
+	$file = Array(
+		'Browse current object' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.browse_objects'),
+		'Add new entry' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.add_edit_object')
+	);
+	display_sidebox($appname,$menu_title,$file);
+
 	if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
 	{
 		$menu_title = lang('Administration');
