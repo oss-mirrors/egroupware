@@ -41,12 +41,12 @@ $DBTablePrefix = 'phpgw_wiki_';
 
 // $WikiName determines the name of your wiki.  This name is used in the
 // browser title bar.  Often, it will be the same as $HomePage.
-$WikiName = 'PhpGroupWareWiki';
+$WikiName = 'PhpGroupWare';
 
 // $HomePage determines the "main" page of your wiki.  If browsers do not ask
 // to see a specific page they will be shown the home page.  This should be
 // a wiki page name, like 'AcmeProjectWiki'.
-$HomePage = 'PhpGroupWareWiki';
+$HomePage = 'PhpGroupWare';
 
 // $InterWikiPrefix determines what interwiki prefix you recommend other
 // wikis use to link to your wiki. Usually it is similar to your WikiName.
