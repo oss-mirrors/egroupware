@@ -969,13 +969,19 @@
 				for ($filter_idx=0; $filter_idx < count($this->all_filters); $filter_idx++)
 				{
 					$this_filter = $this->all_filters[$filter_idx];
+					if ($this->debug > 2) { echo 'bofilters.do_filter ('.__LINE__.'): $this_filter DUMP <pre>'; print_r($this_filter); echo '</pre>'."\r\n"; } 
+					$source_accounts = '';
+					for ($i=0; $i < count($this_filter['source_accounts']); $i++)
+					{
+						$source_accounts .= $this_filter['source_accounts'][$i]['acctnum'] .' ';
+					}
 					$num_matches = count($this->each_filter_mball_list[$filter_idx]);
 					parse_str($this_filter['actions'][0]['folder'], $target_folder);
 					echo '<p>'."\r\n"
 					.'<strong>'.lang('Filter number').' '.(string)$filter_idx.':</strong>'.'<br>'."\r\n"
 					.'&nbsp;&nbsp;&nbsp;'.lang('filter name:').' ['.$this_filter['filtername'].']<br>'."\r\n"
-					.'&nbsp;&nbsp;&nbsp;'.lang('number of matches:').' ['.(string)$num_matches.']'.'<br>'."\r\n"
-
+					.'&nbsp;&nbsp;&nbsp;'.lang('number of matches:').' ['.(string)$num_matches.']'.' <br>'."\r\n"
+					.'&nbsp;&nbsp;&nbsp;'.lang('source accounts').' ['.$source_accounts.'] <br>'."\r\n"
 					.'&nbsp;&nbsp;&nbsp;'.lang('requested filter action:').' ['.$this_filter['actions'][0]['judgement'].'] ; Acctnum ['.(string)$target_folder['acctnum'].'] ;  '.lang('Folder').': ['.htmlspecialchars($target_folder['folder']).']<br>'."\r\n"
 					.'</p>'."\r\n"
 					.'<p>&nbsp;</p>'."\r\n";
@@ -1431,8 +1437,9 @@
 				{
 					// NOT A TEST - APPLY THE ACTION(S)
 					if ($this->debug > 1) { echo 'bofilters.filter_action_sequence: NOT a Test, *Apply* the Action(s) ; $this_filter[actions][0][judgement] : ['.$this_filter['actions'][0]['judgement'].']<br>'; }
-					// ACTION: FILEINTO
-					if ($this_filter['actions'][0]['judgement'] == 'fileinto')
+					// ACTION: FILEINTO or DISCARD
+					if (($this_filter['actions'][0]['judgement'] == 'discard')
+					|| ($this_filter['actions'][0]['judgement'] == 'fileinto'))
 					{
 						$mov_msgball = $this->inbox_full_msgball_list[$src_acct_loop_num][$msg_iteration];
 						// clean the msgball of stuff we added to it during the filtering logic, it is no longer needed
@@ -1446,17 +1453,39 @@
 							$mov_msgball['match_keeper'] = '';
 							unset($mov_msgball['match_keeper']);
 						}
-						// get a folder value to use as the target folder and make this into a target_fldball
-						parse_str($this_filter['actions'][0]['folder'], $target_folder);
-						// parse_str will add escape slashes to folder names with quotes in them
-						$target_folder['folder'] = stripslashes($target_folder['folder']);
-						$target_folder['folder'] = urlencode($target_folder['folder']);
-						//if ($this->debug > 2) { echo 'bofilters.filter_action_sequence: $target_folder DUMP:<pre>'; print_r($target_folder); echo "</pre>\r\n"; }
-						$to_fldball = array();
-						$to_fldball['folder'] = $target_folder['folder'];
-						$to_fldball['acctnum'] = (int)$target_folder['acctnum'];
+						if ($this_filter['actions'][0]['judgement'] == 'discard')
+						{
+							// this is a STRAIGHT DELETE! 
+							// STRAIGHT DELETE has a "PSUEDO FOLDER" called "##DELETE##"
+							// that we use in the "flush_buffered_move_commmands" to indicate a delete instead of a move
+							// AND we'll use the same "acctnum" as the delete from acctnum because this will group them together during a "sort" of the array
+							// so we can use the same function  for both
+							// we do not use pgpgw_delete because (1) we know this is a straight delete and 
+							// (2) because we can so what it does for straight delete right here
+							$to_fldball = array();
+							$to_fldball['acctnum'] = $mov_msgball['acctnum'];
+							$to_fldball['folder'] = $GLOBALS['phpgw']->msg->del_pseudo_folder;
+						}
+						elseif ($this_filter['actions'][0]['judgement'] == 'fileinto')
+						{
+							// get a folder value to use as the target folder and make this into a target_fldball
+							parse_str($this_filter['actions'][0]['folder'], $target_folder);
+							// parse_str will add escape slashes to folder names with quotes in them
+							$target_folder['folder'] = stripslashes($target_folder['folder']);
+							$target_folder['folder'] = urlencode($target_folder['folder']);
+							//if ($this->debug > 2) { echo 'bofilters.filter_action_sequence: $target_folder DUMP:<pre>'; print_r($target_folder); echo "</pre>\r\n"; }
+							$to_fldball = array();
+							$to_fldball['folder'] = $target_folder['folder'];
+							$to_fldball['acctnum'] = (int)$target_folder['acctnum'];
+						}
+						else
+						{
+							// we should never get gere!
+							if ($this->debug > 1) { echo 'bofilters.filter_action_sequence: were not supposed to be here at line ['.__LINE__.'] <br>'; }
+							echo 'bofilters.filter_action_sequence: were not supposed to be here at line ['.__LINE__.'] <br>';
+						}
 						if ($this->debug > 2) { echo 'bofilters.filter_action_sequence: $to_fldball DUMP:<pre>'; print_r($to_fldball); echo "</pre>\r\n"; }
-						if ($this->debug > 1) { echo 'bofilters.filter_action_sequence: pre-move info: $mov_msgball [<code>'.serialize($mov_msgball).'</code>]<br>'; }
+						if ($this->debug > 1) { echo 'bofilters.filter_action_sequence: pre-move or discard info: $mov_msgball [<code>'.serialize($mov_msgball).'</code>]<br>'; }
 						//echo 'EXIT NOT READY TO APPLY THE FILTER YET<br>';
 						$good_to_go = $GLOBALS['phpgw']->msg->industrial_interacct_mail_move($mov_msgball, $to_fldball);
 							
@@ -1524,7 +1553,18 @@
 				//$this->result_set_mlist = $GLOBALS['phpgw']->msg->get_msg_list_display($fake_folder_info,$this->each_filter_mball_list[$filter_num]);
 				$this->result_set_mlist = $GLOBALS['phpgw']->msg->get_msg_list_display($fake_folder_info,$new_style_msgball_list);
 				// save this report data for later use, add it to any other previous report
-				parse_str($this_filter['actions'][0]['folder'], $target_folder);
+				if ((isset($this_filter['actions'][0]['folder']))
+				&& ($this_filter['actions'][0]['folder'] != ''))
+				{
+					parse_str($this_filter['actions'][0]['folder'], $target_folder);
+				}
+				else
+				{
+					// probably the folder value is not applicable to the action
+					$target_folder = array();
+					$target_folder['acctnum'] = 99;
+					$target_folder['folder'] = 'UNKNOWN or NOT APPLICABLE';
+				}
 				$this->html_matches_table .= 
 					//'<h3>Results: ['.$fake_folder_info['number_all'].'] matches for Filter number ['.$filter_num.'] named: '.$this_filter['filtername'].'</h3>'."\r\n"
 					'<h4>Test Results: Filter ['.$filter_num.'] had ['.$fake_folder_info['number_all'].'] matches. Filter named: '.$this_filter['filtername'].'</h4>'."\r\n"

@@ -611,20 +611,43 @@
 		it after we call this function, so we do not actually want data returned here (EXPERIMENTAL, MAY NOT WORK)
 		@author Angles
 		@access public
-		@result returns an array of of type "msgball" , so it contains acctnum, foldername, message UID, and some other info, such as a 
-		pre-prepared "fake URI" a.k.a. a GET URI string of type magball. Important data is the message UID integers which 
-		are message numbers referring to messages in the current folder. Because multiple accounts may be in use, the msgball array 
-		structure is necessary so the correct acctnum and foldername accompanies each message UID. Therefor you have enough information 
-		to take all sorts of action on any particular message in the list, see discussion below.
-		@discussion Folder and Account Number SHOULD be obtained from the class vars which were set during begin_request(),
-		where folder and acctnum were determined from GET POST data or data supplied to begin_request() in its arg array. This way 
-		the desired folder is known to be correctly named (it exists, not a bogus foldername) and associated with the correct acctnum.
-		However, some of the filter functions do use these params, but using them is discouraged.
-		The return is an array of "msgball" data, which contains acctnum, foldername, message UID, and some other info, such as a 
-		pre-prepared "fake URI" a.k.a. a GET URI string of type magball. Use this data and specifically these message numbers 
-		to request more detailed information about a message (headers, subject), or the request message itself from the server.
-		Sort and Order is applied by the class, so the calling process does not need to specify sorting here
-		The data communications object (class mail_dcom) is supplied by the class
+		@result returns an flat array of strings where each string item is a "msgball" in the form if URI TYPE DATA. 
+		This means each element of the array is a string of type URI data msgball. Thus each string looks something like this 
+		"msgball[msgnum]=12&msgball[folder]=INBOX&msgball[acctnum]=0" 
+		so it contains acctnum, foldername, message UID,  in the form of "fake URI" a.k.a. a GET URI string of type magball. 
+		Typically we just want all the message numbers in the currently active folder, WHICH IS WHAT THIS FUNCTION RETURNS, 
+		in which case the msgball strings of the array will differ only in that the message UID integers, which are message 
+		numbers referring to messages in the folder, are the only things that differ  because the acctnum and folder are going to be the same. 
+		The flat string array returned helps with memory management and speed when manipulating such arrays that are flat, 
+		HOWEVER most functions in this wrapper class are set up to use msgball or fldball type data as params (i.e. not just message 
+		numbers by themselves) IN THEIR EXPANDED structured array form, i.e. passing a single msgball NOT in URI form 
+		is most common in this class, which expanded single msgball array form you can obtain by calling function "ball_data_parse_str" on 
+		any URI type msgball string. 
+		@discussion Because multiple accounts may be in use, the msgball concept allows any msgball element to refer to a 
+		message in any folder in any account. However the most common usage is to get all the message numbers in the current folder 
+		sorted according to the get_arg_value(sort, acctnum) AND get_arg_value(order, acctnum) which most often is a 
+		single folder in a single account WHICH IS WHAT THIS FUNCTIONS RETURNS. 
+		This whole wrapper class is set up to ba able to handle msgball data with each element refering to 
+		different accounts and folders, however this powerful capability is almost never used. Mostly we just get all message 
+		UID numbers in the current folder, such as this function will return in msgball form. 
+		But the structure of the msgball, in the form is a single msgball in its expanded array form, 
+		is what is generally used as in parms to most functions in this wrapper class, 
+		so even in simple usage we still will use the msgball to do stuff like move mail or request a message. 
+		You can call function "ball_data_parse_str" on any URI type msgball string to obtain the array 
+		that is of type msgball. It is the same data in full structured array form. 
+		In most cases, when we are operating in a single folder, the Folder and Account Number SHOULD be obtained from the 
+		class vars which were set during begin_request(), where folder and acctnum were determined from GET POST data. 
+		Thus you need not provide any args to this function because the desired folder is known to be correctly named (it exists, 
+		not a bogus foldername) and associated with the correct acctnum. However, some of the filter functions do use these params, 
+		but using them is discouraged in simple and most common cases. As mentioned above, the return is an array of "msgball" data, 
+		which contains acctnum, foldername, message UID, in the form of "fake URI" a.k.a. a GET URI string of type magball. 
+		We use this data and specifically these message numbers to request more detailed information about a message (headers, subject), 
+		or the request message itself from the server. Note that getting a list of message numbers from a mailserver ALWAYS requires 
+		giving the mail server Sort and Order information so the server knows how to order the message numbers it returns. 
+		In this function, Sort and Order is applied by this class, so the calling process does not need to specify sorting here
+		The data communications object (class mail_dcom) is supplied by the class.
+		CACHE NOTE: If $this->session_cache_enabled is True, the data this function gets is cached in the appsession, 
+		thus even if $this->session_cache_extreme is False, this  data this data is still cached.  
 		*/
 		function get_msgball_list($acctnum='', $folder='', $only_fill_cache=False)
 		{
@@ -756,6 +779,7 @@
 				// NOW WE USE FOLDER NAME ALSO IN THE DATA KEY
 				// use the folder name that was fed as a param, since this most likely represents a good key to use 
 				// just in case the msgball_list, in the future, is a virtual one composed of msg from many folders
+				//echo 'wrappers line ('.__LINE__.') about to call save_session_cache_item for msgball_list <br>';
 				$this->save_session_cache_item('msgball_list', $meta_data, $acctnum, $folder);
 				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): get_msgball_list: ('.__LINE__.') LEAVING, <font color="red">had to get data from server</font><br>'); } 
 				return $msgball_list;
@@ -1675,11 +1699,22 @@
 		
 		/*!
 		@function industrial_interacct_mail_move
-		@abstract ?
-		@param $mov_msgball (array of type msgball) the message the will be moved. 
-		@param $to_fldball (array of type fldball) the target of the move. 
+		@abstract Entry point to moving or deleting mail in this class. Call this for moves, call "phpgw_delete" for deletes, which may call this.
+		@param $mov_msgball (array of type msgball) the message the will be moved, i.e. a single msgball in its array form.
+		@param $to_fldball (array of type fldball) the target of the move, i.e. a single fldball in its array form.
 		@author Angles
-		@discussion ?
+		@discussion Calls "buffer_move_commands" and "track_expungable_folders" so that 
+		the calling process need not worry about these things, HOWEVER the calling process 
+		DOES need to call  "expunge_expungable_folders" when all the moves or deletes are done. 
+		If you have a msgball list in the form if URI string data, you can call function "ball_data_parse_str" 
+		on any URI type msgball string to obtain the structured array that is of type msgball. It is the same data in full 
+		structured array form. That structured array form that is a single msgball is what this function expects as an arg. 
+		Looping and calling this functions many times in a row may seem slow but that is the design of this function 
+		to hide the gorry details from you and this function is designed to be used in a large loop 
+		and still achieve speed in the actual implementation of the moves and or deletes on a large scale by 
+		having aggregated all the needed info for you, before actually calling the mailserver, so as to call the 
+		mailserver as few times as possible with the most info possible in each individual mailserver call. 
+		NOTE: TO DELETE MAIL call "phpgw_delete" and it will call this function if conditions warrent. 
 		@access public
 		*/
 		function industrial_interacct_mail_move($mov_msgball='', $to_fldball='')
@@ -1699,12 +1734,12 @@
 		
 		/*!
 		@function buffer_mail_move_commands
-		@abstract ?
+		@abstract Called by "industrial_interacct_mail_move"
 		@param $mov_msgball (array of type msgball) the message the will be moved. 
 		@param $to_fldball (array of type fldball) the target of the move. 
 		@author Angles
-		@discussion ?
-		@access public
+		@discussion Use function "industrial_interacct_mail_move" which calls this function as needed.
+		@access private
 		*/
 		function buffer_move_commands($mov_msgball='', $to_fldball='')
 		{
@@ -1739,17 +1774,18 @@
 			return;
 		}
 		
-		/*!
+		/*
+		// DEPRECIATED
 		@function buffer_delete_commands
-		@abstract ?
+		@abstract DEPRECIATED
 		@param $mov_msgball (array of type msgball) the message the will be moved. 
 		@param $to_fldball (array of type fldball) the target of the move. 
 		@author Angles
-		@discussion ?
+		@discussion DEPRECIATED
 		@access public
-		*/
 		function buffer_delete_commands($mov_msgball='', $to_fldball='')
 		{
+			// DEPRECIATED
 			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): ENTERING<br>'); } 
 			if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): $mov_msgball ['.serialize($mov_msgball).'] $to_fldball ['.serialize($to_fldball).']<br>'); } 
 						
@@ -1780,6 +1816,8 @@
 			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): LEAVING: did add $this_move_data to array, new array count $this->buffered_move_commmands_count: ['.$this->buffered_move_commmands_count.'], "from" acctnum is ['.$mov_msgball['acctnum'].']<br>'); } 
 			return;
 		}
+		*/
+		
 		
 		/*
 Array
@@ -1840,11 +1878,11 @@ Array
 			// we tell the cache to flush and surn off during a big move, if we find a move is requested, just call the notice once.
 			$did_give_big_move_notice = False;
 			
-			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): ENTERING, called by ['.$called_by.'], <br>'); } 
+			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands ('.__LINE__.'): ENTERING, called by ['.$called_by.'], <br>'); } 
 			// leave now if nothing is in the buffered command array
 			if ($this->buffered_move_commmands_count == 0)
 			{
-				if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): LEAVING, nothing to do, return False, $this->buffered_move_commmands_count: ['.$this->buffered_move_commmands_count.']<br>'); } 
+				if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands ('.__LINE__.'): LEAVING, nothing to do, return False, $this->buffered_move_commmands_count: ['.$this->buffered_move_commmands_count.']<br>'); } 
 				return False;
 			}
 			
@@ -1854,7 +1892,7 @@ Array
 			$is_big_move = False;
 			if ($this->buffered_move_commmands_count > $big_move_thresh)
 			{
-				if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): issue $this->event_begin_big_move because $big_move_thresh: ['.$big_move_thresh.'] $this->buffered_move_commmands_count: ['.$this->buffered_move_commmands_count.']<br>'); } 
+				if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands ('.__LINE__.'): issue $this->event_begin_big_move because $big_move_thresh: ['.$big_move_thresh.'] $this->buffered_move_commmands_count: ['.$this->buffered_move_commmands_count.']<br>'); } 
 				$this->event_begin_big_move(array(), 'mail_msg(_wrappers): buffered_move_commmands: LINE '.__LINE__);
 				$is_big_move = True;
 			}
@@ -1870,7 +1908,7 @@ Array
 			// we know the FROM acct num is the same for all commands
 			// we know the list is sorted so all FROM folders are together, and then the TO_FOLDERS
 			// note the the "del_pseudo_folder" also will be grouped together, later we determing what command to call whether move or straight delete
-			if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): we have delete instructions(s) to be processed, (sorted) $this->buffered_move_commmands DUMP:', $this->buffered_move_commmands); } 
+			if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands ('.__LINE__.'): we have delete instructions(s) to be processed, (sorted) $this->buffered_move_commmands DUMP:', $this->buffered_move_commmands); } 
 			
 			$grouped_move_balls = array();
 			// group the commands
@@ -1878,10 +1916,10 @@ Array
 			{
 				$this_move_balls = array();
 				parse_str($this->buffered_move_commmands[$x], $this_move_balls);				
-				if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers): flush_buffered_move_commmands: loop ['.$x.']: $this_move_balls: ['.htmlspecialchars(serialize($this_move_balls)).']<br>'); }
+				if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands: loop ['.$x.']: $this_move_balls: ['.htmlspecialchars(serialize($this_move_balls)).']<br>'); }
 				// NOTE PARSE_STR ***WILL ADD SLASHES*** TO ESCAPE QUOTES
 				// NO MATTER WHAT YOUR MAGIC SLASHES SETTING IS
-				if ($this->debug_args_input_flow > 1) { $this->dbug->out(' * mail_msg(_wrappers): flush_buffered_move_commmands: loop ['.$x.']: NOTE PARSE_STR ***WILL ADD SLASHES*** TO ESCAPE QUOTES NO MATTER WHAT YOUR MAGIC SLASHES SETTING IS **stripping slashes NOW***'); } 
+				if ($this->debug_args_input_flow > 1) { $this->dbug->out(' * mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands: loop ['.$x.']: NOTE PARSE_STR ***WILL ADD SLASHES*** TO ESCAPE QUOTES NO MATTER WHAT YOUR MAGIC SLASHES SETTING IS **stripping slashes NOW***'); } 
 				if (isset($this_move_balls['mov_msgball']['folder']))
 				{
 					$this_move_balls['mov_msgball']['folder'] = stripslashes($this_move_balls['mov_msgball']['folder']);
@@ -1895,7 +1933,7 @@ Array
 				// IF WE ISSUED A BIG MOVE NOTICE THEN THE CACHE IS FLUSHED ALREADY
 				if ($is_big_move == False)
 				{
-					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers): flush_buffered_move_commmands: loop ['.$x.'] $is_big_move: ['.serialize($is_big_move).'] so calling $this->event_msg_move_or_delete()<br>'); }
+					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands: loop ['.$x.'] $is_big_move: ['.serialize($is_big_move).'] so calling $this->event_msg_move_or_delete()<br>'); }
 					$this->event_msg_move_or_delete($this_move_balls['mov_msgball'], 'flush_buffered_move_commmands'.' LINE: '.__LINE__, $this_move_balls['to_fldball']);
 				}
 				
@@ -1911,12 +1949,12 @@ Array
 					{
 						// SKIP TO NEXT LOOP, we need to compare (try to group) b4 we know to issue the actual move command or not
 						// NOTE: CONTINUE
-						if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: added item to array, skip to next iteration<br>'); }
+						if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: added item to array, skip to next iteration<br>'); }
 						continue;
 					}
 					else
 					{
-						if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: added item to array, NOT skipping to next iteration because there is only 1 item in array ['.$this->buffered_move_commmands_count.']<br>'); }
+						if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: added item to array, NOT skipping to next iteration because there is only 1 item in array ['.$this->buffered_move_commmands_count.']<br>'); }
 					}
 				}
 				//elseif (($count_grouped > 0)
@@ -1934,7 +1972,7 @@ Array
 					// AND this is NOT the last item in buffered_move_commmands (that would require action, not another loop)
 					array_push($grouped_move_balls, $this_move_balls);
 					// NOTE: CONTINUE
-					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: added item to array, skip to next iteration<br>'); }
+					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: added item to array, skip to next iteration<br>'); }
 					continue;
 				}
 				elseif (($count_grouped > 0)
@@ -1947,17 +1985,17 @@ Array
 					// PASSES the "is grouped" test, add to the "grouped array"
 					// AND this is the FINAL ITEM, so KEEP GOING down to the code to issue the actual move command
 					array_push($grouped_move_balls, $this_move_balls);
-					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: added item to array, but NOT skipping to next iteration<br>'); }
+					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: added item to array, but NOT skipping to next iteration<br>'); }
 					// DO NOT issue "CONTINUE" here
 				}
 				else
 				{
 					//if ($this->debug_wrapper_dcom_calls > 1) { echo ' * mail_msg(_wrappers): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: UNHANDLED if .. then, $$grouped_move_balls[$count_grouped-1] DUMP<pre>'; print_r($grouped_move_balls[$count_grouped-1]); echo "\r\n".' $$this_move_balls DUMP'; print_r($this_move_balls); echo '</pre>' ; } 
-					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: UNHANDLED if .. then, $$grouped_move_balls[$count_grouped-1] DUMP', $grouped_move_balls[$count_grouped-1]); } 
-					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: UNHANDLED if .. then, $$this_move_balls DUMP', $this_move_balls); } 
+					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: UNHANDLED if .. then, $$grouped_move_balls[$count_grouped-1] DUMP', $grouped_move_balls[$count_grouped-1]); } 
+					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: UNHANDLED if .. then, $$this_move_balls DUMP', $this_move_balls); } 
 				}
 				
-				if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands: if we get here, we can not group anymore, or the series just ended, so issue the command now<br>'); }
+				if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands: if we get here, we can not group anymore, or the series just ended, so issue the command now<br>'); }
 				// OK if we are here then we know this
 				// * "grouped_move_balls" has at least one command in it
 				// ** the current command does not match the preious one in terms or grouping them together
@@ -1975,7 +2013,7 @@ Array
 				if ( ($count_grouped = 1)
 				&& ((int)$grouped_move_balls[0]['mov_msgball']['acctnum'] != (int)$grouped_move_balls[0]['to_fldball']['acctnum']) ) 
 				{
-					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): ($do_it_for_real is '.serialize($do_it_for_real).'): 1 single **DIFFERENT** Account Move item in $grouped_move_balls, hand off to "single_interacct_mail_move"<br>'); } 
+					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands ('.__LINE__.'): ($do_it_for_real is '.serialize($do_it_for_real).'): 1 single **DIFFERENT** Account Move item in $grouped_move_balls, hand off to "single_interacct_mail_move"<br>'); } 
 					if ($do_it_for_real == True)
 					{
 						$this->single_interacct_mail_move($grouped_move_balls[$count_grouped-1]['mov_msgball'], $grouped_move_balls[$count_grouped-1]['to_fldball']);
@@ -1984,7 +2022,7 @@ Array
 				elseif ( ($count_grouped > 1)
 				&& ((int)$grouped_move_balls[$count_grouped-1]['mov_msgball']['acctnum'] != (int)$grouped_move_balls[$count_grouped-1]['to_fldball']['acctnum']) ) 
 				{
-					if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): LEAVING with ERROR: ERROR: unhandled if .. then,  $grouped_move_balls has multiple items but accounts do not match, different accounts should be handled one at a time!!!<br>'); } 
+					if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands ('.__LINE__.'): LEAVING with ERROR: ERROR: unhandled if .. then,  $grouped_move_balls has multiple items but accounts do not match, different accounts should be handled one at a time!!!<br>'); } 
 					echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): LEAVING with ERROR: unhandled if .. then,  $grouped_move_balls has multiple items but accounts do not match, different accounts should be handled one at a time!!!<br>';
 					return False;
 				}
@@ -2108,7 +2146,7 @@ Array
 						if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out(' * flush_buffered_move_commmands ('.__LINE__.'): $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'); } 
 					}
 					
-					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands: final $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'); }
+					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands: final $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'); }
 					// 1b) issue the delete COMMAND finally now
 					$mov_msgball = array();
 					$mov_msgball = $grouped_move_balls[$count_grouped-1]['mov_msgball'];
@@ -2122,7 +2160,7 @@ Array
 					//$this->event_msg_move_or_delete($mov_msgball, 'flush_buffered_move_commmands'.' LINE: '.__LINE__.' and CACHE SHOULD BE OFF NOW', $to_fldball);
 					//if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: expire msgball list with DIRECT call to $this->expire_session_cache_item (because we know extreme caching os turned off for the duration of this function)<br>'; }
 					//$this->expire_session_cache_item('msgball_list', $this_acctnum);
-					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands: ($do_it_for_real is '.serialize($do_it_for_real).'): calling $this->ensure_stream_and_folder($mov_msgball ['.serialize($mov_msgball).'], who_is_calling) <br>'); }
+					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands: ($do_it_for_real is '.serialize($do_it_for_real).'): calling $this->ensure_stream_and_folder($mov_msgball ['.serialize($mov_msgball).'], who_is_calling) <br>'); }
 					if ($do_it_for_real == True)
 					{
 						$this->ensure_stream_and_folder($mov_msgball, 'flush_buffered_move_commmands'.' LINE: '.__LINE__);
@@ -2132,14 +2170,14 @@ Array
 					if ($to_fldball['folder'] == $this->del_pseudo_folder || $to_fldball['folder'] == '##NOTHING##')
 					{
 						// STRAIGHT DELETE
-						if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands: SRAIGHT DELETE ($do_it_for_real is '.serialize($do_it_for_real).'): $GLOBALS[phpgw_dcom_'.$this_acctnum.']->dcom->delete('.serialize($mailsvr_stream).' ,'.$collected_msg_num_string.')<br>'); }
+						if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands: SRAIGHT DELETE ($do_it_for_real is '.serialize($do_it_for_real).'): $GLOBALS[phpgw_dcom_'.$this_acctnum.']->dcom->delete('.serialize($mailsvr_stream).' , '.$collected_msg_num_string.' )<br>'); }
 						if ($do_it_for_real == True)
 						{
 							$did_delete = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->delete($mailsvr_stream , $collected_msg_num_string);
 							if (!$did_delete)
 							{
 								$imap_err = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->server_last_error();
-								if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands: STRAIGHT DELETE: LEAVING on ERROR, $imap_err: ['.$imap_err.'] return False'.' LINE '.__LINE__.'<br>'); }
+								if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands: STRAIGHT DELETE: LEAVING on ERROR, $imap_err: ['.$imap_err.'] return False'.' LINE '.__LINE__.'<br>'); }
 								echo 'mail_msg(_wrappers): flush_buffered_move_commmands: LEAVING on ERROR, $imap_err: ['.$imap_err.'] return False'.' LINE '.__LINE__.'<br>';
 								echo '&nbsp; command was: $GLOBALS[phpgw_dcom_'.$this_acctnum.']->dcom->delete('.serialize($mailsvr_stream).' ,'.$collected_msg_num_string.')<br>';
 								return False;
@@ -2149,21 +2187,21 @@ Array
 					else
 					{
 						// MOVE
-						if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands: ($do_it_for_real is '.serialize($do_it_for_real).'): $GLOBALS[phpgw_dcom_'.$this_acctnum.']->dcom->mail_move('.serialize($mailsvr_stream).' ,'.$collected_msg_num_string.', '.serialize($to_fldball['folder']).')<br>'); }
+						if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands: ($do_it_for_real is '.serialize($do_it_for_real).'): $GLOBALS[phpgw_dcom_'.$this_acctnum.']->dcom->mail_move('.serialize($mailsvr_stream).' ,'.$collected_msg_num_string.', '.serialize($to_fldball['folder']).')<br>'); }
 						if ($do_it_for_real == True)
 						{
 							$did_move = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->mail_move($mailsvr_stream , $collected_msg_num_string, $to_fldball['folder']);
 							if (!$did_move)
 							{
 								$imap_err = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->server_last_error();
-								if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands: LEAVING on ERROR, $imap_err: ['.$imap_err.'] return False'.' LINE '.__LINE__.'<br>'); }
-								echo 'mail_msg(_wrappers): flush_buffered_move_commmands: LEAVING on ERROR, $imap_err: ['.$imap_err.'] return False'.' LINE '.__LINE__.'<br>';
+								if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands: LEAVING on ERROR, $imap_err: ['.$imap_err.'] return False'.' LINE '.__LINE__.'<br>'); }
+								echo 'mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands: LEAVING on ERROR, $imap_err: ['.$imap_err.'] return False'.' LINE '.__LINE__.'<br>';
 								echo '&nbsp; command was: $GLOBALS[phpgw_dcom_'.$this_acctnum.']->dcom->mail_move('.serialize($mailsvr_stream).' ,'.$collected_msg_num_string.', '.serialize($to_fldball['folder']).')<br>';
 								return False;
 							}
 						}
 					}
-					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands: LINE '.__LINE__.': is we get here we probably just issued a move or delete command, we may try to group more (usually only with filter usage) or we may be done with buffered command list<br>'); }
+					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands: LINE '.__LINE__.': is we get here we probably just issued a move or delete command, we may try to group more (usually only with filter usage) or we may be done with buffered command list<br>'); }
 				}
 				
 				// 2) if NOT the final item in $this->buffered_move_commmands we need to
@@ -2174,19 +2212,19 @@ Array
 					$grouped_move_balls = array();
 					array_push($grouped_move_balls, $this_move_balls);
 					// 3) then run again thru the loop after that
-					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands: continue; ... to look for groupable move commands for acctnum ['.$mailsvr_stream.']<br>'); }
+					if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands: continue; ... to look for groupable move commands for acctnum ['.$mailsvr_stream.']<br>'); }
 					// doesn't this happen anyway here?
 					continue;
 				}
-				if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands: still in that loop $x: ['.$x.'] $this->buffered_move_commmands_count-1: ['.(string)($this->buffered_move_commmands_count-1).'], if we get to here we SHOULD be done with all moves, else a continue would have been hit<br>'); }
+				if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands: still in that loop $x: ['.$x.'] $this->buffered_move_commmands_count-1: ['.(string)($this->buffered_move_commmands_count-1).'], if we get to here we SHOULD be done with all moves, else a continue would have been hit<br>'); }
 			}
 			
 			if ($is_big_move == True)
 			{
-				if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands: $is_big_move: ['.serialize($is_big_move).'] we get to here we SHOULD be done so call $this->event_begin_big_end <br>'); } 
+				if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands: $is_big_move: ['.serialize($is_big_move).'] we get to here we SHOULD be done so call $this->event_begin_big_end <br>'); } 
 				$this->event_begin_big_end('flush_buffered_move_commmands '.__LINE__);
 			}
-			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): LEAVING<br>'); } 
+			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): flush_buffered_move_commmands ('.__LINE__.'): LEAVING<br>'); } 
 			// FIXME return something more useful
 			return True;
 		}
@@ -2423,10 +2461,22 @@ Array
 		
 		/*!
 		@function expunge_expungable_folders
-		@abstract loops thru ALL accounts, expunges any account that has folder names in its arg "expunge_folders" 
+		@abstract calls "flush_buffered_move_commmands" then expunges folders. Second part of the move delete process as wrapped in this class. 
 		@author Angles
-		@discussion This function uses the folder tracking from "track_expungable_folders" to know what 
-		to expunge. Call this function after all your moves or deletes are done.
+		@discussion Calls "flush_buffered_move_commmands" then loops thru ALL accounts, expunges any account that has folder names in its arg "expunge_folders". 
+		Recall that moving and deleting mail are related items and make use of the same sub-functions in some cases, as some deletes are simply moves 
+		to a trash folder, and also that even straight deletes can benefit from the "buffering" of the commands as provided in this class. 
+		Thus, to move or delete mail in anglemail, call function "industrial_interacct_mail_move" for moves OR "phpgw_delete" for deletes as many times as you need, as this 
+		will in turn call "buffer_move_commands" and "track_expungable_folders" which buffers move or delete command for a single flush command to be called later, 
+		WHICH IS THIS FUNCTION. This function actually implements all the moves or deletes requested by "industrial_interacct_mail_move" 
+		(or phpgw_delete), i.e. it "flushes" all the actions buffered up there, by calling "flush_buffered_move_commmands", 
+		and then this function also uses the folder tracking from "track_expungable_folders" (also called by "industrial_interacct_mail_move" ) 
+		to know what folders in what accounts to expunge. 
+		To summerize, in this class and in anglemail, to move or delete mail is a two step process for you. 
+		First you call "industrial_interacct_mail_move" as many times as necessary (if moving) or use "phpgw_delete" (if deleting), then 
+		Second, after you are done with that, call this function to apply the actions and expunge the necessary folders. 
+		This two step process is designed to allow for speed in huge moves or deletes by calling the 
+		mailserver as few times as possible and with as much info as possible in each individual mailserver call. 
 		@access public
 		*/
 		function expunge_expungable_folders($called_by='not_specified')
@@ -2480,7 +2530,8 @@ Array
 		@author Angles
 		@discussion Brainless function, used by "expunge_expungable_folders" which is a "smart" 
 		function. This may be called directly, but it is preferable to use "expunge_expungable_folders" 
-		assuming the move or delete function you used calls "track_expungable_folders". 
+		assuming the move or delete function you used calls "track_expungable_folders", such as 
+		by calling "industrial_interacct_mail_move" which handles that stuff for you.
 		@access public
 		*/
 		function phpgw_expunge($acctnum='', $fldball='')
@@ -2528,21 +2579,22 @@ Array
 		@function phpgw_delete
 		@abstract Delete a message, will move to "Trash" folder is necessary.
 		@author Angles
-		@param $msg_num (int) single msgnum of msg to "delete" (or move to trash folder") 
+		@param $msg_num (int) single msgnum of msg to "delete" (or move to trash folder) 
 		@param $currentfolder (string) full name (as in folder_long) and urlencoded name of the 
 		folder from which we are deleting from.
 		@param $acctnum (int) (optional) acctnum this applies to
-		@param $known_single_delete (boolean) BEING PHASED OUT was used to take abreviated action 
-		if we know this is only a single delete, not just one in a series, this logic being moved elsewhere. 
+		@param $known_single_delete (boolean) this param is BEING PHASED OUT it was used to take abreviated action 
+		if we know this is only a single delete, not just one in a series, BUT this logic has been moved elsewhere. 
 		@discussion If the user pref wants to use the Trash folder, this function will auto-create 
 		that folder if it does not already exist, and move the mail to that trash folder. If 
 		the user pref is to not use a trash folder, or if deleting mail that is IN the trash folder, 
-		then a straight delete is done. Keeps track of folders needing expunging via calls 
-		to "track_expungable_folders", but the calling process is responsible to 
-		call "expunge_expungable_folders" after all deletes have been done.
+		then a straight delete is done. For both moves to trash or straight deletes, this function eventually 
+		calls a sub-function "industrial_interacct_mail_move" to utilize the buffering capability there, 
+		which in turn keeps track of folders needing expunging via calls to "track_expungable_folders". 
+		BUT NOTE that the calling process IS RESPONSIBLE to call "expunge_expungable_folders" after all delete calls have been called.
 		@access public
 		*/
-		function phpgw_delete($msg_num,$flags=0, $currentfolder="", $acctnum='', $known_single_delete=False) 
+		function phpgw_delete($msg_num, $flags=0, $currentfolder="", $acctnum='', $known_single_delete=False) 
 		{
 			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): phpgw_delete: ENTERING <br>'); }
 			
@@ -5393,18 +5445,60 @@ Array
 			&& ((string)$arg_name != '')
 			&& (strstr($arg_name, '][')))
 			{
-				// request for $arg_name['sub-element']
-				if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers): get_isset_arg: $arg_name is requesting sub-level array element(s),  use EVAL, $arg_name: '.serialize($arg_name).'<br>'); }
-				$evaled = '';
-				//$code = '$evaled = $this->a[$acctnum][\'args\']'.$arg_name.';';
-				$code = '$evaled = $this->a[$acctnum]["args"]'.$arg_name.';';
-				if ($this->debug_args_oop_access > 1) { $this->dbug->out(' * $code: '.$code.'<br>'); }
-				eval($code);
-				if ($this->debug_args_oop_access > 1) { $this->dbug->out(' * $evaled: '.$evaled.'<br>'); }
-				if (isset($evaled))
+				if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): get_isset_arg: $arg_name is requesting <font color="green"> sub-levels </font> array element(s), $arg_name: '.serialize($arg_name).'<br>'); }
+				// ["msgball"]["acctnum"]
+				$exploded = array();
+				$exploded = explode('][', $arg_name);
+				// ["msgball"
+				//  "acctnum"]
+				if ((!is_array($exploded))
+				|| (count($exploded) < 2)
+				|| (count($exploded) > 3))
 				{
-					if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers): get_isset_arg: LEAVING returning $evaled: ['.$evaled.'] produced by $code: '.$code.'<br>'); }
-					return True;
+					if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): get_isset_arg: ERROR: exploded has wrong number of elements<br>'); }
+					echo 'error line '.__LINE__.'<br>';
+				}
+				else
+				{
+					// only 2 or 3 levels deep, we can do this making an array
+					for ($i=0;$i<count($exploded);$i++)
+					{
+						// is there actual data in this array element
+						if ((isset($exploded[$i])) && ($exploded[$i] != ''))
+						{
+							$exploded[$i] = str_replace('[', '', $exploded[$i]);
+							$exploded[$i] = str_replace(']', '', $exploded[$i]);
+							$exploded[$i] = str_replace('"', '', $exploded[$i]);
+						}
+						else
+						{
+							if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): get_isset_arg: ERROR: some of exploded was not set<br>'); }
+							echo 'error line '.__LINE__.'<br>';
+						}
+					}
+					if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): get_isset_arg: for this test cleaned $exploded args are ['.htmlspecialchars(serialize($exploded)).']<br>'); }
+					// now we have the 2 or 3 things we need
+					if (count($exploded) == 2)
+					{
+						$thing1 = $exploded[0];
+						$thing2 = $exploded[1];
+						if (isset($this->a[$acctnum]['args'][$thing1][$thing2]))
+						{
+							if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers): get_isset_arg: LEAVING returning TRUE for isset($this->a['.$acctnum.'][args]['.$thing1.']['.$thing2.'])<br>'); }
+							return True;
+						}
+					}
+					elseif (count($exploded) == 3)
+					{
+						$thing1 = $exploded[0];
+						$thing2 = $exploded[1];
+						$thing3 = $exploded[2];
+						if (isset($this->a[$acctnum]['args'][$thing1][$thing2][$thing3]))
+						{
+							if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers): get_isset_arg: LEAVING returning TRUE for isset($this->a['.$acctnum.'][args]['.$thing1.']['.$thing2.']['.$thing3.'])<br>'); }
+							return True;
+						}
+					}
 				}
 			}
 			// $arg_name has NO sub-levels
@@ -5417,7 +5511,7 @@ Array
 			elseif ((isset($this->a[$acctnum]['args'][$arg_name][$extra_keys]))
 			&& ($extra_keys))
 			{
-				if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers): get_isset_arg: LEAVING (using EXTRA_KEYS) returning $this->a[$acctnum('.$acctnum.')][args][$arg_name][$extra_keys]: '.$this->a[$acctnum]['args'][$arg_name][$extra_keys].'<br>'); }
+				if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers): get_isset_arg: LEAVING <font color="red">(using DEPRECIATED arg $EXTRA_KEYS) </font> returning $this->a[$acctnum('.$acctnum.')][args][$arg_name][$extra_keys]: '.$this->a[$acctnum]['args'][$arg_name][$extra_keys].'<br>'); }
 				return True;
 			}
 			// if we get here, it was not set
@@ -5432,6 +5526,8 @@ Array
 		@param $acctnum  (int) OPTIONAL 
 		@result boolean True if $arg_name existed and was made unset, False on failure, such as $arg_name not 
 		being set in the first place. This function can not unset something that does not exist to begin with.
+		NOTE right now ther is NO call to this that requires more than 1 level array, ie it is never called needing to 
+		unset sub-level array data, although the code for it is here.
 		@author Angles
 		@discussion ?
 		@access public
@@ -5451,33 +5547,117 @@ Array
 			&& ((string)$arg_name != '')
 			&& (strstr($arg_name, '][')))
 			{
-				// make it equal a blank string
-				$code = '$this->a[$acctnum]["args"]'.$arg_name.' = "";';
-				if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): unset_arg (sublevels): $arg_name is requesting sub-level array element(s),  use EVAL, $arg_name: '.serialize($arg_name).'<br>'); }
-				if ($this->debug_args_oop_access > 1) { $this->dbug->out(' unset_arg (sublevels) * $code: '.$code.'<br>'); }
-				eval($code);
-				// unset it
-				$code = 'unset($this->a[$acctnum]["args"]'.$arg_name.');';
-				if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): unset_arg (sublevels): $arg_name is requesting sub-level array element(s),  use EVAL, $arg_name: '.serialize($arg_name).'<br>'); }
-				if ($this->debug_args_oop_access > 1) { $this->dbug->out(' unset_arg (sublevels) * $code: '.$code.'<br>'); }
-				eval($code);
-				
-				// now were we successful?
-				$code = '$evaled = isset($this->a[$acctnum]["args"]'.$arg_name.');';
-				if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): unset_arg (sublevels): VERIFY that we succeeded, again use EVAL, $arg_name: '.serialize($arg_name).'<br>'); }
-				$evaled = '';
-				if ($this->debug_args_oop_access > 1) { $this->dbug->out(' unset_arg(sublevels): (VERIFY) * $code: '.$code.'<br>'); }
-				eval($code);
-				if ($this->debug_args_oop_access > 1) { $this->dbug->out(' unset_arg(sublevels): (VERIFY) * $evaled: '.$evaled.'<br>'); }
-				if (isset($evaled))
+				$exploded = array();
+				$exploded = explode('][', $arg_name);
+				// ["msgball"
+				//  "acctnum"]
+				if ((!is_array($exploded))
+				|| (count($exploded) < 2)
+				|| (count($exploded) > 3))
 				{
-					if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): unset_arg (sublevels): LEAVING returning False, FAILED to unset arg, because VERIFY showed $evaled is still set<br>'); } 
-					return False;
+					if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): unset_arg: ERROR: exploded has wrong number of elements<br>'); }
+					echo 'error line '.__LINE__.'<br>';
 				}
 				else
 				{
-					if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): unset_arg (sublevels): LEAVING returning True, because VERIFY showed $evaled is unset<br>'); } 
-					return True;
+					/*
+					// NO NEED FOR REFERENCE USE HERE - what does unset(reference) really do anyway?
+					// only 2 or 3 levels deep, we can do this making an array
+					if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): unset_arg: $arg_name has <font color="green"> sub-levels </font> <br>'); }
+					for ($i=0;$i<count($exploded);$i++)
+					{
+						// is there actual data in this array element
+						if ((isset($exploded[$i])) && ($exploded[$i] != ''))
+						{
+							$exploded[$i] = str_replace('[', '', $exploded[$i]);
+							$exploded[$i] = str_replace(']', '', $exploded[$i]);
+							$exploded[$i] = str_replace('"', '', $exploded[$i]);
+						}
+						else
+						{
+							if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): unset_arg: ERROR: some of exploded was not set<br>'); }
+							echo 'error line '.__LINE__.'<br>';
+						}
+					}
+					// try using REFERENCE
+					if (count($exploded) == 2)
+					{
+						$thing1 = $exploded[0];
+						$thing2 = $exploded[1];
+						$ref_unset_me =& $this->a[$acctnum]['args'][$thing1][$thing2];
+						
+					}
+					elseif (count($exploded) == 3)
+					{
+						$thing1 = $exploded[0];
+						$thing2 = $exploded[1];
+						$thing3 = $exploded[2];
+						$ref_unset_me =& $this->a[$acctnum]['args'][$thing1][$thing2][$thing3];
+					}
+					else
+					{
+						if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): unset_arg: ERROR: some of exploded was not set<br>'); }
+						echo 'error line '.__LINE__.'<br>';
+					}
+					// make it equal a blank string
+					$ref_unset_me = '';
+					// unset it (aka UNLINK)
+					unset($ref_unset_me);
+					// now were we successful?
+					if (isset($ref_unset_me))
+					{
+						if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): unset_arg (sublevels): LEAVING returning False, FAILED to unset arg, because VERIFY showed what $ref_unset_me points to is still set<br>'); } 
+						return False;
+					}
+					else
+					{
+						if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): unset_arg (sublevels): LEAVING returning True, because VERIFY showed what $ref_unset_me points to is unset<br>'); } 
+						return True;
+					}
+					*/
+					// not using reference
+					// now we have the 2 or 3 things we need
+					if (count($exploded) == 2)
+					{
+						$thing1 = $exploded[0];
+						$thing2 = $exploded[1];
+						// make it equal a blank string
+						$this->a[$acctnum]['args'][$thing1][$thing2] = '';
+						// unset it
+						unset($this->a[$acctnum]['args'][$thing1][$thing2]);
+						// now were we successful?
+						if (isset($this->a[$acctnum]['args'][$thing1][$thing2]))
+						{
+							if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): unset_arg (sublevels): LEAVING returning False, FAILED to unset arg, because VERIFY showed $this->a[$acctnum][args][$thing1][$thing2] is still set<br>'); } 
+							return False;
+						}
+						else
+						{
+							if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): unset_arg (sublevels): LEAVING returning True, because VERIFY showed $this->a[$acctnum][args][$thing1][$thing2] is unset<br>'); } 
+							return True;
+						}
+					}
+					elseif (count($exploded) == 3)
+					{
+						$thing1 = $exploded[0];
+						$thing2 = $exploded[1];
+						$thing3 = $exploded[2];
+						// make it equal a blank string
+						$this->a[$acctnum]['args'][$thing1][$thing2][$thing3] = '';
+						// unset it
+						unset($this->a[$acctnum]['args'][$thing1][$thing2][$thing3]);
+						// now were we successful?
+						if (isset($this->a[$acctnum]['args'][$thing1][$thing2][$thing3]))
+						{
+							if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): unset_arg (sublevels): LEAVING returning False, FAILED to unset arg, because VERIFY showed $this->a[$acctnum][args][$thing1][$thing2][$thing3] is still set<br>'); } 
+							return False;
+						}
+						else
+						{
+							if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): unset_arg (sublevels): LEAVING returning True, because VERIFY showed $this->a[$acctnum][args][$thing1][$thing2][$thing3] is unset<br>'); } 
+							return True;
+						}
+					}
 				}
 			}
 			elseif ((isset($arg_name))
@@ -5549,64 +5729,80 @@ Array
 					if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers): get_arg_value: LEAVING with HANDOFF to get_verified_trash_folder_long()<br>'); }
 					return $this->get_verified_trash_folder_long($acctnum);
 				}
-				/*
-				elseif ($arg_name == 'folder')
+				// ----  DEPRECIATED HANDLER (arg_name has sub-levels + uses extrakeys) ----
+				elseif ((strstr($arg_name, ']['))
+				&& ($extra_keys))
 				{
-					if ($this->debug_args_oop_access > 1) { echo 'mail_msg(_wrappers): get_arg_value: request for backwards compat arg "folder"<br>'; }
-					// look for foder in (1) msgball , then (2) fldball , then (3) return default value INBOX
-					if ( (isset($this->a[$acctnum]['args']['msgball']['folder']))
-					&& ($this->a[$acctnum]['args']['msgball']['folder'] != '') )
-					{
-						$folder_arg_decision = $this->a[$acctnum]['args']['msgball']['folder'];
-						if ($this->debug_args_oop_access > 1) { echo 'mail_msg(_wrappers): get_arg_value: request for "folder" will use value in $this->a['.$acctnum.'][args][msgball][folder] = ['.$folder_arg_decision.']<br>'; }
-					}
-					elseif ( (isset($this->a[$acctnum]['args']['fldball']['folder']))
-					&& ($this->a[$acctnum]['args']['fldball']['folder'] != '') )
-					{
-						$folder_arg_decision = $this->a[$acctnum]['args']['fldball']['folder'];
-						if ($this->debug_args_oop_access > 1) { echo 'mail_msg(_wrappers): get_arg_value: request for "folder" will use value in $this->a['.$acctnum.'][args][fldball][folder] = ['.$folder_arg_decision.']<br>'; }
-					}
-					else
-					{
-						if ($this->debug_args_oop_access > 1) { echo 'mail_msg(_wrappers): get_arg_value: request for "folder" using "INBOX", found nothing in [args][msgball][folder] nor [args][fldball][folder]<br>'; }
-						$folder_arg_decision = 'INBOX';
-					}
-					if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING, returning (backward compat) $folder_arg_decision ['.$folder_arg_decision.']<br>'; }
-					return $folder_arg_decision;
+					if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers): get_arg_value('.__LINE__.'): <font color="red">ERROR using DEPRECIATED arg</font> $extra_keys: '.serialize($extra_keys).'<br>'); }
+					echo 'error line '.__LINE__.'<br>';
 				}
-				*/
 				// ----  STANDARD HANDLER (arg_name has sub-levels) ----
 				elseif (strstr($arg_name, ']['))
 				{
-					if ($extra_keys)
+					if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): get_arg_value: $arg_name is requesting <font color="green"> sub-levels </font> array element(s), $arg_name: '.serialize($arg_name).'<br>'); }
+					// ["msgball"]["acctnum"]
+					$exploded = array();
+					$exploded = explode('][', $arg_name);
+					// ["msgball"
+					//  "acctnum"]
+					if ((!is_array($exploded))
+					|| (count($exploded) < 2)
+					|| (count($exploded) > 3))
 					{
-						// request for $arg_name['sub-element'] [$extra_keys]
-						// represents code which typically is an array referencing a system/api property 
-						$code = '$evaled = $this->a[$acctnum]["args"]'.$arg_name.'[$extra_keys];';
+						if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): get_arg_value: ERROR: exploded has wrong number of elements<br>'); }
+						echo 'error line '.__LINE__.'<br>';
 					}
 					else
 					{
-						// request for $arg_name['sub-element']
-						// represents code which typically is an array referencing a system/api property
-						//$code = '$evaled = $this->a[$acctnum][\'args\']'.$arg_name.';';
-						$code = '$evaled = $this->a[$acctnum]["args"]'.$arg_name.';';
-					}
-					if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers): get_arg_value: $arg_name is requesting sub-level array element(s),  use EVAL, $arg_name: '.serialize($arg_name).'<br>'); }
-					$evaled = '';
-					if ($this->debug_args_oop_access > 1) { $this->dbug->out(' * $code: '.$code.'<br>'); }
-					eval($code);
-					if ($this->debug_args_oop_access > 1) { $this->dbug->out(' * $evaled: '.$evaled.'<br>'); }
-					if ((isset($evaled))
-					&& (!$extra_keys)
-					&& (strstr($arg_name, 'folder_status_info')))
-					{
-						if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers): get_arg_value: sublevels with folder_status_info NEED values to be serialized since we eval it, so unserialize(base64_decode($evaled)) now: <br>'); }
-						$evaled = unserialize(base64_decode($evaled));
-					}
-					if (isset($evaled))
-					{
-						if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers): get_arg_value: LEAVING returning $evaled: ['.$evaled.'] produced by $code: '.$code.'<br>'); }
-						return $evaled;
+						// only 2 or 3 levels deep, we can do this making an array
+						for ($i=0;$i<count($exploded);$i++)
+						{
+							// is there actual data in this array element
+							if ((isset($exploded[$i])) && ($exploded[$i] != ''))
+							{
+								$exploded[$i] = str_replace('[', '', $exploded[$i]);
+								$exploded[$i] = str_replace(']', '', $exploded[$i]);
+								$exploded[$i] = str_replace('"', '', $exploded[$i]);
+							}
+							else
+							{
+								if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): get_arg_value: ERROR: some of exploded was not set<br>'); }
+								echo 'error line '.__LINE__.'<br>';
+							}
+						}
+						// now we have the 2 or 3 things we need
+						if (count($exploded) == 2)
+						{
+							$thing1 = $exploded[0];
+							$thing2 = $exploded[1];
+							$got_value = $this->a[$acctnum]['args'][$thing1][$thing2];
+							if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): get_arg_value: $this->a[$acctnum][args][$thing1][$thing2] is '.serialize($this->a[$acctnum]['args'][$thing1][$thing2]).'<br>'); }
+						}
+						elseif (count($exploded) == 3)
+						{
+							$thing1 = $exploded[0];
+							$thing2 = $exploded[1];
+							$thing3 = $exploded[2];
+							$got_value = $this->a[$acctnum]['args'][$thing1][$thing2][$thing3];
+							if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): get_arg_value: $this->a[$acctnum][args][$thing1][$thing2][$thing3] is '.serialize($this->a[$acctnum]['args'][$thing1][$thing2][$thing3]).'<br>'); }
+						}
+						else
+						{
+							if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): get_arg_value: ERROR: some of exploded was not set<br>'); }
+							echo 'error line '.__LINE__.'<br>';
+						}
+						if ((isset($got_value))
+						&& (strstr($arg_name, 'folder_status_info')))
+						{
+							if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): get_arg_value: sublevels with folder_status_info NEED values to be serialized, so <font color="green">unserialize(base64_decode($got_value)) </font> now: <br>'); }
+							$got_value = unserialize(base64_decode($got_value));
+						}
+						if (isset($got_value))
+						{
+							if ($this->debug_args_oop_access > 0 && is_array($got_value)) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): get_arg_value: LEAVING returning $got_value array DUMP:',$got_value); }
+							if ($this->debug_args_oop_access > 0 && !is_array($got_value)) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): get_arg_value: LEAVING returning $got_value: ['.$got_value.'] <br>'); }
+							return $got_value;
+						}
 					}
 				}
 				// ----  STANDARD HANDLER (arg_name has NO sub-levels) ----
@@ -5707,7 +5903,6 @@ Array
 				return $this->nothing;
 			}
 		}
-
 		
 		/*!
 		@function get_arg_value_ref
@@ -5720,6 +5915,7 @@ Array
 		$this->nothing on failure.
 		@author Angles
 		*/
+		/*
 		function &get_arg_value_ref($arg_name='',$acctnum='')
 		{
 			if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers): get_arg_value_ref: ENTERING ($arg_name: ['.$arg_name.'], $acctnum: ['.$acctnum.'] )<br>'); }
@@ -5781,6 +5977,7 @@ Array
 			if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers): get_arg_value_ref: if we get here we probably tried but failed to generate a arg value (tried a "special handler"), so returning ref to $this->nothing ['.$this->nothing.']<br>'); }
 			return $this->nothing;
 		}
+		*/
 
 		/*!
 		@function set_arg_value
@@ -5810,45 +6007,82 @@ Array
 			&& ((string)$arg_name != '')
 			&& (strstr($arg_name, '][')))
 			{
-				// NOTE $this_value BETTER BE SIMPLE string or int if you are doing it like this
-				if (strstr($arg_name, 'folder_status_info'))
+				// only 2 or 3 levels deep, we can do this making an array
+				if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): set_arg_value: $arg_name has <font color="green"> sub-levels </font> <br>'); }
+				$exploded = array();
+				$exploded = explode('][', $arg_name);
+				// ["msgball"
+				//  "acctnum"]
+				if ((!is_array($exploded))
+				|| (count($exploded) < 2)
+				|| (count($exploded) > 3))
 				{
-					$code = '$this->a[$acctnum]["args"]'.$arg_name.' = "'.base64_encode(serialize($this_value)).'";';
-				}
-				elseif (is_string($this_value))
-				{
-					$code = '$this->a[$acctnum]["args"]'.$arg_name.' = "'.$this_value.'";';
+					if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): set_arg_value: ERROR: exploded has wrong number of elements<br>'); }
+					echo 'error line '.__LINE__.'<br>';
 				}
 				else
 				{
-					$code = '$this->a[$acctnum]["args"]'.$arg_name.' = '.$this_value.';';
+					for ($i=0;$i<count($exploded);$i++)
+					{
+						// is there actual data in this array element
+						if ((isset($exploded[$i])) && ($exploded[$i] != ''))
+						{
+							$exploded[$i] = str_replace('[', '', $exploded[$i]);
+							$exploded[$i] = str_replace(']', '', $exploded[$i]);
+							$exploded[$i] = str_replace('"', '', $exploded[$i]);
+						}
+						else
+						{
+							if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): set_arg_value: ERROR: some of exploded was not set<br>'); }
+							echo 'error line '.__LINE__.'<br>';
+						}
+					}
 				}
-				if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): set_arg_value (sublevels): $arg_name is requesting sub-level array element(s),  use EVAL, $arg_name: '.serialize($arg_name).'<br>'); }
-				if ($this->debug_args_oop_access > 1) { $this->dbug->out(' set_arg_value (sublevels) * $code: '.$code.'<br>'); }
-				eval($code);
-				// additional handling to get an array into an evaled string
-				//if (is_array($this_value))
-				//{
-				//	$code = '$this->a[$acctnum]["args"]'.$arg_name.' = unserialize($this->a[$acctnum]["args"]'.$arg_name.');';
-				//	if ($this->debug_args_oop_access > 1) { echo ' additional array handling: set_arg_value (sublevels) * $code: '.$code.'<br>'; }
-				//	eval($code);
-				//}
-				
-				// now were we successful?
-				$code = '$evaled = $this->a[$acctnum]["args"]'.$arg_name.';';
-				if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): set_arg_value (sublevels): VERIFY that we succeeded, again use EVAL, $arg_name: '.serialize($arg_name).'<br>'); }
-				$evaled = '';
-				if ($this->debug_args_oop_access > 1) { $this->dbug->out(' set_arg_value(sublevels): (VERIFY) * $code: '.$code.'<br>'); }
-				eval($code);
-				if ($this->debug_args_oop_access > 1) { $this->dbug->out(' set_arg_value(sublevels): (VERIFY) * $evaled (seriialized for this display): '.serialize($evaled).'<br>'); }
-				if (isset($evaled))
+				// try using REFERENCE, it might be slow but it reduces code replication here
+				if (count($exploded) == 2)
 				{
-					if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): set_arg_value (sublevels): LEAVING returning True, VERIFY indicates $evaled was indeded set<br>'); } 
+					$thing1 = $exploded[0];
+					$thing2 = $exploded[1];
+					$ref_set_me =& $this->a[$acctnum]['args'][$thing1][$thing2];
+					if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): set_arg_value: $ref_set_me =& $this->a['.$acctnum.'][args]['.$thing1.']['.$thing2.']  <br>'); }
+				}
+				elseif (count($exploded) == 3)
+				{
+					$thing1 = $exploded[0];
+					$thing2 = $exploded[1];
+					$thing3 = $exploded[2];
+					$ref_set_me =& $this->a[$acctnum]['args'][$thing1][$thing2][$thing3];
+					if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): set_arg_value: $ref_set_me =& $this->a['.$acctnum.'][args]['.$thing1.']['.$thing2.']['.$thing3.']  <br>'); }
+				}
+				else
+				{
+					if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): set_arg_value: ERROR: some of exploded was not set, $exploded DUMP', $exploded); }
+					echo 'error line '.__LINE__.'<br>';
+				}
+				// NOTE $this_value BETTER BE SIMPLE string or int if you are doing it like this
+				if (strstr($arg_name, 'folder_status_info'))
+				{
+					$ref_set_me = base64_encode(serialize($this_value));
+				}
+				elseif (is_string($this_value))
+				{
+					$ref_set_me = $this_value;
+				}
+				else
+				{
+					$ref_set_me = $this_value;
+				}
+				if ($this->debug_args_oop_access > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): set_arg_value (sublevels): $arg_name is requesting sub-level array element(s), $arg_name: '.serialize($arg_name).'<br>'); }
+				// now were we successful?
+				if ($this->debug_args_oop_access > 1) { $this->dbug->out(' set_arg_value(sublevels): (VERIFY) * $ref_set_me (serialized for this display): '.serialize($ref_set_me).'<br>'); }
+				if (isset($ref_set_me))
+				{
+					if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): set_arg_value (sublevels): LEAVING returning True, VERIFY indicates $ref_set_me was indeded set<br>'); } 
 					return True;
 				}
 				else
 				{
-					if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): set_arg_value (sublevels): LEAVING returning False, FAILED to set arg value, because VERIFY showed $evaled was unset<br>'); } 
+					if ($this->debug_args_oop_access > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): set_arg_value (sublevels): LEAVING returning False, FAILED to set arg value, because VERIFY showed $ref_set_me was unset<br>'); } 
 					return False;
 				}
 			}

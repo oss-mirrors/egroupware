@@ -492,6 +492,89 @@
 					if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: delete_single_msg: ('.__LINE__.'): $GLOBALS[phpgw]->msg->expunge_expungable_folders() returns ['.serialize($did_expunge).']<br>'); }
 				}
 			}
+			// ---- EMPTY FOLDER ex. EMPTY TRASH ----
+			elseif ($GLOBALS['phpgw']->msg->get_arg_value('what') == 'empty_folder')
+			{
+				/*!
+				@capability boaction.empty_folder  code for emptying trash folder for example
+				@abstract Inside function "delmov", when GPC var "what" has value "empty_folder" 
+				@param get_arg_value("fldball") (array of type fldball) the folder to delete all messages in.
+				@discussion WHEN CALLED: call from trash folder, and provide these 2 params.
+				*/
+				
+				if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): get_arg_value(what) == "empty_folder") <br>'); }
+				// this is called from the index pge after you check some boxes and click "delete" button
+				$fldball = array();
+				$fldball = $GLOBALS['phpgw']->msg->get_arg_value('fldball');
+				if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): empty_folder: pre-delete $fldball[] DUMP:', $fldball); }
+				
+				// get general stats on the folder
+				$folder_info = $GLOBALS['phpgw']->msg->get_folder_status_info($fldball);
+				if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): empty_folder: pre-delete $folder_info DUMP:', $folder_info); }
+				
+				if ($folder_info['number_all'] == 0)
+				{
+					// nothing to delete, folder already empty
+					if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): empty_folder: nothing to delete, folder already empty <br>'); }
+					// used for number deleted message
+					$i = 0;
+					// used for the redirection back to the page
+					$this_acctnum = (int)$fldball['acctnum'];
+					// do we need to prep folder out on a fldball we just got?
+					$this_folder = $GLOBALS['phpgw']->msg->prep_folder_out($fldball['folder']);
+				}
+				else
+				{
+					// get msgball list of the folder we are to clean
+					// although we MUST be in the folder in question,  we still supply folder and acctnum specifically
+					$del_msgball_list = array();
+					$del_msgball_list = $GLOBALS['phpgw']->msg->get_msgball_list($fldball['acctnum'], $fldball['folder']);
+					if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): empty_folder: pre-delete $del_msgball_list DUMP:', $del_msgball_list); }
+					
+					$loops = count($del_msgball_list);
+					for ($i = 0; $i < $loops; $i++)
+					{
+						if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: (empty_folder) in mail delete loop ['.(string)($i+1).'] of ['.$loops.']<br>'); }
+						// turn the string URI type data into a single msgball item in its full  array form.
+						$uri_msgball = $del_msgball_list[$i];
+						if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): empty_folder: $uri_msgball ['.htmlspecialchars($uri_msgball).']: <br>'); }
+						$full_msgball = $GLOBALS['phpgw']->msg->ball_data_parse_str($uri_msgball);
+						if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: (empty_folder) in mail delete loop ['.(string)($i+1).'] of ['.$loops.'], $full_msgball DUMP:', $full_msgball); }
+						$this_msgnum = $full_msgball['msgnum'];
+						$this_folder = $full_msgball['folder'];
+						$this_acctnum = (int)$full_msgball['acctnum'];
+						$did_delete = $GLOBALS['phpgw']->msg->phpgw_delete($this_msgnum, '', $this_folder,$this_acctnum);
+						if ($did_delete == False)
+						{
+							// error
+							if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: (empty_folder) ***ERROR**** $GLOBALS[phpgw]->msg->phpgw_delete() returns FALSE, ERROR, break out of loop<br>'
+									.' * * Server reports error: '.$GLOBALS['phpgw']->msg->phpgw_server_last_error().'<br>'); }
+							break;
+						}
+						else
+						{
+							if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: (empty_folder) $GLOBALS[phpgw]->msg->phpgw_delete() returns True (so it buffered the command, really does not mean anything not that we buffer commands)<br>'); }
+						}
+					}
+					
+					// ok, done deleting, now expunge
+					if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): done empty_folder, now call $GLOBALS[phpgw]->msg->expunge_expungable_folders<br>'); }
+					$did_expunge = False;
+					$did_expunge = $GLOBALS['phpgw']->msg->expunge_expungable_folders('email.boaction.delmov empty_folder LINE '.__LINE__);
+					if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov "empty_folder"('.__LINE__.'): $GLOBALS[phpgw]->msg->expunge_expungable_folders() returns ['.serialize($did_expunge).']<br>'); }
+				}
+				
+				$totaldeleted = $i;
+				$this->redirect_to = $GLOBALS['phpgw']->link(
+								'/index.php',
+								 'menuaction=email.uiindex.index'
+								.'&fldball[folder]='.$this_folder
+								.'&fldball[acctnum]='.$this_acctnum
+								.'&td='.$totaldeleted
+								.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+								.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+								.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+			}
 			else
 			{
 				if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): get_arg_value(what) == unknown_value<br>'); }
@@ -610,7 +693,7 @@
 				unset($GLOBALS['phpgw']->msg);
 			}
 			// shut down this transaction
-			if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): LEAVING for <b>real</b> with $GLOBALS[phpgw]->common->phpgw_exit(False)<br>'); }
+			if ($this->debug > 0 && is_object($GLOBALS['phpgw']->msg)) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): LEAVING for <b>real</b> with $GLOBALS[phpgw]->common->phpgw_exit(False)<br>'); }
 			$GLOBALS['phpgw']->common->phpgw_exit(False);
 		}
 		

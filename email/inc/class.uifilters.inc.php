@@ -421,6 +421,21 @@
 				$action_rownum = (string)$i;
 				$actionbox_judgement_name = 'action_'.$action_rownum.'[judgement]';
 				$this->tpl->set_var('actionbox_judgement_name',$actionbox_judgement_name);
+				// what should be selected, fileinto is default
+				// right now only fileinto and disgard are coded for
+				$discard_selected = '';
+				$fileinto_selected = '';
+				if ($this->bo->all_filters[$filter_num]['actions'][$i]['judgement'] == 'discard')
+				{
+					$discard_selected = ' selected';
+				}
+				else
+				{
+					// this is default
+					$fileinto_selected = ' selected';
+				}
+				$this->tpl->set_var('discard_selected',$discard_selected);
+				$this->tpl->set_var('fileinto_selected',$fileinto_selected);
 				// 1st row does NOT have the IGNORE_ME option in the actionbox
 				if ($i == 0)
 				{

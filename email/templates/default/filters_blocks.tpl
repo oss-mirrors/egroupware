@@ -22,10 +22,10 @@
 <!-- BEGIN B_action_no_ignore -->
 <select name="{actionbox_judgement_name}">
 	<!-- <option value="keep">{lang_keep}</option> -->
-	<!-- <option value="discard">{lang_discard}</option> -->
+	<option value="discard" {discard_selected}>{lang_discard}</option>
 	<!-- <option value="reject">{lang_reject}</option> -->
 	<!-- <option value="redirect">{lang_redirect}</option> -->
-	<option value="fileinto" selected>{lang_fileinto}</option>
+	<option value="fileinto" {fileinto_selected}>{lang_fileinto}</option>
 	<!-- <option value="flag">{lang_flag}</option> -->
 </select>
 
@@ -37,7 +37,7 @@
 <select name="{actionbox_judgement_name}">
 	<option value="ignore_me" selected>&lt;{lang_ignore_me2}&gt;</option>
 	<!-- <option value="keep">{lang_keep}</option> -->
-	<!-- <option value="discard">{lang_discard}</option> -->
+	<option value="discard">{lang_discard}</option>
 	<!-- <option value="reject">{lang_reject}</option> -->
 	<!-- <option value="redirect">{lang_redirect}</option> -->
 	<option value="fileinto">{lang_fileinto}</option>

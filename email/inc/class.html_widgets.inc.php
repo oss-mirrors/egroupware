@@ -1827,6 +1827,7 @@
 		function get_geek_bar()
 		{
 			$row_on = $GLOBALS['phpgw_info']['theme']['row_on'];
+			$row_off = $GLOBALS['phpgw_info']['theme']['row_off'];
 			$this_server_type = $GLOBALS['phpgw']->msg->get_pref_value('mail_server_type');
 			if (extension_loaded('imap') && function_exists('imap_open'))
 			{
@@ -1834,27 +1835,22 @@
 			}
 			else
 			{
-				$library_usage = 'AM sockets';
+				$library_usage = 'sockets';
 			}
-			$anglemail_table_exists = 'installed';
+			$anglemail_table_exists = 'yes';
 			if ($GLOBALS['phpgw']->msg->so->so_am_table_exists() == False)
 			{
-				$anglemail_table_exists = 'NOT '.$anglemail_table_exists;
+				$anglemail_table_exists = 'no';
 			}
-			$compression = 'NOT available';
-			//if (function_exists('bzcompress'))
-			//{
-			//	$compression = 'bz2';
-			//}
-			//else
+			$compression = 'no';
 			if (function_exists('gzcompress'))
 			{
 				$compression = 'gzip';
 			}
-			$spell_available = 'available';
+			$spell_available = 'yes';
 			if (function_exists('pspell_check') == False)
 			{
-				$spell_available = 'NOT '.$spell_available;
+				$spell_available = 'no';
 			}
 			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt == True)
 			{
@@ -1885,12 +1881,126 @@
 			{
 				$accts_connected = substr($accts_connected,0,-1);
 				$did_connect = 'yes ('.$accts_connected.')';
-				
 			}
 			else
 			{
 				$did_connect = 'no';
 			}
+			
+			// empty trash or empty sent link for this account
+			$show_empty_trash = False;
+			$del_acctnum = $GLOBALS['phpgw']->msg->get_acctnum();
+			// what acct num and name are we dealing with here
+			$this_acct_status = $GLOBALS['phpgw']->msg->extra_and_default_acounts[$del_acctnum]['status'];
+			$this_acct_fullname = $GLOBALS['phpgw']->msg->get_pref_value('fullname', $del_acctnum);
+			if ($GLOBALS['phpgw']->msg->get_pref_value('account_name', $del_acctnum))
+			{
+				$this_acct_fullname = $GLOBALS['phpgw']->msg->get_pref_value('account_name', $del_acctnum);
+			}
+			// do we have folders, does user want trash folder, does that folder exist
+			$del_folder_trash = $this->get_trash_folder_simple($del_acctnum);
+			if ($del_folder_trash)
+			{
+				$querey_fldball = array();
+				$querey_fldball['acctnum'] = $GLOBALS['phpgw']->msg->get_acctnum();
+				$querey_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out($GLOBALS['phpgw']->msg->get_arg_value('folder'));
+				//are we in the trash folder AND we are in the index page
+				if ($GLOBALS['phpgw']->msg->common_folder_is($querey_fldball, 'Trash') == False)
+				{
+					$href_empty_trash = 'not in trash folder';
+				}
+				elseif (($GLOBALS['phpgw']->msg->common_folder_is($querey_fldball, 'Trash') == True)
+				&& (!stristr($_REQUEST['menuaction'],'uiindex.index')))
+				{
+					// we do not want to show empty trash unless in index page (not while viewing an individual message in the trash folder)
+					$href_empty_trash = 'in trash folder but not in index page';
+				}
+				else
+				{
+					// get general stats on the folder
+					$folder_info = $GLOBALS['phpgw']->msg->get_folder_status_info($querey_fldball);
+					if ($folder_info['number_all'] == 0)
+					{
+						$href_empty_trash = 'in trash folder but it is empty';
+					}
+					else
+					{
+						$show_empty_trash = True;
+						$empty_trash_url = $GLOBALS['phpgw']->link('/index.php',array(
+								'menuaction' => 'email.boaction.delmov',
+								'what' => 'empty_folder',
+								'fldball[acctnum]' => $del_acctnum,
+								'fldball[folder]' => $GLOBALS['phpgw']->msg->prep_folder_out($del_folder_trash),
+								// preserve these things for when we return to the message list after the send
+								'sort' => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
+								'order' => $GLOBALS['phpgw']->msg->get_arg_value('order'),
+								'start' => $GLOBALS['phpgw']->msg->get_arg_value('start')
+								));
+						$href_empty_trash = $GLOBALS['phpgw']->msg->href_maketag($empty_trash_url, 'Empty Trash');
+					}
+				}
+			}
+			else
+			{
+				$href_empty_trash = 'no trash folder available';
+			}
+			
+			// empty sent or empty sent link for this account
+			$show_empty_sent = False;
+			// do we have folders, does user want sent folder, does that folder exist
+			$del_folder_sent = $this->get_sent_folder_simple($del_acctnum);
+			if ($del_folder_sent)
+			{
+				$querey_fldball = array();
+				$querey_fldball['acctnum'] = $GLOBALS['phpgw']->msg->get_acctnum();
+				$querey_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out($GLOBALS['phpgw']->msg->get_arg_value('folder'));
+				//are we in the sent folder AND we are in the index page
+				if ($GLOBALS['phpgw']->msg->common_folder_is($querey_fldball, 'Sent') == False)
+				{
+					$href_empty_sent = 'not in sent folder';
+				}
+				elseif (($GLOBALS['phpgw']->msg->common_folder_is($querey_fldball, 'Sent') == True)
+				&& (!stristr($_REQUEST['menuaction'],'uiindex.index')))
+				{
+					// we do not want to show empty sent unless in index page (not while viewing an individual message in the sent folder)
+					$href_empty_sent = 'in sent folder but not in index page';
+				}
+				else
+				{
+					// get general stats on the folder
+					$folder_info = $GLOBALS['phpgw']->msg->get_folder_status_info($querey_fldball);
+					if ($folder_info['number_all'] == 0)
+					{
+						$href_empty_sent = 'in sent folder but it is empty';
+					}
+					else
+					{
+						$show_empty_sent = True;
+						$empty_sent_url = $GLOBALS['phpgw']->link('/index.php',array(
+								'menuaction' => 'email.boaction.delmov',
+								'what' => 'empty_folder',
+								'fldball[acctnum]' => $del_acctnum,
+								'fldball[folder]' => $GLOBALS['phpgw']->msg->prep_folder_out($del_folder_sent),
+								// preserve these things for when we return to the message list after the send
+								'sort' => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
+								'order' => $GLOBALS['phpgw']->msg->get_arg_value('order'),
+								'start' => $GLOBALS['phpgw']->msg->get_arg_value('start')
+								));
+						$href_empty_sent = $GLOBALS['phpgw']->msg->href_maketag($empty_sent_url, 'Empty Sent');
+					}
+				}
+			}
+			else
+			{
+				$href_empty_sent = 'no sent folder available';
+			}
+			
+			
+			$extra_acct_info = 'for acct['.$del_acctnum.'] named ['.$this_acct_fullname.'] with status ['.$this_acct_status.']';
+			
+			// to debug force show trash row, uncomment this
+			//$show_empty_trash = True;
+			//$show_empty_sent = True;
 			
 			$geek_bar = 
 			'<br>
@@ -1899,19 +2009,147 @@
 				<td width="100%" align="left">'."\r\n"
 					//.'<small style="font-size: 10pt;">'
 					.'<small style="font-size: xx-small;">'
-					.'<font color="brown">GeekBar:</font> '
-					.'Server Type: ['.$this_server_type.'] -- '
-					.'IMAP library: ['.$library_usage.'] -- '
-					.'AngleMail Table: ['.$anglemail_table_exists.'] -- '
+					.'<font color="brown">Info:</font> '
+					.'server: ['.$this_server_type.'] -- '
+					.'imap: ['.$library_usage.'] -- '
+					.'AM table: ['.$anglemail_table_exists.'] -- '
 					.'compression: ['.$compression.'] -- '
 					.'spelling: ['.$spell_available.'] -- '
-					.'using XSLT: ['.$using_xslt.'] -- '
+					.'xslt: ['.$using_xslt.'] -- '
 					.'did connect: ['.$did_connect.'] '
 					.'</small>'
 				."\r\n"
-			.'	</td>
-			</table>';
+			.'	</td>'
+			.'</tr>'
+			."\r\n";
+			if (($show_empty_trash == True)
+			|| ($show_empty_sent == True))
+			{
+				if ($show_empty_trash == True)
+				{
+					$href_empty_this = $href_empty_trash;
+				}
+				elseif ($show_empty_sent == True)
+				{
+					$href_empty_this = $href_empty_sent;
+				}
+				$geek_bar .= 
+				'<tr bgcolor="'.$row_off.'" class="row_off">
+					<td width="100%" align="left">'."\r\n"
+						//.'<small style="font-size: xx-small;">'
+						.$href_empty_this.' '.$extra_acct_info
+						//.'</small>'
+					."\r\n"
+				.'	</td>'
+				.'</tr>';
+			}
+			$geek_bar .= '</table>';
+			
 			return $geek_bar;
+		}
+		
+		/*!
+		@function get_trash_folder_simple
+		@abstract TESTING if mailserver supports folders and preference is to use trash and trash folder already exists
+		@author Angles
+		*/
+		function get_trash_folder_simple($acctnum='')
+		{
+			$debug_get_trash = 0;
+			//$debug_get_trash = 2;
+			
+			if ($debug_get_trash > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_trash_folder_simple: ENTERING <br>'); }
+			
+			if (!(isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $GLOBALS['phpgw']->msg->get_acctnum();
+			}
+			if ($debug_get_trash > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_trash_folder_simple: using $acctnum ['.$acctnum.'] <br>'); }
+			// does the mailserver have folders, if not then there is NO trash folder no matter what
+			if ($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders($acctnum) == False)
+			{
+				if ($debug_get_trash > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_trash_folder_simple: LEAVING mailserver does NOT support folders, return blank <br>'); }
+				return '';
+			}
+			
+			// are we even supposed to use a trash folder
+			if ( (!$GLOBALS['phpgw']->msg->get_isset_pref('use_trash_folder', $acctnum))
+			|| (!$GLOBALS['phpgw']->msg->get_pref_value('use_trash_folder', $acctnum)) )
+			{
+				// exit, trash folder pref is NOT TO USE ONE, so we certainly do not have a "verified" name in this case
+				if ($debug_get_trash > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_trash_folder_simple: LEAVING mailserver support folders BUT preference is not to use a trash folder, return blank <br>'); }
+				return '';
+			}
+			
+			// does the trash folder actually exist ?
+			if ($debug_get_trash > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_trash_folder_simple: $GLOBALS[phpgw]->msg->get_pref_value("trash_folder_name", '.$acctnum.') returns ['.htmlspecialchars($GLOBALS['phpgw']->msg->get_pref_value('trash_folder_name', $acctnum)).'] <br>'); }
+			// this returns a good folder long name if the trash folder exists
+			$trash_folder_long = $GLOBALS['phpgw']->msg->folder_lookup('', $GLOBALS['phpgw']->msg->get_pref_value('trash_folder_name', $acctnum));
+			if ($debug_get_trash > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_trash_folder_simple: folder_lookup returns $trash_folder_long ['.htmlspecialchars($trash_folder_long).'] <br>'); }
+			if ((isset($trash_folder_long))
+			&& ($trash_folder_long != ''))
+			{
+				if ($debug_get_trash > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_trash_folder_simple: LEAVING mailserver support folders, and preference is to use a trash folder, and it already exists, return $trash_folder_long ['.htmlspecialchars($trash_folder_long).'] <br>'); }
+				return $trash_folder_long;
+			}
+			else
+			{
+				if ($debug_get_trash > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_trash_folder_simple: LEAVING mailserver support folders, and preference is to use a trash folder, but trash folder does not exist, return blank <br>'); }
+				return '';
+			}
+		}
+
+		/*!
+		@function get_sent_folder_simple
+		@abstract TESTING if mailserver supports folders and preference is to use trash and trash folder already exists
+		@author Angles
+		*/
+		function get_sent_folder_simple($acctnum='')
+		{
+			$debug_get_sent = 0;
+			//$debug_get_sent = 2;
+			
+			if ($debug_get_sent > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_sent_folder_simple: ENTERING <br>'); }
+			
+			if (!(isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $GLOBALS['phpgw']->msg->get_acctnum();
+			}
+			if ($debug_get_sent > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_sent_folder_simple: using $acctnum ['.$acctnum.'] <br>'); }
+			// does the mailserver have folders, if not then there is NO sent folder no matter what
+			if ($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders($acctnum) == False)
+			{
+				if ($debug_get_sent > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_sent_folder_simple: LEAVING mailserver does NOT support folders, return blank <br>'); }
+				return '';
+			}
+			
+			// are we even supposed to use a sent folder
+			if ( (!$GLOBALS['phpgw']->msg->get_isset_pref('use_sent_folder', $acctnum))
+			|| (!$GLOBALS['phpgw']->msg->get_pref_value('use_sent_folder', $acctnum)) )
+			{
+				// exit, sent folder pref is NOT TO USE ONE, so we certainly do not have a "verified" name in this case
+				if ($debug_get_sent > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_sent_folder_simple: LEAVING mailserver support folders BUT preference is not to use a sent folder, return blank <br>'); }
+				return '';
+			}
+			
+			// does the sent folder actually exist ?
+			if ($debug_get_sent > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_sent_folder_simple: $GLOBALS[phpgw]->msg->get_pref_value("sent_folder_name", '.$acctnum.') returns ['.htmlspecialchars($GLOBALS['phpgw']->msg->get_pref_value('sent_folder_name', $acctnum)).'] <br>'); }
+			// this returns a good folder long name if the sent folder exists
+			$sent_folder_long = $GLOBALS['phpgw']->msg->folder_lookup('', $GLOBALS['phpgw']->msg->get_pref_value('sent_folder_name', $acctnum));
+			if ($debug_get_sent > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_sent_folder_simple: folder_lookup returns $sent_folder_long ['.htmlspecialchars($sent_folder_long).'] <br>'); }
+			if ((isset($sent_folder_long))
+			&& ($sent_folder_long != ''))
+			{
+				if ($debug_get_sent > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_sent_folder_simple: LEAVING mailserver support folders, and preference is to use a sent folder, and it already exists, return $sent_folder_long ['.htmlspecialchars($sent_folder_long).'] <br>'); }
+				return $sent_folder_long;
+			}
+			else
+			{
+				if ($debug_get_sent > 0) { $GLOBALS['phpgw']->msg->dbug->out('html_widgets('.__LINE__.'): get_sent_folder_simple: LEAVING mailserver support folders, and preference is to use a sent folder, but sent folder does not exist, return blank <br>'); }
+				return '';
+			}
 		}
 	}
 ?>
