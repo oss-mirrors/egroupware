@@ -118,11 +118,12 @@
 
 				// deze velden handelen plaatjes, hier moet meer mee gebeuren incl uploaden
 				// move to standard plugins
-				elseif ($fieldproperties[name]=='image_path'||$fieldproperties[name]=='img_path')
+			/*	elseif ($fieldproperties[name]=='image_path'||$fieldproperties[name]=='img_path')
 				{
 					$input=$this->bo->plug->get_plugin_fi($input_name,$value,'text');
 
 				}
+			*/
 /*				elseif ($fieldproperties[name]=='thumb_path')
 				{
 					unset($input);
@@ -154,7 +155,7 @@
 				/*************************************
 				* start attachments
 				*************************************/
-
+/*
 				elseif ($fieldproperties[name]=='attachment_path')
 				{
 					unset($input);
@@ -188,7 +189,7 @@
 					$input.=lang('add attachent').' <input type="file" name="'.$fieldproperties[name].'">';
 
 				}
-
+*/
 				/*************************************
 				* end attachments
 				*************************************/
@@ -237,9 +238,10 @@
 
 				elseif ($fieldproperties[type]=='blob') //then it is a textblob
 				{
-					$input=$this->bo->plug->get_plugin_fi($input_name,$value,'text');
+					$input=$this->bo->plug->get_plugin_fi($input_name,$value,'blob');
 				}
 
+				
 				$this->template->set_var('row_color',$row_color);
 				$this->template->set_var('input',$input);
 				$this->template->set_var('fieldname',$display_name);
@@ -247,6 +249,13 @@
 				$this->template->pparse('out','object_field');
 			}
 
+
+
+
+
+
+
+			
 
 			/***********************************************
 			* MANY WITH MANY RELATION SECTION OF FORM      *
@@ -311,9 +320,7 @@
 
 			}
 
-			$cancel_button='<form action="'.
-			$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uijinn.browse_objects').
-			'" method=post><input type=submit value="'.lang('cancel').'"></form>';
+			$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uijinn.browse_objects').'\'" value="'.lang('cancel').'">';
 
 			$this->template->set_var('submit_script',$submit_javascript);
 			$this->template->pparse('out','javascript');
