@@ -7,11 +7,11 @@
 <p><b>{lang_admin}:</b><hr><p>
    <form method="POST" action="{action_url}">
    <table border="0" align="center" cellspacing="1" cellpadding="1">
-    <tr bgcolor="EEEEEE">
+    <tr bgcolor="#EEEEEE">
      <td>{lang_mailnotification}</td>
      <td><input type="checkbox" name="usemailnotification"{mailnotification}></td>
     </tr>
-    <tr bgcolor="EEEEEE">
+    <tr bgcolor="#EEEEEE">
      <td>{lang_ownernotification}</td>
      <td>
        <select size="1" name="ownernotification">
@@ -19,7 +19,7 @@
        </select>
      </td>
     </tr>
-    <tr bgcolor="EEEEEE">
+    <tr bgcolor="#EEEEEE">
      <td>{lang_groupnotification}</td>
      <td>
        <select size="1" name="groupnotification">
@@ -27,7 +27,7 @@
        </select>
      </td>
     </tr>
-    <tr bgcolor="EEEEEE">
+    <tr bgcolor="#EEEEEE">
      <td>{lang_assignednotification}</td>
      <td>
        <select size="1" name="assignednotification">

@@ -27,7 +27,7 @@
 <center>{tts_numtotal}<br />{tts_numopen}</center><p />
 <center>{tts_notickets}</center>
 <center><br />
-  <table CELLSPACING=1 CELLPADDING=1 BORDER=0>
+  <table cellspacing="1" cellpadding="1" border="0">
    <tr bgcolor="{tts_head_bgcolor}">
     <td align=center>{tts_head_ticket}</td>
     <td align=center>{tts_head_prio}</td>
