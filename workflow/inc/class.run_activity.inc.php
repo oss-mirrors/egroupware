@@ -59,19 +59,23 @@
 			$source = GALAXIA_PROCESSES . SEP . $this->process->getNormalizedName(). SEP . 'compiled' . SEP . $activity->getNormalizedName(). '.php';
 			$shared = GALAXIA_PROCESSES . SEP . $this->process->getNormalizedName(). SEP . 'code' . SEP . 'shared.php';
 
+			// Activities' code will have at their disposition the $db object to handle database interactions
+			// TODO: open a new connection to the database under a different username to allow privilege handling on tables
+			$db = $GLOBALS['phpgw']->ADOdb;
+
 			// run the shared code (just in case because each activity is supposed to include it)
 			include_once($shared);
 
 			// run the activity			
-			$appl_root = $this->t->root;
 			if (!$auto && $activity->isInteractive())
 			{
 				$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Running Activity');
 				$GLOBALS['phpgw']->common->phpgw_header();
 				echo parse_navbar();
-				
-				$this->t->set_root(GALAXIA_PROCESSES.SEP);
-				$this->t->set_file('template', $this->process->getNormalizedName().SEP.'code'.SEP.'templates'.SEP.$activity->getNormalizedName().'.tpl');
+			
+				// activities' code will have at their disposition the $template object to handle the corresponding activity template
+				$template = CreateObject('phpgwapi.Template', GALAXIA_PROCESSES.SEP);
+				$template->set_file('template', $this->process->getNormalizedName().SEP.'code'.SEP.'templates'.SEP.$activity->getNormalizedName().'.tpl');
 			}
 			//echo "<br><br><br><br><br>Including $source <br>In request: <pre>";print_r($_REQUEST);echo "</pre>";
 			include_once ($source);
@@ -81,7 +85,6 @@
 			// if activity is interactive and completed, display completed template
 			if (!$auto && $GLOBALS['__activity_completed'] && $activity->isInteractive())
 			{
-				$this->t->set_root($appl_root);
 				$this->t->set_file('activity_completed', 'activity_completed.tpl');
 
 				$this->t->set_var(array(
@@ -97,7 +100,7 @@
 			// but if it hasn't been completed, show the activities' template
 			elseif (!$auto && !$GLOBALS['__activity_completed'] && $activity->isInteractive())
 			{
-				$this->t->pparse('output', 'template');
+				$template->pparse('output', 'template');
 				$GLOBALS['phpgw']->common->phpgw_footer();
 			}
 
