@@ -116,10 +116,14 @@
   </form>
   <form method="post" action="{missing_link}">
      <input name="app_name"  type="hidden" value="{app_name}">
+     <input name="sourcelang" type="hidden" value="{sourcelang}">
+     <input name="targetlang" type="hidden" value="{targetlang}">
    <td align="center"><input type="submit" name="addphrase" value="{lang_missingphrase}"></td>
   </form>
   <form method="post" action="{phrase_link}">
      <input name="app_name"  type="hidden" value="{app_name}">
+     <input name="sourcelang" type="hidden" value="{sourcelang}">
+     <input name="targetlang" type="hidden" value="{targetlang}">
    <td align="center"><input type="submit" name="addphrase" value="{lang_addphrase}"></td>
   </form>
   <form method="post" action="{revert_url}">

@@ -13,6 +13,10 @@
   </tr>
   <tr>
 {app_name}
+     <input name="entry[app_name]" type="hidden" value="{app_name}">
+     <input name="app_name"  type="hidden" value="{app_name}">
+     <input name="sourcelang" type="hidden" value="{sourcelang}">
+     <input name="targetlang" type="hidden" value="{targetlang}">
    <td colspan="2" align="center"><input type="submit" name="submit" value="{lang_button}"></td>
   </tr>
  </table>

@@ -36,8 +36,8 @@
 
 		function cmp($a,$b)
 		{
-			$c=strtolower($a);
-			$d=strtolower($b);
+			$c = strtolower($a);
+			$d = strtolower($b);
 			if ($c == $d)
 			{
 				return 0;
@@ -110,14 +110,15 @@
 				'lang'       => 'en'
 			);
 			@ksort($this->source_langarray);
+			/* _debug_array($this->source_langarray);exit; */
 			return;
 		}
 
 		function movephrase($mess='')
 		{
-			if (($mess !='')&&($this->missing_langarray[strtolower($mess)]['message_id']))
+			if ($mess !='' && ($this->missing_langarray[strtolower($mess)]['message_id']))
 			{
-				$_mess=strtolower($mess);
+				$_mess = strtolower($mess);
 				$this->source_langarray[$mess] = array(
 					'message_id' => $this->missing_langarray[$_mess]['message_id'],
 					'content'    => $this->missing_langarray[$_mess]['content'],
@@ -133,32 +134,31 @@
 			print_r($this->missing_langarray);
 			echo '</pre>';*/
 			return;
-
 		}
 
 		function missing_app($app,$userlang='en')
 		{
-			$this->src_file = $this->so->src_file;
+			//$this->src_file = $this->so->src_file;
 			$this->loaded_apps = $this->so->loaded_apps;
 			//if ($this->missing_langarray=='')
 			//{
-				//$this->missing_langarray=array();
-				$plist = $this->so->missing_app($app,$userlang);
-				while (list($p,$loc) = each($plist))
+			//$this->missing_langarray=array();
+			$plist = $this->so->missing_app($app,$userlang);
+			while (list($p,$loc) = each($plist))
+			{
+				if ((!$this->source_langarray[strtolower($p)])&&(!$this->source_langarray[$p]))
 				{
-					if ((!$this->source_langarray[strtolower($p)])&&(!$this->source_langarray[$p]))
-					{
-						$this->missing_langarray[strtolower(trim($p))]['message_id'] = trim($p);
-						$this->missing_langarray[strtolower(trim($p))]['app_name']   = trim($app);
-						$this->missing_langarray[strtolower(trim($p))]['content']    = $p;
-					}
+					$this->missing_langarray[strtolower(trim($p))]['message_id'] = strtolower(trim($p));
+					$this->missing_langarray[strtolower(trim($p))]['app_name']   = trim($app);
+					$this->missing_langarray[strtolower(trim($p))]['content']    = $p;
 				}
-				//}        
-				reset ($this->missing_langarray);
-				@ksort($this->missing_langarray);
-				$this->save_sessiondata($this->bo->source_langarray,$this->bo->target_langarray);
-				return $this->missing_langarray;
 			}
+			//}        
+			reset ($this->missing_langarray);
+			@ksort($this->missing_langarray);
+			$this->save_sessiondata($this->bo->source_langarray,$this->bo->target_langarray);
+			return $this->missing_langarray;
+		}
 
 		function add_app($app,$userlang='en')
 		{
