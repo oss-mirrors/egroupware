@@ -48,6 +48,10 @@
 		$sock_fname = '_sock';
 		if ($debug_dcom) { echo 'FORCE: imap builtin extension NOT available, using socket class<br>'; }
 	}
+	
+	// SILENT DEBUG
+	//$imap_builtin = False;
+	//$sock_fname = '_sock';
 
 // -----  include SOCKET or PHP-BUILTIN classes as nevessary
 	if ($imap_builtin == False)
