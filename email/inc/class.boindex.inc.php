@@ -338,8 +338,12 @@
 			$this->xi['ctrl_bar_back2'] = $GLOBALS['phpgw_info']['theme']['row_off'];
 			$this->xi['compose_link'] = $GLOBALS['phpgw']->link(
 								'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+								// this data tells us where to return to after sending a message
 								'fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
-								.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
+								.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum()
+								.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+								.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+								.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 			
 			if ($this->xi['mailsvr_supports_folders'])
 			{

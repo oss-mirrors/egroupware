@@ -97,7 +97,7 @@
 				'widget'	=> 'combobox',
 				'write_props'	=> '',
 				'lang_blurb'	=> lang('Message List Layout'),
-				'init_default'	=> 'string,1',
+				'init_default'	=> 'string,2',
 				'values'	=> array(
 					'1' => lang('Layout 1'),
 					'2' => lang('Layout 2')

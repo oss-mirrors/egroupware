@@ -29,7 +29,8 @@
 
 // ----  Handle Replying and Forwarding  -----
 	//if ($GLOBALS['phpgw']->msg->get_arg_value('msgnum'))
-	if ($GLOBALS['phpgw']->msg->get_arg_value('msgball'))
+	//if ($GLOBALS['phpgw']->msg->get_arg_value('msgball'))
+	if ($GLOBALS['phpgw']->msg->get_isset_arg('["msgball"]["msgnum"]'))
 	{
 		$msgball = $GLOBALS['phpgw']->msg->get_arg_value('msgball');
 		$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msgball);
@@ -303,31 +304,38 @@
 	}
 	else
 	{
-		// no var $phpgw->msg-> msgball  means we were not called by the reply, replyall, or forward
+		// no var $phpgw->msg-> msgball['msgnum']  means we were not called by the reply, replyall, or forward
 		// this typically is only called when the user clicks on a mailto: link in an html document
 		// this behavior defines what your "default mail app" is, i.e. what mail app is called when
 		// the user clicks a "mailto:" link
-		if ($GLOBALS['phpgw']->msg->get_arg_value('mailto'))
+		$mailto = $GLOBALS['phpgw']->msg->get_arg_value('mailto');
+		$to = $GLOBALS['phpgw']->msg->get_arg_value('to');
+		$personal = $GLOBALS['phpgw']->msg->get_arg_value('personal');
+		
+		if ($mailto)
 		{
-			$to_box_value = substr($GLOBALS['phpgw']->msg->get_arg_value('mailto'), 7, strlen($GLOBALS['phpgw']->msg->get_arg_value('mailto')));
+			$to_box_value = substr($mailto, 7, strlen($mailto));
 		}
 		// called from the message list (index.php), most likely,
 		//  or from message.php if user clicked on an individual address in the to or cc fields
-		elseif ((($GLOBALS['phpgw']->msg->get_isset_arg('to')))
-		&& ($GLOBALS['phpgw']->msg->get_arg_value('to') != '')
-		&& (($GLOBALS['phpgw']->msg->get_isset_arg('personal')))
-		&& ($GLOBALS['phpgw']->msg->get_arg_value('personal') != '')
-		&& (urldecode($GLOBALS['phpgw']->msg->get_arg_value('personal')) != urldecode($GLOBALS['phpgw']->msg->get_arg_value('to'))) )
+		elseif ((isset($to))
+		&& ($to != '')
+		&& (isset($personal))
+		&& ($personal != '')
+		&& (urldecode($personal) != urldecode($to)) )
 		{
-			$GLOBALS['phpgw']->msg->set_arg_value('to', $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('to')));
-			$GLOBALS['phpgw']->msg->set_arg_value('personal', $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('personal')));
-			$to_box_value = $GLOBALS['phpgw']->msg->htmlspecialchars_encode('"'.urldecode($GLOBALS['phpgw']->msg->get_arg_value('personal')).'" <'.urldecode($GLOBALS['phpgw']->msg->get_arg_value('to')).'>');
+			$to = $GLOBALS['phpgw']->msg->stripslashes_gpc($to);
+			$GLOBALS['phpgw']->msg->set_arg_value('to', $to);
+			$personal = $GLOBALS['phpgw']->msg->stripslashes_gpc($personal);
+			$GLOBALS['phpgw']->msg->set_arg_value('personal', $personal);
+			$to_box_value = $GLOBALS['phpgw']->msg->htmlspecialchars_encode('"'.urldecode($personal).'" <'.urldecode($to).'>');
 		}
-		elseif ((($GLOBALS['phpgw']->msg->get_isset_arg('to')))
-		&& ($GLOBALS['phpgw']->msg->get_arg_value('to') != ''))
+		elseif ((isset($to))
+		&& ($to != ''))
 		{
-			$GLOBALS['phpgw']->msg->set_arg_value('to', $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('to')));
-			$to_box_value = urldecode($GLOBALS['phpgw']->msg->get_arg_value('to'));
+			$to = $GLOBALS['phpgw']->msg->stripslashes_gpc($to);
+			$GLOBALS['phpgw']->msg->set_arg_value('to', $to);
+			$to_box_value = urldecode($to);
 		}
 		else
 		{
@@ -343,8 +351,11 @@
 				'menuaction=email.bosend.send'
 				.'&action=forward'
 				.'&'.$msgball['uri']
-				.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-				.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
+				// this is used to preserve these values when we return to folder list after the send
+				.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+				.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+				.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+				);
 		if (($GLOBALS['phpgw']->msg->get_isset_arg('fwd_proc')))
 		{
 			$send_btn_action = $send_btn_action
@@ -353,10 +364,16 @@
 	}
 	else
 	{
-		//$send_btn_action = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/send_message.php');
 		$send_btn_action = $GLOBALS['phpgw']->link(
-					'/index.php',
-					'menuaction=email.bosend.send');
+				'/index.php',
+				'menuaction=email.bosend.send'
+				// this is used to preserve these values when we return to folder list after the send
+				.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
+				.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum()
+				.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+				.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+				.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+					);
 	}
 	
 	$tpl_vars = Array(
@@ -403,7 +420,8 @@
 		$GLOBALS['phpgw']->template->set_var('V_checkbox_sig','');
 	}
 	$tpl_vars = Array(
-		'attachfile_js_link'	=> $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/attach_file.php'),
+		'attachfile_js_link'	=> $GLOBALS['phpgw']->link(
+						'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/attach_file.php'),
 		'attachfile_js_text'	=> lang('Attach file'),
 		'body_box_name'		=> 'body',
 		'body_box_value'	=> $body

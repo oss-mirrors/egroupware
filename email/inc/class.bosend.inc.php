@@ -56,8 +56,8 @@
 		function send()
 		{
 			// attempt (or not) to reuse an existing mail_msg object, i.e. if one ALREADY exists before entering
-			$attempt_reuse = True;
-			//$attempt_reuse = False;
+			//$attempt_reuse = True;
+			$attempt_reuse = False;
 			
 			if ($this->debug) { echo 'ENTERING: email.bosend.send'.'<br>'; }
 			if ($this->debug) { echo 'email.bosend.send: local var attempt_reuse=['.serialize($attempt_reuse).'] ; reuse_feed_args[] dump<pre>'; print_r($reuse_feed_args); echo '</pre>'; }
@@ -843,9 +843,40 @@
 			
 			// ----  Redirect on Success, else show Error Report   -----
 			// what folder to go back to (the one we came from)
-			//$return_to_folder = $GLOBALS['phpgw']->msg->prep_folder_out('');
 			// Personally, I think people should go back to the INBOX after sending an email
-			$return_to_folder = $GLOBALS['phpgw']->msg->prep_folder_out('INBOX');
+			// HOWEVER, we will go back to the folder this message came from (if available)
+			if (($GLOBALS['phpgw']->msg->get_isset_arg('["msgball"]["folder"]'))
+			&& ($GLOBALS['phpgw']->msg->get_isset_arg('["msgball"]["acctnum"]')))
+			{
+				$fldball_candidate['folder'] = $GLOBALS['phpgw']->msg->get_arg_value('["msgball"]["folder"]');
+				$fldball_candidate['acctnum'] = (int)$GLOBALS['phpgw']->msg->get_arg_value('["msgball"]["acctnum"]');
+			}
+			elseif (($GLOBALS['phpgw']->msg->get_isset_arg('["fldball"]["folder"]'))
+			&& ($GLOBALS['phpgw']->msg->get_isset_arg('["fldball"]["acctnum"]')))
+			{
+				$fldball_candidate['folder'] = $GLOBALS['phpgw']->msg->get_arg_value('["fldball"]["folder"]');
+				$fldball_candidate['acctnum'] = (int)$GLOBALS['phpgw']->msg->get_arg_value('["fldball"]["acctnum"]');
+			}
+			// did we get useful data
+			if ( (isset($fldball_candidate))
+			&& ($fldball_candidate['folder'] != '') )
+			{
+				$fldball_candidate['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out($fldball_candidate['folder']);
+			}
+			else
+			{
+				$fldball_candidate['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out('INBOX');
+				$fldball_candidate['acctnum'] = (int)$GLOBALS['phpgw']->msg->get_acctnum();
+			}
+			$return_to_folder_href = $GLOBALS['phpgw']->link(
+						'/index.php',
+						'menuaction=email.uiindex.index'
+						.'&fldball[folder]='.$fldball_candidate['folder']
+						.'&fldball[acctnum]='.$fldball_candidate['acctnum']
+						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+			
 			if ($returnccode)
 			{
 				// Success
@@ -859,11 +890,7 @@
 					print_r($GLOBALS['phpgw']->mail_send->trace_data);
 					echo '</pre>'."\r\n";
 					echo '<p>&nbsp;<br></p>'."\r\n";
-					echo '<p>To go back to the msg list, click <a href="'.$GLOBALS['phpgw']->link(
-												'/index.php',
-												'menuaction=email.uiindex.index'
-												.'&cd=13'
-												.'&folder='.$return_to_folder).'">here</a></p><br>';
+					echo '<p>To go back to the msg list, click <a href="'.$return_to_folder_href.'">here</a></p><br>';
 					echo '</body></html>';
 					$this->send_message_cleanup();
 				}
@@ -872,10 +899,7 @@
 					// unset some vars (is this necessary?)
 					$this->send_message_cleanup();
 					// redirect the browser to the index page for the appropriate folder
-					header('Location: '.$GLOBALS['phpgw']->link(
-							 '/index.php',
-							 'menuaction=email.uiindex.index'
-							.'&folder='.$return_to_folder));
+					header('Location: '.$return_to_folder_href);
 				}
 			}
 			else
@@ -887,16 +911,7 @@
 				echo '<pre>';
 				print_r($GLOBALS['phpgw']->mail_send->err);
 				echo '</pre>'."\r\n";
-				//	. "err_code: '".$GLOBALS['phpgw']->mail_send->err['code']."';<BR>"
-				//	. "err_msg: '".htmlspecialchars($GLOBALS['phpgw']->mail_send->err['msg'])."';<BR>\r\n"
-				//	. "err_desc: '".$GLOBALS['phpgw']->mail_send->err['desc']."'.<P>\r\n"
-				echo '<p>To go back to the msg list, click <a href="';
-				echo $GLOBALS['phpgw']->link(
-					 '/index.php',
-					 'menuaction=email.uiindex.index'
-					.'&cd=13'
-					.'&folder='.$return_to_folder);
-				echo '">here</a> </p>'."\r\n";
+				echo '<p>To go back to the msg list, click <a href="'.$return_to_folder_href.'">here</a> </p>'."\r\n";
 				echo '</body></html>';
 				$this->send_message_cleanup();
 			}

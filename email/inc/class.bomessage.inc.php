@@ -257,7 +257,11 @@
 						 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
 						$msgball['uri']
 						.'&to='.urlencode($from_plain)
-						.'&personal='.urlencode($from_personal)),
+						.'&personal='.urlencode($from_personal)
+						// preserve these things for when we return to the message list after the send
+						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')),
 					$from_personal);
 				// click on the little envelope image to add this person/address to your address book
 				$from_addybook_add = 
@@ -309,10 +313,13 @@
 					$to_real_name = $GLOBALS['phpgw']->msg->href_maketag(
 						$GLOBALS['phpgw']->link(
 							 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-							// 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out($msgball['folder'])
 							$msgball['uri']
 							.'&to='.urlencode($to_plain)
-							.'&personal='.urlencode($to_personal)),
+							.'&personal='.urlencode($to_personal)
+							// preserve these things for when we return to the message list after the send
+							.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+							.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+							.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')),
 						$to_personal);
 					
 					// I honestly think this needs some attention here.. I feel this isn't used anymore like this..
@@ -365,7 +372,11 @@
 							 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
 							$msgball['uri']
 							.'&to='.urlencode($cc_plain)
-							.'&personal='.urlencode($cc_personal)),
+							.'&personal='.urlencode($cc_personal)
+							// preserve these things for when we return to the message list after the send
+							.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+							.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+							.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')),
 						$cc_personal);
 					
 					$cc_addybook_add = $GLOBALS['phpgw']->msg->href_maketag(
@@ -466,7 +477,11 @@
 					 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
 					 'action=reply'
 					.'&'.$msgball['uri']
-					.$first_presentable);
+					.$first_presentable
+					// preserve these things for when we return to the message list after the send
+					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 			$ilnk_reply = $GLOBALS['phpgw']->msg->href_maketag($reply_url, $reply_img);
 			
 			$replyall_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),'','','0');
@@ -474,7 +489,11 @@
 					 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
 					 'action=replyall'
 					.'&'.$msgball['uri']
-					.$first_presentable);
+					.$first_presentable
+					// preserve these things for when we return to the message list after the send
+					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 			$ilnk_replyall = $GLOBALS['phpgw']->msg->href_maketag($replyall_url, $replyall_img);
 			
 			$forward_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_forward.gif',lang('forward'),'','','0');
@@ -483,7 +502,11 @@
 					 'action=forward'
 					.'&'.$msgball['uri']
 					.'&fwd_proc='.$fwd_proc
-					.$first_presentable);
+					.$first_presentable
+					// preserve these things for when we return to the message list after the send
+					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 			$ilnk_forward = $GLOBALS['phpgw']->msg->href_maketag($forward_url, $forward_img);
 			
 			$delete_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_delete.gif',lang('delete'),'','','0');
@@ -491,7 +514,11 @@
 					 '/index.php',
 					'menuaction=email.boaction.delmov'
 					.'&what=delete_single_msg'
-					.'&'.$msgball['uri']);
+					.'&'.$msgball['uri']
+					// preserve these things for when we return to the message list after the send
+					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 			$ilnk_delete = $GLOBALS['phpgw']->msg->href_maketag($delete_url, $delete_img);
 			
 			$this->xi['theme_font'] = $GLOBALS['phpgw_info']['theme']['font'];
@@ -639,6 +666,7 @@
 				'/index.php',
 				 'menuaction=email.uimessage.message'
 				.'&'.$msgball['uri']
+				// preserve these things for when we return to the message list after the send
 				.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 				.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 				.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
@@ -725,10 +753,8 @@
 				{
 					// ====  MIME IGNORANT SERVER  ====
 					$title_text = '&nbsp;Mime-Ignorant Email Server: ';
-					//$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
 					$this->part_nice[$i]['title_text'] = $title_text;
 					$display_str = lang('keywords').': '.$this->part_nice[$i]['m_keywords'].' - '.$GLOBALS['phpgw']->msg->format_byte_size(strlen($dsp));
-					//$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
 					$this->part_nice[$i]['display_str'] = $display_str;
 					
 					//$msg_raw_headers = $GLOBALS['phpgw']->dcom->fetchheader($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
@@ -769,9 +795,7 @@
 					$this_msgball['part_no'] = $this->part_nice[$i]['m_part_num_mime'];
 					$dsp .= $GLOBALS['phpgw']->msg->phpgw_fetchbody($this_msgball);
 					
-					//$GLOBALS['phpgw']->template->set_var('message_body',$dsp);
 					$this->part_nice[$i]['message_body'] = $dsp;
-					//$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part');
 					
 					
 					// ----  DISPLAY INSTRUCTIONS  ----
@@ -857,9 +881,7 @@
 					//$display_str = $this->part_nice[$i]['type'].'/'.strtolower($this->part_nice[$i]['subtype']);
 					$display_str = lang('keywords').': '.$this->part_nice[$i]['m_keywords']
 						.' - '.$GLOBALS['phpgw']->msg->format_byte_size(strlen($dsp));
-					//$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
 					$this->part_nice[$i]['title_text'] = $title_text;
-					//$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
 					$this->part_nice[$i]['display_str'] = $display_str;
 					
 					if (stristr($this->part_nice[$i]['m_keywords'], 'qprint'))
@@ -916,9 +938,9 @@
 					if ((preg_match("/<style.*body.*[{].*[}]/ismx", $dsp))
 					|| (preg_match("/<script.*>.*<\/script>/ismx", $dsp)))
 					{
-						$view_html_folm_action = $GLOBALS['phpgw']->link(
+						$view_html_form_action = $GLOBALS['phpgw']->link(
 							'/index.php',
-							$GLOBALS['phpgw']->msg->get_arg_value('view_html_menuaction')
+							'menuaction=email.boaction.view_html'
 							.'&'.$msgball['uri']
 						);
 						
@@ -936,7 +958,7 @@
 							// make a submit button with this html part as a hidden var
 							$dsp =
 							'<p>'
-							.'<form action="'.$view_html_folm_action.'" method="post">'."\r\n"
+							.'<form action="'.$view_html_form_action.'" method="post">'."\r\n"
 								.'<input type="hidden" name="html_part" value="'.base64_encode($dsp).'">'."\r\n"
 								.'&nbsp;&nbsp;'
 								.'<input type="submit" value="'.lang('View as HTML').'">'."\r\n"
@@ -966,14 +988,14 @@
 							}
 							$part_href = $GLOBALS['phpgw']->link(
 									 '/index.php',
-									 $GLOBALS['phpgw']->msg->get_arg_value('get_attach_menuaction')
+									'menuaction=email.boaction.get_attach'
 									.'&'.$msgball['uri']
-									.'&part_no=' .$this->part_nice[$i]['m_part_num_mime']
+									.'&msgball[part_no]='.$this->part_nice[$i]['m_part_num_mime']
 									.'&encoding=' .$part_encoding);
 							
 							$dsp =
 							'<p>'
-								.'<form action="'.$view_html_folm_action.'" method="post">'."\r\n"
+								.'<form action="'.$view_html_form_action.'" method="post">'."\r\n"
 								.'<input type="hidden" name="html_reference" value="'.$part_href.'">'."\r\n"
 								.'&nbsp;&nbsp;'
 								.'<input type="submit" value="'.lang('View as HTML').'">'."\r\n"
@@ -1132,11 +1154,8 @@
 						// however, template var "display_str" was set to empty above
 						// if it deserves to be filled, this code just above here will fill it
 						// but it should not be shown in this mesage seperator bar
-						//$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
 						$this->part_nice[$i]['display_str'] = $display_str;
-						//$GLOBALS['phpgw']->template->set_var('message_body',$dsp);
 						$this->part_nice[$i]['message_body'] = $dsp;
-						//$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
 						
 						
 						// ----  DISPLAY INSTRUCTIONS  ----
@@ -1152,16 +1171,12 @@
 					$display_str = $GLOBALS['phpgw']->msg->decode_header_string($this->part_nice[$i]['ex_part_name'])
 						.' - ' .$GLOBALS['phpgw']->msg->format_byte_size((int)$this->part_nice[$i]['bytes']) 
 						.' - '.lang('keywords').': ' .$this->part_nice[$i]['m_keywords'];
-					//$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
 					$this->part_nice[$i]['title_text'] = $title_text;
-					//$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
 					$this->part_nice[$i]['display_str'] = $display_str;
 					// we add an href that points to the exact msg_number/mime_part number that is the image
 					// view_image will then handle this request as the browser requests this "img src" for inline display
 					$img_inline = '<img src="'.$this->part_nice[$i]['ex_part_href'].'">';
-					//$GLOBALS['phpgw']->template->set_var('message_body',$img_inline);
 					$this->part_nice[$i]['message_body'] = $img_inline;
-					//$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
 					
 					
 					// ----  DISPLAY INSTRUCTIONS  ----
@@ -1174,9 +1189,7 @@
 				{
 					$title_text = lang('section').': '.$this->part_nice[$i]['m_part_num_mime'];
 					$display_str = lang('keywords').': ' .$this->part_nice[$i]['m_keywords'];
-					//$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
 					$this->part_nice[$i]['title_text'] = $title_text;
-					//$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
 					$this->part_nice[$i]['display_str'] = $display_str;
 					
 					$msg_text = '&nbsp;&nbsp; <strong>'.lang('Attachment').':</strong>'
@@ -1184,9 +1197,7 @@
 						.'&nbsp;&nbsp; '.lang('size').': '.$GLOBALS['phpgw']->msg->format_byte_size((int)$this->part_nice[$i]['bytes'])
 						.'<br><br>';
 					
-					//$GLOBALS['phpgw']->template->set_var('message_body',$msg_text);
 					$this->part_nice[$i]['message_body'] = $msg_text;
-					//$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
 					
 					
 					// ----  DISPLAY INSTRUCTIONS  ----
