@@ -12,7 +12,7 @@
 
 	$treemenu = Array();
 
-    $phpgw->common->hook('',array('manual'));
+    $phpgw->common->hook('',array('manual','preferences'));
 
     $str .= $menutree->showtree($treemenu,$expandlevels);
 
