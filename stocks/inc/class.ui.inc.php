@@ -42,7 +42,18 @@
 		{
 			$this->bo			= CreateObject('stocks.bo');
 			$this->t			= $GLOBALS['phpgw']->template;
+			$this->sbox			= CreateObject('phpgwapi.sbox');
 			$this->nextmatchs	= CreateObject('phpgwapi.nextmatchs');
+			$this->country		= $this->bo->country;
+		}
+
+		function save_sessiondata()
+		{
+			$data = array
+			(
+				'country'	=> $this->country
+			);
+			$this->bo->save_sessiondata($data);
 		}
 
 		function set_app_langs()
@@ -54,11 +65,14 @@
 			$this->t->set_var('lang_symbol',lang('Symbol'));
 			$this->t->set_var('lang_edit',lang('Edit'));
 			$this->t->set_var('lang_add',lang('Add'));
+			$this->t->set_var('lang_country',lang('Country'));
 			$this->t->set_var('lang_add_stock',lang('Add new stock'));
 			$this->t->set_var('lang_delete',lang('Delete'));
 			$this->t->set_var('lang_save',lang('Save'));
 			$this->t->set_var('lang_stocks',lang('Stock Quotes'));
 			$this->t->set_var('lang_done',lang('Done'));
+			$this->t->set_var('lang_submit',lang('Submit'));
+			$this->t->set_var('lang_select_country',lang('Select country'));
 		}
 
 		function display_app_header()
@@ -124,12 +138,32 @@
 			return $this->return_html($quotes);
 		}
 
+		function selected_country()
+		{
+			switch($this->country)
+			{
+				case 'US': $country_sel[0]=' selected'; break;
+				case 'DE': $country_sel[1]=' selected'; break;
+			}
+
+			$country_list = '<option value="US"' . $country_sel[0] . '>' . lang('united states') . '</option>' . "\n"
+				. '<option value="DE"' . $country_sel[1] . '>' . lang('germany') . '</option>' . "\n"
+				. '<option value="">' . lang('Select country') . '</option>' . "\n";
+
+			return $country_list;
+		}
+
 		function index()
 		{
+			$country	= $GLOBALS['HTTP_GET_VARS']['country'];
+
 			$this->display_app_header();
 			$this->t->set_file(array('quotes_list' => 'main.tpl'));
+			$this->t->set_var('country_list',$this->selected_country($this->country));
+			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.index&country=' . $this->country));
 			$this->t->set_var('quotes',$this->return_quotes());
 			$this->t->pfp('out','quotes_list');
+			$this->save_sessiondata();
 		}
 
 		function list_stocks()
@@ -139,7 +173,8 @@
 
 			$link_data = array
 			(
-				'menuaction'	=> 'stocks.ui.list_stocks'
+				'menuaction'	=> 'stocks.ui.list_stocks',
+				'country'		=> $this->country
 			);
 
 			if ($action == 'delete')
@@ -157,7 +192,14 @@
 			$this->t->set_var('lang_list',lang('Stock Quotes list'));
 			$this->t->set_var('h_lang_edit',lang('Edit'));
 			$this->t->set_var('h_lang_delete',lang('Delete'));
-			$this->t->set_var('doneurl',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.index'));
+			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
+
+			if (!$country)
+			{
+				$country = '';
+			}
+
+			$this->t->set_var('country_list',$this->selected_country($this->country));
 
 			$stocks = $this->bo->read_stocks();
 
@@ -169,8 +211,9 @@
 
 					$this->t->set_var(array
 					(
-						'dsymbol' => rawurldecode($stock['symbol']),
-						'dname' => rawurldecode($stock['name'])
+						'ssymbol' => $GLOBALS['phpgw']->strip_html($stock['symbol']),
+						'sname' => $GLOBALS['phpgw']->strip_html($stock['name']),
+						'scountry' => $this->sbox->get_full_name($stock['country'])
 					));
 
 					$this->t->set_var('delete',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.list_stocks&action=delete&stock_id='
@@ -184,31 +227,33 @@
 			}
 			$link_data['menuaction'] = 'stocks.ui.add_stock';
 			$this->t->set_var('addurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->t->set_var('doneurl',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.index'));
+			$this->save_sessiondata();
 			$this->t->pfp('out','stock_list_t',True);
 		}
 
 		function preferences()
 		{
 			$mainscreen = $GLOBALS['HTTP_GET_VARS']['mainscreen'];
+			$prefs		= $GLOBALS['HTTP_GET_VARS']['prefs'];
 
 			$link_data = array
 			(
 				'menuaction' => 'stocks.ui.preferences'
 			);
 
-			if ($mainscreen)
+			if ($prefs['submit'])
 			{
 				$GLOBALS['phpgw']->preferences->read_repository();
-				if ($mainscreen == 'enable')
+				if ($prefs['mainscreen'])
 				{
 					$GLOBALS['phpgw']->preferences->change('stocks','mainscreen','enabled');
 				}
-
-				if ($mainscreen == 'disable')
+				else
 				{
-					$GLOBALS['phpgw']->preferences->delete('stocks','mainscreen','disabled');
+					$GLOBALS['phpgw']->preferences->change('stocks','mainscreen','disabled');
 				}
-
+				$GLOBALS['phpgw']->preferences->change('stocks','country',$prefs['country']);
 				$GLOBALS['phpgw']->preferences->save_repository(True);
 				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php',$link_data));
 				$GLOBALS['phpgw']->common->phpgw_exit();
@@ -225,20 +270,13 @@
 
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('lang_action',lang('Stock Quote preferences'));
+			$this->t->set_var('lang_def_country',lang('Default country'));
+			$this->t->set_var('lang_display',lang('Display stocks on main screen is enabled'));
+			$this->t->set_var('mainscreen', '<input type="checkbox" name="prefs[mainscreen]" value="True"'
+										. ($prefs['mainscreen'] == 'enabled'?' checked':'') . '>');
 
-			if ($prefs['mainscreen'] == 'enabled')
-			{
-				$this->t->set_var('lang_display',lang('Display stocks on main screen is enabled'));
-				$newstatus = 'disable';
-			}
-			else
-			{
-				$this->t->set_var('lang_display',lang('Display stocks on main screen is disabled'));
-				$newstatus = 'enable';
-			}
+			$this->t->set_var('country_list',$this->selected_country($prefs['country']));
 
-			$this->t->set_var('newstatus',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences&mainscreen=' . $newstatus));
-			$this->t->set_var('lang_newstatus',lang($newstatus));
 			$this->t->set_var('doneurl',$GLOBALS['phpgw']->link('/preferences/index.php'));
 			$this->t->pfp('out','stock_prefs',True);
 		}
@@ -250,9 +288,9 @@
 
 			if ($submit)
 			{
-				$values['symbol']	= urlencode(strtoupper($values['symbol']));
-				$values['name']		= urlencode($values['name']);
-				$this->bo->save_stock(array('access' => 'public','name' => $values['name'],'symbol' => $values['symbol']));
+				$values['symbol']	= strtoupper($values['symbol']);
+				$values['access']	= 'public';
+				$this->bo->save_stock(array($values));
 				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.list_stocks'));
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
@@ -261,7 +299,7 @@
 			$this->t->set_file(array('edit' => 'preferences_edit.tpl'));
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.add_stock'));
 			$this->t->set_var('h_lang_edit',lang('Add stock'));
-
+			$this->t->set_var('country_list',$this->selected_country($country));
 			$this->t->set_var('symbol',$symbol);
 			$this->t->set_var('name',$name);
 
@@ -288,8 +326,8 @@
 
 			if ($submit)
 			{
-				$values['symbol']	= urlencode(strtoupper($values['symbol']));
-				$values['name']		= urlencode($values['name']);
+				$values['symbol']	= strtoupper($values['symbol']);
+				$values['access']	= 'public';
 				$values['id']		= $stock_id;
 
 				$this->bo->save_stock($values);
@@ -307,9 +345,9 @@
 			$this->t->set_var('h_lang_edit',lang('Edit stock'));
 
 			$stock = $this->bo->read_single($stock_id);
-
-			$this->t->set_var('symbol',rawurldecode($stock['symbol']));
-			$this->t->set_var('name',rawurldecode($stock['name']));
+			$this->t->set_var('country_list',$this->selected_country($stock['country']));
+			$this->t->set_var('symbol',$GLOBALS['phpgw']->strip_html($stock['symbol']));
+			$this->t->set_var('name',$GLOBALS['phpgw']->strip_html($stock['name']));
 
 			$this->t->pfp('out','edit');
 		}

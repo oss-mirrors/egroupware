@@ -33,6 +33,40 @@
 		{
 			$this->so		= CreateObject('stocks.so');
 			$this->network	= CreateObject('phpgwapi.network');
+
+			$this->read_sessiondata();
+
+			$country = $GLOBALS['HTTP_POST_VARS']['country']  ? $GLOBALS['HTTP_POST_VARS']['country'] : $GLOBALS['HTTP_GET_VARS']['country'];
+
+			if (isset($country) && !empty($country))
+			{
+				$this->country = $country;
+			}
+
+			if($country == '')
+			{
+				$prefs = $this->read_prefs();
+				if ($prefs['country'])
+				{
+					$this->country = $prefs['country'];
+				}
+				else
+				{
+					$this->country = 'US';
+				}
+			}
+		}
+
+		function save_sessiondata($data)
+		{
+			$GLOBALS['phpgw']->session->appsession('session_data','stocks',$data);
+		}
+
+		function read_sessiondata()
+		{
+			$data = $GLOBALS['phpgw']->session->appsession('session_data','stocks');
+
+			$this->country	= $data['country'];
 		}
 
 		// return content of a url as a string array
@@ -41,8 +75,26 @@
 	 		return $this->network->gethttpsocketfile($url);
 		}
 
+		function get_url()
+		{
+			switch($this->country)
+			{
+				case 'US':	$url = 'http://finance.yahoo.com/d/quotes.csv?f=sl1d1t1c1ohgv&e=.csv&s='; break;
+				case 'DE':	$url = 'http://de.finance.yahoo.com/d/quotes_de.csv?f=sl1d1t1c1ohgv&e=.csv&s='; break;
+				default :	$url = 'http://finance.yahoo.com/d/quotes.csv?f=sl1d1t1c1ohgv&e=.csv&s='; break;
+			}
+			return $url;
+		}
+
 		function get_quotes($stocklist)
 		{
+			switch($this->country)
+			{
+				case 'US':	$sep = ','; break;
+				case 'DE':	$sep = ';'; break;
+				default :	$sep = ','; break;
+			}
+
 			if (! $stocklist)
 			{
 				return array();
@@ -62,7 +114,7 @@
 
 			$regexp_stocks = '/(' . implode('|',$symbollist) . ')/';
 
-			$url = 'http://finance.yahoo.com/d/quotes.csv?f=sl1d1t1c1ohgv&e=.csv&s=' . $symbolstr;
+			$url = $this->get_url($this->country) . $symbolstr;
 			$lines = $this->http_fetch($url,false,80,'');
 
 			$quotes = array();
@@ -77,7 +129,7 @@
 					if (preg_match($regexp_stocks,$line))
 					{
 						$line = ereg_replace('"','',$line);
-						list($symbol,$price0,$date,$time,$dchange,$price1,$price2) = split(',',$line);
+						list($symbol,$price0,$date,$time,$dchange,$price1,$price2) = split($sep,$line);
 
 						if ($price1>0 && $dchange!=0)
 						{
@@ -128,10 +180,12 @@
 			if ($GLOBALS['phpgw_info']['user']['preferences']['stocks'])
 			{
 				$prefs['mainscreen']	= $GLOBALS['phpgw_info']['user']['preferences']['stocks']['mainscreen'];
+				$prefs['country']		= $GLOBALS['phpgw_info']['user']['preferences']['stocks']['country'];
 			}
 			else
 			{
 				$prefs['mainscreen']	= 'disabled';
+				$prefs['country']		= 'us';
 			}
 			return $prefs;
 		}
@@ -139,14 +193,14 @@
 		function get_default()
 		{
 			$def = array();
-			$def['LNUX']	= 'VA%20Linux';
+			$def['LNUX']	= 'VA Linux';
 			$def['RHAT']	= 'Redhat';
 			return $def;
 		}
 
 		function read_stocks()
 		{
-			return $this->so->read_stocks();
+			return $this->so->read_stocks($this->country);
 		}
 
 		function read_single($stock_id)
@@ -161,8 +215,7 @@
 				$values['name'] = $values['symbol'];
 			}
 
-			$values['sysmbol']	= urlencode(strtoupper($values['symbol']));
-			$values['name']		= urlencode($values['name']);
+			$values['symbol']	= strtoupper($values['symbol']);
 
 			if ($values['id'] && $values['id'] != 0)
 			{
@@ -187,8 +240,8 @@
 			{
 				while (list($null,$stock) = each($stocks))
 				{
-					$symbol	= rawurldecode($stock['symbol']);
-					$name	= rawurldecode($stock['name']);
+					$symbol	= $GLOBALS['phpgw']->strip_html($stock['symbol']);
+					$name	= $GLOBALS['phpgw']->strip_html($stock['name']);
 
 					if ($symbol)
 					{
@@ -203,8 +256,8 @@
 			else
 			{
 				$def = $this->get_default();
-				$stocklist['LNUX'] = rawurldecode($def['LNUX']);
-				$stocklist['RHAT'] = rawurldecode($def['RHAT']);
+				$stocklist['LNUX'] = $def['LNUX'];
+				$stocklist['RHAT'] = $def['RHAT'];
 			}
 			return $stocklist;
 		}

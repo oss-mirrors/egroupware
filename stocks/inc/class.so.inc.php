@@ -35,9 +35,14 @@
 			$this->account	= $GLOBALS['phpgw_info']['user']['account_id'];
 		}
 
-		function read_stocks()
+		function read_stocks($country = '')
 		{
-			$this->db->query("SELECT * from phpgw_stocks where stock_owner='" . $this->account . "'",__LINE__,__FILE__);
+			if ($country)
+			{
+				$countrysel = " AND stock_country='" . $country . "'";
+			}
+
+			$this->db->query("SELECT * from phpgw_stocks where stock_owner='" . $this->account . "'" . $countrysel,__LINE__,__FILE__);
 
 			while($this->db->next_record())
 			{
@@ -47,7 +52,8 @@
 					'owner'		=> $this->db->f('stock_owner'),
 					'access'	=> $this->db->f('stock_access'),
 					'name'		=> $this->db->f('stock_name'),
-					'symbol'	=> $this->db->f('stock_symbol')
+					'symbol'	=> $this->db->f('stock_symbol'),
+					'country'	=> $this->db->f('stock_country'),
 				);
 			}
 			return $stocks;
@@ -64,15 +70,19 @@
 				$stock['access']	= $this->db->f('stock_access');
 				$stock['name']		= $this->db->f('stock_name');
 				$stock['symbol']	= $this->db->f('stock_symbol');
+				$stock['country']	= $this->db->f('stock_country');
 			}
 			return $stock;
 		}
 
 		function add_stock($values)
 		{
-			$this->db->query("INSERT into phpgw_stocks (stock_owner,stock_access,stock_name,stock_symbol) values('"
+			$values['symbol']	= $this->db->db_addslashes($values['symbol']);
+			$values['name']		= $this->db->db_addslashes($values['name']);
+
+			$this->db->query("INSERT into phpgw_stocks (stock_owner,stock_access,stock_name,stock_symbol,stock_country) values('"
 							. $this->account . "','" . $values['access'] . "','" . $values['name'] . "','" . $values['symbol']
-							. "')",__LINE__,__FILE__);
+							. "','" . $values['country'] . "')",__LINE__,__FILE__);
 		}
 
 		function delete_stock($stock_id)
@@ -82,8 +92,11 @@
 
 		function edit_stock($values)
 		{
+			$values['symbol']	= $this->db->db_addslashes($values['symbol']);
+			$values['name']		= $this->db->db_addslashes($values['name']);
+
 			$this->db->query("UPDATE phpgw_stocks set stock_name='" . $values['name'] . "', stock_symbol='" . $values['symbol']
-							. "' where stock_id='" . $values['id'] . "'",__LINE__,__FILE__);
+							. "', stock_country='" . $values['country'] . "' where stock_id='" . $values['id'] . "'",__LINE__,__FILE__);
 		}
 	}
 ?>

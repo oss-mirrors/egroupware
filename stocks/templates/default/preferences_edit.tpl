@@ -17,6 +17,10 @@
 		<td>{lang_company}:</td> 
 		<td align="center"><input type="text" name="values[name]" value="{name}"></td>
 	</tr>
+	<tr bgcolor="{tr_color1}">
+		<td>{lang_country}:</td> 
+		<td align="center"><select name="values[country]">{country_list}</select></td>
+	</tr>
 
 <!-- BEGIN edit -->
 
