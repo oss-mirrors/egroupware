@@ -42,6 +42,10 @@
     printf("<A href=\"%s\">%s</A><br>", $pg,
            lang("Comic Data"));
 
+    $pg = $phpgw->link('/comic/admin_comics_reset.php');
+    printf("<A href=\"%s\">%s</A><br>", $pg,
+           lang("Reset Comic Data"));
+
     section_end(); 
 }
 ?>
