@@ -180,7 +180,7 @@
 			}
 		}
 
-// not tested yet! does not work (i guess...)!
+// not tested yet! but maybe it works now ...
 
 		if ($rapp == 'smbmount')
 		{
@@ -191,11 +191,11 @@
 				mkdir($smbdir, 0700);
 			}
 
-			$pipe = system("mount -t smbfs -o ip=$rip,username=$ruser,password=$rpwd,rw //$rpath $smbdir");
+			$pipe = system("mount.smbfs " . '//' . "$rip$rpath $smbdir -o username=$ruser,password=$rpwd,rw");
 
 			if (!$pipe)
 			{
-				echo 'mounting the remote dir ' . $rpath . 'trough smbmount failed !' . "\n";
+				echo 'mounting service ' . $rip$rpath . 'trough smbmount failed !' . "\n";
 				exit;
 			}
 
