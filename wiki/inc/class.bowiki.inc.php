@@ -189,7 +189,7 @@
 						$to_replace = $to_replace->as_array();
 						$to_replace['text'] = $this->rename_links($old_name,$values['name'],$values['title'],$was=$to_replace['text']);
 						$to_replace['comment'] = $old_name . ' --> ' . $values['name'];
-						echo "<p><b>$to_replace[name]</b>: $to_replace[comment]<br>\n<b>From:</b><br>\n$was<br>\n<b>To</b><br>\n$to_replace[text]</p>\n";
+						//echo "<p><b>$to_replace[name]</b>: $to_replace[comment]<br>\n<b>From:</b><br>\n$was<br>\n<b>To</b><br>\n$to_replace[text]</p>\n";
 						$this->write($to_replace);
 					}
 				}
