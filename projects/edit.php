@@ -101,9 +101,9 @@
     }
     else { $t->set_var('error',lang('Please select your currency in preferences !')); }
 
-    $t->set_var("addressbook_link",$phpgw->link("addressbook.php","query="));
-    $t->set_var("actionurl",$phpgw->link("edit.php","id=$id"));
-    $t->set_var("deleteurl",$phpgw->link("delete.php","id=$id"));
+    $t->set_var("addressbook_link",$phpgw->link("/projects/addressbook.php","query="));
+    $t->set_var("actionurl",$phpgw->link("/projects/edit.php","id=$id"));
+    $t->set_var("deleteurl",$phpgw->link("/projects/delete.php","id=$id"));
     $t->set_var("lang_action",lang("Edit project"));
     $t->set_var("hidden_vars",$hidden_vars);
     $t->set_var("lang_num",lang("Project ID"));
@@ -127,9 +127,9 @@
          $stat_sel[2]=" selected";
      endif;
 
-     $status_list = "<option value=\"active\"".$stat_sel[0].">" . lang("Active") . "</option>\n"
-                  . "<option value=\"nonactive\"".$stat_sel[1].">" . lang("Nonactive") . "</option>\n"
-                  . "<option value=\"archiv\"".$stat_sel[2].">" . lang("Archiv") . "</option>\n";
+     $status_list = "<option value=\"active\"".$stat_sel[0].">" . lang('Active') . "</option>\n"
+                  . "<option value=\"nonactive\"".$stat_sel[1].">" . lang('Nonactive') . "</option>\n"
+                  . "<option value=\"archiv\"".$stat_sel[2].">" . lang('Archiv') . "</option>\n";
      $t->set_var("status_list",$status_list);
 
     $t->set_var("lang_budget",lang("Budget"));

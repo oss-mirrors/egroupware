@@ -24,11 +24,11 @@
          </tr>
          <tr>
           <td>{lang_start_date}:</td>
-          <td>{start_date_formatorder}</td>
+          <td>{start_date_select}</td>
          </tr>
          <tr>
           <td>{lang_end_date}:</td>
-          <td>{end_date_formatorder}</td>
+          <td>{end_date_select}</td>
          </tr>
          <tr>
           <td>{lang_coordinator}:</td>

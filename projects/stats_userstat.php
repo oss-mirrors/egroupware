@@ -44,7 +44,7 @@
      // editblock contains the buttons and forms for edit
      // ====================================================================
      
-     $t->set_var("actionurl",$phpgw->link("stats_userstat.php","account_id=" . $phpgw->db->f("account_id")));
+     $t->set_var("actionurl",$phpgw->link("/projects/stats_userstat.php","account_id=" . $phpgw->db->f("account_id")));
      $t->set_var("lang_action",lang("User statistic"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      $t->set_var("lang_lid",lang("Username"));

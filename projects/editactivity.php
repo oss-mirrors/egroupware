@@ -68,8 +68,8 @@
     $t->set_var('lang_choose','');
     $t->set_var('choose','');
     $t->set_var('currency',$currency);
-    $t->set_var('actionurl',$phpgw->link("editactivity.php"));
-    $t->set_var('deleteurl',$phpgw->link("deleteactivity.php"));
+    $t->set_var('actionurl',$phpgw->link("/projects/editactivity.php"));
+    $t->set_var('deleteurl',$phpgw->link("/projects/deleteactivity.php"));
     $t->set_var('lang_action',lang('Edit activity'));
     $t->set_var('hidden_vars',$hidden_vars);
     $t->set_var('lang_num',lang('Activity ID'));

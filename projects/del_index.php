@@ -30,7 +30,7 @@
 
     $t->set_var('lang_action',lang('Project delivery'));   
     $t->set_var('common_hidden_vars',$common_hidden_vars);   
-    $t->set_var('searchurl',$phpgw->link("del_index.php"));  
+    $t->set_var('searchurl',$phpgw->link("/projects/del_index.php"));  
     $t->set_var('lang_search',lang('Search'));  
 
     if (! $start) { $start = 0; }
@@ -44,8 +44,8 @@
 
 //---------------------- nextmatch variable template-declarations ---------------------------
 
-    $left = $phpgw->nextmatchs->left('index.php',$start,$total_records);
-    $right = $phpgw->nextmatchs->right('index.php',$start,$total_records);
+    $left = $phpgw->nextmatchs->left('del_index.php',$start,$total_records);
+    $right = $phpgw->nextmatchs->right('del_index.php',$start,$total_records);
     $t->set_var('left',$left);
     $t->set_var('right',$right);
 
@@ -112,10 +112,10 @@
       		      "end_date" => $end_dateout,
       		      "coordinator" => $coordinatorout));
 
-    $t->set_var('part',$phpgw->link('del_delivery.php',"project_id=$id"));                                                                                                           
+    $t->set_var('part',$phpgw->link('/projects/del_delivery.php',"project_id=$id"));                                                                                                           
     $t->set_var('lang_part',lang('Delivery'));                                                                                                                                        
                                                                                                                                                                                         
-    $t->set_var('partlist',$phpgw->link('bill_invoicelist.php',"project_id=$id"));                                                                                                   
+    $t->set_var('partlist',$phpgw->link('/projects/del_deliverylist.php',"project_id=$id"));                                                                                                   
     $t->set_var('lang_partlist',lang('Delivery list'));
 
     $t->parse('list','projects_list',True);
@@ -124,7 +124,7 @@
     }
 
     $t->set_var('lang_all_partlist',lang('All delivery notes'));                                                                                                                    
-    $t->set_var('all_partlist',$phpgw->link("del_deliverylist.php","project_id=$id"));
+    $t->set_var('all_partlist',$phpgw->link("/projects/del_deliverylist.php","project_id="));
 
     $t->set_var('lang_all_part2list','');
     $t->set_var('all_part2list','');

@@ -46,16 +46,16 @@
      
      $t->set_var("deleteheader",lang("Are you sure you want to delete this entry"));
      
-     $nolinkf = $phpgw->link("index.php","sort=$sort&order=$order&"
+     $nolinkf = $phpgw->link("/projects/activities.php","sort=$sort&order=$order&"
      				. "query=$query&start=$start&filter=$filter");
      $nolink = "<a href=\"$nolinkf\">" . lang("No") ."</a>";
      $t->set_var("nolink",$nolink);
     
-     $yeslinkf = $phpgw->link("delete.php","id=$id&confirm=True&sort="
+     $yeslinkf = $phpgw->link("/projects/delete.php","id=$id&confirm=True&sort="
 				. "$sort&order=$order&query=$query&start=$start"
 				. "&filter=$filter");
 
-     $yeslinkf = "<FORM method=\"POST\" name=yesbutton action=\"".$phpgw->link("deleteactivity.php")."\">"
+     $yeslinkf = "<FORM method=\"POST\" name=yesbutton action=\"".$phpgw->link("/projects/deleteactivity.php")."\">"
                  . $common_hidden_vars
                  . "<input type=hidden name=id value=$id>"
 		 . "<input type=hidden name=confirm value=True>"

@@ -31,7 +31,7 @@
 
     $t->set_var('lang_action',lang('Project billing'));
     $t->set_var('common_hidden_vars',$common_hidden_vars);   
-    $t->set_var('searchurl',$phpgw->link("bill_index.php"));
+    $t->set_var('searchurl',$phpgw->link("/projects/bill_index.php"));
     $t->set_var('lang_search',lang('Search'));
 
     if (! $start) { $start = 0; }
@@ -115,10 +115,10 @@
       		      "end_date" => $end_dateout,
       		      "coordinator" => $coordinatorout));
 
-    $t->set_var('part',$phpgw->link('bill_invoice.php',"project_id=$id"));
+    $t->set_var('part',$phpgw->link('/projects/bill_invoice.php',"project_id=$id"));
     $t->set_var('lang_part',lang('Invoice'));
 
-    $t->set_var('partlist',$phpgw->link('bill_invoicelist.php',"project_id=$id"));
+    $t->set_var('partlist',$phpgw->link('/projects/bill_invoicelist.php',"project_id=$id"));
     $t->set_var('lang_partlist',lang('Invoice list'));
 
     $t->parse('list','projects_list',True);
@@ -126,7 +126,7 @@
 // ------------------------------ end record declaration -------------------------------
   }
 
-    $t->set_var('all_partlist',$phpgw->link("bill_invoicelist.php","project_id=$id"));
+    $t->set_var('all_partlist',$phpgw->link("/projects/bill_invoicelist.php","project_id="));
     $t->set_var('lang_all_partlist',lang("All invoices"));
 
     $t->set_var('all_part2list','');

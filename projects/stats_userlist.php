@@ -10,15 +10,15 @@
   *  Free Software Foundation; either version 2 of the License, or (at your  *
   *  option) any later version.                                              *
   \**************************************************************************/
-/* $Id$ */
+  /* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "projects", 
+    $phpgw_info["flags"] = array("currentapp" => "projects", 
                                "enable_nextmatchs_class" => True);
-  include("../header.inc.php");
+    include("../header.inc.php");
 
-  $t = new Template($phpgw_info["server"]["app_tpl"]);
-  $t->set_file(array( "user_list_t" => "stats_userlist.tpl"));
-  $t->set_block("user_list_t", "user_list", "list");
+    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t->set_file(array('user_list_t' => 'stats_userlist.tpl'));
+    $t->set_block('user_list_t','user_list','list');
 
   $common_hidden_vars =
    "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
@@ -95,7 +95,7 @@
 
 // --------------------- template declaration for list records ---------------------------
 
-    $el = $phpgw->link("stats_userstat.php","account_id=" . $phpgw->db->f("account_id") 
+    $el = $phpgw->link("/projects/stats_userstat.php","account_id=" . $phpgw->db->f("account_id") 
                                          . "&sort=$sort&order=$order&"
                                          . "query=$query&start=$start&filter="
                                          . $filter);

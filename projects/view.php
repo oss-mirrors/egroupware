@@ -46,7 +46,7 @@
     }
     else { $t->set_var("error",lang("Please select your currency in preferences!")); }
 
-    $t->set_var('done_action',$phpgw->link("index.php","sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+    $t->set_var('done_action',$phpgw->link("/projects/index.php","sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
     $t->set_var('lang_done',lang('Done'));
     $t->set_var("lang_action",lang("View project"));
     $t->set_var("hidden_vars",$hidden_vars);
@@ -118,17 +118,10 @@
     $db2->query("SELECT phpgw_p_activities.id as id,phpgw_p_activities.descr,phpgw_p_projectactivities.project_id FROM phpgw_p_activities "
 		     . "$join phpgw_p_projectactivities ON (phpgw_p_activities.id=phpgw_p_projectactivities.activity_id) and  "
                      . "((project_id='$id') or (project_id IS NULL)) WHERE billable IS NULL OR billable='N' ORDER BY descr asc");
-    while ($db2->next_record()) {
-        $ba_activities_list .= "<option value=\"" . $db2->f("id") . "\"";
-        if($db2->f("project_id"))
-            $ba_activities_list .= " selected";
-        $ba_activities_list .= ">"        
-                    . $phpgw->strip_html($db2->f("descr"))
-                    . "</option>";
-    }
+	while ($db2->next_record()) { $ba_activities_list .= $phpgw->strip_html($db2->f("descr")) . "<br>"; }
     
-    $t->set_var("lang_descr",lang("Description"));
-    $t->set_var("ba_activities_list",$ba_activities_list);  
+    $t->set_var('lang_descr',lang('Description'));
+    $t->set_var('ba_activities_list',$ba_activities_list);  
 
 // activities billable
      $t->set_var("lang_billable_activities",lang("Billable activities"));
@@ -138,15 +131,11 @@
                      . "(phpgw_p_activities.id=phpgw_p_projectactivities.activity_id) and  "
                      . "((project_id='$id') or (project_id IS NULL)) WHERE billable IS NULL OR billable='Y' ORDER BY descr asc");
 
-     while ($db2->next_record()) {
-        $bill_activities_list .= "<option value=\"" . $db2->f("id") . "\"";
-        if($db2->f("billable")=="Y")
-            $bill_activities_list .= " selected";
-        $bill_activities_list .= ">"        
-                    . $phpgw->strip_html($db2->f("descr")) . " " . $currency . " " . $db2->f("billperae")
-                    . " " . lang("per workunit") . " " . "</option>";
-     }
-     $t->set_var("bill_activities_list",$bill_activities_list);  
+	while ($db2->next_record()) {
+	    $bill_activities_list .= $phpgw->strip_html($db2->f("descr")) . " " . $currency . " " . $db2->f("billperae")
+					. " " . lang('per workunit') . " " . "<br>";
+	}
+    $t->set_var('bill_activities_list',$bill_activities_list);  
 
 /*    $t->set_var("lang_access_type",lang("Access type"));   
     $access_list = "<option value=\"private\"";

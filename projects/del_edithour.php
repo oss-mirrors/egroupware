@@ -50,7 +50,7 @@
      $t->set_block("projects_edit", "add", "addhandle");
      $t->set_block("projects_edit", "edit", "edithandle");
      
-     $t->set_var("actionurl",$phpgw->link("del_edithour.php"));
+     $t->set_var("actionurl",$phpgw->link("/projects/del_edithour.php"));
      $t->set_var("lang_action",lang("edit project hours"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      

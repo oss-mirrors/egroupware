@@ -31,10 +31,10 @@
 			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
     $t->set_var('lang_action',lang('Projects'));
-    $t->set_var('addurl',$phpgw->link("add.php"));
+    $t->set_var('addurl',$phpgw->link("/projects/add.php"));
     $t->set_var('lang_activities',lang('Activities list'));
-    $t->set_var('activitiesurl',$phpgw->link("activities.php"));
-    $t->set_var('searchurl',$phpgw->link("index.php"));
+    $t->set_var('activitiesurl',$phpgw->link("/projects/activities.php"));
+    $t->set_var('searchurl',$phpgw->link("/projects/index.php"));
     $t->set_var('common_hidden_vars',$common_hidden_vars);   
 
     if (! $start) { $start = 0; }
@@ -125,10 +125,10 @@
        
 // ------------------------- end record declaration -------------------------------------------
 
-    $t->set_var('edit',$phpgw->link('edit.php',"id=$id"));  
+    $t->set_var('edit',$phpgw->link('/projects/edit.php',"id=$id"));  
     $t->set_var('lang_edit_entry',lang('Edit'));
 
-    $t->set_var('view',$phpgw->link('view.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+    $t->set_var('view',$phpgw->link('/projects/view.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
     $t->set_var('lang_view_entry',lang('View'));
 
     $t->parse('list','projects_list',True);

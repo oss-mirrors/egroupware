@@ -79,8 +79,8 @@
     $phpgw->db->query("select * from phpgw_p_hours where id='$id'");
     $phpgw->db->next_record();
 
-    $t->set_var('actionurl',$phpgw->link("hours_edithour.php"));
-    $t->set_var('deleteurl',$phpgw->link("delete_hours.php","id=$id"));
+    $t->set_var('actionurl',$phpgw->link("/projects/hours_edithour.php"));
+    $t->set_var('deleteurl',$phpgw->link("/projects/delete_hours.php","id=$id"));
     $t->set_var('lang_action',lang('Edit project hours'));
     $t->set_var('hidden_vars',$hidden_vars);
      
@@ -112,18 +112,16 @@
 
 
     $t->set_var('lang_status',lang('Status'));
-     if ($phpgw->db->f("status")=="open"): 
+    if ($phpgw->db->f("status")=="open"): 
          $stat_sel[0]=" selected";
-     elseif ($phpgw->db->f("status")=="done"):
+    elseif ($phpgw->db->f("status")=="done"):
          $stat_sel[1]=" selected";
-     elseif ($phpgw->db->f("status")=="billed"):
-         $stat_sel[2]=" selected";
-     endif;
+    endif;
 
     $status_list = "<option value=\"open\"".$stat_sel[0].">" . lang("Open") . "</option>\n"
-                  . "<option value=\"done\"".$stat_sel[1].">" . lang("Done") . "</option>\n"
-                  . "<option value=\"billed\"".$stat_sel[2].">" . lang("Billed") . "</option>\n";
-     $t->set_var("status_list",$status_list);
+                  . "<option value=\"done\"".$stat_sel[1].">" . lang("Done") . "</option>\n";
+
+    $t->set_var("status_list",$status_list);
 
     $t->set_var('lang_start_date',lang('Start date'));
     $t->set_var('lang_end_date',lang('Date due'));

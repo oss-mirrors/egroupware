@@ -32,9 +32,9 @@
 
     $t->set_var(lang_action,lang("Project statistics"));  
     $t->set_var(lang_userlist,lang("User statistics"));
-    $t->set_var(userlisturl,$phpgw->link("stats_userlist.php"));  
+    $t->set_var(userlisturl,$phpgw->link("/projects/stats_userlist.php"));  
     $t->set_var(common_hidden_vars,$common_hidden_vars);   
-    $t->set_var('searchurl',$phpgw->link("index.php"));  
+    $t->set_var('searchurl',$phpgw->link("/projects/stats_projectlist.php"));  
 
     if (! $start) { $start = 0; }
 
@@ -107,6 +107,8 @@
 
     $coordinatorout = $projects[$i]['lid'] . " [ " . $projects[$i]['firstname'] . " " . $projects[$i]['lastname'] . " ]";
 
+    $id = $projects[$i]['id'];
+
 // ----------------- template declaration for list records -------------------------------
 
     $t->set_var(array("number" => $number,
@@ -116,16 +118,16 @@
       		      "end_date" => $end_dateout,
       		      "coordinator" => $coordinatorout));
 
-    $t->set_var('stat',$phpgw->link('stats_projectstat.php',"id=$id"));
+    $t->set_var('stat',$phpgw->link('/projects/stats_projectstat.php',"id=$id"));
     $t->set_var('lang_stat',lang('Statistic'));
 
-    $t->parse("list", "project_list", true);
+    $t->parse('list','project_list',True);
 
 // --------------------------- end record declaration ------------------------------------
   
 }
-    $t->parse("out", "project_list_t", true);
-    $t->p("out");
+    $t->parse('out','project_list_t',True);
+    $t->p('out');
 
     $phpgw->common->phpgw_footer();
 ?>

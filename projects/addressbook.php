@@ -32,7 +32,7 @@
     $t->set_var('charset',$charset);                                                                                                                                                       
     $t->set_var('font',$phpgw_info["theme"]["font"]);	
     $t->set_var('lang_search',lang('Search'));                                                                                                                                             
-    $t->set_var('searchurl',$phpgw->link("addressbook.php"));
+    $t->set_var('searchurl',$phpgw->link("/projects/addressbook.php"));
 
     if (! $start) { $start = 0; }                                                                                                                                                                                    
                                                                                                                                                                                          

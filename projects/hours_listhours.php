@@ -154,14 +154,14 @@
 		      'project' => $project));
 
     if ($status != "billed") {
-    $t->set_var('edit',$phpgw->link('hours_edithour.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+    $t->set_var('edit',$phpgw->link('/projects/hours_edithour.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
     $t->set_var('lang_edit',lang('Edit'));
     }
     else { 
     $t->set_var('edit','');
     $t->set_var('lang_edit','');
     }
-    $t->set_var('view',$phpgw->link('viewhours.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+    $t->set_var('view',$phpgw->link('/projects/viewhours.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
     $t->set_var('lang_view',lang('View'));
 
     $t->parse('list','hours_list',True);

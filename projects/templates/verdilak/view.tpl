@@ -69,14 +69,14 @@
          </tr>
          <tr>
           <td><b>{lang_bookable_activities}:</b></td>
-          <td><select name="ba_activities[]" multiple>{ba_activities_list}</select></td>
+          <td>{ba_activities_list}</td>
          </tr>
         <tr>
         <td height="2">&nbsp;</td>
          </tr>
          <tr>
           <td><b>{lang_billable_activities}:</b></td>
-          <td><select name="bill_activities[]" multiple>{bill_activities_list}</select></td>
+          <td>{bill_activities_list}</td>
          </tr>
          </table>
          

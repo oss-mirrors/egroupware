@@ -19,12 +19,12 @@
     $t->set_var('admin_info', "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] 
                         . "\" align=\"left\"><b>" . $admin_info);
 
-    $t->set_var("link_activities","<a href=\"" . $phpgw->link("activities.php") . "\">" . lang("Activities") ."</a>");
-    $t->set_var("link_billing","<a href=\"" . $phpgw->link("bill_index.php") . "\">" . lang("Project billing") ."</a>");
-    $t->set_var("link_hours","<a href=\"" . $phpgw->link("hours_index.php") . "\">" . lang("Project hours") ."</a>");
-    $t->set_var("link_statistics","<a href=\"" . $phpgw->link("stats_projectlist.php") . "\">" . lang("Project statistics") ."</a>");
-    $t->set_var("link_delivery","<a href=\"" . $phpgw->link("del_index.php") . "\">" . lang("Project delivery") ."</a>");
-    $t->set_var("link_return_projects","<a href=\"" . $phpgw->link("index.php") . "\">" . lang("Return to projects") ."</a>");
+    $t->set_var("link_activities","<a href=\"" . $phpgw->link("/projects/activities.php") . "\">" . lang("Activities") ."</a>");
+    $t->set_var("link_billing","<a href=\"" . $phpgw->link("/projects/bill_index.php") . "\">" . lang("Project billing") ."</a>");
+    $t->set_var("link_hours","<a href=\"" . $phpgw->link("/projects/hours_index.php") . "\">" . lang("Project hours") ."</a>");
+    $t->set_var("link_statistics","<a href=\"" . $phpgw->link("/projects/stats_projectlist.php") . "\">" . lang("Project statistics") ."</a>");
+    $t->set_var("link_delivery","<a href=\"" . $phpgw->link("/projects/del_index.php") . "\">" . lang("Project delivery") ."</a>");
+    $t->set_var("link_return_projects","<a href=\"" . $phpgw->link("/projects/index.php") . "\">" . lang("Return to projects") ."</a>");
     $t->pparse("out","projects_header");
  
 ?>

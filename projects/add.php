@@ -79,8 +79,8 @@
     if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang("Project $num - $title has been added !")); }
     if ((! $submit) && (! $error) && (! $errorcount)) { $t->set_var('message',""); }
 
-    $t->set_var("actionurl",$phpgw->link("add.php"));
-    $t->set_var("addressbook_link",$phpgw->link("addressbook.php","query="));
+    $t->set_var("actionurl",$phpgw->link("/projects/add.php"));
+    $t->set_var("addressbook_link",$phpgw->link("/projects/addressbook.php","query="));
     $t->set_var("lang_action",lang("Add project"));
 
     if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {
@@ -113,9 +113,9 @@
     $t->set_var("descrval",$descr);
 
     $t->set_var("lang_status",lang("Status"));
-    $status_list = "<option value=\"active\" selected>" . lang("Active") . "</option>\n"
-       		. "<option value=\"nonactive\">" . lang("Nonactive") . "</option>\n"
-    		. "<option value=\"archiv\">" . lang("Archiv") . "</option>\n";
+    $status_list = "<option value=\"active\" selected>" . lang('Active') . "</option>\n"
+		. "<option value=\"nonactive\">" . lang('Nonactive') . "</option>\n"
+		. "<option value=\"archiv\">" . lang('Archiv') . "</option>\n";
 
     $t->set_var("status_list",$status_list);
     $t->set_var("lang_budget",lang("Budget"));
@@ -145,7 +145,7 @@
 	}
     else {
         $emonth = date('m',$edate);
-        $emonth = date('m',$edate);
+        $eday = date('d',$edate);
         $eyear = date('Y',$edate);
 	}
 

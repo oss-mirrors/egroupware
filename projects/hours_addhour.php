@@ -75,7 +75,7 @@
     $t->set_var('error',lang('Please select your currency in preferences !'));
     }
 
-    $t->set_var('actionurl',$phpgw->link("hours_addhour.php"));
+    $t->set_var('actionurl',$phpgw->link("/projects/hours_addhour.php"));
     $t->set_var('lang_action',lang('Add project hours'));
 	
     $hidden_vars = "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
@@ -148,9 +148,9 @@
 
     $t->set_var('lang_status',lang('Status'));
     
-    $status_list = "<option value=\"done\" selected>" . lang("Done") . "</option>\n"
-           		. "<option value=\"open\">" . lang("Open") . "</option>\n"
-           		. "<option value=\"billed\">" . lang("Billed") . "</option>\n";	
+    $status_list = "<option value=\"done\" selected>" . lang('Done') . "</option>\n"
+           		. "<option value=\"open\">" . lang('Open') . "</option>\n";
+
     $t->set_var("status_list",$status_list);
 
     $t->set_var('lang_employee',lang('Employee'));

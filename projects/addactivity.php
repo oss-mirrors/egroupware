@@ -43,7 +43,7 @@
     if ((! $submit) && (! $error) && (! $errorcount)) { $t->set_var('message',''); }
 
 
-    $t->set_var('actionurl',$phpgw->link('addactivity.php'));
+    $t->set_var('actionurl',$phpgw->link('/projects/addactivity.php'));
 
     if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {
     $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];

@@ -39,8 +39,8 @@
     $t->set_file(array('prefs' => 'preferences.tpl'));
      
      
-    $t->set_var("actionurl",$phpgw->link("preferences.php"));
-    $t->set_var("addressbook_link",$phpgw->link("addressbook.php","query="));
+    $t->set_var("actionurl",$phpgw->link("/projects/preferences.php"));
+    $t->set_var("addressbook_link",$phpgw->link("/projects/addressbook.php","query="));
     
     $t->set_var("lang_action",lang("Project preferences"));
     $t->set_var("lang_select_tax",lang("Select tax for work hours"));

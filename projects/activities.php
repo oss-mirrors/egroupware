@@ -36,10 +36,12 @@
 			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
     $t->set_var(lang_action,lang("Activities list"));
-    $t->set_var(actionurl,$phpgw->link("addactivity.php"));
+    $t->set_var(actionurl,$phpgw->link("/projects/addactivity.php"));
     $t->set_var(lang_projects,lang("Project list"));
-    $t->set_var(projectsurl,$phpgw->link("index.php"));
+    $t->set_var(projectsurl,$phpgw->link("/projects/index.php"));
     $t->set_var(common_hidden_vars,$common_hidden_vars);   
+    $t->set_var("lang_search",lang("Search"));
+    $t->set_var('searchurl',$phpgw->link("/projects/activities.php"));
 
     if (! $start) { $start = 0; }
     if ($order) { $ordermethod = "order by $order $sort"; }
@@ -47,32 +49,30 @@
 
     if (! $filter) { $filter = "none"; }
 
+    if($phpgw_info["user"]["preferences"]["common"]["maxmatchs"] && $phpgw_info["user"]["preferences"]["common"]["maxmatchs"] > 0) {
+    $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+    }
+    else { $limit = 15; }
+
     if ($query) {
 	$phpgw->db->query("select count(*) from phpgw_p_activities where descr like '%$query%'");
 	$phpgw->db->next_record();
-	if ($phpgw->db->f(0) == 1)
-        $t->set_var(total_matchs,lang("your search returned 1 match"));
-	else
-        $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
+	if ($phpgw->db->f(0) == 1) { $t->set_var('lang_showing',lang('your search returned 1 match')); }
+	else { $t->set_var('lang_showing',lang("your search returned x matchs",$phpgw->db->f(0))); }
      } 
      else {
      $phpgw->db->query("select count(*) from phpgw_p_activities");
      $phpgw->db->next_record();                                                                      
-     if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
-     $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
-                           ($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),
-                           $phpgw->db->f(0));
-     else
-     $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
-     $t->set_var(total_matchs,$total_matchs);
+     if ($phpgw->db->f(0) > $limit) { $t->set_var('lang_showing',lang("showing x - x of x",($start + 1),($start + $limit),$phpgw->db->f(0))); }
+     else { $t->set_var('lang_showing',lang("showing x",$phpgw->db->f(0))); }
      }
 
 // ---------------- nextmatch variable template-declarations ------------------------------
 
-     $next_matchs = $phpgw->nextmatchs->show_tpl("activities.php",$start,$phpgw->db->f(0),
-                   "&order=$order&filter=$filter&sort="
-                 . "$sort&query=$query","85%",$phpgw_info["theme"][th_bg]);
-     $t->set_var(next_matchs,$next_matchs);
+    $left = $phpgw->nextmatchs->left("index.php",$start,$phpgw->db->f(0));
+    $right = $phpgw->nextmatchs->right("index.php",$start,$phpgw->db->f(0));
+    $t->set_var("left",$left); 
+    $t->set_var("right",$right);
 
 // ------------------------- end nextmatch template ---------------------------------------
 
@@ -109,11 +109,11 @@
 
 // ------------------- template declaration for list records -------------------------
       
-    $el = $phpgw->link("editactivity.php","id=" . $phpgw->db->f("id") 
+    $el = $phpgw->link("/projects/editactivity.php","id=" . $phpgw->db->f("id") 
                                          . "&sort=$sort&order=$order&"
                                          . "query=$query&start=$start&filter="
                                          . $filter);
-    $dl = $phpgw->link("deleteactivity.php","id=" . $phpgw->db->f("id") 
+    $dl = $phpgw->link("/projects/deleteactivity.php","id=" . $phpgw->db->f("id") 
                                          . "&sort=$sort&order=$order&"
                                          . "query=$query&start=$start&filter="
                                          . $filter);
