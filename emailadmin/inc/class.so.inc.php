@@ -173,9 +173,7 @@
 		
 		function saveUserData($_accountID, $_accountData)
 		{
-			global $phpgw, $phpgw_info;
-
-			$ldap = $phpgw->common->ldapConnect();
+			$ldap = $GLOBALS['phpgw']->common->ldapConnect();
 			// need to be fixed
 			if(is_numeric($_accountID))
 			{
@@ -186,7 +184,7 @@
 				$filter = "uid=$_accountID";
 			}
 
-			$sri = @ldap_search($ldap,$phpgw_info['server']['ldap_context'],$filter);
+			$sri = @ldap_search($ldap,$GLOBALS['phpgw_info']['server']['ldap_context'],$filter);
 			if ($sri)
 			{
 				$allValues 	= ldap_get_entries($ldap, $sri);
@@ -241,8 +239,7 @@
 			}
 			else
 			{
-				$delete['mailAlternateAddress'] = array();
-				@ldap_mod_del($ldap, $accountDN, $delete);
+				$newData['mailAlternateAddress'] = array();
 			}
 
 			if(!empty($_accountData["deliveryMode"]))
@@ -261,8 +258,7 @@
 			}
 			else
 			{
-				$delete['mailForwardingAddress'] = array();
-				@ldap_mod_del($ldap, $accountDN, $delete);
+				$newData['mailForwardingAddress'] = array();
 			}
 			
 			#print "DN: $accountDN<br>";
