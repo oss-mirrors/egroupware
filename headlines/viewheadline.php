@@ -41,7 +41,7 @@
 	$phpgw->template->set_block('admin_form','listing_row');
 	$phpgw->template->set_block('admin_form','listing_rows');
 
-	$phpgw->template->set_var('title',lang('Headlines admin'));
+	$phpgw->template->set_var('title',lang('Headlines Administration'));
 	$phpgw->template->set_var('lang_header',lang('View headline'));
 	$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
 	$phpgw->template->set_var('row_on',$phpgw_info['theme']['row_on']);
