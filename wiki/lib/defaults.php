@@ -17,9 +17,13 @@
 // The following variables establish the format for WikiNames in this wiki.
 //   Note that changing this might require a change to parse/transforms.php so
 //   that parse_wikiname knows how many parentheses are included in $LinkPtn.
-$UpperPtn = "[A-Z\xc0-\xde]";
-$LowerPtn = "[a-z\xdf-\xff]";
-$AlphaPtn = "[A-Za-z\xc0-\xff]";
+// the original settings do not work with utf-8, as they interpret multibyte chars wrong
+//$UpperPtn = "[A-Z\xc0-\xde]";
+//$LowerPtn = "[a-z\xdf-\xff]";
+//$AlphaPtn = "[A-Za-z\xc0-\xff]";
+$UpperPtn = "[A-Z]";
+$LowerPtn = "[a-z]";
+$AlphaPtn = "[A-Za-z]";
 $LinkPtn = $UpperPtn . $AlphaPtn . '*' . $LowerPtn . '+' .
            $UpperPtn . $AlphaPtn . '*(\\/' . $UpperPtn . $AlphaPtn . '*)?';
 
@@ -55,6 +59,7 @@ $ExpireLen = 14;
 //   "utf-8" is supported, and is recommended for international text;
 //   however you should be cautioned that Netscape does not behave correctly
 //   when editing utf-8 text.  Hence, "utf-8" is not currently the default.
+// eGW will set this later to its active charset, cant be done here as eGW is not yet initialised
 $Charset = 'ISO-8859-1';
 
 // $SeparateTitleWords determines whether spaces should be inserted in page

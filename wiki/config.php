@@ -29,11 +29,11 @@ $Admin = 'webmaster@domain.com';
 // $HomePage determines the "main" page of your wiki.  If browsers do not ask
 // to see a specific page they will be shown the home page.  This should be
 // a EXISTING (!!!) wiki page name, like 'AcmeProjectWiki'.
-$HomePage = 'phpGroupWare';
+$HomePage = 'eGroupWare';
 
 // $InterWikiPrefix determines what interwiki prefix you recommend other
 // wikis use to link to your wiki. Usually it is similar to your WikiName.
-$InterWikiPrefix = 'PhpGroupWare';
+$InterWikiPrefix = 'EGroupWare';
 
 // If $EnableFreeLinks is set to 1, links of the form "((page name))" will be
 // turned on for this wiki.  If it is set to 0, they will be disallowed.
@@ -62,11 +62,11 @@ $EditWithPreview = 1;
 
 // $MetaKeywords indicates what keywords to report on the meta-keywords tag.
 // This is useful to aid search engines in indexing your wiki.
-$MetaKeywords = 'phpgw documentation wiki';
+$MetaKeywords = 'egw documentation wiki';
 
 // $MetaDescription should be a sentence or two describing your wiki.  This
 // is useful to aid search engines in indexing your wiki.
-$MetaDescription = 'phpGroupWare Documentation Wiki';
+$MetaDescription = 'eGroupWare Documentation Wiki';
 
 // TemplateDir indicates what directory your wiki templates are located in.
 // You may use this to install other templates than the default template.

@@ -39,14 +39,15 @@ else
 	}
 	else
 	{	
-		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/wiki/index.php',$GLOBALS['HTTP_SERVER_VARS']['QUERY_STRING']));
+		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/wiki/index.php',$_SERVER['QUERY_STRING']));
 	}
 	$GLOBALS['phpgw']->common->phpgw_exit();
 }
 
-$UserName = ExecMethod('phpgwapi.accounts.id2name',get_account_id());
+$Charset = $GLOBALS['phpgw']->translation->charset();
+$UserName = $GLOBALS['phpgw_info']['user']['account_lid'];
 $anonymous = $UserName == AnonymousUser;
-// echo "<p>user='$UserName', AnonymousUser='$AnonymousUser', anonymous=".($anonymous?'True':'False').", action='$action', Preview='$Preview'</p>\n";
+// echo "<p>user='$UserName', AnonymousUser='".AnonymousUser."', anonymous=".($anonymous?'True':'False').", action='$action', Preview='$Preview'</p>\n";
 if (!($action == 'save' && !$Preview) && $action != 'admin' && !($action == 'prefs' && $Save))
 {
 	$GLOBALS['phpgw_info']['flags']['nonavbar'] = $anonymous;
@@ -91,8 +92,8 @@ if(get_magic_quotes_gpc())
 
 // Read user preferences from cookie.
 
-$prefstr = isset($HTTP_COOKIE_VARS[$CookieName])
-           ? $HTTP_COOKIE_VARS[$CookieName] : '';
+$prefstr = isset($_COOKIE[$CookieName])
+           ? $_COOKIE[$CookieName] : '';
 
 if(!empty($prefstr))
 {
