@@ -25,6 +25,7 @@
 	);
 
 	/* The hooks this app includes, needed for hooks registration */
+	$setup_info['headlines']['hooks'][] = 'home';
 	$setup_info['headlines']['hooks'][] = 'admin';
 	$setup_info['headlines']['hooks'][] = 'manual';
 	$setup_info['headlines']['hooks'][] = 'settings';

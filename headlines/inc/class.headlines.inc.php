@@ -70,7 +70,7 @@
 		function readtable($site)
 		{
 			$GLOBALS['phpgw']->db->query("SELECT con,display,base_url,newsfile,lastread,newstype,"
-                    . "cachetime,listings FROM phpgw_headlines_sites WHERE con = $site",__LINE__,__FILE__);
+                    . "cachetime,listings FROM phpgw_headlines_sites WHERE con=$site",__LINE__,__FILE__);
 			if(!$GLOBALS['phpgw']->db->num_rows())
 			{
 				return False;

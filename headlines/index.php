@@ -40,7 +40,8 @@
 
 	while ($preference = each($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
 	{
-		if ($preference[0] != 'headlines_layout')
+		if ($preference[0] != 'headlines_layout' &&
+			$preference[0] != 'mainscreen_showheadlines')
 		{
 			$sites[] = $preference[0];
 		}
@@ -61,7 +62,7 @@
 	{
 		echo '<center>' . lang('please set your preferences for this application') . '.</center>';
 	}
-	while (list(,$site) = @each($sites))
+	while(list(,$site) = @each($sites))
 	{
 		$j++;
 		$headlines->readtable($site);
@@ -82,7 +83,7 @@
 		}
 		else
 		{
-			while (list($title,$link) = each($links))
+			while(list($title,$link) = @each($links))
 			{
 				if($link && $title)
 				{

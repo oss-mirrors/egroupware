@@ -8,8 +8,10 @@ listings displayed	admin	en	Listings Displayed
 minutes between reloads	admin	en	Minutes between Reloads
 monitor	common	en	Monitor
 news file	admin	en	News File
+news from x	common	en	News from %1
 news headlines	common	en	News headlines
 news type	admin	en	News Type
+other preferences	preferences	en	Other Preferences
 select headline news sites	common	en	Select Headline News sites
 that site has already been entered	admin	en	That site has already been entered
 you must enter a base url	admin	en	You must enter a base url
