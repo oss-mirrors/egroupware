@@ -21,10 +21,9 @@
 //			   used only in reply (read.php) section to show our current
 //			   message with little different color ($phpgw_info["theme"]["bg05"])
 //
-function showthread ($thread,$current) {
-    Global $phpgw, $phpgw_info, $tr_color;
+function showthread ($cat) {
+    global $phpgw, $phpgw_info, $tr_color;
 
-    $phpgw->db->query("select * from f_threads where thread = $thread order by pos");
     while($phpgw->db->next_record()) {
       $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 
@@ -32,7 +31,7 @@ function showthread ($thread,$current) {
       echo "<tr bgcolor=\"$tr_color\">";
 
       $move = "";
-      for($tmp = 1;$tmp <= $row["depth"];$tmp++)
+      for($tmp = 1;$tmp <= $phpgw->db->f("depth"); $tmp++)
           $move .= "&nbsp;&nbsp;";
  
       $pos = $phpgw->db->f("pos");
@@ -51,4 +50,23 @@ function showthread ($thread,$current) {
 }
 
 
+function show_topics($cat,$for) {
+    global $phpgw, $phpgw_info, $tr_color;
+   while($phpgw->db->next_record()) {
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	echo "<tr bgcolor=\"$tr_color\">";
+	echo "<td><a href=" . $phpgw->link("read.php","cat=$cat&for=$for&msg=$msg" . $phpgw->db->f("id")) .">" . $phpgw->db->f("subject") . "</a></td>\n";
+	$lastreply = $phpgw->db->f("postdate");
+	echo "<td align=left valign=top>" . $phpgw->db->f("author") . "</td>\n";
+	$msgid = $phpgw->db->f("id");
+	$mainid = $phpgw->db->f("main");
+ 
+    echo "<td align=left valign=top>" . $phpgw->db->f("n_replies") . "</td>\n";
+    echo "<td align=left valign=top>$lastreply</td>\n";
+
+  }
+
+  echo "</tr>\n"; 
+
+}
 
