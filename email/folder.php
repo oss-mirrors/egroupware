@@ -195,7 +195,7 @@
 
 		$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
 		$t->set_var('list_backcolor',$tr_color);
-		$t->set_var('folder_link',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php','folder=' .$GLOBALS['phpgw']->msg->prep_folder_out($folder_long)));
+		$t->set_var('folder_link',$GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'.'&folder=' .$GLOBALS['phpgw']->msg->prep_folder_out($folder_long)));
 
 		if ((isset($GLOBALS['phpgw']->msg->args['show_long']))
 		&& ($GLOBALS['phpgw']->msg->args['show_long'] != ''))

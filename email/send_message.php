@@ -779,7 +779,7 @@
 			echo '<pre>';
 			echo $GLOBALS['phpgw']->msg->htmlspecialchars_encode($GLOBALS['phpgw']->mail_send->svr_response);
 			echo '</pre>';
-			echo 'To go back to the msg list, click <a href="'.$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php','cd=13&folder='.urlencode($return)).'">here</a><br>';
+			echo 'To go back to the msg list, click <a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'.'&cd=13&folder='.urlencode($return)).'">here</a><br>';
 			//send_message_cleanup($mailbox);
 			send_message_cleanup($mail_out);
 		}
@@ -793,7 +793,7 @@
 			// what folder to go back to (the one we came from)
 			$return = trim($return);
 			// redirect the browser to the index page for the appropriate folder
-			header('Location: '.$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php','folder='.urlencode($return)));
+			header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'.'&folder='.urlencode($return)));
 		}
 	}
 	else
@@ -805,7 +805,7 @@
 			. "err_code: '".$GLOBALS['phpgw']->mail_send->err['code']."';<BR>"
 			. "err_msg: '".htmlspecialchars($GLOBALS['phpgw']->mail_send->err['msg'])."';<BR>\r\n"
 			. "err_desc: '".$GLOBALS['phpgw']->mail_send->err['desc']."'.<P>\r\n"
-			. 'To go back to the msg list, click <a href="'.$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php','cd=13&folder='.urlencode($return)).'">here</a>';
+			. 'To go back to the msg list, click <a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'.'&cd=13&folder='.urlencode($return)).'">here</a>';
 		//send_message_cleanup($mailbox);
 		send_message_cleanup($mail_out);
 	}

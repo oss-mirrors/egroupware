@@ -76,8 +76,8 @@
 		// report folder messages were moved to
 		$tf = $GLOBALS['phpgw']->msg->prep_folder_out($tofolder);
 		$GLOBALS['phpgw']->msg->end_request();
-		Header('Location: '.$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php',
-						 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+		Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'
+						.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
 						.'&tm='.$tm
 						.'&tf='.$tf
 						.'&sort='.$GLOBALS['phpgw']->msg->sort
@@ -97,8 +97,8 @@
 		$GLOBALS['phpgw']->msg->phpgw_expunge();
 		// end the msg class session
 		$GLOBALS['phpgw']->msg->end_request();
-		Header('Location: '.$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php',
-						 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+		Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'
+						.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
 						.'&td='.$totaldeleted
 						.'&sort='.$GLOBALS['phpgw']->msg->sort
 						.'&order='.$GLOBALS['phpgw']->msg->order

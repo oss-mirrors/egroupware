@@ -79,8 +79,8 @@
 
 // ----  What Folder To Return To  -----
         $lnk_goback_folder = $GLOBALS['phpgw']->msg->href_maketag(
-		$GLOBALS['phpgw']->link('/email/index.php',
-			'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+		$GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'
+			.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
 			.'&sort='.$GLOBALS['phpgw']->msg->sort
 			.'&order='.$GLOBALS['phpgw']->msg->order
 			.'&start='.$GLOBALS['phpgw']->msg->start),

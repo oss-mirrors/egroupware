@@ -1433,7 +1433,13 @@ class mail_msg extends mail_msg_wrappers
 	/*!
 	@function get_msg_list_display
 	@abstract make an array containing all necessary data to display an "index.php" type list of mesasages
-	@param ?
+	@param $folder_info : array : (OPTIONAL) array elements as defined in return from function 
+	  $this->folder_status_info() . This is primarily a time saver, if you already have the data, then pass it, 
+	  else this function will obtain the data for itself.
+	@param $folder_info : array of integers (OPTIONAL) integers representing a list of message numbers we 
+	  should display, pass this data if you have search results to show, for example. If this is not present,
+	  then this function get a numbered array list of all message numbers in that folder, sorted and ordered
+	  according to preferences and/or user submitted page view args.
 	@result array 
 		first_item	boolean, flag indicating this is the first item in the array, the first message
 				to display, states the obvious, but the index tpl uses it to show a form tag only once
@@ -1503,7 +1509,7 @@ class mail_msg extends mail_msg_wrappers
 			return $msg_list;
 		}
 		
-		// we gave messages to list, continue...
+		// we have messages to list, continue...
 		// if we were passed an array of message numbers to show, use that, if not then
 		// get a numbered array list of all message numbers in that folder, sorted and ordered
 		if (count($msg_nums_array) == 0)
