@@ -15,7 +15,7 @@
 			{lang_Process}
 		</td>
 		<td align="center">
-			{lang_act}
+			{lang_Activity}
 		</td>
 		<td align="center">
 			{lang_Instance}
