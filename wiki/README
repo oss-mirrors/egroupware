@@ -1,0 +1,10 @@
+----------------
+Axis Wiki README
+----------------
+
+AxisWiki is a modified version of WikkiTikkiTavi for use with phpGroupware.
+See CHANGES file for a list of differences between AxisWiki and Tavi. 
+Modifications are either cosmetic or functional so you may use Tavi and AxisWiki
+interchangably. So, right now if you want to use it outside phpgw then use Tavi.
+
+see http://tavi.sf.net for information on Tavi.
