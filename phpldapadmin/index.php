@@ -199,7 +199,6 @@ function check_config()
 	return true;
 }
 
-$lang = &$phpgw_lang;	// restore the eGW lang-array
 $GLOBALS['phpgw']->common->phpgw_footer();
 $GLOBALS['phpgw']->common->phpgw_exit();
 

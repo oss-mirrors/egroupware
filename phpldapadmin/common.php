@@ -16,7 +16,6 @@ if (!isset($GLOBALS['phpgw_info']['flags']))
 	);
 }
 include_once ('../header.inc.php');
-$phpgw_lang = &$lang; unset($lang);		// save the eGW lang-array
 
 if( file_exists( realpath( 'config.php' ) ) ) {
 	require realpath( 'config.php' );
@@ -24,11 +23,19 @@ if( file_exists( realpath( 'config.php' ) ) ) {
 require_once realpath( 'functions.php' );
 require_once realpath( 'schema_functions.php' );
 
+/* we use the eGW lang-array now
 // grab the language file configured in config.php
 if( ! isset( $language ) )
 	$language = 'english';
 if( file_exists( realpath( "lang/$language.php" ) ) )
 	include realpath( "lang/$language.php" );
+*/
+// load the english langfile, if no specific one found,
+// as phpldapadmin's message_id is not identical to the english text !!!
+if (!file_exists('../setup/phpgw_'.$GLOBALS['phpgw_info']['user']['preferences']['common']['lang'].'.lang'))
+{
+	$GLOBALS['phpgw']->translation->add_app('phpgwldapadmin','en');
+}
 
 // Turn off notices about referencing arrays and such, but leave everything else on.
 error_reporting( E_ALL ^ E_NOTICE );
