@@ -30,7 +30,7 @@
 	app_header(&$phpgw->template);
 
 	$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
-	$phpgw->template->set_var('lang_tree_view',lang('Tree view'));
+	$phpgw->template->set_var('messages',lang('Tree view'));
 
 	$location_info = $phpgw->bookmarks->read_session_data();
 	if (! is_array($location_info))
@@ -108,7 +108,26 @@
 			$db2->query("select * from phpgw_bookmarks where bm_subcategory='" . $phpgw->db->f('cat_id') . "' order by bm_name, bm_url",__LINE__,__FILE__);
 			while ($db2->next_record())
 			{
-				$tree[] = '...' . $db2->f('bm_name') . '| ';
+				$_tree = '...' . $db2->f('bm_name') . '|' . '<input type="checkbox" name="item_cb[]" value="' . $db2->f('bm_id') . '">';
+				if (($phpgw->bookmarks->grants[$db2->f('bm_owner')] & PHPGW_ACL_EDIT) || ($db2->f('bm_owner') == $phpgw_info['user']['account_id']))
+				{
+					$maintain_url  = $phpgw->link('/bookmarks/maintain.php','bm_id=' . $db2->f('bm_id'));
+					$maintain_link = sprintf('<a href="%s"><img src="%s/edit.gif" align="top" border="0" alt="%s"></a>', $maintain_url,PHPGW_IMAGES,lang('Edit this bookmark'));
+
+					$view_url      = $phpgw->link('/bookmarks/view.php','bm_id=' . $db2->f('bm_id'));
+					$view_link     = sprintf('<a href="%s"><img src="%s/document.gif" align="top" border="0" alt="%s"></a>', $view_url,PHPGW_IMAGES,lang('View this bookmark'));
+
+					$mail_link     = sprintf('<a href="%s"><img align="top" border="0" src="%s/mail.gif" alt="%s"></a>',
+							$phpgw->link('/bookmarks/maillink.php','bm_id='.$db2->f("bm_id")),PHPGW_IMAGES,lang('Mail this bookmark'));
+
+					$rating_link   = sprintf('<img src="%s/bar-%s.jpg">',PHPGW_IMAGES,$db2->f('bm_rating'));
+
+					$redirect_link = '<a href="' . $phpgw->link('/bookmarks/redirect.php','bm_id=' . $db2->f('bm_id')) . '" target="_new">' . $phpgw->strip_html($db2->f('bm_name')) . '</a>';
+					$_tree        .= $maintain_link . $view_link . $mail_link . $rating_link . $redirect_link;
+				}
+
+				$tree[] = $_tree;
+
 			}
 		}
 	}

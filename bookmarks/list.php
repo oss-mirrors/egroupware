@@ -53,6 +53,7 @@
 		$phpgw->bookmarks->save_session_data($location_info);
 	}
 
+	$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
 	$phpgw->template->set_var('filter_action',$phpgw->link('list.php'));
 	$phpgw->template->set_var('lang_filter_by',lang('Filter by'));
 	$phpgw->template->set_var('lang_none',lang('None'));

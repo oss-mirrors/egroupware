@@ -16,7 +16,7 @@
 			$img_leaf     = PHPGW_IMAGES . '/minus.gif';
 			$img_spc      = PHPGW_IMAGES . '/tree_space.gif';
 			$img_closed   = PHPGW_IMAGES . '/closed.gif';
-			$img_open   = PHPGW_IMAGES . '/open.gif';
+			$img_open     = PHPGW_IMAGES . '/open.gif';
 
 			/*********************************************/
 			/* read file to $tree array                  */
@@ -105,7 +105,7 @@
 	
 			$maxlevel++;
 	
-			$out  = "<table cellspacing=0 cellpadding=0 border=0 cols=".($maxlevel+3).">\n";
+			$out  = "<form><table cellspacing=0 cellpadding=0 border=0 cols=".($maxlevel+3)." width=70%>\n";
 			$out .= "<tr>\n";
 			for ($i=0; $i<$maxlevel; $i++) $out .= "<td width=36></td>";
 			$out .= "<td width=100%>&nbsp;</td></tr>\n";
@@ -177,11 +177,11 @@
 					// output item text
 					if ($tree[$cnt][2]=="")
 					{
-						$out .= "<td colspan=".($maxlevel-$tree[$cnt][0]).">".$tree[$cnt][1]."</td>";
+						$out .= '<td colspan="' . ($maxlevel-$tree[$cnt][0]) . '">' . $tree[$cnt][1] . '</td>';
 					}
 					else
 					{
-						$out .= "<td colspan=".($maxlevel-$tree[$cnt][0])."><a href=\"".$tree[$cnt][2]."\" target=\"".$tree[$cnt][3]."\">".$tree[$cnt][1]."</a></td>";
+						$out .= '<td colspan=' . ($maxlevel-$tree[$cnt][0]) . '">' . $tree[$cnt][2] . '</td>';
 					}
 	 
 					// end row
@@ -189,7 +189,7 @@
 				}
 				$cnt++;
 			}
-			$out .= "</table>\n";
+			$out .= "</table></form>\n";
 	
 			return $out;
 		}

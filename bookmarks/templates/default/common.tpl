@@ -5,12 +5,6 @@
    {app_navbar}
   </td>
  </tr>
-
- <tr>
-  <td align="center">
-   {messages}
-  </td>
- </tr>
  
  <tr>
   <td>

@@ -1,7 +1,9 @@
 <!-- $Id$ -->
-<table width="100%" cellspacing="0">
- <tr>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+ <tr bgcolor="{th_bg}">
   <td align="left">
+  &nbsp;{messages}
+
 <!--
    {lang_filter_by}
    <form action="{filter_action}" method="POST">
@@ -24,9 +26,10 @@
   <td align="right">
    {next_matchs_left}
    &nbsp;&nbsp;
-   {next_matchs_right}
+   {next_matchs_right}&nbsp; &nbsp;
   </td>
  </tr>
 </table>
+<p>
 
 {BOOKMARK_LIST}
