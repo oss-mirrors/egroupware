@@ -19,7 +19,7 @@
 
   if ($newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
 
-  $phpgw_info["flags"] = array("currentapp" => "email", "enable_message_class" => True,
+  $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True,
                                "enable_nextmatchs_class" => True);
   include("../header.inc.php");
 ?>
@@ -76,7 +76,7 @@
 	   . "\">INBOX</a></font></td>";
 	echo "<td width=20%><font size=2 face="
 	   . $phpgw_info["theme"]["font"] . ">";
-        $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["server"]["mail_port"] . "}INBOX",SA_UNSEEN);
+        $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["user"]["preferences"]["email"]["mail_port"] . "}INBOX",SA_UNSEEN);
 	echo $mailbox_status->unseen."/".$phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
      }
 
@@ -100,7 +100,7 @@
 	   . "\">$nm</a></font></td>";
 	echo "<td width=20%><font size=2 face=$theme[font]>";
 
-        $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["server"]["mail_port"] . "}$t_folder_s",SA_UNSEEN);
+        $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["user"]["preferences"]["email"]["mail_port"] . "}$t_folder_s",SA_UNSEEN);
 
 
 	echo $mailbox_status->unseen."/".$phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
@@ -110,7 +110,7 @@
      echo "<a href=\"" . $phpgw->link("index.php","folder=INBOX")
         . "\">INBOX</a></font></td>";
      echo "<td bgcolor=$COLOR_ROW_ON width=20%><font size=2 face=$theme[font]>";
-     $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["server"]["mail_port"] . "}INBOX",SA_UNSEEN);
+     $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["user"]["preferences"]["email"]["mail_port"] . "}INBOX",SA_UNSEEN);
      echo $mailbox_status->unseen."/".$phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
      echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
      echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";

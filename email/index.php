@@ -19,7 +19,7 @@
   Header("Pragma: no-cache");
   Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
   
-  $phpgw_info["flags"] = array("currentapp" => "email", "enable_message_class" => True, "enable_nextmatchs_class" => True);
+  $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True, "enable_nextmatchs_class" => True);
   if (isset($newsmode) && $newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
   include("../header.inc.php");
 

@@ -15,7 +15,7 @@
 
 // This will eventually be written using templates.
 
-  $phpgw_info["flags"] = array("currentapp" => "email", "enable_message_class" => True, "enable_nextmatchs_class" => True);
+  $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True, "enable_nextmatchs_class" => True);
   include("../header.inc.php");
 
   $msg = $phpgw->msg->header($mailbox, $msgnum);

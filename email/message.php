@@ -23,7 +23,7 @@
     $phpgw_info["flags"]["newsmode"] = True;
   }
 
-  $phpgw_info["flags"] = array("currentapp" => "email", "enable_message_class" => True, 
+  $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True, 
                                 "enable_nextmatchs_class" => True, "noheader" => True, "nonavbar" => True);
   include("../header.inc.php");
 

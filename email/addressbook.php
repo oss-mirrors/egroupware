@@ -13,7 +13,7 @@
   $phpgw_info["flags"] = array("noheader" => True, 
                                "nonavbar" => True, 
                                "currentapp" => "email", 
-                               "enable_message_class" => True,
+                               "enable_network_class" => True,
                                "enable_addressbook_class" => True,
                                "enable_nextmatchs_class" => True);
   include("../header.inc.php");
