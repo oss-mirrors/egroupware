@@ -74,7 +74,7 @@ ending date can not be before start date	projects	en	Ending date can not be befo
 Error in calculation sum does not match !	projects	en	Error in calculation sum does not match !
 exactly accounting	projects	en	Exactly accounting
 gantt chart for project %1	projects	en	Gantt chart for project %1
-gantt chart from %1 to %2	projects	de	Gantt chart from %1 to %2
+gantt chart from %1 to %2	projects	en	Gantt chart from %1 to %2
 Generate Activity ID ?	projects	en	Generate Activity ID ?
 Generate Delivery ID ?	projects	en	Generate Delivery ID ?
 Generate Invoice ID ?	projects	en	Generate Invoice ID ?
