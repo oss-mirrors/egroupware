@@ -149,14 +149,14 @@
 
 		function add(&$id,$url,$name,$ldesc,$keywords,$category,$subcategory,$rating,$access,$groups)
 		{
-			global $phpgw_info,$error_msg, $msg, $bookmarker, $phpgw;
+			global $phpgw_info, $error_msg, $msg, $bookmarker, $phpgw;
 
 			$db = $phpgw->db;
 
-/*      if (! $this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory, 
-                         &$rating, &$public, &$public_db)) {
-           return False;
-        } */
+			if (! $this->validate($url,$name,$ldesc,$keywords,$category,$subcategory,$rating,$public,$public_db))
+			{
+				return False;
+			}
 
         // Does the bookmark already exist?
         $query = sprintf("select count(*) from phpgw_bookmarks where bm_url='%s' and bm_owner='%s'",$url, $phpgw_info["user"]["account_id"]);
@@ -249,25 +249,26 @@
        return true;
     }
 
-    function validate (&$url,&$name,&$ldesc,&$keywords,&$category,&$subcategory,&$rating,&$public,&$public_db)
-    {
-       global $error_msg, $msg, $bookmarker, $validate;
+		function validate ($url,$name,$ldesc,$keywords,$category,$subcategory,$rating,$public,$public_db)
+		{
+			global $error_msg, $msg, $bookmarker, $validate;
 
-
-       // trim the form fields
-       // $url = $validate->strip_space($url);
-       $name = trim($name);
-       $desc = trim($ldesc);
-       $keyw = trim($keywords);
+			// trim the form fields
+			// $url = $validate->strip_space($url);
+//			$name = trim($name);
+//			$desc = trim($ldesc);
+//			$keyw = trim($keywords);
        
-       // Do we have all necessary data?
-       if (empty($url)) {
-          $error_msg .= "<br>URL is required.";
-       }
+			// Do we have all necessary data?
+			if (! $url || $url == 'http://')
+			{
+				$error_msg .= "<br>URL is required.";
+			}
 
-       if (empty($name)) {
-          $error_msg .= "<br>Name is required.";
-       }
+			if ($name)
+			{
+				$error_msg .= "<br>Name is required.";
+			}
    
        if (isset($category) && $category >= 0 ) {
        } else {
@@ -287,35 +288,54 @@
 */
 
        // does the admin want us to check URL format
-       if ($bookmarker->url_format_check > 0) {
-          // Is the URL format valid
-          if (!$validate->is_url($url))  { 
-             $format_msg = "<br>URL invalid. Format must be <strong>http://</strong> or 
-                            <strong>ftp://</strong> followed by a valid hostname and 
-                            URL!<br><small> $validate->ERROR </small>";
-  
-            // does the admin want this formatted as a warning or an error?
-            if ($bookmarker->url_format_check == 2) {
-               $error_msg .= $format_msg;
-            } else {
-               $msg .= $format_msg;
-            }
-         }
-      }    
+		if ($bookmarker->url_format_check > 0)
+		{
+			// Is the URL format valid
+			if ($url == 'http://')
+			{
+				$error_msg .= '<br>You must enter a URL';
+			}
+			else
+			{
+				if (!$validate->is_url($url))
+				{
+					$format_msg = "<br>URL invalid. Format must be <strong>http://</strong> or 
+	                            <strong>ftp://</strong> followed by a valid hostname and 
+	                            URL!<br><small> $validate->ERROR </small>";
+	  
+					// does the admin want this formatted as a warning or an error?
+					if ($bookmarker->url_format_check == 2)
+					{
+						$error_msg .= $format_msg;
+					}
+					else
+					{
+						$msg .= $format_msg;
+					}
+				}
+			}
+		}    
 
-      if ($public == "on") {
-         $public_db = "Y";
-      } else {
-         $public_db = "N";
-      }
+/*
+		if ($public == "on")
+		{
+			$public_db = "Y";
+		}
+		else
+		{
+			$public_db = "N";
+		}
+*/
 
-      // if we found an error, then return false
-      if (!empty($error_msg)) {
-         return False;
-      } else {
-         return True;
-      }
-   }
+		if ($error_msg)
+		{
+			return False;
+		}
+		else
+		{
+			return True;
+		}
+	}
 
    function update_user_total_bookmarks($uname)
    {
@@ -411,7 +431,7 @@ class bookmarker_class  {
 # URL response checking. bookmarker can check that the URL
 # responds to a request and show a warning if it does not
 # respond.
-  var $url_responds_check = true;
+  var $url_responds_check = False;
 
 # how many characters after the scheme(http://) and hostname
 # (www.mydomain.com) to match when checking for possible

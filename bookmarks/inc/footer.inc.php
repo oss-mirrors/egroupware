@@ -13,15 +13,67 @@
 
 	/* $Id$ */
 
-	include(PHPGW_APP_ROOT . '/inc/messages.inc.php');
-	if (isset ($bk_output_html))
+	// This is becuase this file is included inside of a function
+	global $error_msg,$sess_error_msg,$warn_msg,$sess_warn_msg,$msg,$sess_msg;
+
+	if ($error_msg)
 	{
-		echo '<b>ERROR:</b>';
+		$bk_print_error_msg = $error_msg;
+	}
+   
+	// print any other error msgs that haven't
+	// been printed yet - like from another page
+	if ($sess_error_msg)
+	{
+		$bk_print_error_msg .= $sess_error_msg;
+		$sess_error_msg ='';
+	}
+   
+	// print any warn msgs from the current page
+	if ($warn_msg)
+	{
+		$bk_print_warn_msg = $warn_msg;
+	}
+   
+	// print any other warn msgs that haven't
+	// been printed yet - like from another page
+	if ($sess_warn_msg)
+	{
+		$bk_print_warn_msg .= $sess_warn_msg;
+		$sess_warn_msg = '';
+	}
+   
+	// print any info msgs from the current page
+	if ($msg)
+	{
+		$bk_print_msg = $msg;
+	}
+  
+	// print any other info msgs that haven't
+	// been printed yet - like from another page
+	if ($sess_msg)
+	{
+		$bk_print_msg .= $sess_msg;
+		$sess_msg = '';
+	}
+
+	if ($bk_print_error_msg)
+	{
+		$bk_output_html = sprintf("<tr><td align=\"center\"><table cellpadding=2><tr><td><b>" . lang("error") . ":</b>%s</td></tr></table></td></tr>\n", $bk_print_error_msg);
+	}
+	if ($bk_print_warn_msg)
+	{
+		$bk_output_html .= sprintf("<tr><td align=\"center\"><table cellpadding=2><tr><td><b>" . lang("Warning") . ":</b>%s</td></tr></table></td></tr>\n", $bk_print_warn_msg);
+	}
+	if ($bk_print_msg)
+	{
+		$bk_output_html .= sprintf("<tr><td align=\"center\"><table cellpadding=2><tr><td>%s</td></tr></table></td></tr>\n", $bk_print_msg);
+	}
+
+	if ($bk_output_html)
+	{
 		$phpgw->template->set_var('messages',$bk_output_html);
 	}
 
-	$phpgw->template->parse('body',array('body','common'));
-	$phpgw->template->p('body');
-
-	//$phpgw->common->phpgw_footer();
+	$phpgw->template->pfp('body',array('body','common'));
 ?>

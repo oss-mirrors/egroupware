@@ -42,21 +42,23 @@
   $bmark = new bmark;
 
 ## Check if there was a submission
-while (is_array($HTTP_POST_VARS) && list($key, $val) = each($HTTP_POST_VARS)) {
+/*while (is_array($HTTP_POST_VARS) && list($key, $val) = each($HTTP_POST_VARS)) {
   switch ($key) {
 
   ## Create a new bookmark
   case "bk_create_x":
-  case "bk_create":
+  case "bk_create": */
 
-    if (!$bmark->add(&$id, $url, $name, $desc, $keyw, $bookmarks_category, $bookmarks_subcategory, 
-                     $bookmarks_rating, $access,$groups)) break;
-    break;
+	if ($create)
+	{
+		$bmark->add(&$id,$url,$name,$desc,$keyw,$bookmarks_category,$bookmarks_subcategory,$bookmarks_rating, $access,$groups);
+	}
+/*    break;
 
   default:
     break;
  }
-}
+	} */
 
 # if dislpaying b/c of error, show previous data
 if ($url > "") {
@@ -182,7 +184,7 @@ if ($rating > 0) {
 
   $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
 
-  $phpgw->template->set_var("form_action",$phpgw->link('/bookmarks/create.php'));
+  $phpgw->template->set_var("form_action",$phpgw->link('/bookmarks/create.php','create=True'));
   $phpgw->template->set_var("lang_url",lang("URL"));
   $phpgw->template->set_var("lang_name",lang("Name"));
   $phpgw->template->set_var("lang_desc",lang("Description"));
