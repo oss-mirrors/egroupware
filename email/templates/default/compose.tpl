@@ -1,5 +1,5 @@
 <!-- begin compose.tpl -->
-<script>
+<script type="text/javascript">
 <!--
   self.name="first_Window";
   function addybook()
@@ -15,7 +15,6 @@
 
 <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
 <form enctype="multipart/form-data" name="{form1_name}" action="{form1_action}" method="{form1_method}">
-<input type="hidden" name="{hidden1_name}" value="{hidden1_value}">
 <tr>
 	<td colspan="2" bgcolor="{buttons_bgcolor}">
 		<table border="0" cellpadding="4" cellspacing="1" width="100%">

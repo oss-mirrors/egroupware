@@ -254,8 +254,9 @@
 				// first text in the "from" table data, AND click on it to compose a new, blank email to this email address
 				$from_and_compose_link = 
 					$GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link(
-						 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-						$msgball['uri']
+						'/index.php',
+						 'menuaction=email.uicompose.compose'
+						.'&'.$msgball['uri']
 						.'&to='.urlencode($from_plain)
 						.'&personal='.urlencode($from_personal)
 						// preserve these things for when we return to the message list after the send
@@ -312,8 +313,9 @@
 
 					$to_real_name = $GLOBALS['phpgw']->msg->href_maketag(
 						$GLOBALS['phpgw']->link(
-							 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-							$msgball['uri']
+							'/index.php',
+							 'menuaction=email.uicompose.compose'
+							.'&'.$msgball['uri']
 							.'&to='.urlencode($to_plain)
 							.'&personal='.urlencode($to_personal)
 							// preserve these things for when we return to the message list after the send
@@ -369,8 +371,9 @@
 						$cc_extra_info = ' ';
 					}
 					$cc_real_name = $GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link(
-							 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-							$msgball['uri']
+							'/index.php',
+							 'menuaction=email.uicompose.compose'
+							.'&'.$msgball['uri']
 							.'&to='.urlencode($cc_plain)
 							.'&personal='.urlencode($cc_personal)
 							// preserve these things for when we return to the message list after the send
@@ -474,8 +477,9 @@
 			// ----  Images and Hrefs For Reply, ReplyAll, Forward, and Delete  -----
 			$reply_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'','','0');
 			$reply_url = $GLOBALS['phpgw']->link(
-					 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-					 'action=reply'
+					'/index.php',
+					 'menuaction=email.uicompose.compose'
+					.'&action=reply'
 					.'&'.$msgball['uri']
 					.$first_presentable
 					// preserve these things for when we return to the message list after the send
@@ -486,8 +490,9 @@
 			
 			$replyall_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),'','','0');
 			$replyall_url = $GLOBALS['phpgw']->link(
-					 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-					 'action=replyall'
+					'/index.php',
+					 'menuaction=email.uicompose.compose'
+					.'&action=replyall'
 					.'&'.$msgball['uri']
 					.$first_presentable
 					// preserve these things for when we return to the message list after the send
@@ -498,8 +503,9 @@
 			
 			$forward_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_forward.gif',lang('forward'),'','','0');
 			$forward_url =  $GLOBALS['phpgw']->link(
-					 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-					 'action=forward'
+					'/index.php',
+					 'menuaction=email.uicompose.compose'
+					.'&action=forward'
 					.'&'.$msgball['uri']
 					.'&fwd_proc='.$fwd_proc
 					.$first_presentable

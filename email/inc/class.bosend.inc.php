@@ -103,28 +103,11 @@
 			{
 				$GLOBALS['phpgw']->msg->login_error($GLOBALS['PHP_SELF'].', send()');
 			}
-
-
-
-
+			
+			// ---- BEGIN BO SEND LOGIC
+			
 			$not_set = $GLOBALS['phpgw']->msg->not_set;
 			$msgball = $GLOBALS['phpgw']->msg->get_pref_value('msgball');
-			/*
-			// -- debug ----
-			$to = $GLOBALS['phpgw']->msg->stripslashes_gpc($to);
-			$this->mail_out['to'] = $GLOBALS['phpgw']->msg->make_rfc_addy_array($to);
-			$cc = $GLOBALS['phpgw']->msg->stripslashes_gpc($cc);
-			$this->mail_out['cc'] = $GLOBALS['phpgw']->msg->make_rfc_addy_array($cc);
-			
-			//echo '<br> var dump $this->mail_out[to] <br>';
-			//var_dump($this->mail_out['to']);
-			
-			//send_message_cleanup($mailbox);
-			send_message_cleanup($this->mail_out);
-			$GLOBALS['phpgw']->common->phpgw_footer();
-			exit;
-			// end ----  debug ------
-			*/
 			
 			//  -------  Init Array Structure For Outgoing Mail  -----------
 			$this->mail_out = Array();
@@ -144,18 +127,29 @@
 			$this->mail_out['whitespace'] = chr(9);
 			$this->mail_out['is_forward'] = False;
 			$this->mail_out['fwd_proc'] = '';
-			// this array gets filled with functiuon "make_rfc_addy_array", but it will have only 1 numbered array, $this->mail_out['from'][0]
-			// note that sending it through make_rfc_addy_array will ensure correct formatting of non us-ascii chars (if any) in the use's fullname
-			$this->mail_out['from'] = Array();
-			$this->mail_out['from'] = $GLOBALS['phpgw']->msg->make_rfc_addy_array('"'.$GLOBALS['phpgw_info']['user']['fullname'].'" <'.$GLOBALS['phpgw']->msg->get_pref_value('address').'>');
-			// this array gets filled with functiuon "make_rfc_addy_array", but it will have only 1 numbered array, $this->mail_out['sender'][0]
+			$this->mail_out['from'] = array();
 			$this->mail_out['sender'] = '';
 			$this->mail_out['charset'] = '';
 			$this->mail_out['msgtype'] = '';
 			
 			//  -------  Start Filling Array Structure For Outgoing Mail  -----------
-			// -----  x-phpgw custom message type RPC-like flag  ------
-			// RARELY USED, maybe NEVER used, most implementation code for this is commented out
+			
+			// -----  X-PHPGW flag (msgtype)  ------
+			/*!
+			@var msgtype
+			@abstract obsoleted way phpgw apps used to inter-operate
+			@discussion NOTE: this is a vestigal way for phpgw apps to inter-operate, 
+			I *think* this is being obsoleted via n-tiering and xml-rpc / soap methods.
+			RARELY USED, maybe NEVER used, most email code for this is now commented out
+			"back in the day..." the "x-phpgw" header was specified by a phpgw app *other* than the email app
+			which was used to include special phpgw related handling instructions in the message which 
+			to the message intentended to be noticed and processed by the phpgw email app when the 
+			user open the mail for viewing, at which time the phpgw email app would issue the 
+			special handling instructions contained in the "x-phpgw" header.
+			even before n-tiering of the phpgw apps and api begain, I (angles) considered this a possible
+			area of abuse and I commented out the code in the email app that would notice, process and issue
+			those instructions.
+			*/
 			if (($GLOBALS['phpgw']->msg->get_isset_arg('msgtype'))
 			&& ($GLOBALS['phpgw']->msg->get_arg_value('msgtype') != ''))
 			{
@@ -163,7 +157,17 @@
 				$this->mail_out['msgtype'] = $GLOBALS['phpgw']->msg->get_arg_value('msgtype');
 				// after this, ONLY USE $this->mail_out structure for this
 			}
+			
 			// -----  CHARSET  -----
+			/*!
+			@property charset
+			@abstract not user specified, not a user var, not an argument, not a paramater.
+			@discussion charset could take up a lot of notes here, suffice to say that email began life as a
+			US-ASCII thing and still us-ascii chars are strictly required for some headers, while other headers
+			and the body have various alternative ways to deal with other charsets, ways that are well documented
+			in email and other RFC's and other literature. In the rare event that the phpgw api is unable 
+			to provide us with a charset value, we use the RFC specified default value of "US-ASCII"
+			*/
 			if (lang('charset') != '')
 			{
 				$this->mail_out['charset'] = lang('charset');
@@ -173,15 +177,63 @@
 				// RFC default charset, if none is specified, is US-ASCII
 				$this->mail_out['charset'] = 'US-ASCII';
 			}
+			
+			// -----  FROM  -----
+			/*!
+			@var from
+			@abstract the mail's author, OPTIONAL, usually no need to specify this as an arg passed to the script.
+			@discussion Generally this var does not need to be specified. When the mail is being sent from the 
+			user's default email account (or mail on behalf of the user, like automated email notifications),
+			we generate the "from" header for the user, hence no custom "from" arg is necessary.
+			This is the most common scenario, in which case we generate the "from" value as follows:
+			(1) the user's "fullname" (a.k.a. the "personal" part of the address) is always picked up 
+			from the phpgw api's value that contains the users name, and 
+			(2) the user's email address is either (2a) the default value from the phpgw api which was 
+			passed into the user's preferences because the user specified no custom email address preference, or
+			(2b) the user specified a custom email address in the email preferences in which case the aformentioned
+			phpgw api default email address is not used in the user's preferences array, this user supplied
+			value is used instead.
+			Providing a "from" arg is usually for extra email accounts and/or alternative email profiles, 
+			where the user wants other than the "from" info otherwise defaultly associated with this email acccount.
+			NOTE: from != sender
+			from is who the mail came from assuming that person is also the mail's author.
+			this is by far the most common scenario, "from" and "author" are usually one in the same
+			(see below for info on when to *also* use "sender" - VERY rare)
+			*/
+			if (($GLOBALS['phpgw']->msg->get_isset_arg('from'))
+			&& ($GLOBALS['phpgw']->msg->get_arg_value('from') != ''))
+			{
+				$from_assembled = $GLOBALS['phpgw']->msg->get_arg_value('sender');
+			}
+			else
+			{
+				$from_name = $GLOBALS['phpgw_info']['user']['fullname'];
+				$from_address = $GLOBALS['phpgw']->msg->get_pref_value('address');
+				$from_assembled = '"'.$from_name.'" <'.$from_address.'>';
+			}
+			// this array gets filled with functiuon "make_rfc_addy_array", but it will have only 1 numbered array, $this->mail_out['from'][0]
+			// note that sending it through make_rfc_addy_array will ensure correct formatting of non us-ascii chars (if any) in the use's fullname
+			$this->mail_out['from'] = $GLOBALS['phpgw']->msg->make_rfc_addy_array($from_assembled);
+			
 			// -----  SENDER  -----
-			// rfc2822 - sender is only used if some one NOT the author (ex. the author's secretary) is sending the authors email
+			/*!
+			@var sender
+			@abstract OPTIONAL only used in the rare event that the person sending the email 
+			is NOT that email's author.
+			@discussion RFC2822 makes clear that the Sender header is ONLY used if some one 
+			NOT the author (ex. the author's secretary) is sending the author's email.
+			RFC2822 considers that "From" = the author and the "Sender" = the person who clicked the
+			send button. Generally they are one in the same and generally the Sender header (and hence this 
+			"sender" var) is NOT needed, not used, not included in the email's headers.
+			*/
 			if (($GLOBALS['phpgw']->msg->get_isset_arg('sender'))
 			&& ($GLOBALS['phpgw']->msg->get_arg_value('sender') != ''))
 			{
 				// clean data of magic_quotes escaping (if any)
-				$GLOBALS['phpgw']->msg->set_arg_value('sender', $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('sender')));
+				$this->mail_out['sender'] = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('sender'));
 				// convert general address string into structured data array of addresses, each has properties [plain] and [personal]
-				$sender_array = $GLOBALS['phpgw']->msg->make_rfc_addy_array($GLOBALS['phpgw']->msg->get_arg_value('sender'));
+				// this array gets filled with functiuon "make_rfc_addy_array", but it will have only 1 numbered array, $this->mail_out['sender'][0]
+				$sender_array = $GLOBALS['phpgw']->msg->make_rfc_addy_array($this->mail_out['sender']);
 				// realistically sender array should have no more than one member (can there really be more than 1 sender?)
 				if (count($sender_array) > 0)
 				{
@@ -192,16 +244,38 @@
 						$this->mail_out['sender'] = '';
 					}
 				}
-				// after this, ONLY USE $this->mail_out structure for this
-				// it will wither be blank string OR a string which should be 1 email address
+				else
+				{
+					$this->mail_out['sender'] = '';
+				}
+				// after this, ONLY USE $this->mail_out[] structure for this
+				// it will either be blank string OR a string which should be 1 email address
 			}
 			// -----  DATE  -----
-			// RFC2822: date *should* be local time with the correct offset, but this is problematic on many Linux boxen
-			// FUTURE: figure out a host independant way of getting the correct rfc time and TZ offset
+			/*!
+			@property date
+			@abstract not user specified, not a user var, not an argument, not a paramater.
+			@discussion According to RFC2822 the Date header *should* be the local time with the correct 
+			timezone offset relative to GMT, however this is problematic on many Linux boxen, and
+			in general I have found that reliably extracting this data from the host OS can be tricky, 
+			so instead we use a fallback value which is simply GMT time, which is allowed under RFC2822 
+			but not preferred.
+			FUTURE: figure out a host independant way of getting the correct rfc time and TZ offset
+			*/
 			$this->mail_out['date'] = gmdate('D, d M Y H:i:s').' +0000';
+			
 			// -----  MYMACHINE - The MTA HELO/ELHO DOMAIN ARG  -----
-			// rfc2821 sect 4.1.1.1 - almost always the Fully Qualified Domain Name of the SMTP client maching
-			// rarely, when the maching has dynamic FQD or no reverse mapping is available, *should* be "address leteral" (see sect 4.1.3)
+			/*!
+			@property elho SMTP handshake domain value
+			@abstract not user specified, not a user var, not an argument, not a paramater.
+			@discussion when class.msg_send conducts the handshake with the SMTP server, this 
+			will be the required domain value that we supply to the SMTP server. Phpgw is considered 
+			the client to the SMTP server. 
+			RFC2821 sect 4.1.1.1 specifies this value is almost always the Fully Qualified Domain Name 
+			of the SMTP client machine, but rarely, when said client machine has dynamic FQDN or no reverse 
+			mapping is available, this value *should* be "address leteral" (see sect 4.1.3).
+			Refer to the documentation for BIND for further reading on reverse lookup issues.
+			*/
 			$this->mail_out['mta_elho_mymachine'] = trim($GLOBALS['phpgw_info']['server']['hostname']);
 			
 			// ----  Forwarding Detection  -----

@@ -341,9 +341,10 @@
 			
 			$this->xi['ctrl_bar_back2'] = $GLOBALS['phpgw_info']['theme']['row_off'];
 			$this->xi['compose_link'] = $GLOBALS['phpgw']->link(
-								'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+								'/index.php',
+								 'menuaction=email.uicompose.compose'
 								// this data tells us where to return to after sending a message
-								'fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
+								.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
 								.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum()
 								.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 								.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
@@ -698,11 +699,18 @@
 			$this->xi['td_prev_arrows'] = '';
 			
 			$this->xi['ctrl_bar_back2'] = $GLOBALS['phpgw_info']['theme']['row_off'];
-			$this->xi['compose_link'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php','folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+			$this->xi['compose_link'] = $GLOBALS['phpgw']->link(
+								'/index.php',
+								 'menuaction=email.uicompose.compose'
+								.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
+								.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
+			
 			if ($this->xi['mailsvr_supports_folders'])
 			{
 				//$this->xi['folders_link'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php');
-				$this->xi['folders_link'] = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('folder_menuaction'));
+				$this->xi['folders_link'] = $GLOBALS['phpgw']->link(
+							'/index.php',
+							$GLOBALS['phpgw']->msg->get_arg_value('folder_menuaction'));
 				$this->xi['folders_href'] = '<a href="'.$this->xi['folders_link'].'">'.$this->xi['folders_txt2'].'</a>';
 		
 				$folders_btn_js = 'window.location=\''.$this->xi['folders_link'].'\'';
@@ -713,8 +721,11 @@
 				$this->xi['folders_href'] = '&nbsp;';
 				$this->xi['folders_btn'] = '&nbsp;';
 			}
-			$this->xi['email_prefs_link'] = $GLOBALS['phpgw']->link('/index.php','menuaction=email.uipreferences.preferences');
-			$this->xi['filters_link'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/filters.php');
+			$this->xi['email_prefs_link'] = $GLOBALS['phpgw']->link(
+								'/index.php',
+								'menuaction=email.uipreferences.preferences');
+			$this->xi['filters_link'] = $GLOBALS['phpgw']->link(
+								'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/filters.php');
 			$this->xi['filters_href'] = '<a href="'.$this->xi['filters_link'].'">'.$this->xi['filters_txt'].'</a>';
 			// multiple account maintenance - not yet implemented
 			$this->xi['accounts_link'] = $this->index_base_link;

@@ -26,6 +26,10 @@
 	\**************************************************************************/
 
 	/* $Id$ */
+	class mail_dcom_holder
+	{
+		var $dcom = '';
+	}
 
   class mail_msg_base
   {
@@ -146,7 +150,7 @@
 	
 	function mail_msg()
 	{
-		if ($this->debug_logins > 0) { echo 'mail_msg: *constructor*: $GLOBALS[PHP_SELF] = ['.$GLOBALS['PHP_SELF'].'] $this->acctnum = ['.$this->acctnum.']  get_class($this) : "'.get_class($this).'" ; get_parent_class($this) : "'.get_parent_class($this).'"<br>'; }
+		//if ($this->debug_logins > 0) { echo 'mail_msg: *constructor*: $GLOBALS[PHP_SELF] = ['.$GLOBALS['PHP_SELF'].'] $this->acctnum = ['.$this->acctnum.']  get_class($this) : "'.get_class($this).'" ; get_parent_class($this) : "'.get_parent_class($this).'"<br>'; }
 		if ($this->debug_logins > 1) { echo 'mail_msg: *constructor*: $this->acctnum = ['.$this->acctnum.'] ; $this->a  Dump<pre>'; print_r($this->a); echo '</pre>'; }
 		
 		$this->known_external_args = array(
@@ -674,8 +678,8 @@
 		$tmp_prefs = array();
 		
 		//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST create_email_preferences GLOBALS[phpgw_info][user][preferences][email] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']['email']) ; echo '</pre>';}
-		if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST create_email_preferences $this->get_all_prefs() dump:<pre>'; print_r($this->get_all_prefs()) ; echo '</pre>';}
-		//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST create_email_preferences direct access dump of $this->a  :<pre>'; print_r($this->a) ; echo '</pre>';}
+		//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST create_email_preferences $this->get_all_prefs() dump:<pre>'; print_r($this->get_all_prefs()) ; echo '</pre>';}
+		if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST create_email_preferences direct access dump of $this->a  :<pre>'; print_r($this->a) ; echo '</pre>';}
 		//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw_info][user][preferences] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']) ; echo '</pre>';}
 		//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw_info][user] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']) ; echo '</pre>';}
 		//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw_info] dump:<pre>'; print_r($GLOBALS['phpgw_info']) ; echo '</pre>';}
@@ -794,33 +798,53 @@
 			//$this->a[$this->acctnum]['dcom'] = CreateObject("email.mail_dcom",$this->get_pref_value('mail_server_type'));
 			
 			// ----  php3 compatibility  ----
+			// make a "new" holder object to hold the dcom object
+			// remember, by now we have determined an acctnum
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: creating new dcom_holder at $this->a['.$this->acctnum.'][dcom_holder]'.'<br>'; }
+			//$this->a[$this->acctnum]['dcom_holder'] = new mail_dcom_holder;
+			//$this_dcom_holder = new mail_dcom_holder;
+			//$this->a[$this->acctnum]['dcom_holder'] = $this_dcom_holder;
+			//$this->a[$this->acctnum]['dcom_holder']->dcom = '';
+			
 			// apparently php3 wants you to create the object first, then put it in the array
 			$this_server_type = $this->get_pref_value('mail_server_type');
-			$this_dcom = CreateObject("email.mail_dcom", $this_server_type);
+			//$this_dcom_holder->dcom = CreateObject("email.mail_dcom", $this_server_type);
+			//$this_dcom = CreateObject("email.mail_dcom", $this_server_type);
 			// ok, now put that object into the array
-			$this->a[$this->acctnum]['dcom'] = $this_dcom;
-			$tmp_a = $this->a[$this->acctnum];
+			//$this->a[$this->acctnum]['dcom'] = $this_dcom;
+			//$this->a[$this->acctnum]['dcom_holder']->dcom = $this_dcom;
+			$this_acctnum = (string)$this->acctnum;
+			//$this->a[$this_acctnum]['dcom_holder'] = $this_dcom_holder;
+			$GLOBALS['phpgw_dcom_'.$this_acctnum] = new mail_dcom_holder;
+			$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom = CreateObject("email.mail_dcom", $this_server_type);
+			//$this->a[$this->acctnum]['dcom_holder']->dcom = CreateObject("email.mail_dcom", $this_server_type);
+			//$tmp_a = $this->a[$this->acctnum];
 			// initialize the dcom class variables
-			$tmp_a['dcom']->mail_dcom_base();
+			//$tmp_a['dcom']->mail_dcom_base();
+			//$this->a[$this->acctnum]['dcom_holder']->dcom->mail_dcom_base();
+			$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->mail_dcom_base();
 			
 			// ----  there are 2 settings from this mail_msg object we need to pass down to the child dcom object:  ----
 			// (1)  Do We Use UTF7 encoding/decoding of folder names
 			if (($this->get_isset_pref('enable_utf7'))
 			&& ($this->get_pref_value('enable_utf7')))
 			{
-				$tmp_a['dcom']->enable_utf7 = True;
+				//$tmp_a['dcom']->enable_utf7 = True;
+				$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->enable_utf7 = True;
 			}
 			// (2)  Do We Force use of msg UID's
 			if ($this->force_msg_uids == True)
 			{
-				$tmp_a['dcom']->force_msg_uids = True;
+				//$tmp_a['dcom']->force_msg_uids = True;
+				$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->force_msg_uids = True;
 			}
 			
 			set_time_limit(60);
 			// login to INBOX because we know that always(?) should exist on an imap server and pop server
 			// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call dcom->open: this->a['.$this->acctnum.'][dcom]->open('.$mailsvr_callstr."INBOX".', '.$user.', '.$pass.', )'.'<br>'; }
-			$mailsvr_stream = $tmp_a['dcom']->open($mailsvr_callstr."INBOX", $user, $pass, '');
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call dcom->open: this->a['.$this->acctnum.'][dcom_holder]->dcom->open('.$mailsvr_callstr."INBOX".', '.$user.', '.$pass.', )'.'<br>'; }
+			//$mailsvr_stream = $tmp_a['dcom']->open($mailsvr_callstr."INBOX", $user, $pass, '');
+			$mailsvr_stream = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->open($mailsvr_callstr."INBOX", $user, $pass, '');
 			$pass = '';
 			set_time_limit(0);
 			
@@ -923,7 +947,8 @@
 				// switch to the desired folder now that we are sure we have it's official name
 				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: need to switch folders (reopen) from INBOX to $processed_folder_arg: '.$processed_folder_arg.'<br>';}
 				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to issue: $this->a['.$this->acctnum.'][dcom]->reopen('.$mailsvr_stream.', '.$mailsvr_callstr.$processed_folder_arg,', )'.'<br>';}
-				$did_reopen = $tmp_a['dcom']->reopen($mailsvr_stream, $mailsvr_callstr.$processed_folder_arg, '');
+				//$did_reopen = $tmp_a['dcom']->reopen($mailsvr_stream, $mailsvr_callstr.$processed_folder_arg, '');
+				$did_reopen = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->reopen($mailsvr_stream, $mailsvr_callstr.$processed_folder_arg, '');
 				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: reopen returns: '.serialize($did_reopen).'<br>';}
 				// error check
 				if ($did_reopen == False)
@@ -950,8 +975,9 @@
 			// now we have folder, sort and order, make a URI for auto-refresh use
 			// we can NOT put "start" in auto refresh or user may not see the 1st index page on refresh
 			$this->index_refresh_uri = 
-				$this->index_menuaction
-				.'&folder='.$this->prep_folder_out('')
+				'menuaction=email.uiindex.index'
+				.'&fldball[folder]='.$this->prep_folder_out()
+				.'&fldball[acctnum]='.$this->get_acctnum()
 				.'&sort='.$this->get_arg_value('sort')
 				.'&order='.$this->get_arg_value('order');
 			
@@ -968,16 +994,19 @@
 		// args array currently not used
 		if ($this->debug_logins > 0) { echo 'mail_msg: end_request: ENTERING'.'<br>';}
 		if ($this->debug_logins > 2) { echo 'mail_msg: end_request: direct access info dump of $this->a  :<pre>'; print_r($this->a) ; echo '</pre>';}
+		
 		if (($this->get_isset_arg('mailsvr_stream') == True)
 		&& ($this->get_arg_value('mailsvr_stream') != ''))
 		{
-			if ($this->debug_logins > 0) { echo 'mail_msg: end_request: stream exists, logging out'.'<br>';}
-			$tmp_a = $this->a[$this->acctnum];
-			$tmp_a['dcom']->close($this->get_arg_value('mailsvr_stream'));
+			if ($this->debug_logins > 0) { echo 'mail_msg: end_request: stream exists, logging out'.'<br>'; }
+			//$tmp_a = $this->a[$this->acctnum];
+			//$tmp_a['dcom']->close($this->get_arg_value('mailsvr_stream'));
+			$this_acctnum = $this->acctnum;
+			$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->close($this->get_arg_value('mailsvr_stream'));
 			$this->set_arg_value('mailsvr_stream', '');
 		}
 		if ($this->debug_logins > 0) { echo 'mail_msg: end_request: LEAVING'.'<br>';}
-		$this->a[$this->acctnum] = $tmp_a;
+		//$this->a[$this->acctnum] = $tmp_a;
 	}
 		
 	function login_error($called_from='')
@@ -1182,7 +1211,7 @@
 		
 		// we *may* need this data later
 		$mailsvr_stream = $this->get_arg_value('mailsvr_stream');
-		$server_str = $this->get_pref_value('mailsvr_callstr');
+		$server_str = $this->get_arg_value('mailsvr_callstr');
 		
 		if (($this->get_pref_value('imap_server_type') == 'UW-Maildir')
 		|| ($this->get_pref_value('imap_server_type') == 'UWash'))
@@ -1226,8 +1255,12 @@
 			// see http://www.faqs.org/rfcs/rfc2060.html  section 6.3.8 (which is not entirely clear on this)
 			// FIXME: abstract this class dcom call in mail_msg_wrappers
 			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_namespace: issuing: $this->a['.$this->acctnum.'][dcom]->listmailbox('.$mailsvr_stream.', '.$server_str.', %)'.'<br>'; }
-			$tmp_a = $this->a[$this->acctnum];
-			$name_space = $tmp_a['dcom']->listmailbox($mailsvr_stream, $server_str, '%');
+			
+			//$tmp_a = $this->a[$this->acctnum];
+			//$name_space = $tmp_a['dcom']->listmailbox($mailsvr_stream, $server_str, '%');
+			$this_acctnum = $this->acctnum;
+			$name_space = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->listmailbox($mailsvr_stream, $server_str, '%');
+			
 			if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_mailsvr_namespace: raw $name_space dump<pre>'; print_r($name_space); echo '</pre>'; }
 			
 			if (!$name_space)
@@ -1281,7 +1314,7 @@
 		
 		// cache the result in "level one cache" class var holder
 		$this->set_arg_value('mailsvr_namespace', $name_space);
-		$this->a[$this->acctnum] = $tmp_a;
+		//$this->a[$this->acctnum] = $tmp_a;
 		
 		// -----------
 		// SAVE DATA TO PREFS DB CACHE
@@ -1322,11 +1355,13 @@
 			return $class_cached_mailsvr_delimiter;
 		}
 		
+		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_delimiter: $this->get_pref_value(imap_server_type) returns: ['.$this->get_pref_value('imap_server_type').'] ; api var SEP: ['.serialize(SEP).']<br>'; }
+		
 		if ($this->get_pref_value('imap_server_type') == 'UWash')
 		{
 			//$delimiter = '/';
 			//$delimiter = SEP;
-
+			
 			// UWASH is a filesystem based thing, so the delimiter is whatever the system SEP is
 			// unix = /  and win = \ (win maybe even "\\" because the backslash needs escaping???
 			// currently the filesystem seterator is provided by phpgw api as constant "SEP"
@@ -1509,15 +1544,18 @@
 		}
 		
 		// check if class dcom reports that the folder list has changed
-		$tmp_a = $this->a[$this->acctnum];
-
-		if ((isset($tmp_a['dcom']))
-		&& ($tmp_a['dcom']->folder_list_changed == True))
+		//$tmp_a = $this->a[$this->acctnum];
+		
+		//if ((isset($tmp_a['dcom']))
+		//&& ($tmp_a['dcom']->folder_list_changed == True))
+		if ((is_object($GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom))
+		&& ($GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->folder_list_changed == True))
 		{
 			// class dcom recorded a change in the folder list
 			// supposed to happen when create or delete mailbox is called
 			// reset the changed flag
-			$tmp_a['dcom']->folder_list_changed = False;
+			// $tmp_a['dcom']->folder_list_changed = False;
+			$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->folder_list_changed = False;
 			// set up for a force_refresh
 			$force_refresh = True;
 			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: class dcom report folder list changed<br>'; }
@@ -1617,7 +1655,8 @@
 			// At this time we use "unqualified" a.k.a. "relative" directory names if the user provides a namespace
 			// UWash will consider it relative to the mailuser's $HOME property as with "emails/*" (DOES THIS WORK ON ALL PLATFORMS??)
 			// BUT we use <tilde><slash> "~/" if no namespace is given
-			$mailboxes = $tmp_a['dcom']->listmailbox($mailsvr_stream, $server_str, "$name_space" ."$delimiter" ."*");
+			//$mailboxes = $tmp_a['dcom']->listmailbox($mailsvr_stream, $server_str, "$name_space" ."$delimiter" ."*");
+			$mailboxes = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->listmailbox($mailsvr_stream, $server_str, "$name_space" ."$delimiter" ."*");
 			// UWASH IMAP returns information in this format:
 			// {SERVER_NAME:PORT}FOLDERNAME
 			// example:
@@ -1635,7 +1674,8 @@
 			//$mailboxes = $this->a[$this_acctnum]['dcom']->listmailbox($mailsvr_stream, $server_str, "$name_space" ."*");
 			// UPDATED information of this issue: to get shared folders included in the return, better NOT include the "." delimiter
 			// example: Cyrus does not like anything but a "*" as the pattern IF you want shared folders returned.
-			$mailboxes = $tmp_a['dcom']->listmailbox($mailsvr_stream, $server_str, "*");
+			//$mailboxes = $tmp_a['dcom']->listmailbox($mailsvr_stream, $server_str, "*");
+			$mailboxes = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->listmailbox($mailsvr_stream, $server_str, "*");
 			// returns information in this format:
 			// {SERVER_NAME:PORT} NAMESPACE DELIMITER FOLDERNAME
 			// example:
@@ -1737,7 +1777,7 @@
 		// finished, return the folder_list array atructure
 		if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_folder_list: finished, $my_folder_list dump:<pre>'; print_r($my_folder_list); echo '</pre>'; }
 		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_folder_list: LEAVING, got folder data from server<br>'; }
-		$this->a[$this->acctnum] = $tmp_a;
+		//$this->a[$this->acctnum] = $tmp_a;
 		return $my_folder_list;
 	}
 

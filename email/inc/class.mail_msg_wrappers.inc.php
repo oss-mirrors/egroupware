@@ -69,12 +69,13 @@
 			}
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			
-			$tmp_a = $this->a[$this->acctnum];
-			$retval = $tmp_a['dcom']->fetchstructure($stream, $msgball['msgnum']);
-			$this->a[$this->acctnum] = $tmp_a;
+			//$tmp_a = $this->a[$this->acctnum];
+			//$retval = $tmp_a['dcom']->fetchstructure($stream, $msgball['msgnum']);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchstructure($stream, $msgball['msgnum']);
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
-	
+		
 		/*!
 		@function phpgw_header
 		@abstract wrapper for IMAP_HEADER, phpgw supplies the nedessary stream arg and mail_dcom reference
@@ -99,9 +100,10 @@
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			
 			// Message Information: THE MESSAGE'S HEADERS RETURNED AS A STRUCTURE
-			$tmp_a = $this->a[$this->acctnum];
-			$retval = $tmp_a['dcom']->header($stream, $msgball['msgnum']);
-			$this->a[$this->acctnum] = $tmp_a;
+			//$tmp_a = $this->a[$this->acctnum];
+			//$retval = $tmp_a['dcom']->header($stream, $msgball['msgnum']);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->header($stream, $msgball['msgnum']);
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
 		
@@ -121,9 +123,10 @@
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 		
 			// Message Information: THE MESSAGE'S HEADERS RETURNED RAW (no processing)
-			$tmp_a = $this->a[$this->acctnum];
-			$retval = $tmp_a['dcom']->fetchheader($stream, $msgball['msgnum']);
-			$this->a[$this->acctnum] = $tmp_a;
+			//$tmp_a = $this->a[$this->acctnum];
+			//$retval = $tmp_a['dcom']->fetchheader($stream, $msgball['msgnum']);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchheader($stream, $msgball['msgnum']);
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
 	
@@ -136,9 +139,10 @@
 			}
 			else
 			{
-				$tmp_a = $this->a[$this->acctnum];
-				$retval = $tmp_a['dcom']->get_flag($this->get_arg_value('mailsvr_stream'),$this->get_arg_value('["msgball"]["msgnum"]'),$flag);
-				$this->a[$this->acctnum] = $tmp_a;
+				//$tmp_a = $this->a[$this->acctnum];
+				//$retval = $tmp_a['dcom']->get_flag($this->get_arg_value('mailsvr_stream'),$this->get_arg_value('["msgball"]["msgnum"]'),$flag);
+				$retval = $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->get_flag($this->get_arg_value('mailsvr_stream'),$this->get_arg_value('["msgball"]["msgnum"]'),$flag);
+				//$this->a[$this->acctnum] = $tmp_a;
 				return $retval;
 			}
 		}
@@ -159,9 +163,10 @@
 				$acctnum = $this->get_acctnum();
 			}
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-			$tmp_a = $this->a[$this->acctnum];
-			$retval = $tmp_a['dcom']->get_body($stream, $msgball['msgnum']);
-			$this->a[$this->acctnum] = $tmp_a;
+			//$tmp_a = $this->a[$this->acctnum];
+			//$retval = $tmp_a['dcom']->get_body($stream, $msgball['msgnum']);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->get_body($stream, $msgball['msgnum']);
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
 		
@@ -188,9 +193,10 @@
 			$msgnum = $msgball['msgnum'];
 			$part_no = $msgball['part_no'];
 			//echo 'mail_msg(_wrappers): phpgw_fetchbody: processed: $acctnum: '.$acctnum.'; $stream: '.serialize($stream).'; $msgnum: '.$msgnum.'; $part_no: '.$part_no.'<br> * $msgball dump<pre>'; print_r($msgball); echo '</pre>';
-			$tmp_a = $this->a[$this->acctnum];
-			$retval = $tmp_a['dcom']->fetchbody($stream, $msgnum, $part_no, $flags);
-			$this->a[$this->acctnum] = $tmp_a;
+			//$tmp_a = $this->a[$this->acctnum];
+			//$retval = $tmp_a['dcom']->fetchbody($stream, $msgnum, $part_no, $flags);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchbody($stream, $msgnum, $part_no, $flags);
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
 		/*
@@ -249,9 +255,10 @@
 			else
 			{
 				$server_msgnum_list = array();
-				$tmp_a = $this->a[$this->acctnum];
-				$server_msgnum_list = $tmp_a['dcom']->sort($this->get_arg_value('mailsvr_stream'), $this->get_arg_value('sort'), $this->get_arg_value('order'));
-				$this->a[$this->acctnum] = $tmp_a;
+				//$tmp_a = $this->a[$this->acctnum];
+				//$server_msgnum_list = $tmp_a['dcom']->sort($this->get_arg_value('mailsvr_stream'), $this->get_arg_value('sort'), $this->get_arg_value('order'));
+				$server_msgnum_list = $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->sort($this->get_arg_value('mailsvr_stream'), $this->get_arg_value('sort'), $this->get_arg_value('order'));
+				//$this->a[$this->acctnum] = $tmp_a;
 				// put more information about these particular messages into the msgball_list[] structure
 				$msgball_list = array();
 				$loops = count($server_msgnum_list);
@@ -293,9 +300,10 @@
 		*/
 		function get_folder_size()
 		{
-			$tmp_a = $this->a[$this->acctnum];
-			$mailbox_detail = $tmp_a['dcom']->mailboxmsginfo($this->get_arg_value('mailsvr_stream'));
-			$this->a[$this->acctnum] = $tmp_a;
+			//$tmp_a = $this->a[$this->acctnum];
+			//$mailbox_detail = $tmp_a['dcom']->mailboxmsginfo($this->get_arg_value('mailsvr_stream'));
+			$mailbox_detail = $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->mailboxmsginfo($this->get_arg_value('mailsvr_stream'));
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $mailbox_detail->Size;
 		}
 		
@@ -347,10 +355,11 @@
 			$return_data['uidvalidity'] = 0;
 			
 			$server_str = $this->get_arg_value('mailsvr_callstr');
-			$tmp_a = $this->a[$this->acctnum];
-			$mailbox_status = $tmp_a['dcom']->status($this->get_arg_value('mailsvr_stream'),$server_str.$this->get_arg_value('folder'),SA_ALL);
-			$this->a[$this->acctnum] = $tmp_a;
-
+			//$tmp_a = $this->a[$this->acctnum];
+			//$mailbox_status = $tmp_a['dcom']->status($this->get_arg_value('mailsvr_stream'),$server_str.$this->get_arg_value('folder'),SA_ALL);
+			$mailbox_status = $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->status($this->get_arg_value('mailsvr_stream'),$server_str.$this->get_arg_value('folder'),SA_ALL);
+			//$this->a[$this->acctnum] = $tmp_a;
+			
 			// cache validity data - will be used to cache msg_list_array data, which is good until UID_NEXT changes
 			$return_data['uidnext'] = $mailbox_status->uidnext;
 			$return_data['uidvalidity'] = $mailbox_status->uidvalidity;
@@ -402,33 +411,37 @@
 		function phpgw_status($feed_folder_long='')
 		{
 			$server_str = $this->get_arg_value('mailsvr_callstr');
-			$tmp_a = $this->a[$this->acctnum];
-			$retval = $tmp_a['dcom']->status($this->get_arg_value('mailsvr_stream'),"$server_str"."$feed_folder_long",SA_ALL);
-			$this->a[$this->acctnum] = $tmp_a;
+			//$tmp_a = $this->a[$this->acctnum];
+			//$retval = $tmp_a['dcom']->status($this->get_arg_value('mailsvr_stream'),"$server_str"."$feed_folder_long",SA_ALL);
+			$retval = $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->status($this->get_arg_value('mailsvr_stream'),"$server_str"."$feed_folder_long",SA_ALL);
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
 
 		function phpgw_server_last_error()
 		{
-			$tmp_a = $this->a[$this->acctnum];
-			$retval = $tmp_a['dcom']->server_last_error();
-			$this->a[$this->acctnum] = $tmp_a;
+			//$tmp_a = $this->a[$this->acctnum];
+			//$retval = $tmp_a['dcom']->server_last_error();
+			$retval = $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->server_last_error();
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
 		
 		function phpgw_ping()
 		{
-			$tmp_a = $this->a[$this->acctnum];
-			$retval = $tmp_a['dcom']->noop_ping_test($this->get_arg_value('mailsvr_stream'));
-			$this->a[$this->acctnum] = $tmp_a;
+			//$tmp_a = $this->a[$this->acctnum];
+			//$retval = $tmp_a['dcom']->noop_ping_test($this->get_arg_value('mailsvr_stream'));
+			$retval = $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->noop_ping_test($this->get_arg_value('mailsvr_stream'));
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
 		
 		function phpgw_search($criteria,$flags='')
 		{
-			$tmp_a = $this->a[$this->acctnum];
-			$retval = $tmp_a['dcom']->i_search($this->get_arg_value('mailsvr_stream'),$criteria,$flags);
-			$this->a[$this->acctnum] = $tmp_a;
+			//$tmp_a = $this->a[$this->acctnum];
+			//$retval = $tmp_a['dcom']->i_search($this->get_arg_value('mailsvr_stream'),$criteria,$flags);
+			$retval = $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->i_search($this->get_arg_value('mailsvr_stream'),$criteria,$flags);
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
 		
@@ -437,9 +450,10 @@
 			$acctnum = (int)$target_fldball['acctnum'];
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			$folder = $target_fldball['folder'];
-			$tmp_a = $this->a[$this->acctnum];
-			$retval = $tmp_a['dcom']->createmailbox($stream, $folder);
-			$this->a[$this->acctnum] = $tmp_a;
+			//$tmp_a = $this->a[$this->acctnum];
+			//$retval = $tmp_a['dcom']->createmailbox($stream, $folder);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->createmailbox($stream, $folder);
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
 		
@@ -448,9 +462,10 @@
 			$acctnum = (int)$target_fldball['acctnum'];
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			$folder = $target_fldball['folder'];
-			$tmp_a = $this->a[$this->acctnum];
-			$retval = $tmp_a['dcom']->deletemailbox($stream, $folder);
-			$this->a[$this->acctnum] = $tmp_a;
+			//$tmp_a = $this->a[$this->acctnum];
+			//$retval = $tmp_a['dcom']->deletemailbox($stream, $folder);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->deletemailbox($stream, $folder);
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
 		
@@ -460,9 +475,10 @@
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			$folder_old = $source_fldball['folder'];
 			$folder_new = $target_fldball['folder'];
-			$tmp_a = $this->a[$this->acctnum];
-			$retval = $tmp_a['dcom']->renamemailbox($stream, $folder_old, $folder_new);
-			$this->a[$this->acctnum] = $tmp_a;
+			//$tmp_a = $this->a[$this->acctnum];
+			//$retval = $tmp_a['dcom']->renamemailbox($stream, $folder_old, $folder_new);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->renamemailbox($stream, $folder_old, $folder_new);
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
 		
@@ -516,9 +532,10 @@
 				// delete session msg array data thAt is now stale
 				$this->expire_session_cache_item('msgball_list');
 				// do the append
-				$tmp_a = $this->a[$this->acctnum];
-				$retval = $tmp_a['dcom']->append($this->get_arg_value('mailsvr_stream'), "$server_str"."$official_folder_long", $message, $flags);
-				$this->a[$this->acctnum] = $tmp_a;
+				//$tmp_a = $this->a[$this->acctnum];
+				//$retval = $tmp_a['dcom']->append($this->get_arg_value('mailsvr_stream'), "$server_str"."$official_folder_long", $message, $flags);
+				$retval = $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->append($this->get_arg_value('mailsvr_stream'), "$server_str"."$official_folder_long", $message, $flags);
+				//$this->a[$this->acctnum] = $tmp_a;
 				return $retval;
 			}
 			else
@@ -536,9 +553,10 @@
 			// delete session msg array data thAt is now stale
 			$this->expire_session_cache_item('msgball_list');
 			
-			$tmp_a = $this->a[$this->acctnum];
-			$retval = $tmp_a['dcom']->mail_move($this->get_arg_value('mailsvr_stream'), $msg_list, $mailbox);
-			$this->a[$this->acctnum] = $tmp_a;
+			//$tmp_a = $this->a[$this->acctnum];
+			//$retval = $tmp_a['dcom']->mail_move($this->get_arg_value('mailsvr_stream'), $msg_list, $mailbox);
+			$retval = $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->mail_move($this->get_arg_value('mailsvr_stream'), $msg_list, $mailbox);
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
 		
@@ -563,9 +581,11 @@
 			//echo 'mail_msg(_wrappers): interacct_mail_move: $acctnum: '.$acctnum.' $stream: '.$stream.' $msgnum: '.$msgnum.' $mailsvr_callstr: '.$mailsvr_callstr.' $mailbox: '.$mailbox.'<br>';
 			// the acctnum we are moving FROM *may* be different from the acctnum we are moving TO
 			// that requires a fetch then an append - FIXME!!!
-			$tmp_a = $this->a[$this->acctnum];
-			$retval = $tmp_a['dcom']->mail_move($stream ,$msgnum, $mailbox);
-			$this->a[$this->acctnum] = $tmp_a;
+			
+			//$tmp_a = $this->a[$this->acctnum];
+			//$retval = $tmp_a['dcom']->mail_move($stream ,$msgnum, $mailbox);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->mail_move($stream ,$msgnum, $mailbox);
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
 		
@@ -577,9 +597,10 @@
 				$acctnum = $this->get_acctnum();
 			}
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-			$tmp_a = $this->a[$this->acctnum];
-			$retval = $tmp_a['dcom']->expunge($stream);
-			$this->a[$this->acctnum] = $tmp_a;
+			//$tmp_a = $this->a[$this->acctnum];
+			//$retval = $tmp_a['dcom']->expunge($stream);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->expunge($stream);
+			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
 		
@@ -612,9 +633,10 @@
 					$this->expire_session_cache_item('msgball_list');
 					
 					//return imap_delete($stream,$msg_num);
-					$tmp_a = $this->a[$this->acctnum];
-					$retval = $tmp_a['dcom']->delete($stream, $msg_num);
-					$this->a[$this->acctnum] = $tmp_a;
+					//$tmp_a = $this->a[$this->acctnum];
+					//$retval = $tmp_a['dcom']->delete($stream, $msg_num);
+					$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->delete($stream, $msg_num);
+					//$this->a[$this->acctnum] = $tmp_a;
 					return $retval;
 				}
 				// FIXME: from here on needs that $acctnum and.or $stream NEEDS TO BE SPECIFIED!
@@ -666,9 +688,10 @@
 						// can't just leave the mail sitting there
 						// so just straight delete the message
 						//return imap_delete($stream,$msg_num);
-						$tmp_a = $this->a[$this->acctnum];
-						$retval = $tmp_a['dcom']->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
-						$this->a[$this->acctnum] = $tmp_a;
+						//$tmp_a = $this->a[$this->acctnum];
+						//$retval = $tmp_a['dcom']->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
+						$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
+						//$this->a[$this->acctnum] = $tmp_a;
 						return $retval;
 					}
 				}
@@ -679,9 +702,10 @@
 				$this->expire_session_cache_item('msgball_list');
 				
 				//return imap_delete($stream,$msg_num);
-				$tmp_a = $this->a[$this->acctnum];
-				$retval = $tmp_a['dcom']->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
-				$this->a[$this->acctnum] = $tmp_a;
+				//$tmp_a = $this->a[$this->acctnum];
+				//$retval = $tmp_a['dcom']->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
+				$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
+				//$this->a[$this->acctnum] = $tmp_a;
 				return $retval;
 			}
 		}
@@ -1592,21 +1616,25 @@
 		* * * * * * * * * * * * * * * * * */
 		function get_pref_value($pref_name='',$acctnum='')
 		{
+			if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_pref_value: ENTERING, $pref_name: ['.$pref_name.'] $acctnum: ['.$acctnum.']'.'<br>'; }
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
 			{
 				$acctnum = $this->get_acctnum();
+				if ($this->debug_args_oop_access > 1) { echo 'mail_msg(_wrappers): get_pref_value: obtained acctnum from "$this->get_acctnum()", got $acctnum: ['.$acctnum.']'.'<br>'; }
 			}
 			
 			if ((isset($pref_name))
 			&& ((string)$pref_name != '')
 			&& (isset($this->a[$acctnum]['prefs'][$pref_name])))
 			{
+				if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_pref_value: LEAVING, returning $this->a['.$acctnum.'][prefs]['.$pref_name.'] : ['.$this->a[$acctnum]['prefs'][$pref_name].'] <br>'; }
 				return $this->a[$acctnum]['prefs'][$pref_name];
 			}
 			else
 			{
 				// arg not set, or invalid input $arg_name
+				if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_pref_value: LEAVING with ERRROR, pref item was not found<br>'; }
 				return;
 			}
 		}

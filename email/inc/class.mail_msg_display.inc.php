@@ -943,9 +943,12 @@ class mail_msg extends mail_msg_wrappers
 			//$part_nice[$i]['m_part_num_mime'] = $part_nice[$i]['ex_mime_number_smart'];
 
 			// TEMPORARY HACK FOR SOCKET POP3 CLASS - feed it DUMB mime part numbers
-			$tmp_a = $this->a[$this->acctnum];
-			if ((isset($tmp_a['dcom']->imap_builtin))
-			&& ($tmp_a['dcom']->imap_builtin == False)
+			
+			//$tmp_a = $this->a[$this->acctnum];
+			//if ((isset($tmp_a['dcom']->imap_builtin))
+			//&& ($tmp_a['dcom']->imap_builtin == False)
+			if ((isset($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin))
+			&& ($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin == False)
 			&& (stristr($this->get_pref_value('mail_server_type'), 'pop3')))
 			{
 				// Make ***DUMB*** Mime Number THE PRIMARY MIME NUMBER we will use
@@ -956,7 +959,7 @@ class mail_msg extends mail_msg_wrappers
 				// Make Smart Mime Number THE PRIMARY MIME NUMBER we will use
 				$part_nice[$i]['m_part_num_mime'] = $part_nice[$i]['ex_mime_number_smart'];
 			}
-			$this->a[$this->acctnum] = $tmp_a;
+			//$this->a[$this->acctnum] = $tmp_a;
 			
 			// ------  MAKE CLICKABLE HREF TO THIS PART  -------
 			
@@ -1704,9 +1707,12 @@ class mail_msg extends mail_msg_wrappers
 			// SHOW ATTACHMENT CLIP ?
 			// SKIP this for POP3 - fetchstructure for POP3 requires download the WHOLE msg
 			// so PHP can build the fetchstructure data (IMAP server does this internally)
-			$tmp_a = $this->a[$this->acctnum];
-			if ((isset($tmp_a['dcom']->imap_builtin))
-			&& ($tmp_a['dcom']->imap_builtin == False)
+			
+			//$tmp_a = $this->a[$this->acctnum];
+			//if ((isset($tmp_a['dcom']->imap_builtin))
+			//&& ($tmp_a['dcom']->imap_builtin == False)
+			if ((isset($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin))
+			&& ($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin == False)
 			&& (stristr($this->get_pref_value('mail_server_type'), 'pop3')))
 			{
 				// do Nothing - socket class pop3 not ready for this stress yet
@@ -1720,7 +1726,7 @@ class mail_msg extends mail_msg_wrappers
 				// now examine that msg_struct for signs of an attachment
 				$msg_list_display[$x]['has_attachment'] = $this->has_real_attachment($msg_structure);
 			}
-			$this->a[$this->acctnum] = $tmp_a;
+			//$this->a[$this->acctnum] = $tmp_a;
 
 			// Message Information: THE MESSAGE'S HEADERS ENVELOPE DATA
 			//$hdr_envelope = $this->phpgw_header($msgball_list[$i]['msgnum']);
