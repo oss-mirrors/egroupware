@@ -27,7 +27,7 @@
 				'to_address'	=> array('type' => 'varchar', 'precision' => 120),
 				'date'		=> array('type' => 'timestamp'),
 				'size'		=> array('type' => 'int', 'precision' => 4),
-				'attachments'	=> array('type' => 'varchar', 'precision' =>120))
+				'attachments'	=> array('type' => 'varchar', 'precision' =>120)
 			),
 			'pk' => array('accountid','hostname','accountname','foldername','uid'),
 			'fk' => array(),
