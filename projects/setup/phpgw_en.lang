@@ -1,21 +1,22 @@
-Account	projects	en	Account
+account	projects	en	Account
 accountancy	common	en	Accountancy
-Active	projects	en	Active
-Activities	projects	en	Activities
-Activity	projects	en	Activity
-Activity %1 has been added !	projects	en	Activity %1 has been added.
-Activity %1 has been updated !	projects	en	Activity %1 has been updated.
-Activity ID	projects	en	Activity ID
-Add Activity	projects	en	Add activity
-Add job	projects	en	Add job
+active	projects	en	Active
+activities	projects	en	Activities
+activity	projects	en	Activity
+activity %1 has been added !	projects	en	Activity %1 has been added.
+activity %1 has been updated !	projects	en	Activity %1 has been updated.
+activity id	projects	en	Activity ID
+add activity	projects	en	Add activity
+add job	projects	en	Add job
 add milestone	projects	en	add milestone
-Add project	projects	en	Add project
-Add project hours	projects	en	Add project hours
-Add work hours	projects	en	Add work hours
-Administrator	projects	en	Administrator
-All	projects	en	All
-All delivery notes	projects	en	ALL delivery notes
-All invoices	projects	en	All invoices
+add project	projects	en	Add project
+add project hours	projects	en	Add project hours
+add work hours	projects	en	Add work hours
+address book	projects	en	Address book
+administrator	projects	en	Administrator
+all	projects	en	All
+all delivery notes	projects	en	ALL delivery notes
+all invoices	projects	en	All invoices
 anonymous public	projects	en	Anonymous public
 archive	projects	en	Archive
 are you sure you want to delete this activity	projects	en	Are you sure you want to delete this activity ?
@@ -24,110 +25,119 @@ arial	projects	en	Arial
 assignment to project %1	projects	en	assignment to project %1
 bill per hour	projects	en	Bill per hour
 bill per hour/workunit	projects	en	Bill per hour/workunit
-Bill per workunit	projects	en	Bill per workunit
-Billable activities	projects	en	Billable activities
+bill per workunit	projects	en	Bill per workunit
+billable activities	projects	en	Billable activities
 billed	projects	en	Billed
-Billed only	projects	en	Billed only
-Billing	projects	en	Billing
-Bookable activities	projects	en	Bookable activities
+billed only	projects	en	Billed only
+billing	projects	en	Billing
+bookable activities	projects	en	Bookable activities
 bookkeeper	projects	en	Bookkeeper
 bookkeeping	common	en	bookkeeping
-Budget	projects	en	Budget
+budget	projects	en	Budget
 budget main project	projects	en	Budget main project
 budget sum of all sub projects is bigger than the budget of the main project	projects	en	Budget sum of all sub projects is bigger than the budget of the main project !
-Calculate	projects	en	Calculate
+calculate	projects	en	Calculate
+click %1here%2 to return to projects.	projects	en	Click %1here%2 to return to projects.
 closed	projects	en	Closed
-Coordinator	common	en	Coordinator
+coordinator	common	en	Coordinator
 courier new	projects	en	Courier New
-Create delivery	projects	en	Create delivery
-Create invoice	projects	en	Create invoice
+create delivery	projects	en	Create delivery
+create invoice	projects	en	Create invoice
 creator	projects	en	Creator
 customer	projects	en	Customer
 date created	projects	en	Date created
 date due of milestone %1 of project %2 has been updated	projects	en	Date due of milestone %1 of project %2 has been updated.
-Delete hours	projects	en	Delete hours
-Deliveries	projects	en	Deliveries
-Delivery	projects	en	Delivery
-Delivery %1 has been created !	projects	en	Delivery %1 has been created.
-Delivery %1 has been updated !	projects	en	Delivery %1 has been updated.
-Delivery date	projects	en	Delivery date
-Delivery ID	projects	en	Delivery ID
-Delivery list	projects	en	Delivery list
-Delivery note	projects	en	Delivery note
+delete hours	projects	en	Delete hours
+deliveries	projects	en	Deliveries
+delivery	projects	en	Delivery
+delivery %1 has been created !	projects	en	Delivery %1 has been created.
+delivery %1 has been updated !	projects	en	Delivery %1 has been updated.
+delivery date	projects	en	Delivery date
+delivery id	projects	en	Delivery ID
+delivery list	projects	en	Delivery list
+delivery note	projects	en	Delivery note
 delivery note for project	projects	en	Delivery note for project
-Delivery notes	projects	en	Delivery notes
+delivery notes	projects	en	Delivery notes
 description can not exceed 255 characters in length !	projects	en	Description can not exceed 255 characters in length !
 description can not exceed 8000 characters in length !	projects	en	Description can not exceed 8000 characters in length !
-Do you also want to delete all sub projects ?	projects	en	Do you also want to delete all sub projects ?
-Edit Activity	projects	en	Edit activity
-Edit administrator list	projects	en	Edit project administrator list
+do you also want to delete all sub projects ?	projects	en	Do you also want to delete all sub projects ?
+edit activity	projects	en	Edit activity
+edit administrator list	projects	en	Edit project administrator list
 edit bookkeeper list	projects	en	Edit project bookkeeper list
-Edit job	projects	en	Edit job
-Edit project	projects	en	Edit project
-Edit project hours	projects	en	Edit project hours
-Edit work hours	projects	en	Edit work hours
+edit job	projects	en	Edit job
+edit milestone	projects	en	edit milestone
+edit project	projects	en	Edit project
+edit project hours	projects	en	Edit project hours
+edit work hours	projects	en	Edit work hours
 email notifications	projects	en	E-Mail notifications
-Employee	projects	en	Employee
+employee	projects	en	Employee
 employees	projects	en	Employees
+enable acl for invoicing section	admin	en	enable acl for invoicing section
 ending date can not be after main projects ending date	projects	en	Ending date can not be after main projects ending date !
 ending date can not be before start date	projects	en	Ending date can not be before start date !
-Error in calculation sum does not match !	projects	en	Error in calculation sum does not match !
+error in calculation sum does not match !	projects	en	Error in calculation sum does not match !
 exactly accounting	projects	en	Exactly accounting
 gantt chart for project %1	projects	en	Gantt chart for project %1
-gantt chart from %1 to %2	projects	de	Gantt chart from %1 to %2
-Generate Activity ID ?	projects	en	Generate Activity ID ?
-Generate Delivery ID ?	projects	en	Generate Delivery ID ?
-Generate Invoice ID ?	projects	en	Generate Invoice ID ?
-Generate Job ID ?	projects	en	Generate Job ID ?
-Generate Project ID ?	projects	en	Generate Project ID ?
+gantt chart from %1 to %2	projects	en	Gantt chart from %1 to %2
+generate activity id ?	projects	en	Generate Activity ID ?
+generate delivery id ?	projects	en	Generate Delivery ID ?
+generate invoice id ?	projects	en	Generate Invoice ID ?
+generate job id ?	projects	en	Generate Job ID ?
+generate project id ?	projects	en	Generate Project ID ?
 georgia	projects	en	Georgia
+global categories	projects	en	Global Categories
 helvetica	projects	en	Helvetica
-Hours	projects	en	Hours
+hours	projects	en	Hours
 id can not exceed 19 characters in length	projects	en	ID can not exceed 19 characters in length !
 id can not exceed 25 characters in length	projects	en	ID can not exceed 25 characters in length !
 if you are an administrator, please set the preferences for this application	projects	en	If you are an administrator, please set the preferences for this application !
 if you are not an administrator, please inform the administrator to set the preferences for this application	projects	en	If you are not an administrator, please inform the administrator to set the preferences for this application !
 investment nr	projects	en	Investment Number
-Invoice	projects	en	Invoice
-Invoice %1 has been created !	projects	en	Invoice %1 has been created.
-Invoice %1 has been updated !	projects	en	Invoice %1 has been updated.
-Invoice date	projects	en	Invoice date
+invoice	projects	en	Invoice
+invoice %1 has been created !	projects	en	Invoice %1 has been created.
+invoice %1 has been updated !	projects	en	Invoice %1 has been updated.
+invoice date	projects	en	Invoice date
 invoice for project	projects	en	Invoice for project
-Invoice ID	projects	en	Invoice ID
-Invoice layout	projects	en	Invoice layout
-Invoice list	projects	en	Invoice list
-Invoices	projects	en	Invoices
+invoice id	projects	en	Invoice ID
+invoice layout	projects	en	Invoice layout
+invoice list	projects	en	Invoice list
+invoices	projects	en	Invoices
+invoicing	admin	en	invoicing
 invoicing of work time	projects	en	Invoicing of work time
-Job	projects	en	Job
+job	projects	en	Job
 job archive	projects	en	Job archive
-Job date	projects	en	Job date
-Job description	projects	en	Job description
-Job has been added !	projects	en	Job has been added.
-Job has been updated !	projects	en	Job has been updated.
-Job ID	projects	en	Job ID
+job date	projects	en	Job date
+job description	projects	en	Job description
+job has been added !	projects	en	Job has been added.
+job has been updated !	projects	en	Job has been updated.
+job id	projects	en	Job ID
 job list	projects	en	Job list
 jobs	common	en	Jobs
 large	projects	en	Large
 last update	projects	en	Last update
 list activities	projects	en	List activities
 list budget	projects	en	List budget
+list deliveries	projects	en	list deliveries
+list invoices	projects	en	list invoices
 list jobs	projects	en	List jobs
 list pcosts	projects	en	List planned costs
 list projects	projects	en	List projects
 list work hours	projects	en	List work hours
 main project	projects	en	Main project
+main project:	projects	en	Main project:
 milestones	common	en	Milestones
-Minutes per workunit	projects	en	Minutes per workunit
+minutes per workunit	projects	en	Minutes per workunit
 month	projects	en	Month
 net	projects	en	net
 new date due of milestone %1: %2	projects	en	New date due of milestone %1: %2.
-New project	projects	en	New project
-Nonactive	common	en	Nonactive
-Number	projects	en	Number
+new project	projects	en	New project
+nonactive	common	en	Nonactive
+number	projects	en	Number
 open	projects	en	Open
 open popup window	projects	en	open popup window
-Overall	projects	en	Overall
+overall	projects	en	Overall
 parent project	projects	en	Parent project
+parent project:	projects	en	Parent project:
 pcosts can not be higher than the budget	projects	en	Planned costs can not be higher than the budget !
 per hour	projects	en	per hour
 per hour/workunit	projects	en	per hour/workunit
@@ -145,79 +155,82 @@ please set the minutes per workunit for each activity now !	projects	en	Please s
 please set your preferences for this application !	projects	en	Please set your preferences for this application !
 please specify country and currency in the global preferences section	projects	en	Please specify country and currency in the global preferences section !
 please specify the budget	projects	en	Please specify the budget !
-Position	projects	en	Position
+position	projects	en	Position
 preferences for accountancy	projects	en	Preferences for accountancy
 previous project	projects	en	Previous project
-Print delivery	projects	en	Print delivery
-Print invoice	projects	en	Print invoice
+print delivery	projects	en	Print delivery
+print invoice	projects	en	Print invoice
 processor	projects	en	Processor
-Project	projects	en	Project
+project	projects	en	Project
 project %1 has been saved	projects	en	Project %1 has been saved.
 project %1 has been updated	projects	en	Project %1 has been updated.
-Project archive	projects	en	Project archive
-Project billing	projects	en	Project billing
-Project delivery	projects	en	Project delivery
-Project ID	common	en	Project ID
+project archive	projects	en	Project archive
+project billing	projects	en	Project billing
+project delivery	projects	en	Project delivery
+project id	common	en	Project ID
 project list	projects	en	Project list
-Project name	projects	en	Project name
-Project preferences	projects	en	Project preferences
-Project statistic	projects	en	Project statistic
+project name	projects	en	Project name
+project preferences	projects	en	Project preferences
+project statistic	projects	en	Project statistic
 project statistics	projects	en	Project statistics
 projects	common	en	Projects
 projects preferences	preferences	en	Projects preferences
-Remark	projects	en	Remark
+remark	projects	en	Remark
 remark can not exceed 8000 characters in length !	projects	en	Remark can not exceed 8000 characters in length !
-Remark required	projects	en	Remark required
+remark required	projects	en	Remark required
 select font	projects	en	Select font
-Select font size for customer address	projects	en	Select font size for customer address
-Select font size for own address	projects	en	Select font size for own address
-Select groups	projects	en	Select groups
-Select main project	projects	en	Select main project
-Select own address	projects	en	Select own address
-Select project	projects	en	Select project
-Select tax for work time	projects	en	Select tax for work time
-Select users	projects	en	Select users
-Short description	projects	en	Short description
+select font size for customer address	projects	en	Select font size for customer address
+select font size for own address	projects	en	Select font size for own address
+select groups	projects	en	Select groups
+select main project	projects	en	Select main project
+select own address	projects	en	Select own address
+select project	projects	en	Select project
+select tax for work time	projects	en	Select tax for work time
+select users	projects	en	Select users
+settings	admin	en	settings
+short description	projects	en	Short description
 small	projects	en	Small
-Sorry, no preferences to set for you :)	projects	en	Sorry, no preferences to set for you :)
+sorry, no preferences to set for you :)	projects	en	Sorry, no preferences to set for you :)
 start date can not be before main projects start date	projects	en	Start date can not be before main projects start date !
-Statistic	projects	en	Statistic
+statistic	projects	en	Statistic
 statistics	projects	en	Statistics
-Sum	projects	en	Sum
+sum	projects	en	Sum
 sum budget	projects	en	Sum budget
 sum hours	projects	en	Sum hours
 sum net	projects	en	Sum net
 sum pcosts	projects	en	Sum planned costs
-Sum workunits	projects	en	Sum workunits
+sum workunits	projects	en	Sum workunits
 tahoma	projects	en	Tahoma
 tax	projects	en	tax
 that id has been used already !	projects	en	That ID has been used already !
 the choosen previous project does not have an end date specified	projects	en	The choosen previous project does not have an end date specified !
-The delivery note contains no items !	projects	en	The delivery note contains no items !
-The invoice contains no items !	projects	en	The invoice contains no items !
+the delivery note contains no items !	projects	en	The delivery note contains no items !
+the invoice contains no items !	projects	en	The invoice contains no items !
+this is mostly caused by a not or wrongly configured smtp server. notify your administrator.	projects	en	This is mostly caused by a not or wrongly configured SMTP server. Notify your administrator.
 time planned	projects	en	Time planned
 time planned main project	projects	en	Time planned main project
 time used	projects	en	Time used
 times new roman	projects	en	Times New Roman
 title can not exceed 255 characters in length	projects	en	Title can not exceed 255 characters in length !
-Update delivery	projects	en	Update delivery
-Update invoice	projects	en	Update invoice
-User statistic	projects	en	User statistic
+update delivery	projects	en	Update delivery
+update invoice	projects	en	Update invoice
+user statistic	projects	en	User statistic
 user statistics	projects	en	User statistics
-Username / Group	projects	en	Username / Group
+username / group	projects	en	Username / Group
 verdana	projects	en	Verdana
 very large	projects	en	Very Large
 very small	projects	en	Very Small
-View job	projects	en	View job
-View project	projects	en	View project
-View work hours	projects	en	View work hours
-Work date	projects	en	Work date
-Work hours	projects	en	Work hours
-Work hours archive	projects	en	Work hours archive
-Work hours list	projects	en	Work hours list
-Work time	projects	en	Work time
-Workunit	projects	en	Workunit
-Workunits	projects	en	Workunits
+view job	projects	en	View job
+view project	projects	en	View project
+view work hours	projects	en	View work hours
+work date	projects	en	Work date
+work hours	projects	en	Work hours
+work hours archive	projects	en	Work hours archive
+work hours list	projects	en	Work hours list
+work time	projects	en	Work time
+workunit	projects	en	Workunit
+workunits	projects	en	Workunits
+would you like to display project info on the main page	projects	en	Would you like to display project info on the main page ?
 would you like to get notified if milestones date due change	projects	en	Would you like to get notified if milestones date due change ?
 would you like to get notified if projects data get updated	projects	en	Would you like to get notified if projects data get updated ?
 would you like to get notified if you get assigned to a project	projects	en	Would you like to get notified if you get assigned to a project ?
@@ -225,6 +238,6 @@ written by:	projects	en	Written by:
 you have entered an invalid date !	projects	en	You have entered an invalid date !
 you have entered an invalid end date !	projects	en	You have entered an invalid end date !
 you have entered an invalid start date !	projects	en	You have entered an invalid start date !
-You have no customer selected !	projects	en	You have no customer selected !
-You have selected an invalid activity !	projects	en	You have selected an invalid activity !
-You have to CREATE a delivery or invoice first !	projects	en	You have to CREATE a delivery or invoice first !
+you have no customer selected !	projects	en	You have no customer selected !
+you have selected an invalid activity !	projects	en	You have selected an invalid activity !
+you have to create a delivery or invoice first !	projects	en	You have to CREATE a delivery or invoice first !
