@@ -27,15 +27,31 @@
                                 "enable_nextmatchs_class" => True, "noheader" => True, "nonavbar" => True);
   include("../header.inc.php");
 
+	$str = '';
   $msgtype = $phpgw->msg->get_flag($mailbox,$msgnum,"X-phpGW-Type");
   if (!empty($msgtype)) {
-    Header("Location: " . $phpgw->link("message_$msgtype.php","folder=". urlencode($folder)."&msgnum=".$msgnum));
-    $phpgw->common->phpgw_exit();
-  } else {
-    $phpgw->common->phpgw_header();
-    echo parse_navbar();
+    $msg_type = explode(';',$msgtype);
+    $msg_type[0] = substr($msg_type[0],1,strlen($msg_type[0])-2);
+    $str = '<h1>THIS IS A SPECIAL '.strtoupper($msg_type[0]).' TYPE EMAIL</h1><br>'."\n"
+		.'In the future, this will process a specially formated email msg.<hr>';
+	$phpgw->common->hook_single('');
+
+
+//    Header('Location: ' . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message_'.$msgtype.'.php','folder='.urlencode($folder).'&msgnum='.$msgnum));
+//    $phpgw->common->phpgw_exit();
+//  } else {
+//    $phpgw->common->phpgw_header();
+//    echo parse_navbar();
   }
 
+  $phpgw->common->phpgw_header();
+  echo parse_navbar();
+
+	if($str)
+	{
+		echo $str;
+	}
+  
   if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
     $phpgw->common->read_preferences("nntp");
 
