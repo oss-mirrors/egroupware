@@ -44,9 +44,32 @@
 		mkdir($phpgw_info['server']['temp_dir'],0700);
 	}
 
+	// if we were NOT able to create this temp directory, then make an ERROR report
+	if (!file_exists($phpgw_info['server']['temp_dir']))
+	{
+		$alert_msg .= 'Error:'.'<br>'
+			.'Server is unable to access phpgw tmp directory'.'<br>'
+			.$phpgw_info['server']['temp_dir'].'<br>'
+			.'Please check your configuration'.'<br>'
+			.'<br>';
+	}
+
 	if (!file_exists($phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid']))
 	{
 		mkdir($phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'],0700);
+	}
+
+	//$uploaddir = $phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'] . SEP;
+	$uploaddir = $phpgw->msg->att_files_dir;
+	
+	// if we were NOT able to create this temp directory, then make an ERROR report
+	if (!file_exists($uploaddir))
+	{
+		$alert_msg .= 'Error:'.'<br>'
+			.'Server is unable to access phpgw email tmp directory'.'<br>'
+			.$uploaddir.'<br>'
+			.'Please check your configuration'.'<br>'
+			.'<br>';
 	}
 
 	/*
@@ -79,6 +102,15 @@
 		$file_size = $phpgw->msg->stripslashes_gpc(trim($uploadedfile_size));
 		$file_type = $phpgw->msg->stripslashes_gpc(trim($uploadedfile_type));
 	}
+	
+	// sometimes PHP is very clue-less about MIME types, and gives NO file_type
+	// rfc default for unknown MIME type is:
+	$mime_type_default = 'application/octet-stream';
+	// so if PHP did not pass any file_type info, then substitute the rfc default value
+	if (trim($file_type) == '')
+	{
+		$file_type = $mime_type_default;
+	}
 
 	// Netscape 6 passes file_name with a full path, we need to extract just the filename
 	function wbasename($input)
@@ -106,14 +138,12 @@
 
 	// Some of the methods were borrowed from
 	// Squirrelmail <Luke Ehresman> http://www.squirrelmail.org
-	$uploaddir = $phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'] . SEP;
-
 	if ($action == 'Delete')
 	{
 		for ($i=0; $i<count($delete); $i++)
 		{
-			unlink($uploaddir . $delete[$i]);
-			unlink($uploaddir . $delete[$i] . '.info');
+			unlink($uploaddir.SEP.$delete[$i]);
+			unlink($uploaddir.SEP.$delete[$i] . '.info');
 		}
 	}
 
@@ -130,31 +160,34 @@
 		//if ($file_tmp_name == "none" && $file_size == 0) This could work also
 		if ($file_size == 0)
 		{
-			touch ($uploaddir . $newfilename);
+			touch ($uploaddir.SEP.$newfilename);
 		}
 		else
 		{
-			copy($file_tmp_name, $uploaddir . $newfilename);
+			copy($file_tmp_name, $uploaddir.SEP.$newfilename);
 		}
 
-		$ftp = fopen($uploaddir . $newfilename . '.info','wb');
+		$ftp = fopen($uploaddir.SEP.$newfilename . '.info','wb');
 		fputs($ftp,$file_type."\n".$file_name."\n");
 		fclose($ftp);
 	}
 	elseif (($action == 'Attach File')
 	&& (($file_tmp_name == '') || ($file_tmp_name == 'none')))
 	{
-		$alert_msg = 'Please submit a filename to attach';
+		$alert_msg = 'Input Error:'.'<br>'
+			.'Please submit a filename to attach'.'<br>'
+			.'You must click "Attach File" for the file to actually upload'.'<br>'
+			.'<br>';
 	}
 
-	$dh = opendir($phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid']);
+	$dh = opendir($uploaddir);
 	while ($file = readdir($dh))
 	{
 		if (($file != '.')
 		&& ($file != '..')
 		&& (ereg("\.info",$file)))
 		{
-			$file_info = file($uploaddir . $file);
+			$file_info = file($uploaddir.SEP.$file);
 			// for every file, fill the file list template with it
 			$t->set_var('ckbox_delete_name','delete[]');
 			$t->set_var('ckbox_delete_value',substr($file,0,-5));
@@ -191,11 +224,11 @@
 	}
 
 	/*
-	$debuginfo .= $phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'] .'<br>';
-	if (count($file_info) > 0)
-	{
-	}
+	// begin DEBUG INFO
 	$debuginfo .= '--uploadedfile info: <br>'
+		.'phpgw_info[server][temp_dir]: '.$phpgw_info['server']['temp_dir'].'<br>'
+		.'$phpgw_info[user][sessionid]: '.$phpgw_info['user']['sessionid'].'<br>'
+		.'uploaddir: '.$uploaddir.'<br>'
 		.'file_tmp_name: ' .$file_tmp_name .'<br>'
 		.'file_name: ' .$file_name .'<br>'
 		.'file_size: ' .$file_size .'<br>'
@@ -210,8 +243,8 @@
 	}
 	$debuginfo .= '<br>';
 	echo $debuginfo;
+	// end DEBUG INFO
 	*/
-	
 
 	$charset = lang('charset');
 	$t->set_var('charset',$charset);

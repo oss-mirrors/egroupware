@@ -95,34 +95,6 @@
 // ----  What Folder To Return To  -----
         $lnk_goback_folder = href_maketag($phpgw->link('/email/index.php','folder='.urlencode($folder)),$folder);
 
-/*
-// ----  Images and Hrefs For Reply, ReplyAll, Forward, and Delete  -----
-        $reply_img = img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'19','26','0');
-	$reply_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=reply&folder='.urlencode($folder).'&msgnum='.$msgnum);
-	$ilnk_reply = href_maketag($reply_url, $reply_img);
-
-        $replyall_img = img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),"19","26",'0');
-	$replyall_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=replyall&folder='.urlencode($folder).'&msgnum='.$msgnum);
-	$ilnk_replyall = href_maketag($replyall_url, $replyall_img);
-
-	$forward_img = img_maketag($image_dir .'/sm_forward.gif',lang('forward'),"19","26",'0');
-	$forward_url =  $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=forward&folder='.urlencode($folder).'&msgnum='.$msgnum);
-	$ilnk_forward = href_maketag($forward_url, $forward_img);
-
-	$delete_img = img_maketag($image_dir .'/sm_delete.gif',lang('delete'),"19","26",'0');
-	$delete_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/action.php','what=delete&folder='.urlencode($folder).'&msgnum='.$msgnum);
-	$ilnk_delete = href_maketag($delete_url, $delete_img);
-
-	$t->set_var('theme_font',$phpgw_info['theme']['font']);
-	$t->set_var('reply_btns_bkcolor',$phpgw_info['theme']['em_folder']);
-	$t->set_var('reply_btns_text',$phpgw_info['theme']['em_folder_text']);
-	$t->set_var('lnk_goback_folder',$lnk_goback_folder);
-	$t->set_var('ilnk_reply',$ilnk_reply);
-	$t->set_var('ilnk_replyall',$ilnk_replyall);
-	$t->set_var('ilnk_forward',$ilnk_forward);
-	$t->set_var('ilnk_delete',$ilnk_delete);
-	*/
-
 // ----  Go To Previous Message Handling  -----
 	if ($msgnum != 1 || ($default_sorting == 'new_old' && $msgnum != $totalmeesages))
 	{
@@ -1319,7 +1291,7 @@
 			/*
 			$dsp = str_replace("{", " BLA ", $dsp);
 			$dsp = str_replace("}", " ALB ", $dsp);
-			
+
 			$b_slash = chr(92);
 			$f_slash = chr(47);
 			$dsp = str_replace($b_slash, " B_SLASH ", $dsp);
@@ -1359,6 +1331,7 @@
 
 				//    normalize line breaks to rfc2822 CRLF
 				$dsp = $phpgw->msg->normalize_crlf($dsp);
+
 
 				/*// THIS NEEDS TO BE SMARTER
 				// how many "\r\n\r\n" do we have? too_many was set above

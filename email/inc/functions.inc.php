@@ -122,25 +122,44 @@
 	}
 	*/
 
-	if ($debug_logins) {  echo '<br>'; }
-	if ($debug_logins) {  echo 'PHP_SELF='.$PHP_SELF.'<br>'; }
-	if ($debug_logins) {  echo 'phpgw_info[server][webserver_url]='.$phpgw_info['server']['webserver_url'].'<br>'; }
-	if ($debug_logins) {  echo 'in_mainscreen='.serialize($in_mainscreen).'<br>'; }
-	if ($debug_logins) {  echo 'in_email='.serialize($in_email).'<br>'; }
-	if ($debug_logins) {  echo 'do_not_login='.serialize($do_not_login).'<br>'; }
+	if ($debug_logins)
+	{
+		echo '<br>';
+		echo 'PHP_SELF='.$PHP_SELF.'<br>';
+		echo 'phpgw_info[server][webserver_url]='.$phpgw_info['server']['webserver_url'].'<br>';
+		echo 'in_mainscreen='.serialize($in_mainscreen).'<br>';
+		echo 'in_email='.serialize($in_email).'<br>';
+		echo 'do_not_login='.serialize($do_not_login).'<br>';
+		echo 'folder='.$folder.'<br>';
+		echo 'get_mailsvr_callstr='.get_mailsvr_callstr().'<br>';
+		echo 'get_folder_long='.get_folder_long($folder).'<br>';
+	}
 
 // ----  CONNECT TO MAILSERVER - IF IT'S OK  -------
 	if ( (($in_email) || ($in_mainscreen)) && ($do_not_login == False) )
 	{
 		if ($debug_logins) {  echo 'CALL TO LOGIN IN FUNCTIONS.INC.PHP'.'<br>'.'userid='.$phpgw_info['user']['preferences']['email']['userid']; }
+		
+		set_time_limit(90);
 		$mailbox = $phpgw->msg->login($folder); // Changed this to not try connection in prefs
-
+		set_time_limit(0);
+		
 		// ----  Error Msg And Exit If Mailbox Connection Not Established  -----
 		if (!$mailbox)
 		{
+			$imap_err = imap_last_error();
+			if ($imap_err == '')
+			{
+				$error_report = 'No Error Returned From Server';
+			}
+			{
+				$error_report = $imap_err;
+			}
+
 			echo "<p><center><b>"
 			  . lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
 			  ."<br>source: email functions.inc.php"
+			  ."<br>imap_last_error: ".$error_report
 			  . "</b></center></p>";
 			$phpgw->common->phpgw_exit(True);
 		}
@@ -299,23 +318,26 @@
 	// construct the email server call string from the opening bracket "{"  to the closing bracket  "}"
 	if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
 	{
-		/* IMAP normal connection, No SSL */
+		// IMAP normal connection, No SSL
 		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':' .get_mailsvr_port().'}';
 	}
 	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps')
 	{
- 		/* IMAP over SSL */
-		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .'/ssl/novalidate-cert:'.get_mailsvr_port().'}';
+ 		// IMAP over SSL
+		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.get_mailsvr_port().'/imap/ssl/novalidate-cert}';
+		//$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.get_mailsvr_port().'/imap/ssl/novalidate-cert}';
+
 	}
 	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s')
 	{
-		/* POP3 over SSL: */
-		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .'/pop3/ssl/novalidate-cert:'.get_mailsvr_port().'}';
+		// POP3 over SSL:
+		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.get_mailsvr_port().'/pop3/ssl/novalidate-cert}';
+		//$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.get_mailsvr_port().'/pop3/ssl}';
 	}
 	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3')
 	{
-		/* POP3 normal connection, No SSL  ( same string as normal imap above)  */
-		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.get_mailsvr_port().'}';
+		// POP3 normal connection, No SSL
+		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.get_mailsvr_port().'/pop3}';
 	}
 	else
 	{
@@ -339,31 +361,28 @@
 	// Cyrus and Courier style =" INBOX"
 	// UWash style: "mail"
 
-	if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UW-Maildir')
+	if (($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UW-Maildir')
+	|| ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash'))
 	{
-		if ( isset($phpgw_info['user']['preferences']['email']['mail_folder']) )
+		if ((isset($phpgw_info['user']['preferences']['email']['mail_folder']))
+		&& (trim($phpgw_info['user']['preferences']['email']['mail_folder']) != ''))
 		{
-			if ( empty($phpgw_info['user']['preferences']['email']['mail_folder']) )
-			{
-				// do we need a default value here?
-				$name_space = '';
-			}
-			else
-			{
-				$name_space = $phpgw_info['user']['preferences']['email']['mail_folder'];
-			}
+			$name_space = trim($phpgw_info['user']['preferences']['email']['mail_folder']);
+		}
+		else
+		{
+			// in this case, the namespace is blank, indicating the user's $HOME is where the MBOX files are
+			// or in the case uo UW-Maildir, where the maildir files are
+			// thus we can not have <blank><slash> preceeding a folder name
+			// note that we *may* have <tilde><slash> preceeding a folder name, SO:
+			// default value for this UWash server, $HOME = tilde (~)
+			$name_space = '~';
 		}
 	}
 	elseif ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'Cyrus')
 	// ALSO works for Courier IMAP
 	{
 		$name_space = 'INBOX';
-	}
-	elseif ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
-	{
-		//$name_space = 'mail/';
-		// delimiter "/" moved to get_mailsvr_delimiter()
-		$name_space = 'mail';
 	}
 	else
 	{
@@ -374,6 +393,7 @@
 		// however as of PHP 4.0 this is not implemented
 		$name_space = 'INBOX';
 	}
+	//echo 'name_space='.$name_space.'<br>';
 	return $name_space;
   }
 
@@ -418,6 +438,7 @@
   {
 	global $phpgw, $phpgw_info;
 
+	$feed_folder = urldecode($feed_folder);
 	$folder = ensure_no_brackets($feed_folder);
 	if ($folder == 'INBOX')
 	{
@@ -434,9 +455,11 @@
 		}
 		else
 		{
+			// this folder is already in "long" format (it's namespace and delimiter already there)
 			$folder_long = $folder;
 		}
 	}
+	//echo 'get_folder_long('.$folder.')='.$folder_long.'<br>';
 	return trim($folder_long);
   }
 
@@ -446,6 +469,7 @@
 	// Example: "Sent"
 	// Cyrus may support  "Sent.Today"
 
+	$feed_folder = urldecode($feed_folder);
 	$folder = ensure_no_brackets($feed_folder);
 	if ($folder == 'INBOX')
 	{
@@ -497,7 +521,9 @@
 		if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
 		{
 			$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, "$name_space" ."$delimiter" ."*");
-		} else {
+		}
+		else
+		{
 			$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, "$name_space" ."*");
 		}
 
@@ -516,19 +542,30 @@
         		}
 			for ($i=0; $i<$num_boxes;$i++)
 			{
-				$folder_short = get_folder_short($mailboxes[$i]);
-				if ($folder_short == $pre_select)
+				if (($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
+				&& (strstr($mailboxes[$i],"/.")) )
 				{
-					$sel = ' selected';
+					// {serverstring}~/. indicates this is a hidden file in the users home directory
+					// $server_str."/."
+					// actually, ANY pattern matching "/." for UWash is NOT an MBOX
+					// DO NOTHING - this is not an MBOX file
 				}
 				else
 				{
-					$sel = '';
-				}
-				if ($folder_short != $skip)
-				{
-					$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short .'</option>';
-					$outstr = $outstr ."\n";
+					$folder_short = get_folder_short($mailboxes[$i]);
+					if ($folder_short == $pre_select)
+					{
+						$sel = ' selected';
+					}
+					else
+					{
+						$sel = '';
+					}
+					if ($folder_short != $skip)
+					{
+						$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short .'</option>';
+						$outstr = $outstr ."\n";
+					}
 				}
 			}
 		}
