@@ -13,7 +13,7 @@
 	{
 		$file = Array
 		(
-			'Preferences' => $GLOBALS['phpgw']->link('/'.sprintf("%u", $GLOBALS['phpgw_info']['user']['domain']).'/fudforum/index.php','t=register'),
+			'Preferences' => $GLOBALS['phpgw']->link('/'.sprintf("%u", crc32($GLOBALS['phpgw_info']['user']['domain'])).'/fudforum/index.php','t=register'),
 		);
 
 //Do not modify below this line
