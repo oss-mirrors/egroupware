@@ -13,12 +13,11 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "polls", "enable_nextmatchs_class" => True);
-  include("../header.inc.php");
+  if (! $inindex) {
+     if (! $phpgw_info["user"]["preferences"]["polls"]["show_on_mainscreen"]) {
+        return False;
+     }
+  }
 
-  $inindex = True;
-  include($phpgw_info["server"]["server_root"] . "/polls/hooks/hook_mainscreen.inc.php");
-  
-//  display_poll();
-  
+  display_poll();  
 ?>

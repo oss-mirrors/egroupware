@@ -12,13 +12,23 @@
   \**************************************************************************/
 
   /* $Id$ */
+
+  function add_template_row(&$tmpl,$label,$value)
+  {
+     global $phpgw;
+
+     $tmpl->set_var("tr_color",$phpgw->nextmatchs->alternate_row_color());
+     $tmpl->set_var("label",$label);
+     $tmpl->set_var("value",$value);
+     $tmpl->parse("rows","row",True);
+  }
   
   function verify_uservote($poll_id)
   {
      global $phpgw,$phpgw_info;
      $db = $phpgw->db;
 
-     $db->query("select count(*) from polls_user where user_id='" . $phpgw_info["user"]["account_id"]
+     $db->query("select count(*) from phpgw_polls_user where user_id='" . $phpgw_info["user"]["account_id"]
               . "' and poll_id='$poll_id'",__LINE__,__FILE__);
      $db->next_record();
 
@@ -35,17 +45,17 @@
     
      $db = $phpgw->db;
 
-     $db->query("SELECT SUM(option_count) AS sum FROM polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
+     $db->query("SELECT SUM(option_count) AS sum FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
      $db->next_record();
      $poll_sum = (int)$db->f(0);
 
-     $db->query("select poll_title from polls_desc where poll_id='$poll_id'");
+     $db->query("select poll_title from phpgw_polls_desc where poll_id='$poll_id'");
      $db->next_record();
 
      echo '<p><table border="0" align="center" width="50%">';
      echo '<tr><td colspan="3" bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="center">'
         . $db->f("poll_title") . '</td></tr>';
-     $db->query("SELECT * FROM polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
+     $db->query("SELECT * FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
      while ($db->next_record()) {
         $poll_optionText  = $db->f("option_text");
         $poll_optionCount = $db->f("option_count");
@@ -90,11 +100,11 @@
      $db = $phpgw->db;
      $ret = array();
     
-     $db->query("SELECT SUM(option_count) AS sum FROM polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
+     $db->query("SELECT SUM(option_count) AS sum FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
      $db->next_record();
      $poll_sum = $db->f("sum");
     
-     $db->query("SELECT poll_title FROM polls_desc WHERE poll_id='$poll_id'",__LINE__,__FILE__);
+     $db->query("SELECT poll_title FROM phpgw_polls_desc WHERE poll_id='$poll_id'",__LINE__,__FILE__);
      $db->next_record();
     
      $poll_title = $db->f("poll_title");
@@ -102,7 +112,7 @@
      $ret[0] = array("title" => $poll_title, "votes" => $poll_sum);
     
      // select next vote option
-     $db->query("SELECT * FROM polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
+     $db->query("SELECT * FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
      while ($db->next_record()) {
         $ret[] = array("text" => $db->f("option_text"), "votes" => $db->f("option_count"));
      }
@@ -118,7 +128,7 @@
      $db = $phpgw->db;
 
      if (! $poll_id) {
-        $db->query("select max(poll_id) from polls_desc",__LINE__,__FILE__);
+        $db->query("select max(poll_id) from phpgw_polls_desc",__LINE__,__FILE__);
         $db->next_record();
         $poll_id = $db->f(0);
      }
@@ -127,7 +137,7 @@
         return 0;
      }
 
-     $db->query("select poll_title from polls_desc where poll_id='$poll_id'",__LINE__,__FILE__);
+     $db->query("select poll_title from phpgw_polls_desc where poll_id='$poll_id'",__LINE__,__FILE__);
      $db->next_record();
 
      echo '<table border="0" align="center" width="50%">'
@@ -137,7 +147,7 @@
      echo '<input type="hidden" name="poll_id" value="' . $poll_id . '">';
 //     echo '<input type="hidden" name="poll_forwarder" value="' . $poll_forwarder . '">';
 
-     $db->query("SELECT * FROM polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
+     $db->query("SELECT * FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
      while ($db->next_record()) {
         $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
         echo '<tr bgcolor="' . $tr_color . '"><td align="center"><input type="radio" name="poll_voteNr" value="'
@@ -154,7 +164,7 @@
   {
      global $phpgw;
      
-     $phpgw->db->query("select max(poll_id) from polls_data",__LINE__,__FILE__);
+     $phpgw->db->query("select max(poll_id) from phpgw_polls_data",__LINE__,__FILE__);
      $phpgw->db->next_record();
 
      $poll_id = $phpgw->db->f(0);
