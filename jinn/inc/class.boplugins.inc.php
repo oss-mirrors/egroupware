@@ -41,18 +41,9 @@ class boplugins extends bojinn
 
 	function include_plugins()
 	{
-//		var_dump($this->bo);
-		// read form_plugin directory
-		// include all 'plugin.' files;
-		//var_dump($this->bo);
-	//	var_dump($this);
 		global $local_bo;
 		$local_bo=$this;
 		
-//$test=get_parent_class($this);
-//var_dump($local_bo);
-	//global $PHPGW_SERVER_ROOT
-	//var_dump(PHPGW_SERVER_ROOT);	
 		if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/plugins')) {
 
 			/* This is the correct way to loop over the directory. */
@@ -117,45 +108,32 @@ class boplugins extends bojinn
 			$sets=explode(':',$plugin);
 			if (substr($input_name,3)==$sets[0])
 			{
-				$input=call_user_func('plg_fi_'.$sets[1],$input_name,$value,$sets[3],$this->bo);
+				$input=call_user_func('plg_fi_'.$sets[1],$input_name,$value,$sets[3]);
 
-				return $input;
-			}
-			else /* fall back on default plugin */
-			{
-				$input=call_user_func('plg_fi_def_'.$type,$input_name,$value,'','');
-				return $input;	
 			}
 		}
+	
+		if (!$input) $input=call_user_func('plg_fi_def_'.$type,$input_name,$value,'');
+		return $input;
+		
+
 	}
 
 	/* get storage filter from plugin */
 	function get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES)
 	{
-		echo $key;
 		$plugins=explode('|',$this->bo->site_object['plugins']);
 		foreach($plugins as $plugin)
 		{
-
 			$sets=explode(':',$plugin);
 
 			if (substr($key,3)==$sets[0])
 			{
 				$data=call_user_func('plg_sf_'.$sets[1],$key,$HTTP_POST_VARS,$HTTP_POST_FILES,$sets[3],$this->bo);
-
-				return $data;
 			}
-			
-			else return False;
-			/* fall back on default plugin */
-			/*
-			{
-				$input=call_user_func('plugin_def_'.$type,$input_name,$value,'','');
-				return $input;	
-			}
-			*/
-			
 		}
+		
+		return $data;
 	}
 
 }

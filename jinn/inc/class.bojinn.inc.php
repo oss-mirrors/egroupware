@@ -791,7 +791,7 @@ class bojinn
 
 
 		 */
-
+//die(var_dump($HTTP_POST_VARS));
 		while(list($key, $val) = each($HTTP_POST_VARS)) 
 		{
 
@@ -799,7 +799,13 @@ class bojinn
 			{
 				if ($filtered_data=$this->plug->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES))
 				{
-					$data=array_merge($data,$filtered_data);
+					$data[] = array
+					(
+						'name' => substr($key,3),
+						'value' =>  $filtered_data  //addslashes($val)
+					);
+																														  
+					//$data=array_merge($data,$filtered_data);
 				}
 				else // if there's no plugin, just save the vals
 				{
