@@ -252,6 +252,7 @@
 			{
 				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
 			}
+			//$GLOBALS['phpgw']->js->validate_file('foldertree','foldertree');
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 		}
@@ -938,6 +939,8 @@
 			
 // Start of the new folder tree system
 // 29-12-2003 NDEE
+// ToDo
+// check how many mails in folder
 // open to active folder on reload
 
 			$counter = 0;
@@ -966,6 +969,8 @@
 			
 				$counted_dots = substr_count($value,".");
 
+/*
+
 				if ($this->mailbox == $key) 
 				{
 					$folder_name = "<font style=\"background-color: #dddddd\">".str_replace(".","",$value)."</font>";
@@ -981,7 +986,35 @@
 				if($counter==0)
 				{
 					$parent = -1;
-					$folder_icon = PHPGW_IMAGES_DIR."/foldertree_felamimail_sm.png";
+					$folder_icon = $folderImageDir."/foldertree_felamimail_sm.png";
+				}
+
+				if($counted_dots == 2) 
+				{
+					$parent = 0;
+					$last_parent = $counter;
+				}
+				if($counted_dots > 2)
+				{
+					$parent = $last_parent;
+				}
+*/
+				if ($this->mailbox == $key) 
+				{
+					$folder_name = "<font style=\"background-color: #dddddd\">".str_replace(".","",$value)."</font>";
+				}
+				else
+				{
+					$folder_name = str_replace(".","",$value);
+				}
+
+				$folder_title = str_replace(".","",$value);
+				$folder_icon = $folderImageDir."/foldertree_folder.gif";
+
+				if($counter==0)
+				{
+					$parent = -1;
+					$folder_icon = $folderImageDir."/foldertree_felamimail_sm.png";
 				}
 				else
 				{
@@ -991,17 +1024,16 @@
 					$parent = intval($parent_code);
 				}
 
-
-// das hier kostet wahnisnning Performance
-
-				if($folder_name == "INBOX")
+//				if($folder_name = "INBOX")
+				if($counter < 5)
 				{
+
 					$folderStatus	= $this->bofelamimail->getFolderStatus($key);
 					$unseen = $folderStatus[unseen];
 					if($unseen != 0) $folder_name = "<b>".$folder_name." <small>(".$unseen.")</small></b>";
 				}
 
-				// Node(id, pid, name, url, urlClick, urlOut, title, target, icon, iconOpen, open)
+// Node(id, pid, name, url, urlClick, urlOut, title, target, icon, iconOpen, open) {
 				$folder_tree_new .= "d.add($counter,$parent,'$folder_name','#','document.messageList.mailbox.value=\'$key\'; document.messageList.submit();','','$folder_title $key','','$folder_icon');";
 				$counter++;
 			}
