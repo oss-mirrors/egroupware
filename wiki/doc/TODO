@@ -9,6 +9,13 @@ AxisWiki TODO
 - /help
 - phpgw auto-detect
 - database abstraction
+-
+
+------------
+Added by Pim
+------------
+- parse all general messages to lang
+- port to our own template system (not very important)
 
 the following should be mostly synchronized with the canonical Tavi group at http://tavi.sf.net
 *group support
