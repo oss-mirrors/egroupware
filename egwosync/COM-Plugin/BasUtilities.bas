@@ -26,13 +26,18 @@ Public Sub GetContacts()
         Dim ORDER       As String
         Dim SORT        As String
         Dim oContacts   As New COutlookContacts
+        Dim colFields   As Collection
+        Dim strTemp     As Variant
         
         'Clears the local and remote listbox, so that we dont get double contacts.
         FrmMain.listLocal.Clear
         FrmMain.listRemote.Clear
+        
+        'Get Filter and search info
         query = FrmMain.txtSearch
+        Set colFields = FrmMain.AdditionalFields
         
-        
+        'Some Defaults
         INT_START = 1
         INT_LIMIT = 50
         ORDER = "fn"
@@ -47,6 +52,11 @@ Public Sub GetContacts()
             xmlParms.AddInteger "start", INT_START
             xmlParms.AddInteger "limit", INT_LIMIT
             xmlArray.AddString "fn"
+            For Each strTemp In colFields
+                If strTemp <> "" Then
+                    xmlArray.AddString strTemp
+                End If
+            Next strTemp
             xmlParms.AddArray "fields", xmlArray
             xmlParms.AddString "query", query
             xmlParms.AddString "order", ORDER
@@ -62,10 +72,9 @@ Public Sub GetContacts()
             
             For Each tempValue In xmlResponse.Params(1).ArrayValue
                 'Add each contact to the response collection
-                egwContacts.CursoryInfo.Add tempValue
-                'list the contacts in the listbox
-                FrmMain.listRemote.AddItem egwContacts.CursoryInfo.Item(egwContacts.CursoryInfo.Count).StructValue.GetValueByName("fn").StringValue
+                egwContacts.CursoryInfo.Add tempValue.StructValue
             Next tempValue
+            egwContacts.List FrmMain.listRemote
             
             'update our place in the remote list of contacts
             INT_START = INT_LIMIT + INT_START
@@ -166,16 +175,16 @@ Public Sub SynchronizeContacts()
                     Debug.Print "Successfully exported " & ciContact.FullName & " to the eGroupWare server"
     
                     'Add each contact to the response collection
-                    egwContacts.CursoryInfo.Add tempResponse.Params(1).ArrayValue(1)
+                    egwContacts.CursoryInfo.Add tempResponse.Params(1).ArrayValue(1).StructValue
                     'list the contacts in the listbox
                     With FrmMain.listRemote
                         For i = 0 To (.ListCount - 1) Step 1
-                            If .List(i) = egwContacts.CursoryInfo.Item(egwContacts.CursoryInfo.Count).StructValue.GetValueByName("fn").StringValue Then
+                            If .List(i) = egwContacts.CursoryInfo.Item(egwContacts.CursoryInfo.Count).GetValueByName("fn").StringValue Then
                                 .RemoveItem (i)
                                 Exit For
                             End If
                         Next i
-                        .AddItem egwContacts.CursoryInfo.Item(egwContacts.CursoryInfo.Count).StructValue.GetValueByName("fn").StringValue
+                        .AddItem egwContacts.CursoryInfo.Item(egwContacts.CursoryInfo.Count).GetValueByName("fn").StringValue
                     End With
                 'If creation of the remote contact failed...
                 End If

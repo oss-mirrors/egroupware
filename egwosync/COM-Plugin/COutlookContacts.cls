@@ -1,6 +1,10 @@
 VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
+  Persistable = 0  'NotPersistable
+  DataBindingBehavior = 0  'vbNone
+  DataSourceBehavior  = 0  'vbNone
+  MTSTransactionMode  = 0  'NotAnMTSObject
 END
 Attribute VB_Name = "COutlookContacts"
 Attribute VB_GlobalNameSpace = False
@@ -34,6 +38,10 @@ Public Sub List(fldFolder As Outlook.MAPIFolder)
     Next objItem
 End Sub
 
+Public Function Filter(fldFolder As Outlook.MAPIFolder, field As String, query As String) As Items
+    Set Filter = fldFolder.Items.Restrict("[" & field & "] = """ & query & """")
+End Function
+
 '***********************************************************************************************
 ' Create an Outlook contact given an eGroupWare Response that holds the full information on an
 ' eGW contact
@@ -42,9 +50,10 @@ Public Function Create(ByVal egwContact As XMLRPCStruct) As ContactItem
     Dim objContact      As ContactItem
     Dim gnspNamespace   As NameSpace
     Dim fldContacts     As Outlook.MAPIFolder
-    Dim ciFindContact   As ContactItem
+    'Dim ciFindContact   As ContactItem
     Dim bWriteContact   As Boolean
     Dim objTranslator   As New CContactTranslator
+    Dim tempItems       As Items
     
     bWriteContact = True    'we assume that we will write a new contact, unless we hear otherwise
     Set gnspNamespace = GetNamespace("MAPI")
@@ -52,15 +61,16 @@ Public Function Create(ByVal egwContact As XMLRPCStruct) As ContactItem
     Set objContact = fldContacts.Items.Add
     
     'If a contact with the same full name doesn't exist, create the new contact.
-    Set ciFindContact = fldContacts.Items.Find("[FullName] = " & egwContact.GetValueByName("fn").StringValue)
+    'Set ciFindContact = fldContacts.Items.Find("[FullName] = " & egwContact.GetValueByName("fn").StringValue)
+    Set tempItems = Filter(fldContacts, "FullName", egwContact.GetValueByName("fn").StringValue)
     
     'Confirm Overwrite: Only do this if a contact by the same name was found
-    If Not (ciFindContact Is Nothing) Then
+    If tempItems.Count > 0 Then
         'Manage overwriting
         Dim OMResponse As Integer
         Dim OM As New COverwriteManager
         
-        OMResponse = OM.Manage(ciFindContact, egwContact)
+        OMResponse = OM.Manage(tempItems.GetFirst, egwContact)
         If OMResponse = FrmOverwrite.OVERWRITE Then
             ciFindContact.Delete
         ElseIf OMResponse = FrmOverwrite.SKIP Then

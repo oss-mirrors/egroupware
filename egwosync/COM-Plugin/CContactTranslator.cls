@@ -1,6 +1,10 @@
 VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
+  Persistable = 0  'NotPersistable
+  DataBindingBehavior = 0  'vbNone
+  DataSourceBehavior  = 0  'vbNone
+  MTSTransactionMode  = 0  'NotAnMTSObject
 END
 Attribute VB_Name = "CContactTranslator"
 Attribute VB_GlobalNameSpace = False
@@ -150,3 +154,57 @@ Public Sub eGW2Outlook(egwContact As XMLRPCStruct, oContact As ContactItem)
     'oContact. = egwContact.GetValueByName("pubkey").StringValue 'public key
     'oContact. = egwContact.GetValueByName("note").StringValue 'notes
 End Sub
+
+Property Get eGWFields() As Collection
+    Set eGWFields = New Collection
+
+    eGWFields.Add "fn" 'full name"
+    eGWFields.Add "Sound" 'Sound"
+    eGWFields.Add "org_name" 'company name"
+    eGWFields.Add "org_unit" 'Department"
+    eGWFields.Add "Title" ' Title"
+    eGWFields.Add "n_prefix" 'Prefix"
+    eGWFields.Add "n_given" 'first name"
+    eGWFields.Add "n_middle" 'middle name"
+    eGWFields.Add "n_family" 'last name"
+    eGWFields.Add "n_suffix" ' Suffix"
+    eGWFields.Add "Label" ' Label"
+    eGWFields.Add "adr_one_street" 'business street"
+    eGWFields.Add "adr_one_locality" 'business city"
+    eGWFields.Add "adr_one_region" 'business state"
+    eGWFields.Add "adr_one_postalcode" 'business zip code"
+    eGWFields.Add "adr_one_countryname" 'business country"
+    eGWFields.Add "adr_one_type" 'business address type"
+    eGWFields.Add "adr_two_street" 'home street"
+    eGWFields.Add "adr_two_locality" 'home city"
+    eGWFields.Add "adr_two_region" 'home state"
+    eGWFields.Add "adr_two_postalcode" 'home zip code"
+    eGWFields.Add "adr_two_countryname" 'home country"
+    eGWFields.Add "adr_two_type" 'home address type"
+    eGWFields.Add "tz" 'time zone"
+    eGWFields.Add "geo" 'geo"
+    eGWFields.Add "tel_work" 'business phone"
+    eGWFields.Add "tel_home" 'home phone"
+    eGWFields.Add "tel_voice" 'voice phone"
+    eGWFields.Add "tel_msg" 'message phone"
+    eGWFields.Add "tel_fax" 'fax"
+    eGWFields.Add "tel_pager" 'pager"
+    eGWFields.Add "tel_cell" 'mobile phone"
+    eGWFields.Add "tel_bbs" 'bbs phone"
+    eGWFields.Add "tel_modem" 'modem phone"
+    eGWFields.Add "tel_isdn" 'isdn phone"
+    eGWFields.Add "tel_car" 'car phone"
+    eGWFields.Add "tel_video" 'video phone"
+    eGWFields.Add "tel_prefer" 'preferred phone"
+    eGWFields.Add "email" 'business email"
+    eGWFields.Add "email_type" 'business email type"
+    eGWFields.Add "email_home" 'home email"
+    eGWFields.Add "email_home_type" 'home email type"
+    eGWFields.Add "address2" 'address line 2"
+    eGWFields.Add "address3" 'address line 3"
+    eGWFields.Add "ophone" 'Other Phone"
+    eGWFields.Add "bday" ' Birthday"
+    eGWFields.Add "URL" ' URL"
+    eGWFields.Add "pubkey" 'public key"
+    eGWFields.Add "note" ' Notes"
+End Property

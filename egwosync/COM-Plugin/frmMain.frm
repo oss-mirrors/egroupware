@@ -4,7 +4,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FrmMain
    ClientHeight    =   8535
    ClientLeft      =   45
    ClientTop       =   315
-   ClientWidth     =   5925
+   ClientWidth     =   5880
    OleObjectBlob   =   "FrmMain.dsx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -24,8 +24,34 @@ Attribute VB_Exposed = False
 '#################################################################################################
 Private myFilter As String
 
-Property Get filter() As String
-    filter = myFilter
+Property Get Filter() As String
+    Filter = myFilter
+End Property
+
+Property Get AdditionalFields() As Collection
+    Dim Control As Variant
+    Set AdditionalFields = New Collection
+    
+    For Each Control In FilterFrame.Controls
+        If TypeOf Control Is MSForms.ComboBox Then
+            If Control.Value <> "" Then
+                AdditionalFields.Add Control.Value
+            End If
+        End If
+    Next Control
+End Property
+
+Property Get FieldQueries() As Collection
+    Dim Control As Variant
+    Set FieldQueries = New Collection
+    
+    For Each Control In FilterFrame.Controls
+        If TypeOf Control Is MSForms.TextBox Then
+            If Control.Value <> "" Then
+                FieldQueries.Add Control.Text
+            End If
+        End If
+    Next Control
 End Property
 
 '***********************************************************************************************
@@ -64,28 +90,27 @@ Private Sub cmdSynchronize_Click()
     BasUtilities.SynchronizeContacts
 End Sub
 
-Private Sub obtNone_Click()
-    myFilter = "none"
-End Sub
-
-Private Sub obtPrivate_Click()
-    myFilter = "private"
-End Sub
-
-Private Sub obtYours_Click()
-    myFilter = "yours"
-End Sub
-
 '***********************************************************************************************
 ' Set things up for frmMain
 '***********************************************************************************************
 Private Sub UserForm_Initialize()
+    Dim Translator As New CContactTranslator
+    Dim Temp As Variant
+
     'load previous settings
     LoadSettings
     'we get an error if we try and run the putsettings() if there is nothing in the options.
     If Me.txtHostname.Text <> "" Then
         PutSettings
     End If
+    
+    'Populate the Filter comboboxes with available fields
+    For Each Temp In Translator.eGWFields
+        cbField1.AddItem Temp
+        cbField2.AddItem Temp
+        cbField3.AddItem Temp
+        cbField4.AddItem Temp
+    Next Temp
 End Sub
 
 '***********************************************************************************************
@@ -142,7 +167,7 @@ End Sub
 '***********************************************************************************************
 ' Makes it easy to get selected items from a listBox. Returns a collection of strings
 '***********************************************************************************************
-Public Function GetSelectedListItems(ByRef myList As MsForms.ListBox) As Collection
+Public Function GetSelectedListItems(ByRef myList As MSForms.ListBox) As Collection
     Dim i As Integer
     Set GetSelectedListItems = New Collection
 
