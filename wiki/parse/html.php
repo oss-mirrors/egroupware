@@ -118,7 +118,7 @@ function html_url($url, $text)
      $onClick = " onClick=\"document.location='mai'+'lto:$matchs[1]'+unescape('%40')+$domains; return false;\"";
      $text = str_replace('@',' AT ',str_replace('mailto:','',str_replace('.',' DOT ',$text)));
   }
-  return "<a href=\"$url\"$onClick>$text</a>";
+  return '<a href="'.$url.'" '.($onClick ? $onClick : 'target="_blank"').">$text</a>";
 }
 function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appearance = '')
 {
