@@ -25,5 +25,6 @@ no alternate email address	qmailldap	de	keine zusätzlichen EMailadressen
 add server	qmailldap	de	Server hinzufügen
 smtp routing	qmailldap	de	SMTP Routing
 domainname	qmailldap	de	Domänenname
+qmailldap	common	de	QMailLDAP
 remote server	qmailldap	de	Zielserver
 remote port	qmailldap	de	Zielport
