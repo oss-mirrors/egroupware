@@ -19,24 +19,29 @@
 	$GLOBALS['phpgw_info']['flags']['noheader']            = True;
 	include('../header.inc.php');
 
-	$submit   = $_POST['submit'];
-	$cancel   = $_POST['cancel'];
 	$state_id = intval(get_var('state_id',array('POST','GET')));
 
-	if($cancel)
+	if($_POST['cancel'])
 	{
 		$GLOBALS['phpgw']->redirect_link('/tts/states.php');
 	}
 
 	$GLOBALS['phpgw']->config->read_repository();
 
-	if($submit)
+	if($_POST['save'])
 	{
 		$state = $_POST['state'];
+		if (get_magic_quotes_gpc())
+		{
+			foreach(array('id','name','description') as $name)
+			{
+				$state[$name] = stripslashes($state[$name]);
+			}
+		}
 
 		if (!$state_id)
 		{
-		   $auto=($state['autoid']=='on');
+			$auto=($state['autoid']=='on');
 			$GLOBALS['phpgw']->db->query("insert into phpgw_tts_states (".($auto?'':'state_id,')."state_name,state_description,state_initial) "
 				. " values ('"
 				. ($auto?'':(addslashes($state['id']) . "','"))

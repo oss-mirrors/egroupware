@@ -20,25 +20,25 @@
 
 	include('../header.inc.php');
 
-	$submit   = $_POST['submit'];
-	$cancel   = $_POST['cancel'];
 	$transition_id = intval(get_var('transition_id',array('POST','GET')));
 
-	if($cancel)
+	if($_POST['cancel'])
 	{
 		$GLOBALS['phpgw']->redirect_link('/tts/transitions.php');
 	}
 
 	$GLOBALS['phpgw']->config->read_repository();
 
-	if($cancel)
-	{
-		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/tts/transitions.php'));
-	}
-
-	if($submit)
+	if($_POST['save'])
 	{
 		$transition = $_POST['transition'];
+		if (get_magic_quotes_gpc())
+		{
+			foreach(array('name','description') as $name)
+			{
+				$transition[$name] = stripslashes($transition[$name]);
+			}
+		}
 
 		if (!$transition_id)
 		{
