@@ -38,7 +38,8 @@
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['jinn']['hooks']		= array
 	(
-		'admin'
+		'admin',
+		'sidebox_menu'
 	);
 
 	/* Dependacies for this app to work */

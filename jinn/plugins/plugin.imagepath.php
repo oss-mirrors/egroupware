@@ -249,7 +249,6 @@
 					}
 
 					/* get original type */
-					//$magick->verbose=true;
 					$filetype=$magick->Get_Imagetype($add_image['tmp_name']);	
 					if(!$filetype)
 					{
@@ -258,31 +257,36 @@
 					elseif($filetype!='JPEG' && $filetype!='GIF' && $filetype!='PNG')
 					{
 						$filetype='png';
-						$new_temp_file=$magick->Resize($new_img_width,$new_img_height,$add_image['tmp_name'],$filetype,'');
-
-						/* if thumb */
-						if($config['Generate_thumbnail']) 
-						$new_temp_thumb=$magick->Resize($config['Max_thumbnail_width'],$config['Max_thumbnail_height'],$add_image['tmp_name'],$filetype,'');
+						$new_temp_file=$magick->Resize($new_img_width,$new_img_height,$add_image['tmp_name'],$filetype);
+						if(!$new_temp_file) die(lang('the resize process failed, please contact the administrator'));
 
 					}
 					elseif($new_img_width || $new_img_height)
 					{
 						$target_image_name.='.'.$filetype;
-						$new_temp_file=$magick->Resize($new_img_width,$new_img_height,$add_image['tmp_name'],$filetype,'');
-
-						/* if thumb */
-						if($config['Generate_thumbnail']) 
-						$new_temp_thumb=$magick->Resize($config['Max_thumbnail_width'],$config['Max_thumbnail_height'],$add_image['tmp_name'],$new_filetype,'');
+						$new_temp_file=$magick->Resize($new_img_width,$new_img_height,$add_image['tmp_name'],$filetype);
+						if(!$new_temp_file) die(lang('the resize process failed, please contact the administrator'));
 					}
 					else
 					{
 						$new_temp_file=$add_image['tmp_name']; // just copy
+					}
 
-						/* if thumb */
-						if($config['Generate_thumbnail']) 
-						$new_temp_thumb=$magick->Resize($config['Max_thumbnail_width'],$config['Max_thumbnail_height'],$add_image['tmp_name'],$filetype,'');
+					/* if thumb */
+					if($config['Generate_thumbnail']=='True')
+					{
+						//generate thumb
+						$new_temp_thumb=$magick->Resize($config['Max_thumbnail_width'],
+							$config['Max_thumbnail_height'],$add_image['tmp_name'],$new_filetype);
+
+						//put thumbpath in db for backwards compatibility
+						if($config['Store_thumbnail_in_thumb_pathfield_for_backwards_compatibility']=='True')
+						{
+							echo '';
+						}
 
 					}
+				
 
 					$target_image_name = time().ereg_replace("[^a-zA-Z0-9_.]", '_', $add_image['name']);
 
@@ -302,7 +306,7 @@
 					}
 					else
 					{
-						die ("failed to copy $target_image_name...<br>\n");
+						die ("failed copying $new_temp_file to $upload_path/normal_size/$target_image_name...<br>\n");
 					}
 				}
 

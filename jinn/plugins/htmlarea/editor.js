@@ -19,7 +19,7 @@ function editor_generate(objname,w,h) {
 
 
   // Default Settings
-  var imgURL = _editor_url + 'jinn/plugins/fip/htmlarea/images/';       // images url
+  var imgURL = _editor_url + 'jinn/plugins/htmlarea/images/';       // images url
 
   // set size to specified size or size of original object
   var obj    = document.all[objname];
@@ -179,7 +179,7 @@ function editor_action(button_id) {
     var wPosition   = "dialogLeft:" +posX+ "; dialogTop:" +posY;
 
     var oldcolor = _dec_to_rgb(editdoc.queryCommandValue(cmdID));
-    var newcolor = showModalDialog(_editor_url + "jinn/plugins/fip/htmlarea/select_color.html", oldcolor,
+    var newcolor = showModalDialog(_editor_url + "jinn/plugins/htmlarea/select_color.html", oldcolor,
                                    "dialogWidth:238px; dialogHeight: 187px; "
                                    + "resizable: no; help: no; status: no; scroll: no; "
                                    + wPosition);
@@ -199,7 +199,7 @@ function editor_action(button_id) {
 
     // insert image
     else if (cmdID.toLowerCase() == 'insertimage'){
-      showModalDialog(_editor_url + "jinn/plugins/fip/htmlarea/insert_image.html", editdoc, "resizable: no; help: no; status: no; scroll: no; ");
+      showModalDialog(_editor_url + "jinn/plugins/htmlarea/insert_image.html", editdoc, "resizable: no; help: no; status: no; scroll: no; ");
     }
 
     // insert image

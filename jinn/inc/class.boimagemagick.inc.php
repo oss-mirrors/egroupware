@@ -35,7 +35,7 @@
 		var $count          = 0;
 		var $image_data     = array();
 		var $error          = '';
-		var $verbose        = FALSE;
+		var $verbose        = false;
 
 		function boimagemagick() 
 		{
@@ -55,7 +55,7 @@
 		'fit' > fit image to given size
 		*/
 
-		function Resize($x_size, $y_size, $src_temp_file, $filetype, $how='keep_aspect') 
+		function Resize($x_size=10000, $y_size=10000, $src_temp_file, $filetype, $how='keep_aspect') 
 		{
 
 			$target_temp_file = tempnam ("jinn/temp", "convert_");
@@ -71,14 +71,16 @@
 			if($this->verbose == TRUE) {
 				echo "  Resize method: {$how}\n";
 			}
-
-
-			if($x_size || $y_size) 
+			
+			if($x_size || $y_size)
 			{
+				if(!$x_size) $x_size=10000;
+				if(!$y_size) $y_size=10000;
+
 				$geometry_option='-geometry';
 				$resize_vals="'{$x_size}x{$y_size}{$method}'";
 			}
-			
+
 			$command = "{$this->imagemagickdir}/convert $geometry_option $resize_vals '{$src_temp_file}' '{$target_temp_file}'";
 
 			if($this->verbose == TRUE) {
