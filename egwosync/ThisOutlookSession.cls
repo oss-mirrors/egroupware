@@ -42,6 +42,7 @@ Public Function RefreshSettingStatus() As Boolean
         GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="Password") <> "" Then
             beGWOSyncEnabled = True
             RefreshSettingStatus = True
+            
     Else
         beGWOSyncEnabled = False
         RefreshSettingStatus = False
@@ -53,9 +54,12 @@ End Function
 '***********************************************************************************************
 Private Sub Application_Startup()
     'Are we ready to contact the server?
-    If Not RefreshSettingStatus Then
-        Setup
-    End If
+    If RefreshSettingStatus Then
+        'We need to put the current settings in FrmMain,
+        'else the setup dialog will be shown at first sync anyways.
+        FrmMain.Helper.PutSettings
+    Else: Setup
+   End If
     
     'If so, initialize the process that will allow contacts to be added automatically
     If beGWOSyncEnabled Then
@@ -74,14 +78,16 @@ Public Function Setup() As Boolean
                     "Server. Would you like to set it up now?", _
                     vbOKCancel, "eGrwoupWare not set up")
         If x = vbOK Then
-            If Not frmMain.Visible Then
-                frmMain.Show
+            If Not FrmMain.Visible Then
+                FrmMain.Show
             End If
             'Set focus to settings page
-            frmMain.MultiPage1.Value = 1
+            FrmMain.MultiPage1.Value = 1
         ElseIf x = vbCancel Then
             beGWOSyncEnabled = False
         End If
         Setup = beGWOSyncEnabled
 End Function
+
+
 
