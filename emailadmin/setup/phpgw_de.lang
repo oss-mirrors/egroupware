@@ -14,3 +14,11 @@ email settings	qmailldap	de	EMailkonto
 We don't accept any email!	qmailldap	de	Es werden keine EMail's aktzeptiert!
 add also to local domains	qmailldap	de	auch zu den lokalen Domänen hinzufügen
 We don't deliver any email local!	qmailldap	de	Es werden keine EMail's lokal ausgeliefert!
+edit email settings	qmailldap	de	EMail Einstellungen bearbeiten
+email address	qmailldap	de	EMailadresse
+alternate email address	qmailldap	de	zusätzliche EMailadressen
+forward email's to	qmailldap	de	EMail's weiterleiten an
+email account active	qmailldap	de	EMailkonto aktiv
+back	common	de	zurück
+options	common	de	Optionen
+no alternate email address	qmailldap	de	keine zusätzlichen EMailadressen

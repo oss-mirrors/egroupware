@@ -134,7 +134,14 @@
 					$userData["mailAlternateAddress"]	= $allValues[0]["mailalternateaddress"];
 					$userData["accountStatus"]		= $allValues[0]["accountstatus"][0];
 					$userData["mailRoutingAddress"]		= $allValues[0]["mailroutingaddress"][0];
-					unset($userData["mailAlternateAddress"]["count"]);
+					if ($userData["mailAlternateAddress"]["count"] == 0)
+					{
+						$userData["mailAlternateAddress"]='';
+					}
+					else
+					{
+						unset($userData["mailAlternateAddress"]["count"]);
+					}
 					return $userData;
 				}
 			}

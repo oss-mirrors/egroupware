@@ -82,7 +82,7 @@
 			// only when we show a existing user
 			if($userData = $this->boqmailldap->getUserData($accountID, $_useCache))
 			{
-				if (count($userData['mailAlternateAddress']) > 0)
+				if ($userData['mailAlternateAddress'] != '')
 				{
 					$options_mailAlternateAddress = "<select size=\"6\" name=\"mailAlternateAddress\">\n";
 					for ($i=0;$i < count($userData['mailAlternateAddress']); $i++)
