@@ -48,7 +48,7 @@
 	);
 	create_select_box('Refresh time in minutes','refreshTime',$refreshTime);
 
-	create_text_area('email signature','email_sig',3,50);
+	create_notify('email signature','email_sig',3,50);
 
 	$sortOrder = array(
 		'0' => lang('date(newest first)'),
