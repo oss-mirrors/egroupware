@@ -21,7 +21,11 @@ Attribute VB_Exposed = False
 '# heisters[at]0x09.com
 '#################################################################################################
 
-Public CursoryInfo As New Collection
+Public CursoryInfo As Collection
+
+Private Sub Class_Initialize()
+    Set CursoryInfo = New Collection
+End Sub
 
 '***********************************************************************************************
 ' Returns a collection of all the XMLRPCStructs that match the query
@@ -150,7 +154,7 @@ Public Function GetFullInfoFromServer(strSelectedName As String) As XMLRPCRespon
     Next varTemp
 End Function
 
-Public Function List(putItHere As MSForms.ListBox)
+Public Function List(putItHere As MsForms.ListBox)
     Dim colFiltered As Collection
     Dim colFields   As Collection
     Dim colQueries  As Collection

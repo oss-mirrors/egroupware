@@ -33,7 +33,7 @@ Property Get AdditionalFields() As Collection
     Set AdditionalFields = New Collection
     
     For Each Control In FilterFrame.Controls
-        If TypeOf Control Is MSForms.ComboBox Then
+        If TypeOf Control Is MsForms.ComboBox Then
             If Control.Value <> "" Then
                 AdditionalFields.Add Control.Value
             End If
@@ -46,7 +46,7 @@ Property Get FieldQueries() As Collection
     Set FieldQueries = New Collection
     
     For Each Control In FilterFrame.Controls
-        If TypeOf Control Is MSForms.TextBox Then
+        If TypeOf Control Is MsForms.TextBox Then
             If Control.Value <> "" Then
                 FieldQueries.Add Control.Text
             End If
@@ -95,7 +95,8 @@ End Sub
 '***********************************************************************************************
 Private Sub UserForm_Initialize()
     Dim Translator As New CContactTranslator
-    Dim Temp As Variant
+    Dim FieldName As Variant
+    Dim Control As Variant
 
     'load previous settings
     LoadSettings
@@ -105,12 +106,14 @@ Private Sub UserForm_Initialize()
     End If
     
     'Populate the Filter comboboxes with available fields
-    For Each Temp In Translator.eGWFields
-        cbField1.AddItem Temp
-        cbField2.AddItem Temp
-        cbField3.AddItem Temp
-        cbField4.AddItem Temp
-    Next Temp
+    For Each Control In FilterFrame.Controls
+        If TypeOf Control Is MsForms.ComboBox Then
+            For Each FieldName In Translator.eGWFields
+                Control.AddItem FieldName
+            Next FieldName
+            Control.AddItem ""
+        End If
+    Next Control
 End Sub
 
 '***********************************************************************************************
@@ -167,7 +170,7 @@ End Sub
 '***********************************************************************************************
 ' Makes it easy to get selected items from a listBox. Returns a collection of strings
 '***********************************************************************************************
-Public Function GetSelectedListItems(ByRef myList As MSForms.ListBox) As Collection
+Public Function GetSelectedListItems(ByRef myList As MsForms.ListBox) As Collection
     Dim i As Integer
     Set GetSelectedListItems = New Collection
 

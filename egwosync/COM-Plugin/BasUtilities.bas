@@ -29,9 +29,12 @@ Public Sub GetContacts()
         Dim colFields   As Collection
         Dim strTemp     As Variant
         
+        FrmMain.lblStatus.Caption = "Getting Contacts..."
+        
         'Clears the local and remote listbox, so that we dont get double contacts.
         FrmMain.listLocal.Clear
         FrmMain.listRemote.Clear
+        Set egwContacts.CursoryInfo = New Collection
         
         'Get Filter and search info
         query = FrmMain.txtSearch
@@ -39,24 +42,25 @@ Public Sub GetContacts()
         
         'Some Defaults
         INT_START = 1
-        INT_LIMIT = 50
+        INT_LIMIT = 25
         ORDER = "fn"
         SORT = "ASC"
         
+        xmlArray.AddString "fn"
+        For Each strTemp In colFields
+            If strTemp <> "" Then
+                xmlArray.AddString strTemp
+            End If
+        Next strTemp
+        
         '[ > Get the contacts from the eGW server.
         '[ When I tried to grab all the contacts from the server at once I got an Overflow
-        '[ XML Parse Error, so now I grab them 50 at a time.
+        '[ XML Parse Error, so now I grab them 100 at a time.
         Do
             '[ It's not sufficient to only add the parameters that need updating, they all need to be
             '[ re-added in a specific order
             xmlParms.AddInteger "start", INT_START
             xmlParms.AddInteger "limit", INT_LIMIT
-            xmlArray.AddString "fn"
-            For Each strTemp In colFields
-                If strTemp <> "" Then
-                    xmlArray.AddString strTemp
-                End If
-            Next strTemp
             xmlParms.AddArray "fields", xmlArray
             xmlParms.AddString "query", query
             xmlParms.AddString "order", ORDER
@@ -74,12 +78,12 @@ Public Sub GetContacts()
                 'Add each contact to the response collection
                 egwContacts.CursoryInfo.Add tempValue.StructValue
             Next tempValue
-            egwContacts.List FrmMain.listRemote
             
             'update our place in the remote list of contacts
             INT_START = INT_LIMIT + INT_START
         Loop While xmlResponse.Params(1).ArrayValue.Count = INT_LIMIT
-        
+        'load them into the listbox
+        egwContacts.List FrmMain.listRemote
         Debug.Print "Got all contacts from the server."
         
         'List the contacts from the local Outlook folders
@@ -88,6 +92,8 @@ Public Sub GetContacts()
         Set gnspNamespace = GetNamespace("MAPI")
         Set fldContacts = gnspNamespace.GetDefaultFolder(olFolderContacts)
         oContacts.List fldContacts
+        
+        FrmMain.lblStatus = "Idle"
     Else
         Master.Setup
     End If
@@ -112,6 +118,8 @@ Public Sub SynchronizeContacts()
         Dim xmlResponse         As New XMLRPCResponse
         Dim tempValue           As XMLRPCValue
         Dim oContacts           As New COutlookContacts
+        
+        FrmMain.lblStatus.Caption = "Synchronizing..."
         
         Set gnspNamespace = GetNamespace("MAPI")
         Set fldContacts = gnspNamespace.GetDefaultFolder(olFolderContacts)
@@ -191,6 +199,7 @@ Public Sub SynchronizeContacts()
             Next strListItem
         End If
         '[ < End synchronizing local contacts
+        FrmMain.lblStatus.Caption = "Idle"
     Else
         Master.Setup
     End If
