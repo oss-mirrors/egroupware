@@ -577,7 +577,8 @@
 		}
 		*/
 		// ------- Dynamically Discover User's Private Namespace ---------
-		elseif (isset($this->mailsvr_stream))
+		elseif (isset($this->mailsvr_stream)
+		&& ($this->mailsvr_stream != ''))
 		{
 			// existing "$this->mailsvr_stream" means we are logged in and can querey the server
 			$server_str = $this->get_mailsvr_callstr();
