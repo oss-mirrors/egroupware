@@ -43,8 +43,8 @@
 		*/
 		function ui_data()
 		{
-			$temp = $GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.page_info');
-			$temp2 = $GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.all_entries');
+			$temp = $GLOBALS['phpgw']->session->appsession('ui_data.page_info','contactcenter');
+			$temp2 = $GLOBALS['phpgw']->session->appsession('ui_data.all_entries','contactcenter');
 			
 			$this->bo = CreateObject('contactcenter.bo_contactcenter');
 			
@@ -1154,11 +1154,11 @@
 			 * Process Photo, if available 
 			 */
 			$sleep_count = 0;
-			$photo_ok = $GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.photo');
+			$photo_ok = $GLOBALS['phpgw']->session->appsession('ui_data.photo','contactcenter');
 			while($photo_ok[0]{0} !== 'o' and $photo_ok[1]{0} === 'y')
 			{
 				sleep(1);
-				$photo_ok = $GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.photo');
+				$photo_ok = $GLOBALS['phpgw']->session->appsession('ui_data.photo','contactcenter');
 				$sleep_count++;
 
 				if ($sleep_count > 35)
@@ -1167,7 +1167,7 @@
 					return;
 				}
 			}
-			$GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.photo', array('wait', 'n'));
+			$GLOBALS['phpgw']->session->appsession('ui_data.photo','contactcenter', array('wait', 'n'));
 			
 			if (isset($this->page_info['photos'][$id_photo]))
 			{
@@ -1387,7 +1387,7 @@
 		function post_photo($id)
 		{
 			//print_r($_FILES);
-			$GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.photo', array('wait', 'y'));
+			$GLOBALS['phpgw']->session->appsession('ui_data.photo','contactcenter', array('wait', 'y'));
 			
 			if (!is_array($_FILES) and is_array(!$_FILES['cc_pd_photo']))
 			{
@@ -1395,7 +1395,7 @@
 				$this->page_info['photos'][$id]['msg'] = lang('No Photos uploaded to Server.');
 				
 				$this->save_session();
-				$GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.photo', array('ok', 'y'));
+				$GLOBALS['phpgw']->session->appsession('ui_data.photo','contactcenter', array('ok', 'y'));
 				return;
 			}
 
@@ -1405,7 +1405,7 @@
 				$this->page_info['photos'][$id]['msg'] = lang('Cannot manipulate Image. No Image added. Please, if you want to use images, ask the Administrator to install GD library.');
 				
 				$this->save_session();
-				$GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.photo', array('ok', 'y'));
+				$GLOBALS['phpgw']->session->appsession('ui_data.photo','contactcenter', array('ok', 'y'));
 				return;
 			}
 
@@ -1416,7 +1416,7 @@
 				$this->page_info['photos'][$id]['msg'] = lang('Image too large! ContactCenter limits the image size to 1 Mb');
 
 				$this->save_session();
-				$GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.photo', array('ok', 'y'));
+				$GLOBALS['phpgw']->session->appsession('ui_data.photo','contactcenter', array('ok', 'y'));
 				return;
 			}
 
@@ -1426,7 +1426,7 @@
 				$this->page_info['photos'][$id]['msg'] = lang('Some Error occured while processed the Image. Contact the Administrator. The error code was: ').$_FILES['cc_pd_photo']['error'];
 
 				$this->save_session();
-				$GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.photo', array('ok', 'y'));
+				$GLOBALS['phpgw']->session->appsession('ui_data.photo','contactcenter', array('ok', 'y'));
 				return;
 			}
 			
@@ -1464,7 +1464,7 @@
 					$this->page_info['photos'][$id]['msg'] = lang('The file must be an JPEG, PNG or GIF Image.');
 
 					$this->save_session();
-					$GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.photo', array('ok', 'y'));
+					$GLOBALS['phpgw']->session->appsession('ui_data.photo','contactcenter', array('ok', 'y'));
 					return;
 			}
 
@@ -1474,7 +1474,7 @@
 					$this->page_info['photos'][$id]['msg'] = lang('Couldn\'t open Image. It may be corrupted or internal library doesn\'t support this format.');
 					
 					$this->save_session();
-					$GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.photo', array('ok', 'y'));
+					$GLOBALS['phpgw']->session->appsession('ui_data.photo','contactcenter', array('ok', 'y'));
 					return;
 			}
 			
@@ -1487,7 +1487,7 @@
 				$this->page_info['photos'][$id]['msg'] = lang('Couldn\'t open Image. It may be corrupted or internal library doesn\'t support this format.');
 				
 				$this->save_session();
-				$GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.photo', array('ok', 'y'));
+				$GLOBALS['phpgw']->session->appsession('ui_data.photo','contactcenter', array('ok', 'y'));
 				return;
 			}
 			
@@ -1501,7 +1501,7 @@
 
 			$this->save_session();
 		
-			$GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.photo', array('ok', 'y'));
+			$GLOBALS['phpgw']->session->appsession('ui_data.photo','contactcenter', array('ok', 'y'));
 
 			imagedestroy($src_img);
 			imagedestroy($dst_img);
@@ -1892,8 +1892,8 @@
 		*/
 		function save_session()
 		{
-			$GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.page_info',$this->page_info);
-			$GLOBALS['phpgw']->session->appsession('contactcenter','ui_data.all_entries',$this->all_entries);
+			$GLOBALS['phpgw']->session->appsession('ui_data.page_info','contactcenter',$this->page_info);
+			$GLOBALS['phpgw']->session->appsession('ui_data.all_entries','contactcenter',$this->all_entries);
 		}
 
 		/*!

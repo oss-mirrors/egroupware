@@ -33,8 +33,8 @@
 
 		function bo_contactcenter($catalog=false)
 		{
-			$this->tree = $GLOBALS['phpgw']->session->appsession('contactcenter','bo_contactcenter.tree');
-			$this->catalog_level = $GLOBALS['phpgw']->session->appsession('contactcenter','bo_contactcenter.catalog_level');
+			$this->tree = $GLOBALS['phpgw']->session->appsession('bo_contactcenter.tree','contactcenter');
+			$this->catalog_level = $GLOBALS['phpgw']->session->appsession('bo_contactcenter.catalog_level','contactcenter');
 			$this->security = CreateObject('contactcenter.bo_security_manager');
 			
 			if ($catalog)
@@ -237,7 +237,7 @@
 							return false;
 						}
 					}
-					$GLOBALS['phpgw']->session->appsession('contactcenter','bo_contactcenter.tree',$this->tree);
+					$GLOBALS['phpgw']->session->appsession('bo_contactcenter.tree','contactcenter',$this->tree);
 					
 					return $branch;
 				}
@@ -297,7 +297,7 @@
 				}
 			}
 			
-			$GLOBALS['phpgw']->session->appsession('contactcenter','bo_contactcenter.tree',$this->tree);
+			$GLOBALS['phpgw']->session->appsession('bo_contactcenter.tree','contactcenter',$this->tree);
 			return $this->tree['branches'];
 		}
 
@@ -479,7 +479,7 @@
 				case 'catalog_group':
 				case 'mixed_catalog_group':
 					$this->catalog_level = array($level);
-					$GLOBALS['phpgw']->session->appsession('contactcenter','bo_contactcenter.catalog_level', $this->catalog_level);
+					$GLOBALS['phpgw']->session->appsession('bo_contactcenter.catalog_level','contactcenter', $this->catalog_level);
 					$call = '$this->catalog = CreateObject('.'\'contactcenter.'.$catalog['class'].'\'';
 					if ($catalog['class_args'])
 					{

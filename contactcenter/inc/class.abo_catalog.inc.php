@@ -988,6 +988,37 @@
 				)));
 			}
 
+			/* Search for cities with the same data */
+			$what = array('city.id_city');
+			$rules = array(
+				0 => array(
+					'field' => 'city.city_name',
+					'type'  => 'iLIKE',
+					'value' => $city_info['city_name']
+				),
+				1 => array(
+					'field' => 'city.id_country',
+					'type'  => 'iLIKE',
+					'value' => $city_info['id_country']
+				)
+			);
+
+			if (isset($city_info['id_state']))
+			{
+				array_push($rules, array(
+					'field' => 'city.id_state',
+					'type'  => '=',
+					'value' => $city_info['id_state']
+				));
+			}
+
+			$result = $this->find($what, $rules);
+
+			if (is_array($result) and count($result))
+			{
+				return $result[0]['id_city'];
+			}
+
 			$city =& CreateObject('contactcenter.so_city');
 
 			$city->set_id_country($city_info['id_country']);

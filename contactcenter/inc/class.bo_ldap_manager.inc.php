@@ -25,7 +25,7 @@
 		
 		function bo_ldap_manager ()
 		{
-			if (!($this->srcs = $GLOBALS['phpgw']->session->appsession('contactcenter','bo_ldap_manager.srcs')))
+			if (!($this->srcs = $GLOBALS['phpgw']->session->appsession('bo_ldap_manager.srcs','contactcenter')))
 			{
 				$c = CreateObject('phpgwapi.config','contactcenter');
 				$data = $c->read_repository();
