@@ -3,12 +3,12 @@
   <center>
 	<table border="0" width="95%">
 		<tr>
-			<td valign="top" width="150"> <table border="0"
-				width="100%">
+			<td valign="top" width="150"> 
+				<table border="0" width="100%">
 					<tr bgcolor="{th_bg}">
-						<td colspan="4">&nbsp;</td>
+						<td colspan="1">&nbsp;</td>
 					</tr>
-{rows}
+					{rows}
 				</table>
 			</td>
 			<td>
@@ -57,6 +57,6 @@
 
 <!-- BEGIN link_row -->
 					<tr bgcolor="{tr_color}">
-						<td colspan="2">&nbsp;&nbsp;<a href="{pref_link}">{pref_text}</a></td>
+						<td colspan="2">&nbsp;&nbsp;<a href="{row_link}">{row_text}</a></td>
 					</tr>
 <!-- END link_row -->

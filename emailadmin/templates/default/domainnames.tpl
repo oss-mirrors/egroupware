@@ -128,4 +128,9 @@
 		<a href="{activation_link}">{lang_activate}</a>
 	</td>
 </tr>
+<tr>
+	<td>
+		&nbsp;
+	</td>
+</tr>
 <!-- END activation_row -->
