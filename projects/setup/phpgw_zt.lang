@@ -1,5 +1,8 @@
 % to	projects	zt	% 到
 + jobs	projects	zt	+ 工作
+a new project has been created	projects	zt	一個新專案建立於：
+a project has been deleted	projects	zt	一個專案被刪除於：
+a project has been updated	projects	zt	一個專案被更新於：
 account	projects	zt	帳號
 accounting	common	zt	會計
 accounting factor	projects	zt	會計要素
@@ -89,6 +92,7 @@ date due planned	projects	zt	已規劃日期
 days	projects	zt	日
 days before	projects	zt	日之前
 definition per project	admin	zt	每個專案的定義
+delete	admin	zt	刪除
 delete activity	projects	zt	刪除活動
 delete factor	projects	zt	刪除要素
 delete hours	projects	zt	移除時數
@@ -217,16 +221,25 @@ month	projects	zt	月
 move start date if pervious projects end date changes	admin	zt	如果上一個專案的結束日期改變就同時修改這個專案的開始日期
 name not exceed 250 characters in length	projects	zt	名稱不能夠超過250字元
 net	projects	zt	淨
+new	admin	zt	新增
 new date due of milestone %1: %2	projects	zt	預訂 %1 階段的日期：%2。
 new end date	projects	zt	新的結束日期
 new milestone	projects	zt	新的階段
 new project	projects	zt	新增專案
+new project created	projects	zt	新專案建立於：
 new start date	projects	zt	新的開始日期
 nonactive	common	zt	停用
 not billable	projects	zt	未付款
+notification settings	admin	zt	提醒設定
+notify management committee	admin	zt	通知管理群
+notify project administrators	admin	zt	通知專案管理員
+notify sales department	admin	zt	通知業務部門
 number	projects	zt	編號
 old end date	projects	zt	舊的結束日期
 old start date	projects	zt	舊的開始日期
+onadd	admin	zt	新增時
+ondelete	admin	zt	刪除時
+onstatuschange	admin	zt	異動時
 open	projects	zt	開放
 open popup	projects	zt	開啟彈出式視窗
 open popup window	projects	zt	開啟彈出式視窗
@@ -273,11 +286,12 @@ project %1 has been saved	projects	zt	專案%1已經儲存了。
 project %1 has been updated	projects	zt	專案%1已經更新了。
 project accounting	admin	zt	專案會計帳
 project administration	projects	zt	專案管理
-project administrators	projects	zt	專案管理者
+project administrators	common	zt	專案管理者
 project archive	projects	zt	專案封存
 project billing	projects	zt	專案計費
 project data due	projects	zt	專案預定時程
 project date due	projects	zt	專案預定時程
+project deleted	projects	zt	專案刪除了
 project delivery	projects	zt	專案運送
 project dependencies	common	zt	專案附加說明
 project id	common	zt	專案代碼
@@ -287,6 +301,7 @@ project overview	projects	zt	專案概要
 project preferences	projects	zt	專案喜好設定
 project statistic	projects	zt	專案統計
 project statistics	projects	zt	專案統計
+project updated	projects	zt	專案更新了
 project url	projects	zt	專案網址
 projects	common	zt	專案管理
 projects, which are assigned as sequencing	projects	zt	專案，依序被指定
@@ -329,6 +344,7 @@ start date can not be before parent projects start date	projects	zt	開始日期
 start date planned	projects	zt	預定開始日期
 statistic	projects	zt	統計
 statistics	projects	zt	統計
+status change	admin	zt	狀態異動
 stop	projects	zt	結束
 sub project level %1	projects	zt	附屬專案層級 %1
 subproject	projects	zt	子專案
