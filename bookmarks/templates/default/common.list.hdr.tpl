@@ -7,8 +7,8 @@
 <table width="100%" border="0" cellspacing="1">
  <tr>
   <td colspan="3" align="right">
-   {lang_massupdate}:
-   <input type="image" name="delete" border="0" src="{img_root}/delete.gif">
-   <input type="image" name="mail" border="0" src="{img_root}/mail.gif">
+   {lang_massupdate}
+   {massupdate_delete_icon}
+   {massupdate_mail_icon}
   </td>
  </tr>

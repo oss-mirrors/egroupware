@@ -105,7 +105,7 @@
      global $phpgw, $phpgw_info;
      $db = $phpgw->db;
 
-     $query = sprintf("select id, name from %s where username='%s' order by name", $table,
+/*     $query = sprintf("select id, name from %s where username='%s' order by name", $table,
                       $phpgw_info["user"]["account_id"]);
      $db->query($query,__LINE__,__FILE__);
      while ($db->next_record()) {
@@ -115,7 +115,7 @@
         }        
         $s .= '>' . $phpgw->strip_html($db->f("name")) . '</option>';
         $s .= "\n";
-     }
+     } */
      return $s;
   }
 

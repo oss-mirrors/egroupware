@@ -17,6 +17,6 @@
 
  <tr valign="top">
   <td>
-   {BOOKMARK_DESC} {KEYWORDS}
+   {BOOKMARK_DESC} {KEYWORDS} &nbsp;
   </td>
  </tr>

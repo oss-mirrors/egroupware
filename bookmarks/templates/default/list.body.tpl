@@ -2,6 +2,7 @@
 <table width="100%" cellspacing="0">
  <tr>
   <td align="left">
+<!--
    {lang_filter_by}
    <form action="{filter_action}" method="POST">
     <select name="filter_type">
@@ -17,7 +18,7 @@
      <option value="desc">{lang_desc}</option>
     </select>
     <input type="submit" value="{lang_filter}">
-   </form>
+   </form> --> &nbsp;
   </td>
 
   <td align="right">
