@@ -37,5 +37,5 @@
   add_template_row($phpgw->template,lang("Enter poll question"),'<input name="question">');
 
   $phpgw->template->pparse("out","form");
-
+  $phpgw->common->phpgw_footer();
 ?>

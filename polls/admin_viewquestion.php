@@ -44,5 +44,5 @@
   }
 
   $phpgw->template->pparse("out","form");
-
+  $phpgw->common->phpgw_footer();
 ?>

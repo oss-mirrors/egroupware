@@ -15,4 +15,5 @@
   include("../header.inc.php");
   
   display_poll();
+  $phpgw->common->phpgw_footer();
 ?>

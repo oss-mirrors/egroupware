@@ -40,4 +40,5 @@
   add_template_row($phpgw->template,lang("Poll question"),'<input name="question" value="' . $phpgw->db->f("poll_title") . '">');
 
   $phpgw->template->pparse("out","form");
+  $phpgw->common->phpgw_footer();
 ?>

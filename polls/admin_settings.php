@@ -45,4 +45,5 @@
   
   echo '<tr><td colspan="2"><input type="submit" name="submit" value="' . lang("Submit") . '"></td></tr>';
   echo '</table></form>';
+  $phpgw->common->phpgw_footer();
 ?>

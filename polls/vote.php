@@ -36,4 +36,5 @@
   if ($show_results) {
      poll_viewResults($show_results);
   }
+  $phpgw->common->phpgw_footer();
 ?>

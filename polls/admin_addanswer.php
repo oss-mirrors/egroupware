@@ -47,4 +47,5 @@
   add_template_row($phpgw->template,lang("Answer"),'<input name="answer">');
 
   $phpgw->template->pparse("out","form");
+  $phpgw->common->phpgw_footer();
 ?>

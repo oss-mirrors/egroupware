@@ -74,4 +74,5 @@
   $phpgw->template->set_var("lang_add",lang("add"));
 
   $phpgw->template->pparse("out","form");
+  $phpgw->common->phpgw_footer();
 ?>

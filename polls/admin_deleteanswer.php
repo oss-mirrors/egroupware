@@ -24,4 +24,5 @@
      echo '    <td align="right"><a href="' . $phpgw->link("admin_deleteanswer.php","vote_id=$vote_id&confirm=True") . '">' . lang("Yes") . '</td></tr>';
      echo '</table>';
   }
+  $phpgw->common->phpgw_footer();
 ?>
