@@ -236,7 +236,7 @@
                      "<img border=0 src=\"images/save.gif\" " .
                      "alt=\"" . lang_ftp("save") . " $file\">");
                   $del_link=macro_get_Link("delete",
-                     "<img border=0 src=\"images//ftp/trash.gif\" " . 
+                     "<img border=0 src=\"images/trash.gif\" " . 
                      "alt=\"" . lang_ftp("delete") . " $file\">");
                   $rename_link=macro_get_Link("rename",
                      "<img border=0 src=\"images/rename.gif\" " .
