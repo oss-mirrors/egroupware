@@ -101,7 +101,7 @@ if(!validate_page($page))
 
 // Don't let people do too many things too quickly.
 if($ActionList[$action][2] != '')
-  { rateCheck($pagestore->dbh, $ActionList[$action][2]); }
+  { $pagestore->rateCheck($ActionList[$action][2],$REMOTE_ADDR); }
 
 // Dispatch the appropriate action.
 if(!empty($ActionList[$action]))

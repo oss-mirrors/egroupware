@@ -127,7 +127,8 @@ function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appeara
   if($hover != '')
     { $hover = ' title="' . $hover . '"'; }
 
-  $p = new WikiPage($db, $page);
+  global $pagestore;
+  $p = $pagestore->page($page);
 
   if($p->exists())
   {

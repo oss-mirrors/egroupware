@@ -111,7 +111,7 @@ else if($blocking)                      // Blocking/unblocking IP addrs.
     }
 
     $html = $html . html_rate_start();
-    $blocklist = rateBlockList($pagestore->dbh);
+    $blocklist = $pagestore->rateBlockList();
     foreach($blocklist as $block)
       { $html = $html . html_rate_entry($block); }
     $html = $html . html_rate_end();
@@ -121,9 +121,9 @@ else if($blocking)                      // Blocking/unblocking IP addrs.
   else                                  // Block/unblock an address group.
   {
     if(!empty($Block))
-      { rateBlockAdd($pagestore->dbh, $address); }
+      { $pagestore->rateBlockAdd($address); }
     else if(!empty($Unblock))
-      { rateBlockRemove($pagestore->dbh, $address); }
+      { $pagestore->rateBlockRemove($address); }
 
     header('Location: ' . $AdminScript);
   }

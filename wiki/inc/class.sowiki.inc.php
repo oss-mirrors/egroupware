@@ -208,7 +208,7 @@ class sowiki	// DB-Layer
 		$list = array();
 		while($this->db->next_record())
 		{
-			$list[] = array($this->db->Record);	// that allows num. indexes as well as strings
+			$list[] = $this->db->Record;	// that allows num. indexes as well as strings
 		}
 		return $list;
 	}

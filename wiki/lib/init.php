@@ -7,6 +7,7 @@ require('lib/defaults.php');
 require('config.php');
 require('lib/url.php');
 require('lib/messages.php');
+/*
 require('lib/pagestore.php');
 require('lib/rate.php');
 
@@ -17,10 +18,12 @@ $LkTbl = $DBTablePrefix . 'links';
 $RtTbl = $DBTablePrefix . 'rate';
 $RemTbl = $DBTablePrefix . 'remote_pages';
 
-$FlgChr = chr(255);                     // Flag character for parse engine.
-
 $pagestore = new PageStore();
 $db = $pagestore->dbh;
+*/
+$pagestore = CreateObject('wiki.sowiki');
+
+$FlgChr = chr(255);                     // Flag character for parse engine.
 
 $Entity = array();                      // Global parser entity list.
 

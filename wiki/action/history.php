@@ -17,6 +17,7 @@ function action_history()
 
   gen_headers($history[0][0]);
 
+
   $text = '';
   $latest_auth = '';
   $previous_ver = 0;
@@ -41,7 +42,7 @@ function action_history()
       $text = $text . html_history_entry($page, $history[$i][2],
                                          $history[$i][0], $history[$i][1],
                                          $history[$i][3],
-                                         $previous_ver == $history[$i][2],
+                                         $previous_ver == $history[$i][2] || !$full && $i == count($history)-1,
                                          $is_latest, $history[$i][4]);
     }
 
