@@ -21,7 +21,8 @@ Billing	projects	de	Abrechnung
 Bookable activities	projects	de	Buchbare Aktivit&auml;ten
 bookkeeper	projects	de	Buchhalter
 Billable activities	projects	de	Abrechenbare Aktivit&auml;ten
-Bill per workunit	projects	de	Preis der Arbeitseinheit
+bill per hour	projects	de	Preis pro Stunde	
+Bill per workunit	projects	de	Preis pro Arbeitseinheit
 Budget	projects	de	Budget
 Calculate	projects	de	Berechnen
 closed	projects	de	Abgeschlossen
@@ -58,6 +59,7 @@ Invoice list	projects	de	Rechnungs Liste
 Invoices	projects	de	Rechnungen
 Invoice x has been created !	projects	de	Rechnung %1 wurde erstellt !
 Invoice x has been updated !	projects	de	Rechnung %1 wurde &uuml;berarbeitet !
+invoicing	projects	de	in Rechnung stellen
 Job	projects	de	Job
 job archive	projects	de	Job Archiv
 Job date	projects	de	Job Datum
@@ -74,11 +76,11 @@ New project	projects	de	Neues Projekt
 Nonactive	projects	de	Nicht aktiv
 Number	projects	de	Nummer
 open	projects	de	Offen
-Overall	projects	de	Gesamt
-per	projects	de	pro
+Overall	projects	de	Gesammt
+per	hour	projects	de	pro Stunde
 per workunit	projects	de	pro Arbeitseinheit
 Please enter an ID !	projects	de	Bitte geben Sie eine ID ein !
-Please choose activities for that project first !	projects	de	Bitte w&auml;hlen Sie erst Aktivit&auml;ten f&uuml;r das Projekt !
+Please choose activities for that project first !	projects	de	Bitte wählen Sie erst Aktiviäten für das Projekt !
 Please enter a remark !	projects	de	Bitte geben Sie einen Betreff ein !
 Please enter the bill per workunit !	projects	de	Bitte geben Sie den Preis pro Arbeitseinheit ein !
 Please enter the minutes per workunit !	projects	de	Bitte geben Sie die Minuten pro Arbeitseinheit ein !
@@ -99,17 +101,19 @@ Project statistic	projects	de	Projekt Statistik
 project statistics	projects	de	Projekt Statistiken
 Remark	projects	de	Betreff
 Remark required	projects	de	Betreff notwendig
-select	projects	de	Ausw&auml;hlen
+select	projects	de	Auswählen
 Select main project	projects	de	Hauptprojekt auswählen
-Select per button !	projects	de	Ausw&auml;hlen per Button !
-Select project	projects	de	Projekt ausw&auml;hlen
-Select tax for workhours	projects	de	Mehrwertsteuer f&uuml;r Arbeitsstunden
-Select users	projects	de	Benutzer ausw&auml;hlen
-Select groups	projects	de	Gruppen ausw&auml;hlen
+Select per button !	projects	de	Auswählen per Button !
+Select project	projects	de	Projekt auswählen
+Select tax for workhours	projects	de	Mehrwertsteuer für Arbeitsstunden
+Select users	projects	de	Benutzer auswählen
+Select groups	projects	de	Gruppen auswählen
 Select your address	projects	de	Eigene Adresse ausw&auml;hlen
 Statistic	projects	de	Statistik
 Statistics	projects	de	Statistiken
 Short description	projects	de	Kurzbeschreibung
+Sorry, no preferences to set for you :)	projects	de	Sorry, keine Einstellungen für Sie zu tätigen :)
+sum net	projects	de	Summe netto
 Sum	projects	de	Summe
 Sum workunits	projects	de	Summe Arbeitseinheiten
 tax	projects	de	Mwst.
