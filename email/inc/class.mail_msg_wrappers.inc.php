@@ -185,15 +185,17 @@ class mail_msg_wrappers extends mail_msg_base
 		class is currently logged into, you may want to apply PHP function "number_format()" to
 		the integers after you have done any math code and befor eyou display them to the user, it adds the thousands comma
 	*/
-	function get_folder_status_info()
+	function get_folder_status_info($force_refresh=False)
 	{
-		//$debug_folder_status_info = True;
-		$debug_folder_status_info = False;
+		$debug_folder_status_info = True;
+		//$debug_folder_status_info = False;
 
 		if ($debug_folder_status_info) { echo 'class_msg: append: get_folder_status_info: ENTERING<br>'; }
 
-		// do we have cached data in L1 cache / class object var
-		if (($this->folder_status_info)
+		/*
+		// do we have cached data in L1 cache / class object var, that we can use
+		if ((!$force_refresh)
+		&& ($this->folder_status_info)
 		&& (count($this->folder_status_info) > 0)
 		&& ($this->folder_status_info['folder_checked'] == $this->folder))
 		{
@@ -201,6 +203,7 @@ class mail_msg_wrappers extends mail_msg_base
 			if ($debug_folder_status_info) { echo 'class_msg: append: get_folder_status_info: LEAVING returning L1/class var cached data<br>'; }
 			return $this->folder_status_info;
 		}
+		*/
 		
 		// initialize return structure
 		$return_data = Array();
@@ -284,7 +287,7 @@ class mail_msg_wrappers extends mail_msg_base
 		return $this->dcom->renamemailbox($this->mailsvr_stream, $folder_old, $folder_new);
 	}
 
-	function phpgw_append($folder = "Sent", $message, $flags = "")
+	function phpgw_append($folder = "Sent", $message, $flags=0)
 	{
 		//$debug_append = True;
 		$debug_append = False;
@@ -343,7 +346,7 @@ class mail_msg_wrappers extends mail_msg_base
 		}
 	}
 
-	function phpgw_mail_move($msg_list,$mailbox,$flags)
+	function phpgw_mail_move($msg_list,$mailbox,$flags=0)
 	{
 		return $this->dcom->mail_move($this->mailsvr_stream,$msg_list,$mailbox,$flags);
 	}
@@ -354,7 +357,7 @@ class mail_msg_wrappers extends mail_msg_base
 	}
 
 
-	function phpgw_delete($msg_num,$flags, $currentfolder="") 
+	function phpgw_delete($msg_num,$flags=0, $currentfolder="") 
 	{
 		//$this->dcom->delete($this->mailsvr_stream, $this->args['msglist'][$i],"",$this->folder);
 
