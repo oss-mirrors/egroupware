@@ -1,3 +1,4 @@
+actions	polls	fr	actions
 add answer to poll	polls	fr	Ajouter une réponse au sondage
 add answers	polls	fr	Ajouter des réponses
 add new poll question	polls	fr	Ajouter une nouvelle question au sondage
@@ -6,24 +7,27 @@ allow users to vote more then once	polls	fr	Ajouter les utilisateurs qui votent 
 answer	polls	fr	Réponse
 answer has been added to poll	polls	fr	La réponse a été ajoutée au sondage
 answer has been updated	polls	fr	La réponse a été mise à jour dans le sondage
-Answers	polls	fr	Réponses
+answers	polls	fr	Réponses
 are you sure want to delete this answer ?	polls	fr	Etes-vous sûr de vouloir effacer cette réponse ?
 are you sure want to delete this question ?	polls	fr	Etes-vous sûr de vouloir effacer cette question ?
+current poll	polls	fr	Sondage en cours
 edit answer	polls	fr	Modifier la réponse
 edit poll question	polls	fr	Modifier la question du sondage
 enter poll question	polls	fr	Entrer la question du sondage
 new poll has been added.  you should now add some answers for this poll	polls	fr	Le nouveau sondage a été ajouté. Vous devriez maintenant ajouter des réponses pour ce sondage
 poll question	polls	fr	Question du sondage
-poll settings	polls	fr	Réglages Sondages
+poll settings	common	fr	Réglages Sondages
 polls	common	fr	Sondages
 question has been updated	polls	fr	La question a été mise à jour
-select current poll	polls	fr	Choisissez le sondage courant
+select current poll	polls	fr	Choisissez le sondage en cours
+settings	polls	fr	Paramètres
 settings updated	polls	fr	Réglages mis à jour
 show answers	polls	fr	Montrer les réponses
-show questions	polls	fr	Montrer les questions
+show questions	common	fr	Montrer les questions
 total votes	polls	fr	Votes totaux
-View poll	polls	fr	Voir le sondage
+view poll	polls	fr	Voir le sondage
+view results	polls	fr	Voir Résultats
 vote	polls	fr	Vote
-voting booth admin	admin	fr	Admin de baraque de vote
-voting booth administration	polls	fr	Administration de baraque de vote
+voting booth admin	admin	fr	Urne
+voting booth administration	polls	fr	Administration de l'urne
 which poll	polls	fr	Quel sondage
