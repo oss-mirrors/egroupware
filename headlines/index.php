@@ -56,7 +56,11 @@
 
 	$j = 0;
 	$i = count($sites);
-	while (list(,$site) = each($sites))
+	if(!$i)
+	{
+		echo '<center>' . lang('please set your preferences for this application') . '.</center>';
+	}
+	while (list(,$site) = @each($sites))
 	{
 		$j++;
 		$headlines->readtable($site);
