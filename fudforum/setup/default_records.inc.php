@@ -104,12 +104,12 @@
 	$oProc->query("INSERT INTO phpgw_fud_stats_cache VALUES(0,0,0,0,0,'',0)");
 	$oProc->query("INSERT INTO phpgw_fud_users (egw_id, login, alias, time_zone, theme, email, passwd, name, users_opt) VALUES(-1, 'Anonymous Coward', 'Anonymous Coward', 'America/Montreal', 1, 'dev@null', '1', 'Anonymous Coward', 1|4|16|32|128|256|512|2048|4096|8192|16384|262144|2097152|4194304)");
 
-	if ($GLOBALS['phpgw_domain'][$GLOBALS['phpgw_setup']->ConfigDomain]['db_type'] == 'mysql') {
+	if ($GLOBALS['egw_domain'][$GLOBALS['egw_setup']->ConfigDomain]['db_type'] == 'mysql') {
 		$oProc->query("ALTER TABLE phpgw_fud_thread_view CHANGE pos pos INT NOT NULL AUTO_INCREMENT");
 	}
 
 	$path = realpath(dirname(realpath(__FILE__)) . '/../');
-	$dom_key = sprintf("%u", crc32($GLOBALS['phpgw_setup']->ConfigDomain));
+	$dom_key = sprintf("%u", crc32($GLOBALS['egw_setup']->ConfigDomain));
 
 	if (!is_dir($path . "/" . $dom_key) && !mkdir($path . "/" . $dom_key, 0755)) {
 		echo "<font color='red'>ERROR: Failed to create {$path}/{$dom_key}, please create this directory manually and chmod it 777</font>";
