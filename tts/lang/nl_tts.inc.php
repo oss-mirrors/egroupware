@@ -11,6 +11,7 @@
        case "prio":			$s = "Prio";		break;
        case "group":			$s = "Groep";		break;
        case "assigned to":		$s = "Toegewezen aan";	break;
+       case "assign to":		$s = "Toewijzen aan";	break;
        case "opened by":		$s = "Aangenomen door";	break;
        case "date opened":		$s = "Aanmaak datum";	break;
        case "subject":			$s = "Onderwerp";		break;
@@ -21,16 +22,16 @@
        case "status/date closed":	$s = "Status/Datum gesloten";	break;
        case "add new ticket":		$s = "Voeg nieuwe melding toe";	break;
        case "detail":			$s = "Detail";		break;
-       case "priority":			$s = "Prioritiet";	break;
+       case "priority":			$s = "Prioriteit";	break;
        case "add ticket":		$s = "Voeg melding toe";	break;
        case "clear form":		$s = "Formulier wissen";	break;
        case "no subject":		$s = "Geen onderwerp";	break;
        case "view job detail":		$s = "Details werkzaamheden weergeven";	break;
-       case "assigned from":		$s = "Assigned from";	break;
+       case "assigned from":		$s = "Toegewezen door";	break;
        case "open date":		$s = "Datum opening";	break;
        case "close date":		$s = "Datum sluiting";	break;
        case "details":			$s = "Details";		break;
-       case "additional notes":		$s = "Overige notities";	break;
+       case "additional notes":		$s = "Opmerkingen";	break;
        case "ok":			$s = "OK";		break;
        case "update":			$s = "Bijwerken";		break;
        case "close":			$s = "Sluiten";		break;

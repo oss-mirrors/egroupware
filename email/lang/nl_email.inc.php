@@ -14,7 +14,7 @@
        case "next":			$s = "Volgende";		break;
        case "from":			$s = "Van";		break;
        case "to":			$s = "Aan";			break;
-       case "cc":			$s = "CC";			break;
+       case "cc":			$s = "Kopie naar";			break;
        case "files":		$s = "Bestanden";		break;
        case "date":			$s = "Datum";		break;
        case "send":			$s = "Verzenden";		break;
@@ -24,7 +24,7 @@
        case "section":		$s = "Sectie";		break;
        case "image":		$s = "Afbeelding";		break;
        case "no subject":	$s = "Geen onderwerp";	break;
-       case "compose":		$s = "Opstellen";		break;
+       case "compose":		$s = "Bericht maken";		break;
        case "message":		$s = "Bericht";		break;
        case "messages":		$s = "Berichten";	break;
        case "new message":	$s = "Nieuw bericht";	break;

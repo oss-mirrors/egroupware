@@ -6,10 +6,10 @@
 
     switch($message)
     {
-       case "relogin": $s = "logouitloggen/opnieuw inloggen"; break;
+       case "relogin": $s = "afmelden/opnieuw aanmelden"; break;
        case "cd": $s = "cd"; break;
        case "delete": $s = "verwijder $m1"; break;
-       case "deleted": $s = "$m1 met succes verijder"; break;
+       case "deleted": $s = "$m1 met succes verwijderd"; break;
        case "failed to delete": $s = "Verwijderen van $m1 is mislukt"; break;
        case "view": $s = "weergeven"; break;
        case "save": $s = "opslaan"; break;
@@ -26,13 +26,13 @@
        case "password": $s="Wachtwoord"; break;
        case "ftpserver": $s="Ftp Server"; break;
        case "connect": $s="Verbinden"; break;
-       case "bad connection": $s="Verbinden met $m1 als gebruiker $m2 met wachtwoord $m3 is mislukt"; break;
+       case "bad connection": $s="Verbinden met server $m1 als gebruiker $m2 met wachtwoord $m3 is mislukt"; break;
        case "cancel": $s="annuleren"; break;
        case "rename": $s="$m1 hernoemen"; break;
        case "renamed": $s="$m1 hernoemd als $m2"; break;
        case "created directory": $s="$m1 met succes gemaakt"; break;
        case "failed to rename": $s="Hernoemen van $m1 als $m2 is mislukt"; break;
-       case "rename from": $s="Hernoem van"; break;
+       case "rename from": $s="Hernoem"; break;
        case "rename to": $s="als"; break;
        case "confirm delete": $s="Wilt u $m1 echt verwijderen?"; break;
 
