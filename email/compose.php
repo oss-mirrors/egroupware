@@ -13,9 +13,9 @@
 
   /* $Id$ */
 
-  if ($newsmode == "on"){$phpgw_flags["newsmode"] = True;}
+  if ($newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
 
-  $phpgw_flags["currentapp"] = "email";
+  $phpgw_info["flags"]["currentapp"] = "email";
   include("../header.inc.php");
 
   if ($msgnum) {
