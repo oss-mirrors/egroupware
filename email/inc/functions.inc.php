@@ -324,7 +324,7 @@
 
   if (!$inprefs) $mailbox = $phpgw->msg->login($folder); // Changed this to not try connection in prefs
 
-  if (!$mailbox && !$attop) {
+  if (!$mailbox && !($attop || $inprefs)) {
      echo "<p><center><b>" . lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
         . "</b></center>";
      $phpgw->common->phpgw_exit(True);
