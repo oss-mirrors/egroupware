@@ -14,32 +14,58 @@
 	$phpgw_baseline = array(
 		'phpgw_tts_tickets' => array(
 			'fd' => array(
-				'ticket_id'             => array('type' => 'auto', 'nullable' => False),
-				'ticket_group'          => array('type' => 'varchar', 'precision' => 40, 'nullable' => True),
-				'ticket_priority'       => array('type' => 'int', 'precision' => 2, 'nullable' => False),
-				'ticket_owner'          => array('type' => 'varchar', 'precision' => 10, 'nullable' => True),
-				'ticket_assignedto'     => array('type' => 'varchar', 'precision' => 10, 'nullable' => True),
-				'ticket_subject'        => array('type' => 'varchar', 'precision' => 255, 'nullable' => True),
-				'ticket_category'       => array('type' => 'varchar', 'precision' => 25, 'nullable' => True),
-				'ticket_billable_hours' => array('type' => 'decimal', 'precision' => 8, 'scale' => 2, 'nullable' => False),
-				'ticket_billable_rate'  => array('type' => 'decimal', 'precision' => 8, 'scale' => 2, 'nullable' => False),
-				'ticket_status'         => array('type' => 'char','precision' => 1, 'nullable' => False),
-				'ticket_details'        => array('type' => 'text','nullable' => False)
+				'ticket_id' 					=> array('type' => 'auto','nullable' => False),
+				'ticket_group' 				=> array('type' => 'varchar','precision' => '40'),
+				'ticket_priority' 			=> array('type' => 'int','precision' => '2','nullable' => False),
+				'ticket_owner' 				=> array('type' => 'varchar','precision' => '10'),
+				'ticket_assignedto' 			=> array('type' => 'varchar','precision' => '10'),
+				'ticket_subject' 				=> array('type' => 'varchar','precision' => '255'),
+				'ticket_category' 			=> array('type' => 'varchar','precision' => '25'),
+				'ticket_billable_hours' 	=> array('type' => 'decimal','precision' => '8','scale' => '2','nullable' => False),
+				'ticket_billable_rate' 		=> array('type' => 'decimal','precision' => '8','scale' => '2','nullable' => False),
+				'ticket_status' 				=> array('type' => 'char','precision' => '1','nullable' => False),
+				'ticket_details' 				=> array('type' => 'text','nullable' => False),
+				'ticket_state' 				=> array('type' => 'int','precision' => '4','nullable' => False, 'default'=>'-1')
 			),
 			'pk' => array('ticket_id'),
-			'ix' => array(),
 			'fk' => array(),
+			'ix' => array(),
 			'uc' => array()
 		),
 		'phpgw_tts_views' => array(
 			'fd' => array(
-				'view_id'             => array('type' => 'int', 'precision' => 4, 'nullable' => False),
-				'view_account_id'     => array('type' => 'varchar', 'precision' => 40, 'nullable' => True),
-				'view_time'           => array('type' => 'int', 'precision' => 4, 'nullable' => False)
+				'view_id' 					=> array('type' => 'int','precision' => '4','nullable' => False),
+				'view_account_id' 		=> array('type' => 'varchar','precision' => '40','nullable' => True),
+				'view_time' 				=> array('type' => 'int','precision' => '4','nullable' => False)
 			),
 			'pk' => array(),
 			'ix' => array(),
 			'fk' => array(),
+			'uc' => array()
+		),
+		'phpgw_tts_states' => array(
+			'fd' => array(
+				'state_id' 					=> array('type' => 'auto','nullable' => False),
+				'state_name' 				=> array('type' => 'text','nullable' => False),
+				'state_description' 		=> array('type' => 'text','nullable' => False),
+				'state_initial' 			=> array('type' => 'int', 'precision'=>'4', 'nullable' => False, 'default'=>'0')
+			),
+			'pk' => array('state_id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		),
+		'phpgw_tts_transitions' => array(
+			'fd' => array(
+				'transition_id' 				=> array('type' => 'auto','nullable' => False),
+				'transition_name' 			=> array('type' => 'text','precision' => '20','nullable' => False),
+				'transition_description' 	=> array('type' => 'text','nullable' => False),
+				'transition_source_state' 	=> array('type' => 'int','precision' => '4','nullable' => False),
+				'transition_target_state' 	=> array('type' => 'int','precision' => '4','nullable' => False)
+			),
+			'pk' => array('transition_id'),
+			'fk' => array(),
+			'ix' => array(),
 			'uc' => array()
 		)
 	);

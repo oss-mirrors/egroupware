@@ -36,7 +36,9 @@
 		$menu_title = lang('Administration');
 		$file = Array(
 			'Admin options'     => $GLOBALS['phpgw']->link('/tts/admin.php'),
-			'Global Categories' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uicategories.index&appname=tts')
+			'Global Categories' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uicategories.index&appname=tts'),
+			'Configure the states'     	=> $GLOBALS['phpgw']->link('/tts/states.php'),
+			'Configure the transitions'   => $GLOBALS['phpgw']->link('/tts/transitions.php')
 		);
 		display_sidebox($appname,$menu_title,$file);
 	}

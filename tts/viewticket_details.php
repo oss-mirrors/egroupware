@@ -9,19 +9,20 @@
 	*  option) any later version.                                              *
 	\**************************************************************************/
 
-	// $Id$
+ 	// $Id$
 	// $Source$
+
 
 	$GLOBALS['phpgw_info']['flags'] = array(
 		'enable_nextmatchs_class' => True,
 		'enable_categories_class' => True,
-		'enable_config_class'     => True,
-		'currentapp'              => 'tts',
-		'noheader'                => True,
-		'nonavbar'                => True,
-		'enable_config_class'     => !$_POST['submit'] && !$_POST['cancel']
+ 		'enable_config_class'     => True,
+ 		'currentapp'              => 'tts',
+ 		'noheader'                => True,
+ 		'nonavbar'                => True,
+ 		'enable_config_class'     => !$_POST['submit'] && !$_POST['cancel']
 	);
-
+	
 	include('../header.inc.php');
 
 	if($_POST['cancel'])
@@ -29,11 +30,11 @@
 		$GLOBALS['phpgw']->redirect_link('/tts/index.php');
 	}
 	$ticket_id = intval(get_var('ticket_id',array('POST','GET')));
-
+	
 	$GLOBALS['phpgw']->config->read_repository();
 
 	$GLOBALS['phpgw']->historylog = createobject('phpgwapi.historylog','tts');
-
+	
 	$GLOBALS['phpgw']->historylog->types = array(
 		'R' => 'Re-opened',
 		'X' => 'Closed',
@@ -44,7 +45,8 @@
 		'S' => 'Subject changed',
 		'B' => 'Billing rate',
 		'H' => 'Billing hours',
-		'G' => 'Group ownership changed'
+		'G' => 'Group ownership changed',
+		'N' => 'State changed'
 	);
 
 	if(!$_POST['save'] && !$_POST['apply'])
@@ -77,6 +79,7 @@
 		$ticket['priority']       = $GLOBALS['phpgw']->db->f('ticket_priority');
 		$ticket['owner']          = $GLOBALS['phpgw']->db->f('ticket_owner');
 		$ticket['group']          = $GLOBALS['phpgw']->db->f('ticket_group');
+		$ticket['state']          = $GLOBALS['phpgw']->db->f('ticket_state');
 
 		$GLOBALS['phpgw']->template->set_file('viewticket','viewticket_details.tpl');
 		$GLOBALS['phpgw']->template->set_block('viewticket','options_select');
@@ -85,6 +88,7 @@
 		$GLOBALS['phpgw']->template->set_block('viewticket','row_history');
 		$GLOBALS['phpgw']->template->set_block('viewticket','row_history_empty');
 		$GLOBALS['phpgw']->template->set_block('viewticket','form');
+		$GLOBALS['phpgw']->template->set_block('form','update_state_items','update_state_group');
 
 		$messages .= $GLOBALS['phpgw']->session->appsession('messages','tts');
 		if($messages)
@@ -230,6 +234,7 @@
 				case 'H': $type = lang('Billable hours changed'); break;
 				case 'B': $type = lang('Billable rate changed'); break;
 				case 'G': $type = lang('Group ownership changed'); break;
+				case 'N': $type = lang('State changed'); break;
 				default: break;
 			}
 
@@ -268,6 +273,16 @@
 				$GLOBALS['phpgw']->template->set_var('value_new_value',$s);
 
 				$s = $GLOBALS['phpgw']->accounts->id2name($value['old_value']);
+				$s = ($s ? $s : '--');
+				$GLOBALS['phpgw']->template->set_var('value_old_value',$s);
+			}
+			elseif($value['status'] == 'N')
+			{
+				$s = id2field('phpgw_tts_states','state_name','state_id',$value['new_value']);
+				$s = ($s ? $s : '--');
+				$GLOBALS['phpgw']->template->set_var('value_new_value',$s);
+
+				$s = id2field('phpgw_tts_states','state_name','state_id',$value['old_value']);
 				$s = ($s ? $s : '--');
 				$GLOBALS['phpgw']->template->set_var('value_old_value',$s);
 			}
@@ -316,6 +331,13 @@
 		$s = ($s ? $s : '--');
 		$GLOBALS['phpgw']->template->set_var('value_group',$s);
 
+		$GLOBALS['phpgw']->template->set_var('lang_state', lang('State'));
+		$s = id2field('phpgw_tts_states','state_name','state_id',$ticket['state']);
+		$s = ($s ? $s : '--');
+		$t = id2field('phpgw_tts_states','state_description','state_id',$ticket['state']);
+		$t = ($t ? $t : '-- Missing description --');
+		$GLOBALS['phpgw']->template->set_var('value_state',$s. ' ['.$t.'] ');
+
 		$GLOBALS['phpgw']->template->set_var('lang_billable_hours',lang('Billable hours'));
 		$GLOBALS['phpgw']->template->set_var('value_billable_hours',$ticket['billable_hours']);
 
@@ -344,23 +366,38 @@
 		$GLOBALS['phpgw']->template->set_var('value_subject', stripslashes($ticket['subject']));
 
 		$GLOBALS['phpgw']->template->set_var('lang_additional_notes',lang('Additional notes'));
-		$GLOBALS['phpgw']->template->set_var('lang_save', lang('Save'));
-		$GLOBALS['phpgw']->template->set_var('lang_apply', lang('Apply'));
-		$GLOBALS['phpgw']->template->set_var('lang_cancel', lang('Cancel'));
+ 		$GLOBALS['phpgw']->template->set_var('lang_save', lang('Save'));
+ 		$GLOBALS['phpgw']->template->set_var('lang_apply', lang('Apply'));
+ 		$GLOBALS['phpgw']->template->set_var('lang_cancel', lang('Cancel'));
 
 		$GLOBALS['phpgw']->template->set_var('lang_category',lang('Category'));
 		$GLOBALS['phpgw']->template->set_var('value_category',$GLOBALS['phpgw']->categories->id2name($ticket['category']));
 
 		$GLOBALS['phpgw']->template->set_var('options_select','');
 
+      $GLOBALS['phpgw']->template->set_var('lang_update_state',lang('Update ticket state'));
+      $GLOBALS['phpgw']->template->set_var('lang_keep_present_state',
+      	lang('Keep the present state [%1].',id2field('phpgw_tts_states','state_name','state_id',$ticket['state'])));
+
+		$GLOBALS['phpgw']->db->query("select * from phpgw_tts_transitions where transition_source_state=".$ticket['state'],__LINE__,__FILE__);
+		
+		while($GLOBALS['phpgw']->db->next_record())
+		{
+			$GLOBALS['phpgw']->template->set_var('update_state_value',$GLOBALS['phpgw']->db->f('transition_target_state'));
+			$GLOBALS['phpgw']->template->set_var('update_state_text',$GLOBALS['phpgw']->db->f('transition_description'));
+         $GLOBALS['phpgw']->template->parse('update_state_group', 'update_state_items', True);
+		}
+
+
 		$GLOBALS['phpgw']->template->pfp('out','form');
 		$GLOBALS['phpgw']->common->phpgw_footer();
-	}
-	else	// save or apply
-	{
-		$ticket = $_POST['ticket'];
 
-		// DB Content is fresher than http posted value.
+	}
+	else // save or apply
+	{
+ 		$ticket = $_POST['ticket'];
+ 
+ 		// DB Content is fresher than http posted value.
 		$GLOBALS['phpgw']->db->query("select * from phpgw_tts_tickets where ticket_id='$ticket_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
 
@@ -371,6 +408,7 @@
 		$old_billable_hours = $GLOBALS['phpgw']->db->f('ticket_billable_hours');
 		$old_billable_rate = $GLOBALS['phpgw']->db->f('ticket_billable_rate');
 		$old_group   = $GLOBALS['phpgw']->db->f('ticket_group');
+		$old_state   = $GLOBALS['phpgw']->db->f('ticket_state');
 
 		$GLOBALS['phpgw']->db->transaction_begin();
 
@@ -387,6 +425,7 @@
 		** B - Billing rate
 		** H - Billing hours
 		** G - Group
+		** N - Petri Net State change
 		*/
 
 		if($old_status != $ticket['status'])
@@ -457,6 +496,15 @@
 			$GLOBALS['phpgw']->historylog->add('B',$ticket_id,$ticket['billable_rate'],$old_billable_rate);
 		}
 
+		if($old_state != $ticket['state'])
+		{
+			$fields_updated = True;
+			$GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_state='" . $ticket['state']
+				. "' where ticket_id='$ticket_id'",__LINE__,__FILE__);
+			$GLOBALS['phpgw']->historylog->add('N',$ticket_id,$ticket['state'],$old_state);
+		}
+
+
 		if($ticket['note'])
 		{
 			$fields_updated = True;
@@ -478,16 +526,16 @@
 			if($GLOBALS['phpgw']->config->config_data['mailnotification'])
 			{
 				mail_ticket($ticket_id);
-			}
+			} 
 		}
 
-		if ($_POST['save'])
-		{
-			$GLOBALS['phpgw']->redirect_link('/tts/index.php');
-		}
-		else	// apply
-		{
-			$GLOBALS['phpgw']->redirect_link('/tts/viewticket_details.php','ticket_id=' . $ticket_id);
-		}
+ 		if ($_POST['save'])
+ 		{
+ 			$GLOBALS['phpgw']->redirect_link('/tts/index.php');
+ 		}
+ 		else	// apply
+ 		{
+ 			$GLOBALS['phpgw']->redirect_link('/tts/viewticket_details.php','ticket_id=' . $ticket_id);
+ 		}
 	}
 ?>

@@ -12,14 +12,15 @@
 	// $Id$
 	// $Source$
 
-	$GLOBALS['phpgw_info']['flags'] = array(
-		'noheader'             => True,
-		'nonavbar'             => True,
-		'currentapp'           => 'tts',
-		'enable_send_class'    => True,
-		'enable_config_class'  => True,
-		'enable_categories_class' => True
-	);
+ 	$GLOBALS['phpgw_info']['flags'] = array(
+ 		'noheader'             => True,
+ 		'nonavbar'             => True,
+ 		'currentapp'           => 'tts',
+ 		'enable_send_class'    => True,
+ 		'enable_config_class'  => True,
+ 		'enable_categories_class' => True
+ 	);
+
 	include('../header.inc.php');
 
 	$GLOBALS['phpgw']->config->read_repository();
@@ -32,9 +33,10 @@
 	if($_POST['submit'])
 	{
 		$ticket = $_POST['ticket'];
-		$GLOBALS['phpgw']->db->query("insert into phpgw_tts_tickets (ticket_group,ticket_priority,ticket_owner,"
+		$GLOBALS['phpgw']->db->query("insert into phpgw_tts_tickets (ticket_state,ticket_group,ticket_priority,ticket_owner,"
 			. "ticket_assignedto,ticket_subject,ticket_category,ticket_billable_hours,"
 			. "ticket_billable_rate,ticket_status,ticket_details) values ('"
+			. intval($ticket['state']) . "','"
 			. addslashes($ticket['group']) . "','"
 			. intval($ticket['priority']) . "','"
 			. $GLOBALS['phpgw_info']['user']['account_id'] . "','"
@@ -102,6 +104,7 @@
 	$GLOBALS['phpgw']->template->set_var('lang_highest', lang('Highest'));
 	$GLOBALS['phpgw']->template->set_var('lang_addticket', lang('Add Ticket'));
 	$GLOBALS['phpgw']->template->set_var('lang_clearform', lang('Clear Form'));
+	$GLOBALS['phpgw']->template->set_var('lang_initialstate', lang('Initial State'));
 	$GLOBALS['phpgw']->template->set_var('lang_assignedto',lang('Assign to'));
 	$GLOBALS['phpgw']->template->set_var('lang_submit',lang('Save'));
 	$GLOBALS['phpgw']->template->set_var('lang_cancel',lang('Cancel'));
@@ -114,7 +117,7 @@
 	$GLOBALS['phpgw']->template->set_var('th_bg', $GLOBALS['phpgw_info']['theme']['th_bg']);
 
 	$GLOBALS['phpgw']->template->set_var('value_details',$ticket['details']);
-	$GLOBALS['phpgw']->template->set_var('value_subject',$ticket['details']);
+	$GLOBALS['phpgw']->template->set_var('value_subject',$ticket['subject']);
 	$GLOBALS['phpgw']->template->set_var('value_billable_hours',($ticket['billable_hours']?$ticket['billable_hours']:'0.00'));
 	$GLOBALS['phpgw']->template->set_var('value_billable_hours_rate',($ticket['billable_rate']?$ticket['billable_rate']:'0.00'));
 
@@ -159,9 +162,14 @@
 	}
 	$GLOBALS['phpgw']->template->set_var('value_priority','<select name="ticket[priority]">' . $priority_select . '</select>');
 
+	// Choose the initial state to display
+	$GLOBALS['phpgw']->template->set_var('options_state',
+		listid_field('phpgw_tts_states','state_name','state_id',$ticket['state'], "state_initial=1"));
+
 	$GLOBALS['phpgw']->template->set_var('tts_select_options','');
 	$GLOBALS['phpgw']->template->set_var('tts_new_lstcategory','');
 	$GLOBALS['phpgw']->template->set_var('tts_new_lstassignto','');
 
 	$GLOBALS['phpgw']->template->pfp('out','form');
 	$GLOBALS['phpgw']->common->phpgw_footer();
+?>

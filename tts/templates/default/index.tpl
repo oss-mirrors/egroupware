@@ -44,6 +44,7 @@
 		<td width="22">&nbsp;</td>
 		<td align="center">{tts_head_ticket}</td>
 		<td align="center">{tts_head_subject}</td>
+		<td align="center">{tts_head_state}</td>
 		<td align="center">{tts_head_dateopened}</td>
 		<td align="center">{tts_head_group}</td>
 		<td align="center">{tts_head_category}</td>
@@ -64,6 +65,7 @@
 		<td width="22">{row_status}</td>
 		<td align="center">{row_ticket_id}</td>
 		<td align="center">{tts_t_subject}</td>
+		<td align="center">{tts_t_state}</td>
 		<td align="center">{tts_t_timestampopened}</td>
 		<td style="font-size=12" align=center>{row_group}</td>
 		<td style="font-size=12" align=center>{row_category}</td>

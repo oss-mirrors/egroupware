@@ -36,9 +36,9 @@
      </td>
     </tr>
     <tr>
-     <td colspan="3" align="center" height="40">
-      <input type="submit" name="submit" value="{lang_submit}"> &nbsp;
-      <input type="submit" name="cancel" value="{lang_cancel}">
+      <td colspan="3" align="center" height="40">
+       <input type="submit" name="submit" value="{lang_submit}"> &nbsp;
+       <input type="submit" name="cancel" value="{lang_cancel}">
      </td>
     </tr>
    </table>

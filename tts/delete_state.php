@@ -24,65 +24,102 @@
 	** 4 - Allow to make changes to priority, billing hours, billing rate, category, and assigned to
 	*/
 
+	// select what tickets to view
+	$cancel     = $HTTP_POST_VARS['cancel'];
+	$submit 		= $HTTP_POST_VARS['submit'];
+	
+	$start  		= $HTTP_GET_VARS['start'];
+	$sort   		= $HTTP_GET_VARS['sort'];
+	$order  		= $HTTP_GET_VARS['order'];
+	$state_id  	= $HTTP_GET_VARS['state_id'];
+
+	if($submit || $cancel || $state_id==0)
+	{
+		$GLOBALS['phpgw_info']['flags'] = array(
+			'noheader' => True,
+			'nonavbar' => True
+		);
+	}
+
 	$GLOBALS['phpgw_info']['flags']['currentapp'] = 'tts';
 	$GLOBALS['phpgw_info']['flags']['enable_contacts_class'] = True;
 	$GLOBALS['phpgw_info']['flags']['enable_categories_class'] = True;
 	$GLOBALS['phpgw_info']['flags']['enable_nextmatchs_class'] = True;
 	include('../header.inc.php');
 
+	if ($state_id==0) {
+		$state_id  	= $HTTP_POST_VARS['state_id'];
+		if ($state_id==0) {
+			$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/tts/states.php'));
+		}
+	}
+	if($cancel)
+	{
+		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/tts/states.php'));
+	}
+
+	if($submit){
+		if ($ticket['state']==-1) //delete the tickets
+		{ 
+			$GLOBALS['phpgw']->db->query("delete from phpgw_tts_tickets where ticket_state=$state_id",__LINE__,__FILE__);
+		}
+		else if ($ticket['state']==-2) //delete the tickets
+		{ 
+			$GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_state=".$ticket['newstate'].
+				" where ticket_state=$state_id",__LINE__,__FILE__);
+		}
+		else {
+			$GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_state=".$ticket['state'].
+				" where ticket_state=$state_id",__LINE__,__FILE__);
+		}
+		$GLOBALS['phpgw']->db->query("delete from phpgw_tts_states where state_id=$state_id",__LINE__,__FILE__);
+		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/tts/states.php'));
+	}
+
+
 	$GLOBALS['phpgw']->historylog = createobject('phpgwapi.historylog','tts');
 
-	$GLOBALS['phpgw']->template->set_file('index','index.tpl');
-	$GLOBALS['phpgw']->template->set_block('index', 'tts_title', 'tts_title');
-//	$GLOBALS['phpgw']->template->set_block('index', 'tts_links', 'tts_links');
-	$GLOBALS['phpgw']->template->set_block('index', 'tts_search', 'tts_search');
-	$GLOBALS['phpgw']->template->set_block('index', 'tts_list', 'tts_list');
-	$GLOBALS['phpgw']->template->set_block('index', 'tts_row', 'tts_row');
-	$GLOBALS['phpgw']->template->set_block('index', 'tts_col_ifviewall', 'tts_col_ifviewall');
-	$GLOBALS['phpgw']->template->set_block('index', 'tts_head_ifviewall', 'tts_head_ifviewall');
-//	$GLOBALS['phpgw']->template->set_block('index', 'tts_ticket_id_read', 'tts_ticket_id_read');
-//	$GLOBALS['phpgw']->template->set_block('index', 'tts_ticket_id_unread', 'tts_ticket_id_unread');
+	$GLOBALS['phpgw']->template->set_file('delete_state','delete_state.tpl');
+	$GLOBALS['phpgw']->template->set_block('delete_state', 'tts_title', 'tts_title');
+	$GLOBALS['phpgw']->template->set_block('delete_state', 'tts_search', 'tts_search');
+	$GLOBALS['phpgw']->template->set_block('delete_state', 'tts_list', 'tts_list');
+	$GLOBALS['phpgw']->template->set_block('delete_state', 'form', 'form');
+	$GLOBALS['phpgw']->template->set_block('delete_state', 'tts_row', 'tts_row');
+	$GLOBALS['phpgw']->template->set_block('delete_state', 'tts_col_ifviewall', 'tts_col_ifviewall');
+	$GLOBALS['phpgw']->template->set_block('delete_state', 'tts_head_ifviewall', 'tts_head_ifviewall');
+	$GLOBALS['phpgw']->template->set_block('form','update_state_items','update_state_group');
 
-	$GLOBALS['phpgw']->template->set_var('lang_appname', lang('Trouble Ticket System'));
-	$GLOBALS['phpgw']->template->set_var('tts_newticket_link', $GLOBALS['phpgw']->link('/tts/newticket.php'));
-	$GLOBALS['phpgw']->template->set_var('tts_search_link', $GLOBALS['phpgw']->link('/tts/index.php'));
-	$GLOBALS['phpgw']->template->set_var('tts_prefs_link', $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=tts'));
+	$GLOBALS['phpgw']->template->set_var('lang_edit_state',lang('Deleting the state'));
+	$s=id2field('phpgw_tts_states','state_name','state_id',$state_id);
+	$GLOBALS['phpgw']->template->set_var('lang_are_you_sure',lang('You want to delete the state %1. Are you sure?',$s		));
+	$GLOBALS['phpgw']->template->set_var('lang_tickets_in_state',lang('The tickets in the following list are in the state %1. Please, decide what should be done with them.',$s));
 	$GLOBALS['phpgw']->template->set_var('lang_preferences', lang('Preferences'));
 	$GLOBALS['phpgw']->template->set_var('lang_search', lang('search'));
 	$GLOBALS['phpgw']->template->set_var('tts_newticket', lang('New ticket'));
-	$GLOBALS['phpgw']->template->set_var('tts_head_status','');
+	$GLOBALS['phpgw']->template->set_var('tts_head_status',lang('Status'));
 	$GLOBALS['phpgw']->template->set_var('tts_notickets','');
 	$GLOBALS['phpgw']->template->set_var('lang_category',lang('Category'));
 
-	// select what tickets to view
-	$filter = $HTTP_GET_VARS['filter'];
-	$start  = $HTTP_GET_VARS['start'];
-	$sort   = $HTTP_GET_VARS['sort'];
-	$order  = $HTTP_GET_VARS['order'];
+	$GLOBALS['phpgw']->template->set_var('delete_state_link',
+		$GLOBALS['phpgw']->link('/tts/delete_state.php','state_id='.$state_id));
+	$GLOBALS['phpgw']->template->set_var('lang_delete_the_tickets',lang('Delete the listed tickets.'));
+	$GLOBALS['phpgw']->template->set_var('lang_irregular_move_into_state',lang('Perform irregular transition into the following state'));
+	$GLOBALS['phpgw']->template->set_var('lang_ok',lang('Delete'));
+	$GLOBALS['phpgw']->template->set_var('lang_cancel',lang('Cancel'));
 
-	if (!$filter)
+	$GLOBALS['phpgw']->db->query("select * from phpgw_tts_transitions where transition_source_state=".$state_id,__LINE__,__FILE__);
+		
+	while($GLOBALS['phpgw']->db->next_record())
 	{
-		$filter='viewopen';
+		$GLOBALS['phpgw']->template->set_var('update_state_value',$GLOBALS['phpgw']->db->f('transition_target_state'));
+		$GLOBALS['phpgw']->template->set_var('update_state_text',$GLOBALS['phpgw']->db->f('transition_description'));
+      $GLOBALS['phpgw']->template->parse('update_state_group', 'update_state_items', True);
 	}
-	if ($filter == 'viewopen') 
-	{
-		$filtermethod = "where ticket_status='O'";
 
-		$GLOBALS['phpgw']->preferences->read_repository();
-		if ($GLOBALS['phpgw_info']['user']['preferences']['tts']['refreshinterval'])
-		{
-			$GLOBALS['phpgw']->template->set_var('autorefresh','<META HTTP-EQUIV="Refresh" CONTENT="'.$GLOBALS['phpgw_info']['user']['preferences']['tts']['refreshinterval'].'; URL='.$GLOBALS['phpgw']->link('/tts/index.php').'">');
-		}
-		else
-		{
-			$GLOBALS['phpgw']->template->set_var('autorefresh','');
-		}
-	}
-	if ($filter == 'search') 
-	{
-		$filtermethod = "where ticket_details like '%".addslashes($searchfilter)."%'";
-		$GLOBALS['phpgw']->template->set_var('tts_searchfilter',addslashes($searchfilter));
-	}
+	// Choose the initial state to display
+	$GLOBALS['phpgw']->template->set_var('options_state',
+		listid_field('phpgw_tts_states','state_name','state_id','', "state_id<>".$state_id));
+
 
 	if (!$sort)
 	{
@@ -93,11 +130,11 @@
 		$sortmethod = "order by $order $sort";
 	}
 
-	$GLOBALS['phpgw']->db->query("select count(*) from phpgw_tts_tickets",__LINE__,__FILE__);
+	$GLOBALS['phpgw']->db->query("select count(*) from phpgw_tts_tickets where ticket_state=".$state_id,__LINE__,__FILE__);
 	$GLOBALS['phpgw']->db->next_record();
 	$numtotal = $GLOBALS['phpgw']->db->f('0') ;
 
-	$GLOBALS['phpgw']->db->query("select count(*) from phpgw_tts_tickets where ticket_status='O'",__LINE__,__FILE__);
+	$GLOBALS['phpgw']->db->query("select count(*) from phpgw_tts_tickets where ticket_status='O' and ticket_state=".$state_id,__LINE__,__FILE__);
 	$GLOBALS['phpgw']->db->next_record();
 	$numopen = $GLOBALS['phpgw']->db->f('0') ;
 
@@ -106,31 +143,8 @@
 
 
 	$db2 = $GLOBALS['phpgw']->db;
-	$GLOBALS['phpgw']->db->query("select * from phpgw_tts_tickets $filtermethod $sortmethod",__LINE__,__FILE__);
+	$GLOBALS['phpgw']->db->query("select * from phpgw_tts_tickets where ticket_state=".$state_id." ".$sortmethod,__LINE__,__FILE__);
 	$numfound = $GLOBALS['phpgw']->db->num_rows();
-
-	if ($filter == 'search')
-	{
-		$filtermethod = "where ticket_details like '%".addslashes($searchfilter)."%'";
-		$GLOBALS['phpgw']->template->set_var('tts_searchfilter',addslashes($searchfilter));
-		$GLOBALS['phpgw']->template->set_var('tts_numfound',lang('Tickets found %1',$numfound));
-	}
-	else
-	{
-		$GLOBALS['phpgw']->template->set_var('tts_searchfilter','');
-		$GLOBALS['phpgw']->template->set_var('tts_numfound','');
-	}
-
-	if ($filter != 'viewopen')
-	{
-		$GLOBALS['phpgw']->template->set_var('tts_changeview_link', $GLOBALS['phpgw']->link('/tts/index.php'));
-		$GLOBALS['phpgw']->template->set_var('tts_changeview', lang('View only open tickets'));
-	}
-	else
-	{
-		$GLOBALS['phpgw']->template->set_var('tts_changeview_link', $GLOBALS['phpgw']->link('/tts/index.php','filter=viewall'));
-		$GLOBALS['phpgw']->template->set_var('tts_changeview', lang('View all tickets'));
-	}
 
 	$GLOBALS['phpgw']->template->set_var('tts_ticketstotal', lang('Tickets total %1',$numtotal));
 	$GLOBALS['phpgw']->template->set_var('tts_ticketsopen', lang('Tickets open %1',$numopen));
@@ -138,23 +152,17 @@
 	// fill header
 	$GLOBALS['phpgw']->template->set_var('tts_head_bgcolor',$GLOBALS['phpgw_info']['theme']['th_bg'] );
 	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg'] );
-	$GLOBALS['phpgw']->template->set_var('tts_head_ticket', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_id',$order,'/tts/index.php',lang('Ticket').' #'));
-	$GLOBALS['phpgw']->template->set_var('tts_head_prio', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_priority',$order,'/tts/index.php',lang('Prio')));
-	$GLOBALS['phpgw']->template->set_var('tts_head_group',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_group',$order,'/tts/index.php',lang('Group')));
-	$GLOBALS['phpgw']->template->set_var('tts_head_category',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_category',$order,'/tts/index.php',lang('Category')));
-	$GLOBALS['phpgw']->template->set_var('tts_head_assignedto', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_assignedto',$order,'/tts/index.php',lang('Assigned to')));
-	$GLOBALS['phpgw']->template->set_var('tts_head_openedby', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_owner',$order,'/tts/index.php',lang('Opened by')));
+	$GLOBALS['phpgw']->template->set_var('tts_head_ticket', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_id',$order,'/tts/delete_state.php?state_id=$state_id',lang('Ticket').' #'));
+	$GLOBALS['phpgw']->template->set_var('tts_head_prio', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_priority',$order,'/tts/delete_state.php?state_id=$state_id',lang('Prio')));
+	$GLOBALS['phpgw']->template->set_var('tts_head_group',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_group',$order,'/tts/delete_state.php?state_id=$state_id',lang('Group')));
+	$GLOBALS['phpgw']->template->set_var('tts_head_category',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_category',$order,'/tts/delete_state.php?state_id=$state_id',lang('Category')));
+	$GLOBALS['phpgw']->template->set_var('tts_head_assignedto', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_assignedto',$order,'/tts/delete_state.php?state_id=$state_id',lang('Assigned to')));
+	$GLOBALS['phpgw']->template->set_var('tts_head_openedby', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_owner',$order,'/tts/delete_state.php?state_id=$state_id',lang('Opened by')));
 
-	// I am not sure how the sorting will work for this, if at all. (jengo)
 	$GLOBALS['phpgw']->template->set_var('tts_head_dateopened',lang('Date opened'));
-//	$GLOBALS['phpgw']->template->set_var('tts_head_dateopened', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'',$order,'/tts/index.php',lang('Date opened')));
-	if ($filter != 'viewopen')
-	{
-		$GLOBALS['phpgw']->template->set_var('tts_head_dateclosed', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_status',$order,'/tts/index.php',lang('Status/Date closed')));
-		$GLOBALS['phpgw']->template->parse('tts_head_status','tts_head_ifviewall',false);
-	}
-	$GLOBALS['phpgw']->template->set_var('tts_head_subject', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_subject',$order,'/tts/index.php',lang('Subject')));
-	$GLOBALS['phpgw']->template->set_var('tts_head_state', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_state',$order,'/tts/index.php',lang('State')));
+
+	$GLOBALS['phpgw']->template->set_var('tts_head_subject', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_subject',$order,'/tts/delete_state.php?state_id=$state_id',lang('Subject')));
+	$GLOBALS['phpgw']->template->set_var('tts_head_state', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_state',$order,'/tts/delete_state.php?state_id=$state_id',lang('State')));
 
 	if ($GLOBALS['phpgw']->db->num_rows() == 0)
 	{
@@ -202,8 +210,7 @@
 			$GLOBALS['phpgw']->template->set_var('tts_row_color', $tr_color );
 			$GLOBALS['phpgw']->template->set_var('tts_ticketdetails_link', $GLOBALS['phpgw']->link('/tts/viewticket_details.php','ticket_id=' . $GLOBALS['phpgw']->db->f('ticket_id')));
 
-			$view_link = '<a href="' . $GLOBALS['phpgw']->link('/tts/viewticket_details.php','ticket_id=' . $GLOBALS['phpgw']->db->f('ticket_id')) . '">';
-			$GLOBALS['phpgw']->template->set_var('row_ticket_id',$view_link . $GLOBALS['phpgw']->db->f('ticket_id') . '</a>');
+			$GLOBALS['phpgw']->template->set_var('row_ticket_id','<a href="' . $GLOBALS['phpgw']->link('/tts/viewticket_details.php','ticket_id=' . $GLOBALS['phpgw']->db->f('ticket_id')) . '">' . $GLOBALS['phpgw']->db->f('ticket_id') . '</a>');
 
 			if (! $ticket_read)
 			{
@@ -241,8 +248,7 @@
 				$GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',$GLOBALS['phpgw']->common->show_date($history_values[0]['datetime'] - ((60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])));
 				$GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
 			}
-			elseif ($filter != 'viewopen')
-			{
+			else {
 //				if ($GLOBALS['phpgw']->db->f('ticket_assignedto') != -1)
 //				{
 //					$assigned_to = lang('Not assigned');
@@ -255,7 +261,7 @@
 				$GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',lang('Open'));
 				$GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
 			}
-			$GLOBALS['phpgw']->template->set_var('tts_t_subject', $view_link.$GLOBALS['phpgw']->db->f('ticket_subject').'</a>');
+			$GLOBALS['phpgw']->template->set_var('tts_t_subject', $GLOBALS['phpgw']->db->f('ticket_subject'));
 			$GLOBALS['phpgw']->template->set_var('tts_t_state', 
 				id2field('phpgw_tts_states','state_name','state_id',$GLOBALS['phpgw']->db->f('ticket_state')));
 
@@ -270,7 +276,7 @@
 	$GLOBALS['phpgw']->template->set_var('tts_ticket_id_read','');
 	$GLOBALS['phpgw']->template->set_var('tts_ticket_id_unread','');
 
-	$GLOBALS['phpgw']->template->pfp('out','index');
+	$GLOBALS['phpgw']->template->pfp('out','delete_state');
 
 	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

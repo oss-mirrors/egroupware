@@ -23,10 +23,10 @@
 
 	include('../header.inc.php');
 
-	if ($_POST['cancel'])
-	{
-		$GLOBALS['phpgw']->redirect_link('/tts/index.php');
-	}
+ 	if ($_POST['cancel'])
+ 	{
+ 		$GLOBALS['phpgw']->redirect_link('/tts/index.php');
+ 	}
 
 	$option_names = array(lang('Disabled'), lang('Users choice'), lang('Force'));
 	$owner_selected = array ();
@@ -157,8 +157,8 @@
 		$GLOBALS['phpgw']->template->parse('tts_assignedoptions','tts_select_options',true);
 	}
 
-	$GLOBALS['phpgw']->template->set_var('lang_submit',lang('Save'));
-	$GLOBALS['phpgw']->template->set_var('lang_cancel',lang('Cancel'));
+ 	$GLOBALS['phpgw']->template->set_var('lang_submit',lang('Save'));
+ 	$GLOBALS['phpgw']->template->set_var('lang_cancel',lang('Cancel'));
 	$GLOBALS['phpgw']->template->set_var('tts_select_options','');
 
 	$GLOBALS['phpgw']->template->pparse('out','admin');

@@ -1,6 +1,44 @@
 <?php
   /* $Id$ */
 
+  /**
+   * Produce an option list from the database table to be used in HTML template.
+   */
+    function listid_field($table,$field,$idf,$selected,$conditions=False)
+    {
+    	$db=$GLOBALS['phpgw']->db;
+      $sql  = 'SELECT '.$db->db_addslashes($field).','.$db->db_addslashes($idf).
+      	' FROM '.$db->db_addslashes($table). ($conditions?' WHERE '.$conditions:'');
+      $db->query($sql,__FILE__,__LINE__);
+      
+      while ($db->next_record()) {
+      	$val=$db->f($idf,True);
+			$select .= '<option value="' . intval($val). ($val==$selected?'" SELECTED>':'" >');
+         $select .= htmlentities($db->f($field,True)).($val==$selected?('  '.lang('selected')):''). "</option>\n";
+       }
+       return $select;
+       
+    }
+
+  /**
+   * Obtain a value of a field for a given row from the database table.
+   */
+    function id2field($table,$field,$idf,$id)
+    {
+    	$db=$GLOBALS['phpgw']->db;
+      $sql  = 'SELECT '.$db->db_addslashes($field).' FROM '.$db->db_addslashes($table). " WHERE ".$db->db_addslashes($idf)."=" . intval($id);
+      $db->query($sql,__FILE__,__LINE__);
+      if($db->next_record())
+      {
+      	return $db->f($field,True);
+      }
+      else
+      {
+      	return '';
+      }
+    }
+
+
 	//open and print each line of a file
 	function rfile($textFile)
 	{
