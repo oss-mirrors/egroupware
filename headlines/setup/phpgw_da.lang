@@ -23,7 +23,7 @@ minutes between reloads	headlines	da	Minutter mellem opdateringer
 monitor	common	da	Skærm
 news file	headlines	da	Nyheds fil (f.eks /backend/nyhed.rdf)
 news headlines	common	da	Nyheds overskrift
-news headlines  common  da  nyheds overskrifter		da	
+news headlines  common  da	nyheds overskrifter	
 news type	headlines	da	Nyheds type
 no headlines found	headlines	da	Ingen Nyheder fundet
 other preferences	preferences	da	Andre præferencer
