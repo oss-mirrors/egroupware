@@ -17,7 +17,7 @@
   include("../header.inc.php");
 
   if(!count($phpgw_info["user"]["preferences"]["headlines"])) {
-    Header("Location: ".$phpgw->link("preferences.php"));
+    Header("Location: ".$phpgw->link("/headlines/preferences.php"));
   } else {
     $phpgw->common->phpgw_header();
     echo parse_navbar();
