@@ -164,7 +164,7 @@
 		{
 			$this->db->query("SELECT * from phpgw_p_projects WHERE id='$project_id'",__LINE__,__FILE__);
 	
-			while($this->db->next_record())
+			if ($this->db->next_record())
 			{
 				$project['project_id']	= $this->db->f('id');
 				$project['parent']		= $this->db->f('parent');
@@ -367,8 +367,9 @@
 		{
 			switch ($action)
 			{
-				case 'pro': $p_table = ' phpgw_p_projects'; break;
-				case 'act': $p_table = ' phpgw_p_activities '; break;
+				case 'mains': $p_table = ' phpgw_p_projects'; break;
+				case 'subs'	: $p_table = ' phpgw_p_projects'; break;
+				case 'act'	: $p_table = ' phpgw_p_activities '; break;
 			}
 
 			if ($check == 'number')
@@ -380,9 +381,10 @@
 
 				$this->db->query("select count(*) from $p_table where num = '$num' $editexists",__LINE__,__FILE__);
 			}
-			else
+
+			if ($check == 'par')
 			{
-				$this->db->query("select count(*) from phpgw_p_projects where pro_parent = '$project_id'",__LINE__,__FILE__);
+				$this->db->query("select count(*) from phpgw_p_projects where pro_parent = '$pa_id'",__LINE__,__FILE__);
 			}
 			$this->db->next_record();
 
@@ -541,13 +543,60 @@
 			return $act;
 		}
 
+		function read_single_activity($activity_id)
+		{
+			$this->db->query("SELECT * from phpgw_p_activities WHERE id='$activity_id'",__LINE__,__FILE__);
+	
+			if ($this->db->next_record())
+			{
+				$act['activity_id']	= $this->db->f('id');
+				$act['cat']			= $this->db->f('category');
+				$act['number']		= $this->db->f('num');
+				$act['act_descr']	= $this->db->f('descr');
+				$act['remarkreq']	= $this->db->f('remarkreq');
+				$act['billperae']	= $this->db->f('billperae');
+				$act['minperae']	= $this->db->f('minperae');
+				return $act;
+			}
+		}
+
 		function add_activity($values)
 		{
-			$values['descr'] = addslashes($values['descr']);
+			$values['number']	= addslashes($values['number']);
+			$values['act_descr'] = addslashes($values['act_descr']);
 
 			$this->db->query("insert into phpgw_p_activities (num,category,descr,remarkreq,billperae,minperae) values ('"
-							. $values['number'] . "','" . $values['cat'] . "','" . $values['descr'] . "','" . $values['remarkreq'] . "','"
+							. $values['number'] . "','" . $values['cat'] . "','" . $values['act_descr'] . "','" . $values['remarkreq'] . "','"
 							. $values['billperae'] . "','" . $values['minperae'] . "')",__LINE__,__FILE__);
+		}
+
+
+		function edit_activity($values)
+		{
+			$values['number']	= addslashes($values['number']);
+			$values['act_descr']	= addslashes($values['act_descr']);
+
+			$this->db->query("update phpgw_p_activities set num='" . $values['number'] . "', category='" . $values['cat']
+							. "',remarkreq='" . $values['remarkreq'] . "',descr='" . $values['act_descr'] . "',billperae='"
+							. $values['billperae'] . "',minperae='" . $values['minperae'] . "' where id='" . $values['activity_id']
+							. "'",__LINE__,__FILE__);
+		}
+
+		function delete_pa($action, $pa_id, $subs = '')
+		{
+			switch ($action)
+			{
+				case 'mains': $p_table = ' phpgw_p_projects'; break;
+				case 'subs'	: $p_table = ' phpgw_p_projects'; break;
+				case 'act'	: $p_table = ' phpgw_p_activities '; break;
+			}
+
+			if ($subs)
+			{
+				$subdelete = " or parent = '$pa_id'";
+			}
+
+			$this->db->query("Delete from $p_table where id = '$pa_id' $subdelete",__LINE__,__FILE__);
 		}
 	}
 ?>

@@ -2,21 +2,20 @@
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
 <hr noshade width="98%" align="center" size="1">
 <center>
-{error}
 <form method="POST" name="activity_form" action="{actionurl}">
-{error}{message}
+{pref_message}<br>{message}
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
 		<td>{lang_choose}</td>
 		<td>{choose}</td>
 	</tr>
 	<tr>
-		<td>{lang_num}:</td>
+		<td>{lang_act_number}:</td>
 		<td><input type="text" name="values[number]" value="{num}"></td>
 	</tr>
 	<tr>
 		<td>{lang_descr}:</td>
-		<td colspan="2"><textarea name="values[descr]" rows=4 cols=50 wrap="VIRTUAL">{descr}</textarea></td>
+		<td colspan="2"><textarea name="values[act_descr]" rows=4 cols=50 wrap="VIRTUAL">{descr}</textarea></td>
 	</tr>
 	<tr>
 		<td>{lang_category}:</td>
@@ -59,7 +58,6 @@
 			<input type="submit" name="submit" value="{lang_save}"></form></td>
 		<td height="50" align="center">
 			<form method="POST" action="{deleteurl}">
-			{hidden_vars}
 			<input type="submit" name="delete" value="{lang_delete}"></form></td>
 		<td height="50" align="center">
 			<form method="POST" action="{done_url}">

@@ -39,10 +39,11 @@
 			'list_projects'		=> True,
 			'add_project'		=> True,
 			'edit_project'		=> True,
-			'delete_project'	=> True,
+			'delete_pa'			=> True,
 			'view_project'		=> True,
 			'list_activities'	=> True,
-			'add_activity'		=> True
+			'add_activity'		=> True,
+			'edit_activity'		=> True
 		);
 
 		function uiprojects()
@@ -523,7 +524,7 @@
 
 		function edit_project()
 		{
-			global $phpgw, $phpgw_info, $submit, $cat_id, $new_cat, $abid, $name, $values, $book_activities, $bill_activities, $project_id;
+			global $phpgw, $phpgw_info, $submit, $cat_id, $new_cat, $abid, $name, $values, $book_activities, $bill_activities, $project_id, $action;
 
 			if ($new_cat)
 			{
@@ -669,8 +670,8 @@
 
 			if ($this->boprojects->check_perms($this->grants[$values['coordinator']],PHPGW_ACL_DELETE) || $values['coordinator'] == $this->account)
 			{
-				$this->t->set_var('delete','<form method="POST" action="' . $phpgw->link('/projects/delete.php','id=' . $project_id)
-															. '"><input type="submit" value="' . lang('Delete') .'"></form>');
+				$this->t->set_var('delete','<form method="POST" action="' . $phpgw->link('/index.php','menuaction=projects.uiprojects.delete_pa&pa_id='
+									. $project_id . '&action=mains') . '"><input type="submit" value="' . lang('Delete') .'"></form>');
 			}
 			else
 			{
@@ -685,15 +686,22 @@
 			$this->t->pfp('edithandle','edit');
 		}
 
-		function delete_project()
+		function delete_pa()
 		{
-			global $phpgw, $confirm, $project_id, $subs, $pro_parent, $action;
+			global $phpgw, $confirm, $pa_id, $subs, $pro_parent, $action;
+
+			switch($action)
+			{
+				case 'mains'	: $menu = 'projects.uiprojects.list_projects'; break;
+				case 'subs'		: $menu = 'projects.uiprojects.list_projects'; break;
+				case 'act'		: $menu = 'projects.uiprojects.list_activities'; break;
+			}
 
 			$link_data = array
 			(
-				'menuaction'	=> 'projects.uiprojects.list_projects',
+				'menuaction'	=> $menu,
 				'pro_parent'	=> $pro_parent,
-				'project_id'	=> $project_id,
+				'pa_id'			=> $pa_id,
 				'action'		=> $action
 			);
 
@@ -701,42 +709,43 @@
 			{
 				if ($subs)
 				{
-					$this->boprojects->delete_project($project_id,True);
+					$this->boprojects->delete_pa($action, $pa_id, True);
 				}
-				else
+				else 
 				{
-					$this->boprojects->delete_projects($project_id);
+					$this->boprojects->delete_pa($action, $pa_id, False);
 				}
-
 				Header('Location: ' . $phpgw->link('/index.php',$link_data));
 			}
 
 			$phpgw->common->phpgw_header();
 			echo parse_navbar();
 
-			$this->t->set_file(array('projects_delete' => 'delete.tpl'));
-			$exists = $this->boprojects->exists('par', $num ='', $project_id);
+			$this->t->set_file(array('pa_delete' => 'delete.tpl'));
 
-			if ($exists)
-			{
-				$this->t->set_var('lang_subs',lang('Do you also want to delete all sub projects ?'));
-				$this->t->set_var('subs','<input type="checkbox" name="subs" value="True">');
-			}
-			else
-			{
-				$this->t->set_var('lang_subs','');
-				$this->t->set_var('subs', '');
-			}
+			$this->t->set_var('lang_subs','');
+			$this->t->set_var('subs', '');
 
-			$this->t->set_var('nolink',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects'));
-			$this->t->set_var('deleteheader',lang('Are you sure you want to delete this entry'));
+			$this->t->set_var('nolink',$phpgw->link('/index.php',$link_data));
+			$this->t->set_var('deleteheader',lang('Are you sure you want to delete this entry ?'));
 			$this->t->set_var('lang_no',lang('No'));
 			$this->t->set_var('lang_yes',lang('Yes'));
 
-			$link_data['menuaction'] = 'projects.uiprojects.delete_project';
+			if ($action != 'act')
+			{
+				$exists = $this->boprojects->exists('mains', 'par', $num ='', $pa_id);
+
+				if ($exists)
+				{
+					$this->t->set_var('lang_subs',lang('Do you also want to delete all sub projects ?'));
+					$this->t->set_var('subs','<input type="checkbox" name="subs" value="True">');
+				}
+			}
+
+			$link_data['menuaction'] = 'projects.uiprojects.delete_pa';
 			$this->t->set_var('actionurl',$phpgw->link('/index.php',$link_data));
 
-			$this->t->pfp('out','projects_delete');
+			$this->t->pfp('out','pa_delete');
 		}
 
 		function list_activities()
@@ -762,11 +771,11 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uiprojects.list_activities',
-				'action'		=> 'act'
+				'action'		=> 'act',
+				'cat_id'		=> $this->cat_id
 			);
 
 			$this->t->set_var('lang_header',lang('Activities list'));
-			$this->t->set_var('add_url',$phpgw->link('/index.php','menuaction=projects.uiprojects.add_activity&cat_id=' . $cat_id));
 			$this->t->set_var('project_url',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
 
 			if (!$this->start)
@@ -806,7 +815,7 @@
             for ($i=0;$i<count($act);$i++)
             {
 				$this->nextmatchs->template_alternate_row_color(&$this->t);
-				$descr = $phpgw->strip_html($act[$i]['descr']);
+				$descr = $phpgw->strip_html($act[$i]['act_descr']);
 				if (! $descr)
 				{
 					$descr  = '&nbsp;';
@@ -819,17 +828,27 @@
 									'billperae' => $act[$i]['billperae'],
 									'minperae'	=> $act[$i]['minperae']));
 
-				$this->t->set_var('edit',$phpgw->link('/projects/editactivity.php','id=' . $act[$i]['activity_id'] . "&sort=$this->sort&order=$this->order&query=$this->query&start=$start&cat_id=$this->cat_id"));
-				$this->t->set_var('delete',$phpgw->link('/projects/deleteactivity.php','id=' . $act[$i]['activity_id'] . "&sort=$this->sort&order=$this->order&query=$this->query&start=$this->start&cat_id=$cat_id"));
-				$this->t->set_var('lang_delete',lang('Delete'));
+				$link_data['menuaction']	= 'projects.uiprojects.edit_activity';
+				$link_data['activity_id']	= $act[$i]['activity_id'];
+				$this->t->set_var('edit',$phpgw->link('/index.php',$link_data));
+
+				$link_data['menuaction']	= 'projects.uiprojects.delete_pa';
+				$link_data['pa_id']	= $act[$i]['activity_id'];
+				$this->t->set_var('delete',$phpgw->link('/index.php',$link_data));
+
 				$this->t->fp('list','activities_list',True);
 
 // ------------------------------- end record declaration --------------------------------
+
 			}
 
 // ------------------------- template declaration for Add Form ---------------------------
 
+			$link_data['menuaction'] = 'projects.uiprojects.add_activity';
+			$this->t->set_var('add_url',$phpgw->link('/index.php',$link_data));
+
 			$this->t->set_var('lang_add',lang('Add'));
+			$this->t->set_var('lang_delete',lang('Delete'));
 			$this->t->pfp('out','activities_list_t',True);
 			$this->save_sessiondata($action);
 
@@ -837,7 +856,6 @@
 
 //			$phpgw->common->phpgw_footer();
 		}
-
 
 		function add_activity()
 		{
@@ -847,6 +865,13 @@
 			{
 				$cat_id = $new_cat;
 			}
+
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uiprojects.list_activities',
+				'action'		=> 'act',
+				'cat_id'		=> $cat_id
+			);
 
 			if ($submit)
 			{
@@ -860,7 +885,7 @@
 				else
 				{
 					$this->boprojects->save_activity($values);
-					Header('Location: ' . $phpgw->link('/index.php','menuaction=projects.uiprojects.list_activities&action=act&cat_id=' . $cat_id));
+					Header('Location: ' . $phpgw->link('/index.php',$link_data));
 				}
 			}
 
@@ -870,10 +895,12 @@
 			$this->t->set_block('activity_add','add','addhandle');
 			$this->t->set_block('activity_add','edit','edithandle');
 
+			$this->t->set_var('done_url',$phpgw->link('/index.php',$link_data));
 			$this->t->set_var('actionurl',$phpgw->link('/index.php','menuaction=projects.uiprojects.add_activity'));
 			$this->t->set_var('lang_action',lang('Add activity'));
 			$this->t->set_var('cats_list',$this->cats->formated_list('select','all',$cat_id,True));
 
+			$nopref = $this->boprojects->check_prefs();
 			if ($nopref)
 			{
 				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
@@ -888,7 +915,7 @@
 
 			$this->t->set_var('number',$values['number']);
 			$this->t->set_var('title',$values['title']);
-			$this->t->set_var('descr',$values['descr']);
+			$this->t->set_var('descr',$values['act_descr']);
 
 			$this->t->set_var('lang_num',lang('Activity ID'));
 			$this->t->set_var('num',$values['number']);
@@ -908,12 +935,100 @@
 
 			$this->t->set_var('remarkreq_list',$remarkreq_list);
 
-			$this->t->set_var('done_url',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_activities&action=act&cat_id=' . $cat_id));
-
 			$this->t->set_var('edithandle','');
 			$this->t->set_var('addhandle','');
 			$this->t->pfp('out','activity_add');
 			$this->t->pfp('addhandle','add');
+		}
+
+
+		function edit_activity()
+		{
+			global $phpgw, $phpgw_info, $submit, $cat_id, $new_cat, $values, $activity_id;
+
+			if ($new_cat)
+			{
+				$cat_id = $new_cat;
+			}
+
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uiprojects.list_activities',
+				'action'		=> 'act',
+				'cat_id'		=> $cat_id
+			);
+
+			if ($submit)
+			{
+				$values['cat'] = $cat_id;
+				$values['activity_id'] = $activity_id;
+
+				$error = $this->boprojects->check_act_values($values);
+				if (is_array($error))
+				{
+					$this->t->set_var('message',$phpgw->common->error_list($error));
+				}
+				else
+				{
+					$this->boprojects->save_activity($values);
+					Header('Location: ' . $phpgw->link('/index.php',$link_data));
+				}
+			}
+
+			$this->display_app_header();
+
+			$this->t->set_file(array('activity_edit' => 'formactivity.tpl'));
+			$this->t->set_block('activity_edit','add','addhandle');
+			$this->t->set_block('activity_edit','edit','edithandle');
+
+			$this->t->set_var('done_url',$phpgw->link('/index.php',$link_data));
+			$this->t->set_var('actionurl',$phpgw->link('/index.php','menuaction=projects.uiprojects.edit_activity&activity_id=' . $activity_id));
+			$this->t->set_var('lang_action',lang('Edit activity'));
+
+			$nopref = $this->boprojects->check_prefs();
+			if ($nopref)
+			{
+				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
+			}
+			else
+			{
+				$currency = $this->boprojects->get_prefs();
+			}
+
+			$this->t->set_var('lang_choose','');
+			$this->t->set_var('choose','');
+			$this->t->set_var('currency',$currency);
+
+			$values = $this->boprojects->read_single_activity($activity_id);
+
+			$this->t->set_var('cats_list',$this->cats->formated_list('select','all',$values['cat'],True));
+			$this->t->set_var('num',$phpgw->strip_html($values['number']));
+			$descr  = $phpgw->strip_html($values['act_descr']);
+			if (! $descr) $descr = '&nbsp;';
+			$this->t->set_var('descr',$descr);
+
+			if ($values['remarkreq'] == 'N'):
+				$stat_sel[0]=' selected';
+			elseif ($values['remarkreq'] == 'Y'):
+				$stat_sel[1]=' selected';
+			endif;
+
+			$remarkreq_list = '<option value="N"' . $stat_sel[0] . '>' . lang('No') . '</option>' . "\n"
+					. '<option value="Y"' . $stat_sel[1] . '>' . lang('Yes') . '</option>' . "\n";
+
+			$this->t->set_var('remarkreq_list',$remarkreq_list);
+			$this->t->set_var('billperae',$values['billperae']);
+			$this->t->set_var('minperae',$values['minperae']);
+
+			$link_data['menuaction']	= 'projects.uiprojects.delete_pa';
+			$link_data['pa_id']	= $values[$i]['activity_id'];
+			$this->t->set_var('deleteurl',$phpgw->link('/index.php',$link_data));
+			$this->t->set_var('lang_delete',lang('Delete'));
+
+			$this->t->set_var('edithandle','');
+			$this->t->set_var('addhandle','');
+			$this->t->pfp('out','activity_edit');
+			$this->t->pfp('edithandle','edit');
 		}
 	}
 ?>

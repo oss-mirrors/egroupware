@@ -13,7 +13,7 @@
 <hr noshade width="98%" align="center" size="1">
 <center>
 <form method="POST" name="projects_form" action="{actionurl}">
-{error}<br>{message}
+{pref_message}<br>{message}
 <table width="85%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
 		<td>{lang_choose}</td>

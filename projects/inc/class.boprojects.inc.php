@@ -41,9 +41,10 @@
 			'check_perms'			=> True,
 			'check_values'			=> True,
 			'select_project_list'	=> True,
+			'check_act_values'		=> True,
 			'save_project'			=> True,
 			'read_single_project'	=> True,
-			'delete_project'		=> True,
+			'delete_pa'				=> True,
 			'exists'				=> True,
 			'read_customer_data'	=> True,
 			'isprojectadmin'		=> True,
@@ -51,7 +52,9 @@
 			'coordinator_list'		=> True,
 			'check_prefs'			=> True,
 			'get_prefs'				=> True,
-			'list_activities'		=> True
+			'list_activities'		=> True,
+			'read_single_activity'	=> True,
+			'save_activity'			=> True
 		);
 
 		function boprojects($session=False, $action = '')
@@ -223,8 +226,13 @@
 		function read_single_project($project_id)
 		{
 			$single_pro = $this->soprojects->read_single_project($project_id);
-
 			return $single_pro;
+		}
+
+		function read_single_activity($activity_id)
+		{
+			$single_act = $this->soprojects->read_single_activity($activity_id);
+			return $single_act;
 		}
 
 		function exists($action, $check, $num, $pa_id)
@@ -315,7 +323,7 @@
 		{
 			global $phpgw;
 
-			if (strlen($values['descr']) >= 8000)
+			if (strlen($values['act_descr']) >= 8000)
 			{
 				$error[] = lang('Description can not exceed 8000 characters in length');
 			}
@@ -426,6 +434,11 @@
 		{
 			$list = $this->soprojects->select_project_list($type,$project_id);
 			return $list;
+		}
+
+		function delete_pa($action, $pa_id, $subs)
+		{
+			$this->soprojects->delete_pa($action, $pa_id, $subs);
 		}
 	}
 ?>
