@@ -16,10 +16,14 @@
 		global $phpgw, $phpgw_info, $treemenu;
 	}
 
-	$treemenu .= '..<img src="'.$phpgw->common->image($appname,'navbar.gif').'" border="0" alt="'.ucwords($appname).'">'.ucwords($appname).'|'.$phpgw->link('/'.$appname.'/help/'.$appname.'.php')."\n";
+	$font = $phpgw_info['theme']['font'];
+	$navbar = $phpgw_info['user']['preferences']['common']['navbar_format'];
+
+	$treemenu[] = '..'.($navbar != 'text'?'<img src="'.$phpgw->common->image($appname,'navbar.gif').'" border="0" alt="'.ucwords($appname).'">':'').($navbar != 'icons'?'<font face="'.$font.'">'.ucwords($appname).'</font>':'').'|'.$phpgw->link('/'.$appname.'/help/index.php');
+	$treemenu[] = '...<font face="'.$font.'">Overview</font>|'.$phpgw->link('/'.$appname.'/help/'.$appname.'.php');
 // Modify the $treemenu variables from here down.....
-	$treemenu .= '...<font face="'.$phpgw_info['theme']['font'].'">Viewing</font>|'.$phpgw->link('/'.$appname.'/help/viewing.php')."\n";
-	$treemenu .= '...<font face="'.$phpgw_info['theme']['font'].'">Replying</font>|'.$phpgw->link('/'.$appname.'/help/replying.php')."\n";
-	$treemenu .= '...<font face="'.$phpgw_info['theme']['font'].'">Composing/Saving/Deleting</font>|'.$phpgw->link('/'.$appname.'/help/other.php')."\n";
-	$treemenu .= '...<font face="'.$phpgw_info['theme']['font'].'">Notes</font>|'.$phpgw->link('/'.$appname.'/help/notes.php')."\n";
+	$treemenu[] = '...<font face="'.$phpgw_info['theme']['font'].'">Viewing</font>|'.$phpgw->link('/'.$appname.'/help/viewing.php');
+	$treemenu[] = '...<font face="'.$phpgw_info['theme']['font'].'">Replying</font>|'.$phpgw->link('/'.$appname.'/help/replying.php');
+	$treemenu[] = '...<font face="'.$phpgw_info['theme']['font'].'">Composing/Saving/Deleting</font>|'.$phpgw->link('/'.$appname.'/help/other.php');
+	$treemenu[] = '...<font face="'.$phpgw_info['theme']['font'].'">Notes</font>|'.$phpgw->link('/'.$appname.'/help/notes.php');
 ?>

@@ -16,5 +16,5 @@
 		global $phpgw, $phpgw_info, $treemenu;
 	}
 
-	$treemenu .= '.<font face="'.$phpgw_info['theme']['font'].'">overview</font>|'.$phpgw->link('/'.$appname.'/overview.php')."\n";
+	$treemenu[] = '.<font face="'.$phpgw_info['theme']['font'].'">Overview</font>|'.$phpgw->link('/'.$appname.'/overview.php');
 ?>
