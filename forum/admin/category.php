@@ -88,9 +88,8 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang_forums("Return to Forums"
     </td>
    </tr>
    <tr>
-    <form method="POST" action="./category.php">
-    <?  echo $phpgw->session->hidden_var(); ?>
-    <? echo $extrahidden ?> 
+    <form method="POST" action="<?php echo $phpgw->link("category.php"); ?>">
+    <?php echo $extrahidden; ?> 
     <input type="hidden" name="action" value="<?echo $actiontype?>">
     <td><? echo lang_forums("Category Name") ?>:</td>
     <td><input type="text" name="catname" size=40 maxlength=49 value="<? echo $catname ?>"></td>
