@@ -11,48 +11,49 @@
 
   /* $Id$ */
 
-  if ($submit) {
-     $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
-  }
-
-  $phpgw_info["flags"]["currentapp"] = "tts";
-  include("../header.inc.php");
-  function group_list($db,$currgroup)
-  {
-	$groups = CreateObject('phpgwapi.accounts');
-	$group_list = $groups->get_list('groups');
-	while (list($key,$entry) = each($group_list))
+	if ($submit)
 	{
-      $tag="";
-      if ($entry['account_lid'] == "$currgroup") { $tag = "selected"; }
-      echo "<option value=\"" . $entry['account_lid'] . "\" $tag>" . $entry['account_lid'] . "</option>\n";
-    }
-  }
+		$phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
+	}
 
-  function groupusers_list($db,$curruser)
-  {
-	$accounts = CreateObject('phpgwapi.accounts',$group_id);
-	$account_list = $accounts->get_list('accounts');
-	echo "<option value=none>none</option>";
-	while (list($key,$entry) = each($account_list))
+	$phpgw_info["flags"]["currentapp"] = "tts";
+	include("../header.inc.php");
+	function group_list($db,$currgroup)
 	{
-	
-      $tag="";
-      if ($entry['account_lid'] == "$curruser") { $tag = "selected"; }
-      echo "<option value=\"" . $entry['account_lid'] . "\" $tag>" . $entry['account_lid'] . "</option>\n";
-    }
-  }
+		$groups = CreateObject('phpgwapi.accounts');
+		$group_list = $groups->get_list('groups');
+		while (list($key,$entry) = each($group_list))
+		{
+			$tag="";
+			if ($entry['account_lid'] == "$currgroup") { $tag = "selected"; }
+			echo "<option value=\"" . $entry['account_lid'] . "\" $tag>" . $entry['account_lid'] . "</option>\n";
+		}
+	}
 
-  if (! $submit) {
-// select the ticket that you selected
-$phpgw->db->query("select t_id,t_category,t_detail,t_priority,t_user,t_assignedto,"
-	    . "t_timestamp_opened, t_timestamp_closed, t_subject from ticket where t_id='$ticketid'");
-$phpgw->db->next_record();
+	function groupusers_list($db,$curruser)
+	{
+		$accounts = CreateObject('phpgwapi.accounts',$group_id);
+		$account_list = $accounts->get_list('accounts');
+		echo "<option value=none>none</option>";
+		while (list($key,$entry) = each($account_list))
+		{
+			$tag="";
+			if ($entry['account_lid'] == "$curruser") { $tag = "selected"; }
+			echo "<option value=\"" . $entry['account_lid'] . "\" $tag>" . $entry['account_lid'] . "</option>\n";
+		}
+	}
 
-$lstAssignedto=$phpgw->db->f("t_assignedto");
-$lstCategory=$phpgw->db->f("t_category");
+	if (! $submit)
+	{
+		// select the ticket that you selected
+		$phpgw->db->query("select t_id,t_category,t_detail,t_priority,t_user,t_assignedto,"
+			. "t_timestamp_opened, t_timestamp_closed, t_subject from ticket where t_id='$ticketid'");
+		$phpgw->db->next_record();
 
-// Print the table
+		$lstAssignedto=$phpgw->db->f("t_assignedto");
+		$lstCategory=$phpgw->db->f("t_category");
+
+		// Print the table
 ?>
 <form method="POST" action="<?php echo $phpgw->link("/tts/viewticket_details.php"); ?>">
  <input type=hidden value="<?php echo $phpgw->db->f("t_id"); ?>" name="t_id">
@@ -96,8 +97,9 @@ $lstCategory=$phpgw->db->f("t_category");
      </tr>
      <tr>
        <td align=center>
-         <?php // Choose the correct priority to display
-           $prority_selected[$phpgw->db->f("t_priority")] = " selected";
+         <?php
+		// Choose the correct priority to display
+		$prority_selected[$phpgw->db->f("t_priority")] = " selected";
          ?>
          <b><?php echo lang("Priority"); ?>:</b>
          <select name="optPriority">
@@ -128,23 +130,26 @@ $lstCategory=$phpgw->db->f("t_category");
        </td>
      </tr>
 <?php
-  $details_string = nl2br(stripslashes($phpgw->db->f("t_detail")));
-  if (empty($details_string)) {
-    echo "   <input type=hidden value=\"" . $phpgw->strip_html($details_string) . "\" name=\"prevtxtdetail\">";
-    echo "     <tr>\n";
-    echo "         <td colspan=3 align=center>\n";
-    echo "         <textarea rows=\"12\" name=\"txtDetail\" cols=\"70\" wrap=physical></textarea>\n";
-    echo "       </td>\n";
-  } else {  
-    echo "   <input type=hidden value=\"" . $phpgw->strip_html($details_string) . "\" name=\"prevtxtdetail\">";
-    echo "    <tr><td colspan=3 align=left><br><b>".lang("Subject").":</b> " . stripslashes($phpgw->db->f("t_subject")) . "<br><br>";
-    echo "    <tr><td colspan=3 align=left><B>".lang("Details").":</B><BR> " . stripslashes($details_string) . " </td></tr>\n";
-    echo "    <tr><td colspan=3 align=left><BR><BR>".lang("Additional notes").":<BR></td></tr>\n";
-    echo "     <tr>\n";
-    echo "         <td colspan=3 align=center>\n";
-    echo "         <textarea rows=\"12\" name=\"txtAdditional\" cols=\"70\" wrap=physical></textarea>\n";
-    echo "       </td>\n";
-  }
+		$details_string = nl2br(stripslashes($phpgw->db->f("t_detail")));
+		if (empty($details_string))
+		{
+			echo "   <input type=hidden value=\"" . $phpgw->strip_html($details_string) . "\" name=\"prevtxtdetail\">"
+				."   <tr>\n"
+				."     <td colspan=3 align=center>\n"
+				."       <textarea rows=\"12\" name=\"txtDetail\" cols=\"70\" wrap=physical></textarea>\n"
+				."     </td>\n";
+		}
+		else
+		{
+			echo "   <input type=hidden value=\"" . $phpgw->strip_html($details_string) . "\" name=\"prevtxtdetail\">"
+				."   <tr><td colspan=3 align=left><br><b>".lang("Subject").":</b> " . stripslashes($phpgw->db->f("t_subject")) . "<br><br>"
+				."   <tr><td colspan=3 align=left><B>".lang("Details").":</B><BR> " . stripslashes($details_string) . " </td></tr>\n"
+				."   <tr><td colspan=3 align=left><BR><BR>".lang("Additional notes").":<BR></td></tr>\n"
+				."   <tr>\n"
+				."      <td colspan=3 align=center>\n"
+				."        <textarea rows=\"12\" name=\"txtAdditional\" cols=\"70\" wrap=physical></textarea>\n"
+				."      </td>\n";
+		}
 ?>
      <tr>
        <td colspan=3 align=center><hr noshade></td>
@@ -152,9 +157,10 @@ $lstCategory=$phpgw->db->f("t_category");
      <tr>
        <td align=center>
 <?php
-  # change buttons from update/close to close/reopen if ticket is already closed
-  if ($phpgw->db->f(7) > 0) {
-    echo "<input type=radio value='letclosed' name='optUpdateclose' checked>".lang("Closed")."
+		# change buttons from update/close to close/reopen if ticket is already closed
+		if ($phpgw->db->f(7) > 0)
+		{
+			echo "<input type=radio value='letclosed' name='optUpdateclose' checked>".lang("Closed")."
        </td>
        <td align=center>
          <input type=submit value='".lang("OK")."' name='submit'>
@@ -163,8 +169,10 @@ $lstCategory=$phpgw->db->f("t_category");
          <input type=radio value='reopen' name='optUpdateclose'>".lang("ReOpen")."
        </td>
     ";
-  } else {
-    echo "<input type=radio value='update' name='optUpdateclose' checked>".lang("Update")."
+		}
+		else
+		{
+			echo "<input type=radio value='update' name='optUpdateclose' checked>".lang("Update")."
        </td>
        <td align=center>
          <input type=submit value='".lang("OK")."' name='submit'>
@@ -173,7 +181,7 @@ $lstCategory=$phpgw->db->f("t_category");
          <input type=radio value='close' name='optUpdateclose'>".lang("Close")."
        </td>
     ";
-  }
+		}
 ?>
        </td>
      </tr>
@@ -184,54 +192,67 @@ $lstCategory=$phpgw->db->f("t_category");
 
 </form>
 <?php
-  $phpgw->common->phpgw_footer();
-  } else {
-    $txtDetail = $prevtxtdetail;
+		$phpgw->common->phpgw_footer();
+	}
+	else
+	{
+		$txtDetail = $prevtxtdetail;
 
-    if (! empty($txtAdditional)) {
-      $txtDetail .= "<BR><i>\n" . $phpgw_info["user"]["userid"] . " - "
-      			. $phpgw->common->show_date(time()) . "</i><BR>\n";
-    } else {
-      $textDetail = $prevtextdetail;
-    }
+		if (! empty($txtAdditional))
+		{
+			$txtDetail .= "<BR><i>\n" . $phpgw_info["user"]["userid"] . " - "
+				. $phpgw->common->show_date(time()) . "</i><BR>\n";
+		}
+		else
+		{
+			$textDetail = $prevtextdetail;
+		}
 
-    if ($optUpdateclose == "letclosed" ) {
-      # let ticket be closed
-      # don't do any changes, ppl will have to reopen tickets to
-      # submit additional infos
-    } else {
-      if ($optUpdateclose == "reopen") {
-        # reopen the ticket
-        $phpgw->db->query("UPDATE ticket set t_timestamp_closed='0' WHERE t_id=$t_id");
-        $txtDetail .= "<b>".lang("Ticket reopened")."</b><br>\n";
-      }
+		if ($optUpdateclose == "letclosed" )
+		{
+			# let ticket be closed
+			# don't do any changes, ppl will have to reopen tickets to
+			# submit additional infos
+		}
+		else
+		{
+			if ($optUpdateclose == "reopen")
+			{
+				# reopen the ticket
+				$phpgw->db->query("UPDATE ticket set t_timestamp_closed='0' WHERE t_id=$t_id");
+				$txtDetail .= "<b>".lang("Ticket reopened")."</b><br>\n";
+			}
 
-      if (! empty($txtAdditional)) { $txtDetail .= $txtAdditional; }
+			if (! empty($txtAdditional)) { $txtDetail .= $txtAdditional; }
 
-      if ( $optUpdateclose == "close" ) {
-        $txtDetail .= "<br><b>\n\n".lang("Ticket closed")."</b><br>\n";
-      }
+			if ( $optUpdateclose == "close" )
+			{
+				$txtDetail .= "<br><b>\n\n".lang("Ticket closed")."</b><br>\n";
+			}
      
-      if (! empty($txtAdditional)) {
-        $txtDetail .= "<hr>";
-        $txtDetail = addslashes($txtDetail);
-      }
+			if (! empty($txtAdditional))
+			{
+				$txtDetail .= "<hr>";
+				$txtDetail = addslashes($txtDetail);
+			}
 
-      # update the database if ticket content changed
-      $phpgw->db->query("select t_assignedto from ticket where t_id='$t_id'");
-      $phpgw->db->next_record();
-      if ($phpgw->db->f("t_assignedto") != $lstAssignedto) {
-         // I would like to add something like !*!<epoch>!*! then that could be replaced with the users date/time preferences
-         $txtDetail .= "<br>" . $phpgw_info["user"]["loginid"] . date("m/d/Y h:m:s a") . " - " . addslashes(lang("Ticket assigned to x",$lstAssignedto));
-      }
-      $phpgw->db->query("UPDATE ticket set t_category='$lstCategory',t_detail='".addslashes($txtDetail)."',t_priority='$optPriority',t_user='$lstAssignedfrom',t_assignedto='$lstAssignedto' WHERE t_id=$t_id");
+			# update the database if ticket content changed
+			$phpgw->db->query("select t_assignedto from ticket where t_id='$t_id'");
+			$phpgw->db->next_record();
+			if ($phpgw->db->f("t_assignedto") != $lstAssignedto)
+			{
+				// I would like to add something like !*!<epoch>!*! then that could be replaced with the users date/time preferences
+				$txtDetail .= "<br>" . $phpgw_info["user"]["loginid"] . date("m/d/Y h:m:s a") . " - " . addslashes(lang("Ticket assigned to x",$lstAssignedto));
+			}
+			$phpgw->db->query("UPDATE ticket set t_category='$lstCategory',t_detail='".addslashes($txtDetail)."',t_priority='$optPriority',t_user='$lstAssignedfrom',t_assignedto='$lstAssignedto' WHERE t_id=$t_id");
 
-      if ( $optUpdateclose == "close" ) {
-        $phpgw->db->query("UPDATE ticket set t_timestamp_closed='" . time() . "' WHERE t_id=$t_id");
-      }
+			if ( $optUpdateclose == "close" )
+			{
+				$phpgw->db->query("UPDATE ticket set t_timestamp_closed='" . time() . "' WHERE t_id=$t_id");
+			}
 
-      mail_ticket($t_id);
-    }
-    Header("Location: " . $phpgw->link("/tts/index.php"));
-  }
+			mail_ticket($t_id);
+		}
+		Header("Location: " . $phpgw->link("/tts/index.php"));
+	}
 ?>

@@ -11,14 +11,16 @@
 
   /* $Id$ */
   
-  if ($submit) {
-     $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
-  }
+	if ($submit)
+	{
+		$phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
+	}
 
-  $phpgw_info["flags"]["currentapp"] = "tts";
-  $phpgw_info["flags"]["enable_send_class"]       = True;
-  include("../header.inc.php");
-  if (! $submit) {
+	$phpgw_info["flags"]["currentapp"] = "tts";
+	$phpgw_info["flags"]["enable_send_class"]       = True;
+	include("../header.inc.php");
+	if (! $submit)
+	{
      ?>
       <form method=POST action="<?php echo $phpgw->link("/tts/newticket.php"); ?>">
 
@@ -45,12 +47,12 @@
             <td width="75%" valign="middle">
               <select size="1" name="lstCategory">
 <?php
-	$groups = CreateObject('phpgwapi.accounts');
-	$group_list = $groups->get_list('groups');
-	while (list($key,$entry) = each($group_list))
-	{
-		echo "<option value= " . $entry['account_lid'] . ">" . $entry['account_lid'] . "</option>\n";
-	}
+		$groups = CreateObject('phpgwapi.accounts');
+		$group_list = $groups->get_list('groups');
+		while (list($key,$entry) = each($group_list))
+		{
+			echo "<option value= " . $entry['account_lid'] . ">" . $entry['account_lid'] . "</option>\n";
+		}
 ?>
               </select>
             </td>
@@ -60,16 +62,16 @@
             <td width="75%" valign="middle">
               <select size="1" name="assignto">
 <?php
-	$accounts = CreateObject('phpgwapi.accounts',$group_id);
-	$account_list = $accounts->get_list('accounts');
-	echo "<option value=none SELECTED>none</option>\n";
-	while (list($key,$entry) = each($account_list))
-	{
-		if ($entry['account_lid'])
+		$accounts = CreateObject('phpgwapi.accounts',$group_id);
+		$account_list = $accounts->get_list('accounts');
+		echo "<option value=none SELECTED>none</option>\n";
+		while (list($key,$entry) = each($account_list))
 		{
-	    	echo "<option value= " . $entry['account_lid'] . ">" . $entry['account_lid'] . "</option>\n";
+			if ($entry['account_lid'])
+			{
+		    	echo "<option value= " . $entry['account_lid'] . ">" . $entry['account_lid'] . "</option>\n";
+			}
 		}
-	}
 ?>
               </select>
             </td>
@@ -117,22 +119,24 @@
    </div>
   </form>
 <?php
-$phpgw->common->phpgw_footer();
-  } else {
-     //$current_date = date("ymdHi");		//set timestamp
+		$phpgw->common->phpgw_footer();
+	}
+	else
+	{
+		//$current_date = date("ymdHi");		//set timestamp
 
-    $txtDetail .= $phpgw_info["user"]["userid"] . " - " . $phpgw->common->show_date($phpgw->db->f(6)) . "<BR>\n";
-    $txtDetail .= $txtAdditional . "<br><hr>";
-     $txtDetail = addslashes($txtDetail);
+		$txtDetail .= $phpgw_info["user"]["userid"] . " - " . $phpgw->common->show_date($phpgw->db->f(6)) . "<BR>\n";
+		$txtDetail .= $txtAdditional . "<br><hr>";
+		$txtDetail = addslashes($txtDetail);
 
-     $phpgw->db->query("INSERT INTO ticket (t_category,t_detail,t_priority,t_user,t_assignedto, "
-		           . " t_timestamp_opened,t_timestamp_closed,t_subject) VALUES ('$lstCategory','$txtDetail',"
- 		           . "'$optPriority','" . $phpgw_info["user"]["userid"] . "','$assignto','"
-		           . time() . "',0,'$subject');");
-     $phpgw->db->query("SELECT t_id FROM ticket WHERE t_subject='$subject' AND t_user='".$phpgw_info["user"]["userid"]."'");
-     $phpgw->db->next_record();
-     mail_ticket($phpgw->db->f("t_id"));
+		$phpgw->db->query("INSERT INTO ticket (t_category,t_detail,t_priority,t_user,t_assignedto, "
+			. " t_timestamp_opened,t_timestamp_closed,t_subject) VALUES ('$lstCategory','$txtDetail',"
+			. "'$optPriority','" . $phpgw_info["user"]["userid"] . "','$assignto','"
+			. time() . "',0,'$subject');");
+		$phpgw->db->query("SELECT t_id FROM ticket WHERE t_subject='$subject' AND t_user='".$phpgw_info["user"]["userid"]."'");
+		$phpgw->db->next_record();
+		mail_ticket($phpgw->db->f("t_id"));
 
-     Header("Location: " . $phpgw->link("/tts/index.php"));
-  }
+		Header("Location: " . $phpgw->link("/tts/index.php"));
+	}
 ?>
