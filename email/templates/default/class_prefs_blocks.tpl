@@ -4,7 +4,7 @@
 
 <!-- BEGIN B_tr_blank -->
 <tr>
-	<td colspan="2" bgcolor="{back_color}">
+	<td colspan="2">
 		&nbsp;<br>
 	</td>
 </tr>

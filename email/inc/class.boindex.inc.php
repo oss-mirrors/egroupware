@@ -133,9 +133,9 @@
 				'folders_txt2'		=> lang('Manage Folders'),
 				'email_prefs_txt'	=> lang('Email Preferences'),
 				'filters_txt'		=> lang('EMail Filters'),
-				'accounts_txt'		=> lang('Manage Accounts'),
+				'accounts_txt'		=> lang('Extra Accounts'),
 				//'accounts_label'	=> lang('Accounts:'),
-				'accounts_label'	=> lang('Switch Accounts'),
+				'accounts_label'	=> lang('Account'),
 				// some langs for the sort by box
 				'lang_sort_by'		=> lang('Sort By'),
 				'lang_email_date'	=> lang('Email Date'),
@@ -413,8 +413,7 @@
 			// FIXME
 			$this->xi['email_prefs_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',
-								 'menuaction=email.uipreferences.preferences'
-								.'&ex_acctnum='.$GLOBALS['phpgw']->msg->get_acctnum());
+								 'menuaction=email.uipreferences.preferences');
 			
 			$this->xi['filters_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',

@@ -452,7 +452,12 @@
 			$prefs_ui_rows .= $this->create_prefs_block($this->bo->std_prefs);
 			
 			// ---  Custom Prefs  ---
-			$GLOBALS['phpgw']->template->set_var('section_title', lang('Custom E-Mail preferences'));
+			$GLOBALS['phpgw']->template->set_var('section_title', lang('Custom E-Mail Settings').' &#040;'.lang('required').'&#041;');
+			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
+			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
+			$prefs_ui_rows .= $done_widget;
+			// ---  Custom Prefs INSTRUCTIONS ---
+			$GLOBALS['phpgw']->template->set_var('section_title', lang('fill in as much as you can'));
 			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
 			$prefs_ui_rows .= $done_widget;
