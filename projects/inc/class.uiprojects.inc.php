@@ -1099,12 +1099,6 @@
 
 			$GLOBALS['phpgw']->template->set_block('edit_form','navbar','navbarhandle');
 
-			$GLOBALS['phpgw']->template->set_block('edit_form','clist','clisthandle');
-			$GLOBALS['phpgw']->template->set_block('edit_form','cfield','cfieldhandle');
-
-			$GLOBALS['phpgw']->template->set_block('edit_form','elist','elisthandle');
-			$GLOBALS['phpgw']->template->set_block('edit_form','efield','efieldhandle');
-
 			/*$GLOBALS['phpgw']->template->set_block('edit_form','msfield1','msfield1handle');
 			$GLOBALS['phpgw']->template->set_block('edit_form','msfield2','msfield2handle');
 			$GLOBALS['phpgw']->template->set_block('edit_form','mslist','mslisthandle');*/
@@ -1457,43 +1451,36 @@
 
 			$GLOBALS['phpgw']->template->set_var('lang_coordinator',($pro_main?lang('job manager'):lang('Coordinator')));
 
-			switch($GLOBALS['phpgw_info']['user']['preferences']['common']['account_selection'])
+			if (!is_object($GLOBALS['phpgw']->uiaccountsel))
 			{
-				case 'popup':
-					if ($values['coordinator'])
-					{
-						$GLOBALS['phpgw']->template->set_var('accountid',$values['coordinator']);
-						$GLOBALS['phpgw']->template->set_var('accountname',$values['coordinatorout']);
-					}
-					$GLOBALS['phpgw']->template->set_var('clisthandle','');
-					$GLOBALS['phpgw']->template->fp('cfieldhandle','cfield',True);
-
-					$GLOBALS['phpgw']->template->set_var('employee_list',$this->employee_format(array('type' => 'popup','project_id' => ($project_id?$project_id:$parent['project_id']))));
-
-					$GLOBALS['phpgw']->template->set_var('elisthandle','');
-					$GLOBALS['phpgw']->template->fp('efieldhandle','efield',True);
-					break;
-				default:
-					$GLOBALS['phpgw']->template->set_var('coordinator_list',$this->employee_format(array('selected' => ($values['coordinator']?$values['coordinator']:$this->boprojects->account))));
-					$GLOBALS['phpgw']->template->set_var('cfieldhandle','');
-					$GLOBALS['phpgw']->template->fp('clisthandle','clist',True);
-
-					$GLOBALS['phpgw']->template->set_var
-					(	
-						'employee_list',
-						$this->employee_format
-						(
-							array
-							(
-								'project_id' => ($project_id?$project_id:$parent['project_id']),
-								'action' => $action,'pro_parent' => $parent['project_id']
-							)
-						)
-					);
-					$GLOBALS['phpgw']->template->set_var('efieldhandle','');
-					$GLOBALS['phpgw']->template->fp('elisthandle','elist',True);
-					break;
+				$GLOBALS['phpgw']->uiaccountsel = CreateObject('phpgwapi.uiaccountsel');
 			}
+
+			$GLOBALS['phpgw']->template->set_var
+			(
+				'coordinator_accounts',
+				$GLOBALS['phpgw']->uiaccountsel->selection
+				(
+					'accountid',
+					'coordinator_accounts',
+					$values['coordinator'],
+					'accounts',
+					0,false,'style="width:250px;"'
+				)
+			);
+
+			$GLOBALS['phpgw']->template->set_var
+			(
+				'employees_accounts',
+				$GLOBALS['phpgw']->uiaccountsel->selection
+				(
+					'employees[]',
+					'employees_accounts',
+					array_flip($this->boprojects->get_acl_for_project($project_id?$project_id:$parent['project_id'])),
+					'accounts',
+					5,false,'style="width:250px;"'
+				)
+			);
 
 			$abid = $values['customer'];
 			$customer = $this->boprojects->read_single_contact($abid);

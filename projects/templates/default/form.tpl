@@ -155,46 +155,14 @@
 	<tr bgcolor="{row_off}">
 		<td>{lang_coordinator}:</td>
 		<td colspan="3">
-
-<!-- BEGIN clist -->
-
-		<select name="accountid">{coordinator_list}</select>
-
-<!-- END clist -->
-
-<!-- BEGIN cfield -->
-
-		<input type="hidden" name="accountid" value="{accountid}">
-		<input type="text" name="accountname" size="20" value="{accountname}" onClick="accounts_popup();" readonly>
-
-<!-- END cfield -->
-
+		{coordinator_accounts}
 		</td>
 	</tr>
 
 	<tr bgcolor="{row_on}">
 		<td valign="top">{lang_employees}:</td>
 		<td colspan="2">
-
-<!-- BEGIN elist -->
-
-		<select name="employees[]" multiple>{employee_list}</select>
-
-<!-- END elist -->
-
-<!-- BEGIN efield -->
-
-			<table border="0" cellpadding="0" cellspacing="2">
-				<tr>
-					<td>
-						<select name="employees[]" multiple>{employee_list}</select>
-					</td>
-					<td valign="top"><input type="button" value="{lang_open_popup}" onClick="e_accounts_popup();"></td>
-				</tr>
-			</table>
-
-<!-- END efield -->
-
+		{employees_accounts}
 		</td>
 		<td align="right" valign="top">{edit_roles_events_button}</td>
 	</tr>
