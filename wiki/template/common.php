@@ -57,11 +57,12 @@ function template_common_prologue($args)
 <link rel="STYLESHEET" href="<?php print $StyleScript; ?>" type="text/css" />
 <div align="left">
 <div id="header">
+  <?php /* removed logo for now: TODO show it on extern site
   <div class="logo">
-  <a href="<?php print viewURL($HomePage); ?>"><img
+   <a href="<?php print viewURL($HomePage); ?>"><img
     src="<?php print $WikiLogo; ?>" alt="[Home]" /></a>
-  </div>
-  <h1>
+  </div> */ ?>
+  <h1 style="margin:0px;">
 <?php
     print $args['heading'];
     if($args['headlink'] != '')
