@@ -16,7 +16,7 @@
 	$setup_info['emailadmin']['title']     = 'EMailAdmin';
 	$setup_info['emailadmin']['version']   = '0.0.6';
 	$setup_info['emailadmin']['app_order'] = 10;
-	$setup_info['emailadmin']['enable']    = 1;
+	$setup_info['emailadmin']['enable']    = 2;
 
 	$setup_info['emailadmin']['author'] = 'Lars Kneschke';
 	$setup_info['emailadmin']['license']  = 'GPL';
