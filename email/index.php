@@ -151,6 +151,11 @@
 	// "accounts" switchbox
 	// FUTURE
 	// "sorting" switchbox
+	$sort_selected[0] = '';
+	$sort_selected[1] = '';
+	$sort_selected[2] = '';
+	$sort_selected[3] = '';
+	$sort_selected[6] = '';
 	$sort_selected[$phpgw->msg->sort] = " selected";
 	$sortbox_select_options =
 		 '<option value="0"' .$sort_selected[0] .'>'.lang("Email Date").'</option>' ."\r\n"
@@ -168,7 +173,8 @@
 	$t->set_var('switchbox_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php'));
 	$t->set_var('switchbox_listbox',$switchbox_listbox);
 	// navagation arrows
-	$t->set_var('arrows_backcolor',$phpgw_info['theme']['bg_color']);
+	//$t->set_var('arrows_backcolor',$phpgw_info['theme']['bg_color']);
+	$t->set_var('arrows_backcolor',$phpgw_info['theme']['row_off']);
 	$t->set_var('prev_arrows',$td_prev_arrows);
 	$t->set_var('next_arrows',$td_next_arrows);
 
@@ -267,7 +273,7 @@
 	// "last" can not be know until the calculations below
 	//$t->set_var('stats_last',$phpgw->msg->start + $phpgw_info['user']['preferences']['common']['maxmatchs']);
 
-// ----  Messages List Clickable Column Headers (for Sort)  -----
+// ----  Messages List SORT Clickable Column Headers  -----
 	// this is the indicator flag that will be applied to the header name that = current sort
 	$flag_sort_pre = '* ';
 	$flag_sort_post = ' *';
@@ -283,9 +289,30 @@
 		case 1 : $lang_date = $flag_sort_pre .$lang_date .$flag_sort_post; break;
 		case 2 : $lang_from = $flag_sort_pre .$lang_from .$flag_sort_post; break;
 		case 3 : $lang_subject = $flag_sort_pre .$lang_subject .$flag_sort_post; break;
-		case 6 : $lang_size = $flag_sort_pre .$lang_size .$flag_sort_post;
-			 $lang_lines = $flag_sort_pre .$lang_lines .$flag_sort_post; break;
+		case 6 : $lang_size = '*'.$lang_size.'*';
+			 $lang_lines = $lang_lines .$flag_sort_post; break;
 	}
+	
+	// "show_sort_order_imap"
+	// $old_sort : the current sort value
+	// $new_sort : the sort value you want if you click on this
+	// $default_order : user's preference for ordering list items (force this when a new [different] sorting is requested)
+	// $order : the current order (will be flipped if old_sort = new_sort)
+	// script file name
+	// Text the link will show
+	// any extra stuff you want to pass, url style
+	
+	// get users default order preference (hi to lo OR lo to hi)
+	if ((isset($phpgw_info["user"]["preferences"]["email"]["default_sorting"]))
+	  && ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old"))
+	{
+		$default_order = 1;
+	}
+	else
+	{
+		$default_order = 0;
+	}
+
 	// clickable column headers which change the sorting of the messages
 	if ($phpgw->msg->newsmode)
 	{
@@ -298,10 +325,15 @@
 	else
 	{
 		// for email
-		$hdr_subject = $phpgw->nextmatchs->show_sort_order_imap("3",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_subject,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=3&order='.$phpgw->msg->order);
-		$hdr_from = $phpgw->nextmatchs->show_sort_order_imap("2",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_from,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=2&order='.$phpgw->msg->order);
-		$hdr_date = $phpgw->nextmatchs->show_sort_order_imap("1",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_date,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=1&order='.$phpgw->msg->order);
-		$hdr_size = $phpgw->nextmatchs->show_sort_order_imap("6",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_size,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=6&order='.$phpgw->msg->order);
+		//$hdr_subject = $phpgw->nextmatchs->show_sort_order_imap("3",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_subject,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=3&order='.$phpgw->msg->order);
+		//$hdr_from = $phpgw->nextmatchs->show_sort_order_imap("2",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_from,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=2&order='.$phpgw->msg->order);
+		//$hdr_date = $phpgw->nextmatchs->show_sort_order_imap("1",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_date,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=1&order='.$phpgw->msg->order);
+		//$hdr_size = $phpgw->nextmatchs->show_sort_order_imap("6",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_size,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=6&order='.$phpgw->msg->order);
+		// for email
+		$hdr_subject = $phpgw->nextmatchs->show_sort_order_imap($phpgw->msg->sort,"3",$default_order,$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_subject,"&folder=".$phpgw->msg->prep_folder_out(''));
+		$hdr_from = $phpgw->nextmatchs->show_sort_order_imap($phpgw->msg->sort,"2",$default_order,$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_from,"&folder=".$phpgw->msg->prep_folder_out(''));
+		$hdr_date = $phpgw->nextmatchs->show_sort_order_imap($phpgw->msg->sort,"1",$default_order,$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_date,"&folder=".$phpgw->msg->prep_folder_out(''));
+		$hdr_size = $phpgw->nextmatchs->show_sort_order_imap($phpgw->msg->sort,"6",$default_order,$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_size,"&folder=".$phpgw->msg->prep_folder_out(''));
 	}
 
 	$t->set_var('hdr_backcolor',$phpgw_info['theme']['th_bg']);
@@ -310,13 +342,14 @@
 	$t->set_var('hdr_from',$hdr_from);
 	$t->set_var('hdr_date',$hdr_date);
 	$t->set_var('hdr_size',$hdr_size);
+	/*
 	// for those layouts that do not want these clickable headers, here are plain words
 	$t->set_var('lang_subject',$lang_subject);
 	$t->set_var('lang_from',$lang_from);
 	$t->set_var('lang_date',$lang_date);
 	$t->set_var('lang_size',$lang_size);
 	$t->set_var('lang_lines',$lang_size);
-
+	*/
 
 // ----  Form delmov Intialization  Setup  -----
 	// ----  place in first checkbox cell of the messages list table, ONE TIME ONLY   -----
@@ -530,7 +563,7 @@
 			else
 			{
 				// show NO red astrisk
-				$t->set_var('mlist_new_msg','');
+				$t->set_var('mlist_new_msg','&nbsp;');
 				// include NO "strong" bold tags
 				$t->set_var('open_newbold','');
 				$t->set_var('close_newbold','');

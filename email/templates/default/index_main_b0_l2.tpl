@@ -119,22 +119,22 @@ function check_all()
 	</td>
 	<td bgcolor="{hdr_backcolor}" width="20%">
 		<font size="2" face="{hdr_font}">
-		{lang_from}
+		<strong>{hdr_from}</strong>
 		</font>
 	</td>
 	<td bgcolor="{hdr_backcolor}" width="37%">
 		<font size="2" face="{hdr_font}">
- 		{lang_subject}
+ 		<strong>{hdr_subject}</strong>
 		</font>
 	</td>
 	<td bgcolor="{hdr_backcolor}" width="12%" align="center">
 		<font size="1" face="{hdr_font}">
-		{lang_date}
+		<strong>{hdr_date}</strong>
 		</font>
 	</td>
 	<td bgcolor="{hdr_backcolor}" width="4%" align="center">
 		<font size="1" face="{hdr_font}">
-		{lang_size}
+		<strong>{hdr_size}</strong>
 		</font>
 	</td>
 </tr>
