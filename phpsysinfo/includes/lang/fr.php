@@ -19,7 +19,7 @@
 //
 // $Id$
 
-$text['title']		    = 'Information Système';
+$text['title']		    = 'Information Système ';
 
 $text['vitals']         = 'Système';
 $text['hostname']       = 'Nom d\'hôte cannonique';
@@ -66,14 +66,14 @@ $text['gb']             = 'Go';
 
 $text['none']           = 'aucun';
 
-$text['capacity']       = 'Capacity';
+$text['capacity']       = 'Capacité';
   
-$text['template']       = 'Template';
-$text['language']       = 'Language';
-$text['submit']         = 'Submit';
-$text['created']        = 'Created by';
+$text['template']       = 'Modèle ';
+$text['language']       = 'Langue ';
+$text['submit']         = 'Valider';
+$text['created']        = 'Créé par';
 
-$text['days']           = 'days';
-$text['hours']          = 'hours';
+$text['days']           = 'jours';
+$text['hours']          = 'heures';
 $text['minutes']        = 'minutes';
 ?>

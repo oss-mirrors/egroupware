@@ -19,41 +19,41 @@
 //
 // $Id$
 
-$text['title']          = 'Systeem Imformatie';
+$text['title']          = 'Systeem Informatie';
 
-$text['vitals']         = 'Systeem Vitaliteit';
-$text['hostname']       = 'Toegewezen Hostnaam';
+$text['vitals']         = 'Systeem overzicht';
+$text['hostname']       = 'Toegewezen naam';
 $text['ip']             = 'IP-adres';
-$text['kversion']       = 'Kernel Versie';
+$text['kversion']       = 'Kernelversie';
 $text['uptime']         = 'Uptime';
-$text['users']          = 'Huidige Gebruikers';
-$text['loadavg']        = 'Gemiddelde Laadtijd';
+$text['users']          = 'Huidige gebruikers';
+$text['loadavg']        = 'Gemiddelde belasting';
 
-$text['hardware']       = 'Hardware Informatie';
+$text['hardware']       = 'Hardware overzicht';
 $text['numcpu']         = 'Processors';
 $text['cpumodel']       = 'Model';
 $text['mhz']            = 'Chip MHz';
-$text['cache']          = 'Cache Grootte';
+$text['cache']          = 'Buffergrootte';
 $text['bogomips']       = 'Systeem Bogomips';
 $text['pci']            = 'PCI Apparaten';
 $text['ide']            = 'IDE Apparaten';
 $text['scsi']           = 'SCSI Apparaten';
 
-$text['netusage']       = 'Network Gebruik';
+$text['netusage']       = 'Netwerkgebruik';
 $text['device']         = 'Apparaat';
 $text['received']       = 'Ontvangen';
 $text['sent']           = 'Verzonden';
 $text['errors']         = 'Err/Drop';
 
-$text['memusage']       = 'Geheugen Gebruik';
-$text['phymem']         = 'Fysisch Geheugen';
-$text['swap']           = 'Disk Swap';
+$text['memusage']       = 'Geheugengebruik';
+$text['phymem']         = 'Fysiek geheugen';
+$text['swap']           = 'Swap geheugen';
 
-$text['fs']             = 'Gemounte Bestandssystemen';
+$text['fs']             = 'Aangesloten bestandssystemen';
 $text['mount']          = 'Mount';
 $text['partition']      = 'Partitie';
 
-$text['percent']        = 'Percentage vrije ruimte';
+$text['percent']        = 'Percentage gebruikt';
 $text['type']           = 'Type';
 $text['free']           = 'Vrij';
 $text['used']           = 'Gebruikt';
@@ -64,16 +64,16 @@ $text['kb']             = 'KB';
 $text['mb']             = 'MB';
 $text['gb']             = 'GB';
 
-$text['none']           = 'niet';
+$text['none']           = 'geen';
 
-$text['capacity']       = 'Capacity';
+$text['capacity']       = 'Capaciteit';
   
-$text['template']       = 'Template';
+$text['template']       = 'Model';
 $text['language']       = 'Language';
-$text['submit']         = 'Submit';
-$text['created']        = 'Created by';
+$text['submit']         = 'Toepassen';
+$text['created']        = 'Gegenereerd door';
 
-$text['days']           = 'days';
-$text['hours']          = 'hours';
-$text['minutes']        = 'minutes';
+$text['days']           = 'dagen';
+$text['hours']          = 'uren';
+$text['minutes']        = 'minuten';
 ?>

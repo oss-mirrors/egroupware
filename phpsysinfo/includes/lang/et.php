@@ -54,7 +54,7 @@ $text['fs']             = '&Uuml;hendatud failis&uuml;steemid';
 $text['mount']          = '&Uuml;hendus';
 $text['partition']      = 'Partitsioon';
 
-$text['percent']        = 'Percent Capacity';
+$text['percent']        = 'Protsendiline h&otilde;ivatus';
 $text['type']           = 'T&uuml;&uuml;p';
 $text['free']           = 'Vaba';
 $text['used']           = 'Kasutusel';
@@ -65,16 +65,16 @@ $text['kb']             = 'KB';
 $text['mb']             = 'MB';
 $text['gb']             = 'GB';
 
-$text['none']           = 'none';
+$text['none']           = 'puudub';
 
-$text['capacity']       = 'Capacity';
+$text['capacity']       = 'H&otilde;ivatus';
   
 $text['template']       = 'Template';
-$text['language']       = 'Language';
-$text['submit']         = 'Submit';
-$text['created']        = 'Created by';
+$text['language']       = 'Keel';
+$text['submit']         = 'Kehtesta';
+$text['created']        = 'Looja: ';
 
-$text['days']           = 'days';
-$text['hours']          = 'hours';
-$text['minutes']        = 'minutes';
+$text['days']           = 'p&auml;eva';
+$text['hours']          = 'tundi';
+$text['minutes']        = 'minutit';
 ?>

@@ -23,37 +23,37 @@ $text['title']          = 'Informaci&oacute;n Del Sistema';
 
 $text['vitals']         = 'Vitales';
 $text['hostname']       = 'Nombre Del Sistema';
-$text['ip']             = 'N&uacute;mero de IP';
-$text['kversion']       = 'Versi&oacute;n Del Kernel';
+$text['ip']             = 'Direcci&oacute;n IP';
+$text['kversion']       = 'Versi&oacute;n Del N&uacute;cleo';
 $text['uptime']         = 'Uptime';
-$text['users']          = 'Usuarios actuales';
-$text['loadavg']        = 'Promedio de Uso';
+$text['users']          = 'Usuarios Actuales';
+$text['loadavg']        = 'Promedio De Uso';
 
 $text['hardware']       = 'Informaci&oacute;n Del Hardware';
 $text['numcpu']         = 'Procesadores';
 $text['cpumodel']       = 'Modelo';
-$text['mhz']            = 'Frequencia en MHz';
+$text['mhz']            = 'Frecuencia';
 $text['cache']          = 'Tama&ntilde;o Del Cach&eacute;';
 $text['bogomips']       = 'Bogomips';
-$text['pci']            = 'PCI Dispositivos ';
-$text['ide']            = 'IDE Dispositivos';
-$text['scsi']           = 'SCSI Dispositivos ';
+$text['pci']            = 'Dispositivos PCI';
+$text['ide']            = 'Dispositivos IDE';
+$text['scsi']           = 'Dispositivos SCSI';
 
-$text['netusage']       = 'Utilizaci&oacute;n de la Red';
+$text['netusage']       = 'Utilizaci&oacute;n De La Red';
 $text['device']         = 'Dispositivo';
 $text['received']       = 'Recibidos';
 $text['sent']           = 'Enviados';
 $text['errors']         = 'Errores/Perdidos';
 
-$text['memusage']       = 'Utilizaci&oacute;n De Memoria';
+$text['memusage']       = 'Utilizaci&oacute;n De La Memoria';
 $text['phymem']         = 'Memoria F&iacute;sica';
-$text['swap']           = 'Disco Swap';
+$text['swap']           = 'Memoria De Intercambio';
 
-$text['fs']             = 'Sistemas de Archivos Montados';
-$text['mount']          = 'Montado en';
+$text['fs']             = 'Sistemas De Archivos';
+$text['mount']          = 'Punto De Montaje';
 $text['partition']      = 'Partici&oacute;n';
 
-$text['percent']        = 'Porcentaje de Capacidad';
+$text['percent']        = 'Porcentaje De Uso';
 $text['type']           = 'Tipo';
 $text['free']           = 'Libre';
 $text['used']           = 'Usado';
@@ -64,16 +64,16 @@ $text['kb']             = 'KB';
 $text['mb']             = 'MB';
 $text['gb']             = 'GB';
 
-$text['none']           = 'ninguno';
+$text['none']           = 'Ninguno';
 
-$text['capacity']       = 'Capacity';
-  
-$text['template']       = 'Template';
-$text['language']       = 'Language';
-$text['submit']         = 'Submit';
-$text['created']        = 'Created by';
+$text['capacity']       = 'Capacidad';
 
-$text['days']           = 'days';
-$text['hours']          = 'hours';
-$text['minutes']        = 'minutes';
+$text['template']       = 'Plantilla';
+$text['language']       = 'Idioma';
+$text['submit']         = 'Enviar';
+$text['created']        = 'Creado por';
+
+$text['days']           = 'd&iacute;as';
+$text['hours']          = 'horas';
+$text['minutes']        = 'minutos';
 ?>

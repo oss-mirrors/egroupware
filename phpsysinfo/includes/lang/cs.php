@@ -23,13 +23,13 @@ $charset                = 'iso-8859-2';
 
 $text['title']          = 'Informace o systému';
 
-$text['vitals']         = 'Zásadní informace';
+$text['vitals']         = 'Základní informace';
 $text['hostname']       = 'Jméno poèítaèe';
 $text['ip']             = 'IP adresa';
 $text['kversion']       = 'Verze jádra';
 $text['uptime']         = 'Uptime';
 $text['users']          = 'Pøihlá¹ených u¾ivatelù';
-$text['loadavg']        = 'Prùmìru loadu';
+$text['loadavg']        = 'Prùmìrná zátì¾';
 
 $text['hardware']       = 'Hardwarové informace';
 $text['numcpu']         = 'Procesory';
@@ -51,9 +51,9 @@ $text['memusage']       = 'Obsazení pamìti';
 $text['phymem']         = 'Fyzická pamì»';
 $text['swap']           = 'Swap';
 
-$text['fs']             = 'Namountované souborové systémy';
+$text['fs']             = 'Pøipojené souborové systémy';
 $text['mount']          = 'Adresáø';
-$text['partition']      = 'Partition';
+$text['partition']      = 'Oddíl';
 
 $text['percent']        = 'Obsazeno';
 $text['type']           = 'Typ';

@@ -46,7 +46,7 @@ $text['received']       = 'Recebidos';
 $text['sent']           = 'Enviados';
 $text['errors']         = 'Erros/Drop';
 
-$text['memusage']       = 'Utilização de Memória';
+$text['memusage']       = 'Utilização da Memória';
 $text['phymem']         = 'Memória Física';
 $text['swap']           = 'Swap';
 
@@ -67,14 +67,14 @@ $text['gb']             = 'GB';
 
 $text['none']           = 'nenhum';
 
-$text['capacity']       = 'Capacity';
+$text['capacity']       = 'Capacidade';
 
-$text['template']       = 'Template';
-$text['language']       = 'Language';
-$text['submit']         = 'Submit';
-$text['created']        = 'Created by';
+$text['template']       = 'Molde';
+$text['language']       = 'Língua';
+$text['submit']         = 'Enviar';
+$text['created']        = 'Criado por';
 
-$text['days']           = 'days';
-$text['hours']          = 'hours';
-$text['minutes']        = 'minutes';
+$text['days']           = 'dias';
+$text['hours']          = 'horas';
+$text['minutes']        = 'minutos';
 ?>

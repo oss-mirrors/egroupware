@@ -21,43 +21,43 @@
 
 $text['title']          = 'System Information';
 
-$text['vitals']         = 'Systemvitalitaet';
-$text['hostname']       = 'zugewiesener Hostname';
-$text['ip']             = 'Überwachte IP';
-$text['kversion']       = 'Kernel-Version';
+$text['vitals']         = 'System Vitalit&auml;t';
+$text['hostname']       = 'Zugewiesener Hostname';
+$text['ip']             = '&Uuml;berwachte IP';
+$text['kversion']       = 'Kernel Version';
 $text['uptime']         = 'Betriebszeit';
-$text['users']          = 'eingeloggte Benutzer';
-$text['loadavg']        = 'Load Averages';
+$text['users']          = 'Eingeloggte Benutzer';
+$text['loadavg']        = 'Auslastung';
 
-$text['hardware']       = 'Hardwareübersicht';
+$text['hardware']       = 'Hardware &Uuml;bersicht';
 $text['numcpu']         = 'Prozessoren';
 $text['cpumodel']       = 'Modell';
 $text['mhz']            = 'Chip MHz';
-$text['cache']          = 'Cache Größe';
+$text['cache']          = 'Cachegr&ouml;&szlig;e';
 $text['bogomips']       = 'System Bogomips';
-$text['pci']            = 'PCI Geräte';
-$text['ide']            = 'IDE Geräte';
-$text['scsi']           = 'SCSI Geräte';
+$text['pci']            = 'PCI Ger&auml;te';
+$text['ide']            = 'IDE Ger&auml;te';
+$text['scsi']           = 'SCSI Ger&auml;te';
 
-$text['netusage']       = 'Netzwerkauslastung';
+$text['netusage']       = 'Netzwerk Auslastung';
 $text['device']         = 'Schnittstelle';
 $text['received']       = 'Empfangen';
 $text['sent']           = 'Gesendet';
-$text['errors']         = 'Fehler/Drop';
+$text['errors']         = 'Err/Drop';
 
-$text['memusage']       = 'Speicherauslastung';
-$text['phymem']         = 'physikalischer Speicher';
+$text['memusage']       = 'Speicher Auslastung';
+$text['phymem']         = 'Physikalischer Speicher';
 $text['swap']           = 'Auslagerungsdatei auf Disk';
 
-$text['fs']             = 'eingebundene Filesysteme';
+$text['fs']             = 'Gemountete Filesysteme';
 $text['mount']          = 'Mount';
 $text['partition']      = 'Partition';
 
-$text['percent']        = 'prozentuale Auslastung';
+$text['percent']        = 'Prozentuale Auslastung';
 $text['type']           = 'Typ';
 $text['free']           = 'Frei';
 $text['used']           = 'Benutzt';
-$text['size']           = 'Größe';
+$text['size']           = 'Gr&ouml;&szlig;e';
 $text['totals']         = 'Insgesamt';
 
 $text['kb']             = 'KB';
@@ -68,10 +68,10 @@ $text['none']           = 'keine';
 
 $text['capacity']       = 'Kapazität';
   
-$text['template']       = 'Template';
+$text['template']       = 'Vorlage';
 $text['language']       = 'Sprache';
-$text['submit']         = 'Submit';
-$text['created']        = 'Created by';
+$text['submit']         = 'Ändern';
+$text['created']        = 'Erstellt von';
 
 $text['days']           = 'Tage';
 $text['hours']          = 'Stunden';

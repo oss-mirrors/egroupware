@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - PHPSysInfo                                                *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - PHPSysInfo                                                  *
+	* http://www.egroupware.org                                                *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -13,7 +13,7 @@
 
 	$setup_info['phpsysinfo']['name']      = 'phpsysinfo';
 	$setup_info['phpsysinfo']['title']     = 'phpsysinfo';
-	$setup_info['phpsysinfo']['version']   = '1.7';
+	$setup_info['phpsysinfo']['version']   = '2.1';
 	$setup_info['phpsysinfo']['app_order'] = 99;
 	$setup_info['phpsysinfo']['enable']    = 2;
 	$setup_info['phpsysinfo']['tables']    = '';

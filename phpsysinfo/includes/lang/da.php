@@ -68,14 +68,14 @@ $text['gb']             = 'GB';
 
 $text['none']           = 'ingen';
 
-$text['capacity']       = 'Capacity';
+$text['capacity']       = 'Kapacitet';
   
-$text['template']       = 'Template';
-$text['language']       = 'Language';
-$text['submit']         = 'Submit';
-$text['created']        = 'Created by';
+$text['template']       = 'Skabelon';
+$text['language']       = 'Sprog';
+$text['submit']         = 'Okay';
+$text['created']        = 'Lavet af';
 
-$text['days']           = 'days';
-$text['hours']          = 'hours';
-$text['minutes']        = 'minutes';
+$text['days']           = 'dage';
+$text['hours']          = 'timer';
+$text['minutes']        = 'minutter';
 ?>

@@ -35,17 +35,17 @@ $text['cpumodel']       = 'Modello';
 $text['mhz']            = 'MHz del Chip';
 $text['cache']          = 'Dimensione Cache';
 $text['bogomips']       = 'Bogomips del Sistema';
-$text['pci']            = 'Unit? PCI';
-$text['ide']            = 'Unit? IDE';
-$text['scsi']           = 'Unit? SCSI';
+$text['pci']            = 'Unità PCI';
+$text['ide']            = 'Unità IDE';
+$text['scsi']           = 'Unità SCSI';
 
-$text['netusage']       = 'Uso della Rete';
+$text['netusage']       = 'Utilizzo della Rete';
 $text['device']         = 'Device';
-$text['received']       = 'Received';
-$text['sent']           = 'Sent';
+$text['received']       = 'Ricevuti';
+$text['sent']           = 'Inviati';
 $text['errors']         = 'Err/Drop';
 
-$text['memusage']       = 'Uso della Memoria';
+$text['memusage']       = 'Utilizzo della Memoria';
 $text['phymem']         = 'Memoria Fisica';
 $text['swap']           = 'Disco di Swap';
 
@@ -66,14 +66,14 @@ $text['gb']             = 'GB';
 
 $text['none']           = 'none';
 
-$text['capacity']       = 'Capacity';
+$text['capacity']       = 'Capacità';
   
 $text['template']       = 'Template';
-$text['language']       = 'Language';
-$text['submit']         = 'Submit';
-$text['created']        = 'Created by';
+$text['language']       = 'Lingua';
+$text['submit']         = 'Invia';
+$text['created']        = 'Creato da';
 
-$text['days']           = 'days';
-$text['hours']          = 'hours';
-$text['minutes']        = 'minutes';
+$text['days']           = 'giorni';
+$text['hours']          = 'ore';
+$text['minutes']        = 'minuti';
 ?>

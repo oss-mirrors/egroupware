@@ -22,7 +22,7 @@
 $text['title']          = 'System Information';
 
 $text['vitals']         = 'System Vital';
-$text['hostname']       = 'Cannonical Hostname';
+$text['hostname']       = 'Canonical Hostname';
 $text['ip']             = 'Listening IP';
 $text['kversion']       = 'Kernel Version';
 $text['uptime']         = 'Uptime';
@@ -44,6 +44,8 @@ $text['device']         = 'Device';
 $text['received']       = 'Received';
 $text['sent']           = 'Sent';
 $text['errors']         = 'Err/Drop';
+
+$text['connections']	= 'Established Network Connections';
 
 $text['memusage']       = 'Memory Usage';
 $text['phymem']         = 'Physical Memory';
