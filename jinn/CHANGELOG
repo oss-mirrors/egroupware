@@ -3,6 +3,17 @@ CHANGELOG JiNN for eGroupWare
 =============================
 $Id$
 
+Version 0.8.205b
+Thu Dec 30 18:27:21 CET 2004
+=============================
+- All browse setting are now stored in the session array and thay stay sticky
+- Renamed search to quick filter
+- Quick filter can now search on more tokens using OR
+- Quick filter is stores in session array
+- Small fixes to the pager
+- Fix record count when using a quick filter
+- Small code cleanup
+
 Version 0.8.205a
 Fri Dec 24 17:01:31 CET 2004
 =============================

@@ -18,7 +18,8 @@
 			</table>
 	</td>-->
 	<td align="center" style="padding-left:20px;">
-		<form action="{menu_action}" method="post">{search_for}&nbsp;<input type="text" size="8" name="search" value="{search_string}">
+		<form action="{menu_action}" method="post">{search_for}&nbsp;<input type="text" size="20" name="quick_filter" value="{search_string}">
+		<input type="hidden" name="quick_filter_hidden" value="1">
 		<input type="submit" value="{search}">
 		</form>	
 	</td>

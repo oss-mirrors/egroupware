@@ -251,11 +251,16 @@
 	  @function num_rows_table
 	  @ abstract get all tablefield in array for table                                      
 	  */
-	  function num_rows_table($site_id,$table)
+	  function num_rows_table($site_id,$table,$where_condition=false)
 	  {
 		 $this->site_db_connection($site_id);
 
-		 $sql="SELECT * FROM $table";
+		 if($where_condition)
+		 {
+			   $WHERE='WHERE '.$where_condition;
+		 }
+
+		 $sql="SELECT * FROM $table $WHERE";
 		 $this->site_db->query($sql,__LINE__,__FILE__);
 
 		 $num_rows=$this->site_db->num_rows();
@@ -905,7 +910,6 @@
 
 		 if($where_condition)
 		 {
-//			$where_condition = $this->strip_magic_quotes_gpc($where_condition);
 			$where_condition = $where_condition;
 			if($WHERE)
 			{

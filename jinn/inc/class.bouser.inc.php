@@ -72,6 +72,7 @@
 
 	  /* debugging vars set them in preferences */
 	  var $debug_sql = false;
+	  var $debug_session = false;
 	  var $debug_site_arr =false;
 	  var $debug_object_arr =false;
 
@@ -129,14 +130,18 @@
 		 if($GLOBALS['phpgw_info']['user']['apps']['admin'])
 		 {
 			if($this->read_preferences('debug_sql')=='yes') $this->debug_sql=true;
+
 			if($this->read_preferences('debug_site_arr')=='yes') 
 			{
 			   $this->message['debug'][]='SITE_ARRAY: '._debug_array($this->site,false);
 			}
+		
 			if($this->read_preferences('debug_object_arr')=='yes')
 			{
 			   $this->message['debug'][]='OBJECT_ARRAY: '._debug_array($this->site_object,false);
 			}
+		
+		//	$this->message['debug'][]='OBJECT_ARRAY: '._debug_array($this->browse_settings,false);
 		 }
 	  }
 
@@ -202,7 +207,7 @@
 		 }
 		 else
 		 {
-			return 10;
+			return 20;
 		 }
 
 	  }
