@@ -36,16 +36,16 @@ function view_macro_category($args)
   $now = time();
  
   //for($i = 0; $i < count($list); $i++)
-  foreach($list as $i => $page)
+  foreach($list as $i => $lpage)
   {
-    $editTime = $page['time'];
+    $editTime = $lpage['time'];
     if($DayLimit && $i >= $MinEntries
        && !$full && ($now - $editTime) > $DayLimit * 24 * 60 * 60)
       { break; }
 
-    $text = $text . html_category($page['time'], $page,
-                                  $page['author'], $page['username'],
-                                  $page['comment']);
+    $text = $text . html_category($lpage['time'], $lpage,
+                                  $lpage['author'], $lpage['username'],
+                                  $lpage['comment']);
     $text .= html_newline();
   }
 
