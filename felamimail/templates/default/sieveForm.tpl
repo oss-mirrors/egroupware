@@ -23,8 +23,8 @@ function createScript()
 <i>Scripts available for this account.</i><br>
 <br>
 <form method='post' action='{action_add_script}' name='addScript'>
-<table border="1" width="95%">
-	<tr>
+<table border="0" width="100%" cellpadding="1" cellspacing="1" style="border: 1px solid white;">
+	<tr class="th">
 		<td colspan="5" style='text-align : right;'>
 			<a href="javascript:createScript();">{lang_add_script}</a>
 		</td>
@@ -34,9 +34,8 @@ function createScript()
 <input type='hidden' name='newScriptName'>
 </form>
 <br>
-<hr width="95%">
 <table border='0' width='100%'>
-<tr>
+<tr class="text_small">
 <td>
 {lang_rule}: <a href="javascript:submitRuleList('enable');">{lang_enable}</a> 
 <a href="javascript:submitRuleList('disable');">{lang_disable}</a> 
@@ -49,9 +48,9 @@ function createScript()
 <form name='rulelist' method='post' action='{action_rulelist}'>
 <input type='hidden' name='rulelist_action' value='unset'>
 <table width="100%" border="0" cellpadding="2" cellspacing="1">
-	<thead>
+	<thead class="th">
 		<tr>
-			<th width="5%">&nbsp;</th>
+			<th width="3%">&nbsp;</th>
 			<th width="10%">Status</th>
 			<th width="80%">{lang_rule}</th>
 			<th width="5%">Order</th>
@@ -66,7 +65,7 @@ function createScript()
 <!-- END header -->
 
 <!-- BEGIN scriptrow -->
-<tr>
+<tr class="row_on">
 	<td class="body">
 		Script {scriptnumber}
 	</td>
@@ -86,17 +85,17 @@ function createScript()
 <!-- END scriptrow -->
 
 <!-- BEGIN filterrow -->
-<tr class="enabledrule" onmouseover="javascript:style.backgroundColor='#e5e5e5'" onmouseout="javascript:style.backgroundColor='#FFFFFF'" style="background-color: rgb(255, 255, 255);">
-	<td>
+<tr class="{ruleCSS}" onmouseover="javascript:style.backgroundColor='#F6F7F4'" onmouseout="javascript:style.backgroundColor='#FFFFFF'" style="background-color: rgb(255, 255, 255);">
+	<td style="text-align: center;">
 		<input type="checkbox" name="ruleID[]" value="{ruleID}">
 	</td>
-	<td class="enabled">
+	<td style="text-align: center;">
 		{filter_status}
 	</td>
 	<td>
-		<a class="rule" href="{url_edit_rule}" onmouseover="window.status='Edit This Rule'; return true;" onmouseout="window.status='';">{filter_text}</a>
+		<a class="{ruleCSS}" href="{url_edit_rule}" onmouseover="window.status='Edit This Rule'; return true;" onmouseout="window.status='';">{filter_text}</a>
 	</td>
-	<td nowrap="nowrap">
+	<td nowrap="nowrap" style="text-align: center;">
 		<a href="{url_increase}"><img src="{url_up}" alt="Move rule up" border="0" onmouseover="window.status='Move rule up'; return true;" onmouseout="window.status='';"></a>
 		<a href="{url_decrease}"><img src="{url_down}" alt="Move rule down" border="0" onmouseover="window.status='Move rule down'; return true;" onmouseout="window.status='';"></a>
 	</td>

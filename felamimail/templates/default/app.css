@@ -215,3 +215,35 @@ A.header_row_R
 	FONT-SIZE: 12px;
 	font-family : Arial;
 }
+
+TR.sieveRowActive
+{
+	FONT-SIZE: 11px;
+	height : 20px;
+	padding: 0;
+	background : White;
+}
+
+A.sieveRowActive
+{
+	FONT-SIZE: 11px;
+	height : 14px;
+	padding: 0;
+}
+
+TR.sieveRowInActive
+{
+	FONT-SIZE: 11px;
+	height : 20px;
+	padding: 0;
+	background : White;
+	color: Silver;
+}
+
+A.sieveRowInActive
+{
+	FONT-SIZE: 11px;
+	height : 14px;
+	padding: 0;	
+	color: Silver;
+}

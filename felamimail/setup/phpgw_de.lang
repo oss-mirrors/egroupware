@@ -194,3 +194,11 @@ IF	felamimail	de	Wenn
 THEN	felamimail	de	dann
 contains	felamimail	de	enthält
 file into	felamimail	de	verschiebe nach
+rule	felamimail	de	Regel
+enable	felamimail	de	Aktivieren
+disable	felamimail	de	Deaktivieren
+add rule	felamimail	de	Regel hinzufügen
+add script	felamimail	de	Script hinzufügen
+ENABLED	felamimail	de	Aktiviert
+DISABLED	felamimail	de	Deaktiviert
+edit rule	felamimail	de	Regel bearbeiten

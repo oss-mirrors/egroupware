@@ -30,8 +30,11 @@
 
 		function uisieve()
 		{
-			
+			$this->displayCharset	= $GLOBALS['phpgw']->translation->charset();
+
 			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			$this->bofelamimail     = CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$this->connectionStatus	= $this->bofelamimail->openConnection();
 			
 			$config 		= CreateObject('phpgwapi.config','felamimail');
 			$config->read_repository();
@@ -274,6 +277,7 @@
 			// initialize the template
 			$this->t->set_file(array("filterForm" => "sieveEditForm.tpl"));
 			$this->t->set_block('filterForm','main');
+			$this->t->set_block('filterForm','folder');
 #			$this->t->set_block('filterForm','scriptrow');
 #			$this->t->set_block('filterForm','filterrow');
 
@@ -311,6 +315,16 @@
 			$this->t->set_var('value_'.$_ruleData['action'],$_ruleData['action_arg']);
 			}
 			$this->t->set_var('value_ruleID',$_ruleID);
+			
+			$folders = $this->bofelamimail->getFolderList(false);
+			
+			#_debug_array($folders);
+			foreach($folders as $folderName => $folderDisplayName)
+			{
+				$this->t->set_var('folderName',$folderName);
+				$this->t->set_var('folderDisplayName',$folderDisplayName);
+				$this->t->parse("folder_rows", 'folder', true); 
+			}
 			
 			// translate most of the parts
 			$this->translate();
@@ -390,6 +404,10 @@
 					$this->displayRule('unset', false);
 				}
 				$this->sieve->close();
+				if($this->connectionStatus == 'True')
+				{
+					$this->bofelamimail->closeConnection();
+				}
 			}
 		}
 		
@@ -523,7 +541,16 @@
 
 				foreach ($this->rules as $ruleID => $rule)
 				{
-					$this->t->set_var('filter_status',$rule[status]);
+					$this->t->set_var('filter_status',lang($rule[status]));
+					if($rule[status] == 'ENABLED')
+					{
+						$this->t->set_var('ruleCSS','sieveRowActive');
+					}
+					else
+					{
+						$this->t->set_var('ruleCSS','sieveRowInActive');
+					}
+					
 					$this->t->set_var('filter_text',$this->buildRule($rule));
 					$this->t->set_var('ruleID',$ruleID);
 
@@ -576,6 +603,7 @@
 			$this->t->pfp("out","header");
 			
 			$this->sieve->close();
+			$this->bofelamimail->closeConnection();
 		}
 		
 		function restoreSessionData()
@@ -662,6 +690,7 @@
 			$this->t->set_var("lang_add_rule",lang('add rule'));
 			$this->t->set_var("lang_add_script",lang('add script'));
 			$this->t->set_var("lang_back",lang('back'));
+			$this->t->set_var("lang_edit_rule",lang('edit rule'));
 
 			$this->t->set_var("bg01",$GLOBALS['phpgw_info']["theme"]["bg01"]);
 			$this->t->set_var("bg02",$GLOBALS['phpgw_info']["theme"]["bg02"]);
