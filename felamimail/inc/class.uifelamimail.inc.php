@@ -944,66 +944,70 @@
 // different style of parsing folders into file
 // open to active folder on reload
 
-			$counter = 0;
-
 			$folderImageDir = substr($GLOBALS['phpgw']->common->image('phpgwapi','foldertree_line.gif'),0,-19);
 			
 			// careful! "d = new..." MUST be on a new line!!!
 			$folder_tree_new = "<script type='text/javascript'><!--	
 			d = new dTree('d','".$folderImageDir."');";
 			
-			
-			$parentStack = array();
-			while(list($key,$value) = @each($folders))
-			{
-				$selected = '';
-				if ($this->mailbox == $key) 
-				{
-					$selected = ' selected';
-					$this->t->set_var('current_folder',str_replace(".","",$value));
-				
-				}
-				$options_folder .= sprintf('<option value="%s"%s>%s</option>',
-							htmlspecialchars($key),
-							$selected,
-							htmlspecialchars($value));
-							
-				$counted_dots = substr_count($value,".");
+			$allFolders = array();
 
-				if ($this->mailbox == $key) 
+			// create a list of all folders, also the ones which are not subscribed
+ 			foreach($folders as $key => $value)
+			{
+				$folderParts = explode('.',$key);
+				$partCount = count($folderParts);
+				$string = '';
+				for($i = 0; $i < $partCount; $i++)
 				{
-					$folder_name = "<font style=\"background-color: #dddddd\">".str_replace(".","",$value)."</font>";
+					if(!empty($string)) $string .= '.';
+					$string .= $folderParts[$i];
+					$allFolders[$string] = $folderParts[$i];
+				}
+			}
+
+			// keep track of the last parent id
+			$parentStack = array();
+			$counter = 0;
+			foreach($allFolders as $key => $value)
+			{
+				$countedDots = substr_count($key,".");
+				#print "$value => $counted_dots<br>";
+
+				// hihglight currently selected mailbox
+				if ($this->mailbox == $key)
+				{
+					$folder_name = "<font style=\"background-color: #dddddd\">$value</font>";
 #					$folderOpen = 'true';
 				}
 				else
 				{
-					$folder_name = str_replace(".","",$value);
+					$folder_name = $value;
 					$folderOpen = '';
 				}
 
-				$folder_title = str_replace(".","",$value);
+				$folder_title = $value;
 				$folder_icon = $folderImageDir."/foldertree_folder.gif";
 
-				if($counter==0)
+				// we are on the same level
+				if($countedDots == count($parentStack) -1)
 				{
-					$parent = -1;
-					$folder_icon = $folderImageDir."/foldertree_felamimail_sm.png";
+					// remove the last entry
+					array_pop($parentStack);
+					// get the parent
+					$parent = end($parentStack);
+					// and put the current counter on top
+					array_push($parentStack, $counter);
 				}
-
-				$countedDots = $counted_dots/2-1;
-
-				if($countedDots == 0) 
+				// we go one level deeper
+				elseif($countedDots > count($parentStack) -1)
 				{
-					$parent = 0;
-					$parentStack = array($counter);
-				}
-
-				if($countedDots > count($parentStack)-1 && $countedDots > 0)
-				{
+					// get the parent
 					$parent = end($parentStack);
 					array_push($parentStack, $counter);
 				}
-				elseif($countedDots < count($parentStack)-1 && $countedDots > 0)
+				// we go some levels up
+				elseif($countedDots < count($parentStack))
 				{
 					$stackCounter = count($parentStack);
 					while(count($parentStack) > $countedDots)
@@ -1011,6 +1015,14 @@
 						array_pop($parentStack);
 					}
 					$parent = end($parentStack);
+				}
+
+				// some special handling for the root icon
+				// the first icon requires $parent to be -1
+				if($counter==0)
+				{
+					$parent = -1;
+					$folder_icon = $folderImageDir."/foldertree_felamimail_sm.png";
 				}
 				
 				// Node(id, pid, name, url, urlClick, urlOut, title, target, icon, iconOpen, open) {
@@ -1073,6 +1085,29 @@
 			$GLOBALS['phpgw']->common->phpgw_footer();
 			
 		}
+
+function array_merge_replace( $array, $newValues ) {
+   foreach ( $newValues as $key => $value ) {
+       if ( is_array( $value ) ) {
+               if ( !isset( $array[ $key ] ) ) {
+               $array[ $key ] = array();
+           }
+           $array[ $key ] = $this->array_merge_replace( $array[ $key ], $value );
+       } else {
+           if ( isset( $array[ $key ] ) && is_array( $array[ $key ] ) ) {
+               $array[ $key ][ 0 ] = $value;
+           } else {
+               if ( isset( $array ) && !is_array( $array ) ) {
+                   $temp = $array;
+                   $array = array();
+                   $array[0] = $temp;
+               }
+               $array[ $key ] = $value;
+           }
+       }
+   }
+   return $array;
+}
 
 		/* Returns a string showing the size of the message/attachment */
 		function show_readable_size($bytes, $_mode='short')
