@@ -35,7 +35,7 @@
      $sortmethod = "order by $order $sort";
 
   $phpgw->db->query("select t_id,t_category,t_priority,t_assignedto,t_timestamp_opened,t_user,t_timestamp_closed,t_subject "
-	      . "from t_ticket $filtermethod $sortmethod");
+              . "from t_ticket $filtermethod $sortmethod");
 
   $zeilen = $phpgw->db->num_rows();
   if ($filter == "viewall") {
@@ -98,21 +98,21 @@
     $priority=$phpgw->db->f("t_priority");
     switch ($priority)
     {
-       case 1:		$tr_color = $phpgw_info["theme"]["bg01"];	break;
-       case 2:		$tr_color = $phpgw_info["theme"]["bg02"];	break;
-       case 3:		$tr_color = $phpgw_info["theme"]["bg03"];	break;
-       case 4:		$tr_color = $phpgw_info["theme"]["bg04"];	break;
-       case 5:		$tr_color = $phpgw_info["theme"]["bg05"];	break;
-       case 6:		$tr_color = $phpgw_info["theme"]["bg06"];	break;
-       case 7:		$tr_color = $phpgw_info["theme"]["bg07"];	break;
-       case 8:		$tr_color = $phpgw_info["theme"]["bg08"];	break;
-       case 9:		$tr_color = $phpgw_info["theme"]["bg09"];	break;
-       case 10:		$tr_color = $phpgw_info["theme"]["bg10"];	break;
-       default:		$tr_color = $phpgw_info["theme"]["bg_color"];
+       case 1:          $tr_color = $phpgw_info["theme"]["bg01"];       break;
+       case 2:          $tr_color = $phpgw_info["theme"]["bg02"];       break;
+       case 3:          $tr_color = $phpgw_info["theme"]["bg03"];       break;
+       case 4:          $tr_color = $phpgw_info["theme"]["bg04"];       break;
+       case 5:          $tr_color = $phpgw_info["theme"]["bg05"];       break;
+       case 6:          $tr_color = $phpgw_info["theme"]["bg06"];       break;
+       case 7:          $tr_color = $phpgw_info["theme"]["bg07"];       break;
+       case 8:          $tr_color = $phpgw_info["theme"]["bg08"];       break;
+       case 9:          $tr_color = $phpgw_info["theme"]["bg09"];       break;
+       case 10:         $tr_color = $phpgw_info["theme"]["bg10"];       break;
+       default:         $tr_color = $phpgw_info["theme"]["bg_color"];
     }
     echo "<tr bgcolor=\"$tr_color\"><TD align=center><a href=\""
-	. $phpgw->link("viewticket_details.php","ticketid=" . $phpgw->db->f("t_id")) . "\">"
-	. $phpgw->db->f("t_id") . "</a></TD>";
+        . $phpgw->link("viewticket_details.php","ticketid=" . $phpgw->db->f("t_id")) . "\">"
+        . $phpgw->db->f("t_id") . "</a></TD>";
 
 
     $priostr="";
