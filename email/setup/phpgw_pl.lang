@@ -102,10 +102,7 @@ email type	common	pl	Typ e-mail
 enable this email account	common	pl	Uaktywnij to konto
 enable utf-7 encoded folder names	email	pl	Uaktywnij kodowanie UTF-7 nazw folderów
 enter the search string in the text boxes	email	pl	Wprowad¿ szukany tekst w pole tekstowe
-enter your default mail domain ( from: user@domain )	admin	pl	Podaj nazwê swojej domeny (u¿ytkownik@domena)
 enter your pop	admin	pl	Podaj dane swojego POP
-enter your smtp server hostname or ip address	admin	pl	Podaj nazwê hosta serwera SMTP lub adres IP
-enter your smtp server port	admin	pl	Podaj port serwera SMTP
 error moving messages to	email	pl	B³±d w przesuniêcju wiadomo¶ci do
 error text not provided	email	pl	brak tre¶æi b³êdu
 error: unknown message data	email	pl	Wyst±pi³ b³±d: Nieznany format danych w tre¶ci wiadomo¶ci
@@ -195,7 +192,6 @@ mail folder(uw-maildir)	email	pl	Katalog poczty (uw-maildir)
 mail server	email	pl	Serwer pocztowy
 mail server login type	admin	pl	Rodzaj logowania do serwera pocztowego
 mail server type	email	pl	Typ serwera pocztowego
-mail settings	admin	pl	Ustawienia email
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	pl	
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	pl	
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your phpgroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	pl	Poczta wysy³ana bêdzie u¿ywa³a tego wpisu jako adres nadawcy w polu &quot;From&quot;. Mo¿e to byæ twój login do eGroupWare lub administrator systemu ustawi³ ci jaki¶ inne. Jak odbiorca kliknje na odpowiedz lub reply, ten adres bêdzie u¿yty na wys³anie odpowiedzi do ciebie. Je¿eli nie wpiszesz nic do tego pola, domy¶lna warto¶æ zostanie u¿yta.

@@ -94,10 +94,7 @@ email type	common	el	Τύπος E-Mail
 enable this email account	common	el	Ενεργοποίηση αυτού του λογαριασμού email
 enable utf-7 encoded folder names	email	el	Ενεργοποίηση utf-7 κωδικοποίησης για τα ονόματα φακέλων
 enter the search string in the text boxes	email	el	Εισάγετε το αλφαριθμητικό εύρεσης στα πλαίσια κειμένου
-enter your default mail domain ( from: user@domain )	admin	el	Εισαγωγή του προκαθορισμένου ονόματος τομέα αλληλογραφίας (Από:user@domain)
 enter your pop	admin	el	Εισάγωγή POP
-enter your smtp server hostname or ip address	admin	el	Εισάγωγή του ονόματος ή του IP του SMTP server
-enter your smtp server port	admin	el	Εισάγωγή του SMTP server port
 error moving messages to	email	el	Σφάλμα κατά τη μετακίνηση μηνυμάτων σε
 error text not provided	email	el	Η επεξήγηση του σφάλματος δεν υπάρχει
 error: unknown message data	email	el	Σφάλμα: Αγνωστο μήνυμα δεδομένων
@@ -183,7 +180,6 @@ mail folder(uw-maildir)	email	el
 mail server	email	el	
 mail server login type	admin	el	
 mail server type	email	el	
-mail settings	admin	el	
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your phpgroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	el	
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your phpgroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	el	
 manage accounts	email	el	Διαχείρηση Λογαριασμών

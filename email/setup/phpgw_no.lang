@@ -97,10 +97,7 @@ email type	common	no	Epost type
 enable this email account	common	no	Slå på denne epost kontoen
 enable utf-7 encoded folder names	email	no	Slå på utf-7 kodede mappenavn
 enter the search string in the text boxes	email	no	Skriv inn søkestreng i tekst boksene
-enter your default mail domain ( from: user@domain )	admin	no	Skriv inn ditt standard epost domene ( Fra: bruker@domene )
 enter your pop	admin	no	Skriv inn din POP tjener
-enter your smtp server hostname or ip address	admin	no	Skriv inn din SMTP tjeners navn eller IP adresse
-enter your smtp server port	admin	no	Skriv inn din SMTP tjeners portnummer
 error moving messages to	email	no	Feilmelding under flytting av meldinger til
 error text not provided	email	no	feilmeldingstekst ikke klar
 error: unknown message data	email	no	Feil: ukjent meldings data
@@ -188,7 +185,6 @@ mail folder(uw-maildir)	email	no	epost mappe (uw-maildir)
 mail server	email	no	Epost tjener
 mail server login type	admin	no	Epost tjener påloggingstype
 mail server type	email	no	Epost tjener type
-mail settings	admin	no	Epost innstillinger
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	no	Epost du sender vil bruke &quot;Fra&quot; adressen som avsender. Dette kan være den samme som ditt eGroupWare påloggingsnavn eller din IT administrator kan ha satt adressen for deg. Når mottaker velger å svare på meldingen vil denne adressen bli brukt. Du kan la denne boksen være blank, i såfall vil standard verdien bli brukt.
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	no	Epost du sender vil bruke &quot;Fra&quot; adressen som avsender. Dette kan være den samme som ditt eGroupWare påloggingsnavn eller din IT administrator kan ha satt adressen for deg. Når mottaker velger å svare på meldingen vil denne adressen bli brukt. Du kan la denne boksen være blank, i såfall vil standard verdien bli brukt.
 manage accounts	email	no	Behandle Kontoer

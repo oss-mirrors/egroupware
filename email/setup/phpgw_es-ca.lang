@@ -102,10 +102,7 @@ email type	common	es-ca	Tipus de correu
 enable this email account	common	es-ca	Activar aquest compte de correu
 enable utf-7 encoded folder names	email	es-ca	Activar codificació UTF-7 per a noms de carpetes
 enter the search string in the text boxes	email	es-ca	Entreu la cadena a cercar a les caselles de text
-enter your default mail domain ( from: user@domain )	admin	es-ca	Entreu el vostre domini de correu per defecte ( De: usuari@domini )
 enter your pop	admin	es-ca	Entreu el servidor POP
-enter your smtp server hostname or ip address	admin	es-ca	Entreu el nom o l'adreça IP del servidor SMTP
-enter your smtp server port	admin	es-ca	Entreu el port del servidor SMTP
 error moving messages to	email	es-ca	Error movent missatges a
 error text not provided	email	es-ca	text d'error no proveït
 error: unknown message data	email	es-ca	Error: Dades del missatge desconegudes
@@ -194,7 +191,6 @@ mail folder(uw-maildir)	email	es-ca	Carpeta de Correu (uw-maildir)
 mail server	email	es-ca	Servidor de Correu
 mail server login type	admin	es-ca	Tipus de connexió
 mail server type	email	es-ca	Tipus de Servidor de Correu
-mail settings	admin	es-ca	Configuracions de Correu
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your phpgroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	es-ca	El missatge que envieu farà servir aquesta adreça com a camp &quot:De&quot; del remitent. Pot ser la mateixa que l'usuari d'eGroupWare, o l'administrador del servidor pot haber-ho establert per vosaltres. Quan el destinatari respongui al missatge, farà servir aquesta adreça. Podeu deixar aquest camp en blanc i s'usarà el valor predeterminat.
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your phpgroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	es-ca	El missatge que envieu farà servir aquesta adreça com a camp &quot:De&quot; del remitent. Pot ser la mateixa que l'usuari d'eGroupWare, o l'administrador del servidor pot haber-ho establert per vosaltres. Quan el destinatari respongui al missatge, farà servir aquesta adreça. Podeu deixar aquest camp en blanc i s'usarà el valor predeterminat.
 manage accounts	email	es-ca	Gestionar comptes

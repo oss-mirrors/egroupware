@@ -41,8 +41,6 @@ enable this email account	common	fi	Käytä tätä tunnusta
 enable utf-7 encoded folder names	email	fi	Käytä utf-7 muotoisia kansioiden nimiä
 enter your default mail domain ( From: user@domain )	admin	fi	Anna oletustoimialue ( Lähettäjä: minä@toimialue )
 enter your pop	admin	fi	Anna POP
-enter your smtp server hostname or ip address	admin	fi	Anna SMTP -palvelimen nimi tai IP-osoite
-enter your smtp server port	admin	fi	Anna SMTP -palvelimen portti
 error moving messages to	email	fi	Virhe siirrettäessä viestejä kansioon
 error: unknown message data	email	fi	Virhe: Viestin sisältöä ei tunnistettu
 extra e-mail account	common	fi	Lisä E-Mail tunnus
@@ -75,7 +73,6 @@ mail folder(uw-maildir)	email	fi	Postikansio (uw-maildir)
 mail server login type	admin	fi	Postipalvelimelle kirjautumisen tapa
 mail server type	email	fi	Postipalvelimen tyyppi
 mail server	email	fi	Postipalvelin
-mail settings	admin	fi	Asetukset
 manage accounts	email	fi	Tunnusten hallinta
 manage folders	email	fi	Kansioiden hallinta
 message list layout	common	fi	Viestiluettelon ulkoasu

@@ -81,8 +81,6 @@ enable this email account	common	fr	Activer ce compte EMail
 enable utf-7 encoded folder names	email	fr	Activer les noms de dossiers encodés utf-7
 enter your default mail domain ( From: user@domain )	admin	fr	Entrez votre domaine mail par défaut ( From: user@domaine )
 enter your pop	admin	fr	Entrez votre POP
-enter your smtp server hostname or ip address	admin	fr	Entrez votre nom de serveur SMTP ou adresse IP
-enter your smtp server port	admin	fr	Entrez le port de votre serveur SMTP
 error	email	fr	erreur
 error moving messages to	email	fr	Erreur lors du déplacement de messages vers
 error: unknown message data	email	fr	Erreur: données de message inconnues
@@ -142,7 +140,6 @@ mail folder(uw-maildir)	email	fr	Répertoire de mail (uw-maildir)
 mail server	email	fr	Serveur de mail
 mail server login type	admin	fr	Type de login du serveur de mail
 mail server type	email	fr	Type de serveur de mail
-mail settings	admin	fr	Réglages mail
 manage accounts	email	fr	Gérer les comptes
 manage folders	email	fr	Gérer les dossiers
 message list layout	common	fr	Mise en page de la liste de messages

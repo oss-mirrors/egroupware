@@ -97,10 +97,7 @@ email type	common	zh	E-Mail类型
 enable this email account	common	zh	启用该帐户
 enable utf-7 encoded folder names	email	zh	邮件夹名称使用UTF-7编码
 enter the search string in the text boxes	email	zh	在文本框中输入查找字符串
-enter your default mail domain ( from: user@domain )	admin	zh	输入默认邮件域名（即邮件地址中"@"号后面的内容）
 enter your pop	admin	zh	输入POP服务器
-enter your smtp server hostname or ip address	admin	zh	输入SMTP服务器的主机名或IP地址
-enter your smtp server port	admin	zh	输入SMTP服务器的端口号
 error moving messages to	email	zh	移动邮件至该邮件夹时出错:
 error text not provided	email	zh	该错误无详细信息
 error: unknown message data	email	zh	错误: 未知的邮件数据
@@ -188,7 +185,6 @@ mail folder(uw-maildir)	email	zh	邮件夹(uw-maildir)
 mail server	email	zh	邮件服务器
 mail server login type	admin	zh	邮件服务器登录类型
 mail server type	email	zh	邮件服务器类型
-mail settings	admin	zh	邮件配置
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	zt	您送出的郵件將會用這個位址當&quot;寄件人&quot;，這也許與您登入eGroupWare的帳號一樣或是伺服器管理員另外幫您設定。當收件人點選回信時將會寄到這個信箱，您可以不填入任何資料來使用預設值。
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	zt	您送出的郵件將會用這個位址當&quot;寄件人&quot;，這也許與您登入eGroupWare的帳號一樣或是伺服器管理員另外幫您設定。當收件人點選回信時將會寄到這個信箱，您可以不填入任何資料來使用預設值。
 manage accounts	email	zh	管理帐户

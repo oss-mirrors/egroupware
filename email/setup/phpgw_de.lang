@@ -97,10 +97,7 @@ email type	common	de	E-Mail Typ
 enable this email account	common	de	Diese E-Mail Konto aktivieren
 enable utf-7 encoded folder names	email	de	UTF-7 codierte Ordnername erlauben
 enter the search string in the text boxes	email	de	Geben Sie die zu suchenden Begriffe bitte ein
-enter your default mail domain ( from: user@domain )	admin	de	Standard EMail-Domain (Von: benutzer@domain)
 enter your pop	admin	de	Eingaben POP
-enter your smtp server hostname or ip address	admin	de	SMTP-Server Hostname oder IP-Adresse
-enter your smtp server port	admin	de	SMTP-Server Port
 error moving messages to	email	de	Fehler beim verschieben der Nachricht nach
 error text not provided	email	de	Fehlermeldung nicht verfügbar
 error: unknown message data	email	de	Fehler: unbekannte Nachrichent-Daten
@@ -189,7 +186,6 @@ mail folder(uw-maildir)	email	de	Mail Ordner (UW-Mailverzeichnis)
 mail server	email	de	Mail Server
 mail server login type	admin	de	EMail-Server Logintyp
 mail server type	email	de	Typ des Mailservers
-mail settings	admin	de	EMail Einstellungen
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	de	E-Mail Nachrichten welche Sie versenden benutzen diese Adresse im Feld &quot;Von&quot;. Dies kann die gleiche Name sein wie Ihr eGroupWare Name, oder der Server Administrator hat einen Namen für Sie vergeben. Wenn der Empfänger auf Antworten klickt wird die hier angegebene Adresse als Antwort Adresse benutzt. Wenn Sie dieses Feld nicht ausfüllen wird eine Standard Einstellung verwendet.
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	de	E-Mail Nachrichten welche Sie versenden benutzen diese Adresse im Feld &quot;Von&quot;. Dies kann die gleiche Name sein wie Ihr eGroupWare Name, oder der Server Administrator hat einen Namen für Sie vergeben. Wenn der Empfänger auf Antworten klickt wird die hier angegebene Adresse als Antwort Adresse benutzt. Wenn Sie dieses Feld nicht ausfüllen wird eine Standard Einstellung verwendet.
 manage accounts	email	de	Benutzerkonten verwalten

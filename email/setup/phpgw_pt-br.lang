@@ -100,10 +100,7 @@ email type	common	pt-br	Tipo de e-mail
 enable this email account	common	pt-br	Habilitar esta conta de e-mail
 enable utf-7 encoded folder names	email	pt-br	Habilitar codificação utf-7 para nomes de pastas
 enter the search string in the text boxes	email	pt-br	Digite o argumento de busca nas caixas de texto
-enter your default mail domain ( from: user@domain )	admin	pt-br	Digite seu domínio padrão de correio eletrônico (usuario@dominio)
 enter your pop	admin	pt-br	Digite o endereço de seu servidor POP
-enter your smtp server hostname or ip address	admin	pt-br	Digite o endereço de seu servidor SMTP
-enter your smtp server port	admin	pt-br	Digite a porta de seu servidor SMTP
 error moving messages to	email	pt-br	Erro movendo mensagens para
 error text not provided	email	pt-br	Erro desconhecido
 error: unknown message data	email	pt-br	Erro: mensagem contém dados desnconhecidos
@@ -191,7 +188,6 @@ mail folder(uw-maildir)	email	pt-br	Pasta de Entrada(uw-maildir)
 mail server	email	pt-br	Servidor de E-mail
 mail server login type	admin	pt-br	Tipo de conexão para o servidor de correio
 mail server type	email	pt-br	Tipo de servidor de Correio eletrônico
-mail settings	admin	pt-br	Configurações de Correio Eletronico
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	pt-br	A mensagem que você enviar usará este endereço como o endereço "Remetente". Este pode ser o mesmo nome usado na conexão ao eGroupWare ou, pode ser que o administrador do seu servidor já tenha configurado isso para você. Quando os destinatários clicarem em Responder, esse será o endereço que será utilizado. Você pode deixar este espaço em branco e o valor padrão será utilizado.
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	pt-br	A mensagem que você enviar usará este endereço como o endereço "Remetente". Este pode ser o mesmo nome usado na conexão ao eGroupWare ou, pode ser que o administrador do seu servidor já tenha configurado isso para você. Quando os destinatários clicarem em Responder, esse será o endereço que será utilizado. Você pode deixar este espaço em branco e o valor padrão será utilizado.
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your phpgroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	pt-br	Mensagens enviadas por você usará o endereço &quot;From&quot;. Talvez esse seja o mesmo nome de login de seu usuário. Ao clicar em responder, esse será o endereço utilizado pelo destinatário para responder. DEixando essa caixa em branco, será utilizado o valor padrão.

@@ -97,10 +97,7 @@ email type	common	zt	種類
 enable this email account	common	zt	啟用
 enable utf-7 encoded folder names	email	zt	在資料夾名稱啟用 UTF-7 編碼
 enter the search string in the text boxes	email	zt	請輸入您要搜尋的文字
-enter your default mail domain ( from: user@domain )	admin	zt	輸入您的預設郵件網域
 enter your pop	admin	zt	輸入您的POP伺服器
-enter your smtp server hostname or ip address	admin	zt	輸入您的SMTP伺服器主機名稱或IP位址
-enter your smtp server port	admin	zt	輸入您的SMTP伺服器連接埠
 error moving messages to	email	zt	移動訊息時發生錯誤
 error text not provided	email	zt	錯誤文字並未提供
 error: unknown message data	email	zt	錯誤：未知名的訊息資料
@@ -188,7 +185,6 @@ mail folder(uw-maildir)	email	zt	郵件資料夾(uw-maildir)
 mail server	email	zt	郵件伺服器
 mail server login type	admin	zt	郵件伺服器登入種類
 mail server type	email	zt	郵件伺服器種類
-mail settings	admin	zt	郵件設定
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	zt	您送出的郵件將會用這個位址當&quot;寄件人&quot;，這也許與您登入eGroupWare的帳號一樣或是伺服器管理員另外幫您設定。當收件人點選回信時將會寄到這個信箱，您可以不填入任何資料來使用預設值。
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	zt	您送出的郵件將會用這個位址當&quot;寄件人&quot;，這也許與您登入eGroupWare的帳號一樣或是伺服器管理員另外幫您設定。當收件人點選回信時將會寄到這個信箱，您可以不填入任何資料來使用預設值。
 manage accounts	email	zt	管理帳號

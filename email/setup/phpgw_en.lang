@@ -97,10 +97,7 @@ email type	common	en	E-Mail Type
 enable this email account	common	en	Enable this email account
 enable utf-7 encoded folder names	email	en	Enable utf-7 encoded folder names
 enter the search string in the text boxes	email	en	Enter the search string in the text boxes
-enter your default mail domain ( from: user@domain )	admin	en	Enter your default mail domain ( From: user@domain )
 enter your pop	admin	en	Enter your POP
-enter your smtp server hostname or ip address	admin	en	Enter your SMTP server hostname or IP address
-enter your smtp server port	admin	en	Enter your SMTP server port
 error moving messages to	email	en	Error moving messages to
 error text not provided	email	en	error text not provided
 error: unknown message data	email	en	Error: Unknown message data
@@ -188,7 +185,6 @@ mail folder(uw-maildir)	email	en	Mail Folder(uw-maildir)
 mail server	email	en	Mail Server
 mail server login type	admin	en	Mail server login type
 mail server type	email	en	Mail Server type
-mail settings	admin	en	Mail settings
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	en	Mail you send will use this address as the &quot;From&quot; address. This may be the same as your eGroupWare login name or the server administrator may have set it for you. When the recipient clicks reply, this address will be used. You can leave this box blank and the default value will be used.
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	en	Mail you send will use this address as the &quot;From&quot; address. This may be the same as your eGroupWare login name, or the server administrator may have set it for you. When the recipient clicks reply, this address will be used. You can leave this box blank and the default value will be used.
 manage accounts	email	en	Manage Accounts

@@ -47,8 +47,6 @@ enable this email account	common	pt	Habilitar esta conta de email
 enable utf-7 encoded folder names	email	pt	Habilitar codificação utf-7 de nomes de pastas
 enter your default mail domain ( From: user@domain )	admin	pt	Digite seu domínio padrão de correio eletrônico
 enter your pop	admin	pt	Digite o endereço de seu servidor POP
-enter your smtp server hostname or ip address	admin	pt	Digite o endereço de seu servidor SMTP
-enter your smtp server port	admin	pt	Digite a porta de seu servidor SMTP
 error moving messages to	email	pt	Erro movendo mensagens para
 error: unknown message data	email	pt	Erro: Data de mensagem desconhecida
 extra e-mail account	common	pt	Conta de email extra
@@ -83,7 +81,6 @@ mail folder(uw-maildir)	email	pt	Caixa de Entrada(uw-maildir)
 mail server	email	pt	Servidor de E-mail
 mail server login type	admin	pt	Tipo de servidor de correio para login
 mail server type	email	pt	Tipo de servidor de e-mail
-mail settings	admin	pt	Configurações de correio
 manage accounts	email	pt	Manutenção de contas
 manage folders	email	pt	Manutenção de pastas
 message list layout	common	pt	Layout de listagem de mensagens

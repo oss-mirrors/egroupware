@@ -94,10 +94,7 @@ email type	common	ru	Тип E-Mail
 enable this email account	common	ru	Включить эту учетную запись
 enable utf-7 encoded folder names	email	ru	Включить кодирование имен папок utf-7
 enter the search string in the text boxes	email	ru	Введите строку для поиска
-enter your default mail domain ( from: user@domain )	admin	ru	Введите Ваш почтовый домен по умолчанию  ( From: user@domain )
 enter your pop	admin	ru	Введите IP-адрес или имя Вашего POP-сервера
-enter your smtp server hostname or ip address	admin	ru	Введите IP-адрес или имя Вашего SMTP-сервера
-enter your smtp server port	admin	ru	Введите порт Вашего SMTP-сервера
 error moving messages to	email	ru	Ошибка при перемещении сообщений в
 error text not provided	email	ru	ошибка нет текста
 error: unknown message data	email	ru	Ошибка: Неизвестные данные сообщения
@@ -183,7 +180,6 @@ mail folder(uw-maildir)	email	ru	Папка Mail (uw-maildir)
 mail server	email	ru	Почтовый сервер
 mail server login type	admin	ru	Тип входа на почтовый сервер
 mail server type	email	ru	Тип почтового сервера
-mail settings	admin	ru	Установки почты
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your phpgroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	ru	
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your phpgroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	ru	
 manage accounts	email	ru	Управление учетными записями

@@ -39,10 +39,7 @@ e-mail filters	common	ja	フィルタ管理
 e-mail inbox filters list	email	ja	受信メールフィルタリスト
 e-mail preferences	common	ja	電子メールユーザ設定
 enable utf-7 encoded folder names	email	ja	UTF-7 エンコードのフォルダ名を使用
-enter your default mail domain ( from: user@domain )	admin	ja	メールドメイン名 ( 書式 user@domain の domain部分 )
 enter your pop	admin	ja	POP
-enter your smtp server hostname or ip address	admin	ja	SMTP サーバ名または IP アドレス
-enter your smtp server port	admin	ja	SMTP ポート番号
 evolution style	email	ja	Evolution Style
 extra e-Mail accounts	common	ja	アカウント管理
 file	email	ja	ファイル名
@@ -79,7 +76,6 @@ mail folder(uw-maildir)	email	ja	メールフォルダ（UW-MailDir）
 mail server	email	ja	メールサーバ
 mail server login type	admin	ja	メールサーバログインタイプ
 mail server type	email	ja	メールサーバタイプ
-mail settings	admin	ja	電子メール設定
 manage folders	email	ja	フォルダ管理
 message list layout	email	ja	メッセージリストレイアウト
 messages	email	ja	メッセージ

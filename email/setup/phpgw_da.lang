@@ -108,10 +108,7 @@ email type	common	da	E-mail type
 enable this email account	common	da	Aktiver denne e-mail konto
 enable utf-7 encoded folder names	email	da	Tillad utf-7 kodede mappe-navne
 enter the search string in the text boxes	email	da	
-enter your default mail domain ( from: user@domain )	admin	da	Indtast dit standard domæne navn (fra: bruger@domæne)
 enter your pop	admin	da	Indtast POP-server navn
-enter your smtp server hostname or ip address	admin	da	Indtast SMTP-server navn
-enter your smtp server port	admin	da	Indtast SMTP-server port
 error	email	da	fejl
 error moving messages to	email	da	Fejl ved flytning af beskeder til
 error text not provided	email	da	
@@ -203,7 +200,6 @@ mail folder(uw-maildir)	email	da	Post mappe (uw-maildir)
 mail server	email	da	Post server
 mail server login type	admin	da	Post server login type
 mail server type	email	da	Post server type
-mail settings	admin	da	Post indstillinger
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	da	Post du har sendt vil bruge denne adresse som &quot;Fra&quot; adresse. Dette kan være det samme som dit eGroupWare login navn eller systemadministrator kan lave indstillet den for dig. Når modtageren klikker besvar, vil denne adresse blive brugt. Du kan efterlade denne boks tom, da vil den standarte adresse blive brugt.
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	da	Post du har sendt vil bruge denne adresse som &quot;Fra&quot; adresse. Dette kan være det samme som dit eGroupWare login navn eller systemadministrator kan lave indstillet den for dig. Når modtageren klikker besvar, vil denne adresse blive brugt. Du kan efterlade denne boks tom, da vil den standarte adresse blive brugt.
 manage accounts	email	da	Vedligehold konti

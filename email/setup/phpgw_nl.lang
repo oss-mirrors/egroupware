@@ -97,10 +97,7 @@ email type	common	nl	Email type
 enable this email account	common	nl	Activeer dit email account
 enable utf-7 encoded folder names	email	nl	Inschakelen utf-7 gecodeerde foldernamen
 enter the search string in the text boxes	email	nl	Geeft de zoektekst in het tekstvak
-enter your default mail domain ( from: user@domain )	admin	nl	Geef uw huidige mail domein (Van: gebruiker@domein)
 enter your pop	admin	nl	Uw POP server
-enter your smtp server hostname or ip address	admin	nl	Uw SMTP server host of IP
-enter your smtp server port	admin	nl	Uw SMTP port
 error moving messages to	email	nl	Fout bij verplaatsten berichten naar
 error text not provided	email	nl	fout tekst niet opgegeven
 error: unknown message data	email	nl	Fout: Onbekende bericht data
@@ -187,7 +184,6 @@ mail folder(uw-maildir)	email	nl	Mail folder (uw-maildir)
 mail server	email	nl	Mail Server
 mail server login type	admin	nl	Mail server login-type
 mail server type	email	nl	Mail Server type
-mail settings	admin	nl	Mail instellingen
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your phpgroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	nl	
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your phpgroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	nl	
 manage accounts	email	nl	Beheer accounts

@@ -105,10 +105,7 @@ email type	common	es-es	Tipo del E-mail
 enable this email account	common	es-es	Habilitar esta cuenta de correo
 enable utf-7 encoded folder names	email	es-es	Habilitar codificacion UTF-7 para carpetas
 enter the search string in the text boxes	email	es-es	Introduzca la cadena de búsqueda para cuadros de texto
-enter your default mail domain ( from: user@domain )	admin	es-es	Introduzca su dominio de correo predeterminado ( De: usuario@dominio )
 enter your pop	admin	es-es	Introduzca su servidor POP
-enter your smtp server hostname or ip address	admin	es-es	Introduzca su servidor SMTP (nombre o IP)
-enter your smtp server port	admin	es-es	Introduzca el puerto del servidor SMTP
 error moving messages to	email	es-es	Error moviendo mensajes a
 error text not provided	email	es-es	texto de error no proporcionado
 error: unknown message data	email	es-es	Error: Datos del mensaje desconocidos
@@ -199,7 +196,6 @@ mail folder(uw-maildir)	email	es-es	Carpeta del Correo
 mail server	email	es-es	Servidor de Mail
 mail server login type	admin	es-es	Tipo de login
 mail server type	email	es-es	Tipo de servidor de Mail
-mail settings	admin	es-es	Seteos del E-mail
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	es-es	El correo que envíe usará esta dirección como el campo &quot:De&quot; del remitente. Puede ser el mismo que el usuario de eGroupWare, o el administrador del servidor puede haberlo puesto por usted. Cuando el destinatario responda al mensaje, usará esta dirección. Puede dejar este campo en blanco y se usará el valor predeterminado.
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	es-es	El correo que envíe usará esta dirección como el campo &quot:De&quot; del remitente. Puede ser el mismo que el usuario de eGroupWare, o el administrador del servidor puede haberlo puesto por usted. Cuando el destinatario responda al mensaje, usará esta dirección. Puede dejar este campo en blanco y se usará el valor predeterminado.
 manage accounts	email	es-es	Administrar cuentas

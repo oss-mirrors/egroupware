@@ -202,19 +202,11 @@
 			$mymachine = $mail_out['mta_elho_mymachine'];
 			$fromuser = $mail_out['mta_from'];
 			// START SMTP SESSION - now we can send our message. 1st we identify ourselves and the sender
-// START CHANGES JF
-// lets assume for the purpose of testing that these variables were already set up somewhere.
-// That still needs to be done properly.
-// angles: this is a temp handler until it gets in the email site setup page as site option
-$smtp_auth_login_required = False;
-//$smtp_auth_login_required = true;
-$mylogin = "xxxxxx";
-$mypassword = "xxxxxxxxxx";
 
-			if ($smtp_auth_login_required)
+			if ($GLOBALS['phpgw_info']['server']['smtp_auth_user'])
 			{
-				$mybase64login=base64_encode($mylogin);
-				$mybase64password=base64_encode($mypassword);
+				$mybase64login=base64_encode($GLOBALS['phpgw_info']['server']['smtp_auth_user']);
+				$mybase64password=base64_encode($GLOBALS['phpgw_info']['server']['smtp_auth_passwd']);
 				$cmds = array (
 					"\$src = \$this->msg2socket(\$socket,\"EHLO \$mymachine\r\n\");",
 					"\$rrc = \$this->socket2msg(\$socket);",
@@ -237,7 +229,7 @@ $mypassword = "xxxxxxxxxx";
 					"\$rrc = \$this->socket2msg(\$socket);"
 				);
 			}
-// END CHANGES JF
+
 			if ($this->debug_fake_send)
 			{
 				echo '<pre>';

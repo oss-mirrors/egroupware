@@ -94,10 +94,7 @@ email type	common	sl	Tip epo¹te
 enable this email account	common	sl	Omogo&#269;i ta enabiralnik
 enable utf-7 encoded folder names	email	sl	Omogo&#269;i imena map v naboru utf-7
 enter the search string in the text boxes	email	sl	Vnesite iskani niz v vnosne vrstice
-enter your default mail domain ( from: user@domain )	admin	sl	Vnesite privzeto po¹tno domeno (oblika: uporabnik@domena)
 enter your pop	admin	sl	Vnesite ime POP3 stre¾nika
-enter your smtp server hostname or ip address	admin	sl	Vnesite ime ali IP SMTP stre¾nika
-enter your smtp server port	admin	sl	Vnesite vrata SMTP stre¾nika
 error moving messages to	email	sl	Napaka pri prenosu sporo&#269;il v
 error text not provided	email	sl	ni opisa napake
 error: unknown message data	email	sl	Napaka: neznani podatki o sporo&#269;ilu
@@ -175,7 +172,6 @@ mail folder(uw-maildir)	email	sl	Mapa s po¹to (uw-maildir)
 mail server	email	sl	Po¹tni stre¾nik
 mail server login type	admin	sl	Tip prijave na po¹tni stre¾nik
 mail server type	email	sl	Tip po¹tnega stre¾nika
-mail settings	admin	sl	Nastavitve po¹te
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	sl	Po¹ta, ki jo po¹ljete, bo uporabljala ta naslov kot po¹iljateljev naslov. Ta je lahko enak va¹emu egroupware uporabni¹kemu imenu, ali pa ga mora administrator nastaviti za vas. Ko bo prejemnik uporabil Odgovori, se ob uporabil ta naslov. Polje lahko pustite prazno in se bo uporabil privzeti naslov.
 manage accounts	email	sl	Upravljanje nabiralnikov
 manage folders	email	sl	Upravljanje map

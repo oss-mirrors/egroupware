@@ -97,10 +97,7 @@ email type	common	it	Tipo E-mail
 enable this email account	common	it	Abilita questo account e-mail
 enable utf-7 encoded folder names	email	it	Abilita le cartelle con encoding utf-7
 enter the search string in the text boxes	email	it	Inserisci la stringa di ricerca nella casella di testo
-enter your default mail domain ( from: user@domain )	admin	it	Inserisci il dominio predefinito per l'email ( Da: utente@dominio )
 enter your pop	admin	it	Inserisci il POP
-enter your smtp server hostname or ip address	admin	it	Inserisci l'host o l'IP del server SMTP
-enter your smtp server port	admin	it	Inserisci la porta del server SMTP
 error moving messages to	email	it	Errore nello spostamento dei messaggi in
 error text not provided	email	it	testo dell'errore non previsto
 error: unknown message data	email	it	Errore: Messaggio sconosciuto
@@ -188,7 +185,6 @@ mail folder(uw-maildir)	email	it	Cartella Mail (uw-maildir)
 mail server	email	it	Server email
 mail server login type	admin	it	Tipo di Login server Mail
 mail server type	email	it	Tipo di Mail server
-mail settings	admin	it	Impostazioni Mail
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	it	Mail you send will use this address as the &quot;From&quot; address. This may be the same as your eGroupWare login name or the server administrator may have set it for you. When the recipient clicks reply, this address will be used. You can leave this box blank and the default value will be used.
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	it	Mail you send will use this address as the &quot;From&quot; address. This may be the same as your eGroupWare login name, or the server administrator may have set it for you. When the recipient clicks reply, this address will be used. You can leave this box blank and the default value will be used.
 manage accounts	email	it	Gestione Account
