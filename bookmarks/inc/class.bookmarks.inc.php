@@ -106,7 +106,7 @@
        NAME_HTML        => $name_html,
        SERVER_NAME      => $SERVER_NAME
      ));
-     $p_tpl->set_var('img_root',$bookmarker->image_url_prefix);
+     $p_tpl->set_var('img_root',PHPGW_IMAGES);
      $p_tpl->set_var('search_link',$phpgw->link('/bookmarks/search.php'));
      $p_tpl->set_var('create_link',$phpgw->link('/bookmarks/create.php'));
      $p_tpl->set_var('list_link',$phpgw->link('/bookmarks/list.php'));

@@ -30,6 +30,15 @@
 	}
 
 	$location_info = $phpgw->bookmarks->read_session_data();
+	if ($cancel_x || $cancel_y)
+	{
+		if ($location_info['bm_id'])
+		{
+			$extravars = 'bm_id=' . $location_info['bm_id'];
+		}
+		$phpgw->redirect($phpgw->link('/bookmarks/' . $location_info['returnto'],$extravars));
+	}
+
 	if ($location_info['returnto'] == 'create.php')
 	{
 		$bookmark['name']        = $location_info['bookmark_name'];
@@ -165,8 +174,7 @@
 
 	$phpgw->template->set_var('input_access','<input type="checkbox" name="bookmark[access]" value="private"' . $checked . '>');
 
-	$phpgw->template->set_var('delete_link','');
-	$phpgw->template->set_var('cancel_link','');
+	$phpgw->template->set_var('cancel_button','<input type="image" name="cancel" title="' . lang('Done') . '" src="' . PHPGW_IMAGES . '/cancel.gif" border="0">');
 	$phpgw->template->set_var('form_link','<input type="image" name="bk_create" alt="'
                                       . lang('Create bookmark') . '" src="' . $phpgw_info['server']['app_images']
                                       . '/save.gif" border="0">');

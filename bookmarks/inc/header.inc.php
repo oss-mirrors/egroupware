@@ -47,7 +47,7 @@
 		{
 			$selected = 4;
 		}
-   
+
 		$tpl->set_var('app_navbar',$phpgw->common->create_tabs($tabs,$selected));
 		set_standard('',&$tpl);
 	}

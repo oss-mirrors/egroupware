@@ -23,7 +23,6 @@
 	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
 	$phpgw->treemenu  = createobject('bookmarks.treemenu');
 
-
 	$phpgw->template->set_file(array(
 		'common' => 'common.tpl',
 		'body'   => 'list.body.tpl'
@@ -32,6 +31,31 @@
 
 	$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
 	$phpgw->template->set_var('lang_tree_view',lang('Tree view'));
+
+	$location_info = $phpgw->bookmarks->read_session_data();
+	if (! is_array($location_info))
+	{
+		$location_info = array(
+			'returnto' => 'tree.php'
+		);
+		$phpgw->bookmarks->save_session_data($location_info);
+	}
+
+	if ($location_info['tree_postion'] && ! $p)
+	{
+		$p = $location_info['tree_postion'];
+	}
+	else
+	{
+		if ($p)
+		{
+			$location_info = array(
+				'returnto'     => 'tree.php',
+				'tree_postion' => $p
+			);
+			$phpgw->bookmarks->save_session_data($location_info);
+		}
+	}
 
 
 	if ($filter != 'private')

@@ -8,14 +8,16 @@
 		{
 			global $phpgw,$server_id,$p;
 	
-			$img_expand   = $phpgw->common->get_image_path($appname) . SEP . "tree_expand.gif";
-			$img_collapse = $phpgw->common->get_image_path($appname) . SEP . "tree_collapse.gif";
-			$img_line     = $phpgw->common->get_image_path($appname) . SEP . "tree_vertline.gif";  
-			$img_split    = $phpgw->common->get_image_path($appname) . SEP . "tree_split.gif";
-			$img_end      = $phpgw->common->get_image_path($appname) . SEP . "tree_end.gif";
-			$img_leaf     = $phpgw->common->get_image_path($appname) . SEP . "tree_leaf.gif";
-			$img_spc      = $phpgw->common->get_image_path($appname) . SEP . "tree_space.gif";
-	
+			$img_expand   = PHPGW_IMAGES . '/plus.gif';
+			$img_collapse = PHPGW_IMAGES . '/tree_collapse.gif';
+			$img_line     = PHPGW_IMAGES . '/tree_vertline.gif';
+			$img_split    = PHPGW_IMAGES . '/tree_split.gif';
+			$img_end      = PHPGW_IMAGES . '/tree_end.gif';
+			$img_leaf     = PHPGW_IMAGES . '/minus.gif';
+			$img_spc      = PHPGW_IMAGES . '/tree_space.gif';
+			$img_closed   = PHPGW_IMAGES . '/closed.gif';
+			$img_open   = PHPGW_IMAGES . '/open.gif';
+
 			/*********************************************/
 			/* read file to $tree array                  */
 			/* tree[x][0] -> tree level                  */
@@ -105,7 +107,7 @@
 	
 			$out  = "<table cellspacing=0 cellpadding=0 border=0 cols=".($maxlevel+3).">\n";
 			$out .= "<tr>\n";
-			for ($i=0; $i<$maxlevel; $i++) $out .= "<td width=16></td>";
+			for ($i=0; $i<$maxlevel; $i++) $out .= "<td width=36></td>";
 			$out .= "<td width=100%>&nbsp;</td></tr>\n";
 			$cnt=0;
 			while ($cnt<count($tree))
@@ -121,7 +123,7 @@
 					{
 						if ($levels[$i]==1)
 						{
-							$out .= "<td><a name='$cnt'></a><img src=\"".$img_line."\"></td>";
+							$out .= "<td><a name='$cnt'>&nbsp;</td>";
 						}
 						else
 						{
@@ -133,12 +135,12 @@
 					// corner at end of subtree or t-split
 					if ($tree[$cnt][4]==1) 
 					{
-						$out .= "<td><img src=\"".$img_end."\"></td>\n";
+						$out .= "<td>&nbsp;</td>\n";
 						$levels[$tree[$cnt][0]-1]=0;
 					}
 					else
 					{
-						$out .= "<td><img src=\"".$img_split."\"></td>";                  
+						$out .= "<td>&nbsp;</td>";                  
 						$levels[$tree[$cnt][0]-1]=1;    
 					} 
 	
@@ -159,17 +161,17 @@
 	
 						if ($expand[$cnt]==0)
 						{
-							$out .= "<td><a href=\"".$phpgw->link('/bookmarks/tree.php',$params."#$cnt")."\"><img src=\"".$img_expand."\" border=no></a></td>";
+							$out .= "<td><a href=\"".$phpgw->link('/bookmarks/tree.php',$params."#$cnt")."\"><img src=\"".$img_expand."\" border=no></a><img src=\"".$img_closed."\" border=no></td>";
 						}
 						else
 						{
-							$out .= "<td><a href=\"".$phpgw->link('/bookmarks/tree.php',$params."#$cnt")."\"><img src=\"".$img_collapse."\" border=no></a></td>";
+							$out .= "<td><a href=\"".$phpgw->link('/bookmarks/tree.php',$params."#$cnt")."\"><img src=\"".$img_collapse."\" border=no></a><img src=\"".$img_open."\" border=no></td>";
 						}
 					}
 					else
 					{
 						// Tree Leaf
-						$out .= "<td><img src=\"".$img_leaf."\"></td>";         
+						$out .= '<td><img src="' . $img_leaf . '"><img src="' . $img_closed . '"></td>';
 					}
 	
 					// output item text
