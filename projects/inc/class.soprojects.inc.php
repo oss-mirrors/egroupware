@@ -7,7 +7,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright 2000 - 2003 Free Software Foundation, Inc               *
+	* Copyright 2000 - 2004 Free Software Foundation, Inc.              *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -30,16 +30,20 @@
 	{
 		var $db;
 		var $grants;
+		var $column_array;
 
 		function soprojects()
 		{
-			$this->db		= $GLOBALS['phpgw']->db;
-			$this->db2		= $this->db;
-			$this->grants	= $GLOBALS['phpgw']->acl->get_grants('projects');
-			$this->account	= $GLOBALS['phpgw_info']['user']['account_id'];
-			$this->currency = $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
-			$this->year		= $GLOBALS['phpgw']->common->show_date(time(),'Y');
-			$this->member	= $this->get_acl_projects();
+			$this->db			= $GLOBALS['phpgw']->db;
+			$this->db2			= $this->db;
+			$this->grants		= $GLOBALS['phpgw']->acl->get_grants('projects');
+			$this->account		= $GLOBALS['phpgw_info']['user']['account_id'];
+			$this->currency 	= $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
+			$this->year			= $GLOBALS['phpgw']->common->show_date(time(),'Y');
+			$this->member		= $this->get_acl_projects();
+			$this->soconfig		= CreateObject('projects.soconfig');
+			$this->siteconfig	= $this->get_site_config();
+			$this->column_array = array();
 		}
 
 		function project_filter($type)
@@ -53,65 +57,84 @@
 			return $s;
 		}
 
-		function bill_lang()
+		function db2projects($column = False)
 		{
-			switch ($GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'])
-			{
-				case 'wu':	$l = lang('per workunit'); break;
-				case 'h':	$l = lang('per hour'); break;
-				default:	$l = lang('per hour/workunit');
-			}
-			return $l;
-		}
-
-		function db2projects()
-		{
+			$i = 0;
 			while ($this->db->next_record())
 			{
-				$projects[] = array
-				(
-					'project_id'	=> $this->db->f('id'),
-					'parent'		=> $this->db->f('parent'),
-					'number'		=> $this->db->f('p_number'),
-					'access'		=> $this->db->f('access'),
-					'cat'			=> $this->db->f('category'),
-					'sdate'			=> $this->db->f('start_date'),
-					'edate'			=> $this->db->f('end_date'),
-					'coordinator'	=> $this->db->f('coordinator'),
-					'customer'		=> $this->db->f('customer'),
-					'status'		=> $this->db->f('status'),
-					'descr'			=> $this->db->f('descr'),
-					'title'			=> $this->db->f('title'),
-					'budget'		=> $this->db->f('budget'),
-					'ptime'			=> $this->db->f('time_planned'),
-					'owner'			=> $this->db->f('owner'),
-					'cdate'			=> $this->db->f('date_created'),
-					'processor'		=> $this->db->f('processor'),
-					'udate'			=> $this->db->f('entry_date'),
-					'investment_nr'	=> $this->db->f('investment_nr'),
-					'pcosts'		=> $this->db->f('pcosts'),
-					'main'			=> $this->db->f('main'),
-					'level'			=> $this->db->f('level'),
-					'previous'		=> $this->db->f('previous')
-				);
+				if($column)
+				{
+					$projects[$i] = array();
+					for($k=0;$k<count($this->column_array);$k++)
+					{
+						$projects[$i][$this->column_array[$k]] = $this->db->f($this->column_array[$k]);
+					}
+					$i++;
+				}
+				else
+				{
+					$projects[] = array
+					(
+						'project_id'					=> $this->db->f('project_id'),
+						'parent'						=> $this->db->f('parent'),
+						'number'						=> $this->db->f('p_number'),
+						'access'						=> $this->db->f('access'),
+						'cat'							=> $this->db->f('category'),
+						'sdate'							=> $this->db->f('start_date'),
+						'edate'							=> $this->db->f('end_date'),
+						'coordinator'					=> $this->db->f('coordinator'),
+						'customer'						=> $this->db->f('customer'),
+						'status'						=> $this->db->f('status'),
+						'descr'							=> $this->db->f('descr'),
+						'title'							=> $this->db->f('title'),
+						'budget'						=> $this->db->f('budget'),
+						'e_budget'						=> $this->db->f('e_budget'),
+						'ptime'							=> $this->db->f('time_planned'),
+						'owner'							=> $this->db->f('owner'),
+						'cdate'							=> $this->db->f('date_created'),
+						'processor'						=> $this->db->f('processor'),
+						'udate'							=> $this->db->f('entry_date'),
+						'investment_nr'					=> $this->db->f('investment_nr'),
+						'main'							=> $this->db->f('main'),
+						'level'							=> $this->db->f('level'),
+						'previous'						=> $this->db->f('previous'),
+						'customer_nr'					=> $this->db->f('customer_nr'),
+						'url'							=> $this->db->f('url'),
+						'reference'						=> $this->db->f('reference'),
+						'result'						=> $this->db->f('result'),
+						'test'							=> $this->db->f('test'),
+						'quality'						=> $this->db->f('quality'),
+						'accounting'					=> $this->db->f('accounting'),
+						'project_accounting_factor'		=> $this->db->f('acc_factor'),
+						'project_accounting_factor_d'	=> $this->db->f('acc_factor_d'),
+						'billable'						=> $this->db->f('billable'),
+						'psdate'						=> $this->db->f('psdate'),
+						'pedate'						=> $this->db->f('pedate'),
+						'priority'						=> $this->db->f('priority'),
+						'discount'						=> $this->db->f('discount'),
+						'discount_type'					=> $this->db->f('discount_type'),
+						'inv_method'					=> $this->db->f('inv_method')
+					);
+				}
 			}
 			return $projects;
 		}
 
-
 		function read_projects($values)
 		{
-			$start	= intval($values['start']);
-			$limit	= (isset($values['limit'])?$values['limit']:True);
-			$filter	= (isset($values['filter'])?$values['filter']:'none');
-			$sort	= (isset($values['sort'])?$values['sort']:'ASC');
-			$order	= $values['order'];
-			$status	= $values['status'];
-			$type	= (isset($values['type'])?$values['type']:'mains');
+			$start		= intval($values['start']);
+			$limit		= (isset($values['limit'])?$values['limit']:True);
+			$filter		= (isset($values['filter'])?$values['filter']:'none');
+			$sort		= $values['sort']?$values['sort']:'ASC';
+			$order		= $values['order']?$values['order']:'p_number,title,start_date';
+			$status		= isset($values['status'])?$values['status']:'active';
+			$action		= (isset($values['action'])?$values['action']:'mains');
 
-			$cat_id	= intval($values['cat_id']);
-			$main	= intval($values['main']);
-			$parent	= intval($values['parent']);
+			$cat_id		= intval($values['cat_id']);
+			$main		= intval($values['main']);
+			$parent		= intval($values['parent']);
+			$project_id	= intval($values['project_id']);
+			$column		= (isset($values['column'])?$values['column']:False);
 
 			$query	= $this->db->db_addslashes($values['query']);
 
@@ -124,18 +147,11 @@
 				$statussort = " AND status != 'archive' ";
 			}
 
-			if ($order)
-			{
-				$ordermethod = " order by $order $sort";
-			}
-			else
-			{
-				$ordermethod = ' order by start_date asc';
-			}
+			$ordermethod = " order by $order $sort";
 
-			if ($filter == 'none')
+			if ($filter == 'none' || $filter == 'noadmin')
 			{
-				if ($this->isprojectadmin('pad') || $this->isbookkeeper('pbo'))
+				if ($filter == 'none' && ($this->soconfig->isprojectadmin('pad') || $this->soconfig->isprojectadmin('pmanager') || $this->soconfig->isprojectadmin('psale')))
 				{
 					$filtermethod = " ( access != 'private' OR coordinator = " . $this->account . ' )';
 				}
@@ -155,7 +171,7 @@
 
 					if (is_array($this->member))
 					{
-						$filtermethod .= " OR (access != 'private' AND id in(" . implode(',',$this->member) . '))';
+						$filtermethod .= " OR (access != 'private' AND project_id in(" . implode(',',$this->member) . '))';
 					}
 					$filtermethod .= ' )';
 				}
@@ -164,7 +180,7 @@
 			{
 				$filtermethod = ' coordinator=' . $this->account;
 			}
-			elseif ($filter == 'public')
+			elseif ($filter == 'anonym')
 			{
 				$filtermethod = " access = 'anonym' ";
 			}
@@ -178,14 +194,13 @@
 				$filtermethod .= ' AND category=' . $cat_id;
 			}
 
-			switch($type)
+			switch($action)
 			{
 				case 'all':
-				case 'amains':
-				case 'mains':		$parent_select = ' AND parent=0'; break;
-				case 'asubs':
-				case 'subs':		$parent_select = ' AND (parent=' . $parent . ' AND parent != 0)'; break;
-				case 'mainandsubs':	$parent_select = ' AND main=' . $main; break;
+				case 'mains':			$parent_select = ' AND parent=0'; break;
+				case 'subs':			$parent_select = ' AND (parent=' . $parent . ' AND parent != 0)'; break;
+				case 'mainandsubs':		$parent_select = ' AND main=' . $main; break;
+				case 'mainsubsorted':	$parent_select = ' AND project_id=' . $project_id; break;
 			}
 
 			if ($query)
@@ -193,23 +208,30 @@
 				$querymethod = " AND (title like '%$query%' OR p_number like '%$query%' OR descr like '%$query%') ";
 			}
 
-			$sql = "SELECT * from phpgw_p_projects WHERE $filtermethod $statussort $querymethod";
+			$column_select = ((is_string($column) && $column != '')?$column:'*');
+			$this->column_array = explode(',',$column);
 
-			$this->db2->query($sql . $parent_select,__LINE__,__FILE__);
-			$total = $this->db2->num_rows();
+			$sql = "SELECT $column_select from phpgw_p_projects WHERE $filtermethod $statussort $querymethod";
 
-			if ($limit)
+			if ($limit && $action == 'mains')
 			{
+				$this->db2->query($sql . $parent_select,__LINE__,__FILE__);
+
+				//echo 'query main: ' . $sql . $parent_select;
+
+				$total = $this->db2->num_rows();
+
 				$this->db->limit_query($sql . $parent_select . $ordermethod,$start,__LINE__,__FILE__);
 			}
 			else
 			{
 				$this->db->query($sql . $parent_select . $ordermethod,__LINE__,__FILE__);
+				$total = $this->db->num_rows();
 			}
 
-			$pro = $this->db2projects();
+			$pro = $this->db2projects($column);
 
-			if ($main == 0 && $type != 'mains' && $type != 'amains')
+			if ($main == 0 && $action != 'mains')
 			{
 				$num_pro = count($pro);
 				for ($i=0;$i < $num_pro;$i++)
@@ -218,7 +240,7 @@
 
 					$this->db->query($sql . $sub_select . $ordermethod,__LINE__,__FILE__);
 					$total += $this->db->num_rows();
-					$subpro = $this->db2projects();
+					$subpro = $this->db2projects($column);
 
 					$num_subpro = count($subpro);
 					if ($num_subpro != 0)
@@ -243,12 +265,33 @@
 			}
 
 			$this->total_records = $total;
+			if ($limit && $main == 0 && $action != 'mains')
+			{
+				$max = $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
+				$max = $max + $start;
+
+				$k=0;
+				for($i=$start;$i<$max;++$i)
+				{
+					if(is_array($pro[$i]))
+					{
+						$spro[$k] = $pro[$i];
+						++$k;
+					}
+				}
+				if(is_array($spro))
+				{
+					$pro = $spro;
+				}
+			}
+
+			//_debug_array($pro);
 			return $pro;
 		}
 
 		function read_single_project($project_id)
 		{
-			$this->db->query('SELECT * from phpgw_p_projects WHERE id=' . $project_id,__LINE__,__FILE__);
+			$this->db->query('SELECT * from phpgw_p_projects WHERE project_id=' . intval($project_id),__LINE__,__FILE__);
 	
 			list($project) = $this->db2projects();
 			return $project;
@@ -256,12 +299,16 @@
 
 		function select_project_list($values)
 		{
+			$formatted = isset($values['formatted'])?$values['formatted']:True;
+
 			$pro = $this->read_projects(array
 						(
 							'limit'		=> False,
 							'status'	=> $values['status'],
-							'type'		=> (isset($values['type'])?$values['type']:'mains'),
+							'action'	=> (isset($values['action'])?$values['action']:'mains'),
 							'main'		=> $values['main'],
+							'filter'	=> $values['filter'],
+							'column'	=> 'project_id,p_number,level,title'
 						));
 
 			if($values['self'])
@@ -275,93 +322,101 @@
 				}
 			}
 
-			while (is_array($pro) && list(,$p) = each($pro))
+			if(is_array($pro) && $formatted)
 			{
-				$s .= '<option value="' . $p['project_id'] . '"';
-				if ($p['project_id'] == $values['selected'])
+				$s = '';
+				foreach($pro as $p)
 				{
-					$s .= ' selected';
-				}
-				$s .= '>';
+					$s .= '<option value="' . $p['project_id'] . '"';
+					if ($p['project_id'] == $values['selected'])
+					{
+						$s .= ' selected';
+					}
+					$s .= '>';
 
-				for ($j=0;$j<$p['level'];$j++)
-				{
-					$s .= '&nbsp;.&nbsp;';
-				}
+					for ($j=0;$j<$p['level'];$j++)
+					{
+						$s .= '&nbsp;.&nbsp;';
+					}
 
-				if ($p['title'])
-				{
-					$s .= $GLOBALS['phpgw']->strip_html($p['title']) . ' [ '
-								. $GLOBALS['phpgw']->strip_html($p['number']) . ' ]';
+					$s .= $GLOBALS['phpgw']->strip_html($p['title']) . ' [ ' . $GLOBALS['phpgw']->strip_html($p['number']?$p['number']:$p['p_number']) . ' ]';
+					$s .= '</option>';
 				}
-				else
-				{
-					$s .= $GLOBALS['phpgw']->strip_html($p['number']);
-				}
-				$s .= '</option>';
 			}
-			return $s;
+			return $formatted?$s:$pro;
 		}
 
-		function add_project($values, $book_activities, $bill_activities)
+		function add_project($values)
 		{
 			$values['descr']			= $this->db->db_addslashes($values['descr']);
 			$values['title']			= $this->db->db_addslashes($values['title']);
 			$values['number']			= $this->db->db_addslashes($values['number']);
 			$values['investment_nr']	= $this->db->db_addslashes($values['investment_nr']);
+			$values['customer_nr']		= $this->db->db_addslashes($values['customer_nr']);
+			$values['result']			= $this->db->db_addslashes($values['result']);
+			$values['test']				= $this->db->db_addslashes($values['test']);
+			$values['quality']			= $this->db->db_addslashes($values['quality']);
+			$values['inv_method']		= $this->db->db_addslashes($values['inv_method']);
+			$values['url']				= $this->db->db_addslashes($values['url']);
+			$values['reference']		= $this->db->db_addslashes($values['reference']);
 
 			$values['budget']			= $values['budget'] + 0.0;
-			$values['pcosts']			= $values['pcosts'] + 0.0;
+			$values['e_budget']			= $values['e_budget'] + 0.0;
+			$values['discount']			= $values['discount'] + 0.0;
+			$values['project_accounting_factor'] = $values['project_accounting_factor'] + 0.0;
+			$values['project_accounting_factor_d'] = $values['project_accounting_factor_d'] + 0.0;
+			$values['parent']			= intval($values['parent']);
 
-			if ($values['parent'] && $values['parent'] != 0)
+			if ($values['parent'] > 0)
 			{
-				$values['main']		= intval($this->id2item(array('project_id' => $values['parent'],'item' => 'main')));
-				$values['level']	= intval($this->id2item(array('project_id' => $values['parent'],'item' => 'level'))+1);
+				$values['main']		= intval($this->id2item(array('item_id' => $values['parent'],'item' => 'main')));
+				$values['level']	= intval($this->id2item(array('item_id' => $values['parent'],'item' => 'level'))+1);
 			}
 
 			$table = 'phpgw_p_projects';
 			$this->db->lock($table);
 
 			$this->db->query('INSERT into phpgw_p_projects (owner,access,category,entry_date,start_date,end_date,coordinator,customer,status,'
-							. 'descr,title,budget,p_number,parent,time_planned,date_created,processor,investment_nr,pcosts,main,level,previous) VALUES (' . $this->account
-							. ",'" . (isset($values['access'])?$values['access']:'public') . "'," . intval($values['cat']) . ',' . time() . ',' . intval($values['sdate']) . ','
-							. intval($values['edate']) . ',' . intval($values['coordinator']) . ',' . intval($values['customer']) . ",'" . $values['status']
-							. "','" . $values['descr'] . "','" . $values['title'] . "'," . $values['budget'] . ",'" . $values['number'] . "',"
-							. intval($values['parent']) . ',' . intval($values['ptime']) . ',' . time() . ',' . $this->account . ",'" . $values['investment_nr']
-							. "'," . $values['pcosts'] . ',' . intval($values['main']) . ',' . intval($values['level']) . ',' . intval($values['previous']) . ')',__LINE__,__FILE__);
+							. 'descr,title,budget,p_number,parent,time_planned,date_created,processor,investment_nr,main,level,previous,'
+							. 'customer_nr,url,reference,result,test,quality,accounting,acc_factor,acc_factor_d,billable,inv_method,psdate,pedate,priority,e_budget,
+							discount,discount_type) VALUES ('
+							. $this->account . ",'" . (isset($values['access'])?$values['access']:'public') . "'," . intval($values['cat']) . ',' . time() . ','
+							. intval($values['sdate']) . ',' . intval($values['edate']) . ',' . intval($values['coordinator']) . ',' . intval($values['customer']) . ",'"
+							. $values['status'] . "','" . $values['descr'] . "','" . $values['title'] . "'," . $values['budget'] . ",'" . $values['number'] . "',"
+							. $values['parent'] . ',' . intval($values['ptime']) . ',' . time() . ',' . $this->account . ",'" . $values['investment_nr']
+							. "'," . intval($values['main']) . ',' . intval($values['level']) . ',' . intval($values['previous']) . ",'"
+							. $values['customer_nr'] . "','" . $values['url'] . "','" . $values['reference'] . "','" . $values['result'] . "','"
+							. $values['test'] . "','" . $values['quality'] . "','" . $values['accounting'] . "'," . $values['project_accounting_factor']
+							. ',' . $values['project_accounting_factor_d'] . ",'". ($values['billable']?'N':'Y') . "','" . $values['inv_method'] . "',"
+							. intval($values['psdate']) . ',' . intval($values['pedate']) . ',' . intval($values['priority']) . ',' . $values['e_budget'] . ','
+							. $values['discount'] . ",'" . $values['discount_type'] . "')",__LINE__,__FILE__);
 
-			$p_id = $this->db->get_last_insert_id($table,'id');
+			$p_id = $this->db->get_last_insert_id($table,'project_id');
 			$this->db->unlock();
 
 			if ($p_id && ($p_id != 0))
 			{
-				if (!$values['parent'] || $values['parent'] == 0)
+				if ($values['parent'] == 0)
 				{
-					$this->db->query('UPDATE phpgw_p_projects SET main=' . $p_id . ' WHERE id=' . $p_id,__LINE__,__FILE__);
+					$this->db->query('UPDATE phpgw_p_projects SET main=' . $p_id . ' WHERE project_id=' . $p_id,__LINE__,__FILE__);
 				}
 
-				if (is_array($book_activities))
+				if (is_array($values['book_activities']))
 				{
-					while($activ=each($book_activities))
+					while($activ=each($values['book_activities']))
 					{
 						$this->db->query('insert into phpgw_p_projectactivities (project_id,activity_id,billable) values (' . $p_id . ','
 										. $activ[1] . ",'N')",__LINE__,__FILE__);
 					}
 				}
 
-				if (is_array($bill_activities))
+				if (is_array($values['bill_activities']))
 				{
-					while($activ=each($bill_activities))
+					while($activ=each($values['bill_activities']))
 					{
 						$this->db->query('insert into phpgw_p_projectactivities (project_id,activity_id,billable) values (' . $p_id . ','
 										. $activ[1] . ",'Y')",__LINE__,__FILE__);
 					}
-				}
-
-				if ($values['pcosts'] && $values['pcosts'] != 0)
-				{
-					$this->db->query('INSERT into phpgw_p_pcosts (project_id,month,pcosts) VALUES (' . $p_id . ',' . $values['monthdate'] . ','
-									. $values['pcosts'] . ')',__LINE__,__FILE__);
 				}
 				return $p_id;
 			}
@@ -394,7 +449,7 @@
 			$id = $values['project_id'];
 			$parent = $values['parent'];
 			$old_parent = $values['old_parent'];
-			$main = $old_parent ? intval($this->id2item(array('project_id' => $old_parent))) : $id;
+			$main = $old_parent ? intval($this->id2item(array('item_id' => $old_parent))) : $id;
 			//echo "<p>reparent: $id/$main: $old_parent --> $parent</p>\n";
 
 			$subs = array();
@@ -417,9 +472,9 @@
 				return;
 			}
 
-			$new_main = $parent ? $this->id2item(array('project_id' => $parent)) : $id;
-			$new_parent_level = $parent ? $this->id2item(array('project_id' => $parent,'item' => 'level')) : -1;
-			$old_parent_level = $old_parent ? $this->id2item(array('project_id' => $old_parent,'item' => 'level')) : -1;
+			$new_main = $parent ? $this->id2item(array('item_id' => $parent)) : $id;
+			$new_parent_level = $parent ? $this->id2item(array('item_id' => $parent,'item' => 'level')) : -1;
+			$old_parent_level = $old_parent ? $this->id2item(array('item_id' => $old_parent,'item' => 'level')) : -1;
 			$level_adj = $old_parent_level - $new_parent_level;
 			reset($subs);
          //echo "new_main=$new_main,level_adj = $level_adj<br>";
@@ -432,26 +487,28 @@
 			}
 		}
 
-		function edit_project($values, $book_activities = 0, $bill_activities = 0)
+		function edit_project($values)
 		{
-			if (is_array($book_activities))
+			$values['project_id'] = intval($values['project_id']);
+
+			if (is_array($values['book_activities']))
 			{
 				$this->db2->query('delete from phpgw_p_projectactivities where project_id=' . $values['project_id']
 								. " and billable='N'",__LINE__,__FILE__);
 
-				while($activ=each($book_activities))
+				while($activ=each($values['book_activities']))
 				{
 					$this->db->query('insert into phpgw_p_projectactivities (project_id, activity_id, billable) values (' . $values['project_id']
 									. ',' . $activ[1] . ",'N')",__LINE__,__FILE__);
 				}
 			}
 
-			if (is_array($bill_activities))
+			if (is_array($values['bill_activities']))
 			{
 				$this->db2->query('delete from phpgw_p_projectactivities where project_id=' . $values['project_id']
 								. " and billable='Y'",__LINE__,__FILE__);
 
-				while($activ=each($bill_activities))
+				while($activ=each($values['bill_activities']))
 				{
 					$this->db->query('insert into phpgw_p_projectactivities (project_id, activity_id, billable) values (' . $values['project_id']
 									. ',' . $activ[1] . ",'Y')",__LINE__,__FILE__);
@@ -462,11 +519,21 @@
 			$values['title']			= $this->db->db_addslashes($values['title']);
 			$values['number']			= $this->db->db_addslashes($values['number']);
 			$values['investment_nr']	= $this->db->db_addslashes($values['investment_nr']);
-			$values['project_id']		= intval($values['project_id']);
+			$values['customer_nr']		= $this->db->db_addslashes($values['customer_nr']);
+			$values['result']			= $this->db->db_addslashes($values['result']);
+			$values['test']				= $this->db->db_addslashes($values['test']);
+			$values['quality']			= $this->db->db_addslashes($values['quality']);
+			$values['url']				= $this->db->db_addslashes($values['url']);
+			$values['reference']		= $this->db->db_addslashes($values['reference']);
+			$values['inv_method']		= $this->db->db_addslashes($values['inv_method']);
 			$values['parent']			= intval($values['parent']);
+			$values['edate']			= intval($values['edate']);
 
 			$values['budget']			= $values['budget'] + 0.0;
-			$values['pcosts']			= $values['pcosts'] + 0.0;
+			$values['e_budget']			= $values['e_budget'] + 0.0;
+			$values['discount']			= $values['discount'] + 0.0;
+			$values['project_accounting_factor'] = $values['project_accounting_factor'] + 0.0;
+			$values['project_accounting_factor_d'] = $values['project_accounting_factor_d'] + 0.0;
 
 			if (isset($values['old_parent']) && $values['old_parent'] != $values['parent'])
 			{
@@ -476,35 +543,28 @@
 			{
 				if ($values['parent'] > 0)
 				{
-					$values['main']		= intval($this->id2item(array('project_id' => $values['parent'],'item' => 'main')));
-					$values['level']	= intval($this->id2item(array('project_id' => $values['parent'],'item' => 'level'))+1);
+					$values['main']		= intval($this->id2item(array('item_id' => $values['parent'],'item' => 'main')));
+					$values['level']	= intval($this->id2item(array('item_id' => $values['parent'],'item' => 'level'))+1);
+				}
+				else
+				{
+					$values['main'] = $values['project_id'];
 				}
 			}
 
 			$this->db->query("UPDATE phpgw_p_projects set access='" . (isset($values['access'])?$values['access']:'public') . "', category=" . intval($values['cat']) . ", entry_date="
-							. time() . ", start_date=" . intval($values['sdate']) . ", end_date=" . intval($values['edate']) . ", coordinator="
+							. time() . ", start_date=" . intval($values['sdate']) . ", end_date=" . $values['edate'] . ", coordinator="
 							. intval($values['coordinator']) . ", customer=" . intval($values['customer']) . ", status='" . $values['status'] . "', descr='"
 							. $values['descr'] . "', title='" . $values['title'] . "', budget=" . $values['budget'] . ", p_number='"
 							. $values['number'] . "', time_planned=" . intval($values['ptime']) . ', processor=' . $this->account . ", investment_nr='"
-							. $values['investment_nr'] . "', pcosts=" . $values['pcosts'] . ', parent=' . $values['parent']
-							. ', level=' . intval($values['level']) . ', previous=' . intval($values['previous']) . ' where id=' . $values['project_id'],__LINE__,__FILE__);
-
-			$this->db->query('SELECT max(month) FROM phpgw_p_pcosts where project_id=' . $values['project_id'],__LINE__,__FILE__);
-			if($this->db->next_record())
-			{
-				$month = $this->db->f(0);
-			}
-
-			if($values['monthdate'] > intval($month))
-			{
-				$this->db->query('INSERT into phpgw_p_pcosts (project_id,month,pcosts) VALUES (' . $values['project_id'] . ',' . $values['monthdate'] . ','
-									. $values['pcosts'] . ')',__LINE__,__FILE__);
-			}
-			else
-			{
-				$this->db->query('UPDATE phpgw_p_pcosts set pcosts=' . $values['pcosts'] . ' WHERE project_id=' . $values['project_id']
-								. ' AND month=' . $values['monthdate'],__LINE__,__FILE__);
-			}
+							. $values['investment_nr'] . "', inv_method='" . $values['inv_method'] . "', parent=" . $values['parent'] . ', main=' . intval($values['main'])
+							. ', level=' . intval($values['level']) . ', previous=' . intval($values['previous']) . ", customer_nr='" . $values['customer_nr']
+							. "', url='" . $values['url'] . "', reference='" . $values['reference'] . "', result='" . $values['result'] . "', test='"
+							. $values['test'] . "', quality='" . $values['quality'] . "', accounting='" . $values['accounting'] . "', acc_factor="
+							. $values['project_accounting_factor'] . ', acc_factor_d=' . $values['project_accounting_factor_d'] . ",billable='" . ($values['billable']?'N':'Y')
+							. "', discount_type='" . $values['discount_type'] . "',psdate=" . intval($values['psdate']) . ', pedate=' . intval($values['pedate']) . ', priority='
+							. intval($values['priority']) . ', e_budget=' . $values['e_budget'] . ', discount=' . $values['discount'] . ' where project_id='
+							. $values['project_id'],__LINE__,__FILE__);
 
 			if ($values['status'] == 'archive')
 			{
@@ -516,215 +576,83 @@
 				$this->db->query("Update phpgw_p_projects set status='" . $values['status'] . "' WHERE parent=" . $values['project_id'],__LINE__,__FILE__);
 			}
 
-			if (isset($values['old_edate']) && $values['old_edate'] != $values['edate'])
+			$values['old_edate'] = intval($values['old_edate']);
+			if ($values['old_edate'] > 0 && $values['edate'] > 0 && $values['old_edate'] != $values['edate'])
 			{
-				$this->db->query('SELECT id,start_date,end_date from phpgw_p_projects where previous=' . $values['project_id'],__LINE__,__FILE__);
+				$this->db->query('SELECT project_id,title,p_number,start_date,end_date from phpgw_p_projects where previous=' . $values['project_id'],__LINE__,__FILE__);
 
 				while($this->db->next_record())
 				{
 					$following[] = array
 					(
-						'id'	=> $this->db->f('id'),
-						'sdate'	=> $this->db->f('start_date'),
-						'edate'	=> $this->db->f('end_date')
+						'project_id'	=> $this->db->f('project_id'),
+						'title'			=> $this->db->f('title'),
+						'number'		=> $this->db->f('p_number'),
+						'sdate'			=> $this->db->f('start_date'),
+						'edate'			=> $this->db->f('end_date')
 					);
 				};
 
+				//_debug_array($following);
+
 				if (is_array($following))
 				{
-					$diff = abs($values['edate']-$values['old_edate']);
+					if ($this->siteconfig['dateprevious'] == 'yes')
+					{
+						$diff = abs($values['edate']-$values['old_edate']);
 
-					if ($values['old_edate'] > $values['edate'])
-					{
-						$op = 'sub';
-					}
-					else
-					{
-						$op = 'add';
-					}
-
-					while (list(,$fol) = each($following))
-					{
-						switch($op)
+						if ($values['old_edate'] > $values['edate'])
 						{
-							case 'add':
-								$nsdate = $fol['sdate']+$diff;
-								$nedate = $fol['edate']+$diff;
-								break;
-							case 'sub':
-								$nsdate = $fol['sdate']-$diff;
-								$nedate = $fol['edate']-$diff;
-								break;
+							$op = 'sub';
 						}
-						$this->db->query('UPDATE phpgw_p_projects set start_date=' . $nsdate . ', end_date=' . $nedate . ', entry_date=' . time()
-										. ', processor=' . $this->account . ' WHERE id=' . $fol['id'],__LINE__,__FILE__);
+						else
+						{
+							$op = 'add';
+						}
+					}
+					foreach($following as $key => $fol)
+					{
+						if ($this->siteconfig['dateprevious'] == 'yes')
+						{
+							$nsdate = $op=='add'?$fol['sdate']+$diff:$fol['sdate']-$diff;
+							$nedate = intval($fol['edate'])>0?($op=='add'?$fol['edate']+$diff:$fol['edate']-$diff):0;
+							//$npsdate = intval($fol['psdate'])>0?($op=='add'?$fol['psdate']+$diff:$fol['psdate']-$diff):0;
+							//$npedate = intval($fol['pedate'])>0?($op=='add'?$fol['pedate']+$diff:$fol['pedate']-$diff):0;
 
-						$this->db->query('SELECT s_id, edate from phpgw_p_mstones WHERE project_id=' . $fol['id'],__LINE__,__FILE__);
+							$this->db->query('UPDATE phpgw_p_projects set start_date=' . intval($nsdate) . ', end_date=' . intval($nedate) . ', entry_date=' . time()
+										. ', processor=' . $this->account . ' WHERE project_id=' . $fol['project_id'],__LINE__,__FILE__);
+
+							$following[$key]['nsdate'] = $nsdate;
+							$following[$key]['nedate'] = $nedate;
+						}
+						$this->db->query('SELECT s_id,edate,title from phpgw_p_mstones WHERE project_id=' . intval($fol['project_id']),__LINE__,__FILE__);
 
 						while($this->db->next_record())
 						{
 							$stones[] = array
 							(
 								's_id'	=> $this->db->f('s_id'),
-								'edate'	=> $this->db->f('edate')
+								'edate'	=> $this->db->f('edate'),
+								'title'	=> $this->db->f('title')
 							);
 						};
+						$following[$key]['mstones'] = $stones;
 
-						while(is_array($stones) && list(,$stone) = each($stones))
+						if ($this->siteconfig['dateprevious'] == 'yes' && is_array($stones))
 						{
-							switch($op)
+							foreach($stones as $skey => $stone)
 							{
-								case 'add':
-									$sedate = $stone['edate']+$diff;
-									break;
-								case 'sub':
-									$sedate = $stone['edate']-$diff;
-									break;
+								$snedate = $op=='add'?$stone['edate']+$diff:$stone['edate']-$diff;
+
+								$this->db->query('UPDATE phpgw_p_mstones set edate=' . intval($snedate) . ' WHERE s_id=' . intval($stone['s_id']),__LINE__,__FILE__);
+								$stones[$skey]['snedate'] = $snedate;
 							}
-							$this->db->query('UPDATE phpgw_p_mstones set edate=' . $sedate . ' WHERE s_id=' . $stone['s_id'],__LINE__,__FILE__);
 						}
 					}
+					return $following;
 				}
+				return False;
 			}
-		}
-
-		function activities_list($project_id = '',$billable = False)
-		{
-			if ($billable)
-			{
-				$bill_filter = " AND billable='Y'";
-			}
-			else
-			{
-				$bill_filter = " AND billable='N'";
-			}
-
-			$this->db->query('SELECT phpgw_p_activities.id,a_number,descr,billperae,activity_id from phpgw_p_activities,phpgw_p_projectactivities '
-							. 'WHERE phpgw_p_projectactivities.project_id=' . $project_id . ' AND phpgw_p_activities.id='
-							. 'phpgw_p_projectactivities.activity_id' . $bill_filter,__LINE__,__FILE__);
-
-			while ($this->db->next_record())
-			{
-				$act[] = array
-				(
-					'num'		=> $this->db->f('a_number'),
-					'descr'		=> $this->db->f('descr'),
-					'billperae'	=> $this->db->f('billperae')
-				);
-			}
-			return $act;
-		}
-
-		function select_activities_list($project_id = '',$billable = False)
-		{
-			if ($billable)
-			{
-				$bill_filter = " AND billable='Y'";
-			}
-			else
-			{
-				$bill_filter = " AND billable='N'";
-			}
-
-			$this->db2->query('SELECT activity_id from phpgw_p_projectactivities WHERE project_id=' . intval($project_id) . $bill_filter,__LINE__,__FILE__);
-			while ($this->db2->next_record())
-			{
-				$selected[] = array('activity_id' => $this->db2->f('activity_id'));
-			}
-
-			$this->db->query('SELECT id,a_number,descr,billperae FROM phpgw_p_activities ORDER BY descr asc');
-			while ($this->db->next_record())
-			{
-				$activities_list .= '<option value="' . $this->db->f('id') . '"';
-				for ($i=0;$i<count($selected);$i++)
-				{
-					if($selected[$i]['activity_id'] == $this->db->f('id'))
-					{
-						$activities_list .= ' selected';
-					}
-				}
-				$activities_list .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' ['
-										. $GLOBALS['phpgw']->strip_html($this->db->f('a_number')) . ']';
-				if($billable)
-				{
-					$activities_list .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . $this->bill_lang();
-				}
-
-				$activities_list .= '</option>' . "\n";
-			}
-			return $activities_list;
-		}
-
-		function select_pro_activities($project_id = '', $pro_parent, $billable = False)
-		{
-			if ($billable)
-			{
-				$bill_filter = " AND billable='Y'";
-			}
-			else
-			{
-				$bill_filter = " AND billable='N'";
-			}
-
-			$this->db2->query('SELECT activity_id from phpgw_p_projectactivities WHERE project_id=' . intval($project_id) . $bill_filter,__LINE__,__FILE__);
-			while ($this->db2->next_record())
-			{
-				$selected[] = array('activity_id' => $this->db2->f('activity_id'));
-			}
-
-			$this->db->query('SELECT a.id, a.a_number, a.descr, a.billperae, pa.activity_id FROM phpgw_p_activities as a, phpgw_p_projectactivities as pa'
-							. ' WHERE pa.project_id=' . intval($pro_parent) . $bill_filter . ' AND pa.activity_id=a.id ORDER BY a.descr asc');
-			while ($this->db->next_record())
-			{
-				$activities_list .= '<option value="' . $this->db->f('id') . '"';
-				for ($i=0;$i<count($selected);$i++)
-				{
-					if($selected[$i]['activity_id'] == $this->db->f('id'))
-					{
-						$activities_list .= ' selected';
-					}
-				}
-
-				if (! is_array($selected))
-				{
-					$activities_list .= ' selected';
-				}
-
-				$activities_list .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' ['
-										. $GLOBALS['phpgw']->strip_html($this->db->f('a_number')) . ']';
-
-				if($billable)
-				{
-					$activities_list .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . $this->bill_lang();
-				}
-
-				$activities_list .= '</option>' . "\n";
-			}
-			return $activities_list;
-		}
-
-		function select_hours_activities($project_id, $activity = '')
-		{
-			$this->db->query('SELECT activity_id,a_number,descr,billperae,billable FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='
-							. intval($project_id) . ' AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id order by descr asc',__LINE__,__FILE__);
-
-			while ($this->db->next_record())
-			{
-				$hours_act .= '<option value="' . $this->db->f('activity_id') . '"';
-				if($this->db->f('activity_id') == intval($activity))
-				{
-					$hours_act .= ' selected';
-				}
-				$hours_act .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' ['
-									. $GLOBALS['phpgw']->strip_html($this->db->f('a_number')) . ']';
-
-				if($this->db->f('billable') == 'Y')
-				{
-					$hours_act .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . $this->bill_lang();
-				}
-				$hours_act .= '</option>' . "\n";
-			}
-			return $hours_act;
 		}
 
 		function return_value($action,$pro_id)
@@ -738,57 +666,60 @@
 					$bla = $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' [' . $GLOBALS['phpgw']->strip_html($this->db->f('a_number')) . ']';
 				}
 			}
-			elseif ($action == 'co')
-			{
-				$this->db->query('SELECT coordinator from phpgw_p_projects where id=' . $pro_id,__LINE__,__FILE__);
-				if ($this->db->next_record())
-				{
-					$bla = $this->db->f('coordinator');
-				}
-			}
 			else
 			{
 				switch ($action)
 				{
+					case 'co':			$column = 'coordinator'; break;		
+					case 'main':		$column = 'main'; break;
+					case 'level':		$column = 'level'; break;
+					case 'parent':		$column = 'parent'; break;
 					case 'pro':			$column = 'p_number,title'; break;
 					case 'edate':		$column = 'end_date'; break;
 					case 'sdate':		$column = 'start_date'; break;
+					case 'phours':
 					case 'ptime':		$column = 'time_planned'; break;
 					case 'invest':		$column = 'investment_nr'; break;
 					case 'budget':		$column = 'budget'; break;
+					case 'e_budget':	$column = 'e_budget'; break;
 					case 'previous':	$column = 'previous'; break;
+					case 'billable':	$column = 'billable'; break;
 				}
 
-				$this->db->query('SELECT ' . $column . ' from phpgw_p_projects where id=' . $pro_id,__LINE__,__FILE__);
+				$this->db->query('SELECT ' . $column . ' from phpgw_p_projects where project_id=' . $pro_id,__LINE__,__FILE__);
 				if ($this->db->next_record())
 				{
-					if ($action == 'pro')
+					switch($action)
 					{
-						$bla = $GLOBALS['phpgw']->strip_html($this->db->f('title')) . ' ['
-								. $GLOBALS['phpgw']->strip_html($this->db->f('p_number')) . ']';
-					}
-					else
-					{
-						$bla = $GLOBALS['phpgw']->strip_html($this->db->f($column));
+						case 'pro':
+							$bla = $GLOBALS['phpgw']->strip_html($this->db->f('title')) . ' ['
+									. $GLOBALS['phpgw']->strip_html($this->db->f('p_number')) . ']';
+							break;
+						case 'phours':
+							$bla = $this->db->f('time_planned')/60;
+							break;
+						default:
+							$bla = $GLOBALS['phpgw']->strip_html($this->db->f($column));
 					}
 				}
 			}
 			return $bla;
 		}
 
-		function exists($action, $check = 'number', $num = '', $pa_id = '')
+		function exists($action, $check = 'number', $num = '', $project_id = '')
 		{
+			$project_id = intval($project_id);
+
 			switch ($action)
 			{
-				case 'act'	: $p_table = ' phpgw_p_activities '; $column = ' a_number';break;
-				default		: $p_table = ' phpgw_p_projects'; $column = ' p_number'; break;
+				default:	$p_table = ' phpgw_p_projects'; $column = ' p_number'; break;
 			}
 
 			if ($check == 'number')
 			{
-				if ($pa_id && ($pa_id != 0))
+				if ($project_id > 0)
 				{
-					$editexists = ' and id !=' . $pa_id;
+					$editexists = ' and project_id !=' . $project_id;
 				}
 
 				$this->db->query("select count(*) from $p_table where $column='$num'" .  $editexists,__LINE__,__FILE__);
@@ -796,7 +727,7 @@
 
 			if ($check == 'par')
 			{
-				$this->db->query('select count(*) from phpgw_p_projects where parent=' . $pa_id,__LINE__,__FILE__);
+				$this->db->query('select count(*) from phpgw_p_projects where parent=' . $project_id,__LINE__,__FILE__);
 			}
 			$this->db->next_record();
 
@@ -807,132 +738,6 @@
 			else
 			{
 				return False;
-			}
-		}
-
-		function return_admins($action, $type = 'all')
-		{
-			if ($action == 'pad')
-			{
-				switch ($type)
-				{
-					case 'all':	$filter = " type='aa' or type='ag'"; break;
-					case 'aa':	$filter = " type='aa'"; break;
-					case 'ag':	$filter = " type='ag'"; break;
-				}
-			}
-			else
-			{
-				switch ($type)
-				{
-					case 'all':	$filter = " type='ba' or type='bg'"; break;
-					case 'aa':	$filter = " type='ba'"; break;
-					case 'ag':	$filter = " type='bg'"; break;
-				}
-			}
-
-			$sql = 'select account_id,type from phpgw_p_projectmembers WHERE ' . $filter;
-			$this->db->query($sql);
-			$this->total_records = $this->db->num_rows();
-			while ($this->db->next_record())
-			{
-				$admins[] = array('account_id' => $this->db->f('account_id'),
-										'type' => $this->db->f('type'));
-			}
-			return $admins;
-		}
-
-		function isprojectadmin($action)
-		{
-			$admin_groups = $GLOBALS['phpgw']->accounts->membership($this->account);
-			$admins = $this->return_admins($action);
-
-			for ($i=0;$i<count($admins);$i++)
-			{
-				if ($admins[$i]['type']=='aa')
-				{
-					if ($admins[$i]['account_id'] == $this->account)
-					return True;
-				}
-				elseif ($admins[$i]['type']=='ag')
-				{
-					if (is_array($admin_groups))
-					{
-						for ($j=0;$j<count($admin_groups);$j++)
-						{
-							if ($admin_groups[$j]['account_id'] == $admins[$i]['account_id'])
-							return True;
-						}
-					}
-				}
-				else
-				{
-					return False;
-				}
-			}
-		}
-
-		function isbookkeeper($action)
-		{
-			$admin_groups = $GLOBALS['phpgw']->accounts->membership($this->account);
-			$admins = $this->return_admins($action);
-
-			for ($i=0;$i<count($admins);$i++)
-			{
-				if ($admins[$i]['type']=='ba')
-				{
-					if ($admins[$i]['account_id'] == $this->account)
-					return True;
-				}
-				elseif ($admins[$i]['type']=='bg')
-				{
-					if (is_array($admin_groups))
-					{
-						for ($j=0;$j<count($admin_groups);$j++)
-						{
-							if ($admin_groups[$j]['account_id'] == $admins[$i]['account_id'])
-							return True;
-						}
-					}
-				}
-				else
-				{
-					return False;
-				}
-			}
-		}
-
-		function edit_admins($action, $users = '', $groups = '')
-		{
-			if ($action == 'pad')
-			{
-				$ag = 'ag';
-				$aa = 'aa';
-			}
-			else
-			{
-				$ag = 'bg';
-				$aa = 'ba';
-			}
-
-			$this->db->query("DELETE from phpgw_p_projectmembers WHERE type='" . $aa . "' OR type='" . $ag . "'",__LINE__,__FILE__);
-
-			if (is_array($users))
-			{
-				while($activ=each($users))
-				{
-					$this->db->query('insert into phpgw_p_projectmembers (project_id, account_id,type) values (0,' . $activ[1] . ",'"
-									. $aa . "')",__LINE__,__FILE__);
-				}
-			}
-
-			if (is_array($groups))
-			{
-				while($activ=each($groups))
-				{
-					$this->db->query('insert into phpgw_p_projectmembers (project_id, account_id,type) values (0,' . $activ[1] . ",'"
-									. $ag . "')",__LINE__,__FILE__);
-				}
 			}
 		}
 
@@ -980,9 +785,16 @@
 
 		function create_jobid($pro_parent)
 		{
-			$this->db->query('select p_number from phpgw_p_projects where id=' . $pro_parent);
+			/*$parent_level = $this->id2item(array('project_id' => $pro_parent, 'item' => 'level'));
+			switch($parent_level)
+			{
+				case 0:		$add = ' / '; break;
+				default:	$add = ''; break;
+			}*/
+
+			$this->db->query('select p_number from phpgw_p_projects where project_id=' . $pro_parent);
 			$this->db->next_record();
-			$prefix = $this->db->f('num') . '/';
+			$prefix = $this->db->f('p_number') . '/';
 
 			$this->db->query("select max(p_number) from phpgw_p_projects where p_number like ('$prefix%')");
 			$this->db->next_record();
@@ -1022,170 +834,60 @@
 			return $prefix . $max;
 		}
 
-		function read_activities($start, $limit = True, $query = '', $sort = '', $order = '', $cat_id = '')
+		function delete_project($project_id, $subs = False)
 		{
-			if ($order)
-			{
-				$ordermethod = " order by $order $sort";
-			}
-			else
-			{
-				$ordermethod = " order by a_number asc";
-			}
-
-			if ($query)
-			{
-				$filtermethod = " where (descr like '%$query%' or a_number like '%$query%' or minperae like '%$query%' or billperae like '%$query%')";
-
-				if ($cat_id)
-				{
-					$filtermethod .= ' AND category=' . $cat_id;
-				}
-			}
-			else
-			{
-				if ($cat_id)
-				{
-					$filtermethod = ' WHERE category=' . $cat_id;
-				}
-			}
-
-			$sql = 'select * from phpgw_p_activities' . $filtermethod;
-			$this->db2->query($sql,__LINE__,__FILE__);
-			$this->total_records = $this->db2->num_rows();
-
-			if ($limit)
-			{
-				$this->db->limit_query($sql . $ordermethod,$start,__LINE__,__FILE__);
-			}
-			else
-			{
-				$this->db->query($sql . $ordermethod,__LINE__,__FILE__);
-			}
-
-			$i = 0;
-			while ($this->db->next_record())
-			{
-				$act[$i]['activity_id']	= $this->db->f('id');
-				$act[$i]['cat']			= $this->db->f('category');
-				$act[$i]['number']		= $this->db->f('a_number');
-				$act[$i]['descr']		= $this->db->f('descr');
-				$act[$i]['remarkreq']	= $this->db->f('remarkreq');
-				$act[$i]['billperae']	= $this->db->f('billperae');
-				$act[$i]['minperae']	= $this->db->f('minperae');
-				$i++;
-			}
-			return $act;
-		}
-
-		function read_single_activity($activity_id)
-		{
-			$this->db->query('SELECT * from phpgw_p_activities WHERE id=' . intval($activity_id),__LINE__,__FILE__);
-	
-			if ($this->db->next_record())
-			{
-				$act['activity_id']	= $this->db->f('id');
-				$act['cat']			= $this->db->f('category');
-				$act['number']		= $this->db->f('a_number');
-				$act['descr']		= $this->db->f('descr');
-				$act['remarkreq']	= $this->db->f('remarkreq');
-				$act['billperae']	= $this->db->f('billperae');
-				$act['minperae']	= $this->db->f('minperae');
-				return $act;
-			}
-		}
-
-		function add_activity($values)
-		{
-			$values['number']		= $this->db->db_addslashes($values['number']);
-			$values['descr'] 		= $this->db->db_addslashes($values['descr']);
-			$values['billperae']	= $values['billperae'] + 0.0;
-
-			$this->db->query("insert into phpgw_p_activities (a_number,category,descr,remarkreq,billperae,minperae) values ('"
-							. $values['number'] . "'," . intval($values['cat']) . ",'" . $values['descr'] . "','" . $values['remarkreq'] . "',"
-							. $values['billperae'] . ','  . intval($values['minperae']) . ')',__LINE__,__FILE__);
-		}
-
-		function edit_activity($values)
-		{
-			$values['number']		= $this->db->db_addslashes($values['number']);
-			$values['descr']		= $this->db->db_addslashes($values['descr']);
-			$values['billperae']	= $values['billperae'] + 0.0;
-
-			$this->db->query("update phpgw_p_activities set a_number='" . $values['number'] . "', category=" . intval($values['cat'])
-							. ",remarkreq='" . $values['remarkreq'] . "',descr='" . $values['descr'] . "',billperae="
-							. $values['billperae'] . ',minperae=' . intval($values['minperae']) . ' where id=' . intval($values['activity_id']),__LINE__,__FILE__);
-		}
-
-		function delete_pa($action, $pa_id, $subs = False)
-		{
-			$pa_id = intval($pa_id);
-
-			switch ($action)
-			{
-				case 'mains': $p_table = ' phpgw_p_projects'; break;
-				case 'subs'	: $p_table = ' phpgw_p_projects'; break;
-				case 'act'	: $p_table = ' phpgw_p_activities '; break;
-			}
+			$project_id = intval($project_id);
 
 			if ($subs)
 			{
-				$subdelete = ' OR parent =' . $pa_id;
+				$subdelete = ' OR main =' . $project_id;
 			}
 
-			$this->db->query("DELETE from $p_table where id=" . $pa_id . $subdelete,__LINE__,__FILE__);
+			$this->db->query('DELETE from phpgw_p_projects where project_id=' . $project_id . $subdelete,__LINE__,__FILE__);
 
-			if ($action == 'act')
+			if ($subs)
 			{
-				$this->db->query('DELETE from phpgw_p_projectactivities where activity_id=' . $pa_id,__LINE__,__FILE__); 
+				$subdelete = ' or pro_parent=' . $project_id;
 			}
 
-			if ($action == 'mains' || $action == 'subs')
+			$this->db->query('DELETE from phpgw_p_hours where project_id=' . $project_id . $subdelete,__LINE__,__FILE__); 
+
+			$this->db->query('select id from phpgw_p_delivery where project_id=' . $project_id,__LINE__,__FILE__);
+
+			while ($this->db->next_record())
 			{
-				if ($subs)
+				$del[] = array
+				(
+					'id'	=> $this->db->f('id')
+				);
+			}
+
+			if (is_array($del))
+			{
+				for ($i=0;$i<=count($del);$i++)
 				{
-					$subdelete = ' or pro_parent=' . $pa_id;
+					$this->db->query('Delete from phpgw_p_deliverypos where delivery_id=' . intval($del[$i]['id']),__LINE__,__FILE__);
 				}
+				$this->db->query('DELETE from phpgw_p_delivery where project_id=' . $project_id,__LINE__,__FILE__);
+			}
 
-				$this->db->query('DELETE from phpgw_p_hours where project_id=' . $pa_id . $subdelete,__LINE__,__FILE__); 
+			$this->db->query('select id from phpgw_p_invoice where project_id=' . $project_id,__LINE__,__FILE__);
 
-				$this->db->query('select id from phpgw_p_delivery where project_id=' . $pa_id,__LINE__,__FILE__);
+			while ($this->db->next_record())
+			{
+				$inv[] = array
+				(
+					'id'	=> $this->db->f('id')
+				);
+			}
 
-				while ($this->db->next_record())
+			if (is_array($inv))
+			{
+				for ($i=0;$i<=count($inv);$i++)
 				{
-					$del[] = array
-					(
-						'id'	=> $this->db->f('id')
-					);
+					$this->db->query('Delete from phpgw_p_invoicepos where invoice_id=' . intval($inv[$i]['id']),__LINE__,__FILE__);
 				}
-
-				if (is_array($del))
-				{
-					for ($i=0;$i<=count($del);$i++)
-					{
-						$this->db->query('Delete from phpgw_p_deliverypos where delivery_id=' . intval($del[$i]['id']),__LINE__,__FILE__);
-					}
-					$this->db->query('DELETE from phpgw_p_delivery where project_id=' . $pa_id,__LINE__,__FILE__);
-				}
-
-				$this->db->query('select id from phpgw_p_invoice where project_id=' . $pa_id,__LINE__,__FILE__);
-
-				while ($this->db->next_record())
-				{
-					$inv[] = array
-					(
-						'id'	=> $this->db->f('id')
-					);
-				}
-
-				if (is_array($inv))
-				{
-					for ($i=0;$i<=count($inv);$i++)
-					{
-						$this->db->query('Delete from phpgw_p_invoicepos where invoice_id=' . intval($inv[$i]['id']),__LINE__,__FILE__);
-					}
-					$this->db->query('DELETE from phpgw_p_invoice where project_id=' . $pa_id,__LINE__,__FILE__);
-				}
+				$this->db->query('DELETE from phpgw_p_invoice where project_id=' . $project_id,__LINE__,__FILE__);
 			}
 		}
 
@@ -1194,14 +896,13 @@
 			$account_id = intval($account_id);
 			if ($account_id > 0)
 			{
-				/* TODO - this shouldn't be touching api tables */
 				$this->db->query('delete from phpgw_categories where cat_owner=' . $account_id . " AND cat_appname='projects'",__LINE__,__FILE__);
 				$this->db->query('delete from phpgw_p_hours where employee=' . $account_id,__LINE__,__FILE__);
-				$this->db->query('select id from phpgw_p_projects where coordinator=' . $account_id,__LINE__,__FILE__);
+				$this->db->query('select project_id from phpgw_p_projects where coordinator=' . $account_id,__LINE__,__FILE__);
 
 				while ($this->db->next_record())
 				{
-					$drop_list[] = $this->db->f('id');
+					$drop_list[] = $this->db->f('project_id');
 				}
 
 				if (is_array($drop_list))
@@ -1212,7 +913,7 @@
 
 					$subdelete = ' OR parent in (' . implode(',',$drop_list) . ')';
 
-					$this->db->query('DELETE from phpgw_p_projects where id in (' . implode(',',$drop_list) . ')'
+					$this->db->query('DELETE from phpgw_p_projects where id project_in (' . implode(',',$drop_list) . ')'
 									. $subdelete,__LINE__,__FILE__);
 
 					$this->db->query('select id from phpgw_p_delivery where project_id in (' . implode(',',$drop_list) . ')',__LINE__,__FILE__);
@@ -1272,28 +973,38 @@
 			$this->db->query('UPDATE phpgw_categories set cat_owner=' . $new . ' where cat_owner=' . $old . " AND cat_appname='projects'",__LINE__,__FILE__);
 		}
 
-		function sum_budget($action = 'budget')
+
+// -------- SUM BUDGET ---------------
+
+		function sum_budget($values)
 		{
-			$this->db->query('SELECT SUM(' . $action . ") as sumvalue from phpgw_p_projects where ( parent=0 AND status!='archive' )",__LINE__,__FILE__);
+			$action		= $values['action']?$values['action']:'mains';
+			$bcolumn	= $values['bcolumn']?$values['bcolumn']:'budget';
+			$project_id	= intval($values['project_id']);
+
+			$values['column'] = 'project_id,level';
+
+			$projects = $this->read_projects($values);
+
+			//_debug_array($projects);
+
+			$pro = array();
+			for($i=0;$i<count($projects);$i++)
+			{
+				$pro[$i] = $projects[$i]['project_id'];
+			}
+
+			if(count($pro) == 0)
+			{
+				$pro[0] = 0;
+			}
+
+			$sql = 'SELECT SUM(' . $bcolumn . ') as sumvalue from phpgw_p_projects where project_id in(' . implode(',',$pro) . ')';
+			$this->db->query($sql,__LINE__,__FILE__);
 			if ($this->db->next_record())
 			{
 				return $this->db->f('sumvalue');
 			}
-		}
-
-		function list_pcosts($project_id)
-		{
-			$this->db->query('SELECT month,pcosts from phpgw_p_pcosts where project_id=' . intval($project_id) . ' order by month DESC',__LINE__,__FILE__);
-
-			while ($this->db->next_record())
-			{
-				$costs[] = array
-				(
-					'month'		=> $this->db->f('month'),
-					'pcosts'	=> $this->db->f('pcosts')
-				);
-			}
-			return $costs;
 		}
 
 		function get_planned_value($option)
@@ -1308,8 +1019,9 @@
 			switch($action)
 			{
 				case 'tmain':
-				case 'bmain':	$filter = 'main=' . $parent_id . ' and id !=' . $parent_id; break;
+				case 'bmain':	$filter = 'main=' . $parent_id . ' and project_id !=' . $parent_id; break;
 				case 'tparent':
+				case 'ebparent':
 				case 'bparent':	$filter = 'parent=' . $parent_id; break;
 			}
 
@@ -1317,13 +1029,14 @@
 			{
 				case 'bmain':
 				case 'bparent':	$column = 'budget'; break;
+				case 'ebparent': $column = 'e_budget'; break;
 				case 'tmain':
 				case 'tparent':	$column = 'time_planned'; break;
 			}
 
 			if($project_id > 0)
 			{
-				$editfilter = ' and id !=' . $project_id;
+				$editfilter = ' and project_id !=' . $project_id;
 			}
 
 			$this->db->query('SELECT SUM(' . $column . ') as sumvalue from phpgw_p_projects where (' . $filter . $editfilter . ')',__LINE__,__FILE__);
@@ -1333,18 +1046,44 @@
 			}
 		}
 
+		function item2id($data = 0)
+		{
+			$item_id	= (isset($data['item_id'])?$data['item_id']:'event_id');
+			$item		= $data['item'];
+			$action		= (isset($data['action'])?$data['action']:'event');
+
+			switch($action)
+			{
+				case 'event':	$table = 'phpgw_p_events'; $column = 'event_name'; break;
+			}
+
+			$this->db->query("SELECT $item_id FROM $table WHERE $column='" . $item . "'",__LINE__,__FILE__);
+			$this->db->next_record();
+
+			if ($this->db->f($item_id))
+			{
+				return $this->db->f(0);
+			}
+		}
+
 		function id2item($data)
 		{
 			if(is_array($data))
 			{
-				$project_id	= $data['project_id'];
+				$item_id	= intval($data['item_id']);
 				$item		= (isset($data['item'])?$data['item']:'main');
+				$action		= (isset($data['action'])?$data['action']:'pro');
 			}
 
-			$this->db->query("SELECT $item FROM phpgw_p_projects WHERE id=" . $project_id,__LINE__,__FILE__);
-			$this->db->next_record();
+			switch($action)
+			{
+				case 'role':	$table = 'phpgw_p_roles'; $column = 'role_id'; break;
+				case 'event':	$table = 'phpgw_p_events'; $column = 'event_id'; break;
+				default:		$table = 'phpgw_p_projects'; $column = 'project_id'; break;
+			}
 
-			if ($this->db->f($item))
+			$this->db->query("SELECT $item FROM $table WHERE $column=" . $item_id,__LINE__,__FILE__);
+			if ($this->db->next_record())
 			{
 				return $this->db->f(0);
 			}
@@ -1386,6 +1125,7 @@
 		{
 			$this->db->query('INSERT into phpgw_p_mstones (project_id,title,edate) VALUES (' . intval($values['project_id']) . ",'"
 							. $this->db->db_addslashes($values['title']) . "'," . intval($values['edate']) . ')',__LINE__,__FILE__);
+			return $this->db->get_last_insert_id('phpgw_p_mstones','s_id');
 		}
 
 		function edit_mstone($values)
@@ -1417,6 +1157,52 @@
 			return $projects;
 		}
 
+		function get_employee_projects($account_id = '')
+		{
+			$this->account = intval($account_id);
+			$coord = $this->read_projects(array('filter' => 'yours','action' => 'all','limit' => False,'column' => 'title,p_number,level,project_id',
+												'order' => 'main'));
+
+			$pros = $this->get_acl_projects();
+			$this->account = $GLOBALS['phpgw_info']['user']['account_id'];
+
+			$space = '&nbsp;.&nbsp;';
+			for($i=0;$i<count($pros);$i++)
+			{
+				$level = $spaceset = '';
+				$level = $this->return_value('level',$pros[$i]);
+				if ($level > 0)
+				{
+					$spaceset = str_repeat($space,$level);
+				}
+
+				$pro[] = array
+				(
+					'pro_name'	=> $spaceset . $this->return_value('pro',$pros[$i])
+				);
+			};
+
+			if(is_array($coord))
+			{
+				foreach($coord as $co)
+				{
+					if(!is_array($pros) || (is_array($pros) && !in_array($co['project_id'],$pros)))
+					{
+						$spaceset = '';
+						if ($co['level'] > 0)
+						{
+							$spaceset = str_repeat($space,$co['level']);
+						}
+						$pro[] = array
+						(
+							'pro_name'	=> $spaceset . $co['title'] . ' [' . $co['p_number'] . ']'
+						);
+					}
+				}	
+			}
+			return $pro;
+		}
+
 		function member($project_id)
 		{
 			$this->db->query("SELECT acl_account from phpgw_acl where acl_appname = 'projects' and acl_rights=7 and acl_location="
@@ -1432,6 +1218,191 @@
 				return True;
 			}
 			return False;
+		}
+
+		function read_employee_roles($data)
+		{
+			$project_id = intval($data['project_id']);
+			$column		= isset($data['column'])?$data['column']:'*';
+			$account_id	= intval($data['account_id']);
+			$event_type	= $data['event_type']?$data['event_type']:'';
+
+			//echo 'SOPROJECTS->read->employee_roles: DATA ';
+			//_debug_array($data);
+
+			if($account_id > 0)
+			{
+				$emp_select = ' and account_id=' . $account_id;
+			}
+
+			$this->db->query('SELECT * from phpgw_p_projectmembers where project_id=' . $project_id . " and type='role'" . $emp_select,__LINE__,__FILE__);
+
+			while($this->db->next_record())
+			{
+				if($column != '*')
+				{
+					$roles = $this->db->f($column);
+				}
+				else
+				{
+					$roles[] = array
+					(
+						'r_id'			=> $this->db->f('id'),
+						'account_id'	=> $this->db->f('account_id'),
+						'role_id'		=> $this->db->f('role_id'),
+						'events'		=> explode(',',$this->db->f('events'))
+					);
+				}
+			}
+
+			if($event_type && $event_type != '')
+			{
+				//echo 'event_type: ' . $event_type;
+
+				if(is_string($event_type))
+				{
+					$event_type = explode(',',$event_type);
+				}
+
+				for($i=0;$i<=count($event_type);$i++)
+				{
+					$event_id = $this->item2id(array('item' => $event_type[$i]));
+
+					for ($k=0;$k<=count($roles);$k++)
+					{
+						if(is_array($roles[$k]['events']) && in_array($event_id,$roles[$k]['events']))
+						{
+							$eroles[] = array
+							(
+								'r_id'			=> $roles[$k]['r_id'],
+								'account_id'	=> $roles[$k]['account_id'],
+								'role_id'		=> $roles[$k]['role_id'],
+								'events'		=> array($event_id)
+							);
+						}
+					}
+				}
+				$roles = is_array($eroles)?$eroles:False;
+			}
+
+			//echo 'SOPROJECTS->read_employee_roles: ROLES ';
+			//_debug_array($roles);
+			return $roles;
+		}
+
+		function save_employee_role($values,$edit = False)
+		{
+			if(!$edit)
+			{
+				$this->db->query('INSERT into phpgw_p_projectmembers (project_id,account_id,type,role_id,events) values(' . intval($values['project_id']) . ','
+							. intval($values['account_id']) . ",'role'," . intval($values['role_id']) . ",'"
+							. (is_array($values['events'])?implode(',',$values['events']):'') . "')",__LINE__,__FILE__);
+			}
+			else
+			{
+				$this->db->query('UPDATE phpgw_p_projectmembers set role_id=' . intval($values['role_id']) . ",events='" . (is_array($values['events'])?implode(',',$values['events']):'')
+								. "' where type='role' and project_id=" . intval($values['project_id']) . ' and account_id=' . intval($values['account_id']) . ' and id='
+								. intval($values['r_id']),__LINE__,__FILE__);
+
+			}
+		}
+
+		function add_alarm($data = 0)
+		{
+			$project_id = intval($data['project_id']);
+			$action		= isset($data['action'])?$data['action']:'hours';
+			$extra		= intval($data['extra']);
+
+			$this->db->query('INSERT into phpgw_p_alarm (project_id,alarm_type,alarm_extra,alarm_send) values(' . $project_id . ",'" . $action . "',"
+							. $extra . ',1)',__LINE__,__FILE__);
+
+			return $this->db->get_last_insert_id('phpgw_p_alarm','alarm_id');
+		}
+
+		function update_alarm($data)
+		{
+			$alarm_id	= intval($data['alarm_id']);
+			$extra		= intval($data['extra']);
+			$send		= isset($data['send'])?$data['send']:'1';
+
+			$this->db->query('UPDATE phpgw_p_alarm set alarm_extra=' . $extra . ", alarm_send='" . $send . "' where alarm_id=" . $alarm_id,__LINE__,__FILE__);
+		}
+
+		function drop_alarm($project_id = 0,$action = 'edit')
+		{
+			$this->db->query('DELETE from phpgw_p_alarm where project_id=' . intval($project_id) . " and alarm_type='" . $action . "'",__LINE__,__FILE__);
+		}
+
+		function check_alarm($project_id = 0,$action = 'hours')
+		{
+			$this->db->query('SELECT * from phpgw_p_alarm where project_id=' . intval($project_id) . " and alarm_send='1' and alarm_type='" . $action . "'",__LINE__,__FILE__);
+
+			if($this->db->next_record())
+			{
+				return True;
+			}
+			return False;
+		}
+
+		function get_alarm($data)
+		{
+			$project_id = intval($data['project_id']);
+			$action		= isset($data['action'])?$data['action']:'hours';
+
+			$this->db->query('SELECT * from phpgw_p_alarm where project_id=' . intval($project_id) . " and alarm_type='" . $action . "'",__LINE__,__FILE__);
+
+			if($this->db->next_record())
+			{
+				$alarm = array
+				(
+					'alarm_id'	=> $this->db->f('alarm_id'),
+					'extra'		=> $this->db->f('alarm_extra')
+				);
+				return $alarm;
+			}
+			return False;
+		}
+
+		function check_employee_alarm($data)
+		{
+			$employee	= intval($data['employee']);
+			$type		= isset($data['type'])?$data['type']:'assignment to role';
+			$project_id	= intval($data['project_id']);
+
+			$event_id = $this->soprojects->item2id(array('item' => $type));
+
+			$events = $this->read_employee_roles(array('project_id' => $project_id,'employee' => $employee, 'column' => 'events'));
+
+			if(is_string($events) && $events != '')
+			{
+				$events = explode(',',$events);
+			}
+
+			if(is_array($events) && in_array($event_id,$events))
+			{
+				return $event_id;
+			}
+			return False;
+		}
+
+		function get_site_config($default = True)
+		{
+			$this->config = CreateObject('phpgwapi.config','projects');
+			$this->config->read_repository();
+
+			if ($this->config->config_data)
+			{
+				$items = $this->config->config_data;
+			}
+
+			if($default)
+			{
+				$items['hwday']			= isset($items['hwday'])?$items['hwday']:8;
+				$items['accounting']	= isset($items['accounting'])?$items['accounting']:'own';
+				$items['activity_bill']	= isset($items['activity_bill'])?$items['activity_bill']:'h';
+				$items['dateprevious']	= isset($items['dateprevious'])?$items['dateprevious']:'no';
+			}
+			return $items;
 		}
 	}
 ?>

@@ -1,11 +1,11 @@
 <center>
-<table border="0" width="80%" cellpadding="2" cellspacing="2">
+<table border="0" cellpadding="2" cellspacing="2">
 <form method="POST" action="{action_url}">
-	<tr>
+	<tr bgcolor="{row_on}">
 		<td valign="top">{lang_users_list}:</td>
 		<td><select name="users[]" multiple>{users_list}</select></td>
 	</tr>
-	<tr>
+	<tr bgcolor="{row_off}">
 		<td valign="top">{lang_groups_list}:</td>
 		<td><select name="groups[]" multiple>{groups_list}</select></td>
 	</tr>

@@ -18,30 +18,15 @@
 	}
 	unset($d1);
 
-	$homedisplay = $GLOBALS['phpgw_info']['user']['preferences']['projects']['homepage_display'];
-	if(!isset($homedisplay))
-	{
-		// check for old varnames that were used to toggle this display - should be removed Real Soon Now (TM)
-		if(intval($GLOBALS['phpgw_info']['user']['preferences']['projects']['mainscreen_showevents'])==1)
-		{
-			$homedisplay = 1;
-		} 
-		elseif(intval($GLOBALS['phpgw_info']['user']['preferences']['todo']['mainscreen_showevents'])==1)
-		{
-			$homedisplay = 1;
-		}
-	}
-	$homedisplay=intval($homedisplay);	
-
-	if($homedisplay>0)
-	{
+	//if ($GLOBALS['phpgw_info']['user']['preferences']['todo']['mainscreen_showevents'] == True)
+	//{
 
 		$pro = CreateObject('projects.uiprojects');
 		$extra_data = '<td>'."\n".$pro->list_projects_home().'</td>'."\n";
 
 		$portalbox = CreateObject('phpgwapi.listbox',
 			Array(
-				'title'     => lang('projects'),
+				'title'     => '<font color="#FFFFFF">'.lang('projects').'</font>',
 				'primary'   => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
 				'secondary' => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
 				'tertiary'  => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
@@ -68,5 +53,5 @@
 		$portalbox->data = array();
 
 		echo "\n".'<!-- projects info -->'."\n".$portalbox->draw($extra_data).'<!-- projects info -->'."\n";
-	}
+	//}
 ?>

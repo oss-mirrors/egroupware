@@ -14,10 +14,27 @@
 		$title = $appname;
 		$file = Array
 		(
-			'Preferences'     => $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.preferences'),
+			'Preferences'     => $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.preferences'),
 			'Grant Access'    => $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uiaclprefs.index&acl_app='.$appname),
 			'Edit categories' => $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=projects&cats_level=True&global_cats=True')
 		);
+
+		$pro_soconfig = CreateObject('projects.soconfig');
+		if($pro_soconfig->isprojectadmin('pad') || $pro_soconfig->isprojectadmin('pmanager'))
+		{
+		$afile = Array
+		(
+			'roles'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_roles&action=role'),
+			'events'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_events')
+		);
+		unset($pro_soconfig);
+		}
+
+		if(is_array($afile))
+		{
+			$file += $afile;
+		}
+
 		display_section($appname,$title,$file);
 	}
 ?>

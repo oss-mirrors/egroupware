@@ -76,14 +76,14 @@
 				$join = ' LEFT JOIN ';
 			}
 
-			$this->db->query('SELECT title,p_number,phpgw_p_projects.id as id FROM phpgw_p_projects' . $join . 'phpgw_p_hours ON '
-							. 'phpgw_p_hours.employee=' . $account_id . ' GROUP BY title,p_number,phpgw_p_projects.id',__LINE__,__FILE__);
+			$this->db->query('SELECT title,p_number,phpgw_p_projects.project_id FROM phpgw_p_projects' . $join . 'phpgw_p_hours ON '
+							. 'phpgw_p_hours.employee=' . $account_id . ' GROUP BY title,p_number,project_id',__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{
 				$pro[] = array
 				(
-					'project_id'	=> $this->db->f('id'),
+					'project_id'	=> $this->db->f('project_id'),
 					'num'			=> $this->db->f('p_number'),
 					'title'			=> $this->db->f('title')
 				);

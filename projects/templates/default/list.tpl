@@ -2,12 +2,34 @@
 
 {app_header}
 
-<center>
-<table border="0" width="98%" cellpadding="2" cellspacing="2">
-	<tr colspan="9">
-		<td colspan="8" width="100%">
+<!-- BEGIN project_main -->
+
+<table border="0" width="100%" cellpadding="2" cellspacing="0">
+	<tr bgcolor="{th_bg}">
+		<td colspan="4"><b>{lang_main}:&nbsp;<a href="{main_url}">{title_main}</a></b></td>
+	</tr>
+	<tr bgcolor="{row_off}">
+		<td>{lang_number}:</td>
+		<td>{number_main}</td>
+		<td>{lang_url}:</td>
+		<td><a href="http://{url_main}" taget="_blank">{url_main}</a></td>
+	</tr>
+	<tr bgcolor="{row_off}">
+		<td>{lang_coordinator}:</td>
+		<td>{coordinator_main}</td>
+		<td>{lang_customer}:</td>
+		<td>{customer_main}</td>
+	</tr>
+</table>
+
+<!-- END project_main -->
+
+<center>{message}</center>
+<table border="0" width="100%" cellpadding="2" cellspacing="2">
+	<tr width="100%">
+		<td colspan="11" width="100%">
 			<table border="0" width="100%">
-				<tr>
+				<tr width="100%">
 				{left}
 					<td align="center">{lang_showing}</td>
 				{right}
@@ -16,39 +38,41 @@
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2" width="25%" align="left">
-			{action_list}
-			<noscript>&nbsp;<input type="submit" name="submit" value="{lang_submit}"></noscript></form></td>
-		<td colspan="2" width="20%" align="center"><form method="POST" name="status" action="{status_action}">
-			<select name="status" onChange="this.form.submit();">{status_list}</select><noscript>
-			&nbsp;<input type="submit" name="submit" value="Submit"></noscript></form></td>
-		<td colspan="2" width="20%" align="center"><form method="POST" name="filter" action="{filter_action}">{filter_list}</form></td>
-		<td colspan="2" width="35%" align="right"><form method="POST" name="query" action="{search_action}">{search_list}</form></td>
+		<td width="25%" align="left"><form method="POST" action="{action_url}">{action_list}</form></td>
+		<td width="20%" align="center">
+			<form method="POST" name="status" action="{action_url}">
+				<select name="status" onChange="this.form.submit();">{status_list}</select>
+			</form>
+		</td>
+		<td width="20%" align="center"><form method="POST" name="filter" action="{action_url}">{filter_list}</form></td>
+		<td width="35%" align="right"><nobr><form method="POST" name="query" action="{action_url}">{search_list}</nobr></form></td>
 	</tr>
 </table>
-<table border="0" width="98%" cellpadding="2" cellspacing="2">
+<table border="0" width="100%" cellpadding="2" cellspacing="2">
 	<tr bgcolor="{th_bg}">
-		<td width="10%">{sort_number}</td>
-		<td width="20%">{sort_title}</td>
-		<td width="20%">{sort_coordinator}</td>
-        <td width="20%" align="center">{lang_milestones}</td>
-		<td width="10%" align="center">{sort_end_date}</td>
-		<td width="10%" align="center">{lang_action}</td>
-		<td width="5%" align="center">{lang_view}</td>
-		<td width="5%" align="center">{lang_edit}</td>
+		<td>{sort_title}</td>
+
+		<!-- BEGIN pro_sort_cols -->
+
+		<td align="{col_align}">{sort_column}</td>
+
+		<!-- END pro_sort_cols -->
+
+		<td width="16" align="center">&nbsp;</td>
+		<td width="16" align="center">&nbsp;</td>
+		<td width="16" align="center">&nbsp;</td>
 	</tr>
 
 <!-- BEGIN projects_list -->
 
 	<tr bgcolor="{tr_color}">
-		<td valign="top">{number}</td>
-		<td valign="top">{title}</td>
-		<td valign="top">{coordinator}</td>
-        <td>{milestones}</td>
-		<td align="center" valign="top">{end_date}</td>
-		<td align="center" valign="top"><a href="{action_entry}">{lang_action_entry}</a></td>
-		<td align="center" valign="top"><a href="{view}">{lang_view_entry}</a></td>
-		<td align="center" valign="top"><a href="{edit}">{lang_edit_entry}</a></td>
+		<td valign="top"><a href="{projects_url}">{title}</a></td>
+
+		{pro_column}
+
+		<td align="center" valign="top"><a href="{add_job_url}">{add_job_img}</a></td>
+		<td align="center" valign="top"><a href="{view_url}"><img src="{view_img}" title="{lang_view}" border="0"></a></td>
+		<td align="center" valign="top"><a href="{edit_url}">{edit_img}</a></td>
 	</tr>
 
 <!-- END projects_list -->
@@ -57,4 +81,9 @@
 		<td height="50">{add}</td>
 	</tr>
 </table>
-</center>
+
+<!-- BEGIN pro_cols -->
+
+		<td align="{col_align}">{column}</td>
+
+<!-- END pro_cols -->

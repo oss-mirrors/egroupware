@@ -20,9 +20,9 @@
 </table>
 <table width="80%" border="0" cellpadding="2" cellspacing="2">	
 	<tr bgcolor="{th_bg}">
-		<td width="33%" bgcolor="{th_bg}">{sort_lid}</td>
-		<td width="33%" bgcolor="{th_bg}">{sort_firstname}</td>
-		<td width="33%" bgcolor="{th_bg}">{sort_lastname}</td>
+		<td width="33%" bgcolor="{th_bg}"><b>{sort_lid}</b></td>
+		<td width="33%" bgcolor="{th_bg}"><b>{sort_firstname}</b></td>
+		<td width="33%" bgcolor="{th_bg}"><b>{sort_lastname}</b></td>
 	</tr>
 
 <!-- BEGIN admin_list -->
@@ -34,6 +34,17 @@
 	</tr>
 
 <!-- END admin_list -->
+	<tr>
+		<td colspan="3" bgcolor="{th_bg}"><b>{lang_group}</b></td>
+	</tr>
+
+<!-- BEGIN group_list -->
+
+	<tr bgcolor="{tr_color}">                                                                                                                                                                
+		<td colspan="3">{lid}</td>
+	</tr>
+
+<!-- END group_list -->
 
 	<tr valign="bottom" height="50">
 	<form method="POST" action="{action_url}">

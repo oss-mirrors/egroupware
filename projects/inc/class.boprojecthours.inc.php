@@ -7,7 +7,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright 2000 - 2003 Free Software Foundation, Inc               *
+	* Copyright 2000 - 2004 Free Software Foundation, Inc               *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -33,7 +33,8 @@
 		var $filter;
 		var $order;
 		var $sort;
-		var $state;
+		var $status;
+		var $project_id;
 
 		var $public_functions = array
 		(
@@ -44,67 +45,204 @@
 			'delete_hours'		=> True
 		);
 
-		function boprojecthours($session=False)
+		function boprojecthours()
 		{
-			$this->soprojecthours	= CreateObject('projects.soprojecthours');
-			$this->boprojects		= CreateObject('projects.boprojects');
+			$action = get_var('action',array('GET'));
 
-			if ($session)
+			$this->boprojects	= CreateObject('projects.boprojects',True,$action);
+			$this->boconfig		= CreateObject('projects.boconfig');
+
+			$this->sohours		= $this->boprojects->sohours;
+			$this->account		= $this->boprojects->account;
+			$this->grants		= $this->boprojects->grants;
+
+			$this->start		= $this->boprojects->start;
+			$this->query		= $this->boprojects->query;
+			$this->filter		= $this->boprojects->filter;
+			$this->order		= $this->boprojects->order;
+			$this->sort		= $this->boprojects->sort;
+			$this->status		= $this->boprojects->status;
+			$this->project_id	= $this->boprojects->project_id;
+			$this->cat_id		= $this->boprojects->cat_id;
+			$this->siteconfig	= $this->boprojects->siteconfig;
+		}
+
+		function add_perms($pro)
+		{
+			$coordinator = $this->boprojects->return_value('co',$this->project_id);
+
+			if ($this->boprojects->check_perms($this->grants[$coordinator],PHPGW_ACL_ADD) || $coordinator == $this->account)
 			{
-				$this->read_sessiondata();
-				$this->use_session = True;
+				return True;
 			}
 
-			$start		= get_var('start',array('POST','GET'));
-			$query		= get_var('query',array('POST','GET'));
-			$sort		= get_var('sort',array('POST','GET'));
-			$order		= get_var('order',array('POST','GET'));
-			$state		= get_var('state',array('POST','GET'));
-			$filter		= get_var('filter',array('POST','GET'));
-			$project_id	= get_var('project_id',array('POST','GET'));
-
-
-			if(isset($start)) { $this->start = $start; }
-			if(isset($query)) { $this->query = $query; }
-			if(!empty($filter)) { $this->filter = $filter; }
-			if(isset($sort)) { $this->sort = $sort; }
-			if(isset($order)) { $this->order = $order; }
-			if(isset($state)) { $this->state = $state; }
-			if(isset($project_id)) { $this->project_id = $project_id; }
+			if($this->member())
+			{
+				return True;
+			}
+			//$main = $this->boprojects->return_value('main',$this->project_id);
+			//$main_co = $this->boprojects->return_value('co',intval($pro['main']));
+			if($this->boprojects->check_perms($this->grants[$pro['main_co']],PHPGW_ACL_ADD) || $pro['main_co'] == $this->account)
+			{
+				return True;
+			}
+			$parent = $this->boprojects->return_value('parent',$this->project_id);
+			$parent_co = $this->boprojects->return_value('co',$parent);
+			if($this->boprojects->check_perms($this->grants[$parent_co],PHPGW_ACL_ADD) || $parent_co == $this->account)
+			{
+				return True;
+			}
+			if($this->boprojects->isprojectadmin('pad') || $this->boprojects->isprojectadmin('pmanager'))
+			{
+				return True;
+			}
+			return False;
 		}
 
-		function save_sessiondata($data)
+		function edit_perms($pro)
 		{
-			if ($this->use_session)
+			$pro['action'] = isset($pro['action'])?$pro['action']:'edit';
+
+			switch($pro['action'])
 			{
-				$GLOBALS['phpgw']->session->appsession('session_data','projects_hours',$data);
+				case 'delete':	$acl = PHPGW_ACL_DELETE; break;
+				default:		$acl = PHPGW_ACL_EDIT; break;
+			}
+
+			if (($pro['status'] != 'billed') && ($pro['status'] != 'closed'))
+			{
+				if ($pro['employee'] == $this->account && !$pro['adminonly'])
+				{
+					return True;
+				}
+
+				$coordinator = $this->boprojects->return_value('co',$this->project_id);
+				if ($this->boprojects->check_perms($this->grants[$coordinator],$acl) || $coordinator == $this->account)
+				{
+					return True;
+				}
+
+				//$main_co = $this->boprojects->return_value('co',intval());
+				if($this->boprojects->check_perms($this->grants[$pro['main_co']],$acl) || $pro['main_co'] == $this->account)
+				{
+					return True;
+				}
+				$parent = $this->boprojects->return_value('parent',$this->project_id);
+				$parent_co = $this->boprojects->return_value('co',$parent);
+				if($this->boprojects->check_perms($this->grants[$parent_co],$acl) || $parent_co == $this->account)
+				{
+					return True;
+				}
+				if($this->boprojects->isprojectadmin('pad') || $this->boprojects->isprojectadmin('pmanager'))
+				{
+					return True;
+				}
+				return False;
 			}
 		}
 
-		function read_sessiondata()
+		function format_htime($hdate = '')
 		{
-			$data = $GLOBALS['phpgw']->session->appsession('session_data','projects_hours');
+			$hdate = (int)$hdate;
 
-			$this->start		= $data['start'];
-			$this->query		= $data['query'];
-			$this->filter		= $data['filter'];
-			$this->order		= $data['order'];
-			$this->sort			= $data['sort'];
-			$this->state		= $data['state'];
-			$this->project_id	= $data['project_id'];
+			if ($hdate > 0)
+			{
+				$hour = date('H',$hdate);
+				$min = date('i',$hdate);
+
+				$hdate = $hdate + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+				$htime['date'] = $GLOBALS['phpgw']->common->show_date($hdate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+				$htime['time'] = $GLOBALS['phpgw']->common->formattime($hour,$min);
+			}
+			else
+			{
+				$htime['date'] = 0;
+				$htime['time'] = 0;
+			}
+			return $htime;
 		}
 
-		function list_hours($start, $limit, $query, $filter, $sort, $order, $state, $project_id)
+		function hdate_format($hdate = '')
 		{
-			$hours_list = $this->soprojecthours->read_hours($start, $limit, $query, $filter, $sort, $order, $state, $project_id);
-			$this->total_records = $this->soprojecthours->total_records;
-			return $hours_list;
+			if (!$hdate)
+			{
+				$dateval['month'] = date('m',time());
+				$dateval['day'] = date('d',time());
+				$dateval['year'] = date('Y',time());
+				$dateval['hour'] = date('H',time());
+				$dateval['min'] = date('i',time());
+			}
+			else
+			{
+				$dateval['month'] = date('m',$hdate);
+				$dateval['day'] = date('d',$hdate);
+				$dateval['year'] = date('Y',$hdate);
+				$dateval['hour'] = date('H',$hdate);
+				$dateval['min'] = date('i',$hdate);
+			}
+			return $dateval;
+		}
+
+		function list_hours()
+		{
+			$hours_list = $this->sohours->read_hours(array('start' => $this->start,'limit' => $this->limit,'query' => $this->query,'filter' => $this->filter,
+																	'sort' => $this->sort,'order' => $this->order,'status' => $this->state,'project_id' => $this->project_id));
+			$this->total_records = $this->sohours->total_records;
+
+			while(is_array($hours_list) && list(,$hour) = each($hours_list))
+			{
+				$hours[] = array
+				(
+					'hours_id'			=> $hour['hours_id'],
+					'project_id'		=> $hour['project_id'],
+					'hours_descr'		=> $GLOBALS['phpgw']->strip_html($hour['hours_descr']),
+					'activity_title'	=> $this->siteconfig['accounting']=='activity'?$this->boprojects->return_value('act',$hour['activity_id']):'',
+					'status'			=> $hour['status'],
+					'statusout'			=> lang($hour['status']),
+					'sdate'				=> $hour['start_date'],
+					'edate'				=> $hour['end_date'],
+					'minutes'			=> $hour['minutes'],
+					'wh'				=> $this->sohours->format_wh($hour['minutes']),
+					'employee'			=> $hour['employee'],
+					'employeeout'		=> $GLOBALS['phpgw']->common->grab_owner_name($hour['employee']),
+					'sdate_formatted'	=> $this->format_htime($hour['sdate']),
+					'edate_formatted'	=> $this->format_htime($hour['edate'])
+				);
+			}
+			return $hours;
 		}
 
 		function read_single_hours($hours_id)
 		{
-			$hours = $this->soprojecthours->read_single_hours($hours_id);
-			return $hours;
+			$hours = $this->sohours->read_single_hours($hours_id);
+
+			$hour = array
+			(
+				'hours_id'			=> $hours['hours_id'],
+				'project_id'		=> $hours['project_id'],
+				'pro_parent'		=> $hours['pro_parent'],
+				'pro_main'			=> $hours['pro_main'],
+				'hours_descr'		=> $GLOBALS['phpgw']->strip_html($hours['hours_descr']),
+				'status'			=> $hours['status'],
+				'statusout'			=> lang($hours['status']),
+				'minutes'			=> $hours['minutes'],
+				'wh'				=> $this->sohours->format_wh($hours['minutes']),
+				'sdate'				=> $hours['sdate'],
+				'edate'				=> $hours['edate'],
+				'employee'			=> $hours['employee'],
+				'employeeout'		=> $GLOBALS['phpgw']->common->grab_owner_name($hours['employee']),
+				'activity_id'		=> $hours['activity_id'],
+				'activity_title'	=> $this->siteconfig['accounting']=='activity'?$this->boprojects->return_value('act',$hours['activity_id']):'',
+				'remark'			=> nl2br($GLOBALS['phpgw']->strip_html($hours['remark'])),
+				'sdate_formatted'	=> $this->hdate_format($hours['sdate']),
+				'edate_formatted'	=> $this->hdate_format($hours['edate']),
+				'stime_formatted'	=> $this->format_htime($hours['sdate']),
+				'etime_formatted'	=> $this->format_htime($hours['edate']),
+				'billable'			=> $hours['billable'],
+				'km_distance'		=> $hours['km_distance'],
+				't_journey'			=> $hours['t_journey']
+			);
+			return $hour;
 		}
 
 		function member()
@@ -114,17 +252,17 @@
 
 		function check_values($values)
 		{
-			if (strlen($values['hours_descr']) >= 255)
+			if (strlen($values['hours_descr']) > 250)
 			{
-				$error[] = lang('Description can not exceed 255 characters in length !');
+				$error[] = lang('Description can not exceed 250 characters in length');
 			}
 
-			if (strlen($values['remark']) >= 8000)
+			if (strlen($values['remark']) > 8000)
 			{
 				$error[] = lang('Remark can not exceed 8000 characters in length !');
 			}
 
-			if ($values['shour'] && ($values['shour'] != 0) && ($values['shour'] != 12))
+			/*if ($values['shour'] && ($values['shour'] != 0) && ($values['shour'] != 12))
 			{
 				if ($values['sampm']=='pm')
 				{
@@ -154,29 +292,35 @@
 				{
 					$values['ehour'] = 0;
 				}
-			}
+			}*/
 
 			if (! checkdate($values['smonth'],$values['sday'],$values['syear']))
 			{
-				$error[] = lang('You have entered an invalid start date !');
+				$error[] = lang('You have entered an invalid start date');
 			}
 
-			if (! checkdate($values['emonth'],$values['eday'],$values['eyear']))
+			if ($values['emonth'] || $values['eday'] || $values['eyear'])
 			{
-				$error[] = lang('You have entered an invalid end date !');
-			}
-
-			$activity = $this->boprojects->read_single_activity($values['activity_id']);
-
-			if (! is_array($activity))		
-			{
-				$error[] = lang('You have selected an invalid activity !');
-			}
-			else
-			{
-				if ($activity['remarkreq']=='Y' && (!$values['remark']))
+				if (! checkdate($values['emonth'],$values['eday'],$values['eyear']))
 				{
-					$error[] = lang('Please enter a remark !');
+					$error[] = lang('You have entered an invalid end date');
+				}
+			}
+
+			if($this->siteconfig['accounting'] == 'activity')
+			{
+				$activity = $this->boconfig->read_single_activity($values['activity_id']);
+
+				if (! is_array($activity))		
+				{
+					$error[] = lang('You have selected an invalid activity');
+				}
+				else
+				{
+					if ($activity['remarkreq']=='Y' && (!$values['remark']))
+					{
+						$error[] = lang('Please enter a remark');
+					}
 				}
 			}
 
@@ -186,13 +330,34 @@
 			}
 		}
 
+		function check_ttracker($values)
+		{
+			if(!$values['project_id'])
+			{
+				$error[] = lang('please select a project for time tracking');
+			}
+
+			if($values['start'] || $values['continue'])
+			{
+				$is_active = $this->sohours->check_ttracker($values['project_id'],'active');
+				if($is_active)
+				{
+					$error[] = lang('time tracking for this project is already active');
+				}
+			}
+			else if($values['stop'] || $values['pause'])
+			{
+				$is_active = $this->sohours->check_ttracker($values['project_id'],'inactive');
+				if($is_active)
+				{
+					$error[] = lang('time tracking for this project has been stopped already');
+				}
+			}
+			return $error;
+		}
+
 		function save_hours($values)
 		{
-			$activity = $this->boprojects->read_single_activity($values['activity_id']);
-
-			$values['minperae']		= $activity['minperae'];
-			$values['billperae']	= $activity['billperae'];
-
 			if ($values['shour'] && ($values['shour'] != 0) && ($values['shour'] != 12))
 			{
 				if ($values['sampm']=='pm')
@@ -240,24 +405,188 @@
 				$values['edate'] = mktime($values['ehour'],$values['emin'],0,$values['emonth'],$values['eday'],$values['eyear']);
 			}
 
-			if (!$values['employee'])
-			{
-				$values['employee'] = $this->soprojecthours->account;
-			}
+			$values['w_minutes'] = $values['hours']*60+$values['minutes'];
 
-			if (intval($values['hours_id']) > 0)
+			if($values['track_id'] || $values['action'] == 'apply')
 			{
-				$this->soprojecthours->edit_hours($values);
+				$this->ttracker($values);
 			}
 			else
 			{
-				$this->soprojecthours->add_hours($values);
+				if (!$values['employee'])
+				{
+					$values['employee'] = $this->sohours->account;
+				}
+
+				$values['project_id']	= $this->project_id;
+				$values['pro_parent']	= $this->boprojects->return_value('parent',$this->project_id);
+				$values['pro_main']		= $values['pro_main']?$values['pro_main']:$this->project_id;
+
+				if (intval($values['hours_id']) > 0)
+				{
+					$this->sohours->edit_hours($values);
+				}
+				else
+				{
+					$this->sohours->add_hours($values);
+				}
+				$pro = $this->boprojects->read_single_project($this->project_id,'budget','subs');
+
+				// HOURS ALARM
+
+				$hours_percent = $this->boprojects->soconfig->get_event_extra('hours limit');
+				$hours_percent = $hours_percent>0?$hours_percent:100;
+				$pro['ptime_min_percent'] = ($pro['ptime_min']*intval($hours_percent))/100;
+				//echo 'PTIME_MIN_PERCENT: ' . $pro['ptime_min_percent'];
+				//echo 'uhours_jobs_all: ' . $pro['uhours_jobs_all_wminutes'];
+				if($pro['uhours_jobs_all_wminutes'] >= $pro['ptime_min_percent'])
+				{
+					//echo 'uhours_jobs_all ' . $pro['uhours_jobs_all_wminutes'] . ' >= ' . $pro['ptime_min_percent'];
+					$alarm = $this->boprojects->soprojects->get_alarm(array('project_id' => $this->project_id));
+
+					if(is_array($alarm))
+					{
+						$alarm_id = $alarm['alarm_id'];
+						if($pro['ptime_min'] != $alarm['extra'])
+						{
+							$this->boprojects->soprojects->update_alarm(array('alarm_id' => $alarm['alarm_id'],'extra' => $pro['ptime_min']));
+						}
+					}
+					else
+					{
+						$alarm_id = $this->boprojects->soprojects->add_alarm(array('project_id' => $this->project_id,'extra' => $pro['ptime_min']));
+					}
+					$return = $this->boprojects->send_alarm(array('project_id' => $this->project_id,'event_type' => 'hours limit','project_name' =>
+															$pro['title'] . ' [' . $pro['number'] . ']','ptime' => $pro['ptime'],'uhours_jobs_all' =>
+															$pro['uhours_jobs_all']));
+					if($return)
+					{
+						$this->boprojects->soprojects->update_alarm(array('alarm_id' => $alarm_id,'send' => '0','extra' => $pro['ptime_min']));
+					}
+				}
+
+				// BUDGET ALARM
+
+				$budget_percent = $this->boprojects->soconfig->get_event_extra('budget limit');
+				$budget_percent = $budget_percent>0?$budget_percent:100;
+				$pro['budget_percent'] = ($pro['budget']*intval($budget_percent))/100;
+
+				if($pro['u_budget_jobs'] >= $pro['budget_percent'])
+				{
+					//echo 'u_budget_jobs ' . $pro['u_budget_jobs'] . ' >= ' . $pro['budget_percent'];
+					$alarm = $this->boprojects->soprojects->get_alarm(array('project_id' => $this->project_id,'action' => 'budget'));
+
+					if(is_array($alarm))
+					{
+						$alarm_id = $alarm['alarm_id'];
+						if($pro['budget'] != $alarm['extra'])
+						{
+							$this->boprojects->soprojects->update_alarm(array('alarm_id' => $alarm['alarm_id'],'extra' => $pro['budget']));
+						}
+					}
+					else
+					{
+						$alarm_id = $this->boprojects->soprojects->add_alarm(array('project_id' => $this->project_id,'action' => 'budget','extra' => $pro['budget']));
+					}
+					$return = $this->boprojects->send_alarm(array('project_id' => $this->project_id,'event_type' => 'budget limit','project_name' =>
+															$pro['title'] . ' [' . $pro['number'] . ']','budget' => $pro['budget'],'u_budget_jobs' =>
+															$pro['u_budget_jobs']));
+					if($return)
+					{
+						$this->boprojects->soprojects->update_alarm(array('alarm_id' => $alarm_id,'send' => '0','extra' => $pro['budget']));
+					}
+				}
 			}
 		}
 
-		function delete_hours($hours_id)
+		function delete_hours($values)
 		{
-			$this->soprojecthours->delete_hours($hours_id);
+			$this->sohours->delete_hours($values);
+		}
+
+		function list_ttracker()
+		{
+			$tracking = $this->sohours->list_ttracker();
+			$project_list = $this->boprojects->select_project_list(array('action' => 'all','filter' => 'noadmin','formatted' => False));
+
+			//_debug_array($htracker);
+
+			if(is_array($project_list))
+			{
+				foreach($project_list as $key => $pro)
+				{
+					$hours[$key] = array
+					(
+						'project_title'	=> $GLOBALS['phpgw']->strip_html($pro['title']) . ' [' . $GLOBALS['phpgw']->strip_html($pro['p_number']) . ']',
+						'project_id'	=> $pro['project_id']
+					);
+
+					if(is_array($tracking))
+					{
+					foreach($tracking as $track)
+					{
+						if($track['project_id'] == $pro['project_id'])
+						{
+							$hours[$key]['hours'][] = array
+							(
+								'track_id'			=> $track['track_id'],
+								'activity_title'	=> $this->boprojects->return_value('act',$track['activity_id']),
+								'hours_descr'		=> $GLOBALS['phpgw']->strip_html($track['hours_descr']),
+								'status'			=> $track['status'],
+								'sdate_formatted'	=> $this->format_htime($track['sdate']),
+								'edate'				=> $track['edate'],
+								'edate_formatted'	=> $this->format_htime($track['edate']),
+								'remark'			=> nl2br($GLOBALS['phpgw']->strip_html($track['remark'])),
+								'wh'				=> $this->sohours->format_wh($track['minutes'])
+							);
+						}
+					}
+					}
+				}
+				//_debug_array($hours);
+				return $hours;
+			}
+		}
+
+		function ttracker($values)
+		{
+			if(!isset($values['action']))
+			{
+				$values['action'] = isset($values['start'])?'start':(isset($values['stop'])?'stop':(isset($values['pause'])?'pause':(isset($values['continue'])?'continue':'edit')));
+			}
+
+			switch($values['action'])
+			{
+				case 'save':	
+					$this->sohours->save_ttracker(); 
+					break;
+				default:	
+					$this->sohours->ttracker($values); 
+					break;
+			}
+		}
+
+		function read_single_track($track_id)
+		{
+			$hours = $this->sohours->read_single_track($track_id);
+
+			//_debug_array($hours);
+			$hour = array
+			(
+				'track_id'			=> $hours['track_id'],
+				'project_id'		=> $hours['project_id'],
+				'wh'				=> $hours['minutes']>0?$this->sohours->format_wh($hours['minutes']):0,
+				'hours_descr'		=> $GLOBALS['phpgw']->strip_html($hours['hours_descr']),
+				'sdate'				=> $hours['sdate'],
+				'edate'				=> $hours['edate'],
+				'activity_id'		=> $hours['activity_id'],
+				'remark'			=> nl2br($GLOBALS['phpgw']->strip_html($hours['remark'])),
+				'sdate_formatted'	=> $this->hdate_format($hours['sdate']),
+				'edate_formatted'	=> $hours['edate']>0?$this->hdate_format($hours['edate']):0,
+				'stime_formatted'	=> $this->format_htime($hours['sdate']),
+				'etime_formatted'	=> $this->format_htime($hours['edate'])
+			);
+			return $hour;
 		}
 	}
 ?>

@@ -1,274 +1,65 @@
-account	projects	da	Konto
-accountancy	common	da	Bogholderi
 active	projects	da	Aktiv
-activities	projects	da	Aktiviteter
-activities list	projects	da	Aktivitets liste
-activity	projects	da	Aktivitet
-activity %1 has been added !	projects	da	Aktivitet %1 er tilføjet.
-activity %1 has been updated !	projects	da	Aktivitet %1 er opdateret.
-activity id	projects	da	Aktivitets ID
-add activity	projects	da	Tilføj aktivitet
-add hours	projects	da	Tilføj timer
-add job	projects	da	Tilføj job
-add milestone	projects	da	tilføj milepæl
-add project	projects	da	Tilføj projekt
-add project hours	projects	da	Tilføj projekt timer
-add work hours	projects	da	Tilføj arbejdstimer
-address book	projects	da	Adressebog
-administrator	projects	da	Administrator
-all	projects	da	Alle
-all delivery notes	projects	da	Alle leverings noter
-all done hours	projects	da	Alle brugte timer
-all invoices	projects	da	Alle fakturaer
-all open hours	projects	da	Alle åbne timer
-anonymous public	projects	da	Anonym offentlighed
-archive	projects	da	Arkiv
-are you sure you want to delete this activity	projects	da	Er du sikker på at du vil slette denne aktivitet?
-are you sure you want to delete this project	projects	da	Er du sikker på at du vil slette dette projekt?
-arial	projects	da	Arial
-assignment to project %1	projects	da	overdragelse til projekt %1
-bill per hour	projects	da	Tarif pr time
-bill per hour/workunit	projects	da	Tarif pr time/arbejdsenhed
-bill per workunit	projects	da	Tarif pr arbejdsenhed
-billable activities	projects	da	Fakturerbare aktiviteter
-billed	projects	da	Fakturerede projekter
-billed only	projects	da	Kun faktureret
-billing	projects	da	Fakturerer
-bookable activities	projects	da	Bestilbar aktiviteter
-bookkeeper	projects	da	Bogholder
-bookkeeping	common	da	Bogholderi
-budget	projects	da	Budget
-budget main project	projects	da	Budgettet for hoved projekt
-budget sum of all sub projects is bigger than the budget of the main project	projects	da	Budget summen for alle underprojekter er større end budgettet for hoved projektet!
-calculate	projects	da	Beregn
-click %1here%2 to return to projects.	projects	da	Klik %1her%2 for at vende tilbage til projektet
-closed	projects	da	Lukket
-coordinator	common	da	Koordinator
-coordinator     projects        da      koordinator		da	
-courier new	projects	da	Courier New
-create delivery	projects	da	Opret levering
-create delivery projects        da      opret leverance		da	
-create invoice	projects	da	Opret faktura
-create invoice  projects        da      opret faktura		da	
-creator	projects	da	Oprettet af
-customer	projects	da	Kunde
-customer        projects        da      kunde		da	
-date created	projects	da	Dato oprettet
-date due of milestone %1 of project %2 has been updated	projects	da	Dato pga. milepæl %1 i projekt %2 er opdateret.
-delete hours	projects	da	Slet timer
-delete hours    projects        da      slet timer		da	
-deliveries	projects	da	Leveringer
-delivery	projects	da	Levering
-delivery        projects        da      levering		da	
-delivery %1 has been created !	projects	da	Levering %1 er oprettet
-delivery %1 has been updated !	projects	da	Levering %1 er opdateret
-delivery date	projects	da	Leverings dato
-delivery date   projects        da      leveringsdato		da	
-delivery id	projects	da	Leverings ID
-delivery id     projects        da      leveringsnummer		da	
-delivery list	projects	da	Leverings liste
-delivery list   projects        da      leveringsliste		da	
-delivery note	projects	da	Leverings note
-delivery note   projects        da      leveringsnota		da	
-delivery note for project	projects	da	Leverings note project
-delivery notes	projects	da	Leverings noter
-description can not exceed 255 characters in length !	projects	da	Beskrivelse må ikke overstige 255 tegn!
-description can not exceed 8000 characters in length !	projects	da	Beskrivelsen må ikke overstige 8000 tegn!
-do you also want to delete all sub projects ?	projects	da	Vil du også slette alle underprojekter?
-edit activity	projects	da	Redigere aktivitet
-edit administrator list	projects	da	Redigere projekt administrator liste
-edit bookkeeper list	projects	da	Redigere projekt bogholder liste
-edit hours      projects        da      rediger timer		da	
-edit job	projects	da	Redigere job
-edit milestone	projects	da	redigere milepæl
-edit project	projects	da	Redigere projekt
-edit project    projects        da      redigér projekt		da	
-edit project hours	projects	da	Redigere projekt timer
-edit project hours      projects        da      redigér projekt timer		da	
-edit work hours	projects	da	Redigere arbejdstimer
-email notifications	projects	da	E-Mail påmindelse
-employee	projects	da	Medarbejder
-employees	projects	da	Medarbejdere
-enable acl for invoicing section	admin	da	aktiver ACL for faktura sektionen
-ending date can not be after main projects ending date	projects	da	Afslutnings dato kan ikke være efter hovedprojektets afslutnings dato!
-ending date can not be before start date	projects	da	Afslutnings dato kan ikke starte før projektets start dato!
-error in calculation sum does not match !	projects	da	Fejl i udregningen, summen stemmer ikke overens!
-exactly accounting	projects	da	
-gantt chart for project %1	projects	da	Gantt diagram for projekt %1
-gantt chart from %1 to %2	projects	da	Gantt diagram fra %1 til %2
-generate activity id ?	projects	da	Genererer Aktivitets ID?
-generate delivery id ?	projects	da	Genererer Leverings ID?
-generate invoice id ?	projects	da	Genererer Faktura ID?
-generate job id ?	projects	da	Genererer Job ID?
-generate project id ?	projects	da	Genererer Projekt ID?
-georgia	projects	da	Georgia
-global categories	projects	da	Globale Kategorier
-helvetica	projects	da	Helvetica
-hours	projects	da	Timer
-hours   projects	da	da	
-id can not exceed 19 characters in length	projects	da	ID man ikke overstige 19 tegn!
-id can not exceed 25 characters in length	projects	da	ID man ikke overstige 25 tegn!
-if you are an administrator, please set the preferences for this application	projects	da	Hvis du er en administrator, så sæt venligst preferencerne for denne applikation!
-if you are not an administrator, please inform the administrator to set the preferences for this application	projects	da	Hvis du ikke er en administrator, kontakt venligst administratoren for at få sat preferencerne for denne applikation
-investment nr	projects	da	Investering Nummer
-invoice	projects	da	Faktura
-invoice %1 has been created !	projects	da	Faktura %1 er oprettet.
-invoice %1 has been updated !	projects	da	Faktura %1 er opdateret.
-invoice date	projects	da	Faktura dato
-invoice for project	projects	da	Faktura for projektet
-invoice id	projects	da	Faktura nummer
-invoice layout	projects	da	Faktura layout
-invoice list	projects	da	Faktura liste
-invoice projects	da	da	
-invoices	projects	da	Fakturaer
-invoicing	admin	da	Fakturere
-invoicing of work time	projects	da	Fakturere for arbejdstid
-job	projects	da	Job
-job archive	projects	da	Job arkiv
-job date	projects	da	Job dato
-job description	projects	da	Job beskrivelse
-job has been added !	projects	da	Jobbet er oprettet.
-job has been updated !	projects	da	Jobbet er opdateret.
-job id	projects	da	Job ID
-job list	projects	da	Job liste
-jobs	common	da	Jobs
-large	projects	da	Stor
-last update	projects	da	Sidste opdatering
-list activities	projects	da	Vis aktiviteter
-list budget	projects	da	Vis budget
-list deliveries	projects	da	vis leveringer
-list hours	projects	da	Timeoversigt
-list invoices	projects	da	vis fakturaer
-list jobs	projects	da	vis jobs
-list pcosts	projects	da	Vis planlagte udgifter
-list project hours	projects	da	Projekt time oversigt
-list projects	projects	da	Vis projekter
-list work hours	projects	da	Vis arbejdstimer
-main project	projects	da	Hoved projekt
-main project:	projects	da	Hoved projekt:
-milestones	common	da	Milepæl
-minutes per workunit	projects	da	Minutter pr arbejdsenhed
-month	projects	da	Måned
-net	projects	da	net
-new date due of milestone %1: %2	projects	da	Ny dato pga. milepæl %1: %2.
-new project	projects	da	Nyt projekt
-nonactive	common	da	Inaktiv
-number	projects	da	Nummer
-open	projects	da	Åben
-open popup window	projects	da	åben popup vindue
-overall	projects	da	Total
-parent project	projects	da	Oprindeligt projekt
-parent project:	projects	da	Oprindeligt projekt:
-pcosts can not be higher than the budget	projects	da	Planlagte udgifter kan ikke være større end budgetet!
-per hour	projects	da	pr time
-per hour/workunit	projects	da	pr time/arbejdsenhed
-per workunit	projects	da	pr arbejdsenhed
-planned costs	projects	da	Planlagte udgifter
-planned time	projects	da	Planlagt tid
-planned time sum of all sub projects is bigger than the planned time of the main project	projects	da	Den planlagte tid af alle underprojekter er større end den planlagte tid i hoved projektet!
-please choose a project coordinator	projects	da	Vælg venligst en projekt koordinator!
-please choose activities for the project	projects	da	Vælg venligst aktiviteter for projektet!
-please enter a remark !	projects	da	Indtast venligst en bemærkning!
-please enter an id !	projects	da	Indtast venligst et ID!
-please enter the bill	projects	da	Indtast venligst fakturaen!
-please enter the minutes per workunit	projects	da	Indtast venligst minutter pr arbejdsenhed!
-please set the minutes per workunit for each activity now !	projects	da	Sæt venligst minutter pr arbejdsenhed for hver aktivitet nu!
-please set your preferences for this application !	projects	da	Sæt vengligst dine preferencer for denne applikation!
-please specify country and currency in the global preferences section	projects	da	Specificere venligst land og valuta i globale preferencer!
-please specify the budget	projects	da	Angiv venligst budgettet!
-position	projects	da	Position
-preferences for accountancy	projects	da	Preferencer for bogholderiet
-previous project	projects	da	Tidligere projekt
-print delivery	projects	da	Udskrifts levering
-print invoice	projects	da	Udskriv faktura
-processor	projects	da	
-project	projects	da	Projekt
-project %1 has been saved	projects	da	Projekt %1 er gemt.
-project %1 has been updated	projects	da	Projekt %1 er opdateret.
-project archive	projects	da	Projekt arkiv
-project billing	projects	da	Projekt fakturering
-project delivery	projects	da	Projekt levering
-project hours	projects	da	Projekt timer
-project id	common	da	Projekt ID
-project list	projects	da	Projekt liste
-project name	projects	da	Projekt navn
-project preferences	projects	da	Projekt preferencer
-project statistic	projects	da	Projekt statistik
-project statistics	projects	da	Projekt statestik
+Activities list	projects	da	Aktivitets liste
+Activity	projects	da	Aktivitet
+Activity ID	projects	da	Aktivitets ID
+Add Activity	projects	da	Tilføj aktivitet
+Add hours	projects	da	Tilføj timer
+Add project	projects	da	Tilføj projekt
+Add project hours	projects	da	Tilføj projekt timer
+All delivery notes	projects	da	Alle leverings noter
+All done hours	projects	da	Alle brugte timer
+All invoices	projects	da	Alle fakturaer
+All open hours	projects	da	Alle åbne timer
+Bill per workunit	projects	da	Tarif pr arbejdsenhed
+Billable activities	projects	da	Fakturerbare aktiviteter
+Billed	projects	da	Fakturerede projekter
+Billed only	projects	da	Kun faktureret
+Calculate	projects	da	Beregn
+Coordinator     projects        da      Koordinator
+Create delivery projects        da      Opret leverance
+Create invoice  projects        da      Opret faktura
+Customer        projects        da      Kunde
+Delete hours    projects        da      Slet timer
+Delivery        projects        da      Levering
+Delivery date   projects        da      Leveringsdato
+Delivery ID     projects        da      Leveringsnummer
+Delivery list   projects        da      Leveringsliste
+Delivery note   projects        da      Leveringsnota
+Edit hours      projects        da      Rediger timer
+Edit project    projects        da      Redigér projekt
+Edit project hours      projects        da      Redigér projekt timer
+Employee	projects	da	Medarbejder
+Hours   projects	da	Timer
+Invoice projects	da	Faktura
+Invoice date	projects	da	Faktura dato
+Invoice ID	projects	da	Faktura nummer
+Invoice list	projects        da      Faktura oversigt
+List hours	projects	da	Timeoversigt
+List project hours	projects	da	Projekt time oversigt
+Nonactive	projects	da	Inaktiv
+Number	projects	da	Nummer
+Overall	projects	da	Total
+Position	projects	da	Position
+Print delivery	projects	da	Udskrifts levering
+Print invoice	projects	da	Udskriv faktura
+Project	projects	da	Projekt
+Project billing	projects	da	Projekt fakturering
+Project delivery	projects	da	Projekt levering
+Project hours	projects	da	Projekt timer
+Project ID	projects	da	Projekt ID
+Project list	projects	da	Projekt liste
+Project name	projects	da	Projekt navn
+Project preferences	common	da	Projekt preferencer
 projects	common	da	Projekter
-projects preferences	preferences	da	Projekt preferencer
-remark	projects	da	Bemærkning
-remark  projects	da	da	
-remark can not exceed 8000 characters in length !	projects	da	Bemærkningen må ikke være længere end 8000 tegn!
-remark required	projects	da	Bemærkning krævet
-remark required projects	da	da	
-select customer projects	da	da	
-select font	projects	da	Vælg skrifttype
-select font size for customer address	projects	da	Vælg skrifttype størrelse for kunde adresse
-select font size for own address	projects	da	Vælg skrifttype størrelse for egen adresse
-select groups	projects	da	Vælg grupper
-select main project	projects	da	Vælg hoved projekt
-select own address	projects	da	Vælg egen adresse
-select project	projects	da	Vælg projekt
-select tax for work hours	projects	da	Vælg afgift for arbejdstimer
-select tax for work time	projects	da	Vælg skat for arbejdstid
-select users	projects	da	Vælg brugere
-select your address	projects	da	Vælg Din adresse
-settings	admin	da	indstillinger
-short description	projects	da	Kort beskrivelse
-small	projects	da	Lille
-sorry, no preferences to set for you :)	projects	da	Beklager, ingen preferencer at sætte for dig :-)
-start date can not be before main projects start date	projects	da	Start datoen kan ikke være før hoved projektets start dato!
-statistic	projects	da	Statistik
-statistics	projects	da	Statistiker
-sum	projects	da	Sum
-sum budget	projects	da	Sum budget
-sum hours	projects	da	Sum timer
-sum net	projects	da	Sum net
-sum pcosts	projects	da	Sum planlagte udgifter
-sum workunits	projects	da	Sum arbejdsenheder
-tahoma	projects	da	
-tax	projects	da	skat
-that id has been used already !	projects	da	Det ID er allerede i brug!
-the choosen previous project does not have an end date specified	projects	da	Det valgte tidligere projekt har ikke nogen afslutnings dato defineret!
-the delivery note contains no items !	projects	da	Leverings noten indeholder ingenting!
-the invoice contains no items !	projects	da	Fakturaen indeholder ingenting!
-this is mostly caused by a not or wrongly configured smtp server. notify your administrator.	projects	da	Dette er for det meste forsaget af en manglednde eller forkert konfigureret SMTP server. Underret din systemadministrator.
-time planned	projects	da	Planlagt tid
-time planned main project	projects	da	Planlagt tid i hoved projekt
-time used	projects	da	Tid brugt
-times new roman	projects	da	Times New Roman
-title can not exceed 255 characters in length	projects	da	Titlen må ikke indeholde mere end 255 tegn!
-update delivery	projects	da	Opdater levering
-update invoice	projects	da	Opdater faktura
-user statistic	projects	da	Bruger statestik
-user statistic  projects	da	da	
-user statistics	projects	da	Bruger statestikker
-user statistics projects	da	da	
-username / group	projects	da	Brugernavn / Gruppe
-verdana	projects	da	Verdana
-very large	projects	da	Meget stor
-very small	projects	da	Meget lille
-view job	projects	da	Vis job
-view project	projects	da	Vis projekt
-view work hours	projects	da	Vis arbejdstimer
-work date	projects	da	Arbejds dato
-work hours	projects	da	Arbejdstimer
-work hours archive	projects	da	Arbejdstimer arkiv
-work hours list	projects	da	Arbejdstimer liste
-work time	projects	da	Arbejdstime
-workunit	projects	da	Arbejdsenhed
-workunits	projects	da	Arbejdsenheder
-would you like to display project info on the main page	projects	da	Vi du have vist projekt information på startsiden?
-would you like to get notified if milestones date due change	projects	da	Vil du have en påmindelse hvis milepæls datoen ændres?
-would you like to get notified if projects data get updated	projects	da	Vil du have en påmindelse hvis projektets data bliver opdateret?
-would you like to get notified if you get assigned to a project	projects	da	Vil du have en påmindelse hvis du bliver tildelt til et projekt?
-written by:	projects	da	Skrevet af:
-you have entered an invalid date !	projects	da	Du har indtastet en ugyldig dato!
-you have entered an invalid end date !	projects	da	Du har indtastet en ugyldig afslutnings dato!
-you have entered an invalid start date !	projects	da	Du har indtastet en ugyldig start dato!
-you have no customer selected !	projects	da	Du har ikke valgt nogen kunder!
-you have selected an invalid activity	projects	da	Du har valgt en ugyldig aktivitet
-you have selected an invalid activity !	projects	da	Du har valgt en ugyldig aktivitet!
-you have to create a delivery or invoice first !	projects	da	Du SKAL oprette en levering eller faktura først!
-you have to enter a remark	projects	da	Du skal skrive en bemærkning
+Project statistic	projects	da	Projekt statistik
+Remark  projects	da	Bemærkning
+Remark required projects	da	Bemærkning er krævet
+Select customer projects	da	Vælg kunde
+Select tax for work hours	projects	da	Vælg afgift for arbejdstimer
+Select your address	projects	da	Vælg Din adresse
+Statistic	projects	da	Statistik
+Sum	projects	da	Sum
+User statistic  projects	da	Bruger statistik
+User statistics projects	da	Bruger statistikker
+You have selected an invalid activity	projects	da	Du har valgt en ugyldig aktivitet
+You have to enter a remark	projects	da	Du skal skrive en bemærkning

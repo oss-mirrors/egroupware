@@ -13,12 +13,12 @@
 	// Delete all records for a user
 	$pro = CreateObject('projects.boprojects');
 
-	if(intval($GLOBALS['HTTP_POST_VARS']['new_owner']) == 0)
+	if(intval($_POST['new_owner']) == 0)
 	{
-		$pro->delete_pa('account',intval($GLOBALS['HTTP_POST_VARS']['account_id']),False);
+		$pro->delete_project(intval($_POST['account_id']),0,'account');
 	}
 	else
 	{
-		$pro->change_owner(intval($GLOBALS['HTTP_POST_VARS']['account_id']),intval($GLOBALS['HTTP_POST_VARS']['new_owner']));
+		$pro->change_owner(intval($_POST['account_id']),intval($_POST['new_owner']));
 	}
 ?>

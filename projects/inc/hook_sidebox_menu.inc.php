@@ -25,47 +25,75 @@
 			$boprojects = CreateObject('projects.boprojects');
 			$appname = 'projects';
 			$menu_title = $GLOBALS['phpgw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
-			$file = array();
-			if ($boprojects->isprojectadmin('pad'))
-			{
-				$file['Activities']	= $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_activities&action=act');
-				$file['Budget']		= $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_budget&action=mains');
-			}
 
-			if ($boprojects->isprojectadmin('pbo'))
-			{
-				$file['Billing']	= $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&action=mains');
-				$file['Deliveries']	= $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains');
-			}
-			$file['Projects']		= $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains');
-			$file['Jobs']			= $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs');
-			$file['Work hours']		= $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_hours');
+			$file = array(
+				'Projects' => 
+				$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'),
+				
+				'Jobs' => 
+				$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'),
+				
+				'Work hours' => 
+				$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_projects&action=mains'),
+				
+				'time tracker' => 
+				$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.ttracker'),
+				
+				'Statistics' => 
+				$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains'));
 
-			$file['Statistics']		= $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains');
-			$file['Archive']		= $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.archive&action=amains');
+			if ($boprojects->isprojectadmin('pad') || $boprojects->isprojectadmin('pmanager'))
+			{
+				$file['Budget'] = $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_budget&action=mains');
+				switch($boprojects->siteconfig['accounting'])
+				{
+					case 'activity':
+						$file['Activities'] = 
+							$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_activities&action=act');
+						break;
+					default:
+						$file['Accounting'] = 
+							$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_employees&action=accounting');
+				}
+			}
 
 			display_sidebox($appname,$menu_title,$file);
 
 			if ($GLOBALS['phpgw_info']['user']['apps']['preferences'])
 			{
 				$menu_title = $GLOBALS['phpgw_info']['apps'][$appname]['title'] . ' '. lang('Preferences');
-				$file = Array(
-					'Preferences'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.preferences'),
-					'Grant Access'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uiaclprefs.index&acl_app='.$appname),
-					'Edit categories'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=projects&cats_level=True&global_cats=True')
-				);
-				display_sidebox($appname,$menu_title,$file);
+				$pref_file['Preferences'] = 
+					$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.preferences');
+				$pref_file['Grant Access'] =
+					$GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uiaclprefs.index&acl_app='.$appname);
+				$pref_file['Edit categories'] = 
+					$GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=projects&cats_level=True&global_cats=True');
+
+				if ($boprojects->isprojectadmin('pad') || $boprojects->isprojectadmin('pmanager'))
+				{
+					$pref_file['Roles'] =
+						$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_roles&action=role');
+					$pref_file['events'] =
+						$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_events');
+				}
+				display_sidebox($appname,$menu_title,$pref_file);
 			}
 
 			if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
 			{
 				$menu_title = $GLOBALS['phpgw_info']['apps'][$appname]['title'] . ' '. lang('Administration');
-				$file = Array(
-					'Administration'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_admins&action=pad'),
-					'Accountancy'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_admins&action=pbo'),
-					'Global Categories'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uicategories.index&appname=' . $appname)
-				);
-				display_sidebox($appname,$menu_title,$file);
+
+				$admin_file['Site Configuration'] =
+					$GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname);
+				$admin_file['managing committee'] =
+					$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_admins&action=pmanager');
+				$admin_file['project administrators'] =
+					$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_admins&action=pad');
+				$admin_file['sales department'] =
+					$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_admins&action=psale');
+				$admin_file['Global Categories'] =
+					$GLOBALS['phpgw']->link('/index.php','menuaction=admin.uicategories.index&appname=' . $appname);
+				display_sidebox($appname,$menu_title,$admin_file);
 			}
 			unset($boprojects);
 	}

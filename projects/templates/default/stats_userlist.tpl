@@ -4,8 +4,9 @@
 
 <center>
 <table border="0" width="79%" cellspacing="2" cellpadding="2">
+<form method="POST" action="{action_url}">
 	<tr>
-		<td colspan="4" align="left">
+		<td colspan="4">
 			<table border="0" width="100%">
 				<tr>
 				{left}
@@ -16,14 +17,13 @@
 		</td>
 	</tr>
 	<tr>
-		<td>&nbsp;</td>
-		<td align="right"><form method="POST" name="query" action="{search_action}">{search_list}</form></td>
+		<td>{search_list}</td>
 	</tr>
 	<tr bgcolor="{th_bg}">
-		<td width="20%" bgcolor="{th_bg}">{sort_lid}</td>
-		<td width="20%" bgcolor="{th_bg}">{sort_firstname}</td>
-		<td width="20%" bgcolor="{th_bg}">{sort_lastname}</td>
-		<td align="center" width="8%" bgcolor="{th_bg}">{lang_stat}</td>
+		<td width="20%">{sort_lid}</td>
+		<td width="20%">{sort_firstname}</td>
+		<td width="20%">{sort_lastname}</td>
+		<td align="center" width="8%">{lang_projects}</td>
 	</tr>
 
 <!-- BEGIN user_list -->
@@ -32,10 +32,41 @@
 		<td>{lid}</td>
 		<td>{firstname}</td>
 		<td>{lastname}</td>
-		<td align="center"><a href="{stat}">{lang_stat_entry}</a></td>
+		<td align="center"><input type="radio" name="values[account_id][{account_id}]" value="{account_id}" {radio_checked}></td>
 	</tr>
+
+	{project_list}
 
 <!-- END user_list -->
 
+
+	<tr height="50" valign="bottom">
+		<td colspan="4" align="right"><input type="submit" name="view" value="{lang_view}"></td>
+	</tr>
+</form>
 </table>
 </center>
+
+<!-- BEGIN pro_cols -->
+
+	<tr>
+		<td>&nbsp;</td>
+		<td bgcolor="{th_bg}" colspan="2">{lang_projects}</td>
+		<td>&nbsp;</td>
+	</tr>
+
+<!-- BEGIN pro_list -->
+
+	<tr>
+		<td>&nbsp;</td>
+		<td bgcolor="{tr_color}" colspan="2">{pro_name}</td>
+		<td>&nbsp;</td>
+	</tr>
+
+<!-- END pro_list -->
+
+	<tr height="15">
+		<td>&nbsp;</td>
+	</tr>
+
+<!-- END pro_cols -->

@@ -30,10 +30,9 @@
 		<td width="15%" bgcolor="{th_bg}">{sort_coordinator}</td>
         <td width="15%" bgcolor="{th_bg}">{sort_action}</td>
 		<td width="8%" bgcolor="{th_bg}" align="center">{sort_end_date}</td>
-		<td width="8%" bgcolor="{th_bg}" align="center">{lang_action}</td>
-		<td width="8%" bgcolor="{th_bg}" align=center>{lang_deliveries}</td>
-		<td width="8%" bgcolor="{th_bg}" align=center>{lang_invoices}</td>
+		<td width="10%" bgcolor="{th_bg}" align="center">{lang_action}</td>
 		<td width="8%" bgcolor="{th_bg}" align=center>{lang_stats}</td>
+		<td width="5%" bgcolor="{th_bg}" align=center>{lang_view}</td>
 		<td width="5%" bgcolor="{th_bg}" align=center>{lang_edit}</td>
 	</tr>
 
@@ -46,9 +45,8 @@
         <td>{td_action}</td>
 		<td align="center">{end_date}</td>
 		<td align="center"><a href="{action_entry}">{lang_action_entry}</a></td>
-		<td align="center"><a href="{delivery}">{lang_delivery_entry}</a></td>
-		<td align="center"><a href="{invoice}">{lang_invoice_entry}</a></td>
 		<td align="center"><a href="{stats}">{lang_stats_entry}</a></td>
+		<td align="center"><a href="{view}">{lang_view_entry}</a></td>
 		<td align="center"><a href="{edit}">{lang_edit_entry}</a></td>
 	</tr>
 

@@ -1,16 +1,22 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - Setup                                                     *
-  * http://www.eGroupWare.org                                                *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare - Setup                                                     *
+	* http://www.phpgroupware.org                                              *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
+	/* $Id$ */
 
-  /* $Id$ */
+	$GLOBALS['phpgw_setup']->oProc->query("INSERT into phpgw_p_events (event_name,event_type,event_extra) values('hours limit','percent',90)",__LINE__,__FILE__);
+	$GLOBALS['phpgw_setup']->oProc->query("INSERT into phpgw_p_events (event_name,event_type,event_extra) values('budget limit','percent',90)",__LINE__,__FILE__);
+	$GLOBALS['phpgw_setup']->oProc->query("INSERT into phpgw_p_events (event_name,event_type,event_extra) values('project date due','limits',7)",__LINE__,__FILE__);
+	$GLOBALS['phpgw_setup']->oProc->query("INSERT into phpgw_p_events (event_name,event_type,event_extra) values('milestone date due','limits',7)",__LINE__,__FILE__);
 
-	$oProc->query ("INSERT INTO phpgw_p_projectmembers (project_id,account_id,type) VALUES (0,2,'ag')");
-	$oProc->query ("INSERT INTO phpgw_p_projectmembers (project_id,account_id,type) VALUES (0,2,'bg')");
-	$oProc->query ("INSERT INTO phpgw_p_activities (a_number,descr,remarkreq,minperae,billperae,category) VALUES ('0815','Exampleactivity','Y',0,'10.0',0)");
+	$GLOBALS['phpgw_setup']->oProc->query("INSERT into phpgw_p_events (event_name,event_type) values('assignment to project','assignment')",__LINE__,__FILE__);
+	$GLOBALS['phpgw_setup']->oProc->query("INSERT into phpgw_p_events (event_name,event_type) values('assignment to role','assignment')",__LINE__,__FILE__);
+
+	$GLOBALS['phpgw_setup']->oProc->query("INSERT into phpgw_p_events (event_name,event_type) values('project dependencies','dependencies')",__LINE__,__FILE__);
+	$GLOBALS['phpgw_setup']->oProc->query("INSERT into phpgw_p_events (event_name,event_type) values('changes of project data','dependencies')",__LINE__,__FILE__);

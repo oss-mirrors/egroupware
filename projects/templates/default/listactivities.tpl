@@ -19,7 +19,7 @@
 		<td width="33%" align="left">
 			<form method="POST" name="cat" action="{cat_action}">
 				<select name="cat_id" onChange="this.form.submit();">
-				<option value="">{lang_select_category}</option>
+				<option value="none">{lang_select_category}</option>
 				{categories_list}
 				</select>
 				<noscript><input type="submit" name="cats" value="{lang_select}"></noscript>

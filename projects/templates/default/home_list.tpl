@@ -37,7 +37,6 @@
 		<td width="20%">{sort_coordinator}</td>
         <td width="20%" align="center">{lang_milestones}</td>
 		<td width="10%" align="center">{sort_end_date}</td>
-		<td width="10%" align="center">{lang_jobs}</td>
 		<td width="5%" align="center">{lang_view}</td>
 	</tr>
 
@@ -45,11 +44,10 @@
 
 	<tr bgcolor="{tr_color}">
 		<td valign="top">{number}</td>
-		<td valign="top">{title}</td>
+		<td valign="top"><a href="{projects_url}">{title}</a></td>
 		<td valign="top">{coordinator}</td>
         <td>{milestones}</td>
 		<td align="center" valign="top">{end_date}</td>
-		<td align="center" valign="top"><a href="{jobs}">{lang_jobs_entry}</a></td>
 		<td align="center" valign="top"><a href="{view}">{lang_view_entry}</a></td>
 	</tr>
 

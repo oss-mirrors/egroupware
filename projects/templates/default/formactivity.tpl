@@ -1,4 +1,23 @@
 <!-- $Id$ -->
+<script language="JavaScript">
+	var oldNumberInputValue;
+
+	function changeProjectIDInput($_selectBox)
+	{
+		$numberInput = eval(document.getElementById("id_number"));
+		if($_selectBox.checked == true)
+		{
+			$numberInput.disabled = true;
+			$oldNumberInputValue = $numberInput.value;
+			$numberInput.value = '';
+		}
+		else
+		{
+			$numberInput.disabled = false;
+			$numberInput.value = $oldNumberInputValue;
+		}
+	}
+</script>
 
 <center>
 <form method="POST" name="activity_form" action="{actionurl}">
@@ -10,7 +29,7 @@
 	</tr>
 	<tr>
 		<td>{lang_act_number}:</td>
-		<td><input type="text" name="values[number]" value="{num}" size="20" maxlength="20"></td>
+		<td><input type="text" name="values[number]" value="{num}" size="20" maxlength="20" id="id_number"></td>
 	</tr>
 	<tr>
 		<td valign="top">{lang_descr}:</td>
@@ -33,7 +52,10 @@
 		<td>{minperae}</td>
 	</tr>
 	<tr valign="bottom" height="50">
-		<td><input type="submit" name="save" value="{lang_save}"></td>
+		<td>
+			<input type="submit" name="save" value="{lang_save}">
+			<input type="hidden" name="values[edit_mode]" value="{edit_mode}">
+		</td>
 		<td align="right"><input type="submit" name="cancel" value="{lang_cancel}"></td>
 	</tr>
 </table>
