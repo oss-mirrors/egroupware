@@ -21,7 +21,7 @@
 
 	include('../header.inc.php');
 
-	$mydir = '/phpgroupware/xmlrpc';
+	$mydir = eregi_replace('https*://[^/]*/','',$GLOBALS['phpgw_info']['server']['webserver_url']).'/xmlrpc';
 
 	// define some utility functions
 	function bomb()
@@ -49,7 +49,7 @@
 	}
 
 	// create client for discussion server
-	$dclient = CreateObject('phpgwapi.xmlrpc_client',"${mydir}/discuss.php",$HTTP_HOST, 80);
+	$dclient = CreateObject('phpgwapi.xmlrpc_client',"${mydir}/discuss.php",$_SERVER['HTTP_HOST'], 80);
 
 	// check if we're posting a comment, and send it if so
 //	$storyid = $HTTP_POST_VARS['storyid'];

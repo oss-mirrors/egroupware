@@ -23,7 +23,7 @@
 	require './phpunit.php';
 
 	$DEBUG = 0;
-	$LOCALSERVER = $HTTP_SERVER_VARS['HTTP_HOST'];
+	$LOCALSERVER = $_SERVER['HTTP_HOST'];
 	echo 'Testing: ' . $LOCALSERVER;
 	$suite = new TestSuite;
 
@@ -38,7 +38,8 @@
 
 		function setUp()
 		{
-			$this->client= CreateObject('phpgwapi.xmlrpc_client','/phpgroupware/xmlrpc.php', $GLOBALS['LOCALSERVER'], 80);
+			$xmlrpc = eregi_replace('https*://[^/]*/','',$GLOBALS['phpgw_info']['server']['webserver_url']).'/xmlrpc.php';
+			$this->client= CreateObject('phpgwapi.xmlrpc_client',$xmlrpc, $GLOBALS['LOCALSERVER'], 80);
 			if ($GLOBALS['DEBUG']) $this->client->setDebug(1);
 		}
 
@@ -209,7 +210,8 @@ And turned it into nylon";
 		{
 			global $DEBUG,$HTTPSSERVER;
 
-			$this->client = CreateObject('phpgwapi.xmlrpc_client','/phpgroupware/xmlrpc.php', $HTTPSSERVER);
+			$xmlrpc = eregi_replace('https*://[^/]*/','',$GLOBALS['phpgw_info']['server']['webserver_url']).'/xmlrpc.php';
+			$this->client = CreateObject('phpgwapi.xmlrpc_client',$xmlrpc, $HTTPSSERVER);
 			//$this->client->setCertificate('/var/www/xmlrpc/rsakey.pem',
 			//			  'test');
 			if ($DEBUG || 1)

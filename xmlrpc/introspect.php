@@ -43,7 +43,8 @@
 	}
 
 	$f = CreateObject('phpgwapi.xmlrpcmsg','system.listMethods');
-	$c = CreateObject('phpgwapi.xmlrpc_client','/phpgroupware/xmlrpc.php', $HTTP_HOST, 80);
+	$xmlrpc = eregi_replace('https*://[^/]*/','',$GLOBALS['phpgw_info']['server']['webserver_url']).'/xmlrpc.php';
+	$c = CreateObject('phpgwapi.xmlrpc_client',$xmlrpc, $_SERVER['HTTP_HOST'], 80);
 	$c->setDebug(0);
 
 	$v = rpc_call($c, $f);
