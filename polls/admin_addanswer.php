@@ -30,7 +30,7 @@
 		$vote_id = $phpgw->db->f(0);
 
 		$phpgw->db->query("insert into phpgw_polls_data (poll_id,option_text,vote_id) values ('$poll_id','" . addslashes($answer) . "','$vote_id')",__LINE__,__FILE__);
-		$p->set_var('message',lang('Answer has been added to poll.'));
+		$p->set_var('message',lang('Answer has been added to poll'));
 	}
 
 	$p->set_var('header_message',lang('Add answer to poll'));
