@@ -281,6 +281,8 @@
 			$this->template->pparse('out','change_num');
 		 }
 
+		 $popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
+		 $this->template->set_var('popuplink',$popuplink);
 		 $this->template->pparse('out','form_header');
 		 $this->template->pparse('out','form_buttons');
 
@@ -303,9 +305,6 @@
 			   $this->render_fields();
 			   $this->render_many_to_many_input();
 
-			   $popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
-			   $this->template->set_var('popuplink',$popuplink);
-
 			   $this->template->pparse('out','row');
 			   $this->render_mult_table_footer();
 			}
@@ -319,9 +318,6 @@
 
 			   $this->render_fields();
 			   $this->render_many_to_many_input();
-
-			   $popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
-			   $this->template->set_var('popuplink',$popuplink);
 
 			   $this->template->pparse('out','row');
 			   $this->render_mult_table_footer();

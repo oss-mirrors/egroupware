@@ -6,6 +6,12 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.214
+===========================
+Tue Mar 23 13:00:00 CET 2005
+- new filemanager plugin now also works in multiple records edit view
+- fixed bug where images opened in multiple records edit view by clicking on a thumbnail resulted in error
+
 Version 0.8.213
 ===========================
 Tue Mar 10 17:30:00 CET 2005

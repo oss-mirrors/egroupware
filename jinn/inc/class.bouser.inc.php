@@ -524,6 +524,25 @@
 	  }
 
 
+	  function remove_helper_fields($data)
+	  {
+			//removes helper form fields created by plugins
+		foreach($this->plug->plugins as $plugin)
+		{
+			foreach($data as $key => $field)
+			{
+				if(strpos($field[name], $plugin['helper_fields_substring']) === false)
+				{
+				}
+				else
+				{
+					unset($data[$key]);
+				}
+			}
+		}
+		return $data;
+	  }
+	  
 	  function multiple_records_update()
 	  {
 		 /* exit and go to del function */
@@ -539,11 +558,8 @@
 			{
 			   $post_arr=$this->mult_to_fld($i,'_POST');
 			   $files_arr=$this->mult_to_fld($i,'_FILES');
-			   //				_debug_array($post_arr);
-			   $data=$this->http_vars_pairs($post_arr,$files_arr);
-
-			   //				  _debug_array($data);
-
+			   $data = $this->remove_helper_fields($this->http_vars_pairs($post_arr,$files_arr));
+			   
 			   $where_string=base64_decode($_POST['MLTWHR'.sprintf("%02d",$i)]);
 			   $this->mult_where_array[]=$where_string;
 
@@ -553,10 +569,6 @@
 
 			   $status=$this->so->update_object_many_data($this->site_id, $m2m_data);
 
-			   $data=$this->http_vars_pairs($post_arr, $files_arr);
-
-			   // _debug_array($data);
-			   // die();
 			   $status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
 			   $eventstatus = $this->run_event_plugins('on_update', $post_arr);
 
@@ -658,7 +670,8 @@
 		 $status[o2o]=$this->o2o_update();
 
 		 $status=$this->so->update_object_many_data($this->site_id, $m2m_data);
-		 $data=$this->http_vars_pairs($_POST, $_FILES);
+//		 $data=$this->http_vars_pairs($_POST, $_FILES);
+		 $data = $this->remove_helper_fields($this->http_vars_pairs($_POST, $_FILES));
 
 		 $status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
 
