@@ -44,7 +44,7 @@
 //	$GLOBALS['phpgw']->template->set_block('index', 'tts_ticket_id_unread', 'tts_ticket_id_unread');
 
 	$GLOBALS['phpgw']->template->set_var('lang_appname', lang('Trouble Ticket System'));
-	$GLOBALS['phpgw']->template->set_var('tts_newticket_link', $GLOBALS['phpgw']->link('/tts/newticket.php'));
+	$GLOBALS['phpgw']->template->set_var('tts_newticket_link', $GLOBALS['phpgw']->link('/tts/newticket.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort)));
 	$GLOBALS['phpgw']->template->set_var('tts_prefs_link', $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=tts'));
 	$GLOBALS['phpgw']->template->set_var('lang_preferences', lang('Preferences'));
 	$GLOBALS['phpgw']->template->set_var('lang_search', lang('search'));
@@ -61,7 +61,7 @@
 	$searchfilter = reg_var('searchfilter','POST');
 	
 	// Append the filter to the search URL, so that the mode carries forward on a search
-	$GLOBALS['phpgw']->template->set_var('tts_search_link',$GLOBALS['phpgw']->link('/tts/index.php',"filter=$filter"));
+	$GLOBALS['phpgw']->template->set_var('tts_search_link',$GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort)));
 
 	if (!$filter)
 	{
@@ -74,7 +74,7 @@
 		$GLOBALS['phpgw']->preferences->read_repository();
 		if ($GLOBALS['phpgw_info']['user']['preferences']['tts']['refreshinterval'])
 		{
-			$GLOBALS['phpgw']->template->set_var('autorefresh','<META HTTP-EQUIV="Refresh" CONTENT="'.$GLOBALS['phpgw_info']['user']['preferences']['tts']['refreshinterval'].'; URL='.$GLOBALS['phpgw']->link('/tts/index.php').'">');
+			$GLOBALS['phpgw']->template->set_var('autorefresh','<META HTTP-EQUIV="Refresh" CONTENT="'.$GLOBALS['phpgw_info']['user']['preferences']['tts']['refreshinterval'].'; URL='.$GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort)).'">');
 		}
 		else
 		{
@@ -92,7 +92,7 @@
 	{
 		$sortmethod = 'order by ticket_priority desc';
 	}
-	else
+	elseif ($order)
 	{
 		$sortmethod = "order by $order $sort";
 	}
@@ -125,12 +125,12 @@
 
 	if ($filter != 'viewopen')
 	{
-		$GLOBALS['phpgw']->template->set_var('tts_changeview_link', $GLOBALS['phpgw']->link('/tts/index.php'));
+		$GLOBALS['phpgw']->template->set_var('tts_changeview_link', $GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort)));
 		$GLOBALS['phpgw']->template->set_var('tts_changeview', lang('View only open tickets'));
 	}
 	else
 	{
-		$GLOBALS['phpgw']->template->set_var('tts_changeview_link', $GLOBALS['phpgw']->link('/tts/index.php','filter=viewall'));
+		$GLOBALS['phpgw']->template->set_var('tts_changeview_link', $GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>'viewall','order'=>$order,'sort'=>$sort)));
 		$GLOBALS['phpgw']->template->set_var('tts_changeview', lang('View all tickets'));
 	}
 
@@ -202,9 +202,9 @@
 			}
 
 			$GLOBALS['phpgw']->template->set_var('tts_row_color', $tr_color );
-			$GLOBALS['phpgw']->template->set_var('tts_ticketdetails_link', $GLOBALS['phpgw']->link('/tts/viewticket_details.php','ticket_id=' . $db->f('ticket_id')));
+			$GLOBALS['phpgw']->template->set_var('tts_ticketdetails_link', $GLOBALS['phpgw']->link('/tts/viewticket_details.php',array('ticket_id'=>$db->f('ticket_id'),'filter'=>$filter,'order'=>$order,'sort'=>$sort)));
 
-			$view_link = '<a href="' . $GLOBALS['phpgw']->link('/tts/viewticket_details.php','ticket_id=' . $db->f('ticket_id')) . '">';
+			$view_link = '<a href="' . $GLOBALS['phpgw']->link('/tts/viewticket_details.php',array('ticket_id'=>$db->f('ticket_id'),'filter'=>$filter,'order'=>$order,'sort'=>$sort)). '">';
 			$GLOBALS['phpgw']->template->set_var('row_ticket_id',$view_link . $db->f('ticket_id') . '</a>');
 
 			if (! $ticket_read)
