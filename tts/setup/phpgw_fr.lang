@@ -1,14 +1,42 @@
 add new ticket	tts	fr	Ajouter un nouveau ticket
 add ticket	tts	fr	Ajouter un ticket
+additional notes	tts	fr	Notes additionelles
 admin options	admin	fr	Options d'admin
 assign to	tts	fr	Assigner à
+assigned from	tts	fr	Assigné depuis
+assigned to	tts	fr	Assigné à
+billable hours	tts	fr	Heures facturables
+billable hours changed	tts	fr	Heures facturables changées
+billable hours rate	tts	fr	Taux d'heures facturables
+billable rate	tts	fr	Taux facturable
+billable rate changed	tts	fr	Taux facturable changé
+category changed	tts	fr	Catégorie changée
+clear form	tts	fr	Réinitialiser le formulaire
+closed	tts	fr	Fermé
+create new ticket	tts	fr	Créer un nouveau ticket
+creates a new ticket, returns ticket_id	tts	fr	Crée un nouveau ticket, retourne l'id du ticket
+creates a struct of tickets	tts	fr	Crée une structure de tickets
+date opened	tts	fr	Date d'ouverture
 detail	tts	fr	Détail
+in progress	tts	fr	En progression
 new ticket	tts	fr	Nouveau ticket
+new value	tts	fr	Nouvelle valeur
 no tickets found	tts	fr	Pas de ticket trouvé
+open date	tts	fr	Date d'ouverture
+opened by	tts	fr	Ouvert par
+prio	tts	fr	Prio
+priority	tts	fr	Priorité
+priority changed	tts	fr	Priorité changée
+status/date closed	tts	fr	Statut/Date de fermeture
+subject changed	tts	fr	Sujet changé
+ticket	tts	fr	Ticket
+ticket has been updated	tts	fr	Le ticket a été mis à jour
 tickets open x	tts	fr	Tickets ouverts %1
 tickets total x	tts	fr	Tickets total %1
-trouble ticket system	common	fr	Système de tickets de problèmes
-tts	common	fr	Trouble Ticket System
-tts preferences	tts	fr	Trouble Ticket System - préférences
+trouble ticket system	common	fr	Système de tickets d'incidents
+tts	common	fr	Système de tickets d'incidents
+tts preferences	tts	fr	Système de tickets d'incidents - préférences
+use email notification	tts	fr	Utiliser la notification par EMail
 view all tickets	tts	fr	Voir tous les tickets
+view job detail	tts	fr	Voir le détail du travail
 view only open tickets	tts	fr	Voir seulement les tickets ouverts

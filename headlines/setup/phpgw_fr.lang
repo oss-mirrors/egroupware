@@ -3,17 +3,17 @@ base url	admin	fr	URL de base
 grab new news sites	common	fr	Récupérer les nouveaux sites de News
 headlines	common	fr	Titres
 headline preferences	common	fr	Préférences de titres
-headline sites	common	fr	Sites de titres
+headline sites	admin	fr	Sites de titres
 listings displayed	admin	fr	Listings affichés
 minutes between reloads	admin	fr	Minutes entre les rechargements
 monitor	common	fr	Moniteur
-news file	common	fr	Fichier de News
+news file	admin	fr	Fichier de News
 news headlines	common	fr	Titres de News
-news type	common	fr	Type de News
+news type	admin	fr	Type de News
 select headline news sites	common	fr	Choisissez les sites de titres de News
 that site has already been entered	admin	fr	Ce site a déjà été entré
-you must enter a base url	common	fr	Vous devez entrer une URL de base
-you must enter a display	common	fr	Vous devez entrer un affichage
-you must enter a news url	common	fr	Vous devez entrer une URL de News
-you must enter the number of listings display	common	fr	Vous devez entrer le nombre de listings affichés
-you must enter the number of minutes between reload	common	fr	Vous devez entrer le nombre de minutes entre chaque rechargement
+you must enter a base url	admin	fr	Vous devez entrer une URL de base
+you must enter a display	admin	fr	Vous devez entrer un affichage
+you must enter a news url	admin	fr	Vous devez entrer une URL de News
+you must enter the number of listings display	admin	fr	Vous devez entrer le nombre de listings affichés
+you must enter the number of minutes between reload	admin	fr	Vous devez entrer le nombre de minutes entre chaque rechargement

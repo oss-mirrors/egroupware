@@ -1,14 +1,15 @@
 are you sure you want to reset all comic dates and resolved image urls?	comic	fr	Etes-vous sûr de vouloir remettre à zéro toutes les dates de comic et les URLS d'images résolues?
-phpgroupware daily comics	comic	fr	Comics journaliers de phpGroupWare
 censorship level	comic	fr	Niveau de censure
-image source	comic	fr	Source d'image
 censorship override enabled	comic	fr	Ecrasement du niveau de censure activé
+comics	common	en	Comics
+daily comics data	comic	fr	Données du comics journalier
 daily comics global options	comic	fr	Options globales des comics journaliers
+genre	comic	fr	Genre
+image source	comic	fr	Source d'image
 max file size	comic	fr	Taille maximale de fichier
+parser	comic	fr	Parseur
+phpgroupware daily comics	comic	fr	Comics journaliers de phpGroupWare
+rated	comic	fr	Niveau
 remote (parse/snarf) enabled	comic	fr	(parse/snarf) distant activé
 reset	comic	fr	Remise à zéro
-genre	comic	fr	Genre
-rated	comic	fr	Niveau
-parser	comic	fr	Parseur
 resolve	comic	fr	Résoudre
-daily comics data	comic	fr	Données du comics journalier

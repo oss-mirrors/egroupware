@@ -9,9 +9,9 @@ save to filemanager	ftp	fr	Sauver vers le gestionnaire de fichiers
 upload	ftp	fr	Upload
 uploaded	ftp	fr	%1 uploadé avec succès
 failed to upload	ftp	fr	Impossible d'uploader %1
-create new directory	ftp	fr	Créér un nouveau répertoire
-failed to mkdir	ftp	fr	Impossible de créér le répertoire %1
-empty dirname	ftp	fr	Tentative de créér un répertoire sans nom
+create new directory	ftp	fr	Créer un nouveau répertoire
+failed to mkdir	ftp	fr	Impossible de créer le répertoire %1
+empty dirname	ftp	fr	Tentative de créer un répertoire sans nom
 module name	ftp	fr	Client Ftp
 home	ftp	fr	Home
 username	ftp	fr	Utilisateur
