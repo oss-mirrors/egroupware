@@ -12,6 +12,7 @@ activity %1 has been added	projects	en	Activity %1 has been added.
 activity %1 has been updated	projects	en	Activity %1 has been updated.
 activity id	projects	en	Activity ID
 add activity	projects	en	Add activity
+add file projects	en	add file 
 add job	projects	en	Add job
 add milestone	projects	en	add milestone
 add project	projects	en	Add project
@@ -81,6 +82,7 @@ delete activity	projects	en	delete activity
 delete factor	projects	en	delete factor
 delete hours	projects	en	Delete hours
 delete job	projects	en	delete job
+delete selected files	projects	en	delete selected files 
 delete project	projects	en	delete project
 delete work hours	projects	en	delete work hours
 deliveries	projects	en	Deliveries
@@ -210,6 +212,7 @@ please choose activities for the project	projects	en	Please choose activities fo
 please choose the accounting system for the project	projects	en	Please choose the accounting system for the project.
 please choose the columns to list in the projects preferences section	projects	en	Please choose the columns to list in the projects preferences section.
 please choose the discount type	projects	en	Please choose the discount type.
+please enable html view of emails.	projects	en	Please enable HTML view of E-Mails.
 please enter a remark	projects	en	Please enter a remark.
 please enter an id	projects	en	Please enter an ID.
 please enter an id !	projects	en	Please enter an ID !
@@ -267,7 +270,10 @@ sequencing project	projects	en	Sequencing project
 settings	admin	en	settings
 short description	projects	en	Short description
 show gantt chart	projects	en	Show gantt chart
+show milestones	projects	en	show milestones
+show planned resources	projects	en	show planned resources
 site configuration	projects	en	Site Configuration
+size	projects	en	size
 start	projects	en	Start
 start date can not be before parent projects start date	projects	en	Start date can not be before parent projects start date.
 start date planned	projects	en	Start date planned
