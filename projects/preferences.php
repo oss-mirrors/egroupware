@@ -61,7 +61,7 @@
 					'org_name' => 'org_name');
 
 		$entry = $d->read_single_entry($abid,$cols);
-		if ($entry[0]['org_name'] == '') { $t->set_var('name',$entry[0]['n_given'] . ' ' . $entry[0]['n_family']; }
+		if ($entry[0]['org_name'] == '') { $t->set_var('name',$entry[0]['n_given'] . ' ' . $entry[0]['n_family']); }
 		else { $t->set_var('name',$entry[0]['org_name'] . ' [ ' . $entry[0]['n_given'] . ' ' . $entry[0]['n_family'] . ' ]'); }
 	}
 	else
