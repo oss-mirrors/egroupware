@@ -158,7 +158,7 @@
 						'n_family'	=> 'n_family',
 						'org_name'	=> 'org_name');
 
-			$entries = $this->contacts->read($start, True, $cols, $query, $qfilter, $sort, $order, $account_id);
+			$entries = $this->contacts->read($start, $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'], $cols, $query, $qfilter, $sort, $order, $account_id);
 			$this->total_records = $this->contacts->total_records;
 			return $entries;
 		}
