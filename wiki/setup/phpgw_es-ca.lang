@@ -1,4 +1,97 @@
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	es-ca	<em>Però</em> mostra com a mínim aquestes entrades dins Canvis Recents i altres llistes de subscripció:
+add document to category	wiki	es-ca	Afegeix document a categoria
+added	wiki	es-ca	Afegit
+administration features are disabled for this wiki.	wiki	es-ca	Les característiques d'administració estan deshabilitades per a aquest wiki.
+admins	wiki	es-ca	administradors
+allow anonymous access	admin	es-ca	permet accés anònim
+anonymous password	admin	es-ca	Contrasenya anònima
+anonymous session type	admin	es-ca	Tipus de Sessió Anònima
+anonymous username	admin	es-ca	usuari anònim
+automatically convert pages with wiki-syntax to richtext (if edited)?	admin	es-ca	Converteix automàticament les pàgines amb sintaxi de wiki a text enriquit (si s'editen)?
+block	wiki	es-ca	Bloca
+block / unblock hosts	common	es-ca	Bloca / Desbloca màquines
+blocked ip address ranges	wiki	es-ca	Abast d'adreces IP blocades
+cancel without saving	wiki	es-ca	Cancel·la sense desar
+changed	wiki	es-ca	Canviat
+changes by last author	wiki	es-ca	Canvis del darrer autor
+choose your current time here, so the server may figure out what time zone you are in.	wiki	es-ca	Trieu aquí el vostre horari actual a fi de que el servidor pugui esbrinar en quina zona horària esteu.
+columns	wiki	es-ca	Columnes
+compute difference	wiki	es-ca	Calcula la Diferència
+converts the page to richtext	wiki	es-ca	Converteix la pàgina a text enriquit
+current version	wiki	es-ca	Versió actual
+deleted	wiki	es-ca	Esborrat
+deletes this page	wiki	es-ca	Esborra aquesta pàgina
+difference between versions	wiki	es-ca	Diferència entre versions
+differences in	wiki	es-ca	Diferències a
+different languages can have different titles	wiki	es-ca	idiomes diferents poden tenir títols diferents
+document last modified	wiki	es-ca	Darrera modificació del document
+edit box	wiki	es-ca	Quadre d'edició
+edit this <em>archive version</em> of this document	wiki	es-ca	Edita aquesta <em>VERSIÓ DE L'ARXIU</em> d'aquest document
+edit this document	wiki	es-ca	Edita aquest document
+edit with preview	admin	es-ca	Edita amb Visualització prèvia
+editable	admin	es-ca	editable
+editing	wiki	es-ca	Editant
+emailaddress administrator	admin	es-ca	Adreça de correu de l'Administrador
+enable free links	admin	es-ca	Habilita Enllaços Lliures
+enable wiki links	admin	es-ca	Habilita Enllaços Wiki
+enter here the maximum number of entries to display in a document's history list.	wiki	es-ca	Introduïu aquí el nombre màxim d'entrades per mostrar a l'historial d'un document
+enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	es-ca	Introduïu aquí el nombre de dies d'edicions a mostrar als Canvis Recents o qualsevol altra llista de subscripció. Establiu-ho a zero si voleu veure totes les pàgines a Canvis Recents, sense tenir en compte si s'han editat recentment.
+enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	es-ca	Introduïu l'abast d'adreces IP en format <tt>12.*</tt>, <tt>34.56.*</tt>, o <tt>78.90.123.*</tt>
+error creating temporary file.	wiki	es-ca	Error creant el fitxer temporal.
+error writing to temporary file.	wiki	es-ca	Error escrivint en el fitxer temporal.
+everyone	wiki	es-ca	tothom
+find	wiki	es-ca	Cerca
+history	wiki	es-ca	historial
+history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	es-ca	L'historial hauria de mostrar <em>tots</em> els canvis realitzats pel darrer autor. Altrament, només mostra el darrer canvi realitzat.
+history lists	wiki	es-ca	Llistes d'historial
+history of	wiki	es-ca	Historial de
+interwikiprefix	admin	es-ca	Prefix Entre Wikis
+invalid page name.	wiki	es-ca	Nom de pàgina no vàlid.
+load	wiki	es-ca	Carrega
+loads the named page in the given language, all change so far get lost !!!	wiki	es-ca	Carrega la pàgina indicada en l'idioma donat, tots els canvis es perdran !!!
+lock / unlock pages	common	es-ca	Bloca / Desbloca Pàgines
+locked	wiki	es-ca	Blocat
+name wiki home link	admin	es-ca	nom de l'enllaç de la pàgina d'inici de wiki
+newer	wiki	es-ca	Més recent
+no never	admin	es-ca	No mai
+not set	wiki	es-ca	no especificat
+older	wiki	es-ca	Més antic
+only if browser supports a richtext-editor	admin	es-ca	Només si el navegador suporta un editor de text enriquit
+please contact the %1administrator%2 for assistance.	wiki	es-ca	Si us plau, contacteu amb el vostre %1Administrador%2 per a obtenir assistència.
 please contact the <a href="mailto:%1">administrator</a> for assistence.	wiki	es-ca	Contacteu amb l'<a href="mailto:%1">administrador</a> per obtenir suport.
+preview	wiki	es-ca	Visualització prèvia
+preview of current version	wiki	es-ca	Visualització prèvia de la Versió Actual
+rate control / ip blocking disabled	wiki	es-ca	Control de transferència / blocatge d'IP deshabilitat
+readable by	wiki	es-ca	De lectura per a
+readonly	admin	es-ca	només de lectura
+recent changes	wiki	es-ca	Canvis Recents
+renames page to the given name and language	wiki	es-ca	Renomena la pàgina al nom i l'idioma indicats
+richtext	wiki	es-ca	Text enriquit
+rows	wiki	es-ca	Files
+save the changes and exit	wiki	es-ca	Desa els canvis i surt
+saves and continues editing	wiki	es-ca	Desa i continua editant
+see complete list (%1 entries)	wiki	es-ca	Mostra la llista sencera (%1 entrades)
+site configuration	wiki	es-ca	Configuració del lloc
+summary	wiki	es-ca	Resum
+summary of change	wiki	es-ca	Resum dels canvis
+this page can not be edited.	wiki	es-ca	Aquesta pàgina no pot ser editada.
+twin pages	wiki	es-ca	Pàgines bessones
+unblock	wiki	es-ca	Desbloca
+updates the preview	wiki	es-ca	Actualitza la visualització prèvia
+users	wiki	es-ca	usuaris
+view document history	wiki	es-ca	Mostra l'historial del document
+visit %1 to set your user name	wiki	es-ca	Visiteu %1 per a establir el vostre nom d'usuari
+warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	es-ca	Avís: des de que heu començat a editar, aquest document ha estat modificat per una altra persona. Si us plau, adapteu els vostres canvis dins la versió actual d'aquest document.
+who should be able to edit this page	wiki	es-ca	qui ha de poder editar aquesta pàgina
+who should be able to read this page	wiki	es-ca	qui ha de poder llegir aquesta pàgina
 wiki	common	es-ca	Wiki
+wiki administration	wiki	es-ca	Administració de Wiki
+wiki menu	wiki	es-ca	Menú de Wiki
+writable by	wiki	es-ca	D'escriptura per a
+yes always	admin	es-ca	Sí sempre
 you have been denied access to this site.	wiki	es-ca	Teniu prohibit l'accés a aquest lloc
+you have entered an invalid user name.	wiki	es-ca	Heu introduït un nom d'usuari invàlid.
 you have exeeded the number of pages you are allowed to visit in a given period of time.  please return later.	wiki	es-ca	Heu excedit el nombre de planes que teniu permés visitar en un període de temps determinat. Si us plau, torneu més tard.
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	es-ca	Heu excedit el nombre de pàgines que teniu permès de visitar en un determinat espai de temps. Si us plau, torneu més endavant.
+your changes	wiki	es-ca	Els vostres canvis
+your user name is "%1".	wiki	es-ca	El vostre nom d'usuari és "%1".
