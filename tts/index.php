@@ -39,6 +39,8 @@
 	$p->set_var('tts_appname', lang("Trouble Ticket System"));
 	$p->set_var('tts_newticket_link', $phpgw->link("/tts/newticket.php"));
 	$p->set_var('tts_search_link', $phpgw->link("/tts/index.php"));
+	$p->set_var('tts_prefs_link', $phpgw->link("/tts/preferences.php"));
+	$p->set_var('lang_preferences', "Preferences");
 	$p->set_var('tts_newticket', lang("New ticket"));
 	$p->set_var('tts_head_status',"");
 	$p->set_var('tts_notickets',"");
