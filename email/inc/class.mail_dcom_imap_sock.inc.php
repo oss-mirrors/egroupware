@@ -600,7 +600,49 @@
 				}
 			}
 			
+			// delete all text except the folder name
+			for ($i=0; $i<count($response_array); $i++)
+			{
+				// don't include "noselect" folders
+				if (strstr($response_array[$i], '\NoSelect'))
+				{
+					// do nothing
+				}
+				else
+				{
+					// get everything to the right of the quote_space [" ], INCLUDES the quote_space itself
+					$folder_name = strstr($response_array[$i],'" ');
+					// delete that quote_space and trim
+					$folder_name = trim(substr($folder_name, 2));
+					// if the folder name includes space(s) then it will be enclosed in quotes
+					if ((strlen($folder_name) > 0)
+					&& ($folder_name[0] == '"') )
+					{
+						// delete the opening quote
+						$folder_name = substr($folder_name, 1);
+						// delete the closing quote
+						$folder_name = substr($folder_name, 0, -1);
+					}
+					// php builtin function returns the server_str before the folder name
+					$folder_name = $server_str .$folder_name;
+					// add to the result array
+					$next_pos = count($mailboxes_array);
+					$mailboxes_array[$next_pos] = $folder_name;
+				}
+			}
+			
+			if ($this->debug_dcom_extra)
+			{
+				echo 'imap: listmailbox: mailboxes_array line by line:<br>';
+				for ($i=0; $i<count($mailboxes_array); $i++)
+				{
+					echo '-ArrayPos['.$i.'] data: ' .htmlspecialchars($mailboxes_array[$i]) .'<br>';
+				}
+				echo 'imap: listmailbox: =ENDS= mailboxes_array line by line:<br>';
+			}
+			
 			if ($this->debug_dcom) { echo 'imap: Leaving listmailbox<br>'; }
+			//return '';
 			return $mailboxes_array;
 		}
 

@@ -682,7 +682,7 @@
 				// {some.server.com:143}INBOX.Trash
 			}
 
-			//echo 'raw mailbox list:<br>'.$phpgw->msg->htmlspecialchars_encode(serialize($mailboxes)).'<br>';
+			//echo 'raw mailbox list:<br>'.htmlspecialchars(serialize($mailboxes)).'<br>';
 
 			// ERROR DETECTION
 			if (!$mailboxes)
