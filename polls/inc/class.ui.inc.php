@@ -214,9 +214,12 @@
 			$this->t->pfp('out','form');
 		}
 
-		function select_poll($preselected_poll)
+		function select_poll($preselected_poll, $show_select_tag=true)
 		{
-			$poll_select = '<select name="poll_id">';
+			if ($show_select_tag)
+			{
+				$poll_select = '<select name="poll_id">';
+			}
 			$questions = $this->bo->get_list('question',true);
 
 			foreach($questions as $key => $array)
@@ -237,7 +240,10 @@
 				}
 				$poll_select .= '>'.trim(stripslashes($_poll_title)).'</option>';
 			}
-			$poll_select .= '</select>';
+			if ($show_select_tag)
+			{
+				$poll_select .= '</select>';
+			}
 
 			return $poll_select;
 		}
@@ -521,7 +527,7 @@
 			);
 			$this->t->set_var($var);
 
-			$poll_questions = $this->select_poll($GLOBALS['poll_settings']['currentpoll']);
+			$poll_questions = $this->select_poll($GLOBALS['poll_settings']['currentpoll'],false);
 			$this->t->set_var('poll_questions', $poll_questions);
 
 			$this->t->pparse('out','settings');
