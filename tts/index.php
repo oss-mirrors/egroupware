@@ -214,26 +214,27 @@
 			$GLOBALS['phpgw']->template->set_var('tts_t_assignedto', $GLOBALS['phpgw']->db->f('ticket_assignedto')?$GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_assignedto')):lang('None'));
 			$GLOBALS['phpgw']->template->set_var('tts_t_user',$GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_owner')));
 
-			$history_values = $GLOBALS['phpgw']->historylog->return_array(array(),array('O'),'','',$GLOBALS['phpgw']->db->f('ticket_id'));
+			$history_values = $GLOBALS['phpgw']->historylog->return_array(array(),array('O'),'history_timestamp','ASC',$GLOBALS['phpgw']->db->f('ticket_id'));
 			$GLOBALS['phpgw']->template->set_var('tts_t_timestampopened',$GLOBALS['phpgw']->common->show_date($history_values[0]['datetime']));
 
-			if ($GLOBALS['phpgw']->db->f('ticket_status') == 'C')
+			if ($GLOBALS['phpgw']->db->f('ticket_status') == 'X')
 			{
-//				$timestampclosed=$GLOBALS['phpgw']->common->show_date($GLOBALS['phpgw']->db->f('t_timestamp_closed'));
-				$GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed','Fix me!');
+				$history_values = $GLOBALS['phpgw']->historylog->return_array(array(),array('X'),'history_timestamp','DESC',$GLOBALS['phpgw']->db->f('ticket_id'));
+				$GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',$GLOBALS['phpgw']->common->show_date($history_values[0]['datetime']));
 				$GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
 			}
 			elseif ($filter != 'viewopen')
 			{
-				if ($GLOBALS['phpgw']->db->f('ticket_assignedto') != -1)
-				{
-					$assigned_to = lang('Not assigned');
-				}
-				else
-				{
-					$assigned_to = $phpgw->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_assignedto'));
-				}
-				$GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',$assigned_to);
+//				if ($GLOBALS['phpgw']->db->f('ticket_assignedto') != -1)
+//				{
+//					$assigned_to = lang('Not assigned');
+//				}
+//				else
+//				{
+//					$assigned_to = $GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_assignedto'));
+//				}
+//				$GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',$assigned_to);
+				$GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed','Open');
 				$GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
 			}
 			$GLOBALS['phpgw']->template->set_var('tts_t_subject', $GLOBALS['phpgw']->db->f('ticket_subject'));
