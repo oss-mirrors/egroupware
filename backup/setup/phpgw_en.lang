@@ -1,5 +1,8 @@
+Archive type	backup	en	Archive type
 Backup	common	en	Backup
 Backup administration	common	en	Backup administration
+Configuration backup	backup	en	Configuration backup
+Configuration localhost	backup	en	Configuration localhost
 Create backups of your data ?	backup	en	Create backups of your data ?
 daily	backup	en	daily
 Interval	backup	en	Interval
@@ -10,10 +13,16 @@ LDAP	backup	en	LDAP
 E-MAIL	backup	en	E-MAIL
 Operating system	backup	en	Operating system
 Configuration remote host	backup	en	Configuration remote host
+Save backup locally ?	backup	en	Save backup locally ?
 Save backup to a remote host ?	backup	en	Save backup to a remote host ?
+Select archive type	backup	en	Select archive type
+Show backup archives in phpGroupWare ?	backup	en	Show backup archives in phpGroupWare ?
+tar.gz	backup	en	tar.gz
+tar.bz2	backup	en	tar.bz2
 Absolute path of the backup directory	backup	en	Absolute path of the backup directory
 IP	backup	en	IP
 monthly	backup	en	monthly
 User	backup	en	User
 Password	backup	en	Password
 weekly	backup	en	weekly
+zip	backup	en	zip

@@ -52,11 +52,16 @@
 			$this->t->set_var('lang_r_host',lang('Operating system'));
 			$this->t->set_var('lang_r_config',lang('Configuration remote host'));
 			$this->t->set_var('lang_r_save',lang('Save backup to a remote host ?'));
-			$this->t->set_var('lang_r_path',lang('Absolute path of the backup directory'));
+			$this->t->set_var('lang_path',lang('Absolute path of the backup directory'));
 			$this->t->set_var('lang_r_ip',lang('IP'));
-			$this->t->set_var('lang_r_user',lang('User'));
-			$this->t->set_var('lang_r_pwd',lang('Password'));
-
+			$this->t->set_var('lang_user',lang('User'));
+			$this->t->set_var('lang_pwd',lang('Password'));
+			$this->t->set_var('lang_l_config',lang('Configuration localhost'));
+			$this->t->set_var('lang_l_save',lang('Save backup locally ?'));
+			$this->t->set_var('lang_l_websave',lang('Show backup archives in phpGroupWare ?'));
+			$this->t->set_var('lang_b_config',lang('Configuration backup'));
+			$this->t->set_var('lang_b_type',lang('Archive type'));
+			$this->t->set_var('lang_select_b_type',lang('Select archive type'));
 			$this->t->set_var('lang_save',lang('Save'));
 		}
 
@@ -110,10 +115,25 @@
 
 			$this->t->set_var('intval_list',$intval_list);
 
+			switch($values['b_type'])
+			{
+				case 'tgz': $b_type_sel[0]=' selected';break;
+				case 'tar.bz2': $b_type_sel[1]=' selected';break;
+				case 'zip': $b_type_sel[2]=' selected';break;
+			}
+
+			$type_list = '<option value="tgz"' . $b_type_sel[0] . '>' . lang('tar.gz') . '</option>' . "\n"
+						. '<option value="tar.bz2"' . $b_type_sel[1] . '>' . lang('tar.bz2') . '</option>' . "\n"
+						. '<option value="zip"' . $b_type_sel[2] . '>' . lang('zip') . '</option>' . "\n";
+
+			$this->t->set_var('type_list',$type_list);
+
 			$this->t->set_var('b_sql','<input type="checkbox" name="values[b_sql]" value="True"' . ($values['b_sql'] == 'yes'?' checked':'') . '>');
 			$this->t->set_var('b_ldap','<input type="checkbox" name="values[b_ldap]" value="True"' . ($values['b_ldap'] == 'yes'?' checked':'') . '>');
 			$this->t->set_var('b_email','<input type="checkbox" name="values[b_email]" value="True"' . ($values['b_email'] == 'yes'?' checked':'') . '>');
 
+			$this->t->set_var('l_save','<input type="checkbox" name="values[l_save]" value="True"' . ($values['l_save'] == 'yes'?' checked':'') . '>');
+			$this->t->set_var('l_websave','<input type="checkbox" name="values[l_websave]" value="True"' . ($values['l_websave'] == 'yes'?' checked':'') . '>');
 			$this->t->set_var('r_save','<input type="checkbox" name="values[r_save]" value="True"' . ($values['r_save'] == 'yes'?' checked':'') . '>');
 
 			$r_host = '<input type="radio" name="values[r_host]" value="unix"' . ($values['r_host'] == 'unix'?' checked':'') . '>UNIX' . "\n";
@@ -124,6 +144,10 @@
 			$this->t->set_var('r_ip',$values['r_ip']);
 			$this->t->set_var('r_user',$values['r_user']);
 			$this->t->set_var('r_pwd',$values['r_pwd']);
+
+			$this->t->set_var('l_path',$values['l_path']);
+			$this->t->set_var('l_user',$values['l_user']);
+			$this->t->set_var('l_pwd',$values['l_pwd']);
 
 			$this->t->pfp('out','admin_form');
 

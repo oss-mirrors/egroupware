@@ -105,6 +105,25 @@
 				$values['r_save'] = 'no';
 			}
 
+			if ($values['l_save'])
+			{
+				$values['l_save'] = 'yes';
+			}
+			else
+			{
+				$values['l_save'] = 'no';
+			}
+
+			if ($values['l_websave'])
+			{
+				$values['l_websave'] = 'yes';
+			}
+			else
+			{
+				$values['l_websave'] = 'no';
+			}
+
+
 			while (list($key,$config) = each($values))
 			{
 				if ($config)
