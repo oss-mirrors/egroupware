@@ -53,13 +53,22 @@
 			);
 			$GLOBALS['phpgw']->template->set_var('done_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
 
+			$GLOBALS['phpgw']->template->set_var('qmail_servername',$values['qmail_servername']);
+			$GLOBALS['phpgw']->template->set_var('description',$values['description']);
+			$GLOBALS['phpgw']->template->set_var('ldap_basedn',$values['ldap_basedn']);
+			$GLOBALS['phpgw']->template->set_var('ldap_basedn',$values['ldap_basedn']);
+
+
 			$linkData = array
 			(
 				'menuaction' => 'qmailldap.uiqmailldap.save'
 			);
 			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
-			$GLOBALS['phpgw']->template->parse('out','main');
-			print $GLOBALS['phpgw']->template->get('out','main');
+
+			$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array
+			(
+				'body_data' => $GLOBALS['phpgw']->template->parse('out','main')
+			));
 		}
 
 		function addSmtpRoute()
@@ -152,10 +161,16 @@
 		{
 			$serverid		= get_var('serverid',array('GET'));
 			$pagenumber		= get_var('pagenumber',array('GET'));
-			$HTTP_GET_VARS	= get_var('HTTP_GET_VARS',array('GET'));;
+			//$values			= get_var('values',array('GET'));;
 
-			if(!empty($_serverid)) $serverid=$_serverid;
-			if(!empty($_pagenumber)) $pagenumber=$_pagenumber;
+			if(!empty($_serverid))
+			{
+				$serverid=$_serverid;
+			}
+			if(!empty($_pagenumber))
+			{
+				$pagenumber=$_pagenumber;
+			}
 
 			$ldapData = $this->boqmailldap->getLDAPData($serverid);
 			
@@ -258,8 +273,10 @@
 					break;
 			}
 
-			$GLOBALS['phpgw']->template->parse('out','main');
-			print $GLOBALS['phpgw']->template->get('out','main');
+			$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array
+			(
+				'body_data' => $GLOBALS['phpgw']->template->parse('out','main')
+			));
 		}
 		
 		function editSettings($_serverid='')
@@ -300,8 +317,10 @@
 			);
 
 			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
-			$GLOBALS['phpgw']->template->parse('out','main');
-			print $GLOBALS['phpgw']->template->get('out','main');
+			$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array
+			(
+				'body_data' => $GLOBALS['phpgw']->template->parse('out','main')
+			));
 		}
 		
 		function listServers()
@@ -309,11 +328,11 @@
 			$GLOBALS['phpgw']->template->set_file(array('body' => 'listservers.tpl'));
 			$GLOBALS['phpgw']->template->set_block('body','main','main');
 			$GLOBALS['phpgw']->template->set_block('body','row','row');
-			
+
 			$this->translate();
 			$serverList = $this->boqmailldap->getServerList();
 
-			if ($serverList)
+			if (is_array($serverList))
 			{
 				for ($i=0; $i < count($serverList); $i++)
 				{
@@ -340,8 +359,12 @@
 						'serverid'	=> $serverList[$i]['id']
 					);
 					$GLOBALS['phpgw']->template->set_var('delete_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
-					$GLOBALS['phpgw']->template->parse('rows','row',True);
+					$GLOBALS['phpgw']->template->parse('rows','row');
 				}
+			}
+			else
+			{
+				$GLOBALS['phpgw']->template->set_var('rows','');
 			}
 
 			$linkData = array
@@ -349,23 +372,27 @@
 				'menuaction' => 'qmailldap.uiqmailldap.addServer'
 			);
 			$GLOBALS['phpgw']->template->set_var('add_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
-			$GLOBALS['phpgw']->template->parse('out','main');
-			print $GLOBALS['phpgw']->template->get('out','main');
+			$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array
+			(
+				'body_data' => $GLOBALS['phpgw']->template->parse('out','main')
+			));
 		}
 
 		function save()
 		{
-			$this->boqmailldap->save($GLOBALS['HTTP_POST_VARS'], $GLOBALS['HTTP_GET_VARS']);
-			if ($GLOBALS['HTTP_POST_VARS']['bo_action'] == 'save_ldap' || $GLOBALS['HTTP_GET_VARS']['bo_action'] == 'save_ldap')
+			$values = get_var('values',array('POST','GET'));
+
+			$this->boqmailldap->save($values);
+			if ($values['bo_action'] == 'save_ldap')
 			{
 				$this->listServers();
 			}
 			else
 			{
-				$this->editServer($GLOBALS['HTTP_GET_VARS']['serverid'],$GLOBALS['HTTP_GET_VARS']['pagenumber']);
+				$this->editServer($values['serverid'],$values['pagenumber']);
 			}
 		}
-		
+
 		function translate()
 		{
 			$GLOBALS['phpgw']->template->set_var('lang_server_list',lang('server list'));
@@ -383,7 +410,7 @@
 			$GLOBALS['phpgw']->template->set_var('lang_remove',lang('remove'));
 			$GLOBALS['phpgw']->template->set_var('lang_add_to_local',lang('add also to local domains'));
 			$GLOBALS['phpgw']->template->set_var('lang_ldap_server',lang('LDAP server'));
-			$GLOBALS['phpgw']->template->set_var('lang_ldap_basedn',lang('LDAP basedn'));
+			$GLOBALS['phpgw']->template->set_var('lang_qmail_base',lang('qmail dn'));
 			$GLOBALS['phpgw']->template->set_var('lang_ldap_server_admin',lang('admin dn'));
 			$GLOBALS['phpgw']->template->set_var('lang_ldap_server_password',lang('admin password'));
 			$GLOBALS['phpgw']->template->set_var('lang_add_server',lang('add server'));

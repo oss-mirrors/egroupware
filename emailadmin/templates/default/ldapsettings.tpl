@@ -1,27 +1,28 @@
 <!-- BEGIN main -->
+
 <center>
-<table border="0" cellspacing="1" cellpading="0" width="95%">
+<table>
 <tr>
-	<td width="90%" valign="top">
+	<td>
 		<form action="{form_action}" method="post">
-		<table border="0" cellspacing="1" cellpading="0" width="100%">
-		<tr bgcolor="{bg_01}">
+		<table cellspacing="2" cellpading="2">
+		<tr class="row_on">
 			<td>
 				{lang_server_name}
 			</td>
 			<td>
-				<input type="text" size="50" name="qmail_servername" value="{qmail_servername}">
+				<input type="text" size="50" name="values[qmail_servername]" value="{qmail_servername}">
 			</td>
 		</tr>
-		<tr bgcolor="{bg_02}">
+		<tr class="row_off">
 			<td>
 				{lang_server_description}
 			</td>
 			<td>
-				<input type="text" size="50" name="description" value="{description}">
+				<input type="text" size="50" name="values[description]" value="{description}">
 			</td>
 		</tr>
-		<tr bgcolor="{bg_01}">
+		<tr class="row_on">
 			<td>
 				{lang_ldap_server}
 			</td>
@@ -29,15 +30,15 @@
 				<input type="text" size="50">
 			</td>
 		</tr>
-		<tr bgcolor="{bg_02}">
+		<tr class="row_off">
 			<td>
-				{lang_ldap_basedn}
+				{lang_qmail_base}
 			</td>
 			<td>
-				<input type="text" size="50" name="ldap_basedn" value="{ldap_basedn}">
+				<input type="text" size="50" name="values[ldap_basedn]" value="{ldap_basedn}">
 			</td>
 		</tr>
-		<tr bgcolor="{bg_01}">
+		<tr class="row_on">
 			<td>
 				{lang_ldap_server_admin}
 			</td>
@@ -45,7 +46,7 @@
 				<input type="text" size="50">
 			</td>
 		</tr>
-		<tr bgcolor="{bg_02}">
+		<tr class="row_off">
 			<td>
 				{lang_ldap_server_password}
 			</td>
@@ -53,13 +54,13 @@
 				<input type="text" size="50">
 			</td>
 		</tr>
-		<tr bgcolor="{bg_01}">
-			<td align="left">
+		<tr class="row_on">
+			<td>
 				<a href="{done_link}">{lang_back}</a>
 			</td>
 			<td align="right">
 				<input type="submit" name="save_ldap" value="{lang_save}">
-				<input type="hidden" name="bo_action" value="save_ldap">
+				<input type="hidden" name="values[bo_action]" value="save_ldap">
 			</td>
 		</tr>
 		</table>
@@ -71,7 +72,7 @@
 <!-- END main -->
 
 <!-- BEGIN menu_row -->
-<tr bgcolor="{menu_row_color}">
+<tr class="th">
 	<td>
 		<nobr><a href="{menu_link}">{menu_description}</a><nobr>
 	</td>
@@ -79,7 +80,7 @@
 <!-- END menu_row -->
 
 <!-- BEGIN menu_row_bold -->
-<tr bgcolor="{menu_row_color}">
+<tr class="th">
 	<td>
 		<nobr><b><a href="{menu_link}">{menu_description}</a></b><nobr>
 	</td>

@@ -105,21 +105,17 @@
 			#print "restored Session<br>";
 		}
 		
-		function save($_postVars, $_getVars)
+		function save($vars)
 		{
-			$serverid = $_getVars['serverid'];
+			$serverid = $vars['serverid'];
 
-			if (isset($_postVars["bo_action"]))
+			if (isset($vars['bo_action']))
 			{
-				$bo_action = $_postVars["bo_action"];
-			}
-			elseif (isset($_getVars["bo_action"]))
-			{
-				$bo_action = $_getVars["bo_action"];
+				$bo_action = $vars['bo_action'];
 			}
 			else
 			{
-				return false;
+				return False;
 			}
 
 			#print "bo_action: $bo_action<br>";
@@ -129,21 +125,18 @@
 				case 'add_locals':
 					$count = count($this->sessionData[$serverid]['locals']);
 
-					$this->sessionData[$serverid]['locals'][$count] = 
-						$_postVars['new_local'];
+					$this->sessionData[$serverid]['locals'][$count] = $vars['new_local'];
 
 					$this->sessionData[$serverid]['needActivation'] = 1;
 					$this->saveSessionData();
 					break;
 				case 'add_rcpthosts':
 					$count = count($this->sessionData[$serverid]['rcpthosts']);
-					$this->sessionData[$serverid]['rcpthosts'][$count] = $_postVars['new_rcpthost'];
-					if ($_postVars['add_to_local'] == 'on')
+					$this->sessionData[$serverid]['rcpthosts'][$count] = $vars['new_rcpthost'];
+					if ($vars['add_to_local'] == 'on')
 					{
 						$count = count($this->sessionData[$serverid]['locals']);
-						
-						$this->sessionData[$serverid]['locals'][$count] = 
-							$_postVars["new_rcpthost"];
+						$this->sessionData[$serverid]['locals'][$count] = $vars['new_rcpthost'];
 					}
 					$this->sessionData[$serverid]['needActivation'] = 1;
 					$this->saveSessionData();
@@ -151,9 +144,9 @@
 				case 'add_smtproute':
 					$count = count($this->sessionData[$serverid]['smtproutes']);
 					$this->sessionData[$serverid]['smtproutes'][$count] = sprintf("%s:%s:%s",
-																			$_postVars['domain_name'],
-																			$_postVars['remote_server'],
-																			$_postVars['remote_port']);
+																			$vars['domain_name'],
+																			$vars['remote_server'],
+																			$vars['remote_port']);
 					$this->sessionData[$serverid]['needActivation'] = 1;
 					$this->saveSessionData();
 					break;
@@ -162,7 +155,7 @@
 					while(list($key, $value) = each($this->sessionData[$serverid]['locals']))
 					{
 						#print ".. $key: $value<br>";
-						if ($key != $_postVars['locals'])
+						if ($key != $vars['locals'])
 						{
 							$newLocals[$i]=$value;
 							#print "!! $i: $value<br>";
@@ -178,7 +171,7 @@
 					while(list($key, $value) = each($this->sessionData[$serverid]['rcpthosts']))
 					{
 						#print ".. $key: $value<br>";
-						if ($key != $_postVars['rcpthosts'])
+						if ($key != $vars['rcpthosts'])
 						{
 							$newRcpthosts[$i]=$value;
 							#print "!! $i: $value<br>";
@@ -194,7 +187,7 @@
 					while(list($key, $value) = each($this->sessionData[$serverid]['smtproutes']))
 					{
 						#print ".. $key: $value : ".$_getVars["smtproute_id"]."<br>";
-						if ($key != $_getVars['smtproute_id'])
+						if ($key != $vars['smtproute_id'])
 						{
 							$newSmtproutes[$i]=$value;
 							#print "!! $i: $value<br>";
@@ -209,10 +202,10 @@
 					#print "hallo".$_getVars["serverid"]." ".$_postVars["servername"]."<br>";
 					$data = array
 					(
-						'qmail_servername'	=> $_postVars['qmail_servername'],
-						'description'		=> $_postVars['description'],
-						'ldap_basedn'		=> $_postVars['ldap_basedn'],
-						'id'				=> $_getVars['serverid']
+						'qmail_servername'	=> $vars['qmail_servername'],
+						'description'		=> $vars['description'],
+						'ldap_basedn'		=> $vars['ldap_basedn'],
+						'id'				=> $vars['serverid']
 					);
 					if (!isset($_getVars['serverid']))
 					{
@@ -222,7 +215,7 @@
 					{
 						$this->soqmailldap->update('update_server',$data);
 					}
-					$this->getLDAPData($_getVars['serverid'], '1');
+					$this->getLDAPData($vars['serverid'], '1');
 					break;
 				case 'write_to_ldap':
 					$this->soqmailldap->writeConfigData($this->sessionData[$serverid], $serverid);
