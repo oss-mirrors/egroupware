@@ -10,8 +10,9 @@ changelog entry has been added	developer_tools	en	Changelog entry has been added
 changelogs	developer_tools	en	Changelogs
 create new language file	developer_tools	en	Create New Language File
 create sgml file	developer_tools	en	Create SGML file
-developer tools	common	en	Developer tools
-developer tools - preferences	developer_tools	en	Developer tools - preferences
+developer_tools	common	en	Developer Tools
+developer tools	common	en	Developer Tools
+developer tools - preferences	developer_tools	en	Developer Tools - preferences
 diary	developer_tools	en	Diary
 done	developer_tools	en	done
 download	developer_tools	en	Download

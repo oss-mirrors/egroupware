@@ -7,7 +7,7 @@ forwarded	messenger	de	Weitergeleitet
 global message	messenger	de	Globale Mitteilung
 inbox	messenger	de	Posteingang
 message from	messenger	de	Mitteilung von
-messenger	common	de	Messenger
+messenger	common	de	Bote
 read message	messenger	de	Mitteilung lesen
 reply	messenger	de	Antworten
 reply to a message	messenger	de	Mitteilung beantworten
