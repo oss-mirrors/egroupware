@@ -23,6 +23,7 @@
 
 	$projects = CreateObject('projects.projects');
 	$grants = $phpgw->acl->get_grants('projects');
+	$grants[$phpgw_info['user']['account_id']] = PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
 
 	if ($phpgw_info['server']['db_type']=='pgsql')
 	{

@@ -24,7 +24,6 @@
 	$t->set_block('project_list_t','project_list','list');
 
     $projects = CreateObject('projects.projects');
-    $grants = $phpgw->acl->get_grants('projects');
 
 	$hidden_vars = '<input type="hidden" name="sort" value="' . $sort . '">' . "\n"
 				. '<input type="hidden" name="order" value="' . $order . '">' . "\n"
