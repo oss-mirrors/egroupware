@@ -18,7 +18,7 @@
 
 	$phpgw->template->set_block('INDEX','CategoryForum','CatF');
 
-	$phpgw->db->query("select * from f_categories");
+	$phpgw->db->query("select * from phpgw_forum_categories");
 	$phpgw->template->set_var(array(
 	IMG_URL_PREFIX          => PHPGW_IMAGES . "/",
 	'BGROUND'	=> $phpgw_info["theme"]["th_bg"],
