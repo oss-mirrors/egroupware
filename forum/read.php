@@ -99,8 +99,7 @@ if($pos != 0) {
  include("./inc/bar.inc.php");
 
  echo "<center>\n";
- echo "<form method=post action=\"read.php\">\n";
- echo $phpgw->session->hidden_var();
+ echo "<form method=\"post\" action=\"".$phpgw->link("read.php")."\">\n";
  echo "<input type=\"hidden\" name=\"cat\" value=\"$cat\">\n";
  echo "<input type=\"hidden\" name=\"for\" value=\"$for\">\n";
  echo "<input type=\"hidden\" name=\"type\" value=\"$type\">\n";

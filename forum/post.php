@@ -97,8 +97,7 @@ $dattim = date("Y-m-d H:i:s",time());
 
 
  echo "<center>\n";
- echo "<form method=post action=\"post.php\">\n";
- echo $phpgw->session->hidden_var();
+ echo "<form method=post action=\"".$phpgw->link("post.php")."\">\n";
  echo "<input type=\"hidden\" name=\"cat\" value=\"$cat\">\n";
  echo "<input type=\"hidden\" name=\"for\" value=\"$for\">\n";
  echo "<input type=\"hidden\" name=\"type\" value=\"$type\">\n";
