@@ -14,16 +14,16 @@
   function headlines_update($lid,$headlines)
   {
      global $phpgw;
+
      $phpgw->db->query("DELETE FROM users_headlines WHERE owner='$lid'");
      if (count($headlines) != 0) {
-   	for ($i=0;$i<count($headlines);$i++) {
-	   $phpgw->db->query("INSERT INTO users_headlines (owner,site) "
-			   . "values ('$lid',".$headlines[$i].")");
- 	}
+        for ($i=0;$i<count($headlines);$i++) {
+	      $phpgw->db->query("INSERT INTO users_headlines (owner,site) values ('$lid',".$headlines[$i].")");
+        }
      }
   }
 
-include ($phpgw_info["server"]["api_dir"] . "/phpgw_network.inc.php");
+  //include ($phpgw_info["server"]["api_dir"] . "/phpgw_network.inc.php");
 
 class headlines extends network {
   // socket timeout in seconds
