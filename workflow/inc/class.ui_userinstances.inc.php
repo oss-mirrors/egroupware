@@ -28,10 +28,42 @@
 			$filter_process		= get_var('filter_process', 'any', '');
 			$filter_user		= get_var('filter_user', 'any', '');
 			$filter_act_status	= get_var('filter_act_status', 'any', '');
+			$activity_id		= get_var('aid', 'GET', 0);
+			$instance_id		= get_var('iid', 'GET', 0);
 			$this->sort			= get_var('sort', 'any', 'asc');
 			$this->order		= get_var('order', 'any', 'procname');
 			$this->sort_mode	= $this->order . '_' . $this->sort;
 			$this->search_str	= get_var('search_str', 'any', '');
+
+			// exception instance
+			if (isset($_GET['exception']))
+			{
+				$this->GUI->gui_exception_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id);
+			}
+
+			// abort instance
+			if (isset($_GET['abort']))
+			{
+				$this->GUI->gui_abort_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id);
+			}
+
+			// release instance
+			if (isset($_GET['release']))
+			{
+				$this->GUI->gui_release_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id);
+			}
+
+			// grab instance
+			if (isset($_GET['grab']))
+			{
+				$this->GUI->gui_grab_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id);
+			}
+
+			// send instance (needed when an activity is not autorouted)
+			if (isset($_GET['send']))
+			{
+				$this->GUI->gui_send_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id);
+			}
 
 			// retrieve all user processes info
 			$all_processes = $this->GUI->gui_list_user_processes($GLOBALS['phpgw_info']['user']['account_id'], 0, -1, 'procname_asc', '', '');
@@ -61,6 +93,7 @@
 
 		function show_list_instances($instances_data)
 		{
+			//_debug_array($instances_data);
 			// show table headers
 			$this->t->set_var(array(
 				'header_id'				=> $this->nextmatchs->show_sort_order($this->sort, 'instanceId', $this->order, 'index.php', lang('id')),
@@ -74,18 +107,18 @@
 			$this->t->set_block('user_instances', 'block_list_instances', 'list_instances');
 			foreach ($instances_data as $instance)
 			{
-				if ($instance['status'] != 'aborted' && $instance['status'] != 'exception' && $instance['user'] != $GLOBALS['phpgw_info']['user']['account_id'])
+				if ($instance['status'] != 'aborted' && $instance['status'] != 'exception' && $instance['user'] == $GLOBALS['phpgw_info']['user']['account_id'])
 				{
-					$this->t->set_var('exception', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&abort=1&iid='. $instance['instanceId'] .'&aid='. $instance['activityId']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'stop') .'" alt="'. lang('exception instance') .'" title="'. lang('exception instance') .'" /></a>');
+					$this->t->set_var('exception', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&exception=1&iid='. $instance['instanceId'] .'&aid='. $instance['activityId']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'stop') .'" alt="'. lang('exception instance') .'" title="'. lang('exception instance') .'" /></a>');
 				}
 				else
 				{
 					$this->t->set_var('exception', '');
 				}
 
-				if ($instance['isAutorouted'] == 'n' && $instance['actstatus'] == 'completed')
+				if ($instance['isAutoRouted'] == 'n' && $instance['actstatus'] == 'completed')
 				{
-					$this->t->set_var('send', '<a href="'. $GLOBALS['phgpw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&send=1&iid='. $instance['instanceId'] .'&aid='. $instance['activityId']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'linkto') .'" alt="'. lang('send instance') .'" title="'. lang('send instance') .'" /></a>');
+					$this->t->set_var('send', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&send=1&iid='. $instance['instanceId'] .'&aid='. $instance['activityId']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'linkto') .'" alt="'. lang('send instance') .'" title="'. lang('send instance') .'" /></a>');
 				}
 				else
 				{
