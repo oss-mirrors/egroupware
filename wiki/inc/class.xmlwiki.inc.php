@@ -76,7 +76,7 @@
 					continue;	// not modified since $modified
 				}
 
-				$GLOBALS['phpgw']->translation->convert($page,$GLOBALS['phpgw']->translation->charset(),'utf-8');
+				$page = $GLOBALS['phpgw']->translation->convert($page,$GLOBALS['phpgw']->translation->charset(),'utf-8');
 
 				$xml_page = new xmlnode('page');
 				foreach($page as $attr => $val)
@@ -158,7 +158,7 @@
 						// fall through
 					case 'cdata':
 						$wiki_page['text'] = trim($val['value']);
-						$GLOBALS['phpgw']->translation->convert($wiki_page,'utf-8');
+						$wiki_page = $GLOBALS['phpgw']->translation->convert($wiki_page,'utf-8');
 						if ($this->write($wiki_page,False))
 						{
 							if ($debug_messages) 
