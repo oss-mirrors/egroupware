@@ -520,9 +520,11 @@
 			}
 			$browser = CreateObject('phpgwapi.browser');
 			$browser->content_header('phpgw_' . $userlang . '.lang');
+			$to = $GLOBALS['phpgw']->translation->charset($userlang);
+			$from = $GLOBALS['phpgw']->translation->system_charset;
 			while(list($mess_id,$data) = @each($langarray))
 			{
-				echo $mess_id . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $data['content'] . "\n";
+				echo $mess_id . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $GLOBALS['phpgw']->translation->convert(trim($data['content']),$from,$to) . "\n";
 			}
 			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
