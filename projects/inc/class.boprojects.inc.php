@@ -263,6 +263,11 @@
 				$prefs['notify_mstone'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_mstone'];
 				$prefs['notify_pro'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_pro'];
 				$prefs['notify_assign'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_assign'];
+				$prefs['homepage_display'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['homepage_display'];
+				if(!isset($prefs['homepage_display']))
+				{
+					$prefs['homepage_display'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['mainscreen_showevents'];
+				}
 			}
 			return $prefs;
 		}
@@ -282,6 +287,11 @@
 				$GLOBALS['phpgw']->preferences->change('projects','notify_mstone',(isset($prefs['notify_mstone'])?'yes':''));
 				$GLOBALS['phpgw']->preferences->change('projects','notify_pro',(isset($prefs['notify_pro'])?'yes':''));
 				$GLOBALS['phpgw']->preferences->change('projects','notify_assign',(isset($prefs['notify_assign'])?'yes':''));
+				$GLOBALS['phpgw']->preferences->change('projects','homepage_display',(isset($prefs['homepage_display'])?'1':'0'));
+				if(isset($GLOBALS['phpgw_info']['user']['preferences']['projects']['mainscreen_showevents']))
+				{
+					$GLOBALS['phpgw']->preferences->delete('projects','mainscreen_showevents');
+				}
 
 				$GLOBALS['phpgw']->preferences->save_repository(True);
 		//	_debug_array($prefs);

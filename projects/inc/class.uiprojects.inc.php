@@ -1738,6 +1738,7 @@
 			$GLOBALS['phpgw']->template->set_var('lang_notify_mstone',lang('would you like to get notified if milestones date due change'));
 			$GLOBALS['phpgw']->template->set_var('lang_notify_pro',lang('would you like to get notified if projects data get updated'));
 			$GLOBALS['phpgw']->template->set_var('lang_notify_assign',lang('would you like to get notified if you get assigned to a project'));
+			$GLOBALS['phpgw']->template->set_var('lang_homepage_display',lang('would you like to display project info on the main page'));
 
 			$GLOBALS['phpgw']->template->set_var('lang_notifications',lang('email notifications'));
 
@@ -1745,6 +1746,8 @@
 			$GLOBALS['phpgw']->template->set_var('notify_mstone_selected',($prefs['notify_mstone'] == 'yes'? ' checked':''));
 			$GLOBALS['phpgw']->template->set_var('notify_pro_selected',($prefs['notify_pro'] == 'yes'? ' checked':''));
 			$GLOBALS['phpgw']->template->set_var('notify_assign_selected',($prefs['notify_assign'] == 'yes'? ' checked':''));
+			$GLOBALS['phpgw']->template->set_var('homepage_display_selected',(intval($prefs['homepage_display'])=='1'?' checked':''));
+
 
 			if ($this->boprojects->isprojectadmin('pbo') || $this->boprojects->isprojectadmin('pad'))
 			{

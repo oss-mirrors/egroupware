@@ -68,6 +68,10 @@
 		<td>{lang_notify_assign}:</td>
 		<td><input type="checkbox" name="prefs[notify_assign]" value="True" {notify_assign_selected}></td>
 	</tr>
+	<tr bgcolor="{row_off}">
+		<td>{lang_homepage_display}:</td>
+		<td><input type="checkbox" name="prefs[homepage_display]" value="True" {homepage_display_selected}></td>
+	</tr>
 	<tr valign="bottom" height="50">
 		<td align="left">
 			<input type="submit" name="save" value="{lang_save}">
