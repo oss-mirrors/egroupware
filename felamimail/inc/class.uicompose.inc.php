@@ -198,6 +198,7 @@
 			$this->t->set_var("bcc",htmlentities($sessionData['bcc'],ENT_QUOTES,$this->displayCharset));
 			$this->t->set_var("reply_to",htmlentities($sessionData['reply_to'],ENT_QUOTES,$this->displayCharset));
 			$this->t->set_var("subject",htmlentities($sessionData['subject'],ENT_QUOTES,$this->displayCharset));
+			$this->t->set_var('addressbookImage',$GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','users'));
 			$this->t->pparse("out","header");
 
 			// body

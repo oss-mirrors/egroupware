@@ -24,55 +24,12 @@
 		<input class="input_text" type="submit" value="{lang_send}" name="send">
 	</td>
 </tr>
-<tr>
+<tr class="row_off">
 	<td align="right" width="10%">
 		<b>{lang_from}:</b>
 	</td>
 	<td align="left" width="60%">
 		{from}
-	</td>
-	<td align="right">
-		<input class="input_text" type="button" value="{lang_addressbook}" onclick="addybook();">
-	</td>
-</tr>
-<tr>
-	<td align="right" width="10%">
-		<b>{lang_to}:</b>
-	</td>
-	<td align="left" width="60%" colspan="2">
-		<input class="input_text" type=text size="76" name="to" value="{to}">
-	</td>
-</tr>
-<tr>
-	<td align="right">
-		{lang_cc}:
-	</td>
-	<td align="left" colspan="2">
-		<input class="input_text" type=text size="76" name="cc" value='{cc}'>
-	</td>
-</tr>
-<tr>
-	<td align="right">
-		{lang_bcc}:
-	</td>
-	<td align="left" colspan="2">
-		<input class="input_text" type=text size="76" name="bcc" value='{bcc}'>
-	</td>
-</tr>
-<tr>
-	<td align="right">
-		{lang_reply_to}:
-	</td>
-	<td align="left" colspan="2">
-		<input class="input_text" type=text size="76" name="reply_to" value='{reply_to}'>
-	</td>
-</tr>
-<tr>
-	<td align="right">
-		<b>{lang_subject}:</b>
-	</td>
-	<td align="left" >
-		<input class="input_text" type=text size="76" name="subject" value='{subject}'>
 	</td>
 	<td align="right">
 		{lang_priority}
@@ -81,6 +38,51 @@
 			<option value="3" selected>{lang_normal}</option>
 			<option value="5">{lang_low}</option>
 		</select>
+	</td>
+</tr>
+<tr class="row_on">
+	<td align="right" width="10%">
+		<b>{lang_to}:</b>
+	</td>
+	<td align="left" width="60%" colspan="2" valign="bottom">
+		<input class="input_text" type=text size="76" name="to" value="{to}">
+		<a href="javascript:addybook();"><img src="{addressbookImage}"></a>
+	</td>
+</tr>
+<tr class="row_off">
+	<td align="right">
+		{lang_cc}:
+	</td>
+	<td align="left" colspan="2">
+		<input class="input_text" type=text size="76" name="cc" value='{cc}'>
+		<!-- <input class="input_text" type="button" value="{lang_addressbook}" onclick="addybook();">
+		<input type="image" src="{addressbookImage}" onclick="javascript:addybook();"> -->
+		<a href="javascript:addybook();"><img src="{addressbookImage}"></a>
+	</td>
+</tr>
+<tr class="row_off">
+	<td align="right">
+		{lang_bcc}:
+	</td>
+	<td align="left" colspan="2">
+		<input class="input_text" type=text size="76" name="bcc" value='{bcc}'>
+		<a href="javascript:addybook();"><img src="{addressbookImage}"></a>
+	</td>
+</tr>
+<tr class="row_off">
+	<td align="right">
+		{lang_reply_to}:
+	</td>
+	<td align="left" colspan="2">
+		<input class="input_text" type=text size="76" name="reply_to" value='{reply_to}'>
+	</td>
+</tr>
+<tr class="row_on">
+	<td align="right">
+		<b>{lang_subject}:</b>
+	</td>
+	<td align="left" colspan="2">
+		<input class="input_text" type=text size="76" name="subject" value='{subject}'>
 	</td>
 </tr>
 </table>
