@@ -12,7 +12,7 @@
 <!-- BEGIN B_match_and_or_ignore -->
 <select name="{andor_select_name}">
 	<option value="ignore_me" {ignore_me_selected}>&lt;{lang_ignore_me1}&gt;</option>
-	<!-- <option value="or" {or_selected}>{lang_or}</option> -->
+	<option value="or" {or_selected}>{lang_or}</option>
 	<option value="and" {and_selected}>{lang_and}</option>
 </select>
 <!-- END B_match_and_or_ignore -->

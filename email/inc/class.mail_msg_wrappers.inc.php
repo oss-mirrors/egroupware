@@ -139,7 +139,6 @@
 			}
 		}
 		
-		//FIXME: msgball
 	// ====  Functions For Getting A Message Or A Part (MIME Part) Of A Message  ====
 		function phpgw_body($msgball='')
 		{
@@ -183,37 +182,6 @@
 			//echo 'mail_msg(_wrappers): phpgw_fetchbody: processed: $acctnum: '.$acctnum.'; $mailsvr_stream: '.serialize($mailsvr_stream).'; $msgnum: '.$msgnum.'; $part_no: '.$part_no.'<br> * $msgball dump<pre>'; print_r($msgball); echo '</pre>';
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchbody($mailsvr_stream, $msgnum, $part_no, $flags);
 		}
-		/*
-		function phpgw_fetchbody($msgball='', $part_num_mime='', $flags='')
-		{
-			$mailsvr_stream = $this->get_arg_value('mailsvr_stream');
-			$msgnum = $msgball['msgnum'];
-			$part_no = $msgball['part_no'];
-			return $this->a[$this->acctnum]['dcom']->fetchbody($mailsvr_stream, $msgnum, $part_no, $flags);
-		}
-		*/
-		/*
-		function phpgw_fetchbody($msgball='', $part_num_mime='', $flags='')
-		{
-			if (!(isset($msgball))
-			|| ((string)$msgball == ''))
-			{
-				$msgball = $this->get_arg_value('msgball');
-			}
-			$acctnum = $msgball['acctnum'];
-			if (!(isset($acctnum))
-			|| ((string)$acctnum == ''))
-			{
-				$acctnum = $this->get_acctnum();
-			}
-			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-			
-			//return $this->a[$acctnum]['dcom']->fetchbody($mailsvr_stream, $msgball['msgnum'], $part_num_mime, $flags);
-			//return $this->a[$this->acctnum]['dcom']->fetchbody($this->get_arg_value('mailsvr_stream'), $this->get_arg_value('msgnum'), $part_num_mime, $flags);
-			//return $this->a[$acctnum      ]['dcom']->fetchbody($mailsvr_stream, $msgball['msgnum'], $part_num_mime, $flags);
-			return $this->a[$this->acctnum]['dcom']->fetchbody($mailsvr_stream, $msgball['msgnum'], $part_num_mime, $flags);
-		}
-		*/
 		
 		
 	// =====  Functions For Getting Information About A Folder  =====
@@ -457,8 +425,7 @@
 				$acctnum = $this->get_acctnum();
 			}
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->noop_ping_test($mailsvr_stream);
-			return $retval;
+			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->noop_ping_test($mailsvr_stream);
 		}
 		
 		function phpgw_search($fldball='', $criteria='', $flags='')
@@ -635,75 +602,98 @@
 
 		function industrial_interacct_mail_move($mov_msgball='', $to_fldball='')
 		{
-			// this needs A LOT of work!!! do not rely on this yet
-			$good_to_go = False;
-			// delete session msg array data thAt is now stale
-			$this->expire_session_cache_item('msgball_list');
-			
 			// Note: Only call this function with ONE msgball at a time, i.e. NOT a list of msgballs
+			// INTERACCOUNT -OR- SAME ACCOUNT ?
+			$debug_move = 0;
+			// --- Establist account numbers ----
 			$mov_msgball['acctnum'] = (int)$mov_msgball['acctnum'];
 			if (!(isset($mov_msgball['acctnum']))
 			|| ((string)$mov_msgball['acctnum'] == ''))
 			{
 				$mov_msgball['acctnum'] = $this->get_acctnum();
 			}
-			//$from_folder = $this->prep_folder_in($mov_msgball['folder'], $from_acctnum);
-			$mov_msgball['folder'] = urldecode($mov_msgball['folder']);
-			// Make Sure Stream Exists
-			// multiple accounts means one stream may be open but another may not
-			// "ensure_stream_and_folder" will verify for us, 
-			$this->ensure_stream_and_folder($mov_msgball, 'industrial_interacct_mail_move');
-			// GET MESSAGE FLAGS (before you get the mgs, so unseen/seen is not tainted by our grab)
-			$hdr_envelope = $this->phpgw_header($mov_msgball);
-			$mov_msgball['flags'] = $this->make_flags_str($hdr_envelope);
-			// GET THE MESSAGE
-			// part_no 0 only used to get the headers
-			$mov_msgball['part_no'] = 0;
-			// (a)  the headers, specify part_no 0
-			$moving_message = $GLOBALS['phpgw']->msg->phpgw_fetchbody($mov_msgball);
-			// (b) the body, plus a CRLF, reuse headers_msgball b/c "phpgw_body" cares not about part_no
-			$moving_message .= $GLOBALS['phpgw']->msg->phpgw_body($mov_msgball)."\r\n";
-			$good_to_go = (strlen($moving_message) > 3);
-			if (!$good_to_go)
-			{
-				return False;
-			}
-			
-			// APPEND TO TARGET FOLDER
 			$to_fldball['acctnum'] = (int)$to_fldball['acctnum'];
 			if (!(isset($to_fldball['acctnum']))
 			|| ((string)$to_fldball['acctnum'] == ''))
 			{
 				$to_fldball['acctnum'] = $this->get_acctnum();
-			}			
-			$to_fldball['folder'] = urldecode($to_fldball['folder']);
-			// TEMP (MUST add this back!!!) append does NOT require we open the target folder, only requires a stream
-			$remember_to_fldball = $to_fldball['folder'];
-			$to_fldball['folder'] = '';
-			$this->ensure_stream_and_folder($to_fldball, 'industrial_interacct_mail_move');
-			$mailsvr_callstr = $this->get_arg_value('mailsvr_callstr', $to_fldball['acctnum']);
-			$to_mailsvr_stream = $this->get_arg_value('mailsvr_stream', $to_fldball['acctnum']);
-			$to_fldball['folder'] = $remember_to_fldball;
-			$good_to_go = $GLOBALS['phpgw_dcom_'.$to_fldball['acctnum']]->dcom->append($to_mailsvr_stream, $mailsvr_callstr.$to_fldball['folder'], $moving_message, $mov_msgball['flags']);
-			if (!$good_to_go)
-			{
-				return False;
 			}
-			// DELETE and EXPUNGE from FROM FOLDER
-			$from_mailsvr_stream = $this->get_arg_value('mailsvr_stream', $mov_msgball['acctnum']);
-			$good_to_go = $GLOBALS['phpgw_dcom_'.$mov_msgball['acctnum']]->dcom->delete($from_mailsvr_stream, $mov_msgball['msgnum']);
-			if (!$good_to_go)
+			
+			// Are the acctnums the same?
+			if ((string)$mov_msgball['acctnum'] == (string)$to_fldball['acctnum'])
 			{
-				return False;
+				// SAME ACCOUNT MAIL MOVE
+				
+				$common_acctnum = $mov_msgball['acctnum'];
+				//if ($debug_move > 1) { echo 'mail_msg(_wrappers): interacct_mail_move: SAME ACCOUNT MOVE $common_acctnum: '.$common_acctnum.' $mailsvr_stream: '.$mailsvr_stream.' $msgnum: '.$msgnum.' $mailsvr_callstr: '.$mailsvr_callstr.' $mailbox: '.$mailbox.'<br>'; }
+				$this->expire_session_cache_item('msgball_list', $common_acctnum);
+				// we need to SELECT the folder the message is being moved FROM
+				$this->ensure_stream_and_folder($mov_msgball, 'industrial_interacct_mail_move');
+				$to_fldball['folder'] = urldecode($to_fldball['folder']);
+				$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $common_acctnum);
+				if ($debug_move > 1) { echo 'mail_msg(_wrappers): interacct_mail_move: SAME ACCOUNT MOVE $common_acctnum: '.$common_acctnum.' $mailsvr_stream: '.$mailsvr_stream.' $mov_msgball[msgnum]: '.$mov_msgball['msgnum'].'  $to_fldball[folder]: '. $to_fldball['folder'].'<br>'; }
+				return $GLOBALS['phpgw_dcom_'.$common_acctnum]->dcom->mail_move($mailsvr_stream ,$mov_msgball['msgnum'], $to_fldball['folder']);
 			}
-			$good_to_go = $GLOBALS['phpgw']->msg->phpgw_expunge($mov_msgball['acctnum']);
-			if (!$good_to_go)
+			else
 			{
-				return False;
+				// DIFFERENT ACCOUNT MAIL MOVE
+				
+				$good_to_go = False;
+				// delete session msg array data thAt is now stale
+				$this->expire_session_cache_item('msgball_list', $mov_msgball['acctnum']);
+				$mov_msgball['folder'] = urldecode($mov_msgball['folder']);
+				// Make Sure Stream Exists
+				// multiple accounts means one stream may be open but another may not
+				// "ensure_stream_and_folder" will verify for us, 
+				$this->ensure_stream_and_folder($mov_msgball, 'industrial_interacct_mail_move');
+				// GET MESSAGE FLAGS (before you get the mgs, so unseen/seen is not tainted by our grab)
+				$hdr_envelope = $this->phpgw_header($mov_msgball);
+				$mov_msgball['flags'] = $this->make_flags_str($hdr_envelope);
+				// GET THE MESSAGE
+				// part_no 0 only used to get the headers
+				$mov_msgball['part_no'] = 0;
+				// (a)  the headers, specify part_no 0
+				$moving_message = $GLOBALS['phpgw']->msg->phpgw_fetchbody($mov_msgball);
+				// (b) the body, plus a CRLF, reuse headers_msgball b/c "phpgw_body" cares not about part_no
+				$moving_message .= $GLOBALS['phpgw']->msg->phpgw_body($mov_msgball)."\r\n";
+				$good_to_go = (strlen($moving_message) > 3);
+				if (!$good_to_go)
+				{
+					return False;
+				}
+				
+				// APPEND TO TARGET FOLDER
+				// delete session msg array data thAt is now stale
+				$this->expire_session_cache_item('msgball_list', $to_fldball['acctnum']);
+				$to_fldball['folder'] = urldecode($to_fldball['folder']);
+				// TEMP (MUST add this back!!!) append does NOT require we open the target folder, only requires a stream
+				$remember_to_fldball = $to_fldball['folder'];
+				$to_fldball['folder'] = '';
+				$this->ensure_stream_and_folder($to_fldball, 'industrial_interacct_mail_move');
+				$mailsvr_callstr = $this->get_arg_value('mailsvr_callstr', $to_fldball['acctnum']);
+				$to_mailsvr_stream = $this->get_arg_value('mailsvr_stream', $to_fldball['acctnum']);
+				$to_fldball['folder'] = $remember_to_fldball;
+				$good_to_go = $GLOBALS['phpgw_dcom_'.$to_fldball['acctnum']]->dcom->append($to_mailsvr_stream, $mailsvr_callstr.$to_fldball['folder'], $moving_message, $mov_msgball['flags']);
+				if (!$good_to_go)
+				{
+					return False;
+				}
+				// DELETE and EXPUNGE from FROM FOLDER
+				$from_mailsvr_stream = $this->get_arg_value('mailsvr_stream', $mov_msgball['acctnum']);
+				$good_to_go = $GLOBALS['phpgw_dcom_'.$mov_msgball['acctnum']]->dcom->delete($from_mailsvr_stream, $mov_msgball['msgnum']);
+				if (!$good_to_go)
+				{
+					return False;
+				}
+				$good_to_go = $GLOBALS['phpgw']->msg->phpgw_expunge($mov_msgball['acctnum']);
+				if (!$good_to_go)
+				{
+					return False;
+				}
+				return True;
 			}
-			return True;
 		}
-
+	
 		function phpgw_expunge($acctnum='')
 		{
 			if (!(isset($acctnum))

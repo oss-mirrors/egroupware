@@ -546,7 +546,7 @@
 					if ($matches_row > 0)
 					{
 						$andor = $this_filter['matches'][$matches_row]['andor'];
-						if ($andor = 'and')
+						if ($andor == 'and')
 						{
 							// "AND" - only items in this list AND also in the previous list make it to the next round
 							if ($this->debug > 1) { echo 'bofilters.run_single_filter:  source_accounts loop ['.$src_acct_loop_num.'] ; $matches_row ['.$matches_row.'] ; $andor ['.$andor.'] means only items in this list AND also in the previous list make it to the next round<br>'."\r\n"; }
@@ -600,8 +600,13 @@
 							for ($x=0; $x < count($this->each_row_result_mball_list[$matches_row-1]); $x++)
 							{
 								$existing_msgnum = $this->each_row_result_mball_list[$matches_row-1][$x]['msgnum'];
-								if ($this->debug > 1) { echo ' * bofilters.run_single_filter: $existing_msgnum = $this->each_row_result_mball_list[$matches_row-1]['.$x.'][msgnum] = ['.$existing_msgnum.'] <br>'."\r\n"; }
-								$this_row_serialized = str_replace('s:6:"msgnum";i:'.$existing_msgnum.';', 's:6:"msgnum";s:1:" ";', $this_row_serialized);
+								if ($this->debug > 1) { echo ' * bofilters.run_single_filter: $this->each_row_result_mball_list[$matches_row-1]['.$x.'][msgnum] : $existing_msgnum ['.$existing_msgnum.'] <br>'."\r\n"; }
+								if (stristr($this_row_serialized, 's:6:"msgnum";i:'.$existing_msgnum.';'))
+								{
+									if ($this->debug > 1) { echo ' * bofilters.run_single_filter: DUPLICATE $existing_msgnum ['.$existing_msgnum.'] <br>'."\r\n"; }
+									$modified_serialized = str_replace('s:6:"msgnum";i:'.(string)$existing_msgnum.';', 's:6:"msgnum";s:1:" ";', $this_row_serialized);
+									$this_row_serialized = $modified_serialized;
+								}
 							}
 							if ($this->debug > 1) { echo 'bofilters.run_single_filter: POST replace $this_row_serialized  <p>'.$this_row_serialized.'</p> <br>'."\r\n"; }
 							$this_row_unserialized = unserialize($this_row_serialized);
@@ -672,9 +677,9 @@
 				$html_list = $this->make_mlist_box();
 				echo '<html><table>'.$html_list.'</table></html>';
 			}
-			elseif ((count($all_accounts_result_set > 0))
+			elseif ((count($all_accounts_result_set) > 0)
 			&& (isset($all_accounts_result_set[0]))
-			&& ((string)$all_accounts_result_set[0] != ''))
+			&& ((string)$all_accounts_result_set[0]['folder'] != ''))
 			{				
 				// NOT A TEST - APPLY THE ACTION(S)
 				if ($this->debug > 1) { echo 'bofilters.run_single_filter: NOT a Test, *Apply* the Action(s) ; $this_filter[actions][0][judgement] : ['.$this_filter['actions'][0]['judgement'].']<br>'; }
@@ -687,15 +692,15 @@
 					$to_fldball['folder'] = $target_folder['folder'];
 					$to_fldball['acctnum'] = (int)$target_folder['acctnum'];
 					if ($this->debug > 2) { echo 'bofilters.run_single_filter: $to_fldball DUMP:<pre>'; print_r($to_fldball); echo "</pre>\r\n"; }
-					$tm = count($msgball_list);
-					for ($i = 0; $i < count($msgball_list); $i++)
+					$tm = count($all_accounts_result_set);
+					for ($i = 0; $i < count($all_accounts_result_set); $i++)
 					{
 						if ($this->debug > 2) { echo 'bofilters.run_single_filter: in mail move loop ['.(string)($i+1).'] of ['.$tm.']<br>'; }
-						$mov_msgball = $msgball_list[$i];
+						$mov_msgball = $all_accounts_result_set[$i];
 						if ($this->debug > 1) { echo 'bofilters.run_single_filter: pre-move info: $mov_msgball [<code>'.serialize($mov_msgball).'</code>]<br>'; }
 						
-						echo 'EXIT NOT READY TO APPLY THE FILTER YET';
-						//$good_to_go = $GLOBALS['phpgw']->msg->industrial_interacct_mail_move($mov_msgball, $to_fldball);
+						//echo 'EXIT NOT READY TO APPLY THE FILTER YET<br>';
+						$good_to_go = $GLOBALS['phpgw']->msg->industrial_interacct_mail_move($mov_msgball, $to_fldball);
 						
 						if (!$good_to_go)
 						{
