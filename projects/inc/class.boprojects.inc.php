@@ -59,8 +59,6 @@
 
 		function boprojects($session=False, $action = '')
 		{
-			global $phpgw;
-
 			$this->soprojects	= CreateObject('projects.soprojects');
 			$this->contacts		= CreateObject('phpgwapi.contacts');
 
@@ -94,21 +92,17 @@
 
 		function save_sessiondata($data, $action)
 		{
-			global $phpgw;
-
 			if ($this->use_session)
 			{
 				$column = $this->type($action);
-				$phpgw->session->appsession('session_data',$column, $data);
+				$GLOBALS['phpgw']->session->appsession('session_data',$column, $data);
 			}
 		}
 
 		function read_sessiondata($action)
 		{
-			global $phpgw;
-
 			$column = $this->type($action);
-			$data = $phpgw->session->appsession('session_data',$column);
+			$data = $GLOBALS['phpgw']->session->appsession('session_data',$column);
 
 			$this->start	= $data['start'];
 			$this->query	= $data['query'];
@@ -125,8 +119,6 @@
 
 		function cached_accounts($account_id)
 		{
-			global $phpgw;
-
 			$this->accounts = CreateObject('phpgwapi.accounts',$account_id);
 
 			$this->accounts->read_repository();
@@ -140,9 +132,7 @@
 
 		function check_prefs()
 		{
-			global $phpgw_info;
-
-			if (! isset($phpgw_info['user']['preferences']['common']['currency']))
+			if (! isset($GLOBALS['phpgw_info']['user']['preferences']['common']['currency']))
 			{
 				return True;
 			}
@@ -155,11 +145,9 @@
 
 		function get_prefs()
 		{
-			global $phpgw_info;
-
-			if (isset($phpgw_info['user']['preferences']['common']['currency']))
+			if (isset($GLOBALS['phpgw_info']['user']['preferences']['common']['currency']))
 			{
-				$currency = $phpgw_info['user']['preferences']['common']['currency'];
+				$currency = $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
 			}
 			return $currency;
 		}
@@ -176,35 +164,35 @@
 		}
 
 		function coordinator_list()
-		{
-			global $phpgw;			
-
-			$employees = $phpgw->accounts->get_list('accounts');
+		{		
+			$employees = $GLOBALS['phpgw']->accounts->get_list('accounts');
 			return $employees;
 		}
 
-		function read_admins($start, $limit, $query, $sort, $order)
+		function read_admins($type)
 		{ 
-			global $phpgw;
-
-			$admins = $this->soprojects->return_admins();
+			$admins = $this->soprojects->return_admins($type);
 			$this->total_records = $this->soprojects->total_records;
+			return $admins;
+		}
 
-			$allaccounts = $phpgw->accounts->get_list('both', $start, $sort, $order, $query, $limit);
+		function list_admins($start, $limit, $query, $sort, $order)
+		{
+			$admins = $this->read_admins('all');
+
+			$allaccounts = $GLOBALS['phpgw']->accounts->get_list($_type, $start, $sort, $order, $query, $limit);
+
 			while (list($null,$account) = each($allaccounts))
 			{
 				for ($i=0;$i<count($admins);$i++)
 				{
 					if ($account['account_id'] == $admins[$i]['account_id'])
 					{
-						$admin_data[] = Array
-						(
-							'account_id'	=> $account['account_id'],
-							'lid'			=> $account['account_lid'],
-							'firstname'		=> $account['account_firstname'],
-							'lastname'		=> $account['account_lastname'],
-							'type'			=> $admins[$i]['type']
-						);
+						$admin_data['account_id']	= $account['account_id'];
+						$admin_data['lid']			= $account['account_lid'];
+						$admin_data['firstname']	= $account['account_firstname'];
+						$admin_data['lastname']		= $account['account_lastname'];
+						$admin_data['type']			= $admins[$i]['type'];
 					}
 				}
 			}
@@ -213,18 +201,50 @@
 			return $admin_data;
 		}
 
+		function selected_admins($type)
+		{
+			$is_admin = $this->read_admins($type);
+
+			if ($type == 'aa')
+			{
+				$alladmins = $GLOBALS['phpgw']->accounts->get_list('accounts');
+			}
+			else
+			{
+				$alladmins = $GLOBALS['phpgw']->accounts->get_list('groups');
+			}
+
+			while (list($null,$ad_account) = each($alladmins))
+			{
+				$selected_admins .= '<option value="' . $ad_account['account_id'] . '"';
+				for ($i=0;$i<count($is_admin);$i++)
+				{
+					if($is_admin[$i]['account_id'] == $ad_account['account_id'])
+					{
+						$selected_admins .= ' selected';
+					}
+				}
+				$selected_admins .= '>'
+				. $ad_account['account_firstname'] . ' ' . $ad_account['account_lastname'] . ' [ ' . $ad_account['account_lid'] . ' ]' . '</option>';
+			}
+			return $selected_admins;
+		}
+
+		function edit_admins($users, $groups)
+		{
+			$this->soprojects->edit_admins($users, $groups);
+		}
+
 		function isprojectadmin()
 		{
-			global $phpgw, $phpgw_info;
-
-			$admin_groups = $phpgw->accounts->membership($phpgw_info['user']['account_id']);
+			$admin_groups = $GLOBALS['phpgw']->accounts->membership($GLOBALS['phpgw_info']['user']['account_id']);
 			$admins = $this->soprojects->return_admins();
 
 			for ($i=0;$i<count($admins);$i++)
 			{
 				if ($admins[$i]['type']=='aa')
 				{
-					if ($admins[$i]['account_id'] == $phpgw_info['user']['account_id'])
+					if ($admins[$i]['account_id'] == $GLOBALS['phpgw_info']['user']['account_id'])
 					return True;
 				}
 				elseif ($admins[$i]['type']=='ag')
@@ -298,8 +318,6 @@
 
 		function check_values($action, $values, $book_activities, $bill_activities)
 		{
-			global $phpgw;
-
 			if (strlen($values['descr']) >= 8000)
 			{
 				$error[] = lang('Description can not exceed 8000 characters in length !');
@@ -369,8 +387,6 @@
 
 		function check_pa_values($values)
 		{
-			global $phpgw;
-
 			if (strlen($values['descr']) >= 255)
 			{
 				$error[] = lang('Description can not exceed 255 characters in length !');
@@ -416,8 +432,6 @@
 
 		function save_project($action, $values, $book_activities, $bill_activities)
 		{
-			global $phpgw;
-
 			if ($values['choose'])
 			{
 				if ($action == 'mains')
@@ -469,8 +483,6 @@
 
 		function save_activity($values)
 		{
-			global $phpgw;
-
 			if ($values['choose'])
 			{
 				$values['number'] = $this->soprojects->create_activityid();

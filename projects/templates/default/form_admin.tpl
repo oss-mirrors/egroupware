@@ -17,7 +17,7 @@
 	</tr>
     <tr>
 		<td>
-			<input type="submit" name="submit" value="{lang_edit}">
+			<input type="submit" name="submit" value="{lang_save}">
 		</td>
 	</tr>
 </form>

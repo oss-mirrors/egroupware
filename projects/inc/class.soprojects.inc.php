@@ -453,9 +453,16 @@
 			}
 		}
 
-		function return_admins()
+		function return_admins($type = 'all')
 		{
-			$this->db->query("select account_id,type from phpgw_p_projectmembers WHERE type='aa' OR type='ag'");
+			switch ($type)
+			{
+				case 'all': $filter = " type='aa' or type='ag'"; break;
+				case 'aa': $filter = " type='aa'"; break;
+				case 'ag': $filter = " type='ag'"; break;
+			}
+
+			$this->db->query("select account_id,type from phpgw_p_projectmembers WHERE $filter");
 			$this->total_records = $this->db->num_rows();
 			while ($this->db->next_record())
 			{
@@ -463,6 +470,27 @@
 										'type' => $this->db->f('type'));
 			}
 			return $admins;
+		}
+
+		function edit_admins($users = '', $groups = '')
+		{
+			$this->db->query("DELETE from phpgw_p_projectmembers WHERE type='aa' OR type='ag'",__LINE__,__FILE__);
+
+			if (count($users) != 0)
+			{
+				while($activ=each($users))
+				{
+					$this->db->query("insert into phpgw_p_projectmembers (project_id, account_id,type) values (0,'$activ[1]','aa')",__LINE__,__FILE__);
+				}
+			}
+
+			if (count($groups) != 0)
+			{
+				while($activ=each($groups))
+				{
+					$this->db->query("insert into phpgw_p_projectmembers (project_id, account_id,type) values (0,'$activ[1]','ag')",__LINE__,__FILE__);
+				}
+			}
 		}
 
 // returns project-,invoice- and delivery-ID

@@ -46,7 +46,8 @@
 			'edit_activity'		=> True,
 			'add_sub'			=> True,
 			'view_project'		=> True,
-			'list_admins'		=> True
+			'list_admins'		=> True,
+			'edit_admins'		=> True
 		);
 
 		function uiprojects()
@@ -1266,7 +1267,6 @@
 			$this->t->set_block('admin_list_t','admin_list','list');
 
 			$this->t->set_var('lang_action',lang('Project administration'));
-			$this->t->set_var('addurl',$phpgw->link('/projects/add_admin.php'));
 			$this->t->set_var('search_action',$phpgw->link('/index.php',$link_data));
 			$this->t->set_var('search_list',$this->nextmatchs->search(1));
 			$this->t->set_var('doneurl',$phpgw->link('/admin/index.php'));
@@ -1276,7 +1276,7 @@
 				$this->start = 0;
 			}
 
-			$admins = $this->boprojects->read_admins($this->start, True, $this->query, $this->sort, $this->order);
+			$admins = $this->boprojects->list_admins($this->start, True, $this->query, $this->sort, $this->order);
 
 //--------------------------------- nextmatch --------------------------------------------
  
@@ -1321,10 +1321,47 @@
 
 				$this->t->fp('list','admin_list',True);
 			}
-
+			$link_data['menuaction'] = 'projects.uiprojects.edit_admins';
+			$this->t->set_var('addurl',$phpgw->link('/index.php',$link_data));
 			$this->t->pfp('out','admin_list_t',True);
 			$this->save_sessiondata($action);
 			$phpgw->common->phpgw_footer();
+		}
+
+		function edit_admins()
+		{
+			global $phpgw, $phpgw_info, $action, $submit, $users, $groups;
+
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uiprojects.edit_admins',
+				'action'		=> 'pad'
+			);
+
+			if ($submit)
+			{
+				$this->boprojects->edit_admins( $users, $groups);
+				$link_data['menuaction'] = 'projects.uiprojects.list_admins';
+				Header('Location: ' . $phpgw->link('/index.php',$link_data));
+			}
+
+			$GLOBALS['phpgw']->common->phpgw_header();
+			echo parse_navbar();
+
+			$this->set_app_langs();
+
+			$this->t->set_file(array('admin_add' => 'form_admin.tpl'));
+
+			$this->t->set_var('lang_action',lang('Edit project administrator list'));
+			$this->t->set_var('actionurl',$phpgw->link('/index.php',$link_data));
+
+			$this->t->set_var('users_list',$this->boprojects->selected_admins('aa'));
+			$this->t->set_var('groups_list',$this->boprojects->selected_admins('ag'));
+			$this->t->set_var('lang_users_list',lang('Select users'));
+			$this->t->set_var('lang_groups_list',lang('Select groups'));
+
+			$this->t->pfp('out','admin_add');
+			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
 	}
 ?>
