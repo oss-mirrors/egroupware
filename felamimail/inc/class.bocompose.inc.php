@@ -347,7 +347,7 @@
 		function send($_formData)
 		{
 			$bofelamimail	= CreateObject('felamimail.bofelamimail');
-			$mail 		= CreateObject('felamimail.phpmailer');
+			$mail 		= CreateObject('phpgwapi.phpmailer');
 			
 			$this->sessionData['to']	= $_formData['to'];
 			$this->sessionData['cc']	= $_formData['cc'];
@@ -360,16 +360,16 @@
 
 
 			$userLang = $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'];
-			$langFile = PHPGW_SERVER_ROOT."/felamimail/setup/phpmailer.lang-$userLang.php";
+			$langFile = PHPGW_SERVER_ROOT."/phpgwapi/setup/phpmailer.lang-$userLang.php";
 			if(file_exists($langFile))
 			{
-				$mail->SetLanguage($userLang, PHPGW_SERVER_ROOT."/felamimail/setup/");
+				$mail->SetLanguage($userLang, PHPGW_SERVER_ROOT."/phpgwapi/setup/");
 			}
 			else
 			{
-				$mail->SetLanguage("en", PHPGW_SERVER_ROOT."/felamimail/setup/");
+				$mail->SetLanguage("en", PHPGW_SERVER_ROOT."/phpgwapi/setup/");
 			}
-			$mail->PluginDir = PHPGW_SERVER_ROOT."/felamimail/inc/";
+			$mail->PluginDir = PHPGW_SERVER_ROOT."/phpgwapi/inc/";
 			
 			#print $this->sessionData['uid']."<bR>";
 			#print $this->sessionData['folder']."<bR>";
