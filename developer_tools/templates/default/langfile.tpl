@@ -91,14 +91,20 @@
 <hr>
 <table width="80%" align="center">
   <tr valign="top">
-  </form>
    <td align="center">&nbsp;</td>
+     <input name="update" type="submit" value="{lang_update}">
+   <td align="center"><input type="submit" name="addphrase" value="{lang_addphrase}"></td>
+  </form>
   <form method="post" action="{phrase_link}">
+   <td align="center">&nbsp;</td>
      <input name="app_name" type="hidden" value="{app_name}">
-   <td align="center"><input type="submit" name="addphrase" value="{lang_addphrase}"></TD>
+   <td align="center"><input type="submit" name="addphrase" value="{lang_addphrase}"></td>
+  </form>
+  <form method="post" action="{revert_url}">
+   <td align="center"><input name="revert" type="submit" value="{lang_revert}"></td>
   </form>
   <form method="post" action="{cancel_link}">
-   <td align="center"><input type="submit" name="cancel" value="{lang_cancel}"></TD>
+   <td align="center"><input type="submit" name="cancel" value="{lang_cancel}"></td>
   </tr>
   </form>
 </table>

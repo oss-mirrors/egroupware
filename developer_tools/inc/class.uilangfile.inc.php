@@ -46,6 +46,10 @@
 			if($submit)
 			{
 				$this->bo->addphrase($entry);
+				if ($sourcelang == $targetlang)
+				{
+					$this->bo->target_langarray = $this->bo->source_langarray;
+				}
 				$this->bo->save_sessiondata($this->bo->source_langarray,$this->bo->target_langarray);
 
 				Header('Location: ' . $phpgw->link('/index.php','menuaction=developer_tools.uilangfile.edit&app_name=' . $app_name
@@ -58,7 +62,7 @@
 
 				$this->template->set_file(array('form' => 'addphrase.tpl'));
 				$this->template->set_var('message_id_field','<input name="entry[message_id]">');
-				$this->template->set_var('translation_field','<input name="entry[transy]">');
+				$this->template->set_var('translation_field','<input name="entry[content]">');
 				$this->template->set_var('app_name','<input type="hidden" name="entry[app_name]" value="'.$app_name.'">');
 
 				$this->template->set_var('lang_message',lang('Add new phrase'));
@@ -77,19 +81,19 @@
 
 		function edit()
 		{
-			global $phpgw,$app_name,$newlang,$sourcelang,$targetlang,$dlsource,$srcwrite,$dltarget,$tgtwrite,$add_phrase,$added,$DO_ACTION;
+			global $phpgw,$app_name,$newlang,$sourcelang,$targetlang,$dlsource,$srcwrite,$dltarget,$tgtwrite,$add_phrase,$added,$update,$revert;
 
 			if($add_phrase)
 			{
-				$this->bo->save_sessiondata($this->bo->source_langarray,$this->bo->target_langarray);
 				Header('Location: ' . $phpgw->link('/index.php','menuaction=developer_tools.uilangfile.addphrase&app_name='.$app_name
 					. '&sourcelang=' . $sourcelang . '&targetlang=' . $targetlang));
 			}
-			elseif($added)
+			elseif ($revert)
 			{
-				$this->bo->read_sessiondata();
+				$this->bo->save_sessiondata('','');
 			}
-			
+			$this->bo->read_sessiondata();
+
 			$phpgw->common->phpgw_header();
 			echo parse_navbar();
 			include(PHPGW_APP_INC . '/header.inc.php');
@@ -104,12 +108,15 @@
 			$this->template->set_block('langfile','tgtdownload','tgtdownload');
 			$this->template->set_block('langfile','footer','footer');
 
-			$this->template->set_var('action_url',$phpgw->link('/index.php','menuaction=developer_tools.uilangfile.edit&DO_ACTION=getstrings'));
+			$this->template->set_var('action_url',$phpgw->link('/index.php','menuaction=developer_tools.uilangfile.edit'));
+			$this->template->set_var('revert_url',$phpgw->link('/index.php','menuaction=developer_tools.uilangfile.edit'));
 			$this->template->set_var('cancel_link',$phpgw->link('/index.php','menuaction=developer_tools.uilangfile.index'));
 			$this->template->set_var('lang_application',lang('Application'));
 			$this->template->set_var('lang_source',lang('Source Language'));
 			$this->template->set_var('lang_target',lang('Target Language'));
 			$this->template->set_var('lang_submit',lang('Submit'));
+			$this->template->set_var('lang_update',lang('Update'));
+			$this->template->set_var('lang_revert',lang('Revert'));
 			$this->template->set_var('lang_cancel',lang('Cancel'));
 
 			$languages = $this->bo->list_langs();
@@ -183,12 +190,22 @@
 			}
 			$this->template->set_var('userapps',$userapps);
 
-			if ($DO_ACTION == 'putstrings')
+			if ($update)
 			{
-				while ($t = each($translations))
+				$transapp     = $GLOBALS['transapp'];
+				$translations = $GLOBALS['translations'];
+				while (list($_mess,$_app) = each($transapp))
 				{
-
+					$this->bo->source_langarray[$_mess]['app_name'] = $_app;
+					$this->bo->target_langarray[$_mess]['app_name'] = $_app;
 				}
+				while (list($_mess,$_cont) = each($translations))
+				{
+					$this->bo->target_langarray[$_mess]['content'] = $_cont;
+				}
+				$this->bo->save_sessiondata($this->bo->source_langarray,$this->bo->target_langarray);
+				unset($transapp);
+				unset($translations);
 			}
 
 			if($sourcelang && $targetlang)
@@ -212,7 +229,7 @@
 					$this->template->set_var('mess_id',$phpgw->strip_html($mess_id));
 					$this->template->set_var('source_content',$phpgw->strip_html($content));
 					$this->template->set_var('content',$phpgw->strip_html($transy));
-					$this->template->set_var('transapp',$this->lang_option($app_name,$transapp));
+					$this->template->set_var('transapp',$this->lang_option($app_name,$transapp,$mess_id));
 					$this->template->pfp('out','detail');
 				}
 				$this->template->set_var('targetlang',$targetlang);
@@ -237,6 +254,7 @@
 				$this->template->pfp('out','footer');
 			}
 			/* _debug_array($this->bo->loaded_apps); */
+			$this->bo->save_sessiondata($this->bo->source_langarray,$this->bo->target_langarray);
 			$phpgw->common->phpgw_footer();
 		}
 
@@ -368,7 +386,7 @@
 			$this->template->pparse('out','list');
 		}
 
-		function lang_option($app_name,$current)
+		function lang_option($app_name,$current,$name)
 		{
 			$list = array(
 				$app_name     => $app_name,
@@ -378,7 +396,7 @@
 				'preferences' => 'preferences'
 			);
 
-			$select  = "\n" .'<select name="transapp">' . "\n";
+			$select  = "\n" .'<select name="transapp[' . $name . ']">' . "\n";
 			while (list($key,$val) = each($list))
 			{
 				$select .= '<option value="' . $key . '"';

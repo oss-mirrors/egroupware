@@ -36,19 +36,19 @@
 		{
 			global $phpgw;
 			if($this->debug) { echo '<br>Save:'; _debug_array($source); }
-			$phpgw->session->appsession('session_data','developer_source_lang',$source);
+			$phpgw->session->appsession('developer_source_lang','developer_tools',$source);
 			if($this->debug) { echo '<br>Save:'; _debug_array($target); }
-			$phpgw->session->appsession('session_data','developer_target_lang',$target);
+			$phpgw->session->appsession('developer_target_lang','developer_tools',$target);
 		}
 
 		function read_sessiondata()
 		{
 			global $phpgw;
 
-			$source = $phpgw->session->appsession('session_data','developer_source_lang');
+			$source = $phpgw->session->appsession('developer_source_lang','developer_tools');
 			if($this->debug) { echo '<br>Read:'; _debug_array($source); }
 
-			$target = $phpgw->session->appsession('session_data','developer_target_lang');
+			$target = $phpgw->session->appsession('developer_target_lang','developer_tools');
 			if($this->debug) { echo '<br>Read:'; _debug_array($target); }
 
 			$this->set_sessiondata($source,$target);
@@ -75,15 +75,15 @@
 
 		function addphrase($entry)
 		{
-			_debug_array($this->source_langarray);exit;
-			$this->source_langarray[] = array(
-				'message_id', array(
-					'message_id' => $entry['message_id'],
-					'content'    => $entry['content'],
-					'app_name'   => $entry['app_name'],
-					'lang'       => 'en'
-				)
+			/* _debug_array($this->source_langarray);exit; */
+			$mess_id = $entry['message_id'];
+			$this->source_langarray[$mess_id] = array(
+				'message_id' => $entry['message_id'],
+				'content'    => $entry['content'],
+				'app_name'   => $entry['app_name'],
+				'lang'       => 'en'
 			);
+			@ksort($this->source_langarray);
 			return;
 		}
 
@@ -93,20 +93,22 @@
 			{
 				return $this->source_langarray;
 			}
-			$langarray = $this->so->add_app($app,$userlang);
+			$this->source_langarray = $this->so->add_app($app,$userlang);
 			$this->loaded_apps = $this->so->loaded_apps;
-			return $langarray;
+			return $this->source_langarray;
 		}
 
 		function load_app($app,$userlang='en')
 		{
+			/*
 			if(gettype($this->target_langarray) == 'array')
 			{
 				return $this->target_langarray;
 			}
-			$langarray = $this->so->add_app($app,$userlang);
+			*/
+			$this->target_langarray = $this->so->add_app($app,$userlang);
 			$this->loaded_apps = $this->so->loaded_apps;
-			return $langarray;
+			return $this->target_langarray;
 		}
 	}
 ?>
