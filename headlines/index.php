@@ -17,13 +17,10 @@
   $phpgw_info["flags"]["disable_vfs_class"] = True;
   $phpgw_info["flags"]["disable_msg_class"] = True;
   include("../header.inc.php");
-  
-  $sql = "SELECT site FROM users_headlines "
-       . "WHERE owner='" . $phpgw_info["user"]["userid"] . "'";
-  
-  $phpgw->db->query($sql);
-  while ($phpgw->db->next_record()) {
-    $sites[]=$phpgw->db->f(0);
+
+  $i = 0;
+  while ($preference = each($phpgw_info["user"]["preferences"]["headlines"])) {
+     $sites[$i++] = $preference[0];
   }
 
   $headlines = new headlines;
