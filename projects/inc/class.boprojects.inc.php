@@ -256,7 +256,7 @@
 			return $admins;
 		}
 
-		function list_admins($action, $start, $query, $sort, $order)
+		function list_admins($action, $type, $start, $query, $sort, $order)
 		{
 			$admins = $this->read_admins($action, 'all');
 
