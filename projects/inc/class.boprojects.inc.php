@@ -2891,22 +2891,67 @@
 			{
 				$co = $this->soprojects->return_value('co',$values['project_id']);
 				$event_extra = $this->soconfig->get_event_extra('milestone date due');
-				$next = mktime(date('H',time()),date('i',time())+5,0,$values['emonth'],$values['eday']-$event_extra,$values['eyear']);
-
+				$next = mktime
+				(
+					date('H',time()),
+					date('i',time())+1,
+					0,
+					date('m',$values['edate']),
+					date('d',$values['edate'])-$event_extra,
+					date('Y',$values['edate'])
+				);
+				
 				$edate = $this->format_date($values['edate']);
-				$async->write(array('id' => 'ms-' . $values['s_id'] . '-project-' . $values['project_id'], 'next' => $next,'times' => array('year' => date('Y',$next),
-									'month' => date('m',$next),'day' => date('d',$next),'hour' => date('H',$next),'min' => date('i',$next))
-									,'account_id' => $co,'method' => 'projects.boprojects.send_alarm',
-									'data' => array('project_id' => $values['project_id'],'event_type' => 'milestone date due',
-									'edate' => $edate['date_formatted'],'ms_title' => $values['title'])));
+/*				$async->write
+				(
+					array
+					(
+						'id'		=> 'ms-' . $values['s_id'] . '-project-' . $values['project_id'], 
+						'next'		=> $next,
+						'account_id'	=> $co,
+						'method'	=> 'projects.boprojects.send_alarm',
+						'data'		=> array
+						(
+							'project_id'	=> $values['project_id'],
+							'event_type'	=> 'milestone date due',
+							'edate'		=> $edate['date_formatted'],
+							'ms_title'	=> $values['title']
+						)
+					)
+				);*/
+				$asyncID = 'ms-' . $values['s_id'] . '-project-' . $values['project_id'];
+				$async->cancel_timer($asyncID);
+				$async->set_timer
+				(
+					$next,
+					$asyncID,
+					'projects.boprojects.send_alarm',
+					array
+					(
+							'project_id'	=> $values['project_id'],
+							'event_type'	=> 'milestone date due',
+							'edate'		=> $edate['date_formatted'],
+							'ms_title'	=> $values['title']
+					),
+					$co
+				);
 			}
 			if($values['edate'] == 0)
 			{
 				$aid = 'ms-' . $values['s_id'] . '-project-' . $values['project_id'];
-				$async->delete($aid);
+				$async->cancel_timer($aid);
 			}
 			unset($async);
-
+			#$this->send_alarm
+			#(
+			#	array
+			#	(
+			#			'project_id'	=> $values['project_id'],
+			#			'event_type'	=> 'milestone date due',
+			#			'edate'		=> $edate['date_formatted'],
+			#			'ms_title'	=> $values['title']
+			#	)
+			#);
 			return $values['s_id'];
 		}
 
@@ -2943,8 +2988,8 @@
 					break;
 			}
 
-			//echo 'BOPROJECTS->alarm EVENTS: ';
-			//_debug_array($emp_events);
+			#echo 'BOPROJECTS->alarm EVENTS: ';
+			#_debug_array($emp_events);
 
 			$notify_hours	= $this->soprojects->check_alarm($values['project_id'],'hours');
 			$notify_budget	= $this->soprojects->check_alarm($values['project_id'],'budget');
@@ -3083,19 +3128,14 @@
 							$send_alarm = $event_type=='milestone date due'?True:False;
 							$msg = lang($event) . ': ' . $values['edate'] . "\n";
 							$msg .= lang('milestone') . ': ' . $values['ms_title'] . "\n";
-							$msg .= lang('project') . ':' . $values['project_name'];
+							$msg .= lang('project') . ': ' . $project_name;
 							break;
 					}
 
 					if($send_alarm)
 					{
-						$prefs_co = CreateObject('phpgwapi.preferences',$co);
-						$prefs_co->read_repository();
-						$sender = $prefs_co->email_address($co);
-						unset($prefs_co);
-
-						$prefs = CreateObject('phpgwapi.preferences',$emp_events[$k]['account_id']);
-						$prefs->read_repository();
+						$sender = $GLOBALS['phpgw']->accounts->id2name($co,'account_email');
+						$to = $GLOBALS['phpgw']->accounts->id2name($emp_events[$k]['account_id'],'account_email');
 
 						$msgtype = '"projects";';
 
@@ -3104,27 +3144,9 @@
 							$GLOBALS['phpgw']->send = CreateObject('phpgwapi.send');
 						}
 
-						print_debug('UserID',$emp['account_id']);
-
-						$to = $prefs->email_address($emp_events[$k]['account_id']);
-
-						$subject = $GLOBALS['phpgw']->send->encode_subject($subject);
-
 						$returncode = $GLOBALS['phpgw']->send->msg('email',$to,$subject,$msg,''/*$msgtype*/,'','','',$sender);
 						//echo "<p>send(to='$to', sender='$sender'<br>subject='$subject') returncode=$returncode<br>".nl2br($body)."</p>\n";
 
-						# i commented it out
-						# this gets called maybe by cron, so this error message is useless
-						# also i breaks any egw app
-						#// not nice, but better than failing silently
-						#if (!$returncode)
-						#{
-						#	echo '<p><b>boprojects::send_alarm</b>: '.lang("Failed sending message to '%1' #%2 subject='%3', sender='%4' !!!",$to,$emp['account_id'],htmlspecialchars($subject), $sender)."<br>\n";
-						#	echo '<i>'.$GLOBALS['phpgw']->send->err['desc']."</i><br>\n";
-						#	echo lang('This is mostly caused by a not or wrongly configured SMTP server. Notify your administrator.')."</p>\n";
-						#	echo '<p>'.lang('Click %1here%2 to return to projects.','<a href="'.$GLOBALS['phpgw']->link('/projects/').'">','</a>')."</p>\n";
-						#}
-						unset($prefs);
 					}
 				}
 			}
