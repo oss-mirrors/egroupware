@@ -67,7 +67,7 @@ function mail_ticket($ticket_id) {
     }
   }
   if($count($toarray)) {
-    $to = implode($toarray,",");
+    $to = implode(",",$toarray);
   } else {
     $to = $toarray[0];
   }
