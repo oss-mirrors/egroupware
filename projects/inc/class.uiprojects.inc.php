@@ -638,6 +638,9 @@
 							case 'priority':
 								$p[$col] = $this->boprojects->formatted_priority($p[$col]);
 								break;
+							case 'budget':
+								$p[$col] = $p['budgetSum'];
+								break;
 						}
 
 						$GLOBALS['phpgw']->template->set_var('col_align',$col_align);
