@@ -55,8 +55,10 @@
 			for($i=0;$i<count($var);$i++)
 			{
 				$var_str = $var[$i];
-				$this->$var_str = (@isset($GLOBALS['HTTP_GET_VARS'][$var_str])?intval($GLOBALS['HTTP_GET_VARS'][$var_str]):$this->$var_str);
-				$this->$var_str = (@isset($GLOBALS['HTTP_POST_VARS'][$var_str])?intval($GLOBALS['HTTP_POST_VARS'][$var_str]):$this->$var_str);
+//				$this->$var_str = (@isset($GLOBALS['HTTP_GET_VARS'][$var_str])?intval($GLOBALS['HTTP_GET_VARS'][$var_str]):$this->$var_str);
+//				$this->$var_str = (@isset($GLOBALS['HTTP_POST_VARS'][$var_str])?intval($GLOBALS['HTTP_POST_VARS'][$var_str]):$this->$var_str);
+				$this->$var_str = (@isset($GLOBALS['HTTP_GET_VARS'][$var_str])?$GLOBALS['HTTP_GET_VARS'][$var_str]:$this->$var_str);
+				$this->$var_str = (@isset($GLOBALS['HTTP_POST_VARS'][$var_str])?$GLOBALS['HTTP_POST_VARS'][$var_str]:$this->$var_str);
 			}
 			if(!@isset($this->view))
 			{

@@ -216,7 +216,7 @@
 					)
 			);
 
-			$is_collapsed = ($this->bo->view=='collapsed');
+			$is_collapsed = (strcmp($this->bo->view,'collapsed') == 0);
 			$thread_listing = $this->bo->get_thread($this->bo->cat_id,$this->bo->forum_id,$is_collapsed);
 			if($is_collapsed)
 			{
