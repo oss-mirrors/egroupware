@@ -99,7 +99,7 @@ Public Function Login() As Boolean
     linsStruct.AddString "domain", mDomain
     linsStruct.AddString "username", mUsername
     linsStruct.AddString "password", mPassword
-        
+    
     Exec "system.login", linsStruct
     
     If linsResponse.Status <> XMLRPC_PARAMSRETURNED Then
@@ -116,6 +116,8 @@ Public Function Login() As Boolean
             Debug.Print "Login successful"
         ElseIf linsMember.Name = "kp3" Then
             mKp3 = linsMember.Value.StringValue
+        Else
+            Login = False
         End If
     Next linsMember
 End Function
