@@ -1,5 +1,7 @@
+!!! you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	zh	!!! 在进行下一步操作前，必须[保存]上面字段中每一条手动的修改!!!
 add	developer_tools	zh	添加
 add change	developer_tools	zh	添加更改
+add more	developer_tools	en	继续添加
 add new phrase	developer_tools	zh	添加新短语
 add phrase	developer_tools	zh	添加短语
 allows you to add a single phrase	developer_tools	zh	允许您添加单一短语
@@ -31,7 +33,7 @@ message_id in english	developer_tools	zh	message_id in English
 no file	developer_tools	zh	无文件
 ok	developer_tools	zh	OK
 original	developer_tools	zh	初始的
-phrase in english	developer_tools	zh	短语(用英语表达)
+phrase in english (or empty if identical)	developer_tools	zh	英文短语(留空表示相同)
 preferences	developer_tools	zh	个性化配置
 preferences have been updated	developer_tools	zh	个性化配置已更新
 project	developer_tools	zh	项目
@@ -56,6 +58,7 @@ target language	developer_tools	zh	目标语言
 title	developer_tools	zh	名称
 translate	developer_tools	zh	翻译
 translation	developer_tools	zh	翻译
+translation of phrase	developer_tools	en	翻译结果
 update	developer_tools	zh	更新
 update database	developer_tools	zh	更新数据库
 updates the translations of both lang-files in your database, so you can verify your work imediatly	developer_tools	zh	同时更新数据库中的语言，即时查看翻译结果以便校正
@@ -63,8 +66,8 @@ version	developer_tools	zh	版本
 write	developer_tools	zh	保存
 write the lang-file to the apps setup-dir	developer_tools	zh	保存语言文件至应用程序Setup目录
 write to lang table	developer_tools	zh	保存至语言表
+writing langfile for '%1' ...	developer_tools	en	Writing langfile for '%1' ...
 you must a version	developer_tools	zh	必须指定版本
 you must enter a change	developer_tools	zh	必须输入一个改动
 you must select a project	developer_tools	zh	必须选择一个项目
 you need to set your preferences for this app	developer_tools	zh	需要为该应用程序设置个性化配置
-!!! you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	zh	!!! 在进行下一步操作前，必须[保存]上面字段中每一条手动的修改!!!

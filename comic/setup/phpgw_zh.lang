@@ -14,26 +14,26 @@ daily comics	admin	zh	日常漫画
 daily comics - global options	comic	zh	日常漫画—全局配置
 daily comics data	comic	zh	日常漫画数据
 daily comics global options	comic	zh	日常漫画全局配置
-display layout	comic	zh	显示的布局方式
-display options	comic	zh	显示的选项
+display layout	comic	zh	页面布局方式
+display options	comic	zh	其他选项
 egroupware daily comics	comic	zh	eGroupWare日常漫画
 front page comic	comic	zh	头版漫画
 front page comic scaled	comic	zh	头版漫画比例
 genre	comic	zh	风格
 global comics	admin	zh	全局漫画
-global comics	comin	zh	全局漫画
+global comics	comic	zh	全局漫画
 global options	admin	zh	全局配置
 global options	comic	zh	全局配置
 global options updated	comic	zh	全局配置已更新
 image source	comic	zh	图片来源
 max file size	comic	zh	最大文件大小
-my comics	comic	zh	我的漫画
+my comics	comic	zh	首选项
 no_entries	comic	zh	无条目
 parser	comic	zh	分析
 performed %1 of element	comic	zh	Performed %1 of element
-phpgroupware daily comics	comic	zh	phpGroupWare日常漫画
+phpgroupware daily comics	comic	zh	eGroupWare日常漫画
 random	comic	zh	随机
-rated	comic	zh	比率
+rated	comic	zh	审查等级
 remote (parse/snarf) enabled	comic	zh	Remote (parse/snarf)
 reset	comic	zh	复位
 reset comic data	admin	zh	复位漫画数据
