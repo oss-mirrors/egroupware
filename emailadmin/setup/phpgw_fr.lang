@@ -10,7 +10,7 @@ edit email settings	qmailldap	fr	Modifier les réglages d'EMail
 email account active	qmailldap	fr	Compte EMail actif
 email address	qmailldap	fr	Adresse EMail
 email settings	admin	fr	Réglages EMail
-forward email's to	qmailldap	fr	Faire suivre l'EMail à
+forward emails to	qmailldap	fr	Faire suivre les EMails à
 qmail dn	qmailldap	fr	QMail DN
 ldap server	qmailldap	fr	Serveur LDAP
 ldap settings	qmailldap	fr	Réglages LDAP

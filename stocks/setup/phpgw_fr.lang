@@ -1,13 +1,11 @@
-%	stocks	fr	%
-add new stock	stocks	fr	Ajouter une nouveau action
-display stocks on main screen is disabled	stocks	fr	Afficher les actions sur l'écran principal est désactivé
+add stock	stocks	fr	Ajouter une action
+default country	stocks	fr	Pays par défaut
 display stocks on main screen is enabled	stocks	fr	Afficher les actions sur l'écran principal est activé
-disable	stocks	fr	désactiver
 edit stock	stocks	fr	Modifier l'action
-enable	stocks	fr	activer
 price	stocks	fr	Prix
 stocks	common	fr	Actions
 stock quotes	common	fr	Valeurs des actions
-select displayed stocks	preferences	fr	Choisir les actions affichées
+select stocks to display	stocks	fr	Choisissez les actions à afficher
+stock quotes list	stocks	en	Liste des valeurs d'actions
 stock quote preferences	stocks	fr	Préférences actions
 symbol	stocks	fr	Symbole
