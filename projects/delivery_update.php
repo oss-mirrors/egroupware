@@ -56,14 +56,14 @@
     if (($Delivery) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Delivery has been updated !')); }
     if ((! $Delivery) && (! $error) && (! $errorcount)) { $t->set_var('message',''); }
 
-    $common_hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
+    $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
 			. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
 			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
 			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
 			. "<input type=\"hidden\" name=\"delivery_id\" value=\"$delivery_id\">\n"
 			. "<input type=\"hidden\" name=\"project_id\" value=\"$project_id\">\n";
 
-    $t->set_var(common_hidden_vars,$common_hidden_vars);   
+    $t->set_var('hidden_vars',$hidden_vars);   
     $t->set_var("lang_action",lang("Delivery"));
     $t->set_var('lang_choose','');
     $t->set_var('choose','');
@@ -80,19 +80,19 @@
 // ------------------ list header variable template-declarations ----------------------------
 
     $t->set_var('th_bg',$phpgw_info["theme"][th_bg]);
-    $t->set_var('sort_activity',lang("Activity"));
-    $t->set_var('sort_remark',lang("Remark"));
-    $t->set_var('sort_status',lang("Status"));
-    $t->set_var('sort_end_date',lang("Date due"));
-    $t->set_var('sort_aes',lang("Workunits"));
-    $t->set_var('h_lang_select',lang("Select"));
-    $t->set_var('h_lang_edithour',lang("Edit hours"));
-    $t->set_var('lang_delivery',lang("Update delivery"));
-    $t->set_var('actionurl',$phpgw->link("/projects/delivery_update.php"));
-    $t->set_var('lang_print_delivery',lang("Print delivery"));
+    $t->set_var('sort_activity',lang('Activity'));
+    $t->set_var('sort_remark',lang('Remark'));
+    $t->set_var('sort_status',lang('Status'));
+    $t->set_var('sort_end_date',lang('Date due'));
+    $t->set_var('sort_aes',lang('Workunits'));
+    $t->set_var('h_lang_select',lang('Select'));
+    $t->set_var('h_lang_edithour',lang('Edit hours'));
+    $t->set_var('lang_delivery',lang('Update delivery'));
+    $t->set_var('actionurl',$phpgw->link('/projects/delivery_update.php'));
+    $t->set_var('lang_print_delivery',lang('Print delivery'));
 
-    if (!$delivery_id) { $t->set_var(print_delivery,$phpgw->link("/projects/fail.php")); }
-    else { $t->set_var(print_delivery,$phpgw->link("/projects/del_deliveryshow.php","delivery_id=$delivery_id")); }
+    if (!$delivery_id) { $t->set_var(print_delivery,$phpgw->link('/projects/fail.php')); }
+    else { $t->set_var(print_delivery,$phpgw->link('/projects/del_deliveryshow.php',"delivery_id=$delivery_id")); }
   
 // ----------------------- end header declaration ------------------------------
 
@@ -114,13 +114,13 @@
     }
     else { $t->set_var('customer',lang('You have no customer selected !')); }
 
-    $t->set_var(title_project,lang("Title"));                                                                                                                                                               
-    $t->set_var(title_customer,lang("Customer"));  
-    $t->set_var(title_delivery_num,lang("Delivery ID"));
+    $t->set_var(title_project,lang('Title'));
+    $t->set_var(title_customer,lang('Customer'));
+    $t->set_var(title_delivery_num,lang('Delivery ID'));
     $t->set_var(delivery_num,$phpgw->strip_html($delivery_num));
   
     if ($delivery_id) {
-    $phpgw->db->query("SELECT date FROM phpgw_p_delivery WHERE id=$delivery_id");
+    $phpgw->db->query("SELECT date FROM phpgw_p_delivery WHERE id='$delivery_id'");
     $phpgw->db->next_record();
     $date=$phpgw->db->f("date");    
     $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,phpgw_p_hours.status,"
@@ -192,11 +192,11 @@
     $t->set_var('lang_edit_entry','&nbsp;');
     }
     else {
-    $t->set_var('edithour',$phpgw->link("/projects/del_edithour.php","id=" . $phpgw->db->f("id")
-                                         . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter&status=$status"));
+    $t->set_var('edithour',$phpgw->link('/projects/hours_edithour.php','id=' . $phpgw->db->f("id")
+                                         . "&delivery_id=$delivery_id&delivery_num=$delivery_num&sort=$sort&order=$order&query=$query&start=$start&filter=$filter&status=$status"));
     $t->set_var('lang_edit_entry',lang('Edit hours'));
     }
-    $t->parse("list", "projecthours_list", true);
+    $t->parse('list','projecthours_list',True);
 
 // -------------------------- end record declaration -------------------------------------------
     }
@@ -255,11 +255,11 @@
     $t->set_var('lang_edit_entry','&nbsp;');
     }
     else {
-    $t->set_var('edithour',$phpgw->link("/projects/del_edithour.php","id=" . $phpgw->db->f("id")
-                                         . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter&status=$status"));
+    $t->set_var('edithour',$phpgw->link('/projects/hours_edithour.php','id=' . $phpgw->db->f("id")
+                                         . "&delivery_id=$delivery_id&delivery_num=$delivery_num&sort=$sort&order=$order&query=$query&start=$start&filter=$filter&status=$status"));
     $t->set_var('lang_edit_entry',lang('Edit hours'));
     }
-    $t->parse("list", "projecthours_list", true);
+    $t->parse('list','projecthours_list',True);
   
 // -------------------------- end record declaration ------------------------
 	}

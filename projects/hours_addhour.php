@@ -10,14 +10,12 @@
   *  Free Software Foundation; either version 2 of the License, or (at your  *
   *  option) any later version.                                              *
   \**************************************************************************/
-/* $Id$ */
+  /* $Id$ */
   
     $phpgw_info["flags"]["currentapp"] = "projects";
     include("../header.inc.php");
 
-    if (!$id) {
-    Header("Location: " . $phpgw->link('/projects/index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
-    }
+    if (!$id) { Header('Location: ' . $phpgw->link('/projects/hours_index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter")); }
 
     $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
     $t->set_file(array('hours_add' => 'hours_formhours.tpl'));
@@ -74,7 +72,7 @@
     $t->set_var('error',lang('Please select your currency in preferences !'));
     }
 
-    $t->set_var('actionurl',$phpgw->link("/projects/hours_addhour.php"));
+    $t->set_var('actionurl',$phpgw->link('/projects/hours_addhour.php'));
     $t->set_var('lang_action',lang('Add project hours'));
 	
     $hidden_vars = "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
@@ -86,7 +84,7 @@
         		
     $t->set_var('hidden_vars',$hidden_vars);
 
-    $phpgw->db->query("SELECT num,title FROM phpgw_p_projects WHERE id = '".$id."'");
+    $phpgw->db->query("SELECT num,title FROM phpgw_p_projects WHERE id = '" . $id . "'");
     if ($phpgw->db->next_record()) {
     $t->set_var('num',$phpgw->strip_html($phpgw->db->f("num")));
     $title  = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                
@@ -96,7 +94,7 @@
     $t->set_var('lang_title',lang('Title'));
     }
 
-    $t->set_var("lang_activity",lang("Activity"));
+    $t->set_var('lang_activity',lang('Activity'));
 
     $phpgw->db->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities"
                         . " WHERE project_id = '".$id."' AND phpgw_p_projectactivities.activity_id="
@@ -178,6 +176,9 @@
     $t->set_var('minperae',$minperae);
     $t->set_var('lang_billperae',lang("Bill per workunit"));
     $t->set_var('billperae',$billperae);
+
+    $t->set_var('lang_done',lang('Done'));    
+    $t->set_var('doneurl',$phpgw->link('/projects/hours_index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
 
     $t->set_var('lang_add',lang('Add'));
     $t->set_var('lang_reset',lang('Clear Form'));

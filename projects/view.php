@@ -17,7 +17,7 @@
   
     if (!$id) {
     Header("Location: " . $phpgw->link('/projects/index.php'
-	  . "sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+	  . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
     }
 
     $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));

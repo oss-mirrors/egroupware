@@ -27,7 +27,7 @@
 </tr>
 </table> 
 
- {common_hidden_vars}
+ {hidden_vars}
  {total_matchs}
  {next_matchs}
   

@@ -33,7 +33,7 @@
 	    "cd=16&sort=$sort&order=$order&query=$query&start="
 	  . "$start&filter=$filter"));
   } else {
-	$common_hidden_vars =
+	$hidden_vars =
  	  "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
  	. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
  	. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
@@ -55,7 +55,7 @@
 				. "&filter=$filter");
 
      $yeslinkf = "<FORM method=\"POST\" name=yesbutton action=\"".$phpgw->link("/projects/hours_deletehour.php")."\">"
-                 . $common_hidden_vars
+                 . $hidden_vars
                  . "<input type=hidden name=id value=$id>"
 		 . "<input type=hidden name=confirm value=True>"
                  . "<input type=submit name=yesbutton value=Yes>"

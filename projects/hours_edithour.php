@@ -17,10 +17,7 @@
   
     $db2 = $phpgw->db;
   
-    if (!$id) {
-     Header("Location: " . $phpgw->link('/projects/hours_index.php'
-	  . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
-    }
+    if (!$id) { Header("Location: " . $phpgw->link('/projects/hours_index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter")); }
 
     $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
 		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
@@ -30,8 +27,6 @@
 		. "<input type=\"hidden\" name=\"id\" value=\"$id\">\n"
 		. "<input type=\"hidden\" name=\"delivery_id\" value=\"$delivery_id\">\n"
 		. "<input type=\"hidden\" name=\"invoice_id\" value=\"$invoice_id\">\n";
-
-
 
     $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
     $t->set_file(array('hours_edit' => 'hours_formhours.tpl'));
@@ -82,8 +77,8 @@
     $phpgw->db->query("select * from phpgw_p_hours where id='$id'");
     $phpgw->db->next_record();
 
-    $t->set_var('actionurl',$phpgw->link("/projects/hours_edithour.php"));
-    $t->set_var('deleteurl',$phpgw->link("/projects/delete_hours.php","id=$id"));
+    $t->set_var('actionurl',$phpgw->link('/projects/hours_edithour.php'));
+    $t->set_var('deleteurl',$phpgw->link('/projects/delete_hours.php',"id=$id"));
     $t->set_var('lang_action',lang('Edit project hours'));
     $t->set_var('hidden_vars',$hidden_vars);
      
@@ -190,10 +185,11 @@
 
     $t->set_var('lang_done',lang('Done'));
 
-    print "Referrer".$HTTP_REFERER."<br>";
+    $t->set_var('doneurl',$phpgw->link($HTTP_REFERER));
 
-    $t->set_var('doneurl',$phpgw->link($HTTP_REFERER . '&project_id=' . $phpgw->db->f("id") . "&delivery_id=$delivery_id&invoice_id=$invoice_id&sort=$sort&order=$order&"
-                                        . "query=$query&start=$start&filter=$filter&status=$status"));
+/*    print "Referrer".$HTTP_REFERER."<br>";
+    $t->set_var('doneurl',$phpgw->link($HTTP_REFERER . 'project_id=' . $phpgw->db->f("id") . "&delivery_id=$delivery_id&invoice_id=$invoice_id&sort=$sort&order=$order&"
+                                        . "query=$query&start=$start&filter=$filter&status=$status")); */
 
     $t->set_var('lang_edit',lang('Edit'));
     $t->set_var('lang_delete',lang('Delete'));
@@ -202,8 +198,6 @@
     $t->set_var('addhandle','');
     $t->pparse('out','hours_edit');
     $t->pparse('edithandle','edit');
-
-    #print phpinfo();
 
     $phpgw->common->phpgw_footer();
 ?>

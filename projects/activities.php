@@ -29,7 +29,7 @@
    $t->set_var("error",lang("Please select your currency in preferences!"));                                                                                              
    }
 
-    $common_hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
+    $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
 			. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
 			. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
 			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
@@ -39,7 +39,7 @@
     $t->set_var(actionurl,$phpgw->link("/projects/addactivity.php"));
     $t->set_var(lang_projects,lang("Project list"));
     $t->set_var(projectsurl,$phpgw->link("/projects/index.php"));
-    $t->set_var(common_hidden_vars,$common_hidden_vars);   
+    $t->set_var('hidden_vars',$hidden_vars);   
     $t->set_var("lang_search",lang("Search"));
     $t->set_var('searchurl',$phpgw->link("/projects/activities.php"));
 

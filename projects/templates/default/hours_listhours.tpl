@@ -2,11 +2,27 @@
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>                                                                                                                                                        
 <hr noshade width="98%" align="center" size="1">                                                                                                                                                     
 <center>
-
- {total_matchs}
- {next_matchs}
-	
-  <table width=100% border=0 cellspacing=1 cellpadding=3>
+ {hidden_vars}
+ {error}
+<table border="0" cellspacing="2" cellpadding="2">
+ <tr>
+  <td colspan="8" align="left">
+   <table border="0" width="100%">
+    <tr>
+    {left}
+    <td align="center">{lang_showing}</td>
+    {right}
+    </tr>
+   </table>
+   </td>
+  </tr>
+ <tr>
+  <td>&nbsp;</td>
+  <td colspan="8" align="right">
+  <form method="post" action="{searchurl}">
+  <input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
+  </form></td>
+ </tr>
     <tr bgcolor="{th_bg}">
       <td width="15%" bgcolor="{th_bg}" align=center>{sort_project}</td>
       <td width="20%" bgcolor="{th_bg}" align=center>{sort_activity}</td>
@@ -17,7 +33,6 @@
       <td width="5%" align=center>{h_lang_view}</td>
       <td width="5%" align=center>{h_lang_edit}</td>
     </tr>
-  </form>
   
 <!-- BEGIN hours_list -->
 

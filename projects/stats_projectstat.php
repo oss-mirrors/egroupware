@@ -17,11 +17,12 @@
 
     include("../header.inc.php");
   
-    if (! $id)
-     Header("Location: " . $phpgw->link('/projects/stats_index.php',"sort=$sort&order=$order&query=$query&start=$start"
-	  . "&filter=$filter"));
+    if (! $id) {
+     Header("Location: " . $phpgw->link('/projects/stats_projectlist.php'
+	  . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+    }
 
-    $common_hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
+    $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
 			. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
 			. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
 			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
@@ -36,9 +37,9 @@
     $t->set_file(array('project_stat' => 'stats_projectstat.tpl'));
     $t->set_block('project_stat','stat_list','list');
      
-    $t->set_var("actionurl",$phpgw->link("/projects/stats_projectstat.php"));
-    $t->set_var("lang_action",lang("Project statistic"));
-    $t->set_var("common_hidden_vars",$common_hidden_vars);
+    $t->set_var('actionurl',$phpgw->link('/projects/stats_projectstat.php'));
+    $t->set_var('lang_action',lang("Project statistic"));
+    $t->set_var('hidden_vars',$hidden_vars);
     $t->set_var("lang_num",lang("Project ID"));
     $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
     $t->set_var("lang_title",lang("Title"));

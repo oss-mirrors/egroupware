@@ -23,14 +23,14 @@
 
     $d = CreateObject('phpgwapi.contacts');
 
-    $common_hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
+    $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
 			. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
 			. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
 			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
 			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
     $t->set_var('lang_action',lang('Project billing'));
-    $t->set_var('common_hidden_vars',$common_hidden_vars);   
+    $t->set_var('hidden_vars',$hidden_vars);   
     $t->set_var('searchurl',$phpgw->link("/projects/bill_index.php"));
     $t->set_var('lang_search',lang('Search'));
 

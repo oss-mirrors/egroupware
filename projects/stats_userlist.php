@@ -20,71 +20,62 @@
     $t->set_file(array('user_list_t' => 'stats_userlist.tpl'));
     $t->set_block('user_list_t','user_list','list');
 
-  $common_hidden_vars =
-   "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
- . "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
- . "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
- . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
- . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
+    $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
+		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
+		. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
+		. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
+		. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
 
-  $t->set_var(lang_action,lang("User statistics"));
-  $t->set_var(common_hidden_vars,$common_hidden_vars);   
+    $t->set_var('lang_action',lang('User statistics'));
+    $t->set_var('hidden_vars',$hidden_vars);   
+    $t->set_var("lang_search",lang('Search'));
+    $t->set_var('searchurl',$phpgw->link('/projects/stats_userlist.php'));
 
-  if (! $start)
-     $start = 0;
-  if ($order)
-     $ordermethod = "order by $order $sort";
-  else
-     $ordermethod = "order by account_lid asc";
+    if (! $start) { $start = 0; }
+    if ($order) { $ordermethod = "order by $order $sort"; }
+    else { $ordermethod = "order by account_lid asc"; }
 
-  if (! $filter) {
-     $filter = "none";
-  }
+    if (! $filter) { $filter = "none"; }
 
-  $filtermethod = "account_status='A'";
+    if($phpgw_info["user"]["preferences"]["common"]["maxmatchs"] && $phpgw_info["user"]["preferences"]["common"]["maxmatchs"] > 0) {
+                $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+    }
+    else { $limit = 15; }
 
-  if ($query) {
-     $phpgw->db->query("select count(*) from phpgw_accounts where $filtermethod");
-     $phpgw->db->next_record();
-     if ($phpgw->db->f(0) == 1)
-        $t->set_var(total_matchs,lang("your search returned 1 match"));
-     else
-        $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
+    $filtermethod = "account_status='A'";
+
+    if ($query) {
+	$phpgw->db->query("select count(*) from phpgw_accounts where $filtermethod");
+	$phpgw->db->next_record();
+	if ($phpgw->db->f(0) == 1) { $t->set_var('lang_showing',lang('your search returned 1 match')); }
+	else { $t->set_var('lang_showing',lang("your search returned x matchs",$phpgw->db->f(0))); }
     } 
-   else {
+    else {
     $phpgw->db->query("select count(*) from phpgw_accounts where $filtermethod");
     $phpgw->db->next_record();                                                                      
-     if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
-     $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
-                           ($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),
-                           $phpgw->db->f(0));
-     else
-     $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
-     $t->set_var(total_matchs,$total_matchs);
+	if ($phpgw->db->f(0) > $limit) { $t->set_var('lang_showing',lang("showing x - x of x",($start + 1),($start + $limit),$phpgw->db->f(0))); } 
+	else { $t->set_var('lang_showing',lang("showing x",$phpgw->db->f(0))); }
      }
 
 // ------------- nextmatch variable template-declarations -------------------------------
 
-     $next_matchs = $phpgw->nextmatchs->show_tpl("stats_userlist.php",$start,$phpgw->db->f(0),
-                   "&order=$order&filter=$filter&sort="
-                 . "$sort&query=$query","85%",$phpgw_info["theme"][th_bg]);
-     $t->set_var(next_matchs,$next_matchs);
+    $left = $phpgw->nextmatchs->left('bill_invoicelist.php',$start,$phpgw->db->f(0));
+    $right = $phpgw->nextmatchs->right('bill_invoicelist.php',$start,$phpgw->db->f(0));
+    $t->set_var('left',$left); 
+    $t->set_var('right',$right);
 
 // ------------------------ end nextmatch template --------------------------------------
 
 // --------------- list header variable template-declarations ---------------------------
 
-  $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-  $t->set_var(sort_lid,$phpgw->nextmatchs->show_sort_order($sort,"account_lid",$order,"stats_userlist.php",lang("Username")));
-  $t->set_var(sort_firstname,$phpgw->nextmatchs->show_sort_order($sort,"account_firstname",$order,"stats_userlist.php",lang("Firstname")));
-  $t->set_var(sort_lastname,$phpgw->nextmatchs->show_sort_order($sort,"account_lastname",$order,"stats_userlist.php",lang("Lastname")));
-  $t->set_var(h_lang_stat,lang("Statistic"));
+    $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
+    $t->set_var(sort_lid,$phpgw->nextmatchs->show_sort_order($sort,"account_lid",$order,"stats_userlist.php",lang("Username")));
+    $t->set_var(sort_firstname,$phpgw->nextmatchs->show_sort_order($sort,"account_firstname",$order,"stats_userlist.php",lang("Firstname")));
+    $t->set_var(sort_lastname,$phpgw->nextmatchs->show_sort_order($sort,"account_lastname",$order,"stats_userlist.php",lang("Lastname")));
+    $t->set_var(h_lang_stat,lang("Statistic"));
 
 // ------------------------- end header declaration -------------------------------------
-
-    $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
-//  $limit = $phpgw->db->limit($start);
 
      $phpgw->db->query("SELECT account_id,account_lid,account_firstname,account_lastname FROM "
                  . "phpgw_accounts WHERE $filtermethod $ordermethod limit $limit");
@@ -113,5 +104,5 @@
        $t->parse("out", "user_list_t", true);
        $t->p("out");
 
-$phpgw->common->phpgw_footer();
+    $phpgw->common->phpgw_footer();
 ?>

@@ -15,16 +15,14 @@
     $phpgw_info["flags"]["currentapp"] = "projects";
     include("../header.inc.php");
   
-    if (!$id) {
-    Header("Location: " . $phpgw->link('/projects/index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
-    }
+    if (!$id) { Header("Location: " . $phpgw->link('/projects/index.php' . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter")); }
 
     $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
     $t->set_file(array( "projects_edit" => "form.tpl"));
     $t->set_block("projects_edit", "add", "addhandle");
     $t->set_block("projects_edit", "edit", "edithandle");
 
-    $common_hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
+    $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
 			. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
 			. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
 			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"

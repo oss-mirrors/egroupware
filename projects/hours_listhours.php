@@ -29,6 +29,8 @@
 
     $t->set_var(hidden_vars,$hidden_vars); 
     $t->set_var('lang_action',lang('List project hours'));   
+    $t->set_var('lang_search',lang('Search'));
+    $t->set_var('searchurl',$phpgw->link("/projects/hours_listhours.php"));
 
     if ($phpgw_info["server"]["db_type"]=="pgsql") { $join = " JOIN "; }
     else { $join = " LEFT JOIN "; }
@@ -41,6 +43,11 @@
     
     if (!$filter) { $filter = "none"; }
   
+    if($phpgw_info["user"]["preferences"]["common"]["maxmatchs"] && $phpgw_info["user"]["preferences"]["common"]["maxmatchs"] > 0) {
+        $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+    }
+    else { $limit = 15; }
+
     if ($project_id) {
 	if ($filter=="none")
 	$filter = "project_id=$project_id";
@@ -56,29 +63,23 @@
     if ($query) {
 	$phpgw->db->query("select count(*) from phpgw_p_hours WHERE $filtermethod");
 	$phpgw->db->next_record();
-	if ($phpgw->db->f(0) == 1)
-	$t->set_var(total_matchs,lang("your search returned 1 match"));
-	else
-	$t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
-    } 
+	if ($phpgw->db->f(0) == 1) { $t->set_var('lang_showing',lang('your search returned 1 match')); }
+	else { $t->set_var('lang_showing',lang("your search returned x matchs",$phpgw->db->f(0))); } 
+    }
     else {
     $phpgw->db->query("select count(*) from phpgw_p_hours WHERE $filtermethod");
     $phpgw->db->next_record();                                                                      
-    if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
-    $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
+    if ($phpgw->db->f(0) > $limit) { $t->set_var('lang_showing',lang("showing x - x of x",($start + 1),
                            ($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),
-                           $phpgw->db->f(0));
-    else
-    $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
-    $t->set_var(total_matchs,$total_matchs);                                                                                                               
+                           $phpgw->db->f(0))); }
+    else { $t->set_var('lang_showing',lang("showing x",$phpgw->db->f(0))); }
     }
-
 // ------------ nextmatch variable template-declarations ----------------------------
 
-     $next_matchs = $phpgw->nextmatchs->show_tpl("hours_listhours.php",$start,$phpgw->db->f(0),
-                   "&order=$order&filter=$filter&sort="
-                 . "$sort&query=$query","85%",$phpgw_info["theme"][th_bg]);
-     $t->set_var(next_matchs,$next_matchs);
+    $left = $phpgw->nextmatchs->left('hours_listhours.php',$start,$phpgw->db->f(0));
+    $right = $phpgw->nextmatchs->right('hours_listhours.php',$start,$phpgw->db->f(0));
+    $t->set_var('left',$left);
+    $t->set_var('right',$right);
 
 // ----------------------- end nextmatch template -------------------------------------
 
@@ -95,9 +96,6 @@
   $t->set_var('h_lang_view',lang('View'));             
 
   // -------------- end header declaration -----------------
-
-    $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
-//  $limit = $phpgw->db->limit($start);
 
     if ($query) {
     $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,phpgw_p_hours.status,"
@@ -154,7 +152,8 @@
 		      'project' => $project));
 
     if ($status != "billed") {
-    $t->set_var('edit',$phpgw->link('/projects/hours_edithour.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+    $t->set_var('edit',$phpgw->link('/projects/hours_edithour.php','id=' . $phpgw->db->f("id") 
+				    . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
     $t->set_var('lang_edit',lang('Edit'));
     }
     else { 

@@ -50,7 +50,7 @@
   </table>
   <table cellpadding=3 cellspacing=1>
   <form method="POST" action="{addurl}">
-  {common_hidden_vars}
+  {hidden_vars}
     <tr> 
       <td><input type="submit" name="Add" value="{lang_add}"></form></td>
   <form method="POST" action="{activitiesurl}">

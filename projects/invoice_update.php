@@ -75,10 +75,10 @@
     if (($Invoice) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Invoice has been updated !')); }
     if ((! $Invoice) && (! $error) && (! $errorcount)) { $t->set_var('message',''); }
 
-    $common_hidden_vars = "<input type=\"hidden\" name=\"invoice_id\" value=\"$invoice_id\">\n"
+    $hidden_vars = "<input type=\"hidden\" name=\"invoice_id\" value=\"$invoice_id\">\n"
 			. "<input type=\"hidden\" name=\"project_id\" value=\"$project_id\">\n";
 
-    $t->set_var(common_hidden_vars,$common_hidden_vars);   
+    $t->set_var('hidden_vars',$hidden_vars);   
     $t->set_var('lang_action',lang('Invoice'));
 
     if (! $start) $start = 0;
@@ -268,11 +268,11 @@
         		"billperae" => $phpgw->db->f("billperae"),
         		"sum" => sprintf ("%01.2f", (float)$phpgw->db->f("billperae")*$aes)));
 
-    $t->set_var('edithour',$phpgw->link("/projects/bill_edithour.php","id=" . $phpgw->db->f("id")
-                                         . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter&status=$status"));
+    $t->set_var('edithour',$phpgw->link('/projects/hours_edithour.php','id=' . $phpgw->db->f("id")
+                                         . "&invoice_id=$invoice_id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter&status=$status"));
     $t->set_var('lang_edit_entry',lang('Edit hours'));
 
-    $t->parse("list", "projecthours_list", true);
+    $t->parse('list','projecthours_list',True);
   
 // ---------------------------------- end record declaration -------------------------------------
     }

@@ -10,34 +10,31 @@
   *  Free Software Foundation; either version 2 of the License, or (at your  *
   *  option) any later version.                                              *
   \**************************************************************************/
-/* $Id$ */
+  /* $Id$ */
   
-  $phpgw_info["flags"]["currentapp"] = "projects";
-  include("../header.inc.php");
+    $phpgw_info["flags"]["currentapp"] = "projects";
+    include("../header.inc.php");
   
+    $db2 = $phpgw->db;
   
-  $db2 = $phpgw->db;
-  
-  
-  if (! $account_id)
-     Header("Location: " . $phpgw->link('/projects/stats_index.php'
-	  . "sort=$sort&order=$order&query=$query&start=$start"
-	  . "&filter=$filter"));
+    if (! $account_id) {
+	Header("Location: " . $phpgw->link('/projects/stats_userlist.php'
+	  . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+    }
 
-  $common_hidden_vars =
-   "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
- . "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
- . "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
- . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
- . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
- . "<input type=\"hidden\" name=\"id\" value=\"$id\">\n";
+    $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
+		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
+		. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
+		. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
+		. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
+		. "<input type=\"hidden\" name=\"id\" value=\"$id\">\n";
 
-     $phpgw->db->query("select * from phpgw_accounts where account_id = '$account_id'");
-     $phpgw->db->next_record();
+    $phpgw->db->query("select * from phpgw_accounts where account_id = '$account_id'");
+    $phpgw->db->next_record();
 
-     $t = new Template($phpgw_info["server"]["app_tpl"]);
-     $t->set_file(array( "projects_stat" => "stats_userstat.tpl"));
-     $t->set_block("projects_stat","stat_list","list");
+    $t = new Template($phpgw_info["server"]["app_tpl"]);
+    $t->set_file(array( "projects_stat" => "stats_userstat.tpl"));
+    $t->set_block("projects_stat","stat_list","list");
 
      // ====================================================================
      // create two seperate blocks, addblock will be cut off from template
@@ -46,7 +43,7 @@
      
      $t->set_var("actionurl",$phpgw->link("/projects/stats_userstat.php","account_id=" . $phpgw->db->f("account_id")));
      $t->set_var("lang_action",lang("User statistic"));
-     $t->set_var("common_hidden_vars",$common_hidden_vars);
+     $t->set_var('hidden_vars',$hidden_vars);
      $t->set_var("lang_lid",lang("Username"));
      $t->set_var("lid",$phpgw->strip_html($phpgw->db->f("account_lid")));
      $t->set_var("lang_firstname",lang("Firstname"));
