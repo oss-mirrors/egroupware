@@ -38,6 +38,13 @@
 				default:
 					$this->auto_convert = $this->tpl->html->htmlarea_availible();
 			}
+			if (get_magic_quotes_gpc())
+			{
+				foreach($_GET as $name => $val)
+				{
+					$_GET[$name] = stripslashes($val);
+				}
+			}
 		}
 
 		function edit($content='')
