@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XMLSAXParser Object</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXML_XMLSAXParser_Intro"></a>XMLSAXParser Object</H1>
+<P><U>See Also</U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <a href="vbXML_XMLSAXParser_Properties.htm">Properties</a>&nbsp;&nbsp; <a href="vbXML_XMLSAXParser_Methods.htm">Methods</a>&nbsp;&nbsp; <a href="vbXML_XMLSAXParser_Events.htm">Events</a></P>
+<p>Models an XML SAX Parser.</p>
+<P class=label>Class Diagram</P>
+<P><IMG src="vbXML_XMLSAXParser.gif"></P>
+<P class=label>Remarks</P>
+<p>The <b>XMLSAXParser</b> is a simple SAX parser that is passed a document via the 
+<a href="vbXML_XMLSAXParser_ParseFile.htm">ParseFile</a>, 
+<a href="vbXML_XMLSAXParser_ParseString.htm">ParseString</a> and 
+<a href="vbXML_XMLSAXParser_ParseWeb.htm">ParseWeb</a> methods.
+The text in the document is then stored in the read-only
+<a href="vbXML_XMLSAXParser_RawDocument.htm">RawDocument</a> property.
+The <b>XMLSAXParser</b> contains a large number of <a href="vbXML_XMLSAXParser_Events.htm">events</a> that are fired when the document is parsed.
+These events can be used to react to the presence of certain tags in the document.</p>
+
+<P>An <b>XMLSAXParser</b> object can be created the same way other objects are created. For example:</P>
+<pre><code>Dim X As New XMLSAXParser</code></pre>
+
+</BODY>
+</HTML>

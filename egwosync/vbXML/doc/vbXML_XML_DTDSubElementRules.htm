@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XML_DTDSubElementRules Enumerated List</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXML_XML_DTDSubElementRules"></a>XML_DTDSubElementRules Enumerated List</H1>
+<P><U>See Also</U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <a href="vbXML_XMLDTDSubElement_Rule.htm">Applies To</a></P>
+<P>This enumerated list contains the rules applied to an individual sub-node in the list of sub-nodes in a DTD Element.</P>
+
+<P class=label>XMLDTD_ONLY_ONE</P>
+<P>Value 0 - Only one sub-element of this type may be contained in the element. Equivalent to the DTD entry :</P>
+<pre><code>&lt;!ELEMENT element1 (subelement2)&gt;</code></pre>
+
+<P class=label>XMLDTD_MINIMUM_ONE</P>
+<P>Value 1 - One or more sub-elements of this type may be contained in the element. Equivalent to the DTD entry :</p>
+<pre><code>&lt;!ELEMENT element1 (subelement2+)&gt;</code></pre>
+
+<P class=label>XMLDTD_ZERO_OR_MORE</P>
+<P>Value 2 - Any number (including zero) of sub-elements of this type may be contained in the element. Equivalent to the DTD entry :</P>
+<pre><code>&lt;!ELEMENT element1 (subelement2*)&gt;</code></pre>
+
+<P class=label>XMLDTD_ZERO_OR_ONE</P>
+<P>Value 3 - Zero or one sub-element of this type may be contained in the element. Equivalent to the DTD entry :</P>
+<pre><code>&lt;!ELEMENT element1 (subelement2?)&gt;</code></pre>
+
+</BODY>
+</HTML>

@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>Item Method</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<h1><a name="vbXML_XMLDTDAttlist_Item"></a>Item Method</h1>
+<P><a href="vbXML_XMLDTDAttlist_Methods.htm">See Also</a>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <a href="vbXML_XMLDTDAttlist_Intro.htm">Applies To</a></P>
+<P>Returns an <a href="vbXML_XMLDTDAttribute_Intro.htm">XMLDTDAttribute</a> object from the collection by position.</P>
+<P class=label>Syntax</P>
+<P><I>object</I>.<B>Item (</B><I>index</I><B>)</B></P>
+<TABLE cols=2 cellPadding=5 rules=rows border=1 frame=below>
+<TBODY>
+<TR vAlign=top>
+<TD width="29%"><B>Part</B></TD>
+<TD width="71%"><B>Description</B></TD></TR>
+<TR vAlign=top>
+<TD width="29%"><I>object</I></TD>
+<TD width="71%">An object expression that evaluates to an <a href="vbXML_XMLDTDAttlist_Intro.htm">XMLDTDAttlist</a> object.</TD></TR>
+<TR vAlign=top>
+<TD width="29%"><I>index</I></TD>
+<TD width="71%">Required. An expression that specifies the position of an <a href="vbXML_XMLDTDAttribute_Intro.htm">XMLDTDAttribute</a> object of the object. A Long, <i>index</i> must be a number from 1 to the value returned by the <b>Count</b> property.</TD></TR></TBODY></TABLE>
+<P class=label>Remarks</P>
+<p>If the value provided as <i>index</i> doesn’t match any existing <a href="vbXML_XMLDTDAttribute_Intro.htm">XMLDTDAttribute</a> object of the object, an error occurs.</p>
+<p>The <b>Item</b> method is the default method for the object. Therefore, the following lines of code are equivalent:</p>
+
+<P><pre><code>Print MyObject(1).Name
+Print MyObject.Item(1).Name
+</code></pre></P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>GetErrorCode Method</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<h1><a name="vbXML_XMLUtility_GetErrorCode"></a>GetErrorCode Method</h1>
+<P><A href="vbXML_XMLUtility_Methods.htm">See Also</A>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <U><a href="vbXML_XMLUtility_Intro.htm">Applies To</a></U></P>
+<P>Returns a string with a text description of the <a href="vbXML_XML_Errors.htm">error code</a>.</P>
+<P class=label>Syntax</P>
+<P><I>object</I>.<B>GetErrorCode (</B><I>ErrorNumber</I><B>)</B></P>
+<TABLE cols=2 cellPadding=5 rules=rows border=1 frame=below>
+<TBODY>
+<TR vAlign=top>
+<TD width="29%"><B>Part</B></TD>
+<TD width="71%"><B>Description</B></TD></TR>
+<TR vAlign=top>
+<TD width="29%"><I>object</I></TD>
+<TD width="71%">An object expression that evaluates to an <a href="vbXML_XMLUtility_Intro.htm">XMLUtility</a> object.</TD></TR>
+<TR vAlign=top>
+<TD width="29%"><I>ErrorNumber</I></TD>
+<TD width="71%">Required. A long integer (type Long) which is the error number.</TD></TR>
+</tbody>
+</table>
+<P class=label>Remarks</P>
+<P>When a special <a href="vbXML_XML_Errors.htm">vbXML error</a> is thrown the following information is passed to the calling application:</p>
+<ul type=disc>
+<li>The error code e.g. vbXML_ERROR_MALFORMEDXML</li>
+<li>The method name e.g. "vbXML.dll#HTTPCall.cls#SubmitRequest"</li>
+<li>A comment about the error e.g. "WinInet.dll Error Number 12345 : Server Sleeping off Hangover"</li>
+</ul>
+<p>An example of the code fragment needed is below:</P>
+<P><pre><code>Dim X as New XMLUtility ' The Utility object
+
+Print X.GetErrorCode(vbXML_ERROR_MALFORMEDXML)</code></pre></P>
+
+</BODY>
+</HTML>

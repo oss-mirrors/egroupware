@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>vbXMLRPC.dll Getting the time at Userland</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPCExample_UserlandTime"></a>vbXMLRPC.dll Getting the time at Userland</H1>
+<p>In this example we are going to get the time at Userland using the <a href="http://www.xmlrpc.com/currentTime">published spec</a> ... The code was written in Visual Basic 6.</p>
+
+<ul>
+<li>Create a new project, a Standard EXE.</li>
+<li>Go to the <u>P</u>roject menu and click on the Refere<u>n</u>ces option. This will bring up the references dialog. Find the vbXMLRPC dll in the references list and tick the box to reference it in your project.</li>
+<li>Drop one standard label and one standard command button on the form. Apart from setting the <b>BorderStyle</b> of the form to <b>1 - Fixed Single</b>, don't worry about placement or sizing yet.</li>
+<li>Copy the following code fragment to the form's code window:
+<pre><code>Option Explicit
+
+Private Sub Form_Load()
+
+    Label1.Caption = ""
+    Label1.BackColor = &H80000005
+    Label1.BorderStyle = 1
+    Label1.Height = 255
+    Label1.Left = 120
+    Label1.Top = 120
+    Label1.Width = 3615
+    
+    Command1.Caption = "Get Time @ Userland"
+    Command1.Height = 375
+    Command1.Left = 120
+    Command1.Top = 480
+    Command1.Width = 3615
+
+    Caption = "Userland Time"
+'    BorderStyle = 1
+    Height = 1350
+    Width = 3945
+    
+End Sub
+
+Private Sub Command1_Click()
+
+    Dim linsRequest As New XMLRPCRequest
+    Dim linsResponse As XMLRPCResponse
+    Dim linsUtility As New XMLRPCUtility
+    
+    Me.MousePointer = vbHourglass
+    
+    Label1.Caption = ""
+    
+    linsRequest.HostName = "time.xmlrpc.com"
+    linsRequest.HostPort = 80
+    linsRequest.HostURI = "/RPC2"
+    linsRequest.MethodName = "currentTime.getCurrentTime"
+    
+    Set linsResponse = linsRequest.Submit
+    
+    Select Case linsResponse.Status
+    Case XMLRPC_PARAMSRETURNED
+        If linsResponse.Params.Count = 1 Then
+            If linsResponse.Params(1).ValueType = XMLRPC_DATETIME Then
+                Label1.Caption = Format$(linsResponse.Params(1).DateTimeValue, "d mmm, yyyy hh:mm:ss")
+            Else
+                BugOut "Expecting a datetime to be returned instead received a '" & linsUtility.GetXMLRPCType(linsResponse.Params(1).ValueType) & "'."
+            End If
+        Else
+            BugOut "Expecting one return parameter, received '" & linsResponse.Params.Count & "'."
+        End If
+    Case XMLRPC_FAULTRETURNED
+        BugOut "Server returned a fault. Code is '" & linsResponse.Fault.faultCode & "', description is '" & linsResponse.Fault.faultString & "'."
+    Case XMLRPC_HTTPERROR
+        BugOut "HTTP error encountered. Code is '" & linsResponse.HTTPStatusCode & "', description is '" & linsUtility.GetHTTPError(linsResponse.HTTPStatusCode) & "'."
+    Case XMLRPC_XMLPARSERERROR
+        BugOut "XML Parsing Error encountered '" & linsResponse.XMLParseError & "'."
+    Case XMLRPC_NOTINITIALISED
+        BugOut "Weird, the response claims not to be initialised !!!"
+    Case Else
+        BugOut "Double Weird, unknown response status '" & linsResponse.Status & "'."
+    End Select
+     
+    Me.MousePointer = vbDefault
+
+End Sub
+
+Private Sub BugOut(ByVal vstrError As String)
+    MsgBox vstrError, vbOKOnly + vbCritical, App.Title
+End Sub</code></pre></li>
+<li>To run the program, hit the run button, and the click on the command button. After a short period of time, the time on the west coast of the USA will appear.<br><br>
+<img src="XMLRPCUserland.gif" border=0></li>
+</ul>
+</BODY>
+</HTML>
+

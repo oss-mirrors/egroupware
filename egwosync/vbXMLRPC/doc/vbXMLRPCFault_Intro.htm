@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XMLRPCFault Object</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPCFault_Intro"></a>XMLRPCFault Object</H1>
+<P><A href="vbXMLRPCResponse_Intro.htm">See Also</a>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <A href="vbXMLRPCFault_Properties.htm">Properties</A>&nbsp;&nbsp; <A href="vbXMLRPCFault_Methods.htm">Methods</A>&nbsp;&nbsp; <U>Events</U></P>
+<p>Models an XML-RPC Fault structure.</p>
+<P class=label>Class Diagram</P>
+<P><IMG src="XMLRPCFault.gif"></P>
+<P class=label>Remarks</P>
+<P>The XML-RPC Fault structure is defined as two values, <A href="vbXMLRPCFault_FaultCode.htm">faultCode</a> and <A href="vbXMLRPCFault_FaultString.htm">faultString</a>. These are stored in this object as <A href="vbXMLRPCFault_Properties.htm">properties</a>. This object is accessible via the <a href="vbXMLRPCResponse_Fault.htm">Fault</a> property of the <a href="vbXMLRPCResponse_Intro.htm">XMLRPCResponse</a> object.</P>
+<p>Fault codes and strings can mean anything. There are no standard codes and descriptions. The differ from one service to another.</p>
+<P class=label>Background</P>
+<P>The <A href="http://www.xmlrpc.com/spec">XML-RPC specification</A> details the structure of the XML fragment which this object models as follows:</P>
+
+<pre><code>&lt;fault&gt;
+    &lt;value&gt;
+        &lt;struct&gt;
+            &lt;member&gt;
+                &lt;name&gt;faultCode&lt;/name&gt;
+                &lt;value&gt;&lt;int&gt;4&lt;/int&gt;&lt;/value&gt;
+            &lt;/member&gt;
+            &lt;member&gt;
+                &lt;name&gt;faultString&lt;/name&gt;
+                &lt;value&gt;&lt;string&gt;Too many parameters.&lt;/string&gt;&lt;/value&gt;
+            &lt;/member&gt;
+        &lt;/struct&gt;
+    &lt;/value&gt;
+&lt;/fault&gt;
+</code></pre>
+
+</BODY>
+</HTML>

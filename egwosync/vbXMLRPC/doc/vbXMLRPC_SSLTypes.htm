@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<title>XMLRPC_SSLTypes Enumerated List</title>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</head>
+<body>
+
+<h1><a name="vbXMLRPC_SSLTypes"></a>XMLRPC_SSLTypes Enumerated List</h1>
+<p><a href="vbXMLRPCRequest_SSLFlags.htm">See Also</a>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <a href="vbXMLRPCRequest_SSLFlags.htm">Applies To</a></p>
+<p>This enumerated list contains the <a href="vbXMLRPCRequest_SSLFlags.htm">XMLRPCRequest.SSLFlags</a> property's possible
+values that specify any utilisation of SSL. The underlying mechanism of calling
+an SSL server uses the Microsoft Wininet DLL. There are three rules that must be met in varying degrees for SSL
+to be used via WININET :
+<ol>
+<li>Must be on port 443.</li>
+<li>The domain name in the certificate must match the name of the server.</li>
+<li>The validity dates in the certificate must be correspond with the current date.</li>
+</ol>
+The possible values of the enumerated list are as follows:</p>
+<p class=label>XMLRPC_SSL_NONE</p>
+<p>Value 0 - No SSL logic is used, i.e. a regular HTTP call is made.</p>
+<p class=label>XMLRPC_SSL_STRICT</p>
+<p>Value 1 - Strict SSL rules are applied. An HTTPS call is made that must meet the three rules.</p>
+<p class=label>XMLRPC_SSL_IGNORE_CERT_CN_INVALID_AND_DATE_INVALID</p>
+<p>Value 2 - Lax SSL rules are applied. An HTTPS call is made that must meet rule 1 only.</p>
+</blockquote><p class=label>XMLRPC_SSL_IGNORE_CERT_CN_INVALID_ONLY</p>
+<p>Value 3 - Lax(ish) SSL rules are applied. An HTTPS call is made that must meet rules 1 and 3 only.</p>
+<p class=label>XMLRPC_SSL_IGNORE_CERT_DATE_INVALID_ONLY</p>
+<p>Value 4 - Lax(ish) SSL rules are applied. An HTTPS call is made that must meet rules 1 and 2 only.</p>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XMLRPC_ResponseStatus Enumerated List</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPC_ResponseStatus"></a>XMLRPC_ResponseStatus Enumerated List</H1>
+<P><U>See Also</U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <U>Applies To</U></P>
+<P>This enumerated list contains the <a href="vbXMLRPCResponse_Intro.htm">XMLRPCResponse</a> object's possible response states which are obtainable from the <a href="vbXMLRPCResponse_Status.htm">Status</a> property.</P>
+<P class=label>XMLRPC_NOTINITIALISED</P>
+<P>Value 0 - The inital state of the response before any of the properties have been set, i.e. usually before the request has been sent.</P>
+<P class=label>XMLRPC_HTTPERROR</P>
+<P>Value 1 - There has been an HTTP error, i.e. the HTTP headers have returned a number other than 200. Look in the <a href="vbXMLRPCResponse_HTTPStatusCode.htm">HTTPStatusCode</a> and <a href="vbXMLRPCResponse_HTTPHeaders.htm">HTTPHeaders</a> properties of the <a href="vbXMLRPCResponse_Intro.htm">XMLRPCResponse</a> object for more information.</P>
+<P class=label>XMLRPC_FAULTRETURNED</P>
+<P>Value 2 - A fault has been returned by the remote XML-RPC server. Look in the <a href="vbXMLRPCResponse_Fault.htm">Fault</a> property of the <a href="vbXMLRPCResponse_Intro.htm">XMLRPCResponse</a> object for more information.</P>
+<P class=label>XMLRPC_PARAMSRETURNED</P>
+<P>Value 3 - The call to the remote XML-RPC server has been successful. Look in the <a href="vbXMLRPCResponse_Params.htm">Params</a> property of the <a href="vbXMLRPCResponse_Intro.htm">XMLRPCResponse</a> object for more information.</P>
+<P class=label>XMLRPC_XMLPARSERERROR</P>
+<P>Value 4 - The call to the remote XML-RPC server has returned unexpected XML. Look in the <a href="vbXMLRPCResponse_XMLParseError.htm">XMLParseError</a> and <a href="vbXMLRPCResponse_XMLResponse.htm">XMLResponse</a> properties of the <a href="vbXMLRPCResponse_Intro.htm">XMLRPCResponse</a> object for more information.</P>
+
+</BODY>
+</HTML>

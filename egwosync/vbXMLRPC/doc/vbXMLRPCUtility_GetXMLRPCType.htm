@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>GetXMLRPCType Method</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<h1><a name="vbXMLRPCUtility_GetXMLRPCType"></a>GetXMLRPCType Method</h1>
+<P><a href="vbXMLRPCUtility_Methods.htm">See Also</a>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <a href="vbXMLRPCUtility_Intro.htm">Applies To</a></P>
+<P>Returns a string with a text description of the <a href="vbXMLRPC_ValueTypes.htm">XML-RPC Type</a>.</P>
+<P class=label>Syntax</P>
+<P><I>object</I>.<B>GetXMLRPCType (</B><I>XMLRPCType</I><B>)</B></P>
+<TABLE cols=2 cellPadding=5 rules=rows border=1 frame=below>
+<TBODY>
+<TR vAlign=top>
+<TD width="29%"><B>Part</B></TD>
+<TD width="71%"><B>Description</B></TD></TR>
+<TR vAlign=top>
+<TD width="29%"><I>object</I></TD>
+<TD width="71%">An object expression that evaluates to an <a href="vbXMLRPCUtility_Intro.htm">XMLRPCUtility</a> object.</TD></TR>
+<TR vAlign=top>
+<TD width="29%"><I>ErrorNumber</I></TD>
+<TD width="71%">Required. A long integer (type Long) which should be a member of the enumerated list <a href="vbXMLRPC_ValueTypes.htm">XMLRPC Value Types</a>.</TD></TR>
+</tbody>
+</table>
+<P class=label>Settings</P>
+<P>See the <a href="vbXMLRPC_ValueTypes.htm">XMLRPC_ValueTypes</a> enumerated list.</P>
+<P class=label>Remarks</P>
+<P>If the passed integer is not equivalent to one of the <a href="vbXMLRPC_ValueTypes.htm">XMLRPC Value Types</a> then the code "Unknown" is returned.</p>
+<p>An example of the code fragment needed is below:</P>
+<pre><code>Dim X as New XMLRPCUtility ' The Utility object
+
+Print X.GetXMLRPCType(XMLRPC_BASE64)</code></pre>
+
+</BODY>
+</HTML>

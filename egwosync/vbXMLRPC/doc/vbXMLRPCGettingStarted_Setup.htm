@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>vbXMLRPC.dll Meerkat Example Setup</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPCGettingStarted_Setup"></a>vbXMLRPC.dll Meerkat Example Setup</H1>
+<p>These are the steps for creating the Meerkat example ... The code was written in Visual Basic 6.</p>
+
+<ul>
+<li>Create a new project, a Standard EXE</li>
+<li>Go to the <u>P</u>roject menu and click on the Refere<u>n</u>ces option. This will bring up the references dialog. Find the vbXMLRPC dll in the references list and tick the box to reference it in your project.</li>
+<li>Drop two standard labels, two standard list boxes, one standard command button and four standard text boxes on the form. Apart from changing the value of the <b>MultiLine</b> property of <b>Text4</b> to <b>True</b> and the <b>BorderStyle</b> of the form to <b>1 - Fixed Single</b>, don't worry about placement or sizing yet.</li>
+<li>Copy the following code fragment to the form's code window:
+<pre><code>Option Explicit
+
+Private Sub Form_Load()
+
+    ClearCaptions
+    
+    Label1.Caption = "Categories:"
+    Label1.Height = 255
+    Label1.Left = 120
+    Label1.Top = 240
+    Label1.Width = 1335
+    
+    Label2.Caption = "Channels:"
+    Label2.Height = 255
+    Label2.Left = 120
+    Label2.Top = 3120
+    Label2.Width = 1335
+    
+    Command1.Caption = "Get Categories"
+    Command1.Height = 375
+    Command1.Left = 2040
+    Command1.Top = 120
+    Command1.Width = 1695
+    
+    List1.Height = 2400
+    List1.Left = 120
+    List1.Top = 600
+    List1.Width = 3615
+    
+    List2.Height = 2400
+    List2.Left = 120
+    List2.Top = 3480
+    List2.Width = 3615
+    
+    Text1.Height = 375
+    Text1.Left = 3840
+    Text1.Top = 600
+    Text1.Width = 4215
+    Text1.Locked = False
+    
+    Text2.Height = 375
+    Text2.Left = 3840
+    Text2.Top = 1080
+    Text2.Width = 4215
+    Text2.Locked = False
+    
+    Text3.Height = 375
+    Text3.Left = 3840
+    Text3.Top = 1560
+    Text3.Width = 4215
+    Text3.Locked = False
+    
+    Text4.Height = 3855
+    Text4.Left = 3840
+    Text4.Top = 2040
+    Text4.Width = 4215
+    Text4.Locked = False
+'    Text4.MultiLine = True
+
+    Caption = "Meerkat XML-RPC Interface"
+'    BorderStyle = 1
+    Height = 6420
+    Width = 8295
+    
+End Sub
+
+Private Sub ClearCaptions()
+    Text1.Text = ""
+    Text2.Text = ""
+    Text3.Text = ""
+    Text4.Text = ""
+End Sub</code></pre></li>
+<li>Run the program, the form should look something like the picture below:<br><br>
+<img src="XMLRPCExampleForm.gif"></li>
+<li>Copy the following code fragment into the code window of the form after the code you have just added:
+<pre><code>Private Sub Command1_Click()
+
+    Dim linsRequest As New XMLRPCRequest
+    Dim linsResponse As XMLRPCResponse
+    Dim linsUtility As New XMLRPCUtility
+    Dim linsValue As XMLRPCValue
+    Dim linsMember As XMLRPCMember
+    Dim llngCatId As Long
+    Dim lstrCatTitle As String
+    
+    Me.MousePointer = vbHourglass
+    
+    linsRequest.HostName = "www.oreillynet.com"
+    linsRequest.HostPort = 80
+    linsRequest.HostURI = "/meerkat/xml-rpc/server.php"
+    linsRequest.MethodName = "meerkat.getCategories"
+    
+    Set linsResponse = linsRequest.Submit
+    
+    If linsResponse.Status <> XMLRPC_PARAMSRETURNED Then
+        BugOut "Unexpected response from XML-RPC request " & linsResponse.Status
+    ElseIf linsResponse.Params.Count <> 1 Then
+        BugOut "Unexpected response from XML-RPC request " & linsResponse.Params.Count & " return parameters, expecting 1"
+    ElseIf linsResponse.Params(1).ValueType <> XMLRPC_ARRAY Then
+        BugOut "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(linsResponse.Params(1).ValueType) & " returned, expecting an array"
+    End If
+    
+    For Each linsValue In linsResponse.Params(1).ArrayValue
+    
+        If linsValue.ValueType <> XMLRPC_STRUCT Then
+            BugOut "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(linsResponse.Params(1).ValueType) & " returned, expecting a struct"
+        End If
+        
+        For Each linsMember In linsValue.StructValue
+            If linsMember.Name = "id" Then
+                llngCatId = linsMember.Value.IntegerValue
+            ElseIf linsMember.Name = "title" Then
+                lstrCatTitle = linsMember.Value.StringValue
+            End If
+        Next linsMember
+        
+        List1.AddItem lstrCatTitle
+        List1.ItemData(List1.ListCount - 1) = llngCatId
+        
+    Next linsValue
+
+    ClearCaptions
+    
+    Me.MousePointer = vbDefault
+
+End Sub
+
+Private Sub BugOut(ByVal vstrError As String)
+    MsgBox vstrError, vbOKOnly + vbCritical, App.Title
+    End
+End Sub
+
+Private Sub List1_Click()
+
+    Dim linsRequest As New XMLRPCRequest
+    Dim linsResponse As XMLRPCResponse
+    Dim linsUtility As New XMLRPCUtility
+    Dim linsValue As XMLRPCValue
+    Dim linsMember As XMLRPCMember
+    Dim llngChanId As Long
+    Dim lstrChanTitle As String
+    
+    Me.MousePointer = vbHourglass
+    
+    List2.Clear
+    
+    linsRequest.HostName = "www.oreillynet.com"
+    linsRequest.HostPort = 80
+    linsRequest.HostURI = "/meerkat/xml-rpc/server.php"
+    linsRequest.MethodName = "meerkat.getChannelsByCategory"
+    linsRequest.Params.AddInteger (List1.ItemData(List1.ListIndex))
+    
+    Set linsResponse = linsRequest.Submit
+    
+    If linsResponse.Status <> XMLRPC_PARAMSRETURNED Then
+        BugOut "Unexpected response from XML-RPC request " & linsResponse.Status
+    ElseIf linsResponse.Params.Count <> 1 Then
+        BugOut "Unexpected response from XML-RPC request " & linsResponse.Params.Count & " return parameters, expecting 1"
+    ElseIf linsResponse.Params(1).ValueType <> XMLRPC_ARRAY Then
+        BugOut "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(linsResponse.Params(1).ValueType) & " returned, expecting an array"
+    End If
+    
+    For Each linsValue In linsResponse.Params(1).ArrayValue
+    
+        If linsValue.ValueType <> XMLRPC_STRUCT Then
+            BugOut "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(linsResponse.Params(1).ValueType) & " returned, expecting a struct"
+        End If
+        
+        For Each linsMember In linsValue.StructValue
+            If linsMember.Name = "id" Then
+                llngChanId = linsMember.Value.IntegerValue
+            ElseIf linsMember.Name = "title" Then
+                lstrChanTitle = linsMember.Value.StringValue
+            End If
+        Next linsMember
+        
+        List2.AddItem lstrChanTitle
+        List2.ItemData(List2.ListCount - 1) = llngChanId
+        
+    Next linsValue
+
+    ClearCaptions
+    
+    Me.MousePointer = vbDefault
+
+End Sub
+
+Private Sub List2_Click()
+
+    Dim linsRequest As New XMLRPCRequest
+    Dim linsResponse As XMLRPCResponse
+    Dim linsUtility As New XMLRPCUtility
+    Dim linsStruct As New XMLRPCStruct
+    Dim linsValue As XMLRPCValue
+    Dim linsMember As XMLRPCMember
+    
+    Me.MousePointer = vbHourglass
+    
+    linsRequest.HostName = "www.oreillynet.com"
+    linsRequest.HostPort = 80
+    linsRequest.HostURI = "/meerkat/xml-rpc/server.php"
+    linsRequest.MethodName = "meerkat.getItems"
+    
+    linsStruct.AddInteger "channel", (List2.ItemData(List2.ListIndex))
+    linsStruct.AddInteger "dates", 1
+    linsStruct.AddInteger "descriptions", 1
+    linsStruct.AddInteger "num_items", 1
+    
+    linsRequest.Params.AddStruct linsStruct
+    
+    Set linsResponse = linsRequest.Submit
+
+    If linsResponse.Status <> XMLRPC_PARAMSRETURNED Then
+        BugOut "Unexpected response from XML-RPC request " & linsResponse.Status
+    ElseIf linsResponse.Params.Count <> 1 Then
+        BugOut "Unexpected response from XML-RPC request " & linsResponse.Params.Count & " return parameters, expecting 1"
+    ElseIf linsResponse.Params(1).ValueType <> XMLRPC_ARRAY Then
+        BugOut "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(linsResponse.Params(1).ValueType) & " returned, expecting an array"
+    ElseIf linsResponse.Params(1).ArrayValue.Count < 1 Then
+        MsgBox "No stories to read ...", vbOKOnly + vbInformation, App.Title
+        Me.MousePointer = vbDefault
+        Exit Sub
+    End If
+    
+    Set linsValue = linsResponse.Params(1).ArrayValue(1)
+    
+    For Each linsMember In linsValue.StructValue
+        If linsMember.Name = "title" Then
+            Text1.Text = linsMember.Value.StringValue
+        ElseIf linsMember.Name = "link" Then
+            Text2.Text = linsMember.Value.StringValue
+        ElseIf linsMember.Name = "description" Then
+            Text4.Text = linsMember.Value.StringValue
+        ElseIf linsMember.Name = "date" Then
+            Text3.Text = Format(linsMember.Value.DateTimeValue, "d mmm, yyyy hh:mm:ss")
+        End If
+    Next linsMember
+    
+    Me.MousePointer = vbDefault
+    
+End Sub</code></pre></li>
+<li>To run the program, hit the run button, click the command button to get a list of available RSS story categories, click on a category in the list to get available channels, click on the channels to get the latest story on the channel. There are four fields, the first is the title, the second is the URL, the third is the date and the last is the description of the article.</li>
+</ul>
+</BODY>
+</HTML>
+

@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XMLHTTPCall Object</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXML_XMLHTTPCall_Intro"></a>XMLHTTPCall Object</H1>
+<P><U>See Also</U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <U><A href="vbXML_XMLHTTPCall_Properties.htm">Properties</A></U>&nbsp;&nbsp; <U><A href="vbXML_XMLHTTPCall_Methods.htm">Methods</A></U>&nbsp;&nbsp; <U>Events</U></P>
+<p>Models an HTTP call used to fetch a document off the web.</p>
+<P class=label>Class Diagram</P>
+<P><IMG src="vbXML_XMLHTTPCall.gif"></P>
+<P class=label>Remarks</P>
+<p>The <b>XMLHTTPCall</b> object provides a very versatile set of proprties that can be set to precisely configure a call to an HTTP server.
+Using the <a href="vbXML_XMLHTTPCall_HostName.htm">HostName</a> and <a href="vbXML_XMLHTTPCall_HostURI.htm">HostURI</a> properties or the <a href="vbXML_XMLHTTPCall_URL.htm">URL</a> property, the resource to be fetched can be specified.
+The <a href="vbXML_XMLHTTPCall_HostPort.htm">HostPort</a> property allows the HTTP port to be configured.
+The <a href="vbXML_XMLHTTPCall_UserAgent.htm">UserAgent</a> property allows the user agent code/name to be specified.
+The <a href="vbXML_XMLHTTPCall_HTTPOpenRequestFlags.htm">HTTPOpenRequestFlags</a>, <a href="vbXML_XMLHTTPCall_HTTPVersion.htm">HTTPVersion</a>, <a href="vbXML_XMLHTTPCall_InternetOpenFlags.htm">InternetOpenFlags</a>, <a href="vbXML_XMLHTTPCall_InternetOpenType.htm">InternetOpenType</a> and <a href="vbXML_XMLHTTPCall_RequestType.htm">RequestType</a> all allow you to tweak a number of flags used by wininet.dll to handle things like cookies, encryption and the like.
+The <a href="vbXML_XMLHTTPCall_Username.htm">Username</a> and <a href="vbXML_XMLHTTPCall_Password.htm">Password</a> properties are used to set up HTTP basic authentication.</p>
+
+<p>After all the parameters of the call are set up using the properties outlined above, any HTTP Headers that are to be sent can be specified with the <a href="vbXML_XMLHTTPCall_HeadersToSend.htm">HeadersToSend</a> property and if any data is to be POSTed then the <a href="vbXML_XMLHTTPCall_DataToPost.htm">DataToPost</a> property can be used.</p>
+
+<p>The <a href="vbXML_XMLHTTPCall_SubmitRequest.htm">SubmitRequest</a> method can then be used to submit the request to the remote server. The <a href="vbXML_XMLHTTPCall_HeadersReceived.htm">HeadersReceived</a> property can be used to examine the returned HTTP headers and the <a href="vbXML_XMLHTTPCall_DataReturned.htm">DataReturned</a> property can be used to examine the returned data.</p>
+
+<p>Default values defined each time the object is created are as follows:</p>
+
+<table cols=2 cellPadding=5 rules=rows border=1 frame=below>
+<tr><td><b>Property</b></td><td><b>Default Value</b></td></tr>
+<tr><td><a href="vbXML_XMLHTTPCall_DataToPost.htm">DataToPost</a></td><td>""</td></tr>
+<tr><td><a href="vbXML_XMLHTTPCall_HeadersToSend.htm">HeadersToSend</a></td><td>Nothing</td></tr>
+<tr><td><a href="vbXML_XMLHTTPCall_HostName.htm">HostName</a></td><td>""</td></tr>
+<tr><td><a href="vbXML_XMLHTTPCall_HostPort.htm">HostPort</a></td><td>80</td></tr>
+<tr><td><a href="vbXML_XMLHTTPCall_HostURI.htm">HostURI</a></td><td>""</td></tr>
+<tr><td><a href="vbXML_XMLHTTPCall_HTTPVersion.htm">HTTPVersion</a></td><td>HTTP_1_0</td></tr>
+<tr><td><a href="vbXML_XMLHTTPCall_InternetOpenFlags.htm">InternetOpenFlags</a></td><td>0</td></tr>
+<tr><td><a href="vbXML_XMLHTTPCall_InternetOpenType.htm">InternetOpenType</a></td><td>INTERNET_OPEN_TYPE_PRECONFIG</td></tr>
+<tr><td><a href="vbXML_XMLHTTPCall_Password.htm">Password</a></td><td>not set (i.e. vbNullString)</td></tr>
+<tr><td><a href="vbXML_XMLHTTPCall_RequestType.htm">RequestType</a></td><td>HTTP_GET</td></tr>
+<tr><td><a href="vbXML_XMLHTTPCall_URL.htm">URL</a></td><td>""</td></tr>
+<tr><td><a href="vbXML_XMLHTTPCall_UserAgent.htm">UserAgent</a></td><td>"vbXML Vx.y.z" (where x is the major version number, y is the minor version number and z is the revision number)</td></tr>
+<tr><td><a href="vbXML_XMLHTTPCall_Username.htm">Username</a></td><td>not set (i.e. vbNullString)</td></tr>
+
+</BODY>
+</HTML>

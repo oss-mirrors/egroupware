@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XMLDOMNode Object</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXML_XMLDOMNode_Intro"></a>XMLDOMNode Object</H1>
+<P><U>See Also</U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <U><a href="vbXML_XMLDOMNode_Properties.htm">Properties</A></U>&nbsp;&nbsp; <U><a href="vbXML_XMLDOMNode_Methods.htm">Methods</A></U>&nbsp;&nbsp; <U>Events</U></P>
+<p>Models an XML <b>D</b>ocument <b>O</b>bject <b>M</b>odel Node.</p>
+<P class=label>Class Diagram</P>
+<P><IMG src="vbXML_XMLDOMNode.gif"></P>
+<P class=label>Remarks</P>
+<p>The <b>XMLDOMNode</b> contains information about an XML node and the sub-nodes it contains.
+All nodes have a <a href="vbXML_XMLDOMNode_Position.htm">Position</a> in bytes into the file,
+all nodes are at a <a href="vbXML_XMLDOMNode_Level.htm">Level</a> in the tree,
+all nodes have a <a href="vbXML_XMLDOMNode_Value.htm">Value</a> - whether it be their name or some data - and
+all nodes are one of a number of <a href="vbXML_XMLDOMNode_NodeType.htm">types</a>.
+If the node is a tag it may have <a href="vbXML_XMLDOMNode_Attributes.htm">attributes</a>.</p>
+
+<p>The <b>XMLDOMNode</b> object also contains collection class functionality to access sub-nodes of the node.
+The number of items in the collection of sub-nodes is held in the <a href="vbXML_XMLDOMNode_Count.htm">Count</a> property,
+specific sub-nodes can be returned from the collection using the <a href="vbXML_XMLDOMNode_Item.htm">Item</a> method,
+while the entire collection of sub-nodes can be iterated using the <B>For</B> <B>Each...Next</B> structure.
+Methods are also implemented to extract nodes which are tags of a certain name, these are the <a href="vbXML_XMLDOMNode_GetTagByName.htm">GetTagByName</a> and <a href="vbXML_XMLDOMNode_TagExists.htm">TagExists</a> methods.</p>
+
+</BODY>
+</HTML>

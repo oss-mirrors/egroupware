@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>Validate Method</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXML_XMLDOMParser_Validate"></a>Validate Property</H1>
+<P><U><A href="vbXML_XMLDOMParser_Properties.htm">See Also</a></U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <U><A href="vbXML_XMLDOMParser_Intro.htm">Applies To</A></U></P>
+<P>Validates the XML DOM tree using the defined DTD.</P>
+<P class=label>Syntax</P>
+<p><i>object</i>.<b>Validate</b>
+<p>The object placeholder represents an <A href="vbXML_XMLDOMParser_Intro.htm">XMLDOMParser</A> object.
+<P class=label>Remarks</P>
+<p>This method will use an already loaded DTD stored in the <a href="vbXML_XMLDOMParser_DTD.htm">DTD</a> and <a href="vbXML_XMLDOMParser_RootElement.htm">RootElement</a> properties to validate the XML document that has been parsed into the DOM tree.</p>
+<P class=label>Background</P>
+<p>The validate method is automatically executed when an XML document is parsed using the <a href="vbXML_XMLDOMParser_ParseString.htm">ParseString</a> or <a href="vbXML_XMLDOMParser_ParseWeb.htm">ParseWeb</a> method and the <a href="vbXML_XMLDOMParser_ValidationRule.htm">ValidationRule</a> property is set appropriately.
+It works by executing individual <a href="vbXML_XMLDOMParser_ValidateNode.htm">ValidateNode</a> methods on every node in the DOM tree that is a tag.
+If there are any problems with the validation a <b>vbXML_ERROR_INVALIDXML</b> error will be thrown.</p>
+
+</BODY>
+</HTML>

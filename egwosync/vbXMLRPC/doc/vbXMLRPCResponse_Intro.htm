@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XMLRPCResponse Object</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPCResponse_Intro"></a>XMLRPCResponse Object</H1>
+<P><U>See Also</U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <a href="vbXMLRPCResponse_Properties.htm">Properties</a>&nbsp;&nbsp; <a href="vbXMLRPCResponse_Methods.htm">Methods</a>&nbsp;&nbsp; <U>Events</U></P>
+<p>The <b>XMLRPCResponse</b> object is used to hold the details of a response from the remote XML-RPC server.</p>
+<P class=label>Class Diagram</P>
+<P><IMG src="XMLRPCResponse.gif"></P>
+<P class=label>Remarks</P>
+<p>The <b>XMLRPCResponse</b> object contains all the logic to process a response from the remote XML-RPC server.
+It is best used as shown in the code fragment below.
+When the request to the remote XML-RPC server has completed the <b>XMLRPCResponse</b> object will be populated with the information required for further analysis of the response.
+First check the <a href="vbXMLRPCResponse_Status.htm">Status</a> property for the status of the response and then act accordingly.</p>
+<p>An example code fragment follows:</p>
+<pre><code>Dim X As New XMLRPCRequest
+Dim Y As XMLRPCResponse
+
+' ...
+' ...
+' Put code to set up the request to the remote XML-RPC server here
+' ...
+' ...
+
+Set Y = X.Submit
+
+' ...
+' ...
+' Put code to process the response from the remote XML-RPC server here
+' ...
+' ...</code></pre>
+
+</BODY>
+</HTML>

@@ -1,0 +1,576 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="ImageType" value="Folder">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Introduction">
+		<param name="Local" value="vbXMLRPCIntroduction.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Install Notes">
+		<param name="Local" value="vbXMLRPCInstallNotes.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Release Notes">
+		<param name="Local" value="vbXMLRPCReleaseNotes.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="The XML-RPC Standard">
+		<param name="Local" value="vbXMLRPCStandard.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Getting Started">
+		<param name="Local" value="vbXMLRPCGettingStarted.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="vbXMLRPC Reference">
+		<param name="Local" value="vbXMLRPCReference.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="vbXMLRPC Reference">
+			<param name="Local" value="vbXMLRPCReference.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLRPCArray">
+			<param name="Local" value="vbXMLRPCArray_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Introduction">
+				<param name="Local" value="vbXMLRPCArray_Intro.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXMLRPCArray_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddArray">
+					<param name="Local" value="vbXMLRPCArray_AddArray.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddBase64">
+					<param name="Local" value="vbXMLRPCArray_AddBase64.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddBoolean">
+					<param name="Local" value="vbXMLRPCArray_AddBoolean.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddDateTime">
+					<param name="Local" value="vbXMLRPCArray_AddDateTime.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddDouble">
+					<param name="Local" value="vbXMLRPCArray_AddDouble.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddInteger">
+					<param name="Local" value="vbXMLRPCArray_AddInteger.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddNil">
+					<param name="Local" value="vbXMLRPCArray_AddNil.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddString">
+					<param name="Local" value="vbXMLRPCArray_AddString.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddStruct">
+					<param name="Local" value="vbXMLRPCArray_AddStruct.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Item">
+					<param name="Local" value="vbXMLRPCArray_Item.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXMLRPCArray_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Count">
+					<param name="Local" value="vbXMLRPCArray_Count.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLRPCBase64">
+			<param name="Local" value="vbXMLRPCBase64_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXMLRPCBase64_Methods.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXMLRPCBase64_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Encoded">
+					<param name="Local" value="vbXMLRPCBase64_Encoded.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="LineLength">
+					<param name="Local" value="vbXMLRPCBase64_LineLength.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="LineTerminator">
+					<param name="Local" value="vbXMLRPCBase64_LineTerminator.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Unencoded">
+					<param name="Local" value="vbXMLRPCBase64_Unencoded.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="UseLineTerminator">
+					<param name="Local" value="vbXMLRPCBase64_UseLineTerminator.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLRPCFault">
+			<param name="Local" value="vbXMLRPCFault_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Introduction">
+				<param name="Local" value="vbXMLRPCFault_Intro.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXMLRPCFault_Methods.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXMLRPCFault_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="faultCode">
+					<param name="Local" value="vbXMLRPCFault_FaultCode.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="faultString">
+					<param name="Local" value="vbXMLRPCFault_FaultString.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLRPCMember">
+			<param name="Local" value="vbXMLRPCMember_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Introduction">
+				<param name="Local" value="vbXMLRPCMember_Intro.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXMLRPCMember_Methods.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXMLRPCMember_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Name">
+					<param name="Local" value="vbXMLRPCMember_Name.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Value">
+					<param name="Local" value="vbXMLRPCMember_Value.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLRPCParams">
+			<param name="Local" value="vbXMLRPCParams_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Introduction">
+				<param name="Local" value="vbXMLRPCParams_Intro.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXMLRPCParams_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddArray">
+					<param name="Local" value="vbXMLRPCParams_AddArray.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddBase64">
+					<param name="Local" value="vbXMLRPCParams_AddBase64.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddBoolean">
+					<param name="Local" value="vbXMLRPCParams_AddBoolean.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddDateTime">
+					<param name="Local" value="vbXMLRPCParams_AddDateTime.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddDouble">
+					<param name="Local" value="vbXMLRPCParams_AddDouble.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddInteger">
+					<param name="Local" value="vbXMLRPCParams_AddInteger.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddString">
+					<param name="Local" value="vbXMLRPCParams_AddString.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddStruct">
+					<param name="Local" value="vbXMLRPCParams_AddStruct.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Item">
+					<param name="Local" value="vbXMLRPCParams_Item.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXMLRPCParams_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Count">
+					<param name="Local" value="vbXMLRPCParams_Count.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLRPCRequest">
+			<param name="Local" value="vbXMLRPCRequest_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Introduction">
+				<param name="Local" value="vbXMLRPCRequest_Intro.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXMLRPCRequest_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Submit">
+					<param name="Local" value="vbXMLRPCRequest_Submit.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXMLRPCRequest_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="HostName">
+					<param name="Local" value="vbXMLRPCRequest_HostName.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="HostPort">
+					<param name="Local" value="vbXMLRPCRequest_HostPort.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="HostURI">
+					<param name="Local" value="vbXMLRPCRequest_HostURI.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="MethodName">
+					<param name="Local" value="vbXMLRPCRequest_MethodName.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Params">
+					<param name="Local" value="vbXMLRPCRequest_Params.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Password">
+					<param name="Local" value="vbXMLRPCRequest_Password.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="SSLFlags">
+					<param name="Local" value="vbXMLRPCRequest_SSLFlags.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="UserAgent">
+					<param name="Local" value="vbXMLRPCRequest_UserAgent.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Username">
+					<param name="Local" value="vbXMLRPCRequest_Username.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="XMLToSend">
+					<param name="Local" value="vbXMLRPCRequest_XMLToSend.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLRPCResponse">
+			<param name="Local" value="vbXMLRPCResponse_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Introduction">
+				<param name="Local" value="vbXMLRPCResponse_Intro.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXMLRPCResponse_Methods.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXMLRPCResponse_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Fault">
+					<param name="Local" value="vbXMLRPCResponse_Fault.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="HTTPHeaders">
+					<param name="Local" value="vbXMLRPCResponse_HTTPHeaders.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="HTTPStatusCode">
+					<param name="Local" value="vbXMLRPCResponse_HTTPStatusCode.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Params">
+					<param name="Local" value="vbXMLRPCResponse_Params.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Status">
+					<param name="Local" value="vbXMLRPCResponse_Status.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="XMLParseError">
+					<param name="Local" value="vbXMLRPCResponse_XMLParseError.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="XMLResponse">
+					<param name="Local" value="vbXMLRPCResponse_XMLResponse.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLRPCStruct">
+			<param name="Local" value="vbXMLRPCStruct_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Introduction">
+				<param name="Local" value="vbXMLRPCStruct_Intro.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXMLRPCStruct_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddArray">
+					<param name="Local" value="vbXMLRPCStruct_AddArray.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddBase64">
+					<param name="Local" value="vbXMLRPCStruct_AddBase64.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddBoolean">
+					<param name="Local" value="vbXMLRPCStruct_AddBoolean.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddDateTime">
+					<param name="Local" value="vbXMLRPCStruct_AddDateTime.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddDouble">
+					<param name="Local" value="vbXMLRPCStruct_AddDouble.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddInteger">
+					<param name="Local" value="vbXMLRPCStruct_AddInteger.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddString">
+					<param name="Local" value="vbXMLRPCStruct_AddString.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AddStruct">
+					<param name="Local" value="vbXMLRPCStruct_AddStruct.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="GetValueByName">
+					<param name="Local" value="vbXMLRPCStruct_GetValueByName.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Item">
+					<param name="Local" value="vbXMLRPCStruct_Item.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="MemberExists">
+					<param name="Local" value="vbXMLRPCStruct_MemberExists.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXMLRPCStruct_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Count">
+					<param name="Local" value="vbXMLRPCStruct_Count.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLRPCUtility">
+			<param name="Local" value="vbXMLRPCUtility_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Introduction">
+				<param name="Local" value="vbXMLRPCUtility_Intro.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXMLRPCUtility_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="GetErrorCode">
+					<param name="Local" value="vbXMLRPCUtility_GetErrorCode.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="GetHTTPError">
+					<param name="Local" value="vbXMLRPCUtility_GetHTTPError.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="GetVariantType">
+					<param name="Local" value="vbXMLRPCUtility_GetVariantType.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="GetXMLRPCType">
+					<param name="Local" value="vbXMLRPCUtility_GetXMLRPCType.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXMLRPCUtility_Properties.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLRPCValue">
+			<param name="Local" value="vbXMLRPCValue_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Introduction">
+				<param name="Local" value="vbXMLRPCValue_Intro.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXMLRPCValue_Methods.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXMLRPCValue_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ArrayValue">
+					<param name="Local" value="vbXMLRPCValue_ArrayValue.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Base64Value">
+					<param name="Local" value="vbXMLRPCValue_Base64Value.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="BooleanValue">
+					<param name="Local" value="vbXMLRPCValue_BooleanValue.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="DateTimeValue">
+					<param name="Local" value="vbXMLRPCValue_DateTimeValue.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="DoubleValue">
+					<param name="Local" value="vbXMLRPCValue_DoubleValue.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="IntegerValue">
+					<param name="Local" value="vbXMLRPCValue_IntegerValue.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="StringValue">
+					<param name="Local" value="vbXMLRPCValue_StringValue.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="StructValue">
+					<param name="Local" value="vbXMLRPCValue_StructValue.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ValueType">
+					<param name="Local" value="vbXMLRPCValue_ValueType.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLRPC_Errors">
+			<param name="Local" value="vbXMLRPC_Errors.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLRPC_ResponseStatus">
+			<param name="Local" value="vbXMLRPC_ResponseStatus.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLRPC_SSLTypes">
+			<param name="Local" value="vbXMLRPC_SSLTypes.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLRPC_ValueTypes">
+			<param name="Local" value="vbXMLRPC_ValueTypes.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Examples">
+		<param name="Local" value="vbXMLRPCExamples.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Meerkat">
+			<param name="Local" value="vbXMLRPCGettingStarted_Setup.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Getting the Time at Userland">
+			<param name="Local" value="vbXMLRPCExample_UserlandTime.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Pinging www.weblogs.com">
+			<param name="Local" value="vbXMLRPCExample_PingWeblogs.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Licensing etc">
+		<param name="Local" value="vbXMLRPCDullStuff.htm">
+		</OBJECT>
+</UL>
+</BODY></HTML>

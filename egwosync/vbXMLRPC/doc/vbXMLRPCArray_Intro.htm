@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XMLRPCArray Object</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPCArray_Intro"></a>XMLRPCArray Object</H1>
+<P><U>See Also</U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <U><A href="vbXMLRPCArray_Properties.htm">Properties</A></U>&nbsp;&nbsp; <U><A href="vbXMLRPCArray_Methods.htm">Methods</A></U>&nbsp;&nbsp; <U>Events</U></P>
+<p>Models an XML-RPC Array structure.</p>
+<P class=label>Class Diagram</P>
+<P><IMG src="XMLRPCArray.gif"></P>
+<P class=label>Remarks</P>
+<P>The XML-RPC array structure is defined as having a number of values of any <A href="vbXMLRPC_ValueTypes.htm">type</A>. An XMLRPCArray object can be created the same way other objects are created. For example:</P>
+<pre><code>Dim X As New XMLRPCArray
+</code></pre>
+<P>Once an XMLRPCArray object is created, members can be added using one of the nine <B>Add...</B> <A href="vbXMLRPCArray_Methods.htm">methods</A>. Specific members can be returned from the collection using the <B>Item</B> method, while the entire collection can be iterated using the <B>For</B> <B>Each...Next</B> statement.</P>
+<P class=label>Background</P>
+<P>The <A href="http://www.xmlrpc.com/spec">XML-RPC specification</A> details the structure of the XML fragment which this object models as follows:</P>
+
+<pre><code>&lt;array&gt;
+    &lt;data&gt;
+        &lt;value&gt;&lt;i4&gt;12&lt;/i4&gt;&lt;/value&gt;
+        &lt;value&gt;&lt;string&gt;Egypt&lt;/string&gt;&lt;/value&gt;
+        &lt;value&gt;&lt;boolean&gt;0&lt;/boolean&gt;&lt;/value&gt;
+        &lt;value&gt;&lt;i4&gt;-31&lt;/i4&gt;&lt;/value&gt;
+    &lt;/data&gt;
+&lt;/array&gt;</code></pre>
+
+</BODY>
+</HTML>

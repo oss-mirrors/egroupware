@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XMLRPCParams Object</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPCParams_Intro"></a>XMLRPCParams Object</H1>
+<P><a href="vbXMLRPCApplies_To_Request_Response.htm">See Also</a>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <U><A href="vbXMLRPCParams_Properties.htm">Properties</A></U>&nbsp;&nbsp; <U><A href="vbXMLRPCParams_Methods.htm">Methods</A></U>&nbsp;&nbsp; <U>Events</U></P>
+<p>Models an XML-RPC Params structure.</p>
+<P class=label>Class Diagram</P>
+<P><IMG src="XMLRPCParams.gif"></P>
+<P class=label>Remarks</P>
+<P>The XML-RPC Params structure is defined as having a number of values of any <A href="vbXMLRPC_ValueTypes.htm">type</A>.
+An <b>XMLRPCParams</b> object is not creatable and is either a property of a <a href="vbXMLRPCRequest_Intro.htm">XMLRPCRequest</a> or <a href="vbXMLRPCResponse_Intro.htm">XMLRPCResponse</a> object.
+Any access to an <b>XMLRPCParams</b> object should be made via one of these two objects.
+For example to add an integer <a href="vbXMLRPCValue_Intro.htm">XMLRPCValue</a> to a <b>XMLRPCParams</b> object requires the following fragment:</P>
+<pre><code>Dim X As New XMLRPCRequest
+
+X.Params.AddInteger 1
+</code></pre>
+<P>Once an <b>XMLRPCParams</b> object is referenced,
+members can be added using one of the nine <B>Add...</B> <A href="vbXMLRPCParams_Methods.htm">methods</A>.
+Specific members can be returned from the collection using the <B>Item</B> method,
+while the entire collection can be iterated using the <B>For</B> <B>Each...Next</B> statement.</P>
+<P class=label>Background</P>
+<P>The <A href="http://www.xmlrpc.com/spec">XML-RPC specification</A> details the structure of the XML fragment which this object models as follows:</P>
+
+<pre><code>&lt;params&gt;
+    &lt;param&gt;
+        &lt;value&gt;&lt;boolean&gt;0&lt;/boolean&gt;&lt;/value&gt;
+    &lt;/param&gt;
+&lt;/params&gt;</code></pre>
+
+</BODY>
+</HTML>

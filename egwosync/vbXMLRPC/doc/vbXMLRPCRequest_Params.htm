@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>Params Property</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPCRequest_Params"></a>Params Property</H1>
+<P><a href="vbXMLRPCRequest_Properties.htm">See Also</a>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <A href="vbXMLRPCRequest_Intro.htm">Applies To</A></P>
+<P>Read-Only. An <a href="vbXMLRPCParams_Intro.htm">XMLRPCParams</a> object containing the parameters to pass in the remote method call.</P>
+<P class=label>Syntax</P>
+<p><i>object</i>.<b>Params</b>
+<p>The object placeholder represents an <A href="vbXMLRPCRequest_Intro.htm">XMLRPCRequest</A> object.
+<P class=label>Remarks</P>
+<p>This property is read-only. The only way to add parameters to the request is in the following manner:</p>
+<pre><code>Dim X as New XMLRPCRequest ' The request to be have params added to it
+
+X.Params.AddBoolean True
+X.Params.AddString "Fred"
+X.Params.AddInteger 23</code></pre>
+</BODY>
+</HTML>

@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>Value Property</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXML_XMLDOMNode_Value"></a>Value Property</H1>
+<P><U><A href="vbXML_XMLDOMNode_Properties.htm">See Also</a></U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <U><A href="vbXML_XMLDOMNode_Intro.htm">Applies To</A></U></P>
+<P>Read-Only. A string containing the value of the node - whether it be the name or some data.</P>
+<P class=label>Syntax</P>
+<p><i>object</i>.<b>Value</b>
+<p>The object placeholder represents an <A href="vbXML_XMLDOMNode_Intro.htm">XMLDOMNode</A> object.
+<P class=label>Remarks</P>
+<ul>
+<li>If the Node is of type <b>XML_SPECIAL</b> the value is the whole tag.</li>
+<li>If the Node is of type <b>XML_TAG</b> the value is the name of the tag, in the following example the value will be 'ExampleTag':<br>
+<pre><code>&lt;ExampleTag ExampleName1="Example Value" ExampleName2="Another Example Value" /&gt;</code></pre></li>
+<li>If the Node is of type <b>XML_VALUE</b> the value is the whole string.</li>
+</ul>
+
+
+</BODY>
+</HTML>

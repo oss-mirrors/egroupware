@@ -16,7 +16,7 @@ Attribute VB_Exposed = False
 Private Sub cmdTest_Click()
     Dim xmlParms As New XMLRPCStruct
     Dim xmlArray As New XMLRPCArray
-    Dim response As XMLRPCResponse
+    Dim Response As XMLRPCResponse
     
     'Save connection details to registry
     SaveSetting AppName:="eGWOSync", Section:="Settings", _
@@ -40,8 +40,12 @@ Private Sub cmdTest_Click()
     xmlParms.AddString "order", "n_given"
     xmlParms.AddString "sort", "ASC"
     
-    Set response = modEGWUtilities.SimpleExec("addressbook.boaddressbook.search", xmlParms)
-    Debug.Print response.params.Count
+    Set Response = modEGWUtilities.SimpleExec("addressbook.boaddressbook.search", xmlParms)
+    Debug.Print "Attempting to print the response values..."
+    Dim tempValue As XMLRPCValue
+    For Each tempValue In Response.params
+        modEGWUtilities.PrintXMLRPCValue tempValue
+    Next
     
     modEGWUtilities.GetOutlookContacts
 End Sub

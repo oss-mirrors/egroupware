@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<title>DocTypeTag Event</title>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</head>
+<body>
+
+<h1><a name="vbXML_XMLSAXParser_DocTypeTag"></a>DocTypeTag Event</h1>
+<p><a href="vbXML_XMLSAXParser_Events.htm">See Also</a>&nbsp;&nbsp; <u>Example</u>&nbsp;&nbsp; <a href="vbXML_XMLSAXParser_Intro.htm">Applies To</a></p>
+<p>Fired when a DocType tag is found in the XML document.</p>
+<p class=label>Syntax</p>
+<p><b>Private Sub</b> <i>object</i><B>_DocTypeTag (</B><i>RootElement , SystemDocType , DTDData , DTDDataIsURL , DTDName</i><B>)</B></p>
+<table cols=2 cellPadding=5 rules=rows border=1 frame=below>
+<tbody>
+<tr valign=top>
+<td width="29%"><B>Part</B></td>
+<td width="71%"><B>Description</B></td></tr>
+<tr valign=top>
+<td width="29%"><i>object</i></td>
+<td width="71%">An object expression that evaluates to an <a href="vbXML_XMLSAXParser_Intro.htm">XMLSAXParser</a> object.</td></tr>
+<tr valign=top>
+<td width="29%"><i>RootElement</i></td>
+<td width="71%">Required. A string with the name of the root element of the XML document.</td></tr>
+<tr valign=top>
+<td width="29%"><i>SystemDocType</i></td>
+<td width="71%">Required. A boolean indicating that the DocType is a "SYSTEM" DocType if <b>True</b> or a "PUBLIC" DocType if <b>False</b>.</td></tr>
+<tr valign=top>
+<td width="29%"><i>DTDData</i></td>
+<td width="71%">Required. A string with the contents of the DTD if it is embedded in the tag or a URL if it is a reference to another document.</td></tr>
+<tr valign=top>
+<td width="29%"><i>DTDDataIsURL</i></td>
+<td width="71%">Required. A boolean indicating that the <b>DTDData</b> parameter is a URL if <b>True</b> or an embedded DTD if it is <b>False</b>.</td></tr>
+<tr valign=top>
+<td width="29%"><i>DTDName</i></td>
+<td width="71%">Required. If the <b>SystemDocType</b> parameter is <b>False</b> then this string will contain a reference to a public name of the DTD.
+If the <b>SystemDocType</b> parameter is <b>True</b> then this string should be empty.</td></tr></tbody></table>
+
+</body>
+</html>

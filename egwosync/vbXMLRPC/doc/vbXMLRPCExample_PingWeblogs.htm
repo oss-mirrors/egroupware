@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>vbXMLRPC.dll Pinging www.weblogs.com</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPCExample_PingWeblogs"></a>vbXMLRPC.dll Pinging www.weblogs.com</H1>
+<p>In this example we are going to tell <a href="http://www.weblogs.com">www.weblogs.com</a> that our weblog has been updated using the <a href="http://www.xmlrpc.com/weblogsCom">published spec</a> ... The code was written in Visual Basic 6.</p>
+
+<ul>
+<li>Create a new project, a Standard EXE.</li>
+<li>Go to the <u>P</u>roject menu and click on the Refere<u>n</u>ces option. This will bring up the references dialog. Find the vbXMLRPC dll in the references list and tick the box to reference it in your project.</li>
+<li>Drop two standard labels, two standard text boxes and one standard command button on the form. Apart from setting the <b>BorderStyle</b> of the form to <b>1 - Fixed Single</b>, don't worry about placement or sizing yet.</li>
+<li>Copy the following code fragment to the form's code window:
+<pre><code>Option Explicit
+
+Private Enum flErrorStatus
+    FLERROR_NOTSET = 0
+    FLERROR_TRUE = 0
+    FLERROR_FALSE = 0
+End Enum
+
+Private Sub Form_Load()
+
+    Label1.Caption = "Name :"
+    Label1.Height = 255
+    Label1.Left = 120
+    Label1.Top = 120
+    Label1.Width = 615
+
+    Label2.Caption = "URL :"
+    Label2.Height = 255
+    Label2.Left = 120
+    Label2.Top = 480
+    Label2.Width = 615
+
+    Text1.Text = ""
+    Text1.Height = 285
+    Text1.Left = 840
+    Text1.Top = 120
+    Text1.Width = 7095
+
+    Text2.Text = ""
+    Text2.Height = 285
+    Text2.Left = 840
+    Text2.Top = 480
+    Text2.Width = 7095
+
+    Command1.Caption = "Ping www.weblogs.com"
+    Command1.Height = 375
+    Command1.Left = 120
+    Command1.Top = 840
+    Command1.Width = 7815
+
+    Caption = "Tell www.weblogs.com that your weblog has been updated."
+'    BorderStyle = 1
+    Height = 1710
+    Width = 8145
+    
+End Sub
+
+Private Sub Command1_Click()
+
+    Dim linsRequest As New XMLRPCRequest
+    Dim linsResponse As XMLRPCResponse
+    Dim linsMember As XMLRPCMember
+    Dim linsUtility As New XMLRPCUtility
+    
+    Dim lenmflError As flErrorStatus
+    Dim lstrmessage As String
+    
+    Me.MousePointer = vbHourglass
+    
+    linsRequest.HostName = "rpc.weblogs.com"
+    linsRequest.HostPort = 80
+    linsRequest.HostURI = "/RPC2"
+    linsRequest.MethodName = "weblogUpdates.ping"
+    linsRequest.Params.AddString Text1.Text
+    linsRequest.Params.AddString Text2.Text
+    
+    Set linsResponse = linsRequest.Submit
+    
+    Select Case linsResponse.Status
+    Case XMLRPC_PARAMSRETURNED
+        If linsResponse.Params.Count = 1 Then
+            If linsResponse.Params(1).ValueType = XMLRPC_STRUCT Then
+                For Each linsMember In linsResponse.Params(1).StructValue
+                    Select Case linsMember.Name
+                    Case "flerror"
+                        If linsMember.Value.ValueType = XMLRPC_BOOLEAN Then
+                            If linsMember.Value.BooleanValue Then
+                                lenmflError = FLERROR_TRUE
+                            Else
+                                lenmflError = FLERROR_FALSE
+                            End If
+                        Else
+                            BugOut "Params returned from call to 'weblogUpdates.ping' contains '" & linsUtility.GetXMLRPCType(linsMember.Value.ValueType) & "' expecting 'boolean' for 'flerror'"
+                        End If
+                    Case "message"
+                        If linsMember.Value.ValueType = XMLRPC_STRING Then
+                            lstrmessage = linsMember.Value.StringValue
+                        Else
+                            BugOut "Params returned from call to 'weblogUpdates.ping' contains '" & linsUtility.GetXMLRPCType(linsMember.Value.ValueType) & "' expecting 'string' for 'message'"
+                        End If
+                    Case Else
+                        BugOut "Params returned from call to 'weblogUpdates.ping' contains '" & linsMember.Name & "' expecting 'flerror' or 'message'."
+                    End Select
+                
+                Next linsMember
+            
+                Select Case lenmflError
+                Case FLERROR_TRUE
+                    MsgBox "Error : " & lstrmessage, vbOKOnly + vbInformation, "www.weblogs.com says ..."
+                Case FLERROR_FALSE
+                    MsgBox lstrmessage, vbOKOnly + vbInformation, "www.weblogs.com says ..."
+                Case Else
+                    BugOut "Params returned from call to 'weblogUpdates.ping' did not contain 'flerror'"
+                End Select
+            
+            Else
+                BugOut "Expecting a struct to be returned instead received a '" & linsUtility.GetXMLRPCType(linsResponse.Params(1).ValueType) & "'."
+            End If
+        Else
+            BugOut "Expecting one return parameter, received '" & linsResponse.Params.Count & "'."
+        End If
+    Case XMLRPC_FAULTRETURNED
+        BugOut "Server returned a fault. Code is '" & linsResponse.Fault.faultCode & "', description is '" & linsResponse.Fault.faultString & "'."
+    Case XMLRPC_HTTPERROR
+        BugOut "HTTP error encountered. Code is '" & linsResponse.HTTPStatusCode & "', description is '" & linsUtility.GetHTTPError(linsResponse.HTTPStatusCode) & "'."
+    Case XMLRPC_XMLPARSERERROR
+        BugOut "XML Parsing Error encountered '" & linsResponse.XMLParseError & "'."
+    Case XMLRPC_NOTINITIALISED
+        BugOut "Weird, the response claims not to be initialised !!!"
+    Case Else
+        BugOut "Double Weird, unknown response status '" & linsResponse.Status & "'."
+    End Select
+     
+    Me.MousePointer = vbDefault
+
+End Sub
+
+Private Sub BugOut(ByVal vstrError As String)
+    MsgBox vstrError, vbOKOnly + vbCritical, App.Title
+End Sub
+
+</code></pre></li>
+<li>To run the program, hit the run button, enter in your weblog name and weblog URL and then click on the command button. After a short period of time, a message will come back from www.weblogs.com with the reply from the service.<br><br>
+<img src="XMLRPCWeblogs.gif" border=0></li>
+</ul>
+</BODY>
+</HTML>
+

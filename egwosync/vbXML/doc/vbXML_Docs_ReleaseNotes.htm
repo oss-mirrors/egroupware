@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>vbXML.dll Release Notes</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLReleaseNotes"></a>vbXML.dll Release Notes</H1>
+<p class=label>Introduction</p>
+<p>vbXML.dll provides a COM implementation of a simple XML SAX and DOM parser. The DLL is designed to be as light an implementation as possible with as few references to other DLLs as practical to reduce problems with program dependencies.</p>
+
+<p class=label>Licensing</p>
+<p>This software is licensed for use under the GNU Library or Lesser General Public License (<a href="http://www.gnu.org/copyleft/lesser.txt">LGPL</a>) ...</p>
+<p>This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General private License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.</p>
+<p>This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General private License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General private License along with this library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
+
+<p class=label>Dependencies</p>
+<p>vbXML.dll has the following dependencies: VB6STKIT.DLL, COMCAT.DLL, STDOLE2.TLB, ASYCFILT.DLL, OLEPRO32.DLL, OLEAUT32.DLL, MSVBVM60.DLL and WININET.DLL</p>
+
+<p>All files with the exception of WinInet.dll are standard files that come with every installation of a Visual Basic App. If you have a Visual Basic or Visual Basic for Applications installation (very likely) they will be present on your machine. WinInet.dll is shipped with Internet Explorer since version 3 so you are likely to have this DLL also.</p>
+
+<p>If you have any problems with dependencies, vbXML.dll was compiled with Visual Basic 6.0 (SP5) against the following versions of these DLLs.</p>
+<ul>
+<li>VB6STKIT.DLL 6.0.84.50</li>
+<li>COMCAT.DLL 4.71.1460.1</li>
+<li>STDOLE2.TLB 2.40.4275.1</li>
+<li>ASYCFILT.DLL 2.40.4275.1</li>
+<li>OLEPRO32.DLL 5.0.4275.1</li>
+<li>OLEAUT32.DLL 2.40.4275.1</li>
+<li>MSVBVM60.DLL 6.0.89.64</li>
+<li>WININET.DLL 5.50.4915.500</li>
+</ul>
+
+<p class=label>Change History</p>
+
+<p>Version 0.5.0020 - Status Beta - 15th May, 2004</p>
+<ul>
+<li>The code has been liberally sprinkled with <b>DoEvents</b> statements to prevent the DLL appearing to hang.</li>
+<li>Internal performance during parsing has improved by rewriting the SAX parser code and DOM parser code. Previously the DOM parser performance would slow in an exponential manner as the number of nodes in the document increased, this performance decrease is now linear resulting in significant performance improvements.</li>
+<li>Modified the XMLHTTPCall.HostPort property to a Long so it can except the full range of port numbers after a sugestion by Torsten Fackert.</li>
+<li>Added new error vbXML_ERROR_PORTOUTOFRANGE.</li>
+<li>Added support for HTTP basic authentication using code donated by Chris Carter. Added new properties to XMLHTTPCall called Username and Password.</li>
+</ul>
+
+<p>Version 0.5.0017 - Status Alpha - 14th February, 2003</p>
+<ul>
+<li>Internal performance during parsing has improved by moving objects around in the parsing code. Improvement in speed is 4 times in some cases.</li>
+</ul>
+
+<p>Version 0.5.0016 - Status Alpha - 8th January, 2003</p>
+<ul>
+<li>Internal performance during parsing was improved by modifying code that decodes special characters.</li>
+<li>An issue with large strings (> 32768 characters) between tags was addressed. Maximum number of characters between tags is now 2147483648.</li>
+<li>Many thanks to Adriano Santoni for the excellent bug reports that helped me fix these problems.</li>
+</ul>
+
+<p>Version 0.5.0012 - Status Alpha - 31st October, 2002</p>
+<ul>
+<li>Added new method DecodeRFC822Date to XMLUtility.</li>
+<li>Added new method EncodeRFC822Date to XMLUtility.</li>
+<li>Added new method ParseFile to XMLDOMParser.</li>
+<li>Added new method ParseFile to XMLSAXParser.</li>
+<li>Modified attribute decoding code so that if they contain special characters these are decoded also.</li>
+</ul>
+
+<p>Version 0.5.0010 - Status Alpha - 23rd October, 2002</p>
+<ul>
+<li>Fixed a bug that meant that the HTTP Port was always set to 80.</li>
+<li>Added new class XMLDTDAttlist.</li>
+<li>Added new class XMLDTDAttribute.</li>
+<li>Added new class XMLDTDAttributeEnum.</li>
+<li>Added new enum XML_DTDAttributeModifiers.</li>
+<li>Added new enum XML_DTDAttributeVarieties.</li>
+<li>Added new property to XMLDTDElement called Attlist.</li>
+<li>Added new event DTDAttlistTag to XMLSAXParser.</li>
+<li>Added new event NamespaceDefinition to XMLSAXParser.</li>
+<li>Added new method GetDTDElementByName to XMLDTDElements.</li>
+<li>Added new error vbXML_ERROR_DTDELEMENTNOTFOUND.</li>
+<li>Removed ReplaceEscapeCodes method from XMLUtility.</li>
+<li>Added new method DecodeEscapeCodes to XMLUtility.</li>
+<li>Added new method EncodeEscapeCodes to XMLUtility.</li>
+<li>Added functionality to handle name space validation.</li>
+<li>Added new error vbXML_ERROR_UNDEFINEDNAMESPACE.</li>
+</ul>
+
+<p>Version 0.5.0005 - Status Alpha - 14th October, 2002</p>
+<ul>
+<li>Compiled with Binary Compatibility.</li>
+<li>Fixed a problem with getting the headers string property from an XMLHTTPHeaders object.</li>
+<li>GetAttributeByName method added to XMLAttributes.</li>
+<li>Error vbXML_ERROR_ATTRIBUTENOTFOUND added.</li>
+<li>AttributeExists method added to XMLAttributes.</li>
+<li>GetTagByName method added to XMLDOMNode.</li>
+<li>Error vbXML_ERROR_TAGNOTFOUND added.</li>
+<li>TagExists method added to XMLDOMNode.</li>
+</ul>
+
+<p>Version 0.5.0003 - Status Alpha - 11th October, 2002</p>
+<ul>
+<li>First Release</li>
+</ul>
+
+</BODY>
+</HTML>

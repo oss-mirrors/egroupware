@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>WININET_InternetOpen_Flags Enumerated List</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXML_WININET_InternetOpen_Flags"></a>WININET_InternetOpen_Flags Enumerated List</H1>
+<P><U>See Also</U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <a href="vbXML_XMLHTTPCall_InternetOpenFlags.htm">Applies To</a></P>
+<P>This enumerated list is used in the InternetOpen function to set up the flags to be passed to be used.
+These constants come from Microsoft Knowledge Base Article - Q185519, 
+<a href="http://msdn.microsoft.com/workshop/networking/wininet/reference/constants/api_flags.asp">msdn.microsoft.com/workshop/networking/wininet/reference/constants/api_flags.asp</a>
+and <a href="http://msdn.microsoft.com/workshop/networking/wininet/reference/functions/internetopen.asp">msdn.microsoft.com/workshop/networking/wininet/reference/functions/internetopen.asp</a>.</p>
+
+<P class=label>INTERNET_FLAG_ASYNC</p>
+<p>Value &H10000000 - Makes only asynchronous requests on handles descended from the handle returned from this function.</p>
+
+<P class=label>INTERNET_FLAG_FROM_CACHE</p>
+<p>Value &H1000000 - Does not make network requests. All entities are returned from the cache. If the requested item is not in the cache, a suitable error, such as ERROR_FILE_NOT_FOUND, is returned.</p>
+
+<P class=label>INTERNET_FLAG_OFFLINE
+<p>Value INTERNET_FLAG_FROM_CACHE - Identical to INTERNET_FLAG_FROM_CACHE. Does not make network requests. All entities are returned from the cache. If the requested item is not in the cache, a suitable error, such as ERROR_FILE_NOT_FOUND, is returned.</p>
+
+</BODY>
+</HTML>

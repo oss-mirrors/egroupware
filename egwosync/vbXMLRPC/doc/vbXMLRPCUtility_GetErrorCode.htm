@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>GetErrorCode Method</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<h1><a name="vbXMLRPCUtility_GetErrorCode"></a>GetErrorCode Method</h1>
+<P><a href="vbXMLRPCUtility_Methods.htm">See Also</a>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <a href="vbXMLRPCUtility_Intro.htm">Applies To</a></P>
+<P>Returns a string with a text description of the <a href="vbXMLRPC_Errors.htm">error code</a>.</P>
+<P class=label>Syntax</P>
+<P><I>object</I>.<B>GetErrorCode (</B><I>ErrorNumber</I><B>)</B></P>
+<TABLE cols=2 cellPadding=5 rules=rows border=1 frame=below>
+<TBODY>
+<TR vAlign=top>
+<TD width="29%"><B>Part</B></TD>
+<TD width="71%"><B>Description</B></TD></TR>
+<TR vAlign=top>
+<TD width="29%"><I>object</I></TD>
+<TD width="71%">An object expression that evaluates to an <a href="vbXMLRPCUtility_Intro.htm">XMLRPCUtility</a> object.</TD></TR>
+<TR vAlign=top>
+<TD width="29%"><I>ErrorNumber</I></TD>
+<TD width="71%">Required. A long integer (type Long) which is the error number.</TD></TR>
+</tbody>
+</table>
+<P class=label>Settings</P>
+<P>See the <a href="vbXMLRPC_Errors.htm">XMLRPC_Errors</a> enumerated list.</P>
+<P class=label>Remarks</P>
+<P>When a special <a href="vbXMLRPC_Errors.htm">vbXMLRPC error</a> is thrown the following information is passed to the calling application:</p>
+<ul type=disc>
+<li>The error code e.g. vbXMLRPC_ERROR_HOSTNAMENOTSET</li>
+<li>The method name e.g. "vbXMLRPC.dll#Request.cls#Submit"</li>
+<li>A comment about the error e.g. "WinInet.dll Error Number 12345 : Server Sleeping off Hangover"</li>
+</ul>
+<p>An example of the code fragment needed is below:</P>
+<pre><code>Dim X as New XMLRPCUtility ' The Utility object
+
+Print X.GetErrorCode(vbXMLRPC_ERROR_HOSTNAMENOTSET)</code></pre>
+
+</BODY>
+</HTML>

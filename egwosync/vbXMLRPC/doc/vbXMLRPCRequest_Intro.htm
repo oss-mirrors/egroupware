@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XMLRPCRequest Object</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPCRequest_Intro"></a>XMLRPCRequest Object</H1>
+<P><U>See Also</U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <A href="vbXMLRPCRequest_Properties.htm">Properties</A>&nbsp;&nbsp; <A href="vbXMLRPCRequest_Methods.htm">Methods</A>&nbsp;&nbsp; <U>Events</U></P>
+<p>The <b>XMLRPCRequest</b> object is used to build a request to the remote XML-RPC server.</p>
+<P class=label>Class Diagram</P>
+<P><IMG src="XMLRPCRequest.gif"></P>
+<P class=label>Remarks</P>
+<p>Use the <b>XMLRPCRequest</b> object to build a request to the remote XML-RPC server.
+First set up the server parameters using the <a href="vbXMLRPCRequest_HostName.htm">HostName</a>,
+<a href="vbXMLRPCRequest_HostPort.htm">HostPort</a> and <a href="vbXMLRPCRequest_HostURI.htm">HostURI</a> properties.
+If you wish to use SSL then use the <a href="vbXMLRPCRequest_SSLFlags.htm">SSLFlags</a> property.
+If you wish to use HTTP basic authentication then use the <a href="vbXMLRPCRequest_Username.htm">Username</a> and <a href="vbXMLRPCRequest_Password.htm">Password</a> property.
+Then use the <a href="vbXMLRPCRequest_Params.htm">Params</a> property to set up the data to be sent.
+Finally set the <a href="vbXMLRPCRequest_MethodName.htm">MethodName</a> property with the remote method to be called.
+Use the <a href="vbXMLRPCRequest_Submit.htm">Submit</a> method to execute the request which returns an <a href="vbXMLRPCResponse_Intro.htm">XMLRPCResponse</a> object which can be used to decode the response from the remote server.</p>
+<p>An example code fragment follows:</p>
+<pre><code>Dim X As New XMLRPCRequest
+Dim Y As XMLRPCResponse
+
+' ...
+' ...
+' Put code to set up the request to the remote XML-RPC server here
+' ...
+' ...
+
+Set Y = X.Submit
+
+' ...
+' ...
+' Put code to process the response from the remote XML-RPC server here
+' ...
+' ...</code></pre>
+
+</BODY>
+</HTML>

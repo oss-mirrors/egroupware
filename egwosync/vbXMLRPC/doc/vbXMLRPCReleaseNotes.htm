@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>vbXMLRPC.dll Release Notes</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPCReleaseNotes"></a>vbXMLRPC.dll Release Notes</H1>
+<p class=label>Introduction</p>
+<p>vbXMLRPC.dll provides a COM implementation of a client interface to web services implementing the XML-RPC standard. The DLL is designed to be as light an implementation as possible with as few references to other DLLs as practical to reduce problems with program dependencies.</p>
+
+<p class=label>Licensing</p>
+<p>This software is licensed for use under the GNU Library or Lesser General Public License (<a href="http://www.gnu.org/copyleft/lesser.txt">LGPL</a>) ...</p>
+<p>This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General private License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.</p>
+<p>This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General private License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General private License along with this library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
+
+<p class=label>Dependencies</p>
+<p>vbXMLRPC.dll has the following dependencies: VB6STKIT.DLL, COMCAT.DLL, STDOLE2.TLB, ASYCFILT.DLL, OLEPRO32.DLL, OLEAUT32.DLL, MSVBVM60.DLL and WININET.DLL</p>
+
+<p>All files with the exception of WinInet.dll are standard files that come with every installation of a Visual Basic App. If you have a Visual Basic or Visual Basic for Applications installation (very likely) they will be present on your machine. WinInet.dll is shipped with Internet Explorer since version 3 so you are likely to have this DLL also.</p>
+
+<p>If you have any problems with dependencies, vbXMLRPC.dll was compiled with Visual Basic 6.0 (SP5) against the following versions of these DLLs.</p>
+<ul>
+<li>VB6STKIT.DLL 6.0.84.50</li>
+<li>COMCAT.DLL 4.71.1460.1</li>
+<li>STDOLE2.TLB 2.40.4275.1</li>
+<li>ASYCFILT.DLL 2.40.4275.1</li>
+<li>OLEPRO32.DLL 5.0.4275.1</li>
+<li>OLEAUT32.DLL 2.40.4275.1</li>
+<li>MSVBVM60.DLL 6.0.89.64</li>
+<li>WININET.DLL 5.50.4915.500</li>
+<li>vbXML.DLL 0.5.0020</li>
+</ul>
+
+<p class=label>Change History</p>
+
+<p>Version 0.9.0033 - Status Beta - 15th May, 2004</p>
+<ul>
+<li>The code has been liberally sprinkled with <b>DoEvents</b> statements to prevent the DLL appearing to hang.</li>
+<li>Re-compiled to be compatible with <a href="http://www.enappsys.com/backend/vbXML_Index.jsp">vbXML.dll</a> V0.5.0020.</li>
+<li>Performance has improved significantly due to changes in <a href="http://www.enappsys.com/backend/vbXML_Index.jsp">vbXML.dll</a>.</li>
+<li>Modified the XMLRPCRequest.HostPort property to a Long so it can except the full range of port numbers after a sugestion by Torsten Fackert.</li>
+<li>Added support for HTTP basic authentication using code donated by Chris Carter. Added new properties to XMLRPCRequest called Username and Password.</li>
+</ul>
+
+<p>Version 0.9.0030 - Status Beta - 14th February, 2003</p>
+<ul>
+<li>Re-compiled to be compatible with <a href="http://www.enappsys.com/backend/vbXML_Index.jsp">vbXML.dll</a> V0.5.0017.</li>
+<li>After Assistance from Rick at <a href="http://www.techno-weenie.com/">www.techno-weenie.com</a> SSL suupport problems have been bottomed.</li>
+<li>SSL only works on port 443, features of wininet.dll will not allow other ports.</li>
+<li>The "Secure" parameter of the XMLRPCRequest.Submit method has been removed.</li>
+<li>A new property "SSLFlags" has been added to the XMLRPCRequest object.</li>
+<li>A new enum "XMLRPC_SSLTypes" has been added.</li>
+</ul>
+
+<p>Version 0.9.0027 - Status Beta - 14th January, 2003</p>
+<ul>
+<li>Re-compiled to be compatible with <a href="http://www.enappsys.com/backend/vbXML_Index.jsp">vbXML.dll</a> V0.5.0016.</li>
+<li>A first stab at SSL support has been made, however, with no SSL server to test against this is a shot in the dark.</li>
+<li>Many corrections to the handling of Base 64 encryption were made. It now works properly.</li>
+<li>Many thanks to Adriano Santoni for the excellent bug reports that helped me fix these problems.</li>
+</ul>
+
+<p>Version 0.9.0023 - Status Beta - 31st October, 2002</p>
+<ul>
+<li>Re-compiled to be compatible with <a href="http://www.enappsys.com/backend/vbXML_Index.jsp">vbXML.dll</a> V0.5.0012.</li>
+</ul>
+
+<p>Version 0.9.0022 - Status Beta - 24th October, 2002</p>
+<ul>
+<li>Added new property UseLineTerminator to XMLRPCBase64 to switch on or off the line termination functionality.</li>
+</ul>
+
+<p>Version 0.9.0020 - Status Beta - 23rd October, 2002</p>
+<ul>
+<li>Re-compiled to be compatible with <a href="http://www.enappsys.com/backend/vbXML_Index.jsp">vbXML.dll</a> V0.5.0010. This solves bug that meant that the HTTP Port was always set to 80.</li>
+</ul>
+
+<p>Version 0.9.0019 - Status Beta - 14th October, 2002</p>
+<ul>
+<li>Compiled with Binary Compatibility.</li>
+<li>Added reference to <a href="http://www.enappsys.com/backend/vbXML_Index.jsp">vbXML.dll</a> which has removed the need for a number of internal parsing functions and classes, this has reduced the size of the DLL.</li>
+<li>Because WININET functions are now in <a href="http://www.enappsys.com/backend/vbXML_Index.jsp">vbXML.dll</a>, ERROR vbXMLRPC_ERROR_WININETERROR has been changed to vbXMLRPC_ERROR_HTTPCALLFAILED.</li>
+<li>Added a new data type, XMLRPC_NIL to XMLRPC_ValueTypes this supports the &lt;nil/> value type in XML-RPC 2</li>
+<li>Added functionality to XMLRPCValue to handle &lt;nil/&gt;.</li>
+<li>Added AddNil method to XMLRPCArray.</li>
+<li>Added AddNil method to XMLRPCParams.</li>
+<li>Added AddNil method to XMLRPCStruct.</li>
+<li>Added a new method to XMLRPCStruct "GetValueByName" which gets a value from the struct by a passed name.</li>
+<li>Added a new method to XMLRPCStruct "MemberExists" which checks that a specific named member exists.</li>
+<li>Added a new ERROR vbXMLRPC_ERROR_MEMBERNOTFOUND to handle a missing struct member in "GetValueByName".</li>
+<li>Added a new class XMLRPCBase64 which handles Base64 encoding and decoding.</li>
+<li>The new XMLRPCBase64 class means that the error vbXMLRPC_ERROR_BASE64NOTSUPPORTED has been changed to vbXMLRPC_ERROR_BASE64ERROR.</li>
+<li>The AddBase64 methods in XMLRPCArray, XMLRPCParams, XMLRPCStruct and the Base64 property in XMLRPCValue have been changed to take an XMLRPCBase64 object as opposed to a string.</li>
+<li>Count methods in XMLRPCArray, XMLRPCParams and XMLRPCStruct classes have been changed to properties.</li>
+</ul>
+
+<p>Version 0.5.0011 - Status Alpha - 24th September, 2002</p>
+<ul>
+<li>The XMLRPCResponse object has a mis-spelt property XMLRPCReponse, this has now been renamed to XMLRe<u><b>s</b></u>ponse. Help file GIF also fixed.</li>
+<li>XMLRPCValue.IntegerValue() Method changed to handle a VB <b>Long</b> integer (32 bit signed integer) instead of a VB <b>Integer</b> integer (16 bit signed integer).</li>
+<li>XMLRPCArray.AddInteger(), XMLRPCParams.AddInteger() and XMLRPCStruct.AddInteger() have been changed to require a VB <b>Long</b> integer (32 bit signed integer) instead of a VB <b>Integer</b> integer (16 bit signed integer). Changes have also been made to the online help to clarify the parameters to reflect these changes.</li>
+<li>Support for Empty Structs in the server response added.</li>
+</ul>
+
+<p>Version 0.5.0010 - Status Alpha - 19th August, 2002</p>
+<ul>
+<li>Enum XMLRPC_ResponseStatus had XMLRPC_PARAMSRETURNED = 3 as well as XMLRPC_XMLPARSERERROR = 3 so changed XMLRPC_XMLPARSERERROR = 4.</li>
+<li>Fixed help file reference to fix "help file not found" problem.</li>
+<li>Fixed decoding of special characters in non-specified strings e.g. &lt;value>&amp;lt;b>Now Fixed&amp;lt;/b>&lt;/value> is properly decoded to &lt;value>&lt;b>Now Fixed&lt;/b>&lt;/value></li>
+</ul>
+
+<p>Version 0.5.0008 - Status Alpha - 16th August, 2002</p>
+<ul>
+<li>More problems with the XMLRPCFault class because Blogger returns string/code whereas the software is expecting code/string. Now can handle both ways round.</li>
+<li>Fixed infinite loop when writing <b>&amp;</b> characters.</li>
+</ul>
+
+<p>Version 0.5.0007 - Status Alpha - 15th August, 2002</p>
+<ul>
+<li>Fixed "Run-time error '438': Object doesn't support this property or method" in XMLRPCFault</li>
+<li>Added new example code to help docs to get the time from userland using "currentTime.getCurrentTime" @ time.xmlrpc.com</li>
+</ul>
+
+<p>Version 0.5.0005 - Status Alpha - 14th August, 2002</p>
+<ul>
+<li>First Release</li>
+</ul>
+
+</BODY>
+</HTML>

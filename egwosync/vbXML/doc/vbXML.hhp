@@ -1,0 +1,324 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=vbXML.chm
+Contents file=vbXML.hhc
+Default topic=vbXML_Docs_Introduction.htm
+Display compile progress=No
+Language=0x809 English (United Kingdom)
+Title=vbXML Help
+
+[INFOTYPES]
+
+[ALIAS]
+
+IDH_INTRODUCTION                    = vbXML_Docs_Introduction.htm
+
+IDH_ERROR_WININETERROR              = vbXML_XML_Errors.htm
+IDH_ERROR_HTTPERROR                 = vbXML_XML_Errors.htm
+IDH_ERROR_MALFORMEDXML              = vbXML_XML_Errors.htm
+IDH_ERROR_UNSUPPORTED               = vbXML_XML_Errors.htm
+IDH_ERROR_MALFORMEDDTD              = vbXML_XML_Errors.htm
+IDH_ERROR_NODTDTOVALIDATEWITH       = vbXML_XML_Errors.htm
+IDH_ERROR_INVALIDXML                = vbXML_XML_Errors.htm
+IDH_ERROR_UNKNOWNREQUESTTYPE        = vbXML_XML_Errors.htm
+IDH_ERROR_UNKNOWNPROTOCOLTYPE       = vbXML_XML_Errors.htm
+IDH_ERROR_ATTRIBUTENOTFOUND         = vbXML_XML_Errors.htm
+IDH_ERROR_TAGNOTFOUND               = vbXML_XML_Errors.htm
+IDH_ERROR_DTDELEMENTNOTFOUND        = vbXML_XML_Errors.htm
+IDH_ERROR_UNDEFINEDNAMESPACE        = vbXML_XML_Errors.htm
+IDH_ERROR_PORTOUTOFRANGE            = vbXML_XML_Errors.htm
+IDH_ERROR_UNKNOWNERROR              = vbXML_XML_Errors.htm
+
+IDH_ATTRIBUTE_INTRO                 = vbXML_XMLAttribute_Intro.htm
+IDH_ATTRIBUTE_NAME                  = vbXML_XMLAttribute_Name.htm
+IDH_ATTRIBUTE_VALUE                 = vbXML_XMLAttribute_Value.htm
+
+IDH_ATTRIBUTES_INTRO                = vbXML_XMLAttributes_Intro.htm
+IDH_ATTRIBUTES_COUNT                = vbXML_XMLAttributes_Count.htm
+IDH_ATTRIBUTES_ITEM                 = vbXML_XMLAttributes_Item.htm
+IDH_ATTRIBUTES_ATTRIBUTEEXISTS      = vbXML_XMLAttributes_AttributeExists.htm
+IDH_ATTRIBUTES_GETATTRIBUTEBYNAME   = vbXML_XMLAttributes_GetAttributeByName.htm
+
+IDH_DOMNODE_INTRO                   = vbXML_XMLDOMNode_Intro.htm
+IDH_DOMNODE_ATTRIBUTES              = vbXML_XMLDOMNode_Attributes.htm
+IDH_DOMNODE_COUNT                   = vbXML_XMLDOMNode_Count.htm
+IDH_DOMNODE_ITEM                    = vbXML_XMLDOMNode_Item.htm
+IDH_DOMNODE_LEVEL                   = vbXML_XMLDOMNode_Level.htm
+IDH_DOMNODE_NODETYPE                = vbXML_XMLDOMNode_NodeType.htm
+IDH_DOMNODE_POSITION                = vbXML_XMLDOMNode_Position.htm
+IDH_DOMNODE_VALUE                   = vbXML_XMLDOMNode_Value.htm
+IDH_DOMNODE_GETTAGBYNAME            = vbXML_XMLDOMNode_GetTagByName.htm
+IDH_DOMNODE_TAGEXISTS               = vbXML_XMLDOMNode_TagExists.htm
+
+IDH_DOMPARSER_INTRO                 = vbXML_XMLDOMParser_Intro.htm
+IDH_DOMPARSER_ATTRIBUTES            = vbXML_XMLDOMParser_Attributes.htm
+IDH_DOMPARSER_COUNT                 = vbXML_XMLDOMParser_Count.htm
+IDH_DOMPARSER_DTD                   = vbXML_XMLDOMParser_DTD.htm
+IDH_DOMPARSER_ITEM                  = vbXML_XMLDOMParser_Item.htm
+IDH_DOMPARSER_LEVEL                 = vbXML_XMLDOMParser_Level.htm
+IDH_DOMPARSER_NODETYPE              = vbXML_XMLDOMParser_NodeType.htm
+IDH_DOMPARSER_PARSEFILE             = vbXML_XMLDOMParser_ParseFile.htm
+IDH_DOMPARSER_PARSESTRING           = vbXML_XMLDOMParser_ParseString.htm
+IDH_DOMPARSER_PARSEWEB              = vbXML_XMLDOMParser_ParseWeb.htm
+IDH_DOMPARSER_POSITION              = vbXML_XMLDOMParser_Position.htm
+IDH_DOMPARSER_RAWDOCUMENT           = vbXML_XMLDOMParser_RawDocument.htm
+IDH_DOMPARSER_ROOTELEMENT           = vbXML_XMLDOMParser_RootElement.htm
+IDH_DOMPARSER_VALIDATE              = vbXML_XMLDOMParser_Validate.htm
+IDH_DOMPARSER_VALIDATENODE          = vbXML_XMLDOMParser_ValidateNode.htm
+IDH_DOMPARSER_VALIDATIONRULE        = vbXML_XMLDOMParser_ValidationRule.htm
+IDH_DOMPARSER_VALUE                 = vbXML_XMLDOMParser_Value.htm
+
+IDH_DTD_INTRO                       = vbXML_XMLDTD_Intro.htm
+IDH_DTD_ELEMENTS                    = vbXML_XMLDTD_Elements.htm
+IDH_DTD_GETELEMENT                  = vbXML_XMLDTD_GetElement.htm
+IDH_DTD_PARSEFILE                   = vbXML_XMLDTD_ParseFile.htm
+IDH_DTD_PARSESTRING                 = vbXML_XMLDTD_ParseString.htm
+IDH_DTD_PARSEWEB                    = vbXML_XMLDTD_ParseWeb.htm
+
+IDH_DTDELEMENT_INTRO                = vbXML_XMLDTDElement_Intro.htm
+IDH_DTDELEMENT_CONTENTRULE          = vbXML_XMLDTDElement_ContentRule.htm
+IDH_DTDELEMENT_NAME                 = vbXML_XMLDTDElement_Name.htm
+IDH_DTDELEMENT_SUBELEMENTS          = vbXML_XMLDTDElement_SubElements.htm
+IDH_DTDELEMENT_ATTLIST              = vbXML_XMLDTDElement_Attlist.htm
+
+IDH_DTDELEMENTS_INTRO               = vbXML_XMLDTDElements_Intro.htm
+IDH_DTDELEMENTS_COUNT               = vbXML_XMLDTDElements_Count.htm
+IDH_DTDELEMENTS_GETDTDELEMENTBYNAME = vbXML_XMLDTDElements_GetDTDElementByName.htm
+IDH_DTDELEMENTS_ITEM                = vbXML_XMLDTDElements_Item.htm
+
+IDH_DTDSUBELEMENT_INTRO             = vbXML_XMLDTDSubElement_Intro.htm
+IDH_DTDSUBELEMENT_NAME              = vbXML_XMLDTDSubElement_Name.htm
+IDH_DTDSUBELEMENT_RULE              = vbXML_XMLDTDSubElement_Rule.htm
+IDH_DTDSUBELEMENT_VARIETY           = vbXML_XMLDTDSubElement_Variety.htm
+
+IDH_DTDSUBELEMENTS_INTRO            = vbXML_XMLDTDSubElements_Intro.htm
+IDH_DTDSUBELEMENTS_COUNT            = vbXML_XMLDTDSubElements_Count.htm
+IDH_DTDSUBELEMENTS_ITEM             = vbXML_XMLDTDSubElements_Item.htm
+
+IDH_HTTPCALL_INTRO                  = vbXML_XMLHTTPCall_Intro.htm
+IDH_HTTPCALL_DATARETURNED           = vbXML_XMLHTTPCall_DataReturned.htm
+IDH_HTTPCALL_DATATOPOST             = vbXML_XMLHTTPCall_DataToPost.htm
+IDH_HTTPCALL_HEADERSRECEIVED        = vbXML_XMLHTTPCall_HeadersReceived.htm
+IDH_HTTPCALL_HEADERSTOSEND          = vbXML_XMLHTTPCall_HeadersToSend.htm
+IDH_HTTPCALL_HOSTNAME               = vbXML_XMLHTTPCall_HostName.htm
+IDH_HTTPCALL_HOSTPORT               = vbXML_XMLHTTPCall_HostPort.htm
+IDH_HTTPCALL_HOSTURI                = vbXML_XMLHTTPCall_HostURI.htm
+IDH_HTTPCALL_HTTPOPENREQUESTFLAGS   = vbXML_XMLHTTPCall_HTTPOpenRequestFlags.htm
+IDH_HTTPCALL_HTTPVERSION            = vbXML_XMLHTTPCall_HTTPVersion.htm
+IDH_HTTPCALL_INTERNETOPENFLAGS      = vbXML_XMLHTTPCall_InternetOpenFlags.htm
+IDH_HTTPCALL_INTERNETOPENTYPE       = vbXML_XMLHTTPCall_InternetOpenType.htm
+IDH_HTTPCALL_REQUESTTYPE            = vbXML_XMLHTTPCall_RequestType.htm
+IDH_HTTPCALL_SUBMITREQUEST          = vbXML_XMLHTTPCall_SubmitRequest.htm
+IDH_HTTPCALL_URL                    = vbXML_XMLHTTPCall_URL.htm
+IDH_HTTPCALL_USERAGENT              = vbXML_XMLHTTPCall_UserAgent.htm
+IDH_HTTPCALL_USERNAME               = vbXML_XMLHTTPCall_Username.htm
+IDH_HTTPCALL_PASSWORD               = vbXML_XMLHTTPCall_Password.htm
+
+IDH_HTTPHEADERS_INTRO               = vbXML_XMLHTTPHeaders_Intro.htm
+IDH_HTTPHEADERS_ADD                 = vbXML_XMLHTTPHeaders_Add.htm
+IDH_HTTPHEADERS_CLEAR               = vbXML_XMLHTTPHeaders_Clear.htm
+IDH_HTTPHEADERS_COUNT               = vbXML_XMLHTTPHeaders_Count.htm
+IDH_HTTPHEADERS_HEADERSSTRING       = vbXML_XMLHTTPHeaders_HeadersString.htm
+IDH_HTTPHEADERS_ITEM                = vbXML_XMLHTTPHeaders_Item.htm
+IDH_HTTPHEADERS_REMOVE              = vbXML_XMLHTTPHeaders_Remove.htm
+
+IDH_SAXPARSER_INTRO                 = vbXML_XMLSAXParser_Intro.htm
+IDH_SAXPARSER_COMMENTTAG            = vbXML_XMLSAXParser_CommentTag.htm
+IDH_SAXPARSER_DOCTYPETAG            = vbXML_XMLSAXParser_DocTypeTag.htm
+IDH_SAXPARSER_DOCUMENTEND           = vbXML_XMLSAXParser_DocumentEnd.htm
+IDH_SAXPARSER_DOCUMENTSTART         = vbXML_XMLSAXParser_DocumentStart.htm
+IDH_SAXPARSER_DTDATTLISTTAG         = vbXML_XMLSAXParser_DTDAttlistTag.htm
+IDH_SAXPARSER_DTDELEMENTTAG         = vbXML_XMLSAXParser_DTDElementTag.htm
+IDH_SAXPARSER_EMPTYTAG              = vbXML_XMLSAXParser_EmptyTag.htm
+IDH_SAXPARSER_ENDTAG                = vbXML_XMLSAXParser_EndTag.htm
+IDH_SAXPARSER_NAMESPACEDEFINITION   = vbXML_XMLSAXParser_NamespaceDefinition.htm
+IDH_SAXPARSER_OTHERTAG              = vbXML_XMLSAXParser_OtherTag.htm
+IDH_SAXPARSER_PARSEFILE             = vbXML_XMLSAXParser_ParseFile.htm
+IDH_SAXPARSER_PARSESTRING           = vbXML_XMLSAXParser_ParseString.htm
+IDH_SAXPARSER_PARSEWEB              = vbXML_XMLSAXParser_ParseWeb.htm
+IDH_SAXPARSER_RAWDOCUMENT           = vbXML_XMLSAXParser_RawDocument.htm
+IDH_SAXPARSER_STARTTAG              = vbXML_XMLSAXParser_StartTag.htm
+IDH_SAXPARSER_VALUE                 = vbXML_XMLSAXParser_Value.htm
+
+IDH_UTILITY_INTRO                   = vbXML_XMLUtility_Intro.htm
+IDH_UTILITY_GETERRORCODE            = vbXML_XMLUtility_GetErrorCode.htm
+IDH_UTILITY_GETHTTPERROR            = vbXML_XMLUtility_GetHTTPError.htm
+IDH_UTILITY_GETNODETYPE             = vbXML_XMLUtility_GetNodeType.htm
+IDH_UTILITY_DECODEESCAPECODES       = vbXML_XMLUtility_DecodeEscapeCodes.htm
+IDH_UTILITY_ENCODEESCAPECODES       = vbXML_XMLUtility_EncodeEscapeCodes.htm
+IDH_UTILITY_DECODERFC822DATE        = vbXML_XMLUtility_DecodeRFC822Date.htm
+IDH_UTILITY_ENCODERFC822DATE        = vbXML_XMLUtility_EncodeRFC822Date.htm
+
+IDH_DTDATTRIBUTEENUM_INTRO          = vbXML_XMLDTDAttributeEnum_Intro.htm
+IDH_DTDATTRIBUTEENUM_COUNT          = vbXML_XMLDTDAttributeEnum_Count.htm
+IDH_DTDATTRIBUTEENUM_ISINLIST       = vbXML_XMLDTDAttributeEnum_IsInList.htm
+IDH_DTDATTRIBUTEENUM_ITEM           = vbXML_XMLDTDAttributeEnum_Item.htm
+
+IDH_DTDATTRIBUTE_INTRO              = vbXML_XMLDTDAttribute_Intro.htm
+IDH_DTDATTRIBUTE_DEFAULT            = vbXML_XMLDTDAttribute_Default.htm
+IDH_DTDATTRIBUTE_ENUMLIST           = vbXML_XMLDTDAttribute_EnumList.htm
+IDH_DTDATTRIBUTE_MODIFIER           = vbXML_XMLDTDAttribute_Modifier.htm
+IDH_DTDATTRIBUTE_NAME               = vbXML_XMLDTDAttribute_Name.htm
+IDH_DTDATTRIBUTE_VARIETY            = vbXML_XMLDTDAttribute_Variety.htm
+
+IDH_DTDATTLIST_INTRO                = vbXML_XMLDTDAttlist_Intro.htm
+IDH_DTDATTLIST_ATTRIBUTEEXISTS      = vbXML_XMLDTDAttlist_AttributeExists.htm
+IDH_DTDATTLIST_COUNT                = vbXML_XMLDTDAttlist_Count.htm
+IDH_DTDATTLIST_ITEM                 = vbXML_XMLDTDAttlist_Item.htm
+
+[MAP]
+
+#define IDH_INTRODUCTION                   1000
+
+#define IDH_ERROR_WININETERROR             1100
+#define IDH_ERROR_HTTPERROR                1101
+#define IDH_ERROR_MALFORMEDXML             1102
+#define IDH_ERROR_UNSUPPORTED              1103
+#define IDH_ERROR_MALFORMEDDTD             1104
+#define IDH_ERROR_NODTDTOVALIDATEWITH      1105
+#define IDH_ERROR_INVALIDXML               1106
+#define IDH_ERROR_UNKNOWNREQUESTTYPE       1107
+#define IDH_ERROR_UNKNOWNPROTOCOLTYPE      1108
+#define IDH_ERROR_ATTRIBUTENOTFOUND        1109
+#define IDH_ERROR_TAGNOTFOUND              1110
+#define IDH_ERROR_DTDELEMENTNOTFOUND       1111
+#define IDH_ERROR_UNDEFINEDNAMESPACE       1112
+#define IDH_ERROR_PORTOUTOFRANGE           1113
+#define IDH_ERROR_UNKNOWNERROR             1200
+
+#define IDH_ATTRIBUTE_INTRO                2000
+#define IDH_ATTRIBUTE_NAME                 2050
+#define IDH_ATTRIBUTE_VALUE                2100
+
+#define IDH_ATTRIBUTES_INTRO               3000
+#define IDH_ATTRIBUTES_COUNT               3050
+#define IDH_ATTRIBUTES_ITEM                3100
+#define IDH_ATTRIBUTES_ATTRIBUTEEXISTS     3150
+#define IDH_ATTRIBUTES_GETATTRIBUTEBYNAME  3200
+
+#define IDH_DOMNODE_INTRO                  4000
+#define IDH_DOMNODE_ATTRIBUTES             4050
+#define IDH_DOMNODE_COUNT                  4100
+#define IDH_DOMNODE_ITEM                   4150
+#define IDH_DOMNODE_LEVEL                  4200
+#define IDH_DOMNODE_NODETYPE               4250
+#define IDH_DOMNODE_POSITION               4300
+#define IDH_DOMNODE_VALUE                  4350
+#define IDH_DOMNODE_GETTAGBYNAME           4400
+#define IDH_DOMNODE_TAGEXISTS              4450
+
+#define IDH_DOMPARSER_INTRO                5000
+#define IDH_DOMPARSER_ATTRIBUTES           5050
+#define IDH_DOMPARSER_COUNT                5100
+#define IDH_DOMPARSER_DTD                  5150
+#define IDH_DOMPARSER_ITEM                 5200
+#define IDH_DOMPARSER_LEVEL                5250
+#define IDH_DOMPARSER_NODETYPE             5300
+#define IDH_DOMPARSER_PARSEFILE            5800
+#define IDH_DOMPARSER_PARSESTRING          5350
+#define IDH_DOMPARSER_PARSEWEB             5400
+#define IDH_DOMPARSER_POSITION             5450
+#define IDH_DOMPARSER_RAWDOCUMENT          5500
+#define IDH_DOMPARSER_ROOTELEMENT          5550
+#define IDH_DOMPARSER_VALIDATE             5600
+#define IDH_DOMPARSER_VALIDATENODE         5650
+#define IDH_DOMPARSER_VALIDATIONRULE       5700
+#define IDH_DOMPARSER_VALUE                5750
+
+#define IDH_DTD_INTRO                      6000
+#define IDH_DTD_ELEMENTS                   6050
+#define IDH_DTD_GETELEMENT                 6100
+#define IDH_DTD_PARSEFILE                  6150
+#define IDH_DTD_PARSESTRING                6200
+#define IDH_DTD_PARSEWEB                   6250
+
+#define IDH_DTDELEMENT_INTRO               7000
+#define IDH_DTDELEMENT_CONTENTRULE         7050
+#define IDH_DTDELEMENT_NAME                7100
+#define IDH_DTDELEMENT_SUBELEMENTS         7150
+#define IDH_DTDELEMENT_ATTLIST             7200
+
+#define IDH_DTDELEMENTS_INTRO              8000
+#define IDH_DTDELEMENTS_COUNT              8050
+#define IDH_DTDELEMENTS_GETELEMENTBYNAME   8150
+#define IDH_DTDELEMENTS_ITEM               8100
+
+#define IDH_DTDSUBELEMENT_INTRO            9000
+#define IDH_DTDSUBELEMENT_NAME             9050
+#define IDH_DTDSUBELEMENT_RULE             9100
+#define IDH_DTDSUBELEMENT_VARIETY          9150
+
+#define IDH_DTDSUBELEMENTS_INTRO          10000
+#define IDH_DTDSUBELEMENTS_COUNT          10050
+#define IDH_DTDSUBELEMENTS_ITEM           10100
+
+#define IDH_HTTPCALL_INTRO                11000
+#define IDH_HTTPCALL_DATARETURNED         11050
+#define IDH_HTTPCALL_DATATOPOST           11100
+#define IDH_HTTPCALL_HEADERSRECEIVED      11150
+#define IDH_HTTPCALL_HEADERSTOSEND        11200
+#define IDH_HTTPCALL_HOSTNAME             11250
+#define IDH_HTTPCALL_HOSTPORT             11300
+#define IDH_HTTPCALL_HOSTURI              11350
+#define IDH_HTTPCALL_HTTPOPENREQUESTFLAGS 11400
+#define IDH_HTTPCALL_HTTPVERSION          11450
+#define IDH_HTTPCALL_INTERNETOPENFLAGS    11500
+#define IDH_HTTPCALL_INTERNETOPENTYPE     11550
+#define IDH_HTTPCALL_REQUESTTYPE          11600
+#define IDH_HTTPCALL_SUBMITREQUEST        11650
+#define IDH_HTTPCALL_URL                  11700
+#define IDH_HTTPCALL_USERAGENT            11750
+#define IDH_HTTPCALL_USERNAME             11800
+#define IDH_HTTPCALL_PASSWORD             11850
+
+#define IDH_HTTPHEADERS_INTRO             12000
+#define IDH_HTTPHEADERS_ADD               12050
+#define IDH_HTTPHEADERS_CLEAR             12100
+#define IDH_HTTPHEADERS_COUNT             12150
+#define IDH_HTTPHEADERS_HEADERSSTRING     12200
+#define IDH_HTTPHEADERS_ITEM              12250
+#define IDH_HTTPHEADERS_REMOVE            12300
+
+#define IDH_SAXPARSER_INTRO               13000
+#define IDH_SAXPARSER_COMMENTTAG          13050
+#define IDH_SAXPARSER_DOCTYPETAG          13100
+#define IDH_SAXPARSER_DOCUMENTEND         13150
+#define IDH_SAXPARSER_DOCUMENTSTART       13200
+#define IDH_SAXPARSER_DTDELEMENTTAG       13250
+#define IDH_SAXPARSER_EMPTYTAG            13275
+#define IDH_SAXPARSER_ENDTAG              13300
+#define IDH_SAXPARSER_OTHERTAG            13350
+#define IDH_SAXPARSER_PARSEFILE           13750
+#define IDH_SAXPARSER_PARSESTRING         13400
+#define IDH_SAXPARSER_PARSEWEB            13450
+#define IDH_SAXPARSER_RAWDOCUMENT         13500
+#define IDH_SAXPARSER_STARTTAG            13550
+#define IDH_SAXPARSER_VALUE               13600
+#define IDH_SAXPARSER_DTDATTLISTTAG       13650
+#define IDH_SAXPARSER_NAMESPACEDEFINITION 13700
+
+#define IDH_UTILITY_INTRO                 14000
+#define IDH_UTILITY_GETERRORCODE          14050
+#define IDH_UTILITY_GETHTTPERROR          14100
+#define IDH_UTILITY_GETNODETYPE           14150
+#define IDH_UTILITY_DECODEESCAPECODES     14200
+#define IDH_UTILITY_ENCODEESCAPECODES     14250
+#define IDH_UTILITY_DECODERFC822DATE      14300
+#define IDH_UTILITY_ENCODERFC822DATE      14350
+
+#define IDH_DTDATTRIBUTEENUM_INTRO        15000
+#define IDH_DTDATTRIBUTEENUM_COUNT        15050
+#define IDH_DTDATTRIBUTEENUM_ISINLIST     15100
+#define IDH_DTDATTRIBUTEENUM_ITEM         15150
+
+#define IDH_DTDATTRIBUTE_INTRO            16000
+#define IDH_DTDATTRIBUTE_DEFAULT          16050
+#define IDH_DTDATTRIBUTE_ENUMLIST         16100
+#define IDH_DTDATTRIBUTE_MODIFIER         16150
+#define IDH_DTDATTRIBUTE_NAME             16200
+#define IDH_DTDATTRIBUTE_VARIETY          16250
+
+#define IDH_DTDATTLIST_INTRO              17000
+#define IDH_DTDATTLIST_ATTRIBUTEEXISTS    17050
+#define IDH_DTDATTLIST_COUNT              17100
+#define IDH_DTDATTLIST_ITEM               17150

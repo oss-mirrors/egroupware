@@ -86,8 +86,8 @@ Public Property Get Password() As String
     Password = mPassword
 End Property
 
-Public Property Get response() As XMLRPCResponse
-    Set response = linsResponse
+Public Property Get Response() As XMLRPCResponse
+    Set Response = linsResponse
 End Property
 
 Public Function Login() As Boolean

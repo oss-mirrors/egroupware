@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>vbXMLRPC.dll Install Notes</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPCInstallNotes"></a>vbXMLRPC.dll Install Notes</H1>
+
+<p>The vbXMLRPC.dll is designed to be used by programmers with a reasonable understanding of the workings of windows. This DLL does not come with a deployment package and some manual registering of the file will have to be carried out. These instructions are provided AS IS but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Only carry out these steps if you understand what you are doing. Any mistakes can damage your windows installation beyond repair. YOU HAVE BEEN WARNED.</p>
+<p>Take the following steps to install the DLL:</p>
+
+<ul>
+<li>This process will copy four files (two DLLs and two help files) to your PC and register the DLLs for use.</li>
+<li>Download the latest version of the software from <a href="http://www.enappsys.com/backend.jsp">www.enappsys.com/backend.jsp</a> and save it to a temporary folder on your computer.</li>
+<li>If you have earlier versions of the DLLs on your machine you will need to unregister and delete them. Repeat the steps twice, once for vbXML.dll and once for vbXMLRPC.dll. The process is as follows:
+<ul>
+<li>Find the DLL on your machine using the find option on the start bar (put vbXML.dll or vbXMLRPC.dll in the find bar and search all your hard drives).</li>
+<li>Make a note of the full path and name of the DLL.</li>
+<li>Go to the start bar and click "Start", "Run" and use the following syntax to unregister the file. (in this example, the dll is stored in <b>C:\WINNT\SYSTEM32</b>)
+<pre><code>regsvr32 C:\WINNT\SYSTEM32\vbXMLRPC.dll /u</code></pre>and/or<pre><code>regsvr32 C:\WINNT\SYSTEM32\vbXML.dll /u</code></pre></li>
+<li>Once the file(s) is/are unregistered, delete it/them.</li>
+</ul>
+<li>Extract the DLL (vbXML.dll or vbXMLRPC.dll) from the ZIP archive and copy it to your windows system directory (usually either <b>C:\WINNT\SYSTEM32</b> on Windows NT, 2000 or <b>C:\WINDOWS\SYSTEM32</b> on Windows 9x).</li>
+<li>Go to the start bar and click "Start", "Run" and use the following syntax to register the file. (in this example, the dll is stored in <b>C:\WINNT\SYSTEM32</b>)
+<pre><code>regsvr32 C:\WINNT\SYSTEM\vbXMLRPC.dll</code></pre>and/or<pre><code>regsvr32 C:\WINNT\SYSTEM\vbXML.dll</code></pre></li>
+<li>Extract the help files (vbXML.chm and vbXMLRPC.chm) from the ZIP archive and copy them to the same location as the DLL.</li>
+<li>The DLLs should now be installed.</li>
+</ul>
+
+<p>To use the DLL in development environments in your Windows applications you will need to <b>reference</b> vbXMLRPC.dll (not vbXML.dll that is referenced by vbXMLRPC.dll).</p>
+
+<p>To reference it in <b>Visual Basic 5/6</b> carry out the following steps:</p>
+<ul>
+<li>Start VB.</li>
+<li>Open or create your project.</li>
+<li>Click on <u>P</u>roject on the menu bar and Refere<u>n</u>ces on the menu that appears.</li>
+<li>Scroll through the available DLLs until you find vbXMLRPC and tick that on.</li>
+<li>You can now use the functions of the DLL.</li>
+</ul>
+
+<p>To reference it in <b>Microsoft Office 97/2000</b> carry out the following steps:</p>
+<ul>
+<li>Start Either Excel, Access, Powerpoint or Word.</li>
+<li>Open or create your document.</li>
+<li>Click on <u>T</u>ools on the menu bar and <u>M</u>acro on the menu that appears followed by <u>V</u>isual Basic Editor. Alternatively <b>Alt+F11</b> usually does the same thing.</li>
+<li>The Visual Basic for Applications editor will appear. Select the <u>T</u>ools menu and then click on the <u>R</u>eferences item.</li>
+<li>Scroll through the available DLLs until you find vbXMLRPC and tick that on.</li>
+<li>You can now use the functions of the DLL.</li>
+</ul>
+
+<p>Other environments will have similar ways of referencing DLLs.</p>
+
+</BODY>
+</HTML>

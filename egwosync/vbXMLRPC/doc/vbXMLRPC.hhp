@@ -1,0 +1,235 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=vbXMLRPC.chm
+Contents file=vbXMLRPC.hhc
+Default topic=vbXMLRPCIntroduction.htm
+Display compile progress=No
+Index file=vbXMLRPC.hhk
+Language=0x809 English (United Kingdom)
+Title=vbXMLRPC Help
+
+[INFOTYPES]
+
+[ALIAS]
+IDH_INTRODUCTION              = vbXMLRPCIntroduction.htm
+
+IDH_ERROR_BASE64ERROR         = vbXMLRPC_Errors.htm
+IDH_ERROR_UNKNOWNVALUETYPE    = vbXMLRPC_Errors.htm
+IDH_ERROR_UNEXPECTEDVALUETYPE = vbXMLRPC_Errors.htm
+IDH_ERROR_VALUETYPENOTSET     = vbXMLRPC_Errors.htm
+IDH_ERROR_VALUENOTSET         = vbXMLRPC_Errors.htm
+IDH_ERROR_MALFORMEDXML        = vbXMLRPC_Errors.htm
+IDH_ERROR_HOSTNAMENOTSET      = vbXMLRPC_Errors.htm
+IDH_ERROR_HOSTPORTNOTSET      = vbXMLRPC_Errors.htm
+IDH_ERROR_HOSTURINOTSET       = vbXMLRPC_Errors.htm
+IDH_ERROR_METHODNAMENOTSET    = vbXMLRPC_Errors.htm
+IDH_ERROR_USERAGENTNOTSET     = vbXMLRPC_Errors.htm
+IDH_ERROR_HTTPCALLFAILED      = vbXMLRPC_Errors.htm
+IDH_ERROR_MEMBERNOTFOUND      = vbXMLRPC_Errors.htm
+IDH_ERROR_UNKNOWNERROR        = vbXMLRPC_Errors.htm
+
+IDH_ARRAY_ADDARRAY            = vbXMLRPCArray_AddArray.htm
+IDH_ARRAY_ADDBASE64           = vbXMLRPCArray_AddBase64.htm
+IDH_ARRAY_ADDBOOLEAN          = vbXMLRPCArray_AddBoolean.htm
+IDH_ARRAY_ADDDATETIME         = vbXMLRPCArray_AddDateTime.htm
+IDH_ARRAY_ADDDOUBLE           = vbXMLRPCArray_AddDouble.htm
+IDH_ARRAY_ADDINTEGER          = vbXMLRPCArray_AddInteger.htm
+IDH_ARRAY_ADDNIL              = vbXMLRPCArray_AddNil.htm
+IDH_ARRAY_ADDSTRING           = vbXMLRPCArray_AddString.htm
+IDH_ARRAY_ADDSTRUCT           = vbXMLRPCArray_AddStruct.htm
+IDH_ARRAY_COUNT               = vbXMLRPCArray_Count.htm
+IDH_ARRAY_INTRO               = vbXMLRPCArray_Intro.htm
+IDH_ARRAY_ITEM                = vbXMLRPCArray_Item.htm
+
+IDH_FAULT_FAULTCODE           = vbXMLRPCFault_FaultCode.htm
+IDH_FAULT_FAULTSTRING         = vbXMLRPCFault_FaultString.htm
+IDH_FAULT_INTRO               = vbXMLRPCFault_Intro.htm
+
+IDH_MEMBER_INTRO              = vbXMLRPCMember_Intro.htm
+IDH_MEMBER_NAME               = vbXMLRPCMember_Name.htm
+IDH_MEMBER_VALUE              = vbXMLRPCMember_Value.htm
+
+IDH_PARAMS_ADDARRAY           = vbXMLRPCParams_AddArray.htm
+IDH_PARAMS_ADDBASE64          = vbXMLRPCParams_AddBase64.htm
+IDH_PARAMS_ADDBOOLEAN         = vbXMLRPCParams_AddBoolean.htm
+IDH_PARAMS_ADDDATETIME        = vbXMLRPCParams_AddDateTime.htm
+IDH_PARAMS_ADDDOUBLE          = vbXMLRPCParams_AddDouble.htm
+IDH_PARAMS_ADDINTEGER         = vbXMLRPCParams_AddInteger.htm
+IDH_PARAMS_ADDNIL             = vbXMLRPCParams_AddNil.htm
+IDH_PARAMS_ADDSTRING          = vbXMLRPCParams_AddString.htm
+IDH_PARAMS_ADDSTRUCT          = vbXMLRPCParams_AddStruct.htm
+IDH_PARAMS_COUNT              = vbXMLRPCParams_Count.htm
+IDH_PARAMS_INTRO              = vbXMLRPCParams_Intro.htm
+IDH_PARAMS_ITEM               = vbXMLRPCParams_Item.htm
+
+IDH_REQUEST_HOSTNAME          = vbXMLRPCRequest_HostName.htm
+IDH_REQUEST_HOSTPORT          = vbXMLRPCRequest_HostPort.htm
+IDH_REQUEST_HOSTURI           = vbXMLRPCRequest_HostURI.htm
+IDH_REQUEST_INTRO             = vbXMLRPCRequest_Intro.htm
+IDH_REQUEST_METHODNAME        = vbXMLRPCRequest_MethodName.htm
+IDH_REQUEST_PARAMS            = vbXMLRPCRequest_Params.htm
+IDH_REQUEST_SSLFLAGS          = vbXMLRPCRequest_SSLFlags.htm
+IDH_REQUEST_SUBMIT            = vbXMLRPCRequest_Submit.htm
+IDH_REQUEST_USERAGENT         = vbXMLRPCRequest_UserAgent.htm
+IDH_REQUEST_XMLTOSEND         = vbXMLRPCRequest_XMLToSend.htm
+
+IDH_RESPONSE_FAULT            = vbXMLRPCResponse_Fault.htm
+IDH_RESPONSE_HTTPHEADERS      = vbXMLRPCResponse_HTTPHeaders.htm
+IDH_RESPONSE_HTTPSTATUSCODE   = vbXMLRPCResponse_HTTPStatusCode.htm
+IDH_RESPONSE_INTRO            = vbXMLRPCResponse_Intro.htm
+IDH_RESPONSE_PARAMS           = vbXMLRPCResponse_Params.htm
+IDH_RESPONSE_STATUS           = vbXMLRPCResponse_Status.htm
+IDH_RESPONSE_XMLPARSEERROR    = vbXMLRPCResponse_XMLParseError.htm
+IDH_RESPONSE_XMLRESPONSE      = vbXMLRPCResponse_XMLResponse.htm
+
+IDH_STRUCT_ADDARRAY           = vbXMLRPCStruct_AddArray.htm
+IDH_STRUCT_ADDBASE64          = vbXMLRPCStruct_AddBase64.htm
+IDH_STRUCT_ADDBOOLEAN         = vbXMLRPCStruct_AddBoolean.htm
+IDH_STRUCT_ADDDATETIME        = vbXMLRPCStruct_AddDateTime.htm
+IDH_STRUCT_ADDDOUBLE          = vbXMLRPCStruct_AddDouble.htm
+IDH_STRUCT_ADDINTEGER         = vbXMLRPCStruct_AddInteger.htm
+IDH_STRUCT_ADDNIL             = vbXMLRPCStruct_AddNil.htm
+IDH_STRUCT_ADDSTRING          = vbXMLRPCStruct_AddString.htm
+IDH_STRUCT_ADDSTRUCT          = vbXMLRPCStruct_AddStruct.htm
+IDH_STRUCT_COUNT              = vbXMLRPCStruct_Count.htm
+IDH_STRUCT_INTRO              = vbXMLRPCStruct_Intro.htm
+IDH_STRUCT_GETVALUEBYNAME     = vbXMLRPCStruct_GetValueByName.htm
+IDH_STRUCT_ITEM               = vbXMLRPCStruct_Item.htm
+IDH_STRUCT_MEMBEREXISTS       = vbXMLRPCStruct_MemberExists.htm
+
+IDH_UTILITY_GETERRORCODE      = vbXMLRPCUtility_GetErrorCode.htm
+IDH_UTILITY_GETHTTPERROR      = vbXMLRPCUtility_GetHTTPError.htm
+IDH_UTILITY_GETVARIANTTYPE    = vbXMLRPCUtility_GetVariantType.htm
+IDH_UTILITY_GETXMLRPCTYPE     = vbXMLRPCUtility_GetXMLRPCType.htm
+IDH_UTILITY_INTRO             = vbXMLRPCUtility_Intro.htm
+
+IDH_VALUE_ARRAYVALUE          = vbXMLRPCValue_ArrayValue.htm
+IDH_VALUE_BASE64VALUE         = vbXMLRPCValue_Base64Value.htm
+IDH_VALUE_BOOLEANVALUE        = vbXMLRPCValue_BooleanValue.htm
+IDH_VALUE_DATETIMEVALUE       = vbXMLRPCValue_DateTimeValue.htm
+IDH_VALUE_DOUBLEVALUE         = vbXMLRPCValue_DoubleValue.htm
+IDH_VALUE_INTEGERVALUE        = vbXMLRPCValue_IntegerValue.htm
+IDH_VALUE_INTRO               = vbXMLRPCValue_Intro.htm
+IDH_VALUE_STRINGVALUE         = vbXMLRPCValue_StringValue.htm
+IDH_VALUE_STRUCTVALUE         = vbXMLRPCValue_StructValue.htm
+IDH_VALUE_VALUETYPE           = vbXMLRPCValue_ValueType.htm
+
+IDH_BASE64_INTRO              = vbXMLRPCBase64_Intro.htm
+IDH_BASE64_ENCODED            = vbXMLRPCBase64_Encoded.htm
+IDH_BASE64_LINELENGTH         = vbXMLRPCBase64_LineLength.htm
+IDH_BASE64_LINETERMINATOR     = vbXMLRPCBase64_LineTerminator.htm
+IDH_BASE64_UNENCODED          = vbXMLRPCBase64_Unencoded.htm
+IDH_BASE64_USELINETERMINATOR  = vbXMLRPCBase64_UseLineTerminator.htm
+
+[MAP]
+#define IDH_INTRODUCTION              1000
+
+#define IDH_ERROR_BASE64ERROR         1100
+#define IDH_ERROR_UNKNOWNVALUETYPE    1101
+#define IDH_ERROR_UNEXPECTEDVALUETYPE 1102
+#define IDH_ERROR_VALUETYPENOTSET     1103
+#define IDH_ERROR_VALUENOTSET         1104
+#define IDH_ERROR_MALFORMEDXML        1105
+#define IDH_ERROR_HOSTNAMENOTSET      1106
+#define IDH_ERROR_HOSTPORTNOTSET      1107
+#define IDH_ERROR_HOSTURINOTSET       1108
+#define IDH_ERROR_METHODNAMENOTSET    1109
+#define IDH_ERROR_USERAGENTNOTSET     1110
+#define IDH_ERROR_HTTPCALLFAILED      1111
+#define IDH_ERROR_MEMBERNOTFOUND      1112
+#define IDH_ERROR_UNKNOWNERROR        1200
+
+#define IDH_ARRAY_ADDARRAY            2050
+#define IDH_ARRAY_ADDBASE64           2100
+#define IDH_ARRAY_ADDBOOLEAN          2150
+#define IDH_ARRAY_ADDDATETIME         2200
+#define IDH_ARRAY_ADDDOUBLE           2250
+#define IDH_ARRAY_ADDINTEGER          2300
+#define IDH_ARRAY_ADDNIL              2325
+#define IDH_ARRAY_ADDSTRING           2350
+#define IDH_ARRAY_ADDSTRUCT           2400
+#define IDH_ARRAY_COUNT               2450
+#define IDH_ARRAY_INTRO               2000
+#define IDH_ARRAY_ITEM                2500
+
+#define IDH_FAULT_FAULTCODE           3100
+#define IDH_FAULT_FAULTSTRING         3200
+#define IDH_FAULT_INTRO               3000
+
+#define IDH_MEMBER_INTRO              4000
+#define IDH_MEMBER_NAME               4100
+#define IDH_MEMBER_VALUE              4200
+
+#define IDH_PARAMS_ADDARRAY           5050
+#define IDH_PARAMS_ADDBASE64          5100
+#define IDH_PARAMS_ADDBOOLEAN         5150
+#define IDH_PARAMS_ADDDATETIME        5200
+#define IDH_PARAMS_ADDDOUBLE          5250
+#define IDH_PARAMS_ADDINTEGER         5300
+#define IDH_PARAMS_ADDNIL             5325
+#define IDH_PARAMS_ADDSTRING          5350
+#define IDH_PARAMS_ADDSTRUCT          5400
+#define IDH_PARAMS_COUNT              5450
+#define IDH_PARAMS_INTRO              5000
+#define IDH_PARAMS_ITEM               5500
+
+#define IDH_REQUEST_HOSTNAME          6050
+#define IDH_REQUEST_HOSTPORT          6100
+#define IDH_REQUEST_HOSTURI           6150
+#define IDH_REQUEST_INTRO             6000
+#define IDH_REQUEST_METHODNAME        6200
+#define IDH_REQUEST_PARAMS            6250
+#define IDH_REQUEST_SSLFLAGS          6450
+#define IDH_REQUEST_SUBMIT            6300
+#define IDH_REQUEST_USERAGENT         6350
+#define IDH_REQUEST_XMLTOSEND         6400
+#define IDH_REQUEST_USERNAME          6450
+#define IDH_REQUEST_PASSWORD          6500
+
+#define IDH_RESPONSE_FAULT            7050
+#define IDH_RESPONSE_HTTPHEADERS      7100
+#define IDH_RESPONSE_HTTPSTATUSCODE   7150
+#define IDH_RESPONSE_INTRO            7000
+#define IDH_RESPONSE_PARAMS           7200
+#define IDH_RESPONSE_STATUS           7250
+#define IDH_RESPONSE_XMLPARSEERROR    7300
+#define IDH_RESPONSE_XMLRESPONSE      7350
+
+#define IDH_STRUCT_ADDARRAY           8050
+#define IDH_STRUCT_ADDBASE64          8100
+#define IDH_STRUCT_ADDBOOLEAN         8150
+#define IDH_STRUCT_ADDDATETIME        8200
+#define IDH_STRUCT_ADDDOUBLE          8250
+#define IDH_STRUCT_ADDINTEGER         8300
+#define IDH_STRUCT_ADDNIL             8325
+#define IDH_STRUCT_ADDSTRING          8350
+#define IDH_STRUCT_ADDSTRUCT          8400
+#define IDH_STRUCT_COUNT              8450
+#define IDH_STRUCT_INTRO              8000
+#define IDH_STRUCT_GETVALUEBYNAME     8475
+#define IDH_STRUCT_ITEM               8500
+#define IDH_STRUCT_MEMBEREXISTS       8525
+
+#define IDH_UTILITY_GETERRORCODE      9050
+#define IDH_UTILITY_GETHTTPERROR      9100
+#define IDH_UTILITY_GETVARIANTTYPE    9150
+#define IDH_UTILITY_GETXMLRPCTYPE     9200
+#define IDH_UTILITY_INTRO             9000
+
+#define IDH_VALUE_ARRAYVALUE         10050
+#define IDH_VALUE_BASE64VALUE        10100
+#define IDH_VALUE_BOOLEANVALUE       10150
+#define IDH_VALUE_DATETIMEVALUE      10200
+#define IDH_VALUE_DOUBLEVALUE        10250
+#define IDH_VALUE_INTEGERVALUE       10300
+#define IDH_VALUE_INTRO              10000
+#define IDH_VALUE_STRINGVALUE        10350
+#define IDH_VALUE_STRUCTVALUE        10400
+#define IDH_VALUE_VALUETYPE          10450
+
+#define IDH_BASE64_INTRO             11000
+#define IDH_BASE64_ENCODED           11050
+#define IDH_BASE64_LINELENGTH        11100
+#define IDH_BASE64_LINETERMINATOR    11150
+#define IDH_BASE64_UNENCODED         11200
+#define IDH_BASE64_USELINETERMINATOR 11250

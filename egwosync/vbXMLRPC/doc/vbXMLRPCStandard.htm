@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>The XML-RPC Standard</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPCStandard"></a>The XML-RPC Standard</H1>
+<P class=label>Overview</P>
+
+<p>XML-RPC is a simple protocol for carrying out remote proceedure calls (RPC) over TCP/IP. It uses two standards of the internet, Hypertext Transfer Protocol (<a href="http://www.w3.org/Protocols/rfc2616/rfc2616.html">HTTP</a>) and eXtensible Markup Language (<a href="http://www.w3.org/TR/2000/REC-xml-20001006">XML</a>) to create a standard way of calling remote web services and receiving a response. The best place to learn about XML-RPC is at its website <a href="http://www.xmlrpc.com/">www.xmlrpc.com</a> which is maintained by XML-RPC's champion <a href="http://www.scripting.com/">Dave Winer</a>.</p>
+
+<p>The XML-RPC specification is located <a href="http://www.xmlrpc.com/spec">here</a>.</p>
+
+<p>Figure 1 shows a simple diagram showing the process of calling a remove server with an XML-RPC call.</p>
+
+<p align=center><img src="XMLRPC_Overview_Figure1.gif"></p>
+<p align=center><b><u>Figure 1 - Overview of XML-RPC</u></b></p>
+
+<p>XML-RPC is in effect a modified early draft of the Simple Object Access Protocol (<a href="http://www.w3.org/TR/SOAP/">SOAP</a>) and is much simpler and less political. Whilst everyone fights over the specification for SOAP and tries to build their own proprietory "enhancements", XML-RPC remains refreshingly constant and open. XML-RPC implements RPC in a simple way without the additional overhead of SOAP. You get 95% of SOAPs functionality with much less hassle.</p>
+
+<P class=label>History</P>
+
+<p>The history (or is that histories !) of XML-RPC appears to be contentious so its best to hear it from the horses mouth, so to speak; read <a href="http://www.xmlrpc.com/stories/storyReader$555">Dave Winer's History of XML-RPC</a>.</p>
+
+<P class=label>How vbXMLRPC.dll implements XML-RPC</P>
+
+<p>First read the <a href="http://www.xmlrpc.com/spec">XML-RPC specification</a>.</p>
+
+<p>vbXMLRPC.dll implements XML-RPC in an intuitive way, hiding enough of the nasty implementation stuff without going too far. XML-RPC consists of a request (see Figure 1) sent to a server which is modeled in vbXMLRPC.dll as an <a href="vbXMLRPCRequest_Intro.htm">XMLRPCRequest</a> object. The server responds with a response which is modeled as an <a href="vbXMLRPCResponse_Intro.htm">XMLRPCResponse</a> object.</p>
+
+<p>Figure 2 shows the process of building a request - note, many methods and properties are removed from the class diagrams for clarity. Parameters are added to the request before it is sent to the server using a property of the <a href="vbXMLRPCRequest_Intro.htm">XMLRPCRequest</a> object called <a href="vbXMLRPCParams_Intro.htm">Params</a>, these parameters are modeled as an <a href="vbXMLRPCParams_Intro.htm">XMLRPCParams</a> object. By using one of the eight Add... methods of the <a href="vbXMLRPCParams_Intro.htm">XMLRPCParams</a> object, values are added to the parameters of the request. The values are modeled by <a href="vbXMLRPCValue_Intro.htm">XMLRPCValue</a> objects. Use the <a href="vbXMLRPCRequest_Submit.htm">Submit</a> method of the <a href="vbXMLRPCRequest_Intro.htm">XMLRPCRequest</a> object to submit the request to the remote server. This method also returns an <a href="vbXMLRPCResponse_Intro.htm">XMLRPCResponse</a> object with the response from the remote server.</p>
+
+<p align=center><img src="XMLRPC_Overview_Figure2.gif"></p>
+
+<p align=center><b><u>Figure 2 - Building an XML-RPC Request with vbXMLRPC.dll</u></b></p>
+
+<p>The <a href="vbXMLRPCValue_Intro.htm">XMLRPCValue</a> object models the eight types of value in the XML-RPC specification. See the <a href="vbXMLRPC_ValueTypes.htm">value types</a> enumerated list for more information on the types available. Six of the data types (<a href="vbXMLRPCValue_Base64Value.htm">Base64</a>, <a href="vbXMLRPCValue_BooleanValue.htm">Boolean</a>, <a href="vbXMLRPCValue_DateTimeValue.htm">DateTime</a>, <a href="vbXMLRPCValue_DoubleValue.htm">Double</a>, <a href="vbXMLRPCValue_IntegerValue.htm">Integer</a> and <a href="vbXMLRPCValue_StringValue.htm">String</a>) are simple, however, there are two complex types (<a href="vbXMLRPCValue_ArrayValue.htm">Array</a> and <a href="vbXMLRPCValue_StructValue.htm">Struct</a>) that are modeled with their own classes (<A href="vbXMLRPCArray_Intro.htm">XMLRPCArray</a> and <A href="vbXMLRPCStruct_Intro.htm">XMLRPCStruct</a>).</p>
+
+<p>The <A href="vbXMLRPCArray_Intro.htm">XMLRPCArray</a> is analagous to a Visual Basic collection, it can be a collection of other values of any of the eight types, an array type can contain more than one type of value. The <A href="vbXMLRPCStruct_Intro.htm">XMLRPCStruct</a> type is similar to an array type, however, every item in the collection also has a name to identify it. The name / value pair is refered to in the XML-RPC specification as a member of the struct and in the vbXMLRPC.dll is modeled by its own object, the <A href="vbXMLRPCMember_Intro.htm">XMLRPCMember</a>.</p>
+
+<p>Figure 3 shows the process of decoding a response - note, many methods and properties are removed from the class diagrams for clarity. When an <a href="vbXMLRPCResponse_Intro.htm">XMLRPCResponse</a> object is returned from the <a href="vbXMLRPCRequest_Submit.htm">Submit</a> method of the <a href="vbXMLRPCRequest_Intro.htm">XMLRPCRequest</a> object the <a href="vbXMLRPCResponse_Status.htm">Status</a> property is set to a value which indicates how the response has been received and decoded. If the remote proceedure call has successfully completed, the parameters returned from the call are stored in an <a href="vbXMLRPCParams_Intro.htm">XMLRPCParams</a> object. Using the <a href="vbXMLRPCParams_Item.htm">Item</a> method of the <a href="vbXMLRPCParams_Intro.htm">XMLRPCParams</a> object, the indvidual <a href="vbXMLRPCValue_Intro.htm">XMLRPCValue</a> objects can be decoded to get the information from the response.
+
+</p>
+
+<p align=center><img src="XMLRPC_Overview_Figure3.gif"></p>
+
+<p align=center><b><u>Figure 3 - Decoding an XML-RPC Response with vbXMLRPC.dll</u></b></p>
+
+
+
+</p>
+<P class=label>Resources</P>
+<p>Please find below some resources on XML-RPC which you may find usefull:</a>
+<ul>
+<li><a href="http://www.scripting.com/">Dave Winer</a> maintains the <a href="http://www.xmlrpc.com/">www.xmlrpc.com</a> website which contains lists of services and clients as well as standards documents and a discussion forum.</li>
+<li>The Linux Documentation Project maintains an <a href="http://www.tldp.org/HOWTO/XML-RPC-HOWTO/">XML-RPC How To</a>.</li>
+<li><a href="http://www.scripting.com/">Dave Winer</a> wrote a <a href="http://davenet.userland.com/2001/05/17/forewordToOreillysXmlrpcBook">foreward</a> to an <a href="http://www.oreilly.com/catalog/progxmlrpc/">O'Reilly book on XML-RPC</a> which is interesting.</li>
+<li><a href="http://www.pocketsoap.com/weblog/index.html">Simon Fell</a> has written an excellent utility to allow you to view the HTTP conversation going on between your client and the remote server. I recomend you dowload <a href="http://www.pocketsoap.com/tcptrace/">tcpTrace</a>.
+</ul>
+
+</BODY>
+</HTML>

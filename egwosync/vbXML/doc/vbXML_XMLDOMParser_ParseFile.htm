@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<title>ParseFile Method</title>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</head>
+<body>
+
+<h1><a name="vbXML_XMLDOMParser_ParseFile"></a>ParseFile Method</h1>
+<p><u><a href="vbXML_XMLDOMParser_Methods.htm">See Also</a></u>&nbsp;&nbsp; <u>Example</u>&nbsp;&nbsp; <u><a href="vbXML_XMLDOMParser_Intro.htm">Applies To</a></u></p>
+<p>Gets a local XML file and may check the document is well formed and valid.</p>
+<p class=label>Syntax</p>
+<p><i>object</i>.<B>ParseFile (</B><i>FileName, CheckWellFormed</i><B>)</B></p>
+<table cols=2 cellPadding=5 rules=rows border=1 frame=below>
+<tbody>
+<tr valign=top>
+<td width="29%"><B>Part</B></td>
+<td width="71%"><B>Description</B></td></tr>
+<tr valign=top>
+<td width="29%"><i>object</i></td>
+<td width="71%">An object expression that evaluates to an <a href="vbXML_XMLDOMParser_Intro.htm">XMLDOMParser</a> object.</td></tr>
+<tr valign=top>
+<td width="29%"><i>FileName</i></td>
+<td width="71%">Required. A string with the name of the local file to parse.</td></tr>
+<tr valign=top>
+<td width="29%"><i>CheckWellFormed</i></td>
+<td width="71%">Optional. A boolean that defines whether the parser should check the XML is "well formed". Defaults to <b>True</b>, i.e. will check the document is well-formed.</td></tr></tbody></table>
+<p class=label>Remarks</p>
+<p>The default behaviour of this method is to check the document is well formed. The validation against a DTD is determined by the <a href="vbXML_XMLDOMParser_ValidationRule.htm">ValidationRule</a> property.</p>
+<p class=label>Background</p>
+<p>There are two checks that can be carried out on an XML file,
+the first is to check the document is "well formed",
+this means does it have all open tags closed, only one root element etc.
+The second check is "is it valid",
+this can be carried out by checking against a DTD and/or a schema. DTD validation checks that the right elements are in the right place.</p>
+<p>This method uses simple visual basic file access functions and therefore is restricted to files on local or mapped drives.
+This method actually loads the contents of the file into a string and then passes it to the <a href="vbXML_XMLDOMParser_ParseString.htm">ParseString</a> method for well formed and validation checks.</p>
+
+</body>
+</html>

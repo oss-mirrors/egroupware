@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>Submit Method</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<h1><a name="vbXMLRPCRequest_Submit"></a>Submit Method</h1>
+<P><a href="vbXMLRPCRequest_Methods.htm">See Also</a>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <a href="vbXMLRPCStruct_Intro.htm">Applies To</a></P>
+<P>Takes the method name and parameters,
+builds the XML and uses the host settings to send the request to the remote XML-RPC server.
+Returns an <a href="vbXMLRPCResponse_Intro.htm">XMLRPCResponse</a> object with the outcome of the call.</P>
+<P class=label>Syntax</P>
+<P><I>object</I>.<B>Submit ()</B></P>
+<TABLE cols=2 cellPadding=5 rules=rows border=1 frame=below>
+<TBODY>
+<TR vAlign=top>
+<TD width="29%"><B>Part</B></TD>
+<TD width="71%"><B>Description</B></TD></TR>
+<TR vAlign=top>
+<TD width="29%"><I>object</I></TD>
+<TD width="71%">An object expression that evaluates to an <a href="vbXMLRPCStruct_Intro.htm">XMLRPCStruct</a> object.</TD></TR>
+</TBODY></TABLE>
+<P class=label>Remarks</P>
+<p>The method will throw an error if any of the following are zero length strings <a href="vbXMLRPCRequest_HostName.htm">HostName</a>, <a href="vbXMLRPCRequest_HostURI.htm">HostURI</a>, <a href="vbXMLRPCRequest_MethodName.htm">MethodName</a> and <a href="vbXMLRPCRequest_UserAgent.htm">UserAgent</a> or if <a href="vbXMLRPCRequest_HostPort.htm">Host Port</a> is zero. Note: <a href="vbXMLRPCRequest_Params.htm">Params</a> can be empty if required.</p>
+<P>An example of the code fragment needed is below:</P>
+
+<pre><code>Dim X As New XMLRPCRequest
+Dim Y As XMLRPCResponse
+
+' ...
+' ...
+' Put code to set up the request to the remote XML-RPC server here
+' ...
+' ...
+
+Set Y = X.Submit
+
+' ...
+' ...
+' Put code to process the response from the remote XML-RPC server here
+' ...
+' ...
+</code></pre>
+
+</BODY>
+</HTML>

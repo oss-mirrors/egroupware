@@ -1,0 +1,800 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="ImageType" value="Folder">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Introduction">
+		<param name="Local" value="vbXML_Docs_Introduction.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Install Notes">
+		<param name="Local" value="vbXML_Docs_InstallNotes.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Release Notes">
+		<param name="Local" value="vbXML_Docs_ReleaseNotes.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Reference">
+		<param name="Local" value="vbXML_Docs_Reference.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLAttribute">
+			<param name="Local" value="vbXML_XMLAttribute_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLAttribute_Methods.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLAttribute_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Name">
+					<param name="Local" value="vbXML_XMLAttribute_Name.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Value">
+					<param name="Local" value="vbXML_XMLAttribute_Value.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLAttributes">
+			<param name="Local" value="vbXML_XMLAttributes_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLAttributes_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AttributeExists">
+					<param name="Local" value="vbXML_XMLAttributes_AttributeExists.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="GetAttributeByName">
+					<param name="Local" value="vbXML_XMLAttributes_GetAttributeByName.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Item">
+					<param name="Local" value="vbXML_XMLAttributes_Item.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLAttributes_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Count">
+					<param name="Local" value="vbXML_XMLAttributes_Count.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLDOMNode">
+			<param name="Local" value="vbXML_XMLDOMNode_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLDOMNode_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="GetTagByName">
+					<param name="Local" value="vbXML_XMLDOMNode_GetTagByName.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Item">
+					<param name="Local" value="vbXML_XMLDOMNode_Item.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="TagExists">
+					<param name="Local" value="vbXML_XMLDOMNode_TagExists.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLDOMNode_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Attributes">
+					<param name="Local" value="vbXML_XMLDOMNode_Attributes.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Count">
+					<param name="Local" value="vbXML_XMLDOMNode_Count.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Level">
+					<param name="Local" value="vbXML_XMLDOMNode_Level.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="NodeType">
+					<param name="Local" value="vbXML_XMLDOMNode_NodeType.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Position">
+					<param name="Local" value="vbXML_XMLDOMNode_Position.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Value">
+					<param name="Local" value="vbXML_XMLDOMNode_Value.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLDOMParser">
+			<param name="Local" value="vbXML_XMLDOMParser_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLDOMParser_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Item">
+					<param name="Local" value="vbXML_XMLDOMParser_Item.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ParseFile">
+					<param name="Local" value="vbXML_XMLDOMParser_ParseFile.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ParseString">
+					<param name="Local" value="vbXML_XMLDOMParser_ParseString.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ParseWeb">
+					<param name="Local" value="vbXML_XMLDOMParser_ParseWeb.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Validate">
+					<param name="Local" value="vbXML_XMLDOMParser_Validate.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ValidateNode">
+					<param name="Local" value="vbXML_XMLDOMParser_ValidateNode.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLDOMParser_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Attributes">
+					<param name="Local" value="vbXML_XMLDOMParser_Attributes.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Count">
+					<param name="Local" value="vbXML_XMLDOMParser_Count.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="DTD">
+					<param name="Local" value="vbXML_XMLDOMParser_DTD.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Level">
+					<param name="Local" value="vbXML_XMLDOMParser_Level.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="NodeType">
+					<param name="Local" value="vbXML_XMLDOMParser_NodeType.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Position">
+					<param name="Local" value="vbXML_XMLDOMParser_Position.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="RawDocument">
+					<param name="Local" value="vbXML_XMLDOMParser_RawDocument.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="RootElement">
+					<param name="Local" value="vbXML_XMLDOMParser_RootElement.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ValidationRule">
+					<param name="Local" value="vbXML_XMLDOMParser_ValidationRule.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Value">
+					<param name="Local" value="vbXML_XMLDOMParser_Value.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLDTD">
+			<param name="Local" value="vbXML_XMLDTD_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLDTD_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="GetElement">
+					<param name="Local" value="vbXML_XMLDTD_GetElement.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ParseFile">
+					<param name="Local" value="vbXML_XMLDTD_ParseFile.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ParseString">
+					<param name="Local" value="vbXML_XMLDTD_ParseString.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ParseWeb">
+					<param name="Local" value="vbXML_XMLDTD_ParseWeb.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLDTD_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Elements">
+					<param name="Local" value="vbXML_XMLDTD_Elements.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLDTDAttlist">
+			<param name="Local" value="vbXML_XMLDTDAttlist_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLDTDAttlist_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="AttributeExists">
+					<param name="Local" value="vbXML_XMLDTDAttlist_AttributeExists.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Item">
+					<param name="Local" value="vbXML_XMLDTDAttlist_Item.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLDTDAttlist_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Count">
+					<param name="Local" value="vbXML_XMLDTDAttlist_Count.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLDTDAttribute">
+			<param name="Local" value="vbXML_XMLDTDAttribute_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLDTDAttribute_Methods.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLDTDAttribute_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Default">
+					<param name="Local" value="vbXML_XMLDTDAttribute_Default.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="EnumList">
+					<param name="Local" value="vbXML_XMLDTDAttribute_EnumList.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Modifier">
+					<param name="Local" value="vbXML_XMLDTDAttribute_Modifier.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Name">
+					<param name="Local" value="vbXML_XMLDTDAttribute_Name.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Variety">
+					<param name="Local" value="vbXML_XMLDTDAttribute_Variety.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLDTDAttributeEnum">
+			<param name="Local" value="vbXML_XMLDTDAttributeEnum_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLDTDAttributeEnum_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Item">
+					<param name="Local" value="vbXML_XMLDTDAttributeEnum_Item.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="IsInList">
+					<param name="Local" value="vbXML_XMLDTDAttributeEnum_IsInList.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLDTDAttributeEnum_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Count">
+					<param name="Local" value="vbXML_XMLDTDAttributeEnum_Count.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLDTDElement">
+			<param name="Local" value="vbXML_XMLDTDElement_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLDTDElement_Methods.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLDTDElement_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Attlist">
+					<param name="Local" value="vbXML_XMLDTDElement_Attlist.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ContentRule">
+					<param name="Local" value="vbXML_XMLDTDElement_ContentRule.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Name">
+					<param name="Local" value="vbXML_XMLDTDElement_Name.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="SubElements">
+					<param name="Local" value="vbXML_XMLDTDElement_SubElements.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLDTDElements">
+			<param name="Local" value="vbXML_XMLDTDElements_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLDTDElements_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="GetDTDElementByName">
+					<param name="Local" value="vbXML_XMLDTDElements_GetDTDElementByName.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Item">
+					<param name="Local" value="vbXML_XMLDTDElements_Item.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLDTDElements_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Count">
+					<param name="Local" value="vbXML_XMLDTDElements_Count.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLDTDSubElement">
+			<param name="Local" value="vbXML_XMLDTDSubElement_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLDTDSubElement_Methods.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLDTDSubElement_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Name">
+					<param name="Local" value="vbXML_XMLDTDSubElement_Name.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Rule">
+					<param name="Local" value="vbXML_XMLDTDSubElement_Rule.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Variety">
+					<param name="Local" value="vbXML_XMLDTDSubElement_Variety.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLDTDSubElements">
+			<param name="Local" value="vbXML_XMLDTDSubElements_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLDTDSubElements_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Item">
+					<param name="Local" value="vbXML_XMLDTDSubElements_Item.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLDTDSubElements_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Count">
+					<param name="Local" value="vbXML_XMLDTDSubElements_Count.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLHTTPCall">
+			<param name="Local" value="vbXML_XMLHTTPCall_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLHTTPCall_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="SubmitRequest">
+					<param name="Local" value="vbXML_XMLHTTPCall_SubmitRequest.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLHTTPCall_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="DataReturned">
+					<param name="Local" value="vbXML_XMLHTTPCall_DataReturned.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="DataToPost">
+					<param name="Local" value="vbXML_XMLHTTPCall_DataToPost.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="HeadersReceived">
+					<param name="Local" value="vbXML_XMLHTTPCall_HeadersReceived.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="HeadersToSend">
+					<param name="Local" value="vbXML_XMLHTTPCall_HeadersToSend.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="HostName">
+					<param name="Local" value="vbXML_XMLHTTPCall_HostName.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="HostPort">
+					<param name="Local" value="vbXML_XMLHTTPCall_HostPort.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="HostURI">
+					<param name="Local" value="vbXML_XMLHTTPCall_HostURI.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="HTTPOpenRequestFlags">
+					<param name="Local" value="vbXML_XMLHTTPCall_HTTPOpenRequestFlags.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="HTTPVersion">
+					<param name="Local" value="vbXML_XMLHTTPCall_HTTPVersion.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="InternetOpenFlags">
+					<param name="Local" value="vbXML_XMLHTTPCall_InternetOpenFlags.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="InternetOpenType">
+					<param name="Local" value="vbXML_XMLHTTPCall_InternetOpenType.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Password">
+					<param name="Local" value="vbXML_XMLHTTPCall_Password.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="RequestType">
+					<param name="Local" value="vbXML_XMLHTTPCall_RequestType.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="URL">
+					<param name="Local" value="vbXML_XMLHTTPCall_URL.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="UserAgent">
+					<param name="Local" value="vbXML_XMLHTTPCall_UserAgent.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Username">
+					<param name="Local" value="vbXML_XMLHTTPCall_Username.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLHTTPHeaders">
+			<param name="Local" value="vbXML_XMLHTTPHeaders_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLHTTPHeaders_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Add">
+					<param name="Local" value="vbXML_XMLHTTPHeaders_Add.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Clear">
+					<param name="Local" value="vbXML_XMLHTTPHeaders_Clear.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Item">
+					<param name="Local" value="vbXML_XMLHTTPHeaders_Item.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Remove">
+					<param name="Local" value="vbXML_XMLHTTPHeaders_Remove.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLHTTPHeaders_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Count">
+					<param name="Local" value="vbXML_XMLHTTPHeaders_Count.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="HeadersString">
+					<param name="Local" value="vbXML_XMLHTTPHeaders_HeadersString.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLSAXParser">
+			<param name="Local" value="vbXML_XMLSAXParser_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Events">
+				<param name="Local" value="vbXML_XMLSAXParser_Events.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="CommentTag">
+					<param name="Local" value="vbXML_XMLSAXParser_CommentTag.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="DocTypeTag">
+					<param name="Local" value="vbXML_XMLSAXParser_DocTypeTag.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="DocumentEnd">
+					<param name="Local" value="vbXML_XMLSAXParser_DocumentEnd.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="DocumentStart">
+					<param name="Local" value="vbXML_XMLSAXParser_DocumentStart.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="DTDAttlist">
+					<param name="Local" value="vbXML_XMLSAXParser_DTDAttlistTag.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="DTDElementTag">
+					<param name="Local" value="vbXML_XMLSAXParser_DTDElementTag.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="EmptyTag">
+					<param name="Local" value="vbXML_XMLSAXParser_EmptyTag.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="EndTag">
+					<param name="Local" value="vbXML_XMLSAXParser_EndTag.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="NamespaceDefinition">
+					<param name="Local" value="vbXML_XMLSAXParser_NamespaceDefinition.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="OtherTag">
+					<param name="Local" value="vbXML_XMLSAXParser_OtherTag.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="StartTag">
+					<param name="Local" value="vbXML_XMLSAXParser_StartTag.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Value">
+					<param name="Local" value="vbXML_XMLSAXParser_Value.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLSAXParser_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ParseFile">
+					<param name="Local" value="vbXML_XMLSAXParser_ParseFile.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ParseString">
+					<param name="Local" value="vbXML_XMLSAXParser_ParseString.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ParseWeb">
+					<param name="Local" value="vbXML_XMLSAXParser_ParseWeb.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLSAXParser_Properties.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="RawDocument">
+					<param name="Local" value="vbXML_XMLSAXParser_RawDocument.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="XMLUtility">
+			<param name="Local" value="vbXML_XMLUtility_Intro.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Methods">
+				<param name="Local" value="vbXML_XMLUtility_Methods.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="DecodeEscapeCodes">
+					<param name="Local" value="vbXML_XMLUtility_DecodeEscapeCodes.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="DecodeRFC822Date">
+					<param name="Local" value="vbXML_XMLUtility_DecodeRFC822Date.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="EncodeEscapeCodes">
+					<param name="Local" value="vbXML_XMLUtility_EncodeEscapeCodes.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="EncodeRFC822Date">
+					<param name="Local" value="vbXML_XMLUtility_EncodeRFC822Date.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="GetErrorCode">
+					<param name="Local" value="vbXML_XMLUtility_GetErrorCode.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="GetHTTPError">
+					<param name="Local" value="vbXML_XMLUtility_GetHTTPError.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="GetNodeType">
+					<param name="Local" value="vbXML_XMLUtility_GetNodeType.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Properties">
+				<param name="Local" value="vbXML_XMLUtility_Properties.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Enumerated Lists">
+			<param name="Local" value="vbXML_Docs_Introduction.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="HTTP_Request_Types">
+				<param name="Local" value="vbXML_HTTP_Request_Types.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="HTTP_Status_Codes">
+				<param name="Local" value="vbXML_HTTP_Status_Codes.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="HTTP_Versions">
+				<param name="Local" value="vbXML_HTTP_Versions.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="WININET_HTTPOpenRequest_Flags">
+				<param name="Local" value="vbXML_WININET_HTTPOpenRequest_Flags.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="WININET_InternetOpen_Flags">
+				<param name="Local" value="vbXML_WININET_InternetOpen_Flags.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="WININET_InternetOpen_Types">
+				<param name="Local" value="vbXML_WININET_InternetOpen_Types.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XML_DTDAttributeModifiers">
+				<param name="Local" value="vbXML_XML_DTDAttributeModifiers.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XML_DTDAttributeVarieties">
+				<param name="Local" value="vbXML_XML_DTDAttributeVarieties.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XML_DTDElementContentRules">
+				<param name="Local" value="vbXML_XML_DTDElementContentRules.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XML_DTDSubElementRules">
+				<param name="Local" value="vbXML_XML_DTDSubElementRules.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XML_DTDSubElementVarieties">
+				<param name="Local" value="vbXML_XML_DTDSubElementVarieties.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XML_Errors">
+				<param name="Local" value="vbXML_XML_Errors.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XML_NodeType">
+				<param name="Local" value="vbXML_XML_NodeType.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ValidationRules">
+				<param name="Local" value="vbXML_XML_ValidationRules.htm">
+				</OBJECT>
+		</UL>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Licensing etc">
+		<param name="Local" value="vbXML_Docs_DullStuff.htm">
+		</OBJECT>
+</UL>
+</BODY></HTML>

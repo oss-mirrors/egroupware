@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>WININET_HTTPOpenRequest_Flags Enumerated List</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXML_WININET_HTTPOpenRequest_Flags"></a>WININET_HTTPOpenRequest_Flags Enumerated List</H1>
+<P><U>See Also</U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <a href="vbXML_XMLHTTPCall_HTTPOpenRequestFlags.htm">Applies To</a></P>
+<P>This enumerated list is used in the HTTPOpenRequest function to set up the function flags.</P>
+These constants come from Microsoft Knowledge Base Article - Q185519, 
+<a href="http://msdn.microsoft.com/workshop/networking/wininet/reference/constants/api_flags.asp">msdn.microsoft.com/workshop/networking/wininet/reference/constants/api_flags.asp</a> and
+<a href="http://msdn.microsoft.com/workshop/networking/wininet/reference/functions/httpopenrequest.asp">msdn.microsoft.com/workshop/networking/wininet/reference/functions/httpopenrequest.asp</a>
+
+<P class=label>INTERNET_FLAG_CACHE_IF_NET_FAIL</p>
+<p>Value &H10000 - Returns the resource from the cache if the network request for the resource fails due to an ERROR_INTERNET_CONNECTION_RESET or ERROR_INTERNET_CANNOT_CONNECT error.</p>
+
+<P class=label>INTERNET_FLAG_HYPERLINK</p>
+<p>Value &H400 - Forces a reload if there was no Expires time and no LastModified time returned from the server when determining whether to reload the item from the network.</p>
+
+<P class=label>INTERNET_FLAG_IGNORE_CERT_CN_INVALID</p>
+<p>Value &H1000 - Disables Win32 Internet function checking of SSL/PCT-based certificates that are returned from the server against the host name given in the request. Win32 Internet functions use a simple check against certificates by comparing for matching host names and simple wildcarding rules.</p>
+
+<P class=label>INTERNET_FLAG_IGNORE_CERT_DATE_INVALID</p>
+<p>Value &H2000 - Disables Win32 Internet function checking of SSL/PCT-based certificates for proper validity dates.</p>
+
+<P class=label>INTERNET_FLAG_IGNORE_REDIRECT_TO_HTTP</p>
+<p>Value &H8000 - Disables the ability of the Win32 Internet functions to detect this special type of redirect. When this flag is used, Win32 Internet functions transparently allow redirects from HTTPS to HTTP URLs.</p>
+
+<P class=label>INTERNET_FLAG_IGNORE_REDIRECT_TO_HTTPS</p>
+<p>Value &H4000 - Disables the ability of the Win32 Internet functions to detect this special type of redirect. When this flag is used, Win32 Internet functions transparently allow redirects from HTTP to HTTPS URLs.</p>
+
+<P class=label>INTERNET_FLAG_KEEP_CONNECTION</p>
+<p>Value &H400000 - Uses keep-alive semantics, if available, for the connection.
+This flag is required for Microsoft Network (MSN), NT LAN Manager (NTLM), and other types of authentication.</p>
+
+<P class=label>INTERNET_FLAG_NEED_FILE</p>
+<p>Value &H10 - Causes a temporary file to be created if the file cannot be cached.</p>
+
+<P class=label>INTERNET_FLAG_MUST_CACHE_REQUEST</p>
+<p>Value INTERNET_FLAG_NEED_FILE - Identical to the preferred value, INTERNET_FLAG_NEED_FILE. Causes a temporary file to be created if the file cannot be cached.</p>
+
+<P class=label>INTERNET_FLAG_NO_AUTH</p>
+<p>Value &H40000 -  Does not attempt authentication automatically.</p>
+
+<P class=label>INTERNET_FLAG_NO_AUTO_REDIRECT</p>
+<p>Value &H200000 - Does not automatically handle redirection.</p>
+
+<P class=label>INTERNET_FLAG_NO_CACHE_WRITE</p>
+<p>Value &H4000000 - Does not add the returned entity to the cache.</p>
+
+<P class=label>INTERNET_FLAG_DONT_CACHE</p>
+<p>Value INTERNET_FLAG_NO_CACHE_WRITE - Does not add the returned entity to the cache. This is identical to the preferred value, INTERNET_FLAG_NO_CACHE_WRITE.</p>
+
+<P class=label>INTERNET_FLAG_NO_COOKIES</p>
+<p>Value &H80000 - Does not automatically add cookie headers to requests, and does not automatically add returned cookies to the cookie database.</p>
+
+<P class=label>INTERNET_FLAG_NO_UI</p>
+<p>Value &H200 - Disables the cookie dialog box.</p>
+
+<P class=label>INTERNET_FLAG_PRAGMA_NOCACHE</p>
+<p>Value &H100 - Forces the request to be resolved by the origin server, even if a cached copy exists on the proxy.</p>
+
+<P class=label>INTERNET_FLAG_RELOAD</p>
+<p>Value &H80000000 - Forces a download of the requested file, object, or directory listing from the origin server, not from the cache.</p>
+
+<P class=label>INTERNET_FLAG_RESYNCHRONIZE</p>
+<p>Value &H800 - Reloads HTTP resources if the resource has been modified since the last time it was downloaded. All FTP and Gopher resources are reloaded.</p>
+
+<P class=label>INTERNET_FLAG_SECURE</p>
+<p>Value &H800000 - Uses secure transaction semantics. This translates to using Secure Sockets Layer/Private Communications Technology (SSL/PCT) and is only meaningful in HTTP requests.</p>
+
+</BODY>
+</HTML>

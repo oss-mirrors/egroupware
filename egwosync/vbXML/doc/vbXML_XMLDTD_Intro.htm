@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XMLDTD Object</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXML_XMLDTD_Intro"></a>XMLDTD Object</H1>
+<P><U>See Also</U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <U><A href="vbXML_XMLDTD_Properties.htm">Properties</A></U>&nbsp;&nbsp; <U><A href="vbXML_XMLDTD_Methods.htm">Methods</A></U>&nbsp;&nbsp; <U>Events</U></P>
+<p>Models an XML Document Type Definition.</p>
+<P class=label>Class Diagram</P>
+<P><IMG src="vbXML_XMLDTD.gif"></P>
+<P class=label>Remarks</P>
+<p>The <b>XMLDTD</b> object is very simple and at present only supports simple "&lt;!Element  ... &gt;" tags.
+Elements are stored in the <a href="vbXML_XMLDTD_Elements.htm">Elements</a> property.
+The <a href="vbXML_XMLDTD_ParseFile.htm">ParseFile</a>, <a href="vbXML_XMLDTD_ParseString.htm">ParseString</a> and <a href="vbXML_XMLDTD_ParseWeb.htm">ParseWeb</a> methods take a DTD and parse it into the DTD object,
+extracting the element definitions and building the <a href="vbXML_XMLDTD_Elements.htm">Elements</a> property.
+The <a href="vbXML_XMLDTD_GetElement.htm">GetElement</a> method returns the details of an element from the DTD.</p>
+<p>The "&lt;!Element  ... &gt;" tags supported are simple ones without complex nested rules. For example :</p>
+<pre><code>&lt;!ELEMENT element1 (subelement1 | subelement2* | subelement3 | subelement4)*&gt;</code></pre>
+<p>is supported, however, something like the following example is not :</p>
+<pre><code>&lt;!ELEMENT element1 ((subelement1* | subelement2), subelement3)*&gt;</code></pre>
+
+</BODY>
+</HTML>

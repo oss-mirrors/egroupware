@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XMLDTDElement Object</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXML_XMLDTDElement_Intro"></a>XMLDTDElement Object</H1>
+<P><U>See Also</U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <U><A href="vbXML_XMLDTDElement_Properties.htm">Properties</A></U>&nbsp;&nbsp; <U><A href="vbXML_XMLDTDElement_Methods.htm">Methods</A></U>&nbsp;&nbsp; <U>Events</U></P>
+<p>Models an XML DTD element declaration.</p>
+<P class=label>Class Diagram</P>
+<P><IMG src="vbXML_XMLDTDElement.gif"></P>
+<P class=label>Remarks</P>
+<p>The <b>XMLDTDElement</b> object models the DTD element declaration using the <a href="vbXML_XMLDTDElement_Attlist.htm">Attlist</a>, <a href="vbXML_XMLDTDElement_ElementContentRules.htm">ElementContentRules</a>, <a href="vbXML_XMLDTDElement_Name.htm">Name</a> and <a href="vbXML_XMLDTDElement_SubElements.htm">SubElements</a> properties.</p>
+<P class=label>Background</P>
+<p>An XML DTD Element definition can have a number of sub-elements. These sub-elements are the valid sub-nodes that can be below the node.
+These sub-nodes are specified in brackets after the node. The following shows a complicated example from the RSS 0.91 DTD :</p>
+<pre><code>&lt;!ELEMENT channel (title | description | link | language |
+                   item+ | rating? | image? | textinput? |
+                   copyright? | pubDate? | lastBuildDate? |
+                   docs? | managingEditor? | webMaster? |
+                   skipHours? | skipDays?)*&gt;</code></pre>
+
+</BODY>
+</HTML>

@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XMLRPCValue Object</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPCValue_Intro"></a>XMLRPCValue Object</H1>
+<P><A href="vbXMLRPCApplies_To_Array_Params_Member.htm">See Also</a>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <A href="vbXMLRPCValue_Properties.htm">Properties</A>&nbsp;&nbsp; <A href="vbXMLRPCValue_Methods.htm">Methods</A>&nbsp;&nbsp; <U>Events</U></P>
+<p>Models an XML-RPC Value structure.</p>
+<P class=label>Class Diagram</P>
+<P><IMG src="XMLRPCValue.gif"></P>
+<P class=label>Remarks</P>
+<p>The XML-RPC Value structure can contain one of eight <A href="vbXMLRPC_ValueTypes.htm">XML-RPC types</a>. These are stored in this object as eight <A href="vbXMLRPCValue_Properties.htm">properties</a> that end in the word Value, e.g. 'ArrayValue'. The object can only be of one type and this is indicated by the <A href="vbXMLRPCValue_ValueType.htm">ValueType</a> property. This object is not creatable and so needs to be referenced from one of its parent objects (<a href="vbXMLRPCArray_Intro.htm">XMLRPCArray</a>, <a href="vbXMLRPCMember_Intro.htm">XMLRPCMember</a> or <a href="vbXMLRPCParams_Intro.htm">XMLRPCParams</a>). An example of the way to use the <b>XMLRPCValue</b> object is detailed as follows:</p>
+<pre><code>Dim X As New XMLRPCArray
+
+X.AddString "Fred"
+
+If X(1).ValueType <> XMLRPC_STRING Then
+    MsgBox "Expecting A String", vbCritical + vbOKOnly, App.Title
+Else
+    MsgBox "Value is : '" & X(1).StringValue & "'", vbInformation + vbOKOnly, App.Title
+End If</code></pre>
+
+<P class=label>Background</P>
+<P>The <A href="http://www.xmlrpc.com/spec">XML-RPC specification</A> details the structure of the XML fragment which this object models as follows:</P>
+
+<pre><code>&lt;value&gt;&lt;int&gt;4&lt;/int&gt;&lt;/value&gt;</code></pre>
+
+</BODY>
+</HTML>

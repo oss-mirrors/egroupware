@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XMLRPCBase64 Object</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPCBase64_Intro"></a>XMLRPCBase64 Object</H1>
+<P><u>See Also</u>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <A href="vbXMLRPCBase64_Properties.htm">Properties</A>&nbsp;&nbsp; <A href="vbXMLRPCBase64_Methods.htm">Methods</A>&nbsp;&nbsp; <U>Events</U></P>
+<p>Provides Base64 functions.</p>
+<P class=label>Class Diagram</P>
+<P><IMG src="XMLRPCBase64.gif"></P>
+<P class=label>Remarks</P>
+<P>To use the class to decode a Base64 string, set the <a href="vbXMLRPCBase64_Encoded.htm">Encoded</a> property to the encoded string and read the <a href="vbXMLRPCBase64_Unencoded.htm">Unencoded</a> property to get the unencoded string.
+To use the class to encode a Base64 string, set the <a href="vbXMLRPCBase64_Unencoded.htm">Unencoded</a> property to the unencoded string and read the <a href="vbXMLRPCBase64_Encoded.htm">Encoded</a> property to get the encoded string.
+The <a href="vbXMLRPCBase64_UseLineTerminator.htm">UseLineTerminator</a>, 
+<a href="vbXMLRPCBase64_LineLength.htm">LineLength</a> and 
+<a href="vbXMLRPCBase64_LineTerminator.htm">LineTerminator</a> 
+properties are used to define the behaviour of the object with respect to line terminators. 
+By default line terminator functionality is switched off (<a href="vbXMLRPCBase64_UseLineTerminator.htm">UseLineTerminator</a> is set to <b>False</b>).
+The line terminator properties have the following default values:</P>
+
+<table border=1 cellspacing=2 cellpadding=3>
+<tr><td><b>Property</b></td><td><b>Default Value</b></td></tr>
+<tr><td>UseLineTerminator</td><td>False</td></tr>
+<tr><td>LineLength</td><td>76</td></tr>
+<tr><td>LineTerminator</td><td>CR then LF</td></tr>
+</table>
+
+<P class=label>Background</P>
+<P>For more detail on Base64 encoding see RFC 2045.
+As an example the following Base64 string :</P>
+
+<pre><code>VXNlIHZiWE1MUlBDLmRsbCwgdGhlIGxlYWRpbmcgVmlzdWFsIEJhc2ljIGltcGxlbWVudGF0aW9uIG9mIFhNTC1SUEMsIG5vdyB3aXRoIHN1cHBvcnQgZm9yIEJhc2U2NC4=</code></pre>
+
+<p>Decodes to :</p>
+
+<pre><code>Use vbXMLRPC.dll, the leading Visual Basic implementation of XML-RPC, now with support for Base64.</code></pre>
+
+</BODY>
+</HTML>

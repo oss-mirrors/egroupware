@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XMLDOMParser Object</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXML_XMLDOMParser_Intro"></a>XMLDOMParser Object</H1>
+<P><U>See Also</U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <U><A href="vbXML_XMLDOMParser_Properties.htm">Properties</A></U>&nbsp;&nbsp; <U><A href="vbXML_XMLDOMParser_Methods.htm">Methods</A></U>&nbsp;&nbsp; <U>Events</U></P>
+<p>Models an XML <b>D</b>ocument <b>O</b>bject <b>M</b>odel Parser.</p>
+<P class=label>Class Diagram</P>
+<P><IMG src="vbXML_XMLDOMParser.gif"></P>
+<P class=label>Remarks</P>
+<p>The <b>XMLDOMParser</b> contains a large number of methods and properties. These can be broken into three groups.</p>
+<p>The base node group consist of functions that mimic the <a href="vbXML_XMLDOMNode_Intro.htm">XMLDOMNode</a> properties and methods.
+Specifically, the <a href="vbXML_XMLDOMParser_Position.htm">Position</a>, <a href="vbXML_XMLDOMParser_Level.htm">Level</a>, <a href="vbXML_XMLDOMParser_Value.htm">Value</a>, <a href="vbXML_XMLDOMParser_NodeType.htm">NodeType</a> and <a href="vbXML_XMLDOMParser_Attributes.htm">Attributes</a> properties.
+The <b>XMLDOMNode</b> object also contains collection class functionality to access sub-nodes of the base node.
+The number of items in the collection of sub-nodes is held in the <a href="vbXML_XMLDOMParser_Count.htm">Count</a> property,
+specific sub-nodes can be returned from the collection using the <a href="vbXML_XMLDOMParser_Item.htm">Item</a> method,
+while the entire collection of sub-nodes can be iterated using the <B>For</B> <B>Each...Next</B> structure.</p>
+
+<p>There are methods used to parse in the XML File.
+<a href="vbXML_XMLDOMParser_ParseFile.htm">ParseFile</a>,
+<a href="vbXML_XMLDOMParser_ParseString.htm">ParseString</a>
+and <a href="vbXML_XMLDOMParser_ParseWeb.htm">ParseWeb</a>
+will take an XML document and parse it.
+The text in the document is then stored in the read-only
+<a href="vbXML_XMLDOMParser_RawDocument.htm">RawDocument</a> property.</p>
+
+<p>There are properties and methods that validate a file against a DTD.
+The <a href="vbXML_XMLDOMParser_ValidationRule.htm">ValidationRule</a> property reports the validation rule in force.
+<a href="vbXML_XMLDOMParser_DTD.htm">DTD</a> and <a href="vbXML_XMLDOMParser_RootElement.htm">RootElement</a> are properties that hold the DTD and the root element for validation.
+<a href="vbXML_XMLDOMParser_Validate.htm">Validate</a> and <a href="vbXML_XMLDOMParser_ValidateNode.htm">ValidateNode</a> will validate the document against the DTD and root element.</p>
+
+<P>A <b>XMLDOMParser</b> object can be created the same way other objects are created. For example:</P>
+<pre><code>Dim X As New XMLDOMParser</code></pre>
+
+</BODY>
+</HTML>

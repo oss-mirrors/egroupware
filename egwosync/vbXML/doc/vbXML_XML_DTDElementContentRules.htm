@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>XML_DTDElementContentRules Enumerated List</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXML_XML_DTDElementContentRules"></a>XML_DTDElementContentRules Enumerated List</H1>
+<P><U>See Also</U>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <a href="vbXML_XMLDTDElement_ContentRule.htm">Applies To</a></P>
+<P>This enumerated list contains the rules applied to a group of sub-nodes in a DTD Element.</P>
+
+<P class=label>XMLDTD_UNKNOWNCONTENTRULE</P>
+<P>Value 0 - This rule is applied when the object is created.
+It should be set never be seen by the user of the DLL unless there has been a problem with determining the element type.</P>
+
+<P class=label>XMLDTD_ONLY_ONE_FROM_THE_LIST</P>
+<P>Value 1 - Only one sub-element may be taken from the list. Equivalent to the DTD entry :</p>
+<pre><code>&lt;!ELEMENT element1 (subelement2 | subelement3)&gt;</code></pre>
+
+<P class=label>XMLDTD_ZERO_OR_MORE_FROM_THE_LIST</P>
+<P>Value 2 - Zero or more sub-elements may be taken from the list. Equivalent to the DTD entries :</P>
+<pre><code>&lt;!ELEMENT element1 (subelement2 | subelement3)*&gt;
+&lt;!ELEMENT element1 (subelement2 , subelement3)*&gt;</code></pre>
+
+<P class=label>XMLDTD_MUST_HAVE_ALL_ELEMENTS_IN_LIST</P>
+<P>Value 3 - All the elements in the list must be used. Equivalent to the DTD entry :</P>
+<pre><code>&lt;!ELEMENT element1 (subelement2 , subelement3)&gt;</code></pre>
+
+<P class=label>XMLDTD_ONE_ELEMENT</P>
+<P>Value 4 - Only one sub-element is defined for this node. Equivalent to the DTD entry :</P>
+<pre><code>&lt;!ELEMENT element1 (subelement2)&gt;</code></pre>
+
+<P class=label>XMLDTD_EMPTY</P>
+<P>Value 5 - There are no sub-elements to this tag. Equivalent to the DTD entry :</P>
+<pre><code>&lt;!ELEMENT element1 EMPTY&gt;</code></pre>
+
+<P class=label>XMLDTD_ANY</P>
+<P>Value 6 - This tag can have any sub-elements. Equivalent to the DTD entry :</P>
+<pre><code>&lt;!ELEMENT element1 ANY&gt;</code></pre>
+
+</BODY>
+</HTML>

@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>DecodeEscapeCodes Method</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<h1><a name="vbXML_XMLUtility_DecodeEscapeCodes"></a>DecodeEscapeCodes Method</h1>
+<P><A href="vbXML_XMLUtility_Methods.htm">See Also</A>&nbsp;&nbsp; <U>Example</U>&nbsp;&nbsp; <a href="vbXML_XMLUtility_Intro.htm">Applies To</a></P>
+<P>Returns a string with the HTML escape codes decoded.</P>
+<P class=label>Syntax</P>
+<P><I>object</I>.<B>DecodeEscapeCodes (</B><I>Data</I><B>)</B></P>
+<TABLE cols=2 cellPadding=5 rules=rows border=1 frame=below>
+<TBODY>
+<TR vAlign=top>
+<TD width="29%"><B>Part</B></TD>
+<TD width="71%"><B>Description</B></TD></TR>
+<TR vAlign=top>
+<TD width="29%"><I>object</I></TD>
+<TD width="71%">An object expression that evaluates to an <a href="vbXML_XMLUtility_Intro.htm">XMLRPCUtility</a> object.</TD></TR>
+<TR vAlign=top>
+<TD width="29%"><I>Data</I></TD>
+<TD width="71%">Required. The string to be converted.</TD></TR>
+</tbody>
+</table>
+<P class=label>Remarks</P>
+<p>An example of the code fragment and output needed is below:</P>
+<pre><code>Dim X as New XMLRPCUtility ' The Utility object
+
+Print X.DecodeEscapeCodes("&amp;lt;example&amp;gt;")
+
+&lt;example&gt;</code></pre>
+
+</BODY>
+</HTML>

@@ -1,0 +1,108 @@
+[Root]
+Most Recent Package=vbXMLRPC
+
+
+[Package|vbXMLRPC|Root]
+SubWizProgID=PDWizard.SetupPkgSubWiz
+BuildFolder=C:\Program Files\Microsoft Visual Studio\VB98\Projects\vbBlog\Sources\vbXMLRPC\Current\Install
+
+[Package|vbXMLRPC|Configure DAO ISAMs]
+Applicable=No
+
+[Package|vbXMLRPC|Configure DAO ODBC]
+JetWorkspace=
+ODBCDirect=
+
+[Package|vbXMLRPC|Files Found]
+
+[Package|vbXMLRPC|Files Released]
+vbXMLRPC.CHI=
+
+[Package|vbXMLRPC|Missing Dependency Information]
+C:\WINNT\system32\wininet.dll=
+
+[Package|vbXMLRPC|Out-of-Date Dependency Information]
+
+[Package|vbXMLRPC|Files Added]
+
+[Package|vbXMLRPC|Files Removed]
+c:\winnt\system32\wininet.dll=
+c:\winnt\system32\hh.exe=
+c:\winnt\system32\hhctrl.ocx=
+c:\winnt\system32\itircl.dll=
+c:\winnt\system32\itss.dll=
+
+[Package|vbXMLRPC|Files In Project]
+C:\Program Files\Microsoft Visual Studio\VB98\Projects\vbBlog\Sources\vbXMLRPC\Current\Code\vbXMLRPC.dll=Yes
+C:\WINNT\system32\MSVBVM60.DLL=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEAUT32.DLL=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEPRO32.DLL=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\ASYCFILT.DLL=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\STDOLE2.TLB=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=Yes
+C:\WINNT\system32\wininet.dll=No
+C:\Program Files\Microsoft Visual Studio\VB98\Projects\vbBlog\Sources\vbXMLRPC\Current\HTMLHelp\vbXMLRPC.chm=Yes
+C:\WINNT\system32\hhctrl.ocx=No
+C:\WINNT\system32\itss.dll=No
+C:\WINNT\system32\itircl.dll=No
+C:\WINNT\system32\hh.exe=No
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=Yes
+C:\WINNT\system32\VB6STKIT.DLL=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=Yes
+
+[Package|vbXMLRPC|Configure Registry Files]
+Applicable=No
+
+[Package|vbXMLRPC|Configure Remote Servers]
+Applicable=No
+
+[Package|vbXMLRPC|Install Locations]
+C:\Program Files\Microsoft Visual Studio\VB98\Projects\vbBlog\Sources\vbXMLRPC\Current\Code\vbXMLRPC.dll=$(WinSysPath)
+C:\WINNT\system32\MSVBVM60.DLL=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEAUT32.DLL=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEPRO32.DLL=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\ASYCFILT.DLL=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\STDOLE2.TLB=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=$(WinSysPathSysFile)
+C:\WINNT\system32\wininet.dll=$(WinSysPath)
+C:\Program Files\Microsoft Visual Studio\VB98\Projects\vbBlog\Sources\vbXMLRPC\Current\HTMLHelp\vbXMLRPC.chm=$(WinSysPath)
+C:\WINNT\system32\hhctrl.ocx=$(WinSysPath)
+C:\WINNT\system32\itss.dll=$(WinSysPath)
+C:\WINNT\system32\itircl.dll=$(WinSysPath)
+C:\WINNT\system32\hh.exe=$(WinSysPath)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=$(AppPath)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=$(WinPath)
+C:\WINNT\system32\VB6STKIT.DLL=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=$(WinPath)
+
+[Package|vbXMLRPC|Configure Shared Files]
+Applicable=No
+C:\Program Files\Microsoft Visual Studio\VB98\Projects\vbBlog\Sources\vbXMLRPC\Current\Code\vbXMLRPC.dll=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Projects\vbBlog\Sources\vbXMLRPC\Current\HTMLHelp\vbXMLRPC.chm=No
+
+[Package|vbXMLRPC|Distribution]
+Type=single
+Size=
+Title=vbXMLRPC - ActiveX DLL XML-RPC Client for Windows
+
+[Package|vbXMLRPC|Package]
+PackageFolder=C:\Program Files\Microsoft Visual Studio\VB98\Projects\vbBlog\Sources\vbXMLRPC\Current\Install
+ProjectFolder=C:\Program Files\Microsoft Visual Studio\VB98\Projects\vbBlog\Sources\vbXMLRPC\Current\Code
+ServerSideCab=
+File1=C:\Program Files\Microsoft Visual Studio\VB98\Projects\vbBlog\Sources\vbXMLRPC\Current\Install\setup.exe
+File2=C:\Program Files\Microsoft Visual Studio\VB98\Projects\vbBlog\Sources\vbXMLRPC\Current\Install\Setup.Lst
+File3=C:\Program Files\Microsoft Visual Studio\VB98\Projects\vbBlog\Sources\vbXMLRPC\Current\Install\vbXMLRPC.CAB
+Handler1=PDWizard.FolderDplySubWiz
+Handler2=PDWizard.WebPostDplySubWiz
+
+[Package|vbXMLRPC|IconGroups]
+Group0=vbXMLRPC
+PrivateGroup0=0
+Parent0=$(Programs)
+
+[Package|vbXMLRPC|vbXMLRPC]
+Icon1=vbXMLRPC.chm
+Title1=vbXMLRPC.dll Help
+StartIn1=$(WinSysPath)
+Key1=Icon1

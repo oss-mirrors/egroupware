@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<TITLE>vbXMLRPC.dll Getting Started</TITLE>
+<style>@import url(msdn_ie4.css);</style>
+<link disabled rel="stylesheet" href="msdn_ie3.css">
+</HEAD>
+<BODY>
+
+<H1><a name="vbXMLRPCGettingStarted"></a>vbXMLRPC.dll Getting Started</H1>
+
+<p class=label>Introduction</p>
+<p>In this example a connection is made to the (excellent) Meerkat XML-RPC Interface at the O'Reilly network. Take a look at the <a href="http://www.oreillynet.com/pub/a/rss/2000/11/14/meerkat_xmlrpc.html">Meerkat specification</a> for more info. The example was chosen to show the three different ways of compiling an XML-RPC request and how to process the response. The example set-up is detailed in a separate page (<a href="vbXMLRPCGettingStarted_Setup.htm">click here ...</a>) for clarity, in this page we will assume that you have already set up the program and played around with it a little to see how it works.</p>
+
+<p class=label>A parameter-less call</p>
+<p>Take a look at the code for the Command1_Click event. In this event we are calling Meerkat and asking it for the list of all channels. The first thing we do is set up the variables. <b>linsRequest</b> is an <a href="vbXMLRPCRequest_Intro.htm">XMLRPCRequest</a> object and is the request we are going to send to the remote server; note the use of the <b>New</b> keyword, we are creating the request from scratch not referencing an object so we need <b>New</b>. <b>linsResponse</b> is the <a href="vbXMLRPCResponse_Intro.htm">XMLRPCResponse</a> object and will hold the response from the remote server; note there is no <b>New</b> keyword here as we will just be using this object to hold a reference to the response returned as part of the <a href="vbXMLRPCRequest_Submit.htm">XMLRPCRequest Submit method</a>. <b>linsUtility</b> is an <a href="vbXMLRPCUtility_Intro.htm">XMLRPCUtility</a> object and will be used to decode some of the responses from the dll into useful strings. <b>linsValue</b> is an <a href="vbXMLRPCValue_Intro.htm">XMLRPCValue</a> object and will be used in a <b>For...Each</b> loop to iterate through the contents of an <a href="vbXMLRPCArray_Intro.htm">XMLRPCArray</a>; again note no <b>New</b> keyword. Similarly <b>linsMember</b> is an <a href="vbXMLRPCMember_Intro.htm">XMLRPCMember</a> object and will be used in a <b>For...Each</b> loop to iterate through the contents of an <a href="vbXMLRPCStruct_Intro.htm">XMLRPCStruct</a>; again note no <b>New</b> keyword. <b>llngCatId</b> is the category ID returned by the procedure call. <b>lstrCatTitle</b> is the name of the category returned by the procedure call. The final line switches the mouse pointer to an hourglass, we are taking data over the internet and even on a fast line this call will take in the order of seconds.</p>
+
+<blockquote><pre><code>Private Sub Command1_Click()
+
+    Dim linsRequest As New XMLRPCRequest
+    Dim linsResponse As XMLRPCResponse
+    Dim linsUtility As New XMLRPCUtility
+    Dim linsValue As XMLRPCValue
+    Dim linsMember As XMLRPCMember
+    Dim llngCatId As Long
+    Dim lstrCatTitle As String
+
+    Me.MousePointer = vbHourglass</code></pre></blockquote>
+
+<p>Three lines are need to set up the connection to the remote server. The first sets the <a href="vbXMLRPCRequest_HostName.htm">host name</a>, note there is no <i>http://</i> at the start and nothing after the <i>.com</i>. The second sets the <a href="vbXMLRPCRequest_HostPort.htm">host port</a>, note this will almost always be 80, but do check the interface reference docs to check. The final line sets the <a href="vbXMLRPCRequest_HostURI.htm">host URI</a>, note the leading "/".</p>
+    
+<blockquote><pre><code>    linsRequest.HostName = "www.oreillynet.com"
+    linsRequest.HostPort = 80
+    linsRequest.HostURI = "/meerkat/xml-rpc/server.php"</blockquote></code></pre>
+
+<p>We are passing no parameters to the remote server so all we need to set is the <a href="vbXMLRPCRequest_MethodName.htm">name of the remote method</a> to call.</p>
+    
+<blockquote><pre><code>    linsRequest.MethodName = "meerkat.getCategories"</code></pre></blockquote>
+
+<p>With the remote server and method call set up, we use the <a href="vbXMLRPCRequest_Submit.htm">Submit method</a> to call the server and return an <a href="vbXMLRPCResponse_Intro.htm">XMLRPCResponse</a> object.</p>
+    
+<blockquote><pre><code>    Set linsResponse = linsRequest.Submit</code></pre></blockquote>
+
+<p>Now we need to validate the response. The first thing we do is check the <a href="vbXMLRPCResponse_Status.htm">status</a> of the response, if it is not <b>XMLRPC_PARAMSRETURNED</b> then we have a problem. More sophisticated coding might be used to catch the various values that the <a href="vbXMLRPCResponse_Status.htm">status</a> property can return but this is an example so let's plow on. The second thing we do is just check that we are getting one value back in the <a href="vbXMLRPCParams_Intro.htm">XMLRPCParams</a> object that is the <a href="vbXMLRPCResponse_Params.htm">Params</a> property and that it is an <a href="vbXMLRPCArray_Intro.htm">XMLRPCArray</a>.</p>
+    
+<blockquote><pre><code>    If linsResponse.Status <> XMLRPC_PARAMSRETURNED Then
+        BugOut "Unexpected response from XML-RPC request " & linsResponse.Status
+    ElseIf linsResponse.Params.Count <> 1 Then
+        BugOut "Unexpected response from XML-RPC request " & linsResponse.Params.Count & " return parameters, expecting 1"
+    ElseIf linsResponse.Params(1).ValueType <> XMLRPC_ARRAY Then
+        BugOut "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(linsResponse.Params(1).ValueType) & " returned, expecting an array"
+    End If</code></pre></blockquote>
+
+<p>If we've got this far then we now need to go through the array and extract each struct. We use the <b>For...Each</b> code structure to achieve this. The <b>linsResponse.Params(1).ArrayValue</b> is the <a href="vbXMLRPCArray_Intro.htm">XMLRPCArray</a> object that has come back in the response from the remote server. The <a href="vbXMLRPCValue_Intro.htm">XMLRPCValue</a> object has eight methods for getting the various <a href="vbXMLRPC_ValueTypes.htm">value types</a> that XML-RPC supports, check the <a href="vbXMLRPCValue_ValueType.htm">XMLRPCValue ValueType property</a> to find out which one to call.</p>
+    
+<blockquote><pre><code>    For Each linsValue In linsResponse.Params(1).ArrayValue</code></pre></blockquote>
+
+<p>Now we are in the array we need to check first that every value is an <a href="vbXMLRPCStruct_Intro.htm">XMLRPCStruct</a> object.</p>
+    
+<blockquote><pre><code>        If linsValue.ValueType <> XMLRPC_STRUCT Then
+            BugOut "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(linsResponse.Params(1).ValueType) & " returned, expecting a struct"
+        End If</code></pre></blockquote>
+
+<p><a href="vbXMLRPCStruct_Intro.htm">XMLRPCStruct</a> objects consist of <a href="vbXMLRPCMember_Intro.htm">XMLRPCMembers</a> so we iterate through each member and assign it to the correct variable.</p>
+    
+<blockquote><pre><code>        For Each linsMember In linsValue.StructValue
+            If linsMember.Name = "id" Then
+                llngCatId = linsMember.Value.IntegerValue
+            ElseIf linsMember.Name = "title" Then
+                lstrCatTitle = linsMember.Value.StringValue
+            End If
+        Next linsMember</code></pre></blockquote>
+
+<p>Use standard Visual Basic code to add these to the list box.</p>
+    
+<blockquote><pre><code>        List1.AddItem lstrCatTitle
+        List1.ItemData(List1.ListCount - 1) = llngCatId
+        
+    Next linsValue</code></pre></blockquote>
+
+<p>Don't forget to switch the mouse pointer back to its default state.</p>
+    
+<blockquote><pre><code>    ClearCaptions
+    
+    Me.MousePointer = vbDefault
+
+End Sub</code></pre></blockquote>
+
+<p class=label>A simple parameter call</p>
+
+<p>In part of the example, we are going to use a value from the list set up in the previous section as the single integer parameter to send to Meerkat to get the list of channels that are in the category. The declarations are the same as previously except that this time we have <b>llngChanId</b> as the channel id and <b>lstrChanTitle</b> as the channel name.</p>
+
+<blockquote><pre><code>Private Sub List1_Click()
+
+    Dim linsRequest As New XMLRPCRequest
+    Dim linsResponse As XMLRPCResponse
+    Dim linsUtility As New XMLRPCUtility
+    Dim linsValue As XMLRPCValue
+    Dim linsMember As XMLRPCMember
+    Dim llngChanId As Long
+    Dim lstrChanTitle As String
+    
+    Me.MousePointer = vbHourglass</blockquote></code></pre>
+
+<p>Clear the second list otherwise we'll just keep on adding to it.</p>
+    
+<blockquote><pre><code>    List2.Clear
+    
+    linsRequest.HostName = "www.oreillynet.com"
+    linsRequest.HostPort = 80
+    linsRequest.HostURI = "/meerkat/xml-rpc/server.php"</blockquote></code></pre>
+
+<p>The next difference is that we are sending a parameter to the remote server so we use the <a href="vbXMLRPCRequest_Params.htm">Params</a> property to <a href="vbXMLRPCParams_AddInteger.htm">add an integer</a> to the call. Notice the <a href="vbXMLRPCRequest_MethodName.htm">name of the method call</a> has changed.</p>
+    
+<blockquote><pre><code>    linsRequest.MethodName = "meerkat.getChannelsByCategory"
+    linsRequest.Params.AddInteger (List1.ItemData(List1.ListIndex))</blockquote></code></pre>
+
+<p>The rest of the code is essentially the same, it just populates a different list box.</p>
+    
+<blockquote><pre><code>    Set linsResponse = linsRequest.Submit
+    
+    If linsResponse.Status <> XMLRPC_PARAMSRETURNED Then
+        BugOut "Unexpected response from XML-RPC request " & linsResponse.Status
+    ElseIf linsResponse.Params.Count <> 1 Then
+        BugOut "Unexpected response from XML-RPC request " & linsResponse.Params.Count & " return parameters, expecting 1"
+    ElseIf linsResponse.Params(1).ValueType <> XMLRPC_ARRAY Then
+        BugOut "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(linsResponse.Params(1).ValueType) & " returned, expecting an array"
+    End If
+    
+    For Each linsValue In linsResponse.Params(1).ArrayValue
+    
+        If linsValue.ValueType <> XMLRPC_STRUCT Then
+            BugOut "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(linsResponse.Params(1).ValueType) & " returned, expecting a struct"
+        End If
+        
+        For Each linsMember In linsValue.StructValue
+            If linsMember.Name = "id" Then
+                llngChanId = linsMember.Value.IntegerValue
+            ElseIf linsMember.Name = "title" Then
+                lstrChanTitle = linsMember.Value.StringValue
+            End If
+        Next linsMember
+        
+        List2.AddItem lstrChanTitle
+        List2.ItemData(List2.ListCount - 1) = llngChanId
+        
+    Next linsValue
+
+    ClearCaptions
+    
+    Me.MousePointer = vbDefault
+
+End Sub</code></pre></blockquote>
+
+<p class=label>A complex parameter call</p>
+
+<p>In the last part of the example, we are going to use build an <a href="vbXMLRPCStruct_Intro.htm">XMLRPCStruct</a> and pass this as part of the remote method call. We are going to use the channel id from the list box populated in the previous example to get the latest post in that channel. Once again, the declarations are the same as previously except that there are no non vbXMLRPC variables declared and we have an <a href="vbXMLRPCStruct_Intro.htm">XMLRPCStruct</a> object which will be created, populated and added to the parameters to be sent to the remote server.</p>
+
+<blockquote><pre><code>Private Sub List2_Click()
+
+    Dim linsRequest As New XMLRPCRequest
+    Dim linsResponse As XMLRPCResponse
+    Dim linsUtility As New XMLRPCUtility
+    Dim linsStruct As New XMLRPCStruct
+    Dim linsValue As XMLRPCValue
+    Dim linsMember As XMLRPCMember
+    
+    Me.MousePointer = vbHourglass
+    
+    linsRequest.HostName = "www.oreillynet.com"
+    linsRequest.HostPort = 80
+    linsRequest.HostURI = "/meerkat/xml-rpc/server.php"</blockquote></code></pre>
+
+<p>The next bit of code adds values to the <a href="vbXMLRPCStruct_Intro.htm">XMLRPCStruct</a> object. The call to the Meerkat server gets the latest post with its date and description. See the documentation at the Meerkat XML-RPC specification for the other options that can be added to the <a href="vbXMLRPCStruct_Intro.htm">XMLRPCStruct</a> to search and return custom information.</p>
+    
+<blockquote><pre><code>    linsRequest.MethodName = "meerkat.getItems"
+    linsStruct.AddInteger "channel", (List2.ItemData(List2.ListIndex))
+    linsStruct.AddInteger "dates", 1
+    linsStruct.AddInteger "descriptions", 1
+    linsStruct.AddInteger "num_items", 1
+    
+    linsRequest.Params.AddStruct linsStruct
+    
+    Set linsResponse = linsRequest.Submit</blockquote></code></pre>
+
+<p>The rest of the code rehearses aspects covered earlier.</p>
+    
+<blockquote><pre><code>    If linsResponse.Status <> XMLRPC_PARAMSRETURNED Then
+        BugOut "Unexpected response from XML-RPC request " & linsResponse.Status
+    ElseIf linsResponse.Params.Count <> 1 Then
+        BugOut "Unexpected response from XML-RPC request " & linsResponse.Params.Count & " return parameters, expecting 1"
+    ElseIf linsResponse.Params(1).ValueType <> XMLRPC_ARRAY Then
+        BugOut "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(linsResponse.Params(1).ValueType) & " returned, expecting an array"
+    ElseIf linsResponse.Params(1).ArrayValue.Count < 1 Then
+        MsgBox "No stories to read ...", vbOKOnly + vbInformation, App.Title
+        Me.MousePointer = vbDefault
+        Exit Sub
+    End If
+    
+    Set linsValue = linsResponse.Params(1).ArrayValue(1)
+    
+    For Each linsMember In linsValue.StructValue
+        If linsMember.Name = "title" Then
+            Text1.Text = linsMember.Value.StringValue
+        ElseIf linsMember.Name = "link" Then
+            Text2.Text = linsMember.Value.StringValue
+        ElseIf linsMember.Name = "description" Then
+            Text4.Text = linsMember.Value.StringValue
+        ElseIf linsMember.Name = "date" Then
+            Text3.Text = Format(linsMember.Value.DateTimeValue, "d mmm, yyyy hh:mm:ss")
+        End If
+    Next linsMember
+    
+    Me.MousePointer = vbDefault
+    
+End Sub</code></pre></blockquote>
+
+<p>Oh yes ... and there is this little <b>Sub</b> that puts up a message box with a message and stops the program.</p>
+
+<blockquote><pre><code>Private Sub BugOut(ByVal vstrError As String)
+    MsgBox vstrError, vbOKOnly + vbCritical, App.Title
+    End
+End Sub</code></pre></blockquote>
+
+</BODY>
+</HTML>
