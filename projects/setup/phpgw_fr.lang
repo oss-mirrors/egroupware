@@ -54,6 +54,7 @@ Edit project	projects	fr	Modifier le projet
 Edit project hours	projects	fr	Modifier les heures de projet
 Employee	projects	fr	Employé
 Ending date can not be after main projects ending date !	projects	fr	La date de fin ne peut pas être après la date de fin des projets principaux !
+exactly accounting	projects	fr	Comptabilisation exacte
 Generate Activity ID ?	projects	fr	Générer l'ID d'activité ?
 Generate Delivery ID ?	projects	fr	Générer l'ID de livraison ?
 Generate Project ID ?	projects	fr	Générer l'ID de projet ?
@@ -72,6 +73,7 @@ Invoices	projects	fr	Factures
 Invoice x has been created !	projects	fr	La facture %1 a été crée !
 Invoice x has been updated !	projects	fr	La facture %1 a été mise à jour !
 invoicing	projects	fr	Facturation
+invoicing of work time	projects	fr	Facturation du temps de travail
 Job	projects	fr	Tâche
 job archive	projects	fr	Archive des tâches
 Job date	projects	fr	Date de tâche
@@ -109,8 +111,9 @@ Project delivery	projects	fr	Livraison de projet
 Project ID	projects	fr	ID de projet
 Project list	projects	fr	Liste de projets
 Project name	projects	fr	Nom de projet
-Project preferences	projects	fr	Préférences de projet
+preferences for accountancy	projects	fr	Préférences pour la comptabilité
 projects preferences	preferences	fr	Préférences de projets
+project preferences	preferences	fr	Préférences de projets
 Project statistic	projects	fr	Statistique de projet
 project statistics	projects	fr	Statistiques de projet
 Remark	projects	fr	Remarque
@@ -122,10 +125,10 @@ select	projects	fr	Choisir
 Select main project	projects	fr	Choisir le projet principal
 Select per button !	projects	fr	Choisir par bouton !
 Select project	projects	fr	Choisissez le projet
-Select tax for workhours	projects	fr	Choisissez la taxe pour les heures de travail
+Select tax for work time	projects	fr	Choisissez la taxe pour le temps de travail
 Select users	projects	fr	Choisissez les utilisateurs
 Select groups	projects	fr	Choisissez les groupes
-Select your address	projects	fr	Choisissez votre adresse
+Select own address	projects	fr	Choisissez votre propre adresse
 small	projects	fr	Petit
 Start date can not be before main projects start date !	projects	fr	La date de début ne peut pas être avant la date de début des projets principaux !
 Statistic	projects	fr	Statistique
