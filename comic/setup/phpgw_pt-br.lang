@@ -1,0 +1,41 @@
+%1 by %2	comic	pt-br	%1 de %2
+%1 by %2 (%3)	comic	pt-br	%1 de %2 (%3)
+are you sure you want to reset all comic dates and resolved image urls?	comic	pt-br	Deseja realmente zerar todas as datas e endereços de imagens?
+censorship level	comic	pt-br	Nível de moderação
+censorship override enabled	comic	pt-br	Permitir ultrapassar da moderação
+comic	common	pt-br	Quadrinhos
+comic preferences updated	comic	pt-br	Preferências dos Quadrinhos atualizadas
+comics	common	pt-br	Quadrinhos
+comics per page	comic	pt-br	Quadrinhos por página
+comics scaled	comic	pt-br	Quadrinhos Selecionados
+daily comic	common	pt-br	Quadrinhos do Dia
+daily comic preferences	comic	pt-br	Preferência dos  Quadrinhos diários
+daily comics	admin	pt-br	Quadrinhos Diários
+daily comics - global options	comic	pt-br	Quadrinhos Diários - Opções Globais
+daily comics data	comic	pt-br	Dados dos Quadrinhos diários
+daily comics global options	comic	pt-br	Opções globais dos Quadrinhos diários
+display layout	comic	pt-br	Visualizar Layout
+display options	comic	pt-br	Opções de visualização
+egroupware daily comics	comic	pt-br	Quadrinhos Diários do eGroupWare
+front page comic	comic	pt-br	Página Inicial dos Quadrinhos
+front page comic scaled	comic	pt-br	Página inicial dos Quadrinhos Selecionados
+genre	comic	pt-br	Genero
+global comics	comic	pt-br	Quadrinhos globais
+global options	comic	pt-br	Opções globais
+global options updated	comic	pt-br	Opções globais atualizadas
+image source	comic	pt-br	Recursos de imagem
+max file size	comic	pt-br	Tamanho máximo do arquivo
+my comics	comic	pt-br	Meus Quadrinhos
+no_entries	comic	pt-br	sem registros
+parser	comic	pt-br	Análise
+performed %1 of element	comic	pt-br	Completo %1 do elemento
+phpgroupware daily comics	comic	pt-br	Quadrinhos diários do eGroupWare
+random	comic	pt-br	Randômico
+rated	comic	pt-br	Classificado
+remote (parse/snarf) enabled	comic	pt-br	Remoto (análisel / investigação)
+reset	comic	pt-br	Reiniciar
+reset comic data	admin	pt-br	Reiniciar dados de Quadrinhos
+resolve	comic	pt-br	Resolver
+showing %1 (%2 - %3 of %4)	comic	pt-br	visualizando %1 (%2 - %3 de %4)
+template	comic	pt-br	Modelo
+visit %1	comic	pt-br	Visitar %1
