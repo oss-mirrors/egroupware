@@ -121,12 +121,12 @@ doLoad();
 			<!-- <a href="{url_compose_empty}">{lang_compose}</a>&nbsp;&nbsp; -->
 			{lang_quicksearch}
 			<input type="text" size="50" name="quickSearch" value="{quicksearch}"
-			onChange="javascript:document.searchForm.submit()">
+			onChange="javascript:document.searchForm.submit()" style="border : 1px solid silver; font-size:11px;">
 		</td>
 		<td align='right' width="30%" style="border-color:silver; border-style:solid; border-width:0px 0px 1px 0px; ">
 			<a href="{url_filter}"><img src="{new}" alt="{lang_edit_filter}" title="{lang_edit_filter}" border="0"></a>&nbsp;&nbsp;
 			<input type=hidden name="changeFilter">
-			<select name="filter" onChange="javascript:document.searchForm.submit()">
+			<select name="filter" onChange="javascript:document.searchForm.submit()" style="border : 1px solid silver; font-size:11px;">
 				{filter_options}
 			</select>
 		</td>
@@ -143,7 +143,8 @@ doLoad();
 					<FORM name=messageList method=post action="{url_change_folder}">
 					<td align="LEFT" valign="center" width="5%">
 						<TT><SMALL>
-						<SELECT NAME="mailbox" onChange="document.messageList.submit()">
+						<SELECT NAME="mailbox" onChange="document.messageList.submit()" style="border-bottom : 1px solid; font-size:11px;
+			border-left : 0px; border-right : 0px; border-top : 0px;">
 							{options_folder}
 						</SELECT></SMALL></TT>
 						<input type="hidden" name="folderAction" value="changeFolder">
@@ -276,7 +277,7 @@ doLoad();
 <!-- END error_message -->
 
 <!-- BEGIN quota_block -->
-	<table border="1" cellpadding="0" cellspacing="0" width="200">
+	<table cellpadding="0" cellspacing="0" width="200" style="border : 1px solid silver;">
 		<tr valign="middle">
 			<td width="{leftWidth}%" bgcolor="{quotaBG}" align="center" valign="middle">
 				<small>{quotaUsage_left}</small>
