@@ -26,7 +26,7 @@
 		$file = Array(
 			'Site Configuration' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
 			'Lock/Unlock Pages' => $GLOBALS['phpgw']->link('/wiki/index.php','action=admin&locking=1'),
-			'Block/Unblock Hostes' => $GLOBALS['phpgw']->link('/wiki/index.php','action=admin&blocking=1')
+			'Block/Unblock Hosts' => $GLOBALS['phpgw']->link('/wiki/index.php','action=admin&blocking=1')
 		);
 		display_sidebox($appname,$menu_title,$file);
 	}
