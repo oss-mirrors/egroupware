@@ -314,7 +314,12 @@
 
   /*Set some defults*/
   if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UWash" &&
-      $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
+      $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" && !$folder) {
+// Changed by skeeter 04 Jan 01
+// This was changed to give me access back to my folders.
+// Not sure what it would break if the user has a default folder preference set,
+// but will allow access to other folders now.
+//      $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
       $phpgw_info["user"]["preferences"]["email"]["folder"] = (!$phpgw_info["user"]["preferences"]["email"]["folder"] ? "INBOX" : $phpgw_info["user"]["preferences"]["email"]["folder"]);
 //backward compatibility
       $folder = $phpgw_info["user"]["preferences"]["email"]["folder"];
