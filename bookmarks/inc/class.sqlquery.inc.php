@@ -9,22 +9,34 @@
  *
  */ 
 
-class Sql_Query {
-  var $classname = "Sql_Query";  ## Persistence Support
-  var $persistent_slots = array(
-    "conditions", "input_size", "input_max", "method", "lang", "translate", "container", "variable"
-  );
+	class sqlquery
+	{
+		var $classname = 'sqlquery';  ## Persistence Support
+
+		var $persistent_slots = array(
+				'conditions',
+				'input_size',
+				'input_max',
+				'method',
+				'lang',
+				'translate',
+				'container',
+				'variable',
+				'query'
+		);
+
+		var $query = '1=0';       // last WHERE clause used
+		var $conditions = 1;      // Allow for that many Query Conditions
+		var $input_size = 35;     // Used in text input field creation
+		var $input_max  = 80;
   
-  var $conditions = 1;      ## Allow for that many Query Conditions
-  var $input_size = 20;     ## Used in text input field creation
-  var $input_max  = 80;
+		var $method     = 'post'; // Generate get or post form...
+		var $lang       = 'en';   // HTML Widget language
+  
+		var $translate = 'on';    // If set, translate column names
+		var $container = '';      // If set, create a container table
+		var $variable  = 'on';    // if set, create variable size buttons
 
-  var $method     = "post"; ## Generate get or post form...
-  var $lang       = "en";   ## HTML Widget language
-
-  var $translate = "on";    ## If set, translate column names
-  var $container = "on";    ## If set, create a container table
-  var $variable  = "on";    ## if set, create variable size buttons
   
   ## HTML Widget dictionary
   var $dict = array(
@@ -188,7 +200,7 @@ class Sql_Query {
       $res .= sprintf("  <td%s><input type=\"text\" name=\"%s\" value=\"%s\" size=%d maxlength=%d%s></td>\n",
         ($class)?" class=$class":"",
         $this->makename($base, "input", $i),
-        $GLOBALS[$base]["input_".$i],
+        stripslashes($GLOBALS[$base]["input_".$i]),
         $this->input_size,
         $this->input_max,
         ($class)?" class=$class":"");

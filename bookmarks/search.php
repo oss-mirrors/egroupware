@@ -20,6 +20,7 @@
 	);
 	include('../header.inc.php');
 	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
+	$q = createobject('bookmarks.sqlquery');
 
 	$phpgw->template->set_file(array(
 		'common'  => 'common.tpl',
@@ -46,40 +47,10 @@
 	// if we don't have a query object for this session yet,
 	// then create one and save as a session variable.
 
-	include(PHPGW_SERVER_ROOT . '/bookmarks/inc/sqlquery.inc.php');
 	include(PHPGW_SERVER_ROOT . '/bookmarks/inc/plist.inc.php');
-
-	class bk_Sql_Query extends Sql_Query
-	{
-		var $classname = 'bk_Sql_Query';
-		var $persistent_slots = array(
-				'conditions',
-				'input_size',
-				'input_max',
-				'method',
-				'lang',
-				'translate',
-				'container',
-				'variable',
-				'query'
-		);
-
-		var $query = '1=0';       // last WHERE clause used
-		var $conditions = 1;      // Allow for that many Query Conditions
-		var $input_size = 35;     // Used in text input field creation
-		var $input_max  = 80;
-  
-		var $method     = 'post'; // Generate get or post form...
-		var $lang       = 'en';   // HTML Widget language
-  
-		var $translate = 'on';    // If set, translate column names
-		var $container = '';      // If set, create a container table
-		var $variable  = 'on';    // if set, create variable size buttons
-	}
 
 
 //  if (!isset($q)) {
-       $q = new bk_Sql_Query;
 //     $sess->register("q");
 //  }
 
@@ -261,7 +232,7 @@ if ($q->query == $noquery) {
   
   $tree_search_url = $phpgw->link('/bookmarks/tree.php',"where=" . base64_encode($q->query));
   $phpgw->template->set_var(array(
-    QUERY_CONDITION => htmlspecialchars($q->query),
+    QUERY_CONDITION => $phpgw->strip_html($q->query),
     BOOKMARK_LIST   => $bookmark_list,
     TREE_SEARCH_URL => $tree_search_url
   ));

@@ -13,7 +13,7 @@
 <hr>
 <small>Query Condition = {QUERY_CONDITION}
 &nbsp;&nbsp;&nbsp;
-<a href="javascript:pop_tree_search()">Open Results in Tree View</a>
+<!-- <a href="javascript:pop_tree_search()">Open Results in Tree View</a> -->
 </small><br>
 
 {BOOKMARK_LIST}
