@@ -90,7 +90,7 @@
 			//	exec("find " . $dir . '-mtime +' . $datedue . ' -exec rm -- {} ; 2>&1 > /dev/null');
 
 				exec("find " . $dir . ' -mtime +' . $datedue,$rarchives);
-		
+
 				if ($rarchives)
 				{
 					chdir($dir);
