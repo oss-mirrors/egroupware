@@ -1,4 +1,4 @@
-<!-- BEGIN main -->
+[B<!-- BEGIN main -->
 <center>
 <table border="0" cellspacing="1" cellpading="0" width="95%">
 <tr>
@@ -10,6 +10,7 @@
 				&nbsp;
 			</td>
 		</tr>
+		{activation_rows}
 		<tr bgcolor="{done_row_color}">
 			<td>
 				<a href="{done_link}">{lang_done}</a>
@@ -46,3 +47,11 @@
 	</td>
 </tr>
 <!-- END menu_row_bold -->
+
+<!-- BEGIN activation_row -->
+<tr bgcolor="{bg_01}">
+	<td>
+		<a href="{activation_link}">{lang_activate}</a>
+	</td>
+</tr>
+<!-- END activation_row -->

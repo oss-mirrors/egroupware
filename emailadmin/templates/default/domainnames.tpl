@@ -10,6 +10,7 @@
 				&nbsp;
 			</td>
 		</tr>
+		{activation_rows}
 		<tr bgcolor="{done_row_color}">
 			<td>
 				<a href="{done_link}">{lang_done}</a>
@@ -121,3 +122,10 @@
 </tr>
 <!-- END menu_row_bold -->
 
+<!-- BEGIN activation_row -->
+<tr bgcolor="{bg_01}">
+	<td>
+		<a href="{activation_link}">{lang_activate}</a>
+	</td>
+</tr>
+<!-- END activation_row -->

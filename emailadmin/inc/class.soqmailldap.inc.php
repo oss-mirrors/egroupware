@@ -18,9 +18,6 @@
 			global $phpgw, $phpgw_info;
 
 			$this->db		= $phpgw->db;
-			#$this->db2		= $this->db;
-			#$this->grants	= $phpgw->acl->get_grants('notes');
-			#$this->owner	= $phpgw_info['user']['account_id'];
 		}
 
 		function getLDAPStorageData($_serverid)
@@ -55,30 +52,20 @@
 			if ($sri)
 			{
 				$allValues = ldap_get_entries($ldap, $sri);
-				print "found data<br>";
 				
-				#return $data;
+				$data = array
+				(
+					'rcpthosts'	=> $allValues[0]['rcpthosts'],
+					'locals'	=> $allValues[0]['locals']
+				);
+
+				print $allValues[0]['rcpthosts'][0];
+
+				return $data;
 			}
 			else
 			{
-				$data = array
-				(
-					'rcpthosts'	=> array
-							   (
-							   	'0' => 'vater-www.shacknet.nu',
-							   	'1' => 'phpgw.de',
-							   	'2' => 'linux-at-work.de'
-							   ),
-					'locals'	=> array
-							   (
-							   	'0' => 'vater-www.shacknet.nu',
-							   	'1' => 'phpgw.de',
-							   	'2' => 'linux-at-work.de'
-							   )
-				);
-				
-				return $data;
-				#return false;
+				return false;
 			}
 			
 		}
@@ -123,6 +110,33 @@
 					$this->db->query($query);
 					break;
 			}
+		}
+
+		function writeConfigData($_data, $_serverid)
+		{
+			global $phpgw;
+		
+			$storageData = $this->getLDAPStorageData($_serverid);
+			
+			#print "write Data for ".$storageData['qmail_servername']."<br>";
+			
+			$ds = $phpgw->common->ldapConnect();
+			
+			// check if the DN exists, if not create it
+			$filter = "objectclass=*";
+			@ldap_read($ds,$storageData['ldap_basedn'], $filter);
+			if (ldap_errno($ds) == 32)
+			{
+				print "nix da<br>";
+				$ldapData["objectclass"][0] = "qmailldap";
+				$ldapData["description"]    = "settings for the qmail ldap control";
+				$ldapData["cn"]             = "internetsettings";
+				ldap_add($ds,$storageData['ldap_basedn'],$ldapData);
+			}
+			
+			$ldapData['rcpthosts']	= $_data['rcpthosts'];
+			
+			ldap_modify($ds,$storageData['ldap_basedn'],$ldapData);
 		}
 	}
 ?>

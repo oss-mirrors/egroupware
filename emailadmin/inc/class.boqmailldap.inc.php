@@ -44,25 +44,26 @@
 			{
 				#print "option1<br>";
 				$LDAPData = $this->soqmailldap->getLDAPData($_serverid);
-				$this->sessionData[$_serverid]['data'] = $LDAPData;
+				$this->sessionData[$_serverid] = $LDAPData;
+				$this->sessionData[$_serverid]['needActivation'] = 0;
 				
 				$this->saveSessionData();
 
-				#while(list($key, $value) = each($this->sessionData[$_serverid]['data']['rcpthosts']))
+				#while(list($key, $value) = each($this->sessionData[$_serverid]['rcpthosts']))
 				#{
 				#	print "... $key: $value<br>";
 				#}
 				
-				return $this->sessionData['$_serverid']['data'];
+				return $this->sessionData[$_serverid];
 			}
 			else
 			{
 				#print "option2<br>";
-				#while(list($key, $value) = each($this->sessionData[$_serverid]['data']['rcpthosts']))
+				#while(list($key, $value) = each($this->sessionData[$_serverid]['rcpthosts']))
 				#{
 				#	print ".... $key: $value<br>";
 				#}
-				return $this->sessionData[$_serverid]['data'];
+				return $this->sessionData[$_serverid];
 			}
 		}
 		
@@ -95,31 +96,50 @@
 		{
 			$serverid = $_getVars['serverid'];
 			
-			switch ($_postVars["bo_action"])
+			if (isset($_postVars["bo_action"]))
+			{
+				$bo_action = $_postVars["bo_action"];
+			}
+			elseif (isset($_getVars["bo_action"]))
+			{
+				$bo_action = $_getVars["bo_action"];
+			}
+			else
+			{
+				return false;
+			}
+			
+			print "bo_action: $bo_action<br>";
+			
+			switch ($bo_action)
 			{
 				case "add_locals":
-					$count = count($this->sessionData[$serverid]['data']['locals']);
+					$count = count($this->sessionData[$serverid]['locals']);
 					
-					$this->sessionData[$serverid]['data']['locals'][$count] = 
+					$this->sessionData[$serverid]['locals'][$count] = 
 						$_postVars["new_local"];
+						
+					$this->sessionData[$serverid]['needActivation'] = 1;
 					
 					$this->saveSessionData();
 					
 					break;
 					
 				case "add_rcpthosts":
-					$count = count($this->sessionData[$serverid]['data']['rcpthosts']);
+					$count = count($this->sessionData[$serverid]['rcpthosts']);
 					
-					$this->sessionData[$serverid]['data']['rcpthosts'][$count] = 
+					$this->sessionData[$serverid]['rcpthosts'][$count] = 
 						$_postVars["new_rcpthost"];
 						
 					if ($_postVars["add_to_local"] == "on")
 					{
-						$count = count($this->sessionData[$serverid]['data']['locals']);
+						$count = count($this->sessionData[$serverid]['locals']);
 						
-						$this->sessionData[$serverid]['data']['locals'][$count] = 
+						$this->sessionData[$serverid]['locals'][$count] = 
 							$_postVars["new_rcpthost"];
 					}
+					
+					$this->sessionData[$serverid]['needActivation'] = 1;
 					
 					$this->saveSessionData();
 					
@@ -128,7 +148,7 @@
 				case "remove_locals":
 					$i=0;
 					
-					while(list($key, $value) = each($this->sessionData[$serverid]['data']['locals']))
+					while(list($key, $value) = each($this->sessionData[$serverid]['locals']))
 					{
 						#print ".. $key: $value<br>";
 						if ($key != $_postVars["locals"])
@@ -138,7 +158,9 @@
 							$i++;
 						}
 					}
-					$this->sessionData[$serverid]['data']['locals'] = $newLocals;
+					$this->sessionData[$serverid]['locals'] = $newLocals;
+					
+					$this->sessionData[$serverid]['needActivation'] = 1;
 					
 					$this->saveSessionData();
 					
@@ -147,7 +169,7 @@
 				case "remove_rcpthosts":
 					$i=0;
 					
-					while(list($key, $value) = each($this->sessionData[$serverid]['data']['rcpthosts']))
+					while(list($key, $value) = each($this->sessionData[$serverid]['rcpthosts']))
 					{
 						#print ".. $key: $value<br>";
 						if ($key != $_postVars["rcpthosts"])
@@ -157,7 +179,9 @@
 							$i++;
 						}
 					}
-					$this->sessionData[$serverid]['data']['rcpthosts'] = $newRcpthosts;
+					$this->sessionData[$serverid]['rcpthosts'] = $newRcpthosts;
+					
+					$this->sessionData[$serverid]['needActivation'] = 1;
 					
 					$this->saveSessionData();
 					
@@ -174,6 +198,16 @@
 					);
 					$this->soqmailldap->update("save_ldap",$data);
 					$this->getLDAPData($_getVars["serverid"], '1');
+					
+					break;
+					
+				case "write_to_ldap":
+				
+					$this->soqmailldap->writeConfigData($this->sessionData[$serverid], $serverid);
+				
+					$this->sessionData[$serverid]['needActivation'] = 0;
+				
+					$this->saveSessionData();
 					
 					break;
 			}

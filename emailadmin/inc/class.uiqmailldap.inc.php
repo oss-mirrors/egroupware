@@ -86,6 +86,7 @@
 			$this->t->set_block('body','main');
 			$this->t->set_block('body','menu_row');
 			$this->t->set_block('body','menu_row_bold');
+			$this->t->set_block('body','activation_row');
 			
 			$this->translate();
 			
@@ -111,6 +112,19 @@
 					$this->t->parse('menu_rows','menu_row',True);
 				}
 				$i++;
+			}
+			
+			if ($ldapData['needActivation'] == 1)
+			{
+				$linkData = array
+				(
+					'menuaction'	=> 'qmailldap.uiqmailldap.save',
+					'pagenumber'	=> $pagenumber,
+					'serverid'	=> $serverid,
+					'bo_action'	=> 'write_to_ldap'
+				);
+				$this->t->set_var('activation_link',$phpgw->link('/index.php',$linkData));
+				$this->t->parse('activation_rows','activation_row');
 			}
 			
 			$this->t->set_var('done_row_color',$this->rowColor[($i)%2]);
@@ -254,6 +268,7 @@
 			$this->t->set_var('lang_server_list',lang('server list'));
 			$this->t->set_var('lang_server_name',lang('server name'));
 			$this->t->set_var('lang_server_description',lang('description'));
+			$this->t->set_var('lang_activate',lang('Activate'));
 			$this->t->set_var('lang_edit',lang('edit'));
 			$this->t->set_var('lang_save',lang('save'));
 			$this->t->set_var('lang_delete',lang('delete'));
