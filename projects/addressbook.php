@@ -205,5 +205,5 @@ if ($query) {
  $t->p("out");
 
 // ----------- end Done form declaration ------------
-//$phpgw->common->phpgw_footer();
+ $phpgw->common->phpgw_exit();
 ?>
