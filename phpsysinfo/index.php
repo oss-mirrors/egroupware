@@ -153,7 +153,7 @@ $xml .= "</phpsysinfo>";
     $XPath->importFromString($xml);
 
     // let the page begin.
-    require('./includes/system_header.php');
+    //require('./includes/system_header.php');
 
     $tpl->set_var('title', $text['title'] . ': ' . $XPath->getData('/phpsysinfo/Vitals/Hostname') . ' (' . $XPath->getData('/phpsysinfo/Vitals/IPAddr') . ')');
 
