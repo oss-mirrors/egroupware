@@ -328,7 +328,7 @@
 		{
 			if(!$message_id)
 			{
-				$message_id = $GLOBALS['HTTP_POST_VARS']['message_id'];
+				$message_id = get_var('message_id', array('GET','POST'));
 				$n_message  = $GLOBALS['HTTP_POST_VARS']['n_message'];
 			}
 
@@ -350,7 +350,7 @@
 		{
 			if(!$message_id)
 			{
-				$message_id = $GLOBALS['HTTP_POST_VARS']['message_id'];
+				$message_id = get_var('message_id', array('GET','POST'));
 				$n_message  = $GLOBALS['HTTP_POST_VARS']['n_message'];
 			}
 
