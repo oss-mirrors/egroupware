@@ -8,6 +8,7 @@
 
 files:
 create_tables.mysql 
+create_tables.pgsql 
 lang.sql and/or de_translation.sql
 [ can be found in projects-doc-directory ]
 

@@ -3,4 +3,4 @@
 11/26/2000: included pstatistics,pbilling,pdelivery in projects
 11/28/2000: fixed bugs in invoice-print + numbers-counting
             some layout changes
- 
+            rework search & projects data access
