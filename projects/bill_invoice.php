@@ -292,7 +292,7 @@
   }
     $t->set_var(sum_sum,sprintf("%01.2f",$summe));
     $t->set_var(sum_aes,$sumaes);
-    $t->set_var(title_netto,lang("Netto"));
+    $t->set_var(title_netto,lang("Net"));
 
 // na_list
   if($invoice_id) {

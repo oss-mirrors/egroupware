@@ -97,7 +97,7 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Activity','proje
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Active','projects','en','Active');                                                                                                      
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Select','projects','en','Select');                                                                                                      
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Workunit','projects','en','Workunit');                                                                                                       
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Netto','projects','en','Netto');                                                                                                        
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Net','projects','en','Net');                                                                                                        
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Sum','projects','en','Sum');                                                                                                            
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('New project','projects','en','New project');                                                                                            
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Edit','projects','en','Edit');                                                                                                          

@@ -53,22 +53,18 @@
         <td align=center>{edithour}</td>
       </tr>
 <!-- END projecthours_list -->
-
+</table><br><br>
+<table width=100% border=0 cellspacing=0 cellpadding=0>
       <tr bgcolor="{tr_color}">
-        <td>
-        </td>
-        <td align=center>
-         <font size="4"><b>{title_netto}</b></font></td>
-        <td></td>
-        <td></td>
-        <td align=right>
-         <font size="4"><b>{sum_aes}</b></font>
-        </td>
-        <td>
-        </td>
-        <td align=right>
-         <font size="4"><b>{sum_sum}</b></font></td>
-        <td></td>
+        <td width="3%">&nbsp;</td>
+        <td width="20%">&nbsp;</td>
+        <td width="20%">&nbsp;</td>
+        <td width="10%">&nbsp;</td>
+        <td width="10%" align=center><font size="4"><b>{title_netto}</b></font></td>
+        <td width="10%" align=right><font size="4"><b>{sum_aes}</b></font></td>
+        <td width="10%">&nbsp;</td>
+        <td width="7%" align=right><font size="4"><b>{sum_sum}</b></font></td>
+        <td width="10%">&nbsp;</td>
       </tr>
 </table>
 <table border=0 cellpadding=3 cellspacing=1>
