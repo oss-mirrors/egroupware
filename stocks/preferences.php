@@ -28,6 +28,17 @@
      exit;  
   }
 
+  if ($mainscreen) {
+     if ($mainscreen == "enable") {
+        $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"enabled","stocks","True");
+     }
+     if ($mainscreen == "disable") {
+     $phpgw->common->preferences_delete("byappvar_single",$phpgw_info["user"]["account_id"],"stocks","enabled");
+     }
+     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/stocks/preferences.php"));
+     exit;     
+  }
+
   $phpgw->common->phpgw_header();
   $phpgw->common->navbar();
 
@@ -60,6 +71,20 @@
      }
 
      $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+     
+     echo '<tr bgcolor="' . $tr_color . '"><td colspan="3">&nbsp;</td></tr>';
+     
+     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+     echo '<tr bgcolor="' . $tr_color . '"><td colspan="2">';
+     if ($phpgw_info["user"]["preferences"]["stocks"]["enabled"]) {
+        echo lang("Display stocks on main screen is enabled");
+        $newstatus = "disable";
+     } else {
+        echo lang("Display stocks on main screen is disabled");
+        $newstatus = "enable";
+     }
+     echo '</td><td><a href="' . $phpgw->link("","mainscreen=$newstatus") . '">' . $newstatus . '</a>'
+        . '</td><tr>';
      ?>
 
     <tr>
