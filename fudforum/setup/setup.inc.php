@@ -32,6 +32,7 @@
 	$setup_info['fudforum']['hooks']['deleteaccount'] = 'fudforum.ufud.del_account';
 	$setup_info['fudforum']['hooks']['changepassword'] = 'fudforum.ufud.chg_settings';
 	$setup_info['fudforum']['hooks'][] = 'admin';
+	$setup_info['fudforum']['hooks'][] = 'preferences';
 
 	/* the dependencies */
 	$setup_info['fudforum']['depends'][] = array(
