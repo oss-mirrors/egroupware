@@ -66,5 +66,5 @@ url is required.	bookmarks	ko	URL이 필요합니다.
 view bookmark	bookmarks	ko	북마크 보기
 view this bookmark	bookmarks	ko	이 북마크 보기
 warning	bookmarks	ko	경고
-you are viewing this site outside of phpgroupware	bookmarks	ko	귀하는 phpGroupWare 외부에서 이 사이트를 보고 있습니다
+you are viewing this site outside of egroupware	bookmarks	ko	귀하는 eGroupWare 외부에서 이 사이트를 보고 있습니다
 you must select a category	bookmarks	ko	반드시 카테고리를 선택해야합니다

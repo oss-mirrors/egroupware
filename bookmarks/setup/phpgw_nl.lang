@@ -65,5 +65,5 @@ url is required.	bookmarks	nl	URL is vereist.
 view bookmark	bookmarks	nl	Favoriet weergeven
 view this bookmark	bookmarks	nl	Deze favoriet weergeven
 warning	bookmarks	nl	Waarschuwing
-you are viewing this site outside of phpgroupware	bookmarks	nl	U bekijkt deze website buiten eGroupWare
+you are viewing this site outside of egroupware	bookmarks	nl	U bekijkt deze website buiten eGroupWare
 you must select a category	bookmarks	nl	U moet een categorie selecteren

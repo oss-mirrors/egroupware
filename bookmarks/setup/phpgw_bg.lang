@@ -66,5 +66,5 @@ url is required.	bookmarks	bg	Изисква се URL.
 view bookmark	bookmarks	bg	Преглед на отметка
 view this bookmark	bookmarks	bg	Преглед на тази отметка
 warning	bookmarks	bg	Внимание
-you are viewing this site outside of phpgroupware	bookmarks	bg	Този сайт е външен за phpGroupWare
+you are viewing this site outside of egroupware	bookmarks	bg	Този сайт е външен за eGroupWare
 you must select a category	bookmarks	bg	Трябва да изберете категория

@@ -66,5 +66,5 @@ url is required.	bookmarks	no	En URL er nødvendig.
 view bookmark	bookmarks	no	Vis Favoritt
 view this bookmark	bookmarks	no	Vis denne favoritten
 warning	bookmarks	no	Advarsel
-you are viewing this site outside of phpgroupware	bookmarks	no	Du ser denne siden på utsiden av phpGroupWare
+you are viewing this site outside of egroupware	bookmarks	no	Du ser denne siden på utsiden av eGroupWare
 you must select a category	bookmarks	no	Du må velge en kategori

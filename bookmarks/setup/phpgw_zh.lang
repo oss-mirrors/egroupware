@@ -68,5 +68,5 @@ url is required.	bookmarks	zh	缺少地址
 view bookmark	bookmarks	zh	浏览书签
 view this bookmark	bookmarks	zh	浏览该书签
 warning	bookmarks	zh	警告
-you are viewing this site outside of phpgroupware	bookmarks	zh	您正在浏览eGroupWare以外的网站
+you are viewing this site outside of egroupware	bookmarks	zh	您正在浏览eGroupWare以外的网站
 you must select a category	bookmarks	zh	必须指定导入书签的类别

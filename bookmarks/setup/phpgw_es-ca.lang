@@ -64,5 +64,5 @@ url is required.	bookmarks	es-ca	URL obligatória
 view bookmark	bookmarks	es-ca	Veure adreça d'interès
 view this bookmark	bookmarks	es-ca	Veure aquesta adreça d'interès
 warning	bookmarks	es-ca	Avís
-you are viewing this site outside of phpgroupware	bookmarks	es-ca	Esteu veient aquest lloc des de fora d'eGroupWare
+you are viewing this site outside of egroupware	bookmarks	es-ca	Esteu veient aquest lloc des de fora d'eGroupWare
 you must select a category	bookmarks	es-ca	Heu de seleccionar una categoria

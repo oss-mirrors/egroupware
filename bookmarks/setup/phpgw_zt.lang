@@ -67,5 +67,5 @@ url is required.	bookmarks	zt	網址是必填欄位
 view bookmark	bookmarks	zt	瀏覽書籤
 view this bookmark	bookmarks	zt	瀏覽這個書籤
 warning	bookmarks	zt	注意
-you are viewing this site outside of phpgroupware	bookmarks	zt	您正在瀏覽phpGroupWare以外的網站
+you are viewing this site outside of egroupware	bookmarks	zt	您正在瀏覽eGroupWare以外的網站
 you must select a category	bookmarks	zt	您必須選取一個類別

@@ -66,5 +66,5 @@ url is required.	bookmarks	hu	URL szükséges.
 view bookmark	bookmarks	hu	Könyvjelzö megtekintése
 view this bookmark	bookmarks	hu	Ennek a könyvjelzönek a megtekintése
 warning	bookmarks	hu	Figyelmeztetés
-you are viewing this site outside of phpgroupware	bookmarks	hu	A phpGroupWare-n kívül nézed ezt az oldalt
+you are viewing this site outside of egroupware	bookmarks	hu	A eGroupWare-n kívül nézed ezt az oldalt
 you must select a category	bookmarks	hu	Egy kategóriát kell választanod
