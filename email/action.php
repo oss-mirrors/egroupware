@@ -14,24 +14,27 @@
   /* $Id$ */
 
 	$phpgw_info["flags"] = array(
-		"currentapp" => "email", 
-		"enable_network_class" => True, 
-		"noheader" => True, "nonavbar" => True
+		'currentapp' => 'email', 
+		'enable_network_class' => True, 
+		'noheader' => True,
+		'nonavbar' => True
 	);
 
 	include("../header.inc.php");
-	$totalmessages = $phpgw->msg->num_msg($mailbox);
+	$folder = urldecode($folder);
+
+	$totalmessages = $phpgw->dcom->num_msg($mailbox);
 
 	if ($what == "move")
 	{
 		$tofolder = ($tofolder == "INBOX" ? 
 			"INBOX" : 
-			$phpgw->msg->construct_folder_str($tofolder));
+			$phpgw->dcom->construct_folder_str($tofolder));
 
 		$msgs = $msglist ? implode($msglist, ",") : $msglist;
-		if (! $phpgw->msg->mail_move($mailbox, $msgs, $tofolder))
+		if (! $phpgw->dcom->mail_move($mailbox, $msgs, $tofolder))
 		{
-			echo "summin went rong<br>";
+			echo "<br>mail_move: summin went rong<br>";
 		}
 	}
 
@@ -41,11 +44,11 @@
 		{
 			if ($folder == "Trash")
 			{
-				$phpgw->msg->delete($mailbox, $msglist[$i],"",$folder);
+				$phpgw->dcom->delete($mailbox, $msglist[$i],"",$folder);
 			}
 			else
 			{
-				$phpgw->msg->delete($mailbox, $msglist[$i]);
+				$phpgw->dcom->delete($mailbox, $msglist[$i]);
 			}
 		}
 		$totaldeleted = "&td=$i";
@@ -56,11 +59,11 @@
 	{
 		if ($folder == "Trash")
 		{
-			$phpgw->msg->delete($mailbox, $msgnum,"",$folder);
+			$phpgw->dcom->delete($mailbox, $msgnum,"",$folder);
 		}
 		else
 		{
-			$phpgw->msg->delete($mailbox, $msgnum);
+			$phpgw->dcom->delete($mailbox, $msgnum);
 		}
 		if ($totalmessages != $msgnum || $phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old")
 		{
@@ -77,8 +80,8 @@
 			$dontforward = True;
 		}
 	}
-	$phpgw->msg->expunge($mailbox);
-	$phpgw->msg->close($mailbox);
+	$phpgw->dcom->expunge($mailbox);
+	$phpgw->dcom->close($mailbox);
 
 
 	if (! $dontforward)

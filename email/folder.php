@@ -43,18 +43,18 @@
 	$t->set_block('T_folder_out','B_action_report','V_action_report');
 
 //  ----  Establish Email Server Connectivity Conventions  ----
-	$server_str = get_mailsvr_callstr();
-	$name_space = get_mailsvr_namespace();
-	$dot_or_slash = get_mailsvr_delimiter();
+	$server_str = $phpgw->msg->get_mailsvr_callstr();
+	$name_space = $phpgw->msg->get_mailsvr_namespace();
+	$dot_or_slash = $phpgw->msg->get_mailsvr_delimiter();
 
-	$folder_long = get_folder_long($folder);
-	$folder_short = get_folder_short($folder);
+	$folder_long = $phpgw->msg->get_folder_long($folder);
+	$folder_short = $phpgw->msg->get_folder_short($folder);
 	/*
 	//$full_str = $server_str .$folder_long;
-	//$folder_short = get_folder_short($full_str);
+	//$folder_short = $phpgw->msg->get_folder_short($full_str);
 	$t->set_var('debug_server_str',$server_str .$folder_long);
-	$t->set_var('debug_namespace',get_mailsvr_namespace());
-	$t->set_var('debug_delimiter',get_mailsvr_delimiter());
+	$t->set_var('debug_namespace',$phpgw->msg->get_mailsvr_namespace());
+	$t->set_var('debug_delimiter',$phpgw->msg->get_mailsvr_delimiter());
 	$t->set_var('debug_folder',$folder);
 	$t->set_var('debug_folder_long',$folder_long);
 	$t->set_var('debug_folder_short',$folder_short);
@@ -73,16 +73,16 @@
 		else
 		{
 			// maybe some "are you sure" code
-			$folder_long = get_folder_long($target_folder);
-			$folder_short = get_folder_short($target_folder);
+			$folder_long = $phpgw->msg->get_folder_long($target_folder);
+			$folder_short = $phpgw->msg->get_folder_short($target_folder);
 		
 			if ($action == 'create')
 			{
-				$phpgw->msg->createmailbox($mailbox, "$server_str"."$folder_long");
+				$phpgw->dcom->createmailbox($mailbox, "$server_str"."$folder_long");
 			}
 			else if ($action == 'delete')
 			{
-				$phpgw->msg->deletemailbox($mailbox, "$server_str"."$folder_long");
+				$phpgw->dcom->deletemailbox($mailbox, "$server_str"."$folder_long");
 			}
 
 			// Result Message
@@ -111,7 +111,7 @@
 	{
 		// last arg may be "mail/*" which will NOT list the INBOX with the folder list
 		// however, we have no choice since w/o the delimiter "email*" we get NOTHING
-		$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, "$name_space" ."$dot_or_slash" ."*");
+		$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."$dot_or_slash" ."*");
 	}
 	else
 	{
@@ -119,7 +119,7 @@
 		// wheres adding the delimiter "INBOX.*" will NOT include the INBOX in the list of folders
 		// so - it's safe to include the delimiter here, but the INBOX will not be included in the list
 		// this is typically the ONLY TIME you would ever *not* use the delimiter between the namespace and what comes after it
-		$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, "$name_space" ."*");
+		$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."*");
 	}
 
 	// sort folder names 
@@ -143,19 +143,19 @@
 			}
 			else
 			*/
-			if (is_imap_folder($mailboxes[$i]))
+			if ($phpgw->msg->is_imap_folder($mailboxes[$i]))
 			{
-				$folder_long = get_folder_long($mailboxes[$i]);
-				$folder_short = get_folder_short($mailboxes[$i]);
-				$phpgw->msg->reopen($mailbox, $mailboxes[$i]);
-				$mailbox_status = $phpgw->msg->status($mailbox,$server_str .$folder_long,SA_UNSEEN);
+				$folder_long = $phpgw->msg->get_folder_long($mailboxes[$i]);
+				$folder_short = $phpgw->msg->get_folder_short($mailboxes[$i]);
+				$phpgw->dcom->reopen($mailbox, $mailboxes[$i]);
+				$mailbox_status = $phpgw->dcom->status($mailbox,$server_str .$folder_long,SA_UNSEEN);
 
 				$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 				$t->set_var('list_backcolor',$tr_color);
 				$t->set_var('folder_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','folder=' .urlencode($folder_short)));
 				$t->set_var('folder_name',$folder_short);
 				$t->set_var('msgs_unseen',$mailbox_status->unseen);
-				$t->set_var('msgs_total',$phpgw->msg->num_msg($mailbox));
+				$t->set_var('msgs_total',$phpgw->dcom->num_msg($mailbox));
 				$t->parse('V_folder_list','B_folder_list',True);
 			}
 		}
@@ -164,13 +164,13 @@
 	{
 		$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 
-		$mailbox_status = $phpgw->msg->status($mailbox,$server_str.'INBOX',SA_UNSEEN);
+		$mailbox_status = $phpgw->dcom->status($mailbox,$server_str.'INBOX',SA_UNSEEN);
 
 		$t->set_var('list_backcolor',$tr_color);
 		$t->set_var('folder_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','folder=INBOX'));
 		$t->set_var('folder_name','INBOX');
 		$t->set_var('msgs_unseen',$mailbox_status->unseen);
-		$t->set_var('msgs_total',$phpgw->msg->num_msg($mailbox));
+		$t->set_var('msgs_total',$phpgw->dcom->num_msg($mailbox));
 		$t->parse('V_folder_list','B_folder_list',True);
 	}
 
@@ -191,7 +191,7 @@
 	
 	$t->pparse('out','T_folder_out');
 
-	$phpgw->msg->close($mailbox);
+	$phpgw->dcom->close($mailbox);
 
 	$phpgw->common->phpgw_footer();
 ?>

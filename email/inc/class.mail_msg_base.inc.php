@@ -1,0 +1,1639 @@
+<?php
+  /**************************************************************************\
+  * phpGroupWare - E-Mail Message Processing Functions                             *
+  * http://www.phpgroupware.org                                              *
+  */
+  /**************************************************************************\
+  * phpGroupWare API - E-Mail Message Processing Functions                         *
+  * This file written by Angelo Tony Puglisi (Angles) <angles@phpgroupware.org>      *
+  * Handles specific operations in manipulating email messages                         *
+  * Copyright (C) 2001 Angelo Tony Puglisi (Angles)                                           *
+  * -------------------------------------------------------------------------*
+  * This library is part of the phpGroupWare API                             *
+  * http://www.phpgroupware.org/api                                          * 
+  * ------------------------------------------------------------------------ *
+  * This library is free software; you can redistribute it and/or modify it  *
+  * under the terms of the GNU Lesser General Public License as published by *
+  * the Free Software Foundation; either version 2.1 of the License,         *
+  * or any later version.                                                    *
+  * This library is distributed in the hope that it will be useful, but      *
+  * WITHOUT ANY WARRANTY; without even the implied warranty of               *
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                     *
+  * See the GNU Lesser General Public License for more details.              *
+  * You should have received a copy of the GNU Lesser General Public License *
+  * along with this library; if not, write to the Free Software Foundation,  *
+  * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            *
+  \**************************************************************************/
+
+  /* $Id$ */
+
+  class mail_msg_base
+  {
+	//global $phpgw, $phpgw_info;
+
+	var $att_files_dir;
+
+	function mail_msg_init()
+	{
+		global $phpgw, $phpgw_info;
+
+		$this->att_files_dir = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'];
+		$this->create_email_preferences();
+	}
+
+// ----  Various Functions Used To Support Email   -----
+  /*!
+  @function create_email_preferences
+  @abstract create email preferences
+  @discussion This fills the global $phpgw_info array with the required email preferences for this user
+  @param $account_id -optional defaults to : phpgw_info['user']['account_id']
+  */	
+  function create_email_preferences($accountid='')
+  {
+	global $phpgw, $phpgw_info;
+
+	$account_id = get_account_id($accountid);
+
+	// Add default preferences info
+	if (!isset($phpgw_info['user']['preferences']['email']['userid']))
+	{
+		if ($phpgw_info['server']['mail_login_type'] == 'vmailmgr')
+		{
+			$phpgw_info['user']['preferences']['email']['userid'] = $phpgw->accounts->id2name($account_id)
+				. '@' . $phpgw_info['server']['mail_suffix'];
+		}
+		else
+		{
+			$phpgw_info['user']['preferences']['email']['userid'] = $phpgw->accounts->id2name($account_id);
+		}
+	}
+	// Set Server Mail Type if not defined
+	if (empty($phpgw_info['server']['mail_server_type']))
+	{
+		$phpgw_info['server']['mail_server_type'] = 'imap';
+	}
+	// Get Email Password
+	if (!isset($phpgw_info['user']['preferences']['email']['passwd']))
+	{
+		$phpgw_info['user']['preferences']['email']['passwd'] = $phpgw_info['user']['passwd'];
+	}
+	else
+	{
+		$phpgw_info['user']['preferences']['email']['passwd'] = $this->decrypt_email_passwd($phpgw_info['user']['preferences']['email']['passwd']);
+	}
+	if (!isset($phpgw_info['user']['preferences']['email']['address']))
+	{
+		$phpgw_info['user']['preferences']['email']['address'] = $phpgw->accounts->id2name($account_id)
+			. '@' . $phpgw_info['server']['mail_suffix'];
+	}
+	if (!isset($phpgw_info['user']['preferences']['email']['mail_server']))
+	{
+		$phpgw_info['user']['preferences']['email']['mail_server'] = $phpgw_info['server']['mail_server'];
+	}
+	if (!isset($phpgw_info['user']['preferences']['email']['mail_server_type']))
+	{
+		$phpgw_info['user']['preferences']['email']['mail_server_type'] = $phpgw_info['server']['mail_server_type'];
+	}
+	if (!isset($phpgw_info['user']['preferences']['email']['imap_server_type']))
+	{
+		$phpgw_info['user']['preferences']['email']['imap_server_type'] = $phpgw_info['server']['imap_server_type'];
+	}
+	// This is going to be used to switch to the nntp class
+	if ((isset($phpgw_info['flags']['newsmode'])
+	&& $phpgw_info['flags']['newsmode']))
+	{
+		$phpgw_info['user']['preferences']['email']['mail_server_type'] = 'nntp';
+	}
+
+	// These sets the mail_port server variable
+	$phpgw_info['user']['preferences']['email']['mail_port'] = $this->get_mailsvr_port();
+
+	// DEBUG
+	//echo "<br>prefs['email']['passwd']: " .$prefs['email']['passwd'] .'<br>';
+  }
+
+
+	/* * * * * * * * * * *
+	  *  ensure_no_brackets
+	  * used for removing the bracketed server call string from a full IMAP folder name string
+	  *  Example: ensure_no_brackets('{mail.yourserver.com:143}INBOX') = 'INBOX'
+	  * * * * * * *  * * * */
+	function ensure_no_brackets($feed_str='')
+	{
+		if ((strstr($feed_str,'{') == False) && (strstr($feed_str,'}') == False))
+		{
+			// no brackets to remove
+			$no_brackets = $feed_str;
+		}
+		else
+		{
+			// get everything to the right of the bracket "}", INCLUDES the bracket itself
+			$no_brackets = strstr($feed_str,'}');
+			// get rid of that 'needle' "}"
+			$no_brackets = substr($no_brackets, 1);
+		}
+		return $no_brackets;
+	}
+
+	/* * * * * * * * * * *
+	  *  get_mailsvr_port
+	  * will generate the appropriate port number to access a mail server of type
+	  * pop3, pop3s, imap, imaps
+	  * users value from $phpgw_info['user']['preferences']['email']['mail_port']
+	  * if that value is not set, it generates a default port for the given $server_type
+	  * * * * * * *  * * * */
+	function get_mailsvr_port()
+	{
+		global $phpgw, $phpgw_info;
+
+		/*// UNCOMMENT WHEN mail_port IS A REAL, USER SET OPTION
+		// first we try the port number supplied in preferences
+		if ( (isset($phpgw_info['user']['preferences']['email']['mail_port']))
+		&& ($phpgw_info['user']['preferences']['email']['mail_port'] != '') )
+		{
+			$port_number = $phpgw_info['user']['preferences']['email']['mail_port'];
+		}
+		// preferences does not have a port number, generate a default value
+		else
+		{
+		*/
+			if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
+			{
+				/* IMAP normal connection, No SSL */
+				$port_number = 143;
+			}
+			elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps')
+			{
+				/* IMAP over SSL */
+				$port_number = 993;
+			}
+			elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s')
+			{
+				/* POP3 over SSL: */
+				$port_number = 995;
+			}
+			elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3')
+			{
+				/* POP3 normal connection, No SSL  ( same string as normal imap above)  */
+				$port_number = 110;
+			}
+			elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'nntp')
+			{
+				// NNTP news server port
+				$port_number = 119;
+			}
+			else
+			{
+				//UNKNOWN SERVER in Preferences, return a default value that is likely to work
+				// probably should raise some kind of error here
+				$port_number = 143;
+			}
+			// set the preference string, since it was not set and that's why we are here
+			//$phpgw_info['user']['preferences']['email']['mail_port'] = $port_number;
+		// UNCOMMENT WHEN mail_port IS A REAL, USER SET OPTION
+		//}
+		return $port_number;
+	}
+
+	/* * * * * * * * * * *
+	  *  get_mailsvr_callstr
+	  * will generate the appropriate string to access a mail server of type
+	  * pop3, pop3s, imap, imaps
+	  * the returned string is the server call string from beginning bracker "{" to ending bracket "}"
+	  * the returned string is the server call string from beginning bracker "{" to ending bracket "}"
+	  *  Example:  {mail.yourserver.com:143}
+	  * * * * * * *  * * * */
+	function get_mailsvr_callstr()
+	{
+		global $phpgw, $phpgw_info;
+
+		// construct the email server call string from the opening bracket "{"  to the closing bracket  "}"
+		if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
+		{
+			// IMAP normal connection, No SSL
+			$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':' .$this->get_mailsvr_port().'}';
+		}
+		elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps')
+		{
+			// IMAP over SSL
+			$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.$this->get_mailsvr_port().'/imap/ssl/novalidate-cert}';
+			//$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.$this->get_mailsvr_port().'/imap/ssl/novalidate-cert}';
+		}
+		elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s')
+		{
+			// POP3 over SSL:
+			$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.$this->get_mailsvr_port().'/pop3/ssl/novalidate-cert}';
+			//$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.$this->get_mailsvr_port().'/pop3/ssl}';
+		}
+		elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3')
+		{
+			// POP3 normal connection, No SSL
+			$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.$this->get_mailsvr_port().'/pop3}';
+		}
+		else
+		{
+			//UNKNOWN SERVER in Preferences, return a default value that is likely to work
+			// probably should raise some kind of error here
+			$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'].':'.$this->get_mailsvr_port().'}';
+		}
+		return $server_call;
+	}
+
+	/* * * * * * * * * * *
+	  *  get_mailsvr_namespace
+	  *  will generate the appropriate namespace (aka filter) string to access an imap mail server
+	  *  Example: {mail.servyou.com:143}INBOX    where INBOX is the namespace
+	  *  for more info see: see http://www.rfc-editor.org/rfc/rfc2342.txt
+	  * * * * * * *  * * * */
+	function get_mailsvr_namespace()
+	{
+		global $phpgw, $phpgw_info;
+		// UWash patched for Maildir style: $Maildir.Junque ?????
+		// Cyrus and Courier style =" INBOX"
+		// UWash style: "mail"
+
+		if (($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UW-Maildir')
+		|| ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash'))
+		{
+			if ((isset($phpgw_info['user']['preferences']['email']['mail_folder']))
+			&& (trim($phpgw_info['user']['preferences']['email']['mail_folder']) != ''))
+			{
+				$name_space = trim($phpgw_info['user']['preferences']['email']['mail_folder']);
+			}
+			else
+			{
+				// in this case, the namespace is blank, indicating the user's $HOME is where the MBOX files are
+				// or in the case uo UW-Maildir, where the maildir files are
+				// thus we can not have <blank><slash> preceeding a folder name
+				// note that we *may* have <tilde><slash> preceeding a folder name, SO:
+				// default value for this UWash server, $HOME = tilde (~)
+				$name_space = '~';
+			}
+		}
+		elseif ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'Cyrus')
+		// ALSO works for Courier IMAP
+		{
+			$name_space = 'INBOX';
+		}
+		else
+		{
+			// GENERIC IMAP NAMESPACE
+			// imap servers usually use INBOX as their namespace
+			// this is supposed to be discoverablewith the NAMESPACE command
+			// see http://www.rfc-editor.org/rfc/rfc2342.txt
+			// however as of PHP 4.0 this is not implemented
+			$name_space = 'INBOX';
+		}
+		//echo 'name_space='.$name_space.'<br>';
+		return $name_space;
+	}
+
+	/* * * * * * * * * * *
+	  *  get_mailsvr_delimiter
+	  *  will generate the appropriate token that goes between the namespace and the inferior folders (subfolders)
+	  *  Example: typical imap: "INBOX.Sent"  then the "." is the delimiter
+	  *  Example: UWash imap (stock mbox)  "email/Sent"  then the "/" is the delimiter
+	  * * * * * * *  * * * */
+	function get_mailsvr_delimiter()
+	{
+		global $phpgw, $phpgw_info;
+		// UWash style: "/"
+		// all other imap servers *should* be "."
+
+		if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
+		{
+			$delimiter = '/';
+		}
+		else
+		{
+			// GENERIC IMAP DELIMITER
+			// imap servers usually use a "." as their delimiter
+			// this is supposed to be discoverable with the NAMESPACE command
+			// see http://www.rfc-editor.org/rfc/rfc2342.txt
+			// however as of PHP 4.0 this is not implemented
+			$delimiter = '.';
+		}
+		return $delimiter;
+	}
+
+	/* * * * * * * * * * *
+	  *  get_folder_long
+	  *  will generate the long name of an imap folder name, works for
+	  *  imap: UW-Maildir, Cyrus, Courier
+	  *  Example (Cyrus or Courier):  INBOX.Templates
+	  *  Example (Cyrus only):  INBOX.drafts.rfc
+	  *  ????   Example (UW-Maildir only): /home/James.Drafts   ????
+	  * * * * * * *  * * * */
+	function get_folder_long($feed_folder='INBOX')
+	{
+		global $phpgw, $phpgw_info;
+
+		$feed_folder = urldecode($feed_folder);
+		$folder = $this->ensure_no_brackets($feed_folder);
+		if ($folder == 'INBOX')
+		{
+			// INBOX is (always?) a special reserved word with nothing preceeding it in long or short form
+			$folder_long = 'INBOX';
+		}
+		else
+		{
+			$name_space = $this->get_mailsvr_namespace();
+			$delimiter = $this->get_mailsvr_delimiter();
+			if (strstr($folder,"$name_space" ."$delimiter") == False)
+			{
+				$folder_long = "$name_space" ."$delimiter" ."$folder";
+			}
+			else
+			{
+				// this folder is already in "long" format (it's namespace and delimiter already there)
+				$folder_long = $folder;
+			}
+		}
+		//echo 'get_folder_long('.$folder.')='.$folder_long.'<br>';
+		return trim($folder_long);
+	}
+
+	/* * * * * * * * * * *
+	  *  get_folder_short
+	  *  will generate the SHORT name of an imap folder name, works for
+	  * simply, this is the folder name without the NAMESPACE nor the DELIMITER preceeding it
+	  *  imap: UWash, UW-Maildir, Cyrus, Courier
+	  *  Example (Cyrus or Courier):  Templates
+	  *  Example (Cyrus only):  drafts.rfc
+	  * * * * * * *  * * * */
+	function get_folder_short($feed_folder='INBOX')
+	{
+		global $phpgw, $phpgw_info;
+		// Example: "Sent"
+		// Cyrus may support  "Sent.Today"
+
+		$feed_folder = urldecode($feed_folder);
+		$folder = $this->ensure_no_brackets($feed_folder);
+		if ($folder == 'INBOX')
+		{
+			// INBOX is (always?) a special reserved word with nothing preceeding it in long or short form
+			$folder_short = 'INBOX';
+		}
+		else
+		{
+			$name_space = $this->get_mailsvr_namespace();
+			$delimiter = $this->get_mailsvr_delimiter();
+			if (strstr($folder,"$name_space" ."$delimiter") == False)
+			{
+				$folder_short = $folder;
+			}
+			else
+			{
+				$folder_short = strstr($folder,$delimiter);
+				$folder_short = substr($folder_short, 1);
+			}
+		}
+		return $folder_short;
+	}
+
+	function is_imap_folder($folder)
+	{
+		global $phpgw, $phpgw_info;
+
+		// UWash is the only (?) imap server where there is any question whether a folder is legit or not
+		if ($phpgw_info['user']['preferences']['email']['imap_server_type'] != 'UWash')
+		{
+			//echo 'is_imap_folder TRUE 1<br>';
+			return True;
+		}
+
+		$folder_long = $this->get_folder_long($folder);	
+
+		// INBOX ia ALWAYS a valid folder, and is ALWAYS called INBOX because it's a special reserved word
+		if ($folder_long == 'INBOX')
+		{
+			//echo 'is_imap_folder TRUE 2<br>';
+			return True;
+		}
+
+		// UWash IMAP server looks for MBOX files, which it considers to be email "folders"
+		// and will return any file, whether it's an actual IMAP folder or not
+		if (strstr($folder_long,"/."))
+		{
+			// any pattern matching "/." for UWash is NOT an MBOX
+			// because the delimiter for UWash is "/" and the immediately following "." indicates a hidden file
+			// not an MBOX file, at least on Linux type system
+			//echo 'is_imap_folder FALSE 3<br>';
+			return False;
+		}
+
+		// if user specifies namespace like "mail" then MBOX files are in $HOME/mail
+		// so this server knows to put MBOX files in a special place
+		// BUT if the namespace used is associated with $HOME, such as ~
+		// then how many folders deep do you want to go? UWash is recursive, it will go as deep as possible into $HOME
+	
+		// is this a $HOME type of namespace
+		$the_namespace = $this->get_mailsvr_namespace();
+		if ($the_namespace == '~')
+		{
+			$home_type_namespace = True;
+		}
+		else
+		{
+			$home_type_namespace = False;
+		}
+	
+		// DECISION: no more than 3 DIRECTORIES DEEP of recursion
+		$num_slashes = $phpgw->msg->substr_count_ex($folder_long, "/");
+		if (($home_type_namespace)
+		&& ($num_slashes >= 3))
+		{
+			//echo 'is_imap_folder FALSE 4<br>';
+			return False;
+		}
+
+		// if you get all the way to here then this must be a valid folder name
+		//echo 'is_imap_folder TRUE 5<br>';
+		return True;
+	}
+
+	function care_about_unseen($folder)
+	{
+		$folder = $this->get_folder_short($folder);
+		// we ALWAYS care about new messages in the INBOX
+		if ($folder == 'INBOX')
+		{
+			return True;
+		}
+
+		$we_care = True; // initialize
+		$ignore_these_folders = Array();
+		// DO NOT CHECK UNSEEN for these folders
+		$ignore_these_folders[0] = "sent";
+		$ignore_these_folders[1] = "trash";
+		$ignore_these_folders[2] = "templates";
+		for ($i=0; $i<count($ignore_these_folders); $i++)
+		{
+			$match_this = $ignore_these_folders[$i];
+			if (eregi("^.*$match_this$",$folder))
+			{
+				$we_care = False;
+				break;
+			}
+		}
+		return $we_care;
+	}
+
+	/*
+	function all_folders_listbox($mailbox,$pre_select="",$skip="",$indicate_new=false)
+	{
+		global $phpgw, $phpgw_info;
+
+		// init some important variables
+		$outstr = '';
+		//$unseen_prefix = ' &lt;';
+		//$unseen_suffix = ' new&gt;';	
+		//$unseen_prefix = ' &#091;';
+		//$unseen_suffix = ' new&#093;';
+		//$unseen_prefix = ' &#040;';
+		//$unseen_suffix = ' new&#041;';
+		//$unseen_prefix = ' &#045; ';
+		//$unseen_suffix = ' new';
+		//$unseen_prefix = ' &#045;';
+		//$unseen_suffix = '&#045;';	
+		//$unseen_prefix = '&nbsp;&nbsp;&#040;';
+		//$unseen_suffix = ' new&#041;';
+		//$unseen_prefix = '&nbsp;&nbsp;&#091;';
+		//$unseen_suffix = ' new&#093;';
+		$unseen_prefix = '&nbsp;&nbsp;&#060;';
+		$unseen_suffix = ' new&#062;';
+
+		if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
+		{
+			while($pref = each($phpgw_info["user"]["preferences"]["nntp"]))
+			{
+				$phpgw->db->query("SELECT name FROM newsgroups WHERE con=".$pref[0]);
+				while($phpgw->db->next_record())
+				{
+					$outstr = $outstr .'<option value="' . urlencode($phpgw->db->f("name")) . '">' . $phpgw->db->f("name")
+					  . '</option>';
+				}
+			}
+		}
+		elseif (($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'pop3')
+		    && ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'pop3s'))
+		{
+			// Establish Email Server Connectivity Conventions
+			$server_str = $this->get_mailsvr_callstr();
+			$name_space = $this->get_mailsvr_namespace();
+			$delimiter = $this->get_mailsvr_delimiter();
+			if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
+			{
+				$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."$delimiter" ."*");
+			}
+			else
+			{
+				$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."*");
+			}
+
+			// sort folder names 
+			if (gettype($mailboxes) == 'array')
+			{
+				sort($mailboxes);
+			}
+
+			if($mailboxes)
+			{
+				$num_boxes = count($mailboxes);
+				if ($name_space != 'INBOX')
+				{
+					// UWash for example, we must FORCE it to look at the INBOX 
+					$outstr = $outstr .'<option value="INBOX">INBOX';
+					if ($indicate_new)
+					{
+						$mailbox_status = $phpgw->dcom->status($mailbox,$server_str . 'INBOX',SA_UNSEEN);
+						if ($mailbox_status->unseen > 0)
+						{
+							$outstr = $outstr . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
+						}
+					}
+					$outstr = $outstr . "</option>\r\n"; 
+				}
+				for ($i=0; $i<$num_boxes;$i++)
+				{
+					if ($this->is_imap_folder($mailboxes[$i]))
+					{
+						$folder_short = $this->get_folder_short($mailboxes[$i]);
+						if ($folder_short == $pre_select)
+						{
+							$sel = ' selected';
+						}
+						else
+						{
+							$sel = '';
+						}
+						if ($folder_short != $skip)
+						{
+							$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short;
+							// do we show the number of new (unseen) messages for this folder
+							if (($indicate_new)
+							&& ($this->care_about_unseen($folder_short)))
+							{
+								$mailbox_status = $phpgw->dcom->status($mailbox,$mailboxes[$i],SA_UNSEEN);
+								if ($mailbox_status->unseen > 0)
+								{
+									$outstr = $outstr . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
+								}
+							}
+							$outstr = $outstr . "</option>\r\n";
+						}
+					}
+				}
+			}
+			else
+			{
+				$outstr = $outstr .'<option value="INBOX">INBOX</option>';
+			}
+		}
+		return $outstr;
+	}
+	*/
+
+
+	// OBSOLETED -- To Be Removed -- 
+	function get_mime_info($this_part)
+	{
+		// rfc2045 says to assume "text" if this if not specified
+		$mime_type = "text";
+		if (isset($this_part->type) && $this_part->type)
+		{
+			switch ($this_part->type)
+			{
+				case TYPETEXT:		$mime_type = "text"; break;
+				case TYPEMESSAGE:	$mime_type = "message"; break;
+				case TYPEAPPLICATION:	$mime_type = "application"; break;
+				case TYPEAUDIO:		$mime_type = "audio"; break;
+				case TYPEIMAGE:		$mime_type = "image"; break;
+				case TYPEVIDEO:		$mime_type = "video"; break;
+				case TYPEMODEL:		$mime_type = "model"; break;
+				default:		$mime_type = "text";
+			} 
+		}
+		$mime_info['mime_type'] = $mime_type;
+
+		// assume no info
+		$mime_info['subtype'] = 'plain';
+		if ((isset($part->ifsubtype)) && ($part->ifsubtype)
+		&& (isset($part->subtype)) && ($part->subtype) )
+		{
+			$mime_info['subtype'] = trim(strtolower($part->subtype));
+		}
+
+		// rfc2045 says to assume "7bit" if this is not specified
+		$mime_encoding = "7bit";
+		if (isset($this_part->encoding) && $this_part->encoding)
+		{
+			switch ($this_part->encoding)
+			{
+				case ENC7BIT:		$mime_encoding = "7bit"; break;
+				case ENC8BIT:		$mime_encoding = "8bit"; break;
+				case ENCBINARY:		$mime_encoding = "binary"; break;
+				case ENCBASE64:		$mime_encoding = "base64"; break;
+				case ENCQUOTEDPRINTABLE:	$mime_encoding = "qprint"; break;
+				case ENCOTHER:		$mime_encoding = "other";  break;
+				default:		$mime_encoding = "7bit";
+			}
+		}
+		$mime_info['mime_encoding'] = $mime_encoding;
+
+		$mime_info['mime_params'] = Array();
+		if ($this_part->ifparameters)
+		{
+			for ($i = 0; $i < count($this_part->parameters); $i++) 
+			{
+				$param = $this_part->parameters[$i];
+				$mime_info['mime_params'][$i]['attribute'] = $param->attribute;
+				$mime_info['mime_params'][$i]['value'] = $param->value;
+			}
+		}
+	}
+
+// ----  Password Crypto Workaround broken common->en/decrypt  -----
+	/*!
+	@function encrypt_email_passwd
+	@abstract encrypt data passed to the function
+	@param $data data string to be encrypted
+	*/
+	function encrypt_email_passwd($data)
+	{
+		global $phpgw_info, $phpgw;
+
+		$encrypted_passwd = $data;
+		if ($phpgw_info['server']['mcrypt_enabled'] && extension_loaded('mcrypt'))
+		{
+			// this will return a string that has (1) been serialized (2) had addslashes applied
+			// and (3) been encrypted with mcrypt (assuming mcrypt is enabled and working)
+			$encrypted_passwd = $phpgw->crypto->encrypt($encrypted_passwd);
+		}
+		else
+		{
+			// ***** STRIP SLASHES BEFORE CALLING THIS FUNCTION !!!!!!! ******
+			// we have no way of knowing if it's necessary, but you do, you who call this function
+			//$encrypted_passwd = $this->stripslashes_gpc($encrypted_passwd);
+			$encrypted_passwd = $data;
+			if ($this->is_serialized($encrypted_passwd))
+			{
+				$encrypted_passwd = unserialize($encrypted_passwd);
+			}
+			$encrypted_passwd = $this->html_quotes_encode($encrypted_passwd);
+		}
+		return $encrypted_passwd;
+	}
+	/*!
+	@function decrypt_email_pass
+	@abstract decrypt $data
+	@param $data data to be decrypted
+	*/
+	function decrypt_email_passwd($data)
+	{
+		global $phpgw_info, $phpgw;
+
+		$passwd = $data;
+		if ($phpgw_info['server']['mcrypt_enabled'] && extension_loaded('mcrypt'))
+		{
+			// this will return a string that has:
+			// (1) been decrypted with mcrypt (assuming mcrypt is enabled and working)
+			// (2) had stripslashes applied and (3) *MAY HAVE* been unserialized
+			$passwd = $phpgw->crypto->decrypt($passwd);
+		}
+		else
+		{
+			// ASSUMING set_magic_quotes_runtime(0) is in functions.inc.php (it is) then
+			// there should be NO escape slashes coming from the database
+			if ($this->is_serialized($passwd))
+			{
+				$passwd = unserialize($passwd);
+			}
+
+
+			// #### (begin) Upgrade Routine for 0.9.12 and earlier versions ####
+			/* // these version *may* have double ot tripple serialized passwd stored in their preferences table
+			// (1) check for this (2) unserialize to the real string (3) feed the unserialized / fixed passwd in the prefs class */
+			// (1) check for this 
+			$multi_serialized = $this->is_serialized($passwd);
+			if ($multi_serialized)
+			{
+				$pre_upgrade_passwd = $passwd;
+				// (2) unserialize to the real string
+				$failure = 10;
+				$loop_num = 0;
+				do
+				{
+					$loop_num++;
+					if ($loop_num == $failure)
+					{
+						break;
+					}
+					$passwd = unserialize($passwd);
+				}
+				while ($this->is_serialized($passwd));
+				
+				// 10 loops is too much, something is wrong
+				if ($loop_num == $failure)
+				{
+					// screw it and continue as normal, user will need to reenter password
+					$passwd = $pre_upgrade_passwd;
+				}
+				else
+				{
+					// (3) SAVE THE FIXED / UPGRADED PASSWD TO PREFS
+					// feed the unserialized / fixed passwd in the prefs class
+					$phpgw->preferences->delete("email","passwd");
+					// make any html quote entities back to real form (i.e. ' or ")
+					$encrypted_passwd = $this->html_quotes_decode($passwd);
+					// encrypt it as it would be as if the user had just submitted the preferences page (no need to strip slashes, no POST occured)
+					$encrypted_passwd = $this->encrypt_email_passwd($passwd);
+					// store in preferences so this does not happen again
+					$phpgw->preferences->add("email","passwd",$encrypted_passwd);
+					$phpgw->preferences->save_repository();
+				}
+			}
+			// #### (end) Upgrade Routine for 0.9.12 and earlier versions ####
+
+			$passwd = $this->html_quotes_decode($passwd);
+			//echo 'decrypt_email_passwd result: '.$passwd;
+		}
+		return $passwd;
+	}
+
+	function get_email_passwd()
+	{
+		global $phpgw_info, $phpgw;
+		
+		$tmp_prefs = $phpgw->preferences->read();
+
+		if (!isset($tmp_prefs['email']['passwd']))
+		{
+			return $phpgw_info['user']['passwd'];
+		}
+		else
+		{
+			return $this->decrypt_email_passwd($tmp_prefs['email']['passwd']);
+		}
+	}
+
+	// ----  High-Level Function To Get The Subject String  -----
+	function get_subject($msg, $desired_prefix='Re: ')
+	{
+		if ( (! $msg->Subject) || ($msg->Subject == '') )
+		{
+			$subject = lang('no subject');
+		}
+		else
+		{
+			$subject = $this->decode_header_string($msg->Subject);
+		}
+		// non-us-ascii chars in headers MUST be specially encoded, so decode them (if any) now
+		// $personal = $this->qprint_rfc_header($personal);
+		$personal = $this->decode_header_string($personal);
+		// do we add a prefix like Re: or Fw:
+		if ($desired_prefix != '')
+		{
+			if (strtoupper(substr($subject, 0, 3)) != strtoupper(trim($desired_prefix)))
+			{
+				$subject = $desired_prefix . $subject;
+			}
+		}
+		$subject = $this->htmlspecialchars_encode($subject);
+		return $subject;
+	}
+
+	// ----  High-Level Function To Get The "so-and-so" wrote String   -----
+	function get_who_wrote($msg)
+	{
+		if ( (!isset($msg->from)) && (!isset($msg->reply_to)) )
+		{
+			$lang_somebody = 'somebody';
+			return $lang_somebody;
+		}
+		elseif ($msg->from[0])
+		{
+			$from = $msg->from[0];
+		}
+		else
+		{
+			$from = $msg->reply_to[0];
+		}
+		if ((!isset($from->personal)) || ($from->personal == ''))
+		{
+			$personal = $from->mailbox.'@'.$from->host;
+			//$personal = 'not set or blank';
+		}
+		else
+		{
+			//$personal = $from->personal." ($from->mailbox@$from->host)";
+			$personal = trim($from->personal);
+			// non-us-ascii chars in headers MUST be specially encoded, so decode them (if any) now
+			$personal = $this->decode_header_string($personal);
+			//$personal = $this->qprint_rfc_header($personal);
+			$personal = $personal ." ($from->mailbox@$from->host)";
+		}
+		return $personal;
+	}
+
+	// ----  Make Address accoring to RFC2822 Standards  -----
+	function make_rfc2822_address($addy_data, $html_encode=True)
+	{
+		//echo '<br>'.$this->htmlspecialchars_encode(serialize($addy_data)).'<br>'.'<br>';
+		
+		if ((!isset($addy_data->mailbox)) && (!$addy_data->mailbox)
+		&& (!isset($addy_data->host)) && (!$addy_data->host))
+		{
+			// fallback value, we do not want to sent a string like this "@" if no data if available
+			return '';
+		}
+		// now we can continue, 1st make a simple, plain address
+		// RFC2822 allows this simple form if not using "personal" info
+		$rfc_addy = $addy_data->mailbox.'@'.$addy_data->host;
+		// add "personal" data if it exists
+		if (isset($addy_data->personal) && ($addy_data->personal))
+		{
+			// why DECODE when we are just going to feed it right back into a header?
+			$personal = $this->decode_header_string($addy_data->personal);
+			// need to format according to RFC2822 spec for non-plain email address
+			$rfc_addy = '"'.$personal.'" <'.$rfc_addy.'>';
+			// if using this addy in an html page, we need to encode the ' " < > chars
+			if ($html_encode)
+			{
+				$rfc_addy = $this->htmlspecialchars_encode($rfc_addy);
+				//NOTE: in rfc_comma_sep we will decode any html entities back into these chars
+			}
+		}
+		return $rfc_addy;
+	}
+
+	// ----  Make a To: string of addresses into an array  -----
+	/*
+	// param $data should be the desired header string, with one or more addresses, ex:
+	// john@doe.com,"Php Group" <info@phpgroupware.org>
+	// this will make an array, each numbered item will be this:
+	// array[0]['personal'] = ""
+	// array[0]['plain'] = "john@doe.com"
+	// array[1]['personal'] = "Php Group"
+	// array[1]['plain'] = "info@phpgroupware.org"
+	*/
+	function make_rfc_addy_array($data)
+	{
+		// if we are fed a null value, return nothing (i.e. a null value)
+		if (isset($data))
+		{
+			$data = trim($data);
+			// if we are fed a whitespace only string, return a blank string
+			if ($data == '')
+			{
+				return $data;
+				// return performs an implicit break, so we are outta here
+			}
+			// in some cases the data may be in html entity form
+			// i.e. the compose page uses html entities when filling the To: box with a predefined value
+			$data = $this->htmlspecialchars_decode($data);
+			//reduce all multiple spaces to just one space
+			//$data = ereg_replace("[' ']{2,20}", ' ', $data);
+			$this_space = " ";
+			$data = ereg_replace("$this_space{2,20}", " ", $data);
+			
+			// explode into an array of email addys
+			$data = explode(",", $data);
+			//$data = preg_split("/.*@.*\..*>{0,1},/",$data,-1,PREG_SPLIT_NO_EMPTY);
+			
+			// --- Create Compund Array Structure To Hold Decomposed Addresses -----
+			// addy_array is a simple numbered array, each element is a addr_spec_array
+			$addy_array = Array();
+			// $addr_spec_array has this structure:
+			//  addr_spec_array['plain'] 
+			//  addr_spec_array['personal']
+
+			// decompose addy's into that array, and format according to rfc specs
+			for ($i=0;$i<count($data);$i++)
+			{
+				// trim off leading and trailing whitespaces and \r and \n
+				$data[$i] = trim($data[$i]);
+				// is this a rfc 2822 compound address (not a simple one)
+				if (strstr($data[$i], '" <'))
+				{
+					// SEPERATE "personal" part from the <x@x.com> part
+					$addr_spec_parts = explode('" <', $data[$i]);
+					// that got rid of the closing " in personal, now get rig of the first "
+					$addy_array[$i]['personal'] = substr($addr_spec_parts[0], 1);
+					//  the "<" was already removed, , NOW remove the closing ">"
+					$grab_to = strlen($addr_spec_parts[1]) - 1;
+					$addy_array[$i]['plain'] = substr($addr_spec_parts[1], 0, $grab_to);
+
+					// QPRINT NON US-ASCII CHARS in "personal" string, as per RFC2047
+					// the actual "plain" address may NOT have any other than US-ASCII chars, as per rfc2822
+					$addy_array[$i]['personal'] = $this->encode_header($addy_array[$i]['personal']);
+
+					// REVISION: rfc2047 says the following escaping technique is not much help
+					// use the encoding above instead
+					/*
+					// ESCAPE SPECIALS:  rfc2822 requires the "personal" comment string to escape "specials" inside the quotes
+					// the non-simple (i.e. "personal" info is included) need special escaping
+					// escape these:  ' " ( ) 
+					$addy_array[$i]['personal'] = ereg_replace('\'', "\\'", $addy_array[$i]['personal']);
+					$addy_array[$i]['personal'] = str_replace('"', '\"', $addy_array[$i]['personal']);
+					$addy_array[$i]['personal'] = str_replace("(", "\(", $addy_array[$i]['personal']);
+					$addy_array[$i]['personal'] = str_replace(")", "\)", $addy_array[$i]['personal']);
+					*/
+				}
+				else
+				{
+					// this is an old style simple address
+					$addy_array[$i]['personal'] = '';
+					$addy_array[$i]['plain'] = $data[$i];
+				}
+
+				//echo 'addy_array['.$i.'][personal]: '.$this->htmlspecialchars_encode($addy_array[$i]['personal']).'<br>';
+				//echo 'addy_array['.$i.'][plain]: '.$this->htmlspecialchars_encode($addy_array[$i]['plain']).'<br>';
+			}
+			// NO NEED TO SERIALIZE THIS!!!!!
+			//$addy_array = serialize($addy_array);
+			//echo 'serialized addy_array: '.$addy_array.'<br>';
+			return $addy_array;
+		}
+	}
+
+	function addy_array_to_str($data, $include_personal=True)
+	{
+		$addy_string = '';
+		
+		// reconstruct data in the correct email address format
+		//if (count($data) == 0)
+		//{
+		//	$addy_string = '';
+		//}
+		if (count($data) == 1)
+		{
+			if (($include_personal == False) || (strlen(trim($data[0]['personal'])) < 1))
+			{
+				$addy_string = trim($data[0]['plain']);
+			}
+			else
+			{
+				$addy_string = '"'.trim($data[0]['personal']).'" <'.trim($data[0]['plain']).'>';
+			}
+		}
+		elseif ($include_personal == False)
+		{
+			// CLASS SEND CAN NOT HANDLE FOLDED HEADERS OR PERSONAL ADDRESSES
+			// this snippit just assembles the headers
+			for ($i=0;$i<count($data);$i++)
+			{
+				// addresses should be seperated by one comma with NO SPACES AT ALL
+				$addy_string = $addy_string .trim($data[$i]['plain']) .',';
+			}
+			// catch any situations where a blank string was included, resulting in two commas with nothing inbetween
+			$addy_string = ereg_replace("[,]{2}", ',', $addy_string);
+			// trim again, strlen needs to be accurate without trailing spaces included
+			$addy_string = trim($addy_string);
+			// eliminate that final comma
+			$grab_to = strlen($addy_string) - 1;
+			$addy_string = substr($addy_string, 0, $grab_to);
+		}
+		else
+		{
+			// if folding headers - use SEND_2822  instead of class.send
+			// FRC2822 recommended max header line length, excluding the required CRLF
+			$rfc_max_length = 78;
+
+			// establish an arrays in case we need a multiline header string
+			$header_lines = Array();
+			$line_num = 0;
+			$header_lines[$line_num] = '';
+			// loop thru the addresses, construct the header string
+			for ($z=0;$z<count($data);$z++)
+			{
+				// make a string for this individual address
+				if (trim($data[$z]['personal']) != '')
+				{
+					$this_address = '"'.trim($data[$z]['personal']).'" <'.trim($data[$z]['plain']).'>';
+				}
+				else
+				{
+					$this_address = trim($data[$z]['plain']);
+				}
+				// see how long this line would be if this address were added
+				//if ($z == 0)
+				$cur_len = strlen($header_lines[$line_num]);
+				if ($cur_len < 1)
+				{
+					$would_be_str = $this_address;
+				}
+				else
+				{
+					$would_be_str = $header_lines[$line_num] .','.$this_address;
+				}
+				//echo 'would_be_str: '.$this->htmlspecialchars_encode($would_be_str).'<br>';
+				//echo 'strlen(would_be_str): '.strlen($would_be_str).'<br>';
+				if ((strlen($would_be_str) > $rfc_max_length)
+				&& ($cur_len > 1))
+				{
+					// Fold Header: RFC2822 "fold" = CRLF followed by a "whitespace" (#9 or #32)
+					// preferable to "fold" after the comma, and DO NOT TRIM that white space, preserve it
+					//$whitespace = " ";
+					$whitespace = chr(9);
+					$header_lines[$line_num] = $header_lines[$line_num].','."\r\n";
+					// advance to the next line
+					$line_num++;
+					// now start the new line with the "folding whitespace" then the address
+					$header_lines[$line_num] = $whitespace .$this_address;
+				}
+				else
+				{
+					// simply comma sep the items (as we did when making "would_be_str")
+					$header_lines[$line_num] = $would_be_str;
+				}
+			}
+			// assemble $header_lines array into a single string
+			$addy_string = '';
+			for ($x=0;$x<count($header_lines);$x++)
+			{
+				$addy_string = $addy_string .$header_lines[$x];
+			}
+			$addy_string = trim($addy_string);
+		}
+		// data leaves here with NO FINAL (trailing) CRLF - will add that later
+		return $addy_string;
+	}
+
+	// ----  Ensure CR and LF are always together, RFCs prefer the CRLF combo  -----
+	function normalize_crlf($data)
+	{
+		// this is to catch all plain \n instances and replace them with \r\n.  
+		$data = ereg_replace("\r\n", "\n", $data);
+		$data = ereg_replace("\r", "\n", $data);
+		$data = ereg_replace("\n", "\r\n", $data);
+		//$data = preg_replace("/(?<!\r)\n/m", "\r\n", $data);
+		//$data = preg_replace("/\r(?!\n)/m", "\r\n", $data);
+		return $data;
+	}
+
+	// ----  Explode by Linebreak, ANY kind of line break  -----
+	function explode_linebreaks($data)
+	{
+		$data = preg_split("/\r\n|\r(?!\n)|(?<!\r)\n/m",$data);
+		// match \r\n, OR \r with no \n after it , OR /n with no /r before it
+		// modifier m = multiline
+		return $data;
+	}
+
+	// ----  Create a Unique Mime Boundary  -----
+	function make_boundary($part_length=4)
+	{
+		global $phpgw;
+		$part_length = (int)$part_length;
+		
+		$rand_stuff = Array();
+		$rand_stuff[0]['length'] = $part_length;
+		$rand_stuff[0]['string'] = $phpgw->common->randomstring($rand_stuff[0]['length']);
+		$rand_stuff[0]['rand_numbers'] = '';
+		for ($i = 0; $i < $rand_stuff[0]['length']; $i++)
+		{
+			if ((ord($rand_stuff[0]['string'][$i]) > 47) 
+			&& (ord($rand_stuff[0]['string'][$i]) < 58))
+			{
+				// this char is already a digit
+				$rand_stuff[0]['rand_numbers'] .= $rand_stuff[0]['string'][$i];
+			}
+			else
+			{
+				// turn this into number form, based on this char's ASCII value
+				$rand_stuff[0]['rand_numbers'] .= ord($rand_stuff[0]['string'][$i]);
+			}
+		}
+		$rand_stuff[1]['length'] = $part_length;
+		$rand_stuff[1]['string'] = $phpgw->common->randomstring($rand_stuff[1]['length']);
+		$rand_stuff[1]['rand_numbers'] = '';
+		for ($i = 0; $i < $rand_stuff[1]['length']; $i++)
+		{
+			if ((ord($rand_stuff[1]['string'][$i]) > 47) 
+			&& (ord($rand_stuff[1]['string'][$i]) < 58))
+			{
+				// this char is already a digit
+				$rand_stuff[1]['rand_numbers'] .= $rand_stuff[1]['string'][$i];
+			}
+			else
+			{
+				// turn this into number form, based on this char's ASCII value
+				$rand_stuff[1]['rand_numbers'] .= ord($rand_stuff[1]['string'][$i]);
+			}
+		}
+		$unique_boundary = '---=_Next_Part_'.$rand_stuff[0]['rand_numbers'].'_'.$phpgw->common->randomstring($part_length)
+			.'_'.$phpgw->common->randomstring($part_length).'_'.$rand_stuff[1]['rand_numbers'];
+		
+		return $unique_boundary;
+	}
+
+	// ----  Create a Unique RFC2822 Message ID  -----
+	function make_message_id()
+	{
+		global $phpgw, $phpgw_info;
+		
+		if ($phpgw_info['server']['hostname'] != '')
+		{
+			$id_suffix = $phpgw_info['server']['hostname'];
+		}
+		else
+		{
+			$id_suffix = $phpgw->common->randomstring(3).'local';
+		}
+		// gives you timezone dot microseconds space datetime
+		$stamp = microtime();
+		$stamp = explode(" ",$stamp);
+		// get rid of tomezone info
+		$grab_from = strpos($stamp[0], ".") + 1;
+		$stamp[0] = substr($stamp[0], $grab_from);
+		// formay the datetime into YYYYMMDD
+		$stamp[1] = date('Ymd', $stamp[1]);
+		// a small random string for the middle
+		$rand_middle = $phpgw->common->randomstring(3);
+		
+		$mess_id = '<'.$stamp[1].'.'.$rand_middle.'.'.$stamp[0].'@'.$id_suffix.'>';
+		return $mess_id;
+	}
+
+  // ----  HTML - Related Utility Functions   -----
+	function qprint($string)
+	{
+		$string = str_replace("_", " ", $string);
+		$string = str_replace("=\r\n","",$string);
+		$string = quoted_printable_decode($string);
+		return $string;
+	}
+	
+	/*
+	// ----  RFC Header Decoding  -----
+	function qprint_rfc_header($data)
+	{
+		// SAME FUNCTIONALITY as decode_header_string()  in /inc/functions, (but Faster, hopefully)
+		// non-us-ascii chars in email headers MUST be encoded using the special format:  
+		//  =?charset?Q?word?=
+		// currently only qprint and base64 encoding is specified by RFCs
+		if (ereg("=\?.*\?(Q|q)\?.*\?=", $data))
+		{
+			$data = ereg_replace("=\?.*\?(Q|q)\?", '', $data);
+			$data = ereg_replace("\?=", '', $data);
+			$data = $this->qprint($data);
+		}
+		return $data;
+	}
+	*/
+
+	// non-us-ascii chars in email headers MUST be encoded using the special format:  
+	//  =?charset?Q?word?=
+	// currently only qprint and base64 encoding is specified by RFCs
+	function decode_header_string($string)
+	{
+		global $phpgw;
+
+		if($string)
+		{
+			$pos = strpos($string,"=?");
+			if(!is_int($pos))
+			{
+				return $string;
+			}
+			// save any preceding text
+			$preceding = substr($string,0,$pos);
+			$end = strlen($string);
+			// the mime header spec says this is the longest a single encoded word can be
+			$search = substr($string,$pos+2,$end - $pos - 2 );
+			$d1 = strpos($search,"?");
+			if(!is_int($d1))
+			{
+				return $string;
+			}
+			$charset = strtolower(substr($string,$pos+2,$d1));
+			$search = substr($search,$d1+1);
+			$d2 = strpos($search,"?");
+			if(!is_int($d2))
+			{
+				return $string;
+			}
+			$encoding = substr($search,0,$d2);
+			$search = substr($search,$d2+1);
+			$end = strpos($search,"?=");
+			if(!is_int($end))
+			{
+				return $string;
+			}
+			$encoded_text = substr($search,0,$end);
+			$rest = substr($string,(strlen($preceding.$charset.$encoding.$encoded_text)+6));
+			if(strtoupper($encoding) == "Q")
+			{
+				$decoded = $phpgw->msg->qprint(str_replace("_"," ",$encoded_text));
+			}
+			if (strtoupper($encoding) == "B")
+			{
+				$decoded = urldecode(base64_decode($encoded_text));
+			}
+			return $preceding . $decoded . $this->decode_header_string($rest);
+		} 
+		else
+		{
+			return $string;
+		}
+	}
+
+
+
+	// SUB-FUNCTION - do not call directly
+	function encode_iso88591_word($string)
+	{
+		$qprint_prefix = '=?iso-8859-1?Q?';
+		$qprint_suffix = '?=';
+		$new_str = '';
+		$did_encode = False;
+		
+		for( $i = 0 ; $i < strlen($string) ; $i++ )
+		{
+			$val = ord($string[$i]);
+			// my interpetation of what to encode from RFC2045 and RFC2822
+			if ( (($val >= 1) && ($val <= 31))
+			|| (($val >= 33) && ($val <= 47))
+			|| ($val == 61)
+			|| ($val == 62)
+			|| ($val == 64)
+			|| (($val >= 91) && ($val <= 94))
+			|| ($val == 96)
+			|| ($val >= 123))
+			{
+				$did_encode = True;
+				//echo 'val needs encode: '.$val.'<br>';
+				$val = dechex($val);
+				// rfc2045 requires quote printable HEX letters to be uppercase
+				$val = strtoupper($val);
+				//echo 'val AFTER encode: '.$val.'<br>';
+				//$text .= '='.$val;
+				$new_str = $new_str .'='.$val;
+			}
+			else
+			{
+				$new_str = $new_str . $string[$i];
+			}
+		}
+		if ($did_encode)
+		{
+			$new_str =  $qprint_prefix .$new_str .$qprint_suffix;
+		}
+		return $new_str;
+	}
+	
+	
+	function encode_header($data)
+	{
+		// explode string into an array or words
+		$words = explode(' ', $data);
+		
+		for($i=0; $i<count($words); $i++)
+		{
+			//echo 'words['.$i.'] in loop: '.$words[$i].'<br>';
+			
+			// my interpetation of what to encode from RFC2045, RFC2047, and RFC2822
+			if (preg_match('/'
+				. '['.chr(1).'-'.chr(31).']'
+				. '['.chr(33).'-'.chr(38).']'
+				.'|[\\'.chr(39).']'
+				.'|['.chr(40).'-'.chr(46).']'
+				.'|[\\'.chr(47).']'
+				.'|['.chr(61).'-'.chr(62).']'
+				.'|['.chr(64).']'
+				.'|['.chr(91).'-'.chr(94).']'
+				.'|['.chr(96).']'
+				.'|['.chr(123).'-'.chr(255).']'
+				.'/', $words[$i]))
+			{
+				/*
+				// qprint this word, and add rfc2047 header special words
+				$len_before = strlen($words[$i]);
+				echo 'words['.$i.'] needs encode: '.$words[$i].'<br>';
+				$words[$i] = imap_8bit($words[$i]);
+				echo 'words['.$i.'] AFTER encode: '.$words[$i].'<br>';
+				// php may not encode everything that I expect, so check to see if encoding happened
+				$len_after = strlen($words[$i]);
+				if ($len_before != $len_after)
+				{
+					// indeed, encoding did happen, add rfc2047 header special words
+					$words[$i] = $qprint_prefix .$words[$i] .$qprint_suffix;
+				}
+				*/
+				
+				// qprint this word, and add rfc2047 header special words
+				//echo 'words['.$i.'] needs encode: '.$words[$i].'<br>';
+				$words[$i] = $this->encode_iso88591_word($words[$i]);
+				//echo 'words['.$i.'] AFTER encode: '.$words[$i].'<br>';
+			}
+		}
+		
+		// reassemble the string
+		$encoded_str = implode(' ',$words);
+		return $encoded_str;
+	}
+
+	function htmlspecialchars_encode($str)
+	{
+		/*// replace  '  and  "  with htmlspecialchars */
+		$str = ereg_replace('&', '&amp;', $str);
+		// any ampersand & that ia already in a "&amp;" should NOT be encoded
+		//$str = preg_replace("/&(?![:alnum:]*;)/", "&amp;", $str);
+		$str = ereg_replace('"', '&quot;', $str);
+		$str = ereg_replace('\'', '&#039;', $str);
+		$str = ereg_replace('<', '&lt;', $str);
+		$str = ereg_replace('>', '&gt;', $str);
+		// these {  and  }  must be html encoded or else they conflict with the template system
+		//$str = str_replace("{", '&#123;', $str);
+		//$str = str_replace("}", '&#125;', $str);
+		return $str;
+	}
+
+	function htmlspecialchars_decode($str)
+	{
+		/*// reverse of htmlspecialchars */
+		//$str = str_replace('&#125;', "}", $str);
+		//$str = str_replace('&#123;', "{", $str);
+		
+		$str = ereg_replace('&gt;', '>', $str);
+		$str = ereg_replace('&lt;', '<', $str);
+		$str = ereg_replace('&#039;', '\'', $str);
+		$str = ereg_replace('&quot;', '"', $str);
+		$str = ereg_replace('&amp;', '&', $str);
+		return $str;
+	}
+
+	function html_quotes_encode($str)
+	{
+		// replace  '  and  "  with htmlspecialchars
+		$str = ereg_replace('"', '&quot;', $str);
+		$str = ereg_replace('\'', '&#039;', $str);
+		// NEEDED: add  /  and  \  to this
+		return $str;
+	}
+
+	function html_quotes_decode($str)
+	{
+		// reverse of htmlspecialchars
+		$str = ereg_replace('&#039;', '\'', $str);
+		$str = ereg_replace('&quot;', '"', $str);
+		// NEEDED: add  /  and  \  to this
+		return $str;
+	}
+
+	function space_to_nbsp($data)
+	{
+		// change every other space to a html "non breaking space" so lines can still wrap
+		$data = str_replace("  "," &nbsp;",$data);
+		return $data;
+	}
+
+	function body_hard_wrap($in, $size=80)
+	{
+		// this function formats lines according to the defined
+		// linesize. Linebrakes (\n\n) are added when neccessary,
+		// but only between words.
+
+		$out="";
+		$exploded = explode ("\r\n",$in);
+
+		for ($i = 0; $i < count($exploded); $i++)
+		{
+			$this_line = $exploded[$i];
+			$this_line_len = strlen($this_line); 
+			if ($this_line_len > $size)
+			{
+				$temptext="";
+				$temparray = explode (" ",$this_line);
+				$z = 0;
+				while ($z <= count($temparray))
+				{
+					while ((strlen($temptext." ".$temparray[$z]) < $size) && ($z <= count($temparray)))
+					{
+						$temptext = $temptext." ".$temparray[$z];
+						$z++;
+					}
+					$out = $out."\r\n".$temptext;
+					$temptext = $temparray[$z];
+					$z++;
+				}
+			}
+			else
+			{
+				//$out = trim($out);
+				// get the rest of the line now
+				$out = $out . $this_line . "\r\n";
+			}
+			//$out = trim($out);
+			//$out = $out . "\r\n";
+		}
+		// one last trimming
+		$temparray = explode("\r\n",$out);
+		for ($i = 0; $i < count($temparray); $i++)
+		{
+			$temparray[$i] = trim($temparray[$i]);
+		}
+		$out = implode("\r\n",$temparray);
+		
+		return $out;
+	}
+
+
+	// magic_quotes_gpc  PHP MANUAL:
+	/* Sets the magic_quotes state for GPC (Get/Post/Cookie) operations. 
+	  When magic_quotes are on, all ' (single-quote), " (double quote), \ (backslash) and NUL's 
+	  are escaped with a backslash automatically.
+	  GPC means GET/POST/COOKIE which is actually EGPCS these days (Environment, GET, POST, Cookie, Server).
+	  This cannot be turned off in your script because it operates on the data before your script is called. 
+	  You can check if it is on using that function and treat the data accordingly." (by Rasmus Lerdorf) */
+	function stripslashes_gpc($data)
+	{	/* get rid of the escape \ that magic_quotes HTTP POST will add, " becomes \" and  '  becomes  \'  
+		  but ONLY if magic_quotes is on, less likely to strip user intended slashes this way */
+		if (get_magic_quotes_gpc()==1)
+		{
+			return stripslashes($data);
+		}
+		else
+		{
+			return $data;
+		}
+	}
+
+	function addslashes_gpc($data)
+	{	/* add the escape \ that magic_quotes HTTP POST would add, " becomes \" and  '  becomes  \'  
+		  but ONLY if magic_quotes is OFF, else we may *double* add slashes */
+		if (get_magic_quotes_gpc()==1)
+		{
+			return $data;
+		}
+		else
+		{
+			return addslashes($data);
+		}
+	}
+
+// ----  Functions PHP Should Have OR Functions From PHP4+ Backported to PHP3  ---------
+	/*!
+	@function is_serialized
+	@abstract find out if something is already serialized
+	@param $data could be almost anything
+	*/
+	function is_serialized($data)
+	{
+		global $phpgw_info, $phpgw;
+		
+		/* not totally complete: currently works with strings, arrays, and booleans (update this if more is added) */
+		
+		 /* FUTURE: detect a serialized data that had addslashes appplied AFTER it was serialized
+		 you can NOT unserialize that data until those post-serialization slashes are REMOVED */
+
+		//echo 'is_serialized initial input [' .$data .']<br>';
+		//echo 'is_serialized unserialized input [' .unserialize($data) .']<br>';
+
+		if (is_array($data))
+		{
+			// arrays types are of course not serialized (at least not at the top level)
+			// BUT there  may be serialization INSIDE in a sub part
+			return False;
+		}
+		elseif (is_bool($data))
+		{
+			// a boolean type is of course not serialized
+			return False;
+		}
+		elseif ((is_string($data))
+		&& (($data == 'b:0;') || ($data == 'b:1;')) )
+		{
+			// check for easily identifiable serialized boolean values
+			return True;
+		}
+		elseif ((is_string($data))
+		&& (unserialize($data) == False))
+		{
+			// when you unserialize a normal (not-serialized) string, you get False
+			return False;
+		}
+		elseif ((is_string($data))
+		&& (ereg('^s:[0-9]+:"',$data) == True))
+		{
+			// identify pattern of a serialized string (that did NOT have slashes added AFTER serialization )
+			return True;
+		}
+		elseif ((is_string($data))
+		&& (is_array(unserialize($data))))
+		{
+			// if unserialization produces an array out of a string, it was serialized
+			//(ereg('^a:[0-9]+:\{',$data) == True))  also could work
+			return True;
+		}
+		//Best Guess - UNKNOWN / ERROR / NOY YET SUPPORTED TYPE
+		elseif (is_string($data))
+		{
+			return True;
+		}
+		else
+		{
+			return False;
+		}
+	}
+
+	// PHP3 SAFE Version of "substr_count"
+	/*!
+	@function substr_count_ex
+	@abstract returns the number of times the "needle" substring occurs in the "haystack" string
+	@param $haystack  string
+	@param $needle  string
+	*/
+	function substr_count_ex($haystack='', $needle='')
+	{
+		if (($haystack == '') || ($needle == ''))
+		{
+			return 0;
+		}
+
+		$crtl_struct = Array();
+		// how long is needle
+		$crtl_struct['needle_len'] = strlen($needle);
+		// how long is haystack before the replacement
+		$crtl_struct['haystack_orig_len'] = strlen($haystack);
+		
+		// we will replace needle with a BLANK STRING
+		$crtl_struct['haystack_new'] = str_replace("$needle",'',$haystack);
+		// how long is the new haystack string
+		$crtl_struct['haystack_new_len'] = strlen($crtl_struct['haystack_new']);
+		// the diff in length between orig haystack and haystack_new diveded by len of needle = the number of occurances of needle
+		$crtl_struct['substr_count'] = ($crtl_struct['haystack_orig_len'] - $crtl_struct['haystack_new_len']) / $crtl_struct['needle_len'];
+		
+		//echo '<br>';
+		//var_dump($crtl_struct);
+		//echo '<br>';
+		
+		// return the finding
+		return $crtl_struct['substr_count'];
+	}
+
+	/**************************************************************************\
+	* USEFUL  AND   SIMPLE  HTML  FUNCTIONS	*
+	\**************************************************************************/
+
+	/* * * * * * * * * * *
+	  *  href_maketag
+	  *  will generate a typical A HREF html item
+	  * * * * * * *  * * * */
+	function href_maketag($href_link='',$href_text='default text')
+	{
+		return '<a href="' .$href_link .'">' .$href_text .'</a>' ."\n";
+	}
+
+	/* * * * * * * * * * *
+	  *  img_maketag
+	  *  will generate a typical IMG html item
+	  * * * * * * *  * * * */
+	function img_maketag($location='',$alt='',$height='',$width='',$border='')
+	{
+		$alt_default_txt = 'image';
+		$alt_unknown_txt = 'unknown';
+		if ($location == '')
+		{
+			return '<img src="" alt="['.$alt_unknown_txt.']">';
+		}
+		if ($alt != '')
+		{
+			$alt_tag = ' alt="['.$alt.']"';
+		}
+		else
+		{
+			$alt_tag = ' alt="['.$alt_default_txt.']"';
+		}
+		if ($height != '')
+		{
+			$height_tag = ' height="' .$height .'"';
+		}
+		else
+		{
+			$height_tag = '';
+		}
+		if ($width != '')
+		{
+			$width_tag = ' width="' .$width .'"';
+		}
+		else
+		{
+			$width_tag = '';
+		}
+		if ($border != '')
+		{
+			$border_tag = ' border="' .$border .'"';
+		}
+		else
+		{
+			$border_tag = '';
+		}
+		$image_html = '<img src="'.$location.'"' .$height_tag .$width_tag .$border_tag .$alt_tag .'>';
+		return $image_html;
+	}
+
+  }
+// end of class mail_msg
+?>

@@ -39,8 +39,8 @@
 		}
 		else
 		{
-			$server_str = get_mailsvr_callstr();
-			$mailbox_status = $phpgw->msg->status($mailbox,$server_str .'INBOX',SA_UNSEEN);
+			$server_str = $phpgw->msg->get_mailsvr_callstr();
+			$mailbox_status = $phpgw->dcom->status($mailbox,$server_str .'INBOX',SA_UNSEEN);
 			if ($mailbox_status->unseen == 1)
 			{
 				$num_new_str = ' - ' .lang('You have 1 new message!');
@@ -57,7 +57,7 @@
 			{
 				$num_new_str = '';
 			}
-			$nummsg = $phpgw->msg->num_msg($mailbox);
+			$nummsg = $phpgw->dcom->num_msg($mailbox);
 
 			$title = '<font color="FFFFFF">' . lang('EMail') . $num_new_str . '</font>';
 			$portalbox = CreateObject('phpgwapi.linkbox',Array($title,$phpgw_info['theme']['navbar_bg'],$phpgw_info['theme']['bg_color'],$phpgw_info['theme']['bg_color']));
@@ -88,11 +88,11 @@
 			if ($nummsg > 0)
 			{
 				$msg_array_hook = array();
-				$msg_array_hook = $phpgw->msg->sort($mailbox, $order_hook, $sort_hook);
+				$msg_array_hook = $phpgw->dcom->sort($mailbox, $order_hook, $sort_hook);
 			}
 			for($i=0;$i<$check_msgs;$i++,$j++)
 			{
-				$msg = $phpgw->msg->header($mailbox,$msg_array_hook[$i]);
+				$msg = $phpgw->dcom->header($mailbox,$msg_array_hook[$i]);
 				$subject = $phpgw->msg->get_subject($msg,'');
 				if (strlen($subject) > 65)
 				{
@@ -114,7 +114,7 @@
 				$listbox_show_unseen = False;
 				$switchbox_listbox = '<select name="folder" onChange="document.switchbox.submit()">'
 						. '<option>' . lang('switch current folder to') . ':'
-						. all_folders_listbox($mailbox,'','',$listbox_show_unseen)
+						. $phpgw->msg->all_folders_listbox($mailbox,'','',$listbox_show_unseen)
 						. '</select>';
 				// make it another TR we can insert
 				$switchbox_action = $phpgw->link('/email/index.php');
@@ -127,6 +127,7 @@
 					.'</form>'."\r\n"
 					.'</tr>'."\r\n";
 			}
+			$phpgw->dcom->close($mailbox);
 			// output the portalbox and (if applicable) the folders listbox below it
 			echo '<!-- start Mailbox info -->'."\r\n"
 			.'<tr>'."\r\n"

@@ -33,8 +33,8 @@
 		// properly grab folder var
 		$folder = urldecode($folder);
 		
-		$msg = $phpgw->msg->header($mailbox, $msgnum);
-		$struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
+		$msg = $phpgw->dcom->header($mailbox, $msgnum);
+		$struct = $phpgw->dcom->fetchstructure($mailbox, $msgnum);
 		if ($action == 'reply')
 		{
 			// if "Reply-To" is specified, use it, or else use the "from" address as the address to reply to
@@ -132,7 +132,7 @@
 		&& ($part_no != '')
 		&& (($action == 'reply') || ($action == 'replyall')))
 		{
-			$bodystring = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no);
+			$bodystring = $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_no);
 			// see if we have to un-do qprint encoding
 			if ((isset($encoding))
 			&& ($encoding == 'qprint'))
@@ -219,7 +219,7 @@
 			/*
 			$orig_boundary = '';
 			// we are going to re-use the original message's mime boundry from the main headers
-			$orig_headers = $phpgw->msg->fetchheader($mailbox, $msgnum);
+			$orig_headers = $phpgw->dcom->fetchheader($mailbox, $msgnum);
 			$did_match = preg_match('/(boundary=["]?)(.*)(["]?.*(\r|\n))/ix', $orig_headers, $reg_matches);
 			if (($did_match) && (isset($reg_matches[1])) && (isset($reg_matches[2]))
 			&& (stristr($reg_matches[1], 'boundary')) && ($reg_matches[2] != ''))
@@ -262,7 +262,7 @@
 			{
 				if (strtoupper($part->subtype) == 'PLAIN')
 				{
-					$bodystring = $phpgw->msg->fetchbody($mailbox, $msgnum, $i+1);
+					$bodystring = $phpgw->dcom->fetchbody($mailbox, $msgnum, $i+1);
 					$body_array = array();
 					$body_array = explode("\n", $bodystring);
 					$bodycount = count ($body_array);
@@ -362,8 +362,8 @@
 	$t->set_var('checkbox_sig_desc',lang("Attach signature"));
 	$t->set_var('checkbox_sig_name','attach_sig');
 	$t->set_var('checkbox_sig_value','true');
-	if (isset($phpgw_info["user"]["preferences"]["email"]["email_sig"])
-	&& ($phpgw_info["user"]["preferences"]["email"]["email_sig"] != ''))
+	if (isset($phpgw_info['user']['preferences']['email']['email_sig'])
+	&& ($phpgw_info['user']['preferences']['email']['email_sig'] != ''))
 	{
 		$t->parse('V_checkbox_sig','B_checkbox_sig');
 	}
@@ -377,6 +377,8 @@
 	$t->set_var('body_box_value',$body);
 
 	$t->pparse('out','T_compose_out');
+
+	$phpgw->dcom->close($mailbox);
  
 	$phpgw->common->phpgw_footer();
 ?>

@@ -70,13 +70,13 @@
 		$uses_folders = False;
 	}
 	// How To Communicate With The Server
-	$server_str = get_mailsvr_callstr();
+	$server_str = $phpgw->msg->get_mailsvr_callstr();
 	// Fully Qualified Folder Name, Includes Namespace and Delimiter
-	$folder_long = get_folder_long($folder);
+	$folder_long = $phpgw->msg->get_folder_long($folder);
 	// Abreviated Folder Name, NO namespace, NO delimiter
-	$folder_short = get_folder_short($folder);
+	$folder_short = $phpgw->msg->get_folder_short($folder);
 	// How Many Messages Are In This Inbox/Folder
-	$nummsg = $phpgw->msg->num_msg($mailbox);
+	$nummsg = $phpgw->dcom->num_msg($mailbox);
 
 // ---- Messages Sort Order  (AND ensure $sort and $order and $start have usable values) -----
 	/*
@@ -171,8 +171,8 @@
 	$t->set_var('next_arrows',$td_next_arrows);
 
 // ---- Message Folder Stats   -----
-	$mailbox_info = $phpgw->msg->mailboxmsginfo($mailbox);
-	$mailbox_status = $phpgw->msg->status($mailbox,"$server_str" ."$folder_long",SA_UNSEEN);
+	$mailbox_info = $phpgw->dcom->mailboxmsginfo($mailbox);
+	$mailbox_status = $phpgw->dcom->status($mailbox,"$server_str" ."$folder_long",SA_UNSEEN);
 
 	if ($nummsg == 0)
 	{
@@ -188,7 +188,7 @@
 		$msg_array = array();
 			// Note: sorting on email is on address, not displayed name per php imap_sort
 			//echo "<br>SORT GOT: column '$order', '$oursort'.";
-		$msg_array = $phpgw->msg->sort($mailbox, $sort, $order);
+		$msg_array = $phpgw->dcom->sort($mailbox, $sort, $order);
 
 		// NUM NEW MESSAGES
 		$stats_new = $mailbox_status->unseen;
@@ -213,8 +213,8 @@
 		$listbox_show_unseen = False;
 		$switchbox_listbox = '<select name="folder" onChange="document.switchbox.submit()">'
 				. '<option>' . lang('switch current folder to') . ':'
-				//. all_folders_listbox($mailbox,'')
-				. all_folders_listbox($mailbox,'','',$listbox_show_unseen)
+				//. $phpgw->msg->all_folders_listbox($mailbox,'')
+				. $phpgw->msg->all_folders_listbox($mailbox,'','',$listbox_show_unseen)
 				. '</select>';
 	} else {
 		$switchbox_listbox = '&nbsp';
@@ -337,12 +337,12 @@
 			// ROW BACK COLOR
 			$bg = (($i + 1)/2 == floor(($i + 1)/2)) ? $phpgw_info["theme"]["row_off"] : $phpgw_info["theme"]["row_on"];
 
-			$struct = $phpgw->msg->fetchstructure($mailbox, $msg_array[$i]);
+			$struct = $phpgw->dcom->fetchstructure($mailbox, $msg_array[$i]);
 
 			// SHOW ATTACHMENT CLIP ?
 			$show_attach = has_real_attachment($struct);
 
-			$msg = $phpgw->msg->header($mailbox, $msg_array[$i]);
+			$msg = $phpgw->dcom->header($mailbox, $msg_array[$i]);
 			
 			// MESSAGE REFERENCE NUMBER
 			$mlist_msg_num = $msg_array[$i];
@@ -394,7 +394,7 @@
 			}
 			else
 			{
-				$personal = decode_header_string($from->personal);
+				$personal = $phpgw->msg->decode_header_string($from->personal);
 			}
 			if ($personal == "@")
 			{
@@ -431,7 +431,7 @@
 				$from_link = $from_link .'&personal='.urlencode($personal);
 			}
 			// this will be the href clickable text in the from column
-			$from_name = decode_header_string($personal);
+			$from_name = $phpgw->msg->decode_header_string($personal);
 			//echo "$display_address->from";
 
 			// DATE
@@ -483,7 +483,7 @@
 	{
 		$delmov_listbox = '<select name="tofolder" onChange="do_action(\'move\')">'
 			. '<option>' . lang("move selected messages into") . ':'
-			. all_folders_listbox($mailbox,'',$folder_short)
+			. $phpgw->msg->all_folders_listbox($mailbox,'',$folder_short)
 			. '</select>';
             
 	}
@@ -505,7 +505,7 @@
 // ----  Output the Template   -----
 	$t->pparse('out','T_index_out');
 
-	$phpgw->msg->close($mailbox);
+	$phpgw->dcom->close($mailbox);
 
 	$phpgw->common->phpgw_footer();
 ?>

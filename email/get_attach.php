@@ -14,13 +14,13 @@
   /* $Id$ */
 
 	$phpgw_info["flags"] = array(
-		"currentapp" => "email",
-		"enable_network_class" => True,
-		"enable_browser_class" => True,
-		"noheader" => True,
-		"nonavbar" => True
+		'currentapp' => 'email',
+		'enable_network_class' => True,
+		'enable_browser_class' => True,
+		'noheader' => True,
+		'nonavbar' => True
 	);
-	include("../header.inc.php");
+	include('../header.inc.php');
 
 	//header("Content-disposition: attachment; filename=\"".$name."\"");
 	//header("Content-type: ".strtolower($application)."/".strtolower($subtype));
@@ -30,14 +30,17 @@
 
 	if ($encoding == "base64")
 	{
-		echo $phpgw->msg->base64($phpgw->msg->fetchbody($mailbox, $msgnum, $part_no));
+		echo $phpgw->dcom->base64($phpgw->dcom->fetchbody($mailbox, $msgnum, $part_no));
 	}
 	elseif ($encoding == "qprint")
 	{
-		echo $phpgw->msg->qprint($phpgw->msg->fetchbody($mailbox, $msgnum, $part_no));
+		echo $phpgw->msg->qprint($phpgw->dcom->fetchbody($mailbox, $msgnum, $part_no));
 	}
 	else
 	{
-		echo $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no);
+		echo $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_no);
 	}
+
+	$phpgw->dcom->close($mailbox);
+
 ?>

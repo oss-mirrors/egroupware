@@ -27,7 +27,7 @@
 	{
 		$phpgw->browser->content_header('','');
 		$html_part = $phpgw->msg->stripslashes_gpc($html_part);
-		echo $phpgw->msg->base64($html_part);
+		echo $phpgw->dcom->base64($html_part);
 	}
 	elseif (isset($html_reference))
 	{

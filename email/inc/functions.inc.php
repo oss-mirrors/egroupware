@@ -23,7 +23,7 @@
 
 	if(floor(phpversion()) == 4)
 	{
-		global $phpgw, $phpgw_info, $PHP_SELF;  // This was a problem for me.
+		global $phpgw, $phpgw_info, $PHP_SELF;  // This was a problem for me (author unknown).
 	}
 
 // ----  Turn Off Magic Quotes Runtime    -----
@@ -32,22 +32,24 @@
 	  external source including databases and text files will have quotes escaped with a backslash. */
 	set_magic_quotes_runtime(0);
 
-// ----  Load "Preferences" from db (currently "phpgw_preferences")    -----
+// ----  Create the base email Msg Class    -----
+	$phpgw->msg = CreateObject("email.mail_msg");
+	// initialize the class
+	// *AND* this also obtains the email preferences from the db (currently "phpgw_preferences")
+	$phpgw->msg->mail_msg_init();
+
+	/*
+	// ----  Load "Preferences" from db (currently "phpgw_preferences")    -----
+	// **MOVED INTO THE CLASS**
 	// NOTE: Preferences *MAY* have the "custom email password" which is different than other passwords
 	// because it is stored in the "Preferences" table, and may require special treatment
-	$phpgw_info['user']['preferences'] = $phpgw->common->create_emailpreferences($phpgw_info['user']['preferences']);
-	
-	// NOTE: WORKAROUND FOR CUST EMAIL PASSWD BUG REQ'D msg->get_email_passwd() during LOGIN
-	// NO MORE - "common->create_emailpreferences" now uses the msg class to get the correct password 
-	//var_dump($phpgw_info["user"]["preferences"]["email"]);
+	//$phpgw->msg->create_email_preferences();
+	//$phpgw->common->create_emailpreferences();
+	*/
 
-// ----  Create the base email Msg Class    -----
-	$phpgw->msg = CreateObject("email.msg");
-	$phpgw->msg->msg_common_();
-
-// ----  Ensure certasin Defaults are Set, and some bug workarounds    -----
-	if ( ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UWash")
-	&& ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap")
+// ----  (LEGACY CODE ?)  Ensure certasin Defaults are Set, and some bug workarounds    -----
+	if ( ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
+	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
 	&& (!isset($folder)) )
 	{
 		// Changed by skeeter 04 Jan 01
@@ -57,29 +59,36 @@
 		//      $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
 		//$phpgw_info["user"]["preferences"]["email"]["folder"] = (@!$phpgw_info["user"]["preferences"]["email"]["folder"] ? "INBOX" : $phpgw_info["user"]["preferences"]["email"]["folder"]);
 		
-		if ((isset($phpgw_info["user"]["preferences"]["email"]["folder"]))
-		&& ($phpgw_info["user"]["preferences"]["email"]["folder"] != ''))
+		if ((isset($phpgw_info['user']['preferences']['email']['folder']))
+		&& ($phpgw_info['user']['preferences']['email']['folder'] != ''))
 		{
 			// DO NOTHING -this is OK
 		}
 		else
 		{
-			$phpgw_info["user"]["preferences"]["email"]["folder"] = "INBOX";
+			$phpgw_info['user']['preferences']['email']['folder'] = 'INBOX';
 		}
 		//backward compatibility
-		$folder = $phpgw_info["user"]["preferences"]["email"]["folder"];
+		$folder = $phpgw_info['user']['preferences']['email']['folder'];
 	}
 
 // ----  Ensure a Folder Variable exists, if not, set to INBOX (typical practice)   -----
-	if(!$folder) $folder="INBOX";
+	if (!$folder)
+	{
+		$folder = 'INBOX';
+	}
 
 	// Its better then them using a ton of PHP errors.
 	// Changed by Milosch on 3-26-2001 - This check was not working, and the code progressed to giving stream pointer errors
 	// From the msg_imap class.  I tried to clean it up here so I could see what was happening.
 	// -- (obviously, PHP_SELF is the built-in php variable = "filename on the currently executing script") --
-	if (!$PHP_SELF) global $PHP_SELF;  // This was a problem for me (author unknown).
+	if (!$PHP_SELF)
+	{
+		// This was a problem for me (author unknown)
+		global $PHP_SELF;
+	}
 
-// ----  CONNECT TO MAILSERVER == IS IT NECESSARY ==  -----
+// ----  == IS IT OK TO LOGIN To Mailserver ==  -----
 	//$debug_logins = True;
 	$debug_logins = False;
 	
@@ -90,7 +99,7 @@
 	$in_email = eregi("^.*\/email\/.*$",$PHP_SELF);
 	
 	// DO NOT LOGIN for these conditions  --------
-	$do_not_login = False; // initialize
+	$login_allowed = True; // initialize
 	$no_login_check = Array();
 	// these files do not require login to email server
 	$no_login_check[0] = "preferences\.php";
@@ -101,7 +110,7 @@
 		$match_this = $no_login_check[$i];
 		if (eregi("^.*\/email\/$match_this.*$",$PHP_SELF))
 		{
-			$do_not_login = True;
+			$login_allowed = False;
 			break;
 		}
 	}
@@ -110,7 +119,7 @@
 	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imap')
 	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imaps') )
 	{
-		$do_not_login = True;
+		$login_allowed = False;
 	}
 	/* // FINE TUNE THIS - TOO BROAD
 	// AND ALSO  Do Not Login - if composing message when server is not IMAP/IMAPS
@@ -118,7 +127,7 @@
 	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imap')
 	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imaps') )
 	{
-		$do_not_login = True;
+		$login_allowed = False;
 	}
 	*/
 
@@ -129,19 +138,24 @@
 		echo 'phpgw_info[server][webserver_url]='.$phpgw_info['server']['webserver_url'].'<br>';
 		echo 'in_mainscreen='.serialize($in_mainscreen).'<br>';
 		echo 'in_email='.serialize($in_email).'<br>';
-		echo 'do_not_login='.serialize($do_not_login).'<br>';
+		echo 'login_allowed='.serialize($login_allowed).'<br>';
 		echo 'folder='.$folder.'<br>';
-		echo 'get_mailsvr_callstr='.get_mailsvr_callstr().'<br>';
-		echo 'get_folder_long='.get_folder_long($folder).'<br>';
+		echo 'get_mailsvr_callstr='.$phpgw->msg->get_mailsvr_callstr().'<br>';
+		echo 'get_folder_long='.$phpgw->msg->get_folder_long($folder).'<br>';
 	}
 
 // ----  CONNECT TO MAILSERVER - IF IT'S OK  -------
-	if ( (($in_email) || ($in_mainscreen)) && ($do_not_login == False) )
+	if ((($in_email) || ($in_mainscreen))
+	&& ($login_allowed))
 	{
 		if ($debug_logins) {  echo 'CALL TO LOGIN IN FUNCTIONS.INC.PHP'.'<br>'.'userid='.$phpgw_info['user']['preferences']['email']['userid']; }
 		
+		// ---- Create email server Data Communication Class
+		$phpgw->dcom = CreateObject("email.mail_dcom");
+		$phpgw->dcom->mail_dcom_base();
+		
 		set_time_limit(90);
-		$mailbox = $phpgw->msg->login($folder); // Changed this to not try connection in prefs
+		$mailbox = $phpgw->dcom->login($folder);
 		set_time_limit(0);
 		
 		// ----  Error Msg And Exit If Mailbox Connection Not Established  -----
@@ -171,543 +185,6 @@
 	//var_dump($phpgw_info['user']);
 
 // ----  Various Functions Used To Support Email   -----
-
-  // non-us-ascii chars in email headers MUST be encoded using the special format:  
-  //  =?charset?Q?word?=
-  // currently only qprint and base64 encoding is specified by RFCs
-  function decode_header_string($string)
-  {
-	global $phpgw;
-
-	if($string)
-	{
-		$pos = strpos($string,"=?");
-		if(!is_int($pos))
-		{
-			return $string;
-		}
-		// save any preceding text
-		$preceding = substr($string,0,$pos);
-		$end = strlen($string);
-		// the mime header spec says this is the longest a single encoded word can be
-		$search = substr($string,$pos+2,$end - $pos - 2 );
-		$d1 = strpos($search,"?");
-		if(!is_int($d1))
-		{
-			return $string;
-		}
-		$charset = strtolower(substr($string,$pos+2,$d1));
-		$search = substr($search,$d1+1);
-		$d2 = strpos($search,"?");
-		if(!is_int($d2))
-		{
-			return $string;
-		}
-		$encoding = substr($search,0,$d2);
-		$search = substr($search,$d2+1);
-		$end = strpos($search,"?=");
-		if(!is_int($end)) {
-			return $string;
-		}
-		$encoded_text = substr($search,0,$end);
-		$rest = substr($string,(strlen($preceding.$charset.$encoding.$encoded_text)+6));
-		if(strtoupper($encoding) == "Q")
-		{
-			$decoded = $phpgw->msg->qprint(str_replace("_"," ",$encoded_text));
-		}
-		if (strtoupper($encoding) == "B")
-		{
-			$decoded = urldecode(base64_decode($encoded_text));
-		}
-		return $preceding . $decoded . decode_header_string($rest);
-	} 
-	else
-	return $string;
-  }
-
-
-/* * * * * * * * * * *
-  *  ensure_no_brackets
-  * used for removing the bracketed server call string from a full IMAP folder name string
-  *  Example: ensure_no_brackets('{mail.yourserver.com:143}INBOX') = 'INBOX'
-  * * * * * * *  * * * */
-  function ensure_no_brackets($feed_str='')
-  {
-  	if ((strstr($feed_str,'{') == False) && (strstr($feed_str,'}') == False))
-	{
-		// no brackets to remove
-		$no_brackets = $feed_str;
-	}
-	else
-	{
-		// get everything to the right of the bracket "}", INCLUDES the bracket itself
-		$no_brackets = strstr($feed_str,'}');
-		// get rid of that 'needle' "}"
-		$no_brackets = substr($no_brackets, 1);
-	}
-	return $no_brackets;
-  }
-
-/* * * * * * * * * * *
-  *  get_mailsvr_port
-  * will generate the appropriate port number to access a mail server of type
-  * pop3, pop3s, imap, imaps
-  * users value from $phpgw_info['user']['preferences']['email']['mail_port']
-  * if that value is not set, it generates a default port for the given $server_type
-  * * * * * * *  * * * */
-  function get_mailsvr_port()
-  {
-	global $phpgw, $phpgw_info;
-
-	/*// UNCOMMENT WHEN mail_port IS A REAL, USER SET OPTION
-	// first we try the port number supplied in preferences
-	if ( (isset($phpgw_info['user']['preferences']['email']['mail_port']))
-	&& ($phpgw_info['user']['preferences']['email']['mail_port'] != '') )
-	{
-		$port_number = $phpgw_info['user']['preferences']['email']['mail_port'];
-	}
-	// preferences does not have a port number, generate a default value
-	else
-	{
-	*/
-		if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
-		{
-			/* IMAP normal connection, No SSL */
-			$port_number = 143;
-		}
-		elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps')
-		{
-			/* IMAP over SSL */
-			$port_number = 993;
-		}
-		elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s')
-		{
-			/* POP3 over SSL: */
-			$port_number = 995;
-		}
-		elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3')
-		{
-			/* POP3 normal connection, No SSL  ( same string as normal imap above)  */
-			$port_number = 110;
-		}
-		else
-		{
-			//UNKNOWN SERVER in Preferences, return a default value that is likely to work
-			// probably should raise some kind of error here
-			$port_number = 143;
-		}
-		// set the preference string, since it was not set and that's why we are here
-		$phpgw_info['user']['preferences']['email']['mail_port'] = $port_number;
-	// UNCOMMENT WHEN mail_port IS A REAL, USER SET OPTION
-	//}
-	return $port_number;
-  }
-
-/* * * * * * * * * * *
-  *  get_mailsvr_callstr
-  * will generate the appropriate string to access a mail server of type
-  * pop3, pop3s, imap, imaps
-  * the returned string is the server call string from beginning bracker "{" to ending bracket "}"
-  * the returned string is the server call string from beginning bracker "{" to ending bracket "}"
-  *  Example:  {mail.yourserver.com:143}
-  * * * * * * *  * * * */
-  function get_mailsvr_callstr()
-  {
-	global $phpgw, $phpgw_info;
-
-	// construct the email server call string from the opening bracket "{"  to the closing bracket  "}"
-	if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
-	{
-		// IMAP normal connection, No SSL
-		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':' .get_mailsvr_port().'}';
-	}
-	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps')
-	{
- 		// IMAP over SSL
-		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.get_mailsvr_port().'/imap/ssl/novalidate-cert}';
-		//$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.get_mailsvr_port().'/imap/ssl/novalidate-cert}';
-
-	}
-	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s')
-	{
-		// POP3 over SSL:
-		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.get_mailsvr_port().'/pop3/ssl/novalidate-cert}';
-		//$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.get_mailsvr_port().'/pop3/ssl}';
-	}
-	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3')
-	{
-		// POP3 normal connection, No SSL
-		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.get_mailsvr_port().'/pop3}';
-	}
-	else
-	{
-		//UNKNOWN SERVER in Preferences, return a default value that is likely to work
-		// probably should raise some kind of error here
-		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'].':'.get_mailsvr_port().'}';
-	}
-	return $server_call;
-  }
-
-/* * * * * * * * * * *
-  *  get_mailsvr_namespace
-  *  will generate the appropriate namespace (aka filter) string to access an imap mail server
-  *  Example: {mail.servyou.com:143}INBOX    where INBOX is the namespace
-  *  for more info see: see http://www.rfc-editor.org/rfc/rfc2342.txt
-  * * * * * * *  * * * */
-  function get_mailsvr_namespace()
-  {
-	global $phpgw, $phpgw_info;
-	// UWash patched for Maildir style: $Maildir.Junque ?????
-	// Cyrus and Courier style =" INBOX"
-	// UWash style: "mail"
-
-	if (($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UW-Maildir')
-	|| ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash'))
-	{
-		if ((isset($phpgw_info['user']['preferences']['email']['mail_folder']))
-		&& (trim($phpgw_info['user']['preferences']['email']['mail_folder']) != ''))
-		{
-			$name_space = trim($phpgw_info['user']['preferences']['email']['mail_folder']);
-		}
-		else
-		{
-			// in this case, the namespace is blank, indicating the user's $HOME is where the MBOX files are
-			// or in the case uo UW-Maildir, where the maildir files are
-			// thus we can not have <blank><slash> preceeding a folder name
-			// note that we *may* have <tilde><slash> preceeding a folder name, SO:
-			// default value for this UWash server, $HOME = tilde (~)
-			$name_space = '~';
-		}
-	}
-	elseif ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'Cyrus')
-	// ALSO works for Courier IMAP
-	{
-		$name_space = 'INBOX';
-	}
-	else
-	{
-		// GENERIC IMAP NAMESPACE
-		// imap servers usually use INBOX as their namespace
-		// this is supposed to be discoverablewith the NAMESPACE command
-		// see http://www.rfc-editor.org/rfc/rfc2342.txt
-		// however as of PHP 4.0 this is not implemented
-		$name_space = 'INBOX';
-	}
-	//echo 'name_space='.$name_space.'<br>';
-	return $name_space;
-  }
-
-/* * * * * * * * * * *
-  *  get_mailsvr_delimiter
-  *  will generate the appropriate token that goes between the namespace and the inferior folders (subfolders)
-  *  Example: typical imap: "INBOX.Sent"  then the "." is the delimiter
-  *  Example: UWash imap (stock mbox)  "email/Sent"  then the "/" is the delimiter
-  * * * * * * *  * * * */
-  function get_mailsvr_delimiter()
-  {
-	global $phpgw, $phpgw_info;
-	// UWash style: "/"
-	// all other imap servers *should* be "."
-
-	if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
-	{
-		$delimiter = '/';
-	}
-	else
-	{
-		// GENERIC IMAP DELIMITER
-		// imap servers usually use a "." as their delimiter
-		// this is supposed to be discoverable with the NAMESPACE command
-		// see http://www.rfc-editor.org/rfc/rfc2342.txt
-		// however as of PHP 4.0 this is not implemented
-		$delimiter = '.';
-	}
-	return $delimiter;
-  }
-
-
-/* * * * * * * * * * *
-  *  get_folder_long
-  *  will generate the long name of an imap folder name, works for
-  *  imap: UW-Maildir, Cyrus, Courier
-  *  Example (Cyrus or Courier):  INBOX.Templates
-  *  Example (Cyrus only):  INBOX.drafts.rfc
-  *  ????   Example (UW-Maildir only): /home/James.Drafts   ????
-  * * * * * * *  * * * */
-  function get_folder_long($feed_folder='INBOX')
-  {
-	global $phpgw, $phpgw_info;
-
-	$feed_folder = urldecode($feed_folder);
-	$folder = ensure_no_brackets($feed_folder);
-	if ($folder == 'INBOX')
-	{
-		// INBOX is (always?) a special reserved word with nothing preceeding it in long or short form
-		$folder_long = 'INBOX';
-	}
-	else
-	{
-		$name_space = get_mailsvr_namespace();
-		$delimiter = get_mailsvr_delimiter();
-		if (strstr($folder,"$name_space" ."$delimiter") == False)
-		{
-			$folder_long = "$name_space" ."$delimiter" ."$folder";
-		}
-		else
-		{
-			// this folder is already in "long" format (it's namespace and delimiter already there)
-			$folder_long = $folder;
-		}
-	}
-	//echo 'get_folder_long('.$folder.')='.$folder_long.'<br>';
-	return trim($folder_long);
-  }
-
-  function get_folder_short($feed_folder='INBOX')
-  {
-	global $phpgw, $phpgw_info;
-	// Example: "Sent"
-	// Cyrus may support  "Sent.Today"
-
-	$feed_folder = urldecode($feed_folder);
-	$folder = ensure_no_brackets($feed_folder);
-	if ($folder == 'INBOX')
-	{
-		// INBOX is (always?) a special reserved word with nothing preceeding it in long or short form
-		$folder_short = 'INBOX';
-	}
-	else
-	{
-		$name_space = get_mailsvr_namespace();
-		$delimiter = get_mailsvr_delimiter();
-		if (strstr($folder,"$name_space" ."$delimiter") == False)
-		{
-			$folder_short = $folder;
-		}
-		else
-		{
-			$folder_short = strstr($folder,$delimiter);
-			$folder_short = substr($folder_short, 1);
-		}
-	}
-	return $folder_short;
-  }
-
-  function is_imap_folder($folder)
-  {
-	global $phpgw, $phpgw_info;
-
-	// UWash is the only (?) imap server where there is any question whether a folder is legit or not
-	if ($phpgw_info['user']['preferences']['email']['imap_server_type'] != 'UWash')
-	{
-		//echo 'is_imap_folder TRUE 1<br>';
-		return True;
-	}
-
-	$folder_long = get_folder_long($folder);	
-
-	// INBOX ia ALWAYS a valid folder, and is ALWAYS called INBOX because it's a special reserved word
-	if ($folder_long == 'INBOX')
-	{
-		//echo 'is_imap_folder TRUE 2<br>';
-		return True;
-	}
-
-	// UWash IMAP server looks for MBOX files, which it considers to be email "folders"
-	// and will return any file, whether it's an actual IMAP folder or not
-	if (strstr($folder_long,"/."))
-	{
-		// any pattern matching "/." for UWash is NOT an MBOX
-		// because the delimiter for UWash is "/" and the immediately following "." indicates a hidden file
-		// not an MBOX file, at least on Linux type system
-		//echo 'is_imap_folder FALSE 3<br>';
-		return False;
-	}
-
-	// if user specifies namespace like "mail" then MBOX files are in $HOME/mail
-	// so this server knows to put MBOX files in a special place
-	// BUT if the namespace used is associated with $HOME, such as ~
-	// then how many folders deep do you want to go? UWash is recursive, it will go as deep as possible into $HOME
-	
-	// is this a $HOME type of namespace
-	$the_namespace = get_mailsvr_namespace();
-	if ($the_namespace == '~')
-	{
-		$home_type_namespace = True;
-	}
-	else
-	{
-		$home_type_namespace = False;
-	}
-	
-	// DECISION: no more than 3 DIRECTORIES DEEP of recursion
-	$num_slashes = $phpgw->msg->substr_count_ex($folder_long, "/");
-	if (($home_type_namespace)
-	&& ($num_slashes >= 3))
-	{
-		//echo 'is_imap_folder FALSE 4<br>';
-		return False;
-	}
-
-	// if you get all the way to here then this must be a valid folder name
-	//echo 'is_imap_folder TRUE 5<br>';
-	return True;
-  }
-
-
-  function care_about_unseen($folder)
-  {
-	$folder = get_folder_short($folder);
-	// we ALWAYS care about new messages in the INBOX
-	if ($folder == 'INBOX')
-	{
-		return True;
-	}
-
-	$we_care = True; // initialize
-	$ignore_these_folders = Array();
-	// DO NOT CHECK UNSEEN for these folders
-	$ignore_these_folders[0] = "sent";
-	$ignore_these_folders[1] = "trash";
-	$ignore_these_folders[2] = "templates";
-	for ($i=0; $i<count($ignore_these_folders); $i++)
-	{
-		$match_this = $ignore_these_folders[$i];
-		if (eregi("^.*$match_this$",$folder))
-		{
-			$we_care = False;
-			break;
-		}
-	}
-	return $we_care;
-  }
-
-
-  function all_folders_listbox($mailbox,$pre_select="",$skip="",$indicate_new=false)
-  {
-	global $phpgw, $phpgw_info;
-
-	// init some important variables
-	$outstr = '';
-	//$unseen_prefix = ' &lt;';
-	//$unseen_suffix = ' new&gt;';	
-	//$unseen_prefix = ' &#091;';
-	//$unseen_suffix = ' new&#093;';
-	//$unseen_prefix = ' &#040;';
-	//$unseen_suffix = ' new&#041;';
-	//$unseen_prefix = ' &#045; ';
-	//$unseen_suffix = ' new';
-	//$unseen_prefix = ' &#045;';
-	//$unseen_suffix = '&#045;';	
-	//$unseen_prefix = '&nbsp;&nbsp;&#040;';
-	//$unseen_suffix = ' new&#041;';
-	//$unseen_prefix = '&nbsp;&nbsp;&#091;';
-	//$unseen_suffix = ' new&#093;';
-	$unseen_prefix = '&nbsp;&nbsp;&#060;';
-	$unseen_suffix = ' new&#062;';
-	
-	if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
-	{
-		while($pref = each($phpgw_info["user"]["preferences"]["nntp"]))
-		{
-			$phpgw->db->query("SELECT name FROM newsgroups WHERE con=".$pref[0]);
-			while($phpgw->db->next_record())
-			{
-				$outstr = $outstr .'<option value="' . urlencode($phpgw->db->f("name")) . '">' . $phpgw->db->f("name")
-				  . '</option>';
-			}
-		}
-	}
-	elseif (($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'pop3')
-	    && ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'pop3s'))
-	{
-		// Establish Email Server Connectivity Conventions
-		$server_str = get_mailsvr_callstr();
-		$name_space = get_mailsvr_namespace();
-		$delimiter = get_mailsvr_delimiter();
-		if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
-		{
-			$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, "$name_space" ."$delimiter" ."*");
-		}
-		else
-		{
-			$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, "$name_space" ."*");
-		}
-
-		// sort folder names 
-		if (gettype($mailboxes) == 'array')
-		{
-			sort($mailboxes);
-		}
-
-		if($mailboxes)
-		{
-			$num_boxes = count($mailboxes);
-			if ($name_space != 'INBOX')
-			{
-				// UWash for example, we must FORCE it to look at the INBOX 
-				$outstr = $outstr .'<option value="INBOX">INBOX';
-				if ($indicate_new)
-				{
-					$mailbox_status = $phpgw->msg->status($mailbox,$server_str . 'INBOX',SA_UNSEEN);
-					if ($mailbox_status->unseen > 0)
-					{
-						$outstr = $outstr . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
-					}
-				}
-				$outstr = $outstr . "</option>\r\n"; 
-        		}
-			for ($i=0; $i<$num_boxes;$i++)
-			{
-				/*
-				if (($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
-				&& (strstr($mailboxes[$i],"/.")) )
-				{
-					// {serverstring}~/. indicates this is a hidden file in the users home directory
-					// $server_str."/."
-					// actually, ANY pattern matching "/." for UWash is NOT an MBOX
-					// DO NOTHING - this is not an MBOX file
-				}
-				else
-				*/
-				if (is_imap_folder($mailboxes[$i]))
-				{
-					$folder_short = get_folder_short($mailboxes[$i]);
-					if ($folder_short == $pre_select)
-					{
-						$sel = ' selected';
-					}
-					else
-					{
-						$sel = '';
-					}
-					if ($folder_short != $skip)
-					{
-						$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short;
-						// do we show the number of new (unseen) messages for this folder
-						if (($indicate_new)
-						&& (care_about_unseen($folder_short)))
-						{
-							$mailbox_status = $phpgw->msg->status($mailbox,$mailboxes[$i],SA_UNSEEN);
-							if ($mailbox_status->unseen > 0)
-							{
-								$outstr = $outstr . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
-							}
-						}
-						$outstr = $outstr . "</option>\r\n";
-					}
-				}
-			}
-		}
-		else
-		{
-			$outstr = $outstr .'<option value="INBOX">INBOX</option>';
-		}
-	}
-	return $outstr;
-  }
-
-
 
   function get_mime_type($de_part)
   {
@@ -1229,7 +706,7 @@
 		.'&type=' .$url_part_type .'&subtype=' .$url_part_subtype
 		.'&name=' .$url_part_name .'&encoding=' .$url_part_encoding); 
 	// Make CLICKABLE link directly to this attachment or part
-	$href_part_name = decode_header_string($part_name);
+	$href_part_name = $phpgw->msg->decode_header_string($part_name);
 	// ex_part_clickable
 	$ex_part_clickable = '<a href="'.$ex_part_href.'">'.$href_part_name.'</a>';
 	// put these two vars in an array, serialize it, and pass it back to the calling process
@@ -1278,7 +755,7 @@
 		{
 			$att_name = $param->value;
 			$url_att_name = urlencode($att_name);
-			$att_name = decode_header_string($att_name);
+			$att_name = $phpgw->msg->decode_header_string($att_name);
 		}
 	}
 
@@ -1297,7 +774,7 @@
 	$mime_type = get_mime_type($de_part);
 	$mime_encoding = get_mime_encoding($de_part);
 
-	$dsp = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no);
+	$dsp = $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_no);
 
 	$tag = "pre";
 	$jnk = $de_part->ifdisposition ? $de_part->disposition : "unknown";
@@ -1395,63 +872,6 @@
 	return $newText;
   }
 
-  /**************************************************************************\
-    * USEFUL  AND   SIMPLE  HTML  FUNCTIONS	*
-    \**************************************************************************/
-
-/* * * * * * * * * * *
-  *  href_maketag
-  *  will generate a typical A HREF html item
-  * * * * * * *  * * * */
-  function href_maketag($href_link='',$href_text='default text')
-  {
-	return '<a href="' .$href_link .'">' .$href_text .'</a>' ."\n";
-  }
-
-
-  function img_maketag($location='',$alt='',$height='',$width='',$border='')
-  {
-	$alt_default_txt = 'image';
-	$alt_unknown_txt = 'unknown';
-	if ($location == '')
-	{
-		return '<img src="" alt="['.$alt_unknown_txt.']">';
-	}
-	if ($alt != '')
-	{
-		$alt_tag = ' alt="['.$alt.']"';
-	}
-	else
-	{
-		$alt_tag = ' alt="['.$alt_default_txt.']"';
-	}
-	if ($height != '')
-	{
-		$height_tag = ' height="' .$height .'"';
-	}
-	else
-	{
-		$height_tag = '';
-	}
-	if ($width != '')
-	{
-		$width_tag = ' width="' .$width .'"';
-	}
-	else
-	{
-		$width_tag = '';
-	}
-	if ($border != '')
-	{
-		$border_tag = ' border="' .$border .'"';
-	}
-	else
-	{
-		$border_tag = '';
-	}
-	$image_html = '<img src="'.$location.'"' .$height_tag .$width_tag .$border_tag .$alt_tag .'>';
-	return $image_html;
-  }
 
 /* * * * * * * * * * *
   *  isValidUrl

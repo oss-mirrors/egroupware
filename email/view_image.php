@@ -13,27 +13,37 @@
 
   /* $Id$ */
 
-  if ($newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
-  $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True, 
-                                "noheader" => True, "nonavbar" => True);
-  include("../header.inc.php");
+	if ($newsmode == "on")
+	{
+		$phpgw_info['flags']['newsmode'] = True;
+	}
+	$phpgw_info['flags'] = array(
+			'currentapp' => 'email',
+			'enable_network_class' => True, 
+			'noheader' => True,
+			'nonavbar' => True
+	);
+	include("../header.inc.php");
 
-//  if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
-//    $phpgw->common->read_preferences("nntp");
-//  set_time_limit(0);
+	//  if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
+	//    $phpgw->common->read_preferences("nntp");
+	//  set_time_limit(0);
 
-//  echo "Mailbox = ".$mailbox."<br>\n";
-//  echo "Msgnum = ".$m."<br>\n";
-//  echo "Part Number = ".$p."<br>\n";
-//  echo "Subtype = ".$s."<br>\n";
-  $data = $phpgw->msg->fetchbody($mailbox, $m, $p);
-  $picture = $phpgw->msg->base64($data);
-//  echo strlen($picture)."<br>\n";
-//  echo $data;
+	//  echo "Mailbox = ".$mailbox."<br>\n";
+	//  echo "Msgnum = ".$m."<br>\n";
+	//  echo "Part Number = ".$p."<br>\n";
+	//  echo "Subtype = ".$s."<br>\n";
 
-  Header("Content-length: ".strlen($picture));
-  Header("Content-type: image/".$s);
-  Header("Content-disposition: attachment; filename=\"".urldecode($n)."\"");
-  echo $picture;
-  flush();
+	$data = $phpgw->dcom->fetchbody($mailbox, $m, $p);
+	$picture = $phpgw->dcom->base64($data);
+
+	//  echo strlen($picture)."<br>\n";
+	//  echo $data;
+
+	Header("Content-length: ".strlen($picture));
+	Header("Content-type: image/".$s);
+	Header("Content-disposition: attachment; filename=\"".urldecode($n)."\"");
+	echo $picture;
+	flush();
+	$phpgw->dcom->close($mailbox);
 ?>
