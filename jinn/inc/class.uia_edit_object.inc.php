@@ -512,7 +512,7 @@
 			$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.add_edit_site&cancel=true&where_key=site_id&where_value='.$parent_site_id).'\'" value="'.lang('cancel').'">';
 
 
-			$this->template->set_var('save_button',lang('save'));
+			$this->template->set_var('save_button',lang('save and finish'));
 			$this->template->set_var('save_and_continue_button',lang('save and contiue'));
 			$this->template->set_var('reset_form',lang('reset form'));
 			$this->template->set_var('delete',lang('delete'));

@@ -191,7 +191,7 @@
 
 			<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.export_site&where_key=site_id&where_value='.$values_object[0][site_id]).'\'" value="'.lang('export this site').'">';
 
-			$this->template->set_var('save_button',lang('save'));
+			$this->template->set_var('save_button',lang('save and finish'));
 			$this->template->set_var('save_and_continue_button',lang('save and continue'));
 			$this->template->set_var('reset_form',lang('reset form'));
 			$this->template->set_var('delete',lang('delete'));
