@@ -137,7 +137,7 @@
     <tr><td colspan="2">&nbsp;</td></tr>
 
     <tr bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
-     <td colspan="2">Custom Email settings</td>
+     <td colspan="2"><?php echo lang("Custom Email settings"); ?></td>
     </tr>
     <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
     <tr bgcolor="<?php echo $tr_color; ?>">

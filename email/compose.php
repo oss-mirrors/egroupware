@@ -161,7 +161,7 @@
   <tr>
    <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" colspan="2">
     <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-      Attach signature
+      <?php echo lang("Attach signature"); ?>
       <input type="checkbox" name="attach_sig" value="true" checked>
     </font>
    </td>
