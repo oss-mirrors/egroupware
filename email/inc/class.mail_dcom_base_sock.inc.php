@@ -436,6 +436,28 @@
 			return $glob_response;
 		}
 		
+		/*
+		function imap_read_port_array($end_begins_with='')
+		{
+			$return_me = Array();
+			if ($end_begins_with == '')
+			{
+				return $return_me;
+			}
+			while ($line = $this->read_port())
+			{
+				//echo $line."<br>\r\n";
+				if ($this->str_begins_with($line, $end_begins_with))
+				{
+					break;
+				}
+				$next_pos = count($return_me);
+				$return_me[$next_pos] = $line;
+			}
+			return $return_me;
+		}
+		*/
+		
 		function glob_to_array($data,$keep_blank_lines=True,$cut_from_here='',$keep_received_lines=True,$idx_offset=0)
 		{
 			$data_array = explode("\r\n",$data);
@@ -473,6 +495,61 @@
 				}
 			}
 			return $return_array;
+		}
+		
+		/*!
+		@function str_begins_with
+		@abstract determine if string $haystack begins with string $needle
+		@param $haystack : string : data to examine to determine if it starts with $needle
+		@param $needle : string : $needle should or should not start at position 0 (zero) of $haystack
+		@result  Boolean, True or False
+		@discussion this is a NON-REGEX way to to so this, and is NOT case sensitive
+		this *should* be faster then Regular expressions and *should* not be confused by
+		regex special chars such as the period "." or the slashes "/" and "\" , etc...
+		@syntax ?
+		@author Angles
+		@access	public or private
+		*/
+		function str_begins_with($haystack,$needle='')
+		{
+			if ((trim($haystack) == '')
+			|| (trim($needle) == ''))
+			{
+				return False;
+			}
+			// now do a case insensitive search for needle as the beginning part of haystack
+			if (stristr($haystack,$needle) == False)
+			{
+				// needle is not anywhere in haystack
+				return False;
+			}
+			// so needle IS in haystack
+			// now see if needle is the same as the begining of haystack (case insensitive)
+			if (strpos(strtolower($haystack),strtolower($needle)) == 0)
+			{
+				// in this case we know 0 means "at position zero" (i.e. NOT "could not find")
+				// because we already checked for the existance of needle above
+				return True;
+			}
+			else
+			{
+				return False;
+			}
+		}
+		
+		/*!
+		@function show_crlf
+		@abstract replace actual CRLF sequence with the string "CRLF"
+		@param $data : string
+		@result returns string "\r\n" CRFL pairs replaced with the string "CRLF"
+		@discussion useful for debugging, CRLF pairs are CarrageReturn + LineFeed
+		which is the standard way email client and servers end any line while communicating
+		@author Angles
+		@access	public or private
+		*/
+		function show_crlf($data='')
+		{
+			return str_replace("\r\n", 'CRLF', $data);
 		}
 		
 		function create_header($line,$header,$line2='')
