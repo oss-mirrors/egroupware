@@ -1,6 +1,6 @@
 ===================================================================================
 
-                CHANGELOG JiNN for phpGroupWare
+                CHANGELOG JiNN for eGroupWare
 
 ===================================================================================
 
@@ -205,7 +205,7 @@ di jun 25 23:05:46 UTC 2002
 =======
 - switching to English as main development language for todo, changes and comments
 - using versionnumbers, starting with 0.3 ;-)
-- added setup method, phpgroupware SETUP3 compliant
+- added setup method, egroupware SETUP3 compliant
 - Added GPL-Licence
 - Added languagefiles, though very incomplete
 - added message-box function
@@ -233,7 +233,7 @@ di jun 25 23:05:46 UTC 2002
 12 juni
 =======
 - save-mode uploadbug eindelijke verwijderd,
-  denk eraan convert in de root van phpgropupware
+  denk eraan convert in de root van egroupware
   te zetten anders mag dit niet worden uitgevoerd
 - bladeren geeft geen bianry data meer
 - bladeren kort te lange strings in

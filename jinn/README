@@ -1,8 +1,8 @@
-Readme Jinn for phpGroupWare
+Readme Jinn for eGroupWare
 ======================================
-Jinn for phpGroupWare is a multi-site, multi-database, multi-user/-group,
-database driven jinn written for in and for the phpGroupWare Framework.
-jinn for phpGroupWare makes it possible to have a lot of site-databases moderated
+Jinn for eGroupWare is a multi-site, multi-database, multi-user/-group,
+database driven jinn written for in and for the eGroupWare Framework.
+jinn for eGroupWare makes it possible to have a lot of site-databases moderated
 by a lot of people all in one system. Access Rights are asigned at
 table-level and every site can have one or more site administrators.
 
@@ -21,7 +21,7 @@ Main features are:
 - support for large tables
 - fast browsing trough records
 - fast seaching for records
-- themable(using phpGroupware-templates)
+- themable(using eGroupware-templates)
 - language independant
 - uploading support for other attachments then images
 - wysiwyg html/xml editor

@@ -1,8 +1,8 @@
 INSTALLATION
 ================================================================================
-go to your phpgroupware directory and untar the tarball in it.
+go to your egroupware directory and untar the tarball in it.
 
-   cd /path/to/phpgroupware
+   cd /path/to/egroupware
    tar xvjf jinn.x.x.x.tar.bz2
    
 If you use the image upload functionality you have to install ImageMagick on
@@ -10,7 +10,7 @@ your machine which runs the webserver. For more information see
 http://www.imagemagick.org
 
 If your php.ini has safe mode enabled, You have to copy convert from the
-ImageMagick package to the root of your phpgroupware directory. It's also
+ImageMagick package to the root of your egroupware directory. It's also
 important that the owner of the webserver and the jinn are the same.
 This is because the jinn can upload files if this is setup for the
 sites.
@@ -23,9 +23,9 @@ to set owner to apache and group to apache, type
 
    chown apache.apache /path/to/directory -R
 
-Now go to the setupapplication of phpgroupware in your browser
+Now go to the setupapplication of egroupware in your browser
 
-    e.g. http://phpgroupware/setup/
+    e.g. http://wgroupware/setup/
 
 and go to manage applications. check jinn for install and then submit
 form. If nothing went wrong the jinn is now available, so you can
