@@ -130,7 +130,8 @@ function extract()
           <td style="padding-right: 25px;" nowrap="nowrap" valign="top">
 		  <br><br>
 		  <div style="position: relative; width: 150px; height: auto; overflow: auto;">
-		  {tree_path}
+		  {tree_path}<br>
+          {tree_shared}
 		  </div>
 		  </td>
 

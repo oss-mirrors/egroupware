@@ -14,6 +14,13 @@
   *  option) any later version.                                               *
   \***************************************************************************/
 
+    class tree_node
+    {
+        var $path;
+        var $name;
+        var $contents;
+    }
+
 	class bo_fm2
 	{
 		var $so;
@@ -211,10 +218,10 @@
 			// $this->numoffiles = 0; //NUMBER OF FILES info willnot be calc now
 /*			if($path == $this->fakebase)
 			{
-				// FIXME this test can be removed
-				if(!$this->vfs->file_exists(array('string' => $this->homedir, 'relatives' => array(RELATIVE_NONE))))
+				// FIXME this test can be removed 
+				if(!$this->vfs->file_exists(array('string' => $this->homedir, 'relatives' => array(RELATIVE_ROOT))))
 				{
-					$this->vfs->mkdir(array('string' => $this->homedir, 'relatives' => array(RELATIVE_NONE)));
+					$this->vfs->mkdir(array('string' => $this->homedir, 'relatives' => array(RELATIVE_ROOT)));
 				}
 
 				$ls_array = $this->vfs->ls(array(
@@ -1125,6 +1132,58 @@
 		}
 //END FUNCTION
 
+		/*!
+		@function   get_shared_tree
+		@abstract   Returns tree with all shared folders inside it
+					Use it carefully If the file repository is a DAV type, it
+					will last a lot of time to get all dir tree
+		@author Vinicius Cubas Brand
+		*/
+		function get_shared_tree()
+		{
+            $tree = array(
+                'root' => new tree_node
+                );
+            $tree['root']->name = 'Shared';
+            $tree['root']->path = '';
+            $tree['root']->contents = array();
+
+			$vfs_sharing = CreateObject('phpgwapi.vfs_sharing');
+
+			$other_shares = $vfs_sharing->get_shares($GLOBALS['phpgw_info']['user']['account_id'],false);
+
+            if ($other_shares)
+            {
+                foreach ($other_shares as $share)
+                {
+                    $GLOBALS['phpgw']->accounts->get_account_name($share['owner_id'],$lid,$fname,$lname);
+                    if (!array_key_exists($lid,$tree['root']->contents))
+                    {
+                        $tree['root']->contents[$lid] = new tree_node;
+                    
+                        $tree['root']->contents[$lid]->name = $fname.' '.$lname;
+                        $tree['root']->contents[$lid]->path = '';
+                        $tree['root']->contents[$lid]->contents = array();
+                    }
+
+                    $user_node =& $tree['root']->contents[$lid];
+
+                    if (!$subtree = $this->get_dir_tree($share['directory'].'/'.$share['name'],$share['name']))
+                    {
+                        $user_node->contents[] = new tree_node();
+                        $j =& $user_node->contents[count($user_node->contents)-1];
+                        $j->name = $share['name'];
+                        $j->path = $share['directory'].'/'.$share['name'];
+                        $j->contents = array();
+                    }
+                    else
+                    {
+                        $user_node->contents[] =& $subtree['root'];
+                    }
+                }
+            }
+            return $tree;
+		}
 
 
 		/*!
@@ -1138,15 +1197,21 @@
 		                            supress /home/admin if path=/home/admin)
 		@author Vinicius Cubas Brand
 		*/
-		function get_dir_tree($dir,$supress_path=True)
+		function get_dir_tree($dir,$tree_name='Home',$supress_path=True)
 		{
 
 			if (!empty($dir))
 			{
+                $ftree = array(
+                    'root' => new tree_node
+                    );
+                $ftree['root']->path = $dir;
+                $ftree['root']->name = $tree_name;
+                $ftree['root']->contents = 1;
 
 				$ls_array = $this->vfs->ls(array(
 					'string'       => $dir,
-					'relatives'    => array(RELATIVE_NONE),
+					'relatives'    => array(RELATIVE_ROOT),
 					'checksubdirs' => True,
 					'orderby'      => 'name',
 					'nofiles'	   => False,
@@ -1161,26 +1226,23 @@
 					{
 						$dirlist[] = $file['directory'].$this->sep.$file['name'];
 					}
-					$ftree = array();
-					foreach ($dirlist as $val)
+					foreach ($dirlist as $val_orig)
 					{
+                        $val = $val_orig;
 						if ($supress_path)
 						{
-							$val = ereg_replace("^$dir",'',$val);
+							$val = ereg_replace("^$dir",'',$val_orig);
 						}
 						$val = ereg_replace('^/','',$val);
 						$val = ereg_replace('/$','',$val);
 						$val = explode('/',$val);
-						$this->add_dir_tree($ftree,$val);
+						$this->add_dir_tree($ftree['root']->contents,$val,$val_orig);
 					}
-					
-					return $ftree;
-				}
-				else
-				{
-					return false;
 				}
 			}
+            
+            return $ftree;
+
 		}
 
 		/*!
@@ -1188,7 +1250,7 @@
 		@abstract   Used only by get_dir_tree. Recursive.
 		@author     Vinicius Cubas Brand
 		*/
-		function add_dir_tree(&$tree, $dir)
+		function add_dir_tree(&$tree, $dir, $path)
 		{
 			if (empty($dir))
 			{
@@ -1199,17 +1261,28 @@
 
 			if (is_int($tree))
 			{
-				$tree = array ($first => 1);
+                $tree = array(
+                    $first => new tree_node
+                    );
+                    
+                $tree[$first]->path = ereg_replace(implode('/',$dir).'$','',$path);
+                $tree[$first]->name = $first;
+                $tree[$first]->contents = 1;
+//				$tree = array ($first => 1);
 			}
 
+            //tree is array and already have index named first
 			if ($tree[$first])
 			{
-				$this->add_dir_tree($tree[$first],$dir);
+				$this->add_dir_tree($tree[$first]->contents,$dir,$path);
 			}
 			else
 			{
-				$tree[$first] = 1;
-				$this->add_dir_tree($tree[$first],$dir);
+				$tree[$first] = new tree_node;
+                $tree[$first]->path = ereg_replace(implode('/',$dir).'$','',$path);
+                $tree[$first]->name = $first;
+                $tree[$first]->contents = 1;
+				$this->add_dir_tree($tree[$first]->contents,$dir,$path);
 			}
 		}
 
@@ -1298,7 +1371,18 @@
 				$this->vfs->import_vfs();
 			}
 		}
-
+        /*
+            function allowed_access
+            @description Returns True if access is allowed to $dir. 
+        */
+        function allowed_access($dir)
+        {
+            return $this->vfs->acl_check(array(
+                'string'    => $dir,
+                'relatives' => array(RELATIVE_ROOT),
+                'operation' => PHPGW_ACL_READ,
+                'must_exist' => true));
+        }
 	}
 
 

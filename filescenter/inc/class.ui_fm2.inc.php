@@ -206,6 +206,10 @@
 
 			#set $this->path to the correct path, based in the path received
 			#in get/post
+            if (!$GLOBALS['phpgw_info']['user']['apps']['admin'] && ($this->path == '/' || $this->path == $this->bo->fakebase || !$this->bo->allowed_access($this->path)))
+            {
+                $this->path = $this->bo->homedir;
+            }
 			$this->set_current_path();
 
 
@@ -435,11 +439,6 @@
              * Template Variable assigning and parsing                     *
 			 * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
 			
-//			echo "importará:<br><br>\n\n";
-//			$this->bo->vfs->import_vfs();
-//			echo "importou<br>\n\n";
-//			exit();
-
 
 			# Get the groups for the current user
 			# $groups = $GLOBALS['phpgw']->accounts->membership();
@@ -453,10 +452,17 @@
 
 			$this->t->set_var('return_to_path','');
 
-			#$this->t->set_var('js_dir',$this->appl_rel_root.'/js');
 			$this->t->set_var('path',$this->disppath);
 			$this->t->set_var('lang_path',lang('Location'));
-			$this->t->set_var('tree_path',$this->parsed_tree_path($this->bo->homedir));
+            
+            /* <trees> */
+			$bo_home_tree = $this->bo->get_dir_tree($this->bo->homedir,'Home');
+			$this->t->set_var('tree_path',$this->parsed_tree_path($bo_home_tree,'home'));
+
+            $bo_shared_tree = $this->bo->get_shared_tree();
+            $this->t->set_var('tree_shared',$this->parsed_tree_path($bo_shared_tree,'shared'));
+            /* </trees> */
+            
 			$this->t->set_var('lang_no_items_selected',lang('You selected no items. Click in the checkbox near the file name to select an item.'));
 			$this->t->set_var('lang_delete_confirmation',lang('Are you sure you want to delete \'"+filename+"\'?'));
 			$this->t->set_var('lang_delete_items_confirmation',lang('Are you sure you want to delete all these "+count+" items?'));
@@ -490,7 +496,8 @@
 			$navbar_format = $GLOBALS['phpgw_info']['user']['preferences']['common']['navbar_format'];
 
 			# button uplevel 
-			if ($this->path == '/')
+            # When user is not admin, he cannot dive into root or fakebase
+			if ($this->path == '/' || (!$GLOBALS['phpgw_info']['user']['apps']['admin'] &&($this->path == $this->bo->fakebase || $this->path == $this->bo->homedir || !$this->bo->allowed_access(dirname($this->path))) ))
 			{
 				unset($this->menu_buttons['uplevel']);
 			}
@@ -1451,19 +1458,14 @@
 		 @abstract  Parses the path tree, returning it
 		 @author Vinicius Cubas Brand
 		*/
-		function parsed_tree_path($dir)
+		function parsed_tree_path($bo_tree,$tree_name='d')
 		{
 			/* Catalogue Tree */
-			#$bo = $GLOBALS['object_keeper']->GetObject('contactcenter.bo_contactcenter');
-			$bo_tree = $this->bo->get_dir_tree($dir);
-
 
 			$mainFolderImageDir = substr($GLOBALS['phpgw']->common->image('phpgwapi','foldertree_line.gif'),0,-19);
-			$parsed_tree = '<script type="text/javascript">'."\n".'d = new dTree(\'d\',\''.$mainFolderImageDir.'\');'."\n".'d.config.inOrder=true;'."\n".'d.config.closeSameLevel=false;'."\n";
-			$parsed_tree .= $this->convert_tree($bo_tree, $mainFolderImageDir);
-			$parsed_tree .= 'document.write(d);'."\n".'d.openTo(\'0\',\'true\');'."\n".'</script>';
-			
-			#TODO treats shared dirs
+			$parsed_tree = '<script type="text/javascript">'."\n".$tree_name.' = new dTree(\''.$tree_name.'\',\''.$mainFolderImageDir.'\');'."\n".$tree_name.'.config.inOrder=true;'."\n".$tree_name.'.config.closeSameLevel=false;'."\n";
+			$parsed_tree .= $this->convert_tree($bo_tree, $mainFolderImageDir, $tree_name);
+			$parsed_tree .= 'document.write('.$tree_name.');'."\n".$tree_name.'.openTo(\'0\',\'true\');'."\n".'</script>';
 			
 			return $parsed_tree;
 		}
@@ -1473,7 +1475,7 @@
 		 @abstract  Recursive Helper for parse_tree_path
 		 @author    Raphael Derosso Pereira
 		*/
-		function convert_tree($tree, &$iconDir, $parent='0')
+		function convert_tree($tree, &$iconDir, $tree_name, $parent='0')
 		{
 
 			#javascript syntax:
@@ -1484,32 +1486,34 @@
 			#will do at first time
 			if ($parent === '0')
 			{
-				$link = $GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->bo->homedir));
-				$new .= 'd.add(\''.$parent.'\',\'-1\',\''.lang('Home').'\',\''.$link.'\');'."\n";
+				$link = ($tree['root']->path) ? "'".$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$tree['root']->path))."'" : 'null';
+				$new .= $tree_name.'.add(\''.$parent.'\',\'-1\',\''.lang($tree['root']->name).'\','.$link.');'."\n";
+                $tree =& $tree['root']->contents;
 			}
 			
 			foreach ($tree as $id => $value)
 			{
-				$path = str_replace('_','/',str_replace('0_','',$parent.'_'.$id));
-				$path = $this->bo->homedir.'/'.$path;
+	//			$path = str_replace('_','/',str_replace('0_','',$parent.'_'.$id));
+    //			$path = $this->bo->homedir.'/'.$path;
+                $path = $value->path;
 
 
-				$link = $GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$path));
+				$link = ($path) ? "'".$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$path))."'" : 'null';
 
-				if (ereg("^$path",$this->path)) //force opened
+				if (strpos($this->path,$path) === 0) //force opened
 				{
-					$node_string = 'd.add(\''.$parent.'_'.$id.'\',\''.$parent.'\',\''.$id.'\',\''.$link.'\',null,null,null,null,null,null,true);'."\n";
+					$node_string = $tree_name.'.add(\''.$parent.'_'.$id.'\',\''.$parent.'\',\''.$value->name.'\','.$link.',null,null,null,null,null,null,true);'."\n";
 				}
 				else
 				{
-					$node_string = 'd.add(\''.$parent.'_'.$id.'\',\''.$parent.'\',\''.$id.'\',\''.$link.'\');'."\n";
+					$node_string = $tree_name.'.add(\''.$parent.'_'.$id.'\',\''.$parent.'\',\''.$value->name.'\','.$link.');'."\n";
 				}
 
-				if (is_array($value))
+				if (is_array($value->contents))
 				{
 
 					$new .= $node_string;
-					$new .= $this->convert_tree($value,$iconDir,$parent.'_'.$id);
+					$new .= $this->convert_tree($value->contents,$iconDir,$tree_name,$parent.'_'.$id);
 					continue;
 				}
 				
@@ -1651,6 +1655,7 @@
 		 @function  sharing
 		 @abstract  Creates the file sharing screen
 		 @author    Vinicius Cubas Brand 
+         #FIXME redo this function to transfer vfs_sharing access to bo
 		 */
 		function sharing()
 		{
@@ -1848,7 +1853,11 @@
 		*/
 		function custom_manager()
 		{
-			//TODO just administrator can have access to this
+			//just administrator can have access to this
+            if (!$GLOBALS['phpgw_info']['user']['apps']['admin'])
+            {
+                $GLOBALS['phpgw']->common->phpgw_exit();
+            }
 
 			//displayed fields
 			$fields = array(
@@ -2016,7 +2025,12 @@
 		*/
 		function custom_edit()
 		{
-			//TODO just administrator can have access to this
+			//just administrator can have access to this
+            if (!$GLOBALS['phpgw_info']['user']['apps']['admin'])
+            {
+                $GLOBALS['phpgw']->common->phpgw_exit();
+            }
+
 
 			$custom = CreateObject('phpgwapi.vfs_customfields');
 
@@ -2121,7 +2135,12 @@
 		*/
 		function custom_add()
 		{
-			//TODO just administrator can have access to this
+			//just administrator can have access to this
+            if (!$GLOBALS['phpgw_info']['user']['apps']['admin'])
+            {
+                $GLOBALS['phpgw']->common->phpgw_exit();
+            }
+
 
 			$custom = CreateObject('phpgwapi.vfs_customfields');
 
