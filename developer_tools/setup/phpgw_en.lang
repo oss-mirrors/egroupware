@@ -35,6 +35,7 @@ search changelogs	developer_tools	en	Search changelogs
 search for missing phrase	developer_tools	en	Search for missing phrase
 select project	developer_tools	en	Select project
 sf project tracker	developer_tools	en	SF Project tracker
+sf project tracker preferences	preferences	en	SF Project tracker preferences
 sourceforge project id	developer_tools	en	Sourceforge project ID
 sourceforge project tracker	developer_tools	en	Sourceforge project tracker
 sourceforge project tracker preferences	developer_tools	en	Sourceforge project tracker preferences
