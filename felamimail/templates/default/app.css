@@ -22,6 +22,10 @@ th.inactivetab
    border-top : 1px solid Gray; 
 }
 
+.input_text {
+	border : 1px solid Silver;
+}
+
 .td_right 
 { 
   border-right : 1px solid Gray; 

@@ -22,10 +22,10 @@
 		{lang_back_to_folder}:&nbsp;<a class="head_link" href="{link_message_list}">{folder_name}</a>
 	</td>
 	<td align="right">
-		<input class="text" type="submit" value="{lang_send}" name="send">
+		<input class="input_text" type="submit" value="{lang_send}" name="send">
 	</td>
 </tr>
-<tr bgcolor="{bg02}">
+<tr>
 	<td class="body" width="10%">
 		<b>{lang_from}:</b>
 	</td>
@@ -33,47 +33,47 @@
 		{from}
 	</td>
 	<td class="body" align="right">
-		<input class="text" type="button" value="{lang_addressbook}" onclick="addybook();">
+		<input class="input_text" type="button" value="{lang_addressbook}" onclick="addybook();">
 	</td>
 </tr>
-<tr bgcolor="{bg01}">
+<tr>
 	<td width="10%">
 		<b>{lang_to}:</b>
 	</td>
 	<td width="60%" colspan="2">
-		<input class="text" type=text size="60" name="to" value="{to}">
+		<input class="input_text" type=text size="76" name="to" value="{to}">
 	</td>
 </tr>
-<tr bgcolor="{bg02}">
+<tr>
 	<td>
 		{lang_cc}:
 	</td>
 	<td colspan="2">
-		<input class="text" type=text size="60" name="cc" value='{cc}'>
+		<input class="input_text" type=text size="76" name="cc" value='{cc}'>
 	</td>
 </tr>
-<tr bgcolor="{bg01}">
+<tr>
 	<td>
 		{lang_bcc}:
 	</td>
 	<td colspan="2">
-		<input class="text" type=text size="60" name="bcc" value='{bcc}'>
+		<input class="input_text" type=text size="76" name="bcc" value='{bcc}'>
 	</td>
 </tr>
-<tr bgcolor="{bg02}">
+<tr>
 	<td>
 		{lang_reply_to}:
 	</td>
 	<td colspan="2">
-		<input class="text" type=text size="60" name="reply_to" value='{reply_to}'>
+		<input class="input_text" type=text size="76" name="reply_to" value='{reply_to}'>
 	</td>
 </tr>
-<tr bgcolor="{bg01}">
+<tr>
 	<td>
 		<b>{lang_subject}:</b>
 	</td>
 	<td>
-		<input class="text" type=text size="60" name="subject" value='{subject}'>
+		<input class="input_text" type=text size="76" name="subject" value='{subject}'>
 	</td>
 	<td align="right">
 		{lang_priority}
@@ -97,7 +97,7 @@ document.doit.{focusElement}.focus();
 
 <!-- BEGIN body_input -->
 <table width="98%" border="0" cellspacing="0" cellpading="0">
-<tr bgcolor="{bg02}">
+<tr>
 	<td>
 		&nbsp;<br>
 	</td>
@@ -105,23 +105,23 @@ document.doit.{focusElement}.focus();
 		{errorInfo}<br>
 	</td>
 </tr>
-<tr bgcolor="{bg02}">
+<tr>
 	<td width="10%">
 		&nbsp;
 	</td>
 	<td align="left">
-		<TEXTAREA class="text" NAME=body ROWS=20 COLS="76" WRAP=HARD>{body}</TEXTAREA>
+		<TEXTAREA class="input_text" NAME=body ROWS=20 COLS="76" WRAP=HARD>{body}</TEXTAREA>
 	</td>
 </tr>
-<tr bgcolor="{bg02}">
+<tr>
 	<td width="10%" valign="top">
 		{lang_signature}
 	</td>
 	<td align="left">
-		<TEXTAREA class="text" NAME=signature ROWS=5 COLS="76" WRAP=HARD>{signature}</TEXTAREA>
+		<TEXTAREA class="input_text" NAME=signature ROWS=5 COLS="76" WRAP=HARD>{signature}</TEXTAREA>
 	</td>
 </tr>
-<tr bgcolor="{bg02}">
+<tr>
 	<td colspan="2">
 		&nbsp;<br>
 	</td>
@@ -131,24 +131,24 @@ document.doit.{focusElement}.focus();
 
 <!-- BEGIN attachment -->
 <br>
-<table width="95%" border="0" cellspacing="0" cellpading="0">
+<table width="98%" border="0" cellspacing="0" cellpading="0">
 <tr bgcolor="{th_bg}">
 	<td>
 		<b>{lang_attachments}</b>
 	</td>
 	<td width="80%" align="center">
-		<INPUT class="text" NAME="attachfile" SIZE=48 TYPE="file">
+		<INPUT class="input_text" NAME="attachfile" SIZE=48 TYPE="file">
 	</td>
 	<td align="left" width="20%">
-		<input class="text" type="submit" name="addfile" value="{lang_add}">
+		<input class="input_text" type="submit" name="addfile" value="{lang_add}">
 	</td>
 	<td>
-		<input class="text" type="submit" value="{lang_send}" name="send">
+		<input class="input_text" type="submit" value="{lang_send}" name="send">
 	</td>
 </tr>
 </table>
 <br>
-<table width="95%" border="0" cellspacing="1" cellpading="0">
+<table width="98%" border="0" cellspacing="1" cellpading="0">
 {attachment_rows}
 </table>
 
