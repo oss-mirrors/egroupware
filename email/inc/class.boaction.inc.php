@@ -20,7 +20,7 @@
 			'view_html'	=> True
 		);
 		var $debug = 0;
-		//var $debug = 4;	
+		//var $debug = 4;
 		var $xml_functions = array();
 		var $xi = array();
 		var $redirect_to = '';
@@ -193,10 +193,11 @@
 					}
 					else
 					{
-						if ($this->debug > 0) { echo 'email.boaction.delmov: (delete) $GLOBALS[phpgw]->msg->phpgw_delete() returns True, calling $GLOBALS[phpgw]->msg->phpgw_expunge('.$delmov_list[$i]['acctnum'].')<br>'; }
+						if ($this->debug > 0) { echo 'email.boaction.delmov: (delete) $GLOBALS[phpgw]->msg->phpgw_delete() returns True<br>'; }
+						if ($this->debug > 0) { echo 'email.boaction.delmov: (delete) calling $GLOBALS[phpgw]->msg->phpgw_expunge('.$delmov_list[$i]['acctnum'].')<br>'; }
 						$did_expunge = False;
 						$did_expunge = $GLOBALS['phpgw']->msg->phpgw_expunge((int)$delmov_list[$i]['acctnum']);
-						if ($this->debug > 2) { echo 'email.boaction.delmov: (delete) $GLOBALS[phpgw]->msg->phpgw_expunge() returns '.serialize($did_expunge).'<br>'; }
+						if ($this->debug > 2) { echo 'email.boaction.delmov: (delete) $GLOBALS[phpgw]->msg->phpgw_expunge('.$delmov_list[$i]['acctnum'].') returns '.serialize($did_expunge).'<br>'; }
 					}
 				}
 				$totaldeleted = $i;

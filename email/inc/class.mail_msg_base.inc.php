@@ -871,28 +871,13 @@
 			// ----  php3 compatibility  ----
 			// make a "new" holder object to hold the dcom object
 			// remember, by now we have determined an acctnum
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: creating new dcom_holder at $this->a['.$this->acctnum.'][dcom_holder]'.'<br>'; }
-			//$this->a[$this->acctnum]['dcom_holder'] = new mail_dcom_holder;
-			//$this_dcom_holder = new mail_dcom_holder;
-			//$this->a[$this->acctnum]['dcom_holder'] = $this_dcom_holder;
-			//$this->a[$this->acctnum]['dcom_holder']->dcom = '';
-			
-			// apparently php3 wants you to create the object first, then put it in the array
 			$this_server_type = $this->get_pref_value('mail_server_type');
-			//$this_dcom_holder->dcom = CreateObject("email.mail_dcom", $this_server_type);
-			//$this_dcom = CreateObject("email.mail_dcom", $this_server_type);
 			// ok, now put that object into the array
-			//$this->a[$this->acctnum]['dcom'] = $this_dcom;
-			//$this->a[$this->acctnum]['dcom_holder']->dcom = $this_dcom;
-			$this_acctnum = (string)$this->acctnum;
-			//$this->a[$this_acctnum]['dcom_holder'] = $this_dcom_holder;
+			$this_acctnum = $this->get_acctnum();
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: creating new dcom_holder at $GLOBALS["phpgw_dcom_".$this_acctnum('.$this_acctnum.')] = new mail_dcom_holder'.'<br>'; }
 			$GLOBALS['phpgw_dcom_'.$this_acctnum] = new mail_dcom_holder;
 			$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom = CreateObject("email.mail_dcom", $this_server_type);
-			//$this->a[$this->acctnum]['dcom_holder']->dcom = CreateObject("email.mail_dcom", $this_server_type);
-			//$tmp_a = $this->a[$this->acctnum];
 			// initialize the dcom class variables
-			//$tmp_a['dcom']->mail_dcom_base();
-			//$this->a[$this->acctnum]['dcom_holder']->dcom->mail_dcom_base();
 			$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->mail_dcom_base();
 			
 			// ----  there are 2 settings from this mail_msg object we need to pass down to the child dcom object:  ----
@@ -900,21 +885,18 @@
 			if (($this->get_isset_pref('enable_utf7'))
 			&& ($this->get_pref_value('enable_utf7')))
 			{
-				//$tmp_a['dcom']->enable_utf7 = True;
 				$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->enable_utf7 = True;
 			}
 			// (2)  Do We Force use of msg UID's
 			if ($this->force_msg_uids == True)
 			{
-				//$tmp_a['dcom']->force_msg_uids = True;
 				$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->force_msg_uids = True;
 			}
 			
 			set_time_limit(60);
 			// login to INBOX because we know that always(?) should exist on an imap server and pop server
 			// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call dcom->open: this->a['.$this->acctnum.'][dcom_holder]->dcom->open('.$mailsvr_callstr."INBOX".', '.$user.', '.$pass.', )'.'<br>'; }
-			//$mailsvr_stream = $tmp_a['dcom']->open($mailsvr_callstr."INBOX", $user, $pass, '');
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call dcom->open: $GLOBALS["phpgw_dcom_".$this_acctnum('.$this_acctnum.')]->dcom->open('.$mailsvr_callstr."INBOX".', '.$user.', '.$pass.', )'.'<br>'; }
 			$mailsvr_stream = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->open($mailsvr_callstr."INBOX", $user, $pass, '');
 			$pass = '';
 			set_time_limit(0);
@@ -1070,8 +1052,6 @@
 		&& ($this->get_arg_value('mailsvr_stream') != ''))
 		{
 			if ($this->debug_logins > 0) { echo 'mail_msg: end_request: stream exists, logging out'.'<br>'; }
-			//$tmp_a = $this->a[$this->acctnum];
-			//$tmp_a['dcom']->close($this->get_arg_value('mailsvr_stream'));
 			$this_acctnum = $this->acctnum;
 			$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->close($this->get_arg_value('mailsvr_stream'));
 			$this->set_arg_value('mailsvr_stream', '');
@@ -1079,6 +1059,129 @@
 		if ($this->debug_logins > 0) { echo 'mail_msg: end_request: LEAVING'.'<br>';}
 		//$this->a[$this->acctnum] = $tmp_a;
 	}
+
+
+
+	function open_stream_extra($fldball='')
+	{
+		if ($this->debug_logins > 0) { echo 'mail_msg: open_stream_extra: ENTERING, fldball: ['.serialize($fldball).'] <br>'; }
+		$existing_mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+		if ((isset($existing_mailsvr_stream))
+		&& ((string)$existing_mailsvr_stream != ''))
+		{
+			if ($this->debug_logins > 0) { echo 'mail_msg: open_stream_extra: LEAVING, stream already exists, returning $existing_mailsvr_stream ['.serialize($existing_mailsvr_stream).'] <br>'; }
+			return $existing_mailsvr_stream;
+		}
+		else
+		{
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: stream for this account needs tp be opened'.'<br>'; }
+			$acctnum = $fldball['acctnum'];
+			$mailsvr_callstr = $this->get_pref_value('mailsvr_callstr', $acctnum);
+			if ($this->get_isset_pref('passwd', $acctnum) == False)
+			{
+				if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: this->a[$this->acctnum][prefs][passwd] NOT set, fallback to $GLOBALS[phpgw_info][user][passwd]'.'<br>'; }
+				$pass = $GLOBALS['phpgw_info']['user']['passwd'];
+				if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: pass grabbed from GLOBALS[phpgw_info][user][passwd] = '.htmlspecialchars(serialize($pass)).'<br>'; }
+			}
+			else
+			{
+				$pass = $this->decrypt_email_passwd($this->get_pref_value('passwd', $acctnum));
+				if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: pass decoded from prefs: '.htmlspecialchars(serialize($this->get_pref_value('passwd'))).'<br>'; }
+			}
+			if ( $this->get_isset_pref('userid', $acctnum)
+			&& ($this->get_pref_value('userid', $acctnum) != '')
+			&& (isset($pass))
+			&& ($pass != '') )
+			{
+				$user = $this->get_pref_value('userid', $acctnum);
+			}
+			else
+			{
+					echo 'mail_msg: open_stream_extra: ERROR: userid or passwd empty'."<br>\r\n"
+						.' * * $this->get_pref_value(userid, '.$acctnum.') = '
+							.$this->get_pref_value('userid', $acctnum)."<br>\r\n"
+						.' * * if the userid is filled, then it must be the password that is missing'."<br>\r\n"
+						.' * * tell your admin if a) you have a custom email password or not when reporting this error'."<br>\r\n";
+				if ($this->debug_logins > 0) { echo 'mail_msg: open_stream_extra: LEAVING with ERROR: userid or passwd empty<br>';}
+				return False;
+			}
+			
+			// ----  Create email server Data Communication Class  ----
+			$this_server_type = $this->get_pref_value('mail_server_type', $acctnum);
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: creating new dcom_holder at $GLOBALS["phpgw_dcom_".$this_acctnum('.$this_acctnum.')] = new mail_dcom_holder'.'<br>'; }
+			$GLOBALS['phpgw_dcom_'.$acctnum] = new mail_dcom_holder;
+			$GLOBALS['phpgw_dcom_'.$acctnum]->dcom = CreateObject("email.mail_dcom", $this_server_type);
+			$GLOBALS['phpgw_dcom_'.$acctnum]->dcom->mail_dcom_base();
+			
+			if (($this->get_isset_pref('enable_utf7', $acctnum))
+			&& ($this->get_pref_value('enable_utf7', $acctnum)))
+			{
+				$GLOBALS['phpgw_dcom_'.$acctnum]->dcom->enable_utf7 = True;
+			}
+			if ($this->force_msg_uids == True)
+			{
+				$GLOBALS['phpgw_dcom_'.$acctnum]->dcom->force_msg_uids = True;
+			}
+			
+			set_time_limit(60);
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: about to call dcom->open: $GLOBALS["phpgw_dcom_".$this_acctnum('.$this_acctnum.')]->dcom->open('.$mailsvr_callstr."INBOX".', '.$user.', '.$pass.', )'.'<br>'; }
+			$mailsvr_stream = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->open($mailsvr_callstr."INBOX", $user, $pass, '');
+			$pass = '';
+			set_time_limit(0);
+			if ($this->debug_logins > 1) {  echo 'mail_msg: open_stream_extra: open returns $mailsvr_stream = ['.serialize($mailsvr_stream).']<br>'; }
+			
+			if ( (!isset($mailsvr_stream))
+			|| ($mailsvr_stream == '') )
+			{
+				$this->set_arg_value('mailsvr_stream', '', $acctnum);
+				if ($this->debug_logins > 0) { echo 'mail_msg: open_stream_extra: LEAVING with ERROR: failed to open mailsvr_stream : '.$mailsvr_stream.'<br>';}
+				return False;
+			}
+			
+			$this->set_arg_value('mailsvr_stream', $mailsvr_stream, $acctnum);
+			$this->set_arg_value('mailsvr_account_username', $user, $acctnum);
+			
+			$mailsvr_namespace = $this->get_arg_value('mailsvr_namespace', $acctnum);
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: $mailsvr_namespace: '.serialize($mailsvr_namespace).'<br>'; }
+			$mailsvr_delimiter = $this->get_arg_value('mailsvr_delimiter', $acctnum);
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: $mailsvr_delimiter: '.serialize($mailsvr_delimiter).'<br>'; }
+			
+			$input_folder_arg = $fldball['folder'];
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: about to issue $processed_folder_arg = $this->prep_folder_in('.$input_folder_arg.')<br>'; }
+			$processed_folder_arg = $this->prep_folder_in($input_folder_arg);
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: $processed_folder_arg value: ['.$processed_folder_arg.']<br>'; }
+			
+			// ---- Switch To Desired Folder If Necessary  ----
+			if ($processed_folder_arg == 'INBOX')
+			{
+				if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: NO need to switch folders, about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.')<br>'; }
+				$this->set_arg_value('folder', $processed_folder_arg, $acctnum);
+			}
+			else
+			{
+				if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: need to switch folders (reopen) from INBOX to $processed_folder_arg: '.$processed_folder_arg.'<br>';}
+				if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: about to issue: $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->reopen('.$mailsvr_stream.', '.$mailsvr_callstr.$processed_folder_arg,', )'.'<br>';}
+				$did_reopen = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->reopen($mailsvr_stream, $mailsvr_callstr.$processed_folder_arg, '');
+				if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: reopen returns: '.serialize($did_reopen).'<br>';}
+				if ($did_reopen == False)
+				{
+					if ($this->debug_logins > 0) { echo 'mail_msg: open_stream_extra: LEAVING with re-open ERROR, closing stream, FAILED to reopen (change folders) $mailsvr_stream ['.$mailsvr_stream.'] INBOX to ['.$mailsvr_callstr.$processed_folder_arg.'<br>';}
+					$this->end_request($acctnum);
+					return False;
+				}
+				else
+				{
+					if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: Successful switch folders (reopen) from (default initial folder) INBOX to ['.$processed_folder_arg.']<br>';}
+					if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: switched folders (via reopen), about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.')<br>'; }
+					$this->set_arg_value('folder', $processed_folder_arg, $acctnum);
+				}
+			}
+			return $this->get_arg_value('mailsvr_stream', $acctnum);
+		}
+	}
+
+
+
 		
 	function login_error($called_from='')
 	{

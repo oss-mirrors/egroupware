@@ -67,11 +67,11 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			
 			//$tmp_a = $this->a[$this->acctnum];
-			//$retval = $tmp_a['dcom']->fetchstructure($stream, $msgball['msgnum']);
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchstructure($stream, $msgball['msgnum']);
+			//$retval = $tmp_a['dcom']->fetchstructure($mailsvr_stream, $msgball['msgnum']);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchstructure($mailsvr_stream, $msgball['msgnum']);
 			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
@@ -97,12 +97,12 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			
 			// Message Information: THE MESSAGE'S HEADERS RETURNED AS A STRUCTURE
 			//$tmp_a = $this->a[$this->acctnum];
-			//$retval = $tmp_a['dcom']->header($stream, $msgball['msgnum']);
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->header($stream, $msgball['msgnum']);
+			//$retval = $tmp_a['dcom']->header($mailsvr_stream, $msgball['msgnum']);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->header($mailsvr_stream, $msgball['msgnum']);
 			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
@@ -120,12 +120,12 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 		
 			// Message Information: THE MESSAGE'S HEADERS RETURNED RAW (no processing)
 			//$tmp_a = $this->a[$this->acctnum];
-			//$retval = $tmp_a['dcom']->fetchheader($stream, $msgball['msgnum']);
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchheader($stream, $msgball['msgnum']);
+			//$retval = $tmp_a['dcom']->fetchheader($mailsvr_stream, $msgball['msgnum']);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchheader($mailsvr_stream, $msgball['msgnum']);
 			//$this->a[$this->acctnum] = $tmp_a;
 			return $retval;
 		}
@@ -162,8 +162,8 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->get_body($stream, $msgball['msgnum']);
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->get_body($mailsvr_stream, $msgball['msgnum']);
 			return $retval;
 		}
 		
@@ -186,19 +186,19 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			$msgnum = $msgball['msgnum'];
 			$part_no = $msgball['part_no'];
-			//echo 'mail_msg(_wrappers): phpgw_fetchbody: processed: $acctnum: '.$acctnum.'; $stream: '.serialize($stream).'; $msgnum: '.$msgnum.'; $part_no: '.$part_no.'<br> * $msgball dump<pre>'; print_r($msgball); echo '</pre>';
-			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchbody($stream, $msgnum, $part_no, $flags);
+			//echo 'mail_msg(_wrappers): phpgw_fetchbody: processed: $acctnum: '.$acctnum.'; $mailsvr_stream: '.serialize($mailsvr_stream).'; $msgnum: '.$msgnum.'; $part_no: '.$part_no.'<br> * $msgball dump<pre>'; print_r($msgball); echo '</pre>';
+			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchbody($mailsvr_stream, $msgnum, $part_no, $flags);
 		}
 		/*
 		function phpgw_fetchbody($msgball='', $part_num_mime='', $flags='')
 		{
-			$stream = $this->get_arg_value('mailsvr_stream');
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream');
 			$msgnum = $msgball['msgnum'];
 			$part_no = $msgball['part_no'];
-			return $this->a[$this->acctnum]['dcom']->fetchbody($stream, $msgnum, $part_no, $flags);
+			return $this->a[$this->acctnum]['dcom']->fetchbody($mailsvr_stream, $msgnum, $part_no, $flags);
 		}
 		*/
 		/*
@@ -215,12 +215,12 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			
-			//return $this->a[$acctnum]['dcom']->fetchbody($stream, $msgball['msgnum'], $part_num_mime, $flags);
+			//return $this->a[$acctnum]['dcom']->fetchbody($mailsvr_stream, $msgball['msgnum'], $part_num_mime, $flags);
 			//return $this->a[$this->acctnum]['dcom']->fetchbody($this->get_arg_value('mailsvr_stream'), $this->get_arg_value('msgnum'), $part_num_mime, $flags);
-			//return $this->a[$acctnum      ]['dcom']->fetchbody($stream, $msgball['msgnum'], $part_num_mime, $flags);
-			return $this->a[$this->acctnum]['dcom']->fetchbody($stream, $msgball['msgnum'], $part_num_mime, $flags);
+			//return $this->a[$acctnum      ]['dcom']->fetchbody($mailsvr_stream, $msgball['msgnum'], $part_num_mime, $flags);
+			return $this->a[$this->acctnum]['dcom']->fetchbody($mailsvr_stream, $msgball['msgnum'], $part_num_mime, $flags);
 		}
 		*/
 		
@@ -342,9 +342,9 @@
 			{
 				$fldball['folder'] = $this->get_arg_value('folder', $fldball['acctnum']);
 			}
-			$stream = $this->get_arg_value('mailsvr_stream', $fldball['acctnum']);
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $fldball['acctnum']);
 			$server_str = $this->get_arg_value('mailsvr_callstr', $fldball['acctnum']);
-			if ($this->debug_session_caching > 2) { echo 'class_msg: get_folder_status_info: will use $stream ['.serialize($stream).'] ; $server_str ['.$server_str.'] ; $fldball: '.serialize($fldball).' <br>'; }
+			if ($this->debug_session_caching > 2) { echo 'class_msg: get_folder_status_info: will use $mailsvr_stream ['.serialize($mailsvr_stream).'] ; $server_str ['.$server_str.'] ; $fldball: '.serialize($fldball).' <br>'; }
 			
 			// do we have cached data in L1 cache / class object var, that we can use
 			$folder_status_info = $this->get_arg_value('folder_status_info', $fldball['acctnum']);
@@ -369,7 +369,7 @@
 			$return_data['uidnext'] = 0;
 			$return_data['uidvalidity'] = 0;
 			
-			$mailbox_status = $GLOBALS['phpgw_dcom_'.$fldball['acctnum']]->dcom->status($stream,$server_str.$fldball['folder'],SA_ALL);
+			$mailbox_status = $GLOBALS['phpgw_dcom_'.$fldball['acctnum']]->dcom->status($mailsvr_stream,$server_str.$fldball['folder'],SA_ALL);
 			
 			// cache validity data - will be used to cache msg_list_array data, which is good until UID_NEXT changes
 			$return_data['uidnext'] = $mailbox_status->uidnext;
@@ -442,43 +442,43 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->noop_ping_test($stream);
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->noop_ping_test($mailsvr_stream);
 			return $retval;
 		}
 		
 		function phpgw_search($criteria,$flags='')
 		{
-			$stream = $this->get_arg_value('mailsvr_stream');
-			$retval = $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->i_search($stream,$criteria,$flags);
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream');
+			$retval = $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->i_search($mailsvr_stream,$criteria,$flags);
 			return $retval;
 		}
 		
 		function phpgw_createmailbox($target_fldball)
 		{
 			$acctnum = (int)$target_fldball['acctnum'];
-			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			$folder = $target_fldball['folder'];
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->createmailbox($stream, $folder);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->createmailbox($mailsvr_stream, $folder);
 			return $retval;
 		}
 		
 		function phpgw_deletemailbox($target_fldball)
 		{
 			$acctnum = $target_fldball['acctnum'];
-			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			$folder = $target_fldball['folder'];
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->deletemailbox($stream, $folder);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->deletemailbox($mailsvr_stream, $folder);
 			return $retval;
 		}
 		
 		function phpgw_renamemailbox($source_fldball,$target_fldball)
 		{
 			$acctnum = (int)$source_fldball['acctnum'];
-			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			$folder_old = $source_fldball['folder'];
 			$folder_new = $target_fldball['folder'];
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->renamemailbox($stream, $folder_old, $folder_new);
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->renamemailbox($mailsvr_stream, $folder_old, $folder_new);
 			return $retval;
 		}
 		
@@ -512,7 +512,7 @@
 				// (remember the lookup failed, so we have to guess here)
 				$folder_long = $this->get_folder_long($folder);
 				// create the specified target folder so it will exist
-				//$this->createmailbox($stream,"$server_str"."$folder_long");
+				//$this->createmailbox($mailsvr_stream,"$server_str"."$folder_long");
 				$this->phpgw_createmailbox("$server_str"."$folder_long");
 				// try again to get the real long folder name of the just created trash folder
 				$official_folder_long = $this->folder_lookup('', $folder);
@@ -568,18 +568,15 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			//$stream = (int)$this->get_arg_value('mailsvr_stream', $acctnum);
-			$stream = $this->get_arg_value('mailsvr_stream');
+			//$mailsvr_stream = (int)$this->get_arg_value('mailsvr_stream', $acctnum);
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			$msgnum = (string)$mov_msgball['msgnum'];
 			$mailbox = $to_fldball['folder'];
-			//echo 'mail_msg(_wrappers): interacct_mail_move: $acctnum: '.$acctnum.' $stream: '.$stream.' $msgnum: '.$msgnum.' $mailsvr_callstr: '.$mailsvr_callstr.' $mailbox: '.$mailbox.'<br>';
+			//echo 'mail_msg(_wrappers): interacct_mail_move: $acctnum: '.$acctnum.' $mailsvr_stream: '.$mailsvr_stream.' $msgnum: '.$msgnum.' $mailsvr_callstr: '.$mailsvr_callstr.' $mailbox: '.$mailbox.'<br>';
 			// the acctnum we are moving FROM *may* be different from the acctnum we are moving TO
 			// that requires a fetch then an append - FIXME!!!
 			
-			//$tmp_a = $this->a[$this->acctnum];
-			//$retval = $tmp_a['dcom']->mail_move($stream ,$msgnum, $mailbox);
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->mail_move($stream ,$msgnum, $mailbox);
-			//$this->a[$this->acctnum] = $tmp_a;
+			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->mail_move($mailsvr_stream ,$msgnum, $mailbox);
 			return $retval;
 		}
 		
@@ -590,15 +587,11 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-			//$tmp_a = $this->a[$this->acctnum];
-			//$retval = $tmp_a['dcom']->expunge($stream);
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->expunge($stream);
-			//$this->a[$this->acctnum] = $tmp_a;
-			return $retval;
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			//echo 'mail_msg(_wrappers): phpgw_expunge: $acctnum: '.serialize($acctnum).' $mailsvr_stream: '.serialize($mailsvr_stream).'<br>';
+			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->expunge($mailsvr_stream);
 		}
 		
-		//function phpgw_delete($msg_num,$flags=0, $currentfolder="") 
 		function phpgw_delete($msg_num,$flags=0, $currentfolder="", $acctnum='') 
 		{
 			if (!(isset($acctnum))
@@ -609,7 +602,8 @@
 			// everything from now on MUST specify this $acctnum
 			
 			// now get the stream that applies to that acctnum
-			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			//echo 'mail_msg(_wrappers): phpgw_delete: $acctnum: '.$acctnum.' $mailsvr_stream: '.$mailsvr_stream.' $msg_num: '.$msg_num.'<br>';
 			
 			if (($this->get_isset_pref('use_trash_folder', $acctnum))
 			&& ($this->get_pref_value('use_trash_folder', $acctnum)))
@@ -624,16 +618,12 @@
 				if ($currentfolder_short == $trash_folder_short)
 				{
 					// delete session msg array data thAt is now stale
-					$this->expire_session_cache_item('msgball_list');
+					$this->expire_session_cache_item('msgball_list', $acctnum);
 					
-					//return imap_delete($stream,$msg_num);
-					//$tmp_a = $this->a[$this->acctnum];
-					//$retval = $tmp_a['dcom']->delete($stream, $msg_num);
-					$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->delete($stream, $msg_num);
-					//$this->a[$this->acctnum] = $tmp_a;
+					//return imap_delete($mailsvr_stream,$msg_num);
+					$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->delete($mailsvr_stream, $msg_num);
 					return $retval;
 				}
-				// FIXME: from here on needs that $acctnum and.or $stream NEEDS TO BE SPECIFIED!
 				else
 				{
 					// does the trash folder actually exist ?
@@ -650,11 +640,11 @@
 					if (!$havefolder)
 					{
 						// create the Trash folder so it will exist (Netscape does this too)
-						$server_str = $this->get_arg_value('mailsvr_callstr');
-						//$this->createmailbox($stream,$server_str .$trash_folder_long);
+						$server_str = $this->get_arg_value('mailsvr_callstr', $acctnum);
+						//$this->createmailbox($mailsvr_stream,$server_str .$trash_folder_long);
 						$this->phpgw_createmailbox("$server_str"."$trash_folder_long");
 						// try again to get the real long folder name of the just created trash folder
-						$official_trash_folder_long = $this->folder_lookup('', $this->get_pref_value('trash_folder_name'));
+						$official_trash_folder_long = $this->folder_lookup('', $this->get_pref_value('trash_folder_name', $acctnum));
 						// did the folder get created and do we now have the official full name of that folder?
 						if ($official_trash_folder_long != '')
 						{
@@ -668,24 +658,21 @@
 					if ($havefolder)
 					{
 						// delete session msg array data thAt is now stale
-						$this->expire_session_cache_item('msgball_list');
+						$this->expire_session_cache_item('msgball_list', $acctnum);
 						
-						//return imap_mail_move($stream,$msg_num,$official_trash_folder_long);
+						//return imap_mail_move($mailsvr_stream,$msg_num,$official_trash_folder_long);
 						return $this->phpgw_mail_move($msg_num,$official_trash_folder_long);
 					}
 					else
 					{
 						// delete session msg array data thAt is now stale
-						$this->expire_session_cache_item('msgball_list');
+						$this->expire_session_cache_item('msgball_list', $acctnum);
 						
 						// we do not have the trash official folder name, but we have to do something
 						// can't just leave the mail sitting there
 						// so just straight delete the message
-						//return imap_delete($stream,$msg_num);
-						//$tmp_a = $this->a[$this->acctnum];
-						//$retval = $tmp_a['dcom']->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
-						$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
-						//$this->a[$this->acctnum] = $tmp_a;
+						//return imap_delete($mailsvr_stream,$msg_num);
+						$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->delete($mailsvr_stream, $msg_num);
 						return $retval;
 					}
 				}
@@ -693,13 +680,11 @@
 			else
 			{
 				// delete session msg array data thAt is now stale
-				$this->expire_session_cache_item('msgball_list');
+				$this->expire_session_cache_item('msgball_list', $acctnum);
 				
-				//return imap_delete($stream,$msg_num);
-				//$tmp_a = $this->a[$this->acctnum];
-				//$retval = $tmp_a['dcom']->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
-				$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
-				//$this->a[$this->acctnum] = $tmp_a;
+				//return imap_delete($mailsvr_stream,$msg_num);
+				$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+				$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->delete($mailsvr_stream, $msg_num);
 				return $retval;
 			}
 		}
@@ -749,6 +734,56 @@
 			parse_str($uri_type_string, $embeded_data);
 			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: decode_fake_uri: parse_str('.$uri_type_string.', into $embeded_data dump:<pre>'; print_r($embeded_data); echo '</pre>'; }
 			
+			// some embeded uri-faked data needs to be raised up one level from sub-elements to top level
+			if ($raise_up)
+			{
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: decode_fake_uri: attempt to raise up data one level in the array <br>'; }
+				$count_embeded = count($embeded_data);
+				if ($count_embeded == 1)
+				{
+					@reset($embeded_data);
+					$new_top_level = array();
+					while(list($key,$value) = each($embeded_data))
+					{
+						$new_top_level = $embeded_data[$key];
+						//break;
+					}
+					// re-urlencode folder names, and make acctnum 's integers
+					/*
+					// NOT NECESSARY HERE
+					if ((is_array($new_top_level))
+					&& (count($new_top_level) > 0))
+					{
+						$loops = count($new_top_level);
+						for($i=0;$i<$loops;$i++)
+						{
+							// re-urlencode folder names, because "prep_folder_in" is supposed to be where it gets urldecoded
+							if ((isset($this_array_item[$i]['folder']))
+							&& ((string)$this_array_item[$i]['folder'] != ''))
+							{
+								$re_urlencoded_folder = urlencode($this_array_item[$i]['folder']);
+								if ($this->debug_args_input_flow > 1) { echo 'mail_msg: decode_fake_uri: re-urlencode (hopefully) folder element $this_array_item['.$i.'][folder] from ['.$this_array_item[$i]['folder'].'] into ['.$re_urlencoded_folder.'] <br>'; }
+								$this_array_item[$i]['folder'] = $re_urlencoded_folder;
+							}
+							if ((isset($this_array_item[$i]['acctnum']))
+							&& ((string)$this_array_item[$i]['acctnum'] != ''))
+							{
+								$make_int_acctnum = (int)$this_array_item[$i]['acctnum'];
+								if ($this->debug_args_input_flow > 1) { echo 'mail_msg: decode_fake_uri: $make_int_acctnum (hopefully) acctnum element $this_array_item['.$i.'][acctnum] from ['.serialize($this_array_item[$i]['acctnum']).'] into ['.serialize($make_int_acctnum).'] <br>'; }
+								$this_array_item[$i]['acctnum'] = $make_int_acctnum;
+							}
+						}
+					}
+					*/
+					// replace result with $new_top_level
+					$embeded_data = $new_top_level;
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: decode_fake_uri: raise embeded up to $new_top_level: <pre>'; print_r($new_top_level); echo '</pre>'; }
+				}
+				else
+				{
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: decode_fake_uri: original result had more than one element, can not raise <br>'; }
+				}
+			}
 			// parse_str will "urldecode" the folder string, we need to re-urlencode it, 
 			// because "prep_folder_in" is supposed to be where it gets urldecoded
 			while(list($key,$value) = each($embeded_data))
@@ -768,29 +803,7 @@
 					$embeded_data[$key] = $make_int_acctnum;
 				}
 			}
-			// some embeded uri-faked data needs to be raised up one level from sub-elements to top level
-			if ($raise_up)
-			{
-				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: decode_fake_uri: attempt to raise up data one level in the array <br>'; }
-				$count_embeded = count($embeded_data);
-				if ($count_embeded == 1)
-				{
-					@reset($embeded_data);
-					$new_top_level = array();
-					while(list($key,$value) = each($embeded_data))
-					{
-						$new_top_level = $embeded_data[$key];
-						//break;
-					}
-					// replace result with $new_top_level
-					$embeded_data = $new_top_level;
-					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: decode_fake_uri: raise embeded up to $new_top_level: <pre>'; print_r($new_top_level); echo '</pre>'; }
-				}
-				else
-				{
-					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: decode_fake_uri: original result had more than one element, can not raise <br>'; }
-				}
-			}
+
 			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: decode_fake_uri: final $embeded_data (sub parts made into an associative array) dump:<pre>'; print_r($embeded_data); echo '</pre>'; }
 			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: decode_fake_uri: LEAVING <br>'; }
 			return $embeded_data;
@@ -918,12 +931,7 @@
 			// 4-) current class value for acct num
 			// 4a) use class value $this->acctnum if it exists
 			// 4b) get a default value to use (usually = 0)
-			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will look here: <br>'
-								.' * (1) function arg $acctnum ['.serialize($acctnum).']<br>'
-								.' * (2) $got_args[msgball][acctnum] ['.serialize($got_args['msgball']['acctnum']).']<br>'
-								.' * (3) $got_args[fldball][acctnum] ['.serialize($got_args['fldball']['acctnum']).']<br>'
-								.' * (4) last resort, calls $this->get_acctnum()<br>'
-								; }
+			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": searching...: <br>'; }
 			
 			if ((isset($acctnum))
 			&& ((string)$acctnum != ''))
@@ -958,12 +966,23 @@
 			elseif ((isset($got_args['target_fldball']['acctnum']))
 			&& ((string)$got_args['target_fldball']['acctnum'] != ''))
 			{
+				// at the very least we know we need to login to this account to append a message to a folder there
 				$acctnum = (int)$got_args['target_fldball']['acctnum'];
 				// make sure this is an integer
 				$got_args['target_fldball']['acctnum'] = $acctnum;
 				if ($this->debug_args_input_flow > 1)
 				{
 					echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use GPC aquired $got_args[target_fldball][acctnum] : ['.serialize($got_args['target_fldball']['acctnum']).']<br>';
+				}
+			}
+			elseif ((isset($got_args['delmov_list'][0]['acctnum']))
+			&& ((string)$got_args['delmov_list'][0]['acctnum'] != ''))
+			{
+				// at the very least we know that we'll need to login to this account to delete or move this particular msgball
+				$acctnum = (int)$got_args['delmov_list'][0]['acctnum'];
+				if ($this->debug_args_input_flow > 1)
+				{
+					echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use GPC aquired $got_args[delmov_list][0][acctnum] : ['.serialize($got_args['delmov_list'][0]['acctnum']).']<br>';
 				}
 			}
 			else
