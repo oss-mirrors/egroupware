@@ -43,8 +43,14 @@ INSTALLATION:
        CeGWContacts.cls
        CFormHelper
        COutlookContacts.cls
+       COverwriteManager.cls
        FrmMain.frm
+       FrmOverwrite.frm
+       FrmRename.frm
        ThisOutlookSession.cls
+   NOTE: You may need to copy the contents of ThisOutlookSession.cls into the
+   ThisOutlookSession class automatically created by Outlook, rather than
+   importing it.
 
 6. Save the project.
 

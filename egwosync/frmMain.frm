@@ -13,7 +13,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
 '#################################################################################################
 '# FrmMain.frm & .frx
 '# The main control window for mass uploading and downloading of contact information
@@ -23,6 +22,7 @@ Attribute VB_Exposed = False
 '# for its usage or losses of any kind that may ensue thereof or otherwise. Feedback is nice:
 '# heisters[at]0x09.com
 '#################################################################################################
+
 Public Helper As New CFormHelper
 
 '***********************************************************************************************
@@ -35,7 +35,7 @@ Private Sub cmdApply_Click()
 End Sub
 
 Private Sub cmdCancel_Click()
-Me.Hide
+    Me.Hide
 End Sub
 
 '***********************************************************************************************
@@ -66,4 +66,6 @@ Private Sub UserForm_Initialize()
     Set Helper.Parent = Me
     'load previous settings
     Helper.LoadSettings
+    Helper.PutSettings
+    ThisOutlookSession.RefreshSettingStatus
 End Sub

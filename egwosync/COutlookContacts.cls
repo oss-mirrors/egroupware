@@ -30,7 +30,7 @@ Public Sub List(fldFolder As Outlook.MAPIFolder)
     End If
     
     For Each objItem In fldFolder.Items
-        frmMain.listLocal.AddItem (objItem.FullName)
+        FrmMain.listLocal.AddItem (objItem.FullName)
     Next objItem
 End Sub
 
@@ -38,9 +38,8 @@ End Sub
 ' Create an Outlook contact given an eGroupWare Response that holds the full information on an
 ' eGW contact
 '***********************************************************************************************
-Public Function Create(ByVal rContact As XMLRPCResponse) As ContactItem
+Public Function Create(ByVal egwContact As XMLRPCStruct) As ContactItem
     Dim objContact      As ContactItem
-    Dim egwContact      As New XMLRPCStruct
     Dim gnspNamespace   As NameSpace
     Dim fldContacts     As Outlook.MAPIFolder
     Dim ciFindContact   As ContactItem
@@ -51,34 +50,23 @@ Public Function Create(ByVal rContact As XMLRPCResponse) As ContactItem
     Set gnspNamespace = GetNamespace("MAPI")
     Set fldContacts = gnspNamespace.GetDefaultFolder(olFolderContacts)
     Set objContact = fldContacts.Items.Add
-    Set egwContact = rContact.params(1).ArrayValue(1).StructValue
     
     'If a contact with the same full name doesn't exist, create the new contact.
-    '   Perhaps there should be a more sophisticated method of finding *similar* contacts as well,
-    '   but I'll leave that for the future.
     Set ciFindContact = fldContacts.Items.Find("[FullName] = " & egwContact.GetValueByName("fn").StringValue)
     
     'Confirm Overwrite: Only do this if a contact by the same name was found
     If Not (ciFindContact Is Nothing) Then
-        'Display a message box to confirm an overwrite.
-        Dim x As VbMsgBoxResult
-        x = MsgBox("Trying to import " & (Chr(10)) & (egwContact.GetValueByName("fn").StringValue) & (Chr(10)) & _
-                    "from the eGroupWare server, but a contact by that name already" & _
-                    " exists in the local directory." & (Chr(10)) & (Chr(10)) & _
-                    "Press okay to overwrite the local contact, cancel to skip", _
-                    vbOKCancel, "Confirm Overwrite of " & (egwContact.GetValueByName("fn").StringValue))
-
-        'If the user chose to overwrite then go ahead and do the writing over
-        If x = vbOK Then
-            'First delete the current copy to make space for the new one
+        'Manage overwriting
+        Dim OMResponse As Integer
+        Dim OM As New COverwriteManager
+        
+        OMResponse = OM.Manage(ciFindContact, egwContact)
+        If OMResponse = FrmOverwrite.OVERWRITE Then
             ciFindContact.Delete
-            'allow writing
-            bWriteContact = True
-        'If the user chose to skip, exit this function
-        ElseIf x = vbCancel Then
-            'disallow writing
+        ElseIf OMResponse = FrmOverwrite.SKIP Then
             bWriteContact = False
-            Set Create = Nothing
+        ElseIf OMResponse = FrmOverwrite.RENAME Then
+            bWriteContact = False 'OM will take care of the rest.
         End If
     End If
 
@@ -91,4 +79,3 @@ Public Function Create(ByVal rContact As XMLRPCResponse) As ContactItem
         objContact.Close (olSave)
     End If
 End Function
-

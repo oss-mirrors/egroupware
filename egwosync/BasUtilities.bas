@@ -128,7 +128,7 @@ Public Sub SynchronizeContacts()
         
             'Add the selected remote contacts to the local directory
             For Each tempResponse In arrFullInformation
-                Set ciContact = oContacts.Create(tempResponse)
+                Set ciContact = oContacts.Create(tempResponse.params(1).ArrayValue(1).StructValue)
                 If Not (ciContact Is Nothing) Then
                     Debug.Print "Successfully imported " & tempResponse.params(1).ArrayValue(1).StructValue.GetValueByName("fn").StringValue & _
                                     " to the Outlook Contact List."
@@ -142,9 +142,6 @@ Public Sub SynchronizeContacts()
                         Next i
                         .AddItem (ciContact.FullName)
                     End With
-                Else
-                    Debug.Print "Failed to import " & tempResponse.params(1).ArrayValue(1).StructValue.GetValueByName("fn").StringValue & _
-                                    " to the Outlook Contact List."
                 End If
             Next tempResponse
         End If
@@ -180,8 +177,6 @@ Public Sub SynchronizeContacts()
                         .AddItem egwContacts.CursoryInfo.Item(egwContacts.CursoryInfo.Count).StructValue.GetValueByName("fn").StringValue
                     End With
                 'If creation of the remote contact failed...
-                Else
-                    Debug.Print "Failed to export " & ciContact.FullName & " to the eGroupWare server"
                 End If
             Next strListItem
         End If
@@ -200,9 +195,9 @@ Public Function SimpleExec(methodName As String, xmlParms As XMLRPCStruct) As XM
     Dim linsUtility As New XMLRPCUtility
     Dim bLogin As Boolean
     Dim bEnabled As Boolean
+    
     '[ grab the login information from the form GUI. eGW is defined in ThisOutlookSession
     '[ so it's always accessible to everyone.
-    
     bEnabled = ThisOutlookSession.eGWOSyncEnabled
     
     If bEnabled Then

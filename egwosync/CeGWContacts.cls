@@ -43,30 +43,36 @@ Public Function Create(ByVal ciContact As ContactItem) As XMLRPCResponse
         For Each varTemp In CursoryInfo
             'If a contact that was downloaded from the server has the same fullname
             If ciContact.FullName = varTemp.StructValue.GetValueByName("fn").StringValue Then
-                    'record the contact's id number
-                    dblDuplicateID = Val(varTemp.StructValue.GetValueByName("id").StringValue)
-                    'and exit the loop
-                    Exit For
+                'record the contact's id number
+                dblDuplicateID = Val(varTemp.StructValue.GetValueByName("id").StringValue)
+                'Grab the full information on the original contact
+                Set xmlResponse = GetFullInfoFromServer(varTemp.StructValue.GetValueByName("fn").StringValue)
+                'and exit the loop
+                Exit For
             End If
         Next varTemp
     End If
     
     'Do something if a duplicate was found
     If dblDuplicateID <> 0 Then
-        Dim x As VbMsgBoxResult
-        x = MsgBox("Trying to export " & (Chr(10)) & (ciContact.FullName) & (Chr(10)) & _
-                        "to the eGroupWare server, but a contact by that name already" & _
-                        " exists in the remote directory." & (Chr(10)) & (Chr(10)) & _
-                        "Press okay to overwrite the remote contact, cancel to skip", _
-                        vbOKCancel, "Confirm Overwrite of " & (ciContact.FullName))
-        If x = vbOK Then
-            'No need to do anything, dblDuplicateID holds the ID to overwrite.
-        ElseIf x = vbCancel Then
+        Dim OMResponse As Integer
+        Dim OM As New COverwriteManager
+        OMResponse = OM.Manage(xmlResponse.params(1).ArrayValue(1).StructValue, ciContact)
+        
+        If OMResponse = FrmOverwrite.OVERWRITE Then
+            'No need to do anything, dblDuplicateID holds the ID to overwrite
+        ElseIf OMResponse = FrmOverwrite.SKIP Then
             Set Create = Nothing
             'Setting dblDuplicate ID to DONT_WRITE means that neither a new contact should be
-            '   created nor an old one overwritten
+            'created nor an old one overwritten
+            dblDuplicateID = DONT_WRITE
+        ElseIf OMResponse = FrmOverwrite.RENAME Then
+            'Be sure it won't write a new one, OM will take care of the rest
             dblDuplicateID = DONT_WRITE
         End If
+        
+        'Reset xmlResponse
+        Set xmlResponse = New XMLRPCResponse
     End If
 
     If dblDuplicateID <> DONT_WRITE Then
@@ -102,6 +108,7 @@ End Function
 ' of the contact and an array that holds cursory information on all the eGW contacts
 '***********************************************************************************************
 Public Function GetFullInfoFromServer(strSelectedName As String) As XMLRPCResponse
+    Debug.Print "Getting full information on " & strSelectedName & " from the server"
     Dim xmlParms    As New XMLRPCStruct
     Dim varTemp     As XMLRPCValue
     'Now we need to go back and get the full information on the selected contacts.
@@ -119,10 +126,9 @@ Public Function GetFullInfoFromServer(strSelectedName As String) As XMLRPCRespon
             '   converted to an Integer.
             xmlParms.AddInteger "id", Val(varTemp.StructValue.GetValueByName("id").StringValue)
             Set GetFullInfoFromServer = BasUtilities.SimpleExec("addressbook.boaddressbook.read", xmlParms)
-                
             'Break out of the loop since we've found our man.
             Exit For
-                
+            
         End If
     Next varTemp
 End Function

@@ -35,11 +35,11 @@ End Property
 ' Refresh the status of whether egwosync has all the login information it needs
 '***********************************************************************************************
 Public Function RefreshSettingStatus() As Boolean
-    If GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="Hostname") <> "" And _
-        GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="Port") <> "" And _
-        GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="URI") <> "" And _
-        GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="Username") <> "" And _
-        GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="Password") <> "" Then
+    If GetSetting(AppName:="eGWOSync", Section:="Settings", key:="Hostname") <> "" And _
+        GetSetting(AppName:="eGWOSync", Section:="Settings", key:="Port") <> "" And _
+        GetSetting(AppName:="eGWOSync", Section:="Settings", key:="URI") <> "" And _
+        GetSetting(AppName:="eGWOSync", Section:="Settings", key:="Username") <> "" And _
+        GetSetting(AppName:="eGWOSync", Section:="Settings", key:="Password") <> "" Then
             beGWOSyncEnabled = True
             RefreshSettingStatus = True
             
@@ -59,7 +59,7 @@ Private Sub Application_Startup()
         'else the setup dialog will be shown at first sync anyways.
         FrmMain.Helper.PutSettings
     Else: Setup
-   End If
+    End If
     
     'If so, initialize the process that will allow contacts to be added automatically
     If beGWOSyncEnabled Then
@@ -76,7 +76,7 @@ Public Function Setup() As Boolean
         
         x = MsgBox("eGroupWare Synchornization has not been set up to access the eGroupWare " & _
                     "Server. Would you like to set it up now?", _
-                    vbOKCancel, "eGrwoupWare not set up")
+                    vbOKCancel + vbApplicationModal, "eGrwoupWare not set up")
         If x = vbOK Then
             If Not FrmMain.Visible Then
                 FrmMain.Show
@@ -88,6 +88,4 @@ Public Function Setup() As Boolean
         End If
         Setup = beGWOSyncEnabled
 End Function
-
-
 
