@@ -14,7 +14,7 @@
 
     if (! $id)
     {
-        Header('Location: ' . $phpgw->link('/projects/index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+        Header('Location: ' . $phpgw->link('/projects/index.php',"cat_id=$cat_id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
     }
 
     if ($confirm)
@@ -32,7 +32,7 @@
 	$phpgw->db->query("delete from phpgw_p_hours where project_id='$id'");
 	$phpgw->db->query("delete from phpgw_p_projectactivities where project_id='$id'");
 
-	Header('Location: ' . $phpgw->link('/projects/index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+	Header('Location: ' . $phpgw->link('/projects/index.php',"cat_id=$cat_id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
     }
     else
     {
@@ -41,6 +41,7 @@
 			. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
 			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
 			. "<input type=\"hidden\" name=\"id\" value=\"$id\">\n"
+			. "<input type=\"hidden\" name=\"cat_id\" value=\"$cat_id\">\n"
 			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
 	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
@@ -48,10 +49,10 @@
 
 	$t->set_var('deleteheader',lang('Are you sure you want to delete this project ?'));
         $t->set_var('hidden_vars',$hidden_vars);
-	$t->set_var('nolink',$phpgw->link('/projects/index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+	$t->set_var('nolink',$phpgw->link('/projects/index.php',"cat_id=$cat_id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
 	$t->set_var('lang_no',lang('No'));
 
-	$t->set_var('action_url',$phpgw->link('/projects/delete.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+	$t->set_var('action_url',$phpgw->link('/projects/delete.php',"id=$id"));
 	$t->set_var('lang_yes',lang('Yes'));
 	$t->pparse('out','projects_delete');
     }

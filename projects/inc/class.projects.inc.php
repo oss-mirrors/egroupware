@@ -11,65 +11,101 @@
   \**************************************************************************/
   /* $Id$ */
 
-    class projects {
+    class projects
+    {
 	    var $db;
 	    var $projects;
 	    var $grants;
 	    var $total_records;
 
-	function projects() {
+	function projects()
+	{
 		global $phpgw;
 		$this->db		= $phpgw->db;
+		$this->db2		= $this->db;
 		$this->total_records	= $this->db->num_rows();
 		$this->grants 		= $phpgw->acl->get_grants('projects');
 		$this->projects		= $this->read_projects($start, $limit, $query, $filter, $sort, $order, $status, $cat_id);
 
 	}
 
-	function check_perms($has, $needed) {
+	function check_perms($has, $needed)
+	{
 	    return (!!($has & $needed) == True);
 	}
 
-	function read_projects( $start, $limit, $query = '', $filter = '', $sort = '', $order = '', $status = 'active', $cat_id) {
+	function read_projects( $start, $limit = True, $query = '', $filter = '', $sort = '', $order = '', $status = 'active', $cat_id)
+	{
 
-	    global $phpgw, $phpgw_info, $total_records, $grants;
+	    global $phpgw, $phpgw_info;
 
-	    $this->db2 = $this->db;
+	    if ($status == 'archive')
+	    {
+		$statussort = " AND status = 'archive' ";
+	    }
+            else
+	    {
+		$statussort = " AND status != 'archive' ";
+	    }
 
-	    if ($status == 'archive') { $statussort = " AND status = 'archive' "; }
-            else { $statussort = " AND status != 'archive' "; }
+	    if (!$sort)
+	    {
+		$sort = "ASC";
+	    }
 
-	    if (!$sort) { $sort = "ASC";  }
+	    if ($order)
+	    {
+		$ordermethod = "order by $order $sort";
+	    }
+	    else
+	    {
+		$ordermethod = "order by start_date asc";
+	    }
 
-	    if ($order) { $ordermethod = "order by $order $sort"; }
-	    else { $ordermethod = "order by start_date asc"; }
+            if (! $filter)
+	    {
+		$filter = 'none';
+	    }
 
-            if (! $filter) { $filter = 'none'; }
-
-            if ($filter != 'private') {
-                if ($filter != 'none') { $filtermethod = " access like '%,$filter,%' "; }
-                else {
-                $filtermethod = " ( coordinator=" . $phpgw_info['user']['account_id'];
-                    if (is_array($this->grants)) {
+            if ($filter != 'private')
+	    {
+                if ($filter != 'none')
+		{
+		    $filtermethod = " access like '%,$filter,%' ";
+		}
+                else
+		{
+            	    $filtermethod = " ( coordinator=" . $phpgw_info['user']['account_id'];
+                    if (is_array($this->grants))
+		    {
                         $grants = $this->grants;
-                        while (list($user) = each($grants)) {
-                                        $public_user_list[] = $user;
+                        while (list($user) = each($grants))
+			{
+                            $public_user_list[] = $user;
                         }
                         reset($public_user_list);
                         $filtermethod .= " OR (access='public' AND coordinator in(" . implode(',',$public_user_list) . ")))";
                     }
-                    else {
+                    else
+		    {
                         $filtermethod .= ' )';
                     }
                 }
             }
-            else {
+            else
+	    {
                 $filtermethod = ' coordinator=' . $phpgw_info['user']['account_id'] . ' ';
             }
 
-	    if ($cat_id) { $filtermethod .= " AND category='$cat_id' "; }
+	    if ($cat_id)
+	    {
+		$filtermethod .= " AND category='$cat_id' ";
+	    }
 
-	    if ($query) { $querymethod = " AND (title like '%$query%' OR num like '%$query%' OR descr like '%$query%') "; }
+	    if ($query)
+	    {
+		$querymethod = " AND (title like '%$query%' OR num like '%$query%' OR descr like '%$query%') ";
+	    }
 
     	    $sql = "SELECT p.id,p.num,p.access,p.category,p.entry_date,p.start_date,p.end_date,p.coordinator,p.customer,p.status, "
                             . "p.descr,p.title,p.budget,a.account_lid,a.account_firstname,a.account_lastname FROM "
@@ -78,10 +114,11 @@
 
 	    $this->db2->query($sql,__LINE__,__FILE__);
 	    $this->total_records = $this->db2->num_rows();
-	    $this->db->query($sql. " " . $this->db->limit($start,$limit),__LINE__,__FILE__);
+	    $this->db->query($sql. " " . $this->db->limit($start),__LINE__,__FILE__);
 
 	    $i = 0;
-	    while ($this->db->next_record()) {
+	    while ($this->db->next_record())
+	    {
         	$projects[$i]['id']		= $this->db->f('id');
         	$projects[$i]['number']		= $this->db->f('num');
         	$projects[$i]['access']		= $this->db->f('access');
@@ -103,11 +140,13 @@
 	    return $projects;
 	}
 
-	function read_single_project($id = '') {
+	function read_single_project($id = '')
+	{
 	
-	$this->db->query("SELECT * from phpgw_p_projects WHERE id='$id'",__LINE__,__FILE__);
+	    $this->db->query("SELECT * from phpgw_p_projects WHERE id='$id'",__LINE__,__FILE__);
 	
-	while($this->db->next_record()) {
+	    while($this->db->next_record())
+	    {
                 $projects[0]['id']             = $this->db->f('id');
                 $projects[0]['number']         = $this->db->f('num');
                 $projects[0]['access']         = $this->db->f('access');
@@ -125,14 +164,17 @@
             return $projects;
 	}
 
-	function select_project_list($selected = '') {
+	function select_project_list($selected = '')
+	{
 	    global $phpgw;
 
-		$projects = $this->read_projects($start, $limit, $query, $filter, $sort, $order, $status, $cat_id);
+		$projects = $this->read_projects($start, False, $query, $filter, $sort, $order, $status, $cat_id);
 
-		for ($i=0;$i<count($projects);$i++) {
+		for ($i=0;$i<count($projects);$i++)
+		{
                     $pro_select .= '<option value="' . $projects[$i]['id'] . '"';
-                        if ($projects[$i]['id'] == $selected) {
+                        if ($projects[$i]['id'] == $selected)
+			{
                             $pro_select .= ' selected';
                         }
                         $pro_select .= '>' . $phpgw->strip_html($projects[$i]['title']) . ' [ ' . $projects[$i]['number'] . ' ]';
@@ -141,23 +183,44 @@
                 return $pro_select;
 	}
 
-	function read_hours($start, $limit, $query = '', $filter, $sort = '', $order = '',$access = 'all',$status) {
+	function read_hours($start, $limit = True, $query = '', $filter, $sort = '', $order = '',$access = 'all',$status)
+	{
 	    global $phpgw, $phpgw_info;
 
-	    $this->db2 = $this->db;
+	    if ($phpgw_info['server']['db_type']=='pgsql')
+	    {
+		$join = " JOIN ";
+	    }
+	    else
+	    {
+		$join = " LEFT JOIN ";
+	    }
 
-	    if ($phpgw_info["server"]["db_type"]=="pgsql") { $join = " JOIN "; }
-	    else { $join = " LEFT JOIN "; }
+	    if ($order)
+	    {
+		$ordermethod = "order by $order $sort";
+	    }
+	    else
+	    {
+		$ordermethod = "order by h.start_date asc";
+	    }
 
-	    if ($order) { $ordermethod = "order by $order $sort"; }
-	    else { $ordermethod = "order by h.start_date asc"; }
+	    if (!$status)
+	    {
+		$filtermethod = " AND (h.status='open' OR h.status='done' OR h.status='billed') ";
+	    }
+            else
+	    {
+		$filtermethod = " AND h.status='$status' ";
+	    }
 
-	    if (!$status) { $filtermethod = " AND (h.status='open' OR h.status='done' OR h.status='billed') "; }
-            else { $filtermethod = " AND h.status='$status' "; }
+	    if ($access == 'private')
+	    {
+		$filtermethod .= "AND h.employee='" . $phpgw_info['user']['account_id'] . "' ";
+	    }
 
-	    if ($access == 'private') { $filtermethod .= "AND h.employee='" . $phpgw_info["user"]["account_id"] . "' "; }
-
-	    if ($query) {
+	    if ($query)
+	    {
 		$querymethod = " AND (h.remark like '%$query%' OR h.start_date like '%$query%' OR h.end_date like '%$query%' OR h.minutes like '%$query%' "
 			     . "OR h.hours_descr like '%$query%') "; 
 	    }
@@ -170,10 +233,11 @@
 
 	    $this->db2->query($sql,__LINE__,__FILE__);
 	    $this->total_records = $this->db2->num_rows();
-	    $this->db->query($sql . " " . $this->db->limit($start,$limit),__LINE__,__FILE__);
+	    $this->db->query($sql . " " . $this->db->limit($start),__LINE__,__FILE__);
 
 	    $i = 0;
-	    while ($this->db->next_record()) {
+	    while ($this->db->next_record())
+	    {
 		$hours[$i]['id']		= $this->db->f('id');
 		$hours[$i]['hours_descr']	= $this->db->f('hours_descr');
 		$hours[$i]['descr']		= $this->db->f('descr');
@@ -187,5 +251,5 @@
 	    return $hours;
 	}
 
-
     }
+?>

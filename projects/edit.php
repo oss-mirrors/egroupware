@@ -23,20 +23,20 @@
 
     include('../header.inc.php');
   
-    $t = new Template(PHPGW_APP_TPL);
+    $t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
     $t->set_file(array('projects_edit' => 'form.tpl'));
     $t->set_block('projects_edit','add','addhandle');
     $t->set_block('projects_edit','edit','edithandle');
 
     $projects = CreateObject('projects.projects');
 
-    $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
-			. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
-			. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
-			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
-			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
-			. "<input type=\"hidden\" name=\"cat_id\" value=\"$cat_id\">\n"
-			. "<input type=\"hidden\" name=\"id\" value=\"$id\">\n";
+    $hidden_vars = '<input type="hidden" name="sort" value="' . $sort . '">' . "\n"
+		. '<input type="hidden" name="order" value="' . $order . '">' . "\n"
+		. '<input type="hidden" name="query" value="' . $query . '">' . "\n"
+		. '<input type="hidden" name="start" value="' . $start . '">' . "\n"
+		. '<input type="hidden" name="filter" value="' . $filter . '">' . "\n"
+		. '<input type="hidden" name="cat_id" value="' . $cat_id . '">' . "\n"
+		. '<input type="hidden" name="id" value="' . $id . '">' . "\n";
 
     if ($new_cat)
     {
@@ -178,14 +178,14 @@
     $t->set_var('lang_action',lang('Edit project'));
     $t->set_var('hidden_vars',$hidden_vars);
     $t->set_var('lang_num',lang('Project ID'));
-    $t->set_var('num',$phpgw->strip_html($phpgw->db->f("num")));
+    $t->set_var('num',$phpgw->strip_html($phpgw->db->f('num')));
     $t->set_var('lang_choose','');
     $t->set_var('choose','');
     $t->set_var('lang_title',lang('Title'));
-    $title  = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                               
-    if (! $title)  $title  = '&nbsp;';                                                                                                                                                  
+    $title  = $phpgw->strip_html($phpgw->db->f('title'));
+    if (! $title)  $title  = '&nbsp;';
     $t->set_var('title',$title);
-    $descrval  = $phpgw->strip_html($phpgw->db->f("descr"));
+    $descrval  = $phpgw->strip_html($phpgw->db->f('descr'));
     if (! $descrval)  $descrval  = '&nbsp;';
     $t->set_var('descrval',$descrval);
     $t->set_var('lang_category',lang('Category'));
@@ -258,7 +258,7 @@
         $coordinator_list .= '<option value="' . $account['account_id'] . '"';
         if($account['account_id']==$phpgw->db->f('coordinator'))
     	    $coordinator_list .= ' selected';
-        $coordinator_list .= '>'
+    	    $coordinator_list .= '>'
 	    . $account['account_firstname'] . ' ' . $account['account_lastname'] . ' [ ' . $account['account_lid'] . ' ]' . '</option>';
     }
 
@@ -273,7 +273,7 @@
 
     if (!$abid)
     {
-	$name = '';
+	$t->set_var('name','');
     }
     else
     {
@@ -322,7 +322,7 @@
                      . "(phpgw_p_activities.id=phpgw_p_projectactivities.activity_id) AND "
                      . "((project_id='$id') OR (project_id IS NULL)) WHERE billable IS NULL OR billable='Y' OR billable='N' ORDER BY descr asc");
 
-     while ($db2->next_record())
+    while ($db2->next_record())
     {
         $bill_activities_list .= '<option value="' . $db2->f('id') . '"';
         if($db2->f('billable')=='Y')
@@ -370,7 +370,7 @@
 
     if ($projects->check_perms($grants[$phpgw->db->f('coordinator')],PHPGW_ACL_DELETE) || $phpgw->db->f('coordinator') == $phpgw_info['user']['account_id'])
     {
-        $t->set_var('delete','<form method="POST" action="' . $phpgw->link('/projects/delete.php',"id=$id") . '"><input type="submit" value="' . lang('Delete') .'"></form>');
+        $t->set_var('delete','<form method="POST" action="' . $phpgw->link('/projects/delete.php',"id=$id&cat_id=$cat_id&start=$start&sort=$sort&order=$order&query=$query&filter=$filter") . '"><input type="submit" value="' . lang('Delete') .'"></form>');
     }
     else
     {

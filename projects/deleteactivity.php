@@ -48,7 +48,7 @@
 	$t->set_var('nolink',$phpgw->link('/projects/activities.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
 	$t->set_var('lang_no',lang('No'));
 
-        $t->set_var('action_url',$phpgw->link('/projects/deleteactivity.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+        $t->set_var('action_url',$phpgw->link('/projects/deleteactivity.php',"id=$id"));
 	$t->set_var('lang_yes',lang('Yes'));
 
 	$t->pparse('out','activity_delete');
