@@ -23,6 +23,13 @@
 		var $commons;
 		var $commons_loaded = false;
 		
+		/*!
+
+			@function ui_api (Constructor)
+			@abstract Inserts all the common code to all CC API usage
+			@author Raphael Derosso Pereira
+
+		*/
 		function ui_api()
 		{
 			$conns_types = ExecMethod('phpgwapi.config.read_repository', 'contactcenter');
@@ -82,12 +89,13 @@
 			$this->commons_loaded = false;
 		}
 		
-		/* DEPRECTED! Use get_email_win() instead */
-		function ui_get_email_win()
-		{
-			return $this->get_email_win();
-		}
+		/*!
 
+			@function get_email_win
+			@abstract Returns the code to insert the Full-Featured Email Browser Window anywhere
+			@author Raphael Derosso Pereira
+
+		*/
 		function get_email_win()
 		{
 			//$search = $this->ui_get_search_win();
@@ -148,11 +156,14 @@
 			return $template->get_var('out');
 		}
 
-		function ui_get_search_win()
-		{
-			return $this->get_search_win();
-		}
 
+		/*!
+
+			@function get_search_win
+			@abstract Returns the code to insert the Full-Featured Search Win anywhere
+			@author Raphael Derosso Pereira
+
+		*/
 		function get_search_win()
 		{
 			$template_dir = PHPGW_SERVER_ROOT . '/contactcenter/templates/default/';
@@ -188,17 +199,28 @@
 			return $template->get_var('out');
 		}
 
+
+		/*!
+		
+			@function get_search_obj
+			@abstract Returns the code to insert CC Search Object anywhere
+			@author Raphael Derosso Pereira
+
+		*/
 		function get_search_obj()
 		{
 			return "\n".'<script type="text/javascript" src="'.$GLOBALS['phpgw_info']['server']['webserver_url'] . '/contactcenter/js/cc_search.js'.'"></script>'."\n";
 		}
 
-		function ui_get_full_add()
-		{
-			return $this->get_full_add();
-		}
 
-		function get_full_add()
+		/*!
+
+			@function get_people_full_add
+			@abstract Returns all the code to insert the People Catalog Full Add Window into anywhere
+			@author Raphael Derosso Pereira
+
+		*/
+		function get_people_full_add()
 		{
 			$template_dir = PHPGW_SERVER_ROOT . '/contactcenter/templates/default/';
 			$template = CreateObject('phpgwapi.Template',$template_dir);
@@ -214,7 +236,21 @@
 			{
 				$template->set_var('cc_api', '');
 			}
+
+			/* Loads the Constant Fields */
+			$bo_cc = CreateObject('contactcenter.bo_contactcenter');
+			$last_level = $bo_cc->get_actual_level();
+			$bo_cc->set_catalog('0.0');
 			
+			$prefixes = $bo_cc->catalog->get_all_prefixes();
+			$suffixes = $bo_cc->catalog->get_all_suffixes();
+			$addr_types = $bo_cc->catalog->get_all_addresses_types();
+			$conn_types = $bo_cc->catalog->get_all_connections_types();
+			$countries = $bo_cc->catalog->get_all_countries();
+
+			$bo_cc->set_catalog($last_level);
+			
+			/* Title */
 			$template->set_var('cc_contact_title',lang('Contact Center').' - '.lang('Contacts'));
 
 			/* Messages */
@@ -286,6 +322,28 @@
 			$template->set_var('cc_pd_choose_sex',lang('Choose Sex ...'));
 			$template->set_var('cc_pd_male',lang('Male'));
 			$template->set_var('cc_pd_female',lang('Female'));
+
+			if (is_array($prefixes) and count($prefixes))
+			{
+				$prefixes_opts = '';
+				foreach ($prefixes as $id => $prefix)
+				{
+					$prefixes_opts .= '<option value="'.$id.'">'.$prefix."</option>\n";
+				}
+			
+				$template->set_var('cc_pd_prefix_opts', $prefixes_opts);
+			}
+			
+			if (is_array($suffixes) and count($suffixes))
+			{
+				$suffixes_opts = '';
+				foreach ($suffixes as $id => $suffix)
+				{
+					$suffixes_opts .= '<option value="'.$id.'">'.$suffix."</option>\n";
+				}
+
+				$template->set_var('cc_pd_suffix_opts', $suffixes_opts);
+			}
 			/* End Contact - Personal Data */
 			
 			/* Contact - Addresses */
@@ -310,6 +368,26 @@
 			$template->set_var('cc_addr_yes',lang('Yes'));
 			$template->set_var('cc_addr_no',lang('No'));
 			$template->set_var('cc_available',lang('Available'));
+			
+			if (is_array($addr_types) and count($addr_types))
+			{
+				$addr_opts = '';
+				foreach ($addr_types as $id => $type)
+				{
+					$addr_opts .= '<option value="'.$id.'">'.$type."</option>\n";
+				}
+
+				$template->set_var('cc_addr_types_opts', $addr_opts);
+			}
+			
+			
+			$country_opts = '';
+			foreach ($countries as $id => $country)
+			{
+				$country_opts .= '<option value="'.$id.'">'.$country."</option>\n";
+			}
+
+			$template->set_var('cc_addr_countries_opts', $country_opts);
 			/* End Contact - Addresses */
 			
 			/* Contact - Connections */
@@ -320,6 +398,17 @@
 			$template->set_var('cc_new_same_type',lang('New from the same Type').'...');
 			
 			$template->set_var('cc_conn_type_none',lang('Choose Type of Connection').'...');
+
+			if (is_array($conn_types) and count($conn_types))
+			{
+				$conn_opts = '';
+				foreach ($conn_types as $id => $conn)
+				{
+					$conn_opts .= '<option value="'.$id.'">'.$conn."</option>\n";
+				}
+
+				$template->set_var('cc_conn_types_opts', $conn_opts);
+			}
 			/* End Contact - Connections */
 
 			$template->parse('out_full', 'full_add');
@@ -327,6 +416,13 @@
 			return $template->get_var('out_full');
 		}
 
+		/*!
+
+			@function get_quick_add_plugin
+			@abstract Returns the code to insert the QuickAdd functionality into anywhere
+			@author Raphael Derosso Pereira
+
+		*/
 		function get_quick_add_plugin()
 		{
 			$template_dir = PHPGW_SERVER_ROOT . '/contactcenter/templates/default/';

@@ -4,7 +4,7 @@
   * http://www.egroupware.org                                                 *
   * Written by:                                                               *
   *  - Raphael Derosso Pereira <raphaelpereira@users.sourceforge.net>         *
-  *  sponsored by Thyamad - http://www.thyamad.com
+  *  sponsored by Thyamad - http://www.thyamad.com                            *
   * ------------------------------------------------------------------------- *
   *  This program is free software; you can redistribute it and/or modify it  *
   *  under the terms of the GNU General Public License as published by the    *
@@ -31,15 +31,15 @@
 		var $security;
 		
 
-		function bo_contactcenter($catalog=false)
+		function bo_contactcenter($catalog_level=false)
 		{
 			$this->tree = $GLOBALS['phpgw']->session->appsession('bo_contactcenter.tree','contactcenter');
 			$this->catalog_level = $GLOBALS['phpgw']->session->appsession('bo_contactcenter.catalog_level','contactcenter');
 			$this->security = CreateObject('contactcenter.bo_security_manager');
 			
-			if ($catalog)
+			if ($catalog_level)
 			{
-				$this->set_catalog($catalog);
+				$this->set_catalog($catalog_level);
 			}
 			else
 			{
@@ -433,6 +433,18 @@
 			$catalog = $this->get_branch_by_level($this->catalog_level[0]);
 			return $catalog;
 		}
+
+		/*!
+
+			@function get_actual_level
+			@abstract Returns the level of the actual instantiated catalog
+			@author Raphael Derosso Pereira
+
+		*/
+		function get_actual_level()
+		{
+			return $this->catalog_level[0];
+		}
 		
 		/*!
 		
@@ -444,7 +456,7 @@
 				get_available_tree or the level
 		
 		*/
-		function set_catalog(& $to_catalog )
+		function set_catalog( $to_catalog )
 		{
 			if(!is_array($to_catalog))
 			{

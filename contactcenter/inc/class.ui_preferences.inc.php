@@ -4,7 +4,7 @@
   * http://www.egroupware.org                                                 *
   * Written by:                                                               *
   *  - Raphael Derosso Pereira <raphaelpereira@users.sourceforge.net>         *
-  *  sponsored by Thyamad - http://www.thyamad.com
+  *  sponsored by Thyamad - http://www.thyamad.com                            *
   * ------------------------------------------------------------------------- *
   *  This program is free software; you can redistribute it and/or modify it  *
   *  under the terms of the GNU General Public License as published by the    *

@@ -167,7 +167,7 @@ function newContact()
 	}
 	
 	resetFullAdd();
-	populateFullAddConst();
+	//populateFullAddConst();
 	fullAddWin.open();
 	tabs._showTab('cc_contact_tab_0');
 }
@@ -177,8 +177,7 @@ function newContact()
 function editContact (id)
 {
 	resetFullAdd();
-	populateFullAddConst();
-	ccTimeout('CC_full_add_const', 'populateFullEdit(\''+id+'\')');
+	setTimeout(function(){populateFullEdit(id);}, 100);
 	fullAddWin.open();
 	tabs._showTab('cc_contact_tab_0');
 }

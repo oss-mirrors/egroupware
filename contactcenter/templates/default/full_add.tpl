@@ -35,7 +35,11 @@
 		</tr>
 		<tr class="row_off">
 			<td align="right">{cc_pd_prefix}:</td>
-			<td align="left" colspan="2"><select id="cc_pd_prefix" name="{cc_pd_prefix}" style="width: 175px;"><option value='0'>{cc_pd_choose_prefix}</option></select></td>
+			<td align="left" colspan="2">
+				<select id="cc_pd_prefix" name="{cc_pd_prefix}" style="width: 175px;">
+					<option value='0'>{cc_pd_choose_prefix}</option>
+					{cc_pd_prefix_opts}
+				</select></td>
 		</tr>
 		<tr class="row_on">
 			<td align="right">{cc_pd_given_names}:</td>
@@ -60,7 +64,12 @@
 		</tr>
 		<tr class="row_off">
 			<td align="right">{cc_pd_suffix}:</td>
-			<td align="left" colspan="3"><select id="cc_pd_suffix" name="{cc_pd_suffix}" style="width: 175px;"><option value="0">{cc_pd_choose_suffix}</option></select></td>
+			<td align="left" colspan="3">
+				<select id="cc_pd_suffix" name="{cc_pd_suffix}" style="width: 175px;">
+					<option value="0">{cc_pd_choose_suffix}</option>
+					{cc_pd_suffix_opts}
+				</select>
+			</td>
 		</tr>
 		<tr class="row_on">
 			<td align="right">{cc_pd_gpg_finger_print}:</td>
@@ -83,6 +92,7 @@
 			<td align="left">
 				<select id="cc_addr_types" name="{cc_addr_types}" style="width: 200px;" onchange="updateAddressFields()">
 					<option value="_NONE_">{cc_addr_choose_types}</option>
+					{cc_addr_types_opts}
 				</select>
 			</td>
 		</tr>
@@ -91,6 +101,7 @@
 			<td align="left">
 				<select id="cc_addr_countries" name="{cc_addr_countries}" style="width: 200px;" onchange="updateAddrStates()">
 					<option value="_NONE_">{cc_addr_choose_countries}</option>
+					{cc_addr_countries_opts}
 				</select>
 			</td>
 		</tr>
@@ -166,6 +177,7 @@
 			<td valign="top">
 				<select id="cc_conn_type" style="width: 150px;" onchange="updateConnFields();">
 					<option value="_NONE_">{cc_conn_type_none}</option>
+					{cc_conn_types_opts}
 				</select>
 			</td>
 			<td valign="top" colspan="3" width="100%" style="border: 0px solid black" cellpadding="0" cellspacing="0">

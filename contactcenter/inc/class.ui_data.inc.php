@@ -157,7 +157,7 @@
 			$GLOBALS['phpgw']->template->parse('out','index');
 			
 			$api = CreateObject('contactcenter.ui_api');
-			$main = $api->get_full_add();
+			$main = $api->get_people_full_add();
 			$main .= $api->get_search_obj();
 			$main .= $api->get_quick_add_plugin();
 			$main .= $GLOBALS['phpgw']->template->get_var('out');

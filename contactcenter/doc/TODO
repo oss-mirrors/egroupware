@@ -1,10 +1,7 @@
 
 Minor TODOs:
 
-- populateFullAddConst is in JS but I think it is unnecessary, as changes to this
-  fields should be rare. Replace it with a pre-load from PHP (v0.4.4)
-
-- Insert a Full Add Constant Fields Configuration/Insertion/Removal Interface
+- Insert a Full Add Constants Fields Configuration/Insertion/Removal Interface
   for Admin (v0.5.1)
 
 - Interface to manage Quick Add fields, as the back-end and plugin already 
