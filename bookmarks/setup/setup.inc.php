@@ -18,6 +18,7 @@
 	$setup_info['bookmarks']['title']     = 'Bookmarks';
 	$setup_info['bookmarks']['version']   = '0.8.1';
 	$setup_info['bookmarks']['app_order'] = '20';
+	$setup_info['bookmarks']['enable']    = 1;
 
 	/* The tables this app creates */
 	$setup_info['bookmarks']['tables']    = array(
