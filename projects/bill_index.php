@@ -125,7 +125,6 @@
     if (! $title)  $title  = "&nbsp;";
 
     $num  = $phpgw->strip_html($phpgw->db->f("num"));
-//    $num = $phpgw->db->f("num");
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
 
@@ -161,15 +160,20 @@
                         . "ab_id='" .$phpgw->db->f("customer")."'");
                        
     if ($db2->next_record()) {
-      $customerout = $db2->f("ab_company")." [ ".$db2->f("ab_firstname"). " " .$db2->f("ab_lastname")." ]";
-    }
+        if (!$db2->f("ab_company")) {      
+     $customerout = $db2->f("ab_firstname"). " " .$db2->f("ab_lastname");
+      }
+    else { 
+    $customerout = $db2->f("ab_company")." [ ".$db2->f("ab_firstname"). " " .$db2->f("ab_lastname")." ]";
+      }
+     }
     else {
     $customerout = $t->set_var("customer","");
-    }
+     }
     }
     
-    $coordinatorout = htmlentities($phpgw->db->f("account_lid") . " [" . $phpgw->db->f("account_firstname"). " " 
-                                               . $phpgw->db->f("account_lastname"). " ]");
+    $coordinatorout = $phpgw->db->f("account_lid") . " [" . $phpgw->db->f("account_firstname"). " " 
+                                               . $phpgw->db->f("account_lastname"). " ]";
         
     // ============================================
     // template declaration for list records

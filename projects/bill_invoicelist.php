@@ -154,9 +154,14 @@
 			$phpgw->db->f("ab_firstname")." ".$phpgw->db->f("ab_lastname")."]";
 			}
 	else {
-	$customerout = $phpgw->db->f("ab_company")." [".
+        if (!$phpgw->db->f("ab_company")) {	
+        $customerout = $phpgw->db->f("ab_firstname")." ".$phpgw->db->f("ab_lastname");
+        }
+       else {    
+       $customerout = $phpgw->db->f("ab_company")." [".
 			$phpgw->db->f("ab_firstname")." ".$phpgw->db->f("ab_lastname")."]";
-    }
+         }
+        }
     $sum = $phpgw->db->f("sum");
 
     // ============================================

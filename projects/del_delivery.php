@@ -144,8 +144,13 @@
     if (! $title)  $title  = "&nbsp;";
 
     $t->set_var("project",$title);
+    if (!$phpgw->db->f("ab_company")) {
+    $t->set_var(customer,$phpgw->db->f("ab_firstname")." ".$phpgw->db->f("ab_lastname"));
+         }
+    else {
     $t->set_var(customer,$phpgw->db->f("ab_company")." [ ".
 		$phpgw->db->f("ab_firstname")." ".$phpgw->db->f("ab_lastname")." ]");
+     }
     } 
     else {
     $t->set_var(project,lang("no customer selected"));

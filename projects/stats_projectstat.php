@@ -128,8 +128,13 @@
     $db2->query("select ab_id,ab_firstname,ab_lastname,ab_company from addressbook "
                      . "where ab_id='" .$phpgw->db->f("customer")."'");
     if ($db2->next_record())
-       $customerout = $db2->f("ab_company")." [ ".$db2->f("ab_firstname")." ".$db2->f("ab_lastname")." ]";
-       }    
+    if (!$db2->f("ab_company")) {    
+       $customerout = $db2->f("ab_firstname")." ".$db2->f("ab_lastname");
+       }
+    else {  
+    $customerout = $db2->f("ab_company")." [ ".$db2->f("ab_firstname")." ".$db2->f("ab_lastname")." ]";
+      }  
+     }    
     
     $t->set_var("customer",$customerout);
     

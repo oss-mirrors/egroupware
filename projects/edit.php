@@ -42,7 +42,6 @@
 
      if ($isadmin == 1) {
      $phpgw->db->query("select * from p_projects where id='$id'");
-//   $phpgw->db->next_record();
         }
        else {
      $phpgw->db->query("select * from p_projects where (coordinator='" . $phpgw_info["user"]["account_id"]                                                                                        
@@ -191,8 +190,13 @@
     $db2->query("select ab_id,ab_lastname,ab_firstname,ab_company from addressbook where "
                         . "ab_id='" .$phpgw->db->f("customer")."'");
 	if ($db2->next_record()) {
-        $t->set_var("customer_name",$db2->f("ab_company")." [ ".$db2->f("ab_firstname")." ".$db2->f("ab_lastname")." ]");
-	}
+        if (!$db2->f("ab_company")) {                                                                                                                                            
+        $t->set_var("customer_name",$db2->f("ab_firstname")." ".$db2->f("ab_lastname"));    
+         }
+      else {    
+       $t->set_var("customer_name",$db2->f("ab_company")." [ ".$db2->f("ab_firstname")." ".$db2->f("ab_lastname")." ]");
+        }	
+       }
 	else {
 	$t->set_var("customer_name","");		
         }

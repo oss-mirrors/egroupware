@@ -158,15 +158,20 @@
     $db2->query("select ab_id,ab_lastname,ab_firstname,ab_company from addressbook where "
                         . "ab_id='" .$phpgw->db->f("customer")."'");
     if ($db2->next_record()) {
-    $customerout = $db2->f("ab_company")." [ ".$db2->f("ab_firstname"). " " .$db2->f("ab_lastname")." ]";
-    }
-    else {
+    if (!$db2->f("ab_company")) {    
+    $customerout = $db2->f("ab_firstname"). " " .$db2->f("ab_lastname");
+     }
+    else {    
+    $customerout = $db2->f("ab_company")." [ ".$db2->f("ab_firstname"). " " .$db2->f("ab_lastname")." ]";    
+      }
+    }    
+   else {
      $customerout = $t->set_var("customer","");    
          }
     }
     
-    $coordinatorout = htmlentities($phpgw->db->f("account_lid") . " [" . $phpgw->db->f("account_firstname"). " " 
-                                   . $phpgw->db->f("account_lastname"). " ]");
+    $coordinatorout = $phpgw->db->f("account_lid") . " [" . $phpgw->db->f("account_firstname"). " " 
+                                   . $phpgw->db->f("account_lastname"). " ]";
       
     // ============================================
     // template declaration for list records

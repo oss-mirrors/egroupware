@@ -64,8 +64,13 @@ if ($submit) {
     $phpgw->db->query("select ab_id,ab_lastname,ab_firstname,ab_company from addressbook where "                                                                                                     
                         . "ab_id='" .$phpgw_info["user"]["preferences"]["projects"]["address"]."'");                                                                                                                            
         if ($phpgw->db->next_record()) {                                                                                                                                                             
+        if (!$phpgw->db->f("ab_company")) {
+        $t->set_var("address_name",$phpgw->db->f("ab_firstname")." ".$phpgw->db->f("ab_lastname"));        
+            }
+        else {
         $t->set_var("address_name",$phpgw->db->f("ab_company")." [ ".$phpgw->db->f("ab_firstname")." ".$phpgw->db->f("ab_lastname")." ]");                                                                       
-        }                                                                                                                                                                                      
+          }                                                                                                                                                                                      
+         }
         else {                                                                                                                                                                                 
         $t->set_var("address_name","");                                                                                                                                                        
         }                                                                                                                                                                                      

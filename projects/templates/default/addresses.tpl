@@ -34,8 +34,8 @@
         <td>{lastname}</td>
 	<form>
         <input type="hidden" size="25" name="hidden" value="{id}">
-	<input type="hidden" size="25" name="hidden" value="{company}">
-	<td align=center><input type="button" value="{lang_select_address}" onClick="ExchangeAddress(this.form);" name="button"></td>
+	<input type="hidden" size="25" name="hidden" value="{company} {firstname} {lastname}">
+        <td align=center><input type="button" value="{lang_select_address}" onClick="ExchangeAddress(this.form);" name="button"></td>
       </form>    
       </tr>
 <!-- END address_list -->

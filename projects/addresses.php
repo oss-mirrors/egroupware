@@ -31,7 +31,6 @@
    
   if (! $start) {
      $start = 0;
-//     $query = "";
     }
   
   if ($order)

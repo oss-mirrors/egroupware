@@ -34,7 +34,7 @@
         <td>{lastname}</td>
 	<form>
         <input type="hidden" size="25" name="hidden" value="{id}">
-	<input type="hidden" size="25" name="hidden" value="{company}">
+	<input type="hidden" size="25" name="hidden" value="{company} {firstname} {lastname}">
 	<td align=center><input type="button" value="{lang_select_customer}" onClick="ExchangeCustomer(this.form);" name="button"></td>
       </form>    
       </tr>
