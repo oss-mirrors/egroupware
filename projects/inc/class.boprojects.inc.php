@@ -357,6 +357,7 @@
 			$template->set_block('view','sub','subhandle');
 			$template->set_block('view','accounting_act','acthandle');
 			$template->set_block('view','accounting_own','ownhandle');
+			$template->set_block('view','accounting_own_project','ownprojecthandle');
 			$template->set_block('view','accounting_both','bothhandle');
 			$template->set_block('view','nonanonym','nonanonymhandle');
 			$template->set_block('view','emplist','emplisthandle');
@@ -472,12 +473,17 @@
 			{
 				if($this->siteconfig['accounting'] == 'own')
 				{
-					$template->set_var('accounting_factor',($_values['accounting']=='employee'?lang('factor employee'):lang('factor project')));
-					$template->set_var('project_accounting_factor',$_values['project_accounting_factor']);
-					$template->set_var('project_accounting_factor_d',$_values['project_accounting_factor_d']);
-					$template->set_var('billable',($_values['billable']=='Y'?lang('yes'):lang('no')));
-
-					$template->fp('accounting_settings','accounting_own',True);
+					$template->set_var('accounting_factor',$_values['billable']=='Y'?($_values['accounting']=='employee'?lang('factor employee'):lang('factor project')):lang('not billable'));
+					if ($_values['billable'] == 'N' || $_values['accounting']=='employee')
+					{
+						$template->fp('accounting_settings','accounting_own',True);
+					}
+					else
+					{
+						$template->set_var('project_accounting_factor',$_values['project_accounting_factor']);
+						$template->set_var('project_accounting_factor_d',$_values['project_accounting_factor_d']);
+						$template->fp('accounting_settings','accounting_own_project',True);
+					}
 				}
 				else
 				{
@@ -2495,18 +2501,19 @@
 					$error[] = lang('please choose activities for the project');
 				}
 			}
-			else if(!$values['billable'])
+			else
 			{
-				if(!$values['accounting'])
+				switch($values['accounting'])
 				{
-					$error[] = lang('please choose the accounting system for the project');
-				}
-				else
-				{
-					if($values['accounting'] == 'project' && !$values['project_accounting_factor'])
-					{
-						$error[] = lang('please set the accounting factor for the project');
-					}
+					case 'project':
+						if($values['project_accounting_factor_d'] <= 0.0 && $values['project_accounting_factor'] <= 0.0)
+						{
+							$error[] = lang('please set the accounting factor for the project');
+						}
+						break;
+					case '':
+						$error[] = lang('please choose the accounting system for the project');
+						break;
 				}
 			}
 
@@ -2706,14 +2713,13 @@
 				$values['previous'] = $this->return_value('previous',$values['parent']);
 			}
 
-			if ($values['project_accounting_factor'])
+			if ($values['project_accounting_factor'] <= 0.0)
 			{
-				switch($values['radio_acc_factor'])
-				{
-					case 'day':		$values['project_accounting_factor_d'] = $values['project_accounting_factor'];
-									$values['project_accounting_factor'] = $values['project_accounting_factor']/$this->siteconfig['hwday']; break;
-					default:		$values['project_accounting_factor_d'] = $values['project_accounting_factor']*$this->siteconfig['hwday']; break;
-				}
+				$values['project_accounting_factor'] = $values['project_accounting_factor_d'] / $this->siteconfig['hwday'];
+			}
+			if ($values['project_accounting_factor_d'] <= 0.0)
+			{
+				$values['project_accounting_factor_d'] = $values['project_accounting_factor'] * $this->siteconfig['hwday'];
 			}
 
 			//_debug_array($values);

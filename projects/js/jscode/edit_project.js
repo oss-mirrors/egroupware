@@ -8,22 +8,16 @@ function initAll()
 
 function updateAccountingForm(_selectBox)
 {
-	$radioHour = document.getElementById("radio_acc_factor_hour");
-	$radioDay = document.getElementById("radio_acc_factor_day");
 	$inputHour = document.getElementById("input_acc_factor_hour");
 	$inputDay = document.getElementById("input_acc_factor_day");
 	
 	if(_selectBox.value == 'project')
 	{
-		$radioHour.disabled = false;
-		$radioDay.disabled = false;
 		$inputHour.disabled = false;
 		$inputDay.disabled = false;
 	}
 	else
 	{
-		$radioHour.disabled = true;		
-		$radioDay.disabled = true;		
 		$inputHour.disabled = true;
 		$inputDay.disabled = true;
 	}

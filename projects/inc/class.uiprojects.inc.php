@@ -112,8 +112,7 @@
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main?lang('list jobs'):lang('list projects'))
-															. $this->admin_header_info();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main ? lang('list jobs') : lang('list projects'));
 
 			$this->display_app_header();
 
@@ -379,26 +378,6 @@
 			$this->set_app_langs();
 		}
 
-		function admin_header_info()
-		{
-			if ($this->boprojects->isprojectadmin('pad'))
-			{
-				$pa = True;
-			}
-
-			if ($this->boprojects->isprojectadmin('pmanager'))
-			{
-				$pm = True;
-			}
-
-			if ($this->boprojects->isprojectadmin('psale'))
-			{
-				$ps = True;
-			}
-			return ($pa?'&nbsp;&gt;&nbsp;' . lang('administrator'):'') . ($pm?'&nbsp;&gt;&nbsp;' . lang('manager'):'')
-					. ($ps?'&nbsp;&gt;&nbsp;' . lang('seller'):'');
-		}
-
 		function status_format($status = '', $showarchive = True)
 		{
 			if (!$status)
@@ -447,8 +426,7 @@
 				$action = 'mains';
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main?lang('list jobs'):lang('list projects'))
-															. $this->admin_header_info();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main ? lang('list jobs') : lang('list projects'));
 
 			$this->display_app_header();
 
@@ -710,8 +688,7 @@
 			$menuaction	= get_var('menuaction',Array('GET'));
 			if ($menuaction)
 			{
-				$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main?lang('list jobs'):lang('list projects'))
-																. $this->admin_header_info();
+				$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main ? lang('list jobs') : lang('list projects'));
 				$GLOBALS['phpgw']->common->phpgw_header();
 				echo parse_navbar();
 			}
@@ -1036,6 +1013,10 @@
 				$values['pemonth']	= $startdate['month'];
 				$values['peyear']	= $startdate['year'];
 				
+				if ($values['accounting'] == 'non')
+				{
+					$values['billable'] = 'N';
+				}				
 				if(is_array($values['budget']))
 				{
 					foreach($values['budget'] as $singleBudget)
@@ -1092,13 +1073,11 @@
 
 			if ($action == 'mains')
 			{
-				$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($project_id?lang('edit project'):lang('add project'))
-															. $this->admin_header_info();
+				$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($project_id ? lang('edit project') : lang('add project'));
 			}
 			else
 			{
-				$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($project_id?lang('edit job'):lang('add job'))
-															. $this->admin_header_info();
+				$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($project_id ? lang('edit job') : lang('add job'));
 			}
 
 			$this->display_app_header();
@@ -1390,11 +1369,11 @@
 
 			if($this->boprojects->siteconfig['accounting'] == 'own')
 			{
-				$GLOBALS['phpgw']->template->set_var('acc_employee_selected',($values['accounting']=='employee'?' SELECTED':''));
-				$GLOBALS['phpgw']->template->set_var('acc_project_selected',($values['accounting']=='project'?' SELECTED':''));
+				$GLOBALS['phpgw']->template->set_var('acc_employee_selected',($values['billable']!='N' && $values['accounting']=='employee'?' selected="1"':''));
+				$GLOBALS['phpgw']->template->set_var('acc_project_selected',($values['billable']!='N' && $values['accounting']=='project'?' selected="1"':''));
+				$GLOBALS['phpgw']->template->set_var('acc_non_billable_selected',($values['billable']=='N'?' selected="1"':''));
 				$GLOBALS['phpgw']->template->set_var('project_accounting_factor',$values['project_accounting_factor']);
 				$GLOBALS['phpgw']->template->set_var('project_accounting_factor_d',$values['project_accounting_factor_d']);
-				$GLOBALS['phpgw']->template->set_var('acc_billable_checked',($values['billable']=='N'?' checked':''));
 
 				$GLOBALS['phpgw']->template->fp('accounting_ownhandle','accounting_own',True);
 			}
@@ -1418,9 +1397,6 @@
 					$GLOBALS['phpgw']->template->fp('accounting_acthandle','accounting_act',True);
 				}
 			}
-
-			$GLOBALS['phpgw']->template->set_var('acc_factor_hour',$values['radio_acc_factor']=='hour'?'checked':'');
-			$GLOBALS['phpgw']->template->set_var('acc_factor_day',$values['radio_acc_factor']=='day'?'checked':'');
 
 			$GLOBALS['phpgw']->template->set_var('discount',$values['discount']);
 			$GLOBALS['phpgw']->template->set_var('dt_amount',$values['discount_type']=='amount'?'checked':'');
@@ -1459,7 +1435,7 @@
 				(
 					'accountid',
 					'coordinator_accounts',
-					$values['coordinator'],
+					$values['coordinator'] ? $values['coordinator'] : $GLOBALS['phpgw_info']['user']['account_id'],
 					'accounts',
 					0,false,'style="width:250px;"'
 				)
@@ -1694,8 +1670,7 @@
 			}
 
 			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . 
-				($pro_main?lang('view job'):lang('view project')) . 
-				$this->admin_header_info();
+				($pro_main?lang('view job'):lang('view project'));
 
 			if (isset($public_view))
 			{
@@ -1783,8 +1758,7 @@
 				$GLOBALS['phpgw']->redirect_link('/index.php',$link_data);
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . $header
-															. $this->admin_header_info();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . $header;
 
 			$this->display_app_header();
 			$GLOBALS['phpgw']->template->set_file(array('pa_delete' => 'delete.tpl'));
@@ -1932,8 +1906,7 @@
 			$action		= get_var('action',array('POST','GET'));
 			$pro_main	= get_var('pro_main',array('POST','GET'));
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_parent?lang('list budget'):lang('list budget'))
-														. $this->admin_header_info();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_parent?lang('list budget'):lang('list budget'));
 
 			$this->display_app_header();
 
@@ -2146,8 +2119,7 @@
 				$values = $this->boprojects->get_single_mstone($s_id);
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($s_id?lang('edit milestone'):lang('add milestone'))
-														. $this->admin_header_info();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($s_id?lang('edit milestone'):lang('add milestone'));
 			$this->display_app_header();
 
 			$GLOBALS['phpgw']->template->set_file(array('mstone_list_t' => 'list_mstones.tpl'));
@@ -2282,8 +2254,7 @@
 				list($values) = $this->boprojects->get_employee_roles(array('project_id' => $project_id,'account_id' => $_GET['account_id']));
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('assign roles and events')
-														. $this->admin_header_info();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('assign roles and events');
 			$this->display_app_header();
 
 			$GLOBALS['phpgw']->template->set_file(array('role_list_t' => 'form_emp_roles.tpl'));

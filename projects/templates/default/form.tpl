@@ -199,30 +199,26 @@
 
 	<tr bgcolor="{row_on}">
 		<td valign="top">{lang_accounting}:</td>
-		<td valign="top"><select id="acc_factor" name="values[accounting]" onchange="updateAccountingForm(this)">
-				<option value="">{lang_select_factor}</option>
-				<option value="employee" {acc_employee_selected}>{lang_factor_employee}</option>
+		<td valign="top">
+			<select id="acc_factor" name="values[accounting]" onchange="updateAccountingForm(this)">
 				<option value="project" {acc_project_selected}>{lang_factor_project}</option>
+				<option value="employee" {acc_employee_selected}>{lang_factor_employee}</option>
+				<option value="non" {acc_non_billable_selected}>{lang_non_billable}</option>
 			</select>
 		</td>
 		<td valign="top">{lang_accounting_factor_for_project}:&nbsp;{currency}</td>
 		<td>
 			<table border="0" cellspacing="0" cellpadding="1">
 				<tr>
-					<td><input type="radio" id="radio_acc_factor_hour" name="values[radio_acc_factor]" value="hour" {acc_factor_hour}>{lang_per_hour}</td>
-					<td><input type="text" id="input_acc_factor_hour" name="values[project_accounting_factor]" value="{project_accounting_factor}"></td>
+					<td>{lang_per_hour}</td>
+					<td><input type="text" id="input_acc_factor_hour" name="values[project_accounting_factor]" size="10" value="{project_accounting_factor}"></td>
 				</tr>
 				<tr>
-					<td><input type="radio" id="radio_acc_factor_day" name="values[radio_acc_factor]" value="day" {acc_factor_day}>{lang_per_day}</td>
-					<td><input type="text" id="input_acc_factor_day" name="values[project_accounting_factor_d]" value="{project_accounting_factor_d}"></td>
+					<td>{lang_per_day}</td>
+					<td><input type="text" id="input_acc_factor_day" name="values[project_accounting_factor_d]" size="10" value="{project_accounting_factor_d}"></td>
 				</tr>
 			</table>
 		</td>
-	</tr>
-	<tr bgcolor="{row_off}">
-		<td>{lang_non_billable}:</td>
-		<td colspan="3"><input type="checkbox" name="values[billable]" value="True" {acc_billable_checked}></td>
-
 	</tr>
 
 <!-- END accounting_own -->

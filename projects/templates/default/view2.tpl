@@ -27,6 +27,18 @@
 	<tr bgcolor="{row_off}" valign="top">
 		<td>{lang_accounting}:</td>
 		<td>{accounting_factor}</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+<!-- END accounting_project -->
+	</tr>
+
+<!-- END accounting_own -->
+
+<!-- BEGIN accounting_own_project -->
+
+	<tr bgcolor="{row_off}" valign="top">
+		<td>{lang_accounting}:</td>
+		<td>{accounting_factor}</td>
 		<td>{lang_accounting_factor_for_project}:&nbsp;{currency}</td>
 		<td>
 			<table border="0" cellpadding="1" cellspacing="0">
@@ -39,12 +51,8 @@
 			</table>
 		</td>
 	</tr>
-	<tr bgcolor="{row_on}">
-		<td>{lang_billable}:</td>
-		<td colspan="3">{billable}</td>
-	</tr>
 
-<!-- END accounting_own -->
+<!-- END accounting_own_project -->
 
 <!-- BEGIN accounting_both -->
 
