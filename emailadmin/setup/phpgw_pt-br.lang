@@ -1,0 +1,66 @@
+add profile		pt-br	Adicionar perfil
+admin dn		pt-br	dn do administrador
+admin password		pt-br	senha do administrador
+admin username		pt-br	nome de usuário do administrador
+advanced options		pt-br	oipções avançadas
+alternate email address		pt-br	endereço de correio eletrônico alternativo
+cyrus imap server		pt-br	Servidor Cyrus IMAP
+cyrus imap server administration		pt-br	Administração do Servidor Cyrus IMAP
+default		pt-br	padrão
+deliver extern		pt-br	entrga externa
+do you really want to delete this profile		pt-br	Tem certeza que deseja apagar esse perfil?
+domainname		pt-br	nome do domínio
+edit email settings		pt-br	editar configurações de correio eletrônico
+email account active		pt-br	conta de correio eletrônico ativa
+email address		pt-br	endrereço de correio eletrônico
+enable cyrus imap server administration		pt-br	habilitar administração do Servidor Cyrus IMAP
+enable sieve		pt-br	habilitarSieve
+enter your default mail domain (from: user@domain)		pt-br	Entre com o domínio de correio padrão (de: usario@dominio)
+forward also to		pt-br	encaminhar também para
+forward email's to		pt-br	encaminhar mensagens para 
+forward only		pt-br	encaminhar somente
+imap admin password		pt-br	senha do administrador IMAP
+imap admin user		pt-br	usuário administrador do IMAP
+imap server hostname or ip address		pt-br	Nome ou IP do servidor IMAP
+imap server logintyp		pt-br	Tipo de login do servidor IMAP
+imap server port		pt-br	Porta do servidor IMAP
+imap/pop3 server name		pt-br	Nome do servidor IMAP/POP3
+in mbyte		pt-br	em Mbytes
+ldap server		pt-br	Servidor LDAP
+ldap server accounts dn		pt-br	Contas DN de servidores LDAP
+ldap server admin dn		pt-br	Administrador DN de servidor LDAP
+ldap server admin password		pt-br	Senha do administrador DN de servidor LDAP
+ldap server hostname or ip address		pt-br	Nome ou endereço IP do servidor LDAP
+ldap settings		pt-br	configurações do LDAP
+leave empty for no quota		pt-br	deixe em branco para nenhuma cota
+mail settings		pt-br	Configurações de Correio eletrônico
+name of organisation		pt-br	Nome da organização
+no alternate email address		pt-br	sem conta de correio eletrônico alternativa
+no forwarding email address		pt-br	sem conta de correio eletrônico para encaminhar
+pop3 server hostname or ip address		pt-br	Nome ou endereço IP do servidor POP3
+pop3 server port		pt-br	Porta do servidor POP3
+postfix with ldap		pt-br	Postfix com LDAP
+profile list		pt-br	Lista de perfis
+profile name		pt-br	Nome do perfil
+qmaildotmode		pt-br	modo dos arquivos qmaildot (.qmail)
+qouta size in mbyte		pt-br	tamanho da cota em MBytes
+quota settings		pt-br	configurações de cota
+remove		pt-br	remover
+select type of imap/pop3 server		pt-br	Selecione o tipo de servidor IMAP/POP3
+select type of smtp server		pt-br	Selecione o tipo de servidor SMTP
+sieve server hostname or ip address		pt-br	Nome ou endereço IP do servidor Sieve
+sieve server port		pt-br	Porta do Servidor Sieve
+sieve settings		pt-br	Configurações Sieve
+smtp server name		pt-br	Nome do Servidor FTP
+smtp-server hostname or ip address		pt-br	Nome ou endereço IP do servidor SMTP
+smtp-server port		pt-br	Porta do servidor SMTP
+standard		pt-br	Padrão
+standard imap server		pt-br	Servidor IMAP padrão
+standard pop3 server		pt-br	Servidor POP3 padrão
+standard smtp-server		pt-br	Servidor SMTP padrão
+use ldap defaults		pt-br	usar padrões LDAP
+use smtp auth		pt-br	usar SMTP Autenticado
+use tls authentication		pt-br	Usar autenticação TLS
+use tls encryption		pt-br	Usar encriptação TLS
+users can define their own emailaccounts		pt-br	Os usuários podem definir sua próprias contas de correio
+virtual mail manager		pt-br	Gerenciador Virtual Mail
