@@ -425,7 +425,7 @@
 			}
 
 			$t->set_var(array(
-				'catname' => iconv("ISO-8859-1","UTF-8",$this->categories->id2name($catid)),
+				'catname' => iconv("ISO-8859-1","UTF-8",$GLOBALS['phpgw']->strip_html($this->categories->id2name($catid))),
 				'catid' => $catid,
 				'folded' => (in_array($catid,$this->expanded) ? 'no' : 'yes')
 			));

@@ -448,7 +448,7 @@ define('SEARCH',4);
 			if ($bm_cat)
 			{
 				$total_matchs .= ' ' . 
-					lang('from category %1',$GLOBALS['phpgw']->strip_html($this->bo->categories->return_name($bm_cat))) .
+					lang('from category %1',$GLOBALS['phpgw']->strip_html($this->bo->categories->id2name($bm_cat))) .
 					' - <a href="' . 
 					$GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui._list&bm_cat=0&start=0') .
 					'">' .
@@ -588,7 +588,7 @@ define('SEARCH',4);
 
 		function print_list_break ($category_id)
 		{
-			$category = $this->bo->categories->return_name($category_id);
+			$category = $GLOBALS['phpgw']->strip_html($this->bo->categories->id2name($category_id));
 
 			$massupdate_shown = $GLOBALS['massupdate_shown'];
 
@@ -816,11 +816,11 @@ function toggle(image, catid)
 					'" onclick="toggle(this, \'' . 
 					$cat_id . 
 					'\')"></td><td><a style="font-weight:bold" title="' .
-					$cat['description'] .
+					$GLOBALS['phpgw']->strip_html($cat['description']) .
 					'" href="' .
 					$GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui._list&start=0&bm_cat=' . $cat_id) .
 					'">' .
-					$cat['name'] . 
+					$GLOBALS['phpgw']->strip_html($cat['name']) . 
 					'</a></td></tr>' . 
 					"\n";
 				$subcats = $this->bo->categories->return_array('subs',0,False,'','','',True,$cat_id);
@@ -941,7 +941,7 @@ function toggle(image, catid)
 
 			$account = createobject('phpgwapi.accounts',$bookmark['owner']);
 			$ad      = $account->read_repository();
-			$category  = $GLOBALS['phpgw']->strip_html($this->bo->categories->return_name($bookmark['category']));
+			$category  = $GLOBALS['phpgw']->strip_html($this->bo->categories->id2name($bookmark['category']));
 
 			$this->t->set_var(array(
 				'total_visits' => $bookmark['visits'],
