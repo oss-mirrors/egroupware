@@ -74,7 +74,7 @@
 				$act_name = '';
 				if ($activity['wf_instances'] > 0) $act_name = '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&filter_process='. $activity['wf_p_id'] .'&filter_activity='. $activity['wf_activity_id']) .'">';
 				$act_name .= $activity['wf_name'];
-				if ($actvity['wf_instances'] > 0) $act_name .= '</a>';
+				if ($activity['wf_instances'] > 0) $act_name .= '</a>';
 
 				if ($activity['wf_is_interactive'] == 'y' && ($activity['wf_type'] == 'start' || $activity['wf_type'] == 'standalone'))
 				{
