@@ -56,7 +56,7 @@
            $nm = $msgnum;
         }
 
-        Header("Location: ".$phpgw->link("message.php","folder=" . urlencode($folder)."&msgnum=".$nm));
+        Header("Location: ".$phpgw->link("/email/message.php","folder=" . urlencode($folder)."&msgnum=".$nm));
         $dontforward = True;
      }
   }
@@ -65,7 +65,7 @@
 
 
   if (! $dontforward) {
-     Header("Location: ".$phpgw->link("index.php","folder=" . urlencode($folder) . $totaldeleted));
+     Header("Location: ".$phpgw->link("/email/index.php","folder=" . urlencode($folder) . $totaldeleted));
   }
   $phpgw->common->phpgw_footer();
 ?>
