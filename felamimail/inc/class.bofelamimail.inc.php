@@ -998,12 +998,12 @@
 			if(is_numeric($_quotaLimit) && $_quotaLimit >= 0)
 			{
 				// enable quota
-				$quota_value = imap_set_quota($this->mbox, "user.".$_username, $_quotaLimit*1024);
+				$quota_value = @imap_set_quota($this->mbox, "user.".$_username, $_quotaLimit*1024);
 			}
 			else
 			{
 				// disable quota
-				$quota_value = imap_set_quota($this->mbox, "user.".$_username, -1);
+				$quota_value = @imap_set_quota($this->mbox, "user.".$_username, -1);
 			}
 		}
 		
