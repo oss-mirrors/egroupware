@@ -1,7 +1,7 @@
 <!-- BEGIN header -->
-
-<script>
-<!--
+<script language="JavaScript1.2">
+  self.focus();
+  
   self.name="first_Window";
   function addybook()
   {
@@ -11,7 +11,6 @@
   {
 	awin = window.open(url,"attach","width=500,height=400,toolbar=no,resizable=yes");
   }
--->
 </script>
 
 <center>
