@@ -126,7 +126,7 @@
     <tr bgcolor="<?php echo $tr_color; ?>">
      <td align="left"><?php echo lang("Email Password"); ?></td>
      <td align="center">
-      <input type="password" name="passwd" value="<?php echo $phpgw_info["user"]["preferences"]["email"]["passwd"]; ?>">
+      <input type="password" name="passwd" value="">
      </td>
     </tr>
     <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
