@@ -206,7 +206,7 @@
 							for($i = 1; $i <= $args[0]; ++$i)
 							{
 								$next = 1;
-								if (!$rest || strpos($rest,$del,1) === False)
+								if (!$rest || empty($del) || strpos($rest,$del,1) === False)
 								{
 									$rest .= trim($lines[++$n]);
 								}
