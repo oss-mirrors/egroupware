@@ -20,6 +20,9 @@
      if ($mainscreen_showmail) {
         $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"mainscreen_showmail","email");
      }
+     if ($use_trash_folder) {
+        $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"use_trash_folder","email");
+     }
      $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"default_sorting","email");
      $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"email_sig","email"); 
 
@@ -65,6 +68,11 @@
     <tr bgcolor="<?php echo $tr_color; ?>">
      <td align="left"><?php echo lang("show new messages on main screen"); ?></td>
      <td align="center"><input type="checkbox" name="mainscreen_showmail" value="True"<?php if ($phpgw_info["user"]["preferences"]["email"]["mainscreen_showmail"]) echo " checked"; ?>></td>
+    </tr>
+    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
+    <tr bgcolor="<?php echo $tr_color; ?>">
+     <td align="left"><?php echo lang("Send deleted messages to the trash"); ?></td>
+     <td align="center"><input type="checkbox" name="use_trash_folder" value="True"<?php if ($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]) echo " checked"; ?>></td>
     </tr>
     <tr>
      <td colspan="3" align="center">
