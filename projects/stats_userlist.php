@@ -35,12 +35,6 @@
 	if ($order) { $ordermethod = " order by $order $sort"; }
 	else { $ordermethod = " order by account_lid asc"; }
 
-	if($phpgw_info['user']['preferences']['common']['maxmatchs'] && $phpgw_info['user']['preferences']['common']['maxmatchs'] > 0)
-	{
-		$limit = $phpgw_info['user']['preferences']['common']['maxmatchs'];
-	}
-	else { $limit = 15; }
-
 	if ($query)
 	{
 		$filtermethod = " AND (account_firstname like '%$query%' OR account_lastname like '%$query%' OR account_lid like '%$query%') ";
@@ -69,14 +63,7 @@
 	$t->set_var('left',$left);
 	$t->set_var('right',$right);
 
-	if ($total_records > $limit)
-	{
-		$t->set_var('lang_showing',lang('showing x - x of x',($start + 1),($start + $limit),$total_records));
-	}
-	else
-	{
-		$t->set_var('lang_showing',lang('showing x',$total_records));
-    }
+    $t->set_var('lang_showing',$phpgw->nextmatchs->show_hits($total_records,$start));
 
 // ------------------------ end nextmatch template --------------------------------------
 

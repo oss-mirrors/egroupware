@@ -53,6 +53,15 @@
 		$setup_info['projects']['currentver'] == '0.0.0';
 	}
 
+	$test[] = '0.0';
+	function projects_upgrade0_0()
+	{
+		global $setup_info;
+
+		$setup_info['projects']['currentver'] == '0.0.0';
+		return $setup_info['projects']['currentver'];
+	}
+
 	$test[] = '0.8.2';
 	function projects_upgrade0_8_2()
 	{

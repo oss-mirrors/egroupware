@@ -64,12 +64,6 @@
 		$filter = "none";
 	}
 
-	if($phpgw_info['user']['preferences']['common']['maxmatchs'] && $phpgw_info['user']['preferences']['common']['maxmatchs'] > 0)
-	{
-		$limit = $phpgw_info['user']['preferences']['common']['maxmatchs'];
-	}
-	else { $limit = 15; }
-
 	if ($query)
 	{
 		$querymethod = " where (descr like '%$query%' or num like '%$query%' or minperae like '%$query%' or billperae like '%$query%')";
@@ -81,28 +75,7 @@
 	$db2->query($sql,__LINE__,__FILE__);
 	$total_records = $db2->num_rows();
 
-	if ($query)
-	{
-		if ($total_records == 1)
-		{
-			$t->set_var('lang_showing',lang('Your search has returned 1 match'));
-		}
-		else
-		{
-			$t->set_var('lang_showing',lang('Your search returned x matchs',$total_records));
-		}
-	}
-	else
-	{
-		if ($total_records > $limit)
-		{
-			$t->set_var('lang_showing',lang('showing x - x of x',($start + 1),($start + $limit),$total_records));
-		}
-		else
-		{
-			$t->set_var('lang_showing',lang('showing x',$total_records));
-		}
-	}
+	$t->set_var('lang_showing',$phpgw->nextmatchs->show_hits($total_records,$start));
 
 // ---------------- nextmatch variable template-declarations ------------------------------
 

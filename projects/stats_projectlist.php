@@ -45,12 +45,6 @@
 
 	if (! $start) { $start = 0; }
 
-	if($phpgw_info['user']['preferences']['common']['maxmatchs'] && $phpgw_info['user']['preferences']['common']['maxmatchs'] > 0)
-	{
-		$limit = $phpgw_info['user']['preferences']['common']['maxmatchs'];
-	}
-	else { $limit = 15; }
-
 	$pro = $projects->read_projects($start,True,$query,$filter,$sort,$order,$status,$cat_id);
 
 //---------------------- nextmatch variable template-declarations ---------------------------
@@ -60,11 +54,7 @@
 	$t->set_var('left',$left);
 	$t->set_var('right',$right);
 
-	if ($projects->total_records > $limit)
-	{
-		$t->set_var('lang_showing',lang('showing x - x of x',($start + 1),($start + $limit),$projects->total_records));
-	}
-	else { $t->set_var('lang_showing',lang('showing x',$projects->total_records)); }
+	$t->set_var('lang_showing',$phpgw->nextmatchs->show_hits($projects->total_records,$start));
 
 // ------------------------------ end nextmatch template ------------------------------------
 

@@ -55,35 +55,23 @@
         else { $qfilter = 'tid=n,owner='.$filter . 'cat_id=' . $cat_id; }
 	}
 
-	if($phpgw_info['user']['preferences']['common']['maxmatchs'] && $phpgw_info['user']['preferences']['common']['maxmatchs'] > 0)
-	{
-		$offset = $phpgw_info['user']['preferences']['common']['maxmatchs'];
-	}
-	else { $offset = 15; }
-
 	$account_id = $phpgw_info['user']['account_id'];
 
 	$cols = array('n_given' => 'n_given',
 				'n_family' => 'n_family',
 				'org_name' => 'org_name');
 
-	$entries = $d->read($start,$offset,$cols,$query,$qfilter,$sort,$order,$account_id);
+	$entries = $d->read($start,True,$cols,$query,$qfilter,$sort,$order,$account_id);
 
 //--------------------------------- nextmatch --------------------------------------------
 
-	$left = $phpgw->nextmatchs->left('/projects/addressbook.php',$start,$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");
+	$left = $phpgw->nextmatchs->left('/projects/addressbook.php',$start,$d->total_records,'&order=' . $order . '&filter=' . $filter . '&sort='
+									. $sort . '&query=' . $query);
 	$right = $phpgw->nextmatchs->right('/projects/addressbook.php',$start,$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");
 	$t->set_var('left',$left);
 	$t->set_var('right',$right);
 
-	if ($d->total_records > $phpgw_info['user']['preferences']['common']['maxmatchs'])
-	{
-		$t->set_var('lang_showing',lang('showing x - x of x',($start + 1),($start + $phpgw_info['user']['preferences']['common']['maxmatchs']),$d->total_records));
-	}
-	else
-	{
-		$t->set_var('lang_showing',lang('showing x',$d->total_records));
-	}
+    $t->set_var('lang_showing',$phpgw->nextmatchs->show_hits($d->total_records,$start));
 
 // ------------------------------ end nextmatch ------------------------------------------
 
