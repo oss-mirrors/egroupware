@@ -160,7 +160,7 @@
 		$phpgw_setup->oProc->RenameColumn('phpgw_p_projects','date','start_date');
 		$phpgw_setup->oProc->AlterColumn('phpgw_p_projects','start_date',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
 		$phpgw_setup->oProc->AlterColumn('phpgw_p_projects','title',array('type' => 'varchar','precision' => 255,'nullable' => False));
-		$phpgw_setup->oProc->AlterColumn('phpgw_p_projects','num',array('type' => 'int','precision' => 20,'nullable' => False));
+		$phpgw_setup->oProc->AlterColumn('phpgw_p_projects','num',array('type' => 'varchar','precision' => 20,'nullable' => False));
 		$phpgw_setup->oProc->DropColumn('phpgw_p_projects',$newtabledefinition,'access');
 		$phpgw_setup->oProc->query("CREATE INDEX phpgw_p_projects_key ON phpgw_p_projects(id,num)");
 
