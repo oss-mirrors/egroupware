@@ -195,7 +195,7 @@
 				{
 					$this->t->set_var(array(
 						'act_role_name'	=> $role['wf_name'],
-						'act_role_href'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&find='. $find .'&where='. $where .'&activity_id='. $activity_info['wf_activity_id'] .'&p_id='. $this->wf_p_id .'&remove_role='. $role['roleId'])
+						'act_role_href'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&find='. $find .'&where='. $where .'&activity_id='. $activity_info['wf_activity_id'] .'&p_id='. $this->wf_p_id .'&remove_role='. $role['wf_role_id'])
 					));
 					$this->t->parse('activity_roles', 'block_activity_roles', True);
 				}
