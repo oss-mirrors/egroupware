@@ -1,6 +1,7 @@
 <?php
 // $Id$
 
+require('parse/macros.php');
 require('parse/html.php');
 require(TemplateDir . '/edit.php');
 require('parse/main.php');
