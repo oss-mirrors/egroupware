@@ -309,11 +309,8 @@
 
 				$link_data['project_id'] = $pro[$i]['project_id'];
 
-				$this->t->set_var('stat',$GLOBALS['phpgw']->link('/projects/del_delivery.php','project_id=' . $pro[$i]['project_id']));
+				$this->t->set_var('stat',$GLOBALS['phpgw']->link('/projects/stats_projectstat.php','id=' . $pro[$i]['project_id']));
 				$this->t->set_var('lang_stat_entry',lang('Statistic'));
-
-				$this->t->set_var('partlist',$GLOBALS['phpgw']->link('/projects/del_deliverylist.php','project_id=' . $pro[$i]['project_id']));
-				$this->t->set_var('lang_partlist',lang('Delivery list'));
 
 				if ($action == 'mains')
 				{
