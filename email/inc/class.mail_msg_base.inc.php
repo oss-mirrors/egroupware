@@ -914,7 +914,7 @@
 			&& (strlen($folder_needle) == strlen($folder_haystack)) )
 			{
 				// exact match - needle is already a fully legit folder_long name
-				$needle_official_long = $folder_needle;
+				$needle_official_long = $folder_haystack;
 				if ($debug_folder_lookup) { echo 'folder exists, exact match, already legit long name: '.$needle_official_long.'<br>'; }
 				break;
 			}
