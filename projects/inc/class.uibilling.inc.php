@@ -636,7 +636,7 @@
 
 					$select = '<input type="checkbox" name="select[' . $inv['hours_id'] . ']" value="True" checked>';
 
-					$activity = $GLOBALS['phpgw']->strip_html($inv['descr']);
+					$activity = $GLOBALS['phpgw']->strip_html($inv['act_descr']);
 					if (! $activity)  $activity  = '&nbsp;';
 
 					$hours_descr = $GLOBALS['phpgw']->strip_html($inv['hours_descr']);
@@ -714,7 +714,7 @@
 
 						$select = '<input type="checkbox" name="select[' . $inv['hours_id'] . ']" value="True">';
 
-						$activity = $GLOBALS['phpgw']->strip_html($inv['descr']);
+						$activity = $GLOBALS['phpgw']->strip_html($inv['act_descr']);
 						if (! $activity)  $activity  = '&nbsp;';
 
 						$hours_descr = $GLOBALS['phpgw']->strip_html($inv['hours_descr']);
@@ -906,7 +906,7 @@
 					$this->t->set_var('sumpos',sprintf("%01.2f",round($onehour,2)));
 					$this->t->set_var('aes',$aes);
 
-					$act_descr = $GLOBALS['phpgw']->strip_html($inv['descr']);
+					$act_descr = $GLOBALS['phpgw']->strip_html($inv['act_descr']);
 					if (! $act_descr) { $act_descr  = '&nbsp;'; }
 					$this->t->set_var('act_descr',$act_descr);
 

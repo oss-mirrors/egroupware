@@ -500,7 +500,7 @@
 
 					$select = '<input type="checkbox" name="select[' . $note['hours_id'] . ']" value="True" checked>';
 
-					$activity = $GLOBALS['phpgw']->strip_html($note['descr']);
+					$activity = $GLOBALS['phpgw']->strip_html($note['act_descr']);
 					if (! $activity)  $activity  = '&nbsp;';
 
 					$hours_descr = $GLOBALS['phpgw']->strip_html($note['hours_descr']);
@@ -569,7 +569,7 @@
 
 						$select = '<input type="checkbox" name="select[' . $note['hours_id'] . ']" value="True">';
 
-						$activity = $GLOBALS['phpgw']->strip_html($note['descr']);
+						$activity = $GLOBALS['phpgw']->strip_html($note['act_descr']);
 						if (! $activity)  $activity  = '&nbsp;';
 	
 						$hours_descr = $GLOBALS['phpgw']->strip_html($note['hours_descr']);
@@ -852,7 +852,7 @@
 					}
 
 					$this->t->set_var('aes',$aes);
-					$act_descr = $GLOBALS['phpgw']->strip_html($note['descr']);
+					$act_descr = $GLOBALS['phpgw']->strip_html($note['act_descr']);
 					if (! $act_descr) { $act_descr  = '&nbsp;'; }
 					$this->t->set_var('act_descr',$act_descr);
 					$this->t->set_var('billperae',$note['billperae']);
