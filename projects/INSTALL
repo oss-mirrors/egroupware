@@ -1,0 +1,57 @@
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++     install instructions for projects                   +
++                              projecthours               +
++                              projectstatistics          + 
++                              projectbilling             +
++                              projectdelivery            +          
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++       first edit the inc/phpgwapi/phpgw.inc.php        +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  add to class phpgw:
+        
+        var $dbtemp;
+
+
+  add to function phpgw: 
+
+  $this->dbtemp           = new db;
+  $this->dbtemp->Host     = $phpgw_info["server"]["db_host"];                           
+  $this->dbtemp->type     = $phpgw_info["server"]["db_type"]; 
+  $this->dbtemp->Database = $phpgw_info["server"]["db_name"];  
+  $this->dbtemp->User     = $phpgw_info["server"]["db_user"];   
+  $this->dbtemp->Password = $phpgw_info["server"]["db_pass"];                                                                                                                                                    
+                                                                                                                                                   
+    if ($this->debug) {                                                                                                                          
+        $this->dbtemp->Debug = 1;                                                                                                                
+            }
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++                install the datebase                      +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+create_tables.mysql [ can be found in projects-directory ]
+
+lang.sql [ can be found in each project*-directory ]
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++                    project Admin                         +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+create a group projectAdmin
+each member of this group is able to edit or delete all created 
+projects
+
+also the chosen coordinator of a project is able to manage his
+project 
+
+
+the projects-app is required for running the other apps.
+it needs at least projects and projecthours to manage jobs.
+projectbilling is needed to create invoices.
+projectstatistics creates user- and projectstats.
+projectdelivery manages delivery notes. 
+
+  
