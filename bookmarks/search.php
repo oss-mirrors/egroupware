@@ -14,7 +14,7 @@
   /* $Id$ */
 
   $phpgw_info["flags"]["currentapp"] = "bookmarks";
-  $phpgw_info["flags"]["enabled_nextmatchs_class"] = True;
+  $phpgw_info["flags"]["enable_nextmatchs_class"] = True;
   include("../header.inc.php");
 
   $phpgw->template->set_file(array(standard   => "common.standard.tpl",
@@ -24,14 +24,14 @@
 
 
   // the following fields are selectable
-  $field = array("bookmark.name"       => "Name",
-                 "bookmark.keywords"   => "Keywords",
-                 "bookmark.url"        => "URL",
-                 "bookmark.ldesc"      => "Description",
-                 "category.name"       => "Category",
-                 "subcategory.name"    => "Sub Category",
-                 "rating.name"         => "Rating",
-                 "bookmark.id"         => "ID");
+  $field = array("bookmarks.name"       => "Name",
+                 "bookmarks.keywords"   => "Keywords",
+                 "bookmarks.url"        => "URL",
+                 "bookmarks.ldesc"      => "Description",
+                 "bookmarks_category.name"       => "Category",
+                 "bookmarks_subcategory.name"    => "Sub Category",
+//                 "rating.name"         => "Rating",
+                 "bookmarks.id"         => "ID");
 
   # PHPLIB's sqlquery class loads this string when
   # no query has been specified.
@@ -39,8 +39,30 @@
 
   # if we don't have a query object for this session yet,
   # then create one and save as a session variable.
+
+  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/sqlquery.inc.php");
+  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/plist.inc.php");
+class bk_Sql_Query extends Sql_Query {
+  var $classname = "bk_Sql_Query";
+  var $persistent_slots = array(
+    "conditions", "input_size", "input_max", "method", "lang", "translate", "container", "variable", "query"
+  );
+  var $query = "1=0";       ## last WHERE clause used
+  var $conditions = 1;      ## Allow for that many Query Conditions
+  var $input_size = 35;     ## Used in text input field creation
+  var $input_max  = 80;
+
+  var $method     = "post"; ## Generate get or post form...
+  var $lang       = "en";   ## HTML Widget language
+
+  var $translate = "on";    ## If set, translate column names
+  var $container = "";      ## If set, create a container table
+  var $variable  = "on";    ## if set, create variable size buttons
+}
+
+
 //  if (!isset($q)) {
-//     $q = new bk_Sql_Query;
+       $q = new bk_Sql_Query;
 //     $sess->register("q");
 //  }
 
@@ -63,7 +85,7 @@
     }
 
     ## get the saved search
-    $query = sprintf("select query from search where id=%s and username='%s'",$search,$phpgw_info["user"]["account_id"]);
+    $query = sprintf("select query from bookmarks_search where id=%s and username='%s'",$search,$phpgw_info["user"]["account_id"]);
     $phpgw->db->query($query,__LINE__,__FILE__);
     if ($phpgw->db->Errno == 0) {
        if ($phpgw->db->next_record()){
@@ -134,10 +156,10 @@
   case "bks_create":
 
     ## Do we have permission to do so?
-    if (!$perm->have_perm("editor")) {
+/*    if (!$perm->have_perm("editor")) {
       $error_msg .= "<br>You do not have permission to create Saved Searches.";
       break;
-    }
+    } */
 
     ## Trim form fields
     $name = trim($name);
@@ -155,7 +177,7 @@
 
     ## Does the search already exist?
     ## NOTE: This should be a transaction, but it isn't...
-    $query = sprintf("select id from search where name='%s' and username = '%s'",addslashes($name), $auth->auth["uname"]);
+    $query = sprintf("select id from bookmarks_search where name='%s' and username = '%s'",addslashes($name), $auth->auth["uname"]);
     $db->query($query);
     if ($db->Errno == 0) {
       if ($db->nf() > 0) {
@@ -169,7 +191,7 @@
     if ($db->Errno != 0) break;
 
     ## Insert the search
-    $query = sprintf("insert into search (id, name, query, username) 
+    $query = sprintf("insert into bookmarks_search (id, name, query, username) 
       values(%s, '%s', '%s', '%s')", 
       $id, addslashes($name), addslashes($q->query), $auth->auth["uname"]);
     $db->query($query);
@@ -216,9 +238,9 @@ if ($q->query == $noquery) {
 
 # db callout to allow database specific override to the
 # generated query syntax.
-  $q->query = $bk_db_callout->fix_search_sql ($q->query);
+//  $q->query = $bk_db_callout->fix_search_sql ($q->query);
 
-  print_list ($q->query, $limit, $offset, "search.php", &$bookmark_list, &$error_msg);
+  print_list ($q->query, $start, "search.php", &$bookmark_list, &$error_msg);
   
   $tree_search_url = $phpgw->link("tree.php","where=" . base64_encode($q->query));
   $phpgw->template->set_var(array(
