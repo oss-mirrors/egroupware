@@ -14,11 +14,11 @@
   /* $Id$ */
 
   $phpgw_info["flags"]["currentapp"] = "bookmarks";
-  $phpgw_info["flags"]["enabled_nextmatchs_class"] = True;
+  $phpgw_info["flags"]["enable_nextmatchs_class"] = True;
   include("../header.inc.php");
 
-  $phpgw->template->set_file(array(standard   => "common.standard.tpl",
-                                   code_list  => "codes.codelist.tpl",
+  $phpgw->template->set_file(array(standard    => "common.standard.tpl",
+                                   code_list   => "codes.codelist.tpl",
                                    select_form  => "codes.select.tpl",
                                    update_form  => "codes.update.tpl",
                                    create_form  => "codes.create.tpl",
@@ -93,7 +93,7 @@
     ## when deleting a category or subcategory, we need to
     ## update related tables to maintain data integrity.
     if ($codetable == "category" || $codetable == "subcategory") {
-      $query = sprintf("update bookmark set %s_id=0 where %s_id=%s and username='%s'"
+      $query = sprintf("update bookmarks set %s_id=0 where %s_id=%s and username='%s'"
                       ,$codetable
                       ,$codetable
                       ,$id
@@ -178,17 +178,23 @@ if (!isset($mode) || $mode=="S") {
        $id = $phpgw->db->f("id");
        $url = $phpgw->link("codes.php","codetable=$codetable&mode=U&id=$id");
 
+       $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+       $phpgw->template->set_var(TR_COLOR, $tr_color);
+
+       $phpgw->template->set_var(EDIT, '<a href="' . $phpgw->link() . '"> Edit </a>');
+       $phpgw->template->set_var(DELETE, '<a href="' . $phpgw->link() . '"> Delete </a>');
+
        $phpgw->template->set_var(URL, $url);
        $phpgw->template->set_var(NAME, htmlspecialchars(stripslashes($phpgw->db->f("name"))));
        $phpgw->template->set_var(ID, $id);
-       $phpgw->template->parse(UPDATE_CODE_LIST, "code_list", TRUE);
+       $phpgw->template->parse(CODE_LIST, "code_list", TRUE);
 
-       if (($codetable == "category" || $codetable == "subcategory") && ($id == 0)) {
+/*       if (($codetable == "category" || $codetable == "subcategory") && ($id == 0)) {
        } else {
           $url = $phpgw->link("codes.php","codetable=$codetable&mode=D&id=$id");
           $phpgw->template->set_var(URL, $url);
           $phpgw->template->parse(DELETE_CODE_LIST, "code_list", TRUE);
-      }
+      } */
     }
     $phpgw->template->parse(BODY, "select_form");
   }
@@ -235,7 +241,7 @@ if (!isset($mode) || $mode=="S") {
 # a static name for the body template.
 
 # standard error message, and message handler.
-include(LIBDIR . "bkmsg.inc");
+include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/messages.inc.php");
 if (isset ($bk_output_html)) {
   $phpgw->template->set_var(MESSAGES, $bk_output_html);
 }

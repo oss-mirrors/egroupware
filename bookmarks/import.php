@@ -44,7 +44,7 @@
 //        echo "<br>Category - $name exsists";
         return $cat[$upperName];
      } else {
-        $q  = "INSERT INTO category (name, username) ";
+        $q  = "INSERT INTO bookmarks_category (name, username) ";
         $q .= "VALUES ('" . addslashes($name) . "', '" . $phpgw_info["user"]["account_id"] . "') ";
 
         $db->query($q,__LINE__,__FILE__);
@@ -53,7 +53,7 @@
            return -1;
         }
 
-        $db->query("select id from category where name='" . addslashes($name) . "' and username='"
+        $db->query("select id from bookmarks_category where name='" . addslashes($name) . "' and username='"
                  . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
         $db->next_record();
 
@@ -82,7 +82,7 @@
      if (isset($subcat[$upperName])) {
         return $subcat[$upperName];
      } else {
-        $q  = "INSERT INTO subcategory (name, username) ";
+        $q  = "INSERT INTO bookmarks_subcategory (name, username) ";
         $q .= "VALUES ('" . addslashes($name) . "', '" . $phpgw_info["user"]["account_id"] . "') ";
 
         $db->query($q,__LINE__,__FILE__);
@@ -91,7 +91,7 @@
            return -1;
         }
         
-        $db->query("select id from subcategory where name='" . addslashes($name) . "' and username='"
+        $db->query("select id from bookmarks_subcategory where name='" . addslashes($name) . "' and username='"
                  . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
         $db->next_record();
         
@@ -131,15 +131,18 @@
      }
 
      // Find out what the default settings should be
-     $phpgw->db->query("select id from rating where name='--' and username='" . $phpgw_info["user"]["account_id"] . "'");
+     $phpgw->db->query("select id from bookmarks_rating where name='--' and username='"
+                     . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
      $phpgw->db->next_record();
      $default_rating = $phpgw->db->f("id");
 
-     $phpgw->db->query("select id from category where name='--' and username='" . $phpgw_info["user"]["account_id"] . "'");
+     $phpgw->db->query("select id from bookmarks_category where name='--' and username='"
+                     . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
      $phpgw->db->next_record();
      $default_category = $phpgw->db->f("id");
 
-     $phpgw->db->query("select id from subcategory where name='--' and username='" . $phpgw_info["user"]["account_id"] . "'");
+     $phpgw->db->query("select id from bookmarks_subcategory where name='--' and username='"
+                     . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
      $phpgw->db->next_record();
      $default_subcategory = $phpgw->db->f("id");
 
@@ -147,7 +150,7 @@
      if ($fd) {
         # read current categories into an array
         $catNext = -1;
-        $query = sprintf("select id, name from category where username='%s' order by id",$phpgw_info["user"]["account_id"]);
+        $query = sprintf("select id, name from bookmarks_category where username='%s' order by id",$phpgw_info["user"]["account_id"]);
         $phpgw->db->query($query,__LINE__,__FILE__);
         if ($phpgw->db->Errno != 0)
            break;
@@ -159,7 +162,7 @@
     
         # read current subcategories into an array
         $subcatNext = -1;
-        $query = sprintf("select id, name from subcategory where username='%s' order by id",$phpgw_info["user"]["account_id"]);
+        $query = sprintf("select id, name from bookmarks_subcategory where username='%s' order by id",$phpgw_info["user"]["account_id"]);
         $phpgw->db->query($query,__LINE__,__FILE__);
        if ($phpgw->db->Errno != 0)
           break;
