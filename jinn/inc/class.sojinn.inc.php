@@ -328,11 +328,25 @@
 			WHERE site_id='$site_id'",__LINE__,__FILE__);
 
 			$this->phpgw_db->next_record();
-			$site_name=$this->phpgw_db->f('site_name');
+			$site_name=$this->strip_magic_quotes_gpc($this->phpgw_db->f('site_name'));
 			return $site_name;
 
 		}
-
+				
+		/* 
+			strip_magic_quotes_gpc checks if magic_quotes_gpc is set on in 
+			the current php configuration. If this is true it removes the slashes
+		*/
+		function strip_magic_quotes_gpc($value)
+		{
+			if (get_magic_quotes_gpc()==1)
+			{
+				return stripslashes($value);
+			}
+			else return $value;
+		}
+		
+		
 		/****************************************************************************\
 		* get objectname for object id                                               *
 		\****************************************************************************/
@@ -343,11 +357,9 @@
 			WHERE object_id='$object_id'",__LINE__,__FILE__);
 
 			$this->phpgw_db->next_record();
-			$name=$this->phpgw_db->f('name');
+			$name=$this->strip_magic_quotes_gpc($this->phpgw_db->f('name'));
 			return $name;
-
 		}
-
 
 		function get_objects_for_user($uid)
 		{
@@ -356,7 +368,7 @@
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			while ($this->phpgw_db->next_record())
-			{
+			{	
 				$objects[]= $this->phpgw_db->f('site_object_id');
 			}
 
@@ -440,7 +452,7 @@
 
 			if ($where_condition)
 			{
-				$WHERE = ' WHERE '.stripslashes($where_condition);
+				$WHERE = ' WHERE '.$this->strip_magic_quotes_gpc($where_condition);
 			}
 
 			$fieldproperties = $this->get_phpgw_fieldproperties($table);
@@ -458,11 +470,11 @@
 				{
 					if ($value_reference=='name')
 					{
-						$row[$field[name]] = $this->phpgw_db->f($field[name]);
+						$row[$field[name]] = $this->strip_magic_quotes_gpc($this->phpgw_db->f($field[name]));
 					}
 					else
 					{
-						$row[] = $this->phpgw_db->f($field[name]);
+						$row[] = $this->strip_magic_quotes_gpc($this->phpgw_db->f($field[name]));
 					}
 				}
 				$rows[]=$row;
@@ -525,7 +537,7 @@
 
 			if ($where_condition)
 			{
-				$WHERE = ' WHERE '.stripslashes($where_condition);
+				$WHERE = ' WHERE '.$this->strip_magic_quotes_gpc($where_condition);
 			}
 
 			$fieldproperties = $this->get_site_fieldproperties($site_id,$table);
@@ -547,7 +559,7 @@
 					}
 					else
 					{
-						$value=$this->site_db->f($field[name]);
+						$value=$this->strip_magic_quotes_gpc($this->site_db->f($field[name]));
 					}
 
 
@@ -574,12 +586,12 @@
 
 			if ($where_condition)
 			{
-				$WHERE = ' WHERE '.stripslashes($where_condition);
+				$WHERE = ' WHERE '.$this->strip_magic_quotes_gpc($where_condition);
 			}
 
 			if ($order_by)
 			{
-				$ORDER_BY = ' ORDER BY '.stripslashes($order_by);
+				$ORDER_BY = ' ORDER BY '.$order_by;
 			}
 
 			$fieldproperties = $this->get_site_fieldproperties($site_id,$table);
@@ -601,7 +613,7 @@
 					}
 					else
 					{
-						$value=$this->site_db->f($field[name]);
+						$value=$this->strip_magic_quotes_gpc($this->site_db->f($field[name]));
 					}
 
 
@@ -626,7 +638,7 @@
 		{
 			$this->site_db_connection($site_id);
 
-			$SQL = 'DELETE FROM ' . $table . ' WHERE ' . stripslashes(stripslashes($where_condition));
+			$SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_condition);
 
 			if ($this->site_db->query($SQL,__LINE__,__FILE__))
 			{
@@ -643,7 +655,7 @@
 			$this->site_db_connection($site_id);
 
 			$record=$this->get_site_fieldproperties($site_id,$table);
-			$values=$this->get_record_values_2($site_id,$table,$where_condition,'0','1','name','');
+			$values=$this->get_record_values_2($site_id,$table,$this->strip_magic_quotes_gpc($where_condition),'0','1','name','');
 
 			foreach($record as $field)
 			{
@@ -682,7 +694,7 @@
 				if ($SQLvalues) $SQLvalues .= ',';
 
 				$SQLfields .= $field[name];
-				$SQLvalues .= "'".$field[value]."'";
+				$SQLvalues .= "'".$this->strip_magic_quotes_gpc($field[value])."'";
 			}
 
 			$SQL='INSERT INTO ' . $site_object . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
@@ -744,10 +756,10 @@
 			foreach($data as $field)
 			{
 				if ($SQL_SUB) $SQL_SUB .= ', ';
-				$SQL_SUB .= "$field[name]='$field[value]'";
+				$SQL_SUB .= "$field[name]='".$this->strip_magic_quotes_gpc($field[value])."'";
 			}
 
-			$SQL = 'UPDATE ' . $site_object . ' SET ' . $SQL_SUB . ' WHERE ' . stripslashes(stripslashes($where_condition));
+			$SQL = 'UPDATE ' . $site_object . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($this->strip_magic_quotes_gpc($where_condition));
 
 			if ($this->site_db->query($SQL,__LINE__,__FILE__))
 			{
@@ -760,7 +772,7 @@
 		function delete_phpgw_data($site_id,$table,$where_condition)
 		{
 
-			$SQL = 'DELETE FROM ' . $table . ' WHERE ' . stripslashes(stripslashes($where_condition));
+			$SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_condition);
 
 			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 			{
@@ -802,7 +814,7 @@
 				$SQL_SUB .= "$field[name]='$field[value]'";
 			}
 
-			$SQL = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . stripslashes(stripslashes($where_condition));
+			$SQL = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($where_condition);
 			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 			{
 				$status=1;
