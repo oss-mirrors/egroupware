@@ -37,7 +37,7 @@
 	var $a = array();
 	var $acctnum = 0;
 	var $fallback_default_acctnum = 0;
-	
+
 	// ----  args that are known to be used for email
 	// externally filled args, such as thru GPC values, or xmlrpc call
 	var $known_external_args = array();
@@ -57,16 +57,17 @@
 	var $reuse_existing_obj = False;
 	// raw prefs, before we process them to extract extra acct and/or filters data, not of much use
 	var $unprocessed_prefs=array();
-	
+	var $crypto;
+
 	// ---- Data Caching  ----
 	// (A) session data caching in appsession, for data that is temporary in nature
 	var $session_cache_enabled=True;
 	//var $session_cache_enabled=False;
-	
+
 	// ----  session cache runthru without actuall saving data to appsession
 	//var $session_cache_debug_nosave = True;
 	var $session_cache_debug_nosave = False;
-	
+
 	// DEPRECIATED: folder_list now cached to appsession / temporary cache
 	// (B) "folder list" caching (default value here, will be overridden by preferences item "cache_data")
 	// currently caches "mailsvr_namespace" and "get_folder_list" responses to the prefs DB
@@ -79,7 +80,7 @@
 		// match_cached_account is vestigal - depreciated
 		2	=> 'match_cached_account'
 	);
-	
+
 	// EXTRA ACCOUNTS
 	// used for looping thru extra account data during begin request
 	var $ex_accounts_count = 0;
@@ -88,8 +89,7 @@
 	var $extra_acounts = array();
 	// same as above but includes the default account, makes checking streams easier
 	var $extra_and_default_acounts = array();
-	
-	
+
 	// DEBUG FLAGS generally take int 0, 1, 2, or 3
 	var $debug_logins = 0;
 	var $debug_session_caching = 0;
@@ -102,11 +102,9 @@
 	//var $skip_args_special_handlers = 'get_folder_list';
 	var $skip_args_special_handlers = '';
 
-	
 	// future (maybe never) usage
 	//var $known_subtypes = array();
-	
-	
+
 	/*
 	function mail_msg_init()
 	{
@@ -2321,7 +2319,13 @@
 	*/
 	function encrypt_email_passwd($data)
 	{
-		return $GLOBALS['phpgw']->crypto->encrypt($data);
+		if(!is_object($this->crypto))
+		{
+			$cryptovars[0] = md5($GLOBALS['phpgw_info']['server']['encryptkey']);
+			$cryptovars[1] = $GLOBALS['phpgw_info']['server']['mcrypt_iv'];
+			$this->crypto = CreateObject('phpgwapi.crypto',$cryptovars);
+		}
+		return $this->crypto->encrypt($data);
 	}
 	
 	/*!
@@ -2333,7 +2337,20 @@
 	*/
 	function decrypt_email_passwd($data)
 	{
-		return $GLOBALS['phpgw']->crypto->decrypt($data);
+		if(!is_object($this->crypto))
+		{
+			$cryptovars[0] = md5($GLOBALS['phpgw_info']['server']['encryptkey']);
+			$cryptovars[1] = $GLOBALS['phpgw_info']['server']['mcrypt_iv'];
+			$this->crypto = CreateObject('phpgwapi.crypto',$cryptovars);
+		}
+		$unencrypted = $this->crypto->decrypt($data);
+		$encrypted = $this->crypto->encrypt($unencrypted);
+		if($data <> $encrypted)
+		{
+			$unencrypted = $GLOBALS['phpgw']->crypto->decrypt($data);
+			$encrypted = $GLOBALS['phpgw']->crypto->encrypt($unencrypted);
+		}
+		return $unencrypted;
 	}
 	/*
 	function decrypt_email_passwd($data)
