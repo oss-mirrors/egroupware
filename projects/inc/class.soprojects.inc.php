@@ -1077,7 +1077,7 @@
 
 					$subdelete = ' OR parent in (' . implode(',',$drop_list) . ')';
 
-					$this->db->query('DELETE from phpgw_p_projects where id project_in (' . implode(',',$drop_list) . ')'
+					$this->db->query('DELETE from phpgw_p_projects where project_id in (' . implode(',',$drop_list) . ')'
 									. $subdelete,__LINE__,__FILE__);
 
 					$this->db->query('select id from phpgw_p_delivery where project_id in (' . implode(',',$drop_list) . ')',__LINE__,__FILE__);
