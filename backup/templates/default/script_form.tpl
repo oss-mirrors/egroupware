@@ -146,11 +146,11 @@
 
 				if ($put)
 				{
-					echo "ftp backuptransfer $input[$i]: success !\n";
+					echo 'ftp backuptransfer ' . $input[$i] . ': success !' . "\n";
 				}
 				else
 				{
-					echo "ftp backuptransfer $input[$i]: failed !\n";
+					echo 'ftp backuptransfer ' . $input[$i] . ': failed !' . "\n";
 					exit;
 				}
 			}
@@ -168,12 +168,12 @@
 
 				if (!$pipe)
 				{
-					echo "scp backuptransfer $input[$i]: failed !\n";
+					echo 'scp backuptransfer ' . $input[$i] . ': failed !' . "\n";
 					exit;
 				}
 				else
 				{
-					echo "scp backuptransfer $input[$i]: success !\n";
+					echo 'scp backuptransfer ' . $input[$i] . ': success !' . "\n";
 				}
 				pclose($pipe);
 			}
@@ -184,31 +184,37 @@
 		if ($rapp == 'smbmount')
 		{
 			$smbdir = '/mnt/smb';
-			mkdir("$smbdir", 0700);
+
+			if (!is_dir($smbdir))
+			{
+				mkdir($smbdir, 0700);
+			}
+
 			$pipe = system("mount -t smbfs -o ip=$rip,username=$ruser,password=$rpwd,rw /$rpath $smbdir");
 
 			if (!$pipe)
 			{
-				echo "mounting the remote dir trough smbmount failed !\n";
+				echo 'mounting the remote dir ' . $rpath . 'trough smbmount failed !' . "\n";
 				exit;
 			}
 
-			chdir("$smbdir");
+			chdir($smbdir);
 			for ($i=0;$i<count($output);$i++)
 			{
 				$put = system("cp " . $output[$i] . ' ' . $input[$i]);
 
 				if ($put)
 				{
-					echo "smbmount backuptransfer $input[$i]: success !\n";
+					echo 'smbmount backuptransfer $input[$i]: success !' . "\n";
 				}
 				else
 				{
-					echo "smbmount backuptransfer $input[$i]: failed !\n";
+					echo 'smbmount backuptransfer $input[$i]: failed !' . "\n";
 					exit;
 				}
 			}
-			system("umount " . $smbmount);
+			chdir('/mnt');
+			system("umount " . $smbdir);
 		}
 	}
 
