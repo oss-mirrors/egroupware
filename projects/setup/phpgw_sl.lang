@@ -7,7 +7,7 @@ activity %1 has been added !	projects	sl	Dejavnost %1 je bila dodana.
 activity %1 has been updated !	projects	sl	Dejavnost %1 je bila spremenjena.
 activity id	projects	sl	©ifra dejavnosti
 add activity	projects	sl	Dodaj dejavnost
-add job	projects	sl	Dodaj slu¾bo
+add job	projects	sl	Dodaj nalogo
 add milestone	projects	sl	dodaj milestone
 add project	projects	sl	Dodaj projekt
 add project hours	projects	sl	Dodaj ure projekta
@@ -62,7 +62,7 @@ do you also want to delete all sub projects ?	projects	sl	ALi ¹e vedno ¾eli¹ izb
 edit activity	projects	sl	Uredi dejavnost
 edit administrator list	projects	sl	Uredi seznam skrbnikov projekta
 edit bookkeeper list	projects	sl	Uredi seznam knjigovodij projekta
-edit job	projects	sl	Uredi slu¾bo
+edit job	projects	sl	Uredi nalogo
 edit project	projects	sl	Uredi projekt
 edit project hours	projects	sl	Uredi ure projekta
 edit work hours	projects	sl	Uredi delavne ure
@@ -78,7 +78,7 @@ gantt chart from %1 to %2	projects	sl	Ganttov graf od %1 do %2
 generate activity id ?	projects	sl	Generiram ¹ifro dejavnosti?
 generate delivery id ?	projects	sl	Generiram ¹ifro dostave?
 generate invoice id ?	projects	sl	Generiram ¹ifro fakture?
-generate job id ?	projects	sl	Generiram ¹ifro slu¾be?
+generate job id ?	projects	sl	Generiram ¹ifro naloge?
 generate project id ?	projects	sl	Generiram ¹ifro projekta?
 georgia	projects	sl	Georgia
 helvetica	projects	sl	Helvetica
@@ -98,20 +98,20 @@ invoice layout	projects	sl	Razporeditev faktur
 invoice list	projects	sl	Seznam faktur
 invoices	projects	sl	Fakture
 invoicing of work time	projects	sl	Fakturiranje delavnega èasa
-job	projects	sl	Slu¾ba
-job archive	projects	sl	Slu¾beni arhiv
-job date	projects	sl	Slu¾beni datum
-job description	projects	sl	Opis slu¾be
-job has been added !	projects	sl	Slu¾ba je bila dodana.
-job has been updated !	projects	sl	Slu¾ba je bila spremenjena.
-job id	projects	sl	©ifra slu¾be
-job list	projects	sl	Seznam slu¾b
-jobs	common	sl	Slu¾be
+job	projects	sl	Naloga
+job archive	projects	sl	Arhiv nalog
+job date	projects	sl	Datum naloge
+job description	projects	sl	Opis naloge
+job has been added !	projects	sl	Naloga je bila dodana.
+job has been updated !	projects	sl	Naloga je bila spremenjena.
+job id	projects	sl	©ifra naloge
+job list	projects	sl	Seznam nalog
+jobs	common	sl	naloge
 large	projects	sl	Velik
 last update	projects	sl	Zadnji popravek
 list activities	projects	sl	Prika¾i dejavnosti
 list budget	projects	sl	Prika¾i prora&#269;une
-list jobs	projects	sl	Prika¾i slu¾be
+list jobs	projects	sl	Prika¾i naloge
 list pcosts	projects	sl	Prika¾i naèrtovane cene
 list projects	projects	sl	Prika¾i projekte
 list work hours	projects	sl	Prika¾i delovne ure
@@ -211,7 +211,7 @@ username / group	projects	sl	Uporabni¹ko ime / Skupina
 verdana	projects	sl	Verdana
 very large	projects	sl	Zelo veliko
 very small	projects	sl	Zelo majhno
-view job	projects	sl	Ogled slu¾be
+view job	projects	sl	Ogled naloge
 view project	projects	sl	Ogled projekta
 view work hours	projects	sl	Ogled delovnih ur
 work date	projects	sl	Delovni datum
