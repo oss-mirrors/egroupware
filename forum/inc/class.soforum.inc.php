@@ -73,18 +73,20 @@
 				}
 				else
 				{
-					$new_forum_id = $this->get_max_forum_id($forum['cat_id']) + 1;
-					$query = 'UPDATE phpgw_forum_forums SET cat_id='.$forum['cat_id'].', id='.$new_forum_id.", name='".$forum['name']."', descr='".$forum['descr']."' WHERE cat_id=".$forum['orig_cat_id'].' and id='.$forum['id'];
+					$query = 'UPDATE phpgw_forum_forums SET cat_id='.$forum['cat_id'].", name='".$forum['name']."', descr='".$forum['descr']."' WHERE cat_id=".$forum['orig_cat_id'].' and id='.$forum['id'];
 					$this->db->query($query,__LINE__,__FILE__);
-					$query = 'UPDATE phpgw_forum_threads SET cat_id='.$forum['cat_id'].', for_id='.$new_forum_id." WHERE cat_id=".$forum['orig_cat_id'].' and for_id='.$forum['id'];
+					$query = 'UPDATE phpgw_forum_threads SET cat_id='.$forum['cat_id'].' WHERE cat_id='.$forum['orig_cat_id'].' and for_id='.$forum['id'];
 					$this->db->query($query,__LINE__,__FILE__);
-					$query = 'UPDATE phpgw_forum_body SET cat_id='.$forum['cat_id'].', for_id='.$new_forum_id." WHERE cat_id=".$forum['orig_cat_id'].' and for_id='.$forum['id'];
+					$query = 'UPDATE phpgw_forum_body SET cat_id='.$forum['cat_id'].' WHERE cat_id='.$forum['orig_cat_id'].' and for_id='.$forum['id'];
 				}
 			}
 			else
 			{
-				$new_forum_id = $this->get_max_forum_id($forum['cat_id']) + 1;
-				$query = 'INSERT INTO phpgw_forum_forums(cat_id,id,name,descr) VALUES('.$forum['cat_id'].','.$new_forum_id.",'".$forum['name']."','".$forum['descr']."')";
+				if($this->debug)
+				{
+					echo '<-- Cat ID: '.$forum['cat_id'].' -->'."\n";
+				}
+				$query = 'INSERT INTO phpgw_forum_forums (cat_id,name,descr,perm,groups) VALUES ('.$forum['cat_id'].",'".$forum['name']."','".$forum['descr']."',0,'0')";
 			}
 			$this->db->query($query,__LINE__,__FILE__);
 		}
@@ -110,9 +112,9 @@
 			$this->db->query('insert into phpgw_forum_body (cat_id,for_id,message) VALUES ('.$data['cat_id'].','.$data['forum_id'].",'".$this->db->db_addslashes($data['message'])."')",__LINE__,__FILE__);
 		}
 
-		function get_max_forum_id($cat_id)
+		function get_max_forum_id()
 		{
-			$this->db->query('select max(id) from phpgw_forum_forums where cat_id='.$cat_id,__LINE__,__FILE__);
+			$this->db->query('select max(id) from phpgw_forum_forums',__LINE__,__FILE__);
 			$this->db->next_record();
 			return $this->db->f(0);
 		}
