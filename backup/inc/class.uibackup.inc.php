@@ -55,7 +55,7 @@
 			$GLOBALS['phpgw']->template->set_var('lang_path',lang('Absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive'));
 			$GLOBALS['phpgw']->template->set_var('lang_l_config',lang('Configuration localhost'));
 			$GLOBALS['phpgw']->template->set_var('lang_l_save',lang('Save backup locally ?'));
-			$GLOBALS['phpgw']->template->set_var('lang_l_websave',lang('Show backup archives in phpGroupWare ?'));
+			$GLOBALS['phpgw']->template->set_var('lang_l_websave',lang('Show backup archives in eGroupWare ?'));
 			$GLOBALS['phpgw']->template->set_var('lang_b_config',lang('Configuration backup'));
 			$GLOBALS['phpgw']->template->set_var('lang_b_type',lang('Archive type'));
 			$GLOBALS['phpgw']->template->set_var('lang_select_b_type',lang('Select archive type'));
@@ -226,7 +226,7 @@
 			}
 			else
 			{
-				$GLOBALS['phpgw']->template->set_var('noweb',lang('The backup application is not configured for showing the archives in phpGroupWare yet !'));
+				$GLOBALS['phpgw']->template->set_var('noweb',lang('The backup application is not configured for showing the archives in eGroupWare yet !'));
 			}
 
 			$GLOBALS['phpgw']->template->pfp('out','archive_list_t',True);

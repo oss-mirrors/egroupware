@@ -72,7 +72,7 @@
 				{
 					if (! $values['l_path'] && ! $values['l_websave'])
 					{
-						$error[] = lang('Please enter the path to the backup dir and/or enable showing archives in phpGroupWare !');
+						$error[] = lang('Please enter the path to the backup dir and/or enable showing archives in eGroupWare !');
 					}
 				}
 
