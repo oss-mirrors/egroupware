@@ -190,7 +190,8 @@
 			'kp3'       => $xkp3
 		);
 
-		echo ExecMethod('phpgwapi.app_registry.request_packaged_app',10,3,$param);
+		echo ExecMethod('phpgwapi.app_registry.request_packaged_app','etemplate',3,$param);
+//		echo ExecMethod('phpgwapi.app_registry.request_packaged_app','nntp',3,$param);
 //		echo ExecMethod('phpgwapi.app_registry.request_newer_applist','',3,$param);
 //		echo ExecMethod('phpgwapi.app_registry.request_appbyid',10,3,$param);
 //		echo ExecMethod('phpgwapi.app_registry.request_appbyname','infolog',3,$param);
