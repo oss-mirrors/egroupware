@@ -1,5 +1,5 @@
 <!-- begin email_index.tpl -->
-<script>
+<script type="text/javascript">
 function do_action(act)
 {
 	flag = 0;
@@ -37,30 +37,30 @@ function check_all()
 <table border="0" cellpadding="2" cellspacing="1" width="95%" align="center">
 <tr>
 	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
-		<font size="-1"><a href="{compose_link}">{compose_txt}</a></font>
+		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}"><a href="{compose_link}">{compose_txt}</a></font>
 	</td>
 	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
-		<font size="-1">{folders_href}</font>
+		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">{folders_href}</font>
 	</td>
 	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
-		<font size="-1">{filters_href}</font>
+		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">{filters_href}</font>
 	</td>
 	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
-		<font size="-1"><a href="{email_prefs_link}">{email_prefs_txt}</a></font>
+		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}"><a href="{email_prefs_link}">{email_prefs_txt}</a></font>
 	</td>
 </tr>
 </table>
 
 <table border="0" cellpadding="3" cellspacing="1" width="95%" align="center">
 <tr>
-	<form name="switchbox" action="{switchbox_action}" method="post">
+	<form name="{switchbox_frm_name}" action="{switchbox_action}" method="post">
 	<td bgcolor="{ctrl_bar_back1}" width="50%" align="left">
 		&nbsp;&nbsp;&nbsp;{switchbox_listbox}
 	</td>
 	</form>
 	<form name="sortbox" action="{sortbox_action}" method="post">
 	<td bgcolor="{ctrl_bar_back1}" width="50%" align="left">
-		<font size="-1">&nbsp;&nbsp;{sortbox_sort_by_txt}:&nbsp;</font>
+		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">&nbsp;&nbsp;{sortbox_sort_by_txt}:&nbsp;</font>
 		<select name="{sortbox_select_name}" onChange="{sortbox_on_change}">
 		{sortbox_select_options}
 		</select>
@@ -69,7 +69,7 @@ function check_all()
 </tr>
 <tr>
 	<td colspan="2" align="center">
-		<font face="{stats_font}" size="{stats_fontsize}">&nbsp;
+		<font face="{stats_font}" size="{stats_font_size}">&nbsp;
 		<!-- BEGIN B_action_report -->
 		{report_this}
 		<!-- END B_action_report -->
@@ -78,33 +78,28 @@ function check_all()
 </tr>
 </table>
 
-<table border="0" cellpadding="0" cellspacing="1" width="95%" align="center">
-<tr bgcolor="{arrows_backcolor}">
-	{prev_arrows}
-	{next_arrows}
-</tr>
-</table>
+{V_arrows_form_table}
 
 <table border="0" cellpadding="5" cellspacing="1" width="95%" align="center">
 <tr>
 	<td bgcolor="{stats_backcolor}" align="center">
-		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
+		<font face="{stats_font}" size="{stats_font_size}" color="{stats_color}">
 			<strong>{stats_folder}</strong>
 		</font>
 	</td>
 	<td bgcolor="{stats_backcolor}" align="center">
-		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
+		<font face="{stats_font}" size="{stats_font_size}" color="{stats_color}">
 			&nbsp;&nbsp;{stats_new}&nbsp;&nbsp;{lang_new}
 		</font>
 	</td>
 	<td bgcolor="{stats_backcolor}" align="center">
-		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
+		<font face="{stats_font}" size="{stats_font_size}" color="{stats_color}">
 			&nbsp;&nbsp;{stats_saved}&nbsp;&nbsp;{lang_total}
 		</font>
 	</td>
 	<!-- BEGIN B_show_size -->
 	<td bgcolor="{stats_backcolor}" align="center">
-		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
+		<font face="{stats_font}" size="{stats_font_size}" color="{stats_color}">
 			&nbsp;&nbsp;{stats_size}&nbsp;&nbsp;{lang_size}
 		</font>
 	</td>
@@ -119,14 +114,14 @@ function check_all()
 	<input type="hidden" name="start" value="{current_start}">
 	<input type="hidden" name="{get_size_flag}" value="1">
 	<td bgcolor="{stats_backcolor}" align="center">
-		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
+		<font face="{stats_font}" size="{stats_font_size}" color="{stats_color}">
 			&nbsp;&nbsp;<input type="submit" value="{lang_get_size}">
 		</font>
 	</td>
 	</form>
 	<!-- END B_get_size -->
 	<td bgcolor="{stats_backcolor}" align="center">
-		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
+		<font face="{stats_font}" size="{stats_font_size}" color="{stats_color}">
 			&nbsp;&nbsp;{stats_first}&nbsp;{stats_to_txt}&nbsp;{stats_last}
 		</font>
 	</td>
@@ -142,22 +137,22 @@ function check_all()
 		&nbsp;
 	</td>
 	<td bgcolor="{hdr_backcolor}" width="20%">
-		<font size="2" face="{hdr_font}">
+		<font size="{hdr_font_size}" face="{hdr_font}">
 		<strong>{hdr_from}</strong>
 		</font>
 	</td>
 	<td bgcolor="{hdr_backcolor}" width="39%">
-		<font size="2" face="{hdr_font}">
+		<font size="{hdr_font_size}" face="{hdr_font}">
  		<strong>{hdr_subject}</strong>
 		</font>
 	</td>
 	<td bgcolor="{hdr_backcolor}" width="10%" align="center">
-		<font size="1" face="{hdr_font}">
+		<font size="{hdr_font_size_sm}" face="{hdr_font}">
 		<strong>{hdr_date}</strong>
 		</font>
 	</td>
 	<td bgcolor="{hdr_backcolor}" width="4%" align="center">
-		<font size="1" face="{hdr_font}">
+		<font size="{hdr_font_size_sm}" face="{hdr_font}">
 		<strong>{hdr_size}</strong>
 		</font>
 	</td>
@@ -166,7 +161,7 @@ function check_all()
 <tr>
 	<td bgcolor="{mlist_backcolor}" colspan="6" align="center">
 		<!-- form delmove init here is just a formality, need an opening form tag but form does noting -->
-		{mlist_delmov_init}
+		{V_mlist_form_init}
 		<font size="2" face="{mlist_font}">{report_no_msgs}</font>
 	</td>
 </tr>
@@ -177,23 +172,23 @@ function check_all()
 <!-- BEGIN B_msg_list -->
 <tr>
 	<td bgcolor="{mlist_backcolor}" align="center">
-	<!-- INIT FORM ONCE -->{mlist_delmov_init}
+	<!-- INIT FORM ONCE -->{V_mlist_form_init}
 		<input type="checkbox" name="msglist[]" value="{mlist_msg_num}">
 	</td>
 	<td bgcolor="{mlist_backcolor}" align="center">
 		{mlist_attach}
 	</td>
 	<td bgcolor="{mlist_backcolor}" align="left">
-		{open_newbold}<font size="2" face="{mlist_font}">{mlist_from} {mlist_from_extra}</font>{close_newbold}
+		{open_newbold}<font size="{mlist_font_size}" face="{mlist_font}">{mlist_from} {mlist_from_extra}</font>{close_newbold}
 	</td>
 	<td bgcolor="{mlist_backcolor}" align="left">
-		{open_newbold}<font size="2" face="{mlist_font}"><a href="{mlist_subject_link}">{mlist_subject}</a></font>{close_newbold}
+		{open_newbold}<font size="{mlist_font_size}" face="{mlist_font}"><a href="{mlist_subject_link}">{mlist_subject}</a></font>{close_newbold}
 	</td>
 	<td bgcolor="{mlist_backcolor}" align="center">
-		<font size="2" face="{mlist_font}">{mlist_date}</font>
+		<font size="{mlist_font_size}" face="{mlist_font}">{mlist_date}</font>
 	</td>
 	<td bgcolor="{mlist_backcolor}" align="center">
-		<font size="1" face="{mlist_font}">{mlist_size}</font>
+		<font size="{mlist_font_size_sm}" face="{mlist_font}">{mlist_size}</font>
 	</td>
 </tr>
 <!-- END B_msg_list -->
@@ -209,13 +204,6 @@ function check_all()
 		{delmov_listbox}&nbsp;
 	</td>
 	</form>
-</tr>
-</table>
-
-<table border="0" cellpadding="0" cellspacing="1" width="95%" align="center">
-<tr bgcolor="{arrows_backcolor}">
-	{prev_arrows}
-	{next_arrows}
 </tr>
 </table>
 

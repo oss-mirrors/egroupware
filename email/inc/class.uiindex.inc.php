@@ -43,7 +43,8 @@
 			
 			$this->template = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			$this->template->set_file(array(		
-				'T_form_delmov_init' => 'index_form_delmov_init.tpl',
+				//'T_form_delmov_init' => 'index_form_delmov_init.tpl',
+				'T_index_blocks' => 'index_blocks.tpl',
 				'T_index_main' => 'index_main_b'.$this->bo->xi['my_browser'].'_l'.$this->bo->xi['my_layout']. '.tpl'
 			));
 			$this->template->set_block('T_index_main','B_action_report','V_action_report');
@@ -51,26 +52,43 @@
 			$this->template->set_block('T_index_main','B_get_size','V_get_size');
 			$this->template->set_block('T_index_main','B_no_messages','V_no_messages');
 			$this->template->set_block('T_index_main','B_msg_list','V_msg_list');
+			$this->template->set_block('T_index_blocks','B_mlist_form_init','V_mlist_form_init');
+			$this->template->set_block('T_index_blocks','B_arrows_form_table','V_arrows_form_table');
 			
-			$this->template->set_var('delmov_action',$this->bo->xi['delmov_action']);
-			$this->template->parse('V_form_delmov_init','T_form_delmov_init');
-			$this->bo->xi['mlist_delmov_init'] = $this->template->get_var('V_form_delmov_init');	
+			$this->template->set_var('frm_delmov_action',$this->bo->xi['frm_delmov_action']);
+			$this->template->set_var('frm_delmov_name',$this->bo->xi['frm_delmov_name']);
+			$this->template->parse('V_mlist_form_init','B_mlist_form_init');
+			$this->bo->xi['V_mlist_form_init'] = $this->template->get_var('V_mlist_form_init');	
+			$tpl_vars = Array(
+				// fonts and font sizes
+				'ctrl_bar_font'		=> $this->bo->xi['ctrl_bar_font'],
+				'ctrl_bar_font_size'	=> $this->bo->xi['ctrl_bar_font_size'],
+				'mlist_font'		=> $this->bo->xi['mlist_font'],
+				'mlist_font_size'	=> $this->bo->xi['mlist_font_size'],
+				'mlist_font_size_sm'	=> $this->bo->xi['mlist_font_size_sm'],
+				'stats_font'		=> $this->bo->xi['stats_font'],
+				'stats_font_size'	=> $this->bo->xi['stats_font_size'],
+				'hdr_font'		=> $this->bo->xi['hdr_font'],
+				'hdr_font_size'		=> $this->bo->xi['hdr_font_size'],
+				'hdr_font_size_sm'	=> $this->bo->xi['hdr_font_size_sm'],
+				'ftr_font'		=> $this->bo->xi['ftr_font'],
+				// other message list stuff, we parse the mlist block before the rest of the tpl vars are needed			
+				'mlist_newmsg_char'	=> $this->bo->xi['mlist_newmsg_char'],
+				'mlist_newmsg_color'	=> $this->bo->xi['mlist_newmsg_color'],
+				'mlist_newmsg_txt'	=> $this->bo->xi['mlist_newmsg_txt'],
+				'images_dir'		=> $this->bo->xi['svr_image_dir']
+			);
+			$this->template->set_var($tpl_vars);
 			
-			$this->template->set_var('mlist_font',$this->bo->xi['mlist_font']);
-			$this->template->set_var('images_dir',$this->bo->xi['svr_image_dir']);
-			
-			$this->template->set_var('mlist_newmsg_char',$this->bo->xi['mlist_newmsg_char']);
-			$this->template->set_var('mlist_newmsg_color',$this->bo->xi['mlist_newmsg_color']);
-			$this->template->set_var('mlist_newmsg_txt',$this->bo->xi['mlist_newmsg_txt']);
-
-
-
 			if ($this->bo->xi['folder_info']['number_all'] == 0)
 			{
-				$this->template->set_var('stats_last','0');
-				$this->template->set_var('report_no_msgs',$this->bo->xi['report_no_msgs']);
-				$this->template->set_var('mlist_delmov_init',$this->bo->xi['mlist_delmov_init']);
-				$this->template->set_var('mlist_backcolor',$GLOBALS['phpgw_info']['theme']['row_on']);
+				$tpl_vars = Array(
+					'stats_last'		=> '0',
+					'report_no_msgs'	=> $this->bo->xi['report_no_msgs'],
+					'V_mlist_form_init'	=> $this->bo->xi['V_mlist_form_init'],
+					'mlist_backcolor'	=> $GLOBALS['phpgw_info']['theme']['row_on']
+				);
+				$this->template->set_var($tpl_vars);
 				$this->template->parse('V_no_messages','B_no_messages');
 				$this->template->set_var('V_msg_list','');
 			}
@@ -84,11 +102,11 @@
 				{
 					if ($this->bo->xi['msg_list_dsp'][$i]['first_item'])
 					{
-						$this->template->set_var('mlist_delmov_init',$this->bo->xi['mlist_delmov_init']);
+						$this->template->set_var('V_mlist_form_init',$this->bo->xi['V_mlist_form_init']);
 					}
 					else
 					{
-						$this->template->set_var('mlist_delmov_init', '');
+						$this->template->set_var('V_mlist_form_init', '');
 					}
 					if ($this->bo->xi['msg_list_dsp'][$i]['is_unseen'])
 					{
@@ -154,17 +172,26 @@
 				'accounts_link'	=> $this->bo->xi['accounts_link'],
 				'ctrl_bar_back1'	=> $this->bo->xi['ctrl_bar_back1'],
 				'sortbox_action'	=> $this->bo->xi['sortbox_action'],
+				'switchbox_frm_name'	=> $this->bo->xi['switchbox_frm_name'],
 				'sortbox_on_change'	=> $this->bo->xi['sortbox_on_change'],
 				'sortbox_select_name'	=> $this->bo->xi['sortbox_select_name'],
 				'sortbox_select_options' => $this->bo->xi['sortbox_select_options'],
 				'sortbox_sort_by_txt'	=> $this->bo->xi['lang_sort_by'],
 				'switchbox_action'	=> $this->bo->xi['switchbox_action'],
 				'switchbox_listbox'	=> $this->bo->xi['switchbox_listbox'],
-				'arrows_backcolor'	=> $this->bo->xi['arrows_backcolor'],
+				// old version of first prev next last arrowsm for "layout 1"
 				'prev_arrows'		=> $this->bo->xi['td_prev_arrows'],
 				'next_arrows'		=> $this->bo->xi['td_next_arrows'],
+				'arrows_backcolor'	=> $this->bo->xi['arrows_backcolor'],
+				'arrows_td_backcolor'	=> $this->bo->xi['arrows_td_backcolor'],
+				// part of new first prev next last arrows data block for "layout 2"
+				'arrows_form_action'	=> $this->bo->xi['arrows_form_action'],
+				'arrows_form_name'	=> $this->bo->xi['arrows_form_name'],
+				'first_page'	=> $this->bo->xi['first_page'],
+				'prev_page'	=> $this->bo->xi['prev_page'],
+				'next_page'	=> $this->bo->xi['next_page'],
+				'last_page'	=> $this->bo->xi['last_page'],
 				'stats_backcolor' => $this->bo->xi['stats_backcolor'],
-				'stats_font'	=> $this->bo->xi['stats_font'],
 				'stats_color'	=> $this->bo->xi['stats_color'],
 				'stats_folder'	=> $this->bo->xi['stats_folder'],
 				'stats_saved'	=> $this->bo->xi['stats_saved'],
@@ -178,19 +205,19 @@
 				'stats_to_txt'	=> $this->bo->xi['stats_to_txt'],
 				'stats_first'	=> $this->bo->xi['stats_first'],
 				'hdr_backcolor'	=> $this->bo->xi['hdr_backcolor'],
-				'hdr_font'	=> $this->bo->xi['hdr_font'],
 				'hdr_subject'	=> $this->bo->xi['hdr_subject'],
 				'hdr_from'	=> $this->bo->xi['hdr_from'],
 				'hdr_date'	=> $this->bo->xi['hdr_date'],
 				'hdr_size'	=> $this->bo->xi['hdr_size'],
 				'app_images'		=> $this->bo->xi['image_dir'],
 				'ftr_backcolor'		=> $this->bo->xi['ftr_backcolor'],
-				'ftr_font'		=> $this->bo->xi['ftr_font'],
 				'delmov_button'		=> $this->bo->xi['lang_delete'],
 				// "delmov_action" was filled above when we parsed that block
 				'delmov_listbox'	=> $this->bo->xi['delmov_listbox']
 			);
 			$this->template->set_var($tpl_vars);
+			// make the first prev next last arrows
+			$this->template->parse('V_arrows_form_table','B_arrows_form_table');			
 			if ($this->bo->xi['stats_size'] != '')
 			{
 				$this->template->set_var('stats_size',$this->bo->xi['stats_size']);
