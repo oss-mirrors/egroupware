@@ -143,7 +143,7 @@
 
 
   //produce the list of categories
-  $s = '<select name="ticket_category">' . $GLOBALS['phpgw']->categories->formated_list('select','',$_POST['ticket_category'],True) . '</select>';
+  $s = '<select name="ticket_category">' . $GLOBALS['phpgw']->categories->formated_list('select','all',$_POST['ticket_category'],True) . '</select>';
   $GLOBALS['phpgw']->template->set_var('value_category',$s);
 
   

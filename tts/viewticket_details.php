@@ -243,7 +243,7 @@
       $GLOBALS['phpgw']->template->parse('options_group','options_select',true);
     }
 
-    $GLOBALS['phpgw']->template->set_var('options_category',$GLOBALS['phpgw']->categories->formated_list('select','',$ticket['category'],$ticket['category'],True));
+    $GLOBALS['phpgw']->template->set_var('options_category',$GLOBALS['phpgw']->categories->formated_list('select','all',$ticket['category'],$ticket['category'],True));
 
     $ticket_status[$ticket['status']] = ' selected';
 
