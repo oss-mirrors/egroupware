@@ -45,8 +45,93 @@
 		'Default_value'=>array(array('ON','OFF','NOTHING'),'select','')
 	);
 
+
+	
+	
+	/*-------------------------------------------------------------------
+	Boolian PLUGIN                                                                     
+	-------------------------------------------------------------------*/
+	$this->plugins['boolian']['name'] 			= 'boolian';
+	$this->plugins['boolian']['title']			= 'Boolian';
+	$this->plugins['boolian']['version']		= '1.0';
+	$this->plugins['boolian']['enable']			= 1;
+	$this->plugins['boolian']['description']	= 'Input for on/off, yes/no, true/false etc....';
+	$this->plugins['boolian']['db_field_hooks']	= array
+	(
+		'string',	
+		'int',	
+	);
+	$this->plugins['boolian']['config']		= array
+	(
+		'ON_input_display_value'=>array('yes','text','maxlength=20'),
+		'OFF_input_display_value'=>array('no','text','maxlength=20'), 
+		'ON_output_value_If_not_the_same_as_input_value'=>array('','text','maxlength=20'),
+		'OFF_output_value_If_not_the_same_as_input_value'=>array('','text','maxlength=20'),
+		'Default_value'=>array(array('ON','OFF','NOTHING'),'select',''),
+	);
+
 	function plg_fi_boolian($field_name,$value, $config)
-	{ /*
+	{
+
+		//var_dump($config);
+		//echo $config['OFF_output_value_If_not_the_same_as_input_value'];
+		if(!is_null($config['ON_output_value_If_not_the_same_as_input_value'])) $val_on=$config['ON_output_value_If_not_the_same_as_input_value'];
+		else $val_on=$config['ON_input_display_value'];
+
+		// FIXME
+		if($config['OFF_output_value_If_not_the_same_as_input_value']=='0') $val_off=$config['OFF_output_value_If_not_the_same_as_input_value'];
+		elseif($config['OFF_output_value_If_not_the_same_as_input_value']) $val_off=$config['OFF_output_value_If_not_the_same_as_input_value'];
+		else $val_off=$config['OFF_input_display_value'];
+
+		if($value==$val_on) $on_select='SELECTED';
+		elseif($value==$val_off) $off_select='SELECTED';
+		elseif($value || $config['Default_value']=='NOTHING') $empty_option='<option value=""></option>';
+		elseif(!$value && $config['Default_value']=='ON') $on_select='SELECTED'; 
+		elseif(!$value && $config['Default_value']=='OFF') $off_select='SELECTED'; 
+
+
+		$input='<select name="'.$field_name.'">';
+		$input.=$empty_option;
+		$input.='<option '.$on_select.' value="'.$val_on.'">'.$config['ON_input_display_value'].'</option>';
+		$input.='<option '.$off_select.' value="'.$val_off.'">'.$config['OFF_input_display_value'].'</option>';
+		$input.='</select>';
+
+		return $input;
+	}
+
+	function plg_bv_boolian($value,$config)
+	{
+
+		if(!is_null($config['ON_output_value_If_not_the_same_as_input_value'])) $val_on=$config['ON_output_value_If_not_the_same_as_input_value'];
+		else $val_on=$config['ON_input_display_value'];
+
+		// FIXME
+		if($config['OFF_output_value_If_not_the_same_as_input_value']=='0') $val_off=$config['OFF_output_value_If_not_the_same_as_input_value'];
+		elseif($config['OFF_output_value_If_not_the_same_as_input_value']) $val_off=$config['OFF_output_value_If_not_the_same_as_input_value'];
+		else $val_off=$config['OFF_input_display_value'];
+
+		if($value)
+		{
+			if($value==$val_on) $display=$config['ON_input_display_value'];
+			elseif($value==$val_off) $display=$config['OFF_input_display_value'];
+		}
+
+		return $display;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	function plg_fi_boolian($field_name,$value, $config)
+//	{ 
+	/*
 
 		//var_dump($config);
 		//echo $config['OFF_output_value_If_not_the_same_as_input_value'];
@@ -72,10 +157,11 @@
 		$input.='</select>';
 
 		return $input;*/
-	}
+//	}
 
-	function plg_bv_boolian($value,$config)
-	{  /*
+//	function plg_bv_boolian($value,$config)
+//	{  
+	/*
 
 		if(!is_null($config['ON_output_value_If_not_the_same_as_input_value'])) $val_on=$config['ON_output_value_If_not_the_same_as_input_value'];
 		else $val_on=$config['ON_input_display_value'];
@@ -92,5 +178,5 @@
 		}
 
 		return $display; */
-	}
+//	}
  ?>

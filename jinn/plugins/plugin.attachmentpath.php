@@ -3,14 +3,13 @@
 	JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for phpGroupWare
 	Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
 
-	phpGroupWare - http://www.phpgroupware.org
+	eGroupWare - http://www.egroupware.org
 
 	This file is part of JiNN
 
 	JiNN is free software; you can redistribute it and/or modify it under
 	the terms of the GNU General Public License as published by the Free
-	Software Foundation; either version 2 of the License, or (at your 
-	option) any later version.
+	Software Foundation; version 2 of the License.
 
 	JiNN is distributed in the hope that it will be useful,but WITHOUT ANY
 	WARRANTY; without even the implied warranty of MERCHANTABILITY or 
@@ -72,10 +71,6 @@
 			$upload_path=false;
 		}
 		
-		
-		//if ($local_bo->site_object['upload_url']) $upload_url=$local_bo->site_object['upload_url'].'/';
-		//elseif($local_bo->site['upload_url']) $upload_url=$local_bo->site['upload_url'].'/';
-		//else $upload_url=false;
 
 		$field_name=substr($field_name,3);	
 
@@ -154,7 +149,6 @@
 			$field_prefix='dev_';
 		}
 		
-		
 		if($local_bo->site_object[$field_prefix.'upload_url'])
 		{
 			$upload_url=$local_bo->site_object[$field_prefix.'upload_url'].'/';
@@ -170,10 +164,6 @@
 			$upload_url=false;
 			$upload_path=false;
 		}
-
-		//if ($local_bo->site_object['upload_path']) $upload_path=$local_bo->site_object['upload_path'].'/';
-		//elseif($local_bo->site['upload_path']) $upload_path=$local_bo->site['upload_path'].'/';
-		//else $upload_path=false;
 
 		$atts_to_delete=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'ATT_DEL');
 
@@ -264,7 +254,7 @@
 					}
 					else
 					{
-						die ("failed to copy $target_att_name...<br>\n");
+						die ("failed to copy: $new_temp_file <br/> to $upload_path/attachments/$target_att_name...<br>\n");
 					}
 				}
 
@@ -283,7 +273,7 @@
 			}						
 		}
 
-		//// make return array for storage
+		// make return array for storage
 		if($atts_path_new || $atts_path_changed)
 		{
 			return $atts_path_new;
