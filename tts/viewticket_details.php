@@ -128,7 +128,7 @@ $lstCategory=$phpgw->db->f(1);
        </td>
      </tr>
 <?php
-  $details_string = $phpgw->db->f(2);
+  $details_string = nl2br($phpgw->db->f(2));
   if (empty($details_string)) {
     echo "   <input type=hidden value=\"$details_string\" name=\"prevtxtdetail\">";
     echo "     <tr>\n";

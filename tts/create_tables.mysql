@@ -1,5 +1,5 @@
 create table ticket (
-  t_id		int unsigned not null auto_increment,
+  t_id		int not null auto_increment,
   t_category	varchar(40) not null,
   t_detail	text,
   t_priority	smallint,
@@ -13,7 +13,7 @@ create table ticket (
 );
 
 create table category (
-  c_id		int unsigned not null auto_increment,
+  c_id		int not null auto_increment,
   c_department	varchar(25) not null,
   c_name	varchar(40) not null,
   primary key (c_id)
