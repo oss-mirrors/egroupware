@@ -48,13 +48,13 @@
 			if (!is_writeable($path.$check_list)) {
 				echo <<< FUD_ERR
 
-FUDforum installation requires write permission to the following files &amp; directories:<br /><br />
-Files: {$path}blank.gif, {$path}index.php, {$path}lib.js, {$path}rdf.php, {$path}pdf.php, {path}GLOBALS.php<br />
+FUDforum installation requires write permission to the following files and directories:<br /><br />
+Files: {$path}blank.gif, {$path}index.php, {$path}lib.js, {$path}rdf.php, {$path}pdf.php, {$path}GLOBALS.php<br />
 Directories: {$path}adm, {$path}theme, {$path}images<br />
 <br /><br />
 You can add the necessary permissions by performing one of the following commands:<br /><br />
-touch {$path}blank.gif {$path}index.php {$path}lib.js {$path}rdf.php {$path}pdf.php {path}GLOBALS.php<br />
-chmod 666 {$path}blank.gif {$path}index.php {$path}lib.js {$path}rdf.php {$path}pdf.php {path}GLOBALS.php<br />
+touch {$path}blank.gif {$path}index.php {$path}lib.js {$path}rdf.php {$path}pdf.php {$path}GLOBALS.php<br />
+chmod 666 {$path}blank.gif {$path}index.php {$path}lib.js {$path}rdf.php {$path}pdf.php {$path}GLOBALS.php<br />
 mkdir {$path}adm {$path}theme {$path}images<br />
 chmod 777 {$path}adm {$path}theme {$path}images<br />
 <br /><br />
