@@ -17,5 +17,5 @@
 		//'SF Project tracker preferences' => $GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uisf_project_tracker.preferences')
 	);
 
-	display_section('developer_tools','Developer Tools',$file);
+	display_section('developer_tools',$file);
 ?>

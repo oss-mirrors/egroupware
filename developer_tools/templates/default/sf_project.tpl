@@ -14,11 +14,11 @@
 <center>{message}</center>
 <form action="{form_action}" method="POST">
 <table border="0" width="60%" align="center">
- <tr bgcolor="{th_bg}">
+ <tr class="th">
   <td colspan="2">&nbsp;</td>
  </tr>
 
- <tr bgcolor="{row_off}">
+ <tr class="row_off">
   <td>{lang_sf_project_id}</td>
   <td>{input_sf_project_id}</td>
  </tr>

@@ -218,7 +218,6 @@
 				$this->template->set_var('lang_message',lang('Message'));
 				$this->template->set_var('lang_original',lang('Original'));
 				//$this->template->set_var('lang_translation',lang('Translation'));
-				$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 				$this->template->set_var('view_link',
 					$GLOBALS['phpgw']->link(
 						'/index.php',
@@ -469,7 +468,6 @@
 				$this->template->set_var('lang_translation',lang('Translation'));
 				$this->template->set_var('lang_missingphrase',lang('Search for missing phrase'));
 				$this->template->set_var('lang_addphrase',lang('Add Phrase'));
-				$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 				$this->template->set_var('sourcelang',$sourcelang);
 				$this->template->set_var('targetlang',$targetlang);
 				$this->template->set_var('app_name',$app_name);
@@ -638,8 +636,6 @@
 			}
 
 			$this->template->set_var('lang_installed',lang('Installed applications'));
-			$this->template->set_var('bg_color',$GLOBALS['phpgw_info']['theme']['bg_color']);
-			$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 
 			$this->template->set_var('sort_title',$this->nextmatchs->show_sort_order($sort,'title','title','/index.php',lang('Title'),'&menuaction=developer_tools.uilangfile.index'));
 			$this->template->set_var('lang_showing',$this->nextmatchs->show_hits($total,$start));

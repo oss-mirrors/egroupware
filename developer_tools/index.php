@@ -15,5 +15,6 @@
 		'currentapp'              => 'developer_tools'
 	);
 	include('../header.inc.php');
+	include(PHPGW_APP_INC.'/header.inc.php');
 
 	$phpgw->common->phpgw_footer();

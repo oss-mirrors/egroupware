@@ -46,13 +46,6 @@
 			$this->template->pfp('out','_header');
 		}
 
-		function common_template_vars()
-		{
-			$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-			$this->template->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
-			$this->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
-		}
-
 		function list_changelogs()
 		{
 			$this->header();
@@ -64,7 +57,6 @@
 			$this->header();
 			$this->template->set_file('_form','changelog_form.tpl');
 			$this->template->set_block('_form','form');
-			$this->common_template_vars();
 
 			if ($messages)
 			{

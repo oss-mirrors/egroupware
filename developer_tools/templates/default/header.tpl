@@ -1,6 +1,6 @@
 <!-- BEGIN header -->
    <table border="0" width="100%">
-    <tr bgcolor="{th_bg}">
+    <tr class="th">
      <td>&nbsp;<b>{lang_developer_tools}</b></td>
     </tr>
     <tr>

@@ -31,10 +31,10 @@
 
 <!-- BEGIN postheader -->
  <table width="90%" align="center">
-  <tr bgcolor="{th_bg}">
+  <tr class="th">
    <td colspan="5" align="center">{lang_application}:&nbsp;{app_name}</td>
   </tr>
-  <tr bgcolor="{th_bg}">
+  <tr class="th">
    <form method="post" action="{action_url}">
    <td align="left">{lang_remove}</td>
    <td align="left">{lang_appname}</td>
@@ -45,7 +45,7 @@
 <!-- END postheader -->
 
 <!-- BEGIN detail -->
-  <tr bgcolor="{tr_color}">
+  <tr class="{tr_color}">
    <td><input type="checkbox" name="delete[{mess_id}]"></td>
    <td>{transapp}</td>
    <td>{mess_id}</td>

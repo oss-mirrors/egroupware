@@ -14,7 +14,6 @@
 	$GLOBALS['phpgw']->template->set_file(array('header' => 'header.tpl'));
 
 	$GLOBALS['phpgw']->template->set_var('lang_developer_tools',lang('Developer tools'));
-	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 	$GLOBALS['phpgw']->template->set_var('link_diary',lang('Diary'));
 	/*
 	$GLOBALS['phpgw']->template->set_var('link_sourceforge_project','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uisf_project_tracker.display_tracker') . '">' . lang('SF Project tracker') . '</a>');

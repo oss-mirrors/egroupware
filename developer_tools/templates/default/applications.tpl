@@ -3,14 +3,14 @@
 
 <p>
  <table border="0" width="45%" align="center">
-  <tr bgcolor="{bg_color}">
+  <tr>
 {left}
     <td align="center">{lang_showing}</td>
 {right}
   </tr>
  </table>
  <table border="0" width="45%" align="center">
-  <tr bgcolor="{th_bg}">
+  <tr class="th">
    <td> {sort_title} </td>
    <td>{lang_edit}</td>
   </tr>
@@ -32,7 +32,7 @@
 <!-- END list -->
 
 <!-- BEGIN row -->
-  <tr bgcolor="{tr_color}">
+  <tr class="{tr_color}">
    <td>{name}</td>
    <td width="5%">{edit}</td>
   </tr>

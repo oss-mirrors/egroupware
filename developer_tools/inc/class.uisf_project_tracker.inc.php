@@ -59,10 +59,6 @@
 
 			$this->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.bosf_project_tracker.preferences'));
 
-			$this->template->set_var('th_bg',  $GLOBALS['phpgw_info']['theme']['th_bg']);
-			$this->template->set_var('row_on', $GLOBALS['phpgw_info']['theme']['row_on']);
-			$this->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
-
 			$this->template->set_var('header_message',lang('Developer tools - preferences'));
 			$this->template->set_var('lang_header',lang('Sourceforge project tracker preferences'));
 			$this->template->set_var('lang_sf_project_id',lang('Sourceforge project ID'));

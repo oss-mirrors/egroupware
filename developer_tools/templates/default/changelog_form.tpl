@@ -6,17 +6,17 @@
    <td colspan="2" bgcolor="{th_bg}">&nbsp;</td>
   </tr>
 
-  <tr bgcolor="{row_off}">
+  <tr class="row_off">
    <td>{lang_project}</td>
    <td>{value_project}&nbsp;</td>
   </tr>
 
-  <tr bgcolor="{row_on}">
+  <tr class="row_on">
    <td>{lang_version}</td>
    <td>{value_version}&nbsp;</td>
   </tr>
 
-  <tr bgcolor="{row_off}">
+  <tr class="row_off">
    <td>{lang_change}</td>
    <td>{value_change}&nbsp;</td>
   </tr>
