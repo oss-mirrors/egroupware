@@ -175,6 +175,7 @@
 	$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/xmlrpc/interserv.php'));
 	$GLOBALS['phpgw']->template->set_var('lang_title',lang('phpGroupWare XML-RPC/SOAP Client<->Server and Server<->Server Test (SOAP pending...)'));
 	$GLOBALS['phpgw']->template->set_var('lang_select_target',lang('Select target server'));
+	$GLOBALS['phpgw']->template->set_var('lang_st_note',lang('Configure using admin - Peer servers'));
 	$GLOBALS['phpgw']->template->set_var('lang_this_servername',lang('Servername/Domain'));
 	$GLOBALS['phpgw']->template->set_var('lang_sd_note',lang('(optional: set domain for user/client login, required: set this servername for server login)'));
 	$GLOBALS['phpgw']->template->set_var('lang_addressbook',lang('Addressbook test'));

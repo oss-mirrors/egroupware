@@ -6,7 +6,7 @@
   <tr>
     <td colspan="3">
       <form method="POST" action="{action_url}">
-      {lang_select_target}:&nbsp;{server_list}
+      {lang_select_target}:&nbsp;{server_list}&nbsp;{lang_st_note}
     </td>
   </tr>
   <tr>
