@@ -52,6 +52,6 @@
 	);
 	$setup_info['felamimail']['depends'][] = array(
 		'appname'  => 'emailadmin',
-		'versions' => Array('0.0.8',)
+		'versions' => Array('0.0.008',)
 	);
 ?>
