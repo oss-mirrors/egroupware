@@ -42,7 +42,7 @@ In the future, this will process a specially formated email msg, intended to acc
        <tr>
          <td>
   	  <font size="3" face="<?php echo $phpgw_info["theme"]["font"] . "\" color=\"" . $phpgw_info["theme"]["em_folder_text"]; ?>">
-	   <a href="<?php echo $phpgw->link($phpgw_info["server"]["webserver_url"]."/email/","folder=" . urlencode($folder)); ?>"><?php echo $folder; ?></a>
+	   <a href="<?php echo $phpgw->link('/email/index.php',"folder=" . urlencode($folder)); ?>"><?php echo $folder; ?></a>
          </font>
         </td>
 
@@ -129,8 +129,7 @@ if ($msg->from) {
       . "</a></font>";
    echo "<font size=\"2\" face=\"" . $phpgw_info["theme"]["font"]."\">"
       . " <a href=\""
-      . $phpgw->link($phpgw_info["server"]["webserver_url"]
-        . "/addressbook/add.php", "add_email=" 
+      . $phpgw->link('/addressbook/add.php', "add_email=" 
         . urlencode($from->mailbox . "@" . $from->host)) 
       . "\" target=\"_new\">"
         . "<img src=\""
@@ -166,8 +165,7 @@ if ($msg->to) {
         . "\">".$personal."</a>";
 
       echo "&nbsp;<a href=\""
-        . $phpgw->link($phpgw_info["server"]["webserver_url"]
-          ."/addressbook/add.php","add_email="
+        . $phpgw->link('/addressbook/add.php',"add_email="
         . urlencode($topeople->mailbox."@".$topeople->host) 
         . "&name=" . urlencode($personal))
         . "\" target=\"_new\">"
@@ -207,8 +205,7 @@ if ($msg->cc) {
         . "\">".$personal."</a>";
 
       echo "&nbsp;<a href=\""
-        . $phpgw->link($phpgw_info["server"]["webserver_url"]
-          ."/addressbook/add.php","add_email="
+        . $phpgw->link('/addressbook/add.php',"add_email="
         . urlencode($topeople->mailbox."@".$topeople->host) 
         . "&name=" . urlencode($personal))
         . "\" target=\"_new\">"

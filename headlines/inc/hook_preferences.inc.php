@@ -25,8 +25,7 @@
   }
   section_start(ucfirst($appname),$imgpath);
 
-  $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]."/".$appname."/preferences.php");
-  echo "<A href=".$pg.">Select Headlines to Display</A>";
+  echo '<a href="' . $phpgw->link('/headlines/preferences.php') . '">' . lang('Select Headlines to Display') . '</a>';
 
   section_end(); 
 }

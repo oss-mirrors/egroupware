@@ -13,10 +13,8 @@
   }
   section_start("Headlines",$img);
 
-  $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]."/headlines/admin.php");
-  echo "<A href=".$pg.">".lang("Edit headline sites")."</A><br>";
-  $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]."/headlines/preferences.php","editDefault=1");
-  echo "<A href=".$pg.">".lang("Edit headlines shown by default")."</A>";
+  echo '<a href="' . $phpgw->link('/headlines/admin.php') . '">' . lang('Edit headline sites') . '</a><br>';
+  echo '<a href="' . $phpgw->link('/headlines/preferences.php','editDefault=1') . '">' . lang('Edit headlines shown by default') . '</a>';
 
   section_end(); 
 }

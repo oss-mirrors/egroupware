@@ -43,7 +43,7 @@
      . "<tr><td colspan=\"5\"><input type=\"submit\" value=\"".lang("Add")
      . "\"></td></tr></form></table></center>";
 
-  echo "<a href=\"".$phpgw->link("grabnewssites.php")."\">Grab New News Sites</a>";
+  echo '<a href="' . $phpgw->link('/headlines/grabnewssites.php'). '">' . lang('Grab New News Sites') . '</a>';
 
   $phpgw->common->phpgw_footer();
 ?>

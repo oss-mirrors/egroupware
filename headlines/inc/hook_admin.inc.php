@@ -25,8 +25,7 @@
   }
   section_start(ucfirst($appname),$imgpath);
 
-  $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]."/".$appname."/admin.php");
-  echo "<A href=".$pg.">Headline Site Management</A>";
+  echo '<a href="' . $phpgw->link('/headlines/admin.php') . '">' . lang('Headline Site Management') . '</a>';
 
   section_end(); 
 }
