@@ -18,11 +18,10 @@
 	$setup_info['comic']['app_order'] = 21;
 	$setup_info['comic']['enable']    = 1;
 
-	$setup_info['comic']['author'] = 'Ryan Phillips';
-	$setup_info['comic']['note'] = 'Originally ported from phpComic.';
+	$setup_info['comic']['author'] = 'Sam Wynn';
+	$setup_info['comic']['note'] = 'Originally ported from phpComic by Ryan Phillips.';
 	$setup_info['comic']['license']  = 'GPL';
-	$setup_info['comic']['description'] =
-		'Displays comic strips.';
+	$setup_info['comic']['description'] = 'Displays comic strips.';
 	$setup_info['comic']['maintainer'] = 'eGroupWare developers';
 	$setup_info['comic']['maintainer_email']    = 'shrykedude@users.sourceforge.net';
 
@@ -42,7 +41,7 @@
 
 	/* Dependencies for this app to work */
 	$setup_info['comic']['depends'][] = array(
-		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.10', '0.9.11' , '0.9.12', '0.9.13', '0.9.14')
+		'appname' => 'phpgwapi',
+		'versions' => Array('0.9.10', '0.9.11' , '0.9.12', '0.9.13', '0.9.14')
 	);
 ?>
