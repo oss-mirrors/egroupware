@@ -25,15 +25,18 @@
 	$tpl->set_block('form','channel');
 	$tpl->set_block('form','row');
 
-	$sites = array(
-		0 => 35,
-		1 => 13
-	);
+	while ($preference = each($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
+	{
+		if ($preference[0] != 'headlines_layout')
+		{
+			$sites[] = $preference[0];
+		}
+	}
 
 	$j = 0;
 	$i = count($sites);
 
-	while (list(,$site) = @each($sites))
+	while(list(,$site) = @each($sites))
 	{
 		$j++;
 		$headlines->readtable($site);
@@ -42,6 +45,7 @@
 		$tpl->set_var('channel_title',$headlines->display);
 
 		$links = $headlines->getLinks($site);
+		@reset($links);
 		if($links == False)
 		{
 			$var = Array(
@@ -54,14 +58,17 @@
 		}
 		else
 		{
-			while (list($title,$link) = each($links))
+			while(list($title,$link) = each($links))
 			{
-				$var = Array(
-					'item_link'  => stripslashes($link),
-					'item_label' => stripslashes($title)
-				);
-				$tpl->set_var($var);
-				$s .= $tpl->parse('o_','row');
+				if($link && $title)
+				{
+					$var = Array(
+						'item_link'  => stripslashes($link),
+						'item_label' => stripslashes($title)
+					);
+					$tpl->set_var($var);
+					$s .= $tpl->parse('o_','row');
+				}
 			}
 		}
 		$tpl->set_var('rows',$s);
@@ -69,7 +76,7 @@
 
 		$tpl->set_var('section_' . $j,$tpl->parse('o','channel'));
 
-		if ($j == 3 || $i == 1)
+		if ($j == 1 || $i == 1)
 		{
 			$GLOBALS['phpgw_info']['wcm']['right'] .= $tpl->fp('out','layout_row');
 			$tpl->set_var('section_1', '');
@@ -79,4 +86,5 @@
 		}
 		$i--;
 	}
+	echo $GLOBALS['phpgw_info']['wcm']['right'];
 ?>

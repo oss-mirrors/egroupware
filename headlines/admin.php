@@ -42,14 +42,16 @@
 	if (! $GLOBALS['phpgw']->db->f(0))
 	{
 		$GLOBALS['phpgw']->template->set_var('lang_row_empty',lang('No headlines found'));
-		$GLOBALS['phpgw']->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
+		$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
+		$GLOBALS['phpgw']->template->set_var('tr_color',$tr_color);
 		$GLOBALS['phpgw']->template->parse('rows','row_empty');
 	}
 
 	$GLOBALS['phpgw']->db->query('select con,display from phpgw_headlines_sites order by display',__LINE__,__FILE__);
 	while ($GLOBALS['phpgw']->db->next_record())
 	{
-		$GLOBALS['phpgw']->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
+		$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
+		$GLOBALS['phpgw']->template->set_var('tr_color',$tr_color);
 
 		$GLOBALS['phpgw']->template->set_var('row_display',$GLOBALS['phpgw']->db->f('display'));
 		$GLOBALS['phpgw']->template->set_var('row_edit',$GLOBALS['phpgw']->link('/headlines/editheadline.php','con='.$GLOBALS['phpgw']->db->f('con')));

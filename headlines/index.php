@@ -84,13 +84,16 @@
 		{
 			while (list($title,$link) = each($links))
 			{
-
-				$var = Array(
-					'item_link'  => stripslashes($link),
-					'item_label' => stripslashes($title)
-				);
-				$GLOBALS['phpgw']->template->set_var($var);
-				$s .= $GLOBALS['phpgw']->template->parse('o_','row');
+				if($link && $title)
+				{
+					$var = Array(
+						'item_link'  => stripslashes($link),
+						'item_label' => stripslashes($title),
+						'error'      => ''
+					);
+					$GLOBALS['phpgw']->template->set_var($var);
+					$s .= $GLOBALS['phpgw']->template->parse('o_','row');
+				}
 			}
 		}
 		$GLOBALS['phpgw']->template->set_var('rows',$s);
