@@ -29,6 +29,14 @@
 					SA_ALL);
 	$totalmessages = $mailbox_status->messages;
 	*/
+	/*
+	echo 'HTTP_POST_VARS dump:<br>';
+	var_dump($GLOBALS['HTTP_POST_VARS']);
+	echo '<br><br>HTTP_GET_VARS dump:<br>';
+	var_dump($GLOBALS['HTTP_GET_VARS']);
+	echo '<br><br>';
+	*/
+	
 	$folder_info = array();
 	$folder_info = $GLOBALS['phpgw']->msg->folder_status_info();
 	$totalmessages = $folder_info['number_all'];
@@ -57,6 +65,7 @@
 		{
 			// ERROR: report ZERO messages moved
 			$tm = 0;
+			//echo 'Server reports error: '.$GLOBALS['phpgw']->msg->dcom->server_last_error();
 		}
 		else
 		{

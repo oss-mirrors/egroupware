@@ -445,16 +445,16 @@
 		$t->set_var('V_no_messages','');
 		
 		// generate a list of details about all the messages we are going to show
-		$msg_list = Array();
-		$msg_list = $GLOBALS['phpgw']->msg->get_msg_list_display($folder_info);
-		$totaltodisplay = $GLOBALS['phpgw']->msg->start + count($msg_list);
+		$msg_list_dsp = Array();
+		$msg_list_dsp = $GLOBALS['phpgw']->msg->get_msg_list_display($folder_info);
+		$totaltodisplay = $GLOBALS['phpgw']->msg->start + count($msg_list_dsp);
 		// this info for the stats row above
 		$t->set_var('stats_last',$totaltodisplay);
 
-		for ($i=0; $i < count($msg_list); $i++)
+		for ($i=0; $i < count($msg_list_dsp); $i++)
 		{
 			// set up vars for the template parsing
-			if ($msg_list[$i]['first_item'])
+			if ($msg_list_dsp[$i]['first_item'])
 			{
 				$t->set_var('mlist_delmov_init',$mlist_delmov_init);
 			}
@@ -462,7 +462,7 @@
 			{
 				$t->set_var('mlist_delmov_init', '');
 			}
-			if ($msg_list[$i]['is_unseen'])
+			if ($msg_list_dsp[$i]['is_unseen'])
 			{
 				// this shows the red astrisk
 				$t->set_var('mlist_new_msg',$mlist_new_msg);
@@ -478,7 +478,7 @@
 				$t->set_var('open_newbold','');
 				$t->set_var('close_newbold','');
 			}
-			if ($msg_list[$i]['has_attachment'])
+			if ($msg_list_dsp[$i]['has_attachment'])
 			{
 				$t->set_var('mlist_attach',$mlist_attach);
 			}
@@ -488,15 +488,15 @@
 				$t->set_var('mlist_attach','&nbsp;');
 			}
 			$tpl_vars = Array(
-				'msg_num'		=> $msg_list[$i]['msg_num'],
-				'mlist_backcolor'	=> $msg_list[$i]['back_color'],
-				'mlist_subject'		=> $msg_list[$i]['subject'],
-				'mlist_subject_link'	=> $msg_list[$i]['subject_link'],
-				'mlist_from'		=> $msg_list[$i]['from_name'],
-				'mlist_from_extra'	=> $msg_list[$i]['display_address_from'],
-				'mlist_reply_link'	=> $msg_list[$i]['from_link'],
-				'mlist_date'		=> $msg_list[$i]['msg_date'],
-				'mlist_size'		=> $msg_list[$i]['size']
+				'mlist_msg_num'		=> $msg_list_dsp[$i]['msg_num'],
+				'mlist_backcolor'	=> $msg_list_dsp[$i]['back_color'],
+				'mlist_subject'		=> $msg_list_dsp[$i]['subject'],
+				'mlist_subject_link'	=> $msg_list_dsp[$i]['subject_link'],
+				'mlist_from'		=> $msg_list_dsp[$i]['from_name'],
+				'mlist_from_extra'	=> $msg_list_dsp[$i]['display_address_from'],
+				'mlist_reply_link'	=> $msg_list_dsp[$i]['from_link'],
+				'mlist_date'		=> $msg_list_dsp[$i]['msg_date'],
+				'mlist_size'		=> $msg_list_dsp[$i]['size']
 			);
 			$t->set_var($tpl_vars);
 

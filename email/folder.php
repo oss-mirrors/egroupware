@@ -154,7 +154,8 @@
 			else
 			{
 				//$imap_err = imap_last_error();
-				$imap_err = $this->server_last_error();
+				//$imap_err = $this->server_last_error();
+				$imap_err = $GLOBALS['phpgw']->msg->dcom->server_last_error();
 				if ($imap_err == '')
 				{
 					$imap_err = lang('unknown error');
