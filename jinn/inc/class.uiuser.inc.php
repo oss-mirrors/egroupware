@@ -112,6 +112,23 @@
 				  );
 			   }
 			}
+			else
+			{
+			   $this->bo->message[error]=lang('There is not site you have access to. Ask your administrator to give you access to your site of site-objects or check if any site exist');
+	
+			   if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
+			   {
+				  $this->bo->message[info]='<a href="'.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.add_edit_site').'">'.lang('Create a new site now').'</a>';
+				}
+				else
+				{
+
+				   $this->bo->message[info]='';
+				}
+
+				$this->ui->msg_box($this->bo->message);
+
+			}
 
 			$site_options=$this->ui->select_options($site_arr,$this->bo->site_id,true);
 
@@ -184,9 +201,9 @@
 			   $this->bo->common->exit_and_open_screen('jinn.uiuser.index');
 			}				
 
+			$this->main_menu();	
 			$this->ui->header('browse through objects');
 			$this->ui->msg_box($this->bo->message);
-			$this->main_menu();	
 
 			$this->template->set_file(array(
 			   'browse_menu' => 'browse_menu.tpl',
