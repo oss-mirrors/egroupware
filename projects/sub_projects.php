@@ -13,15 +13,14 @@
 	/* $Id$ */
 
 	$phpgw_info['flags'] = array('currentapp' => 'projects',
-					'enable_nextmatchs_class' => True,
-					'enable_categories_class' => True);
+					'enable_nextmatchs_class' => True);
 
 	include('../header.inc.php');
 
 	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-	$t->set_file(array('projects_list' => 'list.tpl',
-					'projects_list_t' => 'list.tpl'));
-	$t->set_block('projects_list_t','projects_list','list');
+	$t->set_file(array('sub_list' => 'sub_list.tpl',
+					'sub_list_t' => 'sub_list.tpl'));
+	$t->set_block('sub_list_t','sub_list','list');
 
 	$projects = CreateObject('projects.projects');
 	$grants = $phpgw->acl->get_grants('projects');
@@ -31,26 +30,26 @@
 				. '<input type="hidden" name="order" value="' . $order . '">' . "\n"
 				. '<input type="hidden" name="query" value="' . $query . '">' . "\n"
 				. '<input type="hidden" name="start" value="' . $start . '">' . "\n"
-				. '<input type="hidden" name="cat_id" value="' . $cat_id . '">' . "\n"
+				. '<input type="hidden" name="pro_parent" value="' . $pro_parent . '">' . "\n"
 				. '<input type="hidden" name="filter" value="' . $filter . '">' . "\n";
 
-	$t->set_var('lang_action',lang('Project list'));
+	$t->set_var('lang_action',lang('Job list'));
 	$t->set_var('add_url',$phpgw->link('/projects/add.php'));
-	$t->set_var('search_url',$phpgw->link('/projects/index.php'));
-	$t->set_var('cat_url',$phpgw->link('/projects/index.php'));
+	$t->set_var('search_url',$phpgw->link('/projects/sub_projects.php'));
+	$t->set_var('project_action',$phpgw->link('/projects/sub_projects.php'));
 	$t->set_var('hidden_vars',$hidden_vars);
-	$t->set_var('category_list',$phpgw->categories->formated_list('select','all',$cat_id,'True'));
-	$t->set_var('lang_all',lang('All'));
-	$t->set_var('lang_category',lang('Category'));
 
 	if (! $start) { $start = 0; }
 
-	$pro = $projects->read_projects($start,True,$query,$filter,$sort,$order,'active',$cat_id);
+	if ($pro_parent)
+	{
+		$pro = $projects->read_projects($start,True,$query,$filter,$sort,$order,'active',$cat_id,$pro_parent);
+	}
 
 //---------------------- nextmatch variable template-declarations ---------------------------
 
-	$left = $phpgw->nextmatchs->left('/projects/index.php',$start,$projects->total_records);
-	$right = $phpgw->nextmatchs->right('/projects/index.php',$start,$projects->total_records);
+	$left = $phpgw->nextmatchs->left('/projects/sub_projects.php',$start,$projects->total_records);
+	$right = $phpgw->nextmatchs->right('/projects/sub_projects.php',$start,$projects->total_records);
 	$t->set_var('left',$left);
 	$t->set_var('right',$right);
 
@@ -61,17 +60,19 @@
 // ------------------list header variable template-declarations -------------------------------
 
 	$t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
-	$t->set_var('sort_number',$phpgw->nextmatchs->show_sort_order($sort,'num',$order,'/projects/index.php',lang('Project ID')));
-	$t->set_var('sort_customer',$phpgw->nextmatchs->show_sort_order($sort,'customer',$order,'/projects/index.php',lang('Customer')));
-	$t->set_var('sort_status',$phpgw->nextmatchs->show_sort_order($sort,'status',$order,'/projects/index.php',lang('Status')));
-	$t->set_var('sort_title',$phpgw->nextmatchs->show_sort_order($sort,'title',$order,'/projects/index.php',lang('Title')));
-	$t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,'end_date',$order,'/projects/index.php',lang('Date due')));
-	$t->set_var('sort_coordinator',$phpgw->nextmatchs->show_sort_order($sort,'coordinator',$order,'/projects/index.php',lang('Coordinator')));
-	$t->set_var('lang_h_jobs',lang('Jobs'));
-	$t->set_var('lang_jobs',lang('Jobs'));
+	$t->set_var('sort_number',$phpgw->nextmatchs->show_sort_order($sort,'num',$order,'/projects/sub_projects.php',lang('Project ID')));
+	$t->set_var('sort_customer',$phpgw->nextmatchs->show_sort_order($sort,'customer',$order,'/projects/sub_projects.php',lang('Customer')));
+	$t->set_var('sort_status',$phpgw->nextmatchs->show_sort_order($sort,'status',$order,'/projects/sub_projects.php',lang('Status')));
+	$t->set_var('sort_title',$phpgw->nextmatchs->show_sort_order($sort,'title',$order,'/projects/sub_projects.php',lang('Title')));
+	$t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,'end_date',$order,'/projects/sub_projects.php',lang('Date due')));
+	$t->set_var('sort_coordinator',$phpgw->nextmatchs->show_sort_order($sort,'coordinator',$order,'/projects/sub_projects.php',lang('Coordinator')));
+	$t->set_var('lang_h_hours',lang('Work hours'));
 	$t->set_var('lang_edit',lang('Edit'));
 	$t->set_var('lang_view',lang('View'));
 	$t->set_var('lang_search',lang('Search'));
+	$t->set_var('lang_main',lang('Main project'));
+    $t->set_var('project_list',$projects->select_project_list($pro_parent));
+    $t->set_var('lang_select_project',lang('Select project'));
 
 // -------------- end header declaration -----------------
 
@@ -129,12 +130,12 @@
 
 // ------------------------- end record declaration -------------------------------------------
 
-		$t->set_var('jobs',$phpgw->link('/projects/sub_projects.php','pro_parent=' . $id)); 
-		$t->set_var('lang_jobs',lang('Jobs'));
+		$t->set_var('hours',$phpgw->link('/projects/hours_listhours.php','filter=' . $id)); 
+		$t->set_var('lang_hours',lang('Work hours'));
 
 		if ($projects->check_perms($grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $phpgw_info['user']['account_id'])
 		{
-			$t->set_var('edit',$phpgw->link('/projects/edit.php','id=' . $id . '&cat_id=' . $cat_id . '&sort=' . $sort . '&order=' . $order
+			$t->set_var('edit',$phpgw->link('/projects/edit.php','pro_parent=' . $pro_parent . '&id=' . $id . '&cat_id=' . $cat_id . '&sort=' . $sort . '&order=' . $order
 											. '&query=' . $query . '&start=' . $start . '&filter=' . $filter));
 			$t->set_var('lang_edit_entry',lang('Edit'));
 		}
@@ -145,38 +146,30 @@
 		}
 
 		$t->set_var('view',$phpgw->link('/projects/view.php','id=' . $id . '&sort=' . $sort . '&order=' . $order . '&query=' . $query
-										. '&start=' . $start . '&filter=' . $filter . '&cat_id=' . $cat_id));
+										. '&start=' . $start . '&filter=' . $filter . '&cat_id=' . $cat_id . '&pro_parent=' . $pro_parent));
 		$t->set_var('lang_view_entry',lang('View'));
 
-		$t->parse('list','projects_list',True);
+		$t->parse('list','sub_list',True);
 	}
 
 // ------------------ template declaration for Add Form ---------------------------------------
 
-	if ($cat_id && $cat_id != 0)
+	if ($pro_parent && $pro_parent != 0)
 	{
-		$cat = $phpgw->categories->return_single($cat_id);
+		$parent = $projects->read_single_project($pro_parent);
 	}
 
-	if ($cat[0]['app_name'] == 'phpgw' || !$cat_id)
+	if ($projects->check_perms($grants[$parent[0]['coordinator']],PHPGW_ACL_ADD) || $parent[0]['coordinator'] == $phpgw_info['user']['account_id'])
 	{
-        $t->set_var('add','<form method="POST" action="' . $phpgw->link('/projects/add.php','cat_id=' . $cat_id . '&start=' . $start . '&sort=' . $sort                                                                
-                        . '&order=' . $order . '&query=' . $query . '&filter=' . $filter) . '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
+		$t->set_var('add','<form method="POST" action="' . $phpgw->link('/projects/add.php','pro_parent=' . $pro_parent . '&cat_id=' . $cat_id . '&start=' . $start . '&sort=' . $sort
+					. '&order=' . $order . '&query=' . $query . '&filter=' . $filter) . '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
 	}
 	else
 	{
-		if ($projects->check_perms($grants[$cat[0]['owner']],PHPGW_ACL_ADD) || $cat[0]['owner'] == $phpgw_info['user']['account_id'])
-		{
-			$t->set_var('add','<form method="POST" action="' . $phpgw->link('/projects/add.php','cat_id=' . $cat_id . '&start=' . $start . '&sort=' . $sort
-					. '&order=' . $order . '&query=' . $query . '&filter=' . $filter) . '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
-		}
-		else
-		{
-			$t->set_var('add','');
-		}
+		$t->set_var('add','');
 	}
 
-	$t->parse('out','projects_list_t',True);
+	$t->parse('out','sub_list_t',True);
 	$t->p('out');
 
 // ---------------------- end Add form declaration --------------------------------------------

@@ -29,7 +29,7 @@
 			return (!!($has & $needed) == True);
 		}
 
-		function read_projects( $start, $limit = True, $query = '', $filter = '', $sort = '', $order = '', $status = 'active', $cat_id)
+		function read_projects($start, $limit = True, $query = '', $filter = '', $sort = '', $order = '', $status = 'active', $cat_id = '', $pro_parent = '')
 		{
 			global $phpgw, $phpgw_info;
 
@@ -96,6 +96,11 @@
 				$filtermethod .= " AND category='$cat_id' ";
 			}
 
+			if ($pro_parent)
+			{
+				$filtermethod .= " AND parent = '$pro_parent' ";
+			}
+
 			if ($query)
 			{
 				$querymethod = " AND (title like '%$query%' OR num like '%$query%' OR descr like '%$query%') ";
@@ -121,6 +126,7 @@
 			while ($this->db->next_record())
 			{
 				$projects[$i]['id']				= $this->db->f('id');
+				$projects[$i]['parent']			= $this->db->f('parent');
 				$projects[$i]['number']			= $this->db->f('num');
 				$projects[$i]['access']			= $this->db->f('access');
 				$projects[$i]['category']		= $this->db->f('category');
@@ -148,28 +154,29 @@
 	
 			while($this->db->next_record())
 			{
-				$projects[0]['id']				= $this->db->f('id');
-				$projects[0]['number']			= $this->db->f('num');
-				$projects[0]['access']			= $this->db->f('access');
-				$projects[0]['category']		= $this->db->f('category');
-				$projects[0]['entry_date']		= $this->db->f('entry_date');
-				$projects[0]['start_date']		= $this->db->f('start_date');
-				$projects[0]['end_date']		= $this->db->f('end_date');
-				$projects[0]['coordinator']		= $this->db->f('coordinator');
-				$projects[0]['customer']		= $this->db->f('customer');
-				$projects[0]['status']			= $this->db->f('status');
-				$projects[0]['description']		= $this->db->f('descr');
-				$projects[0]['title']			= $this->db->f('title');
-				$projects[0]['budget']			= $this->db->f('budget');
+				$project[0]['id']			= $this->db->f('id');
+				$project[0]['parent']		= $this->db->f('parent');
+				$project[0]['number']		= $this->db->f('num');
+				$project[0]['access']		= $this->db->f('access');
+				$project[0]['category']		= $this->db->f('category');
+				$project[0]['entry_date']	= $this->db->f('entry_date');
+				$project[0]['start_date']	= $this->db->f('start_date');
+				$project[0]['end_date']		= $this->db->f('end_date');
+				$project[0]['coordinator']	= $this->db->f('coordinator');
+				$project[0]['customer']		= $this->db->f('customer');
+				$project[0]['status']		= $this->db->f('status');
+				$project[0]['description']	= $this->db->f('descr');
+				$project[0]['title']		= $this->db->f('title');
+				$project[0]['budget']		= $this->db->f('budget');
 			}
-			return $projects;
+			return $project;
 		}
 
 		function select_project_list($selected = '')
 		{
 			global $phpgw;
 
-			$projects = $this->read_projects($start, False, $query, $filter, $sort, $order, $status, $cat_id);
+			$projects = $this->read_projects($start, False, $query, $filter, $sort, $order, $status, $cat_id, $pro_parent);
 
 			for ($i=0;$i<count($projects);$i++)
 			{

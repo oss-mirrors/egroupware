@@ -10,6 +10,8 @@
 			&nbsp;&nbsp;
 			<a href="{link_projects}">{lang_projects}</a>
 			&nbsp;&nbsp;
+			<a href="{link_jobs}">{lang_jobs}</a>
+			&nbsp;&nbsp;
 			<a href="{link_hours}">{lang_hours}</a>
 			&nbsp;&nbsp;
 			<a href="{link_delivery}">{lang_delivery}</a>

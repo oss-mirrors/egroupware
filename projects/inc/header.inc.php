@@ -33,8 +33,10 @@
 
 	$t->set_var('link_billing',$phpgw->link('/projects/bill_index.php'));
 	$t->set_var('lang_billing',lang('Billing'));
+	$t->set_var('link_jobs',$phpgw->link('/projects/sub_projects.php'));
+	$t->set_var('lang_jobs',lang('Jobs'));
 	$t->set_var('link_hours',$phpgw->link('/projects/hours_listhours.php'));
-	$t->set_var('lang_hours',lang('Jobs'));
+	$t->set_var('lang_hours',lang('Work hours'));
 	$t->set_var('link_statistics',$phpgw->link('/projects/stats_projectlist.php'));
 	$t->set_var('lang_statistics',lang("Statistics"));
 	$t->set_var('link_delivery',$phpgw->link('/projects/del_index.php'));
