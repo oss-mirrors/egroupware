@@ -208,8 +208,7 @@
 		));
 		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_tts_tickets','ticket_caller_satisfaction',array(
 			'type' => 'int',
-			'precision' => '2',
-			'default' => '0'
+			'precision' => '2'
 		));
 		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_tts_tickets','ticket_escalation',array(
 			'type' => 'int',
@@ -286,7 +285,4 @@
 		$GLOBALS['setup_info']['tts']['currentver'] = '1.0.003';
 		return $GLOBALS['setup_info']['tts']['currentver'];
 	}
-
-
-	
 ?>

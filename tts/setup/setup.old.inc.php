@@ -19,7 +19,7 @@
 	$setup_info['tts']['enable']    = 1;
 
 	/* The tables this app creates */
-	$setup_info['tts']['tables']    = array('phpgw_tts_tickets','phpgw_tts_views','phpgw_tts_states','phpgw_tts_transitions','phpgw_tts_categories_groups','phpgw_tts_escalation','phpgw_tts_tickets_wnt','phpgw_tts_views_wnt');
+	$setup_info['tts']['tables']    = array('phpgw_tts_tickets','phpgw_tts_views','phpgw_tts_states','phpgw_tts_transitions','phpgw_tts_categories_groups','phpgw_tts_escalation','phpgw_tts_tickets_wnt');
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['tts']['hooks'][]   = 'admin';

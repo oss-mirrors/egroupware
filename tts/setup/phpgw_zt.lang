@@ -43,7 +43,6 @@ disabled	tts	zt	停用
 duplicate	tts	zt	重複
 edit the state	tts	zt	編輯狀態
 edit the transition	tts	zt	編輯轉換
-error: the subject of the ticket is not specified.	tts	zt	錯誤： 沒有指定傳票的主題
 force	tts	zt	強制
 global categories	tts	zt	全域類別
 group ownership changed	tts	zt	群組所有權改變
@@ -87,7 +86,6 @@ opened	tts	zt	開啟
 opened by	tts	zt	開啟人
 original ticket details	tts	zt	原始傳票細節
 perform irregular transition into the following state	tts	zt	執行不規則轉換到下列狀態
-please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	zt	請輸入傳票的標題，否則資料無法儲存
 prio	tts	zt	優先權
 priority	tts	zt	優先權
 priority changed	tts	zt	優先權改變
@@ -168,9 +166,7 @@ verify	tts	zt	確認
 verify the ticket to work on it.	tts	zt	確認傳票來進行
 view all tickets	tts	zt	檢視所有傳票
 view job detail	tts	zt	檢視詳細內容
-view only my open tickets	tts	zt	只顯示我的未處理傳票
 view only open tickets	tts	zt	檢視未處理的傳票
 you can only close a ticket if it is assigned to you.	tts	zt	在傳票指定給您時您只能夠關閉它
-you want to delete the state %1 and associated transitions. are you sure?	tts	zt	您要刪除狀態 %1 與相關的資料，確定？
 you want to delete the state %1. are you sure?	tts	zt	您確定要刪除狀態 %1  ？
 you want to delete the transition %1. are you sure?	tts	zt	您確定要刪除轉換 %1 ？

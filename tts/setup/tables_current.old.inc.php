@@ -16,7 +16,7 @@
 			'fd' => array(
 				'ticket_id' => array('type' => 'auto','nullable' => False),
 				'ticket_group' => array('type' => 'varchar','precision' => '40'),
-				'ticket_priority' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '0'),
+				'ticket_priority' => array('type' => 'int','precision' => '2','nullable' => False),
 				'ticket_owner' => array('type' => 'varchar','precision' => '10'),
 				'ticket_assignedto' => array('type' => 'varchar','precision' => '10'),
 				'ticket_subject' => array('type' => 'varchar','precision' => '255'),
@@ -35,7 +35,7 @@
 				'ticket_caller_address' => array('type' => 'varchar','precision' => '40'),
 				'ticket_caller_address_2' => array('type' => 'varchar','precision' => '40'),
 				'ticket_caller_audio_file' => array('type' => 'varchar','precision' => '255'),
-				'ticket_caller_satisfaction' => array('type' => 'int','precision' => '2','default' => '0'),
+				'ticket_caller_satisfaction' => array('type' => 'int','precision' => '2'),
 				'ticket_escalation' => array('type' => 'int','precision' => '2'),
 				'ticket_escalation_time' => array('type' => 'int','precision' => '4')
 			),

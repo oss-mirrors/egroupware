@@ -64,7 +64,7 @@
 		$filtermethod = "where $filter";
 	}
 
-	$db2 = clone($GLOBALS['phpgw']->db);
+	$db2 = $GLOBALS['phpgw']->db;
 	$db2->query($q="select * from phpgw_tts_transitions $filtermethod $sortmethod",__LINE__,__FILE__);
 
 	// fill header

@@ -17,20 +17,21 @@
   );
   create_select_box('show new/updated tickets on main screen','mainscreen_show_new_updated',$yes_and_no);
 
-  $acc = CreateObject('phpgwapi.accounts');
-  $group_list = $acc->get_list('groups');
-  while (list($key,$entry) = each($group_list))
-  {
-    $_groups[$entry['account_id']] = $entry['account_lid'];
-  }
-  create_select_box('Default group','groupdefault',$_groups);
+  ///rem by Josip
+  ///$acc = CreateObject('phpgwapi.accounts');
+  ///$group_list = $acc->get_list('groups');
+  ///while (list($key,$entry) = each($group_list))
+  ///{
+  ///  $_groups[$entry['account_id']] = $entry['account_lid'];
+  ///}
+  ///create_select_box('Default group','groupdefault',$_groups);
 
-  $account_list = $acc->get_list('accounts');
-  while (list($key,$entry) = each($account_list))
-  {
-    $_accounts[$entry['account_id']] = $entry['account_lid'];
-  }
-  create_select_box('Default assign to','assigntodefault',$_accounts);
+  ///$account_list = $acc->get_list('accounts');
+  ///while (list($key,$entry) = each($account_list))
+  ///{
+  ///  $_accounts[$entry['account_id']] = $entry['account_lid'];
+  ///}
+  ///create_select_box('Default assign to','assigntodefault',$_accounts);
 
   // Choose the correct priority to display
   $priority_comment[1]  = ' - ' . lang('Lowest'); 

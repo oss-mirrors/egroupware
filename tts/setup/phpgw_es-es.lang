@@ -157,7 +157,6 @@ verify	tts	es-es	VERIFICAR
 verify the ticket to work on it.	tts	es-es	Verificar la incidencia en la que se va a trabajar.
 view all tickets	tts	es-es	Ver todas las incidencias
 view job detail	tts	es-es	Ver el detalle del trabajo
-view only my open tickets	tts	es-es	Ver sólo mis incidencias abiertas
 view only open tickets	tts	es-es	Ver sólo incidencias abiertas
 you can only close a ticket if it is assigned to you.	tts	es-es	Sólo puede cerrar una incidencia si está asignada a usted.
 you want to delete the state %1 and associated transitions. are you sure?	tts	es-es	¿Seguro que desea borrar el estado %1 y las transiciones asociadas?

@@ -1,5 +1,5 @@
 <!-- $Id$ -->
-<!-- BEGIN index.tpl -->
+<!-- BEGIN wnt_index.tpl -->
 
 {autorefresh}
 
@@ -29,9 +29,8 @@
 		{left}
 		<td align="center" width="15%">
 			<form action="{tts_search_link}" method="POST" name="search">
-                <input type="hidden" name="start" value="0">
 				<select name="filter" onChange="this.form.submit();">{options_filter}</select>
-                <select name="f_status">{options_f_status}</select>
+                                <select name="f_status">{options_f_status}</select>
 				<input type="submit" value="{lang_search}">
 
 			</form>
@@ -40,7 +39,6 @@
 		<td align="right">
 			<form action="{tts_search_link}" method="POST" name="search">
 				<input type="hidden" name="filter" value="search">
-                <input type="hidden" name="start" value="0">
 				<input name="searchfilter" value="{tts_searchfilter}">
 				<input type="submit" value="{lang_search}">
 			</form>
@@ -59,13 +57,9 @@
 		<td width="22">&nbsp;</td>
 		<td align="center">{tts_head_ticket}</td>
 		<td align="center">{tts_head_subject}</td>
-		<td align="center">{tts_head_prio}</td>
-		<td align="center">{tts_head_state}</td>
+        <td align="center">{tts_head_caller_name}</td>
+        <td align="center">{tts_head_caller_telephone}</td>
 		<td align="center">{tts_head_dateopened}</td>
-		<td align="center">{tts_head_group}</td>
-		<td align="center">{tts_head_category}</td>
-		<td align="center">{tts_head_assignedto}</td>
-		<td align="center">{tts_head_openedby}</td>
 
 		{tts_head_status}
 	</tr>
@@ -81,13 +75,10 @@
 		<td width="22">{row_status}</td>
 		<td align="center">{row_ticket_id}</td>
 		<td align="center">{tts_t_subject}</td>
-		<td align="center">{tts_t_prio}</td>
-		<td align="center">{tts_t_state}</td>
+		<td align="center">{tts_t_caller_name}</td>
+		<td align="center">{tts_t_caller_telephone}</td>
 		<td align="center">{tts_t_timestampopened}</td>
-		<td style="font-size=12" align=center>{row_group}</td>
-		<td style="font-size=12" align=center>{row_category}</td>
-		<td align="center">{tts_t_assignedto}</td>
-		<td align="center">{tts_t_user}</td>
+
 		{tts_col_status}
 	</tr>
 <!-- END tts_row -->

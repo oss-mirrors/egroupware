@@ -19,12 +19,21 @@
 	}
 	unset($d1);
 
+        /*//add by Josip
+        if ($GLOBALS['phpgw']->acl->check('vip',1,'tts'))
+        {
+          $GLOBALS['phpgw']->redirect_link('/tts/view_report.php');
+        }
+        ////
+        */
+
+
 	if ($GLOBALS['phpgw_info']['user']['apps']['tts']
 		&& $GLOBALS['phpgw_info']['user']['preferences']['tts']['mainscreen_show_new_updated'])
 	{
 		$GLOBALS['phpgw']->translation->add_app('tts');
 
-		$db2 = clone($GLOBALS['phpgw']->db);
+		$db2 = $GLOBALS['phpgw']->db;
 		$GLOBALS['phpgw']->historylog = createobject('phpgwapi.historylog','tts');
 
 		// this will be an user option

@@ -13,7 +13,7 @@
 
 		function bo()
 		{
-			$this->db         = clone($GLOBALS['phpgw']->db);
+			$this->db         = $GLOBALS['phpgw']->db;
 //			$this->so         = createobject('tts.so');
 			$this->historylog = createobject('phpgwapi.historylog','tts');
 			$this->historylog->types = array(
