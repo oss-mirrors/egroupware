@@ -196,7 +196,7 @@
 						$data[] = array
 						(
 							'name' => $key,
-							'value' => addslashes($val) // removed nl2br, now using plugins
+							'value' => addslashes($val) 
 						);
 
 					}
@@ -216,7 +216,7 @@
 									$data_objects[] = array
 									(
 										'name' => $key2,
-										'value' => addslashes($val2) // removed nl2br, now using plugins
+										'value' => addslashes($val2) 
 									);
 
 
@@ -661,8 +661,8 @@
 				$plugin_name=$this->bo->plug->plugins[$GLOBALS['plug_name']]['title'];
 				$plugin_version=$this->bo->plug->plugins[$GLOBALS['plug_name']]['version'];
 
-				echo '<h1>'.$plugin_name.'</h1> '.lang('version').' '. $plugin_version.'<P>';
-				echo '<b>'.lang('field plugin configuration').'</b><BR>';	
+				$output= '<h1>'.$plugin_name.'</h1> '.lang('version').' '. $plugin_version.'<P>';
+				$output.='<p><i>'.$this->bo->plug->plugins[$GLOBALS['plug_name']]['description'].'</i></p>';	
 
 				if ($GLOBALS[hidden_val]) 
 				{
@@ -685,135 +685,92 @@
 				$cfg=$this->bo->plug->plugins[$GLOBALS['plug_name']]['config'];
 				if(is_array($cfg))
 				{
-					echo '<form name=popfrm><table border=1>';
+					$output.='<b>'.lang('field plugin configuration').'</b><BR>';	
+					$output.= '<form name=popfrm><table border=1>';
 					foreach($cfg as $cfg_key => $cfg_val)
 					{
 						/* replace underscores for spaces */
 						$render_cfg_key=ereg_replace('_',' ',$cfg_key);
+					
+						$val=$cfg_val;	
+				
+						/* if configuration is already set use these values */
+						if ($use_records_cfg)
+						{
+							$set_val=$def_orig_conf[$cfg_key];
+						}
+
+						$output.= '<tr>';
+						$output.= '<td valign=top>'.$render_cfg_key.'</td>';
+
+						if($val[1]=='radio')
+						{
+							$output.= '<td valign=top>';
+							foreach($val[0] as $radio)			
+							{
+								unset($checked);
+								if($set_val==$radio) $checked='checked';
+								$output.='<input name="'.$cfg_key.'" type="radio" '.$checked.' value="'.$radio.'">'.$radio.'<br>';
+							}
+							$output.='</td>';
+						}
+						elseif($val[1]=='text')
+						{
+							if ($use_records_cfg) $val[0]=$set_val;
+							$output.= '<td valign=top><input name="'.$cfg_key.'" type=text '.$val[2].' value="'.$val[0].'"></td>';
+
+						}
+						elseif($val[1]=='select')
+						{
+							$output.= '<td valign=top>';
+							$output.= '<select name="'.$cfg_key.'">';
+
+							foreach($val[0] as $option)			
+							{
+								unset($selected);
+								if($set_val==$option) $selected='selected';
+								$output.='<option value="'.$option.'" '.$selected.'>'.$option.'</option>';
+							}
+
+							$output.='</select></td>';
+
+						}
+						else
+						{
+							$output.= '<td valign=top><input name="'.$cfg_key.'" type=text value="'.$val[0].'"></td>';
+						}
+
+						$output.= '</tr>';
+
+						if($newconfig) $newconfig.='+";"+';
+						$newconfig.='"'.$cfg_key.'="+document.popfrm.'.$cfg_key.'.value';
 						
-						echo '<tr>';
-						echo '<td valign=top>'.$render_cfg_key.'</td>';
-						if ($use_records_cfg)
-						{
-							$val=$def_orig_conf[$cfg_key];
-						}
-						else
-						{
-							$val=$cfg_val;
-						}
-						echo '<td valign=top><input name="'.$cfg_key.'" type=text value="'.$val.'"></td>';
-						echo '</tr>';
-
-						if($newconfig) $newconfig.='+";"+';
-						$newconfig.='"'.$cfg_key.'="+document.popfrm.'.$cfg_key.'.value';
 
 					}
-					echo '</table></form>';
-				}
-				echo '<script>
-				function fake_submit()
-				{
-					var newconfig;
-					newconfig='.$newconfig.';
+					$output.= '</table></form>';
+					$output.= '<script>
+					function fake_submit()
+					{
+						var newconfig;
+						newconfig='.$newconfig.';
 
-					window.opener.document.frm.'.$GLOBALS[hidden_name].'.value=newconfig;
-			
-				//	alert(window.opener.document.frm.'.$GLOBALS[hidden_name].'.value);
-					self.close();
-				}
+						window.opener.document.frm.'.$GLOBALS[hidden_name].'.value=newconfig;
 
-				</script>';
-				echo '<P><input type=button value='.lang('save').' onClick="fake_submit()">';
-				echo '<input type=button value='.lang('cancel').' onClick="self.close()">';
+						//alert(window.opener.document.frm.'.$GLOBALS[hidden_name].'.value);
+						self.close();
+					}
+
+					</script>';
+					$output.= '<P><input type=button value='.lang('save').' onClick="fake_submit()">';
+
+				}
+				$output.= '<input type=button value='.lang('cancel').' onClick="self.close()">';
+
+				echo $output;
 
 				$this->save_sessiondata();
 
 			}
-
-			function SFP_config()
-			{
-				$GLOBALS['phpgw_info']['flags']['noheader']=True;
-				$GLOBALS['phpgw_info']['flags']['nonavbar']=True;
-				$GLOBALS['phpgw_info']['flags']['noappheader']=True;
-				$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
-				$GLOBALS['phpgw_info']['flags']['nofooter']=True;
-
-				//var $plugins;
-				//$this->plugins =  CreateObject('jinn.boplugins');
-				$use_records_cfg=False;
-
-				$plugin_name=$this->bo->plugins['sfp'][$GLOBALS['SFP_name']]['title'];
-				$plugin_version=$this->bo->plugins['sfp'][$GLOBALS['SFP_name']]['version'];
-
-				echo '<h1>'.$plugin_name.'</h1> '.lang('version').' '. $plugin_version.'<P>';
-				echo '<b>'.lang('field plugin configuration').'</b><p>';	
-
-				if ($GLOBALS[hidden_val]) 
-				{
-					$orig_conf=explode(";",$GLOBALS[hidden_val]);
-					if ($GLOBALS[SFP_name]==$GLOBALS[SFP_orig]) $use_records_cfg=True;
-				}
-
-				if (is_array($orig_conf))
-				{
-					foreach($orig_conf as $orig_conf_entry)
-					{
-						unset($cnf_pair);
-						$cnf_pair[]=explode("=",$orig_conf_entry);
-						//var_dump($cnf_pair);die();
-						$def_orig_conf[$cnf_pair[0][0]]=$cnf_pair[0][1];
-						//var_dump($def_orig_conf);
-					}
-				}
-				// get config fields for this plugin
-				// if hidden value is empty get defaults vals for this plugin
-
-
-				$cfg=$this->bo->plugins['sfp'][$GLOBALS['SFP_name']]['config'];
-				if(is_array($cfg))
-				{
-					echo '<form name=popfrm><table>';
-					foreach($cfg as $cfg_key => $cfg_val)
-					{
-						echo '<tr>';
-						echo '<td>'.$cfg_key.'</td>';
-						if ($use_records_cfg)
-						{
-							$val=$def_orig_conf[$cfg_key];
-						}
-						else
-						{
-							$val=$cfg_val;
-						}
-						echo '<td><input name="'.$cfg_key.'" type=text value="'.$val.'"></td>';
-						echo '</tr>';
-
-						if($newconfig) $newconfig.='+";"+';
-						$newconfig.='"'.$cfg_key.'="+document.popfrm.'.$cfg_key.'.value';
-
-					}
-					echo '</table></form>';
-				}
-				echo '<script>
-				function fake_submit()
-				{
-					var newconfig;
-					newconfig='.$newconfig.';
-
-					window.opener.document.frm.'.$GLOBALS[hidden_name].'.value=newconfig;
-
-					//alert(window.opener.document.frm.'.$GLOBALS[hidden_name].'.value);
-					self.close();
-				}
-
-				</script>';
-				echo '<P><input type=button value='.lang('save').' onClick="fake_submit()">';
-				echo '<input type=button value='.lang("cancel").' onClick="self.close()">';
-
-				$this->save_sessiondata();
-
-			}
-
 
 			function admin_menu()
 			{
