@@ -23,6 +23,7 @@
 
    /* $Id$ */
 
+
    /* this file is startpoint for all admin functions */
 
    class uiadmin
