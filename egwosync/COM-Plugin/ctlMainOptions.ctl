@@ -97,7 +97,7 @@ Attribute VB_Name = "ctlMainOptions"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Exposed = True
 '#################################################################################################
 '# ctlMainOptions.ctl
 '# This is the code for the PropertyPage in Settings
