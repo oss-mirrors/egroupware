@@ -1,57 +1,126 @@
 1 message has been deleted	email	en	1 message has been deleted
+1 message has been moved to	email	en	1 message has been moved to
+account	email	en	account
+attach file	email	en	Attach File
+attach signature	email	en	Attach signature
 add to addressbook	email	en	Add to addressbook
+arrival date	email	en	Arrival Date
+as	email	en	as
+attachment	email	en	Attachment
 cc	email	en	CC
+choose to rename	email	en	choose for rename
 compose	email	en	Compose
+could not open this mailbox	email	en	Could not open this mailbox
+create a folder email	en	create a folder
+create (expert)	email	en	create (expert)
 custom email settings	email	en	custom email settings
+default:	common	en	default:
 default sorting order	email	en	Default sorting order
+delete account	common	en	Delete Account
+delete a folder	email	en	Delete a folder
+delete (expert)	email	en	Delete (expert)
+deleted messages go to trash	email	en	Deleted messages go to Trash
+deleted messages (trash) folder	email	en	Deleted messages (Trash) folder
 email account name	email	en	Email Account Name
 email address	email	en	E-Mail address
+email date	email	en	Email Date
 email password	email	en	E-Mail password
+email filters	email	en	Email Filters
 e-mail preferences	common	en	E-Mail preferences
+email preferences	email	en	Email Preferences
 email signature	email	en	E-Mail signature
 email type	common	en	E-Mail Type
+enable this email account	common	en	Enable this email account
+enable utf-7 encoded folder names	email	en	Enable utf-7 encoded folder names
 enter your default mail domain ( From: user@domain )	admin	en	Enter your default mail domain ( From: user@domain )
 enter your pop	admin	en	Enter your POP
 enter your smtp server hostname or ip address	admin	en	Enter your SMTP server hostname or IP address
 enter your smtp server port	admin	en	Enter your SMTP server port
+error: unknown message data	email	en	Error: Unknown message data
+error moving messages to	email	en	Error moving messages to
+extra e-mail account	common	en	Extra E-Mail Account
+file	email	en	File
 folder	email	en	Folder
+folders	email	en	Folders
+folder size	email	en	Folder Size
+folder maintenance	email	en	Folder Maintenance
+folder name	email	en	Folder name
+for these items, fill only what is different from you default e-mail preferences	common	en	For these items, fill only what is different from you default E-Mail preferences
 forward	email	en	Forward
 from	email	en	From
+keywords	email	en	Keywords
 if applicable	email	en	If Applicable
 image	email	en	Image
 imap mail server hostname or ip address	admin	en	IMAP mail server hostname or IP address
 imap server type	common	en	IMAP Server Type
+layout 1	common	en	Layout 1
+layout 2	common	en	Layout 2
+lines	email	en	Lines
+long names	email	en	long names
+manage accounts	email	en	Manage Accounts
+manage folders	email	en	Manage Folders
 mail folder(uw-maildir)	email	en	Mail Folder(uw-maildir)
 mail server	email	en	Mail Server
 mail server login type	admin	en	Mail server login type
 mail server type	email	en	Mail Server type
 mail settings	admin	en	Mail settings
+message list layout	common	en	Message List Layout
 messages	email	en	Messages
+messages have been moved to	email	en	messages have been moved to
 move selected messages into	email	en	Move Selected Messages into
+new	email	en	New
+newest	common	en	newest
 new message	email	en	New message
 non-standard	email	en	Non-Standard
+no error returned from server	email	en	No error returned from server
+no next message	email	en	no next message
+no previous message	email	en	no previous message
+number	common	en	Number
+oldest	common	en	oldest
+or	common	es	or
+please fill in everything you need	email	en	Please Fill in everything you need
 please select a message first	email	en	Please select a message first
+please select a folder to rename	email	es	Please select a folder to rename
+please type a folder name in the text box	email	en	Please type a folder name in the text box
 previous	email	en	Previous
+rename a folder	email	en	Rename a Folder
+rename (expert)	email	en	Rename (expert)
 reply all	email	en	Reply All
 reply	email	en	Reply
 replyto	email	en	ReplyTo
+result	email	en	result
 section	email	en	Section
 select your mail server type	admin	en	Select your mail server type
 send deleted messages to the trash	email	en	Send deleted messages to the trash
 send	email	en	Send
+sent messages saved in &quot;sent&quot; folder	common	en	Sent messages saved in &quot;sent&quot; folder
+sent messages folder	common	en	Sent messages folder
+short names	email	en	short names
 show new messages on main screen	email	en	Show new messages on main screen
 show sender's email address with name	email	en	Show sender's email address with name
 size	email	en	Size
-switch current folder to	email	en	Switch Current Folder To
+somebody	email	en	somebody
+sort by	email	en	Sort By
+switch accounts	email	en	Switch Accounts
+switch current folder to	common	en	Switch Current Folder To
 there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	en	There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.
+this data not supplied.	email	en	This data not supplied
 this folder is empty	email	en	This folder is empty
 to	email	en	To
+total messages	email	en	Total Messages
 undisclosed recipients	email	en	Undisclosed Recipients
 undisclosed sender	email	en	Undisclosed Sender
+unknown action	email	en	Unknown Action
+unknown error	email	en	Unknown error
 use custom settings	email	en	Use custom settings
+view as html	email	en	View as HTML
+view formatted	email	en	View formatted
+view headers	email	en	View headers
+view unformatted	email	en	View unformatted
 x messages have been deleted	email	en	%1 messages have been deleted
 you have 1 new message!	common	en	You have 1 new message!
 you have messages!	common	en	You have messages!
 you have no new messages	common	en	You have no new messages!
 you have x new messages!	common	en	You have %1 new messages!
+your full name	common	en	Your Full Name
 your message has been sent	common	en	Your message has been sent!
