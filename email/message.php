@@ -216,8 +216,8 @@
 			$from_personal);
 		// click on the little envelope image to add this person/address to your address book
 		$from_addybook_add = 
-			$GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link('/addressbook/add.php',
-				'add_email='.urlencode($from_plain).'&name='.urlencode($from_personal)
+			$GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link('/index.php',
+				'menuaction=addressbook.uiaddressbook.add_email&add_email='.urlencode($from_plain).'&name='.urlencode($from_personal)
 				.'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
 			$sm_envelope_img);
 		
@@ -265,8 +265,8 @@
 // new call should be performed..
 // Skeeter
 			$to_addybook_add = $GLOBALS['phpgw']->msg->href_maketag(
-				$GLOBALS['phpgw']->link('/addressbook/add.php',
-					'add_email='.urlencode($to_plain).'&name='.urlencode($to_personal)
+				$GLOBALS['phpgw']->link('/index.php',
+					'menuaction=addressbook.uiaddressbook.add_email&add_email='.urlencode($to_plain).'&name='.urlencode($to_personal)
 					.'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
 				$sm_envelope_img);
 			// assemble the string and store for later use (note to_extra_info also handles the spacing)
