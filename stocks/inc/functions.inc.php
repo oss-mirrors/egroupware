@@ -25,12 +25,16 @@
 
 	function return_html($quotes)
 	{
+		global $phpgw_info;
+
+		$currency = $phpgw_info['user']['preferences']['common']['currency'];
+
 		$return_html = '<table cellspacing="1" cellpadding="0" border="0" bgcolor="black"><tr><td>'
 					. '<table cellspacing="1" cellpadding="2" border="0" bgcolor="white">'
-					. '<tr><td><b>Name</b></td><td><b>Symbol</b></td><td><b>Price</b></td><td>'
-					. '<b>$&nbsp;Change</b></td><td><b>%&nbsp;Change</b></td><td><b>Date</b></td><td>'
-					. '<b>Time</b></td></tr>';
-    
+					. '<tr><td><b>' . lang('Name') . '</b></td><td><b>' . lang('Symbol') . '</b></td><td align="right"><b>' . lang('Price') . '</b></td><td align="right">'
+					. '<b>' . $currency . '&nbsp;' . lang('Change') . '</b></td><td align="right"><b>' . lang('%') . '&nbsp;' . lang('Change') . '</b></td><td align="center"><b>' . lang('Date') . '</b></td><td align="center">'
+					. '<b>' . lang('Time') . '</b></td></tr>';
+
 		for ($i=0;$i<count($quotes);$i++)
 		{
 			$q = $quotes[$i];
@@ -54,9 +58,9 @@
 				$color = 'green';
 			}
         
-			$return_html .= '<tr><td>' . $name . '</td><td>' . $symbol . '</td><td>' . $price0 . '</td><td><font color="'
-						. $color . '">' . $dollarchange . '</font></td><td><font color="' . $color . '">' . $percentchange
-						. '</font></td><td>' . $date . '</td><td>' . $time . '</td></tr>';
+			$return_html .= '<tr><td>' . $name . '</td><td>' . $symbol . '</td><td align="right">' . $price0 . '</td><td align="right"><font color="'
+						. $color . '">' . $dollarchange . '</font></td><td align="right"><font color="' . $color . '">' . $percentchange
+						. '</font></td><td align="center">' . $date . '</td><td align="center">' . $time . '</td></tr>';
 		}
     
 		$return_html .= '</table></td></tr></table>';
@@ -83,57 +87,60 @@
 			}
 		}
 
-		$regexp_stocks = "/(" . implode("|",$symbollist) . ")/";
+		$regexp_stocks = '/(' . implode('|',$symbollist) . ')/';
 
-		$url = "http://finance.yahoo.com/d/quotes.csv?f=sl1d1t1c1ohgv&e=.csv&s=$symbolstr";
+		$url = 'http://finance.yahoo.com/d/quotes.csv?f=sl1d1t1c1ohgv&e=.csv&s=' . $symbolstr;
 		$lines = http_fetch($url,false,80,'');
 
 		$quotes = array();
 		$i = 0;
 
-		while ($line = each($lines))
+		if ($lines)
 		{
-			$line = $lines[$i];
-
-			if (preg_match($regexp_stocks,$line))
+			while ($line = each($lines))
 			{
-				$line = ereg_replace('"','',$line);
-				list($symbol,$price0,$date,$time,$dchange,$price1,$price2) = split(',',$line);
+				$line = $lines[$i];
+
+				if (preg_match($regexp_stocks,$line))
+				{
+					$line = ereg_replace('"','',$line);
+					list($symbol,$price0,$date,$time,$dchange,$price1,$price2) = split(',',$line);
                
-				if ($price1>0 && $dchange!=0)
-				{
-					$pchange = round(10000*($dchange)/$price1)/100;
-				}
-				else
-				{
-					$pchange = 0;
-				}
+					if ($price1>0 && $dchange!=0)
+					{
+						$pchange = round(10000*($dchange)/$price1)/100;
+					}
+					else
+					{
+						$pchange = 0;
+					}
 
-				if ($pchange>0)
-				{
-					$pchange = '+' . $pchange;
-				}
+					if ($pchange>0)
+					{
+						$pchange = '+' . $pchange;
+					}
    
-				$name = $stocklist[$symbol];
+					$name = $stocklist[$symbol];
             
-				if (! $name)
-				{
-					$name = $symbol;
-				}
+					if (! $name)
+					{
+						$name = $symbol;
+					}
 
-				$quotes[] = array('symbol' => $symbol,
+					$quotes[] = array('symbol' => $symbol,
 									'price0' => $price0,
 									'date' => $date,
 									'time' => $time,
-								'dchange' => $dchange,
+									'dchange' => $dchange,
 									'price1' => $price1,
 									'price2' => $price2,
 									'pchange' => $pchange,
 									'name' => $name);
+				}
+				$i++;
 			}
-			$i++;
+     		return $quotes;
 		}
-     	return $quotes;
 	}
 
 	function get_savedstocks()
