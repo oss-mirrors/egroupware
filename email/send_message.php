@@ -41,9 +41,9 @@
 	&& ($attach_sig))
 	{
 		$user_sig = $phpgw_info['user']['preferences']['email']['email_sig'];
-		// may be obsoleted someday:  workaround for a preferences database issue (<=pgpgw ver 0.9.13)
+		// html_quotes_decode may be obsoleted someday:  workaround for a preferences database issue (<=pgpgw ver 0.9.13)
 		$user_sig = $phpgw->msg->html_quotes_decode($user_sig);
-		$body = $body ."\n-----\n" .$user_sig;
+		$body = $body ."\r\n" .'-- '."\r\n" .$user_sig ."\r\n";
 	}
 
 // ----  Prepare Body for RFC821 Compliance  -----

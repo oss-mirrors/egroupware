@@ -588,6 +588,8 @@
 	&& (isset($part->subtype)) && ($part->subtype) )
 	{
 		$part_nice['subtype'] = $part->subtype;
+		// this header item is not case sensitive
+		$part_nice['subtype'] = trim(strtolower($part_nice['subtype']));
 	}
 	//5: IFDESCRIPTION : true if there is a description string (SKIP)
 	// 6: Content Description String, if the above is true
@@ -603,7 +605,7 @@
 	if ( (isset($part->ifid)) && ($part->ifid)
 	&& (isset($part->id)) && ($part->id) )
 	{
-		$part_nice['id'] = $part->id;
+		$part_nice['id'] = trim($part->id);
 	}
 	// 9: lines : Number of lines
 	$part_nice['lines'] = $struct_not_set; // Default value if not filled
@@ -711,7 +713,9 @@
 		//$part_nice['ex_part_name'] = 'no_name.att';
 	}
 	// Attachment Detection PART3 = if "disposition" header has a value of "attachment" , then treat as an attachment
+	// PROVIDED it is not type "message" - in that case the attachment is *inside* the message, not the message itself
 	if (($part_nice['disposition'] == 'attachment')
+	&& ($part_nice['type'] != 'message')
 	&& ($part_nice['ex_attachment'] == False))
 	{
 		// NOTE: if a part has a name in the params, the above code would have found it, so to get here means
@@ -765,12 +769,12 @@
 	$exploded_mime_dumb = Array();
 	if (strlen($new_mime_dumb) == 1)
 	{
-		if ($debug) { echo 'true: strlen(new_mime_dumb) = 1 ; FIRST debth level<br>'; }
+		if ($debug) { echo 'strlen(new_mime_dumb) = 1 :: TRUE ; FIRST debth level<br>'; }
 		$exploded_mime_dumb[0] = (int)$new_mime_dumb;
 	}
 	else
 	{
-		if ($debug) { echo 'false: strlen(new_mime_dumb) = 1<br>'; }
+		if ($debug) { echo 'strlen(new_mime_dumb) = 1 :: FALSE<br>'; }
 		$exploded_mime_dumb = explode('.', $new_mime_dumb);
 	}
 
@@ -791,7 +795,7 @@
 		if ($i == (count($exploded_mime_dumb) - 1))
 		{
 			$dumbs_part_nice[$i] = $part_nice[$flat_idx];
-			if ($debug) { echo 'dumbs_part_nice[i('.$i.')] = part_nice[flat_idx('.$flat_idx.')]<br>'; }
+			if ($debug) { echo '(outermost/current part) dumbs_part_nice[i('.$i.')] = part_nice[flat_idx('.$flat_idx.')]<br>'; }
 			//if ($debug) { echo ' - prev_parent_flat_idx: '.$prev_parent_flat_idx.'<br>'; }
 		}
 		else
@@ -802,10 +806,11 @@
 		}
 	}
 	//if ($debug) { echo 'dumbs_part_nice serialized: '.serialize($dumbs_part_nice) .'<br>'; }
-
-
-
 	//if ($debug) { echo 'serialize exploded_mime_dumb: '.serialize($exploded_mime_dumb).'<br>'; }
+	
+	// NOTE:  Packagelist -> Container EXCEPTION Conversions
+	// a.k.a "Exceptions for Less-Standart Subtypes"
+	// are located in the analysis loop done that BEFORE you enter this function
 
 	// Reconstruct the Dumb Mime Number string into a "SMART" Mime Number string
 	// RULE:  Dumb Mime parts that have "m_description" = "packagelist" (i.e. it's a header part)

@@ -120,7 +120,8 @@
 
     function fetchheader($stream,$msg_num) 
     {
-	return $this->get_header($stream,$msg_num);
+	//return $this->get_header($stream,$msg_num);
+	return imap_fetchheader($stream,$msg_num);
     }
 
     function fetchstructure($stream,$msg_num,$flags="") 

@@ -37,6 +37,8 @@
 	$alert_msg = '';
 	$totalfiles = 0;
 
+	// ensure existance of PHPGROUPWARE temp dir
+	// note: this is different from apache temp dir, and different from any other temp file location set in php.ini
 	if (!file_exists($phpgw_info['server']['temp_dir']))
 	{
 		mkdir($phpgw_info['server']['temp_dir'],0700);
@@ -47,9 +49,63 @@
 		mkdir($phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'],0700);
 	}
 
-	// Some on the methods were borrowed from
-	// Squirrelmail <Luke Ehresman> http://www.squirrelmail.org
+	/*
+	//PHP VARIABLES NOTES: 
+	// $uploadedfile was the name of the file box in the submitted form, and php3 gives it additional properties:
+	// $uploadedfile_name   $uploadedfile_size   $uploadedfile_type
+	// php4 also does this, but the preffered way is to use the new (for php4) $HTTP_POST_FILES global array
+	// $HTTP_POST_FILES['uploadedfile']['name']   .. .['type']   ... ['size']  ... ['tmp_name']
+	// note that $uploadedfile_type and $HTTP_POST_FILES['uploadedfile']['type'] *may* not be correct filled
+	// 
+	// FILE SIZE NOTES:
+	// file size limits may depend on: (a) <input type="hidden" name="MAX_FILE_SIZE" value="whatever">
+	// (b) these values in php.ini: "post_max_size" "upload_max_filesize" "memory_limit" "max_execution_time"
+	// also see http://www.php.net/bugs.php?id=8377  for the status of an upload bug not fixed as of 4.0.4
+	// also note that uploading file to *memory* is wasteful
+	*/
+	
+	// clean / prepare PHP provided file info
+	if(floor(phpversion()) >= 4)
+	{
+		$file_tmp_name = $phpgw->msg->stripslashes_gpc(trim($HTTP_POST_FILES['uploadedfile']['tmp_name']));
+		$file_name = $phpgw->msg->stripslashes_gpc(trim($HTTP_POST_FILES['uploadedfile']['name']));
+		$file_size = $phpgw->msg->stripslashes_gpc(trim($HTTP_POST_FILES['uploadedfile']['size']));
+		$file_type = $phpgw->msg->stripslashes_gpc(trim($HTTP_POST_FILES['uploadedfile']['type']));
+	}
+	else
+	{
+		$file_tmp_name = $phpgw->msg->stripslashes_gpc(trim($uploadedfile));
+		$file_name = $phpgw->msg->stripslashes_gpc(trim($uploadedfile_name));
+		$file_size = $phpgw->msg->stripslashes_gpc(trim($uploadedfile_size));
+		$file_type = $phpgw->msg->stripslashes_gpc(trim($uploadedfile_type));
+	}
 
+	// Netscape 6 passes file_name with a full path, we need to extract just the filename
+	function wbasename($input)
+	{
+		if (strstr($input, SEP) == False)
+		{
+			// no filesystem seperator is present
+			return $input;
+		}
+		
+		for($i=0; $i < strlen($input); $i++ )
+		{
+			$pos = strpos($input, SEP, $i);
+			if ($pos != false)
+			{
+				$lastpos = $pos;
+			}
+		}
+		return substr($input, $lastpos + 1, strlen($input));
+	}
+	//$debuginfo = 'file_name (pre-wbasename): ' .$file_name .'<br>';
+	// Netscape 6 passes file_name with a full path, we need to extract just the filename
+	$file_name = wbasename($file_name);
+
+
+	// Some of the methods were borrowed from
+	// Squirrelmail <Luke Ehresman> http://www.squirrelmail.org
 	$uploaddir = $phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'] . SEP;
 
 	if ($action == 'Delete')
@@ -63,30 +119,30 @@
 
 	//if ($action == 'Attach File')
 	if (($action == 'Attach File')
-	&& ($uploadedfile != '')
-	&& ($uploadedfile != 'none'))
+	&& ($file_tmp_name != '')
+	&& ($file_tmp_name != 'none'))
 	{
 		srand((double)microtime()*1000000);
 		$random_number = rand(100000000,999999999);
-		$newfilename = md5($uploadedfile.', '.$uploadedfile_name.', '.$phpgw_info['user']['sessionid'].time().getenv('REMOTE_ADDR').$random_number);
+		$newfilename = md5($file_tmp_name.', '.$file_name.', '.$phpgw_info['user']['sessionid'].time().getenv('REMOTE_ADDR').$random_number);
 
 		// Check for uploaded file of 0-length, or no file (patch from Zone added by Milosch)
-		//if ($uploadedfile == "none" && $uploadedfile_size == 0) This could work also
-		if ($uploadedfile_size == 0)
+		//if ($file_tmp_name == "none" && $file_size == 0) This could work also
+		if ($file_size == 0)
 		{
 			touch ($uploaddir . $newfilename);
 		}
 		else
 		{
-			copy($uploadedfile, $uploaddir . $newfilename);
+			copy($file_tmp_name, $uploaddir . $newfilename);
 		}
 
 		$ftp = fopen($uploaddir . $newfilename . '.info','wb');
-		fputs($ftp,$uploadedfile_type."\n".$uploadedfile_name."\n");
+		fputs($ftp,$file_type."\n".$file_name."\n");
 		fclose($ftp);
 	}
 	elseif (($action == 'Attach File')
-	&& (($uploadedfile == '') || ($uploadedfile == 'none')))
+	&& (($file_tmp_name == '') || ($file_tmp_name == 'none')))
 	{
 		$alert_msg = 'Please submit a filename to attach';
 	}
@@ -134,18 +190,28 @@
 		$body_tags .= ' topmargin="0" marginheight="0" marginwidth="0" leftmargin="0"';
 	}
 
-	/*$debuginfo = $phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'];
+	/*
+	$debuginfo .= $phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'] .'<br>';
 	if (count($file_info) > 0)
 	{
 	}
-	$debuginfo .= '<br> uploadedfile: ' .$uploadedfile .'   totalfiles: ' .$totalfiles 
-		.'<br>file_info_count: '.count($file_info);
+	$debuginfo .= '--uploadedfile info: <br>'
+		.'file_tmp_name: ' .$file_tmp_name .'<br>'
+		.'file_name: ' .$file_name .'<br>'
+		.'file_size: ' .$file_size .'<br>'
+		.'file_type: ' .$file_type .'<br>'
+		.'<br>'
+		.'totalfiles: ' .$totalfiles .'<br>'
+		.'file_info_count: '.count($file_info) .'<br>'
+		.'<br>';
 	if (count($file_info) > 0)
 	{
-		$debuginfo .= ' file_info[0]='.$file_info[0] .' file_info[1]='.$file_info[1];
+		$debuginfo .= '<br> file_info[0]='.$file_info[0] .'<br> file_info[1]='.$file_info[1];
 	}
-	$t->set_var('debuginfo',$debuginfo);
+	$debuginfo .= '<br>';
+	echo $debuginfo;
 	*/
+	
 
 	$charset = lang('charset');
 	$t->set_var('charset',$charset);

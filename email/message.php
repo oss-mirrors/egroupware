@@ -604,13 +604,13 @@
 		//{
 		//	$part_nice[$i]['m_keywords'] .= $part_nice[$i]['description'] .' ';
 		//}
-		if ($part_nice[$i]['ex_num_param_pairs'] > 0)
-		{
-			for ($p = 0; $p < $part_nice[$i]['ex_num_param_pairs']; $p++)
-			{
-				$part_nice[$i]['m_keywords'] .= $part_nice[$i]['params'][$p]['attribute'].'='.$part_nice[$i]['params'][$p]['value'].' ';
-			}
-		}
+		//if ($part_nice[$i]['ex_num_param_pairs'] > 0)
+		//{
+		//	for ($p = 0; $p < $part_nice[$i]['ex_num_param_pairs']; $p++)
+		//	{
+		//		$part_nice[$i]['m_keywords'] .= $part_nice[$i]['params'][$p]['attribute'].'='.$part_nice[$i]['params'][$p]['value'].' ';
+		//	}
+		//}
 		if ($part_nice[$i]['ex_attachment'])
 		{
 			$part_nice[$i]['m_keywords'] .= 'ex_attachment' .' ';
@@ -669,6 +669,42 @@
 		else
 		{
 			$part_nice[$i]['m_description'] = 'presentable';
+		}
+		
+		// initialize and prepare for the following mime exceptions code
+		$part_nice[$i]['m_html_related_kids'] = False;
+		$parent_idx = $part_nice[$i]['ex_parent_flat_idx'];
+		
+		// ------  Exceptions for Less-Standart Subtypes  ------
+		//"m_description" set above will work *most all* the time. However newer standards
+		// are encouraged to make use of the "subtype" param, not create new "type"s 
+		// the following "multipart/SUBTYPES" should be treated as
+		// "container" instead of "packagelist"
+		if ($part_nice[$i]['m_description'] == 'packagelist')
+		{
+			// Exception: multipart/APPLEDOUBLE  (ex. mac thru X.400 gateway)
+			// treat as "container", not as "packagelist"
+			if (($part_nice[$i]['type'] == 'multipart')
+			&& ($part_nice[$i]['subtype'] == 'appledouble'))
+			{
+				$part_nice[$i]['m_description'] = 'container';
+				$part_nice[$i]['m_keywords'] .= 'Force Container' .' ';
+			}
+			// Exception: multipart/RELATED (ex. Outl00k "stationary" email)
+			// treat it's *child* multipart/alternative as "container", not as "packagelist"
+			elseif (($part_nice[$i]['ex_level_debth'] > 1)  // does not apply to level1, b/c level1 has no parent
+			&& ($part_nice[$i]['type'] == 'multipart')
+			&& ($part_nice[$i]['subtype'] == 'alternative')
+			&& ($part_nice[$parent_idx]['type'] == 'multipart')
+			&& ($part_nice[$parent_idx]['subtype'] == 'related'))
+			{
+				$part_nice[$i]['m_description'] = 'container';
+				$part_nice[$i]['m_keywords'] .= 'Force Container' .' ';
+				// SET THIS FLAG: then, in presentation loop, see if a HTML part 
+				// has a parent with this flag - if so, replace "id" reference(s) with 
+				// http... mime reference(s). Example: MS Stationary mail's image background
+				$part_nice[$i]['m_html_related_kids'] = True;
+			}
 		}
 	}
 
@@ -811,6 +847,10 @@
 			if ($part_nice[$i]['subtype'] != $struct_not_set)
 			{
 				$msg_body_info .= 'subtype: '. $part_nice[$i]['subtype'] .$crlf;
+			}
+			if ($part_nice[$i]['m_html_related_kids'])
+			{
+				$msg_body_info .= '*m_html_related_kids: True*' .$crlf;
 			}
 			if ($part_nice[$i]['encoding'] != $struct_not_set)
 			{
@@ -1026,8 +1066,70 @@
 				$dsp = $phpgw->msg->qprint($dsp);
 			}
 
+			$parent_idx = $part_nice[$i]['ex_parent_flat_idx'];
+			$msg_headers = $phpgw->msg->fetchheader($mailbox, $msgnum);
+			$ms_related_str = 'X-MimeOLE: Produced By Microsoft MimeOLE';
+
+			// ---- Replace "Related" part's ID with a mime reference link
+			// this for the less-standard multipart/RELATED subtype ex. Outl00k's Stationary email
+			if (($part_nice[$parent_idx]['m_html_related_kids'])
+			|| (stristr($msg_headers, $ms_related_str)))
+			{
+				// typically it's the NEXT mime part that should be inserted into this one
+				for ($rel = $i+1; $rel < count($part_nice)+1; $rel++)
+				{
+					if ((isset($part_nice[$rel]))
+					&& ($part_nice[$rel]['id'] != $struct_not_set))
+					{
+						// Set this Flag for Later Use
+						$probable_replace = True;
+						// prepare the reference ID for search and replace
+						$replace_id = $part_nice[$rel]['id'];
+						// prepare the replacement href, add the quotes that the html expects
+						$part_href = $part_nice[$rel]['ex_part_href'];
+						//$part_href = '"'.$part_nice[$rel]['ex_part_href'].'"';
+					
+						//echo '<br> **replace_id (pre-processing): ' .$replace_id .'<br>';
+						//echo 'part_href (processed): ' .$part_href .'<br>';
+					
+						// strip <  and  >  from this ID
+						$replace_id = ereg_replace( '^<','',$replace_id);
+						$replace_id = ereg_replace( '>$','',$replace_id);
+						// id references are typically preceeded with "cid:"
+						$replace_id = 'cid:' .$replace_id;
+					
+						//echo '**replace_id (post-processing): ' .$replace_id .'<br>';
+					
+						// Attempt the Search and Replace
+						$dsp = str_replace($replace_id, $part_href, $dsp);
+					}
+				}
+				// ELSE - Forget About It - Unsupported
+			}
 
 			// ---- strip html - FUTURE: only strip "bad" html
+			
+			// PARTIALLY HOSED
+			// strip source html email from <!DOCTYPE  ...  to the begining of the body tag
+			//$dsp = preg_replace("/<!DOC.*<body/ismx", "BLA",$dsp);
+			// strip to the end of the <body .... > tag
+			//$dsp = preg_replace("/^.*>/i","",$dsp);
+			// strip </body>  tag
+			//$dsp = preg_replace("/<\/body>/i","",$dsp);
+			// strip </html>  tag
+			//$dsp = preg_replace("/<\/html>/i","",$dsp);
+
+			// FULLY HOSED
+			// strip source html email from <!DOCTYPE  ...  to the begining of the style tag
+			//$dsp = preg_replace("/<!DOC.*<style/ismx", "<style",$dsp);
+			//$dsp = preg_replace("/<\/style>.*<body/ismx", "</style>\r\n<body",$dsp);
+			// strip to the end of the <body .... > tag
+			//$dsp = preg_replace("/^<body.{0,}>/im","",$dsp);
+			// strip </body>  tag
+			//$dsp = preg_replace("/<\/body>/i","",$dsp);
+			// strip </html>  tag
+			//$dsp = preg_replace("/<\/html>/i","",$dsp);
+
 			//if (strtoupper(lang("charset")) <> "BIG5")
 			//{
 			//	$dsp = $phpgw->strip_html($dsp);
@@ -1043,6 +1145,62 @@
 
 
 			//$t->set_var('message_body',"<tt>$dsp</tt>");
+
+			/*
+			// if there are headers <!DOCTYPE or <STYLE> in the html body, then seeing is optional
+			if ((stristr($dsp, '<!DOCTYPE'))
+			|| (stristr($dsp, '<style'))
+			|| (stristr($dsp, '<script'))
+			|| (stristr($dsp, '</script>'))
+			|| (stristr($dsp, '</head>')))
+			*/
+			
+			// Viewing HTML part is Optional (NOT automatic) if:
+			// (1) if there are CSS Body formattings, or
+			// (2) any <script> in the html body
+			if ((preg_match("/<style.*body.*[{].*[}]/ismx", $dsp))
+			|| (preg_match("/<script.*>.*<\/script>/ismx", $dsp)))
+			{
+				// if we replaced id(s) with href'(s) above (RELATED) then
+				// stuff the modified html in a hidden var, submit it then echo it back
+				if (($part_nice[$parent_idx]['m_html_related_kids'])
+				|| (stristr($msg_headers, $ms_related_str)))
+				{
+					// this means we *may* have replaced, a guess, but better security 
+					// than setting a variable that could be fed to the server from a URI
+					// replacement is done, and hard to reproduce easily, do just use the work
+					// we already did above
+					// make a submit button with this html part as a hidden var
+					$dsp =
+					//'<pre>'.$msg_headers .'</pre>'
+					'<p>'
+					.'<form action="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/view_html.php').'" method="post">'."\r\n"
+					.'<input type="hidden" name="html_part" value="'.base64_encode($dsp).'">'."\r\n"
+					.'&nbsp;&nbsp;<input type="submit" value="View as HTML">'."\r\n"
+					.'</p>'
+					.'<br>';
+				}
+				else
+				{
+					// in this case, we need only refer to the part number in an href, then redirect
+					// make a submit button with this html part as a hidden var
+					$part_href = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/get_attach.php',
+						 'folder='.$folder .'&msgnum=' .$msgnum .'&part_no=' .$part_nice[$i]['m_part_num_mime']);
+					$dsp =
+					//'<pre>'.$msg_headers .'</pre>'
+					'<p>'
+					.'<form action="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/view_html.php').'" method="post">'."\r\n"
+					.'<input type="hidden" name="html_reference" value="'.$part_href.'">'."\r\n"
+					.'&nbsp;&nbsp;<input type="submit" value="View as HTML">'."\r\n"
+					.'</p>'
+					.'<br>';
+				}
+			}
+			else
+			{
+				// it can't be that bad, just show it
+			}
+
 			$t->set_var('message_body',"$dsp");
 			$t->parse('V_display_part','B_display_part', True);
 
