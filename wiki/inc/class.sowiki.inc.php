@@ -215,10 +215,9 @@ class soWikiPage
 	{
 		$where = array(
 			'wiki_name'	=> $this->name,
+			'wiki_lang' => !empty($this->lang) ? $this->lang : $this->use_langs,
 			$this->acl_filter(),
 		);
-		if (!empty($this->lang)) $where['wiki_lang'] = $this->lang;
-
 		if($this->version != -1)
 		{
 			$where['wiki_version'] = $this->version;
