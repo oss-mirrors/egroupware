@@ -28,14 +28,10 @@
 
 		function boqmailldap()
 		{
-			#global $phpgw;
-
 			$this->soqmailldap = CreateObject('qmailldap.soqmailldap');
-			
 			$this->restoreSessionData();
-
 		}
-		
+
 		function deleteServer($_serverid)
 		{
 			$this->soqmailldap->deleteServer($_serverid);
@@ -43,22 +39,20 @@
 		
 		function getLDAPData($_serverid, $_nocache=0)
 		{
-			global $phpgw, $HTTP_GET_VARS;
-			
-			if ($HTTP_GET_VARS['nocache'] == '1' || $_nocache == '1')
+			if ($GLOBALS['HTTP_GET_VARS']['nocache'] == '1' || $_nocache == '1')
 			{
 				#print "option1<br>";
 				$LDAPData = $this->soqmailldap->getLDAPData($_serverid);
 				$this->sessionData[$_serverid] = $LDAPData;
 				$this->sessionData[$_serverid]['needActivation'] = 0;
-				
+
 				$this->saveSessionData();
 
 				#while(list($key, $value) = each($this->sessionData[$_serverid]['rcpthosts']))
 				#{
 				#	print "... $key: $value<br>";
 				#}
-				
+
 				return $this->sessionData[$_serverid];
 			}
 			else
@@ -71,19 +65,19 @@
 				return $this->sessionData[$_serverid];
 			}
 		}
-		
+
 		function getLDAPStorageData($_serverid)
 		{
 			$storageData = $this->soqmailldap->getLDAPStorageData($_serverid);
 			return $storageData;
 		}
-		
+
 		function getServerList()
 		{
 			$serverList = $this->soqmailldap->getServerList();
 			return $serverList;
 		}
-		
+
 		function getUserData($_accountID, $_usecache)
 		{
 			if ($_usecache)
@@ -101,11 +95,9 @@
 
 		function restoreSessionData()
 		{
-			global $phpgw;
-		
-			$this->sessionData = $phpgw->session->appsession('session_data');
-			$this->userSessionData = $phpgw->session->appsession('user_session_data');
-			
+			$this->sessionData = $GLOBALS['phpgw']->session->appsession('session_data');
+			$this->userSessionData = $GLOBALS['phpgw']->session->appsession('user_session_data');
+
 			#while(list($key, $value) = each($this->sessionData))
 			#{
 			#	print "++ $key: $value<br>";
@@ -116,7 +108,7 @@
 		function save($_postVars, $_getVars)
 		{
 			$serverid = $_getVars['serverid'];
-			
+
 			if (isset($_postVars["bo_action"]))
 			{
 				$bo_action = $_postVars["bo_action"];
@@ -129,66 +121,48 @@
 			{
 				return false;
 			}
-			
+
 			#print "bo_action: $bo_action<br>";
-			
+
 			switch ($bo_action)
 			{
-				case "add_locals":
+				case 'add_locals':
 					$count = count($this->sessionData[$serverid]['locals']);
-					
+
 					$this->sessionData[$serverid]['locals'][$count] = 
-						$_postVars["new_local"];
-						
+						$_postVars['new_local'];
+
 					$this->sessionData[$serverid]['needActivation'] = 1;
-					
 					$this->saveSessionData();
-					
 					break;
-					
-				case "add_rcpthosts":
+				case 'add_rcpthosts':
 					$count = count($this->sessionData[$serverid]['rcpthosts']);
-					
-					$this->sessionData[$serverid]['rcpthosts'][$count] = 
-						$_postVars["new_rcpthost"];
-						
-					if ($_postVars["add_to_local"] == "on")
+					$this->sessionData[$serverid]['rcpthosts'][$count] = $_postVars['new_rcpthost'];
+					if ($_postVars['add_to_local'] == 'on')
 					{
 						$count = count($this->sessionData[$serverid]['locals']);
 						
 						$this->sessionData[$serverid]['locals'][$count] = 
 							$_postVars["new_rcpthost"];
 					}
-					
 					$this->sessionData[$serverid]['needActivation'] = 1;
-					
 					$this->saveSessionData();
-					
 					break;
-					
-				case "add_smtproute":
+				case 'add_smtproute':
 					$count = count($this->sessionData[$serverid]['smtproutes']);
-				
-					$this->sessionData[$serverid]['smtproutes'][$count] =
-						sprintf("%s:%s:%s",
-							$_postVars["domain_name"],
-							$_postVars["remote_server"],
-							$_postVars["remote_port"]
-						);
-				
+					$this->sessionData[$serverid]['smtproutes'][$count] = sprintf("%s:%s:%s",
+																			$_postVars['domain_name'],
+																			$_postVars['remote_server'],
+																			$_postVars['remote_port']);
 					$this->sessionData[$serverid]['needActivation'] = 1;
-					
 					$this->saveSessionData();
-					
 					break;
-					
-				case "remove_locals":
+				case 'remove_locals':
 					$i=0;
-					
 					while(list($key, $value) = each($this->sessionData[$serverid]['locals']))
 					{
 						#print ".. $key: $value<br>";
-						if ($key != $_postVars["locals"])
+						if ($key != $_postVars['locals'])
 						{
 							$newLocals[$i]=$value;
 							#print "!! $i: $value<br>";
@@ -196,20 +170,15 @@
 						}
 					}
 					$this->sessionData[$serverid]['locals'] = $newLocals;
-					
 					$this->sessionData[$serverid]['needActivation'] = 1;
-					
 					$this->saveSessionData();
-					
 					break;
-					
-				case "remove_rcpthosts":
+				case 'remove_rcpthosts':
 					$i=0;
-					
 					while(list($key, $value) = each($this->sessionData[$serverid]['rcpthosts']))
 					{
 						#print ".. $key: $value<br>";
-						if ($key != $_postVars["rcpthosts"])
+						if ($key != $_postVars['rcpthosts'])
 						{
 							$newRcpthosts[$i]=$value;
 							#print "!! $i: $value<br>";
@@ -217,20 +186,15 @@
 						}
 					}
 					$this->sessionData[$serverid]['rcpthosts'] = $newRcpthosts;
-					
 					$this->sessionData[$serverid]['needActivation'] = 1;
-					
 					$this->saveSessionData();
-					
 					break;
-					
-				case "remove_smtproute":
+				case 'remove_smtproute':
 					$i=0;
-					
 					while(list($key, $value) = each($this->sessionData[$serverid]['smtproutes']))
 					{
 						#print ".. $key: $value : ".$_getVars["smtproute_id"]."<br>";
-						if ($key != $_getVars["smtproute_id"])
+						if ($key != $_getVars['smtproute_id'])
 						{
 							$newSmtproutes[$i]=$value;
 							#print "!! $i: $value<br>";
@@ -238,62 +202,50 @@
 						}
 					}
 					$this->sessionData[$serverid]['smtproutes'] = $newSmtproutes;
-				
 					$this->sessionData[$serverid]['needActivation'] = 1;
-					
 					$this->saveSessionData();
-					
 					break;
-				case "save_ldap":
+				case 'save_ldap':
 					#print "hallo".$_getVars["serverid"]." ".$_postVars["servername"]."<br>";
 					$data = array
 					(
-						"qmail_servername"	=> $_postVars["qmail_servername"],
-						"description"		=> $_postVars["description"],
-						"ldap_basedn"		=> $_postVars["ldap_basedn"],
-						"id"			=> $_getVars["serverid"]
+						'qmail_servername'	=> $_postVars['qmail_servername'],
+						'description'		=> $_postVars['description'],
+						'ldap_basedn'		=> $_postVars['ldap_basedn'],
+						'id'				=> $_getVars['serverid']
 					);
-					if (!isset($_getVars["serverid"]))
+					if (!isset($_getVars['serverid']))
 					{
-						$this->soqmailldap->update("add_server",$data);
+						$this->soqmailldap->update('add_server',$data);
 					}
 					else
 					{
-						$this->soqmailldap->update("update_server",$data);
+						$this->soqmailldap->update('update_server',$data);
 					}
-
-					$this->getLDAPData($_getVars["serverid"], '1');
-					
+					$this->getLDAPData($_getVars['serverid'], '1');
 					break;
-					
-				case "write_to_ldap":
-				
+				case 'write_to_ldap':
 					$this->soqmailldap->writeConfigData($this->sessionData[$serverid], $serverid);
-				
 					$this->sessionData[$serverid]['needActivation'] = 0;
-				
 					$this->saveSessionData();
-					
 					break;
 			}
 		}
-		
+
 		function saveSessionData()
 		{
-			global $phpgw;
-			
-			$phpgw->session->appsession('session_data','',$this->sessionData);
-			$phpgw->session->appsession('user_session_data','',$this->userSessionData);
+			$GLOBALS['phpgw']->session->appsession('session_data','',$this->sessionData);
+			$GLOBALS['phpgw']->session->appsession('user_session_data','',$this->userSessionData);
 		}
-		
+
 		function saveUserData($_accountID, $_formData, $_boAction)
 		{
-			$this->userSessionData[$_accountID]['mailLocalAddress'] 	= $_formData["mailLocalAddress"];
-			$this->userSessionData[$_accountID]['accountStatus'] 		= $_formData["accountStatus"];
-			$this->userSessionData[$_accountID]['mailRoutingAddress'] 	= $_formData["mailRoutingAddress"];
-			$this->userSessionData[$_accountID]['qmailDotMode'] 		= $_formData["qmailDotMode"];
-			$this->userSessionData[$_accountID]['deliveryProgramPath'] 	= $_formData["deliveryProgramPath"];
-			
+			$this->userSessionData[$_accountID]['mailLocalAddress'] 	= $_formData['mailLocalAddress'];
+			$this->userSessionData[$_accountID]['accountStatus'] 		= $_formData['accountStatus'];
+			$this->userSessionData[$_accountID]['mailRoutingAddress'] 	= $_formData['mailRoutingAddress'];
+			$this->userSessionData[$_accountID]['qmailDotMode'] 		= $_formData['qmailDotMode'];
+			$this->userSessionData[$_accountID]['deliveryProgramPath'] 	= $_formData['deliveryProgramPath'];
+
 			switch ($_boAction)
 			{
 				case 'add_mailAlternateAddress':
@@ -306,17 +258,13 @@
 						$count = 0;
 						$this->userSessionData[$_accountID]['mailAlternateAddress'] = array();
 					}
-					
 					$this->userSessionData[$_accountID]['mailAlternateAddress'][$count] = 
 						$_formData['add_mailAlternateAddress'];
 						
 					$this->saveSessionData();
-					
 					break;
-					
 				case 'remove_mailAlternateAddress':
 					$i=0;
-					
 					while(list($key, $value) = each($this->userSessionData[$_accountID]['mailAlternateAddress']))
 					{
 						#print ".. $key: $value<br>";
@@ -328,14 +276,10 @@
 						}
 					}
 					$this->userSessionData[$_accountID]['mailAlternateAddress'] = $newMailAlternateAddress;
-					
 					$this->saveSessionData();
-
 					break;
-					
 				case 'save':
 					$this->soqmailldap->saveUserData($_accountID, $this->userSessionData[$_accountID]);
-					
 					break;
 			}
 		}
