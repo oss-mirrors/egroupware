@@ -19,7 +19,7 @@
   $phpgw_info["flags"]["parent_page"] = "admin.php";
   include("../header.inc.php");
   if (! $con)
-     Header("Location: " . $phpgw->link("admin.php"));
+     Header("Location: " . $phpgw->link("/headlines/admin.php"));
 
   if ((! $submit) && ($con)) {
 
@@ -28,7 +28,7 @@
 
      ?>
 
-     <form method="POST" action="<?php echo $phpgw->link("editheadline.php"); ?>">
+     <form method="POST" action="<?php echo $phpgw->link("/headlines/editheadline.php"); ?>">
       <input type="hidden" name="o_con" value="<?php echo $con; ?>">
 
       <center>
@@ -86,6 +86,6 @@
 
      $phpgw->db->unlock();
 
-     Header("Location: " . $phpgw->link("admin.php", "cd=27"));
+     Header("Location: " . $phpgw->link("/headlines/admin.php", "cd=27"));
   }
 ?>

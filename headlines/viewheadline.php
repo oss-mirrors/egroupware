@@ -16,7 +16,7 @@
 
   include("../header.inc.php");
   if (! $con)
-     Header("Location: ".$phpgw->link("admin.php"));
+     Header("Location: ".$phpgw->link("/headlines/admin.php"));
 
   $phpgw->db->query("select * from news_site where con=$con");
   $phpgw->db->next_record();

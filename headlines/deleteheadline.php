@@ -36,10 +36,10 @@
        </tr>
        <tr>
          <td>
-           <a href="<?php echo $phpgw->link("admin.php") . "\">" . lang("No"); ?></a>
+           <a href="<?php echo $phpgw->link("/headlines/admin.php") . "\">" . lang("No"); ?></a>
          </td>
          <td>
-           <a href="<?php echo $phpgw->link("deleteheadline.php","con=$con&confirm=true") . "\">" . lang("Yes"); ?></a>
+           <a href="<?php echo $phpgw->link("/headlines/deleteheadline.php","con=$con&confirm=true") . "\">" . lang("Yes"); ?></a>
          </td>
        </tr>
       </table>
@@ -70,6 +70,6 @@
       }
     }
 
-    Header("Location: " . $phpgw->link("admin.php","cd=16"));
+    Header("Location: " . $phpgw->link("/headlines/admin.php","cd=16"));
   }
 ?>
