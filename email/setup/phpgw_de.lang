@@ -278,7 +278,7 @@ send	email	de	Senden
 send deleted messages to the trash	email	de	gelöschte Nachrichten in die Mülltonne befördern
 send forwarded mail as quoted attachment	email	de	Nachrichten als Zitierten Anhang (quoted attachment) weiterleiten
 sender	email	de	Absender
-sent	email	de	gesenden
+sent	email	de	Gesendet
 sent folder	email	de	Ordner für gesendete Nachrcihten
 sent messages folder	common	de	Ordner für versandte Nachrichten
 sent messages folder name	email	de	Ordner Name für versandte Nachrichten
@@ -300,7 +300,7 @@ size	email	de	Größe
 size larger than	email	de	Größer als
 size smaller than	email	de	Kleiner als
 small	email	de	klein
-small view	email	de	
+small view	email	de	kleine Ansicht
 smaller	email	de	kleiner
 smallest	email	de	sehr klein
 somebody	email	de	irgendjemand
@@ -346,8 +346,8 @@ this text will be appended to the bottom of the users emails for this email acco
 to	email	de	An
 to address	email	de	An Adresse
 total messages	email	de	Nachrichten insgesamt
-trash	email	de	papierkorb
-trash folder	email	de	papierkorb ordner
+trash	email	de	Papierkorb
+trash folder	email	de	Papierkorb Ordner
 u-wash mail folder	email	de	U-Wash Mail Ordner
 u-wash mail folder - if applicable	email	de	U-Wash Mail Ordner- wenn anwendbar
 unable to get source folder name	email	de	Kann Ursprünglichen Ordnernamen nicht finden
