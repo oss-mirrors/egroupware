@@ -94,7 +94,7 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a
    </tr>
    <tr>
     <form method="POST" action="./forum.php">
-    <? echo $phpgw->session->hidden_var(); ?>
+    <? // echo $phpgw->session->hidden_var(); ?>
     <? echo $extrahidden ?> 
     <input type="hidden" name="action" value="<?echo $actiontype?>">
 
