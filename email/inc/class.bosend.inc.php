@@ -9,14 +9,14 @@
 	*  Free Software Foundation; either version 2 of the License, or (at your		*
 	*  option) any later version.								*
 	\**************************************************************************/
-	
+
 	/* $Id$ */
-	
+
 	/*!
 	@class bosend
 	@abstract bo class for assembling messages for sending via class send
 	@author Angles, server side attachment storage technique borrowed from Squirrelmail,
-	
+
 	*/
 	class bosend
 	{
@@ -32,7 +32,7 @@
 		var $not_set='-1';
 		var $mail_out = array();
 		var $xi;
-		
+
 		// --- DEBUG FLAGS ---  level between 0 to 3, level 4 *sometimes* will dump info and exit
 		// this debugs stuff in the constructor AND passes the debug flag to msg_bootstrap
 		var $debug_constructor = 0;
@@ -45,27 +45,27 @@
 		// this debugs stuff in the attachment handling section inside the send section
 		var $debug_struct = 0;
 		var $company_disclaimer = '';
-		
+
 		function bosend()
 		{
 			if ($this->debug_constructor > 0) { echo 'email.bosend *constructor*: ENTERING<br>'; }
-			
+
 			// May 9, 2003 Ryan Bonham adds company disclaimer code
 			// This Disclaimer will be added to any out going mail
 			//var $company_disclaimer = "\r\n\r\n-- \r\n This message was sent using Forester GroupWare. Visit the Forest City Regional website at http://www.forestcityschool.org.\r\nThis message does not necessarily reflect the views of the Forest City Regional School District, nor has it been approved or sanctioned by it. \r\n";
-			
+
 			$this->msg_bootstrap = CreateObject("email.msg_bootstrap");
 			$this->msg_bootstrap->ensure_mail_msg_exists('email.bosend.constructor', $this->debug_constructor);
-			
+
 			$this->not_set = $GLOBALS['phpgw']->msg->not_set;
 			if ($this->debug_constructor > 0) { echo 'email.bosend *constructor*: LEAVING<br>'; }
 		}
-		
+
 		/*!
 		@function get_originating_ip
 		@abstract the client IP for this phpgw user at the time the send button was clicked
 		@discussion Gets the value for the "X-Originating-IP" header. That header  is used
-		by hotmail, for example, it looked like a "good thing" and was a feature request, so we 
+		by hotmail, for example, it looked like a "good thing" and was a feature request, so we
 		use it here too. Even if the IP private (such as on a LAN), this can still be useful for the admin.
 		*/
 		function get_originating_ip()
@@ -79,7 +79,7 @@
 			{
 				$got_ip = $GLOBALS['HTTP_SERVER_VARS']['REMOTE_ADDR'];
 			}
-			
+
 			// did we get anything useful ?
 			if (trim((string)$got_ip) == '')
 			{
@@ -87,27 +87,27 @@
 			}
 			return $got_ip;
 		}
-		
-		
-		
+
+
+
 		/*!
 		@function copy_to_sent_folder
 		@abstract Put a message in "Sent" Folder, if Applicable. This MUST be a message that has been sent already!
 		@result Boolean
 		@author Angles
-		@discussion If a message has already been sent, and IF the user has set the pref enabling the use of the sent folder, 
-		only then should this function be used. If a message has not actually been sent, it should NOT be copied to the "Sent" 
-		folder because that misrepresents to the user the history of the message. Mostly this is an issue with automated 
-		messages sent from other apps. My .02 cents is that if a user did not send a message by pressing the "Send" button, 
-		then the message does not belong in the Sent messages folder. Other people may have a different opinion, so 
-		this function will not zap your keyboard if you think differently. Nonetheless, if the user has not enabled 
-		the preference "Sent mail copied to Sent Folder", then noting gets copied there no matter what. Note that we 
-		obtain these preference settings as shown in the example for this function. If the folder does not already exist, 
-		class mail_msg has code to make every reasonable attempt to create the folder automatically. Some servers 
-		just do things differently enough (unusual namespaces, sub folder trees) that the auto create may not work, 
-		but it is nost likly that it can be created, and even more likely that it already exists. NOTE: this particular class 
-		should be made availabllle to public use without the brain damage that is the current learning curve for this 
-		code. BUT for now, this is a private function unless you really know what you are doing. Even then, code 
+		@discussion If a message has already been sent, and IF the user has set the pref enabling the use of the sent folder,
+		only then should this function be used. If a message has not actually been sent, it should NOT be copied to the "Sent"
+		folder because that misrepresents to the user the history of the message. Mostly this is an issue with automated
+		messages sent from other apps. My .02 cents is that if a user did not send a message by pressing the "Send" button,
+		then the message does not belong in the Sent messages folder. Other people may have a different opinion, so
+		this function will not zap your keyboard if you think differently. Nonetheless, if the user has not enabled
+		the preference "Sent mail copied to Sent Folder", then noting gets copied there no matter what. Note that we
+		obtain these preference settings as shown in the example for this function. If the folder does not already exist,
+		class mail_msg has code to make every reasonable attempt to create the folder automatically. Some servers
+		just do things differently enough (unusual namespaces, sub folder trees) that the auto create may not work,
+		but it is nost likly that it can be created, and even more likely that it already exists. NOTE: this particular class
+		should be made availabllle to public use without the brain damage that is the current learning curve for this
+		code. BUT for now, this is a private function unless you really know what you are doing. Even then, code
 		in this class is subject to change.
 		@access private - NEEDS TO BE MADE AVAILABLE FOR PUBLIC USE
 		*/
@@ -115,29 +115,29 @@
 		{
 			/*!
 			@capability (FUTURE CODE) append to sent folder without a pre-existing mailsvr_stream.
-			@discussion FUTURE CODE what follows is untested but should work to accomplish that. 
-			While we do need to login to the mail server, we can just select the INBOX because the IMAP 
+			@discussion FUTURE CODE what follows is untested but should work to accomplish that.
+			While we do need to login to the mail server, we can just select the INBOX because the IMAP
 			APPEND command does not require you have "selected" the folder that is the target of the append.
-			We should be able to simply bootstrap the msg objext and call login, because during initialization 
-			the msg object gathers all the data it can find on what account number we are dealing with here, 
-			it handles that for us automatically. We do not want to append to the sent folder of the wrong account. 
+			We should be able to simply bootstrap the msg objext and call login, because during initialization
+			the msg object gathers all the data it can find on what account number we are dealing with here,
+			it handles that for us automatically. We do not want to append to the sent folder of the wrong account.
 			@example ## this should work if a stream does not already exist (UNTESTED)
 			$this->msg_bootstrap = CreateObject("email.msg_bootstrap");
 			$this->msg_bootstrap->ensure_mail_msg_exists('email.bosend.copy_to_sent_folder', $this->debug_send);
 			## now run the rest of the function as usual.
-			*/ 
-			
+			*/
+
 			if ($GLOBALS['phpgw']->msg->get_isset_pref('use_sent_folder') == False)
 			{
 				// ERROR, THIS ACCT DOES NOT WANT SENT FOLDER USED
 				return False;
 			}
-			
-			
+
+
 			// note: what format should these folder name options (sent and trash) be held in
 			// i.e. long or short name form, in the prefs database
 			$sent_folder_name = $GLOBALS['phpgw']->msg->get_pref_value('sent_folder_name');
-			
+
 			// NOTE: append will open the stream automatically IF it is not open
 			//if ((($GLOBALS['phpgw']->msg->get_isset_arg('mailsvr_stream')))
 			//&& ($GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream') != ''))
@@ -154,10 +154,10 @@
 				//echo 'NO STREAM available for sent folder append<br>';
 			//	return False;
 			//}
-			
+
 			return $success;
 		}
-		
+
 		//  -------  This will be called just before leaving this page, to clear / unset variables / objects -----------
 		function send_message_cleanup()
 		{
@@ -169,22 +169,22 @@
 			$GLOBALS['phpgw']->mail_send = '';
 			unset($GLOBALS['phpgw']->mail_send);
 		}
-		
+
 		/*!
 		@function sendorspell
 		@abstract detects whether the compose page was submitted as a send or spellcheck, and acts accordingly
 		@params none, uses GET and POST vars
 		@author Angles
-		@discussion Compose form submit action target is bosend, naturally, however the spell check button submit is identical 
+		@discussion Compose form submit action target is bosend, naturally, however the spell check button submit is identical
 		EXCEPT "btn_spellcheck" POST var will be set, which requires we handoff the handling to the spell class.
 		*/
 		function sendorspell()
 		{
 			if ($this->debug_sendorspell > 0) { $GLOBALS['phpgw']->msg->dbug->out('ENTERING: email.bosend.sendorspell('.__LINE__.') <br>'); }
-			
+
 			if ($this->debug_sendorspell > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.sendorspell('.__LINE__.'): $GLOBALS[HTTP_POST_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_POST); }
 			if ($this->debug_sendorspell > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.sendorspell('.__LINE__.'): $GLOBALS[HTTP_GET_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_GET); }
-			
+
 			if ((isset($GLOBALS['phpgw']->msg->ref_POST['btn_spellcheck']))
 			&& ($GLOBALS['phpgw']->msg->ref_POST['btn_spellcheck'] != ''))
 			{
@@ -202,11 +202,11 @@
 				if ($this->debug_sendorspell > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.sendorspell('.__LINE__.'): ERROR: neither "btn_spellcheck" not "btn_send" is set; fallback action $this->send()'.'<br>'); }
 				$this->send();
 			}
-			
+
 			if ($this->debug_sendorspell > 0) { $GLOBALS['phpgw']->msg->dbug->out('LEAVING: email.bosend.sendorspell('.__LINE__.')'.'<br>'); }
 		}
-		
-		
+
+
 		/*!
 		@function spellcheck
 		@abstract if the compose page was submitted as a pellcheck, this function is called, it then calls the emai.spell class
@@ -217,14 +217,14 @@
 		function spellcheck()
 		{
 			if ($this->debug_spellcheck > 0) { $GLOBALS['phpgw']->msg->dbug->out('ENTERING: email.bosend.spellcheck('.__LINE__.')'.'<br>'); }
-			
+
 			if ($this->debug_spellcheck > 2) { 	$GLOBALS['phpgw']->msg->dbug->out('email.bosend.spellcheck('.__LINE__.'): $GLOBALS[HTTP_POST_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_POST); }
 			if ($this->debug_spellcheck > 2) { 	$GLOBALS['phpgw']->msg->dbug->out('email.bosend.spellcheck: data dump('.__LINE__.'): $GLOBALS[HTTP_GET_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_GET); }
-			
+
 			// we may strip slashes, but that is all we should do before handing the body to the spell class
 			//$my_body = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($GLOBALS['phpgw']->msg->get_arg_value('body')));
 			//$this->mail_spell->set_body_orig($my_body);
-			
+
 			$this->mail_spell = CreateObject("email.spell");
 			// preserve these vars
 			$this->mail_spell->set_preserve_var('action', $GLOBALS['phpgw']->msg->get_arg_value('action'));
@@ -236,10 +236,10 @@
 			$this->mail_spell->set_preserve_var('cc', $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('cc')));
 			$this->mail_spell->set_preserve_var('bcc', $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('bcc')));
 			$this->mail_spell->set_preserve_var('msgtype', $GLOBALS['phpgw']->msg->get_arg_value('msgtype'));
-			
+
 			$this->mail_spell->set_subject($GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('subject')));
 			$this->mail_spell->set_body_orig($GLOBALS['phpgw']->msg->stripslashes_gpc(trim($GLOBALS['phpgw']->msg->get_arg_value('body'))));
-			
+
 			// oops, do not forget about these, "attach_sig" and "req_notify"
 			if (($GLOBALS['phpgw']->msg->get_isset_arg('attach_sig'))
 			&& ($GLOBALS['phpgw']->msg->get_arg_value('attach_sig') != ''))
@@ -251,23 +251,23 @@
 			{
 				$this->mail_spell->set_preserve_var('req_notify', $GLOBALS['phpgw']->msg->get_arg_value('req_notify'));
 			}
-			
+
 			//$this->mail_spell->basic_spcheck();
 			$this->mail_spell->spell_review();
-			
-			
-			
+
+
+
 			if ($this->debug_spellcheck > 0) { echo 'LEAVING: email.bosend.spellcheck('.__LINE__.')'.'<br>'; }
 		}
-		
+
 		/*!
 		@function send
 		@abstract if the compose page was submitted as a pellcheck, this function is called
 		@params none, uses GET and POST vars, however this will be OOPd for API use
 		@discussion advanced function to send mail with all the complexities of modern MIME usage.
-		Currently handles forwarding as an "encapsulated" MIME part, thus prewserving the original 
+		Currently handles forwarding as an "encapsulated" MIME part, thus prewserving the original
 		messages structure, including any attachments the original message had.
-		Of course the user can attach files, this includes attaching additional files to a forwarded message which 
+		Of course the user can attach files, this includes attaching additional files to a forwarded message which
 		itself alsready has attachments.
 		*/
 		function send()
@@ -276,9 +276,9 @@
 			if ($this->debug_send> 2) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.send('.__LINE__.'): $GLOBALS[HTTP_POST_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_POST); }
 			if ($this->debug_send> 2) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.send('.__LINE__.'): $GLOBALS[HTTP_GET_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_GET); }
 			if ($this->debug_send> 3) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.send('.__LINE__.'): $this->debug_send > 3 PREMATURE EXIT, returning...'); return; }
-			
+
 			// ---- BEGIN BO SEND LOGIC
-			
+
 			if (($GLOBALS['phpgw']->msg->get_isset_arg('msgball'))
 			&& ($GLOBALS['phpgw']->msg->get_arg_value('msgball') != ''))
 			{
@@ -288,7 +288,7 @@
 			{
 				$msgball = $this->not_set;
 			}
-			
+
 			//  -------  Init Array Structure For Outgoing Mail  -----------
 			$this->mail_out = Array();
 			$this->mail_out['to'] = Array();
@@ -314,20 +314,20 @@
 			$this->mail_out['charset'] = '';
 			$this->mail_out['feed_charset'] = '';
 			$this->mail_out['msgtype'] = '';
-			
+
 			//  -------  Start Filling Array Structure For Outgoing Mail  -----------
-			
+
 			// -----  X-PHPGW flag (msgtype)  ------
 			/*!
 			@var msgtype
 			@abstract obsoleted way phpgw apps used to inter-operate
-			@discussion NOTE  this is a vestigal way for phpgw apps to inter-operate, 
+			@discussion NOTE  this is a vestigal way for phpgw apps to inter-operate,
 			I *think* this is being obsoleted via n-tiering and xml-rpc / soap methods.
 			RARELY USED, maybe NEVER used, most email code for this is now commented out
 			"back in the day..." the "x-phpgw" header was specified by a phpgw app *other* than the email app
-			which was used to include special phpgw related handling instructions in the message which 
-			to the message intentended to be noticed and processed by the phpgw email app when the 
-			user open the mail for viewing, at which time the phpgw email app would issue the 
+			which was used to include special phpgw related handling instructions in the message which
+			to the message intentended to be noticed and processed by the phpgw email app when the
+			user open the mail for viewing, at which time the phpgw email app would issue the
 			special handling instructions contained in the "x-phpgw" header.
 			even before n-tiering of the phpgw apps and api begain, I (angles) considered this a possible
 			area of abuse and I commented out the code in the email app that would notice, process and issue
@@ -340,7 +340,7 @@
 				$this->mail_out['msgtype'] = $GLOBALS['phpgw']->msg->get_arg_value('msgtype');
 				// after this, ONLY USE $this->mail_out structure for this
 			}
-			
+
 			// -----  CHARSET  -----
 			/*!
 			@property charset
@@ -348,7 +348,7 @@
 			@discussion charset could take up a lot of notes here, suffice to say that email began life as a
 			US-ASCII thing and still us-ascii chars are strictly required for some headers, while other headers
 			and the body have various alternative ways to deal with other charsets, ways that are well documented
-			in email and other RFC's and other literature. In the rare event that the phpgw api is unable 
+			in email and other RFC's and other literature. In the rare event that the phpgw api is unable
 			to provide us with a charset value, we use the RFC specified default value of "US-ASCII"
 			*/
 			$this->mail_out['charset'] = $GLOBALS['phpgw']->translation->charset();
@@ -359,23 +359,23 @@
 			{
 				$this->mail_out['feed_charset'] = $GLOBALS['phpgw']->msg->get_arg_value('charset');
 			}
-			
+
 			// -----  FROM  -----
 			/*!
 			@var from
 			@abstract the mail's author, OPTIONAL, usually no need to specify this as an arg passed to the script.
-			@discussion Generally this var does not need to be specified. When the mail is being sent from the 
+			@discussion Generally this var does not need to be specified. When the mail is being sent from the
 			user's default email account (or mail on behalf of the user, like automated email notifications),
 			we generate the "from" header for the user, hence no custom "from" arg is necessary.
 			This is the most common scenario, in which case we generate the "from" value as follows:
 			(1) the user's "fullname" (a.k.a. the "personal" part of the address) is always picked up
-			from the phpgw api's value that contains the users name, and 
-			(2) the user's email address is either (2a) the default value from the phpgw api which was 
+			from the phpgw api's value that contains the users name, and
+			(2) the user's email address is either (2a) the default value from the phpgw api which was
 			passed into the user's preferences because the user specified no custom email address preference, or
 			(2b) the user specified a custom email address in the email preferences in which case the aformentioned
 			phpgw api default email address is not used in the user's preferences array, this user supplied
 			value is used instead.
-			Providing a "from" arg is usually for extra email accounts and/or alternative email profiles, 
+			Providing a "from" arg is usually for extra email accounts and/or alternative email profiles,
 			where the user wants other than the "from" info otherwise defaultly associated with this email acccount.
 			NOTE: from != sender
 			from is who the mail came from assuming that person is also the mail's author.
@@ -391,22 +391,29 @@
 			{
 				$from_name = $GLOBALS['phpgw']->msg->get_pref_value('fullname');
 				//$from_name = $GLOBALS['phpgw_info']['user']['fullname'];
-				$from_address = $GLOBALS['phpgw']->msg->get_pref_value('address');
+				if(isset($GLOBALS['phpgw_info']['user']['mailaddress']))
+				{
+					$from_address = $GLOBALS['phpgw_info']['user']['mailaddress'];
+				}
+				else
+				{
+					$from_address = $GLOBALS['phpgw']->msg->get_pref_value('address');
+				}
 				$from_assembled = '"'.$from_name.'" <'.$from_address.'>';
 			}
 			// this array gets filled with functiuon "make_rfc_addy_array", but it will have only 1 numbered array, $this->mail_out['from'][0]
 			// note that sending it through make_rfc_addy_array will ensure correct formatting of non us-ascii chars (if any) in the use's fullname
 			$this->mail_out['from'] = $GLOBALS['phpgw']->msg->make_rfc_addy_array($from_assembled);
-			
+
 			// -----  SENDER  -----
 			/*!
 			@var sender
-			@abstract OPTIONAL only used in the rare event that the person sending the email 
+			@abstract OPTIONAL only used in the rare event that the person sending the email
 			is NOT that email's author.
-			@discussion RFC2822 makes clear that the Sender header is ONLY used if some one 
+			@discussion RFC2822 makes clear that the Sender header is ONLY used if some one
 			NOT the author (ex. the author's secretary) is sending the author's email.
 			RFC2822 considers that "From" = the author and the "Sender" = the person who clicked the
-			send button. Generally they are one in the same and generally the Sender header (and hence this 
+			send button. Generally they are one in the same and generally the Sender header (and hence this
 			"sender" var) is NOT needed, not used, not included in the email's headers.
 			*/
 			if (($GLOBALS['phpgw']->msg->get_isset_arg('sender'))
@@ -438,14 +445,14 @@
 			/*!
 			@property date
 			@abstract not user specified, not a user var, not an argument, not a paramater.
-			@discussion According to RFC2822 the Date header *should* be the local time with the correct 
+			@discussion According to RFC2822 the Date header *should* be the local time with the correct
 			timezone offset relative to GMT, however this is problematic on many Linux boxen, and
-			in general I have found that reliably extracting this data from the host OS can be tricky, 
-			so instead we use a fallback value which is simply GMT time, which is allowed under RFC2822 
+			in general I have found that reliably extracting this data from the host OS can be tricky,
+			so instead we use a fallback value which is simply GMT time, which is allowed under RFC2822
 			but not preferred.
-			UPDATE: NOW "user timezone" is fed as arg "utz" from the users browser as 
-			a POST value of "minus0500" or "plus0500" for example, utz meaning UserTimeZone. 
-			.And if that is not available then the xGW API datetime->tz_offset is used, and none of 
+			UPDATE: NOW "user timezone" is fed as arg "utz" from the users browser as
+			a POST value of "minus0500" or "plus0500" for example, utz meaning UserTimeZone.
+			.And if that is not available then the xGW API datetime->tz_offset is used, and none of
 			those are available nor valid, then +0000 is used.
 			*/
 			//$this->mail_out['date'] = gmdate('D, d M Y H:i:s').' +0000';
@@ -526,7 +533,7 @@
 			}
 			else
 			{
-				// this is RFC spec date, example "Thu, 15 Apr 2004 20:44:30 -0500" 
+				// this is RFC spec date, example "Thu, 15 Apr 2004 20:44:30 -0500"
 				// where the datetime is in local and the offset indicates "add this offest to that datetime to get to GMT"
 				$this->mail_out['date'] = $tz_data['time_string_local'].' '.$this->tz_offset;
 			}
@@ -534,12 +541,12 @@
 			if ($this->debug_send > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.send('.__LINE__.'): $tz_data DUMP:', $tz_data); }
 			if ($this->debug_send > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.send('.__LINE__.'): $this->mail_out[date] ['.$this->mail_out['date'].']  <br>'); }
 			//if ($this->debug_send > 3) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.send('.__LINE__.'): $this->debug_send > 3 PREMATURE EXIT, returning...'); return; }
-			
+
 			// -----  IN-REPLY-TO  -----
 			/*!
 			@property in-reply-to
-			@abstract if REPLY then this is the message ID of the msg we are replying to 
-			@discussion If this is a REPLY or REPLYALL then this is the main header value 
+			@abstract if REPLY then this is the message ID of the msg we are replying to
+			@discussion If this is a REPLY or REPLYALL then this is the main header value
 			is the message ID of the msg we are replying to. Otherwise empty and not used.
 			Note: requires a mailserver_call.
 			*/
@@ -570,22 +577,22 @@
 				if ($this->debug_send > 2) { $GLOBALS['phpgw']->msg->dbug->out('class.bosend.send('.__LINE__.'): reply BUT no msgball so NO msg_headers, and $this->mail_out[in_reply_to] = $this->not_set <br>');  }
 				$this->mail_out['in_reply_to'] = $this->not_set;
 			}
-			
-			
+
+
 			// -----  MYMACHINE - The MTA HELO/ELHO DOMAIN ARG  -----
 			/*!
 			@property elho SMTP handshake domain value
 			@abstract not user specified, not a user var, not an argument, not a paramater.
-			@discussion when class.msg_send conducts the handshake with the SMTP server, this 
-			will be the required domain value that we supply to the SMTP server. Phpgw is considered 
-			the client to the SMTP server. 
-			RFC2821 sect 4.1.1.1 specifies this value is almost always the Fully Qualified Domain Name 
-			of the SMTP client machine, but rarely, when said client machine has dynamic FQDN or no reverse 
+			@discussion when class.msg_send conducts the handshake with the SMTP server, this
+			will be the required domain value that we supply to the SMTP server. Phpgw is considered
+			the client to the SMTP server.
+			RFC2821 sect 4.1.1.1 specifies this value is almost always the Fully Qualified Domain Name
+			of the SMTP client machine, but rarely, when said client machine has dynamic FQDN or no reverse
 			mapping is available, this value *should* be "address leteral" (see sect 4.1.3).
 			Refer to the documentation for BIND for further reading on reverse lookup issues.
 			*/
 			$this->mail_out['mta_elho_mymachine'] = trim($GLOBALS['phpgw_info']['server']['hostname']);
-			
+
 			// ----  Forwarding Detection  -----
 			if (($GLOBALS['phpgw']->msg->get_isset_arg('action'))
 			&& ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'forward'))
@@ -601,7 +608,7 @@
 				$this->mail_out['fwd_proc'] = $GLOBALS['phpgw']->msg->get_arg_value('fwd_proc');
 				// after this, ONLY USE $this->mail_out[] structure for this
 			}
-			
+
 			// ----  Attachment Detection  -----
 			// some of this attachment uploading and handling code is from squirrelmail (www.squirrelmail.org)
 			$upload_dir = $GLOBALS['phpgw']->msg->att_files_dir;
@@ -628,7 +635,7 @@
 					$this->mail_out['is_multipart'] = True;
 				}
 			}
-			
+
 			//  ------  get rid of the escape \ that magic_quotes (if enabled) HTTP POST will add, " becomes \" and  '  becomes  \'
 			// convert script GPC args into useful mail_out structure information
 			$to = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('to'));
@@ -637,20 +644,20 @@
 			$body = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($GLOBALS['phpgw']->msg->get_arg_value('body')));
 			$subject = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('subject'));
 			// after this,  do NOT use ->msg->get_arg_value() for these anymore
-			
+
 			// since arg "body" *may* be huge (and is now in local var $body), lets clear it now
 			$GLOBALS['phpgw']->msg->set_arg_value('body', '');
-			
+
 			// ----  DE-code HTML SpecialChars in the body    and subject -----
 			// THIS NEEDS TO BE CHANGED WHEN MULTIPLE PART FORWARDS ARE ENABLED
 			// BECAUSE WE CAN ONLY ALTER THE 1ST PART, I.E. THE PART THE USER JUST TYPED IN
 			/*  email needs to be sent out as if it were PLAIN text (at least the part we are handling here)
 			i.e. with NO ENCODED HTML ENTITIES, so use > instead of $rt; and " instead of &quot; . etc...
-			it's up to the endusers MUA to handle any htmlspecialchars, whether to encode them or leave as it, the MUA should decide 
+			it's up to the endusers MUA to handle any htmlspecialchars, whether to encode them or leave as it, the MUA should decide
 			*/
 			//$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body, $this->mail_out['feed_charset']);
 			$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
-			
+
 			//echo '<br> ('.__LINE__.') $GLOBALS[phpgw]->msg DUMP<pre>'; print_r($GLOBALS['phpgw']->msg); echo '] </pre>'."\r\n";
 			//echo '<br> ('.__LINE__.') $GLOBALS[phpgw]->msg->get_arg_value(subject) ['.$GLOBALS['phpgw']->msg->get_arg_value('subject').'] <br>'."\r\n";
 			//echo '<br> ('.__LINE__.') pre $subject: ['.$subject.'] <br>'."\r\n";
@@ -672,17 +679,17 @@
 				$user_sig = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($user_sig, $this->mail_out['charset']);
 				$body = $body."\r\n"
 						."\r\n"
-						.'-- '."\r\n" 
+						.'-- '."\r\n"
 						.$user_sig ."\r\n";
 			}
 			if ($this->company_disclaimer)
 			{
 				$body = $body .$this->company_disclaimer;
 			}
-			
+
 			// ----  LINE LENGTH for formatting body   -----
-			// LINE LENGTH for "new" and our text of a forwarded text are 78 chars, 
-			// which is SHORTER than for reply quoted bodies that have ">" chars 
+			// LINE LENGTH for "new" and our text of a forwarded text are 78 chars,
+			// which is SHORTER than for reply quoted bodies that have ">" chars
 			// this is only for text WE have written, not any other part of the body
 			// html textbox no longer adds hard wrap on submit, so we handle it here now
 			// NOTE reply bodies have already been handled as to length when we quoted the text
@@ -705,7 +712,7 @@
 				//echo 'entering recall_desired_action == reply line length handling'."\r\n";
 				// ok we have already quoted the text of the message we are replying to
 				// BUT we have yet to standardize line length for the text WE just typed
-				// in this message, our own text, 
+				// in this message, our own text,
 				// BUT we really should skip doing linebreaking it _again_ for the quoted text, though
 				$body_array = array();
 				$body_array = explode("\r\n", $body);
@@ -738,9 +745,9 @@
 							// toggle this flag
 							$in_unquoted_block = False;
 							// for THIS line, it is the first in a quoted block, so pass straight to new body var
-							//   I _think_ the CRLF is needed before this line because hard_wrap may not 
+							//   I _think_ the CRLF is needed before this line because hard_wrap may not
 							//   put one at the end of the last line of the unquoted text block ?
-							//$new_body .=  "\r\n" . $this_line . "\r\n";	
+							//$new_body .=  "\r\n" . $this_line . "\r\n";
 							$new_body .= $this_line . "\r\n";
 						}
 						else
@@ -769,8 +776,8 @@
 						{
 							// toggle this flag
 							$in_unquoted_block = True;
-							// there is just no real special action of a change into this block of our text, 
-							// the real action is when switching out of a block or our (unqouted) text 
+							// there is just no real special action of a change into this block of our text,
+							// the real action is when switching out of a block or our (unqouted) text
 						}
 						// compile this block of unquoted text, our text, in a var for later processing
 						$unquoted_text .= $this_line . "\r\n";
@@ -785,7 +792,7 @@
 				$unquoted_text = '';
 				// end reply body line length landling block
 			}
-			
+
 			// Step One Addition
 			// ---- Request Delivery Notification in Headers ----
 			if (($GLOBALS['phpgw']->msg->get_isset_arg('req_notify'))
@@ -817,7 +824,7 @@
 			}
 			// now make mta_to an array because we will loop through it in class mail_send
 			$this->mail_out['mta_to'] = explode(',', $mta_to);
-			
+
 			// RFC2821 - RCPT TO: args (email addresses) should be enclosed in brackets
 			// when we constructed the $this->mail_out['mta_to'] var, we set "include_personal" to False, so this array has only "plain" email addys
 			for ($i=0; $i<count($this->mail_out['mta_to']); $i++)
@@ -827,9 +834,9 @@
 					$this->mail_out['mta_to'][$i] = '<'.$this->mail_out['mta_to'][$i].'>';
 				}
 			}
-			
+
 			/*
-			// ===== DEBUG =====	
+			// ===== DEBUG =====
 			echo '<br>';
 			//$dubug_info = $to;
 			//$dubug_info = ereg_replace("\r\n.", "CRLF_WSP", $dubug_info);
@@ -837,21 +844,21 @@
 			//$dubug_info = ereg_replace(" ", "SP", $dubug_info);
 			//$dubug_info = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($dubug_info);
 			//echo serialize($dubug_info);
-			
+
 			//$to = $GLOBALS['phpgw']->msg->addy_array_to_str($to, True);
 			//echo 'to including personal: '.$GLOBALS['phpgw']->msg->htmlspecialchars_encode($to).'<br>';
-			
+
 			echo '<br> var dump mail_out <br>';
 			var_dump($this->mail_out);
 			//echo '<br> var dump cc <br>';
 			//var_dump($cc);
 			echo '<br>';
-			
+
 			$GLOBALS['phpgw']->common->phpgw_exit();
 			return;
-			// ===== DEBUG ===== 
+			// ===== DEBUG =====
 			*/
-			
+
 			// ----  Send The Email  ==  via CLASS MAIL SEND 2822  == -----
 			// USE CLASS MAIL SEND 2822
 			$GLOBALS['phpgw']->mail_send = CreateObject("email.mail_send");
@@ -861,12 +868,12 @@
 			{
 				$GLOBALS['phpgw']->mail_send->retain_copy = True;
 			}
-			
+
 			// initialize structure for 1st part
 			$body_part_num = 0;
 			$this->mail_out['body'][$body_part_num]['mime_headers'] = Array();
 			$this->mail_out['body'][$body_part_num]['mime_body'] = Array();
-			
+
 			// -----  ADD 1st PART's MIME HEADERS  (if necessary)  -------
 			if (($this->mail_out['is_multipart'] == True)
 			|| ($this->mail_out['is_forward'] == True))
@@ -899,7 +906,7 @@
 				// 7 BIT vs. 8 BIT Content-Transfer-Encoding
 				// 7 bit means that no chars > 127 can be in the email, or else MTA's will get confused
 				// if you really want to enforce 7 bit you should qprint encode the email body
-				// however, if you are forwarding via MIME encapsulation then I do not believe it's cool to alter 
+				// however, if you are forwarding via MIME encapsulation then I do not believe it's cool to alter
 				// the original message's content by qprinting it if it was not already qprinted
 				// in which case you should send it 8 bit instead.
 				// ALSO, the top most level encoding can not be less restrictive than any embedded part's encoding
@@ -917,7 +924,7 @@
 				$this->mail_out['body'][0]['mime_headers'][$m_line] = 'Content-Disposition: inline';
 				$m_line++;
 			}
-			
+
 			// -----  MAIN BODY PART (1st Part)  ------
 			// Explode Body into Array of strings
 			$body = $GLOBALS['phpgw']->msg->normalize_crlf($body);
@@ -932,7 +939,7 @@
 			//$this->mail_out['body'][$body_part_num]['mime_body'][count($this->mail_out['body'][$body_part_num]['mime_body'])] = " \r\n";
 			// since var $body *may* be huge, lets clear it now
 			$body = '';
-			
+
 			// -----  FORWARD HANDLING  ------
 			// Sanity Check - we can not "pushdown" a multipart/mixed original mail, it must be encaposulated
 			// PUSHDOWN NOT YET IMPLEMENTED
@@ -942,7 +949,7 @@
 				// ===MAILSERVER_CALL===
 				$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header('');
 				$msg_struct = $GLOBALS['phpgw']->msg->phpgw_fetchstructure('');
-				
+
 				// === PGW_MSG_STRUCT CALL ===
 				$this->mail_out['fwd_info'] = $GLOBALS['phpgw']->msg->pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1);
 				if (($this->mail_out['fwd_info']['type'] == 'multipart')
@@ -951,7 +958,7 @@
 					$this->mail_out['fwd_proc'] = 'encapsulate';
 				}
 			}
-			
+
 			// Add Forwarded Mail as An Additional Encapsulated "message/rfc822" MIME Part
 			// PUSHDOWN NOT IMLEMENTED YET!!!
 			if (($this->mail_out['is_forward'] == True)
@@ -963,12 +970,12 @@
 				$body_part_num++;
 				$this->mail_out['body'][$body_part_num]['mime_headers'] = Array();
 				$this->mail_out['body'][$body_part_num]['mime_body'] = Array();
-				
+
 				// ----  General Information about The Original Message  -----
 				// ===MAILSERVER_CALL===
 				$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header('');
 				$msg_struct = $GLOBALS['phpgw']->msg->phpgw_fetchstructure('');
-				
+
 				// use the "pgw_msg_struct" function to get the orig message main header info
 				// === PGW_MSG_STRUCT CALL ===
 				$this->mail_out['fwd_info'] = $GLOBALS['phpgw']->msg->pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1);
@@ -979,7 +986,7 @@
 				$this->mail_out['fwd_info']['date'] = $GLOBALS['phpgw']->msg->show_date2($msg_headers->udate);
 				// the third empty param says no html encoding of return data
 				$this->mail_out['fwd_info']['subject'] = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'','');
-				
+
 				// normalize data to rfc2046 defaults, in the event data is not provided
 				if ($this->mail_out['fwd_info']['type'] == $not_set)
 				{
@@ -993,12 +1000,12 @@
 				{
 					$this->mail_out['fwd_info']['disposition'] = 'inline';
 				}
-				
+
 				$this->mail_out['fwd_info']['boundary'] = $not_set;
 				for ($p = 0; $p < $part_nice['ex_num_param_pairs']; $p++)
 				{
 					//echo '<br>params['.$p.']: '.$part_nice['params'][$p]['attribute'].'='.$part_nice['params'][$p]['value'] .'<br>';
-					if (($part_nice['params'][$p]['attribute'] == 'boundary') 
+					if (($part_nice['params'][$p]['attribute'] == 'boundary')
 					  && ($part_nice['params'][$p]['value'] != $not_set))
 					{
 						$this->mail_out['fwd_info']['boundary'] = $part_nice['params'][$p]['value'];
@@ -1012,7 +1019,7 @@
 				}
 				//echo '<br>part_nice[boundary] ' .$this->mail_out['fwd_info']['boundary'] .'<br>';
 				//echo '<br>part_nice: <br>' .$GLOBALS['phpgw']->msg->htmlspecialchars_encode(serialize($this->mail_out)) .'<br>';
-				
+
 				// prepare the mime part headers
 				// original body gets pushed down one part, i.e. was part 1, now is part 2
 				$m_line = 0;
@@ -1023,12 +1030,12 @@
 				if ($this->mail_out['fwd_info']['encoding'] != 'other')
 				{
 					$this->mail_out['body'][$body_part_num]['mime_headers'][$m_line] = 'Content-Transfer-Encoding: '.$this->mail_out['fwd_info']['encoding'];
-					$m_line++;			
+					$m_line++;
 				}
 				for ($p = 0; $p < $part_nice['ex_num_param_pairs']; $p++)
 				{
 					//echo '<br>params['.$p.']: '.$part_nice['params'][$p]['attribute'].'='.$part_nice['params'][$p]['value'] .'<br>';
-					if ($part_nice['params'][$p]['attribute'] != 'boundary') 
+					if ($part_nice['params'][$p]['attribute'] != 'boundary')
 					{
 						$this->mail_out['body'][$body_part_num]['mime_headers'][$m_line] = '  '.$part_nice['params'][$p]['attribute'].'="'.$part_nice['params'][$p]['value'].'"';
 						$m_line++;
@@ -1036,13 +1043,13 @@
 				}
 				$this->mail_out['body'][$body_part_num]['mime_headers'][$m_line] = 'Content-Disposition: '.$this->mail_out['fwd_info']['disposition'];
 				$m_line++;
-				
+
 				// dump the original BODY (with out its headers) here
 				// ===MAILSERVER_CALL===
 				$fwd_this = $GLOBALS['phpgw']->msg->phpgw_body();
 				// Explode Body into Array of strings
 				$this->mail_out['body'][$body_part_num]['mime_body'] = $GLOBALS['phpgw']->msg->explode_linebreaks(trim($fwd_this));
-				$fwd_this = '';		
+				$fwd_this = '';
 			}
 			elseif (($this->mail_out['is_forward'] == True)
 			&& ($this->mail_out['fwd_proc'] == 'encapsulate'))
@@ -1053,29 +1060,29 @@
 				$body_part_num++;
 				$this->mail_out['body'][$body_part_num]['mime_headers'] = Array();
 				$this->mail_out['body'][$body_part_num]['mime_body'] = Array();
-				
+
 				// mime headers define this as a message/rfc822 part
 				// following RFC2046 recommendations
 				$this->mail_out['body'][$body_part_num]['mime_headers'][0] = '--' .$this->mail_out['boundary'];
 				$this->mail_out['body'][$body_part_num]['mime_headers'][1] = 'Content-Type: message/rfc822'.';';
 				$this->mail_out['body'][$body_part_num]['mime_headers'][2] = 'Content-Disposition: inline';
-				
+
 				// DUMP the original message verbatim into this part's "body" - i.e. encapsulate the original mail
 				// ===MAILSERVER_CALL===
 				$fwd_this['sub_header'] = trim($GLOBALS['phpgw']->msg->phpgw_fetchheader());
 				$fwd_this['sub_header'] = $GLOBALS['phpgw']->msg->normalize_crlf($fwd_this['sub_header']);
-				
+
 				// CLENSE headers of offensive artifacts that can confuse dumb MUAs
 				$fwd_this['sub_header'] = preg_replace("/^[>]{0,1}From\s.{1,}\r\n/i", "", $fwd_this['sub_header']);
 				$fwd_this['sub_header'] = preg_replace("/Received:\s(.{1,}\r\n\s){0,6}.{1,}\r\n(?!\s)/m", "", $fwd_this['sub_header']);
 				$fwd_this['sub_header'] = preg_replace("/.{0,3}Return-Path.*\r\n/m", "", $fwd_this['sub_header']);
 				$fwd_this['sub_header'] = trim($fwd_this['sub_header']);
-				
+
 				// get the body
 				// ===MAILSERVER_CALL===
 				$fwd_this['sub_body'] = trim($GLOBALS['phpgw']->msg->phpgw_body());
 				//$fwd_this['sub_body'] = $GLOBALS['phpgw']->msg->normalize_crlf($fwd_this['sub_body']);
-				
+
 				// -- "expect_good_body_crlf" --
 				// we expect modern email equipment to give us properly formatted CRLF
 				// although this is not always the case
@@ -1085,7 +1092,7 @@
 				{
 					// Make Sure ALL INLINE BOUNDARY strings actually have CRLF CRLF preceeding them
 					// because some lame MUA's don't properly format the message with CRLF CRLF BOUNDARY
-					// in which case when we encapsulate such a malformed message, it *may* not be understood correctly 
+					// in which case when we encapsulate such a malformed message, it *may* not be understood correctly
 					// by the receiving MUA, so we attempt to correct such a malformed message before we encapsulate it
 					// ---- not yet complete ----
 					$char_quot = '"';
@@ -1106,27 +1113,27 @@
 						$fwd_this['sub_body'] = trim($fwd_this['sub_body']);
 					}
 				}
-				
+
 				// assemble it and add the blank line that seperates the headers from the body
 				$fwd_this['processed'] = $fwd_this['sub_header']."\r\n"."\r\n".$fwd_this['sub_body'];
 				// memory mgt, doing this can really save memory with big attachments
 				$fwd_this['sub_body'] = '';
 				unset($fwd_this['sub_body']);
-				
-				
+
+
 				/*
 				//echo 'fwd_this[sub_header]: <br><pre>'.$GLOBALS['phpgw']->msg->htmlspecialchars_encode($fwd_this['sub_header']).'</pre><br>';
 				//echo 'fwd_this[matches]: <br><pre>'.$GLOBALS['phpgw']->msg->htmlspecialchars_encode(serialize($fwd_this['matches'])).'</pre><br>';
 				//echo 'fwd_this[boundaries]: <br><pre>'.$GLOBALS['phpgw']->msg->htmlspecialchars_encode($fwd_this['boundaries']).'</pre><br>';
 				//echo '=== var dump    fwd_this <br><pre>';
 				//var_dump($fwd_this);
-				//echo '</pre><br>';			
+				//echo '</pre><br>';
 				echo 'fwd_this[processed]: <br><pre>'.$GLOBALS['phpgw']->msg->htmlspecialchars_encode($fwd_this['processed']).'</pre><br>';
 				unset($fwd_this);
 				exit;
 				*/
-				
-				
+
+
 				// Explode Body into Array of strings
 				if ($GLOBALS['phpgw']->msg->expect_good_body_crlf == False)
 				{
@@ -1142,22 +1149,22 @@
 				$fwd_this = '';
 				unset($fwd_this);
 			}
-			
+
 			/*
-			// ===== DEBUG =====	
+			// ===== DEBUG =====
 			echo '<br>';
 			echo '<br>=== mail_out ===<br>';
 			$dubug_info = serialize($this->mail_out);
 			$dubug_info = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($dubug_info);
 			echo $dubug_info;
 			echo '<br>';
-				
+
 			$GLOBALS['phpgw']->common->phpgw_footer();
 			exit;
-			// ===== DEBUG ===== 
+			// ===== DEBUG =====
 			*/
-			
-			
+
+
 			// ---  ATTACHMENTS -- Add each of them as an additional mime part ---
 			if ($this->mail_out['num_attachments'] > 0)
 			{
@@ -1175,13 +1182,13 @@
 						{
 							$total_files++;
 							$size = filesize($upload_dir.SEP.$file);
-							
+
 							$info_file = $upload_dir.SEP.$file.'.info';
 							$file_info = file($info_file);
-							if ($this->debug_struct > 2) { echo 'FILE INFO: '.htmlspecialchars(serialize($file_info)).'<br>'; } 
+							if ($this->debug_struct > 2) { echo 'FILE INFO: '.htmlspecialchars(serialize($file_info)).'<br>'; }
 							$content_type = trim($file_info[0]);
 							$content_name = trim($file_info[1]);
-							
+
 							// testing i18n handling of filenames
 							$max_ord = 0;
 							$needs_rfc_encode = False;
@@ -1198,7 +1205,7 @@
 								$needs_rfc_encode = True;
 								$hdr_ready_content_name = $GLOBALS['phpgw']->msg->encode_header($content_name);
 							}
-							
+
 							$body_part_num++;
 							$this->mail_out['body'][$body_part_num]['mime_headers'] = Array();
 							$this->mail_out['body'][$body_part_num]['mime_body'] = Array();
@@ -1212,7 +1219,7 @@
 							$m_line++;
 							//$this->mail_out['body'][$body_part_num]['mime_headers'][$m_line] = 'Content-Disposition: attachment; filename="'.$content_name.'"';
 							$this->mail_out['body'][$body_part_num]['mime_headers'][$m_line] = 'Content-Disposition: attachment; filename="'.$hdr_ready_content_name.'"';
-							
+
 							/*
 							// BASE64 ENCODE method 1 - entire file loaded into memory
 							// get the file and base 64 encode it
@@ -1223,7 +1230,7 @@
 							$b64_part = '';
 							fclose($fh);
 							*/
-							
+
 							// BASE64 ENCODE method 2 - small chunks of file limit memory usage during encoding
 							// base64 encoded data should be split into lines of 76 chars for the outgoing message (not including the CRLF)
 							// reading 3 bytes from the file makes 4 bytes of encoded data
@@ -1236,14 +1243,14 @@
 							$next_pos = 0;
 							while ($datachunk = fread($fh, 57))
 							{
-								if ($this->debug_struct > 2) { echo '$next_pos ['.$next_pos.'] :: string ['.$datachunk.'] :: b64 version ['.base64_encode($datachunk).']<br>'."\r\n"; } 
+								if ($this->debug_struct > 2) { echo '$next_pos ['.$next_pos.'] :: string ['.$datachunk.'] :: b64 version ['.base64_encode($datachunk).']<br>'."\r\n"; }
 								$this->mail_out['body'][$body_part_num]['mime_body'][$next_pos] = base64_encode($datachunk);
 								$next_pos++;
 							}
 							$b64_part = '';
 							fclose($fh);
-							
-							
+
+
 							/*
 							/ /  * * * * MOVE THIS INTO MAIL SEND 2822 PROC * * * * *
 							// IF LAST PART - GIVE THE "FINAL" boundary
@@ -1252,15 +1259,15 @@
 								// attachments (parts) have their own boundary preceeding them (see below)
 								// this is: "--"boundary
 								// all boundary strings are have 2 dashes "--" added to their begining
-								// and the FINAL boundary string (after all other parts) ALSO has 
-								// 2 dashes "--" tacked on tho the end of it, very important !! 
+								// and the FINAL boundary string (after all other parts) ALSO has
+								// 2 dashes "--" tacked on tho the end of it, very important !!
 								// the next available array number
 								$m_line = count($this->mail_out['body'][$body_part_num]['mime_body']);
 								$this->mail_out['body'][$body_part_num]['mime_body'][$m_line] = '--' .$this->mail_out['boundary'].'--';
 							}
 							//echo 'tot: '.$total_files .' expext: '.$num_expected; // for debugging
 							*/
-							
+
 							// delete the temp file (the attachment)
 							unlink($upload_dir.SEP.$file);
 							// delete the other temp file (the .info file)
@@ -1271,7 +1278,7 @@
 				// get rid of the temp dir we used for the above
 				rmdir($upload_dir);
 			}
-			
+
 			// --- MAIN HEADERS  -------
 			$hdr_line = 0;
 			$this->mail_out['main_headers'][$hdr_line] = 		'X-Originating-IP: '.$this->mail_out['originating_ip'];
@@ -1320,9 +1327,9 @@
 				$hdr_line++;
 				$this->mail_out['main_headers'][$hdr_line] = 'Return-Receipt-To: '.$this->mail_out['sender'];
 				$hdr_line++;
-				
+
 			}
-			
+
 			// RFC2045 REQUIRES this header in even if no embedded mime parts are in the body
 			// MTA's, MUA's *should* assume the following as default (RFC2045) if not included
 			$this->mail_out['main_headers'][$hdr_line] = 		'MIME-Version: 1.0';
@@ -1339,7 +1346,7 @@
 			}
 			else
 			{
-				// NO MIME SUBPARTS - SIMPLE 1 PART MAIL 
+				// NO MIME SUBPARTS - SIMPLE 1 PART MAIL
 				// headers = mime part 0 and  body = mime part 1
 				$this->mail_out['main_headers'][$hdr_line] =	'Content-Type: text/plain;';
 				$hdr_line++;
@@ -1388,14 +1395,14 @@
 				*/
 				$this->mail_out['main_headers'][$hdr_line] =	'Content-Transfer-Encoding: 8bit';
 				$hdr_line++;
-			
+
 				$this->mail_out['main_headers'][$hdr_line] =	'Content-Disposition: inline';
 				$hdr_line++;
 				// Content-Description: this is not really a "technical" header
 				// it can be used to inform the person reading some summary info
 				//$header .= 'Content-description: Mail message body'."\r\n";
 			}
-			
+
 			// finish off the main headers
 			if ($this->mail_out['msgtype'] != '')
 			{
@@ -1404,9 +1411,9 @@
 			}
 			$this->mail_out['main_headers'][$hdr_line] = 	'X-Mailer: AngleMail for eGroupWare (http://www.egroupware.org) v '.$GLOBALS['phpgw_info']['server']['versions']['phpgwapi'];
 			$hdr_line++;
-			
+
 			/*
-			// ===== DEBUG =====	
+			// ===== DEBUG =====
 			//echo '<br>';
 			//echo '<br>=== mail_out ===<br>';
 			//$dubug_info = serialize($this->mail_out);
@@ -1418,38 +1425,38 @@
 			echo '</pre>';
 			$GLOBALS['phpgw']->common->phpgw_exit();
 			return;
-			// ===== DEBUG ===== 
+			// ===== DEBUG =====
 			*/
-			
+
 			// ----  Send It   -----
 			$returnccode = $GLOBALS['phpgw']->mail_send->smail_2822($this->mail_out);
-			
+
 			/*
-			// ===== DEBUG =====	
+			// ===== DEBUG =====
 			echo '<br>';
 			echo 'retain_copy: '.serialize($GLOBALS['phpgw']->mail_send->retain_copy);
 			echo '<br>=== POST SEND ===<br>';
 			echo '<pre>'.$GLOBALS['phpgw']->msg->htmlspecialchars_encode($GLOBALS['phpgw']->mail_send->assembled_copy).'</pre>';
 			echo '<br>';
-			// ===== DEBUG ===== 
+			// ===== DEBUG =====
 			*/
-			
-			
+
+
 			//  -------  Put in "Sent" Folder, if Applicable  -------
 			$skip_this = False;
 			//$skip_this = True;
-			
+
 			if (($skip_this == False)
 			&& ($returnccode)
 			&& ($GLOBALS['phpgw']->msg->get_isset_pref('use_sent_folder')))
 			{
 					$success = $this->copy_to_sent_folder();
 			}
-			
+
 			// use for DEBUGGING prevents page redirect
 			//$returnccode = False;
 			//$success = False;
-			
+
 			// ----  Redirect on Success, else show Error Report   -----
 			// what folder to go back to (the one we came from)
 			// Personally, I think people should go back to the INBOX after sending an email
@@ -1485,7 +1492,7 @@
 						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
-			
+
 			if ($returnccode)
 			{
 				// Success
@@ -1537,6 +1544,6 @@
 				$this->send_message_cleanup();
 			}
 		}
-	
+
 	}
 ?>
