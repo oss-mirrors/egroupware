@@ -196,7 +196,7 @@
 	// ----  HANDLE GETTING PREFERENCE GPC HTTP_POST_VARS ARGS  -------
 	// setting prefs does not require a login, in fact you may not be able to login until you set
 	// some basic prefs, so it makes sence to handle that here
-	if (isset($GLOBALS['HTTP_POST_VARS']['submit_prefs']))
+	if(get_var('submit_prefs',Array('POST')))
 	{
 		$GLOBALS['phpgw']->msg->grab_set_prefs_args_gpc();
 	}
