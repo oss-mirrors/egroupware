@@ -94,8 +94,6 @@ End Sub
 Private Sub oXL_OptionsPagesAdd( _
     ByVal Pages As Outlook.PropertyPages)
 
-
     Pages.Add "PropertyPage.ctlMainOptions", "eGWOSync Settings"
-        
 End Sub
 

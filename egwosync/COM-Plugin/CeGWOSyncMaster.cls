@@ -75,7 +75,7 @@ Public Function Setup() As Boolean
                     "Server. Would you like to set it up now?", _
                     vbOKCancel + vbApplicationModal, "eGrwoupWare not set up")
         If x = vbOK Then
-            If Not MainGUI.Visible Then
+            If Not FrmMain.Visible Then
                 FrmMain.Show
             End If
             'Set focus to settings page

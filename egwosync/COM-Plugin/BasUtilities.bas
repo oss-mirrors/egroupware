@@ -33,7 +33,7 @@ Public Sub GetContacts()
         
         INT_START = 1
         INT_LIMIT = 50
-        QUERY = ""
+        QUERY = "z"
         ORDER = "fn"
         SORT = "ASC"
         
@@ -108,8 +108,8 @@ Public Sub SynchronizeContacts()
         
         'Get the full names of the selected contacts from each listbox
         With FrmMain
-            Set colSelLocal = .GetSelectedListItems(.listLocal)
-            Set colSelRemote = .GetSelectedListItems(.listRemote)
+            Set colSelLocal = .GetSelectedListItems("local")
+            Set colSelRemote = .GetSelectedListItems("remote")
         End With
         
         '[ > Start synchronizing remote contacts
