@@ -283,15 +283,15 @@
 			$this->template->set_var('lang_cancel',lang('Cancel'));
 			$this->template->set_var('lang_step',lang('Step'));
 			$help = 'onMouseOver="self.status=\'%s\'; return true;" onMouseOut="self.status=\'\'; return true;"';
-			$this->template->set_var('cancel_help',sprintf($help,lang('Returns to the application list, not saved changes get lost !!!')));
-			$this->template->set_var('load_help',sprintf($help,lang('Loads the selected lang-files, to be modified in the next steps')));
-			$this->template->set_var('update_help',sprintf($help,lang('Saves the added/changed translations to an internal buffer, to be used in further steps')));
-			$this->template->set_var('search_help',sprintf($help,lang('Searches the source-code for phrases not in the actual source-lang-file')));
-			$this->template->set_var('add_help',sprintf($help,lang('Allows you to add a single phrase')));
-			$this->template->set_var('revert_help',sprintf($help,lang('Clears the internal buffer, all changes made sofar are lost')));
-			$this->template->set_var('download_help',sprintf($help,lang('Download the lang-file to be saved in the apps setup-dir')));
-			$this->template->set_var('write_help',sprintf($help,lang('Write the lang-file to the apps setup-dir')));
-			$this->template->set_var('loaddb_help',sprintf($help,lang('Updates the translations of both lang-files in your database, so you can verify your work immediately')));
+			$this->template->set_var('cancel_help',sprintf($help,str_replace("'","\\'",lang('Returns to the application list, not saved changes get lost !!!'))));
+			$this->template->set_var('load_help',sprintf($help,str_replace("'","\\'",lang('Loads the selected lang-files, to be modified in the next steps'))));
+			$this->template->set_var('update_help',sprintf($help,str_replace("'","\\'",lang('Saves the added/changed translations to an internal buffer, to be used in further steps'))));
+			$this->template->set_var('search_help',sprintf($help,str_replace("'","\\'",lang('Searches the source-code for phrases not in the actual source-lang-file'))));
+			$this->template->set_var('add_help',sprintf($help,str_replace("'","\\'",lang('Allows you to add a single phrase'))));
+			$this->template->set_var('revert_help',sprintf($help,str_replace("'","\\'",lang('Clears the internal buffer, all changes made sofar are lost'))));
+			$this->template->set_var('download_help',sprintf($help,str_replace("'","\\'",lang('Download the lang-file to be saved in the apps setup-dir'))));
+			$this->template->set_var('write_help',sprintf($help,str_replace("'","\\'",lang('Write the lang-file to the apps setup-dir'))));
+			$this->template->set_var('loaddb_help',sprintf($help,str_replace("'","\\'",lang('Updates the translations of both lang-files in your database, so you can verify your work immediately'))));
 
 			$languages = $this->bo->list_langs();
 
