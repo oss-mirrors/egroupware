@@ -10,8 +10,6 @@
 	*  option) any later version.						     *
 	\**************************************************************************/-
 
-	if (! $sessionid) Header("Location: ../login.php");
-
 	$phpgw_info["flags"] = array("currentapp" => "forum",
 	"enable_nextmatchs_class" => True);
 	include("../header.inc.php");
