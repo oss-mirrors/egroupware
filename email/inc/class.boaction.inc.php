@@ -21,9 +21,10 @@
 	class boaction
 	{
 		var $public_functions = array(
-			'delmov'	=> True,
-			'get_attach'	=> True,
-			'view_html'	=> True
+			'delmov' => True,
+			'get_attach' => True,
+			'view_html' => True,
+			'clearcache' => True
 		);
 		// class var to hold content to be downloaded
 		var $output_data='';
@@ -1238,7 +1239,74 @@
 			// shut down this transaction
 			$GLOBALS['phpgw']->common->phpgw_exit(False);
 		}
-	
+
+		/*!
+		@function clearcache
+		@abstract will remove all cached data for this user, all cahced data for all email accounts
+		@author Angles
+		@discussion if caching is enabled, this function will clear the cache for this user, 
+		That is all data for all email accounts this user has that email app has cached, this will 
+		be wiped clean. Mostly good for debugging.
+		It expects a fldball just to know where to redirect to after the wipe is done.
+		@access public
+		*/
+		function clearcache()
+		{
+			// make sure we have msg object and a server stream
+			$this->msg_bootstrap = CreateObject("email.msg_bootstrap");
+			$this->msg_bootstrap->ensure_mail_msg_exists('email.boaction.clearcache', 0);
+			if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('ENTERING email.boaction.clearcache line('.__LINE__.')'.'<br>'); }
+			
+			// make an error report URL
+			$this->redirect_if_error = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'));
+			if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): $this->redirect_if_error is ['.$this->redirect_if_error.']<br>'); }
+			
+			// where do we goto after done here
+			$goback_fldball = array();
+			if ($GLOBALS['phpgw']->msg->get_isset_arg('fldball'))
+			{
+				$goback_fldball = $GLOBALS['phpgw']->msg->get_arg_value('fldball');
+			}
+			else
+			{
+				$goback_fldball['acctnum'] = $GLOBALS['phpgw']->msg->get_acctnum();
+				// does this need to be langed?
+				$goback_fldball['folder'] = 'INBOX';
+			}
+			
+			if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): goback_fldball[] DUMP:', $goback_fldball); }
+			
+			if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): $GLOBALS[phpgw]->msg->session_cache_enabled is ['.serialize($GLOBALS['phpgw']->msg->session_cache_enabled).']  $$GLOBALS[phpgw]->msg->session_cache_extreme is ['.serialize($GLOBALS['phpgw']->msg->session_cache_extreme).'] <br>'); } 
+			// is there any cache to delete
+			//if (($GLOBALS['phpgw']->msg->session_cache_enabled == True)
+			//|| ($GLOBALS['phpgw']->msg->session_cache_extreme == True))
+			//{
+			
+			if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): about to call $GLOBALS[phpgw]->msg->clearcache_all("email.boaction.clearcache line(LINENUM)") <br>'); }
+			$GLOBALS['phpgw']->msg->clearcache_all('email.boaction.clearcache line('.__LINE__.')');
+			if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): $GLOBALS[] DUMP', $GLOBALS); }
+			$totaldeleted = 'cachedata';
+			$this->redirect_to = $GLOBALS['phpgw']->link('/index.php',array(
+							'menuaction' => 'email.uiindex.index',
+							'fldball[folder]' => $GLOBALS['phpgw']->msg->prep_folder_out($goback_fldball['folder']),
+							'fldball[acctnum]' => $goback_fldball['acctnum'],
+							'td' => $totaldeleted,
+							'sort' => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
+							'order' => $GLOBALS['phpgw']->msg->get_arg_value('order'),
+							'start' => $GLOBALS['phpgw']->msg->get_arg_value('start')
+							));
+			// we ALWAYS use classic redirect after this function is done, no need for speed here
+			if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): EXITING ... about redirect to: $this->redirect_to ['.$this->redirect_to.']<br>'); }
+			$GLOBALS['phpgw']->redirect($this->redirect_to);
+			// kill this script, we re outa here...
+			if (is_object($GLOBALS['phpgw']->msg))
+			{
+				$GLOBALS['phpgw']->msg->end_request();
+				$GLOBALS['phpgw']->msg = '';
+				unset($GLOBALS['phpgw']->msg);
+			}
+			$GLOBALS['phpgw']->common->phpgw_exit(False);
+		}
 	
 	}
 ?>

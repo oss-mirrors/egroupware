@@ -1887,6 +1887,40 @@
 				$did_connect = 'no';
 			}
 			
+			// clear cache for this user link
+			$show_clearcache = True;
+			//$show_clearcache = False;
+			// CHECK for 2 things
+			// 1. only show if in the index page
+			// 2. some kind of caching is turned on
+			if (($show_clearcache == True)
+			&& (stristr($GLOBALS['phpgw']->msg->ref_GET['menuaction'], 'uiindex.index'))
+			&& (
+				($GLOBALS['phpgw']->msg->session_cache_enabled == True)
+			 || ($GLOBALS['phpgw']->msg->session_cache_extreme == True)
+			))
+			{
+				$cur_fldball = array();
+				$cur_fldball['acctnum'] = $GLOBALS['phpgw']->msg->get_acctnum();
+				$cur_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out($GLOBALS['phpgw']->msg->get_arg_value('folder'));
+				$clearcache_url = $GLOBALS['phpgw']->link('/index.php',array(
+						'menuaction' => 'email.boaction.clearcache',
+						// what folder to retuen to after the cache is cleared
+						'fldball[acctnum]' => $cur_fldball['acctnum'],
+						'fldball[folder]' => $cur_fldball['folder'],
+						// preserve these things for when we return to the message list after the send
+						'sort' => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
+						'order' => $GLOBALS['phpgw']->msg->get_arg_value('order'),
+						'start' => $GLOBALS['phpgw']->msg->get_arg_value('start')
+						));
+				$href_clearcache = $GLOBALS['phpgw']->msg->href_maketag($clearcache_url, lang('Clear Cache'));
+				$clearcache_link = ' -- ['.$href_clearcache.']';
+			}
+			else
+			{
+				$clearcache_link = '';
+			}
+			
 			// empty trash or empty sent link for this account
 			$show_empty_trash = False;
 			$del_acctnum = $GLOBALS['phpgw']->msg->get_acctnum();
@@ -2013,10 +2047,11 @@
 					.'server: ['.$this_server_type.'] -- '
 					.'imap: ['.$library_usage.'] -- '
 					.'AM table: ['.$anglemail_table_exists.'] -- '
-					.'compression: ['.$compression.'] -- '
-					.'spelling: ['.$spell_available.'] -- '
+					.'comp: ['.$compression.'] -- '
+					.'spell: ['.$spell_available.'] -- '
 					.'xslt: ['.$using_xslt.'] -- '
 					.'did connect: ['.$did_connect.'] '
+					.$clearcache_link
 					.'</small>'
 				."\r\n"
 			.'	</td>'

@@ -5059,6 +5059,33 @@ Array
 			return False;
 		}
 
+		/*!
+		@function clearcache_all
+		@abstract will remove all cached data for this user, all cahced data for all email accounts
+		@param (string) $called_by optional for debug information
+		@author Angles
+		@discussion This function is a passthru directly to the so class, calls a low level function that 
+		simply wipes ANY and ALL email cached data for this user, all accounts, all data. 
+		Not to be confused with "batch_expire_cached_items", which is used with the extreme caching events system. 
+		This function wipes it all.
+		@access Public
+		*/
+		function clearcache_all($called_by='not_specified')
+		{
+			if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg_wrappers: clearcache_all: ('.__LINE__.') ENTERING, called by ['.$called_by.'],  $this->session_cache_extreme is ['.serialize($this->session_cache_extreme).']<br>'); } 
+			if ($this->debug_session_caching > 1) { $this->dbug->out('mail_msg_wrappers: clearcache_all: ('.__LINE__.') about to call $this->so->expire_db_session_bulk_data("clearcache_all", True); <br>'); } 
+			// True means $wipe_absolutely_everything = True
+			$this->so->expire_db_session_bulk_data('mail_msg_wrappers.clearcache_all line('.__LINE__.') which was called by '.$called_by, True);
+			if ($this->debug_session_caching > 1) { $this->dbug->out('mail_msg_wrappers: clearcache_all: ('.__LINE__.') unset $GLOBALS["email_dbsession_compat"] is it exists, may not be necessary? <br>'); } 
+			// is this necessary
+			if (isset($GLOBALS['email_dbsession_compat']))
+			{
+				$GLOBALS['email_dbsession_compat'] = array();
+				unset($GLOBALS['email_dbsession_compat']);
+			}
+			if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg_wrappers: clearcache_all: ('.__LINE__.') LEAVING, called by ['.$called_by.'],  $this->session_cache_extreme is ['.serialize($this->session_cache_extreme).']<br>'); } 
+		}
+
 		
 		/**************************************************************************\
 		* END  CACHING HANDLERS								*

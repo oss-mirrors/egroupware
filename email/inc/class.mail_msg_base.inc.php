@@ -466,7 +466,7 @@
 			
 			// NEW: allow "session_cache_extreme ONLY IF
 			// 1.am table exists and is in use
-			// 2. if php_imap is built in 
+			// 2. if php_imap is built in (CHANGE THIS - FIX MISALIGNMENT THEN REMOVE THIS TEST)
 			// 3. if using imap (we can not really check prefs yet though, since we are only in the constructor)
 			// BECAUSE php4_sessions and sessions_db can not handle large data that session_cache_extreme generates
 			// and sockets does not use statdard MIME numbers, can cause header body misalign if using extreme caching
@@ -477,9 +477,12 @@
 			if ($ses_cache_exteme == True)
 			{
 				// check conditions  to change to false
-				if (($this->use_private_table == False)
-				|| ($this->so->so_am_table_exists() == False)
-				|| (function_exists('imap_open') == False))
+				if (
+				  ($this->use_private_table == False)
+				  || ($this->so->so_am_table_exists() == False)
+				  // fix the misalignment bug for pop3 sockets then remove this test
+				  || (function_exists('imap_open') == False)
+				)
 				{
 					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: will FORCE CHANGE $this->session_cache_extreme to FALSE<br>'); }
 					$this->session_cache_extreme = False;
@@ -3219,9 +3222,18 @@
 				$my_folder_list[0]['folder_long'] = 'INBOX';
 				$my_folder_list[0]['folder_short'] = 'INBOX';
 				$my_folder_list[0]['acctnum'] = $acctnum;
-				// save result to "Level 1 cache" class arg holder var
+				// DARN DO NOT FORGET to cache it because extreme mode caching checks for A CACHED FOLDER_LIST to determine if we need a login or not!!!!
+				// -----------
+				// SAVE DATA TO APPSESSION DB CACHE (WITH the [folder_short] data)
+				// -----------
+				if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_folder_list('.__LINE__.'): POP3 set appsession cache $this->save_session_cache_item(folder_list, $my_folder_list, '.$acctnum.']) because extreme mode checks for this in login or not logic <br>'); }
+				$this->save_session_cache_item('folder_list', $my_folder_list, $acctnum);
+				
+				// cache the result to "level 1 cache" class arg holder var
+				if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_folder_list('.__LINE__.'): POP3 set Level 1 class var "cache" $this->set_arg_value(folder_list, $my_folder_list, '.$acctnum.') <br>'); }
 				$this->set_arg_value('folder_list', $my_folder_list, $acctnum);
-				if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_folder_list: LEAVING,  pop3 servers only have one folder: INBOX<br>'); }
+				
+				if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_folder_list('.__LINE__.'): LEAVING,  POP3 servers only have one folder: INBOX<br>'); }
 				return $my_folder_list;
 			}
 			elseif ($force_refresh == False)
@@ -5533,6 +5545,10 @@
 		UPDATE we use folder as a key in msgball_list but batch expire still works because 
 		it wipes data based on a key prior to folder name, same as with other data that has a 
 		folder name in its data key.
+		NOTE this function will save stuff not assiciated with extreme caching, because this 
+		function is part of the extreme caching "cache events" functions. To really 
+		totally clear the cache look for a function in msg_wrappers with a name 
+		something like "clearcache".
 		*/
 		function batch_expire_cached_items($called_by='not_specified', $only_msgball_list=False)
 		{
