@@ -2,25 +2,27 @@
   /**************************************************************************\
   * phpGroupWare Email - Mail Abstraction Layer                              *
   * http://www.phpgroupware.org/api                                          *
-  * This file written by Joseph Engo <jengo@phpgroupware.org>                *
-  * and Itzchak Rehberg <izzy@phpgroupware.org>                              *
-  * and Dan Kuykendall <dan@phpgroupware.org>                                *
-  * and Mark Peters <skeeter@phpgroupware.org>                               *
-  * Mail Abstraction Layer                                                   *
+  * ------------------------------------------------------------------------ *
   * Copyright (C) 2000, 2001 Itzchak Rehberg                                 *
-  * -------------------------------------------------------------------------*
-  * This library is part of phpGroupWare (http://www.phpgroupware.org)       * 
-  * This library is free software; you can redistribute it and/or modify it  *
-  * under the terms of the GNU Lesser General Public License as published by *
-  * the Free Software Foundation; either version 2.1 of the License,         *
-  * or any later version.                                                    *
-  * This library is distributed in the hope that it will be useful, but      *
-  * WITHOUT ANY WARRANTY; without even the implied warranty of               *
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                     *
-  * See the GNU Lesser General Public License for more details.              *
-  * You should have received a copy of the GNU Lesser General Public License *
-  * along with this library; if not, write to the Free Software Foundation,  *
-  * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            *
+  * This file written by  Joseph Engo <jengo@phpgroupware.org>               *
+  *                       Itzchak Rehberg <izzy@phpgroupware.org>            *
+  *                       Dan Kuykendall <dan@phpgroupware.org>              *
+  *                       Mark Peters <skeeter@phpgroupware.org>             *
+  * ------------------------------------------------------------------------ *
+  *  This library is part of phpGroupWare (http://www.phpgroupware.org)      * 
+  *  This library is free software; you can redistribute it and/or modify it *
+  *  under the terms of the GNU Lesser General Public License as published   *
+  *  by the Free Software Foundation; either version 2.1 of the License,     *
+  *  or any later version.                                                   *
+  *  This library is distributed in the hope that it will be useful, but     *
+  *  WITHOUT ANY WARRANTY; without even the implied warranty of              *
+  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    *
+  *  See the GNU Lesser General Public License for more details.             *
+  *  You should have received a copy of the GNU Lesser General Public        *
+  *  License along with this library; if not, write to the:                  *
+  *   Free Software Foundation, Inc.                                         *
+  *   59 Temple Place, Suite 330                                             *
+  *   Boston, MA  02111-1307  USA                                            *
   \**************************************************************************/
 
   /* $Id$ */
@@ -31,6 +33,323 @@
     $phpgw->common->phpgw_exit();
   } unset($d1);
 
+  /**************************************************************************\
+  * Some constants we need to define                                         *
+  \**************************************************************************/
+
+  if (! defined("TYPEVIDEO")) { // without imap compiled in some constants
+    define ("TYPETEXT",0);      // are missing
+    define ("TYPEMULTIPART",1);
+    define ("TYPEMESSAGE",2);
+    define ("TYPEAPPLICATION",3);
+    define ("TYPEAUDIO",4);
+    define ("TYPEIMAGE",5);
+    define ("TYPEVIDEO",6);
+    define ("TYPEOTHER",7);
+//  define ("TYPEMODEL",
+    define ("ENC7BIT",0);
+    define ("ENC8BIT",1);
+    define ("ENCBINARY",2);
+    define ("ENCBASE64",3);
+    define ("ENCQUOTEDPRINTABLE",4);
+    define ("ENCOTHER",5);
+    define ("ENCUU",6);
+  }
+
+  /**************************************************************************\
+  * SubClasses needed by msg funcs.                                          *
+  \**************************************************************************/
+
+  class msg_struct {
+     var $type = 0;
+     var $encoding = 5;
+     var $ifsubtype = false, $subtype = "plain";
+     var $ifdescription = false, $description;
+     var $ifid = false, $id;
+     var $lines = "0";
+     var $bytes = "0";
+     var $ifdisposition = false, $disposition;
+     var $ifdparameters = false, $dparameters;
+     var $ifparameters = false, $parameters;
+     var $parts;
+  }
+
+  class msg_params {
+     var $attribute;
+     var $value;
+     function msg_params($attrib,$val) {
+       $this->attribute = $attrib;
+       $this->value     = $val;
+     }
+  }
+
+  class msg_headinfo {
+    var $remail, $date, $Date, $subject, $Subject,
+        $in_reply_to, $message_id, $newsgroups, $followup_to, $references,
+        $Recent, $Unseen, $Answered, $Deleted, $Draft, $Flagged,
+        $toaddress, $to = Array(),
+        $fromaddress, $from = Array(),
+        $ccaddress, $cc = Array(),
+        $bccaddress, $bcc = Array(),
+        $reply_toaddress, $reply_to = Array(),
+        $senderaddress, $sender = Array(),
+        $return_path, $return_path = Array(),
+        $udate, $fetchfrom, $fetchsubject, $Size;
+  }
+
+  class msg_aka {
+    var $personal, $adl, $mailbox, $host;
+  }
+
+  class msg_mb_info {
+    var $Date = "", $Driver ="", $Mailbox = "", $Nmsgs = "",
+        $Recent = "", $Unread = "", $Size;
+  }
+
+  /**************************************************************************\
+  \**************************************************************************/
+
+  class msg_common 
+  { 
+    var $msg_struct;
+    var $err = array("code","msg","desc");
+    var $msg_info = Array(Array());
+    var $tempfile, $force_check;
+    var $boundary, $got_structure;
+
+    function msg_common_() {
+      global $phpgw_info;
+      $this->err["code"] = " ";
+      $this->err["msg"]  = " ";
+      $this->err["desc"] = " ";
+      $this->tempfile = $phpgw_info["server"]["temp_dir"].$phpgw_info["server"]["dir_separator"].$phpgw_info["user"]["userid"].".mhd";
+      $this->force_check = false;
+      $this->got_structure = false;
+    }
+
+    // phpGroupWare functions for developers
+
+    function get_flag($stream,$msg_num,$flag) {
+      $header = $this->fetchheader($stream,$msg_num);
+      $flag = strtolower($flag);
+      for ($i=0;$i<count($header);$i++) {
+        $pos = strpos($header[$i],":");
+        if (is_int($pos) && $pos) {
+          $keyword = trim(substr($header[$i],0,$pos));
+          $content = trim(substr($header[$i],$pos+1));
+          if (strtolower($keyword) == $flag) return $content;
+        }
+      }
+      return false;
+    }
+
+    /*************************************************************************\
+    * Common functions used by several pieces of this class                   *
+    \*************************************************************************/
+  
+    function base64($string) {
+      return base64_decode($string);
+    }
+  
+    function construct_folder_str( $folder ) {
+      /* This is only used by the login() function */
+      // Cyrus style: INBOX.Junque
+      // UWash style: ./aeromail/Junque
+      global $phpgw_info;
+
+      if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "Cyrus") {
+        $folder_str = "INBOX.".$folder;
+      } else {
+        $folder_str = "mail/".$folder;
+      }
+      return $folder_str;
+    }
+
+    function createmailbox($stream,$mailbox) {
+      return false;
+    }
+     
+    function deconstruct_folder_str( $folder )
+    {
+      /* This is only used by the login() function */
+      // Cyrus style: INBOX.Junque
+      // UWash style: ./aeromail/Junque
+      global $phpgw_info;
+
+      if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "Cyrus") {
+        $srch_str = "INBOX.";
+      } else {
+        $srch_str = "mail/";
+      }
+      $folder_str = substr($folder, strlen($srch_str), strlen($folder));
+
+      return $folder_str;
+    }
+
+    function deletemailbox($stream,$mailbox) {
+      return false;
+    } 
+     
+    function fetchheader($stream,$msg_num) {
+      $header = $this->get_header($stream,$msg_num);
+      return implode("\n",$header);
+    } 
+     
+    function fetchstructure($stream,$msg_num,$flags="") {
+      $header = $this->get_header($stream,$msg_num);
+      if (!$header): return false; endif;
+      $info = $this->get_structure($header,1);
+      if (!$info->bytes):
+        $rc = ($this->msg2socket($stream,"LIST $msg_num\n"));
+        if (!($this->pop_socket2msg($stream))):
+          $pos = strpos($this->err[msg]," ");
+          $info->bytes = substr($this->err[msg],$pos+1);
+        endif;
+      endif;
+      if ($info->type == 1) { // multipart
+        $body = $this->get_body($stream,$msg_num);
+        $boundary = $this->get_boundary(&$info);
+        $boundary = str_replace("\"","",$boundary);
+        $this->boundary = $boundary;
+        for ($i=1;$i<=$body[0];$i++) {
+          $pos1 = strpos($body[$i],"--$boundary");
+          $pos2 = strpos($body[$i],"--$boundary--");
+          if (is_int($pos2) && !$pos2) {
+            break;
+          }
+          if (is_int($pos1) && !$pos1) {
+            $info->parts[] = $this->get_structure($body,&$i,true);
+          }
+        }
+      }
+      $this->got_structure = true;
+      return $info;
+    }
+
+   function make_udate($msg_date) { // used only by pop_header
+     global $phpgw_info;
+     $pos = strpos($msg_date,",");
+     if ($pos): $msg_date = trim(substr($msg_date,$pos+1)); endif;
+     $pos = strpos($msg_date," ");
+     $day = substr($msg_date,0,$pos);
+     $msg_date = trim(substr($msg_date,$pos));
+     $month = substr($msg_date,0,3);
+     switch (strtolower($month)) {
+       case "jan" : $month =  1; break;
+       case "feb" : $month =  2; break;
+       case "mar" : $month =  3; break;
+       case "apr" : $month =  4; break;
+       case "may" : $month =  5; break;
+       case "jun" : $month =  6; break;
+       case "jul" : $month =  7; break;
+       case "aug" : $month =  8; break;
+       case "sep" : $month =  9; break;
+       case "oct" : $month = 10; break;
+       case "nov" : $month = 11; break;
+       default    : $month = 12; break;
+     }
+     $msg_date = trim(substr($msg_date,3));
+     $pos  = strpos($msg_date," ");
+     $year = trim(substr($msg_date,0,$pos));
+     $msg_date = trim(substr($msg_date,$pos));
+     $hour = substr($msg_date,0,2);
+     $minute = substr($msg_date,3,2);
+     $second = substr($msg_date,6,2);
+     $pos = strrpos($msg_date," ");
+     $tzoff = trim(substr($msg_date,$pos));
+     if (strlen($tzoff)==5) {
+       $diffh = substr($tzoff,1,2); $diffm = substr($tzoff,3);
+       if ((substr($tzoff,0,1)=="+") && is_int($diffh)) {
+         $hour -= $diffh; $minute -= $diffm;
+       } else {
+         $hour += $diffh; $minute += $diffm;
+       }
+     }
+     $utime = mktime($hour,$minute,$second,$month,$day,$year);
+     return $utime;
+   }
+
+     
+    function header($stream,$msg_nr,$fromlength="",$tolength="",$defaulthost="") {
+      $info = new msg_headinfo;
+      $info->Size = $this->size_msg($stream,$msg_nr);
+      $header = $this->get_header($stream,$msg_nr);
+      if (!$header): return false; endif;
+      for ($i=1;$i<=$header[0];$i++) {
+        $pos = strpos($header[$i]," ");
+        if (is_int($pos) && !$pos): continue; endif;
+        $keyword = strtolower(substr($header[$i],0,$pos));
+        $content = trim(substr($header[$i],$pos+1));
+        switch ($keyword) {
+          case "from"    :
+          case "from:"   :
+            $info->from = $this->get_addr_details("from",$content,&$header,&$i);
+            break;
+          case "to"      :
+          case "to:"     :  // following two lines need to be put into a loop!
+            $info->to   = $this->get_addr_details("to",$content,&$header,&$i);
+            break;
+          case "cc"      :
+          case "cc:"     :
+            $info->cc   = $this->get_addr_details("cc",$content,&$header,&$i);
+            break;
+          case "bcc"     :
+          case "bcc:"    :
+            $info->bcc  = $this->get_addr_details("bcc",$content,&$header,&$i);
+            break;
+          case "reply-to"  :
+          case "reply-to:" :
+            $info->reply_to = $this->get_addr_details("reply_to",$content,&$header,&$i);
+            break;
+          case "sender"  :
+          case "sender:" :
+            $info->sender = $this->get_addr_details("sender",$content,&$header,&$i);
+            break;
+          case "return-path"  :
+          case "return-path:" :
+            $info->return_path = $this->get_addr_details("return_path",$content,&$header,&$i);
+            break;
+          case "subject"  :
+          case "subject:" :
+          case "Subject:" :
+            $pos = strpos($header[$i+1]," "); if (is_int($pos) && !$pos) {
+              $i++; $content .= chop($header[$i]); }
+            $info->subject = htmlspecialchars($content);
+            $info->Subject = htmlspecialchars($content);
+            break;
+
+          // only temp
+          case "message-id"  :
+          case "message-id:" : $info->message_id = htmlspecialchars($content); break;
+          case "newsgroups:" : $info->newsgroups = htmlspecialchars($content); break;
+          case "references:" : $info->references = htmlspecialchars($content); break;
+          case "in-reply-to:" : $info->in_reply_to = htmlspecialchars($content); break;
+          case "followup-to:" : $info->follow_up_to = htmlspecialchars($content); break;
+          case "date:"   :
+            $info->date  = $content;
+            $info->udate = $this->make_udate($content);
+            break;
+          default        : break;
+        }
+      }
+      return $info;
+    } 
+
+    function listmailbox($stream,$ref,$pattern) {
+      return false;
+    }
+
+    function qprint($string) {
+      $string = str_replace("_", " ", $string);
+      $string = str_replace("=\r\n","",$string);
+      $string = quoted_printable_decode($string);
+      return $string;
+    } 
+     
+  } // end of class msg_common
+
+=======
+>>>>>>> 1.41
   /* Load msg class */
   $phpgw->msg = CreateObject("email.msg");
   $phpgw->msg->msg_common_();
@@ -57,7 +376,7 @@
   if (!$mailbox && !ereg("preferences",$PHP_SELF)) {
      echo "<p><center><b>" . lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
         . "</b></center>";
-     $phpgw->common->phpgw_exit();
+     $phpgw->common->phpgw_exit(True);
   }
 
   function decode_header_string($string) {
@@ -99,12 +418,12 @@
     // UWash style: ./aeromail/Junque
 
     if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"]) {
-      while($pref = each($phpgw_info["user"]["preferences"]["nntp"])) {
-	      $phpgw->db->query("SELECT name FROM newsgroups WHERE con=".$pref[0]);
-	      while($phpgw->db->next_record()) {
-	        echo '<option value="' . urlencode($phpgw->db->f("name")) . '">' . $phpgw->db->f("name")
-	           . '</option>';
-        }
+      while ($pref = each($phpgw_info["user"]["preferences"]["nntp"])) {
+	 $phpgw->db->query("SELECT name FROM newsgroups WHERE con='"
+                         . $pref[0] . "'",__LINE__,__FILE__);
+         while ($phpgw->db->next_record()) {
+            $folders[] = $phpgw->db->f("name");
+         }
       }
     } else {
       if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UW-Maildir") {
@@ -127,28 +446,28 @@
       $mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"].":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]."}",$filter."*");  
       if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] != "pop3")
         if (gettype($mailboxes) == "array") {
- 	        sort($mailboxes); // added sort for folder names 
+ 	   sort($mailboxes); // added sort for folder names
+           reset($mailboxes);
         }
-        if($mailboxes) {
-	        $num_boxes = count($mailboxes);
-	        if ($filter != "INBOX") { 
-	          echo '<option value="INBOX">INBOX</option>'; 
-	        }
-	        for ($index = 0; $index < $num_boxes; $index++) {
-	          $nm = substr($mailboxes[$index], strrpos($mailboxes[$index], "}") + $stdoffset, strlen($mailboxes[$index]));
-	          echo '<option value="';
-	          if ($nm != "INBOX") {
-	             $foldername = $phpgw->msg->deconstruct_folder_str($nm);
-	          } else {
-	             $foldername = "INBOX";
-	          }
-	          echo urlencode($foldername) . '">' . $foldername . '</option>';
-	          echo "\n";
-	        }
+        if ($mailboxes) {
+	   $num_boxes = count($mailboxes);
+	   if ($filter != "INBOX") {
+              $folders[] = "INBOX";
+	   }
+           for ($index = 0; $index < $num_boxes; $index++) {
+               $nm = substr($mailboxes[$index], strrpos($mailboxes[$index], "}") + $stdoffset, strlen($mailboxes[$index]));
+               if ($nm != "INBOX") {
+                  $foldername = $phpgw->msg->deconstruct_folder_str($nm);
+               } else {
+                  $foldername = "INBOX";
+               }
+               $folders[] = $foldername;
+           }
         } else {
-	      echo '<option value="INBOX">INBOX</option>';
+           $folders[] = "INBOX";
       }
     }
+    return $folders;
   }
 
   function get_mime_type($de_part) {
@@ -290,7 +609,6 @@
 
   // function make_clickable ripped off from PHPWizard.net
   // http://www.phpwizard.net/phpMisc/
-  // modified to make mailto: addresses compose in AeroMail
   function make_clickable($text)
   {
     global $phpgw;
