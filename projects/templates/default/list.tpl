@@ -7,7 +7,7 @@
 <table border="0" width="100%" cellpadding="2" cellspacing="0">
 	<tr bgcolor="{th_bg}">
 		<td colspan="3"><b>{lang_main}:&nbsp;<a href="{main_url}">{title_main}</a></b></td>
-		<td style="text-align:right;"><a href="{url_export_pdf}" target="_blank">PDF</a>&nbsp;<a href="{url_export_email}">EMail</a></td>
+		<td style="text-align:right;">{lang_export_as}:&nbsp;<a href="{url_export_pdf}" target="_blank">PDF</a>&nbsp;<a href="{url_export_email}">EMail</a></td>
 	</tr>
 	<tr bgcolor="{row_off}">
 		<td>{lang_number}:</td>

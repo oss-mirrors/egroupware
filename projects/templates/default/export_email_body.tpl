@@ -18,15 +18,10 @@
 		<td>{lang_customer}:</td>
 		<td>{customer_main}</td>
 	</tr>
-</table>
 
-<table border="0" width="100%" cellpadding="2" cellspacing="2">
-	<tr bgcolor="{th_bg}">
-		<td>{sort_title}</td>
-		{sort_cols}
-	</tr>
-	{list}
 </table>
+<br>
+{project_list}
 
 <!-- END body_html -->
 
@@ -34,21 +29,3 @@
 	{lang_enable_html}
 <!-- END body_text -->
 
-<!-- BEGIN pro_sort_cols -->
-	<td align="{col_align}">{sort_column}</td>
-<!-- END pro_sort_cols -->
-
-<!-- BEGIN projects_list -->
-
-	<tr bgcolor="{tr_color}">
-		<td valign="top"><a href="{projects_url}">{title}</a></td>
-		{pro_column}
-	</tr>
-
-<!-- END projects_list -->
-
-<!-- BEGIN pro_cols -->
-
-		<td align="{col_align}">{column}</td>
-
-<!-- END pro_cols -->

@@ -16,10 +16,15 @@
 		var valueYear	= document.getElementById(_valueName + '_year').value;
 		var valueMonth	= document.getElementById('{dateSelectBox_valueName}_month').value;
 		var valueText	= document.getElementById('{dateSelectBox_valueName}_text').value;
-		
+
 		var cell1	= newRow.insertCell(0);
 		cell1.setAttribute('align','center');
-		var textNode	= document.createTextNode(valueYear);
+		yearText = valueYear;
+		if(valueYear == 0)
+		{
+			yearText = '---';
+		}
+		var textNode	= document.createTextNode(yearText);
 		cell1.appendChild(textNode);
 		
 		var el		= document.createElement('input');
@@ -30,7 +35,12 @@
 
 		var cell2	= newRow.insertCell(1);
 		cell2.setAttribute('align','center');
-		var textNode	= document.createTextNode(valueMonth);
+		monthText = valueMonth;
+		if(valueMonth == 0)
+		{
+			monthText = '---';
+		}
+		var textNode	= document.createTextNode(monthText);
 		cell2.appendChild(textNode);
 		
 		var el		= document.createElement('input');

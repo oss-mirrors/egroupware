@@ -713,13 +713,17 @@
 			if(is_array($values['budget']))
 			{
 				//_debug_array($values['budgetBegin']);
-				foreach($values[budget] as $budget)
+				foreach($values[budget] as $year => $budgetData)
 				{
-					$this->db->query("insert into phpgw_p_budget (project_id,month,year,budget) values ('".
+					foreach($budgetData as $month => $budget)
+					{
+						$query = "insert into phpgw_p_budget (project_id,month,year,budget) values ('".
 									$values['project_id']."','".
-									$budget['month']."','".
-									$budget['year']."','".
-									$budget['text']."')",__LINE__,__FILE__);
+									(int)$month."','".
+									(int)$year."','".
+									$budget."')";
+						$this->db->query($query,__LINE__,__FILE__);
+					}
 				}
 			}
 			

@@ -23,7 +23,7 @@
 	
 	function editMilestone(_url)
 	{
-		window.open(_url,"EditMilestone","width=600,height=220,toolbar=no,scrollbars=yes,resizable=yes");
+		window.open(_url,"EditMilestone","width=600,height=220,toolbar=no,scrollbars=yes,resizable=yes,left=200,top=300");
 	}
 </script>
 

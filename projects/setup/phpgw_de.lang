@@ -332,3 +332,6 @@ you have to create a delivery or invoice first !	projects	de	Sie müssen zuerst e
 show milestones	projects	de	Meilensteine anzeigen
 show planned resources	projects	de	eingeplante Mitarbeiter anzeigen
 subproject	projects	de	Teilprojekt
+export as	projects	de	exportieren als
+delete selected files	projects	de	ausgewählte Dateien löschen
+add file	projects	de	Datei hinzufügen

@@ -31,6 +31,7 @@
 	(
 		'phpgw_p_projects',
 		'phpgw_p_activities',
+		'phpgw_p_budget',
 		'phpgw_p_projectactivities',
 		'phpgw_p_hours',
 		'phpgw_p_projectmembers',

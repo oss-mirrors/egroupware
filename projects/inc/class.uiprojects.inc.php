@@ -321,6 +321,8 @@
 			$GLOBALS['phpgw']->template->set_var('lang_files',lang('Files'));
 			$GLOBALS['phpgw']->template->set_var('lang_add',lang('add file'));
 			$GLOBALS['phpgw']->template->set_var('lang_delete_selected',lang('delete selected files'));
+			$GLOBALS['phpgw']->template->set_var('lang_export_as',lang('export as'));
+			$GLOBALS['phpgw']->template->set_var('lang_open_popup',lang('open popup'));
 		}
 
 		function display_app_header()
@@ -1025,6 +1027,15 @@
 				$values['sday']		= $startdate['day'];
 				$values['smonth']	= $startdate['month'];
 				$values['syear']	= $startdate['year'];
+				
+				if(is_array($values['budget']))
+				{
+					foreach($values['budget'] as $singleBudget)
+					{
+						$formatedBudget[$singleBudget['year']][$singleBudget['month']] = $singleBudget['text'];
+					}
+					$values['budget'] = $formatedBudget;
+				}
 
 				$error = $this->boprojects->check_values($action, $values);
 				if (is_array($error))
@@ -1152,7 +1163,6 @@
 				$GLOBALS['phpgw']->template->set_var('navbarhandle','');
 				$GLOBALS['phpgw']->template->fp('navbarhandle','navbar',True);
 				$values = $this->boprojects->read_single_project($project_id);
-				//_debug_array($values);
 				$GLOBALS['phpgw']->template->set_var('old_status',$values['status']);
 				$GLOBALS['phpgw']->template->set_var('old_parent',$values['parent']);
 				$GLOBALS['phpgw']->template->set_var('old_edate',$values['edate']);
@@ -1283,24 +1293,7 @@
 				}
 			}
 
-#			$GLOBALS['phpgw']->template->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$values['syear']),
-#																							$this->sbox->getMonthText('values[smonth]',$values['smonth']),
-#																							$this->sbox->getDays('values[sday]',$values['sday'])));
-#
-#			$GLOBALS['phpgw']->template->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$values['eyear']),
-#																							$this->sbox->getMonthText('values[emonth]',$values['emonth']),
-#																							$this->sbox->getDays('values[eday]',$values['eday'])));
-#
-#			$GLOBALS['phpgw']->template->set_var('pstart_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[psyear]',$values['psyear']),
-#																							$this->sbox->getMonthText('values[psmonth]',$values['psmonth']),
-#																							$this->sbox->getDays('values[psday]',$values['psday'])));
-#
-#			$GLOBALS['phpgw']->template->set_var('pend_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[peyear]',$values['peyear']),
-#																							$this->sbox->getMonthText('values[pemonth]',$values['pemonth']),
-#																							$this->sbox->getDays('values[peday]',$values['peday'])));
-#
 //ndee 130504 new date selectors
-
 			$GLOBALS['phpgw']->template->set_var('start_date_select',$this->jscal->input('values[startdate]',$values['sdate']?$values['sdate']:time()+(60*60*24*7)));
 			$GLOBALS['phpgw']->template->set_var('end_date_select',$this->jscal->input('values[enddate]',$values['edate']?$values['edate']:''));
 			$GLOBALS['phpgw']->template->set_var('pstart_date_select',$this->jscal->input('values[pstartdate]',$values['psdate']?$values['psdate']:time()+(60*60*24*7)));
@@ -1600,8 +1593,8 @@
 #			$GLOBALS['phpgw']->template->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$values['eyear']),
 #				$this->sbox->getMonthText('values[emonth]',$values['emonth']),
 #				$this->sbox->getDays('values[eday]',$values['eday'])));
-			$GLOBALS['phpgw']->template->set_var('end_date_select',
-				$this->jscal->input('values[enddate]',$values['edate']?$values['edate']:''));
+#			$GLOBALS['phpgw']->template->set_var('end_date_select',
+#				$this->jscal->input('values[enddate]',$values['edate']?$values['edate']:''));
 
 			unset($uiwidgets);
 
@@ -1708,8 +1701,9 @@
 				$GLOBALS['phpgw']->redirect_link('/index.php',$link_data);
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main?lang('view job'):lang('view project'))
-															. $this->admin_header_info();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . 
+				($pro_main?lang('view job'):lang('view project')) . 
+				$this->admin_header_info();
 
 			if (isset($public_view))
 			{
@@ -1722,17 +1716,8 @@
 				$this->display_app_header();
 			}
 
-			$GLOBALS['phpgw']->template->set_file(array('view' => 'view.tpl'));
-			$GLOBALS['phpgw']->template->set_block('view','sub','subhandle');
-			$GLOBALS['phpgw']->template->set_block('view','accounting_act','acthandle');
-			$GLOBALS['phpgw']->template->set_block('view','accounting_own','ownhandle');
-			$GLOBALS['phpgw']->template->set_block('view','accounting_both','bothhandle');
 
-			$GLOBALS['phpgw']->template->set_block('view','nonanonym','nonanonymhandle');
-
-#			$GLOBALS['phpgw']->template->set_block('view','mslist','mslisthandle');
-			$GLOBALS['phpgw']->template->set_block('view','emplist','emplisthandle');
-
+			$GLOBALS['phpgw']->template->set_file(array('view' => 'view3.tpl'));
 			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
 			$nopref = $this->boprojects->check_prefs();
@@ -1751,219 +1736,19 @@
 
 			if ($action == 'mains' || $action == 'amains')
 			{
-				$GLOBALS['phpgw']->template->set_var('cat',$this->boprojects->cats->id2name($values['cat']));
-				$GLOBALS['phpgw']->template->set_var('pcosts',$values['pcosts']);
+				$GLOBALS['phpgw']->template->set_var('project_view',
+					$this->boprojects->createHTMLOutput('mains',$values)
+				);
 			}
 			else if($pro_main && $action == 'subs')
 			{
 				$main = $this->boprojects->read_single_project($pro_main);
 
-				$GLOBALS['phpgw']->template->set_var('cat',$this->boprojects->cats->id2name($main['cat']));
-				$GLOBALS['phpgw']->template->set_var('pcosts',$main['pcosts']);
-				$GLOBALS['phpgw']->template->set_var('lang_number',lang('Job ID'));
-
-				$link_data['project_id'] = $values['parent'];
-				$GLOBALS['phpgw']->template->set_var('pro_parent',$this->boprojects->return_value('pro',$values['parent']));	
-				$GLOBALS['phpgw']->template->set_var('parent_url',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.view_project&action='
-																							. ($values['main']==$values['parent']?'mains':'subs') . '&project_id='
-																						. $values['parent'] . '&pro_main=' . $values['main']));
-
-				$GLOBALS['phpgw']->template->set_var('pro_main',$this->boprojects->return_value('pro',$values['main']));
-				$GLOBALS['phpgw']->template->set_var('main_url',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.view_project&action=mains&project_id='
-																						. $values['main']));
-				$GLOBALS['phpgw']->template->set_var('previous',$this->boprojects->return_value('pro',$values['previous']));
-				$GLOBALS['phpgw']->template->fp('subhandle','sub',True);
-			}
-
-			$GLOBALS['phpgw']->template->set_var('investment_nr',($values['investment_nr']?$values['investment_nr']:$main['investment_nr']));
-
-
-			$GLOBALS['phpgw']->template->set_var('number',$values['number']);
-			$GLOBALS['phpgw']->template->set_var('title',($values['title']?$values['title']:'&nbsp;'));
-			$GLOBALS['phpgw']->template->set_var('descr',($values['descr']?$values['descr']:'&nbsp;'));
-			$GLOBALS['phpgw']->template->set_var('status',lang($values['status']));
-			$GLOBALS['phpgw']->template->set_var('access',lang($values['access']));
-			$uiwidgets	= CreateObject('projects.uiwidgets');
-			$GLOBALS['phpgw']->template->set_var('budget',$uiwidgets->dateSelectBox($values['budget'],'values[budget]','['.$prefs['currency'].'.c]',true));
-			$GLOBALS['phpgw']->template->set_var('ebudget',$values['e_budget']);
-
-			$GLOBALS['phpgw']->template->set_var('discount',$values['discount']);
-			$GLOBALS['phpgw']->template->set_var('discount_type',$values['discount_type']=='amount'?$prefs['currency']:'%');
-
-			$GLOBALS['phpgw']->template->set_var('inv_method',$values['inv_method']);
-
-			$GLOBALS['phpgw']->template->set_var('reference',$values['reference']);
-			$GLOBALS['phpgw']->template->set_var('url',$values['url']);
-
-			$GLOBALS['phpgw']->template->set_var('result',$values['result']);
-			$GLOBALS['phpgw']->template->set_var('test',$values['test']);
-			$GLOBALS['phpgw']->template->set_var('quality',$values['quality']);
-			$GLOBALS['phpgw']->template->set_var('priority',$this->boprojects->formatted_priority($values['priority']));
-
-			$GLOBALS['phpgw']->template->set_var('currency',$prefs['currency']);
-
-			$month = $this->boprojects->return_date();
-			$GLOBALS['phpgw']->template->set_var('month',$month['monthformatted']);
-
-			$GLOBALS['phpgw']->template->set_var('ptime',$values['ptime']);
-
-			$GLOBALS['phpgw']->template->set_var('uhours_jobs',$values['uhours_jobs_all']);
-
-			$GLOBALS['phpgw']->template->set_var('sdate',$values['sdate_formatted']);
-			$GLOBALS['phpgw']->template->set_var('edate',$values['edate_formatted']);
-
-			$GLOBALS['phpgw']->template->set_var('psdate',$values['psdate_formatted']);
-			$GLOBALS['phpgw']->template->set_var('pedate',$values['pedate_formatted']);
-
-			$GLOBALS['phpgw']->template->set_var('udate',$values['udate_formatted']);
-			$GLOBALS['phpgw']->template->set_var('cdate',$values['cdate_formatted']);
-
-//--------- coordinator -------------
-
-			$GLOBALS['phpgw']->template->set_var('lang_coordinator',($pro_main?lang('job manager'):lang('Coordinator')));
-			$GLOBALS['phpgw']->template->set_var('coordinator',$values['coordinatorout']);
-			$GLOBALS['phpgw']->template->set_var('owner',$GLOBALS['phpgw']->common->grab_owner_name($values['owner']));
-			$GLOBALS['phpgw']->template->set_var('processor',$GLOBALS['phpgw']->common->grab_owner_name($values['processor']));
-
-// ----------------------------------- customer ------
-
-			$GLOBALS['phpgw']->template->set_var('customer',$values['customerout']);
-			$GLOBALS['phpgw']->template->set_var('customer_nr',$values['customer_nr']);
-
-// --------- milestones ------------------------------
-
-#			$mstones = $this->boprojects->get_mstones($project_id);
-#			//$link_data['menuaction'] = 'projects.uiprojects.edit_mstone';
-#
-#			while (is_array($mstones) && list(,$ms) = each($mstones))
-#			{
-#				//$link_data['s_id'] = $ms['s_id'];
-#				$GLOBALS['phpgw']->template->set_var('s_title',$ms['title']);
-#				//$GLOBALS['phpgw']->template->set_var('mstone_edit_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
-#				$GLOBALS['phpgw']->template->set_var('s_edateout',$this->boprojects->formatted_edate($ms['edate']));
-#				$GLOBALS['phpgw']->template->fp('mslisthandle','mslist',True);
-#			}
-
-// --------- emps & roles ------------------------------
-
-			$emps = $this->boprojects->get_employee_roles(array('project_id' => $project_id,'formatted' => True));
-
-			while (is_array($emps) && list(,$emp) = each($emps))
-			{
-				$GLOBALS['phpgw']->template->set_var('emp_name',$emp['emp_name']);
-				$GLOBALS['phpgw']->template->set_var('events',$emp['events']);
-				$GLOBALS['phpgw']->template->set_var('role_name',$emp['role_name']);
-				$GLOBALS['phpgw']->template->fp('emplisthandle','emplist',True);
-			}
-
-			if (!isset($public_view))
-			{
-				if($this->boprojects->siteconfig['accounting'] == 'own')
-				{
-					$GLOBALS['phpgw']->template->set_var('accounting_factor',($values['accounting']=='employee'?lang('factor employee'):lang('factor project')));
-					$GLOBALS['phpgw']->template->set_var('project_accounting_factor',$values['project_accounting_factor']);
-					$GLOBALS['phpgw']->template->set_var('project_accounting_factor_d',$values['project_accounting_factor_d']);
-					$GLOBALS['phpgw']->template->set_var('billable',($values['billable']=='Y'?lang('yes'):lang('no')));
-
-					$GLOBALS['phpgw']->template->fp('accounting_settings','accounting_own',True);
-				}
-				else
-				{
-// ------------ activites bookable ----------------------
-					$boact = $this->boprojects->activities_list($project_id,False);
-					if (is_array($boact))
-					{
-						while (list($null,$bo) = each($boact))
-						{
-							$boact_list .=	$bo['descr'] . ' [' . $bo['num'] . ']' . '<br>';
-						}
-					}
-
-					$GLOBALS['phpgw']->template->set_var('book_activities_list',$boact_list);
-// -------------- activities billable ---------------------- 
-
-					$billact = $this->boprojects->activities_list($project_id,True);
-					if (is_array($billact))
-					{
-						while (list($null,$bill) = each($billact))
-						{
-							$billact_list .=	$bill['descr'] . ' [' . $bill['num'] . ']' . "\n";
-						}
-					}
-					$GLOBALS['phpgw']->template->set_var('bill_activities_list',$billact_list);
-					$GLOBALS['phpgw']->template->fp('accounting_settings','accounting_act',True);
-				}
-				$GLOBALS['phpgw']->template->fp('accounting_2settings','accounting_both',True);
-				$GLOBALS['phpgw']->template->fp('nonanonymhandle','nonanonym',True);
-
-				if ($this->boprojects->edit_perms(array('action' => $action,'coordinator' => $values['coordinator'],'main' => $values['main'],
-													'parent' => $values['parent'])))
-				{
-					$GLOBALS['phpgw']->template->set_var('edit_button','<input type="submit" name="edit" value="' . lang('edit') .'">');
-					$GLOBALS['phpgw']->template->set_var('edit_milestones_button','<input type="submit" name="mstone" value="' . lang('edit milestones') .'">');
-					$GLOBALS['phpgw']->template->set_var('edit_roles_events_button','<input type="submit" name="roles" value="' . lang('edit roles and events') .'">');
-				}
-			}
-			$GLOBALS['phpgw']->template->set_var('ownhandle','');
-			$GLOBALS['phpgw']->template->set_var('acthandle','');
-			$GLOBALS['phpgw']->template->set_var('bothhandle','');
-			
-			// the milestones part
-			$uiwidgets	= CreateObject('projects.uiwidgets');
-
-			$mstones = $this->boprojects->get_mstones($project_id);
-
-			if(is_array($mstones))
-			{
-				while(list(,$ms) = each($mstones))
-				{
-					#_debug_array($ms);
-					$GLOBALS['phpgw']->template->set_var('s_title',$ms['title']);
-					$GLOBALS['phpgw']->template->set_var('s_edateout',$this->boprojects->formatted_edate($ms['edate']));
-					$rowID = $uiwidgets->tableViewAddRow();
-					if($ms['description'])
-					{
-						$uiwidgets->tableViewAddTextCell($rowID,'<b>'.$ms['title'].'</b><br>'.$ms['description']);
-					}
-					else
-					{
-						$uiwidgets->tableViewAddTextCell($rowID,'<b>'.$ms['title'].'</b>');
-					}
-					$uiwidgets->tableViewAddTextCell($rowID,$this->boprojects->formatted_edate($ms['edate']),'center');
-				}
-				$headValues = array(lang('title'),lang('Date due'));
-				$GLOBALS['phpgw']->template->set_var('milestones_table',$uiwidgets->tableView($headValues));
-			}
-			unset($uiwidgets);
-			
-			// the file manager part
-			$uiwidgets	= CreateObject('projects.uiwidgets');
-			$bolink		= CreateObject('infolog.bolink');
-			
-			$headValues = array(lang('name'),lang('size'));
-			$attachedFiles = $bolink->get_links('projects',$project_id,'file');
-
-			if(is_array($attachedFiles))
-			{
-				foreach($attachedFiles as $fileData)
-				{
-					$fileLinkData = array
-					(
-						'menuaction'	=> 'infolog.bolink.get_file',
-						'app'		=> 'projects',
-						'id'		=> $project_id,
-						'filename'	=> $fileData['id']
-					);
-					$rowID = $uiwidgets->tableViewAddRow();
-					$uiwidgets->tableViewAddTextCell($rowID,'<a href="'.
-						$GLOBALS['phpgw']->link('/index.php',$fileLinkData).'">'.
-						$fileData['id'].'</a>');
-					$uiwidgets->tableViewAddTextCell($rowID,$fileData['size'],'center');
-				}
+				$GLOBALS['phpgw']->template->set_var('project_view',
+					$this->boprojects->createHTMLOutput('subs', $values, $main)
+				);
 			}
 			
-			$GLOBALS['phpgw']->template->set_var('files_table',$uiwidgets->tableView($headValues));
-
 			$GLOBALS['phpgw']->template->pfp('out','view');
 
 
@@ -1974,6 +1759,7 @@
 					'project_id' => $project_id
 				));
 			}
+
 		}
 
 		function delete_project()

@@ -114,12 +114,17 @@
 		* creates the image for the gantt chart
 		*
 		* @param $_params	array containing projectdata, start- and enddate
+		* @param $_filename	filename for the image, if empty image gets printed to browser
 		* @author	Lars Kneschke / Bettina Gille
 		* @returns	nothing - writes image to disk
 		*/
-		function show_graph($params)
+		function show_graph($params, $_filename='')
 		{
 			$modernJPGraph = false;
+			
+			// no gd support
+			if(!function_exists('imagecopyresampled')) 
+				return false;
 			
 			DEFINE("TTF_DIR",PHPGW_SERVER_ROOT."/projects/ttf-bitstream-vera-1.10/");
 			if(file_exists(PHPGW_SERVER_ROOT . '/../jpgraph/src/jpgraph.php'))
@@ -499,7 +504,7 @@
 				}
 				
 				#$graph->Stroke(PHPGW_SERVER_ROOT . SEP . 'phpgwapi' . SEP . 'images' . SEP . 'draw_tmp.png');
-				$graph->Stroke();
+				$graph->Stroke($_filename);
 			}
 		}
 	}

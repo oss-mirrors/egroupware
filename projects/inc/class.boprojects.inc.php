@@ -195,11 +195,380 @@
 			}
 		}
 
+		function createHTMLOutput($_action, $_values, $_dataMainProject = array(), 
+			$_displayNavbar=true, $_displayFooter=true,
+			$_displayOverview=true, $_displayMilestones=true, $_displayFiles=true)
+		{
+			$template = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+		
+			$template->set_file(array('view' => 'view2.tpl'));
+			$template->set_block('view','main');
+			$template->set_block('view','sub','subhandle');
+			$template->set_block('view','accounting_act','acthandle');
+			$template->set_block('view','accounting_own','ownhandle');
+			$template->set_block('view','accounting_both','bothhandle');
+			$template->set_block('view','nonanonym','nonanonymhandle');
+			$template->set_block('view','emplist','emplisthandle');
+			$template->set_block('view','navbar','navbarhandle');
+			$template->set_block('view','div_overview','div_overviewhandle');
+			$template->set_block('view','div_milestone','div_milestonehandle');
+			$template->set_block('view','div_files','div_fileshandle');
+			$template->set_block('view','overview_footer','overview_footerhandle');
+
+			$template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
+
+			$nopref = $this->check_prefs();
+			if (is_array($nopref))
+			{
+				$template->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
+			}
+			else
+			{
+				$prefs = $this->read_prefs();
+			}
+
+			#$values = $this->read_single_project($project_id);
+
+			//_debug_array($values);
+			
+			if($_displayNavbar== true)
+				$template->parse('navbar_placeholder','navbar',True);
+
+			if ($_action == 'mains' || $action == 'amains')
+			{
+				$template->set_var('cat',$this->cats->id2name($_values['cat']));
+				$template->set_var('pcosts',$_values['pcosts']);
+			}
+			else if($_action == 'subs')
+			{
+				$main = $_dataMainProject;
+
+				$template->set_var('cat',$this->cats->id2name($main['cat']));
+				$template->set_var('pcosts',$main['pcosts']);
+				$template->set_var('lang_number',lang('Job ID'));
+
+				$link_data['project_id'] = $_values['parent'];
+				$template->set_var('pro_parent',$this->return_value('pro',$_values['parent']));	
+				$template->set_var('parent_url',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.view_project&action='
+					. ($values['main']==$values['parent']?'mains':'subs') . '&project_id='
+					. $values['parent'] . '&pro_main=' . $values['main']));
+
+				$template->set_var('pro_main',$this->return_value('pro',$_values['main']));
+				$template->set_var('main_url',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.view_project&action=mains&project_id='
+					. $_values['main']));
+				$template->set_var('previous',$this->return_value('pro',$_values['previous']));
+				$template->fp('subhandle','sub',True);
+			}
+
+			$template->set_var('investment_nr',($_values['investment_nr']?$_values['investment_nr']:$main['investment_nr']));
+
+			$template->set_var('number',$_values['number']);
+			$template->set_var('title',($_values['title']?$_values['title']:'&nbsp;'));
+			$template->set_var('descr',($_values['descr']?$_values['descr']:'&nbsp;'));
+			$template->set_var('status',lang($_values['status']));
+			$template->set_var('access',lang($_values['access']));
+			$uiwidgets	= CreateObject('projects.uiwidgets');
+			$template->set_var('budget',$uiwidgets->dateSelectBox($_values['budget'],'values[budget]','['.$prefs['currency'].'.c]',true));
+			$template->set_var('ebudget',$_values['e_budget']);
+
+			$template->set_var('discount',$_values['discount']);
+			$template->set_var('discount_type',$_values['discount_type']=='amount'?$prefs['currency']:'%');
+
+			$template->set_var('inv_method',$_values['inv_method']);
+
+			$template->set_var('reference',$_values['reference']);
+			$template->set_var('url',$_values['url']);
+
+			$template->set_var('result',$_values['result']);
+			$template->set_var('test',$_values['test']);
+			$template->set_var('quality',$_values['quality']);
+			$template->set_var('priority',$this->formatted_priority($_values['priority']));
+
+			$template->set_var('currency',$prefs['currency']);
+
+			$month = $this->return_date();
+			$template->set_var('month',$month['monthformatted']);
+
+			$template->set_var('ptime',$_values['ptime']);
+
+			$template->set_var('uhours_jobs',$_values['uhours_jobs_all']);
+
+			$template->set_var('sdate',$_values['sdate_formatted']);
+			$template->set_var('edate',$_values['edate_formatted']);
+
+			$template->set_var('psdate',$_values['psdate_formatted']);
+			$template->set_var('pedate',$_values['pedate_formatted']);
+
+			$template->set_var('udate',$_values['udate_formatted']);
+			$template->set_var('cdate',$_values['cdate_formatted']);
+
+//--------- coordinator -------------
+
+			$template->set_var('lang_coordinator',($pro_main?lang('job manager'):lang('Coordinator')));
+			$template->set_var('coordinator',$_values['coordinatorout']);
+			$template->set_var('owner',$GLOBALS['phpgw']->common->grab_owner_name($_values['owner']));
+			$template->set_var('processor',$GLOBALS['phpgw']->common->grab_owner_name($_values['processor']));
+
+// ----------------------------------- customer ------
+
+			$template->set_var('customer',$_values['customerout']);
+			$template->set_var('customer_nr',$_values['customer_nr']);
+
+// --------- emps & roles ------------------------------
+			$emps = $this->get_employee_roles(array('project_id' => $_values['project_id'],'formatted' => True));
+
+			while (is_array($emps) && list(,$emp) = each($emps))
+			{
+				$template->set_var('emp_name',$emp['emp_name']);
+				$template->set_var('events',$emp['events']);
+				$template->set_var('role_name',$emp['role_name']);
+				$template->fp('emplisthandle','emplist',True);
+			}
+
+			if (!isset($public_view))
+			{
+				if($this->siteconfig['accounting'] == 'own')
+				{
+					$template->set_var('accounting_factor',($_values['accounting']=='employee'?lang('factor employee'):lang('factor project')));
+					$template->set_var('project_accounting_factor',$_values['project_accounting_factor']);
+					$template->set_var('project_accounting_factor_d',$_values['project_accounting_factor_d']);
+					$template->set_var('billable',($_values['billable']=='Y'?lang('yes'):lang('no')));
+
+					$template->fp('accounting_settings','accounting_own',True);
+				}
+				else
+				{
+// ------------ activites bookable ----------------------
+					$boact = $this->activities_list($_values['project_id'],False);
+					if (is_array($boact))
+					{
+						while (list($null,$bo) = each($boact))
+						{
+							$boact_list .=	$bo['descr'] . ' [' . $bo['num'] . ']' . '<br>';
+						}
+					}
+
+					$template->set_var('book_activities_list',$boact_list);
+// -------------- activities billable ---------------------- 
+
+					$billact = $this->activities_list($_values['project_id'],True);
+					if (is_array($billact))
+					{
+						while (list($null,$bill) = each($billact))
+						{
+							$billact_list .=	$bill['descr'] . ' [' . $bill['num'] . ']' . "\n";
+						}
+					}
+					$template->set_var('bill_activities_list',$billact_list);
+					$template->fp('accounting_settings','accounting_act',True);
+				}
+				$template->fp('accounting_2settings','accounting_both',True);
+				$template->fp('nonanonymhandle','nonanonym',True);
+
+				if ($this->edit_perms(array('action' => $action,
+							'coordinator' => $_values['coordinator'],
+							'main' => $_values['main'],
+							'parent' => $_values['parent']))
+					&& $_displayFooter == true
+				)
+				{
+					$template->set_var('edit_button','<input type="submit" name="edit" value="' . lang('edit') .'">');
+					$template->set_var('edit_milestones_button','<input type="submit" name="mstone" value="' . lang('edit milestones') .'">');
+					$template->set_var('edit_roles_events_button','<input type="submit" name="roles" value="' . lang('edit roles and events') .'">');
+					$template->parse('overview_footer_placeholder','overview_footer',True);
+				}
+			}
+			$template->set_var('ownhandle','');
+			$template->set_var('acthandle','');
+			$template->set_var('bothhandle','');
+
+			// the milestones part
+			$uiwidgets	= CreateObject('projects.uiwidgets');
+
+			$mstones = $this->get_mstones($_values['project_id']);
+
+			if(is_array($mstones))
+			{
+				while(list(,$ms) = each($mstones))
+				{
+					#_debug_array($ms);
+					$template->set_var('s_title',$ms['title']);
+					$template->set_var('s_edateout',$this->formatted_edate($ms['edate']));
+					$rowID = $uiwidgets->tableViewAddRow();
+					if($ms['description'])
+					{
+						$uiwidgets->tableViewAddTextCell($rowID,'<b>'.$ms['title'].'</b><br>'.$ms['description']);
+					}
+					else
+					{
+						$uiwidgets->tableViewAddTextCell($rowID,'<b>'.$ms['title'].'</b>');
+					}
+					$uiwidgets->tableViewAddTextCell($rowID,$this->formatted_edate($ms['edate']),'center');
+				}
+				$headValues = array(lang('title'),lang('Date due'));
+				$template->set_var('milestones_table',$uiwidgets->tableView($headValues));
+			}
+			unset($uiwidgets);
+			
+			// the file manager part
+			$uiwidgets	= CreateObject('projects.uiwidgets');
+			$bolink		= CreateObject('infolog.bolink');
+			
+			$headValues = array(lang('name'),lang('size'));
+			$attachedFiles = $bolink->get_links('projects',$_values['project_id'],'file');
+
+			if(is_array($attachedFiles))
+			{
+				foreach($attachedFiles as $fileData)
+				{
+					$fileLinkData = array
+					(
+						'menuaction'	=> 'infolog.bolink.get_file',
+						'app'		=> 'projects',
+						'id'		=> $_values['project_id'],
+						'filename'	=> $fileData['id']
+					);
+					$rowID = $uiwidgets->tableViewAddRow();
+					$uiwidgets->tableViewAddTextCell($rowID,'<a href="'.
+						$GLOBALS['phpgw']->link('/index.php',$fileLinkData).'">'.
+						$fileData['id'].'</a>');
+					$uiwidgets->tableViewAddTextCell($rowID,$fileData['size'],'center');
+				}
+			}
+			
+			$template->set_var('files_table',$uiwidgets->tableView($headValues));
+
+			$template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+			$template->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
+			$template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
+
+			$template->set_var('lang_category',lang('Category'));
+			$template->set_var('lang_select',lang('Select'));
+			$template->set_var('lang_select_category',lang('Select category'));
+
+			$template->set_var('lang_descr',lang('Description'));
+			$template->set_var('lang_title',lang('Title'));
+			$template->set_var('lang_none',lang('None'));
+			$template->set_var('lang_number',lang('Project ID'));
+
+			$template->set_var('lang_start_date',lang('Start Date'));
+			$template->set_var('lang_date_due',lang('Date due'));
+			$template->set_var('lang_cdate',lang('Date created'));
+			$template->set_var('lang_last_update',lang('last update'));
+
+			$template->set_var('lang_start_date_planned',lang('start date planned'));
+			$template->set_var('lang_date_due_planned',lang('date due planned'));
+
+			$template->set_var('lang_access',lang('access'));
+			$template->set_var('lang_projects',lang('Projects'));
+			$template->set_var('lang_project',lang('Project'));
+
+			$template->set_var('lang_ttracker',lang('time tracker'));
+			$template->set_var('lang_statistics',lang('Statistics'));
+			$template->set_var('lang_roles',lang('roles'));
+			$template->set_var('lang_role',lang('role'));
+
+			$template->set_var('lang_jobs',lang('Jobs'));
+			$template->set_var('lang_act_number',lang('Activity ID'));
+			$template->set_var('lang_title',lang('Title'));
+			$template->set_var('lang_status',lang('Status'));
+			$template->set_var('lang_budget',lang('Budget'));
+
+			$template->set_var('lang_investment_nr',lang('investment nr'));
+			$template->set_var('lang_customer',lang('Customer'));
+			$template->set_var('lang_coordinator',lang('Coordinator'));
+			$template->set_var('lang_employees',lang('Employees'));
+			$template->set_var('lang_creator',lang('creator'));
+			$template->set_var('lang_processor',lang('processor'));
+			$template->set_var('lang_previous',lang('previous project'));
+			$template->set_var('lang_bookable_activities',lang('Bookable activities'));
+			$template->set_var('lang_billable_activities',lang('Billable activities'));
+			$template->set_var('lang_edit',lang('edit'));
+			$template->set_var('lang_view',lang('View'));
+			$template->set_var('lang_hours',lang('Work hours'));
+			$template->set_var('lang_remarkreq',lang('Remark required'));
+
+			$template->set_var('lang_customer_nr',lang('customer nr'));
+			$template->set_var('lang_url',lang('project url'));
+			$template->set_var('lang_reference',lang('external reference'));
+
+			$template->set_var('lang_stats',lang('Statistics'));
+			$template->set_var('lang_ptime',lang('time planned'));
+			$template->set_var('lang_utime',lang('time used'));
+			$template->set_var('lang_month',lang('month'));
+
+			$template->set_var('lang_done',lang('done'));
+			$template->set_var('lang_save',lang('save'));
+			$template->set_var('lang_apply',lang('apply'));
+			$template->set_var('lang_cancel',lang('cancel'));
+			$template->set_var('lang_search',lang('search'));
+			$template->set_var('lang_delete',lang('delete'));
+			$template->set_var('lang_back',lang('back'));
+
+			$template->set_var('lang_parent',lang('Parent project'));
+			$template->set_var('lang_main',lang('Main project'));
+
+			$template->set_var('lang_add_milestone',lang('add milestone'));
+			$template->set_var('lang_milestones',lang('milestones'));
+
+			$template->set_var('lang_result',lang('result'));
+			$template->set_var('lang_test',lang('test'));
+			$template->set_var('lang_quality',lang('quality check'));
+
+			$template->set_var('lang_accounting',lang('accounting system'));
+			$template->set_var('lang_factor_project',lang('factor project'));
+			$template->set_var('lang_factor_employee',lang('factor employee'));
+			$template->set_var('lang_accounting_factor_for_project',lang('accounting factor for project'));
+			$template->set_var('lang_select_factor',lang('select factor'));
+			$template->set_var('lang_non_billable',lang('not billable'));
+
+			$template->set_var('lang_pbudget',lang('budget planned'));
+			$template->set_var('lang_ubudget',lang('budget used'));
+			$template->set_var('lang_plus_jobs',lang('+ jobs'));
+
+			$template->set_var('lang_per_hour',lang('per hour'));
+			$template->set_var('lang_per_day',lang('per day'));
+
+			$template->set_var('lang_percent',lang('percent'));
+			$template->set_var('lang_amount',lang('amount'));
+
+			$template->set_var('lang_events',lang('events'));
+			$template->set_var('lang_priority',lang('priority'));
+
+			$template->set_var('lang_available',lang('available'));
+			$template->set_var('lang_used_billable',lang('used billable'));
+			$template->set_var('lang_planned',lang('planned'));
+			$template->set_var('lang_used_total',lang('used total'));
+
+			$template->set_var('lang_invoicing_method',lang('invoicing method'));
+			$template->set_var('lang_discount',lang('discount'));
+			$template->set_var('lang_extra_budget',lang('extra budget'));
+
+			$template->set_var('lang_billable',lang('billable'));
+			$template->set_var('lang_send',lang('send'));
+			$template->set_var('lang_project_overview',lang('Project overview'));
+			$template->set_var('lang_milestones',lang('Milestones'));
+			$template->set_var('lang_files',lang('Files'));
+			$template->set_var('lang_add',lang('add file'));
+			$template->set_var('lang_delete_selected',lang('delete selected files'));
+
+			if($_displayOverview == true)
+				$template->parse('div_placeholder','div_overview',True);
+			if($_displayMilestones == true)
+				$template->parse('div_placeholder','div_milestone',True);
+			if($_displayFiles == true)
+				$template->parse('div_placeholder','div_files',True);
+
+			return $template->fp('out','main');
+
+		}
+
 		function exportProjectEMail($_pro_main,$_emailTo)
 		{
 			if(!$_pro_main || !$_emailTo)
 				return false;
 		
+			
 			$profileID 	= 1;
 			$mainProjectData	= $this->read_single_project($_pro_main);
 			$subProjectsData	= $this->list_projects(array('action' => 'subs','parent' => $_pro_main));
@@ -210,7 +579,7 @@
 			#_debug_array($subProjectsData);
 
 			$bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw']->translation->charset());			
-
+			$bostatistics	= CreateObject('projects.bostatistics');
 			$boemailadmin	= CreateObject('emailadmin.bo');
 			$template	= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			$emailSettings	= $boemailadmin->getProfile($profileID);
@@ -226,9 +595,6 @@
 			$template->set_file(array('email_project_t' => 'export_email_body.tpl'));
 			$template->set_block('email_project_t','body_text');
 			$template->set_block('email_project_t','body_html');
-			$template->set_block('email_project_t','pro_sort_cols');
-			$template->set_block('email_project_t','pro_cols');
-			$template->set_block('email_project_t','projects_list');
 			
 			// create the html body
 			$template->set_var('title_main',$mainProjectData['title']);
@@ -236,114 +602,19 @@
 			$template->set_var('number_main',$mainProjectData['number']);
 			$template->set_var('customer_main',$mainProjectData['customerout']);
 			$template->set_var('url_main',$mainProjectData['url']);
+
+			$htmlBody = $this->createHTMLOutput('mains',$mainProjectData,'',false, false,true,true,false);
 			
-			$template->set_var('sort_title',lang('title'));
-			foreach($prefs['columns'] as $col)
-			{
-				$col_align = '';
-				switch($col)
-				{
-					case 'number':			$cname = lang('project id'); $db = 'p_number'; break;
-					case 'priority':		$cname = lang('priority');  $col_align= 'right';break;
-					case 'sdateout':		$cname = lang('start date'); $db = 'start_date'; $col_align= 'center'; break;
-					case 'edateout':		$cname = lang('date due'); $db = 'end_date'; $col_align= 'center'; break;
-					case 'phours':			$cname = lang('time planned'); $db = 'time_planned';  $col_align= 'right';break;
-					case 'budget':			$cname = $prefs['currency'] . ' ' . lang('budget'); $col_align= 'right'; break;
-					case 'e_budget':		$cname = $prefs['currency'] . ' ' . lang('extra budget'); $col_align= 'right'; break;
-					case 'coordinatorout':		$cname = ($action=='mains'?lang('coordinator'):lang('job manager')); $db = 'coordinator'; break;
-					case 'customerout':		$cname = lang('customer'); break; $db = 'customer'; break;
-					case 'investment_nr':		$cname = lang('investment nr'); break;
-					case 'previousout':		$cname = lang('previous'); $db = 'previous'; break;
-					case 'customer_nr':		$cname = lang('customer nr'); break;
-					case 'url':			$cname = lang('url'); break;
-					case 'reference':		$cname = lang('reference'); break;
-					case 'accountingout':		$cname = lang('accounting'); $db = 'accounting'; break;
-					case 'project_accounting_factor':		$cname = $prefs['currency'] . ' ' . lang('project') . ' ' . lang('accounting factor') . ' '
-															. lang('per hour'); $db = 'acc_factor'; $col_align = 'right'; break;
-					case 'project_accounting_factor_d':		$cname = $prefs['currency'] . ' ' . lang('project') . ' ' . lang('accounting factor') . ' '
-															. lang('per day'); $db = 'acc_factor_d'; $col_align = 'right'; break;
-					case 'billableout':		$cname = lang('billable'); $db = 'billable'; $col_align= 'center';break;
-					case 'psdateout':		$cname = lang('start date planned'); $db = 'psdate'; $col_align= 'center'; break;
-					case 'pedateout':		$cname = lang('date due planned'); $db = 'pedate'; $col_align= 'center'; break;
-					case 'discountout':		$cname = lang('discount'); $db = 'discount'; $col_align= 'right'; break;
-				}
-
-#				($col=='mstones'?$sort_column = lang('milestones'):
-#				$sort_column = $this->nextmatchs->show_sort_order($this->sort,($db?$db:$col),$this->order,'/index.php',$cname?$cname:lang($col),$link_data));
-				$template->set_var('col_align',$col_align?$col_align:'left');
-				$template->set_var('sort_column',$cname);
-				$template->fp('sort_cols','pro_sort_cols',True);
-			}
-
-// -------------- end header declaration ---------------------------------------
-
 			if(is_array($subProjectsData))
 			{
-				foreach($subProjectsData as $p)
-            			{
-					$nextmatchs->template_alternate_row_color($template);
-
-// --------------- template declaration for list records -------------------------------------
-
-					$link_data['project_id'] = $p['project_id'];
-					if ($action == 'mains')
-					{
-						$projects_url = $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&pro_main='
-									. $p['project_id'] . '&action=subs');
-					}
-					else
-					{
-						$projects_url = $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_hours&project_id='
-									. $p['project_id'] . '&action=hours&pro_main=' . $pro_main);
-					}
-
-					$template->set_var(array
-					(
-						'title'			=> $p['title']?$p['title']:lang('browse'),
-						'projects_url'	=> $projects_url
-					));
-
-					$template->set_var('pro_column','');
-					foreach($prefs['columns'] as $col)
-					{
-						switch($col)
-						{
-							case 'priority':
-							case 'discountout':
-							case 'e_budget':
-							case 'budget':
-							case 'project_accounting_factor':
-							case 'project_accounting_factor_d':
-							case 'phours': 
-								$col_align = 'right'; 
-								break;
-							case 'sdateout':
-							case 'edateout':
-							case 'psdateout':
-							case 'pedateout':
-							case 'billableout': 
-								$col_align = 'center'; 
-								break;
-							default:
-								$col_align = 'left';
-								break;
-						}
-
-						switch($col)
-						{
-							case 'priority':
-								$p[$col] = $this->formatted_priority($p[$col]);
-								break;
-						}
-
-						$template->set_var('col_align',$col_align);
-						$template->set_var('column',$p[$col]);
-						$template->fp('pro_column','pro_cols',True);
-					}
-					//$template->set_var('pro_column',$pdata);
-					$template->fp('list','projects_list',True);
+				foreach($subProjectsData as $singelSubProjectData)
+				{
+					$htmlBody .= $this->createHTMLOutput('subs',
+						$singelSubProjectData, $mainProjectData, false,
+						false,true,true,false);
 				}
 			}
+			$template->set_var('project_list',$htmlBody);
 
 			// translations
 			$template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
@@ -356,6 +627,31 @@
 			$template->set_var('lang_coordinator',lang('Coordinator'));
 			$template->set_var('lang_customer',lang('Customer'));
 			$template->set_var('lang_enable_html',lang('Please enable HTML view of EMails.'));
+			
+			// create project overview
+			#$GLOBALS['phpgw_info']['server']['temp_dir'] . SEP .
+			
+			if($tempFileName = tempnam($GLOBALS['phpgw_info']['server']['temp_dir'],'project'))
+			{
+				$start = $mainProjectData[sdate];
+				$end = $mainProjectData[edate];
+				$bostatistics->show_graph
+				(
+					array
+					(
+						'project_array'         => array($_pro_main),
+						'sdate'                 => $start?$start:mktime(12,0,0,date('m'),date('d'),date('Y')),
+						'edate'                 => $end?$end:mktime(12,0,0,date('m'),date('d')+30,date('Y')),
+						'showMilestones'        => true,
+						'showResources'         => true
+					),
+					$tempFileName
+				);
+				if(filesize($tempFileName) > 0)
+				{
+					 $mail->AddAttachment($tempFileName,'project_overview.png','base64','image/png');
+				}
+			}
 			
 			$mail->From	= $emailAddresses[0]['address'];
 			$mail->FromName	= $bofelamimail->encodeHeader($emailAddresses[0]['name'],'q');
@@ -390,328 +686,12 @@
 				$this->errorInfo = $mail->ErrorInfo;
 				return false;
 			}
-		}
-		
-		function exportProjectPDF($_pro_main)
-		{
-			if(!$_pro_main)
-				return false;
-
-			include(PHPGW_APP_INC . "/phppdflib/phppdflib.class.php");
-			include(PHPGW_SERVER_ROOT."/phpgwapi/inc/fpdf/fpdf.php");
-		
-			$botranslation 	= CreateObject('phpgwapi.translation');
-		
-			$param["height"] = 8;
-			$param["font"] = "Helvetica";
-
-			$font_small["height"] = 7;
-			$font_small["font"] = "Helvetica";
-			
-			$columnData['priority']['width']	= 30;
-			$columnData['number']['width']		= 70;
-			$columnData['coordinatorout']['width']	= 65;
-			$columnData['title']['width']		= 70;
-
-			$mainProjectData	= $this->read_single_project($_pro_main);
-			$subProjectsData	= $this->list_projects(array('action' => 'subs','parent' => $_pro_main));
-			$prefs = $this->read_prefs();
-
-			// Starts a new pdffile object
-			$pdf = new pdffile;
-			
-			/* Use the defaults system to turn off page
-			 * margins
-			 */
-			$pdf->set_default('margin', 0);
-			
-			$content = 'lksdfjkdsfj';
-			
-			#while(is_string($content))
-			#{
-			#	$page = $pdf->new_page("a4");
-			#	$content = $pdf->draw_paragraph(800, 72, 72, 540, $content, $page, $param);
-			#}
-			
-			$page = $pdf->new_page("a4");
-			
-			// main project name row1
-			$content = lang('Main project').': '.$mainProjectData['title'];
-			$nextRow = $pdf->draw_one_paragraph(800, 72, 72, 540, $content, $page, $param);
-			
-			// row2
-			$content = lang('Project ID').':';
-			$bottom = $pdf->draw_one_paragraph($nextRow, 72, 72, 139, $content, $page, $param);
-
-			$content = $mainProjectData['number'];
-			$bottom2 = $pdf->draw_one_paragraph($nextRow, 140, 72, 279, $content, $page, $param);
-			if($bottom2 < $bottom) $bottom = $bottom2;
-
-			$content = lang('project url').':';
-			$bottom2 = $pdf->draw_one_paragraph($nextRow, 280, 72, 339, $content, $page, $param);
-			if($bottom2 < $bottom) $bottom = $bottom2;
-			
-			$content = 'http://'.$mainProjectData['url'];
-			$bottom2 = $pdf->draw_one_paragraph($nextRow, 340, 72, 540, $content, $page, $param);
-			if($bottom2 < $bottom) $bottom = $bottom2;
-			
-			$nextRow = $bottom;
-			
-			// row3
-			$content = lang('Coordinator').':';
-			$bottom = $pdf->draw_one_paragraph($nextRow, 72, 72, 139, $content, $page, $param);
-
-			$content = $mainProjectData['coordinatorout'];
-			$bottom2 = $pdf->draw_one_paragraph($nextRow, 140, 72, 279, $content, $page, $param);
-			if($bottom2 < $bottom) $bottom = $bottom2;
-
-			$content = lang('Customer').':';
-			$bottom2 = $pdf->draw_one_paragraph($nextRow, 280, 72, 339, $content, $page, $param);
-			if($bottom2 < $bottom) $bottom = $bottom2;
-			
-			$content = $mainProjectData['customerout'];
-			$bottom2 = $pdf->draw_one_paragraph($nextRow, 340, 72, 540, $content, $page, $param);
-			if($bottom2 < $bottom) $bottom = $bottom2;
-
-			$nextRow = $bottom;
-
-			if(is_array($subProjectsData))
+			if($tempFileName)
 			{
-				$nextRow = $nextRow - 30;
-				$left = 72;
-
-				$content = $botranslation->convert(lang('title'),False,'iso-8859-1');
-				$right = $left+$columnData['title']['width'];
-				$bottom2 = $pdf->draw_one_paragraph($nextRow, $left, 72, $right, $content, $page, $font_small);
-				if($bottom2 < $bottom) $bottom = $bottom2;
-				$left = $right++;
-
-				foreach($prefs['columns'] as $column)
-				{
-					$width=50;
-					switch($column)
-					{
-						case 'number':
-							$cname = lang('project id'); 
-							$width = $columnData[$column]['width'];
-							break;
-						case 'priority':
-							$cname = lang('priority');  
-							$width = $columnData[$column]['width'];
-							break;
-						case 'sdateout':
-							$cname = lang('start date'); 
-							break;
-						case 'edateout':
-							$cname = lang('date due'); 
-							break;
-						case 'phours':
-							$cname = lang('time planned');
-							break;
-						case 'budget':
-							$cname = $prefs['currency'] . ' ' . lang('budget');
-							break;
-						case 'e_budget':
-							$cname = $prefs['currency'] . ' ' . lang('extra budget');
-							break;
-						case 'coordinatorout':
-							$cname = ($action=='mains'?lang('coordinator'):lang('job manager'));
-							$width = $columnData[$column]['width'];
-							break;
-						case 'customerout':
-							$cname = lang('customer'); 
-							break; 
-						case 'investment_nr':
-							$cname = lang('investment nr'); 
-							break;
-						case 'previousout':
-							$cname = lang('previous');
-							break;
-						case 'customer_nr':
-							$cname = lang('customer nr'); 
-							break;
-						case 'url':
-							$cname = lang('url');
-							break;
-						case 'reference':
-							$cname = lang('reference'); 
-							break;
-						case 'accountingout':
-							$cname = lang('accounting');
-							break;
-						case 'project_accounting_factor':
-							$cname = $prefs['currency'] . ' ' .
-							lang('project') . ' ' . 
-							lang('accounting factor') . ' ' .
-							lang('per hour');
-							break;
-						case 'project_accounting_factor_d':
-							$cname = $prefs['currency'] . ' ' . 
-							lang('project') . ' ' . 
-							lang('accounting factor') . ' ' . 
-							lang('per day'); 
-							break;
-						case 'billableout':
-							$cname = lang('billable'); 
-							break;
-						case 'psdateout':
-							$cname = lang('start date planned'); 
-							break;
-						case 'pedateout':
-							$cname = lang('date due planned'); 
-							break;
-						case 'discountout':
-							$cname = lang('discount'); 
-							break;
-					}
-					$content = $botranslation->convert($cname,False,'iso-8859-1');
-					$right = $left+$width;
-					$bottom2 = $pdf->draw_one_paragraph($nextRow, $left, 72, $right, $content, $page, $font_small);
-					if($bottom2 < $bottom) $bottom = $bottom2;
-					$left = $right++;
-				}
-				
-				$nextRow = $bottom;
-				
-				foreach($subProjectsData as $projectData)
-				{
-
-					$left = 72;
-
-					$projectData['title'] = str_replace('&nbsp;','',$projectData['title']);
-					$content = $botranslation->convert($projectData['title'],False,'iso-8859-1');
-					$right = $left+$columnData['title']['width'];
-					$bottom2 = $pdf->draw_one_paragraph($nextRow, $left, 72, $right, $content, $page, $font_small);
-					if($bottom2 < $bottom) $bottom = $bottom2;
-					$left = $right++;
-
-				foreach($prefs['columns'] as $column)
-				{
-					$width=50;
-					switch($column)
-					{
-						case 'number':
-							$cname = lang('project id'); 
-							$width = $columnData[$column]['width'];
-							break;
-						case 'priority':
-							$cname = lang('priority');  
-							$width = $columnData[$column]['width'];
-							break;
-						case 'sdateout':
-							$cname = lang('start date'); 
-							if($projectData['sdateout'])
-								$projectData['sdateout'] = 
-									$GLOBALS['phpgw']->common->show_date($projectData['sdate'],'Y-m-d');
-							else
-								$projectData['edateout'] = '';
-							break;
-						case 'edateout':
-							$cname = lang('date due'); 
-							if($projectData['edateout'])
-								$projectData['edateout'] = 
-									$GLOBALS['phpgw']->common->show_date($projectData['edate'],'Y-m-d');
-							else
-								$projectData['edateout'] = '';
-							break;
-						case 'phours':
-							$cname = lang('time planned');
-							break;
-						case 'budget':
-							$cname = $prefs['currency'] . ' ' . lang('budget');
-							break;
-						case 'e_budget':
-							$cname = $prefs['currency'] . ' ' . lang('extra budget');
-							break;
-						case 'coordinatorout':
-							$cname = ($action=='mains'?lang('coordinator'):lang('job manager'));
-							$width = $columnData[$column]['width'];
-							break;
-						case 'customerout':
-							$cname = lang('customer'); 
-							break; 
-						case 'investment_nr':
-							$cname = lang('investment nr'); 
-							break;
-						case 'previousout':
-							$cname = lang('previous');
-							break;
-						case 'customer_nr':
-							$cname = lang('customer nr'); 
-							break;
-						case 'url':
-							$cname = lang('url');
-							break;
-						case 'reference':
-							$cname = lang('reference'); 
-							break;
-						case 'accountingout':
-							$cname = lang('accounting');
-							break;
-						case 'project_accounting_factor':
-							$cname = $prefs['currency'] . ' ' .
-							lang('project') . ' ' . 
-							lang('accounting factor') . ' ' .
-							lang('per hour');
-							break;
-						case 'project_accounting_factor_d':
-							$cname = $prefs['currency'] . ' ' . 
-							lang('project') . ' ' . 
-							lang('accounting factor') . ' ' . 
-							lang('per day'); 
-							break;
-						case 'billableout':
-							$cname = lang('billable'); 
-							break;
-						case 'psdateout':
-							$cname = lang('start date planned');
-							if($projectData['psdateout'])
-								$projectData['psdateout'] = 
-									$GLOBALS['phpgw']->common->show_date($projectData['psdate'],'Y-m-d');
-							else
-								$projectData['psdateout'] = '';
-							break;
-						case 'pedateout':
-							$cname = lang('date due planned'); 
-							if($projectData['pedateout'])
-								$projectData['pedateout'] = 
-									$GLOBALS['phpgw']->common->show_date($projectData['pedate'],'Y-m-d');
-							else
-								$projectData['pedateout'] = '';
-							break;
-						case 'discountout':
-							$cname = lang('discount'); 
-							break;
-					}
-					$content = $botranslation->convert($projectData["$column"],False,'iso-8859-1');
-					$right = $left+$width;
-					$bottom2 = $pdf->draw_one_paragraph($nextRow, $left, 72, $right, $content, $page, $font_small);
-					if($bottom2 < $bottom) $bottom = $bottom2;
-					$left = $right++;
-
-				}
-				
-				$nextRow = $bottom;
-				
-				}
-			}
-			
-			if($pdfFile = $pdf->generate())
-			{
-				#$retData['filename'] = $botranslation->convert(lang('Project Overview').'_'.
-				#		$mainProjectData['title'],False,'iso-8859-1').'_'.
-				#		$GLOBALS['phpgw']->common->show_date('Y-m-d').'.pdf';
-				$retData['filename'] = $botranslation->convert(lang('Project Overview').'_'.
-						$mainProjectData['title'],False,'iso-8859-1').'.pdf';
-				$retData['pdfFile']	= $pdfFile;
-			
-				return $retData;
-			}
-			else
-			{
-				return false;
+				unlink($tempFileName);
 			}
 		}
+		
 
 		function exportProjectPDF2($_pro_main)
 		{
@@ -720,6 +700,7 @@
 
 			$botranslation 		= CreateObject('phpgwapi.translation');
 			$pdf			= CreateObject('phpgwapi.pdf');
+			$bostatistics		= CreateObject('projects.bostatistics');
 			
 			$mainProjectData	= $this->read_single_project($_pro_main);
 			$subProjectsData	= $this->list_projects(array('action' => 'subs','parent' => $_pro_main));
@@ -1296,318 +1277,37 @@
 				}
 			}
 
+			if($tempFileName = tempnam($GLOBALS['phpgw_info']['server']['temp_dir'],'project'))
+			{
+				$start = $mainProjectData[sdate];
+				$end = $mainProjectData[edate];
+				$bostatistics->show_graph
+				(
+					array
+					(
+						'project_array'         => array($_pro_main),
+						'sdate'                 => $start?$start:mktime(12,0,0,date('m'),date('d'),date('Y')),
+						'edate'                 => $end?$end:mktime(12,0,0,date('m'),date('d')+30,date('Y')),
+						'showMilestones'        => true,
+						'showResources'         => true
+					),
+					$tempFileName
+				);
+				if(filesize($tempFileName) > 0)
+				{
+					$pdf->AddPage();
+					$pdf->Image($tempFileName,5,5,200,0,'PNG');
+				}
+			}
+
+
 			$pdfFile = $pdf->Output('','S');
+
+			if($tempFileName)
+				unlink($tempFileName);
 
 			return $pdfFile;
 
-		
-			$param["height"] = 8;
-			$param["font"] = "Helvetica";
-
-			$font_small["height"] = 7;
-			$font_small["font"] = "Helvetica";
-			
-			$columnData['priority']['width']	= 30;
-			$columnData['number']['width']		= 70;
-			$columnData['coordinatorout']['width']	= 65;
-			$columnData['title']['width']		= 70;
-
-
-
-			// Starts a new pdffile object
-			$pdf = new pdffile;
-			
-			/* Use the defaults system to turn off page
-			 * margins
-			 */
-			$pdf->set_default('margin', 0);
-			
-			$content = 'lksdfjkdsfj';
-			
-			#while(is_string($content))
-			#{
-			#	$page = $pdf->new_page("a4");
-			#	$content = $pdf->draw_paragraph(800, 72, 72, 540, $content, $page, $param);
-			#}
-			
-			$page = $pdf->new_page("a4");
-			
-			// main project name row1
-			$content = lang('Main project').': '.$subProjectData['title'];
-			$nextRow = $pdf->draw_one_paragraph(800, 72, 72, 540, $content, $page, $param);
-			
-			// row2
-			$content = lang('Project ID').':';
-			$bottom = $pdf->draw_one_paragraph($nextRow, 72, 72, 139, $content, $page, $param);
-
-			$content = $mainProjectData['number'];
-			$bottom2 = $pdf->draw_one_paragraph($nextRow, 140, 72, 279, $content, $page, $param);
-			if($bottom2 < $bottom) $bottom = $bottom2;
-
-			$content = lang('project url').':';
-			$bottom2 = $pdf->draw_one_paragraph($nextRow, 280, 72, 339, $content, $page, $param);
-			if($bottom2 < $bottom) $bottom = $bottom2;
-			
-			$content = 'http://'.$mainProjectData['url'];
-			$bottom2 = $pdf->draw_one_paragraph($nextRow, 340, 72, 540, $content, $page, $param);
-			if($bottom2 < $bottom) $bottom = $bottom2;
-			
-			$nextRow = $bottom;
-			
-			// row3
-			$content = lang('Coordinator').':';
-			$bottom = $pdf->draw_one_paragraph($nextRow, 72, 72, 139, $content, $page, $param);
-
-			$content = $mainProjectData['coordinatorout'];
-			$bottom2 = $pdf->draw_one_paragraph($nextRow, 140, 72, 279, $content, $page, $param);
-			if($bottom2 < $bottom) $bottom = $bottom2;
-
-			$content = lang('Customer').':';
-			$bottom2 = $pdf->draw_one_paragraph($nextRow, 280, 72, 339, $content, $page, $param);
-			if($bottom2 < $bottom) $bottom = $bottom2;
-			
-			$content = $mainProjectData['customerout'];
-			$bottom2 = $pdf->draw_one_paragraph($nextRow, 340, 72, 540, $content, $page, $param);
-			if($bottom2 < $bottom) $bottom = $bottom2;
-
-			$nextRow = $bottom;
-
-			if(is_array($subProjectsData))
-			{
-				$nextRow = $nextRow - 30;
-				$left = 72;
-
-				$content = $botranslation->convert(lang('title'),False,'iso-8859-1');
-				$right = $left+$columnData['title']['width'];
-				$bottom2 = $pdf->draw_one_paragraph($nextRow, $left, 72, $right, $content, $page, $font_small);
-				if($bottom2 < $bottom) $bottom = $bottom2;
-				$left = $right++;
-
-				foreach($prefs['columns'] as $column)
-				{
-					$width=50;
-					switch($column)
-					{
-						case 'number':
-							$cname = lang('project id'); 
-							$width = $columnData[$column]['width'];
-							break;
-						case 'priority':
-							$cname = lang('priority');  
-							$width = $columnData[$column]['width'];
-							break;
-						case 'sdateout':
-							$cname = lang('start date'); 
-							break;
-						case 'edateout':
-							$cname = lang('date due'); 
-							break;
-						case 'phours':
-							$cname = lang('time planned');
-							break;
-						case 'budget':
-							$cname = $prefs['currency'] . ' ' . lang('budget');
-							break;
-						case 'e_budget':
-							$cname = $prefs['currency'] . ' ' . lang('extra budget');
-							break;
-						case 'coordinatorout':
-							$cname = ($action=='mains'?lang('coordinator'):lang('job manager'));
-							$width = $columnData[$column]['width'];
-							break;
-						case 'customerout':
-							$cname = lang('customer'); 
-							break; 
-						case 'investment_nr':
-							$cname = lang('investment nr'); 
-							break;
-						case 'previousout':
-							$cname = lang('previous');
-							break;
-						case 'customer_nr':
-							$cname = lang('customer nr'); 
-							break;
-						case 'url':
-							$cname = lang('url');
-							break;
-						case 'reference':
-							$cname = lang('reference'); 
-							break;
-						case 'accountingout':
-							$cname = lang('accounting');
-							break;
-						case 'project_accounting_factor':
-							$cname = $prefs['currency'] . ' ' .
-							lang('project') . ' ' . 
-							lang('accounting factor') . ' ' .
-							lang('per hour');
-							break;
-						case 'project_accounting_factor_d':
-							$cname = $prefs['currency'] . ' ' . 
-							lang('project') . ' ' . 
-							lang('accounting factor') . ' ' . 
-							lang('per day'); 
-							break;
-						case 'billableout':
-							$cname = lang('billable'); 
-							break;
-						case 'psdateout':
-							$cname = lang('start date planned'); 
-							break;
-						case 'pedateout':
-							$cname = lang('date due planned'); 
-							break;
-						case 'discountout':
-							$cname = lang('discount'); 
-							break;
-					}
-					$content = $botranslation->convert($cname,False,'iso-8859-1');
-					$right = $left+$width;
-					$bottom2 = $pdf->draw_one_paragraph($nextRow, $left, 72, $right, $content, $page, $font_small);
-					if($bottom2 < $bottom) $bottom = $bottom2;
-					$left = $right++;
-				}
-				
-				$nextRow = $bottom;
-				
-				foreach($subProjectsData as $projectData)
-				{
-
-					$left = 72;
-
-					$projectData['title'] = str_replace('&nbsp;','',$projectData['title']);
-					$content = $botranslation->convert($projectData['title'],False,'iso-8859-1');
-					$right = $left+$columnData['title']['width'];
-					$bottom2 = $pdf->draw_one_paragraph($nextRow, $left, 72, $right, $content, $page, $font_small);
-					if($bottom2 < $bottom) $bottom = $bottom2;
-					$left = $right++;
-
-				foreach($prefs['columns'] as $column)
-				{
-					$width=50;
-					switch($column)
-					{
-						case 'number':
-							$cname = lang('project id'); 
-							$width = $columnData[$column]['width'];
-							break;
-						case 'priority':
-							$cname = lang('priority');  
-							$width = $columnData[$column]['width'];
-							break;
-						case 'sdateout':
-							$cname = lang('start date'); 
-							if($projectData['sdateout'])
-								$projectData['sdateout'] = 
-									$GLOBALS['phpgw']->common->show_date($projectData['sdate'],'Y-m-d');
-							else
-								$projectData['edateout'] = '';
-							break;
-						case 'edateout':
-							$cname = lang('date due'); 
-							if($projectData['edateout'])
-								$projectData['edateout'] = 
-									$GLOBALS['phpgw']->common->show_date($projectData['edate'],'Y-m-d');
-							else
-								$projectData['edateout'] = '';
-							break;
-						case 'phours':
-							$cname = lang('time planned');
-							break;
-						case 'budget':
-							$cname = $prefs['currency'] . ' ' . lang('budget');
-							break;
-						case 'e_budget':
-							$cname = $prefs['currency'] . ' ' . lang('extra budget');
-							break;
-						case 'coordinatorout':
-							$cname = ($action=='mains'?lang('coordinator'):lang('job manager'));
-							$width = $columnData[$column]['width'];
-							break;
-						case 'customerout':
-							$cname = lang('customer'); 
-							break; 
-						case 'investment_nr':
-							$cname = lang('investment nr'); 
-							break;
-						case 'previousout':
-							$cname = lang('previous');
-							break;
-						case 'customer_nr':
-							$cname = lang('customer nr'); 
-							break;
-						case 'url':
-							$cname = lang('url');
-							break;
-						case 'reference':
-							$cname = lang('reference'); 
-							break;
-						case 'accountingout':
-							$cname = lang('accounting');
-							break;
-						case 'project_accounting_factor':
-							$cname = $prefs['currency'] . ' ' .
-							lang('project') . ' ' . 
-							lang('accounting factor') . ' ' .
-							lang('per hour');
-							break;
-						case 'project_accounting_factor_d':
-							$cname = $prefs['currency'] . ' ' . 
-							lang('project') . ' ' . 
-							lang('accounting factor') . ' ' . 
-							lang('per day'); 
-							break;
-						case 'billableout':
-							$cname = lang('billable'); 
-							break;
-						case 'psdateout':
-							$cname = lang('start date planned');
-							if($projectData['psdateout'])
-								$projectData['psdateout'] = 
-									$GLOBALS['phpgw']->common->show_date($projectData['psdate'],'Y-m-d');
-							else
-								$projectData['psdateout'] = '';
-							break;
-						case 'pedateout':
-							$cname = lang('date due planned'); 
-							if($projectData['pedateout'])
-								$projectData['pedateout'] = 
-									$GLOBALS['phpgw']->common->show_date($projectData['pedate'],'Y-m-d');
-							else
-								$projectData['pedateout'] = '';
-							break;
-						case 'discountout':
-							$cname = lang('discount'); 
-							break;
-					}
-					$content = $botranslation->convert($projectData["$column"],False,'iso-8859-1');
-					$right = $left+$width;
-					$bottom2 = $pdf->draw_one_paragraph($nextRow, $left, 72, $right, $content, $page, $font_small);
-					if($bottom2 < $bottom) $bottom = $bottom2;
-					$left = $right++;
-
-				}
-				
-				$nextRow = $bottom;
-				
-				}
-			}
-			
-			if($pdfFile = $pdf->generate())
-			{
-				#$retData['filename'] = $botranslation->convert(lang('Project Overview').'_'.
-				#		$mainProjectData['title'],False,'iso-8859-1').'_'.
-				#		$GLOBALS['phpgw']->common->show_date('Y-m-d').'.pdf';
-				$retData['filename'] = $botranslation->convert(lang('Project Overview').'_'.
-						$mainProjectData['title'],False,'iso-8859-1').'.pdf';
-				$retData['pdfFile']	= $pdfFile;
-			
-				return $retData;
-			}
-			else
-			{
-				return false;
-			}
 		}
 
 
@@ -3385,8 +3085,6 @@
 			$formatted = isset($data['formatted'])?$data['formatted']:False;
 
 			$emp_roles = $this->soprojects->read_employee_roles($data);
-
-			//_debug_array($emp_roles);
 
 			if(is_array($emp_roles))
 			{

@@ -318,7 +318,7 @@
 			$admin_groups = $GLOBALS['phpgw']->accounts->membership($this->account);
 			$admins = $this->read_admins($action);
 
-			//_debug_array($admins);
+			#_debug_array($admins);
 
 			for ($i=0;$i<count($admins);$i++)
 			{
@@ -337,7 +337,6 @@
 						$type_g = 'ag';
 						break;
 				}
-
 				if ($admins[$i]['type'] == $type_a && $admins[$i]['account_id'] == $this->account)
 				{
 					return True;
@@ -353,11 +352,12 @@
 						}
 					}
 				}
-				else
-				{
-					return False;
-				}
+				#else
+				#{
+				#	return False;
+				#}
 			}
+			return False;
 		}
 
 		function edit_admins($action,$users = '', $groups = '')
