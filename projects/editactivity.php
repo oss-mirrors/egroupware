@@ -16,8 +16,7 @@
     include("../header.inc.php");
 
     if (! $id) {
-     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/"
-	  . "sort=$sort&order=$order&query=$query&start=$start"
+     Header("Location: " . $phpgw->link('/projects/index.php',"sort=$sort&order=$order&query=$query&start=$start"
 	  . "&filter=$filter"));
     }
 

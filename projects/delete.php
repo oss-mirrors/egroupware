@@ -22,7 +22,7 @@
 
 
   if (! $id) {
-     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/",
+     Header("Location: " . $phpgw->link('/projects/index.php',
 	    "&sort=$sort&order=$order&query=$query&start=$start"
 	  . "&filter=$filter"));
   }
@@ -32,7 +32,7 @@
     $phpgw->db->query("delete from phpgw_p_hours where project_id='$id'");
     $phpgw->db->query("delete from phpgw_p_projectactivities where project_id='$id'");
 
-    Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/",
+    Header("Location: " . $phpgw->link('/projects/index.php',
 	    "cd=16&sort=$sort&order=$order&query=$query&start="
 	  . "$start&filter=$filter"));
     } 

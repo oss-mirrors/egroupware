@@ -22,14 +22,14 @@
 
 
   if (! $id) {
-     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/hours_index.php",
+     Header("Location: " . $phpgw->link('/projects/hours_index.php',
 	    "&sort=$sort&order=$order&query=$query&start=$start"
 	  . "&filter=$filter"));
   }
 
   if ($confirm) {
      $phpgw->db->query("delete from p_hours where id='$id'");
-     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/hours_index.php",
+     Header("Location: " . $phpgw->link('/projects/hours_index.php',
 	    "cd=16&sort=$sort&order=$order&query=$query&start="
 	  . "$start&filter=$filter"));
   } else {

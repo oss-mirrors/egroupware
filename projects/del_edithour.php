@@ -25,8 +25,7 @@
   
   
   if (!$id)
-     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/del_index.php"
-	  . "sort=$sort&order=$order&query=$query&start=$start"
+     Header("Location: " . $phpgw->link('/projects/del_index.php',"sort=$sort&order=$order&query=$query&start=$start"
 	  . "&filter=$filter"));
 
 
@@ -216,7 +215,7 @@
 		. "minutes='$ae_minutes',status='$status',minperae='$minperae',"
 		. "billperae='$billperae',employee='$employee' where id='$id'");
 
-    Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/del_index.php"));
+    Header("Location: " . $phpgw->link('/projects/del_index.php'));
 //	   "cd=15&sort=$sort&order=$order&query=$query&start="
 //	 . "$start&filter=$filter"));
   }

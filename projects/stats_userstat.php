@@ -20,7 +20,7 @@
   
   
   if (! $account_id)
-     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/stats_index.php"
+     Header("Location: " . $phpgw->link('/projects/stats_index.php'
 	  . "sort=$sort&order=$order&query=$query&start=$start"
 	  . "&filter=$filter"));
 

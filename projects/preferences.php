@@ -24,7 +24,7 @@
 	$phpgw->preferences->change("projects","abid");
 	$phpgw->preferences->commit(True);     
      
-    Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/preferences/"));
+    Header("Location: " . $phpgw->link('/preferences/index.php'));
     $phpgw->common->phpgw_exit();     
     }
 
