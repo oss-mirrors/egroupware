@@ -135,7 +135,18 @@
 
 				elseif ($fieldproperties[type]=='string')
 				{
-					$input=$this->bo->get_plugin_fi($input_name,$value,'string');
+
+					/* If this integer has a relation get that options */
+				   if (is_array($fields_with_relation1) && in_array($fieldproperties[name],$fields_with_relation1))
+				   {
+					   //get related field vals en displays
+					   $related_fields=$this->bo->get_related_field($relation1_array[$fieldproperties[name]]);
+
+					   $input= '<select name="'.$input_name.'">';
+					   $input.= $this->ui->select_options($related_fields,$value,true);
+					   $input.= '</select> ('.lang('real value').': '.$value.')';
+				   }
+				   else  $input=$this->bo->get_plugin_fi($input_name,$value,'string');
 				}
 
 				elseif ($fieldproperties[type]=='int' || $fieldproperties[type]=='real')
