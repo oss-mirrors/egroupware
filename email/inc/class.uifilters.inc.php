@@ -116,7 +116,7 @@
 			
 			$apply_this_filter_url = $GLOBALS['phpgw']->link(
 								'/index.php',
-								'menuaction=email.bofilters.run_single_filter'
+								'menuaction=email.bofilters.do_filter'
 								.'&filter_num='.$filter_num);
 			$apply_this_filter_href = '<a href="'.$apply_this_filter_url.'"><b>*APPLY*</b> This Filter</a>';
 			
@@ -581,12 +581,12 @@
 			// TEST AND APPLY LINKS
 			$run_all_filters_url = $GLOBALS['phpgw']->link(
 									'/index.php',
-									 'menuaction=email.bofilters.run_all_filters');
-			$run_all_filters_href = '<a href="'.$run_all_filters_url.'">'.lang('Run ALL Filters').'</a>';
+									 'menuaction=email.bofilters.do_filter');
+			$run_all_filters_href = '<a href="'.$run_all_filters_url.'">'.lang('<b>APPLY ALL</b> Filters').'</a>';
 			$GLOBALS['phpgw']->template->set_var('run_all_filters_href',$run_all_filters_href);
 			
 			$test_all_filters_url = $run_all_filters_url.'&filter_test=1';
-			$test_all_filters_href = '<a href="'.$test_all_filters_url.'">Test Run All Filters</a>';
+			$test_all_filters_href = '<a href="'.$test_all_filters_url.'">Test All Filters</a>';
 			$GLOBALS['phpgw']->template->set_var('test_all_filters_href',$test_all_filters_href);
 			
 			// output the template

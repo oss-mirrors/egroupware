@@ -17,10 +17,10 @@
 		var $public_functions = array(
 			'process_submitted_data'	=> True,
 			'delete_filter'	=> True,
-			'run_single_filter'	=> True,
-			'run_all_filters'	=> True
+			'do_filter'	=> True
 		);
 		
+		var $not_set='-1';
 		var $all_filters = Array();
 		var $filter_num = 0;
 		//var $this_filter = Array();
@@ -35,9 +35,11 @@
 		var $result_set_mlist = Array();
 		var $fake_folder_info = array();
 		
+		var $do_filter_apply_all = True;
 		var $inbox_full_msgball_list = array();
 		var $each_row_result_mball_list = array();
 		var $each_acct_final_mball_list = array();
+		var $html_matches_table = '';
 		
 		function bofilters()
 		{
@@ -65,7 +67,7 @@
 				if ($this->debug > 1) { echo 'email.bofilters *constructor*: is_object: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
 				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 			}
-			
+			$this->not_set = $GLOBALS['phpgw']->msg->not_set;
 			if ($GLOBALS['phpgw']->msg->get_isset_arg('already_grab_class_args_gpc'))
 			{
 				if ($this->debug > 0) { echo 'email.bofilters *constructor*: LEAVING , msg object already initialized<br>'; }
@@ -112,25 +114,30 @@
 		
 		function obtain_filer_num($get_next_avail_if_none=True)
 		{
-			if ((isset($GLOBALS['HTTP_POST_VARS']['filter_num']))
-			&& ((string)$GLOBALS['HTTP_POST_VARS']['filter_num'] == $this->add_new_filter_token))
+			if ($this->debug > 0) { echo 'bofilters.obtain_filer_num: ENTERING ; $get_next_avail_if_none : [<code>'.serialize($get_next_avail_if_none).'</code>]<br>'."\r\n"; }
+			if (isset($GLOBALS['HTTP_POST_VARS']['filter_num']))
 			{
-				$filter_num = $this->get_next_avail_num();
+				if ($GLOBALS['HTTP_POST_VARS']['filter_num'] == $this->add_new_filter_token)
+				{
+					$filter_num = $this->get_next_avail_num();
+				}
+				else
+				{
+					$filter_num = $GLOBALS['HTTP_POST_VARS']['filter_num'];
+					$filter_num = (int)$filter_num;
+				}
 			}
-			elseif ((isset($GLOBALS['HTTP_GET_VARS']['filter_num']))
-			&& ((string)$GLOBALS['HTTP_GET_VARS']['filter_num'] == $this->add_new_filter_token))
+			elseif (isset($GLOBALS['HTTP_GET_VARS']['filter_num']))
 			{
-				$filter_num = $this->get_next_avail_num();
-			}
-			elseif ((isset($GLOBALS['HTTP_POST_VARS']['filter_num']))
-			&& ((string)$GLOBALS['HTTP_POST_VARS']['filter_num'] != ''))
-			{
-				$filter_num = (int)$GLOBALS['HTTP_POST_VARS']['filter_num'];
-			}
-			elseif ((isset($GLOBALS['HTTP_GET_VARS']['filter_num']))
-			&& ((string)$GLOBALS['HTTP_GET_VARS']['filter_num'] != ''))
-			{
-				$filter_num = (int)$GLOBALS['HTTP_GET_VARS']['filter_num'];
+				if ($GLOBALS['HTTP_GET_VARS']['filter_num'] == $this->add_new_filter_token)
+				{
+					$filter_num = $this->get_next_avail_num();
+				}
+				else
+				{
+					$filter_num = $GLOBALS['HTTP_GET_VARS']['filter_num'];
+					$filter_num = (int)$filter_num;
+				}
 			}
 			elseif($get_next_avail_if_none == True)
 			{
@@ -138,14 +145,15 @@
 			}
 			else
 			{
-				$filter_num = False;
+				$filter_num = $this->not_set;
 			}
-			return (int)$filter_num;
+			if ($this->debug > 0) { echo 'bofilters.obtain_filer_num: LEAVING ; returning $filter_num : [<code>'.serialize($filter_num).'</code>]<br>'."\r\n"; }
+			return $filter_num;
 		}
 		
 		function get_next_avail_num()
 		{
-			return count($this->all_filters)+4;
+			return count($this->all_filters);
 		}
 		
 		function just_testing()
@@ -302,57 +310,30 @@
 			$this->save_all_filters_to_repository();
 		}
 		
-		function squash_all_filters_gap()
+		function squash_and_sort_all_filters()
 		{
-			$did_squash = False;
-			//for ($i=0; $i < count($this->all_filters); $i++)
-			for ($i=0; $i < 20; $i++)
+			// KEY SORT so the filters are numbered in acending array index order
+			ksort($this->all_filters);
+			
+			$new_all_filters = array();
+			while(list($key,$value) = each($this->all_filters))
 			{
-				if ((!isset($this->all_filters[$i]))
-				&& (!isset($this->all_filters[$i+1])))
-				{
-					// ok
-				}
-				elseif ((isset($this->all_filters[$i]))
-				&& (isset($this->all_filters[$i+1])))
-				{
-					// good
-				}
-				elseif ((!isset($this->all_filters[$i]))
-				&& (isset($this->all_filters[$i+1]))
-				&& ($this->filter_exists($i+1)))
-				{
-					$move_me_down = array();
-					$move_me_down = $this->all_filters[$i+1];
-					$this->all_filters[$i] = array();
-					$this->all_filters[$i] = $move_me_down;
-					$this->all_filters[$i+1] = array();
-					unset($this->all_filters[$i+1]);
-					$did_squash = True;
-					break;
-				}
+				$next_pos = count($new_all_filters);
+				$this_filter = $this->all_filters[$key];
+				$new_all_filters[$next_pos] = $this_filter;
 			}
-			return $did_squash;
+			// ok, now we have a compacted list with no gaps
+			$this->all_filters = array();
+			$this->all_filters = $new_all_filters;
+			
+			
 		}
 		
 		function save_all_filters_to_repository()
 		{
-			if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository: ENTERING<br>'; }
 			// KEY SORT so the filters are numbered in acending array index order
-			ksort($this->all_filters);
 			// SQUASH / COMPACT $this->all_prefs so there are NO GAPS
-			// use a while statement in the future, for now use $i loop so we won't loop forever if something goes wrong
-			for ($i=0; $i < 11; $i++)
-			{
-				$did_squash = $this->squash_all_filters_gap();
-				if ($did_squash == False)
-				{
-					break;
-				}
-			}
-			
-			// KEY SORT so the filters are numbered in acending array index order
-			ksort($this->all_filters);
+			$this->squash_and_sort_all_filters();
 			
 			// now add this filter piece by piece
 			// we can only set a non-array value, but we can use array string for the base
@@ -510,34 +491,60 @@
 		}
 		
 		
-		function run_all_filters()
+		function do_filter()
 		{
-			if ($this->debug > 0) { echo 'bofilters.run_all_filters: ENTERING<br>'; }
+			if ($this->debug > 0) { echo 'bofilters.do_filter: ENTERING<br>'; }
 			if (count($this->all_filters) == 0)
 			{
-				if ($this->debug > 0) { echo 'bofilters.run_all_filters: LEAVING with ERROR, no filters exist<br>'; }
+				if ($this->debug > 0) { echo 'bofilters.do_filter: LEAVING with ERROR, no filters exist<br>'; }
+			}
+			// "False" means  return $this->not_set  if no filter number was found anywhere
+			$found_filter_num = $this->obtain_filer_num(False);
+			if ($this->debug > 1) { echo 'bofilters.obtain_filer_num: $found_filter_num : [<code>'.serialize($found_filter_num).'</code>]<br>'."\r\n"; }
+			
+			if ($found_filter_num == $this->not_set)
+			{
+				// NO filter number was specified, that means run ALL filters
+				$this->do_filter_apply_all = True;
+				for ($filter_idx=0; $filter_idx < count($this->all_filters); $filter_idx++)
+				{
+					if ($this->debug > 1) { echo 'bofilters.do_filter: run_all_finters_mode: calling $this->run_single_filter['.$filter_idx.']<br>'; }
+					$this->run_single_filter((int)$filter_idx);
+				}
+			}
+			else
+			{
+				// we were given a filter_num, that means run THAT FILTER ONLY
+				$this->do_filter_apply_all = False;
+				if ($this->debug > 1) { echo 'bofilters.do_filter: run_single_filter mode: calling $this->run_single_filter['.$found_filter_num.']<br>'; }
+				$this->run_single_filter((int)$found_filter_num);
 			}
 			
-			for ($filter_idx=0; $filter_idx < count($this->all_filters); $filter_idx++)
+			// ok, filters have run, do we have a report to show?
+			if ($this->just_testing())
 			{
-				// APPLY THIS FILTER
-				if ($this->debug > 1) { echo 'bofilters.run_all_filters: calling $this->run_single_filter['.$filter_idx.']<br>'; }
-				$this->run_single_filter[$filter_idx];
+				echo '<html>'.$this->html_matches_table.'</html>';
 			}
-			if ($this->debug > 0) { echo 'bofilters.run_all_filters: LEAVING<br>'; }
+			if ($this->debug > 1) { echo 'bofilters.do_filter: calling end_request<br>'; }
+			$GLOBALS['phpgw']->msg->end_request();
+			if ($this->debug > 0) { echo 'bofilters.do_filter: LEAVING<br>'; }
+			$take_me_to_url = $GLOBALS['phpgw']->link(
+										'/index.php',
+										'menuaction=email.uifilters.filters_list');
+			$take_me_to_href = '<a href="'.$take_me_to_url.'"> Go Back </a>';
+			//Header('Location: ' . $take_me_to_url);
+			echo '<p>&nbsp;</p><br><p>'.$take_me_to_href.'</p>';
+
+			if ($this->debug > 0) { echo 'bofilters.do_filter: LEAVING<br>'; }
 		}
 		
+		// PRIVATE
 		function run_single_filter($filter_num='')
 		{
-			if ($this->debug > 0) { echo 'bofilters.run_single_filter: ENTERING<br>'; }
+			if ($this->debug > 0) { echo 'bofilters.run_single_filter: ENTERING, feed  $filter_num : [<code>'.serialize($filter_num).'</code>]<br>'; }
 			if (count($this->all_filters) == 0)
 			{
 				if ($this->debug > 0) { echo 'bofilters.run_single_filter: LEAVING with ERROR, no filters exist<br>'; }
-			}
-			if ((!isset($filter_num))
-			|| (trim((string)$filter_num) == ''))
-			{
-				$filter_num = $this->obtain_filer_num();
 			}
 			$filter_exists = $this->filter_exists($filter_num);
 			if (!$filter_exists)
@@ -549,7 +556,7 @@
 			if ($this->debug > 2) { echo 'bofilters.run_single_filter: $filter_num ['.$filter_num.'] ; $this_filter DUMP:<pre>'; print_r($this_filter); echo "</pre>\r\n"; }
 			
 			
-			// WE NEED TO DO THIS FOR EVERY SOURCE ACCOUNT
+			// WE NEED TO DO THIS FOR EVERY SOURCE ACCOUNT specified in this filter
 			$all_accounts_result_set = array();
 			$msgball_list = array();
 			for ($src_acct_loop_num=0; $src_acct_loop_num < count($this_filter['source_accounts']); $src_acct_loop_num++)
@@ -781,9 +788,11 @@
 			}
 			
 			// report
+			//if ((count($all_accounts_result_set) > 0)
+			//&& (isset($all_accounts_result_set[0]))
+			//&& ((string)$all_accounts_result_set[0]['folder'] != '')
+			//&& ($this->just_testing()))
 			if ((count($all_accounts_result_set) > 0)
-			&& (isset($all_accounts_result_set[0]))
-			&& ((string)$all_accounts_result_set[0]['folder'] != '')
 			&& ($this->just_testing()))
 			{
 				if ($this->debug > 1) { echo 'bofilters.run_single_filter: Filter Test Run<br>'; }
@@ -797,15 +806,18 @@
 				if ($this->debug > 2) { echo 'bofilters.run_single_filter:  $all_accounts_result_set DUMP:<pre>'; print_r($all_accounts_result_set); echo "</pre>\r\n"; }
 				// retrieve user displayable data for each message in the result set
 				$this->result_set_mlist = $GLOBALS['phpgw']->msg->get_msg_list_display($this->fake_folder_info,$all_accounts_result_set);
-				$html_list = $this->make_mlist_box();
-				echo '<html><table>'.$html_list.'</table></html>';
+				// save this report data for later use, add it to any other previous report
+				$this->html_matches_table .= 
+					'<h3>Results for Filter ['.$filter_num.'] named: '.$this_filter['filtername'].'</h3>'."\r\n"
+					.'<table>'
+					.$this->make_mlist_box()
+					.'</table>'."\r\n";
 			}
-			elseif ((count($all_accounts_result_set) > 0)
-			&& (isset($all_accounts_result_set[0]))
-			&& ((string)$all_accounts_result_set[0]['folder'] != ''))
+			elseif (count($all_accounts_result_set) > 0)
 			{				
 				// NOT A TEST - APPLY THE ACTION(S)
 				if ($this->debug > 1) { echo 'bofilters.run_single_filter: NOT a Test, *Apply* the Action(s) ; $this_filter[actions][0][judgement] : ['.$this_filter['actions'][0]['judgement'].']<br>'; }
+				// ACTION: FILEINTO
 				if ($this_filter['actions'][0]['judgement'] == 'fileinto')
 				{
 					parse_str($this_filter['actions'][0]['folder'], $target_folder);
@@ -829,32 +841,29 @@
 						{
 							// ERROR
 							if ($this->debug > 1) { echo 'bofilters.run_single_filter: ERROR: industrial_interacct_mail_move returns FALSE<br>'; }
-							break;
+							return False;
 						}
 					}
 				}
 				else
 				{
 					// not yet coded action
-					if ($this->debug > 1) { echo 'bofilters.run_single_filter: action not yet coded: $this_filter[actions][0][judgement] : ['.$this_filter['actions'][0]['judgement'].']<br>'; }
+					if ($this->debug > 1) { echo 'bofilters.run_single_filter: actions not yet coded: $this_filter[actions][0][judgement] : ['.$this_filter['actions'][0]['judgement'].']<br>'; }
 				}
 			}
 			else
 			{
 				// NO MATCHES
+				if ($this->debug > 1) { echo 'bofilters.run_single_filter: NO MATCHES: $this_filter[filtername] : ['.$this_filter['filtername'].']<br>'; }
 			}
+			// cleanup
+			$this->each_row_result_mball_list = array();
+			$this->each_acct_final_mball_list = array();
+			$all_accounts_result_set = array();
 			
+			if ($this->debug > 0) { echo 'bofilters.run_single_filter: LEAVING, return True because we made it to the end of the function<br><br><br>'; }
+			return True;
 			
-			if ($this->debug > 1) { echo 'bofilters.run_single_filter: calling end_request<br>'; }
-			$GLOBALS['phpgw']->msg->end_request();
-			if ($this->debug > 0) { echo 'bofilters.run_single_filter: LEAVING<br>'; }
-			$take_me_to_url = $GLOBALS['phpgw']->link(
-										'/index.php',
-										'menuaction=email.uifilters.filters_list');
-										
-			$take_me_to_href = '<a href="'.$take_me_to_url.'"> Go Back </a>';
-			//Header('Location: ' . $take_me_to_url);
-			echo '<p>&nbsp;</p><br><p>'.$take_me_to_href.'</p>';
 		}
 		
 		

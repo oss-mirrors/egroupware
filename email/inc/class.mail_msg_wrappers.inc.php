@@ -605,6 +605,8 @@
 			// Note: Only call this function with ONE msgball at a time, i.e. NOT a list of msgballs
 			// INTERACCOUNT -OR- SAME ACCOUNT ?
 			$debug_move = 0;
+			//$debug_move = 3;
+			if ($debug_move > 2) { echo 'bofilters.run_single_filter: $to_fldball DUMP:<pre>'; print_r($to_fldball); echo "</pre>\r\n"; }
 			// --- Establist account numbers ----
 			$mov_msgball['acctnum'] = (int)$mov_msgball['acctnum'];
 			if (!(isset($mov_msgball['acctnum']))
@@ -625,19 +627,30 @@
 				// SAME ACCOUNT MAIL MOVE
 				
 				$common_acctnum = $mov_msgball['acctnum'];
-				//if ($debug_move > 1) { echo 'mail_msg(_wrappers): interacct_mail_move: SAME ACCOUNT MOVE $common_acctnum: '.$common_acctnum.' $mailsvr_stream: '.$mailsvr_stream.' $msgnum: '.$msgnum.' $mailsvr_callstr: '.$mailsvr_callstr.' $mailbox: '.$mailbox.'<br>'; }
+				if ($debug_move > 1) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: SAME ACCOUNT MOVE $common_acctnum: '.$common_acctnum.' $mailsvr_stream: '.$mailsvr_stream.' $msgnum: '.$msgnum.' $mailsvr_callstr: '.$mailsvr_callstr.' $mailbox: '.$mailbox.'<br>'; }
 				$this->expire_session_cache_item('msgball_list', $common_acctnum);
 				// we need to SELECT the folder the message is being moved FROM
+				$mov_msgball['folder'] = urldecode($mov_msgball['folder']);
 				$this->ensure_stream_and_folder($mov_msgball, 'industrial_interacct_mail_move');
+				$mov_msgball['msgnum'] = (string)$mov_msgball['msgnum'];
 				$to_fldball['folder'] = urldecode($to_fldball['folder']);
 				$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $common_acctnum);
-				if ($debug_move > 1) { echo 'mail_msg(_wrappers): interacct_mail_move: SAME ACCOUNT MOVE $common_acctnum: '.$common_acctnum.' $mailsvr_stream: '.$mailsvr_stream.' $mov_msgball[msgnum]: '.$mov_msgball['msgnum'].'  $to_fldball[folder]: '. $to_fldball['folder'].'<br>'; }
-				return $GLOBALS['phpgw_dcom_'.$common_acctnum]->dcom->mail_move($mailsvr_stream ,$mov_msgball['msgnum'], $to_fldball['folder']);
+				if ($debug_move > 1) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: $GLOBALS[phpgw_dcom_'.$common_acctnum.']->dcom->mail_move('.serialize($mailsvr_stream).' ,'.serialize($mov_msgball['msgnum']).', '.serialize($to_fldball['folder']).')<br>'; }
+				$did_move = $GLOBALS['phpgw_dcom_'.$common_acctnum]->dcom->mail_move($mailsvr_stream ,$mov_msgball['msgnum'], $to_fldball['folder']);
+				if (!$did_move)
+				{
+					return False;
+				}
+				else
+				{
+					return $this->phpgw_expunge($mov_msgball['acctnum']);
+				}
 			}
 			else
 			{
 				// DIFFERENT ACCOUNT MAIL MOVE
 				
+				if ($debug_move > 1) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: Different ACCOUNT MOVE $common_acctnum: '.$common_acctnum.' $mailsvr_stream: '.$mailsvr_stream.' $msgnum: '.$msgnum.' $mailsvr_callstr: '.$mailsvr_callstr.' $mailbox: '.$mailbox.'<br>'; }
 				$good_to_go = False;
 				// delete session msg array data thAt is now stale
 				$this->expire_session_cache_item('msgball_list', $mov_msgball['acctnum']);
@@ -653,9 +666,11 @@
 				// part_no 0 only used to get the headers
 				$mov_msgball['part_no'] = 0;
 				// (a)  the headers, specify part_no 0
-				$moving_message = $GLOBALS['phpgw']->msg->phpgw_fetchbody($mov_msgball);
+				//$moving_message = $GLOBALS['phpgw']->msg->phpgw_fetchbody($mov_msgball);
+				$moving_message = $this->phpgw_fetchbody($mov_msgball);
 				// (b) the body, plus a CRLF, reuse headers_msgball b/c "phpgw_body" cares not about part_no
-				$moving_message .= $GLOBALS['phpgw']->msg->phpgw_body($mov_msgball)."\r\n";
+				//$moving_message .= $GLOBALS['phpgw']->msg->phpgw_body($mov_msgball)."\r\n";
+				$moving_message .= $this->phpgw_body($mov_msgball)."\r\n";
 				$good_to_go = (strlen($moving_message) > 3);
 				if (!$good_to_go)
 				{
@@ -685,7 +700,8 @@
 				{
 					return False;
 				}
-				$good_to_go = $GLOBALS['phpgw']->msg->phpgw_expunge($mov_msgball['acctnum']);
+				//$good_to_go = $GLOBALS['phpgw']->msg->phpgw_expunge($mov_msgball['acctnum']);
+				$good_to_go = $this->phpgw_expunge($mov_msgball['acctnum']);
 				if (!$good_to_go)
 				{
 					return False;

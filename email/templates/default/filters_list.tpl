@@ -54,7 +54,7 @@
 </table>
 
 <p>&nbsp;</p>
-<!--
+
 <hr>
 <p>&nbsp;</p>
 	
@@ -74,6 +74,6 @@
 	</td>
 </tr>
 </table>
--->
+
 <p>&nbsp;</p>
 <!-- end filter_list.tpl -->
