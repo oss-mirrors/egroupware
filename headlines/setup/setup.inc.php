@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Headlines                                                 *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - Headlines                                                 *
+	* http://www.epgroupware.org                                              *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -22,8 +22,8 @@
 	$setup_info['headlines']['license']  = 'GPL';
 	$setup_info['headlines']['description'] =
 		'Read news site headlines.';
-	$setup_info['headlines']['maintainer'] = 'Mark Peters<br>Joseph Engo';
-	$setup_info['headlines']['maintainer_email'] = 'skeeter@phpgroupware.org<br>jengo@phpgroupware.org';
+	$setup_info['headlines']['maintainer'] = 'eGroupWare developers';
+	$setup_info['headlines']['maintainer_email'] = 'milosch@groupwhere.org';
 
 	/* The tables this app creates */
 	$setup_info['headlines']['tables']    = array(
