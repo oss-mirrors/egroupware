@@ -18,7 +18,7 @@
 	$setup_info['projects']['author'] = array
 	(
 		'name'	=> 'Bettina Gille',
-		'email'	=> 'ceb@phpgroupware.org'
+	//	'email'	=> 'ceb@phpgroupware.org'
 	);
 
 	$setup_info['projects']['license']  = 'GPL';
