@@ -12,16 +12,14 @@
 
 	/* $Id$ */
 
-	function createLink($string) 
+	function createLink($string,$params='')
 	{
-		global $phpgw;
-		return $phpgw->link($string);
+		return $GLOBALS['phpgw']->link($string,$params);
 	}
 
 	function getConnectionInfo() 
 	{
-		global $phpgw;
-		$unencrypted=$phpgw->session->appsession();
+		$unencrypted=$GLOBALS['phpgw']->session->appsession();
 		return $unencrypted;
 	}
 
@@ -41,107 +39,90 @@
 
 	function renameForm($template,$session,$filename,$directory) 
 	{
-		global $bgcolor, $em_bg, $target;
-		$rename_form_begin= "<form action=\"" . createLink($target) . 
-			"\" method=\"post\">\n" .
-			"<input type=\"hidden\" name=\"action\" value=\"rename\">\n" .
-			"<input type=\"hidden\" name=\"olddir\" value=\"$directory\">\n" . 
-			"<input type=\"hidden\" name=\"newdir\" value=\"$directory\">\n" . 
-			"<input type=\"hidden\" name=\"filename\" value=\"$filename\">\n";
-		$rename_form_end = "</form>\n";
+		$rename_form_begin= '<form action="' . createLink($GLOBALS['target']) . '" method="post">'."\n"
+			. '<input type="hidden" name="action" value="rename">'."\n"
+			. '<input type="hidden" name="olddir" value="'.$directory.'">'."\n"
+			. '<input type="hidden" name="newdir" value="'.$directory.'">'."\n"
+			. '<input type="hidden" name="filename" value="'.$filename.'">'."\n";
+		$rename_form_end = '</form>'."\n";
 		$rename_form_from=  $filename;
-		$rename_form_to="<input type=text name=\"newfilename\" size=20 " .
-			"value=\"\">";
-		$rename_form_submit="<input type=\"submit\" name=\"confirm\" " .
-			"value=\"" . lang("rename") . "\">\n";
-		$rename_form_cancel="<input type=\"submit\" name=\"cancel\" " .
-			"value=\"" . lang("cancel") . "\">\n";
+		$rename_form_to='<input type="text" name="newfilename" size="20" value="">';
+		$rename_form_submit='<input type="submit" name="confirm" value="' . lang('rename') . '">'."\n";
+		$rename_form_cancel='<input type="submit" name="cancel" value="' . lang('cancel') . '">'."\n";
 
 		$template->set_var(array(
-			"rename_form_begin" => $rename_form_begin,
-			"rename_form_end"  => $rename_form_end,
-			"rename_form_from" => $rename_form_from,
-			"rename_form_to" => $rename_form_to,
-			"rename_form_submit" => $rename_form_submit,
-			"rename_form_cancel" => $rename_form_cancel,
-			"lang_rename_from" => lang("rename from"), 
-			"lang_rename_to" => lang("rename to")
+			'rename_form_begin' => $rename_form_begin,
+			'rename_form_end'  => $rename_form_end,
+			'rename_form_from' => $rename_form_from,
+			'rename_form_to' => $rename_form_to,
+			'rename_form_submit' => $rename_form_submit,
+			'rename_form_cancel' => $rename_form_cancel,
+			'lang_rename_from' => lang('rename from'), 
+			'lang_rename_to' => lang('rename to')
 		));
 
 		$template->set_var('lang_message',lang('Rename file'));
 
 
-		$template->parse("out","rename",true);
-		// $template->p("renameform");
-		$template->set_var("return",$template->get("out"));
-		return $template->get("return");
+		$template->parse('out','rename',true);
+		// $template->p('renameform');
+		$template->set_var('return',$template->get('out'));
+		return $template->get('return');
 	}
 
 	function confirmDeleteForm($template,$session,$filename,$directory,$type ='') 
 	{
-		global $bgcolor, $em_bg, $target;
-		$delete_form_begin= "<form action=\"" . createLink($target) . 
-			"\" method=\"post\">\n" .
-			"<input type=\"hidden\" name=\"action\" value=\"delete\">\n" .
-			"<input type=\"hidden\" name=\"olddir\" value=\"$directory\">\n" .
-			"<input type=\"hidden\" name=\"newdir\" value=\"$directory\">\n" .
-			"<input type=\"hidden\" name=\"file\" value=\"$filename\">\n";
-		$delete_form_end = "</form>\n";
+		$delete_form_begin= '<form action="' . createLink($GLOBALS['target']) . '" method="post">'."\n"
+			. '<input type="hidden" name="action" value="delete">'."\n"
+			. '<input type="hidden" name="olddir" value="'.$directory.'">'."\n"
+			. '<input type="hidden" name="newdir" value="'.$directory.'">'."\n"
+			. '<input type="hidden" name="file" value="'.$filename.'">'."\n";
+		$delete_form_end = '</form>'."\n";
 		$delete_form_question = 'Are you sure you want to delete ' . $filename . ' ?';
-		$delete_form_from= $directory . "/" . $filename;
-		$delete_form_to="<input type=text name=\"newname\" size=20" .
-			"value=\"\">";
-		$delete_form_confirm="<input type=\"submit\" name=\"confirm\" " .
-			"value=\"" . lang("delete") . "\">\n";
-		$delete_form_cancel="<input type=\"submit\" name=\"cancel\" " .
-			"value=\"" . lang("cancel") . "\">\n";
+		$delete_form_from= $directory . '/' . $filename;
+		$delete_form_to='<input type="text" name="newname" size=20" value="">';
+		$delete_form_confirm='<input type="submit" name="confirm" value="' . lang('delete') . '">'."\n";
+		$delete_form_cancel='<input type="submit" name="cancel" value="' . lang('cancel') . '">'."\n";
 
 		$template->set_var(array(
-			"delete_form_begin" => $delete_form_begin,
-			"delete_form_end"  => $delete_form_end,
-			"delete_form_question" => $delete_form_question,
-			"delete_form_confirm" => $delete_form_confirm,
-			"delete_form_cancel" => $delete_form_cancel
+			'delete_form_begin' => $delete_form_begin,
+			'delete_form_end'  => $delete_form_end,
+			'delete_form_question' => $delete_form_question,
+			'delete_form_confirm' => $delete_form_confirm,
+			'delete_form_cancel' => $delete_form_cancel
 		));
 
-		$template->parse("out","confirm_delete",true);
-		$template->set_var("return",$template->get("out"));
-		return $template->get("return");
+		$template->parse('out','confirm_delete',true);
+		$template->set_var('return',$template->get('out'));
+		return $template->get('return');
 	}
 
 	function newLogin($template,$dfhost,$dfuser,$dfpass) 
 	{
-		global $bgcolor, $em_bg, $target;
-		$login_form_begin= "<form action=\"" . createLink($target) . 
-			"\" method=\"post\">\n" .
-			"<input type=\"hidden\" name=\"action\" value=\"login\">\n";
-		$login_form_end="</form>\n";
-		$login_form_username="<input type=text name=\"username\" " .
-			"value=\"$dfuser\">";
-		$login_form_password="<input type=password name=\"password\" " .
-			"value=\"$dfpass\">";
-		$login_form_ftpserver="<input type=text name=\"ftpserver\" " .
-			"value=\"$dfhost\">";
-		$login_form_submit="<input type=\"submit\" name=\"submit\" value=\"" .
-			lang("connect") . "\">\n";
+		$login_form_begin= '<form action="'.createLink($GLOBALS['target']).'" method="post">'."\n".'<input type="hidden" name="action" value="login">'."\n";
+		$login_form_end='</form>'."\n";
+		$login_form_username='<input type="text" name="username" value="'.$dfuser.'">';
+		$login_form_password='<input type="password" name="password" value="'.$dfpass.'">';
+		$login_form_ftpserver='<input type="text" name="ftpserver" value="'.$dfhost.'">';
+		$login_form_submit='<input type="submit" name="submit" value="'.lang('connect').'">'."\n";
 		$login_form_end="</form>";
 
 		$template->set_var(array(
-			"login_form_begin" => $login_form_begin,
-			"login_form_end" => $login_form_end,
-			"login_form_username" => $login_form_username,
-			"login_form_password" => $login_form_password,
-			"login_form_ftpserver" => $login_form_ftpserver,
-			"login_form_submit" => $login_form_submit,
-			"lang_username" => lang("username"),
-			"lang_password" => lang("password"),
-			"langserver" => lang("ftpserver")
+			'login_form_begin' => $login_form_begin,
+			'login_form_end' => $login_form_end,
+			'login_form_username' => $login_form_username,
+			'login_form_password' => $login_form_password,
+			'login_form_ftpserver' => $login_form_ftpserver,
+			'login_form_submit' => $login_form_submit,
+			'lang_username' => lang('username'),
+			'lang_password' => lang('password'),
+			'langserver' => lang('ftpserver')
 		));
 		$template->set_var('lang_login',lang('Log into FTP server'));
 		$template->set_var('lang_ftpserver',lang('FTP hostname'));
 
-		$template->parse("loginform","login",false);
-		$template->p("loginform");
+		$template->parse('loginform','login',false);
+		$template->p('loginform');
 		return;
 	}
 
@@ -151,14 +132,14 @@
 
 		srand((double)microtime()*1000000);
 		$randval = rand();
-		$tmpfile="$tempdir/" . $file . "." . $randval;
+		$tmpfile=$tempdir.'/'.$file.".".$randval;
 		ftp_chdir($ftp,$dir);
-		$remotefile=$dir . "/" . $file;
+		$remotefile=$dir . '/' . $file;
 		if ( ! ftp_get( $ftp, $tmpfile, $remotefile, FTP_BINARY ) )
 		{
 			echo 'tmpfile="' . $tmpfile . '",file="' . $remotefile . '"<br>' . "\n";
 			ftp_quit( $ftp );
-			echo macro_get_Link("newlogin","Start over?");
+			echo macro_get_Link('newlogin','Start over?');
 			$retval=0;
 		}
 		else
@@ -213,7 +194,7 @@
 				}
 			}
 		}
-		return "text/plain";
+		return 'text/plain';
 	}
 
 	function phpftp_view( $ftp, $tempdir, $dir, $file ) 
@@ -226,13 +207,13 @@
 		if ( ! ftp_get( $ftp, $tmpfile, $remotefile, FTP_BINARY ) ) 
 		{
 			echo "tmpfile=\"$tmpfile\",file=\"$remotefile\"<BR>\n";
-			macro_get_Link("newlogin","Start over?");
+			macro_get_Link('newlogin','Start over?');
 			$retval=0;
 		}
 		else 
 		{
 			$content_type=getMimeType($remotefile);
-			header("Content-Type: $content_type");
+			header('Content-Type: '.$content_type);
 			readfile( $tmpfile );
 			$retval=1;
 		}
@@ -240,27 +221,24 @@
 		return $retval;
 	}
 
-	function updateSession($string="") 
+	function updateSession($string='')
 	{
-		global $phpgw;
-		$phpgw->common->appsession($string);
+		$GLOBALS['phpgw']->common->appsession($string);
 		return;
 	}
-
-
 
 	function analysedir($dirline)
 	{
 		if (ereg("([-dl])[rwxst-]{9}",substr($dirline,0,10)))
 		{
-			$systyp = "UNIX";
+			$systyp = 'UNIX';
 		}
 
-		if (substr($dirline,0,5) == "total")
+		if (substr($dirline,0,5) == 'total')
 		{
 			$dirinfo[0] = -1;
 		}
-		else if($systyp=="Windows_NT")
+		else if($systyp=='Windows_NT')
 		{
 			if (ereg("[-0-9]+ *[0-9:]+[PA]?M? +<DIR> {10}(.*)",$dirline,$regs))
 			{
@@ -272,7 +250,7 @@
 				$dirinfo[1] = $regs[1];
 				$dirinfo[2] = $regs[2];
 			}
-		} else if($systyp=="UNIX") {
+		} else if($systyp=='UNIX') {
 			if (ereg("([-d][rwxst-]{9}).*  ([a-zA-Z0-9]*) ([a-zA-Z]+ [0-9: ]*[0-9]) (.+)",$dirline,$regs))
 			{
 				$ta = explode(' ',$dirline);
@@ -294,7 +272,7 @@
 			}
 		}
     
-		if (($dirinfo[2]==".") || ($dirinfo[2]==".."))
+		if (($dirinfo[2]=='.') || ($dirinfo[2]=='..'))
 		{
 			$dirinfo[0] = 0;
 		}
@@ -304,12 +282,12 @@
 
 	function phpftp_getList($ftp,$dir,$start)
 	{
-		global $real_systyp, $phpgw_info;
+		global $real_systyp;
 		$real_systyp = ftp_systype($ftp);
 
 		ftp_chdir($ftp,$dir);
 		$dirlist = ftp_rawlist($ftp,'');
-		for ($i=$start; $i<($start+$phpgw_info['user']['preferences']['common']['maxmatchs']); $i++)
+		for ($i=$start; $i<($start+$GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']); $i++)
 		{
 			if ($i < count($dirlist))
 			{
@@ -322,13 +300,14 @@
 	function macro_get_Link($action,$string) 
 	{
 		// globals everything it needs but the string to link
-		global $olddir, $newdir, $file, $target;
-		$retval = "<a href=\"" . createLink($target) . 
-				"&olddir=" . urlencode($olddir) . "&action=" .
-				urlencode($action) . "&file=" . urlencode($file) . "&newdir=" .
-				urlencode($newdir) . "\">";
+		global $olddir, $newdir, $file;
+		$retval = '<a href="'
+			. $GLOBALS['phpgw']->link($GLOBALS['target'],
+				'olddir='.urlencode($olddir).'&action='.urlencode($action)
+				. '&file='.urlencode($file).'&newdir='.urlencode($newdir)
+			).'">';
 		$retval .= $string;
-		$retval .= "</a>";
+		$retval .= '</a>';
 		return $retval;
 	}
 
