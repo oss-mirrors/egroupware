@@ -47,22 +47,10 @@
 		<td>{l_save}</td>
 	</tr>
 	<tr bgcolor="{row_off}">
-		<td>{lang_app}</td>
-		<td><select name="values[l_app]"><option value="">{lang_select_app}</option>{l_app_list}</select></td>
-	</tr>
-	<tr bgcolor="{row_on}">
 		<td>{lang_path}:</td>
 		<td><input type="text" name="values[l_path]" value="{l_path}"></td>
 	</tr>
-	<tr bgcolor="{row_off}">
-		<td>{lang_user}:</td>
-		<td><input type="text" name="values[l_user]" value="{l_user}"></td>
-	</tr>
 	<tr bgcolor="{row_on}">
-		<td>{lang_pwd}:</td>
-		<td><input type="password" name="values[l_pwd]" value="{l_pwd}"></td>
-	</tr>
-	<tr bgcolor="{row_off}">
 		<td>{lang_l_websave}</td>
 		<td>{l_websave}</td>
 	</tr>

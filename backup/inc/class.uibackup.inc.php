@@ -100,7 +100,7 @@
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('lang_action',lang('Backup administration'));
 
-			$values = $this->bobackup->read_items();
+			$values = $this->bobackup->get_config();
 
 			$this->t->set_var('b_create','<input type="checkbox" name="values[b_create]" value="True"' . ($values['b_create'] == 'yes'?' checked':'') . '>');
 
@@ -129,19 +129,6 @@
 						. '<option value="zip"' . $b_type_sel[2] . '>' . lang('zip') . '</option>' . "\n";
 
 			$this->t->set_var('type_list',$type_list);
-
-			switch($values['l_app'])
-			{
-				case 'ftp': $l_type_sel[0]=' selected';break;
-				case 'scp': $l_type_sel[1]=' selected';break;
-				case 'httpd': $l_type_sel[2]=' selected';break;
-			}
-
-			$l_app_list = '<option value="ftp"' . $l_type_sel[0] . '>' . lang('ftp') . '</option>' . "\n"
-						. '<option value="scp"' . $l_type_sel[1] . '>' . lang('scp') . '</option>' . "\n"
-						. '<option value="httpd"' . $l_type_sel[2] . '>' . lang('httpd') . '</option>' . "\n";
-
-			$this->t->set_var('l_app_list',$l_app_list);
 
 			switch($values['r_app'])
 			{
@@ -174,8 +161,6 @@
 			$this->t->set_var('r_pwd',$values['r_pwd']);
 
 			$this->t->set_var('l_path',$values['l_path']);
-			$this->t->set_var('l_user',$values['l_user']);
-			$this->t->set_var('l_pwd',$values['l_pwd']);
 
 			$this->t->pfp('out','admin_form');
 
