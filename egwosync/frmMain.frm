@@ -64,6 +64,7 @@ End Property
 Private Sub cmdApply_Click()
     SaveSettings
     PutSettings
+    Master.InitAuto
 End Sub
 
 Private Sub cmdCancel_Click()
@@ -86,6 +87,7 @@ End Sub
 Private Sub cmdOK_Click()
     SaveSettings
     PutSettings
+    Master.InitAuto
     Me.Hide
 End Sub
 

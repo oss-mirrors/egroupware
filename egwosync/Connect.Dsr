@@ -34,8 +34,8 @@ Option Explicit
 
 Private WithEvents oXL As Outlook.Application
 Attribute oXL.VB_VarHelpID = -1
-Private WithEvents btSync As Office.CommandBarButton
-Attribute btSync.VB_VarHelpID = -1
+Private WithEvents cbb As Office.CommandBarButton
+Attribute cbb.VB_VarHelpID = -1
 
 Private Sub AddinInstance_OnConnection(ByVal Application As Object, _
     ByVal ConnectMode As AddInDesignerObjects.ext_ConnectMode, _
@@ -43,34 +43,42 @@ Private Sub AddinInstance_OnConnection(ByVal Application As Object, _
     
     On Error Resume Next
     Set oXL = Application
-    
-    'Create a button only if there wasn't one there already.
-    If oXL.ActiveExplorer.CommandBars("Standard").Controls.Item("eGroupWare Sync Main") Is Nothing Then
-        Set btSync = oXL.ActiveExplorer.CommandBars("Standard").Controls.Add(1)
-    
-        With btSync
-            .Caption = "eGroupWare Sync Main"
-            .Style = msoButtonCaption
-
-            'this helps to keep track of the button
-            .Tag = "eGroupWare Sync Main"
-            
-            .OnAction = "!<" & AddInInst.ProgId & ">"
-            .Visible = True
-        End With
-    Else
-        Set btSync = oXL.ActiveExplorer.CommandBars("Standard").Controls.Item("eGroupWare Sync Main")
-    End If
+    If (ConnectMode <> ext_cm_Startup) Then _
+        Call AddinInstance_OnStartupComplete(custom)
 End Sub
 
 Private Sub AddinInstance_OnBeginShutdown(custom() As Variant)
-    'btSync.Delete
-    Set btSync = Nothing
-    Set oXL = Nothing
+    On Error Resume Next
+    cbb.Delete
+    Set cbb = Nothing
 End Sub
 
 'I've found that putting as many processes as possible here speeds startup.
 Private Sub AddinInstance_OnStartupComplete(custom() As Variant)
+    Dim oCBs As Office.CommandBars
+    Dim oSB As Office.CommandBar
+    
+    On Error Resume Next
+    Set oCBs = oXL.CommandBars
+    If oCBs Is Nothing Then
+        Set oCBs = oXL.ActiveExplorer.CommandBars
+    End If
+    
+    Set oSB = oCBs.Item("Standard")
+    Set cbb = oSB.Controls.Item("eGWOSync")
+        If cbb Is Nothing Then
+            Set cbb = oSB.Controls.Add(1)
+            With cbb
+                .Caption = "eGWOSync"
+                .Style = msoButtonCaption
+                .Tag = "eGWOSync"
+                .OnAction = "!<eGWOSync.Connect>"
+                .Visible = True
+            End With
+        End If
+    Set oCBs = Nothing
+    Set oSB = Nothing
+
     Set Master = New CeGWOSyncMaster
 End Sub
 
@@ -78,12 +86,12 @@ Private Sub AddinInstance_OnDisconnection(ByVal RemoveMode As _
     AddInDesignerObjects.ext_DisconnectMode, custom() As Variant)
     On Error Resume Next
     
-    btSync.Delete
-    Set btSync = Nothing
+    If RemoveMode <> ext_dm_HostShutdown Then _
+        Call AddinInstance_OnBeginShutdown(custom)
     Set oXL = Nothing
 End Sub
 
-Private Sub btSync_Click(ByVal Ctrl As Office.CommandBarButton, _
+Private Sub cbb_Click(ByVal Ctrl As Office.CommandBarButton, _
     CancelDefault As Boolean)
     Master.OpenMain
 End Sub

@@ -25,6 +25,9 @@ Attribute VB_Exposed = True
 Dim AutoMaker As New CAutoExporter
 Public eGW As CeGW
 
+Public Sub InitAuto()
+    AutoMaker.Initialize_handler
+End Sub
 
 Public Sub OpenMain()
     If Ready Then
@@ -79,7 +82,8 @@ Public Function Setup() As Boolean
                 FrmMain.Show
             End If
             'Set focus to settings page
-            FrmMain.MultiPage1.Value = 1
+            FrmMain.MultiPage1.Value = 2
+            Setup = True
         ElseIf x = vbCancel Then
             Setup = False
         End If
