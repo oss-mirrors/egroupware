@@ -54,6 +54,7 @@
   if (count($phpgw_info["user"]["preferences"]["stocks"]) == 1) {
      $phpgw->preferences->change("stocks","LNUX");
      $phpgw->preferences->change("stocks","RHAT");
+     $phpgw->preferences->commit();
      $phpgw_info["user"]["preferences"]["stocks"]["LNUX"] = "VA%20Linux";
      $phpgw_info["user"]["preferences"]["stocks"]["RHAT"] = "RedHat";
   }

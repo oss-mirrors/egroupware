@@ -11,7 +11,7 @@
 
   if ($phpgw_info["user"]["preferences"]["email"]["mainscreen_showmail"]) {
     include($phpgw_info["server"]["app_inc"] . "/functions.inc.php");
-    echo "<!-- Mailox info -->\n";
+    echo "\n".'<tr><td align="left"><!-- Mailbox info -->'."\n";
 //    if (! $mbox) {
 //      echo "Mail error: can not open connection to mail server";
 //      $phpgw->common->phpgw_exit();
@@ -41,7 +41,7 @@
       $portalbox->data[$j] = array(decode_header_string($subject),$phpgw->link($phpgw_info["server"]["webserver_url"]."/email/message.php","folder=".urlencode($folder)."&msgnum=".$i));
     }
     echo $portalbox->draw();
-    echo "<!-- Mailox info -->\n";
+    echo "\n".'<!-- Mailox info --></td></tr>'."\n";
   }
 
   $phpgw_info["server"]["app_inc"] = $tmp_app_inc;

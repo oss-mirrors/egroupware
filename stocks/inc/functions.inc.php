@@ -56,7 +56,7 @@
                       . "$color\">$dollarchange</font></td><td><font color=\"$color\">$percentchange"
                       . "</font></td><td>$date</td><td>$time</td></tr>";
     }
-    $return_html .= "</table></td></tr></table></table>";
+    $return_html .= "</table></td></tr></table>";
 
     return $return_html;
   }
