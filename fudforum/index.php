@@ -10,7 +10,9 @@
 * (at your option) any later version.
 ***************************************************************************/
 
-	if (!empty($_GET['domain'])) {
+	if (!empty($_COOKIE['domain'])) {
+		$dom = sprintf("%u", crc32(stripslashes($_COOKIE['domain'])));
+	} else if (!empty($_GET['domain'])) {
 		$dom = sprintf("%u", crc32(stripslashes($_GET['domain'])));
 	} else {
 		$d = opendir('.');
@@ -24,6 +26,8 @@
 		}
 	}
 
-	$path = dirname($_SERVER["REQUEST_URI"]) . "/" . $dom . "/index.php?" . $_SERVER["QUERY_STRING"];
+	$prefix = strpos($_SERVER["REQUEST_URI"], 'index.php') ? dirname($_SERVER["REQUEST_URI"]) : $_SERVER["REQUEST_URI"]; 
+
+	$path = $prefix . "/" . $dom . "/index.php?" . $_SERVER["QUERY_STRING"];
 	header("Location: ".$path);
 ?>
