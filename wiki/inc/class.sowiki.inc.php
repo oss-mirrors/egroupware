@@ -180,7 +180,7 @@ class sowiki	// DB-Layer
 	*/
 	function find($text)
 	{
-		$this->db->query("SELECT t1.title,t1.version,MAX(t2.version)".
+		$this->db->query("SELECT t1.title,t1.version,MAX(t2.version),t1.body".
 		                  " FROM $this->PgTbl AS t1,$this->PgTbl AS t2".
 		                  " WHERE t1.title=t2.title ".
 		                  " GROUP BY t1.title,t1.version,t1.body".
