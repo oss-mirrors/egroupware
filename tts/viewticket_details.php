@@ -185,7 +185,7 @@
 
 			if ($oldpriority != $optPriority)
 			{
-				$txtPriority = "<br /><b>".lang("Priority changed to x",$lstPriority)."</b>";
+				$txtPriority = "<br /><b>".lang("Priority changed to x",$optPriority)."</b>";
 			}
 
 			if ($oldcategory != $lstCategory)
