@@ -7,8 +7,7 @@
   include("../header.inc.php");
   if (! $submit) {
      ?>
-      <form method=POST action="newticket.php">
-       <?php echo $phpgw->session->hidden_var(); ?>
+      <form method=POST action="<?php echo $phpgw->link("newticket.php"); ?>">
 
        <div align="center">
        <center>

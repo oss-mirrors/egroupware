@@ -43,8 +43,7 @@ $lstCategory=$phpgw->db->f(1);
 
 // Print the table
 ?>
-<form method="POST" action="viewticket_details.php">
- <?php echo $phpgw->session->hidden_var(); ?>
+<form method="POST" action="<?php echo $phpgw->link("viewticket_details.php"); ?>">
  <input type=hidden value="<?php echo $phpgw->db->f(0); ?>" name="t_id">
  <input type=hidden value="<?php echo $phpgw->db->f(4); ?>" name="lstAssignedfrom">
   <div align=center>
