@@ -150,7 +150,7 @@ $servers["SOAPx4 - interop test suite"] = array(
 
 ?>
 
-<form action='test_methods.php' method='post'>
+<form action="<?php $phpgw->link('/soap/test_methods.php'); ?>" method='post'>
 <select name='nserver'>
 <option>Choose Server...
 	<?php
