@@ -17,37 +17,37 @@
 		return $GLOBALS['phpgw']->link($string,$params);
 	}
 
-	function getConnectionInfo() 
+	function getConnectionInfo()
 	{
-		$unencrypted=$GLOBALS['phpgw']->session->appsession();
+		$unencrypted = $GLOBALS['phpgw']->session->appsession();
 		return $unencrypted;
 	}
 
 	function phpftp_connect($host,$user,$pass) 
 	{
-		// echo "connecting to $host with $user and $pass\n";
+		//echo "connecting to $host with $user and $pass\n";
 		$ftp = ftp_connect($host);
-		if ( $ftp ) 
+		if($ftp)
 		{
-			if ( ftp_login($ftp,$user,$pass) ) 
+			if(ftp_login($ftp,$user,$pass))
 			{
 				return $ftp;
 			}
 		}
 	}
 
-	function renameForm($session,$filename,$directory) 
+	function renameForm($session,$filename,$directory)
 	{
-		$rename_form_begin= '<form action="' . createLink($GLOBALS['target']) . '" method="post">'."\n"
-			. '<input type="hidden" name="action" value="rename">'."\n"
-			. '<input type="hidden" name="olddir" value="'.$directory.'">'."\n"
-			. '<input type="hidden" name="newdir" value="'.$directory.'">'."\n"
-			. '<input type="hidden" name="filename" value="'.$filename.'">'."\n";
-		$rename_form_end = '</form>'."\n";
-		$rename_form_from=  $filename;
-		$rename_form_to='<input type="text" name="newfilename" size="20" value="">';
-		$rename_form_submit='<input type="submit" name="confirm" value="' . lang('rename') . '">'."\n";
-		$rename_form_cancel='<input type="submit" name="cancel" value="' . lang('cancel') . '">'."\n";
+		$rename_form_begin= '<form action="' . createLink($GLOBALS['target']) . '" method="post">' . "\n"
+			. '<input type="hidden" name="action" value="rename">' . "\n"
+			. '<input type="hidden" name="olddir" value="' . $directory . '">' . "\n"
+			. '<input type="hidden" name="newdir" value="' . $directory . '">' . "\n"
+			. '<input type="hidden" name="filename" value="' . $filename . '">' . "\n";
+		$rename_form_end  = '</form>'."\n";
+		$rename_form_from =  $filename;
+		$rename_form_to = '<input type="text" name="newfilename" size="20" value="">';
+		$rename_form_submit = '<input type="submit" name="confirm" value="' . lang('rename') . '">'."\n";
+		$rename_form_cancel = '<input type="submit" name="cancel" value="' . lang('cancel') . '">'."\n";
 
 		$GLOBALS['phpgw']->template->set_var(array(
 			'rename_form_begin' => $rename_form_begin,
@@ -56,7 +56,7 @@
 			'rename_form_to' => $rename_form_to,
 			'rename_form_submit' => $rename_form_submit,
 			'rename_form_cancel' => $rename_form_cancel,
-			'lang_rename_from' => lang('rename from'), 
+			'lang_rename_from' => lang('rename from'),
 			'lang_rename_to' => lang('rename to')
 		));
 
@@ -68,19 +68,19 @@
 		return $GLOBALS['phpgw']->template->get('return');
 	}
 
-	function confirmDeleteForm($session,$filename,$directory,$type ='') 
+	function confirmDeleteForm($session,$filename,$directory,$type ='')
 	{
-		$delete_form_begin= '<form action="' . createLink($GLOBALS['target']) . '" method="post">'."\n"
-			. '<input type="hidden" name="action" value="delete">'."\n"
-			. '<input type="hidden" name="olddir" value="'.$directory.'">'."\n"
-			. '<input type="hidden" name="newdir" value="'.$directory.'">'."\n"
-			. '<input type="hidden" name="file" value="'.$filename.'">'."\n";
+		$delete_form_begin = '<form action="' . createLink($GLOBALS['target']) . '" method="post">'."\n"
+			. '<input type="hidden" name="action" value="delete">' . "\n"
+			. '<input type="hidden" name="olddir" value="' . $directory . '">' . "\n"
+			. '<input type="hidden" name="newdir" value="' . $directory . '">' . "\n"
+			. '<input type="hidden" name="file" value="' . $filename.'">' . "\n";
 		$delete_form_end = '</form>'."\n";
-		$delete_form_question = lang ('Are you sure you want to delete %1 ?', $filename);
-		$delete_form_from= $directory . '/' . $filename;
-		$delete_form_to='<input type="text" name="newname" size=20" value="">';
-		$delete_form_confirm='<input type="submit" name="confirm" value="' . lang('delete') . '">'."\n";
-		$delete_form_cancel='<input type="submit" name="cancel" value="' . lang('cancel') . '">'."\n";
+		$delete_form_question = lang('Are you sure you want to delete %1 ?', $filename);
+		$delete_form_from = $directory . '/' . $filename;
+		$delete_form_to = '<input type="text" name="newname" size=20" value="">';
+		$delete_form_confirm = '<input type="submit" name="confirm" value="' . lang('delete') . '">'."\n";
+		$delete_form_cancel = '<input type="submit" name="cancel" value="' . lang('cancel') . '">'."\n";
 
 		$GLOBALS['phpgw']->template->set_var(array(
 			'delete_form_begin' => $delete_form_begin,
@@ -95,7 +95,7 @@
 		return $GLOBALS['phpgw']->template->get('return');
 	}
 
-	function newLogin($dfhost,$dfuser,$dfpass) 
+	function newLogin($dfhost,$dfuser,$dfpass)
 	{
 		$login_form_begin= '<form action="'.createLink($GLOBALS['target']).'" method="post">'."\n".'<input type="hidden" name="action" value="login">'."\n";
 		$login_form_end='</form>'."\n";
@@ -124,25 +124,23 @@
 		return;
 	}
 
-	function phpftp_get( $ftp, $tempdir, $dir, $file )
+	function phpftp_get($ftp, $tempdir, $dir, $file)
 	{
-		srand((double)microtime()*1000000);
-		$randval = rand();
-		$tmpfile=$tempdir.'/'.$file.".".$randval;
+		$tmpfile = tempnam('/tmp','egwftp');
 		ftp_chdir($ftp,$dir);
-		$remotefile=$dir . '/' . $file;
-		if ( ! ftp_get( $ftp, $tmpfile, $remotefile, FTP_BINARY ) )
+		$remotefile = $dir . '/' . $file;
+		if(!ftp_get($ftp, $tmpfile, $remotefile, FTP_BINARY))
 		{
 			echo 'tmpfile="' . $tmpfile . '",file="' . $remotefile . '"<br>' . "\n";
-			ftp_quit( $ftp );
+			ftp_quit($ftp);
 			echo macro_get_Link('newlogin','Start over?');
 			$retval=0;
 		}
 		else
 		{
-			ftp_quit( $ftp );
+			ftp_quit($ftp);
 			$b = CreateObject('phpgwapi.browser');
-			if ($GLOBALS['phpgw_info']['server']['ftp_use_mime'])
+			if($GLOBALS['phpgw_info']['server']['ftp_use_mime'])
 			{
 				$mime = getMimeType($file);
 				$b->content_header($file,$mime);
@@ -151,38 +149,38 @@
 			{
 				$b->content_header($file);
 			}
-			//header( "Content-Type: application/octet-stream" );
-			//header( "Content-Disposition: attachment; filename=" . $file );
-			readfile( $tmpfile );
-			$retval=1;
+			//header("Content-Type: application/octet-stream");
+			//header("Content-Disposition: attachment; filename=" . $file);
+			readfile($tmpfile);
+			$retval = 1;
 		}
-		@unlink( $tmpfile );
+		@unlink($tmpfile);
 		return $retval;
 	}
 
 	function getMimeType($file)
 	{
-		$file=basename($file);
+		$file = basename($file);
 		$mimefile = PHPGW_APP_ROOT . SEP . 'mime.types';
-		$fp=fopen($mimefile,"r");
-		$contents = explode("\n",fread ($fp, filesize($mimefile)));
+		$fp = fopen($mimefile,'rb');
+		$contents = explode("\n",fread($fp, filesize($mimefile)));
 		fclose($fp);
 
-		$parts=explode(".",$file);
-		$ext=$parts[(sizeof($parts)-1)];
+		$parts = explode(".",$file);
+		$ext = $parts[(sizeof($parts)-1)];
 
 		for($i=0;$i<sizeof($contents);$i++)
 		{
-			if (! ereg("^#",$contents[$i]))
+			if(!ereg("^#",$contents[$i]))
 			{
-				$line=split("[[:space:]]+", $contents[$i]);
-				if (sizeof($line) >= 2)
+				$line = split("[[:space:]]+", $contents[$i]);
+				if(sizeof($line) >= 2)
 				{
 					for($j=1;$j<sizeof($line);$j++)
 					{
-						if ($line[$j] == $ext)
+						if($line[$j] == $ext)
 						{
-							$mimetype=$line[0];
+							$mimetype = $line[0];
 							return $mimetype;
 						}
 					}
@@ -192,27 +190,25 @@
 		return 'text/plain';
 	}
 
-	function phpftp_view( $ftp, $tempdir, $dir, $file ) 
+	function phpftp_view($ftp, $tempdir, $dir, $file)
 	{
-		srand((double)microtime()*1000000);
-		$randval = rand();
-		$tmpfile="$tempdir/" . $file . "." . $randval;
+		$tmpfile = tempnam('/tmp','egwftp');
 		ftp_chdir($ftp,$dir);
-		$remotefile=$dir . "/" . $file;
-		if ( ! ftp_get( $ftp, $tmpfile, $remotefile, FTP_BINARY ) ) 
+		$remotefile = $dir . '/' . $file;
+		if(!ftp_get($ftp, $tmpfile, $remotefile, FTP_BINARY))
 		{
-			echo "tmpfile=\"$tmpfile\",file=\"$remotefile\"<BR>\n";
+			echo 'tmpfile="' . $tmpfile . '",file="' . $remotefile . '"<br>' . "\n";
 			macro_get_Link('newlogin','Start over?');
-			$retval=0;
+			$retval = 0;
 		}
-		else 
+		else
 		{
-			$content_type=getMimeType($remotefile);
-			header('Content-Type: '.$content_type);
-			readfile( $tmpfile );
-			$retval=1;
+			$content_type = getMimeType($remotefile);
+			header('Content-Type: ' . $content_type);
+			readfile($tmpfile);
+			$retval = 1;
 		}
-		@unlink( $tmpfile );
+		@unlink($tmpfile);
 		return $retval;
 	}
 
@@ -224,70 +220,69 @@
 
 	function analysedir($dirline)
 	{
-		if (ereg("([-dl])[rwxst-]{9}",substr($dirline,0,10)))
+		if(ereg("([-dl])[rwxst-]{9}",substr($dirline,0,10)))
 		{
 			$systyp = 'UNIX';
 		}
 
-		if (substr($dirline,0,5) == 'total')
+		if(substr($dirline,0,5) == 'total')
 		{
 			$dirinfo[0] = -1;
 		}
-		elseif($systyp=='Windows_NT')
+		switch($systyp)
 		{
-			if (ereg("[-0-9]+ *[0-9:]+[PA]?M? +<DIR> {10}(.*)",$dirline,$regs))
-			{
-				$dirinfo[0] = 1;
-				$dirinfo[1] = 0;
-				$dirinfo[2] = $regs[1];
-			}
-			elseif(ereg("[-0-9]+ *[0-9:]+[PA]?M? +([0-9]+) (.*)",$dirline,$regs))
-			{
-				$dirinfo[0] = 0;
-				$dirinfo[1] = $regs[1];
-				$dirinfo[2] = $regs[2];
-			}
-		}
-		elseif($systyp=='UNIX')
-		{
-			if (ereg("([-d][rwxst-]{9}).*  ([a-zA-Z0-9]*) ([a-zA-Z]+ [0-9: ]*[0-9]) (.+)",$dirline,$regs))
-			{
-				$ta = explode(' ',$dirline);
-				while (list(,$p) = each($ta))
+			case 'Windows_NT':
+				if(ereg("[-0-9]+ *[0-9:]+[PA]?M? +<DIR> {10}(.*)",$dirline,$regs))
 				{
-					if ($p)
-					{
-						$a[] = $p;
-					}
+					$dirinfo[0] = 1;
+					$dirinfo[1] = 0;
+					$dirinfo[2] = $regs[1];
 				}
-				$fileinfo['permissions'] = $a[0];
-				$fileinfo['owner']       = $a[2];
-				$fileinfo['group']       = $a[3];
-				$fileinfo['size']        = $a[4];
-				$fileinfo['date']        = $regs[3];
-				$fileinfo['name']        = $regs[4];
-				//echo '<pre>'; print_r($regs); echo '</pre>';
-			}
+				elseif(ereg("[-0-9]+ *[0-9:]+[PA]?M? +([0-9]+) (.*)",$dirline,$regs))
+				{
+					$dirinfo[0] = 0;
+					$dirinfo[1] = $regs[1];
+					$dirinfo[2] = $regs[2];
+				}
+				break;
+			case 'UNIX':
+				if(ereg("([-d][rwxst-]{9}).*  ([a-zA-Z0-9]*) ([a-zA-Z]+ [0-9: ]*[0-9]) (.+)",$dirline,$regs))
+				{
+					$ta = explode(' ',$dirline);
+					while(list(,$p) = each($ta))
+					{
+						if($p)
+						{
+							$a[] = $p;
+						}
+					}
+					$fileinfo['permissions'] = $a[0];
+					$fileinfo['owner']       = $a[2];
+					$fileinfo['group']       = $a[3];
+					$fileinfo['size']        = $a[4];
+					$fileinfo['date']        = $regs[3];
+					$fileinfo['name']        = $regs[4];
+					//echo '<pre>'; print_r($regs); echo '</pre>';
+				}
 		}
-    
-		if (($dirinfo[2]=='.') || ($dirinfo[2]=='..'))
+
+		if(($dirinfo[2]=='.') || ($dirinfo[2]=='..'))
 		{
 			$dirinfo[0] = 0;
 		}
-        
+
 		return $fileinfo;
 	}
 
 	function phpftp_getList($ftp,$dir,$start)
 	{
-		global $real_systyp;
-		$real_systyp = ftp_systype($ftp);
+		$GLOBALS['real_systyp'] = ftp_systype($ftp);
 
 		ftp_chdir($ftp,$dir);
 		$dirlist = ftp_rawlist($ftp,'');
-		for ($i=$start; $i<($start+$GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']); $i++)
+		for($i=$start; $i<($start+$GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']); $i++)
 		{
-			if ($i < count($dirlist))
+			if($i < count($dirlist))
 			{
 				$dirinfo[] = analysedir($dirlist[$i]);
 			}
@@ -295,14 +290,20 @@
 		return $dirinfo;
 	}
 
-	function macro_get_Link($action,$string) 
+	function macro_get_Link($action,$string)
 	{
-		// globals everything it needs but the string to link
-		global $olddir, $newdir, $file;
+		if($string == '..')
+		{
+			$new = '..';
+		}
+		else
+		{
+			$new = urlencode($GLOBALS['newdir']);
+		}
 		$retval = '<a href="'
 			. $GLOBALS['phpgw']->link($GLOBALS['target'],
-				'olddir='.urlencode($olddir).'&action='.urlencode($action)
-				. '&file='.urlencode($file).'&newdir='.urlencode($newdir)
+				'olddir='  . urlencode($GLOBALS['olddir']) . '&action=' . urlencode($action)
+				. '&file=' . urlencode($GLOBALS['file'])  . '&newdir=' . $new
 			).'">';
 		$retval .= $string;
 		$retval .= '</a>';
@@ -313,7 +314,7 @@
 	{
 	}
 
-	function phpftp_rename($origfile,$newfile,$confirm) 
+	function phpftp_rename($origfile,$newfile,$confirm)
 	{
 	}
 ?>
