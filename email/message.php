@@ -328,448 +328,22 @@
 // ---- Message Date  (set above)  -----
 	$t->set_var('message_date', $message_date);
 // ---- Message Subject  (set above)  -----
-	$t->set_var('message_subject',$subject);
-
-/*
-// ---- Flatten Message Structure Array   -----
-	// prepare for recursive traversal of this multi-dimentional array structure
-	global $not_set, $index_flat_array, $part_nice, $control_array;
-	$not_set = '-1';
-	//$index_flat_array = -1; // it will be advanced to 0 before its used
-	// need this unset so we can call this function recursively
-	unset($part_nice);
-
-	// this function will be called recursively
-	function traverse_part_struct($part, $loops, $parent_part)
-	{
-		global $not_set, $index_flat_array, $part_nice, $control_array;
-		//echo '=*=*=*=*=*' .serialize($part) .'=*=*=*=*=*' ." <br> \r\n";
-		for ($i = 0; $i < $loops; $i++)
-		{
-
-			// NEW CONTROL TEST
-			// has this parent been seen by the control_array?
-			$z = count($control_array);
-			$seen_before = $not_set;
-			if ($z != 0)
-				for ($y = 0; $y < $z; $y++)
-				{
-					if ($control_array[$y] == serialize($part))
-					{
-						$seen_before = $y;
-						$debth = $y + 1;
-					}
-				}
-			// if not seen, add it, using $z as the the "next blank" index num in control_array 
-			if ($seen_before == $not_set)
-			{
-				$control_array[$z] = serialize($part);
-				$debth = $z + 1;
-			}
-
-			$index_flat_array++;
-			$part_nice[$index_flat_array] = pgw_msg_struct($part[$i], ($i+1), $loops, $debth, $folder, $phpgw->msg->msgnum);
-
-			if ($part_nice[$index_flat_array]['ex_num_subparts'] != $not_set)
-			{
-				traverse_part_struct($part_nice[$index_flat_array]['subpart'], $part_nice[$index_flat_array]['ex_num_subparts'], $part_nice[$index_flat_array]);
-			}
-		}
-	}
-
-	// start the process, call traverse_part_struct recursively until done
-	set_time_limit(15);
-	$array_filled = (isset($part_nice));
-	if (!$array_filled)
-	{
-		// get INITIAL part structure / array from the fetchstructure  variable
-		if ((!isset($struct->parts[0]) || (!$struct->parts[0])))
-		{
-			//$part = $struct;
-			$part[0] = $struct;
-		}
-		else
-		{
-			$part = $struct->parts;
-		}
-		// track recursion
-		$index_flat_array = -1; // it will be advanced  its used (we added 3 sudo parts to zero level before traverse_part_struct)
-		$start_analysis_pos = 0;
-		$control_array = Array();
-		traverse_part_struct($part, count($part), $not_set);
-	}
-	set_time_limit(0);
-*/
-
-// ---- Message Structure Analysis   -----
-
-	//echo '<br>var struct serialized:<br>' .serialize($struct) .'<br><br>';
-	//echo '<br>var struct->parts serialized:<br>' .serialize($struct->parts) .'<br><br>';
-	//echo '<br>var count(struct->parts): [' .count($struct->parts) .']<br><br>';
-
-
-	// get INITIAL part structure / array from the fetchstructure  variable
-	if ((!isset($struct->parts[0]) || (!$struct->parts[0])))
-	{
-		$part[0] = $struct;
-	}
-	else
-	{
-		$part = $struct->parts;
-	}
-
-	//echo '<br>INITIAL var part serialized:<br>' .serialize($part) .'<br><br>';
+	$t->set_var('message_subject',$subject);	
 	
-
-	$d1_num_parts = count($part);
-	
+// ---- Generate phpgw CUSTOM FLATTENED FETCHSTRUCTURE ARRAY  -----
 	$part_nice = Array();
-
-	// get PRIMARY level part information
-	$deepest_level=0;
-	$array_position = -1;  // it will be advanced to 0 before its used
-	for ($d1 = 0; $d1 < $d1_num_parts; $d1++)
-	{
-		$array_position++;
-		$d1_mime_num = (string)($d1+1);
-		$part_nice[$array_position] = pgw_msg_struct($part[$d1], $not_set, $d1_mime_num, ($d1+1), $d1_num_parts, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
-		if ($deepest_level < 1) { $deepest_level=1; }
-		
-		// get SECONDARY/EMBEDDED level part information
-		$d1_array_pos = $array_position;
-		if ($part_nice[$d1_array_pos]['ex_num_subparts'] != $not_set)
-		{
-			$d2_num_parts = $part_nice[$d1_array_pos]['ex_num_subparts'];
-			for ($d2 = 0; $d2 < $d2_num_parts; $d2++)
-			{
-				$d2_part = $part_nice[$d1_array_pos]['subpart'][$d2];
-				$d2_mime_num = (string)($d1+1) .'.' .(string)($d2+1);
-				$array_position++;
-				$part_nice[$array_position] = pgw_msg_struct($d2_part, $d1_array_pos, $d2_mime_num, ($d2+1), $d2_num_parts, 2, $phpgw->msg->folder, $phpgw->msg->msgnum);
-				if ($deepest_level < 2) { $deepest_level=2; }
-				
-				// get THIRD/EMBEDDED level part information
-				$d2_array_pos = $array_position;
-				if ($d2_part['ex_num_subparts'] != $not_set)
-				{
-					$d3_num_parts = $part_nice[$d2_array_pos]['ex_num_subparts'];
-					for ($d3 = 0; $d3 < $d3_num_parts; $d3++)
-					{
-						$d3_part = $part_nice[$d2_array_pos]['subpart'][$d3];
-						$d3_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1);
-						$array_position++;
-						$part_nice[$array_position] = pgw_msg_struct($d3_part, $d2_array_pos, $d3_mime_num, ($d3+1), $d3_num_parts, 3, $phpgw->msg->folder, $phpgw->msg->msgnum);
-						if ($deepest_level < 3) { $deepest_level=3; }
-
-						// get FOURTH/EMBEDDED level part information
-						$d3_array_pos = $array_position;
-						if ($d3_part['ex_num_subparts'] != $not_set)
-						{
-							$d4_num_parts = $part_nice[$d3_array_pos]['ex_num_subparts'];
-							for ($d4 = 0; $d4 < $d4_num_parts; $d4++)
-							{
-								$d4_part = $part_nice[$d3_array_pos]['subpart'][$d4];
-								$d4_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1);
-								$array_position++;
-								$part_nice[$array_position] = pgw_msg_struct($d4_part, $d3_array_pos, $d4_mime_num, ($d4+1), $d4_num_parts, 4, $phpgw->msg->folder, $phpgw->msg->msgnum);
-								if ($deepest_level < 4) { $deepest_level=4; }
-
-								// get FIFTH LEVEL EMBEDDED level part information
-								$d4_array_pos = $array_position;
-								if ($d4_part['ex_num_subparts'] != $not_set)
-								{
-									$d5_num_parts = $part_nice[$d4_array_pos]['ex_num_subparts'];
-									for ($d5 = 0; $d5 < $d5_num_parts; $d5++)
-									{
-										$d5_part = $part_nice[$d4_array_pos]['subpart'][$d5];
-										$d5_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1);
-										$array_position++;
-										$part_nice[$array_position] = pgw_msg_struct($d5_part, $d4_array_pos, $d5_mime_num, ($d5+1), $d5_num_parts, 5, $phpgw->msg->folder, $phpgw->msg->msgnum);
-										if ($deepest_level < 5) { $deepest_level=5; }
-
-										// get SISTH LEVEL EMBEDDED level part information
-										$d5_array_pos = $array_position;
-										if ($d5_part['ex_num_subparts'] != $not_set)
-										{
-											$d6_num_parts = $part_nice[$d5_array_pos]['ex_num_subparts'];
-											for ($d6 = 0; $d6 < $d6_num_parts; $d6++)
-											{
-												$d6_part = $part_nice[$d5_array_pos]['subpart'][$d6];
-												$d6_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1) .'.' .(string)($d6+1);
-												$array_position++;
-												$part_nice[$array_position] = pgw_msg_struct($d6_part, $d5_array_pos, $d6_mime_num, ($d6+1), $d6_num_parts, 6, $phpgw->msg->folder, $phpgw->msg->msgnum);
-												if ($deepest_level < 6) { $deepest_level=6; }
-
-												// get SEVENTH LEVEL EMBEDDED level part information
-												$d6_array_pos = $array_position;
-												if ($d6_part['ex_num_subparts'] != $not_set)
-												{
-													$d7_num_parts = $part_nice[$d6_array_pos]['ex_num_subparts'];
-													for ($d7 = 0; $d7 < $d7_num_parts; $d7++)
-													{
-														$d7_part = $part_nice[$d6_array_pos]['subpart'][$d7];
-														$d7_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1) .'.' .(string)($d6+1) .'.' .(string)($d7+1);
-														$array_position++;
-														$part_nice[$array_position] = pgw_msg_struct($d7_part, $d6_array_pos, $d7_mime_num, ($d7+1), $d7_num_parts, 7, $phpgw->msg->folder, $phpgw->msg->msgnum);
-														if ($deepest_level < 7) { $deepest_level=7; }
-
-														// get EIGTH LEVEL EMBEDDED level part information
-														$d7_array_pos = $array_position;
-														if ($d7_part['ex_num_subparts'] != $not_set)
-														{
-															$d8_num_parts = $part_nice[$d7_array_pos]['ex_num_subparts'];
-															for ($d8 = 0; $d8 < $d8_num_parts; $d8++)
-															{
-																$d8_part = $part_nice[$d7_array_pos]['subpart'][$d8];
-																$d8_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1) .'.' .(string)($d6+1) .'.' .(string)($d7+1) .'.' .(string)($d8+1);
-																$array_position++;
-																$part_nice[$array_position] = pgw_msg_struct($d8_part, $d7_array_pos, $d8_mime_num, ($d8+1), $d8_num_parts, 8, $phpgw->msg->folder, $phpgw->msg->msgnum);
-																if ($deepest_level < 8) { $deepest_level=8; }
-
-																// get NINTH LEVEL EMBEDDED level part information
-																$d8_array_pos = $array_position;
-																if ($d8_part['ex_num_subparts'] != $not_set)
-																{
-																	$d9_num_parts = $part_nice[$d8_array_pos]['ex_num_subparts'];
-																	for ($d9 = 0; $d9 < $d9_num_parts; $d9++)
-																	{
-																		$d9_part = $part_nice[$d8_array_pos]['subpart'][$d9];
-																		$d9_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1) .'.' .(string)($d6+1) .'.' .(string)($d7+1) .'.' .(string)($d8+1) .'.' .(string)($d9+1);
-																		$array_position++;
-																		$part_nice[$array_position] = pgw_msg_struct($d9_part, $d8_array_pos, $d9_mime_num, ($d9+1), $d9_num_parts, 9, $phpgw->msg->folder, $phpgw->msg->msgnum);
-																		if ($deepest_level < 9) { $deepest_level=9; }
-
-																		// get 10th LEVEL EMBEDDED level part information
-																		$d9_array_pos = $array_position;
-																		if ($d9_part['ex_num_subparts'] != $not_set)
-																		{
-																			$d10_num_parts = $part_nice[$d9_array_pos]['ex_num_subparts'];
-																			for ($d10 = 0; $d10 < $d10_num_parts; $d10++)
-																			{
-																				$d10_part = $part_nice[$d9_array_pos]['subpart'][$d10];
-																				$d10_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1) .'.' .(string)($d6+1) .'.' .(string)($d7+1) .'.' .(string)($d8+1) .'.' .(string)($d9+1) .'.' .(string)($d10+1);
-																				$array_position++;
-																				$part_nice[$array_position] = pgw_msg_struct($d10_part, $d9_array_pos, $d10_mime_num, ($d10+1), $d10_num_parts, 10, $phpgw->msg->folder, $phpgw->msg->msgnum);
-																				if ($deepest_level < 10) { $deepest_level=10; }
-
-																				// get 11th LEVEL EMBEDDED level part information
-																				$d10_array_pos = $array_position;
-																				if ($d10_part['ex_num_subparts'] != $not_set)
-																				{
-																					$d11_num_parts = $part_nice[$d10_array_pos]['ex_num_subparts'];
-																					for ($d11 = 0; $d11 < $d11_num_parts; $d11++)
-																					{
-																						$d11_part = $part_nice[$d10_array_pos]['subpart'][$d11];
-																						$d11_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1) .'.' .(string)($d6+1) .'.' .(string)($d7+1) .'.' .(string)($d8+1) .'.' .(string)($d9+1) .'.' .(string)($d10+1) .'.' .(string)($d11+1);
-																						$array_position++;
-																						$part_nice[$array_position] = pgw_msg_struct($d11_part, $d10_array_pos, $d11_mime_num, ($d11+1), $d11_num_parts, 11, $phpgw->msg->folder, $phpgw->msg->msgnum);
-																						if ($deepest_level < 11) { $deepest_level=11; }
-
-
-																						// get 12th LEVEL EMBEDDED level part information
-																						$d11_array_pos = $array_position;
-																						if ($d11_part['ex_num_subparts'] != $not_set)
-																						{
-																							$d12_num_parts = $part_nice[$d11_array_pos]['ex_num_subparts'];
-																							for ($d12 = 0; $d12 < $d12_num_parts; $d12++)
-																							{
-																								$d12_part = $part_nice[$d11_array_pos]['subpart'][$d12];
-																								$d12_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1) .'.' .(string)($d6+1) .'.' .(string)($d7+1) .'.' .(string)($d8+1) .'.' .(string)($d9+1) .'.' .(string)($d10+1) .'.' .(string)($d11+1) .'.' .(string)($d12+1);
-																								$array_position++;
-																								$part_nice[$array_position] = pgw_msg_struct($d12_part, $d11_array_pos, $d12_mime_num, ($d12+1), $d12_num_parts, 12, $phpgw->msg->folder, $phpgw->msg->msgnum);
-																								if ($deepest_level < 12) { $deepest_level=12; }
-																							}
-																						}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}
-															}
-														}
-
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+	$part_nice = $phpgw->msg->get_flat_pgw_struct($struct);
 	
-
-// ---- Mime Characteristics Analysis  and more Attachments Detection  -----
-
-	// Make an Array of Non-File Attachments like X-VCARD for use in the following loop
-	//$other_attach_types = array(
-	//	'X-VCARD'
-	//);
 	
-	// ANALYSIS LOOP Part 1
-	for ($i = 0; $i < count($part_nice); $i++)
-	{
-		// ------  Make a Keyword List for this Part  ------
-		$part_nice[$i]['m_keywords'] = '';
-		if ($part_nice[$i]['type'] != $not_set)
-		{
-			$part_nice[$i]['m_keywords'] .= $part_nice[$i]['type'] .' ';
-		}
-		if ($part_nice[$i]['subtype'] != $not_set)
-		{
-			$part_nice[$i]['m_keywords'] .= $part_nice[$i]['subtype'] .' ';
-		}
-		if ($part_nice[$i]['encoding'] != $not_set)
-		{
-			$part_nice[$i]['m_keywords'] .= $part_nice[$i]['encoding'] .' ';
-		}
-		//if ($part_nice[$i]['description'] != $not_set)
-		//{
-		//	$part_nice[$i]['m_keywords'] .= $part_nice[$i]['description'] .' ';
-		//}
-		//if ($part_nice[$i]['ex_num_param_pairs'] > 0)
-		//{
-		//	for ($p = 0; $p < $part_nice[$i]['ex_num_param_pairs']; $p++)
-		//	{
-		//		$part_nice[$i]['m_keywords'] .= $part_nice[$i]['params'][$p]['attribute'].'='.$part_nice[$i]['params'][$p]['value'].' ';
-		//	}
-		//}
-		if ($part_nice[$i]['ex_attachment'])
-		{
-			$part_nice[$i]['m_keywords'] .= 'ex_attachment' .' ';
-		}
-		//$part_nice[$i]['m_keywords'] = trim($part_nice[$i]['m_keywords']);
-
-		/* B0RKED --(any part with a name is considered an attachment, so this is not needed)
-		// ------  Test For Non-File Attachments like X-VCARD  ------
-		// add any others that I missed to the $other_attach_types array above
-		for ($oa = 0; $oa < count($other_attach_types); $oa++)
-		{
-			if (stristr($part_nice[$i]['m_keywords'], $other_attach_types[$oa]))
-			{
-				$part_nice[$i]['ex_attachment'] = True;
-				$part_nice[$i]['ex_part_name'] = $other_attach_types[$oa];
-				// add "ex_attachment" to keywords
-				$prev_keywords = $part_nice[$i]['m_keywords'];
-				if (!stristr($prev_keywords, 'ex_attachment'))
-				{
-					$part_nice[$i]['m_keywords'] .= 'ex_attachment' .' ';
-				}
-			}
-		}
-		*/
-
-		// POSSIBLE VALUES FOR ['m_description'] ARE:
-		//	container
-		//	packagelist
-		//	presentable/image
-		//	attachment
-		//	presentable
-
-		// ------  Use That Keyword List To Make a "m_description"  ------
-		if ((stristr($part_nice[$i]['m_keywords'], 'RFC822')) 
-		|| (stristr($part_nice[$i]['m_keywords'], 'message')))
-		{
-			$part_nice[$i]['m_description'] = 'container';
-		}
-		elseif ((stristr($part_nice[$i]['m_keywords'], 'MIXED')) 
-		|| (stristr($part_nice[$i]['m_keywords'], 'multipart'))
-		|| (stristr($part_nice[$i]['m_keywords'], 'boundry')))
-		{
-			$part_nice[$i]['m_description'] = 'packagelist';
-		}
-		elseif ((stristr($part_nice[$i]['m_keywords'], 'base64'))
-		&& ((stristr($part_nice[$i]['m_keywords'], 'JPEG'))
-		|| (stristr($part_nice[$i]['m_keywords'], 'GIF'))
-		|| (stristr($part_nice[$i]['m_keywords'], 'PJPEG')) ) )
-		{
-			$part_nice[$i]['m_description'] = 'presentable/image';
-		}
-		elseif (stristr($part_nice[$i]['m_keywords'], 'ex_attachment')) 
-		{
-			$part_nice[$i]['m_description'] = 'attachment';
-		}
-		else
-		{
-			$part_nice[$i]['m_description'] = 'presentable';
-		}
-		
-		// initialize and prepare for the following mime exceptions code
-		$part_nice[$i]['m_html_related_kids'] = False;
-		$parent_idx = $part_nice[$i]['ex_parent_flat_idx'];
-		
-		// ------  Exceptions for Less-Standart Subtypes  ------
-		//"m_description" set above will work *most all* the time. However newer standards
-		// are encouraged to make use of the "subtype" param, not create new "type"s 
-		// the following "multipart/SUBTYPES" should be treated as
-		// "container" instead of "packagelist"
-		if ($part_nice[$i]['m_description'] == 'packagelist')
-		{
-			// Exception: multipart/APPLEDOUBLE  (ex. mac thru X.400 gateway)
-			// treat as "container", not as "packagelist"
-			if (($part_nice[$i]['type'] == 'multipart')
-			&& ($part_nice[$i]['subtype'] == 'appledouble'))
-			{
-				$part_nice[$i]['m_description'] = 'container';
-				$part_nice[$i]['m_keywords'] .= 'Force Container' .' ';
-			}
-			// Exception: multipart/RELATED (ex. Outl00k "stationary" email)
-			// treat it's *child* multipart/alternative as "container", not as "packagelist"
-			elseif (($part_nice[$i]['ex_level_debth'] > 1)  // does not apply to level1, b/c level1 has no parent
-			&& ($part_nice[$i]['type'] == 'multipart')
-			&& ($part_nice[$i]['subtype'] == 'alternative')
-			&& ($part_nice[$parent_idx]['type'] == 'multipart')
-			&& ($part_nice[$parent_idx]['subtype'] == 'related'))
-			{
-				$part_nice[$i]['m_description'] = 'container';
-				$part_nice[$i]['m_keywords'] .= 'Force Container' .' ';
-				// SET THIS FLAG: then, in presentation loop, see if a HTML part 
-				// has a parent with this flag - if so, replace "id" reference(s) with 
-				// http... mime reference(s). Example: MS Stationary mail's image background
-				$part_nice[$i]['m_html_related_kids'] = True;
-			}
-		}
-	}
-
-
-// ---- Generate Mime Part Number and Attachments List Creation  -----
+// ---- Attachments List Creation  -----
 	$list_of_files = '';
-	// ANALYSIS LOOP Part 2
 	for ($j = 0; $j < count($part_nice); $j++)
 	{
-		// ---Mime Number Dumb
-		//$new_mime_dumb = mime_number_dumb($part_nice, $j);
-		//$part_nice[$j]['ex_mime_number_dumb'] = $new_mime_dumb;
-		
-		// ---Use Mime Number Dumb To Make ex_mime_number_smart
-		$new_mime_dumb = $part_nice[$j]['ex_mime_number_dumb'];
-		$part_nice[$j]['ex_mime_number_smart'] = mime_number_smart($part_nice, $j, $new_mime_dumb);
-
-		// -----   Make Smart Mime Number THE PRIMARY MIME NUMBER we will use
-		$part_nice[$j]['m_part_num_mime'] = $part_nice[$j]['ex_mime_number_smart'];
-
-		// ---- make an URL and a Clickable Link to directly acces this part
-		$click_info = make_part_clickable($part_nice[$j], $phpgw->msg->folder, $phpgw->msg->msgnum);
-		$part_nice[$j]['ex_part_href'] = $click_info['part_href'];
-		$part_nice[$j]['ex_part_clickable'] = $click_info['part_clickable'];
-
 		// ---- list_of_files is diaplayed in the summary at the top of the message page
 		if ($part_nice[$j]['ex_attachment'])
 		{
-			if ((int)$part_nice[$j]['bytes'] > 100)
-			{
-				$att_size = ' ('. $phpgw->msg->format_byte_size($part_nice[$j]['bytes']).')';
-			}
-			else
-			{
-				$att_size = '';
-			}
-			$list_of_files = $list_of_files . $part_nice[$j]['ex_part_clickable'] .$att_size .', ';
+			$list_of_files .= $part_nice[$j]['ex_part_clickable']
+				.' ('. $phpgw->msg->format_byte_size($part_nice[$j]['bytes']).')' .', ';
 		}
 	}
 	// set up for use in the template
@@ -805,6 +379,7 @@
 	}
 	/*
 	// FUTURE: Forward needs entirely different handling
+	// ADD: adopt
 	if ($deepest_level == 1)
 	{
 		$fwd_proc = 'pushdown';
@@ -870,7 +445,7 @@
 		
 		$msg_body_info .= 'This message has '.$max_parts.' part(s)' .$crlf;
 		$msg_body_info .= 'deepest_level: '.$deepest_level .$crlf;
-		$msg_body_info .= 'Array Keys: '.array_keys_str($part_nice) .$crlf;
+		$msg_body_info .= 'Array Keys: '.$phpgw->msg->array_keys_str($part_nice) .$crlf;
 		$msg_body_info .= $crlf;
 		for ($i = 0; $i < count($part_nice); $i++)
 		{
@@ -885,7 +460,7 @@
 			$msg_body_info .= 'm_description: '. $part_nice[$i]['m_description'] .$crlf;
 			$msg_body_info .= 'm_keywords: '. $part_nice[$i]['m_keywords'] .$crlf;
 			
-			//$keystr = array_keys_str($part_nice[$i]);
+			//$keystr = $phpgw->msg->array_keys_str($part_nice[$i]);
 			//$msg_body_info .= 'Array Keys (len='.strlen($keystr).'): '.$keystr .$crlf;
 			
 			if ((isset($part_nice[$i]['m_level_total_parts']))
@@ -935,14 +510,6 @@
 				{
 					$msg_body_info .= 'params['.$p.']: '.$part_nice[$i]['params'][$p]['attribute'].'='.$part_nice[$i]['params'][$p]['value'] .$crlf;
 				}
-
-				/*
-				//$msg_body_info .= 'ex_num_param_pairs: '. $part_nice[$i]['ex_num_param_pairs'] .$crlf;
-				$msg_body_info .= 'param_attribute: '. $part_nice[$i]['param_attribute'] .$crlf;
-				$msg_body_info .= 'param_value: '. $part_nice[$i]['param_value']  .$crlf;
-				$msg_body_info .= 'param_2_attribute: '. $part_nice[$i]['param_2_attribute'] .$crlf;
-				$msg_body_info .= 'param_2_value: '. $part_nice[$i]['param_2_value']  .$crlf;
-				*/
 			}
 			if ($part_nice[$i]['ex_num_subparts'] != $not_set)
 			{
@@ -972,15 +539,6 @@
 		$t->set_var('V_debug_parts','');
 	}
 
-// -----  Pass part_nice into $phpgw_info['flags']  for Temporary Storage  --------
-	/*
-	$phpgw_info["user"]["preferences"]
-	$phpgw_info['flags']['part_nice_serial'] = serialize($part_nice);
-	$phpgw_info['flags']['part_nice_msgnum'] = $phpgw->msg->msgnum;
-	$phpgw_info['flags']['part_nice_folder'] = $folder;
-	*/
-	
-
 // -----  Message_Display Template Handles it from here  -------
 	$t->set_var('theme_font',$phpgw_info['theme']['font']);
 	$t->set_var('theme_th_bg',$phpgw_info['theme']['th_bg']);
@@ -988,38 +546,12 @@
 
 	// Force Echo Out Unformatted Text for email with 1 part which is a large text messages (in bytes) , such as a system replrt from cron
 	// php (4.0.4pl1 last tested) and some imap servers (courier and uw-imap are confirmed) will time out retrieving this type of message
-	$force_echo_size = 20000;
-	//$too_many_crlf = 18;
-
-// -----  Unknown and/or Unrecognized MIME subtypes get flagged HERE  -------
-	// ### TEMP HACK FIX ###
-	// RFC1892 "The  Multipart/Report Content Type"  (1996)
-	//	requires a MIME sub-part "Message/delivery-status" which is INCONSISTANT
-	//	with later MIME docs rfc2045-2049 in its use of the type "Message" in this case
-	//	(this is my opinion - Angles)
-	// flag "multipart/report" as unsupported
-	
-	// initialize
-	$unsupported['finding'] = False;
-	$unsupported['user_info'] = '';
-
-	//$support_test_struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
-	$support_test_struct = $phpgw->msg->phpgw_fetchstructure('');
-	$support_test_struct_nice = pgw_msg_struct($support_test_struct, $not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
-
-	if (($support_test_struct_nice['type'] == 'multipart')
-	&& ($support_test_struct_nice['subtype'] == 'report'))
-	{
-		$unsupported['finding'] = True;
-		$unsupported['user_info'] = 'unsupported Content-Type "'
-			.$support_test_struct_nice['type'].'/'.$support_test_struct_nice['subtype']
-			.'" forced echo dump';
-	}
-	
+	$force_echo_size = 20000;	
 
 // -----  GET BODY AND SHOW MESSAGE  -------
 	set_time_limit(120);
-	for ($i = 0; $i < count($part_nice); $i++)
+	$count_part_nice = count($part_nice);
+	for ($i = 0; $i < $count_part_nice; $i++)
 	{
 		// TEMPORARY: some lame servers do not give any mime data out
 		if ((count($part_nice) == 1) 
@@ -1124,43 +656,7 @@
 			$t->pparse('out','T_message_echo_dump');
 
 			//  = = = =  = =======  CLEANUP AND EXIT PAGE ======= = = = = = =
-			unset($part_nice);
-			$phpgw->msg->end_request();
-			$phpgw->common->phpgw_footer();
-			exit;
-		}
-		// TEMP HACK FOR  FOR NON-SUPPORTED MIME EMAILS
-		elseif ($unsupported['finding'] == True)
-		{
-			// output a blank message body, we'll use an alternate method below
-			$t->set_var('V_display_part','');
-			// -----  Finished With Message_Mail Template, Output It
-			$t->pparse('out','T_message_main');
-			
-			// -----  Prepare a Table for this Echo Dump
-			$title_text = '&nbsp;message: ';
-			$t->set_var('title_text',$title_text);
-			$display_str = $unsupported['user_info'];
-			$t->set_var('display_str',$display_str);
-			$t->parse('V_setup_echo_dump','B_setup_echo_dump');
-			$t->set_var('V_done_echo_dump','');
-			$t->pparse('out','T_message_echo_dump');
-			// -----  Echo This Data Directly to the Client
-			echo '<pre>';
-			echo $phpgw->msg->htmlspecialchars_encode(
-				$phpgw->msg->normalize_crlf(
-					//trim($phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum))
-					trim($phpgw->msg->phpgw_body())
-				)
-			    );
-			echo '</pre>';
-			// -----  Close Table
-			$t->set_var('V_setup_echo_dump','');
-			$t->parse('V_done_echo_dump','B_done_echo_dump');
-			$t->pparse('out','T_message_echo_dump');
-
-			//  = = = =  = =======  CLEANUP AND EXIT PAGE ======= = = = = = =
-			unset($part_nice);
+			//unset($part_nice);
 			$phpgw->msg->end_request();
 			$phpgw->common->phpgw_footer();
 			exit;
@@ -1170,11 +666,22 @@
 		{
 
 			// get the body
-			//$dsp = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
-			$dsp = $phpgw->msg->phpgw_fetchbody($part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
+			//$dsp = $phpgw->msg->phpgw_fetchbody($part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
+			$dsp = $phpgw->msg->phpgw_fetchbody($part_nice[$i]['m_part_num_mime']);
 			// is a blank part test necessary for html ???
-
-			$title_text = lang("section").': '.$part_nice[$i]['m_part_num_mime'];
+			
+			// ----  prepare the message part seperator(s)  ----
+			//if showing more than 1 part, then show the part number, else just say "message"
+			// NEEDS FIXING - is this simple test accurate enough?
+			if ($count_part_nice > 2)
+			{
+				$title_text = lang("section").': '.$part_nice[$i]['m_part_num_mime'];
+			}
+			else
+			{
+				$title_text = '&nbsp;'.lang("message").': ';
+			}
+			
 			//$display_str = $part_nice[$i]['type'].'/'.strtolower($part_nice[$i]['subtype']);
 			$display_str = 'keywords: '.$part_nice[$i]['m_keywords']
 				.' - '.$phpgw->msg->format_byte_size(strlen($dsp));
@@ -1350,7 +857,7 @@
 			$dsp = ereg_replace( "^","<p>",$dsp);
 			$dsp = ereg_replace( "\n","<br>",$dsp);
 			$dsp = ereg_replace( "$","</p>", $dsp);
-			$dsp = make_clickable($dsp, $phpgw->msg->folder);
+			$dsp = $phpgw->msg->make_clickable($dsp, $phpgw->msg->folder);
 
 			$title_text = lang("section").': '.$part_nice[$i]['m_part_num_mime'];
 			//$display_str = $part_nice[$i]['type'].'/'.strtolower($part_nice[$i]['subtype']);
@@ -1417,22 +924,14 @@
 					$dsp = $phpgw->msg->qprint($dsp);
 					$tag = "tt";
 				}
+				elseif (stristr($part_nice[$i]['m_keywords'], 'base64'))
+				{
+					// some idiots encode text/plain parts in base64
+					$dsp = $phpgw->msg->de_base64($dsp);
+				}
 
 				//    normalize line breaks to rfc2822 CRLF
 				$dsp = $phpgw->msg->normalize_crlf($dsp);
-
-
-				/*// THIS NEEDS TO BE SMARTER
-				// how many "\r\n\r\n" do we have? too_many was set above
-				$crlf_report = '';
-				$excessive_crlf = explode("\r\n\r\n", $dsp);
-				if ((is_array($excessive_crlf))
-				&& (count($excessive_crlf) > $too_many_crlf))
-				{
-					$dsp = ereg_replace("\r\n\r\n", "\r\n", $dsp);
-					$crlf_report = '; CRLF > ' .$too_many_crlf. ' so compressed';
-				}
-				*/
 
 				// the "view unformatted" or "view formatted" option base url
 				$view_option_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php','&folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$phpgw->msg->msgnum);
@@ -1464,7 +963,7 @@
 						// NOT WORTH IT: give view unformatted option instead
 						//$dsp = $phpgw->msg->space_to_nbsp($dsp);
 					}
-					$dsp = make_clickable($dsp, $phpgw->msg->folder);
+					$dsp = $phpgw->msg->make_clickable($dsp, $phpgw->msg->folder);
 					// (OPT 2) THIS CONVERTS UNFORMATTED TEXT TO *VERY* SIMPLE HTML - adds only <br>
 					$dsp = ereg_replace("\r\n","<br>",$dsp);
 					// add a line after the last line of the message
@@ -1479,14 +978,16 @@
 					$view_option = '';
 				}
 				
-				// prepare the message sep
-				if ($d1_num_parts > 1)
+				// ----  prepare the message part seperator(s)  ----
+				//if showing more than 1 part, then show the part number, else just say "message"
+				// NEEDS FIXING - is this simple test accurate enough?
+				if ($count_part_nice > 2)
 				{
 					$title_text = lang("section").': '.$part_nice[$i]['m_part_num_mime'];
 				}
 				else
 				{
-					$title_text = '&nbsp;message: ';
+					$title_text = '&nbsp;'.lang("message").': ';
 				}
 				$t->set_var('title_text',$title_text);
 				$display_str = 'keywords: '.$part_nice[$i]['m_keywords']
@@ -1515,7 +1016,7 @@
 				$dsp = ereg_replace( "^","<p>",$dsp);
 				$dsp = ereg_replace( "\n","<br>",$dsp);
 				$dsp = ereg_replace( "$","</p>", $dsp);
-				$dsp = make_clickable($dsp, $phpgw->msg->folder);
+				$dsp = $phpgw->msg->make_clickable($dsp, $phpgw->msg->folder);
 				*/
 			}
 		}
@@ -1603,7 +1104,7 @@
 	$t->pparse('out','T_message_main');
 
 	// CLEANUP
-	unset($part_nice);
+	//unset($part_nice);
 
 	$phpgw->msg->end_request();
 	$phpgw->common->phpgw_footer();

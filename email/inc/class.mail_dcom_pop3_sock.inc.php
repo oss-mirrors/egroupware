@@ -372,7 +372,9 @@
 		}
 	
 		/**************************************************************************\
+		*
 		*	Message Structural Information
+		*
 		\**************************************************************************/
 		/*!
 		@function fetchstructure
@@ -382,7 +384,7 @@
 		@param $flags : integer - FT_UID (not implimented)
 		@result returns an instance of Class "msg_structure" is sucessful, False if error
 		@discussion  basiclly a replacement for PHP's c-client logic which is missing if IMAP is not builtin
-		@author Angles, Skeeter, Itzchak Rehberg, Joseph Engo
+		@author Angles, (some sub-parts by Skeeter, Itzchak Rehberg, Joseph Engo)
 		*/
 		function fetchstructure($stream_notused,$msg_num,$flags="")
 		{
@@ -412,9 +414,11 @@
 			// $this->msg_structure  (PARTIAL - INCOMPLETE)
 			// $this->msg_structure_msgnum
 			
+			/*
 			// ---  Create Sub-Parts FetchStructure Data  (if necessary)  ---
 			$this->create_embeded_fetchstructure(&$this->msg_structure);
-			
+			*/
+			/*
 			// TEST: attempt 3rd level MIME discovery
 			$level_3_loops = count($this->msg_structure->parts);
 			for ($i=0; $i < $level_3_loops ;$i++)
@@ -431,6 +435,163 @@
 					if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: this ['.$i.'] 3rd level part is empty<br>'; }
 				}
 			}
+			*/
+
+
+			/*
+			$this->create_embeded_fetchstructure(&$this->msg_structure);
+			
+			if (isset($this->msg_structure->parts))
+			{
+				for ($lev_1=0; $lev_1 < count($this->msg_structure->parts) ;$lev_1++)
+				{
+					// grap 3rd level embedded data (if any)
+					if ($this->debug_dcom_extra) { echo '<br>* * * * * * * * * * *<br>pop3: fetchstructure: attempting base->parts['.$lev_1.'] of ['.(string)(count($this->msg_structure->parts)-1).'] embedded parts discovery * * * * *<br>'; }
+					// ---  Create 3rd Level Sub-Parts FetchStructure Data  (if necessary)  ---
+					$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]);
+				}
+			}
+			else
+			{
+					if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Traversal SKIP 2rd level parts NOT SET<br>'; }
+			}
+			// SECOND PASS
+			if (isset($this->msg_structure->parts))
+			{
+				for ($lev_1=0; $lev_1 < count($this->msg_structure->parts) ;$lev_1++)
+				{
+					// grap 3rd level embedded data (if any)
+					if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Parent is base->parts['.$lev_1.'] of ['.(string)(count($this->msg_structure->parts)-1).']<br>'; }
+					if (isset($this->msg_structure->parts[$lev_1]->parts))
+					{
+						for ($lev_2=0; $lev_2 < count($this->msg_structure->parts[$lev_1]->parts) ;$lev_2++)
+						{
+							// grap 3rd level embedded data (if any)
+							if ($this->debug_dcom_extra) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting base->parts['.$lev_1.']->parts['.$lev_2.'] of ['.(string)(count($this->msg_structure->parts[$lev_1]->parts)-1).'] embedded parts discovery * * * * *<br>'; }
+							// ---  Create 3rd Level Sub-Parts FetchStructure Data  (if necessary)  ---
+							$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]->parts[$lev_2]);
+						}
+					}
+					else
+					{
+						if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Traversal SKIP 3rd level parts NOT SET<br>'; }
+					}
+				}
+			}
+			else
+			{
+					if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: Traversal BREAK 2rd level parts NOT SET<br>'; }
+			}
+			
+			// THIRD PASS
+			if (isset($this->msg_structure->parts))
+			{
+				for ($lev_1=0; $lev_1 < count($this->msg_structure->parts) ;$lev_1++)
+				{
+					// grap 3rd level embedded data (if any)
+					if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Parent is base->parts['.$lev_1.'] of ['.(string)(count($this->msg_structure->parts)-1).']<br>'; }
+					if (isset($this->msg_structure->parts[$lev_1]->parts))
+					{
+						for ($lev_2=0; $lev_2 < count($this->msg_structure->parts[$lev_1]->parts) ;$lev_2++)
+						{
+							if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Parent is base->parts['.$lev_1.']->parts['.$lev_2.'] of ['.(string)(count($this->msg_structure->parts[$lev_1]->parts)-1).']<br>'; }
+							if (isset($this->msg_structure->parts[$lev_1]->parts[$lev_2]))
+							{
+								for ($lev_3=0; $lev_3 < count($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts) ;$lev_3++)
+								{
+									// grap 3rd level embedded data (if any)
+									if ($this->debug_dcom_extra) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting base->parts['.$lev_1.']->parts['.$lev_2.']->parts['.$lev_3.'] of ['.(string)(count($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts)-1).'] embedded parts discovery * * * * *<br>'; }
+									// ---  Create 3rd Level Sub-Parts FetchStructure Data  (if necessary)  ---
+									$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts[$lev_3]);
+								}
+							}
+							else
+							{
+								if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Traversal SKIP THIRD PASS level parts NOT SET<br>'; }
+							}
+						}
+					}
+					else
+					{
+						if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Traversal SKIP 3rd level parts NOT SET<br>'; }
+					}
+				}
+			}
+			else
+			{
+					if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: Traversal BREAK 2rd level parts NOT SET<br>'; }
+			}
+			*/
+
+			// ---  Create Sub-Parts FetchStructure Data  (if necessary)  ---
+			$this->create_embeded_fetchstructure(&$this->msg_structure);
+			// FOUR PASS ANALYSIS
+			if (isset($this->msg_structure->parts))
+			{
+				for ($lev_1=0; $lev_1 < count($this->msg_structure->parts) ;$lev_1++)
+				{				
+					// grap 1st level embedded data (if any)
+					if ($this->debug_dcom_extra) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting this->msg_structure->parts['.$lev_1.'] of ['.(string)(count($this->msg_structure->parts)-1).'] embedded parts discovery * * * * *<br>'; }
+					// Create Sub-Parts FetchStructure Data  (if necessary)  ---
+					$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]);
+					
+					// go deeper
+					if (isset($this->msg_structure->parts[$lev_1]->parts))
+					{
+						for ($lev_2=0; $lev_2 < count($this->msg_structure->parts[$lev_1]->parts) ;$lev_2++)
+						{
+							// grap 2nd level embedded data (if any)
+							if ($this->debug_dcom_extra) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting this->msg_structure->parts['.$lev_1.']->parts['.$lev_2.'] of ['.(string)(count($this->msg_structure->parts[$lev_1]->parts)-1).'] embedded parts discovery * * * * *<br>'; }
+							// Create Sub-Parts FetchStructure Data  (if necessary)  ---
+							$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]->parts[$lev_2]);
+							
+							// go deeper
+							if (isset($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts))
+							{
+								for ($lev_3=0; $lev_3 < count($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts) ;$lev_3++)
+								{
+									// grap 3rd level embedded data (if any)
+									if ($this->debug_dcom_extra) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting this->msg_structure->parts['.$lev_1.']->parts['.$lev_2.']->parts['.$lev_3.'] of ['.(string)(count($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts)-1).'] embedded parts discovery * * * * *<br>'; }
+									// Create 3rd Level Sub-Parts FetchStructure Data  (if necessary)  ---
+									$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts[$lev_3]);
+									
+									// go deeper
+									if (isset($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts[$lev_3]->parts))
+									{
+										for ($lev_4=0; $lev_4 < count($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts[$lev_3]->parts) ;$lev_4++)
+										{
+											// grap 3rd level embedded data (if any)
+											if ($this->debug_dcom_extra) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting this->msg_structure->parts['.$lev_1.']->parts['.$lev_2.']->parts['.$lev_3.']->parts['.$lev_4.'] of ['.(string)(count($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts[$lev_3]->parts)-1).'] embedded parts discovery * * * * *<br>'; }
+											// Create Sub-Parts FetchStructure Data  (if necessary)  ---
+											$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts[$lev_3]->parts[$lev_4]);
+										}
+									}
+									else
+									{
+										if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Traversal SKIP FOUTRH PASS level parts NOT SET<br>'; }
+									}
+								}
+							}
+							else
+							{
+								if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Traversal SKIP THIRD PASS level parts NOT SET<br>'; }
+							}
+						}
+					}
+					else
+					{
+						if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Traversal SKIP SECOND PASS level parts NOT SET<br>'; }
+					}
+				}
+			}
+			else
+			{
+				if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: Traversal SKIP FIRST PARTS level parts NOT SET<br>'; }
+			}
+			
+			
+			if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: * * * * * * Traversal OVER * * * * * * * * * * <br>'; }
+			
 			
 			if ($this->debug_dcom_extra)
 			{
@@ -442,7 +603,8 @@
 			if ($this->debug_dcom) { echo 'pop3: Leaving fetchstructure<br>'; }
 			return $this->msg_structure;
 		}
-		
+
+
 		function fill_toplevel_fetchstructure($stream_notused,$msg_num,$flags="")
 		{
 			if ($this->debug_dcom) { echo 'pop3: Entering fill_toplevel_fetchstructure<br>'; }
@@ -510,20 +672,20 @@
 			$list_response = explode(' ',$response);
 			$this->msg_structure->bytes = (int)trim($list_response[2]);
 			// make sure some necessary information is present, use RFC defaults if necessary
-			if ((!isset($this->msg_structure->type))
-			|| ((string)$this->msg_structure->type == ''))
-			{
-				// default type - RFC says is Text (unless you are dealing with an attachment)
-				$this->msg_structure->type = $this->default_type(True);
-			}
-			if ((!isset($this->msg_structure->ifsubtype))
-			|| ($this->msg_structure->ifsubtype != True))
-			{
-				// if no type we should NOT have a subtype, or else something is wrong
-				$this->msg_structure->subtype = $this->default_subtype($this->msg_structure->type);
-				$this->msg_structure->ifsubtype = True;
-			}
-			if ((!isset($this->msg_structure->ifsubtype))
+			//if ((!isset($this->msg_structure->type))
+			//|| ((string)$this->msg_structure->type == ''))
+			//{
+			//	// default type - RFC says is Text (unless you are dealing with an attachment)
+			//	$this->msg_structure->type = $this->default_type(True);
+			//}
+			//if ((!isset($this->msg_structure->ifsubtype))
+			//|| ($this->msg_structure->ifsubtype != True))
+			//{
+			//	// if no type we should NOT have a subtype, or else something is wrong
+			//	$this->msg_structure->subtype = $this->default_subtype($this->msg_structure->type);
+			//	$this->msg_structure->ifsubtype = True;
+			//}
+			if ((!isset($this->msg_structure->encoding))
 			|| ((string)$this->msg_structure->encoding == ''))
 			{
 				$this->msg_structure->encoding = $this->default_encoding();
@@ -788,6 +950,12 @@
 			{
 				// do NOTHING - this is NOT multipart
 				if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: feed info not multipart<br>'; }
+				if ($this->debug_dcom_extra)
+				{
+					echo 'pop3: create_embeded_fetchstructure: feed info not multipart DUMP EXAMINE:<br>';
+					var_dump($info);
+					echo '<br><br>';
+				}
 				return False;
 			}
 			elseif (($info->custom['my_cookie'] != '')
@@ -1655,22 +1823,29 @@
 					}
 				}
 			}
-			// handle 2nd level parts
-			elseif (strlen((string)$part_num) == 3)
+			// handle multiple parts
+			elseif (strlen((string)$part_num) > 2)
 			{
 				// explode part number into its component part numbers
-				$the_part = explode(".",$part_num);
+				$the_part_array = Array();
+				$the_part_array = explode(".",$part_num);
 				// convert to fetchstructure part number
-				for($i=0;$i < count($the_part);$i++)
+				for($i=0;$i < count($the_part_array);$i++)
 				{
-					$the_part[$i] = (int)$the_part[$i];
-					$the_part[$i] = $the_part[$i] - 1;
+					$the_part_array[$i] = (int)$the_part_array[$i];
+					$the_part_array[$i] = $the_part_array[$i] - 1;
 				}
-				// return part one
-				if ($this->debug_dcom) { echo 'pop3: fetchbody: returning part '.$part_num.', internally ['.serialize($the_part).']<br>'; }
-				if ((count($the_part) > 2)
-				|| (!isset($this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->custom['part_start']))
-				|| (!isset($this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->custom['part_start'])))
+				// build the recursive parts structure to obtain this parts data
+				$temp_part = &$this->msg_structure;
+				for($i=0;$i < count($the_part_array);$i++)
+				{
+					$target_part = $temp_part->parts[$the_part_array[$i]];
+					$temp_part = &$target_part;
+				}
+				// verify part data exists
+				if ($this->debug_dcom) { echo 'pop3: fetchbody: returning part '.$part_num.', internally ['.serialize($the_part_array).']<br>'; }
+				if ((!isset($target_part->custom['part_start']))
+				|| (!isset($target_part->custom['part_start'])))
 				{
 					if ($this->debug_dcom) { echo 'pop3: fetchbody: ERROR: required part data not present for '.$part_num.', internally ['.serialize($the_part).']<br>'; }
 					// screw it, just return the whole thing
@@ -1680,8 +1855,8 @@
 				else
 				{
 					// attempt to make the part
-					$part_start = (int)$this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->custom['part_start'];
-					$part_end = (int)$this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->custom['part_end'];
+					$part_start = (int)$target_part->custom['part_start'];
+					$part_end = (int)$target_part->custom['part_end'];
 					if ($this->debug_dcom) { echo 'pop3: fetchbody: returning part '.$part_num.' starts ['.$part_start.'] ends ['.$part_end.']<br>'; }
 					// assemble the body [art part
 					$body_blob = '';
@@ -1696,7 +1871,53 @@
 				// screw it, just return the whole thing
 				if ($this->debug_dcom) { echo 'pop3: fetchbody - something is unsupported, using fallback pass thru<br>'; }
 				$body_blob = $this->get_body($stream_notused,$msg_num,$flags,False);
-			}		
+			}
+
+			/*
+			// handle 3nd level parts
+			elseif (strlen((string)$part_num) == 5)
+			{
+				// explode part number into its component part numbers
+				$the_part = explode(".",$part_num);
+				// convert to fetchstructure part number
+				for($i=0;$i < count($the_part);$i++)
+				{
+					$the_part[$i] = (int)$the_part[$i];
+					$the_part[$i] = $the_part[$i] - 1;
+				}
+				// return part one
+				if ($this->debug_dcom) { echo 'pop3: fetchbody: returning part '.$part_num.', internally ['.serialize($the_part).']<br>'; }
+				if ((count($the_part) > 3) // there should only be 3 levels here
+				|| (!isset($this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->parts[$the_part[2]]->custom['part_start']))
+				|| (!isset($this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->parts[$the_part[2]]->custom['part_start'])))
+				{
+					if ($this->debug_dcom) { echo 'pop3: fetchbody: ERROR: required part data not present for '.$part_num.', internally ['.serialize($the_part).']<br>'; }
+					// screw it, just return the whole thing
+					if ($this->debug_dcom) { echo 'pop3: fetchbody - using fallback pass thru<br>'; }
+					$body_blob = $this->get_body($stream_notused,$msg_num,$flags,False);
+				}
+				else
+				{
+					// attempt to make the part
+					$part_start = (int)$this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->parts[$the_part[2]]->custom['part_start'];
+					$part_end = (int)$this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->parts[$the_part[2]]->custom['part_end'];
+					if ($this->debug_dcom) { echo 'pop3: fetchbody: returning part '.$part_num.' starts ['.$part_start.'] ends ['.$part_end.']<br>'; }
+					// assemble the body [art part
+					$body_blob = '';
+					for($i=$part_start;$i < $part_end+1;$i++)
+					{
+						$body_blob .= $this->body_array[$i]."\r\n";
+					}
+				}
+			}
+			else
+			{
+				// screw it, just return the whole thing
+				if ($this->debug_dcom) { echo 'pop3: fetchbody - something is unsupported, using fallback pass thru<br>'; }
+				$body_blob = $this->get_body($stream_notused,$msg_num,$flags,False);
+			}
+			*/
+			
 			// the false above is a temporary, custom option, says to NOT include the headers in the retuen
 			if ($this->debug_dcom) { echo 'pop3: Leaving fetchbody<br>'; }
 			return $body_blob;
