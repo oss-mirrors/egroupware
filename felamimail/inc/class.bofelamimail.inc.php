@@ -963,13 +963,9 @@
 			
 			if($_adminConnection)
 			{
-				$config = CreateObject('phpgwapi.config','qmailldap');
-				$config->read_repository();
-				$qmailldapConfig = $config->config_data;
-				
 				$folderName	= '';
-				$username	= $qmailldapConfig['imapAdminUser'];
-				$password	= $qmailldapConfig['imapAdminPassword'];
+				$username	= $this->mailPreferences['imapAdminUsername'];
+				$password	= $this->mailPreferences['imapAdminPW'];
 				$options	= '';
 			}
 			else

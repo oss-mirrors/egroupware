@@ -177,4 +177,6 @@ always show html emails	preferences	de	immer anzeigen
 never display html emails	preferences	de	niemals anzeigen
 display only when no plain text is available	preferences	de	nur anzeigen wenn kein Plain Text vorhanden ist
 IMAP emailclient for EGroupware	common	de	IMAP-EMailclient für EGroupware
-:site configuration	felamimail	de	Konfiguration der Anwendung
+site configuration	felamimail	de	Konfiguration der Anwendung
+select emailprofile	felamimail	de	EMailprofil auswählen
+

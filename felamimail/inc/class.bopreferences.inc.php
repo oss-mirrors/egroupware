@@ -35,7 +35,7 @@
 			$imapServerTypes = $this->boemailadmin->getIMAPServerTypes();
 			$profileData = $this->boemailadmin->getProfile($this->profileID);
 			
-			$imapServerTypes[$profileData['imapType']]['protocol'];
+			#$imapServerTypes[$profileData['imapType']]['protocol'];
 			
 			#_debug_array($profileData);
 			
@@ -60,6 +60,8 @@
 
 			$data['emailAddress']		= $data['username']."@".$profileData['defaultDomain'];
 			$data['smtpAuth']		= $profileData['smtpAuth'];
+			$data['imapAdminUsername']	= $profileData['imapAdminUsername'];
+			$data['imapAdminPW']		= $profileData['imapAdminPW'];
 
 			if($GLOBALS['phpgw_info']['server']['account_repository'] == 'ldap')
 			{
