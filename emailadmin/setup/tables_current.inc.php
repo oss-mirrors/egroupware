@@ -18,6 +18,8 @@
 			'fd' => array(
 				'id' => array('type' => 'auto', 'nullable' => false),
 				'qmail_servername' => array('type' => 'varchar', 'precision' => 50),
+				'qmail_dn' => array('type' => 'varchar', 'precision' => 200),
+				'use_default_ldap_server' => array('type' => 'int', 'precision' => 2),
 				'ldap_servername' => array('type' => 'varchar', 'precision' => 50),
 				'ldap_basedn' => array('type' => 'varchar', 'precision' => 200),
 				'ldap_admindn' => array('type' => 'varchar', 'precision' => 200),

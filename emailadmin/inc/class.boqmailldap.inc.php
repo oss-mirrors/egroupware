@@ -1,9 +1,9 @@
 <?php
 	/***************************************************************************\
-	* phpGroupWare - Notes                                                      *
+	* phpGroupWare - QMailLDAP                                                  *
 	* http://www.phpgroupware.org                                               *
-	* Written by : Andy Holman (LoCdOg)                                         *
-	*              Bettina Gille [ceb@phpgroupware.org]                         *
+	* http://www.phpgw.de                                                       *
+	* Written by : Lars Kneschke                                                *
 	* -------------------------------------------------                         *
 	* This program is free software; you can redistribute it and/or modify it   *
 	* under the terms of the GNU General Public License as published by the     *
@@ -21,9 +21,9 @@
 
 		var $public_functions = array
 		(
-			'read_notes'		=> True,
-			'read_single_note'	=> True,
-			'save_note'		=> True,
+			'getServerList'		=> True,
+			'getLocals'		=> True,
+			'getRcptHosts'		=> True,
 			'delete_note'		=> True,
 			'read_preferences'	=> True,
 			'save_preferences'	=> True
@@ -31,10 +31,18 @@
 
 		function boqmailldap()
 		{
-			global $phpgw;
+			#global $phpgw;
 
 			$this->soqmailldap = CreateObject('qmailldap.soqmailldap');
 
+		}
+		
+		function getLocals()
+		{
+		}
+		
+		function getRcptHosts()
+		{
 		}
 		
 		function getServerList()
@@ -43,9 +51,11 @@
 			(
 				'0'	=> array
 				(
-					'servername'	=> 'gateway.intranet.local',
-					'description'	=> 'Standard Server',
-					'id'		=> '0'
+					'servername'		=> 'gateway.intranet.local',
+					'description'		=> 'Standard Server',
+					'default_ldap_server'	=> '1',
+					'qmail_base_dn'		=> 'ou=qmailldap, ou=future_project, dc=intranet, dc=local',
+					'id'			=> '0'
 				),
 				'1'	=> array
 				(
