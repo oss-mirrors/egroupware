@@ -55,49 +55,99 @@
 
   class mailbox_status
   {
-	var $messages;
-	var $recent;
-	var $unseen;
-	var $uidnext;
-	var $uidvalidity;
-	var $quota;
-	var $quota_all;
+	var $messages = '';
+	var $recent = '';
+	var $unseen = '';
+	var $uidnext = '';
+	var $uidvalidity = '';
+	// quota and quota_all not in php builtin
+	var $quota = '';
+	var $quota_all = '';
+	/*
+	see PHP function: imap_status --  This function returns status information on a mailbox other than the current one
+	SA_MESSAGES - set status->messages to the number of messages in the mailbox
+	SA_RECENT - set status->recent to the number of recent messages in the mailbox
+	SA_UNSEEN - set status->unseen to the number of unseen (new) messages in the mailbox
+	SA_UIDNEXT - set status->uidnext to the next uid to be used in the mailbox
+	SA_UIDVALIDITY - set status->uidvalidity to a constant that changes when uids for the mailbox may no longer be valid
+	SA_ALL - set all of the above
+	*/
+  }
+
+  class msg_mb_info
+  {
+	var $Date = '';
+	var $Driver ='';
+	var $Mailbox = '';
+	var $Nmsgs = '';
+	var $Recent = '';
+	var $Unread = '';
+	var $Size = '';
+	/*
+	see PHP function: imap_mailboxmsginfo -- Get information about the current mailbox
+	Date		date of last change
+	Driver		driver
+	Mailbox		name of the mailbox
+	Nmsgs		number of messages
+	Recent		number of recent messages
+	Unread		number of unread messages
+	Deleted		number of deleted messages
+	Size		mailbox size
+	*/
+  }
+
+	/*
+	Discussion: imap_mailboxmsginfo  vs.  imap_status
+	note 1): 	IMAP uses imap_mailboxmsginfo for the folder it's currently logged into,
+		and IMAP uses imap_status for info on a folder it is NOT currently logged into
+	note 2)	imap_mailboxmsginfo returns size data, imap_status does NOT
+	*/
+
+  class msg_struct
+  {
+	var $type = '';
+	var $encoding = '';
+	var $ifsubtype = False;
+	var $subtype = '';
+	var $ifdescription = False;
+	var $description = '';
+	var $ifid = False;
+	var $id = '';
+	var $lines = '';
+	var $bytes = '';
+	var $ifdisposition = False;
+	var $disposition = '';
+	var $ifdparameters = False;
+	var $dparameters = array();
+	var $ifparameters = False;
+	var $parameters = array();
+	var $parts = array();
+	/*
+	see PHP function: imap_fetchstructure --  Read the structure of a particular message
+	type		Primary body type
+	encoding		Body transfer encoding
+	ifsubtype		TRUE if there is a subtype string
+	subtype		MIME subtype
+	ifdescription	TRUE if there is a description string
+	description	Content description string
+	ifid		TRUE if there is an identification string
+	id		Identification string
+	lines		Number of lines
+	bytes		Number of bytes
+	ifdisposition	TRUE if there is a disposition string
+	disposition	Disposition string
+	ifdparameters	TRUE if the dparameters array exists
+	dparameters	Disposition parameter array
+	ifparameters	TRUE if the parameters array exists
+	parameters	MIME parameters array
+	parts		Array of objects describing each message part
+	*/
   }
 
   class att_parameter
   {
 	var $attribute;
 	var $value;
-  }
-
-  class struct
-  {
-	var $encoding;
-	var $type;
-	var $subtype;
-	var $ifsubtype;
-	var $parameters;
-	var $ifparameters;
-	var $description;
-	var $ifdescription;
-	var $disposition;
-	var $ifdisposition;
-	var $id;
-	var $ifid;
-	var $lines;
-	var $bytes;
-  }
-
-  class msg_mb_info
-  {
-	var $date = '';
-	var $driver ='';
-	var $mailbox = '';
-	//var $Nmsgs = '';
-	var $messages = '';
-	var $recent = '';
-	var $unread = '';
-	var $size;
   }
 
   class address
@@ -110,30 +160,55 @@
 
   class msg_headinfo
   {
+	// see PHP function:  imap_headerinfo -- Read the header of the message
+	// which is the same as PHP function imap_header
+	// --- Various Header Data ---
+	var $remail = '';
+	var $date = '';
+	var $subject = '';
+	var $in_reply_to = '';
+	var $message_id = '';
+	var $newsgroups = '';
+	var $followup_to = '';
+	var $references = '';
+	// --- Message Flags ---
+	var $Recent = '';		//  'R' if recent and seen, 'N' if recent and not seen, ' ' if not recent
+	var $Unseen = '';		//  'U' if not seen AND not recent, ' ' if seen OR not seen and recent
+	var $Answered = '';	//  'A' if answered, ' ' if unanswered
+	var $Deleted = '';		//  'D' if deleted, ' ' if not deleted
+	var $Draft = '';		//  'X' if draft, ' ' if not draft
+	var $Flagged = '';		//  'F' if flagged, ' ' if not flagged
+	// --- To, From, etc... Data ---
+	var $toaddress = '';	// up to 1024 characters of the To: line
+	var $to;			// array of these objects from the To line, containing:
+				//	to->personal ; to->adl ; to->mailbox ; to->host
+				// 	this applies to From, Cc, Bcc, etc... below
+	var $fromaddress = '';	// up to 1024 characters of the From: line
 	var $from;
-	var $fromaddress;
-	var $to;
-	var $toaddress;
+	var $ccaddress = '';	// up to 1024 characters of the Cc: line
 	var $cc;
-	var $ccaddress;
+	var $bccaddress = '';	// up to 1024 characters of the Bcc: line
 	var $bcc;
-	var $bccaddress;
+	var $reply_toaddress = '';	// up to 1024 characters of the Reply_To: line
 	var $reply_to;
-	var $reply_toaddress;
+	var $senderaddress = '';	// up to 1024 characters of the Sender: line
 	var $sender;
-	var $senderaddress;
+	var $return_pathaddress = '';	// up to 1024 characters of the Return-Path: line
 	var $return_path;
-	var $return_pathaddress;
-	var $udate;
-	var $subject;
-	var $lines;
+	var $udate = '';		// mail message date in unix time
+	// --- Specially Formatted Data ---
+	var $fetchfrom = '';	// from line formatted to fit arg "fromlength" characters
+	var $fetchsubject = '';	// subject line formatted to fit arg "subjectlength" characters
+	// --- I added these
+	var $lines = '';
+	var $Size = '';
   }
 
   class mail_dcom_base extends network
   {
 	var $header=array();
 	var $msg;
-	var $struct;
+	var $msg_struct;
 	var $body;
 	var $mailbox;
 	var $numparts;
@@ -143,8 +218,9 @@
 	var $bsub=array();
 
 	var $php_builtin=False;
-	var $debug_dcom=True;
-	//var $debug_dcom=False;
+	// DEBUG FLAG
+	//var $debug_dcom=True;
+	var $debug_dcom=False;
 	
 	function mail_dcom_base()
 	{

@@ -23,7 +23,7 @@
 
   class mail_dcom extends mail_dcom_base
   {
-
+	/*
 	function login( $folder = "INBOX")
 	{
 		global $phpgw, $phpgw_info;
@@ -59,6 +59,7 @@
 		//error_reporting(error_reporting() + 2);
 		return $mbox;
 	}
+	*/
 
 	// = = = Functions that DO NOTHING in POP3 = = =
 	function createmailbox($stream,$mailbox) 
@@ -82,7 +83,7 @@
 	function listmailbox($stream,$ref,$pattern)
 	{
 		// N/A for pop3
-		if ($this->debug_dcom) { echo 'pop3: call to unused function in POP3: listmailbox<br>'; }
+		if ($this->debug_dcom) { echo 'pop3: call to unused function in POP3: listmailbox (probable namespace discovery attempt)<br>'; }
 		return False;
 	}
 	function mailcopy($stream,$msg_list,$mailbox,$flags)
@@ -163,111 +164,92 @@
 	}
 
 	// returns number of messages in the mailbox
-	function num_msg($fq_folder='')
+	function num_msg($stream_notused='')
 	{
 		if ($this->debug_dcom) { echo 'pop3: Entering num_msg<br>'; }
-		// fq_folder is a "fully qualified folder" , seperate the parts:
-		$svr_data = array();
-		$svr_data = $this->distill_fq_folder($fq_folder);
-		$folder = $svr_data['folder'];
-		
-		if (!$this->msg2socket('STAT',"^\+ok",&$response))
-		{
-			$this->error();
-		}
-		$num_msg = explode(' ',$response);
-		if ($this->debug_dcom) { echo 'pop3: num_msg: num_msg: '.$num_msg[1].'<br>'; }
+		// Most Efficient Method:
+		//	call mailboxmsginfo and fill THIS size data from that
+		$mb_msg_info = $this->mailboxmsginfo($stream_notused);
+		$return_num_msg = $mb_msg_info->Nmsgs;
+		if ($this->debug_dcom) { echo 'pop3: num_msg: '.$return_num_msg.'<br>'; }
 		if ($this->debug_dcom) { echo 'pop3: Leaving num_msg<br>'; }
-		return $num_msg[1];
+		return $return_num_msg;
 	}
 
-	function mailboxmsginfo($fq_folder='')
+	function mailboxmsginfo($stream_notused='')
 	{
 		if ($this->debug_dcom) { echo 'pop3: Entering mailboxmsginfo<br>'; }
-		// fq_folder is a "fully qualified folder" , seperate the parts:
-		$svr_data = array();
-		$svr_data = $this->distill_fq_folder($fq_folder);
-		$folder = $svr_data['folder'];
-		
+		// initialize the structure
 		$info = new msg_mb_info;
+		$info->Date = '';
+		$info->Driver ='';
+		$info->Mailbox = '';
+		$info->Nmsgs = '';
+		$info->Recent = '';
+		$info->Unread = '';
+		$info->Size = '';
+		// POP3 will only give 2 items:
+		// 1)  number of messages
+		// 2) total size of mailbox
+		// imap_mailboxmsginfo is the only function to return both of these
 		if (!$this->msg2socket('STAT',"^\+ok",&$response))
 		{
 			$this->error();
+			return False;
 		}
 		$num_msg = explode(' ',$response);
-		
-		$info->messages = $num_msg[1];
-		$info->size  = $num_msg[2];
-		if ($info->messages)
+		// fill the only 2 data items we have
+		$info->Nmsgs = trim($num_msg[1]);
+		$info->Size  = trim($num_msg[2]);
+		if ($info->Nmsgs)
 		{
-			if ($this->debug_dcom) { echo 'pop3: num_msg: info->messages: '.$info->messages.'<br>'; }
-			if ($this->debug_dcom) { echo 'pop3: num_msg: info->size: '.$info->size.'<br>'; }
+			if ($this->debug_dcom) { echo 'pop3: mailboxmsginfo: info->Nmsgs: '.$info->Nmsgs.'<br>'; }
+			if ($this->debug_dcom) { echo 'pop3: mailboxmsginfo: info->Size: '.$info->Size.'<br>'; }
 			if ($this->debug_dcom) { echo 'pop3: Leaving mailboxmsginfo<br>'; }
 			return $info;
 		}
 		else
 		{
-			if ($this->debug_dcom) { echo 'pop3: num_msg: returining False<br>'; }
+			if ($this->debug_dcom) { echo 'pop3: mailboxmsginfo: returining False<br>'; }
 			if ($this->debug_dcom) { echo 'pop3: Leaving mailboxmsginfo<br>'; }
 			return False;
 		}
 	}
 
-	function status($fq_folder='',$options=SA_ALL)
+	function status($stream_notused='', $fq_folder='',$options=SA_ALL)
 	{
 		if ($this->debug_dcom) { echo 'pop3: Entering status<br>'; }
-		// fq_folder is a "fully qualified folder" meaning this format:
-		// seperate the parts:
-		$svr_data = array();
-		$svr_data = $this->distill_fq_folder($fq_folder);
-		$folder = $svr_data['folder'];
-		
+		// POP3 has only INBOX so ignore $fq_folder
+		// assume option is SA_ALL for POP3 because POP3 returns so little info anyway
+		// initialize structure
 		$info = new mailbox_status;
-		$info->messages = $this->num_msg($folder);
+		$info->messages = '';
+		$info->recent = '';
+		$info->unseen = '';
+		$info->uidnext = '';
+		$info->uidvalidity = '';
+		// POP3 only knows:
+		// 1) many messages are in the box, which is:
+		//	a) returned by imap_ mailboxmsginfo as ->Nmsgs (in IMAP this is thefolder opened)
+		//	b) returned by imap_status (THIS) as ->messages (in IMAP used for folders other than the opened one)
+		// 2) total size of the box, which is:
+		//	returned by imap_ mailboxmsginfo as ->Size		
+		// Most Efficient Method:
+		//	call mailboxmsginfo and fill THIS structurte from that
+		$mb_msg_info = $this->mailboxmsginfo($stream_notused);
+		// all POP3 can return from imap_status is messages
+		$info->messages = $mb_msg_info->Nmsgs;
 		if ($this->debug_dcom) { echo 'pop3: status: info->messages: '.$info->messages.'<br>'; }
 		if ($this->debug_dcom) { echo 'pop3: Leaving status<br>'; }
 		return $info;
-	}
-
-	function fetch_header_element($start,$stop,$element)
-	{
-		if ($this->debug_dcom) { echo 'pop3: Entering fetch_header_element<br>'; }
-		for($i=$start;$i<=$stop;$i++)
-		{
-			if ($this->debug_dcom) { echo 'pop3: fetch_header_element: issue "TOP '.$i.' 0"<br>'; }
-			if(!$this->write_port('TOP '.$i.' 0'))
-			{
-				$this->error();
-			}
-			$this->read_and_load('.');
-			if($this->header[$element])
-			{
-				$field_element[$i] = $this->phpGW_quoted_printable_decode2($this->header[$element]);
-//				echo $field_element[$i].' = '.$this->phpGW_quoted_printable_decode2($this->header[$element])."<br>\n";
-				if ($this->debug_dcom) { echo 'pop3: fetch_header_element: field_element['.$i.']: '.$field_element[$i].'<br>'; }
-			}
-			else
-			{
-				$field_element[$i] = $this->phpGW_quoted_printable_decode2($this->header[strtoupper($element)]);
-//				echo $field_element[$i].' = '.$this->phpGW_quoted_printable_decode2($this->header[strtoupper($element)])."<br>\n";
-				if ($this->debug_dcom) { echo 'pop3: fetch_header_element: field_element['.$i.']: '.$field_element[$i].'<br>'; }
-			}
-			
-		}
-		if ($this->debug_dcom) { echo 'pop3: fetch_header_element: field_element: '.serialize($field_element).'<br><br><br>'; }
-		if ($this->debug_dcom) { echo 'pop3: Leaving fetch_header_element<br>'; }
-		return $field_element;
 	}
 
 	function sort($stream_notused='',$criteria=SORTDATE,$reverse=False,$options='')
 	{
 		if ($this->debug_dcom) { echo 'pop3: Entering sort<br>'; }
 		
-		// this is POP3, there's only 1 folder
-		$folder = "INBOX";
-		
 		// nr_of_msgs on pop server
-		$msg_num = $this->num_msg($folder);
+		$msg_num = $this->num_msg($stream_notused);
 		
 		// no msgs - no sort.
 		if (!$msg_num)
@@ -350,6 +332,41 @@
 		return $return_array;
 	}
 
+	function fetch_header_element($start,$stop,$element)
+	{
+		if ($this->debug_dcom) { echo 'pop3: Entering fetch_header_element<br>'; }
+		for($i=$start;$i<=$stop;$i++)
+		{
+			if ($this->debug_dcom) { echo 'pop3: fetch_header_element: issue "TOP '.$i.' 0"<br>'; }
+			if(!$this->write_port('TOP '.$i.' 0'))
+			{
+				$this->error();
+			}
+			$this->read_and_load('.');
+			if($this->header[$element])
+			{
+				$field_element[$i] = $this->phpGW_quoted_printable_decode2($this->header[$element]);
+//				echo $field_element[$i].' = '.$this->phpGW_quoted_printable_decode2($this->header[$element])."<br>\n";
+				if ($this->debug_dcom) { echo 'pop3: fetch_header_element: field_element['.$i.']: '.$field_element[$i].'<br>'; }
+			}
+			else
+			{
+				$field_element[$i] = $this->phpGW_quoted_printable_decode2($this->header[strtoupper($element)]);
+//				echo $field_element[$i].' = '.$this->phpGW_quoted_printable_decode2($this->header[strtoupper($element)])."<br>\n";
+				if ($this->debug_dcom) { echo 'pop3: fetch_header_element: field_element['.$i.']: '.$field_element[$i].'<br>'; }
+			}
+			
+		}
+		if ($this->debug_dcom) { echo 'pop3: fetch_header_element: field_element: '.serialize($field_element).'<br><br><br>'; }
+		if ($this->debug_dcom) { echo 'pop3: Leaving fetch_header_element<br>'; }
+		return $field_element;
+	}
+
+	function get_header($stream_notused,$msg_num)
+	{
+		return $this->get_header_raw($stream_notused,$msg_num);
+	}
+
 	function get_header_raw($stream_notused,$msg_num)
 	{
 		if ($this->debug_dcom) { echo 'pop3: Entering get_header_raw<br>'; }
@@ -357,6 +374,8 @@
 		if (!$this->msg2socket('TOP '.$msg_num.' 0',"^\+ok",&$response))
 		{
 			$this->error();
+			if ($this->debug_dcom) { echo 'pop3: Leaving get_header_raw with error<br>'; }
+			return False;
 		}
 		$response = $this->read_port_glob('.');
 		$msg_header_raw = $this->glob_to_array($response, False, '');
@@ -365,14 +384,32 @@
 		return $msg_header_raw;
 	}
 
-	function get_structure($header_array,$line_nr,$is_multi=false)
+	function sub_get_structure($header_array,$line_nr,$is_multi=false)
 	{
-		if ($this->debug_dcom) { echo 'pop3: Entering get_structure<br>'; }
-		$debug_mime = True;
-		//$debug_mime = False;
+		//$debug_mime = True;
+		$debug_mime = False;
 		
-		$info = new struct;
+		if ($this->debug_dcom) { echo 'pop3: Entering sub_get_structure<br>'; }
+		// initialize the structure
+		$info = new msg_struct;
+		$info->type = '';
+		$info->encoding = '';
+		$info->ifsubtype = False;
+		$info->subtype = '';
+		$info->ifdescription = False;
+		$info->description = '';
+		$info->ifid = False;
+		$info->id = '';
+		$info->lines = '';
+		$info->bytes = '';
+		$info->ifdisposition = False;
+		$info->disposition = '';
+		$info->ifdparameters = False;
+		$info->dparameters = array();
+		$info->ifparameters = False;
 		$info->parameters = array();
+		$info->parts = array();
+		// FILL THE DATA
 		if ($is_multi)
 		{
 			$info->type = 0;
@@ -460,39 +497,46 @@
 			  default : break;
 			}
 		}
-		if ($this->debug_dcom) { echo 'pop3: Leaving get_structure<br>'; }
+		if ($this->debug_dcom) { echo 'pop3: Leaving sub_get_structure<br>'; }
 		return $info;
+	}
+
+	function size_msg($stream_notused,$msg_num)
+	{
+		if (!$this->msg2socket('LIST '.$msg_num,"^\+ok",&$response))
+		{
+			$this->error();
+			return False;
+		}
+		$list_response = explode(' ',$response);
+		$return_size = trim($list_response[2]);
+		$return_size = (int)$return_size * 1;
+		if ($this->debug_dcom) { echo 'pop3: size_msg: '.$return_size.'<br>'; }
+		return $return_size;
 	}
 
 	function fetchstructure($stream_notused,$msg_num,$flags="")
 	{
 		if ($this->debug_dcom) { echo 'pop3: Entering fetchstructure<br>'; }
-		$header_array = $this->get_header_raw($stream,$msg_num);
+		$header_array = $this->get_header($stream_notused,$msg_num);
 		if (!$header_array)
 		{
+			if ($this->debug_dcom) { echo 'pop3: Leaving fetchstructure with error<br>'; }
 			return false;
 		}
-		
-		echo '<br>dumping header_array: <br>';
-		var_dump($header_array);
-		echo '<br><br><br>';
-		
-		$info = $this->get_structure($header_array,1);
-		
-		echo 'dumping info: <br>';
-		var_dump($info);
-		echo '<br><br><br>';
-		
-		/*
+		$info = $this->sub_get_structure($header_array,1);
 		if (!$info->bytes)
 		{
-			$rc = ($this->msg2socket($stream,"LIST $msg_num\n"));
-			if (!($this->pop_socket2msg($stream)))
+			if (!$this->msg2socket('LIST '.$msg_num,"^\+ok",&$response))
 			{
-				$pos = strpos($this->err[msg]," ");
-				$info->bytes = substr($this->err[msg],$pos+1);
+				$this->error();
+				if ($this->debug_dcom) { echo 'pop3: Leaving fetchstructure with error<br>'; }
+				return False;
 			}
+			$list_response = explode(' ',$response);
+			$info->bytes = trim($list_response[2]);
 		}
+		/*
 		if ($info->type == 1)
 		{ 
 			// multipart
@@ -510,28 +554,31 @@
 				}
 				if (is_int($pos1) && !$pos1)
 				{
-					$info->parts[] = $this->get_structure($body,&$i,true);
+					$info->parts[] = $this->sub_get_structure($body,&$i,true);
 				}
 			}
 		}
 		//$this->got_structure = true;
 		*/
-		
+		echo '<br>dumping fetchstructure return info: <br>';
+		var_dump($info);
+		echo '<br><br><br>';
 		if ($this->debug_dcom) { echo 'pop3: Leaving fetchstructure<br>'; }
 		return $info;
 	}
 
-	function header($stream_notused,$msg_nr,$fromlength="",$tolength="",$defaulthost="")
+	function header($stream_notused,$msg_num,$fromlength="",$tolength="",$defaulthost="")
 	{
 		if ($this->debug_dcom) { echo 'pop3: Entering header<br>'; }
 		$info = new msg_headinfo;
-		//$info->size = $this->size_msg($stream,$msg_nr);
-		$header_array = $this->get_header_raw($stream,$msg_nr);
+		$info->Size = $this->size_msg($stream_notused,$msg_num);
+		$header_array = $this->get_header($stream_notused,$msg_num);
 		if (!$header_array)
 		{
+			if ($this->debug_dcom) { echo 'pop3: Leaving header with error<br>'; }
 			return false;
 		}
-		for ($i=1;$i<=$header_array[0];$i++)
+		for ($i=0; $i < count($header_array); $i++)
 		{
 			$pos = strpos($header_array[$i]," ");
 			if (is_int($pos) && !$pos)
@@ -646,7 +693,8 @@
 		
 		for ($i=0,$pos=1;$pos;$i++)
 		{
-			$addr_details = new msg_aka;
+			//$addr_details = new msg_aka;
+			$addr_details = new address;
 			$pos = strpos($address,"<");
 			$pos3 = strpos($address,"(");
 			if (is_int($pos))

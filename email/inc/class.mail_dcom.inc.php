@@ -41,12 +41,13 @@
 		if ($debug_dcom) { echo 'imap builtin extension NOT available, using socket class<br>'; }
 	}
 
-	/*
 	// debug
-	$imap_builtin = False;
-	$sock_fname = '_sock';
-	if ($debug_dcom) { echo 'FORCE: imap builtin extension NOT available, using socket class<br>'; }
-	*/
+	if ($debug_dcom)
+	{
+		$imap_builtin = False;
+		$sock_fname = '_sock';
+		if ($debug_dcom) { echo 'FORCE: imap builtin extension NOT available, using socket class<br>'; }
+	}
 
 // -----  include SOCKET or PHP-BUILTIN classes as nevessary
 	if ($imap_builtin == False)
