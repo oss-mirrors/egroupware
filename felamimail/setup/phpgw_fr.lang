@@ -107,7 +107,7 @@ error connecting to imap serv	felamimail	fr	Erreur lors de la connexion au serve
 error opening	felamimail	fr	Erreur à l'ouverture
 expunge	felamimail	fr	Purger
 felamimail	common	fr	Messagerie
-file into	felamimail	fr	
+file into	felamimail	fr	fichier dans
 files	felamimail	fr	Fichiers
 filter active	felamimail	fr	Filtre actif
 filter name	felamimail	fr	Nom du filtre
@@ -129,11 +129,13 @@ for mail to be send - not functional yet	felamimail	fr	Pour le mail à envoyer - 
 for received mail	felamimail	fr	Pour le mail reçu
 forward	felamimail	fr	Transférer
 found	felamimail	fr	Trouvé
+fri	felamimail	fr	Ven
 from	felamimail	fr	De
 from(a->z)	felamimail	fr	De (A->Z)
 from(z->a)	felamimail	fr	De (Z->A)
 full name	felamimail	fr	Nom complet
 have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	fr	Jettez un oeil à <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> pour en savoir plus sur Squirrelmail.<br>
+header lines	felamimail	fr	Lignes d'Entête
 help	felamimail	fr	Aide
 hide header	felamimail	fr	Cacher l'entête
 html	felamimail	fr	HTML
@@ -184,11 +186,13 @@ match	felamimail	fr	Correspond
 matches	felamimail	fr	correspond
 matches regexp	felamimail	fr	correspond
 medium gray	felamimail	fr	Gris moyen
+message	felamimail	fr	Message
 message highlighting	felamimail	fr	Mise en évidence de message
 message list	felamimail	fr	Liste des messages
 messages	felamimail	fr	Messages
 minute	felamimail	fr	Minute
 minutes	felamimail	fr	Minutes
+mon	felamimail	fr	Lun
 more	felamimail	fr	Plus
 move	felamimail	fr	Déplacer
 move messages	felamimail	fr	Déplacer les messages
@@ -261,6 +265,7 @@ right	felamimail	fr	Droit
 rule	felamimail	fr	Règle
 running squirrelmail version %1 (c) 1999-2000.	felamimail	fr	Exécute Felamimail version %1 (c) 1999-2000.
 same window - not functional yet	felamimail	fr	Même fenêtre - pas encore fonctionnel
+sat	felamimail	fr	Sa
 save	felamimail	fr	Sauver
 search	felamimail	fr	Rechercher
 search for	felamimail	fr	Rechercher
@@ -302,6 +307,7 @@ subscribed successfully!	felamimail	fr	Souscrit avec succès!
 successfully saved display preferences!	felamimail	fr	Préférences d'affichage sauvegardées avec succès!
 successfully saved folder preferences!	felamimail	fr	Préférences de dossier sauvegardées avec succès!
 successfully saved personal information!	felamimail	fr	Informations personelles sauvegardées avec succès!
+sun	felamimail	fr	Di
 switch current folder to	felamimail	fr	Changer le dossier actuel vers
 table of contents	felamimail	fr	Table des contenus
 text only	felamimail	fr	Texte seulement
@@ -316,6 +322,7 @@ this contains personal information about yourself such as your name, your email 
 this folder is empty	felamimail	fr	CE DOSSIER EST VIDE
 this php has no imap support compiled in!!	felamimail	fr	PHP n'est pas compilé avec le support IMAP!
 this port is based on squirrelmail, which is a standalone imap client.<br>	felamimail	fr	Ce portage est basé sur Squirrelmail, qui est un client IMAP indépendant.<br>
+thu	felamimail	fr	Jeu
 to	felamimail	fr	A
 to the left	felamimail	fr	Vers la gauche
 to the right	felamimail	fr	Vers la droite
@@ -326,6 +333,7 @@ translation server	felamimail	fr	Serveur de traduction
 trash	felamimail	fr	Corbeille
 trash fold	felamimail	fr	Corbeille
 trash folder	felamimail	fr	Dossier Corbeille
+tue	felamimail	fr	Ma
 type	felamimail	fr	Type
 unable to list addresses from %1	felamimail	fr	Impossible de lister les adresses depuis %1
 unflagged	felamimail	fr	Dé-marqué
@@ -356,6 +364,7 @@ view message	felamimail	fr	Voir message
 viewing full header	felamimail	fr	Visualise toutes les entêtes
 viewing message	felamimail	fr	Visualise le message
 viewing messages	felamimail	fr	Visualise les messages
+wed	felamimail	fr	Me
 welcome to %1's webmail system	felamimail	fr	Bienvenue dans le système WebMail de %1
 when deleting messages	felamimail	fr	Quand j'efface les messages
 white	felamimail	fr	Blanc
@@ -368,4 +377,4 @@ you can only edit one address at the time	felamimail	fr	Vous pouvez modifier une
 you must login first.	felamimail	fr	Vous devez vous connecter d'abord.
 you need a valid user and password to access this page!	felamimail	fr	Vous avez besoin d'un utilisateur et d'un mot de passe valides pour accéder à cette page!
 your search failed with the following error(s)	felamimail	fr	Votre recherche a échoué avec l'(es) erreur(s) suivante(s)
-1	felamimail	fr	
+1	felamimail	fr	1
