@@ -20,9 +20,9 @@
 	);
 	include('../header.inc.php');
 
-	$show  = get_var('show',Array('GET'));
-	$order = get_var('order',Array('GET'));
-	$sort  = get_var('sort',Array('GET'));
+ 	$show  = get_var('show',Array('GET'));
+ 	$order = get_var('order',Array('GET'));
+ 	$sort  = get_var('sort',Array('GET'));
 
 	if(!$show)
 	{
