@@ -25,8 +25,8 @@
   }
   section_start(ucfirst($appname),$imgpath);
 
-  echo '<a href="' . $phpgw->link('/headlines/preferences.php') . '">' . lang('Select Headlines to Display') . '</a>';
-  echo '<br><a href="' . $phpgw->link('/headlines/preferences_layout.php') . '">' . lang('Select layout') . '</a>';
+  section_item($phpgw->link('/headlines/preferences.php'),lang('Select Headlines to Display'));
+  section_item($phpgw->link('/headlines/preferences_layout.php'),lang('Select layout'));
 
   section_end(); 
 }

@@ -33,16 +33,14 @@
 
 	section_start(ucfirst($appname),$imgpath);
 
+	section_item($phpgw->link('/bookmarks/import.php'),
+		lang('Import bookmarks'));
 
-	echo '<a href="' . $phpgw->link('/bookmarks/import.php')
-		. '">' . lang('Import bookmarks') . '</a>';
+	section_item($phpgw->link('/preferences/acl_preferences.php','acl_app=bookmarks'),
+		lang('Grant access'));
 
-	echo '<br><a href="' . $phpgw->link('/preferences/acl_preferences.php','acl_app=bookmarks')
-		. '">' . lang('Grant access') . '</a>';
-
-	echo '<br><a href="' . $phpgw->link('/preferences/categories.php','cats_app=bookmarks')
-		. '">' . lang('Categories') . '</a>';
-
+	section_item($phpgw->link('/preferences/categories.php','cats_app=bookmarks'),
+		lang('Categories'));
 
 	section_end(); 
 }
