@@ -13,7 +13,7 @@
   }
   section_start("Polls",$img);
 
-  $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]."/polls/admin.php");
+  $pg = $phpgw->link('/polls/admin.php');
   echo "<A href=".$pg.">".lang("Polls")."</A>";
 
   section_end(); 

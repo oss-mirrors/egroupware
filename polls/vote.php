@@ -30,7 +30,7 @@
                         . $phpgw_info["user"]["account_id"] . "','" . time() . "')",__LINE__,__FILE__);
 //        $phpgw->db->unlock();
      }
-     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/polls/vote.php","show_results=$poll_id"));
+     Header("Location: " . $phpgw->link('/polls/vote.php',"show_results=$poll_id"));
      $phpgw->common->phpgw_exit();
   }
   if ($show_results) {
