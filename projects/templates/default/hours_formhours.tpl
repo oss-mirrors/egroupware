@@ -2,8 +2,6 @@
 
 {app_header}
 
-<p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
-<hr noshade width="98%" align="center" size="1">
 <center>
 {message}
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
@@ -82,7 +80,7 @@
          
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
-		<td height="50"><input type="submit" name="submit" value="{lang_save}"></td>
+		<td height="50"><input type="submit" name="values[submit]" value="{lang_save}"></td>
 		<td height="50"><input type="reset" name="reset" value="{lang_reset}"></form></td>
 		<td height="50"><form method="POST" action="{doneurl}"> 
 			<input type="submit" name="done" value="{lang_done}"></form></td>
@@ -96,7 +94,7 @@
 
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
-		<td height="50"><input type="submit" name="submit" value="{lang_save}">
+		<td height="50"><input type="submit" name="values[submit]" value="{lang_save}">
 			</form></td>
 		<td height="50">{delete}</td>
 		<td height="50">

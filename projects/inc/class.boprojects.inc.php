@@ -78,13 +78,13 @@
 				$this->use_session = True;
 			}
 
-			$start	= $GLOBALS['HTTP_POST_VARS']['start'] ? $GLOBALS['HTTP_POST_VARS']['start'] : $GLOBALS['HTTP_GET_VARS']['start'];
-			$query	= $GLOBALS['HTTP_POST_VARS']['query'] ? $GLOBALS['HTTP_POST_VARS']['query'] : $GLOBALS['HTTP_GET_VARS']['query'];
-			$sort	= $GLOBALS['HTTP_POST_VARS']['sort'] ? $GLOBALS['HTTP_POST_VARS']['sort'] : $GLOBALS['HTTP_GET_VARS']['sort'];
-			$order	= $GLOBALS['HTTP_POST_VARS']['order'] ? $GLOBALS['HTTP_POST_VARS']['order'] : $GLOBALS['HTTP_GET_VARS']['order'];
-			$cat_id	= $GLOBALS['HTTP_POST_VARS']['cat_id'] ? $GLOBALS['HTTP_POST_VARS']['cat_id'] : $GLOBALS['HTTP_GET_VARS']['cat_id'];
-			$filter	= $GLOBALS['HTTP_POST_VARS']['filter'] ? $GLOBALS['HTTP_POST_VARS']['filter'] : $GLOBALS['HTTP_GET_VARS']['filter'];
-			$status	= $GLOBALS['HTTP_POST_VARS']['status'] ? $GLOBALS['HTTP_POST_VARS']['status'] : $GLOBALS['HTTP_GET_VARS']['status'];
+			$start	= get_var('start',array('POST','GET'));
+			$query	= get_var('query',array('POST','GET'));
+			$sort	= get_var('sort',array('POST','GET'));
+			$order	= get_var('order',array('POST','GET'));
+			$cat_id	= get_var('cat_id',array('POST','GET'));
+			$filter	= get_var('filter',array('POST','GET'));
+			$status	= get_var('status',array('POST','GET'));
 
 			if(isset($start)) { $this->start = $start; }
 			if(isset($query)) { $this->query = $query; }
@@ -113,6 +113,8 @@
 				case 'amains'	: $column = 'projects_amains'; break;
 				case 'asubs'	: $column = 'projects_asubs'; break;
 				case 'ustat'	: $column = 'projects_ustat'; break;
+				case 'bill'		: $column = 'projects_bill'; break;
+				case 'del'		: $column = 'projects_del'; break;
 			}
 			return $column;
 		}

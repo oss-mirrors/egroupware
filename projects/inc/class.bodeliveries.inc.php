@@ -64,9 +64,9 @@
 			return $hours;
 		}
 
-		function read_deliveries($query, $sort, $order, $limit, $project_id)
+		function read_deliveries($start, $query, $sort, $order, $limit, $project_id)
 		{
-			$del = $this->sodeliveries->read_deliveries($query, $sort, $order, $limit, $project_id);
+			$del = $this->sodeliveries->read_deliveries($start, $query, $sort, $order, $limit, $project_id);
 			$this->total_records = $this->sodeliveries->total_records;
 			return $del;
 		}

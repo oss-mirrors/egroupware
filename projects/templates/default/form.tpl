@@ -9,8 +9,6 @@
 
 {app_header}
 
-<p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
-<hr noshade width="98%" align="center" size="1">
 <center>
 <form method="POST" name="projects_form" action="{actionurl}">
 {pref_message}<br>{message}
@@ -32,7 +30,7 @@
 		<td><input type="text" name="values[title]" size="50" value="{title}"></td>
 	</tr>
 	<tr>
-		<td>{lang_descr}:</td>
+		<td valign="top">{lang_descr}:</td>
 		<td colspan="2"><textarea name="values[descr]" rows="4" cols="50" wrap="VIRTUAL">{descr}</textarea></td>
 	</tr>
 	<tr>
@@ -83,11 +81,11 @@
 <table width="50%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
 		<td height="50">
-			<input type="submit" name="submit" value="{lang_save}"></td>
+			<input type="submit" name="values[submit]" value="{lang_save}"></td>
 		<td height="50"><input type="reset" name="reset" value="{lang_reset}"></form></td>
 		<td height="50">
 			<form method="POST" action="{done_url}">
-			<input type="submit" name="done" value="{lang_done}"></form></td>
+			<input type="submit" name="values[done]" value="{lang_done}"></form></td>
 	</tr>
 </table>
 </center>
@@ -99,12 +97,12 @@
 <table width="50%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
 		<td height="50">
-			<input type="submit" name="submit" value="{lang_save}"></form></td>
+			<input type="submit" name="values[submit]" value="{lang_save}"></form></td>
 		<td height="50">
 			{delete}</td>
 		<td height="50">
 			<form method="POST" action="{done_url}">
-			<input type="submit" name="done" value="{lang_done}"></form></td>
+			<input type="submit" name="values[done]" value="{lang_done}"></form></td>
 	</tr>
 </table>
 </center>

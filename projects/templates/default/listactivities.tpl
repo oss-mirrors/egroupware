@@ -2,8 +2,6 @@
 
 {app_header}
 
-<p><b>&nbsp;&nbsp;&nbsp;{lang_header}</b><br>
-<hr noshade width="98%" align="center" size="1">
 <center>
 <table border="0" width="85%" cellpadding="2" cellspacing="2">
 	<tr colspan="6">

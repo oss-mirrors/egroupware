@@ -2,8 +2,6 @@
 
 {app_header}
 
-<p><b>&nbsp;&nbsp;&nbsp;{lang_action}<b><br>
-<hr noshade width="98%" align="center" size="1">
 <center>
 <form method="POST" action="{actionurl}">
 <table width="75%" border="0" cellspacing="2" cellpadding="2">

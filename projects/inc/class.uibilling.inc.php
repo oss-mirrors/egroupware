@@ -183,6 +183,8 @@
 			$GLOBALS['phpgw']->template->set_file(array('projects_list_t' => 'bill_list.tpl'));
 			$GLOBALS['phpgw']->template->set_block('projects_list_t','projects_list','list');
 
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_parent?lang('list jobs'):lang('list projects'));
+
 			if (!$action)
 			{
 				$action = 'mains';
@@ -192,13 +194,17 @@
 			(
 				'menuaction'	=> 'projects.uibilling.list_projects',
 				'pro_parent'	=> $pro_parent,
-				'action'		=> $action,
-				'cat_id'		=> $this->cat_id
+				'action'		=> $action
 			);
 
 			if (!$this->start)
 			{
 				$this->start = 0;
+			}
+
+			if (!$action)
+			{
+				$action = 'mains';
 			}
 
 			if (!$pro_parent)
@@ -224,14 +230,12 @@
 				$action_list= '<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data) . '" name="form">' . "\n"
 							. '<select name="cat_id" onChange="this.form.submit();"><option value="">' . lang('None') . '</option>' . "\n"
 							. $this->cats->formatted_list('select','all',$this->cat_id,True) . '</select>';
-				$GLOBALS['phpgw']->template->set_var(lang_header,lang('Project list'));
 			}
 			else
 			{
 				$action_list= '<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data) .'" name="form">' . "\n"
 							. '<select name="pro_parent" onChange="this.form.submit();"><option value="">' . lang('Select main project') . '</option>' . "\n"
 							. $this->boprojects->select_project_list('mains', $status, $pro_parent) . '</select>';
-				$GLOBALS['phpgw']->template->set_var('lang_header',lang('Job list'));
 			}
 
 			$GLOBALS['filter']	= $this->filter;
@@ -239,9 +243,9 @@
 
 			$GLOBALS['phpgw']->template->set_var('action_list',$action_list);
 			$GLOBALS['phpgw']->template->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$GLOBALS['phpgw']->template->set_var('filter_list',$this->nextmatchs->filter(1,1));
+			$GLOBALS['phpgw']->template->set_var('filter_list',$this->nextmatchs->new_filter($this->filter));
 			$GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(1));
+			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(array('query' => $this->query)));
 
 // ---------------- list header variable template-declarations --------------------------
 
@@ -339,7 +343,8 @@
 				$GLOBALS['phpgw']->template->set_var('part',$GLOBALS['phpgw']->link('/index.php',$link_data));
 				$GLOBALS['phpgw']->template->set_var('lang_part',lang('Invoice'));
 
-				$link_data['menuaction'] = 'projects.uibilling.list_invoices';
+				$link_data['menuaction']	= 'projects.uibilling.list_invoices';
+				$link_data['action']		= 'bill';
 				$GLOBALS['phpgw']->template->set_var('partlist',$GLOBALS['phpgw']->link('/index.php',$link_data));
 				$GLOBALS['phpgw']->template->set_var('lang_partlist',lang('Invoice list'));
 
@@ -375,11 +380,6 @@
 			$action		= get_var('action',array('POST','GET'));
 			$project_id	= get_var('project_id',array('POST','GET'));
 
-			$start		= get_var('start',array('POST','GET'));
-			$sort		= get_var('sort',array('POST','GET'));
-			$order		= get_var('order',array('POST','GET'));
-			$query		= get_var('query',array('POST','GET'));
-
 			$this->display_app_header();
 
 			$GLOBALS['phpgw']->template->set_file(array('projects_list_t' => 'bill_listinvoice.tpl'));
@@ -388,12 +388,7 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uibilling.list_invoices',
-				'action'		=> $action,
-				'project_id'	=> $project_id,
-				'start'			=> $start,
-				'sort'			=> $sort,
-				'order'			=> $order,
-				'query'			=> $query
+				'action'		=> $action
 			);
 
 			$nopref = $this->boprojects->check_prefs();
@@ -411,13 +406,14 @@
 				$this->start = 0;
 			}
 
-			$GLOBALS['phpgw']->template->set_var('lang_action',lang('Invoice list'));
-			$GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(1));
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('list invoices');
 
-			if (! $start)
+			$GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(array('query' => $this->query)));
+
+			if (! $this->start)
 			{
-				$start = 0;
+				$this->start = 0;
 			}
 
 			if (! $project_id)
@@ -425,7 +421,7 @@
 				$project_id = '';
 			}
 
-			$bill = $this->bobilling->read_invoices($start, $query, $sort, $order, True, $project_id);
+			$bill = $this->bobilling->read_invoices($this->start, $this->query, $this->sort, $this->order, True, $project_id);
 
 // -------------------- nextmatch variable template-declarations -----------------------------
 
@@ -509,10 +505,6 @@
 			$select		= get_var('select',array('POST'));
 			$referer	= get_var('referer',array('POST'));
 
-
-
-			global $action, $Invoice, $project_id, $action, $invoice_id, $values, $select, $referer;
-
 			if (! $Invoice)
 			{
 				$referer = $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] ? $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] : $GLOBALS['HTTP_REFERER'];
@@ -571,11 +563,11 @@
 				'menuaction'	=> 'projects.uibilling.invoice',
 				'action'		=> $action,
 				'project_id'	=> $project_id,
-				'invoice_id'	=> $invoice_id,
-				'action'		=> $action
+				'invoice_id'	=> $invoice_id
 			);
 
-			$GLOBALS['phpgw']->template->set_var('lang_action',lang('Invoice'));
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('create invoice');
+
 			$GLOBALS['phpgw']->template->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$GLOBALS['phpgw']->template->set_var('currency',$prefs['currency']);
 

@@ -168,6 +168,8 @@
 			$GLOBALS['phpgw']->template->set_file(array('projects_list_t' => 'bill_list.tpl'));
 			$GLOBALS['phpgw']->template->set_block('projects_list_t','projects_list','list');
 
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_parent?lang('list jobs'):lang('list projects'));
+
 			if (!$action)
 			{
 				$action = 'mains';
@@ -224,9 +226,9 @@
 
 			$GLOBALS['phpgw']->template->set_var('action_list',$action_list);
 			$GLOBALS['phpgw']->template->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$GLOBALS['phpgw']->template->set_var('filter_list',$this->nextmatchs->filter(1,1));
+			$GLOBALS['phpgw']->template->set_var('filter_list',$this->nextmatchs->new_filter($this->filter));
 			$GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(1));
+			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(array('query' => $this->query)));
 
 // ---------------- list header variable template-declarations --------------------------
 
@@ -324,7 +326,8 @@
 				$GLOBALS['phpgw']->template->set_var('part',$GLOBALS['phpgw']->link('/index.php',$link_data));
 				$GLOBALS['phpgw']->template->set_var('lang_part',lang('Delivery'));
 
-				$link_data['menuaction'] = 'projects.uideliveries.list_deliveries';
+				$link_data['menuaction']	= 'projects.uideliveries.list_deliveries';
+				$link_data['action']		= 'del';
 				$GLOBALS['phpgw']->template->set_var('partlist',$GLOBALS['phpgw']->link('/index.php',$link_data));
 				$GLOBALS['phpgw']->template->set_var('lang_partlist',lang('Delivery list'));
 
@@ -431,7 +434,8 @@
 			$GLOBALS['phpgw']->template->set_file(array('hours_list_t' => 'del_listhours.tpl'));
 			$GLOBALS['phpgw']->template->set_block('hours_list_t','hours_list','list');
 
-			$GLOBALS['phpgw']->template->set_var('lang_action',lang('Delivery'));
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('create delivery');
+
 			$GLOBALS['phpgw']->template->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
 			$GLOBALS['phpgw']->template->set_var('hidden_vars','<input type="hidden" name="referer" value="' . $referer . '">');
@@ -664,11 +668,6 @@
 			$action		= get_var('action',array('POST','GET'));
 			$project_id	= get_var('project_id',array('POST','GET'));
 
-			$start		= get_var('start',array('POST','GET'));
-			$sort		= get_var('sort',array('POST','GET'));
-			$order		= get_var('order',array('POST','GET'));
-			$query		= get_var('query',array('POST','GET'));
-
 			$this->display_app_header();
 
 			$GLOBALS['phpgw']->template->set_file(array('projects_list_t' => 'bill_listinvoice.tpl'));
@@ -678,20 +677,17 @@
 			(
 				'menuaction'	=> 'projects.uideliveries.list_deliveries',
 				'action'		=> $action,
-				'project_id'	=> $project_id,
-				'start'			=> $start,
-				'query'			=> $query,
-				'sort'			=> $sort,
-				'order'			=> $order
+				'project_id'	=> $project_id
 			);
 
-			$GLOBALS['phpgw']->template->set_var('lang_action',lang('Delivery list'));
-			$GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(1));
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('list deliveries');
 
-			if (! $start)
+			$GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(array('query' => $this->query)));
+
+			if (! $this->start)
 			{
-				$start = 0;
+				$this->start = 0;
 			}
 
 			if (!$project_id)
@@ -699,25 +695,25 @@
 				$project_id = '';
 			}
 
-			$del = $this->bodeliveries->read_deliveries($query, $sort, $order, True, $project_id);
+			$del = $this->bodeliveries->read_deliveries($this->start, $this->query, $this->sort, $this->order, True, $project_id);
 
 // -------------------- nextmatch variable template-declarations -----------------------------
 
-			$left = $this->nextmatchs->left('/index.php',$start,$this->bodeliveries->total_records,$link_data);
-			$right = $this->nextmatchs->right('/index.php',$start,$this->bodeliveries->total_records,$link_data);
+			$left = $this->nextmatchs->left('/index.php',$this->start,$this->bodeliveries->total_records,$link_data);
+			$right = $this->nextmatchs->right('/index.php',$this->start,$this->bodeliveries->total_records,$link_data);
 			$GLOBALS['phpgw']->template->set_var('left',$left);
 			$GLOBALS['phpgw']->template->set_var('right',$right);
 
-			$GLOBALS['phpgw']->template->set_var('lang_showing',$this->nextmatchs->show_hits($this->bodeliveries->total_records,$start));
+			$GLOBALS['phpgw']->template->set_var('lang_showing',$this->nextmatchs->show_hits($this->bodeliveries->total_records,$this->start));
 
 // ------------------------ end nextmatch template -------------------------------------------
 
 // ---------------- list header variable template-declarations -------------------------------
 
-			$GLOBALS['phpgw']->template->set_var('sort_num',$this->nextmatchs->show_sort_order($sort,'num',$order,'/index.php',lang('Delivery ID'),$link_data));
-			$GLOBALS['phpgw']->template->set_var('sort_customer',$this->nextmatchs->show_sort_order($sort,'customer',$order,'/index.php',lang('Customer'),$link_data));
-			$GLOBALS['phpgw']->template->set_var('sort_title',$this->nextmatchs->show_sort_order($sort,'title',$order,'/index.php',lang('Title'),$link_data));
-			$GLOBALS['phpgw']->template->set_var('sort_date',$this->nextmatchs->show_sort_order($sort,'date',$order,'/index.php',lang('Date'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_num',$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Delivery ID'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_customer',$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_title',$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_date',$this->nextmatchs->show_sort_order($this->sort,'date',$this->order,'/index.php',lang('Date'),$link_data));
 			$GLOBALS['phpgw']->template->set_var('sort_sum','');
 			$GLOBALS['phpgw']->template->set_var('lang_data',lang('Delivery'));
 
@@ -769,6 +765,7 @@
 				}
 			}
 			$GLOBALS['phpgw']->template->pfp('out','projects_list_t',True);
+			$this->save_sessiondata('del');
 		}
 
 		function show_delivery()

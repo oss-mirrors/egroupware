@@ -6,9 +6,7 @@
 		Window1=window.open('{addressbook_link}',"Search","width=800,height=600,toolbar=no,scrollbars=yes,resizable=yes");
 	}
 </script>
-<br><br>
-<p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
-<hr noshade width="98%" align="center" size="1">
+
 <center>
 {bill_message}
 <form method="POST" name="projects_form" action="{actionurl}">

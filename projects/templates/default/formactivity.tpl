@@ -1,6 +1,5 @@
 <!-- $Id$ -->
-<p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
-<hr noshade width="98%" align="center" size="1">
+
 <center>
 <form method="POST" name="activity_form" action="{actionurl}">
 {pref_message}<br>{message}
@@ -19,7 +18,7 @@
 	</tr>
 	<tr>
 		<td>{lang_category}:</td>
-		<td><select name="new_cat"><option value="">{lang_none}</option>{cats_list}</select></font></td>
+		<td><select name="new_cat"><option value="">{lang_none}</option>{cats_list}</select></td>
 	</tr>
 	<tr>
 		<td>{lang_remarkreq}:</td>
@@ -39,7 +38,7 @@
          
 <table width="50%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
-		<td height="50" align="center"><input type="submit" name="submit" value="{lang_save}"></td>
+		<td height="50" align="center"><input type="submit" name="values[submit]" value="{lang_save}"></td>
 		<td height="50" align="center"><input type="reset" name="reset" value="{lang_reset}"></form></td>
 		<td height="50" align="center">
 			<form method="POST" action="{done_url}">
@@ -55,7 +54,7 @@
 <table width="50%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
 		<td height="50" align="center">
-			<input type="submit" name="submit" value="{lang_save}"></form></td>
+			<input type="submit" name="values[submit]" value="{lang_save}"></form></td>
 		<td height="50" align="center">
 			<form method="POST" action="{deleteurl}">
 			<input type="submit" name="delete" value="{lang_delete}"></form></td>

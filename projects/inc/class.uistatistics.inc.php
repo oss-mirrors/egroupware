@@ -215,14 +215,11 @@
 				$GLOBALS['phpgw']->template->set_var('lang_header',lang('Job list'));
 			}
 
-			$GLOBALS['filter']	= $this->filter;
-			$GLOBALS['query']	= $this->query;
-
 			$GLOBALS['phpgw']->template->set_var('action_list',$action_list);
 			$GLOBALS['phpgw']->template->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$GLOBALS['phpgw']->template->set_var('filter_list',$this->nextmatchs->filter(1,1));
+			$GLOBALS['phpgw']->template->set_var('filter_list',$this->nextmatchs->new_filter($this->filter));
 			$GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(1));
+			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(array('query' => $this->query)));
 
 // ---------------- list header variable template-declarations --------------------------
 

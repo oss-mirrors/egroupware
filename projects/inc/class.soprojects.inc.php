@@ -495,9 +495,8 @@
 		{
 			switch ($action)
 			{
-				case 'mains': $p_table = ' phpgw_p_projects'; break;
-				case 'subs'	: $p_table = ' phpgw_p_projects'; break;
 				case 'act'	: $p_table = ' phpgw_p_activities '; break;
+				default		: $p_table = ' phpgw_p_projects'; break;
 			}
 
 			if ($check == 'number')

@@ -36,7 +36,6 @@
 		var $public_functions = array
 		(
 			'list_hours'	=> True,
-			'add_hours'		=> True,
 			'edit_hours'	=> True,
 			'delete_hours'	=> True,
 			'view_hours'	=> True
@@ -201,26 +200,15 @@
 				'action'		=> $action
 			);
 
-			$GLOBALS['filter']	= $this->filter;
-			$GLOBALS['query']	= $this->query;
-
 			$GLOBALS['phpgw']->template->set_var('project_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$GLOBALS['phpgw']->template->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$GLOBALS['phpgw']->template->set_var('filter_list',$this->nextmatchs->filter(1));
+			$GLOBALS['phpgw']->template->set_var('filter_list',$this->nextmatchs->new_filter(array('format' => 'yours','filter' => $this->filter)));
 			$GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(1));
+			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(array('query' => $this->query)));
 			$GLOBALS['phpgw']->template->set_var('state_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
-			if ($action != 'asubs')
-			{
-				$GLOBALS['phpgw']->template->set_var(lang_action,lang('Work hours list'));
-				$GLOBALS['phpgw']->template->set_var('project_list',$this->boprojects->select_project_list('all',$status,$project_id));
-			}
-			else
-			{
-				$GLOBALS['phpgw']->template->set_var(lang_action,lang('Work hours archive'));
-				$GLOBALS['phpgw']->template->set_var('project_list',$this->boprojects->select_project_list('all','archive',$project_id));
-			}
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . (($action == 'asubs')?lang('work hours archive'):lang('list work hours'));
+			$GLOBALS['phpgw']->template->set_var('project_list',$this->boprojects->select_project_list('all',(($action != 'asubs')?$status:'archive'),$project_id));
 
 			switch($this->state)
 			{
@@ -351,7 +339,8 @@
 			{
 				if ($this->boprojects->check_perms($this->grants[$coordinator],PHPGW_ACL_ADD) || $coordinator == $this->account)
 				{
-					$link_data['menuaction'] = 'projects.uiprojecthours.add_hours';
+					$link_data['menuaction'] = 'projects.uiprojecthours.edit_hours';
+					unset($link_data['hours_id']);
 					$GLOBALS['phpgw']->template->set_var('action','<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data)
 																	. '"><input type="submit" value="' . lang('Add') . '"></form>');
 				}
@@ -421,147 +410,6 @@
 			return $dateval;
 		}
 
-		function add_hours()
-		{
-			$project_id	= get_var('project_id',array('POST','GET'));
-			$pro_parent	= get_var('pro_parent',array('POST','GET'));
-			$values		= get_var('values',array('POST'));
-			$submit		= get_var('submit',array('POST'));
-
-			$link_data = array
-			(
-				'menuaction'	=> 'projects.uiprojecthours.list_hours',
-				'project_id'	=> $project_id,
-				'pro_parent'	=> $pro_parent
-			);
-
-			if ($submit)
-			{
-				$values['project_id'] = $project_id;
-				$values['pro_parent'] = $pro_parent;
-				$error = $this->boprojecthours->check_values($values);
-				if (is_array($error))
-				{
-					$GLOBALS['phpgw']->template->set_var('message',$GLOBALS['phpgw']->common->error_list($error));
-				}
-				else
-				{
-					$this->boprojecthours->save_hours($values);
-					Header('Location: ' . $GLOBALS['phpgw']->link('/index.php',$link_data));
-				}
-			}
-
-			$this->display_app_header();
-
-			$GLOBALS['phpgw']->template->set_file(array('hours_add' => 'hours_formhours.tpl'));
-			$GLOBALS['phpgw']->template->set_block('hours_add','add','addhandle');
-			$GLOBALS['phpgw']->template->set_block('hours_add','edit','edithandle');
-
-			$GLOBALS['phpgw']->template->set_var('doneurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
-
-			$link_data['menuaction'] = 'projects.uiprojecthours.add_hours';
-			$GLOBALS['phpgw']->template->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$GLOBALS['phpgw']->template->set_var('lang_action',lang('Add work hours'));
-
-			$GLOBALS['phpgw']->template->set_var('project_name',$this->boprojects->return_value('pro',$project_id));
-
-			if ($pro_parent)
-			{
-				$GLOBALS['phpgw']->template->set_var('pro_parent',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('pro',$pro_parent)));
-				$GLOBALS['phpgw']->template->set_var('lang_pro_parent',lang('Main project:'));
-			}
-
-			$GLOBALS['phpgw']->template->set_var('activity_list',$this->boprojects->select_hours_activities($project_id, $values['activity_id']));
-
-			$sdate = $this->hdate_format($values['sdate']);
-
-			$GLOBALS['phpgw']->template->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$sdate['year']),
-																			$this->sbox->getMonthText('values[smonth]',$sdate['month']),
-																			$this->sbox->getDays('values[sday]',$sdate['day'])));
-
-			$amsel = ' checked';
-			$pmsel = '';
-
-			if ($GLOBALS['phpgw_info']['user']['preferences']['common']['timeformat'] == '12')
-			{
-				if ($sdate['hour'] >= 12)
-				{
-					$amsel = '';
-					$pmsel = ' checked'; 
-					if ($sdate['hour'] > 12)
-					{
-						$sdate['hour'] = $sdate['hour'] - 12;
-					}
-				}
-
-				if ($sdate['hour'] == 0)
-				{
-					$sdate['hour'] = 12;
-				}
-
-				$sradio = '<input type="radio" name="values[sampm]" value="am"' . $amsel . '>am';
-				$sradio .= '<input type="radio" name="values[sampm]" value="pm"' . $pmsel . '>pm';
-				$GLOBALS['phpgw']->template->set_var('sradio',$sradio);
-			}
-			else
-			{
-				$GLOBALS['phpgw']->template->set_var('sradio','');
-			}
-
-			$GLOBALS['phpgw']->template->set_var('shour',$sdate['hour']);
-			$GLOBALS['phpgw']->template->set_var('smin',$sdate['min']);
-
-			$edate = $this->hdate_format($values['edate']);
-
-			$GLOBALS['phpgw']->template->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$edate['year']),
-																		$this->sbox->getMonthText('values[emonth]',$edate['month']),
-																		$this->sbox->getDays('values[eday]',$edate['day'])));
-
-			if ($GLOBALS['phpgw_info']['user']['preferences']['common']['timeformat'] == '12')
-			{
-				if ($edate['hour'] >= 12)
-				{
-					$amsel = '';
-					$pmsel = ' checked';
-
-					if ($edate['hour'] > 12)
-					{
-						$edate['hour'] = $edate['hour'] - 12;
-					}
-				}
-				if ($edate['hour'] == 0)
-				{
-					$edate['hour'] = 12;
-				}
-
-				$eradio = '<input type="radio" name="values[eampm]" value="am"' . $amsel . '>am';
-				$eradio .= '<input type="radio" name="values[eampm]" value="pm"' . $pmsel . '>pm';
-				$GLOBALS['phpgw']->template->set_var('eradio',$eradio);
-			}
-			else
-			{
-				$GLOBALS['phpgw']->template->set_var('eradio','');
-			}
-
-			$GLOBALS['phpgw']->template->set_var('ehour',$edate['hour']);
-			$GLOBALS['phpgw']->template->set_var('emin',$edate['min']);
-
-			$GLOBALS['phpgw']->template->set_var('remark',nl2br($values['remark']));
-			$GLOBALS['phpgw']->template->set_var('hours_descr',$values['hours_descr']);
-
-			$GLOBALS['phpgw']->template->set_var('hours',$values['hours']);
-			$GLOBALS['phpgw']->template->set_var('minutes',$values['minutes']);
-
-			$GLOBALS['phpgw']->template->set_var('status_list',$this->status_format($values['status']));
-
-			$GLOBALS['phpgw']->template->set_var('employee_list',$this->employee_format($values['employee']));
-
-			$GLOBALS['phpgw']->template->set_var('edithandle','');
-			$GLOBALS['phpgw']->template->set_var('addhandle','');
-			$GLOBALS['phpgw']->template->pfp('out','hours_add');
-			$GLOBALS['phpgw']->template->pfp('addhandle','add');
-		}
-
 		function edit_hours()
 		{
 			$project_id	= get_var('project_id',array('POST','GET'));
@@ -569,20 +417,14 @@
 			$hours_id	= get_var('hours_id',array('POST','GET'));
 
 			$values		= get_var('values',array('POST'));
-			$submit		= get_var('submit',array('POST'));
 			$referer	= get_var('referer',array('POST'));
 
-			if (! $submit)
+			if (! $values['submit'])
 			{
 				$referer = $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] ? $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] : $GLOBALS['HTTP_REFERER'];
 			}
 
-			if (!$hours_id)
-			{
-				Header('Location: ' . $referer);
-			}
-
-			if ($submit)
+			if ($values['submit'])
 			{
 				$values['hours_id']		= $hours_id;
 				$error = $this->boprojecthours->check_values($values);
@@ -609,19 +451,23 @@
 
 			$this->display_app_header();
 
-			$GLOBALS['phpgw']->template->set_file(array('hours_edit' => 'hours_formhours.tpl'));
-			$GLOBALS['phpgw']->template->set_block('hours_edit','add','addhandle');
-			$GLOBALS['phpgw']->template->set_block('hours_edit','edit','edithandle');
+			$form = ($hours_id?'edit':'add');
+
+			$GLOBALS['phpgw']->template->set_file(array('hours_' . $form => 'hours_formhours.tpl'));
+			$GLOBALS['phpgw']->template->set_block('hours_' . $form,'add','addhandle');
+			$GLOBALS['phpgw']->template->set_block('hours_' . $form,'edit','edithandle');
 
 			$GLOBALS['phpgw']->template->set_var('hidden_vars','<input type="hidden" name="referer" value="' . $referer . '">');
 
 			$GLOBALS['phpgw']->template->set_var('doneurl',$referer);
 
 			$GLOBALS['phpgw']->template->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$GLOBALS['phpgw']->template->set_var('lang_action',lang('Edit work hours'));
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($hours_id?lang('edit work hours'):lang('add work hours'));
 
-			$values = $this->boprojecthours->read_single_hours($hours_id);
-
+			if ($hours_id)
+			{
+				$values = $this->boprojecthours->read_single_hours($hours_id);
+			}
 			$GLOBALS['phpgw']->template->set_var('status_list',$this->status_format($values['status']));
 			$GLOBALS['phpgw']->template->set_var('employee_list',$this->employee_format($values['employee']));
 
@@ -739,8 +585,9 @@
 
 			$GLOBALS['phpgw']->template->set_var('edithandle','');
 			$GLOBALS['phpgw']->template->set_var('addhandle','');
-			$GLOBALS['phpgw']->template->pfp('out','hours_edit');
-			$GLOBALS['phpgw']->template->pfp('edithandle','edit');
+
+			$GLOBALS['phpgw']->template->pfp('out','hours_' . $form);
+			$GLOBALS['phpgw']->template->pfp($form . 'handle',$form);
 		}
 
 		function view_hours()

@@ -2,8 +2,6 @@
 
 {app_header}
 
-<p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
-<hr noshade width="98%" align="center" size="1">
 <center>
 {error}
 <table width="85%" border="0" cellspacing="3" cellpadding="3">
