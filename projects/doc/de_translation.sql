@@ -1,6 +1,6 @@
 # $Id$
 # First we will delete all entries for projects, to prevent dups when updating.                                                           
-DELETE from lang WHERE app_name='projects';
+DELETE from lang WHERE app_name='projects' and lang='de';
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Projects','projects','de','Projekte');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Project preferences','projects','de','Projekt Einstellungen');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Project preferences','preferences','de','Projekt Einstellungen');
