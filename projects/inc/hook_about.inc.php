@@ -12,6 +12,11 @@
 
 	function about_app($tpl,$handle)
 	{
-		$s = '<b>' . lang('Projects') . '</b><p>' . lang('written by:') . '&nbsp;Bettina Gille&nbsp;&nbsp;[ceb@phpgroupware.org]';
+		$t = CreateObject('phpgwapi.Template',$GLOBALS['phpgw']->common->get_tpl_dir('projects'));
+		$s = $t->set_file(array('about' => 'about.tpl'));
+		$s .= $t->set_var('app_title',lang('Projects'));
+		$s .= $t->set_var('written_by',lang('written by'));
+		$s .= $t->set_var('developers','Bettina Gille&nbsp;&nbsp;[ceb@phpgroupware.org]');
+		$s .= $t->fp('out','about');
 		return $s;
 	}
