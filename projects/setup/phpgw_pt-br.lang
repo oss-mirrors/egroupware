@@ -1,0 +1,121 @@
+projects	common	pt-br	Projetos
+project administration	admin	pt-br	Administração de Projetos
+Account	projects	pt-br	Conta
+Active	projects	pt-br	Ativo
+Activities	projects	pt-br	Ativos
+Activities list	projects	pt-br	Lista ativos
+Activity	projects	pt-br	Ativado
+Activity ID	projects	pt-br	ID da atividade
+Activity %1 has been added !	projects	pt-br	Atividade %1 foi adicionada !
+Add Activity	projects	pt-br	Adicionar ativo
+Add hours	projects	pt-br	Adicionar horas
+Add project	projects	pt-br	Adicionar projeto
+Add project hours	projects	pt-br	Adicionar horas ao projetos
+Administrator	projects	pt-br	Administrador
+All deliveries	projects	pt-br	Todas as notas de entrega
+All invoices	projects	pt-br	Todas as faturas
+All delivery notes	projects	pt-br	Todas as notas de entrega
+archive	projects	pt-br	Arquivo
+billed	projects	pt-br	Devedor
+Billed only	projects	pt-br	Devedor somente
+Billing	projects	pt-br	Cobrança
+Bookable activities	projects	pt-br	Recursos encomendáveis
+Billable activities	projects	pt-br	Recursos cobráveis
+Bill per workunit	projects	pt-br	Fatura por unidade de trabalho
+Budget	projects	pt-br	Orçamento
+Calculate	projects	pt-br	Calcular
+Coordinator	projects	pt-br	Coordenador
+Create delivery	projects	pt-br	Criar entrega
+Create invoice	projects	pt-br	Criar fatura
+Customer	projects	pt-br	Clientes
+Delete hours	projects	pt-br	Apagar horas
+Deliveries	projects	pt-br	Entregas
+Delivery	projects	pt-br	Entrega
+Delivery date	projects	pt-br	Data de entrega
+Delivery note	projects	pt-br	Nota de entrega
+Delivery ID	projects	pt-br	ID da entrega
+Delivery list	projects	pt-br	Lista de entregas
+Delivery notes	projects	pt-br	Notas de entrega
+Delivery %1 has been created !	projects	pt-br	Entrega %1 foi criada !
+Delivery %1 has been updated !	projects	pt-br	Entrega %1 foi atualizada !
+Edit Activity	projects	pt-br	Editar ativo
+Edit hours	projects	pt-br	Editar horas
+Edit project administrator list	projects	pt-br	Editar Lista de administração de projetos
+Edit project	projects	pt-br	Editar Projetos
+Edit project hours	projects	pt-br	Editar horas do projetos
+Employee	projects	pt-br	Funcionário
+Generate Delivery ID ?	projects	pt-br	Gerar ID de entrega ?
+Generate Project ID ?	projects	pt-br	Gerar ID do projeto ?
+Generate Invoice ID ?	projects	pt-br	Gerar ID da fatura ?
+Hours	projects	pt-br	Horas
+Invoice	projects	pt-br	Fatura
+Invoice date	projects	pt-br	Data da fatura
+Invoice ID	projects	pt-br	ID da fatura
+Invoice list	projects	pt-br	Lista de faturas
+Invoices	projects	pt-br	Faturas
+Invoice %1 has been created !	projects	pt-br	Fatura %1 foi criada !
+Invoice %1 has been updated !	projects	pt-br	Fatura %1 foi atualizada !
+Job	projects	pt-br	Trabalho
+Job date	projects	pt-br	Data do Trabalho
+Job description	projects	pt-br	Descrição do Trabalho
+Job has been added !	projects	pt-br	Horas foram adicionadas !
+Job has been updated !	projects	pt-br	Horas foram adicionadas !
+Job list	projects	pt-br	Lista de trabalhos
+List hours	projects	pt-br	Lista de horas
+Main project	projects	en	Main project
+Minutes per workunit	projects	pt-br	Minutos por unidade de trabalho
+net	projects	pt-br	rede
+New project	projects	pt-br	Novo projeto
+Nonactive	projects	pt-br	Não ativo
+Number	projects	pt-br	Número
+open	projects	pt-br	Abrir
+Overall	projects	pt-br	Marcação
+per	projects	pt-br	per
+per workunit	projects	pt-br	por unidade de trabalho
+Please enter an ID !	projects	pt-br	Por favor entre com um identificador !
+Please enter a remark !	projects	pt-br	Por favor entre com uma nota !
+Please enter the bill per workunit !	projects	pt-br	Por favor entre com um valor para uma unidade de trabalho !
+Please enter the minutes per workunit !	projects	pt-br	Por favor entre com os minutos para cada unidade de trabalho !
+Position	projects	pt-br	Posição
+Print delivery	projects	pt-br	Imprimir entrega
+Print invoice	projects	pt-br	Imprimir fatura
+Project	projects	pt-br	Projeto
+Project administration	projects	pt-br	Administração de Projetos
+Project archive	projects	pt-br	Lista de projetos
+Project billing	projects	pt-br	Fatura do projeto
+Project delivery	projects	pt-br	Entrega do projeto
+Project ID	projects	pt-br	ID do projeto
+Project list	projects	pt-br	Lista de projetos
+Project name	projects	pt-br	Nome do projeto
+Project preferences	projects	pt-br	Preferência de Projetos
+Project statistic	projects	pt-br	Estatística do projeto
+project statistics	projects	pt-br	Estatísticas do projeto
+Remark	projects	pt-br	Nortas
+Remark required	projects	pt-br	Notas requeridos
+Select project	projects	pt-br	Selecione um projeto
+Select tax for workhours	projects	pt-br	Selecione uma taxa para horas de trabalho
+Select users	projects	pt-br	Selecione usuários
+Select groups	projects	pt-br	Selecione grupos
+Select your address	projects	pt-br	Selecione seu endereço
+Statistic	projects	pt-br	Estatística
+Statistics	projects	pt-br	Estatísticas
+Short description	projects	pt-br	Descrição rápida
+Sum	projects	pt-br	Som
+Sum workunits	projects	pt-br	Soma de unidades de trabalho
+tax	projects	pt-br	taxa
+That ID has been used already !	projects	pt-br	Esse ID já está sendo usado !
+Update invoice	projects	pt-br	Atualizar fatura
+Update delivery	projects	pt-br	Atualizar entrega
+Username / Group	projects	pt-br	Usuários / Grupo
+User statistic	projects	pt-br	Estatística dos usuários
+user statistics	projects	pt-br	Estatísticas dos usuários
+View job	projects	pt-br	Ver Trabalho
+View project	projects	en	View project
+Work date	projects	pt-br	Data de trabalho
+Work time	projects	pt-br	Tempo de trabalho
+Workunit	projects	pt-br	Unidade de Trabalho
+Workunits	projects	pt-br	Unidades de Trabalho
+You have entered an invalid start date !	projects	pt-br	Você entrou com uma data de ínicio inválida !
+You have entered an invalid end date !	projects	pt-br	Você entrou com uma data de finalização inválida !
+You have no customer selected !	projects	pt-br	Você não tem clientes selecionados !
+You have to CREATE a delivery or invoice first !	projects	pt-br	Você deve criar uma ENTREGA ou uma fatura antes !
