@@ -391,9 +391,9 @@
 			{
 				$from_name = $GLOBALS['phpgw']->msg->get_pref_value('fullname');
 				//$from_name = $GLOBALS['phpgw_info']['user']['fullname'];
-				if(isset($GLOBALS['phpgw_info']['user']['mailaddress']))
+				if(isset($GLOBALS['phpgw_info']['user']['email']))
 				{
-					$from_address = $GLOBALS['phpgw_info']['user']['mailaddress'];
+					$from_address = $GLOBALS['phpgw_info']['user']['email'];
 				}
 				else
 				{
