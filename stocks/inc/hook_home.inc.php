@@ -23,14 +23,10 @@
 		$app_id	= $GLOBALS['phpgw']->applications->name2id('stocks');
 		$GLOBALS['portal_order'][] = $app_id;
 
-		$portalbox = CreateObject('phpgwapi.listbox',array
-		(
-			'app_name'	=> 'stocks',
-			'app_id'	=> $app_id,
-			'title'		=> lang('Stocks')
-		));
-
+		$GLOBALS['phpgw']->portalbox->set_params(array('app_name'	=> 'stocks',
+														'app_id'	=> $app_id,
+														'title'		=> lang('Stocks')));
 		$stocks = CreateObject('stocks.ui');
-		$portalbox->xdraw($stocks->return_quotes());
+		$GLOBALS['phpgw']->portalbox->xdraw($stocks->return_quotes());
 	}
 ?>

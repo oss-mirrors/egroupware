@@ -105,7 +105,7 @@
 					'percentchange'	=> $quotes[$i]['pchange'],
 					'date'			=> $quotes[$i]['date'],
 					'time'			=> $quotes[$i]['time'],
-					'volume'		=> $quotes[$i]['volume'],
+					//'volume'		=> $quotes[$i]['volume'],
 					'color'			=> ($quotes[$i]['dchange'] < 0?'red':'green')
 				);
 			}
