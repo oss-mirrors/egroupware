@@ -1,0 +1,36 @@
+1 message has been deleted	email	de	1 Nachricht wurde gelöscht
+add to addressbook	email	de	Zum Addressbuch hinzufügen
+cc	email	de	Kopie
+compose	email	de	Verfassen
+email account name	email	de	Name des E-Mail Kontos
+email address	email	de	E-Mail Adresse
+email password	email	de	E-Mail Passwort
+folder	email	de	Ordner
+forward	email	de	Weiterleiten
+from	email	de	Von
+if applicable	email	de	falls zutreffend
+image	email	de	Grafik
+imap server type	email	de	Typ des IMAP Servers
+mail folder(uw-maildir)	email	de	Mail Ordner (UW-Mailverzeichnis)
+mail server	email	de	Mail Server
+mail server type	email	de	Typ des Mailservers
+messages	email	de	Nachrichten
+move selected messages into	email	de	Verschiebe ausgewählte Nachrichten in
+new message	email	de	Neue Nachricht
+non-standard	email	de	nicht Standard
+please select a message first	email	de	Bitte zuerst eine Nachricht wählen
+previous	email	de	Vorige
+reply	email	de	Antworten
+reply all	email	de	Allen antworten
+section	email	de	Sektion
+send	email	de	Senden
+send deleted messages to the trash	email	de	gelöschte Nachrichten in die Mülltonne befördern
+size	email	de	Größe
+switch current folder to	email	de	Wechseln zum Ordner
+there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	de	Die Verbindung zum Mailserver ist leider fehlgeschlagen.<br>Bitte prüfen sie Ihren Usernamen und Ihr Passwort, oder setzen Sie sich mit Ihrem Administrator in Verbindung.
+this folder is empty	email	de	Dieser Ordner ist leer
+to	email	de	An
+undisclosed recipients	email	de	Verborgene Empfänger
+undisclosed sender	email	de	Verborgener Absender
+use custom settings	email	de	Benutzerdefinierte Einstellungen verwenden
+x messages have been deleted	email	de	%1 Nachrichten wurden gelöscht

@@ -1,0 +1,46 @@
+1 message has been deleted	email	ja	1 件削除しました。
+add to addressbook	email	ja	アドレス帳へ追加
+attach file	email	ja	添付ファイル
+attach signature	email	ja	署名追加
+create a folder	email	ja	フォルダ作成
+custom email settings	email	ja	カスタム設定
+date	email	ja	送信日付
+default sorting order	email	ja	ソート順（既定）
+delete a folder	email	ja	フォルダ削除
+email account name	email	ja	電子メールアカウント名
+email address	email	ja	電子メールアドレス
+email password	email	ja	電子メールパスワード
+email signature	email	ja	署名
+files	email	ja	ファイル
+firstname	email	ja	姓
+folder	email	ja	フォルダ
+folder maintenance	email	ja	フォルダメンテナンス
+if applicable	email	ja	適用時
+image	email	ja	Image
+imap server type	email	ja	IMAP サーバタイプ
+lastname	email	ja	名
+mail folder(uw-maildir)	email	ja	メールフォルダ（UW-MailDir）
+mail server	email	ja	メールサーバ
+mail server type	email	ja	メールサーバタイプ
+messages	email	ja	メッセージ
+move selected messages into	email	ja	選択メッセージを移動
+newest -> oldest	email	ja	新から旧
+new message	email	ja	新着メッセージ
+no subject	email	ja	No Subject
+non-standard	email	ja	既定値を使用しない
+oldest -> newest	email	ja	旧から新
+please select a message first	email	ja	メッセージを選択してください。
+section	email	ja	Section
+select email address	email	ja	電子メールアドレス
+select home email address	email	ja	電子メール（個人）
+select work email address	email	ja	電子メール（仕事）
+send deleted messages to the trash	email	ja	削除メッセージをゴミ箱へ
+show new messages on main screen	email	ja	新着メッセージをメイン画面に表示
+show sender's email address with name	email	ja	送信者名の表示方法
+size	email	ja	サイズ
+switch current folder to	email	ja	カレントフォルダ変更
+to	email	ja	宛先
+undisclosed recipients	email	ja	受信者未公開
+undisclosed sender	email	ja	送信者未公開
+use custom settings	email	ja	カスタム設定を使用
+x messages have been deleted	email	ja	%1 件削除しました。
