@@ -52,8 +52,7 @@
 				$this->to_address_size = $table_def['fd']['fmail_to_address']['precision'];
 				unset($table_def);
 			}
-			$this->db->insert($this->cache_table,array_merge($this->host_account_folder,array(
-				'fmail_uid'				=> $_data['uid'],
+			$this->db->insert($this->cache_table,array(
 				'fmail_date'			=> $_data['date'],
 				'fmail_subject'			=> $_data['subject'],
 				'fmail_sender_name'		=> $_data['sender_name'],
@@ -62,7 +61,9 @@
 				'fmail_to_address'		=> substr($_data['to_address'],0,$this->to_address_size),
 				'fmail_size'			=> $_data['size'],
 				'fmail_attachments'		=> $_data['attachments'],
-			)),False,__LINE__,__FILE__);	
+			),array_merge($this->host_account_folder,array(
+				'fmail_uid'				=> $_data['uid'],
+			)),__LINE__,__FILE__);	
 		}
 		
 		/**

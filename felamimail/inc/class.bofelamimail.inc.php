@@ -550,10 +550,6 @@
 						}
 					}
 					
-					// maybe it's already in the database
-					// lets remove it, sometimes the database gets out of sync
-					$caching->removeFromCache($messageData['uid']);
-					
 					$caching->addToCache($messageData);
 					
 					unset($messageData);
