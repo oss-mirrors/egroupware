@@ -1,51 +1,23 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - Daily Comics Admin Hook File                              *
-  * http://www.phpgroupware.org                                              *
-  * This file written by Sam Wynn <neotexan@wynnsite.com>                    *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare - Daily Comics Admin Hook File                              *
+	* http://www.phpgroupware.org                                              *
+	* This file written by Sam Wynn <neotexan@wynnsite.com>                    *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
-  /* $Id$ */
-{
-    echo "<p>\n";
+	/* $Id$ */
 
-    $imgfile = $phpgw->common->get_image_dir("comic")."/" . $appname .".gif";                                                                                                                
-    if (file_exists($imgfile))
-    {                                                                                                                                                           
-        $imgpath = $phpgw->common->get_image_path("comic")."/" . $appname .".gif";                                                                                                             
-    }
-    else
-    {                                                                                                                                                                               
-        $imgfile = $phpgw->common->get_image_dir("comic")."/navbar.gif";                                                                                                                       
-        if (file_exists($imgfile))
-        {                                                                                                                                                         
-            $imgpath = $phpgw->common->get_image_path("comic")."/navbar.gif";                                                                                                                    
-        }
-        else
-        {                                                                                                                                                                             
-            $imgpath = "";
-        }
-    }
+	$imgpath = $phpgw->common->image($appname,'navbar.gif');
+	section_start('Daily Comics',$imgpath);
 
-    section_start("Daily Comics",$imgpath);
+	section_item($phpgw->link('/comic/admin_options.php'),lang('Global Options'));
+	section_item($phpgw->link('/comic/admin_comics.php'),lang('Global Options'));
+	section_item($phpgw->link('/comic/admin_comics_reset.php'),lang('Reset Comic Data'));
 
-    $pg = $phpgw->link('/comic/admin_options.php');
-    printf("<A href=\"%s\">%s</A><br>", $pg,
-           lang("Global Options"));
-
-    $pg = $phpgw->link('/comic/admin_comics.php');
-    printf("<A href=\"%s\">%s</A><br>", $pg,
-           lang("Comic Data"));
-
-    $pg = $phpgw->link('/comic/admin_comics_reset.php');
-    printf("<A href=\"%s\">%s</A><br>", $pg,
-           lang("Reset Comic Data"));
-
-    section_end(); 
-}
+	section_end();
 ?>

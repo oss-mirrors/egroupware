@@ -57,7 +57,7 @@
 			}
 			else
 			{
-				$phpgw->categories->add($name,0);
+				$phpgw->categories->add($name,'0');
 				$cat[$name] = $phpgw->categories->name2id($name);
 			}
 

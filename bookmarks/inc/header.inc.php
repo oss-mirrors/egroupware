@@ -15,7 +15,15 @@
 
 	function app_header(&$tpl)
 	{
-		global $phpgw, $PHP_SELF;
+		global $phpgw, $phpgw_info, $PHP_SELF;
+
+		$tpl->set_block('common_','common');
+		$tpl->set_block('common_','preferences_header');
+
+		if ($phpgw_info['flags']['preferences_header'])
+		{
+			$tpl->parse('preference_header_','preference_header');
+		}
 
 		$tabs[1]['label'] = 'Tree view';
 		$tabs[1]['link']  = $phpgw->link('/bookmarks/tree.php');

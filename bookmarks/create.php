@@ -19,6 +19,7 @@
 		'enable_categories_class' => True,
 		'noheader'                => True,
 		'nonavbar'                => True,
+		'preferences_header' => True
 	);
 	include('../header.inc.php');
 	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
@@ -55,7 +56,7 @@
 	echo parse_navbar();
 
 	$phpgw->template->set_file(array(
-		'common'             => 'common.tpl',
+		'common_'            => 'common.tpl',
 		'possible_dup'       => 'create.possible_dup.tpl',
 		'possible_dup_lines' => 'create.possible_dup.line.tpl',
 		'body'               => 'form.tpl'
