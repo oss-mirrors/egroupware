@@ -24,7 +24,10 @@
 		'phpgw_bookmarks'
 	);
 
-	/* Dependacies for this app to work */
+	/* The hooks this app includes, needed for hooks registration */
+	$setup_info['bookmarks']['hooks'][] = 'preferences';
+
+	/* Dependencies for this app to work */
 	$setup_info['bookmarks']['depends'][] = array(
 		'appname'  => 'phpgwapi',
 		'versions' => Array('0.9.11','0.9.12','0.9.13')
