@@ -20,11 +20,11 @@
 		'news_site' => array(
 			'fd' => array(
 				'con' => array('type' => 'auto','nullable' => False),
-				'display' => array('type' => 'varchar', 'precision' => 8,'nullable' => True),
-				'base_url' => array('type' => 'varchar', 'precision' => 8,'nullable' => True),
-				'newsfile' => array('type' => 'varchar', 'precision' => 8,'nullable' => True),
+				'display' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
+				'base_url' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
+				'newsfile' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
 				'lastread' => array('type' => 'int', 'precision' => 4,'nullable' => True),
-				'newstype' => array('type' => 'varchar', 'precision' => 8,'nullable' => True),
+				'newstype' => array('type' => 'varchar', 'precision' => 15,'nullable' => True),
 				'cachetime' => array('type' => 'int', 'precision' => 4,'nullable' => True),
 				'listings' => array('type' => 'int', 'precision' => 4,'nullable' => True)
 			),
@@ -36,8 +36,8 @@
 		'news_headlines' => array(
 			'fd' => array(
 				'site' => array('type' => 'int', 'precision' => 4,'nullable' => False),
-				'title' => array('type' => 'varchar', 'precision' => 8,'nullable' => True),
-				'link' => array('type' => 'varchar', 'precision' => 8,'nullable' => True)
+				'title' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
+				'link' => array('type' => 'varchar', 'precision' => 255,'nullable' => True)
 			),
 			'pk' => array(),
 			'fk' => array(),
@@ -46,7 +46,7 @@
 		),
 		'users_headlines' => array(
 			'fd' => array(
-				'owner' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
+				'owner' => array('type' => 'varchar', 'precision' => 25,'nullable' => False),
 				'site' => array('type' => 'int', 'precision' => 4,'nullable' => False)
 			),
 			'pk' => array(),
