@@ -42,7 +42,7 @@
       </table>
      </center>
     <?php
-    include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+    include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
   }
 
   if (($cat_id) && ($confirm)) {
