@@ -574,7 +574,8 @@
 			}
 			else
 			{
-				$t->set_var('mlist_attach','');
+				//$t->set_var('mlist_attach','');
+				$t->set_var('mlist_attach','&nbsp;');
 			}
 			$t->set_var('mlist_msg_num',$mlist_msg_num);
 			$t->set_var('mlist_backcolor',$bg);
