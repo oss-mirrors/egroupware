@@ -82,10 +82,10 @@ file	email	en	file
 file attachment	email	en	File attachment
 file into	email	en	File into
 fill in as much as you can	email	en	fill in as much as you can
-filter [number] and name	email	en	Filter [number] and Name
 filter inbox for accounts	email	en	Filter INBOX for accounts
 filter name	email	en	Filter Name
 filter number	email	en	Filter Number
+filter [number] and name	email	en	Filter [number] and Name
 filters	email	en	Filters
 filters list	email	en	Filters List
 flag as important	email	en	Flag as important
