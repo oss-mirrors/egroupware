@@ -89,7 +89,7 @@
     function addressbook()
     {
 <!--   Window1=window.open('<?php echo $phpgw->link("addressbook.php","query="); ?>+document.doit.to.value',"Search","width=800,height=600","toolbar=yes,resizable=yes");  -->
-       Window1=window.open('<?php echo $phpgw->link("addressbook.php"); ?>&query=document.doit.to.value',"Search","width=800,height=600,toolbar=yes,scrollbars=yes,resizable=yes");
+       Window1=window.open('<?php echo $phpgw->link("addressbook.php"); ?>&query=',"Search","width=800,height=600,toolbar=yes,scrollbars=yes,resizable=yes");
     }
 
     function attach_window(url)
