@@ -24,39 +24,32 @@
 		function so()
 		{
 			$this->db = $GLOBALS['phpgw']->db;
+			$this->db->set_app('bookmarks');
 			$this->table = 'phpgw_bookmarks';
-			$table_def = $this->db->get_table_definitions('bookmarks',$this->table);
-			$this->db->set_column_definitions($table_def['fd']);
+			$this->user = $GLOBALS['phpgw_info']['user']['account_id'];
 		}
 
 		function _list($cat_list,$public_user_list,$start,$where_clause)
 		{
-			$query = "SELECT * FROM $this->table WHERE ( bm_owner=" . (int)$GLOBALS['phpgw_info']['user']['account_id'];
-			if ($public_user_list)
-			{
-				$filtermethod .= ' OR ('.$this->db->column_data_implode(' AND ',array(
+			$where = $this->db->expression($this->table,'(',array('bm_owner'=>$this->user),
+				(boolean) $public_user_list,' OR (',array(
 					'bm_access'=>'public',
 					'bm_owner' => $public_user_list,
-				));
-			}
-			$query .= ' )';
-
-			if ($cat_list)
-			{
-				$where_clause .= ' '.$this->db->column_data_implode(' AND ',array(
+				),'))',(boolean)$cat_list,' AND ',array(
 					'bm_category' => $cat_list,
-				));
-			}
-			$query .= ($where_clause ? ' AND '.$where_clause : '') . ' ORDER BY bm_category, bm_name';
-
-			$this->db->query($query,__LINE__,__FILE__);
-			$this->total_records = $this->db->num_rows();
+				),(boolean)$where_clause,' AND ',$where_clause,' ORDER BY bm_category, bm_name');
 
 			if ($start !== False)
 			{
-				$this->db->limit_query($query,$start,__LINE__,__FILE__);
+				$this->db->select($this->table,'count(*)',$where,__LINE__,__FILE__);
+				$this->total_records = $this->db->next_record() ? $this->db->f(0) : 0;
+				$this->db->select($this->table,'*',$where,__LINE__,__FILE__,$start);
 			}
-
+			else
+			{
+				$this->db->select($this->table,'*',$where,__LINE__,__FILE__);
+				$this->total_records = $this->db->num_rows();
+			}
 			while ($this->db->next_record())
 			{
 				$result[$this->db->f('bm_id')] = $this->_db2bookmark();
@@ -83,7 +76,7 @@
 		function read($id,$do_htmlspecialchars=True)
 		{
 			$query = "SELECT * FROM $this->table WHERE bm_id=".(int)$id;
-			$this->db->query($query,__LINE__,__FILE__);
+			$this->db->select($this->table,'*',array('bm_id'=>$id),__LINE__,__FILE__);
 			if (!$this->db->next_record())
 			{
 				return False;
@@ -93,8 +86,7 @@
 
 		function exists($url)
 		{
-			$query = "SELECT count(*) FROM $this->table WHERE bm_url=".$this->db->quote($url).' AND bm_owner='.(int)$GLOBALS['phpgw_info']['user']['account_id'];
-			$this->db->query($query,__LINE__,__FILE__);
+			$this->db->select($this->table,'count(*)',array('bm_url'=>$url,'bm_owner'=>$this->user),__LINE__,__FILE__);
 			$this->db->next_record();
 
 			return (bool)$this->db->f(0);
@@ -106,21 +98,18 @@
 			$columns['bm_owner'] = (int) $GLOBALS['phpgw_info']['user']['account_id'];
 			$columns['bm_visits'] = 0;
 
-			$query = "INSERT INTO $this->table (".implode(',',array_keys($columns)).") VALUES(".
-				$this->db->column_data_implode(',',$columns,False).')';
-
-			if (!$this->db->query($query,__LINE__,__FILE__))
+			if (!$this->db->insert($this->table,$columns,False,__LINE__,__FILE__))
 			{
 				return False;
 			}
-			return $this->db->get_last_insert_id('phpgw_bookmarks','bm_id');
+			return $this->db->get_last_insert_id($this->table,'bm_id');
 		}
 
 		function update($id, $values)
 		{
 			#echo "so::update<pre>".htmlspecialchars(print_r($values,True))."</pre>\n";
 
-			$this->db->query("SELECT bm_info FROM $this->table WHERE bm_id=".(int)$id,__LINE__,__FILE__);
+			$this->db->select($this->table,'bm_info',array('bm_id'=>$id),__LINE__,__FILE__);
 			$this->db->next_record();
 			$ts = explode(',',$GLOBALS['phpgw']->db->f('bm_info'));
 			$ts[2] = time();
@@ -128,9 +117,7 @@
 			$columns = $this->_bookmark2db($values,implode(',',$ts));
 
 			// Update bookmark information.
-			$query = "UPDATE $this->table SET ".$this->db->column_data_implode(',',$columns).' WHERE bm_id='.(int)$id;
-
-			if (!$this->db->query($query,__LINE__,__FILE__))
+			if (!$this->db->update($this->table,$columns,array('bm_id'=>$id),__LINE__,__FILE__))
 			{
 				return False;
 			}
@@ -154,14 +141,15 @@
 
 		function updatetimestamp($id,$timestamp)
 		{
-			$query = "UPDATE $this->table SET bm_info=".$this->db->quote($timestamp).', bm_visits=bm_visits+1 WHERE bm_id='.(int)$id;
-			$this->db->query($query,__LINE__,__FILE__);
+			$this->db->update($this->table,array(
+				'bm_info'=>$timestamp,
+				'bm_visits=bm_visits+1'
+			),array('bm_id'=>$id),__LINE__,__FILE__);
 		}
 
 		function delete($id)
 		{
-			$query = "DELETE FROM $this->table WHERE bm_id=".(int)$id;
-			$this->db->query($query,__LINE__,__FILE__);
+			$this->db->delete($this->table,array('bm_id'=>$id),__LINE__,__FILE__);
 			if ($this->db->Errno != 0)
 			{
 				return False;
