@@ -16,7 +16,7 @@
 <form action="{tts_search_link}" method="POST" name="search">
 <input type="hidden" name="filter" value="search">
 <input name="searchfilter" size="60" value="{tts_searchfilter}">
-<input type="submit" value="search">
+<input type="submit" value="{lang_search}">
 </form>
 <b>{tts_numfound}</b>
 <br />

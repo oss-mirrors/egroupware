@@ -113,7 +113,7 @@
 		$p->set_var('tts_lang_viewjobdetails', lang("View Job Detail"));
 		$p->set_var('tts_lang_assignedfrom', lang("Assigned from"));
 		$p->set_var('tts_lang_opendate', lang("Open Date"));
-		$p->set_var('tts_t_status', $phpgw->common->show_date($phpgw->db->f("t_timestamp_opened")));
+		$p->set_var('tts_t_opendate', $phpgw->common->show_date($phpgw->db->f("t_timestamp_opened")));
 		$p->set_var('tts_lang_closedate', lang("Close Date"));
 		$p->set_var('tts_lang_priority', lang("Priority"));
 		$p->set_var('tts_lang_group', lang("Group"));
