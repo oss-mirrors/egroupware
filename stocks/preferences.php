@@ -98,7 +98,7 @@
 	$GLOBALS['phpgw']->template->set_var('lang_symbol',lang('Symbol'));
 	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']["theme"][th_bg]);
 
-	while ($stock = each($GLOBALS['phpgw_info']['user']['preferences']['stocks']))
+	while ($stock = @each($GLOBALS['phpgw_info']['user']['preferences']['stocks']))
 	{
 		if (($stock[0] != 'enabled') && ($stock[0] != 'disabled'))
 		{
