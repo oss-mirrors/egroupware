@@ -711,7 +711,7 @@
 
 			if($billed)
 			{
-				$t->set_var('billed','checked');
+				$this->t->set_var('billed','checked');
 			}
 
 // -------------------------------- calculate statistics -------------------------------------------                                                                                                                                         
