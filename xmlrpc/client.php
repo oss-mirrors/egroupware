@@ -23,9 +23,9 @@
 
 	if ($HTTP_POST_VARS['stateno'] != '')
 	{
-		$f = CreateObject('phpgwapi.xmlrpcmsg','examples.getStateName',array(CreateObject('phpgwapi.xmlrpcval',$HTTP_POST_VARS["stateno"], "int")));
+		$f = CreateObject('phpgwapi.xmlrpcmsg','examples.getStateName',array(CreateObject('phpgwapi.xmlrpcval',$HTTP_POST_VARS['stateno'], 'int')));
 		print "<pre>" . htmlentities($f->serialize()) . "</pre>\n";
-		$c = CreateObject('phpgwapi.xmlrpc_client',"/phpgroupware/xmlrpc.php", $HTTP_HOST, 80);
+		$c = CreateObject('phpgwapi.xmlrpc_client',"/phpgroupware/xmlrpc.php", $HTTP_SERVER_VARS['HTTP_HOST'], 80);
 		$c->setDebug(1);
 		$r = $c->send($f);
 		if (!$r)
