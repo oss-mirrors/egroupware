@@ -201,7 +201,6 @@ if ($phpgw->db->Errno == 0) {
   $phpgw->template->set_var(array(FILTER_MSG       => $filter_msg,
                                   GROUPBY_DEFAULT  => $groupby_default,
                                   BOOKMARK_JS      => $output,
-                           //       SESSION_ID       => $sess->id,
                                   IMAGE_URL_PREFIX => $bookmarker->image_url_prefix,
                                   IMAGE_EXT        => $bookmarker->image_ext
                            ));
@@ -215,6 +214,4 @@ if ($phpgw->db->Errno == 0) {
 
   $phpgw->template->parse("BODY", "body");
   $phpgw->template->p("BODY");
-
-  //page_close();
 ?>
