@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - email/addressbook                                         *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - email/addressbook                                           *
+	* http://www.egroupware.org                                                *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                          *
 	* -----------------------------------------------                          *
 	*  This program is free software; you can redistribute it and/or modify it *

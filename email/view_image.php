@@ -1,7 +1,7 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - E-Mail                                                    *
-  * http://www.phpgroupware.org                                              *
+  * eGroupWare - E-Mail                                                      *
+  * http://www.egroupware.org                                                *
   * Based on Aeromail by Mark Cushman <mark@cushman.net>                     *
   *          http://the.cushman.net/                                         *
   * --------------------------------------------                             *

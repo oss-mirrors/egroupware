@@ -1,7 +1,7 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - E-Mail                                                    *
-  * http://www.phpgroupware.org                                              *
+  * eGroupWare - E-Mail                                                      *
+  * http://www.egroupware.org                                                *
   * This file written by Joseph Engo <jengo@phpgroupware.org>                *
   * --------------------------------------------                             *
   *  This program is free software; you can redistribute it and/or modify it *

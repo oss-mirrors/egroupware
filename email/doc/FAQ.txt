@@ -1,5 +1,5 @@
 FAQ
-PhpGroupware
+eGroupware
 Email Application
 
 Last Updated:
@@ -16,7 +16,7 @@ johndoe@example.com,jane@example.com,tarzan@example.com
 johndoe@example.com,"Jane" <jane@example.com>,tarzan@example.com
 
 
-Q: I use UWash IMAP, where will phpgroupware email look for MBOX files?
+Q: I use UWash IMAP, where will egroupware email look for MBOX files?
 A1: The mbox folder "INBOX" will always be available by default
 A2: (The following answer is subject to change when this option becomes
     settable suring the system wide setup)
@@ -58,7 +58,7 @@ Note: As of this writting, it is a "per user" config option only
 
 Q: I can not attach files to an email, I get errors about "unlink".
 A: There are 2 directories to check:
- - goto /setup  (the phpgroupware initial setup page)
+ - goto /setup  (the egroupware initial setup page)
  - login to "Setup/Config Admin Log"
  - in "Step 2 - Configuration" click "Edit Current Configuration"
  - under "Path Information" see the box labeled
