@@ -70,7 +70,7 @@ $phpgw->db->query("update f_threads set n_replies = n_replies+1 where thread='$t
 
 
   Header("Location: ". $phpgw->link("threads.php","cat=".$cat."&for=".$for."&col=".$col));
-  exit;
+  $phpgw->common->phpgw_exit();
 
 }
 

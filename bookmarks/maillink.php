@@ -20,7 +20,7 @@
 ?>
 <center>Not avaiable</center>
 <?php
-  exit;
+  $phpgw->common->phpgw_exit();
 
 $tpl->set_file(array(
   standard   => "common.standard.tpl",

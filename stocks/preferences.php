@@ -24,13 +24,13 @@
      // For some odd reason, if I forward it back to stocks/preferences.php after an add
      // I get no data errors, so for now forward it to the main preferences section.
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/preferences/index.php"));
-     exit;
+     $phpgw->common->phpgw_exit();
   } else if ($action == "delete") {
      // This needs to be fixed
      $phpgw->preferences->delete("stocks",$value);
      $phpgw->preferences->commit();
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/stocks/preferences.php"));
-     exit;  
+     $phpgw->common->phpgw_exit();
   }
 
   if ($mainscreen) {
@@ -42,7 +42,8 @@
      }
      $phpgw->preferences->commit();
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/stocks/preferences.php"));
-     exit;     
+     $phpgw->common->phpgw_exit();
+    
   }
 
   $phpgw->common->phpgw_header();

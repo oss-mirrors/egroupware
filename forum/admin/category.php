@@ -24,7 +24,7 @@
   if($act == "edit") {
    if(!$phpgw->db->query("select * from f_categories where id=$cat_id")) {
     print "Error in reading database<br>\n";
-     exit;
+     $phpgw->common->phpgw_exit();
    } else {
     $phpgw->db->next_record();
     $catname = $phpgw->db->f("name");
@@ -42,18 +42,18 @@
    if($action == "addcat") {
     if(!$phpgw->db->query("insert into f_categories (name,descr) values ('$catname','$catdescr')")) {
      print "Error in adding forum to database<br>\n";
-     exit;
+     $phpgw->common->phpgw_exit();
     } else {
      Header("Location: " . $phpgw->link("./"));
-     exit;
+     $phpgw->common->phpgw_exit();
     }
    } elseif ($action == "updcat" && $cat_id) {
     if(!$phpgw->db->query("update f_categories set name='$catname',descr='$catdescr' where id = $cat_id")) {
      print "Error in adding forum to database<br>\n";
-     exit;
+     $phpgw->common->phpgw_exit();
     } else {
      Header("Location: " . $phpgw->link("./"));  
-     exit;
+     $phpgw->common->phpgw_exit();
     }
 
    }

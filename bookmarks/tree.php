@@ -44,7 +44,7 @@
 //    ."id="
 //    .time();
   header("Location: ".$url);
-  exit;
+  $phpgw->common->phpgw_exit();
 }
 
   $phpgw->template->set_file(array(body => "tree.body.tpl"));

@@ -49,7 +49,7 @@
 
   if ($phpgw->db->num_rows() == 0) {
      echo "<p><center>".lang("No tickets found")."</center>";
-     exit;
+     $phpgw->common->phpgw_exit();
   }
 
   // Sorting by protrity needs to be added somewhere in here.

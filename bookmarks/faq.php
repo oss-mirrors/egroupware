@@ -12,10 +12,12 @@
   \**************************************************************************/
 
   /* $Id$ */
+  $phpgw_info["flags"]["currentapp"] = "bookmarks";
+  include("../header.inc.php");
 ?>
   <center>Not avaiable</center>
 <?php
-  exit;
+  $phpgw->common->phpgw_exit();
   
   // Not sure if this is gonna be used, but its here for reference
 

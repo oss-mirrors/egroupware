@@ -24,7 +24,7 @@
   if($act == "edit") {
    if(!$phpgw->db->query("select * from f_forums where id=$for_id")) {
     print "Error in reading database<br>\n";
-     exit;
+     $phpgw->common->phpgw_exit();
    } else {
     $phpgw->db->next_record(); 
     $forname = $phpgw->db->f("name");
@@ -33,7 +33,7 @@
     if ($cat_id > 0) {
       if(!$phpgw->db->query("select * from f_categories where id=$cat_id")) {
        print "Error in readindg database<br>\n";
-       exit;
+       $phpgw->common->phpgw_exit();
       } else $phpgw->db->next_record();
       $catname = $phpgw->db->f("name");
     } else $catname = lang("No Catagory");
@@ -49,18 +49,18 @@
    if($action == "addforum") {
     if(!$phpgw->db->query("insert into f_forums (name,descr,cat_id) values ('$forname','$fordescr',$goestocat)")) {
      print "Error in adding forum to database<br>\n";
-     exit;
+     $phpgw->common->phpgw_exit();
     } else {
      Header("Location: " . $phpgw->link("./"));
-     exit;
+     $phpgw->common->phpgw_exit();
     }
    } elseif ($action == "updforum" && $for_id) {
     if(!$phpgw->db->query("update f_forums set name='$forname',descr='$fordescr',cat_id=$goestocat where id=$for_id ")) {
      print "Error in updating forum on database<br>\n";
-     exit;
+     $phpgw->common->phpgw_exit();
     } else {
      Header("Location: " . $phpgw->link("./"));
-     exit;
+     $phpgw->common->phpgw_exit();
     }
    }
   }

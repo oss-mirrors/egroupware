@@ -58,7 +58,7 @@ $dattim = date("Y-m-d H:i:s",time());
   
 
   Header("Location: ". $phpgw->link("threads.php","cat=".$cat."&for=".$for."&col=".$col));
-  exit;
+  $phpgw->common->phpgw_exit();
 
 }
 

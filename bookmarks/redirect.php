@@ -42,7 +42,7 @@
       </tr>
      </table>
      <?php
-     exit;
+     $phpgw->common->phpgw_exit();
   }
 ?>
   <frameset rows="65,*" marginheight="0" marginwidth="0">

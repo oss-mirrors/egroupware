@@ -8,7 +8,7 @@ function rfile($textFile) {
   if(!($myFile)) {
     print("<P><B>Error: </B>");
     print("<i>'$textFile'</i> could not be read\n");
-    exit;
+    $phpgw->common->phpgw_exit();
   }
   if($myFile) {
     while(!feof($myFile)) {
@@ -86,7 +86,7 @@ function mail_ticket($ticket_id) {
          "err_msg: '".htmlspecialchars($phpgw->send->err[msg])."';<BR>\n".
          "err_desc: '".$phpgw->err[desc]."'.<P>\n";
     echo "To go back to the msg list, click <A HRef=\"".$phpgw->link("index.php","cd=13")."\">here</a>";
-    exit;
+    $phpgw->common->phpgw_exit();
   }
 }
 ?>

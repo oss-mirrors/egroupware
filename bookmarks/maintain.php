@@ -28,7 +28,7 @@
         $sess_error_msg = $error_msg;
         header("Location: " . $phpgw->link($file,$vars));
         page_close();
-        exit;
+        $phpgw->common->phpgw_exit();
      }
   }
 
