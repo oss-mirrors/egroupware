@@ -1,195 +1,302 @@
+% to	projects	pl	% zosta³o
++ jobs	projects	pl	+ zadania
 account	projects	pl	Konto
-accountancy	common	pl	
+accounting	common	pl	Rozliczenia
 active	projects	pl	Aktywny
 activities	projects	pl	Dzia³alno¶ci
 activities list	projects	pl	Lista dzia³alno¶ci
-activity	projects	pl	Dzia³alno¶æ
-activity id	projects	pl	ID Dzia³alno¶ci
+activity	common	pl	Dzia³alno¶æ
 activity %1 has been added !	projects	pl	Dodano dzia³alno¶æ %1
 activity %1 has been updated !	projects	pl	Zaktualizowano dzia³alno¶æ %1
+activity id	projects	pl	ID Dzia³alno¶ci
 add activity	projects	pl	Dodaj dzia³alno¶æ
 add hours	projects	pl	Dodaj godziny
 add job	projects	pl	Dodaj zadanie
 add project	projects	pl	Dodaj projekt
 add project hours	projects	pl	Dodaj godziny
-add work hours	projects	pl	
+add role	projects	pl	dodaj rolê
 address book	projects	pl	Ksi±¿ka adresowa
 admin	projects	pl	Admininistracja
 administrator	projects	pl	Zarz±dzaj±cy
+alarm	projects	pl	alarm
 all	projects	pl	Wszystko
 all delivery notes	projects	pl	Wszystkie dostawy
 all deliverys	projects	pl	Wszystkie dostawy
 all done hours	projects	pl	Wszystkie wykonane godziny
 all invoices	projects	pl	Wszystkie faktury
 all open hours	projects	pl	Wszystkie otwarte godziny
-archive	projects	pl	Archiwum
+anonymous public	projects	pl	Publiczny anonimowy
+archive	common	pl	Archiwum
 are you sure you want to delete this entry	projects	pl	Na pewno usun±æ ten wpis?
 arial	projects	pl	Arial
-bill per hour	projects	pl	
+assign	projects	pl	Przydziel
+assign roles and events	projects	pl	Przydziel role i zdarzenia
+assignment has been deleted	projects	pl	przydzia³ zosta³ skasowany
+assignment has been saved	projects	pl	przydzia³ zosta³ zapisany
+available	projects	pl	Dostêpne
+before	projects	pl	przed
 bill per workunit	projects	pl	Warto¶æ jednostki pracy
+billable	projects	pl	Rozliczane
 billable activities	projects	pl	Warto¶æ dzia³alno¶ci
 billed	projects	pl	Rozliczone
 billed only	projects	pl	Tylko rozliczone
-billing	projects	pl	Rachunek
+billing	projects	pl	Rozliczenie
 bookable activities	projects	pl	Przypisana dzia³alno¶æ
-bookkeeper	projects	pl	
-bookkeeping	common	pl	
+browse	projects	pl	przegl±daj
 budget	projects	pl	Bud¿et
+budget available	projects	pl	dostepny bud¿et
+budget limit	projects	pl	Limit bud¿etu
+budget planned	projects	pl	Planowany bud¿et
+budget used	projects	pl	u¿yty bud¿et
+budget used total	projects	pl	³±cznie u¿yty bud¿et
 calculate	projects	pl	Oblicz
 category	projects	pl	Kategoria
+changed start date and end date	projects	pl	Zmieniona data rozpoczecia i zakoñczenia
+changes of project data	projects	pl	Zmiany projektu
 closed	projects	pl	Zamkniêty
-coordinator	projects	pl	Prowadz±cy
+columns to show in the projects list	projects	pl	Kolumny do wy¶wietlenia na li¶cie projektów
+comment	projects	pl	komientarz
+continue	projects	pl	Kontynuuj
+coordinator	common	pl	Prowadz±cy
 courier new	projects	pl	Courier New
 create delivery	projects	pl	Twórz dostawê
 create invoice	projects	pl	Twórz fakturê
-customer	projects	pl	Klient
+creator	projects	pl	Twórca
+customer	common	pl	Klient
+customer nr	projects	pl	Nr. klienta
 date	projects	pl	Data
+date created	projects	pl	Data utworzenia
 date due	projects	pl	Termin wykonania
+days	projects	pl	dni
+days before	projects	pl	dni przed
 delete hours	projects	pl	Usuñ godziny
+delete job	projects	pl	skasuj zadanie
+delete project	projects	pl	skasuj projekt
 deliveries	projects	pl	Dostawcy
 delivery	projects	pl	Dostawa
+delivery %1 has been created !	projects	pl	Utworzono dostawê %1
+delivery %1 has been updated !	projects	pl	Zaktualizowano dostawê %1
 delivery date	projects	pl	Data dostawy
 delivery id	projects	pl	ID Dostawy
 delivery list	projects	pl	Lista dostaw
 delivery note	projects	pl	Dostawy
-delivery note for project	projects	pl	
 delivery notes	projects	pl	Dostawy
-delivery %1 has been created !	projects	pl	Utworzono dostawê %1
-delivery %1 has been updated !	projects	pl	Zaktualizowano dostawê %1
 description	projects	pl	Opis
+discount	projects	pl	Rabat
 done	projects	pl	Gotowe
 edit	projects	pl	Edycja
 edit activity	projects	pl	Edycja dzia³alno¶ci
+edit events	projects	pl	edycja zdarzeñ
 edit hours	projects	pl	Edycja godzin
+edit job	projects	pl	Edycja zadania
 edit project	projects	pl	Edycja projektu
 edit project administrator list	projects	pl	Edycja listy zarz±dzaj±cych projektem
-edit project bookkeeper list	projects	pl	
 edit project hours	projects	pl	Edycja godzin
-edit work hours	projects	pl	
-employee	projects	pl	Osoba
+edit roles	projects	pl	edycja ról
+employee	projects	pl	Pracownik
+employees	projects	pl	Pracownicy
 end date	projects	pl	Zakoñczenie
+end date has changed	projects	pl	Zmieni³a siê data zakoñczenia
 end time	projects	pl	Zakoñczenie
-ending date can not be after main projects ending date !	projects	pl	
+entry	projects	pl	wpis
 entry date	projects	pl	Data wprowadzenia
+event	projects	pl	Zdarzenie
+events	projects	pl	Zdarzenia
+extra budget	projects	pl	Bud¿et extra
 firstname	projects	pl	Imiê
-generate activity id ?	projects	pl	Wygenerowaæ ID Dzia³alno¶ci
+from	projects	pl	Od
+from %1 to %2	projects	pl	od %1 do %2
+gantt chart	projects	pl	Wykres Gantt
+gantt chart from %1 to %2	projects	pl	Wykres Gantt od %1 do %2
+generate activity id ?	projects	pl	Wygenerowaæ ID Dzia³alno¶ci?
 generate delivery id ?	projects	pl	Wygenerowaæ ID Dostawy?
 generate invoice id ?	projects	pl	Wygenerowaæ ID Faktury?
+generate job id	projects	pl	Generowaæ ID Zadania?
 generate job id ?	projects	pl	Wygenerowaæ ID Zadania?
+generate project id	projects	pl	Wygenerowaæ ID Projektu?
 generate project id ?	projects	pl	Wygenerowaæ ID Projektu?
 georgia	projects	pl	Georgia
+global categories	projects	pl	Kategorie globalne
+has reached	projects	pl	osi±gn±³
 helvetica	projects	pl	Helvetica
-hours	projects	pl	Godzin
+hours	projects	pl	Godziny
+hours limit	projects	pl	Limit godzin
+hours of work day	admin	pl	Liczba godzin na dzieñ pracy
+hours used total	projects	pl	przepracowane godziny razem
+id can not exceed 20 characters in length	projects	pl	id nie mo¿e byæ d³uzszy ni¿ 20 znaków
+id can not exceed 250 characters in length	projects	pl	ID nie mo¿e byæ d³uzszy ni¿ 250 znaków
 invoice	projects	pl	Faktura
+invoice %1 has been created !	projects	pl	Utworzono fakturê %1
+invoice %1 has been updated !	projects	pl	Zaktualizowano fakturê %1
 invoice date	projects	pl	Data faktury
 invoice for project	projects	pl	Faktura dla projektu
 invoice id	projects	pl	ID Faktury
 invoice layout	projects	pl	Uk³ad faktury
 invoice list	projects	pl	Lista faktur
-invoice %1 has been created !	projects	pl	Utworzono fakturê %1
-invoice %1 has been updated !	projects	pl	Zaktualizowano fakturê %1
 invoices	projects	pl	Faktury
-invoicing	projects	pl	
+invoicing method	projects	pl	Metoda fakturowania
 job	projects	pl	Zadanie
 job archive	projects	pl	Zadanie archiwalne
 job date	projects	pl	Data zadania
 job description	projects	pl	Opis zadania
+job has been added	projects	pl	Zadanie zosta³o dodane
 job has been added !	projects	pl	Dodano zadanie
+job has been updated	projects	pl	Zadanie zosta³o uaktualnione
 job has been updated !	projects	pl	Zaktualizowano zadanie
 job id	projects	pl	ID Zadania
 job list	projects	pl	Lista zadañ
-jobs	projects	pl	Zadania
+job manager	projects	pl	Manager zadania
+jobs	common	pl	Zadania
 large	projects	pl	Du¿a
+last update	projects	pl	Ostatnie uaktualnienie
 lastname	projects	pl	Nazwisko
 list hours	projects	pl	Lista godzin
-main project:	projects	pl	G³ówny projekt:
+list jobs	common	pl	Lista zadañ
+list projects	common	pl	Lista projektów
+list work hours	projects	pl	Lista godzin pracy
+main project	projects	pl	Projekt g³ówny
+main project:	projects	pl	Projekt g³ówny:
+manager	projects	pl	Manager
+manager list	projects	pl	Lista managerów
 minutes per workunit	projects	pl	Minut na jednostkê pracy
+month	projects	pl	Miesi±c
+move start date if pervious projects end date changes	admin	pl	Zmieñ date rozpoczêcia, je¿eli zmienia siê data zakoñczenia poprzedniego projektu
+name not exceed 250 characters in length	projects	pl	nazwa nie mo¿e byæ d³u¿sza ni¿ 250 znaków
 net	projects	pl	Netto
+new end date	projects	pl	Nowa data zakoñczenia
 new project	projects	pl	Nowy projekt
-nonactive	projects	pl	Nieaktywny
+new start date	projects	pl	Nowa data rozpoczêcia
+nonactive	common	pl	Nieaktywny
+not billable	projects	pl	nie rozliczane
 number	projects	pl	Numer
+old end date	projects	pl	Stara data zakoñczenia
+old start date	projects	pl	Stara data rozpoczêcia
 open	projects	pl	Otwarte
+open popup window	projects	pl	otwiera okno pop-up
 overall	projects	pl	Podsumowanie
+parent project	projects	pl	Projekt nadrzêdny
+pause	projects	pl	Pauza
 per	projects	pl	za
-per hour	projects	pl	na godzinê
-per workunit	projects	pl	za jednostkê pracy
+per day	projects	pl	za dzieñ
+per hour	projects	pl	za godzinê
+per workunit	common	pl	za jednostkê pracy
+percent	projects	pl	Procent
+planned	projects	pl	Planowane
+please choose a project coordinator	projects	pl	Proszê wybraæ koordynatora projektu.
 please choose activities for that project first !	projects	pl	Proszê wybraæ dzia³alno¶æ dla projektu
+please choose the discount type	projects	pl	Prosze wybraæ typ rabatu.
 please enter a delivery id for that delivery !	projects	pl	Proszê podaæ ID Dostawy dla dostawy
 please enter a remark !	projects	pl	Proszê wpisaæ komentarz!
+please enter an id	projects	pl	Proszê podaæ ID
 please enter an id !	projects	pl	Proszê podaæ ID
 please enter an id for that activity !	projects	pl	Proszê podaæ ID Dzia³alno¶ci
 please enter an invoice id for that invoice !	projects	pl	Proszê podaæ ID Faktury dla faktury
-please enter the bill !	projects	pl	
 please enter the bill per workunit !	projects	pl	Proszê podaæ warto¶æ jednostki pracy
 please enter the minutes per workunit !	projects	pl	Proszê podaæ liczbê minut na jednostkê czasu
 please select currency,tax and your address in preferences!	projects	pl	Proszê wybraæ walutê, podatek i swój adres w preferencjach
 please select your address in preferences!	projects	pl	Proszê wybraæ swój adres w preferencjach
 please select your currency in preferences!	projects	pl	Proszê wybraæ walutê w preferencjach
-please set the minutes per workunit for each activity now !	projects	pl	
+please set your preferences for this application !	projects	pl	Proszê ustawiæ swoje preferencje dla tej aplikacji!
+please specify the budget	projects	pl	Proszê okre¶liæ bud¿et.
+please specify the currency in the global preferences section	common	pl	Prosze okre¶liæ walutê w sekcji preferencje globalne.
 position	projects	pl	Pozycja
+previous	projects	pl	Poprzedni projekt
+previous project	projects	pl	Poprzedni projekt
+previous projects end date has changed	projects	pl	Zmieni³a siê data zakoñczenia poprzedniego projektu
 print delivery	projects	pl	Drukuj dostawê
 print invoice	projects	pl	Drukuj fakturê
 project	projects	pl	Projekt
+project %1 %2 has been added !	projects	pl	Dodano projekt %1 %2
+project %1 %2 has been updated !	projects	pl	Zaktualizowano projekt %1 %2
 project administration	projects	pl	Zarz±dzanie projektem
 project archive	projects	pl	Archiwum projektów
 project billing	projects	pl	Rozliczenie projektu
 project delivery	projects	pl	Przekazanie projektu
 project hours	projects	pl	Godziny
-project id	projects	pl	ID Projektu
+project id	common	pl	ID Projektu
 project list	projects	pl	Lista projektów
 project name	projects	pl	Nazwa projektu
+project overview	projects	pl	przegl±d projektu
 project preferences	projects	pl	Preferencje projektu
 project statistic	projects	pl	Statystyka projektu
 project statistics	projects	pl	Statystyki projektów
-project %1 %2 has been added !	projects	pl	Dodano projekt %1 %2
-project %1 %2 has been updated !	projects	pl	Zaktualizowano projekt %1 %2
+project url	projects	pl	URL projektu
 projects	common	pl	Projekty
 projects archive	projects	pl	Projekty archiwalne
 projects list	projects	pl	Lista projektów
 projects preferences	preferences	pl	Preferencje projektu
 remark	projects	pl	Komentarz
 remark required	projects	pl	Wymagaæ komentarza?
+result	projects	pl	Rezultat
 return to projects	projects	pl	Powrót do projektów
+role	projects	pl	Rola
+role %1 has been saved	projects	pl	rola %1 zosta³a zapisana
+role %1 has been updated	projects	pl	rola %1 zosta³a uaktualniona
+role has been deleted	projects	pl	rola zosta³a skasowana
+roles	projects	pl	Role
+roles list	projects	pl	lista ról
+save factor	projects	pl	Zapisz wspó³czynnik
 select category	projects	pl	Wybierz kategoriê
 select customer	projects	pl	Wybierz klienta
+select factor	projects	pl	Wybierz wspó³czynnik
 select font	projects	pl	Wybierz cziconkê
 select font size for customer address	projects	pl	Wybierz wielko¶æ czcionki dla adresu klienta
 select font size for own address	projects	pl	Wybierz wielko¶æ czcionki dla w³asnego adresu
 select groups	projects	pl	Wybierz grupy
-select main project	projects	pl	Wybierz projekt g³ówny
+select main project	common	pl	Wybierz projekt g³ówny
 select project	projects	pl	Wybierz projekt
 select tax for work hours	projects	pl	Podatek od roboczogodzin
 select tax for workhours	projects	pl	Podatek od roboczogodzin
 select users	projects	pl	Wybierz u¿ytkowników
 select your address	projects	pl	Wybierz swój adres
+settings	admin	pl	ustawienia
 short description	projects	pl	Krótki opis
+show gantt chart	projects	pl	Poka¿ wykres Gantt
 small	projects	pl	Ma³a
 sorry, no preferences to set for you :)	projects	pl	Niestety, nie ma preferencji do ustawienia przez Ciebie
+start	projects	pl	Start
 start date	projects	pl	Pocz±tek
-start date can not be before main projects start date !	projects	pl	
+start date planned	projects	pl	Planowana data rozpoczêcia
 start time	projects	pl	Pocz±tek
 statistic	projects	pl	Statystyka
 statistics	projects	pl	Statystyki
 status	projects	pl	Status
+stop	projects	pl	Stop
 submit	projects	pl	OK
 sum	projects	pl	Suma
+sum budget	projects	pl	Razem bud¿et
 sum hours	projects	pl	Suma godzin
+sum jobs	projects	pl	suma zadañ
 sum net	projects	pl	Suma netto
 sum workunits	projects	pl	Suma jednostek pracy
 tahoma	projects	pl	Tahoma
 tax	projects	pl	Podatek
+test	projects	pl	Test
 that activity id has been used already !	projects	pl	Ten ID Dzia³alno¶ci ju¿ istnieje
 that delivery id has been used already !	projects	pl	Ten ID Dostawy ju¿ istnieje
-that id has been used already !	projects	pl	Podany ID jest ju¿ u¿ywany
+that id has been used already	projects	pl	Podany ID jest ju¿ u¿ywany.
+that id has been used already !	projects	pl	Podany ID jest ju¿ u¿ywany!
 that invoice id has been used already !	projects	pl	Ten ID Faktury ju¿ istnieje
+the choosen previous project does not have an end date specified	projects	pl	Wybrany poprzednio projekt nie ma okre¶lonej daty zakoñczenia.
 there are no entries	projects	pl	Nie ma wpisów!
+till	projects	pl	Do
 time	projects	pl	Czas
+time of journey	projects	pl	Czas podró¿y
+time planned	projects	pl	Planowany czas
+time used	projects	pl	Przepracowany czas
+time used total	projects	pl	Przepracowany czas razem
 times new roman	projects	pl	Times New Roman
 title	projects	pl	Tytu³
+title can not exceed 250 characters in length	projects	pl	Nazwa nie mo¿e mieæ wiêcej ni¿ 250 znaków.
 update	projects	pl	Aktualizuj
 update delivery	projects	pl	Aktualizuj dostawê
 update invoice	projects	pl	Aktualizuj fakturê
 update project	projects	pl	Aktualizuj projekt
+used	projects	pl	przepracowane
+used - jobs included	projects	pl	przepracowane - zadania w³±czone
+used billable	projects	pl	Przepracowane rozliczane
+used not billable	projects	pl	Przepracowane nie rozliczane
+used total	projects	pl	Przepracowane razem
 user statistic	projects	pl	Statystyka u¿ytkownika
 user statistics	projects	pl	Statystyki u¿ytkowników
 username	projects	pl	Nazwa u¿ytkownika
@@ -197,21 +304,24 @@ username / group	projects	pl	Nazwa u¿ytkownika/Grupa
 verdana	projects	pl	Verdana
 very large	projects	pl	Bardzo du¿a
 very small	projects	pl	Bardzo ma³a
-view job	projects	pl	Pogl±d zadania
-view project	projects	pl	Pogl±d projektu
-view work hours	projects	pl	
-work date	projects	pl	Dni
-work hours	projects	pl	Roboczogodziny
+view employees	projects	pl	Zobacz pracowników
+view gantt chart	projects	pl	Zobacz wykres Gantt
+view hours	projects	pl	podgl±d godzin
+view job	projects	pl	Podgl±d zadania
+view project	projects	pl	Podgl±d projektu
+work date	common	pl	Dni
+work hours	common	pl	Roboczogodziny
 work hours archive	projects	pl	Archiwum roboczogodzin
 work hours list	projects	pl	Lista roboczogodzin
 work time	projects	pl	Godziny
 workunit	projects	pl	Jednostka pracy
 workunits	projects	pl	Jednostki pracy
-written by:	projects	pl	
+you have entered an invalid date !	projects	pl	Wprowadzi³e¶ z³± datê!
 you have entered an invalid delivery date !	projects	pl	Poda³e¶ niepoprawn± datê dostawy
 you have entered an invalid end date !	projects	pl	Poda³e¶ niepopran± datê zakoñczenia projektu
 you have entered an invalid invoice date !	projects	pl	Poda³e¶ niepoprawn± datê faktury
 you have entered an invalid start date !	projects	pl	Poda³e¶ niepoprawn± datê rozpoczêcia projektu
 you have no customer selected !	projects	pl	Nie wybra³e¶ klienta
+you have no projects selected	projects	pl	nie wybra³e¶ projektów
 you have selected an invalid activity !	projects	pl	Wybra³e¶ niew³a¶ciw± dzia³alno¶æ
 you have to create a delivery or invoice first !	projects	pl	Najpierw musisz utworzyæ dostawê lub fakturê
