@@ -214,16 +214,15 @@
 			switch ($which)
 			{
 				case 'source':
-					$langarray = $this->source_langarray;
+					$this->src_file = $this->so->write_file($app_name,$this->source_langarray,$userlang,$which);
 					break;
 				case 'target':
-					$langarray = $this->target_langarray;
+					$this->tgt_file = $this->so->write_file($app_name,$this->target_langarray,$userlang,$which);
 					break;
 				default:
 					break;
 			}
-			$this->so->write_file($app_name,$langarray,$userlang);
-			return;
+			$this->save_sessiondata();
 		}
 
 		function loaddb($app_name,$userlang)

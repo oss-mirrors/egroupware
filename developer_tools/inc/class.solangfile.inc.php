@@ -369,7 +369,7 @@
 			return $languages;
 		}
 
-		function write_file($app_name,$langarray,$userlang)
+		function write_file($app_name,$langarray,$userlang,$which)
 		{
 			$fn = PHPGW_SERVER_ROOT . SEP . $app_name . SEP . ($app_name == 'setup' ? 'lang' : 'setup') . SEP . 'phpgw_' . $userlang . '.lang';
 			if (file_exists($fn))
@@ -384,7 +384,16 @@
 				fwrite($fp,$mess_id . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $data['content'] . "\n");
 			}
 			fclose($fp);
-			return;
+
+			if ($which == 'source')
+			{
+				$this->src_file = $fn;
+			}
+			else
+			{
+				$this->tgt_file = $fn;
+			}
+			return $fn;
 		}
 
 		function loaddb($app_name,$userlang)

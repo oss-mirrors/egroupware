@@ -398,6 +398,10 @@
 						$this->bo->target_langarray[$_mess]['app_name'] = $_app;
 					}
 				}
+				if (!is_array($this->bo->target_langarray))
+				{
+					$this->bo->target_langarray = array();
+				}
 				while (list($_mess,$_cont) = each($translations))
 				{
 					if($_mess && $_cont)
