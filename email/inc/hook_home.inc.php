@@ -74,18 +74,19 @@
 
 			if ($inbox_data['number_all'] > 0)
 			{
-				$msg_array = array();
-				$msg_array = $phpgw->msg->get_message_list();
+				$msg_nums_array = array();
+				$msg_nums_array = $phpgw->msg->get_message_list();
 			}
 			for($i=0; $i<$check_msgs; $i++)
 			{
-				$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream,$msg_array[$i]);
-				$subject = $phpgw->msg->get_subject($msg,'');
+				//$msg_headers = $phpgw->dcom->header($phpgw->msg->mailsvr_stream,$msg_nums_array[$i]);
+				$msg_headers = $phpgw->msg->phpgw_header($msg_nums_array[$i]);
+				$subject = $phpgw->msg->get_subject($msg_headers,'');
 				if (strlen($subject) > 65)
 				{
 					$subject = substr($subject,0,65).' ...';
 				}
-				$portalbox->data[$i] = array($subject,$phpgw->link('/email/message.php','folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$msg_array[$i]));
+				$portalbox->data[$i] = array($subject,$phpgw->link('/email/message.php','folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$msg_nums_array[$i]));
 			}
 			// ADD FOLDER LISTBOX TO HOME PAGE (Needs to be TEMPLATED)
 			// Does This Mailbox Support Folders (i.e. more than just INBOX)?

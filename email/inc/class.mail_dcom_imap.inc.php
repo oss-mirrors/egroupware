@@ -57,6 +57,7 @@
 	return imap_renamemailbox($stream,$mailbox_old,$mailbox_new);
     }
 
+    /*
     function delete($stream,$msg_num,$flags="", $currentfolder="") 
     {
 	global $phpgw_info, $phpgw;
@@ -123,6 +124,12 @@
 	{
 		return imap_delete($stream,$msg_num);
 	}
+    }
+    */
+
+    function delete($stream,$msg_num,$flags="") 
+    {
+	return imap_delete($stream,$msg_num);
     }
 
     function expunge($stream) 
@@ -226,6 +233,7 @@
 	return imap_status($stream,$mailbox,$options);
     }
 
+    /*
     function append($stream, $folder = "Sent", $message, $flags = "")
     {
 	global $phpgw_info, $phpgw;
@@ -274,6 +282,13 @@
 		// so just SKIP IT
 		return False;
 	}
+    }
+    */
+
+    function append($stream, $folder, $message, $flags = "")
+    {
+	$folder = $this->utf7_encode($folder);
+	return imap_append($stream, $folder, $message, $flags);
     }
 
     function login( $folder = "INBOX")

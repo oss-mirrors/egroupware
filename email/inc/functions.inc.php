@@ -762,40 +762,6 @@
 	return $att_name;
   }
 
-  function has_real_attachment($struct)
-  {
-	$haystack = serialize($struct);
-
-	if (stristr($haystack, 's:9:"attribute";s:4:"name"'))
-	{
-		// param attribute "name"
-		// s:9:"attribute";s:4:"name"
-		return True;
-	}
-	elseif (stristr($haystack, 's:8:"encoding";i:3'))
-	{
-		// encoding is base 64
-		// s:8:"encoding";i:3
-		return True;
-	}
-	elseif (stristr($haystack, 's:11:"disposition";s:10:"attachment"'))
-	{
-		// header disposition calls itself "attachment"
-		// s:11:"disposition";s:10:"attachment"
-		return True;
-	}
-	elseif (stristr($haystack, 's:9:"attribute";s:8:"filename"'))
-	{
-		// another mime filename indicator
-		// s:9:"attribute";s:8:"filename"
-		return True;
-	}
-	else
-	{
-		return False;
-	}
-  }
-
 
  function pgw_msg_struct($part, $parent_flat_idx, $feed_dumb_mime, $feed_i, $feed_loops, $feed_debth, $folder, $msgnum)
   {
@@ -1281,7 +1247,7 @@
 	{
 		$mailbox = $phpgw->msg->mailsvr_stream;
 	}
-	$dsp = $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_no);
+	$dsp = $phpgw->msg->dcom->fetchbody($mailbox, $msgnum, $part_no);
 
 	$tag = "pre";
 	$jnk = $de_part->ifdisposition ? $de_part->disposition : "unknown";

@@ -35,9 +35,10 @@
 	//  echo "Part Number = ".$p."<br>\n";
 	//  echo "Subtype = ".$s."<br>\n";
 
-	//$data = $phpgw->dcom->fetchbody($mailbox, $m, $p);
-	$data = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $m, $p);
-	$picture = $phpgw->dcom->base64($data);
+	//$data = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $m, $p);
+	$data = $phpgw->msg->phpgw_fetchbody($p);
+	//$picture = $phpgw->dcom->base64($data);
+	$picture = $phpgw->msg->de_base64($data);
 
 	//  echo strlen($picture)."<br>\n";
 	//  echo $data;

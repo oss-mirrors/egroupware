@@ -146,20 +146,20 @@
 			}
 
 			// Create email server Data Communication Class
-			$phpgw->dcom = CreateObject("email.mail_dcom");
+			$this->dcom = CreateObject("email.mail_dcom");
 			// initialize the dcom class variables
-			$phpgw->dcom->mail_dcom_base();
+			$this->dcom->mail_dcom_base();
 			// ----  Do We Use UTF7 encoding/decoding of folder names  -----
 			if (isset($phpgw_info['user']['preferences']['email']['enable_utf7'])
 			&& ($phpgw_info['user']['preferences']['email']['enable_utf7']))
 			{
-				$phpgw->dcom->enable_utf7 = True;
+				$this->dcom->enable_utf7 = True;
 			}
 
 			set_time_limit(60);
 			// login to INBOX because we know that always(?) should exist on an imap server
 			// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
-			$this->mailsvr_stream = $phpgw->dcom->open($this->mailsvr_callstr."INBOX", $user, $pass, '');
+			$this->mailsvr_stream = $this->dcom->open($this->mailsvr_callstr."INBOX", $user, $pass, '');
 			  if ($debug_logins) { echo 'this->mailsvr_stream: '.serialize($this->mailsvr_stream).'<br>';}
 			set_time_limit(0);
 
@@ -185,7 +185,7 @@
 			{
 				// switch to the desired folder now that we are sure we have it's official name
 				  if ($debug_logins) { echo 'reopen mailsvr_stream to this->folder: (callstr)'.$this->folder.'<br>';}
-				$did_reopen = $phpgw->dcom->reopen($this->mailsvr_stream, $this->mailsvr_callstr.$this->folder, '');
+				$did_reopen = $this->dcom->reopen($this->mailsvr_stream, $this->mailsvr_callstr.$this->folder, '');
 				  if ($debug_logins) { echo 'reopen returns: '.serialize($did_reopen).'<br>';}
 				// error check
 				if ($did_reopen == False)
@@ -219,7 +219,7 @@
 		if ((isset($this->mailsvr_stream))
 		&& ($this->mailsvr_stream != ''))
 		{
-			$phpgw->dcom->close($phpgw->msg->mailsvr_stream);
+			$this->dcom->close($phpgw->msg->mailsvr_stream);
 			$phpgw->msg->mailsvr_stream = '';
 		}
 	}
@@ -316,6 +316,19 @@
 		{
 			$phpgw_info['user']['preferences']['email']['imap_server_type'] = $phpgw_info['server']['imap_server_type'];
 		}
+		
+		// ====  UWash Mail Folder Location used to be "mail", now it's changeable, but keep the
+		// ====  default to "mail" so upgrades happen transparently
+		// ---  TEMP MAKE DEFAULT UWASH MAIL FOLDER ~/mail (a.k.a. $HOME/mail)
+		$phpgw_info['server']['mail_folder'] = 'mail';
+		// ---  DELETE THE ABOVE WHEN THIS OPTION GETS INTO THE SYSTEM SETUP
+		// pick up custom "mail_folder" if it exists (used for UWash and UWash Maildor servers)
+		// else use the system default (which we temporarily hard coded to "mail" just above here)
+		if (!isset($phpgw_info['user']['preferences']['email']['mail_folder']))
+		{
+			$phpgw_info['user']['preferences']['email']['mail_folder'] = $phpgw_info['server']['mail_folder'];
+		}
+
 		// This is going to be used to switch to the nntp class
 		if ((isset($phpgw_info['flags']['newsmode'])
 		&& $phpgw_info['flags']['newsmode']))
@@ -540,6 +553,10 @@
 			if ((isset($phpgw_info['user']['preferences']['email']['mail_folder']))
 			&& (trim($phpgw_info['user']['preferences']['email']['mail_folder']) != ''))
 			{
+				// if the user fills this option correctly, this should yield an unqualified foldername which
+				// UWash should qualify (juat like any unix command line "cd" command) with the
+				// appropriate $HOME variable (I THINK) ...
+				// DO I NEED to add the "~" here too?
 				$name_space = trim($phpgw_info['user']['preferences']['email']['mail_folder']);
 			}
 			else
@@ -571,7 +588,7 @@
 			// however this is less useful if the IMAP server makes available shared folders and/or usenet groups
 			// in addition to the users private mailboxes
 			// see http://www.faqs.org/rfcs/rfc2060.html  section 6.3.8 (which is not entirely clear on this)
-			$name_space = $phpgw->dcom->listmailbox($this->mailsvr_stream, $server_str, '%');
+			$name_space = $this->dcom->listmailbox($this->mailsvr_stream, $server_str, '%');
 			//echo 'list with percent sign arg returns: '.$this->htmlspecialchars_encode(serialize($name_space)).'<br>';
 
 			if (!$name_space)
@@ -789,13 +806,13 @@
 		}
 
 		// check if class dcom reports that the folder list has changed
-		if ((isset($phpgw->dcom))
-		&& ($phpgw->dcom->folder_list_changed == True))
+		if ((isset($this->dcom))
+		&& ($this->dcom->folder_list_changed == True))
 		{
 			// class dcom recorded a change in the folder list
 			// supposed to happen when create or delete mailbox is called
 			// reset the changed flag
-			$phpgw->dcom->folder_list_changed = False;
+			$this->dcom->folder_list_changed = False;
 			// set up for a force_refresh
 			$force_refresh = True;
 			if ($debug_get_folder_list) { echo 'class dcom report folder list changed<br>';}
@@ -836,7 +853,7 @@
 				// example querey: "~/"
 				// OR if the user specifies specific mbox folder,
 				// then: "~/emails/*"  OR  "emails/*" give the same result, much like a unix "ls" command
-				$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."$delimiter" ."*");
+				$mailboxes = $this->dcom->listmailbox($mailbox, $server_str, "$name_space" ."$delimiter" ."*");
 				// UWASH IMAP returns information in this format:
 				// {SERVER_NAME:PORT}FOLDERNAME
 				// example:
@@ -849,9 +866,9 @@
 				// wheres adding the delimiter "INBOX.*" will NOT include the INBOX in the list of folders
 				// so - it's safe to include the delimiter here, but the INBOX will not be included in the list
 				// this is typically the ONLY TIME you would ever *not* use the delimiter between the namespace and what comes after it
-				//$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."*");
+				//$mailboxes = $this->dcom->listmailbox($mailbox, $server_str, "$name_space" ."*");
 				// problem: Cyrus does not like anything but a "*" as the pattern IF you want shared folders returned.
-				$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "*");
+				$mailboxes = $this->dcom->listmailbox($mailbox, $server_str, "*");
 				// returns information in this format:
 				// {SERVER_NAME:PORT} NAMESPACE DELIMITER FOLDERNAME
 				// example:
@@ -940,7 +957,8 @@
 	{
 		global $phpgw, $phpgw_info;
 
-		if (!$mailbox)
+		if ((!$mailbox)
+		|| ($mailbox == ''))
 		{
 			$mailbox = $this->mailsvr_stream;
 		}
@@ -1978,6 +1996,14 @@
 		// double quote "
 		$str = ereg_replace('&quot;', '"', $str);
 		return $str;
+	}
+
+	// base64 decoding
+	function de_base64($text) 
+	{
+		//return $this->dcom->base64($text);
+		//return imap_base64($text);
+		return base64_decode($text);
 	}
 
 	// DEPRECIATED - not used currently (9/25/2001)

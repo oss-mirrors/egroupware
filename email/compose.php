@@ -29,33 +29,35 @@
 // ----  Handle Replying and Forwarding  -----
 	if ($phpgw->msg->msgnum)
 	{
-		$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
-		$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
+		//$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
+		$msg_headers = $phpgw->msg->phpgw_header('');
+		//$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
+		$msg_struct = $phpgw->msg->phpgw_fetchstructure('');
 
 		if ($phpgw->msg->args['action'] == 'reply')
 		{
 			// if "Reply-To" is specified, use it, or else use the "from" address as the address to reply to
-			if ($msg->reply_to[0])
+			if ($msg_headers->reply_to[0])
 			{
-				$reply = $msg->reply_to[0];
+				$reply = $msg_headers->reply_to[0];
 			}
 			else
 			{
-				$reply = $msg->from[0];
+				$reply = $msg_headers->from[0];
 			}
 			$to = $phpgw->msg->make_rfc2822_address($reply);
-			$subject = $phpgw->msg->get_subject($msg,'Re: ');
+			$subject = $phpgw->msg->get_subject($msg_headers,'Re: ');
 		}
 		if ($phpgw->msg->args['action'] == 'replyall')
 		{
-			if ($msg->to)
+			if ($msg_headers->to)
 			{
-				$from = $msg->from[0];
+				$from = $msg_headers->from[0];
 				$from_plain = $from->mailbox.'@'.$from->host;
 				// if from and reply-to are the same plain email address, use from instead, it usually has "personal" info
-				if ($msg->reply_to[0])
+				if ($msg_headers->reply_to[0])
 				{
-					$reply_to = $msg->reply_to[0];
+					$reply_to = $msg_headers->reply_to[0];
 					$reply_to_plain = $reply_to->mailbox.'@'.$reply_to->host;
 					if ($reply_to_plain != $from_plain)
 					{
@@ -71,9 +73,9 @@
 				{
 					$my_reply = $from;
 				}
-				for ($i = 0; $i < count($msg->to); $i++)
+				for ($i = 0; $i < count($msg_headers->to); $i++)
 				{
-					$topeople = $msg->to[$i];
+					$topeople = $msg_headers->to[$i];
 					$tolist[$i] = $phpgw->msg->make_rfc2822_address($topeople);
 				}
 				// these spaces after the comma will be taken out in send_message, they are only for user readability here
@@ -103,21 +105,21 @@
 				}
 				*/
 			}
-			if ($msg->cc)
+			if ($msg_headers->cc)
 			{
-				for ($i = 0; $i < count($msg->cc); $i++)
+				for ($i = 0; $i < count($msg_headers->cc); $i++)
 				{
-					$ccpeople = $msg->cc[$i];
+					$ccpeople = $msg_headers->cc[$i];
 					$cclist[$i] = $phpgw->msg->make_rfc2822_address($ccpeople);
 				}
 				// these spaces after the comma will be taken out in send_message, they are only for user readability here
 				$cc = implode(", ", $cclist);
 			}
-			$subject = $phpgw->msg->get_subject($msg,'Re: ');
+			$subject = $phpgw->msg->get_subject($msg_headers,'Re: ');
 		}
 
 		// ----  Begin The Message Body  (of Fw or Re Body) -----
-		$who_wrote = $phpgw->msg->get_who_wrote($msg);
+		$who_wrote = $phpgw->msg->get_who_wrote($msg_headers);
 		$lang_wrote = lang('wrote');
 		$body = "\r\n"."\r\n"."\r\n" .$who_wrote .' '. $lang_wrote .': '."\r\n".'>'."\r\n";
 
@@ -130,7 +132,8 @@
 		&& (($phpgw->msg->args['action'] == 'reply')
 		  || ($phpgw->msg->args['action'] == 'replyall')))
 		{
-			$bodystring = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum, $phpgw->msg->args['part_no']);
+			//$bodystring = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum, $phpgw->msg->args['part_no']);
+			$bodystring = $phpgw->msg->phpgw_fetchbody($phpgw->msg->args['part_no']);
 			// see if we have to un-do qprint encoding
 			if ((isset($phpgw->msg->args['encoding']))
 			&& ($phpgw->msg->args['encoding'] == 'qprint'))
@@ -181,10 +184,10 @@
 		elseif ($phpgw->msg->args['action'] == 'forward')
 		{
 			// ----- get information from the orig email  --------
-			$subject = $phpgw->msg->get_subject($msg,'Fw: ');
-			$fwd_info_from = $phpgw->msg->make_rfc2822_address($msg->from[0]);
-			$fwd_info_date = $phpgw->common->show_date($msg->udate);
-			$fwd_info_subject = $phpgw->msg->get_subject($msg,'');
+			$subject = $phpgw->msg->get_subject($msg_headers,'Fw: ');
+			$fwd_info_from = $phpgw->msg->make_rfc2822_address($msg_headers->from[0]);
+			$fwd_info_date = $phpgw->common->show_date($msg_headers->udate);
+			$fwd_info_subject = $phpgw->msg->get_subject($msg_headers,'');
 			
 			//$body = " \r\n"." \r\n"
 			$body = "\r\n"."\r\n"
@@ -197,7 +200,7 @@
 			//$body = "\r\n"."\r\n".'forwarded mail'."\r\n";
 			
 			/*
-			$part_nice = pgw_msg_struct($struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
+			$part_nice = pgw_msg_struct($msg_struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
 			// see if one of the params if the boundry
 			$part_nice['boundary'] = $struct_not_set;  // initialize
 			for ($p = 0; $p < $part_nice['ex_num_param_pairs']; $p++)
@@ -234,34 +237,35 @@
 			//echo '<br>orig_headers <br><pre>' .$phpgw->msg->htmlspecialchars_encode($orig_headers) .'</pre><br>';
 			//echo '<br>reg_matches ' .serialize($reg_matches) .'<br>';
 			//echo '<br>orig_boundary ' .$orig_boundary .'<br>';
-			//echo '<br>struct: <br>' .$phpgw->msg->htmlspecialchars_encode(serialize($struct)) .'<br>';
+			//echo '<br>struct: <br>' .$phpgw->msg->htmlspecialchars_encode(serialize($msg_struct)) .'<br>';
 			*/
 			
 		}
 		// ----  "the OLD WAY": Process Multiple Body Parts (if necessary)  of Fw or Re Body   -----
-		elseif (!$struct->parts)
+		elseif (!$msg_struct->parts)
 		{
 			$numparts = "1";
 		}
 		else
 		{
-			$numparts = count($struct->parts);
+			$numparts = count($msg_struct->parts);
 		}
 		for ($i = 0; $i < $numparts; $i++)
 		{
-			if (!$struct->parts[$i])
+			if (!$msg_struct->parts[$i])
 			{
-				$part = $struct;
+				$part = $msg_struct;
 			}
 			else
 			{
-				$part = $struct->parts[$i];
+				$part = $msg_struct->parts[$i];
 			}
 			if (get_att_name($part) == "Unknown")
 			{
 				if (strtoupper($part->subtype) == 'PLAIN')
 				{
-					$bodystring = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum, $i+1);
+					//$bodystring = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum, $i+1);
+					$bodystring = $phpgw->msg->phpgw_fetchbody($i+1);
 					$body_array = array();
 					$body_array = explode("\n", $bodystring);
 					$bodycount = count ($body_array);

@@ -314,13 +314,12 @@
 	if (($mail_out['is_forward'] == True)
 	&& ($mail_out['fwd_proc'] == 'pushdown'))
 	{
-		//$msg = $phpgw->dcom->header($mailbox, $phpgw->msg->msgnum);
-		//$struct = $phpgw->dcom->fetchstructure($mailbox, $phpgw->msg->msgnum);
-		$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
-		$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
+		//$msg_headers = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
+		$msg_headers = $phpgw->msg->phpgw_header('');
+		//$msg_struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
+		$msg_struct = $phpgw->msg->phpgw_fetchstructure('');
 
-
-		$mail_out['fwd_info'] = pgw_msg_struct($struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
+		$mail_out['fwd_info'] = pgw_msg_struct($msg_struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
 		if (($mail_out['fwd_info']['type'] == 'multipart')
 		|| ($mail_out['fwd_info']['subtype'] == 'mixed'))
 		{
@@ -338,16 +337,17 @@
 		$mail_out['body'][$body_part_num]['mime_body'] = Array();
 
 		// ----  General Information about The Original Message  -----
-		//$msg = $phpgw->dcom->header($mailbox, $phpgw->msg->msgnum);
-		//$struct = $phpgw->dcom->fetchstructure($mailbox, $phpgw->msg->msgnum);
-		$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
-		$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
+		//$msg_headers = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
+		$msg_headers = $phpgw->msg->phpgw_header('');
+		//$msg_struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
+		$msg_struct = $phpgw->msg->phpgw_fetchstructure('');
+
 		// use the "pgw_msg_struct" function to get the orig message main header info
-		$mail_out['fwd_info'] = pgw_msg_struct($struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
+		$mail_out['fwd_info'] = pgw_msg_struct($msg_struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
 		// add some more info
-		$mail_out['fwd_info']['from'] = $phpgw->msg->make_rfc2822_address($msg->from[0]);
-		$mail_out['fwd_info']['date'] = $phpgw->common->show_date($msg->udate);
-		$mail_out['fwd_info']['subject'] = $phpgw->msg->get_subject($msg,'');
+		$mail_out['fwd_info']['from'] = $phpgw->msg->make_rfc2822_address($msg_headers->from[0]);
+		$mail_out['fwd_info']['date'] = $phpgw->common->show_date($msg_headers->udate);
+		$mail_out['fwd_info']['subject'] = $phpgw->msg->get_subject($msg_headers,'');
 
 		// normalize data to rfc2046 defaults, in the event data is not provided
 		if ($mail_out['fwd_info']['type'] == $struct_not_set)
@@ -407,8 +407,8 @@
 		$m_line++;
 
 		// dump the original BODY (with out its headers) here
-		//$fwd_this = $phpgw->dcom->get_body($mailbox, $phpgw->msg->msgnum);
-		$fwd_this = $phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
+		//$fwd_this = $phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
+		$fwd_this = $phpgw->msg->phpgw_body();
 		// Explode Body into Array of strings
 		$mail_out['body'][$body_part_num]['mime_body'] = $phpgw->msg->explode_linebreaks(trim($fwd_this));
 		$fwd_this = '';		
@@ -428,8 +428,8 @@
 		$mail_out['body'][$body_part_num]['mime_headers'][2] = 'Content-Disposition: inline';
 
 		// DUMP the original message verbatim into this part's "body" - i.e. encapsulate the original mail
-		//$fwd_this['sub_header'] = trim($phpgw->dcom->fetchheader($mailbox, $phpgw->msg->msgnum));
-		$fwd_this['sub_header'] = trim($phpgw->dcom->fetchheader($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum));
+		//$fwd_this['sub_header'] = trim($phpgw->dcom->fetchheader($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum));
+		$fwd_this['sub_header'] = trim($phpgw->msg->phpgw_fetchheader(''));
 		$fwd_this['sub_header'] = $phpgw->msg->normalize_crlf($fwd_this['sub_header']);
 
 		// CLENSE headers of offensive artifacts that can confuse dumb MUAs
@@ -439,8 +439,8 @@
 		$fwd_this['sub_header'] = trim($fwd_this['sub_header']);
 
 		// get the body
-		//$fwd_this['sub_body'] = trim($phpgw->dcom->get_body($mailbox, $phpgw->msg->msgnum));
-		$fwd_this['sub_body'] = trim($phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum));
+		//$fwd_this['sub_body'] = trim($phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum));
+		$fwd_this['sub_body'] = trim($phpgw->msg->phpgw_body());
 		//$fwd_this['sub_body'] = $phpgw->msg->normalize_crlf($fwd_this['sub_body']);
 
 
@@ -687,10 +687,12 @@
 
 		// note: what format should these folder name options (sent and trash) be held in
 		// i.e. long or short name form, in the prefs database
-		$sent_folder_name = $phpgw->msg->get_folder_short($phpgw_info['user']['preferences']['email']['sent_folder_name']);	
+		//$sent_folder_name = $phpgw->msg->get_folder_short($phpgw_info['user']['preferences']['email']['sent_folder_name']);
+		$sent_folder_name = $phpgw_info['user']['preferences']['email']['sent_folder_name'];
 
 		// NOTE: should we use the existing mailbox stream or initiate a new one just for the append?
 		// using a NEW stream *seems* faster, but not sure ???
+		/*
 		if ((!isset($phpgw->msg->mailsvr_stream))
 		|| ($phpgw->msg->mailsvr_stream == ''))
 		{
@@ -704,9 +706,32 @@
 		{
 			// note: "append" will CHECK  to make sure this folder exists, and try to create it if it does not
 			// also note, make sure there is a \r\n CRLF empty last line sequence so Cyrus will be happy
-			$phpgw->dcom->append( $phpgw->msg->mailsvr_stream , $sent_folder_name,  $phpgw->mail_send->assembled_copy."\r\n", "\\Seen");
+			//$phpgw->dcom->append($phpgw->msg->mailsvr_stream,
+			$phpgw->msg->phpgw_append($sent_folder_name,
+						$phpgw->mail_send->assembled_copy."\r\n",
+						"\\Seen");
 			//echo 'used existing stream for trash folder';
+		//}
+		*/
+
+		if ((isset($phpgw->msg->mailsvr_stream))
+		&& ($phpgw->msg->mailsvr_stream != ''))
+		{
+			// note: "append" will CHECK  to make sure this folder exists, and try to create it if it does not
+			// also note, make sure there is a \r\n CRLF empty last line sequence so Cyrus will be happy
+			//$phpgw->dcom->append($phpgw->msg->mailsvr_stream,
+			//echo 'using existing stream for sent folder append<br>';
+			$success = $phpgw->msg->phpgw_append($sent_folder_name,
+							$phpgw->mail_send->assembled_copy."\r\n",
+							"\\Seen");
+			//if ($success) { echo 'append to sent OK<br>'; }
+			//else { echo 'append to sent FAILED<br>'; echo 'imap_last_error: '.imap_last_error().'<br>'; }
 		}
+		else
+		{
+			//echo 'NO STREAM available for sent folder append<br>';
+		}
+
 	}
 
 	// ----  Redirect on Success, else show Error Report   -----

@@ -34,29 +34,29 @@ function check_all()
 }
 </script>
 
-<table border="0" cellpadding="1" cellspacing="2" width="95%" align="center">
+<table border="0" cellpadding="2" cellspacing="1" width="95%" align="center">
 <tr>
-	<td bgcolor="{ctrl_bar_back2}" align="center">
+	<td bgcolor="{ctrl_bar_back2}" width="33%" align="center">
 		<font size="-1"><a href="{compose_link}">{compose_txt}</a></font>
 	</td>
-	<td bgcolor="{ctrl_bar_back2}" align="center">
+	<td bgcolor="{ctrl_bar_back2}" width="34%" align="center">
 		<font size="-1">{folders_href}</font>
 	</td>
-	<td bgcolor="{ctrl_bar_back2}" align="center">
+	<td bgcolor="{ctrl_bar_back2}" width="33%" align="center">
 		<font size="-1"><a href="{email_prefs_link}">{email_prefs_txt}</a></font>
 	</td>
 </tr>
 </table>
 
-<table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
+<table border="0" cellpadding="3" cellspacing="1" width="95%" align="center">
 <tr>
 	<form name="switchbox" action="{switchbox_action}" method="post">
-	<td bgcolor="{ctrl_bar_back1}" align="left">
+	<td bgcolor="{ctrl_bar_back1}" width="50%" align="left">
 		&nbsp;&nbsp;&nbsp;{switchbox_listbox}
 	</td>
 	</form>
 	<form name="sortbox" action="{sortbox_action}" method="post">
-	<td bgcolor="{ctrl_bar_back1}" align="left">
+	<td bgcolor="{ctrl_bar_back1}" width="50%" align="left">
 		<font size="-1">&nbsp;&nbsp;Sort by:&nbsp;</font>
 		<select name="{sortbox_select_name}" onChange="{sortbox_on_change}">
 		{sortbox_select_options}
@@ -64,13 +64,16 @@ function check_all()
 	</td>
 	</form>
 </tr>
+<tr>
+	<td colspan="2" align="center">
+		<font face="{stats_font}" size="{stats_fontsize}">&nbsp;
+		<!-- BEGIN B_action_report -->
+		{report_this}
+		<!-- END B_action_report -->
+		</font>
+	</td>
+</tr>
 </table>
-
-<!-- BEGIN B_action_report -->
-<br><center>{report_this}</center>
-<!-- END B_action_report -->
-
-<br>
 
 <table border="0" cellpadding="0" cellspacing="1" width="95%" align="center">
 <tr bgcolor="{arrows_backcolor}">

@@ -3,7 +3,7 @@ PhpGroupware
 Email Application
 
 Last Updated:
-8/03/2001
+9/28/2001
 
 
 Q: I'm composing mail, what do I put in the "To" and/or "CC" boxes
@@ -17,23 +17,31 @@ johndoe@example.com,"Jane" <jane@example.com>,tarzan@example.com
 
 
 Q: I use UWash IMAP, where will phpgroupware email look for MBOX files?
-A: The mbox folder "INBOX" will always be available
-If your other mbox folders like "Sent" and "Trash" are in your $HOME directory,
-then you DO NOT need any special config.
-If your mbox files are in $HOME/mail  then you must do this:
+A1: The mbox folder "INBOX" will always be available by default
+A2: (The following answer is subject to change when this option becomes
+    settable suring the system wide setup)
+-IF your mbox files are in $HOME/mail (a.k.a. ~/mail/*) then you do NOT
+ need to change any settings, email will look there BY DEFAULT.
+-IF your mbox folders (such as the "Sent" and "Trash" foldsers)
+ are in any other location (such as your $HOME directory, a.k.a ~/*)
+ THEN you must _currently_ set the following "custom option"
+ FOR EACH ACCOUNT (this will change when this option becomes a system item).
+--FIRST do this:
  - goto the "Preferences" page
  - click on "E-Mail preferences"
  - check "use custom settings"
- - enter your email account name, password, and your email address
- - enter the name or IP address of your IMAP server (ex: mail.example.com)
- - choose IMAP as your "mail server type"
- - choose "UWash" as your "imap server type"
-(note that all this information up to this point should be no surprise to you)
- - the last option is presently called "Mail Folder(uw-maildir)"
-it is somewhat mis-named because it also works for regular UWash IMAP too.
+ - enter these next items ONLY if they are different from your account
+   and system defaults:
+   - enter your email account name, password, and your email address
+   - enter the name or IP address of your IMAP server (ex: mail.example.com)
+   - choose IMAP as your "mail server type"
+   - choose "UWash" as your "imap server type"
+ - the last option is presently called "UWash Mail Folder"
+   ( it used to be called "Mail Folder(uw-maildir)"
+     this option will works for regular UWash IMAP and UWash Maildir IMAP)
  - If your mbox files are in $HOME   then LEAVE THIS OPTION BLANK.
- - If your mbox files are in $HOME/mail  then type in this:
-mail
+ - If your mbox files are in $HOME/email  then type in this:
+email
 (notice NO QUOTES, NO TILDES, NO SLASHES)
  - If your mbox files are in $HOME/mystuff  then type in this:
 mystuff

@@ -34,12 +34,14 @@ function check_all()
 }
 </script>
 
-
-<!-- BEGIN B_action_report -->
-<p><center>{report_this}</center></p>
-<!-- END B_action_report -->
-
 <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
+<!-- BEGIN B_action_report -->
+<tr>
+	<td colspan="7" align="center">
+		<font face="{stats_font}" size="{stats_fontsize}">{report_this}</font>
+	</td>
+</tr>
+<!-- END B_action_report -->
 <tr bgcolor="{arrows_backcolor}" align="center">
 	<td>&nbsp;</td>
 	{prev_arrows}

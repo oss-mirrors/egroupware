@@ -27,7 +27,10 @@
 
   /* $Id$ */
 
-class mail_msg extends mail_msg_base
+// include this last, it extends mail_msg_wrappers which extends mail_msg_base
+// so (1) include mail_msg_base, (2) incluse mail_msg_wrappers extending mail_msg_base
+// then (3) include mail_msg which extends mail_msg_wrappers and, by inheritance, mail_msg_base
+class mail_msg extends mail_msg_wrappers
 {
 
 	function all_folders_listbox($mailbox,$pre_select="",$skip="",$indicate_new=False)
@@ -96,7 +99,7 @@ class mail_msg extends mail_msg_base
 					if (($indicate_new)
 					&& ($this->care_about_unseen($folder_short)))
 					{
-						$mailbox_status = $phpgw->dcom->status($mailbox,$this->get_mailsvr_callstr().$folder_long,SA_ALL);
+						$mailbox_status = $this->dcom->status($mailbox,$this->get_mailsvr_callstr().$folder_long,SA_ALL);
 						if ($mailbox_status->unseen > 0)
 						{
 							$outstr = $outstr . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
@@ -235,93 +238,6 @@ class mail_msg extends mail_msg_base
 		return $nice_size;
 	}
 
-	// returns an array of integers which are refer to all the messages in a folder ("INBOX") sorted and ordered
-	// any integer in this array can be used to request that specific message from the server
-	function get_message_list()
-	{
-		global $phpgw;
-
-		$msg_array = array();
-		$msg_array = $phpgw->dcom->sort($this->mailsvr_stream, $this->sort, $this->order);
-		return $msg_array;
-	}
-
-	// ALIAS for folder_status_info() , for backward compatibility
-	function new_message_check()
-	{
-		return $this->folder_status_info();
-	}
-
-	/*!
-	@function folder_status_info
-	@abstract get status info for the current folder, with emphesis on reporting to user about new messages
-	@param none
-	@result returns an associative array  with 5 named elements:
-		result['is_imap'] boolean - pop3 server do not know what is "new" or not, IMAP servers do
-		result['folder_checked'] string - the folder checked, as processed by the msg class, which may have done a lookup on the folder name
-		result['alert_string'] string - lang'd string to show the user about status of new messages in this folder
-		result['number_new'] integer - for IMAP: the number "recent" and/or "unseen"messages; for POP3: the total number of messages
-		result['number_all'] integer - for IMAP and POP3: the total number messages in the folder
-	@discussion gives user friendly "alert_string" element to show the user, info is for what ever folder the msg
-		class is currently logged into, you may want to apply PHP function "number_format()" to
-		the integers after you have done any math code and befor eyou display them to the user, it adds the thousands comma
-	*/
-	function folder_status_info()
-	{
-		global $phpgw, $phpgw_info;
-
-		// initialize return structure
-		$return_data = Array();
-		$return_data['is_imap'] = False;
-		$return_data['folder_checked'] = $this->folder;
-		$return_data['alert_string'] = '';
-		$return_data['number_new'] = 0;
-		$return_data['number_all'] = 0;
-
-		$server_str = $this->get_mailsvr_callstr();
-		$mailbox_status = $phpgw->dcom->status($this->mailsvr_stream,$server_str.$this->folder,SA_ALL);
-
-		if (($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
-		|| ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps'))
-		{
-			$return_data['is_imap'] = True;
-			$return_data['number_new'] = $mailbox_status->unseen;
-			$return_data['number_all'] = $mailbox_status->messages;
-			if ($mailbox_status->unseen == 1) 
-			{
-				$return_data['alert_string'] .= lang('You have 1 new message!');
-			}
-			if ($mailbox_status->unseen > 1) 
-			{
-				$return_data['alert_string'] .= lang('You have x new messages!',$mailbox_status->unseen);
-			}
-			if ($mailbox_status->unseen == 0) 
-			{
-				$return_data['alert_string'] .= lang('You have no new messages');
-			}
-		}
-		else
-		{
-			$return_data['is_imap'] = False;
-			// pop3 does not know what is "new" or not
-			$return_data['number_new'] = $mailbox_status->messages;
-			$return_data['number_all'] = $mailbox_status->messages;
-			if ($mailbox_status->messages > 0) 
-			{
-				$return_data['alert_string'] .= lang('You have messages!');
-			}
-			elseif ($mailbox_status->messages == 0)
-			{
-				$return_data['alert_string'] .= lang('You have no new messages');
-			}
-			else
-			{
-				$return_data['alert_string'] .= lang('error');
-			}
-		}
-		return $return_data;
-	}
-
 	// ----  High-Level Function To Get The Subject String  -----
 	function get_subject($msg, $desired_prefix='Re: ')
 	{
@@ -380,6 +296,50 @@ class mail_msg extends mail_msg_base
 		}
 		return $personal;
 	}
+
+	/*!
+	@function has_real_attachment
+	@abstract s quick test to see if a message has an attachment, (NOT 100% accurate, but fast and mostly accurate)
+	@param $struct : PHP structure obtained from the "fetchstructure" command
+	@result boolean
+	@discussion for use when displaying a list of messages, a quick way to determine if visual information (paperclip) is necessary
+	*/
+	function has_real_attachment($struct)
+	{
+		$haystack = serialize($struct);
+
+		if (stristr($haystack, 's:9:"attribute";s:4:"name"'))
+		{
+			// param attribute "name"
+			// s:9:"attribute";s:4:"name"
+			return True;
+		}
+		elseif (stristr($haystack, 's:8:"encoding";i:3'))
+		{
+			// encoding is base 64
+			// s:8:"encoding";i:3
+			return True;
+		}
+		elseif (stristr($haystack, 's:11:"disposition";s:10:"attachment"'))
+		{
+			// header disposition calls itself "attachment"
+			// s:11:"disposition";s:10:"attachment"
+			return True;
+		}
+		elseif (stristr($haystack, 's:9:"attribute";s:8:"filename"'))
+		{
+			// another mime filename indicator
+			// s:9:"attribute";s:8:"filename"
+			return True;
+		}
+		else
+		{
+			return False;
+		}
+	}
+
+
+
 
 
 } // end class mail_msg

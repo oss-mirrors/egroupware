@@ -30,15 +30,18 @@
 
 	if ($phpgw->msg->args['encoding'] == "base64")
 	{
-		echo $phpgw->dcom->base64($phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->args['msgnum'], $phpgw->msg->args['part_no']));
+		//echo $phpgw->dcom->base64($phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->args['msgnum'], $phpgw->msg->args['part_no']));
+		echo $phpgw->msg->de_base64($phpgw->msg->phpgw_fetchbody($phpgw->msg->args['part_no']));
 	}
 	elseif ($phpgw->msg->args['encoding'] == "qprint")
 	{
-		echo $phpgw->msg->qprint($phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->args['msgnum'], $phpgw->msg->args['part_no']));
+		//echo $phpgw->msg->qprint($phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->args['msgnum'], $phpgw->msg->args['part_no']));
+		echo $phpgw->msg->qprint($phpgw->msg->phpgw_fetchbody($phpgw->msg->args['part_no']));
 	}
 	else
 	{
-		echo $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->args['msgnum'], $phpgw->msg->args['part_no']);
+		//echo $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->args['msgnum'], $phpgw->msg->args['part_no']);
+		echo $phpgw->msg->phpgw_fetchbody($phpgw->msg->args['part_no']);
 	}
 
 	$phpgw->msg->end_request();

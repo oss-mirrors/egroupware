@@ -131,9 +131,6 @@
 	}
 
 // ---- Folder Status Infomation   -----
-	$mailbox_status = $phpgw->dcom->status($phpgw->msg->mailsvr_stream,
-					$phpgw->msg->get_mailsvr_callstr().$phpgw->msg->folder,
-					SA_ALL);
 	// NEW: use API-like high level function for this:
 	$folder_info = array();
 	$folder_info = $phpgw->msg->folder_status_info();
@@ -243,10 +240,6 @@
 		// TOTAL MESSAGES IN FOLDER
 		$stats_saved = number_format($folder_info['number_all']);
 
-		$msg_array = array();
-		//$msg_array = $phpgw->dcom->sort($phpgw->msg->mailsvr_stream, $phpgw->msg->sort, $phpgw->msg->order);
-		$msg_array = $phpgw->msg->get_message_list();
-
 		// NUM NEW MESSAGES
 		$stats_new = $folder_info['number_new'];
 		if ($stats_new == 0)
@@ -294,9 +287,8 @@
 		if ($do_show_size)
 		{
 			$do_show_size = True;
-			$mailbox_detail = $phpgw->dcom->mailboxmsginfo($phpgw->msg->mailsvr_stream);
-			$stats_size = $mailbox_detail->Size;
-			// size is in bytes, format for KB or MB
+			// FOLDER SIZE info obtained now
+			$stats_size = $phpgw->msg->get_folder_size();
 			$stats_size = $phpgw->msg->format_byte_size($stats_size);
 		}
 	}
@@ -487,6 +479,10 @@
 		// we have messages, so set the "no messages" block to nothing, we don't show it in this case
 		$t->set_var('V_no_messages','');
 
+		// get a numbered array list of all message numbers in that folder, sorted and ordered
+		$msg_nums_array = array();
+		$msg_nums_array = $phpgw->msg->get_message_list();
+
 		if ($folder_info['number_all'] < $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
 		{
 			$totaltodisplay = $folder_info['number_all'];
@@ -511,34 +507,40 @@
 			//$bg = (($i + 1)/2 == floor(($i + 1)/2)) ? $phpgw_info["theme"]["row_off"] : $phpgw_info["theme"]["row_on"];
 			$bg = $phpgw->nextmatchs->alternate_row_color($bg);
 
-			$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $msg_array[$i]);
-
 			// SHOW ATTACHMENT CLIP ?
-			$show_attach = has_real_attachment($struct);
+			// need Message Information: STRUCTURAL for this
+			$msg_struct = $phpgw->msg->phpgw_fetchstructure($msg_nums_array[$i]);
+			// now examine that msg_struct for signs of an attachment
+			$show_attach = $phpgw->msg->has_real_attachment($msg_struct);
 
-			$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $msg_array[$i]);
+			// Message Information: THE MESSAGE'S HEADERS
+			$msg_headers = $phpgw->msg->phpgw_header($msg_nums_array[$i]);
 			
 			// MESSAGE REFERENCE NUMBER
-			$mlist_msg_num = $msg_array[$i];
+			$mlist_msg_num = $msg_nums_array[$i];
 
 			// SUBJECT
-			$subject = $phpgw->msg->get_subject($msg,'');
+			$subject = $phpgw->msg->get_subject($msg_headers,'');
 			$subject_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php',
-				'folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$mlist_msg_num);
+				'folder='.$phpgw->msg->prep_folder_out('')
+				.'&msgnum='.$mlist_msg_num
+				.'&sort='.$phpgw->msg->sort
+				.'&order='.$phpgw->msg->order
+				.'&start='.$phpgw->msg->start);
 
 			// SIZE
 			if ($phpgw->msg->newsmode)
 			{
 				// nntp apparently gives size in number of lines ?
-				$size = $msg->Size;
+				$size = $msg_headers->Size;
 			}
 			else
 			{
-				$size = $phpgw->msg->format_byte_size($msg->Size);
+				$size = $phpgw->msg->format_byte_size($msg_headers->Size);
 			}
 
 			// SEEN OR UNSEEN/NEW
-			if (($msg->Unseen == "U") || ($msg->Recent == "N"))
+			if (($msg_headers->Unseen == "U") || ($msg_headers->Recent == "N"))
 			{
 				$show_newmsg = True;
 			}
@@ -548,19 +550,19 @@
 			}
 
 			// FROM and REPLY TO  HANDLING
-			if ($msg->reply_to[0])
+			if ($msg_headers->reply_to[0])
 			{
-				$reply = $msg->reply_to[0];
+				$reply = $msg_headers->reply_to[0];
 			}
 			else
 			{
-				$reply = $msg->from[0];
+				$reply = $msg_headers->from[0];
 			}
 
 			//$replyto = $phpgw->msg->make_rfc2822_address($reply);
 			$replyto = $reply->mailbox.'@'.$reply->host;
 
-			$from = $msg->from[0];
+			$from = $msg_headers->from[0];
 			if (!$from->personal)
 			{
 				// no "personal" info available, only can show plain address
@@ -617,7 +619,7 @@
 
 			// DATE
 			// date_time has both date and time, which probably is long enough to make a TD cell wrap text to 2 lines
-			$msg_date_time = $phpgw->common->show_date($msg->udate);
+			$msg_date_time = $phpgw->common->show_date($msg_headers->udate);
 			// this stripps the time part, leaving only the date, better for single line TD cells
 			$msg_date_only = ereg_replace(" - .*$", '', $msg_date_time);
 

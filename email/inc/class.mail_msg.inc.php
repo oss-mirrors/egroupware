@@ -28,6 +28,7 @@
   /* $Id$ */
 
 	include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_msg_base.inc.php');
+	include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_msg_wrappers.inc.php');
 	include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_msg_display.inc.php');
 
 ?>

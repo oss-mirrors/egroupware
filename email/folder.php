@@ -109,12 +109,14 @@
 			if (($phpgw->msg->args['action'] == 'create')
 			|| ($phpgw->msg->args['action'] == 'create_expert'))
 			{
-				$success = $phpgw->dcom->createmailbox($phpgw->msg->mailsvr_stream, $server_str.$phpgw->msg->args['target_folder']);
+				//$success = $phpgw->dcom->createmailbox($phpgw->msg->mailsvr_stream, $server_str.$phpgw->msg->args['target_folder']);
+				$success = $phpgw->msg->phpgw_createmailbox($server_str.$phpgw->msg->args['target_folder']);
 			}
 			elseif (($phpgw->msg->args['action'] == 'delete')
 			|| ($phpgw->msg->args['action'] == 'delete_expert'))
 			{
-				$success = $phpgw->dcom->deletemailbox($phpgw->msg->mailsvr_stream, $server_str.$phpgw->msg->args['target_folder']);
+				//$success = $phpgw->dcom->deletemailbox($phpgw->msg->mailsvr_stream, $server_str.$phpgw->msg->args['target_folder']);
+				$success = $phpgw->msg->phpgw_deletemailbox($server_str.$phpgw->msg->args['target_folder']);
 			}
 			elseif (($phpgw->msg->args['action'] == 'rename')
 			|| ($phpgw->msg->args['action'] == 'rename_expert'))
@@ -122,7 +124,9 @@
 				// phpgw->msg->args['source_folder'] is taken directly from the listbox, so it *should* be official long name already
 				// but it does need to be prep'd in because we prep out the foldernames put in that listbox
 				$phpgw->msg->args['source_folder'] = $phpgw->msg->prep_folder_in($phpgw->msg->args['source_folder']);
-				$success = $phpgw->dcom->renamemailbox($phpgw->msg->mailsvr_stream, $server_str.$phpgw->msg->args['source_folder'], $server_str.$phpgw->msg->args['target_folder']);
+				//$success = $phpgw->dcom->renamemailbox($phpgw->msg->mailsvr_stream, $server_str.$phpgw->msg->args['source_folder'], $server_str.$phpgw->msg->args['target_folder']);
+				$success = $phpgw->msg->phpgw_renamemailbox($server_str.$phpgw->msg->args['source_folder'], $server_str.$phpgw->msg->args['target_folder']);
+
 			}
 
 			// Result Message
@@ -174,7 +178,9 @@
 		$folder_short = $folder_list[$i]['folder_short'];
 
 		// SA_ALL gets the stats for the number of:  messages, recent, unseen, uidnext, uidvalidity
-		 $mailbox_status = $phpgw->dcom->status($phpgw->msg->mailsvr_stream,"$server_str"."$folder_long",SA_ALL);
+		//$mailbox_status = $phpgw->dcom->status($phpgw->msg->mailsvr_stream,"$server_str"."$folder_long",SA_ALL);
+		$folder_info = array();
+		$folder_info = $phpgw->msg->folder_status_info();
 		
 		//debug
 		//$real_long_name = $phpgw->msg->folder_lookup('',$folder_list[$i]['folder_short']);
@@ -199,9 +205,11 @@
 		//$t->set_var('folder_name',$folder_list[$i]["folder_long"]);
 		//$t->set_var('folder_name',$phpgw->msg->htmlspecialchars_encode($folder_long));
 
-		$t->set_var('msgs_unseen',$mailbox_status->unseen);
+		//$t->set_var('msgs_unseen',$mailbox_status->unseen);
+		$t->set_var('msgs_unseen',number_format($folder_info['number_new']));
 		//$t->set_var('msgs_total',$total_msgs);
-		$t->set_var('msgs_total',$mailbox_status->messages);
+		//$t->set_var('msgs_total',$mailbox_status->messages);
+		$t->set_var('msgs_total',number_format($folder_info['number_all']));
 		$t->parse('V_folder_list','B_folder_list',True);
 	}
 
