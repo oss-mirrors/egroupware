@@ -16,7 +16,7 @@
 	$setup_info['soap']['title']     = 'Soap Test';
 	$setup_info['soap']['version']   = '0.0.1';
 	$setup_info['soap']['app_order'] = 4;
-	$setup_info['soap']['enable']    = 2;
+	$setup_info['soap']['enable']    = 1;
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['soap']['hooks'][] = 'preferences';
