@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Manual                                                    *
-	* http://www.phpgroupware.org                                              *
+	* phpGroupWare - Online User Manual                                        *
+	* http://www.eGroupWare.org                                              *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -14,16 +14,27 @@
 	/* Basic information about this app */
 	$setup_info['manual']['name']      = 'manual';
 	$setup_info['manual']['title']     = 'User Manual';
-	$setup_info['manual']['version']   = '0.9.13.002';
+	$setup_info['manual']['version']   = '1.0.0';
 	$setup_info['manual']['app_order'] = 5;
-	$setup_info['manual']['enable']    = 1;
+	$setup_info['manual']['enable']    = 4;	// popup
+
+	$setup_info['manual']['author']    =
+	$setup_info['manual']['maintainer'] = 'Ralf Becker';
+	$setup_info['manual']['maintainer_email'] = 'RalfBecker@outdoor-training.de';
+	$setup_info['manual']['license']   = 'GPL';
+	$setup_info['manual']['description'] =
+		'The new eGW Online User Manual uses the Wiki app.';
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['manual']['hooks'][] = 'manual';
+	$setup_info['manual']['hooks'] = array();
 
 	/* Dependencies for this app to work */
 	$setup_info['manual']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.13', '0.9.14')
+		 'versions' => Array('0.9.14','1.0.0')
+	);
+	$setup_info['manual']['depends'][] = array(
+		 'appname' => 'wiki',
+		 'versions' => Array('0.9.15.005','1.0.0')
 	);
 ?>
