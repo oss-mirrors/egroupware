@@ -1,5 +1,5 @@
 compose	messenger	de	Verfassen
-compose global message	admin	de	Globale Mitteilung verfassen
+compose global message	common	de	Globale Mitteilung verfassen
 compose message	messenger	de	Mitteilung verfassen
 forward	messenger	de	Weiterleiten
 forward a message	messenger	de	Mitteilung weiterleiten

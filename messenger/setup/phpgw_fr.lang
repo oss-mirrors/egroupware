@@ -1,5 +1,5 @@
 compose	messenger	fr	Composer
-compose global message	admin	fr	Composer un message global
+compose global message	common	fr	Composer un message global
 compose message	messenger	fr	Composer un message
 delete a message.	messenger	fr	Effacer un message.
 delete selected	messenger	fr	Effacer sélection

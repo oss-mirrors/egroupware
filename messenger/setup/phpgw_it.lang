@@ -1,5 +1,5 @@
 compose	messenger	it	Componi
-compose global message	admin	it	Componi messaggio globale
+compose global message	common	it	Componi messaggio globale
 compose global message	messenger	it	Componi messaggio globale
 compose message	messenger	it	Componi messaggio
 forward	messenger	it	Inoltra

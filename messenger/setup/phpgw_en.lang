@@ -1,5 +1,5 @@
 compose	messenger	en	Compose
-compose global message	admin	en	Compose global message
+compose global message	common	en	Compose global message
 compose message	messenger	en	Compose message
 delete a message.	messenger	en	Delete a message.
 delete selected	messenger	en	Delete selected
