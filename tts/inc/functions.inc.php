@@ -39,7 +39,7 @@ function mail_ticket($ticket_id) {
   $body .= "Date Opened: ".$phpgw->common->show_date($phpgw->db->f("t_timestamp_opened"))."\n\n";
   if(!$phpgw->db->f("t_timestamp_closed"))
     $body .= "Date Closed: ".$phpgw->common->show_date($phpgw->db->f("t_timestamp_closed"))."\n\n";
-  $body .= stripslashes($phpgw->db->f("t_detail"))."\n\n.";
+  $body .= stripslashes(strip_tags($phpgw->db->f("t_detail")))."\n\n.";
 
   $phpgw->db->query("SELECT group_id FROM groups WHERE group_name='$group'");
   $phpgw->db->next_record();
