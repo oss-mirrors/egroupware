@@ -25,6 +25,7 @@ descending	bookmarks	en	Descending
 edit bookmark	bookmarks	en	Edit bookmark
 edit this bookmark	bookmarks	en	Edit this bookmark
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	en	Enter the name of the Netscape bookmark file<br>that you want imported into bookmarker below.
+export bookmarks	preferences	en	Export Bookmarks
 fewer	bookmarks	en	Fewer
 filter by	bookmarks	en	Filter by
 found a link you might like	bookmarks	en	Found a link you might like
@@ -46,6 +47,7 @@ name is required	bookmarks	en	Name is required
 netscape bookmark file	bookmarks	en	Netscape Bookmark File
 netscape bookmark filename is required!	bookmarks	en	Netscape bookmark filename is required!
 new	bookmarks	en	New
+or	bookmarks	en	or
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	en	Please fill out <B>To E-Mail Address</B>, <B>Subject</B>, and <B>Message</B>!
 query condition	bookmarks	en	Query Condition
 rating	bookmarks	en	Rating

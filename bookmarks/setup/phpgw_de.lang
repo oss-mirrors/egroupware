@@ -2,11 +2,11 @@
 %1 bookmarks imported from %2 successfully.	bookmarks	de	%1 Bookmarks erfolgreich von %2 importiert.
 (comma separate multiple addresses)	bookmarks	de	(mehrere Adressen mit Komma getrennt)
 <b>note:</b> this currently works with netscape bookmarks only	bookmarks	de	<b>Achtung:</b> Geht im Moment nur mit Bookmarks von Netscape.
-all bookmarks	bookmarks	de	Alles Bookmarks
+all bookmarks	bookmarks	de	Alle Bookmarks
 and	bookmarks	de	Und
 append this message to mailed bookmarks	bookmarks	de	Diese Nachricht an zu verschickende Bookmarks anhängen.
 ascending	bookmarks	de	Absteigend
-book marks	common	de	Book marks
+book marks	common	de	Bookmarks
 bookmark changed sucessfully	bookmarks	de	Bookmarks erfolgreich geändert
 bookmark created successfully.	bookmarks	de	Bookmark erfolgreich erzeugt
 bookmark not editable	bookmarks	de	Dieses Bookmark ist nicht editierbar
@@ -25,6 +25,7 @@ descending	bookmarks	de	Aufsteigend
 edit bookmark	bookmarks	de	Bookmark editieren
 edit this bookmark	bookmarks	de	Dieses Bookmark editieren
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	de	Geben sie den Namen der Netscape Bookmark-Datei an<br>die sie importieren wollen.
+export bookmarks	preferences	de	Bookmarks exportieren
 fewer	bookmarks	de	Weniger
 filter by	bookmarks	de	Filtern nach
 found a link you might like	bookmarks	de	Habe einen interessanten Link gefunden
@@ -39,7 +40,7 @@ list	bookmarks	de	Liste
 lowest	bookmarks	de	Niedrigste
 mail this bookmark	bookmarks	de	Mail dieses Bookmark
 mail-this-link message sent to %1.	bookmarks	de	Nachricht mit Link versandt an %1.
-mass update:	bookmarks	de	Massen&uuml;berarbeitung:
+mass update:	bookmarks	de	Massenbearbeitung:
 message from	bookmarks	de	Nachricht von
 more	bookmarks	de	Mehr
 name	bookmarks	de	Name
