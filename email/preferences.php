@@ -46,10 +46,11 @@
 
 		$phpgw->preferences->add("email","default_sorting");
 
-		//email sig must not have single nor double quotes in it, as they screw up the preferences database
+		/* email sig must not have  '  nor  "  in it, as they screw up the preferences in class session
+		    not an sql error, but the core bug lies somewhere in session caching */
 		if ($email_sig != '')
 		{
-			// (1) if magic_quotes_gpc is ON, get rid of the escape \ that HTTP POST will add to quotes, " becomes \"
+			/* get rid of the escape \ that magic_quotes HTTP POST will add, " becomes \" and  '  becomes  \'  */
 			if (get_magic_quotes_gpc()==1)
 			{
 				$email_sig_clean = stripslashes($email_sig);
@@ -58,9 +59,10 @@
 			{
 				$email_sig_clean = $email_sig;
 			}
-			// (2) turn offensive single and double quotes into harmless html entities like used in URLs
-			$email_sig_clean = htmlspecialchars($email_sig_clean, ENT_QUOTES);
-			//note: ENT_QUOTES adds single quotes ' to the translation, but only in php >3.0.17
+			/*// replace  '  and  "  with htmlspecialchars */
+			$email_sig_clean = ereg_replace('\'', '&#039;', $email_sig_clean);
+			$email_sig_clean = ereg_replace('"', '&quot;', $email_sig_clean);
+
 			$phpgw->preferences->add("email","email_sig",$email_sig_clean);
 		}
 		else
