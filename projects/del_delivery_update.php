@@ -17,13 +17,13 @@
   include("../header.inc.php");
 
   $t = new Template($phpgw_info["server"]["app_tpl"]);
-  $t->set_file(array("delhours_list_t" => "del_listhours.tpl"));
-  $t->set_block("delhours_list_t", "delhours_list", "list");
+  $t->set_file(array("delupdate_list_t" => "del_update.tpl"));
+  $t->set_block("delupdate_list_t", "delupdate_list", "list");
 
   $t->set_var(date_hint,"");
   $t->set_var("lang_action",lang("Delivery"));
 
-  if($Delivery) {
+  if($Update) {
   if (checkdate($month,$day,$year)) {
        $date = mktime(2,0,0,$month,$day,$year);
       } 
@@ -31,7 +31,7 @@
        if ($month && $day && $year) {
           $t->set_var(date_hint,lang("You have entered an invailed date"));
           $date=0;
-          unset($Delivery); 
+          unset($Update);
         }
      }
    if(!$delivery_id) {
@@ -39,6 +39,7 @@
     if($phpgw->db->next_record()) {                                                                                                                         
     $t->set_var(delivery_hint,lang("Duplicate Delivery ID !"));                                                                                               
     unset($Delivery);
+    unset($Update);                                                                                                                                   
      } 
       else {
       if ($choose)
@@ -103,16 +104,16 @@
 // --------- list header variable template-declarations ------------
 
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-  $t->set_var(sort_activity,lang("Activity"));
-  $t->set_var(sort_remark,lang("Remark"));
-  $t->set_var(sort_status,lang("Status"));
-  $t->set_var(sort_date,lang("Date"));
-  $t->set_var(sort_aes,lang("Workunits"));
-  $t->set_var(h_lang_select,lang("Select"));
-  $t->set_var(h_lang_edithour,lang("Edit hours"));
-  $t->set_var(lang_delivery,lang("Create delivery"));
-  $t->set_var(actionurl,$phpgw->link("del_delivery.php"));
-  $t->set_var(lang_print_delivery,lang("Print delivery"));
+  $t->set_var("sort_activity",lang("Activity"));
+  $t->set_var("sort_remark",lang("Remark"));
+  $t->set_var("sort_status",lang("Status"));
+  $t->set_var("sort_date",lang("Date"));
+  $t->set_var("sort_aes",lang("Workunits"));
+  $t->set_var("h_lang_select",lang("Select"));
+  $t->set_var("h_lang_edithour",lang("Edit hours"));
+  $t->set_var("lang_update",lang("Update delivery"));
+  $t->set_var("actionurl",$phpgw->link("del_delivery_update.php"));
+  $t->set_var("lang_print_delivery",lang("Print delivery"));
 
   if (!$delivery_id) {                                                                                                                                                                     
   $t->set_var(print_delivery,$phpgw->link("fail.php"));                                                                                                                                    
@@ -176,9 +177,8 @@
     else
       $t->set_var(delivery_num,$phpgw->strip_html($delivery_num));
 
-     $choose = "<input type=\"checkbox\" name=\"choose\" value=\"True\">";                                                                                                            
-     $t->set_var("lang_choose",lang("Auto generate Delivery ID ?"));                                                                                                                    
-     $t->set_var("choose",$choose);
+     $t->set_var("lang_choose","");                                                                                                                    
+     $t->set_var("choose","");
   
   if(!$delivery_id) {
     $date=0;
@@ -256,7 +256,7 @@
     $aes = ceil($phpgw->db->f("minutes")/$phpgw->db->f("minperae"));
     $sumaes += $aes;
 
-// ------------- template declaration for list records --------------------
+// ----------------- template declaration for list records ---------------------
 
     $t->set_var(array("select" => $select,
 		      "activity" => $activity,
@@ -269,9 +269,9 @@
                                          . "query=$query&start=$start&filter="
                                          . "$filter&status=$status")
                                  . "\">" . lang("Edit hours") . "</a>"));
-    $t->parse("list", "delhours_list", true);
+    $t->parse("list", "delupdate_list", true);
 
-// ------------------------- end record declaration ---------------------------------
+// ------------------------- end record declaration -------------------------------
   }
     $t->set_var(sum_aes,$sumaes);
 
@@ -309,8 +309,9 @@
   
       $aes = ceil($phpgw->db->f("minutes")/$phpgw->db->f("minperae"));
       $sumaes += $aes;
-      
-// -------------- template declaration for list records -----------------------
+
+
+// ----------------------- template declaration for list records -------------------
   
       $t->set_var(array("select" => $select,
   		        "activity" => $activity,
@@ -323,7 +324,7 @@
                                        . "query=$query&start=$start&filter="
                                        . "$filter&status=$status")
                                        . "\">". lang("Edit hours") . "</a>"));
-      $t->parse("list", "delhours_list", true);
+      $t->parse("list", "delupdate_list", true);
   
       // -------------- end record declaration ------------------------
     }
@@ -332,7 +333,7 @@
 
 
 
-    $t->parse("out", "delhours_list_t", true);
+    $t->parse("out", "delupdate_list_t", true);
     $t->p("out");
 
 $phpgw->common->phpgw_footer();

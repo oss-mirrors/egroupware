@@ -2,7 +2,7 @@
   /**************************************************************************\
   * phpGroupWare - projects/projectbilling                                   *
   * (http://www.phpgroupware.org)                                            *
-  * Written by Bettina Gille  [aeb@hansenet.de]                              *
+  * Written by Bettina Gille  [ceb@phpgroupware.org]                         *
   *          & Jens Lentfoehr <sw@lf.shlink.de>                              *  
   * --------------------------------------------------------                 *
   *  This program is free software; you can redistribute it and/or modify it *
@@ -183,7 +183,7 @@
     		      "title" => $title,
       		      "date" => $dateout,
       		      "sum" => $sum,
-                      "invoice" => "<a href=\"". $phpgw->link("bill_invoice.php","invoice_id=" . $phpgw->db->f("id") 
+                      "invoice" => "<a href=\"". $phpgw->link("bill_invoice_update.php","invoice_id=" . $phpgw->db->f("id") 
                                          . "&sort=$sort&order=$order&"
                                          . "query=$query&start=$start&filter="
                                          . "$filter&project_id=". $phpgw->db->f("pid")."&invoice_num=".$phpgw->db->f("num") )

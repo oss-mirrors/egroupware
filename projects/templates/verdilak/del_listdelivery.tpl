@@ -15,7 +15,8 @@
     </tr>
   </form>
   
-<!-- BEGIN projects_list -->
+<!-- BEGIN delivery_list -->
+
       <tr bgcolor="{tr_color}">
         <td>{num}</td>
         <td>{customer}</td>
@@ -23,7 +24,8 @@
         <td align=center>{date}</td>
         <td align=center>{delivery}</td>
       </tr>
-<!-- END projects_list -->
+
+<!-- END delivery_list -->
 
   </table>
 </center>

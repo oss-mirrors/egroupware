@@ -15,6 +15,9 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES('All open hours',
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('All done hours','projects','en','All done hours');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Activity','projects','en','Activity');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Duplicate Delivery ID !','projects','en','Duplicate Delivery ID !');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Auto generate Delivery ID ?','projects','en','Auto generate Delivery ID ?');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Auto generate Project ID ?','projects','en','Auto generate Project ID ?');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Auto generate Invoice ID ?','projects','en','Auto generate Invoice ID ?');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Duplicate Invoice ID !','projects','en','Duplicate Invoice ID !');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Active','projects','en','Active');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('New project','projects','en','New project');
@@ -26,6 +29,8 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Edit Activity','
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Project name','projects','en','Project name');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Add project','projects','en','Add project');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Update project','projects','en','Update project');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Update invoice','projects','en','Update invoice');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Update delivery','projects','en','Update delivery');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Title','projects','en','Title');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('net','projects','en','net');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Invoice','projects','en','Invoice');

@@ -1,8 +1,8 @@
 <?php
   /**************************************************************************\                                            
-  * phpGroupWare - projects/projectdelivery                                  *                                            
+  * phpGroupWare - projects                                                  *                                            
   * (http://www.phpgroupware.org)                                            *                                            
-  * Written by Bettina Gille  [aeb@hansenet.de]                              *                                            
+  * Written by Bettina Gille  [ceb@phpgroupware.org]                         *                                            
   *          & Jens Lentfoehr <sw@lf.shlink.de>                              *                                            
   * --------------------------------------------------------                 *                                            
   *  This program is free software; you can redistribute it and/or modify it *                                            
@@ -29,12 +29,12 @@
   }
 
 
-  $projectid_type = "hex";
+  $id_type = "hex";
 
   function add_leading_zero($num)  {                                                                      
-     global $projectid_type;                                             
+     global $id_type;                                             
                                                                          
-     if ($projectid_type == "hex") {                                     
+     if ($id_type == "hex") {                                     
         $num = hexdec($num);                                             
         $num++;                                                          
         $num = dechex($num);                                             
@@ -57,19 +57,42 @@
   }
 
   $year = $phpgw->common->show_date(time(),"Y"); 
-  function create_projectid($year)                                                                  
-  {                                                                                                   
+
+  function create_projectid($year) {                                                                                                   
      global $phpgw;                                                                                    
      global $year;
 
-//     $year = $phpgw->common->show_date(time(),"Y");
-
-     $phpgw->db->query("select max(num) from p_projects where num like ('$year%')");         
+     $prefix = "P-$year-";
+     $phpgw->db->query("select max(num) from p_projects where num like ('$prefix%')");         
      $phpgw->db->next_record();                                                                       
-     $max = add_leading_zero(substr($phpgw->db->f(0),4));                                             
+     $max = add_leading_zero(substr($phpgw->db->f(0),7));                                             
                                                                                                       
-     return $year .$max; 
+     return $prefix.$max;
+     }
+
+  function create_invoiceid($year)  {                                                                                                   
+     global $phpgw;                                                                                    
+     global $year;
+
+     $prefix = "I-$year-";
+     $phpgw->db->query("select max(num) from p_invoice where num like ('$prefix%')");         
+     $phpgw->db->next_record();                                                                       
+     $max = add_leading_zero(substr($phpgw->db->f(0),7));                                             
+                                                                                                      
+     return $prefix.$max; 
       
     }
 
+  function create_deliveryid($year)  {                                                                                                   
+     global $phpgw;                                                                                    
+     global $year;
+
+     $prefix = "D-$year-";
+     $phpgw->db->query("select max(num) from p_delivery where num like ('$prefix%')");         
+     $phpgw->db->next_record();                                                                       
+     $max = add_leading_zero(substr($phpgw->db->f(0),7));                                             
+                                                                                                      
+     return $prefix.$max; 
+      
+    }
 ?>

@@ -7,6 +7,10 @@
 
 <table border=0 cellspacing=1 cellpadding=3>
 <tr>
+<td>{lang_choose}</td>
+<td>{choose}</td>
+</tr>
+<tr>
 <td>{title_delivery_num} :</td>
 <td><input type=text name="delivery_num" value="{delivery_num}">{delivery_hint}</td>
 </tr>
@@ -38,7 +42,9 @@
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_aes}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{h_lang_edithour}</td>
     </tr>
-<!-- BEGIN projecthours_list -->
+
+<!-- BEGIN delhours_list -->
+
       <tr bgcolor="{tr_color}">
         <td align=center>{select}</td>
         <td>{activity}</td>
@@ -48,7 +54,8 @@
         <td align=right>{aes}</td>
         <td align=center>{edithour}</td>
       </tr>
-<!-- END projecthours_list -->
+
+<!-- END delhours_list -->
 
       <tr bgcolor="{tr_color}">
         <td>
@@ -67,13 +74,12 @@
         <td></td>
       </tr>
 </table>
-<table border=0 cellpadding=3 cellspacing=1>
+<table width="50%" border=0 cellpadding="2" cellspacing="2">
 <tr>
-<td><input type="submit" name="Update" value="{lang_update}"></td>
-<td><input type="submit" name="Delivery" value="{lang_createdelivery}"></td>
+<td align="center"><input type="submit" name="Delivery" value="{lang_delivery}"></td>
   </form>
 <!-- url zum druck -->
-<td><a href={print_delivery} target=_blank>{lang_print_delivery}</a></td>
+<td align="center"><a href={print_delivery} target=_blank>{lang_print_delivery}</a></td>
 </tr>
 </table>
 </center>

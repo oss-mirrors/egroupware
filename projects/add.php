@@ -137,7 +137,7 @@
 
      $t->set_var("num",$num);        
      $choose = "<input type=\"checkbox\" name=\"choose\" value=\"True\">";
-     $t->set_var("lang_choose",lang("Generate the Project ID ?"));                                                                                                                   
+     $t->set_var("lang_choose",lang("Auto generate Project ID ?"));                                                                                                                   
      $t->set_var("choose",$choose);
 
 

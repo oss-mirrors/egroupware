@@ -18,7 +18,7 @@
   include("../header.inc.php");
 
   $t = new Template($phpgw_info["server"]["app_tpl"]);
-  $t->set_file(array( "invoicehours_list_t" => "bill_listhours.tpl"));
+  $t->set_file(array( "invoicehours_list_t" => "bill_update.tpl"));
   $t->set_block("invoicehours_list_t", "invoicehours_list", "list");
   
   $t->set_var("lang_action",lang("Invoice"));
@@ -34,14 +34,14 @@
 
   $db2 = $phpgw->db;
   
-  if($Invoice) {
+  if($Update) {
    if (checkdate($month,$day,$year)) {
        $date = mktime(2,0,0,$month,$day,$year);
    } else {
        if ($month && $day && $year) {
           $t->set_var(date_hint,lang("You have entered an invailed date"));
           $date=0;
-          unset($Invoice);
+          unset($Update);
        }
     }
    if(!$invoice_id) {
@@ -79,7 +79,7 @@
     $phpgw->db->query("SELECT num FROM p_invoice WHERE num='$invoice_num' AND id!=$invoice_id");
     if($phpgw->db->next_record()) {
     $t->set_var(invoice_hint,lang("Duplicate Invoice ID !"));
-    unset($Invoice);
+    unset($Update);
     } else {
     $phpgw->db->query("SELECT customer FROM p_projects WHERE id=$project_id");
     $phpgw->db->next_record();
@@ -121,8 +121,8 @@
   $t->set_var(sort_sum,lang("Sum"));
   $t->set_var(h_lang_select,lang("Select"));
   $t->set_var(h_lang_edithour,lang("Edit hours"));
-  $t->set_var(lang_invoice,lang("Create invoice"));
-  $t->set_var(actionurl,$phpgw->link("bill_invoice.php"));
+  $t->set_var(lang_update,lang("Update invoice"));
+  $t->set_var(actionurl,$phpgw->link("bill_invoice_update.php"));
   $t->set_var(lang_print_invoice,lang("Print invoice"));
   
   if (!$invoice_id) {
@@ -186,9 +186,8 @@
     else 
       $t->set_var(invoice_num,$phpgw->strip_html($invoice_num));
 
-     $choose = "<input type=\"checkbox\" name=\"choose\" value=\"True\">";                                                                                                            
-     $t->set_var("lang_choose",lang("Auto generate Invoice ID ?"));                                                                                                                       
-     $t->set_var("choose",$choose);
+     $t->set_var("lang_choose","");                                                                                                                       
+     $t->set_var("choose","");
 
   if(!$invoice_id) { 
     $date=0;

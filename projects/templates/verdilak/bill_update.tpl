@@ -6,10 +6,6 @@
 <form method="POST" action="{actionurl}">
 <table border=0 cellspacing=1 cellpadding=3>
 <tr>
-<td>{lang_choose}</td>
-<td>{choose}</td>
-</tr>
-<tr>
 <td>{title_invoice_num} :</td>
 <td><input type=text name="invoice_num" value="{invoice_num}">{invoice_hint}</td>
 </tr>
@@ -72,7 +68,7 @@
 </table>
 <table width="50%" border=0 cellpadding="2" cellspacing="2">
 <tr>
-<td align="center"><input type="submit" name="Invoice" value="{lang_invoice}"></td>
+<td align="center"><input type="submit" name="Update" value="{lang_update}"></td>
   </form>
 <!-- url zum druck -->
 <td align="center"><a href={print_invoice} target=_blank>{lang_print_invoice}</a></td>

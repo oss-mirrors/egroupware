@@ -6,6 +6,10 @@
 <form method="POST" action="{actionurl}">
 <table border=0 cellspacing=1 cellpadding=3>
 <tr>
+<td>{lang_choose}</td>
+<td>{choose}</td>
+</tr>
+<tr>
 <td>{title_invoice_num} :</td>
 <td><input type=text name="invoice_num" value="{invoice_num}">{invoice_hint}</td>
 </tr>
@@ -35,7 +39,9 @@
       <td width="7%" bgcolor="{th_bg}" align=right>{currency}&nbsp;{sort_sum}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{h_lang_edithour}</td>
     </tr>
-<!-- BEGIN projecthours_list -->
+
+<!-- BEGIN invoicehours_list -->
+
       <tr bgcolor="{tr_color}">
         <td align=center>{select}</td>
         <td>{activity}</td>
@@ -47,7 +53,9 @@
         <td align=right>{sum}</td>
         <td align=center>{edithour}</td>
       </tr>
-<!-- END projecthours_list -->
+
+<!-- END invoicehours_list -->
+
 </table><br><br>
 <table width=100% border=0 cellspacing=0 cellpadding=0>
       <tr bgcolor="{tr_color}">
@@ -62,13 +70,12 @@
         <td width="10%">&nbsp;</td>
       </tr>
 </table>
-<table border=0 cellpadding=3 cellspacing=1>
+<table width="50%" border=0 cellpadding="2" cellspacing="2">
 <tr>
-<td><input type="submit" name="Update" value="{lang_update}"></td>
-<td><input type="submit" name="Invoice" value="{lang_createinvoice}"></td>
+<td align="center"><input type="submit" name="Invoice" value="{lang_invoice}"></td>
   </form>
 <!-- url zum druck -->
-<td><a href={print_invoice} target=_blank>{lang_print_invoice}</a></td>
+<td align="center"><a href={print_invoice} target=_blank>{lang_print_invoice}</a></td>
 </tr>
 </table>
 </center>
