@@ -17,6 +17,7 @@
      
      $tpl->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
      $tpl->set_var("info",lang("Voting booth administration"));
+     $tpl->set_var("link_list_questions",'<a href="' . $phpgw->link("admin.php") . '">' . lang("Show questions") . '</a>');
      $tpl->set_var("link_questions",'<a href="' . $phpgw->link("admin_addanswer.php") . '">' . lang("Add answers") . '</a>');
      $tpl->set_var("link_answers",'<a href="' . $phpgw->link("admin_addquestion.php") . '">' . lang("Add questions") . '</a>');
      

@@ -49,13 +49,13 @@
      $db->next_record();
      $poll_sum = (int)$db->f(0);
 
-     $db->query("select poll_title from phpgw_polls_desc where poll_id='$poll_id'");
+     $db->query("select poll_title from phpgw_polls_desc where poll_id='$poll_id'",__LINE__,__FILE__);
      $db->next_record();
 
      echo '<p><table border="0" align="center" width="50%">';
      echo '<tr><td colspan="3" bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="center">'
         . $db->f("poll_title") . '</td></tr>';
-     $db->query("SELECT * FROM polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
+     $db->query("SELECT * FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
      while ($db->next_record()) {
         $poll_optionText  = $db->f("option_text");
         $poll_optionCount = $db->f("option_count");
