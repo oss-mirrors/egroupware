@@ -32,57 +32,58 @@
 	$c->app_name = 'addressbook';
 	
 	$include_personal = True;
-	
-	$charset = $GLOBALS['phpgw']->translation->translate('charset');
-	$GLOBALS['phpgw']->template->set_var('charset',$charset);
+
+	$GLOBALS['phpgw']->template->set_var('charset',$GLOBALS['phpgw']->translation->charset());
 	$GLOBALS['phpgw']->template->set_var('title',$GLOBALS['phpgw_info']['site_title']);
 	$GLOBALS['phpgw']->template->set_var('bg_color',$GLOBALS['phpgw_info']['theme']['bg_color']);
 	$GLOBALS['phpgw']->template->set_var('lang_addressbook_action',lang('Address book'));
 	$GLOBALS['phpgw']->template->set_var('font',$GLOBALS['phpgw_info']['theme']['font']);
 
 	$GLOBALS['phpgw']->template->set_var('lang_search',lang('Search'));
-	$GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php'));
 	$GLOBALS['phpgw']->template->set_var('lang_select_cats',lang('Select category'));
+	$GLOBALS['phpgw']->template->set_var('lang_done',lang('Done'));
 
-	if (! $start)
+	$start  = intval(get_var('start',array('POST','GET'),0));
+	$filter = get_var('filter',array('POST','GET'),'none');
+	$cat_id = intval(get_var('cat_id',array('POST','GET'),0));
+	$query  = get_var('query',array('POST','GET'));
+	$sort   = get_var('sort',array('POST','GET'));
+	$order  = get_var('order',array('POST','GET'));
+
+	$common_vars = array(
+		'filter' => $filter,
+		'cat_id' => $cat_id,
+		'query'  => $query,
+		'sort'   => $sort,
+		'order'  => $order,
+	);
+	$link = '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php';
+	$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link($link,$common_vars+array(
+		'start' => $start,
+	)));
+
+	$qfilter = 'tid=n';
+	switch($filter)
 	{
-		$start = 0;
+		case 'none':
+			break;
+		case 'private':
+			$qfilter .=',access=private';
+			// fall-through
+		case 'yours':
+			$qfilter .= ',owner='.$GLOBALS['phpgw_info']['user']['account_id'];
+			break;
+		default:
+			if(is_numeric($filter))
+			{
+				$qfilter = ',owner='.$filter;
+			}
+			break;
 	}
 
-	if (!$filter)
+	if ($cat_id)
 	{
-		$filter = 'none';
-	}
-
-	if (!$cat_id)
-	{
-		if ($filter == 'none')
-		{
-			$qfilter  = 'tid=n';
-		}
-		elseif ($filter == 'private')
-		{
-			$qfilter  = 'tid=n,owner='.$GLOBALS['phpgw_info']['user']['account_id'];
-		}
-		else
-		{
-			$qfilter = 'tid=n,owner='.$filter;
-		}
-	}
-	else
-	{
-		if ($filter == 'none')
-		{
-			$qfilter  = 'tid=n,cat_id='.$cat_id;
-		}
-		elseif ($filter == 'private')
-		{
-			$qfilter  = 'tid=n,owner='.$GLOBALS['phpgw_info']['user']['account_id'].',cat_id='.$cat_id; 
-		}
-		else
-		{
-			$qfilter = 'tid=n,owner='.$filter.'cat_id='.$cat_id;
-		}
+		$qfilter  .= ',cat_id='.$cat_id;
 	}
 
 	if (($GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']) &&
@@ -108,10 +109,19 @@
 	$entries = $d->read($start,$offset,$cols,$query,$qfilter,$sort,$order,$account_id);
 
 	//------------------------------------------- nextmatch --------------------------------------------
-	$left = $GLOBALS['phpgw']->nextmatchs->left('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',$start,$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");
-	$right = $GLOBALS['phpgw']->nextmatchs->right('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',$start,$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");
-	$GLOBALS['phpgw']->template->set_var('left',$left);
-	$GLOBALS['phpgw']->template->set_var('right',$right);
+	$GLOBALS['phpgw']->template->set_var('left',$GLOBALS['phpgw']->nextmatchs->left(
+		$link,$start,$d->total_records,'&'.explode('&',$common_vars)));
+	$GLOBALS['phpgw']->template->set_var('right',$GLOBALS['phpgw']->nextmatchs->right(
+		$link,$start,$d->total_records,'&'.explode('&',$common_vars)));
+	foreach(array(
+		'n_given'  => lang('Firstname'),
+		'n_family' => lang('Lastname'),
+		'org_name' => lang('Company'),
+	) as $col => $translation)
+	{
+		$GLOBALS['phpgw']->template->set_var('sort_'.$col,$GLOBALS['phpgw']->nextmatchs->show_sort_order(
+			$sort,$col,$order,$link,$translation,'&cat_id='.$cat_id));
+	}
 
 	if ($d->total_records > $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
 	{
@@ -126,19 +136,26 @@
 
 	// ------------------- list header variable template-declaration -----------------------
 	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-	$GLOBALS['phpgw']->template->set_var('sort_firstname',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'n_given',$order,'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',lang('Firstname')));
-	$GLOBALS['phpgw']->template->set_var('sort_lastname',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'n_family',$order,'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',lang('Lastname')));
-	$GLOBALS['phpgw']->template->set_var('sort_company',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'org_name',$order,'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',lang('Company')));
 	$GLOBALS['phpgw']->template->set_var('lang_email',lang('Select work email address'));
 	$GLOBALS['phpgw']->template->set_var('lang_hemail',lang('Select home email address'));
 	$GLOBALS['phpgw']->template->set_var('cats_list',$c->formated_list('select','all',$cat_id,'True'));
 	$GLOBALS['phpgw']->template->set_var('lang_select',lang('Select'));
-	
-	//$GLOBALS['phpgw']->template->set_var('cats_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',"sort=$sort&order=$order&filter=$filter&start=$start&query=$query&cat_id=$cat_id"));
-	// thanks to  dave.hall@mbox.com.au for fixing drop down list filtering by categories
-	$GLOBALS['phpgw']->template->set_var('cats_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',"sort=$sort&order=$order&filter=$filter&start=$start&query=$query"));
 
+	$filter_list = '';
+	foreach(array(
+		'none'    => lang('Show all'),
+		'yours'   => lang('Only yours'),
+		'private' => lang('Private'),
+	) as $id => $translation)
+	{
+		$filter_list .= "<option value=\"$id\"".($filter == $id ? ' selected':'').">$translation</option>\n";
+	}
+	$GLOBALS['phpgw']->template->set_var(array(
+		'query' => $query,
+		'filter_list' => $filter_list,
+	));
 	// --------------------------- end header declaration ----------------------------------
+
 	for ($i=0;$i<count($entries);$i++)
 	{
 		$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
@@ -222,7 +239,6 @@
 	}
 	// --------------------------- end record declaration ---------------------------
 
-	$GLOBALS['phpgw']->template->set_var('lang_done',lang('Done'));
 	$GLOBALS['phpgw']->template->parse('out','addressbook_list_t',True);
 	$GLOBALS['phpgw']->template->p('out');
 

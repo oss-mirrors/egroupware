@@ -63,7 +63,7 @@
 	<table border="0" width="100%">
 	<tr>
 		<td width="33%" align="left">
-<form action="{cats_action}" name="form" method="POST">
+<form action="{form_action}" name="form" method="POST">
 			<select name="cat_id" onChange="this.form.submit();"><option value="">{lang_select_cats}</option>{cats_list}</select>
 			<noscript>&nbsp;<input type="submit" name="submit" value="{lang_submit}"></noscript>
 </form>
@@ -72,22 +72,20 @@
 			{lang_showing}
 		</td>
 		<td width="33%" align="right">
-<form method="POST" action="{search_action}">
+<form method="POST" action="{form_action}">
 		<table>
 		<tr>
 			<td>
-			<input type="text" name="query">&nbsp;
+				<input type="text" name="query" value="{query}">&nbsp;
 			</td>
 			<td>
-			<select name="filter" onChange="this.form.submit();">
-				{filter_list}
-				<option value="" >Select Filter</option>
-				<option value="private">Private</option>
-				<option value="none">All</option>
-				<option value="user_only">Only yours </option></td>
+				<select name="filter" onChange="this.form.submit();">
+					{filter_list}
+				</select>
+			</td>
 		</tr>
 		<tr>
-			
+
 			<td colspan="3">
 			<center><input type="submit" name="search" value="{lang_search}"></center>
 			</td>
@@ -114,13 +112,13 @@
 	<table border="0" width="100%" cellpadding="2" cellspacing="2">
 	<tr bgcolor="{th_bg}">
 		<td width="25%" bgcolor="{th_bg}" align="center">
-			<font face="{font}">{sort_firstname}</font>
+			<font face="{font}">{sort_n_given}</font>
 		</td>
 		<td width="15%" bgcolor="{th_bg}" align="center">
-			<font face="{font}">{sort_lastname}</font>
+			<font face="{font}">{sort_n_family}</font>
 		</td>
 		<td width="15%" bgcolor="{th_bg}" align="center">
-			<font face="{font}">{sort_company}</font>
+			<font face="{font}">{sort_org_name}</font>
 		</td>
 		<td width="25%" bgcolor="{th_bg}" align="center">
 			<font face="{font}">{lang_email}</font>
