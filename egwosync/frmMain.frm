@@ -13,6 +13,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 '#################################################################################################
 '# FrmMain.frm & .frx
 '# The main control window for mass uploading and downloading of contact information
@@ -33,11 +34,22 @@ Private Sub cmdApply_Click()
     ThisOutlookSession.RefreshSettingStatus
 End Sub
 
+Private Sub cmdCancel_Click()
+Me.Hide
+End Sub
+
 '***********************************************************************************************
 ' Display the names of contacts in the remote and local directories
 '***********************************************************************************************
 Private Sub cmdGet_Click()
     BasUtilities.GetContacts
+End Sub
+
+Private Sub cmdOK_Click()
+    Helper.SaveSettings
+    Helper.PutSettings
+    ThisOutlookSession.RefreshSettingStatus
+    Me.Hide
 End Sub
 
 '***********************************************************************************************
