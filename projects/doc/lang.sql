@@ -19,6 +19,7 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select per button
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('You have entered an invalid invoice date !','projects','en','You have entered an invalid invoice date !');  
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select project','projects','en','Select project');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects','projects','en','Projects');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Username / Group','projects','en','Username / Group');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project access','preferences','en','Project access');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project categories','preferences','en','Project categories');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Invoice has been created !','projects','en','Invoice has been created !');

@@ -2,10 +2,10 @@
 <center>
 <table width="80%" border="0" cellpadding="2" cellspacing="2">
 <tr>
-<td colspan="4" align="center" bgcolor="{th_bg}"><b>{lang_action}</b></td>
+<td colspan="3" align="center" bgcolor="{th_bg}"><b>{lang_action}</b></td>
 </tr>
 <tr>
-<td colspan="4" align=left>
+<td colspan="3" align=left>
   <table border="0" width="100%">
     <tr>
     {left}
@@ -17,7 +17,7 @@
   </tr>
  <tr>
   <td>&nbsp;</td>
-  <td colspan="4" align=right>
+  <td colspan="3" align=right>
   <form method="post" action="{actionurl}">
  <input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}"></form></td>
  </tr>
@@ -25,16 +25,14 @@
     <td bgcolor="{th_bg}">{sort_lid}</td>
     <td bgcolor="{th_bg}">{sort_firstname}</td>
     <td bgcolor="{th_bg}">{sort_lastname}</td>
-    <td bgcolor="{th_bg}" align="center">{lang_delete}</td>
   </tr>
 
 <!-- BEGIN admin_list -->
 
-  <tr bgcolor="{tr_color}">
+  <tr bgcolor="{tr_color}">                                                                                                                                                                
     <td>{lid}</td>
     <td>{lastname}</td>
     <td>{firstname}</td>
-    <td><a href="{delete}">{lang_delete}</a></td>
   </tr>
 
 <!-- END admin_list -->
@@ -42,7 +40,7 @@
 <tr valign="bottom">
   <td>
      <form method="POST" action="{addurl}">
-      <input type="submit" name="add" value="{lang_add}"></form>
+      <input type="submit" name="add" value="{lang_edit}"></form>
     </td>
     </tr>
 <tr valign="bottom">
@@ -52,7 +50,5 @@
     </td>
    </tr>
  
-<!-- END add -->
-
 </table>
 </center>

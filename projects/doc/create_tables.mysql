@@ -56,7 +56,8 @@ CREATE TABLE phpgw_p_hours (
 CREATE TABLE phpgw_p_projectmembers (
 	id		int(11) unsigned PRIMARY KEY NOT NULL auto_increment,
 	project_id	int(11) DEFAULT '0' NOT NULL,
-	account_id	int(11) DEFAULT '0' NOT NULL
+	account_id	int(11) DEFAULT '0' NOT NULL,
+	type		char(2)
 );
 
 CREATE TABLE phpgw_p_invoice (

@@ -11,6 +11,36 @@
   \**************************************************************************/
   /* $Id$ */
 
+    function isprojectadmin() {
+	global $phpgw, $phpgw_info;
+
+	$admin_groups = $phpgw->accounts->memberships($phpgw_info['user']['account_id']);
+
+	$phpgw->db->query("select account_id,type from phpgw_p_projectmembers WHERE type='aa' OR type='ag'");
+	while ($phpgw->db->next_record()) {
+	    $admins[] = array('account_id' => $phpgw->db->f('account_id'),
+				    'type' => $phpgw->db->f('type'));
+	}
+	
+	for ($i=0;$i<count($admins);$i++) {
+	    if ($admins[$i]['type']=='aa') {
+		if ($admins[$i]['account_id'] == $phpgw_info['user']['account_id'])
+    		return 1;
+	    }
+	    else {
+		if (is_array($admin_groups)) {
+		    for ($j=0;$j<count($admin_groups);$j++) {	
+            		if ($admin_groups[$j]['account_id'] == $admins[$i]['account_id'])	    	    
+			return 1;
+		    }
+		}
+	    }
+	return 0;
+	}
+
+    }
+
+
 // returns project-,invoice- and delivery-ID
 
     $id_type = "hex";

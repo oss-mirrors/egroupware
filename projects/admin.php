@@ -24,7 +24,7 @@
 
     $t->set_var('lang_action',lang('Project administration'));
     $t->set_var('addurl',$phpgw->link('/projects/add_admin.php'));
-    $t->set_var('lang_add',lang('Add'));
+    $t->set_var('lang_edit',lang('Edit'));
     $t->set_var('lang_search',lang('Search'));
     $t->set_var('actionurl',$phpgw->link('/projects/admin.php'));
     $t->set_var('lang_done',lang('Done'));
@@ -45,14 +45,20 @@
 
     $db2 = $phpgw->db;
 
-    $sql = "SELECT phpgw_p_projectmembers.account_id,account_lid,account_firstname,account_lastname from phpgw_p_projectmembers, "
+    $sql = "SELECT phpgw_p_projectmembers.account_id,type,account_lid,account_firstname,account_lastname from phpgw_p_projectmembers, "
          . "phpgw_accounts WHERE project_id='0' AND phpgw_p_projectmembers.account_id=phpgw_accounts.account_id $querymethod $ordermethod";
 
     $db2->query($sql,__LINE__,__FILE__);
     $total_records = $db2->num_rows();
 
     $phpgw->db->query($sql . " " . $phpgw->db->limit($start,$limit),__LINE__,__FILE__);
-
+    while ($phpgw->db->next_record()) {
+	$admins[] = array('id' => $phpgw->db->f('account_id'),
+			 'lid' => $phpgw->db->f('account_lid'),
+		   'firstname' => $phpgw->db->f('account_firstname'),
+		    'lastname' => $phpgw->db->f('account_lastname'),
+			'type' => $phpgw->db->f('type'));
+    }
 //--------------------------------- nextmatch --------------------------------------------
  
     $left = $phpgw->nextmatchs->left('/projects/admin.php',$start,$total_records);
@@ -68,25 +74,36 @@
 //------------------- list header variable template-declarations -------------------------
 
     $t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
-    $t->set_var('sort_lid',$phpgw->nextmatchs->show_sort_order($sort,'account_lid',$order,'/projects/admin.php',lang('Username')));
+    $t->set_var('sort_lid',$phpgw->nextmatchs->show_sort_order($sort,'account_lid',$order,'/projects/admin.php',lang('Username / Group')));
     $t->set_var('sort_lastname',$phpgw->nextmatchs->show_sort_order($sort,'account_lastname',$order,'/projects/admin.php',lang('Lastname')));
     $t->set_var('sort_firstname',$phpgw->nextmatchs->show_sort_order($sort,'account_firstname',$order,'/projects/admin.php',lang('Firstname')));
-    $t->set_var('lang_delete',lang('Delete'));
 
 // -------------------------- end header declaration --------------------------------------
 
-    while($phpgw->db->next_record()) {
+    for ($i=0;$i<count($admins);$i++) {
 
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
         $t->set_var('tr_color',$tr_color);
-	$t->set_var(array('lid' => $phpgw->db->f('account_lid'),
-                     'firstname' => $phpgw->db->f('account_firstname'),
-                      'lastname' => $phpgw->db->f('account_lastname')));
+	$lid = $admins[$i]['lid'];
 
-	$t->set_var('delete',$phpgw->link('/projects/delete_admin.php','id=' . $phpgw->db->f('account_id')));
+        if ($admins[$i]['type']=='aa') {
+	    $firstname = $admins[$i]['firstname'];
+	    if (!$firstname) { $firstname = '&nbsp;'; }
+	    $lastname = $admins[$i]['lastname'];
+            if (!$lastname) { $lastname = '&nbsp;'; }
+	}
+	else {
+	    $firstname = '&nbsp;';
+	    $lastname = '&nbsp;';
+	}
+
+	$t->set_var(array('lid' => $lid,
+                     'firstname' => $firstname,
+                      'lastname' => $lastname));
+
         $t->parse('list','admin_list',True);
     }
-       
+
     $t->parse('out','admin_list_t',True);
     $t->p('out');
 

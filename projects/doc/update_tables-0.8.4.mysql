@@ -52,3 +52,9 @@ alter table phpgw_p_hours add column hours_descr varchar(255) NOT NULL after end
 alter table phpgw_p_projects add column access char(7) after owner;
 alter table phpgw_p_projects add column category int(9) DEFAULT '0' NOT NULL after access;
 alter table phpgw_p_projects modify column status enum('active','nonactive','archive') NOT NULL;
+
+###################################################
+#		04/10/2001 0.8.4pre5		  #
+###################################################
+
+alter table phpgw_p_projectmembers add column type char(2);

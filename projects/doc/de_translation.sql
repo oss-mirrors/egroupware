@@ -41,6 +41,7 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Firstname','proje
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Lastname','projects','de','Nachname');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('net','projects','de','netto');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Username','projects','de','Benutzername');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Username / Group','projects','de','Benutzername / Gruppe');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Add hour','projects','de','Job hinzuf&uuml;gen');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Edit','projects','de','Bearbeiten');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Activities list','projects','de','Kategorienliste');

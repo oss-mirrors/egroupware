@@ -19,8 +19,17 @@
     $t->set_var('admin_info',$admin_info);
     $t->set_var('bg_color',$phpgw_info['theme']['th_bg']);
 
-    $t->set_var('link_activities',$phpgw->link('/projects/activities.php'));
-    $t->set_var('lang_activities',lang('Activities'));
+    $isadmin = isprojectadmin();
+
+    if ($isadmin==1) {
+	$t->set_var('link_activities',$phpgw->link('/projects/activities.php'));
+	$t->set_var('lang_activities',lang('Activities'));
+    }
+    else {
+        $t->set_var('link_activities','');
+        $t->set_var('lang_activities','');
+    }
+
     $t->set_var('link_billing',$phpgw->link('/projects/bill_index.php'));
     $t->set_var('lang_billing',lang('Billing'));
     $t->set_var('link_hours',$phpgw->link('/projects/hours_listhours.php'));

@@ -173,3 +173,9 @@ CREATE TABLE phpgw_p_deliverypos (
 
 insert into phpgw_p_deliverypos select * from temp;
 drop table temp;
+
+----------------------------
+--      0.8.4pre5	  --
+----------------------------
+
+alter table phpgw_p_projectmembers add column type char(2);
