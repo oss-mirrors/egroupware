@@ -27,7 +27,7 @@
  . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
  . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
-  $t->set_var(lang_action,lang("projectbilling"));
+  $t->set_var(lang_action,lang("Project billing"));
   $t->set_var(common_hidden_vars,$common_hidden_vars);   
 
   if (! $start)
@@ -120,13 +120,12 @@
     while ($phpgw->db->next_record()) {
   
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-    $title = $phpgw->db->f("title");
-    if ($title != "")
-       $title = htmlentities(stripslashes($title));
-    else
-       $title = "&nbsp;";
 
-    $num = $phpgw->db->f("num");
+    $title  = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                    
+    if (! $title)  $title  = "&nbsp;";
+
+    $num  = $phpgw->strip_html($phpgw->db->f("num"));
+//    $num = $phpgw->db->f("num");
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
 
@@ -195,5 +194,5 @@
        $t->p("out");
        // -------------- end Add form declaration ------------------------
 
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
 ?>

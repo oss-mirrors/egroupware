@@ -45,10 +45,11 @@
      $t->set_var("lang_action",lang("Project statistic"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      $t->set_var("lang_num",lang("Project ID"));
-     $t->set_var("num", stripslashes($phpgw->db->f("num")));
+     $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
      $t->set_var("lang_title",lang("Title"));
-     $t->set_var("title", stripslashes($phpgw->db->f("title")));
-
+     $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                   
+     if (! $title)  $title  = "&nbsp;";
+     $t->set_var("title",$title);
      $t->set_var("lang_status",lang("Status"));
      $t->set_var("status",lang($phpgw->db->f("status")));
      $t->set_var("lang_budget",lang("Budget"));
@@ -208,5 +209,5 @@
                                                                                                                                                                 
   $t->pparse("out","project_stat");                                                                                                                            
   
-include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");                                                                                                                                                                
+include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");                                                                                                                                                                
 ?>

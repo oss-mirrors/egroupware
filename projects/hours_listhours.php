@@ -126,17 +126,11 @@
   while ($phpgw->db->next_record()) {
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     
-    $activity = $phpgw->db->f("descr");                                                                                                                            
-    if ($activtiy != "")                                                                                                                                           
-       $activity = htmlentities(stripslashes($activity));                                                                                                          
-    else                                                                                                                                                           
-       $activitiy = "&nbsp;";
+     $activity  = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                             
+     if (! $activity)  $activity  = "&nbsp;";                                                                                                                                                
 
-    $remark = $phpgw->db->f("remark");
-    if ($remark != "")
-       $remark = htmlentities(stripslashes($remark));
-    else
-       $remark = "&nbsp;";
+    $remark  = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                             
+    if (! $remark)  $remark  = "&nbsp;";                                                                                                                                                
 
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
@@ -208,5 +202,5 @@
     $t->p("out");
     // -------------- end Add form declaration ------------------------
 
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
 ?>

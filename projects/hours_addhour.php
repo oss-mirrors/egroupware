@@ -47,8 +47,10 @@
         $phpgw->db->query("SELECT num,title FROM p_projects "
                         . " WHERE id = '".$id."'");
         if ($phpgw->db->next_record()) {
-           $t->set_var("num",$phpgw->db->f("num"));
-	   $t->set_var("title",$phpgw->db->f("title"));
+           $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
+           $title  = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                
+           if (! $title)  $title  = "&nbsp;";
+           $t->set_var("title",$title);
         }
         $t->set_var("lang_num",lang("Project ID"));
         $t->set_var("lang_title",lang("Title"));
@@ -193,5 +195,5 @@
            "cd=14&sort=$sort&order=$order&query=$query&start="
          . "$start&filter=$filter"));
   }
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
 ?>

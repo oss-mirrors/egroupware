@@ -117,13 +117,13 @@
 
   while ($phpgw->db->next_record()) {
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-    $num = $phpgw->db->f("num");
-    if ($num != "")
-       $num = htmlentities(stripslashes($num));
-    else
-       $num = "&nbsp;";
+    
+    $num  = $phpgw->strip_html($phpgw->db->f("num"));                                                                                                                                    
+    if (! $num)  $num  = "&nbsp;";
 
-    $descr = $phpgw->db->f("descr");
+    $descr = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                                    
+    if (! $descr)  $descr  = "&nbsp;";
+
     $billperae = $phpgw->db->f("billperae");
     $minperae = $phpgw->db->f("minperae");
     $t->set_var(tr_color,$tr_color);
@@ -164,5 +164,5 @@
        // -------------- end Add form declaration ------------------------
 
 
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
 ?>

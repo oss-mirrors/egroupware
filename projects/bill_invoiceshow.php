@@ -101,7 +101,7 @@
    
   
    if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
-   $phpgw->db->query("SELECT p_invoice.customer,p_invoice.num,p_invoice.project_id,p_invoice.date,p_invoice.sum as sum_netto, "
+   $phpgw->db->query("SELECT p_projects.title,p_invoice.customer,p_invoice.num,p_invoice.project_id,p_invoice.date,p_invoice.sum as sum_netto, "
                  . "round(sum*$taxpercent,2) as sum_tax,round(sum*(1+$taxpercent),2) as sum_sum,"                                                                                                    
                  . "ab_company_id,company_name,ab_firstname,ab_lastname,ab_street,ab_zip,ab_state, "
                  . "ab_city FROM addressbook,customers,p_invoice,p_projects WHERE "
@@ -118,8 +118,10 @@
    $t->set_var("invoice_day",date("j",$phpgw->db->f("date")));                                                                                                                                       
    $t->set_var("invoice_month",date("n",$phpgw->db->f("date")));                                                                                                                                     
    $t->set_var("invoice_year",date("Y",$phpgw->db->f("date")));                                                                                                                                      
-   $t->set_var("invoice_num",$phpgw->db->f("num"));                                                                                                                                                  
-   $t->set_var("title",$phpgw->db->f("title"));                                                                                                                                                      
+   $t->set_var("invoice_num",$phpgw->strip_html($phpgw->db->f("num")));   
+   $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                               
+    if (! $title)  $title  = "&nbsp;";
+   $t->set_var("title",$title);                                                                                                                                                      
    $t->set_var("sum_netto",$phpgw->db->f("sum_netto"));                                                                                                                                              
    $t->set_var("tax_percent",$taxpercent);                                                                                                                                                           
    $t->set_var("sum_tax",$phpgw->db->f("sum_tax"));                                                                                                                                                  
@@ -142,9 +144,11 @@
    $t->set_var("state",$phpgw->db->f("ab_state"));
    $t->set_var("invoice_day",date("j",$phpgw->db->f("date")));                                                                                                                                  
    $t->set_var("invoice_month",date("n",$phpgw->db->f("date")));                                                                                                                                
-   $t->set_var("invoice_year",date("Y",$phpgw->db->f("date")));                                                                                                                                 
-   $t->set_var("invoice_num",$phpgw->db->f("num"));                                                                                                                                             
-   $t->set_var("title",$phpgw->db->f("title"));                                                                                                                                                 
+   $t->set_var("invoice_year",date("Y",$phpgw->db->f("date"))); 
+   $t->set_var("invoice_num",$phpgw->strip_html($phpgw->db->f("num")));                                                                                                                    
+   $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                    
+    if (! $title)  $title  = "&nbsp;";                                                                                                                                                     
+   $t->set_var("title",$title); 
    $t->set_var("sum_netto",$phpgw->db->f("sum_netto"));    
    $t->set_var("tax_percent",$taxpercent);                                                                                                                                                      
    $t->set_var("sum_tax",$phpgw->db->f("sum_tax"));                                                                                                                                             
@@ -175,16 +179,16 @@
 		$t->set_var("year",date("Y",$phpgw->db->f("date")));
 	}
 	$t->set_var("aes",$phpgw->db->f("aes"));
-	$t->set_var("act_descr",$phpgw->db->f("descr"));
+        $act_descr = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                               
+        if (! $act_descr)  $act_descr  = "&nbsp;";
+	$t->set_var("act_descr",$act_descr);
 	$t->set_var("billperae",$phpgw->db->f("billperae"));
 	$t->set_var("sumperpos",$phpgw->db->f("sumpos"));
 	$sum += $phpgw->db->f("sumpos");
-	if($phpgw->db->f("remark")) {
-		$t->set_var("act_remark",$phpgw->db->f("remark"));
-	        } else {                    
-                $t-set_var("act_remark","");
-                }
-                $t->parse("list", "invoicepos_list", true);
+	$remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                               
+        if (! $remark)  $remark  = "&nbsp;";
+        $t->set_var("remark",$remark);
+        $t->parse("list", "invoicepos_list", true);
       }
    
    if($sum==$sum_netto)

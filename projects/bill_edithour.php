@@ -61,8 +61,13 @@
      $db2->query("SELECT num,title FROM p_projects "
                      . " WHERE id = '".$phpgw->db->f("project_id")."'");
      if ($db2->next_record()) {
-        $t->set_var("num",$db2->f("num"));
-        $t->set_var("title",$db2->f("title"));
+     $t->set_var("num",$phpgw->strip_html($db2->f("num")));
+     $title = $phpgw->strip_html($db2->f("title"));                                                                                                                                         
+     if (! $title)  $title  = "&nbsp;";
+     $t->set_var("title",$title);
+        
+//        $t->set_var("num",$db2->f("num"));
+//        $t->set_var("title",$db2->f("title"));
      }
      $t->set_var("lang_num",lang("Project ID"));
      $t->set_var("lang_title",lang("title"));
@@ -154,8 +159,11 @@
      $t->set_var("end_date_formatorder",$end_date_formatorder);
 
      $t->set_var("lang_remark",lang("Remark"));
-     $t->set_var("remark",stripslashes($phpgw->db->f("remark")));
-
+     
+     $remark  = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                                    
+     if (! $remark)  $remark  = "&nbsp;"; 
+     $t->set_var("remark",$remark);     
+     
      $t->set_var("lang_time",lang("Time"));
      $t->set_var("hours",floor($phpgw->db->f("minutes")/60));
      $t->set_var("minutes",($phpgw->db->f("minutes"))-((floor($phpgw->db->f("minutes")/60)*60)));
@@ -219,5 +227,5 @@
 //	   "cd=15&sort=$sort&order=$order&query=$query&start="
 //	 . "$start&filter=$filter"));
   }
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
 ?>

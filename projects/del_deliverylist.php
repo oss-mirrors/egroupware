@@ -128,11 +128,9 @@
    }
   while ($phpgw->db->next_record()) {
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-    $title = $phpgw->db->f("title");
-    if ($title != "")
-       $title = htmlentities(stripslashes($title));
-    else
-       $title = "&nbsp;";
+
+    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                               
+    if (! $title)  $title  = "&nbsp;";
     $t->set_var(tr_color,$tr_color);
 
     if ($phpgw->db->f("date") == 0)
@@ -162,7 +160,7 @@
     // template declaration for list records
     // ============================================
 
-    $t->set_var(array("num" => $phpgw->db->f("num"),
+    $t->set_var(array("num" => $phpgw->strip_html($phpgw->db->f("num")),
                       "customer" => $customerout,
     		      "title" => $title,
       		      "date" => $dateout,
@@ -180,5 +178,5 @@
        $t->p("out");
        // -------------- end Add form declaration ------------------------
 
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
 ?>

@@ -102,8 +102,10 @@
    $t->set_var("delivery_day",date("j",$phpgw->db->f("date")));                                                                                                                                       
    $t->set_var("delivery_month",date("n",$phpgw->db->f("date")));                                                                                                                                     
    $t->set_var("delivery_year",date("Y",$phpgw->db->f("date")));                                                                                                                                      
-   $t->set_var("delivery_num",$phpgw->db->f("num"));                                                                                                                                                  
-   $t->set_var("title",$phpgw->db->f("title"));                                                                                                                                                      
+   $t->set_var("delivery_num",$phpgw->strip_html($phpgw->db->f("num")));
+   $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                  
+    if (! $title)  $title  = "&nbsp;";                                                                                                                                                   
+   $t->set_var("title",$title);
       }
     }
    else {    
@@ -119,10 +121,12 @@
    $t->set_var("zip",$phpgw->db->f("ab_zip"));                                                                                                                                                   
    $t->set_var("city",$phpgw->db->f("ab_city"));
    $t->set_var("delivery_day",date("j",$phpgw->db->f("date")));                                                                                                                                  
-   $t->set_var("delivery_month",date("n",$phpgw->db->f("date")));                                                                                                                                
-   $t->set_var("delivery_year",date("Y",$phpgw->db->f("date")));                                                                                                                                 
-   $t->set_var("delivery_num",$phpgw->db->f("num"));                                                                                                                                             
-   $t->set_var("title",$phpgw->db->f("title"));                                                                                                                                                 
+   $t->set_var("delivery_month",date("n",$phpgw->db->f("date")));
+   $t->set_var("delivery_year",date("Y",$phpgw->db->f("date")));
+   $t->set_var("delivery_num",$phpgw->strip_html($phpgw->db->f("num")));                                                                                                                         
+   $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                          
+    if (! $title)  $title  = "&nbsp;";                                                                                                                                                           
+   $t->set_var("title",$title);
      }
    }
                                                                                                                                                                                                  
@@ -146,14 +150,14 @@
 		$t->set_var("year",date("Y",$phpgw->db->f("date")));
 	}
 	$t->set_var("aes",$phpgw->db->f("aes"));
-	$t->set_var("act_descr",$phpgw->db->f("descr"));
+        $act_descr = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                         
+        if (! $act_descr)  $act_descr  = "&nbsp;";                                                                                                                                       
+        $t->set_var("act_descr",$act_descr);
 	$t->set_var("billperae",$phpgw->db->f("billperae"));
-	if($phpgw->db->f("remark")) {
-		$t->set_var("act_remark",$phpgw->db->f("remark"));
-	        } else {                    
-                $t->set_var("act_remark","");
-                }
-                $t->parse("list", "deliverypos_list", true);
+        $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                           
+        if (! $remark)  $remark  = "&nbsp;";                                                                                                                                             
+        $t->set_var("remark",$remark);
+        $t->parse("list", "deliverypos_list", true);
       }
    
 

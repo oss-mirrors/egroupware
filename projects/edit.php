@@ -67,10 +67,14 @@
      $t->set_var("lang_action",lang("Edit project"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      $t->set_var("lang_num",lang("Project ID"));
-     $t->set_var("num", stripslashes($phpgw->db->f("num")));
+     $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
      $t->set_var("lang_title",lang("Title"));
-     $t->set_var("title", stripslashes($phpgw->db->f("title")));
-     $t->set_var("descrval", stripslashes($phpgw->db->f("descr")));
+     $title  = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                               
+     if (! $title)  $title  = "&nbsp;";                                                                                                                                                  
+     $t->set_var("title",$title);
+     $descrval  = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                               
+     if (! $descrval)  $descrval  = "&nbsp;";                                                                                                                                                  
+     $t->set_var("descrval",$descrval);
      $t->set_var("lang_status",lang("Status"));
      if ($phpgw->db->f("status")=="active"):
          $stat_sel[0]=" selected";
@@ -367,5 +371,5 @@
 	   "cd=15&sort=$sort&order=$order&query=$query&start="
 	 . "$start&filter=$filter"));
   }
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
 ?>

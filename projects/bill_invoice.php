@@ -157,16 +157,16 @@
   $t->set_var(title_customer,lang("customer"));
   
   $t->set_var(title_invoice_num,lang("Invoice ID"));
+  
   if(!$invoice_num) {
     $phpgw->db->query("SELECT max(num) AS max FROM p_invoice");
-    $t->set_var(title_invoice_num,lang("Invoice ID"));
     if($phpgw->db->next_record()) {
       $t->set_var(invoice_num,(int)($phpgw->db->f("max"))+1);
     } else {
       $t->set_var(invoice_num,"1");
     }
   } else {
-      $t->set_var(invoice_num,$invoice_num);
+      $t->set_var(invoice_num,$phpgw->strip_html($invoice_num));
   }
 
   if(!$invoice_id) {
@@ -224,17 +224,11 @@
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\" checked>";
 
-    $activity = $phpgw->db->f("descr");
-    if ($activity != "")
-       $activity = htmlentities(stripslashes($activity));
-    else
-       $activity = "&nbsp;";
-    
-   $remark = $phpgw->db->f("remark");
-    if ($remark != "")
-       $remark = htmlentities(stripslashes($remark));
-    else
-       $remark = "&nbsp;";
+    $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                                   
+    if (! $activity)  $activity  = "&nbsp;";    
+
+    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                                   
+    if (! $remark)  $remark  = "&nbsp;";    
 
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
@@ -308,20 +302,15 @@
       $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
       $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\">";
 
-      $activity = $phpgw->db->f("descr");
-      if ($activity != "")
-         $activity = htmlentities(stripslashes($activity));
-      else
-         $activity = "&nbsp;";
-      
-      $remark = $phpgw->db->f("remark");
-      if ($remark != "")
-         $remark = htmlentities(stripslashes($remark));
-      else
-         $remark = "&nbsp;";
+
+    $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                                   
+    if (! $activity)  $activity  = "&nbsp;";
+
+    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                                   
+    if (! $remark)  $remark  = "&nbsp;";      
   
-      $status = lang($phpgw->db->f("status"));
-      $t->set_var(tr_color,$tr_color);
+    $status = lang($phpgw->db->f("status"));
+    $t->set_var(tr_color,$tr_color);
 
       if ($phpgw->db->f("date") == 0)
                $end_dateout = "&nbsp;";
@@ -384,5 +373,5 @@
     $t->p("out");
     // -------------- end Add form declaration ------------------------
 
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
 ?>

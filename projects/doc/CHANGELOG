@@ -16,4 +16,5 @@
 12/03/2000: moved select own address to preferences
 12/09/2000: update invoice & activities to display currency
 12/10/2000: create function to make sure if created invoice or delivery before printing them
-12/20/2000: update preferences  
+12/20/2000: update preferences
+12/22/2000: included call to function strip_html()  

@@ -119,13 +119,11 @@
   while ($phpgw->db->next_record()) {
   
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-    $title = $phpgw->db->f("title");
-    if ($title != "")
-       $title = htmlentities(stripslashes($title));
-    else
-       $title = "&nbsp;";
 
-    $num = $phpgw->db->f("num");
+    $title  = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                
+    if (! $title)  $title  = "&nbsp;"; 
+
+    $num = $phpgw->strip_html($phpgw->db->f("num"));
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
 
@@ -193,5 +191,5 @@
        $t->p("out");
        // -------------- end Add form declaration ------------------------
 
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
 ?>

@@ -139,7 +139,11 @@
                   . "FROM p_projects,addressbook "
                   . "WHERE id='$project_id' AND p_projects.customer=ab_id");
   if($phpgw->db->next_record()) {
-    $t->set_var(project,$phpgw->db->f("title"));
+    
+    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                               
+    if (! $title)  $title  = "&nbsp;";
+
+    $t->set_var("project",$title);
     $t->set_var(customer,$phpgw->db->f("ab_company")." [ ".
 		$phpgw->db->f("ab_firstname")." ".$phpgw->db->f("ab_lastname")." ]");
     } 
@@ -154,14 +158,13 @@
   
   if(!$delivery_num) {
     $phpgw->db->query("SELECT max(num) AS max FROM p_delivery");
-    $t->set_var(title_delivery_num,lang("Delivery ID"));
     if($phpgw->db->next_record()) {
       $t->set_var(delivery_num,(int)($phpgw->db->f("max"))+1);
     } else {
       $t->set_var(delivery_num,"1");
     }
   } else {
-      $t->set_var(delivery_num,$delivery_num);
+      $t->set_var(delivery_num,$phpgw->strip_html($delivery_num));
   }
   
   if(!$delivery_id) {
@@ -217,17 +220,11 @@
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\" checked>";
 
-    $activity = $phpgw->db->f("descr");
-    if ($activity != "")
-       $activity = htmlentities(stripslashes($activity));
-    else
-       $activity = "&nbsp;";
+    $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                               
+    if (! $activity)  $activity  = "&nbsp;";    
     
-    $remark = $phpgw->db->f("remark");
-    if ($remark != "")
-       $remark = htmlentities(stripslashes($remark));
-    else
-       $remark = "&nbsp;";
+    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                               
+    if (! $remark)  $remark  = "&nbsp;";
 
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
@@ -278,17 +275,11 @@
       $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
       $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\">";
 
-      $activity = $phpgw->db->f("descr");
-      if ($activity != "")
-         $activity = htmlentities(stripslashes($activity));
-      else
-         $activity = "&nbsp;";
+    $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                               
+    if (! $activity)  $activity  = "&nbsp;";
 
-      $remark = $phpgw->db->f("remark");
-      if ($remark != "")
-         $remark = htmlentities(stripslashes($remark));
-      else
-         $remark = "&nbsp;";
+    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                               
+    if (! $remark)  $remark  = "&nbsp;";
   
       $status = lang($phpgw->db->f("status"));
       $t->set_var(tr_color,$tr_color);
@@ -334,5 +325,5 @@
     $t->p("out");
     // -------------- end Add form declaration ------------------------
 
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
 ?>

@@ -64,9 +64,11 @@
      $t->set_var("lang_action",lang("Edit activity"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      $t->set_var("lang_num",lang("Activity ID"));
-     $t->set_var("num", stripslashes($phpgw->db->f("num")));
+     $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
      $t->set_var("lang_descr",lang("Description"));
-     $t->set_var("descr", stripslashes($phpgw->db->f("descr")));
+     $descr  = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                                
+     if (! $descr)  $descr  = "&nbsp;";
+     $t->set_var("descr",$descr);
      $t->set_var("lang_remarkreq",lang("Remark required"));
      if ($phpgw->db->f("remarkreq")=="N"):
          $stat_sel[0]=" selected";
@@ -103,4 +105,5 @@
 	   "cd=15&sort=$sort&order=$order&query=$query&start="
 	 . "$start&filter=$filter"));
   }
+  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
 ?>
