@@ -94,10 +94,7 @@
 
 		function db2projects($column = False)
 		{
-			if(floor(phpversion()) > 4)
-				$db = clone $this->db;
-			else
-				$db = $this->db;
+			$db = clone($this->db);
 			
 			$i = 0;
 			while ($this->db->next_record())
@@ -204,10 +201,7 @@
 		*/
 		function getBudget($_projectID)
 		{
-			if(floor(phpversion()) > 4)
-				$db = clone $this->db;
-			else
-				$db = $this->db;
+			$db = clone($this->db);
 			
 			$db->select($this->budget_table,'budget_amount,budget_month,budget_year',array(
 					'project_id' => $_projectID,
