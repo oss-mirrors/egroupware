@@ -32,16 +32,8 @@
 
 		if (!$GLOBALS['phpgw']->msg->mailsvr_stream)
 		{
-			$error_msg = '<b>Mail error:</b> Can not open connection to mail server';
-			echo "\r\n<br>\r\n"
-//			.'<tr>'."\r\n"
-//				.'<td align="left">'."\r\n"
-					.'<!-- start Mailbox info -->'."\r\n"
-					.$error_msg."\r\n"
-					.'<!-- ends Mailbox info -->'."\r\n";
-//				.'</td>'."\r\n"
-//			.'</tr>'."\r\n";
-			//$GLOBALS['phpgw']->common->phpgw_exit(True);
+			$title = '<font color="#FFFFFF">'.lang('EMail').'</font>';
+			$extra_data = '<b>Mail error:</b> Can not open connection to mail server';
 		}
 		else
 		{
@@ -57,31 +49,6 @@
 			$inbox_data = $GLOBALS['phpgw']->msg->new_message_check();
 
 			$title = '<font color="#FFFFFF">'.lang('EMail').' '.$inbox_data['alert_string'].'</font>';
-
-			$portalbox = CreateObject('phpgwapi.listbox',
-				Array(
-					'title'	=> $title,
-					'primary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-					'secondary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-					'tertiary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-					'width'	=> '90%',
-					'outerborderwidth'	=> '0',
-					'header_background_image'	=> $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler.gif')
-				)
-			);
-
-			$var = Array(
-				'up'	=> Array('url'	=> '/set_box.php', 'app'	=> 'email'),
-				'down'	=> Array('url'	=> '/set_box.php', 'app'	=> 'email'),
-				'close'	=> Array('url'	=> '/set_box.php', 'app'	=> 'email'),
-				'question'	=> Array('url'	=> '/set_box.php', 'app'	=> 'email'),
-				'edit'	=> Array('url'	=> '/set_box.php', 'app'	=> 'email')
-			);
-
-			while(list($key,$value) = each($var))
-			{
-				$portalbox->set_controls($key,$value);
-			}
 
 			if($inbox_data['number_all'] >= 5)
 			{
@@ -112,7 +79,7 @@
 			// Does This Mailbox Support Folders (i.e. more than just INBOX)?
 			if ($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders() == False)
 			{
-				$switchbox_tablerow = '';
+				$extra_data = '';
 			}
 			else
 			{
@@ -125,28 +92,45 @@
 						. '</select>';
 				// make it another TR we can insert
 				$switchbox_action = $GLOBALS['phpgw']->link('/email/index.php');
-				$switchbox_tablerow = 
-//					'</td>'."\r\n"
-//					.'</tr>'."\r\n"
-//					.'<tr>'."\r\n"
+				$extra_data = 
 					'<form name="switchbox" action="'.$switchbox_action.'" method="post">'."\r\n"
 						.'<td align="left">'."\r\n"
 							.'&nbsp;<strong>E-Mail Folders:</strong>&nbsp;'.$switchbox_listbox
 						.'</td>'."\r\n"
 					.'</form>'."\r\n";
-//					.'</tr>'."\r\n"
-//					.'<tr>'."\r\n"
-//					.'<td>'."\r\n";
 			}
 			$GLOBALS['phpgw']->msg->end_request();
-			// output the portalbox and (if applicable) the folders listbox below it
-			echo "\r\n".'<!-- start Mailbox info -->'."\r\n"
-//			.'<tr>'."\r\n"
-//				.'<td align="left">'."\r\n"
-					.$portalbox->draw($switchbox_tablerow)
-//				.'</td>'."\r\n"
-//			.'</tr>'."\r\n"
-			.'<!-- ends Mailox info -->'."\r\n";
 		}
+
+		$portalbox = CreateObject('phpgwapi.listbox',
+			Array(
+				'title'	=> $title,
+				'primary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'secondary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'tertiary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'width'	=> '100%',
+				'outerborderwidth'	=> '0',
+				'header_background_image'	=> $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler.gif')
+			)
+		);
+		$app_id = $GLOBALS['phpgw']->applications->name2id('email');
+		$GLOBALS['portal_order'][] = $app_id;
+		$var = Array(
+			'up'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+			'down'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+			'close'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+			'question'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+			'edit'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id)
+		);
+
+		while(list($key,$value) = each($var))
+		{
+			$portalbox->set_controls($key,$value);
+		}
+
+		// output the portalbox and (if applicable) the folders listbox below it
+		echo "\r\n".'<!-- start Mailbox info -->'."\r\n"
+			.$portalbox->draw($extra_data)
+			.'<!-- ends Mailox info -->'."\r\n";
 	}
 ?>

@@ -1070,7 +1070,6 @@ function comic_display_frontpage($data_id, $scale, $censor_level)
                   th_text     => $phpgw_info["theme"]["th_text"]));
             $comic_tpl->parse("center_part", "row");
             $comic_tpl->parse(TABLE, "table");
-            $comic_tpl->p("TABLE");
             
             /******************************************************************
              * put the url and date in the database
@@ -1079,6 +1078,7 @@ function comic_display_frontpage($data_id, $scale, $censor_level)
             {
                 comic_flag_success($comic_url, $data_id);
             }
+            return $comic_tpl->fp('out','TABLE');
         }
     }
 }

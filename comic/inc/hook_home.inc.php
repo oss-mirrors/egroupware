@@ -35,8 +35,37 @@
 
 		if ($data_id != -1)
 		{
+			$title = '<font color="#FFFFFF">'.lang('Comic').'</font>';
+
+			$portalbox = CreateObject('phpgwapi.listbox',
+				Array(
+					'title'	=> $title,
+					'primary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+					'secondary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+					'tertiary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+					'width'	=> '100%',
+					'outerborderwidth'	=> '0',
+					'header_background_image'	=> $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler.gif')
+				)
+			);
+			$app_id = $GLOBALS['phpgw']->applications->name2id('comic');
+			$GLOBALS['portal_order'][] = $app_id;
+			$var = Array(
+				'up'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+				'down'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+				'close'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+				'question'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+				'edit'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id)
+			);
+
+			while(list($key,$value) = each($var))
+			{
+				$portalbox->set_controls($key,$value);
+			}
 			include($tmp_app_inc . '/functions.inc.php');
-			comic_display_frontpage($data_id, $scale, $censor_level);
+			echo "\r\n".'<!-- start Comic info -->'."\r\n"
+				.$portalbox->draw(comic_display_frontpage($data_id, $scale, $censor_level))
+				.'<!-- ends Comic info -->'."\r\n";
 		}
 	}
 }
