@@ -2127,8 +2127,8 @@
 			$pro_list = $this->soprojects->read_projects(array
 			(
 				'start'		=> $this->start,
-				'limit'		=> $this->limit,
-				'query'		=> $this->query,
+				'limit'		=> isset($params['limit']) ? $params['limit'] : $this->limit,
+				'query'		=> isset($params['query']) ? $params['query'] : $this->query,
 				'filter'	=> $this->filter,
 				'sort'		=> $this->sort,
 				'order'		=> $this->order,
@@ -2154,15 +2154,15 @@
 					if ($pro['customer'])
 					{
 						$customer = $this->read_single_contact($pro['customer']);
-            					if ($customer[0]['org_name'] == '') 
-            					{ 
-            						$customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; 
-            					}
-            					else
-            					{
-            						$customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . 
-            						' ' . $customer[0]['n_family'] . ' ]'; 
-            					}
+    					if ($customer[0]['org_name'] == '') 
+    					{ 
+    						$customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; 
+    					}
+    					else
+    					{
+    						$customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . 
+    						' ' . $customer[0]['n_family'] . ' ]'; 
+    					}
 					}
 
 					$mstones = $this->get_mstones($pro['project_id']);
@@ -2197,11 +2197,10 @@
 					$ubudget_pro	= $this->colored($acc['u_budget'],$pro['budgetSum'],$acc['u_budget']);
 					$ubudget_jobs	= $this->colored($acc['u_budget_jobs'],$pro['budgetSum'],$acc['u_budget_jobs']);
 
-					$space = '';
+					$spaceset = '';
 					if ($pro['level'] > 0)
 					{
-						$space = ($this->html_output?'&nbsp;.&nbsp;':'.');
-						$spaceset = str_repeat($space,$pro['level']);
+						$spaceset = str_repeat($this->html_output?'&nbsp;.&nbsp;':'.',$pro['level']);
 					}
 
 					$projects[] = array

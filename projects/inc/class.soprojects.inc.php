@@ -320,7 +320,7 @@
 
 			switch($action)
 			{
-				case 'all':			break;
+				case 'all':				break;
 				case 'mains':			$parent_select = ' AND parent=0'; break;
 				case 'subs':			$parent_select = ' AND (parent=' . $parent . ' AND parent != 0)'; break;
 				case 'mainandsubs':		$parent_select = ' AND main=' . $main; break;
@@ -364,7 +364,7 @@
 
 			$pro = $this->db2projects($column);
 
-			if ($main == 0 && $action != 'mains')
+			if ($main == 0 && $action != 'mains' && $action != 'all')
 			{
 				$num_pro = count($pro);
 				for ($i=0;$i < $num_pro;$i++)
