@@ -246,7 +246,7 @@
 						'pagenumber'	=> '0',
 						'profileid'	=> $profileList[$i]['profileID']
 					);
-					$imapServerLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).'">'.$profileList[$i]['smtpServer'].'</a>';
+					$imapServerLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).'">'.$profileList[$i]['imapServer'].'</a>';
 					
 					$linkData = array
 					(
