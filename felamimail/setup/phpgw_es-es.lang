@@ -34,6 +34,7 @@ change folder	felamimail	es-es	Cambiar carpeta
 checkbox	felamimail	es-es	Casilla
 click here to log back in.	felamimail	es-es	Pulse aquí para volver a iniciar sesión
 click here to return to %1	felamimail	es-es	Pulse aquí para volver a %1
+close all	felamimail	es-es	cerrar todas
 close this page	felamimail	es-es	cerrar esta página
 close window	felamimail	es-es	Cerrar ventana
 color	felamimail	es-es	Color
@@ -174,6 +175,7 @@ location of buttons when composing	felamimail	es-es	Ubicación de los botones al 
 location of folder list	felamimail	es-es	Ubicación de la lista de carpetas
 mail server login type	admin	es-es	Tipo de sesión del servidor de correo
 mail settings	felamimail	es-es	Configuración del correo
+mainmessage	felamimail	es-es	mensaje principal
 manage folders	felamimail	es-es	Administrar carpetas
 manage sieve	felamimail	es-es	Administrar scripts Sieve
 mark as deleted	felamimail	es-es	Marcar como borrado
@@ -221,6 +223,7 @@ number of messages to index	felamimail	es-es	Número de mensajes a indexar
 on behalf of	felamimail	es-es	en nombre de
 only inbox	felamimail	es-es	Sólo la Bandeja de entrada
 only unseen	felamimail	es-es	Sólo los no vistos
+open all	felamimail	es-es	abrir todas
 options	felamimail	es-es	Opciones
 organisation	felamimail	es-es	Organización
 organization	felamimail	es-es	Organización
