@@ -38,11 +38,12 @@
 		);
 
 		var $app_title='JiNN';
+		var $screen_title;
 		var $bo;// = CreateObject('jinn.bojinn');
 		var $template;
 		var $debug=False;
 		var $add_edit;
-		var $message;
+		var $message=array();
 
 		function uijinn()
 		{
@@ -103,25 +104,18 @@
 				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
 				unset($GLOBALS['phpgw_info']['flags']['noappheader']);
 				unset($GLOBALS['phpgw_info']['flags']['noappfooter']);
-
-				$GLOBALS['phpgw']->common->phpgw_header();
-				$this->template->set_file(array('header' => 'header.tpl'));
-
+	
 				if (!$this->bo->site_id)
 				{
-					$this->message=lang('Select site to moderate');
+				  $this->message['info']=lang('Select site to moderate');
 				}
 				else
 				{
-					$this->message=lang('Select site-object to moderate');
+				  $this->message['info']=lang('Select site-object to moderate');
 				}
-
-				$action=lang('Start');
-				$this->template->set_var('title',$this->app_title);
-				$this->template->set_var('action',$action);
-				$this->template->pparse('out','header');
-				$this->debug_info();
-				$this->message_box();
+				$this->screen_title='start';
+				$this->header();
+				
 				$this->main_menu();
 				$this->save_sessiondata();
 			}
@@ -138,11 +132,10 @@
 			$this->template->set_file(array(
 				'header' => 'header.tpl'
 			));
-
-			$action=lang('add object');
-
+	
 			$this->template->set_var('title',$this->app_title);
-			$this->template->set_var('action',$action);
+			$this->template->set_var('action',$this->screen_title);
+			$this->template->set_var('msg_box',$this->msg_box());
 			$this->template->pparse('out','header');
 		}
 
@@ -154,8 +147,9 @@
 		function add_edit_object()
 		{
 			$this->add_edit= CreateObject('jinn.uiuseraddedit',$this->bo);
-
-			$this->debug_info();
+			
+			$this->screen_title='add or edit objects';
+			
 			$this->header();
 			$this->main_menu();	
 
@@ -173,7 +167,7 @@
 		{
 			$this->browse= CreateObject('jinn.uiuserbrowse',$this->bo);
 
-			$this->debug_info();
+			$this->screen_title='browse through objects';
 			$this->header();
 			$this->main_menu();	
 
@@ -265,6 +259,16 @@
 				$this->template->set_var('select_object',lang('select_object'));
 				$this->template->set_var('go',lang('go'));
 
+				/* set admin shortcuts */
+				// if site if site admin
+				if($this->bo->site_id && $userisadmin)
+				{
+				  $admin_site_link='<br><a href="'.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadminaddedit.').'">'.
+					lang('admin:: edit site').'</a>';
+				}
+				$this->template->set_var('admin_site_link',$admin_site_link);
+				$this->template->set_var('admin_object_link',$admin_object_link);
+
 				$this->template->pparse('out','main_menu');
 
 			}
@@ -310,14 +314,22 @@
 
 			}
 
-			/****************************************************************************\
-			* delete routine after submission                                            *
-			\****************************************************************************/
-
-			function message_box()
+			/*
+			   standard msg_box
+		    */
+			function msg_box()
 			{
-				echo '<table align=center width="80%"><tr><td>'.$this->message.'</td></tr></table>';
-				unset($this->message);
+
+			  if ($this->message['info']) $msg_box='<p><font color=green>'.$this->message['info'].'</font></p>';
+			  if ($this->message['error']) $msg_box.='<p><font color=red>'.$this->message['error'].'</font></p>';
+			  unset($this->message);
+						  
+			  if($msg_box)
+			  {
+			  $msg='<table style="border-width:1;border-color:#CCCCCC;border-style:solid" align=center bgcolor=white cellpadding=3 cellspaging=3><tr><td>'.$msg_box.'</td></tr></table><br>';
+			}
+			  return $msg;
+
 			}
 
 

@@ -7,5 +7,6 @@
 <tr><td align="center"><b>{title} - {action}</b></td></tr>
 <tr><td><b>&nbsp;</b></td></tr>
 </table>
+{msg_box}
 
 <!-- end app title -->

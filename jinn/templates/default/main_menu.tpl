@@ -17,12 +17,14 @@
 			<select name="site_id" onChange="this.form.submit()">
 			{site_options}
 			</select>
+			{admin_site_link}
 	 	</td>
 		<td align="center">
 			{select_object}<br>
 			<select name="site_object_id" onChange="this.form.submit()">
 			{site_objects}
 			</select>
+			{admin_object_link}
 		</td>
 	</tr></form>
 </table>
