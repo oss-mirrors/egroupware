@@ -52,7 +52,7 @@
 		{
 			/* get rid of the escape \ that magic_quotes HTTP POST will add, " becomes \" and  '  becomes  \'  */
 			$email_sig_clean = $phpgw->msg->stripslashes_gpc($email_sig);
-			/*// replace  '  and  "  with htmlspecialchars */
+			/*// replace database offensive ASCII chars  with htmlspecialchars */
 			$email_sig_clean = $phpgw->msg->html_quotes_encode($email_sig_clean);
 			$phpgw->preferences->add("email","email_sig",$email_sig_clean);
 		}
@@ -89,25 +89,21 @@
 			}
 			if ($passwd)
 			{
-				// INTERIM WORKAROUND: requires NO change to phpgwapi
 				// there were multiple problems with previous custom email passwd handling
-				//echo 'in pref page b4 strip: '.$passwd.'<br>';
-				$encrypted_passwd = $phpgw->msg->stripslashes_gpc($passwd);
-				//echo 'in pref page after strip: '.$encrypted_passwd.'<br>';
-				$encrypted_passwd = $phpgw->msg->encrypt_email_passwd($encrypted_passwd);
-				//echo 'encrypted_passwd: '.$encrypted_passwd.'<br>';
-				$phpgw->preferences->add("email","passwd",$encrypted_passwd);
-				//$test_str = 'a test string';
-				//echo 'test_str before base64 decode: '.$test_str.'<br>';
-				//$test_str = base64_decode($test_str);
-				//echo 'test_str after base64 decode: '.$test_str.'<br>';
+				// fixed so far:
+				// - database unfriendly ASCII chars are converted to/from html special chars
+				// - bypass $phpgw->common->en/decrypt()  which added extra serializations
+				// - upgrade routine makes double or tripple serialized passwords back to normal
 
-				/* // CURRENT: does not need class common change, 
-				// BUT CURRENT CODE IS BROKEN - waiting for api change to implement the above fix
-				//  get rid of the escape \ that magic_quotes HTTP POST will add, " becomes \" and  '  becomes  \' 
+				//echo 'in pref page b4 strip: <pre>'.$passwd.'</pre><br>';
 				$encrypted_passwd = $phpgw->msg->stripslashes_gpc($passwd);
-				$encrypted_passwd = $phpgw->common->encrypt($encrypted_passwd);
-				$phpgw->preferences->add("email","passwd",$encrypted_passwd); */
+				//echo 'in pref page after strip: <pre>'.$encrypted_passwd.'</pre><br>';
+				$encrypted_passwd = $phpgw->msg->encrypt_email_passwd($encrypted_passwd);
+				//echo 'encrypted_passwd: <pre>'.$encrypted_passwd.'</pre><br>';
+				$phpgw->preferences->add("email","passwd",$encrypted_passwd);
+				//echo '<br>just saved to prefs table, all ok?<br><br>';
+				//echo 'convert back to actual ASCII char <pre>'
+				//	.$phpgw->msg->decrypt_email_passwd($encrypted_passwd).'</pre>';
 			}
 			else
 			{

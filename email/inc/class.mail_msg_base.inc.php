@@ -109,7 +109,8 @@
 	$phpgw_info['user']['preferences']['email']['mail_port'] = $this->get_mailsvr_port();
 
 	// DEBUG
-	//echo "<br>prefs['email']['passwd']: " .$prefs['email']['passwd'] .'<br>';
+	//echo "<br>phpgw_info['user']['preferences']['email']: <br>"
+	//	.'<pre>'.serialize($phpgw_info['user']['preferences']['email']) .'</pre><br>';
   }
 
 
@@ -1364,19 +1365,35 @@
 
 	function html_quotes_encode($str)
 	{
+		// ==  "poor-man's" database compatibility ==
+		// encode database unfriendly chars as html entities
+		// it'll work for now, and it can be easily un-done later when real DB classes take care of this issue
 		// replace  '  and  "  with htmlspecialchars
 		$str = ereg_replace('"', '&quot;', $str);
 		$str = ereg_replace('\'', '&#039;', $str);
-		// NEEDED: add  /  and  \  to this
+		// replace  , (comma)
+		$str = ereg_replace(',', '&#044;', $str);
+		// replace /  (forward slash)
+		$str = ereg_replace('/', '&#047;', $str);
+		// replace \  (back slash)
+		$str = ereg_replace("\\\\", '&#092;', $str);
 		return $str;
 	}
 
 	function html_quotes_decode($str)
 	{
-		// reverse of htmlspecialchars
+		// ==  "poor-man's" database compatibility ==
+		// reverse of html_quotes_encode - html specialchar convert to actual ascii char
+		// backslash \ 
+		$str = ereg_replace('&#092;', "\\", $str);
+		// forward slash /
+		$str = ereg_replace('&#047;', '/', $str);
+		// comma ,
+		$str = ereg_replace('&#044;', ',', $str);
+		// single quote '
 		$str = ereg_replace('&#039;', '\'', $str);
+		// double quote "
 		$str = ereg_replace('&quot;', '"', $str);
-		// NEEDED: add  /  and  \  to this
 		return $str;
 	}
 
