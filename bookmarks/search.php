@@ -43,10 +43,10 @@
 
 	// the following fields are selectable
 	$field = array(
-		'phpgw_bookmarks.bm_name'        => 'Name',
-		'phpgw_bookmarks.bm_keywords'    => 'Keywords',
-		'phpgw_bookmarks.bm_url'         => 'URL',
-		'phpgw_bookmarks.bm_desc'        => 'Description'
+		'phpgw_bookmarks.bm_name'        => lang('Name'),
+		'phpgw_bookmarks.bm_keywords'    => lang('Keywords'),
+		'phpgw_bookmarks.bm_url'         => lang('URL'),
+		'phpgw_bookmarks.bm_desc'        => lang('Description')
 //		'phpgw_bookmarks.bm_category'    => 'Category',
 //		'phpgw_bookmarks.bm_subcategory' => 'Sub Category',
 	);
@@ -266,6 +266,7 @@
 		$tree_search_url = $GLOBALS['phpgw']->link('/bookmarks/tree.php',"where=" . base64_encode($q->query));
 		$GLOBALS['phpgw']->template->set_var(array(
 			'QUERY_CONDITION' => $GLOBALS['phpgw']->strip_html($q->query),
+			'LANG_QUERY_CONDITION' => lang('Query Condition'),
 			'BOOKMARK_LIST'   => $bookmark_list,
 			'TREE_SEARCH_URL' => $tree_search_url
 		));

@@ -39,6 +39,7 @@
 
   
   ## HTML Widget dictionary
+/* use phpgw lang() now
   var $dict = array(
     "de" => array(
       "searchfor" => "Suchen nach:",
@@ -62,7 +63,7 @@
       "more"      => "More"
     )
   );
-
+*/
   ## SQL comparision dictionary
   var $compare = array(
         "like" => "like",
@@ -141,7 +142,7 @@
     ## A hack. We cannot do language dependent initialisation of
     ## static values.
     if (isset($this->compare["like"])) {
-      $this->compare["like"] = $this->dict[$this->lang]["like"];
+      $this->compare["like"] = lang('like');
     }
     
     ## Prepare a self-directed container form
@@ -165,13 +166,12 @@
       ## Build conjunction (first row does not have a conjunction)
       if ($i == 1) {
         $res .= sprintf("  <td%s>%s</td>\n", 
-          ($class)?" class=$class":"", 
-          $this->dict[$this->lang]["searchfor"]);
+          ($class)?" class=$class":"",lang('Search for:'));
       } else {
         $res .= sprintf("  <td%s>%s</td>\n", 
           ($class)?" class=$class":"", 
           $this->selection($this->makename($base, "conj", $i),
-                           array("and" => $this->dict[$this->lang]["and"], "or" => $this->dict[$this->lang]["or"]),
+                           array("and" => lang('and'), "or" => lang('or')),
                            $GLOBALS[$base]["conj_".$i], 
                            "on",
                            $class));
@@ -216,10 +216,10 @@
       $res .= sprintf("  <td%s><input type=\"submit\" name=\"%s\" value=\"%s\">&nbsp;",
         ($class)?" class=$class":"",
         $this->makename($base, "more", 0),
-        $this->dict[$this->lang]["more"]);
+        lang('More'));
       $res .= sprintf("<input type=\"submit\" name=\"%s\"value=\"%s\"></td>\n",
         $this->makename($base, "less", 0),
-        $this->dict[$this->lang]["less"]);
+        lang('Fewer'));
     } else {
       $res .= sprintf("  <td%s>&nbsp;</td>\n", ($class)?" class=$class":"");
     }
@@ -227,10 +227,10 @@
     $res .= sprintf("  <td%s>&nbsp;</td>\n", ($class)?" class=$class":"");
     $res .= sprintf("  <td%s><input type=\"reset\" value=\"%s\">&nbsp;",
       ($class)?" class=$class":"",
-      $this->dict[$this->lang]["reset"]);
+      lang('Clear'));
     $res .= sprintf("<input type=\"submit\" name=\"%s\"value=\"%s\"></td>\n",
       $this->makename($base, "submit", 0),
-      $this->dict[$this->lang]["submit"]);
+      lang('Search'));
     
     $res .= sprintf(" </tr>\n");
     $res .= sprintf("</table>\n");
@@ -292,11 +292,11 @@
 
       ## If necessary, add conjunction
       if ($q != "")
-        $q .= sprintf(" %s ", $this->dict[$this->lang][$GLOBALS[$base]["conj_".$i]]);
+        $q .= sprintf(" %s ", lang($GLOBALS[$base]["conj_".$i]));
       
       ## Handle "like"
       if ($GLOBALS[$base]["comp_".$i] == "like")
-        $c = $this->dict[$this->lang][$GLOBALS[$base]["comp_".$i]];
+        $c = lang($GLOBALS[$base]["comp_".$i]);
       else
         $c = $this->compare[$GLOBALS[$base]["comp_".$i]];
 

@@ -3,22 +3,21 @@
  <input type="hidden" name="MAX_FILE_SIZE" value="10000000">
  <table border=0 bgcolor="#EEEEEE" align="center" width=60%>
  <tr>
-  <td colspan=2>Enter the name of the Netscape bookmark file
-   <br>that you want imported into bookmarker below.
+  <td colspan=2>{lang_name}
    <br>&nbsp;
   </td>
  </tr>
  <tr>
-  <td align=left>Netscape Bookmark File</td>
+  <td align=left>{lang_file}</td>
   <td align=left><input type="file" name="bkfile"></td>
  </tr>
  <tr>
   <td colspan=2 align=right>
-   <input type="submit" name="import" value="Import Bookmarks">
+   <input type="submit" name="import" value="{lang_import_button}">
   </td>
  </tr>
  <tr>
-  <td colspan="2" align="left"><b>Note:</b> This currently works with netscape bookmarks only</td>
+  <td colspan="2" align="left">{lang_note}</td>
  </tr>
 <!--  I commented this out, becuase if I can provide the format, I will.  Even if it means we convert
       it first to netscape format.

@@ -1,16 +1,30 @@
-book marks	common	fr	Signets
+Ascending	bookmarks	fr	Croissant
+Bookmark changed sucessfully	bookmarks	fr	Changement du Signet réussi
 bookmarks	common	fr	Signets
+Change Bookmark	bookmarks	fr	Changer le signet
+close this window to return	bookmarks	fr	Fermer cette fenêtre pour revenir
+Create bookmark	bookmarks	fr	Créer signet
 create new bookmark	bookmarks	fr	Créer un nouveau signet
 date added	bookmarks	fr	Date ajoutée
+Date Changed	bookmarks	fr	Date changée
 date last updated	bookmarks	fr	Date de dernière mise à jour
 date last visited	bookmarks	fr	Date de dernière visite
+Descending	bookmarks	fr	Décroissant
 edit bookmark	bookmarks	fr	Editer le signet
 edit this bookmark	bookmarks	fr	Editer ce signet
+Filter by	bookmarks	fr	Filtrer par
 import bookmarks	preferences	fr	Importer les signets
 mail this bookmark	bookmarks	fr	Envoyer ce signet par EMail
 mass update:	bookmarks	fr	Mise à jour de masse:
+Message from	bookmarks	fr	Message de
+Name is required	bookmarks	fr	Le nom est requis
 rating	bookmarks	fr	Note
-to e-mail address	bookmarks	fr	Aux adresses EMail
+Send bookmark	bookmarks	fr	Envoyer signet
+Sub Category	bookmarks	fr	Sous-catégorie
+To E-Mail Addresses	bookmarks	fr	Vers les adresses EMail
 total visits	bookmarks	fr	Visites totales
 tree view	bookmarks	fr	Vue en arbre
+View bookmark	bookmarks	fr	Voir signet
 view this bookmark	bookmarks	fr	Voir ce signet
+Warning	bookmarks	fr	Attention
+You are viewing this site outside of phpGroupWare	bookmarks	fr	Vous visualisez ce site en-dehors de phpGroupWare

@@ -92,12 +92,12 @@
 
 	if ($total_bookmarks > $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
 	{
-		$total_matchs = lang('showing x - x of x',($start + 1),
+		$total_matchs = lang('showing %1 - %2 of %3',($start + 1),
 			($start + $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']),$total_bookmarks);
 	}
 	else
 	{
-		$total_matchs = lang('showing x',$total_bookmarks);
+		$total_matchs = lang('showing %1',$total_bookmarks);
 	}
 	$GLOBALS['phpgw']->template->set_var('showing',$total_matchs);
 

@@ -25,14 +25,14 @@
 //			$tpl->parse('preference_header_','preference_header');
 		}
 
-		$tabs[1]['label'] = 'Tree view';
+		$tabs[1]['label'] = lang('Tree view');
 		$tabs[1]['link']  = $GLOBALS['phpgw']->link('/bookmarks/tree.php');
 		if (ereg('tree.php',$PHP_SELF))
 		{
 			$selected = 1;
 		}
 
-		$tabs[2]['label'] = 'List';
+		$tabs[2]['label'] = lang('List');
 		$tabs[2]['link']  = $GLOBALS['phpgw']->link('/bookmarks/list.php');
 		if (ereg('list.php',$PHP_SELF))
 		{
@@ -41,7 +41,7 @@
 
 		if (! $GLOBALS['phpgw']->acl->check('anonymous',1,'bookmarks'))
 		{
-			$tabs[3]['label'] = 'New';
+			$tabs[3]['label'] = lang('New');
 			$tabs[3]['link']  = $GLOBALS['phpgw']->link('/bookmarks/create.php');
 			if (ereg('create.php',$PHP_SELF))
 			{
@@ -49,7 +49,7 @@
 			}
 		}
 
-		$tabs[4]['label'] = 'Search';
+		$tabs[4]['label'] = lang('Search');
 		$tabs[4]['link']  = $GLOBALS['phpgw']->link('/bookmarks/search.php');
 		if (ereg('search.php',$PHP_SELF))
 		{

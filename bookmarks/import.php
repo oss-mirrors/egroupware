@@ -130,7 +130,7 @@
 
 		if (empty($bkfile) || $bkfile == "none")
 		{
-			$error_msg .= "<br>Netscape bookmark filename is required!";
+			$error_msg .= '<br>'.lang('Netscape bookmark filename is required!');
 			break;
 		}
 		$default_rating = 0;
@@ -144,12 +144,18 @@
 			$scat_index = -1;
 			$bookmarker->url_format_check = 0;
 			$bookmarker->url_responds_check = false;
+
+			$utf8flag = False;
    
 			while ($line = @fgets($fd, 2048))
 			{
+			 	if ((strcmp('<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">', rtrim($line)) == 0) && function_exists('iconv'))
+            {
+             $utf8flag = True;
+            }
 				// URLs are recognized by A HREF tags in the NS file.
-				if (eregi('<A HREF="([^"]*)[^>]*>(.*)</A>', $line, $match))
-				{
+				elseif (eregi('<A HREF="([^"]*)[^>]*>(.*)</A>', $line, $match))
+ 				{
 					$url_parts = @parse_url($match[1]);
 					if ($url_parts[scheme] == 'http' || $url_parts[scheme] == 'https' || $url_parts[scheme] == 'ftp' || $url_parts[scheme] == 'news')
 					{
@@ -180,7 +186,10 @@
 						}
 						$values['category'] = sprintf('%s|%s',$cid,$scid);
 						$values['url']      = $match[1];
-						$values['name']     = $match[2];
+
+						//if iconv fails, fall back to undecoded string
+						$name_iconv = ($utf8flag ? iconv('UTF-8','ISO-8859-1',$match[2]) : False);
+						$values['name']     = ($name_iconv ? $name_iconv : $match[2]);
 						$values['rating']   = 0;
 
 						eregi('ADD_DATE="([^"]*)"',$line,$add_info);
@@ -213,20 +222,24 @@
 					$folder_index ++;
 					$id = -1;
 
+					//if iconv fails, fall back to undecoded string
+					$folder_name_iconv = ($utf8flag ? iconv('UTF-8','ISO-8859-1',$match[1]) : False);
+					$folder_name = ($folder_name_iconv ? $folder_name_iconv : $match[1]);
+
 					if ($folder_index == 0)
 					{
 						$cat_index ++;
-						$cat_array[$cat_index] = $match[1];
+						$cat_array[$cat_index] = $folder_name;
 						$id = $cat_index + $cat_start;
 					}
 					elseif ($folder_index == 1)
 					{
 						$scat_index ++;
-						$scat_array[$scat_index] = $match[1];
+						$scat_array[$scat_index] = $folder_name;
 						$id = $scat_index + $scat_start;
 					}
 					$folder_stack[$folder_index] = $id;
-					$folder_name_stack[$folder_index] = $match[1];
+					$folder_name_stack[$folder_index] = $folder_name;
 				}
 				elseif (eregi('</DL>', $line))
 				{
@@ -238,15 +251,19 @@
 		}
 		else
 		{
-			$error_msg .= "<br>Unable to open temp file " . $bkfile . " for import.";
+			$error_msg .= '<br>'.lang('Unable to open temp file %1 for import.',$bkfile);
 		}
 
 		unset($msg);
-		$msg .= sprintf("<br>%s bookmarks imported from %s successfully.", $inserts, $bkfile_name);
+		$msg .= '<br>'.lang("%1 bookmarks imported from %2 successfully.", $inserts, $bkfile_name);
 		$error_msg = $all_errors;
 //		break;
 	}
 
 	$GLOBALS['phpgw']->template->set_var('FORM_ACTION',$GLOBALS['phpgw']->link('/bookmarks/import.php'));
+	$GLOBALS['phpgw']->template->set_var('lang_name',lang('Enter the name of the Netscape bookmark file<br>that you want imported into bookmarker below.'));
+	$GLOBALS['phpgw']->template->set_var('lang_file',lang('Netscape Bookmark File'));
+	$GLOBALS['phpgw']->template->set_var('lang_import_button',lang('Import Bookmarks'));
+	$GLOBALS['phpgw']->template->set_var('lang_note',lang('<b>Note:</b> This currently works with netscape bookmarks only'));
 	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

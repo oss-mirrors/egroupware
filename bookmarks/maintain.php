@@ -103,10 +103,10 @@
 		$GLOBALS['phpgw']->db->query("select * from phpgw_bookmarks where bm_id='$bm_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
 
-		$bookmark['name']        = $GLOBALS['phpgw']->db->f('bm_name');
+		$bookmark['name']        = $GLOBALS['phpgw']->strip_html($GLOBALS['phpgw']->db->f('bm_name'));
 		$bookmark['url']         = $GLOBALS['phpgw']->db->f('bm_url');
-		$bookmark['desc']        = $GLOBALS['phpgw']->db->f('bm_desc');
-		$bookmark['keywords']    = $GLOBALS['phpgw']->db->f('bm_keywords');
+		$bookmark['desc']        = $GLOBALS['phpgw']->strip_html($GLOBALS['phpgw']->db->f('bm_desc'));
+		$bookmark['keywords']    = $GLOBALS['phpgw']->strip_html($GLOBALS['phpgw']->db->f('bm_keywords'));
 		$bookmark['category']    = $GLOBALS['phpgw']->db->f('bm_category') . '|' . $GLOBALS['phpgw']->db->f('bm_subcategory');
 		$bookmark['rating']      = $GLOBALS['phpgw']->db->f('bm_rating');
 	}

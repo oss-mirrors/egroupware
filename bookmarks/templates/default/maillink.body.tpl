@@ -11,7 +11,7 @@
 
   <tr>
    <td>{lang_to} <!-- To E-Mail Addresses --></td>
-   <td><input type="text" name="to" size="60" maxlength="255" value="{to}"><br><small>(comma separate multiple addresses)</small></td>
+   <td><input type="text" name="to" size="60" maxlength="255" value="{to}"><br><small>{lang_multiple_addr}</small></td>
   </tr>
 
   <tr>

@@ -170,7 +170,7 @@
 			}
 
 			// Check owner
-			if (($this->grants[$GLOBALS['phpgw']->db->f('bm_owner')] & PHPGW_ACL_EDIT) || ($GLOBALS['phpgw']->db->f('bm_owner') == $GLOBALS['phpgw_info']['user']['account_id']))
+			if (($GLOBALS['phpgw']->bookmarks->grants[$GLOBALS['phpgw']->db->f('bm_owner')] & PHPGW_ACL_EDIT) || ($GLOBALS['phpgw']->db->f('bm_owner') == $GLOBALS['phpgw_info']['user']['account_id']))
 			{
 				$maintain_url  = $GLOBALS['phpgw']->link("/bookmarks/maintain.php","bm_id=" . $GLOBALS['phpgw']->db->f("bm_id"));
 				$maintain_link = sprintf('<a href="%s"><img src="%s/edit.gif" align="top" border="0" alt="%s"></a>', $maintain_url,PHPGW_IMAGES,lang('Edit this bookmark'));

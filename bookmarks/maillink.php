@@ -21,12 +21,12 @@
 	include('../header.inc.php');
 
 	$GLOBALS['phpgw']->bookmarks = createobject('bookmarks.bookmarks');
-	$GLOBALS['phpgw']->send      = createobject('phpgwapi.send');
 
 	$GLOBALS['phpgw']->template->set_file(array(
 		'common_' => 'common.tpl',
 		'body'    => 'maillink.body.tpl'
 	));
+
 	app_header(&$GLOBALS['phpgw']->template);
 
 	// if browser is MSIE, then need to add this bit
@@ -38,62 +38,62 @@
 	}
 
 	// Check if there was a submission
-	while (is_array($HTTP_POST_VARS) && list($key, $val) = each($HTTP_POST_VARS))
+	if ($GLOBALS['HTTP_POST_VARS']['send'])	// Send button clicked
 	{
-		switch ($key)
+		$validate = createobject('phpgwapi.validator');
+		// Strip space and tab from anywhere in the To field
+		$to = $validate->strip_space($GLOBALS['HTTP_POST_VARS']['to']);
+
+		// Trim the subject
+		$subject = trim($GLOBALS['HTTP_POST_VARS']['subject']);
+
+		$message = $GLOBALS['HTTP_POST_VARS']['message'];
+
+		// Do we have all necessary data?
+		if (empty($to) || empty($subject) || empty($message))
 		{
-			// Send button clicked
-			case 'bk_send':
-				// Strip space and tab from anywhere in the To field
-				$to = $validate->strip_space($to);
+			$error_msg .= '<br>'.lang('Please fill out <B>To E-Mail Address</B>, <B>Subject</B>, and <B>Message</B>!');
+		}
+		else
+		{
+			// the To field may contain one or more email addresses
+			// separated by commas. Check each one for proper format.
+			$to_array = explode(",", $to);
 
-				// Trim the subject
-				$subject = trim($subject);
-
-				// Do we have all necessary data?
-				if (empty($to) || empty($subject) || empty($message))
+			while (list($key, $val) = each($to_array))
+			{
+				// Is email address in the proper format?
+				if (!$validate->is_email($val))
 				{
-					$error_msg .= "<br>Please fill out <B>To E-Mail Address</B>, <B>Subject</B>, and <B>Message</B>!";
+					$error_msg .= '<br>'.lang('To address %1 invalid. Format must be <strong>user@domain</strong> and domain must exist!',$val).
+						'<br><small>'.$validate->ERROR.'</small>';
 					break;
 				}
+			}
+		}
 
-				// the To field may contain one or more email addresses
-				// separated by commas. Check each one for proper format.
-				$to_array = explode(",", $to);
+		if (!isset ($error_msg))
+		{
+			$send     = createobject('phpgwapi.send');
+			// add additional headers to our email
+			$addl_headers = sprintf("%s: %s <%s>",lang('From'),stripslashes($from_name), $from);
 
-				while (list($key, $val) = each($to_array))
-				{
-					// Is email address in the proper format?
-					if (!$validate->is_email($val))
-					{
-						$error_msg .= "<br>To address $val invalid. Format must be <strong>user@domain</strong> and domain must exist!<br><small> $validate->ERROR </small>";
-						break;
-					}
-				}
-
-				if (isset ($error_msg))
-				{
-					break;
-				}
-
-				// add additional headers to our email
-				$addl_headers = sprintf("From: %s <%s>", stripslashes($from_name), $from);
-	
-				$addl_headers = sprintf('%s\n%s',$addl_headers,$GLOBALS['phpgw']->template->parse('_footer','footer'));
-	
-				// send the message
-				$send->msg('email',$to,$subject,$mail_message . $GLOBALS['phpgw']->bookmarks->config['mail_footer'],'','','','No reply <noreply@' . $SERVER_NAME . '>');
-	
-				$msg .= "<br>mail-this-link message sent to $to.";
-				break;
-			default:
-				break;
+			//$addl_headers = sprintf('%s\n%s',$addl_headers,$GLOBALS['phpgw']->template->parse('_footer','footer'));
+			$reply_to = $GLOBALS['phpgw_info']['user']['fullname'].' <'.$GLOBALS['phpgw_info']['user']['preferences']['email']['address'].'>';
+			if (empty($replay_to))
+			{
+				$reply_to = 'No reply <noreply@' . $GLOBALS['phpgw_info']['server']['mail_suffix'].'>';
+			}
+			// send the message
+			$send->msg('email',$to,$subject,$message ."\n". $GLOBALS['phpgw']->bookmarks->config['mail_footer'],'','','',$reply_to);
+			
+			$msg .= '<br>'.lang('mail-this-link message sent to %1.',$to);
 		}
 	}
 
 	if (empty($subject))
 	{
-		$subject = 'Found a link you might like';
+		$subject = lang('Found a link you might like');
 	}
 
 	if (empty($message))
@@ -120,7 +120,7 @@
 			$bm_id = unserialize(stripslashes($mass_bm_id));
 			echo '<pre>'; print_r($bm_id); echo '</pre>';
 	
-			while (list(,$id) = each($bm_id) && is_array($bm_id))
+			while (is_array($bm_id) && (list(,$id) = each($bm_id)))
 			{
 				$GLOBALS['phpgw']->db->query("select * from phpgw_bookmarks where bm_id='$id' and $filtermethod",__LINE__,__FILE__);
 				$GLOBALS['phpgw']->db->next_record();
@@ -142,8 +142,8 @@
 			);
 		}
 	
-		$message = "I thought you would be interested in the following link(s):\n";
-		while (list(,$link) = each($links))
+		$message = lang('I thought you would be interested in the following link(s):')."\n";
+		while (list(,$link) = @each($links))
 		{
 			$message .= sprintf("%s - %s\n",$link['name'],$link['url']);
 		}
@@ -153,6 +153,7 @@
 	$GLOBALS['phpgw']->template->set_var('header_message',lang('Send bookmark'));
 	$GLOBALS['phpgw']->template->set_var('lang_from',lang('Message from'));
 	$GLOBALS['phpgw']->template->set_var('lang_to',lang('To E-Mail Addresses'));
+	$GLOBALS['phpgw']->template->set_var('lang_multiple_addr',lang('(comma separate multiple addresses)'));
 	$GLOBALS['phpgw']->template->set_var('lang_subject',lang('Subject'));
 	$GLOBALS['phpgw']->template->set_var('lang_message',lang('Message'));
 	$GLOBALS['phpgw']->template->set_var('lang_send',lang('Send'));

@@ -90,12 +90,11 @@
 
 	$GLOBALS['phpgw']->template->set_var('lang_header',lang('View bookmark'));
 
-	$GLOBALS['phpgw']->template->set_var('input_url','<a href="' . $GLOBALS['phpgw']->link('/bookmarks/redirect.php','bm_id=' . $GLOBALS['phpgw']->db->f('bm_id'))
-		. '" target="_new">' . $GLOBALS['phpgw']->db->f('bm_url') . '</a>');
-	$GLOBALS['phpgw']->template->set_var('input_name',$GLOBALS['phpgw']->db->f('bm_name'));
-	$GLOBALS['phpgw']->template->set_var('input_desc',$GLOBALS['phpgw']->db->f('bm_desc'));
-	$GLOBALS['phpgw']->template->set_var('input_keywords',$GLOBALS['phpgw']->db->f('bm_keywords'));
-	$GLOBALS['phpgw']->template->set_var('input_rating','<img src="' . $GLOBALS['phpgw']->common->get_image_path('bookmarks') . '/bar-' . $GLOBALS['phpgw']->db->f('bm_rating'). '.jpg">');
+	$GLOBALS['phpgw']->template->set_var('input_url','<a href="' . $GLOBALS['phpgw']->link('/bookmarks/redirect.php','bm_id=' . $GLOBALS['phpgw']->db->f('bm_id')) . '" target="_new">' . $GLOBALS['phpgw']->db->f('bm_url') . '</a>');
+	$GLOBALS['phpgw']->template->set_var('input_name',$GLOBALS['phpgw']->strip_html($GLOBALS['phpgw']->db->f('bm_name')));
+	$GLOBALS['phpgw']->template->set_var('input_desc',$GLOBALS['phpgw']->strip_html($GLOBALS['phpgw']->db->f('bm_desc')));
+	$GLOBALS['phpgw']->template->set_var('input_keywords',$GLOBALS['phpgw']->strip_html($GLOBALS['phpgw']->db->f('bm_keywords')));
+ 	$GLOBALS['phpgw']->template->set_var('input_rating','<img src="' . $GLOBALS['phpgw']->common->get_image_path('bookmarks') . '/bar-' . $GLOBALS['phpgw']->db->f('bm_rating') . '.jpg">');
 
 	$category    = $GLOBALS['phpgw']->strip_html($GLOBALS['phpgw']->categories->return_name($GLOBALS['phpgw']->db->f('bm_category')));
 	$subcategory = $GLOBALS['phpgw']->strip_html($GLOBALS['phpgw']->categories->return_name($GLOBALS['phpgw']->db->f('bm_subcategory')));
