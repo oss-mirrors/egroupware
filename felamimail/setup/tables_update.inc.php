@@ -155,28 +155,6 @@
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','date','fmail_date');
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','size','fmail_size');
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','attachments','fmail_attachments');
-		$GLOBALS['phpgw_setup']->oProc->RefreshTable('phpgw_felamimail_cache',array(
-			'fd' => array(
-				'fmail_accountid' => array('type' => 'int','precision' => '4','nullable' => False),
-				'fmail_hostname' => array('type' => 'varchar','precision' => '60','nullable' => False),
-				'fmail_accountname' => array('type' => 'varchar','precision' => '25','nullable' => False),
-				'fmail_foldername' => array('type' => 'varchar','precision' => '200','nullable' => False),
-				'fmail_uid' => array('type' => 'int','precision' => '4','nullable' => False),
-				'fmail_subject' => array('type' => 'text'),
-				'fmail_striped_subject' => array('type' => 'text'),
-				'fmail_sender_name' => array('type' => 'varchar','precision' => '120'),
-				'fmail_sender_address' => array('type' => 'varchar','precision' => '120'),
-				'fmail_to_name' => array('type' => 'varchar','precision' => '120'),
-				'fmail_to_address' => array('type' => 'varchar','precision' => '120'),
-				'fmail_date' => array('type' => 'int','precision' => '8'),
-				'fmail_size' => array('type' => 'int','precision' => '4'),
-				'fmail_attachments' => array('type' => 'varchar','precision' => '120')
-			),
-			'pk' => array('fmail_accountid','fmail_hostname','fmail_accountname','fmail_foldername','fmail_uid'),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		));
 
 		$GLOBALS['setup_info']['felamimail']['currentver'] = '1.0.0.001';
 		return $GLOBALS['setup_info']['felamimail']['currentver'];
@@ -195,23 +173,6 @@
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_folderstatus','unseen','fmail_unseen');
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_folderstatus','uidnext','fmail_uidnext');
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_folderstatus','uidvalidity','fmail_uidvalidity');
-		$GLOBALS['phpgw_setup']->oProc->RefreshTable('phpgw_felamimail_folderstatus',array(
-			'fd' => array(
-				'fmail_accountid' => array('type' => 'int','precision' => '4','nullable' => False),
-				'fmail_hostname' => array('type' => 'varchar','precision' => '60','nullable' => False),
-				'fmail_accountname' => array('type' => 'varchar','precision' => '200','nullable' => False),
-				'fmail_foldername' => array('type' => 'varchar','precision' => '200','nullable' => False),
-				'fmail_messages' => array('type' => 'int','precision' => '4'),
-				'fmail_recent' => array('type' => 'int','precision' => '4'),
-				'fmail_unseen' => array('type' => 'int','precision' => '4'),
-				'fmail_uidnext' => array('type' => 'int','precision' => '4'),
-				'fmail_uidvalidity' => array('type' => 'int','precision' => '4')
-			),
-			'pk' => array('fmail_accountid','fmail_hostname','fmail_accountname','fmail_foldername'),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		));
 
 		$GLOBALS['setup_info']['felamimail']['currentver'] = '1.0.0.002';
 		return $GLOBALS['setup_info']['felamimail']['currentver'];
@@ -223,16 +184,6 @@
 	{
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_displayfilter','accountid','fmail_filter_accountid');
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_displayfilter','filter','fmail_filter_data');
-		$GLOBALS['phpgw_setup']->oProc->RefreshTable('phpgw_felamimail_displayfilter',array(
-			'fd' => array(
-				'fmail_filter_accountid' => array('type' => 'int','precision' => '4','nullable' => False),
-				'fmail_filter_data' => array('type' => 'text')
-			),
-			'pk' => array('fmail_filter_accountid'),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		));
 
 		$GLOBALS['setup_info']['felamimail']['currentver'] = '1.0.0.003';
 		return $GLOBALS['setup_info']['felamimail']['currentver'];
