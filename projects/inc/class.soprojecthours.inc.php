@@ -35,6 +35,7 @@
 		var $ttracker_table = 'phpgw_p_ttracker';
 		var $hours_table = 'phpgw_p_hours';
 		var $activities_table = 'phpgw_p_activities';
+		var $projectactivities_table = 'phpgw_p_projectactivities';
 		var $projects_table = 'phpgw_p_projects';
 
 		function soprojecthours()
@@ -259,7 +260,7 @@
 		{
 			$where = array('project_id' => is_array($params['project_array']) ? $params['project_array'] : $params['project_id']);
 			
-			$this->db->select($this->activities_table,'id,activity_id,billable',$where,__LINE__,__FILE__);
+			$this->db->select($this->projectactivities_table,'id,activity_id,billable',$where,__LINE__,__FILE__);
 
 			$activities = array();
 			while($this->db->next_record())
@@ -303,7 +304,7 @@
 
 			if($params['no_billable'] || $params['is_billable'])
 			{
-				$this->db->select($this->activities_table,'activity_id',array_merge($where,array(
+				$this->db->select($this->projectactivities_table,'activity_id',array_merge($where,array(
 						'billable' => $params['no_billable'] ? 'N' : 'Y'
 					)),__LINE__,__FILE__);
 
