@@ -60,8 +60,8 @@ class fud_mlist
 			)
 			VALUES(
 			".$this->forum_id.",
-			".$this->mlist_opt.",
 			'".addslashes($this->name)."',
+			".$this->mlist_opt.",
 			'".addslashes($this->subject_regex_haystack)."',
 			'".addslashes($this->subject_regex_needle)."',
 			'".addslashes($this->body_regex_haystack)."',
