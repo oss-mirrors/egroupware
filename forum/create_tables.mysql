@@ -70,6 +70,7 @@ CREATE TABLE f_threads (
   thread int(11) DEFAULT '0' NOT NULL,
   depth int(11) DEFAULT '0' NOT NULL,
   pos int(11) DEFAULT '0' NOT NULL,
+  n_replies int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (id),
   KEY date (postdate)
 );
@@ -83,4 +84,4 @@ CREATE TABLE f_threads (
 # Add forum to applications table too
 #
 
-INSERT INTO applications VALUES ('forum','Forum',1);
+INSERT INTO applications VALUES ('forum','Forum',1,13,'',0.01);

@@ -42,44 +42,21 @@
  echo ' <table border="0" width="80%">';
 
    // Collapsed view
-   if(!$col) {
-    echo "<tr bgcolor=" . $phpgw_info["theme"]["th_bg"] . " align=left>";
-	echo "<th width=40%>" .lang("Topic") ."</th>";
-	echo "<th>".lang("Author") ."</th>";
-	echo "<th>".lang("Replies")."</th>";
-	echo "<th>".lang("Latest Reply")."</th>";
-    echo "</tr>";
-    $phpgw->db->query("select * from f_threads where cat_id = $cat and for_id = $for and parent = -1");
-    while($phpgw->db->next_record()) {
-     $replycount = 0;
-     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-     echo "<tr bgcolor=\"$tr_color\">";
-     echo "<td><a href=" . $phpgw->link("read.php","cat=$cat&for=$for&msg=$msg" . $phpgw->db->f("id")) .">" 
-       . $phpgw->db->f("subject") . "</a></td>\n";
+   // Something wrong with this section when it goes here the query for $msgid fails
+if(!$col) {
+  echo "<tr bgcolor=" . $phpgw_info["theme"]["th_bg"] . " align=left>";
+  echo "<th width=40%>" .lang("Topic") ."</th>";
+  echo "<th>".lang("Author") ."</th>";
+  echo "<th>".lang("Replies")."</th>";
+  echo "<th>".lang("Latest Reply")."</th>";
+  echo "</tr>";
 
-     $lastreply = $phpgw->db->f("postdate");
-     echo "<td align=left valign=top>" . $phpgw->db->f("author") . "</td>\n";
-      $msgid = $phpgw->db->f("id");
-      $mainid = $phpgw->db->f("main");
-
-      $phpgw->db->query("select count(*) from f_threads where thread = " . $msgid);
-      $phpgw->db->next_record();
-      $replycount = ($phpgw->db->f(0) - 1);
-
-      $phpgw->db->query("select postdate from f_threads where parent = " . $msgid . " order by postdate ");
-      $phpgw->db->next_record();
-      if($phpgw->db->f(0)) $lastreply = $phpgw->db->f(0);
- 
-     echo "<td align=left valign=top>$replycount</td>\n";
-     echo "<td align=left valign=top>$lastreply</td>\n";
-
-     }
-
-     echo "</tr>\n";
+  $phpgw->db->query("select * from f_threads where cat_id=$cat and for_id=$for and parent = -1  order by postdate DESC");
+  show_topics($cat,$for);
 
 
    // Threaded view  ...... I hate these darn threads, and this gotta redo soon
-   } else {
+} else {
     echo "<tr bgcolor=" . $phpgw_info["theme"]["th_bg"] . " align=left>";
 	echo "<th width=40%>" .lang("Topic") ."</th>";
 	echo "<th>".lang("Author") ."</th>";
@@ -87,13 +64,8 @@
     echo "</tr>";
     echo "<tr>";
 
-
-    $new = $phpgw->db->query("select * from f_threads where cat_id = $cat and for_id = $for and parent = -1 order by thread");
-    while($phpgw->db->next_record($new)) {
-         showthread($phpgw->db->f("thread"),NULL);
-    }
-
-
+    $phpgw->db->query("select * from f_threads where cat_id = $cat and for_id = $for order by thread DESC, postdate, depth");
+    showthread($cat);
 
    }
  echo "</table>";

@@ -21,20 +21,21 @@ CREATE TABLE f_forums (
 );
 
 CREATE TABLE f_threads (
-  id 	serial,
-  postdate varchar(255),
-  main 	int DEFAULT '0',
-  parent 	int DEFAULT '0',
-  cat_id 	int DEFAULT '0',
-  for_id 	int DEFAULT '0',
-  author 	varchar(50) DEFAULT '',
-  subject varchar(50) DEFAULT '',
-  email 	varchar(50) DEFAULT '',
-  host 	varchar(18) DEFAULT '',
-  stat 	int DEFAULT '0',
-  thread 	int DEFAULT '0',
-  depth 	int DEFAULT '0',
-  pos 	int DEFAULT '0'
+  id        serial,
+  postdate  varchar(255),
+  main      int DEFAULT '0' NOT NULL,
+  parent    int DEFAULT '0' NOT NULL,
+  cat_id    int DEFAULT '0' NOT NULL,
+  for_id    int DEFAULT '0' NOT NULL,
+  author    varchar(50) DEFAULT '' NOT NULL,
+  subject   varchar(50) DEFAULT '' NOT NULL,
+  email     varchar(50) DEFAULT '' NOT NULL,
+  host      varchar(18) DEFAULT '' NOT NULL,
+  stat      int DEFAULT '0' NOT NULL,
+  thread    int DEFAULT '0' NOT NULL,
+  depth     int DEFAULT '0' NOT NULL,
+  pos       int DEFAULT '0' NOT NULL,
+  n_replies int DEFAULT '0' NOT NULL
 );
 
 INSERT INTO applications VALUES ('forum','Forum',1);

@@ -28,7 +28,7 @@
     echo "<center>";
     echo '<table border="0" width="80%">';
 
-
+//  Pull all the categories from the table f_categories and display them
 	$phpgw->db->query("select * from f_categories");
 	while($phpgw->db->next_record()) {
 		$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);

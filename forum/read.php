@@ -58,6 +58,8 @@ if($pos != 0) {
 	'$email',
 	'$host',
 	$stat)");
+$phpgw->db->query("update f_threads set n_replies = n_replies+1 where thread='$thread'");
+
 
   $phpgw->db->query("insert into f_body (cat_id,for_id,message) VALUES (
 	$cat,
