@@ -19,10 +19,14 @@ creates a new ticket, returns ticket_id	tts	fr	Crée un nouveau ticket, retourne 
 creates a struct of tickets	tts	fr	Crée une structure de tickets
 date opened	tts	fr	Date d'ouverture
 detail	tts	fr	Détail
+force	tts	fr	Force
+group ownership changed	tts	fr	Propriété du groupe changée
 in progress	tts	fr	En progression
+latest note added	tts	fr	Dernière note ajoutée
 new ticket	tts	fr	Nouveau ticket
 new value	tts	fr	Nouvelle valeur
 no additional notes	tts	fr	Pas de notes additionnelles
+no notes for this ticket	tts	fr	Pas de notes pour ce ticket
 no tickets found	tts	fr	Pas de ticket trouvé
 not assigned	tts	fr	Non assigné
 old value	tts	fr	Ancienne valeur
@@ -30,9 +34,12 @@ open	tts	fr	Ouvrir
 opened	tts	fr	Ouvert
 open date	tts	fr	Date d'ouverture
 opened by	tts	fr	Ouvert par
+original ticket details	tts	fr	Détails du ticket original
 prio	tts	fr	Prio
 priority	tts	fr	Priorité
 priority changed	tts	fr	Priorité changée
+re-assigned	tts	fr	Réassigné
+re-opened	tts	fr	Rouvert
 status/date closed	tts	fr	Statut/Date de fermeture
 subject changed	tts	fr	Sujet changé
 ticket	tts	fr	Ticket

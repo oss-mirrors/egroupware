@@ -1,6 +1,8 @@
+<b>apply all</b> filters	email	fr	<b>APPLIQUER TOUS</b> les filtres
 1 message has been deleted	email	fr	1 message a été effacé
 1 message has been moved to	email	fr	1 message a été déplacé vers
 account	email	fr	compte
+account user name	email	fr	Nom d'utilisateur du compte
 add to addressbook	email	fr	Ajouter au carnet d'adresses
 and	email	fr	et
 arrival date	email	fr	Date d'arrivée
@@ -17,6 +19,7 @@ contains	email	fr	Contient
 could not open this mailbox	email	fr	N'a pas pu ouvrir cette boîte aux lettres
 create a folder email	fr	créer un dossier	
 create (expert)	email	fr	créer (expert)
+custom e-mail preferences	email	fr	Préférences d'EMail personnalisées
 custom email settings	email	fr	Réglages d'EMail personnalisés
 default:	common	fr	défaut:
 default sorting order	email	fr	Ordre d'affichage par défaut
@@ -27,14 +30,16 @@ deleted messages (trash) folder	email	fr	Messages effacés dossier poubelle (Tras
 delete (expert)	email	fr	Effacer (expert)
 discard	email	fr	Mettre de côté
 does not contain	email	fr	Ne contient pas
+e-mail extra accounts list	email	fr	Liste des comptes supplémentaires d'EMail
+e-mail filters	common	fr	Filtres sur les EMails
+e-mail folders	common	fr	Dossiers d'EMails
+e-mail inbox filters List	email	fr	Liste des filtres de la boîte de réception d'EMail
+e-mail preferences	common	fr	Préférences EMail
 email account name	email	fr	Nom de compte EMail
 email address	email	fr	Adresse EMail
 email date	email	fr	Date d'Email
-e-mail filters	email	fr	Filtres sur les EMails
-e-mail folders	common	fr	Dossiers d'EMails
 email filters	email	fr	Filtres sur les Emails
 email password	email	fr	Mot de passe EMail
-e-mail preferences	common	fr	Préférences EMail
 email preferences	email	fr	Préférences EMail
 email signature	email	fr	Signature EMail
 email type	common	fr	Type d'EMail
@@ -52,6 +57,7 @@ fewer actions	email	fr	Moins d'actions
 fewer choices	email	fr	Moins de choix
 file	email	fr	Fichier
 file into	email	fr	Fichier dans
+filter [number] and name	email	fr	[Numéro] du filtre et nom
 folder	email	fr	Dossier
 folder maintenance	email	fr	Maintenance des dossiers
 folder name	email	fr	Nom du dossier
@@ -60,6 +66,7 @@ folder size	email	fr	Taille du dossier
 for these items, fill only what is different from you default e-mail preferences	common	fr	Pour ces éléments, remplissez uniquement ce qui est différent de vos préférences du compte EMail par défaut
 forward	email	fr	Transférer
 from	email	fr	De
+hidden	email	fr	Caché
 if applicable	email	fr	Si applicable
 if fileto then select destination folder	email	fr	Si Fichiervers alors sélectionner le dossier de destination
 if messages match	email	fr	Si les messages correspondent
@@ -84,25 +91,30 @@ messages	email	fr	Messages
 messages have been moved to	email	fr	messages ont été déplacés vers
 more actions	email	fr	Plus d'actions
 more choices	email	fr	Plus de choix
+move down	email	fr	Descendre
 move selected messages into	email	fr	Déplacer les messages choisis dans
 move this message into	email	fr	Déplacer ce message dans
+move up	email	fr	Monter
 new	email	fr	Nouveau
-newest	common	fr	plus récent
+new account	email	fr	Nouveau compte
+new filter	email	fr	Nouveau filtre
 new message	email	fr	Nouveau message
+newest	common	fr	plus récent
 no error returned from server	email	fr	Pas d'erreur retournée par le serveur
 no next message	email	fr	pas de message suivant
 non-standard	email	fr	Non-Standard
 no previous message	email	fr	pas de message précédent
 number	common	fr	Nombre
 oldest	common	fr	plus ancien
-or	common	es	ou
+or	common	fr	ou
 or enter text	email	fr	Ou entrer du texte
 please fill in everything you need	email	fr	SVP remplissez tout ce dont vous avez besoin
-please select a folder to rename	email	es	SVP choisissez un dossier à renommer
+please select a folder to rename	email	fr	SVP choisissez un dossier à renommer
 please select a message first	email	fr	Sélectionnez d'abord un message, SVP
 please type a folder name in the text box	email	fr	SVP entrez un nom de dossier dans la boîte texte
 previous	email	fr	Précédent
 raw message	email	fr	Message brut
+read mail	email	fr	Lire l'EMail
 redirect	email	fr	Rediriger
 reject	email	fr	Rejeter
 rename a folder	email	fr	Renommer un dossier
@@ -125,6 +137,7 @@ show sender's email address with name	email	fr	Montrer l'adresse EMail de l'envo
 size	email	fr	Taille
 somebody	email	fr	quelqu'un
 sort by	email	fr	Trié par
+standard e-mail preferences	email	fr	Préférences d'EMail standard
 stop if matched	email	fr	S'arrêter si correpondance
 switch accounts	email	fr	Switcher les comptes
 switch current folder to	common	fr	Changer de dossier courant vers
@@ -139,6 +152,7 @@ undisclosed sender	email	fr	Envoyeur caché
 unknown action	email	fr	Action inconnue
 unknown error	email	fr	Erreur inconnue
 use custom settings	email	fr	Utiliser les réglages personnalisés
+u-wash mail folder	email	fr	Dossier d'EMail U-Wash
 view as html	email	fr	Voir comme du HTML
 view formatted	email	fr	Voir formaté
 view headers	email	fr	Voir les entêtes

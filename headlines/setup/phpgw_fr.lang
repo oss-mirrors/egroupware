@@ -1,5 +1,6 @@
 are you sure you want to delete this news site ?	admin	fr	Etes-vous sûr de vouloir effacer ce site de nouvelles ?
 base url	admin	fr	URL de base
+create new headline	headlines	fr	Créer un nouveu titre
 grab new news sites	common	fr	Récupérer les nouveaux sites de nouvelles
 headlines	common	fr	Titres
 headline preferences	common	fr	Préférences de titres
@@ -9,9 +10,14 @@ listings displayed	admin	fr	Listings affichés
 minutes between reloads	admin	fr	Minutes entre les rechargements
 monitor	common	fr	Moniteur
 news file	admin	fr	Fichier de nouvelles
+news from x	common	fr	Nouvelles de %1
 news headlines	common	fr	Titres de nouvelles
 news type	admin	fr	Type de nouvelles
+other preferences	preferences	fr	Autres préférences
+reload news sites	headlines	fr	Recharger les sites de nouvelles
 select headline news sites	common	fr	Sélectionner les sites de titres de nouvelles
+select headlines to display	preferences	fr	Sélectionner les titres à afficher
+select layout	preferences	fr	Sélectionner la mise en page
 that site has already been entered	admin	fr	Ce site a déjà été entré
 you must enter a base url	admin	fr	Vous devez entrer une URL de base
 you must enter a display	admin	fr	Vous devez entrer un affichage

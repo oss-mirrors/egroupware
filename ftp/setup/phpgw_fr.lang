@@ -1,3 +1,7 @@
+log into ftp server	ftp	fr	Se connecter au serveur FTP
+permissions	ftp	fr	Permissions
+size	ftp	fr	Taille
+ftp hostname	ftp	fr	Nom du serveur FTP
 relogin	ftp	fr	Déconnecte/reconnecte
 cd	ftp	fr	cd
 delete	ftp	fr	Supprimer %1

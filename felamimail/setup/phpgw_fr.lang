@@ -60,6 +60,7 @@ error opening 	felamimail	fr	Erreur à l'ouverture
 error	felamimail	fr	ERREUR
 erro	felamimail	fr	ERR
 expunge	felamimail	fr	Purger
+felamimail	common	fr	FelaMiMail
 files	felamimail	fr	Fichiers
 first name	felamimail	fr	Prénom
 flags	felamimail	fr	Drapeaux
@@ -85,7 +86,7 @@ info	felamimail	fr	Info
 in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	fr	Afin que Felamimail puisse vous proposer l'ensemble des options vous devez créer les dossiers spéciaux listés ci-dessous. Cliquez simplement sur les boites de sélection et cliquez sur le bouton Créer.
 in	felamimail	fr	Dans
 in the center	felamimail	fr	Au centre
-invalid user name or password	felamimail	fr	Nom d'utilisateur ou mot de passe invalide
+invaild user name or password	felamimail	fr	Nom d'utilisateur ou mot de passe invalide
 javaScript	felamimail	fr	JavaScript
 language	felamimail	fr	Langue
 last name	felamimail	fr	Nom de famille

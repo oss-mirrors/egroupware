@@ -2,31 +2,40 @@ Absolute path of the directory to store the backup script	backup	fr	Chemin absol
 Archive type	backup	fr	Type d'archive
 Backup	common	fr	Sauvegarde
 Backup administration	common	fr	Administration de sauvegarde
+bzip2	admin	fr	bzip2
 Configuration backup	backup	fr	Configuration de sauvegarde
 Configuration localhost	backup	fr	Configuration de la machine locale
 Create backups of your data ?	backup	fr	Créer des sauvegardes de vos données ?
 daily	backup	fr	Journalier
+directory locations	admin	fr	Emplacements des répertoires
+directory names	admin	fr	Noms des répertoires
 interval	backup	fr	Intervalle
 Select interval	backup	fr	Choisissez l'intervalle
 Data	backup	fr	Données
 SQL	backup	fr	SQL
-LDAP	backup	fr	LDAP
+LDAP	common	fr	LDAP
+ldap database	admin	fr	Base de données LDAP
 E-MAIL	backup	fr	E-MAIL
 nfs	backup	fr	NFS
 Operating system	backup	fr	Système d'exploitation
+pgsql	admin	fr	PostgreSQL
+php cgi	admin	fr	php cgi
 plase enter username and password for remote connection !	backup	fr	SVP entrez le nom d'utilisateur et le mot de passe pour la connexion à distance !
 please enter the path of the backup dir and/or enable showing archives in phpGroupWare !	backup	fr	Svp entrez le chemin du répertoire de sauvegarde et/ou activez montrer les archives de sauvegarde dans phpGroupWare !
 please select an application for transport to the remote host !	backup	fr	SVP choisissez une application comme transport vers la machine distante !
 please set the path to a local dir to store the backup script !	backup	fr	SVP configurez le chemin vers un répertoire local où stocker le script de sauvegarde !
 please specify the path to the backup directory !	backup	fr	SVP précisez le chemin vers le répertoire de sauvegarde !
 please specify the ip of the remote host !	backup	fr	SVP précisez l'adresse IP de la machine distante !
+program locations	admin	fr	Emplacements des programmes
 Configuration remote host	backup	fr	Configuration de la machine distante
 Save backup locally ?	backup	fr	Stocker les sauvegardes localement ?
 Save backup to a remote host ?	backup	fr	Stocker les sauvegardes sur une machine distante ?
 Select archive type	backup	fr	Choisissez le type d'archive
 Select transport application	backup	fr	Choisissez l'application de transport
+settings	admin	fr	Réglages
 Show backup archives in phpGroupWare ?	backup	fr	Montrer les archives de sauvegarde dans phpGroupWare ?
 smbmount	backup	fr	SMBMOUNT
+tar	admin	fr	tar
 tar.gz	backup	fr	tar.gz
 tar.bz2	backup	fr	tar.bz2
 The backup application is not configured for showing the archives in phpGroupWare yet !	backup	fr	L'application de sauvegarde n'est pas encore configurée pour montrer les archives de sauvegarde dans phpGroupWare !
@@ -35,10 +44,12 @@ The ftp connection failed ! Please check your configuration !	backup	fr	La conne
 Transport application	backup	fr	Application de transport
 Absolute path of the backup directory	backup	fr	Chemin absolu vers le répertoire de sauvegarde
 ip or hostname	backup	fr	IP ou nom de machine
+maildir	admin	fr	Répertoire Mail
 monthly	backup	fr	Mensuellement
+mysql	admin	fr	MySQL
 No backup archives available !	backup	fr	Pas d'archives de sauvegarde disponibles !
 Number of stored backup versions	backup	fr	Nombre de versions de sauvegardes stockées
 User	backup	fr	Utilisateur
 Password	backup	fr	Mot de passe
 weekly	backup	fr	Hebdomadairement
-zip	backup	fr	zip
+zip	common	fr	zip
