@@ -561,7 +561,7 @@
 			return $records;
 		}
 
-
+/*
 
 		function get_record_values($site_id,$table,$where_condition,$offset,$limit,$value_reference)
 		{
@@ -611,9 +611,9 @@
 
 			return $rows;
 		}
+*/
 
-
-		function get_record_values_2($site_id,$table,$where_condition,$offset,$limit,$value_reference,$order_by)
+		function get_record_values($site_id,$table,$where_condition,$offset,$limit,$value_reference,$order_by='',$field_list='*')
 		{
 			$this->site_db_connection($site_id);
 
@@ -628,40 +628,45 @@
 			}
 
 			$fieldproperties = $this->site_table_metadata($site_id,$table);
-
-			$SQL='SELECT * FROM '. $table . $WHERE . $ORDER_BY;
+//die($field_list);
+$field_list_arr=(explode(',',$field_list));
+			$SQL='SELECT '.$field_list.' FROM '. $table . $WHERE . $ORDER_BY;
 			if (!$limit) $limit=1000000;
 
-			$this->site_db->limit_query($SQL, $offset,__LINE__,__FILE__,$limit); // returns a limited result from start to limit
+			$this->site_db->limit_query($SQL, $offset,__LINE__,__FILE__,$limit); 
 
 			while ($this->site_db->next_record())
 			{
-
 				unset($row);
 				foreach($fieldproperties as $field)
 				{
-					if ($field[type]=='blob' && ereg('binary',$field[flags]))
+					if($field_list=='*' || in_array($field[name],$field_list_arr))
 					{
-						$value=lang('binary');
-					}
-					else
-					{
-						$value=$this->strip_magic_quotes_gpc($this->site_db->f($field[name]));
-					}
+						if ($field[type]=='blob' && ereg('binary',$field[flags]))
+						{
+							$value=lang('binary');
+						}
+						else
+						{
+							$value=$this->strip_magic_quotes_gpc($this->site_db->f($field[name]));
+						}
 
 
-					if ($value_reference=='name')
-					{
-						$row[$field[name]] = $value;
-					}
-					else
-					{
-						$row[] = $value;
+						if ($value_reference=='name')
+						{
+							$row[$field[name]] = $value;
+						}
+						else
+						{
+							$row[] = $value;
+						}
+
+						
 					}
 				}
 				$rows[]=$row;
-
 			}
+//			die(var_dump($rows));
 
 			return $rows;
 		}
