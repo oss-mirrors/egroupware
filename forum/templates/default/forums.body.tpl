@@ -5,6 +5,13 @@
 	<tr bgcolor="{BGROUND}"> 
 		<td colspan="5"><a href="{MAIN_LINK}">{LANG_MAIN}</a> : {CATEGORY}</td>
 	</tr>
+	<tr bgcolor="{BGROUND}">
+		<td></td>
+		<td align="center">{LANG_SUBCATEGORY}</td>
+		<td align="center">{LANG_DESCRIPTION}</td>
+		<td align="center">{LANG_LATREP}</td>
+		<td align="center">{LANG_THREADS}</td>
+	</tr>
 
 {rows}
 

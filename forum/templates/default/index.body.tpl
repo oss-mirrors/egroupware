@@ -4,6 +4,13 @@
 	<tr bgcolor="{BGROUND}"> 
 		<td colspan="5">{FORUM}</td>
 	</tr>
+	<tr bgcolor="{BGROUND}">
+		<td></td>
+		<td align="center">{LANG_CATEGORY}</td>
+		<td align="center">{LANG_DESCRIPTION}</td>
+		<td align="center">{LANG_LATREP}</td>
+		<td align="center">{LANG_THREADS}</td>
+	</tr>
 	<!-- BEGIN CategoryForum --> 
 	<tr bgcolor="{COLOR}">
 		<td width="2%" height="20" valign="top"><img src="{CAT_IMG}" width="18" height="18" alt="{LANG_CATEGORY}"></td>
