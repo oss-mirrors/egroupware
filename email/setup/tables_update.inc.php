@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* Anglemail - setup files for phpGroupWare - DB Table Update			*
-	* http://www.anglemail.org							*
+	* Anglemail - setup files for phpGroupWare - DB Table Update               *
+	* http://www.anglemail.org                                                 *
 	* phpGroupWare                                                             *
 	* http://www.phpgroupware.org                                              *
 	* --------------------------------------------                             *
@@ -30,20 +30,17 @@
 				'uc' => array()
 			)
 		);
-		
+
 		//$GLOBALS['setup_info']['email']['currentver'] = '0.9.13.110805';
 		$GLOBALS['setup_info']['email']['currentver'] = '0.9.13.003';
 		return $GLOBALS['setup_info']['email']['currentver'];
 	}
 	*/
-	
-	
+
 	$test[] = '0.9.13.002';
 	function email_upgrade0_9_13_002()
 	{
-		global $setup_info, $phpgw_setup;
-
-		$phpgw_setup->oProc->CreateTable(
+		$GLOBALS['phpgw_setup']->oProc->CreateTable(
 			'phpgw_anglemail', array(
 				'fd' => array(
 					'account_id' => array('type' => 'varchar', 'precision' => 20, 'nullable' => false),
@@ -57,10 +54,8 @@
 			)
 		);
 
-		//$setup_info['email']['currentver'] = '0.9.13.110805';
-		$setup_info['email']['currentver'] = '0.9.13.003';
-		return $setup_info['email']['currentver'];
+		//$GLOBALS['setup_info']['email']['currentver'] = '0.9.13.110805';
+		$GLOBALS['setup_info']['email']['currentver'] = '0.9.13.003';
+		return $GLOBALS['setup_info']['email']['currentver'];
 	}
-	
-
 ?>

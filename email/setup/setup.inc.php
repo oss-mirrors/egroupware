@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* Anglemail - setup files for phpGroupWare 				*
-	* http://www.anglemail.org							*
+	* Anglemail - setup files for phpGroupWare                                 *
+	* http://www.anglemail.org                                                 *
 	* phpGroupWare - Email                                                     *
 	* http://www.phpgroupware.org                                              *
 	* --------------------------------------------                             *
@@ -38,22 +38,21 @@
 	$setup_info['email']['hooks'][] = 'add_def_prefs';
 	$setup_info['email']['hooks'][] = 'preferences';
 
-	/* Dependacies for this app to work */
+	/* Dependencies for this app to work */
 	$setup_info['email']['depends'][] = array(
-		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.13','0.9.14','0.9.15')
+		'appname' => 'phpgwapi',
+		'versions' => Array('0.9.13','0.9.14','0.9.15')
 	);
 
 	/*
 	$setup_info['email']['depends'][] = array(
-		 'appname' => 'admin',
-		 'versions' => Array('0.9.13','0.9.14','0.9.15')
+		'appname' => 'admin',
+		'versions' => Array('0.9.13','0.9.14','0.9.15')
 	);
 
 	$setup_info['email']['depends'][] = array(
-		 'appname' => 'preferences',
-		 'versions' => Array('0.9.13','0.9.14','0.9.15')
+		'appname' => 'preferences',
+		'versions' => Array('0.9.13','0.9.14','0.9.15')
 	);
 	*/
-	
 ?>
