@@ -56,7 +56,7 @@
 
 	if (isset($_GET['del'])) {
 		$del = (int)$_GET['del'];
-		db_lock($tbl.'cat WRITE, '.$tbl.'forum WRITE, '.$tbl.'fc_view WRITE');
+		db_lock($tbl.'cat WRITE, '.$tbl.'cat c WRITE, '.$tbl.'forum WRITE, '.$tbl.'forum f WRITE, '.$tbl.'fc_view WRITE');
 		q_singleval('DELETE FROM '.$tbl.'cat WHERE id='.$del);
 		if (db_affected()) {
 			q('UPDATE '.$tbl.'forum SET cat_id=0 WHERE cat_id='.$del);
