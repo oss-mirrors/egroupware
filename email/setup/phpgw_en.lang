@@ -42,3 +42,9 @@ undisclosed recipients	email	en	Undisclosed Recipients
 undisclosed sender	email	en	Undisclosed Sender
 use custom settings	email	en	Use custom settings
 x messages have been deleted	email	en	%1 messages have been deleted
+you have 1 new message!	common	en	You have 1 new message!
+you have messages!	common	en	You have messages!
+you have no new messages	common	en	You have no new messages!
+you have x new messages!	common	en	You have %1 new messages!
+your message has been sent	common	en	Your message has been sent!
+
