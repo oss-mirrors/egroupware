@@ -180,7 +180,6 @@
 	
 			if ($oldassigned != $lstAssignedto)
 			{
-				// I would like to add something like !*!<epoch>!*! then that could be replaced with the users date/time preferences
 				$txtAssignTo = "<br /><b>".lang("Ticket assigned to x",$lstAssignedto)."</b>";
 			}
 

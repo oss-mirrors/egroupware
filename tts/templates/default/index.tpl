@@ -1,7 +1,7 @@
 <!-- $Id$ -->
 <!-- BEGIN index.tpl -->
 
-<META HTTP-EQUIV="Refresh" CONTENT="60; URL={tts_search_link}">
+{autorefresh}
 
 <!-- BEGIN tts_title -->
 <center>{tts_appname}</center><p />

@@ -75,6 +75,16 @@
 				$phpgw->preferences->delete('tts','prioritydefault');
 			}
 
+ 			if ($refreshinterval)
+			{
+				$phpgw->preferences->delete('tts','refreshinterval');
+				$phpgw->preferences->add('tts','refreshinterval',$refreshinterval);
+			}
+			else
+			{
+				$phpgw->preferences->delete('tts','refreshinterval');
+			}
+
 			$phpgw->preferences->save_repository(True);
 			Header('Location: ' . $phpgw->link('/preferences/index.php'));
 		}
@@ -113,6 +123,11 @@
 	if ($phpgw_info['user']['preferences']['tts']['assigntodefault']) { $account_selected[$phpgw_info['user']['preferences']['tts']['assigntodefault']]=" selected"; };
 	if ($phpgw_info['user']['preferences']['tts']['prioritydefault']) { $priority_selected[$phpgw_info['user']['preferences']['tts']['prioritydefault']]=" selected"; };
 
+	if ($phpgw_info['user']['preferences']['tts']['refreshinterval']) {
+		$t->set_var(refreshinterval,$phpgw_info['user']['preferences']['tts']['refreshinterval']);
+	} else {
+		$t->set_var(refreshinterval,"");
+	}
 
 	$groups = CreateObject('phpgwapi.accounts');
 	$group_list = $groups->get_list('groups');
@@ -154,6 +169,7 @@
 	    $t->parse('tts_priorityoptions','tts_select_options',true);
 	}
 
+	$t->set_var(lang_refreshinterval,lang('Refresh every (seconds)'));
 	$t->set_var(lang_ttsprefs,lang('tts preferences'));
 	$t->set_var(lang_defaultgroup,lang('Default group'));
 	$t->set_var(lang_defaultassignto,lang('Default assign to'));

@@ -12,8 +12,9 @@
   /* $Id$ */
 
  
-	$phpgw_info["flags"]["enable_nextmatchs_class"] = True;
 	$phpgw_info["flags"]["currentapp"] = "tts";
+	$phpgw_info["flags"]["enable_contacts_class"] = True;
+	$phpgw_info["flags"]["enable_nextmatchs_class"] = True;
 	include("../header.inc.php");
 
 
@@ -47,6 +48,13 @@
 	if ($filter == "viewopen") 
 	{
 		$filtermethod = "where t_timestamp_closed='0'";
+
+		$phpgw->preferences->read_repository();
+		if ($phpgw_info['user']['preferences']['tts']['refreshinterval']) {
+			$p->set_var(autorefresh,'<META HTTP-EQUIV="Refresh" CONTENT="'.$phpgw_info['user']['preferences']['tts']['refreshinterval'].'; URL='.$phpgw->link("/tts/index.php").'">');
+	    	} else {
+			$p->set_var(autorefresh,"");
+		}
 	}
 	if ($filter == "search") 
 	{

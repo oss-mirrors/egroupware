@@ -36,6 +36,12 @@
        </select>
      </td>
     </tr>
+    <tr bgcolor="EEEEEE">
+     <td>{lang_refreshinterval}</td>
+     <td>
+        <input name="refreshinterval" value="{refreshinterval}" size="60"></input>
+     </td>
+    </tr>
     <tr colspan="2" >
      <td colspan="5" align="center">
       <input type="submit" name="submit" value="{lang_submit}">
