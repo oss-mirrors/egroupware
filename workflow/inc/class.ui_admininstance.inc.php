@@ -43,12 +43,15 @@
 				$this->instance_manager->set_instance_owner($iid, $instance_owner);
 
 				// user reasignment
-				foreach (array_keys($_POST['acts']) as $act)
+				if(count($_POST['acts']) != 0)
 				{
-					$this->instance_manager->set_instance_user($iid, $act , $POST['acts'][$act]);
-				}
+				  foreach (array_keys($_POST['acts']) as $act)
+				  {
+					$this->instance_manager->set_instance_user($iid, $act , $_POST['acts'][$act]);
+				  }
+				}  
 
-				if (isset($_POST['sendto']))
+				if ($_POST['sendto'])
 				{
 					$this->instance_manager->set_instance_destination($iid, $_POST['sendto']);
 				}
@@ -124,21 +127,22 @@
 		{
 			$this->t->set_block('admin_instance', 'block_instance_acts_table_users', 'instance_acts_table_users');
 			$users = $GLOBALS['phpgw']->accounts->get_list('accounts');
-			foreach ($users as $user)
-			{
-				$this->t->set_var(array(
-					'inst_act_usr_value'	=> $user['account_id'],
-					'inst_act_usr_selected'	=> ($user['account_id'] == $activity['user'])? 'selected="selected"' : '',
-					'inst_act_usr_name'		=> $user['account_firstname'] . ' ' . $user['account_lastname'],
-				));
-				$this->t->parse('instance_acts_table_users', 'block_instance_acts_table_users', true);
-			}
-
+			
 			if ($instance_acts)
 			{
 				$this->t->set_block('admin_instance', 'block_instance_acts_table', 'instance_acts_table');
 				foreach ($instance_acts as $activity)
 				{
+				        foreach ($users as $user)
+				        {
+				                $this->t->set_var(array(
+							'inst_act_usr_value'	=> $user['account_id'],
+							'inst_act_usr_selected'	=> ($user['account_id'] == $activity['user'])? 'selected="selected"' : '',
+							'inst_act_usr_name'		=> $user['account_firstname'] . ' ' . $user['account_lastname'],
+						 ));
+						$this->t->parse('instance_acts_table_users', 'block_instance_acts_table_users', true);
+					}
+
 					if ($activity['isInteractive'] == 'y')
 					{
 						$this->t->set_var('inst_act_run', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.run_activity.go&activityId='. $activity['activityId']) .'&iid='. $iid. '"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'next') .'" alt="'. lang('run') .'" title="'. lang('run') .'" /></a>');
