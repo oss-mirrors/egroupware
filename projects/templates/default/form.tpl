@@ -63,10 +63,14 @@
           <td>{lang_billable_activities}:</td>
           <td><select name="bill_activities[]" multiple>{bill_activities_list}</select></td>
          </tr>
+         <tr>
+          <td>{lang_access}:</td>
+          <td>{access}</td>
+         </tr>
          </table>
-         
-         <!-- BEGIN add -->
-         
+
+<!-- BEGIN add -->
+
          <table width="75%" border="0" cellspacing="1" cellpadding="3">
          <tr valign="bottom">
           <td height="62"><input type="submit" name="submit" value="{lang_add}"></td>
@@ -76,10 +80,10 @@
          </form>
          </center>
          
-        <!-- END add -->
+<!-- END add -->
         
-        <!-- BEGIN edit -->
-         
+<!-- BEGIN edit -->
+
          <table width="75%" border="0" cellspacing="1" cellpadding="3">
          <tr valign="bottom">
           <td height="62"><input type="submit" name="submit" value="{lang_edit}">
@@ -93,6 +97,4 @@
          </table>
 	</center>
 
-        <!-- END edit -->
-
-
+<!-- END edit -->

@@ -66,7 +66,7 @@
 
 	    if ($query) { $querymethod = " AND (title like '%$query%' OR num like '%$query%' OR descr like '%$query%') "; }
 
-    	    $sql = "SELECT p.id,p.num,p.entry_date,p.start_date,p.end_date,p.coordinator,p.customer,p.status, "
+    	    $sql = "SELECT p.id,p.num,p.access,p.category,p.entry_date,p.start_date,p.end_date,p.coordinator,p.customer,p.status, "
                             . "p.descr,p.title,p.budget,a.account_lid,a.account_firstname,a.account_lastname FROM "
                             . "phpgw_p_projects AS p,phpgw_accounts AS a WHERE a.account_id=p.coordinator $querymethod AND $filtermethod "
                             . "$ordermethod";

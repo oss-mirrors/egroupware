@@ -52,12 +52,16 @@
     if ((!$ba_activities) && (!$bill_activities)) { $error[$errorcount++] = lang('Please choose activityies for that project first !'); }
 
     if (! $error) {
+    
+    if ($access) { $access = 'private'; }
+    else { $access = 'public'; }
+
     $owner = $phpgw_info["user"]["account_id"];
     $descr = addslashes($descr);
     $title = addslashes($title);
 
-    $phpgw->db->query("insert into phpgw_p_projects (owner,entry_date,start_date,end_date,coordinator,customer,status,descr,title,budget,num) "
-                   . "values ('$owner','" . time() ."','$sdate','$edate',"
+    $phpgw->db->query("insert into phpgw_p_projects (owner,access,category,entry_date,start_date,end_date,coordinator,customer,status,"
+		    . "descr,title,budget,num) values ('$owner','$access','$category','" . time() ."','$sdate','$edate',"
                    . "'$coordinator','$abid','$status','$descr','$title','$budget','$num')");
 
     $db2->query("SELECT max(id) AS max FROM phpgw_p_projects");
@@ -183,6 +187,9 @@
     $t->set_var('name',$name);
     $t->set_var('lang_bookable_activities',lang('Bookable activities'));
     $t->set_var('lang_billable_activities',lang('Billable activities'));
+    $t->set_var('lang_access',lang('Private'));
+    if ($access) { $t->set_var('access', '<input type="checkbox" name="access" value="True" checked>'); }
+    else { $t->set_var('access', '<input type="checkbox" name="access" value="True"'); }
 
     if (!$submit) {
 // activities bookable     

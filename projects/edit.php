@@ -60,7 +60,10 @@
     $descr = addslashes($descr);
     $title = addslashes($title);
 
-    $phpgw->db->query("update phpgw_p_projects set entry_date='" . time() . "', start_date='"
+    if ($access) { $access = 'private'; }
+    else { $access = 'public'; }
+
+    $phpgw->db->query("update phpgw_p_projects set access='$access', category='$category', entry_date='" . time() . "', start_date='"
 		    . "$sdate', end_date='$edate', coordinator='$coordinator', "
 		    . "customer='$abid', status='$status', descr='$descr', title='$title', "
 		    . "budget='$budget', num='$num' where id='$id'");
@@ -166,7 +169,11 @@
 
     $t->set_var('end_date_select',$phpgw->common->dateformatorder($sm->getYears('eyear',$eyear),$sm->getMonthText('emonth',$emonth),$sm->getDays('eday',$eday)));
 
-     $t->set_var('lang_coordinator',lang('Coordinator'));
+    $t->set_var('lang_access',lang('Private'));
+    if ($phpgw->db->f('access')=='private') { $t->set_var('access', '<input type="checkbox" name="access" value="True" checked>'); }
+    else { $t->set_var('access', '<input type="checkbox" name="access" value="True">'); }
+
+    $t->set_var('lang_coordinator',lang('Coordinator'));
      
 /*     $db2->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
                      . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
