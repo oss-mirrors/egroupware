@@ -9,7 +9,7 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  /* $Id$ */
+  /* $Id $ */
 
 	if ($submit)
 	{
@@ -18,180 +18,134 @@
 
 	$phpgw_info["flags"]["currentapp"] = "tts";
 	include("../header.inc.php");
-	function group_list($db,$currgroup)
-	{
-		$groups = CreateObject('phpgwapi.accounts');
-		$group_list = $groups->get_list('groups');
-		while (list($key,$entry) = each($group_list))
-		{
-			$tag="";
-			if ($entry['account_lid'] == "$currgroup") { $tag = "selected"; }
-			echo "<option value=\"" . $entry['account_lid'] . "\" $tag>" . $entry['account_lid'] . "</option>\n";
-		}
-	}
+	
 
-	function groupusers_list($db,$curruser)
-	{
-		$accounts = CreateObject('phpgwapi.accounts',$group_id);
-		$account_list = $accounts->get_list('accounts');
-		echo "<option value=none>none</option>";
-		while (list($key,$entry) = each($account_list))
-		{
-			$tag="";
-			if ($entry['account_lid'] == "$curruser") { $tag = "selected"; }
-			echo "<option value=\"" . $entry['account_lid'] . "\" $tag>" . $entry['account_lid'] . "</option>\n";
-		}
-	}
 
 	if (! $submit)
 	{
+
+
 		// select the ticket that you selected
 		$phpgw->db->query("select t_id,t_category,t_detail,t_priority,t_user,t_assignedto,"
-			. "t_timestamp_opened, t_timestamp_closed, t_subject from ticket where t_id='$ticketid'");
+			. "t_timestamp_opened, t_timestamp_closed, t_subject, t_watchers from ticket where t_id='$ticketid'");
 		$phpgw->db->next_record();
 
 		$lstAssignedto=$phpgw->db->f("t_assignedto");
 		$lstCategory=$phpgw->db->f("t_category");
 
-		// Print the table
-?>
-<form method="POST" action="<?php echo $phpgw->link("/tts/viewticket_details.php"); ?>">
- <input type=hidden value="<?php echo $phpgw->db->f("t_id"); ?>" name="t_id">
- <input type=hidden value="<?php echo $phpgw->db->f("t_user"); ?>" name="lstAssignedfrom">
-  <div align=center>
-   <center>
-    <table border=0 width="80%" bgcolor="<?php echo $phpgw_info["theme"][th_bg]; ?>" cellspacing=0>
-     <tr>
-       <td width=33%>&nbsp;</td>
-       <td width=33%>&nbsp;</td>
-       <td width=33%>&nbsp;</td>
-     </tr>
-     <tr>
-       <td colspan=3 align=center><font size=+2><?php echo lang("View Job Detail"); ?></font></td>
-     </tr>
-     <tr>
-       <td colspan=3 align=center><hr noshade></td>
-     </tr>
-     <tr>
-       <td align=center>
-         <font size=3>ID: <b><?php echo $phpgw->db->f("t_id"); ?></b>
-       </td>
-       <td align=center>
-         <?php echo lang("Assigned from"); ?>: <br><b><?php echo $phpgw->db->f("t_user");?></b>
-       </td>
-       <td align=center>
-         <?php echo lang("Open Date"); ?>: <br><b><?php echo $phpgw->common->show_date($phpgw->db->f("t_timestamp_opened")); ?></b>
-         <br>
-         <?php echo lang("Close Date"); ?>: <br><b><?php
-                        if ($phpgw->db->f("t_timestamp_closed") > 0) {
-                          echo $phpgw->common->show_date($phpgw->db->f("t_timestamp_closed"));
-                        } else {
-                          echo lang("in progress");
-                        }
-                      ?></b>
-       </td>
+		// mark as read.
+		$temp_watchers=explode(":",$phpgw->db->f("t_watchers"));
+		if (!(in_array( $phpgw_info["user"]["userid"], $temp_watchers))) {
+	    	    $temp_watchers[]=$phpgw_info["user"]["userid"];
+	    	    $t_watchers=implode(":",$temp_watchers);
+	    	    // var_dump($t_watchers);
+	    	    $phpgw->db->query("UPDATE ticket set t_watchers='".$t_watchers."' where t_id=$ticketid");
+		} 
 
-     </tr>
-     <tr>
-       <td colspan=3 align=center><hr noshade></td>
-     </tr>
-     <tr>
-       <td align=center>
-         <?php
+
+		// Print the table
+		$p = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+		//  echo PHPGW_APP_TPL;
+		$p->set_file(array(
+		    'viewticket'   => 'viewticket_details.tpl'
+    		));
+	
+		$p->set_block('viewticket', 'tts_select_options','tts_select_options');
+	
+		$p->set_unknowns('remove');
+
+
+                if ($phpgw->db->f("t_timestamp_closed") > 0) {
+		    $p->set_var('tts_t_status', $phpgw->common->show_date($phpgw->db->f("t_timestamp_closed")));
+                } else {
+		    $p->set_var('tts_t_status', lang("in progress"));
+                }
+	
 		// Choose the correct priority to display
 		$prority_selected[$phpgw->db->f("t_priority")] = " selected";
-         ?>
-         <b><?php echo lang("Priority"); ?>:</b>
-         <select name="optPriority">
-           <option value="1"<?php echo $prority_selected[1]; ?>>1 - Lowest</option>
-           <option value="2"<?php echo $prority_selected[2]; ?>>2</option>
-           <option value="3"<?php echo $prority_selected[3]; ?>>3</option>
-           <option value="4"<?php echo $prority_selected[4]; ?>>4</option>
-           <option value="5"<?php echo $prority_selected[5]; ?>>5 - Medium</option>
-           <option value="6"<?php echo $prority_selected[6]; ?>>6</option>
-           <option value="7"<?php echo $prority_selected[7]; ?>>7</option>
-           <option value="8"<?php echo $prority_selected[8]; ?>>8</option>
-           <option value="9"<?php echo $prority_selected[9]; ?>>9</option>
-           <option value="10"<?php echo $prority_selected[10]; ?>>10 - Highest</option>
-         </select>
+		$priority_comment[1]=lang("Lowest"); 
+		$priority_comment[5]=lang("Medium"); 
+		$priority_comment[10]=lang("Highest"); 
 
-       </td>
-       <td align=center>
-         <b><?php echo lang("Group"); ?>:</b>
-         <select size="1" name="lstCategory">
-           <?php group_list($phpgw->db,$lstCategory); ?>
-         </select>
-       </td>
-       <td align=center>
-         <b><?php echo lang("Assigned to"); ?>:</b>
-         <select size="1" name="lstAssignedto">
-           <?php groupusers_list($phpgw->db,$lstAssignedto); ?>
-         </select>
-       </td>
-     </tr>
-<?php
-		$details_string = nl2br(stripslashes($phpgw->db->f("t_detail")));
-		if (empty($details_string))
-		{
-			echo "   <input type=hidden value=\"" . $phpgw->strip_html($details_string) . "\" name=\"prevtxtdetail\">"
-				."   <tr>\n"
-				."     <td colspan=3 align=center>\n"
-				."       <textarea rows=\"12\" name=\"txtDetail\" cols=\"70\" wrap=physical></textarea>\n"
-				."     </td>\n";
+        	for ($i=1; $i<=10; $i++) {
+		    $p->set_var('tts_optionname', $i." ". $priority_comment[$i]);
+		    $p->set_var('tts_optionvalue', $i);
+		    $p->set_var('tts_optionselected', $prority_selected[$i]);
+		    $p->parse('tts_priority_options','tts_select_options',true);
 		}
-		else
+		
+		// assigned to
+		$accounts = CreateObject('phpgwapi.accounts',$group_id);
+		$account_list = $accounts->get_list('accounts');
+		$p->set_var('tts_optionname', lang("none"));
+		$p->set_var('tts_optionvalue', "none");
+		$p->set_var('tts_optionselected', "");
+		$p->parse('tts_assignedto_options','tts_select_options',true);
+		while (list($key,$entry) = each($account_list))
 		{
-			echo "   <input type=hidden value=\"" . $phpgw->strip_html($details_string) . "\" name=\"prevtxtdetail\">"
-				."   <tr><td colspan=3 align=left><br><b>".lang("Subject").":</b> " . stripslashes($phpgw->db->f("t_subject")) . "<br><br>"
-				."   <tr><td colspan=3 align=left><B>".lang("Details").":</B><BR> " . stripslashes($details_string) . " </td></tr>\n"
-				."   <tr><td colspan=3 align=left><BR><BR>".lang("Additional notes").":<BR></td></tr>\n"
-				."   <tr>\n"
-				."      <td colspan=3 align=center>\n"
-				."        <textarea rows=\"12\" name=\"txtAdditional\" cols=\"70\" wrap=physical></textarea>\n"
-				."      </td>\n";
+		    $tag="";
+		    if ($entry['account_lid'] == "$lstAssignedto") { $tag = "selected"; }
+		    $p->set_var('tts_optionname', $entry['account_lid']);
+		    $p->set_var('tts_optionvalue', $entry['account_lid']);
+		    $p->set_var('tts_optionselected', $tag);
+		    $p->parse('tts_assignedto_options','tts_select_options',true);
 		}
-?>
-     <tr>
-       <td colspan=3 align=center><hr noshade></td>
-     </tr>
-     <tr>
-       <td align=center>
-<?php
-		# change buttons from update/close to close/reopen if ticket is already closed
+		
+		// group
+		$groups = CreateObject('phpgwapi.accounts');
+		$group_list = $groups->get_list('groups');
+		while (list($key,$entry) = each($group_list))
+		{
+		    $tag="";
+		    if ($entry['account_lid'] == "$lstCategory") { $tag = "selected"; }
+		    $p->set_var('tts_optionname', $entry['account_lid']);
+		    $p->set_var('tts_optionvalue', $entry['account_lid']);
+		    $p->set_var('tts_optionselected', $tag);
+		    $p->parse('tts_group_options','tts_select_options',true);
+		}
+	    
+	        $details_string = stripslashes($phpgw->db->f("t_detail"));
+
+		$p->set_var('tts_viewticketdetails_link', $phpgw->link("/tts/viewticket_details.php"));
+		$p->set_var('tts_t_id', $phpgw->db->f("t_id"));
+		$p->set_var('tts_t_user', $phpgw->db->f("t_user"));
+		$p->set_var('tts_th_bg', $phpgw_info["theme"][th_bg]);
+		$p->set_var('tts_lang_viewjobdetails', lang("View Job Detail"));
+		$p->set_var('tts_lang_assignedfrom', lang("Assigned from"));
+		$p->set_var('tts_lang_opendate', lang("Open Date"));
+		$p->set_var('tts_t_status', $phpgw->common->show_date($phpgw->db->f("t_timestamp_opened")));
+		$p->set_var('tts_lang_closedate', lang("Close Date"));
+		$p->set_var('tts_lang_priority', lang("Priority"));
+		$p->set_var('tts_lang_group', lang("Group"));
+		$p->set_var('tts_lang_assignedto', lang("Assigned to"));
+		$p->set_var('tts_hidden_detailstring', $phpgw->strip_html($details_string));
+		$p->set_var('tts_lang_subject', lang("Subject"));
+		$p->set_var('tts_lang_details', lang("Details"));
+		$p->set_var('tts_t_subject', stripslashes($phpgw->db->f("t_subject")));
+		$p->set_var('tts_detailstring', stripslashes($details_string));
+		$p->set_var('tts_lang_additionalnotes', lang("Additional notes"));
+	        $p->set_var('tts_lang_ok', lang("OK"));
+
+		// change buttons from update/close to close/reopen if ticket is already closed
 		if ($phpgw->db->f(7) > 0)
 		{
-			echo "<input type=radio value='letclosed' name='optUpdateclose' checked>".lang("Closed")."
-       </td>
-       <td align=center>
-         <input type=submit value='".lang("OK")."' name='submit'>
-       </td>
-       <td align=center>
-         <input type=radio value='reopen' name='optUpdateclose'>".lang("ReOpen")."
-       </td>
-    ";
+		        $p->set_var('tts_leftradio', lang("Closed"));
+		        $p->set_var('tts_rightradio', lang("ReOpen"));
+		        $p->set_var('tts_leftradiovalue', "letclosed");
+		        $p->set_var('tts_rightradiovalue', "reopen");
 		}
 		else
 		{
-			echo "<input type=radio value='update' name='optUpdateclose' checked>".lang("Update")."
-       </td>
-       <td align=center>
-         <input type=submit value='".lang("OK")."' name='submit'>
-       </td>
-       <td align=center>
-         <input type=radio value='close' name='optUpdateclose'>".lang("Close")."
-       </td>
-    ";
+		        $p->set_var('tts_leftradio', lang("Update"));
+		        $p->set_var('tts_rightradio', lang("Close"));
+		        $p->set_var('tts_leftradiovalue', "update");
+		        $p->set_var('tts_rightradiovalue', "close");
 		}
-?>
-       </td>
-     </tr>
-     <tr>
-       <td colspan=3>&nbsp;</td>
-     </tr>
-   </table>
+		
+		$p->set_var('tts_select_options',"");
+	
+		$p->pfp('out','viewticket');
 
-</form>
-<?php
 		$phpgw->common->phpgw_footer();
 	}
 	else
@@ -223,7 +177,7 @@
 				$txtDetail .= "<b>".lang("Ticket reopened")."</b><br>\n";
 			}
 
-			if (! empty($txtAdditional)) { $txtDetail .= $txtAdditional; }
+			if (! empty($txtAdditional)) { $txtDetail .= nl2br($txtAdditional); }
 
 			if ( $optUpdateclose == "close" )
 			{
@@ -244,17 +198,14 @@
 				// I would like to add something like !*!<epoch>!*! then that could be replaced with the users date/time preferences
 				$txtDetail .= "<br>" . $phpgw_info["user"]["loginid"] . date("m/d/Y h:m:s a") . " - " . addslashes(lang("Ticket assigned to x",$lstAssignedto));
 			}
-			$phpgw->db->query("UPDATE ticket set t_category='$lstCategory',t_detail='".addslashes($txtDetail)."',t_priority='$optPriority',t_user='$lstAssignedfrom',t_assignedto='$lstAssignedto' WHERE t_id=$t_id");
+			$phpgw->db->query("UPDATE ticket set t_category='$lstCategory',t_detail='".addslashes($txtDetail)."',t_priority='$optPriority',t_user='$lstAssignedfrom',t_assignedto='$lstAssignedto',t_watchers='".$phpgw_info["user"]["userid"]."' WHERE t_id=$t_id");
 
 			if ( $optUpdateclose == "close" )
 			{
 				$phpgw->db->query("UPDATE ticket set t_timestamp_closed='" . time() . "' WHERE t_id=$t_id");
 			}
 
-			if($phpgw_info['server']['tts_mailticket'])
-			{
-				mail_ticket($phpgw->db->f("t_id"));
-			}
+			mail_ticket($t_id);
 		}
 		Header("Location: " . $phpgw->link("/tts/index.php"));
 	}

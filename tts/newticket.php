@@ -9,7 +9,7 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  /* $Id$ */
+  /* $Id $ */
   
 	if ($submit)
 	{
@@ -21,105 +21,65 @@
 	include("../header.inc.php");
 	if (! $submit)
 	{
-     ?>
-      <form method=POST action="<?php echo $phpgw->link("/tts/newticket.php"); ?>">
 
-       <div align="center">
-       <center>
-       <table bgcolor="<?php echo $theme["th_bg"]; ?>" cellpadding="3" border="1" width="600">
-        <tr>
-         <td width="100%" valign="center" align="center">
-          <font color="<?php echo $theme["th_text"]; ?>">
-           <b><?php echo lang("Add new ticket"); ?></b>
-          </font>
-         </td>
-       </tr>
-       <tr>
-        <td width="100%" align="left">
-        <table cellspacing="0" cellpadding="5" border="0" width="100%">
-         <tr>
-<!--          <td width="15%" valign=middle align=right><font size=3>ID:</font></td> -->
-          <td width="75%" valign="middle"></td>
-           </tr> 
+	$p = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+	//  echo PHPGW_APP_TPL;
+	$p->set_file(array(
+		'newticket'   => 'newticket.tpl'
+    	));
+	
+	$p->set_block('newticket', 'tts_new_lstassignto','tts_new_lstassignto');
+	$p->set_block('newticket', 'tts_new_lstcategory','tts_new_lstcategory');
+	
+	$p->set_unknowns('remove');
+	$p->set_var('tts_newticket_link', $phpgw->link("/tts/newticket.php"));
+        $p->set_var('tts_bgcolor',$theme["th_bg"] );
+        $p->set_var('tts_textcolor', $theme["th_text"] );
+        $p->set_var('tts_lang_addnewticket', lang("Add new ticket"));
+        $p->set_var('tts_lang_group', lang("Group"));
+        $p->set_var('tts_lang_subject', lang("Subject") );
+        $p->set_var('tts_lang_nosubject', lang("No subject"));
+        $p->set_var('tts_lang_details', lang("Detail"));
+        $p->set_var('tts_lang_priority', lang("Priority"));
+        $p->set_var('tts_lang_lowest', lang("Lowest"));
+        $p->set_var('tts_lang_medium', lang("Medium"));
+        $p->set_var('tts_lang_highest', lang("Highest"));
+        $p->set_var('tts_lang_addticket', lang("Add Ticket"));
+        $p->set_var('tts_lang_clearform', lang("Clear Form"));
 
-           <tr>
-            <td width="15%" valign="middle" align="right"><b><?php echo lang("Group"); ?>:</b> </td>
-            <td width="75%" valign="middle">
-              <select size="1" name="lstCategory">
-<?php
 		$groups = CreateObject('phpgwapi.accounts');
 		$group_list = $groups->get_list('groups');
 		while (list($key,$entry) = each($group_list))
 		{
-			echo "<option value= " . $entry['account_lid'] . ">" . $entry['account_lid'] . "</option>\n";
+    		    $p->set_var('tts_account_lid', $entry['account_lid']);
+    		    $p->set_var('tts_account_name', $entry['account_lid']);
+		    $p->parse('tts_new_lstcategories','tts_new_lstcategory',true);
 		}
-?>
-              </select>
-            </td>
-           </tr>
-<tr>
-            <td width="15%" valign="middle" align="right"><b><?php echo lang("assign to"); ?>:</b> </td>
-            <td width="75%" valign="middle">
-              <select size="1" name="assignto">
-<?php
+            
+        $p->set_var('tts_lang_assignto', lang("assign to"));
+
 		$accounts = CreateObject('phpgwapi.accounts',$group_id);
 		$account_list = $accounts->get_list('accounts');
-		echo "<option value=none SELECTED>none</option>\n";
+
+		$p->set_var('tts_account_lid', "0" );
+		$p->set_var('tts_account_name', lang("none"));
+		$p->set_var('tts_assignedtoselected', "selected");
+		$p->parse('tts_new_lstassigntos','tts_new_lstassignto',false);
+		
 		while (list($key,$entry) = each($account_list))
 		{
 			if ($entry['account_lid'])
 			{
-		    	echo "<option value= " . $entry['account_lid'] . ">" . $entry['account_lid'] . "</option>\n";
+    			$p->set_var('tts_account_lid', $entry['account_lid']);
+    			$p->set_var('tts_account_name', $entry['account_lid']);
 			}
+			$p->parse('tts_new_lstassigntos','tts_new_lstassignto',true);
 		}
-?>
-              </select>
-            </td>
-           </tr>
-           <tr>
-             <td width="15%" valign="middle" align="right"><b><?php echo lang("Subject"); ?>:</b></td>
-             <td width="75%" valign="middle">
-               <input type=text size=50 maxlength=80 name="subject"
-                value="<?php echo lang("No subject"); ?>">
-             </td>
-           </tr>
-           <tr>
-            <td width="15%" valign="top" align="right"><b><?php echo lang("Detail"); ?>:</b> </td>
-            <td width="75%"><textarea rows="10" name="txtAdditional" cols="65" wrap="virtual"></textarea></td>
-           </tr>
-           <tr>
-            <td width="15%" valign="middle" align="right"><b><?php echo lang("Priority"); ?>:</b> </td>
-            <td width="75%" valign="middle">
-             <table border="0" width="100%" cellspacing="0" cellpadding="0">
-              <tr>
-               <td width="25%">
-                <select name="optPriority">
-                 <option value="1">1 - Lowest</option>
-                 <option value="2">2</option>
-                 <option value="3">3</option>
-                 <option value="4">4</option>
-                 <option value="5" selected>5 - Medium</option>
-                 <option value="6">6</option>
-                 <option value="7">7</option>
-                 <option value="8">8</option>
-                 <option value="9">9</option>
-                 <option value="10">10 - Highest</option>
-                </select>
-               </td>
-              </tr>
-             </table>
-            </td>
-           </tr>
-         </table>
-        <p align="center"><center><input type="submit" value="<?php echo lang("Add Ticket"); ?>" name="submit">
-         <input type="reset" value="<?php echo lang("Clear Form"); ?>"></center></td>
-       </tr>
-      </table>
-     </center>
-   </div>
-  </form>
-<?php
-		$phpgw->common->phpgw_footer();
+
+	
+	$p->pparse('out', 'newticket');
+	
+	$phpgw->common->phpgw_footer();
 	}
 	else
 	{
