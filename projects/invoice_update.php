@@ -88,22 +88,22 @@
 
     $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
 
-    $t->set_var(currency,$currency);
-    $t->set_var(sort_activity,lang('Activity'));
-    $t->set_var(sort_hours_descr,lang('Job'));
-    $t->set_var(sort_status,lang('Status'));
-    $t->set_var(sort_end_date,lang('Date due'));
-    $t->set_var(sort_aes,lang('Workunits'));
-    $t->set_var(sort_billperae,lang('Bill per workunit'));
-    $t->set_var(sort_sum,lang('Sum'));
-    $t->set_var(h_lang_select,lang('Select'));
-    $t->set_var(h_lang_edithour,lang('Edit hours'));
-    $t->set_var(lang_invoice,lang('Update invoice'));
-    $t->set_var(actionurl,$phpgw->link('/projects/invoice_update.php'));
-    $t->set_var(lang_print_invoice,lang('Print invoice'));
+    $t->set_var('currency',$currency);
+    $t->set_var('sort_activity',lang('Activity'));
+    $t->set_var('sort_hours_descr',lang('Job'));
+    $t->set_var('sort_status',lang('Status'));
+    $t->set_var('sort_start_date',lang('Work date'));
+    $t->set_var('sort_aes',lang('Workunits'));
+    $t->set_var('sort_billperae',lang('Bill per workunit'));
+    $t->set_var('sort_sum',lang('Sum'));
+    $t->set_var('h_lang_select',lang('Select'));
+    $t->set_var('h_lang_edithour',lang('Edit hours'));
+    $t->set_var('lang_invoice',lang('Update invoice'));
+    $t->set_var('actionurl',$phpgw->link('/projects/invoice_update.php'));
+    $t->set_var('lang_print_invoice',lang('Print invoice'));
   
-    if (!$invoice_id) { $t->set_var(print_invoice,$phpgw->link("/projects/fail.php")); }
-    else { $t->set_var(print_invoice,$phpgw->link("/projects/bill_invoiceshow.php","invoice_id=$invoice_id")); }
+    if (!$invoice_id) { $t->set_var('print_invoice',$phpgw->link('/projects/fail.php')); }
+    else { $t->set_var('print_invoice',$phpgw->link('/projects/bill_invoiceshow.php',"invoice_id=$invoice_id")); }
 
 // ------------------------ end header declaration ------------------------------------
 
@@ -123,10 +123,10 @@
         }
     else { $t->set_var('customer',lang('You have no customer selected !')); }
 
-    $t->set_var(title_project,lang('Title'));
-    $t->set_var(title_customer,lang('Customer'));
+    $t->set_var('title_project',lang('Title'));
+    $t->set_var('title_customer',lang('Customer'));
   
-    $t->set_var(title_invoice_num,lang("Invoice ID"));
+    $t->set_var('title_invoice_num',lang('Invoice ID'));
     $t->set_var('invoice_num',$invoice_num);  
 
     $t->set_var('lang_choose','');
@@ -137,7 +137,7 @@
     $phpgw->db->next_record();
     $date=$phpgw->db->f("date");    
     $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,"
-		    . "phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
+		    . "phpgw_p_hours.start_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
 		    . "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id $join phpgw_p_invoicepos "
 		    . "ON phpgw_p_invoicepos.hours_id=phpgw_p_hours.id WHERE phpgw_p_hours.status='billed' AND "
 		    . "phpgw_p_hours.project_id='$project_id' AND phpgw_p_invoicepos.invoice_id='$invoice_id' $ordermethod");
@@ -173,17 +173,15 @@
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
 
-    $end_date = $phpgw->db->f("end_date");
-    if ($end_date == 0) { $end_dateout = "&nbsp;"; } 
+    $start_date = $phpgw->db->f("start_date");
+    if ($start_date == 0) { $start_dateout = "&nbsp;"; } 
     else {
       $month = $phpgw->common->show_date(time(),"n");
       $day   = $phpgw->common->show_date(time(),"d");
       $year  = $phpgw->common->show_date(time(),"Y");
 
-      $end_date = $end_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-      $end_dateout =  $phpgw->common->show_date($end_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
-        if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout = "<font color=\"CC0000\"><b>" . $end_dateout . "</b></font>"; }
-        if (mktime(2,0,0,$month,$day,$year) == $end_date) { $end_dateout = "<b>" . $end_dateout . "</b>"; }
+      $start_date = $start_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
+      $start_dateout =  $phpgw->common->show_date($start_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
     }
 
     if ($phpgw->db->f("minperae") != 0) {
@@ -198,7 +196,7 @@
 		      'activity' => $activity,
                       'hours_descr' => $hours_descr,
                       'status' => $status,
-    		      'end_date' => $end_dateout,
+    		      'start_date' => $start_dateout,
       		      'aes' => $aes,
       		      'billperae' => $phpgw->db->f("billperae"),
       		      'sum' => sprintf ("%01.2f", (float)$phpgw->db->f("billperae")*$aes)));
@@ -210,15 +208,15 @@
 
 // ------------------------ end record declaration ------------------------
     }
-    $t->set_var(sum_sum,sprintf("%01.2f",$summe));
-    $t->set_var(sum_aes,$sumaes);
-    $t->set_var(title_netto,lang("net"));
+    $t->set_var('sum_sum',sprintf("%01.2f",$summe));
+    $t->set_var('sum_aes',$sumaes);
+    $t->set_var('title_netto',lang('net'));
 
 // ----------------------------- na_list ------------------------------------
 
     if($invoice_id) {
 	$phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,"
-			. "phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
+			. "phpgw_p_hours.start_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
 			. "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id $join phpgw_p_projectactivities "
 			. "ON phpgw_p_hours.activity_id=phpgw_p_projectactivities.activity_id WHERE phpgw_p_hours.status='done' AND "
 			. "phpgw_p_hours.project_id='$project_id' AND phpgw_p_projectactivities.project_id='$project_id' "
@@ -229,7 +227,7 @@
     $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\">";
 
     $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                                   
-    if (! $activity)  $activity  = "&nbsp;";
+    if (! $activity)  $activity  = '&nbsp;';
 
     $hours_descr = $phpgw->strip_html($phpgw->db->f("hours_descr"));
     if (! $hours_descr)  $hours_descr  = '&nbsp;';
@@ -237,19 +235,17 @@
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
 
-    $end_date = $phpgw->db->f("end_date");  
+    $start_date = $phpgw->db->f("start_date");  
 
-    if ($end_date == 0) { $end_dateout = "&nbsp;"; }
-      else {
-        $month = $phpgw->common->show_date(time(),"n");
+    if ($start_date == 0) { $start_dateout = "&nbsp;"; }
+    else {
+	$month = $phpgw->common->show_date(time(),"n");
         $day   = $phpgw->common->show_date(time(),"d");
         $year  = $phpgw->common->show_date(time(),"Y");
   
-        $end_date = $end_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-	$end_dateout =  $phpgw->common->show_date($end_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
-        if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout = "<font color=\"CC0000\"><b>" . $end_dateout . "</b></font>"; }
-        if (mktime(2,0,0,$month,$day,$year) == $end_date) { $end_dateout = "<b>" . $end_dateout . "</b>"; }
-           }
+        $start_date = $start_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
+	$start_dateout =  $phpgw->common->show_date($start_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
+    }
 
     if ($phpgw->db->f("minperae") != 0) {
     $aes = ceil($phpgw->db->f("minutes")/$phpgw->db->f("minperae"));
@@ -263,7 +259,7 @@
   		        'activity' => $activity,
                         'hours_descr' => $hours_descr,
                         'status' => $status,
-      		        'end_date' => $end_dateout,
+      		        'start_date' => $start_dateout,
         		'aes' => $aes,
         		'billperae' => $phpgw->db->f("billperae"),
         		'sum' => sprintf ("%01.2f", (float)$phpgw->db->f("billperae")*$aes)));

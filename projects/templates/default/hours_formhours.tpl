@@ -50,19 +50,21 @@
          <tr>
           <td>{lang_start_time}:</td>
           <td>
-           <input type="text" name="st_hours" value="{st_hours}" size=3 maxlength=2>
-           <input type="text" name="st_minutes" value="{st_minutes}" size=3 maxlength=2>
+           <input type="text" name="shour" value="{shour}" size=3 maxlength=2>
+           <input type="text" name="smin" value="{smin}" size=3 maxlength=2>
+	&nbsp;{sradio}
 	</td>
          </tr>
          <tr>
           <td>{lang_end_time}:</td>
           <td>
-           <input type="text" name="et_hours" value="{et_hours}" size=3 maxlength=2>
-           <input type="text" name="et_minutes" value="{et_minutes}" size=3 maxlength=2>
+           <input type="text" name="ehour" value="{ehour}" size=3 maxlength=2>
+           <input type="text" name="emin" value="{emin}" size=3 maxlength=2>
+	&nbsp;{eradio}
 	    </td>
          </tr>
          <tr>
-          <td>{lang_time}:</td>
+          <td>{lang_hours}:</td>
           <td>
            <input type="text" name="hours" value="{hours}" size=3 maxlength=2>
            <input type="text" name="minutes" value="{minutes}" size=3 maxlength=2>

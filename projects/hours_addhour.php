@@ -28,17 +28,23 @@
                 . "<input type=\"hidden\" name=\"id\" value=\"$id\">\n";
 
     if ($submit) {
-      
     $errorcount = 0;
 
-    if (checkdate($smonth,$sday,$syear)) { $sdate = mktime(2,0,0,$smonth,$sday,$syear); } 
-    else {
-       if ($smonth && $sday && $syear) { $error[$errorcount++] = lang('You have entered an invalid start date !') . " : " . "$smonth - $sday - $syear"; }
+    if ($shour && ($shour != 0)) {
+	if ($sampm=="pm") { $shour = $shour + 12; }
+    }
+    if ($ehour && ($ehour != 0)) {
+	if ($eampm=="pm") { $ehour = $ehour + 12; }
     }
 
-    if (checkdate($emonth,$eday,$eyear)) { $edate = mktime(2,0,0,$emonth,$eday,$eyear); } 
+    if (checkdate($smonth,$sday,$syear)) { $sdate = mktime($shour,$smin,0,$smonth,$sday,$syear); } 
     else {
-       if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang('You have entered an invalid end date !') . " : " . "$emonth - $eday - $eyear"; }
+       if ($shour && $smin && $smonth && $sday && $syear) { $error[$errorcount++] = lang('You have entered an invalid start date !') . " : " . "$shour - $smin - $smonth - $sday - $syear"; }
+    }
+
+    if (checkdate($emonth,$eday,$eyear)) { $edate = mktime($ehour,$emin,0,$emonth,$eday,$eyear); } 
+    else {
+       if ($ehour && $emin && $emonth && $eday && $eyear) { $error[$errorcount++] = lang('You have entered an invalid end date !') . " : " . "$ehour - $emin - $emonth - $eday - $eyear"; }
     }
 
     $phpgw->db->query("SELECT minperae,billperae,remarkreq FROM phpgw_p_activities WHERE id ='$activity'");
@@ -62,7 +68,7 @@
     }
 
     if ($errorcount) { $t->set_var('message',$phpgw->common->error_list($error)); }
-    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Hours has been added !')); }
+    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Job has been added !')); }
     if ((! $submit) && (! $error) && (! $errorcount)) { $t->set_var('message',''); }
 
     if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {
@@ -82,7 +88,7 @@
     $t->set_var('lang_project',lang('Project'));
     $t->set_var('lang_descr',lang('Short description'));
     $t->set_var('lang_remark',lang('Remark'));
-    $t->set_var('lang_time',lang('Time'));
+    $t->set_var('lang_hours',lang('Hours'));
     $t->set_var('lang_status',lang('Status'));
     $t->set_var('lang_employee',lang('Employee'));
     $t->set_var('lang_work_date',lang('Work date'));
@@ -123,43 +129,75 @@
            $activity_list .= "<option value=\"" . $phpgw->db->f("activity_id") . "\">"
                     . $phpgw->strip_html($phpgw->db->f("descr")) . "</option>";
         }
-
     $t->set_var('activity_list',$activity_list);
     }
 
     $sm = CreateObject('phpgwapi.sbox');
+    $amsel = ' checked'; $pmsel = '';
+
+/*    $tz_offset = ((60 * 60) * intval($phpgw_info['user']['preferences']['common']['tz_offset']));
+    if ($phpgw_info['user']['preferences']['common']['timeformat'] == '12') { $hourformat = 'h'; }
+    else { $hourformat = 'H'; } */
 
     if (!$sdate) {
         $smonth = date('m',time());
         $sday = date('d',time()); 
         $syear = date('Y',time());
+        $shour = date('H',time());
+        $smin = date('i',time());
         }
     else {
         $smonth = date('m',$sdate);
         $sday = date('d',$sdate);
         $syear = date('Y',$sdate);
+        $shour = date('H',$sdate);
+        $smin = date('i',$sdate);
         }
 
     $t->set_var('start_date_select',$phpgw->common->dateformatorder($sm->getYears('syear',$syear),$sm->getMonthText('smonth',$smonth),$sm->getDays('sday',$sday)));
+    if ($phpgw_info['user']['preferences']['common']['timeformat'] == '12') {
+    if ($shour >= 12) { 
+    $amsel = ''; $pmsel = ' checked'; 
+    $shour = $shour - 12;
+    }
+    $sradio = '<input type="radio" name="sampm" value="am"'.$amsel.'>am';
+    $sradio .= '<input type="radio" name="sampm" value="pm"'.$pmsel.'>pm';
+    $t->set_var('sradio',$sradio);
+    }
+    else { $t->set_var('sradio',''); }
+
+    $t->set_var('shour',$shour);
+    $t->set_var('smin',$smin);
 
     if (!$edate) {
         $emonth = 0;
         $eday = 0;
         $eyear = 0;
+	$ehour = '';
+	$emin = '';
         }
     else {
         $emonth = date('m',$edate);
         $emonth = date('m',$edate);
         $eyear = date('Y',$edate);
+        $ehour = date('H',$edate);
+        $emin = date('i',$edate);
         }
 
     $t->set_var('end_date_select',$phpgw->common->dateformatorder($sm->getYears('eyear',$eyear),$sm->getMonthText('emonth',$emonth),$sm->getDays('eday',$eday)));
+    if ($phpgw_info['user']['preferences']['common']['timeformat'] == '12') {
+    if ($ehour >= 12) { 
+    $amsel = ''; $pmsel = ' checked'; 
+    $ehour = $ehour - 12;
+    }
+    $eradio = '<input type="radio" name="eampm" value="am"'.$amsel.'>am';
+    $eradio .= '<input type="radio" name="eampm" value="pm"'.$pmsel.'>pm';
+    $t->set_var('eradio',$eradio);
+    }
+    else { $t->set_var('eradio',''); }
 
-    $t->set_var('st_hours','');
-    $t->set_var('st_minutes','');
-
-    $t->set_var('et_hours','');
-    $t->set_var('et_minutes','');
+    $t->set_var('ehour',$ehour);
+    $t->set_var('emin',$emin);
 
     $t->set_var('remark',$remark);
     $t->set_var('hours_descr',$hours_descr);

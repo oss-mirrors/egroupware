@@ -75,9 +75,10 @@
     $t->set_var('sort_activity',$phpgw->nextmatchs->show_sort_order($sort,'phpgw_p_activities.descr',$order,'/projects/hours_listhours.php',lang('Activity')));
     $t->set_var('sort_hours_descr',$phpgw->nextmatchs->show_sort_order($sort,'phpgw_p_hours.hours_descr',$order,'/projects/hours_listhours.php',lang('Job')));
     $t->set_var('sort_status',$phpgw->nextmatchs->show_sort_order($sort,'status',$order,'/projects/hours_listhours.php',lang("Status")));
-    $t->set_var('sort_start_date',$phpgw->nextmatchs->show_sort_order($sort,'start_date',$order,'/projects/hours_listhours.php',lang('Start date')));
-    $t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,'end_date',$order,'/projects/hours_listhours.php',lang('Date due')));
-    $t->set_var('sort_minutes',$phpgw->nextmatchs->show_sort_order($sort,'minutes',$order,'/projects/hours_listhours.php',lang('Time')));
+    $t->set_var('sort_start_date',$phpgw->nextmatchs->show_sort_order($sort,'start_date',$order,'/projects/hours_listhours.php',lang('Work date')));
+    $t->set_var('sort_start_time',$phpgw->nextmatchs->show_sort_order($sort,'start_date',$order,'/projects/hours_listhours.php',lang('Start time')));
+    $t->set_var('sort_end_time',$phpgw->nextmatchs->show_sort_order($sort,'end_date',$order,'/projects/hours_listhours.php',lang('End time')));
+    $t->set_var('sort_hours',$phpgw->nextmatchs->show_sort_order($sort,'minutes',$order,'/projects/hours_listhours.php',lang('Hours')));
     $t->set_var('h_lang_edit',lang('Edit'));
     $t->set_var('h_lang_view',lang('View'));
     $t->set_var('lang_action',lang('Job list'));
@@ -118,30 +119,35 @@
     $statusout = lang($status);
     $t->set_var(tr_color,$tr_color);
 
+    $ampm = 'am';
+
     $start_date = $phpgw->db->f("start_date");
-    if ($start_date == 0)
-             $start_dateout = "&nbsp;";
+    if ($start_date == 0) {
+        $start_dateout = '&nbsp;';
+	$start_time = '&nbsp;';
+    }
     else {
-	$month = $phpgw->common->show_date(time(),"n");
-	$day   = $phpgw->common->show_date(time(),"d");
-	$year  = $phpgw->common->show_date(time(),"Y");
+	$smonth = $phpgw->common->show_date(time(),"n");
+	$sday   = $phpgw->common->show_date(time(),"d");
+	$syear  = $phpgw->common->show_date(time(),"Y");
+        $shour  = date('H',$start_date);
+	$smin  = date('i',$start_date);
 
 	$start_date = $start_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-	$start_dateout =  $phpgw->common->show_date($start_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
+	$start_dateout = $phpgw->common->show_date($start_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
+	$start_timeout = $phpgw->common->formattime($shour,$smin);
     }
 
     $end_date = $phpgw->db->f("end_date");
-    if ($end_date == 0)
-             $end_dateout = "&nbsp;";
+    if ($end_date == 0) { $end_timeout = '&nbsp;'; }
     else {
-	$month = $phpgw->common->show_date(time(),"n");
-	$day   = $phpgw->common->show_date(time(),"d");
-	$year  = $phpgw->common->show_date(time(),"Y");
+	$emonth = $phpgw->common->show_date(time(),"n");
+	$eday   = $phpgw->common->show_date(time(),"d");
+	$eyear  = $phpgw->common->show_date(time(),"Y");
+        $ehour  = date('H',$end_date);
+        $emin  = date('i',$end_date);
 
-	$end_date = $end_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-	$end_dateout =  $phpgw->common->show_date($end_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
-        if (mktime(2,0,0,$month,$day,$year) == $end_date) { $end_dateout = "<b>" . $end_dateout . "</b>"; }
-        if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout = "<font color=\"CC0000\"><b>" . $end_dateout . "</b></font>"; }
+	$end_timeout =  $phpgw->common->formattime($ehour,$emin);
     }
     
     $minutes = floor($phpgw->db->f("minutes")/60).":"
@@ -155,7 +161,8 @@
                       'hours_descr' => $hours_descr,
                       'status' => $statusout,
       		      'start_date' => $start_dateout,
-			'end_date' => $end_dateout,
+			'start_time' => $start_timeout,
+			'end_time' => $end_timeout,
       		      'minutes' => $minutes));
 
     if ($status != "billed") {

@@ -34,7 +34,7 @@
       <td width="20%" bgcolor="{th_bg}" align=center>{sort_activity}</td>
       <td width="20%" bgcolor="{th_bg}" align=center>{sort_hours_descr}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_status}</td>
-      <td width="10%" bgcolor="{th_bg}" align=center>{sort_end_date}</td>
+      <td width="10%" bgcolor="{th_bg}" align=center>{sort_start_date}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_aes}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{currency}&nbsp;{sort_billperae}</td>
       <td width="7%" bgcolor="{th_bg}" align=center>{currency}&nbsp;{sort_sum}</td>
@@ -46,7 +46,7 @@
         <td>{activity}</td>
         <td>{hours_descr}</td>
         <td align=center>{status}</td>
-        <td align=center>{end_date}</td>
+        <td align=center>{start_date}</td>
         <td align=right>{aes}</td>
         <td align=right>{billperae}</td>
         <td align=right>{sum}</td>

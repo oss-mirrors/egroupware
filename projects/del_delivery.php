@@ -86,7 +86,7 @@
     $t->set_var('sort_activity',lang('Activity'));
     $t->set_var('sort_hours_descr',lang('Job'));
     $t->set_var('sort_status',lang('Status'));
-    $t->set_var('sort_start_date',lang('Date'));
+    $t->set_var('sort_start_date',lang('Work date'));
     $t->set_var('sort_aes',lang('Workunits'));
     $t->set_var('h_lang_select',lang('Select'));
     $t->set_var('h_lang_edithour',lang('Edit hours'));

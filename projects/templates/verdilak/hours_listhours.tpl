@@ -15,7 +15,7 @@
     </form></td>
     </tr>
     <tr>
-    <td colspan="7">
+    <td colspan="9">
     <table border="0" width="100%">
     <tr>
     {left}
@@ -34,8 +34,9 @@
       <td width="20%" bgcolor="{th_bg}" align=center>{sort_hours_descr}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_status}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_start_date}</td>
-      <td width="10%" bgcolor="{th_bg}" align=center>{sort_end_date}</td>
-      <td width="5%" bgcolor="{th_bg}" align=center>{sort_minutes}</td>
+      <td width="10%" bgcolor="{th_bg}" align=center>{sort_start_time}</td>
+      <td width="10%" bgcolor="{th_bg}" align=center>{sort_end_time}</td>
+      <td width="5%" bgcolor="{th_bg}" align=center>{sort_hours}</td>
       <td width="5%" align=center>{h_lang_view}</td>
       <td width="5%" align=center>{h_lang_edit}</td>
     </tr>
@@ -47,7 +48,8 @@
         <td>{hours_descr}</td>
         <td align=center>{status}</td>
         <td align=center>{start_date}</td>
-        <td align=center>{end_date}</td>
+        <td align=center>{start_time}</td>
+        <td align=center>{end_time}</td>
         <td align=right>{minutes}</td>
         <td align=center><a href="{view}">{lang_view}</a></td>
         <td align=center><a href="{edit}">{lang_edit}</a></td>
