@@ -447,7 +447,7 @@
 			if ($pro_parent)
 			{
 				$this->t->set_var('pro_parent',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('pro',$pro_parent)));
-				$this->t->set_var('lang_pro_parent',lang('Parent project'));
+				$this->t->set_var('lang_pro_parent',lang('Main project:'));
 			}
 
 			$this->t->set_var('activity_list',$this->boprojects->select_hours_activities($project_id, $values['activity_id']));
@@ -681,7 +681,7 @@
 			if ($values['pro_parent'] != 0)
 			{
 				$this->t->set_var('pro_parent',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('pro',$values['pro_parent'])));
-				$this->t->set_var('lang_pro_parent',lang('Parent project'));
+				$this->t->set_var('lang_pro_parent',lang('Main project:'));
 			}
 
 			$this->t->set_var('project_name',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('pro',$values['project_id'])));
@@ -766,7 +766,7 @@
 			if ($values['pro_parent'] != 0)
 			{
 				$this->t->set_var('pro_parent',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('pro',$values['pro_parent'])));
-				$this->t->set_var('lang_pro_parent',lang('Parent project'));
+				$this->t->set_var('lang_pro_parent',lang('Main project:'));
 			}
 
 			$this->t->set_var('activity',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('act',$values['activity_id'])));

@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000, 2001 Bettina Gille                            *
+	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -31,11 +31,8 @@
 
 		function sobilling()
 		{
-			$this->db		= $GLOBALS['phpgw']->db;
-			$this->db2		= $this->db;
-			$this->grants	= $GLOBALS['phpgw']->acl->get_grants('projects');
-			$this->account	= $GLOBALS['phpgw_info']['user']['account_id'];
-			$this->currency = $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
+			$this->db			= $GLOBALS['phpgw']->db;
+			$this->db2			= $this->db;
 		}
 
 		function return_join()
@@ -48,116 +45,6 @@
 				case 'mysql':	$join = " LEFT JOIN "; break;
 			}
 			return $join;
-		}
-
-		function read_projects($start, $limit = True, $query = '', $filter = '', $sort = '', $order = '', $status = '', $cat_id = '', $type = 'mains', $pro_parent = '')
-		{
-			if ($status)
-			{
-				$statussort = " AND status = '" . $status . "' ";
-			}
-			else
-			{
-				$statussort = " AND status != 'archive' ";
-			}
-
-			if (!$sort)
-			{
-				$sort = "ASC";
-			}
-
-			if ($order)
-			{
-				$ordermethod = "order by $order $sort";
-			}
-			else
-			{
-				$ordermethod = "order by start_date asc";
-			}
-
-			if (! $filter)
-			{
-				$filter = 'none';
-			}
-
-			if ($filter == 'none')
-			{
-				$filtermethod = " ( coordinator=" . $this->account;
-				if (is_array($this->grants))
-				{
-					$grants = $this->grants;
-					while (list($user) = each($grants))
-					{
-						$public_user_list[] = $user;
-					}
-					reset($public_user_list);
-					$filtermethod .= " OR (access='public' AND coordinator in(" . implode(',',$public_user_list) . ")))";
-				}
-				else
-				{
-					$filtermethod .= ' )';
-				}
-			}
-			elseif ($filter == 'yours')
-			{
-				$filtermethod = " coordinator='" . $this->account . "'";
-			}
-			else
-			{
-				$filtermethod = " coordinator='" . $this->account . "' AND access='private'";
-			}
-
-			if ($cat_id)
-			{
-				$filtermethod .= " AND category='$cat_id' ";
-			}
-
-			switch($type)
-			{
-				case 'mains':	$filtermethod .= " AND parent = '0' "; break;
-				case 'subs' :	$filtermethod .= " AND parent = '$pro_parent' AND parent != '0' "; break;
-				case 'amains':	$filtermethod .= " AND parent = '0' "; break;
-				case 'asubs':	$filtermethod .= " AND parent = '$pro_parent' AND parent != '0' "; break;
-			}
-
-			if ($query)
-			{
-				$querymethod = " AND (title like '%$query%' OR num like '%$query%' OR descr like '%$query%') ";
-			}
-
-			$sql = "SELECT * from phpgw_p_projects WHERE $filtermethod $statussort $querymethod";
-
-			$this->db2->query($sql,__LINE__,__FILE__);
-			$this->total_records = $this->db2->num_rows();
-
-			if ($limit)
-			{
-				$this->db->limit_query($sql . $ordermethod,$start,__LINE__,__FILE__);
-			}
-			else
-			{
-				$this->db->query($sql . $ordermethod,__LINE__,__FILE__);
-			}
-
-			$i = 0;
-			while ($this->db->next_record())
-			{
-				$projects[$i]['project_id']		= $this->db->f('id');
-				$projects[$i]['parent']			= $this->db->f('parent');
-				$projects[$i]['number']			= $this->db->f('num');
-				$projects[$i]['access']			= $this->db->f('access');
-				$projects[$i]['cat']			= $this->db->f('category');
-				$projects[$i]['sdate']			= $this->db->f('start_date');
-				$projects[$i]['edate']			= $this->db->f('end_date');
-				$projects[$i]['coordinator']	= $this->db->f('coordinator');
-				$projects[$i]['customer']		= $this->db->f('customer');
-				$projects[$i]['status']			= $this->db->f('status');
-				$projects[$i]['descr']			= $this->db->f('descr');
-				$projects[$i]['title']			= $this->db->f('title');
-				$projects[$i]['budget']			= $this->db->f('budget');
-				$i++;
-			}
-			return $projects;
 		}
 
 		function read_invoices($start, $query = '', $sort = '', $order = '', $limit = True, $project_id = '')

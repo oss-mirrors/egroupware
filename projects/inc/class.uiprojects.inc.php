@@ -322,10 +322,19 @@
 				));
 
 				$link_data['project_id'] = $pro[$i]['project_id'];
+				$link_data['menuaction'] = 'projects.uiprojects.edit_project';
 
-				if ($this->boprojects->check_perms($this->grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $this->account)
+				if ($this->boprojects->isprojectadmin() && $pro[$i]['access'] != 'private')
 				{
-					$link_data['menuaction'] = 'projects.uiprojects.edit_project';
+					$showedit = True;
+				}
+				else if ($this->boprojects->check_perms($this->grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $this->account)
+				{
+					$showedit = True;
+				}
+
+				if ($showedit)
+				{
 					$this->t->set_var('edit',$GLOBALS['phpgw']->link('/index.php',$link_data));
 					$this->t->set_var('lang_edit_entry',lang('Edit'));
 				}
@@ -360,6 +369,7 @@
 // --------------- template declaration for Add Form --------------------------
 
 			$link_data['menuaction'] = 'projects.uiprojects.add_project';
+
 			if ($action == 'mains')
 			{
 				if ($this->cat_id && $this->cat_id != 0)
@@ -367,25 +377,13 @@
 					$cat = $this->cats->return_single($this->cat_id);
 				}
 
-				$link_data['action']		= 'mains';
-				$link_data['pro_parent']	= '';
-
 				if ($cat[0]['app_name'] == 'phpgw' || !$this->cat_id)
 				{
-					$this->t->set_var('add','<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data)
-										. '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
+					$showadd = True;
 				}
-				else
+				else if ($this->boprojects->check_perms($this->grants[$cat[0]['owner']],PHPGW_ACL_ADD) || $cat[0]['owner'] == $this->account)
 				{
-					if ($this->boprojects->check_perms($this->grants[$cat[0]['owner']],PHPGW_ACL_ADD) || $cat[0]['owner'] == $this->account)
-					{
-						$this->t->set_var('add','<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data)
-											. '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
-					}
-					else
-					{
-						$this->t->set_var('add','');
-					}
+					$showadd = True;
 				}
 			}
 			else
@@ -393,17 +391,22 @@
 				if ($pro_parent && $pro_parent != 0)
 				{
 					$pro = $this->boprojects->read_single_project($pro_parent);
-				}
 
-				if ($this->boprojects->check_perms($this->grants[$pro['owner']],PHPGW_ACL_ADD) || $pro['owner'] == $this->account)
-				{
-					$this->t->set_var('add','<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data)
-											. '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
+					if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
+					{
+						$showadd = True;
+					}
 				}
-				else
-				{
-					$this->t->set_var('add','');
-				}	
+			}
+
+			if ($showadd)
+			{
+				$this->t->set_var('add','<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data)
+											. '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
+			}
+			else
+			{
+				$this->t->set_var('add','');
 			}
 
 // ----------------------- end Add form declaration ----------------------------

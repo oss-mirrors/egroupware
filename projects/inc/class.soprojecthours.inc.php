@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000, 2001 Bettina Gille                            *
+	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -38,16 +38,6 @@
 
 		function read_hours($start, $limit = True, $query = '', $filter, $sort = '', $order = '', $state, $project_id)
 		{
-
-/*			if ($phpgw_info['server']['db_type']=='pgsql')
-			{
-				$join = " JOIN ";
-			}
-			else
-			{
-				$join = " LEFT JOIN ";
-			} */
-
 			if ($order)
 			{
 				$ordermethod = " order by $order $sort";
@@ -143,36 +133,6 @@
 							. $values['remark'] . "',minutes='" . $values['ae_minutes'] . "',status='" . $values['status'] . "',minperae='"
 							. $values['minperae'] . "',billperae='" . $values['billperae'] . "',employee='" . $values['employee']
 							. "' where id='" . $values['hours_id'] . "'",__LINE__,__FILE__);
-		}
-
-		function return_value($item)
-		{
-			$this->db->query("select num from phpgw_p_projects where id='$item'",__LINE__,__FILE__);
-			if ($this->db->next_record())
-			{
-				$thing = $this->db->f('num');
-			}
-			return $thing;
-		}
-
-		function exists($num, $project_id = '')
-		{
-			if ($project_id && ($project_id != 0))
-			{
-				$editexists = " and id != '$project_id'";
-			}
-
-			$this->db->query("select count(*) from phpgw_p_projects where num = '$num' $editexists",__LINE__,__FILE__);
-			$this->db->next_record();
-
-			if ($this->db->f(0))
-			{
-				return True;
-			}
-			else
-			{
-				return False;
-			}
 		}
 
 		function delete_hours($hours_id)

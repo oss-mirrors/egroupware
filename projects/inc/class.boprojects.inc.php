@@ -300,32 +300,8 @@
 
 		function isprojectadmin()
 		{
-			$admin_groups = $GLOBALS['phpgw']->accounts->membership($GLOBALS['phpgw_info']['user']['account_id']);
-			$admins = $this->soprojects->return_admins();
-
-			for ($i=0;$i<count($admins);$i++)
-			{
-				if ($admins[$i]['type']=='aa')
-				{
-					if ($admins[$i]['account_id'] == $GLOBALS['phpgw_info']['user']['account_id'])
-					return True;
-				}
-				elseif ($admins[$i]['type']=='ag')
-				{
-					if (is_array($admin_groups))
-					{
-						for ($j=0;$j<count($admin_groups);$j++)
-						{
-							if ($admin_groups[$j]['account_id'] == $admins[$i]['account_id'])
-							return True;
-						}
-					}
-				}
-				else
-				{
-					return False;
-				}
-			}
+			$admin = $this->soprojects->isprojectadmin();
+			return $admin;
 		}
 
 		function list_projects($start, $limit, $query, $filter, $sort, $order, $status, $cat_id, $type, $pro_parent)

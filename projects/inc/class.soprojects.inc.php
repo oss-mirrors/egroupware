@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000, 2001 Bettina Gille                            *
+	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -82,20 +82,27 @@
 
 			if ($filter == 'none')
 			{
-				$filtermethod = " ( coordinator=" . $this->account;
-				if (is_array($this->grants))
+				if ($this->isprojectadmin())
 				{
-					$grants = $this->grants;
-					while (list($user) = each($grants))
-					{
-						$public_user_list[] = $user;
-					}
-					reset($public_user_list);
-					$filtermethod .= " OR (access='public' AND coordinator in(" . implode(',',$public_user_list) . ")))";
+					$filtermethod = " access != 'private'";
 				}
 				else
 				{
-					$filtermethod .= ' )';
+					$filtermethod = " ( coordinator=" . $this->account;
+					if (is_array($this->grants))
+					{
+						$grants = $this->grants;
+						while (list($user) = each($grants))
+						{
+							$public_user_list[] = $user;
+						}
+						reset($public_user_list);
+						$filtermethod .= " OR (access='public' AND coordinator in(" . implode(',',$public_user_list) . ")))";
+					}
+					else
+					{
+						$filtermethod .= ' )';
+					}
 				}
 			}
 			elseif ($filter == 'yours')
@@ -239,29 +246,26 @@
 
 			$this->db->unlock();
 
-	//		if ($action == 'mains')
-	//		{
-				if ($p_id && ($p_id != 0))
+			if ($p_id && ($p_id != 0))
+			{
+				if (count($book_activities) != 0)
 				{
-					if (count($book_activities) != 0)
+					while($activ=each($book_activities))
 					{
-						while($activ=each($book_activities))
-						{
-							$this->db->query("insert into phpgw_p_projectactivities (project_id,activity_id,billable) values ('$p_id','"
+						$this->db->query("insert into phpgw_p_projectactivities (project_id,activity_id,billable) values ('$p_id','"
 										. $activ[1] . "','N')",__LINE__,__FILE__);
-						}
-					}
-
-					if (count($bill_activities) != 0)
-					{
-						while($activ=each($bill_activities))
-						{
-							$this->db->query("insert into phpgw_p_projectactivities (project_id,activity_id,billable) values ('$p_id','"
-										. $activ[1] . "','Y')",__LINE__,__FILE__);
-						}
 					}
 				}
-//			}
+
+				if (count($bill_activities) != 0)
+				{
+					while($activ=each($bill_activities))
+					{
+						$this->db->query("insert into phpgw_p_projectactivities (project_id,activity_id,billable) values ('$p_id','"
+										. $activ[1] . "','Y')",__LINE__,__FILE__);
+					}
+				}
+			}
 		}
 
 		function edit_project($values, $book_activities, $bill_activities)
@@ -493,6 +497,36 @@
 										'type' => $this->db->f('type'));
 			}
 			return $admins;
+		}
+
+		function isprojectadmin()
+		{
+			$admin_groups = $GLOBALS['phpgw']->accounts->membership($this->account);
+			$admins = $this->return_admins();
+
+			for ($i=0;$i<count($admins);$i++)
+			{
+				if ($admins[$i]['type']=='aa')
+				{
+					if ($admins[$i]['account_id'] == $this->account)
+					return True;
+				}
+				elseif ($admins[$i]['type']=='ag')
+				{
+					if (is_array($admin_groups))
+					{
+						for ($j=0;$j<count($admin_groups);$j++)
+						{
+							if ($admin_groups[$j]['account_id'] == $admins[$i]['account_id'])
+							return True;
+						}
+					}
+				}
+				else
+				{
+					return False;
+				}
+			}
 		}
 
 		function edit_admins($users = '', $groups = '')

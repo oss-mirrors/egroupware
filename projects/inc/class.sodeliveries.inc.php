@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000, 2001 Bettina Gille                            *
+	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -30,8 +30,8 @@
 
 		function sodeliveries()
 		{
-			$this->db	= $GLOBALS['phpgw']->db;
-			$this->db2	= $this->db;
+			$this->db			= $GLOBALS['phpgw']->db;
+			$this->db2			= $this->db;
 		}
 
 		function return_join()
