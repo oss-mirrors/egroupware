@@ -28,10 +28,10 @@
 <table border="0" width="100%" cellpadding="2" cellspacing="2">
 	<tr bgcolor="{th_bg}">
 		<td width="8%" bgcolor="{th_bg}">{sort_number}</td>
-		<td width="20%" bgcolor="{th_bg}">{sort_action}</td>
 		<td width="20%" bgcolor="{th_bg}">{sort_title}</td>
 		<td width="20%" bgcolor="{th_bg}">{sort_coordinator}</td>
 		<td width="8%" bgcolor="{th_bg}" align="center">{sort_status}</td>
+        <td width="20%" bgcolor="{th_bg}">{sort_action}</td>
 		<td width="8%" bgcolor="{th_bg}" align="center">{sort_end_date}</td>
 		<td width="5%" bgcolor="{th_bg}" align="center">{lang_action}</td>
 		<td width="5%" bgcolor="{th_bg}" align="center">{lang_view}</td>
@@ -42,10 +42,10 @@
 
 	<tr bgcolor="{tr_color}">
 		<td>{number}</td>
-		<td>{td_action}</td>
 		<td>{title}</td>
 		<td>{coordinator}</td>
 		<td align="center">{status}</td>
+        <td>{td_action}</td>
 		<td align="center">{end_date}</td>
 		<td align="center"><a href="{action_entry}">{lang_action_entry}</a></td>
 		<td align="center"><a href="{view}">{lang_view_entry}</a></td>
