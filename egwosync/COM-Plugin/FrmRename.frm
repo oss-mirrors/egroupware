@@ -5,7 +5,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FrmRename
    ClientLeft      =   45
    ClientTop       =   315
    ClientWidth     =   8175
-   OleObjectBlob   =   "FrmRename.frx":0000
+   OleObjectBlob   =   "FrmRename.dsx":0000
    StartUpPosition =   1  'CenterOwner
 End
 Attribute VB_Name = "FrmRename"
@@ -89,6 +89,8 @@ Private Sub cmdOK_Click()
 End Sub
 
 Private Sub UserForm_Activate()
+    Set myOriginalContactNames = Nothing
+    Set myNewContactNames = Nothing
     Set myOriginalContactNames = GrandParent.OriginalContactNames
     Set myNewContactNames = GrandParent.NewContactNames
     

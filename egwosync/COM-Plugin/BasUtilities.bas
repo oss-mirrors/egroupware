@@ -33,7 +33,7 @@ Public Sub GetContacts()
         
         INT_START = 1
         INT_LIMIT = 50
-        QUERY = "z"
+        QUERY = ""
         ORDER = "fn"
         SORT = "ASC"
         

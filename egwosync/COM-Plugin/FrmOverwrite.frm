@@ -5,7 +5,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FrmOverwrite
    ClientLeft      =   45
    ClientTop       =   315
    ClientWidth     =   3675
-   OleObjectBlob   =   "FrmOverwrite.frx":0000
+   OleObjectBlob   =   "FrmOverwrite.dsx":0000
    StartUpPosition =   1  'CenterOwner
 End
 Attribute VB_Name = "FrmOverwrite"
@@ -67,7 +67,7 @@ Private Sub cmdRename_Click()
     Me.Hide
     Set FrmRename.Parent = Me
     Set FrmRename.GrandParent = Me.Parent
-    FrmRename.Show
+    FrmRename.Show 1, Me
 End Sub
 
 Private Sub UserForm_Activate()

@@ -1,7 +1,7 @@
 Connect = 0, 0, 607, 457, , 211, 10, 1073, 725, C
 basDebugUtils = 0, 0, 0, 0, C
 BasGlobals = 21, 21, 628, 478, C
-BasUtilities = 60, 150, 667, 607, 
+BasUtilities = 60, 150, 667, 607, C
 CAutoExporter = 0, 0, 0, 0, C
 CContactTranslator = 0, 0, 0, 0, C
 CeGW = 147, 147, 754, 604, C
