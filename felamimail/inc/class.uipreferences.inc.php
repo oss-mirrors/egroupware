@@ -1,9 +1,9 @@
 <?php
 	/***************************************************************************\
-	* phpGroupWare - FeLaMiMail                                                 *
+	* eGroupWare - FeLaMiMail                                                   *
 	* http://www.linux-at-work.de                                               *
 	* http://www.phpgw.de                                                       *
-	* http://www.phpgroupware.org                                               *
+	* http://www.egroupware.org                                                 *
 	* Written by : Lars Kneschke [lkneschke@linux-at-work.de]                   *
 	* -------------------------------------------------                         *
 	* This program is free software; you can redistribute it and/or modify it   *

@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - FeLaMiMail                                              *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - FeLaMiMail                                                  *
+	* http://www.egroupware.org                                                *
 	* http://www.phpgw.de                                                      *
 	* http://www.linux-at-work.de                                              *
 	* Written by Lars Kneschke [lkneschke@linux-at-work.de]                    *

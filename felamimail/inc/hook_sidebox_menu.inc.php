@@ -1,8 +1,8 @@
 <?php
 {
 	/**************************************************************************\
-	* phpGroupWare - Calendar's Sidebox-Menu for idots-template                *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - Calendar's Sidebox-Menu for idots-template                  *
+	* http://www.egroupware.org                                                *
 	* Written by Pim Snel <pim@lingewoud.nl>                                   *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
