@@ -21,7 +21,7 @@ class fud_theme
 				$this->{$k} = $_POST['thm_'.$k];
 			}
 		}
-		$this->theme_opt = !empty($_POST['thm_enabled']) | !empty($_POST['thm_t_default']);
+		$this->theme_opt = !empty($_POST['thm_enabled']) | (!empty($_POST['thm_t_default']) ? 2 : 0);
 	}
 
 	function add()
