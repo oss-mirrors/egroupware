@@ -22,6 +22,8 @@
 
   if ($encoding == "base64") {
      echo $phpgw->msg->base64($phpgw->msg->fetchbody($mailbox, $msgnum, $part_no));
+  } elseif ($encoding == "qprint") {
+     echo $phpgw->msg->qprint($phpgw->msg->fetchbody($mailbox, $msgnum, $part_no));
   } else {
      echo $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no);
   }
