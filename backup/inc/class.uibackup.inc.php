@@ -204,7 +204,7 @@
 				{
 					for ($i=0;$i<count($archives);$i++)
 					{
-						$this->nextmatchs->template_alternate_row_color(&$GLOBALS['phpgw']->template);
+						$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 
 						$GLOBALS['phpgw']->template->set_var(array
 						(
