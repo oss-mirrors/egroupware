@@ -34,7 +34,7 @@ message_id in english	developer_tools	de	Text-Schlüssel in Englisch
 no file	developer_tools	de	keine Datei
 ok	developer_tools	de	Ok
 original	developer_tools	de	Orginal
-phrase in english (or empty if identical)	developer_tools	de	Text in Englisch (oder leer if identisch)
+phrase in english (or empty if identical)	developer_tools	de	Text in Englisch (oder leer wenn identisch)
 preferences	developer_tools	de	Einstellungen
 preferences have been updated	developer_tools	de	Einstellungen wurden geschrieben
 project	developer_tools	de	Projekt

@@ -274,6 +274,7 @@
 			{
 				$wr = True;
 			}
+			if (!$target) $this->src_apps = array();
 
 			$from = $GLOBALS['phpgw']->translation->charset($userlang);
 			$to = $GLOBALS['phpgw']->translation->system_charset;
@@ -293,7 +294,12 @@
 						//echo '<br>load_app(): adding phrase: $this->langarray["'.$message_id.'"]=' . trim($content);
 						$_mess_id = strtolower(trim($message_id));
 						$langarray[$_mess_id]['message_id'] = $_mess_id;
-						$langarray[$_mess_id]['app_name']   = trim($app_name);
+						$app_name   = trim($app_name);
+						$langarray[$_mess_id]['app_name']   = $app_name;
+						if (!$target)
+						{
+							$this->src_apps[$app_name] = $app_name;
+						}
 						$langarray[$_mess_id]['content']    =
 							$GLOBALS['phpgw']->translation->convert(trim($content),$from,$to);
 				   }
@@ -315,6 +321,9 @@
 			// stuff class array listing apps that are included already
 			$this->loaded_apps[$userlang]['filename']  = $fn;
 			$this->loaded_apps[$userlang]['writeable'] = $wr;
+
+			if (!$target) ksort($this->src_apps);
+
 			if($this->debug) { _debug_array($langarray); }
 			@ksort($langarray);
 			return $langarray;
