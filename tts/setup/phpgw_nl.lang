@@ -1,33 +1,165 @@
+a new ticket has been reported.	tts	nl	
+accept	tts	nl	
+accept the ticket into verification process.	tts	nl	
+accepted	tts	nl	
+action	tts	nl	
 add new ticket	tts	nl	Nieuwe melding toevoegen
 add ticket	tts	nl	Melding toevoegen
 additional notes	tts	nl	Aanvullende opmerkingen
+admin options	common	nl	
 assign to	tts	nl	Toewijzen aan
 assigned from	tts	nl	Toegewezen door
 assigned to	tts	nl	Toegewezen aan
+billable hours	tts	nl	
+billable hours changed	tts	nl	
+billable hours rate	tts	nl	
+billable rate	tts	nl	
+billable rate changed	tts	nl	
+category changed	tts	nl	
+check here to generate the state's id automatically or enter a particular id below.	tts	nl	
 clear form	tts	nl	Formulier wissen
 close	tts	nl	Sluiten
 close date	tts	nl	Datum sluiting
+close the invalid ticket.	tts	nl	
 closed	tts	nl	Gesloten
+completed	tts	nl	
+configure the states	tts	nl	
+configure the transitions	tts	nl	
+create new state	tts	nl	
+create new ticket	tts	nl	
+create new transition	tts	nl	
+creates a new ticket, returns ticket_id	tts	nl	
+creates a struct of tickets	tts	nl	
 date opened	tts	nl	Datum geopend
+default assign to	tts	nl	
+default group	tts	nl	
+default priority	tts	nl	
+delete the listed tickets.	tts	nl	
+deleting the state	tts	nl	
+deleting the transition	tts	nl	
 detail	tts	nl	Detail
 details	tts	nl	Details
+duplicate	tts	nl	
+edit the state	tts	nl	
+edit the transition	tts	nl	
+force	tts	nl	
+global categories	tts	nl	
 group	tts	nl	Groep
+group ownership changed	tts	nl	
+history	tts	nl	
+i worked on the ticket and the work requires validation.	tts	nl	
+i worked on the ticket, but did not finish.	tts	nl	
 in progress	tts	nl	In uitvoering
+initial state	tts	nl	
+invalid	tts	nl	
+invalidate	tts	nl	
+keep the present state [%1].	tts	nl	
+latest note added	tts	nl	
+list of available tickets' states.	tts	nl	
+list of available tickets' transitions.	tts	nl	
+missing description	tts	nl	
+morework	tts	nl	
+needswork	tts	nl	
+new	tts	nl	NIEUW
 new ticket	tts	nl	Nieuwe melding
+new tickets can be put into this state.	tts	nl	
+new value	tts	nl	
+no additional notes	tts	nl	
+no duplicate	tts	nl	
+no notes for this ticket	tts	nl	
+no states found	tts	nl	
 no subject	tts	nl	Geen onderwerp
 no tickets found	tts	nl	Geen meldingen gevonden
+no transitions found	tts	nl	
+not assigned	tts	nl	
+not completed	tts	nl	
 ok	tts	nl	OK
+old value	tts	nl	
+open	tts	nl	
+open / closed	tts	nl	
 open date	tts	nl	Datum opening
+opened	tts	nl	
 opened by	tts	nl	Geopend door
+original ticket details	tts	nl	
+perform irregular transition into the following state	tts	nl	
 prio	tts	nl	Prio
 priority	tts	nl	Prioriteit
+priority changed	tts	nl	
+put the preexistent ticket into the state %1.	tts	nl	
+re-assigned	tts	nl	
+re-opened	tts	nl	
+refresh every (seconds)	tts	nl	
 reopen	tts	nl	Heropenen
+reopened	tts	nl	
+resolve	tts	nl	
+resolved	tts	nl	
+returns a struct of a tickets history	tts	nl	
+returns a struct of values of a single ticket	tts	nl	
+returns the additional notes attached to a ticket	tts	nl	
+selected	tts	nl	
+show new/updated tickets on main screen	tts	nl	
+source state	tts	nl	
+state	tts	nl	
+state changed	tts	nl	
+state id	tts	nl	
+state name	tts	nl	
 status/date closed	tts	nl	Status/Datum sluiting
 subject	tts	nl	Onderwerp
+subject changed	tts	nl	
+target state	tts	nl	
+test	tts	nl	
+the closed ticket requires more work. reopen it.	tts	nl	
+the owner of the ticket was not able to confirm the issue.	tts	nl	
+the ticket has been accepted by the owner, who is about to work on it.	tts	nl	
+the ticket has been closed without resolution.	tts	nl	
+the ticket has been reopened for further work.	tts	nl	
+the ticket has been successfully resolved.	tts	nl	
+the ticket has been verified and has to be worked on.	tts	nl	
+the ticket has been worked on and the work requires validation.	tts	nl	
+the ticket has been worked on, but requires more work.	tts	nl	
+the ticket is a duplicate of another ticket and should be closed.	tts	nl	
+the ticket is essentially not a duplicate of another ticket. reopen it.	tts	nl	
+the ticket is invalid and cannot be worked on.	tts	nl	
+the ticket resolution was successfully validated. close the ticket.	tts	nl	
+the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	nl	
+the ticket was found a duplicate of another ticket.	tts	nl	
+the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	nl	
+the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	nl	
 ticket	tts	nl	Melding
-Ticket assigned to %1	tts	nl	Melding toegewezen aan %1
+ticket assigned to %1	tts	nl	Melding toegewezen aan %1
+ticket has been updated	tts	nl	
+tickets found %1	tts	nl	
+tickets open %1	tts	nl	
+tickets total %1	tts	nl	
+to go back to the tts index, click <a href= %1 >here</a>	tts	nl	
+toaccept	tts	nl	
+toclosed	tts	nl	
+toduplicate	tts	nl	
+toinvalid	tts	nl	
+toneedswork	tts	nl	
+tonew	tts	nl	
+toreopened	tts	nl	
+toresolved	tts	nl	
+total billable	tts	nl	
+totovalidate	tts	nl	
+tovalidate	tts	nl	
+toverified	tts	nl	
+transition	tts	nl	
+transition name	tts	nl	
 trouble ticket system	common	nl	Probleem Registratie Systeem
+tts	common	nl	Probleem Registratie Systeem
+tts preferences	tts	nl	Probleem Registratie Systeem - Voorkeuren
+undefined	tts	nl	
 update	tts	nl	bijwerken
+update ticket state	tts	nl	
+updates ticket	tts	nl	
+use email notification	tts	nl	
+verified	tts	nl	
+verify	tts	nl	
+verify the ticket to work on it.	tts	nl	
 view all tickets	tts	nl	Alle meldingen bekijken
 view job detail	tts	nl	werkdetail bekijken
 view only open tickets	tts	nl	Alleen openstaande meldingen bekijken
+you can only close a ticket if it is assigned to you.	tts	nl	
+you want to delete the state %1. are you sure?	tts	nl	
+you want to delete the transition %1. are you sure?	tts	nl	

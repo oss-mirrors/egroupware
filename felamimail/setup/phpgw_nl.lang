@@ -29,7 +29,7 @@ cc	felamimail	nl	Cc.
 change folder	felamimail	nl	Wijzig map
 checkbox	felamimail	nl	Checkbox
 click here to log back in.	felamimail	nl	Klik hier om opnieuw in te loggen.
-click here to return to %1	felamimail	nl	Klik hier om terig te gaan naar %1
+click here to return to %1	felamimail	nl	Klik hier om terug te gaan naar %1
 close this page	felamimail	nl	Sluit dit venster
 close window	felamimail	nl	Venster sluiten
 color	felamimail	nl	Kleur
@@ -107,7 +107,7 @@ folderlist	felamimail	nl	Mappenlijst
 folders	felamimail	nl	Mappen
 folders created successfully!	felamimail	nl	Mappen met succes aangemaakt!
 follow	felamimail	nl	
-for mail to be send - not functional yet	felamimail	nl	Voor not te vezenden email - nog niet functioneel
+for mail to be send - not functional yet	felamimail	nl	Voor nog te vezenden email - nog niet functioneel
 for received mail	felamimail	nl	Voor ontvangen email
 forward	felamimail	nl	Doorsturen
 found	felamimail	nl	Gevonden
@@ -133,7 +133,7 @@ invalid user name or password	felamimail	nl	Ongeldige gebruikersnaam of -wachtwo
 javascript	felamimail	nl	JavaScript
 language	felamimail	nl	Taal
 last name	felamimail	nl	Achternaam
-left	felamimail	nl	
+left	felamimail	nl	Links
 less	felamimail	nl	minder
 let this folder contain subfolders	felamimail	nl	Laat deze map submappen hebben
 light blue	felamimail	nl	Licht blauw
@@ -154,7 +154,7 @@ mark selected as flagged	felamimail	nl	Markeer geselecteerde als 'gemarkeerd'
 mark selected as read	felamimail	nl	Markeer geselecteerde als 'gelezen'
 mark selected as unflagged	felamimail	nl	Markeer geselecteerde als 'niet gemarkeerd'
 mark selected as unread	felamimail	nl	Markeer geselecteerde als 'niet gezelezen
-match	felamimail	nl	
+match	felamimail	nl	Overeenkomstige
 medium gray	felamimail	nl	Grijs
 message highlighting	felamimail	nl	
 message list	felamimail	nl	Berichtenlijst
@@ -199,7 +199,7 @@ personal information	felamimail	nl	Persoonlijke informatie
 preference file %1 not found. exiting abnormally	felamimail	nl	Voorkeurenbestand %1 niet gevonden. Afgesloten met een fout
 preference file, %1, does not exist. log out, and log back in to create a default preference file.	felamimail	nl	Voorkeurenbestand, %1 bestaat niet. Log uit en log vervolgens opnieuw in om een standaard voorkeuren bestand aan te maken.
 previous	felamimail	nl	Vorig
-previous message	preferences	nl	Vorig bericht
+previous message	felamimail	nl	Vorig bericht
 print it	felamimail	nl	Uitprinten
 print this page	felamimail	nl	Deze pagina uitprinten
 purge	felamimail	nl	
@@ -210,7 +210,7 @@ reason giv	felamimail	nl
 recent	felamimail	nl	Recente
 refresh folder list	felamimail	nl	ververs mappenlijst
 refresh page	felamimail	nl	Ververs pagina
-refresh time in minutes	felamimail	nl	Ververs tijd in minuten
+refresh time in minutes	felamimail	nl	Ververstijd in minuten
 remove	felamimail	nl	Verwijderen
 remove immediately	felamimail	nl	Meteen verwijderen
 rename	felamimail	nl	Hernoemen
@@ -238,12 +238,12 @@ select emailprofile	felamimail	nl	Emailprofiel selecteren
 select home email address	felamimail	nl	Selecteer emailadres thuis
 select work email address	felamimail	nl	Selecteer emailadres werk
 send	felamimail	nl	Verzenden
-sent fold	felamimail	nl	Verzondermap
-sent folder	felamimail	nl	Verzondermap
+sent fold	felamimail	nl	Verzondenmap
+sent folder	felamimail	nl	Verzondenmap
 server respond	felamimail	nl	Reactie server
 show header	felamimail	nl	berichtkop weergeven
 show new messages on main screen	felamimail	nl	Nieuwe berichten op hoofdscherm weergeven
-sieve settings	admin	nl	Seive instellingen
+sieve settings	admin	nl	SIEVE instellingen
 signature	felamimail	nl	Handtekening
 size	felamimail	nl	Grootte
 size of editor window	felamimail	nl	Grootte van schrijfvenster
@@ -310,11 +310,11 @@ use javascript or html addressbook?	felamimail	nl	Gebruik JavaScript- of HTML-ad
 use smtp auth	admin	nl	Gebruik SMTP-authenticatie
 view full header	felamimail	nl	Volledige berichtkop weergeven
 view message	felamimail	nl	Bericht weergeven
-viewing full header	felamimail	nl	
-viewing message	felamimail	nl	
-viewing messages	felamimail	nl	
+viewing full header	felamimail	nl	volledige berichtkop weergeven
+viewing message	felamimail	nl	bericht weergeven
+viewing messages	felamimail	nl	berichten weergeven
 welcome to %1's webmail system	felamimail	nl	Welkom in %1's Webmailsysteem
-when deleting messages	felamimail	nl	
+when deleting messages	felamimail	nl	Bij het verwijderen van berichten
 white	felamimail	nl	Wit
 width of folder list	felamimail	nl	Breedte van mappenlijst
 wrap incoming text at	felamimail	nl	Kort tekst binnenkomende berichten af op

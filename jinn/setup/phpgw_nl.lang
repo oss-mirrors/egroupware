@@ -1,4 +1,17 @@
+<br/><li>defineer relaties tussen tabellen</li>		nl	
+<li>geef a correct absoluut pad naar de upload directory</li>		nl	
+<li>geef een jinn sitenaam voor weergave</li>		nl	
+<li>geef een overeenkomstige voorbeeld url voor elementen die worden ge-upload</li>		nl	
+<li>geef zonodig een altenatief pad naar de upload directory</li>		nl	
+<li>geef zonodig een altenatieve voorbeeld url voor toevoegde afbeeldingen</li>		nl	
+<li>selecteer een databasetabel dat dit object gebruikt</li>		nl	
+<li>selecteer een jinn objectnaam voor weergave</li>		nl	
+<li>selecteer en configureer insteekmodules voor de tabelvelden</li>		nl	
+<li>voeg correcte database-instellingen toe</li>		nl	
+access rights	jinn	nl	Toegangsrechten
+access rights for site not succesfully editted	jinn	nl	FOUT: toegangsrechten voor site NIET gewijzigd
 access rights for site succesfully editted	jinn	nl	Toegangsrechten voor site met succes bijgewerkt
+access rights for site-object not succesfully editted	jinn	nl	FOUT: toegangsrechten voor site-object NIET gewijzigd
 access rights for site-object succesfully editted	jinn	nl	Toegangsrechten voor site-object met succes bijgewerkt
 access rights site-objects	jinn	nl	Toegangsrechten site-objecten
 access_rights	jinn	nl	Toegangsrechten
@@ -7,6 +20,7 @@ add %1st image	jinn	nl	voeg %1e beeld toe
 add attachent	jinn	nl	bestand toevoegen
 add attachment	jinn	nl	bestand toevoegen
 add attachment %1	jinn	nl	voeg bestand %1 toe
+add edit	jinn	nl	Toevoegen / WIjzigen
 add image	jinn	nl	afbeelding toevoegen
 add image %1	jinn	nl	voeg beeld %1 toe
 add new	jinn	nl	Toevoegen
@@ -17,6 +31,9 @@ add or remove	jinn	nl	toevoegen of verwijderen
 add site	admin	nl	Site toevoegen
 add site object	jinn	nl	Site-object toevoegen
 add site-object	jinn	nl	Site-object toevoegen
+admin:: edit site	jinn	nl	Beheer - Wijzig Site
+administrator mode	jinn	nl	Beheermodus
+administrators for site $site_name	jinn	nl	Beheerders voor site $site_name
 all from	jinn	nl	alle opties uit
 are you sure?	jinn	nl	Weet u het zeker
 attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	nl	Bestandsdirectory bestaat en kan ook niet worden aangemaakt. Controleer de upload-directory van dit object
@@ -25,43 +42,70 @@ binary	jinn	nl	binair
 browse	jinn	nl	Bladeren
 browse sites	jinn	nl	blader door sites
 browse through object settings	admin	nl	Blader door objectinstellingen
+browse through sites	jinn	nl	Blader door sites
 browses through sites	admin	nl	Blader door sites
 cancel	jinn	nl	Annuleren
 category	jinn	nl	Categorie
 check:	jinn	nl	controleer:
-come back in edit mode for configuring plugins	jinn	nl	kom terug in de wijzigen-modus om plugins te configureren
+close this window	jinn	nl	Sluit dit venster
+column name	jinn	nl	kolomnaam
+come back after new valid tablename is saved to configure plugins	jinn	nl	Kom terug nadat een nieuwe geldige tabelnaam is opgeslagen om de insteekmodules te configureren
+come back in edit mode for configuring plugins	jinn	nl	kom terug in de wijzigenweergave om insteekmodules te configureren
+come back in edit mode to configure plugins	jinn	nl	kom terug in de wijzigenweergave om insteekmodules te configureren
 configure	jinn	nl	configureer
+configure browse view	jinn	nl	configureer bladerweergave
+configure this tableview	jinn	nl	configureer deze tabelweergave
 configure this view	jinn	nl	configureer deze weergave
-convert exec ( e.g. /usr/x11r6/bin/convert )	admin	nl	Pad naar Convert van ImageMagick (bijv.: /usr/X11R6/bin/convert)
-copy	jinn	nl	kopieer
-database connection failed! <p>please recheck your settings.	jinn	nl	Het maken van een databaseconnectie is mislukt! <P>Controleer a.u.b. uw instellingen.
-database connection was succesfull. <p>you can go on with the site-objects	jinn	nl	Het maken van een databaseconnectie is geluk! <P>U kunt verder gaan met  Site Objecten
+configure view of	jinn	nl	configureer weergave van
+convert exec ( e.g. /usr/x11r6/bin/convert )	admin	nl	Pad naar de toepassing convert van ImageMagick (bijv.: /usr/X11R6/bin/convert)
+copy	jinn	nl	kopiëer
+database connection failed! <p>please recheck your settings.	jinn	nl	Het is misluk een databaseconnectie te maken! <p>Controleer a.u.b. uw instellingen.</p>
+database connection was succesfull. <p>you can go on with the site-objects	jinn	nl	Het is gelukt een databaseconnectie te maken! <p>U kunt verder gaan met het toevoegen van Site-objecten</p>
 default image type (jpg, gif, png)	admin	nl	Standaard afbeelingstype (jpg, gif, png)
 default image width	admin	nl	Standaard afbeelingsbreedte
-default thumb width	admin	nl	Standaard 'thumb'-breedte
+default order	jinn	nl	standaard volgorde
+default thumb width	admin	nl	Standaard breedte voorbeeld van afbeelding
+default:	jinn	nl	standaard:
 delete	jinn	nl	Verwijder
 edit	jinn	nl	Wijzig
+edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	nl	Wijzig JiNN Site object instellingen:
+edit this site	jinn	nl	Wijzig deze site
+editors for object $object_name in site $site_name	jinn	nl	redacteuren voor het object $object_name in de site $site_name
 export this site	jinn	nl	exporteer deze site
-field plugin configuration	jinn	nl	veldplugin configuratie
+failed to open table. please check if table <i>%1</i> still exists in database	jinn	nl	FOUT: Het is niet gelukt de tabel te openen. Controleer a.u.b. of de tabel <i>%1</i> nog voorkomt in de database
+field plugin configuration	jinn	nl	configuratie veldinsteekmodule
 fields	jinn	nl	velden
-form input plugin	jinn	nl	Formulier Invoer Plugin
-global configuration	jinn	nl	Globale Configuratie
-global site configuration	admin	nl	Globale Site configuratie
+form input plugin	jinn	nl	Formulier invoer insteekmodule
+global configuration	jinn	nl	Globale configuratie
+global site configuration	admin	nl	Globale Site Configuratie
 go	jinn	nl	ga
+height:	jinn	nl	Hoogte:
 hidden	jinn	nl	verborgen
-image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	nl	Afbeeldingsdirectory bestaat niet. Controleer de upload-directory van dit object
+image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	nl	Afbeeldingsdirectory bestaat niet. Controleer de upload directory van dit object
+image settings	admin	nl	Instellingen afbeelding
+imagemagick directory ( e.g. /usr/x11r6/bin )	admin	nl	Directory van ImageMagick-toepassing ( bijvoorbeeld /usr/X11R6/bin )
 import failed	jinn	nl	Het importeren is mislukt.
-import jinn-site	jinn	nl	Importeer JiNN-Site
-import site	jinn	nl	Importeer Site
-import was succesfull<br>imported one site with	jinn	nl	Het importeren is gelukt.<BR>1 site geïmporteerd met 
-jinn	common	nl	JiNN
-maximum image width isn\	jinn	nl	maximale beeld breedte is 
+import jinn site	jinn	nl	JiNN Site importeren
+import jinn-site	jinn	nl	JiNN Site importeren
+import site	jinn	nl	Site importeren
+import was succesfull<br>imported one site with	jinn	nl	Het importeren is gelukt.<br/>1 site geïmporteerd met
+index	jinn	nl	index
+insert another record after saving	jinn	nl	nog een item toevoegen nadat deze is opgeslagen
+insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	nl	Voeg JiNN Site instelling toe:
+insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	nl	Voeg JiNN object instellingen toe:
+jinn	common	nl	JiNN C.M.S.
+maximum image width isn\	jinn	nl	maximale beeld breedte is
+moderator mode	jinn	nl	Redactieweergave
+new image size limits.	jinn	nl	Nieuwe max. afmetingen voor afbeeldingen
 no matchs found	jinn	nl	Geen resultaten gevonden
-please set your preferences for this application	jinn	nl	Stel a.u.b. uw voorkeuren in voor deze applicatie 
+normal view	jinn	nl	Normale weergave
+please set your preferences for this application	jinn	nl	Stel a.u.b. uw voorkeuren in voor deze toepassing
 real value	jinn	nl	eigelijke waarde
 record	jinn	nl	record
 record added succesfully	jinn	nl	Record met succes toegevoegd
 record deleted succesfully	jinn	nl	Record met succes verwijderd
+record not succesfully copied. unknown error	jinn	nl	Record net met succes gekopiëerd. Onbekende fout.
+record not succesfully deleted. unknown error	jinn	nl	Record net met succes verwijderd. Onbekende fout.
 record succesfully copied	jinn	nl	Record met succes gekopieerd
 record succesfully deleted	jinn	nl	Record met succes verwijderd
 record succesfully editted	jinn	nl	Record met succes gewijwigd
@@ -73,17 +117,22 @@ save	jinn	nl	Opslaan
 search	jinn	nl	Zoek
 search for string	jinn	nl	zoek op trefwoord
 select directory	jinn	nl	Selecteer directorie
+select jinn site file	jinn	nl	Selecteer JiNN Site bestand
 select site	jinn	nl	selecteer site
 select site to moderate	jinn	nl	Selecteer site om te bewerken
 select site-object to moderate	jinn	nl	Selecteer site-object om te bewerken
 select_object	jinn	nl	Selecteer site-object
-set access rights	admin	nl	Stel permissies in
+set access right for site objects	jinn	nl	Stel toegangsrechten voor site objecten in
+set access rights	admin	nl	Stel toegangsrechten in
+set access rights for sites	jinn	nl	Stel toegangsrechten in voor Sites
 set administrators for	jinn	nl	Stel beheerders in voor
-set object moderator	jinn	nl	Stel object-redacteur in
-show	jinn	nl	laat zien
-show all columns	jinn	nl	Geef alle kolommen weer
-show upload path	admin	nl	Geef uploadpad weer
-site beheerders	jinn	nl	Site Beheerders
+set object moderator	jinn	nl	Stel objectredacteur in
+set site admin	jinn	nl	Stel Sitebeheerder
+show	jinn	nl	weergeven
+show all columns	jinn	nl	alle kolommen weergeven
+show colomn	jinn	nl	kolomnen weergeven
+show upload path	admin	nl	uploadpad weergeven
+site beheerders	jinn	nl	Sitebeheerders
 site db host	admin	nl	site database host
 site db name	admin	nl	site database naam
 site db password	admin	nl	site database wachtwoord
@@ -92,14 +141,31 @@ site db user	admin	nl	site database gebruiker
 site description	admin	nl	site beschrijving
 site id	admin	nl	site id
 site name	admin	nl	site naam
-site title	admin	nl	site titel
-site-objects	jinn	nl	Site Objecten
+site not succesfully added, unknown error	jinn	nl	Site niet toegevoegd! Er is een onbekende opgetreden.
+site not succesfully deleted, unknown error	jinn	nl	Site niet verwijderd! Er is een onbekende opgetreden.
+site not succesfully saved, unknown error	jinn	nl	Site niet opgeslagen! Er is een onbekende opgetreden.
+site object not succesfully added, unknown error	jinn	nl	Object niet toegevoegd! Er is een onbekende opgetreden.
+site object not succesfully deleted, unknown error	jinn	nl	Object niet verwijderd! Er is een onbekende opgetreden.
+site object not succesfully saved, unknown error	jinn	nl	Object niet opgeslagen! Er is een onbekende opgetreden.
+site object succesfully added	jinn	nl	Object met succes toegevoegd.
+site object succesfully deleted	jinn	nl	Object met succes verwijderd.
+site object succesfully saved	jinn	nl	Object met succes opgeslagen.
+site succesfully added	jinn	nl	Site met succes toegevoegd.
+site succesfully deleted	jinn	nl	Site met succes verwijderd.
+site succesfully saved	jinn	nl	Site met succes opgeslagen.
+site title	admin	nl	Titel Site
+site-objects	jinn	nl	Site-objecten
 sites	jinn	nl	Sites
 start	admin	nl	Start
 start at record	jinn	nl	Start bij record
 stop at record	jinn	nl	Stop bij record
+submit and import	jinn	nl	verzend en importeer
 t/m	jinn	nl	t/m
+tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	nl	Naam van tabel <i>%1</i> is niet correct. Waarschijnlijk is de naam veranderd of is de tabel verwijderd uit de database. Selecteer a.u.b. een nieuwe tabel of verwijder dit object.
 test database access	jinn	nl	Test database toegang
 the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	nl	Het bestand, %1, dat u heeft ge-upload, is corrupt, is geen beeldbestand of het beeldformaat wordt niet door JiNN ondersteund.
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	nl	Het bestand, %1, dat u heeft ge-upload, is corrupt, is geen beeldbestand of het beeldformaat wordt niet door JiNN ondersteund. Als deze fout terugkeert controleer dan uw installatie van ImageMagick. Oudere versies van ImageMagick werken niet goed met JiNN. Zorg ervoor dat uw ImageMagick versie 5.4.9 of hogen heeft geïnstalleerd.
+the resize process failed, please contact the administrator	jinn	nl	Het veranderen van de afbeeldingafmetingen is mislukt. Neem a.u.b. contact op met de systeembeheerder
 thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	nl	Afbeeldingsthumbdirectory bestaat niet. Controleer de upload-directory van dit object
 version	jinn	nl	versie
+width:	jinn	nl	Breedte:
