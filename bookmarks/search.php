@@ -23,7 +23,6 @@
 <?php 
   exit;
 
-  include(dirname(__FILE__)."/lib/bkprepend.inc");
   include(LIBDIR . "plist.inc");
 
   $phpgw->template->set_file(array(standard   => "common.standard.tpl",

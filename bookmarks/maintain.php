@@ -18,8 +18,6 @@
   $phpgw_info["flags"]["enabled_nextmatchs_class"] = True;
   include("../header.inc.php");
 
-  include(dirname(__FILE__)."/inc/bkprepend.inc");
-
   function return_to()
   {
      global $returnto, $msg, $error_msg, $sess_msg, $sess_error_msg, $phpgw;

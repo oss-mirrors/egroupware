@@ -1,4 +1,4 @@
-CREATE TABLE bookmark (
+CREATE TABLE bookmarks (
   id          int(10) unsigned NOT NULL auto_increment,
   url         varchar(255) DEFAULT '' NOT NULL,
   name        varchar(255) DEFAULT '' NOT NULL,
@@ -14,14 +14,7 @@ CREATE TABLE bookmark (
   KEY username (username)
 );
 
-CREATE TABLE category (
-  id       int unsigned DEFAULT '0' NOT NULL auto_increment,
-  name     varchar(30) DEFAULT '' NOT NULL,
-  username varchar(32) DEFAULT '' NOT NULL,
-  PRIMARY KEY (id,username)
-);
-
-CREATE TABLE rating (
+CREATE TABLE bookmarks_rating (
   id       int unsigned DEFAULT '0' NOT NULL auto_increment,
   name     varchar(30) DEFAULT '' NOT NULL,
   username varchar(32) DEFAULT '' NOT NULL,
@@ -29,18 +22,24 @@ CREATE TABLE rating (
   PRIMARY KEY (id,username)
 );
 
-CREATE TABLE subcategory (
+CREATE TABLE bookmarks_category (
   id int unsigned DEFAULT '0' NOT NULL auto_increment,
   name varchar(30) DEFAULT '' NOT NULL,
   username varchar(32) DEFAULT '' NOT NULL,
   PRIMARY KEY (id,username)
 );
 
-CREATE TABLE search (
+CREATE TABLE bookmarks_subcategory (
+  id int unsigned DEFAULT '0' NOT NULL auto_increment,
+  name varchar(30) DEFAULT '' NOT NULL,
+  username varchar(32) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id,username)
+);
+
+CREATE TABLE bookmarks_search (
   id int(10) unsigned NOT NULL,
   name varchar(30) DEFAULT '' NOT NULL,
   query varchar(255) DEFAULT '' NOT NULL,
   username varchar(32) DEFAULT '' NOT NULL,
   PRIMARY KEY (id,username)
 );
-

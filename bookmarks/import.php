@@ -25,7 +25,6 @@
   #  give option, to load all urls into unassigned unassigned
   #  give option, to delete bookmarks,cat,subcat before import
   #
-  include(dirname(__FILE__)."/inc/bkprepend.inc");
 
   # find existing category matching name, or
   # create a new one. return id.

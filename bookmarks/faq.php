@@ -1,13 +1,24 @@
 <?php
-# ---------------------------------------------------------------
-# bookmarker
-# A WWW based bookmark management, retrieval, and search tool.
-# Copyright (C) 1998  Padraic Renaghan
-# Licensed under terms of GNU General Public License
-# (see http://www.renaghan.com/bookmarker/source/LICENSE)
-# ---------------------------------------------------------------
-# $Id$
-# ---------------------------------------------------------------
+  /**************************************************************************\
+  * phpGroupWare - Bookmarks                                                 *
+  * http://www.phpgroupware.org                                              *
+  * Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
+  *                     http://www.renaghan.com/bookmarker                   *
+  * --------------------------------------------                             *
+  *  This program is free software; you can redistribute it and/or modify it *
+  *  under the terms of the GNU General Public License as published by the   *
+  *  Free Software Foundation; either version 2 of the License, or (at your  *
+  *  option) any later version.                                              *
+  \**************************************************************************/
+
+  /* $Id$ */
+?>
+  <center>Not avaiable</center>
+<?php
+  exit;
+  
+  // Not sure if this is gonna be used, but its here for reference
+
 include(dirname(__FILE__)."/lib/bkprepend.inc");
 page_open(array( "sess" => "bk_sess_cache"));
 

@@ -14,52 +14,60 @@
   /* $Id$ */
 
   $phpgw_info["flags"] = array("currentapp" => "bookmarks", "enabled_nextmatchs_class" => True);
+
   include("../header.inc.php");
-
-  include(dirname(__FILE__)."/inc/bkprepend.inc");
   include(LIBDIR . "plist.inc");
-  
-  $account_id = $phpgw_info["user"]["account_id"];
-  $phpgw->db->query("select count(*) from category where username='$account_id'",__LINE__,__FILE__);
+
+  $account_id = $phpgw_info["user"]["account_id"];	// only temp
+
+  $phpgw->db->query("select count(*) from bookmarks_category where username='$account_id'",__LINE__,__FILE__);
   $phpgw->db->next_record();
   if ($phpgw->db->f(0) == 0) {
-     $phpgw->db->query("insert into category (name,username) values ('--','$account_id')",__LINE__,__FILE__);
-     $phpgw->db->query("insert into category (name,username) values ('Linux','$account_id')",__LINE__,__FILE__);
+     $phpgw->db->query("insert into bookmarks_category (name,username) values ('--','$account_id')",__LINE__,__FILE__);
+     $phpgw->db->query("insert into bookmarks_category (name,username) values ('Linux','$account_id')",__LINE__,__FILE__);
   }
 
-  $phpgw->db->query("select count(*) from subcategory where username='$account_id'",__LINE__,__FILE__);
+  $phpgw->db->query("select count(*) from bookmarks_subcategory where username='$account_id'",__LINE__,__FILE__);
   $phpgw->db->next_record();
   if ($phpgw->db->f(0) == 0) {
-     $phpgw->db->query("insert into subcategory (name,username) values ('--','$account_id')",__LINE__,__FILE__);
-     $phpgw->db->query("insert into subcategory (name,username) values ('development','$account_id')",__LINE__,__FILE__);
+     $phpgw->db->query("insert into bookmarks_subcategory (name,username) values ('--','$account_id')",__LINE__,__FILE__);
+     $phpgw->db->query("insert into bookmarks_subcategory (name,username) values ('development','$account_id')",__LINE__,__FILE__);
   }
 
-  $phpgw->db->query("select count(*) from rating where username='$account_id'",__LINE__,__FILE__);
+  $phpgw->db->query("select count(*) from bookmarks_rating where username='$account_id'",__LINE__,__FILE__);
   $phpgw->db->next_record();
   if ($phpgw->db->f(0) == 0) {
-     $phpgw->db->query("insert into rating (name,username) values ('--','$account_id')",__LINE__,__FILE__);
-     $phpgw->db->query("insert into rating (name,username) values ('weak','$account_id')",__LINE__,__FILE__);
-     $phpgw->db->query("insert into rating (name,username) values ('good','$account_id')",__LINE__,__FILE__);
-     $phpgw->db->query("insert into rating (name,username) values ('excellent','$account_id')",__LINE__,__FILE__);
+     $phpgw->db->query("insert into bookmarks_rating (name,username) values ('--','$account_id')",__LINE__,__FILE__);
+     $phpgw->db->query("insert into bookmarks_rating (name,username) values ('weak','$account_id')",__LINE__,__FILE__);
+     $phpgw->db->query("insert into bookmarks_rating (name,username) values ('good','$account_id')",__LINE__,__FILE__);
+     $phpgw->db->query("insert into bookmarks_rating (name,username) values ('excellent','$account_id')",__LINE__,__FILE__);
   }
 
-  $phpgw->db->query("select count(*) from bookmark where username='$account_id'",__LINE__,__FILE__);
+  $phpgw->db->query("select count(*) from bookmarks where username='$account_id'",__LINE__,__FILE__);
   $phpgw->db->next_record();
   if ($phpgw->db->f(0) == 0) {
-     $phpgw->db->query("select category.id as main, subcategory.id as sub, rating.id as rating "
-                     . "from category,subcategory,rating where category.username='$account_id' "
-                     . "and subcategory.username='$account_id' and rating.username='$account_id' "
-                     . "and category.name='Linux' and subcategory.name='development' "
-                     . "and rating.name='excellent'",__LINE__,__FILE__);
+     $phpgw->db->query("select id from bookmarks_category where username='"
+                     . "$account_id' and name='Linux'",__LINE__,__FILE__);
      $phpgw->db->next_record();
-     $phpgw->db->query("INSERT INTO bookmark (url,name,ldesc,keywords,category_id,"
+     $maincat_id = $phpgw->db->f("id");
+
+     $phpgw->db->query("select id from bookmarks_subcategory where username='"
+                     . "$account_id' and name='development'",__LINE__,__FILE__);
+     $phpgw->db->next_record();
+     $subcat_id = $phpgw->db->f("id");
+
+     $phpgw->db->query("select id from bookmarks_rating where username='$account_id' and name='"
+                     . "excellent'",__LINE__,__FILE__);
+     $phpgw->db->next_record();
+     $rating_id = $phpgw->db->f("id");
+
+     $phpgw->db->query("INSERT INTO bookmarks (url,name,ldesc,keywords,category_id,"
                      . "subcategory_id,rating_id,username,public_f) VALUES ('"
-                     . "http://www.phpgroupware.org/','phpGroupWare','PHP','php','"
-                     . $phpgw->db->f("main") . "','"
-                     . $phpgw->db->f("sub") . "','"
-                     . $phpgw->db->f("rating") . "','" . $account_id . "','N')",__LINE__,__FILE__);
-//     $bmark = new bmark;
-//     $bmark->add(&$id,"http://www.phpgroupware.org","phpGroupWare","","phpGroupWare",$phpgw->db->f("main"),$phpgw->db->f("sub"),$phpgw->db->f("rating"),"n");
+                     . "http://www.phpgroupware.org/','phpGroupWare','PHP','php','$maincat_id','"
+                     . $subcat_id . "','$rating_id','$account_id','N')",__LINE__,__FILE__);
+     unset($subcat_id);
+     unset($rating_id);
+     unset($main_catid);
   }
 
   $phpgw->template->set_file(array(standard   => "common.standard.tpl",

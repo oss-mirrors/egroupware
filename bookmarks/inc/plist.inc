@@ -1,13 +1,17 @@
 <?php 
-# ---------------------------------------------------------------
-# bookmarker
-# A WWW based bookmark management, retrieval, and search tool.
-# Copyright (C) 1998  Padraic Renaghan
-# Licensed under terms of GNU General Public License
-# (see http://www.renaghan.com/bookmarker/source/LICENSE)
-# ---------------------------------------------------------------
-# $Id$
-# ---------------------------------------------------------------
+  /**************************************************************************\
+  * phpGroupWare - Bookmarks                                                 *
+  * http://www.phpgroupware.org                                              *
+  * Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
+  *                     http://www.renaghan.com/bookmarker                   *
+  * --------------------------------------------                             *
+  *  This program is free software; you can redistribute it and/or modify it *
+  *  under the terms of the GNU General Public License as published by the   *
+  *  Free Software Foundation; either version 2 of the License, or (at your  *
+  *  option) any later version.                                              *
+  \**************************************************************************/
+
+  /* $Id$ */
 
   function print_list_break (&$list_tpl, $category, $subcategory)
   {
@@ -65,18 +69,18 @@
    //  if ($auth->auth["include_public"] == "Y" || $auth->is_nobody()) 
    //     $public_sql = " or bookmark.public_f='Y' ";
 
-   $query = sprintf("select category.name as category_name, bookmark.category_id, 
-                    subcategory.name as subcategory_name, bookmark.subcategory_id, bookmark.id, 
-                    bookmark.url, bookmark.name as bookmark_name, bookmark.ldesc, bookmark.keywords, 
-                    rating.name as rating_name, bookmark.rating_id, bookmark.username
-                    from bookmark, category, subcategory, rating 
-                    where ( bookmark.category_id = category.id 
-                    and category.username = bookmark.username 
-                    and bookmark.subcategory_id = subcategory.id 
-                    and subcategory.username = bookmark.username 
-                    and bookmark.rating_id = rating.id 
-                    and rating.username = bookmark.username )
-                    and (   bookmark.username = '%s' )", $phpgw_info["user"]["account_id"]);
+   $query = sprintf("select bookmarks_category.name as category_name, bookmarks.category_id, 
+                    bookmarks_subcategory.name as subcategory_name, bookmarks.subcategory_id, bookmarks.id, 
+                    bookmarks.url, bookmarks.name as bookmarks_name, bookmarks.ldesc, bookmarks.keywords, 
+                    bookmarks_rating.name as rating_name, bookmarks.rating_id, bookmarks.username
+                    from bookmarks, bookmarks_category, bookmarks_subcategory, bookmarks_rating 
+                    where (bookmarks.category_id = bookmarks_category.id 
+                    and bookmarks_category.username = bookmarks.username 
+                    and bookmarks.subcategory_id = bookmarks_subcategory.id 
+                    and bookmarks_subcategory.username = bookmarks.username 
+                    and bookmarks.rating_id = bookmarks_rating.id 
+                    and bookmarks_rating.username = bookmarks.username)
+                    and (bookmarks.username = '%s')", $phpgw_info["user"]["account_id"]);
   
    if ($where_clause != "") {
       $where_clause_sql = " and " . $where_clause;
@@ -84,7 +88,7 @@
       $where_clause_sql = " ";
    }
 
-   $order_by_sql = " order by category.name, subcategory.name, bookmark.name, bookmark.id";
+   $order_by_sql = " order by bookmarks_category.name, bookmarks_subcategory.name, bookmarks.name, bookmarks.id";
 
    // db callout to add limit clause to sql
    // $limit_sql = $phpgw->nextmatchs->sql_limit($offset,$limit); //$bk_db_callout->get_limit_sql ($offset, $limit);

@@ -17,8 +17,6 @@
   $phpgw_info["flags"]["enable_nextmatchs_class"] = True;
   include("../header.inc.php");
 
-  include(dirname(__FILE__)."/inc/bkprepend.inc");
-
   $phpgw->template->set_file(array(standard            => "common.standard.tpl",
                                    msie_js             => "common.msie_js.tpl",
                                    body                => "create.body.tpl",
@@ -145,9 +143,9 @@ if ($rating > 0) {
    }
 } */
 
-load_ddlb("category", $default_category, &$category_select, FALSE);
-load_ddlb("subcategory", $default_subcategory, &$subcategory_select, FALSE);
-load_ddlb("rating", $default_rating, &$rating_select, FALSE);
+load_ddlb("bookmarks_category", $default_category, &$category_select, FALSE);
+load_ddlb("bookmarks_subcategory", $default_subcategory, &$subcategory_select, FALSE);
+load_ddlb("bookmarks_rating", $default_rating, &$rating_select, FALSE);
 
 # only default the public checkbox the first time the
 # page is shown. after that, show the value that the

@@ -17,26 +17,25 @@
   $phpgw_info["flags"]["currentapp"] = "bookmarks";
   $phpgw_info["flags"]["enabled_nextmatchs_class"] = True;
   include("../header.inc.php");
-  include(dirname(__FILE__)."/inc/bkprepend.inc");
 
-# if mode is not GET, then we want to redirect
-# back to ourselves which will put us in GET mode.
-# The reason is the javascript reload() and go()
-# functions give the annoying
-# "the page cannot be refreshed without resending..."
-# message.
-# Note: we should only be here in POST mode if
-# user clicked tree view without already being
-# authenticated, then the login will do a POST back
-# to itself - in this case the tree.php page.
-if (strtoupper($REQUEST_METHOD) != "GET") {
-
-# use a 303 since http spec states only a 303,
-# not a 302 or 301 is allowed after a POST.
-  header("Status: 303 See Other");
-
-# netscape bug won't do redirect a page to itself
-# after a POST, therefore we add the id string to the url.
+  # if mode is not GET, then we want to redirect
+  # back to ourselves which will put us in GET mode.
+  # The reason is the javascript reload() and go()
+  # functions give the annoying
+  # "the page cannot be refreshed without resending..."
+  # message.
+  # Note: we should only be here in POST mode if
+  # user clicked tree view without already being
+  # authenticated, then the login will do a POST back
+  # to itself - in this case the tree.php page.
+  if (strtoupper($REQUEST_METHOD) != "GET") {
+  
+  # use a 303 since http spec states only a 303,
+  # not a 302 or 301 is allowed after a POST.
+    header("Status: 303 See Other");
+  
+  # netscape bug won't do redirect a page to itself
+  # after a POST, therefore we add the id string to the url.
   $url = ((isset($HTTPS)&&$HTTPS=='on')?"https":"http")
     ."://"
     .$HTTP_HOST

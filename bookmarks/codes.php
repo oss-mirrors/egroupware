@@ -16,8 +16,6 @@
   $phpgw_info["flags"]["currentapp"] = "bookmarks";
   $phpgw_info["flags"]["enabled_nextmatchs_class"] = True;
   include("../header.inc.php");
-  
-  include(dirname(__FILE__)."/inc/bkprepend.inc");
 
   $phpgw->template->set_file(array(standard   => "common.standard.tpl",
                                    code_list  => "codes.codelist.tpl",
