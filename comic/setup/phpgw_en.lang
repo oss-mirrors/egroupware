@@ -2,15 +2,28 @@ are you sure you want to reset all comic dates and resolved image urls?	comic	en
 censorship level	comic	en	Censorship level
 censorship override enabled	comic	en	Censorship override enabled
 comics	common	en	Comics
-daily comic	comic	en	Daily Comic
+comics per page	comic	en	Comics per Page
+comics scaled	comic	en	Comics Scaled
+daily comic	common	en	Daily Comic
+daily comic preferences	comic	en	Daily Comic Preferences
+daily comics	admin	en	Daily Comics
 daily comics data	comic	en	Daily comics data
 daily comics global options	comic	en	Daily comics global options
+display layout	comic	en	Display Layout
+display options	comic	en	Display Options
+front page comic	comic	en	Front Page Comic
+front page comic scaled	comic	en	Front Page Comic Scaled
 genre	comic	en	Genre
+global comics	admin	en	Global Comics
+global options	admin	en	Global Options
 image source	comic	en	Image source
 max file size	comic	en	Max file size
 parser	comic	en	Parser
 phpgroupware daily comics	comic	en	phpGroupWare Daily Comics
+random	comic	en	Random
 rated	comic	en	Rated
 remote (parse/snarf) enabled	comic	en	Remote (parse/snarf)
+reset comic data	admin	en	Reset Comic Data
 reset	comic	en	Reset
 resolve	comic	en	Resolve
+template	comic	en	Template

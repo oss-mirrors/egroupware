@@ -16,6 +16,8 @@ news type	admin	en	News Type
 other preferences	preferences	en	Other Preferences
 reload news sites	headlines	en	Reload news sites
 select headline news sites	common	en	Select Headline News sites
+select headlines to display	preferences	en	Select Headlines to Display
+select layout	preferences	en	Select layout
 that site has already been entered	admin	en	That site has already been entered
 you must enter a base url	admin	en	You must enter a base url
 you must enter a display	admin	en	You must enter a display
