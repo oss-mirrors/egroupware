@@ -29,7 +29,7 @@
 
 	if ($confirm)
 	{
-		$phpgw->db->query("delete from p_activities where id='$id'");
+		$phpgw->db->query("delete from phpgw_p_activities where id='$id'");
 		Header('Location: ' . $phpgw->link('/projects/activities.php','sort=' . $sort . '&order=' . $order . '&query=' . $query . '&start=' . $start
 											. '&filter=' . $filter));
 	}

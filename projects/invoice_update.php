@@ -73,17 +73,17 @@
 			$phpgw->db->query("UPDATE phpgw_p_hours SET status='done' WHERE id=".$db2->f("hours_id"));
 		} */
 
-			$phpgw->db->query("DELETE FROM phpgw_p_invoicepos WHERE invoice_id=$invoice_id");
+			$phpgw->db->query("DELETE FROM phpgw_p_invoicepos WHERE invoice_id='$invoice_id'");
 			while($select && $entry=each($select))
 			{
 				$phpgw->db->query("INSERT INTO phpgw_p_invoicepos (invoice_id,hours_id) VALUES ('$invoice_id','$entry[0]')");
 				$phpgw->db->query("UPDATE phpgw_p_hours SET status='billed' WHERE id='$entry[0]'");
 			}
 
-			$phpgw->db->query("SELECT sum(billperae*ceiling(minutes/minperae)) as sum FROM phpgw_p_hours,phpgw_p_invoicepos "
+			$phpgw->db->query("SELECT sum(billperae*(minutes/minperae)) as sum FROM phpgw_p_hours,phpgw_p_invoicepos "
 							."WHERE phpgw_p_invoicepos.invoice_id='$invoice_id' AND phpgw_p_hours.id=phpgw_p_invoicepos.hours_id");
 			$phpgw->db->next_record();
-			$db2->query("UPDATE p_invoice SET sum='".$phpgw->db->f("sum")."' WHERE id='$invoice_id'");
+			$db2->query("UPDATE p_invoice SET sum=round(" . $phpgw->db->f('sum') . ",2) WHERE id='$invoice_id'");
 		}
 	}
 	if ($errorcount) { $t->set_var('message',$phpgw->common->error_list($error)); }
