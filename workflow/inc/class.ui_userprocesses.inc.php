@@ -38,7 +38,7 @@
 				$this->t->set_var(array(
 					'link_wf_procname'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_useractivities.form&filter_process='. $process_data['wf_p_id']),
 					'item_wf_procname'		=> $process_data['wf_procname'],
-					'item_version'		=> $process_data['verion'],
+					'item_version'		=> $process_data['wf_version'],
 					'link_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_useractivities.form&filter_process='. $process_data['wf_p_id']),
 					'item_activities'	=> $process_data['wf_activities'],
 					'link_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&filter_process='. $process_data['wf_p_id']),
