@@ -122,17 +122,43 @@
 		$mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":". $phpgw_info["user"]["preferences"]["email"]["mail_port"] ."}$t_folder_s",SA_UNSEEN);
 	}
 
-	if ($nummsg > 0) 
+	if ($nummsg == 0)
 	{
+		$stats_saved = '-';
+		$stats_new = '-';
+		$stats_size = '-';
+	}
+	else
+	{
+		// TOTAL MESSAGES IN FOLDER
+		$stats_saved = number_format($nummsg);
+
 		$msg_array = array();
 		// Note: sorting on email is on address, not displayed name per php imap_sort
 		//echo "<br>SORT GOT: column '$order', '$oursort'.";
 		$msg_array = $phpgw->msg->sort($mailbox, $order, $oursort);
+
+		// NUM NEW MESSAGES
 		$stats_new = $mailbox_status->unseen;
-		$ksize = round(10*($mailbox_info->Size/1024))/10;
-	} else {
-		$stats_new = '-';
-		$ksize = '-';
+		if ($stats_new == 0)
+		{
+			$stats_new = '-';
+		} else {
+			// put a comma between the thousands
+			$stats_new = number_format($stats_new);
+		}
+		// SIZE OF FOLDER
+		$stats_size = $mailbox_info->Size;
+		// size is in bytes, format for KB or MB
+		if ($stats_size < 999999)
+		{
+			$stats_size = round(10*($mailbox_info->Size/1024))/10 .' k';
+		} else {
+			//  round to W.XYZ megs by rounding WX.YZ
+			$stats_size = round($mailbox_info->Size/(1024*100));
+			// then bring it back one digit and add the MB string
+			$stats_size = ($stats_size/10) .' MB';
+		}
 	}
 
 // ---- SwitchTo Folder Listbox   -----
@@ -164,9 +190,9 @@
 	$t->set_var('stats_font',$phpgw_info['theme']['font']);
 	$t->set_var('stats_color',$phpgw_info['theme']['em_folder_text']);
 	$t->set_var('stats_folder',$folder);
-	$t->set_var('stats_saved',$nummsg);
+	$t->set_var('stats_saved',$stats_saved);
 	$t->set_var('stats_new',$stats_new);
-	$t->set_var('stats_size',$ksize);	
+	$t->set_var('stats_size',$stats_size);	
 	$t->set_var('switchbox_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php'));
 	$t->set_var('switchbox_listbox',$switchbox_listbox);
 	$t->set_var('folder_maint_button',$folder_maint_button);

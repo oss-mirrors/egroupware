@@ -56,7 +56,7 @@ function check_all()
 					<strong> {stats_folder} - </strong> <br>
 					Saved messages: {stats_saved} <br>
 					New messages: {stats_new} <br>
-					Total size of folder: {stats_size} k
+					Total size of folder: {stats_size}
 				</font>
 			</td>
 			<td align="right">
