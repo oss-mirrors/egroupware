@@ -114,6 +114,7 @@
 			$this->t->set_var('lang_workunits',lang('Workunits'));
 			$this->t->set_var('lang_delivery_date',lang('Delivery date'));
 			$this->t->set_var('lang_work_date',lang('Work date'));
+			$this->t->set_var('lang_submit',lang('Submit'));
 		}
 
 		function display_app_header()

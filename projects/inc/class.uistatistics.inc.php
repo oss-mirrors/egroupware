@@ -111,6 +111,7 @@
     		$this->t->set_var('lang_billperae',lang('Bill per workunit'));
 			$this->t->set_var('lang_stat',lang('Statistic'));
 			$this->t->set_var('lang_userstats',lang('User statistics'));
+			$this->t->set_var('lang_submit',lang('Submit'));
 		}
 
 		function display_app_header()

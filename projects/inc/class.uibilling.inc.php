@@ -116,6 +116,7 @@
 			$this->t->set_var('lang_tax',lang('tax'));
 			$this->t->set_var('lang_position',lang('Position'));
 			$this->t->set_var('lang_work_date',lang('Work date'));
+			$this->t->set_var('lang_submit',lang('Submit'));
 		}
 
 		function display_app_header()

@@ -120,6 +120,7 @@
 			$this->t->set_var('lang_reset',lang('Clear Form'));
 			$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
 			$this->t->set_var('lang_billperae',lang('Bill per workunit'));
+			$this->t->set_var('lang_submit',lang('Submit'));
 		}
 
 		function display_app_header()

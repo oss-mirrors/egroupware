@@ -122,6 +122,7 @@
 			$this->t->set_var('lang_invoices',lang('Invoices'));
 			$this->t->set_var('lang_deliveries',lang('Deliveries'));
 			$this->t->set_var('lang_stats',lang('Statistics'));
+			$this->t->set_var('lang_submit',lang('Submit'));
 		}
 
 		function display_app_header()
