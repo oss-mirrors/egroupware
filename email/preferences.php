@@ -11,9 +11,8 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True, 
-                                "noheader" => True, "nonavbar" => True,
-				"enable_nextmatchs_class" => True);
+  $phpgw_info["flags"] = array("currentapp" => "email","noheader" => True, "nonavbar" => True,
+																"enable_nextmatchs_class" => True);
 
   include("../header.inc.php");
 

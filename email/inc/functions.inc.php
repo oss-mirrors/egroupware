@@ -343,7 +343,7 @@
 
   // Its better then them using a ton of PHP errors.
   $mailbox = $phpgw->msg->login($folder);
-  if (!$mailbox && !ereg("preferences",$PHP_SELF)) {
+  if (!$mailbox && ! (ereg("preferences",$PHP_SELF) || ! ereg($phpgw_info['server']['webserver_url'] . '/index.php',$PHP_SELF))) {
      echo "<p><center><b>" . lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
         . "</b></center>";
      $phpgw->common->phpgw_exit(True);
