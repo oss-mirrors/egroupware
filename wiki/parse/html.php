@@ -87,28 +87,21 @@ function html_table_cell_start($span = 1)
 }
 function html_table_cell_end()
   { return '</td>'; }
-function html_time($time/*stamp*/)
+function html_time($time)
 {
   global $TimeZoneOff;
-  if($time/*stamp*/ == '') { return 'never'; }
-/*$time = mktime(substr($timestamp, 8, 2),  substr($timestamp, 10, 2),
-                 substr($timestamp, 12, 2), substr($timestamp, 4, 2),
-                 substr($timestamp, 6, 2),  substr($timestamp, 0, 4));*/
+  if($time == '') { return 'never'; }
+  
   return date('D, d M Y H:i:s', $time + $TimeZoneOff * 60);
 }
-function html_gmtime($time/*stamp*/)
+function html_gmtime($time)
 {
-/*$time = mktime(substr($timestamp, 8, 2),  substr($timestamp, 10, 2),
-                 substr($timestamp, 12, 2), substr($timestamp, 4, 2),
-                 substr($timestamp, 6, 2),  substr($timestamp, 0, 4));*/
   return gmdate('Y-m-d', $time) . 'T' . gmdate('H:i:s', $time) . 'Z';
 }
-function html_timestamp($time/*stamp*/)
+function html_timestamp($time)
 {
   global $TimeZoneOff;
-/*  $time = mktime(substr($timestamp, 8, 2),  substr($timestamp, 10, 2),
-                 substr($timestamp, 12, 2), substr($timestamp, 4, 2),
-                 substr($timestamp, 6, 2),  substr($timestamp, 0, 4)); */
+  
   return date('Y.m.d H:i:s', $time + $TimeZoneOff * 60);
 }
 function html_url($url, $text)
@@ -134,7 +127,7 @@ function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appeara
   {
     if($SeparateLinkWords && $page == $appearance)
       { $appearance = html_split_name($page); }
-    return '<a href="' . viewURL($page) . $anchor . '"' . $hover . '>'
+    return '<a href="' . viewURL($page) . $anchor . '"' . $hover . ' class="wiki">'
            . $appearance . $anchor_appearance . '</a>';
   }
   else
@@ -148,13 +141,13 @@ function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appeara
 }
 function html_interwiki($url, $text)
 {
-  return '<a href="' . $url . '">' . $text . '</a>';
+  return '<a href="' . $url . '" class="wiki">' . $text . '</a>';
 }
 function html_twin($base, $ref)
 {
   global $pagestore;
 
-  return '<a href="' . $pagestore->interwiki($base) . $ref . '">' .
+  return '<a href="' . $pagestore->interwiki($base) . $ref . '" class="wiki">' .
          '<span class="twin"><em>[' . $base . ']</em></span></a>';
 }
 function html_category($time, $page, $host, $user, $comment)
@@ -191,7 +184,7 @@ function html_fulllist($page, $count)
 function html_fullhistory($page, $count)
 {
   return '<tr><td colspan="3"><strong><a href="' . historyURL($page, 1) .
-         '">' .  'See complete list (' . $count .
+         '" class="wiki">' .  'See complete list (' . $count .
          ' entries)</a></strong></td></tr>';
 }
 function html_toolbar_top()

@@ -5,15 +5,10 @@ body
     color:            #000000;
     margin-right:     3%;
     margin-left:      3%; }
-a:link
-  { color:      #97694f;
-    background: transparent; }
-a:visited
-  { color:      #4e2f2f;
-    background: transparent; }
-a:active
-  { color:      #7f3030;
-    background: transparent; }
+a.wiki {
+	background: transparent;
+	text-decoration: underline;
+}
 a.title
   { text-decoration: none; }
 img
