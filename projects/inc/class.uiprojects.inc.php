@@ -2340,7 +2340,7 @@
 			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$GLOBALS['phpgw']->template->set_var('role_select',$this->boprojects->action_format($values['role_id']));
 			$GLOBALS['phpgw']->template->set_var('event_select',$this->boprojects->action_format($values['events'],'event'));
-			$GLOBALS['phpgw']->template->set_var('lang_select_role',('select role'));
+			$GLOBALS['phpgw']->template->set_var('lang_select_role',lang('select role'));
 			$GLOBALS['phpgw']->template->set_var('emp_select',$this->employee_format(array('type' => 'selectbox','project_id' => $project_id,'selected' => $values['account_id']
 																							,'project_only' => True,'admins_included' => True)));
 			$GLOBALS['phpgw']->template->set_var('lang_assign',lang('assign'));

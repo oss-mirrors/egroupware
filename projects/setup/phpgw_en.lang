@@ -270,6 +270,7 @@ select factor	projects	en	Select factor
 select groups	projects	en	Select groups
 select main project	common	en	Select main project
 select project	projects	en	select project
+select role	projects	en	Select role
 select users	projects	en	Select users
 seller	projects	en	Seller
 seller list	projects	en	Seller list
