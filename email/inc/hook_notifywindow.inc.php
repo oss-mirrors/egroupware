@@ -19,9 +19,6 @@
 	}
 	unset($d1);
 
-	// is this still needed?
-	//$GLOBALS['phpgw_info']['server']['app_inc'] = PHPGW_SERVER_ROOT . SEP . 'email' . SEP . 'inc';
-
 	// NOTE: notify for email not available if the welcome screen show mail option if off
 	// just wondering, where and when is this pref array data created prior to mail_msg object creation?
 	if (($GLOBALS['phpgw_info']['user']['preferences']['email']['mainscreen_showmail'])
@@ -64,24 +61,19 @@
 
 		if ($inbox_data['alert_string'] != '')
 		{
+			echo '<script language="JavaScript">'."\n";
+			echo '	<!-- Activate Cloaking Device'."\n";
+			echo '	function CheckEmail()'."\n";
+			echo '	{'."\n";
+			echo '		window.opener.document.location.href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index').'";'."\n";
+			echo '	}'."\n";
+			echo '	//-->'."\n";
+			echo '	</script>'."\n";
 			echo "\r\n" . '<tr><td align="left"><!-- Mailbox info X10 -->' . "\r\n";
-/*			echo '<script language="JavaScript">'.chr(13).chr(10);
-			echo '<!-- Activate Cloaking Device'.chr(13).chr(10);
-			echo '	funtion CheckEmail()'.chr(13).chr(10);
-			echo '	{'.chr(13).chr(10);
-			echo '		window.opener.document.location.href="'.$GLOBALS['phpgw']->link("../email/").'";'.chr(13).chr(10);
-			echo '	}'.chr(13).chr(10);
-			echo '//-->'.chr(13).chr(10);
-			echo '</script>'.chr(13).chr(10); */
-			//echo '<font color="FFFFFF">EMail';
-			//echo ($str ? ' - <A href="JavaScript:CheckEmail();">' . $str . '</A>' : '') . '</font>';
 			echo lang("EMail").' - <a href="JavaScript:CheckEmail();">'.$inbox_data['alert_string'].'</a>';
 			//echo '</font>';
 			echo "\r\n".'<!-- Mailox info --></td></tr>'."\r\n";
 		}
 
 	}
-	
-	// is this still needed?
-	//$GLOBALS['phpgw_info']['server']['app_inc'] = $tmp_app_inc;
 ?>
