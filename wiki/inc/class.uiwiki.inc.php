@@ -119,6 +119,7 @@
 				{
 					case 'delete':
 						$content['text'] = '';
+						$content['comment'] = lang('deleted');
 						$content['is_html'] = False;	// else page is not realy empty
 					case 'rename':
 					case 'save':
