@@ -51,7 +51,7 @@ install: build
 	# Install $(APP) files in $(PACKAGE)
 	find $(FINDOPT) $(APPFILE) \
 		-exec install -D --mode=644 \
-			{} $(PACHAGE)/{} \; ;\
+			{} $(PACKAGE)/{} \; ;\
 	
 	# Install $(APP) doc files in $(PACKAGEDOC)
 	cd doc ;\
