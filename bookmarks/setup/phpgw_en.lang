@@ -1,11 +1,16 @@
+%1 bookmarks have been deleted	bookmarks	en	%1 bookmarks have been deleted
 %1 bookmarks imported from %2 successfully.	bookmarks	en	%1 bookmarks imported from %2 successfully.
 (comma separate multiple addresses)	bookmarks	en	(comma separate multiple addresses)
 <b>note:</b> this currently works with netscape bookmarks only	bookmarks	en	<b>Note:</b> This currently works with netscape bookmarks only
+all bookmarks	bookmarks	en	All bookmarks
 and	bookmarks	en	And
 append this message to mailed bookmarks	bookmarks	en	Append this message to mailed bookmarks
 ascending	bookmarks	en	Ascending
 book marks	common	en	Book marks
 bookmark changed sucessfully	bookmarks	en	Bookmark changed sucessfully
+bookmark created successfully.	bookmarks	en	Bookmark created successfully.
+bookmark not editable	bookmarks	en	Bookmark not editable
+bookmark not readable	bookmarks	en	Bookmark not readable
 bookmarks	common	en	Bookmarks
 bookmarks settings	bookmarks	en	Bookmarks Settings
 change bookmark	bookmarks	en	Change Bookmark
@@ -23,6 +28,8 @@ enter the name of the netscape bookmark file<br>that you want imported into book
 fewer	bookmarks	en	Fewer
 filter by	bookmarks	en	Filter by
 found a link you might like	bookmarks	en	Found a link you might like
+from	bookmarks	en	From
+from category %1	bookmarks	en	from category %1
 highest	bookmarks	en	Highest
 i thought you would be interested in the following link(s):	bookmarks	en	I thought you would be interested in the following link(s):
 import bookmarks	preferences	en	Import bookmarks
@@ -44,15 +51,16 @@ query condition	bookmarks	en	Query Condition
 rating	bookmarks	en	Rating
 search for:	bookmarks	en	Search for:
 send bookmark	bookmarks	en	Send bookmark
-showing %1	bookmarks	en	showing %1
-showing %1 - %2 of %3	bookmarks	en	showing %1 - %2 of %3
 sub category	bookmarks	en	Sub Category
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	en	To address %1 invalid. Format must be <strong>user@domain</strong> and domain must exist!
 to e-mail addresses	bookmarks	en	To E-Mail Addresses
+to which category should the imported folder hierarchy be attached	bookmarks	en	To which category should the imported folder hierarchy be attached
 total visits	bookmarks	en	total visits
 tree view	bookmarks	en	Tree view
 unable to open temp file %1 for import.	bookmarks	en	Unable to open temp file %1 for import.
+url is required.	bookmarks	en	URL is required.
 view bookmark	bookmarks	en	View bookmark
 view this bookmark	bookmarks	en	View this bookmark
 warning	bookmarks	en	Warning
 you are viewing this site outside of phpgroupware	bookmarks	en	You are viewing this site outside of phpGroupWare
+you must select a category	bookmarks	en	You must select a category
