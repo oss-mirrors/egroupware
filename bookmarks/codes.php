@@ -121,7 +121,7 @@
     }
         
     // Does the code already exist?
-    $phpgw->db->query("select name from $codename where name='" . addslashes($name)
+    $phpgw->db->query("select name from $codetable where name='" . addslashes($name)
                     . "' and username='" . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
 
     if ($phpgw->db->nf() > 0) {
