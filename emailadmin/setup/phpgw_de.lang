@@ -75,3 +75,4 @@ imap server logintyp	emailadmin	de	IMAP-Server Loginverfahren
 Virtual MAIL ManaGeR	emailadmin	de	Virtual MAIL ManaGeR
 standard	emailadmin	de	Standard
 A central Mailserver management application for EGroupWare.	common	de	Zentrale Managementanwendung für EMailServer. Geschrieben für EGroupware.
+Do you really want to delete this Profile	emailadmin	de	Wollen Sie dieses Profil wirklich löschen

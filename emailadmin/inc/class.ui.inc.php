@@ -271,7 +271,9 @@
 						'menuaction'	=> 'emailadmin.ui.deleteProfile',
 						'profileid'	=> $profileList[$i]['profileID']
 					);
-					$deleteLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).'">'.lang('delete').'</a>';
+					$deleteLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).
+						      '" onClick="return confirm(\''.lang('Do you really want to delete this Profile').'?\')">'.
+						      lang('delete').'</a>';
 					
 					$data[] = array(
 						$descriptionLink,
