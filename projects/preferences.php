@@ -11,23 +11,26 @@
   \**************************************************************************/
 /* $Id$ */
   
-  if ($submit) {
-     $phpgw_info["flags"] = array("noheader" => True, 
-                                  "nonavbar" => True);
-  }
+  $phpgw_info["flags"] = array("currentapp" => "projects",                                                                                                                            
+                               "noheader" => True,                                                                                                                                 
+                               "nonavbar" => True,
+                               "noappheader" => True,
+                               "noappfooter" => True);
 
-  $phpgw_info["flags"]["currentapp"] = "projects";
-  include("../header.inc.php");
-  
-  
-if ($submit) {
+  include("../header.inc.php"); 
+
+  if ($submit) {
      $phpgw->preferences->change("projects","tax");
      $phpgw->preferences->change("projects","address");
      $phpgw->preferences->commit();     
      
     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/preferences/"));
+    $phpgw->common->phpgw_exit();     
      }
-  
+
+   $phpgw->common->phpgw_header();                                                                                                                                                       
+   echo parse_navbar();  
+
      if ($totalerrors) {                                                                                                                                                               
      echo "<p><center>" . $phpgw->common->error_list($errors) . "</center>";                                                                                                        
       }     

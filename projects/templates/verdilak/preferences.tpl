@@ -6,7 +6,8 @@
        Window1=window.open('{addresses_link}',"Search","width=800,height=600","scrolling=yes,toolbar=yes,resizable=yes");                                      
     }                                                                                                                                                                                          
    </script>      
-    <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
+<br><br>    
+   <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
       <hr noshade width="98%" align="center" size="1">
 
       <center>

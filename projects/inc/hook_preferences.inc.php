@@ -30,5 +30,5 @@
    printf("<A href=\"%s\">%s</A><br>", $pg, lang("Project preferences"));
 
    section_end(); 
-}
+   }
 ?>
