@@ -15,6 +15,7 @@ activity %1 has been updated	projects	fr	L'activité %1 a été modifiée.
 activity %1 has been updated !	projects	fr	L'activité %1 a été mise à jour !
 activity id	projects	fr	ID Activité
 add activity	projects	fr	Ajouter activité
+add file	projects	fr	Ajouter un fichier
 add job	projects	fr	Ajouter tâche
 add milestone	projects	fr	Ajouter étapé clé
 add project	projects	fr	Ajouter projet
@@ -76,6 +77,9 @@ columns to show in the projects list	projects	fr	Colonnes à afficher dans la lis
 comment	projects	fr	Commentaire
 continue	projects	fr	Continuer
 coordinator	common	fr	Coordinateur
+costs	projects	fr	Coûts
+costs list	projects	fr	Liste des coûts
+costtype	projects	fr	Type de coûts
 courier new	projects	fr	Courier New
 create delivery	projects	fr	Créer une livraison
 create invoice	projects	fr	Créer une facture
@@ -143,13 +147,16 @@ event %1 has been updated	projects	fr	l'évènement %1 à été mis à jour
 events	projects	fr	Evènements
 exact accounting [hh.mm]	admin	fr	Compte
 exactly accounting	projects	fr	Comptabilisation exacte
+export as	projects	fr	exporter en tant que
 external reference	projects	fr	Référence externe
 extra budget	projects	fr	Budget supplémentaire
+extra budget sum of all sub projects is bigger than the extra budget of the main project	projects	fr	La somme du budget extra de tous ls sous-projets est supérieure au budget extra du projet principal.
 factor employee	projects	fr	Facturer l'employé
 factor has been deleted	projects	fr	mode de facturation supprimé
 factor has been saved	projects	fr	mode de facturation sauvegardé
 factor has been updated	projects	fr	mode de facturation mis à jour
 factor project	projects	fr	Facturer le projet
+failed sending message to '%1' #%2 subject='%3', sender='%4' !!!	projects	fr	Echec d'envoir du message à '%1' #%2 sujet='%3', expéditeur='%4' !!!
 from	projects	fr	De
 from %1 to %2	projects	fr	de %1 à %2
 gantt chart	projects	fr	Diagramme de Gantt
@@ -216,7 +223,7 @@ main project	projects	fr	Projet principal
 main project:	projects	fr	Projet principal:
 manager	projects	fr	Directeur
 manager list	projects	fr	Liste des directeurs
-managing committee	admin	fr	Comité de gestion
+managing committee	projects	fr	Comité de gestion
 manuell entries	projects	fr	Entrées manuelles
 milestone	projects	fr	Etape clé
 milestone date due	projects	fr	Date d'étape clé due
@@ -239,6 +246,7 @@ number	projects	fr	Nombre
 old end date	projects	fr	Ancienne date de fin
 old start date	projects	fr	Ancienne date de départ
 open	projects	fr	Ouvert
+open popup	projects	fr	ouvrir popup
 open popup window	projects	fr	Ouvrir une fenêtre Popup
 overall	projects	fr	Total
 parent project	projects	fr	Projet parent
@@ -285,10 +293,11 @@ project	projects	fr	Projet
 project %1 has been saved	projects	fr	Le projet %1 a été enregistré.
 project %1 has been updated	projects	fr	Le projet %1 a été mis à jour.
 project accounting	admin	fr	Facturation du projet
-project administrators	admin	fr	Administrateurs du projet
+project administrators	projects	fr	Administrateurs du projet
 project archive	projects	fr	Archive de projets
 project billing	projects	fr	Facturation de projet
 project data due	projects	fr	Date due du projet
+project date due	projects	fr	Date due du projet
 project delivery	projects	fr	Livraison de projet
 project dependencies	common	fr	Dépendances du projet
 project id	common	fr	ID de projet
@@ -315,7 +324,7 @@ role %1 has been updated	projects	fr	le rôle %1 a été mis à jour
 role has been deleted	projects	fr	le rôle à été supprimmé
 roles	projects	fr	Rôles
 roles list	projects	fr	List des rôles
-sales department	admin	fr	Département des ventes
+sales department	projects	fr	Département des ventes
 save factor	projects	fr	Sauver facteur
 save milestone	projects	fr	sauver étape clé
 select factor	projects	fr	Choisissez facteur
@@ -348,6 +357,7 @@ statistic	projects	fr	Statistique
 statistics	projects	fr	Statistiques
 stop	projects	fr	Arrêt
 sub project level %1	projects	fr	Sous-projet niveau %1
+subproject	projects	fr	sous-projet
 sum	projects	fr	Total
 sum budget	projects	fr	Somme du budget
 sum hours	projects	fr	Total heures
@@ -365,6 +375,7 @@ the delivery note contains no items !	projects	fr	La note de livraison ne contie
 the invoice contains no items !	projects	fr	La facture ne contient aucun objet !
 this is mostly caused by a not or wrongly configured smtp server. notify your administrator.	projects	fr	Ceci arrive souvent à cause d'un serveur SMTP mal ou pas configuré. Avisez-en votre administrateur.
 till	projects	fr	Jusqu'à
+time of journey	projects	fr	Durée du déplacement
 time planned	projects	fr	Temps planifié
 time planned main project	projects	fr	Temps planifié projet principal
 time tracker	projects	fr	Pointeuse
@@ -403,6 +414,7 @@ work hours	common	fr	Heures de travail
 work hours archive	projects	fr	Archive des heures de travail
 work hours list	projects	fr	Liste des heures de travail
 work time	projects	fr	Temps de travail
+workload warning for project	projects	fr	avertisseur de charge de travail pour le projet
 workunit	projects	fr	Unité de travail
 workunits	projects	fr	Unités de travail
 written by:	projects	fr	Ecrit par:
