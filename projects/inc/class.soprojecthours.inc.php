@@ -71,8 +71,7 @@
 
 			if ($query)
 			{
-				$querymethod = " AND (remark like '%$query%' OR start_date like '%$query%' OR end_date like '%$query%' OR minutes like '%$query%' "
-							. "OR hours_descr like '%$query%')";
+				$querymethod = " AND (remark like '%$query%' OR minutes like '%$query%' OR hours_descr like '%$query%')";
 			}
 
 			$sql = "SELECT * FROM phpgw_p_hours WHERE $filtermethod $querymethod";
@@ -84,7 +83,7 @@
 			$i = 0;
 			while ($this->db->next_record())
 			{
-				$hours[$i]['hours_id']			= $this->db->f('id');
+				$hours[$i]['hours_id']		= $this->db->f('id');
 				$hours[$i]['project_id']	= $this->db->f('project_id');
 				$hours[$i]['hours_descr']	= $this->db->f('hours_descr');
 				$hours[$i]['status']		= $this->db->f('status');
@@ -118,7 +117,6 @@
 			}
 			return $hours;
 		}
-
 
 		function add_hours($values)
 		{
@@ -174,6 +172,11 @@
 			{
 				return False;
 			}
+		}
+
+		function delete_hours($hours_id)
+		{
+			$this->db->query("Delete from phpgw_p_hours where id = '$hours_id'",__LINE__,__FILE__);
 		}
 	}
 ?>

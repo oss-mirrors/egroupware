@@ -927,9 +927,7 @@
 				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php',$link_data));
 			}
 
-			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
-
+			$this->display_app_header();
 			$this->t->set_file(array('pa_delete' => 'delete.tpl'));
 
 			$this->t->set_var('lang_subs','');

@@ -236,5 +236,10 @@
 				$this->soprojecthours->add_hours($values);
 			}
 		}
+
+		function delete_hours($hours_id)
+		{
+			$this->soprojecthours->delete_hours($hours_id);
+		}
 	}
 ?>

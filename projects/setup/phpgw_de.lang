@@ -9,7 +9,7 @@ Activity ID	projects	de	Aktivit&auml;ts ID
 Activity x has been added !	projects	de	Aktivit&auml;t %1 wurde hinzugef&uuml;gt !
 Activity x has been updated !	projects	de	Aktivit&auml;t %1 wurde &uuml;berarbeitet !
 Add Activity	projects	de	Aktivit&auml;t hinzuf&uuml;gen
-Add hours	projects	de	Studen hinzuf&uuml;gen
+Add work hours	projects	de	Arbeitsstunden hinzuf&uuml;gen
 Add project	projects	de	Projekt hinzuf&uuml;gen
 Add project hours	projects	de	Projektstuden hinzuf&uuml;gen
 Administrator	projects	de	Administrator
@@ -40,7 +40,7 @@ Delivery notes	projects	de	Lieferscheine
 Delivery x has been created !	projects	de	Lieferung %1 wurde erstellt !
 Delivery x has been updated !	projects	de	Lieferung %1 wurde &uuml;berarbeitet !
 Edit Activity	projects	de	Aktivit&auml;t &uuml;berarbeiten
-Edit hours	projects	de	Stunden &uuml;berarbeiten
+Edit work hours	projects	de	Arbeitsstunden &uuml;berarbeiten
 Edit project administrator list	projects	de	Projekt Administrator Liste &uuml;berarbeiten
 Edit project	projects	de	Projekt &uuml;berarbeiten
 Edit project hours	projects	de	Projektstunden &uuml;berarbeiten
@@ -65,7 +65,6 @@ Job has been updated !	projects	de	Job wurde &uuml;berarbeitet !
 Job ID	projects	de	Job ID
 Job list	projects	de	Job Liste
 Jobs	projects	de	Jobs
-List hours	projects	de	Stunden Liste
 Main project	projects	de	Hauptprojekt
 Minutes per workunit	projects	de	Minuten pro Arbeitseinheit
 net	projects	de	netto
@@ -117,10 +116,12 @@ Update delivery	projects	de	Lieferung &uuml;berarbeiten
 Username / Group	projects	de	Benutzername / Gruppe
 User statistic	projects	de	Benutzer Statistik
 User statistics	projects	de	Benutzer Statistiken
+View work hours	projects	de	Arbeitsstunden anzeigen
 View job	projects	de	Job anzeigen
 View project	projects	de	Projekt anzeigen
 Work date	projects	de	Arbeitsdatum
 Work hours	projects	de Arbeitsstunden
+Work hours list	projects	de	Arbeitsstunden Liste
 Work time	projects	de	Arbeitszeit
 Workunit	projects	de	Arbeitseinheit
 Workunits	projects	de	Arbeitseinheiten

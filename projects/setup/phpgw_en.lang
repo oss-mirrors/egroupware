@@ -9,7 +9,7 @@ Activity ID	projects	en	Activity ID
 Activity x has been added !	projects	en	Activity %1 has been added !
 Activity x has been updated !	projects	en	Activity %1 has been updated !
 Add Activity	projects	en	Add activity
-Add hours	projects	en	Add hours
+Add work hours	projects	en	Add work hours
 Add job	projects	en	Add job
 Add project	projects	en	Add project
 Add project hours	projects	en	Add project hours
@@ -42,7 +42,7 @@ Delivery notes	projects	en	Delivery notes
 Delivery x has been created !	projects	en	Delivery %1 has been created !
 Delivery x has been updated !	projects	en	Delivery %1 has been updated !
 Edit Activity	projects	en	Edit activity
-Edit hours	projects	en	Edit Hours
+Edit work hours	projects	en	Edit work hours
 Edit project administrator list	projects	en	Edit project administrator list
 Edit project	projects	en	Edit project
 Edit project hours	projects	en	Edit project hours
@@ -68,7 +68,6 @@ Job has been updated !	projects	en	Job has been updated !
 Job ID	projects	en	Job ID
 Job list	projects	en	Job list
 Jobs	projects	en	Jobs
-List hours	projects	en	List hours
 Main project:	projects	en	Main project:
 Minutes per workunit	projects	en	Minutes per workunit
 net	projects	en	net
@@ -120,6 +119,7 @@ Update delivery	projects	en	Update delivery
 Username / Group	projects	en	Username / Group
 User statistic	projects	en	User statistic
 user statistics	projects	en	User statistics
+View work hours	projects	en	View work hours
 View job	projects	en	View job
 View project	projects	en	View project
 Work date	projects	en	Work date

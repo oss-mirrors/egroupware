@@ -37,7 +37,9 @@
 		(
 			'list_hours'	=> True,
 			'add_hours'		=> True,
-			'edit_hours'	=> True
+			'edit_hours'	=> True,
+			'delete_hours'	=> True,
+			'view_hours'	=> True
 		);
 
 		function uiprojecthours()
@@ -106,7 +108,6 @@
 			$this->t->set_var('lang_project',lang('Project'));
 			$this->t->set_var('lang_descr',lang('Short description'));
 			$this->t->set_var('lang_remark',lang('Remark'));
-			$this->t->set_var('lang_hours',lang('Hours'));
 			$this->t->set_var('lang_status',lang('Status'));
 			$this->t->set_var('lang_employee',lang('Employee'));
 			$this->t->set_var('lang_work_date',lang('Work date'));
@@ -158,6 +159,28 @@
 
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
+		}
+
+		function format_htime($hdate = '')
+		{
+			if (!$hdate || $hdate == 0)
+			{
+				$htime['date'] = '&nbsp;';
+				$htime['time'] = '&nbsp;';
+			}
+			else
+			{
+			//	$month = $GLOBALS['phpgw']->common->show_date(time(),'n');
+			//	$day = $GLOBALS['phpgw']->common->show_date(time(),'d');
+			//	$year = $GLOBALS['phpgw']->common->show_date(time(),'Y');
+				$hour = date('H',$hdate);
+				$min = date('i',$hdate);
+
+				$hdate = $hdate + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+				$htime['date'] = $GLOBALS['phpgw']->common->show_date($hdate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+				$htime['time'] = $GLOBALS['phpgw']->common->formattime($hour,$min);
+			}
+			return $htime;
 		}
 
 		function list_hours()
@@ -247,39 +270,8 @@
 				$statusout = lang($status);
 				$this->t->set_var('tr_color',$tr_color);
 
-				$ampm = 'am';
-
-				$start_date = $hours[$i]['sdate'];
-				if ($start_date == 0)
-				{
-					$start_dateout = '&nbsp;';
-					$start_time = '&nbsp;';
-				}
-				else
-				{
-					$smonth = $GLOBALS['phpgw']->common->show_date(time(),'n');
-					$sday = $GLOBALS['phpgw']->common->show_date(time(),'d');
-					$syear = $GLOBALS['phpgw']->common->show_date(time(),'Y');
-					$shour = date('H',$start_date);
-					$smin = date('i',$start_date);
-
-					$start_date = $start_date + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
-					$start_dateout = $GLOBALS['phpgw']->common->show_date($start_date,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
-					$start_timeout = $GLOBALS['phpgw']->common->formattime($shour,$smin);
-				}
-
-				$end_date = $hours[$i]['edate'];
-				if ($end_date == 0) { $end_timeout = '&nbsp;'; }
-				else
-				{
-					$emonth = $GLOBALS['phpgw']->common->show_date(time(),'n');
-					$eday = $GLOBALS['phpgw']->common->show_date(time(),'d');
-					$eyear = $GLOBALS['phpgw']->common->show_date(time(),'Y');
-					$ehour = date('H',$end_date);
-					$emin = date('i',$end_date);
-
-					$end_timeout = $GLOBALS['phpgw']->common->formattime($ehour,$emin);
-				}
+				$sdate = $this->format_htime($hours[$i]['sdate']);
+				$edate = $this->format_htime($hours[$i]['edate']);
 
 				$minutes = floor($hours[$i]['minutes']/60) . ':'
 						. sprintf ("%02d",(int)($hours[$i]['minutes']-floor($hours[$i]['minutes']/60)*60));
@@ -295,17 +287,18 @@
 				$this->t->set_var(array('employee' => $employeeout,
 								'hours_descr' => $hours_descr,
 									'status' => $statusout,
-								'start_date' => $start_dateout,
-								'start_time' => $start_timeout,
-									'end_time' => $end_timeout,
+								'start_date' => $sdate['date'],
+								'start_time' => $sdate['time'],
+									'end_time' => $edate['time'],
 									'minutes' => $minutes));
+
+				$link_data['hours_id'] = $hours[$i]['hours_id'];
 
 				if ($this->state != 'billed')
 				{
 					if ($this->boprojects->check_perms($this->grants[$hours[$i]['employee']],PHPGW_ACL_EDIT) || $hours[$i]['employee'] == $this->account)
 					{
 						$link_data['menuaction'] = 'projects.uiprojecthours.edit_hours';
-						$link_data['hours_id'] = $hours[$i]['hours_id'];
 						$this->t->set_var('edit',$GLOBALS['phpgw']->link('/index.php',$link_data));
 						$this->t->set_var('lang_edit',lang('Edit'));
 					}
@@ -316,8 +309,8 @@
 					$this->t->set_var('lang_edit_entry','&nbsp;');
 				}
 
-				$this->t->set_var('view',$GLOBALS['phpgw']->link('/projects/viewhours.php','id=' . $hours[$i]['id'] . '&pro_parent=' . $pro[0]['parent']
-										. '&sort=' . $sort . '&order=' . $order . '&query=' . $query . '&start=' . $start . '&filter=' . $filter));
+				$link_data['menuaction'] = 'projects.uiprojecthours.view_hours';
+				$this->t->set_var('view',$GLOBALS['phpgw']->link('/index.php',$link_data));
 				$this->t->set_var('lang_view_entry',lang('View'));
 
 				$this->t->fp('list','hours_list',True);
@@ -392,8 +385,6 @@
 				$dateval['hour'] = date('H',$hdate);
 				$dateval['min'] = date('i',$hdate);
 			}
-
-
 			return $dateval;
 		}
 
@@ -442,7 +433,7 @@
 
 			$link_data['menuaction'] = 'projects.uiprojecthours.add_hours';
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$this->t->set_var('lang_action',lang('Add project hours'));
+			$this->t->set_var('lang_action',lang('Add work hours'));
 
 			$values['project_id'] = $project_id;
 			$this->t->set_var('project_name',$this->boprojects->return_value($values['project_id']));
@@ -601,7 +592,7 @@
 			}
 
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$this->t->set_var('lang_action',lang('Edit project hours'));
+			$this->t->set_var('lang_action',lang('Edit work hours'));
 
 			$values = $this->boprojecthours->read_single_hours($hours_id);
 
@@ -690,6 +681,9 @@
 
 			$this->t->set_var('minperae',$values['minperae']);
 			$this->t->set_var('billperae',$values['billperae']);
+			$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
+			$this->t->set_var('lang_billperae',lang('Bill per workunit'));
+			$this->t->set_var('currency',$currency);
 
 			$this->t->set_var('project_name',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value($values['project_id'])));
 
@@ -697,8 +691,9 @@
 
 			if ($this->boprojects->check_perms($grants[$values['employee']],PHPGW_ACL_DELETE) || $values['employee'] == $this->account)
 			{
-				$this->t->set_var('delete','<form method="POST" action="' . $GLOBALS['phpgw']->link('/projects/hours_deletehour.php','id=' . $hours_id
-									. '&project_id=' . $project_id) . '"><input type="submit" value="' . lang('Delete') .'"></form>');
+				$link_data['menuaction'] = 'projects.uiprojecthours.delete_hours';
+				$this->t->set_var('delete','<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data)
+										. '"><input type="submit" value="' . lang('Delete') .'"></form>');
 			}
 			else
 			{
@@ -709,6 +704,105 @@
 			$this->t->set_var('addhandle','');
 			$this->t->pfp('out','hours_edit');
 			$this->t->pfp('edithandle','edit');
+		}
+
+		function view_hours()
+		{
+			global $hours_id, $referer;
+
+			$referer = $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] ? $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] : $GLOBALS['HTTP_REFERER'];
+
+			if (!$hours_id)
+			{
+				Header('Location: ' . $referer);
+			}
+
+			$this->display_app_header();
+
+			$this->t->set_file(array('hours_view' => 'hours_view.tpl'));
+			$this->t->set_var('lang_action',lang('View work hours'));
+			$this->t->set_var('doneurl',$referer);
+
+			$nopref = $this->boprojects->check_prefs();
+			if ($nopref)
+			{
+				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
+			}
+			else
+			{
+				$currency = $this->boprojects->get_prefs();
+			}
+
+			$values = $this->boprojecthours->read_single_hours($hours_id);
+
+			$this->t->set_var('status',lang($values['status']));
+
+			$sdate = $this->format_htime($values['sdate']);
+			$edate = $this->format_htime($values['edate']);
+
+			$this->t->set_var('sdate',$sdate['date']);
+			$this->t->set_var('stime',$sdate['time']);
+
+			$this->t->set_var('edate',$edate['date']);
+			$this->t->set_var('etime',$edate['time']);
+
+			$this->t->set_var('remark',$GLOBALS['phpgw']->strip_html($values['remark']));
+			$this->t->set_var('hours_descr',$GLOBALS['phpgw']->strip_html($values['hours_descr']));
+
+			$this->t->set_var('hours',floor($values['ae_minutes']/60));
+			$this->t->set_var('minutes',($values['ae_minutes']-(floor($values['ae_minutes']/60)*60)));
+
+			$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
+			$this->t->set_var('lang_billperae',lang('Bill per workunit'));
+			$this->t->set_var('currency',$currency);
+			$this->t->set_var('minperae',$values['minperae']);
+			$this->t->set_var('billperae',$values['billperae']);
+
+			$cached_data = $this->boprojects->cached_accounts($values['employee']);
+			$employeeout = $GLOBALS['phpgw']->strip_html($cached_data[$values['employee']]['account_lid']
+                                        			. ' [' . $cached_data[$values['employee']]['firstname'] . ' '
+                                        			. $cached_data[$values['employee']]['lastname'] . ' ]');
+			$this->t->set_var('employee',$employeeout);
+
+			$this->t->set_var('project_name',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value($values['project_id'])));
+
+			$this->t->set_var('activity',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value($values['project_id'])));
+
+			$this->t->pfp('out','hours_view');
+		}
+
+		function delete_hours()
+		{
+			global $confirm, $hours_id, $project_id;
+
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uiprojecthours.list_hours',
+				'hours_id'		=> $hours_id,
+				'project_id'	=> $project_id
+			);
+
+			if ($confirm)
+			{
+				$this->boprojecthours->delete_hours($hours_id);
+				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php',$link_data));
+			}
+
+			$this->display_app_header();
+
+			$this->t->set_file(array('hours_delete' => 'delete.tpl'));
+
+			$this->t->set_var('lang_subs','');
+			$this->t->set_var('subs', '');
+			$this->t->set_var('nolink',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->t->set_var('deleteheader',lang('Are you sure you want to delete this entry ?'));
+			$this->t->set_var('lang_no',lang('No'));
+			$this->t->set_var('lang_yes',lang('Yes'));
+
+			$link_data['menuaction'] = 'projects.uiprojecthours.delete_hours';
+			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
+
+			$this->t->pfp('out','hours_delete');
 		}
 	}
 ?>
