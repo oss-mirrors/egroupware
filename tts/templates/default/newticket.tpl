@@ -52,7 +52,7 @@
 	</tr>
 
 	<tr bgcolor="{row_off}">
-		<td colspan="4"><input name="ticket[subject]" value="{value_subject}"></td>
+		<td colspan="4"><input name="ticket[subject]" value="{value_subject}" size="65"></td>
 	</tr>
 
 	<tr bgcolor="{row_off}">
