@@ -337,8 +337,10 @@
 		}
 		else
 		{
-			// clean up the string
-			$encrypted_passwd = $this->stripslashes_gpc($encrypted_passwd);
+			// ***** STRIP SLASHES BEFORE CALLING THIS FUNCTION !!!!!!! ******
+			// we have no way of knowing if it's necessary, but you do, you who call this function
+			//$encrypted_passwd = $this->stripslashes_gpc($encrypted_passwd);
+			$encrypted_passwd = $data;
 			if ($this->is_serialized($encrypted_passwd))
 			{
 				$encrypted_passwd = unserialize($encrypted_passwd);
@@ -372,6 +374,51 @@
 			{
 				$passwd = unserialize($passwd);
 			}
+
+
+			// #### (begin) Upgrade Routine for 0.9.12 and earlier versions ####
+			/* // these version *may* have double ot tripple serialized passwd stored in their preferences table
+			// (1) check for this (2) unserialize to the real string (3) feed the unserialized / fixed passwd in the prefs class */
+			// (1) check for this 
+			$multi_serialized = $this->is_serialized($passwd);
+			if ($multi_serialized)
+			{
+				$pre_upgrade_passwd = $passwd;
+				// (2) unserialize to the real string
+				$failure = 10;
+				$loop_num = 0;
+				do
+				{
+					$loop_num++;
+					if ($loop_num == $failure)
+					{
+						break;
+					}
+					$passwd = unserialize($passwd);
+				}
+				while ($this->is_serialized($passwd));
+				
+				// 10 loops is too much, something is wrong
+				if ($loop_num == $failure)
+				{
+					// screw it and continue as normal, user will need to reenter password
+					$passwd = $pre_upgrade_passwd;
+				}
+				else
+				{
+					// (3) feed the unserialized / fixed passwd in the prefs class
+					$phpgw->preferences->delete("email","passwd");
+					// make any html quote entities back to real form (i.e. ' or ")
+					$encrypted_passwd = $this->html_quotes_decode($passwd);
+					// encrypt it as it would be as if the user had just submitted the preferences page (no need to strip slashes, no POST occured)
+					$encrypted_passwd = $this->encrypt_email_passwd($passwd);
+					// store in preferences so this does not happen again
+					$phpgw->preferences->add("email","passwd",$encrypted_passwd);
+					$phpgw->preferences->save_repository();
+				}
+			}
+			// #### (end) Upgrade Routine for 0.9.12 and earlier versions ####
+
 			$passwd = $this->html_quotes_decode($passwd);
 			//echo 'decrypt_email_passwd result: '.$passwd;
 		}
