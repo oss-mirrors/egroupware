@@ -13,7 +13,10 @@
 
   /* $Id$ */
 
-	if ($newsmode == 'on'){$phpgw_info['flags']['newsmode'] = True;}
+	if ($newsmode == 'on')
+	{
+		$phpgw_info['flags']['newsmode'] = True;
+	}
 
 	$phpgw_info['flags'] = array(
 		'currentapp' => 'email',
@@ -104,7 +107,7 @@
 			}
 		}
 	}
-//<!--   Window1=window.open('<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/addressbook.php','query='); ?>+document.doit.to.value',"Search","width=800,height=600","toolbar=yes,resizable=yes");  -->
+//<!--   Window1=window.open('<_?_php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/addressbook.php','query='); ?_>+document.doit.to.value',"Search","width=800,height=600","toolbar=yes,resizable=yes");  -->
 
 ?>
 
