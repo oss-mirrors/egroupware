@@ -1,48 +1,25 @@
 # $Id$
 
-CREATE TABLE bookmarks (
-  id          int(10) unsigned NOT NULL auto_increment,
-  url         varchar(255) DEFAULT '' NOT NULL,
-  name        varchar(255) DEFAULT '' NOT NULL,
-  ldesc       varchar(255) DEFAULT '' NOT NULL,
-  keywords    varchar(255),
-  category_id tinyint(4) DEFAULT '0' NOT NULL,
-  subcategory_id tinyint(4) DEFAULT '0' NOT NULL,
-  rating_id   tinyint(4) DEFAULT '0' NOT NULL,
-  username    varchar(32) DEFAULT '' NOT NULL,
-  bm_timestamps varchar(255),
-  bm_vists    int default '0' NOT NULL,
-  public_f    char(1) DEFAULT 'N' NOT NULL,
-  PRIMARY KEY (id),
-  KEY username (username)
+CREATE TABLE phpgw_bookmarks (
+  bm_id          int NOT NULL auto_increment,
+  bm_owner       int,
+  bm_access      varchar(255),
+  bm_url         varchar(255),
+  bm_name        varchar(255),
+  bm_desc        varchar(255),
+  bm_keywords    varchar(255),
+  bm_category    int,
+  bm_subcategory int,
+  bm_rating      int,
+  bm_info        varchar(255),
+  bm_visits      int,
+  primary key (bm_id)
 );
 
-CREATE TABLE bookmarks_rating (
-  id       int unsigned DEFAULT '0' NOT NULL auto_increment,
-  name     varchar(30) DEFAULT '' NOT NULL,
-  username varchar(32) DEFAULT '' NOT NULL,
-  list_tag varchar(255),
-  PRIMARY KEY (id,username)
-);
-
-CREATE TABLE bookmarks_category (
-  id int unsigned DEFAULT '0' NOT NULL auto_increment,
-  name varchar(30) DEFAULT '' NOT NULL,
-  username varchar(32) DEFAULT '' NOT NULL,
-  PRIMARY KEY (id,username)
-);
-
-CREATE TABLE bookmarks_subcategory (
-  id int unsigned DEFAULT '0' NOT NULL auto_increment,
-  name varchar(30) DEFAULT '' NOT NULL,
-  username varchar(32) DEFAULT '' NOT NULL,
-  PRIMARY KEY (id,username)
-);
-
-CREATE TABLE bookmarks_search (
-  id int(10) unsigned NOT NULL,
-  name varchar(30) DEFAULT '' NOT NULL,
-  query varchar(255) DEFAULT '' NOT NULL,
-  username varchar(32) DEFAULT '' NOT NULL,
-  PRIMARY KEY (id,username)
+CREATE TABLE phpgw_bookmarks_search (
+  id             int NOT NULL auto_increment,
+  name           varchar(30) DEFAULT '' NOT NULL,
+  query          varchar(255) DEFAULT '' NOT NULL,
+  username       varchar(32) DEFAULT '' NOT NULL,
+  primary key (id)
 );
