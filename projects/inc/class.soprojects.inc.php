@@ -983,7 +983,7 @@
 			$this->db->next_record();
 			$prefix = $this->db->f('p_number') . '/';
 
-			$this->db->select($this->project_table,'max(p_number)','p_number LIKE '.$this->db->quote('$prefix%'),__LINE__,__FILE__);
+			$this->db->select($this->project_table,'max(p_number)','p_number LIKE '.$this->db->quote($prefix.'%'),__LINE__,__FILE__);
 			$this->db->next_record();
 			$max = $this->add_leading_zero(substr($this->db->f(0),-4));
 
