@@ -372,7 +372,7 @@
 						'send_global_message' => array(
 							'function'  => 'send_global_message',
 							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
-							'docstring' => lang('Send a global message.'),
+							'docstring' => lang('Send a global message.')
 						),
 						'reply' => array(
 							'function'  => 'reply',
