@@ -631,8 +631,17 @@
 			// DATE
 			// date_time has both date and time, which probably is long enough to make a TD cell wrap text to 2 lines
 			$msg_date_time = $GLOBALS['phpgw']->common->show_date($hdr_envelope->udate);
-			// this stripps the time part, leaving only the date, better for single line TD cells
-			$msg_date_only = ereg_replace(" - .*$", '', $msg_date_time);
+			if($GLOBALS['phpgw']->common->show_date($hdr_envelope->udate,'Ymd') != date('Ymd'))
+			{
+				// this strips the time part, leaving only the date, better for single line TD cells
+				$msg_date_only = ereg_replace(" - .*$", '', $msg_date_time);
+			}
+			else
+			{
+				// this strips the time part, leaving only the date, better for single line TD cells
+				$msg_date_only = ereg_replace("^.* -", '', $msg_date_time);
+			}
+				
 
 			// set up vars for the parsing
 			if ($do_init_form)
