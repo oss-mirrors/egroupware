@@ -160,21 +160,21 @@ in order for squirrelmail to provide the full set of options you need to create 
 in the center	felamimail	de	
 index order	felamimail	de	Spaltenanordnung
 index_what_is	felamimail	de	Konfigurieren Sie hier die Anordnung der Spalten
-info	felamimail	de	
-invalid user name or password	felamimail	de	
-javascript	felamimail	de	
-language	felamimail	de	
-last name	felamimail	de	
-left	felamimail	de	
-less	felamimail	de	
+info	felamimail	de	Info
+invalid user name or password	felamimail	de	Falscher Benutzername oder Pasword
+javascript	felamimail	de	JavaScript
+language	felamimail	de	Sprache
+last name	felamimail	de	Nachname
+left	felamimail	de	Links
+less	felamimail	de	kleiner
 let this folder contain subfolders	felamimail	de	
-light blue	felamimail	de	
+light blue	felamimail	de	Hellblau
 light cyan	felamimail	de	
-light gray	felamimail	de	
-light green	felamimail	de	
+light gray	felamimail	de	Hellgrau
+light green	felamimail	de	Hellgrün
 light magenta	felamimail	de	
 light yellow	felamimail	de	
-list all	felamimail	de	
+list all	felamimail	de	Alle anzeigen
 location of buttons when composing	felamimail	de	Ort der Knöpfe beim EMail schreiben
 location of folder list	felamimail	de	
 low	common	de	niedrig
@@ -183,6 +183,7 @@ mail server	felamimail	de	Emailserver
 mail server login type	admin	de	
 mail server type	felamimail	de	EMailservertyp
 mail settings	felamimail	de	EMail Einstellungen
+mainmessage	felamimail	de	Hauptnachricht
 manage folders	felamimail	de	Ordner verwalten
 manage sieve	felamimail	de	Sieve Scripte verwalten
 mark as deleted	felamimail	de	als gelöscht markieren
@@ -197,17 +198,17 @@ matches regexp	felamimail	de
 medium gray	felamimail	de	
 message highlighting	felamimail	de	Nachrichtenhervorhebung
 message list	felamimail	de	Nachrichtenliste
-messages	felamimail	de	
+messages	felamimail	de	Nachrichten
 minute	felamimail	de	
 minutes	felamimail	de	
 mon	felamimail	de	Mo
 more	felamimail	de	
-move	felamimail	de	
+move	felamimail	de	verschieben
 move messages	felamimail	de	Nachrichten verschieben
 move selected to	felamimail	de	verschieben nach
 move to trash	felamimail	de	in den Trash-Ordner verschieben
 must be unique	felamimail	de	
-name	felamimail	de	
+name	felamimail	de	Name
 never display html emails	felamimail	de	niemals anzeigen
 new	felamimail	de	Neu
 new filter	felamimail	de	neuer Filter
@@ -215,32 +216,32 @@ next	felamimail	de	nächste
 next message	felamimail	de	nächste Nachricht
 nickname	felamimail	de	
 no filter	felamimail	de	kein Filter
-no folders found	felamimail	de	
+no folders found	felamimail	de	Keine Ordner gefunden
 no folders were found to subscribe to!	felamimail	de	Keine Order gefunden, die bestellt werden können!
-no folders were found to unsubscribe from!	felamimail	de	
+no folders were found to unsubscribe from!	felamimail	de	Keine Order gefunden, die abbestellt werden können!
 no highlighting is defined	felamimail	de	keine Hervorhebung definiert
-no messages were selected.	felamimail	de	
+no messages were selected.	felamimail	de	Es wurde keine NAchricht ausgewählt
 no next message	felamimail	de	
 no notification	felamimail	de	
 no personal address book is defined. contact administrator.	felamimail	de	
 no persons matching your search was found	felamimail	de	
-no previous message	felamimail	de	
+no previous message	felamimail	de	Keine vorherige Nachricht vorhanden
 no quota set	felamimail	de	keine Quota aktiviert
-no valid emailprofile selected!!	felamimail	de	
+no valid emailprofile selected!!	felamimail	de	Sie haben kein gültiges Email Profil ausgewählt!
 non-standard	felamimail	de	nicht Standard
-none	felamimail	de	
+none	felamimail	de	kein
 normal	common	de	normal
 number of messages to index	felamimail	de	
 on behalf of	felamimail	de	im Auftrag von
-only inbox	felamimail	de	
-only unseen	felamimail	de	
-options	felamimail	de	
+only inbox	felamimail	de	Nur Posteingang
+only unseen	felamimail	de	Nur nicht gesehene
+options	felamimail	de	Optionen
 organisation	felamimail	de	Organisation
-organization	felamimail	de	
+organization	felamimail	de	Organisation
 organization name	admin	de	Name der Organisation
 original message	felamimail	de	Originalnachricht
 oth	felamimail	de	
-participants	felamimail	de	
+participants	felamimail	de	Teilnehmer
 personal information	felamimail	de	persönliche Informationen
 posting	felamimail	de	
 preference file %1 not found. exiting abnormally	felamimail	de	
@@ -264,24 +265,24 @@ remove immediately	felamimail	de	sofort löschen
 rename	felamimail	de	Umbenennen
 rename a folder	felamimail	de	Ordner umbenennen
 rename folder	felamimail	de	Ordner umbenennen
-renamed successfully!	felamimail	de	
+renamed successfully!	felamimail	de	Erfolgreich umbenannt
 replied	felamimail	de	beantwortet
 reply	felamimail	de	Antworten
 reply all	felamimail	de	allen Antworten
 reply to	felamimail	de	Antwort an
-replyto	felamimail	de	
-return	felamimail	de	
+replyto	felamimail	de	Antwort an
+return	felamimail	de	Zurück
 return to options page	felamimail	de	zurück zu Einstellungen
-right	felamimail	de	
+right	felamimail	de	Rechts
 rule	felamimail	de	Regel
 running squirrelmail version %1 (c) 1999-2000.	felamimail	de	
 same window - not functional yet	felamimail	de	
 sat	felamimail	de	Sa
-save	felamimail	de	
-search	felamimail	de	
-search for	felamimail	de	
+save	felamimail	de	Speichern
+search	felamimail	de	Suchen
+search for	felamimail	de	Suchen nach
 seconds	felamimail	de	
-select	felamimail	de	
+select	felamimail	de	Auswählen
 select all	felamimail	de	alle auswählen
 select emailprofile	felamimail	de	EMailprofil auswählen
 select home email address	felamimail	de	
@@ -308,21 +309,21 @@ source	felamimail	de
 special folder options	felamimail	de	
 squirrelmail	felamimail	de	
 status	felamimail	de	Status
-subject	felamimail	de	
+subject	felamimail	de	Betreff
 subject(a->z)	felamimail	de	Betreff(A->Z)
 subject(z->a)	felamimail	de	Betreff(Z->A)
-submit	felamimail	de	
+submit	felamimail	de	Absenden
 subscribe	felamimail	de	Bestellen
 subscribed	felamimail	de	abonniert
-subscribed successfully!	felamimail	de	
+subscribed successfully!	felamimail	de	Erfolgreich abonniert
 successfully saved display preferences!	felamimail	de	
 successfully saved folder preferences!	felamimail	de	
 successfully saved personal information!	felamimail	de	
 sun	felamimail	de	So
 switch current folder to	felamimail	de	
-table of contents	felamimail	de	
-text only	felamimail	de	
-the connection to the imap server failed!!	felamimail	de	
+table of contents	felamimail	de	Inhaltsverzeichnis
+text only	felamimail	de	Nur Text
+the connection to the imap server failed!!	felamimail	de	Die Verbindung zum IMAP Server ist fehlgeschlagen
 the help has not been translated to %1.  it will be displayed in english instead.	felamimail	de	
 the index order is the order that the columns are arranged in the message index.  you can add, remove, and move columns around to customize them to fit your needs.	felamimail	de	
 the order of the message index can be rearanged and changed to contain the headers in any order you want.	felamimail	de	
@@ -341,17 +342,17 @@ top	felamimail	de
 translation location	felamimail	de	
 translation preferences	felamimail	de	Übersetzungseinstellungen
 translation server	felamimail	de	Übersetzungsserver
-trash fold	felamimail	de	
+trash fold	felamimail	de	Abfall Ordner
 trash folder	felamimail	de	Ordner für gelöschte Nachrichten
 tue	felamimail	de	Di
 type	felamimail	de	Typ
 unable to list addresses from %1	felamimail	de	
 undelivered message	felamimail	de	Unzustellbare Nachricht
 unflagged	felamimail	de	unwichtig
-unknown err	felamimail	de	
-unknown error	felamimail	de	
-unknown sender	felamimail	de	
-unknown user or password incorrect.	felamimail	de	
+unknown err	felamimail	de	Unbekannter Fehler
+unknown error	felamimail	de	Unbekannter Fehler
+unknown sender	felamimail	de	Unbekannter Absender
+unknown user or password incorrect.	felamimail	de	Unbekannter Benutzer oder das Password ist falsch
 unread	felamimail	de	ungelesen
 unseen	felamimail	de	Ungelesen
 unseen and total	felamimail	de	
@@ -360,15 +361,15 @@ unseen message notification type	felamimail	de
 unselect all	felamimail	de	keine auswählen
 unsubscribe	felamimail	de	Abbestellen
 unsubscribed	felamimail	de	abbestellt
-unsubscribed successfully!	felamimail	de	
+unsubscribed successfully!	felamimail	de	Erfolgreich abbestellt
 up	felamimail	de	hoch
 update address	felamimail	de	
-use a signature	felamimail	de	
-use a signature?	felamimail	de	
-use addresses	felamimail	de	
+use a signature	felamimail	de	Signatur benutzen
+use a signature?	felamimail	de	Eine Signatur benutzen?
+use addresses	felamimail	de	Adresse benutzen
 use custom settings	felamimail	de	benutze angepaßte Einstellungen
-use javascript or html addressbook?	felamimail	de	
-use smtp auth	admin	de	
+use javascript or html addressbook?	felamimail	de	JavaScript oder HTML Adressbuch benutzen
+use smtp auth	admin	de	SMTP Auth benutzen
 users can define their own emailaccounts	admin	de	Anwender können ihre eigenen Konten definieren
 view full header	felamimail	de	alle Kopfzeilen anzeigen
 view message	felamimail	de	zeige Nachricht
@@ -377,16 +378,15 @@ viewing full header	felamimail	de	zeige alle Kopfzeilen
 viewing message	felamimail	de	zeige Nachricht
 viewing messages	felamimail	de	zeige Nachrichten
 wed	felamimail	de	Mi
-welcome to %1's webmail system	felamimail	de	
+welcome to %1's webmail system	felamimail	de	Willkommen beim %! Webmail System
 when deleting messages	felamimail	de	wenn Nachrichten gelöscht werden
 white	felamimail	de	
 width of folder list	felamimail	de	
 wrap incoming text at	felamimail	de	Text umbrechen nach
-writing	felamimail	de	
+writing	felamimail	de	schreiben
 wrote	felamimail	de	schrieb
 you can change the way that squirrelmail looks and displays information to you, such as the colors, the language, and other settings.	felamimail	de	
 you can only edit one address at the time	felamimail	de	
-you must login first.	felamimail	de	
+you must login first.	felamimail	de	Sie müssen sich zuerst anmelden
 you need a valid user and password to access this page!	felamimail	de	
 your search failed with the following error(s)	felamimail	de	
-mainmessage	felamimail	de	Hauptnachricht
