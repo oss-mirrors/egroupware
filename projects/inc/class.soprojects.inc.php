@@ -1376,6 +1376,10 @@
 			{
 				$level = $spaceset = '';
 				$level = $this->return_value('level',$pros[$i]);
+				
+				$pro_name = $this->return_value('pro',$pros[$i]);
+				if (!$pro_name) continue;	// project does not exist any more
+
 				if ($level > 0)
 				{
 					$spaceset = str_repeat($space,$level);
@@ -1383,7 +1387,7 @@
 
 				$pro[] = array
 				(
-					'pro_name'	=> $spaceset . $this->return_value('pro',$pros[$i])
+					'pro_name'	=> $spaceset . $pro_name
 				);
 			};
 

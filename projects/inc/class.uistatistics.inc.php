@@ -54,8 +54,8 @@
 			$this->bostatistics				= CreateObject('projects.bostatistics');
 			$this->boprojects				= $this->bostatistics->boprojects;
 			$this->nextmatchs				= CreateObject('phpgwapi.nextmatchs');
-			$this->sbox					= CreateObject('phpgwapi.sbox');
-			$this->cats					= CreateObject('phpgwapi.categories');
+			$this->sbox						= CreateObject('phpgwapi.sbox');
+			$this->cats						= CreateObject('phpgwapi.categories');
 			$this->account					= $GLOBALS['phpgw_info']['user']['account_id'];
 			$this->grants					= $GLOBALS['phpgw']->acl->get_grants('projects');
 			$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
@@ -64,7 +64,7 @@
 			$this->query					= $this->bostatistics->query;
 			$this->filter					= $this->bostatistics->filter;
 			$this->order					= $this->bostatistics->order;
-			$this->sort					= $this->bostatistics->sort;
+			$this->sort						= $this->bostatistics->sort;
 			$this->cat_id					= $this->bostatistics->cat_id;
 			$this->status					= $this->bostatistics->status;
 			$this->siteconfig				= $this->bostatistics->boprojects->siteconfig;
@@ -475,13 +475,13 @@
 			);
 
 			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$GLOBALS['query'] = $this->query;	// else nextmatch wont display it
 			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(1));
 
 			if (!$this->start)
 			{
 				$this->start = 0;
 			}
-
 			$users = $this->bostatistics->get_users('accounts', $this->start, $this->sort, $this->order, $this->query);
 
 // ------------- nextmatch variable template-declarations -------------------------------
@@ -520,7 +520,7 @@
 					'lid'			=> $users[$i]['account_lid'],
 					'firstname'		=> $users[$i]['account_firstname'],
 					'lastname'		=> $users[$i]['account_lastname'],
-					'radio_checked'	=> (in_array($users[$i]['account_id'],$pro_user)?' checked':''),
+					'radio_checked'	=> (in_array($users[$i]['account_id'],$pro_user)?' checked="1"':''),
 					'account_id'	=> $users[$i]['account_id']
 				));
 

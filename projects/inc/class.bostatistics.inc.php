@@ -59,7 +59,7 @@
 			$this->query		= $this->boprojects->query;
 			$this->filter		= $this->boprojects->filter;
 			$this->order		= $this->boprojects->order;
-			$this->sort		= $this->boprojects->sort;
+			$this->sort			= $this->boprojects->sort;
 			$this->cat_id		= $this->boprojects->cat_id;
 
 			$this->date_diff	= 0;
@@ -69,30 +69,46 @@
 		{
 			$pro_employees = $this->boprojects->read_projects_acl();
 
-			//_debug_array($pro_employees);
-
-			if(is_array($pro_employees))
+			if (!is_array($pro_employees)) return false;
+			
+			$users = array();
+			foreach((array) $pro_employees as $uid)
 			{
-				$users = $GLOBALS['phpgw']->accounts->get_list('accounts', $start, $sort, $order, $query);
-
-				if(is_array($users))
+				$GLOBALS['phpgw']->accounts->get_account_name($uid,$lid,$lastname,$firstname);
+				
+				if ($query && stristr($lid,$query) == false && stristr($lastname,$query) == false && stristr($firstname,$query) == false)
 				{
-					foreach($users as $user)
-					{
-						if(in_array($user['account_id'],$pro_employees))
-						{
-							$rights[] = $user;
-						}
-						else
-						{
-							$norights[] = $user;
-						}
-					}
+					continue;
 				}
-				$this->total_records = ($GLOBALS['phpgw']->accounts->total - count($norights));
-				return $rights;
+				$users[] = array(
+					'account_id'		=> $uid,
+					'account_lid'		=> $lid,
+					'account_firstname'	=> $firstname,
+					'account_lastname'	=> $lastname,
+				);
 			}
-			return False;
+			$this->total_records = count($users);
+			
+			switch($order)
+			{
+				default:
+					$order = 'account_lid';
+					// fall-through
+				case 'account_lid':
+				case 'account_firstname':
+				case 'account_lastname':
+					$sign = $sort == 'DESC' ? '-' : '';
+					usort($users,create_function('$a,$b',"return $sign"."strcasecmp(\$a['$order'],\$b['$order']);"));
+					break;
+			}
+			$maxmatchs = $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
+			if (!$maxmatchs) $maxmatchs = 12;
+
+			if ($start || $this->total_records > $maxmatchs)
+			{
+				$users = array_slice($users,(int)$start,$maxmatchs);
+			}
+			return $users;
 		}
 
 		function get_userstat_pro($account_id, $values)
