@@ -60,9 +60,9 @@
 		</td>
 		<td align="center">
 			<select name="filter_act_status">
-				<option {filter_act_status_selected_all} value="">{lang_All}</option>
-				<option value="running" {filter_act_running}>{lang_running}</option>
-				<option value="completed" {filter_act_completed}>{lang_completed}</option>
+				<option value="" {filter_act_status_selected_all}>{lang_All}</option>
+				<option value="running" {filter_act_status_running}>{lang_running}</option>
+				<option value="completed" {filter_act_status_completed}>{lang_completed}</option>
 			</select>
 		</td>
 		<td align="center">
