@@ -125,8 +125,8 @@
 
 				   $this->bo->message[info]='';
 				}
-
 				$this->ui->msg_box($this->bo->message);
+
 
 			}
 
@@ -201,8 +201,8 @@
 			   $this->bo->common->exit_and_open_screen('jinn.uiuser.index');
 			}				
 
-			$this->main_menu();	
 			$this->ui->header('browse through objects');
+			$this->main_menu();	
 			$this->ui->msg_box($this->bo->message);
 
 			$this->template->set_file(array(

@@ -150,7 +150,7 @@
 				   }
 				}
 
-				elseif ($fieldproperties[type]=='int' || $fieldproperties[type]=='real' ||  $fieldproperties[type]=='tinyint')
+				elseif ($fieldproperties[type]=='int' || $fieldproperties[type]=='real' || $fieldproperties[type]=='smallint'|| $fieldproperties[type]=='tinyint')
 				{
 					/* If this integer has a relation get that options */
 					if (is_array($fields_with_relation1) && in_array($fieldproperties[name],$fields_with_relation1))

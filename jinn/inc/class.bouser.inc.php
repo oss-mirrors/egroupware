@@ -227,11 +227,16 @@
 		 $where_string=$this->where_string;
 		 $table=$this->site_object[table_name];
 
+//		echo $where_string;
 		 $many_data=$this->http_vars_pairs_many($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
 
 		 $status=$this->so->update_object_many_data($this->site_id, $many_data);
 
 		 $data=$this->http_vars_pairs($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
+
+// 		_debug_array($data);
+//		 die('hallo');
+
 		 $status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
 
 

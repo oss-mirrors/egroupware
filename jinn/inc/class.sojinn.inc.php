@@ -918,6 +918,7 @@
 
 		 }
 
+//		die($SQL);
 		 if ($this->site_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$value[status]=1;
