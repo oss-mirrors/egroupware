@@ -25,11 +25,12 @@
 	);
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['headlines']['hooks'][]   = 'admin';
-	$setup_info['headlines']['hooks'][]   = 'manual';
-	$setup_info['headlines']['hooks'][]   = 'settings';
-	$setup_info['headlines']['hooks'][]   = 'preferences';
-	$setup_info['headlines']['hooks'][]   = 'website_right';
+	$setup_info['headlines']['hooks'][] = 'admin';
+	$setup_info['headlines']['hooks'][] = 'manual';
+	$setup_info['headlines']['hooks'][] = 'settings';
+	$setup_info['headlines']['hooks'][] = 'preferences';
+	$setup_info['headlines']['hooks'][] = 'website_left';
+	$setup_info['headlines']['hooks'][] = 'website_right';
 
 	/* Dependencies for this app to work */
 	$setup_info['headlines']['depends'][] = array(
