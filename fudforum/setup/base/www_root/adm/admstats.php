@@ -56,6 +56,18 @@ function get_sql_disk_usage()
 	return $sql_size;
 }
 
+if (!function_exists('array_fill')) {
+function array_fill($s, $e, $t)
+{
+	++$e;
+	do {
+		$arr[$s] = $t;
+	} while (++$s < $e);
+
+	return $arr;
+}
+}
+
 	$forum_start = (int) q_singleval('SELECT MIN(post_stamp) FROM '.$tbl.'msg');
 	$days_ago = round((__request_timestamp__ - $forum_start) / 86400);
 
