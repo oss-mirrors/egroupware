@@ -15,7 +15,8 @@
 
 	function print_list_break (&$list_tpl, $category, $subcategory)
 	{
-		global $phpgw, $massupdate_shown;
+		global $phpgw;
+		static $massupdate_shown;
 
 		// construct URLs that include WHERE clauses for linking to the
 		// search page. The Category link will show a search WHERE the
@@ -71,11 +72,6 @@
 			'list_item'      => 'common.list.item.tpl',
 			'item_keyw'      => 'common.list.item_keyw.tpl'
 		));
-
-		// you can see/search anything that you own, and anything that others
-		// have marked as public if you have indicated so on your auth_user record.
-		//  if ($auth->auth["include_public"] == "Y" || $auth->is_nobody()) 
-		//     $public_sql = " or bookmark.public_f='Y' ";
 
 		$filtermethod = '( bm_owner=' . $phpgw_info['user']['account_id'];
 		if (is_array($phpgw->bookmarks->grants))
@@ -143,7 +139,7 @@
 			// Check owner
 			if (($this->grants[$phpgw->db->f('bm_owner')] & PHPGW_ACL_EDIT) || ($phpgw->db->f('bm_owner') == $phpgw_info['user']['account_id']))
 			{
-				$maintain_url  = $phpgw->link("/bookmarks/maintain.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
+				$maintain_url  = $phpgw->link("/bookmarks/maintain.php","bm_id=" . $phpgw->db->f("bm_id"));
 				$maintain_link = sprintf('<a href="%s"><img src="%s/edit.gif" align="top" border="0" alt="%s"></a>', $maintain_url,PHPGW_IMAGES,lang('Edit this bookmark'));
 			}
 			else
@@ -152,7 +148,9 @@
 			}
 			$list_tpl->set_var('maintain_link',$maintain_link);
 
-			$view_url      = $phpgw->link("/bookmarks/view.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
+			$list_tpl->set_var('bookmark_url',$phpgw->link('/bookmarks/redirect.php','bm_id=' . $phpgw->db->f('bm_id')));
+
+			$view_url      = $phpgw->link('/bookmarks/view.php','bm_id=' . $phpgw->db->f('bm_id'));
 			$view_link     = sprintf('<a href="%s"><img src="%s/document.gif" align="top" border="0" alt="%s"></a>', $view_url,PHPGW_IMAGES,lang('View this bookmark'));
 			$list_tpl->set_var('view_link',$view_link);
 
