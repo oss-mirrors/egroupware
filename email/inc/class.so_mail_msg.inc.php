@@ -56,6 +56,8 @@
 		*/
 		function so_mail_msg()
 		{
+			$table_definitions = $GLOBALS['phpgw']->db->get_table_definitions('email');
+			$GLOBALS['phpgw']->db->set_column_definitions($table_definitions['phpgw_anglemail']['fd']);
 			if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: ('.__LINE__.'): *constructor*<br>'); } 
 			return;
 		}
@@ -416,22 +418,21 @@
 			if (($compression)
 			&& (function_exists('gzcompress')))
 			{
-				$content_preped = base64_encode(gzcompress(serialize($content)));
+				$content_preped = gzcompress(serialize($content));
 				$content = '';
 				unset($content);
 				if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_set_data('.__LINE__.'): $compression is ['.serialize($compression).'] AND we did serialize and <font color="green">did GZ compress</font>, no addslashes for compressed content<br>'); }
 			}
 			else
 			{
-				// addslashes only if NOT compressing data
 				// serialize only is NOT a string
 				if (is_string($content))
 				{
-					$content_preped = $GLOBALS['phpgw']->db->db_addslashes($content);
+					$content_preped = $content;
 				}
 				else
 				{
-					$content_preped = $GLOBALS['phpgw']->db->db_addslashes(serialize($content));
+					$content_preped = serialize($content);
 				}
 				$content = '';
 				unset($content);
@@ -443,13 +444,20 @@
 			
 			if ($GLOBALS['phpgw']->db->num_rows()==0)
 			{
-				$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_anglemail (account_id,data_key,content) "
-					. "VALUES ('" . $account_id . "','" . $data_key . "','" . $content_preped . "')",__LINE__,__FILE__);
+				$qry_data = array(
+					'account_id' => $account_id,
+					'data_key' => $data_key,
+					'content' => $content_preped
+				);
+				$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_anglemail (" . implode(',',array_keys($qry_data)) . ") "
+					. "VALUES (" . $GLOBALS['phpgw']->db->column_data_implode(',',$qry_data,False) . ")",__LINE__,__FILE__);
 			}
 			else
 			{
-				$GLOBALS['phpgw']->db->query("UPDATE phpgw_anglemail set content='" . $content_preped 
-					. "' WHERE account_id='" . $account_id . "' AND data_key='" . $data_key . "'",__LINE__,__FILE__);
+				$GLOBALS['phpgw']->db->query("UPDATE phpgw_anglemail SET " .
+					$GLOBALS['phpgw']->db->column_data_implode(',',array(
+						'content' => $content_preped
+					)) . " WHERE account_id='" . $account_id . "' AND data_key='" . $data_key . "'",__LINE__,__FILE__);
 			}
 			if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_set_data('.__LINE__.'): LEAVING <br>'); }
 		}
@@ -557,7 +565,7 @@
 				//else
 				if (function_exists('gzuncompress'))
 				{
-					$my_content_preped = unserialize(gzuncompress(base64_decode($my_content)));
+					$my_content_preped = unserialize(gzuncompress($my_content));
 					if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $comp_desc['after_decomp'] = strlen(serialize($my_content_preped)); $comp_desc['ratio_math'] = (string)(round(($comp_desc['after_decomp']/$comp_desc['before_decomp']), 1) * 1).'X'; $comp_desc['ratio_txt'] = 'pre/post is ['.$comp_desc['before_decomp'].' to '.$comp_desc['after_decomp']; }
 					if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): $compression: ['.serialize($compression).'] using <font color="brown">GZ uncompress</font> pre/post is ['.$comp_desc['ratio_txt'].']; ratio: ['.$comp_desc['ratio_math'].'] <br>'); }
 				}

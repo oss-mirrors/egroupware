@@ -569,7 +569,7 @@
 			$query = "CREATE TABLE $sTableName ( "
 					. "account_id varchar(20) NOT NULL, "
 					. "data_key varchar(255) DEFAULT '' NOT NULL, "
-					. "content text DEFAULT '' NOT NULL, "
+					. "content blob DEFAULT '' NOT NULL, "
 					. "PRIMARY KEY (account_id,data_key) )";
 			$GLOBALS['phpgw']->db->query($query,__LINE__,__FILE__);
 			
