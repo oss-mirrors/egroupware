@@ -11,6 +11,8 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projectstatisti
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projectdelivery','admin','en','Project Delivery');                                                 
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projecthours','admin','en','Project Hours');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projects','projects','en','Projects');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'all open hours','projects','en','All open hours');           
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'all done hours','projects','en','All done hours');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'activity','projects','en','Activity');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'active','projects','en','Active');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'new project','projects','en','New Project');
@@ -49,6 +51,7 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'end_date','proj
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'project list - edit','projects','en','Edit Project');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'project list - add','projects','en','Add Project');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'project hours - add','projects','en','Add Project Hours');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'return to projects','projects','en','Return to Projects');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'status','projects','en','Status');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'entry_date','projects','en','Entry Date');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'nonactive','projects','en','Nonactive');

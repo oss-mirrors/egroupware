@@ -2,7 +2,10 @@
 DELETE from lang WHERE app_name='projects';
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projects','projects','de','Projekte');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projects','common','de','Projekte');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'return to projects','projects','de','Zur&uuml;ck zu Projekte');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projectbilling','common','de','Projekt Abrechnung');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'all open hours','projecthours','de','Alle offenen Stunden');     
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'all done hours','projecthours','de','Alle erledigten Stunden');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projectstatistics','common','de','Projekt Statistiken');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projecthours','common','de','Projekt Stunden');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projectdelivery','common','de','Projekt Lieferung');

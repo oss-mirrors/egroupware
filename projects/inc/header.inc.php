@@ -87,10 +87,10 @@
      else                                                                                                                                                                                          
      $t->set_var("link_billing","");     
 
-     if($invisible_apps["projecthours"]==True)
-     $t->set_var("link_hours","<a href=\"" . $phpgw->link("../projecthours/") . "\">" . lang("projecthours") ."</a>");
-     else                                                                                                                                                                                          
-     $t->set_var("link_hours","");
+//     if($invisible_apps["projecthours"]==True)
+//     $t->set_var("link_hours","<a href=\"" . $phpgw->link("../projects/hours_index.php") . "\">" . lang("projecthours") ."</a>");
+//     else                                                                                                                                                                                          
+//     $t->set_var("link_hours","");
 
      if($invisible_apps["projectstatistics"]==True)
      $t->set_var("link_statistics","<a href=\"" . $phpgw->link("../projectstatistics/") . "\">" . lang("projectstatistics") ."</a>");
@@ -102,6 +102,14 @@
      else                                                                                                                                                                                          
      $t->set_var("link_delivery","");
      
-     $t->pparse("out","projects_header");
+    if ($phpgw_info["apps"]["projects"]["enabled"]) {
+     $t->set_var("link_return_projects","<a href=\"" . $phpgw->link("../projects/") . "\">" . lang("return to projects") ."</a>");     
+     $t->set_var("link_hours","<a href=\"" . $phpgw->link("../projects/hours_index.php") . "\">" . lang("projecthours") ."</a>");     
+         }
+    else {     
+       $t->set_var("link_hours",""); 
+       $t->set_var("link_return_projects","");
+         }
+    $t->pparse("out","projects_header");
  
 ?>
