@@ -34,7 +34,7 @@
 		);
 		_debug_array($is->result);
 		list($x,$xsessionid,$y,$xkp3) = $is->result;
-		if($x)
+		if($x && !$y)
 		{
 			$xkp3 = $xsessionid;
 			$xsessionid = $x;
