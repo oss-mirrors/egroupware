@@ -3025,6 +3025,7 @@
 						case 'project dependencies': $subject .=  ', ' . ($values['is_previous']?lang('end date has changed'):lang('previous projects end date has changed')); break;
 					}
 
+					$send_alarm = False;
 					switch($event)
 					{
 						case 'changes of project data':
