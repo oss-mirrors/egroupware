@@ -1,188 +1,151 @@
-account active	admin	es	Cuenta activa
-account has been created	admin	es	La cuenta ha sido creada
-account has been deleted	admin	es	La cuenta ha sido eliminada
-account has been updated	admin	es	La cuenta ha sido actualizada
-account permissions	admin	es	Permisos de la cuenta
-account preferences	admin	es	Preferencias de la cuenta
-acl manager	admin	es	Manejo de LCA
-action	admin	es	Accion
-active	admin	es	Activo
-add a new account.	admin	es	Agregar una nueva cuenta.
-add auto-created users to this group ('Default' will be attempted if this is empty.)	admin	es	Agregar usuarios creados automaticamente al siguiente grupo (se usara 'Default' si no especifica ninguno.)
-add new account	admin	es	Agregar una nueva cuenta
-add new application	admin	es	Agregar nueva aplicación
-add peer server	admin	es	Agregar Servidor Par
-admin email	admin	es	Administrador E-mail
-administration	admin	es	Administracion
-admin name	admin	es	Nombre del Administrador
-admin options	admin	es	Opciones de Administracion
-admins	admin	es	Administradores
-allow anonymous access to this app	admin	es	Permitir acceso anonimo a esta aplicacion
-all records and account information will be lost!	admin	es	Se perderan todos los registros e informacion de cuentas!
-all users	admin	es	Todos los usuarios
-anonymous user	admin	es	Usuario anonimo
-application name	admin	es	Nombre de la aplicación
-applications	admin	es	Aplicaciones
-application title	admin	es	Titulo de la aplicación
-are you sure you want to delete this account ?	admin	es	Esta seguro de querer borrar esta cuenta ?
-are you sure you want to delete this application ?	admin	es	Seguro de querer borrar esta aplicación ?
-are you sure you want to delete this category ?	admin	es	Seguro de querer borrar esta categoria ?
-are you sure you want to delete this group ?	admin	es	Esta seguro de querer borrar este grupo ?
-are you sure you want to delete this server ?	admin	es	Esta seguro de querer borrar este servidor ?
-are you sure you want to kill this session ?	admin	es	Esta seguro de querer matar esta sesion ?
-attempt to use correct mimetype for FTP instead of default 'application/octet-stream'	admin	es	Intento usar el tipo MIME correcto para FTP en vez de 'application/octet-stream'
-authentication / accounts	admin	es	Autenticacion / Cuentas
-auto create account records for authenticated users	admin	es	Crear cuentas automaticamente para usuarios autenticados
-bi-directional	admin	es	bi-direccional
-bi-dir passthrough	admin	es	bi-direccional pasante
-backup	admin	es	Copias de resguardo
-backup administration	admin	es	Administracion de Backups
-bookeeping admins	admin	es	Administradores de Contabilidad
-bottom	admin	es	Debajo
-change main screen message	admin	es	Cambiar mensaje de la pantalla principal
-check ip address of all sesions	admin	es	Verificar la direccion IP de todas las sesiones
-chora	admin	es	Chora
-configuration	admin	es	Configuracion
-country selection	admin	es	Seleccion del Pais
-create group	admin	es	Crear Grupo
-default file system space per user	admin	es	Espacio por defecto en el sistema de archivos por usuario
-default file system space per user/group ?	admin	es	Espacio por defecto en el sistema de archivos por usuario/grupo ?
-deny all users access to grant other users access to their entries ?	admin	es	Prohibirle a los usuarios ceder acceso a otros usuarios para sus registros ?
-disabled	admin	es	Deshabilitado
-do you also want to delete all global subcategories
-display	admin	es	Mostrar
-edit application	admin	es	Editar aplicatión
-edit cvs repository list	admin	es	Editar Lista de Sitios CVS
-edit global category	admin	es	Editar categoria global
-edit group	admin	es	Editar Grupo
-edit job status id table	admin	es	Editar Tabla de ID de Estados de Trabajos
-edit location table	admin	es	Editar Tabla de Ubicaciones
-edit user account	admin	es	Editar cuenta del usuario
-edit work catagory table	admin	es	Editar Tabla de Categorias de Trabajos
-enabled	admin	es	Habilitado
-enabled - hidden from navbar	admin	es	Habilitado - Esconder es la Barra
-enter some random text for app_session <br>encryption (requires mcrypt)	admin	es	Ingrese texto aleatorio para la encriptacion <br> de la sesion (requiere mcrypt)
-enter the full path for temporary files.<br>Examples: /tmp, C:\TEMP	admin	es	Ingrese el camino completo para los archivos temporales.<br> Ejemplos: /files , E:\FILES
-enter the full path for users and group files.<br>Examples: /files, E:\FILES	admin	es	Ingrese el camino completo para los archivos de usuarios<br>y de grupo. Ejemplos: /files , E:\FILES
-enter the hostname of the machine on which this server is running	admin	es	Ingrese el nombre completo de la maquina sobre la cual corre este servidor
-enter the location of phpGroupWare's URL.<br>Example: http://www.domain.com/phpgroupware &nbsp; or &nbsp; /phpgroupware<br><b>No trailing slash</b>	admin	es	Ingrese la direccion URL de phpGroupWare.<br>Ejemplo: http://www.dominio.com/phpgroupware o /phpgroupware.<br><b>Sin barra al final</b>
-enter the site password for peer servers	admin	es	Ingrese la clave del sitio para servidores pares
-enter the site username for peer servers	admin	es	Ingrese el usuario del sitio para servidores pares
-enter the title for your site	admin	es	Ingrese el titulo para su sitio
-enter your default FTP server	admin	es	Ingrese su servidor FTP por defecto
-enter your HTTP proxy server	admin	es	Ingrese su servidor proxy HTTP
-enter your HTTP proxy server port	admin	es	Ingrese el puerto de su servidor proxy HTTP
-force selectbox	admin	es	Forzar Caja de Seleccion
-forum administration	admin	es	Administracion de Foros
-global categories	admin	es	Categorias Globales
-global options	admin	es	Opciones Globales
-group ?	admin	es	Grupo?
-group has been added	common	es	El grupo ha sido agregado
-group has been deleted	common	es	El grupo ha sido eliminado
-group has been updated	common	es	El grupo ha sido actualizado
-group name	admin	es	Nombre del Grupo
-headline site management	admin	es	Administrador de Encabezados
-hide php information	admin	es	Ocultar informacion de PHP
-home directory	admin	es	Directorio principal
-host information	admin	es	Informacion del servidor
-idle	admin	es	idle
-<<<<<<< phpgw_es.lang
-if no acl records for user or any group the user is a member of	admin	es	Si no se encuentran registros LCA del usuario y grupo, entonces el usuario es miembro del grupo administradores
-if using ldap, do you want to manage homedirectory and loginshell attributes?	admin	es	Si utiliza LDAP, desea manejar el directorio de inicio y attributos del shell?
-installed applications	admin	es	Aplicaciones Instaladas
-interface	admin	es	Interfaz
-=======
-installed applications	common	es	Aplicaciones Instaladas
->>>>>>> 1.5
-ip	admin	es	IP
-kill	admin	es	Matar
-last login	admin	es	Ultimo ingreso
-last login from	admin	es	Ultimo ingreso desde
-last time read	admin	es	Ultima lectura
-last x logins	admin	es	Ultimos %1 ingresos
-ldap accounts context	admin	es	Contexto de las cuentas LDAP
-ldap default homedirectory prefix (e.g. /home for /home/username)	admin	es	Prefijo del directorio de inicio LDAP por defecto (ejemplo /directorio/usuario)
-ldap default shell (e.g. /bin/bash)	admin	es	Shell LDAP por defecto (ej. /bin/bash)
-ldap encryption type	admin	es	Tipo de encriptacion LDAP
-ldap groups context	admin	es	Contexto de Grupos LDAP
-ldap host	admin	es	Servidor LDAP
-ldap rootdn	admin	es	LDAP rootdn
-ldap root password	admin	es	Clave de superusuario LDAP 
-list of current users	admin	es	Lista de usuarios presentes
-loginid	admin	es	LoginID
-login screen	admin	es	Pantalla de Ingreso
-login shell	admin	es	Shell de Ingreso
-login time	admin	es	Hora de Acceso
-main screen message	admin	es	Mensaje de la Pantalla Principal
-manage fields	admin	es	Manejar Campos
-manager	admin	es	Manager
-mantain news	admin	es	Mantenimiento de Noticias
-manual	admin	es	Manual
-maximum account id (e.g. 65535 or 1000000)	admin	es	Maximo id de cuenta (ej. 65535 o 1000000)
-metar regions	admin	es	Regiones Metar
-metar stations	admin	es	Estaciones Metar
-minimum account id (e.g. 500 or 100, etc.)	admin	es	Minimo id de cuenta (ej. 500 o 100, etc.)
-new group name	admin	es	Nuevo nombre de grupo
-new password [ leave blank for no change ]	admin	es	Nueva contraseña [ Deje es blanco para NO cambiar ]
-news	admin	es	Noticias
-no matchs found	admin	es	No se encontraron resultados
-notes	admin	es	Notas
-path information	admin	es	Informacion de Rutas
-peer servers	admin	es	Servidores Pares
-percent of users that logged out	admin	es	Porcentaje de usuarios que se desloguearon
-permissions	admin	es	Permisos
-permissions this group has	admin	es	Permisos que tiene este grupo
-phpinfo	admin	es	Informacion de PHP
-phpsysinfo	admin	es	SysInfo
-polls	admin	es	Encuestas
-preferences	admin	es	Preferencias
-project administration	admin	es	Administracion de Proyectos
-projects	admin	es	Proyectos
-re-enter password	admin	es	Re-Ingresar contraseña
-registration	admin	es	Registracion
-remove all users from this group	admin	es	Borrar todos los usuarios de este grupo
-selectbox	admin	es	Caja de Seleccion
-select permissions this group will have	admin	es	Selecciones los permisos que tendra este grupo
-select users for inclusion	admin	es	Seleccionar usuarios para inclución
-select where you want to store/retrieve filesystem information	admin	es	Seleccione donde desea almacenar informacion del sistema de archivos
-select where you want to store/retrieve user accounts	admin	es	Seleccione donde desea almacenar informacion de las cuentas de usuario
-select which location this app should appear on the navbar, lowest (left) to highest (right)	admin	es	Seleccione el lugar que desea que la aplicacion ocupe en la barra, de abajo (izquiera) a arriba (derecha)
-show 'powered by' logo on	admin	es	Mostrar logo de 'potenciado por' en
-site	admin	es	Sitios
-site configuration	admin	es	Configuracion del Sitio
-site links	admin	es	Enlaces a Sitios
-sorry, that group name has already been taking.	admin	es	Este nombre de grupo ya esta siendo utilizado.
-sorry, the follow users are still a member of the group x	admin	es	Los siguientes usuarios aun son miembros del grupo %1
-status	admin	es	Estado
-submit changes	admin	es	Enviar Cambios
-template selection	admin	es	Seleccion de Plantilla
-text entry	admin	es	Ingreso de Texto
-that loginid has already been taken	admin	es	Ese login ID ya esta siendo utilizado
-the login and password can not be the same	admin	es	El login y la contraseña NO pueden ser iguales
-the two passwords are not the same	admin	es	Las dos contraseñas no son iguales
-they must be removed before you can continue	admin	es	Estos deben ser removidos para poder continuar
-this category is currently being used by applications as a parent category	admin	es	Esta categoria esta siendo usada por las aplicaciones como categoria padre.
-timetrack	admin	es	Seguimiento del Tiempo
-title	admin	es	Titulo
-total records	admin	es	Total de registros
-total records	admin	es	Total de Registros
-tts	admin	es	Sistema de Tickets
-use cookies to pass sessionid	admin	es	Usar cookies para almacenar sesiones
-use pure html compliant code (not fully working yet)	admin	es	Usar codigo HTML puro (no completado)
-user accounts	admin	es	Cuentas de usuario
-userdata	admin	es	Datos del Usuario
-user groups	admin	es	Grupos de usuarios
-users choice	admin	es	A eleccion del Usuario
-use theme	admin	es	Usar tema
-view access log	admin	es	Ver registro de acceso
-view error log	admin	es	Ver registro de errores
-view sessions	admin	es	Ver sesiones
-view system informations	admin	es	Ver Informacion del Sistema
-voting booth admin	admin	es	Administrador de Votos
-would you like phpgroupWare to cache the phpgw info array ?	admin	es	 Desea que phpGroupWare almacene en memoria el array phpgw info?
-would you like phpgroupWare to check for a new version<br>when admins login ?	admin	es	Desea que phpGroupWare revise si hay versiones nuevas<br>cuando ingrese un administrador?
-would you like to show each application's upgrade status ?	admin	es	Desea mostrar el estado de actualizacion de cada aplicacion?
-you must add at least 1 permission to this account	admin	es	Debe agregar por lo menos 1 permiso para esta cuenta.
-you must enter an application name and title.	admin	es	Debe entrar un nombre y titulo para la aplicación.
-you must enter a password	admin	es	Debe entrar una contraseña
-you must select a file type	admin	es	Debe seleccionar un tipo de archivo
+1 message has been deleted	email	es	1 mensaje fue borrado
+1 message has been moved to	email	es	1 mensaje fue movido a
+add to addressbook	email	es	Agregar a la libreta de direcciones
+account	email	es	Cuenta
+arrival date	email	es	Fecha de Llegada
+as	email	es	como
+attach file	email	es	Adjuntar Archivo
+attach signature	email	es	Adjuntar firma
+attachment	email	es	Archivo Adjunto
+attachments	email	es	Archivos Adjuntos
+cache server data whenever possible	email	es	Almacenar datos del servidor en memoria cuando sea posible
+cc	email	es	CC
+choose for rename	email	es	Seleccione para renombrar
+compose	email	es	Componer
+compose new	email	es	Componer
+create a folder email	es	Crear Carpeta
+create (expert)	email	es	Crear (experto)
+delete a folder	email	es	Borrar Carpeta
+delete (expert)	email	es	Borrar (experto)
+rename a folder	email	es	Renombrar carpeta
+could not open this mailbox	email	es	No se pudo abrir esta casilla
+current attachments	email	es	Archivos Adjuntos Actuales
+custom	email	es	Personal -
+custom email settings	email	es	Seteos personalizados del Email
+date	email	es	Fecha
+default:	common	es	por defecto:
+default sorting order	email	es	Modo de orden por defecto
+deleted messages go to trash	email	es	Mensajes borrados van a la Papelera
+deleted messages (trash) folder	email	es	Carpeta de Mensajes borrados (Papelera - Trash)
+delete	email	es	Borrar
+delete account	common	es	Eliminar cuenta
+email account name	email	es	Nombre de cuenta de Email
+email address	email	es	Dirección de Email
+email	email	es	E-mail
+email - file attachment	email	es	Email - Adjuntar Archivo
+email date	email	es	Fecha del Mensaje
+email filters	email	es	Filtros de Correo
+e-mail folders	common	es	Carpetas
+email password	email	es	Contraseña de Email
+e-mail preferences	common	es	Preferencias - E-Mail
+email preferences	email	es	Preferencias - E-Mail
+email signature	email	es	Firma del E-mail
+email type	common	es	Tipo del E-mail
+enable this email account	common	es	Habilitar esta cuenta de correo
+enable utf-7 encoded folder names	email	es	Habilitar codificacion UTF-7 para carpetas
+enter your default mail domain ( From: user@domain )	admin	es	Ingrese su dominio de email predeterminado ( De: usuario@dominio )
+enter your pop	admin	es	Ingrese su Servidor POP
+enter your smtp server hostname or ip address	admin	es	Ingrese su Servidor SMTP (nombre o IP)
+enter your smtp server port	admin	es	Ingrese el puerto del Servidor SMTP
+error: unknown message data	email	es	Error: Datos del mensaje desconocidos
+error moving messages to	email	es	Error moviendo mensajes a
+extra e-mail account	common	es	Cuenta de Correo adicional
+file attachment	email	es	Adjuntar Archivo
+file	email	es	Archivo
+files	email	es	Archivos
+folder	email	es	Carpeta
+folder maintenance	email	es	Mantenimiento de Carpetas
+folder name	email	es	Nombre de la Carpeta
+folders	email	es	Carpetas
+folder size	email	es	Tama&ntilde;o de la Carpeta
+forward	email	es	Reenviar
+for these items, fill only what is different from you default e-mail preferences	common	es	Para estos items, complete solo los campos que difieran de su configuracion por defecto
+from	email	es	De
+get size	email	es	Obtener tama&ntilde;o
+hidden	email	es	oculta
+if applicable	email	es	Si es aplicable
+image	email	es	Imagen
+imap server type	email	es	Tipo de servidor IMAP
+keywords	email	es	Palabras Clave
+layout 1	email	es	Modo 1
+layout 2	email	es	Modo 2
+layout	email	es	Modo
+lines	email	es	Lineas
+long names	email	es	nombres largos
+manage accounts	email	es	Administrar cuentas
+manage folders	email	es	Administrar carpetas
+mail folder(uw-maildir)	email	es	Carpeta del Correo
+mail server	email	es	Servidor de Mail
+mail server login type	admin	es	Tipo de login
+mail server type	email	es	Tipo de servidor de Mail
+mail settings	admin	es	Seteos del E-mail
+message	email	es	Mensaje
+message list layout	email	es	Modo de listado de mensajes
+messages have been moved to	email	es	mensajes fueron movidos a
+messages	email	es	Mensajes
+monitor	email	es	Monitor
+move selected messages into	email	es	Mover los mensajes seleccionados a
+newest	email	es	Mas Nuevo
+new	message	email	es	Nuevo
+new message	email	es	Nuevo mensaje
+new messages	email	es	Mensajes Nuevos
+no error returned from server	email	es	El servidor no devolvio errores
+no next message	email	es	No hay mas mensajes
+no previous message	email	es	No hay mensaje anterior
+next	email	es	Proximo
+non-standard	email	es	No-Estandar
+no subject	email	es	Sin Asunto
+number	email	es	N&uacute;mero
+oldest	email	es	Mas Antiguo
+or	common	es	o
+please fill in everything you need	email	es	Por favor complete los campos necesarios
+please select a message first	email	es	Por favor seleccione un mensaje primero
+please select a folder to rename	email	es	Por favor seleccione una carpeta a renombrar
+please type a folder name in the text box	email	es	Por favor ingrese el nombre de una carpeta en el campo de texto
+previous	email	es	Previo
+rename (expert)	email	es	Renombrar (experto)
+reply all	email	es	Responder a Todos
+reply	email	es	Responder
+replyto	email	es	ResponderA
+result	email	es	resultado
+section	email	es	Seccion
+select home email address	email	es	Seleccione el Email Personal
+select work email address	email	es	Seleccione el Email Laboral
+select your mail server type	admin	es	Seleccione el tipo de servidor de correo
+send deleted messages to the trash	email	es	Enviar mensaje borrados a el Trash
+send	email	es	Enviar
+sent messages folder	email	es	Carpeta de Mensajes Enviados
+sent messages saved in &quot;sent&quot; folder	email	es	Mensajes grabados en carpeta &quot;Enviados&quot;
+short names	email	es	Nombres cortos
+show new messages on main screen	email	es	Mostrar mensajes nuevos en pantalla principal
+show sender's email address with name	email	es	Mostrar direccion y nombre del remitente
+size	email	es	Tamaño
+somebody	email	es	alguien
+sort by	email	es	Ordenar segun
+standard	email	es	Normal -
+subject	email	es	Asunto
+switch accounts	email	es	Cambiar de cuenta
+switch current folder to	common	es	Cambiar la presente carpeta a
+there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	es	Hubo un error en la conexion a su servidor.<br>Revise el usuario y clave, o contacte al soporte tecnico.
+this data not supplied.	email	es	Esta informacion no fue suministrada
+this folder is empty	email	es	Esta carpeta esta vacia
+to	email	es	Para
+total messages	email	es	Total de Mensajes
+undisclosed recipients	email	es	Destinatarios Ocultos
+undisclosed sender	email	es	Remitente Oculto
+unknown action	email	es	Accion Desconocida
+unknown error	email	es	Error desconocido
+use custom settings	email	es	Usar seteos personalizados
+u-wash mail folder 	email	es	Carpeta IMAP U-Wash
+view as html	email	es	Ver como HTML
+view formatted	email	es	Ver con formato
+view headers	email	es	Ver Encabezados
+view unformatted	email	es	Ver sin formato
+wrote	email	es	escribio
+x messages have been deleted	email	es	%1 mensajes han sido borrados
+you have 1 new message!	common	es	Usted tiene 1 nuevo mensaje!
+you have messages!	common	es	Usted tiene mensajes!
+you have no new messages	common	es	Usted no tiene nuevos mensajes
+you have x new messages!	common	es	Usted tiene %1 mensajes nuevos!
+your full name	common	es	Su nombre completo
+your message has been sent	common	es	Su mensaje ha sido enviado!
