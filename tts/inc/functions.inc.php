@@ -23,7 +23,8 @@
     {
       $val=$db->f($idf,True);
       $select .= '<option value="' . intval($val). ($val==$selected?'" SELECTED>':'" >');
-      $select .= htmlspecialchars(try_lang($db->f($field,True),False,True)).($val==$selected?('  '.lang('selected')):''). "</option>\n";
+      $select .= htmlspecialchars(try_lang($db->f($field,True),False,True))
+        . "</option>\n";
     }
     return $select;
   }
