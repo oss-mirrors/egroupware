@@ -25,9 +25,15 @@
             {
                 $items = $config->config_data;
 
-				$this->mail_address		= $config['mail'];
-				$this->routing_address	= $config['routing'];
+				$this->mail_address		= $items['mail'];
+				$this->routing_address	= $items['routing'];
 			}
+			else
+			{
+				$this->mail_address		= 'maillocaladdress';
+				$this->routing_address	= 'mailroutingaddress';
+			}
+			unset($config);
 		}
 
 		function deleteServer($_serverid)
@@ -152,7 +158,7 @@
 					#print "found something<br>";
 					$userData['mailLocalAddress']		= $allValues[0][$mail_address][0];
 					$userData['accountStatus']			= $allValues[0]['accountstatus'][0];
-					$userData['mailForwardingAddress']	= $allValues[0][$routing_address][0];
+					$userData['mailRoutingingAddress']	= $allValues[0][$routing_address][0];
 					$userData['qmailDotMode']			= $allValues[0]['qmaildotmode'][0];
 					$userData['deliveryProgramPath']	= $allValues[0]['deliveryprogrampath'][0];
 					$userData['mailAlternateAddress']	= $allValues[0]['mailalternateaddress'];
@@ -180,9 +186,9 @@
 			$sri = @ldap_search($this->ldap,$GLOBALS['phpgw_info']['server']['ldap_context'],$filter);
 			if ($sri)
 			{
-				$allValues 	= ldap_get_entries($ldap, $sri);
-				$accountDN 	= $allValues[0]['dn'];
-				$uid	   	= $allValues[0]['uid'][0];
+				$allValues 		= ldap_get_entries($ldap, $sri);
+				$accountDN 		= $allValues[0]['dn'];
+				$uid	   		= $allValues[0]['uid'][0];
 				$homedirectory	= (isset($allValues[0]['homedirectory'][0])?$allValues[0]['homedirectory'][0]:'/home/' . $uid);
 			}
 			else
@@ -223,9 +229,9 @@
 				$newData['mailAlternateAddress'] = $_accountData['mailAlternateAddress'];
 			}
 
-			if ($_accountData['mailForwardingAddress'])
+			if ($_accountData['mailRoutingAddress'])
 			{
-				$newData[$routing_address] = $_accountData['mailForwardingAddress'];
+				$newData[$routing_address] = $_accountData['mailRoutingAddress'];
 			}
 
 			if ($_accountData['deliveryProgramPath'])
