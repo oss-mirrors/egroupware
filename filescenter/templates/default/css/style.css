@@ -315,7 +315,7 @@ h3{
         color: #000000;
 	margin: 0px;
 }
-
+/*
 a:link, a:visited, a:active  {
     text-decoration:    none;
     color:  #000000;
@@ -324,7 +324,7 @@ a:link, a:visited, a:active  {
 a:hover {
     text-decoration:    none;
     color:  #00AAD6;
-}
+}*/
 
 td.f{
 	background-color: #FFFFFF;
