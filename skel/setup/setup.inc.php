@@ -1,15 +1,15 @@
 <?php
-	/**************************************************************************\
-	* phpGroupWare                                                             *
-	* http://www.phpgroupware.org                                              *
-	* --------------------------------------------                             *
-	*  This program is free software; you can redistribute it and/or modify it *
-	*  under the terms of the GNU General Public License as published by the   *
-	*  Free Software Foundation; either version 2 of the License, or (at your  *
-	*  option) any later version.                                              *
-	\**************************************************************************/
+  /**************************************************************************\
+  * phpGroupWare                                                             *
+  * http://www.phpgroupware.org                                              *
+  * --------------------------------------------                             *
+  *  This program is free software; you can redistribute it and/or modify it *
+  *  under the terms of the GNU General Public License as published by the   *
+  *  Free Software Foundation; either version 2 of the License, or (at your  *
+  *  option) any later version.                                              *
+  \**************************************************************************/
 
-	/* $Id$ */
+  /* $Id$ */
 
 	/* Basic information about this app */
 	$setup_info['skel']['name']      = 'skel';
@@ -30,9 +30,9 @@
 
 	/* Dependencies for this app to work */
 	$setup_info['skel']['depends'][] = array(
-			 'appname' => 'phpgwapi',
-			 'versions' => Array('0.9.13', '0.9.14','0.9.15')
-		);
+		'appname' => 'phpgwapi',
+		'versions' => Array('0.9.14', '0.9.15','0.9.16')
+	);
 	$setup_info['skel']['depends'][] = array(
 		'appname' => 'email',
 		'versions' => Array('0.9.13', '0.9.14' , '0.9.15', '0.9.16')
