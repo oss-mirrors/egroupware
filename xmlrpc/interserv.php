@@ -25,14 +25,14 @@
 	if($login)
 	{
 		$is->send(
-			'system.auth', array(
+			'system.login', array(
 				'server_name' => $HTTP_HOST,
 				'username'    => $is->server['username'],
 				'password'    => $is->server['password']
 			),
 			$is->server['server_url']
 		);
-		_debug_array($is->result);
+		/* _debug_array($is->result); */
 		list($x,$xsessionid,$y,$xkp3) = $is->result;
 		if($x && !$y)
 		{
@@ -40,14 +40,33 @@
 			$xsessionid = $x;
 		}
 	}
-	elseif($verify)
+	elseif($methods)
 	{
+		$is->sessionid = $xsessionid;
+		$is->kp3 = $xkp3;
 		$is->send(
-			'system.auth_verify', array(
-				'server_name' => $HTTP_HOST,
-				'sessionid'   => $xsessionid,
-				'kp3'         => $xkp3
-			),
+			'system.listMethods',
+			array(''),
+			$is->server['server_url']
+		);
+	}
+	elseif($apps)
+	{
+		$is->sessionid = $xsessionid;
+		$is->kp3 = $xkp3;
+		$is->send(
+			'system.listApps',
+			array(''),
+			$is->server['server_url']
+		);
+	}
+	elseif($users)
+	{
+		$is->sessionid = $xsessionid;
+		$is->kp3 = $xkp3;
+		$is->send(
+			'system.listUsers',
+			array(''),
 			$is->server['server_url']
 		);
 	}
@@ -56,7 +75,9 @@
 	echo '<form action="' . $phpgw->link('/xmlrpc/interserv.php') . '">' . "\n";
 	echo $is->formatted_list($server_id) . "\n";
 	echo '<input type="submit" name="login" value="Login">' . "\n";
-	echo '<input type="submit" name="verify" value="Verify">' . "\n";
+	echo '<input type="submit" name="methods" value="List Methods">' . "\n";
+	echo '<input type="submit" name="apps" value="List Apps">' . "\n";
+	echo '<input type="submit" name="users" value="List Users">' . "\n";
 	echo '<input type="hidden" name="xsessionid" value="' . $xsessionid . '">' . "\n";
 	echo '<input type="hidden" name="xkp3" value="' . $xkp3 . '">' . "\n";
 	echo '</form>' . "\n";
