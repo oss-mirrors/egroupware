@@ -1,0 +1,90 @@
+In addition to the client database (Outlook, or whatever client is to be synced) and the server database (e-groupware), the syncronisation process relies on a database (called PCDB) located in the client that has the following fields:
+	- Record_type:	Calendar, addressbook, etc.
+	- Server_ID: Record ID in the server database (e-groupware)
+	- Local_ID: Record ID in the client database (Outlook or any other client being syncronized)
+	- Local_modif:	Last record modification timestamp in the client database
+	- Server_modif:	Last record modification timestamp in the server database
+
+SYNCRONIZATION LOGIC:
+
+Check if PCDB exists:
+
+	- No: this is the first syncronization
+
+		- Server -> Client: do the following with every record in the server database:
+
+			- add it to the client database
+			- create PCDB and add record
+
+		- Client -> Server: do the following with every record in the client database:
+
+			- Does it exist in PCDB?
+				- Yes: It has just been imported in the previous step
+				- No:
+					- add it to the server database
+					- add it to PCDB
+			
+	- Yes : this is not the first syncronization
+
+		- Server -> Client: do the following with every record in the server database:
+
+			- Does it exist in PCDB?
+
+				- No: It's a new record.
+					
+					- add it to the client database
+					- add it to PCDB
+
+				- Yes: Compare the modification time with Server_modif. Are they equal?
+
+					- Yes : Record has not been modified anywhere.
+
+					- No: Record has been modified in the server.
+						- Does the record exist in the client database?
+							- No: The record was erased from the client database. Treat is as if it was a new record in the server:
+								- delete record in PCDB
+								- add record to the client database
+								- add record to PCDB
+							- Yes: Compare Local_modif with the modification time in the client database. Are they equal?
+								- No: the record was also modified in the client database: CONFLICT
+								- Yes: The record has not been modified in the local database. Replace it with the record from the server database:
+									- delete record in PCDB
+									- update record in the local database
+									- add record to PCDB
+
+		- Handle record deletion in the server database: do the following with every record that appears in PCDB but not in the server database:
+			
+			- Does the record exist in the client database?
+
+				- No: The record has been deleted from both the client and server databases. Delete record in PCDB.
+
+				- Yes: Has the record been modified in the client database?
+					- No: The record can be safely deleted in the client database.
+						- delete record in client database
+						- delete record in PCDB
+					- Yes: delete record in PCDB, so it can be treated as a new record in the client database in the next step
+
+		- Client -> Server: do the following with every record in the client database:
+
+			- Does the record exist in PCDB?
+
+				- No: It's a new record, that needs to be added to the server database:
+					- add record to server database
+					- add record to PCDB
+
+				- Yes: Compare the modification time with Local_modif. Are they equal?
+					- Yes: Record has not been modified anywhere.
+					- No: Record has been modified in the local database.
+						- Compare Server_modif with the modification time of the record in the server database. Are they equal?
+							- No: the record was also modified in the server database: CONFLICT
+							- Yes: the record hasn't been modified in the server database. Replace it with the client database record:
+								- delete record in PCDB
+								- update record in server database
+								- add record to PCDB
+
+		- Handle record deletion in local database: do the following with every record that appears in PCDB but not in the client database:
+			
+			- delete record in server database
+			- delete record in PCDB
+
+
