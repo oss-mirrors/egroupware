@@ -2,37 +2,52 @@
 (required)	email	bg	(задължително)
 1 message has been deleted	email	bg	1 писмо беше изтрито
 1 message has been moved to	email	bg	1 писмо беше преместено в
+<b>*apply*</b> this filter	email	bg	<b>*ИЗПОЛЗВАЙ*</b> този филтър
+<b>apply all</b> filters	email	bg	<b>ИЗПОЛЗВАЙ ВСИЧКИ</b> филтри
 add to address book	email	bg	Добави в адресника
 add to addressbook	email	bg	Добави в адресника
 address book	email	bg	Адресник
 after	email	bg	След
 all messages	email	bg	Всички писма
+and	email	bg	и
+and stop filtering	email	bg	и прекрати филтрирането
+answered	email	bg	отговорено
+apply	email	bg	приложи
+apply filters report:	email	bg	Резултат след прилагане на филтрите:
 apr	email	bg	Април
+aqua fusion	email	bg	Стил "Aqua Fusion"
 arrival date	email	bg	Дата на пристигане
 as	email	bg	като
 attach file	email	bg	Прикрепи файл
 attach signature	email	bg	Добави подпис
 attachment	email	bg	Прикрепен файл
 aug	email	bg	Август
+bcc	email	bg	"ВСС" копие
+bcc address	email	bg	Адрес за "ВСС" копие
 before	email	bg	Преди
 big	email	bg	Голям
 bigger	email	bg	По-голям
 biggest	email	bg	Най-голям
 body	email	bg	Тяло
 both	email	bg	Двете
-button type	email	bg	Тип бутон
+button type	email	bg	Тип бутони
+cache server data whenever possible	email	bg	запомняй често ползваното, когато е възможно
+cc	email	bg	"СС" копие
+cc address	email	bg	Адрес за "СС" копие
 change font size in your e-mail pages	email	bg	Променя шрифта в страниците на ЕПоща
 choose for rename	email	bg	Преименовай
 choose to rename	email	bg	преименовай
 click here for more info in a new window	email	bg	Натисни за повече информация в нов прозорец
 click here to continue	email	bg	Дай нататък
-click here to return to your home page.	email	bg	натисни за да преминеш към началната страница
+click here to edit the settings for this email account.	email	bg	натисни за редактиране настройките на тази пощенска кутия
+click here to return to your home page.	email	bg	натисни за преход към началната страница
 company	email	bg	Фирма
 compose	common	bg	Писане
-compose message	email	bg	на ново писмо
+compose message	email	bg	писане на писмо
 compose new	common	bg	Напиши ново
-contains	email	bg	Съдържание
+contains	email	bg	Съдържа
 could not open this mailbox	email	bg	Не мога да отворя тази кутия
+create (expert)	email	bg	създай (експерт)
 create a folder	email	bg	Създай папка
 current attachments (%1)	email	bg	Приложени (%1)
 custom e-mail preferences	email	bg	Предпочитания за ЕПоща
@@ -40,39 +55,72 @@ custom e-mail settings	email	bg	Е-поща настройки
 debugging page	email	bg	Страница за диагностика
 dec	email	bg	Декември
 default sorting order	email	bg	Сортиране по подразбиране
+default:	common	bg	текущ:
+delete (expert)	email	bg	Премахни (експерт)
 delete a folder	email	bg	Премахни папка
+delete account	common	bg	Премахни пощ. кутия
 deleted	email	bg	премахнат(и)
 deleted messages (trash) folder	email	bg	Папка за изтрити писма (Trash)
 deleted messages folder name	email	bg	Име на папката за изтрити писма
-deleted messages go to trash	email	bg	Изтритите премести в папка Trash
+deleted messages go to trash	email	bg	Изтритите премествай в папка Trash
 deleted messages saved to folder:	email	bg	Записах изтритите писма в папка:
 discard	email	bg	Откажи
 does not contain	email	bg	Не съдържа
 draft	email	bg	чернова
+e-mail extra account	email	bg	Допълнителна пощ. кутия
+e-mail extra accounts	email	bg	Допълнителни пощ. кутии
+e-mail extra accounts list	email	bg	Списък допълнителни пощ. кутии
+e-mail filters	common	bg	Филтри в ЕПоща
+e-mail folders	common	bg	Папки в ЕПоща
+e-mail inbox filters list	email	bg	Списък филтри в ЕПоща Получени
 e-mail preferences	common	bg	ЕПоща предпочитания
 edit filters	email	bg	Редактиране на филтрите
+error moving messages to	email	bg	Грешка при местенето на писмата в
+evolution style	email	bg	Стил "Evolution"
 feb	email	bg	Февруари
 file	email	bg	Файл
+filter name	email	bg	Име на филтъра
+filter name:	email	bg	име на филтъра:
+filter number	email	bg	Номер на филтъра
 filters	email	bg	Филтри
 filters list	email	bg	Списък на филтрите
 flag as important	email	bg	Флаг за важност
 flagged	email	bg	с флаг
 folder	common	bg	Папка
+folder maintenance	email	bg	Редактиране на папките
 folder name	email	bg	Име на папката
 folder size	email	bg	Обем на папката
 folders	email	bg	Папки
+for the file to actually upload	email	bg	за зареждане на файла
 for these items, fill only what is different from you default e-mail preferences	common	bg	Променете само тези настройки за ЕПоща, които се различават от предпочитаното
 forward	email	bg	Препращане
 from	email	bg	От
 from address	email	bg	Подател
-hidden	email	bg	скрит(о)
+get size	email	bg	Какъв е обема?
+go	email	bg	нататък
+go back	email	bg	Назад
+go back to	email	bg	Върни се на
+header field	email	bg	Заглавно поле
+hidden	email	bg	скрито
 hide help	email	bg	Скрий описанията
 icon size	email	bg	Големина на иконите
+icon theme	email	bg	Вид на иконите
+idots crystal style	email	bg	Стил "iDots Crystal"
+if &quot; deleted messages go to trash &quot; is checked, deleted message will be sent to the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;trash&quot;. this will be your &quot;trash&quot; folder, but it does not have to actually be called &quot;trash&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	bg	Ако &quot; Deleted messages go to Trash &quot; е маркирано, всяко изтрито писмо ще бъде премествано в папката, чието име напишете тук. Ако тя не съществува, ще бъде създадена автоматично. Обикновено името и е &quot;Sent&quot;. Наложително е периодично или веднага да изпразвате тази папка. Функцията работи само с IMAP сървър, и не работи с POP.
+if &quot; sent messages folder &quot; is checked, a copy of your sent mail will be stored in the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;sent&quot;. this will be your &quot;sent&quot; folder, but it does not have to actually be called &quot;sent&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	bg	Ако &quot;Sent messages folder&quot; е маркирано, копие на всяко изпратено писмо ще бъде записвано в папката, чието име напишете тук. Ако тя не съществува, ще бъде създадена автоматично. Обикновено името и е &quot;Sent&quot;. Наложително е периодично да почиствате тази папка от излишните писма. Тази функция работи само с IMAP сървър, и не работи с POP.
+if &quot;deleted messages go to trash&quot; is checked, deleted message will be sent to the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;trash&quot; this will be your &quot;trash&quot; folder, but it does not have to actually be called &quot;trash&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	bg	Ако &quot; Deleted messages go to Trash &quot; е маркирано, всяко изтрито писмо ще бъде премествано в папката, чието име напишете тук. Ако тя не съществува, ще бъде създадена автоматично. Обикновено името и е &quot;Sent&quot;. Наложително е периодично или веднага да изпразвате тази папка. Функцията работи само с IMAP сървър, и не работи с POP.
+if &quot;sent messages folder&quot; is checked, a copy of your sent mail will be stored in the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;sent&quot; this will be your &quot;sent&quot; folder, but it does not have to actually be called &quot;sent&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	bg	Ако &quot;Sent messages folder&quot; е маркирано, копие на всяко изпратено писмо ще бъде записвано в папката, чието име напишете тук. Ако тя не съществува, ще бъде създадена автоматично. Обикновено името и е &quot;Sent&quot;. Наложително е периодично да почиствате тази папка от излишните писма. Тази функция работи само с IMAP сървър, и не работи с POP.
+if applicable	email	bg	Ако е приложимо
+if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder &quot;. only works with imap servers, pop servers do not have folders.	email	bg	Ако е маркирано, в папката с име &quot;Sent&quot; ще бъде записвано копие на всяко изпратено писмо. Това налага периодично или веднага да почиствате тази папка. Името и се задава в поле &quot;Sent messages folder&quot;. Тази функция работи само с IMAP сървър, и не работи с POP.
+if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder&quot; only works with imap servers, pop servers do not have folders.	email	bg	Ако е маркирано, в папката с име &quot;Sent&quot; ще бъде записвано копие на всяко изпратено писмо. Това налага периодично или веднага да почиствате тази папка. Името и се задава в поле &quot;Sent messages folder&quot;. Тази функция работи само с IMAP сървър, и не работи с POP.
+if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder&quot;. only works with imap servers, pop servers do not have folders.	email	bg	Ако е маркирано, в папката с име &quot;Sent&quot; ще бъде записвано копие на всяко изпратено писмо. Това налага периодично или веднага да почиствате тази папка. Името и се задава в поле &quot;Sent messages folder&quot;. Тази функция работи само с IMAP сървър, и не работи с POP.
+if checked, deleted message will be sent to the &quot;trash&quot; folder name which you specify in the box for &quot; deleted messages (trash) folder &quot;. only works with imap servers, pop servers do not have folders.	email	bg	Ако е маркирано, писмата, които изтривате ще бъдат премествани в папката с име &quot;Trash&quot; вместо да бъдат изтрити. Това налага периодично или веднага да я изпразвате. Името на папката се задава в поле &quot;Deleted messages (Trash) folder&quot;. Тази функция работи само с IMAP сървър, и не работи с POP.
+if checked, deleted message will be sent to the &quot;trash&quot; folder name which you specify in the box for &quot;deleted messages (trash) folder&quot; only works with imap servers, pop servers do not have folders.	email	bg	Ако е маркирано, писмата, които изтривате ще бъдат премествани в папката с име &quot;Trash&quot; вместо да бъдат изтрити. Това налага периодично или веднага да я изпразвате. Името на папката се задава в поле &quot;Deleted messages (Trash) folder&quot;. Тази функция работи само с IMAP сървър, и не работи с POP.
 image	email	bg	Изображение
 imap mail server hostname or ip address	admin	bg	IP или име на IMAP сървъра
 imap server type	common	bg	Тип на IMAP сървъра
 important	email	bg	важно
-inbox	email	bg	Входяща
+inbox	email	bg	Получени
 jan	email	bg	Януари
 jul	email	bg	Юли
 jun	email	bg	Юни
@@ -88,16 +136,21 @@ move selected messages into	email	bg	Премести маркираните в
 move this message into	email	bg	Премести писмото в
 move up	email	bg	Премести нагоре
 new	email	bg	Нови
+new filter	email	bg	Добавяне на филтър
 new message	email	bg	Ново писмо
 new messages	email	bg	Нови писма
 newest	common	bg	най-ново
 next message	email	bg	Следващо писмо
+no change	email	bg	не променяй
+no error returned from server	email	bg	Няма грешка според сървъра
+no message found in folder '%1'	email	bg	Не са намерени писма в папка '%1'
 no next message	email	bg	Няма следващо
 no previous message	email	bg	Няма предишно
+noia &#64; carlitus style	email	bg	Стил "Noia @ Carlitus"
 nov	email	bg	Ноември
 oct	email	bg	Октомври
 old	email	bg	Стар
-oldest	common	bg	най-стар
+oldest	common	bg	най-старо
 or	common	bg	или
 organization	email	bg	Организация
 phone	email	bg	Телефон
@@ -115,12 +168,12 @@ sent	common	bg	изпратени
 sent folder	email	bg	папка за изпратени
 sent messages folder	common	bg	Папка за изпратени писма
 sent messages folder name	email	bg	Име на папка "Изпратени"
-sent messages saved in &quot;sent&quot; folder	common	bg	Записах изпратените съобщения в папка &quot;sent&quot
+sent messages saved in &quot;sent&quot; folder	common	bg	Записвай изпратените съобщения в папка &quot;sent&quot
 sent messages saved to folder:	email	bg	Записах изпратените в папка:
 sep	email	bg	Септември
 settings	common	bg	Настройки
 short names	email	bg	кратки имена
-show help	email	bg	Покажи обясненията
+show help	email	bg	Покажи описанията
 show long names	email	bg	Покажи с дълги имена
 show message	email	bg	покажи писмото
 show new messages in combobox	email	bg	Покажи новите в падащ списък
@@ -137,12 +190,17 @@ smallest	email	bg	Най-малък
 somebody	email	bg	някой
 sort by	email	bg	Сортирай по
 spell check	email	bg	Проверка на правописа
+switch current folder to	common	bg	Покажи ми папка
+test all filters	email	bg	Тествай всички филтри
+test or apply all filters	email	bg	Тестване и прилагане на филтрите
+text	email	bg	Текст
 there is no text or other part of the email to display to the user, all part(s) are attachments.	email	bg	Няма текст или друго за изобразяване. Има само приложения.
 there was an error trying to connect to your imap server.<br>please contact your admin to check the servername, username or password.	email	bg	Възникна грешка при опита за връзка с IMAP сървъра.<br>Моля, свържете се с администратора за проверка името на сървъра, името на потребителя и паролата му.
 there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	bg	Възникна грешка при опита за връзка с пощенския сървър.<br>Моля, проверете името и паролата си или се свържете с администратора.
 there was an error trying to connect to your pop3 server.<br>please contact your admin to check the servername, username or password.	email	bg	Възникна грешка при опита за връзка с POP3 сървъра.<br>Моля, свържете се с администратора за проверка името на сървъра, името на потребителя и паролата му.
 this folder is empty	email	bg	Тази папка е празна
 to	email	bg	До
+to address	email	bg	Адрес на получателя
 total messages	email	bg	Общо писма
 trash	email	bg	кошче
 trash folder	email	bg	папка за кошче
@@ -150,11 +208,14 @@ unanswered	email	bg	Неотговорени
 unknown error	email	bg	Неизвестна грешка
 view formatted	email	bg	Форматиран вид
 view unformatted	email	bg	Неформатиран вид
+we have three sizes that tell us how to better render the addressbook for you: 800x600 (addressbook will popout in a 700 pixel wide box), 1024x768 (it will be a 800 box), 1200x1600 (will be a 900 box). the fonts for all html stuff will be, respectively set to xx-small, x-small and normal (no font setting).	email	bg	Съобразявайки се с режима на Вашия екран ще изобразим адресника по един от тези три начина. Ако работите в режим 800х600 точки, адресника ще се появява със ширина 700 точки, а за режимите 1024х768 и 1200х1600 съответно 800 и 900 точки. Шрифта за трите режима ще бъде съответно много малък, малък и нормален.
+wrote	email	bg	запаметени
 you have %1 new messages!	common	bg	Имате %1 нови писма!
 you have 1 new message!	common	bg	Имате 1 ново писмо!
 you have messages!	common	bg	Имате съобщения!
 you have no new messages	common	bg	За Вас няма нови съобщения.
+you must click	email	bg	Трябва да натиснете
 you must click %1 for the file to actually upload	email	bg	Трябва да натиснете %1 за да заредите файла
 your full name	common	bg	Пълното Ви име
 your message has been sent	common	bg	Писмото Ви е изпратено!
-your server administrator will set the default values for the following options. you may never need to change any of them. if you do need to use settings that are different from the defaults for the options below here, then check this box. default is disabled, not checked. if you fill in some of the options, but later decide to go back to the default values, unchecking this box will erase your custom values and put back the default values. all of the following options start out with the default value, so you may see some settings below even if you have never filled them in. this checkbox only shows up for the default email account. if you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.	email	bg	Следващите настройки са направени от администратора на Вашия сървър. Вероятно няма да се наложи да ги променяте, но ако все пак искате да го направите, маркирайте тази клетка. По подразбиране тя не е маркирана. Ако някога решите да се върнете към настройките, направени от администратора, можете да демаркирате клетката. При това, настройките направени от Вас ще бъдат изтрити и заменени с първоначалните настройки. All of the following options start out with the default value, so you may see some settings below even if you have never filled them in. This checkbox only shows up for the default email account. If you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.
+your server administrator will set the default values for the following options. you may never need to change any of them. if you do need to use settings that are different from the defaults for the options below here, then check this box. default is disabled, not checked. if you fill in some of the options, but later decide to go back to the default values, unchecking this box will erase your custom values and put back the default values. all of the following options start out with the default value, so you may see some settings below even if you have never filled them in. this checkbox only shows up for the default email account. if you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.	email	bg	Следващите настройки са направени от администратора на Вашия сървър. Някои ще имат зададени стойности, въпреки че никога не сте попълвали нищо в тях. Вероятно няма да се наложи да ги променяте, но ако все пак решите да го направите, маркирайте тази клетка. По подразбиране тя не е маркирана. Ако някога решите да се върнете към настройките, направени от администратора, можете да демаркирате клетката. При това, настройките направени от Вас ще бъдат изтрити и заменени с първоначалните им стойности. Тази клетка се появява само за основната пошенска кутия. Тя не се появява за евентуално активираните от Вас допълнителни пощенски кутии. Там тя ще е маркирана и Вие ще трябва да попълните тези настройки.
