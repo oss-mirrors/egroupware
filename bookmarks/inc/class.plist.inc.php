@@ -40,7 +40,6 @@
 		// We only want to display the massupdate section once
 		if (! $massupdate_shown)
 		{
-			$list_tpl->set_var('list_mass_select_form',$phpgw->link('/bookmarks/mass_maintain.php'));
 			$list_tpl->set_var('lang_massupdate',lang('Mass update:'));
 
 			$list_tpl->set_var('massupdate_delete_icon','<input type="image" name="delete" border="0" src="' . PHPGW_IMAGES . '/delete.gif">');
@@ -75,17 +74,17 @@
 
 		$list_tpl->set_file(array(
 			'list' => 'list.tpl'
-/*			'list_section'   => 'common.list.section.tpl',
-			'header'         => 'common.list.hdr.tpl',
-			'footer'         => 'common.list.ftr.tpl',
-			'list_item'      => 'common.list.item.tpl',
-			'item_keyw'      => 'common.list.item_keyw.tpl' */
 		));
 		$list_tpl->set_block('list','list_section');
 		$list_tpl->set_block('list','list_header');
 		$list_tpl->set_block('list','list_footer');
 		$list_tpl->set_block('list','list_item');
 		$list_tpl->set_block('list','list_keyw');
+		$list_tpl->set_block('list','page_header');
+		$list_tpl->set_block('list','page_footer');
+
+		$list_tpl->set_var('list_mass_select_form',$phpgw->link('/bookmarks/mass_maintain.php'));
+		$list_tpl->fp('header','page_header');
 
 		$filtermethod = '( bm_owner=' . $phpgw_info['user']['account_id'];
 		if (is_array($phpgw->bookmarks->grants))
@@ -120,9 +119,9 @@
 			$where_clause_sql = ' ';
 		}
 
-		$query .= $where_clause_sql . $order_by_sql . $phpgw->db->limit($start);
+		$query .= $where_clause_sql . $order_by_sql;
 
-		$phpgw->db->query($query,__LINE__,__FILE__);
+		$phpgw->db->limit_query($query,$start,__LINE__,__FILE__);
 
 		$prev_category_id = -1;
 		$prev_subcategory_id = -1;
@@ -190,6 +189,7 @@
 		{
 			print_list_break(&$list_tpl, $prev_category, $prev_subcategory);
 			$content = $list_tpl->get('CONTENT');
+			$list_tpl->fp('footer','page_footer');
 		}
 
 	}

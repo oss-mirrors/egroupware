@@ -248,11 +248,11 @@
 			$query = sprintf("select count(*) from phpgw_bookmarks where bm_url='%s' and bm_owner='%s'",$values['url'], $phpgw_info['user']['account_id']);
 			$db->query($query,__LINE__,__FILE__);
 
-			if ($db->f(0))
-			{
-				$error_msg .= sprintf('<br>URL <B>%s</B> already exists!', $values['url']);
-				return False;
-			}
+//			if ($db->f(0) != 0)
+//			{
+//				$error_msg .= sprintf('<br>URL <B>%s</B> already exists!', $values['url']);
+//				return False;
+//			}
 
 			if (! $values['access'])
 			{
@@ -265,6 +265,12 @@
 			}
 
 			list($category,$subcategory) = explode('|',$values['category']);
+
+			if (! $category)
+			{
+				$error_msg .= 'You must select a category';
+				return False;
+			}
 
 			$query = sprintf("insert into phpgw_bookmarks (bm_url, bm_name, bm_desc, bm_keywords, bm_category,"
                        . "bm_subcategory, bm_rating, bm_owner, bm_access, bm_info, bm_visits) "

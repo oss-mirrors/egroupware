@@ -23,7 +23,7 @@
 
 	$phpgw->template->set_file(array(
 		'common_' => 'common.tpl',
-		'body'   => 'list.body.tpl'
+		'body'    => 'list.body.tpl'
 	));
 
 	app_header(&$phpgw->template);

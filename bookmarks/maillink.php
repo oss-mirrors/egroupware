@@ -24,7 +24,7 @@
 	$phpgw->send       = createobject('phpgwapi.send');
 
 	$phpgw->template->set_file(array(
-		'common'     => 'common.tpl',
+		'common_'     => 'common.tpl',
 		'footer'     => 'maillink_footer.tpl',
 		'body'       => 'maillink.body.tpl'
 	));
