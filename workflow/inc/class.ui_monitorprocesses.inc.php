@@ -64,7 +64,7 @@
 			foreach ($processes_list_data as $process)
 			{
 				$this->t->set_var(array(
-					'process_href'				=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorprocesses.form&pid='. $process['pId']),
+					'process_href'				=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&pid='. $process['pId']),
 					'process_name'				=> $process['name'],
 					'process_version'			=> $process['version'],
 					'process_href_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitoractivities.form&filter_process='. $process['pId']),
