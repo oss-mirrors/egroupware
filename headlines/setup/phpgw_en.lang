@@ -6,11 +6,11 @@ headline preferences	common	en	Headline preferences
 headline sites	admin	en	Headline Sites
 listings displayed	admin	en	Listings Displayed
 minutes between reloads	admin	en	Minutes between Reloads
-monitor common  en  Monitor
+monitor	common	en	Monitor
 news file	admin	en	News File
 news headlines  common  en  News headlines
 news type	admin	en	News Type
-select headline news sites  common  en  Select Headline News sites
+select headline news sites	common	en	Select Headline News sites
 that site has already been entered	admin	en	That site has already been entered
 you must enter a base url	admin	en	You must enter a base url
 you must enter a display	admin	en	You must enter a display
