@@ -80,12 +80,31 @@
 			$is->server['server_url']
 		);
 	}
+	elseif($addressbook)
+	{
+		$is->sessionid = $xsessionid;
+		$is->kp3 = $xkp3;
+		/* NOTE: Currently acl in the addressbook so class blocks this from working.
+			You will need to replace the first line in read_entry() there to if(1).
+		*/
+		$is->send(
+			'addressbook.boaddressbook.read_entry',array(
+				'id' => 24,
+				'fields' => array(
+					'n_given'  => 'n_given',
+					'n_family' => 'n_family'
+				)
+			),
+			$is->server['server_url']
+		);
+	}
 
 	echo '<table><tr><td>';
 	echo '<form action="' . $phpgw->link('/xmlrpc/interserv.php') . '">' . "\n";
 	echo $is->formatted_list($server_id) . "\n";
 	echo '<input type="submit" name="login" value="Login">' . "\n";
 	echo '<input type="submit" name="logout" value="Logout">' . "\n";
+	echo '<input type="submit" name="addressbook" value="Addressbook test">' . "\n";
 	echo '<input type="submit" name="methods" value="List Methods">' . "\n";
 	echo '<input type="submit" name="apps" value="List Apps">' . "\n";
 	echo '<input type="submit" name="users" value="List Users">' . "\n";
