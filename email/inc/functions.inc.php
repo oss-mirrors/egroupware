@@ -494,11 +494,29 @@
   }
 
 
- function all_folders_listbox($mailbox,$pre_select="",$skip="")
+ function all_folders_listbox($mailbox,$pre_select="",$skip="",$indicate_new=false)
   {
 	global $phpgw, $phpgw_info;
 
+	// init some important variables
 	$outstr = '';
+	//$unseen_prefix = ' &lt;';
+	//$unseen_suffix = ' new&gt;';	
+	//$unseen_prefix = ' &#091;';
+	//$unseen_suffix = ' new&#093;';
+	//$unseen_prefix = ' &#040;';
+	//$unseen_suffix = ' new&#041;';
+	//$unseen_prefix = ' &#045; ';
+	//$unseen_suffix = ' new';
+	//$unseen_prefix = ' &#045;';
+	//$unseen_suffix = '&#045;';	
+	//$unseen_prefix = '&nbsp;&nbsp;&#040;';
+	//$unseen_suffix = ' new&#041;';
+	//$unseen_prefix = '&nbsp;&nbsp;&#091;';
+	//$unseen_suffix = ' new&#093;';
+	$unseen_prefix = '&nbsp;&nbsp;&#060;';
+	$unseen_suffix = ' new&#062;';
+	
 	if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
 	{
 		while($pref = each($phpgw_info["user"]["preferences"]["nntp"]))
@@ -538,7 +556,17 @@
 			$num_boxes = count($mailboxes);
 			if ($name_space != 'INBOX')
 			{
-				$outstr = $outstr .'<option value="INBOX">INBOX</option>'; 
+				//$outstr = $outstr .'<option value="INBOX">INBOX</option>'; 
+				$outstr = $outstr .'<option value="INBOX">INBOX';
+				if ($indicate_new)
+				{
+					$mailbox_status = $phpgw->msg->status($mailbox,$server_str . 'INBOX',SA_UNSEEN);
+					if ($mailbox_status->unseen > 0)
+					{
+						$outstr = $outstr . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
+					}
+				}
+				$outstr = $outstr . "</option>\r\n"; 
         		}
 			for ($i=0; $i<$num_boxes;$i++)
 			{
@@ -563,8 +591,18 @@
 					}
 					if ($folder_short != $skip)
 					{
-						$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short .'</option>';
-						$outstr = $outstr ."\n";
+						//$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short .'</option>';
+						//$outstr = $outstr ."\n";
+						$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short;
+						if ($indicate_new)
+						{
+							$mailbox_status = $phpgw->msg->status($mailbox,$mailboxes[$i],SA_UNSEEN);
+							if ($mailbox_status->unseen > 0)
+							{
+								$outstr = $outstr . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
+							}
+						}
+						$outstr = $outstr . "</option>\r\n";
 					}
 				}
 			}

@@ -17,6 +17,7 @@
 	{
 		$folder="INBOX";
 	}
+	$folder = urldecode($folder);
 
 	Header("Cache-Control: no-cache");
 	Header("Pragma: no-cache");
@@ -63,7 +64,9 @@
 	  || ($phpgw_info['flags']['newsmode'] == True))
 	{
 		$uses_folders = True;
-	} else {
+	}
+	else
+	{
 		$uses_folders = False;
 	}
 	// How To Communicate With The Server
@@ -205,9 +208,13 @@
 // ---- SwitchTo Folder Listbox   -----
 	if ($uses_folders)
 	{
+		// FUTURE: this will pick up the user option to show num unseen msgs in dropdown list
+		$listbox_show_unseen = True;
+		//$listbox_show_unseen = False;
 		$switchbox_listbox = '<select name="folder" onChange="document.switchbox.submit()">'
 				. '<option>' . lang('switch current folder to') . ':'
-				. all_folders_listbox($mailbox,'')
+				//. all_folders_listbox($mailbox,'')
+				. all_folders_listbox($mailbox,'','',$listbox_show_unseen)
 				. '</select>';
 	} else {
 		$switchbox_listbox = '&nbsp';
