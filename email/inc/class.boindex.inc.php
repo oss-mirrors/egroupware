@@ -20,6 +20,7 @@
 			'index_data'		=> True,
 			'mlist_data'		=> True
 		);
+		var $nextmatchs;
 		var $index_base_link='';
 		//var $debug_index_data = True;
 		var $debug_index_data = False;
@@ -216,61 +217,54 @@
 			//$attempt_reuse = False;
 			
 			if ($this->debug_index_data == True) { echo 'ENTERING: email.boindex: index_data'.'<br>'; }
-			if ($this->debug_index_data == True) { echo 'email.boindex: index_data: local var attempt_reuse=['.serialize($attempt_reuse).'] ; reuse_feed_args[] dump<pre>'; print_r($reuse_feed_args); echo '</pre>'; }
+			if ($this->debug_index_data == True) { echo 'email.boindex.index_data: local var attempt_reuse=['.serialize($attempt_reuse).'] ; reuse_feed_args[] dump<pre>'; print_r($reuse_feed_args); echo '</pre>'; }
 			// create class objects
 			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
+			
+			if (is_object($GLOBALS['phpgw']->msg))
+			{
+				if ($this->debug_index_data) { echo 'email.boindex.index_data: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
+			}
+			else
+			{
+				if ($this->debug_index_data) { echo 'email.boindex.index_data: is_object: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
+				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+			}
+			
 			// do we attempt to reuse the existing msg object?
 			if ((is_object($GLOBALS['phpgw']->msg))
 			&& ($attempt_reuse == True))
 			{
 				// no not create, we will reuse existing
-				if ($this->debug_index_data == True) { echo 'email.boindex: index_data: reusing existing mail_msg object'.'<br>'; }
-				//DO NOT call msg->grab_class_args_gpc() when REUSING existing, the begin_request function does it in this case
-				// // // $GLOBALS['phpgw']->msg->grab_class_args_gpc();
+				if ($this->debug_index_data == True) { echo 'email.boindex.index_data: reusing existing mail_msg object'.'<br>'; }
 				// we need to feed the existing object some params begin_request uses to re-fill the msg->args[] data
 				$args_array = Array();
+				// any args passed in $args_array will override or replace any pre-existing arg value
 				$args_array = $reuse_feed_args;
 				// add this to keep the error checking code (below) happy
 				$args_array['do_login'] = True;
-				// add this for NO reason at all, just maybe use in the future
-				$args_array['newsmode'] = False;
 			}
 			else
 			{
-				if ($this->debug_index_data == True) { echo 'email.boindex: index_data: creating object email.mail_msg, cannot or not trying to reusing existing'.'<br>'; }
-				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-				// only do grab_class_args_gpc() when creating a new object, AND call it BEFORE begin_request
-				$GLOBALS['phpgw']->msg->grab_class_args_gpc();
-				if ($this->debug_index_data == True) { echo 'email.boindex: index_data: grab_class_args_gpc makes ->args[] dump:<pre>'; print_r($GLOBALS['phpgw']->msg->args); echo '</pre>'; }
-				// new login 
-				// (1) folder (if specified) - can be left empty or unset, mail_msg will then assume INBOX
+				if ($this->debug_index_data == True) { echo 'email.boindex.index_data: cannot or not trying to reusing existing'.'<br>'; }
 				$args_array = Array();
-				if (isset($GLOBALS['HTTP_POST_VARS']['folder']))
-				{
-					$args_array['folder'] = $GLOBALS['HTTP_POST_VARS']['folder'];
-				}
-				elseif (isset($GLOBALS['HTTP_GET_VARS']['folder']))
-				{
-					$args_array['folder'] = $GLOBALS['HTTP_GET_VARS']['folder'];
-				}
-				// (2) should we log in
+				// should we log in or not
 				$args_array['do_login'] = True;
-				// (3) NOT IMPLEMENTED YET  -- newsmode
-				$args_array['newsmode'] = False;
 			}
+			
 			// "start your engines"
-			if ($this->debug_index_data == True) { echo 'email.boindex: index_data: call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
-			$GLOBALS['phpgw']->msg->begin_request($args_array);
+			if ($this->debug_index_data == True) { echo 'email.boindex.index_data: call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
+			$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
 			// error if login failed
 			if (($args_array['do_login'] == True)
-			&& (!$GLOBALS['phpgw']->msg->mailsvr_stream))
+			&& (!$some_stream))
 			{
 				$GLOBALS['phpgw']->msg->login_error($GLOBALS['PHP_SELF'].', index_data()');
 			}
 			// base http URI on which we will add other stuff down below
-			$this->index_base_link = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->index_menuaction);
+			$this->index_base_link = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'));
 			// if auto-refresh is in use, it will need to know what to refresh, use with ->link to get full http string
-			$GLOBALS['phpgw_info']['flags']['email_refresh_uri'] = $GLOBALS['phpgw']->msg->index_refresh_uri;
+			$GLOBALS['phpgw_info']['flags']['email_refresh_uri'] = $GLOBALS['phpgw']->msg->get_arg_value('index_refresh_uri');
 			// any app may use these lang'd labels in their email UI
 			$this->get_langed_labels();
 			// ---  this->xi ("eXternal Interface") is an array that will hold ALL data necessary for an index page
@@ -307,9 +301,9 @@
 			// establish all manner of important data
 			$this->xi['svr_image_dir'] = PHPGW_IMAGES_DIR;
 			$this->xi['image_dir'] = PHPGW_IMAGES;
-			$this->xi['current_sort'] = $GLOBALS['phpgw']->msg->sort;
-			$this->xi['current_order'] = $GLOBALS['phpgw']->msg->order;
-			$this->xi['current_start'] = $GLOBALS['phpgw']->msg->start;
+			$this->xi['current_sort'] = $GLOBALS['phpgw']->msg->get_arg_value('sort');
+			$this->xi['current_order'] = $GLOBALS['phpgw']->msg->get_arg_value('order');
+			$this->xi['current_start'] = $GLOBALS['phpgw']->msg->get_arg_value('start');
 			$this->xi['current_folder'] = $GLOBALS['phpgw']->msg->prep_folder_out('');
 			$this->xi['show_num_new'] = False;
 			
@@ -345,7 +339,7 @@
 			//$this->xi['arrows_td_backcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
 			$this->xi['arrows_td_backcolor'] = '';
 			$nav_args = Array (
-				'start'		=> $GLOBALS['phpgw']->msg->start,
+				'start'		=> $GLOBALS['phpgw']->msg->get_arg_value('start'),
 				'total'		=> $this->xi['folder_info']['number_all'],
 				'cmd_prefix'	=> 'do_navigate(\'',
 				'cmd_suffix'	=> '\')'
@@ -358,26 +352,27 @@
 			$this->xi['last_page'] = $arrows_links['last_page'];
 			
 			$this->xi['td_prev_arrows'] = $this->nextmatchs->left('/index.php',
-							$GLOBALS['phpgw']->msg->start,
+							$GLOBALS['phpgw']->msg->get_arg_value('start'),
 							$this->xi['folder_info']['number_all'],
-							'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-							.'&sort='.$GLOBALS['phpgw']->msg->sort
-							.'&order='.$GLOBALS['phpgw']->msg->order
-							.'&'.$GLOBALS['phpgw']->msg->index_menuaction);
+							 '&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+							.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+							.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+							.'&'.$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'));
 			
 			$this->xi['td_next_arrows'] = $this->nextmatchs->right('/index.php',
-							$GLOBALS['phpgw']->msg->start,
+							$GLOBALS['phpgw']->msg->get_arg_value('start'),
 							$this->xi['folder_info']['number_all'],
-							'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-							.'&sort='.$GLOBALS['phpgw']->msg->sort
-							.'&order='.$GLOBALS['phpgw']->msg->order
-							.'&'.$GLOBALS['phpgw']->msg->index_menuaction);
+							 '&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+							.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+							.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+							.'&'.$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'));
 			
 			$this->xi['ctrl_bar_back2'] = $GLOBALS['phpgw_info']['theme']['row_off'];
 			$this->xi['compose_link'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php','folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
 			if ($this->xi['mailsvr_supports_folders'])
 			{
-				$this->xi['folders_link'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php');
+				//$this->xi['folders_link'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php');
+				$this->xi['folders_link'] = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('folder_menuaction'));
 				$this->xi['folders_href'] = '<a href="'.$this->xi['folders_link'].'">'.$this->xi['folders_txt2'].'</a>';
 		
 				$folders_btn_js = 'window.location=\''.$this->xi['folders_link'].'\'';
@@ -403,7 +398,7 @@
 				3 => '',
 				6 => ''
 			);
-			$sort_selected[$GLOBALS['phpgw']->msg->sort] = " selected";
+			$sort_selected[$GLOBALS['phpgw']->msg->get_arg_value('sort')] = " selected";
 			$this->xi['sortbox_select_options'] =
 				 '<option value="0"' .$sort_selected[0] .'>'.$this->xi['lang_email_date'].'</option>' ."\r\n"
 				.'<option value="1"' .$sort_selected[1] .'>'.$this->xi['lang_arrival_date'].'</option>' ."\r\n"
@@ -441,8 +436,8 @@
 			
 			$this->xi['stats_backcolor'] = $GLOBALS['phpgw_info']['theme']['em_folder'];
 			$this->xi['stats_color'] = $GLOBALS['phpgw_info']['theme']['em_folder_text'];
-			$this->xi['stats_folder'] = $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->folder);
-			$this->xi['stats_first'] = $GLOBALS['phpgw']->msg->start + 1;
+			$this->xi['stats_folder'] = $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->get_arg_value('folder'));
+			$this->xi['stats_first'] = $GLOBALS['phpgw']->msg->get_arg_value('start') + 1;
 			// toggle the "get folder size" button or link, if getting that size was skipped as a time-saving measure
 			if ($this->xi['stats_size'] == '')
 			{
@@ -450,9 +445,9 @@
 				$this->xi['get_size_link'] =
 					$this->index_base_link
 					.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-					.'&sort='.$GLOBALS['phpgw']->msg->sort
-					.'&order='.$GLOBALS['phpgw']->msg->order
-					.'&start='.$GLOBALS['phpgw']->msg->start
+					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
 					.'&'.$this->xi['force_showsize_flag'].'=1';
 				$this->xi['frm_get_size_name'] = 'form_get_size';
 				$this->xi['frm_get_size_action'] = $this->index_base_link;
@@ -460,7 +455,7 @@
 			// column labels for the message list
 			$flag_sort_pre = '* ';
 			$flag_sort_post = ' *';
-			switch ((int)$GLOBALS['phpgw']->msg->sort)
+			switch ((int)$GLOBALS['phpgw']->msg->get_arg_value('sort'))
 			{
 				case 1 : $this->xi['lang_date'] = $flag_sort_pre .$this->xi['lang_date'] .$flag_sort_post; break;
 				case 2 : $this->xi['lang_from'] = $flag_sort_pre .$this->xi['lang_from'] .$flag_sort_post; break;
@@ -469,8 +464,8 @@
 					 $this->xi['lang_lines'] = $this->xi['lang_lines'] .$flag_sort_post; break;
 			}
 			// default order is needed for the "nextmatchs" args, to know when to toggle this between normal and reverse
-			if ((isset($GLOBALS['phpgw']->msg->prefs['default_sorting']))
-			  && ($GLOBALS['phpgw']->msg->prefs['default_sorting'] == 'new_old'))
+			if (($GLOBALS['phpgw']->msg->get_isset_pref('default_sorting'))
+			  && ($GLOBALS['phpgw']->msg->get_pref_value('default_sorting') == 'new_old'))
 			{
 				$this->xi['default_order'] = 1;
 			}
@@ -479,19 +474,20 @@
 				$this->xi['default_order'] = 0;
 			}
 			// make these column labels into clickable HREF's for their 
-			if ($GLOBALS['phpgw']->msg->newsmode)
+			if (($GLOBALS['phpgw']->msg->get_isset_arg('newsmode') == True)
+			&& ($GLOBALS['phpgw']->msg->get_arg_value('newsmode') == True))
 			{
-				$this->xi['hdr_subject'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->sort,'3',$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->index_menuaction,$this->xi['lang_subject'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->sort,'2',$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->index_menuaction,$this->xi['lang_from'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				$this->xi['hdr_date'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->sort,'1',$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->index_menuaction,$this->xi['lang_date'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				$this->xi['hdr_size'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->sort,'6',$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->index_menuaction,$this->xi['lang_lines'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_subject'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'3',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'),$this->xi['lang_subject'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'2',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'),$this->xi['lang_from'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_date'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'1',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'),$this->xi['lang_date'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_size'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'6',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'),$this->xi['lang_lines'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
 			}
 			else
 			{
-				$this->xi['hdr_subject'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->sort,'3',$this->xi['default_order'],$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->index_menuaction,$this->xi['lang_subject'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->sort,'2',$this->xi['default_order'],$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->index_menuaction,$this->xi['lang_from'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				$this->xi['hdr_date'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->sort,'1',$this->xi['default_order'],$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->index_menuaction,$this->xi['lang_date'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				$this->xi['hdr_size'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->sort,'6',$this->xi['default_order'],$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->index_menuaction,$this->xi['lang_size'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_subject'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'3',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'),$this->xi['lang_subject'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'2',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'),$this->xi['lang_from'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_date'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'1',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'),$this->xi['lang_date'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_size'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'6',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'),$this->xi['lang_size'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
 			}
 			$this->xi['hdr_backcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
 			$this->xi['mlist_newmsg_char'] = '<strong>*</strong>';
@@ -506,9 +502,9 @@
 			{
 				$this->xi['msg_list_dsp'] = Array();
 				$this->xi['stats_last'] = 0;
-				
-				if ((!isset($GLOBALS['phpgw']->msg->mailsvr_stream))
-				|| ($GLOBALS['phpgw']->msg->mailsvr_stream == ''))
+				$some_stream = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream');
+				if ((!isset($some_stream))
+				|| ($some_stream == ''))
 				{
 					$this->xi['report_no_msgs'] = $this->xi['lang_counld_not_open'];
 				}
@@ -523,11 +519,11 @@
 					// hi-level function assembles all data for each message we will display
 					$this->xi['msg_list_dsp'] = $GLOBALS['phpgw']->msg->get_msg_list_display($this->xi['folder_info']);
 					// after we know how many messages we will display, we make the "showing from X to X" string
-					$this->xi['totaltodisplay'] = $GLOBALS['phpgw']->msg->start + count($this->xi['msg_list_dsp']);
+					$this->xi['totaltodisplay'] = $GLOBALS['phpgw']->msg->get_arg_value('start') + count($this->xi['msg_list_dsp']);
 					$this->xi['stats_last'] = $this->xi['totaltodisplay'];
 			}
 			// user may select individual messages to move, make combobox to select destination folder
-			$this->xi['frm_delmov_action'] = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->action_menuaction);
+			$this->xi['frm_delmov_action'] = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('action_menuaction'));
 			$this->xi['frm_delmov_name'] = 'delmov';
 			if ($this->xi['mailsvr_supports_folders'])
 			{
@@ -535,13 +531,13 @@
 				$feed_args = Array(
 					'mailsvr_stream'	=> '',
 					'pre_select_folder'	=> '',
-					'skip_folder'		=> $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->folder),
+					'skip_folder'		=> $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->get_arg_value('folder')),
 					'show_num_new'		=> $this->xi['show_num_new'],
 					'widget_name'		=> 'tofolder',
 					'on_change'		=> 'do_action(\'move\')',
 					'first_line_txt'	=> lang('move selected messages into')
 				);
-				$this->xi['delmov_listbox'] = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);            
+				$this->xi['delmov_listbox'] = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);
 			}
 			else
 			{
@@ -554,31 +550,36 @@
 		function mlist_data()
 		{
 			// DISPLAY SEARCH RESULTS
+			
+			if ($this->debug_index_data == True) { echo 'ENTERING: email.boindex: mlist_data'.'<br>'; }
+			if ($this->debug_index_data == True) { echo 'email.boindex.mlist_data: local var attempt_reuse=['.serialize($attempt_reuse).'] ; reuse_feed_args[] dump<pre>'; print_r($reuse_feed_args); echo '</pre>'; }
 			// create class objects
 			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
-			$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-			$GLOBALS['phpgw']->msg->grab_class_args_gpc();
-			// 2 args needed for "begin_request()"
-			$args_array = Array();
-			// (1) FUTURE: folder does not really matter, this may be a multi-folder mlist result set
-			// (1) folder (if specified) - can be left empty or unset, mail_msg will then assume INBOX
-			// mlist folder *should* always be passsed as a POST arg
-			if (isset($GLOBALS['HTTP_POST_VARS']['folder']))
+			
+			if (is_object($GLOBALS['phpgw']->msg))
 			{
-				$args_array['folder'] = $GLOBALS['HTTP_POST_VARS']['folder'];
+				if ($this->debug_index_data) { echo 'email.boindex.mlist_data: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
 			}
-			// (2) should we log in
+			else
+			{
+				if ($this->debug_index_data) { echo 'email.boindex.mlist_data: is_object: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
+				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+			}
+			
+			$args_array = Array();
+			// FUTURE: "folder" does not really matter, this may be a multi-folder mlist result set
+			// should we log in
 			$args_array['do_login'] = True;
 			// "start your engines"
-			$GLOBALS['phpgw']->msg->begin_request($args_array);
+			$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
 			// error if login failed
 			if (($args_array['do_login'] == True)
-			&& (!$GLOBALS['phpgw']->msg->mailsvr_stream))
+			&& (!$some_stream))
 			{
 				$GLOBALS['phpgw']->msg->login_error($GLOBALS['PHP_SELF'].', mlist_data()');
 			}
 			// base http URI on which we will add other stuff down below
-			$this->index_base_link = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->mlist_menuaction);
+			$this->index_base_link = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('mlist_menuaction'));
 			// any app may use these lang'd labels in their email UI
 			$this->get_langed_labels();
 			// ---  this->xi ("eXternal Interface") is an array that will hold ALL data necessary for an index page
@@ -591,9 +592,9 @@
 			// establish all manner of important data
 			$this->xi['svr_image_dir'] = PHPGW_IMAGES_DIR;
 			$this->xi['image_dir'] = PHPGW_IMAGES;
-			$this->xi['current_sort'] = $GLOBALS['phpgw']->msg->sort;
-			$this->xi['current_order'] = $GLOBALS['phpgw']->msg->order;
-			$this->xi['current_start'] = $GLOBALS['phpgw']->msg->start;
+			$this->xi['current_sort'] = $GLOBALS['phpgw']->msg->get_arg_value('sort');
+			$this->xi['current_order'] = $GLOBALS['phpgw']->msg->get_arg_value('order');
+			$this->xi['current_start'] = $GLOBALS['phpgw']->msg->get_arg_value('start');
 			$this->xi['current_folder'] = $GLOBALS['phpgw']->msg->prep_folder_out('');
 			$this->xi['show_num_new'] = False;
 			
@@ -601,7 +602,7 @@
 			// if using folders, make a HTML comobox used to switch folders
 			// EXCEPT for mlists
 			if (($this->xi['mailsvr_supports_folders'])
-			&& (!isset($GLOBALS['phpgw']->msg->args['mlist_set'])))
+			&& ($GLOBALS['phpgw']->msg->get_isset_arg('mlist_set') == False))
 			{
 				$feed_args = Array(
 					'mailsvr_stream'	=> '',
@@ -626,10 +627,10 @@
 			//$this->xi['folder_info'] = $GLOBALS['phpgw']->msg->get_folder_status_info();
 			// make a  FAKE  folder_info array to make things simple for get_msg_list_display
 			$this->xi['folder_info']['is_imap'] = True;
-			$this->xi['folder_info']['folder_checked'] = $GLOBALS['phpgw']->msg->folder;
+			$this->xi['folder_info']['folder_checked'] = $GLOBALS['phpgw']->msg->get_arg_value('folder');
 			$this->xi['folder_info']['alert_string'] = 'you have search results';
-			$this->xi['folder_info']['number_new'] = count($GLOBALS['phpgw']->msg->args['mlist_set']);
-			$this->xi['folder_info']['number_all'] = count($GLOBALS['phpgw']->msg->args['mlist_set']);
+			$this->xi['folder_info']['number_new'] = count($GLOBALS['phpgw']->msg->get_arg_value('mlist_set'));
+			$this->xi['folder_info']['number_all'] = count($GLOBALS['phpgw']->msg->get_arg_value('mlist_set'));
 			// first, previous, next, last  page navagation arrows
 			$this->xi['arrows_form_action'] = $this->index_base_link;
 			$this->xi['arrows_form_name'] = 'arrownav';
@@ -637,7 +638,7 @@
 			//$this->xi['arrows_td_backcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
 			$this->xi['arrows_td_backcolor'] = '';
 			$nav_args = Array (
-				'start'		=> $GLOBALS['phpgw']->msg->start,
+				'start'		=> $GLOBALS['phpgw']->msg->get_arg_value('start'),
 				// remember we made that "fake" folder_info data above
 				'total'		=> $this->xi['folder_info']['number_all'],
 				'cmd_prefix'	=> 'do_navigate(\'',
@@ -653,20 +654,20 @@
 			// this OLD arows way will not work with mlist sets
 			/*
 			$this->xi['td_prev_arrows'] = $this->nextmatchs->left('/index.php',
-							$GLOBALS['phpgw']->msg->start,
+							$GLOBALS['phpgw']->msg->get_arg_value('start'),
 							$this->xi['folder_info']['number_all'],
 							'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-							.'&sort='.$GLOBALS['phpgw']->msg->sort
-							.'&order='.$GLOBALS['phpgw']->msg->order
-							.'&'.$GLOBALS['phpgw']->msg->mlist_menuaction);
+							.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+							.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+							.'&'.$GLOBALS['phpgw']->msg->get_arg_value('mlist_menuaction)');
 			
 			$this->xi['td_next_arrows'] = $this->nextmatchs->right('/index.php',
-							$GLOBALS['phpgw']->msg->start,
+							$GLOBALS['phpgw']->msg->get_arg_value('start'),
 							$this->xi['folder_info']['number_all'],
 							'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-							.'&sort='.$GLOBALS['phpgw']->msg->sort
-							.'&order='.$GLOBALS['phpgw']->msg->order
-							.'&'.$GLOBALS['phpgw']->msg->mlist_menuaction);
+							.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+							.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+							.'&'.$GLOBALS['phpgw']->msg->get_arg_value('mlist_menuaction)');
 			*/
 			$this->xi['td_prev_arrows'] = '';
 			$this->xi['td_prev_arrows'] = '';
@@ -675,7 +676,8 @@
 			$this->xi['compose_link'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php','folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
 			if ($this->xi['mailsvr_supports_folders'])
 			{
-				$this->xi['folders_link'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php');
+				//$this->xi['folders_link'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php');
+				$this->xi['folders_link'] = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('folder_menuaction'));
 				$this->xi['folders_href'] = '<a href="'.$this->xi['folders_link'].'">'.$this->xi['folders_txt2'].'</a>';
 		
 				$folders_btn_js = 'window.location=\''.$this->xi['folders_link'].'\'';
@@ -702,7 +704,7 @@
 				3 => '',
 				6 => ''
 			);
-			$sort_selected[$GLOBALS['phpgw']->msg->sort] = " selected";
+			$sort_selected[$GLOBALS['phpgw']->msg->get_arg_value('sort')] = " selected";
 			$this->xi['sortbox_select_options'] =
 				 '<option value="0"' .$sort_selected[0] .'>'.$this->xi['lang_email_date'].'</option>' ."\r\n"
 				.'<option value="1"' .$sort_selected[1] .'>'.$this->xi['lang_arrival_date'].'</option>' ."\r\n"
@@ -745,8 +747,8 @@
 			*/
 			$this->xi['stats_backcolor'] = $GLOBALS['phpgw_info']['theme']['em_folder'];
 			$this->xi['stats_color'] = $GLOBALS['phpgw_info']['theme']['em_folder_text'];
-			$this->xi['stats_folder'] = $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->folder);
-			$this->xi['stats_first'] = $GLOBALS['phpgw']->msg->start + 1;
+			$this->xi['stats_folder'] = $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->get_arg_value('folder'));
+			$this->xi['stats_first'] = $GLOBALS['phpgw']->msg->get_arg_value('start') + 1;
 			
 			// NA for mlist
 			$this->xi['get_size_link'] = '';
@@ -758,9 +760,9 @@
 				$this->xi['get_size_link'] =
 					$this->index_base_link
 					.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-					.'&sort='.$GLOBALS['phpgw']->msg->sort
-					.'&order='.$GLOBALS['phpgw']->msg->order
-					.'&start='.$GLOBALS['phpgw']->msg->start
+					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
 					.'&'.$this->xi['force_showsize_flag'].'=1';
 				$this->xi['frm_get_size_name'] = 'form_get_size';
 				$this->xi['frm_get_size_action'] = $this->index_base_link;
@@ -778,7 +780,7 @@
 			// column labels for the message list
 			$flag_sort_pre = '* ';
 			$flag_sort_post = ' *';
-			switch ((int)$GLOBALS['phpgw']->msg->sort)
+			switch ((int)$GLOBALS['phpgw']->msg->get_arg_value('sort'))
 			{
 				case 1 : $this->xi['lang_date'] = $flag_sort_pre .$this->xi['lang_date'] .$flag_sort_post; break;
 				case 2 : $this->xi['lang_from'] = $flag_sort_pre .$this->xi['lang_from'] .$flag_sort_post; break;
@@ -787,8 +789,8 @@
 					 $this->xi['lang_lines'] = $this->xi['lang_lines'] .$flag_sort_post; break;
 			}
 			// default order is needed for the "nextmatchs" args, to know when to toggle this between normal and reverse
-			if ((isset($GLOBALS['phpgw']->msg->prefs['default_sorting']))
-			  && ($GLOBALS['phpgw']->msg->prefs['default_sorting'] == 'new_old'))
+			if (($GLOBALS['phpgw']->msg->get_isset_pref('default_sorting']))
+			  && ($GLOBALS['phpgw']->msg->get_pref_value('default_sorting') == 'new_old'))
 			{
 				$this->xi['default_order'] = 1;
 			}
@@ -797,19 +799,20 @@
 				$this->xi['default_order'] = 0;
 			}
 			// make these column labels into clickable HREF's for their 
-			if ($GLOBALS['phpgw']->msg->newsmode)
+			if (($GLOBALS['phpgw']->msg->get_isset_arg('newsmode'))
+			&& ($GLOBALS['phpgw']->msg->get_arg_value('newsmode') == True))
 			{
-				$this->xi['hdr_subject'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->sort,'3',$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->mlist_menuaction,$this->xi['lang_subject'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->sort,'2',$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->mlist_menuaction,$this->xi['lang_from'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				$this->xi['hdr_date'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->sort,'1',$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->mlist_menuaction,$this->xi['lang_date'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				$this->xi['hdr_size'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->sort,'6',$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->mlist_menuaction,$this->xi['lang_lines'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_subject'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'3',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('mlist_menuaction'),$this->xi['lang_subject'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'2',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('mlist_menuaction'),$this->xi['lang_from'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_date'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'1',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('mlist_menuaction'),$this->xi['lang_date'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_size'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'6',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('mlist_menuaction'),$this->xi['lang_lines'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
 			}
 			else
 			{
-				$this->xi['hdr_subject'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->sort,'3',$this->xi['default_order'],$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->mlist_menuaction,$this->xi['lang_subject'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->sort,'2',$this->xi['default_order'],$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->mlist_menuaction,$this->xi['lang_from'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				$this->xi['hdr_date'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->sort,'1',$this->xi['default_order'],$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->mlist_menuaction,$this->xi['lang_date'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				$this->xi['hdr_size'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->sort,'6',$this->xi['default_order'],$GLOBALS['phpgw']->msg->order,'/index.php'.$GLOBALS['phpgw']->msg->mlist_menuaction,$this->xi['lang_size'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_subject'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'3',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('mlist_menuaction'),$this->xi['lang_subject'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'2',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('mlist_menuaction'),$this->xi['lang_from'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_date'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'1',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('mlist_menuaction'),$this->xi['lang_date'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				$this->xi['hdr_size'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'6',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.$GLOBALS['phpgw']->msg->get_arg_value('mlist_menuaction'),$this->xi['lang_size'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
 			}
 			*/
 			
@@ -827,8 +830,9 @@
 				$this->xi['msg_list_dsp'] = Array();
 				$this->xi['stats_last'] = 0;
 				
-				if ((!isset($GLOBALS['phpgw']->msg->mailsvr_stream))
-				|| ($GLOBALS['phpgw']->msg->mailsvr_stream == ''))
+				$some_stream = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream');
+				if ((!isset($some_stream))
+				|| ($some_stream == ''))
 				{
 					$this->xi['report_no_msgs'] = $this->xi['lang_counld_not_open'];
 				}
@@ -844,16 +848,16 @@
 					// FEED IT THE MLIST SET TO DISPLAY
 					$this->xi['msg_list_dsp'] = $GLOBALS['phpgw']->msg->get_msg_list_display(
 												$this->xi['folder_info'],
-												$GLOBALS['phpgw']->msg->args['mlist_set']
+												$GLOBALS['phpgw']->msg->get_arg_value('mlist_set')
 					);
 					// after we know how many messages we will display, we make the "showing from X to X" string
-					$this->xi['totaltodisplay'] = $GLOBALS['phpgw']->msg->start + count($this->xi['msg_list_dsp']);
+					$this->xi['totaltodisplay'] = $GLOBALS['phpgw']->msg->get_arg_value('start') + count($this->xi['msg_list_dsp']);
 					$this->xi['stats_last'] = $this->xi['totaltodisplay'];
 			}
 			
 			// NOT YET IMPLEMENTED IN MLIST
 			// user may select individual messages to move, make combobox to select destination folder
-			$this->xi['frm_delmov_action'] = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->index_menuaction);
+			$this->xi['frm_delmov_action'] = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'));
 			$this->xi['frm_delmov_name'] = 'delmov';
 			if ($this->xi['mailsvr_supports_folders'])
 			{
@@ -861,13 +865,13 @@
 				$feed_args = Array(
 					'mailsvr_stream'	=> '',
 					'pre_select_folder'	=> '',
-					'skip_folder'		=> $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->folder),
+					'skip_folder'		=> $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->get_arg_value('folder')),
 					'show_num_new'		=> $this->xi['show_num_new'],
 					'widget_name'		=> 'tofolder',
 					'on_change'		=> 'do_action(\'move\')',
 					'first_line_txt'	=> lang('move selected messages into')
 				);
-				$this->xi['delmov_listbox'] = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);            
+				$this->xi['delmov_listbox'] = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);
 			}
 			else
 			{
@@ -875,6 +879,7 @@
 			}
 			
 			$this->xi['ftr_backcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
+			if ($this->debug_index_data == True) { echo 'LEAVING: email.boindex: mlist_data'.'<br>'; }
 		}
 	
 	

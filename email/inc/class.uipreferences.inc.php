@@ -23,6 +23,9 @@
 		var $nextmatchs;
 		var $theme;
 		var $prefs;
+		//var $debug = True;
+		var $debug = False;
+
 
 		function uipreferences()
 		{
@@ -193,9 +196,6 @@
 		*/
 		function preferences()
 		{
-			//$debug_prefs = True;
-			$debug_prefs = False;
-			
 			unset($GLOBALS['phpgw_info']['flags']['noheader']);
 			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
 			$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
@@ -237,7 +237,7 @@
 			$this->bo->init_available_prefs();			
 			
 			// DEBUG
-			if ($debug_prefs)
+			if ($this->debug)
 			{
 				$this->bo->debug_dump_prefs();
 				//return;

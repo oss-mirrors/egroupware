@@ -75,134 +75,60 @@
 
 // ----  What Folder To Return To  -----
         $lnk_goback_folder = $GLOBALS['phpgw']->msg->href_maketag(
-		$GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->index_menuaction		
+		$GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction')		
 			.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-			.'&sort='.$GLOBALS['phpgw']->msg->sort
-			.'&order='.$GLOBALS['phpgw']->msg->order
-			.'&start='.$GLOBALS['phpgw']->msg->start),
-		$GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->folder));
-
-// ----  Go To Previous Message Handling  -----
-	// NOTE: THIS NEEDS FIXING
-	// TRY TO FIX with "active_msgnum_idx" and "lowest_left" "highest_right"
-	// we need the array index of this message, not the actual message num
-	// this will *try* to restore "msg_array" from saved session data store
-	$msg_array = $GLOBALS['phpgw']->msg->get_message_list();
-	$msgnum_idx = $GLOBALS['phpgw']->msg->array_search_ex($GLOBALS['phpgw']->msg->msgnum, $msg_array);
-	if ($msgnum_idx)
-	{
-		$active_msgnum_idx = $msgnum_idx;
-		$lowest_left = 0;
-		$highest_right = (count($msg_array) -2);
-		$next_msg = $msg_array[$msgnum_idx + 1];
-		$prev_msg = $msg_array[$msgnum_idx - 1];
-	}
-	else
-	{
-		// fall back to old broken way
-		$active_msgnum_idx = $GLOBALS['phpgw']->msg->msgnum;
-		$lowest_left = 1;
-		$highest_right = $totalmessages;
-		$next_msg = $active_msgnum_idx + 1;
-		$prev_msg = $active_msgnum_idx - 1;
-	}
+			.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+			.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+			.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')),
+		$GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->get_arg_value('folder')));
 	
-	if ($active_msgnum_idx != $lowest_left
-	//|| ($default_sorting == 'new_old' && $active_msgnum_idx != $highest_right))
-	|| ($GLOBALS['phpgw']->msg->order == 1 && $active_msgnum_idx != $highest_right))
+	// NOTE: msgnum int 0 is NOT to be confused with "empty" nor "boolean False"
+	
+	// get the data for goto previous / goto next message handling
+	// NOTE: the one arg for this function is only there to support the old, broken method
+	// in the event that the "get_message_list()" returns bogus data or is not available
+	$nav_data = $GLOBALS['phpgw']->msg->prev_next_navigation($folder_info['number_all']);
+	
+// ----  "Go To Previous Message" Handling  -----
+	if ($nav_data['prev_msg'] != $not_set)
 	{
-		/*
-		if ($default_sorting == 'new_old')
-		{
-			$pm = $next_msg;
-		}
-		else
-		{
-			$pm = $prev_msg;
-		}
-		*/
-		//if ($default_sorting == 'new_old')
-		if ($GLOBALS['phpgw']->msg->order == 1)
-		{
-			$pm = $prev_msg;
-		}
-		else
-		{
-			$pm = $next_msg;
-		}
-
-		//if ($default_sorting == 'new_old' 
-		if ($GLOBALS['phpgw']->msg->order == 1
-		&& ($active_msgnum_idx == $highest_right && $active_msgnum_idx != $lowest_left || $highest_right == 1))
-		{
-			$ilnk_prev_msg = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/left-grey.gif',lang('No Previous Message'),'','','0');
-		}
-		else
-		{
-			$prev_msg_link = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
-				'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-				.'&msgnum='.$pm
-				.'&sort='.$GLOBALS['phpgw']->msg->sort
-				.'&order='.$GLOBALS['phpgw']->msg->order
-				.'&start='.$GLOBALS['phpgw']->msg->start);
-			$prev_msg_img = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/left.gif',lang('Previous Message'),'','','0');
-			$ilnk_prev_msg = $GLOBALS['phpgw']->msg->href_maketag($prev_msg_link,$prev_msg_img);
-		}
+		$prev_msg_link = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
+			 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+			.'&msgnum='.$nav_data['prev_msg']
+			.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+			.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+			.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+		$prev_msg_img = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/left.gif',lang('Previous Message'),'','','0');
+		$ilnk_prev_msg = $GLOBALS['phpgw']->msg->href_maketag($prev_msg_link,$prev_msg_img);
 	}
 	else
 	{
+		if ($debug_nav) { echo 'messages.php '.lang('No Previous Message').'<br>'; }
 		$ilnk_prev_msg = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/left-grey.gif',lang('No Previous Message'),'','','0');
 	}
-
-// ----  Go To Next Message Handling  -----
-	if ($active_msgnum_idx < $highest_right
-	//|| ($default_sorting == 'new_old' && $active_msgnum_idx != $lowest_left))
-	|| ($GLOBALS['phpgw']->msg->order == 1 && $active_msgnum_idx != $lowest_left))
+	
+	if ($debug_nav) { echo 'messages.php step3 $nav_data[] $ilnk_prev_msg: '.$ilnk_prev_msg.'<br>'; }
+	
+// ----  "Go To Next Message" Handling  -----
+	if ($nav_data['next_msg'] != $not_set)
 	{
-		/*
-		if ($default_sorting == 'new_old')
-		{
-			$nm = $prev_msg;
-		}
-		else
-		{
-			$nm = $next_msg;
-		}
-		*/
-		//if ($default_sorting == 'new_old')
-		if ($GLOBALS['phpgw']->msg->order == 1)
-		{
-			$nm = $next_msg;
-		}
-		else
-		{
-			$nm = $prev_msg;
-		}
-
-		//if (($default_sorting == 'new_old')
-		if (($GLOBALS['phpgw']->msg->order == 1)
-		&& ($active_msgnum_idx == $lowest_left)
-		&& ($highest_right != $active_msgnum_idx))
-		{
-			$ilnk_next_msg = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/right-grey.gif',lang('No Next Message'),'','','0');
-		}
-		else
-		{
-			$next_msg_link = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
-				'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-				.'&msgnum='.$nm
-				.'&sort='.$GLOBALS['phpgw']->msg->sort
-				.'&order='.$GLOBALS['phpgw']->msg->order
-				.'&start='.$GLOBALS['phpgw']->msg->start);
-			$next_msg_img = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/right.gif',lang('Next Message'),'','','0');
-			$ilnk_next_msg = $GLOBALS['phpgw']->msg->href_maketag($next_msg_link,$next_msg_img);
-		}
+		$next_msg_link = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
+			'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+			.'&msgnum='.$nav_data['next_msg']
+			.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+			.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+			.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+		$next_msg_img = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/right.gif',lang('Next Message'),'','','0');
+		$ilnk_next_msg = $GLOBALS['phpgw']->msg->href_maketag($next_msg_link,$next_msg_img);
 	}
 	else
 	{
+		if ($debug_nav) { echo 'messages.php '.lang('No Next Message').'<br>'; }
 		$ilnk_next_msg = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/right-grey.gif',lang('No Next Message'),'','','0');
 	}
-
+	
+	if ($debug_nav) { echo 'messages.php step4 $nav_data[] $ilnk_next_msg: '.$ilnk_next_msg.'<br>'; }
+	
 	$GLOBALS['phpgw']->template->set_var('ilnk_prev_msg',$ilnk_prev_msg);
 	$GLOBALS['phpgw']->template->set_var('ilnk_next_msg',$ilnk_next_msg);
 
@@ -442,22 +368,22 @@
 	$reply_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'','','0');
 	$reply_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
 		'action=reply&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-		.'&msgnum='.$GLOBALS['phpgw']->msg->msgnum .$first_presentable);
+		.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum') .$first_presentable);
 	$ilnk_reply = $GLOBALS['phpgw']->msg->href_maketag($reply_url, $reply_img);
 
 	//$replyall_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),'19','26','0');
 	$replyall_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),'','','0');
-	$replyall_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php','action=replyall&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->msgnum .$first_presentable);
+	$replyall_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php','action=replyall&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum') .$first_presentable);
 	$ilnk_replyall = $GLOBALS['phpgw']->msg->href_maketag($replyall_url, $replyall_img);
 
 	//$forward_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_forward.gif',lang('forward'),'19','26','0');
 	$forward_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_forward.gif',lang('forward'),'','','0');
-	$forward_url =  $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php','action=forward&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->msgnum .'&fwd_proc='.$fwd_proc .$first_presentable);
+	$forward_url =  $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php','action=forward&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum') .'&fwd_proc='.$fwd_proc .$first_presentable);
 	$ilnk_forward = $GLOBALS['phpgw']->msg->href_maketag($forward_url, $forward_img);
 
 	//$delete_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_delete.gif',lang('delete'),'19','26','0');
 	$delete_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_delete.gif',lang('delete'),'','','0');
-	$delete_url = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->action_menuaction.'&what=delete&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->msgnum);
+	$delete_url = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->action_menuaction.'&what=delete&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
 	$ilnk_delete = $GLOBALS['phpgw']->msg->href_maketag($delete_url, $delete_img);
 
 	$GLOBALS['phpgw']->template->set_var('theme_font',$GLOBALS['phpgw_info']['theme']['font']);
@@ -482,7 +408,7 @@
 		$all_keys = array_keys($part_nice);
 		$str_keys = implode(', ',$all_keys);
 
-		//$msg_raw_headers = $GLOBALS['phpgw']->dcom->fetchheader($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
+		//$msg_raw_headers = $GLOBALS['phpgw']->dcom->fetchheader($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
 		$msg_raw_headers = $GLOBALS['phpgw']->msg->phpgw_fetchheader('');
 		$msg_raw_headers = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($msg_raw_headers);
 
@@ -602,18 +528,21 @@
 	// other wise, this URL will be used unchanged
 	$view_option_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
 		'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-		.'&msgnum='.$GLOBALS['phpgw']->msg->msgnum
-		.'&sort='.$GLOBALS['phpgw']->msg->sort
-		.'&order='.$GLOBALS['phpgw']->msg->order
-		.'&start='.$GLOBALS['phpgw']->msg->start
+		.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum')
+		.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+		.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+		.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
 	);
 
 	// (2) view headers option
 	$view_headers_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/get_attach.php',
 		 '&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-		.'&msgnum='.$GLOBALS['phpgw']->msg->msgnum
+		.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum')
 		.'&part_no=0'
-		.'&type=text&subtype=plain&name=headers.txt&encoding=7bit'
+		.'&type=text'
+		.'&subtype=plain'
+		.'&name=headers.txt'
+		.'&encoding=7bit'
 		);
 	//$view_headers_href = $GLOBALS['phpgw']->msg->href_maketag($view_headers_url, lang('view headers'));
 	$view_headers_href = '<a href="'.$view_headers_url.'" target="new">'.lang('view headers').'</a>';
@@ -639,13 +568,13 @@
 			$display_str = lang('keywords').': '.$part_nice[$i]['m_keywords'].' - '.$GLOBALS['phpgw']->msg->format_byte_size(strlen($dsp));
 			$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
 
-			//$msg_raw_headers = $GLOBALS['phpgw']->dcom->fetchheader($mailbox, $GLOBALS['phpgw']->msg->msgnum);
-			//$msg_headers = $GLOBALS['phpgw']->dcom->header($mailbox, $GLOBALS['phpgw']->msg->msgnum); // returns a structure w/o boundry info
+			//$msg_raw_headers = $GLOBALS['phpgw']->dcom->fetchheader($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
+			//$msg_headers = $GLOBALS['phpgw']->dcom->header($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum')); // returns a structure w/o boundry info
 			//$struct_pop3 = $GLOBALS['phpgw']->dcom->get_structure($msg_headers, 1);
 			//$msg_boundry = $GLOBALS['phpgw']->dcom->get_boundary($msg_headers);
-			//$msg_body = $GLOBALS['phpgw']->dcom->fetchbody($mailbox, $GLOBALS['phpgw']->msg->msgnum, '1');
-			//$msg_body = $GLOBALS['phpgw']->dcom->get_body($mailbox, $GLOBALS['phpgw']->msg->msgnum);
-			//$msg_body = $GLOBALS['phpgw']->dcom->get_body($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
+			//$msg_body = $GLOBALS['phpgw']->dcom->fetchbody($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'), '1');
+			//$msg_body = $GLOBALS['phpgw']->dcom->get_body($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
+			//$msg_body = $GLOBALS['phpgw']->dcom->get_body($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
 			$msg_body = $GLOBALS['phpgw']->msg->phpgw_body();
 
 			// GET THE BOUNDRY
@@ -891,7 +820,7 @@
 						$part_encoding = '';
 					}
 					$part_href = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/get_attach.php',
-						 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('') .'&msgnum=' .$GLOBALS['phpgw']->msg->msgnum .'&part_no=' .$part_nice[$i]['m_part_num_mime'] .'&encoding=' .$part_encoding);
+						 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('') .'&msgnum=' .$GLOBALS['phpgw']->msg->get_arg_value('msgnum') .'&part_no=' .$part_nice[$i]['m_part_num_mime'] .'&encoding=' .$part_encoding);
 					$dsp =
 					//'<pre>'.$msg_raw_headers .'</pre>'
 					'<p>'
@@ -913,7 +842,7 @@
 			/*
 			// get the body
 			//$dsp = $GLOBALS['phpgw']->dcom->fetchbody($mailbox, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
-			$dsp = $GLOBALS['phpgw']->dcom->fetchbody($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
+			$dsp = $GLOBALS['phpgw']->dcom->fetchbody($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'), $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
 
 			if (stristr($part_nice[$i]['m_keywords'], 'qprint'))
 			{
@@ -927,7 +856,7 @@
 			$dsp = ereg_replace( "^","<p>",$dsp);
 			$dsp = ereg_replace( "\n","<br>",$dsp);
 			$dsp = ereg_replace( "$","</p>", $dsp);
-			$dsp = $GLOBALS['phpgw']->msg->make_clickable($dsp, $GLOBALS['phpgw']->msg->folder);
+			$dsp = $GLOBALS['phpgw']->msg->make_clickable($dsp, $GLOBALS['phpgw']->msg->get_arg_value('folder'));
 
 			$title_text = lang('section').': '.$part_nice[$i]['m_part_num_mime'];
 			//$display_str = $part_nice[$i]['type'].'/'.strtolower($part_nice[$i]['subtype']);
@@ -1002,8 +931,8 @@
 				//    normalize line breaks to rfc2822 CRLF
 				$dsp = $GLOBALS['phpgw']->msg->normalize_crlf($dsp);
 
-				if ((isset($GLOBALS['phpgw']->msg->args['no_fmt']))
-				&& ($GLOBALS['phpgw']->msg->args['no_fmt'] != ''))
+				if (($GLOBALS['phpgw']->msg->get_isset_arg('no_fmt'))
+				&& ($GLOBALS['phpgw']->msg->get_arg_value('no_fmt') != ''))
 				{
 					$dsp = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($dsp);
 					// (OPT 1) THIS WILL DISPLAY UNFORMATTED TEXT (faster)
@@ -1031,7 +960,7 @@
 						// NOT WORTH IT: give view unformatted option instead
 						//$dsp = $GLOBALS['phpgw']->msg->space_to_nbsp($dsp);
 					}
-					$dsp = $GLOBALS['phpgw']->msg->make_clickable($dsp, $GLOBALS['phpgw']->msg->folder);
+					$dsp = $GLOBALS['phpgw']->msg->make_clickable($dsp, $GLOBALS['phpgw']->msg->get_arg_value('folder'));
 					// (OPT 2) THIS CONVERTS UNFORMATTED TEXT TO *VERY* SIMPLE HTML - adds only <br>
 					$dsp = ereg_replace("\r\n","<br>",$dsp);
 					// add a line after the last line of the message
@@ -1077,8 +1006,8 @@
 				/*
 				// ------- Previous Method
 				// get the part
-				//$dsp = $GLOBALS['phpgw']->dcom->fetchbody($mailbox, $GLOBALS['phpgw']->msg->msgnum, $part_nice[$i]['m_part_num_mime']);
-				$dsp = $GLOBALS['phpgw']->dcom->fetchbody($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum, $part_nice[$i]['m_part_num_mime']);
+				//$dsp = $GLOBALS['phpgw']->dcom->fetchbody($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'), $part_nice[$i]['m_part_num_mime']);
+				$dsp = $GLOBALS['phpgw']->dcom->fetchbody($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'), $part_nice[$i]['m_part_num_mime']);
 
 				// prepare the part
 				if (strtoupper(lang('charset')) <> 'BIG5')
@@ -1091,7 +1020,7 @@
 				$dsp = ereg_replace( "^","<p>",$dsp);
 				$dsp = ereg_replace( "\n","<br>",$dsp);
 				$dsp = ereg_replace( "$","</p>", $dsp);
-				$dsp = $GLOBALS['phpgw']->msg->make_clickable($dsp, $GLOBALS['phpgw']->msg->folder);
+				$dsp = $GLOBALS['phpgw']->msg->make_clickable($dsp, $GLOBALS['phpgw']->msg->get_arg_value('folder'));
 				*/
 			}
 		}
@@ -1120,9 +1049,9 @@
 			if (($part_nice[$i]['encoding'] == 'base64')
 			|| ($part_nice[$i]['encoding'] == '8bit'))
 			{
-				//$dsp = $GLOBALS['phpgw']->dcom->fetchbody($mailbox, $GLOBALS['phpgw']->msg->msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
-				$dsp = $GLOBALS['phpgw']->dcom->fetchbody($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
-					//$dsp = $GLOBALS['phpgw']->dcom->fetchbody($mailbox, $GLOBALS['phpgw']->msg->msgnum, $part_nice[$i]['m_part_num_mime']);
+				//$dsp = $GLOBALS['phpgw']->dcom->fetchbody($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'), $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
+				$dsp = $GLOBALS['phpgw']->dcom->fetchbody($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'), $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
+					//$dsp = $GLOBALS['phpgw']->dcom->fetchbody($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'), $part_nice[$i]['m_part_num_mime']);
 					//$processed_msg_body = $processed_msg_body . base64_decode($dsp) .'<br>' ."\r\n";
 				$att_size =  $GLOBALS['phpgw']->msg->format_byte_size(strlen($dsp));
 				$msg_text = $msg_text .'&nbsp;&nbsp; size: '.$att_size;
@@ -1152,7 +1081,7 @@
 			if ($part_nice[$i]['encoding'] == 'base64')
 			{
 				$dsp = $GLOBALS['phpgw']->msg->phpgw_fetchbody($part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
-					//$dsp = $GLOBALS['phpgw']->dcom->fetchbody($mailbox, $GLOBALS['phpgw']->msg->msgnum, $part_nice[$i]['m_part_num_mime']);
+					//$dsp = $GLOBALS['phpgw']->dcom->fetchbody($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'), $part_nice[$i]['m_part_num_mime']);
 					//$processed_msg_body = $processed_msg_body . base64_decode($dsp) .'<br>' ."\r\n";
 				$msg_text = $msg_text . 'actual part size: ' .strlen($dsp);
 			}

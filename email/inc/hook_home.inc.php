@@ -25,13 +25,22 @@
 	if ($GLOBALS['phpgw_info']['user']['preferences']['email']['mainscreen_showmail'] == True)
 	{
 		// ----  Create the base email Msg Class    -----
-		$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+		//$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+		if (is_object($GLOBALS['phpgw']->msg))
+		{
+			//echo 'email hook_home: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
+		}
+		else
+		{
+			//echo 'email hook_home: is_object test: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
+			$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+		}
+
 		$args_array = Array();
 		$args_array['folder'] = 'INBOX';
 		$args_array['do_login'] = True;
 		$GLOBALS['phpgw']->msg->begin_request($args_array);
-
-		if (!$GLOBALS['phpgw']->msg->mailsvr_stream)
+		if ((string)$GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream') == '')
 		{
 			$title = '<font color="#FFFFFF">'.lang('EMail').'</font>';
 			$extra_data = '<b>Mail error:</b> Can not open connection to mail server';
@@ -104,7 +113,7 @@
 				$switchbox_listbox = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);
 				// make it another TR we can insert into the home page portal object
 				// and surround it in FORM tage so the submit will work
-				$switchbox_action = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->index_menuaction);
+				$switchbox_action = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'));
 				$extra_data = 
 					'<form name="switchbox" action="'.$switchbox_action.'" method="post">'."\r\n"
 						.'<td align="left">'."\r\n"

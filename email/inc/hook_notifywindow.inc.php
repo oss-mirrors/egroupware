@@ -29,23 +29,37 @@
 	&& $GLOBALS['phpgw_info']['user']['apps']['email']))
 	{
 		// ----  Create the base email Msg Class    -----
-		$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+		//$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+		if (is_object($GLOBALS['phpgw']->msg))
+		{
+			//echo 'email hook_notifywindow: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
+		}
+		else
+		{
+			//echo 'email hook_notifywindow: is_object test: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
+			$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+		}
 		$args_array = Array();
 		$args_array['folder'] = 'INBOX';
 		$args_array['do_login'] = True;
 		$GLOBALS['phpgw']->msg->begin_request($args_array);
-
-		/*  // this is the structure you will get
-		  $inbox_data['is_imap'] boolean - pop3 server do not know what is "new" or not
-		  $inbox_data['folder_checked'] string - the folder checked, as processed by the msg class
-		  $inbox_data['alert_string'] string - what to show the user about this inbox check
-		  $inbox_data['number_new'] integer - for IMAP is number "unseen"; for pop3 is number messages
-		  $inbox_data['number_all'] integer - for IMAP and pop3 is total number messages in that inbox
-		*/
-		$inbox_data = Array();
-		$inbox_data = $GLOBALS['phpgw']->msg->new_message_check();
-
-		// end the mailserver request object
+		if ((string)$GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream') != '')
+		{
+			/*  // this is the structure you will get
+			  $inbox_data['is_imap'] boolean - pop3 server do not know what is "new" or not
+			  $inbox_data['folder_checked'] string - the folder checked, as processed by the msg class
+			  $inbox_data['alert_string'] string - what to show the user about this inbox check
+			  $inbox_data['number_new'] integer - for IMAP is number "unseen"; for pop3 is number messages
+			  $inbox_data['number_all'] integer - for IMAP and pop3 is total number messages in that inbox
+			*/
+			$inbox_data = Array();
+			$inbox_data = $GLOBALS['phpgw']->msg->new_message_check();
+		}
+		else
+		{
+			$inbox_data['alert_string'] = lang('<b>Mail error:</b> Can not open connection to mail server');
+		}
+		// end the mailserver request (i.e. logout of the mail server)
 		$GLOBALS['phpgw']->msg->end_request();
 
 		if ($inbox_data['alert_string'] != '')
@@ -65,6 +79,7 @@
 			//echo '</font>';
 			echo "\r\n".'<!-- Mailox info --></td></tr>'."\r\n";
 		}
+
 	}
 	
 	// is this still needed?

@@ -1,35 +1,35 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - E-Mail Message Processing Functions                             *
-  * http://www.phpgroupware.org                                              *
-  */
-  /**************************************************************************\
-  * phpGroupWare API - E-Mail Message Processing Functions                         *
-  * This file written by Angelo Tony Puglisi (Angles) <angles@phpgroupware.org>      *
-  * Handles specific operations in manipulating email messages                         *
-  * Copyright (C) 2001 Angelo Tony Puglisi (Angles)                                           *
-  * -------------------------------------------------------------------------*
-  * This library is part of the phpGroupWare API                             *
-  * http://www.phpgroupware.org/api                                          * 
-  * ------------------------------------------------------------------------ *
-  * This library is free software; you can redistribute it and/or modify it  *
-  * under the terms of the GNU Lesser General Public License as published by *
-  * the Free Software Foundation; either version 2.1 of the License,         *
-  * or any later version.                                                    *
-  * This library is distributed in the hope that it will be useful, but      *
-  * WITHOUT ANY WARRANTY; without even the implied warranty of               *
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                     *
-  * See the GNU Lesser General Public License for more details.              *
-  * You should have received a copy of the GNU Lesser General Public License *
-  * along with this library; if not, write to the Free Software Foundation,  *
-  * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            *
-  \**************************************************************************/
-
-  /* $Id$ */
-
-// include this last, it extends mail_msg_wrappers which extends mail_msg_base
-// so (1) include mail_msg_base, (2) incluse mail_msg_wrappers extending mail_msg_base
-// then (3) include mail_msg which extends mail_msg_wrappers and, by inheritance, mail_msg_base
+	/**************************************************************************\
+	* phpGroupWare - E-Mail Message Processing Functions				*
+	* http://www.phpgroupware.org							*
+	*/
+	/**************************************************************************\
+	* phpGroupWare API - E-Mail Message Processing Functions			*
+	* This file written by Angelo Tony Puglisi (Angles) <angles@phpgroupware.org> *
+	* Handles specific operations in manipulating email messages			*
+	* Copyright (C) 2001 Angelo Tony Puglisi (Angles)					*
+	* -------------------------------------------------------------------------			*
+	* This library is part of the phpGroupWare API					*
+	* http://www.phpgroupware.org/api							* 
+	* ------------------------------------------------------------------------ 			*
+	* This library is free software; you can redistribute it and/or modify it		*
+	* under the terms of the GNU Lesser General Public License as published by	*
+	* the Free Software Foundation; either version 2.1 of the License,			*
+	* or any later version.								*
+	* This library is distributed in the hope that it will be useful, but			*
+	* WITHOUT ANY WARRANTY; without even the implied warranty of		*
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	*
+	* See the GNU Lesser General Public License for more details.			*
+	* You should have received a copy of the GNU Lesser General Public License 	*
+	* along with this library; if not, write to the Free Software Foundation,		*
+	* Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA			*
+	\**************************************************************************/
+	
+	/* $Id$ */
+	
+	// include this last, it extends mail_msg_wrappers which extends mail_msg_base
+	// so (1) include mail_msg_base, (2) incluse mail_msg_wrappers extending mail_msg_base
+	// then (3) include mail_msg which extends mail_msg_wrappers and, by inheritance, mail_msg_base
 class mail_msg extends mail_msg_wrappers
 {
 	/*!
@@ -62,7 +62,7 @@ class mail_msg extends mail_msg_wrappers
 		
 		// establish fallback default args
 		$local_args = Array(
-			'mailsvr_stream'	=> $this->mailsvr_stream,
+			'mailsvr_stream'	=> $this->get_arg_value('mailsvr_stream'),
 			'pre_select_folder'	=> '',
 			'skip_folder'		=> '',
 			'show_num_new'		=> False,
@@ -154,7 +154,7 @@ class mail_msg extends mail_msg_wrappers
 					if (($local_args['show_num_new'])
 					&& ($this->care_about_unseen($folder_short)))
 					{
-						$mailbox_status = $this->dcom->status($mailsvr_stream,$this->get_mailsvr_callstr().$folder_long,SA_ALL);
+						$mailbox_status = $this->a[$this->acctnum]['dcom']->status($mailsvr_stream,$this->get_arg_value('mailsvr_callstr').$folder_long,SA_ALL);
 						if ($mailbox_status->unseen > 0)
 						{
 							$item_tags = $item_tags . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
@@ -192,7 +192,7 @@ class mail_msg extends mail_msg_wrappers
 		//$debug_sort = True;
 		$debug_sort = False;
 	
-		// AND ensure $this->sort  $this->order  and  $this->start have usable values
+		// AND ensure $this->get_arg_value('sort')  $this->get_arg_value('order')  and  $this->get_arg_value('start') have usable values
 		/*
 		Sorting defs:
 		SORTDATE:  0	//This is the Date that the senders email client stanp the message with
@@ -203,7 +203,7 @@ class mail_msg extends mail_msg_wrappers
 		SORTSIZE:  6
 
 		// imap_sort(STREAM,  CRITERIA,  REVERSE,  OPTIONS)
-		// Stream: is $this->mailsvr_stream
+		// Stream: is $this->get_arg_value('mailsvr_stream')
 		// Criteria = $sort : is HOW to sort, we prefer SORTARRIVAL, or "1" as default (see note above)
 		// Reverse = "order" : 0 = imap default = lowest to highest  ;;  1 = Reverse sorting  =  highest to lowest
 		// Options: we do not use this (yet)
@@ -211,86 +211,134 @@ class mail_msg extends mail_msg_wrappers
 
 		// == SORT ==
 		// if not set in the args, then assign some defaults
-		// then store the determination in a class variable $this->sort
-		if ((isset($this->args['sort']))
-		&& ($this->args['sort'] != '')
-		 && (($this->args['sort'] >= 0) && ($this->args['sort'] <= 6)) )
+		// then store the determination in a class variable $this->get_arg_value('sort')
+		if (($this->get_isset_arg('sort'))
+		&& ($this->get_arg_value('sort') != '')
+		 && (($this->get_arg_value('sort') >= 0) && ($this->get_arg_value('sort') <= 6)) )
 		{
 			// this is a valid "sort" variable passed as an argument (in a URL, form, or cookie, or external request)
-			$this->sort = $this->args['sort'];
 		}
-		elseif ((isset($this->args['sort']))
-		&& ($this->args['sort'] != '')
-		  && ($this->args['sort'] == 'ASC') && ($this->newsmode))
+		elseif (($this->get_isset_arg('sort'))
+		&& ($this->get_arg_value('sort') != '')
+		  && ($this->get_arg_value('sort') == 'ASC') && ($this->get_isset_arg('newsmode')))
 		{
 			// I think this is needed for newsmode because it reads message list that has been
 			// stored locally in a database, in this case it is NOT an arg ment for the NNTP server
-			$this->sort = 'ASC';
+			//$this->get_arg_value('sort') = 'ASC';
 		}
 		else
 		{
 			// SORTARRIVAL as noted above, the preferred default for email
-			$this->sort = 1;
+			$this->set_arg_value('sort', 1);
 		}
 
 		// == ORDER ==
 		// (reverse sorting or not)  if specified in the url, then use it, else use defaults
-		if ((isset($this->args['order']))
-		&& ($this->args['order'] != '')
-		  && (($this->args['order'] >= 0) && ($this->args['order'] <= 1)) )
+		if (($this->get_isset_arg('order'))
+		&& ((string)$this->get_arg_value('order') != '')
+		  && (($this->get_arg_value('order') >= 0) && ($this->get_arg_value('order') <= 1)) )
 		{
-			// this is a valid $this->args['order'] variable passed as an arg
-			$this->order = $this->args['order'];
+			// this is a valid 'order' variable passed as an arg
 		}
-		elseif ((isset($this->prefs['default_sorting']))
-		  && ($this->prefs['default_sorting'] == "new_old"))
+		elseif (($this->get_isset_pref('default_sorting'))
+		  && ($this->get_pref_value('default_sorting') == "new_old"))
 		{
 			// user has a preference set to see new mail first
 			// this is considered "reverse" order because it is "highest to lowest"
 			// with "highest" being the more recent date values
-			$this->order = 1;
+			$this->set_arg_value('order', 1);
 		}
 		else
 		{
 			// if no pref is set or the pref is old->new, then order should = 0
 			// this is considered "NOT reverse" a.k.a. "normal" because it is "lowest to highest"
 			// with "lowest" being the older date values
-			$this->order = 0;
+			$this->set_arg_value('order', 0);
 		}
 
 		// == START ==
 		// when requesting a subset of messages, start will get you there
-		if ((isset($this->args['start']))
-		&& ($this->args['start'] != ''))
+		if (($this->get_isset_arg('start'))
+		&& ($this->get_arg_value('start') != ''))
 		{
-			// this is a valid $this->args['start'] variable passed as an arg
+			// this is a valid 'start' variable passed as an arg
 			// you are probably requesting a subset of the available messages
-			$this->start = $this->args['start'];
 		}
 		else
 		{
 			// start at the beginning (relative to your "sort" and "order" of course)
-			$this->start = 0;
+			$this->set_arg_value('start', 0);
 		}
 
 		// == MSGNUM ==
 		// the current message number for the message we are concerned with here
-		if ((isset($this->args['msgnum']))
-		&& ($this->args['msgnum'] != ''))
+		if (($this->get_isset_arg('msgnum'))
+		&& ($this->get_arg_value('msgnum') != ''))
 		{
-			$this->msgnum = $this->args['msgnum'];
+			// we got a good value fed into the script externally
 		}
 		// else it stays at default of empty string ('')
 
 		if ($debug_sort)
 		{
-			echo 'sort: '.$this->sort.'<br>';
-			echo 'order: '.$this->order.'<br>';
-			echo 'start: '.$this->start.'<br>';
-			echo 'msgnum: '.$this->msgnum.'<br>';
+			echo 'sort: '.$this->get_arg_value('sort').'<br>';
+			echo 'order: '.$this->get_arg_value('order').'<br>';
+			echo 'start: '.$this->get_arg_value('start').'<br>';
+			echo 'msgnum: '.$this->get_arg_value('msgnum').'<br>';
 		}
 	}
+	
+	// ---- Go To Previous / Next Message Logic Handling  -----
+	// NOTE: msgnum int 0 is NOT to be confused with "empty" nor "boolean False"
+	function prev_next_navigation($old_method_totalmessages=0)
+	{
+		//$debug_nav = True;
+		$debug_nav = False;
+		
+		$nav_data = array();
+		$nav_data['msg_array'] = $this->get_message_list();
+		$nav_data['msgnum_idx'] = $this->array_search_ex($this->get_arg_value('msgnum'), $nav_data['msg_array']);
+		// NOTE: msgnum_idx int 0 is NOT to be confused with "empty" nor "boolean False"
+		if ((isset($nav_data['msgnum_idx']))
+		&& ((string)$nav_data['msgnum_idx'] != ''))
+		{
+			$nav_data['active_msgnum_idx'] = $nav_data['msgnum_idx'];
+			$nav_data['lowest_left'] = 0;
+			$nav_data['highest_right'] = (count($nav_data['msg_array']) - 1);
+			$nav_data['next_msg'] = $nav_data['msg_array'][$nav_data['msgnum_idx'] + 1];
+			$nav_data['prev_msg'] = $nav_data['msg_array'][$nav_data['msgnum_idx'] - 1];
+			$nav_data['method'] = 'new';
+		}
+		else
+		{
+			// fall back to old broken way
+			$nav_data['active_msgnum_idx'] = $this->get_arg_value('msgnum');
+			$nav_data['lowest_left'] = 1;
+			$nav_data['highest_right'] = $old_method_totalmessages;
+			$nav_data['next_msg'] = $nav_data['active_msgnum_idx'] + 1;
+			$nav_data['prev_msg'] = $nav_data['active_msgnum_idx'] - 1;
+			$nav_data['method'] = 'old_broken';
+		}
+		
+		if ($debug_nav) { echo 'messages.php step1 $nav_data[] dump <pre>'; print_r($nav_data); echo '</pre>'; }
+		
+		// if it's not possible to have a prev message, then make "prev_msg" False
+		if ($nav_data['active_msgnum_idx'] <= $nav_data['lowest_left'])
+		{
+			// we are at the last message in this direction, there is no prev message
+			$nav_data['prev_msg'] = $this->not_set;
+		}
+		// is it possible to have a next message, and if so, what is it's msgnum
+		if ($nav_data['active_msgnum_idx'] >= $nav_data['highest_right'])
+		{
+			// we are at the final message in this direction, there is no next message
+			$nav_data['next_msg'] = $this->not_set;
+		}
+		if ($debug_nav) { echo 'messages.php step2 $nav_data[] dump <pre>'; print_r($nav_data); echo '</pre>'; }
+		return $nav_data;
+	}
 
+	
 	function format_byte_size($feed_size)
 	{
 		if ($feed_size < 999999)
@@ -835,9 +883,9 @@ class mail_msg extends mail_msg_wrappers
 			//$part_nice[$i]['m_part_num_mime'] = $part_nice[$i]['ex_mime_number_smart'];
 
 			// TEMPORARY HACK FOR SOCKET POP3 CLASS - feed it DUMB mime part numbers
-			if ((isset($this->dcom->imap_builtin))
-			&& ($this->dcom->imap_builtin == False)
-			&& (stristr($this->prefs['mail_server_type'], 'pop3')))
+			if ((isset($this->a[$this->acctnum]['dcom']->imap_builtin))
+			&& ($this->a[$this->acctnum]['dcom']->imap_builtin == False)
+			&& (stristr($this->get_pref_value('mail_server_type'), 'pop3')))
 			{
 				// Make ***DUMB*** Mime Number THE PRIMARY MIME NUMBER we will use
 				$part_nice[$i]['m_part_num_mime'] = $part_nice[$i]['ex_mime_number_dumb'];
@@ -851,7 +899,7 @@ class mail_msg extends mail_msg_wrappers
 			// ------  MAKE CLICKABLE HREF TO THIS PART  -------
 			
 			// make an URL and a Clickable Link to directly acces this part
-			$click_info = $this->make_part_clickable($part_nice[$i], $this->folder, $this->msgnum);
+			$click_info = $this->make_part_clickable($part_nice[$i], $this->get_arg_value('folder'), $this->get_arg_value('msgnum'));
 			$part_nice[$i]['ex_part_href'] = $click_info['part_href'];
 			$part_nice[$i]['ex_part_clickable'] = $click_info['part_clickable'];
 		}		
@@ -1030,14 +1078,7 @@ class mail_msg extends mail_msg_wrappers
 
 	function mime_number_smart($part_nice, $flat_idx, $new_mime_dumb)
 	{
-		if (isset($this->not_set))
-		{
-			$not_set = $this->not_set;
-		}
-		else
-		{
-			$not_set = '-1';
-		}
+		$not_set = $this->not_set;
 		
 		// ---- Construct a "Smart" mime number
 		
@@ -1186,14 +1227,7 @@ class mail_msg extends mail_msg_wrappers
 
 	function make_part_clickable($part_nice, $folder, $msgnum)
 	{
-		if (isset($this->not_set))
-		{
-			$not_set = $this->not_set;
-		}
-		else
-		{
-			$not_set = '-1';
-		}
+		$not_set = $this->not_set;
 		
 		// Part Number used to request parts from the server
 		$m_part_num_mime = $part_nice['m_part_num_mime'];
@@ -1327,9 +1361,9 @@ class mail_msg extends mail_msg_wrappers
 	@result string which has either (a) a langed report to show the user about the move/delete that just occured
 	or (b) an empty string indicating no move or delete actions were taken, so none need to report anything
 	@discussion uses the following class args:
-	->args['td']	"td" means "Total Deleted", if it's filled it contains the number of messages that were deleted
-	->args['tm']	"tm" means "Total Moved", if it's filled it contains the number of messages that were moved
-	->args['tf']	"tf" means "To Folder", if it's filled it contains the name of the folder that messages were moved to
+	  ['args']['td']	"td" means "Total Deleted", if it's filled it contains the number of messages that were deleted
+	  ['args']['tm']	"tm" means "Total Moved", if it's filled it contains the number of messages that were moved
+	  ['args']['tf']	"tf" means "To Folder", if it's filled it contains the name of the folder that messages were moved to
 	if the user requests a delete, then arg "td" SHOULD/MUST be filled with that information
 	if the user requests a move, then BOTH args "tm" AND "tf" SHOULD/MUST be filled with that information
 	"tm" is the number of messages moved, and it's most useful to know where they were moved to, hence "tf"
@@ -1340,21 +1374,21 @@ class mail_msg extends mail_msg_wrappers
 		$report_this = '';
 		// "td" means "Total Deleted", if it's filled it contains the number of messages that were deleted
 		// when user deleted mail this arg should be filled with that information
-		if (isset($this->args['td'])
-		&& ($this->args['td'] != ''))
+		if (($this->get_isset_arg('td'))
+		&& ($this->get_arg_value('td') != ''))
 		{
 			// report on number of messages DELETED (if any)
-			if ($this->args['td'] == 1) 
+			if ($this->get_arg_value('td') == 1) 
 			{
-				$report_this = lang("1 message has been deleted",$this->args['td']);
+				$report_this = lang("1 message has been deleted",$this->get_arg_value('td'));
 			}
 			else
 			{
-				$report_this = lang("x messages have been deleted",$this->args['td']);
+				$report_this = lang("x messages have been deleted",$this->get_arg_value('td'));
 			}
 		}
-		elseif (isset($this->args['tm'])
-		&& ($this->args['tm'] != ''))
+		elseif (($this->get_isset_arg('tm'))
+		&& ($this->get_arg_value('tm') != ''))
 		{
 			// report on number of messages MOVED (if any)
 			// "tm" means "Total Moved", if it's filled it contains the number of messages that were moved
@@ -1363,29 +1397,29 @@ class mail_msg extends mail_msg_wrappers
 			// "tf" means "To Folder", if it's filled it contains the name of the folder that messages were moved to
 			// if the user moves messages this arg should be filled with that information
 			// if "tm" is filled then "tf" SHOULD/MUST also be filled
-			if (isset($this->args['tf'])
-			&& ($this->args['tf'] != ''))
+			if (($this->get_isset_arg('tf'))
+			&& ($this->get_arg_value('tf') != ''))
 			{
-				$_tf = $this->prep_folder_in($this->args['tf']);
+				$_tf = $this->prep_folder_in($this->get_arg_value('tf'));
 			}
 			else
 			{
 				$_tf = 'empty';
 			}
 			// with the name of the "To Folder" we can build our report string
-			if ($this->args['tm'] == 0) 
+			if ($this->get_arg_value('tm') == 0) 
 			{
 				// these args are filled, indicating a MOVE was attempted
 				// but since 0 messages were in fact moved, there must have been an error
 				$report_this = lang("Error moving messages to ").' '.$_tf;
 			}
-			elseif ($this->args['tm'] == 1)
+			elseif ($this->get_arg_value('tm') == 1)
 			{
 				$report_this = lang("1 message has been moved to").' '.$_tf;
 			}
 			else
 			{
-				$report_this = $this->args['tm'].' '.lang("messages have been moved to").' '.$_tf;
+				$report_this = $this->get_arg_value('tm').' '.lang("messages have been moved to").' '.$_tf;
 			}
 		}
 		else
@@ -1451,8 +1485,8 @@ class mail_msg extends mail_msg_wrappers
 		
 		// ----  Is It OK To Get The Folder Size?  ----
 		// determine if we should show the folder size
-		if ((isset($this->args['force_showsize']))
-		&& ($this->args['force_showsize'] != ''))
+		if (($this->get_isset_arg('force_showsize'))
+		&& ($this->get_arg_value('force_showsize') != ''))
 		{
 			// user has requested override of this speed skip option
 			$do_show_size = True;
@@ -1579,9 +1613,9 @@ class mail_msg extends mail_msg_wrappers
 		{
 			$totaltodisplay = $folder_info['number_all'];
 		}
-		elseif (($folder_info['number_all'] - $this->start) > $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
+		elseif (($folder_info['number_all'] - $this->get_arg_value('start')) > $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
 		{
-			$totaltodisplay = $this->start + $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
+			$totaltodisplay = $this->get_arg_value('start') + $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
 		}
 		else
 		{
@@ -1590,12 +1624,12 @@ class mail_msg extends mail_msg_wrappers
 
 		// keep track of how many loops we've done, for the return array, will be advanced to 0 before it's used
 		$x = -1;
-		for ($i=$this->start; $i < $totaltodisplay; $i++)
+		for ($i=$this->get_arg_value('start'); $i < $totaltodisplay; $i++)
 		{
 			// we use $x to sequentially fill the $msg_list array
 			$x++;
 			// place the delmov form header tags ONLY ONCE, blank string all subsequent loops
-			$msg_list[$x]['first_item'] = ($i == $this->start);
+			$msg_list[$x]['first_item'] = ($i == $this->get_arg_value('start'));
 
 			// ROW BACK COLOR
 			$msg_list[$x]['back_color'] = (($i + 1)/2 == floor(($i + 1)/2)) ? $GLOBALS['phpgw_info']['theme']['row_off'] : $GLOBALS['phpgw_info']['theme']['row_on'];
@@ -1604,9 +1638,9 @@ class mail_msg extends mail_msg_wrappers
 			// SHOW ATTACHMENT CLIP ?
 			// SKIP this for POP3 - fetchstructure for POP3 requires download the WHOLE msg
 			// so PHP can build the fetchstructure data (IMAP server does this internally)
-			if ((isset($this->dcom->imap_builtin))
-			&& ($this->dcom->imap_builtin == False)
-			&& (stristr($this->prefs['mail_server_type'], 'pop3')))
+			if ((isset($this->a[$this->acctnum]['dcom']->imap_builtin))
+			&& ($this->a[$this->acctnum]['dcom']->imap_builtin == False)
+			&& (stristr($this->get_pref_value('mail_server_type'), 'pop3')))
 			{
 				// do Nothing - socket class pop3 not ready for this stress yet
 				$msg_list[$x]['has_attachment'] = False;
@@ -1630,9 +1664,9 @@ class mail_msg extends mail_msg_wrappers
 			$msg_list[$x]['subject_link'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
 				'folder='.$this->prep_folder_out('')
 				.'&msgnum='.$msg_list[$x]['msg_num']
-				.'&sort='.$this->sort
-				.'&order='.$this->order
-				.'&start='.$this->start);
+				.'&sort='.$this->get_arg_value('sort')
+				.'&order='.$this->get_arg_value('order')
+				.'&start='.$this->get_arg_value('start'));
 
 			// SIZE
 			if ($this->newsmode)
@@ -1712,7 +1746,7 @@ class mail_msg extends mail_msg_wrappers
 				$personal = $replyto;
 			}
 			
-			if (($this->prefs['show_addresses'] == 'from')
+			if (($this->get_pref_value('show_addresses') == 'from')
 			&& ($personal != $from->mailbox.'@'.$from->host))
 			{
 				/*
@@ -1725,7 +1759,7 @@ class mail_msg extends mail_msg_wrappers
 				$msg_list[$x]['display_address_from'] = '('.$from->mailbox.'@'.$from->host.')';
 				$msg_list[$x]['who_to'] = $from->mailbox.'@'.$from->host;
 			}
-			elseif (($this->prefs['show_addresses'] == 'replyto')
+			elseif (($this->get_pref_value('show_addresses') == 'replyto')
 			&& ($personal != $from->mailbox.'@'.$from->host))
 			{
 				/*

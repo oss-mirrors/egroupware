@@ -1,34 +1,34 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare API - smtp mailer					*
-  * This file written by Itzchak Rehberg <izzysoft@qumran.org>		*
-  * and Joseph Engo <jengo@phpgroupware.org>			*
-  * and Angelo Tony Puglisi (angles)  <angles@phpgroupware.org>		*
-  * This module should replace php's mail() function. It is fully syntax	*
-  * compatible. In addition, when an error occures, a detailed error info	*
-  * is stored in the array $send->err (see ../inc/email/global.inc.php for	*
-  * details on this variable).						*
-  * Copyright (C) 2000, 2001 Itzchak Rehberg, and				*
-  * Copyright (C) 2001 Angelo Puglisi (Angles)				*
-  * -------------------------------------------------------------------------			*
-  * This library is part of the phpGroupWare API				*
-  * http://www.phpgroupware.org/api					* 
-  * ------------------------------------------------------------------------ 			*
-  * This library is free software; you can redistribute it and/or modify it	*
-  * under the terms of the GNU Lesser General Public License as published by 	*
-  * the Free Software Foundation; either version 2.1 of the License,		*
-  * or any later version.						*
-  * This library is distributed in the hope that it will be useful, but		*
-  * WITHOUT ANY WARRANTY; without even the implied warranty 	*
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	*
-  * See the GNU Lesser General Public License for more details.		*
-  * You should have received a copy of the GNU Lesser General Public License	*
-  * along with this library; if not, write to the Free Software Foundation,	*
-  * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA		*
-  \**************************************************************************/
-
+	/**************************************************************************\
+	* phpGroupWare API - smtp mailer							*
+	* This file written by Itzchak Rehberg <izzysoft@qumran.org>			*
+	* and Joseph Engo <jengo@phpgroupware.org>					*
+	* and Angelo Tony Puglisi (angles)  <angles@phpgroupware.org>			*
+	* This module should replace php's mail() function. It is fully syntax		*
+	* compatible. In addition, when an error occures, a detailed error info		*
+	* is stored in the array $send->err (see ../inc/email/global.inc.php for		*
+	* details on this variable).								*
+	* Copyright (C) 2000, 2001 Itzchak Rehberg, and					*
+	* Copyright (C) 2001 Angelo Puglisi (Angles)					*
+	* -------------------------------------------------------------------------			*
+	* This library is part of the phpGroupWare API					*
+	* http://www.phpgroupware.org/api							* 
+	* ------------------------------------------------------------------------ 			*
+	* This library is free software; you can redistribute it and/or modify it		*
+	* under the terms of the GNU Lesser General Public License as published by 	*
+	* the Free Software Foundation; either version 2.1 of the License,			*
+	* or any later version.								*
+	* This library is distributed in the hope that it will be useful, but			*
+	* WITHOUT ANY WARRANTY; without even the implied warranty 		*
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	*
+	* See the GNU Lesser General Public License for more details.			*
+	* You should have received a copy of the GNU Lesser General Public License	*
+	* along with this library; if not, write to the Free Software Foundation,		*
+	* Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA			*
+	\**************************************************************************/
+	
 	/* $Id$ */
-
+	
 	/*!
 	@class mail_send
 	@abstract	sockets based SMTP class, will communicate with an MTA to send mail
@@ -39,37 +39,51 @@
 	@author
 	Itzchak Rehberg - initial implementation, SMTP communication and control flow, excellent work!
 	Angelo Puglisi (Angles) - convert to multi-dimentional array driven architecture, expanded debugging,
-	RFC2822 and 2821 compliance, retain a copy for archiving option, other stuff...
+	RFC2822 and 2821 compliance, retain a copy for archiving option, fake send debug, handshake retention, other stuff...
 	*/
 	class mail_send
 	{
-		var $err = Array(
-			'code',
-			'msg',
-			'desc'
-		);
+		var $err = array();
 		var $to_res = array();
-		var $debug_send = False;
-		var $get_svr_response = False;
-		var $svr_response = '';
+		
+		//var $debug_fake_send = True;
+		var $debug_fake_send = False;
+		
 		var $retain_copy = False;
+		
+		// trace flag 0 = none, 1 = server only, 2 = server and client, 3 = totally extra verbose
+		var $trace_flag = 0;
+		var $trace_data = array();
+		
 		// some of the MTA communication should not go into the copy, like ELHO stuff
 		var $retain_copy_ignore = True;
 		var $assembled_copy = '';
 
+		function mail_send()
+		{
+			$this->err['code'] = '';
+			$this->err['msg']  = '';
+			$this->err['desc'] = '';
+			$this->err['server_chat'] = "\r\n";
+		}
+		
 		function send_init()
 		{
-			$this->err['code'] = ' ';
-			$this->err['msg']  = ' ';
-			$this->err['desc'] = ' ';
+			// depreciated
 		}
-
+		
+		function log_trace($prefix='', $data)
+		{
+			$next_idx = count($this->trace_data);
+			$this->trace_data[$next_idx] = $prefix.' : '.htmlspecialchars(rtrim($data));
+		}
 		// ===  some sub-functions  ===
 
 		function socket2msg($socket)
 		{
-			if ($this->debug_send)
+			if ($this->debug_fake_send)
 			{
+				// we are not really sending mail, pretend the server accepted out data
 				return True;
 			}
 			
@@ -78,19 +92,18 @@
 			do
 			{
 				$rmsg = fgets($socket,255);
-				// echo "< $rmsg<BR>\n";
+				$this->err['server_chat'] .= htmlspecialchars('s->c: '.$rmsg);
+				if ($this->trace_flag > 0) { $this->log_trace('socket2msg: rmsg', $rmsg); }
 				$this->err['code'] = substr($rmsg,0,3);
+				if ($this->trace_flag > 2) { $this->log_trace('socket2msg: $this->err[code]', $this->err['code']); }
 				$followme = substr($rmsg,3,1);
+				if ($this->trace_flag > 2) { $this->log_trace('socket2msg: $followme', $followme); }
 				$this->err['msg'] = substr($rmsg,4);
+				if ($this->trace_flag > 2) { $this->log_trace('socket2msg: $this->err[msg]', $this->err['msg']); }
 				if (substr($this->err['code'],0,1) != 2 && substr($this->err['code'],0,1) != 3)
 				{
 					$rc  = fclose($socket);
 					return false;
-				}
-				// debug stuff
-				if ($this->get_svr_response)
-				{
-					$this->svr_response .= trim($rmsg);
 				}
 				
 				if ($followme == ' ')
@@ -99,21 +112,15 @@
 				}
 			}
 			while ($followme == '-');
-			// debug stuff
-			if ($this->get_svr_response)
-			{
-				$this->svr_response .= "\r\n";
-			}
+			
 			return true;
 		}
 
 		function msg2socket($socket,$message)
 		{
-			if ($this->debug_send)
+			if ($this->debug_fake_send)
 			{
-				// send single line\n
-				echo 'raw ' .$GLOBALS['phpgw']->msg->htmlspecialchars_encode($message);
-				//echo "hex> ".bin2hex($message)."<BR>\r\n";
+				echo $GLOBALS['phpgw']->msg->htmlspecialchars_encode($message);
 				return True;
 			}
 			// if we need a copy of this message for the "sent" folder, assemble it here
@@ -122,6 +129,14 @@
 			{
 				$this->assembled_copy .= "$message";
 			}
+			// on the contrary, server chat ONLY wants the pre- DATA stuff
+			if ($this->retain_copy_ignore)
+			{
+				// "retain_copy_ignore" means we are still in the handshake phase, which is what "server_chat" wants
+				$this->err['server_chat'] .= htmlspecialchars('c->s: '.$message);
+			}
+			
+			if ($this->trace_flag > 1) { $this->log_trace('msg2socket: $message', $message); }
 			
 			$rc = fputs($socket,"$message");
 			if (!$rc)
@@ -142,23 +157,26 @@
 			// don't start retaining the email copy until after the MTA handshake
 			$this->retain_copy_ignore = True;
 			
-			//$this->debug_send = True;
-			//$this->get_svr_response = True;
-			
 			// error code and message of failed connection
 			$errcode = '';
 			$errmsg = '';
 			// timeout in secs
 			$timeout = 5;
 			
-			if ($this->debug_send)
+			if ($this->debug_fake_send)
 			{
-				$socket = 41; // arbitrary number, no significance
+				// arbitrary number, no significance
+				// we do not actually communicate with the SMTP server for a fake send
+				$socket = 41;
+				// announce the fact this is echo'd debug output, not an actual session
+				echo '<html><body><h2>FAKE SEND DEBUG:</h2> <h3>this is what the client *would* send to the SMTP server were this an actual send</h3>';
 			}
 			else
 			{
 				// OPEN SOCKET - now we try to open the socket and check, if any smtp server responds
 				$socket = fsockopen($GLOBALS['phpgw_info']['server']['smtp_server'],$GLOBALS['phpgw_info']['server']['smtp_port'],$errcode,$errmsg,$timeout);
+				$this->err['server_chat'] .= htmlspecialchars('c->s: fsockopen('.$GLOBALS['phpgw_info']['server']['smtp_server'].','.$GLOBALS['phpgw_info']['server']['smtp_port'].','.$errcode.','.$errmsg.','.$timeout.') ; returned: '.$socket )."\r\n";
+
 			}
 			if (!$socket)
 			{
@@ -181,7 +199,7 @@
 				"\$src = \$this->msg2socket(\$socket,\"MAIL FROM:\$fromuser\r\n\");",
 				"\$rrc = \$this->socket2msg(\$socket);"
 			);
-			if ($this->debug_send)
+			if ($this->debug_fake_send)
 			{
 				echo '<pre>';
 			}
@@ -206,7 +224,7 @@
 				$this->to_res[$i][desc] = $this->err['desc'];
 			}
 			
-			if (!$this->debug_send)
+			if (!$this->debug_fake_send)
 			{
 				//now we have to make sure that at least one $to-address was accepted
 				$stop = 1;
@@ -335,12 +353,12 @@
 				return false;
 			}
 			
-			if ($this->debug_send)
+			if ($this->debug_fake_send)
 			{
-				echo '</pre>';
+				echo '</pre><h3>end of Fake Send</h3></body></html>';
 			}
 			
-			if (!$this->debug_send)
+			if (!$this->debug_fake_send)
 			{
 				do
 				{

@@ -19,10 +19,6 @@
 			'noheader' => True,
 			'nonavbar' => True
 	);
-	if ($newsmode == 'on')
-	{
-		$GLOBALS['phpgw_info']['flags']['newsmode'] = True;
-	}
 	include('../header.inc.php');
 
 	//  if (isset($GLOBALS['phpgw_info']['flags']['newsmode']) && $GLOBALS['phpgw_info']['flags']['newsmode'])

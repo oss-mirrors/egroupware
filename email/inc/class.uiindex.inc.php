@@ -49,8 +49,13 @@
 			return $this->is_modular;
 		}
 		
-		function index($reuse_feed_args=array())
+		function index($reuse_feed_args='')
 		{
+			if (empty($reuse_feed_args))
+			{
+				$reuse_feed_args = array();
+			}
+			
 			$this->bo = CreateObject("email.boindex");
 			$this->bo->index_data($reuse_feed_args);
 			
@@ -75,8 +80,7 @@
 				// HOWEVER still this class must NOT invoke $GLOBALS['phpgw']->common->phpgw_header()
 				// even though we had to output the header (go figure... :)
 			}
-			
-			$this->bo->xi['my_layout'] = $GLOBALS['phpgw']->msg->prefs['layout'];
+			$this->bo->xi['my_layout'] = $GLOBALS['phpgw']->msg->get_pref_value('layout');
 			$this->bo->xi['my_browser'] = $GLOBALS['phpgw']->msg->browser;
 			
 			//$GLOBALS['phpgw']->template = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
@@ -487,16 +491,6 @@
 				{
 					// NOT SUPPORTED YET IN MLIST
 					$GLOBALS['phpgw']->template->set_var('V_mlist_form_init', '');
-					/*
-					if ($this->bo->xi['msg_list_dsp'][$i]['first_item'])
-					{
-						$GLOBALS['phpgw']->template->set_var('V_mlist_form_init',$this->bo->xi['V_mlist_form_init']);
-					}
-					else
-					{
-						$GLOBALS['phpgw']->template->set_var('V_mlist_form_init', '');
-					}
-					*/
 					if ($this->bo->xi['msg_list_dsp'][$i]['is_unseen'])
 					{
 						$GLOBALS['phpgw']->template->set_var('mlist_new_msg',$this->bo->xi['mlist_new_msg']);

@@ -18,6 +18,7 @@
 		var $public_functions = array(
 			'action'	=> True
 		);
+		//var $debug = True;
 		var $debug = False;
 		var $xml_functions = array();
 		var $xi = array();
@@ -34,8 +35,8 @@
 		
 		function boaction()
 		{
-			$this->redirect_if_error = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->index_menuaction);
-			
+			// initialize an error reporting action
+			//$this->redirect_if_error = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'));
 		}
 		
 		function DONTlist_methods($_type='xmlrpc')
@@ -75,58 +76,63 @@
 			// attempt (or not) to reuse an existing mail_msg object LEAVING here and going back to index
 			// that index page will attempt to reuse the object we create in this function, i.e. we create it always
 			// because it's not supported to reuse mail_msg object that already exists when ENTERING into this function
+			
 			$attempt_reuse = True;			
 			//$attempt_reuse = False;
 			
-			$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-			$GLOBALS['phpgw']->msg->grab_class_args_gpc();
+			if ($this->debug) { echo 'emai.boaction.action: ENTERED, about to create mail_msg object, attempt to reuse (outgoing): '.serialize($attempt_reuse ).'<br>'; }
+			if (is_object($GLOBALS['phpgw']->msg))
+			{
+				if ($this->debug) { echo 'emai.boaction.action: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
+			}
+			else
+			{
+				if ($this->debug) { echo 'emai.boaction.action: is_object test: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
+				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+			}
 			$args_array = Array();
-			if (isset($GLOBALS['HTTP_POST_VARS']['folder']))
-			{
-				$args_array['folder'] = $GLOBALS['HTTP_POST_VARS']['folder'];
-			}
-			elseif (isset($GLOBALS['HTTP_GET_VARS']['folder']))
-			{
-				$args_array['folder'] = $GLOBALS['HTTP_GET_VARS']['folder'];
-			}
 			$args_array['do_login'] = True;
-			$GLOBALS['phpgw']->msg->begin_request($args_array);
+			$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
 			if (($args_array['do_login'] == True)
-			&& (!$GLOBALS['phpgw']->msg->mailsvr_stream))
+			&& (!$some_stream))
 			{
 				$GLOBALS['phpgw']->msg->login_error($GLOBALS['PHP_SELF'].', action()');
 			}
+			// WHY WAS THIS COMMENTED OUT?
 			// base http URI on which we will add other stuff down below
-			//$this->index_base_link = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->index_menuaction);
+			//$this->index_base_link = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'));
 			//$this->xi['sortbox_action'] = $this->index_base_link.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('');
-
-
-
-
+			
+			// make an error report URL
+			$this->redirect_if_error = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'));
+			
 			$folder_info = array();
 			$folder_info = $GLOBALS['phpgw']->msg->get_folder_status_info();
 			$totalmessages = $folder_info['number_all'];
 			
 			// ---- MOVE Messages from folder to folder   -----
-			if ($GLOBALS['phpgw']->msg->args['what'] == "move")
+			if ($GLOBALS['phpgw']->msg->get_arg_value('what') == "move")
 			{
+				if ($this->debug) { echo 'emai.boaction.action: get_arg_value(what) == "move") <br>'; }
 				// called by the "move selected messages to" listbox onChange action
-				$tofolder = $GLOBALS['phpgw']->msg->prep_folder_in($GLOBALS['phpgw']->msg->args['tofolder']);
+				$tofolder = $GLOBALS['phpgw']->msg->prep_folder_in($GLOBALS['phpgw']->msg->get_arg_value('tofolder'));
 				// report number messages moved (will be made = 0 if error below)
-				$tm = count($GLOBALS['phpgw']->msg->args['msglist']);
-				$msgs = $GLOBALS['phpgw']->msg->args['msglist'] ? implode($GLOBALS['phpgw']->msg->args['msglist'], ",") : $GLOBALS['phpgw']->msg->args['msglist'];
+				$tm = count($GLOBALS['phpgw']->msg->get_arg_value('msglist'));
 				// mail_move accepts a single number (5); a comma seperated list of numbers (5,6,7,8); or a range with a colon (5:8)
+				$msgs = $GLOBALS['phpgw']->msg->get_arg_value('msglist') ? implode($GLOBALS['phpgw']->msg->get_arg_value('msglist'), ",") : $GLOBALS['phpgw']->msg->get_arg_value('msglist');
 				/*
-				if (count($GLOBALS['phpgw']->msg->args['msglist']) > 1)
+				if (count($GLOBALS['phpgw']->msg->get_arg_value('msglist')) > 1)
 				{
-					$msgs = implode($GLOBALS['phpgw']->msg->args['msglist'], ",");
+					$msgs = implode($GLOBALS['phpgw']->msg->get_arg_value('msglist'), ",");
 				}
 				else
 				{
-					$msgs = $GLOBALS['phpgw']->msg->args['msglist'];
+					$msgs = $GLOBALS['phpgw']->msg->get_arg_value('msglist');
 				}
 				*/
-				if (! $GLOBALS['phpgw']->msg->phpgw_mail_move($msgs, $tofolder))
+				$did_move = $GLOBALS['phpgw']->msg->phpgw_mail_move($msgs, $tofolder);
+				if ($this->debug) { echo 'emai.boaction.action: called  $GLOBALS[phpgw]->msg->phpgw_mail_move('.$msgs.', '.$tofolder.') , got back: '.serialize($did_move).'<br>'; }
+				if (! $did_move)
 				{
 					// ERROR: report ZERO messages moved
 					$tm = 0;
@@ -135,124 +141,136 @@
 				else
 				{
 					// expunge moved messages in from folder, they are marked as expungable after the move
+					if ($this->debug) { echo 'emai.boaction.action: calling $GLOBALS[phpgw]->msg->phpgw_expunge() <br>'; }
 					$GLOBALS['phpgw']->msg->phpgw_expunge();
 				}
 				// report folder messages were moved to
 				$tf = $GLOBALS['phpgw']->msg->prep_folder_out($tofolder);
-				// end session if we are not going to reuse the current object
-				if ($attempt_reuse == False)
-				{
-					$GLOBALS['phpgw']->msg->end_request();
-				}
-				$this->redirect_to = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->index_menuaction
+				$this->redirect_to = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction')
 							.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
 							.'&tm='.$tm
 							.'&tf='.$tf
-							.'&sort='.$GLOBALS['phpgw']->msg->sort
-							.'&order='.$GLOBALS['phpgw']->msg->order
-							.'&start='.$GLOBALS['phpgw']->msg->start);
+							.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+							.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+							.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 				$goto_args=array( 
 					'folder'  => $GLOBALS['phpgw']->msg->prep_folder_out(''),
 					'tm'	=> $tm,
 					'tf'	=> $tf,
-					'sort'  => $GLOBALS['phpgw']->msg->sort,
-					'order'  => $GLOBALS['phpgw']->msg->order,
-					'start'  => $GLOBALS['phpgw']->msg->start
+					'sort'  => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
+					'order'  => $GLOBALS['phpgw']->msg->get_arg_value('order'),
+					'start'  => $GLOBALS['phpgw']->msg->get_arg_value('start')
 				);
-			}
-			elseif ($GLOBALS['phpgw']->msg->args['what'] == 'delall')
-			{
-				// this is called from the index pge after you check some boxes and click "delete" button
-				for ($i = 0; $i < count($GLOBALS['phpgw']->msg->args['msglist']); $i++)
-				{
-					$GLOBALS['phpgw']->msg->phpgw_delete($GLOBALS['phpgw']->msg->args['msglist'][$i],'',$GLOBALS['phpgw']->msg->folder);
-				}
-				$totaldeleted = $i;
-				$GLOBALS['phpgw']->msg->phpgw_expunge();
 				// end session if we are not going to reuse the current object
 				if ($attempt_reuse == False)
 				{
 					$GLOBALS['phpgw']->msg->end_request();
 				}
-				$this->redirect_to = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->index_menuaction
+			}
+			elseif ($GLOBALS['phpgw']->msg->get_arg_value('what') == 'delall')
+			{
+				if ($this->debug) { echo 'emai.boaction.action: get_arg_value(what) == "delall") <br>'; }
+				// this is called from the index pge after you check some boxes and click "delete" button
+				$this_msglist = $GLOBALS['phpgw']->msg->get_arg_value('msglist');
+				$this_folder = $GLOBALS['phpgw']->msg->get_arg_value('folder');
+				for ($i = 0; $i < count($this_msglist); $i++)
+				{
+					$GLOBALS['phpgw']->msg->phpgw_delete($this_msglist[$i],'',$this_folder);
+				}
+				$totaldeleted = $i;
+				$GLOBALS['phpgw']->msg->phpgw_expunge();
+				$this->redirect_to = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction')
 								.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
 								.'&td='.$totaldeleted
-								.'&sort='.$GLOBALS['phpgw']->msg->sort
-								.'&order='.$GLOBALS['phpgw']->msg->order
-								.'&start='.$GLOBALS['phpgw']->msg->start);
+								.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+								.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+								.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 				$goto_args=array(
 					'folder'  => $GLOBALS['phpgw']->msg->prep_folder_out(''),
 					'td'	=> $totaldeleted,
-					'sort'  => $GLOBALS['phpgw']->msg->sort,
-					'order'  => $GLOBALS['phpgw']->msg->order,
-					'start'  => $GLOBALS['phpgw']->msg->start
+					'sort'  => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
+					'order'  => $GLOBALS['phpgw']->msg->get_arg_value('order'),
+					'start'  => $GLOBALS['phpgw']->msg->get_arg_value('start')
 				);
+				// end session if we are not going to reuse the current object
+				if ($attempt_reuse == False)
+				{
+					$GLOBALS['phpgw']->msg->end_request();
+				}
 			}
-			elseif ($GLOBALS['phpgw']->msg->args['what'] == "delete")
+			elseif ($GLOBALS['phpgw']->msg->get_arg_value('what') == "delete")
 			{
+				if ($this->debug) { echo 'emai.boaction.action: get_arg_value(what) == "delete") <br>'; }
 				// called by clicking the "X" dutton while reading an individual message
-				//$GLOBALS['phpgw']->dcom->delete($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum,'',$GLOBALS['phpgw']->msg->folder);
-				$GLOBALS['phpgw']->msg->phpgw_delete($GLOBALS['phpgw']->msg->msgnum,'',$GLOBALS['phpgw']->msg->folder);
-				if (($totalmessages != $GLOBALS['phpgw']->msg->msgnum)
+				$GLOBALS['phpgw']->msg->phpgw_delete($GLOBALS['phpgw']->msg->get_arg_value('msgnum'),'',$GLOBALS['phpgw']->msg->get_arg_value('folder'));
+				if (($totalmessages != $GLOBALS['phpgw']->msg->get_arg_value('msgnum'))
 				|| ($GLOBALS['phpgw']->msg->prefs['default_sorting'] == 'new_old'))
 				{
-					if ($GLOBALS['phpgw']->msg->prefs['default_sorting'] == 'new_old')
+					if ($GLOBALS['phpgw']->msg->get_pref_value['default_sorting'] == 'new_old')
 					{
-						$nm = $GLOBALS['phpgw']->msg->msgnum - 1;
+						$nm = $GLOBALS['phpgw']->msg->get_arg_value('msgnum') - 1;
 					}
 					else
 					{
-						$nm = $GLOBALS['phpgw']->msg->msgnum;
+						$nm = $GLOBALS['phpgw']->msg->get_arg_value('msgnum');
 					}
 				}
 				$GLOBALS['phpgw']->msg->phpgw_expunge();
+				$this->redirect_to = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
+								 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+								.'&msgnum='.$nm
+								.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+								.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order'));
+				// message.php not yet n-tier's
+				$goto_args=array();
+				
 				// end session if we are not going to reuse the current object
 				// not supported YET for going to message.php
 				//if ($attempt_reuse == False)
 				//{
 					$GLOBALS['phpgw']->msg->end_request();
 				//}
-				$this->redirect_to = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
-								 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-								.'&msgnum='.$nm
-								.'&sort='.$GLOBALS['phpgw']->msg->sort
-								.'&order='.$GLOBALS['phpgw']->msg->order);
-				// message.php not yet n-tier's
-				$goto_args=array();
 			}
 			else
 			{
+				if ($this->debug) { echo 'emai.boaction.action: get_arg_value(what) == unknown_value<br>'; }
 				$error_str = '<p><center><b>'.lang('UNKNOWN ACTION')."<br> \r\n"
 						.'called from '.$GLOBALS['PHP_SELF'].', action()'."<br> \r\n"
 						.'</b></center></p>'."<br> \r\n";
+				$this->redirect_to = $this->redirect_if_error;
+				// error report not yet n-tier'd
+				$goto_args=array();
+				
 				// end session if we are not going to reuse the current object
 				// not supported YET for error reporting
 				//if ($attempt_reuse == False)
 				//{
 					$GLOBALS['phpgw']->msg->end_request();
 				//}
-				$this->redirect_to = $this->redirect_if_error;
-				// error report not yet n-tier'd
-				$goto_args=array();
 			}
+			
 			
 			if (($attempt_reuse == True)
 			&& (count($goto_args) > 0))
 			{
+				if ($this->debug) { echo 'emai.boaction.action: LEAVING, gonna try to reuse existing mail_msg for the upcoming page view<br>'; }
+				// FORCE refresh of "folder_status_info", call ->get_folder_status_info with arg True = "force refresh"
+				//if ($this->debug) { echo 'emai.boaction.action: LEAVING, since we are gonna try to reuse, we need to FORCE a refresh of "folder_status_info"<br>'; }
+				//$GLOBALS['phpgw']->msg->get_folder_status_info(True);
 				// attempting to reuse existing object msg
-				// FORCE refreesh of folder data that is in L1 cache (object var)
-				//$folder_info = $GLOBALS['phpgw']->msg->get_folder_status_info(True);
 				$obj = CreateObject('email.uiindex');
 				$obj->index($goto_args);
 				exit;
 			}
 			elseif ($this->redirect_to != '')
 			{
+				if ($this->debug) { echo 'emai.boaction.action: LEAVING, redirecting to: '.$GLOBALS['phpgw']->redirect($this->redirect_to).'<br>'; }
 				$GLOBALS['phpgw']->redirect($this->redirect_to);
 				exit;
 			}
 			else
 			{
+				if ($this->debug) { echo 'emai.boaction.action: LEAVING, with ERROR, unhandled "where to go from here" condition<br>'; }
 				echo 'error: mo redirect specified in '.$GLOBALS['PHP_SELF'].', action()'."<br> \r\n"
 					.'error_str: '.$error_str."<br> \r\n";
 				return False;

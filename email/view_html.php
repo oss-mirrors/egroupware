@@ -23,19 +23,19 @@
 	include('../header.inc.php');
 
 	//$GLOBALS['phpgw']->browser->content_header($name,$mime);
-	if ((isset($GLOBALS['phpgw']->msg->args['html_part']))
-	&& ($GLOBALS['phpgw']->msg->args['html_part'] != ''))
+	if ((($GLOBALS['phpgw']->msg->get_isset_arg('html_part')))
+	&& ($GLOBALS['phpgw']->msg->get_arg_value('html_part') != ''))
 	{
 		$GLOBALS['phpgw']->browser->content_header('','');
-		$html_part = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->args['html_part']);
+		$html_part = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('html_part'));
 		//echo $GLOBALS['phpgw']->dcom->base64($html_part);
 		echo $GLOBALS['phpgw']->msg->de_base64($html_part);
 		$GLOBALS['phpgw']->msg->end_request();
 	}
-	elseif ((isset($GLOBALS['phpgw']->msg->args['html_reference']))
-	&& ($GLOBALS['phpgw']->msg->args['html_reference'] != ''))
+	elseif ((($GLOBALS['phpgw']->msg->get_isset_arg('html_reference')))
+	&& ($GLOBALS['phpgw']->msg->get_arg_value('html_reference') != ''))
 	{
-		$html_reference = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->args['html_reference']);
+		$html_reference = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('html_reference'));
 		$GLOBALS['phpgw']->msg->end_request();
 		header('Location: ' . $html_reference); 
 	}

@@ -20,7 +20,7 @@
 			'init_available_prefs' => True,
 			'grab_set_prefs' => True
 		);
-		var $email_base='';
+		//var $email_base='';
 		var $not_set='-1';
 		var $std_prefs=array();
 		var $cust_prefs=array();
@@ -595,7 +595,7 @@
 						{
 							// typical "user_string" needs to strip any slashes 
 							// that PHP "magic_quotes_gpc"may have added
-							$processed_pref = $this->email_base->stripslashes_gpc($submitted_pref);
+							$processed_pref = $GLOBALS['phpgw']->msg->stripslashes_gpc($submitted_pref);
 							// most "user_string" items require pre-processing before going into
 							// the repository (strip slashes, html encode, encrypt, etc...)
 							// we call this database "de-fanging", remove database unfriendly chars
@@ -608,17 +608,17 @@
 							// certain data (passwords) should be encrypted before going into the repository
 							// "user_string"s to be "encrypted" do NOT get "html_quotes_encode"
 							// before going into the encryption routine
-							$processed_pref = $this->email_base->stripslashes_gpc($submitted_pref);
-							$processed_pref = $this->email_base->encrypt_email_passwd($processed_pref);
+							$processed_pref = $GLOBALS['phpgw']->msg->stripslashes_gpc($submitted_pref);
+							$processed_pref = $GLOBALS['phpgw']->msg->encrypt_email_passwd($processed_pref);
 						}
 						else
 						{
 							// typical "user_string" needs to strip any slashes 
 							// that PHP "magic_quotes_gpc"may have added
-							$processed_pref = $this->email_base->stripslashes_gpc($submitted_pref);
+							$processed_pref = $GLOBALS['phpgw']->msg->stripslashes_gpc($submitted_pref);
 							// and this is a _LAME_ way to make the value "database friendly"
 							// because slashes and quotes will FRY the whole preferences repository
-							$processed_pref = $this->email_base->html_quotes_encode($processed_pref);
+							$processed_pref = $GLOBALS['phpgw']->msg->html_quotes_encode($processed_pref);
 						}
 					}
 					else
@@ -674,11 +674,21 @@
 				4) set the prefs
 				5) call "end_request"
 				*/
-				$this->email_base = CreateObject("email.mail_msg");
+				if (is_object($GLOBALS['phpgw']->msg))
+				{
+					if ($this->debug_set_prefs) { echo 'email.bopreferences.preferences: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
+				}
+				else
+				{
+					if ($this->debug_set_prefs) { echo 'email.bopreferences.preferences: is_object test: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
+					$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+				}
+
+				//$this->email_base = CreateObject("email.mail_msg");
 				$request_args = Array(
 					'do_login' => False
 				);
-				$this->email_base->begin_request($request_args);
+				$GLOBALS['phpgw']->msg->begin_request($request_args);
 				
 				// ---  Process Standard Prefs  ---
 				if ($this->debug_set_prefs) { echo 'email.bopreferences: preferences(): about to process Standard Prefs<br>'; }
@@ -713,7 +723,7 @@
 					$GLOBALS['phpgw']->preferences->save_repository();
 				}
 				// end the email session
-				$this->email_base->end_request();
+				$GLOBALS['phpgw']->msg->end_request();
 				// redirect user back to main preferences page
 				if ($this->debug_set_prefs) 
 				{

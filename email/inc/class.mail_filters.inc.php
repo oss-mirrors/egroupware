@@ -175,17 +175,20 @@
 				return array();
 			}
 			
-			$attempt_reuse = True;
-			//$attempt_reuse = False;
+			//$attempt_reuse = True;
+			$attempt_reuse = False;
+			if (!is_object($GLOBALS['phpgw']->msg))
+			{
+				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+			}
+			
 			if ((is_object($GLOBALS['phpgw']->msg))
 			&& ($attempt_reuse == True))
 			{
 				// no not create, we will reuse existing
 				echo 'mail_filters: do_imap_search: reusing existing mail_msg object'.'<br>';
-				//DO NOT call msg->grab_class_args_gpc() when REUSING existing, the begin_request function does it in this case
-				// // // $GLOBALS['phpgw']->msg->grab_class_args_gpc();
 				// we need to feed the existing object some params begin_request uses to re-fill the msg->args[] data
-				$reuse_feed_args = $GLOBALS['phpgw']->msg->args;
+				$reuse_feed_args = $GLOBALS['phpgw']->msg->get_all_args();
 				$args_array = Array();
 				$args_array = $reuse_feed_args;
 				if ((isset($this->filters[0]['source_folder']))
@@ -200,16 +203,10 @@
 				}
 				// add this to keep the error checking code (below) happy
 				$args_array['do_login'] = True;
-				// add this for NO reason at all, just maybe use in the future
-				$args_array['newsmode'] = False;
 			}
 			else
 			{
-				if ($this->debug_index_data == True) { echo 'mail_filters: do_imap_search: creating object email.mail_msg, cannot or not trying to reusing existing'.'<br>'; }
-				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-				// only do grab_class_args_gpc() when creating a new object, AND call it BEFORE begin_request
-				$GLOBALS['phpgw']->msg->grab_class_args_gpc();
-				if ($this->debug_index_data == True) { echo 'mail_filters: do_imap_search: grab_class_args_gpc makes ->args[] dump:<pre>'; print_r($GLOBALS['phpgw']->msg->args); echo '</pre>'; }
+				if ($this->debug_index_data == True) { echo 'mail_filters: do_imap_search: creating new login email.mail_msg, cannot or not trying to reusing existing'.'<br>'; }
 				// new login 
 				// (1) folder (if specified) - can be left empty or unset, mail_msg will then assume INBOX
 				$args_array = Array();
@@ -225,14 +222,11 @@
 				}
 				// (2) should we log in
 				$args_array['do_login'] = True;
-				// (3) NOT IMPLEMENTED YET  -- newsmode
-				$args_array['newsmode'] = False;
 			}
 
 
 			/*
 			//$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-			//$GLOBALS['phpgw']->msg->grab_class_args_gpc();
 			$args_array = Array();
 			if ((isset($this->filters[0]['source_folder']))
 			&& ($this->filters[0]['source_folder'] != ''))
@@ -251,15 +245,13 @@
 			$GLOBALS['phpgw']->msg->begin_request($args_array);
 			
 			$initial_result_set = Array();
-			$initial_result_set = $GLOBALS['phpgw']->msg->dcom->i_search(
-							$GLOBALS['phpgw']->msg->mailsvr_stream,
-							$imap_search_str);
+			$initial_result_set = $GLOBALS['phpgw']->msg->phpgw_search($imap_search_str);
 			// sanity check on 1 returned hit, is it for real?
 			if (($initial_result_set == False)
 			|| (count($initial_result_set) == 0))
 			{
 				echo 'mail_filters: do_imap_search: no hits or possible search error<br>'."\r\n";
-				echo 'mail_filters: do_imap_search: server_last_error (if any) was: "'.$GLOBALS['phpgw']->msg->dcom->server_last_error().'"'."\r\n";
+				echo 'mail_filters: do_imap_search: server_last_error (if any) was: "'.$GLOBALS['phpgw']->msg->phpgw_server_last_error().'"'."\r\n";
 				// we leave this->result_set_mlist an an empty array, as it was initialized on class creation
 			}
 			else
@@ -268,7 +260,7 @@
 				if ($this->debug_level > 0) { echo 'mail_filters: do_imap_search: number of matches = ' .count($this->result_set).'<br>'."\r\n"; }
 				// make a "fake" folder_info array to make things simple for get_msg_list_display
 				$this->fake_folder_info['is_imap'] = True;
-				$this->fake_folder_info['folder_checked'] = $GLOBALS['phpgw']->msg->folder;
+				$this->fake_folder_info['folder_checked'] = $GLOBALS['phpgw']->msg->get_arg_value('folder');
 				$this->fake_folder_info['alert_string'] = 'you have search results';
 				$this->fake_folder_info['number_new'] = count($this->result_set);
 				$this->fake_folder_info['number_all'] = count($this->result_set);

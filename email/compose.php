@@ -28,14 +28,14 @@
 	$GLOBALS['phpgw']->template->set_block('T_compose_out','B_checkbox_sig','V_checkbox_sig');
 
 // ----  Handle Replying and Forwarding  -----
-	if ($GLOBALS['phpgw']->msg->msgnum)
+	if ($GLOBALS['phpgw']->msg->get_arg_value('msgnum'))
 	{
-		//$msg = $GLOBALS['phpgw']->dcom->header($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
+		//$msg = $GLOBALS['phpgw']->dcom->header($GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream'), $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
 		$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header('');
-		//$struct = $GLOBALS['phpgw']->dcom->fetchstructure($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
+		//$struct = $GLOBALS['phpgw']->dcom->fetchstructure($GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream'), $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
 		$msg_struct = $GLOBALS['phpgw']->msg->phpgw_fetchstructure('');
 
-		if ($GLOBALS['phpgw']->msg->args['action'] == 'reply')
+		if ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'reply')
 		{
 			// if "Reply-To" is specified, use it, or else use the "from" address as the address to reply to
 			if ($msg_headers->reply_to[0])
@@ -49,7 +49,7 @@
 			$to = $GLOBALS['phpgw']->msg->make_rfc2822_address($reply);
 			$subject = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'Re: ');
 		}
-		if ($GLOBALS['phpgw']->msg->args['action'] == 'replyall')
+		if ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'replyall')
 		{
 			if ($msg_headers->to)
 			{
@@ -128,16 +128,16 @@
 		// ----  Quoted Bodystring of Fw: or Re: Message is "First Presentable" from message.php  -----
 		// passed in the uri as "part_no"
 		// FUTURE: Forward needs entirely different handling
-		if (isset($GLOBALS['phpgw']->msg->args['part_no'])
-		&& ($GLOBALS['phpgw']->msg->args['part_no'] != '')
-		&& (($GLOBALS['phpgw']->msg->args['action'] == 'reply')
-		  || ($GLOBALS['phpgw']->msg->args['action'] == 'replyall')))
+		if (($GLOBALS['phpgw']->msg->get_isset_arg('part_no'))
+		&& ($GLOBALS['phpgw']->msg->get_arg_value('part_no') != '')
+		&& (($GLOBALS['phpgw']->msg->get_arg_value('action') == 'reply')
+		  || ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'replyall')))
 		{
-			//$bodystring = $GLOBALS['phpgw']->dcom->fetchbody($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum, $GLOBALS['phpgw']->msg->args['part_no']);
-			$bodystring = $GLOBALS['phpgw']->msg->phpgw_fetchbody($GLOBALS['phpgw']->msg->args['part_no']);
+			//$bodystring = $GLOBALS['phpgw']->dcom->fetchbody($GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream'), $GLOBALS['phpgw']->msg->get_arg_value('msgnum'), $GLOBALS['phpgw']->msg->get_arg_value('part_no'));
+			$bodystring = $GLOBALS['phpgw']->msg->phpgw_fetchbody($GLOBALS['phpgw']->msg->get_arg_value('part_no'));
 			// see if we have to un-do qprint encoding
-			if ((isset($GLOBALS['phpgw']->msg->args['encoding']))
-			&& ($GLOBALS['phpgw']->msg->args['encoding'] == 'qprint'))
+			if ((($GLOBALS['phpgw']->msg->get_isset_arg('encoding')))
+			&& ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'qprint'))
 			{
 				$bodystring = $GLOBALS['phpgw']->msg->qprint($bodystring);
 			}
@@ -184,7 +184,7 @@
 			// Later Note: see RFCs 2045-2049 for what MTA's (note "T") can and can not handle
 			$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
 		}
-		elseif ($GLOBALS['phpgw']->msg->args['action'] == 'forward')
+		elseif ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'forward')
 		{
 			// ----- get information from the orig email  --------
 			$subject = $phpgw->msg->get_subject($msg_headers,'Fw: ');
@@ -203,7 +203,7 @@
 			//$body = "\r\n"."\r\n".'forwarded mail'."\r\n";
 			
 			/*
-			$part_nice = pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1, $GLOBALS['phpgw']->msg->folder, $GLOBALS['phpgw']->msg->msgnum);
+			$part_nice = pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1, $GLOBALS['phpgw']->msg->get_arg_value('folder'), $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
 			// see if one of the params if the boundry
 			$part_nice['boundary'] = $not_set;  // initialize
 			for ($p = 0; $p < $part_nice['ex_num_param_pairs']; $p++)
@@ -223,8 +223,8 @@
 			/*
 			$orig_boundary = '';
 			// we are going to re-use the original message's mime boundry from the main headers
-			//$orig_headers = $GLOBALS['phpgw']->dcom->fetchheader($mailbox, $GLOBALS['phpgw']->msg->msgnum);
-			$orig_headers = $GLOBALS['phpgw']->dcom->fetchheader($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
+			//$orig_headers = $GLOBALS['phpgw']->dcom->fetchheader($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
+			$orig_headers = $GLOBALS['phpgw']->dcom->fetchheader($GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream'), $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
 			$did_match = preg_match('/(boundary=["]?)(.*)(["]?.*(\r|\n))/ix', $orig_headers, $reg_matches);
 			if (($did_match) && (isset($reg_matches[1])) && (isset($reg_matches[2]))
 			&& (stristr($reg_matches[1], 'boundary')) && ($reg_matches[2] != ''))
@@ -268,7 +268,7 @@
 			{
 				if (strtoupper($part->subtype) == 'PLAIN')
 				{
-					//$bodystring = $GLOBALS['phpgw']->dcom->fetchbody($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum, $i+1);
+					//$bodystring = $GLOBALS['phpgw']->dcom->fetchbody($GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream'), $GLOBALS['phpgw']->msg->get_arg_value('msgnum'), $i+1);
 					$bodystring = $GLOBALS['phpgw']->msg->phpgw_fetchbody($i+1);
 					$body_array = array();
 					$body_array = explode("\n", $bodystring);
@@ -305,27 +305,27 @@
 		// this typically is only called when the user clicks on a mailto: link in an html document
 		// this behavior defines what your "default mail app" is, i.e. what mail app is called when
 		// the user clicks a "mailto:" link
-		if ($GLOBALS['phpgw']->msg->args['mailto'])
+		if ($GLOBALS['phpgw']->msg->get_arg_value('mailto'))
 		{
-			$to_box_value = substr($GLOBALS['phpgw']->msg->args['mailto'], 7, strlen($GLOBALS['phpgw']->msg->args['mailto']));
+			$to_box_value = substr($GLOBALS['phpgw']->msg->get_arg_value('mailto'), 7, strlen($GLOBALS['phpgw']->msg->get_arg_value('mailto')));
 		}
 		// called from the message list (index.php), most likely,
 		//  or from message.php if user clicked on an individual address in the to or cc fields
-		elseif ((isset($GLOBALS['phpgw']->msg->args['to']))
-		&& ($GLOBALS['phpgw']->msg->args['to'] != '')
-		&& (isset($GLOBALS['phpgw']->msg->args['personal']))
-		&& ($GLOBALS['phpgw']->msg->args['personal'] != '')
-		&& (urldecode($GLOBALS['phpgw']->msg->args['personal']) != urldecode($GLOBALS['phpgw']->msg->args['to'])) )
+		elseif ((($GLOBALS['phpgw']->msg->get_isset_arg('to')))
+		&& ($GLOBALS['phpgw']->msg->get_arg_value('to') != '')
+		&& (($GLOBALS['phpgw']->msg->get_isset_arg('personal')))
+		&& ($GLOBALS['phpgw']->msg->get_arg_value('personal') != '')
+		&& (urldecode($GLOBALS['phpgw']->msg->get_arg_value('personal')) != urldecode($GLOBALS['phpgw']->msg->get_arg_value('to'))) )
 		{
-			$GLOBALS['phpgw']->msg->args['to'] = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->args['to']);
-			$GLOBALS['phpgw']->msg->args['personal'] = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->args['personal']);
-			$to_box_value = $GLOBALS['phpgw']->msg->htmlspecialchars_encode('"'.urldecode($GLOBALS['phpgw']->msg->args['personal']).'" <'.urldecode($GLOBALS['phpgw']->msg->args['to']).'>');
+			$GLOBALS['phpgw']->msg->set_arg_value('to', $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('to')));
+			$GLOBALS['phpgw']->msg->set_arg_value('personal', $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('personal')));
+			$to_box_value = $GLOBALS['phpgw']->msg->htmlspecialchars_encode('"'.urldecode($GLOBALS['phpgw']->msg->get_arg_value('personal')).'" <'.urldecode($GLOBALS['phpgw']->msg->get_arg_value('to')).'>');
 		}
-		elseif ((isset($GLOBALS['phpgw']->msg->args['to']))
-		&& ($GLOBALS['phpgw']->msg->args['to'] != ''))
+		elseif ((($GLOBALS['phpgw']->msg->get_isset_arg('to')))
+		&& ($GLOBALS['phpgw']->msg->get_arg_value('to') != ''))
 		{
-			$GLOBALS['phpgw']->msg->args['to'] = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->args['to']);
-			$to_box_value = urldecode($GLOBALS['phpgw']->msg->args['to']);
+			$GLOBALS['phpgw']->msg->set_arg_value('to', $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('to')));
+			$to_box_value = urldecode($GLOBALS['phpgw']->msg->get_arg_value('to'));
 		}
 		else
 		{
@@ -333,19 +333,25 @@
 		}
 	}
 
-	if ((isset($GLOBALS['phpgw']->msg->args['action']))
-	&& ($GLOBALS['phpgw']->msg->args['action'] == 'forward'))
+	if ((($GLOBALS['phpgw']->msg->get_isset_arg('action')))
+	&& ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'forward'))
 	{
-		$send_btn_action = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/send_message.php',
-			'action=forward&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->msgnum);
-		if (isset($GLOBALS['phpgw']->msg->args['fwd_proc']))
+		//$send_btn_action = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/send_message.php',
+		//	'action=forward&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
+		$send_btn_action = $GLOBALS['phpgw']->link('/index.php',
+				 $GLOBALS['phpgw']->msg->get_arg_value('send_menuaction')
+				.'$action=forward'
+				.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+				.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
+		if (($GLOBALS['phpgw']->msg->get_isset_arg('fwd_proc')))
 		{
-			$send_btn_action = $send_btn_action .'&fwd_proc='.$GLOBALS['phpgw']->msg->args['fwd_proc'];
+			$send_btn_action = $send_btn_action .'&fwd_proc='.$GLOBALS['phpgw']->msg->get_arg_value('fwd_proc');
 		}
 	}
 	else
 	{
-		$send_btn_action = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/send_message.php');
+		//$send_btn_action = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/send_message.php');
+		$send_btn_action = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('send_menuaction'));
 	}
 	
 	$tpl_vars = Array(
@@ -381,8 +387,8 @@
 		'checkbox_sig_value'	=> 'true'
 	);
 	$GLOBALS['phpgw']->template->set_var($tpl_vars);
-	if (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['email_sig'])
-	&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['email_sig'] != ''))
+	if ($GLOBALS['phpgw']->msg->get_isset_pref('email_sig')
+	&& ($GLOBALS['phpgw']->msg->get_pref_value('email_sig') != ''))
 	{
 		$GLOBALS['phpgw']->template->parse('V_checkbox_sig','B_checkbox_sig');
 	}
