@@ -103,16 +103,16 @@ Public Sub SynchronizeContacts()
         Dim tempValue           As XMLRPCValue
         Dim oContacts           As New COutlookContacts
                 
-        
         Set gnspNamespace = GetNamespace("MAPI")
         Set fldContacts = gnspNamespace.GetDefaultFolder(olFolderContacts)
+        
         'Get the full names of the selected contacts from each listbox
         '   and put them in XMLRPC arrays
         With FrmMain
-            arrSelLocal = .Helper.GetSelectedListItems(.listLocal)
-            arrSelRemote = .Helper.GetSelectedListItems(.listRemote)
+           arrSelLocal = .Helper.GetSelectedListItems(.listLocal)
+           arrSelRemote = .Helper.GetSelectedListItems(.listRemote)
         End With
-        
+       
         '[ > Start synchronizing remote contacts
         'If there are remote contacts selected
         If GetUpper(arrSelRemote) > 0 Then

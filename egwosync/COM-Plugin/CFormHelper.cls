@@ -85,7 +85,7 @@ End Sub
 Public Function GetSelectedListItems(myList As ListBox) As Variant
     Dim intListIndex    As Integer
     Dim tempArray()     As String
-    
+
     'Loop through all the listbox items
     For intListIndex = 0 To (myList.ListCount - 1) Step 1
         'If the current item is selected...
@@ -97,3 +97,4 @@ Public Function GetSelectedListItems(myList As ListBox) As Variant
     Next intListIndex
     GetSelectedListItems = tempArray()
 End Function
+

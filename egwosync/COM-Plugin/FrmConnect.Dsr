@@ -100,12 +100,13 @@ Private Sub IDTExtensibility2_OnConnection( _
 
     'Customize the Outlook Menu structure and toolbar.
     Set oCBs = oApp.ActiveExplorer.CommandBars
-    Set oMenuBar = oCBs.Add("eGWOSync", , True, True)
+    Set oMenuBar = oCBs.Add("eGWOSync", msoBarTop, , True)
     oMenuBar.Visible = True
+
     
     'Create the main button, and name it eGWOSync
     Set oMycontrol = oMenuBar.Controls.Add( _
-        msoControlPopup, , , , True)
+        msoControlPopup, , , , False)
     oMycontrol.Caption = "&eGWOSync"
     
     'Adding and enable the "Close Menu" tab in toolbar.

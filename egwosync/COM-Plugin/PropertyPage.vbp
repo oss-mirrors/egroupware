@@ -2,7 +2,6 @@ Type=Control
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\..\WINNT\system32\stdole2.tlb#OLE Automation
 Reference=*\G{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}#2.2#0#..\..\..\..\..\..\..\Programmer\Fælles filer\Microsoft Shared\Office10\MSO.DLL#Microsoft Office 10.0 Object Library
 Reference=*\G{00062FFF-0000-0000-C000-000000000046}#9.1#0#..\..\..\..\..\..\..\Programmer\Microsoft Office\Office10\msoutl.olb#Microsoft Outlook 10.0 Object Library
-Reference=*\G{406192D0-2158-4F01-AC0F-D6FD220BBB79}#1.0#0#..\..\..\..\..\Documents and Settings\esben\Skrivebord\eGWOSync\add-in test\eGWOSync2.dll#Sample AddIn Project
 Reference=*\G{AC0714F2-3D04-11D1-AE7D-00A0C90F26F4}#1.0#0#..\..\..\..\..\..\..\Programmer\Fælles filer\Designer\MSADDNDR.DLL#Microsoft Add-In Designer
 Reference=*\G{3D23F437-7A88-408E-BBAB-DA03A59C5BE5}#a.0#0#..\..\..\..\..\..\..\WINNT\SYSTEM\vbXML.dll#vbXML - Simple XML Parser
 Reference=*\G{7E96BC06-A8B4-11D6-87A5-00105AD26493}#1f.0#0#..\..\..\..\..\..\..\Documents and Settings\esben\Skrivebord\eGWOSync\vbxmlrpc.dll#vbXMLRPC - XML-RPC Client
