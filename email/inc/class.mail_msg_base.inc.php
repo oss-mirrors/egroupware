@@ -212,10 +212,8 @@
 	}
 	else
 	{
-		// FUTURE - replace urlencode/decode with utf encode/decode
-		// internationalization UTF7 DECODE
-		// this is a suitable replacement for enlencode/decode
-		// AND utf7 internationalization is ensured
+		// an incoming folder name has generally been urlencoded before it gets here
+		// particularly if the folder has spaces and is included in the URI, then a + will be where the speces are
 		$feed_folder = urldecode($feed_folder);
 		return $this->folder_lookup('', $feed_folder);
 	}
@@ -229,13 +227,11 @@
 
 	if ($feed_folder == '')
 	{
+		// this allows us to call this with no args and the current folder is "prep'ed"
+		// foldnames with spaces and other URL unfriendly chars are encoded here
+		// must be decoded on the next input (script session) to undo what we do here
 		$feed_folder = $this->folder;
 	}
-	
-	// FUTURE - replace urlencode/decode with utf encode/decode
-	// internationalization UTF7 ENCODE
-	// this is a suitable replacement for urlencode/decode
-	// AND utf7 internationalization is ensured
 	return urlencode($feed_folder);
   }
 
@@ -554,6 +550,9 @@
 			elseif (gettype($name_space) == 'array')
 			{
 				// if the server returns an array of namespaces, the first one is usually the users personal namespace
+				// tyically "INBOX", there can be any number of other, unpredictable, namespaces also
+				// used for the shared folders and/or nntp access, but we want the users "personal"
+				// namespace used for their mailbox folders here
 				// note: do not use is_array() because php3 does not have it
 				$name_space = $this->ensure_no_brackets($name_space[0]);
 			}
@@ -846,7 +845,10 @@
 			for ($i=0; $i<count($mailboxes);$i++)
 			{
 				$this_folder = $this->get_folder_short($mailboxes[$i]);
-				if ($this_folder == 'INBOX')
+				//if ($this_folder == 'INBOX')
+				// rfc2060 says "INBOX" as a namespace can not be case sensitive
+				if ((stristr($this_folder, 'INBOX'))
+				&& (strlen($this_folder) == strlen('INBOX')))
 				{
 					$has_inbox = True;
 					break;
@@ -924,8 +926,8 @@
 			  if ($debug_folder_lookup) { echo '['.$i.'] [folder_needle] '.$folder_needle.' len='.strlen($folder_needle).' [folder_haystack] '.$folder_haystack.' len='.strlen($folder_haystack).'<br>' ;}
 
 			// first try to match the whole name, i.e. needle is already a folder long type name
-			//if ($folder_needle == $folder_haystack)
 			// the NAMESPACE should NOT be case sensitive
+			// mostly, this means "INBOX" must not be matched case sensitively
 			if (stristr($folder_haystack, $folder_needle))
 			{
 				if ($debug_folder_lookup) { echo 'entered stristr statement<br>'; }
@@ -937,6 +939,15 @@
 					break;
 				}
 				  if ($debug_folder_lookup) { echo 'exact match failed<br>'; }
+				// if the needle is smaller than the haystack, then it is possible that the 
+				// needle is a partial folder name that will match a portion of the haystack
+				// look for pattern [delimiter][folder_needle] in the last portion of string haystack
+				// because we do NOT want to match a partial word, folder_needle should be a whole folder name
+				//tried this: if (preg_match('/.*([\]|[.]|[\\/]){1}'.$folder_needle.'$/i', $folder_haystack))
+				// problem: unescaped forward slashes will be in UWASH folder names needles
+				// and unescaped dots will be in other folder names needles
+				// so use non-regex comparing
+				// haystack must be larger then needle+1 (needle + a delimiter) for this to work
 				if (strlen($folder_haystack) > strlen($folder_needle))
 				{
 					if ($debug_folder_lookup) { echo 'entered partial match logic<br>'; }

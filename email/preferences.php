@@ -212,9 +212,6 @@
 	$phpgw->common->phpgw_header();
 	echo parse_navbar();
 
-// RE-PROCESS the Preferences!!!
-	$phpgw->msg->create_email_preferences();
-
 	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 	$t->set_file(array(		
 		'T_preferences_out' => 'preferences.tpl'
