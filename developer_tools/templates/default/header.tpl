@@ -8,10 +8,11 @@
 
       <table border="0" cellspacing="5" cellpadding="5">
        <tr>
-        <td>{lang_diary}</td>
-        <td>{lang_sourceforge_project}</td>
-        <td>{lang_changelog}</td>
-        <td>{lang_language_management}</td>
+        <td>{link_diary}</td>
+        <td>{link_sourceforge_project}</td>
+        <td>{link_changelog}</td>
+        <td>{link_language_management}</td>
+        <td>{link_preferences}</td>
        </tr>
       </table>
 

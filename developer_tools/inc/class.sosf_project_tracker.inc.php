@@ -1,4 +1,15 @@
 <?php
+	/**************************************************************************\
+	* phpGroupWare - Developer Tools                                           *
+	* http://www.phpgroupware.org                                              *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
+
+	/* $Id$ */
 
 	class sosf_project_tracker
 	{
@@ -15,10 +26,10 @@
 
 		function insert_cache($data)
 		{
-//			$this->db->local('phpgw_devtools_sf_cache');
+			$this->db->lock('phpgw_devtools_sf_cache');
 			$this->db->query("delete from phpgw_devtools_sf_cache where cache_id='" . $this->group_id . "'",__LINE__,__FILE__);
 			$this->db->query("insert into phpgw_devtools_sf_cache values ('" . $this->group_id . "','" . time() . "','" . addslashes($data) . "')",__LINE__,__FILE__);
-//			$this->db->unlock();
+			$this->db->unlock();
 		}
 
 		function grab_cache_time()
@@ -64,6 +75,7 @@
 			{
 				$data = ereg_replace('http://a248.e.akamai.net/7/248/1710/949111342/sourceforge.net/images/ic',PHPGW_IMAGES,$data);
 			}
+			$data = preg_replace('/(<a href=")(.*?)(>)/i','\\1\\2 target="_blank"\\3',$data);
 			$data = ereg_replace('#EAECEF',$phpgw_info['theme']['row_off'],$data);
 
 			$this->insert_cache($data);
