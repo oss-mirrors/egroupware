@@ -18,7 +18,9 @@
 
 		var $public_functions = array
 		(
+			'activateScript'	=> True,
 			'addScript'		=> True,
+			'deactivateScript'	=> True,
 			'decreaseFilter'	=> True,
 			'deleteScript'		=> True,
 			'editRule'		=> True,
@@ -157,10 +159,10 @@
 
 		function activateScript()
 		{
-			$scriptName = $GLOBALS['HTTP_GET_VARS']['script'];
+			$scriptName = get_var('scriptname',array('GET'));
 			if(!empty($scriptName))
 			{
-				if($this->sieve->sieve_setactivescript($scriptName))
+				if($this->sieve->activatescript($scriptName))
 				{
 					#print "Successfully changed active script!<br>";
 				}
@@ -230,6 +232,25 @@
 			if ($rule['keep']) $complete .= " [Keep a copy]";
 
 			return $complete;
+		}
+		
+		function deactivateScript()
+		{
+			$scriptName = get_var('scriptname',array('GET'));
+			if(!empty($scriptName))
+			{
+				#if($this->sieve->activatescript($scriptName))
+				#{
+				#	#print "Successfully changed active script!<br>";
+				#}
+				#else
+				#{
+				#	#print "Unable to change active script!<br>";
+				#	/* we could display the full output here */
+				#}
+			}
+                    
+			$this->mainScreen();
 		}
 		
 		function decreaseFilter()
@@ -497,23 +518,27 @@
 						'scriptname'	=> $scriptName
 					);
 					$this->t->set_var('link_editScript',$GLOBALS['phpgw']->link('/index.php',$linkData));
-
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uisieve.activateScript',
-						'scriptname'	=> $scriptName
-					);
-					$this->t->set_var('link_activateScript',$GLOBALS['phpgw']->link('/index.php',$linkData));
-
-					if($this->sieve->activescript == $scriptID)
+					
+					if($this->sieve->activescript == $scriptName)
 					{
-						$this->t->set_var('active','*');
+						$linkData = array
+						(
+							'menuaction'	=> 'felamimail.uisieve.deactivateScript',
+							'scriptname'	=> $scriptName
+						);
+						$this->t->set_var('lang_activate',lang('deactivate script'));
 					}
 					else
 					{
-						$this->t->set_var('active','');
+						$linkData = array
+						(
+							'menuaction'	=> 'felamimail.uisieve.activateScript',
+							'scriptname'	=> $scriptName
+						);
+						$this->t->set_var('lang_activate',lang('activate script'));
 					}
-					                
+					$this->t->set_var('link_activateScript',$GLOBALS['phpgw']->link('/index.php',$linkData));
+
 					$this->t->parse('scriptrows','scriptrow',true);
 				}
 			}
@@ -686,7 +711,6 @@
 			$this->t->set_var("lang_filter_name",lang('filter name'));
 			$this->t->set_var("lang_new_filter",lang('new filter'));
 			$this->t->set_var("lang_no_filter",lang('no filter'));
-			$this->t->set_var("lang_activate",lang('activate'));
 			$this->t->set_var("lang_add_rule",lang('add rule'));
 			$this->t->set_var("lang_add_script",lang('add script'));
 			$this->t->set_var("lang_back",lang('back'));
