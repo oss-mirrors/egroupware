@@ -19,7 +19,7 @@
 <table style="border: 1px solid black;width:100%; margin-bottom:10px">
 	<tr class="th">
 		<td colspan="2" style="font-size: 120%; font-weight:bold">
-			{lang_Add_or_edit_an_activity} <a href="{new_act_href}"><button>{lang_New}</button></a>
+			{lang_Add_or_edit_an_activity} <button onclick="location.href='{new_act_href}'">{lang_New}</button>
 		</td>
 	</tr>
 	<tr>
