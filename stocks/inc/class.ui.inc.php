@@ -246,7 +246,6 @@
 			}
 
 			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
 
 			$this->t->set_file(array('stock_prefs' => 'preferences.tpl'));
 
