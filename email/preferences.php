@@ -98,7 +98,7 @@
      <td align="center"><input type="checkbox" name="use_trash_folder" value="True"<?php if ($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]) echo " checked"; ?>></td>
     </tr>
 
-
+    <tr><td colspan="2">&nbsp;</td></tr>
 
     <tr bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
      <td colspan="2">Custom Email settings</td>
@@ -141,14 +141,24 @@
     <tr bgcolor="<?php echo $tr_color; ?>">
      <td align="left"><?php echo lang("Mail Server type"); ?></td>
      <td align="center">
-      <input type="text" name="mail_server_type" value="<?php echo $phpgw_info["user"]["preferences"]["email"]["mail_server_type"]; ?>">
+      <select name="mail_server_type">
+       <?php $selected[$phpgw_info["user"]["preferences"]["email"]["mail_server_type"]] = " selected"; ?>
+       <option value="imap"<?php echo $selected["imap"]; ?>>IMAP</option>
+       <option value="pop3"<?php echo $selected["pop3"]; ?>>POP-3</option>
+       <?php $selected = array(); ?>
+      </select>
      </td>
     </tr>
     <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
     <tr bgcolor="<?php echo $tr_color; ?>">
      <td align="left"><?php echo lang("IMAP Server Type"); ?> - (<?php echo lang("If Applicable"); ?>)</td>
      <td align="center">
-      <input type="text" name="imap_server_type" value="<?php echo $phpgw_info["user"]["preferences"]["email"]["imap_server_type"]; ?>">
+     <select name="imap_server_type">
+      <?php $selected[$phpgw_info["user"]["preferences"]["email"]["imap_server_type"]] = " selected"; ?>
+      <option value="Cyrus"<?php echo $selected["Cyrus"]; ?>>Cyrus</option>
+      <option value="UWash"<?php echo $selected["UWash"]; ?>>UWash</option>
+      <?php $selected = array(); ?>
+     </select>
      </td>
     </tr>
     <tr>
