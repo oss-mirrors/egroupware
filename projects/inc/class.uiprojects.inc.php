@@ -1623,8 +1623,8 @@
 // -------------- list header variable template-declaration ------------------------
 
 			$GLOBALS['phpgw']->template->set_var('sort_company',$this->nextmatchs->show_sort_order($sort,'org_name',$order,'/index.php',lang('Company'),$link_data));
-			$GLOBALS['phpgw']->template->set_var('sort_firstname',$this->nextmatchs->show_sort_order($sort,'per_first_name',$order,'/index.php',lang('Firstname'),$link_data));
-			$GLOBALS['phpgw']->template->set_var('sort_lastname',$this->nextmatchs->show_sort_order($sort,'per_last_name',$order,'/index.php',lang('Lastname'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_firstname',$this->nextmatchs->show_sort_order($sort,'n_given',$order,'/index.php',lang('Firstname'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_lastname',$this->nextmatchs->show_sort_order($sort,'n_family',$order,'/index.php',lang('Lastname'),$link_data));
 			$GLOBALS['phpgw']->template->set_var('lang_select',lang('Select'));
 
 // ------------------------- end header declaration --------------------------------
@@ -1632,9 +1632,9 @@
 			for ($i=0;$i<count($entries);$i++)
 			{
 				$GLOBALS['phpgw']->template->set_var('tr_color',$this->nextmatchs->alternate_row_color($tr_color));
-				$firstname = $entries[$i]['per_first_name'];
+				$firstname = $entries[$i]['n_given'];
 				if (!$firstname) { $firstname = '&nbsp;'; }
-				$lastname = $entries[$i]['per_last_name'];
+				$lastname = $entries[$i]['n_family'];
 				if (!$lastname) { $lastname = '&nbsp;'; }
 				$company = $entries[$i]['org_name'];
 				if (!$company) { $company = '&nbsp;'; }
@@ -1644,7 +1644,7 @@
 				$GLOBALS['phpgw']->template->set_var(array('company' 	=> $company,
 									'firstname' 	=> $firstname,
 									'lastname'		=> $lastname,
-									'abid'			=> $entries[$i]['contact_id']));
+									'abid'			=> $entries[$i]['id']));
 
 				$GLOBALS['phpgw']->template->parse('list','abook_list',True);
 			}

@@ -387,10 +387,13 @@
 
 		function read_abook($start, $query, $filter, $sort, $order)
 		{
-			$cols = array('contact_id', 'per_first_name','per_last_name','org_name','people');
-			//$criteria = array('my_preferred' => 'Y');
+			$account_id = $GLOBALS['phpgw_info']['user']['account_id'];
 
-			$entries = $this->contacts->get_persons($cols, $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'], $start, $order, $sort);//, $criteria);
+			$cols = array('n_given' => 'n_given',
+				'n_family'  => 'n_family',
+				'org_name'  => 'org_name');
+
+			$entries = $this->contacts->read($start,$GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'], $cols, $query, $qfilter, $sort, $order, $account_id);
 
 			$this->total_records = $this->contacts->total_records;
 			return $entries;
@@ -398,11 +401,11 @@
 
 		function read_single_contact($abid)
 		{
-			$cols = array('contact_id', 'per_first_name','per_last_name','org_name','people');
-			$criteria = array('contact_id' => intval($abid));//, 'my_preferred' => 'Y');
+			$cols = array('n_given' => 'n_given',
+				'n_family' => 'n_family',
+				'org_name' => 'org_name');
 
-			return $this->contacts->get_persons($cols, $limit='',$start = '',$order='', $sort='',$criteria);
-			//_debug_array($co);
+			return $this->contacts->read_single_entry($abid,$cols);
 		}
 
 		function return_value($action,$item)
@@ -411,7 +414,7 @@
 		}
 
 		function read_projects_acl($useronly = True)
-		{		
+		{
 			$aclusers	= $GLOBALS['phpgw']->acl->get_ids_for_location('run',1,'projects');
 			$acl_users	= $GLOBALS['phpgw']->accounts->return_members($aclusers);
 
