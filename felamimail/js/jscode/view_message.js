@@ -7,6 +7,4 @@ function initAll()
 	tab.init();
 // 	smtp.init();
 //	imap.init();
-	
-//	setActiveTabs();
 }
