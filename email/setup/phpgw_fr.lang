@@ -1,5 +1,42 @@
-email account name	common	fr	Nom de compte e-mail
-email address	common	fr	Adresse e-mail
-email password	common	fr	Mot de passe e-mail
-email signature	common	fr	Signature E-Mail
-e-mail preferences	common	fr	Pr&eacute;f&eacute;rences E-mail
+1 message has been deleted	email	fr	1 message a ete effacé
+add to addressbook	email	fr	Ajouter au carnet d'adresses
+cc	email	fr	CC
+compose	email	fr	Composer
+custom email settings	email	fr	Réglages d'EMail personnalisés
+default sorting order	email	fr	Ordre d'affichage par défaut
+email account name	email	fr	Nom de compte EMail
+email address	email	fr	Adresse EMail
+email password	email	fr	Mot de passe EMail
+email signature	email	fr	Sgnature EMail
+folder	email	fr	Dossier
+forward	email	fr	Transférer
+from	email	fr	De
+if applicable	email	fr	Si applicable
+image	email	fr	Image
+imap server type	email	fr	Type de serveur IMAP
+mail folder(uw-maildir)	email	fr	Répertoire de mail (uw-maildir)
+mail server	email	fr	Serveur de mail
+mail server type	email	fr	Type de serveur de mail
+messages	email	fr	Messages
+move selected messages into	email	fr	Déplacer les messages choisis dans
+new message	email	fr	Nouveau message
+non-standard	email	fr	Non-Standard
+please select a message first	email	fr	Sélectionez d'abord un message, s'il vous plaît
+previous	email	fr	Précédent
+reply all	email	fr	Répondre à tous
+reply	email	fr	Répondre
+replyto	email	fr	Répondre à
+section	email	fr	Section
+send deleted messages to the trash	email	fr	Envoyer les messages effacés dans la corbeille
+send	email	fr	Envoyer
+show new messages on main screen	email	fr	Montrer les nouveaux messages sur la page principale
+show sender's email address with name	email	fr	Montrer l'adresse EMail de l'envoyeur avec le nom
+size	email	fr	Taille
+switch current folder to	email	fr	Changer de dossier courant vers
+there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	fr	Il y a eu une erreur en essayant de se connecter à votre serveur de mail.<br>S'il vous plaît, vérifiez votre nom et mot de passe, ou contactez votre administrateur.
+this folder is empty	email	fr	Ce dossier est vide
+to	email	fr	A
+undisclosed recipients	email	fr	Destinataires cachés
+undisclosed sender	email	fr	Envoyeur caché
+use custom settings	email	fr	Utiliser les réglages personnalisés
+x messages have been deleted	email	fr	%1 messages ont été effacés
