@@ -195,9 +195,6 @@
 					}
 				}
 			}
-			// delete the links of the old page
-			$this->clear_link(array('name' => $old_name,'lang' => $old_lang));
-
 			// also rename links in our own content
 			$values['text'] = $this->rename_links($old_name,$values['name'],$values['title'],$values['text']);
 
@@ -209,6 +206,9 @@
 					return $this->write($values);
 				}
 			}
+			// delete the links of the old page
+			$this->clear_link(array('name' => $old_name,'lang' => $old_lang));
+
 			$GLOBALS['page'] = $page->as_array();	// we need this to track lang for new_link, sister_wiki, ...
 			if(!empty($values['category']))		// Editor asked page to be added to a category or categories.
 			{
