@@ -69,7 +69,7 @@
 			{
 				$join = " JOIN ";
 			}
-			else
+			elseif ($GLOBALS['phpgw_info']['server']['db_type']=='mysql')
 			{
 				$join = " LEFT JOIN ";
 			}

@@ -41,7 +41,7 @@
 
 			switch ($dbtype)
 			{
-				case 'psql':	$join = " JOIN "; break;
+				case 'pgsql':	$join = " JOIN "; break;
 				case 'mysql':	$join = " LEFT JOIN "; break;
 			}
 			return $join;
