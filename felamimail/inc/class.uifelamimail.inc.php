@@ -220,7 +220,8 @@
 			$this->viewMainScreen();
 		}
 
-		function createHTMLFolder($_folders, $_selected, $_topFolderName, $_topFolderDescription)
+//NDEE		function createHTMLFolder($_folders, $_selected, $_topFolderName, $_topFolderDescription)
+		function createHTMLFolder($_folders, $_selected, $_topFolderName, $_topFolderDescription, $_folderStatus)
 		{
 			$folderImageDir = substr($GLOBALS['phpgw']->common->image('phpgwapi','foldertree_line.gif'),0,-19);
 			
@@ -257,6 +258,21 @@
 			
 			foreach($allFolders as $key => $value)
 			{
+
+ 				/* message count */
+ 				/* added by GAH 06-Nov-2004 */
+ 				$totalMessages  = $_folderStatus[$key]['messages'];
+ 				$unseenMessages = $_folderStatus[$key]['unseen'];
+ //				$messageCount = " (" . $totalMessages . " / " . $unseenMessages . ")";
+ 				if( $unseenMessages > 0 )
+				{
+ 					$messageCount = " <b>($unseenMessages)</b>";
+				}
+ 				else
+ 				{
+					$messageCount = "";
+				}
+
 				$countedDots = substr_count($key,".");
 				#print "$value => $counted_dots<br>";
 				
@@ -264,7 +280,8 @@
 				// hihglight currently selected mailbox
 				if ($_selected == $key)
 				{
-					$folder_name = "<font style=\"background-color: #dddddd\">$value</font>";
+// NDEE					$folder_name = "<font style=\"background-color: #dddddd\">$value</font>";
+					$folder_name = "<font style=\"background-color: #dddddd\">$value $messageCount</font>";
 					$openTo = $counter;
 				}
 				else
@@ -1063,11 +1080,21 @@
 			// Start of the new folder tree system
 			// 29-12-2003 NDEE
 			// ToDo
-			// check how many mails in folder
+			// check how many mails in folder - DONE thx to GAH
 			// different style of parsing folders into file
 			// open to active folder on reload
 			
-			$folder_tree_new = $this->createHTMLFolder($folders, $this->mailbox, lang('IMAP Server'), $mailPreferences['username'].'@'.$mailPreferences['imapServerAddress']);
+ 			/* find how many messages are in each folder */
+ 			/* added by GAH 06-Nov-2004 */
+ 			$folderList = $this->bofelamimail->getFolderList('true');
+ 			$folderStatus = array();
+ 			foreach( $folderList as $key => $value )
+ 			{
+ 				$folderStatus[$key] = $this->bofelamimail->getFolderStatus($key);
+ 			}
+ 
+ 			$folder_tree_new = $this->createHTMLFolder($folders, $this->mailbox, 'IMAP Server', $mailPreferences['username'].'@'.$mailPreferences['imapServerAddress'], $folderStatus);
+//			$folder_tree_new = $this->createHTMLFolder($folders, $this->mailbox, lang('IMAP Server'), $mailPreferences['username'].'@'.$mailPreferences['imapServerAddress']);
 
 			$this->t->set_var('current_mailbox',$current_mailbox);
 			$this->t->set_var('folder_tree',$folder_tree_new);
