@@ -1,12 +1,12 @@
 <!-- $Id$ -->
-<table width=100% cellspacing=0>
-<tr>
-  <td align=right>
-    {FIRST_LINK}&nbsp;{PREV_LINK}
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    {NEXT_LINK}&nbsp;{LAST_LINK}
+<table width="100%" cellspacing="0">
+ <tr>
+  <td align="right">
+   {next_matchs_left}
+   &nbsp;&nbsp;
+   {next_matchs_right}
   </td>
-</tr>
+ </tr>
 </table>
 
 {BOOKMARK_LIST}

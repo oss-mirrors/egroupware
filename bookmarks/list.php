@@ -13,7 +13,7 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "bookmarks", "enabled_nextmatchs_class" => True);
+  $phpgw_info["flags"] = array("currentapp" => "bookmarks", "enable_nextmatchs_class" => True);
 
   include("../header.inc.php");
   include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/plist.inc.php");
@@ -69,11 +69,11 @@
                                    last       => "list.last.tpl"
                             ));
 
-# get/set the $user_last_page as a user variable.
-# we use this to keep the last page nbr that the user
-# was looking at so we can default in the future.
-if (isset($user))
-  $user->register("user_last_page");
+  // get/set the $user_last_page as a user variable.
+  // we use this to keep the last page nbr that the user
+  // was looking at so we can default in the future.
+  //if (isset($user))
+  //   $user->register("user_last_page");
 
 $total_public = 0;
 //if ($auth->auth["include_public"] == 'Y' ||  $auth->is_nobody() ) {
@@ -87,6 +87,9 @@ $total_public = 0;
   } */
 //}
 $bmark = new bmark;
+
+  $bmark->update_user_total_bookmarks($phpgw_info["user"]["account_id"]);
+
 $total_bookmarks = $total_public + $bmark->getUserTotalBookmarks();
 
 $phpgw->template->set_var(array(
@@ -125,21 +128,9 @@ if ( $page > 0 ) {
   $page = 1;
 }
 
-# if page greater than one then set first and prev page stuff
-if ( $page > 1 ) {
-  $first_url = $sess->url(sprintf("%s?page=%s", "list.php", $first_page));
-  $phpgw->template->set_var(FIRST_URL, $first_url);
-  $phpgw->template->parse(FIRST_LINK, "first");
+  $phpgw->template->set_var(next_matchs_left,  $phpgw->nextmatchs->left("list.php",$start,$total_bookmarks));
+  $phpgw->template->set_var(next_matchs_right, $phpgw->nextmatchs->right("list.php",$start,$total_bookmarks));
 
-  $prev_page = $page - 1;
-  $prev_url = $sess->url(sprintf("%s?page=%s", "list.php", $prev_page));
-  $phpgw->template->set_var(PREV_URL, $prev_url);
-  $phpgw->template->parse(PREV_LINK, "prev");
-
-# otherwise prev page stuff is null
-} else {
-  unset($prev_page);
-}
 
 $phpgw->template->set_var(PAGE_NBR, $page);
 $phpgw->template->set_var(TOTAL_PAGES, $last_page);
@@ -168,7 +159,7 @@ if ($page < $last_page ) {
 # a PHPLIB user var.
 $user_last_page = $page;
 
-print_list ($where_clause, $limit, $offset, sprintf("list.php----page=%s", $page) , &$bookmark_list, &$error_msg);
+print_list ($where_clause,$start,sprintf("list.php----page=%s",$page),&$bookmark_list,&$error_msg);
 
 $phpgw->template->set_var(BOOKMARK_LIST, $bookmark_list);
 

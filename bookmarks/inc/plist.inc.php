@@ -40,9 +40,9 @@
     $list_tpl->set_var("LIST_ITEMS", "");
   }
 
-  function print_list ($where_clause, $limit, $offset, $returnto, &$content, &$error_msg)
+  function print_list ($where_clause, $start, $returnto, &$content, &$error_msg)
   {
-    global $bookmarker, $sess, $auth, $bk_db_callout, $phpgw, $phpgw_info;
+    global $bookmarker, $phpgw, $phpgw_info;
 
     $list_tpl = $phpgw->template;
   
@@ -89,8 +89,7 @@
 
    $order_by_sql = " order by bookmarks_category.name, bookmarks_subcategory.name, bookmarks.name, bookmarks.id";
 
-   // db callout to add limit clause to sql
-   // $limit_sql = $phpgw->nextmatchs->sql_limit($offset,$limit); //$bk_db_callout->get_limit_sql ($offset, $limit);
+   $limit_sql = " limit " . $phpgw->nextmatchs->sql_limit($start);
   
    $query .= $where_clause_sql.$order_by_sql.$limit_sql;
   

@@ -349,52 +349,51 @@
       global $user_total_bookmarks, $phpgw, $phpgw_info;
 
       $db = $phpgw->db;
- 
-      if ($uname == $phpgw_info["user"]["account_id"]) {
-         $user_total_bookmarks = 0;
-         $db = $phpgw->db;
- 
-         $db->query("select count(id) as total_bookmarks from bookmarks where username = '"
-                  . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
-         if ($db->Errno == 0) {
-            if ($db->next_record()) 
-               $user_total_bookmarks = $db->f("total_bookmarks");
-            } else {
-               return False;
-            }
-         }
+
+      $db->query("select count(*) as total_bookmarks from bookmarks where username = '"
+               . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
+      $db->next_record();
+      $phpgw->common->appsession($db->f("total_bookmarks"));
  
          // need to find out how many public bookmarks exist from
          // this user so other users can correctly calculate pages
          // on the list page.
- /*       $total_public = 0;
-        //$db = $phpgw->db;
-        $query = sprintf("select count(id) as total_public from bookmark where username = '%s' and public_f='Y'",$uname);
-        $db->query($query,__LINE__,__FILE__);
-        if ($db->Errno == 0) {
-           if ($db->next_record()) {
-              $total_public = $db->f("total_public");
-           } else {
-              return False;
-           }
+/*
+         $total_public = 0;
+         $query = sprintf("select count(id) as total_public from bookmarks where username = '%s' and public_f='Y'",$phpgw_info["user"]["account_id"]);
+         $db->query($query,__LINE__,__FILE__);
+         if ($db->Errno == 0) {
+            if ($db->next_record()) {
+//               $total_public = $db->f("total_public");
+               echo "TEST: " . $db->f("total_public");
+               $phpgw->common->appsession($db->f("total_public"));
+            } else {
+               echo "TEST: False";
+               return False;
+            } */
  
-           $query = sprintf("update auth_user set total_public_bookmarks=%s where username = '%s'",$total_public, $uname);
-           $db->query($query,__LINE__,__FILE__);
-           if ($db->Errno != 0) {
-              return False;
-           }
-           return true;
-       } */
+//            $phpgw->common->appsession($total_public);
+/*
+            $query = sprintf("update auth_user set total_public_bookmarks=%s where username = '%s'",$total_public, $uname);
+            $db->query($query,__LINE__,__FILE__);
+            if ($db->Errno != 0) {
+               return False;
+            }
+            return true;*/
+       //}
    }
 
-      # get the total nbr of bookmarks for this user.
-      # stored as session variable so re-calculated at
-      # least once per session.
-  function getUserTotalBookmarks() {
-    global $user_total_bookmarks, $sess, $auth;
+   // get the total nbr of bookmarks for this user.
+   // stored as session variable so re-calculated at
+   // least once per session.
+   function getUserTotalBookmarks()
+   {
+      global $user_total_bookmarks, $phpgw;
 
-    # get/set the $user_total_bookmarks as a session variable.
-/*    # we use this to keep the total nbr of bookmarks this
+      return $phpgw->common->appsession();
+
+/*    # get/set the $user_total_bookmarks as a session variable.
+    # we use this to keep the total nbr of bookmarks this
     # user has so we can calculate the list pages correctly.
     $sess->register("user_total_bookmarks");
 
@@ -445,7 +444,8 @@ class bookmarker_class  {
 # statement, set this to zero. In that case the LIMIT clause
 # won't be added to the SQL. You will get all bookmarks on a
 # single plain list page.
-  var $urls_per_page  = 10;
+//  var $urls_per_page  = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+  var $urls_per_page  = 2;
 
 # how many characters after the scheme(http://) and hostname
 # (www.mydomain.com) to match when checking for possible
