@@ -40,6 +40,10 @@
 	$setup_info['felamimail']['hooks'][] = 'settings';
 	$setup_info['felamimail']['hooks'][] = 'home';
 	$setup_info['felamimail']['hooks'][] = 'sidebox_menu';
+	$setup_info['felamimail']['hooks']['addaccount']	= 'felamimail.bofelamimail.addAccount';
+	$setup_info['felamimail']['hooks']['deleteaccount']	= 'felamimail.bofelamimail.deleteAccount';
+	$setup_info['felamimail']['hooks']['editaccount']	= 'felamimail.bofelamimail.updateAccount';
+	$setup_info['felamimail']['hooks']['edit_user']		= 'felamimail.bofelamimail.adminMenu';
 
 	/* Dependacies for this app to work */
 	$setup_info['felamimail']['depends'][] = array(

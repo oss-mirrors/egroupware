@@ -71,6 +71,33 @@
 			
 			$this->htmlOptions 	= $this->mailPreferences['htmlOptions'];
 			
+			$config = CreateObject('phpgwapi.config','felamimail');
+			$config->read_repository();
+			$this->profileID = $config->config_data['profileID'];
+			
+		}
+		
+		function addAccount($_hookValues)
+		{
+			$hookData = array(
+				'profileID'	=> $this->profileID,
+				'hookValues'	=> $_hookValues);
+			ExecMethod('emailadmin.bo.addAccount',$hookData);
+		}
+		
+		function adminMenu()
+		{
+			$data = Array
+			(
+				'description'   => 'email settings',
+				'url'           => '/index.php',
+				'extradata'     => 'menuaction=emailadmin.uiuserdata.editUserData'
+			);
+			
+			//Do not modify below this line
+			global $menuData;
+			
+			$menuData[] = $data;
 		}
 		
 		function appendMessage($_folder, $_header, $_body)
@@ -187,6 +214,14 @@
 				return $newString;
 			}
 			return $string;
+		}
+		
+		function deleteAccount($_hookValues)
+		{
+			$hookData = array(
+				'profileID'	=> $this->profileID,
+				'hookValues'	=> $_hookValues);
+			ExecMethod('emailadmin.bo.deleteAccount',$hookData);
 		}
 		
 		function deleteMessages($_messageUID)
@@ -1424,6 +1459,14 @@
 			$this->saveSessionData();
 		}
 
+		function updateAccount($_hookValues)
+		{
+			$hookData = array(
+				'profileID'	=> $this->profileID,
+				'hookValues'	=> $_hookValues);
+			ExecMethod('emailadmin.bo.updateAccount',$hookData);
+		}
+		
 		function validate_email($_emailAddress)
 		{
 			if($val != "")
