@@ -53,7 +53,7 @@
 					'access'	=> $this->db->f('stock_access'),
 					'name'		=> $this->db->f('stock_name'),
 					'symbol'	=> $this->db->f('stock_symbol'),
-					'country'	=> $this->db->f('stock_country'),
+					'country'	=> $this->db->f('stock_country')
 				);
 			}
 			return $stocks;
