@@ -120,7 +120,7 @@ doLoad();
 		<TD ALIGN="left" WIDTH="70%" style="border-color:silver; border-style:solid; border-width:0px 0px 1px 0px; font-size:10px;">
 			<!-- <a href="{url_compose_empty}">{lang_compose}</a>&nbsp;&nbsp; -->
 			{lang_quicksearch}
-			<input class="slickborder" type="text" size="50" name="quickSearch" value="{quicksearch}"
+			<input class="input_text" type="text" size="50" name="quickSearch" value="{quicksearch}"
 			onChange="javascript:document.searchForm.submit()" style="font-size:11px;">
 		</td>
 		<td align='right' width="30%" style="border-color:silver; border-style:solid; border-width:0px 0px 1px 0px; ">
