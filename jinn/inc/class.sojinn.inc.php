@@ -224,7 +224,7 @@
 
 			if($GLOBALS['phpgw_info']['user']['apps']['admin'])
 			{
-				$SQL = "SELECT site_id FROM phpgw_jinn_sites ";
+				$SQL = "SELECT site_id FROM phpgw_jinn_sites ORDER BY site_name";
 				$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 				while ($this->phpgw_db->next_record())
@@ -441,7 +441,7 @@
 			/* yes it's an admin so we can get all objects for this site */
 			if ($admin=='yes')
 			{
-				$SQL="SELECT object_id FROM phpgw_jinn_site_objects WHERE parent_site_id = '$site_id'";
+				$SQL="SELECT object_id FROM phpgw_jinn_site_objects WHERE parent_site_id = '$site_id' ORDER BY name";
 				$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 				while ($this->phpgw_db->next_record())
@@ -452,7 +452,7 @@
 			// he's no admin so get all the objects which are assigned to the user
 			else
 			{
-				$SQL="SELECT object_id FROM phpgw_jinn_site_objects WHERE parent_site_id = '$site_id'";
+				$SQL="SELECT object_id FROM phpgw_jinn_site_objects WHERE parent_site_id = '$site_id' ORDER BY name";
 				$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 				while ($this->phpgw_db->next_record())
@@ -728,6 +728,7 @@ $field_list_arr=(explode(',',$field_list));
 
 			foreach($data as $field)
 			{
+				if(!$thirstfield) $thirstfield=$field[name];
 				if ($SQLfields) $SQLfields .= ',';
 				if ($SQLvalues) $SQLvalues .= ',';
 
@@ -742,10 +743,12 @@ $field_list_arr=(explode(',',$field_list));
 			//die($SQL);
 			if ($this->site_db->query($SQL,__LINE__,__FILE__))
 			{
-				$status=1;
-			}
+				$value[status]=1;
+				$value[idfield]=$thirstfield;
+				$value[id]=$this->site_db->get_last_insert_id($site_object, $thirstfield);
 
-			return $status;
+			}
+			return $value;
 
 
 		}

@@ -104,7 +104,7 @@
 				/* Its an identifier field */
 				if (eregi("auto_increment", $fieldproperties[flags]))
 				{
-					$input='<input type="hidden" name="'.$input_name.'" value="'.$value.'">'.$display_value;
+					$input='<b>'.$value.'</b><input type="hidden" name="'.$input_name.'" value="'.$value.'">'.$display_value;
 					$record_identifier=$value;
 				}
 

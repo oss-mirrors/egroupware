@@ -52,6 +52,7 @@
 			'save_access_rights_site'=> True,
 			'export_site'=> True,
 			'plug_config'=> True,
+			'edit_this_jinn_site'=> True,
 			'test_db_access'=> True
 		);
 
@@ -104,6 +105,12 @@
 			$this->bo->save_sessiondata();
 		}	
 
+		function edit_this_jinn_site()
+		{
+			$GLOBALS[where_condition]='site_id='.$this->bo->site_id;
+			$this->edit_phpgw_jinn_sites();
+		}
+		
 		function add_edit_phpgw_jinn_site_objects()
 		{
 			if ($GLOBALS[where_condition])

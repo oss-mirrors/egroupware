@@ -23,41 +23,42 @@
 	*/
 
 	/* 
-	plugin.imagepath.php contains the standard image-upload plugin for 
+	plugin.relation.php contains the standard image-upload plugin for 
 	JiNN number off standardly available 
 	plugins for JiNN. 
 	*/
 
-	$this->plugins['imagepath']['name']				= 'imagepath';
-	$this->plugins['imagepath']['title']			= 'ImagePath plugin';
-	$this->plugins['imagepath']['version']			= '0.8.5';
-	$this->plugins['imagepath']['description']		= 'plugin for uploading/resizing images and storing their imagepaths in to database, using default uploadpath for site or object';
-	$this->plugins['imagepath']['enable']			= 1;
-	$this->plugins['imagepath']['db_field_hooks']	= array
+	$this->plugins['relation']['name']				= 'relation';
+	$this->plugins['relation']['title']			= 'Relations plugin';
+	$this->plugins['relation']['version']			= '0.1.1';
+	$this->plugins['relation']['description']		= '
+	New implementation of the  relations feature, now build as plugin. This version is not (fully) functional or stable so use it at your own risk.<P>Tasks: <li>write the function routine to get the tables in a select field<br>
+	<li>pass the fieldname and show this in this screen<br>
+	<li>write the get_tables function<br>
+	<li>write the reload javascript function after a table is selected
+	<li>when table is selected load the foreign key and display fields
+	
+	';
+	$this->plugins['relation']['enable']			= 1;
+	$this->plugins['relation']['db_field_hooks']	= array
 	(
-		'text',
 		'varchar',
-		'blob'
+		'int'
 	);
 
 	/* ATTENTION: spaces and special character are not allowed in config array 
 	use underscores for spaces */
-	$this->plugins['imagepath']['config']		= array
+	$this->plugins['relation']['config']		= array
 	(
 		/* array('default value','input field type', 'extra html properties')*/
-		'Max_files' => array('3','text','maxlength=2 size=2'), 
-		'Max_image_width' => array('','text','maxlength=4 size=4'),
-		'Max_image_height' => array('','text','maxlength=4 size=4'),
-		'Image_filetype' => array(array('png','gif','jpg'),'select','maxlength=3 size=3'),
-		'Generate_thumbnail' => array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
-		'Store_thumbnail_in_thumb_pathfield_for_backwards_compatibility' => array( array('False', 'True') ,'select',''),
-		'Max_thumbnail_width' => array('100','text','maxlength=3 size=3'),
-		'Max_thumbnail_height'=> array('100','text','maxlength=3 size=3'),
-		'Allow_other_images_sizes'=> array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
-		'Show_image_in_form' => array( array('False','True') ,'select','')
+		'Empty_value_alowed' => array( array('False','True') ,'select',''), 
+		'Related_table' => array('get_related_tables','select',''),
+		'Forein_key_field' => array('get_foreign_key_fields','select',''),
+		'Forein_display_field' => array('get_foreign_display_fields','select',''),
+		'Forein_extra_display_field' => array('get_foreign_display_fields','select','')
 	);
 
-	function plg_fi_imagepath($field_name,$value,$config)
+	function plg_fi_relation($field_name,$value,$config)
 	{	
 
 		global $local_bo;
@@ -116,13 +117,6 @@
 				$input.=lang('add image %1', $i).
 				' <input type="file" name="IMG_SRC'.$field_name.$i.'">';
 			}
-			
-			/* when user is allowed to give own image sizes */
-			if($config['Allow_other_images_sizes']=='True')
-			{
-				$input.= ' '.lang('New image size limits.') . ' '. lang('Height: ').'<input type="text" size="3" name="IMG_HEI'.$field_name.$i.'">'.
-				lang('Width: ').'<input type="text" size="3" name="IMG_WID'.$field_name.$i.'"> '.lang('default:').' '.$config['Max_image_height'].'x'.$config['Max_image_width'].'px';
-			}
 
 		}
 
@@ -131,7 +125,9 @@
 		return $input;
 	}
 
-	function plg_sf_imagepath($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
+
+
+	function plg_sf_relation($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 	/****************************************************************************\
 	* main image data function                                                   *
 	\****************************************************************************/
@@ -180,15 +176,6 @@
 
 		/* finally adding new image and if neccesary a new thumb */
 		$images_to_add=$local_bo->common->filter_array_with_prefix($HTTP_POST_FILES,'IMG_SRC'.substr($field_name,3));
-
-		
-		$images_to_add_hei=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_HEI'.substr($field_name,3));
-		$images_to_add_wid=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_WID'.substr($field_name,3));
-
-		
-		
-		
-
 		// quick check for new images
 		if(is_array($images_to_add))
 		foreach($images_to_add as $imagecheck)
@@ -252,46 +239,18 @@
 			{
 				if($add_image['name'])
 				{
-
-
-					if($images_to_add_hei[$img_position] || $images_to_add_wid[$img_position])
+					/* set size */
+					$img_size = GetImageSize($add_image['tmp_name']);
+					if ($config['Max_image_width'] && $img_size[0] > $config['Max_image_width'])
 					{
-						/* set user size */
-						$img_size = GetImageSize($add_image['tmp_name']);
-						if ($images_to_add_wid[$img_position] && $img_size[0] > $images_to_add_wid[$img_position])
-						{
-							$new_img_width=$images_to_add_wid[$img_position];
-						}
-
-						if ($images_to_add_hei[$img_position] && $img_size[1] > $images_to_add_hei[$img_position])
-						{
-							$new_img_height=$images_to_add_hei[$img_position];
-						}
-//						var_dump($fieldname);
-//						var_dump($images_to_add_hei);
-//						var_dump($images_to_add_wid);
-//						die();
-
-
+						$new_img_width=$config['Max_image_width'];
 					}
-					else
+
+					if ($config['Max_image_height'] && $img_size[1] > $config['Max_image_height'])
 					{
-
-						/* default set size */
-						$img_size = GetImageSize($add_image['tmp_name']);
-						if ($config['Max_image_width'] && $img_size[0] > $config['Max_image_width'])
-						{
-							$new_img_width=$config['Max_image_width'];
-						}
-
-						if ($config['Max_image_height'] && $img_size[1] > $config['Max_image_height'])
-						{
-							$new_img_height=$config['Max_image_height'];
-						}
-
+						$new_img_height=$config['Max_image_height'];
 					}
-					
-					
+
 					/* get original type */
 					$filetype=$magick->Get_Imagetype($add_image['tmp_name']);	
 					if(!$filetype)
@@ -384,42 +343,6 @@
 		}
 
 		return '-1'; /* return -1 when there no value to give but the function finished succesfully */
-	}
-
-	function plg_bv_imagepath($value,$conf_array)
-	{
-
-		global $local_bo;
-		$field_name=substr($field_name,3);	
-
-		if ($local_bo->site_object['upload_url']) $upload_url=$local_bo->site_object['upload_url'].'/';
-		elseif($local_bo->site['upload_url']) $upload_url=$local_bo->site['upload_url'].'/';
-		else $upload_url=false;
-
-		/* if value is set, show existing images */	
-		if($value)
-		{
-			$value=explode(';',$value);
-
-			/* there are more images */
-			if (is_array($value))
-			{
-				$i=0;
-				foreach($value as $img_path)
-				{
-					$i++;
-
-					if($upload_url) $display.='<a href="'.$upload_url.$img_path.'" target="_blank">'.$i.'</a>';
-					else $display.=' '.$i;
-					$display.=' ';
-					
-				}
-			}
-		}
-
-		return $display;
-
-
 	}
 
 ?>

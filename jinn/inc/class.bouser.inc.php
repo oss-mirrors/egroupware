@@ -179,8 +179,15 @@
 		{
 			$data=$this->http_vars_pairs($GLOBALS[HTTP_POST_VARS],$GLOBALS[HTTP_POST_FILES]);
 			$status=$this->so->insert_object_data($this->site_id,$this->site_object[table_name],$data);
-
-			if ($status==1)	$this->message['info']='Record met succes toegevoegd';
+			//die($status[id]);
+			
+			
+			$many_data=$this->http_vars_pairs_many($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
+			$many_data['FLD'.$status['idfield']]=$status['id'];
+//			die(var_dump($many_data));
+			$status_relations=$this->so->update_object_many_data($this->site_id, $many_data);
+			
+			if ($status[status]==1)	$this->message['info']='Record met succes toegevoegd';
 			else $this->message[error]=lang('Record NOT succesfully deleted. Unknown error');
 
 			$this->save_sessiondata();
