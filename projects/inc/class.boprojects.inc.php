@@ -32,7 +32,9 @@
 			'delete_project'		=> True,
 			'exists'				=> True,
 			'read_customer_data'	=> True,
-			'isprojectadmin'		=> True
+			'isprojectadmin'		=> True,
+			'select_activity_list'	=> True,
+			'coordinator_list'		=> True	
 		);
 
 		function boprojects($session=False)
@@ -113,6 +115,15 @@
 			return $customer;
 		}
 
+
+		function coordinator_list()
+		{
+			global $phpgw;			
+
+			$employees = $phpgw->accounts->get_list('accounts');
+			return $employees;
+		}
+
 		function isprojectadmin()
 		{
 			global $phpgw, $phpgw_info;
@@ -159,23 +170,41 @@
 			return $single_pro;
 		}
 
-		function check_values($values)
+		function select_activities_list($project_id, $billable)
+		{
+			$activities_list = $this->soprojects->select_activities_list($project_id, $billable);
+			return $activities_list;
+		}
+
+		function check_values($values, $book_activities, $bill_activities)
 		{
 			global $phpgw;
-
-			if (!$values['title'])
-			{
-				$error[] = lang('Please enter a title');
-			}
 
 			if (strlen($values['descr']) >= 8000)
 			{
 				$error[] = lang('Description can not exceed 8000 characters in length');
 			}
 
-			if ($values['daysfromstart'] && ! ereg('^[0-9]+$',$values[daysfromstart]))
+			if (! $values['choose'])
 			{
-				$error[] = lang('You can only enter numbers for days from now');
+				if (! $values['number'])
+				{
+					$error[] = lang('Please enter an ID !');
+				}
+				else
+				{
+					$exists = $this->soprojects->exists($values['number'], $values['project_id']);
+
+					if ($exists)
+					{
+						$error[] = lang('That ID has been used already !');
+					}
+				}
+			}
+
+			if ((! $book_activities) && (! $bill_activities))
+			{
+				$error[] = lang('Please choose activities for that project first !');
 			}
 
 			if ($values['smonth'] || $values['sday'] || $values['syear'])
@@ -205,9 +234,14 @@
 			}
 		}
 
-		function save_todo($values)
+		function save_project($values, $book_activities, $bill_activities)
 		{
 			global $phpgw;
+
+			if ($values['choose'])
+			{
+				$values['number'] = $this->soprojects->create_projectid();
+			}
 
 			if ($values['access'])
 			{
@@ -218,16 +252,9 @@
 				$values['access'] = 'public';
 			}
 
-			if ($values['seltoday'])
+			if ($values['smonth'] || $values['sday'] || $values['syear'])
 			{
-				$values['sdate'] = time();
-			}
-			else
-			{
-				if ($values['emonth'] || $values['eday'] || $values['eyear'])
-				{
-					$values['sdate'] = mktime(0,0,0,$values['smonth'], $values['sday'], $values['syear']);
-				}
+				$values['sdate'] = mktime(0,0,0,$values['smonth'], $values['sday'], $values['syear']);
 			}
 
             if (!$values['sdate'])
@@ -239,54 +266,24 @@
 			{
 				$values['edate'] = mktime(2,0,0,$values['emonth'],$values['eday'],$values['eyear']);
 			}
-			else if ($values['daysfromstart'] > 0)
-			{
-				$values['edate'] = mktime(0,0,0,date('m',$values['sdate']), date('d',$values['sdate'])+$values['daysfromstart'], date('Y',$values['sdate']));
-			}
 
-			if ($values['id'])
+			if ($values['project_id'])
 			{
-				if ($values['id'] != 0)
+				if ($values['project_id'] != 0)
 				{
-					$this->sotodo->edit_todo($values);
+					$this->soprojects->edit_project($values, $book_activities, $bill_activities);
 				}
 			}
 			else
 			{
-				$this->sotodo->add_todo($values);
+				$this->soprojects->add_project($values, $book_activities, $bill_activities);
 			}
 		}
 
-		function select_todo_list($parent)
+		function select_project_list($project_id)
 		{
-			$list = $this->sotodo->select_todo_list($parent);
+			$list = $this->soprojects->select_project_list($project_id);
 			return $list;
-		}
-
-		function exists($todo_id)
-		{
-			$exists = $this->sotodo->exists($todo_id);
-
-			if ($exists)
-			{
-				return True;
-			}
-			else
-			{
-				return False;
-			}
-		}
-
-		function delete_todo($todo_id, $subs = False)
-		{
-			if ($subs)
-			{
-				$this->sotodo->delete_todo($todo_id,True);
-			}
-			else
-			{
-				$this->sotodo->delete_todo($todo_id);
-			}
 		}
 	}
 ?>

@@ -19,7 +19,7 @@
 	</tr>
 	<tr colspan="9">
 		<td width="33%" align="left">
-			<form method="POST" action="{cat_action}" name="cat">
+			<form method="POST" action="{cat_action}" name="cat_id">
 			{lang_category}&nbsp;&nbsp;<select name="cat_id" onChange="this.form.submit();"><option value="">{lang_all}</option>{categories}</select>
 			<noscript>&nbsp;<input type="submit" name="submit" value="{lang_submit}"></noscript></form></td>
 		<td width="33%" align="center"><form method="POST" name="filter" action="{filter_action}">{filter_list}</form></td>
