@@ -24,41 +24,42 @@
 
 
   // the following fields are selectable
-  $field = array("bookmarks.name"       => "Name",
-                 "bookmarks.keywords"   => "Keywords",
-                 "bookmarks.url"        => "URL",
-                 "bookmarks.ldesc"      => "Description",
-                 "bookmarks_category.name"       => "Category",
-                 "bookmarks_subcategory.name"    => "Sub Category",
-//                 "rating.name"         => "Rating",
-                 "bookmarks.id"         => "ID");
+  $field = array("bookmarks.name"             => "Name",
+                 "bookmarks.keywords"         => "Keywords",
+                 "bookmarks.url"              => "URL",
+                 "bookmarks.ldesc"            => "Description",
+                 "bookmarks_category.name"    => "Category",
+                 "bookmarks_subcategory.name" => "Sub Category",
+                 "bookmarks.id"               => "ID");
 
-  # PHPLIB's sqlquery class loads this string when
-  # no query has been specified.
+  // PHPLIB's sqlquery class loads this string when
+  // no query has been specified.
   $noquery = "1=0";
 
-  # if we don't have a query object for this session yet,
-  # then create one and save as a session variable.
+  // if we don't have a query object for this session yet,
+  // then create one and save as a session variable.
 
   include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/sqlquery.inc.php");
   include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/plist.inc.php");
-class bk_Sql_Query extends Sql_Query {
-  var $classname = "bk_Sql_Query";
-  var $persistent_slots = array(
-    "conditions", "input_size", "input_max", "method", "lang", "translate", "container", "variable", "query"
-  );
-  var $query = "1=0";       ## last WHERE clause used
-  var $conditions = 1;      ## Allow for that many Query Conditions
-  var $input_size = 35;     ## Used in text input field creation
-  var $input_max  = 80;
 
-  var $method     = "post"; ## Generate get or post form...
-  var $lang       = "en";   ## HTML Widget language
-
-  var $translate = "on";    ## If set, translate column names
-  var $container = "";      ## If set, create a container table
-  var $variable  = "on";    ## if set, create variable size buttons
-}
+  class bk_Sql_Query extends Sql_Query
+  {
+    var $classname = "bk_Sql_Query";
+    var $persistent_slots = array("conditions","input_size","input_max","method","lang","translate",
+                                  "container","variable","query"
+                                 );
+    var $query = "1=0";       // last WHERE clause used
+    var $conditions = 1;      // Allow for that many Query Conditions
+    var $input_size = 35;     // Used in text input field creation
+    var $input_max  = 80;
+  
+    var $method     = "post"; // Generate get or post form...
+    var $lang       = "en";   // HTML Widget language
+  
+    var $translate = "on";    // If set, translate column names
+    var $container = "";      // If set, create a container table
+    var $variable  = "on";    // if set, create variable size buttons
+  }
 
 
 //  if (!isset($q)) {
