@@ -268,8 +268,8 @@
 
 		function add_stock()
 		{
-			$submit		= get_vars('submit',Array('POST'));
-			$values		= get_vars('values',Array('POST'));
+			$submit		= get_var('submit',Array('POST'));
+			$values		= get_var('values',Array('POST'));
 
 			if ($submit)
 			{
