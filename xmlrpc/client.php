@@ -11,7 +11,8 @@
 
 /* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info'] = array();
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'  => 'xmlrpc',
 		'noheader'    => False,
 		'noappheader' => False,
@@ -46,12 +47,12 @@
 	}
 
 	echo '
-<form action="' . $phpgw->link('/xmlrpc/client.php') . '" method="post">
+<form action="' . $GLOBALS['phpgw']->link('/xmlrpc/client.php') . '" method="post">
 <input name="stateno" VALUE="' . $stateno . '">
 <input type="submit" value="go" name="submit">
 </form>
 <p>
 enter a US state number to query its name';
 
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

@@ -11,23 +11,25 @@
 
 /* $Id$ */
 
+	exit;
+	$GLOBALS['phpgw_info'] = array();
 	/*
 	$login  = 'anonymous';
 	$passwd = 'anonymous1';
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'disable_template_class' => True,
 		'login' => True,
 		'currentapp' => 'login',
 		'noheader'  => True
 	);
 	*/
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'login',
 		'noheader'   => True
 	);
 	include('../header.inc.php');
-	/* $sessionid = $phpgw->session->create($login,$passwd); */
+	/* $sessionid = $GLOBALS['phpgw']->session->create($login,$passwd); */
 
 	$addcomment_sig = array(array($xmlrpcInt, $xmlrpcString, $xmlrpcString, $xmlrpcString));
 	$addcomment_doc = 'Adds a comment to an item. The first parameter
@@ -37,7 +39,6 @@ ID.';
 
 	function addcomment($m)
 	{
-		global $xmlrpcerruser,$phpgw;
 		$err = '';
 		// get the first param
 		$msgID   = xmlrpc_decode($m->getParam(0));
@@ -46,9 +47,9 @@ ID.';
 	
 		$countID = "${msgID}_count";
 		$sql = 'SELECT COUNT(msg_id) FROM phpgw_discuss';
-		$phpgw->db->query($sql,__LINE__,__FILE__);
-		$phpgw->db->next_record();
-		$count = $phpgw->db->f(0);
+		$GLOBALS['phpgw']->db->query($sql,__LINE__,__FILE__);
+		$GLOBALS['phpgw']->db->next_record();
+		$count = $GLOBALS['phpgw']->db->f(0);
 		
 		if(!$count)
 		{
@@ -57,12 +58,12 @@ ID.';
 		// add the new comment in
 		$count++;
 		$sql = "INSERT INTO phpgw_discuss (msg_id,comment,name,count) VALUES ($msgID,'$comment','$name',$count)";
-		$phpgw->db->query($sql,__LINE__,__FILE__);
+		$GLOBALS['phpgw']->db->query($sql,__LINE__,__FILE__);
 
 		// if we generated an error, create an error return response
 		if ($err)
 		{
-			return CreateObject('phpgwapi.xmlrpcresp',0, $xmlrpcerruser, $err);
+			return CreateObject('phpgwapi.xmlrpcresp',0, $GLOBALS['xmlrpcerruser'], $err);
 		}
 		else
 		{
@@ -79,8 +80,6 @@ and comment text.';
 
 	function getcomments($m)
 	{
-		global $xmlrpcerruser,$phpgw;
-
 		$err = '';
 		$ra = array();
 		// get the first param
@@ -88,12 +87,12 @@ and comment text.';
 
 		$countID = "${msgID}_count";
 		$sql = 'SELECT * FROM phpgw_discuss WHERE msg_id=' . $msgID;
-		$phpgw->db->query($sql,__LINE__,__FILE__);
-		$count = $phpgw->db->num_rows();
-		while($data = $phpgw->db->next_record())
+		$GLOBALS['phpgw']->db->query($sql,__LINE__,__FILE__);
+		$count = $GLOBALS['phpgw']->db->num_rows();
+		while($data = $GLOBALS['phpgw']->db->next_record())
 		{
-			$name    = $phpgw->db->f('name');
-			$comment = $phpgw->db->f('comment');
+			$name    = $GLOBALS['phpgw']->db->f('name');
+			$comment = $GLOBALS['phpgw']->db->f('comment');
 			// push a new struct onto the return array
 			$ra[] = CreateObject('phpgwapi.xmlrpcval',array(
 				'name'    => CreateObject('phpgwapi.xmlrpcval',$name),
@@ -105,7 +104,7 @@ and comment text.';
 		// if we generated an error, create an error return response
 		if ($err)
 		{
-			return CreateObject('phpgwapi.xmlrpcresp','', $xmlrpcerruser, $err);
+			return CreateObject('phpgwapi.xmlrpcresp','', $GLOBALS['xmlrpcerruser'], $err);
 		}
 		else
 		{

@@ -11,7 +11,8 @@
 
 /* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info'] = array();
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'  => 'xmlrpc',
 		'noheader'    => True,
 		'noappheader' => True,
@@ -64,7 +65,7 @@
 		));
 
 		// send the browser back to the originating page
-		Header('Location: ' . $phpgw->link($mydir . '/comment.php',
+		Header('Location: ' . $GLOBALS['phpgw']->link($mydir . '/comment.php',
 			  'catid='   . $catid
 			. '&chanid=' . $chanid
 			. '&oc='     . $catid
@@ -72,7 +73,7 @@
 	}
 
 	// now we've got here, we're exploring the story store
-	$phpgw->common->phpgw_header();
+	$GLOBALS['phpgw']->common->phpgw_header();
 	echo parse_navbar();
 ?>
 <h2>Meerkat integration</h2>
@@ -94,7 +95,7 @@
 		// so display a comment form
 ?>
 <h3>Make a comment on the story</h3>
-<form method="post" action="<?php echo $phpgw->link('/xmlrpc/comment.php') ?>">
+<form method="post" action="<?php echo $GLOBALS['phpgw']->link('/xmlrpc/comment.php') ?>">
 <p>Your name:<br /><input type="text" size="30" name="name" /></p>
 <p>Your comment:<br /><textarea rows="5" cols="60"
    name="commenttext"></textarea></p>
@@ -131,7 +132,7 @@
 			));
 		}
 ?>
-<form method="post" action="<?php echo $phpgw->link('/xmlrpc/comment.php') ?>">
+<form method="post" action="<?php echo $GLOBALS['phpgw']->link('/xmlrpc/comment.php') ?>">
 <p>Subject area:<br />
 <select name="catid">
 <?php
@@ -197,7 +198,7 @@
 				print $v['description'] . "<br />";
 				print "<em><a target=\"_blank\" href=\"" . 
 					 $v['link'] . "\">Read full story</a> ";
-				print "<a href=\"" . $phpgw->link('/xmlrpc/comment.php',"catid=${catid}&chanid=${chanid}&" .
+				print "<a href=\"" . $GLOBALS['phpgw']->link('/xmlrpc/comment.php',"catid=${catid}&chanid=${chanid}&" .
 					 "oc=${oc}&comment=" . $v['id']) . "\">Comment on this story</a>";
 				print "</em>";
 				print "</td>";
@@ -233,5 +234,5 @@
 <em>$Id$</em></p>
 
 <?php
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

@@ -12,6 +12,7 @@
 
 	/* $Id$ */
 
+	$GLOBALS['phpgw_info'] = array();
 	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'xmlrpc'
 	);
@@ -104,17 +105,22 @@
 	}
 	elseif($HTTP_POST_VARS['methods'])
 	{
+		if(!$server_id)
+		{
+			echo '<br>Please select a server...';
+		}
+
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
 
 		if($xsessionid & $HTTP_POST_VARS['xappname'])
 		{
 			$method_str = $HTTP_POST_VARS['xappname'] . '.bo' . $HTTP_POST_VARS['xappname'] . '.list_methods';
-			$is->send($method_str,'xmlrpc',$is->server['server_url']);
+			$server_id ? $is->send($method_str,'xmlrpc',$is->server['server_url']) : '';
 		}
 		else
 		{
-			$is->send('system.listMethods','',$is->server['server_url']);
+			$server_id ? $is->send('system.listMethods','',$is->server['server_url']) : '';
 		}
 	}
 	elseif($HTTP_POST_VARS['apps'])
@@ -130,6 +136,13 @@
 		$is->kp3 = $xkp3;
 
 		$is->send('system.listUsers','',$is->server['server_url']);
+	}
+	elseif($HTTP_POST_VARS['bogus'])
+	{
+		$is->sessionid = $xsessionid;
+		$is->kp3 = $xkp3;
+
+		$is->send('system.bogus','',$is->server['server_url']);
 	}
 	elseif($HTTP_POST_VARS['addressbook'])
 	{
@@ -184,6 +197,7 @@
 	$GLOBALS['phpgw']->template->set_var('lang_logout',lang('Logout'));
 	$GLOBALS['phpgw']->template->set_var('lang_list',lang('List'));
 	$GLOBALS['phpgw']->template->set_var('lang_apps',lang('Apps'));
+	$GLOBALS['phpgw']->template->set_var('lang_bogus',lang('Bogus Request'));
 	$GLOBALS['phpgw']->template->set_var('lang_users',lang('Users'));
 	$GLOBALS['phpgw']->template->set_var('lang_methods',lang('Methods'));
 	$GLOBALS['phpgw']->template->set_var('lang_username',lang('Username'));

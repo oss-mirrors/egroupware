@@ -10,11 +10,14 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-	$phpgw_info['flags'] = array(
+  /* $Id$ */
+
+	exit;
+	$GLOBALS['phpgw_info'] = array();
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'login',
 		'noheader'   => True
 	);
-
 	include('../header.inc.php');
 
 	// a PHP version

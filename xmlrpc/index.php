@@ -11,7 +11,8 @@
 
 /* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info'] = array();
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'  => 'xmlrpc',
 		'noheader'    => False,
 		'noappheader' => False,
@@ -20,11 +21,11 @@
 
 	include('../header.inc.php');
 
-	echo '<br><a href="' . $phpgw->link('/xmlrpc/testsuite.php') . '">' . lang('Test Suite') . '</a>' . "\n";
-	echo '<br><a href="' . $phpgw->link('/xmlrpc/interserv.php') . '">' . lang('phpgw client/server test') . '</a>' . "\n";
-	echo '<br><a href="' . $phpgw->link('/xmlrpc/phpgw_test.php') . '">' . lang('phpgw server test') . '</a>' . "\n";
-	echo '<br><a href="' . $phpgw->link('/xmlrpc/client.php') . '">' . lang('Simple Client') . '</a>' . "\n";
-	echo '<br><a href="' . $phpgw->link('/meerkat/index.php') . '">' . lang('Meerkat Browser') . '</a>' . "\n";
+	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/testsuite.php') . '">' . lang('Test Suite') . '</a>' . "\n";
+	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/interserv.php') . '">' . lang('phpgw client/server test') . '</a>' . "\n";
+	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/phpgw_test.php') . '">' . lang('phpgw server test') . '</a>' . "\n";
+	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/client.php') . '">' . lang('Simple Client') . '</a>' . "\n";
+	echo '<br><a href="' . $GLOBALS['phpgw']->link('/meerkat/index.php') . '">' . lang('Meerkat Browser') . '</a>' . "\n";
 
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

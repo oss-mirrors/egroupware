@@ -39,6 +39,7 @@
     <td colspan="3">
     <input type="submit" name="apps" value="{lang_list} {lang_apps}">
     <input type="submit" name="users" value="{lang_list} {lang_users}">
+    <input type="submit" name="bogus" value="{lang_bogus}">
     <input type="hidden" name="xsessionid" value="{xsessionid}">
     <input type="hidden" name="xkp3" value="{xkp3}">
     </td>
