@@ -17,9 +17,7 @@
   include("../header.inc.php");
 
   $t = new Template($phpgw_info["server"]["app_tpl"]);
-  $t->set_file(array( "projects_list"   => "list.tpl",
-                      "projects_list_t" => "list.tpl"));
-                        
+  $t->set_file(array( "projects_list_t" => "list.tpl"));
   $t->set_block("projects_list_t", "projects_list", "list");
 
   $common_hidden_vars =
@@ -54,11 +52,11 @@
      } else {
         $filtermethod = " (coordinator='" . $phpgw_info["user"]["account_id"] 
                       . "' OR owner='" . $phpgw_info["user"]["account_id"] 
-                      . "' OR access='public' "
+                      . "' OR access='public'"
                       . $phpgw->accounts->sql_search("access") . " ) ";
      }
   } else {
-     $filtermethod = " owner='" . $phpgw_info["user"]["account_id"] . "' ";
+     $filtermethod = " coordinator='" . $phpgw_info["user"]["account_id"] . "' ";
   }  
 
   if ($query) {
@@ -73,7 +71,7 @@
      $phpgw->db->query("select count(*) from p_projects where $filtermethod");
   }
 
-  $phpgw->db->next_record();                                                                      
+     $phpgw->db->next_record();                                                                      
 
   if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
      $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
@@ -81,6 +79,7 @@
                            $phpgw->db->f(0));
   else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
+     $phpgw->db->next_record();
 ?>
 
 <?php
@@ -114,17 +113,18 @@
 ?>
 
 <?php
+  
   $limit = $phpgw->nextmatchs->sql_limit($start);
   
   $db2 = $phpgw->db;
   
   if ($query) {
-     $phpgw->db->query("SELECT p_projects.*,accounts.account_firstname,accounts.account_lastname FROM "
-                 . "p_projects,accounts WHERE $filtermethod AND accounts.account_id=p_projects.coordinator AND"
+     $phpgw->db->query("SELECT p_projects.*,account_firstname,account_lastname FROM "
+                 . "p_projects,accounts WHERE $filtermethod AND account_id=p_projects.coordinator AND"
                  . " descr like '%$query%' $ordermethod limit $limit");
   } else {
-     $phpgw->db->query("SELECT p_projects.*,accounts.account_firstname,accounts.account_lastname FROM "
-                 . "p_projects,accounts WHERE accounts.account_id=p_projects.coordinator AND $filtermethod "
+     $phpgw->db->query("SELECT p_projects.*,account_firstname,account_lastname FROM "
+                 . "p_projects,accounts WHERE account_id=p_projects.coordinator AND $filtermethod "
                  . "$ordermethod limit $limit");
   }
 
