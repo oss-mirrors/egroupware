@@ -4,9 +4,9 @@ CREATE TABLE phpgw_p_projects (
    id          serial,
    num         varchar(20) NOT NULL,
    owner       int,
-   entry_date  date,
-   start_date  date,
-   end_date    date,
+   entry_date  int,
+   start_date  int,
+   end_date    int,
    coordinator int,
    customer    int,
    status      text check(status in('active','nonactive','archiv')) DEFAULT 'active' NOT NULL,
@@ -40,9 +40,9 @@ CREATE TABLE phpgw_p_hours (
    employee    int,
    project_id  int,
    activity_id int,
-   entry_date  date,
-   date        date,
-   end_date    date,
+   entry_date  int,
+   date        int,
+   end_date    int,
    remark      text,
    minutes     int,
    minperae    decimal(4,0),
@@ -59,7 +59,7 @@ CREATE TABLE phpgw_p_projectmembers (
 CREATE TABLE phpgw_p_invoice (
    id          serial,
    num         varchar(20) NOT NULL,
-   date        date,
+   date        int,
    project_id  int,
    customer    int,
    sum         decimal(20,2)
@@ -76,7 +76,7 @@ CREATE TABLE phpgw_p_invoicepos (
 CREATE TABLE phpgw_p_delivery (
    id          serial,
    num         varchar(20) NOT NULL,
-   date        date,
+   date        int,
    project_id  int,
    customer    int
 );
