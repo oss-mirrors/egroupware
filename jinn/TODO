@@ -1,0 +1,117 @@
+===================================================================================
+
+                CHANGELOG jinn for phpGroupWare
+
+===================================================================================
+
+TODO - BUGS!!!
+===================================================================================
+- FIP's in admin is broken when using more then one plugin
+- als men in access_rights een userlijst krijgt en daar vervolgens in zoekt kan
+  hij de gevonden resultaten wel aan zetten maar niet uit
+        - deze fout zal ook optreden bij meer dan 15 users
+- phpgwadmin krijgt niet alle objecten te zien in accessrights
+
+
+
+TODO - First developer release APLHA (freshmeat/mailinglist)
+===================================================================================
+- finish import/export function!!!!!!!!!!!!!!!!!!!!!!!!!!
+- finish configure-view-function!!!!!!!!!!!!!!!!!!!!!!!!!
+- finish plugins!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!25%
+- introduce process plugin
+- introduce plugin configuration
+- site administration working for non-phpgw-administrators
+- default demo-site in phpgw-table
+- default demo-site as import-file
+- fix most bugs
+- english translation complete
+- some documentation, users/adminisators
+- remove ugly code/functions
+- optimize default template
+- make official navbar icon
+- classes/functions
+        - alle niet universele make_option requests verwijderen/extra argument aan 
+		  functie maken voor listboxes zonder empty
+        - remove a lot of unused functions and merge similar functions
+		- make a lot of new classes, e.g. class.form_plugins.php
+
+TODO - First public release BETA (freshmeat/mailinglist)
+===================================================================================
+
+- language
+    + Dutch translation complete
+	+ check all statusmessages
+	+ give statusmessages colors
+
+
+TODO - Second public release BETA (freshmeat/mailinglist)
+===================================================================================
+
+
+TODO - Not branched
+===================================================================================
+- Form-plugins
+	- write/port all the default plugins
+	- make it also an option in preferences
+	- plugin-uploader (from tarball)
+	- plugin-code validator
+	- Write plugin documentation
+
+- Code
+        - display_func.js opruimen
+
+- Admin
+	- grouppersmission administration (PRIORITY)
+	- validate-routine maken voor wijzgen records
+
+- menu
+	- if admin adminmenu
+	- bekijk site-link toevoegen
+	- link maken naar beheer (mits site-beheerder)
+	- link maken naar voorkeuren
+
+- site editting
+	- manier bedenken om meer veld info te verkrijgen over 'enum' en 'default'
+	- teksten en boodschappen koppelen aan vertaalfunctie
+	- datum-routine van phpgw-api gebruiken voor timestamps
+	- datum-wijzig inteface maken
+	- validate-routine maken
+	- bij toevoegen image,  maat van thumb en image aangeven
+
+- wachtende content optie
+	- verwerken in universele table zodat het overal toegepast kan worden
+	- geprogrammeerde content
+
+- info/credits/licentie
+	- sponcered by Lingewoud overal toevoegen
+
+- documentatie
+	- schrijven ;-)
+	- implementeren
+	- koppelen aan help-link
+	- about this app-link
+
+- preferences in classes
+	- object en useradministratie op sitebeheerders niveau
+	- aantal record per pagina
+
+- templates
+    - alle nog overgebleven html uit de classes halen en naar templates verplaatsen
+
+- installatie/setup/database
+    - install tempplate for websites
+	- DEBS/RPMS
+
+- testen
+    - normale gebruikers goed testen
+	- veiligheid testen (PRIORITY)
+	- postgreSQL compatibiliteit
+
+- layout
+
+i-dots theme
+===================================================
+- i-dots template voor preferences
+- admin message links uitlijnen
+- css controleren
