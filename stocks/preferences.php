@@ -1,151 +1,143 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - Stock Quotes                                              *
-  * http://www.phpgroupware.org                                              *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare - Stock Quotes                                              *
+	* http://www.phpgroupware.org                                              *
+	* --------------------------------------------                             *
+	* This program is free software; you can redistribute it and/or modify it  *
+	* under the terms of the GNU General Public License as published by the    *
+	* Free Software Foundation; either version 2 of the License, or (at your   *
+	* option) any later version.                                               *
+	\**************************************************************************/
+	/* $Id$ */
 
-  /* $Id$ */
+	$phpgw_info['flags'] = array('noheader' => True, 
+                               'nonavbar' => True,
+                               'enable_nextmatchs_class' => True);
 
-  $phpgw_info["flags"] = array("noheader" => True, 
-                               "nonavbar" => True,
-                               "enable_nextmatchs_class" => True);
+	$phpgw_info['flags']['currentapp'] = 'stocks';
+	include('../header.inc.php');
 
-  $phpgw_info["flags"]["currentapp"] = "stocks";
-  include("../header.inc.php");
+	if ($action == 'add')
+	{
+    	$phpgw->preferences->read_repository();
+		$phpgw->preferences->change('stocks',urlencode($symbol),urlencode($name));
+		$phpgw->preferences->save_repository(True);
 
-  if ($action == "add") {
-     $phpgw->preferences->change("stocks",urlencode($symbol),urlencode($name));
-     $phpgw->preferences->commit(True);
-     // For some odd reason, if I forward it back to stocks/preferences.php after an add
-     // I get no data errors, so for now forward it to the main preferences section.
-     Header("Location: " . $phpgw->link('/preferences/index.php'));
-     $phpgw->common->phpgw_exit();
-  } else if ($action == "delete") {
-     // This needs to be fixed
-     $phpgw->preferences->delete("stocks",$value);
-     $phpgw->preferences->commit(True);
-     Header("Location: " . $phpgw->link('/stocks/preferences.php'));
-     $phpgw->common->phpgw_exit();
-  }
+// For some odd reason, if I forward it back to stocks/preferences.php after an add
+// I get no data errors, so for now forward it to the main preferences section.
 
-    if ($mainscreen) {
-	if ($mainscreen == "enable") {
-        $phpgw->preferences->delete("stocks","disabled");
-        $phpgw->preferences->change("stocks","enabled","True");
-    }
+		Header('Location: ' . $phpgw->link('/stocks/preferences.php'));
+		$phpgw->common->phpgw_exit();
+	}
+	else if ($action == 'delete')
+	{
 
-    if ($mainscreen == "disable") {
-	$phpgw->preferences->delete("stocks","enabled");
-	$phpgw->preferences->change("stocks","disabled","True");
-    }
-    $phpgw->preferences->commit(True);
-    Header("Location: " . $phpgw->link('/stocks/preferences.php'));
-    $phpgw->common->phpgw_exit();
-    }
+// This needs to be fixed
 
-    $phpgw->common->phpgw_header();
-    echo parse_navbar();
+    	$phpgw->preferences->read_repository();	
+		$phpgw->preferences->delete('stocks',$value);
+     	$phpgw->preferences->save_repository(True);
+     	Header('Location: ' . $phpgw->link('/stocks/preferences.php'));
+     	$phpgw->common->phpgw_exit();
+	}
 
-  // If they don't have any stocks in there, give them something to look at
-    if (count($phpgw_info["user"]["preferences"]["stocks"]) == 1) {
-	$phpgw->preferences->change("stocks","LNUX","VA%20Linux");
-	$phpgw->preferences->change("stocks","RHAT","RedHat");
-	$phpgw->preferences->commit(True);
-	$phpgw_info["user"]["preferences"]["stocks"]["LNUX"] = "VA%20Linux";
-	$phpgw_info["user"]["preferences"]["stocks"]["RHAT"] = "RedHat";
-    }
+	if ($mainscreen)
+	{
+    	$phpgw->preferences->read_repository();
+		if ($mainscreen == 'enable')
+		{
+			$phpgw->preferences->delete('stocks','disabled','True');
+			$phpgw->preferences->add('stocks','enabled','True');
+		}
 
+		if ($mainscreen == 'disable')
+		{
+			$phpgw->preferences->delete('stocks','enabled','True');
+			$phpgw->preferences->add('stocks','disabled','True');
+		}
 
-    echo "<p><b>" . lang("Stock Quote preferences") . ":" . "</b><hr><p>";
-?>
-   <table border="0" align="center" cellspacing="1" cellpadding="1" width="60%">
-    <?php
-      echo '<tr bgcolor="' . $phpgw_info["theme"]["th_bg"] . '">'
-         . '<td>' . lang("Symbol") . '</td>'
-         . '<td>' . lang("Company name") . '</td>'
-// For right now, editing is disabled, feel free to add it :)         
-// added it...
-         . '<td width="5%" align="center">' . lang("Edit") . '</td>'
-         . '<td width="5%" align="center">' . lang("Delete") . '</td>'
-         . '</tr>';
-      echo "\n";
-         
-      while ($stock = each($phpgw_info["user"]["preferences"]["stocks"])) {
-         if (($stock[0] != "enabled") && ($stock[0] != "disabled")) {
-            $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-            echo '<tr bgcolor="' . $tr_color . '">';
+		$phpgw->preferences->save_repository(True);
+		Header('Location: ' . $phpgw->link('/stocks/preferences.php'));
+		$phpgw->common->phpgw_exit();
+	}
 
-            echo '<td>' . rawurldecode($stock[0]) . '</td>';
-            echo '<td>' . rawurldecode($stock[1]) . '</td>';
-            echo '<td width="5%" align="center"><a href="'                                                                                                                                     
-               . $phpgw->link("/stocks/preferences_edit.php","sym=" . $stock[0]) . '">Edit</a></td>';
-            echo '<td width="5%" align="center"><a href="'
-               . $phpgw->link("/stocks/preferences.php","action=delete&value=" . $stock[0]) . '">Delete</a></td>';
+	$phpgw->common->phpgw_header();
+	echo parse_navbar();
 
-            echo "</tr>\n";
-         }
-     }
+// If they don't have any stocks in there, give them something to look at
 
-     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-     
-     echo '<tr bgcolor="' . $tr_color . '"><td colspan="4">&nbsp;</td></tr>';
-     
-     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-     echo '<tr bgcolor="' . $tr_color . '"><td colspan="3">';
-     if ($phpgw_info["user"]["preferences"]["stocks"]["enabled"]) {
-        echo lang("Display stocks on main screen is enabled");
-        $newstatus = "disable";
-     } else {
-        echo lang("Display stocks on main screen is disabled");
-        $newstatus = "enable";
-     }
-     echo '</td><td><a href="' . $phpgw->link("/stocks/preferences.php","mainscreen=$newstatus") . '">' . $newstatus . '</a>'
-        . '</td><tr>';
-     ?>
+    $phpgw->preferences->read_repository();
+	if (count($phpgw_info['user']['preferences']['stocks']) == 1)
+	{
+		$phpgw->preferences->change('stocks','LNUX','VA%20Linux');
+		$phpgw->preferences->change('stocks','RHAT','RedHat');
+		$phpgw->preferences->save_repository(True);
+		$phpgw_info['user']['preferences']['stocks']['LNUX'] = 'VA%20Linux';
+		$phpgw_info['user']['preferences']['stocks']['RHAT'] = 'RedHat';
+	}
 
-    <tr>
-     <td colspan="4">&nbsp;</td>
-    </tr>
+	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+	$t->set_file(array('stock_prefs' => 'preferences.tpl',
+					'stock_prefs_t' => 'preferences.tpl'));
+	$t->set_block('stock_prefs_t','stock_prefs','prefs');
 
-    <tr>
-     <td colspan="4">
+	$hidden_vars = '<input type="hidden" name="symbol" value="' . $symbol . '">' . "\n"
+				. '<input type="hidden" name="name" value="' . $name . '">' . "\n";
 
-      <form method="POST" action="<?php echo $phpgw->link("/stocks/preferences.php"); ?>">
-      <input type="hidden" name="action" value="add">
-      <table border="0" align="center">
-       <tr bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
-        <td colspan="2" align="center"><?php echo lang("Add new stock"); ?></td>
-       </tr>
-       <?php
-         // Reset $tr_color
-         $tr_color = "";
-         $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-       ?>
-       <tr bgcolor="<?php echo $tr_color; ?>">
-        <td align="right"><?php echo lang("Symbol"); ?>:&nbsp;</td>
-        <td><input name="symbol"></td>
-       </tr>
-       <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
-       <tr bgcolor="<?php echo $tr_color; ?>">
-        <td align="right"><?php echo lang("Company name"); ?>:&nbsp;</td>
-        <td><input name="name"></td>
-       </tr>
-       <tr>
-        <td colspan="2" align="center">
-         <input type="submit" name="submit" value="<?php echo lang("add"); ?>">
-        </td>
-       </tr>
-      </table>
-      </form>
+	$t->set_var('actionurl',$phpgw->link('/stocks/preferences.php'));
+	$t->set_var('lang_action',lang('Stock Quote preferences'));	
+    $t->set_var('h_lang_edit',lang('Edit'));
+    $t->set_var('hidden_vars',$hidden_vars);
+    $t->set_var('h_lang_delete',lang('Delete'));
+    $t->set_var('lang_company',lang('Company name'));
+    $t->set_var('lang_symbol',lang('Symbol'));
+    $t->set_var('th_bg',$phpgw_info["theme"][th_bg]);
 
-     </td>
-    </tr>
-   </table>
-<?php
-$phpgw->common->phpgw_footer();  
+	while ($stock = each($phpgw_info['user']['preferences']['stocks']))
+	{
+		if (($stock[0] != 'enabled') && ($stock[0] != 'disabled'))
+		{
+            $dsymbol = rawurldecode($stock[0]);
+            $dname = rawurldecode($stock[1]);
+
+			$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+			$t->set_var('tr_color',$tr_color);
+
+			$t->set_var(array('dsymbol' => $dsymbol,                                                                                                                                                   
+								'dname' => $dname));
+
+			$t->set_var('edit',$phpgw->link('/stocks/preferences_edit.php','sym=' . $dsymbol));
+			$t->set_var('lang_edit',lang('Edit'));
+			$t->set_var('delete',$phpgw->link('/stocks/preferences.php','action=delete&value=' . $dsymbol));
+			$t->set_var('lang_delete',lang('Delete'));
+
+			$t->parse('prefs','stock_prefs',True);
+		}
+	}
+
+	if ($phpgw_info['user']['preferences']['stocks']['enabled'])
+	{
+		$t->set_var('lang_display',lang('Display stocks on main screen is enabled'));
+		$newstatus = 'disable';
+	}
+	else
+	{
+		$t->set_var('lang_display',lang('Display stocks on main screen is disabled'));
+		$newstatus = 'enable';
+	}
+	
+	$t->set_var('newstatus',$phpgw->link('/stocks/preferences.php','mainscreen=' . $newstatus));
+	$t->set_var('lang_newstatus',lang($newstatus));
+
+	$t->set_var('add_action',$phpgw->link('/stocks/preferences.php','action=add&name=' . $name . '&symbol=' . $symbol));
+	$tr_color = '';
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$t->set_var('tr_color',$tr_color);
+
+	$t->set_var('lang_add_stock',lang('Add new stock'));
+	$t->set_var('lang_add',lang('Add'));
+
+    $t->parse('out','stock_prefs_t',True);
+    $t->p('out');
+	$phpgw->common->phpgw_footer();
 ?>
