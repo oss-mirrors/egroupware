@@ -18,21 +18,28 @@
     }
 
   	$mailbox_status = $phpgw->msg->status($mbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["user"]["preferences"]["email"]["mail_port"] . "}INBOX",SA_UNSEEN);
+  	$str = '';
     if ($mailbox_status->unseen == 1) {
 //      echo "<tr><td><A href=\"" . $phpgw->link("email/index.php") . "\"> "
 //	 . lang("You have 1 new message!") . "</A></td></tr>\n";
-	  $str = lang("You have 1 new message!");
+	  $str .= lang("You have 1 new message!");
     }
     if ($mailbox_status->unseen > 1) {
 //      echo "<tr><td><A href=\"" . $phpgw->link("email/index.php") . "\"> "
 //	 . lang("You have x new messages!",$mailbox_status->unseen) . "</A></td></tr>";
-	  $str = lang("You have x new messages!",$mailbox_status->unseen);
+	  $str .= lang("You have x new messages!",$mailbox_status->unseen);
     }
-    include($phpgw_info["server"]["api_inc"]."/phpgw_utilities_portalbox.inc.php");
-    $title = '<a href="'.$phpgw->link($phpgw_info["server"]["webserver_url"]."/email/index.php").'">EMail</a>';
+    $nummsg = $phpgw->msg->num_msg($mbox);
+    include($phpgw_info["server"]["api_inc"].'/phpgw_utilities_portalbox.inc.php');
+    $title = '<a href="'.$phpgw->link($phpgw_info["server"]["webserver_url"]."/email/index.php").'">EMail'.($str ? ' - '.$str : '').'</a>';
     $portalbox = new linkbox($title,$phpgw_info["theme"]["navbar_bg"],$phpgw_info["theme"]["bg_color"],$phpgw_info["theme"]["bg_color"]);
-    $portalbox->data[0] = array($str,$phpgw->link("email/index.php"));
-    $portalbox->draw();
+//    $portalbox->data[0] = array($str,$phpgw->link("email/index.php"));
+    for($i=$nummsg - 4,$j=0;$i<=$nummsg;$i++,$j++) {
+      $msg = $phpgw->msg->header($mbox,$i);
+      $subject = !$msg->Subject ? "[".lang("no subject")."]" : substr($msg->Subject,0,35).' ...';
+      $portalbox->data[$j] = array(decode_header_string($subject),$phpgw->link($phpgw_info["server"]["webserver_url"]."/email/message.php","folder=".urlencode($folder)."&msgnum=".$i));
+    }
+    echo $portalbox->draw();
     echo "<!-- Mailox info -->\n";
   }
 
