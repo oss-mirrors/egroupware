@@ -1460,11 +1460,6 @@
 				}
 				$GLOBALS['phpgw']->template->fp('accounting_2settings','accounting_both',True);
 				$GLOBALS['phpgw']->template->fp('nonanonymhandle','nonanonym',True);
-				/*$GLOBALS['phpgw']->hooks->process(array
-				(
-					'location'   => 'projects_view',
-					'project_id' => $project_id
-				));*/
 
 				if ($this->boprojects->edit_perms(array('action' => $action,'coordinator' => $values['coordinator'],'main' => $values['main'],
 													'parent' => $values['parent'])))
@@ -1478,6 +1473,14 @@
 			$GLOBALS['phpgw']->template->set_var('acthandle','');
 			$GLOBALS['phpgw']->template->set_var('bothhandle','');
 			$GLOBALS['phpgw']->template->pfp('out','view');
+
+			if (!isset($public_view))
+			{
+				$GLOBALS['phpgw']->hooks->process(array(
+					'location'   => 'projects_view',
+					'project_id' => $project_id
+				));
+			}
 		}
 
 		function delete_project()
