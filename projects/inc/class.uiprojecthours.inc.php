@@ -24,44 +24,39 @@
 	\*******************************************************************/
 	/* $Id$ */
 
-	class uiprojects
+	class uiprojecthours
 	{
 		var $grants;
 		var $start;
 		var $filter;
 		var $sort;
 		var $order;
-		var $cat_id;
+		var $state;
 
 		var $public_functions = array
 		(
-			'list_projects'		=> True,
-			'list_sub_projects'	=> True,	
-			'add_project'		=> True,
-			'edit_project'		=> True,
-			'delete_project'	=> True,
-			'view_project'		=> True
+			'list_hours'		=> True
 		);
 
-		function uiprojects()
+		function uiprojecthours()
 		{
 			global $phpgw, $phpgw_info;
 
-			$this->boprojects				= CreateObject('projects.boprojects',True);
+			$this->boprojecthours			= CreateObject('projects.boprojecthours',True);
+			$this->boprojects				= CreateObject('projects.boprojects');
 			$this->nextmatchs				= CreateObject('phpgwapi.nextmatchs');
 			$this->sbox						= CreateObject('phpgwapi.sbox');
-			$this->cats						= CreateObject('phpgwapi.categories');
 			$this->account					= $phpgw_info['user']['account_id'];
 			$this->t						= $phpgw->template;
 			$this->grants					= $phpgw->acl->get_grants('projects');
 			$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
 
-			$this->start					= $this->boprojects->start;
-			$this->query					= $this->boprojects->query;
-			$this->filter					= $this->boprojects->filter;
-			$this->order					= $this->boprojects->order;
-			$this->sort						= $this->boprojects->sort;
-			$this->cat_id					= $this->boprojects->cat_id;
+			$this->start					= $this->boprojecthours->start;
+			$this->query					= $this->boprojecthours->query;
+			$this->filter					= $this->boprojecthours->filter;
+			$this->order					= $this->boprojecthours->order;
+			$this->sort						= $this->boprojecthours->sort;
+			$this->state					= $this->boprojecthours->state;
 		}
 
 		function save_sessiondata()
@@ -73,9 +68,9 @@
 				'filter'	=> $this->filter,
 				'order'		=> $this->order,
 				'sort'		=> $this->sort,
-				'cat_id'	=> $this->cat_id
+				'state'		=> $this->state
 			);
-			$this->boprojects->save_sessiondata($data);
+			$this->boprojecthours->save_sessiondata($data);
 		}
 
 		function set_app_langs()
@@ -140,7 +135,7 @@
 			$this->t->set_var('link_billing',$phpgw->link('/projects/bill_index.php'));
 			$this->t->set_var('lang_billing',lang('Billing'));
 			$this->t->set_var('link_jobs',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_sub_projects'));
-			$this->t->set_var('link_hours',$phpgw->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
+			$this->t->set_var('link_hours',$phpgw->link('/index.php','menuaction=projects.uihours.list_hours'));
 			$this->t->set_var('link_statistics',$phpgw->link('/projects/stats_projectlist.php'));
 			$this->t->set_var('lang_statistics',lang("Statistics"));
 			$this->t->set_var('link_delivery',$phpgw->link('/projects/del_index.php'));
@@ -156,109 +151,154 @@
 			echo parse_navbar();
 		}
 
-		function list_projects()
+		function list_hours()
 		{
-			global $phpgw, $phpgw_info;
+			global $phpgw, $phpgw_info, $project_id;
 
 			$this->display_app_header();
 
-			$this->t->set_file(array('projects_list_t' => 'list.tpl'));
-			$this->t->set_block('projects_list_t','projects_list','list');
+			$this->t->set_file(array('hours_list_t' => 'hours_listhours.tpl'));
+			$this->t->set_block('hours_list_t','hours_list','list');
 
-			$this->t->set_var(lang_action,lang('Project list'));
-			$this->t->set_var('lang_all',lang('All'));
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uiprojecthours.list_hours',
+				'project_id'	=> $project_id
+			);
+
+			$this->t->set_var('project_action',$phpgw->link('/index.php',$link_data));
+			$this->t->set_var('project_list',$this->boprojects->select_project_list('all',$project_id));
+			$this->t->set_var('filter_action',$phpgw->link('/index.php',$link_data));
+			$this->t->set_var('filter_list',$this->nextmatchs->filter(1));
+			$this->t->set_var('search_action',$phpgw->link('/index.php',$link_data));
+			$this->t->set_var('search_list',$this->nextmatchs->search(1));
+			$this->t->set_var('state_action',$phpgw->link('/index.php',$link_data));
+
+			$this->t->set_var(lang_action,lang('Work hours list'));
+    		$this->t->set_var('lang_select_project',lang('Select project'));
+
+			switch($this->state)
+			{
+				case 'all': $state_sel[0]=' selected';break;
+				case 'open': $state_sel[1]=' selected';break;
+				case 'closed': $state_sel[2]=' selected';break;
+				case 'billed': $state_sel[3]=' selected';break;
+			}
+
+			$state_list = '<option value="all"' . $state_sel[0] . '>' . lang('Show all') . '</option>' . "\n"
+						. '<option value="open"' . $state_sel[1] . '>' . lang('Open') . '</option>' . "\n"
+						. '<option value="done"' . $state_sel[2] . '>' . lang('Done') . '</option>' . "\n"
+						. '<option value="billed"' . $state_sel[3] . '>' . lang('Billed') . '</option>' . "\n";
+
+			$this->t->set_var('state_list',$state_list);
 
 			if (!$this->start)
 			{
 				$this->start = 0;
 			}
 
-			$pro = $this->boprojects->list_projects($this->start,True,$this->query,$this->filter,$this->sort,$this->order,'active',$this->cat_id,'mains',$pro_parent = '');
+			if (!$this->state)
+			{
+				$this->state = 'all';
+			}
+
+			$hours = $this->boprojecthours->list_hours($this->start, True, $this->query, $this->filter, $this->sort, $this->order, $this->state, $project_id);
 
 // --------------------- nextmatch variable template-declarations ------------------------
 
-			$left = $this->nextmatchs->left('/index.php',$this->start,$this->boprojects->total_records,'&menuaction=projects.uiprojects.list_projects');
-			$right = $this->nextmatchs->right('/index.php',$this->start,$this->boprojects->total_records,'&menuaction=projects.uiprojects.list_projects');
+			$left = $this->nextmatchs->left('/index.php',$this->start,$this->boprojecthours->total_records,$link_data);
+			$right = $this->nextmatchs->right('/index.php',$this->start,$this->boprojecthours->total_records,$link_data);
 			$this->t->set_var('left',$left);
 			$this->t->set_var('right',$right);
 
-			$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->boprojects->total_records,$this->start));
+			$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->boprojecthours->total_records,$this->start));
 
 // ------------------------- end nextmatch template --------------------------------------
 
-			$this->t->set_var('cat_action',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects'));
-			$this->t->set_var('categories',$this->cats->formated_list('select','all',$this->cat_id,'True'));
-			$this->t->set_var('filter_action',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects'));
-			$this->t->set_var('filter_list',$this->nextmatchs->filter(1,1));
-			$this->t->set_var('search_action',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects'));
-			$this->t->set_var('search_list',$this->nextmatchs->search(1));
-
 // ---------------- list header variable template-declarations --------------------------
 
-			$this->t->set_var(sort_number,$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Project ID'),'&menuaction=projects.list_projects'));
-			$this->t->set_var(sort_customer,$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer'),'&menuaction=projects.list_projects'));
-			$this->t->set_var(sort_status,$this->nextmatchs->show_sort_order($this->sort,'status',$this->order,'/index.php',lang('Status'),'&menuaction=projects.list_projects'));
-			$this->t->set_var(sort_title,$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title'),'&menuaction=projects.list_projects'));
-			$this->t->set_var(sort_end_date,$this->nextmatchs->show_sort_order($this->sort,'end_date',$this->order,'/index.php',lang('Date due'),'&menuaction=projects.list_projects'));
-			$this->t->set_var(sort_coordinator,$this->nextmatchs->show_sort_order($this->sort,'coordinator',$this->order,'/index.php',lang('Coordinator'),'&menuaction=projects.list_projects'));
-			$this->t->set_var(lang_h_jobs,lang('Jobs'));
+			$this->t->set_var('sort_hours_descr',$this->nextmatchs->show_sort_order($this->sort,'hours_descr',$this->order,'/index.php',lang('Description')));
+			$this->t->set_var('sort_status',$this->nextmatchs->show_sort_order($this->sort,'status',$this->order,'/index.php',lang('Status')));
+			$this->t->set_var('sort_start_date',$this->nextmatchs->show_sort_order($this->sort,'start_date',$this->order,'/index.php',lang('Work date')));
+			$this->t->set_var('sort_start_time',$this->nextmatchs->show_sort_order($this->sort,'start_date',$this->order,'/index.php',lang('Start time')));
+			$this->t->set_var('sort_end_time',$this->nextmatchs->show_sort_order($this->sort,'end_date',$this->order,'/index.php',lang('End time')));
+			$this->t->set_var('sort_hours',$this->nextmatchs->show_sort_order($this->sort,'minutes',$this->order,'/index.php',lang('Hours')));
+			$this->t->set_var('sort_employee',$this->nextmatchs->show_sort_order($this->sort,'employee',$this->order,'/index.php',lang('Employee')));
 
 // -------------- end header declaration ---------------------------------------
 
-            for ($i=0;$i<count($pro);$i++)
-            {
-				$this->nextmatchs->template_alternate_row_color(&$this->t);
-				$title = $phpgw->strip_html($pro[$i]['title']);
-				if (! $title) $title = '&nbsp;';
+			for ($i=0;$i<count($hours);$i++)
+			{
+				$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
 
-				$edate = $pro[$i]['edate'];
-				if ($edate == 0)
+				$hours_descr = $phpgw->strip_html($hours[$i]['hours_descr']);
+				if (! $hours_descr) $hours_descr = '&nbsp;';
+
+				$status = $hours[$i]['status'];
+				$statusout = lang($status);
+				$this->t->set_var('tr_color',$tr_color);
+
+				$ampm = 'am';
+
+				$start_date = $hours[$i]['start_date'];
+				if ($start_date == 0)
 				{
-					$edateout = '&nbsp;';
+					$start_dateout = '&nbsp;';
+					$start_time = '&nbsp;';
 				}
 				else
 				{
-					$month  = $phpgw->common->show_date(time(),'n');
-					$day    = $phpgw->common->show_date(time(),'d');
-					$year   = $phpgw->common->show_date(time(),'Y');
+					$smonth = $phpgw->common->show_date(time(),'n');
+					$sday = $phpgw->common->show_date(time(),'d');
+					$syear = $phpgw->common->show_date(time(),'Y');
+					$shour = date('H',$start_date);
+					$smin = date('i',$start_date);
 
-					$edate = $edate + (60*60) * $phpgw_info['user']['preferences']['common']['tz_offset'];
-					$edateout = $phpgw->common->show_date($edate,$phpgw_info['user']['preferences']['common']['dateformat']);
-					if (mktime(2,0,0,$month,$day,$year) == $edate) { $edateout = '<b>' . $edateout . '</b>'; }
-					if (mktime(2,0,0,$month,$day,$year) >= $edate) { $edateout = '<font color="CC0000"><b>' . $edateout . '</b></font>'; }
+					$start_date = $start_date + (60*60) * $phpgw_info['user']['preferences']['common']['tz_offset'];
+					$start_dateout = $phpgw->common->show_date($start_date,$phpgw_info['user']['preferences']['common']['dateformat']);
+					$start_timeout = $phpgw->common->formattime($shour,$smin);
 				}
 
-				if ($pro[$i]['customer'] == 0) { $customerout = '&nbsp;'; }
+				$end_date = $hours[$i]['end_date'];
+				if ($end_date == 0) { $end_timeout = '&nbsp;'; }
 				else
 				{
-					$customer = $this->boprojects->read_customer_data($pro[$i]['customer']);
-            		if ($customer[0]['org_name'] == '') { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
-            		else { $customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
+					$emonth = $phpgw->common->show_date(time(),'n');
+					$eday = $phpgw->common->show_date(time(),'d');
+					$eyear = $phpgw->common->show_date(time(),'Y');
+					$ehour = date('H',$end_date);
+					$emin = date('i',$end_date);
+
+					$end_timeout = $phpgw->common->formattime($ehour,$emin);
 				}
 
-				$cached_data = $this->boprojects->cached_accounts($pro[$i]['coordinator']);
-				$coordinatorout = $phpgw->strip_html($cached_data[$pro[$i]['coordinator']]['account_lid']
-                                        . ' [' . $cached_data[$pro[$i]['coordinator']]['firstname'] . ' '
-                                        . $cached_data[$pro[$i]['coordinator']]['lastname'] . ' ]');
+				$minutes = floor($hours[$i]['minutes']/60) . ':'
+						. sprintf ("%02d",(int)($hours[$i]['minutes']-floor($hours[$i]['minutes']/60)*60));
 
-// --------------- template declaration for list records -------------------------------------
+				$cached_data = $this->boprojects->cached_accounts($hours[$i]['employee']);
+				$employeeout = $phpgw->strip_html($cached_data[$hours[$i]['employee']]['account_lid']
+                                        . ' [' . $cached_data[$hours[$i]['employee']]['firstname'] . ' '
+                                        . $cached_data[$hours[$i]['employee']]['lastname'] . ' ]');
 
-				$this->t->set_var(array
-				(
-					'number'		=> $phpgw->strip_html($pro[$i]['number']),
-					'customer'		=> $customerout,
-					'status'		=> lang($pro[$i]['status']),
-					'title'			=> $title,
-					'end_date'		=> $edateout,
-					'coordinator'	=> $coordinatorout
-				));
 
-				$this->t->set_var('jobs',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_sub_projects&pro_parent=' . $pro[$i]['project_id']));
+// ---------------- template declaration for list records ------------------------------
 
-				if ($this->boprojects->check_perms($this->grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $this->account)
+				$this->t->set_var(array('employee' => $employeeout,
+								'hours_descr' => $hours_descr,
+									'status' => $statusout,
+								'start_date' => $start_dateout,
+								'start_time' => $start_timeout,
+									'end_time' => $end_timeout,
+									'minutes' => $minutes));
+
+				if ($this->state != 'billed')
 				{
-					$this->t->set_var('edit',$phpgw->link('/index.php','menuaction=projects.uiprojects.edit_project&project_id=' . $pro[$i]['project_id']));
-					$this->t->set_var('lang_edit_entry',lang('Edit'));
+					if ($this->boprojects->check_perms($grants[$hours[$i]['employee']],PHPGW_ACL_EDIT) || $hours[$i]['employee'] == $this->account)
+					{
+						$this->t->set_var('edit',$phpgw->link('/projects/hours_edithour.php','id=' . $hours[$i]['id'] . '&pro_parent=' . $pro[0]['parent']
+													. '&filter=' . $filter . '&order=' . $order . '&query=' . $query . '&start=' . $start . '&sort=' . $sort));
+						$this->t->set_var('lang_edit',lang('Edit'));
+					}
 				}
 				else
 				{
@@ -266,44 +306,27 @@
 					$this->t->set_var('lang_edit_entry','&nbsp;');
 				}
 
-				$this->t->set_var('view',$phpgw->link('/projects/view.php','id=' . $pro[$i]['project_id']));
+				$this->t->set_var('view',$phpgw->link('/projects/viewhours.php','id=' . $hours[$i]['id'] . '&pro_parent=' . $pro[0]['parent']
+										. '&sort=' . $sort . '&order=' . $order . '&query=' . $query . '&start=' . $start . '&filter=' . $filter));
 				$this->t->set_var('lang_view_entry',lang('View'));
 
-				$this->t->parse('list','projects_list',True);
+				$this->t->fp('list','hours_list',True);
+
+// --------------------------- end record declaration -----------------------------------
+
 			}
 
-// ------------------------- end record declaration ------------------------
+			$pro = $this->boprojects->read_single_project($project_id);
 
-// --------------- template declaration for Add Form --------------------------
-
-			if ($this->cat_id && $this->cat_id != 0)
+			if ($this->boprojects->check_perms($grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
 			{
-				$cat = $this->cats->return_single($this->cat_id);
+				$this->t->set_var('action','<form method="POST" action="' . $phpgw->link('/projects/hours_addhour.php','project_id=' . $pro['project_id']) . '&pro_parent=' . $pro[0]['parent']
+															. '"><input type="submit" value="' . lang('Add') .'"></form>');
 			}
+			else { $this->t->set_var('action',''); }
 
-			if ($cat[0]['app_name'] == 'phpgw' || !$this->cat_id)
-			{
-				$this->t->set_var('add','<form method="POST" action="' . $phpgw->link('/index.php','menuaction=projects.uiprojects.add_project&cat_id='
-										. $this->cat_id) . '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
-			}
-			else
-			{
-				if ($this->boprojects->check_perms($this->grants[$cat[0]['owner']],PHPGW_ACL_ADD) || $cat[0]['owner'] == $this->account)
-				{
-					$this->t->set_var('add','<form method="POST" action="' . $phpgw->link('/index.php','menuaction=projects.uiprojects.add_project&cat_id='
-											. $this->cat_id) . '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
-				}
-				else
-				{
-					$this->t->set_var('add','');
-				}
-			}
-
-// ----------------------- end Add form declaration ----------------------------
-
-			$this->t->pfp('out','projects_list_t',True);
+			$this->t->pfp('out','hours_list_t',True);
 			$this->save_sessiondata();
-//			$phpgw->common->phpgw_footer();
 		}
 
 		function add_project()
@@ -614,162 +637,6 @@
 			$this->t->pfp('edithandle','edit');
 
 //			$phpgw->common->phpgw_footer();
-		}
-
-		function list_sub_projects()
-		{
-			global $phpgw, $phpgw_info, $pro_parent;
-
-			$this->display_app_header();
-
-			$this->t->set_file(array('sub_list' => 'sub_list.tpl',
-									'sub_list_t' => 'sub_list.tpl'));
-			$this->t->set_block('sub_list_t','sub_list','list');
-
-			$link_data = array
-			(
-				'menuaction'	=> 'projects.uiprojects.list_sub_projects',
-				'pro_parent'	=> $pro_parent
-			);
-
-			$this->t->set_var('lang_action',lang('Job list'));
-			$this->t->set_var('project_action',$phpgw->link('/index.php',$link_data));
-			$this->t->set_var('filter_action',$phpgw->link('/index.php',$link_data));
-			$this->t->set_var('filter_list',$this->nextmatchs->filter(1,1));
-			$this->t->set_var('search_action',$phpgw->link('/index.php',$link_data));
-			$this->t->set_var('search_list',$this->nextmatchs->search(1));
-
-			if (! $this->start) { $this->start = 0; }
-
-			if ($pro_parent)
-			{
-				$pro = $this->boprojects->list_projects($this->start,True,$this->query,$this->filter,$this->sort,$this->order,'active',$this->cat_id,'subs',$pro_parent);
-			}
-			else
-			{
-				$this->boprojects->total_records = 0;
-			}
-
-//---------------------- nextmatch variable template-declarations ---------------------------
-
-			$left = $this->nextmatchs->left('/index.php',$this->start,$this->boprojects->total_records,$link_data);
-			$right = $this->nextmatchs->right('/index.php',$this->start,$this->boprojects->total_records,$link_data);
-			$this->t->set_var('left',$left);
-			$this->t->set_var('right',$right);
-
-			$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->boprojects->total_records,$this->start));
-
-// ------------------------------ end nextmatch template ------------------------------------
-
-// ------------------list header variable template-declarations -------------------------------
-
-			$this->t->set_var('sort_number',$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Job ID'),$link_data));
-			$this->t->set_var('sort_status',$this->nextmatchs->show_sort_order($this->sort,'status',$this->order,'/index.php',lang('Status'),$link_data));
-			$this->t->set_var('sort_title',$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title'),$link_data));
-			$this->t->set_var('sort_start_date',$this->nextmatchs->show_sort_order($this->sort,'start_date',$this->order,'/index.php',lang('Start date'),$link_data));
-			$this->t->set_var('sort_end_date',$this->nextmatchs->show_sort_order($this->sort,'end_date',$this->order,'/index.php',lang('Date due'),$link_data));		
-			$this->t->set_var('sort_coordinator',$this->nextmatchs->show_sort_order($this->sort,'coordinator',$this->order,'/index.php',lang('Coordinator'),$link_data));
-			$this->t->set_var('lang_h_hours',lang('Work hours'));
-
-    		$this->t->set_var('project_list',$this->boprojects->select_project_list('mains',$pro_parent));
-    		$this->t->set_var('lang_select_project',lang('Select main project'));
-
-// -------------- end header declaration -----------------
-
-			for ($i=0;$i<count($pro);$i++)
-			{
-				$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
-				$this->t->set_var('tr_color',$tr_color);
-
-				$title = $phpgw->strip_html($pro[$i]['title']);
-				if (! $title) { $title = '&nbsp;'; }
-
-				$edate = $pro[$i]['edate'];
-				if ($edate == 0) { $edateout = '&nbsp;'; }
-				else
-				{
-					$month = $phpgw->common->show_date(time(),'n');
-					$day = $phpgw->common->show_date(time(),'d');
-					$year = $phpgw->common->show_date(time(),'Y');
-
-					$edate = $edate + (60*60) * $phpgw_info['user']['preferences']['common']['tz_offset'];
-					$edateout = $phpgw->common->show_date($edate,$phpgw_info['user']['preferences']['common']['dateformat']);
-					if (mktime(2,0,0,$month,$day,$year) == $edate) { $edateout = '<b>' . $edateout . '</b>'; }
-					if (mktime(2,0,0,$month,$day,$year) >= $edate) { $edateout = '<font color="CC0000"><b>' . $edateout . '</b></font>'; }
-				}
-
-				$sdate = $pro[$i]['sdate'];
-				if ($sdate == 0) { $sdateout = '&nbsp;'; }
-				else
-				{
-					$month = $phpgw->common->show_date(time(),'n');
-					$day = $phpgw->common->show_date(time(),'d');
-					$year = $phpgw->common->show_date(time(),'Y');
-
-					$sdate = $sdate + (60*60) * $phpgw_info['user']['preferences']['common']['tz_offset'];
-					$sdateout = $phpgw->common->show_date($sdate,$phpgw_info['user']['preferences']['common']['dateformat']);
-				}
-
-				$cached_data = $this->boprojects->cached_accounts($pro[$i]['coordinator']);
-				$coordinatorout = $phpgw->strip_html($cached_data[$pro[$i]['coordinator']]['account_lid']
-                                        . ' [' . $cached_data[$pro[$i]['coordinator']]['firstname'] . ' '
-                                        . $cached_data[$pro[$i]['coordinator']]['lastname'] . ' ]');
-
-// ------------------ template declaration for list records -----------------------------------
-
-				$this->t->set_var(array('number' => $phpgw->strip_html($pro[$i]['number']),
-							'start_date' => $sdateout,
-								'status' => lang($pro[$i]['status']),
-								'title' => $title,
-							'end_date' => $edateout,
-						'coordinator' => $coordinatorout));
-
-// ------------------------- end record declaration -------------------------------------------
-
-				$link_data['menuaction'] = 'projects.uiprojecthours.list_hours';
-				$link_data['project_id'] = $pro[$i]['project_id'];
-
-				$this->t->set_var('hours',$phpgw->link('/index.php',$link_data)); 
-
-				if ($this->boprojects->check_perms($this->grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $this->account)
-				{
-					$this->t->set_var('edit',$phpgw->link('/projects/edit_sub.php','pro_parent=' . $pro_parent . '&id=' . $pro[$i]['project_id']));
-					$this->t->set_var('lang_edit_entry',lang('Edit'));
-				}
-				else
-				{
-					$this->t->set_var('edit','');
-					$this->t->set_var('lang_edit_entry','&nbsp;');
-				}
-
-				$this->t->set_var('view',$phpgw->link('/projects/view.php','id=' . $pro[$i]['project_id']));
-				$this->t->set_var('lang_view_entry',lang('View'));
-
-				$this->t->fp('list','sub_list',True);
-			}
-
-// ------------------ template declaration for Add Form ---------------------------------------
-
-			if ($pro_parent && $pro_parent != 0)
-			{
-				$parent = $this->boprojects->read_single_project($pro_parent);
-			}
-
-			if ($this->boprojects->check_perms($this->grants[$parent['coordinator']],PHPGW_ACL_ADD) || $parent['coordinator'] == $this->account)
-			{
-				$this->t->set_var('add','<form method="POST" action="' . $phpgw->link('/projects/add_sub.php','pro_parent=' . $pro_parent)
-															. '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
-			}
-			else
-			{
-				$this->t->set_var('add','');
-			}
-
-// ---------------------- end Add form declaration --------------------------------------------
-
-			$this->t->pfp('out','sub_list_t',True);
-			$this->save_sessiondata();
-
 		}
 	}
 ?>

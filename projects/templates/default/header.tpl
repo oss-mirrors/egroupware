@@ -8,22 +8,22 @@
 		<td align="left" bgcolor="{th_bg}"><b>{lang_projects}&nbsp;&nbsp;&nbsp;{admin_info}</b></td>
 	</tr>
 	<tr>
-		<td>
-			<a href="{link_activities}">{lang_activities}</a>
-			&nbsp;&nbsp;
-			<a href="{link_projects}">{lang_projects}</a>
-			&nbsp;&nbsp;
-			<a href="{link_jobs}">{lang_jobs}</a>
-			&nbsp;&nbsp;
-			<a href="{link_hours}">{lang_hours}</a>
-			&nbsp;&nbsp;
-			<a href="{link_delivery}">{lang_delivery}</a>
-			&nbsp;&nbsp;
-			<a href="{link_billing}">{lang_billing}</a>
-			&nbsp;&nbsp;
-			<a href="{link_statistics}">{lang_statistics}</a>
-			&nbsp;&nbsp;
-			<a href="{link_archiv}">{lang_archiv}</a>
+		<td bgcolor="{row_on}">
+			<a href="{link_activities}"><b>{lang_activities}</b></a>
+			&nbsp;|&nbsp;
+			<a href="{link_projects}"><b>{lang_projects}</b></a>
+			&nbsp;|&nbsp;
+			<a href="{link_jobs}"><b>{lang_jobs}</b></a>
+			&nbsp;|&nbsp;
+			<a href="{link_hours}"><b>{lang_hours}</b></a>
+			&nbsp;|&nbsp;
+			<a href="{link_delivery}"><b>{lang_delivery}</b></a>
+			&nbsp;|&nbsp;
+			<a href="{link_billing}"><b>{lang_billing}</b></a>
+			&nbsp;|&nbsp;
+			<a href="{link_statistics}"><b>{lang_statistics}</b></a>
+			&nbsp;|&nbsp;
+			<a href="{link_archiv}"><b>{lang_archiv}</b></a>
 		</td>
 	</tr>
 </table>

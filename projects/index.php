@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2001 Bettina Gille                                  *
+	* Copyright (C) 2000, 2001 Bettina Gille                            *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -24,7 +24,7 @@
 	\*******************************************************************/
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array
+	$GLOBALS['phpgw_info']['flags'] = array
 	(
 		'currentapp' => 'projects',
 		'noheader'   => True,
@@ -34,4 +34,5 @@
 
 	$obj = CreateObject('projects.uiprojects');
 	$obj->list_projects();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
