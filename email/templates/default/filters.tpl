@@ -38,7 +38,7 @@
 				<option value="cc" {cc_selected}>{lang_cc}</option>
 				<!-- <option value="bcc" {bcc_selected}>{lang_bcc}</option>  -->
 				<option value="recipient" {recipient_selected}>{lang_recipient}</option>
-				<!-- <option value="sender" {sender_selected}>{lang_sender}</option> -->
+				<option value="sender" {sender_selected}>{lang_sender}</option>
 				<option value="subject" {subject_selected}>{lang_subject}</option>
 				<option value="received" {received_selected}>{lang_received_headers}</option> 
 				<!-- <option value="header">{lang_header}</option> -->
@@ -121,9 +121,9 @@
 	</tr>
 	</table>
 	
-	<p>&nbsp;</p>
+	<br>
 	<hr>
-	<p>&nbsp;</p>
+	<br>
 	
 	<table width="90%" border="0" cellPadding="4" cellSpacing="4" align="center">
 	<tr> 

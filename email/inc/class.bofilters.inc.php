@@ -600,8 +600,11 @@
 				{
 					if ($this->debug > 1) { echo 'bofilters.do_filter: run_all_finters_mode: calling $this->run_single_filter['.$filter_idx.']<br>'; }
 					$this->run_single_filter((int)$filter_idx);
-					// keep a report
-					$this->make_filter_match_report((int)$filter_idx);
+					if ($this->just_testing())
+					{
+						// add this message to the report
+						$this->make_filter_match_report((int)$filter_idx);
+					}
 				}
 			}
 			else
@@ -610,14 +613,48 @@
 				$this->do_filter_apply_all = False;
 				if ($this->debug > 1) { echo 'bofilters.do_filter: run_single_filter mode: calling $this->run_single_filter['.$found_filter_num.']<br>'; }
 				$this->run_single_filter((int)$found_filter_num);
-				// keep a report
-				$this->make_filter_match_report((int)$found_filter_num);
+				if ($this->just_testing())
+				{
+					// add this message to the report
+					$this->make_filter_match_report((int)$found_filter_num);
+				}
 			}
 			
 			// ok, filters have run, do we have a report to show?
 			if ($this->just_testing())
 			{
-				echo '<html>'.$this->html_matches_table.'</html>';
+				//echo '<html>'.$this->html_matches_table.'</html>';
+				unset($GLOBALS['phpgw_info']['flags']['noheader']);
+				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+				$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+				$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
+				$GLOBALS['phpgw']->common->phpgw_header();
+				echo '<p>&nbsp</p>'."\r\n";
+				echo $this->html_matches_table;
+			}
+			else
+			{
+				// FIX ME - make a better report
+				unset($GLOBALS['phpgw_info']['flags']['noheader']);
+				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+				$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+				$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
+				$GLOBALS['phpgw']->common->phpgw_header();
+
+				echo '<h4>Apply Filters Report:</h4>'."\r\n";
+				for ($filter_idx=0; $filter_idx < count($this->all_filters); $filter_idx++)
+				{
+					$this_filter = $this->all_filters[$filter_idx];
+					$num_matches = count($this->each_filter_mball_list[$filter_idx]);
+					parse_str($this_filter['actions'][0]['folder'], $target_folder);
+					echo '<p>'."\r\n"
+					.'<strong>Filter number '.(string)$filter_idx.':</strong>'.'<br>'."\r\n"
+					.'&nbsp;&nbsp;&nbsp;'.'filter name: ['.$this_filter['filtername'].']<br>'."\r\n"
+					.'&nbsp;&nbsp;&nbsp;'.'number of matches: ['.(string)$num_matches.']'.'<br>'."\r\n"
+					.'&nbsp;&nbsp;&nbsp;'.'requested filter action: ['.$this_filter['actions'][0]['judgement'].'] ; Acctnum ['.(string)$target_folder['acctnum'].'] ;  Folder: ['.htmlspecialchars($target_folder['folder']).']<br>'."\r\n"
+					.'</p>'."\r\n"
+					.'<p>&nbsp;</p>'."\r\n";
+				}
 			}
 			if ($this->debug > 1) { echo 'bofilters.do_filter: calling end_request<br>'; }
 			$GLOBALS['phpgw']->msg->end_request();
@@ -627,7 +664,7 @@
 										'menuaction=email.uifilters.filters_list');
 			$take_me_to_href = '<a href="'.$take_me_to_url.'"> Go Back </a>';
 			//Header('Location: ' . $take_me_to_url);
-			echo '<p>&nbsp;</p><br><p>'.$take_me_to_href.'</p>';
+			echo '<br><p>'.'&nbsp;&nbsp;&nbsp;'.$take_me_to_href.'</p>';
 
 			if ($this->debug > 0) { echo 'bofilters.do_filter: LEAVING<br>'; }
 		}
@@ -1103,7 +1140,7 @@
 				parse_str($this_filter['actions'][0]['folder'], $target_folder);
 				$this->html_matches_table .= 
 					//'<h3>Results: ['.$fake_folder_info['number_all'].'] matches for Filter number ['.$filter_num.'] named: '.$this_filter['filtername'].'</h3>'."\r\n"
-					'<h3>Results: Filter ['.$filter_num.'] had ['.$fake_folder_info['number_all'].'] matches. Filter named: '.$this_filter['filtername'].'</h3>'."\r\n"
+					'<h4>Test Results: Filter ['.$filter_num.'] had ['.$fake_folder_info['number_all'].'] matches. Filter named: '.$this_filter['filtername'].'</h4>'."\r\n"
 					.'Action: ['.$this_filter['actions'][0]['judgement'].'] ; Acctnum ['.(string)$target_folder['acctnum'].'] ;  Folder: '.htmlspecialchars($target_folder['folder'])
 					.'<table>'
 					.$this->make_mlist_box()

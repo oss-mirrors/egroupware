@@ -53,10 +53,9 @@
 </tr>
 </table>
 
-<p>&nbsp;</p>
-
+<br>
 <hr>
-<p>&nbsp;</p>
+<br>
 	
 <table width="90%" border="0" cellPadding="4" cellSpacing="4" align="center">
 <tr> 

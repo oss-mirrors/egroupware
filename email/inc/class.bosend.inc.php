@@ -15,31 +15,79 @@
 	class bosend
 	{
 		var $public_functions = array(
-			'get_langed_labels'	=> True,
 			'send'		=> True
 		);
 		var $nextmatchs;
+		var $not_set='-1';
 		var $mail_out = array();
-		//var $debug = True;
-		var $debug = False;
+		var $debug = 0;
 		var $xi;
-		var $xml_functions = array();
-		
-		var $soap_functions = array(
-			'get_langed_labels' => array(
-				'in'  => array('int'),
-				'out' => array('array')
-			),
-			'send' => array(
-				'in'  => array('array'),
-				'out' => array('int')
-			)
-		);
 		
 		function bosend()
 		{
-			
+			if ($this->debug > 0) { echo 'email.bosend *constructor*: ENTERING<br>'; }
+			if (is_object($GLOBALS['phpgw']->msg))
+			{
+				if ($this->debug > 1) { echo 'email.bosend *constructor*: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
+			}
+			else
+			{
+				if ($this->debug > 1) { echo 'email.bosend *constructor*: is_object: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
+				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+			}
+			$this->not_set = $GLOBALS['phpgw']->msg->not_set;
+			if ($GLOBALS['phpgw']->msg->get_isset_arg('already_grab_class_args_gpc'))
+			{
+				if ($this->debug > 0) { echo 'email.bosend *constructor*: LEAVING , msg object already initialized<br>'; }
+				return True;
+			}
+				
+			if ($this->debug > 1) { echo 'email.bosend *constructor*: msg object NOT yet initialized<br>'; }
+			$args_array = Array();
+			// should we log in or not, no, we only need prefs initialized
+			// if any data is needed mail_msg will open stream for us
+			$args_array['do_login'] = True;
+			if ($this->debug > 1) { echo 'email.bosend *constructor*: call msg->begin_request with args array:'.serialize($args_array).'<br>'; }
+			$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
+			// error if login failed
+			if (($args_array['do_login'] == True)
+			&& (!$some_stream))
+			{
+				$GLOBALS['phpgw']->msg->login_error($GLOBALS['PHP_SELF'].', constructor()');
+				// is this needed?
+				return False;
+			}
+			if ($this->debug > 0) { echo 'email.bosend *constructor*: LEAVING<br>'; }
 		}
+		
+		/*!
+		@function get_originating_ip
+		@abstract the client IP for this phpgw user at the time the send button was clicked
+		@discussion Gets the value for the "X-Originating-IP" header. That header  is used
+		by hotmail, for example, it looked like a "good thing" and was a feature request, so we 
+		use it here too. Even if the IP private (such as on a LAN), this can still be useful for the admin.
+		*/
+		function get_originating_ip()
+		{
+			$got_ip = '';
+			if (is_object($GLOBALS['phpgw']->session))
+			{
+				$got_ip = $GLOBALS['phpgw']->session->getuser_ip();
+			}
+			elseif (isset($GLOBALS['HTTP_SERVER_VARS']['REMOTE_ADDR']))
+			{
+				$got_ip = $GLOBALS['HTTP_SERVER_VARS']['REMOTE_ADDR'];
+			}
+			
+			// did we get anything useful ?
+			if (trim((string)$got_ip) == '')
+			{
+				$got_ip = 'not available';
+			}
+			return $got_ip;
+		}
+		
+		
 		
 		//  -------  This will be called just before leaving this page, to clear / unset variables / objects -----------
 		function send_message_cleanup()
@@ -55,11 +103,12 @@
 		
 		function send()
 		{
+			if ($this->debug) { echo 'ENTERING: email.bosend.send'.'<br>'; }
+			/*
 			// attempt (or not) to reuse an existing mail_msg object, i.e. if one ALREADY exists before entering
 			//$attempt_reuse = True;
 			$attempt_reuse = False;
 			
-			if ($this->debug) { echo 'ENTERING: email.bosend.send'.'<br>'; }
 			if ($this->debug) { echo 'email.bosend.send: local var attempt_reuse=['.serialize($attempt_reuse).'] ; reuse_feed_args[] dump<pre>'; print_r($reuse_feed_args); echo '</pre>'; }
 			// create class objects
 			//$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
@@ -73,7 +122,6 @@
 				if ($this->debug) { echo 'email.bosend.send: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
 				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 			}
-			
 			// do we attempt to reuse the existing msg object?
 			if ($attempt_reuse)
 			{
@@ -93,7 +141,6 @@
 				// should we log in or not
 				$args_array['do_login'] = True;
 			}
-			
 			// "start your engines"
 			if ($this->debug == True) { echo 'email.bosend.send: call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
 			$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
@@ -103,6 +150,7 @@
 			{
 				$GLOBALS['phpgw']->msg->login_error($GLOBALS['PHP_SELF'].', send()');
 			}
+			*/
 			
 			// ---- BEGIN BO SEND LOGIC
 			
@@ -120,6 +168,7 @@
 			$this->mail_out['message_id'] = $GLOBALS['phpgw']->msg->make_message_id();
 			$this->mail_out['boundary'] = $GLOBALS['phpgw']->msg->make_boundary();
 			$this->mail_out['date'] = '';
+			$this->mail_out['originating_ip'] = '['.$this->get_originating_ip().']';
 			$this->mail_out['main_headers'] = Array();
 			$this->mail_out['body'] = Array();
 			$this->mail_out['is_multipart'] = False;
@@ -749,6 +798,8 @@
 			
 			// --- MAIN HEADERS  -------
 			$hdr_line = 0;
+			$this->mail_out['main_headers'][$hdr_line] = 		'X-Originating-IP: '.$this->mail_out['originating_ip'];
+			$hdr_line++;
 			$this->mail_out['main_headers'][$hdr_line] = 		'From: '.$GLOBALS['phpgw']->msg->addy_array_to_str($this->mail_out['from']);
 			$hdr_line++;
 			if ($this->mail_out['sender'] != '')
