@@ -180,11 +180,14 @@ class sowiki	// DB-Layer
 	*/
 	function find($text)
 	{
+		// fix for case-insensitiv search on pgsql for lowercase searchwords
+		$op = $this->db->type == 'pgsql' && !preg_match('/[A-Z]/') ? 'ILIKE' : 'LIKE';
+
 		$this->db->query("SELECT t1.title,t1.version,MAX(t2.version),t1.body".
 		                  " FROM $this->PgTbl AS t1,$this->PgTbl AS t2".
 		                  " WHERE t1.title=t2.title ".
 		                  " GROUP BY t1.title,t1.version,t1.body".
-		                  " HAVING t1.version=MAX(t2.version) AND (t1.body LIKE '%$text%' OR t1.title LIKE '%$text%')",
+		                  " HAVING t1.version=MAX(t2.version) AND (t1.body $op '%$text%' OR t1.title $op '%$text%')",
 		                  __LINE__,__FILE__);
 		$list = array();
 		while($this->db->next_record())
