@@ -35,7 +35,6 @@
 		{
 			$args = array(
 				'menuaction' => 'manual.uimanual.view',
-				'page' => is_array($page) ? $page['name'] : $page
 			);
 			if ($lang || @$page['lang'])
 			{
@@ -50,7 +49,8 @@
 			{
 				$args['full'] = 1;
 			}
-			return $GLOBALS['phpgw']->link('/index.php',$args);
+			// the page-parameter has to be the last one, as the old wiki code only calls it once with empty page and appends the pages later
+			return $GLOBALS['phpgw']->link('/index.php',$args).'&page='.urlencode(is_array($page) ? $page['name'] : $page);
 		}
 		
 		function editURL()
