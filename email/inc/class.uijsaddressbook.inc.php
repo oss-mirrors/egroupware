@@ -231,7 +231,7 @@
 						'mainframe_t' => 'addressbook-js-frameset.tpl'
 						));
 			//Set the charset (important for translations)
-			$charset = $GLOBALS['phpgw']->translation->translate('charset');
+			$charset = $GLOBALS['phpgw']->translation->charset();
 			//Set your normal variables
 			$this->template->set_var('charset',$charset);
 			$this->template->set_var('title',$GLOBALS['phpgw_info']['site_title']);

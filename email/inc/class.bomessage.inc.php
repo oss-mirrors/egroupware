@@ -100,7 +100,7 @@
 			$this->xi['lang_view_formatted'] = lang('view formatted');
 			$this->xi['lang_view_unformatted'] = lang('view unformatted');
 			$this->xi['lang_view_printable'] = lang('printable');
-			$this->xi['lang_charset'] = lang('charset');
+			$this->xi['lang_charset'] = $GLOBALS['phpgw']->translation->charset();
 			$this->xi['lang_attachment'] = lang('Attachment');
 			$this->xi['lang_size'] = lang('size');
 			$this->xi['lang_error_unknown_message_data'] = lang('ERROR: Unknown Message Data');

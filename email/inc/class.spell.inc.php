@@ -850,7 +850,7 @@
 		{
 			
 			if ($this->debug_spellcheck > 0) { echo 'ENTERING: email.spell.spell_review'.'<br>'; }
-			if ($this->debug_spellcheck > 0) { echo 'spell_review lang(charset): ['.lang('charset').']<br>'; }
+			if ($this->debug_spellcheck > 0) { echo 'spell_review lang(charset): ['.$GLOBALS['phpgw']->translation->charset().']<br>'; }
 			if ($this->debug_spellcheck > 0) { echo 'spell_review $this->user_lang: ['.$this->user_lang.']<br>'; }
 			
 			unset($GLOBALS['phpgw_info']['flags']['noheader']);

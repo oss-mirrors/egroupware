@@ -337,16 +337,8 @@
 			in email and other RFC's and other literature. In the rare event that the phpgw api is unable 
 			to provide us with a charset value, we use the RFC specified default value of "US-ASCII"
 			*/
-			if (lang('charset') != '')
-			{
-				$this->mail_out['charset'] = lang('charset');
-			}
-			else
-			{
-				// RFC default charset, if none is specified, is US-ASCII
-				$this->mail_out['charset'] = 'US-ASCII';
-			}
-			
+			$this->mail_out['charset'] = $GLOBALS['phpgw']->translation->charset();
+
 			// -----  FROM  -----
 			/*!
 			@var from
@@ -355,7 +347,7 @@
 			user's default email account (or mail on behalf of the user, like automated email notifications),
 			we generate the "from" header for the user, hence no custom "from" arg is necessary.
 			This is the most common scenario, in which case we generate the "from" value as follows:
-			(1) the user's "fullname" (a.k.a. the "personal" part of the address) is always picked up 
+			(1) the user's "fullname" (a.k.a. the "personal" part of the address) is always picked up
 			from the phpgw api's value that contains the users name, and 
 			(2) the user's email address is either (2a) the default value from the phpgw api which was 
 			passed into the user's preferences because the user specified no custom email address preference, or

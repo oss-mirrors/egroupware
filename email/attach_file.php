@@ -315,7 +315,7 @@
 	if ($fup_debug > 1) { echo '$debuginfo: '.$debuginfo.'<br>'; } 
 	// end DEBUG INFO
 
-	$charset = lang('charset');
+	$charset = $GLOBALS['phpgw']->translation->charset();
 	$GLOBALS['phpgw']->template->set_var('charset',$charset);
 	$GLOBALS['phpgw']->template->set_var('page_title',$GLOBALS['phpgw_flags']['currentapp'] . ' - ' .lang('File attachment'));
 	$GLOBALS['phpgw']->template->set_var('font_family',$GLOBALS['phpgw_info']['theme']['font']);

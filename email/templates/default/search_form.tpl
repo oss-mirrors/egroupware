@@ -20,7 +20,7 @@
  cellpadding="2" width="100%">
                     <tbody>
                       <tr>
-                        <td colspan="2" bgcolor="#d3dce3">
+                        <td colspan="2" class="th">
                         <div align="center"><span
  style="font-weight: bold;">{lang_search_string}</span></div>
                         <table cellpadding="2" cellspacing="2"
@@ -28,51 +28,51 @@
                           <tbody>
                             <tr>
                               <td style="vertical-align: top;"
- bgcolor="#eeeeee" width="60%" align="right" valign="middle">{lang_subject}</td>
+ class="row_on" width="60%" align="right" valign="middle">{lang_subject}</td>
                               <td style="vertical-align: top;"
- bgcolor="#bbbbbb"><input size="30" name="search_subject" maxlength="50"> </td>
+ class="row_off"><input size="30" name="search_subject" maxlength="50"> </td>
                             </tr>
                             <tr>
                               <td style="vertical-align: top;"
- bgcolor="#eeeeee" width="60%" align="right" valign="middle">{lang_from}<br>
+ class="row_on" width="60%" align="right" valign="middle">{lang_from}<br>
                               </td>
                               <td style="vertical-align: top;"
- bgcolor="#bbbbbb" width="25%"><input size="30" name="search_from" maxlength="50"></td>
+ class="row_off" width="25%"><input size="30" name="search_from" maxlength="50"></td>
                             </tr>
                             <tr>
                               <td style="vertical-align: top;"
- bgcolor="#eeeeee" width="60%" align="right" valign="middle">Body<br>
+ class="row_on" width="60%" align="right" valign="middle">Body<br>
                               </td>
                               <td style="vertical-align: top;"
- bgcolor="#bbbbbb"> <input size="30" name="search_body" maxlength="50"></td>
+ class="row_off"> <input size="30" name="search_body" maxlength="50"></td>
                             </tr>
                             <tr>
                               <td style="vertical-align: top;"
- bgcolor="#eeeeee" width="60%" align="right" valign="middle">{lang_to}<br>
+ class="row_on" width="60%" align="right" valign="middle">{lang_to}<br>
                               </td>
                               <td style="vertical-align: top;"
- bgcolor="#bbbbbb"> <input size="30" name="search_to" maxlength="50"></td>
+ class="row_off"> <input size="30" name="search_to" maxlength="50"></td>
                             </tr>
                             <tr>
                               <td style="vertical-align: top;"
- bgcolor="#eeeeee" width="60%" align="right" valign="middle">{lang_cc}<br>
+ class="row_on" width="60%" align="right" valign="middle">{lang_cc}<br>
                               </td>
                               <td style="vertical-align: top;"
- bgcolor="#bbbbbb"> <input size="30" name="search_cc" maxlength="50"></td>
+ class="row_off"> <input size="30" name="search_cc" maxlength="50"></td>
                             </tr>
                             <tr>
                               <td style="vertical-align: top;"
- bgcolor="#eeeeee" width="60%" align="right" valign="middle">{lang_bcc}<br>
+ class="row_on" width="60%" align="right" valign="middle">{lang_bcc}<br>
                               </td>
                               <td style="vertical-align: top;"
- bgcolor="#bbbbbb"> <input size="30" name="search_bcc" maxlength="50"></td>
+ class="row_off"> <input size="30" name="search_bcc" maxlength="50"></td>
                             </tr>
                             <tr>
                               <td style="vertical-align: top;"
- bgcolor="#eeeeee" width="60%" align="right" valign="middle">{lang_keyword}<br>
+ class="row_on" width="60%" align="right" valign="middle">{lang_keyword}<br>
                               </td>
                               <td style="vertical-align: top;"
- bgcolor="#bbbbbb"> <input size="30" name="search_keyword" maxlength="50"></td>
+ class="row_off"> <input size="30" name="search_keyword" maxlength="50"></td>
                             </tr>
                           </tbody>
                         </table>
@@ -95,13 +95,13 @@
 				  <td valign="top">
 					<table border="1" cellpadding="2" cellspacing="2" width="100%">
 					<tr>
-					<td bgcolor="#d3dce3">
+					<td class="th">
 						<b>{lang_search}</b>
 					</td>
 					</tr>
 					<!-- BEGIN folder -->
 					<tr>
-					<td bgcolor="#eeeeee">
+					<td class="row_on">
 						<input type="checkbox" name="folder_list[]" value="{fld_value}"
  {fld_checked}>
  &nbsp;{fld_value}
@@ -127,13 +127,13 @@
                     <tbody>
                       <tr>
                         <td valign="top" colspan="2" align="center"
- bgcolor="#d3dce3"><b>{lang_return_mails_during}<b><br>
+ class="th"><b>{lang_return_mails_during}<b><br>
                         </td>
                       </tr>
                       <tr>
-                        <td valign="top" bgcolor="#cccccc"><input
+                        <td valign="top" class="row_on"><input
  type="checkbox" name="date_on">&nbsp;&nbsp;&nbsp;{lang_on}</td>
-                        <td valign="top" bgcolor="#cccccc">
+                        <td valign="top" class="row_on">
 
 					<select name="date_on_month">
 		                <!-- BEGIN month_on -->
@@ -153,9 +153,9 @@
                         </td>
                       </tr>
                       <tr>
-                        <td valign="top" bgcolor="#cccccc"><input
+                        <td valign="top" class="row_on"><input
  type="checkbox" name="date_before"> &nbsp; {lang_before}</td>
-                        <td valign="top" bgcolor="#cccccc">
+                        <td valign="top" class="row_on">
 
 					<select name="date_before_month">
                     	<!-- BEGIN month_before -->
@@ -176,9 +176,9 @@
                         </td>
                       </tr>
                       <tr>
-                        <td valign="top" bgcolor="#cccccc"><input
+                        <td valign="top" class="row_on"><input
  type="checkbox" name="date_after">&nbsp;&nbsp; {lang_after} </td>
-                        <td valign="top" bgcolor="#cccccc">
+                        <td valign="top" class="row_on">
 
 				<select name="date_after_month">
                     <!-- BEGIN month_after -->
@@ -220,14 +220,14 @@
  style="width: 100%;">
               <tbody>
                 <tr>
-                  <td bgcolor="#d3dce3">
+                  <td class="th">
                   <div align="center"><b>{lang_check_flags}
                   </b></div>
                   </td>
                 </tr>
 				<!-- BEGIN flag -->
                 <tr>
-                  <td style="vertical-align: top;" bgcolor="#dddddd"><input
+                  <td style="vertical-align: top;" class="row_on"><input
  type="checkbox" name="{flg_name}">&nbsp;{flg_value}</td>
                 </tr>
 				<!-- END flag -->
