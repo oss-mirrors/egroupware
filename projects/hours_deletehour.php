@@ -69,5 +69,5 @@
      $t->pparse("out", "projects_delete");
      
   }
-  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
+$phpgw->common->phpgw_footer();
 ?>

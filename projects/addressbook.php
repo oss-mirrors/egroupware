@@ -31,7 +31,6 @@
    
   if (! $start) {
      $start = 0;
-//     $query = "";
     }
   
   if ($order)
@@ -206,5 +205,5 @@ if ($query) {
  $t->p("out");
 
 // ----------- end Done form declaration ------------
-  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
+$phpgw->common->phpgw_footer();
 ?>
