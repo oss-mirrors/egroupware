@@ -29,7 +29,7 @@
 
 		$phpgw->config->read_repository();
 
-		if ($useemailnotification) {
+		if ($phpgw_info['user']['preferences']['tts']['useemailnotification']) {
 		
 			$phpgw->send = CreateObject('phpgwapi.send');
 	
