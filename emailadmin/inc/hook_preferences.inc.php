@@ -16,8 +16,8 @@
 		$title = $appname;
 		$file = Array
 		(
-			'Grant Access'		=> $GLOBALS['phpgw']->link('/preferences/acl_preferences.php','acl_app=qmailldap'),
-			'Edit categories'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=qmailldap&cats_level=True&global_cats=True')
+			'Grant Access'    => $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uiaclprefs.index&acl_app='.$appname),
+			'Edit categories' => $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=qmailldap&cats_level=True&global_cats=True')
 		);
 //Do not modify below this line
 		display_section($appname,$title,$file);
