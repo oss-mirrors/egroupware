@@ -181,6 +181,7 @@ id can not exceed 19 characters in length	projects	fr	L'ID ne peut pas excéder 1
 id can not exceed 20 characters in length	projects	fr	L'ID ne peut excéder 20 caractères
 id can not exceed 25 characters in length	projects	fr	L'ID ne peut pas excéder 25 caractères de long
 id can not exceed 250 characters in length	projects	fr	L'ID ne peut excéder 250 caractères
+id is already taken, choose an other one	projects	fr	l'id est déjà pris, choisissez-en un autre
 if using activities	admin	fr	Si vous utilisé les activités
 if you are an administrator, please edit the site configuration for projects in the admin section	projects	fr	Si vous êtes un administrateur, SVP modifier la configuration du site dans la section Admin
 if you are an administrator, please set the preferences for this application	projects	fr	Si vous êtes un administrateur, SVP réglez les préférences pour cette application
@@ -335,6 +336,7 @@ select groups	projects	fr	Choisissez les groupes
 select main project	common	fr	Choisir le projet principal
 select own address	projects	fr	Choisissez votre propre adresse
 select project	projects	fr	Choisissez le projet
+select role	projects	fr	Sélectionnez le rôle
 select tax for work time	projects	fr	Choisissez la taxe pour le temps de travail
 select users	projects	fr	Choisissez les utilisateurs
 seller	projects	fr	Vendeurs
