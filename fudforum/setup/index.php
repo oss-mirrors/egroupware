@@ -200,7 +200,7 @@ if (!function_exists('file_get_contents')) {
 	}
 
 	/* compile default theme */
-	define('__dbtype__', $GLOBALS['phpgw']->db->type);
+	define('__dbtype__', (!empty($GLOBALS['phpgw']->db->type) ? $GLOBALS['phpgw']->db->type : $GLOBALS['phpgw']->db->Type));
 	$DBHOST_TBL_PREFIX	= "phpgw_fud_";
 	require("{$INCLUDE}/compiler.inc");
 	compile_all('default', $lang);
