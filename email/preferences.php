@@ -19,9 +19,12 @@
 
 	include("../header.inc.php");
 
+	// ----  Save Preferences to Repository  (if this is a submit)  -----
 	if ($submit)
 	{
 		$phpgw->preferences->read_repository();
+
+		// ----  Typical (Non-Custom) Preferences   -----
 
 		$phpgw->preferences->delete("email","show_addresses");
 		if ($show_addresses)
@@ -58,56 +61,98 @@
 		}
 		else
 		{
+			// have it set, but be empty
 			$phpgw->preferences->add("email","email_sig");
 		}
-		
-		$phpgw->preferences->delete("email","use_custom_settings");
-		$phpgw->preferences->delete("email","userid");
-		$phpgw->preferences->delete("email","passwd");
-		$phpgw->preferences->delete("email","address");
-		$phpgw->preferences->delete("email","mail_server");
-		$phpgw->preferences->delete("email","mail_folder");
-		$phpgw->preferences->delete("email","mail_server_type");
-		$phpgw->preferences->delete("email","imap_server_type");
 
-		if ($use_custom_settings)
+		// ----  Custom Preferences   -----
+		// differ from account defaults set by administrator, should be unset if not using custom prefs
+		$phpgw->preferences->delete("email","use_custom_settings");
+		if (! $use_custom_settings)
+		{
+			$phpgw->preferences->delete("email","userid");
+			$phpgw->preferences->delete("email","passwd");
+			$phpgw->preferences->delete("email","address");
+			$phpgw->preferences->delete("email","mail_server");
+			$phpgw->preferences->delete("email","mail_server_type");
+			$phpgw->preferences->delete("email","imap_server_type");
+			$phpgw->preferences->delete("email","mail_folder");
+		}
+		else
 		{
 			$phpgw->preferences->add("email","use_custom_settings");
 			if ($userid)
 			{
 				$phpgw->preferences->add("email","userid");
 			}
+			else
+			{
+				// should probably be an error message here
+				$phpgw->preferences->delete("email","userid");
+			}
 			if ($passwd)
 			{
 				$encrypted_passwd = $phpgw->common->encrypt($passwd);
 				$phpgw->preferences->add("email","passwd",$encrypted_passwd);
 			}
+			else
+			{
+				// is not specified, LEAVE PASSWD ALONE, retain previous setting
+			}
 			if ($address)
 			{
 				$phpgw->preferences->add("email","address");
+			}
+			else
+			{
+				// should probably be an error message here
+				$phpgw->preferences->delete("email","address");
 			}
 			if ($mail_server)
 			{
 				$phpgw->preferences->add("email","mail_server");
 			}
-			if ($mail_folder) 
+			else
 			{
-				$phpgw->preferences->add("email","mail_folder");
+				// should probably be an error message here
+				$phpgw->preferences->delete("email","mail_server");
 			}
 			if ($mail_server_type)
 			{
 				$phpgw->preferences->add("email","mail_server_type");
 			}
+			else
+			{
+				// should probably be an error message here
+				$phpgw->preferences->delete("email","mail_server_type");
+			}
 			if ($imap_server_type)
 			{
 				$phpgw->preferences->add("email","imap_server_type");
 			}
+			else
+			{
+				// if ( (mail_server_type=='imap') || (mail_server_type=='imaps') ) then
+				// should probably be an error message here
+				$phpgw->preferences->delete("email","imap_server_type");
+			}
+			if ($mail_folder) 
+			{
+				$phpgw->preferences->add("email","mail_folder");
+			}
+			else
+			{
+				// if (imap_server_type=='UW-Maildir')  then
+				// should probably be an error message here
+				$phpgw->preferences->delete("email","mail_folder");
+			}
 		}
 		$phpgw->preferences->save_repository();
-		
+
 		Header("Location: " . $phpgw->link("/preferences/index.php"));
 	}
 
+// ----  Show The Preferences Page   -----
 	$phpgw->common->phpgw_header();
 	echo parse_navbar();
 
@@ -134,7 +179,8 @@
 	// the "table header" row color
 	$t->set_var('th_bg',$phpgw_info["theme"]["th_bg"]);
 
-	// row1 = email sig
+// ----  Typical (Non-Custom) Settings - Fill in HTML form -----
+	// row1 = Email Sig
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 	$t->set_var('bg_row1',$tr_color);
 	$t->set_var('email_sig_blurb',lang("email signature"));
@@ -142,7 +188,8 @@
 	//$t->set_var('email_sig_textarea_content',rawurldecode($phpgw_info["user"]["preferences"]["email"]["email_sig"]));
 	$t->set_var('email_sig_textarea_content',$phpgw_info["user"]["preferences"]["email"]["email_sig"]);
 
-	// row2 = sort order
+	// row2 = Sort Order 
+	// old_new means "lowest to highest", and new_old means "highest to lowest", which is imap-speak for reverse sorting
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 	$default_order_selected[$phpgw_info["user"]["preferences"]["email"]["default_sorting"]] = " selected";
 	$sorting_select_options =
@@ -200,6 +247,7 @@
 	// next section: Custom Email Settings
 	$t->set_var('section_title',lang("Custom Email settings"));
 
+// ----  Custom Settings - Fill in HTML form -----
 	// row6 = use custon settings
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 	if ($phpgw_info["user"]["preferences"]["email"]["use_custom_settings"])
