@@ -27,6 +27,6 @@ create table phpgw_polls_settings (
 insert into phpgw_polls_settings values ('allow_multiable_votes','False');
 insert into phpgw_polls_settings values ('currentpoll','1');
 
-insert into polls_desc (poll_title,poll_timestamp) values ('What came first ?',UNIX_TIMESTAMP());
-insert into polls_data (poll_id,option_text,vote_id) values ('1','The chicken','1');
-insert into polls_data (poll_id,option_text,vote_id) values ('1','The egg','2');
+insert into phpgw_polls_desc (poll_title,poll_timestamp) values ('What came first ?',UNIX_TIMESTAMP());
+insert into phpgw_polls_data (poll_id,option_text,vote_id) values ('1','The chicken','1');
+insert into phpgw_polls_data (poll_id,option_text,vote_id) values ('1','The egg','2');
