@@ -152,7 +152,7 @@
 		{
 			if ($this->debug > 2) { echo 'emai.boattach_file.attach ('.__LINE__.'): $GLOBALS[phpgw]->msg->ref_POST data DUMP<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST);  echo '</pre>'; }
 			
-			$this->control_data['action'] = $GLOBALS['phpgw']->msg->ref_POST['action'];
+			$this->control_data['action'] = htmlentities($GLOBALS['phpgw']->msg->ref_POST['action']);
 			$this->control_data['delete'] = $GLOBALS['phpgw']->msg->ref_POST['delete'];
 			
 			if ($this->debug > 2) { echo 'emai.boattach_file.attach ('.__LINE__.'): $this->control_data DUMP<pre>'; print_r($this->control_data);  echo '</pre>'; }
@@ -317,7 +317,7 @@
 					. 'Please check your configuration'.'<br>'
 					. '<br>';
 			}
-			
+
 			// grab externally provided information
 			$this->fill_control_data_gpc();
 			$this->fill_file_data_gpc();
@@ -325,10 +325,10 @@
 			// Some server side attachment upload handling code is borrowed from
 			// Squirrelmail <Luke Ehresman> http://www.squirrelmail.org
 			// particularly the moving, temporary naming, and the ".info" file code.
-			
-			if ($this->control_data['action'] == lang('Delete'))
+			if ($this->control_data['action'] == lang('Delete') ||
+			    $this->control_data['action'] == htmlentities(lang('Delete')))
 			{
-				if ($this->debug > 1) { echo 'boattach_file.attach ('.__LINE__.'): <b>REQUEST TO DELETE</b> detected $this->control_data[action] ('.$this->control_data['action'].') == lang(Delete) ('.lang('Delete').'): <br>'; } 
+				if ($this->debug > 1) { echo 'boattach_file.attach ('.__LINE__.'): <b>REQUEST TO DELETE</b> detected $this->control_data[action] ('.$this->control_data['action'].') == lang(Delete) ('.lang('Delete').'): <br>'; }
 				// sometimes $this->control_data[delete][] seems to have multiple entries for the same filename
 				for ($i=0; $i<count($this->control_data['delete']); $i++)
 				{
@@ -356,7 +356,8 @@
 				}
 			}
 			
-			if (($this->control_data['action'] == lang('Attach File'))
+			if (($this->control_data['action'] == lang('Attach File') ||
+			     $this->control_data['action'] == htmlentities(lang('Attach File')))
 			&& ($this->file_data['file_tmp_name'] != '')
 			&& ($this->file_data['file_tmp_name'] != 'none'))
 			{
