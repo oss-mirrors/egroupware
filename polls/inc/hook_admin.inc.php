@@ -16,6 +16,6 @@
 			'Voting Booth Admin' => $GLOBALS['phpgw']->link('/polls/admin.php')
 		);
 //Do not modify below this line
-		display_section($appname,$file);
+		$GLOBALS['phpgw']->common->display_mainscreen($appname,$file);
 	}
 ?>

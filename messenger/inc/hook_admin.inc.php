@@ -18,7 +18,6 @@
 		(
 			'Compose global message' => $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose_global')
 		);
-
-		display_section($appname,$file);
+		$GLOBALS['phpgw']->common->display_mainscreen($appname,$file);
 	}
 ?>

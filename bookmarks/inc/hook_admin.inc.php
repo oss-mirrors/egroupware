@@ -9,14 +9,13 @@
 	*  Free Software Foundation; either version 2 of the License, or (at your  *
 	*  option) any later version.                                              *
 	\**************************************************************************/
-
 	/* $Id$ */
 
-	$title = $appname;
-	$file = Array(
+	$file = Array
+	(
 		'Site Configuration' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
-		'Global Categories' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uicategories.index&appname=bookmarks')
+		'Global Categories' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uicategories.index&appname=' . $appname)
 	);
+	$GLOBALS['phpgw']->common->display_mainscreen($appname,$file);
 
-	display_section($appname,$title,$file);
 ?>

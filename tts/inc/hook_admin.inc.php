@@ -13,9 +13,9 @@
 	{
 		$file = Array
 		(
-			'Admin Options' => $GLOBALS['phpgw']->link('/tts/admin.php')
+			'site configuration' => $GLOBALS['phpgw']->link('/tts/admin.php')
 		);
 //Do not modify below this line
-		display_section($appname,$file);
+		$GLOBALS['phpgw']->common->display_mainscreen($appname,$file);
 	}
 ?>

@@ -2,7 +2,6 @@
 	/**************************************************************************\
 	* phpGroupWare                                                             *
 	* http://www.phpgroupware.org                                              *
-	* Written by Joseph Engo <jengo@phpgroupware.org>                          *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -18,6 +17,6 @@
 		);
 
 //Do not modify below this line
-		display_section($appname,$file);
+		$GLOBALS['phpgw']->common->display_mainscreen($appname,$file);
 	}
 ?>
