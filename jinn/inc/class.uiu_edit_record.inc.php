@@ -187,18 +187,35 @@
 
 				elseif ($fieldproperties[type]=='blob' && ereg('binary',$fieldproperties[flags]))
 				{
-					$input = lang('binary');
+				   // FIXME this is a quick hack make a standard routine
+				   $tmpplugins=explode('|',str_replace('~','=',$this->bo->site_object['plugins']));
+				   foreach ($tmpplugins as $tval)
+				   {
+					  if (stristr($tval, $fieldproperties[name])) 
+					  {
+						 $has_plugin=true;
+						 break;
+					  }
+				   }
+//				   die($has_plugin);
+				   if($has_plugin)
+				   {
+					  $input=$this->bo->get_plugin_fi($input_name,$value,'blob',$attr_arr);
+				   }
+				   else
+				   {
+					  $input = lang('binary');
+				   }
 				}
 
 				elseif ($fieldproperties[type]=='text' && ereg('binary',$fieldproperties[flags]))
 				{
 					$input = lang('binary');
-				}
+				 }
 				elseif ($fieldproperties[type]=='blob' || $fieldproperties[type]=='text') //then it is a textblob
 				{
 				   $input=$this->bo->get_plugin_fi($input_name,$value,'blob',$attr_arr);
 				}
-
 				else
 				{
 				   $input=$this->bo->get_plugin_fi($input_name,$value,'string',$attr_arr);
@@ -219,7 +236,9 @@
 					  }
 				   }
 		   
+				   
 				   /* set the row colors */
+					$GLOBALS['phpgw_info']['theme']['row_off']='#eeeeee';
 					if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on']) $row_color=$GLOBALS['phpgw_info']['theme']['row_off'];
 					else $row_color=$GLOBALS['phpgw_info']['theme']['row_on'];
 
@@ -300,7 +319,6 @@
 
 				}
 
-
 			}
 
 			if(!$where_string)
@@ -338,6 +356,10 @@
 			$this->ui->msg_box($this->bo->message);
 
 			$this->main_menu();	
+			
+			$popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
+			
+			$this->template->set_var('popuplink',$popuplink);
 			
 			$this->template->pparse('out','form_header');
 			$this->template->pparse('out','js');
@@ -392,10 +414,11 @@
 				}
 
 				// set theme_colors
-				$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-				$this->template->set_var('th_text',$GLOBALS['phpgw_info']['theme']['th_text']);
-				$this->template->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
-				$this->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
+//				$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+//				$this->template->set_var('th_text',$GLOBALS['phpgw_info']['theme']['th_text']);
+//				$this->template->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
+//				$this->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
+$this->template->set_var('jinn_main_menu',lang('JiNN Main Menu'));
 
 				// set menu
 				$this->template->set_var('site_objects',$object_options);

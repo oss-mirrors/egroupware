@@ -1,4 +1,14 @@
 <!-- BEGIN list_header -->
+
+<script language="javascript" type="text/javascript">
+function img_popup(img,pop_width,pop_height,attr)
+{
+   options="width="+pop_width+",height="+pop_height+",location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no";
+   parent.window.open("{popuplink}?path="+img+"&attr="+attr, "pop", options);
+}
+</script>
+
+
 <br>{lang_showing}
 <br>{searchreturn}
 {search_filter}

@@ -147,7 +147,6 @@
 		 $site_values[cur_site_db_password] = $site_values[$pre.'site_db_password'];
 		 $site_values[cur_site_db_type] = $site_values[$pre.'site_db_type'];
 		 $site_values[cur_upload_path] =$site_values[$pre.'upload_path'];
-		 $site_values[cur_upload_url] =$site_values[$pre.'upload_url'];
 
 		 return $site_values;
 	  }
@@ -186,7 +185,6 @@
 
 		 if($this->config["server_type"]=='dev') $pre='dev_';
 
-		 $object_values[cur_upload_url] =$object_values[$pre.'upload_url'];
 		 $object_values[cur_upload_path] =$object_values[$pre.'upload_path'];
 
 		 return $object_values;
@@ -728,7 +726,9 @@
 		 }
 		 if ($order_by)
 		 {
-			$ORDER_BY = ' ORDER BY '.$order_by;
+			$order_by_new=trim(substr($order_by,0,(strlen($order_by)-4)));
+			$order_direction=trim(substr($order_by,-4));
+			$ORDER_BY = ' ORDER BY `'.$table.'`.`'.$order_by_new.'` '.$order_direction;
 		 }
 
 
@@ -736,7 +736,7 @@
 		 $fieldproperties = $this->site_table_metadata($site_id,$table);
 		 $field_list_arr=(explode(',',$field_list));
 		 $SQL="SELECT $field_list FROM $table $WHERE $ORDER_BY";
-		 //			die($SQL);
+//		die($SQL);
 		 if (!$limit) $limit=1000000;
 
 		 $this->site_db->limit_query($SQL, $offset,__LINE__,__FILE__,$limit); 
@@ -748,7 +748,7 @@
 			{
 			   if($field_list=='*' || in_array($field[name],$field_list_arr))
 			   {
-				  if ($field[type]=='blob' && ereg('binary',$field[flags]))
+				  if ($field[type]=='blob' && ereg('xxxbinary',$field[flags]))// FIXME cripled
 				  {
 					 $value=lang('binary');
 				  }
@@ -816,7 +816,7 @@
 			if ($SQLfields) $SQLfields .= ',';
 			if ($SQLvalues) $SQLvalues .= ',';
 
-			$SQLfields .= $field[name];
+			$SQLfields .= '`'.$field[name].'`';
 			$SQLvalues .= "'".$this->strip_magic_quotes_gpc($field[value])."'"; // FIX THIS magic kut quotes
 
 
@@ -880,7 +880,7 @@
 		 foreach($data as $field)
 		 {
 			if ($SQL_SUB) $SQL_SUB .= ', ';
-			$SQL_SUB .= "$field[name]='".$this->strip_magic_quotes_gpc($field[value])."'";
+			$SQL_SUB .= "`$field[name]`='".$this->strip_magic_quotes_gpc($field[value])."'";
 
 			/* check for primaries and create array */
 			if (eregi("auto_increment", $metadata[$field[name]][flags]))
@@ -961,6 +961,7 @@
 			foreach($related_data as $option)
 			{
 			   $SQL="INSERT INTO $table ($via_primary_key,$via_foreign_key) VALUES ('$data[FLDid]', '$option')";
+//			   die($SQL);
 			   if (!$this->site_db->query($SQL,__LINE__,__FILE__))
 			   {
 				  $status=False;
@@ -978,7 +979,7 @@
 	  function delete_phpgw_data($table,$where_key,$where_value)
 	  {
 
-		 $SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."='".$this->strip_magic_quotes_gpc($where_value)."'";
+		 $SQL = 'DELETE FROM ' . $table . ' WHERE `' . $this->strip_magic_quotes_gpc($where_key)."`='".$this->strip_magic_quotes_gpc($where_value)."'";
 
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {

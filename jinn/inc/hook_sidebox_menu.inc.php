@@ -115,17 +115,23 @@
 		);
 		display_sidebox($appname,$menu_title,$file);
 
-/*		$menu_title = lang('Developer Links');
+		$menu_title = lang('Developer Links');
 		$file = Array(
-			'Site Media and Documents' => array
-			(
-			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiumedia.index'),
-			'text'=>'Site Media and Documents',
-			'icon'=>'thumbnail'
-			)
-		);
+		   'Site Media and Documents' => array
+		   (
+			  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiumedia.index'),
+			  'text'=>'Site Media and Documents',
+			  'icon'=>'thumbnail'
+		   ),
+		   'Mailinglists' => array
+		   (
+			  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_mailing.index'),
+			  'text'=>'Mailinglists',
+			  'icon'=>'thumbnail'
+		   )
+	);
 		display_sidebox($appname,$menu_title,$file);
-*/
+
 	}
 
 }

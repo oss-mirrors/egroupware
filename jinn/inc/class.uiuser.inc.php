@@ -28,7 +28,9 @@
 		 'index'				=> True,
 		 'add_edit_object'		=> True,
 		 'browse_objects'		=> True,
+		 'file_download'		=> True,
 		 'config_objects'		=> True,
+		 'img_popup'			=> True,
 		 'save_object_config'	=> True
 	  );
 
@@ -115,17 +117,17 @@
 			else
 			{
 			   $this->bo->message[error]=lang('There is not site you have access to. Ask your administrator to give you access to your site of site-objects or check if any site exist');
-	
+
 			   if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
 			   {
 				  $this->bo->message[info]='<a href="'.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.add_edit_site').'">'.lang('Create a new site now').'</a>';
-				}
-				else
-				{
+			   }
+			   else
+			   {
 
-				   $this->bo->message[info]='';
-				}
-				$this->ui->msg_box($this->bo->message);
+				  $this->bo->message[info]='';
+			   }
+			   $this->ui->msg_box($this->bo->message);
 
 
 			}
@@ -156,11 +158,7 @@
 			   unset($this->bo->site_object_id);
 			}
 
-			// set theme_colors
-			$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-			$this->template->set_var('th_text',$GLOBALS['phpgw_info']['theme']['th_text']);
-			$this->template->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
-			$this->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
+			$this->template->set_var('jinn_main_menu',lang('JiNN Main Menu'));
 
 			// set menu
 			$this->template->set_var('site_objects',$object_options);
@@ -200,10 +198,19 @@
 			   $this->bo->save_sessiondata();
 			   $this->bo->common->exit_and_open_screen('jinn.uiuser.index');
 			}				
-
+/*
+			if (!is_object($GLOBALS['phpgw']->js))
+			{
+			   $GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+			}
+			if (!strstr($GLOBALS['phpgw_info']['flags']['java_script'],'jinn'))
+			{
+			   $GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
+			}
+*/
 			$this->ui->header('browse through objects');
-			$this->main_menu();	
 			$this->ui->msg_box($this->bo->message);
+			$this->main_menu();	
 
 			$this->template->set_file(array(
 			   'browse_menu' => 'browse_menu.tpl',
@@ -213,31 +220,32 @@
 			$pref_columns_str=$this->bo->read_preferences('show_fields'); 
 			$default_order=$this->bo->read_preferences('default_order');
 
-			list($offset,$asc,$order,$filter,$navdir,$limit_start,$limit_stop,$direction,$show_all_cols,$search)=$this->bo->common->get_global_vars(array('offset','asc','order','filter','navdir','limit_start','limit_stop','direction','show_all_cols','search'));
+			list($offset,$asc,$orderby,$filter,$navdir,$limit_start,$limit_stop,$direction,$show_all_cols,$search)=$this->bo->common->get_global_vars(array('offset','asc','orderby','filter','navdir','limit_start','limit_stop','direction','show_all_cols','search'));
+//			_debug_array($_GET);
 
+			
 			if(!$offset) $offset= $this->bo->browse_settings['offset'];
 			if(!$asc)    $asc=    $this->bo->browse_settings['asc']; // FIXME remove?
 			if(!$filter) $filter= $this->bo->browse_settings['filter'];
-			if(!$order)  $order=  $this->bo->browse_settings['order'];
+			if(!$orderby)  $orderby = $this->bo->browse_settings['orderby'];
 			$this->bo->browse_settings = array
 			(
 			   'offset'=>$offset,
 			   'range'=>$range,
 			   'navdir'=>$navdir, // FIXME test
-			   'order'=>$order,
+			   'orderby'=>$orderby,
 			   'filter'=>$filter
 			);
 
-			if(!$order && $default_order) $order=$default_order;
+			if(!$orderby && $default_order) $orderby=$default_order;
 
-			
 			$num_rows=$this->bo->so->num_rows_table($this->bo->site_id,$this->bo->site_object['table_name']);
 
 			$limit=$this->bo->set_limits($limit_start,$limit_stop,$direction,$num_rows);
 
 			$this->template->set_var('limit_start',$limit['start']);
 			$this->template->set_var('limit_stop',$limit['stop']);
-			$this->template->set_var('order',$order);
+			$this->template->set_var('orderby',$orderby);
 			$this->template->set_var('menu_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.browse_objects'));
 			$this->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
 			$this->template->set_var('start_at',lang('start at record'));
@@ -248,12 +256,16 @@
 			$this->template->set_var('action_config_table',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.config_table'));
 			$this->template->set_var('lang_config_this_tableview',lang('Configure this tableview'));
 			$this->template->set_var('search_string',$search);
-//			$this->template->set_var('show_all_cols',$show_all_cols);
+			//			$this->template->set_var('show_all_cols',$show_all_cols);
 			$this->template->set_var('lang_Actions',lang('Actions'));
 			$this->template->set_var('edit',lang('edit'));
 			$this->template->set_var('delete',lang('delete'));
 			$this->template->set_var('copy',lang('copy'));
 			$this->template->set_var('show_all_cols',$show_all_cols);
+
+			$popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
+
+			$this->template->set_var('popuplink',$popuplink);
 			$this->template->pparse('out','browse_menu');
 
 			$LIMIT="LIMIT $limit[start],$limit[stop]";
@@ -339,8 +351,8 @@
 			   }
 			}
 
-			/*	check if orderfield exist else drop order it	*/
-			if(!in_array(trim(substr($order,0,(strlen($order)-4))),$all_col_names_list)) unset($order);
+			/*	check if orderbyfield exist else drop orderby it	*/
+			if(!in_array(trim(substr($orderby,0,(strlen($orderby)-4))),$all_col_names_list)) unset($orderby);
 			//	unset($all_col_names_list);
 
 
@@ -348,30 +360,30 @@
 			foreach ($col_list as $col)
 			{
 			   $col_names_list[]=$col[name];
-			   unset($order_link);
-			   unset($order_image);
-			   if ($col[name] == trim(substr($order,0,(strlen($order)-4))))
+			   unset($orderby_link);
+			   unset($orderby_image);
+			   if ($col[name] == trim(substr($orderby,0,(strlen($orderby)-4))))
 			   {
-				  if (substr($order,-4)== 'DESC')
+				  if (substr($orderby,-4)== 'DESC')
 				  {
-					 $order_link = $col[name].' ASC';
-					 $order_image = '<img src="'. $GLOBALS['phpgw']->common->image('jinn','desc.png').'" border="0">';
+					 $orderby_link = $col[name].' ASC';
+					 $orderby_image = '<img src="'. $GLOBALS['phpgw']->common->image('jinn','desc.png').'" border="0">';
 				  }
 				  else 
 				  {
-					 $order_link = $col[name].' DESC';
-					 $order_image = '<img src="'. $GLOBALS['phpgw']->common->image('jinn','asc.png').'" border="0">';
+					 $orderby_link = $col[name].' DESC';
+					 $orderby_image = '<img src="'. $GLOBALS['phpgw']->common->image('jinn','asc.png').'" border="0">';
 				  }
 			   }
 			   else
 			   {
-				  $order_link = $col[name].' ASC';
+				  $orderby_link = $col[name].' ASC';
 			   }
 
 			   // FIXME replace by template block
 			   $col_headers_t.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" ';
 				  $col_headers_t.=' style="font-weight:bold;padding:3px;"  align=\"center\">';
-				  $col_headers_t.='<a href="'.$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiuser.browse_objects&order=$order_link&search=$search&limit_start=$limit_start&limit_stop=$limit_stop&show_all_cols=$show_all_cols").'">'.str_replace('_','&nbsp;',$col[name]).'&nbsp;'.$order_image.'</a></td>';
+				  $col_headers_t.='<a href="'.$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiuser.browse_objects&orderby=$orderby_link&search=$search&limit_start=$limit_start&limit_stop=$limit_stop&show_all_cols=$show_all_cols").'">'.str_replace('_','&nbsp;',$col[name]).'&nbsp;'.$orderby_image.'</a></td>';
 			}
 
 			if(!is_array($pkey_arr))
@@ -379,8 +391,8 @@
 			   $pkey_arr=$akey_arr;
 			   unset($akey_arr);
 			}
-			
-			$records=$this->bo->get_records($this->bo->site_object[table_name],'','',$limit[start],$limit[stop],'name',$order,'*',$where_condition);
+
+			$records=$this->bo->get_records($this->bo->site_object[table_name],'','',$limit[start],$limit[stop],'name',$orderby,'*',$where_condition);
 
 			if (count($records)>0)
 			{
@@ -395,14 +407,15 @@
 						if($where_string) $where_string.=' AND ';
 						$where_string.= '('.$pkey.' = \''. $recordvalues[$pkey].'\')';
 					 }
-				
+
 					 $where_string=base64_encode($where_string);
 				  }
 
 				  if ($bgclr==$GLOBALS['phpgw_info']['theme']['row_off'])
 				  {
-					 $bgclr=$GLOBALS['phpgw_info']['theme']['row_on'];
-				  }
+//					 $bgclr=$GLOBALS['phpgw_info']['theme']['row_on'];
+					$bgclr='#ffffff';
+				 }
 				  else
 				  {
 					 $bgclr=$GLOBALS['phpgw_info']['theme']['row_off'];
@@ -449,15 +462,16 @@
 			}
 			else
 			{
-			
+
 			   $table_rows.='<tr><td colspan="'.(count($col_names_list)+3).'">'.lang('No records found').'</td></tr>';		   
-			   
+
 			}
 
 
 			$button_config='<td><form name=form2 action="'.
 				  $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.config_objects') .
 				  '" method="post"><input type="submit" name="action" value="'.lang('Configure this View').'"></form></td>';
+
 
 			$this->template->set_var('button_add',$button_add);
 			$this->template->set_var('button_browse',$button_browse);
@@ -504,9 +518,44 @@
 			$this->bo->save_sessiondata();
 		 }
 
+		 function file_download()
+		 {
 
+			$file_name=$_GET['file'];
 
+			if(file_exists($file_name))
+			{
 
+			   $browser=	CreateObject('phpgwapi.browser'); 
+
+			   $browser->content_header($file_name);
+
+			   $handle = fopen ($file_name, "r");
+			   $contents = fread ($handle, filesize ($file_name));
+			   fclose ($handle);
+
+			   echo $contents;
+			}
+			else
+			{
+			   die(lang('ERROR: the file %1 doesn\'t exists, please contact the webmaster',$file_name));
+			}
+
+			$GLOBALS['phpgw']->common->phpgw_exit();
+		 }
+
+		 function img_popup()
+		 {
+			$attributes=base64_decode($_GET[attr]);
+			$new_path=base64_decode($_GET[path]);
+			$this->template->set_file(array(
+			   'imgpopup' => 'imgpopup.tpl'
+			));
+
+			$this->template->set_var('img',$new_path);
+			$this->template->set_var('ctw',lang('close this window'));
+			$this->template->pparse('out','imgpopup');
+		 }
 
 	  }
    ?>
