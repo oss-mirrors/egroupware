@@ -19,11 +19,7 @@
 	}
 	unset($d1);
 
-	// NOTE: notify for email not available if the welcome screen show mail option if off
-	// just wondering, where and when is this pref array data created prior to mail_msg object creation?
-	if (($GLOBALS['phpgw_info']['user']['preferences']['email']['mainscreen_showmail'])
-	&& (isset($GLOBALS['phpgw_info']['user']['apps']['email'])
-	&& $GLOBALS['phpgw_info']['user']['apps']['email']))
+	if (@$GLOBALS['phpgw_info']['user']['apps']['email'])
 	{
 		$my_msg_bootstrap = '';
 		$my_msg_bootstrap = CreateObject("email.msg_bootstrap");
@@ -86,7 +82,7 @@
 			{
 			 	echo '<a href="JavaScript:CheckEmail();"><b>Unread:</b> None</a><br>'."\r\n";
 			}
-			
+
 			if($inbox_data['number_all']<100)
 			{
 		 	 	echo '<a href="JavaScript:CheckEmail();"><b>INBOX:</b> '.$inbox_data['number_all'].'</a>'."\r\n";
@@ -96,15 +92,15 @@
 		 	 	echo '<a href="JavaScript:CheckEmail();"><nobr><b>INBOX: TOO MANY</b></a></nobr>'."\r\n";
 			}
 
-  		if($urgent)
-  		{
-  		 	echo '<script type="text/javascript" language="Javascript 1.3">'."\r\n";
-  			echo '<!--'."\r\n";
-  			echo 'window.focus();'."\r\n";
-  			echo 'document.bgcolor="#ff6666";'."\r\n";
-  			echo '// -->'."\r\n";
-  			echo '</script>'."\r\n";
-  		}
+			if($urgent)
+			{
+				echo '<script type="text/javascript" language="Javascript 1.3">'."\r\n";
+				echo '<!--'."\r\n";
+				echo 'document.bgcolor="#ff6666";'."\r\n";
+				echo 'window.focus();'."\r\n";
+				echo '// -->'."\r\n";
+				echo '</script>'."\r\n";
+			}
 
 			echo "</td></tr></table>\r\n";
 			echo "\r\n".'<!-- Mailox info --></td></tr>'."\r\n";
