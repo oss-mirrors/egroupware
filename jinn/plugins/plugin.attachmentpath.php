@@ -30,7 +30,7 @@
 
 	$this->plugins['attachpath']['name']			= 'attachpath';
 	$this->plugins['attachpath']['title']			= 'AttachmentPath plugin';
-	$this->plugins['attachpath']['version']			= '0.8.0';
+	$this->plugins['attachpath']['version']			= '0.8.1';
 	$this->plugins['attachpath']['enable']			= 1;
 	$this->plugins['attachpath']['db_field_hooks']	= array
 	(
@@ -49,13 +49,36 @@
 
 	function plg_fi_attachpath($field_name,$value,$config)
 	{	
-
 		global $local_bo;
+	
+		if($local_bo->common->so->config[server_type]=='dev')
+		{
+			$field_prefix='dev_';
+		}
+	
+		if($local_bo->site_object[$field_prefix.'upload_url'])
+		{
+			$upload_url=$local_bo->site_object[$field_prefix.'upload_url'].'/';
+			$upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
+		}
+		elseif($local_bo->site[$field_prefix.'upload_url'])
+		{
+			$upload_url=$local_bo->site[$field_prefix.'upload_url'].'/';
+			$upload_path=$local_bo->site[$field_prefix.'upload_path'];
+		}
+		else
+		{
+			$upload_url=false;
+			$upload_path=false;
+		}
+		
+		
+		//if ($local_bo->site_object['upload_url']) $upload_url=$local_bo->site_object['upload_url'].'/';
+		//elseif($local_bo->site['upload_url']) $upload_url=$local_bo->site['upload_url'].'/';
+		//else $upload_url=false;
+
 		$field_name=substr($field_name,3);	
 
-		if ($local_bo->site_object['upload_url']) $upload_url=$local_bo->site_object['upload_url'].'/';
-		elseif($local_bo->site['upload_url']) $upload_url=$local_bo->site['upload_url'].'/';
-		else $upload_url=false;
 		
 		/* if value is set, show existing images */	
 		if($value)
@@ -126,9 +149,31 @@
 	{
 		global $local_bo;
 
-		if ($local_bo->site_object['upload_path']) $upload_path=$local_bo->site_object['upload_path'].'/';
-		elseif($local_bo->site['upload_path']) $upload_path=$local_bo->site['upload_path'].'/';
-		else $upload_path=false;
+		if($local_bo->common->so->config[server_type]=='dev')
+		{
+			$field_prefix='dev_';
+		}
+		
+		
+		if($local_bo->site_object[$field_prefix.'upload_url'])
+		{
+			$upload_url=$local_bo->site_object[$field_prefix.'upload_url'].'/';
+			$upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
+		}
+		elseif($local_bo->site[$field_prefix.'upload_url'])
+		{
+			$upload_url=$local_bo->site[$field_prefix.'upload_url'].'/';
+			$upload_path=$local_bo->site[$field_prefix.'upload_path'];
+		}
+		else
+		{
+			$upload_url=false;
+			$upload_path=false;
+		}
+
+		//if ($local_bo->site_object['upload_path']) $upload_path=$local_bo->site_object['upload_path'].'/';
+		//elseif($local_bo->site['upload_path']) $upload_path=$local_bo->site['upload_path'].'/';
+		//else $upload_path=false;
 
 		$atts_to_delete=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'ATT_DEL');
 

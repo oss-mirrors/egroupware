@@ -199,7 +199,7 @@
 					$related_table=$relation2[display_table];
 					$rel_i++;
 
-					$display_name=lang($rel_i.'e relatie');
+					$display_name=lang('relation %1',$rel_i);
 
 					$input= '<table cellspacing=0 cellpadding=3 border=1>';
 					$input.= '<tr>';

@@ -30,13 +30,20 @@
 
 	$this->plugins['imagepath']['name']				= 'imagepath';
 	$this->plugins['imagepath']['title']			= 'ImagePath plugin';
-	$this->plugins['imagepath']['version']			= '0.8.5';
+	$this->plugins['imagepath']['version']			= '0.8.6';
 	$this->plugins['imagepath']['description']		= 'plugin for uploading/resizing images and storing their imagepaths in to database, using default uploadpath for site or object';
 	$this->plugins['imagepath']['enable']			= 1;
+	$this->plugins['imagepath']['changelog']		= 
+	'
+	0.8.6
+	- added changelog
+	- changed varchar to string so it actually binds to varchars ;)
+	';
+
 	$this->plugins['imagepath']['db_field_hooks']	= array
 	(
 		'text',
-		'varchar',
+		'string',
 		'blob'
 	);
 
@@ -63,9 +70,30 @@
 		global $local_bo;
 		$field_name=substr($field_name,3);	
 
-		if ($local_bo->site_object['upload_url']) $upload_url=$local_bo->site_object['upload_url'].'/';
-		elseif($local_bo->site['upload_url']) $upload_url=$local_bo->site['upload_url'].'/';
-		else $upload_url=false;
+		if($local_bo->common->so->config[server_type]=='dev')
+		{
+			$field_prefix='dev_';
+		}
+
+		if($local_bo->site_object[$field_prefix.'upload_url'])
+		{
+			$upload_url=$local_bo->site_object[$field_prefix.'upload_url'].'/';
+			$upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
+		}
+		elseif($local_bo->site[$field_prefix.'upload_url'])
+		{
+			$upload_url=$local_bo->site[$field_prefix.'upload_url'].'/';
+			$upload_path=$local_bo->site[$field_prefix.'upload_path'];
+		}
+		else
+		{
+			$upload_url=false;
+			$upload_path=false;
+		}
+
+		//if ($local_bo->site_object['upload_url']) $upload_url=$local_bo->site_object['upload_url'].'/';
+		//elseif($local_bo->site['upload_url']) $upload_url=$local_bo->site['upload_url'].'/';
+		//else $upload_url=false;
 
 		/* if value is set, show existing images */	
 		if($value)
@@ -139,11 +167,30 @@
 		global $local_bo;
 		$magick=CreateObject('jinn.boimagemagick');
 
-		//die(var_dump($local_bo));
-		if ($local_bo->site_object['upload_path']) $upload_path=$local_bo->site_object['upload_path'].'/';
-		elseif($local_bo->site['upload_path']) $upload_path=$local_bo->site['upload_path'].'/';
-		else $upload_path=false;
+		if($local_bo->common->so->config[server_type]=='dev')
+		{
+			$field_prefix='dev_';
+		}
 
+		if($local_bo->site_object[$field_prefix.'upload_url'])
+		{
+			$upload_url=$local_bo->site_object[$field_prefix.'upload_url'].'/';
+			$upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
+		}
+		elseif($local_bo->site[$field_prefix.'upload_url'])
+		{
+			$upload_url=$local_bo->site[$field_prefix.'upload_url'].'/';
+			$upload_path=$local_bo->site[$field_prefix.'upload_path'];
+		}
+		else
+		{
+			$upload_url=false;
+			$upload_path=false;
+		}
+
+		//if ($local_bo->site_object['upload_path']) $upload_path=$local_bo->site_object['upload_path'].'/';
+		//elseif($local_bo->site['upload_path']) $upload_path=$local_bo->site['upload_path'].'/';
+		//else $upload_path=false;
 
 		$images_to_delete=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_DEL');
 
@@ -247,7 +294,7 @@
 
 			}
 
-			$img_position=0;
+			$imgposition=0;
 			foreach($images_to_add as $add_image)
 			{
 				if($add_image['name'])
@@ -392,9 +439,29 @@
 		global $local_bo;
 		$field_name=substr($field_name,3);	
 
-		if ($local_bo->site_object['upload_url']) $upload_url=$local_bo->site_object['upload_url'].'/';
-		elseif($local_bo->site['upload_url']) $upload_url=$local_bo->site['upload_url'].'/';
-		else $upload_url=false;
+		if($local_bo->common->so->config[server_type]=='dev')
+		{
+			$field_prefix='dev_';
+		}
+
+		if($local_bo->site_object[$field_prefix.'upload_url'])
+		{
+			$upload_url=$local_bo->site_object[$field_prefix.'upload_url'].'/';
+			$upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
+		}
+		elseif($local_bo->site[$field_prefix.'upload_url'])
+		{
+			$upload_url=$local_bo->site[$field_prefix.'upload_url'].'/';
+			$upload_path=$local_bo->site[$field_prefix.'upload_path'];
+		}
+		else
+		{
+			$upload_url=false;
+			$upload_path=false;
+		}
+//		if ($local_bo->site_object['upload_url']) $upload_url=$local_bo->site_object['upload_url'].'/';
+//		elseif($local_bo->site['upload_url']) $upload_url=$local_bo->site['upload_url'].'/';
+//		else $upload_url=false;
 
 		/* if value is set, show existing images */	
 		if($value)

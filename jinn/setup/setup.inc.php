@@ -24,8 +24,8 @@
 
 	$setup_info['jinn']['name']		= 'jinn';
 	$setup_info['jinn']['title']	= 'JiNN Data Manager';
-	$setup_info['jinn']['version']	= '0.5.2';
-	$setup_info['jinn']['app_order']= 100;
+	$setup_info['jinn']['version']	= '0.6.002';
+	$setup_info['jinn']['app_order']= 2;
 	$setup_info['jinn']['tables']	= array
 	(
 		'phpgw_jinn_acl',
@@ -48,4 +48,5 @@
 		'appname'  => 'phpgwapi',
 		'versions' => Array('0.9.13','0.9.14','0.9.15')
 	);
-?>
+
+

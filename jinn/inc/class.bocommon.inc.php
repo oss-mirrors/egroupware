@@ -62,7 +62,7 @@
 
 
 		/**
-		* return phpgw configuration setting for JiNN
+		* return egw configuration setting for JiNN
 		*
 		* @return ???
 		*/

@@ -56,7 +56,7 @@
 			));
 
 			$this->template->set_var('app_title',$this->app_title);
-			$this->template->set_var('screen_title',$screen_title);
+			$this->template->set_var('screen_title',$screen_title);	
 			$this->template->pparse('out','header');
 		}
 

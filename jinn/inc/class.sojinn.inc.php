@@ -26,9 +26,18 @@
 	{
 		var $phpgw_db;
 		var $site_db;
+		var $common;
+		var $config;
 
 		function sojinn()
 		{
+			$c = CreateObject('phpgwapi.config',$config_appname);
+			$c->read_repository();
+			if ($c->config_data)
+			{
+				$this->config = $c->config_data;
+			}
+			
 			$this->phpgw_db    	= $GLOBALS['phpgw']->db;
 			$this->phpgw_db->Debug	= False;
 		}
@@ -46,13 +55,29 @@
 			$this->phpgw_db->next_record();
 
 			$this->site_db 				= CreateObject('phpgwapi.db');
-			//$this->site_db->Host		= $this->phpgw_db->f('site_db_host');
-			// FIXME if db_host is set it gives error messages, but why???
-			$this->site_db->Type		= $this->phpgw_db->f('site_db_type');
-			$this->site_db->Database	= $this->phpgw_db->f('site_db_name');
-			$this->site_db->User		= $this->phpgw_db->f('site_db_user');
-			$this->site_db->Password	= $this->phpgw_db->f('site_db_password');
-			//die($this->phpgw_db->f('site_db_host'));
+
+			// if servertype is develment use dev site settings else use normal settings
+			if($this->config["server_type"]=='dev')
+			{
+				//$this->site_db->Host		= $this->phpgw_db->f('site_db_host');
+				// FIXME if db_host is set it gives error messages, but why???
+
+				$this->site_db->Type		= $this->phpgw_db->f('dev_site_db_type');
+				$this->site_db->Database	= $this->phpgw_db->f('dev_site_db_name');
+				$this->site_db->User		= $this->phpgw_db->f('dev_site_db_user');
+				$this->site_db->Password	= $this->phpgw_db->f('dev_site_db_password');
+
+			}
+			else
+			{
+				//$this->site_db->Host		= $this->phpgw_db->f('site_db_host');
+				// FIXME if db_host is set it gives error messages, but why???
+
+				$this->site_db->Type		= $this->phpgw_db->f('site_db_type');
+				$this->site_db->Database	= $this->phpgw_db->f('site_db_name');
+				$this->site_db->User		= $this->phpgw_db->f('site_db_user');
+				$this->site_db->Password	= $this->phpgw_db->f('site_db_password');
+			}
 		}
 
 		function site_close_db_connection()

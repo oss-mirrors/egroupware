@@ -30,7 +30,6 @@
 
 	class uiadmin
 	{
-
 		var $public_functions = Array(
 			'index' => True,
 			'import_phpgw_jinn_site' => True,
@@ -73,7 +72,13 @@
 			$this->template = $GLOBALS['phpgw']->template;
 
 			$this->ui = CreateObject('jinn.uicommon');
-			$this->ui->app_title=lang('Administrator Mode');
+
+			if($this->bo->so->config[server_type]=='dev')
+			{
+				$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
+			}
+			
+			$this->ui->app_title=$dev_title_string.	lang('Administrator Mode');
 		}
 
 		function admin_menu()
@@ -98,16 +103,14 @@
 
 		function index()
 		{
-
 			$this->ui->header(lang('index'));
 			$this->ui->msg_box($this->bo->message);
-//			$this->admin_menu();
 			$this->bo->save_sessiondata();
 		}	
 
 		function edit_this_jinn_site()
 		{
-			$GLOBALS[where_key]='site_id';//='.$this->bo->site_id;
+			$GLOBALS[where_key]='site_id';
 			$GLOBALS[where_value]=$this->bo->site_id;
 			
 			$this->edit_phpgw_jinn_sites();
@@ -125,7 +128,6 @@
 
 			}
 
-			
 			unset($this->bo->message[info]);
 			unset($this->bo->message[error]);
 
@@ -361,7 +363,6 @@
 		{
 			$this->ui->header(lang('Set Access Right for Site Objects'));
 			$this->ui->msg_box($this->bo->message);
-//			$this->admin_menu();
 			$access_rights = CreateObject('jinn.uiadminacl',$this->bo);
 			$access_rights->set_site_objects();
 
@@ -372,7 +373,6 @@
 		{
 			$this->ui->header(lang('Set Access Rights for Sites'));
 			$this->ui->msg_box($this->bo->message);
-//			$this->admin_menu();
 			$access_rights = CreateObject('jinn.uiadminacl',$this->bo);
 			$access_rights->set_sites();
 
@@ -386,7 +386,6 @@
 		{
 			$this->ui->header(lang('Add Edit'));
 			$this->ui->msg_box($this->bo->message);
-//			$this->admin_menu();
 			$add_edit = CreateObject('jinn.uiadminaddedit',$this->bo);
 			$add_edit->render_form($table);
 			$this->bo->save_sessiondata();
@@ -414,8 +413,6 @@
 			$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 			$GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
-		//	$GLOBALS['phpgw']->common->phpgw_header();
-			
 			$use_records_cfg=False;
 			
 			$plugin_name=$this->bo->plugins[$GLOBALS['plug_name']]['title'];
@@ -428,12 +425,8 @@
 			{
 				$GLOBALS[hidden_val]=str_replace('~','=',$GLOBALS[hidden_val]);
 				$orig_conf=explode(";",$GLOBALS[hidden_val]);
-				//var_dump($GLOBALS[plug_name]);
 				if ($GLOBALS[plug_name]==$GLOBALS[plug_orig]) $use_records_cfg=True;
 			}
-
-
-
 			
 			if (is_array($orig_conf))
 			{

@@ -44,8 +44,11 @@
 			$this->template = $GLOBALS['phpgw']->template;
 
 			$this->ui = CreateObject('jinn.uicommon');
-			$this->ui->app_title=lang('Moderator Mode');
-
+			if($this->bo->so->config[server_type]=='dev')
+			{
+				$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
+			}
+			$this->ui->app_title=$dev_title_string.lang('Moderator Mode');
 		}
 
 		/********************************
