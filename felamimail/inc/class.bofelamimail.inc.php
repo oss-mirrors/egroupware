@@ -120,13 +120,13 @@
 			$menuData[] = $data;
 		}
 		
-		function appendMessage($_folderName, $_header, $_body)
+		function appendMessage($_folderName, $_header, $_body, $_flags)
 		{
 			#print "<pre>$_header.$_body</pre>";
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
 			$header = str_replace("\n","\r\n",$_header);
 			$body   = str_replace("\n","\r\n",$_body);
-			$result = @imap_append($this->mbox, $mailboxString, "$header"."$body");
+			$result = @imap_append($this->mbox, $mailboxString, "$header"."$body", $_flags);
 			#print imap_last_error();
 			return $result;
 		}

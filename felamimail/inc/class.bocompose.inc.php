@@ -516,7 +516,10 @@
 				// mark message as answered
 				$bofelamimail = CreateObject('felamimail.bofelamimail');
 				$bofelamimail->openConnection($this->preferences['sentFolder']);
-				$bofelamimail->appendMessage($this->preferences['sentFolder'],$mail->sentHeader,$mail->sentBody);
+				$bofelamimail->appendMessage($this->preferences['sentFolder'],
+								$mail->sentHeader,
+								$mail->sentBody,
+								'\\Seen');
 				$bofelamimail->closeConnection();
 			}
 
