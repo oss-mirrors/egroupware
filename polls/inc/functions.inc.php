@@ -35,8 +35,8 @@
 		}
 
 		$poll_id = intval($poll_id);
-		$GLOBALS['phpgw']->db->query("select count(*) from phpgw_polls_user where user_id='" . $GLOBALS['phpgw_info']['user']['account_id']
-			. "' and poll_id='$poll_id'",__LINE__,__FILE__);
+		$GLOBALS['phpgw']->db->query("select count(*) from phpgw_polls_user where user_id='" . intval($GLOBALS['phpgw_info']['user']['account_id'])
+			. "' and poll_id='".intval($poll_id)."'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
 
 		if ($GLOBALS['phpgw']->db->f(0) == 0)
@@ -52,6 +52,7 @@
 
 	function poll_viewResults($poll_id)
 	{
+		$poll_id = intval($poll_id);
 		$GLOBALS['phpgw']->db->query("SELECT SUM(option_count) AS sum FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
 		$poll_sum = (int)$GLOBALS['phpgw']->db->f(0);
@@ -114,6 +115,7 @@
 	function poll_getResults($poll_id)
 	{
 		$ret = array();
+		$poll_id = intval($poll_id);
 
 		$GLOBALS['phpgw']->db->query("SELECT SUM(option_count) AS sum FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
