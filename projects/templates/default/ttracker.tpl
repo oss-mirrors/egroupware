@@ -4,7 +4,12 @@
 <center>{message}</center>
 <table border="0" width="100%" cellpadding="2" cellspacing="2">
 	<form method="POST" action="{action_url}">
-		<tr bgcolor="{row_on}">
+		<tr class="th">
+			<td valign="top">{lang_project}:</td>
+			<td valign="top" colspan="5">
+			{select_project}
+		</tr>
+		<tr class="row_on">
 			<td valign="top">{lang_activity}:</td>
 			<td valign="top" colspan="2">
 
@@ -15,7 +20,7 @@
 <!-- END act_own -->
 <!-- BEGIN activity -->
 
-				<select name="values[activity_id]"><option value="">{lang_select_activity}</option>{activity_list}</select>
+				<select name="values[activity_id]"><option value="">{lang_select}</option>{activity_list}</select>
 
 <!-- END activity -->
 
@@ -27,17 +32,17 @@
 <!-- END cost -->
 			</td>
 		</tr>
-		<tr bgcolor="{row_on}">
+		<tr class="row_on">
 			<td valign="top">{lang_remark}:</td>
 			<td colspan="5" align="center"><textarea style="width:99%;" name="values[remark]" rows="4" wrap="VIRTUAL">{remark}</textarea></td>
 		</tr>
-		<tr bgcolor="{row_off}">
+		<tr class="row_off">
 			<td>&nbsp;</td>
 			<td colspan="2">{lang_date}</td>
 			<td>{lang_time}</td>
 			<td colspan="2">{lang_action}</td>
 		</tr>
-		<tr bgcolor="{row_off}">
+		<tr class="row_off">
 			<td>{lang_ttracker}:</td>
 			<td colspan="2">{curr_date}</td>
 			<td>{curr_time}</td>
@@ -51,7 +56,7 @@
 		<tr height="15">
 			<td>&nbsp;</td>
 		</tr>
-		<tr bgcolor="{row_on}">
+		<tr class="row_on">
 			<td>{lang_manuell_entries}:</td>
 			<td colspan="2">{start_date_select}</td>
 			<td>
@@ -60,17 +65,15 @@
 			</td>
 			<td colspan="2"><input type="submit" name="values[apply]" value="{lang_apply}"></td>
 		</tr>
-		<tr bgcolor="{row_on}">
+		<tr class="row_on">
 			<td>&nbsp;</td>
-			<td>{lang_distance}:</td>
-			<td><input type="text" name="values[km_distance]" value="{km_distance}" size="6"></td>
-			<td>{lang_time_of_journey}:</td>
-			<td colspan="2"><input type="text" name="values[t_journey]" value="{t_journey}" size="6">&nbsp;[hh:mm]</td>
+			<td colspan="2">{lang_distance}: <input type="text" name="values[km_distance]" value="{km_distance}" size="6"></td>
+			<td colspan="3">{lang_time_of_journey}: <input type="text" name="values[t_journey]" value="{t_journey}" size="6">&nbsp;[hh:mm]</td>
 		</tr>
 		<tr height="15">
 			<td>&nbsp;</td>
 		</tr>
-		<tr bgcolor="{th_bg}" width="100%">
+		<tr class="th" width="100%">
 			<td>{lang_entry}</td>
 			<td>{lang_activity}</td>
 			<td>{lang_from}</td>
@@ -81,9 +84,9 @@
 
 <!-- BEGIN ttracker -->
 
-		<tr bgcolor="{th_bg}">
+		<tr class="th">
 			<td colspan="5">{project_title}</td>
-			<td align="center"><input type="radio" name="values[project_id]" value="{project_id}" {radio_checked}></td>
+			<td>&nbsp;</td>
 		</tr>
 		{thours_list}
 		<tr height="5">

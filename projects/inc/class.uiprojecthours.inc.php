@@ -23,7 +23,6 @@
 	* Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.         *
 	\*******************************************************************/
 	/* $Id$ */
-	// $Source$
 
 	class uiprojecthours
 	{
@@ -213,25 +212,6 @@
 			$this->set_app_langs();
 		}
 
-		function admin_header_info()
-		{
-			if ($this->boprojects->isprojectadmin('pad'))
-			{
-				$admin_header = '&nbsp;&gt;&nbsp;' . lang('administrator');
-			}
-
-			if ($this->boprojects->isprojectadmin('pmanager'))
-			{
-				$admin_header .= '&nbsp;&gt;&nbsp;' .  lang('manager');
-			}
-
-			if ($this->boprojects->isprojectadmin('psale'))
-			{
-				$admin_header .= '&nbsp;&gt;&nbsp;' .  lang('seller');
-			}
-			return $admin_header;
-		}
-
 		function list_projects()
 		{
 			$action		= get_var('action',array('POST','GET'));
@@ -262,8 +242,7 @@
 													. $pro_main . '&action=hours');
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main?lang('list jobs'):lang('list projects'))
-															. $this->admin_header_info();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main?lang('list jobs'):lang('list projects'));
 
 			$this->display_app_header();
 
@@ -379,7 +358,7 @@
 			$project_id	= get_var('project_id',array('POST','GET'));
 			$pro_main	= get_var('pro_main',array('POST','GET'));
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('list work hours') . $this->admin_header_info();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('list work hours');
 			$this->display_app_header();
 
 			$this->project_id = intval($project_id);
@@ -522,6 +501,10 @@
 
 		function ttracker()
 		{
+			if (!is_object($this->jscal))
+			{
+				$this->jscal = CreateObject('phpgwapi.jscalendar');
+			}
 			//$project_id	= get_var('project_id',array('POST','GET'));
 			//$pro_main	= get_var('pro_main',array('POST','GET'));
 			$values		= get_var('values',array('POST'));
@@ -546,6 +529,7 @@
 			{
 				$values['action'] = 'apply';
 				$values['ttracker'] = True;
+				$values += $this->jscal->input2date($values['start_date'],false,'sday','smonth','syear');
 				$error = $this->bohours->check_values($values);
 				if (is_array($error))
 				{
@@ -570,8 +554,6 @@
 
 			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('time tracker');
 			$this->display_app_header();
-
-
 
 			$GLOBALS['phpgw']->template->set_file(array('ttracker_t' => 'ttracker.tpl'));
 			$GLOBALS['phpgw']->template->set_block('ttracker_t','ttracker','track');
@@ -608,9 +590,7 @@
 			$GLOBALS['phpgw']->template->set_var('km_distance',$values['km_distance']);
 			$GLOBALS['phpgw']->template->set_var('t_journey',$values['t_journey']);
 
-			$GLOBALS['phpgw']->template->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$values['syear']),
-																			$this->sbox->getMonthText('values[smonth]',$values['smonth']),
-																			$this->sbox->getDays('values[sday]',$values['sday'])));
+			$GLOBALS['phpgw']->template->set_var('start_date_select',$this->jscal->input('values[start_date]',time()));																
 
 			if($this->siteconfig['accounting'] == 'activity')
 			{
@@ -626,14 +606,15 @@
 			$GLOBALS['phpgw']->template->fp('costhandle','cost',True);
 
 			$tracking = $this->bohours->list_ttracker();
-
 			//_debug_array($tracking);
-
-			while(is_array($tracking) && list(,$track) = each($tracking))
+			
+			$projects = array('' => lang('select project'));
+			foreach((array)$tracking as $track)
 			{
+				$projects[$track['project_id']] = $track['project_title'];
+
 				$GLOBALS['phpgw']->template->set_var('project_title',$track['project_title']);
 				$GLOBALS['phpgw']->template->set_var('project_id',$track['project_id']);
-				$GLOBALS['phpgw']->template->set_var('radio_checked',($track['project_id']==$this->project_id?' CHECKED':''));
 
 				$GLOBALS['phpgw']->template->set_var('thours_list','');
 
@@ -676,6 +657,13 @@
 				}
 				$GLOBALS['phpgw']->template->fp('track','ttracker',True);
 			}
+			if (!is_object($GLOBALS['phpgw']->html))
+			{
+				$GLOBALS['phpgw']->html = CreateObject('phpgwapi.html');
+			}
+			$GLOBALS['phpgw']->template->set_var('select_project',
+				$GLOBALS['phpgw']->html->select('values[project_id]',$this->project_id,$projects,true,
+					$this->siteconfig['accounting'] == 'activity' ? 'onchange="this.form.submit();"' : ''));
 
 			$GLOBALS['phpgw']->template->set_var('listhandle','');
 			$GLOBALS['phpgw']->template->pfp('out','ttracker_t',True);
@@ -927,8 +915,7 @@
 				$GLOBALS['phpgw']->redirect_link('/index.php',$link_data);
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($hours_id?lang('edit work hours'):lang('add work hours'))
-														. $this->admin_header_info();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($hours_id?lang('edit work hours'):lang('add work hours'));
 			$this->display_app_header();
 
 			$GLOBALS['phpgw']->template->set_file(array('hours_form' => 'hours_formhours.tpl'));
@@ -1108,8 +1095,7 @@
 				$GLOBALS['phpgw']->redirect_link($referer);
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('view work hours')
-														. $this->admin_header_info();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('view work hours');
 			$this->display_app_header();
 
 			$GLOBALS['phpgw']->template->set_file(array('hours_view' => 'hours_view.tpl'));
@@ -1199,8 +1185,7 @@
 				$GLOBALS['phpgw']->redirect_link('/index.php',$link_data);
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('delete work hours')
-														. $this->admin_header_info();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('delete work hours');
 
 			$this->display_app_header();
 
