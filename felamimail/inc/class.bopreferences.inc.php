@@ -74,11 +74,16 @@
 			$data['imapAdminUsername']	= $profileData['imapAdminUsername'];
 			$data['imapAdminPW']		= $profileData['imapAdminPW'];
 
-#			}
-			
 			// check for user specific settings
 			#_debug_array($felamimailUserPrefs);
 			#_debug_array($profileData);
+			
+			if ($profileData['imapEnableSieve'] == 'yes')
+			{
+				$data['imapSieveServer']	= $profileData['imapSieveServer'];
+				$data['imapSievePort']		= $profileData['imapSievePort'];
+			}
+			
 			if ($profileData['userDefinedAccounts'] == 'yes' &&
 				$felamimailUserPrefs['use_custom_settings'] == 'yes')
 			{

@@ -39,8 +39,8 @@
 			$this->bopreferences    = CreateObject('felamimail.bopreferences');
 			$this->mailPreferences  = $this->bopreferences->getPreferences();
 			
-			$this->bopreferences	= CreateObject('felamimail.bopreferences');
-			$this->mailPreferences	= $this->bopreferences->getPreferences();
+			#$this->bopreferences	= CreateObject('felamimail.bopreferences');
+			#$this->mailPreferences	= $this->bopreferences->getPreferences();
 
 			$this->bofelamimail     = CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$this->connectionStatus	= $this->bofelamimail->openConnection();
@@ -51,9 +51,9 @@
 			unset($config);
 			
 			$this->restoreSessionData();
-			
-			$sieveHost		= $felamimailConfig["sieveServer"];
-			$sievePort		= $felamimailConfig["sievePort"];
+
+			$sieveHost		= $this->mailPreferences["imapSieveServer"];
+			$sievePort		= $this->mailPreferences["imapSievePort"];
 			$username		= $this->mailPreferences['username'];
 			$password		= $this->mailPreferences['key'];
 			$this->sieve		= CreateObject('felamimail.SieveSession',$sieveHost, $sievePort, $username, $password);
