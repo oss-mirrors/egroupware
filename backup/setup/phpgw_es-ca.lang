@@ -1,0 +1,68 @@
+absolute path of the backup directory	backup	es-ca	Ruta absoluta del directori de la copia de seguretat (ex.: /usr/local/www/egroupware/backup/arxius)
+absolute path of the directory to store the backup script	backup	es-ca	Ruta absoluta del directori de l'aplicació de Copia de Seguretat
+archive type	backup	es-ca	Trieu el tipus d'arxiu
+backup	common	es-ca	Copia de Seguretat
+backup administration	common	es-ca	Administració de la Copia de Seguretat
+bzip2	admin	es-ca	Compressió bzip2
+configuration backup	backup	es-ca	Configuració de la Copia de Seguretat
+configuration localhost	backup	es-ca	Configuració de l'equip local
+configuration remote host	backup	es-ca	Configuración del equipo remoto
+create backups of your data ?	backup	es-ca	Crear Copies de seguretat de les vostres dades?:
+daily	backup	es-ca	cada dia
+data	backup	es-ca	Dades
+directory locations	admin	es-ca	ubicació dels directoris
+directory names	admin	es-ca	noms del directoris
+e-mail	backup	es-ca	Marqueu per rebre notificacions per correu electrònic
+homedirs	admin	es-ca	Directoris d'inici
+interval	backup	es-ca	Interval
+ip or hostname	backup	es-ca	IP o nom de l'equip
+ldap	common	es-ca	LDAP
+ldap database	admin	es-ca	Base de dades LDAP
+list backup archives	backup	es-ca	lista de archivos de copia de seguridad
+maildir	admin	es-ca	Notificació al correu:
+monthly	backup	es-ca	Cada mes
+mysql	admin	es-ca	MySQL
+nfs	backup	es-ca	NFS
+no backup archives available !	backup	es-ca	No hi han arxius de copia de seguretat disponibles
+number of stored backup versions	backup	es-ca	Nombre de copies de seguretat desades abans d'esborrar les antigues:
+operating system	backup	es-ca	Sistema operatiu
+password	backup	es-ca	Contrseña
+pgsql	admin	es-ca	PostgreSQL
+php cgi	admin	es-ca	Ruta completa al vostre executable PHP (ex: /usr/local/bin/php)
+plase enter username and password for remote connection !	backup	es-ca	Ingrese usuario y clave para la coneccion remota !
+please enter the path of the backup dir and/or enable showing archives in phpgroupware !	backup	es-ca	Ingrese el camino absoluto del directorio de resguardos !
+please enter the path of the needed applications in *site configuration* !	backup	es-ca	Entreu la ruta de les aplicacions necessàries en "Configuració del lloc"!
+please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	es-ca	Entreu la ruta al directori de la copia de seguretat i/o activeu mostrar arxius en eGroupWare
+please enter username and password for remote connection !	backup	es-ca	Entreu el nom d'usuari i contrasenya per a connexió remota
+please select an application for transport to the remote host !	backup	es-ca	Trieu una aplicació per al transport al equip remot
+please set the path to a local dir to store the backup script !	backup	es-ca	Seleccioneu la ruta al directori local per desar el script de la copia de seguretat
+please set the path to the ldap database dir in *site configuration* !	backup	es-ca	Indiqueu la ruta a la base de dades LDAP en "Configuració del lloc"!
+please set the path to the mysql database dir in *site configuration* !	backup	es-ca	Indiqueu la ruta a la base de dades MySQL en "Configuració del lloc"
+please set the path to the postgresql database dir in *site configuration* !	backup	es-ca	Indiqueu la ruta a la base de dades PostgreSQL en "Configuració del lloc"
+please set the values in *site configuration* !	backup	es-ca	Indiqueu els valors en "Configuració del lloc"
+please specify the ip of the remote host !	backup	es-ca	Especifiqueu l'adreça IP del sistema remot
+please specify the name of the maildir in *site configuration* !	backup	es-ca	Indiqueu el nom del directori Maildir en "Configuració del lloc"
+please specify the path to the backup directory !	backup	es-ca	Indiqueu la ruta al directori de la copia de seguretat!
+please specify the path to the user-homedirectories in *site configuration* !	backup	es-ca	Indiqueu la ruta als directoris de los usuaris en "Configuració del lloc"
+program locations	admin	es-ca	Ubicació dels programes
+save backup locally ?	backup	es-ca	Guardar copia de seguretat localment?
+save backup to a remote host ?	backup	es-ca	¿Guardar copia de seguridad en un servidor remoto?
+select archive type	backup	es-ca	Seleccioneu tipus d'arxiu
+select interval	backup	es-ca	Seleccioneu interval
+select transport application	backup	es-ca	Seleccione aplicación de transporte
+settings	admin	es-ca	Configuració
+show backup archives in phpgroupware ?	backup	es-ca	Mostrar arxius de copia de seguretat en eGroupWare?
+smbmount	backup	es-ca	SMBMOUNT
+sql	backup	es-ca	SQL
+tar	admin	es-ca	tar
+tar.bz2	backup	es-ca	tar.bz2
+tar.gz	backup	es-ca	tar.gz
+the backup application is not configured for showing the archives in phpgroupware yet !	backup	es-ca	La aplicació de copia de seguretat encara no està configurada per mostrar els arxius en eGroupWare!
+the directory to store the backup script must be outside of the webservers *documentroot* !	backup	es-ca	El directori per desar el script de copia de seguretat ha d'estar dintre dels directoris arrel dels servidors web!
+the ftp connection failed ! please check your configuration !	backup	es-ca	¡La conexión por ftp falló! Por favor, compruebe su configuración
+transport application	backup	es-ca	Aplicación de transporte
+user	backup	es-ca	Usuario
+versions can only be a number !	backup	es-ca	Les versions només poden ser un número
+weekly	backup	es-ca	cada setmana
+your sql database isnt supported by this application !	backup	es-ca	La vostra base de dades SQL no està suportada per aquesta aplicació
+zip	common	es-ca	zip
