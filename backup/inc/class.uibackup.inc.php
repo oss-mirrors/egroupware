@@ -94,7 +94,7 @@
 			}
 
 			$GLOBALS['phpgw']->common->phpgw_header();
-
+			echo parse_navbar();
 			$this->set_app_langs();
 
 			$GLOBALS['phpgw']->template->set_file(array('admin_form' => 'admin_form.tpl'));
@@ -191,7 +191,7 @@
 			);
 
 			$GLOBALS['phpgw']->common->phpgw_header();
-
+			echo parse_navbar();
 			$this->set_app_langs();
 
 			$GLOBALS['phpgw']->template->set_file(array('archive_list_t' => 'web_form.tpl'));

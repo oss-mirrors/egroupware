@@ -1,6 +1,6 @@
 Absolute path of the directory to store the backup script	backup	de	Absoluter Pfad des Verzeichnisses zum speichern des Datensicherungs-Skriptes
 Archive type	backup	de	Archiv Typ
-Backup	common	de	Datensicherung
+backup	common	de	Datensicherung
 Backup administration	common	de	Administration der Datensicherung
 bzip2	admin	de	bzip2
 Configuration backup	backup	de	Konfiguration der Datensicherung
@@ -13,6 +13,7 @@ interval	backup	de	Intervall
 Select interval	backup	de	Intervall ausw&auml;hlen
 Data	backup	de	Daten
 SQL	backup	de	SQL
+homedirs	admin	de	Heimat Verzeichnisse
 LDAP	common	de	LDAP
 ldap database	admin	de	LDAP Datenbank
 E-MAIL	backup	de	E-MAIL
@@ -44,6 +45,7 @@ the ftp connection failed ! Please check your configuration !	backup	de	Die ftp 
 transport application	backup	de	Transport Programm
 absolute path of the backup directory	backup	de	Absoluter Pfad des Backup-Verzeichnisses
 ip or hostname	backup	de	IP oder Rechnername
+maildir	admin	de	E-Mail Ordner
 monthly	backup	de	monatlich
 mysql	admin	de	MySQL
 no backup archives available !	backup	de	Es sind keine Datensicherungs-Archive vorhanden !

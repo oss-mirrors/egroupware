@@ -12,6 +12,7 @@
 
 	{
 // Only Modify the $file and $title variables.....
+		$title = $appname;
 		$file = Array
 		(
 			'Site Configuration'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
@@ -19,6 +20,6 @@
 		);
 
 //Do not modify below this line
-		$GLOBALS['phpgw']->common->display_mainscreen($appname,$file);
+		display_section($appname,$title,$file);
 	}
 ?>

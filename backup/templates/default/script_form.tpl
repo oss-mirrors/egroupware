@@ -167,7 +167,37 @@
 
 	if ($bemail == 'yes')
 	{
-<!-- BEGIN script_ba -->
+		$h_path		= '{home_path}';
+		$h_basedir	= opendir($h_path);
+
+		while ($user_home = readdir($h_basedir))
+		{
+			if (($user_home != '.') && ($user_home != '..'))
+			{
+				if (is_dir($h_path . '/' . $user_home . '/{maildir}'))
+				{
+					chdir($h_path . '/' . $user_home);
+					$out	= $basedir . '/' . get_date() . '_phpGWBackup_email_' . $user_home . '.' . $end;
+					$in		= ' {maildir}';
+					system("$command" . $out . $in . ' 2>&1 > /dev/null');
+
+					if ($bcomp == 'tar.bz2')
+					{
+						$end = '.bz2';
+						system("$bzip2 -z " . $out);
+						$out = $out . $end;
+					}
+					$output[]	= $out;
+					$input[]	= substr($out,strlen($basedir)+1);
+				}
+			}
+		}
+		closedir($h_basedir);
+	}
+
+	check_datedue($basedir);
+
+/* <!-- BEGIN script_ba -->
 		if (is_dir('/home/{lid}') == True)
 		{
 			chdir('/home/{lid}');
@@ -185,9 +215,8 @@
 			$input[]	= substr($out,strlen($basedir)+1);
 		}
 <!-- END script_ba -->
-	}
+	} */
 
-	check_datedue($basedir);
 
 // ----------------------- move to remote host --------------------------------
 
