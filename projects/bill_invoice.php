@@ -24,6 +24,14 @@
   $t->set_var("lang_action",lang("Invoice"));
   $t->set_var(date_hint,"");
   
+   if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {                                                                                                        
+   $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];                                                                                                         
+   $phpgw->template->set_var("error","");                                                                                                                                        
+   }                                                                                                                                                                             
+   else {                                                                                                                                                                        
+   $phpgw->template->set_var("error",lang("Please select your currency in preferences!"));                                                                                       
+   }  
+
   $db2 = $phpgw->db;
   
   if(($Update) or ($Invoice)) {
@@ -79,11 +87,7 @@
 
 
   $common_hidden_vars =
-   "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
- . "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
- . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
- . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
- . "<input type=\"hidden\" name=\"invoice_id\" value=\"$invoice_id\">\n"
+   "<input type=\"hidden\" name=\"invoice_id\" value=\"$invoice_id\">\n"
  . "<input type=\"hidden\" name=\"project_id\" value=\"$project_id\">\n";
 
   $t->set_var(common_hidden_vars,$common_hidden_vars);   
@@ -92,19 +96,12 @@
      $start = 0;
   $ordermethod = "order by date asc";
 
-    // ===========================================
-    // nextmatch variable template-declarations
-    // ===========================================
 
-     $t->set_var(total_matchs,$total_matchs);
+//-------------- list header variable template-declarations------------------------
 
-  // ---------- end nextmatch template --------------------
-
-  // ===========================================
-  // list header variable template-declarations
-  // ===========================================
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
 
+  $t->set_var(currency,$currency);
   $t->set_var(sort_activity,lang("Activity"));
   $t->set_var(sort_remark,lang("Remark"));
   $t->set_var(sort_status,lang("Status"));
@@ -120,10 +117,8 @@
   $t->set_var(lang_print_invoice,lang("Print invoice"));
   $t->set_var(print_invoice,$phpgw->link("bill_invoiceshow.php","invoice_id=$invoice_id"));
 
-  // -------------- end header declaration -----------------
+// ------------------------ end header declaration ------------------------------------
 
-
-  $limit = $phpgw->nextmatchs->sql_limit($start);
 
   if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
     $phpgw->db->query("select title,ab_company_id,ab_lastname,ab_firstname,company_name from "
@@ -269,9 +264,9 @@
     $aes = ceil($phpgw->db->f("minutes")/$phpgw->db->f("minperae"));
     $sumaes += $aes;
     $summe += (float)($phpgw->db->f("billperae")*$aes);
-    // ============================================
-    // template declaration for list records
-    // ============================================
+
+
+// -------------------- declaration for list records ---------------------------
 
     $t->set_var(array("select" => $select,
 		      "activity" => $activity,
@@ -288,15 +283,14 @@
 					 . "\">" . lang("Edit hours") . "</a>"));
     $t->parse("list", "projecthours_list", true);
 
-    // -------------- end record declaration ------------------------
+// ------------------------ end record declaration ------------------------
   }
     $t->set_var(sum_sum,sprintf("%01.2f",$summe));
     $t->set_var(sum_aes,$sumaes);
-    $t->set_var(title_netto,lang("Net"));
+    $t->set_var(title_netto,lang("net"));
 
 // na_list
   if($invoice_id) {
-//    $t->set_block("projecthours_list_t", "projecthours_na_list", "list");
     $phpgw->db->query("SELECT p_hours.id as id,p_hours.remark,p_activities.descr,status,date,"
                   . "end_date,minutes,p_hours.minperae,p_hours.billperae FROM "
                   . "p_activities,p_hours,p_projectactivities WHERE status='done' AND "
@@ -354,9 +348,9 @@
       $aes = ceil($phpgw->db->f("minutes")/$phpgw->db->f("minperae"));
       $sumaes += $aes;
       $summe += (float)($phpgw->db->f("billperae")*$aes);
-      // ============================================
-      // template declaration for list records
-      // ============================================
+
+
+// ------------------------- template declaration for list records ----------------------------
   
       $t->set_var(array("select" => $select,
   		        "activity" => $activity,
@@ -373,7 +367,7 @@
                                        . "\">". lang("Edit hours") . "</a>"));
       $t->parse("list", "projecthours_list", true);
   
-      // -------------- end record declaration ------------------------
+// ---------------------------------- end record declaration -------------------------------------
     }
   }
 // na_list_end

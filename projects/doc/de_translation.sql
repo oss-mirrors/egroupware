@@ -19,6 +19,7 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Address book','
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'My address','projects','de','Meine Adresse');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Firstname','projects','de','Vorname');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Lastname','projects','de','Nachname');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'net','projects','de','netto');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Username','projects','de','Benutzername');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Add hour','projects','de','Job hinzuf&uuml;gen');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Edit','projects','de','Bearbeiten');
@@ -91,7 +92,6 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Activity','proj
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Active','projects','de','Aktiv');                                                                                                
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Select','projects','de','Ausw&auml;hlen');                                                                                       
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Workunits','projects','de','Arbeitseinheiten');                                                                                        
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Net','projects','de','Netto');                                                                                                 
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Sum','projects','de','Summe');                                                                                                   
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Edit','projects','de','Bearbeiten');                                                                                             
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Add project','projects','de','Projekt hinzuf&uuml;gen');                                                                         

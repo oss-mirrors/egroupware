@@ -95,7 +95,7 @@
         <td width=10%>&nbsp;</td>
         <td width=10%>&nbsp;</td>
         <td width=30%>&nbsp;</td>
-        <td width=10%>{currency}&nbsp;Netto:</td>
+        <td width=10%>{currency}&nbsp;{lang_netto}:</td>
         <td width=10% align=right>{sum_netto}</td>
       </tr>
       <tr>

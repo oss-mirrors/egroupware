@@ -21,6 +21,14 @@
                       "activities_list"   => "listactivities.tpl"));
   $t->set_block("activities_list_t", "activities_list", "list");
 
+   if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {                                                                                                               
+   $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];                                                                                                                
+   $t->set_var("error","");                                                                                                                                               
+   }                                                                                                                                                                                    
+   else {                                                                                                                                                                               
+   $t->set_var("error",lang("Please select your currency in preferences!"));                                                                                              
+   }
+
   $common_hidden_vars =
    "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
  . "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
@@ -82,7 +90,9 @@
   // ===========================================
   // list header variable template-declarations
   // ===========================================
+  
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
+  $t->set_var(currency,$currency);
   $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"activities.php",lang("Activity ID")));
   $t->set_var(sort_descr,$phpgw->nextmatchs->show_sort_order($sort,"descr",$order,"activities.php",lang("Description")));
   $t->set_var(sort_billperae,$phpgw->nextmatchs->show_sort_order($sort,"billperae",$order,"activities.php",lang("Bill per workunit")));

@@ -96,7 +96,8 @@
    $t->set_var(lang_date,lang("Date"));                                                                                                                                                         
    $t->set_var(lang_descr,lang("Description"));                                                                                                                                                 
    $t->set_var("currency",$currency);                                                                                                                                                         
-   $t->set_var(lang_mwst,lang("tax"));                                                                                                                                                         
+   $t->set_var(lang_mwst,lang("tax"));
+   $t->set_var(lang_netto,lang("net"));                                                                                                                                                         
    
   
    if ($phpgw_info["apps"]["timetrack"]["enabled"]) {

@@ -25,8 +25,7 @@
 </table> 
 
  {common_hidden_vars}
-  {total_matchs}
-  {next_matchs}
+   {error}
 
 <table width=100% border=0 cellspacing=1 cellpadding=3>
     <tr bgcolor="{th_bg}">
@@ -36,8 +35,8 @@
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_status}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_date}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_aes}</td>
-      <td width="10%" bgcolor="{th_bg}" align=center>{sort_billperae}</td>
-      <td width="7%" bgcolor="{th_bg}" align=center>{sort_sum}</td>
+      <td width="10%" bgcolor="{th_bg}" align=center>{currency}&nbsp;{sort_billperae}</td>
+      <td width="7%" bgcolor="{th_bg}" align=center>{currency}&nbsp;{sort_sum}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{h_lang_edithour}</td>
     </tr>
 <!-- BEGIN projecthours_list -->
@@ -60,7 +59,7 @@
         <td width="20%">&nbsp;</td>
         <td width="20%">&nbsp;</td>
         <td width="10%">&nbsp;</td>
-        <td width="10%" align=center><font size="4"><b>{title_netto}</b></font></td>
+        <td width="10%" align=center><font size="4"><b>{currency}&nbsp;{title_netto}</b></font></td>
         <td width="10%" align=right><font size="4"><b>{sum_aes}</b></font></td>
         <td width="10%">&nbsp;</td>
         <td width="7%" align=right><font size="4"><b>{sum_sum}</b></font></td>

@@ -19,7 +19,7 @@
   $phpgw_info["flags"]["currentapp"] = "projects";
   include("../header.inc.php");
 
-  
+
   $db2 = $phpgw->db;
   
   
@@ -29,15 +29,24 @@
   	
   	$t->set_var("actionurl",$phpgw->link("addactivity.php"));
   	$t->set_file(array( "activity_add" => "formactivity.tpl"));
-  	
-  	// ====================================================================
-     	// create two seperate blocks, editblock will be cut off from template
-     	// addblock contains the buttons needed
-     	// ====================================================================
+
+// =========================================================================================
+//           create two seperate blocks, editblock will be cut off from template
+//           addblock contains the buttons needed
+// =========================================================================================
+
      	$t->set_block("activity_add", "add", "addhandle");
      	$t->set_block("activity_add", "edit", "edithandle");
   	
-  	$t->set_var("lang_action",lang("Add activity"));
+   if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {                                                                                                               
+   $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];                                                                                                                
+   $t->set_var(error,"");                                                                                                                                               
+   }                                                                                                                                                                                    
+   else {                                                                                                                                                                               
+   $t->set_var(error,lang("Please select your currency in preferences!"));                                                                                              
+   }  
+
+	$t->set_var("lang_action",lang("Add activity"));
 	
 	$common_hidden_vars = "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
         		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
@@ -59,6 +68,7 @@
         $t->set_var("descr","");
         $t->set_var("lang_minperae",lang("Minutes per workunit"));
         $t->set_var("minperae","");
+        $t->set_var(currency,$currency);
         $t->set_var("lang_billperae",lang("Bill per workunit"));
         $t->set_var("billperae","");
 

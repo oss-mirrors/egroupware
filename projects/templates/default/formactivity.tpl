@@ -4,8 +4,9 @@
 
       <center>
        <form method="POST" name="activity_form" action="{actionurl}">
-        {common_hidden_vars}
-        <table width="75%" border="0" cellspacing="1" cellpadding="3">
+         {common_hidden_vars}
+          {error}
+          <table width="75%" border="0" cellspacing="1" cellpadding="3">
          <tr>
           <td>{lang_num}:</td>
           <td><input type="text" name="num" value="{num}"></td>
@@ -19,7 +20,7 @@
           <td><select name="remarkreq">{remarkreq_list}</select></td>
          </tr>
          <tr>
-          <td>{lang_billperae}:</td>
+          <td>{currency}&nbsp;{lang_billperae}:</td>
           <td><input type="text" name="billperae" value="{billperae}"></td>
          </tr>
          <tr>

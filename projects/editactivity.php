@@ -35,6 +35,15 @@
 
   if (! $submit) {
 
+   if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {                                                                                                                
+   $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];                                                                                                                 
+   $phpgw->template->set_var("error","");                                                                                                                                                
+   }                                                                                                                                                                                     
+   else {                                                                                                                                                                                
+   $phpgw->template->set_var("error",lang("Please select your currency in preferences!"));                                                                                               
+   }
+
+
      $phpgw->db->query("select * from p_activities "
 		 . "WHERE id='$id'");
      $phpgw->db->next_record();
@@ -42,13 +51,15 @@
      $t = new Template($phpgw_info["server"]["app_tpl"]);
      $t->set_file(array( "activity_edit" => "formactivity.tpl"));
      
-     // ====================================================================
-     // create two seperate blocks, addblock will be cut off from template
-     // editblock contains the buttons and forms for edit
-     // ====================================================================
+// ==========================================================================================
+//             create two seperate blocks, addblock will be cut off from template
+//             editblock contains the buttons and forms for edit
+// ==========================================================================================
+     
      $t->set_block("activity_edit", "add", "addhandle");
      $t->set_block("activity_edit", "edit", "edithandle");
      
+     $t->set_var("currency",$currency);
      $t->set_var("actionurl",$phpgw->link("editactivity.php"));
      $t->set_var("deleteurl",$phpgw->link("deleteactivity.php"));
      $t->set_var("lang_action",lang("Edit activity"));
