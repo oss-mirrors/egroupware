@@ -17,6 +17,7 @@
 		'currentapp'		=> 'email',
 		'enable_network_class'	=> True,
 		//'enable_send_class'	=> True,
+		'enable_send_class'	=> True,
 		'noheader'		=> True,
 		'nonavbar'		=> True
 	);
@@ -168,7 +169,10 @@
 // ----  Send The Email  -----
 	//$rc = $phpgw->send_2822->msg('email', $to, $subject, stripslashes($body), '', $cc, $bcc);
 	// do not stripslash the body because we already stripped it above
-	$rc = $phpgw->send_2822->msg('email', $to, $subject, $body, '', $cc, $bcc);
+	//$rc = $phpgw->send_2822->msg('email', $to, $subject, $body, '', $cc, $bcc);
+	
+	$rc = $phpgw->send->msg('email', $to, $subject, $body, '', $cc, $bcc);
+	
 	if ($rc)
 	{
 		//header('Location: '.$phpgw->link('index.php','cd=13&folder='.urlencode($return)));
