@@ -115,12 +115,26 @@
 		$GLOBALS['setup_info']['wiki']['currentver'] = '0.9.15.005';
 		return $GLOBALS['setup_info']['wiki']['currentver'];
 	}
-	
+
 
 	$test[] = '0.9.15.005';
 	function wiki_upgrade0_9_15_005()
 	{
 		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0';
+		return $GLOBALS['setup_info']['wiki']['currentver'];
+	}
+
+
+	$test[] = '1.0.0';
+	function wiki_upgrade1_0_0()
+	{
+		// drop the index on the page-content, as it limites the content to 2700 chars
+		if ($GLOBALS['phpgw_setup']->oProc->sType == 'pgsql')
+		{
+			// we need to do this in sql, as schemaproc has no function for that atm.
+			$GLOBALS['phpgw_setup']->oProc->query('DROP INDEX phpgw_wiki_pages_body_idx');
+		}
+		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.001';
 		return $GLOBALS['setup_info']['wiki']['currentver'];
 	}
 ?>
