@@ -467,7 +467,7 @@ class mail_msg extends mail_msg_wrappers
 				.'&'.$local_args['acctnum_key_name'].'=0';
 		//$option_text = lang('default account').' '.lang('as').' &quot;'.$this->get_pref_value('fullname', 0).'&quot;';
 		//$option_text = lang('default').'&nbsp;&nbsp;'.$this->get_pref_value('fullname', 0);
-		$option_text = lang('default: ').'&nbsp;&nbsp;'.$this->get_pref_value('fullname', 0);
+		$option_text = lang('default:').'&nbsp;&nbsp;'.$this->get_pref_value('fullname', 0);
 		
 		$item_tags .= '<option value="'.$option_value.'"'.$sel.'>'.$option_text.'</option>'."\r\n";
 		
@@ -513,7 +513,7 @@ class mail_msg extends mail_msg_wrappers
 						.'&'.$local_args['acctnum_key_name'].'='.$this_acctnum;
 				//$option_text = lang('account').' ['.$this_acctnum.']'.' '.lang('as').' &quot;'.$this->get_pref_value('fullname', $this_acctnum).'&quot;';
 				//$option_text = lang('account').' ['.$this_acctnum.']'.'&nbsp;&nbsp;'.$this->get_pref_value('fullname', $this_acctnum);
-				$option_text = lang('account '.$this_acctnum.':').'&nbsp;&nbsp;'.$this->get_pref_value('fullname', $this_acctnum);
+				$option_text = lang('account').' '.$this_acctnum.':'.'&nbsp;&nbsp;'.$this->get_pref_value('fullname', $this_acctnum);
 				
 				$item_tags .= '<option value="'.$option_value.'"'.$sel.'>'.$option_text.'</option>'."\r\n";
 			}
@@ -1621,7 +1621,7 @@ class mail_msg extends mail_msg_wrappers
 			{
 				// these args are filled, indicating a MOVE was attempted
 				// but since 0 messages were in fact moved, there must have been an error
-				$report_this = lang("Error moving messages to ").' '.$_tf;
+				$report_this = lang("Error moving messages to").' '.$_tf;
 			}
 			elseif ($this->get_arg_value('tm') == 1)
 			{
