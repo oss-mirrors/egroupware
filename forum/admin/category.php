@@ -16,7 +16,7 @@
   include("../../header.inc.php");
 
   $actiontype = "addcat";
-  $buttontext = lang_forums("Add Forum");
+  $buttontext = langs("Add Forum");
   $extrahidden = "";
 
   if($act == "edit") {
@@ -30,7 +30,7 @@
     $cat_id = $phpgw->db->f("id"); 
 
     $extrahidden = "<input type=\"hidden\" name=\"cat_id\" value=\"$cat_id\">"; 
-    $buttontext = lang_forums("Update Category");
+    $buttontext = langs("Update Category");
     $actiontype = "updcat";
    }
   } 
@@ -63,19 +63,19 @@
 <p>
 <table border="0" width=100%>
 <tr>
-<?  echo "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] . "\" align=\"left\"><b>" . lang_forums("Forums") . " " . lang_forums("Admin") . "</b></td>" . "</tr>"; ?>
+<?  echo "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] . "\" align=\"left\"><b>" . langs("Forums") . " " . langs("Admin") . "</b></td>" . "</tr>"; ?>
 
 <tr>
  <td>
   <font size=-1>
 <?
-echo "<a href=\"" . $phpgw->link("category.php") . "\">" . lang_forums("New Category") ."</a>";
+echo "<a href=\"" . $phpgw->link("category.php") . "\">" . langs("New Category") ."</a>";
 echo " | ";
-echo "<a href=\"" . $phpgw->link("forum.php") . "\">" . lang_forums("New Forum") ."</a>";   
+echo "<a href=\"" . $phpgw->link("forum.php") . "\">" . langs("New Forum") ."</a>";   
 echo " | ";
-echo "<a href=\"" . $phpgw->link("./") . "\">" . lang_forums("Return to Admin") ."</a>";
+echo "<a href=\"" . $phpgw->link("./") . "\">" . langs("Return to Admin") ."</a>";
 echo " | ";
-echo "<a href=\"" . $phpgw->link("../") . "\">" . lang_forums("Return to Forums") ."</a>";
+echo "<a href=\"" . $phpgw->link("../") . "\">" . langs("Return to Forums") ."</a>";
   
 ?>
   </font>
@@ -84,18 +84,18 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang_forums("Return to Forums"
   <table border="0" width=80% bgcolor="<? echo $phpgw_info["theme"]["table_bg"]?>">
    <tr>
     <td colspan=2 bgcolor="<?echo $phpgw_info["theme"]["th_bg"]?>">
-     <center><?echo lang_forums("Create New Category")?></center>
+     <center><?echo langs("Create New Category")?></center>
     </td>
    </tr>
    <tr>
     <form method="POST" action="<?php echo $phpgw->link("category.php"); ?>">
     <?php echo $extrahidden; ?> 
     <input type="hidden" name="action" value="<?echo $actiontype?>">
-    <td><? echo lang_forums("Category Name") ?>:</td>
+    <td><? echo langs("Category Name") ?>:</td>
     <td><input type="text" name="catname" size=40 maxlength=49 value="<? echo $catname ?>"></td>
    </tr>  
    <tr>
-    <td><? echo lang_forums("Category Description") ?>:</td>
+    <td><? echo langs("Category Description") ?>:</td>
     <td><textarea rows="3" cols="40" name="catdescr" virtual-wrap maxlength=240><? echo $catdescr ?></textarea></td>
    </tr>
    <tr><td colspan=2 align=right><input type="submit" value="<? echo $buttontext ?>"></td></tr>

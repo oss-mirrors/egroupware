@@ -168,10 +168,10 @@
       echo "<table border=\"0\" align=\"left\" cellpadding=\"10\" width=\"80%\">"
            ."<tr><td>$dsp</td></tr></table>";
     } else if (strtoupper($de_part->subtype) == "HTML") {
-      output_bound(lang_email("section").":" , "$mime_type/$de_part->subtype");
+      output_bound(lang("section").":" , "$mime_type/$de_part->subtype");
       echo $dsp;
     } else {
-      output_bound(lang_email("section").":" , "$mime_type/$de_part->subtype");
+      output_bound(lang("section").":" , "$mime_type/$de_part->subtype");
       echo "<$tag>$dsp</$tag>\n";
     }
   }
@@ -192,7 +192,7 @@
   function image_display($folder, $msgnum, $de_part, $part_no, $att_name)  {
     global $phpgw;
 
-    output_bound(lang_email("image").":" , $att_name);
+    output_bound(lang("image").":" , $att_name);
     echo "\n<img src=\"".$phpgw->link("view_image.php",
 				 "folder=".urlencode($folder)."&msgnum=$msgnum"
 				."&part_no=$part_no&type=".$de_part->subtype

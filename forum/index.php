@@ -18,12 +18,12 @@
 <p>
 <table border="0" width="100%">
  <tr>
-<?   echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left">' . lang_forums("Forums") .'</td>' . '</tr>'; ?>
+<?   echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left">' . langs("Forums") .'</td>' . '</tr>'; ?>
  <tr>
   <td align="left" width="50%" valign="top">
    <?php
  if($phpgw_info["user"]["app_perms"][1]) 
-  echo "<font size=-1><a href=" . $phpgw->link("admin/") . ">" . lang_forums("Admin") . "</a></font>"; 
+  echo "<font size=-1><a href=" . $phpgw->link("admin/") . ">" . langs("Admin") . "</a></font>"; 
 
     echo "<center>";
     echo '<table border="0" width="80%">';

@@ -80,7 +80,7 @@ $dattim = date("Y-m-d H:i:s",time());
 
  $catfor = "cat=" . $cat . "&for=" . $for;
 
- echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><font size=+1><a href=' . $phpgw->link("index.php") .'>' . lang_forums("Forums") ;
+ echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><font size=+1><a href=' . $phpgw->link("index.php") .'>' . langs("Forums") ;
  echo '</a> : <a href=' . $phpgw->link("forums.php","cat=" . $cat) . '>' . $category . '</a> : ';
  echo "<a href=" . $phpgw->link("threads.php","$catfor&col=" . $col) . ">". $forums . "</a></font></td></tr>";
 
@@ -89,10 +89,10 @@ $dattim = date("Y-m-d H:i:s",time());
  echo '<td align="left" width="50%" valign="top">';
 
  echo "<font size=-1>";
- echo "[ <a href=" . $phpgw->link("post.php","$catfor&type=new") . ">" . lang_forums("New Topic") . "</a> | ";
- if(!$col) echo "<a href=" . $phpgw->link("threads.php","$catfor&col=1") . ">" . lang_forums("View Threads") . "</a> | ";
- if($col) echo "<a href=" . $phpgw->link("threads.php","$catfor&col=0") . ">" . lang_forums("Collapse Threads") . "</a> | ";
- echo "<a href=" . $phpgw->link("search.php","$catfor") . ">" . lang_forums("Search") . "</a> ]\n";
+ echo "[ <a href=" . $phpgw->link("post.php","$catfor&type=new") . ">" . langs("New Topic") . "</a> | ";
+ if(!$col) echo "<a href=" . $phpgw->link("threads.php","$catfor&col=1") . ">" . langs("View Threads") . "</a> | ";
+ if($col) echo "<a href=" . $phpgw->link("threads.php","$catfor&col=0") . ">" . langs("Collapse Threads") . "</a> | ";
+ echo "<a href=" . $phpgw->link("search.php","$catfor") . ">" . langs("Search") . "</a> ]\n";
  echo "</font><br><br>\n";
 
 
@@ -109,13 +109,13 @@ $dattim = date("Y-m-d H:i:s",time());
  $name = $phpgw_info["user"]["firstname"] . " " . $phpgw_info["user"]["lastname"];
  $email = $phpgw_info["user"]["email_address"];
 
- echo " <tr><th colspan=3 bgcolor=" . $phpgw_info["theme"]["th_bg"] . ">" . lang_forums("New Topic") . "</th></tr>";
- echo " <tr><td>" . lang_forums("Your Name") . ":</td><td><input type=text name=author size=32 maxlength=49 value=\"$name\"></td><td></td></tr>";
- echo " <tr><td>" . lang_forums("Your Email") . ":</td><td><input type=text name=email size=32 maxlength=49 value=\"$email\"></td><td></td></tr>";
- echo " <tr><td>" . lang_forums("Subject") . ":</td><td><input type=text name=subject size=32 maxlength=49></td><td></td></tr>";
+ echo " <tr><th colspan=3 bgcolor=" . $phpgw_info["theme"]["th_bg"] . ">" . langs("New Topic") . "</th></tr>";
+ echo " <tr><td>" . langs("Your Name") . ":</td><td><input type=text name=author size=32 maxlength=49 value=\"$name\"></td><td></td></tr>";
+ echo " <tr><td>" . langs("Your Email") . ":</td><td><input type=text name=email size=32 maxlength=49 value=\"$email\"></td><td></td></tr>";
+ echo " <tr><td>" . langs("Subject") . ":</td><td><input type=text name=subject size=32 maxlength=49></td><td></td></tr>";
  echo " <tr><td colspan=3><center><textarea rows=20 cols=50 name=message></textarea>";
- echo " <tr><td colspan=2><input type=checkbox name=repmail> " . lang_forums("Email replies to this thread, to the address above") . "</td>";
- echo "  <td align=right><input type=submit value=" . lang_forums("Submit") . "></td></tr>";
+ echo " <tr><td colspan=2><input type=checkbox name=repmail> " . langs("Email replies to this thread, to the address above") . "</td>";
+ echo "  <td align=right><input type=submit value=" . langs("Submit") . "></td></tr>";
 
 
  echo "</table>";
