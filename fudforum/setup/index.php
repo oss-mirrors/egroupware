@@ -225,6 +225,6 @@ if (!function_exists('file_get_contents')) {
 		$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_fud_users (last_visit, join_date, theme, alias, login, email, passwd, name, users_opt, egw_id) VALUES(".time().", ".time().", {$theme}, '{$alias}', '{$login}', '{$email}', '{$row['account_pwd']}', '{$name}', {$users_opt}, {$egw_id})");
 	}
 
-	header('Location: '.$WWW_ROOT.'index.php?S='.$_GET['sessionid']);
+	header('Location: '.$WWW_ROOT.'index.php?'.stripslashes($_SERVER['QUERY_STRING']));
 	$GLOBALS['phpgw']->common->phpgw_exit();
 ?>
