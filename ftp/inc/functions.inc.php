@@ -124,27 +124,33 @@
       return;
    }
 
-   function phpftp_get( $ftp, $tempdir, $dir, $file ) {
+	function phpftp_get( $ftp, $tempdir, $dir, $file )
+	{
 		srand((double)microtime()*1000000);
 		$randval = rand();
 		$tmpfile="$tempdir/" . $file . "." . $randval;
-      ftp_chdir($ftp,$dir);
-      $remotefile=$dir . "/" . $file;
-		if ( ! ftp_get( $ftp, $tmpfile, $remotefile, FTP_BINARY ) ) {
-         echo "tmpfile=\"$tmpfile\",file=\"$remotefile\"<BR>\n";
-		   ftp_quit( $ftp );
-         echo macro_get_Link("newlogin","Start over?");
-         $retval=0;
-		} else {
+		ftp_chdir($ftp,$dir);
+		$remotefile=$dir . "/" . $file;
+		if ( ! ftp_get( $ftp, $tmpfile, $remotefile, FTP_BINARY ) )
+		{
+			echo "tmpfile=\"$tmpfile\",file=\"$remotefile\"<BR>\n";
 			ftp_quit( $ftp );
-			header( "Content-Type: application/octet-stream" );
-			header( "Content-Disposition: attachment; filename=" . $file );
+			echo macro_get_Link("newlogin","Start over?");
+			$retval=0;
+		}
+		else
+		{
+			ftp_quit( $ftp );
+			$b = CreateObject('phpgwapi.browser');
+			$b->content_header($file);
+			//header( "Content-Type: application/octet-stream" );
+			//header( "Content-Disposition: attachment; filename=" . $file );
 			readfile( $tmpfile );
-         $retval=1;
+			$retval=1;
 		}
 		@unlink( $tmpfile );
-      return $retval;
-   }
+		return $retval;
+	}
 
    function getMimeType($file) {
       global $phpgw_info;
