@@ -29,16 +29,10 @@
 			}
 		}
 
-		section_start('notes',$imgpath);
+		section_start('skel',$imgpath);
 
-		section_item($phpgw->link('/notes/preferences.php'),
-		lang('Preferences'));
-
-		section_item($phpgw->link('/preferences/acl_preferences.php','acl_app=notes'),
-		lang('Grant Access'));
-
-		section_item($phpgw->link('/preferences/categories.php','cats_app=notes&cats_level=True&global_cats=True'),
-		lang('Edit categories'));
+		section_item($phpgw->link('/skel/preferences.php'),
+		lang('String setting'));
 
 		section_end();
 	}
