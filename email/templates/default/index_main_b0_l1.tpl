@@ -59,8 +59,10 @@ function check_all()
 				<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
 					&nbsp;<strong>{stats_folder}</strong><br>
 					&nbsp;&nbsp;&nbsp;{stats_new}&nbsp;&nbsp;:&nbsp;&nbsp;{lang_new2}<br>
-					&nbsp;&nbsp;&nbsp;{stats_saved}&nbsp;&nbsp;:&nbsp;&nbsp;{lang_total2}<br>
-					&nbsp;&nbsp;&nbsp;{stats_size}&nbsp;&nbsp;:&nbsp;&nbsp;{lang_size2}
+					&nbsp;&nbsp;&nbsp;{stats_saved}&nbsp;&nbsp;:&nbsp;&nbsp;{lang_total2}
+					<!-- BEGIN B_show_size -->
+					<br>&nbsp;&nbsp;&nbsp;{stats_size}&nbsp;&nbsp;:&nbsp;&nbsp;{lang_size2}
+					<!-- END B_show_size -->
 				</font>
 			</td>
 			<td align="right">
@@ -68,11 +70,14 @@ function check_all()
 				<tr>
 				<form name="switchbox" action="{switchbox_action}" method="post">
 					<td>
+						<font face="{stats_font}" size="{stats_fontsize}">
 						{switchbox_listbox}
+						</font>
 					</td>
 					<td>
-						&nbsp;&nbsp;
-						<input type="button" name="folder_link_btn" value="Folders" onClick="{folders_btn_js}">
+						<font face="{stats_font}" size="{stats_fontsize}">
+						&nbsp;&nbsp;<input type="button" name="folder_link_btn" value="Folders" onClick="{folders_btn_js}">
+						</font>
 					</td>
 				</form>
 				</tr>
@@ -159,7 +164,12 @@ function check_all()
 		<tr>
 			<td>
 				<input type="button" value="{delmov_button}" onClick="do_action('delall')">
-				&nbsp;&nbsp;<a href="{compose_link}">{compose_txt}</a>
+				<font face="{stats_font}" size="{stats_fontsize}">
+					&nbsp;&nbsp;<a href="{compose_link}">{compose_txt}</a>
+					<!-- BEGIN B_get_size -->
+					&nbsp;&nbsp;&nbsp;<a href="{get_size_link}">{lang_get_size}</a>
+					<!-- END B_get_size -->
+				</font>
 			</td>
 			<td align="right">
 				{delmov_listbox}

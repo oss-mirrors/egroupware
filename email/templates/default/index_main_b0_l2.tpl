@@ -96,11 +96,29 @@ function check_all()
 			&nbsp;&nbsp;{stats_saved}&nbsp;&nbsp;{lang_total}
 		</font>
 	</td>
+	<!-- BEGIN B_show_size -->
 	<td bgcolor="{stats_backcolor}" align="center">
 		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
 			&nbsp;&nbsp;{stats_size}&nbsp;&nbsp;{lang_size}
 		</font>
 	</td>
+	<!-- END B_show_size -->
+	<!-- &nbsp; Lame Seperator &nbsp; -->
+	<!-- BEGIN B_get_size -->
+	<form name="{frm_get_size_name}" action="{frm_get_size_action}" method="post">
+	<input type="hidden" name="what" value="delete">
+	<input type="hidden" name="folder" value="{current_folder}">
+	<input type="hidden" name="sort" value="{current_sort}">
+	<input type="hidden" name="order" value="{current_order}">
+	<input type="hidden" name="start" value="{current_start}">
+	<input type="hidden" name="{get_size_flag}" value="1">
+	<td bgcolor="{stats_backcolor}" align="center">
+		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
+			&nbsp;&nbsp;<input type="submit" value="{lang_get_size}">
+		</font>
+	</td>
+	</form>
+	<!-- END B_get_size -->
 	<td bgcolor="{stats_backcolor}" align="center">
 		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
 			&nbsp;&nbsp;{stats_first}&nbsp;to&nbsp;{stats_last}

@@ -581,6 +581,17 @@
 			//unset($html_reference);
 		}
 
+		// === FOLDER STATISTICS - CALCULATE TOTAL FOLDER SIZE
+		// as a speed up measure, and to reduce load on the IMAP server
+		// there is an option to skip the calculating of the total folder size
+		// user may request an override of this for 1 page view
+		if (isset($force_showsize))
+		{
+			$phpgw->msg->args['force_showsize'] = $force_showsize;
+			//$args_array['force_showsize'] = $force_showsize;
+			//unset($force_showsize);
+		}
+
 		// ----  INITIALIZE ARGS ARRAY HOLDER VARIABLE  -------
 		// needed whether you intend to login or not
 		$args_array = Array();

@@ -42,6 +42,8 @@
 		'T_index_main' => 'index_main_b'.$my_browser.'_l'.$my_layout. '.tpl'
 	));
 	$t->set_block('T_index_main','B_action_report','V_action_report');
+	$t->set_block('T_index_main','B_show_size','V_show_size');
+	$t->set_block('T_index_main','B_get_size','V_get_size');
 	$t->set_block('T_index_main','B_no_messages','V_no_messages');
 	$t->set_block('T_index_main','B_msg_list','V_msg_list');
 
@@ -103,6 +105,14 @@
 
 	// lang var for checkbox javascript  -----
 	$t->set_var('select_msg',lang('Please select a message first'));
+
+// ----  Preserving Current Sort, Order, Start, and Folder where necessary  -----
+	// use these as hidden vars in any form that requires preserving these vars
+	// example: get size button, the delete button
+	$t->set_var('current_sort',$phpgw->msg->sort);
+	$t->set_var('current_order',$phpgw->msg->order);
+	$t->set_var('current_start',$phpgw->msg->start);
+	$t->set_var('current_folder',$phpgw->msg->prep_folder_out(''));
 
 // ---- SwitchTo Folder Listbox   -----
 	if ($phpgw->msg->get_mailsvr_supports_folders())
@@ -204,7 +214,6 @@
 	$t->set_var('routing_txt',lang("routing"));
 	$t->set_var('routing_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'index.php'));
 
-
 // ---- Message Folder Stats Display  -----
 	if ($mailbox_status->messages == 0)
 	{
@@ -233,19 +242,41 @@
 			$stats_new = number_format($stats_new);
 		}
 
-		// SIZE OF FOLDER - total size of all emails added up
-		// can take a long time if alot of mail is in the folder
+		// SHOW SIZE OF FOLDER OPTION
+		// total size of all emails in this folder added up
+		// can take a long time if alot of mail is in the folder, and put unneeded load on the IMAP server
 		// FUTURE:  make it optional, this will pick up that option from the prefs
-		//$stats_size_speed_skip = True;
-		$stats_size_speed_skip = False;
-		$stats_size_threshold = 1000;
-		if (($mailbox_status->messages > $stats_size_threshold)
-		&& ($stats_size_speed_skip == True))
+		$allow_stats_size_speed_skip = True;
+		//$allow_stats_size_speed_skip = False;
+
+		// if the number of messahes in the folder exceeds this number, then we skip getting the folder size
+		$stats_size_threshold = 100;
+
+		// determine if we should show the folder size
+		if ((isset($phpgw->msg->args['force_showsize']))
+		&& ($phpgw->msg->args['force_showsize'] != ''))
 		{
-			$stats_size = 'speed skip';
+			// user has requested override of this speed skip option
+			$do_show_size = True;
+		}
+		elseif (($allow_stats_size_speed_skip == True)
+		&& ($mailbox_status->messages > $stats_size_threshold))
+		{
+			// spped skip option is enabled and number messages exceeds skip threshold
+			$do_show_size = False;
+			$stats_size = '';
 		}
 		else
 		{
+			// if either of those are not met, just show the size of the folder
+			$do_show_size = True;
+
+		}
+
+		// if we should show the folder size, get that data now
+		if ($do_show_size)
+		{
+			$do_show_size = True;
 			$mailbox_detail = $phpgw->dcom->mailboxmsginfo($phpgw->msg->mailsvr_stream);
 			$stats_size = $mailbox_detail->Size;
 			// size is in bytes, format for KB or MB
@@ -262,7 +293,6 @@
 	$t->set_var('stats_folder',$folder_short);
 	$t->set_var('stats_saved',$stats_saved);
 	$t->set_var('stats_new',$stats_new);
-	$t->set_var('stats_size',$stats_size);
 	$t->set_var('lang_new',lang('New'));
 	$t->set_var('lang_new2',lang('New Messages'));
 	$t->set_var('lang_total',lang('Total'));
@@ -271,7 +301,39 @@
 	$t->set_var('lang_size2',lang('Folder Size'));
 	$t->set_var('stats_first',$phpgw->msg->start + 1);
 	// "last" can not be know until the calculations below
+
 	//$t->set_var('stats_last',$phpgw->msg->start + $phpgw_info['user']['preferences']['common']['maxmatchs']);
+	// FOLDER SIZE: either you show it or you are skipping it because of speed skip
+	if ($do_show_size == True)
+	{
+		// show the size of the folder
+		$t->set_var('stats_size',$stats_size);
+		$t->parse('V_show_size','B_show_size');
+		// the other block (button to get folder size, "V_get_size") should be blank
+		$t->set_var('V_get_size','');
+	}
+	else
+	{
+		//present a link or a button so the user can request showing the folder size
+		$force_showsize_flag = 'force_showsize';
+		// LINK : for templates using an href link for this
+		$get_size_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php',
+					 'folder='.$phpgw->msg->prep_folder_out('')
+					.'&sort='.$phpgw->msg->sort
+					.'&order='.$phpgw->msg->order
+					.'&start='.$phpgw->msg->start
+					.'&'.$force_showsize_flag.'=1');
+		$t->set_var('get_size_link',$get_size_link);
+		// BUTTON: for templates using a button for this
+		$t->set_var('frm_get_size_name','form_get_size');
+		$t->set_var('frm_get_size_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php'));
+		$t->set_var('get_size_flag',$force_showsize_flag);
+		$t->set_var('lang_get_size',lang('get size'));
+		// parse the appropriate block
+		$t->parse('V_get_size','B_get_size');
+		// the other block (the size info, "V_show_size") should be blank
+		$t->set_var('V_show_size','');
+	}
 
 // ----  Messages List SORT Clickable Column Headers  -----
 	// this is the indicator flag that will be applied to the header name that = current sort
@@ -354,7 +416,6 @@
 // ----  Form delmov Intialization  Setup  -----
 	// ----  place in first checkbox cell of the messages list table, ONE TIME ONLY   -----
 	$t->set_var('delmov_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/action.php'));
-	$t->set_var('current_folder',$folder_short);
 	$t->parse('V_form_delmov_init','T_form_delmov_init');
 	$mlist_delmov_init = $t->get_var('V_form_delmov_init');	
 
@@ -606,9 +667,6 @@
 	{
 		$delmov_listbox = '&nbsp;';
 	}
-	// preserving the current sort and order thru the delete process
-	$t->set_var('current_sort',$phpgw->msg->sort);
-	$t->set_var('current_order',$phpgw->msg->order);
 
 // ----  Messages List Table Footer  -----
 	$t->set_var('app_images',$image_dir);
