@@ -41,7 +41,9 @@
 
   $phpgw->template->set_var("lang_edit",lang("edit"));
   $phpgw->template->set_var("lang_delete",lang("delete"));
-  $phpgw->template->set_var("lang_view",lang("view"));
+  if ($show == "questions") {
+     $phpgw->template->set_var("lang_view",lang("view"));
+  }
 
   if ($show == "questions") {
      $phpgw->db->query("select * from phpgw_polls_desc $ordermethod",__LINE__,__FILE__);
@@ -63,7 +65,6 @@
         $phpgw->template->set_var("row_title",$phpgw->db->f("poll_title"));
         $phpgw->template->set_var("row_edit",'<a href="' . $phpgw->link("admin_editanswer.php","vote_id=" . $phpgw->db->f("vote_id")) . '">' . lang("Edit") . '</a>');
         $phpgw->template->set_var("row_delete",'<a href="' . $phpgw->link("admin_deleteanswer.php","vote_id=" . $phpgw->db->f("vote_id")) . '">' . lang("Delete") . '</a>');
-        $phpgw->template->set_var("row_view",'<a href="' . $phpgw->link("admin_viewanswer.php","vote_id=" . $phpgw->db->f("vote_id")) . '">' . lang("View") . '</a>');     
      }
 
      $phpgw->template->parse("rows","row",True);

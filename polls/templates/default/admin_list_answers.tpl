@@ -7,7 +7,6 @@
    <td>{sort_title}</td>
    <td>{lang_edit}</td>
    <td>{lang_delete}</td>
-   <td>{lang_view}</td>
   </tr>
   
   {rows}
