@@ -6,12 +6,14 @@
 		Window1=window.open('{addressbook_link}',"Search","width=800,height=600,toolbar=no,scrollbars=yes,resizable=yes");
 	}
 </script>
+
+{app_header}
+
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
 <hr noshade width="98%" align="center" size="1">
 <center>
 <form method="POST" name="projects_form" action="{actionurl}">
-{error}{message}
-{hidden_vars}
+{pref_message}<br>{message}
 <table width="85%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
 		<td>{lang_parent}</td>
@@ -22,16 +24,16 @@
 		<td>{choose}</td>
 	</tr>
 	<tr>
-		<td>{lang_num}:</td>
-		<td><input type="text" name="num" value="{num}"></td>
+		<td>{lang_job_number}:</td>
+		<td><input type="text" name="values[number]" value="{num}"></td>
 	</tr>
 	<tr>
 		<td>{lang_title}:</font></td>
-		<td><input type="text" name="title" size="50" value="{title}"></td>
+		<td><input type="text" name="values[title]" size="50" value="{title}"></td>
 	</tr>
 	<tr>
 		<td>{lang_descr}:</td>
-		<td colspan="2"><textarea name="descr" rows=4 cols=50 wrap="VIRTUAL">{descrval}</textarea></td>
+		<td colspan="2"><textarea name="values[descr]" rows=4 cols=50 wrap="VIRTUAL">{descr}</textarea></td>
 	</tr>
 	<tr>
 		<td>{lang_category}:</td>   
@@ -39,15 +41,15 @@
 	</tr>
 	<tr>
 		<td>{lang_coordinator}:</td>
-		<td><select name="coordinator">{coordinator_list}</select></td>
+		<td><select name="values[coordinator]">{coordinator_list}</select></td>
 	</tr>
 	<tr>
 		<td>{lang_status}:</td>
-		<td><select name="status">{status_list}</select></td>
+		<td><select name="values[status]">{status_list}</select></td>
 	</tr>
 	<tr>
 		<td>{lang_budget}:&nbsp;{currency}</td>
-		<td><input type="text" name="budget" value="{budget}"></td>
+		<td><input type="text" name="values[budget]" value="{budget}"></td>
 	</tr>
 	<tr>
 		<td>{lang_start_date}:</td>
@@ -68,11 +70,9 @@
 <table width="50%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
 		<td height="50">
-			{hidden_vars}
-			<input type="submit" name="submit" value="{lang_add}"></td>
+			<input type="submit" name="submit" value="{lang_save}"></td>
 		<td height="50"><input type="reset" name="reset" value="{lang_reset}"></form></td>
 		<td height="50">
-			{hidden_vars}
 			<form method="POST" action="{done_url}">
 			<input type="submit" name="done" value="{lang_done}"></form></td>
 	</tr>
@@ -86,13 +86,11 @@
 <table width="50%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
 		<td height="50">
-			{hidden_vars}
-			<input type="submit" name="submit" value="{lang_edit}"></form></td>
+			<input type="submit" name="submit" value="{lang_save}"></form></td>
 		<td height="50">
-			{hidden_vars}{delete}</td>
+			{delete}</td>
 		<td height="50">
 			<form method="POST" action="{done_url}">
-			{hidden_vars}
 			<input type="submit" name="done" value="{lang_done}"></form></td>
 	</tr>
 </table>

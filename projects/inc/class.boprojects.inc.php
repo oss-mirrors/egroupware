@@ -261,7 +261,7 @@
 			return $activities_list;
 		}
 
-		function check_values($values, $book_activities, $bill_activities)
+		function check_values($action, $values, $book_activities, $bill_activities)
 		{
 			global $phpgw;
 
@@ -278,7 +278,7 @@
 				}
 				else
 				{
-					$exists = $this->exists('pro', 'number', $values['number'], $values['project_id']);
+					$exists = $this->exists($action, 'number', $values['number'], $values['project_id']);
 
 					if ($exists)
 					{
@@ -287,9 +287,12 @@
 				}
 			}
 
-			if ((! $book_activities) && (! $bill_activities))
+			if ($action == 'mains')
 			{
-				$error[] = lang('Please choose activities for that project first !');
+				if ((! $book_activities) && (! $bill_activities))
+				{
+					$error[] = lang('Please choose activities for that project first !');
+				}
 			}
 
 			if ($values['smonth'] || $values['sday'] || $values['syear'])
@@ -319,11 +322,11 @@
 			}
 		}
 
-		function check_act_values($values)
+		function check_pa_values($action, $values)
 		{
 			global $phpgw;
 
-			if (strlen($values['act_descr']) >= 8000)
+			if (strlen($values['descr']) >= 8000)
 			{
 				$error[] = lang('Description can not exceed 8000 characters in length');
 			}
@@ -345,14 +348,17 @@
 				}
 			}
 
-			if ((! $values['billperae']) || ($values['billperae'] == 0))
+			if ($action == 'act')
 			{
-				$error[] = lang('Please enter the bill per workunit !');
-			}
+				if ((! $values['billperae']) || ($values['billperae'] == 0))
+				{
+					$error[] = lang('Please enter the bill per workunit !');
+				}
 
-			if ((! $values['minperae']) || ($values['minperae'] == 0))
-			{
-				$error[] = lang('Please enter the minutes per workunit !');
+				if ((! $values['minperae']) || ($values['minperae'] == 0))
+				{
+					$error[] = lang('Please enter the minutes per workunit !');
+				}
 			}
 
 			if (is_array($error))
@@ -361,13 +367,20 @@
 			}
 		}
 
-		function save_project($values, $book_activities, $bill_activities)
+		function save_project($action, $values, $book_activities, $bill_activities)
 		{
 			global $phpgw;
 
 			if ($values['choose'])
 			{
-				$values['number'] = $this->soprojects->create_projectid();
+				if ($action == 'mains')
+				{
+					$values['number'] = $this->soprojects->create_projectid();
+				}
+				else
+				{
+					$values['number'] = $this->soprojects->create_jobid($values['parent']);
+				}
 			}
 
 			if ($values['access'])
@@ -398,15 +411,14 @@
 			{
 				if ($values['project_id'] != 0)
 				{
-					$this->soprojects->edit_project($values, $book_activities, $bill_activities);
+					$this->soprojects->edit_project($action, $values, $book_activities, $bill_activities);
 				}
 			}
 			else
 			{
-				$this->soprojects->add_project($values, $book_activities, $bill_activities);
+				$this->soprojects->add_project($action, $values, $book_activities, $bill_activities);
 			}
 		}
-
 
 		function save_activity($values)
 		{

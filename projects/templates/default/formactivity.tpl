@@ -15,7 +15,7 @@
 	</tr>
 	<tr>
 		<td>{lang_descr}:</td>
-		<td colspan="2"><textarea name="values[act_descr]" rows=4 cols=50 wrap="VIRTUAL">{descr}</textarea></td>
+		<td colspan="2"><textarea name="values[descr]" rows=4 cols=50 wrap="VIRTUAL">{descr}</textarea></td>
 	</tr>
 	<tr>
 		<td>{lang_category}:</td>

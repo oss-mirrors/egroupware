@@ -117,7 +117,7 @@
 			switch($type)
 			{
 				case 'mains':	$filtermethod .= " AND parent = '0' "; break;
-				case 'subs' :	$filtermethod .= " AND parent = '$pro_parent' "; break;
+				case 'subs' :	$filtermethod .= " AND parent = '$pro_parent' AND parent != '0' "; break;
 			}
 
 			if ($query)
@@ -167,6 +167,7 @@
 			if ($this->db->next_record())
 			{
 				$project['project_id']	= $this->db->f('id');
+				$project['owner']		= $this->db->f('owner');
 				$project['parent']		= $this->db->f('parent');
 				$project['number']		= $this->db->f('num');
 				$project['access']		= $this->db->f('access');
@@ -209,7 +210,7 @@
 			return $pro_select;
 		}
 
-		function add_project($values, $book_activities, $bill_activities)
+		function add_project($action, $values, $book_activities, $bill_activities)
 		{
 			global $phpgw;
 
@@ -228,10 +229,10 @@
 			$this->db->lock($table);
 
 			$this->db->query("insert into phpgw_p_projects (owner,access,category,entry_date,start_date,end_date,coordinator,customer,status,"
-							. "descr,title,budget,num) values ('" . $values['owner'] . "','" . $values['access'] . "','" . $values['cat'] . "','"
+							. "descr,title,budget,num,parent) values ('" . $values['owner'] . "','" . $values['access'] . "','" . $values['cat'] . "','"
 							. time() ."','" . $values['sdate'] . "','" . $values['edate'] . "','" . $values['coordinator'] . "','" . $values['customer']
 							. "','" . $values['status'] . "','" . $values['descr'] . "','" . $values['title'] . "','" . $values['budget'] . "','"
-							. $values['number'] . "')",__LINE__,__FILE__);
+							. $values['number'] . "','" . $values['parent'] . "')",__LINE__,__FILE__);
 
 			$this->db->query("SELECT max(id) AS max FROM phpgw_p_projects");
 			if($this->db->next_record())
@@ -241,6 +242,8 @@
 
 			$this->db->unlock();
 
+			if ($action == 'mains')
+			{
 			if ($p_id && ($p_id != 0))
 			{
 				if (count($book_activities) != 0)
@@ -261,6 +264,7 @@
 					}
 				}
 			}
+		}
 		}
 
 		function edit_project($values, $book_activities, $bill_activities)
@@ -534,7 +538,7 @@
 				$act[$i]['activity_id']	= $this->db->f('id');
 				$act[$i]['cat']			= $this->db->f('category');
 				$act[$i]['number']		= $this->db->f('num');
-				$act[$i]['act_descr']	= $this->db->f('descr');
+				$act[$i]['descr']		= $this->db->f('descr');
 				$act[$i]['remarkreq']	= $this->db->f('remarkreq');
 				$act[$i]['billperae']	= $this->db->f('billperae');
 				$act[$i]['minperae']	= $this->db->f('minperae');
@@ -552,7 +556,7 @@
 				$act['activity_id']	= $this->db->f('id');
 				$act['cat']			= $this->db->f('category');
 				$act['number']		= $this->db->f('num');
-				$act['act_descr']	= $this->db->f('descr');
+				$act['descr']		= $this->db->f('descr');
 				$act['remarkreq']	= $this->db->f('remarkreq');
 				$act['billperae']	= $this->db->f('billperae');
 				$act['minperae']	= $this->db->f('minperae');
@@ -563,10 +567,10 @@
 		function add_activity($values)
 		{
 			$values['number']	= addslashes($values['number']);
-			$values['act_descr'] = addslashes($values['act_descr']);
+			$values['descr'] 	= addslashes($values['act_descr']);
 
 			$this->db->query("insert into phpgw_p_activities (num,category,descr,remarkreq,billperae,minperae) values ('"
-							. $values['number'] . "','" . $values['cat'] . "','" . $values['act_descr'] . "','" . $values['remarkreq'] . "','"
+							. $values['number'] . "','" . $values['cat'] . "','" . $values['descr'] . "','" . $values['remarkreq'] . "','"
 							. $values['billperae'] . "','" . $values['minperae'] . "')",__LINE__,__FILE__);
 		}
 
@@ -574,10 +578,10 @@
 		function edit_activity($values)
 		{
 			$values['number']	= addslashes($values['number']);
-			$values['act_descr']	= addslashes($values['act_descr']);
+			$values['descr']	= addslashes($values['act_descr']);
 
 			$this->db->query("update phpgw_p_activities set num='" . $values['number'] . "', category='" . $values['cat']
-							. "',remarkreq='" . $values['remarkreq'] . "',descr='" . $values['act_descr'] . "',billperae='"
+							. "',remarkreq='" . $values['remarkreq'] . "',descr='" . $values['descr'] . "',billperae='"
 							. $values['billperae'] . "',minperae='" . $values['minperae'] . "' where id='" . $values['activity_id']
 							. "'",__LINE__,__FILE__);
 		}
