@@ -12,7 +12,6 @@
 
 	global $pref;
 	$pref->change('projects','tax','16');
-	$pref->change('projects','bill','h');
 	$pref->change('projects','ifont','Tahoma,Verdana,Arial,Helvetica,sans-serif');
 	$pref->change('projects','mysize','1');
 	$pref->change('projects','allsize','3');

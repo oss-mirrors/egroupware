@@ -230,13 +230,16 @@
 
 			if (! isset($prefs['country']) || (! isset($prefs['currency'])))
 			{
-				$error[] = lang('Please set your global preferences !');
+				$error[] = lang('Please set your global preferences');
 			}
 
-			if (! isset($prefs['abid']) || (! isset($prefs['tax'])) || (! isset($prefs['bill'])) || (! isset($prefs['ifont'])) || (! isset($prefs['mysize'])) || (! isset($prefs['allsize'])))
+			if ($this->isprojectadmin('pad') || $this->isprojectadmin('pbo'))
 			{
-				$error[] = lang('Please set your preferences for this application !');
-			}
+				if (! isset($prefs['abid']) || (! isset($prefs['tax'])) || (! isset($prefs['bill'])) || (! isset($prefs['ifont'])) || (! isset($prefs['mysize'])) || (! isset($prefs['allsize'])))
+				{
+					$error[] = lang('Please set your preferences for this application');
+				}
+			]
 			return $error;
 		}
 
@@ -249,14 +252,17 @@
 			$prefs['currency']	= $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
 			$prefs['country']	= $GLOBALS['phpgw_info']['user']['preferences']['common']['country'];
 
-			if ($GLOBALS['phpgw_info']['user']['preferences']['projects'])
+			if ($this->isprojectadmin('pad') || $this->isprojectadmin('pbo'))
 			{
-				$prefs['abid']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['abid'];
-				$prefs['tax']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['tax'];
-				$prefs['bill']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'];
-				$prefs['ifont']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['ifont'];
-				$prefs['mysize']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['mysize'];
-				$prefs['allsize']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['allsize'];
+				if ($GLOBALS['phpgw_info']['user']['preferences']['projects'])
+				{
+					$prefs['abid']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['abid'];
+					$prefs['tax']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['tax'];
+					$prefs['bill']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'];
+					$prefs['ifont']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['ifont'];
+					$prefs['mysize']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['mysize'];
+					$prefs['allsize']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['allsize'];
+				}
 			}
 			return $prefs;
 		}

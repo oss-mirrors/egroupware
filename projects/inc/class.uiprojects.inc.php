@@ -1547,7 +1547,6 @@
 			}
 
 			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
 
 			if ($this->boprojects->isprojectadmin('pbo') || $this->boprojects->isprojectadmin('pad'))
 			{
@@ -1557,7 +1556,7 @@
 
 				$this->set_app_langs();
 
-				$this->t->set_var('lang_action',lang('Project preferences'));
+				$this->t->set_var('lang_action',lang('Preferences for accountancy'));
 
 				if ($obill == True)
 				{
@@ -1568,9 +1567,9 @@
 				$this->t->set_var('lang_select_font',lang('Select font'));
 				$this->t->set_var('lang_select_mysize',lang('Select font size for own address'));
 				$this->t->set_var('lang_select_allsize',lang('Select font size for customer address'));
-				$this->t->set_var('lang_bill',lang('Invoicing'));
-				$this->t->set_var('lang_select_tax',lang('Select tax for workhours'));
-				$this->t->set_var('lang_address',lang('Select your address'));
+				$this->t->set_var('lang_bill',lang('Invoicing of work time'));
+				$this->t->set_var('lang_select_tax',lang('Select tax for work time'));
+				$this->t->set_var('lang_address',lang('Select own address'));
 
 				$prefs = $this->boprojects->read_prefs();
 
@@ -1585,7 +1584,7 @@
 				$bill = '<input type="radio" name="prefs[bill]" value="wu"' . ($prefs['bill'] == 'wu'?' checked':'') . '>'
 							. lang('per workunit') . "\n";
 				$bill .= '<input type="radio" name="prefs[bill]" value="h"' . ($prefs['bill'] == 'h'?' checked':'') . '>'
-							. lang('per hour');
+							. lang('exactly accounting') . '&nbsp;[hh:mm]';
 
 				$this->t->set_var('bill',$bill);
 

@@ -12,8 +12,8 @@
 <center>
 {bill_message}
 <form method="POST" name="projects_form" action="{actionurl}">
-<table width="80%" border="0" cellspacing="2" cellpadding="2">
-	<tr>
+<table width="97%" border="0" cellspacing="2" cellpadding="2">
+	<tr bgcolor="{row_on}">
 
 <!-- BEGIN book -->
 
@@ -24,30 +24,30 @@
 	<tr>
 		<td>&nbsp;</td>
 	</tr>
-	<tr>
+	<tr bgcolor="{row_off}">
 		<td>{lang_select_tax}:</td>
 		<td><input type="text" name="prefs[tax]" value="{tax}" size="6" maxlength="6">&nbsp;%</td>
 	</tr>
-	<tr>
-		<td>{lang_bill}</td>
+	<tr bgcolor="{row_off}">
+		<td valign="top">{lang_bill}:</td>
 		<td>{bill}</td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
 	</tr>
-	<tr>
-		<td>{lang_layout}</td>
+	<tr bgcolor="{row_on}">
+		<td><b>{lang_layout}</b></td>
 		<td>&nbsp;</td>
 	</tr>
-	<tr>
+	<tr bgcolor="{row_on}">
 		<td>{lang_select_font}:</td>
 		<td><select name="prefs[ifont]">{ifont}</select></td>
 	</tr>
-	<tr>
+	<tr bgcolor="{row_on}">
 		<td>{lang_select_mysize}:</td>
 		<td><select name="prefs[mysize]">{mysize}</select></td>
 	</tr>
-	<tr>
+	<tr bgcolor="{row_on}">
 		<td>{lang_select_allsize}:</td>
 		<td><select name="prefs[allsize]">{allsize}</select></td>
 	</tr>

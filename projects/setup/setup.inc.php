@@ -16,7 +16,14 @@
 	$setup_info['projects']['app_order'] = 13;
 	$setup_info['projects']['enable']    = 1;
 
-	$setup_info['projects']['tables'] = array(
+	$setup_info['backup']['author'] = 'Bettina Gille';
+	$setup_info['backup']['license']  = 'GPL';
+	$setup_info['backup']['description'] = 'Advanced project management';
+	$setup_info['backup']['maintainer'] = $setup_info['backup']['author'];
+	$setup_info['backup']['maintainer_email'] = 'ceb@phpgroupware.org';
+
+	$setup_info['projects']['tables'] = array
+	(
 		'phpgw_p_projects',
 		'phpgw_p_activities',
 		'phpgw_p_projectactivities',
@@ -42,22 +49,26 @@
 
 /* Dependencies for this app to work */
 
-	$setup_info['projects']['depends'][] = array(
+	$setup_info['projects']['depends'][] = array
+	(
 		 'appname' => 'phpgwapi',
 		 'versions' => Array('0.9.15')
 	);
 
-	$setup_info['projects']['depends'][] = array(
+	$setup_info['projects']['depends'][] = array
+	(
 		 'appname' => 'admin',
 		 'versions' => Array('0.9.13','0.9.14')
 	);
 
-	$setup_info['projects']['depends'][] = array(
+	$setup_info['projects']['depends'][] = array
+	(
 		 'appname' => 'preferences',
 		 'versions' => Array('0.9.13','0.9.14')
 	);
 
-	$setup_info['projects']['depends'][] = array(
+	$setup_info['projects']['depends'][] = array
+	(
 		 'appname' => 'addressbook',
 		 'versions' => Array('0.9.13','0.9.14')
 	);

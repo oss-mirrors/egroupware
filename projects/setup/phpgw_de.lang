@@ -51,6 +51,7 @@ edit project bookkeeper list	projects	de	Projekt Buchhalter Liste überarbeiten
 Edit project	projects	de	Projekt überarbeiten
 Edit project hours	projects	de	Projektstunden überarbeiten
 Employee	projects	de	Mitarbeiter
+exactly accounting	projects	de	exakte Abrechnung
 Generate Activity ID ?	projects	de	Activit&auml;s ID generieren ?
 Generate Delivery ID ?	projects	de	Lieferungs ID generieren ?
 Generate Project ID ?	projects	de	Projekt ID generieren ?
@@ -67,7 +68,7 @@ Invoice list	projects	de	Rechnungs Liste
 Invoices	projects	de	Rechnungen
 Invoice x has been created !	projects	de	Rechnung %1 wurde erstellt !
 Invoice x has been updated !	projects	de	Rechnung %1 wurde &uuml;berarbeitet !
-invoicing	projects	de	in Rechnung stellen
+invoicing of work time	projects	de	in Rechnung stellen der Arbeitszeit
 Job	projects	de	Job
 job archive	projects	de	Job Archiv
 Job date	projects	de	Job Datum
@@ -88,6 +89,7 @@ open	projects	de	Offen
 Overall	projects	de	Gesammt
 per hour	projects	de	pro Stunde
 per workunit	projects	de	pro Arbeitseinheit
+per hour/workunit	projects	de	pro Stunde/Arbeitseinheit
 Please enter an ID !	projects	de	Bitte eine ID eingeben !
 Please choose activities for that project first !	projects	de	Bitte erst Aktivitäten für das Projekt wählen !
 Please enter a remark !	projects	de	Bitte einen Betreff eingeben !
@@ -104,21 +106,22 @@ Project delivery	projects	de	Projekt Lieferung
 Project ID	projects	de	Projekt ID
 Project list	projects	de	Projekt Liste
 Project name	projects	de	Projekt Name
-Project preferences	projects	de	Projekt Einstellungen
+preferences for accountancy	projects	de	Einstellungen zum Rechnungswesen
 Project statistic	projects	de	Projekt Statistik
 project statistics	projects	de	Projekt Statistiken
 Remark	projects	de	Betreff
 Remark required	projects	de	Betreff notwendig
 select	projects	de	Auswählen
+select font	projects	de	Schrift ausw&auml;hlen
 select font size for customer address	projects	de	Schriftgröße für Kundenadresse auswählen
 Select font size for own address	projects	de	Schriftgröße für eigene Adresse auswählen
 Select main project	projects	de	Hauptprojekt auswählen
 Select per button !	projects	de	Auswählen per Button !
 Select project	projects	de	Projekt auswählen
-Select tax for workhours	projects	de	Mehrwertsteuer für Arbeitsstunden
+Select tax for work time	projects	de	Mehrwertsteuer für Arbeitszeit
 Select users	projects	de	Benutzer auswählen
 Select groups	projects	de	Gruppen auswählen
-Select your address	projects	de	Eigene Adresse ausw&auml;hlen
+Select own address	projects	de	Eigene Adresse ausw&auml;hlen
 small	projects	de	Klein
 Statistic	projects	de	Statistik
 Statistics	projects	de	Statistiken
@@ -126,7 +129,6 @@ Short description	projects	de	Kurzbeschreibung
 Sorry, no preferences to set for you :)	projects	de	Sorry, keine Einstellungen für Sie zu tätigen :)
 sum hours	projects	de	Summe Stunden
 sum net	projects	de	Summe netto
-Sum	projects	de	Summe
 Sum workunits	projects	de	Summe Arbeitseinheiten
 tahoma	projects	de	Tahoma
 tax	projects	de	Mwst.
