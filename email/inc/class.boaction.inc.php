@@ -19,8 +19,8 @@
 			'get_attach'	=> True,
 			'view_html'	=> True
 		);
-		//var $debug = True;
-		var $debug = False;
+		var $debug = 0;
+		//var $debug = 4;	
 		var $xml_functions = array();
 		var $xi = array();
 		var $redirect_to = '';
@@ -42,16 +42,17 @@
 			//$attempt_reuse = True;			
 			$attempt_reuse = False;
 			
-			if ($this->debug) { echo 'emai.boaction.delmov: ENTERED, about to create mail_msg object, attempt to reuse (outgoing): '.serialize($attempt_reuse ).'<br>'; }
+			if ($this->debug > 0) { echo 'emai.boaction.delmov: ENTERED, about to create mail_msg object, attempt to reuse (outgoing): '.serialize($attempt_reuse ).'<br>'; }
 			if (is_object($GLOBALS['phpgw']->msg))
 			{
-				if ($this->debug) { echo 'emai.boaction.delmov: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
+				if ($this->debug > 0) { echo 'emai.boaction.delmov: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
 			}
 			else
 			{
-				if ($this->debug) { echo 'emai.boaction.delmov: is_object test: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
+				if ($this->debug > 0) { echo 'emai.boaction.delmov: is_object test: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
 				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 			}
+			$not_set = $GLOBALS['phpgw']->msg->not_set;
 			$args_array = Array();
 			$args_array['do_login'] = True;
 			$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
@@ -71,7 +72,7 @@
 			// ---- MOVE (Multiple) Messages from folder to folder   -----
 			if ($GLOBALS['phpgw']->msg->get_arg_value('what') == "move")
 			{
-				if ($this->debug) { echo 'emai.boaction.delmov: get_arg_value(what) == "move") <br>'; }
+				if ($this->debug > 0) { echo 'emai.boaction.delmov: get_arg_value(what) == "move") <br>'; }
 				// called by the "move selected messages to" listbox onChange action
 				
 				/*
@@ -105,26 +106,26 @@
 				$tm = count($delmov_list);
 				for ($i = 0; $i < count($delmov_list); $i++)
 				{
-					if ($this->debug) { echo 'email.boaction.delmov: in mail move loop ['.(string)($i+1).'] of ['.$tm.']<br>'; }
+					if ($this->debug > 2) { echo 'email.boaction.delmov: in mail move loop ['.(string)($i+1).'] of ['.$tm.']<br>'; }
 					$mov_msgball = $delmov_list[$i];
 					$mov_msgball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_in($mov_msgball['folder']);
 					$mov_msgball['acctnum'] = (int)$mov_msgball['acctnum'];
 					$did_move = False;
-					if ($this->debug) { echo 'email.boaction.delmov: calling  $GLOBALS[phpgw]->msg->interacct_mail_move('.serialize($mov_msgball).', '.serialize($to_fldball).'<br>'; }
+					if ($this->debug > 2) { echo 'email.boaction.delmov: calling  $GLOBALS[phpgw]->msg->interacct_mail_move('.serialize($mov_msgball).', '.serialize($to_fldball).'<br>'; }
 					$did_move = $GLOBALS['phpgw']->msg->interacct_mail_move($mov_msgball, $to_fldball);
 					if ($did_move == False)
 					{
 						// error
-						if ($this->debug) { echo 'email.boaction.delmov: ***ERROR**** $GLOBALS[phpgw]->msg->interacct_mail_move() returns FALSE, ERROR, break out of loop<br>'
+						if ($this->debug > 0) { echo 'email.boaction.delmov: ***ERROR**** $GLOBALS[phpgw]->msg->interacct_mail_move() returns FALSE, ERROR, break out of loop<br>'
 								.' * * Server reports error: '.$GLOBALS['phpgw']->msg->phpgw_server_last_error().'<br>'; }
 						break;
 					}
 					else
 					{
-						if ($this->debug) { echo 'email.boaction.delmov: $GLOBALS[phpgw]->msg->interacct_mail_move() returns True, calling $GLOBALS[phpgw]->msg->phpgw_expunge('.$mov_msgball['acctnum'].')<br>'; }
+						if ($this->debug > 0) { echo 'email.boaction.delmov: $GLOBALS[phpgw]->msg->interacct_mail_move() returns True, calling $GLOBALS[phpgw]->msg->phpgw_expunge('.$mov_msgball['acctnum'].')<br>'; }
 						$did_expunge = False;
 						$did_expunge = $GLOBALS['phpgw']->msg->phpgw_expunge($mov_msgball['acctnum']);
-						if ($this->debug) { echo 'email.boaction.delmov: $GLOBALS[phpgw]->msg->phpgw_expunge() returns '.serialize($did_expunge).'<br>'; }
+						if ($this->debug > 2) { echo 'email.boaction.delmov: $GLOBALS[phpgw]->msg->phpgw_expunge() returns '.serialize($did_expunge).'<br>'; }
 					}
 				}
 				
@@ -169,14 +170,14 @@
 			// ---- DELETE (MULTIPLE) MESSAGES ----
 			elseif ($GLOBALS['phpgw']->msg->get_arg_value('what') == 'delall')
 			{
-				if ($this->debug) { echo 'emai.boaction.delmov: get_arg_value(what) == "delall") <br>'; }
+				if ($this->debug > 0) { echo 'emai.boaction.delmov: get_arg_value(what) == "delall") <br>'; }
 				// this is called from the index pge after you check some boxes and click "delete" button
 				
 				$delmov_list = $GLOBALS['phpgw']->msg->get_arg_value('delmov_list');
 				$loops = count($delmov_list);
 				for ($i = 0; $i < $loops; $i++)
 				{
-					if ($this->debug) { echo 'email.boaction.delmov: (delete) in mail delete loop ['.(string)($i+1).'] of ['.$loops.']<br>'; }
+					if ($this->debug > 2) { echo 'email.boaction.delmov: (delete) in mail delete loop ['.(string)($i+1).'] of ['.$loops.']<br>'; }
 					$this_msgnum = $delmov_list[$i]['msgnum'];
 					// was_in_folder is used in Trash handling in the ->phpgw_delete function
 					// if a message "was_in_folder" Trash, it gets deleted for real, no option to move to Trash in that case
@@ -186,16 +187,16 @@
 					if ($did_delete == False)
 					{
 						// error
-						if ($this->debug) { echo 'email.boaction.delmov: (delete) ***ERROR**** $GLOBALS[phpgw]->msg->phpgw_delete() returns FALSE, ERROR, break out of loop<br>'
+						if ($this->debug > 0) { echo 'email.boaction.delmov: (delete) ***ERROR**** $GLOBALS[phpgw]->msg->phpgw_delete() returns FALSE, ERROR, break out of loop<br>'
 								.' * * Server reports error: '.$GLOBALS['phpgw']->msg->phpgw_server_last_error().'<br>'; }
 						break;
 					}
 					else
 					{
-						if ($this->debug) { echo 'email.boaction.delmov: (delete) $GLOBALS[phpgw]->msg->phpgw_delete() returns True, calling $GLOBALS[phpgw]->msg->phpgw_expunge('.$delmov_list[$i]['acctnum'].')<br>'; }
+						if ($this->debug > 0) { echo 'email.boaction.delmov: (delete) $GLOBALS[phpgw]->msg->phpgw_delete() returns True, calling $GLOBALS[phpgw]->msg->phpgw_expunge('.$delmov_list[$i]['acctnum'].')<br>'; }
 						$did_expunge = False;
 						$did_expunge = $GLOBALS['phpgw']->msg->phpgw_expunge((int)$delmov_list[$i]['acctnum']);
-						if ($this->debug) { echo 'email.boaction.delmov: (delete) $GLOBALS[phpgw]->msg->phpgw_expunge() returns '.serialize($did_expunge).'<br>'; }
+						if ($this->debug > 2) { echo 'email.boaction.delmov: (delete) $GLOBALS[phpgw]->msg->phpgw_expunge() returns '.serialize($did_expunge).'<br>'; }
 					}
 				}
 				$totaldeleted = $i;
@@ -227,15 +228,13 @@
 			// ---- DELETE A SINGLE MESSAGE  ----
 			elseif ($GLOBALS['phpgw']->msg->get_arg_value('what') == "delete_single_msg")
 			{
-				if ($this->debug) { echo 'emai.boaction.delmov: get_arg_value(what) == "delete_single_msg") <br>'; }
+				if ($this->debug > 0) { echo 'emai.boaction.delmov: get_arg_value(what) == "delete_single_msg") <br>'; }
 				// called by clicking the "X" dutton while reading an individual message
 				$msgball = $GLOBALS['phpgw']->msg->get_arg_value('msgball');
-				$GLOBALS['phpgw']->msg->phpgw_delete($msgball['msgnum'],'',$msgball['folder'], (int)$msgball['acctnum']);
 				
-				
+				// BEFORE we delete, if there is no mext message, then we will go back to index page
 				$nav_data = $GLOBALS['phpgw']->msg->prev_next_navigation($folder_info['number_all']);
-				if ($this->debug > 2) { echo 'emai.boaction.delmov: $nav_data[] dump <pre>: '; print_r($nav_data); echo '</pre>'; }
-				
+				if ($this->debug > 2) { echo 'emai.boaction.delmov: delete_single_msg: pre-delete $nav_data[] dump <pre>: '; print_r($nav_data); echo '</pre>'; }
 				// ----  "Go To Previous Message" Handling  -----
 				if ($nav_data['prev_msg'] != $not_set)
 				{
@@ -253,14 +252,26 @@
 					$this->redirect_to = $GLOBALS['phpgw']->link(
 						'/index.php',
 						 'menuaction=email.uiindex.index'
-						.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out($msgball['folder'])
+						.'&fldball[folder]='.$msgball['folder']
 						.'&fldball[acctnum]='.$msgball['acctnum']
 						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 				}
+				if ($this->debug > 1) { echo 'emai.boaction.delmov: delete_single_msg: pre-delete determination of $this->redirect_to : ['.$this->redirect_to.']<br>'; }
 				
-				$GLOBALS['phpgw']->msg->phpgw_expunge((int)$msgball['acctnum']);
+				
+				if ($this->debug > 3)
+				{
+					echo 'emai.boaction.delmov: delete_single_msg: debug flag = 4 or higher, _SKIP_ the delete and expunge action<br>';
+				}
+				else
+				{
+					// ok, now do the delete
+					$GLOBALS['phpgw']->msg->phpgw_delete($msgball['msgnum'],'',$msgball['folder'], (int)$msgball['acctnum']);
+					// now do the expunge, both IMAP and POP3 require this, or the message is not really deleted
+					$GLOBALS['phpgw']->msg->phpgw_expunge((int)$msgball['acctnum']);
+				}
 				
 				// reuse NOT yet supported
 				$goto_args=array();
@@ -274,7 +285,7 @@
 			}
 			else
 			{
-				if ($this->debug) { echo 'emai.boaction.delmov: get_arg_value(what) == unknown_value<br>'; }
+				if ($this->debug > 0) { echo 'emai.boaction.delmov: get_arg_value(what) == unknown_value<br>'; }
 				$error_str = '<p><center><b>'.lang('UNKNOWN ACTION')."<br> \r\n"
 						.'called from '.$GLOBALS['PHP_SELF'].', delmov()'."<br> \r\n"
 						.'</b></center></p>'."<br> \r\n";
@@ -294,7 +305,7 @@
 			if (($attempt_reuse == True)
 			&& (count($goto_args) > 0))
 			{
-				if ($this->debug) { echo 'emai.boaction.delmov: LEAVING, gonna try to reuse existing mail_msg for the upcoming page view<br>'; }
+				if ($this->debug > 0) { echo 'emai.boaction.delmov: LEAVING, gonna try to reuse existing mail_msg for the upcoming page view<br>'; }
 				// attempting to reuse existing object msg
 				$obj = CreateObject('email.uiindex');
 				$obj->index($goto_args);
@@ -302,13 +313,13 @@
 			}
 			elseif ($this->redirect_to != '')
 			{
-				if ($this->debug) { echo 'emai.boaction.delmov: LEAVING, redirecting to: '.$GLOBALS['phpgw']->redirect($this->redirect_to).'<br>'; }
+				if ($this->debug > 0) { echo 'emai.boaction.delmov: LEAVING, redirecting to: '.$GLOBALS['phpgw']->redirect($this->redirect_to).'<br>'; }
 				$GLOBALS['phpgw']->redirect($this->redirect_to);
 				exit;
 			}
 			else
 			{
-				if ($this->debug) { echo 'emai.boaction.delmov: LEAVING, with ERROR, unhandled "where to go from here" condition<br>'; }
+				if ($this->debug > 0) { echo 'emai.boaction.delmov: LEAVING, with ERROR, unhandled "where to go from here" condition<br>'; }
 				echo 'error: mo redirect specified in '.$GLOBALS['PHP_SELF'].', delmov()'."<br> \r\n"
 					.'error_str: '.$error_str."<br> \r\n";
 				return False;
@@ -326,11 +337,11 @@
 			
 			if (is_object($GLOBALS['phpgw']->msg))
 			{
-				if ($this->debug) { echo 'emai.boaction.get_attach: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
+				if ($this->debug > 0) { echo 'emai.boaction.get_attach: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
 			}
 			else
 			{
-				if ($this->debug) { echo 'emai.boaction.get_attach: is_object test: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
+				if ($this->debug > 0) { echo 'emai.boaction.get_attach: is_object test: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
 				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 			}
 			$args_array = Array();
@@ -344,7 +355,7 @@
 			
 			if (!is_object($GLOBALS['phpgw']->browser))
 			{
-				if ($this->debug) { echo 'emai.boaction.get_attach: is_object test: $GLOBALS[phpgw]->browser needs to be created <br>'; }
+				if ($this->debug > 0) { echo 'emai.boaction.get_attach: is_object test: $GLOBALS[phpgw]->browser needs to be created <br>'; }
 				$GLOBALS['phpgw']->browser = CreateObject("phpgwapi.browser");
 			}
 			
@@ -392,11 +403,11 @@
 			
 			if (is_object($GLOBALS['phpgw']->msg))
 			{
-				if ($this->debug) { echo 'emai.boaction.view_html: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
+				if ($this->debug > 0) { echo 'emai.boaction.view_html: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
 			}
 			else
 			{
-				if ($this->debug) { echo 'emai.boaction.view_html: is_object test: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
+				if ($this->debug > 0) { echo 'emai.boaction.view_html: is_object test: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
 				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 			}
 			$args_array = Array();
@@ -410,7 +421,7 @@
 			
 			if (!is_object($GLOBALS['phpgw']->browser))
 			{
-				if ($this->debug) { echo 'emai.boaction.view_html: is_object test: $GLOBALS[phpgw]->browser needs to be created <br>'; }
+				if ($this->debug > 0) { echo 'emai.boaction.view_html: is_object test: $GLOBALS[phpgw]->browser needs to be created <br>'; }
 				$GLOBALS['phpgw']->browser = CreateObject("phpgwapi.browser");
 			}
 			

@@ -141,8 +141,8 @@
 				$GLOBALS['phpgw']->link(
 					 '/index.php',
 					'menuaction=email.uiindex.index'	
-					.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out($msgball['folder'])
-					.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum($msgball['acctnum'])
+					.'&fldball[folder]='.$msgball['folder']
+					.'&fldball[acctnum]='.$msgball['acctnum']
 					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')),
@@ -238,8 +238,10 @@
 					$from_personal = $GLOBALS['phpgw']->msg->decode_header_string($from->personal);
 				}
 				// display "From" according to user preferences
-				if (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'])
-				&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] != 'none')
+				//if (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'])
+				//&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] != 'none')
+				if (($GLOBALS['phpgw']->msg->get_isset_pref('show_addresses'))
+				&& ($GLOBALS['phpgw']->msg->get_pref_value('show_addresses') != 'none')
 				&& ($from_personal != $from_plain))
 				{
 					// user wants to see "personal" info AND the plain address, and we have both available to us
@@ -256,7 +258,10 @@
 					$GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link(
 						'/index.php',
 						 'menuaction=email.uicompose.compose'
-						.'&'.$msgball['uri']
+						 // DO NOT USE msgball - bosend will interpret this the wrong way
+						//.'&'.$msgball['uri']
+						.'&fldball[folder]='.$msgball['folder']
+						.'&fldball[acctnum]='.$msgball['acctnum']
 						.'&to='.urlencode($from_plain)
 						.'&personal='.urlencode($from_personal)
 						// preserve these things for when we return to the message list after the send
@@ -301,7 +306,8 @@
 					{
 						$to_personal = $GLOBALS['phpgw']->msg->decode_header_string($topeople->personal);
 					}
-					if (($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] != 'none')
+					//if (($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] != 'none')
+					if (($GLOBALS['phpgw']->msg->get_pref_value('show_addresses') != 'none')
 					&& ($to_personal != $to_plain))
 					{
 						$to_extra_info = ' ('.$to_plain.') ';
@@ -315,7 +321,10 @@
 						$GLOBALS['phpgw']->link(
 							'/index.php',
 							 'menuaction=email.uicompose.compose'
-							.'&'.$msgball['uri']
+							// DO NOT USE msgball - bosend will interpret this the wrong way
+							//.'&'.$msgball['uri']
+							.'&fldball[folder]='.$msgball['folder']
+							.'&fldball[acctnum]='.$msgball['acctnum']
 							.'&to='.urlencode($to_plain)
 							.'&personal='.urlencode($to_personal)
 							// preserve these things for when we return to the message list after the send
@@ -361,7 +370,8 @@
 					{
 						$cc_personal = $GLOBALS['phpgw']->msg->decode_header_string($ccpeople->personal);
 					}
-					if (($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] != 'none')
+					//if (($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] != 'none')
+					if (($GLOBALS['phpgw']->msg->get_pref_value('show_addresses') != 'none')
 					&& ($cc_personal != $cc_plain))
 					{
 						$cc_extra_info = ' ('.$cc_plain.') ';
@@ -373,7 +383,10 @@
 					$cc_real_name = $GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link(
 							'/index.php',
 							 'menuaction=email.uicompose.compose'
-							.'&'.$msgball['uri']
+							// DO NOT USE msgball - bosend will interpret this the wrong way
+							//.'&'.$msgball['uri']
+							.'&fldball[folder]='.$msgball['folder']
+							.'&fldball[acctnum]='.$msgball['acctnum']
 							.'&to='.urlencode($cc_plain)
 							.'&personal='.urlencode($cc_personal)
 							// preserve these things for when we return to the message list after the send

@@ -45,6 +45,7 @@
 	{
 		var $err = array();
 		var $to_res = array();
+		var $default_smtp_port = 25;
 		
 		//var $debug_fake_send = True;
 		var $debug_fake_send = False;
@@ -173,9 +174,17 @@
 			}
 			else
 			{
+				$smtp_server = $GLOBALS['phpgw_info']['server']['smtp_server'];
+				$smtp_port = $GLOBALS['phpgw_info']['server']['smtp_port'];
+				// some people do not set this up correctly in the site-wide admin for email
+				if (empty($smtp_port))
+				{
+					$smtp_port = $this->default_smtp_port;
+				}
+				
 				// OPEN SOCKET - now we try to open the socket and check, if any smtp server responds
-				$socket = fsockopen($GLOBALS['phpgw_info']['server']['smtp_server'],$GLOBALS['phpgw_info']['server']['smtp_port'],$errcode,$errmsg,$timeout);
-				$this->err['server_chat'] .= htmlspecialchars('c->s: fsockopen('.$GLOBALS['phpgw_info']['server']['smtp_server'].','.$GLOBALS['phpgw_info']['server']['smtp_port'].','.$errcode.','.$errmsg.','.$timeout.') ; returned: '.$socket )."\r\n";
+				$socket = fsockopen($smtp_server,$smtp_port,$errcode,$errmsg,$timeout);
+				$this->err['server_chat'] .= htmlspecialchars('c->s: fsockopen('.$smtp_server.','.$smtp_port.','.$errcode.','.$errmsg.','.$timeout.') ; returned: '.$socket )."\r\n";
 
 			}
 			if (!$socket)
