@@ -102,18 +102,18 @@ if (!isset($groupby)) {
 }
 $last_groupby = $groupby;
 
-  $public_sql = " or bookmark.public_f='Y' ";
+  $public_sql = " or bookmarks.public_f='Y' ";
 
 
-$query = sprintf("select category.name as category_name, 
-  subcategory.name as subcategory_name, bookmark.id, bookmark.url, 
-  bookmark.name as bookmark_name, bookmark.ldesc 
-  from bookmark, category, subcategory 
-  where bookmark.category_id = category.id and category.username=bookmark.username 
-    and bookmark.subcategory_id = subcategory.id 
-    and subcategory.username=bookmark.username 
-    and ( bookmark.username = '%s' %s )"
-  , $phpgw_info["user"]["account_id"], $public_sql);
+$query = sprintf("select bookmarks_category.name as category_name, 
+                  bookmarks_subcategory.name as subcategory_name, bookmarks.id, bookmarks.url,
+                  bookmarks.name as bookmark_name, bookmarks.ldesc 
+                  from bookmarks, bookmarks_category, bookmarks_subcategory 
+                  where bookmarks.category_id = bookmarks_category.id and 
+                  bookmarks_category.username=bookmarks.username 
+                  and bookmarks.subcategory_id = bookmarks_subcategory.id 
+                  and bookmarks_subcategory.username=bookmarks.username 
+                  and (bookmarks.username = '%s' %s)", $phpgw_info["user"]["account_id"], $public_sql);
 
 # if saved search loaded then use it first
 if (isset($saved_search)) {
@@ -129,7 +129,7 @@ if ($groupby) {
   $query .= " order by category_name, subcategory_name, bookmark_name";
   $groupby_default = "checked";
 } else {
-  $query .= " order by bookmark.name, bookmark.url";
+  $query .= " order by bookmarks.name, bookmarks.url";
   $groupby_default = "";
 }
 
@@ -193,7 +193,7 @@ if ($phpgw->db->Errno == 0) {
      $default_search = "NONE";
   }
 
-  load_ddlb("search", $default_search, &$search_select, TRUE);
+  load_ddlb("bookmarks_search", $default_search, &$search_select, TRUE);
   $phpgw->template->set_var(array(SEARCH_SELECT => $search_select,
                                   FORM_ACTION   => $phpgw->link()
                            ));
@@ -207,8 +207,8 @@ if ($phpgw->db->Errno == 0) {
                            ));
 
 
-  # standard error message, and message handler.
-  include(LIBDIR . "bkmsg.inc");
+  // standard error message, and message handler.
+  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/messages.inc.php");
   if (isset ($bk_output_html)) {
      $phpgw->template->set_var(MESSAGES, $bk_output_html);
   }

@@ -16,7 +16,7 @@
   $phpgw_info["flags"] = array("currentapp" => "bookmarks", "enabled_nextmatchs_class" => True);
 
   include("../header.inc.php");
-  include(LIBDIR . "plist.inc");
+  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/plist.inc.php");
 
   $account_id = $phpgw_info["user"]["account_id"];	// only temp
 
