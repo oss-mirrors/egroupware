@@ -14,16 +14,16 @@
 	/* $Id$ */
 
 	$phpgw_flags = Array(
-		'currentapp'	=>	'email',
+		'currentapp' =>	'email',
 		'enable_network_class'	=> True,
-		'noheader'	=> True,
-		'nonavbar'	=> True
+		'noheader'   => True,
+		'nonavbar'   => True
 	);
 	
 	$phpgw_info['flags'] = $phpgw_flags;
-  
+
 	include('../header.inc.php');
-  
+
 	echo '<body bgcolor="' . $phpgw_info['theme']['bg_color'] . '">';
 
 	// Some on the methods where borrowed from
@@ -66,25 +66,31 @@
 	{
 		mkdir($phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'],0700);
 	}
-  ?>
+?>
     <form ENCTYPE="multipart/form-data" method="POST" action="<?php echo $phpgw->link('/email/attach_file.php')?>">
       <table border=0>
       <tr> <td>Attach file:</td> </tr>
       <tr> <td>Current attachments:</td> </tr>
       <?php
-        $dh = opendir($phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid']);
-        while ($file = readdir($dh)) {
-          if ($file != '.' && $file != '..' && ereg("\.info",$file)) {
-             $file_info = file($uploaddir . $file);
-             echo '<tr><td><input type="checkbox" name="delete[]" value="'.substr($file,0,-5).'">'.$file_info[1].'</tr></td>'."\n";
-             $totalfiles++;
-          }
-        }
-        closedir($dh);
-        if ($totalfiles == 0)
-           echo '<tr></td>None</td></tr>'."\n";
-        else
-           echo '<tr><td><input type="submit" name="action" value="Delete"></td></tr>'."\n";
+	$dh = opendir($phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid']);
+	while ($file = readdir($dh))
+	{
+		if ($file != '.' && $file != '..' && ereg("\.info",$file))
+		{
+			$file_info = file($uploaddir . $file);
+			echo '<tr><td><input type="checkbox" name="delete[]" value="'.substr($file,0,-5).'">'.$file_info[1].'</tr></td>'."\n";
+			$totalfiles++;
+		}
+	}
+	closedir($dh);
+	if ($totalfiles == 0)
+	{
+		echo '<tr></td>'.lang('None').'</td></tr>'."\n";
+	}
+	else
+	{
+		echo '<tr><td><input type="submit" name="action" value="Delete"></td></tr>'."\n";
+	}
       ?>
       <tr>
        <td>File: <input type="file" name="uploadedfile"></td>
