@@ -1,27 +1,31 @@
 <?php 
-  /**************************************************************************\
-  * phpGroupWare - Bookmarks                                                 *
-  * http://www.phpgroupware.org                                              *
-  * Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
-  *                     http://www.renaghan.com/bookmarker                   *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare - Bookmarks                                                 *
+	* http://www.phpgroupware.org                                              *
+	* Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
+	*                     http://www.renaghan.com/bookmarker                   *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "bookmarks", "enable_nextmatchs_class" => True, "enable_categories_class" => True);
+	$phpgw_info['flags'] = array(
+		'currentapp'              => 'bookmarks',
+		'enable_nextmatchs_class' => True,
+		'enable_categories_class' => True
+	);
 
-  include("../header.inc.php");
-  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/plist.inc.php");
+	include('../header.inc.php');
+	include(PHPGW_APP_ROOT . '/inc/plist.inc.php');
 
-  $account_id = $phpgw_info["user"]["account_id"];	// only temp
+	$account_id = $phpgw_info['user']['account_id'];	// only temp
 
-  $phpgw->template->set_file(array("common" => "common.tpl",
-                                   "body"   => "list.body.tpl"
+	$phpgw->template->set_file(array('common' => 'common.tpl',
+                                    'body'   => 'list.body.tpl'
 //                                   first      => "list.first.tpl",
 //                                   prev       => "list.prev.tpl",
 //                                   next       => "list.next.tpl",

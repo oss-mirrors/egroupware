@@ -73,7 +73,7 @@
 
    $query = sprintf("select * from phpgw_bookmarks where (bm_owner='%s' or bm_access='public' %s)",
                     $phpgw_info["user"]["account_id"],
-                    $phpgw->accounts->sql_search("bm_access"));  
+                    $phpgw->common->sql_search("bm_access"));  
 
    if ($where_clause != "") {
       $where_clause_sql = " and " . $where_clause;

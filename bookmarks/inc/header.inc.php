@@ -16,7 +16,7 @@
         $selected = 2;
      }
 
-     if ($phpgw->acl->check("anonymous",1,"bookmarks")) {   
+     if (! $phpgw->acl->check("anonymous",1,"bookmarks")) {   
         $tabs[3]["label"] = "New";
         $tabs[3]["link"]  = $phpgw->link("create.php");
         if (ereg("create.php",$PHP_SELF)) {

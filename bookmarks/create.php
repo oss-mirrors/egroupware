@@ -205,7 +205,7 @@ if ($rating > 0) {
   $phpgw->template->set_var("input_keywords",'<input type="text" name="keyw" size="60" maxlength="255">');
 
   $phpgw->template->set_var("input_access",$phpgw->sbox->getAccessList("access") . "&nbsp;"
-                                         . $phpgw->sbox->getGroups($phpgw->accounts->read_group_names($phpgw_info["user"]["userid"]),-1,"groups"));
+                                         . $phpgw->sbox->getGroups($phpgw->accounts->get_list('groups'),-1,"groups"));
 
   $phpgw->template->set_var("delete_link","");
   $phpgw->template->set_var("cancel_link","");

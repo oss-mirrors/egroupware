@@ -13,7 +13,7 @@
 
   /* $Id$ */
 
-  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/class.Validator.inc");
+  include(PHPGW_APP_ROOT . '/inc/class.Validator.inc');
 
   class bktemplate extends Template
   {
@@ -316,6 +316,7 @@
 
       $db = $phpgw->db;
 
+/*
       $db->query("select count(*) as total_bookmarks from bookmarks where username = '"
                . $phpgw_info["user"]["account_id"] . "' or bookmarks.public_f='Y'",__LINE__,__FILE__);
       $db->next_record();
@@ -324,7 +325,7 @@
          // need to find out how many public bookmarks exist from
          // this user so other users can correctly calculate pages
          // on the list page.
-/*
+
          $total_public = 0;
          $query = sprintf("select count(id) as total_public from bookmarks where username = '%s' and public_f='Y'",$phpgw_info["user"]["account_id"]);
          $db->query($query,__LINE__,__FILE__);
