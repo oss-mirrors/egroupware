@@ -162,7 +162,7 @@
 		{
 			if($this->mbAvailable)
 			{
-				return mb_convert_encoding( $_folderName, "ISO_8859-1", "UTF7-IMAP");
+				return mb_convert_encoding( $_folderName, $this->displayCharset, "UTF7-IMAP");
 			}
 			
 			// if not
@@ -262,7 +262,7 @@
 		{
 			if($this->mbAvailable)
 			{
-				return mb_convert_encoding( $_folderName, "UTF7-IMAP", "ISO_8859-1" );
+				return mb_convert_encoding( $_folderName, "UTF7-IMAP", $this->displayCharset );
 			}
 			
 			// if not
