@@ -28,7 +28,10 @@
 			{
 				foreach($GLOBALS['phpgw_info']['user']['preferences']['headlines'] as $n => $name)
 				{
-					$GLOBALS['phpgw']->preferences->delete('headlines',$n);
+					if ($n != 'headlines_layout')
+					{
+						$GLOBALS['phpgw']->preferences->delete('headlines',$n);
+					}
 				}
 			}
 
