@@ -230,9 +230,9 @@
 
 			$this->t->set_var('action_list',$action_list);
 			$this->t->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$this->t->set_var('filter_list',$this->nextmatchs->filter(1,1));
+			$this->t->set_var('filter_list',$this->nextmatchs->filter(1,array('yours' => 1,'filter' => $this->filter)));
 			$this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$this->t->set_var('search_list',$this->nextmatchs->search(1));
+			$this->t->set_var('search_list',$this->nextmatchs->search(array('search_obj' => 1,'query' => $this->query)));
 
 // ---------------- list header variable template-declarations --------------------------
 
