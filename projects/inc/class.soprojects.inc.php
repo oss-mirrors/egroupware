@@ -245,10 +245,10 @@
 							. "','" . $values['status'] . "','" . $values['descr'] . "','" . $values['title'] . "','" . $values['budget'] . "','"
 							. $values['number'] . "','" . $values['parent'] . "')",__LINE__,__FILE__);
 
-			$this->db->query("SELECT max(id) AS max FROM phpgw_p_projects");
+			$this->db->query("SELECT max(id) FROM phpgw_p_projects");
 			if($this->db->next_record())
 			{
-				$p_id = $this->db->f('max');
+				$p_id = $this->db->f(0);
 			}
 
 			$this->db->unlock();
