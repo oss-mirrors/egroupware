@@ -264,7 +264,7 @@
 					$this->template->set_var('input',$input);
 					$this->template->set_var('fieldname',$display_name);
 
-					$this->template->parse('rows','rows');
+					$this->template->parse('row','rows',true);
 
 				}
 
