@@ -3266,7 +3266,7 @@
 						$eformatted = '<table width="100%" border="0" cellpadding="0" cellspacing="0">' . "\n";
 						for ($i=0;$i<count($emp['events']);$i++)
 						{
-							$e = $this->soprojects->id2item(array('action' => 'event','item_id' => $emp['events'][$i],'item' => 'event_name'));
+							$e = lang($this->soprojects->id2item(array('action' => 'event','item_id' => $emp['events'][$i],'item' => 'event_name')));
 							$eformatted .= '<tr><td width="100%">' . $e . '</td></tr>' . "\n";
 						}
 						$eformatted .= '</table>';
