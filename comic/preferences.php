@@ -168,6 +168,10 @@
     $phpgw->db->query("select * from phpgw_comic_data "
                       ."where data_enabled='T' order by data_name");
 
+    $index = 0;
+    
+    asort($data_ids);
+    
     while ($phpgw->db->next_record())
     {
         $selected = "";
@@ -182,16 +186,15 @@
                    OPTION_NAME     => $phpgw->db->f("data_title")));
         $prefs_tpl->parse(fpage_list, "frontpage", TRUE);
 
-        for ($index = 0; $index < $indexlimit; $index++)
+
+        $selected = "";
+        if ($phpgw->db->f("data_id") == $data_ids[$index])
         {
-            $selected = "";
-            if ($phpgw->db->f("data_id") == $data_ids[$index])
-            {
-                $selected = "selected";
-                break;
-            }
+            $index++;
             
+            $selected = "selected";
         }
+
         $name = sprintf("%s - %s",
                         $phpgw->db->f("data_resolve"),
                         $phpgw->db->f("data_title"));
