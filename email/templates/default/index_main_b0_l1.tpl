@@ -124,7 +124,7 @@ function check_all()
 <!-- BEGIN B_no_messages -->
 <tr>
 	<td bgcolor="{mlist_backcolor}" colspan="6" align="center">
-		<!-- form delmove init here is just a formality -->
+		<!-- form delmove init here is just a formality, need an opening form tag but form does noting -->
 		{mlist_delmov_init}
 		<font size="2" face="{mlist_font}">{report_no_msgs}</font>
 	</td>

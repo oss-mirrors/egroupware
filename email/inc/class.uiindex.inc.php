@@ -29,11 +29,14 @@
 
 		function index()
 		{
-			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
-			
 			$this->bo = CreateObject("email.boindex");
 			$this->bo->index_data();
+			// NOW we can out the header, because "index_data()" filled this global
+			//	$GLOBALS['phpgw_info']['flags']['email_refresh_uri']
+			// which is needed to preserve folder and sort settings during the auto-refresh-ing
+			// currently (Dec 6, 2001) that logic is in phpgwapi/inc/templates/idsociety/head.inc.php
+			$GLOBALS['phpgw']->common->phpgw_header();
+			echo parse_navbar();
 			
 			$this->bo->xi['my_layout'] = $GLOBALS['phpgw_info']['user']['preferences']['email']['layout'];
 			$this->bo->xi['my_browser'] = $GLOBALS['phpgw']->msg->browser;
@@ -49,8 +52,7 @@
 			$this->template->set_block('T_index_main','B_no_messages','V_no_messages');
 			$this->template->set_block('T_index_main','B_msg_list','V_msg_list');
 			
-
-			$this->template->set_var('delmov_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/action.php'));
+			$this->template->set_var('delmov_action',$this->bo->xi['delmov_action']);
 			$this->template->parse('V_form_delmov_init','T_form_delmov_init');
 			$this->bo->xi['mlist_delmov_init'] = $this->template->get_var('V_form_delmov_init');	
 			
@@ -156,7 +158,7 @@
 				'sortbox_select_name'	=> $this->bo->xi['sortbox_select_name'],
 				'sortbox_select_options' => $this->bo->xi['sortbox_select_options'],
 				'sortbox_sort_by_txt'	=> $this->bo->xi['lang_sort_by'],
-				'switchbox_action'	=> $this->bo->xi['sortbox_action'],
+				'switchbox_action'	=> $this->bo->xi['switchbox_action'],
 				'switchbox_listbox'	=> $this->bo->xi['switchbox_listbox'],
 				'arrows_backcolor'	=> $this->bo->xi['arrows_backcolor'],
 				'prev_arrows'		=> $this->bo->xi['td_prev_arrows'],
@@ -185,6 +187,7 @@
 				'ftr_backcolor'		=> $this->bo->xi['ftr_backcolor'],
 				'ftr_font'		=> $this->bo->xi['ftr_font'],
 				'delmov_button'		=> $this->bo->xi['lang_delete'],
+				// "delmov_action" was filled above when we parsed that block
 				'delmov_listbox'	=> $this->bo->xi['delmov_listbox']
 			);
 			$this->template->set_var($tpl_vars);

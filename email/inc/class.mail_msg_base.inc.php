@@ -36,6 +36,10 @@
 	var $mailsvr_callstr = '';
 	var $mailsvr_namespace = '';
 	var $mailsvr_delimiter = '';
+	// these are the supported menuaction strings
+	var $index_menuaction = 'menuaction=email.uiindex.index';
+	// use this uri in any auto-refresh request - filled during "fill_sort_order_start_msgnum()"
+	var $index_refresh_uri ='';
 	// pointer to the primary mailbox stream (you may open others) returned by the first login 
 	var $mailsvr_stream = '';
 	var $folder = '';
@@ -204,8 +208,17 @@
 			// no longer referenced as args after this
 			// requires args saved to $this->args, only relevant if you login
 			$this->fill_sort_order_start_msgnum();
+			
+			// now we have folder, sort and order, make a URI for auto-refresh use
+			// we can NOT put "start" in auto refresh or user may not see the 1st index page on refresh
+			$this->index_refresh_uri = 
+				$this->index_menuaction
+				.'&folder='.$this->prep_folder_out('')
+				.'&sort='.$this->sort
+				.'&order='.$this->order;
 		}
-
+		// anything not specific to logging in goes here (nothing I can think of)
+		
 		// ----  Things Again Specific To Loging In  -----
 		if ($args_array['do_login'] == True)
 		{

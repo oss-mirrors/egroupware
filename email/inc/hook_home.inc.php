@@ -66,7 +66,6 @@
 			}
 			for($i=0; $i<$check_msgs; $i++)
 			{
-				//$msg_headers = $GLOBALS['phpgw']->dcom->header($GLOBALS['phpgw']->msg->mailsvr_stream,$msg_nums_array[$i]);
 				$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msg_nums_array[$i]);
 				$subject = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'');
 				if (strlen($subject) > 65)
@@ -101,7 +100,7 @@
 				$switchbox_listbox = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);
 				// make it another TR we can insert into the home page portal object
 				// and surround it in FORM tage so the submit will work
-				$switchbox_action = $GLOBALS['phpgw']->link('/email/index.php');
+				$switchbox_action = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->index_menuaction);
 				$extra_data = 
 					'<form name="switchbox" action="'.$switchbox_action.'" method="post">'."\r\n"
 						.'<td align="left">'."\r\n"
