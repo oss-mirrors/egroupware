@@ -32,8 +32,28 @@
 
 			$this->t->set_file('admin_instance', 'admin_instance.tpl');
 
-			$iid	= (int)get_var('iid', 'any', 0);
+			$iid				= (int)get_var('iid', 'any', 0);
+			$instance_status	= get_var('status', 'POST', '');
+			$instance_owner		= (int)get_var('owner', 'POST', 0);
 
+			// save changes
+			if (isset($_POST['save']))
+			{
+				$this->instance_manager->set_instance_status($iid, $instance_status);
+				$this->instance_manager->set_instance_owner($iid, $instance_owner);
+
+				// user reasignment
+				foreach (array_keys($_POST['acts']) as $act)
+				{
+					$this->instance_manager->set_instance_user($iid, $act , $POST['acts'][$act]);
+				}
+
+				if (isset($_POST['sendto']))
+				{
+					$this->instance_manager->set_instance_destination($iid, $_POST['sendto']);
+				}
+			}
+			
 			$instance			= $this->instance_manager->get_instance($iid);
 			$process			= $this->process_manager->get_process($instance['pId']);
 			$proc_activities	= $this->activity_manager->list_activities($instance['pId'], 0, -1, 'flowNum_asc', '', '');
@@ -50,7 +70,8 @@
 			// fill the general varibles of the template
 			$this->t->set_var(array(
 				'message'			=> implode('<br>', $this->message),
-				'form_action'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstances.form'),
+				'iid'				=> $iid,
+				'form_action'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form'),
 				'instance_process'	=> lang('Instance: %1 (Process: %2)', $instance['instanceid'], $process['name'] . ' ' . $process['version']),
 				'inst_started'		=> $GLOBALS['phpgw']->common->show_date($instance['started']),
 				'wi_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorworkitems.form&filter_instance='. $instance['instanceId']),
@@ -77,7 +98,7 @@
 			foreach ($users as $user)
 			{
 				$this->t->set_var(array(
-					'select_owner_selected'	=> ($user['account_id'] == $instance['oner'])? 'selected="selected"' : '',
+					'select_owner_selected'	=> ($user['account_id'] == $instance['owner'])? 'selected="selected"' : '',
 					'select_owner_value'	=> $user['account_id'],
 					'select_owner_name'		=> $user['account_firstname'] . ' ' . $user['account_lastname'],
 				));
@@ -101,7 +122,7 @@
 
 		function show_instance_acts($iid, $instance_acts)
 		{
-			$this->t->set_block('admin_instance', 'block_instance_acts_table_users');
+			$this->t->set_block('admin_instance', 'block_instance_acts_table_users', 'instance_acts_table_users');
 			$users = $GLOBALS['phpgw']->accounts->get_list('accounts');
 			foreach ($users as $user)
 			{
