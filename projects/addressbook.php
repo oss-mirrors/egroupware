@@ -23,6 +23,8 @@
 		        'addressbook_list' => 'addressbook.tpl'));
     $t->set_block('addressbook_list_t','addressbook_list','list');
         
+    $d = CreateObject("phpgwapi.contacts");
+
     $t->set_var('title',$phpgw_info["site_title"]);                                                                                                                                          
     $t->set_var('bg_color',$phpgw_info["theme"]["bg_color"]);                                                                                                                                
     $t->set_var('lang_addressbook_action',lang('Address book'));
@@ -34,12 +36,14 @@
 
     if (! $start) { $start = 0; }                                                                                                                                                                                    
                                                                                                                                                                                          
-    if ($order) { $ordermethod = "order by $order $sort"; }
-
     if ($filter == "none") { $filter = ""; }                                                                                                                                         
     if ($filter != "" ) { $filter = "access=$filter"; }
 
-    $d = CreateObject("phpgwapi.contacts");
+    if($phpgw_info["user"]["preferences"]["common"]["maxmatchs"] && $phpgw_info["user"]["preferences"]["common"]["maxmatchs"] > 0) {
+    $offset = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+    }
+    else { $offset = 15; }
+
     $account_id = $phpgw_info['user']['account_id'];
 
     $cols = array('n_given' => 'n_given',
@@ -50,13 +54,8 @@
 
 //--------------------------------- nextmatch --------------------------------------------    
 
-    if($phpgw_info["user"]["preferences"]["common"]["maxmatchs"] && $phpgw_info["user"]["preferences"]["common"]["maxmatchs"] > 0) {
-    $offset = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
-    }
-    else { $offset = 15; }
-
-    $left = $phpgw->nextmatchs->left('addressbook.php',$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");
-    $right = $phpgw->nextmatchs->right('addressbook.php',$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");
+    $left = $phpgw->nextmatchs->left('addressbook.php',$start,$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");
+    $right = $phpgw->nextmatchs->right('addressbook.php',$start,$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");
     $t->set_var('left',$left);
     $t->set_var('right',$right);
                                                                                                                                                                                          
