@@ -11,7 +11,8 @@
 
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$phpgw_info = array();
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'              => 'headlines',
 		'noheader'                => True,
 		'nonavbar'                => True,
@@ -19,25 +20,26 @@
 	);
 	include('../header.inc.php');
 
-	if (! $submit)
+	$submit = get_var('submit',array('POST'));
+	if(!$submit)
 	{
 		$GLOBALS['phpgw']->common->phpgw_header();
 		echo parse_navbar();
-     
+
 		$GLOBALS['phpgw']->template->set_file(array('form' => 'preferences.tpl'));
-	     
-		$GLOBALS['phpgw']->template->set_var('form_action',$phpgw->link('/headlines/preferences.php'));
+
+		$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/headlines/preferences.php'));
 		$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 		$GLOBALS['phpgw']->template->set_var('lang_header',lang('select headline news sites'));
 		$GLOBALS['phpgw']->template->set_var('lang_headlines',lang('Headline preferences'));
 
 		$GLOBALS['phpgw']->db->query('SELECT con,display FROM phpgw_headlines_sites ORDER BY display asc',__LINE__,__FILE__);
-		while ($GLOBALS['phpgw']->db->next_record())
+		while($GLOBALS['phpgw']->db->next_record())
 		{
 			$html_select .= '<option value=\'' . $GLOBALS['phpgw']->db->f('con') . '\'';
-//           . $users_headlines[$GLOBALS['phpgw']->db->f('con')];
+			//. $users_headlines[$GLOBALS['phpgw']->db->f('con')];
 
-			if ($GLOBALS['phpgw_info']['user']['preferences']['headlines'][$GLOBALS['phpgw']->db->f('con')])
+			if($GLOBALS['phpgw_info']['user']['preferences']['headlines'][$GLOBALS['phpgw']->db->f('con')])
 			{
 				$html_select .= ' selected';
 			}
@@ -51,17 +53,19 @@
 		$GLOBALS['phpgw']->template->set_var('lang_submit',lang('submit'));
 
 		$GLOBALS['phpgw']->template->pparse('out','form');
-  } else {
-
+	}
+	else
+	{
 		$i = 0;
-		while (is_array($GLOBALS['phpgw_info']['user']['preferences']['headlines']) && $preference = each($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
+		while(is_array($GLOBALS['phpgw_info']['user']['preferences']['headlines']) &&
+			$preference = each($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
 		{
 			$GLOBALS['phpgw']->preferences->delete('headlines',$preference[0]);
 		}
-	
-		if (count($GLOBALS['HTTP_POST_VARS']['headlines']))
+
+		if(count($GLOBALS['HTTP_POST_VARS']['headlines']))
 		{
-			while ($value = each($GLOBALS['HTTP_POST_VARS']['headlines']))
+			while($value = each($GLOBALS['HTTP_POST_VARS']['headlines']))
 			{
 				$GLOBALS['phpgw']->preferences->add('headlines',$value[1],'True');
 			}
