@@ -129,7 +129,20 @@ function html_url($url, $text)
 			$url = $GLOBALS['phpgw_info']['server']['webserver_url'].'/'.$url;
 		}
 	}
-	if(preg_match('/(.jpe?g|.png|.gif|.bmp)$/i', $url))
+	$is_image = preg_match('/(.jpe?g|.png|.gif|.bmp)$/i', $url);
+
+	// vfs: urls are urls into the eGW VFS
+	if (substr($url,0,4) == 'vfs:')
+	{
+		$parts = explode('/',substr($url,4));
+		$file = array_pop($parts);
+		$path = implode('/',$parts);
+		$linkdata['menuaction'] = 'filemanager.uifilemanager.view';
+		$linkdata['path'] = rawurlencode(base64_encode($path));
+		$linkdata['file'] = rawurlencode(base64_encode($file));
+		$url = $GLOBALS['phpgw']->link('/index.php',$linkdata);
+	}
+	if($is_image)
 	{
 		return "<img src=\"$url\" alt=\"" . basename($url) . "\" />";
 	}
