@@ -70,4 +70,5 @@
          "err_desc: '".$phpgw->err[desc]."'.<P>\n";
     echo "To go back to the msg list, click <A HRef=\"".$phpgw->link("index.php","cd=13&folder=" . urlencode($return))."\">here</a>";
   }
+  $phpgw->common->phpgw_footer();
 ?>

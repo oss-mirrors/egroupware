@@ -286,4 +286,5 @@
       // echo "updating session with new cwd<BR>\n";
       updateSession($connInfo);
    }
+$phpgw->common->phpgw_footer();
 ?>

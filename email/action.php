@@ -67,4 +67,5 @@
   if (! $dontforward) {
      Header("Location: ".$phpgw->link("index.php","folder=" . urlencode($folder) . $totaldeleted));
   }
+  $phpgw->common->phpgw_footer();
 ?>

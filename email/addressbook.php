@@ -172,5 +172,5 @@ if ($query) {
  $t->p("out");
 
 // ----------- end Done form declaration ------------
-
+$phpgw->common->phpgw_footer();
 ?>

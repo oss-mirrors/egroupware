@@ -127,5 +127,5 @@
 <input type=text name="name"><input type=hidden name=folder value="<?php echo $folder ?>">
 <input type=submit value="<?php echo lang("submit"); ?>"></td></tr></form>
 </table>
-
 <p>
+<?php $phpgw->common->phpgw_footer(); ?>
