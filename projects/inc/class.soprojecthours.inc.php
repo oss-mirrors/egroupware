@@ -268,7 +268,6 @@
 				$activities[] = array
 				(
 					'activity_id'	=> $this->db->f('activity_id'),
-					'id'			=> $this->db->f('id'),
 					'billable'		=> $this->db->f('billable')
 				);
 			}
@@ -283,7 +282,8 @@
 				$activity['minperae'] = $this->db->f('minperae');
 				$activity['billperae'] = $this->db->f('billperae');
 				
-				$where['activity_id'] = $activity['id'];
+				$where['activity_id'] = $activity['activity_id'];
+				$where['billable'] = $activity['billable'] == 'Y' ? 'N' : 'Y';	// billable in hours means not-billable !!!
 				$this->db->select($this->hours_table,'SUM(minutes)',$where,__LINE__,__FILE__);
 				$this->db->next_record();
 				$activity['utime'] = $this->db->f(0);
