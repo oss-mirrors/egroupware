@@ -65,15 +65,15 @@
 
     $phpgw->db->query("select * from phpgw_comic "
                       ."WHERE comic_owner='"
-                      .$phpgw_info["user"]["userid"]."'");
+                      .$phpgw_info["user"]["account_id"]."'");
 
     if ($phpgw->db->num_rows() == 0)
     {
         $phpgw->db->query("insert into phpgw_comic (comic_owner) values ".
-                          "('".$phpgw_info["user"]["userid"]."')");
+                          "('".$phpgw_info["user"]["account_id"]."')");
         $phpgw->db->query("select * from phpgw_comic "
                           ."WHERE comic_owner='"
-                          .$phpgw_info["user"]["userid"]."'");
+                          .$phpgw_info["user"]["account_id"]."'");
     }
 
     $phpgw->db->next_record();

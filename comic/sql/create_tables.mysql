@@ -9,7 +9,7 @@
 #
 CREATE TABLE phpgw_comic (
   comic_id int(11) DEFAULT '0' NOT NULL auto_increment,
-  comic_owner varchar(25) DEFAULT '' NOT NULL,
+  comic_owner varchar(32) DEFAULT '' NOT NULL,
   comic_list BLOB DEFAULT '' NOT NULL,
   comic_scale tinyint(4) DEFAULT '0' NOT NULL,
   comic_perpage tinyint(4) DEFAULT '4' NOT NULL,

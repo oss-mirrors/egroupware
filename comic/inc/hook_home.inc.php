@@ -15,7 +15,7 @@
 
     $phpgw->db->query("select * from phpgw_comic "
                       ."WHERE comic_owner='"
-                      .$phpgw_info["user"]["userid"]."'");
+                      .$phpgw_info["user"]["account_id"]."'");
 
     if ($phpgw->db->num_rows())
     {

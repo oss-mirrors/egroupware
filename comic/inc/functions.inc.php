@@ -82,26 +82,42 @@ function comic_resolve_url($remote_enabled, &$fetch_url,
     $status = STD_SUCCESS;
 
     /**************************************************************************
-     * resolve our comic url, link url and comic day
-     *************************************************************************/
-    switch ($phpgw->db->f("data_resolve"))
-    {	 
-      case "Static":
-        $status = comic_resolve_static(&$comic_url, &$comic_day);
-        break;
-      case "Remote":
-        $status = comic_resolve_remote($remote_enabled, &$fetch_url,
-                                       &$comic_url, &$comic_day);
-        break;
-    }
-
-    /**************************************************************************
      * check to see if already "snarfed" today
      *************************************************************************/
     if ($phpgw->db->f("data_date") == (int)date("Ymd"))
     {
         $status = STD_CURRENT;
         $comic_url = $phpgw->db->f("data_imageurl");
+
+        /**********************************************************************
+         * need to generate resolve type links without going to the web
+         * and not putting them in the database
+         *********************************************************************/
+        if ($phpgw->db->f("data_linkurl") == "")
+        {
+            $fetch_url = $phpgw->db->f("data_baseurl")
+                .$phpgw->db->f("data_parseurl");
+            $comic_time   = time() - ($phpgw->db->f("data_daysold")*3600*24);
+            comic_resolver(&$fetch_url, $comic_time);
+            
+        }
+        
+    }
+    else
+    {
+        /**********************************************************************
+         * resolve our comic url, link url and comic day
+         *********************************************************************/
+        switch ($phpgw->db->f("data_resolve"))
+        {	 
+          case "Static":
+            $status = comic_resolve_static(&$comic_url, &$comic_day);
+            break;
+          case "Remote":
+            $status = comic_resolve_remote($remote_enabled, &$fetch_url,
+                                           &$comic_url, &$comic_day);
+            break;
+        }
     }
     
     return $status;
