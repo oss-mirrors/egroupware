@@ -56,13 +56,16 @@
 		function chg_settings($row)
 		{
 			if (isset($_GET, $_POST, $_GET['account_id']) && count($_POST) && ($ac_id = (int) $_GET['account_id'])) {
-				$GLOBALS['phpgw']->db->query("SELECT account_lid, account_firstname, account_lastname, account_status FROM phpgw_accounts WHERE account_id=".$ac_id);
-				if (($row = $GLOBALS['phpgw']->db->row(true))) {
+				$acc = new accounts();
+				$acc->account_id = $ac_id;
+				$acc->read_repository();
+			
+				if ($acc->data['account_id']) {
 					$email = addslashes($this->__get_email($ac_id));
-					$name = addslashes($row['account_firstname'] . ' ' . $row['account_lastname']);
-					$login = addslashes($row['account_lid']);
-					$alias = addslashes(htmlspecialchars($row['account_lid']));
-					$status = ($row['account_status'] != 'A') ? 'users_opt & ~ 2097152' : 'users_opt|2097152';
+					$name = addslashes($$acc->data['firstname'] . ' ' . $acc->data['lastname']);
+					$login = addslashes($acc->data['account_lid']);
+					$alias = addslashes(htmlspecialchars($acc->data['account_lid']));
+					$status = ($acc->data['status'] != 'A') ? 'users_opt & ~ 2097152' : 'users_opt|2097152';
 					$GLOBALS['phpgw']->db->query("UPDATE phpgw_fud_users SET name='{$name}', email='{$email}', login='{$login}', alias='{$alias}', users_opt={$status} WHERE egw_id=".$ac_id);
 				}
 			}
