@@ -148,7 +148,7 @@
 					'details'        => $this->db->f('ticket_details'),
 					'odate'          => $GLOBALS['phpgw']->common->show_date($history_values[0]['datetime'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']),
 					'odate_epoch'    => (int)$history_values[0]['datetime'],
-					'view'           => $this->db->f('ticket_view')
+					'view'           => $ticket_read
 				);
 			}
 			return $r;
@@ -157,6 +157,17 @@
 		function read_ticket($params = '')
 		{
 			$cat = createobject('phpgwapi.categories');
+
+			// Have they viewed this ticket before ?
+			$this->db->query("select count(*) from phpgw_tts_views where view_id='" . $params['id']
+					. "' and view_account_id='" . $GLOBALS['phpgw_info']['user']['account_id'] . "'",__LINE__,__FILE__);
+			$this->db->next_record();
+
+			if (! $this->db->f(0))
+			{
+				$this->db->query("insert into phpgw_tts_views values ('" . $params['id'] . "','"
+					. $GLOBALS['phpgw_info']['user']['account_id'] . "','" . time() . "')",__LINE__,__FILE__);
+			}
 
 			$this->db->query("select * from phpgw_tts_tickets where ticket_id='" . $params['id'] . "'",__LINE__,__FILE__);
 			$this->db->next_record();

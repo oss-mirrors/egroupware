@@ -27,21 +27,15 @@
 		echo "\n<!-- Begin TTS New/Updated -->\n";
 
 		// this will be an user option
-		$filtermethod="where t_timestamp_closed='0' and t_assignedto='".$GLOBALS['phpgw_info']["user"]["userid"]."'";
-		$sortmethod="order by t_priority desc";
+		$filtermethod="where ticket_status='O' and ticket_assignedto='".$GLOBALS['phpgw_info']['user']['account_id']."'";
+		$sortmethod="order by ticket_priority desc";
 
-		$GLOBALS['phpgw']->db->query("select t_id,t_category,t_priority,t_assignedto,t_timestamp_opened,t_user,t_timestamp_closed,t_subject,t_watchers "
-		. "from phpgw_tts_tickets $filtermethod $sortmethod");
-		$GLOBALS['phpgw']->db->next_record();
-		$GLOBALS['phpgw']->db->f('0') ;
+		$GLOBALS['phpgw']->db->query("select ticket_id,ticket_category,ticket_priority,ticket_assignedto,"
+			. "ticket_owner,ticket_subject from phpgw_tts_tickets $filtermethod $sortmethod",__LINE__,__FILE__);
 
 		$p = CreateObject('phpgwapi.Template',$tmp_app_tpl);
 		// echo PHPGW_APP_TPL;
-		$p->set_file(array(
-			'index'   => 'hook_home.tpl'
-		));
-
-		$p->set_unknowns('remove');
+		$p->set_file('index','hook_home.tpl');
 
 		$p->set_block('index', 'tts_list', 'tts_list');
 		$p->set_block('index', 'tts_row', 'tts_row');
@@ -50,8 +44,9 @@
 
 		while ($GLOBALS['phpgw']->db->next_record())
 		{
+
 			$p->set_var('tts_col_status',"");
-			$priority=$GLOBALS['phpgw']->db->f("t_priority");
+			$priority=$GLOBALS['phpgw']->db->f('ticket_priority');
 			switch ($priority)
 			{
 				case 1:  $tr_color = $GLOBALS['phpgw_info']["theme"]["bg01"]; break;
@@ -77,25 +72,57 @@
 				$t_read=0;
 			}
 			$p->set_var('tts_row_color', $tr_color );
-			$p->set_var('tts_ticketdetails_link', $GLOBALS['phpgw']->link("/tts/viewticket_details.php","ticketid=" . $GLOBALS['phpgw']->db->f("t_id")));
+			$p->set_var('tts_ticketdetails_link', $GLOBALS['phpgw']->link("/tts/viewticket_details.php","ticketid=" . $GLOBALS['phpgw']->db->f('ticket_id')));
 
-			$p->set_var('tts_t_id',$GLOBALS['phpgw']->db->f("t_id") );
+			$p->set_var('tts_t_id',$GLOBALS['phpgw']->db->f('ticket_id') );
 
 			if (!$t_read==1)
 			{
-				$p->parse('tts_ticket_id', 'tts_ticket_id_unread', false );
+				$p->fp('tts_ticket_id', 'tts_ticket_id_unread', false );
 			}
 			else
 			{
-				$p->parse('tts_ticket_id', 'tts_ticket_id_read', false );
+				$p->fp('tts_ticket_id', 'tts_ticket_id_read', false );
 			}
 
-			$p->set_var('tts_t_user', $GLOBALS['phpgw']->db->f("t_user"));
+			$p->set_var('tts_t_user', $GLOBALS['phpgw']->db->f('ticket_user'));
 			$p->set_var('tts_t_timestampopened', $GLOBALS['phpgw']->common->show_date($GLOBALS['phpgw']->db->f("t_timestamp_opened")));
-			$p->set_var('tts_t_subject', $GLOBALS['phpgw']->db->f("t_subject"));
+			$p->set_var('tts_t_subject', $GLOBALS['phpgw']->db->f('ticket_subject'));
 
-			$p->parse('rows','tts_row',true);
+			$p->fp('rows','tts_row',true);
 		}
+		
+		$portalbox = CreateObject('phpgwapi.listbox',
+			array(
+				'title'     => '<font color="#FFFFFF">' . lang('Trouble Ticket System') . '</font>',
+				'primary'   => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'secondary' => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'tertiary'  => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'width'     => '100%',
+				'outerborderwidth' => '0',
+				'header_background_image' => $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler.gif')
+			)
+		);
+
+		$app_id = $GLOBALS['phpgw']->applications->name2id('tts');
+		$GLOBALS['portal_order'][] = $app_id;
+		$var = array(
+			'up'       => array('url' => '/set_box.php', 'app' => $app_id),
+			'down'     => array('url' => '/set_box.php', 'app' => $app_id),
+			'close'    => array('url' => '/set_box.php', 'app' => $app_id),
+			'question' => array('url' => '/set_box.php', 'app' => $app_id),
+			'edit'     => array('url' => '/set_box.php', 'app' => $app_id)
+		);
+
+		while(list($key,$value) = each($var))
+		{
+			$portalbox->set_controls($key,$value);
+		}
+		$portalbox->data = array();
+		$portalbox->draw($p->fp('out','tts_list'));
+
+echo 'TEST -&gt;&gt;' . $p->fp('out','tts_list') . '&lt;&lt;-';
+//		$p->pfp('out','tts_list');
 		echo "\n<!-- End TTS New/Updated -->\n";
 	}
 ?>
