@@ -320,7 +320,7 @@
 
             for ($i=0;$i<count($pro);$i++)
             {
-				$this->nextmatchs->template_alternate_row_color(&$GLOBALS['phpgw']->template);
+				$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 				$edateout = $this->boprojects->formatted_edate($pro[$i]['edate']);
 
 				if ($action == 'mains')
@@ -523,7 +523,7 @@
 
             for ($i=0;$i<count($pro);$i++)
             {
-				$this->nextmatchs->template_alternate_row_color(&$this->t);
+				$this->nextmatchs->template_alternate_row_color($this->t);
 				$edateout = $this->boprojects->formatted_edate($pro[$i]['edate']);
 
 				if ($action == 'mains')
@@ -1310,7 +1310,7 @@
 
             for ($i=0;$i<count($act);$i++)
             {
-				$this->nextmatchs->template_alternate_row_color(&$GLOBALS['phpgw']->template);
+				$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 				$descr = $GLOBALS['phpgw']->strip_html($act[$i]['descr']);
 				if (! $descr)
 				{
@@ -1524,7 +1524,7 @@
 
 			for ($i=0;$i<count($admins);$i++)
 			{
-				$this->nextmatchs->template_alternate_row_color(&$GLOBALS['phpgw']->template);
+				$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 				$lid = $admins[$i]['lid'];
 
 				if ($admins[$i]['type']=='u')
@@ -1954,7 +1954,7 @@
 
             for ($i=0;$i<count($pro);$i++)
             {
-				$this->nextmatchs->template_alternate_row_color(&$GLOBALS['phpgw']->template);
+				$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 				$title = $GLOBALS['phpgw']->strip_html($pro[$i]['title']);
 				if (! $title) $title = '&nbsp;';
 
@@ -2134,7 +2134,7 @@
 
             for ($i=0;$i<count($pro);$i++)
             {
-				$this->nextmatchs->template_alternate_row_color(&$GLOBALS['phpgw']->template);
+				$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 
 // --------------- template declaration for list records -------------------------------------
 
@@ -2185,7 +2185,7 @@
 
 			for ($i=0;$i<count($pcosts);$i++)
             {
-				$this->nextmatchs->template_alternate_row_color(&$GLOBALS['phpgw']->template);
+				$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 
 // --------------- template declaration for list records -------------------------------------
 
