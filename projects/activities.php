@@ -52,11 +52,11 @@
 
 	if ($order)
 	{
-		$ordermethod = "order by $order $sort";
+		$ordermethod = " order by $order $sort";
 	}
 	else
 	{
-		$ordermethod = "order by num asc";
+		$ordermethod = " order by num asc";
 	}
 
 	if (! $filter)
@@ -77,7 +77,7 @@
 
 	$db2 = $phpgw->db;
 
-	$sql = "select * from phpgw_p_activities $querymethod $ordermethod";
+	$sql = "select * from phpgw_p_activities $querymethod";
 	$db2->query($sql,__LINE__,__FILE__);
 	$total_records = $db2->num_rows();
 
@@ -106,8 +106,8 @@
 
 // ---------------- nextmatch variable template-declarations ------------------------------
 
-	$left = $phpgw->nextmatchs->left('activities.php',$start,$phpgw->db->f(0));
-	$right = $phpgw->nextmatchs->right('activities.php',$start,$phpgw->db->f(0));
+	$left = $phpgw->nextmatchs->left('activities.php',$start,$total_records);
+	$right = $phpgw->nextmatchs->right('activities.php',$start,$total_records);
 	$t->set_var('left',$left);
 	$t->set_var('right',$right);
 
@@ -126,7 +126,7 @@
 
 // ---------------------------- end header declaration -------------------------------------
 
-	$phpgw->db->query($sql . " " . $phpgw->db->limit($start),__LINE__,__FILE__);
+	$phpgw->db->query($sql . $ordermethod . " " . $phpgw->db->limit($start),__LINE__,__FILE__);
 	while ($phpgw->db->next_record())
 	{
 		$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
