@@ -19,24 +19,28 @@
   include("../header.inc.php");
 
   if ($action == "add") {
-     $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],urlencode($symbol),"stocks",urlencode($name));
+     $phpgw->preferences->change("stocks",urlencode($symbol),urlencode($name));
+     $phpgw->preferences->commit();
      // For some odd reason, if I forward it back to stocks/preferences.php after an add
      // I get no data errors, so for now forward it to the main preferences section.
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/preferences/index.php"));
      exit;
   } else if ($action == "delete") {
-     $phpgw->common->preferences_delete("byappvar_single",$phpgw_info["user"]["account_id"],"stocks",$value);
+     // This needs to be fixed
+     $phpgw->preferences->delete("stocks",$value);
+     $phpgw->preferences->commit();
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/stocks/preferences.php"));
      exit;  
   }
 
   if ($mainscreen) {
      if ($mainscreen == "enable") {
-        $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"enabled","stocks","True");
+        $phpgw->preferences->change("stocks","enabled","True");
      }
      if ($mainscreen == "disable") {
-        $phpgw->common->preferences_delete("byappvar_single",$phpgw_info["user"]["account_id"],"stocks","enabled");
+        $phpgw->preferences->delete("stocks","enabled");
      }
+     $phpgw->preferences->commit();
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/stocks/preferences.php"));
      exit;     
   }

@@ -19,37 +19,37 @@
 
   if ($submit) {
      if ($mainscreen_showmail) {
-        $phpgw->preferences->change($phpgw_info["user"]["account_id"],"mainscreen_showmail","email");
+        $phpgw->preferences->change("email","mainscreen_showmail");
      }
      if ($use_trash_folder) {
-        $phpgw->preferences->change($phpgw_info["user"]["account_id"],"use_trash_folder","email");
+        $phpgw->preferences->change("email","use_trash_folder");
      }
-     $phpgw->preferences->change($phpgw_info["user"]["account_id"],"default_sorting","email");
-     $phpgw->preferences->change($phpgw_info["user"]["account_id"],"email_sig","email"); 
+     $phpgw->preferences->change("email","default_sorting");
+     $phpgw->preferences->change("email","email_sig"); 
 
      if ($use_custom_settings) {
-        $phpgw->preferences->change($phpgw_info["user"]["account_id"],"use_custom_settings","email");
+        $phpgw->preferences->change("email","use_custom_settings");
        if ($userid) {
-          $phpgw->preferences->change($phpgw_info["user"]["account_id"],"userid","email");
+          $phpgw->preferences->change("email","userid");
        }
        if ($passwd) {
           $encrypted_passwd = $phpgw->common->encrypt($passwd);
-          $phpgw->preferences->change($phpgw_info["user"]["account_id"],"passwd","email", $encrypted_passwd);
+          $phpgw->preferences->change("email","passwd",$encrypted_passwd);
        }
        if ($address) {
-          $phpgw->preferences->change($phpgw_info["user"]["account_id"],"address","email");
+          $phpgw->preferences->change("email","address");
        }
        if ($mail_server) {
-          $phpgw->preferences->change($phpgw_info["user"]["account_id"],"mail_server","email");
+          $phpgw->preferences->change("email","mail_server");
        }
        if ($mail_folder) {
-          $phpgw->preferences->change($phpgw_info["user"]["account_id"],"mail_folder","email");
+          $phpgw->preferences->change("email","mail_folder");
        }
        if ($mail_server_type) {
-          $phpgw->preferences->change($phpgw_info["user"]["account_id"],"mail_server_type","email");
+          $phpgw->preferences->change("email","mail_server_type");
        }
        if ($imap_server_type) {
-          $phpgw->preferences->change($phpgw_info["user"]["account_id"],"imap_server_type","email");
+          $phpgw->preferences->change("email","imap_server_type");
        }
      }
      $phpgw->preferences->commit();

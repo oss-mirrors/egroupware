@@ -49,7 +49,7 @@
   } else {
    if (count($headlines)) {
       while ($value = each($headlines)) {
-         $phpgw->preferences->change($phpgw_info["user"]["account_id"],$value[1],"headlines","True");
+         $phpgw->preferences->change("headlines",$value[1],"True");
       }
       $phpgw->preferences->commit();
    }
