@@ -28,7 +28,7 @@
 		echo "<font color=red>test</font>";
 
 		// this will be an user option
-		$filtermethod="where t_timestamp_closed='0' and t_assigned_to='".$phpgw_info["user"]["userid"]."'";
+		$filtermethod="where t_timestamp_closed='0' and t_assignedto='".$phpgw_info["user"]["userid"]."'";
 		$sortmethod="order by t_priority desc";
 
 		$phpgw->db->query("select t_id,t_category,t_priority,t_assignedto,t_timestamp_opened,t_user,t_timestamp_closed,t_subject,t_watchers "
