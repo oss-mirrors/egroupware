@@ -49,9 +49,13 @@
 	$headlines = new headlines;
 	$phpgw->template->set_file(array(
 		'layout_row' => 'layout_row.tpl',
-		'channel'    => $phpgw_info['user']['preferences']['headlines']['headlines_layout'] . '.tpl',
-		'row'        => $phpgw_info['user']['preferences']['headlines']['headlines_layout'] . '_row.tpl'
+		'form'       => $phpgw_info['user']['preferences']['headlines']['headlines_layout'] . '.tpl'
 	));
+	$phpgw->template->set_block('form','channel');
+	$phpgw->template->set_block('form','row');
+
+//		'channel'    => $phpgw_info['user']['preferences']['headlines']['headlines_layout'] . '.tpl',
+//		'row'        => $phpgw_info['user']['preferences']['headlines']['headlines_layout'] . '_row.tpl'
 
 	$j = 0;
 	$i = count($sites);
