@@ -12,7 +12,7 @@ activity %1 has been added	projects	en	Activity %1 has been added.
 activity %1 has been updated	projects	en	Activity %1 has been updated.
 activity id	projects	en	Activity ID
 add activity	projects	en	Add activity
-add file projects	en	add file 
+add file	projects	en	add file
 add job	projects	en	Add job
 add milestone	projects	en	add milestone
 add project	projects	en	Add project
@@ -63,6 +63,7 @@ changed start date and end date of projects bellow	projects	en	Changed start dat
 changes of project data	projects	en	Changes of project data
 click %1here%2 to return to projects.	projects	en	Click %1here%2 to return to projects.
 closed	projects	en	Closed
+color	projects	en	color
 color legend	projects	en	Color legend
 columns to show in the projects list	projects	en	Columns to show in the projects list
 comment	projects	en	comment
@@ -82,8 +83,8 @@ delete activity	projects	en	delete activity
 delete factor	projects	en	delete factor
 delete hours	projects	en	Delete hours
 delete job	projects	en	delete job
-delete selected files	projects	en	delete selected files 
 delete project	projects	en	delete project
+delete selected files	projects	en	delete selected files
 delete work hours	projects	en	delete work hours
 deliveries	projects	en	Deliveries
 delivery	projects	en	Delivery
@@ -147,6 +148,7 @@ hours	projects	en	Hours
 hours limit	projects	en	Hours limit
 hours of work day	admin	en	Number of hours per work day
 hours used total	projects	en	hours used total
+icon	projects	en	icon
 id can not exceed 20 characters in length	projects	en	id can not exceed 20 characters in length
 id can not exceed 250 characters in length	projects	en	ID can not exceed 250 characters in length.
 if using activities	admin	en	If using activities
@@ -173,7 +175,7 @@ main project	projects	en	Main project
 main project:	projects	en	Main project:
 manager	projects	en	Manager
 manager list	projects	en	Manager list
-managing committee	admin	en	Managing committee
+managing committee	common	en	Managing committee
 manuell entries	projects	en	Manuel entries
 milestone	projects	en	Milestone
 milestone date due	projects	en	Milestone date due
@@ -233,7 +235,7 @@ project	projects	en	Project
 project %1 has been saved	projects	en	Project %1 has been saved.
 project %1 has been updated	projects	en	Project %1 has been updated.
 project accounting	admin	en	Project accounting
-project administrators	admin	en	Project administrators
+project administrators	common	en	Project administrators
 project data due	projects	en	Project date due
 project dependencies	common	en	Project dependencies
 project id	common	en	Project ID
@@ -256,7 +258,7 @@ role %1 has been updated	projects	en	role %1 has been updated
 role has been deleted	projects	en	role has been deleted
 roles	projects	en	Roles
 roles list	projects	en	roles list
-sales department	admin	en	Sales department
+sales department	common	en	Sales department
 save factor	projects	en	Save factor
 save milestone	projects	en	save milestone
 select factor	projects	en	Select factor
@@ -334,3 +336,4 @@ you have no customer selected !	projects	en	You have no customer selected !
 you have no projects selected	projects	en	you have no projects selected
 you have selected an invalid activity	projects	en	You have selected an invalid activity.
 you have to create a delivery or invoice first !	projects	en	You have to CREATE a delivery or invoice first !
+your php installation does not have appropriate gd support. you need gd library version 1.8 or newer to see gantt charts.	projects	en	Your PHP installation does not have appropriate GD support. You need gd library version 1.8 or newer to see Gantt charts.
