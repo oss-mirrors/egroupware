@@ -20,7 +20,7 @@
     'currentapp'              => 'tts',
     'noheader'                => True,
     'nonavbar'                => True,
-    'enable_config_class'     => !$_POST['submit'] && !$_POST['cancel']
+    'enable_config_class'     => !@$_POST['submit'] && !@$_POST['cancel']
   );
 
   include('../header.inc.php');
