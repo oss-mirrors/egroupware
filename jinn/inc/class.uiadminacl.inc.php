@@ -26,33 +26,6 @@
 
 	class uiadminacl extends uiadmin
 	{
-/*		var $public_functions = Array(
-			'index' => True,
-			'add_edit_phpgw_jinn_sites' => True,
-			'add_edit_phpgw_jinn_site_objects' => True,
-			'browse_phpgw_jinn_sites' => True,
-			'browse_phpgw_jinn_site_objects' => True,
-			'del_phpgw_jinn_sites'=> True,
-			'del_phpgw_jinn_site_objects' => True,
-			'insert_phpgw_jinn_sites'=> True,
-			'insert_phpgw_jinn_site_objects'=> True,
-			'update_phpgw_jinn_sites'=> True,
-			'update_phpgw_jinn_site_objects' => True,
-			'access_rights'=> True,
-			'set_access_rights_site_objects'=> True,
-			'set_access_rights_sites'=> True,
-			'save_access_rights_object'=> True,
-			'save_access_rights_site'=> True
-		);
-*/
-
-		/*var $app_title='jinn';
-		var $bo;
-		var $template;
-		var $nextmatchs;
-		var $debug=False;
-*/
-
 		function uiadminacl($bo)
 		{
 
@@ -64,7 +37,6 @@
 
 			$this->bo=$bo;
 			$this->nextmatchs=CreateObject('phpgwapi.nextmatchs');
-			//$this->bo = CreateObject('jinn.bojinn');
 			$this->template = $GLOBALS['phpgw']->template;
 		}
 
@@ -350,41 +322,6 @@
 			$this->template->pfp('out','list');
 
 		}
-
-		/*
-		function site_administrator()
-		{
-
-			unset($GLOBALS['phpgw_info']['flags']['noheader']);
-			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-			unset($GLOBALS['phpgw_info']['flags']['noappheader']);
-			unset($GLOBALS['phpgw_info']['flags']['noappfooter']);
-
-
-			$GLOBALS['phpgw']->common->phpgw_header();
-			$this->template->set_file(array
-			(
-				'header' => 'header.tpl'
-			));
-
-			$action=lang('Site Beheerders');
-			$this->template->set_var('title',$this->app_title);
-			$this->template->set_var('action',$action);
-			$this->template->pparse('out','header');
-
-			$this->debug_info();
-			$this->admin_menu();
-
-
-			$this->save_sessiondata();
-
-		}
-
-
-
-
-		*/		
-
 
 	}
 

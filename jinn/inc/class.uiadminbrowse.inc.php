@@ -26,33 +26,6 @@
 
 	class uiadminbrowse extends uiadmin
 	{
-/*
-		var $public_functions = Array
-		(
-			'index' => True,
-			'add_edit_phpgw_jinn_sites' => True,
-			'add_edit_phpgw_jinn_site_objects' => True,
-			'browse_phpgw_jinn_sites' => True,
-			'browse_phpgw_jinn_site_objects' => True,
-			'del_phpgw_jinn_sites'=> True,
-			'del_phpgw_jinn_site_objects' => True,
-			'insert_phpgw_jinn_sites'=> True,
-			'insert_phpgw_jinn_site_objects'=> True,
-			'update_phpgw_jinn_sites'=> True,
-			'update_phpgw_jinn_site_objects' => True,
-			'access_rights'=> True,
-			'set_access_rights_site_objects'=> True,
-			'set_access_rights_sites'=> True,
-			'save_access_rights_object'=> True,
-			'save_access_rights_site'=> True
-		);
-
-
-		var $app_title='jinn';
-		var $bo;
-		var $template;
-		var $debug=False;
-*/
 		function uiadminbrowse($bo)
 		{
 
@@ -62,7 +35,7 @@
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 
-			$this->bo = $bo; //CreateObject('jinn.bojinn');
+			$this->bo = $bo; 
 			$this->template = $GLOBALS['phpgw']->template;
 
 		}
@@ -190,9 +163,6 @@
 
 			if ($table=='phpgw_jinn_site_objects')
 			{                 
-				//$button_browse='<td><form method=post action="'.
-				//$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.add_edit_phpgw_jinn_sites&where_condition=site_id=".$parent_site_id).'"><input type=submit value="'.lang('browse').'"></form></td>';
-
 				$button_add='<td><form method=post action="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_phpgw_jinn_site_objects').'"><input type=submit value="'.lang('add site-object').'"><input type=hidden name=parent_site_id value='.substr($GLOBALS[where_condition],8).'></form></td>';
 				$table_title=lang('Site-objects');
 

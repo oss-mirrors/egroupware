@@ -276,7 +276,6 @@
 							$input.='<b>'.lang('Add new MANY WITH MANY relation')."<b><br><table><tr><td colspan=2>The identifyer from this table ('$table_name.id') represented by:<br>";
 							$input.='<select name="2_relation_via_primary_key">';
 
-							//$fields=$this->bo->get_site_fieldproperties($parent_site_id,$table_name);
 							foreach($table_array as $table)
 							{
 								$fields=$this->bo->get_site_fieldproperties($parent_site_id,$table[name]);
@@ -504,10 +503,6 @@
 			$this->template->pparse('out','form_footer');
 
 		}
-
-
-
-
 
 	}
 
