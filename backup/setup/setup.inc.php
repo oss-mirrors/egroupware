@@ -36,6 +36,6 @@
 	$setup_info['backup']['depends'][] = array
 	(
 		'appname'  => 'admin',
-		'versions' => Array('0.9.14','1.0.0')
+		'versions' => Array('0.9.13','0.9.14','1.0.0')
 	);
 ?>
