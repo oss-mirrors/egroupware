@@ -321,8 +321,8 @@ function parse_raw_html($text)
       $in_html = 0;
       return $FlgChr . (count($Entity) - 1) . $FlgChr;
     }
-
-    $buffer = $buffer . parse_elements($text);
+    // the following str-replace gards agains css or script in the html
+    $buffer = $buffer . parse_elements(str_replace(array('<script','</script'),array('&lt;script','&lt;/script'),$text));
     return '';
   }
   else
