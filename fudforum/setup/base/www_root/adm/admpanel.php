@@ -17,7 +17,8 @@
 	<b>Checks/Consistency</b><br>
 	<a style="font-size: x-small;" href="consist.php?<?php echo _rsidl; ?>">Forum Consistency</a><br>
 	<a style="font-size: x-small;" href="indexdb.php?<?php echo _rsidl; ?>">Rebuild Search Index</a><br>
-	<a style="font-size: x-small;" href="compact.php?<?php echo _rsidl; ?>">Compact Messages</a><br><br>
+	<a style="font-size: x-small;" href="compact.php?<?php echo _rsidl; ?>">Compact Messages</a><br>
+	<a style="font-size: x-small;" href="admsync.php?<?php echo _rsidl; ?>">Syncronize FUDforum Sources</a><br><br>
 
 	<b>General Management</b><br>
 	<a style="font-size: x-small;" href="admglobal.php?<?php echo _rsidl; ?>">Global Settings Manager</a><br>
