@@ -14,7 +14,7 @@
 	/* $Id$ */
 
 	// This is becuase this file is included inside of a function
-	global $phpgw,$error_msg,$sess_error_msg,$warn_msg,$sess_warn_msg,$msg,$sess_msg;
+	global $error_msg,$sess_error_msg,$warn_msg,$sess_warn_msg,$msg,$sess_msg;
 
 	if ($error_msg)
 	{
@@ -49,12 +49,12 @@
 		$bk_print_msg .= $msg;
 	}
 
-	$phpgw->sessions = CreateObject('phpgwapi.sessions');
+	$GLOBALS['phpgw']->sessions = CreateObject('phpgwapi.sessions');
 
-	$session_message = $phpgw->sessions->appsession('message','bookmarks');
+	$session_message = $GLOBALS['phpgw']->sessions->appsession('message','bookmarks');
 	if ($session_message)
 	{
-		$phpgw->sessions->appsession('message','bookmarks','');
+		$GLOBALS['phpgw']->sessions->appsession('message','bookmarks','');
 		$bk_print_msg .= $session_message;
 	}
 
@@ -81,8 +81,8 @@
 
 	if ($bk_output_html)
 	{
-		$phpgw->template->set_var('messages',$bk_output_html);
+		$GLOBALS['phpgw']->template->set_var('messages',$bk_output_html);
 	}
 
-	$phpgw->template->pfp('body',array('body','common'));
+	$GLOBALS['phpgw']->template->pfp('body',array('body','common'));
 ?>

@@ -14,7 +14,7 @@
 
 	$title = $appname;
 	$file = Array(
-		'Configuration' => $phpgw->link('/admin/config.php','appname=bookmarks')
+		'Configuration' => $GLOBALS['phpgw']->link('/admin/config.php','appname=bookmarks')
 	);
 
 	display_section($appname,$title,$file);

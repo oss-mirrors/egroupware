@@ -18,13 +18,12 @@
 	{
 		function plist()
 		{
-		
 		}
 	}
 
 	function print_list_break (&$list_tpl, $category, $subcategory)
 	{
-		global $phpgw, $massupdate_shown;
+		$massupdate_shown = $GLOBALS['massupdate_shown'];
 
 		// construct URLs that include WHERE clauses for linking to the
 		// search page. The Category link will show a search WHERE the
@@ -34,8 +33,8 @@
 		// we use base64 coding rather than urlencode and rawencode since
 		// it seems to be more reliable.
 
-		$cat_search    = $phpgw->link('/bookmarks/search.php','where=' . urlencode("category.name='$category'"));
-		$subcat_search = $phpgw->link('/bookmarks/search.php','where=' . urlencode("subcategory.name='$subcategory'"));
+		$cat_search    = $GLOBALS['phpgw']->link('/bookmarks/search.php','where=' . urlencode("category.name='$category'"));
+		$subcat_search = $GLOBALS['phpgw']->link('/bookmarks/search.php','where=' . urlencode("subcategory.name='$subcategory'"));
 
 		// We only want to display the massupdate section once
 		if (! $massupdate_shown)
@@ -68,9 +67,10 @@
 
 	function print_list ($where_clause, $start, $returnto, &$content, &$error_msg)
 	{
-		global $phpgw, $phpgw_info, $bm_cat, $page_header_shown;
+		$bm_cat            = $GLOBALS['bm_cat'];
+		$page_header_shown = $GLOBALS['page_header_shown'];
 
-		$list_tpl = $phpgw->template;
+		$list_tpl = $GLOBALS['phpgw']->template;
 
 		$list_tpl->set_file(array(
 			'list' => 'list.tpl'
@@ -83,7 +83,7 @@
 		$list_tpl->set_block('list','page_header');
 		$list_tpl->set_block('list','page_footer');
 
-		$list_tpl->set_var('list_mass_select_form',$phpgw->link('/bookmarks/mass_maintain.php'));
+		$list_tpl->set_var('list_mass_select_form',$GLOBALS['phpgw']->link('/bookmarks/mass_maintain.php'));
 
 		if (! $page_header_shown)
 		{
@@ -95,10 +95,10 @@
 			$list_tpl->set_var('header','');
 		}
 
-		$filtermethod = '( bm_owner=' . $phpgw_info['user']['account_id'];
-		if (is_array($phpgw->bookmarks->grants))
+		$filtermethod = '( bm_owner=' . $GLOBALS['phpgw_info']['user']['account_id'];
+		if (is_array($GLOBALS['phpgw']->bookmarks->grants))
 		{
-			$grants = $phpgw->bookmarks->grants;
+			$grants = $GLOBALS['phpgw']->bookmarks->grants;
 			reset($grants);
 			while (list($user) = each($grants))
 			{
@@ -130,16 +130,16 @@
 
 		$query .= $where_clause_sql . ' order by bm_category, bm_name';
 
-		$phpgw->db->limit_query($query,$start,__LINE__,__FILE__);
+		$GLOBALS['phpgw']->db->limit_query($query,$start,__LINE__,__FILE__);
 
 		$prev_category_id = -1;
 		$prev_subcategory_id = -1;
 		$rows_printed = 0;
 
-		while ($phpgw->db->next_record())
+		while ($GLOBALS['phpgw']->db->next_record())
 		{
-			$category_name    = $phpgw->categories->return_name($phpgw->db->f('bm_category'));
-			$subcategory_name = $phpgw->categories->return_name($phpgw->db->f('bm_subcategory'));
+			$category_name    = $GLOBALS['phpgw']->categories->return_name($GLOBALS['phpgw']->db->f('bm_category'));
+			$subcategory_name = $GLOBALS['phpgw']->categories->return_name($GLOBALS['phpgw']->db->f('bm_subcategory'));
 
 			$rows_printed++;
 
@@ -153,9 +153,9 @@
 				$prev_subcategory    = $subcategory_name;
 			}
 
-			if ($phpgw->db->f('bm_keywords'))
+			if ($GLOBALS['phpgw']->db->f('bm_keywords'))
 			{
-				$list_tpl->set_var(BOOKMARK_KEYW, htmlspecialchars(stripslashes($phpgw->db->f('bm_keywords'))));
+				$list_tpl->set_var(BOOKMARK_KEYW, htmlspecialchars(stripslashes($GLOBALS['phpgw']->db->f('bm_keywords'))));
 				$list_tpl->parse('bookmark_keywords','list_keyw');
 			}
 			else
@@ -164,32 +164,32 @@
 			}
 
 			// Check owner
-			if (($this->grants[$phpgw->db->f('bm_owner')] & PHPGW_ACL_EDIT) || ($phpgw->db->f('bm_owner') == $phpgw_info['user']['account_id']))
+			if (($this->grants[$GLOBALS['phpgw']->db->f('bm_owner')] & PHPGW_ACL_EDIT) || ($GLOBALS['phpgw']->db->f('bm_owner') == $GLOBALS['phpgw_info']['user']['account_id']))
 			{
-				$maintain_url  = $phpgw->link("/bookmarks/maintain.php","bm_id=" . $phpgw->db->f("bm_id"));
+				$maintain_url  = $GLOBALS['phpgw']->link("/bookmarks/maintain.php","bm_id=" . $GLOBALS['phpgw']->db->f("bm_id"));
 				$maintain_link = sprintf('<a href="%s"><img src="%s/edit.gif" align="top" border="0" alt="%s"></a>', $maintain_url,PHPGW_IMAGES,lang('Edit this bookmark'));
 			}
 			else
 			{
-				$maintain_link = '';			
+				$maintain_link = '';
 			}
 			$list_tpl->set_var('maintain_link',$maintain_link);
 
-			$list_tpl->set_var('bookmark_url',$phpgw->link('/bookmarks/redirect.php','bm_id=' . $phpgw->db->f('bm_id')));
+			$list_tpl->set_var('bookmark_url',$GLOBALS['phpgw']->link('/bookmarks/redirect.php','bm_id=' . $GLOBALS['phpgw']->db->f('bm_id')));
 
-			$view_url      = $phpgw->link('/bookmarks/view.php','bm_id=' . $phpgw->db->f('bm_id'));
+			$view_url      = $GLOBALS['phpgw']->link('/bookmarks/view.php','bm_id=' . $GLOBALS['phpgw']->db->f('bm_id'));
 			$view_link     = sprintf('<a href="%s"><img src="%s/document.gif" align="top" border="0" alt="%s"></a>', $view_url,PHPGW_IMAGES,lang('View this bookmark'));
 			$list_tpl->set_var('view_link',$view_link);
 
 			$mail_link = sprintf('<a href="%s"><img align="top" border="0" src="%s/mail.gif" alt="%s"></a>',
-							$phpgw->link('/bookmarks/maillink.php','bm_id='.$phpgw->db->f("bm_id")),PHPGW_IMAGES,lang('Mail this bookmark'));
+				$GLOBALS['phpgw']->link('/bookmarks/maillink.php','bm_id='.$GLOBALS['phpgw']->db->f("bm_id")),PHPGW_IMAGES,lang('Mail this bookmark'));
 			$list_tpl->set_var('mail_link',$mail_link);
 
-			$list_tpl->set_var('checkbox','<input type="checkbox" name="item_cb[]" value="' . $phpgw->db->f('bm_id') . '">');
+			$list_tpl->set_var('checkbox','<input type="checkbox" name="item_cb[]" value="' . $GLOBALS['phpgw']->db->f('bm_id') . '">');
 			$list_tpl->set_var('img_root',PHPGW_IMAGES);
-			$list_tpl->set_var('bookmark_name',$phpgw->strip_html($phpgw->db->f('bm_name')));
-			$list_tpl->set_var('bookmark_desc',nl2br($phpgw->strip_html($phpgw->db->f('bm_desc'))));
-			$list_tpl->set_var('bookmark_rating',sprintf('<img src="%s/bar-%s.jpg">',PHPGW_IMAGES,$phpgw->db->f('bm_rating')));
+			$list_tpl->set_var('bookmark_name',$GLOBALS['phpgw']->strip_html($GLOBALS['phpgw']->db->f('bm_name')));
+			$list_tpl->set_var('bookmark_desc',nl2br($GLOBALS['phpgw']->strip_html($GLOBALS['phpgw']->db->f('bm_desc'))));
+			$list_tpl->set_var('bookmark_rating',sprintf('<img src="%s/bar-%s.jpg">',PHPGW_IMAGES,$GLOBALS['phpgw']->db->f('bm_rating')));
 
 			$list_tpl->parse(LIST_ITEMS,'list_item',True);
 		}
@@ -200,6 +200,5 @@
 			$content = $list_tpl->get('CONTENT');
 			$list_tpl->fp('footer','page_footer');
 		}
-
 	}
 ?>

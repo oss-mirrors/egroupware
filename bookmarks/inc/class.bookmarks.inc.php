@@ -15,7 +15,7 @@
 
 	class bktemplate extends Template
 	{
-		var $classname = "bktemplate";
+		var $classname = 'bktemplate';
   
 		/* if set, echo assignments */
 		/* 1 = debug set, 2 = debug get, 4 = debug internals */
@@ -24,34 +24,33 @@
 		/* "yes" => halt, "report" => report error, continue, 
 		** "no" => ignore error quietly 
 		*/
-		var $halt_on_error  = "yes";
+		var $halt_on_error  = 'yes';
 
 		// override the finish function to better handle with javascript.
 		// we don't have whitespace in our var names, so no need to be
 		// so all encompassing with the remove.
 
-     function finish($str)
-     {
-        switch ($this->unknowns) {
-          case "keep":
-          break;
-          
-          case "remove":
-            $str = preg_replace("/\{[-_a-zA-Z0-9]+\}/", "", $str);
-          break; 
-          
-          case "comment":
-            $str = preg_replace("/\{([-_a-zA-Z0-9]+)\}/", "<!-- Template $handle: Variable \\1 undefined -->", $str);
-          break; 
-        } 
-        return $str;
-     } 
-  }
+		function finish($str)
+		{
+			switch ($this->unknowns)
+			{
+				case 'keep':
+					break;
+				case 'remove':
+					$str = preg_replace("/\{[-_a-zA-Z0-9]+\}/", "", $str);
+					break;
+				case 'comment':
+					$str = preg_replace("/\{([-_a-zA-Z0-9]+)\}/", "<!-- Template $handle: Variable \\1 undefined -->", $str);
+					break; 
+			} 
+			return $str;
+		} 
+	}
 
 	// This will drop all form values into appsessions for later use
 	function grab_form_values($returnto, $need_done_button = False)
 	{
-		global $phpgw, $bookmark;
+		global $bookmark;
 
 		$location_info = array(
 			'returnto'             => $returnto,
@@ -64,77 +63,74 @@
 			'bookmark_subcategory' => $bookmark['subcategory'],
 			'bookmark_rating'      => $bookmark['rating']
 		);
-		$phpgw->bookmarks->save_session_data($location_info);
+		$GLOBALS['phpgw']->bookmarks->save_session_data($location_info);
 	}
 
 	function date_information(&$tpl, $raw_string)
 	{
-		global $phpgw;
-
 		$ts = explode(',',$raw_string);
 
-		$tpl->set_var('added_value',$phpgw->common->show_date($ts[0]));
-		$tpl->set_var('visited_value',($ts[1]?$phpgw->common->show_date($ts[1]):lang('Never')));
-		$tpl->set_var('updated_value',($ts[2]?$phpgw->common->show_date($ts[2]):lang('Never')));
+		$tpl->set_var('added_value',$GLOBALS['phpgw']->common->show_date($ts[0]));
+		$tpl->set_var('visited_value',($ts[1]?$GLOBALS['phpgw']->common->show_date($ts[1]):lang('Never')));
+		$tpl->set_var('updated_value',($ts[2]?$GLOBALS['phpgw']->common->show_date($ts[2]):lang('Never')));
 	}
 
-  function  set_standard($title, &$p_tpl) 
-  {
-     global $bookmarker, $SERVER_NAME, $phpgw;
+	function  set_standard($title, &$p_tpl) 
+	{
+		global $bookmarker, $SERVER_NAME;
 
-     $p_tpl->set_var(array(
-       TITLE            => $title,
-       START_URL        => $phpgw->link("/bookmarks/index.php"),
-       TREE_URL         => $phpgw->link("/bookmarks/tree.php"),
-//       LIST_URL         => $phpgw->link("list.php"),
-//       CREATE_URL       => $phpgw->link("create.php"),
-       MAINTAIN_URL     => $phpgw->link("/bookmarks/maintain.php"),
-       MAILLINK_URL     => $phpgw->link("/bookmarks/maillink.php"),
-//       SEARCH_URL       => $phpgw->link("search.php"),
-       FAQ_URL          => $phpgw->link("/bookmarks/faq.php"),
-//       CATEGORY_URL     => $phpgw->link("codes.php","codetable=bookmarks_category"),
-//       SUBCATEGORY_URL  => $phpgw->link("codes.php","codetable=bookmarks_subcategory"),
-       USER_URL         => $phpgw->link("/bookmarks/useropt.php"),
-       USER_SETTINGS_URL=> $phpgw->link("/bookmarks/user.php"),
-       IMPORT_URL       => $phpgw->link("/bookmarks/import.php"),
-       DOWNLOAD_URL     => $phpgw->link("/bookmarks/download.php"),
-       BUGS_URL         => $phpgw->link("/bookmarks/bugs.php"),
-       MAILLIST_URL     => $phpgw->link("/bookmarks/maillist.php"),
-       VERSION          => $bookmarker->version,
-       IMAGE_URL_PREFIX => $bookmarker->image_url_prefix,
-       IMAGE_EXT        => $bookmarker->image_ext,
-       NAME_HTML        => $name_html,
-       SERVER_NAME      => $SERVER_NAME
-     ));
-     $p_tpl->set_var('img_root',PHPGW_IMAGES);
-     $p_tpl->set_var('search_link',$phpgw->link('/bookmarks/search.php'));
-     $p_tpl->set_var('create_link',$phpgw->link('/bookmarks/create.php'));
-     $p_tpl->set_var('list_link',$phpgw->link('/bookmarks/list.php'));
-     $p_tpl->set_var('tree_link',$phpgw->link('/bookmarks/tree.php'));
-  }
+		$p_tpl->set_var(array(
+			'TITLE'             => $title,
+			'START_URL'         => $GLOBALS['phpgw']->link('/bookmarks/index.php'),
+			'TREE_URL'          => $GLOBALS['phpgw']->link('/bookmarks/tree.php'),
+			// 'LIST_URL'        => $GLOBALS['phpgw']->link('list.php'),
+			// 'CREATE_URL'      => $GLOBALS['phpgw']->link('create.php'),
+			'MAINTAIN_URL'      => $GLOBALS['phpgw']->link('/bookmarks/maintain.php'),
+			'MAILLINK_URL'      => $GLOBALS['phpgw']->link('/bookmarks/maillink.php'),
+			// 'SEARCH_URL'      => $GLOBALS['phpgw']->link('search.php'),
+			'FAQ_URL'           => $GLOBALS['phpgw']->link('/bookmarks/faq.php'),
+			// 'CATEGORY_URL'    => $GLOBALS['phpgw']->link('codes.php','codetable=bookmarks_category'),
+			// 'SUBCATEGORY_URL' => $GLOBALS['phpgw']->link('codes.php','codetable=bookmarks_subcategory'),
+			'USER_URL'          => $GLOBALS['phpgw']->link('/bookmarks/useropt.php'),
+			'USER_SETTINGS_URL' => $GLOBALS['phpgw']->link('/bookmarks/user.php'),
+			'IMPORT_URL'        => $GLOBALS['phpgw']->link('/bookmarks/import.php'),
+			'DOWNLOAD_URL'      => $GLOBALS['phpgw']->link('/bookmarks/download.php'),
+			'BUGS_URL'          => $GLOBALS['phpgw']->link('/bookmarks/bugs.php'),
+			'MAILLIST_URL'      => $GLOBALS['phpgw']->link('/bookmarks/maillist.php'),
+			'VERSION'           => $bookmarker->version,
+			'IMAGE_URL_PREFIX'  => $bookmarker->image_url_prefix,
+			'IMAGE_EXT'         => $bookmarker->image_ext,
+			'NAME_HTML'         => $name_html,
+			'SERVER_NAME'       => $SERVER_NAME
+		));
+		$p_tpl->set_var('img_root',PHPGW_IMAGES);
+		$p_tpl->set_var('search_link',$GLOBALS['phpgw']->link('/bookmarks/search.php'));
+		$p_tpl->set_var('create_link',$GLOBALS['phpgw']->link('/bookmarks/create.php'));
+		$p_tpl->set_var('list_link',$GLOBALS['phpgw']->link('/bookmarks/list.php'));
+		$p_tpl->set_var('tree_link',$GLOBALS['phpgw']->link('/bookmarks/tree.php'));
+	}
 
-  // function to load a drop down list box from one
-  // of the standard id-name formatted tables. this
-  // routine will insert the <option> tags, it does
-  // not insert the <select> tags.
-  function load_ddlb($table, $selected = "")
-  {
-     global $phpgw, $phpgw_info;
-     $db = $phpgw->db;
+	// function to load a drop down list box from one
+	// of the standard id-name formatted tables. this
+	// routine will insert the <option> tags, it does
+	// not insert the <select> tags.
+	function load_ddlb($table, $selected = "")
+	{
+		$db = $GLOBALS['phpgw']->db;
 
-/*     $query = sprintf("select id, name from %s where username='%s' order by name", $table,
-                      $phpgw_info["user"]["account_id"]);
-     $db->query($query,__LINE__,__FILE__);
-     while ($db->next_record()) {
-        $s .= '<option value="' . $db->f("id") . '"';
-        if ($selected == $db->f("id")) {
-           $s .= " selected";
-        }        
-        $s .= '>' . $phpgw->strip_html($db->f("name")) . '</option>';
-        $s .= "\n";
-     } */
-     return $s;
-  }
+		/*     $query = sprintf("select id, name from %s where username='%s' order by name", $table,
+		$GLOBALS['phpgw_info']["user"]["account_id"]);
+		$db->query($query,__LINE__,__FILE__);
+		while ($db->next_record()) {
+			$s .= '<option value="' . $db->f("id") . '"';
+			if ($selected == $db->f("id")) {
+				$s .= " selected";
+			}        
+			$s .= '>' . $GLOBALS['phpgw']->strip_html($db->f("name")) . '</option>';
+			$s .= "\n";
+		} */
+		return $s;
+	}
 
 	// function to determine what type of browser the user has.
 	// code idea from http://www.php.net/
@@ -160,7 +156,6 @@
 		return $browser;
 	}
 
-
 	class bookmarks
 	{
 		var $db;
@@ -168,17 +163,15 @@
 
 		function bookmarks()
 		{
-			global $phpgw;
-
-			$this->db          = $phpgw->db;
-			$this->grants      = $phpgw->acl->get_grants('bookmarks');
-			$phpgw->nextmatchs = createobject('phpgwapi.nextmatchs');
-			$phpgw->categories = createobject('phpgwapi.categories');
-			$phpgw->config     = createobject('phpgwapi.config');
-			$phpgw->config->read_repository();
+			$this->db          = $GLOBALS['phpgw']->db;
+			$this->grants      = $GLOBALS['phpgw']->acl->get_grants('bookmarks');
+			$GLOBALS['phpgw']->nextmatchs = createobject('phpgwapi.nextmatchs');
+			$GLOBALS['phpgw']->categories = createobject('phpgwapi.categories');
+			$GLOBALS['phpgw']->config     = createobject('phpgwapi.config');
+			$GLOBALS['phpgw']->config->read_repository();
 			$this->config      = $this->config_data;
 
-			if (! $phpgw->categories->exists('appandmains','No category'))
+			if (! $GLOBALS['phpgw']->categories->exists('appandmains','No category'))
 			{
 				$newcat = array(
 					'name'	 => 'No category',
@@ -187,20 +180,18 @@
 					'access' => '',
 					'data'   => ''
 				);
-				$phpgw->categories->add($newcat);
+				$GLOBALS['phpgw']->categories->add($newcat);
 			}
 		}
 
 		function check_perms($id, $required)
 		{
-			global $phpgw_info;
-
 			$this->db->query("select bm_owner from phpgw_bookmarks where bm_id='$id'",__LINE__,__FILE__);
 			$this->db->next_record();
 
-			//echo "<br>id: $id required: $required grants: " . $this->grants[$this->db->f('bm_owner')] . " owner: " . $this->db->f('bm_owner') . " user: " . $phpgw_info['user']['account_id'];
+			//echo "<br>id: $id required: $required grants: " . $this->grants[$this->db->f('bm_owner')] . " owner: " . $this->db->f('bm_owner') . " user: " . $GLOBALS['phpgw_info']['user']['account_id'];
 
-			if (($this->grants[$this->db->f('bm_owner')] & $required) || ($this->db->f('bm_owner') == $phpgw_info['user']['account_id']))
+			if (($this->grants[$this->db->f('bm_owner')] & $required) || ($this->db->f('bm_owner') == $GLOBALS['phpgw_info']['user']['account_id']))
 			{
 				return True;
 			}
@@ -212,25 +203,23 @@
 
 		function categories_list($selected)
 		{
-			global $phpgw;
-
-			$mains = $phpgw->categories->return_array('mains',0,True,'','cat_name','',True);
+			$mains = $GLOBALS['phpgw']->categories->return_array('mains',0,True,'','cat_name','',True);
 
 			while (is_array($mains) && $main = each($mains))
 			{
-				$phpgw->db->query("select * from phpgw_categories where cat_parent='" . $main[1]['id'] . "' and (cat_appname='bookmarks' or cat_appname='phpgw') order by cat_name",__LINE__,__FILE__);
-				while ($phpgw->db->next_record())
+				$GLOBALS['phpgw']->db->query("select * from phpgw_categories where cat_parent='" . $main[1]['id'] . "' and (cat_appname='bookmarks' or cat_appname='phpgw') order by cat_name",__LINE__,__FILE__);
+				while ($GLOBALS['phpgw']->db->next_record())
 				{
-					$id = $main[1]['id'] . '|' . $phpgw->db->f('cat_id');
+					$id = $main[1]['id'] . '|' . $GLOBALS['phpgw']->db->f('cat_id');
 					$s .= '<option value="' . $id . '"';
 					if ($id == $selected)
 					{
 						$s .= ' selected';
 					}
-					$s .= '>' . $main[1]['name'] . ' :: ' . $phpgw->db->f('cat_name') . '</option>';
+					$s .= '>' . $main[1]['name'] . ' :: ' . $GLOBALS['phpgw']->db->f('cat_name') . '</option>';
 				}
 
-				if ($main[1]['parent'] == 0 && $phpgw->db->num_rows() == 0)
+				if ($main[1]['parent'] == 0 && $GLOBALS['phpgw']->db->num_rows() == 0)
 				{
 					$s .= '<option value="' . $main[1]['id'] . '|0"';
 					if ($main[1]['id'] == $selected)
@@ -245,9 +234,9 @@
 
 		function add(&$id,$values, $return_no_errors = False)
 		{
-			global $phpgw_info, $error_msg, $msg, $phpgw;
+			global $error_msg, $msg;
 
-			$db = $phpgw->db;
+			$db = $GLOBALS['phpgw']->db;
 
 			if (! $this->validate($values))
 			{
@@ -255,7 +244,7 @@
 			}
 
 			// Does the bookmark already exist?
-			$query = sprintf("select count(*) from phpgw_bookmarks where bm_url='%s' and bm_owner='%s'",$values['url'], $phpgw_info['user']['account_id']);
+			$query = sprintf("select count(*) from phpgw_bookmarks where bm_url='%s' and bm_owner='%s'",$values['url'], $GLOBALS['phpgw_info']['user']['account_id']);
 			$db->query($query,__LINE__,__FILE__);
 			$db->next_record();
 
@@ -292,7 +281,7 @@
                        . "bm_subcategory, bm_rating, bm_owner, bm_access, bm_info, bm_visits) "
                        . "values ('%s','%s','%s','%s',%s,%s,%s,'%s','%s','%s',0)", 
                           $values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']),
-                          $category, '0', $values['rating'], $phpgw_info['user']['account_id'], $values['access'],
+                          $category, '0', $values['rating'], $GLOBALS['phpgw_info']['user']['account_id'], $values['access'],
                           $values['timestamps']);
     
 			$db->query($query,__LINE__,__FILE__);
@@ -307,7 +296,7 @@
 
 		function update($id, $values)
 		{
-			global $error_msg, $msg, $validate, $phpgw_info, $phpgw;
+			global $error_msg, $msg, $validate;
 
 /*       if (!$this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory,
                         &$rating, &$public, &$public_db)) {
@@ -319,9 +308,9 @@
 				$values['access'] = 'public';
 			}
 
-			$phpgw->db->query("select bm_info from phpgw_bookmarks where bm_id='$id'",__LINE__,__FILE__);
-			$phpgw->db->next_record();
-			$ts = explode(',',$phpgw->db->f('bm_info'));
+			$GLOBALS['phpgw']->db->query("select bm_info from phpgw_bookmarks where bm_id='$id'",__LINE__,__FILE__);
+			$GLOBALS['phpgw']->db->next_record();
+			$ts = explode(',',$GLOBALS['phpgw']->db->f('bm_info'));
 	
 			$timestamps = sprintf('%s,%s,%s',$ts[0],$ts[1],time());
 
@@ -334,35 +323,36 @@
 	                         $values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']), 
 	                         $category, '0', $values['rating'], $timestamps, $values['access'], $id);
 
-			$phpgw->db->query($query,__LINE__,__FILE__);
+			$GLOBALS['phpgw']->db->query($query,__LINE__,__FILE__);
 
 			$msg .= lang('Bookmark changed sucessfully');
 	
 			return true;
 		}
 
-    function delete($id)
-    {
-       global $error_msg, $msg, $phpgw, $phpgw_info;
-   
-       $db = $phpgw->db;
-       
-       // Delete that bookmark.
-       $query = sprintf("delete from phpgw_bookmarks where bm_id='%s' and bm_owner='%s'", $id, $phpgw_info["user"]["account_id"]);
-       $db->query($query,__LINE__,__FILE__);
-       if ($db->Errno != 0) {
-          return False;
-       }
-       
-       $msg .= "Bookmark deleted sucessfully.";
-   
-       // Update the PHPLIB user variable that keeps track of how
-       // many bookmarks this user has.
-       // NOTE: This needs to be moved into appsessions
-       $this->update_user_total_bookmarks($phpgw_info["user"]["account_id"]);
-   
-       return true;
-    }
+		function delete($id)
+		{
+			global $error_msg, $msg;
+
+			$db = $GLOBALS['phpgw']->db;
+
+			// Delete that bookmark.
+			$query = sprintf("delete from phpgw_bookmarks where bm_id='%s' and bm_owner='%s'", $id, $GLOBALS['phpgw_info']["user"]["account_id"]);
+			$db->query($query,__LINE__,__FILE__);
+			if ($db->Errno != 0)
+			{
+				return False;
+			}
+
+			$msg .= "Bookmark deleted sucessfully.";
+
+			// Update the PHPLIB user variable that keeps track of how
+			// many bookmarks this user has.
+			// NOTE: This needs to be moved into appsessions
+			$this->update_user_total_bookmarks($GLOBALS['phpgw_info']["user"]["account_id"]);
+
+			return true;
+		}
 
 		function validate ($values)
 		{
@@ -386,7 +376,7 @@
 			}   
 
 			// does the admin want us to check URL format
-			if ($phpgw->bookmarks->url_format_check > 0)
+			if ($GLOBALS['phpgw']->bookmarks->url_format_check > 0)
 			{
 				// Is the URL format valid
 				if ($values['url'] == 'http://')
@@ -402,7 +392,7 @@
 	                            URL!<br><small>' .  $validate->ERROR . '</small>';
 	  
 						// does the admin want this formatted as a warning or an error?
-						if ($phpgw->bookmarks->url_format_check == 2)
+						if ($GLOBALS['phpgw']->bookmarks->url_format_check == 2)
 						{
 							$error_msg .= $format_msg;
 						}
@@ -424,191 +414,190 @@
 			}
 		}
 
-   function update_user_total_bookmarks($uname)
-   {
-      global $user_total_bookmarks, $phpgw, $phpgw_info;
-
-      $db = $phpgw->db;
-
-/*
-      $db->query("select count(*) as total_bookmarks from bookmarks where username = '"
-               . $phpgw_info["user"]["account_id"] . "' or bookmarks.public_f='Y'",__LINE__,__FILE__);
-      $db->next_record();
-      $phpgw->common->appsession($db->f("total_bookmarks"));
- 
-         // need to find out how many public bookmarks exist from
-         // this user so other users can correctly calculate pages
-         // on the list page.
-
-         $total_public = 0;
-         $query = sprintf("select count(id) as total_public from bookmarks where username = '%s' and public_f='Y'",$phpgw_info["user"]["account_id"]);
-         $db->query($query,__LINE__,__FILE__);
-         if ($db->Errno == 0) {
-            if ($db->next_record()) {
-//               $total_public = $db->f("total_public");
-               echo "TEST: " . $db->f("total_public");
-               $phpgw->common->appsession($db->f("total_public"));
-            } else {
-               echo "TEST: False";
-               return False;
-            } */
- 
-//            $phpgw->common->appsession($total_public);
-/*
-            $query = sprintf("update auth_user set total_public_bookmarks=%s where username = '%s'",$total_public, $uname);
-            $db->query($query,__LINE__,__FILE__);
-            if ($db->Errno != 0) {
-               return False;
-            }
-            return true;*/
-       //}
-   }
-
-	function get_totalbookmarks()
-	{
-		global $phpgw, $phpgw_info, $bm_cat;
-
-		$filtermethod = '( bm_owner=' . $phpgw_info['user']['account_id'];
-		if (is_array($phpgw->bookmarks->grants))
+		function update_user_total_bookmarks($uname)
 		{
-			$grants = $phpgw->bookmarks->grants;
-			reset($grants);
-			while (list($user) = each($grants))
+			global $user_total_bookmarks;
+
+			$db = $GLOBALS['phpgw']->db;
+
+			/*
+			$db->query("select count(*) as total_bookmarks from bookmarks where username = '"
+			. $GLOBALS['phpgw_info']["user"]["account_id"] . "' or bookmarks.public_f='Y'",__LINE__,__FILE__);
+			$db->next_record();
+			$GLOBALS['phpgw']->common->appsession($db->f("total_bookmarks"));
+
+			// need to find out how many public bookmarks exist from
+			// this user so other users can correctly calculate pages
+			// on the list page.
+
+			$total_public = 0;
+			$query = sprintf("select count(id) as total_public from bookmarks where username = '%s' and public_f='Y'",$GLOBALS['phpgw_info']["user"]["account_id"]);
+			$db->query($query,__LINE__,__FILE__);
+			if ($db->Errno == 0) {
+				if ($db->next_record()) {
+					//               $total_public = $db->f("total_public");
+					echo "TEST: " . $db->f("total_public");
+					$GLOBALS['phpgw']->common->appsession($db->f("total_public"));
+				} else {
+					echo "TEST: False";
+					return False;
+				} */
+
+				//            $GLOBALS['phpgw']->common->appsession($total_public);
+				/*
+				$query = sprintf("update auth_user set total_public_bookmarks=%s where username = '%s'",$total_public, $uname);
+				$db->query($query,__LINE__,__FILE__);
+				if ($db->Errno != 0) {
+					return False;
+				}
+				return true;*/
+				//}
+		}
+
+		function get_totalbookmarks()
+		{
+			global $bm_cat;
+
+			$filtermethod = '( bm_owner=' . $GLOBALS['phpgw_info']['user']['account_id'];
+			if (is_array($GLOBALS['phpgw']->bookmarks->grants))
 			{
-				$public_user_list[] = $user;
+				$grants = $GLOBALS['phpgw']->bookmarks->grants;
+				reset($grants);
+				while (list($user) = each($grants))
+				{
+					$public_user_list[] = $user;
+				}
+				reset($public_user_list);
+				$filtermethod .= " OR (bm_access='public' AND bm_owner in(" . implode(',',$public_user_list) . ')))';
 			}
-			reset($public_user_list);
-			$filtermethod .= " OR (bm_access='public' AND bm_owner in(" . implode(',',$public_user_list) . ')))';
-		}
-		else
+			else
+			{
+				$filtermethod .= ' )';
+			}
+
+			if ($bm_cat)
+			{
+				$filtermethod .= " and bm_category='$bm_cat' ";
+			}
+
+			$GLOBALS['phpgw']->db->query("select count(*) from phpgw_bookmarks where $filtermethod",__LINE__,__FILE__);
+			$GLOBALS['phpgw']->db->next_record();
+
+			return $GLOBALS['phpgw']->db->f(0);
+		} 
+
+		function save_session_data($data)
 		{
-			$filtermethod .= ' )';
+			$GLOBALS['phpgw']->session->appsession('session_data','bookmarks',$data);
 		}
 
-		if ($bm_cat)
+		function read_session_data()
 		{
-			$filtermethod .= " and bm_category='$bm_cat' ";
+			return $GLOBALS['phpgw']->session->appsession('session_data','bookmarks');
 		}
 
-		$phpgw->db->query("select count(*) from phpgw_bookmarks where $filtermethod",__LINE__,__FILE__);
-		$phpgw->db->next_record();
-
-		return $phpgw->db->f(0);
-	} 
-
-	function save_session_data($data)
-	{
-		global $phpgw;
-
-		$phpgw->session->appsession('session_data','bookmarks',$data);
 	}
 
-	function read_session_data()
+	# the following class sets various configuration variables
+	# used throughout the application.
+	class bookmarker_class
 	{
-		global $phpgw;
+		var $version        = "2.8.0";
 
-		return $phpgw->session->appsession('session_data','bookmarks');
+		# directory where templates are located on this server
+		var $template_dir   = "./lib/templates";
+
+		# image URL - string added to the begining of an image file
+		# (for example, I set this to "./images/" which makes bookmarker
+		# build image URLs like <img src="./images/mailto.png"...)
+		var $image_url_prefix;
+
+		# URL format checking. bookmarker can check the format of
+		# URLs entered on the create/maintain pages. This option
+		# lets you control this checking. Possible values:
+		#  0 = no checking of URL format
+		#  1 = URL format is checked, problems reported as warnings
+		#  2 = URL format is checked, problems reported as errors
+		var $url_format_check = 2;
+
+		# URL response checking. bookmarker can check that the URL
+		# responds to a request and show a warning if it does not
+		# respond.
+		var $url_responds_check = False;
+
+		# how many characters after the scheme(http://) and hostname
+		# (www.mydomain.com) to match when checking for possible
+		# duplicates on the create page.
+		# Zero means to just match on scheme and hostname - this is
+		# what I prefer.
+		var $possible_dup_chars = 0;
+
+		# level of access required for user to use the mail-this-link
+		# page. The default is to only allow registered users to send
+		# email using bookmarker - anything else is asking for abuse!
+		# if you allow guest, you may want to bcc yourself by using the
+		# site header variable below.
+		var $mail_this_link_permission_required = "editor";
+
+		# this var controls if the bookmarker links (start, create, search...)
+		# are displayed in the tree view. NOTE: these links are only displayed
+		# if 'group by category/subcategory' is also selected.
+		var $show_bk_in_tree = 1; # set to 0 for 'off' 1 for 'on'
+
+		function bookmarker_class()
+		{
+			global $SERVER_NAME, $SERVER_ADMIN, $REMOTE_ADDR, $PHP_SELF;
+
+			$this->image_url_prefix = $GLOBALS['phpgw_info']['server']['app_images'] . '/';
+
+			$where_am_i = sprintf("http://%s%s/", $SERVER_NAME, dirname($PHP_SELF));
+
+			# used for quik-mark bookmark
+			$this->create_url   = $where_am_i . 'create.php';
+
+			# used for mail-this-link bookmark
+			$this->maillink_url = $where_am_i . 'maillink.php';
+
+			# the following wording is automatically added to all outgoing
+			# mail-this-link email messages
+			$this->site_footer  = sprintf("--\nThis message sent from the bookmarker bookmark manager\nat %s\nPlease contact the server administrator at\n%s to report abuse of this service.", $where_am_i, $SERVER_ADMIN);
+
+			# this var controls the headers that are added to the mail-this-link
+			# email message. You may choose to bcc: yourself, record the senders IP...
+			# the headers should be separated by a newline ("\n")
+			$this->site_headers = sprintf("X-Sender: bookmarker at %s\nX-Sender-IP: $REMOTE_ADDR", $SERVER_NAME);
+		}
 	}
 
-}
+	# instantiate the bookmarker class so we can access
+	# the variables.
+	$bookmarker = new bookmarker_class ();
 
+	# if the user's browser is a 5.0 or later version, then
+	# use PNG images. otherwise use GIF images.
+	$bookmarker->image_ext="gif";
 
+	if (ereg( "MSIE ([0-9]+)",$HTTP_USER_AGENT,$version))
+	{
+		$ver=(int)$version[1];
+		if ($ver>=5) $bookmarker->image_ext="png";
 
-# the following class sets various configuration variables
-# used throughout the application.
-class bookmarker_class  {
-  var $version        = "2.8.0";
+	}
+	elseif (ereg( "Opera/([0-9]+)",$HTTP_USER_AGENT,$version))
+	{
+		# $opera=true;
 
-# directory where templates are located on this server
-  var $template_dir   = "./lib/templates";
+	}
+	elseif (ereg( "Mozilla/([0-9]+)",$HTTP_USER_AGENT,$version))
+	{
+		$ver=(int)$version[1];
+		if ($ver>=5)
+		{
+			$bookmarker->image_ext = 'png';
+		}
+	}
 
-# image URL - string added to the begining of an image file
-# (for example, I set this to "./images/" which makes bookmarker
-# build image URLs like <img src="./images/mailto.png"...)
-  var $image_url_prefix;
+	$GLOBALS['phpgw']->template->set_unknowns('remove');
 
-# URL format checking. bookmarker can check the format of
-# URLs entered on the create/maintain pages. This option
-# lets you control this checking. Possible values:
-#  0 = no checking of URL format
-#  1 = URL format is checked, problems reported as warnings
-#  2 = URL format is checked, problems reported as errors
-  var $url_format_check = 2;
-
-# URL response checking. bookmarker can check that the URL
-# responds to a request and show a warning if it does not
-# respond.
-  var $url_responds_check = False;
-
-# how many characters after the scheme(http://) and hostname
-# (www.mydomain.com) to match when checking for possible
-# duplicates on the create page.
-# Zero means to just match on scheme and hostname - this is
-# what I prefer.
-  var $possible_dup_chars = 0;
-
-# level of access required for user to use the mail-this-link
-# page. The default is to only allow registered users to send
-# email using bookmarker - anything else is asking for abuse!
-# if you allow guest, you may want to bcc yourself by using the
-# site header variable below.
-  var $mail_this_link_permission_required = "editor";
-
-# this var controls if the bookmarker links (start, create, search...)
-# are displayed in the tree view. NOTE: these links are only displayed
-# if 'group by category/subcategory' is also selected.
-  var $show_bk_in_tree = 1; # set to 0 for 'off' 1 for 'on'
-
-
-  function bookmarker_class()
-  {
-    global $SERVER_NAME, $SERVER_ADMIN, $REMOTE_ADDR, $PHP_SELF, $phpgw_info;
-
-    $this->image_url_prefix = $phpgw_info["server"]["app_images"] . "/";
-
-    $where_am_i = sprintf("http://%s%s/", $SERVER_NAME, dirname($PHP_SELF));
-
-# used for quik-mark bookmark
-    $this->create_url   = $where_am_i . "create.php";
-
-# used for mail-this-link bookmark
-    $this->maillink_url = $where_am_i . "maillink.php";
-
-# the following wording is automatically added to all outgoing
-# mail-this-link email messages
-    $this->site_footer  = sprintf("--\nThis message sent from the bookmarker bookmark manager\nat %s\nPlease contact the server administrator at\n%s to report abuse of this service.", $where_am_i, $SERVER_ADMIN);
-
-# this var controls the headers that are added to the mail-this-link
-# email message. You may choose to bcc: yourself, record the senders IP...
-# the headers should be separated by a newline ("\n")
-    $this->site_headers = sprintf("X-Sender: bookmarker at %s\nX-Sender-IP: $REMOTE_ADDR", $SERVER_NAME);
-  }
-     
-}
-
-# instantiate the bookmarker class so we can access
-# the variables.
-$bookmarker = new bookmarker_class ();
-
-# if the user's browser is a 5.0 or later version, then
-# use PNG images. otherwise use GIF images.
-$bookmarker->image_ext="gif";
-
-if (ereg( "MSIE ([0-9]+)",$HTTP_USER_AGENT,$version)) {
-  $ver=(int)$version[1];
-  if ($ver>=5) $bookmarker->image_ext="png";
-
-} elseif (ereg( "Opera/([0-9]+)",$HTTP_USER_AGENT,$version)) {
-    # $opera=true;
-
-} elseif (ereg( "Mozilla/([0-9]+)",$HTTP_USER_AGENT,$version)) {
-  $ver=(int)$version[1];
-  if ($ver>=5) $bookmarker->image_ext="png";
-}
-
-$phpgw->template->set_unknowns("remove");
-
-$validate = createobject('phpgwapi.validator');
-
-
+	$validate = createobject('phpgwapi.validator');
 ?>
