@@ -14,7 +14,7 @@
 
 	$title = $appname;
 	$file = Array(
-		'Configuration' => $GLOBALS['phpgw']->link('/admin/config.php','appname=bookmarks')
+		'Site Configuration' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname)
 	);
 
 	display_section($appname,$title,$file);
