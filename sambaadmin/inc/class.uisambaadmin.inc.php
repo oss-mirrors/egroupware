@@ -1,0 +1,229 @@
+<?php
+	/***************************************************************************\
+	* phpGroupWare - Notes                                                      *
+	* http://www.phpgroupware.org                                               *
+	* Written by : Lars Kneschke [lkneschke@phpgroupware.org]                   *
+	* -------------------------------------------------                         *
+	* This program is free software; you can redistribute it and/or modify it   *
+	* under the terms of the GNU General Public License as published by the     *
+	* Free Software Foundation; either version 2 of the License, or (at your    *
+	* option) any later version.                                                *
+	\***************************************************************************/
+	/* $Id$ */
+
+	class uisambaadmin
+	{
+		#var $grants;
+		#var $cat_id;
+		#var $start;
+		#var $search;
+		#var $filter;
+
+		var $public_functions = array
+		(
+			'checkLDAPSetup'	=> True,
+			'listWorkstations'	=> True,
+			'deleteWorkstation'	=> True,
+			'editWorkstation'	=> True
+		);
+
+		function uisambaadmin()
+		{
+			#$this->cats			= CreateObject('phpgwapi.categories');
+			#$this->nextmatchs		= CreateObject('phpgwapi.nextmatchs');
+			#$this->account			= $phpgw_info['user']['account_id'];
+			$this->t			= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			#$this->grants			= $phpgw->acl->get_grants('notes');
+			#$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
+			$this->bosambaadmin		= CreateObject('sambaadmin.bosambaadmin');
+			
+			$this->rowColor[0] = $phpgw_info["theme"]["row_on"];
+			$this->rowColor[1] = $phpgw_info["theme"]["row_off"];
+
+			$this->dataRowColor[0] = $phpgw_info["theme"]["bg01"];
+			$this->dataRowColor[1] = $phpgw_info["theme"]["bg02"];
+			                 
+		}
+		
+		function checkLDAPSetup()
+		{
+			$this->bosambaadmin->checkLDAPSetup();
+		}
+		
+		function deleteWorkstation()
+		{
+			if($workstations = get_var('deleteWorkstation','POST'))
+			{
+				$this->bosambaadmin->deleteWorkstation($workstations);
+			}
+			$this->listWorkstations();
+		}
+		
+		function displayAppHeader()
+		{
+			$GLOBALS['phpgw']->common->phpgw_header();
+			echo parse_navbar();
+		}
+
+		function editWorkstation($_workstationID='')
+		{
+			$workstationData = array();
+			
+			if(get_var('workstationID',array('GET','POST')))
+			{
+				$workstationID = get_var('workstationID',array('GET','POST'));
+			}
+			else
+			{
+				$workstationID = $_workstationID;
+			}
+			
+			if(get_var('save','POST'))
+			{
+				$workstationData['workstationName']	= get_var('workstationname','POST');
+				$workstationData['workstationID']	= get_var('workstationID','POST');
+				$workstationData['description']		= get_var('description','POST');
+				
+				if($newUID = $this->bosambaadmin->updateWorkstation($workstationData))
+				{
+					$workstationID = $newUID;
+					$this->listWorkstations();
+					return;
+				}
+			}
+			
+			$this->displayAppHeader();
+
+			$this->t->set_file(array("body" => 'editworkstation.tpl'));
+			$this->t->set_block('body','main');
+			
+			$this->translate();
+			
+			$linkData = array
+			(
+				'menuaction'	=> 'sambaadmin.uisambaadmin.editWorkstation'
+			);
+			$this->t->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+
+			$linkData = array
+			(
+				'menuaction'	=> 'sambaadmin.uisambaadmin.listWorkstations'
+			);
+			$this->t->set_var('back_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
+
+			if(is_numeric($workstationID) && $workstationID > 0)
+			{
+				$workstationData = $this->bosambaadmin->getWorkstationData($workstationID);
+				$this->t->set_var('workstationid',$workstationData['workstationID']);
+			}
+			else
+			{
+				$this->t->set_var('workstationid','new');
+			}
+
+			$this->t->set_var('workstationname',$workstationData['workstationName']);
+			$this->t->set_var('description',$workstationData['description']);
+
+			print $this->t->fp("out","main");
+			#print $this->t->get('out','main');
+		}
+		
+		function listWorkstations()
+		{
+			$sort	= get_var('sort',array('POST','GET')) ? get_var('sort',array('POST','GET')) : 'ASC';
+			$order	= get_var('order',array('POST','GET')) ? get_var('order',array('POST','GET')) : 'workstation_name';
+			$start  = get_var('start',array('POST','GET')) ? get_var('start',array('POST','GET')) : 0;
+			
+			$nextMatch = CreateObject('sambaadmin.uibaseclass');
+			$workstationList = $this->bosambaadmin->getWorkstationList($start, $sort, $order);
+			$this->displayAppHeader();
+
+			$this->t->set_file(array("body" => 'listworkstations.tpl'));
+			$this->t->set_block('body','main');
+			#$this->t->set_block('body','status_row_tpl');
+			#$this->t->set_block('body','header_row');
+			
+			$linkData = array
+			(
+				'menuaction'	=> 'sambaadmin.uisambaadmin.editWorkstation'
+			);
+			$this->t->set_var('add_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
+
+			$linkData = array
+			(
+				'menuaction'	=> 'sambaadmin.uisambaadmin.deleteWorkstation'
+			);
+			$this->t->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			
+			$tableHeader = array
+			(
+				lang('workstation name') => 'workstation_name',
+				lang('description')	=> 'description',
+				lang('delete')		=> ''
+				
+			);
+			
+			if(is_array($workstationList['workstations']))
+			{
+				$wsCount = count($workstationList['workstations']);
+				for($i = 0; $i < $wsCount; $i++)
+				{
+					$linkData = array
+					(
+						'menuaction'	=> 'sambaadmin.uisambaadmin.editWorkstation',
+						'workstationID'	=> $workstationList['workstations'][$i]['uidnumber'][0]
+					);
+					$editLink = $GLOBALS['phpgw']->link('/index.php',$linkData);
+					
+					$rows[] = array
+					(
+						'workstationname'	=> '<a href="'.$editLink.'">'.$workstationList['workstations'][$i]['uid'][0].'</a>',
+						'description'		=> '<a href="'.$editLink.'">'.$workstationList['workstations'][$i]['description'][0].'</a>',
+						'select'		=> '<input type="checkbox" name="deleteWorkstation['.$workstationList['workstations'][$i]['uidnumber'][0].']">'
+					);
+				}
+			}
+			
+			$this->t->set_var
+			(
+				'next_match_table',$nextMatch->create_table
+				(
+					$start, 
+					$workstationList['total'], 
+					$sort,
+					$order,
+					$tableHeader, 
+					$rows,
+					'sambaadmin.uibaseclass.listWorkstations',
+					lang('workstations')
+				)
+			);
+
+			$this->translate();
+
+			$this->t->parse("out","main");
+			print $this->t->get('out','main');
+		}
+
+
+		function translate()
+		{
+			$this->t->set_var('th_bg',$GLOBALS['phpgw_info']["theme"]["th_bg"]);
+			$this->t->set_var('bg_01',$GLOBALS['phpgw_info']["theme"]["bg01"]);
+			$this->t->set_var('bg_02',$GLOBALS['phpgw_info']["theme"]["bg02"]);
+
+			$this->t->set_var('lang_workstation_list',lang('workstation list'));
+			$this->t->set_var('lang_add_workstation',lang('add workstation'));
+			$this->t->set_var('lang_workstation_name',lang('workstation name'));
+			$this->t->set_var('lang_description',lang('description'));
+			$this->t->set_var('lang_select',lang('select'));
+			$this->t->set_var('lang_workstation_config',lang('workstation configuration'));
+			$this->t->set_var('lang_account_active',lang('workstationaccount active'));
+			$this->t->set_var('lang_save',lang('save'));
+			$this->t->set_var('lang_back',lang('back'));
+			$this->t->set_var('lang_delete',lang('delete'));
+			$this->t->set_var('lang_do_you_really_want_to_delete',lang('Do you really want to delete selected workstation accounts?'));
+			#$this->t->set_var('',lang(''));
+		}
+	}
+?>

@@ -1,0 +1,9 @@
+samba settings	common	de	Fileserverkonto
+path to mkntpwd	admin	de	Pfad zu mkntpwd
+Samba SID	admin	de	Samba SID
+displayname	sambaadmin	de	Anzeigename
+homepath	sambaadmin	de	Heimatverzeichnis
+homedrive	sambaadmin	de	Heimatlaufwerk
+logonscript	sambaadmin	de	Anmeldescript
+profilepath	sambaadmin	de	Profilepfad
+samba config	sambaadmin	de	Samba Konfiguration
