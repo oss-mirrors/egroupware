@@ -587,7 +587,17 @@
 			$prefix = 'D-' . $this->year . '-';
 			$this->db->query("select max(num) from phpgw_p_delivery where num like ('$prefix%')");
 			$this->db->next_record();
-			$max = add_leading_zero(substr($this->db->f(0),-4));
+			$max = $this->add_leading_zero(substr($this->db->f(0),-4));
+
+			return $prefix . $max;
+		}
+
+		function create_invoiceid()
+		{
+			$prefix = 'I-' . $this->year . '-';
+			$this->db->query("select max(num) from phpgw_p_invoice where num like ('$prefix%')");
+			$this->db->next_record();
+			$max = $this->add_leading_zero(substr($this->db->f(0),-4));
 
 			return $prefix . $max;
 		}

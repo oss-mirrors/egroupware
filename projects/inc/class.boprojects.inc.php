@@ -214,8 +214,12 @@
 
 		function get_prefs()
 		{
+			$GLOBALS['phpgw']->preferences->read_repository();
+
+			$prefs = array();
+
 			$prefs['currency']	= $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
-			$prefs['currency']	= $GLOBALS['phpgw_info']['user']['preferences']['common']['country'];
+			$prefs['country']	= $GLOBALS['phpgw_info']['user']['preferences']['common']['country'];
 			$prefs['abid']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['abid'];
 			$prefs['tax']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['tax'];
 			return $prefs;

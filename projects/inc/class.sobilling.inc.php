@@ -233,7 +233,7 @@
 			}
 		}
 
-		function invoice($values)
+		function invoice($values,$select)
 		{
 			$values['invoice_num'] = addslashes($values['invoice_num']);
 			$this->db->query("INSERT INTO phpgw_p_invoice (num,sum,project_id,customer,date) VALUES ('" . $values['invoice_num'] . "',0,'"
@@ -242,7 +242,7 @@
 			$this->db2->next_record();
 			$invoice_id = $this->db2->f('id');
 
-			while($values['select'] && $entry=each($values['select']))
+			while($select && $entry=each($select))
 			{
 				$this->db->query("INSERT INTO phpgw_p_invoicepos (invoice_id,hours_id) VALUES ('" . $invoice_id . "','" . $entry[0] . "')",__LINE__,__FILE__);
 				$this->db2->query("UPDATE phpgw_p_hours SET status='billed' WHERE id='" . $entry[0] . "'",__LINE__,__FILE__);
@@ -258,6 +258,34 @@
 			}
 			$this->db->query("UPDATE phpgw_p_invoice SET sum=round(" . $sum_sum . ",2) WHERE id='" . $invoice_id . "'",__LINE__,__FILE__);
 			return $invoice_id;
+		}
+
+		function update_invoice($values,$select)
+		{
+			$this->db->query("UPDATE phpgw_p_invoice set num='" . $values['invoice_num'] . "',date='" . $values['date'] . "',customer='"
+							. $values['customer'] . "' WHERE id='" . $values['invoice_id'] . "'",__LINE__,__FILE__);
+
+			$this->db2->query("DELETE FROM phpgw_p_invoicepos WHERE invoice_id='" . $values['invoice_id'] . "'",__LINE__,__FILE__);
+
+			while($select && $entry=each($select))
+			{
+				$this->db->query("INSERT INTO phpgw_p_invoicepos (invoice_id,hours_id) VALUES ('" . $values['invoice_id'] . "','"
+								. $entry[0] . "')",__LINE__,__FILE__);
+				$this->db2->query("UPDATE phpgw_p_hours SET status='billed' WHERE id='" . $entry[0] . "'",__LINE__,__FILE__);
+			}
+
+			$this->db->query("SELECT billperae,minutes,minperae FROM phpgw_p_hours,phpgw_p_invoicepos "
+							."WHERE phpgw_p_invoicepos.invoice_id='" . $values['invoice_id'] . "' AND phpgw_p_hours.id="
+							. "phpgw_p_invoicepos.hours_id",__LINE__,__FILE__);
+
+			while($this->db->next_record())
+			{
+				$aes = ceil($this->db->f('minutes')/$this->db->f('minperae'));
+				$sum = $this->db->f('billperae')*$aes;
+				$sum_sum += $sum;
+			}
+
+			$this->db2->query("UPDATE phpgw_p_invoice SET sum=round(" . $sum_sum . ",2) WHERE id='" . $values['invoice_id'] . "'",__LINE__,__FILE__);
 		}
 
 		function read_hours($project_id)
@@ -299,7 +327,7 @@
 						. "phpgw_p_hours " . $this->return_join() . " phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id "
 						. $this->return_join() . " phpgw_p_invoicepos ON phpgw_p_invoicepos.hours_id=phpgw_p_hours.id WHERE "
 						. "phpgw_p_hours.project_id='" . $project_id . "' AND phpgw_p_invoicepos.invoice_id='"
-						. $invoice_id . $ordermethod,__LINE__,__FILE__);
+						. $invoice_id . "'" . $ordermethod,__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{

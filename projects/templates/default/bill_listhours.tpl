@@ -15,7 +15,7 @@
 	</tr>
 	<tr>
 		<td>{lang_invoice_num}&nbsp;:</td>
-		<td><input type=text name="invoice_num" value="{invoice_num}"></td>
+		<td><input type=text name="values[invoice_num]" value="{invoice_num}"></td>
 	</tr>
 	<tr>
 		<td>{lang_customer}&nbsp;:</td>
@@ -32,13 +32,13 @@
 </table>
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
 	<tr bgcolor="{th_bg}">
-		<td width="3%" bgcolor="{th_bg}" align="center">{lang_select}</td>
+		<td width="5%" bgcolor="{th_bg}" align="center">{lang_select}</td>
 		<td width="20%" bgcolor="{th_bg}">{lang_activity}</td>
 		<td width="20%" bgcolor="{th_bg}">{lang_hours}</td>
-		<td width="9%" bgcolor="{th_bg}" align="center">{lang_status}</td>
-		<td width="9%" bgcolor="{th_bg}" align="center">{lang_start_date}</td>
+		<td width="5%" bgcolor="{th_bg}" align="center">{lang_status}</td>
+		<td width="10%" bgcolor="{th_bg}" align="center">{lang_start_date}</td>
 		<td width="10%" bgcolor="{th_bg}" align="right">{lang_aes}</td>
-		<td width="9%" bgcolor="{th_bg}" align="right">{currency}&nbsp;{lang_billperae}</td>
+		<td width="10%" bgcolor="{th_bg}" align="right">{currency}&nbsp;{lang_billperae}</td>
 		<td width="10%" bgcolor="{th_bg}" align="right">{currency}&nbsp;{lang_sum}</td>
 		<td width="10%" bgcolor="{th_bg}" align="center">{lang_edit}</td>
 	</tr>
@@ -62,14 +62,14 @@
 </table><br><br>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr bgcolor="{tr_color}">
-		<td width="3%">&nbsp;</td>
+		<td width="5%">&nbsp;</td>
 		<td width="20%">&nbsp;</td>
 		<td width="20%">&nbsp;</td>
-		<td width="10%">&nbsp;</td>
+		<td width="5%">&nbsp;</td>
 		<td width="10%" align="center"><font size="4"><b>{currency}&nbsp;{lang_netto}</b></font></td>
 		<td width="10%" align="right"><font size="4"><b>{sum_aes}</b></font></td>
 		<td width="10%">&nbsp;</td>
-		<td width="7%" align="right"><font size="4"><b>{sum_sum}</b></font></td>
+		<td width="10%" align="right"><font size="4"><b>{sum_sum}</b></font></td>
 		<td width="10%">&nbsp;</td>
 	</tr>
 </table>

@@ -50,8 +50,8 @@
 	</table><br><br><br>  
 	<table width="90%" border="0" cellspacing="3" cellpadding="3">
 		<tr>
-      		<td width="8%" align="right"><font face="{font}">{lang_pos}</font></td>
-			<td width="10%" align="center"><font face="{font}">{lang_hours_date}</font></td>
+      		<td width="8%" align="right"><font face="{font}">{lang_position}</font></td>
+			<td width="10%" align="center"><font face="{font}">{lang_work_date}</font></td>
 			<td width="30%"><font face="{font}">{lang_descr}</font></td>
 			<td width="10%" align="right"><font face="{font}">{lang_workunits}</font></td>
 			<td width="15%" align="right"><font face="{font}">{currency}&nbsp;{lang_per}</font></td>
@@ -94,7 +94,7 @@
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
-			<td><font face="{font}">{currency}&nbsp;{tax}&nbsp;%&nbsp;{lang_mwst}:</font></td>
+			<td><font face="{font}">{currency}&nbsp;{tax}&nbsp;%&nbsp;{lang_tax}:</font></td>
 			<td align="right"><font face="{font}">{sum_tax}</font></td>
 		</tr>
 		<tr>

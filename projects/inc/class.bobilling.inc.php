@@ -32,7 +32,10 @@
 			'check_values'			=> True,
 			'read_hours'			=> True,
 			'read_invoice_hours'	=> True,
-			'read_invoice_pos'		=> True
+			'read_invoice_pos'		=> True,
+			'invoice'				=> True,
+			'update_invoice'		=> True,
+			'read_single_invoice'	=> True
 		);
 
 		function bobilling()
@@ -49,7 +52,13 @@
 			return $bill;
 		}
 
-		function check_values($values)
+		function read_single_invoice($invoice_id)
+		{
+			$bill = $this->sobilling->read_single_invoice($invoice_id);
+			return $bill;
+		}
+
+		function check_values($values,$select)
 		{
 			if (!$values['choose'])
 			{
@@ -67,7 +76,7 @@
 				}
 			}
 
-			if (! is_array($values['select']))
+			if (! is_array($select))
 			{
 				$error[] = lang('The invoice contains no items !');				
 			}
@@ -88,7 +97,7 @@
 			}
 		}
 
-		function invoice($values)
+		function invoice($values,$select)
 		{
 			if ($values['choose'])
 			{
@@ -97,8 +106,15 @@
 
 			$values['date'] = mktime(2,0,0,$values['month'],$values['day'],$values['year']);
 
-			$invoice_id = $this->sobilling->invoice($values);
+			$invoice_id = $this->sobilling->invoice($values,$select);
 			return $invoice_id;
+		}
+
+		function update_invoice($values,$select)
+		{
+			$values['date'] = mktime(2,0,0,$values['month'],$values['day'],$values['year']);
+
+			$this->sobilling->update_invoice($values,$select);
 		}
 
 		function read_hours($project_id)
@@ -109,7 +125,7 @@
 
 		function read_invoice_hours($project_id,$invoice_id)
 		{
-			$hours = $this->sobilling->read_hours($project_id,$invoice_id);
+			$hours = $this->sobilling->read_invoice_hours($project_id,$invoice_id);
 			return $hours;
 		}
 

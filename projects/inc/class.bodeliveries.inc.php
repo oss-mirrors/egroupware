@@ -73,7 +73,7 @@
 
 		function read_single_delivery($delivery_id)
 		{
-			$del = $this->bodeliveries->read_single_delivery($delivery_id);
+			$del = $this->sodeliveries->read_single_delivery($delivery_id);
 			return $del;
 		}
 
