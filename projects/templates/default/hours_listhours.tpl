@@ -6,10 +6,7 @@
     <tr>
     <td width="33%" align="left">
     <form action="{project_action}" method="POST">
-    &nbsp;{lang_select_project}<br>
-    <select name="filter">
-    {project_list}
-    </select>
+    <select name="filter"><option value="">{lang_select_project}</option>{project_list}</select>
     &nbsp; <input type="submit" name="submit" value="{lang_submit}"></form></td>
     <td width="33%" align="center">{lang_showing}</td>
     <td width="33%" align="right">

@@ -17,7 +17,7 @@
   
     $db2 = $phpgw->db;
   
-    if (!$id) { Header("Location: " . $phpgw->link('/projects/hours_index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter")); }
+    if (!$id) { Header('Location: ' . $HTTP_REFERER); }
 
     $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
 		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
@@ -42,12 +42,13 @@
     }
     if (checkdate($emonth,$eday,$eyear)) { $edate = mktime(2,0,0,$emonth,$eday,$eyear); }
     else {
-       if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang(You have entered an invalid end date !') . " : " . "$emonth - $eday - $eyear"; }
+       if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang('You have entered an invalid end date !') . " : " . "$emonth - $eday - $eyear"; }
     }
 
-    if ($activity) {
     $phpgw->db->query("SELECT minperae,billperae,remarkreq FROM phpgw_p_activities WHERE id = '".$activity."'");
     $phpgw->db->next_record();
+    if ($phpgw->db->f(0) == 0) { $error[$errorcount++] = lang('You have selected an invalid activity !'); }
+    else {
     $billperae = $phpgw->db->f("billperae");
     $minperae = $phpgw->db->f("minperae");
     if (($phpgw->db->f("remarkreq")=="Y") and (!$remark)) { $error[$errorcount++] = lang('Please enter a remark !'); }
@@ -75,34 +76,34 @@
     $t->set_var('error',lang('Please select your currency in preferences !'));
     }
 
-    $phpgw->db->query("select * from phpgw_p_hours where id='$id'");
-    $phpgw->db->next_record();
-
     $t->set_var('actionurl',$phpgw->link('/projects/hours_edithour.php'));
     $t->set_var('deleteurl',$phpgw->link('/projects/delete_hours.php',"id=$id"));
+    $t->set_var('doneurl',$HTTP_REFERER);
     $t->set_var('lang_action',lang('Edit project hours'));
     $t->set_var('hidden_vars',$hidden_vars);
-     
-/*    $db2->query("SELECT num,title FROM phpgw_p_projects WHERE id = '".$phpgw->db->f("project_id")."'");
-     if ($db2->next_record()) {
-	$t->set_var('num',$phpgw->strip_html($db2->f("num")));
-        $title  = $phpgw->strip_html($db2->f("title"));                                                                                                                                
-        if (! $title)  $title  = "&nbsp;";
-        $t->set_var('title',$title);
-     }
-
-    $t->set_var('lang_num',lang('Project ID'));
-    $t->set_var('lang_title',lang('Title'));  */
- 
-    if ($project_id) { $t->set_var('project_list',select_project_list($project_id)); }
-    else { $t->set_var('project_list',select_project_list($project)); }
     $t->set_var('lang_project',lang('Project'));
-
     $t->set_var('lang_activity',lang('Activity'));
-    
-    $db2->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities "
-		. "WHERE project_id ='" . $phpgw->db->f("project_id") . "' AND phpgw_p_projectactivities.activity_id="
-		. "phpgw_p_activities.id");
+    $t->set_var('lang_start_date',lang('Start date'));
+    $t->set_var('lang_end_date',lang('Date due'));
+    $t->set_var('lang_remark',lang('Remark'));
+    $t->set_var('lang_time',lang('Time')); 
+    $t->set_var('lang_employee',lang('Employee'));
+    $t->set_var('lang_minperae',lang('Minutes per workunit'));
+    $t->set_var('lang_billperae',lang('Bill per workunit'));
+    $t->set_var('lang_done',lang('Done'));
+    $t->set_var('lang_edit',lang('Edit'));
+    $t->set_var('lang_delete',lang('Delete'));
+    $t->set_var('lang_status',lang('Status'));
+
+    $phpgw->db->query("select * from phpgw_p_hours where id='$id'");
+    $phpgw->db->next_record();     
+
+    $project = $phpgw->db->f("project_id");
+
+    $t->set_var('project_list',select_project_list($project));
+
+    $db2->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='$project' "
+		. "AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id");
 	while ($db2->next_record()) {
         $activity_list .= "<option value=\"" . $phpgw->db->f("activity_id") . "\"";
         if($db2->f("activitiy_id")==$phpgw->db->f("activity_id"))
@@ -113,8 +114,6 @@
     
     $t->set_var('activity_list',$activity_list);
 
-
-    $t->set_var('lang_status',lang('Status'));
     if ($phpgw->db->f("status")=="open"): 
          $stat_sel[0]=" selected";
     elseif ($phpgw->db->f("status")=="done"):
@@ -124,15 +123,11 @@
     $status_list = "<option value=\"open\"".$stat_sel[0].">" . lang("Open") . "</option>\n"
                   . "<option value=\"done\"".$stat_sel[1].">" . lang("Done") . "</option>\n";
 
-    $t->set_var("status_list",$status_list);
-
-    $t->set_var('lang_start_date',lang('Start date'));
-    $t->set_var('lang_end_date',lang('Date due'));
-     
-    $sdate = $phpgw->db->f("start_date");
-    $edate = $phpgw->db->f("end_date");
+    $t->set_var('status_list',$status_list);
 
     $sm = CreateObject('phpgwapi.sbox');
+    $sdate = $phpgw->db->f("start_date");
+    $edate = $phpgw->db->f("end_date");
 
     if (!$sdate) {
         $smonth = date('m',time());
@@ -160,16 +155,13 @@
 
     $t->set_var('end_date_select',$phpgw->common->dateformatorder($sm->getYears('eyear',$eyear),$sm->getMonthText('emonth',$emonth),$sm->getDays('eday',$eday)));
 
-    $t->set_var('lang_remark',lang("Remark"));
-    $remark  = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                             
-    if (! $remark)  $remark  = "&nbsp;";                                                                                                                                                
-    $t->set_var("remark",$remark);
+    $remark  = $phpgw->strip_html($phpgw->db->f("remark"));
+    if (! $remark)  $remark  = "&nbsp;";
+    $t->set_var('remark',$remark);
 
-    $t->set_var('lang_time',lang('Time'));
     $t->set_var('hours',floor($phpgw->db->f("minutes")/60));
     $t->set_var('minutes',($phpgw->db->f("minutes"))-((floor($phpgw->db->f("minutes")/60)*60)));
 
-    $t->set_var('lang_employee',lang('Employee'));
     $db2->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
                      . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
      while ($db2->next_record()) {
@@ -183,22 +175,13 @@
      }
     $t->set_var('employee_list',$employee_list);  
 
-    $t->set_var('lang_minperae',lang('Minutes per workunit'));
-    $t->set_var('minperae',$phpgw->db->f('minperae'));
-    $t->set_var('lang_billperae',lang("Bill per workunit"));
-    $t->set_var('billperae',$phpgw->db->f('billperae'));
-
-    $t->set_var('lang_done',lang('Done'));
-
-    $t->set_var('doneurl',$HTTP_REFERER);
+    $t->set_var('minperae',$phpgw->db->f("minperae"));
+    $t->set_var('billperae',$phpgw->db->f("billperae"));
 
 /*    print "Referrer".$HTTP_REFERER."<br>";
     $t->set_var('doneurl',$phpgw->link($HTTP_REFERER . 'project_id=' . $phpgw->db->f("id") . "&delivery_id=$delivery_id&invoice_id=$invoice_id&sort=$sort&order=$order&"
                                         . "query=$query&start=$start&filter=$filter&status=$status")); */
 
-    $t->set_var('lang_edit',lang('Edit'));
-    $t->set_var('lang_delete',lang('Delete'));
-    
     $t->set_var('edithandle','');
     $t->set_var('addhandle','');
     $t->pparse('out','hours_edit');

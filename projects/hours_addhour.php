@@ -20,6 +20,13 @@
     $t->set_block('hours_add','add','addhandle');
     $t->set_block('hours_add','edit','edithandle');
 
+    $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
+                . "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
+                . "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
+                . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
+                . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
+                . "<input type=\"hidden\" name=\"id\" value=\"$id\">\n";
+
     if ($submit) {
       
     $errorcount = 0;
@@ -34,11 +41,10 @@
        if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang('You have entered an invalid end date !') . " : " . "$emonth - $eday - $eyear"; }
     }
 
-/*    if (! $activity) { $error[$errorcount++] = lang('Please choose an activity for the project first !'); } */
- 
-    if ($activity) {
     $phpgw->db->query("SELECT minperae,billperae,remarkreq FROM phpgw_p_activities WHERE id ='$activity'");
     $phpgw->db->next_record();
+    if ($phpgw->db->f(0) == 0) { $error[$errorcount++] = lang('You have selected an invalid activity !'); }
+    else {
     $billperae = $phpgw->db->f("billperae");
     $minperae = $phpgw->db->f("minperae");
     if (($phpgw->db->f("remarkreq")=="Y") and (!$remark)) { $error[$errorcount++] = lang('Please enter a remark !'); }
@@ -49,9 +55,9 @@
     $ae_minutes = $hours*60+$minutes;
 //    $ae_minutes = ceil($ae_minutes / $phpgw->db->f("minperae"));
 
-    $phpgw->db->query("insert into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,"
-               . "remark,minutes,status,minperae,billperae,employee) values "
-               . " ('$project','$activity','" . time() ."','$sdate','$date','$remark',"
+    $phpgw->db->query("INSERT into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,"
+               . "remark,minutes,status,minperae,billperae,employee) VALUES "
+               . "('$project','$activity','" . time() ."','$sdate','$edate','$remark',"
                . "'$ae_minutes','$status','$minperae','$billperae','$employee')");
 
       } 
@@ -78,11 +84,12 @@
         		. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
         		. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
         		. "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
+        		. "<input type=\"hidden\" name=\"project_id\" value=\"$project_id\">\n"
         		. "<input type=\"hidden\" name=\"id\" value=\"$id\">";
         		
     $t->set_var('hidden_vars',$hidden_vars);
 
-    if ($project_id) { $t->set_var('project_list',select_project_list($project_id)); }
+    if ($filter) { $t->set_var('project_list',select_project_list($filter)); }
     else { $t->set_var('project_list',select_project_list($project)); }
     $t->set_var('lang_project',lang('Project'));
 
@@ -164,7 +171,7 @@
     $t->set_var('billperae',$billperae);
 
     $t->set_var('lang_done',lang('Done'));    
-    $t->set_var('doneurl',$phpgw->link('/projects/hours_listhours.php',"project=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+    $t->set_var('doneurl',$phpgw->link('/projects/hours_listhours.php',"filter=$filter&sort=$sort&order=$order&query=$query&start=$start"));
 
     $t->set_var('lang_add',lang('Add'));
     $t->set_var('lang_reset',lang('Clear Form'));

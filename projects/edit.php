@@ -52,6 +52,8 @@
         if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang("You have entered an invalid date") . " : " . "$emonth - $eday - $eyear"; }
     }
 
+    if ((!$ba_activities) && (!$bill_activities)) { $error[$errorcount++] = lang('Please choose activities for that project first !'); }
+
     if (! $error) {
     $owner = $phpgw_info["user"]["account_id"];
     $num = addslashes($num);

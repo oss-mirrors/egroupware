@@ -138,7 +138,7 @@
 		    . "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id "
 		    . "$join phpgw_p_deliverypos ON phpgw_p_hours.id=phpgw_p_deliverypos.hours_id "
 		    . "WHERE (phpgw_p_hours.status='done' OR phpgw_p_hours.status='billed') AND phpgw_p_hours.project_id='$project_id' "
-		    . "AND p_deliverypos.id IS NULL $ordermethod");
+		    . "AND phpgw_p_deliverypos.id IS NULL $ordermethod");
     } 
     else {
     $phpgw->db->query("SELECT date FROM phpgw_p_delivery WHERE id='$delivery_id'");

@@ -158,8 +158,7 @@
       		      'minutes' => $minutes));
 
     if ($status != "billed") {
-    $t->set_var('edit',$phpgw->link('/projects/hours_edithour.php','id=' . $phpgw->db->f("id") 
-				    . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+    $t->set_var('edit',$phpgw->link('/projects/hours_edithour.php',"id=$id&filter=$filter&order=$order&query=$query&start=$start&sort=$sort"));
     $t->set_var('lang_edit',lang('Edit'));
     }
     else { 

@@ -3,7 +3,7 @@
       <hr noshade width="98%" align="center" size="1">
 
       <center>
-       <form method="POST" name="activity_form" action="{actionurl}">
+       <form method="POST" action="{actionurl}">
         {hidden_vars}
 	{error}{message}
         <table width="75%" border="0" cellspacing="0" cellpadding="0">
@@ -56,9 +56,11 @@
          
 	<table width="75%" border="0" cellspacing="0" cellpadding="0">
 	<tr valign="bottom">
+	{hidden_vars}
 	<td height="62"><input type="submit" name="submit" value="{lang_add}"></td>
 	<td height="62"><input type="reset" name="reset" value="{lang_reset}"></form></td>
 	<td><form method="POST" action="{doneurl}"> 
+	    {hidden_vars}
             <input type="submit" name="done" value="{lang_done}"></form></td>
          </tr>
          </table>
@@ -70,6 +72,7 @@
 
          <table width="75%" border="0" cellspacing="0" cellpadding="0">
          <tr valign="bottom">
+	    {hidden_vars}
           <td height="62"><input type="submit" name="submit" value="{lang_edit}">
            </form></td>
 	<td height="62">
