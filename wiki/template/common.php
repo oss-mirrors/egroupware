@@ -169,7 +169,7 @@ function template_common_epilogue($args)
 <br /><?php
     }
   }
-  if(!$args['nosearch'])
+  if(!$args['nosearch'] && $args['history'])
   {
 ?>
 <hr align=left width=99% />
