@@ -234,6 +234,11 @@
 
 			}
 
+			if(!$where_condition)
+			{
+				if($GLOBALS[repeat_input]=='true') $REPEAT_INPUT_CHECKED='CHECKED';
+				$extra_buttons='<input type=checkbox '.$REPEAT_INPUT_CHECKED.' name=repeat_input value=true> '.lang('insert another record after saving');
+			}
 			$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.browse_objects').'\'" value="'.lang('cancel').'">';
 
 			$this->template->set_var('submit_script',$submit_javascript);

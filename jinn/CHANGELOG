@@ -4,6 +4,18 @@
 
 ===================================================================================
 
+version 0.5.2pre3
+Mon May 12 01:56:32 CEST 2003
+=============================
+- added checkbox for repeating insert action
+
+
+version 0.5.2pre2
+Mon May 12 01:56:32 CEST 2003
+=============================
+- fixed htmlarea plugin for IE 5.5+ only
+- added htmlarea plugin v3 for mozilla 1.3+ and IE 5.5+
+
 version 0.5.1/0.5.2pre1
 we apr 9  23:14:32 UTC 2003
 ===========================
