@@ -11,7 +11,6 @@
 
   /* $Id$ */
 
-	$phpgw_info = array();
 	$GLOBALS['phpgw_info']['flags'] = array(
 		'admin_only'              => True,
 		'currentapp'              => 'polls',
@@ -24,10 +23,13 @@
 	$GLOBALS['phpgw']->template->set_block('admin','form','form');
 	$GLOBALS['phpgw']->template->set_block('admin','row','row');
 
-	if ($submit)
+	$vote_id = intval(get_var('vote_id',array('POST','GET')));
+	$poll_id = intval(get_var('poll_id',array('POST','GET')));
+
+	if ($_POST['submit'])
 	{
 		$GLOBALS['phpgw']->db->query("update phpgw_polls_data set poll_id='$poll_id',option_text='"
-			. addslashes($answer) . "' where vote_id='$vote_id'",__LINE__,__FILE__);
+			. addslashes($_POST['answer']) . "' where vote_id='$vote_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->template->set_var('message',lang('Answer has been updated'));
 	}
 	else
