@@ -1,4 +1,7 @@
 <!-- BEGIN message_main -->
+<script language="JavaScript1.2">
+self.focus();
+</script>
 {print_navbar}
 <table border="0" width="100%" cellspacing="0" bgcolor="white">
 <tr>

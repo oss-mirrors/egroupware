@@ -17,7 +17,7 @@ function refresh()
 
 function displayMessage(url) 
 {
-	window.open(url, "felamimailDisplay", "width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no");
+	window.open(url, "felamimailDisplay", "width=800,height=600,screenX=0,screenY=0,top=0,left=0,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no");
 }
 
 doLoad();
