@@ -41,7 +41,7 @@
      // editblock contains the buttons and forms for edit
      // ====================================================================
      
-     $t->set_var("actionurl",$phpgw->link("stat_projectstat.php"));
+     $t->set_var("actionurl",$phpgw->link("stats_projectstat.php"));
      $t->set_var("lang_action",lang("projectstatistic"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      $t->set_var("lang_num",lang("num"));
