@@ -77,7 +77,6 @@
 		$GLOBALS['phpgw']->redirect_link('/tts/index.php');
 	}
 	$after= $GLOBALS['phpgw']->config->config_data['mailnotification'];
-	echo "after: $after <br>";
 
 	$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['tts']['title'] . ' - ' . lang('Administration');
 	$GLOBALS['phpgw']->common->phpgw_header();
