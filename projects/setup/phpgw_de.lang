@@ -18,6 +18,7 @@ all	projects	de	Alle
 all delivery notes	projects	de	Alle Lieferscheine
 all invoices	projects	de	Alle Rechnungen
 anonymous public	projects	de	Anonym &ouml;ffentlich
+anzeigen?		de	
 archive	projects	de	Archiv
 are you sure you want to delete this activity	projects	de	Sind Sie sicher, dass Sie diese Aktivit&auml;t l&ouml;schen wollen ?
 are you sure you want to delete this project	projects	de	Sind Sie sicher, dass Sie dieses Projekt l&ouml;schen wollen ?
@@ -196,7 +197,7 @@ settings	admin	de	Einstellungen
 short description	projects	de	Kurzbeschreibung
 small	projects	de	Klein
 sorry, no preferences to set for you :)	projects	de	Sorry, keine Einstellungen f&uuml;r Sie zu t&auml;tigen :)
-start date can not be before main projects start date	projects	de	Das Startdatum kann nicht vor dem Stardatum des Gesamtprojektes liegen!
+start date can not be before main projects start date	projects	de	Das Startdatum kann nicht vor dem Startdatum des Gesamtprojektes liegen!
 statistic	projects	de	Statistik
 statistics	projects	de	Statistiken
 sum	projects	de	Summe
@@ -236,7 +237,6 @@ work time	projects	de	Arbeitszeit
 workunit	projects	de	Arbeitseinheit
 workunits	projects	de	Arbeitseinheiten
 would you like to display project info on the main page	projects	de	M&ouml;chten Sie die Projektdaten auf der Hauptseite
-anzeigen?
 would you like to get notified if milestones date due change	projects	de	M&ouml;chten Sie informiert werden, wenn sich F&auml;lligkeiten von Milestones &auml;ndern ?
 would you like to get notified if projects data get updated	projects	de	M&ouml;chten Sie informiert werden, wenn sich Projektdaten &auml;ndern ?
 would you like to get notified if you get assigned to a project	projects	de	M&ouml;chten Sie informiert werden, wenn Sie einem Projekt zugeordnet werden ?
