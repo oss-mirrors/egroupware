@@ -53,6 +53,9 @@
 
   $personal = !isset($from->personal) || !$from->personal ? "$from->mailbox@$from->host" : $from->personal;
 
+  if ($phpgw_info["user"]["preferences"]["email"]["show_addresses"] != "no" && ($personal != "$from->mailbox@$from->host"))
+       $display_address->from = "($from->mailbox@$from->host)";
+
   if (! $folder)
      $folder = "INBOX";
 ?>
@@ -155,7 +158,7 @@ if ($msg->from) {
         . urlencode($folder) . "&to=" . urlencode($from->mailbox . "@"
         . $from->host)) 
       . "\">". decode_header_string($personal)
-      . "</a></font>";
+      . "</a> $display_address->from</font>";
    echo "<font size=\"2\" face=\"" . $phpgw_info["theme"]["font"]."\">"
       . " <a href=\""
       . $phpgw->link($phpgw_info["server"]["webserver_url"]
@@ -189,10 +192,13 @@ if ($msg->to) {
     $topeople = $msg->to[$i];
     $personal = !isset($topeople->personal) || !$topeople->personal ? $topeople->mailbox."@".$topeople->host : $topeople->personal;
     $personal = decode_header_string($personal);
+    if ($phpgw_info["user"]["preferences"]["email"]["show_addresses"] != "no" && ($personal != "$topeople->mailbox@$topeople->host"))
+       $display_address->to = "($topeople->mailbox@$topeople->host)";
+       
       echo "<a href=\""
         . $phpgw->link("compose.php", "folder=".urlencode($folder)
           ."&to=".$topeople->mailbox."@".$topeople->host)
-        . "\">".$personal."</a>";
+        . "\">".$personal."</a> $display_address->to";
 
       echo "&nbsp;<a href=\""
         . $phpgw->link($phpgw_info["server"]["webserver_url"]

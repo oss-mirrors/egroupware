@@ -310,10 +310,16 @@ function check_all()
            $personal = !$from->personal ? "$from->mailbox@$from->host" : $from->personal;
            if ($personal == "@")
               $personal = $replyto;
+          if ($phpgw_info["user"]["preferences"]["email"]["show_addresses"] == "from" && ($personal != "$from->mailbox@$from->host"))
+               $display_address->from = "($from->mailbox@$from->host)";
+          elseif ($phpgw_info["user"]["preferences"]["email"]["show_addresses"] == "replyto" && ($personal != $replyto))
+               $display_address->from = "($replyto)";
+          else
+               $display_address->from = "";
 
            echo "<a href=\"" . $phpgw->link("compose.php","folder="
               . urlencode($folder) . "&to=" . urlencode($replyto)) . "\">"
-              . decode_header_string($personal) . "</a>";
+              . decode_header_string($personal) . "</a> $display_address->from";
 
            echo "</font></td>\n"
               . "<td bgcolor=\"$bg\"><font size=\"2\" face=\"".$phpgw_info["theme"]["font"]."\">";
