@@ -105,7 +105,7 @@
 		'email_home' => 'email_home'
 	);
 
-	$entries = $d->read($start,$offset,$cols,$query,$qfilter,$sort,$order);
+	$entries = $d->read($start,$offset,$cols,$query,$qfilter,$sort,$order,$account_id);
 
 	//------------------------------------------- nextmatch --------------------------------------------
 	$left = $GLOBALS['phpgw']->nextmatchs->left('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',$start,$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");
@@ -117,6 +117,7 @@
 	{
 		$GLOBALS['phpgw']->template->set_var('lang_showing',lang('showing %1 - %2 of %3',($start + 1),($start + $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']),$d->total_records));
 	}
+	
 	else
 	{
 		$GLOBALS['phpgw']->template->set_var('lang_showing',lang('showing %1',$d->total_records));

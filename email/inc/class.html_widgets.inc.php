@@ -80,7 +80,7 @@
 		/**************************************************************************\
 		*	VARS
 		\**************************************************************************/		
-		//var $debug = 3;
+		var $debug = 0;
 		var $debug_init = 0;
 		
 		// if calling from home page it is optional to force currentapp as a constructor param
@@ -331,10 +331,12 @@
 			if ($alt != '')
 			{
 				$alt_tag = ' alt="['.$alt.']"';
+				$title_tag = ' title="'.$alt.'"';
 			}
 			else
 			{
 				$alt_tag = ' alt="['.$alt_default_txt.']"';
+				$title_tag = '';
 			}
 			if ($height != '')
 			{
@@ -360,7 +362,7 @@
 			{
 				$border_tag = '';
 			}
-			$image_html = '<img src="'.$location.'"' .$height_tag .$width_tag .$border_tag .$alt_tag .'>';
+			$image_html = '<img src="'.$location.'"' .$height_tag .$width_tag .$border_tag .$title_tag .$alt_tag .'>';
 			return $image_html;
 		}
 		
@@ -946,22 +948,22 @@
 									'sort' => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
 									'order' => $GLOBALS['phpgw']->msg->get_arg_value('order'),
 									'start' => $GLOBALS['phpgw']->msg->get_arg_value('start')));
+			$search_link = $GLOBALS['phpgw']->link('/index.php', array(
+									'menuaction' => 'email.uisearch.form',
+									// this data tells us what account we are operating in
+									'fldball[folder]' => $GLOBALS['phpgw']->msg->prep_folder_out(),
+									'fldball[acctnum]' => $GLOBALS['phpgw']->msg->get_acctnum()
+));
+	
 			$filters_link = $GLOBALS['phpgw']->link('/index.php',array(
 								'menuaction' => 'email.uifilters.filters_list',
 								// this data tells us what folder and account was last active
 								'fldball[folder]' => $GLOBALS['phpgw']->msg->prep_folder_out(),
 								'fldball[acctnum]' => $GLOBALS['phpgw']->msg->get_acctnum()));
 			$accounts_link = $GLOBALS['phpgw']->link('/index.php','menuaction=email.uipreferences.ex_accounts_list');
-/* TEST-RALFBECKER
 			$email_prefs_link = $GLOBALS['phpgw']->link('/index.php',array(
 								'menuaction' => 'email.uipreferences.preferences',
-								'ex_acctnum' => $GLOBALS['phpgw']->msg->get_acctnum()));
-*/
-			$acctnum = $GLOBALS['phpgw']->msg->get_acctnum();
-			$email_prefs_link = $GLOBALS['phpgw']->link('/preferences/preferences.php',array(
-				'appname' => 'email',
-				'prefix'  => $acctnum ? 'ex_accounts/'.$acctnum : ''
-			));
+								'ex_acctnum' => $GLOBALS['phpgw']->msg->get_acctnum()));					
 			// Check to see if mailserver supports folders.
 			$has_folders = $GLOBALS['phpgw']->msg->get_mailsvr_supports_folders();
 			// Create Buttons
@@ -973,6 +975,11 @@
 					$this->set_href_clickme(lang('Compose'));
 					$this->tpl->set_var('compose_txt_link', $this->get_href());			
 					$this->tpl->set_var('compose_img_link', '&nbsp;');
+					//Create Search Button
+					$this->set_href_link($search_link);
+					$this->set_href_clickme(lang('Search'));
+					$this->tpl->set_var('search_txt_link', $this->get_href());			
+					$this->tpl->set_var('search_img_link', '&nbsp;');
 					//Create Filter Button
 					$this->set_href_link($filters_link);
 					$this->set_href_clickme(lang('Filters'));
@@ -1011,6 +1018,13 @@
 					$this->set_href_clickme($this->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/compose-message-'.$icon_size,'_on'),lang('Compose'),'','','0'));
 					$this->tpl->set_var('compose_img_link', $this->get_href());
 					$this->tpl->set_var('compose_txt_link', '&nbsp;');			
+					//Create Search Button
+					$this->set_href_link($search_link);
+					//$this->set_href_clickme($this->img_maketag($image_dir.'/'.$icon_theme.'-search-16.gif',lang('Search'),'','','0'));
+					// will fix this later when new images are made
+					$this->set_href_clickme($this->img_maketag($image_dir.'/'.'evo'.'-search-16.gif',lang('Search'),'','','0'));
+					$this->tpl->set_var('search_img_link', $this->get_href());
+					$this->tpl->set_var('search_txt_link', '&nbsp;');			
 					//Create Filter Button
 					$this->set_href_link($filters_link);
 					$this->set_href_clickme($this->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/filters-'.$icon_size,'_on'),lang('Filters'),'','','0'));
@@ -1050,6 +1064,15 @@
 					$this->set_href_link($compose_link);
 					$this->set_href_clickme(lang('Compose'));
 					$this->tpl->set_var('compose_txt_link', $this->get_href());			
+					//Create Search Button
+					$this->set_href_link($search_link);
+					//$this->set_href_clickme($this->img_maketag($image_dir.'/'.$icon_theme.'-search-16.gif',lang('Search'),'','','0'));
+					// will fix this later when new images are made
+					$this->set_href_clickme($this->img_maketag($image_dir.'/'.'evo'.'-search-16.gif',lang('Search'),'','','0'));
+					$this->tpl->set_var('search_img_link', $this->get_href());
+					$this->set_href_link($search_link);
+					$this->set_href_clickme(lang('Search'));
+					$this->tpl->set_var('search_txt_link', $this->get_href());			
 					//Create Filter Button
 					$this->set_href_link($filters_link);
 					$this->set_href_clickme($this->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/filters-'.$icon_size,'_on'),lang('Filters'),'','','0'));
@@ -1090,6 +1113,13 @@
 					}
 					break;
 				}
+			// WAIT if this is NOT IMAP then we can NOT search
+			// use the has_folders var from above, it should be a good enough indicator
+			if ($has_folders == False)
+			{
+					$this->tpl->set_var('search_img_link', '&nbsp;');
+					$this->tpl->set_var('search_txt_link', '&nbsp;');
+			}
 			// make the 1st row
 			$this->toolbar_row_one = $this->tpl->parse('V_toolbar_row_one','B_toolbar_row_one');
 			// END TOOL BAR ROW 1
@@ -1151,14 +1181,17 @@
 		@abstract high level function, uses functions in mail_msg and this class html_widgets to make an acct switchbox 
 		UNDER DEVELOPMENT.
 		@param $form_reference (string) this bombobox sets an "onChange" event, which will submit the form you put here. 
-		Default value is "document.folders_cbox.submit()" where "" is the default value for the $form_reference param
+		Default value is "document.folders_cbox.submit()" where "folders_cbox" is the default value 
+		for the $form_reference param. 
+		@param $is_move_box (boolean) OPTIONAL default is False, use is making a Move Messages To combo box, 
+		which requires a different cbox name and different first line text.
 		@result string representing an HTML listbox widget 
 		@author Angles
 		@discussion The first item in this folder combo box tells the user to "pick a folder to change to", and has 
 		no "value", the value is an empty string, this is more like a label than a combobox item. 
 		@access private, maybe made public
 		*/
-		function all_folders_combobox($form_reference='')
+		function all_folders_combobox($form_reference='',$is_move_box=False,$skip_fldball='',$first_line_txt='')
 		{
 			if ($form_reference == '')
 			{
@@ -1167,11 +1200,29 @@
 			$acctnum = $GLOBALS['phpgw']->msg->get_acctnum();
 			
 			$this->new_combobox();
-			$this->set_cbox_name('fldball_fake_uri');
-			// default is "document.folders_cbox.submit()"
-			$this->set_cbox_onChange('document.'.$form_reference.'.submit()');
-			// set_cbox_item(value, text, selected(optional, boolean, default false)
-			$this->set_cbox_item('', lang('switch current folder to'));
+			if ($is_move_box)
+			{
+				// right now ONLY the "Move Message To" combo box needs to use this
+				$this->set_cbox_name('to_fldball_fake_uri');
+				$this->set_cbox_onChange('do_action(\'move\')');
+				if ($first_line_txt)
+				{
+					// right now ONLY the Message View page "Move This Message To" combo box uses this
+					$this->set_cbox_item('', $first_line_txt);
+				}
+				else
+				{
+					$this->set_cbox_item('', lang('move selected messages into'));
+				}
+			}
+			else
+			{
+				$this->set_cbox_name('fldball_fake_uri');
+				// default is "document.folders_cbox.submit()"
+				$this->set_cbox_onChange('document.'.$form_reference.'.submit()');
+				// set_cbox_item(value, text, selected(optional, boolean, default false)
+				$this->set_cbox_item('', lang('switch current folder to'));
+			}
 			
 			// get the actual list of folders we are going to put into the combobox
 			//$folder_list = $GLOBALS['phpgw']->msg->get_folder_list();
@@ -1183,15 +1234,13 @@
 			for ($i=0; $i<count($folder_list);$i++)
 			{
 				// folder long needs urlencoding ONCE, string can NOT be plain and can NOT be urlencoded more once.
-				$folder_long = $GLOBALS['phpgw']->msg->ensure_one_urlencoding($folder_list[$i]['folder_long']);
+				//$folder_long = $GLOBALS['phpgw']->msg->ensure_one_urlencoding($folder_list[$i]['folder_long']);
+				$folder_long = $GLOBALS['phpgw']->msg->prep_folder_out($folder_list[$i]['folder_long']);
 				// for display to the user, if this is the INBOX, then translate that using lang INBOX
 				if ($folder_list[$i]['folder_short'] == 'INBOX')
 				{
 				    //$folder_short = lang('INBOX');
 					// try this for common folder related lang strings
-					//$common_langs = $GLOBALS['phpgw']->msg->get_common_langs();
-					//$folder_short = $common_langs['lang_inbox'];
-					// or try this shortcut, it works too
 					$folder_short = $GLOBALS['phpgw']->msg->get_common_langs('lang_inbox');
 				}
 				else
@@ -1200,6 +1249,20 @@
 					$folder_short = $folder_list[$i]['folder_short'];
 				}
 				$folder_acctnum = $folder_list[$i]['acctnum'];
+				$skip_me = False;
+				if ($skip_fldball)
+				{
+					// move folder lists usually skip the current folder because you can not move to current folder
+					if (($skip_fldball['folder'] == $folder_long)
+					&& ($skip_fldball['acctnum'] == $acctnum))
+					{
+						$skip_me = True;
+					}
+				}
+				if ($skip_me)
+				{
+					continue;
+				}
 				
 				if ($listbox_show_unseen == True)
 				{
@@ -1756,5 +1819,99 @@
 			}
 		}
 		
+		/*!
+		@function get_geek_bar
+		@abstract TESTING goes on bottom of index page
+		@author Angles
+		*/
+		function get_geek_bar()
+		{
+			$row_on = $GLOBALS['phpgw_info']['theme']['row_on'];
+			$this_server_type = $GLOBALS['phpgw']->msg->get_pref_value('mail_server_type');
+			if (extension_loaded('imap') && function_exists('imap_open'))
+			{
+				$library_usage = 'builtin';
+			}
+			else
+			{
+				$library_usage = 'AM sockets';
+			}
+			$anglemail_table_exists = 'installed';
+			if ($GLOBALS['phpgw']->msg->so->so_am_table_exists() == False)
+			{
+				$anglemail_table_exists = 'NOT '.$anglemail_table_exists;
+			}
+			$compression = 'NOT available';
+			//if (function_exists('bzcompress'))
+			//{
+			//	$compression = 'bz2';
+			//}
+			//else
+			if (function_exists('gzcompress'))
+			{
+				$compression = 'gzip';
+			}
+			$spell_available = 'available';
+			if (function_exists('pspell_check') == False)
+			{
+				$spell_available = 'NOT '.$spell_available;
+			}
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt == True)
+			{
+				$using_xslt = 'no';
+			}
+			else
+			{
+				$using_xslt = 'yes';
+			}
+			
+			// did we connect
+			$accts_connected = '';
+			// put together a list of all enabled accounts so we will check them for an open stream
+			for ($i=0; $i < count($GLOBALS['phpgw']->msg->extra_and_default_acounts); $i++)
+			{
+				if ($GLOBALS['phpgw']->msg->extra_and_default_acounts[$i]['status'] == 'enabled')
+				{
+					$this_acctnum = (int)$GLOBALS['phpgw']->msg->extra_and_default_acounts[$i]['acctnum'];
+					if (($GLOBALS['phpgw']->msg->get_isset_arg('mailsvr_stream', $this_acctnum) == True)
+					&& ((string)$GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream', $this_acctnum) != ''))
+					{
+						$accts_connected .= (string)$this_acctnum.',';
+					}
+				}
+			}
+			// get rid of trailing , if it exists
+			if (stristr($accts_connected, ','))
+			{
+				$accts_connected = substr($accts_connected,0,-1);
+				$did_connect = 'yes ('.$accts_connected.')';
+				
+			}
+			else
+			{
+				$did_connect = 'no';
+			}
+			
+			$geek_bar = 
+			'<br>
+			<table border="0" cellpadding="4" cellspacing="0" width="100%" align="center">
+			<tr bgcolor="'.$row_on.'" class="row_on">
+				<td width="100%" align="left">'."\r\n"
+					//.'<small style="font-size: 10pt;">'
+					.'<small style="font-size: xx-small;">'
+					.'<font color="brown">GeekBar:</font> '
+					.'Server Type: ['.$this_server_type.'] -- '
+					.'IMAP library: ['.$library_usage.'] -- '
+					.'AngleMail Table: ['.$anglemail_table_exists.'] -- '
+					.'compression: ['.$compression.'] -- '
+					.'spelling: ['.$spell_available.'] -- '
+					.'using XSLT: ['.$using_xslt.'] -- '
+					.'did connect: ['.$did_connect.'] '
+					.'</small>'
+				."\r\n"
+			.'	</td>
+			</table>';
+			return $geek_bar;
+		}
 	}
 ?>

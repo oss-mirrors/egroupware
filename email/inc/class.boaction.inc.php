@@ -25,6 +25,8 @@
 			'get_attach'	=> True,
 			'view_html'	=> True
 		);
+		// class var to hold content to be downloaded
+		var $output_data='';
 		// if bomessage wants this preserves, we detect that and store it here
 		var $no_fmt='';
 		var $debug = 0;
@@ -32,6 +34,7 @@
 		//var $debug = 4;
 		
 		var $debug_new_env = 0;
+		//var $debug_new_env = 3;
 		//var $debug_new_env = 4;
 		
 		var $msg_bootstrap;
@@ -58,7 +61,7 @@
 		
 		function boaction()
 		{
-			return;
+			//return;
 		}
 		
 		/*!
@@ -75,11 +78,12 @@
 		*/
 		function delmov()
 		{
-			if ($this->debug > 0) { echo 'ENTERING emai.boaction.delmov'.'<br>'; }
+			//if ($this->debug > 0) { echo 'ENTERING email.boaction.delmov'.'<br>'; }
 			
 			// make sure we have msg object and a server stream
 			$this->msg_bootstrap = CreateObject("email.msg_bootstrap");
-			$this->msg_bootstrap->ensure_mail_msg_exists('emai.boaction.delmov', $this->debug);
+			$this->msg_bootstrap->ensure_mail_msg_exists('email.boaction.delmov', $this->debug);
+			if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('ENTERING email.boaction.delmov'.'<br>'); }
 			
 			// initialize this to an "ignore me" value, we change it later only if it should have a meaning
 			// MOVED TO MSG CLASS
@@ -140,7 +144,7 @@
 				"nextmatches" view, then the code _SHOULD_ page back to where there are messages to show, 
 				BUT this is not done yet. 
 				*/
-				if ($this->debug > 0) { echo 'emai.boaction.delmov: get_arg_value(what) == "move") <br>'; }
+				if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: get_arg_value(what) == "move") <br>'); }
 				
 				/*
 				$fromacctnum = (int)$GLOBALS['phpgw']->msg->get_arg_value('acctnum');
@@ -188,7 +192,7 @@
 				
 				for ($i = 0; $i < count($delmov_list); $i++)
 				{
-					if ($this->debug > 2) { echo 'email.boaction.delmov: in mail move loop ['.(string)($i+1).'] of ['.$tm.']<br>'; }
+					if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: in mail move loop ['.(string)($i+1).'] of ['.$tm.']<br>'); }
 					$mov_msgball = $delmov_list[$i];
 					// WHY URLDECODE SO SOON?
 					//$mov_msgball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_in($mov_msgball['folder']);
@@ -196,7 +200,7 @@
 					$did_move = False;
 					//if ($this->debug > 2) { echo 'email.boaction.delmov: calling  $GLOBALS[phpgw]->msg->interacct_mail_move('.serialize($mov_msgball).', '.serialize($to_fldball).'<br>'; }
 					//$did_move = $GLOBALS['phpgw']->msg->interacct_mail_move($mov_msgball, $to_fldball);
-					if ($this->debug > 2) { echo 'email.boaction.delmov: calling  $GLOBALS[phpgw]->msg->industrial_interacct_mail_move('.serialize($mov_msgball).', '.serialize($to_fldball).'<br>'; }
+					if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: calling  $GLOBALS[phpgw]->msg->industrial_interacct_mail_move('.serialize($mov_msgball).', '.serialize($to_fldball).'<br>'); }
 					// single move, NO NEED to use the move grouping stuff, NOTE $tm was filled above as count($delmov_list)
 					// MOVED TO FLUSH MOVES LOGIG
 					//if ($tm == 1)
@@ -206,19 +210,19 @@
 					//}
 					//else
 					//{
-						if ($this->debug > 2) { echo 'email.boaction.delmov: calling  $GLOBALS[phpgw]->msg->industrial_interacct_mail_move('.serialize($mov_msgball).', '.serialize($to_fldball).'<br>'; }
+						if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: calling  $GLOBALS[phpgw]->msg->industrial_interacct_mail_move('.serialize($mov_msgball).', '.serialize($to_fldball).'<br>'); }
 						$did_move = $GLOBALS['phpgw']->msg->industrial_interacct_mail_move($mov_msgball, $to_fldball);
 					//}
 					if ($did_move == False)
 					{
 						// error
-						if ($this->debug > 0) { echo 'email.boaction.delmov ('.__LINE__.'): ***ERROR**** $GLOBALS[phpgw]->msg->industrial_interacct_mail_move() returns FALSE, ERROR, break out of loop<br>'
-								.' * * Server reports error: '.$GLOBALS['phpgw']->msg->phpgw_server_last_error().'<br>'; }
+						if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): ***ERROR**** $GLOBALS[phpgw]->msg->industrial_interacct_mail_move() returns FALSE, ERROR, break out of loop<br>'
+								.' * * Server reports error: '.$GLOBALS['phpgw']->msg->phpgw_server_last_error().'<br>'); }
 						break;
 					}
 					else
 					{
-						if ($this->debug > 1) { echo 'email.boaction.delmov ('.__LINE__.'): $GLOBALS[phpgw]->msg->industrial_interacct_mail_move() returns True<br>'; }
+						if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): $GLOBALS[phpgw]->msg->industrial_interacct_mail_move() returns True<br>'); }
 						//$did_expunge = False;
 						//$did_expunge = $GLOBALS['phpgw']->msg->phpgw_expunge($mov_msgball['acctnum'], $mov_msgball);
 						//if ($this->debug > 2) { echo 'email.boaction.delmov: $GLOBALS[phpgw]->msg->phpgw_expunge() returns '.serialize($did_expunge).'<br>'; }
@@ -226,10 +230,10 @@
 				}
 				
 				// ok, done moving, now expunge, "industrial_interacct_mail_move" uses ""
-				if ($this->debug > 0) { echo 'email.boaction.delmov ('.__LINE__.'): done moving, now call $GLOBALS[phpgw]->msg->expunge_expungable_folders<br>'; }
+				if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): done moving, now call $GLOBALS[phpgw]->msg->expunge_expungable_folders<br>'); }
 				$did_expunge = False;
 				$did_expunge = $GLOBALS['phpgw']->msg->expunge_expungable_folders('email.boaction.delmov LINE '.__LINE__);
-				if ($this->debug > 2) { echo 'email.boaction.delmov ('.__LINE__.'): $GLOBALS[phpgw]->msg->expunge_expungable_folders() returns ['.serialize($did_expunge).']<br>'; }
+				if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): $GLOBALS[phpgw]->msg->expunge_expungable_folders() returns ['.serialize($did_expunge).']<br>'); }
 				
 				if (! $did_move)
 				{
@@ -238,7 +242,10 @@
 					//echo 'Server reports error: '.$GLOBALS['phpgw']->msg->dcom->server_last_error();
 				}
 				// report folder messages were moved to
-				$tf = $GLOBALS['phpgw']->msg->prep_folder_out($to_fldball['folder']);
+				//$tf = $GLOBALS['phpgw']->msg->prep_folder_out($to_fldball['folder']);
+				// folder in this array was never changed from its "prepped out" state, it is still urlencoded from when we first picked it up
+				$tf = $to_fldball['folder'];
+				//echo 'boaction: $tf ['.$tf.'] <br>';
 				
 				// folder or message we should go back to
 				if (($GLOBALS['phpgw']->msg->get_isset_arg('move_postmove_goto'))
@@ -247,15 +254,18 @@
 					// THIS MEANS WE WERE CALLED BY UIMESSAGE
 					// treat the post-move navigation like a "delete_single_msg", as per data passed to us from that page
 					$move_postmove_goto = $GLOBALS['phpgw']->msg->get_arg_value('move_postmove_goto');
-					if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): move single *called by uimessage*: $move_postmove_goto: : '.$move_postmove_goto.'<br>'; }
+					if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): move single *called by uimessage*: $move_postmove_goto: : '.$move_postmove_goto.'<br>'); }
 					// ----  "Go To Previous Message" Handling  -----
 					// these insrustions passed from uimessage when prev_next_navigation is obtained anyway
 					$this->redirect_to = $move_postmove_goto;
-					if ($this->debug > 1) { echo 'emai.boaction.delmov: ('.__LINE__.') move single *called by uimessage*: determination of $this->redirect_to : ['.$this->redirect_to.']<br>'; }
+					if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: ('.__LINE__.') move single *called by uimessage*: determination of $this->redirect_to : ['.$this->redirect_to.']<br>'); }
 				}
 				else
 				{
-					$return_to_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out($delmov_list[0]['folder']);
+					//$return_to_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out($delmov_list[0]['folder']);
+					// folder in this array was never changed from its "prepped out" state, it is still urlencoded from when we first picked it up
+					$return_to_fldball['folder'] = $delmov_list[0]['folder'];
+					//echo 'boaction: $return_to_fldball[folder] ['.$return_to_fldball['folder'].'] <br>';
 					$return_to_fldball['acctnum'] = $delmov_list[0]['acctnum'];
 					
 					$this->redirect_to = $GLOBALS['phpgw']->link(
@@ -269,7 +279,7 @@
 									.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 									.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 					
-					if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): NOT called by uimessage, determination of $this->redirect_to : ['.$this->redirect_to.']<br>'; }
+					if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): NOT called by uimessage, determination of $this->redirect_to : ['.$this->redirect_to.']<br>'); }
 				}
 			}
 			// ---- DELETE (MULTIPLE) MESSAGES ----
@@ -284,7 +294,7 @@
 				using its "folder" and "acctnum" values. 
 				*/
 				
-				if ($this->debug > 0) { echo 'emai.boaction.delmov: get_arg_value(what) == "delall") <br>'; }
+				if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: get_arg_value(what) == "delall") <br>'); }
 				// this is called from the index pge after you check some boxes and click "delete" button
 				
 				$delmov_list = $GLOBALS['phpgw']->msg->get_arg_value('delmov_list');
@@ -304,7 +314,7 @@
 				$loops = count($delmov_list);
 				for ($i = 0; $i < $loops; $i++)
 				{
-					if ($this->debug > 2) { echo 'email.boaction.delmov: (delete) in mail delete loop ['.(string)($i+1).'] of ['.$loops.']<br>'; }
+					if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: (delete) in mail delete loop ['.(string)($i+1).'] of ['.$loops.']<br>'); }
 					$this_msgnum = $delmov_list[$i]['msgnum'];
 					// was_in_folder is used in Trash handling in the ->phpgw_delete function
 					// if a message "was_in_folder" Trash, it gets deleted for real, no option to move to Trash in that case
@@ -314,13 +324,13 @@
 					if ($did_delete == False)
 					{
 						// error
-						if ($this->debug > 0) { echo 'email.boaction.delmov: (delete) ***ERROR**** $GLOBALS[phpgw]->msg->phpgw_delete() returns FALSE, ERROR, break out of loop<br>'
-								.' * * Server reports error: '.$GLOBALS['phpgw']->msg->phpgw_server_last_error().'<br>'; }
+						if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: (delete) ***ERROR**** $GLOBALS[phpgw]->msg->phpgw_delete() returns FALSE, ERROR, break out of loop<br>'
+								.' * * Server reports error: '.$GLOBALS['phpgw']->msg->phpgw_server_last_error().'<br>'); }
 						break;
 					}
 					else
 					{
-						if ($this->debug > 1) { echo 'email.boaction.delmov: (delete) $GLOBALS[phpgw]->msg->phpgw_delete() returns True (so it buffered the command, really does not mean anything not that we buffer commands)<br>'; }
+						if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: (delete) $GLOBALS[phpgw]->msg->phpgw_delete() returns True (so it buffered the command, really does not mean anything not that we buffer commands)<br>'); }
 						
 						//if ($this->debug > 0) { echo 'email.boaction.delmov: (delete) calling $GLOBALS[phpgw]->msg->phpgw_expunge('.$delmov_list[$i]['acctnum'].', $delmov_list[$i])<br>'; }
 						//$did_expunge = False;
@@ -330,10 +340,10 @@
 				}
 				
 				// ok, done deleting, now expunge
-				if ($this->debug > 1) { echo 'email.boaction.delmov ('.__LINE__.'): done deleting, now call $GLOBALS[phpgw]->msg->expunge_expungable_folders<br>'; }
+				if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): done deleting, now call $GLOBALS[phpgw]->msg->expunge_expungable_folders<br>'); }
 				$did_expunge = False;
 				$did_expunge = $GLOBALS['phpgw']->msg->expunge_expungable_folders('email.boaction.delmov LINE '.__LINE__);
-				if ($this->debug > 1) { echo 'email.boaction.delmov ('.__LINE__.'): $GLOBALS[phpgw]->msg->expunge_expungable_folders() returns ['.serialize($did_expunge).']<br>'; }
+				if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): $GLOBALS[phpgw]->msg->expunge_expungable_folders() returns ['.serialize($did_expunge).']<br>'); }
 
 				$totaldeleted = $i;
 				//$GLOBALS['phpgw']->msg->phpgw_expunge();
@@ -419,14 +429,14 @@
 				{
 					$this->no_fmt = '&no_fmt=1';
 				}
-				if ($this->debug > 0) { echo 'emai.boaction.delmov ('.__LINE__.'): get_arg_value(what) == "delete_single_msg") <br>'; }
+				if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): get_arg_value(what) == "delete_single_msg") <br>'); }
 				// called by clicking the "X" dutton while reading an individual message
 				$msgball = $GLOBALS['phpgw']->msg->get_arg_value('msgball');
-				if ($this->debug > 2) { echo 'emai.boaction.delmov ('.__LINE__.'): delete_single_msg: pre-delete $msgball[] dump <pre>: '; print_r($msgball); echo '</pre>'; }
+				if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): delete_single_msg: pre-delete $msgball[] DUMP:', $msgball); }
 				
 				// BEFORE we delete, if there is no mext message, then we will go back to index page
 				$nav_data = $GLOBALS['phpgw']->msg->prev_next_navigation($folder_info['number_all']);
-				if ($this->debug > 2) { echo 'emai.boaction.delmov ('.__LINE__.'): delete_single_msg: pre-delete $nav_data[] dump <pre>: '; print_r($nav_data); echo '</pre>'; }
+				if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): delete_single_msg: pre-delete $nav_data[] DUMP:', $nav_data); }
 				// ----  "Go To Previous Message" Handling  -----
 				if ($nav_data['prev_msg'] != $not_set)
 				{
@@ -455,36 +465,36 @@
 							.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 							.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 				}
-				if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): delete_single_msg: pre-delete determination of $this->redirect_to : ['.$this->redirect_to.']<br>'; }
+				if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): delete_single_msg: pre-delete determination of $this->redirect_to : ['.$this->redirect_to.']<br>'); }
 				
 				
 				if ($this->debug > 3)
 				{
-					echo 'emai.boaction.delmov: delete_single_msg ('.__LINE__.'): debug flag = 4 or higher, _SKIP_ the delete and expunge action<br>';
+					$GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: delete_single_msg ('.__LINE__.'): debug flag = 4 or higher, _SKIP_ the delete and expunge action<br>');
 				}
 				else
 				{
 					// ok, now do the delete
-					if ($this->debug > 1) { echo 'emai.boaction.delmov: delete_single_msg: ('.__LINE__.') : (single delete) calling $GLOBALS[phpgw]->msg->phpgw_delete('.$msgball['msgnum'].', " ",'.$msgball['folder'].', '.$msgball['acctnum'].', True) '; } 
+					if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: delete_single_msg: ('.__LINE__.') : (single delete) calling $GLOBALS[phpgw]->msg->phpgw_delete('.$msgball['msgnum'].', " ",'.$msgball['folder'].', '.$msgball['acctnum'].', True) '); } 
 					// True = just a single delete call, don't use the buffer commands
 					// " just a single delete call" logic MOVED TO BUFFERED COMMANDS function
 					//$GLOBALS['phpgw']->msg->phpgw_delete($msgball['msgnum'],'',$msgball['folder'], (int)$msgball['acctnum'], True);
 					$GLOBALS['phpgw']->msg->phpgw_delete($msgball['msgnum'],'',$msgball['folder'], (int)$msgball['acctnum']);
 					// now do the expunge, both IMAP and POP3 require this, or the message is not really deleted
-					//if ($this->debug > 1) { echo 'emai.boaction.delmov: delete_single_msg: ('.__LINE__.') : calling $GLOBALS[phpgw]->msg->phpgw_expunge('.$msgball['acctnum'].', $msgball) '; } 
+					//if ($this->debug > 1) { echo 'email.boaction.delmov: delete_single_msg: ('.__LINE__.') : calling $GLOBALS[phpgw]->msg->phpgw_expunge('.$msgball['acctnum'].', $msgball) '; } 
 					// MOVED to "expunge_expungable_folders"
 					//$GLOBALS['phpgw']->msg->phpgw_expunge((int)$msgball['acctnum'], $msgball);
 					
 					// ok, done deleting, now expunge
-					if ($this->debug > 1) { echo 'email.boaction.delmov: delete_single_msg: ('.__LINE__.'): done deleting, now call $GLOBALS[phpgw]->msg->expunge_expungable_folders<br>'; }
+					if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: delete_single_msg: ('.__LINE__.'): done deleting, now call $GLOBALS[phpgw]->msg->expunge_expungable_folders<br>'); }
 					$did_expunge = False;
 					$did_expunge = $GLOBALS['phpgw']->msg->expunge_expungable_folders('email.boaction.delmov (delete_single_msg) LINE '.__LINE__);
-					if ($this->debug > 1) { echo 'email.boaction.delmov: delete_single_msg: ('.__LINE__.'): $GLOBALS[phpgw]->msg->expunge_expungable_folders() returns ['.serialize($did_expunge).']<br>'; }
+					if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov: delete_single_msg: ('.__LINE__.'): $GLOBALS[phpgw]->msg->expunge_expungable_folders() returns ['.serialize($did_expunge).']<br>'); }
 				}
 			}
 			else
 			{
-				if ($this->debug > 0) { echo 'emai.boaction.delmov ('.__LINE__.'): get_arg_value(what) == unknown_value<br>'; }
+				if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): get_arg_value(what) == unknown_value<br>'); }
 				$error_str = '<p><center><b>'.lang('UNKNOWN ACTION')."<br> \r\n"
 						.'called from '.$GLOBALS['PHP_SELF'].', delmov()'."<br> \r\n"
 						.'</b></center></p>'."<br> \r\n";
@@ -492,7 +502,7 @@
 			}
 			
 			// GOTO NECT PAGEVIEW VIA REDIRECT OR OBJECT CALL
-			if ($this->debug > 0) { echo 'emai.boaction.delmov ('.__LINE__.'): about to enter logic to display page defined in this URI: $this->redirect_to ['.$this->redirect_to.']<br>'; }
+			if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): about to enter logic to display page defined in this URI: $this->redirect_to ['.$this->redirect_to.']<br>'); }
 			
 			/*!
 			@capability use_old_redirect_method
@@ -503,7 +513,7 @@
 			*/
 			if ($this->use_old_redirect_method == True)
 			{
-				if ($this->debug > 0) { echo 'emai.boaction.delmov ('.__LINE__.'): EXITING with OLD REDIRECT CODE : $this->use_old_redirect_method: ['.serialize($this->use_old_redirect_method).']<br>'; }
+				if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): EXITING with OLD REDIRECT CODE : $this->use_old_redirect_method: ['.serialize($this->use_old_redirect_method).']<br>'); }
 				$GLOBALS['phpgw']->redirect($this->redirect_to);
 				// kill this script, we re outa here...
 				if (is_object($GLOBALS['phpgw']->msg))
@@ -533,34 +543,44 @@
 				//sessionid
 				//kp3
 				//domain
-			if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): calling $this->set_expected_args($expected_args) ; $expected_args DUMP<pre>'; print_r($expected_args); echo '</pre>'; }
+			if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): calling $this->set_expected_args($expected_args) ; $expected_args DUMP:', $expected_args); }
 			$this->set_expected_args($expected_args);
 			// the URI of the redirect string contains data needed for the next page view
-			if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): calling $this->set_new_args_uri($this->redirect_to) ; $this->redirect_to ['.$this->redirect_to.']<br>'; }
+			if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): calling $this->set_new_args_uri($this->redirect_to) ; $this->redirect_to ['.$this->redirect_to.']<br>'); }
 			$this->set_new_args_uri($this->redirect_to);
 			// clear existing args, apply the new arg enviornment, 
 			// we get back the menuaction the redirect would have asked for
-			if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): calling $this->apply_new_args_env()<br>'; }
+			if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): calling $this->apply_new_args_env()<br>'); }
 			$my_menuaction = $this->apply_new_args_env();
-			if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): $my_menuaction is ['.$my_menuaction.'] which was returned from $this->apply_new_args_env()<br>'; }
+			if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): $my_menuaction is ['.$my_menuaction.'] which was returned from $this->apply_new_args_env()<br>'); }
 			// (c) IF A "BIG MOVE", THEN TURN BACK ON THE SMART CACHE
 			// MOVED TO MSG CLASS
 			//if ((isset($initial_session_cache_extreme))
 			//&& ($initial_session_cache_extreme != '-1'))
 			//{
-			//	if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): $initial_session_cache_extreme is set and is NOT "-1", meaning we issued a "big move" cache event, $initial_session_cache_extreme is ['.serialize($initial_session_cache_extreme).'] <br>'; }
-			//	if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): "big move" will turn off session_cache_extreme if it was TRUE, so we undo that for the next page view with: $GLOBALS[phpgw]->msg->session_cache_extreme = $initial_session_cache_extreme<br>'; }
+			//	if ($this->debug > 1) { echo 'email.boaction.delmov ('.__LINE__.'): $initial_session_cache_extreme is set and is NOT "-1", meaning we issued a "big move" cache event, $initial_session_cache_extreme is ['.serialize($initial_session_cache_extreme).'] <br>'; }
+			//	if ($this->debug > 1) { echo 'email.boaction.delmov ('.__LINE__.'): "big move" will turn off session_cache_extreme if it was TRUE, so we undo that for the next page view with: $GLOBALS[phpgw]->msg->session_cache_extreme = $initial_session_cache_extreme<br>'; }
 			//	$GLOBALS['phpgw']->msg->session_cache_extreme = $initial_session_cache_extreme;
 			//}
 			//else
 			//{
-			//	if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): $initial_session_cache_extreme is either NOT set or is "-1", meaning we did NOT issued a "big move" cache event earlier<br>'; }
+			//	if ($this->debug > 1) { echo 'email.boaction.delmov ('.__LINE__.'): $initial_session_cache_extreme is either NOT set or is "-1", meaning we did NOT issued a "big move" cache event earlier<br>'; }
 			//}
 			
 			// imitate the next menuaction command with direct object calls
-			if ($this->debug > 0) { echo 'emai.boaction.delmov ('.__LINE__.'): LEAVING by creating "next_obj" and calling its menuaction verb ...<br>'; }
+			if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): LEAVING by creating "next_obj" and calling its menuaction verb ...<br>'); }
 			if (stristr($my_menuaction, 'uimessage'))
 			{
+				//// NEW: mail so object group fill may need to be reset
+				//// we DO NOT use group data capability on the message view page
+				//// this allows the SO class to query for each individual thing it needs
+				//// which is OK for a message view, but not for an index page
+				//$GLOBALS['phpgw']->msg->so->so_prop_use_group_data(False);
+				// NEW: mail so object group fill may need to be reset
+				//clear existing data, if any, and reset the query attempt excess counter
+				$GLOBALS['phpgw']->msg->so->so_prop_use_group_data(False);
+				// then make sure group data capability it turned on
+				$GLOBALS['phpgw']->msg->so->so_prop_use_group_data(True);
 				// MAKE THE UIMESSAGE PAGE OBJECT
 				$this->next_obj = CreateObject('email.uimessage');
 				// CALL THE FUNCTION THAT DISPLAYS THE PAGE VIEW
@@ -569,6 +589,11 @@
 			// else just ASSUME uiindex, it is the most forgiving about missing values, it has fallback defaults to use if needed
 			else
 			{
+				// NEW: mail so object group fill may need to be reset
+				//clear existing data, if any, and reset the query attempt excess counter
+				$GLOBALS['phpgw']->msg->so->so_prop_use_group_data(False);
+				// then make sure group data capability it turned on
+				$GLOBALS['phpgw']->msg->so->so_prop_use_group_data(True);
 				// MAKE THE INDEX PAGE OBJECT
 				$this->next_obj = CreateObject('email.uiindex');
 				// CALL THE FUNCTION THAT DISPLAYS THE PAGE VIEW
@@ -577,7 +602,7 @@
 			// (e) cleanup
 			if (is_object($GLOBALS['phpgw']->msg))
 			{
-				if ($this->debug > 0) { echo 'emai.boaction.delmov ('.__LINE__.'): oops, not LEFT yet, cleanup and unset ->msg object<br>'; }
+				if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): oops, not LEFT yet, cleanup and unset ->msg object<br>'); }
 				// close down ALL mailserver streams
 				$GLOBALS['phpgw']->msg->end_request();
 				// destroy the object
@@ -585,11 +610,11 @@
 				unset($GLOBALS['phpgw']->msg);
 			}
 			// shut down this transaction
-			if ($this->debug > 0) { echo 'emai.boaction.delmov ('.__LINE__.'): LEAVING for <b>real</b> with $GLOBALS[phpgw]->common->phpgw_exit(False)<br>'; }
+			if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.delmov ('.__LINE__.'): LEAVING for <b>real</b> with $GLOBALS[phpgw]->common->phpgw_exit(False)<br>'); }
 			$GLOBALS['phpgw']->common->phpgw_exit(False);
 		}
 		
-		
+		/*
 		// placeholder for previous test code
 		function just_a_placeholder()
 		{	
@@ -597,7 +622,7 @@
 			// VIA REDIRECT OR DIRECT OBJECT CALL
 			if ($this->redirect_to != '')
 			{
-				if ($this->debug > 0) { echo 'emai.boaction.delmov ('.__LINE__.'): next pageview redirect data to use is: ['.$this->redirect_to.']<br>'; } 
+				if ($this->debug > 0) { echo 'email.boaction.delmov ('.__LINE__.'): next pageview redirect data to use is: ['.$this->redirect_to.']<br>'; } 
 				
 				// Experimental:
 				// NO REDIRECT - DIRECTLY MANUFACTURE THE NEXT PAGE VIEW RIGHT NOW
@@ -605,7 +630,7 @@
 				$recovered_data = array();
 				parse_str($this->redirect_to, $recovered_data);
 				
-				if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): redirect_to parsed_str $recovered_data DUMP:<pre>'; print_r($recovered_data); echo '</pre>'; } 
+				if ($this->debug > 1) { echo 'email.boaction.delmov ('.__LINE__.'): redirect_to parsed_str $recovered_data DUMP:<pre>'; print_r($recovered_data); echo '</pre>'; } 
 				// ALL POSSIBLE VARS WE MIGHT FIND IN THE REDIRECT URI:
 				$new_args_env = array(
 					'/mail/index_php?menuaction'  => '-1',
@@ -618,7 +643,7 @@
 					'order'		=> '-1',
 					'start' 	=> '-1'
 				);
-				if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): known possible recovered_data elements init $new_args_env DUMP:<pre>'; print_r($new_args_env); echo '</pre>'; } 
+				if ($this->debug > 1) { echo 'email.boaction.delmov ('.__LINE__.'): known possible recovered_data elements init $new_args_env DUMP:<pre>'; print_r($new_args_env); echo '</pre>'; } 
 				// loop thru KNOWN POSSIBLE new_args_env elements, GATHER the ones that are filled for later use
 				reset($new_args_env);
 				while(list($key,$value) = each($new_args_env))
@@ -653,10 +678,10 @@
 				}
 				else
 				{
-					echo 'emai.boaction.delmov: LINE '.__LINE__.': ERROR getting valid acctnum for goto pageview, NO fldball NO msgball found <br>';
+					echo 'email.boaction.delmov: LINE '.__LINE__.': ERROR getting valid acctnum for goto pageview, NO fldball NO msgball found <br>';
 				}
-				if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): known possible recovered_data elements <b>Post-Gather</b> $new_args_env DUMP:<pre>'; print_r($new_args_env); echo '</pre>'; } 
-				if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): will use $new_acctnum ['.$new_acctnum.'];  and $new_folder ['.$new_folder.'], BUT FIRST unset selected existing class args <br>'; }
+				if ($this->debug > 1) { echo 'email.boaction.delmov ('.__LINE__.'): known possible recovered_data elements <b>Post-Gather</b> $new_args_env DUMP:<pre>'; print_r($new_args_env); echo '</pre>'; } 
+				if ($this->debug > 1) { echo 'email.boaction.delmov ('.__LINE__.'): will use $new_acctnum ['.$new_acctnum.'];  and $new_folder ['.$new_folder.'], BUT FIRST unset selected existing class args <br>'; }
 				
 				// UNSET ARGS WE USED IN THIS PAGE BUT ARE NO LONGER NEEDED
 				$GLOBALS['phpgw']->msg->unset_arg('delmov_list', $new_acctnum);
@@ -698,7 +723,7 @@
 				//}
 				// (d) make object and issue command
 				$new_menuaction = $new_args_env['index_php?menuaction'];
-				if ($this->debug > 1 || $this->debug_new_env > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): $new_menuaction ['.$new_menuaction.'] <br>'; } 
+				if ($this->debug > 1 || $this->debug_new_env > 1) { echo 'email.boaction.delmov ('.__LINE__.'): $new_menuaction ['.$new_menuaction.'] <br>'; } 
 				if (stristr($new_menuaction, 'uimessage'))
 				{
 					// MAKE THE UIMESSAGE PAGE OBJECT
@@ -728,7 +753,7 @@
 			}
 			else
 			{
-				if ($this->debug > 0) { echo 'emai.boaction.delmov ('.__LINE__.'): LEAVING, with ERROR, unhandled "where to go from here" condition<br>'; }
+				if ($this->debug > 0) { echo 'email.boaction.delmov ('.__LINE__.'): LEAVING, with ERROR, unhandled "where to go from here" condition<br>'; }
 				echo 'error: no redirect specified in '.$GLOBALS['PHP_SELF'].', delmov()'."<br> \r\n"
 					.'error_str: '.$error_str."<br> \r\n";
 				// close down ALL mailserver streams
@@ -740,7 +765,7 @@
 				$GLOBALS['phpgw']->common->phpgw_exit(False);
 			}
 		}
-		
+		*/
 		
 		/*!
 		@function set_expected_args
@@ -760,11 +785,11 @@
 		*/
 		function set_expected_args($comma_set_str='-1')
 		{
-			if ($this->debug_new_env > 0) { echo 'emai.boaction.set_expected_args ('.__LINE__.'): ENTERING<br>'; } 
-			if ($this->debug_new_env > 1) { echo 'emai.boaction.set_expected_args ('.__LINE__.'): param $comma_set_str: ['.$comma_set_str.'] <br>'; } 
+			if ($this->debug_new_env > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.set_expected_args ('.__LINE__.'): ENTERING<br>'); } 
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.set_expected_args ('.__LINE__.'): param $comma_set_str: ['.$comma_set_str.'] <br>'); } 
 			$exploded_expected_args = array();
 			$exploded_expected_args = explode(',',$comma_set_str);
-			if ($this->debug_new_env > 1) { echo 'emai.boaction.set_expected_args ('.__LINE__.'): $exploded_expected_args DUMP:<pre>'; print_r($exploded_expected_args); echo '</pre>'; } 
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.set_expected_args ('.__LINE__.'): $exploded_expected_args DUMP:', $exploded_expected_args); } 
 			
 			//$this->expected_args = array();
 			$this->expected_args = array();
@@ -774,8 +799,8 @@
 				$arg_name = $exploded_expected_args[$i];
 				$this->expected_args[$arg_name] = '-1';
 			}
-			if ($this->debug_new_env > 1) { echo 'emai.boaction.set_expected_args ('.__LINE__.'): $this->expected_args DUMP:<pre>'; print_r($this->expected_args); echo '</pre>'; } 
-			if ($this->debug_new_env > 0) { echo 'emai.boaction.set_expected_args ('.__LINE__.'): LEAVING<br>'; } 
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.set_expected_args ('.__LINE__.'): $this->expected_args DUMP:', $this->expected_args); } 
+			if ($this->debug_new_env > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.set_expected_args ('.__LINE__.'): LEAVING<br>'); } 
 		}
 		
 		/*!
@@ -790,9 +815,9 @@
 		*/
 		function set_new_args_uri($new_args_uri='-1')
 		{
-			if ($this->debug_new_env > 0) { echo 'emai.boaction.set_new_args_uri ('.__LINE__.'): ENTERING, $new_args_uri ['.$new_args_uri.']<br>'; } 
+			if ($this->debug_new_env > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.set_new_args_uri ('.__LINE__.'): ENTERING, $new_args_uri ['.$new_args_uri.']<br>'); } 
 			$this->new_args_uri = $new_args_uri;
-			if ($this->debug_new_env > 0) { echo 'emai.boaction.apply_new_args_env ('.__LINE__.'): LEAVING<br>'; } 
+			if ($this->debug_new_env > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): LEAVING<br>'); } 
 		}
 		
 		/*!
@@ -821,22 +846,42 @@
 		*/
 		function apply_new_args_env()
 		{
-			if ($this->debug_new_env > 0) { echo 'emai.boaction.apply_new_args_env ('.__LINE__.'): ENTERING<br>'; } 
+			if ($this->debug_new_env > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): ENTERING<br>'); } 
 			$recovered_data = array();
-			if ($this->debug_new_env > 1) { echo 'emai.boaction.apply_new_args_env ('.__LINE__.'): source data is $this->new_args_uri DUMP:<pre>'; print_r($this->new_args_uri); echo '</pre>'; } 
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): source data is $this->new_args_uri DUMP:', $this->new_args_uri); } 
 			parse_str($this->new_args_uri, $recovered_data);
-			if ($this->debug_new_env > 1) { echo 'emai.boaction.apply_new_args_env ('.__LINE__.'): used command "parsed_str" on that to get this $recovered_data DUMP:<pre>'; print_r($recovered_data); echo '</pre>'; } 
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): used command "parsed_str" on that to get this $recovered_data DUMP:', $recovered_data); } 
+			
+			// NOTE PARSE_STR ***WILL ADD SLASHES*** TO ESCAPE QUOTES
+			// NO MATTER WHAT YOUR MAGIC SLASHES SETTING IS
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): NOTE PARSE_STR ***WILL ADD SLASHES*** TO ESCAPE QUOTES NO MATTER WHAT YOUR MAGIC SLASHES SETTING IS **stripping slashes NOW*** from any folder names'.'<br>'); }  
+			if (isset($recovered_data['fldball']['folder']))
+			{
+				$recovered_data['fldball']['folder'] = stripslashes($recovered_data['fldball']['folder']);
+				$recovered_data['fldball']['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out($recovered_data['fldball']['folder']);
+			}
+			if (isset($recovered_data['msgball']['folder']))
+			{
+				$recovered_data['msgball']['folder'] = stripslashes($recovered_data['msgball']['folder']);
+				$recovered_data['msgball']['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out($recovered_data['msgball']['folder']);
+			}
+			if (isset($recovered_data['tf']))
+			{
+				$recovered_data['tf'] = stripslashes($recovered_data['tf']);
+				$recovered_data['tf'] = $GLOBALS['phpgw']->msg->prep_folder_out($recovered_data['tf']);
+			}
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): AFTER STRIPSLASH: used command "parsed_str" on that to get this $recovered_data DUMP:', $recovered_data); } 
 			
 			$new_args_env = array();
 			$new_args_env = $this->expected_args;
-			if ($this->debug_new_env > 1) { echo 'emai.boaction.apply_new_args_env ('.__LINE__.'): $this->expected_args DUMP:<pre>'; print_r($new_args_env); echo '</pre>'; } 
-			if ($this->debug_new_env > 1) { echo 'emai.boaction.apply_new_args_env ('.__LINE__.'): initial $new_args_env DUMP:<pre>'; print_r($new_args_env); echo '</pre>'; } 
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): $this->expected_args DUMP:', $new_args_env); } 
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): initial $new_args_env DUMP:', $new_args_env); } 
 			
 			// loop thru KNOWN POSSIBLE new_args_env elements, GATHER the ones that are filled for later use
 			reset($new_args_env);
 			while(list($key,$value) = each($new_args_env))
 			{
-				if ($this->debug_new_env > 1) { echo ' * ('.__LINE__.') $key: ['.$key.']  $value: ['.$value.']<br>'; } 
+				if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out(' * ('.__LINE__.') $key: ['.$key.']  $value: ['.$value.']<br>'); } 
 				$known_arg = $key;
 				//handle the special URI not match case
 				if ($key == 'index_php?menuaction')
@@ -845,7 +890,7 @@
 					reset($recovered_data);
 					while(list($recovered_key,$recovered_value) = each($recovered_data))
 					{
-						if ($this->debug_new_env > 1) { echo ' * * ('.__LINE__.') $recovered_key: ['.$recovered_key.']  $recovered_value: ['.$recovered_value.']<br>'; } 
+						if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out(' * * ('.__LINE__.') $recovered_key: ['.$recovered_key.']  $recovered_value: ['.$recovered_value.']<br>'); } 
 						if (stristr($recovered_key, 'menuaction'))
 						{
 							$new_args_env[$key] = $recovered_data[$recovered_key];
@@ -853,7 +898,7 @@
 							break;
 						}
 					}
-					if ($this->debug_new_env > 1) { echo ' ** found menuaction ** ('.__LINE__.') ['.$recovered_data[$recovered_key].']<br>'; } 
+					if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out(' ** found menuaction ** ('.__LINE__.') ['.$recovered_data[$recovered_key].']<br>'); } 
 				}
 				elseif ((isset($recovered_data[$known_arg]))
 				&& ((string)$recovered_data[$known_arg] != ''))
@@ -863,10 +908,10 @@
 				}
 			}
 			reset($new_args_env);
-			if ($this->debug_new_env > 1) { echo 'emai.boaction.apply_new_args_env ('.__LINE__.'): FIRST PASS filled available known possible recovered_data elements <b>Post-Gather</b> $new_args_env DUMP:<pre>'; print_r($new_args_env); echo '</pre>'; } 
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): FIRST PASS filled available known possible recovered_data elements <b>Post-Gather</b> $new_args_env DUMP:', $new_args_env); } 
 			
 			// we are NOT DONE yet, extract some more args that we derive from what we gathered so far
-			if ($this->debug_new_env > 1) { echo 'emai.boaction.apply_new_args_env ('.__LINE__.'): ADDITIONALLY extract embedded "*ball" items "acctnum" and "folder" AND if a "msgball", add a "uri" element to it<br>'; } 
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): ADDITIONALLY extract embedded "*ball" items "acctnum" and "folder" AND if a "msgball", add a "uri" element to it<br>'); } 
 			// GET GOOD ACCTNUM FOR THE UNSET COMMANDS BELOW
 			// and also get other useful info while we are at it (folder), and if we find a "msgball", make and add to it a "uri" element
 			if ($new_args_env['fldball'] != '-1')
@@ -881,44 +926,47 @@
 				// IMITATION: during grab_args_gpc, the code add an element [uri] to the existing msgball
 				// NOTE that for this uri element, the "folder" string shoulf be urlencoded
 				$new_uri_element =	 'msgball[msgnum]='.$new_args_env['msgball']['msgnum']
-								.'&msgball[folder]='.urlencode($new_args_env['msgball']['folder'])
+								//.'&msgball[folder]='.urlencode($new_args_env['msgball']['folder'])
+								//.'&msgball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out($new_args_env['msgball']['folder'])
+								.'&msgball[folder]='.$new_args_env['msgball']['folder']
 								.'&msgball[acctnum]='.$new_args_env['msgball']['acctnum'];
 				$new_args_env['msgball']['uri'] = $new_uri_element;
 			}
 			else
 			{
-				echo 'emai.boaction.apply_new_args_env: LINE '.__LINE__.': ERROR getting valid acctnum for goto pageview, NO fldball NO msgball found <br>';
+				echo 'email.boaction.apply_new_args_env: LINE '.__LINE__.': ERROR getting valid acctnum for goto pageview, NO fldball NO msgball found <br>';
+				$GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env: LINE '.__LINE__.': ERROR getting valid acctnum for goto pageview, NO fldball NO msgball found <br>');
 			}
-			if ($this->debug_new_env > 1) { echo 'emai.boaction.apply_new_args_env ('.__LINE__.'): extracted additional data: will use $new_acctnum ['.$new_acctnum.'];  and $new_folder ['.$new_folder.'] <br>'; }
-			if ($this->debug_new_env > 1) { echo 'emai.boaction.apply_new_args_env ('.__LINE__.'): FINAL filled available known possible recovered_data elements <b>Post-Gather</b> $new_args_env DUMP:<pre>'; print_r($new_args_env); echo '</pre>'; } 
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): extracted additional data: will use $new_acctnum ['.$new_acctnum.'];  and $new_folder ['.$new_folder.'] <br>'); }
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): FINAL filled available known possible recovered_data elements <b>Post-Gather</b> $new_args_env DUMP:', $new_args_env); } 
 			
 			// UNSET ARGS WE USED IN THIS PAGE BUT ARE NO LONGER NEEDED
 			// HELL, JUST UNSET ALL EXTERNAL ARGS
-			if ($this->debug_new_env > 1) { echo 'emai.boaction.apply_new_args_env ('.__LINE__.'): unset ALL known external class args as defined in array $GLOBALS[phpgw]->msg->known_external_args<br>'; }
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): unset ALL known external class args as defined in array $GLOBALS[phpgw]->msg->known_external_args<br>'); }
 			$loops = count($GLOBALS['phpgw']->msg->known_external_args);
 			for ($i = 0; $i < $loops; $i++)
 			{
 				$arg_name = $GLOBALS['phpgw']->msg->known_external_args[$i];
 				if ($GLOBALS['phpgw']->msg->get_isset_arg($arg_name, $new_acctnum) == True)
 				{
-					if ($this->debug_new_env > 2) { echo ' * emai.boaction.apply_new_args_env ('.__LINE__.'):UNSETTING with $GLOBALS[phpgw]->msg->unset_arg('.$arg_name.', '.$new_acctnum.') <br>'; }
+					if ($this->debug_new_env > 2) { $GLOBALS['phpgw']->msg->dbug->out(' * email.boaction.apply_new_args_env ('.__LINE__.'):UNSETTING with $GLOBALS[phpgw]->msg->unset_arg('.$arg_name.', '.$new_acctnum.') <br>'); }
 					$GLOBALS['phpgw']->msg->unset_arg($arg_name, $new_acctnum);
 				}
 				else
 				{
-					if ($this->debug_new_env > 2) { echo ' * emai.boaction.apply_new_args_env ('.__LINE__.'): <i>was not set $arg_name ['.$arg_name.'];  and $new_acctnum ['.$new_acctnum.']</i><br>'; }
+					if ($this->debug_new_env > 2) { $GLOBALS['phpgw']->msg->dbug->out(' * email.boaction.apply_new_args_env ('.__LINE__.'): <i>was not set $arg_name ['.$arg_name.'];  and $new_acctnum ['.$new_acctnum.']</i><br>'); }
 				}
 			}
 			
 			// REFILL ARGS WITH NEW PAGE VIEW VALUES
 			// (a) set the very important acctnum arg we collected earlier, and also the folder arg, because these values are _derived_ values
 			// they are not plainly in the $new_args_env as simple key and value elements, they were derived from some of them, though
-			if ($this->debug_new_env > 1) { echo 'emai.boaction.apply_new_args_env ('.__LINE__.'): BEGIN setting new arg env by setting the "new_acctnum" and "new_folder"<br>'; } 
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): BEGIN setting new arg env by setting the "new_acctnum" and "new_folder"<br>'); } 
 			$GLOBALS['phpgw']->msg->set_acctnum($new_acctnum);
 			$GLOBALS['phpgw']->msg->set_arg_value('folder', $new_folder, $new_acctnum);
 			
 			// (b) LOOP thru Gathered Args, setting the class args to those values
-			if ($this->debug_new_env > 1) { echo 'emai.boaction.apply_new_args_env ('.__LINE__.'): continue by LOOPING thru Final Gathered Args, setting the class args to those values that are not still "-1" (that data was found for)<br>'; } 
+			if ($this->debug_new_env > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): continue by LOOPING thru Final Gathered Args, setting the class args to those values that are not still "-1" (that data was found for)<br>'); } 
 			reset($new_args_env);
 			while(list($key,$value) = each($new_args_env))
 			{
@@ -928,12 +976,12 @@
 				if ((!stristr($arg_name, 'index_php?menuaction'))
 				&& ($arg_value != '-1'))
 				{
-					if ($this->debug_new_env > 2) { echo ' * emai.boaction.apply_new_args_env ('.__LINE__.'): calling $GLOBALS[phpgw]->msg->set_arg_value('.$arg_name.', '.$arg_value.', '.$new_acctnum.') <br>'; }
+					if ($this->debug_new_env > 2) { $GLOBALS['phpgw']->msg->dbug->out(' * email.boaction.apply_new_args_env ('.__LINE__.'): calling $GLOBALS[phpgw]->msg->set_arg_value('.$arg_name.', '.$arg_value.', '.$new_acctnum.') <br>'); }
 					$GLOBALS['phpgw']->msg->set_arg_value($arg_name, $arg_value, $new_acctnum);
 				}
 			}
 			//$my_menuaction = $new_args_env['/mail/index_php?menuaction'];
-			if ($this->debug_new_env > 0) { echo 'emai.boaction.apply_new_args_env ('.__LINE__.'): LEAVING, returning next menuaction command $my_menuaction ['.$my_menuaction.'] <br>'; } 
+			if ($this->debug_new_env > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.apply_new_args_env ('.__LINE__.'): LEAVING, returning next menuaction command $my_menuaction ['.$my_menuaction.'] <br>'); } 
 			return $my_menuaction;
 		}
 		
@@ -957,9 +1005,9 @@
 			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
 			
 			$this->msg_bootstrap = CreateObject('email.msg_bootstrap');
-			$this->msg_bootstrap->ensure_mail_msg_exists('emai.boaction.get_attach', $this->debug);
+			$this->msg_bootstrap->ensure_mail_msg_exists('email.boaction.get_attach', $this->debug);
 			
-			if ($this->debug > 0) { echo 'emai.boaction.get_attach: creating $this->browser <br>'; }
+			if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.get_attach: creating $this->browser <br>'); }
 			$this->browser = CreateObject('phpgwapi.browser');
 			
 			$msgball = $GLOBALS['phpgw']->msg->get_arg_value('msgball');
@@ -980,15 +1028,18 @@
 			}
 			
 			$mime = strtolower($GLOBALS['phpgw']->msg->get_arg_value('type')) .'/' .strtolower($GLOBALS['phpgw']->msg->get_arg_value('subtype'));
-			$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime);
+			// do not do this until we get a length
+			//$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime);
 			
-			//echo 'get all args dump<pre>'; print_r($GLOBALS['phpgw']->msg->get_all_args()); echo '</pre>';
-			//echo '$mime: ['.$mime.']<br>';
-			//echo '$GLOBALS[phpgw]->msg->get_arg_value(encoding): ['.$GLOBALS['phpgw']->msg->get_arg_value('encoding').']<br>';
+			////echo 'get all args dump<pre>'; print_r($GLOBALS['phpgw']->msg->get_all_args()); echo '</pre>';
+			////echo '$mime: ['.$mime.']<br>';
+			////echo '$GLOBALS[phpgw]->msg->get_arg_value(encoding): ['.$GLOBALS['phpgw']->msg->get_arg_value('encoding').']<br>';
 			
 			// ----  'irregular' "view raw message" functionality  ----
 			if ($msgball['part_no'] == 'raw_message')
 			{
+				// NOTE no length for this purpose
+				$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime);
 				// to dump out the whole raw message, do this:
 				// 1) output the headers, 2) output the raw body 3) output a "closing" CRLF
 				//headers_msgball will be used get the message headers, by specifying "part_no" = 0
@@ -1002,15 +1053,30 @@
 			// ---- "regular" attachment handling  ----
 			elseif ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'base64')
 			{
-				echo $GLOBALS['phpgw']->msg->de_base64($GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball));
+				//echo $GLOBALS['phpgw']->msg->de_base64($GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball));
+				$this->output_data = $GLOBALS['phpgw']->msg->de_base64($GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball));
+				$size = strlen($this->output_data);
+				$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime, $size);
+				echo $this->output_data;
+				$this->output_data = '';
 			}
 			elseif ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'qprint')
 			{
-				echo $GLOBALS['phpgw']->msg->qprint($GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball));
+				//echo $GLOBALS['phpgw']->msg->qprint($GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball));
+				$this->output_data = $GLOBALS['phpgw']->msg->qprint($GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball));
+				$size = strlen($this->output_data);
+				$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime, $size);
+				echo $this->output_data;
+				$this->output_data = '';
 			}
 			else
 			{
-				echo $GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball);
+				//echo $GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball);
+				$this->output_data = $GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball);
+				$size = strlen($this->output_data);
+				$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime, $size);
+				echo $this->output_data;
+				$this->output_data = '';
 			}
 			// you may feed "end_request" a msgball or a fldball and "end_request" will close the acctnum specified therein
 			//$GLOBALS['phpgw']->msg->end_request($msgball);
@@ -1053,9 +1119,9 @@
 			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
 			
 			$this->msg_bootstrap = CreateObject('email.msg_bootstrap');
-			$this->msg_bootstrap->ensure_mail_msg_exists('emai.boaction.get_attach', $this->debug);
+			$this->msg_bootstrap->ensure_mail_msg_exists('email.boaction.get_attach', $this->debug);
 			
-			if ($this->debug > 0) { echo 'emai.boaction.view_html: creating $this->browser <br>'; }
+			if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.view_html: creating $this->browser <br>'); }
 			$this->browser = CreateObject('phpgwapi.browser');
 			
 			//$this->browser->content_header($name,$mime);

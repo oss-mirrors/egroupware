@@ -73,7 +73,9 @@
 				'lang_total'		=> lang('Total'),
 				'lang_total2'		=> lang('Total Messages'),
 				'lang_size2'		=> lang('Folder Size'),
-				'stats_to_txt'		=> '-', // this is not the word in other lang's as the other lang('to')'s
+				//'stats_to_txt'		=> lang('to'),
+				// ralfbecker: this is not the word in other lang's as the other lang('to')'s
+				'stats_to_txt'		=> '-',
 				'lang_to'			=> lang('to'),
 				'lang_get_size'		=> lang('get size'),
 				'lang_date'			=> lang('date'),
@@ -82,7 +84,12 @@
 				'lang_empty_folder'	=> lang('this folder is empty'),
 				'lang_delete'		=> lang('delete'),
 				'mlist_attach_txt'	=> lang('file'),
-				'lang_inbox' 		=> lang('INBOX')
+				'lang_inbox' 		=> lang('INBOX'),
+				'lang_flagged' 		=> lang('flagged'),
+				'lang_answered' 	=> lang('answered'),
+				'lang_draft' 		=> lang('draft'),
+				'lang_deleted' 		=> lang('deleted'),
+				'lang_important' 		=> lang('important')
 				
 			);
 			// put these into $this->xi[] array
@@ -572,17 +579,10 @@
 			$this->xi['filters_href'] = '<a href="'.$this->xi['filters_link'].'">'.$this->xi['filters_txt'].'</a>';
 			
 			// FIXME
-/* TEST-RALFBECKER
 			$this->xi['email_prefs_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',
 								 'menuaction=email.uipreferences.preferences'
 								.'&ex_acctnum='.$GLOBALS['phpgw']->msg->get_acctnum());
-*/
-			$acctnum = $GLOBALS['phpgw']->msg->get_acctnum();
-			$this->xi['email_prefs_link'] = $GLOBALS['phpgw']->link('/preferences/preferences.php',array(
-				'appname' => 'email',
-				'prefix'  => $acctnum ? 'ex_accounts/'.$acctnum : ''
-			));
 			
 			$this->xi['email_prefs_img'] = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/customize-'.$this->icon_size,'_on'),$this->xi['folders_txt1'],'','','0');
 			$this->xi['ilnk_email_prefs'] = $GLOBALS['phpgw']->msg->href_maketag($this->xi['email_prefs_link'],$this->xi['email_prefs_img']);
@@ -611,6 +611,7 @@
 				$this->xi['ctrl_bar_current_acctnum'] = 'extra '.(string)$GLOBALS['phpgw']->msg->get_acctnum();
 			}
 			
+			/*
 			// DEPRECIATED
 			$this->xi['ctrl_bar_acct_0_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',
@@ -634,7 +635,7 @@
 								.'&order='
 								.'&start=');
 			$this->xi['ctrl_bar_acct_1_link'] = '<a href="'.$this->xi['ctrl_bar_acct_1_link'].'">'.'goto extra 1'.'</a>';
-			
+			*/
 			$this->xi['ctrl_bar_back1'] = $GLOBALS['phpgw_info']['theme']['row_on'];
 			
 			$sort_selected = Array(
@@ -773,7 +774,11 @@
 			// are we IN THE SENT folder or not
 			//if (	$GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->get_arg_value('folder'))
 			// != $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->get_pref_value('sent_folder_name')))
-			// try this new core function
+			// UPDATE use this new core function
+			// NOTE how to do the querey we need a folder name "prepped out" i.e. urlencoded
+			// and also note that for some backwards reason the arg "folder" is one of the only times a folder name is stored "prepped in", this is a grandfathered in situation
+			// NOTE: this common_folder_is querey for "Sent" folder can not be true unless user has pref "Use Sent Folder" set to True!
+			// i.e. a folder named "Sent" is not THE sent folder unless the prefs say so
 			$querey_fldball = array();
 			$querey_fldball['acctnum'] = $GLOBALS['phpgw']->msg->get_acctnum();
 			$querey_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out($GLOBALS['phpgw']->msg->get_arg_value('folder'));
@@ -804,23 +809,36 @@
 			$this->xi['attach_img'] = $GLOBALS['phpgw']->common->image_on('email','attach','_on');
 			$this->xi['check_image'] = $GLOBALS['phpgw']->common->image_on('email','check','_on');
 			//$this->xi['mlist_attach'] = '<div align="right">'.'<img src="'.$this->xi['attach_img'].'" alt="'.$this->xi['mlist_attach_txt'].'">'.'</div>';
-			$this->xi['mlist_attach'] = '<img src="'.$this->xi['attach_img'].'" alt="'.$this->xi['mlist_attach_txt'].'">';
+			$this->xi['mlist_attach'] = '<img src="'.$this->xi['attach_img'].'" title="'.$this->xi['mlist_attach_txt'].'" alt="'.$this->xi['mlist_attach_txt'].'">';
 			$this->xi['flagged_img'] = 
 					'<img src="'
 					.$GLOBALS['phpgw']->common->image_on('email','flag-for-followup-16','_on')
-					.'" alt="'.$this->xi['FIXME_flagged'].'">';
+					.'" title="'.$this->xi['lang_flagged'].'"'
+					.'" alt="'.$this->xi['lang_flagged'].'">';
 			$this->xi['answered_img'] = 
 					'<img src="'
 					.$GLOBALS['phpgw']->common->image_on('email','replied','_on')
-					.'" alt="'.$this->xi['FIXME_answered'].'">';
+					.'" title="'.$this->xi['lang_answered'].'"'
+					.'" alt="'.$this->xi['lang_answered'].'">';
 			$this->xi['draft_img'] = 
 					'<img src="'
 					.$GLOBALS['phpgw']->common->image_on('email','regular_draft','_on')
-					.'" alt="'.$this->xi['FIXME_draft'].'">';
+					.'" title="'.$this->xi['lang_draft'].'"'
+					.'" alt="'.$this->xi['lang_draft'].'">';
 			$this->xi['deleted_img'] = 
 					'<img src="'
 					.$GLOBALS['phpgw']->common->image_on('email','deleted','_on')
-					.'" alt="'.$this->xi['FIXME_deleted'].'">';
+					.'" title="'.$this->xi['lang_deleted'].'"'
+					.'" alt="'.$this->xi['lang_deleted'].'">';
+			/*
+			// FUTURE USE: MS mail puts "important" indicator in the message headers
+			// note do we have an image for this yet?
+			$this->xi['important_img'] = 
+					'<img src="'
+					.$GLOBALS['phpgw']->common->image_on('email','important','_on')
+					.'" title="'.$this->xi['lang_important'].'"'
+					.'" alt="'.$this->xi['lang_important'].'">';
+			*/
 			
 			// loop thru the messages and get the data that the UI will display
 			if ($this->xi['folder_info']['number_all'] == 0)
@@ -868,6 +886,7 @@
 			$this->xi['frm_delmov_name'] = 'delmov';
 			if ($this->xi['mailsvr_supports_folders'])
 			{
+				/*
 				$feed_args = Array();
 				$feed_args = Array(
 					'mailsvr_stream'	=> '',
@@ -881,26 +900,31 @@
 					'first_line_txt'	=> lang('move selected messages into')
 				);
 				$this->xi['delmov_listbox'] = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);
+				*/
+				// UPDATE use the newer widgets high level function
+				$my_widgets = CreateObject('email.html_widgets');
+				$skip_fldball = array();
+				$skip_fldball['acctnum'] = $GLOBALS['phpgw']->msg->get_acctnum();
+				$skip_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out($GLOBALS['phpgw']->msg->get_arg_value('folder'));
+				$this->xi['delmov_listbox'] = $my_widgets->all_folders_combobox('delmov', True, $skip_fldball);
 			}
 			else
 			{
 				$this->xi['delmov_listbox'] = '&nbsp;';
 			}
-			$delmov_text = lang('Delete');
-			$delmov_image = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/trash-'.$this->icon_size,'_on'),$delmov_text,'','','0');
-			$this->xi['delmov_image'] = $delmov_image;
-			//$delmov_image = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->common->image_on('email',$icon_theme.'-trash-'.$icon_size,'_on'),$delmov_text,'','','0');
-			//$delmov_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-trash-'.$this->icon_size.'.gif',$this->xi['delmov_text'],'','','0');
+			$this->xi['delmov_image'] = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/trash-'.$this->icon_size,'_on'),$this->xi['lang_delete'],'','','0');
+			//$this->xi['delmov_image'] = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->common->image_on('email',$icon_theme.'-trash-'.$icon_size,'_on'),$this->xi['lang_delete'],'','','0');
+			//$this->xi['delmov_image'] = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-trash-'.$this->icon_size.'.gif',$this->xi['lang_delete'],'','','0');
 			$delmov_onclick = "javascript:do_action('delall')";
 			switch ($GLOBALS['phpgw']->msg->get_pref_value('button_type',$acctnum)){
 				case 'text':
-					$this->xi['delmov_button'] = '<a href="'.$delmov_onclick.'">'.$delmov_text.'</a>';
+					$this->xi['delmov_button'] = '<a href="'.$delmov_onclick.'">'.$this->xi['lang_delete'].'</a>';
 					break;
 				case 'image':
-					$this->xi['delmov_button'] = '<a href="'.$delmov_onclick.'">'.$delmov_image.'</a>';
+					$this->xi['delmov_button'] = '<a href="'.$delmov_onclick.'">'.$this->xi['delmov_image'].'</a>';
 					break;
 				case 'both':
-					$this->xi['delmov_button'] = '<a href="'.$delmov_onclick.'">'.$delmov_image.'&nbsp;'.$delmov_text.'</a>';
+					$this->xi['delmov_button'] = '<a href="'.$delmov_onclick.'">'.$this->xi['delmov_image'].'&nbsp;'.$this->xi['lang_delete'].'</a>';
 					break;
 			}
 					
@@ -1066,17 +1090,9 @@
 				$this->xi['folders_href'] = '&nbsp;';
 				$this->xi['folders_btn'] = '&nbsp;';
 			}
-/* TEST-RALFBECKER
 			$this->xi['email_prefs_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',
 								'menuaction=email.uipreferences.preferences');
-*/
-			$acctnum = $GLOBALS['phpgw']->msg->get_acctnum();
-			$this->xi['email_prefs_link'] = $GLOBALS['phpgw']->link('/preferences/preferences.php',array(
-				'appname' => 'email',
-				'prefix'  => $acctnum ? 'ex_accounts/'.$acctnum : ''
-			));
-
 			$this->xi['filters_link'] = $GLOBALS['phpgw']->link(
 								'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/filters.php');
 			$this->xi['filters_href'] = '<a href="'.$this->xi['filters_link'].'">'.$this->xi['filters_txt'].'</a>';

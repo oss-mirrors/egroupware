@@ -42,7 +42,7 @@
 			$this->bo = CreateObject("email.bomessage");
 			$this->bo->message_data();
 			
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				// we point to the global template for this version of phpgw templatings
 				$this->tpl =& $GLOBALS['phpgw']->template;
@@ -54,8 +54,7 @@
 				$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			}
 			
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('E-Mail');
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				// NOW we can out the header, because "index_data()" filled this global
 				//	$GLOBALS['phpgw_info']['flags']['email_refresh_uri']
@@ -71,7 +70,6 @@
 			}
 			else
 			{
-				$GLOBALS['phpgw_info']['flags']['xslt_app'] = True;
 				$GLOBALS['phpgw']->xslttpl->add_file(array('app_data'));
 			}
 			
@@ -91,6 +89,8 @@
 			//= = = = TOOLBAR WIDGET = = = 
 			$this->widgets = CreateObject('email.html_widgets');
 			$this->tpl->set_var('widget_toolbar',$this->widgets->get_toolbar());
+			// geek_bar
+			$this->tpl->set_var('geek_bar',$this->widgets->get_geek_bar());
 			
 			if (!empty($this->xi['msgtype']))
 			{
@@ -260,6 +260,13 @@
 			
 			// -----  SHOW MESSAGE  -------
 			//@set_time_limit(120);
+			
+			//if ($GLOBALS['phpgw']->msg->phpgw_before_xslt == False)
+			//{
+				// fix a b0rk in template showing last item 2 times under XSLT
+				$final_V_display_part = '';
+			//}
+			
 			$count_part_nice = count($this->bo->part_nice);
 			for ($i = 0; $i < $count_part_nice; $i++)
 			{
@@ -268,7 +275,16 @@
 					$this->tpl->set_var('title_text',$this->bo->part_nice[$i]['title_text']);
 					$this->tpl->set_var('display_str',$this->bo->part_nice[$i]['display_str']);
 					$this->tpl->set_var('message_body',$this->bo->part_nice[$i]['message_body']);
-					$this->tpl->parse('V_display_part','B_display_part', True);
+					//$this->tpl->parse('V_display_part','B_display_part', True);
+					//if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
+					//{
+					//	$this->tpl->parse('V_display_part','B_display_part', True);
+					//}
+					//else
+					//{
+						// fix a b0rk in template showing last item 2 times under XSLT
+						$final_V_display_part .= $this->tpl->parse('V_display_part','B_display_part');
+					//}
 				}
 				elseif ($this->bo->part_nice[$i]['d_instructions'] == 'echo_out')
 				{
@@ -305,6 +321,14 @@
 			}
 			//@set_time_limit(0);
 			
+			//if ($GLOBALS['phpgw']->msg->phpgw_before_xslt == False)
+			//{
+			//	// fix a b0rk in template showing last item 2 times under XSLT
+				$this->tpl->set_var('V_display_part',$final_V_display_part);
+				$final_V_display_part = '';
+				unset($final_V_display_part);
+			//}
+			
 			// new way to handle debug data, if there is debug data, this will put it in the template source data vars
 			$this->tpl->set_var('debugdata', $GLOBALS['phpgw']->msg->dbug->notice_pagedone());
 			
@@ -314,7 +338,7 @@
 				// DO NOTHING!
 				// echo dump already outputted the template
 			}
-			elseif ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			elseif ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				$this->tpl->pfp('out','T_message_main');
 				//$GLOBALS['phpgw']->common->phpgw_footer();
@@ -324,8 +348,9 @@
 				$this->tpl->set_unknowns('comment');
 				//$this->tpl->set_unknowns('remove');
 				$data = array();
-				$data['appname'] = lang('E-Mail');
-				$data['function_msg'] = lang('show message');
+				//$data['appname'] = lang('E-Mail');
+				//$data['function_msg'] = lang('show message');
+				$GLOBALS['phpgw_info']['flags']['email']['app_header'] = lang('E-Mail') . ': ' . lang('show message');
 				$data['email_page'] = $this->tpl->parse('out','T_message_main');
 				// new way to handle debug data, if this array has anything, put it in the template source data vars
 				//if ($GLOBALS['phpgw']->msg->dbug->debugdata)
@@ -344,7 +369,16 @@
 				$GLOBALS['phpgw']->hooks->single('email',$this->bo->xi['application']);
  			}
 			// tell apache to release emeory back to the system on script end
-			//apache_child_terminate();
+			//if ((isset($_SERVER['SERVER_SOFTWARE']))
+			//&& (stristr($_SERVER['SERVER_SOFTWARE'], 'apache'))
+			if ((getenv('SERVER_SOFTWARE'))
+			&& (stristr(getenv('SERVER_SOFTWARE'), 'apache'))
+			&& (function_exists('apache_child_terminate'))
+			&& (ini_get('child_terminate')))
+			{
+				//echo 'doing apache_child_terminate';
+				apache_child_terminate();
+			}
 
 			// close down ALL mailserver streams
 			$GLOBALS['phpgw']->msg->end_request();
@@ -364,7 +398,7 @@
 			$this->bo = CreateObject("email.bomessage");
 			$this->bo->message_data();
 			
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				// we point to the global template for this version of phpgw templatings
 				$this->tpl =& $GLOBALS['phpgw']->template;
@@ -372,14 +406,34 @@
 			}
 			else
 			{
+				$GLOBALS['phpgw_info']['flags']['xslt_app'] = True;
 				// we use a PRIVATE template object for 0.9.14 conpat and during xslt porting
 				$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			}
 			
-			$GLOBALS['phpgw_info']['flags']['noheader'] = True;
-			$GLOBALS['phpgw_info']['flags']['nonavbar'] = True;
-			$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
-			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
+			{
+				$GLOBALS['phpgw_info']['flags']['noheader'] = True;
+				$GLOBALS['phpgw_info']['flags']['nonavbar'] = True;
+				$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+				$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
+			}
+			else
+			{
+				$GLOBALS['phpgw_info']['flags']['printview'] = True;
+				$GLOBALS['phpgw_info']['flags']['headonly'] = True;
+				
+				//$GLOBALS['phpgw_info']['navbar'] = '';
+				
+				//$GLOBALS['phpgw']->xslttpl->add_file(array('app_data'));
+				
+				// FIXME how to get rid of other template stuff here for XSLT?
+				$GLOBALS['phpgw_info']['flags']['noheader'] = True;
+				$GLOBALS['phpgw_info']['flags']['nonavbar'] = True;
+				$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+				$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
+			}
+			
 			
 			$this->tpl->set_file(array(
 				'T_message_printable' => 'message_printable.tpl',
@@ -496,15 +550,29 @@
 				// DO NOTHING!
 				// echo dump already outputted the template
 			}
-			else
+			elseif ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				$this->tpl->pfp('out','T_message_printable');
 				//$GLOBALS['phpgw']->common->phpgw_footer();
+				// ----  Finish The HTML Tags  ----
+				echo "</body> \r\n";
+				echo "</html> \r\n";
 			}
-			
-			// ----  Finish The HTML Tags  ----
-			echo "</body> \r\n";
-			echo "</html> \r\n";
+			else
+			{
+				$this->tpl->set_unknowns('comment');
+				$this->tpl->pfp('out','T_message_printable');
+				//// ----  Finish The HTML Tags  ----
+				echo "</body> \r\n";
+				echo "</html> \r\n";
+				////$this->tpl->set_unknowns('remove');
+				
+				$data = array();
+				//$data['appname'] = lang('E-Mail');
+				//$data['function_msg'] = lang('show message');
+				//$data['email_page'] = $this->tpl->parse('out','T_message_printable');
+				//$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('generic_out' => $data));
+			}
 			
 			if (is_object($GLOBALS['phpgw']->msg))
 			{

@@ -30,7 +30,22 @@
 	// then (3) include mail_msg which extends mail_msg_wrappers and, by inheritance, mail_msg_base
 class mail_msg extends mail_msg_wrappers
 {
-
+	
+	/*!
+	@function mail_msg
+	@abstract Constructor 
+	@discussion normally this would call $this->initialize_mail_msg which is a function in the base class, 
+	HOWEVER I had to stop the auto constructor runthrough because preferences class API keeps making 
+	copies of this object thus calling the constructor unnecessarily for what the pref API needs, which is 
+	only a few functions in this object, SO NOW this class has NO real auto called constructor, 
+	instead the initialization function needs to be explicitly called, which it is in the bootstrap class. 
+	*/
+	function mail_msg()
+	{
+		//$this->initialize_mail_msg();
+		return;
+	}
+	
 	/*!
 	@function get_common_langs
 	@abstract Certain strings commonly used with folder names have langs available here. Example lang for INBOX. 
@@ -118,8 +133,8 @@ class mail_msg extends mail_msg_wrappers
 			// blaaaa
 		}
 		*/
-		if (($query_fldball == $this->nothing)
-		|| ($match_fld_name == $this->nothing))
+		if (((string)$query_fldball == $this->nothing)
+		|| ((string)$match_fld_name == $this->nothing))
 		{
 			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg(_display)('.__LINE__.'): common_folder_is: LEAVING with Error, not enough param data supplied, so returning False<br>'); } 
 			return False;
@@ -136,12 +151,18 @@ class mail_msg extends mail_msg_wrappers
 			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg(_display)('.__LINE__.'): common_folder_is: LEAVING with Error, input data fails $this->is_ball_data('.htmlspecialchars(serialize($query_fldball)).', "any"), so returning False<br>'); } 
 			return False;
 		}
+		if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg(_display)('.__LINE__.'): common_folder_is: $query_fldball DUMP:', $query_fldball); } 
+		
 		// First, handle the easiest test - INBOX
 		if (($match_fld_name == 'INBOX')
 		&& ($query_fldball['folder'] == 'INBOX'))
 		{
 			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg(_display)('.__LINE__.'): common_folder_is: LEAVING, returning True, tested for and found INBOX<br>'); } 
 			return True;
+		}
+		else
+		{
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg(_display)('.__LINE__.'): common_folder_is: match_fld_name and $query_fldball["folder"], either one nor both were INBOX, so did not match the test, so continue with more checks...<br>'); } 
 		}
 		// continue ...
 		// does the mailserver have folders, if not then there is NO trash folder no matter what
@@ -719,32 +740,45 @@ class mail_msg extends mail_msg_wrappers
 	/*!
 	@function prev_next_navigation
 	@abstract ?
+	@discussion Adding ex_acctnum and ex_folder params AS AN EXPERIMENT. 
 	@author Angles
 	*/
-	function prev_next_navigation($old_method_totalmessages=0)
+	function prev_next_navigation($old_method_totalmessages=0, $ex_acctnum='', $ex_folder='')
 	{
 		//$debug_nav = True;
 		//$debug_nav = False;
 		$debug_nav = $this->debug_index_page_display;
 		if ($debug_nav > 0) { $this->dbug->out('mail_msg_display: prev_next_navigation('.__LINE__.'): ENTERING, (try debug_index_page_display = 3 to see data dumps)<br>'); }
 		
-		// this gets a verified non stale msgball_list and puts it in cache, or uses the one in cache if it passes verified and not stale test
-		$this->get_msgball_list();
 		// but we do not want a COPY of this data it can be thousands of items, so we try to get a reference
 		$nav_data = array();
 		$nav_data['msgball_list'] = array();
-		$ex_acctnum = $this->get_acctnum();
-		if (($this->session_cache_enabled == True)
-		&& (isset($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'])))
-		//&& (isset($GLOBALS['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'])))
+		// TESTING THIS AS AN OPTIONAL PARAM HERE
+		// we used to obtain it here no matter what, now it may be passed as a param
+		if ((!isset($ex_acctnum))
+		|| ((string)$ex_acctnum == ''))
 		{
-			$nav_data['msgball_list'] =& $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'];
-			//$nav_data['msgball_list'] =& $GLOBALS['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'];
+			$ex_acctnum = $this->get_acctnum();
+		}
+		// TESTING THIS AS AN OPTIONAL PARAM HERE
+		if ((!isset($ex_folder))
+		|| ((string)$ex_folder == ''))
+		{
+			$ex_folder = $this->prep_folder_out($this->get_arg_value('folder', $acctnum));
+		}
+		// TESTING this gets a verified non stale msgball_list and puts it in cache, or uses the one in cache if it passes verified and not stale test
+		//$this->get_msgball_list($ex_acctnum, $ex_folder);
+		// remember the actual msgball_list is a sub element of an array that includes validity info
+		if (($this->session_cache_enabled == True)
+		&& (isset($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list'][$ex_folder]['msgball_list'])))
+		//&& (isset($GLOBALS['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'][$ex_folder])))
+		{
+			$nav_data['msgball_list'] =& $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list'][$ex_folder]['msgball_list'];
 		}
 		else
 		{
 			// ok we could not obtain a reference for some reason, get a COPY then
-			$nav_data['msgball_list'] = $this->get_msgball_list();
+			$nav_data['msgball_list'] = $this->get_msgball_list($ex_acctnum, $ex_folder);
 		}
 		//$nav_data['msgnum_idx'] = $this->array_search_ex($this->get_arg_value('["msgball"]["msgnum"]'), $nav_data['msgball_list']);
 		
@@ -828,11 +862,11 @@ class mail_msg extends mail_msg_wrappers
 	}
 	
 	/*!
-	@function all_ex_accounts_listbox
+	@function all_ex_accounts_listbox DEPRECIATED
 	@abstract Creates a listbox with all email accounts.
 	@discussion  Used in the switch account combobox, and the filers page too, I think. The listbox 
 	is sort of an HTML widget. For the raw data, see the function, it is easy to get the data without the 
-	HTML if you want that. 
+	HTML if you want that. DEPRECIATED now should use function in widgets class. 
 	@author Angles
 	*/
 	function all_ex_accounts_listbox($feed_args)
@@ -1041,7 +1075,7 @@ class mail_msg extends mail_msg_wrappers
 	// ----  High-Level Function To Get The "so-and-so" wrote String   -----
 	/*!
 	@function get_who_wrote
-	@abstract 
+	@abstract PROBABLY NO LONGER USED
 	@author Angles and code from previous maintainer
 	*/
 	function get_who_wrote($msg)
@@ -1070,7 +1104,9 @@ class mail_msg extends mail_msg_wrappers
 			$personal = trim($from->personal);
 			// non-us-ascii chars in headers MUST be specially encoded, so decode them (if any) now
 			$personal = $this->decode_header_string($personal);
-			//$personal = $this->qprint_rfc_header($personal);
+			////$personal = $this->qprint_rfc_header($personal);
+			// escape certain undesirable chars before HTML display
+			$personal =  $this->htmlspecialchars_encode($personal);
 			$personal = $personal .' ('.$from->mailbox.'@'.$from->host.')';
 		}
 		return $personal;
@@ -1130,13 +1166,47 @@ class mail_msg extends mail_msg_wrappers
 	// ---- Message Structure Analysis   -----
 	/*!
 	@function get_flat_pgw_struct
-	@abstract Message Structure Analysis, make multilevel php message struct into a flat array
+	@abstract Message Structure Analysis, make multilevel php message struct into a flat array aka "part_nice"
 	@param $struct (php structure from ?) 
 	@discussion This is the meat of the home grown MIME analysis this app uses. 
 	@author Angles
 	*/
 	function get_flat_pgw_struct($struct)
 	{
+		if ($this->debug_message_display > 0) { $this->dbug->out('mail_msg(display).get_flat_pgw_struct:  ENTERING <br>'); }
+		//if ($this->debug_message_display > 1) { $this->dbug->out('mail_msg(display).get_flat_pgw_struct:  param $msgball ['.serialize($msgball).']<br>'); }
+		if ($this->debug_message_display > 2) { $this->dbug->out('mail_msg(display).get_flat_pgw_struct:  param $struct DUMP:', $struct); }
+		
+		/*
+		// NO NEED TO CACHE THIS DATA, NO CONTACT WITH MAILSERVER IS NEEDED FOR THIS DATA
+		// try to get it from cache, this function handles checking for session_cache_extreme True or False
+		if ($this->session_cache_extreme == True)
+		{
+			if ((isset($msgball['folder']))
+			&& (trim($msgball['folder']) != '')
+			&& (isset($msgball['acctnum']))
+			&& ((string)($msgball['acctnum']) != ''))
+			{
+				$ex_folder = $msgball['folder'];
+				$ex_msgnum = $msgball['msgnum'];
+			}
+			else
+			{
+				$ex_folder = $this->prep_folder_out();
+				$ex_msgnum = $this->get_acctnum();
+			}
+			// the cached data is returned as a ready to use array if it exists, or False if not existing
+			$cache_flat_pgw_struct = $this->read_session_cache_item('flat_pgw_struct', $acctnum, $ex_folder, $ex_msgnum);
+			//echo '** flat_pgw_struct: $specific_key ['.$specific_key.'] :: $cache_flat_pgw_struct DUMP<pre>'; print_r($cache_phpgw_header); echo '</pre>';
+			if ($cache_flat_pgw_struct)
+			{
+				if ($this->debug_message_display > 0) { $this->dbug->out('mail_msg(display).get_flat_pgw_struct:  LEAVING returning cached data<br>'); }
+				return $cache_flat_pgw_struct;
+			}
+		}
+		if ($this->debug_message_display > 1) { $this->dbug->out('mail_msg(display).get_flat_pgw_struct: beginning ... no cached data available or caching is not enabled<br>'); }
+		*/
+		
 		if (isset($this->not_set))
 		{
 			$not_set = $this->not_set;
@@ -1486,7 +1556,8 @@ class mail_msg extends mail_msg_wrappers
 			@syntax RULES for determining m_description are 
 			a) if no subpart(s) then we have either "presentable" or "attachment"
 			b) if subpart(s) and a boundary param, then we have a "packagelist" (HeadersOnly)
-			c) else we have a container
+			c) else we have a container.
+			Presentable can be qualified with "image".
 			*/
 			if ((int)$part_nice[$i]['ex_num_subparts'] < 1)
 			{
@@ -1512,6 +1583,7 @@ class mail_msg extends mail_msg_wrappers
 				else
 				{
 					// not an attachment, nor an attachment that's an image for inline display
+					// so it is presentable
 					$part_nice[$i]['m_description'] = 'presentable';
 				}
 			}
@@ -1532,7 +1604,9 @@ class mail_msg extends mail_msg_wrappers
 			// at least for now, keywords "plain" and "html" are needed below
 			$part_nice[$i]['m_keywords'] = '';
 			if ((stristr($part_nice[$i]['subtype'], 'plain'))
-			|| (stristr($part_nice[$i]['subtype'], 'html')))
+			|| (stristr($part_nice[$i]['subtype'], 'html'))
+			// enriched = part of APPLE MAIL multipart / alternative subpart where the html part usually is
+			|| (stristr($part_nice[$i]['subtype'], 'enriched')))
 			{
 				$part_nice[$i]['m_keywords'] .= $part_nice[$i]['subtype'] .' ';
 			}
@@ -1542,6 +1616,95 @@ class mail_msg extends mail_msg_wrappers
 				$part_nice[$i]['m_keywords'] .= $part_nice[$i]['encoding'] .' ';
 			}
 			
+			// keyword "alt_hide"
+			// Also a keywords we use can be "alt_hide" which means that the 
+			// part is part of an alternative pair of parts and this one can be hidden because 
+			// it is the simpler text part, while we desire to show the html part as the better-to-show 
+			// part, and showing 2 of the same, i.e. both of the alternatives, is undesirable.
+			// so is a presentable part of an alternative pair of parts
+			if ($part_nice[$i]['m_description'] == 'presentable')
+			{
+				// TEST THIS: 
+				// (a) is the part text/plain
+				// (b) if so, is that parent marked as multipart/related
+				//// (c) is the very next part HTML, because apple uses "enhanced" which looks b0rked, 
+				//// so that case needs the simpler part to also be shown.
+				////UPDATE this (c) thing will fail if the html is in a related nest, so skip this check
+				// and CHECK 2 TIMES: note that we test 2 times
+				// (1) the first is where the mail has only 2 parts 
+				// and AngleMail flatening code has left the top level headers out of the 
+				// flat array, as it does sometimes.
+				// (2) The second is for anything deep enough so that the parent part IS in the 
+				// flat array, which is more typical.
+				$presentable_parent_idx = $part_nice[$i]['ex_parent_flat_idx'];
+				if (
+				   ($part_nice[$i]['type'] == 'text')
+				&& ($part_nice[$i]['subtype'] == 'plain')
+				&& ($part_nice[$presentable_parent_idx]['ex_parent_flat_idx'] == $not_set)
+				&& (stristr($struct->type, 'multipart'))
+				// SHOULD BE THIS   && ((string)$struct->type == '1')  // "1" = "multipart"
+				&& (stristr($struct->subtype, 'alternative'))
+				//&& ($part_nice[$i+1]['type'] == 'text')
+				//&& ($part_nice[$i+1]['subtype'] == 'html')
+				)
+				{
+					// SET THIS FLAG: then, in presentation loop, we can decide not to show it
+					$part_nice[$i]['m_keywords'] .= 'alt_hide' .' ';
+				}
+				// same as above but we do not need to look all the way back to the top level headers
+				// ie because the parent part is included in the flat parts array
+				elseif (
+				   ($part_nice[$i]['ex_level_debth'] > 1)
+				&& ($part_nice[$i]['type'] == 'text')
+				&& ($part_nice[$i]['subtype'] == 'plain')
+				&& ($part_nice[$presentable_parent_idx]['type'] == 'multipart')
+				&& ($part_nice[$presentable_parent_idx]['subtype'] == 'alternative')
+				//&& ($part_nice[$i+1]['type'] == 'text')
+				//&& ($part_nice[$i+1]['subtype'] == 'html')
+				)
+				{
+					// SET THIS FLAG: then, in presentation loop, we can decide not to show it
+					$part_nice[$i]['m_keywords'] .= 'alt_hide' .' ';
+				}
+			}
+			// more keyword "alt_hide"
+			// ALSO use this same kind of test to hide images that get swapped into the main related part, 
+			// so we do  not show these images on their own
+			if ($part_nice[$i]['m_description'] == 'presentable/image')
+			{
+				//echo '('.__LINE__.') presentable/image , $struct->type ['.$struct->type.'] , $struct->subtype ['.$struct->subtype.']<br>';
+				// TEST THIS: 
+				// * IS the parent marked as multipart/related
+				// and CHECK 2 TIMES: note that we test 2 times
+				// (1) the first is where the mail has only 2 parts 
+				// and AngleMail flatening code has left the top level headers out of the 
+				// flat array, as it does sometimes.
+				// (2) The second is for anything deep enough so that the parent part IS in the 
+				// flat array, which is more typical.
+				$presentable_parent_idx = $part_nice[$i]['ex_parent_flat_idx'];
+				if (
+				   //ok I am an image, is my parent the top level headers
+				   ($part_nice[$i]['ex_parent_flat_idx'] == $not_set)
+				&& ((string)$struct->type == '1')  // "1" = "multipart"
+				&& (stristr($struct->subtype, 'related'))
+				)
+				{
+					//echo '('.__LINE__.') presentable/image , alt_hide related to top level<br>';
+					// SET THIS FLAG: then, in presentation loop, we can decide not to show it
+					$part_nice[$i]['m_keywords'] .= 'alt_hide' .' ';
+				}
+				// same as above but we do not need to look all the way back to the top level headers
+				// ie because the parent part is included in the flat parts array
+				elseif (
+				   ($part_nice[$i]['ex_level_debth'] > 1)
+				&& ($part_nice[$presentable_parent_idx]['type'] == 'multipart')
+				&& ($part_nice[$presentable_parent_idx]['subtype'] == 'related')
+				)
+				{
+					// SET THIS FLAG: then, in presentation loop, we can decide not to show it
+					$part_nice[$i]['m_keywords'] .= 'alt_hide' .' ';
+				}
+			}
 			
 			// ------  EXCEPTIONS TO THE RULES  -------
 			
@@ -1551,16 +1714,85 @@ class mail_msg extends mail_msg_wrappers
 			// the following "multipart/SUBTYPES" should be treated as
 			// "container" instead of "packagelist"
 			
-			// (1) Exception: multipart/RELATED: for ex. Outl00k Stationary handling
+			// (1a) Exception: multipart/RELATED: for ex. Outl00k Stationary handling
 			// where an HTML part has references to other parts (images) in it
-			// treat it's *child* multipart/alternative as "container", not as "packagelist"
+			// the first 2 tests simple set a "m_html_related_kids" flag
+			// the 3rd test is another form of exception concerning related parts
+			// which requires a change to "container" instead of "packagelist"
 			$part_nice[$i]['m_html_related_kids'] = False;
 			$parent_idx = $part_nice[$i]['ex_parent_flat_idx'];
-			if (($part_nice[$i]['ex_level_debth'] > 1)  // does not apply to level1, b/c level1 has no parent
+			// level 1 has no parent in part_nice because we skip to presentable stuff
+			// so in that case we need to check top level headers
+			if (
+			   ($part_nice[$i]['type'] == 'text')
+			&& ($part_nice[$i]['subtype'] == 'html')
+			&& ($part_nice[$parent_idx]['type'] == 'multipart')
+			&& ($part_nice[$parent_idx]['subtype'] == 'alternative')
+			&& ($part_nice[$parent_idx]['ex_parent_flat_idx'] == $not_set)
+			&& (stristr($struct->subtype, 'RELATED'))
+			)
+			{
+				// SET THIS FLAG: then, in presentation loop, see if a HTML part 
+				// has a parent with this flag - if so, replace "id" reference(s) with 
+				// http... mime reference(s). Example: MS Stationary mail's image background
+				$part_nice[$parent_idx]['m_html_related_kids'] = True;
+				//$part_nice[$i]['m_keywords'] .= 'id_swap' .' ';
+				$part_nice[$i]['m_keywords'] .= 'related' .' ';
+			}
+			// same as above but we do not need to look all the way back to the top level headers
+			// ie an html part with a parent that is explicitly set as RELATED
+			elseif (
+			   ($part_nice[$i]['ex_level_debth'] > 1)
+			&& ($part_nice[$i]['type'] == 'text')
+			&& ($part_nice[$i]['subtype'] == 'html')
+			&& ($part_nice[$parent_idx]['type'] == 'multipart')
+			&& ($part_nice[$parent_idx]['subtype'] == 'related')
+			)
+			{
+				// SET THIS FLAG: then, in presentation loop, see if a HTML part 
+				// has a parent with this flag - if so, replace "id" reference(s) with 
+				// http... mime reference(s). Example: MS Stationary mail's image background
+				$part_nice[$parent_idx]['m_html_related_kids'] = True;
+				//$part_nice[$i]['m_keywords'] .= 'id_swap' .' ';
+				$part_nice[$i]['m_keywords'] .= 'related' .' ';
+			}
+			// (1b) Exception: multipart/RELATED: for ex. Outl00k Stationary handling
+			// where an HTML part has references to other parts (images) in it
+			// treat it's *child* multipart/alternative as "container", not as "packagelist"
+			// similar to above but more serious, MANIPULATE "container" vs. "packagelist"
+			// while also determining is it has related html style child parts
+			elseif (($part_nice[$i]['ex_level_debth'] > 1)  // does not apply to level1, b/c level1 has no parent
 			&& ($part_nice[$i]['type'] == 'multipart')
 			&& ($part_nice[$i]['subtype'] == 'alternative')
 			&& ($part_nice[$parent_idx]['type'] == 'multipart')
 			&& ($part_nice[$parent_idx]['subtype'] == 'related'))
+			{
+				// NOTE: treat it's *child* multipart/alternative as "container", not as "packagelist"
+				$part_nice[$i]['m_description'] = 'container';
+				$part_nice[$i]['m_keywords'] .= 'Force Container, id_swap' .' ';
+				// SET THIS FLAG: then, in presentation loop, see if a HTML part 
+				// has a parent with this flag - if so, replace "id" reference(s) with 
+				// http... mime reference(s). Example: MS Stationary mail's image background
+				$part_nice[$i]['m_html_related_kids'] = True;
+				$part_nice[$i]['m_keywords'] .= 'id_swap' .' ';
+			}
+			// (1c) Exception: multipart/RELATED: for ex.  "courier-users digest, Vol 1 #2565 - 6 msgs" segment 3.1
+			// DAMN this is similar to exception 1b, I wonder if I screwed 1b up and 1c is the real thing?
+			// where an HTML part has references to other parts (images) in it
+			// treat it's *child* multipart/alternative as "container", not as "packagelist"
+			// similar to above but more serious, MANIPULATE "container" vs. "packagelist"
+			// while also determining is it has related html style child parts
+			//this is tricky because it is part of a segment alternative, and this is the htm part encased in a related subsegment
+			// - 3.1.0 segment header (multipart / alternative)
+			// -- 3.1.1 plain part  (text / plain)
+			// --- 3.1.2 related subpart (subsegment) in entirety, both html part and image part (multipart / related) *** NEEDS TO BE A CONTAINER ***
+			// ---- 3.1.2.1 html part of the related segment (text / html)
+			// ---- 3.1.2.2 image part of the related subsegment  (image / gif)
+			elseif (($part_nice[$i]['ex_level_debth'] > 1)  // does not apply to level1, b/c level1 has no parent
+			&& ($part_nice[$i]['type'] == 'multipart')
+			&& ($part_nice[$i]['subtype'] == 'related')
+			&& ($part_nice[$parent_idx]['type'] == 'multipart')
+			&& ($part_nice[$parent_idx]['subtype'] == 'alternative'))
 			{
 				// NOTE: treat it's *child* multipart/alternative as "container", not as "packagelist"
 				$part_nice[$i]['m_description'] = 'container';
@@ -1612,9 +1844,11 @@ class mail_msg extends mail_msg_wrappers
 			$click_info = $this->make_part_clickable($part_nice[$i], $this->get_arg_value('msgball'));
 			$part_nice[$i]['ex_part_href'] = $click_info['part_href'];
 			$part_nice[$i]['ex_part_clickable'] = $click_info['part_clickable'];
-		}		
+		}
 		
 		// finally, return the customized flat phpgw msg structure array
+		if ($this->debug_message_display > 2) { $this->dbug->out('mail_msg(display).get_flat_pgw_struct: returning $part_nice DUMP:', $part_nice); }
+		if ($this->debug_message_display > 0) { $this->dbug->out('mail_msg(display).get_flat_pgw_struct: LEAVING we made a $part_nice, returning it<br>'); }
 		return $part_nice;
 	}
 
@@ -1652,9 +1886,11 @@ class mail_msg extends mail_msg_wrappers
 		
 		// 1: TYPE
 		$part_nice['type'] = $not_set; // Default value if not filled
-		if (isset($part->type) && $part->type)
+		// note that 0 (the number ZERO) IS A VALID possible value here, so 0 != not filled ! 
+		if ((isset($part->type)) 
+		&& (trim((string)$part->type) != ''))
 		{
-			switch ($part->type)
+			switch ((int)$part->type)
 			{
 				case TYPETEXT		: $part_type = 'text'; break;
 				case TYPEMULTIPART	: $part_type = 'multipart'; break;
@@ -1679,9 +1915,11 @@ class mail_msg extends mail_msg_wrappers
 		
 		// 2: ENCODING
 		$part_nice['encoding'] = $not_set; // Default value if not filled
-		if (isset($part->encoding) && $part->encoding)
+		// note that 0 (the number ZERO) IS A VALID possible value here, so 0 != not filled ! 
+		if ((isset($part->encoding)) 
+		&& (trim((string)$part->encoding) != ''))
 		{
-			switch ($part->encoding)
+			switch ((int)$part->encoding)
 			{
 				case ENC7BIT		: $part_encoding = '7bit'; break;
 				case ENC8BIT		: $part_encoding = '8bit'; break;
@@ -2053,6 +2291,8 @@ class mail_msg extends mail_msg_wrappers
 			.'&encoding=' .$url_part_encoding); 
 		// Make CLICKABLE link directly to this attachment or part
 		$href_part_name = $this->decode_header_string($part_name);
+		// escape certain undesirable chars before HTML display
+		$href_part_name = $this->htmlspecialchars_encode($href_part_name);
 		// ex_part_clickable
 		$ex_part_clickable = '<a href="'.$ex_part_href.'">'.$href_part_name.'</a>';
 		// put these two vars in an array, and pass it back to the calling process
@@ -2206,6 +2446,9 @@ class mail_msg extends mail_msg_wrappers
 			&& ($this->get_arg_value('tf') != ''))
 			{
 				$_tf = $this->prep_folder_in($this->get_arg_value('tf'));
+				// NOTE if the folder name has html unfriendly chars, like " or <, we need to do this just in case
+				//echo '$this->htmlspecialchars_encode($_tf) ['.$this->htmlspecialchars_encode($_tf).'] <br>';
+				$_tf = $this->htmlspecialchars_encode($_tf);
 			}
 			else
 			{
@@ -2216,15 +2459,15 @@ class mail_msg extends mail_msg_wrappers
 			{
 				// these args are filled, indicating a MOVE was attempted
 				// but since 0 messages were in fact moved, there must have been an error
-				$report_this = lang("Error moving messages to").' '.$_tf;
+				$report_this = lang('Error moving messages to').' '.$_tf;
 			}
 			elseif ($this->get_arg_value('tm') == 1)
 			{
-				$report_this = lang("1 message has been moved to").' '.$_tf;
+				$report_this = lang('1 message has been moved to').' '.$_tf;
 			}
 			else
 			{
-				$report_this = $this->get_arg_value('tm').' '.lang("messages have been moved to").' '.$_tf;
+				$report_this = $this->get_arg_value('tm').' '.lang('messages have been moved to').' '.$_tf;
 			}
 		}
 		else
@@ -2295,6 +2538,11 @@ class mail_msg extends mail_msg_wrappers
 		{
 			// no param was specified, so we use the arg value "force_showsize", its an external CPG aquired arg
 			// in this case, user has requested override of this speed skip option
+			$do_show_size = True;
+		}
+		elseif ($this->get_isset_pref('show_foldersize'))
+		{
+			// user has set the pref to always show the size of the folder
 			$do_show_size = True;
 		}
 		// if we get to here and $do_show_size  has not specifically been set to True, then False is the fallback default
@@ -2419,15 +2667,21 @@ class mail_msg extends mail_msg_wrappers
 		// get a numbered array list of all message numbers in that folder, sorted and ordered
 		if (!$msgball_list)
 		{
+			// NOW WE USE FOLDER NAME ALSO IN THE DATA KEY FOR MSGBALL_LIST
+			$ex_folder = $folder_info['fldball']['folder'];
+			
 			// msgball_list may be thousands of items, try to fill the cache and get a reference
 			//GLOBALS[phpgw_session][phpgw_app_sessions][email]
-			$this->get_msgball_list();
-			$ex_acctnum = $this->get_acctnum();
+			// fill the cache ? - NO this is folly
+			//$this->get_msgball_list();
+			//$ex_acctnum = $this->get_acctnum();
+			// TESTING get the acctnum from the folder info
+			$ex_acctnum = $folder_info['fldball']['acctnum'];
 			if (($this->session_cache_enabled == True)
-			&& (isset($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'])))
+			&& (isset($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list'][$ex_folder]['msgball_list'])))
 			//&& (isset($GLOBALS['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'])))
 			{
-				$msgball_list =& $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'];
+				$msgball_list =& $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list'][$ex_folder]['msgball_list'];
 				//$msgball_list =& $GLOBALS['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'];
 				//{ echo 'mail_msg_display: get_msg_list_display('.__LINE__.'): $msgball_list *REFERENCE* DUMP:<pre>'; print_r($msgball_list); echo '</pre>'; } 
 				//$msgball_list = $GLOBALS['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'];
@@ -2435,7 +2689,9 @@ class mail_msg extends mail_msg_wrappers
 			else
 			{
 				// ok we could not obtain a reference for some reason, get a COPY then
-				$msgball_list = $this->get_msgball_list();
+				//$msgball_list = $this->get_msgball_list();
+				// EXPERIMENT with passing arge to this
+				$msgball_list = $this->get_msgball_list($ex_acctnum, $ex_folder);
 			}
 		}
 
@@ -2517,6 +2773,54 @@ class mail_msg extends mail_msg_wrappers
 			// Message Information: THE MESSAGE'S HEADERS ENVELOPE DATA
 			$hdr_envelope = $this->phpgw_header($this_loop_msgball);
 			
+			/*
+			// begin GMT handling by "acros"
+			// pongo bien la hora de los correos (GMT)
+#			echo"hora inicial $hdr_envelope->date<br>";
+#						echo"hora inicial $hdr_envelope->udate<br>";
+///modificacion
+$msg_date2=$hdr_envelope->date;
+$comma = strpos($msg_date2,',');
+			if($comma)
+			{
+				$msg_date2 = substr($msg_date2,$comma + 2);
+			}
+			//echo 'Msg Date : '.$msg_date."<br>\n";
+			$dta = array();
+			$ta = array();
+			
+			$dta = explode(' ',$msg_date2);
+			$ta = explode(':',$dta[3]);
+			if(substr($dta[4],0,3) <> 'GMT')
+			{
+				$tzoffset = substr($dta[4],0,1);
+				(int)$tzhours = substr($dta[4],1,2);
+				(int)$tzmins = substr($dta[4],3,2);
+#echo"$ta[0] y $tzoffset";
+				switch ($tzoffset)
+				{
+					case '+': 
+						(int)$ta[0] -= (int)$tzhours;
+						(int)$ta[1] -= (int)$tzmins;
+#echo"$ta[0]";
+						break;
+					case '-':
+						(int)$ta[0] += (int)$tzhours;
+						(int)$ta[1] += (int)$tzmins;
+						break;
+				}
+			}
+			
+			$new_time = mktime($ta[0],$ta[1],$ta[2],$GLOBALS['month_array'][strtolower($dta[1])],$dta[0],$dta[2]) - ((60 * 60) * intval($GLOBALS['phpgw_info']['user']['preferences']['common']['tzoffset']));
+$new_time2=gmdate("D, d M Y H:m:s",$new_time)." GMT";
+$hdr_envelope->date = $new_time2;
+$hdr_envelope->udate = $new_time;
+#echo"hora final $hdr_envelope->udate<br>";
+#echo"hora final $hdr_envelope->date<br>";
+			#$message_date = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
+//fin modificacion			
+// end GMT handling by "acros"
+			*/
 			// MESSAGE REFERENCE (a) NUMBER (b) FOLDER (c) ACCTNUM and (d) FAKE_URL EMBEDDED MULTI DATA
 			$msg_list_display[$x]['msgnum'] = $this_loop_msgball['msgnum'];
 			$msg_list_display[$x]['folder'] = $this_loop_msgball['folder'];
@@ -2633,6 +2937,8 @@ class mail_msg extends mail_msg_wrappers
 			{
 				$personal = $replyto;
 			}
+			// escape certain undesirable chars before HTML display
+			$personal = $this->htmlspecialchars_encode($personal);
 			
 			if (($this->get_pref_value('show_addresses') == 'from')
 			&& ($personal != $from->mailbox.'@'.$from->host))
@@ -2680,7 +2986,8 @@ class mail_msg extends mail_msg_wrappers
 			// ----  From Name ----
 			// Part 1 of 2 of the From string (see above)
 			// NOTE: wasn't this decode_header_string proc already done above?
-			$msg_list_display[$x]['from_name'] = $this->decode_header_string($personal);
+			//$msg_list_display[$x]['from_name'] = $this->decode_header_string($personal);
+			$msg_list_display[$x]['from_name'] = $personal;
 
 			// ----  From Link  ----
 			// this is a URL that can be used to turn the "From String" into a clickable link
@@ -2712,6 +3019,7 @@ class mail_msg extends mail_msg_wrappers
 			// DATE
 			// date_time has both date and time, which probably is long enough to make a TD cell wrap text to 2 lines
 			$msg_date_time = $GLOBALS['phpgw']->common->show_date($hdr_envelope->udate);
+//echo"$msg_date_time";
 			if($GLOBALS['phpgw']->common->show_date($hdr_envelope->udate,'Ymd') != date('Ymd'))
 			{
 				// this strips the time part, leaving only the date, better for single line TD cells
@@ -2731,11 +3039,18 @@ class mail_msg extends mail_msg_wrappers
 			$to_data_array = array();
 			if (!$hdr_envelope->to)
 			{
-				$to_data_final = lang('undisclosed_recipients');
+				$to_data_final = lang('undisclosed recipients');
 			}
 			else
 			{
-				for ($z = 0; $z < count($hdr_envelope->to); $z++)
+				$to_loops = count($hdr_envelope->to);
+				// begin test of Maz Num of To loop limitation
+				$max_to_loops = 25;
+				if ($to_loops > $max_to_loops)
+				{
+					$to_loops = $max_to_loops;
+				}
+				for ($z = 0; $z < $to_loops; $z++)
 				{
 					$topeople = $hdr_envelope->to[$z];
 					$to_plain = $topeople->mailbox.'@'.$topeople->host;
@@ -2745,8 +3060,10 @@ class mail_msg extends mail_msg_wrappers
 					}
 					else
 					{
-						$to_person = $GLOBALS['phpgw']->msg->decode_header_string($topeople->personal);
+						$to_person = $this->decode_header_string($topeople->personal);
 					}
+					// escape certain undesirable chars before HTML display
+					$to_person = $this->htmlspecialchars_encode($to_person);
 					$to_data_array[$z] = $to_person;
 				}
 				// throw a spacer comma in between addresses, if more than one
@@ -2776,8 +3093,8 @@ class mail_msg extends mail_msg_wrappers
 	*/
 	function _image_on($appname,$image,$extension='_on',$navbar=False)
 	{
-		//$prefer_ext = '.gif';
-		$prefer_ext = '.png';
+		$prefer_ext = '.gif';
+		//$prefer_ext = '.png';
 		return $GLOBALS['phpgw_info']['server']['webserver_url'].'/'.$appname.'/templates/default/images'.'/'.$image.$prefer_ext;
 	}
 

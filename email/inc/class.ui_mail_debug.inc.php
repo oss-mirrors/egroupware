@@ -48,7 +48,7 @@
 		var $widgets;
 		var $debug=0;
 		//var $debug=1;
-		
+		var $tpl='##NOTHING##';
 		
 		/*!
 		@function ui_mail_debug
@@ -59,7 +59,7 @@
 			if ($this->debug > 0) { echo 'ENTERING: email.ui_mail_debug.CONSTRUCTOR'.'<br>'."\r\n"; }
 			
 			$this->widgets = CreateObject("email.html_widgets");
-			
+			$this->ensure_tpl_object();
 			if ($this->debug > 0) { echo 'EXIT: email.ui_mail_debug.CONSTRUCTOR'.'<br>'."\r\n"; }
 		}
 		
@@ -79,6 +79,7 @@
 			// FIX ME: do_login False when using msg for UTILITY, does that still work?
 			//$this->msg_bootstrap->set_do_login(False);
 			$this->msg_bootstrap->ensure_mail_msg_exists('emai.ui_mail_debug.invoke_bootatrap', $this->debug);		
+			
 			if ($this->debug > 0) { echo 'EXITing: email.ui_mail_debug.invoke_bootatrap'.'<br>'; }
 		}
 		
@@ -102,6 +103,30 @@
 			//$GLOBALS['phpgw']->common->phpgw_exit(False);
 			if ($this->debug > 0) { echo 'EXITing: email.ui_mail_debug.end_msg_session_object'.'<br>'; }
 		}
+
+		/*!
+		@function ensure_tpl_object
+		@abstract sets class var "tpl" depending on whether or not XSLT is in use or not.
+		@author Angles
+		*/
+		function ensure_tpl_object()
+		{
+			// NOW WE KNOW WE HAVE A MSG OBJECT so handle xslt tpl issue now
+			if ($this->tpl == '##NOTHING##')
+			{
+				if (is_object($GLOBALS['phpgw']->xslttpl) == False)
+				{
+					// we point to the global template for this version of phpgw templatings
+					$this->tpl =& $GLOBALS['phpgw']->template;
+					//$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+				}
+				else
+				{
+					// we use a PRIVATE template object for 0.9.14 conpat and during xslt porting
+					$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+				}
+			}
+		}
 		
 		/**************************************************************************\
 		*	CODE
@@ -119,151 +144,205 @@
 		{
 			if ($this->debug > 0) { echo 'ENTERING: email.ui_mail_debug.index'.'<br>'; }
 			
-			unset($GLOBALS['phpgw_info']['flags']['noheader']);
-			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-			$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
-			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
-			$GLOBALS['phpgw']->common->phpgw_header();
+			if (is_object($GLOBALS['phpgw']->xslttpl) == False)
+			{
+				unset($GLOBALS['phpgw_info']['flags']['noheader']);
+				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+				$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+				$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
+				$GLOBALS['phpgw']->common->phpgw_header();
+			}
+			else
+			{
+				$GLOBALS['phpgw']->xslttpl->add_file(array('app_data'));
+			}
 			
-			$GLOBALS['phpgw']->template->set_file(array(
+			$this->tpl->set_file(array(
 				'T_debug_main' => 'debug.tpl'
 			));
-			$GLOBALS['phpgw']->template->set_block('T_debug_main','B_before_echo','V_before_echo');
-			$GLOBALS['phpgw']->template->set_block('T_debug_main','B_after_echo','V_after_echo');
+			$this->tpl->set_block('T_debug_main','B_before_echo','V_before_echo');
+			$this->tpl->set_block('T_debug_main','B_after_echo','V_after_echo');
 			
 			
-			$GLOBALS['phpgw']->template->set_var('page_desc', 'Email Debug Stuff');
+			$this->tpl->set_var('page_desc', 'Email Debug Stuff');
 			
 			// make a list of available debub calls
 			// Enviornment data
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=phpinfo'));
 			//$this->widgets->set_href_target('new');
 			$this->widgets->set_href_clickme('phpinfo page');
-			$GLOBALS['phpgw']->template->set_var('func_E1', $this->widgets->get_href());
+			$this->tpl->set_var('func_E1', $this->widgets->get_href());
 			
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=get_defined_constants'));
 			$this->widgets->set_href_target('new');
 			$this->widgets->set_href_clickme('get_defined_constants DUMP');
-			$GLOBALS['phpgw']->template->set_var('func_E2', $this->widgets->get_href());
+			$this->tpl->set_var('func_E2', $this->widgets->get_href());
 			
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=globals_dump'));
 			$this->widgets->set_href_target('new');
 			$this->widgets->set_href_clickme('dump the entire globals[] array');
-			$GLOBALS['phpgw']->template->set_var('func_E3', $this->widgets->get_href());
+			$this->tpl->set_var('func_E3', $this->widgets->get_href());
 			
 			// DUMP functions
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=common.debug_list_core_functions'));
 			$this->widgets->set_href_clickme('common.debug_list_core_functions');
-			$GLOBALS['phpgw']->template->set_var('func_D1', $this->widgets->get_href());
+			$this->tpl->set_var('func_D1', $this->widgets->get_href());
 			
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=globals_phpgw_dump'));
 			$this->widgets->set_href_clickme('dump the entire globals[phpgw] structure');
-			$GLOBALS['phpgw']->template->set_var('func_D2', $this->widgets->get_href());
+			$this->tpl->set_var('func_D2', $this->widgets->get_href());
 			
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=globals_phpgw_info_dump'));
 			$this->widgets->set_href_clickme('dump the entire globals[phpgw_info] structure');
-			$GLOBALS['phpgw']->template->set_var('func_D3', $this->widgets->get_href());
+			$this->tpl->set_var('func_D3', $this->widgets->get_href());
 			
 			//$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=globals_phpgw_session_dump'));
 			//$this->widgets->set_href_clickme('dump the entire globals[phpgw_session] structure');
-			//$GLOBALS['phpgw']->template->set_var('func_D4', $this->widgets->get_href());
+			//$this->tpl->set_var('func_D4', $this->widgets->get_href());
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=ref_session_dump'));
 			$this->widgets->set_href_clickme('dump the entire msg->ref_SESSION structure');
-			$GLOBALS['phpgw']->template->set_var('func_D4', $this->widgets->get_href());
+			$this->tpl->set_var('func_D4', $this->widgets->get_href());
 			
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=msg_object_dump'));
 			$this->widgets->set_href_clickme('dump the entire globals[phpgw]->msg object');
-			$GLOBALS['phpgw']->template->set_var('func_D5', $this->widgets->get_href());
+			$this->tpl->set_var('func_D5', $this->widgets->get_href());
+			
+			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=preferences_object_dump'));
+			$this->widgets->set_href_clickme('dump the entire $GLOBALS[phpgw]->preferences object');
+			$this->tpl->set_var('func_D6', $this->widgets->get_href());
 			
 			// inline docs
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/doc/inlinedocparser.php?app=phpgwapi'));
 			$this->widgets->set_href_target('new');
 			$this->widgets->set_href_clickme('inlinedocparser for phpgwapi');			
-			$GLOBALS['phpgw']->template->set_var('func_I1', $this->widgets->get_href());
+			$this->tpl->set_var('func_I1', $this->widgets->get_href());
 			
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/doc/inlinedocparser.php?app=phpwebhosting'));
 			$this->widgets->set_href_target('new');
 			$this->widgets->set_href_clickme('inlinedocparser for phpwebhosing VFS');
-			$GLOBALS['phpgw']->template->set_var('func_I2', $this->widgets->get_href());
+			$this->tpl->set_var('func_I2', $this->widgets->get_href());
 			
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/doc/inlinedocparser.php?app=email'));
 			$this->widgets->set_href_target('new');
 			$this->widgets->set_href_clickme('inlinedocparser for email');
-			$GLOBALS['phpgw']->template->set_var('func_I3', $this->widgets->get_href());
+			$this->tpl->set_var('func_I3', $this->widgets->get_href());
 			
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/doc/inlinedocparser.php?app=email&fn=class.mail_msg_base.inc.php'));
 			$this->widgets->set_href_target('new');
 			$this->widgets->set_href_clickme('inlinedocparser for email, file "class.mail_msg_base.inc.php"');
-			$GLOBALS['phpgw']->template->set_var('func_I4', $this->widgets->get_href());
+			$this->tpl->set_var('func_I4', $this->widgets->get_href());
 			
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/doc/inlinedocparser.php?app=email&fn=class.mail_msg_display.inc.php'));
 			$this->widgets->set_href_target('new');
 			$this->widgets->set_href_clickme('inlinedocparser for email, file "class.mail_msg_display.inc.php"');
-			$GLOBALS['phpgw']->template->set_var('func_I5', $this->widgets->get_href());
+			$this->tpl->set_var('func_I5', $this->widgets->get_href());
 			
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/doc/inlinedocparser.php?app=email&fn=class.mail_msg_wrappers.inc.php'));
 			$this->widgets->set_href_target('new');
 			$this->widgets->set_href_clickme('inlinedocparser for email, file "class.mail_msg_wrappers.inc.php"');
-			$GLOBALS['phpgw']->template->set_var('func_I6', $this->widgets->get_href());
+			$this->tpl->set_var('func_I6', $this->widgets->get_href());
 			
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/doc/inlinedocparser.php?app=email&fn=class.mail_dcom_imap_sock.inc.php'));
 			$this->widgets->set_href_target('new');
 			$this->widgets->set_href_clickme('inlinedocparser for email, file "class.mail_dcom_imap_sock.inc.php"');
-			$GLOBALS['phpgw']->template->set_var('func_I7', $this->widgets->get_href());
+			$this->tpl->set_var('func_I7', $this->widgets->get_href());
 			
 			// other stuff
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=copyinteresting'));
 			$this->widgets->set_href_clickme('copy emails in BOB interesting to Local folder (no workie)');
-			$GLOBALS['phpgw']->template->set_var('func_O1', $this->widgets->get_href());
+			$this->tpl->set_var('func_O1', $this->widgets->get_href());
 			
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=env_test'));
 			$this->widgets->set_href_clickme('utility for testing env code parts');
-			$GLOBALS['phpgw']->template->set_var('func_O2', $this->widgets->get_href());
+			$this->tpl->set_var('func_O2', $this->widgets->get_href());
 			
-			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=make_table'));
+			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=db_admin_make_table'));
 			$this->widgets->set_href_clickme('Create the email DB table');
-			$GLOBALS['phpgw']->template->set_var('func_O3', $this->widgets->get_href());
+			$this->tpl->set_var('func_O3', $this->widgets->get_href());
 			
-			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=rm_table'));
+			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=db_admin_rm_table'));
 			$this->widgets->set_href_clickme('Delete the email DB table');
-			$GLOBALS['phpgw']->template->set_var('func_O4', $this->widgets->get_href());
+			$this->tpl->set_var('func_O4', $this->widgets->get_href());
 			
-			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=so_am_table_exists'));
+			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=db_admin_clear_entire_table'));
+			$this->widgets->set_href_clickme('Wipe the email DB table');
+			$this->tpl->set_var('func_O5', $this->widgets->get_href());
+			
+			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=db_am_table_exists'));
 			$this->widgets->set_href_clickme('Check if email DB table exists');
-			$GLOBALS['phpgw']->template->set_var('func_O5', $this->widgets->get_href());
+			$this->tpl->set_var('func_O6', $this->widgets->get_href());
 			
-			$GLOBALS['phpgw']->template->parse('V_before_echo','B_before_echo');
-			$GLOBALS['phpgw']->template->pfp('out','T_debug_main');
-			
-			// IF we need to show debug data, now is the time
-			$this->show_desired_data();
-			
+			if (is_object($GLOBALS['phpgw']->xslttpl) == False)
+			{
+				$this->tpl->parse('V_before_echo','B_before_echo');
+				$this->tpl->pfp('out','T_debug_main');
+				// IF we need to show debug data, now is the time
+				$this->show_desired_data();
+				// new way to handle debug data, if there is debug data, this will put it in the template source data vars
+				$this->tpl->set_var('debugdata', $GLOBALS['phpgw']->msg->dbug->notice_pagedone());
+				// clear the previous tpl var and fill the ending one
+				$this->tpl->set_var('V_before_echo','');
+				$this->tpl->parse('V_after_echo','B_after_echo');
+				$this->tpl->pfp('out','T_debug_main');
+			}
+			else
+			{
+				$this->tpl->set_unknowns('comment');
+				//$this->tpl->set_unknowns('remove');
+				$data = array();
+				//$data['appname'] = lang('E-Mail');
+				//$data['function_msg'] = lang('Folders');
+				$GLOBALS['phpgw_info']['flags']['email']['app_header'] = lang('E-Mail') . ': ' . lang('Debugging Page');
+				// IF we need to show debug data, now is the time
+				$this->show_desired_data();
+				// new way to handle debug data, if there is debug data, this will put it in the template source data vars
+				$this->tpl->set_var('debugdata', $GLOBALS['phpgw']->msg->dbug->notice_pagedone());
+				$data['email_page'] = $this->tpl->parse('out','T_debug_main');
+				//$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('generic_out' => $data));
+				$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('generic_out' => $data));
+			}
 			
 			if ($this->debug > 0) { echo 'EXITing...: email.ui_mail_debug.index'.'<br>'; }
 			
-			// clear the previous tpl var and fill the ending one
-			$GLOBALS['phpgw']->template->set_var('V_before_echo','');
-			$GLOBALS['phpgw']->template->parse('V_after_echo','B_after_echo');
-			$GLOBALS['phpgw']->template->pfp('out','T_debug_main');
+			$this->end_msg_session_object();
 		}
 		
 		function show_desired_data()
 		{
-			// DAMN, we need a ->msg just to do the ref_GET stuff
+			// DAMN, we need a ->msg just to do the ref_GET stuff and tpl stuff
 			$this->invoke_bootatrap();
 			
-			echo 'REQUEST_URI: '.$GLOBALS['phpgw']->msg->ref_SERVER['REQUEST_URI'].'<br>';
-			echo 'QUERY_STRING: '.$GLOBALS['phpgw']->msg->ref_SERVER['QUERY_STRING'].'<br>';
+			// NOW WE HAVE A MSG OBJECT!!! we can use its debug functions now
+			
+			//echo 'REQUEST_URI: '.$GLOBALS['phpgw']->msg->ref_SERVER['REQUEST_URI'].'<br>';
+			//echo 'QUERY_STRING: '.$GLOBALS['phpgw']->msg->ref_SERVER['QUERY_STRING'].'<br>';
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): REQUEST_URI: '.$GLOBALS['phpgw']->msg->ref_SERVER['REQUEST_URI'].'<br>');
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): QUERY_STRING: '.$GLOBALS['phpgw']->msg->ref_SERVER['QUERY_STRING'].'<br>');
+			
+			$desired_function = '';
+			$uri_confirm = '';
 			
 			if ((isset($GLOBALS['phpgw']->msg->ref_GET['dfunc']))
 			&& ($GLOBALS['phpgw']->msg->ref_GET['dfunc'] != ''))
 			{
 				$desired_function = $GLOBALS['phpgw']->msg->ref_GET['dfunc'];
-				echo "You requested: ".$desired_function.'<br>'."\r\n";
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): You requested: '.$desired_function.'<br>');
+				
+				// some things require you manually type in "&confirn=1" to really make it work
+				if ((isset($GLOBALS['phpgw']->msg->ref_GET['confirm']))
+				&& ($GLOBALS['phpgw']->msg->ref_GET['confirm'] != ''))
+				{
+					$uri_confirm = $GLOBALS['phpgw']->msg->ref_GET['confirm'];
+					$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): confirm token is present in URI: '.$uri_confirm.'<br>');
+				}
+				else
+				{
+					$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): no confirm token is in the URI'.'<br>');
+				}
 			}
 			else
 			{
-				echo "no desired data";
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): no desired data'.'<br>');
 				return;
 			}
 			
@@ -275,16 +354,15 @@
 			elseif ($desired_function == 'get_defined_constants')
 			{
 				// this function echos out its data
-				echo 'get_defined_constants DUMP:<pre>';
-				print_r(get_defined_constants());
-				echo '</pre>';
+				//echo 'get_defined_constants DUMP:<pre>'; print_r(get_defined_constants()); echo '</pre>';
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): get_defined_constants DUMP:', get_defined_constants());
+				
 			}
 			elseif ($desired_function == 'globals_dump')
 			{
 				// this function echos out its data
-				echo 'GLOBALS[] array dump:<pre>';
-				print_r($GLOBALS) ;
-				echo '</pre>';
+				//echo 'GLOBALS[] array dump:<pre>'; print_r($GLOBALS) ; echo '</pre>';
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): GLOBALS[] array DUMP:', $GLOBALS);
 
 			}
 			elseif ($desired_function == 'common.debug_list_core_functions')
@@ -295,38 +373,38 @@
 			elseif ($desired_function == 'globals_phpgw_dump')
 			{
 				// this function echos out its data
-				echo 'GLOBALS[phpgw] dump:<pre>';
-				print_r($GLOBALS['phpgw']) ;
-				echo '</pre>';
-
+				//echo 'GLOBALS[phpgw] dump:<pre>'; print_r($GLOBALS['phpgw']) ; echo '</pre>';
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): GLOBALS[phpgw] DUMP:', $GLOBALS['phpgw']);
 			}
 			elseif ($desired_function == 'globals_phpgw_info_dump')
 			{
 				// this function echos out its data
-				echo 'GLOBALS[phpgw_info] dump:<pre>';
-				print_r($GLOBALS['phpgw_info']) ;
-				echo '</pre>';
+				//echo 'GLOBALS[phpgw_info] dump:<pre>'; print_r($GLOBALS['phpgw_info']) ; echo '</pre>';
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): GLOBALS[phpgw_info] DUMP:', $GLOBALS['phpgw_info']);
 			}
 			elseif ($desired_function == 'globals_phpgw_session_dump')
 			{
 				// this function echos out its data
-				echo 'GLOBALS[phpgw_session] dump:<pre>';
-				print_r($GLOBALS['phpgw_session']) ;
-				echo '</pre>';
+				//echo 'GLOBALS[phpgw_session] dump:<pre>'; print_r($GLOBALS['phpgw_session']) ; echo '</pre>';
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): GLOBALS[phpgw_session] DUMP:', $GLOBALS['phpgw_session']);
 			}
 			elseif ($desired_function == 'ref_session_dump')
 			{
 				// this function echos out its data
-				echo 'msg->ref_SESSION dump:<pre>';
-				print_r($GLOBALS['phpgw']->msg->ref_SESSION) ;
-				echo '</pre>';
+				//echo 'msg->ref_SESSION dump:<pre>'; print_r($GLOBALS['phpgw']->msg->ref_SESSION); echo '</pre>';
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): msg->ref_SESSION DUMP:', $GLOBALS['phpgw']->msg->ref_SESSION);
 			}
 			elseif ($desired_function == 'msg_object_dump')
 			{
 				// this function echos out its data
-				echo 'GLOBALS[phpgw]->msg dump:<pre>';
-				print_r($GLOBALS['phpgw']->msg) ;
-				echo '</pre>';
+				//echo 'GLOBALS[phpgw]->msg dump:<pre>'; print_r($GLOBALS['phpgw']->msg) ; echo '</pre>';
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): GLOBALS[phpgw]->msg DUMP:', $GLOBALS['phpgw']->msg);
+			}
+			elseif ($desired_function == 'preferences_object_dump')
+			{
+				// this function echos out its data
+				//echo '$GLOBALS[phpgw]->preferences dump:<pre>'; print_r($GLOBALS['phpgw']->preferences) ; echo '</pre>';
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): GLOBALS[phpgw]->preferences DUMP:', $GLOBALS['phpgw']->preferences);
 			}
 			elseif ($desired_function == 'copyinteresting')
 			{
@@ -336,31 +414,39 @@
 			{
 				$this->env_test();
 			}
-			elseif ($desired_function == 'make_table')
+			elseif ($desired_function == 'db_admin_make_table')
 			{
-				$this->make_table();
+				$this->db_admin_make_table($uri_confirm);
 			}
-			elseif ($desired_function == 'rm_table')
+			elseif ($desired_function == 'db_admin_rm_table')
 			{
-				$this->rm_table();
+				$this->db_admin_rm_table($uri_confirm);
 			}
-			elseif ($desired_function == 'so_am_table_exists')
+			elseif ($desired_function == 'db_admin_clear_entire_table')
 			{
-				$this->so_am_table_exists();
+				$this->db_admin_clear_entire_table($uri_confirm);
+			}
+			elseif ($desired_function == 'db_am_table_exists')
+			{
+				$this->db_am_table_exists();
 			}
 			else
 			{
-				echo 'unknown desired debug request: "'.$desired_function.'"<br>';
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): unknown desired debug request: '.$desired_function.']<br>');
 			}
 			
 			// DAMN, since we invoked bootstrap above, we should kill the msg session
 			// BUT WILL WE NEED IT AGAIN?
 			// php does not have a definitive destructor, so we have to guess where script will end
-			echo 'emai.ui_mail_debug. line '.__LINE__.': calling "end_msg_session_object" so I hope you do not need it anymore<br>';
-			$this->end_msg_session_object();
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.show_desired_data('.__LINE__.'): calling "end_msg_session_object" so I hope you do not need it anymore<br>');
+			
+			// new way to handle debug data, if there is debug data, this will put it in the template source data vars
+			//$this->tpl->set_var('debugdata', $GLOBALS['phpgw']->msg->dbug->notice_pagedone());
+			// TOO SOON to end msg object
+			//$this->end_msg_session_object();
 		}	
 		
-		
+		// THIS NEVER WORKED
 		function copyinteresting()
 		{
 			// this function echos out its data
@@ -412,6 +498,7 @@
 			$GLOBALS['phpgw']->msg->end_request();
 		}
 		
+		// this evenually made it to boaction and is not used there
 		function env_test()
 		{
 			$expected_args = 
@@ -467,8 +554,15 @@
 			$GLOBALS['phpgw']->msg->end_request();
 		}
 		
-		function make_table()
+		
+		function db_admin_make_table($really_do_it=False)
 		{
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_admin_make_table('.__LINE__.'): ENTERING<br>');
+			if ($really_do_it == False)
+			{
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_admin_make_table('.__LINE__.'): param $really_do_it ['.serialize($really_do_it).'] so we are DO NOTHING, and we EXIT<br>');
+				return;
+			}
 			// this function makes a table for email in the phpgw DB
 			//$account_id = get_account_id($accountid,$GLOBALS['phpgw']->session->account_id);
 			$sTableName = 'phpgw_anglemail';
@@ -480,9 +574,9 @@
 			$GLOBALS['phpgw']->db->query($query,__LINE__,__FILE__);
 			
 			$table_names = $GLOBALS['phpgw']->db->table_names();
-			echo '$table_names dump:<pre>';
-			print_r($table_names) ;
-			echo '</pre>';
+			//echo '$table_names dump:<pre>'; print_r($table_names); echo '</pre>';
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_admin_make_table('.__LINE__.'): $table_names DUMP:', $table_names);
+			
 			/*
 			'phpgw_anglemail' => array(
 				'fd' => array(
@@ -495,48 +589,70 @@
 				'ix' => array(),
 				'uc' => array()
 			*/
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_admin_make_table('.__LINE__.'): LEAVING<br>');
 		}
 		
-		function rm_table()
+		function db_admin_rm_table($really_do_it=False)
 		{
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_admin_rm_table('.__LINE__.'): ENTERING<br>');
+			if (!$really_do_it)
+			{
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_admin_rm_table('.__LINE__.'): param $really_do_it ['.serialize($really_do_it).'] so we are DO NOTHING, and we EXIT<br>');
+				return;
+			}
 			// this function drops the table for email in the phpgw DB
 			$sTableName = 'phpgw_anglemail';
 			$query = "DROP TABLE " . $sTableName;
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_admin_rm_table('.__LINE__.'): about to CALL $GLOBALS[phpgw]->db->query('.$query.','.__LINE__.','.__FILE__.');<br>');
 			$GLOBALS['phpgw']->db->query($query,__LINE__,__FILE__);
 			
 			$table_names = $GLOBALS['phpgw']->db->table_names();
-			echo '$table_names dump:<pre>';
-			print_r($table_names) ;
-			echo '</pre>';
+			//echo '$table_names dump:<pre>'; print_r($table_names); echo '</pre>';
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_admin_rm_table('.__LINE__.'): $table_names DUMP:', $table_names);
 		}
 		
-		function so_admin_clear_entire_table()
+		function db_admin_clear_entire_table($really_do_it=False)
 		{
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_admin_clear_entire_table('.__LINE__.'): ENTERING<br>');
+			if (!$really_do_it)
+			{
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_admin_clear_entire_table('.__LINE__.'): param $really_do_it ['.serialize($really_do_it).'] so we are DO NOTHING, and we EXIT<br>');
+				return;
+			}
 			// If you issue a DELETE with no WHERE clause, all rows are deleted.
 			// THIS WIPES THE TABLE CLEAN OF ALL DATA
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_admin_clear_entire_table('.__LINE__.'): param $really_do_it ['.serialize($really_do_it).'] so we CALL $GLOBALS[phpgw]->db->query("DELETE FROM phpgw_anglemail",'.__LINE__.','.__FILE__.');<br>');
 			$GLOBALS['phpgw']->db->query("DELETE FROM phpgw_anglemail",__LINE__,__FILE__);
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_admin_clear_entire_table('.__LINE__.'): LEAVING<br>');
 		}
 		
-		function so_am_table_exists()
+		function db_am_table_exists()
 		{
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_am_table_exists('.__LINE__.'): ENTERING<br>');
 			$look_for_me = 'phpgw_anglemail';
+			$found_table = False;
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_am_table_exists('.__LINE__.'): about to call $GLOBALS[phpgw]->db->table_names()<br>'); 
 			$table_names = $GLOBALS['phpgw']->db->table_names();
 			$table_names_serialized = serialize($table_names);
 			if (strstr($table_names_serialized, $look_for_me))
 			{
-				echo 'so_am_table_exists: result: table ['.$look_for_me.'] DOES exist<br>';
-				// return True;
+				
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_am_table_exists('.__LINE__.'): result: table ['.$look_for_me.'] DOES exist<br>');
+				$found_table = True;
 			}
 			else
 			{
-				echo 'so_am_table_exists: result: table ['.$look_for_me.'] does NOT exist<br>';
-				// return False;
+				$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_am_table_exists('.__LINE__.'): result: table ['.$look_for_me.'] does NOT exist<br>');
+				$found_table = False;
 			}
-			echo '$table_names dump:<pre>';
-			print_r($table_names) ;
-			echo '</pre>';
+			//echo '$table_names dump:<pre>'; print_r($table_names); echo '</pre>';
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_am_table_exists('.__LINE__.'): $table_names DUMP:', $table_names);
+			
+			$GLOBALS['phpgw']->msg->dbug->out('ui_mail_debug.db_am_table_exists('.__LINE__.'): LEAVING: returning ['.serialize($found_table).']<br>');
+			return $found_table;
 		}
 		
+		/*
 		// these bext functions will go inti the future SO class
 		function so_set_data($data_key, $content)
 		{
@@ -600,6 +716,7 @@
 			$GLOBALS['phpgw']->db->query("DELETE FROM phpgw_anglemail "
 				. " WHERE account_id='" . $account_id . "'",__LINE__,__FILE__);
 		}
+		*/
 		
 	}
 ?>

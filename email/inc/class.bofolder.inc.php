@@ -3,7 +3,7 @@
 	* AngleMail - email BO Class	for Folder Actions and List Display		*
 	* http://www.anglemail.org							*
 	* Written by Angelo (Angles) Puglisi <angles@aminvestments.com>		*
-	* Copyright 2001, 2002 Angelo (Angles) Puglisi				*
+	* Copyright 2001, 2003 Angelo (Angles) Puglisi				*
 	* --------------------------------------------							*
 	*  This program is free software; you can redistribute it and/or modify it		*
 	*  under the terms of the GNU General Public License as published by the	*
@@ -25,7 +25,10 @@
 		// use the cachable function or the non-cachable status function
 		var $use_cachable_status = True;
 		//var $use_cachable_status = False;
+		
 		var $debug = 0;
+		//var $debug = 3;
+		
 		var $xi;
 		
 		function bofolder()
@@ -94,6 +97,9 @@
 				{
 					$source_fldball = $GLOBALS['phpgw']->msg->get_arg_value('source_fldball');
 					$target_fldball = $GLOBALS['phpgw']->msg->get_arg_value('target_fldball');
+					if ($this->debug > 1) { echo 'email.bofolder.folder_action('.__LINE__.'): we will delete, rename, or create a folder; ->msg->get_arg_value("action") is ['.$GLOBALS['phpgw']->msg->get_arg_value('action').']'.'<br>'; }
+					if ($this->debug > 2) { echo 'email.bofolder.folder_action('.__LINE__.'): $source_fldball DUMP<pre>'; print_r($source_fldball); echo '<pre>'; }
+					if ($this->debug > 2) { echo 'email.bofolder.folder_action('.__LINE__.'): $target_fldball DUMP<pre>'; print_r($target_fldball); echo '<pre>'; }
 					
 					//  ----  Establish Email Server Connectivity Conventions  ----
 					$server_str = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_callstr');
@@ -141,7 +147,12 @@
 					}
 					
 					// add server string to target folder
-					$target_fldball['folder'] = $server_str.$target_fldball['folder'];
+					//$target_fldball['folder'] = $server_str.$target_fldball['folder'];
+					//$target_fldball['folder'] = $target_fldball['folder'];
+					$re_encoded = $GLOBALS['phpgw']->msg->prep_folder_out($target_fldball['folder']);
+					$target_fldball['folder'] = $re_encoded;
+					
+					if ($this->debug > 2) { echo 'email.bofolder.folder_action('.__LINE__.'): processed $target_fldball DUMP<pre>'; print_r($target_fldball); echo '<pre>'; }
 					
 					// NOTE the dcom class will set a flag indicating a folder list change, ->dcom->folder_list_changed=True
 					// function ->msg->get_folder_list()  checks for this flag to know when to expire cached folder list and get a new one
@@ -152,38 +163,92 @@
 					if (($GLOBALS['phpgw']->msg->get_arg_value('action') == 'create')
 					|| ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'create_expert'))
 					{
-						$success = $GLOBALS['phpgw']->msg->phpgw_createmailbox($target_fldball);
+						if ($this->debug > 1) { echo 'email.bofolder.folder_action('.__LINE__.'): calling ->phpgw_createmailbox_ex($target_fldball) DUMP<pre>'; print_r($target_fldball); echo '<pre>'; }
+						//$success = $GLOBALS['phpgw']->msg->phpgw_createmailbox($target_fldball);
+						$success = $GLOBALS['phpgw']->msg->phpgw_createmailbox_ex($target_fldball);
+						// UPDATE: use new phpgw_createmailbox_ex, it wants NO server str, and a urlENcoded foldername
+						//$no_server_str = str_replace($server_str, '', $target_fldball['folder']);
+						//$re_encoded = $GLOBALS['phpgw']->msg->prep_folder_out($no_server_str);
+						//$target_fldball['folder'] = $re_encoded;
+						//if ($this->debug > 1) { echo 'email.bofolder.folder_action('.__LINE__.'): calling ->phpgw_createmailbox_ex($target_fldball) DUMP<pre>'; print_r($target_fldball); echo '<pre>'; }
+						//$success = $GLOBALS['phpgw']->msg->phpgw_createmailbox_ex($target_fldball);
 					}
 					elseif (($GLOBALS['phpgw']->msg->get_arg_value('action') == 'delete')
 					|| ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'delete_expert'))
 					{
-						$success = $GLOBALS['phpgw']->msg->phpgw_deletemailbox($target_fldball);
+						//$success = $GLOBALS['phpgw']->msg->phpgw_deletemailbox($target_fldball);
+						$success = $GLOBALS['phpgw']->msg->phpgw_deletemailbox_ex($target_fldball);
 					}
 					elseif (($GLOBALS['phpgw']->msg->get_arg_value('action') == 'rename')
 					|| ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'rename_expert'))
 					{
 						// phpgw->msg->get_arg_value('source_folder') is taken directly from the listbox, so it *should* be official long name already
 						// but it does need to be prep'd in because we prep out the foldernames put in that listbox
-						$source_preped = $GLOBALS['phpgw']->msg->prep_folder_in($source_fldball['folder']);
-						$source_fldball['folder'] = $source_preped;
+						//$source_preped = $GLOBALS['phpgw']->msg->prep_folder_in($source_fldball['folder']);
+						//$source_fldball['folder'] = $source_preped;
 						// add server string to source folder
-						$source_fldball['folder'] = $server_str.$source_fldball['folder'];
-						$success = $GLOBALS['phpgw']->msg->phpgw_renamemailbox($source_fldball, $target_fldball);
+						//$source_fldball['folder'] = $server_str.$source_fldball['folder'];
+						//$success = $GLOBALS['phpgw']->msg->phpgw_renamemailbox($source_fldball, $target_fldball);
+						$src_re_encoded = $GLOBALS['phpgw']->msg->prep_folder_out($source_fldball['folder']);
+						$source_fldball['folder'] = $src_re_encoded;
+						$success = $GLOBALS['phpgw']->msg->phpgw_renamemailbox_ex($source_fldball, $target_fldball);
 					}
 					
 					// Result Message
+					// we are not sure which folder will actually exists, new or old, so we can not really use "prep_folder_in" unless we check
+					if (isset($target_fldball['folder']))
+					{
+						if ($GLOBALS['phpgw']->msg->prep_folder_in($target_fldball['folder']))
+						{
+							$target_folder_decoded = $GLOBALS['phpgw']->msg->prep_folder_in($target_fldball['folder']);
+						}
+						elseif (urldecode($target_fldball['folder']))
+						{
+							$target_folder_decoded = urldecode($target_fldball['folder']);
+						}
+						else
+						{
+							$target_folder_decoded = lang('Unable to get target folder name');
+						}
+					}
+					if (isset($source_fldball['folder']))
+					{
+						if ($GLOBALS['phpgw']->msg->prep_folder_in($source_fldball['folder']))
+						{
+							$source_folder_decoded = $GLOBALS['phpgw']->msg->prep_folder_in($source_fldball['folder']);
+						}
+						elseif (urldecode($source_fldball['folder']))
+						{
+							$source_folder_decoded = urldecode($source_fldball['folder']);
+						}
+						else
+						{
+							$source_folder_decoded = lang('Unable to get source folder name');
+						}
+					}
+					
 					if (($GLOBALS['phpgw']->msg->get_arg_value('action') == 'rename')
 					|| ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'rename_expert'))
 					{
 						$action_report =
-							$GLOBALS['phpgw']->msg->get_arg_value('action') .' '.lang('folder').' &quot;'.htmlspecialchars($source_fldball['folder']).'&quot; '
-							.lang('to').' &quot;'.htmlspecialchars($target_fldball['folder']) .'&quot; '
+							'<em>'.$GLOBALS['phpgw']->msg->get_arg_value('action') .' '.lang('folder').'</em>'
+							.'<br>'
+							.htmlspecialchars($source_folder_decoded)
+							.'<br>'
+							.'<em>'.lang('to').'</em>'
+							.'<br>'
+							.htmlspecialchars($target_folder_decoded)
+							.'<br>'
 							.lang('result').' : ';
 					}
 					else
 					{
-						$action_report = $GLOBALS['phpgw']->msg->get_arg_value('action').' '.lang('folder').' &quot;'.htmlspecialchars($target_fldball['folder']).'&quot; '
-						.lang('result').' : ';
+						$action_report = 
+							'<em>'.$GLOBALS['phpgw']->msg->get_arg_value('action').' '.lang('folder').'</em>'
+							.'<br>'
+							.htmlspecialchars($target_folder_decoded)
+							.'<br>'
+							.lang('result').' : ';
 					}
 					// did it work or not
 					if ($success)

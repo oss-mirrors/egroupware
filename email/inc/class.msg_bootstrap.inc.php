@@ -48,6 +48,9 @@
 		//var $do_login = False;
 		var $do_login_ex = 0;
 		
+		var $debug_level=0;
+		//var $debug_level=3;
+		
 		function msg_bootstrap()
 		{
 			if (defined(BS_LOGIN_NEVER) == False)
@@ -122,7 +125,7 @@
 		*/
 		function set_do_login($do_login='##NOTHING##', $called_by='not_provided')
 		{
-			if ($debug_level > 0) { echo 'ENTERING: msg_bootstrap: set_do_login: (called_by: '.$called_by.') param $do_login: ['.serialize($do_login).']'.'<br>'; } 
+			if ($this->debug_level > 0) { echo 'ENTERING: msg_bootstrap: set_do_login: (called_by: '.$called_by.') param $do_login: ['.serialize($do_login).']'.'<br>'; } 
 			// backward compat, when this was only true or false
 			if (is_bool($do_login))
 			{
@@ -137,7 +140,7 @@
 					$this->do_login_ex = BS_LOGIN_NEVER;
 				}
 				// LEAVING HERE
-				if ($debug_level > 0) { echo 'LEAVING: msg_bootstrap: set_do_login: (bool input) (called_by: '.$called_by.') $this->do_login: ['.$this->do_login.'] $this->do_login_ex: ['.$this->do_login_ex.'] '.'<br>'; }
+				if ($this->debug_level > 0) { echo 'LEAVING: msg_bootstrap: set_do_login: (bool input) (called_by: '.$called_by.') $this->do_login: ['.$this->do_login.'] $this->do_login_ex: ['.$this->do_login_ex.'] '.'<br>'; }
 				return $this->do_login;
 			}
 			elseif (is_int($do_login))
@@ -175,7 +178,7 @@
 				$this->do_login = True;
 				$this->do_login_ex = BS_LOGIN_ONLY_IF_NEEDED;
 			}
-			if ($debug_level > 0) { echo 'LEAVING: msg_bootstrap: set_do_login: (not bool input) (called_by: '.$called_by.') $this->do_login: ['.$this->do_login.'] $this->do_login_ex: ['.$this->do_login_ex.'] '.'<br>'; }
+			if ($this->debug_level > 0) { echo 'LEAVING: msg_bootstrap: set_do_login: (not bool input) (called_by: '.$called_by.') $this->do_login: ['.$this->do_login.'] $this->do_login_ex: ['.$this->do_login_ex.'] '.'<br>'; }
 			return $this->do_login_ex;
 		}
 		
@@ -233,7 +236,11 @@
 		*/
 		function ensure_mail_msg_exists($called_by='not_provided', $debug_level=0)
 		{
-			if ($debug_level > 0) { echo 'ENTERING: msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.')'.'<br>'; }
+			if ($debug_level > $this->debug_level)
+			{
+				$this->debug_level = $debug_level;
+			}
+			if ($this->debug_level > 0) { echo 'ENTERING: msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.')'.'<br>'; }
 			
 			// make sure do_login has been set
 			if ($this->get_do_login_ex() == BS_LOGIN_NOT_SPECIFIED)
@@ -247,31 +254,42 @@
 			//$this->ensure_utility_classes($debug_level);
 			
 			if (is_object($GLOBALS['phpgw']->msg))
+			//if ((isset($GLOBALS['phpgw']->msg))
+			//&& (isset($GLOBALS['phpgw']->msg->been_constructed))
+			//&& ($GLOBALS['phpgw']->msg->been_constructed == True)
+			//)
 			{
-				if ($debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.'): is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
+				if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists('.__LINE__.'): (called_by: '.$called_by.'): is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
 			}
 			else
 			{
-				if ($debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.'): $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
+				if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists('.__LINE__.'): (called_by: '.$called_by.'): $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
 				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+				//$GLOBALS['phpgw']->msg =& CreateObject("email.mail_msg");
+				//include_once(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_msg_base.inc.php');
+				//include_once(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_msg_wrappers.inc.php');
+				//include_once(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_msg_display.inc.php');
+				//$GLOBALS['phpgw']->msg =& new mail_msg;
+				if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists('.__LINE__.'): $GLOBALS[phpgw]->msg created mail_msg object, now calling needed initialization function aka manual constructor function, "initialize_mail_msg"<br>'; } 
+				$GLOBALS['phpgw']->msg->initialize_mail_msg();
 			}
 			
 			if ($GLOBALS['phpgw']->msg->get_isset_arg('already_grab_class_args_gpc'))
 			{
 				// mail_msg had already run thru "begin_request", do not call it again
-				if ($debug_level > 0) { echo 'msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.'): LEAVING , msg object already initialized<br>'; }
+				if ($this->debug_level > 0) { echo 'msg_bootstrap: ensure_mail_msg_exists('.__LINE__.'): (called_by: '.$called_by.'): LEAVING , msg object already initialized<br>'; }
 				return True;
 			}
 			
 			$args_array = Array();
 			// should we log in or not
-			if ($debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.'): $this->do_login: ['.serialize($this->do_login).']<br>'; }
+			if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.'): $this->do_login: ['.serialize($this->do_login).']<br>'; }
 			$args_array['do_login'] = $this->do_login;
-			if ($debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.'): $this->do_login_ex: ['.serialize($this->do_login_ex).']<br>'; }
+			if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.'): $this->do_login_ex: ['.serialize($this->do_login_ex).']<br>'; }
 			$args_array['do_login_ex'] = $this->do_login_ex;
 			
 			// "start your engines"
-			if ($debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.'): call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
+			if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.'): call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
 			$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
 			// error if login failed
 			if (($args_array['do_login'] == True)
@@ -281,7 +299,8 @@
 			}
 			// login error will halt this script execution
 			// else all is good to go and script continues... 
-			if ($debug_level > 0) { echo 'EXIT: msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.')'.'<br>'; }
+			if ($this->debug_level > 2) { echo 'msg_bootstrap: about to leave ensure_mail_msg_exists, $GLOBALS[] DUMP:<pre>'; print_r($GLOBALS); echo '</pre>'; }
+			if ($this->debug_level > 0) { echo 'EXIT: msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.')'.'<br>'; }
 		}
 		
 		/*!
@@ -300,21 +319,21 @@
 			// DEBUG - override debug_level param
 			//$debug_level = 3;
 			
-			if ($debug_level > 0) { echo 'ENTERING: msg_bootstrap: ensure_utility_classes: <br>'; }
+			if ($this->debug_level > 0) { echo 'ENTERING: msg_bootstrap: ensure_utility_classes: <br>'; }
 			
 			if (is_object($GLOBALS['phpgw']->widgets))
 			{
-				if ($debug_level > 1) { echo 'msg_bootstrap: ensure_utility_classes: is_object test: $GLOBALS[phpgw]->widgets is already set, do not create again<br>'; }
+				if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_utility_classes: is_object test: $GLOBALS[phpgw]->widgets is already set, do not create again<br>'; }
 			}
 			else
 			{
-				if ($debug_level > 1) { echo 'msg_bootstrap: ensure_utility_classes: $GLOBALS[phpgw]->widgets is NOT set, creating html_widgets object<br>'; }
+				if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_utility_classes: $GLOBALS[phpgw]->widgets is NOT set, creating html_widgets object<br>'; }
 				$my_widgets = CreateObject("email.html_widgets");
 				$GLOBALS['phpgw']->widgets = $my_widgets;
 			}
 			
 			
-			if ($debug_level > 0) { echo 'EXIT: msg_bootstrap: ensure_utility_classes: <br>'; }
+			if ($this->debug_level > 0) { echo 'EXIT: msg_bootstrap: ensure_utility_classes: <br>'; }
 		}
 
 	}

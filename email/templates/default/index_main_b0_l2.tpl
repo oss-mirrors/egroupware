@@ -121,6 +121,9 @@ function check_all()
 	</form>
 </tr>
 </table>
+
+{geek_bar}
+
 {debugdata}
 <br> 
 <!-- end ndex_mail_b0_l2.tpl -->

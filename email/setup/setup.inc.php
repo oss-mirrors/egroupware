@@ -37,7 +37,6 @@
 	$setup_info['email']['hooks'][] = 'notifywindow_simple';
 	$setup_info['email']['hooks'][] = 'add_def_prefs';
 	$setup_info['email']['hooks'][] = 'preferences';
-	$setup_info['email']['hooks'][] = 'settings';
 
 	/* Dependacies for this app to work */
 	$setup_info['email']['depends'][] = array(

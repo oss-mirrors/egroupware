@@ -44,20 +44,20 @@
 		function createmailbox($stream,$mailbox)
 		{
 			$mailbox = $this->utf7_encode($mailbox);
-			$this->folder_list_changed = True;
+			$this->folder_list_did_change();
 			return imap_createmailbox($stream,$mailbox);
 		}
 
 		function deletemailbox($stream,$mailbox)
 		{
-			$this->folder_list_changed = True;
+			$this->folder_list_did_change();
 			$mailbox = $this->utf7_encode($mailbox);
 			return imap_deletemailbox($stream,$mailbox);
 		} 
 
 		function renamemailbox($stream,$mailbox_old,$mailbox_new)
 		{
-			$this->folder_list_changed = True;
+			$this->folder_list_did_change();
 			$mailbox_old = $this->utf7_encode($mailbox_old);
 			$mailbox_new = $this->utf7_encode($mailbox_new);
 			return imap_renamemailbox($stream,$mailbox_old,$mailbox_new);

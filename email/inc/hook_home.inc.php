@@ -167,44 +167,140 @@
 				.$form_folder_switch_closetag;
 		}
 		
-		if ((isset($prev_currentapp))
-		&& ($prev_currentapp)
-		&& ($GLOBALS['phpgw_info']['flags']['currentapp'] != $prev_currentapp))
+		// how to display this data
+		if (is_object($GLOBALS['phpgw']->xslttpl))
 		{
-			$GLOBALS['phpgw_info']['flags']['currentapp'] = $prev_currentapp;
+			$phpgw_before_xslt = False;
+		}
+		else
+		{
+			$phpgw_before_xslt = True;
 		}
 		
-		$portalbox = CreateObject('phpgwapi.listbox',
-			Array(
-				'title'     => $title,
-				'primary'   => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-				'secondary' => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-				'tertiary'  => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-				'width'     => '100%',
-				'outerborderwidth' => '0',
-				'header_background_image' => $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler')
-			)
-		);
-		$app_id = $GLOBALS['phpgw']->applications->name2id('email');
-		$GLOBALS['portal_order'][] = $app_id;
-		$var = Array(
-			'up'       => Array('url' => '/set_box.php', 'app' => $app_id),
-			'down'     => Array('url' => '/set_box.php', 'app' => $app_id),
-			'close'    => Array('url' => '/set_box.php', 'app' => $app_id),
-			'question' => Array('url' => '/set_box.php', 'app' => $app_id),
-			'edit'     => Array('url' => '/set_box.php', 'app' => $app_id)
-		);
-
-		while(list($key,$value) = each($var))
+		// now display according to the version of the template system in use
+		if ($phpgw_before_xslt == True)
 		{
-			$portalbox->set_controls($key,$value);
+			// the is the OLD, pre-xslt way to display pref items
+			// reset the currentapp to whatever it was
+			if ((isset($prev_currentapp))
+			&& ($prev_currentapp)
+			&& ($GLOBALS['phpgw_info']['flags']['currentapp'] != $prev_currentapp))
+			{
+				$GLOBALS['phpgw_info']['flags']['currentapp'] = $prev_currentapp;
+			}
+			$portalbox = CreateObject('phpgwapi.listbox',
+				Array(
+					'title'     => $title,
+					'primary'   => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+					'secondary' => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+					'tertiary'  => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+					'width'     => '100%',
+					'outerborderwidth' => '0',
+					'header_background_image' => $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler')
+				)
+			);
+			$app_id = $GLOBALS['phpgw']->applications->name2id('email');
+			$GLOBALS['portal_order'][] = $app_id;
+			$var = Array(
+				'up'       => Array('url' => '/set_box.php', 'app' => $app_id),
+				'down'     => Array('url' => '/set_box.php', 'app' => $app_id),
+				'close'    => Array('url' => '/set_box.php', 'app' => $app_id),
+				'question' => Array('url' => '/set_box.php', 'app' => $app_id),
+				'edit'     => Array('url' => '/set_box.php', 'app' => $app_id)
+			);
+	
+			while(list($key,$value) = each($var))
+			{
+				$portalbox->set_controls($key,$value);
+			}
+	
+			$portalbox->data = $data;
+	
+			// output the portalbox and below it (1) the folders listbox (if applicable) and (2) Compose New mail link
+			echo "\n".'<!-- BEGIN Mailbox info -->'."\n".$portalbox->draw($extra_data).'<!-- END Mailbox info -->'."\n";
 		}
-
-		$portalbox->data = $data;
-
-		// output the portalbox and below it (1) the folders listbox (if applicable) and (2) Compose New mail link
-		echo "\n".'<!-- BEGIN Mailbox info -->'."\n".$portalbox->draw($extra_data).'<!-- END Mailbox info -->'."\n";
+		else
+		{
+			// this is the xslt template era			
+			// adjust the title for no html tags
+			$title = lang('EMail').' '.$inbox_data['alert_string'];
+			
+			$GLOBALS['phpgw']->translation->add_app('email');
+			//$GLOBALS['phpgw']->translation->add_app('E-Mail');
+	
+			$app_id = $GLOBALS['phpgw']->applications->name2id('email');
+			$GLOBALS['portal_order'][] = $app_id;
+			
+			$GLOBALS['phpgw']->portalbox->set_params(
+				array(
+					'app_id'	=> $app_id,
+					'title'		=> $title
+				)
+			);
+			// assemble the data BRUTE FORCE
+			// FIXME apparently needs an xsl file called "portal.xsl"
+			/*
+			$main_data = '<table border="0" width="100%">'."\r\n";
+			for($i=0; $i<count($data); $i++)
+			{
+				$main_data .= 
+					'<tr>'
+						.'<td width="2%" align="right"> &nbsp; </td>'
+						.'<td width="98%" align="left">'
+							.'<a href="'.$data[$i]['link'].'">'.$data[$i]['text'].'</a>'
+						.'</td>'
+					.'</tr>'."\r\n";
+			}
+			$main_data .= 
+				'<td width="2%"> &nbsp; </td>'
+				.$form_folder_switch_opentag
+				.'<td width="98%" align="left">'."\r\n"
+					.'&nbsp;<strong>'.lang('E-Mail Folders').':</strong>&nbsp;'
+					.$folder_switch_combobox
+					.'&nbsp; &nbsp;'.$compose_href
+				.'</td>'."\r\n"
+				.$form_folder_switch_closetag;
+			
+			$main_data .= '</table>'."\r\n";
+			*/
+			$main_data = 
+				'<table border="0" width="100%">'
+				.'<tr>'."\r\n"
+					.'<td width="100%" align="left">'."\r\n"
+						.'<ul>'."\r\n";
+			for($i=0; $i<count($data); $i++)
+			{
+				$main_data .= '<li>'.'<a href="'.$data[$i]['link'].'">'.$data[$i]['text'].'</a>'.'</li>'."\r\n";
+			}
+			$main_data .=
+						'</ul>'."\r\n"
+					.'</td>'."\r\n"
+				.'</tr>'."\r\n"
+				.'<tr><td><hr></td></tr>'."\r\n"
+				.'<tr>'."\r\n"
+					.$form_folder_switch_opentag
+					.'<td width="100%" align="left">'."\r\n"
+						.'&nbsp;<strong>'.lang('E-Mail Folders').':</strong>&nbsp;'
+						.$folder_switch_combobox
+						.'&nbsp; &nbsp;'.$compose_href
+					.'</td>'."\r\n"
+					.$form_folder_switch_closetag
+				.'</tr>'."\r\n"
+				.'</table>'."\r\n";
+			
+			$GLOBALS['phpgw']->portalbox->draw($main_data);
+			
+			// reset the currentapp to whatever it was
+			if ((isset($prev_currentapp))
+			&& ($prev_currentapp)
+			&& ($GLOBALS['phpgw_info']['flags']['currentapp'] != $prev_currentapp))
+			{
+				$GLOBALS['phpgw_info']['flags']['currentapp'] = $prev_currentapp;
+			}
+			
+		}
 	}
+	
 	// we create the msg object initially so we can have access to the multi-account preferences, 
 	// so even if we did not output any data here, we still must call this "end_request" function, it is kind of like a destructor
 	$GLOBALS['phpgw']->msg->end_request();

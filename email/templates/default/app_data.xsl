@@ -113,6 +113,12 @@
 		</form>
 		<!-- end the table where the message list will go -->
 		</table>
+		<!-- optional GeekBar -->
+		<xsl:if test="geek_bar != ''">
+			<!-- GeekBar comes pre made as an html widget -->
+			<br />
+			<xsl:value-of disable-output-escaping="yes" select="geek_bar"/>
+		</xsl:if>
 		<!-- optional debug data -->
 		<xsl:if test="debugdata != ''">
 			<xsl:call-template name="show_debugdata"/>

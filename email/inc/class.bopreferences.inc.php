@@ -32,6 +32,8 @@
 			'ex_accounts_delete' => True
 		);
 		var $msg_bootstrap;
+		// convience reference to the msg object
+		var $msg='##NOTHING##';
 		var $not_set='-1';
 		var $std_prefs=array();
 		var $cust_prefs=array();
@@ -50,6 +52,7 @@
 		var $args=array();
 		var $debug_set_prefs = 0;
 		//var $debug_set_prefs = 3;
+		//var $debug_set_prefs = 4;
 		
 		
 		function bopreferences()
@@ -71,9 +74,13 @@
 			$this->msg_bootstrap->set_do_login(BS_LOGIN_NEVER);
 			if ($this->debug_set_prefs > 1) { echo 'email.bopreferences. *constructor*: call this->msg_bootstrap->ensure_mail_msg_exists, msg_bootstrap->get_do_login(): '.serialize($this->msg_bootstrap->get_do_login()).'<br>'; }
 			$this->msg_bootstrap->ensure_mail_msg_exists('email.bopreferences. *constructor*', $this->debug_set_prefs);
-			
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences. *constructor*: LEAVING<br>'; }
-			return;
+			// make the convience reference
+			if ($this->msg == '##NOTHING##')
+			{
+				$this->msg =& $GLOBALS['phpgw']->msg;
+			}
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences. *constructor*: LEAVING<br>'); }
+			//return;
 		}
 		
 		/*!
@@ -100,7 +107,7 @@
 		*/
 		function init_available_prefs()
 		{
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.init_available_prefs: ENTERING, use debug level 4 for a data dump on leaving<br>'; }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.init_available_prefs: ENTERING, use debug level 4 for a data dump on leaving<br>'); }
 			
 			$this->std_prefs = Array();
 			$i = 0;
@@ -113,15 +120,7 @@
 				'lang_blurb'	=> lang('enable this email account'),
 				'init_default'	=> 'set_or_not,not_set',
 				'values'	=> array(),
-				'long_desc' => 
-					'THIS PREF CURRENTLY DOES NOTHING
-					Users may have more than one email account. In the future 
-					it is anticipated that automatic actions may be performed 
-					on these accounts, such as automatic new mail checks, 
-					auto filtering, etc... Perhaps the user may want to disable 
-					an account so that these automatic actions do not occur for 
-					that account. This is one possible use.
-					Also, an admin may want to disable accounts from time to time.'
+				'long_desc' => lang('THIS PREF CURRENTLY DOES NOTHING Users may have more than one email account. In the future it is anticipated that automatic actions may be performed on these accounts, such as automatic new mail checks,auto filtering, etc... Perhaps the user may want to disable an account so that these automatic actions do not occur for that account. This is one possible use. Also, an admin may want to disable accounts from time to time.')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -134,15 +133,7 @@
 				// note that after the comma there is NO space, this means default is no value
 				'init_default'	=> 'string,',
 				'values'	=> array(),
-				'long_desc' => 
-					'This is the name that appears in the account combobox. If for 
-					leave this blank, your accounts will be given a standard name like 
-					Account[1]: Jane Doe, where Jane Doe is the name you give below as 
-					'.lang('Your full name').'. If you want to give an account a special name 
-					you can fill this in. No matter what, this is for your use, 
-					your emails will still use '.lang('Your full name').' as 
-					your FROM name for email messages. Note that '.lang('Your full name').' for your 
-					email account 0 is the name you gave in the phpgroupware setup.'
+				'long_desc' => lang('This is the name that appears in the account combobox. If for leave this blank, your accounts will be given a standard name like Account[1]: Jane Doe, where Jane Doe is the name you give below as Your full name. If you want to give an account a special name you can fill this in. No matter what, this is for your use, your emails will still use Your full name as your FROM name for email messages. Note that Your full name for your email account 0 is the name you gave in the phpgroupware setup.')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -154,12 +145,7 @@
 				'lang_blurb'	=> lang('Your full name'),
 				'init_default'	=> 'varEVAL,$GLOBALS["phpgw_info"]["user"]["fullname"];',
 				'values'	=> array(),
-				'long_desc' => 
-					'This is the name that appears in the users FROM address. 
-					The default mail account gets this value automatically from 
-					the phpgwapi. Additional accounts are created with the phpgwapi 
-					supplied fullname you can specify a different fullname for each 
-					extra email account.'
+				'long_desc' => lang('This is the name that appears in the users FROM address. The default mail account gets this value automatically from the phpgwapi. Additional accounts are created with the phpgwapi supplied fullname you can specify a different fullname for each extra email account.')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -171,13 +157,7 @@
 				'lang_blurb'	=> lang('email signature'),
 				'init_default'	=> 'string, ',
 				'values'	=> array(),
-				'long_desc' => 
-					'This text will be appended to the bottom of the users emails for 
-					this email account. Currently, html tags are not supported. Also, 
-					forwarded email will NOT get this email sig appended to it for reasons 
-					such as it clutters the email, the forwarded part probably has its own 
-					email sig from the original author, which is really the information 
-					that matters the most.'
+				'long_desc' => lang('This text will be appended to the bottom of the users emails for this email account. Currently, html tags are not supported. Also, forwarded email will NOT get this email sig appended to it for reasons such as it clutters the email, the forwarded part probably has its own email sig from the original author, which is really the information that matters the most.')
 			);
 			$lang_oldest = lang('oldest');
 			$lang_newest = lang('newest');
@@ -194,13 +174,7 @@
 					'old_new' => $lang_oldest.' -> '.$lang_newest,
 					'new_old' => $lang_newest.' -> '.$lang_oldest
 				),
-				'long_desc' => 
-					'In the email index page, the page which lists all the mails in a 
-					folder, mail may be sorted by date, author, size, or subject, 
-					HOWEVER all of these need to be ordered from first to last, this 
-					options controlls what is first and last. For example, 
-					if sorting by date, the newest to oldest displays the most recent 
-					emails first, in decending order down to the oldest emails last. '
+				'long_desc' => lang('In the email index page, the page which lists all the mails in a folder, mail may be sorted by date, author, size, or subject, HOWEVER all of these need to be ordered from first to last, this options controlls what is first and last. For example, if sorting by date, the newest to oldest displays the most recent emails first, in decending order down to the oldest emails last. ')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -215,11 +189,7 @@
 					'1' => lang('Layout 1'),
 					'2' => lang('Layout 2')
 				),
-				'long_desc' => 
-					'The email application offers 2 different layouts for the index page, 
-					that is the page that lists the emails in a folder. This page may be 
-					the page the user looks at the most and so different layouts, or looks, 
-					are offered.'
+				'long_desc' => lang('The email application offers 2 different layouts for the index page, that is the page that lists the emails in a folder. This page may be the page the user looks at the most and so different layouts, or looks, are offered.')
 			);
 			$i++;
 			
@@ -275,14 +245,10 @@
 				'values'	=> array(
 					'evo' => lang('Evolution Style'),
 					'moz' => lang('Mozilla Modern Style'),
-					'noia' => lang('Noia &#64; Carlitus Style')
+					'noia' => lang('Noia &#64; Carlitus Style'),
+					'AquaFusion' => lang('Aqua Fusion')
 				),
-				'long_desc' => 
-					'The email application offers different icon image themes, groups of 
-					images of a similar style which are used in this email application. 
-					Currently the available themes are images based on Evolution by Ximian 
-					and the Netscape6 / Mozilla browser buttons. Additional themes are 
-					anticipated and welcome.'
+				'long_desc' => lang('The email application offers different icon image themes, groups of images of a similar style which are used in this email application. Currently the available themes are images based on Evolution by Ximian and the Netscape7, Mozilla browser buttons. Additional themes are anticipated and welcome.')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -297,9 +263,7 @@
 					'16' => lang('Small'),
 					'24' => lang('Big')
 				),
-				'long_desc' => 
-					'The email application offers different icon image themes, these 
-					icons can be big or small.'
+				'long_desc' => lang('The email application offers different icon image themes, these icons can be big or small.')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -315,9 +279,7 @@
 					'image' => lang('Image'),
 					'both' => lang('Both')
 				),
-				'long_desc' => 
-					'The email application offers different button displays, these 
-					buttons can be text, images, or both.'
+				'long_desc' => lang('The email application offers different button displays, these buttons can be text, images, or both.')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -333,19 +295,7 @@
 					'From' => lang('From'),
 					'ReplyTo' => lang('ReplyTo')
 				),
-				'long_desc' => 
-					'This confusing and often misunderstood option is left over from 
-					this email apps origins as Aeromail by Mark Cushman. When viewing 
-					a list of emails in a folder, the FROM column may show you 
-					a) the senders name only, if a name was provided, 
-					b) the senders From email address, in addition to the senders name, or 
-					c) the senders reply to address if it is different from the senders 
-					from address, in addition to the senders name if it was provided. 
-					Typically users set this to none, which will show only the senders 
-					name. If no name was supplied by the sender, then the senders FROM 
-					email address will be shown, whether a seperate reply to address is 
-					provided has no effect on this, the FROM address is always used if the 
-					senders name is not provided.'
+				'long_desc' => lang('This confusing and often misunderstood option is left over from this email apps origins as Aeromail by Mark Cushman. When viewing a list of emails in a folder, the FROM column may show you a) the senders name only, if a name was provided, b) the senders From email address, in addition to the senders name, or c) the senders reply to address if it is different from the senders from address, in addition to the senders name if it was provided. Typically users set this to none, which will show only the senders name. If no name was supplied by the sender, then the senders FROM email address will be shown, whether a seperate reply to address is provided has no effect on this, the FROM address is always used if the senders name is not provided.')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -357,11 +307,7 @@
 				'lang_blurb'	=> lang('show new messages on main screen'),
 				'init_default'	=> 'set_or_not,not_set',
 				'values'	=> array(),
-				'long_desc' => 
-					'Each user has a summary page which can display a variety 
-					of information. This option will show a small list of email 
-					messages in the INBOX of the users default email account on 
-					the users summary home page.'
+				'long_desc' => lang('Each user has a summary page which can display a variety of information. This option will show a small list of email messages in the INBOX of the users default email account on the users summary home page.')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -375,11 +321,7 @@
 				'lang_blurb'	=> lang('Deleted messages go to Trash'),
 				'init_default'	=> 'set_or_not,not_set',
 				'values'	=> array(),
-				'long_desc' => 
-					'If checked, Deleted message will be sent to the &quot;Trash&quot; 
-					folder name which you specify in the box for &quot;'
-					.lang('Deleted messages (Trash) folder').'&quot;. 
-					Only works with IMAP servers, POP servers do not have folders.'
+				'long_desc' => lang('If checked, Deleted message will be sent to the &quot;Trash&quot; folder name which you specify in the box for &quot; Deleted messages (Trash) folder &quot;. Only works with IMAP servers, POP servers do not have folders.')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -392,14 +334,7 @@
 				'lang_blurb'	=> lang('Deleted messages (Trash) folder'),
 				'init_default'	=> 'string,Trash',
 				'values'	=> array(),
-				'long_desc' => 
-					'If &quot;'.lang('Deleted messages go to Trash').'&quot; is checked, 
-					Deleted message will be sent to the folder name you type in 
-					this box. If this folder does not exist, it will be created 
-					for you automatically. Default name is &quot;Trash&quot;. 
-					This will be your &quot;Trash&quot; folder, but it does not have to 
-					actually be called &quot;Trash&quot;, you can name it anything. 
-					Only works with IMAP servers, POP servers do not have folders.'
+				'long_desc' => lang('If &quot; Deleted messages go to Trash &quot; is checked, Deleted message will be sent to the folder name you type in this box. If this folder does not exist, it will be created for you automatically. Default name is &quot;Trash&quot;. This will be your &quot;Trash&quot; folder, but it does not have to actually be called &quot;Trash&quot;, you can name it anything. Only works with IMAP servers, POP servers do not have folders.')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -413,11 +348,7 @@
 				'lang_blurb'	=> lang('Sent messages saved in &quot;Sent&quot; folder'),
 				'init_default'	=> 'set_or_not,not_set',
 				'values'	=> array(),
-				'long_desc' => 
-					'If checked, a copy of your sent mail will be stored in 
-					the &quot;Sent&quot; folder name which you specify in the box 
-					for &quot;'.lang('Sent messages folder').'&quot;. 
-					Only works with IMAP servers, POP servers do not have folders.'
+				'long_desc' => lang('If checked, a copy of your sent mail will be stored in the &quot;Sent&quot; folder name which you specify in the box for &quot;Sent messages folder &quot;. Only works with IMAP servers, POP servers do not have folders.')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -430,14 +361,7 @@
 				'lang_blurb'	=> lang('Sent messages folder'),
 				'init_default'	=> 'string,Sent',
 				'values'	=> array(),
-				'long_desc' => 
-					'If &quot;'.lang('Sent messages folder').'&quot; is checked, 
-					a copy of your sent mail will be stored in the folder 
-					name you type in this box. If this folder does not exist, 
-					it will be created for you automatically. Default name is &quot;Sent&quot;. 
-					This will be your &quot;Sent&quot; folder, but it does not have to 
-					actually be called &quot;Sent&quot;, you can name it anything. 
-					Only works with IMAP servers, POP servers do not have folders.'
+				'long_desc' => lang('If &quot; Sent messages folder &quot; is checked, a copy of your sent mail will be stored in the folder name you type in this box. If this folder does not exist, it will be created for you automatically. Default name is &quot;Sent&quot;. This will be your &quot;Sent&quot; folder, but it does not have to actually be called &quot;Sent&quot;, you can name it anything. Only works with IMAP servers, POP servers do not have folders.')
 			);
 			/*
 			$i++;
@@ -497,13 +421,7 @@
 				'lang_blurb'	=> lang('enable UTF-7 encoded folder names'),
 				'init_default'	=> 'set_or_not,not_set',
 				'values'	=> array(),
-				'long_desc' => 
-					'Most US and European users do not need to enable this.
-					If this option is checked then your email server can handle 
-					folder names with non US-ASCII charactors in them/ Default 
-					is disabled, not checked. Only use if you are really sure 
-					you need it. 
-					Only works with IMAP servers, POP servers do not have folders.'
+				'long_desc'	=> lang('Most US and European users do not need to enable this. If this option is checked then your email server can handle folder names with non US-ASCII charactors in them/ Default is disabled, not checked. Only use if you are really sure you need it. Only works with IMAP servers, POP servers do not have folders.')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -515,10 +433,7 @@
 				'lang_blurb'	=> lang('Send forwarded mail as quoted attachment'),
 				'init_default'	=> 'set_or_not,not_set',
 				'values'	=> array(),
-				'long_desc' => 
-					'Select this box if you want the text body of the message you are forwarding to appear
-					inline in the body of your sent message
-					'
+				'long_desc' 	=> lang('Select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -530,9 +445,7 @@
 				'init_default'	=> 'string,simple',
 				'values'	=> array('orig'=>'Simple',
 							'lex' => 'Javascript'),
-				'long_desc' => 
-					'We have recently added this new addressbook so that users can choose to have a more complex addressbook that features a) Easy, point and click searching, b) Best suited for organizations with large central addressbooks with many categories. You can choose here which addressbook do you prefer.
-					'
+				'long_desc' => lang('We have recently added this new addressbook so that users can choose to have a more complex addressbook that features a) Easy, point and click searching, b) Best suited for organizations with large central addressbooks with many categories. You can choose here which addressbook do you prefer.')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -545,11 +458,7 @@
 				'values'	=> array('900'=>'1200x1600',
 							'800' => '1024x768',
 							'700' => '800x600'),
-				'long_desc' => 
-					'We have three sizes that tell us how to better render the addressbook for you: 800x600 (addressbook
-					will popout in a 700 pixel wide box), 1024x768 (it will be a 800 box), 1200x1600 (will be a 900 box).
-					The fonts for all html stuff will be, respectively set to xx-small, x-small and normal (no font setting).
-					'
+				'long_desc' => lang('We have three sizes that tell us how to better render the addressbook for you: 800x600 (addressbook will popout in a 700 pixel wide box), 1024x768 (it will be a 800 box), 1200x1600 (will be a 900 box). The fonts for all html stuff will be, respectively set to xx-small, x-small and normal (no font setting).')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -561,8 +470,7 @@
 				'lang_blurb'	=> lang('Show New Messages in ComboBox'),
 				'init_default'	=> 'set_or_not,not_set',
 				'values'	=> array(),
-				'long_desc' => 
-					'This specifies whether or not to show the number of new message in the folders combo box on the index screen.'
+				'long_desc' => lang('This specifies whether or not to show the number of new message in the folders combo box on the index screen.')
 			);
 			$i++;
                         $this->std_prefs[$i] = Array(
@@ -574,8 +482,7 @@
                                 'lang_blurb'    => lang('Show total folder size by default'),
                                 'init_default'  => 'set_or_not,not_set',
                                 'values'        => array(),
-                                'long_desc' =>
-                                        'This specifies whether or not to show the total size of folders by default. If this is not checked, you will be presented with a button allowing you to display folder size..'
+                                'long_desc' => lang('This specifies whether or not to show the total size of folders by default. If this is not checked, you will be presented with a button allowing you to display folder size..')
                         );
 			// Custom Settings
 			$this->cust_prefs = Array();
@@ -591,22 +498,7 @@
 				'lang_blurb'	=> lang('Use custom settings'),
 				'init_default'	=> 'set_or_not,not_set',
 				'values'	=> array(),
-				'long_desc' => 
-					'Your server administrator will set the default values for the 
-					following options. You may never need to change any of them. 
-					If you do need to use settings that are different from 
-					the defaults for the options below here, then check this 
-					box. Default is disabled, not checked. If you fill in some 
-					of the options, but later decide to go back to the default 
-					values, unchecking this box will erase your custom values 
-					and put back the default values. All of the following options 
-					start out with the default value, so you may see some 
-					settings below even if you have never filled them in. 
-					This checkbox only shows up for the default email account. 
-					If you are setting up additional email accounts, you will 
-					be required to fill in the following options and this 
-					checkbox will not be displayed, it will be checked for 
-					all extra email accounts.'
+				'long_desc' => lang('Your server administrator will set the default values for the following options. You may never need to change any of them. If you do need to use settings that are different from the defaults for the options below here, then check this box. Default is disabled, not checked. If you fill in some of the options, but later decide to go back to the default values, unchecking this box will erase your custom values and put back the default values. All of the following options start out with the default value, so you may see some settings below even if you have never filled them in. This checkbox only shows up for the default email account. If you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.')
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -619,18 +511,7 @@
 				'lang_blurb'	=> lang('Email Account Name'),
 				'init_default'	=> 'function,sub_default_userid',
 				'values'	=> array(),
-				'long_desc' => 
-					'The login name to use when checking mail for this email 
-					account. This may be the same as your phpGroupWare login 
-					name, or the server administrator may have set it for you. 
-					If your have multiple email accounts set up, you will need 
-					to fill this in. If you have only one email account set 
-					up, then you can probably leave this alone. If you clear this 
-					box, then it goes back to the default value. If you only need 
-					some custom settings but want this one to be the default value, 
-					then leave this box blank, the default value will be used, and 
-					you will see that default value in this box the next time you 
-					come to this preferences page.'
+				'long_desc' => lang('The login name to use when checking mail for this email account. This may be the same as your phpGroupWare login name, or the server administrator may have set it for you. If your have multiple email accounts set up, you will need to fill this in. If you have only one email account set up, then you can probably leave this alone. If you clear this box, then it goes back to the default value. If you only need some custom settings but want this one to be the default value, then leave this box blank, the default value will be used, and you will see that default value in this box the next time you come to this preferences page.')
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -643,20 +524,7 @@
 				'lang_blurb'	=> lang('Email Password'),
 				'init_default'	=> 'init_no_fill',
 				'values'	=> array(),
-				'long_desc' => 
-					'The login name to use when checking mail for this email 
-					account. This may be the same as your phpGroupWare login 
-					name, or the server administrator may have set it for you. 
-					If your have multiple email accounts set up, you will need 
-					to fill this in. If you have only one email account set 
-					up, then you can probably leave this alone. If you do set 
-					a custom password, this box will be blank the next time you 
-					come to this settings page. This is a security feature because 
-					your custom email password is not sent to your browser after 
-					you set it. To change your custom password, simply enter a new 
-					password in the box. Exra email accounts require you to set this. 
-					For your default email account, you can clear your custom password 
-					by unchecking the &quot;Use Custom Settings&quot; option.'
+				'long_desc' => lang('The password to use when checking mail for this email account. This may be the same as your phpGroupWare password, or the server administrator may have set it for you. If your have multiple email accounts set up, you will need to fill this in. If you have only one email account set up, then you can probably leave this alone. If you do set a custom password, this box will be blank the next time you come to this settings page. This is a security feature because your custom email password is not sent to your browser after you set it. To change your custom password, simply enter a new password in the box. Extra email accounts require you to set this. For your default email account, you can clear your custom password by unchecking the &quot;Use Custom Settings&quot; option.')
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -670,13 +538,7 @@
 			//	'init_default'	=> 'function,$this->sub_default_address($account_id);',
 				'init_default'	=> 'function,sub_default_address',
 				'values'	=> array(),
-				'long_desc' => 
-					'Mail you send will use this address as the &quot;From&quot; address. 
-					This may be the same as your phpGroupWare login name, 
-					or the server administrator may have set it for you. 
-					When the recipient clicks reply, this address will 
-					be used. You can leave this box blank and the default value 
-					will be used.'
+				'long_desc' => lang('Mail you send will use this address as the &quot;From&quot; address. This may be the same as your phpGroupWare login name, or the server administrator may have set it for you. When the recipient clicks reply, this address will be used. You can leave this box blank and the default value will be used.')
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -689,10 +551,7 @@
 				'lang_blurb'	=> lang('Mail Server'),
 				'init_default'	=> 'varEVAL,$GLOBALS["phpgw_info"]["server"]["mail_server"];',
 				'values'	=> array(),
-				'long_desc' => 
-					'Name of the mail server you want to access. Should be a 
-					name like &quot;mail.example.com&quot;. If you leave this box 
-					blank then the default value will be used.'
+				'long_desc' => lang('Name of the mail server you want to access. Should be a name like &quot;mail.example.com&quot;. If you leave this box blank then the default value will be used.')
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -709,13 +568,7 @@
 					'imaps'		=> 'IMAPS',
 					'pop3s'		=> 'POP-3S'
 				),
-				'long_desc' => 
-					'The type of mail server you want to access. IMAP mail 
-					servers have folders, such as the Sent and Trash folders. 
-					POP servers do not have folders. POP, POP-3, and POP3 are the same thing. 
-					You can have the server connection encrypted by using IMAPS or POPS, 
-					only if the mailserver supports it and if your phpGroupWare installation 
-					has a &quot;SSL&quot; capabable version of PHP.'
+				'long_desc' => lang('The type of mail server you want to access. IMAP mail servers have folders, such as the Sent and Trash folders. POP servers do not have folders. POP, POP-3, and POP3 are the same thing. You can have the server connection encrypted by using IMAPS or POPS, only if the mailserver supports it and if your phpGroupWare installation has a &quot;SSL&quot; capabable version of PHP.')
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -731,19 +584,7 @@
 					'UWash'		=> 'UWash',
 					'UW-Maildir'	=> 'UW-Maildir'
 				),
-				'long_desc' => 
-					'If using an IMAP server, what kind is it, most often 
-					this option can safely be set to 
-					&quot;Cyrus '.lang('or').' Courier&quot;. Technically, this 
-					means the server uses a dot between the different parts of the 
-					folder names, such as &quot;INBOX.Sent&quot;. The other major kind 
-					of IMAP server is the University of Washington &quot;UWash&quot; IMAP server. 
-					It uses slashes instead of the dots the other servers use, and 
-					although it has a folder called &quot;INBOX&quot;, it is not 
-					considered the &quot;Namespace&quot; for the other folder names. 
-					The &quot;UW-Maildir&quot; is a rare combination of the two above 
-					types. This is the least used kind of IMAP server. If you are unsure, 
-					ask your IT administrator. Only applies to IMAP servers.'
+				'long_desc' => lang('If using an IMAP server, what kind is it, most often this option can safely be set to &quot;Cyrus or Courier&quot;. Technically, this means the server uses a dot between the different parts of the folder names, such as &quot;INBOX.Sent&quot;. The other major kind of IMAP server is the University of Washington &quot;UWash&quot; IMAP server. It uses slashes instead of the dots the other servers use, and although it has a folder called &quot;INBOX&quot;, it is not considered the &quot;Namespace&quot; for the other folder names. The &quot;UW-Maildir&quot; is a rare combination of the two above types. This is the least used kind of IMAP server. If you are unsure, ask your IT administrator. Only applies to IMAP servers.')
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -756,21 +597,10 @@
 				'lang_blurb'	=> lang('U-Wash Mail Folder').' - ' .lang('If Applicable'),
 				'init_default'	=> 'varEVAL,$GLOBALS["phpgw_info"]["server"]["mail_folder"];',
 				'values'	=> array(),
-				'long_desc' => 
-					'Only needed with the University of Washington &quot;UWash&quot; IMAP server. 
-					The default value is &quot;mail&quot; which means your mail folders, other 
-					then INBOX, are located in a directory called &quot;mail&quot; directly 
-					under your &quot;HOME&quot; directory. This box may be left empty, which 
-					means your mail folders are located in your &quot;HOME&quot; directory, not 
-					a subdirectory. If your mail folders are located in a subdirectory of 
-					&quot;HOME&quot; then put the name of that subdirectory here. Generally, 
-					it is not necessary to use any special slashes or tildes, &quot;HOME&quot; 
-					is always considered the base directory, and the slash bewteen &quot;HOME&quot; 
-					and the subdirectory will be added for you automatically, do not put the slash 
-					in this box.'
+				'long_desc' => lang('Only needed with the University of Washington &quot;UWash&quot; IMAP server. The default value is &quot;mail&quot; which means your mail folders, other then INBOX, are located in a directory called &quot;mail&quot; directly under your &quot;HOME&quot; directory. This box may be left empty, which means your mail folders are located in your &quot;HOME&quot; directory, not a subdirectory. If your mail folders are located in a subdirectory of &quot;HOME&quot; then put the name of that subdirectory here. Generally, it is not necessary to use any special slashes or tildes, &quot;HOME&quot; is always considered the base directory, and the slash bewteen &quot;HOME&quot; and the subdirectory will be added for you automatically, do not put the slash in this box.')
 			);
-			if ($this->debug_set_prefs > 3) { echo 'email.bopreferences.init_available_prefs: data dump: calling debug_dump_prefs<pre>';  $this->debug_dump_prefs(); }
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.init_available_prefs: LEAVING<br>'; }
+			if ($this->debug_set_prefs > 3) { $this->msg->dbug->out('email.bopreferences.init_available_prefs: data dump: calling debug_dump_prefs<br>');  $this->debug_dump_prefs(); }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.init_available_prefs: LEAVING<br>'); }
 		}
 		
 		
@@ -778,9 +608,9 @@
 		function debug_dump_prefs()
 		{
 			// DEBUG begin
-			echo '<br><br>';
-			echo '<b>std_prefs var dump:</b><pre>'; print_r($this->std_prefs); echo '</pre>';
-			echo '<b>cust_prefs var dump:</b><pre>'; print_r($this->cust_prefs); echo '</pre>';
+			//$this->msg->dbug->out('<br><br>');
+			$this->msg->dbug->out('email.bopreferences.debug_dump_prefs: std_prefs var DUMP:', $this->std_prefs);
+			$this->msg->dbug->out('email.bopreferences.debug_dump_prefs: cust_prefs var DUMP:', $this->cust_prefs);
 			//Header('Location: ' . $GLOBALS['phpgw']->link('/preferences/index.php'));
 			//return;
 			// DEBUG end
@@ -793,7 +623,9 @@
 		@discussion EXPIRE ANY CACHED ITEM THAT WAS DERIVED FROM A CHANGED PREF ITEM. 
 		We should be precise and only expire if necessary, but for now just expire any cached item that could 
 		be effected by a change in preferences. NOTE: we locate this after we have obtained a reliable 
-		acctnum which these prefs apply to. 
+		acctnum which these prefs apply to.  Currently expires these things, mailsvr_callstr, mailsvr_namespace, 
+		mailsvr_delimiter, and folder_list. Note that "folder_list" requires expiration here because the elements that 
+		make up all the folder long, or fully qualified, folder name probably have changed too. 
 		@author Angles
 		*/
 		function expire_related_cached_items($acctnum='')
@@ -803,10 +635,15 @@
 			{
 				$acctnum = $this->acctnum;
 			}
-
+			
 			$GLOBALS['phpgw']->msg->expire_session_cache_item('mailsvr_callstr', $acctnum);
 			$GLOBALS['phpgw']->msg->expire_session_cache_item('mailsvr_namespace', $acctnum);
 			$GLOBALS['phpgw']->msg->expire_session_cache_item('mailsvr_delimiter', $acctnum);
+			// DAAA! the folder list probably also changes if the components that make up the Fully Qualified folder name have changed
+			$GLOBALS['phpgw']->msg->expire_session_cache_item('folder_list', $acctnum);
+			// NEW: now we cache all the prefs in bulk cache in the appsession
+			$my_location = '0;cached_prefs';
+			$GLOBALS['phpgw']->msg->so->so_appsession_passthru($my_location, ' ');
 		}
 		
 		/*!
@@ -820,7 +657,7 @@
 		*/
 		function grab_set_prefs()
 		{
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences: call to grab_set_prefs<br>'; }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences: call to grab_set_prefs<br>'); }
 			// better make sure we have created the available prefs schema
 			$this->init_available_prefs();
 
@@ -834,7 +671,7 @@
 			}
 			else
 			{
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences: call to grab_set_prefs CALLER UNKNOWN<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences: call to grab_set_prefs CALLER UNKNOWN<br>'); }
 				$this->pref_errors .= 'email: bopreferences: grab_set_prefs: unsupported "caller" variable<br>';
 			}
 		}
@@ -860,7 +697,7 @@
 		*/
 		function grab_set_prefs_args_gpc()
 		{
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences: call to grab_set_prefs_args_gpc<br>'; }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences: call to grab_set_prefs_args_gpc<br>'); }
 			// ----  HANDLE GRABBING PREFERENCE GPC HTTP_POST_VARS ARGS  -------
 			// for abstraction from phpgw UI and from PHP's GPC data, put the submitted GPC data
 			// into a class var $this->args[] array. This array is then used to represent the submitted
@@ -870,7 +707,7 @@
 			// ----  DEFAULT EMAIL ACCOUNT  ----
 			if (isset($GLOBALS['phpgw']->msg->ref_POST[$this->submit_token]))
 			{
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences: INSIDE grab_set_prefs_args_gpc for Default Email Account data<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences: INSIDE grab_set_prefs_args_gpc for Default Email Account data<br>'); }
 				
 				// EXPIRE stuff that may get stale by changing prefs
 				$this->expire_related_cached_items(0);
@@ -886,14 +723,14 @@
 					// existence of $this->submit_token indicates this data is intended for the default email account
 					if (!stristr($this->std_prefs[$i]['accts_usage'], 'default'))
 					{
-						if ($this->debug_set_prefs > 1) { echo ' * * (std pref) _SKIP_ this item ['.$this->std_prefs[$i]['id'].'], it does not apply to the default email account<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out(' * * (std pref) _SKIP_ this item ['.$this->std_prefs[$i]['id'].'], it does not apply to the default email account<br>'); }
 					}
 					else
 					{
 						// ok, we have a pref item that applies to the default email account
 						$this_pref_name = $this->std_prefs[$i]['id'];
-						if ($this->debug_set_prefs > 1) { echo ' * * (std pref) $this_pref_name: '.$this_pref_name.'<br>'; }
-						if ($this->debug_set_prefs > 1) { echo ' * * (std pref) $GLOBALS[HTTP_POST_VARS][$this_pref_name]: '.$GLOBALS['phpgw']->msg->ref_POST[$this_pref_name].'<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out(' * * (std pref) $this_pref_name: '.$this_pref_name.'<br>'); }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out(' * * (std pref) $GLOBALS[HTTP_POST_VARS][$this_pref_name]: '.$GLOBALS['phpgw']->msg->ref_POST[$this_pref_name].'<br>'); }
 						if (isset($GLOBALS['phpgw']->msg->ref_POST[$this_pref_name]))
 						{
 							$this->args[$this_pref_name] = $GLOBALS['phpgw']->msg->ref_POST[$this_pref_name];
@@ -909,14 +746,14 @@
 					// existence of $this->submit_token indicates this data is intended for the default email account
 					if (!stristr($this->cust_prefs[$i]['accts_usage'], 'default'))
 					{
-						if ($this->debug_set_prefs > 1) { echo ' * * (cust pref) _SKIP_ this item ['.$this->cust_prefs[$i]['id'].'], it does not apply to the default email account<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out(' * * (cust pref) _SKIP_ this item ['.$this->cust_prefs[$i]['id'].'], it does not apply to the default email account<br>'); }
 					}
 					else
 					{
 						// ok, we have a pref item that applies to the default email account
 						$this_pref_name = $this->cust_prefs[$i]['id'];
-						if ($this->debug_set_prefs > 1) { echo ' * * (cust pref) $this_pref_name: '.$this_pref_name.'<br>'; }
-						if ($this->debug_set_prefs > 1) { echo ' * * (cust pref) $GLOBALS[HTTP_POST_VARS][$this_pref_name]: '.$GLOBALS['phpgw']->msg->ref_POST[$this_pref_name].'<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out(' * * (cust pref) $this_pref_name: '.$this_pref_name.'<br>'); }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out(' * * (cust pref) $GLOBALS[HTTP_POST_VARS][$this_pref_name]: '.$GLOBALS['phpgw']->msg->ref_POST[$this_pref_name].'<br>'); }
 						if (isset($GLOBALS['phpgw']->msg->ref_POST[$this_pref_name]))
 						{
 							$this->args[$this_pref_name] = $GLOBALS['phpgw']->msg->ref_POST[$this_pref_name];
@@ -927,7 +764,7 @@
 			// ----  EXTRA EMAIL ACCOUNTS  ----
 			elseif (isset($GLOBALS['phpgw']->msg->ref_POST[$this->submit_token_extra_accounts]))
 			{
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences: INSIDE grab_set_prefs_args_gpc for EXTRA EMAIL ACCOUNTS data<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences: INSIDE grab_set_prefs_args_gpc for EXTRA EMAIL ACCOUNTS data<br>'); }
 				
 				//$this->args['submit_prefs'] = $GLOBALS['phpgw']->msg->ref_POST['submit_prefs'];
 				$this->args[$this->submit_token_extra_accounts] = $GLOBALS['phpgw']->msg->ref_POST[$this->submit_token_extra_accounts];
@@ -952,14 +789,14 @@
 					// extra email accounts
 					if (!stristr($this->std_prefs[$i]['accts_usage'], 'extra_accounts'))
 					{
-						if ($this->debug_set_prefs > 1) { echo ' * * (std pref) _SKIP_ this item ['.$this->std_prefs[$i]['id'].'], it does not apply to extra email accounts<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out(' * * (std pref) _SKIP_ this item ['.$this->std_prefs[$i]['id'].'], it does not apply to extra email accounts<br>'); }
 					}
 					else
 					{
 						// ok, we have a pref item that applies to the default email account
 						$this_pref_name = $this->std_prefs[$i]['id'];
-						if ($this->debug_set_prefs > 1) { echo ' * * (std pref) $this_pref_name: '.$this_pref_name.'<br>'; }
-						if ($this->debug_set_prefs > 1) { echo ' * * (std pref) $GLOBALS[HTTP_POST_VARS][$this->acctnum('.$this->acctnum.')][$this_pref_name('.$this_pref_name.')]: ['.$GLOBALS['phpgw']->msg->ref_POST[$this->acctnum][$this_pref_name].']<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out(' * * (std pref) $this_pref_name: '.$this_pref_name.'<br>'); }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out(' * * (std pref) $GLOBALS[HTTP_POST_VARS][$this->acctnum('.$this->acctnum.')][$this_pref_name('.$this_pref_name.')]: ['.$GLOBALS['phpgw']->msg->ref_POST[$this->acctnum][$this_pref_name].']<br>'); }
 						if (isset($GLOBALS['phpgw']->msg->ref_POST[$this->acctnum][$this_pref_name]))
 						{
 							$this->args[$this->acctnum][$this_pref_name] = $GLOBALS['phpgw']->msg->ref_POST[$this->acctnum][$this_pref_name];
@@ -976,14 +813,14 @@
 					// extra email accounts
 					if (!stristr($this->cust_prefs[$i]['accts_usage'], 'extra_accounts'))
 					{
-						if ($this->debug_set_prefs > 1) { echo ' * * (cust pref) _SKIP_ this item ['.$this->cust_prefs[$i]['id'].'], it does not apply to extra email accounts<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out(' * * (cust pref) _SKIP_ this item ['.$this->cust_prefs[$i]['id'].'], it does not apply to extra email accounts<br>'); }
 					}
 					else
 					{
 						// ok, we have a pref item that applies to extra email accounts
 						$this_pref_name = $this->cust_prefs[$i]['id'];
-						if ($this->debug_set_prefs > 1) { echo ' * * (cust pref) $this_pref_name: '.$this_pref_name.'<br>'; }
-						if ($this->debug_set_prefs > 1) { echo ' * * (cust pref) $GLOBALS[HTTP_POST_VARS][$this->acctnum('.$this->acctnum.')][$this_pref_name('.$this_pref_name.')]: ['.$GLOBALS['phpgw']->msg->ref_POST[$this->acctnum][$this_pref_name].']<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out(' * * (cust pref) $this_pref_name: '.$this_pref_name.'<br>'); }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out(' * * (cust pref) $GLOBALS[HTTP_POST_VARS][$this->acctnum('.$this->acctnum.')][$this_pref_name('.$this_pref_name.')]: ['.$GLOBALS['phpgw']->msg->ref_POST[$this->acctnum][$this_pref_name].']<br>'); }
 						if (isset($GLOBALS['phpgw']->msg->ref_POST[$this->acctnum][$this_pref_name]))
 						{
 							$this->args[$this->acctnum][$this_pref_name] = $GLOBALS['phpgw']->msg->ref_POST[$this->acctnum][$this_pref_name];
@@ -1008,7 +845,7 @@
 		function grab_set_prefs_args_xmlrpc()
 		{
 			// STUB, for future use
-			echo 'email boprefs: call to un-implemented function grab_set_prefs_args_xmlrpc';
+			$this->msg->dbug->out('email boprefs: call to un-implemented function grab_set_prefs_args_xmlrpc<br>');
 		}
 		
 		/*!
@@ -1031,13 +868,13 @@
 			$c_prefs = count($prefs_set);
 			if ($c_prefs == 0)
 			{
-				if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_submitted_prefs: empty array, no prefs set supplied, exiting<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_submitted_prefs: empty array, no prefs set supplied, exiting<br>'); }
 				return False;
 			}
 			
 			for($i=0;$i<$c_prefs;$i++)
 			{
-				if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_submitted_prefs: inside preferences loop ['.$i.']<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_submitted_prefs: inside preferences loop ['.$i.']<br>'); }
 				
 				$this_pref = $prefs_set[$i];
 				
@@ -1049,7 +886,7 @@
 					// we are not supposed to show this item for the default account, skip this pref item
 					// continue is used within looping structures to skip the rest of the current loop 
 					// iteration and continue execution at the beginning of the next iteration
-					if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_submitted_prefs: _SKIP_ this item ["'.$this_pref['id'].'"], it does not apply to the default email account<br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_submitted_prefs: _SKIP_ this item ["'.$this_pref['id'].'"], it does not apply to the default email account<br>'); }
 					continue;
 				}
 				
@@ -1061,7 +898,7 @@
 					// ----  OR an empty string was submitted for this pref item  ----
 					
 					// so how do we handle this, for this pref...
-					if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_submitted_prefs: submitted_pref for ["'.$this_pref['id'].'"] not set or empty string<br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_submitted_prefs: submitted_pref for ["'.$this_pref['id'].'"] not set or empty string<br>'); }
 					if (stristr($this_pref['write_props'], 'empty_no_delete'))
 					{
 						// DO NOT DELETE
@@ -1069,7 +906,7 @@
 						// note there may or may not actually be an existing value in the prefs table
 						// but it does not matter here, because we do not touch this items value at all.
 						// Typical Usage: passwords
-						if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: no change to repository for empty or blank ["'.$this_pref['id'].'"] because of "empty_no_delete"<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: no change to repository for empty or blank ["'.$this_pref['id'].'"] because of "empty_no_delete"<br>'); }
 					}
 					elseif (stristr($this_pref['write_props'], 'empty_string_ok'))
 					{
@@ -1077,7 +914,7 @@
 						// i.e. this pref can take an empty string as a valid value
 						// whereas most other prefs are simply deleted from the repository if value is empty
 						// Typical Usage: email sig, UWash Mail Folder
-						if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: save empty string to repository for ["'.$this_pref['id'].'"] because of "empty_string_ok"<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: save empty string to repository for ["'.$this_pref['id'].'"] because of "empty_string_ok"<br>'); }
 						// a) as always, delete the pref before we assign a value
 						$GLOBALS['phpgw']->preferences->delete('email',$this_pref['id']);
 						// b) now assign a blank string value
@@ -1086,7 +923,7 @@
 					else
 					{
 						// just delete it from the preferences repository
-						if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: deleting empty or blank pref ["'.$this_pref['id'].'"] from the repository<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: deleting empty or blank pref ["'.$this_pref['id'].'"] from the repository<br>'); }
 						$GLOBALS['phpgw']->preferences->delete('email',$this_pref['id']);
 					}
 				}
@@ -1098,7 +935,7 @@
 					$submitted_pref = $this->args[$this_pref['id']];
 					// init a var to hold the processed submitted_pref
 					$processed_pref = '';
-					if ($this->debug_set_prefs > 1) { echo '* * ** email: bopreferences: process_submitted_prefs:  submitted_pref: ['.$submitted_pref.']<br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('* * ** email: bopreferences: process_submitted_prefs:  submitted_pref: ['.$submitted_pref.']<br>'); }
 					
 					// most "user_string"s need special processing before they can go into the repository
 					if ($this_pref['type'] == 'user_string')
@@ -1149,7 +986,7 @@
 						// all other data needs no special processing before going into the repository
 						$processed_pref = $submitted_pref;
 					}
-					if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_submitted_prefs: about to assign pref ["'.$this_pref['id'].'"] this value, post processing (if any): <pre>'.$GLOBALS['phpgw']->strip_html($processed_pref).'</pre><br>'."\r\n"; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_submitted_prefs: about to assign pref ["'.$this_pref['id'].'"] this value, post processing (if any):', $GLOBALS['phpgw']->strip_html($processed_pref)); }
 					
 					// a) as always, delete the pref before we assign a value
 					$GLOBALS['phpgw']->preferences->delete('email',$this_pref['id']);
@@ -1170,13 +1007,13 @@
 		*/
 		function preferences()
 		{
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.preferences(): ENTERING<br>'; }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.preferences(): ENTERING<br>'); }
 			// establish all available prefs for email
-			if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.preferences(): about to call $this->init_available_prefs()<br>'; }
+			if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.preferences(): about to call $this->init_available_prefs()<br>'); }
 			$this->init_available_prefs();
 			
 			// this will fill $this->args[] array with any submitted prefs args
-			if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.preferences(): about to call $this->grab_set_prefs()<br>'; }
+			if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.preferences(): about to call $this->grab_set_prefs()<br>'); }
 			$this->grab_set_prefs();
 			
 			// ----  HANDLE SETING PREFERENCE   -------
@@ -1188,25 +1025,25 @@
 				// constructor will initialize $GLOBALS['phpgw']->msg
 				
 				// ---  Process Standard Prefs  ---
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.preferences: about to process Standard Prefs<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.preferences: about to process Standard Prefs<br>'); }
 				$this->process_submitted_prefs($this->std_prefs);
 				
 				// ---  Process Custom Prefs  ---
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.preferences: about to process Custom Prefs<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.preferences: about to process Custom Prefs<br>'); }
 				if (isset($this->args['use_custom_settings']))
 				{
 					// custom settings are in use, process them
-					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.preferences: custom prefs are in use, calling $this->process_submitted_prefs($this->cust_prefs)<br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.preferences: custom prefs are in use, calling $this->process_submitted_prefs($this->cust_prefs)<br>'); }
 					$this->process_submitted_prefs($this->cust_prefs);
 				}
 				else
 				{
 					// custom settings are NOT being used, DELETE them from the repository
 					$c_prefs = count($this->cust_prefs);			
-					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.preferences: custom prefs NOT in use, deleting them<br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.preferences: custom prefs NOT in use, deleting them<br>'); }
 					for($i=0;$i<$c_prefs;$i++)
 					{
-						if ($this->debug_set_prefs > 2) { echo ' *(loop)* email.bopreferences: preferences: deleting custom pref $this->cust_prefs['.$i.'][id] : ['.$this->cust_prefs[$i]['id'].']<br>'; }
+						if ($this->debug_set_prefs > 2) { $this->msg->dbug->out(' *(loop)* email.bopreferences: preferences: deleting custom pref $this->cust_prefs['.$i.'][id] : ['.$this->cust_prefs[$i]['id'].']<br>'); }
 						$GLOBALS['phpgw']->preferences->delete('email',$this->cust_prefs[$i]['id']);
 					}
 				}
@@ -1214,11 +1051,11 @@
 				// DONE processing prefs, SAVE to the Repository
 				if ($this->debug_set_prefs > 1) 
 				{
-					echo 'email.bopreferences.preferences(): *debug* at ['.$this->debug_set_prefs.'] so skipping save_repository<br>';
+					$this->msg->dbug->out('email.bopreferences.preferences(): *debug* at ['.$this->debug_set_prefs.'] so skipping save_repository<br>');
 				}
 				else
 				{
-					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.preferences(): SAVING REPOSITORY<br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.preferences(): SAVING REPOSITORY<br>'); }
 					$GLOBALS['phpgw']->preferences->save_repository();
 				}
 				// end the email session
@@ -1228,14 +1065,14 @@
 				$take_me_to_url = $GLOBALS['phpgw']->link(
 											'/preferences/index.php');
 			
-				if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.preferences(): almost LEAVING, about to issue a redirect to:<br>'.$take_me_to_url.'<br>'; }
+				if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.preferences(): almost LEAVING, about to issue a redirect to:<br>'.$take_me_to_url.'<br>'); }
 				if ($this->debug_set_prefs > 1) 
 				{
-					echo 'email.bopreferences.preferences(): LEAVING, *debug* at ['.$this->debug_set_prefs.'] so skipping Header redirection to: ['.$take_me_to_url.']<br>';
+					$this->msg->dbug->out('email.bopreferences.preferences(): LEAVING, *debug* at ['.$this->debug_set_prefs.'] so skipping Header redirection to: ['.$take_me_to_url.']<br>');
 				}
 				else
 				{
-					if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.preferences: LEAVING with redirect to: <br>'.$take_me_to_url.'<br>'; }
+					if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.preferences: LEAVING with redirect to: <br>'.$take_me_to_url.'<br>'); }
 					Header('Location: ' . $take_me_to_url);
 				}
 			}
@@ -1403,7 +1240,7 @@
 		*/
 		function process_ex_accounts_submitted_prefs($prefs_set='')
 		{
-			if ($this->debug_set_prefs > 0) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs: ENTERING<br>'; }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email: bopreferences: process_ex_accounts_submitted_prefs: ENTERING<br>'); }
 			// basicly, copy and paste the real "process_submitted_prefs" and tweak for extra_accounts applicablility
 			if(!$prefs_set)
 			{
@@ -1412,25 +1249,25 @@
 			$c_prefs = count($prefs_set);
 			if ($c_prefs == 0)
 			{
-				if ($this->debug_set_prefs > 0) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs: LEAVING, empty array, no prefs set supplied<br>'; }
+				if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email: bopreferences: process_ex_accounts_submitted_prefs: LEAVING, empty array, no prefs set supplied<br>'); }
 				return False;
 			}
 			
 			// ==== ACCTNUM ====
-			if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs: pre discovery $this->acctnum : ['.serialize($this->acctnum).']<br>'; }
+			if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_ex_accounts_submitted_prefs: pre discovery $this->acctnum : ['.serialize($this->acctnum).']<br>'); }
 			if ((!isset($this->acctnum))
 			|| ((string)$this->acctnum == ''))
 			{
 				$this->acctnum = $this->obtain_ex_acctnum();
 			}
-			if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs: post discovery $this->acctnum : ['.serialize($this->acctnum).']<br>'; }
+			if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_ex_accounts_submitted_prefs: post discovery $this->acctnum : ['.serialize($this->acctnum).']<br>'); }
 			
 			for($i=0;$i<$c_prefs;$i++)
 			{
-				if ($this->debug_set_prefs > 1) { echo ' <b>* (next loop) *</b> email: bopreferences: process_ex_accounts_submitted_prefs: inside preferences loop ['.$i.']<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out(' <b>* (next loop) *</b> email: bopreferences: process_ex_accounts_submitted_prefs: inside preferences loop ['.$i.']<br>'); }
 				
 				$this_pref = $prefs_set[$i];
-				if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs: $this_pref = $prefs_set['.$i.'] : $this_pref DUMP:<pre>'; print_r($prefs_set[$i]); echo '</pre>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_ex_accounts_submitted_prefs: $this_pref = $prefs_set['.$i.'] : $this_pref DUMP:', $prefs_set[$i]); }
 				
 				// ----  skip this item logic  ----
 				// we are ONLY concerned with items that apply to the extra email accounts
@@ -1439,7 +1276,7 @@
 					// we are not supposed to handle this item for the extra email accounts, skip this pref item
 					// continue is used within looping structures to skip the rest of the current loop 
 					// iteration and continue execution at the beginning of the next iteration
-					if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs: _SKIP_ this item ["'.$this_pref['id'].'"], it does not apply to Extra Email Accounts <br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_ex_accounts_submitted_prefs: _SKIP_ this item ["'.$this_pref['id'].'"], it does not apply to Extra Email Accounts <br>'); }
 					continue;
 				}
 				
@@ -1449,7 +1286,7 @@
 				{
 					// nothing submitted for this preference item
 					// OR an empty string was submitted for this pref item
-					if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs: submitted_pref for ["'.$this_pref['id'].'"] not set or empty string<br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_ex_accounts_submitted_prefs: submitted_pref for ["'.$this_pref['id'].'"] not set or empty string<br>'); }
 					if (stristr($this_pref['write_props'], 'empty_no_delete'))
 					{
 						// DO NOT DELETE
@@ -1457,7 +1294,7 @@
 						// note there may or may not actually be an existing value in the prefs table
 						// but it does not matter here, because we do not touch this items value at all.
 						// Typical Usage: passwords
-						if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs: no change to repository for empty or blank ["'.$this_pref['id'].'"] because of "empty_no_delete"<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_ex_accounts_submitted_prefs: no change to repository for empty or blank ["'.$this_pref['id'].'"] because of "empty_no_delete"<br>'); }
 					}
 					elseif (stristr($this_pref['write_props'], 'empty_string_ok'))
 					{
@@ -1465,21 +1302,21 @@
 						// i.e. this pref can take an empty string as a valid value
 						// whereas most other prefs are simply deleted from the repository if value is empty
 						// Typical Usage: email sig, UWash Mail Folder
-						if ($this->debug_set_prefs > 1) { echo 'email: bopreferences process_ex_accounts_submitted_prefs: save empty string to repository for ["'.$this_pref['id'].'"] because of "empty_string_ok"<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences process_ex_accounts_submitted_prefs: save empty string to repository for ["'.$this_pref['id'].'"] because of "empty_string_ok"<br>'); }
 						// a) as always, delete the pref before we assign a value
 						$pref_struct_str = '["ex_accounts"]['.$this->acctnum.']["'.$this_pref['id'].'"]';
-						if ($this->debug_set_prefs > 1) { echo 'email: bopreferences process_ex_accounts_submitted_prefs: using preferences->delete_struct("email", $pref_struct_str) which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences process_ex_accounts_submitted_prefs: using preferences->delete_struct("email", $pref_struct_str) which will eval $pref_struct_str='.$pref_struct_str.'<br>'); }
 						$GLOBALS['phpgw']->preferences->delete_struct('email',$pref_struct_str);
 						// b) now assign a blank string value
-						if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs: using preferences->add_struct("email", $pref_struct_str, \'\') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_ex_accounts_submitted_prefs: using preferences->add_struct("email", $pref_struct_str, \'\') which will eval $pref_struct_str='.$pref_struct_str.'<br>'); }
 						$GLOBALS['phpgw']->preferences->add_struct('email',$pref_struct_str,'');
 					}
 					else
 					{
 						// just delete it from the preferences repository
-						if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs deleting empty or blank pref ["'.$this_pref['id'].'"] from the repository<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_ex_accounts_submitted_prefs deleting empty or blank pref ["'.$this_pref['id'].'"] from the repository<br>'); }
 						$pref_struct_str = '["ex_accounts"]['.$this->acctnum.']["'.$this_pref['id'].'"]';
-						if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs: using preferences->delete_struct("email", $pref_struct_str) which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_ex_accounts_submitted_prefs: using preferences->delete_struct("email", $pref_struct_str) which will eval $pref_struct_str='.$pref_struct_str.'<br>'); }
 						$GLOBALS['phpgw']->preferences->delete_struct('email',$pref_struct_str);
 					}
 				}
@@ -1489,7 +1326,7 @@
 					$submitted_pref = $this->args[$this->acctnum][$this_pref['id']];
 					// init a var to hold the processed submitted_pref
 					$processed_pref = '';
-					if ($this->debug_set_prefs > 1) { echo '* * email: bopreferences: process_ex_accounts_submitted_prefs:  submitted_pref: ['.$submitted_pref.']<br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('* * email: bopreferences: process_ex_accounts_submitted_prefs:  submitted_pref: ['.$submitted_pref.']<br>'); }
 					
 					// most "user_string"s need special processing before they can go into the repository
 					if ($this_pref['type'] == 'user_string')
@@ -1529,14 +1366,14 @@
 						// all other data needs no special processing before going into the repository
 						$processed_pref = $submitted_pref;
 					}
-					if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs: about to assign pref ["'.$this_pref['id'].'"] this value, post processing (if any): <pre>'.$GLOBALS['phpgw']->strip_html($processed_pref).'</pre><br>'."\r\n"; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_ex_accounts_submitted_prefs: about to assign pref ["'.$this_pref['id'].'"] this value, post processing (if any):', $GLOBALS['phpgw']->strip_html($processed_pref)); }
 					
 					// a) as always, delete the pref before we assign a value
 					$pref_struct_str = '["ex_accounts"]['.$this->acctnum.']["'.$this_pref['id'].'"]';
-					if ($this->debug_set_prefs > 1) { echo 'email: bopreferences process_ex_accounts_submitted_prefs: using preferences->delete_struct("email", $pref_struct_str) which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences process_ex_accounts_submitted_prefs: using preferences->delete_struct("email", $pref_struct_str) which will eval $pref_struct_str='.$pref_struct_str.'<br>'); }
 					$GLOBALS['phpgw']->preferences->delete_struct('email',$pref_struct_str);
 					// b) now assign that processed data to this pref item in the repository
-					if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs: using preferences->add_struct("email", $pref_struct_str, $processed_pref) which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences: process_ex_accounts_submitted_prefs: using preferences->add_struct("email", $pref_struct_str, $processed_pref) which will eval $pref_struct_str='.$pref_struct_str.'<br>'); }
 					$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $processed_pref);
 					// SORT THAT ARRAY by key, so the integer array heys go from lowest to hightest
 					ksort($GLOBALS['phpgw']->preferences->data['email']['ex_accounts']);
@@ -1556,9 +1393,9 @@
 		*/
 		function ex_accounts_delete($acctnum='')
 		{
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_delete ENTERING feed acctnum: ['.serialize($acctnum).']<br>'; }
-			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.ex_accounts_delete: $GLOBALS[HTTP_POST_VARS] dump<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST); echo '</pre>'; }
-			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.ex_accounts_delete: $GLOBALS[HTTP_GET_VARS] dump<pre>'; print_r($GLOBALS['phpgw']->msg->ref_GET); echo '</pre>'; }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.ex_accounts_delete ENTERING feed acctnum: ['.serialize($acctnum).']<br>'); }
+			if ($this->debug_set_prefs > 2) { $this->msg->dbug->out('email: bopreferences.ex_accounts_delete: $GLOBALS[HTTP_POST_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_POST); }
+			if ($this->debug_set_prefs > 2) { $this->msg->dbug->out('email: bopreferences.ex_accounts_delete: $GLOBALS[HTTP_GET_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_GET); }
 			
 			$this->account_group = 'extra_accounts';
 			
@@ -1576,19 +1413,19 @@
 			}
 			
 			$actually_did_something = False;
-			if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_delete obtained acctnum ['.$this->acctnum.']<br>'; }
+			if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.ex_accounts_delete obtained acctnum ['.$this->acctnum.']<br>'); }
 			
 			if ((isset($this->acctnum))
 			&& ((string)$this->acctnum != ''))
 			{
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_delete obtained VALID acctnum ['.$this->acctnum.'], proceed...<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.ex_accounts_delete obtained VALID acctnum ['.$this->acctnum.'], proceed...<br>'); }
 				
 				// delete the extra account pref item
 				$pref_struct_str = '["ex_accounts"]['.$this->acctnum.']';
-				if ($this->debug_set_prefs > 1) { echo 'email: bopreferences.ex_accounts_delete: using preferences->delete_struct("email", $pref_struct_str) which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences.ex_accounts_delete: using preferences->delete_struct("email", $pref_struct_str) which will eval $pref_struct_str='.$pref_struct_str.'<br>'); }
 				$GLOBALS['phpgw']->preferences->delete_struct('email',$pref_struct_str);
 				
-				if ($this->debug_set_prefs > 1) { echo 'email: bopreferences.ex_accounts_delete: $GLOBALS[phpgw]->preferences->data dump<pre>'; print_r($GLOBALS['phpgw']->preferences->data); echo '</pre>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences.ex_accounts_delete: $GLOBALS[phpgw]->preferences->data DUMP:', $GLOBALS['phpgw']->preferences->data); }
 				// let the code below this block know we actually did something that requires saving the repository
 				$actually_did_something = True;
 			}
@@ -1597,12 +1434,12 @@
 			if (!$actually_did_something)
 			{
 				// nothing happened above that requires saving the repository
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_delete: nothing happened that requires save_repository, $actually_did_something='.serialize($actually_did_something).'<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.ex_accounts_delete: nothing happened that requires save_repository, $actually_did_something='.serialize($actually_did_something).'<br>'); }
 			}
 			elseif ($this->debug_set_prefs > 2)
 			{
 				// we actually did something that requires saving repository, but are we in debug mode
-				echo 'email.bopreferences.ex_accounts_delete: *debug* skipping save_repository<br>';
+				$this->msg->dbug->out('email.bopreferences.ex_accounts_delete: *debug* skipping save_repository<br>');
 			}
 			else
 			{
@@ -1617,7 +1454,7 @@
 			// redirect user back to main preferences page
 			if ($this->debug_set_prefs > 2)
 			{
-				echo 'email.bopreferences.ex_accounts_delete: *debug* skipping Header redirection<br>';
+				$this->msg->dbug->out('email.bopreferences.ex_accounts_delete: *debug* skipping Header redirection<br>');
 			}
 			else
 			{
@@ -1625,7 +1462,7 @@
 											'/index.php',
 											'menuaction=email.uipreferences.ex_accounts_list');
 				
-				if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_delete: LEAVING with redirect to: ['.$take_me_to_url.']<br>'; }
+				if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.ex_accounts_delete: LEAVING with redirect to: ['.$take_me_to_url.']<br>'); }
 				Header('Location: ' . $take_me_to_url);
 			}
 		}
@@ -1639,9 +1476,9 @@
 		*/
 		function ex_accounts_edit($acctnum='')
 		{
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_edit ENTERING <br>'; }
-			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.ex_accounts_edit: $GLOBALS[HTTP_POST_VARS] dump<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST); echo '</pre>'; }
-			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.ex_accounts_edit: $GLOBALS[HTTP_GET_VARS] dump<pre>'; print_r($GLOBALS['phpgw']->msg->ref_GET); echo '</pre>'; }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.ex_accounts_edit ENTERING <br>'); }
+			if ($this->debug_set_prefs > 2) { $this->msg->dbug->out('email: bopreferences.ex_accounts_edit: $GLOBALS[HTTP_POST_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_POST); }
+			if ($this->debug_set_prefs > 2) { $this->msg->dbug->out('email: bopreferences.ex_accounts_edit: $GLOBALS[HTTP_GET_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_GET); }
 			
 			// ==== ACCTNUM ====
 			// this tells people that we are dealing with the extra email accounts
@@ -1667,7 +1504,7 @@
 			// this will fill $this->args[] array with any submitted prefs args
 			$this->grab_set_prefs();
 			
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_edit(): just passed this->grab_set_prefs<br>'; }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.ex_accounts_edit(): just passed this->grab_set_prefs<br>'); }
 			
 			// ----  HANDLE SETING PREFERENCE   -------
 			if (isset($this->args[$this->submit_token_extra_accounts]))
@@ -1681,18 +1518,18 @@
 				// constructor will (has taken care of) initialize $GLOBALS['phpgw']->msg
 				
 				// ---  Process Standard Prefs  ---
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_edit(): about to process_ex_accounts_submitted_prefs Standard Prefs<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.ex_accounts_edit(): about to process_ex_accounts_submitted_prefs Standard Prefs<br>'); }
 				$this->process_ex_accounts_submitted_prefs($this->std_prefs);
 				
 				// ---  Process Custom Prefs  ---
 				// CUSTOM PREFS ARE MANDATORY! FOR EXTRA ACCOUNTS
 				// first, delete whatever value was there for "use custom settings" (during pre-release, at times this actually was an option, make sure it's gone grom the db)
 				$pref_struct_str = '["ex_accounts"]['.$this->acctnum.']["'.$this->cust_prefs[0]['id'].'"]';
-				if ($this->debug_set_prefs > 1) { echo 'email: bopreferences.ex_accounts_edit(): "use_custom_settings" pref, delete it, reference it by ["ex_accounts"][$this->acctnum]["$this->cust_prefs[0][id]"]<br>'; }
-				if ($this->debug_set_prefs > 1) { echo 'email: bopreferences.ex_accounts_edit(): using preferences->delete_struct("email", $pref_struct_str) which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences.ex_accounts_edit(): "use_custom_settings" pref, delete it, reference it by ["ex_accounts"][$this->acctnum]["$this->cust_prefs[0][id]"]<br>'); }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences.ex_accounts_edit(): using preferences->delete_struct("email", $pref_struct_str) which will eval $pref_struct_str='.$pref_struct_str.'<br>'); }
 				$GLOBALS['phpgw']->preferences->delete_struct('email',$pref_struct_str);
 
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_edit(): about to process_ex_accounts_submitted_prefs Custom Prefs, which are MANDATORY for extra email accounts<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.ex_accounts_edit(): about to process_ex_accounts_submitted_prefs Custom Prefs, which are MANDATORY for extra email accounts<br>'); }
 				$this->process_ex_accounts_submitted_prefs($this->cust_prefs);
 				
 				/*
@@ -1719,24 +1556,24 @@
 				}
 				*/
 				
-				if ($this->debug_set_prefs > 1) { echo 'email: bopreferences.ex_accounts_edit: $GLOBALS[phpgw]->preferences->data dump<pre>'; print_r($GLOBALS['phpgw']->preferences->data); echo '</pre>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email: bopreferences.ex_accounts_edit: $GLOBALS[phpgw]->preferences->data DUMP:', $GLOBALS['phpgw']->preferences->data); }
 			}
 				
 			// DONE processing prefs, SAVE to the Repository
 			if (!$actually_did_something)
 			{
 				// nothing happened above that requires saving the repository
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_edit(): nothing happened that requires save_repository, $actually_did_something='.serialize($actually_did_something).'<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.ex_accounts_edit(): nothing happened that requires save_repository, $actually_did_something='.serialize($actually_did_something).'<br>'); }
 			}
 			elseif ($this->debug_set_prefs > 1) 
 			{
 				// we actually did something that requires saving repository, but are we in debug mode
-				echo 'email.bopreferences.ex_accounts_edit(): *debug* at ['.$this->debug_set_prefs.'] so skipping save_repository<br>';
+				$this->msg->dbug->out('email.bopreferences.ex_accounts_edit(): *debug* at ['.$this->debug_set_prefs.'] so skipping save_repository<br>');
 			}
 			else
 			{
 				// we actually did something that requires saving repository, and we have the go-ahead
-				if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_edit(): SAVING REPOSITORY<br>'; }
+				if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.ex_accounts_edit(): SAVING REPOSITORY<br>'); }
 				$GLOBALS['phpgw']->preferences->save_repository();
 			}
 			
@@ -1751,14 +1588,14 @@
 										'/index.php',
 										'menuaction=email.uipreferences.ex_accounts_list');
 			
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_edit(): almost LEAVING, about to issue a redirect to:<br>'.$take_me_to_url.'<br>'; }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.ex_accounts_edit(): almost LEAVING, about to issue a redirect to:<br>'.$take_me_to_url.'<br>'); }
 			if ($this->debug_set_prefs > 1) 
 			{
-				echo 'email.bopreferences.ex_accounts_edit(): LEAVING, *debug* at ['.$this->debug_set_prefs.'] so skipping Header redirection to: ['.$take_me_to_url.']<br>';
+				$this->msg->dbug->out('email.bopreferences.ex_accounts_edit(): LEAVING, *debug* at ['.$this->debug_set_prefs.'] so skipping Header redirection to: ['.$take_me_to_url.']<br>');
 			}
 			else
 			{
-				if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_edit: LEAVING with redirect to: <br>'.$take_me_to_url.'<br>'; }
+				if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.ex_accounts_edit: LEAVING with redirect to: <br>'.$take_me_to_url.'<br>'); }
 				Header('Location: ' . $take_me_to_url);
 			}
 		}
@@ -1771,7 +1608,7 @@
 		*/
 		function ex_accounts_list()
 		{
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_list: ENTERING<br>'; }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.ex_accounts_list: ENTERING<br>'); }
 			
 			// list accounts, except "empty" ones (show "enabled" and "disabled"
 			$return_list = array();
@@ -1781,14 +1618,14 @@
 				$this_acctnum = $GLOBALS['phpgw']->msg->extra_accounts[$i]['acctnum'];
 				$this_status = $GLOBALS['phpgw']->msg->extra_accounts[$i]['status'];
 				
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: $GLOBALS[phpgw]->msg->extra_accounts['.$i.'][acctnum]=['.$this_acctnum.'] ;  [status]=['.$this->extra_accounts[$i]['status'].'] <br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.ex_accounts_list: $GLOBALS[phpgw]->msg->extra_accounts['.$i.'][acctnum]=['.$this_acctnum.'] ;  [status]=['.$this->extra_accounts[$i]['status'].'] <br>'); }
 				if ($this_status == 'empty')
 				{
-					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: $GLOBALS[phpgw]->msg->extra_accounts['.$i.'][status] == empty <br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.ex_accounts_list: $GLOBALS[phpgw]->msg->extra_accounts['.$i.'][status] == empty <br>'); }
 				}
 				else
 				{
-					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: $GLOBALS[phpgw]->msg->extra_accounts['.$i.'][status] != empty <br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.ex_accounts_list: $GLOBALS[phpgw]->msg->extra_accounts['.$i.'][status] != empty <br>'); }
 					$next_pos = count($return_list);
 					//$next_pos = $this_acctnum - 1;
 					$return_list[$next_pos]['acctnum'] = $this_acctnum;
@@ -1857,24 +1694,18 @@
 					}
 					// NEXT: html encode the acctname string
 					// html encode entities on the fullname so it's safe to display in the browser, and prefix with the acctnum
-					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: fullname raw: <code>'.serialize($accountname).'</code><br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.ex_accounts_list: fullname raw: <code>'.serialize($accountname).'</code><br>'); }
 					$accountname = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($accountname);
-					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: fullname B: <code>'.serialize($accountname).'</code><br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.ex_accounts_list: fullname B: <code>'.serialize($accountname).'</code><br>'); }
 					$accountname = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($accountname);
-					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: fullname C: <code>'.serialize($accountname).'</code><br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.ex_accounts_list: fullname C: <code>'.serialize($accountname).'</code><br>'); }
 					// FINALLY we have a string we are going to display to the user that is the name of the account
 					$return_list[$next_pos]['display_string'] = '['.$this_acctnum.'] '.$accountname;
 					
 					// NEXT: control action links
-/* TEST-RALFBECKER
 					$return_list[$next_pos]['edit_url'] = $GLOBALS['phpgw']->link(														'/index.php',
 														 'menuaction=email.uipreferences.ex_accounts_edit'
 														.'&ex_acctnum='.$this_acctnum);
-*/
-					$return_list[$next_pos]['edit_url'] = $GLOBALS['phpgw']->link('/preferences/preferences.php',array(
-						'appname' => 'email',
-						'prefix'  => $this_acctnum ? 'ex_accounts/'.$this_acctnum : ''
-					));
 					$return_list[$next_pos]['edit_href'] = '<a href="'.$return_list[$next_pos]['edit_url'].'">'.lang('Edit').'</a>';
 
 					$return_list[$next_pos]['delete_url'] = $GLOBALS['phpgw']->link(
@@ -1884,8 +1715,8 @@
 					$return_list[$next_pos]['delete_href'] = '<a href="'.$return_list[$next_pos]['delete_url'].'">'.lang('Delete').'</a>';
 				}
 			}
-			if ($this->debug_set_prefs > 2) { echo 'email.bopreferences.ex_accounts_list: returning $return_list[] : <pre>'; print_r($return_list); echo '</pre>'; }
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_list: LEAVING, returning $return_list <br>'; }
+			if ($this->debug_set_prefs > 2) { $this->msg->dbug->out('email.bopreferences.ex_accounts_list: returning $return_list[] DUMP:', $return_list); }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.ex_accounts_list: LEAVING, returning $return_list <br>'); }
 			return $return_list;
 		}
 		
@@ -1897,12 +1728,12 @@
 		*/
 		function get_first_empty_ex_acctnum()
 		{
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.get_first_empty_ex_acctnum: ENTERING<br>'; }
-			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.get_first_empty_ex_acctnum: $GLOBALS[phpgw]->msg->extra_accounts dump<pre>'; print_r($GLOBALS['phpgw']->msg->extra_accounts); echo '</pre>'; }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.get_first_empty_ex_acctnum: ENTERING<br>'); }
+			if ($this->debug_set_prefs > 2) { $this->msg->dbug->out('email: bopreferences.get_first_empty_ex_acctnum: $GLOBALS[phpgw]->msg->extra_accounts DUMP:', $GLOBALS['phpgw']->msg->extra_accounts); }
 			$loops = count($GLOBALS['phpgw']->msg->extra_accounts);
 			if ($loops == 0)
 			{
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.get_first_empty_ex_acctnum: count($GLOBALS[phpgw]->msg->extra_accounts =['.serialize(count($GLOBALS['phpgw']->msg->extra_accounts)).']<br>'; }
+				if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.get_first_empty_ex_acctnum: count($GLOBALS[phpgw]->msg->extra_accounts =['.serialize(count($GLOBALS['phpgw']->msg->extra_accounts)).']<br>'); }
 				$first_empty_ex_acctnum = 1;
 			}
 			else
@@ -1913,10 +1744,10 @@
 					$this_acctnum = $GLOBALS['phpgw']->msg->extra_accounts[$i]['acctnum'];
 					$this_status = $GLOBALS['phpgw']->msg->extra_accounts[$i]['status'];
 					// loop =0 *would* = acctnum 1 *if* acctnum slots are filled in order, they'd always be 1 apart
-					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.get_first_empty_ex_acctnum: in loop ['.$i.'] : status: ['.$this_status.'] ; acctnum: ['.$this_acctnum.']<br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.get_first_empty_ex_acctnum: in loop ['.$i.'] : status: ['.$this_status.'] ; acctnum: ['.$this_acctnum.']<br>'); }
 					if ($this_status == 'empty')
 					{
-						if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.get_first_empty_ex_acctnum: [status] == empty for acctnum ['.$this_acctnum.']<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.get_first_empty_ex_acctnum: [status] == empty for acctnum ['.$this_acctnum.']<br>'); }
 						$first_empty_ex_acctnum = (int)$this_acctnum;
 						$did_get_acctnum = True;
 						break;
@@ -1924,7 +1755,7 @@
 					elseif ((int)($i+1) != (int)$this_acctnum)
 					{
 						$first_empty_ex_acctnum = (int)($i+1);
-						if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.get_first_empty_ex_acctnum: slots have an empty spot, unused $acctnum is ['.$first_empty_ex_acctnum.']<br>'; }
+						if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.get_first_empty_ex_acctnum: slots have an empty spot, unused $acctnum is ['.$first_empty_ex_acctnum.']<br>'); }
 						$did_get_acctnum = True;
 						break;
 					}
@@ -1935,10 +1766,10 @@
 					$first_empty_ex_acctnum = count($GLOBALS['phpgw']->msg->extra_accounts);
 					// since extra accounts are not zero based, add one to that count to get real next available
 					$first_empty_ex_acctnum++;
-					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.get_first_empty_ex_acctnum: no empty spaces extra_accounts[], advance to next int: $first_empty_ex_acctnum ['.$first_empty_ex_acctnum.']<br>'; }
+					if ($this->debug_set_prefs > 1) { $this->msg->dbug->out('email.bopreferences.get_first_empty_ex_acctnum: no empty spaces extra_accounts[], advance to next int: $first_empty_ex_acctnum ['.$first_empty_ex_acctnum.']<br>'); }
 				}
 			}
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.get_first_empty_ex_acctnum: LEAVING, returning $first_empty_ex_acctnum ['.serialize($first_empty_ex_acctnum).']<br>'; }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.get_first_empty_ex_acctnum: LEAVING, returning $first_empty_ex_acctnum ['.serialize($first_empty_ex_acctnum).']<br>'); }
 			return $first_empty_ex_acctnum;
 		}
 		
@@ -1950,9 +1781,9 @@
 		*/
 		function obtain_ex_acctnum()
 		{
-			if ($this->debug_set_prefs > 0) { echo 'email: bopreferences.obtain_ex_acctnum: ENTERING<br>'; }
-			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.obtain_ex_acctnum: $GLOBALS[HTTP_POST_VARS] dump<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST); echo '</pre>'; }
-			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.obtain_ex_acctnum: $GLOBALS[HTTP_GET_VARS] dump<pre>'; print_r($GLOBALS['phpgw']->msg->ref_GET); echo '</pre>'; }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email: bopreferences.obtain_ex_acctnum: ENTERING<br>'); }
+			if ($this->debug_set_prefs > 2) { $this->msg->dbug->out('email: bopreferences.obtain_ex_acctnum: $GLOBALS[HTTP_POST_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_POST); }
+			if ($this->debug_set_prefs > 2) { $this->msg->dbug->out('email: bopreferences.obtain_ex_acctnum: $GLOBALS[HTTP_GET_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_GET); }
 			// get fromPOST or GET
 			$prelim_acctnum = '##NOTHING##';
 			if ((isset($GLOBALS['phpgw']->msg->ref_POST['ex_acctnum'])
@@ -1981,7 +1812,7 @@
 			{
 				$final_acctnum = $prelim_acctnum;
 			}
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.obtain_ex_acctnum: LEAVING, returning $final_acctnum: ['.serialize($final_acctnum).'] <br>'; }
+			if ($this->debug_set_prefs > 0) { $this->msg->dbug->out('email.bopreferences.obtain_ex_acctnum: LEAVING, returning $final_acctnum: ['.serialize($final_acctnum).'] <br>'); }
 			return $final_acctnum;
 		}
 

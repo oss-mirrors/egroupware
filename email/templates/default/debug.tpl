@@ -39,6 +39,7 @@
 			<li>{func_D3}</li>
 			<li>{func_D4}</li>
 			<li>{func_D5}</li>
+			<li>{func_D6}</li>
 			<li> = = Inline Docs = =</li>
 			<li>{func_I1}</li>
 			<li>{func_I2}</li>
@@ -53,6 +54,7 @@
 			<li>{func_O3}</li>
 			<li>{func_O4}</li>
 			<li>{func_O5}</li>
+			<li>{func_O6}</li>
 		</ul>
 		<br>
 		This seta up an echo dump:
@@ -62,6 +64,8 @@
 <!-- END B_before_echo -->
 
 <br>
+<!-- if using debug popup window that js will follow here -->
+{debugdata}
 
 <!-- BEGIN B_after_echo -->
 <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">

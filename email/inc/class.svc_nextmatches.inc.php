@@ -332,7 +332,7 @@
 			{
 				//$img_full = $GLOBALS['phpgw']->common->image('email',$img);
 				$img_full = $GLOBALS['phpgw']->msg->_image_on('email',$img,'_on');
-				$image_part = '<img src="'.$img_full.'" border="0" alt="'.$alt_text.'">';
+				$image_part = '<img src="'.$img_full.'" border="0" title="'.$alt_text.'"  alt="'.$alt_text.'">';
 				return '<a href="'.$out_vars['common_uri'].'&start='.$out_vars['start'].'">'.$image_part.'</a>';
 			}
 		}
@@ -362,7 +362,7 @@
 			{
 				//$img_full = $GLOBALS['phpgw']->common->image('email',$img);
 				$img_full = $GLOBALS['phpgw']->msg->_image_on('email',$img,'_on');
-				return '<img src="'.$img_full.'" border="0" alt="'.$alt_text.'">'."\r\n"; 
+				return '<img src="'.$img_full.'" border="0" title="'.$alt_text.'" alt="'.$alt_text.'">'."\r\n"; 
 			}
 		}
 	}

@@ -46,9 +46,13 @@
 	)
 	{
 		$mail_server_type = $p1;
+		if ($debug_dcom) { echo 'DCOM DEBUG: found class feed arg $p1 ['.serialize($p1).']<br>'; }
+		//{ echo 'DCOM DEBUG: found class feed arg $p1 ['.serialize($p1).']<br>'; }
 	}
 	else
 	{
+		if ($debug_dcom) { echo 'DCOM DEBUG: did NOT find class feed arg $p1 ['.serialize($p1).']<br>'; }
+		//{ echo 'DCOM DEBUG: did NOT find class feed arg $p1 ['.serialize($p1).']<br>'; }
 		$mail_server_type = $GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'];
 	}
 

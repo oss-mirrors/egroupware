@@ -33,7 +33,7 @@
 			$this->bo = CreateObject('email.bofolder');
 			$this->bo->folder();
 			
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				// we point to the global template for this version of phpgw templatings
 				$this->tpl =& $GLOBALS['phpgw']->template;
@@ -45,8 +45,7 @@
 				$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			}
 			
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('E-Mail').' - '.lang('Folder');
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				unset($GLOBALS['phpgw_info']['flags']['noheader']);
 				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
@@ -58,7 +57,6 @@
 			}
 			else
 			{
-				$GLOBALS['phpgw_info']['flags']['xslt_app'] = True;
 				$GLOBALS['phpgw']->xslttpl->add_file(array('app_data'));
 			}
 			
@@ -130,9 +128,8 @@
 			
 			// new way to handle debug data, if there is debug data, this will put it in the template source data vars
 			$this->tpl->set_var('debugdata', $GLOBALS['phpgw']->msg->dbug->notice_pagedone());
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
-				//$this->tpl->set_var('debugdata', $GLOBALS['phpgw']->msg->dbug->notice_pagedone());
 				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
 				$this->tpl->set_unknowns('comment');
 				// production use, use this:	$this->tpl->set_unknowns("remove");
@@ -146,12 +143,10 @@
 				$this->tpl->set_unknowns('comment');
 				//$this->tpl->set_unknowns('remove');
 				$data = array();
-				$data['appname'] = lang('E-Mail');
-				$data['function_msg'] = lang('Folders');
+				//$data['appname'] = lang('E-Mail');
+				//$data['function_msg'] = lang('Folders');
+				$GLOBALS['phpgw_info']['flags']['email']['app_header'] = lang('E-Mail') . ': ' . lang('Folders');
 				$data['email_page'] = $this->tpl->parse('out','T_folder_out');
-				// new way to handle debug data, if there is debug data, this will put it in the template source data vars
-				//$data['debugdata'] = $GLOBALS['phpgw']->msg->dbug->notice_pagedone();
-				//$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('uimessage' => $data));
 				$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('generic_out' => $data));
 			}
 			

@@ -39,10 +39,15 @@
 		var $debug_send = 0;
 		var $debug_struct = 0;
 		//var $debug_struct = 3;
+		var $company_disclaimer = '';
 		
 		function bosend()
 		{
 			if ($this->debug_constructor > 0) { echo 'email.bosend *constructor*: ENTERING<br>'; }
+			
+			// May 9, 2003 Ryan Bonham adds company disclaimer code
+			// This Disclaimer will be added to any out going mail
+			//var $company_disclaimer = "\r\n\r\n-- \r\n This message was sent using Forester GroupWare. Visit the Forest City Regional website at http://www.forestcityschool.org.\r\nThis message does not necessarily reflect the views of the Forest City Regional School District, nor has it been approved or sanctioned by it. \r\n";
 			
 			$this->msg_bootstrap = CreateObject("email.msg_bootstrap");
 			$this->msg_bootstrap->ensure_mail_msg_exists('email.bosend.constructor', $this->debug_send);
@@ -520,6 +525,10 @@
 				// html_quotes_decode may be obsoleted someday:  workaround for a preferences database issue (<=pgpgw ver 0.9.13)
 				$user_sig = $GLOBALS['phpgw']->msg->html_quotes_decode($user_sig);
 				$body = $body ."\r\n"."\r\n".'-- '."\r\n" .$user_sig ."\r\n";
+			}
+			if ($this->company_disclaimer)
+			{
+				$body = $body .$this->company_disclaimer;
 			}
 			// Step One Addition
 			// ---- Request Delivery Notification in Headers ----

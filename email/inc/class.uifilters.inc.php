@@ -64,7 +64,7 @@
 		*/
 		function filters_edit()
 		{			
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				// we point to the global template for this version of phpgw templatings
 				$this->tpl =& $GLOBALS['phpgw']->template;
@@ -76,8 +76,7 @@
 				$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			}
 			
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('EMail Filters');
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				unset($GLOBALS['phpgw_info']['flags']['noheader']);
 				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
@@ -87,7 +86,6 @@
 			}
 			else
 			{
-				$GLOBALS['phpgw_info']['flags']['xslt_app'] = True;
 				$GLOBALS['phpgw']->xslttpl->add_file(array('app_data'));
 			}
 			
@@ -183,10 +181,10 @@
 								'/index.php',
 								'menuaction=email.bofilters.do_filter'
 								.'&filter_num='.$filter_num);
-			$apply_this_filter_href = '<a href="'.$apply_this_filter_url.'"><b>*APPLY*</b> This Filter</a>';
+			$apply_this_filter_href = '<a href="'.$apply_this_filter_url.'">'.lang('<b>*apply*</b> this filter').'</a>';
 			
 			$test_this_filter_url = $apply_this_filter_url.'&filter_test=1';
-			$test_this_filter_href = '<a href="'.$test_this_filter_url.'">Test Run This Filter</a>';
+			$test_this_filter_href = '<a href="'.$test_this_filter_url.'">'.lang('Test Run This Filter').'</a>';
 			
 			$this->tpl->set_var('apply_this_filter_href',$apply_this_filter_href);
 			$this->tpl->set_var('test_this_filter_href',$test_this_filter_href);
@@ -397,7 +395,7 @@
 				$this->tpl->set_var('matchthis_textbox_name',$matchthis_textbox_name);
 				$this->tpl->set_var('match_textbox_txt',$match_textbox_txt);
 				$this->tpl->set_var('V_match_left_td',$V_match_left_td);
-				if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+				if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 				{
 					$this->tpl->parse('V_matches_row','B_matches_row',True);
 				}
@@ -406,7 +404,7 @@
 					$V_matches_row = $V_matches_row . $this->tpl->parse('V_matches_row','B_matches_row');
 				}
 			}
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless == False)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt == False)
 			{
 				$this->tpl->set_var('V_matches_row',$V_matches_row);
 			}
@@ -544,8 +542,8 @@
 			$this->tpl->set_var('V_mlist_html',$mlist_html);
 			
 			// new way to handle debug data, if there is debug data, this will put it in the template source data vars
-			$this->tpl->set_var('debugdata', $GLOBALS['phpgw']->msg->dbug->notice_pagedone());
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			$this->tpl->set_var('debugdata', trim($GLOBALS['phpgw']->msg->dbug->notice_pagedone()));
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				//$this->tpl->set_var('debugdata', $GLOBALS['phpgw']->msg->dbug->notice_pagedone());
 				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
@@ -558,16 +556,10 @@
 				$this->tpl->set_unknowns('comment');
 				//$this->tpl->set_unknowns('remove');
 				$data = array();
-				$data['appname'] = lang('E-Mail');
-				$data['function_msg'] = lang('Edit Filters');
+				//$data['appname'] = lang('E-Mail');
+				//$data['function_msg'] = lang('Edit Filters');
+				$GLOBALS['phpgw_info']['flags']['email']['app_header'] = lang('E-Mail') . ': ' . lang('Edit Filters');
 				$data['email_page'] = $this->tpl->parse('out','T_filters_out');
-				// new way to handle debug data, if this array has anything, put it in the template source data vars
-				//if ($GLOBALS['phpgw']->msg->dbug->debugdata)
-				//{
-				//	$data['debugdata'] = $GLOBALS['phpgw']->msg->dbug->get_debugdata_stack();
-				//}
-				//$data['debugdata'] = $GLOBALS['phpgw']->msg->dbug->notice_pagedone();
-				//$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('uimessage' => $data));
 				$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('generic_out' => $data));
 			}
 			
@@ -647,7 +639,7 @@
 		*/
 		function filters_list()
 		{
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				// we point to the global template for this version of phpgw templatings
 				$this->tpl =& $GLOBALS['phpgw']->template;
@@ -659,8 +651,7 @@
 				$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			}
 			
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('E-Mail INBOX Filters List');
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				unset($GLOBALS['phpgw_info']['flags']['noheader']);
 				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
@@ -670,7 +661,6 @@
 			}
 			else
 			{
-				$GLOBALS['phpgw_info']['flags']['xslt_app'] = True;
 				$GLOBALS['phpgw']->xslttpl->add_file(array('app_data'));
 			}
 			
@@ -740,17 +730,42 @@
 					$tr_color = (($i + 1)/2 == floor(($i + 1)/2)) ? $GLOBALS['phpgw_info']['theme']['row_off'] : $GLOBALS['phpgw_info']['theme']['row_on'];
 					$tr_color_class = (($i + 1)/2 == floor(($i + 1)/2)) ? 'row_off' : 'row_on';
 					
-					$filters_list[$i]['move_up_url'] = $GLOBALS['phpgw']->link(
-									'/index.php',
-									 'menuaction=email.bofilters.move_up'
-									.'&filter_num='.$i);
-					$filters_list[$i]['move_up_href'] = '<a href="'.$filters_list[$i]['move_up_url'].'">'.lang('Move Up').'</a>';
+										// Don't move up the first filter (Sam Przyswa)
+					if ($i != 0)
+					{
+						$filters_list[$i]['move_up_url'] = $GLOBALS['phpgw']->link(
+										'/index.php',
+										 'menuaction=email.bofilters.move_up'
+										.'&filter_num='.$i);
+						$filters_list[$i]['move_up_href'] = '<a href="'.$filters_list[$i]['move_up_url'].'">'.lang('Move Up').'</a>';
+					}
+					else
+					{
+						$filters_list[$i]['move_up_url'] = $GLOBALS['phpgw']->link(
+										'/index.php',
+										 'menuaction=email.bofilters.move_up'
+										.'&filter_num='.$i);
+						$filters_list[$i]['move_up_href'] = '<a href="'.$filters_list[$i]['move_up_url'].'"></a>';
+					}
 					
-					$filters_list[$i]['move_down_url'] = $GLOBALS['phpgw']->link(
-									'/index.php',
-									 'menuaction=email.bofilters.move_down'
-									.'&filter_num='.$i);
-					$filters_list[$i]['move_down_href'] = '<a href="'.$filters_list[$i]['move_down_url'].'">'.lang('Move Down').'</a>';
+					// Don't move down the last filter (Sam Przyswa)
+					if ($i != $loops-1)
+					{
+						$filters_list[$i]['move_down_url'] = $GLOBALS['phpgw']->link(
+										'/index.php',
+										 'menuaction=email.bofilters.move_down'
+										.'&filter_num='.$i);
+						$filters_list[$i]['move_down_href'] = '<a href="'.$filters_list[$i]['move_down_url'].'">'.lang('Move Down').'</a>';
+					}
+					else
+					{
+						$filters_list[$i]['move_down_url'] = $GLOBALS['phpgw']->link(
+										'/index.php',
+										 'menuaction=email.bofilters.move_down'
+										.'&filter_num='.$i);
+						$filters_list[$i]['move_down_href'] = '<a href="'.$filters_list[$i]['move_down_url'].'"></a>';
+					}
+					// end of changes (Sam Przyswa)
 					
 					$filters_list[$i]['edit_url'] = $GLOBALS['phpgw']->link(
 									'/index.php',
@@ -771,7 +786,7 @@
 					$this->tpl->set_var('move_down_href',$filters_list[$i]['move_down_href']);
 					$this->tpl->set_var('edit_href',$filters_list[$i]['edit_href']);
 					$this->tpl->set_var('delete_href',$filters_list[$i]['delete_href']);
-					if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+					if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 					{
 						$this->tpl->parse('V_filter_list_row','B_filter_list_row', True);
 					}
@@ -781,7 +796,7 @@
 					}
 				}
 			}
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless == False)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt == False)
 			{
 					$this->tpl->set_var('V_filter_list_row',$V_filter_list_row);
 			}
@@ -806,10 +821,12 @@
 			$this->tpl->set_var('run_all_filters_href',$run_all_filters_href);
 			
 			$test_all_filters_url = $run_all_filters_url.'&filter_test=1';
-			$test_all_filters_href = '<a href="'.$test_all_filters_url.'">Test All Filters</a>';
+			$test_all_filters_href = '<a href="'.$test_all_filters_url.'">'.lang('Test All Filters').'</a>';
 			$this->tpl->set_var('test_all_filters_href',$test_all_filters_href);
 			
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			// new way to handle debug data, if there is debug data, this will put it in the template source data vars
+			$this->tpl->set_var('debugdata', $GLOBALS['phpgw']->msg->dbug->notice_pagedone());
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
 				$this->tpl->set_unknowns("comment");
@@ -821,8 +838,9 @@
 				$this->tpl->set_unknowns('comment');
 				//$this->tpl->set_unknowns('remove');
 				$data = array();
-				$data['appname'] = lang('E-Mail');
-				$data['function_msg'] = lang('Filters List');
+				//$data['appname'] = lang('E-Mail');
+				//$data['function_msg'] = lang('Filters List');
+				$GLOBALS['phpgw_info']['flags']['email']['app_header'] = lang('E-Mail') . ': ' . lang('Filters List');
 				$data['email_page'] = $this->tpl->parse('out','T_filters_list');
 				//$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('uimessage' => $data));
 				$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('generic_out' => $data));

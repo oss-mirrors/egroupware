@@ -67,11 +67,11 @@ In the future, this will process a specially formated email msg.<hr>
 	</td>
 </tr>
 <tr>
-	<td bgcolor="{tofrom_labels_bkcolor}" class="{tofrom_labels_class}" valign="top" width="50%">
+	<td bgcolor="{tofrom_labels_bkcolor}" class="{tofrom_labels_class}" valign="top" width="20%">
 		<font size="2" face="{theme_font}">
 		<strong>{lang_from}:</strong></font>
 	</td>
-	<td bgcolor="{tofrom_data_bkcolor}" class="{tofrom_data_class}" width="50%">
+	<td bgcolor="{tofrom_data_bkcolor}" class="{tofrom_data_class}" width="80%">
 		<font size="2" face="{theme_font}">
 		{from_data_final}
 		</font>
@@ -170,5 +170,7 @@ In the future, this will process a specially formated email msg.<hr>
 <!-- END B_display_part -->
 
 </table>
+{geek_bar}
+<!-- lame sep ##### Lame Sep -->
 {debugdata}
 <!-- end message_main.tpl -->

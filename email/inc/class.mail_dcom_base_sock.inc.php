@@ -318,6 +318,8 @@
 	*/
 	class mail_dcom_base extends network
 	{
+		// OBSOLETED "folder_list_changed" by the newer function "folder_list_did_change"
+		var $folder_list_changed=False;
 		// Cached Data
 		// raw message data from the server, some raw data, some exploded into a string list
 		var $header_glob = '';
@@ -595,6 +597,29 @@
 		function show_crlf($data='')
 		{
 			return str_replace("\r\n", 'CRLF', $data);
+		}
+		
+		/*!
+		@function folder_list_did_change
+		@abstract if folder is created, deleted, or renamed this this function handles cleanup of stale data in main msg object. 
+		@discussion THIS IS A COPY OF THE FUNCTION IN THE NON-SOCK CLASS, THEY SHOULD BE THE SAME
+		@author Angles
+		*/
+		function folder_list_did_change()
+		{
+			// NOTE THIS FLAG "folder_list_changed" IS NOW OBSOLETED SINCE THIS 
+			// CALLBACK FUNCTION IS PROVEN TO WORK
+			$this->folder_list_changed = True;
+			if (is_object($GLOBALS['phpgw']->msg))
+			{
+				// call that classes "callback" function designed to handle cleaning stale folder_list there
+				$sucess = $GLOBALS['phpgw']->msg->folder_list_change_callback();
+				// if it was handled correctly, then reset the "folder_list_changed" because we did our job
+				if ($sucess)
+				{
+					$this->folder_list_changed = False;
+				}
+			}
 		}
 		
 		/*!

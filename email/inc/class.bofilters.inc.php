@@ -721,6 +721,11 @@
 			// now add this filter piece by piece
 			// we can only set a non-array value, but we can use array string for the base
 			// but we can grab structures
+
+			// NEW we need to wipe the cached filters
+			$my_location = '0;cached_prefs';
+			if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository('.__LINE__.'): NEW: EXPIRE CACHED PREFERENCES, calling ->msg->so->so_appsession_passthru('.$my_location.', " ")<br>'; }
+			$GLOBALS['phpgw']->msg->so->so_appsession_passthru($my_location, ' ');
 			
 			// first we delete any existing data at the desired prefs location
 			$pref_struct_str = '["filters"]';
@@ -886,19 +891,24 @@
 		*/
 		function do_filter()
 		{
-			if ($this->debug > 0) { echo 'bofilters.do_filter: ENTERING<br>'; }
+			if ($this->debug > 0) { echo 'bofilters.do_filter('.__LINE__.'): ENTERING<br>'; }
 			if (count($this->all_filters) == 0)
 			{
-				if ($this->debug > 0) { echo 'bofilters.do_filter: LEAVING with ERROR, no filters exist<br>'; } 
+				if ($this->debug > 0) { echo 'bofilters.do_filter('.__LINE__.'): LEAVING with ERROR, no filters exist<br>'; } 
 				return False;
 			}
 			
 			//if ($this->debug > 0) { echo 'bofilters.do_filter: LINE '.__LINE__.' call "->msg->event_begin_big_move" to notice event of impending big batch moves or deletes<br>'; }
+			// CORRECTION: the move function now buffers the commands and the count of those buffered commands is kept there, where big move or not is now determined 
 			//$GLOBALS['phpgw']->msg->event_begin_big_move(array(), 'bofilters.do_filter: LINE '.__LINE__);
+			
+			// filtering thousands of messages can require more time
+			if ($this->debug > 0) { echo 'bofilters.do_filter('.__LINE__.'): calling set_time_limit giving value of 120 ie 2 minutes? <br>'; } 
+			set_time_limit(120);
 			
 			// "False" means  return $this->not_set  if no filter number was found anywhere
 			$found_filter_num = $this->obtain_filer_num(False);
-			if ($this->debug > 1) { echo 'bofilters.obtain_filer_num: $found_filter_num : [<code>'.serialize($found_filter_num).'</code>]<br>'."\r\n"; }
+			if ($this->debug > 1) { echo 'bofilters.do_filter('.__LINE__.'): $found_filter_num : [<code>'.serialize($found_filter_num).'</code>]<br>'."\r\n"; }
 			
 			if ($found_filter_num == $this->not_set)
 			{
@@ -906,7 +916,7 @@
 				$this->do_filter_apply_all = True;
 				for ($filter_idx=0; $filter_idx < count($this->all_filters); $filter_idx++)
 				{
-					if ($this->debug > 1) { echo 'bofilters.do_filter: run_all_finters_mode: calling $this->run_single_filter['.$filter_idx.']<br>'; }
+					if ($this->debug > 1) { echo 'bofilters.do_filter('.__LINE__.'): run_all_finters_mode: calling $this->run_single_filter['.$filter_idx.']<br>'; }
 					$this->run_single_filter((int)$filter_idx);
 					if ($this->just_testing())
 					{
@@ -919,7 +929,7 @@
 			{
 				// we were given a filter_num, that means run THAT FILTER ONLY
 				$this->do_filter_apply_all = False;
-				if ($this->debug > 1) { echo 'bofilters.do_filter: run_single_filter mode: calling $this->run_single_filter['.$found_filter_num.']<br>'; }
+				if ($this->debug > 1) { echo 'bofilters.do_filter('.__LINE__.'): run_single_filter mode: calling $this->run_single_filter['.$found_filter_num.']<br>'; }
 				$this->run_single_filter((int)$found_filter_num);
 				if ($this->just_testing())
 				{
@@ -955,32 +965,34 @@
 				$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
 				$GLOBALS['phpgw']->common->phpgw_header();
 
-				echo '<h4>Apply Filters Report:</h4>'."\r\n";
+				echo '<h4>'.lang('Apply Filters Report:').'</h4>'."\r\n";
 				for ($filter_idx=0; $filter_idx < count($this->all_filters); $filter_idx++)
 				{
 					$this_filter = $this->all_filters[$filter_idx];
 					$num_matches = count($this->each_filter_mball_list[$filter_idx]);
 					parse_str($this_filter['actions'][0]['folder'], $target_folder);
 					echo '<p>'."\r\n"
-					.'<strong>Filter number '.(string)$filter_idx.':</strong>'.'<br>'."\r\n"
-					.'&nbsp;&nbsp;&nbsp;'.'filter name: ['.$this_filter['filtername'].']<br>'."\r\n"
-					.'&nbsp;&nbsp;&nbsp;'.'number of matches: ['.(string)$num_matches.']'.'<br>'."\r\n"
-					.'&nbsp;&nbsp;&nbsp;'.'requested filter action: ['.$this_filter['actions'][0]['judgement'].'] ; Acctnum ['.(string)$target_folder['acctnum'].'] ;  Folder: ['.htmlspecialchars($target_folder['folder']).']<br>'."\r\n"
+					.'<strong>'.lang('Filter number').' '.(string)$filter_idx.':</strong>'.'<br>'."\r\n"
+					.'&nbsp;&nbsp;&nbsp;'.lang('filter name:').' ['.$this_filter['filtername'].']<br>'."\r\n"
+					.'&nbsp;&nbsp;&nbsp;'.lang('number of matches:').' ['.(string)$num_matches.']'.'<br>'."\r\n"
+
+					.'&nbsp;&nbsp;&nbsp;'.lang('requested filter action:').' ['.$this_filter['actions'][0]['judgement'].'] ; Acctnum ['.(string)$target_folder['acctnum'].'] ;  '.lang('Folder').': ['.htmlspecialchars($target_folder['folder']).']<br>'."\r\n"
 					.'</p>'."\r\n"
 					.'<p>&nbsp;</p>'."\r\n";
 				}
 			}
-			if ($this->debug > 1) { echo 'bofilters.do_filter: calling end_request<br>'; }
+			if ($this->debug > 1) { echo 'bofilters.do_filter('.__LINE__.'): calling end_request<br>'; }
 			$GLOBALS['phpgw']->msg->end_request();
-			if ($this->debug > 0) { echo 'bofilters.do_filter: LEAVING<br>'; }
+			if ($this->debug > 0) { echo 'bofilters.do_filter('.__LINE__.'): LEAVING<br>'; }
 			$take_me_to_url = $GLOBALS['phpgw']->link(
 										'/index.php',
-										'menuaction=email.uifilters.filters_list');
-			$take_me_to_href = '<a href="'.$take_me_to_url.'"> Go Back </a>';
+										//'menuaction=email.uifilters.filters_list');
+										'menuaction=email.uiindex.index');
+			$take_me_to_href = '<a href="'.$take_me_to_url.'"> '.lang('Go Back').' </a>';
 			//Header('Location: ' . $take_me_to_url);
-			echo '<br><p>'.'&nbsp;&nbsp;&nbsp;'.$take_me_to_href.'</p>';
+			echo '<br><p>'.'&nbsp;&nbsp;&nbsp;'.$take_me_to_href.'</p><BR>';
 
-			if ($this->debug > 0) { echo 'bofilters.do_filter: LEAVING<br>'; }
+			if ($this->debug > 0) { echo 'bofilters.do_filter('.__LINE__.'): LEAVING<br>'; }
 		}
 		
 		// PRIVATE
@@ -992,24 +1004,24 @@
 		*/
 		function run_single_filter($filter_num='')
 		{
-			if ($this->debug > 0) { echo 'bofilters.run_single_filter: ENTERING, feed  $filter_num : [<code>'.serialize($filter_num).'</code>]<br>'; }
+			if ($this->debug > 0) { echo 'bofilters.run_single_filter('.__LINE__.'): ENTERING, feed  $filter_num : [<code>'.serialize($filter_num).'</code>]<br>'; }
 			if (count($this->all_filters) == 0)
 			{
-				if ($this->debug > 0) { echo 'bofilters.run_single_filter: LEAVING with ERROR, no filters exist<br>'; }
+				if ($this->debug > 0) { echo 'bofilters.run_single_filter('.__LINE__.'): LEAVING with ERROR, no filters exist<br>'; }
 			}
 			$filter_exists = $this->filter_exists($filter_num);
 			if (!$filter_exists)
 			{
-				if ($this->debug > 0) { echo 'bofilters.run_single_filter: LEAVING with ERROR, filter data for $filter_num ['.$filter_num.'] does not exist, return False<br>'; }
+				if ($this->debug > 0) { echo 'bofilters.run_single_filter('.__LINE__.'): LEAVING with ERROR, filter data for $filter_num ['.$filter_num.'] does not exist, return False<br>'; }
 				return False;
 			}
 			$this_filter = $this->all_filters[$filter_num];
-			if ($this->debug > 2) { echo 'bofilters.run_single_filter: $filter_num ['.$filter_num.'] ; $this_filter DUMP:<pre>'; print_r($this_filter); echo "</pre>\r\n"; }
+			if ($this->debug > 2) { echo 'bofilters.run_single_filter('.__LINE__.'): $filter_num ['.$filter_num.'] ; $this_filter DUMP:<pre>'; print_r($this_filter); echo "</pre>\r\n"; }
 			
 			// WE NEED TO DO THIS FOR EVERY SOURCE ACCOUNT specified in this filter
 			for ($src_acct_loop_num=0; $src_acct_loop_num < count($this_filter['source_accounts']); $src_acct_loop_num++)
 			{
-				if ($this->debug > 1) { echo 'bofilters.run_single_filter: source_accounts loop ['.$src_acct_loop_num.']<br>'; }
+				if ($this->debug > 1) { echo 'bofilters.run_single_filter('.__LINE__.'): source_accounts loop ['.$src_acct_loop_num.']<br>'; }
 				
 				// ACCOUNT TO SEARCH (always filter source is INBOX)
 				$fake_fldball = array();
@@ -1021,12 +1033,12 @@
 				if ((isset($this->inbox_full_msgball_list[$src_acct_loop_num]))
 				|| (count($this->inbox_full_msgball_list[$src_acct_loop_num]) > 0))
 				{
-					if ($this->debug > 1) { echo 'bofilters.run_single_filter: already obtained inbox_full_msgball_list, during a previous filter, for $src_acct_loop_num ['.$src_acct_loop_num.']<br>'; }
+					if ($this->debug > 1) { echo 'bofilters.run_single_filter('.__LINE__.'): already obtained inbox_full_msgball_list, during a previous filter, for $src_acct_loop_num ['.$src_acct_loop_num.']<br>'; }
 				}
 				else
 				{
 					// get FULL msgball list for this INBOX (we always filter INBOXs only)
-					if ($this->debug > 1) { echo 'bofilters.run_single_filter: get_msgball_list for later XOR ing for <code>['.serialize($fake_fldball).']</code><br>'; }
+					if ($this->debug > 1) { echo 'bofilters.run_single_filter('.__LINE__.'): get_msgball_list for later XOR ing for <code>['.serialize($fake_fldball).']</code><br>'; }
 					//$this->inbox_full_msgball_list[$src_acct_loop_num] = $GLOBALS['phpgw']->msg->get_msgball_list($fake_fldball['acctnum'], $fake_fldball['folder']);
 					// FIXME: FOR BACKWARDS COMPAT WE GET AN OLD STYLE MSGBALL LIST
 					$this->inbox_full_msgball_list[$src_acct_loop_num] = $GLOBALS['phpgw']->msg->get_msgball_list_oldschool($fake_fldball['acctnum'], $fake_fldball['folder']);
@@ -1035,7 +1047,7 @@
 				
 				// FOR EACH MSG, GET IT'S RAW HEADERS
 				// only if we have not got them yet
-				if ($this->debug > 1) { echo 'bofilters.run_single_filter: get headers for each msg in $src_acct_loop_num ['.$src_acct_loop_num.']<br>'; }
+				if ($this->debug > 1) { echo 'bofilters.run_single_filter('.__LINE__.'): get headers for each msg in $src_acct_loop_num ['.$src_acct_loop_num.']<br>'; }
 				for ($msg_iteration=0; $msg_iteration < count($this->inbox_full_msgball_list[$src_acct_loop_num]); $msg_iteration++)
 				{
 					if ((isset($this->inbox_full_msgball_list[$src_acct_loop_num][$msg_iteration]['headers_text']))
@@ -1043,7 +1055,7 @@
 					{
 						// we ALREADY hav the headers
 						// continue to the next message
-						if ($this->debug > 1) { echo 'bofilters.run_single_filter: already obtained headers, during a previous filter, for $src_acct_loop_num ['.$src_acct_loop_num.']<br>'; }
+						if ($this->debug > 1) { echo 'bofilters.run_single_filter('.__LINE__.'): already obtained headers, during a previous filter, for $src_acct_loop_num ['.$src_acct_loop_num.']<br>'; }
 						continue;
 					}
 					// we need to get the headers
@@ -1118,20 +1130,20 @@
 					if ($this->inbox_full_msgball_list[$src_acct_loop_num][$msg_iteration]['msgnum'] == $this->not_set)
 					{
 						// this message had already been filtered AND MOVED OR DELETED, continue to next loop
-						if ($this->debug > 1) { echo '<br>bofilters.run_single_filter: skipping... this message has already been moved, deleted by a previous filter, $src_acct_loop_num ['.$src_acct_loop_num.'] $msg_iteration ['.$msg_iteration.']<br><br>'; }
+						if ($this->debug > 1) { echo '<br>bofilters.run_single_filter('.__LINE__.'): skipping... this message has already been moved, deleted by a previous filter, $src_acct_loop_num ['.$src_acct_loop_num.'] $msg_iteration ['.$msg_iteration.']<br><br>'; }
 						continue;
 					}
 					// we have a message to be filtered...
 					$headers_text = $this->inbox_full_msgball_list[$src_acct_loop_num][$msg_iteration]['headers_text'];
 					// this patiular message has not been looked at yet, initialize it match keeper value
 					$this->inbox_full_msgball_list[$src_acct_loop_num][$msg_iteration]['match_keeper'] = 0;
-					if ($this->debug > 2) { echo 'bofilters.run_single_filter: $this->inbox_full_msgball_list['.$src_acct_loop_num.']['.$msg_iteration.'][headers_text] DUMP:<pre>'; print_r($this->inbox_full_msgball_list[$src_acct_loop_num][$msg_iteration]['headers_text']); echo "</pre>\r\n"; }
+					if ($this->debug > 2) { echo 'bofilters.run_single_filter('.__LINE__.'): $this->inbox_full_msgball_list['.$src_acct_loop_num.']['.$msg_iteration.'][headers_text] DUMP:<pre>'; print_r($this->inbox_full_msgball_list[$src_acct_loop_num][$msg_iteration]['headers_text']); echo "</pre>\r\n"; }
 						
 					// every header line gets looked at by every row of match criteria
 					// WE NEED TO DO THIS FOR EVERY MATCH ROW
 					for ($matches_row=0; $matches_row < count($this_filter['matches']); $matches_row++)
 					{
-						if ($this->debug > 1) { echo 'bofilters.run_single_filter: source_accounts loop ['.$src_acct_loop_num.'] ; $msg_iteration ['.$msg_iteration.'] ; $matches_row ['.$matches_row.']<br>'; }
+						if ($this->debug > 1) { echo 'bofilters.run_single_filter('.__LINE__.'): source_accounts loop ['.$src_acct_loop_num.'] ; $msg_iteration ['.$msg_iteration.'] ; $matches_row ['.$matches_row.']<br>'; }
 						// Note on "RECIPIENT" :  to,cc, bcc  "tri-fecta" all three headers must be considered
 						// this is why we made a faux header line that contains all three of those in one line
 						// NOTE: recipient Contains vs. NotContains
@@ -1153,7 +1165,7 @@
 						// if this is really the 1st word of the header string, it will be preceeded by CRLF
 						$inspect_me = stristr($headers_text, "\r\n".$search_key_imap);
 						// inspect_me will be everything to the right of the "neede" INCLUDING the "needle" itself and the REST of the headers
-						if ($this->debug > 1) { echo 'bofilters.run_single_filter: $search_key_imap  ['.$search_key_imap.'] ; $comparator ['.$comparator.'] ; $search_for ['.$search_for.']<br>'; }
+						if ($this->debug > 1) { echo 'bofilters.run_single_filter('.__LINE__.'): $search_key_imap  ['.$search_key_imap.'] ; $comparator ['.$comparator.'] ; $search_for ['.$search_for.']<br>'; }
 						if ($inspect_me)
 						{
 							// get rid of that "needle"  search_key_imap (it's included from the stristr above)
@@ -1164,7 +1176,7 @@
 							$cut_here = strpos($inspect_me, "\r\n");
 							// get everything FROM beginning of string TO  pos $cut_here (the end of the line);
 							$inspect_me = substr($inspect_me, 0, $cut_here);
-							if ($this->debug > 1) { echo 'bofilters.run_single_filter: GOT HEADER TO LOOK IN: $inspect_me ['.htmlspecialchars($inspect_me).']<br>'; }
+							if ($this->debug > 1) { echo 'bofilters.run_single_filter('.__LINE__.'): GOT HEADER TO LOOK IN: $inspect_me ['.htmlspecialchars($inspect_me).']<br>'; }
 							// look for EXISTS or NOT EXISTS our search string
 							if
 							(
@@ -1174,7 +1186,7 @@
 								&& (stristr($inspect_me, $search_for) == False))
 							)
 							{
-								if ($this->debug > 1) { echo 'bofilters.run_single_filter: ** GOT ROW CRITERIA MATCH ** $matches_row '.$matches_row.'<br>'; }
+								if ($this->debug > 1) { echo 'bofilters.run_single_filter('.__LINE__.'): ** GOT ROW CRITERIA MATCH ** $matches_row '.$matches_row.'<br>'; }
 								// MATCH: this row matches the search criteria
 								// i.e. this header line does -or- does not have the seach for text, as requested
 								if ($matches_row == 0)
@@ -1209,7 +1221,7 @@
 						{
 							// header we are looking for does not exist in this messages headers
 							// probably lookinf for an "X-" header, like "X-Mailer:"
-							if ($this->debug > 1) { echo 'bofilters.run_single_filter: requested header $search_key_imap  ['.$search_key_imap.'] not in this messages headers<br>'; }
+							if ($this->debug > 1) { echo 'bofilters.run_single_filter('.__LINE__.'): requested header $search_key_imap  ['.$search_key_imap.'] not in this messages headers<br>'; }
 						}
 						// this is the last code that gets run BEFORE we move on to the next row of match criteria 
 						// this code is INSIDE the match criteria rows

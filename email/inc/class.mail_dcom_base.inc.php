@@ -140,7 +140,16 @@
 				// get rid of that 'needle' "}"
 				$name['folder_before'] = substr($name['folder_before'], 1);
 				// translate
-				$name['folder_after'] = imap_utf7_encode($name['folder_before']);
+				if (function_exists('recode_string') == False)
+				{
+					$name['folder_after'] = imap_utf7_encode($name['folder_before']);
+				}
+				else
+				{
+					// Modif UTF-8 by Sam Przyswa so now compatible with MS-Outlook and Netscape accentued folder name
+					$name_tmp = recode_string("ISO-8859-1..UTF-7", $name['folder_before']);
+					$name['folder_after'] = str_replace("+", "&", $name_tmp);
+				}
 				// replace old folder name with new folder name
 				$name['translated'] = str_replace($name['folder_before'], $name['folder_after'], $data_str);
 			}
@@ -253,7 +262,16 @@
 				// get rid of that 'needle' "}"
 				$name['folder_before'] = substr($name['folder_before'], 1);
 				// translate
-				$name['folder_after'] = imap_utf7_decode($name['folder_before']);
+				if (function_exists('recode_string') == False)
+				{
+					$name['folder_after'] = imap_utf7_decode($name['folder_before']);
+				}
+				else
+				{
+					// Modif UTF-8 by Sam Przyswa so now compatible with MS-Outlook and Netscape accentued folder name
+					$name_tmp = str_replace("&", "+", $name['folder_before']);
+					$name['folder_after'] = recode_string("UTF-7..ISO-8859-1", $name_tmp);
+				}
 				// "imap_utf7_decode" returns False if no translation occured (supposed to, can return identical string too)
 				if ( ($name['folder_after'] == False)
 				|| ($name['folder_before'] == $name['folder_after']) )
@@ -293,6 +311,28 @@
 			}
 		}
 
+		/*!
+		@function folder_list_did_change
+		@abstract if folder is created, deleted, or renamed this this function handles cleanup of stale data in main msg object. 
+		@author Angles
+		*/
+		function folder_list_did_change()
+		{
+			// NOTE THIS FLAG "folder_list_changed" IS NOW OBSOLETED SINCE THIS 
+			// CALLBACK FUNCTION IS PROVEN TO WORK
+			$this->folder_list_changed = True;
+			if (is_object($GLOBALS['phpgw']->msg))
+			{
+				// call that classes "callback" function designed to handle cleaning stale folder_list there
+				$sucess = $GLOBALS['phpgw']->msg->folder_list_change_callback();
+				// if it was handled correctly, then reset the "folder_list_changed" because we did our job
+				if ($sucess)
+				{
+					$this->folder_list_changed = False;
+				}
+			}
+		}
+		
 		/*!
 		@function get_flag
 		@abstract ?

@@ -42,6 +42,15 @@
 	class mail_msg_wrappers extends mail_msg_base
 	{
 	
+		/*!
+		@function mail_msg_wrappers
+		@abstract CONSTRUCTOR place holder, does nothing  
+		*/
+		function mail_msg_wrappers()
+		{
+			return;
+		}
+		
 		// ====  Functions For Getting Information About A Message  ====
 		
 		/*!
@@ -152,7 +161,7 @@
 		
 		/*!
 		@function phpgw_header
-		@abstract wrapper for IMAP_HEADER, phpgw supplies the nedessary stream arg and mail_dcom reference
+		@abstract wrapper for IMAP_HEADER, phpgw supplies the necessary stream arg and mail_dcom reference
 		@param $msgball (typed array)
 		@result returns the php IMAP_HEADER data
 		@discussion Wrapper supplies the needed mailsvr_stream arg to IMAP_HEADER. 
@@ -247,6 +256,10 @@
 				$this->ensure_stream_and_folder($msgball, 'phpgw_header'.' LINE '.__LINE__);
 				$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 				$data = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->header($mailsvr_stream, $msgball['msgnum']);
+				
+					 // fix escape problem FORGET THIS FOR NOW
+					//$this->cache_clean_phpgw_header($data);
+				
 				// PUT THIS IN CACHE
 				//  if "session_cache_extreme" is True
 				if (($data)
@@ -262,6 +275,10 @@
 						//$msgball['folder'] = $this->get_arg_value('folder');
 						$msgball['folder'] = $this->prep_folder_out($this->get_arg_value('folder'));
 					}
+					
+					 // fix escape problem
+					//$this->cache_clean_phpgw_header($data);
+					
 					// this is the way we pass phpgw_header data to the caching function
 					$meta_data = array();
 					$meta_data['msgball'] = array();
@@ -283,6 +300,107 @@
 				}
 			}
 		}
+		
+		/*!
+		@function cache_clean_phpgw_header
+		@abstract ?
+		@param $msg_headers (php struct from header)  btw it is a refrence OOP directly on param
+		@author Angles
+		@discussion ?
+		
+		function cache_clean_phpgw_header(&$msg_headers)
+		{
+			//$debug = 0;
+			$debug = 3;
+			
+			if (
+			  (!isset($msg_headers))
+			|| (!$msg_headers )
+			//|| ($this->session_cache_extreme == False)
+			)
+			{
+				return '';
+			}
+			// toaddress
+			// to[]
+			// fromaddress
+			// from[]
+			// reply_toaddress
+			// reply_to[]
+			// senderaddress
+			// sender[]
+			// cc[]
+			
+			if ($debug > 2) { $this->dbug->out('wrappers.cache_clean_phpgw_header('.__LINE__.'): BEFORE $msg_headers DUMP:', $msg_headers);  }
+			// toaddress
+			if ($msg_headers->toaddress)
+			{
+				$msg_headers->toaddress = addslashes($msg_headers->toaddress);
+			}
+			
+			// to[]
+			if ($msg_headers->to)
+			{
+				$loops = count($msg_headers->to);
+				for($i=0;$i<$loops;$i++)
+				{
+					$thingy =& $msg_headers->to[$i];
+					$thingy->personal = addslashes($thingy->personal);
+				}
+			}
+			// fromaddress
+			if ($msg_headers->fromaddress)
+			{
+				$msg_headers->fromaddress = addslashes($msg_headers->fromaddress);
+			}
+			// from[]
+			if ($msg_headers->from)
+			{
+				$loops = count($msg_headers->from);
+				for($i=0;$i<$loops;$i++)
+				{
+					$thingy =& $msg_headers->from[$i];
+					$thingy->personal = addslashes($thingy->personal);
+				}
+			}
+			
+			// reply_toaddress
+			if ($msg_headers->reply_toaddress)
+			{
+				$msg_headers->reply_toaddress = addslashes($msg_headers->reply_toaddress);
+			}
+			// reply_to[]
+			if ($msg_headers->reply_to)
+			{
+				$loops = count($msg_headers->reply_to);
+				for($i=0;$i<$loops;$i++)
+				{
+					$thingy =& $msg_headers->reply_to[$i];
+					$thingy->personal = addslashes($thingy->personal);
+				}
+			}
+			
+			// senderaddress
+			if ($msg_headers->senderaddress)
+			{
+				$msg_headers->senderaddress = addslashes($msg_headers->senderaddress);
+			}
+			// sender[]
+			if ($msg_headers->sender)
+			{
+				$loops = count($msg_headers->sender);
+				for($i=0;$i<$loops;$i++)
+				{
+					$thingy =& $msg_headers->sender[$i];
+					$thingy->personal = addslashes($thingy->personal);
+				}
+			}
+			
+			// cc[]
+			
+			if ($debug > 2) { $this->dbug->out('wrappers.cache_clean_phpgw_header('.__LINE__.'): AFTER $msg_headers DUMP:', $msg_headers);  }
+		}
+		*/
 		
 		/*!
 		@function phpgw_fetchheader
@@ -409,6 +527,60 @@
 				$msgball = $this->get_arg_value('msgball');
 			}
 			$acctnum = $msgball['acctnum'];
+			// why is this next check needed?
+			if ((!isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $this->get_acctnum();
+			}
+			
+			// TRY CACHED DATA
+			$cached_phpgw_fetchbody = $this->read_session_cache_item('phpgw_fetchbody', $msgball['acctnum'], $msgball['folder'], $msgball['msgnum'], $msgball['part_no']);
+			if ($cached_phpgw_fetchbody)
+			{
+				// notice of event
+				$this->event_msg_seen($msgball, 'phpgw_fetchbody');
+				return $cached_phpgw_fetchbody;
+			}
+			// if we get here we need to contact mailserver
+			$this->ensure_stream_and_folder($msgball, 'phpgw_fetchbody'.' LINE '.__LINE__);
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$msgnum = $msgball['msgnum'];
+			$part_no = $msgball['part_no'];
+			//echo 'mail_msg(_wrappers): phpgw_fetchbody: processed: $acctnum: '.$acctnum.'; $mailsvr_stream: '.serialize($mailsvr_stream).'; $msgnum: '.$msgnum.'; $part_no: '.$part_no.'<br> * $msgball dump<pre>'; print_r($msgball); echo '</pre>';
+			
+			$data = '';
+			$data = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchbody($mailsvr_stream, $msgnum, $part_no, $flags);
+			
+			if ($data)
+			{
+				// notice of event
+				$this->event_msg_seen($msgball, 'phpgw_fetchbody');
+				// SET_CACHE_ITEM
+				$meta_data = array();
+				$meta_data['msgball'] = $msgball;
+				$meta_data['phpgw_fetchbody'] = $data;
+				$this->save_session_cache_item('phpgw_fetchbody', $meta_data, $acctnum);
+				$meta_data = array();
+				return $data;
+			}
+			else
+			{
+				return False;
+			}
+		}
+		
+		/*
+		// OLD FUNCTION
+		function phpgw_fetchbody($msgball='', $flags='')
+		{
+			//echo 'mail_msg(_wrappers): phpgw_fetchbody: ENTERING, $msgball dump<pre>'; print_r($msgball); echo '</pre>';
+			if ( (!isset($msgball))
+			|| ($msgball == '') )
+			{
+				$msgball = $this->get_arg_value('msgball');
+			}
+			$acctnum = $msgball['acctnum'];
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
 			{
@@ -425,7 +597,7 @@
 			
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchbody($mailsvr_stream, $msgnum, $part_no, $flags);
 		}
-		
+		*/
 		
 	// =====  Functions For Getting Information About A Folder  =====
 		// returns an array of integers which are refer to all the messages in a folder ("INBOX") sorted and ordered
@@ -467,10 +639,16 @@
 				// DO NOT SPECIFY FOLDER unless you *really* know what you are doing
 				// typically "best" folder and acctnum are obtained during begin request
 				// right now only specialized filter searching requires tp specify a folder
+				
+				// UPDATE WE NOW USE A FOLDER ARG IN THE DATA KEY
+				// not sure how that changes any of this, if at all
+				// in this case, not even an acctnum was passed, so obviously a folder is out of the question here
+				
 				$fake_fldball = array();
 				$fake_fldball['acctnum'] = $acctnum;
 				$fake_fldball['folder'] = $folder;
-				$this->ensure_stream_and_folder($fake_fldball, 'get_msgball_list'.' LINE '.__LINE__);
+				// WHY DO THIS HERE?
+				//$this->ensure_stream_and_folder($fake_fldball, 'get_msgball_list'.' LINE '.__LINE__);
 				// ok, so now we KNOW the stream exists and folder value is what we need for this desired account
 			}
 			elseif ((!isset($acctnum))
@@ -485,7 +663,14 @@
 			//	$cached_msgball_data[msgball_list]
 			//	$cached_msgball_data[validity]
 			// BUT IT RETURNS TO US THE ACTUAL "msgball_list" part, *NOT* WITH THE OTHER STUFF TOO
-			$cached_msgball_list = $this->read_session_cache_item('msgball_list', $acctnum);
+			//$cached_msgball_list = $this->read_session_cache_item('msgball_list', $acctnum);
+			// NOW WE USE FOLDER NAME AS A DATA KEY TOO
+			if ((!isset($folder))
+			|| ((string)$folder == ''))
+			{
+				$folder = $this->prep_folder_out($this->get_arg_value('folder', $acctnum));
+			}
+			$cached_msgball_list = $this->read_session_cache_item('msgball_list', $acctnum, $folder);
 			if ($cached_msgball_list)
 			{
 				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(wrappers).get_msgball_list: ('.__LINE__.') LEAVING, returning appsession cached "msgball_list"<br>'); }
@@ -495,6 +680,7 @@
 			}
 			else
 			{
+				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(wrappers).get_msgball_list: ('.__LINE__.') <font color="brown">cached had NO DATA for "msgball_list"</font><br>'); }
 				// right now only specialized filter searching requires tp specify a folder
 				$fake_fldball = array();
 				$fake_fldball['acctnum'] = $acctnum;
@@ -508,7 +694,7 @@
 				//{
 				//	$server_msgnum_list = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->sort($this->get_arg_value('mailsvr_stream', $acctnum), $this->get_arg_value('sort', $acctnum), $this->get_arg_value('order', $acctnum));
 				//}
-				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): get_msgball_list: ('.__LINE__.') calling $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->sort('.$this->get_arg_value('mailsvr_stream', $acctnum).', '.$this->get_arg_value('sort', $acctnum).', '.$this->get_arg_value('order', $acctnum).')<br>'); } 
+				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): get_msgball_list: ('.__LINE__.') <font color="red">MAILSERVER CALL</font> calling $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->sort('.$this->get_arg_value('mailsvr_stream', $acctnum).', '.$this->get_arg_value('sort', $acctnum).', '.$this->get_arg_value('order', $acctnum).')<br>'); } 
 				$server_msgnum_list = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->sort($this->get_arg_value('mailsvr_stream', $acctnum), $this->get_arg_value('sort', $acctnum), $this->get_arg_value('order', $acctnum));
 				
 				// put more information about these particular messages into the msgball_list[] structure
@@ -566,8 +752,12 @@
 				$meta_data['msgball_list'] = $msgball_list;
 				$meta_data['validity'] = array();
 				$meta_data['validity']['fldball'] = $fake_fldball;
-				$this->save_session_cache_item('msgball_list', $meta_data, $acctnum);
-				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): get_msgball_list: ('.__LINE__.') LEAVING, had to get data from server<br>'); } 
+				//$this->save_session_cache_item('msgball_list', $meta_data, $acctnum);
+				// NOW WE USE FOLDER NAME ALSO IN THE DATA KEY
+				// use the folder name that was fed as a param, since this most likely represents a good key to use 
+				// just in case the msgball_list, in the future, is a virtual one composed of msg from many folders
+				$this->save_session_cache_item('msgball_list', $meta_data, $acctnum, $folder);
+				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): get_msgball_list: ('.__LINE__.') LEAVING, <font color="red">had to get data from server</font><br>'); } 
 				return $msgball_list;
 			}
 		}
@@ -1097,12 +1287,13 @@
 		@discussion This function handles the traditional fldball better, a fldball["folder"] is NOT ever supposed to have 
 		a mailsvr_callstr, and IS ALWAYS urlencoded until just before we call the dcom class, when we urldecode it only 
 		at that point. This function assumes this behavior, so the typical fldball is supported by this function. 
-		This will be the future version of this function, code is migratibg to this version.
+		This will be the future version of this function, code is migrating to this version.
 		@author Angles
 		@access public
 		*/
 		function phpgw_createmailbox_ex($target_fldball)
 		{
+			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('phpgw_createmailbox_ex('.__LINE__.'): ENTERING: raw $target_fldball arg ['.htmlspecialchars($target_fldball).']<br>'); } 
 			if ((isset($target_fldball['acctnum']))
 			&& ((string)$target_fldball['acctnum'] != ''))
 			{
@@ -1127,7 +1318,7 @@
 			// multiple accounts means one stream may be open but another may not
 			// "ensure_stream_and_folder" will verify for us, 
 			// tell "ensure_stream_and_folder" that its NOT NECESSARY to switch TO this folder
-			$fake_fldball['no_switch_away'] = True;
+			$target_fldball['no_switch_away'] = True;
 			$this->ensure_stream_and_folder($target_fldball, 'phpgw_createmailbox_ex LINE ('.__LINE__.')');
 			// if $folder dies not have the {SERVERNAME}  then add it
 			//$target_folder_clean = $this->prep_folder_in($target_fldball['folder']);
@@ -1138,7 +1329,7 @@
 				$target_folder_clean = $mailsvr_callstr.$target_folder_clean;
 			}
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('phpgw_createmailbox_ex('.__LINE__.'): calling createmailbox('.$mailsvr_stream.', '.htmlspecialchars($target_folder_clean).'<br>'); } 
+			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('phpgw_createmailbox_ex('.__LINE__.'): calling $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->createmailbox('.serialize($mailsvr_stream).', '.htmlspecialchars($target_folder_clean).'<br>'); } 
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->createmailbox($mailsvr_stream, $target_folder_clean);
 		}
 		
@@ -1158,6 +1349,59 @@
 		}
 		
 		/*!
+		@function phpgw_deletemailbox_ex
+		@abstract ?
+		@param $target_fldball (array or type "fldball") NOTE: folder element DOES NOT NEED THE SERVER CALLSTR.
+		@discussion This function handles the traditional fldball better, a fldball["folder"] is NOT ever supposed to have 
+		a mailsvr_callstr, and IS ALWAYS urlencoded until just before we call the dcom class, when we urldecode it only 
+		at that point. This function assumes this behavior, so the typical fldball is supported by this function. 
+		This will be the future version of this function, code is migrating to this version.
+		@author Angles
+		@access public
+		*/
+		function phpgw_deletemailbox_ex($target_fldball)
+		{
+			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('phpgw_deletemailbox_ex('.__LINE__.'): ENTERING: raw $target_fldball arg ['.htmlspecialchars($target_fldball).']<br>'); } 
+			if ((isset($target_fldball['acctnum']))
+			&& ((string)$target_fldball['acctnum'] != ''))
+			{
+				$target_fldball['acctnum'] = (int)$target_fldball['acctnum'];
+			}
+			else
+			{
+				$target_fldball['acctnum'] = $this->get_acctnum();
+			}
+			$acctnum = $target_fldball['acctnum'];
+			// if folder is blank, we *should* assume INBOX because BUT mailsvr will give an error INBOX already exists
+			if ((isset($target_fldball['folder']))
+			|| ((string)$target_fldball['folder'] != ''))
+			{
+				// good folder name, no change needed
+			}
+			else
+			{
+				$target_fldball['folder'] = 'INBOX';
+			}
+			// Make Sure Stream Exists
+			// multiple accounts means one stream may be open but another may not
+			// "ensure_stream_and_folder" will verify for us, 
+			// tell "ensure_stream_and_folder" that its NOT NECESSARY to switch TO this folder
+			$target_fldball['no_switch_away'] = True;
+			$this->ensure_stream_and_folder($target_fldball, 'phpgw_deletemailbox_ex LINE ('.__LINE__.')');
+			// if $folder dies not have the {SERVERNAME}  then add it
+			//$target_folder_clean = $this->prep_folder_in($target_fldball['folder']);
+			$target_folder_clean = urldecode($target_fldball['folder']);
+			if (!strstr($target_folder_clean, '}'))
+			{
+				$mailsvr_callstr = $this->get_arg_value('mailsvr_callstr', $acctnum);
+				$target_folder_clean = $mailsvr_callstr.$target_folder_clean;
+			}
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('phpgw_deletemailbox_ex('.__LINE__.'): calling $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->deletemailbox('.serialize($mailsvr_stream).', '.htmlspecialchars($target_folder_clean).'<br>'); } 
+			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->deletemailbox($mailsvr_stream, $target_folder_clean);
+		}
+		
+		/*!
 		@function phpgw_renamemailbox
 		@abstract ?
 		@author Angles
@@ -1173,6 +1417,83 @@
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->renamemailbox($mailsvr_stream, $folder_old, $folder_new);
 		}
 
+		/*!
+		@function phpgw_renamemailbox_ex
+		@abstract ?
+		@param $target_fldball (array or type "fldball") NOTE: folder element DOES NOT NEED THE SERVER CALLSTR.
+		@discussion This function handles the traditional fldball better, a fldball["folder"] is NOT ever supposed to have 
+		a mailsvr_callstr, and IS ALWAYS urlencoded until just before we call the dcom class, when we urldecode it only 
+		at that point. This function assumes this behavior, so the typical fldball is supported by this function. 
+		This will be the future version of this function, code is migrating to this version.
+		@author Angles
+		@access public
+		*/
+		function phpgw_renamemailbox_ex($source_fldball,$target_fldball)
+		{
+			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('phpgw_renamemailbox_ex('.__LINE__.'): ENTERING<br>'); } 
+			if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('phpgw_renamemailbox_ex('.__LINE__.'): raw $source_fldball arg ['.htmlspecialchars($source_fldball).']; raw $target_fldball arg ['.htmlspecialchars($target_fldball).']<br>'); } 
+			if ((isset($target_fldball['acctnum']))
+			&& ((string)$target_fldball['acctnum'] != ''))
+			{
+				$target_fldball['acctnum'] = (int)$target_fldball['acctnum'];
+			}
+			else
+			{
+				$target_fldball['acctnum'] = $this->get_acctnum();
+			}
+			$acctnum = $target_fldball['acctnum'];
+			// if folder is blank, we *should* assume INBOX because BUT mailsvr will give an error INBOX already exists
+			if ((isset($target_fldball['folder']))
+			|| ((string)$target_fldball['folder'] != ''))
+			{
+				// good folder name, no change needed
+			}
+			else
+			{
+				$target_fldball['folder'] = 'INBOX';
+			}
+			// Make Sure Stream Exists
+			// multiple accounts means one stream may be open but another may not
+			// "ensure_stream_and_folder" will verify for us, 
+			// tell "ensure_stream_and_folder" that its NOT NECESSARY to switch TO this folder
+			$target_fldball['no_switch_away'] = True;
+			$this->ensure_stream_and_folder($target_fldball, 'phpgw_renamemailbox_ex LINE ('.__LINE__.')');
+			// if $folder dies not have the {SERVERNAME}  then add it
+			//$target_folder_clean = $this->prep_folder_in($target_fldball['folder']);
+			$target_folder_clean = urldecode($target_fldball['folder']);
+			if (!strstr($target_folder_clean, '}'))
+			{
+				$mailsvr_callstr = $this->get_arg_value('mailsvr_callstr', $acctnum);
+				$target_folder_clean = $mailsvr_callstr.$target_folder_clean;
+			}
+			
+			// SOURCE FOLDER NAME
+			//the folder we are renaming MUST BE from the same account
+			// so we only need to clean up its name
+			if ((isset($source_fldball['folder']))
+			|| ((string)$source_fldball['folder'] != ''))
+			{
+				// good folder name, no change needed
+			}
+			else
+			{
+				$source_fldball['folder'] = 'INBOX';
+			}
+			$source_folder_clean = urldecode($source_fldball['folder']);
+			// if $folder dies not have the {SERVERNAME}  then add it
+			if (!strstr($source_folder_clean, '}'))
+			{
+				$mailsvr_callstr = $this->get_arg_value('mailsvr_callstr', $acctnum);
+				$source_folder_clean = $mailsvr_callstr.$source_folder_clean;
+			}
+			
+			// OK WE are ready to do it!
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('phpgw_renamemailbox_ex('.__LINE__.'): calling $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->renamemailbox('.serialize($mailsvr_stream).', '.htmlspecialchars($source_folder_clean).', '.htmlspecialchars($target_folder_clean).'<br>'); } 
+			//return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->createmailbox($mailsvr_stream, $target_folder_clean);
+			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->renamemailbox($mailsvr_stream, $source_folder_clean, $target_folder_clean);
+		}
+		
 		/*!
 		@function phpgw_listmailbox
 		@abstract ?
@@ -2542,7 +2863,7 @@ Array
 		function is_ball_data($maybe_ball='##NOTHING##', $expect_ball_type='any', $is_uri_type_string='')
 		{
 			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: is_ball_data('.__LINE__.'): ENTERING<br>'); } 
-			if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: is_ball_data('.__LINE__.'): param $maybe_fldball ['.htmlspecialchars(serialize($maybe_fldball)).'], param $expect_ball_type ['.$expect_ball_type.'], param $is_uri_type_string ['.htmlspecialchars(serialize($is_uri_type_string)).']  <br>'); } 
+			if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: is_ball_data('.__LINE__.'): param $maybe_ball ['.htmlspecialchars(serialize($maybe_ball)).'], param $expect_ball_type ['.$expect_ball_type.'], param $is_uri_type_string ['.htmlspecialchars(serialize($is_uri_type_string)).']  <br>'); } 
 			// sanity check on input data
 			if ((!isset($maybe_ball))
 			|| ($maybe_ball == $this->nothing)
@@ -2668,7 +2989,7 @@ Array
 			// add to this data a "uri" element that is the $uri_ball_data
 			//if (isset($return_struct['uri']) == False)
 			//{
-				$return_struct['uri'] = $uri_ball_data;
+				//$return_struct['uri'] = $uri_ball_data;
 			//}
 			if ($do_stripslashes == True)
 			{
@@ -2680,6 +3001,8 @@ Array
 			}
 			// we always keep folder data in urlencoded form until the last second
 			$return_struct['folder'] = $this->prep_folder_out($return_struct['folder']);
+			//rebuild the uri string
+			$return_struct['uri'] = 'msgball[msgnum]='.$return_struct['msgnum'].'&msgball[folder]='.$return_struct['folder'].'&msgball[acctnum]='.$return_struct['acctnum'];
 			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: ball_data_parse_str('.__LINE__.'): final $return_struct DUMP:', $return_struct); } 
 			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: ball_data_parse_str('.__LINE__.'): LEAVING<br>'); } 
 			return $return_struct;
@@ -2729,13 +3052,13 @@ Array
 			*/
 			
 			$embeded_data = array();
-			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: decode_fake_uri: ENTERED $uri_type_string ['.$uri_type_string.'] <br>'); }
+			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: decode_fake_uri('.__LINE__.'): ENTERED $uri_type_string ['.$uri_type_string.'] <br>'); }
 			parse_str($uri_type_string, $embeded_data);
-			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: decode_fake_uri: parse_str('.$uri_type_string.', into $embeded_data DUMP:', $embeded_data); }
+			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: decode_fake_uri('.__LINE__.'): parse_str('.$uri_type_string.', into $embeded_data DUMP:', $embeded_data); }
 			
 			// NOTE PARSE_STR ***WILL ADD SLASHES*** TO ESCAPE QUOTES
 			// NO MATTER WHAT YOUR MAGIC SLASHES SETTING IS
-			if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: decode_fake_uri ('.__LINE__.'): NOTE PARSE_STR ***WILL ADD SLASHES*** TO ESCAPE QUOTES NO MATTER WHAT YOUR MAGIC SLASHES SETTING IS **stripping slashes NOW***'); } 
+			if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: decode_fake_uri('.__LINE__.'): NOTE PARSE_STR ***WILL ADD SLASHES*** TO ESCAPE QUOTES NO MATTER WHAT YOUR MAGIC SLASHES SETTING IS **stripping slashes NOW***'); } 
 			if (isset($embeded_data['folder']))
 			{
 				$embeded_data['folder'] = stripslashes($embeded_data['folder']);
@@ -2745,12 +3068,12 @@ Array
 				$embeded_data['msgball']['folder'] = stripslashes($embeded_data['msgball']['folder']);
 			}
 			
-			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: decode_fake_uri: post "stripslashes" parse_str('.$uri_type_string.', into $embeded_data DUMP:', $embeded_data); }
+			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: decode_fake_uri('.__LINE__.'): post "stripslashes" parse_str('.$uri_type_string.', into $embeded_data DUMP:', $embeded_data); }
 			
 			// some embeded uri-faked data needs to be raised up one level from sub-elements to top level
 			if ($raise_up)
 			{
-				if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: decode_fake_uri: attempt to raise up data one level in the array <br>'); }
+				if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: decode_fake_uri('.__LINE__.'): attempt to raise up data one level in the array <br>'); }
 				$count_embeded = count($embeded_data);
 				if ($count_embeded == 1)
 				{
@@ -2790,11 +3113,11 @@ Array
 					*/
 					// replace result with $new_top_level
 					$embeded_data = $new_top_level;
-					if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: decode_fake_uri: raise embeded up to $new_top_level DUMP:', $new_top_level); }
+					if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: decode_fake_uri('.__LINE__.'): raise embeded up to $new_top_level DUMP:', $new_top_level); }
 				}
 				else
 				{
-					if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: decode_fake_uri: original result had more than one element, can not raise <br>'); }
+					if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: decode_fake_uri('.__LINE__.'): original result had more than one element, can not raise <br>'); }
 				}
 			}
 			// parse_str will "urldecode" the folder string, we need to re-urlencode it, 
@@ -2804,21 +3127,22 @@ Array
 				if ((strstr($key, 'folder'))
 				&& ((string)$embeded_data[$key] != ''))
 				{
-					$re_urlencoded_folder = urlencode($embeded_data[$key]);
-					if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: decode_fake_uri: re-urlencode (hopefully) folder element $embeded_data['.$key.'] from ['.$embeded_data[$key].'] into ['.$re_urlencoded_folder.'] <br>'); }
+					//$re_urlencoded_folder = urlencode($embeded_data[$key]);
+					$re_urlencoded_folder = $this->prep_folder_out($embeded_data[$key]);
+					if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: decode_fake_uri('.__LINE__.'): re-urlencode (hopefully) folder element $embeded_data['.$key.'] from ['.$embeded_data[$key].'] into ['.$re_urlencoded_folder.'] <br>'); }
 					$embeded_data[$key] = $re_urlencoded_folder;
 				}
 				elseif ((strstr($key, 'acctnum'))
 				&& ((string)$embeded_data[$key] != ''))
 				{
 					$make_int_acctnum = (int)$embeded_data[$key];
-					if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: decode_fake_uri: $make_int_acctnum (hopefully) acctnum element $embeded_data['.$key.'] from ['.serialize($embeded_data[$key]).'] into ['.serialize($make_int_acctnum).'] <br>'); }
+					if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: decode_fake_uri('.__LINE__.'): $make_int_acctnum (hopefully) acctnum element $embeded_data['.$key.'] from ['.serialize($embeded_data[$key]).'] into ['.serialize($make_int_acctnum).'] <br>'); }
 					$embeded_data[$key] = $make_int_acctnum;
 				}
 			}
 
-			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: decode_fake_uri: final $embeded_data (sub parts made into an associative array) DUMP:', $embeded_data); }
-			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: decode_fake_uri: LEAVING <br>'); }
+			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: decode_fake_uri('.__LINE__.'): final $embeded_data (sub parts made into an associative array) DUMP:', $embeded_data); }
+			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: decode_fake_uri('.__LINE__.'): LEAVING <br>'); }
 			return $embeded_data;
 		}
 		
@@ -2854,9 +3178,9 @@ Array
 		*/
 		function grab_class_args_gpc()
 		{
-			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: grab_class_args_gpc: ENTERING<br>'); }
-			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc: $this->ref_POST DUMP:', $this->ref_POST); }
-			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc: $this->ref_GET DUMP:', $this->ref_GET); }
+			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): ENTERING<br>'); }
+			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): $this->ref_POST DUMP:', $this->ref_POST); }
+			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): $this->ref_GET DUMP:', $this->ref_GET); }
 			
 			// ----  extract any "fake_uri" embedded data from HTTP_POST_VARS  ----
 			// note: this happens automatically for HTTP_GET_VARS 
@@ -2865,10 +3189,10 @@ Array
 			{
 				while(list($key,$value) = each($this->ref_POST))
 				{
-					if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc: looking for "_fake_uri" token in HTTP_POST_VARS ['.$key.'] = '.$this->ref_POST[$key].'<br>'); }
+					if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): looking for "_fake_uri" token in HTTP_POST_VARS ['.$key.'] = '.$this->ref_POST[$key].'<br>'); }
 					if ($key == 'delmov_list')
 					{
-						if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: grab_class_args_gpc: FOUND "delmov_list_fake_uri" needs decoding HTTP_POST_VARS['.$key.'] = ['.$this->ref_POST[$key].'] <br>'); }
+						if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): FOUND "delmov_list_fake_uri" needs decoding HTTP_POST_VARS['.$key.'] = ['.$this->ref_POST[$key].'] <br>'); }
 						// apache2 on test RH8.0 box submits "delmov_list" array with duplicate items in it, track this
 						$seen_delmov_list_items=array();
 						$sub_loops = count($this->ref_POST[$key]);
@@ -2884,7 +3208,7 @@ Array
 							// bug1: apache2: do duplicate test on the "delmov_list" array items
 							if (in_array($this->ref_POST[$key][$i], $seen_delmov_list_items) == True)
 							{
-								if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: grab_class_args_gpc: <u>unsetting</u> and *skipping* duplicate (buggy apache2) "delmov_list" array item ['.$this->ref_POST[$key][$i].'] <br>'); }
+								if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): <u>unsetting</u> and *skipping* duplicate (buggy apache2) "delmov_list" array item ['.$this->ref_POST[$key][$i].'] <br>'); }
 								$this->ref_POST[$key][$i] = '';
 								// can I UNSET this and have the next $i index item actually be the next one
 								// YES, a) array count calculated before loop, and b) does not squash array to unset an item
@@ -2897,7 +3221,7 @@ Array
 							else
 							{
 								// track seen items for duplicate test
-								if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: grab_class_args_gpc: good (not duplicate, not buggy apache2) "delmov_list" array item ['.$this->ref_POST[$key][$i].'] <br>'); }
+								if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): good (not duplicate, not buggy apache2) "delmov_list" array item ['.$this->ref_POST[$key][$i].'] <br>'); }
 								$tmp_next_idx = count($seen_delmov_list_items);
 								$seen_delmov_list_items[$tmp_next_idx] = $this->ref_POST[$key][$i];
 							}
@@ -2908,19 +3232,19 @@ Array
 							$this->ref_POST[$key][$i] = $sub_embedded_data;
 						}
 						// increment our shadow iteation count
-						if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc: decoded ARRAY "_fake_uri" data: HTTP_POST_VARS['.$key.'] data DUMP:', $this->ref_POST[$key]); }
+						if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): decoded ARRAY "_fake_uri" data: HTTP_POST_VARS['.$key.'] data DUMP:', $this->ref_POST[$key]); }
 					}
 					elseif (strstr($key, '_fake_uri'))
 					{
-						if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: grab_class_args_gpc: FOUND "_fake_uri" token in HTTP_POST_VARS['.$key.'] = ['.$this->ref_POST[$key].'] <br>'); }
+						if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): FOUND "_fake_uri" token in HTTP_POST_VARS['.$key.'] = ['.$this->ref_POST[$key].'] <br>'); }
 						$embedded_data = array();
 						$embedded_data = $this->decode_fake_uri($this->ref_POST[$key]);
 						// Strip "_fake_uri" from $key and insert the associative array into HTTP_POST_VARS
 						$new_key = str_replace('_fake_uri', '', $key);
-						if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: grab_class_args_gpc: embedded "_fake_uri" data will be inserted into POST VARS with key name: ['.$new_key.'] = ['.$this->ref_POST[$key].'] <br>'); }
+						if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): embedded "_fake_uri" data will be inserted into POST VARS with key name: ['.$new_key.'] = ['.$this->ref_POST[$key].'] <br>'); }
 						$this->ref_POST[$new_key] = array();
 						$this->ref_POST[$new_key] = $embedded_data;
-						if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc: decoded "_fake_uri" data: HTTP_POST_VARS['.$new_key.'] data DUMP:', $this->ref_POST[$new_key]); }
+						if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): decoded "_fake_uri" data: HTTP_POST_VARS['.$new_key.'] data DUMP:', $this->ref_POST[$new_key]); }
 					}
 					/*
 					elseif ($key == 'delmov_list')
@@ -2941,7 +3265,7 @@ Array
 			
 			$got_args = array();
 			// insert *known* external args we find into $got_args[], then return that data
-			if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: grab_class_args_gpc: about to loop thru $this->known_external_args<br>'); }
+			if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): about to loop thru $this->known_external_args<br>'); }
 			$loops = count($this->known_external_args);
 			for($i=0;$i<$loops;$i++)
 			{
@@ -2949,39 +3273,55 @@ Array
 				//if ($this->debug_args_input_flow > 2) { $this->dbug->out(' * * (grab pref - external) $this_arg_name: ['.$this_arg_name.']<br>'); }
 				if (isset($this->ref_POST[$this_arg_name]))
 				{
-					if ($this->debug_args_input_flow> 2) { $this->dbug->out(' * * (grab pref - external) $this->ref_POST['.$this_arg_name.'] IS set to ['.$this->ref_POST[$this_arg_name].']<br>'); }
+					if ($this->debug_args_input_flow> 2) { $this->dbug->out(' * * (grab pref - external)('.__LINE__.') $this->ref_POST['.$this_arg_name.'] IS set to ['.$this->ref_POST[$this_arg_name].']<br>'); }
 					$got_args[$this_arg_name] = $this->ref_POST[$this_arg_name];
 				}
 				elseif (isset($this->ref_GET[$this_arg_name]))
 				{
-					if ($this->debug_args_input_flow > 2) { $this->dbug->out(' * * (grab pref - external) $this->ref_GET['.$this_arg_name.'] IS set to ['.$this->ref_GET[$this_arg_name].']<br>'); }
+					if ($this->debug_args_input_flow > 2) { $this->dbug->out(' * * (grab pref - external)('.__LINE__.') $this->ref_GET['.$this_arg_name.'] IS set to ['.serialize($this->ref_GET[$this_arg_name]).']<br>'); }
 					$got_args[$this_arg_name] = $this->ref_GET[$this_arg_name];
 					
+					// STRIPSLASHES IF NEEDED
+					if (($this_arg_name == 'msgball')
+					|| ($this_arg_name == 'fldball'))
+					{
+						// php will automayically urldecode the folder, we don't like this
+						// AND PHP MIGHT ADD GPC SLASHES WE DO NOT WANT!!!!! depending on your ini settings
+						// use custom "stripslashes_gpc" function here because the slashes at this point would have been added ONLY by php itself
+						// i.e. we have not yet used "parse_str" yet, that always addes slashes, but not using it yet means any slashes are GPC slashes
+						$not_urlencoded_but_stripslashed_folder = $this->stripslashes_gpc($got_args[$this_arg_name]['folder']);
+						// now we have no unwanted slashes, so put this back in the input args
+						if ($this->debug_args_input_flow > 2) { $this->dbug->out(' * * (grab pref - external)('.__LINE__.'): msgball[folder] STRIPSLASH watch: $got_args[$this_arg_name]["folder"]: ['.htmlspecialchars($got_args[$this_arg_name]['folder']).']; $not_urlencoded_but_stripslashed_folder: ['.htmlspecialchars($not_urlencoded_but_stripslashed_folder).']<br>'); }
+						$got_args[$this_arg_name]['folder'] = $not_urlencoded_but_stripslashed_folder;
+						$not_urlencoded_but_stripslashed_folder = '';
+						unset($not_urlencoded_but_stripslashed_folder);
+					}
 					// ADD "uri" element to incoming "msgball" arg
 					// so forms may pass this "msgball" on to the next page view
 					if ($this_arg_name == 'msgball')
 					{
 						// php will automayically urldecode the folder, we don't like this
+						// we want the folder value to be URLENCODED, so we need to re-urlencode it
 						$re_urlencoded_folder = $this->prep_folder_out($got_args[$this_arg_name]['folder']);
 						$got_args[$this_arg_name]['folder'] = $re_urlencoded_folder;
 						$got_args[$this_arg_name]['uri'] = 
 							'msgball[msgnum]='.$got_args[$this_arg_name]['msgnum']
 							.'&msgball[folder]='.$got_args[$this_arg_name]['folder']
 							.'&msgball[acctnum]='.$got_args[$this_arg_name]['acctnum'];
-						if ($this->debug_args_input_flow > 2) { $this->dbug->out(' * * (grab pref - external) made msgball URI, added it to msgball[]: DUMP:', $got_args[$this_arg_name]); } 
+						if ($this->debug_args_input_flow > 2) { $this->dbug->out(' * * (grab pref - external)('.__LINE__.') made msgball URI, added it to msgball[]: DUMP:', $got_args[$this_arg_name]); } 
 					}
 				}
 				else
 				{
-					if ($this->debug_args_input_flow > 2) { $this->dbug->out(' * (grab pref - external) neither POST nor GET vars have this item set ['.$this_arg_name.'] <br>'); }
+					if ($this->debug_args_input_flow > 2) { $this->dbug->out(' * (grab pref - external)('.__LINE__.') neither POST nor GET vars have this item set ['.$this_arg_name.'] <br>'); }
 				}
 			}
-			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc: post-loop (external args) $got_args[] DUMP:', $got_args); }
+			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): post-loop (external args) $got_args[] DUMP:', $got_args); }
 			
 			// in order to know wgat account's arg array to insert $got_args[] into, we need to determine what account 
 			// we are dealing with before we can call $this->set_arg_array or "->get_isset_arg" or "->get_arg_value", etc...
 			// so whoever called this function should obtain that before calling $this->set_arg_array() with the data we return here
-			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: grab_class_args_gpc: LEAVING, returning $got_args<br>'); }
+			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): LEAVING, returning $got_args<br>'); }
 			return $got_args;
 		}
 		
@@ -3043,7 +3383,7 @@ Array
 		*/
 		function get_best_acctnum($args_array='', $got_args='', $force_feed_acctnum='')
 		{
-			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: get_best_acctnum('.__LINE__.'): ENTERING, param $force_feed_acctnum ['.$force_feed_acctnum.']'); }
+			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: get_best_acctnum('.__LINE__.'): ENTERING, param $force_feed_acctnum ['.$force_feed_acctnum.']<br>'); }
 			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: get_best_acctnum('.__LINE__.'): parm $args_array[] DUMP:', $args_array); }
 			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: get_best_acctnum('.__LINE__.'): parm $got_args[] DUMP:', $got_args); }
 			
@@ -3540,6 +3880,10 @@ Array
 				//	data['validity']['folder_status_info']
 				// then you have provided EVERYTHING we need
 				
+				// NOTE 5: NOW we also use folder as a data key, so each folder has its own msgball_list
+				// so later we will use this folder data for what is called $extra_keys, but it is just the folder name here
+				// update to make it easier to understand I call this $folder_name now
+				
 				// easy way is "note 1", at this point providing the other stuff is not needed for normal operation
 				// perhaps if you already have the other stuff and you know it has not changed ("folder_status_info" still good) 
 				// then *maybe* it might save some time passing "folder_status_info" you already have 
@@ -3642,29 +3986,38 @@ Array
 				// RECAST DATA ready for saving in appsession
 				//$data = serialize($data);
 				
-				if (($this->debug_session_caching > 2) && ($this->debug_allow_magball_list_dumps)) { $this->dbug->out('mail_msg: save_session_cache_item('.__LINE__.'): [email][dat]['.$acctnum.']['.$data_name.'] DUMP:', $data); } 
+				// NOW WE USE FOLDER INFO TOO SO EVERY FOLDER GETS ITS OWN MSGBALL_LIST
+				$folder_name = $data['validity']['fldball']['folder'];
+				if (($this->debug_session_caching > 2) && ($this->debug_allow_magball_list_dumps)) { $this->dbug->out('mail_msg: save_session_cache_item('.__LINE__.'): [email][dat]['.$acctnum.']['.$data_name.']['.$folder_name.'] DUMP:', $data); } 
 				// SET DATA
-				$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name] = $data;
+				//$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name] = $data;
+				// SET DATA USING FOLDER ALSO
+				$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$folder_name] = $data;
 				
 				// for DB sessions_db ONLY
 				if (($GLOBALS['phpgw_info']['server']['sessions_type'] == 'db')
 				|| ($this->use_private_table == True))
 				{
-					$my_location = (string)$acctnum.';'.$data_name;
-					if ($this->debug_session_caching > 1) { $this->dbug->out('mail_msg: save_session_cache_item('.__LINE__.'): sessions_type is ['.$GLOBALS['phpgw_info']['server']['sessions_type'].'] SO we have this additional step to put data into phpgw_app_sessions table, $my_location ['.$my_location.']<br>'); } 
+					//$my_location = (string)$acctnum.';'.$data_name;
+					// SET DATA USING FOLDER ALSO
+					$my_location = (string)$acctnum.';'.$data_name.';'.$folder_name;
+					if ($this->debug_session_caching > 1) { $this->dbug->out('mail_msg: save_session_cache_item('.__LINE__.'): sessions_type is ['.$GLOBALS['phpgw_info']['server']['sessions_type'].'] SO we have this additional step to put data into database anglemail table, $my_location ['.$my_location.']<br>'); } 
 					if ($this->use_private_table == True)
 					{
-						$this->so->so_set_data($my_location, $data);
+						//$this->so->so_set_data($my_location, $data);
+						// TRY USING COMPRESSION
+						$this->so->so_set_data($my_location, $data, True);
 					}
 					else
 					{
+						// NOTE compression not available for appsession table
 						$GLOBALS['phpgw']->session->appsession($my_location, 'email', $data);
 					}
 				}
 				
 				$data = array();
 				unset($data);
-				if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: save_session_cache_item('.__LINE__.'): LEAVING, did SET data for location: [email][dat][$acctnum][$data_name][$extra_keys] :: [email][dat]['.$acctnum.']['.$data_name.'] <br>'); }
+				if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: save_session_cache_item('.__LINE__.'): LEAVING, did SET data for location: [email][dat][$acctnum][$data_name][$extra_keys] :: [email][dat]['.$acctnum.']['.$data_name.']['.$folder_name.'] <br>'); }
 				return True;
 			}
 			// DEFANG special handler for data that might b0rk a database, stuff like ' " / \ and maybe some others, only "mailsvr_callstr" needs this right now
@@ -3824,6 +4177,8 @@ Array
 				// we will not waste time making a sub array, instead we add the "extra_keys" to the "location"
 				// that way we can directly access this individual datUM without the hastle of a sub array
 				
+				// "flat_pgw_struct" also known as "part_nice"
+				
 				/*!
 				@capability msg_structure and phpgw_header unique handling
 				@abstract The theory is correct and still applied, but the sub-array style is OLD OLD OLD 
@@ -3906,6 +4261,69 @@ Array
 				if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: save_session_cache_item('.__LINE__.'): LEAVING, did SET data for [email][dat]['.$acctnum.']['.$data_name.']['.$ex_folder.']['.$ex_msgnum.'] <br>'); }
 				return True;
 			}
+			elseif ($data_name == 'phpgw_fetchbody')
+			{
+				if ($this->debug_session_caching > 1) { $this->dbug->out('mail_msg: save_session_cache_item('.__LINE__.'): (extreme-mode) data exists for "'.$data_name.'" AND has a handler<br>'); }
+				if ($this->debug_session_caching > 2) { $this->dbug->out('mail_msg: save_session_cache_item('.__LINE__.'): "'.$data_name.'" ARRIVING param $data as it is passed into this function DUMP:', $data); } 
+				
+				//(1) Data Param ARRIVES to this function like this
+				//msg_structure $data param arrives into this function like this:
+				//	$data['msgball'] = $msgball;
+				//	$data['phpgw_fetchbody'] = $data;
+				//
+				//(2) Data Param $data['msgball'] SHOULD HAVE ELEMENT "part_no" !!!!
+				//	$data['msgball']['acctnum']
+				//	$data['msgball']['folder']
+				//	$data['msgball']['msgnum']
+				//	$data['msgball']['part_no']
+				
+				if ((!isset($data['msgball']['part_no']))
+				|| (!$data['msgball']['part_no']))
+				{
+					// LEAVING
+					if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: save_session_cache_item('.__LINE__.'): LEAVING with ERROR, returning FALSE, insufficient data for ['.$data_name.'] because NOT GIVEN $data[msgball][part_no];  $data[msgball] was ['.serialize($data['msgball']).'] <br>'); }
+					return False;
+				}
+				$strlen_phpgw_fetchbody = strlen($data['phpgw_fetchbody']);
+				if ($strlen_phpgw_fetchbody > 60000)
+				{
+					// LEAVING
+					if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: save_session_cache_item('.__LINE__.'): LEAVING with ERROR, returning FALSE, data TOO LARGE for ['.$data_name.']; $strlen_phpgw_fetchbody;  $data[msgball] was ['.$strlen_phpgw_fetchbody.'] <br>'); }
+					return False;
+				}
+				
+				$ex_folder = $data['msgball']['folder'];
+				$ex_msgnum = $data['msgball']['msgnum'];
+				$ex_part_no = $data['msgball']['part_no'];
+				// we know what to do here, so this data "has a handler"
+				$has_handler = True;
+				
+				// RECAST DATA ready for saving in appsession
+				//$data = serialize($data[$data_name]);
+				$data = $data[$data_name];
+				if ($this->debug_session_caching > 2) { $this->dbug->out('mail_msg: save_session_cache_item('.__LINE__.'): [email][dat]['.$acctnum.']['.$data_name.']['.$ex_folder.']['.$ex_msgnum.']['.$ex_part_no.'] DUMP:', $data); } 
+				// SET DATA
+				$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder][$ex_msgnum][$ex_part_no] = $data;
+				// for DB sessions_db ONLY
+				if (($GLOBALS['phpgw_info']['server']['sessions_type'] == 'db')
+				|| ($this->use_private_table == True))
+				{
+					$my_location = (string)$acctnum.';'.$data_name.';'.$ex_folder.';'.$ex_msgnum.';'.$ex_part_no;
+					if ($this->debug_session_caching > 1) { $this->dbug->out('mail_msg: save_session_cache_item('.__LINE__.'): AM Table in use or sessions_type is ['.$GLOBALS['phpgw_info']['server']['sessions_type'].'] SO we have this additional step to put data into a table table, $my_location ['.$my_location.'], this is always needed for AM table<br>'); } 
+					if ($this->use_private_table == True)
+					{
+						$this->so->so_set_data($my_location, $data);
+					}
+					else
+					{
+						$GLOBALS['phpgw']->session->appsession($my_location, 'email', $data);
+					}
+				}
+				$data = array();
+				unset($data);
+				if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: save_session_cache_item('.__LINE__.'): LEAVING, did SET data for [email][dat]['.$acctnum.']['.$data_name.']['.$ex_folder.']['.$ex_msgnum.']['.$ex_part_no.'] <br>'); }
+				return True;
+			}
 			else
 			{
 				// this data_name has no specific handler
@@ -3975,10 +4393,10 @@ Array
 		NOTE: ALL INFO SUBJECT TO CHANGE. 
 		@access private
 		*/
-		function read_session_cache_item($data_name='misc', $acctnum='', $ex_folder='', $ex_msgnum='')
+		function read_session_cache_item($data_name='misc', $acctnum='', $ex_folder='', $ex_msgnum='', $ex_part_no='')
 		{
-			if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): ENTERED, $data_name: ['.$data_name.']; optional: $acctnum: ['.$acctnum.'], $ex_folder: ['.$ex_folder.'], $ex_msgnum: ['.$ex_msgnum.'] '.''); }
-			if ($this->debug_session_caching > 1) { $this->dbug->out('AND $this->session_cache_enabled='.serialize($this->session_cache_enabled).'; $this->session_cache_extreme='.serialize($this->session_cache_extreme).''); } 
+			if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): ENTERED, $data_name: ['.$data_name.']; optional: $acctnum: ['.$acctnum.'], $ex_folder: ['.$ex_folder.'], $ex_msgnum: ['.$ex_msgnum.'], $ex_part_no: ['.$ex_part_no.'] '.'<br>'); }
+			if ($this->debug_session_caching > 1) { $this->dbug->out('AND $this->session_cache_enabled='.serialize($this->session_cache_enabled).'; $this->session_cache_extreme='.serialize($this->session_cache_extreme).'<br>'); } 
 			if ($this->debug_session_caching > 0) { $this->dbug->out('<br>'); } 
 			$font_start = '<font color="purple">';
 			$font_end = '</font>';
@@ -4116,31 +4534,70 @@ Array
 		$validity_test['mailsvr_account_username'] = $this->get_arg_value('mailsvr_account_username', $acctnum);
 				@author Angles
 				*/
+				
+				// NEW: NOW WE NEED A FOLDER NAME TO COMPLETE THE KEY
+				// if one is not provided as a param,
+				// (a) WE MUST GET ONE, and 
+				// (b) it must be URLENCODED, or preped_out
+				if ($ex_folder != '')
+				{
+					if ($this->debug_session_caching > 1) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): handling ['.$data_name.'] we DID get passed param $ex_folder ['.$ex_folder.']<br>'); } 
+				}
+				else
+				{
+					$ex_folder = $this->prep_folder_out($this->get_arg_value('folder', $acctnum));
+					if ($this->debug_session_caching > 1) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): handling ['.$data_name.'] we did NOT get param $ex_folder so we just obtained and set it to this: ['.$ex_folder.']<br>'); } 
+				}
+				
 				// GET DATA
 				// for DB sessions_db ONLY
 				if (($GLOBALS['phpgw_info']['server']['sessions_type'] == 'db')
 				|| ($this->use_private_table == True))
 				{
-					$my_location = (string)$acctnum.';'.$data_name;
-					if ($this->debug_session_caching > 1) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): sessions_type is ['.$GLOBALS['phpgw_info']['server']['sessions_type'].'] SO we have this additional step to read data from phpgw_app_sessions table, $my_location ['.$my_location.']<br>'); } 
+					//$my_location = (string)$acctnum.';'.$data_name;
+					// WE N OW USE FOLDER DATA TOO
+					$my_location = (string)$acctnum.';'.$data_name.';'.$ex_folder;
+					if ($this->debug_session_caching > 1) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): sessions_type is ['.$GLOBALS['phpgw_info']['server']['sessions_type'].'] SO we have this additional step to read data from a database table, $my_location ['.$my_location.']<br>'); } 
 					if ($this->use_private_table == True)
 					{
-						$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name]
-							= $this->so->so_get_data($my_location);
+						//$got_data = array();
+						//$got_data = $this->so->so_get_data($my_location);
+						//$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name]
+						//	= $got_data;
+						
+						//$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name]
+						//	= $this->so->so_get_data($my_location);
+						
+						// TRY USING COMPRESSION
+						//$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name]
+						//	= $this->so->so_get_data($my_location, True);
+						
+						// TRY USING COMPRESSION
+						$got_data = array();
+						$got_data = $this->so->so_get_data($my_location, True);
+						$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder]
+							= $got_data;
 					}
 					else
 					{
-						$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name]
-							= $GLOBALS['phpgw']->session->appsession($my_location, 'email');
+						// NOTE: no compression available for appsession
+						$got_data = array();
+						$got_data = $GLOBALS['phpgw']->session->appsession($my_location, 'email');
+						$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder]
+							= $got_data;
+						
+						// NOTE: no compression available for appsession
+						//$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder]
+						//	= $GLOBALS['phpgw']->session->appsession($my_location, 'email');
 					}
-					if ($this->debug_session_caching > 2) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): [email][dat]['.$acctnum.']['.$data_name.'] DUMP:', $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name]); }
+					if ($this->debug_session_caching > 2) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): [email][dat]['.$acctnum.']['.$data_name.'] DUMP:', $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder]); }
 				}
-				$got_data = $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name];
+				//$got_data = $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name];
 				
 				if (($this->debug_session_caching > 2) && ($this->debug_allow_magball_list_dumps)) { $this->dbug->out('mail_msg: read_session_cache_item: $data_name ['.$data_name.'] verified NOT Stale, restored data DUMP:', $got_data); } 
 				if (!$got_data)
 				{
-					if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): LEAVING, returning False, $data_name ['.$data_name.'] had NO data stored, $acctnum: ['.$acctnum.']<br>'); }
+					if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): LEAVING, returning False, <font color="red">$data_name ['.$data_name.'] had NO data stored</font>, $acctnum: ['.$acctnum.'], $ex_folder ['.$ex_folder.']<br>'); }
 					return False;
 				}
 				else
@@ -4193,17 +4650,19 @@ Array
 					&& ($got_data['validity']['mailsvr_account_username'] == $this->get_arg_value('mailsvr_account_username', $acctnum)))
 					{
 						if (($this->debug_session_caching > 2) && ($this->debug_allow_magball_list_dumps)) { $this->dbug->out('mail_msg: read_session_cache_item: $data_name ['.$data_name.'] verified NOT Stale, restored data DUMP:', $got_data); } 
-						if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): LEAVING, '.$font_start.'successfully restored ['.$data_name.']'.$font_end.' VALID and NOT Stale session data, $acctnum: ['.$acctnum.']<br>'); }
+						if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): LEAVING, '.$font_start.'successfully restored ['.$data_name.']'.$font_end.' VALID and NOT Stale session data, $acctnum: ['.$acctnum.'] param (or obtained) $ex_folder ['.$ex_folder.']<br>'); }
 						return $got_data['msgball_list'];
 					}
 					else
 					{
-						if ($this->debug_session_caching > 1) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): EXPIRE STALE ['.$data_name.'] session data for $acctnum: ['.$acctnum.']<br>'); }
+						if ($this->debug_session_caching > 1) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): EXPIRE STALE ['.$data_name.'] session data for $acctnum: ['.$acctnum.'], $ex_folder ['.$ex_folder.']<br>'); }
 						//$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name] = array();
 						//unset($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name]);
 						// this is better to use
-						$this->expire_session_cache_item($data_name, $acctnum);
-						if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): LEAVING, returning False, $data_name ['.$data_name.'] session was STALE, $acctnum: ['.$acctnum.']<br>'); }
+						//$this->expire_session_cache_item($data_name, $acctnum);
+						// NOW WE USE FOLDER IN DATA KEY ALSO
+						$this->expire_session_cache_item($data_name, $acctnum, $ex_folder);
+						if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): LEAVING, returning False, $data_name ['.$data_name.'] session was STALE, $acctnum: ['.$acctnum.'], $ex_folder ['.$ex_folder.']<br>'); }
 						return False;
 					}
 				}
@@ -4322,6 +4781,41 @@ Array
 					return $got_data;
 					
 				}
+			}
+			elseif (($this->session_cache_extreme == True)
+			&& ($data_name == 'phpgw_fetchbody'))
+			{
+				// THIS DATA IS NEVER CACHED IF $this->session_cache_extreme IS FALSE
+				if ($this->debug_session_caching > 1) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): handler exists for $data_name ['.$data_name.']<br>'); }
+				
+				// GET DATA
+				// for DB sessions_db ONLY
+				if (($GLOBALS['phpgw_info']['server']['sessions_type'] == 'db')
+				|| ($this->use_private_table == True))
+				{
+					$my_location = (string)$acctnum.';'.$data_name.';'.$ex_folder.';'.$ex_msgnum.';'.$ex_part_no;
+					if ($this->debug_session_caching > 1) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): AM table in use or sessions_type is ['.$GLOBALS['phpgw_info']['server']['sessions_type'].'] SO we have this additional step to read data from a table table, $my_location ['.$my_location.']<br>'); } 
+					if ($this->use_private_table == True)
+					{
+						$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder][$ex_msgnum][$ex_part_no]
+							= $this->so->so_get_data($my_location);
+					}
+					else
+					{
+						$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder][$ex_msgnum][$ex_part_no]
+							= $GLOBALS['phpgw']->session->appsession($my_location, 'email');
+					}
+					//if ($this->debug_session_caching > 2) { echo 'mail_msg: read_session_cache_item('.__LINE__.'): [email][dat]['.$acctnum.']['.$data_name.']['.$ex_folder.'] ['.$ex_msgnum.']DUMP:<pre>'; print_r($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder][$ex_msgnum][$ex_part_no]); echo '</pre>'; }
+				}
+				$got_data = $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder][$ex_msgnum][$ex_part_no];
+				
+				if ($got_data)
+				{
+					if ($this->debug_session_caching > 2) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): found an existing array of items for $data_name ['.$data_name.'] data DUMP:', $got_data); }
+					if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): LEAVING, '.$font_start.'successfully restored ['.$data_name.']'.$font_end.' session data for [email][dat]['.$acctnum.']['.$data_name.']['.$ex_folder.']['.$ex_msgnum.']['.$ex_part_no.']<br>'); } 
+					return $got_data;
+					
+				}
 				else
 				{
 					if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: read_session_cache_item('.__LINE__.'): LEAVING, returning False, $data_name ['.$data_name.'] had NO data stored, $acctnum: ['.$acctnum.'], $extra_keys: ['.$extra_keys.']<br>'); }
@@ -4338,11 +4832,13 @@ Array
 		@abstract ?
 		@discussion used with appsession TEMPORARY DATA CACHING server-side caching of limited, 
 		ephermal data, such as a list of messages from an imap search, via appsession
+		NOTE we get the old data, if any, to see whether it was an array or string, HOWEVER using get_arg_value 
+		for "folder_list" WILL ATTEMPT A LOGIN so to avoid that we use "_direct_access_arg_value" instead. 
 		@author Angles
 		@access private
 		*/
 		// ---- session-only data cached to appsession  ----
-		function expire_session_cache_item($data_name='misc',$acctnum='', $ex_folder='', $ex_msgnum='')
+		function expire_session_cache_item($data_name='misc',$acctnum='', $ex_folder='', $ex_msgnum='', $ex_part_no='')
 		{		
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
@@ -4379,7 +4875,9 @@ Array
 			&& (strstr($data_name, 'folder_status_info') == False))
 			{
 				// NOTE L1 cached "folder_status_info" was (a) expired above for non-extreme mode and (b) never uses L1 cached in extreme mode
-				$old_content = $this->get_arg_value($data_name, $acctnum);
+				//$old_content = $this->get_arg_value($data_name, $acctnum);
+				if ($this->debug_session_caching > 1) { $this->dbug->out('mail_msg: expire_session_cache_item('.__LINE__.'): does L1 cache/class for ['.$data_name.'], to find out we call "_direct_access_arg_value" <b>THUS FOLDER_LIST WILL NOT CAUSE A LOGIN</b> using "get_arg_value" for folder_list WILL ATTEMPT A LOGIN!<br>'); }
+				$old_content = $this->_direct_access_arg_value($data_name, $acctnum);
 				if ($this->debug_session_caching > 2) { $this->dbug->out('mail_msg: expire_session_cache_item('.__LINE__.'): found and clearing L1 cache/class for ['.$data_name.'] OLD value DUMP:', $old_content); }
 				if (gettype($old_content) == 'array')
 				{
@@ -4404,13 +4902,20 @@ Array
 			if (($GLOBALS['phpgw_info']['server']['sessions_type'] == 'db')
 			|| ($this->use_private_table == True))
 			{
+				// generic fallback value
 				$my_location = (string)$acctnum.';'.$data_name;
-				if (($ex_folder)
-				&& ($ex_msgnum))
+				if (((string)$ex_folder != '')
+				&& ((string)$ex_msgnum != '')
+				&& ((string)$ex_part_no != ''))
+				{
+					$my_location = (string)$acctnum.';'.$data_name.';'.$ex_folder.';'.$ex_msgnum.';'.$ex_part_no;
+				}
+				elseif (((string)$ex_folder != '')
+				&& ((string)$ex_msgnum != ''))
 				{
 					$my_location = (string)$acctnum.';'.$data_name.';'.$ex_folder.';'.$ex_msgnum;
 				}
-				elseif ($ex_folder)
+				elseif ((string)$ex_folder != '')
 				{
 					$my_location = (string)$acctnum.';'.$data_name.';'.$ex_folder;
 				}
@@ -4427,8 +4932,10 @@ Array
 				}
 			}
 			
-			if ((!$ex_folder)
-			&& (!$ex_msgnum)
+			//if ((!$ex_folder)
+			//&& (!$ex_msgnum)
+			if (((string)$ex_folder == '')
+			&& ((string)$ex_msgnum == '')
 			&& (isset($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name])))
 			{
 				$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name] = '';
@@ -4436,8 +4943,10 @@ Array
 				if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: expire_session_cache_item('.__LINE__.'): LEAVING return True, did expire existing data for [email][dat]['.$acctnum.']['.$data_name.']<br>'); }
 				return True;
 			}
-			elseif (($ex_folder)
-			&& (!$ex_msgnum)
+			//elseif (($ex_folder)
+			//&& (!$ex_msgnum)
+			elseif (((string)$ex_folder != '')
+			&& ((string)$ex_msgnum == '')
 			&& (isset($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder])))
 			{
 				$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder] = '';
@@ -4445,8 +4954,10 @@ Array
 				if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: expire_session_cache_item('.__LINE__.'): LEAVING return True, did expire existing data for [email][dat]['.$acctnum.']['.$data_name.']['.$ex_folder.']<br>'); }
 				return True;
 			}
-			elseif (($ex_folder)
-			&& ($ex_msgnum)
+			//elseif (($ex_folder)
+			//&& ($ex_msgnum)
+			elseif (((string)$ex_folder != '')
+			&& ((string)$ex_msgnum != '')
 			&& (isset($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder][$ex_msgnum])))
 			{
 				$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder][$ex_msgnum] = '';
@@ -4454,14 +4965,23 @@ Array
 				if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: expire_session_cache_item('.__LINE__.'): LEAVING return True, did expire existing data for [email][dat]['.$acctnum.']['.$data_name.']['.$ex_folder.']['.$ex_msgnum.']<br>'); }
 				return True;
 			}
-			if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: expire_session_cache_item('.__LINE__.'): LEAVING, return False, data did not exist for [email][dat]['.$acctnum.']['.$data_name.']['.serialize($ex_folder).']['.serialize($ex_msgnum).']<br>'); } 
+			elseif (((string)$ex_folder != '')
+			&& ((string)$ex_msgnum != '')
+			&& ((string)$ex_part_no != '')
+			&& (isset($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder][$ex_msgnum][$ex_part_no])))
+			{
+				$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder][$ex_msgnum][$ex_part_no] = '';
+				unset($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name][$ex_folder][$ex_msgnum][$ex_part_no]);
+				if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: expire_session_cache_item('.__LINE__.'): LEAVING return True, did expire existing data for [email][dat]['.$acctnum.']['.$data_name.']['.$ex_folder.']['.$ex_msgnum.']['.$ex_part_no.']<br>'); }
+				return True;
+			}
+			if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: expire_session_cache_item('.__LINE__.'): LEAVING, return False, data did not exist for [email][dat]['.$acctnum.']['.$data_name.']['.serialize($ex_folder).']['.serialize($ex_msgnum).']['.serialize($ex_part_no).']<br>'); } 
 			return False;
 		}
 
 		
 		/**************************************************************************\
-		* END **DEPRECIATED *** UNUSED *** 							*
-		* 		SEMI-PERMENANT CACHING HANDLERS					*
+		* END  CACHING HANDLERS								*
 		* - - - - - - - - - - - - - - - - - - - - - - - - -									*
 		* BEGIN PARAM / ARGS / PREFS  ACCESS FUNCTIONS 			*
 		\**************************************************************************/
@@ -4732,7 +5252,7 @@ Array
 		/*!
 		@function set_pref_array
 		@abstract set the entire preference data array FOR ONE ACCOUNT
-		@param $pref_array_data  (array) either (a) correctly formed emai pref array data, or (b) an empty array
+		@param $pref_array_data  (array) either (a) correctly formed email pref array data, or (b) an empty array
 		@param $acctnum  (int) OPTIONAL 
 		@result boolean True is successfully sets $pref_array_data, False to indicate all we did was clear the args, no data was fed
 		@author Angles

@@ -274,6 +274,8 @@
 		{
 			// not yet implemented
 			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: createmailbox<br>'; }
+			// eventually this will use this function to call for expiration of stale cached data, if any
+			//$this->folder_list_did_change();
 			return true;
 		}
 		/*!
@@ -284,8 +286,23 @@
 		{
 			// not yet implemented
 			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: deletemailbox<br>'; }
+			// eventually this will use this function to call for expiration of stale cached data, if any
+			//$this->folder_list_did_change();
 			return true;
 		}
+		/*!
+		@function renamemailbox
+		@abstract not yet implemented in IMAP sockets module
+		*/
+		function renamemailbox($stream,$mailbox_old,$mailbox_new)
+		{
+			// not yet implemented
+			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: renamemailbox<br>'; }
+			// eventually this will use this function to call for expiration of stale cached data, if any
+			//$this->folder_list_did_change();
+			return true;
+		}
+		
 		/*!
 		@function expunge
 		@abstract not yet implemented in IMAP sockets module

@@ -66,7 +66,6 @@
 		*/
 		function create_prefs_block($feed_prefs='')
 		{
-//echo "feed_prefs=<pre>"; print_r($feed_prefs); echo "</pre>\n";
 			if ($this->debug > 0 ) { echo 'email.uipreferences.create_prefs_block: ENTERING, $this->bo->account_group: ['.$this->bo->account_group.']; $this->bo->acctnum: ['.$this->bo->acctnum.']<br>'; }
 			$return_block = '';
 			if(!$feed_prefs)
@@ -335,7 +334,7 @@
 			$this->bo->account_group = 'default';
 			if ($this->debug > 1) { echo 'email.uipreferences.preferences: just set $this->bo->account_group to ['.$this->bo->account_group.']<br>'; }
 			
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				// we point to the global template for this version of phpgw templatings
 				$this->tpl =& $GLOBALS['phpgw']->template;
@@ -347,8 +346,7 @@
 				$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			}
 			
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('E-Mail preferences');
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				unset($GLOBALS['phpgw_info']['flags']['noheader']);
 				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
@@ -358,7 +356,6 @@
 			}
 			else
 			{
-				$GLOBALS['phpgw_info']['flags']['xslt_app'] = True;
 				$GLOBALS['phpgw']->xslttpl->add_file(array('app_data'));
 			}
 			
@@ -475,7 +472,7 @@
 			
 			// output the template
 			if ($this->debug > 0) { echo 'email.uipreferences.preferences: LEAVING, about to output the template<br>'; }
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				$this->tpl->set_unknowns('comment');
 				//$this->tpl->set_unknowns('remove');
@@ -486,15 +483,10 @@
 				$this->tpl->set_unknowns('comment');
 				//$this->tpl->set_unknowns('remove');
 				$data = array();
-				$data['appname'] = lang('E-Mail');
-				$data['function_msg'] = lang('E-Mail preferences');
+				//$data['appname'] = lang('E-Mail');
+				//$data['function_msg'] = lang('E-Mail preferences');
+				$GLOBALS['phpgw_info']['flags']['email']['app_header'] = lang('E-Mail') . ': ' . lang('E-Mail preferences');
 				$data['email_page'] = $this->tpl->parse('out','T_prefs_ui_out');
-				// new way to handle debug data, if this array has anything, put it in the template source data vars
-				//if ($GLOBALS['phpgw']->msg->dbug->debugdata)
-				//{
-				//	$data['debugdata'] = $GLOBALS['phpgw']->msg->dbug->get_debugdata_stack();
-				//}
-				//$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('uimessage' => $data));
 				$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('generic_out' => $data));
 			}
 		}
@@ -519,7 +511,7 @@
 			$this->bo->acctnum = $acctnum;
 			if ($this->debug > 1) { echo 'email.uipreferences.ex_accounts_edit: we just set $this->bo->acctnum to ['.serialize($this->bo->acctnum).']<br>'; }
 			
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				// we point to the global template for this version of phpgw templatings
 				$this->tpl =& $GLOBALS['phpgw']->template;
@@ -530,9 +522,8 @@
 				// we use a PRIVATE template object for 0.9.14 conpat and during xslt porting
 				$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			}
-
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('E-Mail Extra Accounts');
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				unset($GLOBALS['phpgw_info']['flags']['noheader']);
 				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
@@ -542,7 +533,6 @@
 			}
 			else
 			{
-				$GLOBALS['phpgw_info']['flags']['xslt_app'] = True;
 				$GLOBALS['phpgw']->xslttpl->add_file(array('app_data'));
 			}
 			
@@ -672,7 +662,7 @@
 			
 			// output the template
 			if ($this->debug > 0) { echo 'email.uipreferences.ex_accounts_edit: LEAVING, about to output the template<br>'; }
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				$this->tpl->set_unknowns('comment');
 				//$this->tpl->set_unknowns('remove');
@@ -683,15 +673,10 @@
 				$this->tpl->set_unknowns('comment');
 				//$this->tpl->set_unknowns('remove');
 				$data = array();
-				$data['appname'] = lang('E-Mail');
-				$data['function_msg'] = lang('E-Mail Extra Accounts');
+				//$data['appname'] = lang('E-Mail');
+				//$data['function_msg'] = lang('E-Mail Extra Accounts');
+				$GLOBALS['phpgw_info']['flags']['email']['app_header'] = lang('E-Mail') . ': ' . lang('E-Mail Extra Accounts');
 				$data['email_page'] = $this->tpl->parse('out','T_prefs_ui_out');
-				// new way to handle debug data, if this array has anything, put it in the template source data vars
-				//if ($GLOBALS['phpgw']->msg->dbug->debugdata)
-				//{
-				//	$data['debugdata'] = $GLOBALS['phpgw']->msg->dbug->get_debugdata_stack();
-				//}
-				//$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('uimessage' => $data));
 				$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('generic_out' => $data));
 			}
 		}
@@ -699,7 +684,7 @@
 		
 		function ex_accounts_list()
 		{
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				// we point to the global template for this version of phpgw templatings
 				$this->tpl =& $GLOBALS['phpgw']->template;
@@ -711,8 +696,7 @@
 				$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			}
 			
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('E-Mail Extra Accounts List');
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				unset($GLOBALS['phpgw_info']['flags']['noheader']);
 				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
@@ -722,7 +706,6 @@
 			}
 			else
 			{
-				$GLOBALS['phpgw_info']['flags']['xslt_app'] = True;
 				$GLOBALS['phpgw']->xslttpl->add_file(array('app_data'));
 			}
 			
@@ -813,7 +796,7 @@
 			$this->tpl->set_var('debugdata', $GLOBALS['phpgw']->msg->dbug->notice_pagedone());
 			
 			// output the template
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				$this->tpl->set_unknowns('comment');
 				//$this->tpl->set_unknowns('remove');
@@ -824,15 +807,10 @@
 				$this->tpl->set_unknowns('comment');
 				//$this->tpl->set_unknowns('remove');
 				$data = array();
-				$data['appname'] = lang('E-Mail');
-				$data['function_msg'] = lang('E-Mail Extra Accounts List');
+				//$data['appname'] = lang('E-Mail');
+				//$data['function_msg'] = lang('E-Mail Extra Accounts List');
+				$GLOBALS['phpgw_info']['flags']['email']['app_header'] = lang('E-Mail') . ': ' . lang('E-Mail Extra Accounts List');
 				$data['email_page'] = $this->tpl->parse('out','T_prefs_ex_accounts');
-				// new way to handle debug data, if this array has anything, put it in the template source data vars
-				//if ($GLOBALS['phpgw']->msg->dbug->debugdata)
-				//{
-				//	$data['debugdata'] = $GLOBALS['phpgw']->msg->dbug->get_debugdata_stack();
-				//}
-				//$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('uimessage' => $data));
 				$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('generic_out' => $data));
 			}
 		}

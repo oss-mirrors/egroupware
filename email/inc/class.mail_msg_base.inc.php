@@ -234,6 +234,9 @@
 		var $a = array();
 		var $acctnum = 0;
 		var $fallback_default_acctnum = 0;
+		
+		// this object is 3 files, each an object "extending" the other, this prevents 3 constructor calls
+		var $been_constructed = False;
 		// data storage for caching functions moved to SO object
 		var $so = '##NOTHING##';
 		
@@ -264,8 +267,8 @@
 		var $browser = 0;
 		// use message UIDs instead of "message sequence numbers" in requests to the mail server
 		var $force_msg_uids = True;
-		// phpgw 0.9.14 was last for old template system, after that is xslt, make note of version below
-		var $phpgw_0914_orless = '-1';
+		// phpgw 0.9.16 was last for old template system, after that is xslt, make note of version below
+		var $phpgw_before_xslt = '-1';
 		// raw prefs, before we process them to extract extra acct and/or filters data, not of much use
 		var $unprocessed_prefs=array();
 		// raw filters array for use by the filters class, we just put the data here, that is all, while collecting other prefs
@@ -277,9 +280,12 @@
 		// delete URI data is buffered to here, then executed at one time (FUTURE)
 		var $buffered_delete_commmands = array();
 		// I think crypto var this is no longer used, uses global crypto now I think (which does little anyway, w/o mcrypt)
-		var $crypto;
+		//var $crypto;
 		
 		// ---- Data Caching  ----
+		var $use_cached_prefs = True;
+		//var $use_cached_prefs = False;
+		
 		// (A) session data caching in appsession, for data that is temporary in nature
 		// right now this means msgball_list in appsession, and a bunch of stuff we generate (mailsvr_str) stored in L1 cache
 		// also tries to appsession cache the "processed prefs" during begin_request (NOTE: expire this on pref subit so new prefs actually take effect)
@@ -310,9 +316,9 @@
 		// EXTRA ACCOUNTS
 		// used for looping thru extra account data during begin request
 		var $ex_accounts_count = 0;
-		// extra_acounts[X][acctnum] = integer
-		// extra_acounts[X][status] = empty | enabled | disabled
-		var $extra_acounts = array();
+		// extra_accounts[X][acctnum] = integer
+		// extra_accounts[X][status] = empty | enabled | disabled
+		var $extra_accounts = array();
 		// same as above but includes the default account, makes checking streams easier
 		var $extra_and_default_acounts = array();
 		
@@ -336,6 +342,8 @@
 		var $debug_args_oop_access = 0;
 		var $debug_args_special_handlers = 0;
 		var $debug_index_page_display = 0;
+		// this is just being implemented
+		var $debug_message_display = 0;
 		// dormant code, "longterm_caching" currently OBSOLETE
 		var $debug_longterm_caching = 0;
 		//var $skip_args_special_handlers = 'get_mailsvr_callstr, get_mailsvr_namespace, get_mailsvr_delimiter, get_folder_list';
@@ -343,22 +351,47 @@
 		var $skip_args_special_handlers = '';
 		
 		/*!
-		@function mail_msg
-		@abstract CONSTRUCTOR 
+		@function mail_msg_base
+		@abstract CONSTRUCTOR place holder, does nothing  
 		*/
-		function mail_msg()
+		function mail_msg_base()
 		{
+			if (($this->debug_logins > 0) && (is_object($this->dbug->out))) { $this->dbug->out('mail_msg('.__LINE__.'): *constructor*: $GLOBALS[PHP_SELF] = ['.$GLOBALS['PHP_SELF'].'] $this->acctnum = ['.$this->acctnum.']  get_class($this) : "'.get_class($this).'" ; get_parent_class($this) : "'.get_parent_class($this).'"<br>'); }
+			if ($this->debug_logins > 0) { echo 'mail_msg('.__LINE__.'): *constructor*: $GLOBALS[PHP_SELF] = ['.$GLOBALS['PHP_SELF'].'] $this->acctnum = ['.$this->acctnum.']  get_class($this) : "'.get_class($this).'" ; get_parent_class($this) : "'.get_parent_class($this).'"<br>'; }
+			return;
+		}
+		
+		/*!
+		@function initialize_mail_msg
+		@abstract the real CONSTRUCTOR needs to be called by name. 
+		@discussion This used to be called in the final extends file to this aggregrate class. 
+		NEW now called only from bootstrap class, because the preferences API class keeps constructing 
+		this object for every account it makes preferences for, I would change that but changing the API 
+		is like moving a mountain, so I remove all auto constructor functions and make this have to
+		be called explicitly to stop useless runthroughs caused by preferences API. 
+		*/
+		function initialize_mail_msg()
+		{
+			if ($this->been_constructed == True)
+			{
+				// do not run thru this again, probably one of the "extends" objects call this
+				return;
+			}
+			// Set this so we do not run thru this again
+			$this->been_constructed = True;
+			
+			// ... OK ... now we actually do the CONSTRUCTOR
 			// svc_debug object goes here
 			if ($this->dbug == '##NOTHING##')
 			{
 				$this->dbug = CreateObject('email.svc_debug');
 			}
 			
-			//if ($this->debug_logins > 0) { $this->dbug->out('mail_msg: *constructor*: $GLOBALS[PHP_SELF] = ['.$GLOBALS['PHP_SELF'].'] $this->acctnum = ['.$this->acctnum.']  get_class($this) : "'.get_class($this).'" ; get_parent_class($this) : "'.get_parent_class($this).'"<br>'); }
-			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: *constructor*: $this->acctnum = ['.$this->acctnum.'] ; $this->a  DUMP:', $this->a); }
-			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: *constructor*: extra data $p1 (if provided): '.serialize($p1).'<br>'); }
+			if ($this->debug_logins > 0) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): ENTERING manual *constructor*: $GLOBALS[PHP_SELF] = ['.$GLOBALS['PHP_SELF'].'] $this->acctnum = ['.$this->acctnum.']  get_class($this) : "'.get_class($this).'" ; get_parent_class($this) : "'.get_parent_class($this).'"<br>'); }
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: $this->acctnum = ['.$this->acctnum.'] ; $this->a  DUMP:', $this->a); }
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: extra data $p1 (if provided): '.serialize($p1).'<br>'); }
 			
-			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: *constructor*: checking and or setting GET and POST reference based on PHP version<br>'); }
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: checking and or setting GET and POST reference based on PHP version<br>'); }
 			// make GPC reference for php versions < 4.1 and > 4.2
 			// since this constructor is apparently called many times 
 			// during the script run (not sure why) we check if we've already done it first
@@ -403,6 +436,7 @@
 			// SO object has data storage functions
 			if ($this->so == '##NOTHING##')
 			{
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: creating sub SO object "so_mail_msg"<br>'); }
 				$this->so = CreateObject('email.so_mail_msg');
 			}
 			
@@ -410,23 +444,64 @@
 			// TEMPORARY ONLY DURING MIGRATION AND TABLE DEVELOPMENT
 			if ($this->use_private_table)
 			{
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: checking if "so_am_table_exists"<br>'); }
 				if ($this->so->so_am_table_exists() == False)
 				{
 					$this->use_private_table = False;
 				}
 			}
 			
-			// trying this new thing for template porting issues
-			if ($this->phpgw_0914_orless == '-1')
+			// UNDER DEVELOPMENT when to use cached preferences
+			if ($this->use_cached_prefs == True)
 			{
-				$this->phpgw_0914_orless = !isset($GLOBALS['phpgw']->xslttpl); 
+				// any preferences page menuaction is a NO NO to cached prefs
+				if (stristr($this->ref_GET['menuaction'], 'preferences.'))
+				{
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: string "preferences." is in menuaction so NO CACHED PREFS, setting $this->use_cached_prefs to False<br>'); }
+					$this->use_cached_prefs = False;
+				}
+			}
+			
+			// UNDER DEVELOPMENT bulk data query from AngleMail DB
+			// only necessary to grab huge bulk data for INDEX page
+			// and some other menuactions too, but we will add more later
+			if ((stristr($this->ref_GET['menuaction'], 'email.uiindex'))
+			|| (stristr($this->ref_GET['menuaction'], 'email.uimessage.message')))
+			{
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: calling $this->so->so_prop_use_group_data(True)<br>'); }
+				//$this->so->use_group_data = True;
+				$this->so->so_prop_use_group_data(True);
+			}
+			else
+			{
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: calling $this->so->so_prop_use_group_data(False)<br>'); }
+				//$this->so->use_group_data = False;
+				$this->so->so_prop_use_group_data(False);
+			}
+			
+			// trying this new thing for template porting issues
+			// relfbecker recommends NOT using a version test for xslt check
+			if ($this->phpgw_before_xslt == '-1')
+			{
+				if (is_object($GLOBALS['phpgw']->xslttpl))
+				{
+					$this->phpgw_before_xslt = False;
+				}
+				else
+				{
+					$this->phpgw_before_xslt = True;
+				}
+			}
 			/*
+			// relfbecker recommends NOT using a version test for xslt check
+			if ($this->phpgw_before_xslt == '-1')
+			{
 				$this_ver = $GLOBALS['phpgw_info']['server']['versions']['phpgwapi'];
 				$pre_xslt_ver = '0.9.14.0.1.1';
 				if (!$this_ver)
 				{
 					// damn stupid fallback if the api moves the version to another place
-					$this->phpgw_0914_orless = True;
+					$this->phpgw_before_xslt = True;
 				}
 				// this is a function in phpgwapi "common_functions" file for phpgw 0.9.15+
 				elseif (function_exists(amorethanb))
@@ -434,12 +509,12 @@
 					if (amorethanb($this_ver, $pre_xslt_ver))
 					{
 						// this phpgw version is after the switch to xslt templates
-						$this->phpgw_0914_orless = False;
+						$this->phpgw_before_xslt = False;
 					}
 					else
 					{
 						// this phpgw version is NOT in the xslt era
-						$this->phpgw_0914_orless = True;
+						$this->phpgw_before_xslt = True;
 					}
 				}
 				else
@@ -447,15 +522,16 @@
 					if ($GLOBALS['phpgw']->common->cmp_version_long($this_ver, $pre_xslt_ver))
 					{
 						// this phpgw version is after the switch to xslt templates
-						$this->phpgw_0914_orless = False;
+						$this->phpgw_before_xslt = False;
 					}
 					else
 					{
 						// this phpgw version is NOT in the xslt era
-						$this->phpgw_0914_orless = True;
+						$this->phpgw_before_xslt = True;
 					}
-				}*/
+				}
 			}
+			*/
 			
 			$this->known_external_args = array(
 				// === NEW GPC "OBJECTS" or Associative Arrays === 
@@ -723,7 +799,8 @@
 				// experimental: Set Flag indicative we've run thru this function
 				'already_grab_class_args_gpc'
 			);
-			//if ($this->debug_logins > 2) { $this->dbug->out('mail_msg: constructor: $this->known_args[] dump<pre>'; print_r($this->known_args); echo '</pre>'); }
+			//if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual constructor: $this->known_args[] DUMP:', $this->known_args); } 
+			if ($this->debug_logins > 0) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: LEAVING<br>'); }
 		}
 		
 		/*!
@@ -736,8 +813,8 @@
 		// ----  BEGIN request from Mailserver / Initialize This Mail Session  -----
 		function begin_request($args_array)
 		{
-			if ($this->debug_logins > 0) { $this->dbug->out('<br>mail_msg: begin_request: ENTERING'.'<br>'); } 
-			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: feed var args_array[] DUMP:', $args_array); }
+			if ($this->debug_logins > 0) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): ENTERING'.'<br>'); } 
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): feed var args_array[] DUMP:', $args_array); }
 			
 			// Grab GPC vars, after we get an acctnum, we'll put them in the appropriate account's "args" data
 			// issue?: which acctnum arg array would this be talking to when we inquire about "already_grab_class_args_gpc"?
@@ -745,35 +822,35 @@
 			&& ((string)$this->get_arg_value('already_grab_class_args_gpc') != '') )
 			{
 				// somewhere, there's already been a call to grab_class_args_gpc(), do NOT re-run
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: "already_grab_class_args_gpc" is set, do not re-grab<br>'); }
-				if ($this->debug_logins > 2) { $this->dbug->out('mail_msg: begin_request: "already_grab_class_args_gpc" pre-existing $this->get_all_args() DUMP:', $this->get_all_args()); } 
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): "already_grab_class_args_gpc" is set, do not re-grab<br>'); }
+				if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): "already_grab_class_args_gpc" pre-existing $this->get_all_args() DUMP:', $this->get_all_args()); } 
 				$got_args=array();
 			}
 			else
 			{
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: "already_grab_class_args_gpc" is NOT set, call grab_class_args_gpc() now<br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): "already_grab_class_args_gpc" is NOT set, call grab_class_args_gpc() now<br>'); }
 				$got_args=array();
 				$got_args = $this->grab_class_args_gpc();
 			}
 			
 			// FIND THE "BEST ACCTNUM" and set it
-			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: about to call:  get_best_acctnum($args_array, $got_args) <br>'); }
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): about to call:  get_best_acctnum($args_array, $got_args) <br>'); }
 			$acctnum = $this->get_best_acctnum($args_array, $got_args);
-			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: "get_best_acctnum" returns $acctnum ['.$acctnum.']<br>'); }
-			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: * * * *SETTING CLASS ACCTNUM* * * * by calling $this->set_acctnum('.serialize($acctnum).')<br>'); }
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): "get_best_acctnum" returns $acctnum ['.$acctnum.']<br>'); }
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): * * * *SETTING CLASS ACCTNUM* * * * by calling $this->set_acctnum('.serialize($acctnum).')<br>'); }
 			$this->set_acctnum($acctnum);
 			
 			// SET GOT_ARGS TO THAT ACCTNUM
 			// use that acctnum to set "got_args" to the appropiate acctnum
-			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: about to call: $this->set_arg_array($got_args); <br>'); }
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): about to call: $this->set_arg_array($got_args); <br>'); }
 			$this->set_arg_array($got_args, $acctnum);
-			if ($this->debug_logins > 2) { $this->dbug->out('mail_msg: begin_request: post set_arg_array $this->get_all_args() DUMP:', $this->get_all_args()); } 
+			if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): post set_arg_array $this->get_all_args() DUMP:', $this->get_all_args()); } 
 			
 			// Initialize Internal Args
-			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: about to call: "init_internal_args_and_set_them('.$acctnum.')"<br>'); }
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): about to call: "init_internal_args_and_set_them('.$acctnum.')"<br>'); }
 			$this->init_internal_args_and_set_them($acctnum);
 			
-			if ($this->debug_logins > 2) { $this->dbug->out('mail_msg: begin_request: POST "grab_class_args_gpc", "get_best_acctnum", and "init_internal_args_and_set_them" : this->get_all_args() DUMP:', $this->get_all_args()); } 
+			if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): POST "grab_class_args_gpc", "get_best_acctnum", and "init_internal_args_and_set_them" : this->get_all_args() DUMP:', $this->get_all_args()); } 
 			
 			// (chopped out the re-use existing object code - never worked right, maybe later...)
 			
@@ -789,242 +866,416 @@
 			}
 			
 			
-			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: about to create_email_preferences and setup extra accounts<br>'); } 
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): about to handle email preferences and setup extra accounts<br>'); } 
 			// ----  Obtain Preferences Data  ----
 			
 			/*
 			// UNDER DEVELOPMEMT: caching the prefs data
-			// see if our "processed prefs" (what we make below) were appsession cached by us already
-			// FORGET IT THIS IS AS COMPLICATED AS DOING IT FOR REAL
-			$appsession_cached_prefs = $this->read_session_cache_item('cached_prefs', $acctnum);
-			if (($this->session_cache_enabled == True)
-			&& ($appsession_cached_prefs))
-			{
-				$appsession_cached_prefs = unserialize($appsession_cached_prefs);
-				//['cached_prefs'] has several sub elements that fill out the prefs we need
-				// (a) unprocessed_prefs that we keep around, disabled account name access this because disabled accounts do not get processed prefs
-				$this->unprocessed_prefs = array();
-				$this->unprocessed_prefs['email'] = array();
-				$this->unprocessed_prefs['email'] = $appsession_cached_prefs['cached_prefs']['unprocessed_prefs'];
-				// (b) filter data we got from prefs and cached
-				$this->raw_filters = array();
-				if ((isset($appsession_cached_prefs['cached_prefs']['raw_filters']))
-				&& (is_array($appsession_cached_prefs['cached_prefs']['raw_filters'])))
-				{
-					$this->raw_filters = $appsession_cached_prefs['cached_prefs']['raw_filters'];
-				}
-				// (c) prefs for default account 0, ALSO are the "backwards compatibility prefs data
-				$this->set_pref_array($appsession_cached_prefs['cached_prefs']['acct_0'], 0);
-				if (is_array($GLOBALS['phpgw_info']['user']['preferences']['email']) == False)
-				{
-					$GLOBALS['phpgw_info']['user']['preferences']['email'] = array();
-					$GLOBALS['phpgw_info']['user']['preferences']['email'] = $appsession_cached_prefs['cached_prefs']['acct_0'];
-				}
-				// (d) the rest of the accounts, what are their account numbers?
-				// since some accts could be disabled, they need not be contiguously numbered, disabled accts do not get processed prefs
-				$ex_acct_nums = array();
-				if (isset($appsession_cached_prefs['cached_prefs']['ex_accounts_nums']))
-				{
-					$ex_acct_nums = explode(',',$appsession_cached_prefs['cached_prefs']['ex_accounts_nums']);
-				}
-				//(e)  fill in this array containing some info about these accounts status, acct 0 is always done because we know acct 0 always exists
-				$this->extra_and_default_acounts = array();
-				$this->extra_and_default_acounts[0]['acctnum'] = 0;
-				$this->extra_and_default_acounts[0]['status'] = 'enabled';
-				// (f) fill in this item with data about the number of accounts
-				$this->ex_accounts_count = count($ex_acct_nums);
-				// (g) fill the prefs for extra accounts if necessary
-				$this->extra_and_default_acounts[$i+1]['acctnum'] = $this->extra_accounts[$i]['acctnum'];
-				$this->extra_and_default_acounts[$i+1]['status'] = $this->extra_accounts[$i]['status'];
-			}
+			// data we need to DB save to cache final processed prefs
+			$this->unprocessed_prefs
+			$this->raw_filters
+			$this->ex_accounts_count
+			$this->extra_accounts
+			$this->extra_and_default_acounts
+			$this->a[X]->prefs
+			// where X is the account number, we can use "set_pref_array(array_data, acctnum) for each account
+			
+			// ok lets make an array to hold this data in the DB
+			$cached_prefs = array();
+			$cached_prefs['unprocessed_prefs'] = array();
+			$cached_prefs['raw_filters'] = array();
+			$cached_prefs['ex_accounts_count'] = '0';
+			$cached_prefs['extra_accounts'] = array();
+			$cached_prefs['extra_and_default_acounts'] = array();
+			$cached_prefs['a'] = array();
 			*/
-			
-			// obtain the preferences from the database, put them in $this->unprocessed_prefs, note THIS GETS ALL PREFS for some reason, not just email prefs?
-			//if ($this->debug_logins > 2) { $this->dbug->out('mail_msg: begin_request: BEFORE "create_email_preferences" GLOBALS[phpgw_info][user][preferences] DUMP<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']); echo '</pre>'); } 
-			//$this->unprocessed_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences();
-			$tmp_email_only_prefs = array();
-			$tmp_email_only_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences();
-			// clean "unprocessed_prefs" so all prefs oher than email are NOT included 
-			$this->unprocessed_prefs = array();
-			$this->unprocessed_prefs['email'] = array();
-			$this->unprocessed_prefs['email'] = $tmp_email_only_prefs['email'];
-			$tmp_email_only_prefs = array();
-			unset($tmp_email_only_prefs);
-			//if ($this->debug_logins > 2) { $this->dbug->out('mail_msg: begin_request: AFTER "create_email_preferences" GLOBALS[phpgw_info][user][preferences] DUMP<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']); echo '</pre>'); } 
-			
-			// BACKWARDS COMPAT for apps that have no clue what multiple accounts are about
-			// fill email's $GLOBALS['phpgw_info']['user']['preferences'] with the data for backwards compatibility (we don't use that)
-			// damn, where did email's prefs get filled already? Where are they getting filled, anyway do not re-fill if not needed
-			// NO - IT IS POSSIBLE THIS MAY NOT CATCH ALL PREF CHANGES IN CORNER CASES
-			//if (is_array($GLOBALS['phpgw_info']['user']['preferences']['email']) == False)
-			//{
-				//$GLOBALS['phpgw_info']['user']['preferences'] = $this->unprocessed_prefs;
-				$GLOBALS['phpgw_info']['user']['preferences']['email'] = array();
-				$GLOBALS['phpgw_info']['user']['preferences']['email'] = $this->unprocessed_prefs['email'];
-			//}
-			//echo 'dump3 <pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']); echo '</pre>';
-			// BUT DO NOT put unneeded stuff in there, [ex_accounts] and [filters] multilevel arrays 
-			// are not needed for mackward compat, we need them internally but external apps do not use this raw data
-			if (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['ex_accounts']))
+			// ---- GET FROM CACHE THE COMPLETED PREF DATA
+			//$this->use_cached_prefs = True;
+			//$this->use_cached_prefs = False;
+			if ($this->use_cached_prefs == False)
 			{
-				$GLOBALS['phpgw_info']['user']['preferences']['email']['ex_accounts'] = array();
-				unset($GLOBALS['phpgw_info']['user']['preferences']['email']['ex_accounts']);
-			}
-			if (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['filters']))
-			{
-				$GLOBALS['phpgw_info']['user']['preferences']['email']['filters'] = array();
-				unset($GLOBALS['phpgw_info']['user']['preferences']['email']['filters']);
-			}
-			if ($this->debug_logins > 2) { $this->dbug->out('mail_msg: begin_request: AFTER backwards_compat and cleaning GLOBALS[phpgw_info][user][preferences] DUMP:', $GLOBALS['phpgw_info']['user']['preferences']); } 
-			
-			// first, put the filter data from prefs in a holding var for use by the filters class if needed
-			// raw filters array for use by the filters class, we just put the data here, that is all, while collecting other prefs
-			$this->raw_filters = array();
-			if ((isset($this->unprocessed_prefs['email']['filters']))
-			&& (is_array($this->unprocessed_prefs['email']['filters'])))
-			{
-				$this->raw_filters = $this->unprocessed_prefs['email']['filters'];
-				// not get that out of "unprocessed_prefs" because it is not needed there any more
-				$this->unprocessed_prefs['email']['filters'] = array();
-				unset($this->unprocessed_prefs['email']['filters']);
-			}
-			//if ($this->debug_logins > 2) { $this->dbug->out('mail_msg: begin_request: put filter data in $this->raw_filters DUMP<pre>'; print_r($this->raw_filters); echo '</pre>'); } 
-			
-			// second, set the prefs for the default, base acct 0, BUT do not give it data it does not need
-			// we already got "filters" out of "unprocessed_prefs", so when setting acct0 prefs, do not give it the "ex_accounts" array
-			$acct0_prefs_cleaned = array();
-			$acct0_prefs_cleaned = $this->unprocessed_prefs;
-			if ((isset($acct0_prefs_cleaned['email']['ex_accounts']))
-			&& (is_array($acct0_prefs_cleaned['email']['ex_accounts'])))
-			{
-				$acct0_prefs_cleaned['email']['ex_accounts'] = array();
-				unset($acct0_prefs_cleaned['email']['ex_accounts']);
-			}
-			// now we can use that to set the prefs for the base account
-			
-			// ---  process pres for in multi account enviornment ---
-			// for our use, put prefs in a class var to be accessed thru OOP-style access calls in mail_msg_wrapper
-			// since we know these prefs to be the  top level prefs, for the default email account, force them into acctnum 0
-			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: putting top level, default account, pref data in acct 0 with $this->set_pref_array($acct0_prefs_cleaned[email], 0); <br>'); } 
-			if ($this->debug_logins > 2) { $this->dbug->out('mail_msg: begin_request:  $acct0_prefs_cleaned[email] DUMP:', $acct0_prefs_cleaned['email']); } 
-			//$this->set_pref_array($this->unprocessed_prefs['email'], 0);
-			$this->set_pref_array($acct0_prefs_cleaned['email'], 0);
-			$acct0_prefs_cleaned = array();
-			unset($acct0_prefs_cleaned);
-			
-			
-			// ===  EXTRA ACCOUNTS  ===
-			// they are located in an array based at $this->unprocessed_prefs['email']['ex_accounts'][]
-			// determine what extra accounts have been defined
-			// note: php3 DOES have is_array(), ok to use it here
-			if ((isset($this->unprocessed_prefs['email']['ex_accounts']))
-			&& (is_array($this->unprocessed_prefs['email']['ex_accounts'])))
-			{
-				$this->ex_accounts_count = count($this->unprocessed_prefs['email']['ex_accounts']);
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: $this->unprocessed_prefs[email][ex_accounts] is set and is_array, its count: $this->ex_accounts_count: ['.$this->ex_accounts_count.']<br>'); }
-				if ($this->debug_logins > 2) { $this->dbug->out('$this->unprocessed_prefs[email][ex_accounts] DUMP:', $this->unprocessed_prefs['email']['ex_accounts']); }
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: about to process extra account data ; $this->ex_accounts_count: ['.$this->ex_accounts_count.']<br>'); }
-				// note: extra accounts lowest possible value = 1, NOT 0
-				// also, $key, although numbered integers, may not be conticuous lowest to highest (may be empty or missing elements inbetween)
-			
-				// ---- what accounts have some data defined
-				// array_extra_accounts[X]['acctnum'] : integer
-				// array_extra_accounts[X]['status'] string = "enabled" | "disabled" | "empty"
-				//while(list($key,$value) = each($this->unprocessed_prefs['email']['ex_accounts']))
-				while(list($key,$value) = each($this->unprocessed_prefs['email']['ex_accounts']))
-				{
-					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: inside loop: for each $this->unprocessed_prefs[email][ex_accounts] ; $key: ['.serialize($key).'] $value DUMP:', $value); } 
-					// if we are here at all then this array item must have some data defined
-					$next_pos = count($this->extra_accounts);
-					$this->extra_accounts[$next_pos] = array();
-					$this->extra_accounts[$next_pos]['acctnum'] = (int)$key;
-					// ----  is this account "enabled", "disabled" or is this array item "empty"
-					// first, see if it has essential data, if not, it's an empty array item
-					if ( (!isset($this->unprocessed_prefs['email']['ex_accounts'][$key]['fullname']))
-					|| (!isset($this->unprocessed_prefs['email']['ex_accounts'][$key]['email_sig']))
-					|| (!isset($this->unprocessed_prefs['email']['ex_accounts'][$key]['layout'])) )
-					{
-						// this account lacks essential data needed to describe an account, it must be an "empty" element
-						if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: inside loop: account ['.$key.'] is *empty*: $this->unprocessed_prefs[email][ex_accounts]['.$key.']: ['.serialize($this->unprocessed_prefs['email']['ex_accounts'][$key]).']<br>'); } 
-						$this->extra_accounts[$next_pos]['status'] = 'empty';
-					}
-					// ... so the account is not empty ...
-					elseif ( (isset($this->unprocessed_prefs['email']['ex_accounts'][$key]['ex_account_enabled']))
-					&& ((string)$this->unprocessed_prefs['email']['ex_accounts'][$key]['ex_account_enabled'] != ''))
-					{
-						// this account is defined AND enabled, 
-						if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: inside loop: account ['.$key.'] is *enabled*: $this->unprocessed_prefs[email][ex_accounts]['.$key.'][ex_account_enabled]:  ['.serialize($this->unprocessed_prefs['email']['ex_accounts'][$key]['ex_account_enabled']).']<br>'); } 
-						$this->extra_accounts[$next_pos]['status'] = 'enabled';
-					}
-					else
-					{
-						// this account is defined BUT not enabled
-						if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: inside loop: account ['.$key.'] is *disabled*: $this->unprocessed_prefs[email][ex_accounts]['.$key.'][ex_account_enabled]:  ['.serialize($this->unprocessed_prefs['email']['ex_accounts'][$key]['ex_account_enabled']).']<br>'); } 
-						$this->extra_accounts[$next_pos]['status'] = 'disabled';
-					}
-					
-					// IF ENABLED, then 
-					if ($this->extra_accounts[$next_pos]['status'] == 'enabled')
-					{
-						// PROCESS EXTRA ACCOUNT PREFS
-						// run thru the create prefs function requesting this particular acctnum
-						// fills in certain missing data, and does some sanity checks, and any data processing that may be necessary
-						$sub_tmp_prefs = array();
-						// we "fool" create_email_preferences into processing extra account info as if it were top level data
-						// by specifing the secong function arg as the integer of this particular enabled account
-						$this_ex_acctnum = $this->extra_accounts[$next_pos]['acctnum'];
-						if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: about to call create_email_preferences("", $this_ex_acctnum) where $this_ex_acctnum: ['.serialize($this_ex_acctnum).'] <br>'); }
-						$sub_tmp_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences('', $this_ex_acctnum);
-						// now put these processed prefs in the correct location  in our prefs array
-						$this->set_pref_array($sub_tmp_prefs['email'], $this_ex_acctnum);
-					}
-				}
-				// extra_and_default_acounts is the same as above but has default account inserted at position zero
-				$this->extra_and_default_acounts = array();
-				// first put in the default account
-				$this->extra_and_default_acounts[0]['acctnum'] = 0;
-				$this->extra_and_default_acounts[0]['status'] = 'enabled';
-				// now add whetever extra accounts we processed above
-				$loops = count($GLOBALS['phpgw']->msg->extra_accounts);
-				for ($i=0; $i < $loops; $i++)
-				{
-					$this->extra_and_default_acounts[$i+1]['acctnum'] = $this->extra_accounts[$i]['acctnum'];
-					$this->extra_and_default_acounts[$i+1]['status'] = $this->extra_accounts[$i]['status'];
-				}
-				if ($this->debug_logins > 2) { $this->dbug->out('mail_msg: begin_request: $this->extra_accounts DUMP:', $this->extra_accounts); } 
-				if ($this->debug_logins > 2) { $this->dbug->out('mail_msg: begin_request: $this->extra_and_default_acounts DUMP:', $this->extra_and_default_acounts); } 
+				$cached_prefs = $this->nothing;
 			}
 			else
 			{
-				$this->ex_accounts_count = 0;
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: $this->unprocessed_prefs[email][ex_accounts] NOT set or NOT is_array, $this->ex_accounts_count: ['.$this->ex_accounts_count.']<br>'); } 
+				/*
+				// data we need to DB save to cache final processed prefs
+				$this->unprocessed_prefs
+				$this->raw_filters
+				$this->ex_accounts_count
+				$this->extra_accounts
+				$this->extra_and_default_acounts
+				$this->a[X]->['prefs']
+				// where X is the account number, we can use "set_pref_array(array_data, acctnum) for each account
+				
+				// ok this is what we should get from the DB storage (we use appsession for now) 
+				$cached_prefs = array();
+				$cached_prefs['unprocessed_prefs'] = array();
+				$cached_prefs['raw_filters'] = array();
+				$cached_prefs['ex_accounts_count'] = '0';
+				$cached_prefs['extra_accounts'] = array();
+				$cached_prefs['extra_and_default_acounts'] = array();
+				$cached_prefs['a'] = array();
+				*/
+				// get the data from appsession, we use compression to avoid problems unserializing
+				$my_location = '0;cached_prefs';
+				$cached_prefs = $this->so->so_appsession_passthru($my_location);
+				if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): raw $cached_prefs as returned from cache DUMP:', $cached_prefs); } 
+				if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): raw serialized $cached_prefs is '.htmlspecialchars(serialize($cached_prefs)).'<br>'); } 
 			}
-			// if NO extra accounts axist, we STILL need to put the default account inextra_and_default_acounts
-			// extra_and_default_acounts will not have been handled whatsoever if no extra accounts exist
-			// so make sure the default account is there
-			if (count($this->extra_and_default_acounts) == 0)
-			{
-				$this->extra_and_default_acounts = array();
-				// first put in the default account
-				$this->extra_and_default_acounts[0]['acctnum'] = 0;
-				$this->extra_and_default_acounts[0]['status'] = 'enabled';
-			}
-			// -end- extra account init handling
 			
-			//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST create_email_preferences GLOBALS[phpgw_info][user][preferences][email] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']['email']) ; echo '</pre>';}
-			//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST create_email_preferences $this->get_all_prefs() dump:<pre>'; print_r($this->get_all_prefs()) ; echo '</pre>';}
-			if ($this->debug_logins > 2) { $this->dbug->out('mail_msg: begin_request: POST create_email_preferences direct access dump of $this->a DUMP:', $this->a); } 
-			//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw_info][user][preferences] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']) ; echo '</pre>';}
-			//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw_info][user] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']) ; echo '</pre>';}
-			//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw_info] dump:<pre>'; print_r($GLOBALS['phpgw_info']) ; echo '</pre>';}
-			//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw] dump:<pre>'; print_r($GLOBALS['phpgw']) ; echo '</pre>';}
+			// ok if we actually got cached_prefs then maybe we can use them 
+			if (($this->use_cached_prefs == True)
+			&& ((string)$cached_prefs != $this->nothing)
+			&& (is_array($cached_prefs))
+			&& (isset($cached_prefs['extra_and_default_acounts'])))
+			{
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): raw $cached_prefs deemed to actually have usable data, so process it<br>'); } 
+				// UN-defang the filters
+				// NO remember that filters are left in defang (htmlquotes encoded) form
+				// UNTIL they are going to be used, then bofilters defangs them
+				//for ($x=0; $x < count($cached_prefs['raw_filters']); $x++)
+				//{
+				//	$cached_prefs['raw_filters'][$x]['filtername'] = $this->db_defang_decode($cached_prefs['raw_filters'][$x]['filtername']);
+				//	$cached_prefs['raw_filters'][$x]['source_accounts']['folder'] = $this->db_defang_decode($cached_prefs['raw_filters'][$x]['source_accounts']['folder']);
+				//	for ($y=0; $y < count($cached_prefs['raw_filters']['matches']); $y++)
+				//	{
+				//		$cached_prefs['raw_filters'][$x]['matches'][$y]['matchthis']
+				//			= $this->db_defang_decode($cached_prefs['raw_filters'][$x]['matches'][$y]['matchthis']);
+				//	}
+				//	for ($y=0; $y < count($cached_prefs['raw_filters']['actions']); $y++)
+				//	{
+				//		$cached_prefs['raw_filters'][$x]['actions'][$y]['folder']
+				//			= $this->db_defang_decode($cached_prefs['raw_filters'][$x]['actions'][$y]['folder']);
+				//	}
+				//}
+				// UN-defang the rest of the prefs that may need it
+				$defang_these = array();
+				$defang_these[0] = 'passwd';
+				$defang_these[1] = 'email_sig';
+				$defang_these[2] = 'trash_folder_name';
+				$defang_these[3] = 'sent_folder_name';
+				$defang_these[4] = 'userid';
+				$defang_these[5] = 'address';
+				$defang_these[6] = 'mail_folder';
+				$defang_these[7] = 'fullname';
+				$defang_these[8] = 'account_name';
+				$loops = count($cached_prefs['extra_and_default_acounts']);
+				for ($i=0; $i < $loops; $i++)
+				{
+					for ($x=0; $x < count($defang_these); $x++)
+					{
+						$defang_word = $defang_these[$x];
+						if (isset($cached_prefs['a'][$i]['prefs'][$defang_word]))
+						{
+							$cached_prefs['a'][$i]['prefs'][$defang_word]
+								= $this->db_defang_decode($cached_prefs['a'][$i]['prefs'][$defang_word]);
+						}
+					}
+				}
+				if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): retrieved $cached_prefs AFTER UN-defang DUMP:', $cached_prefs); } 
+				// lets fill the data
+				$this->unprocessed_prefs = $cached_prefs['unprocessed_prefs'];
+				$this->raw_filters = $cached_prefs['raw_filters'];
+				$this->ex_accounts_count = $cached_prefs['ex_accounts_count'];
+				$this->extra_accounts = $cached_prefs['extra_accounts'];
+				$this->extra_and_default_acounts = $cached_prefs['extra_and_default_acounts'];
+				$loops = count($this->extra_and_default_acounts);
+				for ($i=0; $i < $loops; $i++)
+				{
+					$this->set_pref_array($cached_prefs['a'][$i]['prefs'], $i);
+				}
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): successfully retrieved and applied $cached_prefs<br>'); } 
+			}
+			//$allow_prefs_shortcut = True;
+			//$allow_prefs_shortcut = False;
+			//if ((is_array($GLOBALS['phpgw_info']['user']['preferences']['email']) == True)
+			//&& ($allow_prefs_shortcut == True))
+			//{
+			//	if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): prefs array already created by the API, NOT calling "create_email_preferences"<br>'); } 
+			//	$this->unprocessed_prefs = array();
+			//	$this->unprocessed_prefs['email'] = array();
+			//	$this->unprocessed_prefs['email'] = $GLOBALS['phpgw_info']['user']['preferences']['email'];
+			//	if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): did NOT call create_email_preferences, prefs were already available in $GLOBALS["phpgw_info"]["user"]["preferences"]["email"] <br>'); } 
+			//}
+			else
+			{
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): $cached_prefs either disabled or no data was cached<br>'); } 
+				// make this empty without question, since cached prefs were not recovered
+				$cached_prefs = array();
+				// IT SEEMS PREFS FOR ACCT 0 NEED TO RUN THRU THIS TO FILL "Account Name" thingy
+				// obtain the preferences from the database, put them in $this->unprocessed_prefs, note THIS GETS ALL PREFS for some reason, not just email prefs?
+				if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): BEFORE processing email prefs, GLOBALS[phpgw_info][user][preferences][email] DUMP:', $GLOBALS['phpgw_info']['user']['preferences']['email']); } 
+				
+				//$this->unprocessed_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences();
+				$tmp_email_only_prefs = array();
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): calling create_email_preferences, may be time consuming<br>'); } 
+				$tmp_email_only_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences();
+				// clean "unprocessed_prefs" so all prefs oher than email are NOT included 
+				$this->unprocessed_prefs = array();
+				$this->unprocessed_prefs['email'] = array();
+				$this->unprocessed_prefs['email'] = $tmp_email_only_prefs['email'];
+				$tmp_email_only_prefs = array();
+				unset($tmp_email_only_prefs);
+				//if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): AFTER "create_email_preferences" GLOBALS[phpgw_info][user][preferences] DUMP<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']); echo '</pre>'); } 
+				
+				// BACKWARDS COMPAT for apps that have no clue what multiple accounts are about
+				// fill email's $GLOBALS['phpgw_info']['user']['preferences'] with the data for backwards compatibility (we don't use that)
+				// damn, where did email's prefs get filled already? Where are they getting filled, anyway do not re-fill if not needed
+				// NO - IT IS POSSIBLE THIS MAY NOT CATCH ALL PREF CHANGES IN CORNER CASES
+				if (is_array($GLOBALS['phpgw_info']['user']['preferences']['email']) == False)
+				{
+					//$GLOBALS['phpgw_info']['user']['preferences'] = $this->unprocessed_prefs;
+					$GLOBALS['phpgw_info']['user']['preferences']['email'] = array();
+					$GLOBALS['phpgw_info']['user']['preferences']['email'] = $this->unprocessed_prefs['email'];
+				}
+				//echo 'dump3 <pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']); echo '</pre>';
+				// BUT DO NOT put unneeded stuff in there, [ex_accounts] and [filters] multilevel arrays 
+				// are not needed for mackward compat, we need them internally but external apps do not use this raw data
+				//if (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['ex_accounts']))
+				//{
+				//	$GLOBALS['phpgw_info']['user']['preferences']['email']['ex_accounts'] = array();
+				//	unset($GLOBALS['phpgw_info']['user']['preferences']['email']['ex_accounts']);
+				//}
+				//if (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['filters']))
+				//{
+				//	$GLOBALS['phpgw_info']['user']['preferences']['email']['filters'] = array();
+				//	unset($GLOBALS['phpgw_info']['user']['preferences']['email']['filters']);
+				//}
+				if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): AFTER backwards_compat and cleaning GLOBALS[phpgw_info][user][preferences] DUMP:', $GLOBALS['phpgw_info']['user']['preferences']); } 
+			
+			
+				// first, put the filter data from prefs in a holding var for use by the filters class if needed
+				// raw filters array for use by the filters class, we just put the data here, that is all, while collecting other prefs
+				$this->raw_filters = array();
+				if ((isset($this->unprocessed_prefs['email']['filters']))
+				&& (is_array($this->unprocessed_prefs['email']['filters'])))
+				{
+					$this->raw_filters = $this->unprocessed_prefs['email']['filters'];
+					// not get that out of "unprocessed_prefs" because it is not needed there any more
+					$this->unprocessed_prefs['email']['filters'] = array();
+					unset($this->unprocessed_prefs['email']['filters']);
+				}
+				//if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): put filter data in $this->raw_filters DUMP<pre>'; print_r($this->raw_filters); echo '</pre>'); } 
+				
+				// second, set the prefs for the default, base acct 0, BUT do not give it data it does not need
+				// we already got "filters" out of "unprocessed_prefs", so when setting acct0 prefs, do not give it the "ex_accounts" array
+				$acct0_prefs_cleaned = array();
+				$acct0_prefs_cleaned = $this->unprocessed_prefs;
+				if ((isset($acct0_prefs_cleaned['email']['ex_accounts']))
+				&& (is_array($acct0_prefs_cleaned['email']['ex_accounts'])))
+				{
+					$acct0_prefs_cleaned['email']['ex_accounts'] = array();
+					unset($acct0_prefs_cleaned['email']['ex_accounts']);
+				}
+				// now we can use that to set the prefs for the base account
+				
+				// ---  process pres for in multi account enviornment ---
+				// for our use, put prefs in a class var to be accessed thru OOP-style access calls in mail_msg_wrapper
+				// since we know these prefs to be the  top level prefs, for the default email account, force them into acctnum 0
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): putting top level, default account, pref data in acct 0 with $this->set_pref_array($acct0_prefs_cleaned[email], 0); <br>'); } 
+				if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): $acct0_prefs_cleaned[email] DUMP:', $acct0_prefs_cleaned['email']); } 
+				//$this->set_pref_array($this->unprocessed_prefs['email'], 0);
+				$this->set_pref_array($acct0_prefs_cleaned['email'], 0);
+				$acct0_prefs_cleaned = array();
+				unset($acct0_prefs_cleaned);
+				
+				
+				// ===  EXTRA ACCOUNTS  ===
+				// they are located in an array based at $this->unprocessed_prefs['email']['ex_accounts'][]
+				// determine what extra accounts have been defined
+				// note: php3 DOES have is_array(), ok to use it here
+				if ((isset($this->unprocessed_prefs['email']['ex_accounts']))
+				&& (is_array($this->unprocessed_prefs['email']['ex_accounts'])))
+				{
+					$this->ex_accounts_count = count($this->unprocessed_prefs['email']['ex_accounts']);
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): $this->unprocessed_prefs[email][ex_accounts] is set and is_array, its count: $this->ex_accounts_count: ['.$this->ex_accounts_count.']<br>'); }
+					if ($this->debug_logins > 2) { $this->dbug->out('$this->unprocessed_prefs[email][ex_accounts] DUMP:', $this->unprocessed_prefs['email']['ex_accounts']); }
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): about to process extra account data ; $this->ex_accounts_count: ['.$this->ex_accounts_count.']<br>'); }
+					// note: extra accounts lowest possible value = 1, NOT 0
+					// also, $key, although numbered integers, may not be conticuous lowest to highest (may be empty or missing elements inbetween)
+				
+					// ---- what accounts have some data defined
+					// array_extra_accounts[X]['acctnum'] : integer
+					// array_extra_accounts[X]['status'] string = "enabled" | "disabled" | "empty"
+					//while(list($key,$value) = each($this->unprocessed_prefs['email']['ex_accounts']))
+					while(list($key,$value) = each($this->unprocessed_prefs['email']['ex_accounts']))
+					{
+						if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): inside loop: for each $this->unprocessed_prefs[email][ex_accounts] ; $key: ['.serialize($key).'] $value DUMP:', $value); } 
+						// if we are here at all then this array item must have some data defined
+						$next_pos = count($this->extra_accounts);
+						$this->extra_accounts[$next_pos] = array();
+						$this->extra_accounts[$next_pos]['acctnum'] = (int)$key;
+						// ----  is this account "enabled", "disabled" or is this array item "empty"
+						// first, see if it has essential data, if not, it's an empty array item
+						if ( (!isset($this->unprocessed_prefs['email']['ex_accounts'][$key]['fullname']))
+						|| (!isset($this->unprocessed_prefs['email']['ex_accounts'][$key]['email_sig']))
+						|| (!isset($this->unprocessed_prefs['email']['ex_accounts'][$key]['layout'])) )
+						{
+							// this account lacks essential data needed to describe an account, it must be an "empty" element
+							if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): inside loop: account ['.$key.'] is *empty*: $this->unprocessed_prefs[email][ex_accounts]['.$key.']: ['.serialize($this->unprocessed_prefs['email']['ex_accounts'][$key]).']<br>'); } 
+							$this->extra_accounts[$next_pos]['status'] = 'empty';
+						}
+						// ... so the account is not empty ...
+						elseif ( (isset($this->unprocessed_prefs['email']['ex_accounts'][$key]['ex_account_enabled']))
+						&& ((string)$this->unprocessed_prefs['email']['ex_accounts'][$key]['ex_account_enabled'] != ''))
+						{
+							// this account is defined AND enabled, 
+							if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): inside loop: account ['.$key.'] is *enabled*: $this->unprocessed_prefs[email][ex_accounts]['.$key.'][ex_account_enabled]:  ['.serialize($this->unprocessed_prefs['email']['ex_accounts'][$key]['ex_account_enabled']).']<br>'); } 
+							$this->extra_accounts[$next_pos]['status'] = 'enabled';
+						}
+						else
+						{
+							// this account is defined BUT not enabled
+							if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): inside loop: account ['.$key.'] is *disabled*: $this->unprocessed_prefs[email][ex_accounts]['.$key.'][ex_account_enabled]:  ['.serialize($this->unprocessed_prefs['email']['ex_accounts'][$key]['ex_account_enabled']).']<br>'); } 
+							$this->extra_accounts[$next_pos]['status'] = 'disabled';
+						}
+						
+						// IF ENABLED, then 
+						if ($this->extra_accounts[$next_pos]['status'] == 'enabled')
+						{
+							// PROCESS EXTRA ACCOUNT PREFS
+							// run thru the create prefs function requesting this particular acctnum
+							// fills in certain missing data, and does some sanity checks, and any data processing that may be necessary
+							$sub_tmp_prefs = array();
+							// we "fool" create_email_preferences into processing extra account info as if it were top level data
+							// by specifing the secong function arg as the integer of this particular enabled account
+							$this_ex_acctnum = $this->extra_accounts[$next_pos]['acctnum'];
+							if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): CALLING create_email_preferences("", $this_ex_acctnum) for specific account, where $this_ex_acctnum: ['.serialize($this_ex_acctnum).'] <br>'); }
+							$sub_tmp_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences('', $this_ex_acctnum);
+							// now put these processed prefs in the correct location  in our prefs array
+							$this->set_pref_array($sub_tmp_prefs['email'], $this_ex_acctnum);
+						}
+					}
+					// extra_and_default_acounts is the same as above but has default account inserted at position zero
+					$this->extra_and_default_acounts = array();
+					// first put in the default account
+					$this->extra_and_default_acounts[0]['acctnum'] = 0;
+					$this->extra_and_default_acounts[0]['status'] = 'enabled';
+					// now add whetever extra accounts we processed above
+					$loops = count($GLOBALS['phpgw']->msg->extra_accounts);
+					for ($i=0; $i < $loops; $i++)
+					{
+						$this->extra_and_default_acounts[$i+1]['acctnum'] = $this->extra_accounts[$i]['acctnum'];
+						$this->extra_and_default_acounts[$i+1]['status'] = $this->extra_accounts[$i]['status'];
+					}
+					if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): $this->extra_accounts DUMP:', $this->extra_accounts); } 
+					if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): $this->extra_and_default_acounts DUMP:', $this->extra_and_default_acounts); } 
+				}
+				else
+				{
+					$this->ex_accounts_count = 0;
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): $this->unprocessed_prefs[email][ex_accounts] NOT set or NOT is_array, $this->ex_accounts_count: ['.$this->ex_accounts_count.']<br>'); } 
+				}
+				// if NO extra accounts axist, we STILL need to put the default account inextra_and_default_acounts
+				// extra_and_default_acounts will not have been handled whatsoever if no extra accounts exist
+				// so make sure the default account is there
+				if (count($this->extra_and_default_acounts) == 0)
+				{
+					$this->extra_and_default_acounts = array();
+					// first put in the default account
+					$this->extra_and_default_acounts[0]['acctnum'] = 0;
+					$this->extra_and_default_acounts[0]['status'] = 'enabled';
+				}
+				// -end- extra account init handling
+			}
+			
+			//if ($this->debug_logins > 2) { echo 'mail_msg.begin_request('.__LINE__.'): POST create_email_preferences GLOBALS[phpgw_info][user][preferences][email] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']['email']) ; echo '</pre>';}
+			//if ($this->debug_logins > 2) { echo 'mail_msg.begin_request('.__LINE__.'): POST create_email_preferences $this->get_all_prefs() dump:<pre>'; print_r($this->get_all_prefs()) ; echo '</pre>';}
+			if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): POST create_email_preferences direct access dump of $this->a DUMP:', $this->a); } 
+			//if ($this->debug_logins > 2) { echo 'mail_msg.begin_request('.__LINE__.'):  preferences->create_email_preferences called, GLOBALS[phpgw_info][user][preferences] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']) ; echo '</pre>';}
+			//if ($this->debug_logins > 2) { echo 'mail_msg.begin_request('.__LINE__.'):  preferences->create_email_preferences called, GLOBALS[phpgw_info][user] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']) ; echo '</pre>';}
+			//if ($this->debug_logins > 2) { echo 'mail_msg.begin_request('.__LINE__.'): preferences->create_email_preferences called, GLOBALS[phpgw_info] dump:<pre>'; print_r($GLOBALS['phpgw_info']) ; echo '</pre>';}
+			//if ($this->debug_logins > 2) { echo 'mail_msg.begin_request('.__LINE__.'): preferences->create_email_preferences called, GLOBALS[phpgw] dump:<pre>'; print_r($GLOBALS['phpgw']) ; echo '</pre>';}
+			
+			// ---- CACHE THE COMPLETED PREF DATA
+			if (($this->use_cached_prefs == True)
+			&& (!$cached_prefs))
+			{
+				// for whever reason we did not get any data from the stored prefs
+				/*
+				// data we need to DB save to cache final processed prefs
+				$this->unprocessed_prefs
+				$this->raw_filters
+				$this->ex_accounts_count
+				$this->extra_accounts
+				$this->extra_and_default_acounts
+				$this->a[X]->['prefs']
+				// where X is the account number, we can use "set_pref_array(array_data, acctnum) for each account
+				*/
+				// ok lets make an array to hold this data in the DB
+				$cached_prefs = array();
+				$cached_prefs['unprocessed_prefs'] = array();
+				$cached_prefs['raw_filters'] = array();
+				$cached_prefs['ex_accounts_count'] = '0';
+				$cached_prefs['extra_accounts'] = array();
+				$cached_prefs['extra_and_default_acounts'] = array();
+				$cached_prefs['a'] = array();
+				// lets fill the data
+				$cached_prefs['unprocessed_prefs'] = $this->unprocessed_prefs;
+				$cached_prefs['raw_filters'] = $this->raw_filters;
+				// defang the filters
+				// NO remember bofilters defangs, htmlquotes encodes, the filters FOR US
+				// they are stored in the preferences DB already in defanged state
+				// we never need to degang or UN-defang filters 
+				// because bofilters handles ALL that for us
+				//for ($x=0; $x < count($cached_prefs['raw_filters']); $x++)
+				//{
+				//	$cached_prefs['raw_filters'][$x]['filtername'] = $this->db_defang_encode($cached_prefs['raw_filters'][$x]['filtername']);
+				//	$cached_prefs['raw_filters'][$x]['source_accounts']['folder'] = $this->db_defang_encode($cached_prefs['raw_filters'][$x]['source_accounts']['folder']);
+				//	for ($y=0; $y < count($cached_prefs['raw_filters']['matches']); $y++)
+				//	{
+				//		$cached_prefs['raw_filters'][$x]['matches'][$y]['matchthis']
+				//			= $this->db_defang_encode($cached_prefs['raw_filters'][$x]['matches'][$y]['matchthis']);
+				//	}
+				//	for ($y=0; $y < count($cached_prefs['raw_filters']['actions']); $y++)
+				//	{
+				//		$cached_prefs['raw_filters'][$x]['actions'][$y]['folder']
+				//			= $this->db_defang_encode($cached_prefs['raw_filters'][$x]['actions'][$y]['folder']);
+				//	}
+				//}
+				$cached_prefs['ex_accounts_count'] = $this->ex_accounts_count;
+				$cached_prefs['extra_accounts'] = $this->extra_accounts;
+				$cached_prefs['extra_and_default_acounts'] = $this->extra_and_default_acounts;
+				$cached_prefs['a'] = array();
+				$defang_these = array();
+				$defang_these[0] = 'passwd';
+				$defang_these[1] = 'email_sig';
+				$defang_these[2] = 'trash_folder_name';
+				$defang_these[3] = 'sent_folder_name';
+				$defang_these[4] = 'userid';
+				$defang_these[5] = 'address';
+				$defang_these[6] = 'mail_folder';
+				$defang_these[7] = 'fullname';
+				$defang_these[8] = 'account_name';
+				$loops = count($this->extra_and_default_acounts);
+				for ($i=0; $i < $loops; $i++)
+				{
+					$cached_prefs['a'][$i] = array();
+					$cached_prefs['a'][$i]['prefs'] = array();
+					$cached_prefs['a'][$i]['prefs'] = $this->a[$i]['prefs'];
+					// defang
+					for ($x=0; $x < count($defang_these); $x++)
+					{
+					$defang_word = $defang_these[$x];
+						if (isset($cached_prefs['a'][$i]['prefs'][$defang_word]))
+						{
+							$cached_prefs['a'][$i]['prefs'][$defang_word]  = $this->db_defang_encode($cached_prefs['a'][$i]['prefs'][$defang_word]);
+						}
+					}
+				}
+				// just use account 0 for this eventhough the prefs are for every account
+				$my_location = '0;cached_prefs';
+				if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): POST create_email_preferences we made the $cached_prefs for storage DUMP:', $cached_prefs); } 
+				$this->so->so_appsession_passthru($my_location, $cached_prefs);
+			}
 			
 			// ---- SET important class vars  ----
 			$this->att_files_dir = $GLOBALS['phpgw_info']['server']['temp_dir'].SEP.$GLOBALS['phpgw_info']['user']['sessionid'];
 			
 			// and.or get some vars we will use later in this function
 			$mailsvr_callstr = $this->get_arg_value('mailsvr_callstr');
-			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: $mailsvr_callstr '.$mailsvr_callstr.'<br>'); }
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): $mailsvr_callstr '.$mailsvr_callstr.'<br>'); }
 			
 			// set class var "$this->cache_mailsvr_data" based on prefs info
 			// FIXME: why have this in 2 places, just keep it in prefs (todo)
@@ -1032,32 +1283,32 @@
 			if ((isset($this->cache_mailsvr_data_disabled))
 			&& ($this->cache_mailsvr_data_disabled == True))
 			{
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: OLD DEFUNCT OPTION folder cache DISABLED, $this->cache_mailsvr_data_disabled = '.serialize($this->cache_mailsvr_data_disabled).'<br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): OLD DEFUNCT OPTION folder cache DISABLED, $this->cache_mailsvr_data_disabled = '.serialize($this->cache_mailsvr_data_disabled).'<br>'); }
 				$this->cache_mailsvr_data = False;
 			}
 			elseif (($this->get_isset_pref('cache_data'))
 			&& ($this->get_pref_value('cache_data') != ''))
 			{
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: OLD DEFUNCT OPTION folder cache is enabled in user prefs'.'<br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): OLD DEFUNCT OPTION folder cache is enabled in user prefs'.'<br>'); }
 				$this->cache_mailsvr_data = True;
 			}
 			else
 			{
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: OLD DEFUNCT OPTION folder cache is NOT enabled in user prefs'.'<br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): OLD DEFUNCT OPTION folder cache is NOT enabled in user prefs'.'<br>'); }
 				$this->cache_mailsvr_data = False;
 			}
 			
 			// ----  Should We Login  -----
 			if (!isset($args_array['do_login']))
 			{
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: $args_array[do_login] was NOT set, so we set it to default value "FALSE"'.'<br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): $args_array[do_login] was NOT set, so we set it to default value "FALSE"'.'<br>'); }
 				$args_array['do_login'] = False;
 			}
 			// ---- newer 3 way do_login_ex value from the bootstrap class
 			if ( (!defined(BS_LOGIN_NOT_SPECIFIED))
 			|| (!isset($args_array['do_login_ex'])) )
 			{
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: $args_array[do_login_ex] not set, getting default from a temp local bootstrap object'.'<br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): $args_array[do_login_ex] not set, getting default from a temp local bootstrap object'.'<br>'); }
 				// that means somewhere the bootstrap class has been run
 				$local_bootstrap = CreateObject('email.msg_bootstrap');
 				$local_bootstrap->set_do_login($args_array['do_login'], 'begin_request');
@@ -1065,7 +1316,7 @@
 				$local_bootstrap = '';
 				unset($local_bootstrap);
 			}
-			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: $args_array[] DUMP ['.serialize($args_array).']'.'<br>'); }
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): $args_array[] DUMP ['.serialize($args_array).']'.'<br>'); }
 			
 			/*
 			// ----  Are We In Newsmode Or Not  -----
@@ -1120,30 +1371,52 @@
 			{
 				// IF we already have a cached_folder_list, we DO NOT NEED to immediately log in
 				// if and when a login is required, calls to "ensure_stream_and_folder" will take care of that login
-				$appsession_cached_folder_list = $this->read_session_cache_item('folder_list', $acctnum);
-				if ($this->debug_logins > 1) { $this->dbug->out('begin_request: LINE '.__LINE__.' check for $appsession_cached_folder_list DUMP:', $appsession_cached_folder_list); } 
-				if ($appsession_cached_folder_list)
+				// actually, we could even test the L1 class cashed folder_list first, that is a sure sign we have the data
+				// note _direct_access_arg_value returns NULL (nothing) if that arg is not set
+				$L1_cached_folder_list = $this->_direct_access_arg_value('folder_list', $acctnum);
+				if ($this->debug_logins > 1) { $this->dbug->out('begin_request: LINE '.__LINE__.' check for $L1_cached_folder_list DUMP:', $L1_cached_folder_list); } 
+				if ((isset($L1_cached_folder_list) == False)
+				|| (!$L1_cached_folder_list))
+				{
+					$appsession_cached_folder_list = $this->read_session_cache_item('folder_list', $acctnum);
+					if ($this->debug_logins > 1) { $this->dbug->out('begin_request: LINE '.__LINE__.' check for $appsession_cached_folder_list DUMP:', $appsession_cached_folder_list); } 
+					// while we are here, if we got a folder list now put it in L1 cache so no more aueries to the DB
+					// but only if it a new style, full folder_list including the folder_short elements
+					if (isset($appsession_cached_folder_list[0]['folder_short']))
+					{
+						// cache the result in "Level 1 cache" class object var
+						if (($this->debug_logins > 1) || ($this->debug_args_special_handlers > 1)) { $this->dbug->out('begin_request: LINE '.__LINE__.' while we are here, put folder_list into Level 1 class var "cache" so no more queries to DB for this<br>'); } 
+						$this->set_arg_value('folder_list', $appsession_cached_folder_list, $acctnum);
+					}
+				}
+				else
+				{
+					// we have L1 data, no need to query the database
+					$appsession_cached_folder_list = $L1_cached_folder_list;
+				}
+				if (($L1_cached_folder_list)
+				|| ($appsession_cached_folder_list))
 				{
 					// in this case, extreme caching is in use, AND we already have cached data, so NO NEED TO LOGIN
-					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: session extreme caching IS in use, AND we have a cached "folder_list", which means should also have all necessary cached data, so NO LOGIN NEEDED<br>'); }		
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): session extreme caching IS in use, AND we have a cached "folder_list", which means should also have all necessary cached data, so NO LOGIN NEEDED<br>'); }		
 					$decision_to_login = False;
 					
 					// get a few more things that we would otherwise get during the login code (which we'll be skiping)
 					$processed_folder_arg = $this->get_best_folder_arg($args_array, $got_args, $acctnum);
-					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: session extreme caching IS in use, Login may NOT occur, so about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.', '.serialize($acctnum).')<br>'); }
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): session extreme caching IS in use, Login may NOT occur, so about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.', '.serialize($acctnum).')<br>'); }
 					$this->set_arg_value('folder', $processed_folder_arg, $acctnum);
 					if ( $this->get_isset_pref('userid')
 					&& ($this->get_pref_value('userid') != ''))
 					{
 						$user = $this->get_pref_value('userid');
-						if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: session extreme caching IS in use, Login may NOT occur, so about to issue: $this->set_arg_value("mailsvr_account_username", '.$user.', '.serialize($acctnum).')<br>'); }
+						if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): session extreme caching IS in use, Login may NOT occur, so about to issue: $this->set_arg_value("mailsvr_account_username", '.$user.', '.serialize($acctnum).')<br>'); }
 						$this->set_arg_value('mailsvr_account_username', $user, $acctnum);
 					}
 				}
 				else
 				{
 					// in this case, extreme caching is in use, HOWEVER we do not have necessary cached data, so WE NEED A LOGIN
-					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: session extreme caching IS in use, but we do NOT have a cached "folder_list", meaning we probably do NOT have any cached data, so we NEED A LOGIN, allow it if requested<br>'); } 
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): session extreme caching IS in use, but we do NOT have a cached "folder_list", meaning we probably do NOT have any cached data, so we NEED A LOGIN, allow it if requested<br>'); } 
 					$decision_to_login = True;
 				}
 			}
@@ -1154,13 +1427,13 @@
 				
 				// get a few more things that we would otherwise get during the login code (which we'll be skiping)
 				$processed_folder_arg = $this->get_best_folder_arg($args_array, $got_args, $acctnum);
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request ('.__LINE__.'): we are NOT allowed to log in (see code this line) but we still need to get this info, so about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.', '.serialize($acctnum).')<br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): we are NOT allowed to log in (see code this line) but we still need to get this info, so about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.', '.serialize($acctnum).')<br>'); }
 				$this->set_arg_value('folder', $processed_folder_arg, $acctnum);
 				if ( $this->get_isset_pref('userid')
 				&& ($this->get_pref_value('userid') != ''))
 				{
 					$user = $this->get_pref_value('userid');
-					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request ('.__LINE__.'): we are NOT allowed to log in (see code this line) but we still need to get this info, so about to issue: $this->set_arg_value("mailsvr_account_username", '.$user.', '.serialize($acctnum).')<br>'); }
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): we are NOT allowed to log in (see code this line) but we still need to get this info, so about to issue: $this->set_arg_value("mailsvr_account_username", '.$user.', '.serialize($acctnum).')<br>'); }
 					$this->set_arg_value('mailsvr_account_username', $user, $acctnum);
 				}
 			}
@@ -1192,40 +1465,40 @@
 			{
 				// extreme caching and logins handled above in the first if .. then
 				// if we are here, generally we are allowed to login
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: session extreme caching is NOT in use, any begin_request logins ARE allowed <br>'); }	 
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): session extreme caching is NOT in use, any begin_request logins ARE allowed <br>'); }	 
 				$decision_to_login = True;
 			}
 			
-			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: <u>maybe about to enter login sequence</u>, $args_array[]: ['.serialize($args_array).'] ; $decision_to_login ['.serialize($decision_to_login).'] <br>'); } 
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): <u>maybe about to enter login sequence</u>, $args_array[]: ['.serialize($args_array).'] ; $decision_to_login ['.serialize($decision_to_login).'] <br>'); } 
 			
 			// now actually use that test result
 			if ($decision_to_login == True)
 			{
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: entered and starting login sequence <br>'); }		
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): entered and starting login sequence <br>'); }		
 				
 				//  ----  Get Email Password
 				if ($this->get_isset_pref('passwd') == False)
 				{
-					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: this->a[$this->acctnum][prefs][passwd] NOT set, fallback to $GLOBALS[phpgw_info][user][passwd]'.'<br>'); }
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): this->a[$this->acctnum][prefs][passwd] NOT set, fallback to $GLOBALS[phpgw_info][user][passwd]'.'<br>'); }
 					// DO NOT alter the password and put that altered password BACK into the preferences array
 					// why not? used to have a reason, but that was obviated, no reason at the moment
 					//$this->set_pref_value('passwd',$GLOBALS['phpgw_info']['user']['passwd']);
 					//$this->a[$this->acctnum]['prefs']['passwd'] = $GLOBALS['phpgw_info']['user']['passwd'];
 					$pass = $GLOBALS['phpgw_info']['user']['passwd'];
-					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: pass grabbed from GLOBALS[phpgw_info][user][passwd] = '.htmlspecialchars(serialize($pass)).'<br>'); }
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): pass grabbed from GLOBALS[phpgw_info][user][passwd] = '.htmlspecialchars(serialize($pass)).'<br>'); }
 				}
 				else
 				{
 					// DO NOT alter the password and do NOT put that altered password BACK into the preferences array
 					// keep the one in GLOBALS in encrypted form if possible ????
 					$pass = $this->get_pref_value('passwd');
-					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: pass from prefs: already defanged for us, but still encrypted <pre>'.$pass.'</pre><br>'."\r\n"); }
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): pass from prefs: already defanged for us, but still encrypted <pre>'.$pass.'</pre><br>'."\r\n"); }
 					// IMPORTANT: (this note on "defanging" still valid as of Jan 24, 2002
 					// the last thing you do before saving to the DB is "de-fang"
 					// so the FIRST thing class prefs does when reading from the db MUST be to "UN-defang", and that IS what happens there
 					// so by now phpgwapi/class.preferences has ALREADY done the "de-fanging"
 					$pass = $this->decrypt_email_passwd($pass);
-					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: pass from prefs: decrypted: <pre>'.$pass.'</pre><br>'."\r\n"); }
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): pass from prefs: decrypted: <pre>'.$pass.'</pre><br>'."\r\n"); }
 				}
 				// ----  ISSET CHECK for userid and passwd to avoid garbage logins  ----
 				if ( $this->get_isset_pref('userid')
@@ -1240,13 +1513,13 @@
 					// FIXME make this use an official error function
 					// problem - invalid or nonexistant info for userid and/or passwd
 					//if ($this->debug_logins > 0) {
-						echo 'mail_msg: begin_request: ERROR: userid or passwd empty'."<br>\r\n"
+						echo 'mail_msg.begin_request('.__LINE__.'): ERROR: userid or passwd empty'."<br>\r\n"
 							.' * * $this->get_pref_value(userid) = '
 								.$this->get_pref_value('userid')."<br>\r\n"
 							.' * * if the userid is filled, then it must be the password that is missing'."<br>\r\n"
 							.' * * tell your admin if a) you have a custom email password or not when reporting this error'."<br>\r\n";
 					//}
-					if ($this->debug_logins > 0) { $this->dbug->out('mail_msg: begin_request: LEAVING with ERROR: userid or passwd empty<br>'); } 
+					if ($this->debug_logins > 0) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): LEAVING with ERROR: userid or passwd empty<br>'); } 
 					return False;
 				}
 				
@@ -1264,7 +1537,7 @@
 				$this_server_type = $this->get_pref_value('mail_server_type');
 				// ok, now put that object into the array
 				//$this_acctnum = $this->get_acctnum();
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: creating new dcom_holder at $GLOBALS[phpgw_dcom_'.$acctnum.'] = new mail_dcom_holder'.'<br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): creating new dcom_holder at $GLOBALS[phpgw_dcom_'.$acctnum.'] = new mail_dcom_holder'.'<br>'); }
 				$GLOBALS['phpgw_dcom_'.$acctnum] = new mail_dcom_holder;
 				$GLOBALS['phpgw_dcom_'.$acctnum]->dcom = CreateObject("email.mail_dcom", $this_server_type);
 				// initialize the dcom class variables
@@ -1286,12 +1559,13 @@
 				//@set_time_limit(60);
 				// login to INBOX because we know that always(?) should exist on an imap server and pop server
 				// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: about to call dcom->open: $GLOBALS["phpgw_dcom_".$acctnum('.$acctnum.')]->dcom->open('.$mailsvr_callstr."INBOX".', '.$user.', '.$pass.', )'.'<br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): about to call dcom->open: $GLOBALS["phpgw_dcom_".$acctnum('.$acctnum.')]->dcom->open('.$mailsvr_callstr."INBOX".', '.$user.', '.$pass.', )'.'<br>'); }
+				if ($this->debug_logins > 0) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): <font color="red">MAIL SERVER COMMAND</font>'.'<br>'); } 
 				$mailsvr_stream = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->open($mailsvr_callstr."INBOX", $user, $pass, '');
 				$pass = '';
 				//@set_time_limit(0);
 				
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: open returns $mailsvr_stream = ['.serialize($mailsvr_stream).']<br>'); } 
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): open returns $mailsvr_stream = ['.serialize($mailsvr_stream).']<br>'); } 
 				
 				// Logged In Success or Faliure check
 				if ( (!isset($mailsvr_stream))
@@ -1299,7 +1573,7 @@
 				{
 					// set the "mailsvr_stream" to blank so all will know the login failed
 					$this->set_arg_value('mailsvr_stream', '');
-					if ($this->debug_logins > 0) { $this->dbug->out('mail_msg: begin_request: LEAVING with ERROR: failed to open mailsvr_stream : '.$mailsvr_stream.'<br>'); } 
+					if ($this->debug_logins > 0) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): LEAVING with ERROR: failed to open mailsvr_stream : '.$mailsvr_stream.'<br>'); } 
 					// we return false, but SHOULD WE ERROR EXIT HERE?
 					return False;
 				}
@@ -1312,47 +1586,48 @@
 				// ----  Get additional Data now that we are logged in to the mail server  ----
 				// namespace is often obtained by directly querying the mailsvr
 				$mailsvr_namespace = $this->get_arg_value('mailsvr_namespace');
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: $mailsvr_namespace: '.serialize($mailsvr_namespace).'<br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): $mailsvr_namespace: '.serialize($mailsvr_namespace).'<br>'); }
 				$mailsvr_delimiter = $this->get_arg_value('mailsvr_delimiter');
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: $mailsvr_delimiter: '.serialize($mailsvr_delimiter).'<br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): $mailsvr_delimiter: '.serialize($mailsvr_delimiter).'<br>'); }
 				
 				
 				// FIND FOLDER VALUE
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: <b> *** FIND FOLDER VALUE *** </b><br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): <b> *** FIND FOLDER VALUE *** </b><br>'); }
 				// get best available, most legit, folder value that we can find, and prep it in
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: about to call: "get_best_folder_arg($args_array, $got_args, $acctnum(='.$acctnum.'))"<br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): about to call: "get_best_folder_arg($args_array, $got_args, $acctnum(='.$acctnum.'))"<br>'); }
 				$processed_folder_arg = $this->get_best_folder_arg($args_array, $got_args, $acctnum);
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: "get_best_folder_arg" returns $processed_folder_arg ['.htmlspecialchars(serialize($processed_folder_arg)).']<br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): "get_best_folder_arg" returns $processed_folder_arg ['.htmlspecialchars(serialize($processed_folder_arg)).']<br>'); }
 				
 				// ---- Switch To Desired Folder If Necessary  ----
 				if ($processed_folder_arg == 'INBOX')
 				{
 					// NO need to switch to another folder
 					// put this $processed_folder_arg in arg "folder", replacing any unprocessed value that may have been there
-					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: NO need to switch folders, about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.', '.serialize($acctnum).')<br>'); }
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): NO need to switch folders, about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.', '.serialize($acctnum).')<br>'); }
 					$this->set_arg_value('folder', $processed_folder_arg, $acctnum);
 				}
 				else
 				{
 					// switch to the desired folder now that we are sure we have it's official name
-					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: need to switch folders (reopen) from INBOX to $processed_folder_arg: '.$processed_folder_arg.'<br>'); } 
-					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: about to issue: $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->reopen('.$mailsvr_stream.', '.$mailsvr_callstr.$processed_folder_arg,', )'.'<br>'); } 
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): need to switch folders (reopen) from INBOX to $processed_folder_arg: '.$processed_folder_arg.'<br>'); } 
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): about to issue: $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->reopen('.$mailsvr_stream.', '.$mailsvr_callstr.$processed_folder_arg,', )'.'<br>'); } 
 					//$did_reopen = $tmp_a['dcom']->reopen($mailsvr_stream, $mailsvr_callstr.$processed_folder_arg, '');
+					if ($this->debug_logins > 0) { $this->dbug->out('mail_msg: begin_request('.__LINE__.'): <font color="red">MAIL SERVER COMMAND</font>'.'<br>'); } 
 					$did_reopen = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->reopen($mailsvr_stream, $mailsvr_callstr.$processed_folder_arg, '');
-					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: reopen returns: '.serialize($did_reopen).'<br>'); } 
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): reopen returns: '.serialize($did_reopen).'<br>'); } 
 					// error check
 					if ($did_reopen == False)
 					{
-						if ($this->debug_logins > 0) { $this->dbug->out('mail_msg: begin_request: LEAVING with re-open ERROR, closing stream, FAILED to reopen (change folders) $mailsvr_stream ['.$mailsvr_stream.'] INBOX to ['.$mailsvr_callstr.$processed_folder_arg.'<br>'); } 
+						if ($this->debug_logins > 0) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): LEAVING with re-open ERROR, closing stream, FAILED to reopen (change folders) $mailsvr_stream ['.$mailsvr_stream.'] INBOX to ['.$mailsvr_callstr.$processed_folder_arg.'<br>'); } 
 						// log out since we could not reopen, something must have gone wrong
 						$this->end_request();
 						return False;
 					}
 					else
 					{
-						if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: Successful switch folders (reopen) from (default initial folder) INBOX to ['.$processed_folder_arg.']<br>'); } 
+						if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): Successful switch folders (reopen) from (default initial folder) INBOX to ['.$processed_folder_arg.']<br>'); } 
 						// put this $processed_folder_arg in arg "folder", since we were able to successfully switch folders
-						if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: switched folders (via reopen), about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.', $acctnum(='.$acctnum.'))<br>'); }
+						if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): switched folders (via reopen), about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.', $acctnum(='.$acctnum.'))<br>'); }
 						$this->set_arg_value('folder', $processed_folder_arg, $acctnum);
 					}
 				}
@@ -1365,11 +1640,11 @@
 					.'&fldball[acctnum]='.$this->get_acctnum()
 					.'&sort='.$this->get_arg_value('sort')
 					.'&order='.$this->get_arg_value('order');
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: about to call $this->set_arg_value(index_refresh_uri, $this_index_refresh_uri, $acctnum(='.$acctnum.')); ; where $this_index_refresh_uri: '.htmlspecialchars($this_index_refresh_uri).'<br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): about to call $this->set_arg_value(index_refresh_uri, $this_index_refresh_uri, $acctnum(='.$acctnum.')); ; where $this_index_refresh_uri: '.htmlspecialchars($this_index_refresh_uri).'<br>'); }
 				$this->set_arg_value('index_refresh_uri', $this_index_refresh_uri, $acctnum);
 				
-				if ($this->debug_logins > 2) { $this->dbug->out('mail_msg: begin_request: about to leave, direct access dump of $this->a  DUMP:', $this->a); } 
-				if ($this->debug_logins > 0) { $this->dbug->out('mail_msg: begin_request: LEAVING, success'.'<br>'); } 
+				if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): about to leave, direct access dump of $this->a  DUMP:', $this->a); } 
+				if ($this->debug_logins > 0) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): LEAVING, success'.'<br>'); } 
 				// returning this is vestigal, not really necessary, but do it anyway
 				// it's importance is that it returns something other then "False" on success
 				return $this->get_arg_value('mailsvr_stream', $acctnum);
@@ -1385,7 +1660,7 @@
 					.'&fldball[acctnum]='.$this->get_acctnum()
 					.'&sort='.$this->get_arg_value('sort')
 					.'&order='.$this->get_arg_value('order');
-				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request: about to call $this->set_arg_value(index_refresh_uri, $this_index_refresh_uri, $acctnum(='.$acctnum.')); ; where $this_index_refresh_uri: '.htmlspecialchars($this_index_refresh_uri).'<br>'); }
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): about to call $this->set_arg_value(index_refresh_uri, $this_index_refresh_uri, $acctnum(='.$acctnum.')); ; where $this_index_refresh_uri: '.htmlspecialchars($this_index_refresh_uri).'<br>'); }
 				$this->set_arg_value('index_refresh_uri', $this_index_refresh_uri, $acctnum);
 				
 				//if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: begin_request ('.__LINE__.'): LEAVING, we were NOT allowed to, $args_array[do_login]: ['.serialize($args_array['do_login']).'] if TRUE, then we must return *something* so calling function does NOT think error, so return $args_array[do_login] <br>'); } 
@@ -1460,7 +1735,8 @@
 					$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $this_acctnum);
 					if ($this->debug_logins > 0) { $this->dbug->out('mail_msg: end_request: stream exists, for $this_acctnum ['.$this_acctnum.'] , $mailsvr_stream : ['.$mailsvr_stream.'] ; logging out'.'<br>'); }
 					// SLEEP seems to give the server time to send its OK response, used tcpdump to confirm this
-					sleep(1);
+					//sleep(1);
+					if ($this->debug_logins > 0) { $this->dbug->out('mail_msg: end_request('.__LINE__.'): <font color="red">MAIL SERVER COMMAND</font>'.'<br>'); } 
 					$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->close($mailsvr_stream);
 					// sleep here does not have any effect
 					//sleep(1);
@@ -1605,6 +1881,7 @@
 				// log in to INBOX because we know INBOX should exist on every mail server, "reopen" to desired folder (if different) later
 				//@set_time_limit(60);
 				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: ensure_stream_and_folder: about to call dcom->open: $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->open('.$mailsvr_callstr."INBOX".', '.$user.', '.$pass.', )'.'<br>'); }
+				if ($this->debug_logins > 0) { $this->dbug->out('mail_msg: ensure_stream_and_folder('.__LINE__.'): <font color="red">MAIL SERVER COMMAND</font>'.'<br>'); } 
 				$mailsvr_stream = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->open($mailsvr_callstr."INBOX", $user, $pass, '');
 				$pass = '';
 				//@set_time_limit(0);
@@ -1752,6 +2029,7 @@
 				{
 					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: ensure_stream_and_folder('.__LINE__.'): need to switch folders (reopen) from $preped_current_folder_arg ['.$preped_current_folder_arg.'] to $preped_folder: '.$preped_folder.'<br>'); } 
 					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: ensure_stream_and_folder('.__LINE__.'): about to issue: $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->reopen('.$mailsvr_stream.', '.$mailsvr_callstr.$preped_folder,', )'.'<br>'); } 
+					if ($this->debug_logins > 0) { $this->dbug->out('mail_msg: ensure_stream_and_folder('.__LINE__.'): <font color="red">MAIL SERVER COMMAND</font>'.'<br>'); } 
 					$did_reopen = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->reopen($mailsvr_stream, $mailsvr_callstr.$preped_folder, '');
 					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg: ensure_stream_and_folder('.__LINE__.'): reopen returns: '.serialize($did_reopen).'<br>'); } 
 					if ($did_reopen == False)
@@ -1889,7 +2167,7 @@
 				$widgets = CreateObject("email.html_widgets");
 				$widgets->init_error_report_values();
 				$widgets->prop_error_report_text($error_text_formatted);
-/* TEST-RALFBECKER
+				
 				if ((string)$acctnum == '0')
 				{
 					$go_somewhere_url = $GLOBALS['phpgw']->link('/index.php',array(
@@ -1903,11 +2181,6 @@
 															'ex_acctnum' => $acctnum,
 															'show_help'  => '1'));
 				}
-*/
-				$go_somewhere_url = $GLOBALS['phpgw']->link('/preferences/preferences.php',array(
-					'appname' => 'email',
-					'prefix'  => $acctnum ? 'ex_accounts/'.$acctnum : ''
-				));
 				$go_somewhere_text = lang('click here to edit the settings for this email account.');
 				$widgets->prop_go_somewhere_link($go_somewhere_url, $go_somewhere_text);
 				
@@ -2167,6 +2440,7 @@
 			}
 			//echo 'prep_folder_out: param $feed_folder ['.$feed_folder.'], :: ';
 			$preped_folder = $GLOBALS['phpgw']->msg->ensure_one_urlencoding($feed_folder);
+			$preped_folder = str_replace('&', '%26', $preped_folder);
 			//echo ' $preped_folder ['.$preped_folder.']<br>';
 			return $preped_folder;
 		}
@@ -2790,9 +3064,38 @@
 		}
 		
 		/*!
+		@function folder_list_change_callback
+		@abstract dcom class callback to alert when dcom class has made a change to the folder list
+		@param $acctnum  OPTIONAL
+		discussion CACHE NOTE: this item is saved in the appsession cache, the folder_list, so altering 
+		that list requires wiping that saved info because it has become stale. 
+		@author Angles
+		*/
+		function folder_list_change_callback($acctnum='')
+		{
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: folder_list_change_callback('.__LINE__.'): ENTERING, param $acctnum ['.$acctnum.']<br>'); } 
+			// what acctnum is operative here, we can only get a folder list for one account at a time (obviously)
+			if ((!isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $this->get_acctnum();
+			}
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: folder_list_change_callback('.__LINE__.'): willo use $acctnum ['.$acctnum.']<br>'); } 
+			// class dcom recorded a change in the folder list
+			// supposed to happen when create or delete or rename mailbox is called
+			// dcom class will callback to this function to handle cleanup of stale folder_list data
+			// expire cached data
+			if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: folder_list_change_callback('.__LINE__.'): calling $this->expire_session_cache_item(folder_list, '.$acctnum.') <br>'); } 
+			$sucess = $this->expire_session_cache_item('folder_list', $acctnum);
+			
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: folder_list_change_callback('.__LINE__.'): LEAVING, returning $sucess ['.$sucess.']<br>'); } 
+			return $sucess;
+		}
+		
+		/*!
 		@function get_folder_list
 		@abstract  list of folders in a numbered array, each element has 2 properties, "folder_long" and "folder_short"
-		@param $mailsvr_stream   DEPRECIATED - do not use
+		@param $acctnum (int) OPTIONAL
 		@param $force_refresh   boolean, will cause any cached folder data to expire, and "fresh" data is retrieved from the mailserver
 		@return   array   numbered, with each numbered element having array keys  "folder_long" and "folder_short"
 		@discussion  returns a numbered array, each element has 2 properties, "folder_long" and "folder_short"
@@ -2809,13 +3112,13 @@
 		*/
 		function get_folder_list($acctnum='', $force_refresh=False)
 		{
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_folder_list: ENTERING<br>'); }
 			// what acctnum is operative here, we can only get a folder list for one account at a time (obviously)
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_folder_list: ENTERING<br>'); }
 			if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_folder_list: for the rest of this function we will use $acctnum: ['.$acctnum.'] <br>'); }
 			// hardcore debug
 			if (stristr($this->skip_args_special_handlers, 'get_folder_list'))
@@ -2833,6 +3136,7 @@
 			
 			// check if class dcom reports that the folder list has changed
 			// is this accounts dcom object has not been created yet, then obviously we did not just change its folder list
+			// NOTE THIS IS OBSOLETED - THE DCOM CLASS NOW USES CALLBACK FUNCTION "folder_list_change_callback"
 			if ((is_object($GLOBALS['phpgw_dcom_'.$acctnum]->dcom))
 			&& ($GLOBALS['phpgw_dcom_'.$acctnum]->dcom->folder_list_changed == True))
 			{
@@ -2901,21 +3205,31 @@
 				{
 					//if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: using *Prefs DB* cached folder list data<br>';}
 					if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_folder_list: using appsession cached folder list data<br>'); } 
-					// cached folder list does NOT contain "folder_short" data
-					// that cuts cached data in 1/2, no need to cache something this easy to deduce
-					// therefor... add FOLDER SHORT element to cached_data array structure
-					if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_folder_list: (L1) adding [folder_short] element to $cached_data array<br>'); } 
-					for ($i=0; $i<count($cached_data);$i++)
+					if (!isset($cached_data[0]['folder_short']))
 					{
-						$my_folder_long = $cached_data[$i]['folder_long'];
-						$my_folder_acctnum = $cached_data[$i]['acctnum'];
-						$my_folder_short = $this->get_folder_short($my_folder_long, $my_folder_acctnum);
-						if ($this->debug_args_special_handlers > 1) { $this->dbug->out('* * mail_msg: get_folder_list: add folder_short loop (L1) ['.$i.']: $my_folder_long ['.$my_folder_long.'] ; $my_folder_acctnum ['.$my_folder_acctnum.'] ; $my_folder_short ['.$my_folder_short.']<br>'); }
-						$cached_data[$i]['folder_short'] = $my_folder_short;
-						//$cached_data[$i]['folder_short'] = $this->get_folder_short($cached_data[$i]['folder_long']);
-						if ($this->debug_args_special_handlers > 2) { $this->dbug->out(' * * $cached_data['.$i.'][folder_long]='.htmlspecialchars($cached_data[$i]['folder_long']).' ; $cached_data['.$i.'][folder_short]='.htmlspecialchars($cached_data[$i]['folder_short']).'<br>'); } 
+						// OLD cached folder list does NOT contain "folder_short" data
+						// that cuts cached data in 1/2, no need to cache something this easy to deduce
+						// therefor... add FOLDER SHORT element to cached_data array structure
+						if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_folder_list: (L1) adding [folder_short] element to $cached_data array<br>'); } 
+						for ($i=0; $i<count($cached_data);$i++)
+						{
+							$my_folder_long = $cached_data[$i]['folder_long'];
+							$my_folder_acctnum = $cached_data[$i]['acctnum'];
+							$my_folder_short = $this->get_folder_short($my_folder_long, $my_folder_acctnum);
+							if ($this->debug_args_special_handlers > 1) { $this->dbug->out('* * mail_msg: get_folder_list: add folder_short loop (L1) ['.$i.']: $my_folder_long ['.$my_folder_long.'] ; $my_folder_acctnum ['.$my_folder_acctnum.'] ; $my_folder_short ['.$my_folder_short.']<br>'); }
+							$cached_data[$i]['folder_short'] = $my_folder_short;
+							//$cached_data[$i]['folder_short'] = $this->get_folder_short($cached_data[$i]['folder_long']);
+							if ($this->debug_args_special_handlers > 2) { $this->dbug->out(' * * $cached_data['.$i.'][folder_long]='.htmlspecialchars($cached_data[$i]['folder_long']).' ; $cached_data['.$i.'][folder_short]='.htmlspecialchars($cached_data[$i]['folder_short']).'<br>'); } 
+						}
+						if ($this->debug_args_special_handlers > 2) { $this->dbug->out('mail_msg: get_folder_list: $cached_data *after* adding "folder_short" data DUMP:', $cached_data); }
+						// -----------
+						// SAVE DATA TO APPSESSION DB CACHE (WITH the [folder_short] data)
+						// -----------
+						// save "folder_list" (WITH ADDED  folder short data) to appsession data store
+						// new style folder_list is stored FULL, has all elements
+						if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_folder_list: added folder short, now resave in DB as new style, complete folder list, set appsession cache $this->save_session_cache_item(folder_list, $cached_data, '.$acctnum.']) <br>'); }
+						$this->save_session_cache_item('folder_list', $cached_data, $acctnum);
 					}
-					if ($this->debug_args_special_handlers > 2) { $this->dbug->out('mail_msg: get_folder_list: $cached_data *after* adding "folder_short" data DUMP:', $cached_data); }
 					// cache the result in "Level 1 cache" class object var
 					if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_folder_list: put folder_list into Level 1 class var "cache" $this->set_arg_value(folder_list, $cached_data, '.$acctnum.');<br>'); } 
 					$this->set_arg_value('folder_list', $cached_data, $acctnum);
@@ -3079,15 +3393,17 @@
 				}
 			}
 			if ($this->debug_args_special_handlers > 2) { $this->dbug->out('mail_msg: get_folder_list: my_folder_list with only "folder_long" DUMP:', $my_folder_list); }
-			// -----------
-			// SAVE DATA TO APPSESSION DB CACHE (without the [folder_short] data)
-			// -----------
-			// save "folder_list" (without folder short data) to appsession data store
-			if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_folder_list: set appsession cache $this->save_session_cache_item(folder_list, $my_folder_list, '.$acctnum.']) <br>'); }
-			$this->save_session_cache_item('folder_list', $my_folder_list, $acctnum);
+			// NEW just save the complete list, leaving out the folder short does not reduce size my a material amount
+			//// -----------
+			//// SAVE DATA TO APPSESSION DB CACHE (without the [folder_short] data)
+			//// -----------
+			//// save "folder_list" (without folder short data) to appsession data store
+			//if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_folder_list: set appsession cache $this->save_session_cache_item(folder_list, $my_folder_list, '.$acctnum.']) <br>'); }
+			//$this->save_session_cache_item('folder_list', $my_folder_list, $acctnum);
 			
 			// add FOLDER SHORT element to folder_list array structure
 			// that cuts cached data in 1/2, no need to cache something this easy to deduce
+			// NEW: forget about it, just add folder short THEN SAVE it, additional data is not that much more
 			for ($i=0; $i<count($my_folder_list);$i++)
 			{
 				$my_folder_long = $my_folder_list[$i]['folder_long'];
@@ -3096,6 +3412,15 @@
 				if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_folder_list: add folder_short loop['.$i.']: $my_folder_long ['.$my_folder_long.'] ; $my_folder_acctnum ['.$my_folder_acctnum.'] ; $my_folder_short ['.$my_folder_short.']<br>'); }
 				$my_folder_list[$i]['folder_short'] = $my_folder_short;
 			}
+			
+			// -----------
+			// SAVE DATA TO APPSESSION DB CACHE (WITH the [folder_short] data)
+			// -----------
+			// save "folder_list" (WITH ADDED  folder short data) to appsession data store
+			// new style folder_list is stored FULL, has all elements
+			if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_folder_list: set appsession cache $this->save_session_cache_item(folder_list, $my_folder_list, '.$acctnum.']) <br>'); }
+			$this->save_session_cache_item('folder_list', $my_folder_list, $acctnum);
+			
 			// cache the result to "level 1 cache" class arg holder var
 			if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_folder_list: set Level 1 class var "cache" $this->set_arg_value(folder_list, $my_folder_list, '.$acctnum.') <br>'); }
 			$this->set_arg_value('folder_list', $my_folder_list, $acctnum);
@@ -4813,7 +5138,37 @@
 				return True;
 			}
 		}
-	
+		
+		/*!
+		@function is_serialized_smarter
+		@abstract find out if a string is already serialized, BUT NOT FOOLED BY SLASH problems on unserizalize.
+		@param $string_data SHOULD be a string
+		*/
+		function is_serialized_smarter($string_data)
+		{
+			if ((is_string($string_data))
+			&& (unserialize($string_data) == False))
+			{
+				// when you unserialize a normal (not-serialized) string, you get False
+				// HOWEVER slashes may b0rk unserialize, do not be fooled, it is still serialized
+				// so use a second test here, piss poor test, but it helps
+				if (stristr($string_data, ':"stdClass":'))
+				{
+					// unserialize failed but the source str appears to look like a serialized thing
+					return True;
+				}
+				else
+				{
+					// second test still says this is not  serialized str
+					return False;
+				}
+			}
+			else
+			{
+				return True;
+			}
+		}
+		
 		// PHP3 SAFE Version of "substr_count"
 		/*!
 		@function substr_count_ex
@@ -5052,6 +5407,9 @@
 		Does a loop thru existing accounts. NOTE THIS REALLY WIPES DATA completely, it is not 
 		very smart, it wipes cached data that may still be useful, so this really does clear the cache. 
 		UNDER DEVELOPMEMT 
+		UPDATE we use folder as a key in msgball_list but batch expire still works because 
+		it wipes data based on a key prior to folder name, same as with other data that has a 
+		folder name in its data key.
 		*/
 		function batch_expire_cached_items($called_by='not_specified', $only_msgball_list=False)
 		{
@@ -5291,8 +5649,10 @@
 			// so we have data in the cache?
 			$data_name = 'msgball_list';
 			// currently we DO NOT use the $extra_keys param for msgball_list data
+			// UPDATE YES NOW WE USE FOLDER NAME IN THE DATA KEYS FOR MSGBALL_LIST
+			$ex_folder = $urlencoded_folder;
 			// get session data
-			if (($this->debug_events > 1) || ($this->debug_session_caching > 1)) { echo 'mail_msg: event_msg_move_or_delete('.__LINE__.'): DIRECT CALL to get appsession data for $location ['.$location.'], $app ['.$app.']<br>'; } 
+			//if (($this->debug_events > 1) || ($this->debug_session_caching > 1)) { echo 'mail_msg: event_msg_move_or_delete('.__LINE__.'): DIRECT CALL to get appsession data for $location ['.$location.'], $app ['.$app.']<br>'; } 
 			
 			//$cached_msgball_data = $GLOBALS['phpgw']->session->appsession($location,$app);
 			//$cached_msgball_data = $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum][$data_name];
@@ -5311,28 +5671,34 @@
 			if (($GLOBALS['phpgw_info']['server']['sessions_type'] == 'db')
 			|| ($this->use_private_table == True))
 			{
-				if ((isset($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list']) == False)
-				|| (!$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list']))
+				if ((isset($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list'][$ex_folder]) == False)
+				|| (!$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list'][$ex_folder]))
 				{
-					$my_location = (string)$acctnum.';msgball_list';
-					if ($this->debug_events > 1) { $this->dbug->out('email_msg_base: event_msg_move_or_delete('.__LINE__.'): (extreme mode) sessions_type is ['.$GLOBALS['phpgw_info']['server']['sessions_type'].'] SO we have this additional step to read data from phpgw_app_sessions table, $my_location ['.$my_location.']<br>'); } 
+					//$my_location = (string)$acctnum.';msgball_list';
+					// NOW WE USE FOLDER TOO as a data key for msgball_list
+					$my_location = (string)$acctnum.';msgball_list;'.$ex_folder;
+					if (($this->debug_events > 1) || ($this->debug_session_caching > 1)) { echo 'mail_msg: event_msg_move_or_delete('.__LINE__.'): DIRECT CALL to get appsession data for $location ['.$location.'], $app ['.$app.']<br>'; } 
+					if ($this->debug_events > 1) { $this->dbug->out('email_msg_base: event_msg_move_or_delete('.__LINE__.'): (extreme mode) sessions_type is ['.$GLOBALS['phpgw_info']['server']['sessions_type'].'] SO we have this additional step to read data from a database table, $my_location ['.$my_location.']<br>'); } 
 					if ($this->use_private_table == True)
 					{
-						$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list']
-							= $this->so->so_get_data($my_location);
+						//$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list'][$ex_folder]
+						//	= $this->so->so_get_data($my_location);
+						// TRY USING COMPRESSION for msgball_list
+						$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list'][$ex_folder]
+							= $this->so->so_get_data($my_location, True);
 					}
 					else
 					{
-						$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list']
+						$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list'][$ex_folder]
 							= $GLOBALS['phpgw']->session->appsession($my_location, 'email');
 					}
-					//if ($this->debug_events > 2) { $this->dbug->out('email_msg_base: event_msg_move_or_delete('.__LINE__.'): (extreme mode) [email][dat]['.$acctnum.'][msgball_list] DUMP:<pre>'; print_r($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list']); echo '</pre>'); }
+					//if ($this->debug_events > 2) { $this->dbug->out('email_msg_base: event_msg_move_or_delete('.__LINE__.'): (extreme mode) [email][dat]['.$acctnum.'][msgball_list] DUMP:<pre>'; print_r($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list'][ex_folder]); echo '</pre>'); }
 				}
 			}
 
-			$cached_msgball_data =& $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list'];
+			$cached_msgball_data =& $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list'][$ex_folder];
 			
-			if (($this->debug_events > 2) && ($this->debug_allow_magball_list_dumps)) { $this->dbug->out('mail_msg: event_msg_move_or_delete('.__LINE__.'): restored $cached_msgball_data DUMP:', $cached_msgball_data); } 
+			if (($this->debug_events > 2) && ($this->debug_allow_magball_list_dumps)) { $this->dbug->out('mail_msg: event_msg_move_or_delete('.__LINE__.'): for $my_location ['.$my_location.'], restored $cached_msgball_data DUMP:', $cached_msgball_data); } 
 			
 			if ((!$cached_msgball_data)
 			&& ($this->session_cache_extreme == False))
@@ -5355,7 +5721,7 @@
 				// expire entire msgball_list and the folder_status_info
 				if ($this->debug_events > 1) { $this->dbug->out('mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) calling $this->expire_session_cache_item("msgball_list", '.$msgball['acctnum'].')<br>'); } 
 				// FUTURE: if each account ever saves msgball_list for individual folders instead of just one folder per account, then add extra_keys to this command
-				$this->expire_session_cache_item('msgball_list', $msgball['acctnum']);
+				$this->expire_session_cache_item('msgball_list', $msgball['acctnum'], $ex_folder);
 				
 				// ANYTIME a message is moved out of a folder, we need to remove any cached "msg_structure" and "phpgw_header" data
 				// damn why are we doing this in non-extreme mode?
@@ -5442,8 +5808,8 @@
 					if (($this->debug_events > 2) && ($this->debug_allow_magball_list_dumps)) { $this->dbug->out('mail_msg: event_msg_move_or_delete('.__LINE__.'): (extreme mode) (step 1) array_splice of $cached_msgball_data[msgball_list] results in this $cached_msgball_data DUMP:', $cached_msgball_data); } 
 					
 					// save altered data back into the cache
-					// NOT needed if using a REFERENCE
-					if (($this->debug_session_caching > 1) || ($this->debug_events > 1)) { $this->dbug->out('mail_msg: event_msg_move_or_delete: ('.__LINE__.') saving altered msgball_list directly to appsession, location: ['.$location.'] $app ['.$app.']<br>'); } 
+					// NOT needed if using a REFERENCE and only using regular appsession (i.e. NOT the anglemail table)
+					//if (($this->debug_session_caching > 1) || ($this->debug_events > 1)) { $this->dbug->out('mail_msg: event_msg_move_or_delete: ('.__LINE__.') saving altered msgball_list directly to appsession, location: ['.$location.'] $app ['.$app.']<br>'); } 
 					// COMMENT IF USING REF, UNCOMMENT IF NOT USING REFERENCES
 					//$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list'] = $cached_msgball_data;
 					
@@ -5451,15 +5817,23 @@
 					if (($GLOBALS['phpgw_info']['server']['sessions_type'] == 'db')
 					|| ($this->use_private_table == True))
 					{
-						$my_location = (string)$acctnum.';msgball_list';
-						if ($this->debug_events > 1) { $this->dbug->out('email_msg_base: event_msg_move_or_delete('.__LINE__.'): (extreme mode) sessions_type is ['.$GLOBALS['phpgw_info']['server']['sessions_type'].'] SO we have this additional step to save data to phpgw_app_sessions table, $my_location ['.$my_location.']<br>'); } 
+						//$my_location = (string)$acctnum.';msgball_list';
+						// NOW WE USE FOLDER TOO as a data key for msgball_list
+						$my_location = (string)$acctnum.';msgball_list;'.$ex_folder;
+						if ($this->debug_events > 1) { $this->dbug->out('email_msg_base: event_msg_move_or_delete('.__LINE__.'): (extreme mode) sessions_type is ['.$GLOBALS['phpgw_info']['server']['sessions_type'].'] SO we have this additional step to save data to a database table, $my_location ['.$my_location.'], if using anglemail table this step is always necessary<br>'); } 
 						if ($this->use_private_table == True)
 						{
-							$this->so->so_set_data($my_location, $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list']);
+							//$this->so->so_set_data($my_location, $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list']);
+							// TRY USING COMPRESSION for msgball_list (only available for anglemail table)
+							$this->so->so_set_data(
+								$my_location, 
+								$this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list'][$ex_folder],
+								True
+							);
 						}
 						else
 						{
-							$GLOBALS['phpgw']->session->appsession($my_location, 'email', $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list']);
+							$GLOBALS['phpgw']->session->appsession($my_location, 'email', $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$acctnum]['msgball_list'][$ex_folder]);
 						}
 					}
 					$did_alter = True;
@@ -5691,10 +6065,12 @@
 			if ($alt != '')
 			{
 				$alt_tag = ' alt="['.$alt.']"';
+				$title_tag = ' title="'.$alt.'"';
 			}
 			else
 			{
 				$alt_tag = ' alt="['.$alt_default_txt.']"';
+				$title_tag = '';
 			}
 			if ($height != '')
 			{
@@ -5720,7 +6096,7 @@
 			{
 				$border_tag = '';
 			}
-			$image_html = '<img src="'.$location.'"' .$height_tag .$width_tag .$border_tag .$alt_tag .'>';
+			$image_html = '<img src="'.$location.'"' .$height_tag .$width_tag .$border_tag .$title_tag .$alt_tag .'>';
 			return $image_html;
 		}
 	

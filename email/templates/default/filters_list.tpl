@@ -74,5 +74,5 @@
 </table>
 
 <p>&nbsp;</p>
-{debugdata}
+
 <!-- end filter_list.tpl -->

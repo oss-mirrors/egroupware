@@ -128,7 +128,10 @@
 	<table width="90%" border="0" cellPadding="4" cellSpacing="4" align="center">
 	<tr> 
 		<td colspan="2" align="center">
+			<!--
 			<em>Under Development</em>
+			-->
+			<!-- this text reminds the user to submit the filter first so AM knows about it -->
 			<br>Submit the filter data to the database by clicking submit,
 			<br>then you may test or apply the filter.
 		</td>
@@ -144,5 +147,7 @@
 	</table>
 	
 	<p>&nbsp;</p>
+
 {debugdata}
+
 <!-- END Sieve Mail Filters -->

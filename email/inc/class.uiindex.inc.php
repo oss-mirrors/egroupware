@@ -44,7 +44,7 @@
 			$this->bo = CreateObject('email.boindex');
 			$this->bo->index_data();
 			
-			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			if ($GLOBALS['phpgw']->msg->phpgw_before_xslt)
 			{
 				$this->index_old_tpl();
 			}
@@ -138,6 +138,7 @@
 			// this will have a msg to the user if messages were moved or deleted
 			$this->widgets->set_toolbar_msg($GLOBALS['phpgw']->msg->report_moved_or_deleted());
 			$this->tpl->set_var('widget_toolbar',$this->widgets->get_toolbar());
+			$this->tpl->set_var('geek_bar',$this->widgets->get_geek_bar());
 			// stats row, generated in a single function call
 			$this->tpl->set_var('stats_data_display', $this->bo->get_index_stats_block((string)$GLOBALS['phpgw']->msg->get_pref_value('layout')));
 			
@@ -411,9 +412,6 @@
 		*/
 		function index_xslt_tpl()
 		{
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('E-Mail').' - '.lang('list messages');
-
-			$GLOBALS['phpgw_info']['flags']['xslt_app'] = True;
 			$GLOBALS['phpgw']->xslttpl->add_file(array('app_data'));
 			
 			$this->bo->xi['my_layout'] = $GLOBALS['phpgw']->msg->get_pref_value('layout');
@@ -426,10 +424,14 @@
 			// this will have a msg to the user if messages were moved or deleted
 			$this->widgets->set_toolbar_msg($GLOBALS['phpgw']->msg->report_moved_or_deleted());
 			$widget_toolbar = $this->widgets->get_toolbar();
+			$geek_bar = $this->widgets->get_geek_bar();
 			
 			$data = array(
+				//'appname' => lang('E-Mail'),
+				//'function_msg' => lang('list messages'),
 				'index_js' => $this->index_xslt_javascript(),
 				'widget_toolbar' => $widget_toolbar,
+				'geek_bar' => $geek_bar,
 				'stats_data_display' => $this->bo->get_index_stats_block((string)$GLOBALS['phpgw']->msg->get_pref_value('layout')),
 				'arrows_backcolor_class' => $this->bo->xi['arrows_backcolor_class'],
 				'first_page' => $this->bo->xi['first_page'],
@@ -464,12 +466,10 @@
 				'auto_refresh_widget' => $this->bo->xi['auto_refresh_widget']
 			);
 			// new way to handle debug data, if this array has anything, put it in the template source data vars
-			//if ($GLOBALS['phpgw']->msg->dbug->debugdata)
-			//{
-			//	$data['debugdata'] = $GLOBALS['phpgw']->msg->dbug->get_debugdata_stack();
-			//}
 			$data['debugdata'] = $GLOBALS['phpgw']->msg->dbug->notice_pagedone();
 			
+			$GLOBALS['phpgw_info']['flags']['email']['app_header'] = lang('E-Mail') . ': ' . lang('list messages');
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('E-Mail') . ': ' . lang('list messages');
 			$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('index' => $data));
 			
 			// close down ALL mailserver streams

@@ -2,6 +2,1013 @@
 # tag: automatic-ChangeLog--angles@aminvestments.com--2002/anglemail--lex--1.1
 #
 
+2003-05-09 GMT	Angles Puglisi <angles@aminvestments.com>	patch-25
+
+    Summary:
+      hand merge Search code by Rohan Romanus Almeida
+    Revision:
+      anglemail--lex--1.1--patch-25
+
+    Hand merge Search code by Rohan Romanus Almeida.
+    
+    We are using the Lex branch to handle the incoming Search 
+    code from Rohan Romanus Almeida. This lex branch is just 
+    an easy way to isolate the search code until it is ready 
+    for full merge into the Stable tree.
+    
+    Notes by Rohan Romanus Almeida:
+    
+    Well. I am not attaching the whole email directory, but just the
+    relevant files for now.
+    
+    There are some templates (.tpl) files which have to be copied
+    into the "email/templates/default" directory
+    and one class file (class.uisearch.inc.php) which has to be 
+    copied
+    into the "email/inc" directory.
+    
+    Note that I have modified two original files,
+    1) email/inc/class.html_widgets.inc.php
+    2) email/templates/default/widget_toolbar.tpl
+    
+    These files I have included, and they have been modified only 
+    for the addition of the link to the search engine which I have
+    put in the toolbar.
+    
+    For the search engine class supports two methods:
+    form and search
+    
+    For the search form to be displayed, index.php is called with
+    parameter of 'menuaction=email.uisearch.form'
+    
+
+    new files:
+     inc/class.uisearch.inc.php
+     templates/default/images/evo-search-16.gif
+     templates/default/search_form.tpl
+     templates/default/search_results.tpl
+     templates/default/search_results_js.tpl
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.html_widgets.inc.php
+     templates/default/widget_toolbar.tpl
+
+
+2003-05-09 GMT	Angles Puglisi <angles@aminvestments.com>	patch-24
+
+    Summary:
+      sync Lex with Brubaker, later will use lex to merge in Rohan search code
+    Revision:
+      anglemail--lex--1.1--patch-24
+
+    Sync Lex with Brubaker, later will use lex to merge in Rohan search code
+    
+
+    new files:
+     inc/class.so_mail_msg.inc.php inc/class.svc_debug.inc.php
+     setup/phpgw_pl.lang setup/tables_current.inc.php
+     setup/tables_update.inc.php templates/default/app_data-A.xsl
+     templates/default/app_data-B.xsl
+     templates/default/app_data-C.xsl
+     templates/default/app_data-D.xsl
+     templates/default/app_data-E.xsl
+     templates/default/app_data-F.xsl
+     templates/default/app_data-G.xsl
+     templates/default/app_data-H.xsl
+     templates/default/app_data-I.xsl
+     templates/default/app_data-J.xsl
+     templates/default/app_data-K.xsl
+     templates/default/app_data.xsl
+     templates/default/error_report.tpl
+     templates/default/extrabox.xsl
+     templates/default/images/AquaFusion/AquaFusion.readme
+     templates/default/images/AquaFusion/accounts-16.gif
+     templates/default/images/AquaFusion/accounts-16.png
+     templates/default/images/AquaFusion/accounts-24.gif
+     templates/default/images/AquaFusion/accounts-24.png
+     templates/default/images/AquaFusion/add-attachment-16.gif
+     templates/default/images/AquaFusion/add-attachment-16.png
+     templates/default/images/AquaFusion/add-attachment-24.gif
+     templates/default/images/AquaFusion/add-attachment-24.png
+     templates/default/images/AquaFusion/address-conduit-16.gif
+     templates/default/images/AquaFusion/address-conduit-16.png
+     templates/default/images/AquaFusion/address-conduit-24.gif
+     templates/default/images/AquaFusion/address-conduit-24.png
+     templates/default/images/AquaFusion/arrow-2left-16.gif
+     templates/default/images/AquaFusion/arrow-2left-16.png
+     templates/default/images/AquaFusion/arrow-2left-24.gif
+     templates/default/images/AquaFusion/arrow-2left-24.png
+     templates/default/images/AquaFusion/arrow-2left-no-16.gif
+     templates/default/images/AquaFusion/arrow-2left-no-16.png
+     templates/default/images/AquaFusion/arrow-2left-no-24.gif
+     templates/default/images/AquaFusion/arrow-2left-no-24.png
+     templates/default/images/AquaFusion/arrow-2right-16.gif
+     templates/default/images/AquaFusion/arrow-2right-16.png
+     templates/default/images/AquaFusion/arrow-2right-24.gif
+     templates/default/images/AquaFusion/arrow-2right-24.png
+     templates/default/images/AquaFusion/arrow-2right-no-16.gif
+     templates/default/images/AquaFusion/arrow-2right-no-16.png
+     templates/default/images/AquaFusion/arrow-2right-no-24.gif
+     templates/default/images/AquaFusion/arrow-2right-no-24.png
+     templates/default/images/AquaFusion/arrow-left-16.gif
+     templates/default/images/AquaFusion/arrow-left-16.png
+     templates/default/images/AquaFusion/arrow-left-24.gif
+     templates/default/images/AquaFusion/arrow-left-24.png
+     templates/default/images/AquaFusion/arrow-left-no-16.gif
+     templates/default/images/AquaFusion/arrow-left-no-16.png
+     templates/default/images/AquaFusion/arrow-left-no-24.gif
+     templates/default/images/AquaFusion/arrow-left-no-24.png
+     templates/default/images/AquaFusion/arrow-right-16.gif
+     templates/default/images/AquaFusion/arrow-right-16.png
+     templates/default/images/AquaFusion/arrow-right-24.gif
+     templates/default/images/AquaFusion/arrow-right-24.png
+     templates/default/images/AquaFusion/arrow-right-no-16.gif
+     templates/default/images/AquaFusion/arrow-right-no-16.png
+     templates/default/images/AquaFusion/arrow-right-no-24.gif
+     templates/default/images/AquaFusion/arrow-right-no-24.png
+     templates/default/images/AquaFusion/compose-message-16.gif
+     templates/default/images/AquaFusion/compose-message-16.png
+     templates/default/images/AquaFusion/compose-message-24.gif
+     templates/default/images/AquaFusion/compose-message-24.png
+     templates/default/images/AquaFusion/customize-16.gif
+     templates/default/images/AquaFusion/customize-16.png
+     templates/default/images/AquaFusion/customize-24.gif
+     templates/default/images/AquaFusion/customize-24.png
+     templates/default/images/AquaFusion/delete-message.gif
+     templates/default/images/AquaFusion/delete-message.png
+     templates/default/images/AquaFusion/filters-16.gif
+     templates/default/images/AquaFusion/filters-16.png
+     templates/default/images/AquaFusion/filters-24.gif
+     templates/default/images/AquaFusion/filters-24.png
+     templates/default/images/AquaFusion/folder-16.gif
+     templates/default/images/AquaFusion/folder-16.png
+     templates/default/images/AquaFusion/folder-24.gif
+     templates/default/images/AquaFusion/folder-24.png
+     templates/default/images/AquaFusion/forward.gif
+     templates/default/images/AquaFusion/forward.png
+     templates/default/images/AquaFusion/reply-all.gif
+     templates/default/images/AquaFusion/reply-all.png
+     templates/default/images/AquaFusion/reply.gif
+     templates/default/images/AquaFusion/reply.png
+     templates/default/images/AquaFusion/send-16.gif
+     templates/default/images/AquaFusion/send-16.png
+     templates/default/images/AquaFusion/send-24.gif
+     templates/default/images/AquaFusion/send-24.png
+     templates/default/images/AquaFusion/spellcheck-16.gif
+     templates/default/images/AquaFusion/spellcheck-16.png
+     templates/default/images/AquaFusion/spellcheck-24.gif
+     templates/default/images/AquaFusion/spellcheck-24.png
+     templates/default/images/AquaFusion/trash-16.gif
+     templates/default/images/AquaFusion/trash-16.png
+     templates/default/images/AquaFusion/trash-24.gif
+     templates/default/images/AquaFusion/trash-24.png
+     templates/default/images/deleted.gif
+     templates/default/images/deleted.png
+     templates/default/images/evo/accounts-16.gif
+     templates/default/images/evo/accounts-16.png
+     templates/default/images/evo/accounts-24.gif
+     templates/default/images/evo/accounts-24.png
+     templates/default/images/evo/add-attachment-16.gif
+     templates/default/images/evo/add-attachment-16.png
+     templates/default/images/evo/add-attachment-24.gif
+     templates/default/images/evo/add-attachment-24.png
+     templates/default/images/evo/add-attachment.gif
+     templates/default/images/evo/add-attachment.png
+     templates/default/images/evo/address-conduit-16.gif
+     templates/default/images/evo/address-conduit-16.png
+     templates/default/images/evo/address-conduit-24.gif
+     templates/default/images/evo/address-conduit-24.png
+     templates/default/images/evo/arrow-2left-16.gif
+     templates/default/images/evo/arrow-2left-16.png
+     templates/default/images/evo/arrow-2left-24.gif
+     templates/default/images/evo/arrow-2left-24.png
+     templates/default/images/evo/arrow-2left-no-16.gif
+     templates/default/images/evo/arrow-2left-no-16.png
+     templates/default/images/evo/arrow-2left-no-24.gif
+     templates/default/images/evo/arrow-2left-no-24.png
+     templates/default/images/evo/arrow-2right-16.gif
+     templates/default/images/evo/arrow-2right-16.png
+     templates/default/images/evo/arrow-2right-24.gif
+     templates/default/images/evo/arrow-2right-24.png
+     templates/default/images/evo/arrow-2right-no-16.gif
+     templates/default/images/evo/arrow-2right-no-16.png
+     templates/default/images/evo/arrow-2right-no-24.gif
+     templates/default/images/evo/arrow-2right-no-24.png
+     templates/default/images/evo/arrow-left-16.gif
+     templates/default/images/evo/arrow-left-16.png
+     templates/default/images/evo/arrow-left-24.gif
+     templates/default/images/evo/arrow-left-24.png
+     templates/default/images/evo/arrow-left-no-16.gif
+     templates/default/images/evo/arrow-left-no-16.png
+     templates/default/images/evo/arrow-left-no-24.gif
+     templates/default/images/evo/arrow-left-no-24.png
+     templates/default/images/evo/arrow-right-16.gif
+     templates/default/images/evo/arrow-right-16.png
+     templates/default/images/evo/arrow-right-24.gif
+     templates/default/images/evo/arrow-right-24.png
+     templates/default/images/evo/arrow-right-no-16.gif
+     templates/default/images/evo/arrow-right-no-16.png
+     templates/default/images/evo/arrow-right-no-24.gif
+     templates/default/images/evo/arrow-right-no-24.png
+     templates/default/images/evo/compose-message-16.gif
+     templates/default/images/evo/compose-message-16.png
+     templates/default/images/evo/compose-message-24.gif
+     templates/default/images/evo/compose-message-24.png
+     templates/default/images/evo/customize-16.gif
+     templates/default/images/evo/customize-16.png
+     templates/default/images/evo/customize-24.gif
+     templates/default/images/evo/customize-24.png
+     templates/default/images/evo/customize3-24.gif
+     templates/default/images/evo/customize3-24.png
+     templates/default/images/evo/customize4-24.gif
+     templates/default/images/evo/customize4-24.png
+     templates/default/images/evo/delete-message.gif
+     templates/default/images/evo/delete-message.png
+     templates/default/images/evo/envelope.gif
+     templates/default/images/evo/envelope.png
+     templates/default/images/evo/filters-16.gif
+     templates/default/images/evo/filters-16.png
+     templates/default/images/evo/filters-24.gif
+     templates/default/images/evo/filters-24.png
+     templates/default/images/evo/filters-config-24.gif
+     templates/default/images/evo/filters-config-24.png
+     templates/default/images/evo/folder-16.gif
+     templates/default/images/evo/folder-16.png
+     templates/default/images/evo/folder-24.gif
+     templates/default/images/evo/folder-24.png
+     templates/default/images/evo/folder-config-16.gif
+     templates/default/images/evo/folder-config-16.png
+     templates/default/images/evo/folder-config-24.gif
+     templates/default/images/evo/folder-config-24.png
+     templates/default/images/evo/folder-config2-24.gif
+     templates/default/images/evo/folder-config2-24.png
+     templates/default/images/evo/forward.gif
+     templates/default/images/evo/forward.png
+     templates/default/images/evo/move-message.gif
+     templates/default/images/evo/move-message.png
+     templates/default/images/evo/next-message.gif
+     templates/default/images/evo/next-message.png
+     templates/default/images/evo/previous-message.gif
+     templates/default/images/evo/previous-message.png
+     templates/default/images/evo/reply-all.gif
+     templates/default/images/evo/reply-all.png
+     templates/default/images/evo/reply-all2.gif
+     templates/default/images/evo/reply-all2.png
+     templates/default/images/evo/reply-to-all.gif
+     templates/default/images/evo/reply-to-all.png
+     templates/default/images/evo/reply.gif
+     templates/default/images/evo/reply.png
+     templates/default/images/evo/send-16.gif
+     templates/default/images/evo/send-16.png
+     templates/default/images/evo/send-24.gif
+     templates/default/images/evo/send-24.png
+     templates/default/images/evo/spellcheck-16.gif
+     templates/default/images/evo/spellcheck-16.png
+     templates/default/images/evo/spellcheck-24.gif
+     templates/default/images/evo/spellcheck-24.png
+     templates/default/images/evo/trash-16.gif
+     templates/default/images/evo/trash-16.png
+     templates/default/images/evo/trash-24.gif
+     templates/default/images/evo/trash-24.png
+     templates/default/images/flag-for-followup-16.gif
+     templates/default/images/flag-for-followup-16.png
+     templates/default/images/mark-as-important-16.gif
+     templates/default/images/mark-as-important-16.png
+     templates/default/images/moz/accounts-16.gif
+     templates/default/images/moz/accounts-16.png
+     templates/default/images/moz/accounts-24.gif
+     templates/default/images/moz/accounts-24.png
+     templates/default/images/moz/add-attachment-16.gif
+     templates/default/images/moz/add-attachment-16.png
+     templates/default/images/moz/add-attachment-24.gif
+     templates/default/images/moz/add-attachment-24.png
+     templates/default/images/moz/address-conduit-16.gif
+     templates/default/images/moz/address-conduit-16.png
+     templates/default/images/moz/address-conduit-24.gif
+     templates/default/images/moz/address-conduit-24.png
+     templates/default/images/moz/arrow-2left-16.gif
+     templates/default/images/moz/arrow-2left-16.png
+     templates/default/images/moz/arrow-2left-24.gif
+     templates/default/images/moz/arrow-2left-24.png
+     templates/default/images/moz/arrow-2left-no-16.gif
+     templates/default/images/moz/arrow-2left-no-16.png
+     templates/default/images/moz/arrow-2left-no-24.gif
+     templates/default/images/moz/arrow-2left-no-24.png
+     templates/default/images/moz/arrow-2right-16.gif
+     templates/default/images/moz/arrow-2right-16.png
+     templates/default/images/moz/arrow-2right-24.gif
+     templates/default/images/moz/arrow-2right-24.png
+     templates/default/images/moz/arrow-2right-no-16.gif
+     templates/default/images/moz/arrow-2right-no-16.png
+     templates/default/images/moz/arrow-2right-no-24.gif
+     templates/default/images/moz/arrow-2right-no-24.png
+     templates/default/images/moz/arrow-left-16.gif
+     templates/default/images/moz/arrow-left-16.png
+     templates/default/images/moz/arrow-left-24.gif
+     templates/default/images/moz/arrow-left-24.png
+     templates/default/images/moz/arrow-left-no-16.gif
+     templates/default/images/moz/arrow-left-no-16.png
+     templates/default/images/moz/arrow-left-no-24.gif
+     templates/default/images/moz/arrow-left-no-24.png
+     templates/default/images/moz/arrow-right-16.gif
+     templates/default/images/moz/arrow-right-16.png
+     templates/default/images/moz/arrow-right-24.gif
+     templates/default/images/moz/arrow-right-24.png
+     templates/default/images/moz/arrow-right-no-16.gif
+     templates/default/images/moz/arrow-right-no-16.png
+     templates/default/images/moz/arrow-right-no-24.gif
+     templates/default/images/moz/arrow-right-no-24.png
+     templates/default/images/moz/compose-message-16.gif
+     templates/default/images/moz/compose-message-16.png
+     templates/default/images/moz/compose-message-24.gif
+     templates/default/images/moz/compose-message-24.png
+     templates/default/images/moz/customize-16.gif
+     templates/default/images/moz/customize-16.png
+     templates/default/images/moz/customize-24.gif
+     templates/default/images/moz/customize-24.png
+     templates/default/images/moz/delete-message.gif
+     templates/default/images/moz/delete-message.png
+     templates/default/images/moz/filters-16.gif
+     templates/default/images/moz/filters-16.png
+     templates/default/images/moz/filters-24.gif
+     templates/default/images/moz/filters-24.png
+     templates/default/images/moz/folder-16.gif
+     templates/default/images/moz/folder-16.png
+     templates/default/images/moz/folder-24.gif
+     templates/default/images/moz/folder-24.png
+     templates/default/images/moz/forward.gif
+     templates/default/images/moz/forward.png
+     templates/default/images/moz/reply-all.gif
+     templates/default/images/moz/reply-all.png
+     templates/default/images/moz/reply.gif
+     templates/default/images/moz/reply.png
+     templates/default/images/moz/send-16.gif
+     templates/default/images/moz/send-16.png
+     templates/default/images/moz/send-24.gif
+     templates/default/images/moz/send-24.png
+     templates/default/images/moz/spellcheck-16.gif
+     templates/default/images/moz/spellcheck-16.png
+     templates/default/images/moz/spellcheck-24.gif
+     templates/default/images/moz/spellcheck-24.png
+     templates/default/images/moz/trash-16.gif
+     templates/default/images/moz/trash-16.png
+     templates/default/images/moz/trash-24.gif
+     templates/default/images/moz/trash-24.png
+     templates/default/images/noia/accounts-16.gif
+     templates/default/images/noia/accounts-16.png
+     templates/default/images/noia/accounts-24.gif
+     templates/default/images/noia/accounts-24.png
+     templates/default/images/noia/add-attachment-16.gif
+     templates/default/images/noia/add-attachment-16.png
+     templates/default/images/noia/add-attachment-24.gif
+     templates/default/images/noia/add-attachment-24.png
+     templates/default/images/noia/address-conduit-16.gif
+     templates/default/images/noia/address-conduit-16.png
+     templates/default/images/noia/address-conduit-24.gif
+     templates/default/images/noia/address-conduit-24.png
+     templates/default/images/noia/arrow-2left-16.gif
+     templates/default/images/noia/arrow-2left-16.png
+     templates/default/images/noia/arrow-2left-24.gif
+     templates/default/images/noia/arrow-2left-24.png
+     templates/default/images/noia/arrow-2left-no-16.gif
+     templates/default/images/noia/arrow-2left-no-16.png
+     templates/default/images/noia/arrow-2left-no-24.gif
+     templates/default/images/noia/arrow-2left-no-24.png
+     templates/default/images/noia/arrow-2right-16.gif
+     templates/default/images/noia/arrow-2right-16.png
+     templates/default/images/noia/arrow-2right-24.gif
+     templates/default/images/noia/arrow-2right-24.png
+     templates/default/images/noia/arrow-2right-no-16.gif
+     templates/default/images/noia/arrow-2right-no-16.png
+     templates/default/images/noia/arrow-2right-no-24.gif
+     templates/default/images/noia/arrow-2right-no-24.png
+     templates/default/images/noia/arrow-left-16.gif
+     templates/default/images/noia/arrow-left-16.png
+     templates/default/images/noia/arrow-left-24.gif
+     templates/default/images/noia/arrow-left-24.png
+     templates/default/images/noia/arrow-left-no-16.gif
+     templates/default/images/noia/arrow-left-no-16.png
+     templates/default/images/noia/arrow-left-no-24.gif
+     templates/default/images/noia/arrow-left-no-24.png
+     templates/default/images/noia/arrow-right-16.gif
+     templates/default/images/noia/arrow-right-16.png
+     templates/default/images/noia/arrow-right-24.gif
+     templates/default/images/noia/arrow-right-24.png
+     templates/default/images/noia/arrow-right-no-16.gif
+     templates/default/images/noia/arrow-right-no-16.png
+     templates/default/images/noia/arrow-right-no-24.gif
+     templates/default/images/noia/arrow-right-no-24.png
+     templates/default/images/noia/compose-message-16.gif
+     templates/default/images/noia/compose-message-16.png
+     templates/default/images/noia/compose-message-24.gif
+     templates/default/images/noia/compose-message-24.png
+     templates/default/images/noia/customize-16.gif
+     templates/default/images/noia/customize-16.png
+     templates/default/images/noia/customize-24.gif
+     templates/default/images/noia/customize-24.png
+     templates/default/images/noia/delete-message.gif
+     templates/default/images/noia/delete-message.png
+     templates/default/images/noia/envelope.gif
+     templates/default/images/noia/envelope.png
+     templates/default/images/noia/filters-16.gif
+     templates/default/images/noia/filters-16.png
+     templates/default/images/noia/filters-24.gif
+     templates/default/images/noia/filters-24.png
+     templates/default/images/noia/folder-16.gif
+     templates/default/images/noia/folder-16.png
+     templates/default/images/noia/folder-24.gif
+     templates/default/images/noia/folder-24.png
+     templates/default/images/noia/forward.gif
+     templates/default/images/noia/forward.png
+     templates/default/images/noia/next-message.gif
+     templates/default/images/noia/next-message.png
+     templates/default/images/noia/noia.changelog
+     templates/default/images/noia/noia.gpl.txt
+     templates/default/images/noia/noia.license
+     templates/default/images/noia/noia.readme
+     templates/default/images/noia/previous-message.gif
+     templates/default/images/noia/previous-message.png
+     templates/default/images/noia/reply-all.gif
+     templates/default/images/noia/reply-all.png
+     templates/default/images/noia/reply.gif
+     templates/default/images/noia/reply.png
+     templates/default/images/noia/send-16.gif
+     templates/default/images/noia/send-16.png
+     templates/default/images/noia/send-24.gif
+     templates/default/images/noia/send-24.png
+     templates/default/images/noia/spellcheck-16.gif
+     templates/default/images/noia/spellcheck-16.png
+     templates/default/images/noia/spellcheck-24.gif
+     templates/default/images/noia/spellcheck-24.png
+     templates/default/images/noia/trash-16.gif
+     templates/default/images/noia/trash-16.png
+     templates/default/images/noia/trash-24.gif
+     templates/default/images/noia/trash-24.png
+     templates/default/images/regular_draft.gif
+     templates/default/images/regular_draft.png
+     templates/default/images/replied.gif
+     templates/default/images/replied.png
+     templates/default/images/view_formatted-16.gif
+     templates/default/images/view_formatted-16.png
+     templates/default/images/view_formatted-24.gif
+     templates/default/images/view_formatted-24.png
+     templates/default/images/view_headers-16.gif
+     templates/default/images/view_headers-16.png
+     templates/default/images/view_headers-24.gif
+     templates/default/images/view_headers-24.png
+     templates/default/images/view_nofmt-16.gif
+     templates/default/images/view_nofmt-16.png
+     templates/default/images/view_nofmt-24.gif
+     templates/default/images/view_nofmt-24.png
+     templates/default/images/view_printable-16.gif
+     templates/default/images/view_printable-16.png
+     templates/default/images/view_printable-24.gif
+     templates/default/images/view_printable-24.png
+     templates/default/images/view_raw-16.gif
+     templates/default/images/view_raw-16.png
+     templates/default/images/view_raw-24.gif
+     templates/default/images/view_raw-24.png
+     templates/default/message_printable.tpl
+     templates/idsociety/images/evo-accounts-16.png
+     templates/idsociety/images/evo-accounts-24.png
+     templates/idsociety/images/evo-add-attachment-16.png
+     templates/idsociety/images/evo-add-attachment-24.png
+     templates/idsociety/images/evo-add-attachment.png
+     templates/idsociety/images/evo-address-conduit-16.png
+     templates/idsociety/images/evo-address-conduit-24.png
+     templates/idsociety/images/evo-arrow-2left-16.png
+     templates/idsociety/images/evo-arrow-2left-24.png
+     templates/idsociety/images/evo-arrow-2left-no-16.png
+     templates/idsociety/images/evo-arrow-2left-no-24.png
+     templates/idsociety/images/evo-arrow-2right-16.png
+     templates/idsociety/images/evo-arrow-2right-24.png
+     templates/idsociety/images/evo-arrow-2right-no-16.png
+     templates/idsociety/images/evo-arrow-2right-no-24.png
+     templates/idsociety/images/evo-arrow-left-16.png
+     templates/idsociety/images/evo-arrow-left-24.png
+     templates/idsociety/images/evo-arrow-left-no-16.png
+     templates/idsociety/images/evo-arrow-left-no-24.png
+     templates/idsociety/images/evo-arrow-right-16.png
+     templates/idsociety/images/evo-arrow-right-24.png
+     templates/idsociety/images/evo-arrow-right-no-16.png
+     templates/idsociety/images/evo-arrow-right-no-24.png
+     templates/idsociety/images/evo-compose-message-16.png
+     templates/idsociety/images/evo-compose-message-24.png
+     templates/idsociety/images/evo-customize-16.png
+     templates/idsociety/images/evo-customize-24.png
+     templates/idsociety/images/evo-customize3-24.png
+     templates/idsociety/images/evo-customize4-24.png
+     templates/idsociety/images/evo-delete-message.png
+     templates/idsociety/images/evo-envelope.png
+     templates/idsociety/images/evo-filters-16.png
+     templates/idsociety/images/evo-filters-24.png
+     templates/idsociety/images/evo-filters-config-24.png
+     templates/idsociety/images/evo-folder-16.png
+     templates/idsociety/images/evo-folder-24.png
+     templates/idsociety/images/evo-folder-config-16.png
+     templates/idsociety/images/evo-folder-config-24.png
+     templates/idsociety/images/evo-folder-config2-24.png
+     templates/idsociety/images/evo-forward.png
+     templates/idsociety/images/evo-move-message.png
+     templates/idsociety/images/evo-next-message.png
+     templates/idsociety/images/evo-previous-message.png
+     templates/idsociety/images/evo-reply-all.png
+     templates/idsociety/images/evo-reply-all2.png
+     templates/idsociety/images/evo-reply-to-all.png
+     templates/idsociety/images/evo-reply.png
+     templates/idsociety/images/evo-send-16.png
+     templates/idsociety/images/evo-send-24.png
+     templates/idsociety/images/evo-spellcheck-16.png
+     templates/idsociety/images/evo-spellcheck-24.png
+     templates/idsociety/images/evo-trash-16.png
+     templates/idsociety/images/evo-trash-24.png
+     templates/idsociety/images/moz-accounts-16.png
+     templates/idsociety/images/moz-accounts-24.png
+     templates/idsociety/images/moz-add-attachment-16.png
+     templates/idsociety/images/moz-add-attachment-24.png
+     templates/idsociety/images/moz-address-conduit-16.png
+     templates/idsociety/images/moz-address-conduit-24.png
+     templates/idsociety/images/moz-arrow-2left-16.png
+     templates/idsociety/images/moz-arrow-2left-24.png
+     templates/idsociety/images/moz-arrow-2left-no-16.png
+     templates/idsociety/images/moz-arrow-2left-no-24.png
+     templates/idsociety/images/moz-arrow-2right-16.png
+     templates/idsociety/images/moz-arrow-2right-24.png
+     templates/idsociety/images/moz-arrow-2right-no-16.png
+     templates/idsociety/images/moz-arrow-2right-no-24.png
+     templates/idsociety/images/moz-arrow-left-16.png
+     templates/idsociety/images/moz-arrow-left-24.png
+     templates/idsociety/images/moz-arrow-left-no-16.png
+     templates/idsociety/images/moz-arrow-left-no-24.png
+     templates/idsociety/images/moz-arrow-right-16.png
+     templates/idsociety/images/moz-arrow-right-24.png
+     templates/idsociety/images/moz-arrow-right-no-16.png
+     templates/idsociety/images/moz-arrow-right-no-24.png
+     templates/idsociety/images/moz-compose-message-16.png
+     templates/idsociety/images/moz-compose-message-24.png
+     templates/idsociety/images/moz-customize-16.png
+     templates/idsociety/images/moz-customize-24.png
+     templates/idsociety/images/moz-delete-message.png
+     templates/idsociety/images/moz-filters-16.png
+     templates/idsociety/images/moz-filters-24.png
+     templates/idsociety/images/moz-folder-16.png
+     templates/idsociety/images/moz-folder-24.png
+     templates/idsociety/images/moz-forward.png
+     templates/idsociety/images/moz-reply-all.png
+     templates/idsociety/images/moz-reply.png
+     templates/idsociety/images/moz-send-16.png
+     templates/idsociety/images/moz-send-24.png
+     templates/idsociety/images/moz-spellcheck-16.png
+     templates/idsociety/images/moz-spellcheck-24.png
+     templates/idsociety/images/moz-trash-16.png
+     templates/idsociety/images/moz-trash-24.png
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-16
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-17
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-18
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-19
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-20
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-21
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-22
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-23
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-24
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-25
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-26
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-27
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-28
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-29
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-30
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-31
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-32
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-33
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-34
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-35
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-36
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-37
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-38
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-39
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-40
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-41
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-42
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-43
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-44
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-45
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-46
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-47
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-48
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-49
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-50
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-51
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-52
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-53
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-54
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-55
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-56
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-57
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-58
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-59
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-60
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-61
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-62
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-63
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-64
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-65
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-66
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-67
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-68
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-69
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-70
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-71
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-72
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-73
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-74
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-75
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-79
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-80
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-81
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-82
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-83
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-84
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-85
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-86
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-87
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-88
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-89
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-90
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-91
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-92
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-13
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-14
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-15
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-17
+
+    removed files:
+     templates/default/images/evo-accounts-16.gif
+     templates/default/images/evo-accounts-24.gif
+     templates/default/images/evo-add-attachment-16.gif
+     templates/default/images/evo-add-attachment-24.gif
+     templates/default/images/evo-add-attachment.gif
+     templates/default/images/evo-address-conduit-16.gif
+     templates/default/images/evo-address-conduit-24.gif
+     templates/default/images/evo-arrow-2left-16.gif
+     templates/default/images/evo-arrow-2left-24.gif
+     templates/default/images/evo-arrow-2left-no-16.gif
+     templates/default/images/evo-arrow-2left-no-24.gif
+     templates/default/images/evo-arrow-2right-16.gif
+     templates/default/images/evo-arrow-2right-24.gif
+     templates/default/images/evo-arrow-2right-no-16.gif
+     templates/default/images/evo-arrow-2right-no-24.gif
+     templates/default/images/evo-arrow-left-16.gif
+     templates/default/images/evo-arrow-left-24.gif
+     templates/default/images/evo-arrow-left-no-16.gif
+     templates/default/images/evo-arrow-left-no-24.gif
+     templates/default/images/evo-arrow-right-16.gif
+     templates/default/images/evo-arrow-right-24.gif
+     templates/default/images/evo-arrow-right-no-16.gif
+     templates/default/images/evo-arrow-right-no-24.gif
+     templates/default/images/evo-compose-message-16.gif
+     templates/default/images/evo-compose-message-24.gif
+     templates/default/images/evo-customize-16.gif
+     templates/default/images/evo-customize-24.gif
+     templates/default/images/evo-customize3-24.gif
+     templates/default/images/evo-customize4-24.gif
+     templates/default/images/evo-delete-message.gif
+     templates/default/images/evo-envelope.gif
+     templates/default/images/evo-filters-16.gif
+     templates/default/images/evo-filters-24.gif
+     templates/default/images/evo-filters-config-24.gif
+     templates/default/images/evo-folder-16.gif
+     templates/default/images/evo-folder-24.gif
+     templates/default/images/evo-folder-config-16.gif
+     templates/default/images/evo-folder-config-24.gif
+     templates/default/images/evo-folder-config2-24.gif
+     templates/default/images/evo-forward.gif
+     templates/default/images/evo-move-message.gif
+     templates/default/images/evo-next-message.gif
+     templates/default/images/evo-previous-message.gif
+     templates/default/images/evo-reply-all.gif
+     templates/default/images/evo-reply-all2.gif
+     templates/default/images/evo-reply-to-all.gif
+     templates/default/images/evo-reply.gif
+     templates/default/images/evo-send-16.gif
+     templates/default/images/evo-send-24.gif
+     templates/default/images/evo-spellcheck-16.gif
+     templates/default/images/evo-spellcheck-24.gif
+     templates/default/images/evo-trash-16.gif
+     templates/default/images/evo-trash-24.gif
+     templates/default/images/moz-accounts-16.gif
+     templates/default/images/moz-accounts-24.gif
+     templates/default/images/moz-add-attachment-16.gif
+     templates/default/images/moz-add-attachment-24.gif
+     templates/default/images/moz-address-conduit-16.gif
+     templates/default/images/moz-address-conduit-24.gif
+     templates/default/images/moz-arrow-2left-16.gif
+     templates/default/images/moz-arrow-2left-24.gif
+     templates/default/images/moz-arrow-2left-no-16.gif
+     templates/default/images/moz-arrow-2left-no-24.gif
+     templates/default/images/moz-arrow-2right-16.gif
+     templates/default/images/moz-arrow-2right-24.gif
+     templates/default/images/moz-arrow-2right-no-16.gif
+     templates/default/images/moz-arrow-2right-no-24.gif
+     templates/default/images/moz-arrow-left-16.gif
+     templates/default/images/moz-arrow-left-24.gif
+     templates/default/images/moz-arrow-left-no-16.gif
+     templates/default/images/moz-arrow-left-no-24.gif
+     templates/default/images/moz-arrow-right-16.gif
+     templates/default/images/moz-arrow-right-24.gif
+     templates/default/images/moz-arrow-right-no-16.gif
+     templates/default/images/moz-arrow-right-no-24.gif
+     templates/default/images/moz-compose-message-16.gif
+     templates/default/images/moz-compose-message-24.gif
+     templates/default/images/moz-customize-16.gif
+     templates/default/images/moz-customize-24.gif
+     templates/default/images/moz-delete-message.gif
+     templates/default/images/moz-filters-16.gif
+     templates/default/images/moz-filters-24.gif
+     templates/default/images/moz-folder-16.gif
+     templates/default/images/moz-folder-24.gif
+     templates/default/images/moz-forward.gif
+     templates/default/images/moz-reply-all.gif
+     templates/default/images/moz-reply.gif
+     templates/default/images/moz-send-16.gif
+     templates/default/images/moz-send-24.gif
+     templates/default/images/moz-spellcheck-16.gif
+     templates/default/images/moz-spellcheck-24.gif
+     templates/default/images/moz-trash-16.gif
+     templates/default/images/moz-trash-24.gif
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     addressbook.php inc/class.boaction.inc.php
+     inc/class.boattach_file.inc.php inc/class.bocompose.inc.php
+     inc/class.bofilters.inc.php inc/class.bofolder.inc.php
+     inc/class.boindex.inc.php inc/class.bomessage.inc.php
+     inc/class.bopreferences.inc.php inc/class.bosend.inc.php
+     inc/class.html_widgets.inc.php inc/class.mail_dcom.inc.php
+     inc/class.mail_dcom_base.inc.php
+     inc/class.mail_dcom_base_sock.inc.php
+     inc/class.mail_dcom_imap.inc.php
+     inc/class.mail_dcom_imap_sock.inc.php
+     inc/class.mail_msg.inc.php inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_display.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+     inc/class.msg_bootstrap.inc.php inc/class.spell.inc.php
+     inc/class.svc_nextmatches.inc.php
+     inc/class.ui_mail_debug.inc.php
+     inc/class.uiattach_file.inc.php inc/class.uicompose.inc.php
+     inc/class.uifilters.inc.php inc/class.uifolder.inc.php
+     inc/class.uiindex.inc.php inc/class.uijsaddressbook.inc.php
+     inc/class.uimessage.inc.php inc/class.uipreferences.inc.php
+     inc/hook_home.inc.php inc/hook_preferences.inc.php
+     setup/phpgw_da.lang setup/phpgw_de.lang setup/phpgw_en.lang
+     setup/phpgw_es.lang setup/phpgw_fi.lang setup/phpgw_fr.lang
+     setup/phpgw_hu.lang setup/phpgw_it.lang setup/phpgw_ja.lang
+     setup/phpgw_ko.lang setup/phpgw_nl.lang setup/phpgw_pt.lang
+     setup/phpgw_sv.lang setup/phpgw_zt.lang setup/setup.inc.php
+     templates/default/attach_file.tpl
+     templates/default/class_prefs_blocks.tpl
+     templates/default/class_prefs_ex_accounts.tpl
+     templates/default/class_prefs_ui.tpl
+     templates/default/compose.tpl templates/default/debug.tpl
+     templates/default/filters.tpl
+     templates/default/filters_list.tpl
+     templates/default/folder.tpl
+     templates/default/images/check.png
+     templates/default/images/navbar.png
+     templates/default/images/refresh.png
+     templates/default/images/sm_delete.png
+     templates/default/images/sm_envelope.png
+     templates/default/images/sm_forward.png
+     templates/default/images/sm_reply.png
+     templates/default/images/sm_reply_all.png
+     templates/default/images/tree_collapse.png
+     templates/default/images/tree_end.png
+     templates/default/images/tree_expand.png
+     templates/default/images/tree_leaf.png
+     templates/default/images/tree_space.png
+     templates/default/images/tree_split.png
+     templates/default/images/tree_vertline.png
+     templates/default/index_blocks.tpl
+     templates/default/index_main_b0_l1.tpl
+     templates/default/index_main_b0_l2.tpl
+     templates/default/message_main.tpl
+     templates/default/widget_toolbar.tpl
+
+    new directories:
+     templates/default/images/AquaFusion
+     templates/default/images/evo templates/default/images/moz
+     templates/default/images/noia
+
+    new patches:
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-16
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-17
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-18
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-19
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-20
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-21
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-22
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-23
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-24
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-25
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-26
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-27
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-28
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-29
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-30
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-31
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-32
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-33
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-34
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-35
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-36
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-37
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-38
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-39
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-40
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-41
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-42
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-43
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-44
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-45
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-46
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-47
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-48
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-49
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-50
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-51
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-52
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-53
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-54
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-55
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-56
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-57
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-58
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-59
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-60
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-61
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-62
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-63
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-64
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-65
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-66
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-67
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-68
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-69
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-70
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-71
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-72
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-73
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-74
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-75
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-79
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-80
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-81
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-82
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-83
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-84
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-85
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-86
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-87
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-88
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-89
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-90
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-91
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-92
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-13
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-14
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-15
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-17
+
+
+2002-12-06 GMT	Angles Puglisi <angles@aminvestments.com>	patch-23
+
+    Summary:
+      sync lext to codehere patch 78, prep to be target of brubaker, ryan merge
+    Revision:
+      anglemail--lex--1.1--patch-23
+
+    Sync lext to codehere patch 78, prep to be target of brubaker, ryan merge.
+    
+
+    new files:
+     ChangeLog.brubaker--1.1 inc/new_nav.js
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/base-0
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-10
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-11
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-12
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-13
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-14
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-15
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-2
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-3
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-4
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-5
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-6
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-7
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-8
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-9
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-54
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-55
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-56
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-57
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-58
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-59
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-60
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-61
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-62
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-63
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-64
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-65
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-66
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-67
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-68
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-69
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-70
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-71
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-72
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-73
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-74
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-75
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-76
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-77
+     {arch}/anglemail/anglemail--codehere/anglemail--codehere--1.1/angles@aminvestments.com--2002/patch-log/patch-78
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-10
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-11
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-12
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.boaction.inc.php
+     inc/class.bocompose.inc.php inc/class.bofilters.inc.php
+     inc/class.bofolder.inc.php inc/class.boindex.inc.php
+     inc/class.bojsaddressbook.inc.php inc/class.bomessage.inc.php
+     inc/class.bopreferences.inc.php inc/class.html_widgets.inc.php
+     inc/class.mail_dcom_base.inc.php
+     inc/class.mail_dcom_imap.inc.php
+     inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_display.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+     inc/class.msg_bootstrap.inc.php inc/class.spell.inc.php
+     inc/class.svc_nextmatches.inc.php
+     inc/class.ui_mail_debug.inc.php inc/class.uiindex.inc.php
+     inc/class.uijsaddressbook.inc.php
+     inc/class.uipreferences.inc.php inc/hook_home.inc.php
+     inc/selectboxes.js templates/default/addressbook-js.tpl
+     templates/default/addressbook-real-plain.tpl-UNUSED
+     templates/default/addressbook.tpl
+     templates/default/addressbook.tpl-BAD
+     templates/default/addressbook.tpl-ORIG
+     templates/default/debug.tpl
+     templates/default/index_main_b0_l2.tpl
+
+    new patches:
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--base-0
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-10
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-11
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-12
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-13
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-14
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-15
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-2
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-3
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-4
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-5
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-6
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-7
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-8
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-9
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-54
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-55
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-56
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-57
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-58
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-59
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-60
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-61
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-62
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-63
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-64
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-65
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-66
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-67
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-68
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-69
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-70
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-71
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-72
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-73
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-74
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-75
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-76
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-77
+     angles@aminvestments.com--2002/anglemail--codehere--1.1--patch-78
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-10
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-11
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-12
+
+
 2002-10-17 GMT	Angles Puglisi <angles@aminvestments.com>	patch-22
 
     Summary:
