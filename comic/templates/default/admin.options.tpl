@@ -24,10 +24,10 @@
       </td>
     </tr>
     <tr>
-      <td colspan=1 align=right>
+      <td colspan=1 align=center>
         <input type="submit" name="submit" value="{action_label}">
       </td>
-      <td colspan=1 align=left>
+      <td colspan=1 align=center>
         <input type="reset" name="reset" value="{reset_label}">
       </td>
     </tr>

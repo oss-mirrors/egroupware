@@ -15,7 +15,7 @@ INSERT INTO phpgw_comic_data VALUES (14,'T','babyblue','Jerry Scott & Rick Kirkm
 INSERT INTO phpgw_comic_data VALUES (15,'T','blondie','Dean Young and Denis Lebrun','Blondie',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','King','General',0,'Remote','C');
 INSERT INTO phpgw_comic_data VALUES (16,'T','hagar','Chris Browne','Hagar the Horrible',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','King','General',0,'Remote','C');
 INSERT INTO phpgw_comic_data VALUES (17,'T','familyc','Bil Keane','The Family Circus',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','King','General',0,'Remote','S');
-INSERT INTO phpgw_comic_data VALUES (18,'T','tumblewd','Tom K. Ryan','Tumbleweeds',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','King','General',0,'Remote','S');
+INSERT INTO phpgw_comic_data VALUES (18,'T','tumblewd','Tom K. Ryan','Tumbleweeds',0,0,'http://www.tumbleweeds.com/','http://www.tumbleweeds.com/images/{day}.gif','','','','Su:Mo:Tu:We:Th:Fr:Sa','None','General',0,'Static','C');
 INSERT INTO phpgw_comic_data VALUES (19,'T','zippy','Bill Griffith','Zippy the Pinhead',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','King','General',0,'Remote','S');
 INSERT INTO phpgw_comic_data VALUES (20,'T','sluggy','Pete Abrams','Sluggy Freelance',0,0,'http://www.sluggy.com/','http://pics.sluggy.com/comics/{ymd}a.gif','','','','Su:Mo:Tu:We:Th:Fr:Sa','None','Geek',0,'Static','C');
 INSERT INTO phpgw_comic_data VALUES (21,'T','calvinandhobbes','Bill Watterson','Calvin and Hobbes',0,0,'http://www.calvinandhobbes.com/','http://www.calvinandhobbes.com','/strips/{y}/{m}/ch{ymd}.html','/strips/{y}/{m}/ch[0-9]*.gif','','Su:Mo:Tu:We:Th:Fr:Sa','None','General',0,'Remote','C');
