@@ -27,7 +27,6 @@
 			(
 				'title'						=> $title,
 				'width'						=> '100%',
-				'outerborderwidth'			=> '0',
 				'header_background_image'	=> $GLOBALS['phpgw']->common->image('phpgwapi/templates/default','bg_filler')
 			)
 		);
@@ -36,11 +35,11 @@
 		$GLOBALS['portal_order'][] = $app_id;
 		$var = Array
 		(
-			'up'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
-			'down'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
-			'close'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
-			'question'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
-			'edit'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id)
+			'up'		=> Array('url' => '/set_box.php','app' => $app_id),
+			'down'		=> Array('url' => '/set_box.php','app' => $app_id),
+			'close'		=> Array('url' => '/set_box.php','app' => $app_id),
+			'question'	=> Array('url' => '/set_box.php','app' => $app_id),
+			'edit'		=> Array('url' => '/set_box.php','app' => $app_id)
 		);
 
 		while(list($key,$value) = each($var))
@@ -52,9 +51,6 @@
 		$stocks = CreateObject('stocks.ui');
 
 		$GLOBALS['phpgw']->template->set_var('phpgw_body',$portalbox->draw($stocks->return_quotes()),True);
-
-		/*echo "\n" . '<!-- BEGIN Stock Quotes info -->' . "\n" . $portalbox->draw('<td>' . "\n" . $stocks->return_quotes() . "\n" . '</td>') . "\n"
-					. '<!-- END Stock Quotes info -->' . "\n";*/
 	}
 	flush();
 ?>
