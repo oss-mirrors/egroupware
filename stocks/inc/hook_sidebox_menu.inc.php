@@ -13,7 +13,7 @@
 
 {
 // Only Modify the $file and $title variables.....
-	$title = 'Stock Quotes';
+	$title = lang('Stock Quotes');
 	$file = Array(
 		'Preferences' => $GLOBALS['phpgw']->link('/stocks/preferences.php')
 	);
