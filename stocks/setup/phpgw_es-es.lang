@@ -12,5 +12,5 @@ stock quote preferences	stocks	es-es	Preferencias de las cotización de mercado
 stock quotes	common	es-es	Cotizaciones del mercado
 stocks	common	es-es	Cotizaciones
 symbol	stocks	es-es	Símbolo
-$ change	common	es-de	Cambio
-% change	common	es-de	Cambio %
+$ change	common	es-es	Cambio
+% change	common	es-es	Cambio %
