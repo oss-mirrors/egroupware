@@ -14,11 +14,9 @@
 	$test[] = '0.0.1.000';
 	function skel_upgrade0_0_1_000()
 	{
-		global $setup_info, $phpgw_setup;
+		$GLOBALS['phpgw_setup']->oProc->RenameTable('skel','phpgw_skel');
 
-		$phpgw_setup->oProc->RenameTable('skel','phpgw_skel');
-
-		$setup_info['forum']['currentver'] = '0.0.1.001';
-		return $setup_info['forum']['currentver'];
+		$GLOBALS['setup_info']['forum']['currentver'] = '0.0.1.001';
+		return $GLOBALS['setup_info']['forum']['currentver'];
 	}
 ?>

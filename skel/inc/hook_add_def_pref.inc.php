@@ -10,7 +10,6 @@
   \**************************************************************************/
 	/* $Id$ */
 
-	global $pref;
-	$pref->change('notes','notes_font','Verdana,Arial,Helvetica,sans-serif');
-	$pref->change('notes','notes_font_size','3');
+	$GLOBALS['pref']->change('notes','notes_font','Verdana,Arial,Helvetica,sans-serif');
+	$GLOBALS['pref']->change('notes','notes_font_size','3');
 ?>

@@ -14,7 +14,7 @@
 // Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = Array(
-//		'Administrate'	=> $GLOBALS['phpgw']->link('/skel/admin.php'),
+//		'Administer' => $GLOBALS['phpgw']->link('/skel/admin.php'),
 	);
 //Do not modify below this line
 	display_section($appname,$title,$file);
