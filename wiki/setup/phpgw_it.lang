@@ -35,9 +35,6 @@ emailaddress administrator	admin	it	Indirizzo email Amministratore
 enable free links	admin	it	Abilita Link liberi
 enable wiki links	admin	it	Abilita link WIKI
 enter here the maximum number of entries to display in a document's history list.	wiki	it	Inserire qui il numero massimo di voci da visualizzare nella cronologia di un documento.
-enter here the maximum number of entries to display in a document\'s history list.	wiki	it	Inserire qui il numero massimo di voci da visualizzare in un elenco cronologico.
-enter here the maximum number of entries to display in a document\\\'s history list.	wiki	it	Inserire qui il numero massimo di voci da visualizzare in un elenco cronologico.
-enter here the maximum number of entries to display in a document\\\\\\\'s history list.	wiki	it	Inserire qui il numero massimo di voci da visualizzare in un elenco cronologico.
 enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	it	Inserire qui il numero di giorni di modifiche da visualizzare in Modifiche Recenti o qualsiasi altro elenco sottoscrizioni. Impostare a zero per visualizzare tutte le pagine in Modifiche Recenti, non importa quanto recentemente siano state modificate.
 enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	it	Inserire un intervallo di IP nella forma <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>
 error creating temporary file.	wiki	it	Errore nella creazione del file temporaneo.
