@@ -8,12 +8,12 @@
 			$p = $GLOBALS['HTTP_GET_VARS']['p'];
 
 			$img_expand   = $GLOBALS['phpgw']->common->image('bookmarks','plus');
-			$img_collapse = $GLOBALS['phpgw']->common->image('bookmarks','tree_collapse');
+			$img_collapse = $GLOBALS['phpgw']->common->image('phpgwapi','tree_collapse');
 			$img_line     = $GLOBALS['phpgw']->common->image('bookmarks','tree_vertline');
 			$img_split    = $GLOBALS['phpgw']->common->image('bookmarks','tree_split');
 			$img_end      = $GLOBALS['phpgw']->common->image('bookmarks','tree_end');
 			$img_leaf     = $GLOBALS['phpgw']->common->image('bookmarks','minus');
-			$img_spc      = $GLOBALS['phpgw']->common->image('bookmarks','tree_space');
+			$img_spc      = $GLOBALS['phpgw']->common->image('phpgwapi','tree_space');
 			$img_closed   = $GLOBALS['phpgw']->common->image('bookmarks','closed');
 			$img_open     = $GLOBALS['phpgw']->common->image('bookmarks','open');
 
