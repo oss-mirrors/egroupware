@@ -15,7 +15,8 @@
 
 	/* Basic information about this app */
 	$setup_info['bookmarks']['name']      = 'bookmarks';
-	$setup_info['bookmarks']['version']   = '0.8.2';
+	$setup_info['bookmarks']['title']     = 'Bookmarks';
+	$setup_info['bookmarks']['version']   = '0.9.1';
 	$setup_info['bookmarks']['app_order'] = '20';
 	$setup_info['bookmarks']['enable']    = 1;
 
@@ -23,8 +24,8 @@
 	$setup_info['bookmarks']['license']  = 'GPL';
 	$setup_info['bookmarks']['description'] =
 		'Manage your bookmarks with phpGW.  Has Netscape plugin.';
-	$setup_info['bookmarks']['maintainer'] = 'Joseph Engo';
-	$setup_info['bookmarks']['maintainer_email'] = 'jengo@phpgroupware.org';
+	$setup_info['bookmarks']['maintainer'] = 'Michael Totschnig';
+	$setup_info['bookmarks']['maintainer_email'] = 'michael@totschnig.org';
 
 	/* The tables this app creates */
 	$setup_info['bookmarks']['tables']	= Array(

@@ -20,27 +20,8 @@
 	);
 	include('../header.inc.php');
 
-	$GLOBALS['phpgw']->bookmarks = createobject('bookmarks.bookmarks');
-	$location_info    = $GLOBALS['phpgw']->bookmarks->read_session_data();
+	$obj = createobject('bookmarks.ui');
+	$obj->init();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 
-	if (is_array($location_info))
-	{
-		$extravars = 'bm_cat=' . $location_info['bm_cat'];
-	}
-
-	if (is_array($location_info) && $location_info['returnto'])
-	{
-		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/bookmarks/' . $location_info['returnto'],$extravars));
-	}
-	else
-	{
-		if ($GLOBALS['phpgw_info']['user']['preferences']['bookmarks']['defaultview'] == 'tree')
-		{
-			$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/bookmarks/tree.php',$extravars));
-		}
-		else
-		{
-			$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/bookmarks/list.php',$extravars));
-		}
-	}
 ?>

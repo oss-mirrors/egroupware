@@ -26,7 +26,6 @@
 				'bm_desc' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
 				'bm_keywords' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
 				'bm_category' => array('type' => 'int', 'precision' => 4,'nullable' => True),
-				'bm_subcategory' => array('type' => 'int', 'precision' => 4,'nullable' => True),
 				'bm_rating' => array('type' => 'int', 'precision' => 4,'nullable' => True),
 				'bm_info' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
 				'bm_visits' => array('type' => 'int', 'precision' => 4,'nullable' => True)

@@ -38,8 +38,8 @@
 <!-- END list_item -->
 
 <!-- BEGIN list_header -->
-<strong class=bk><!-- <a href="{CATEGORY_SEARCH}"> -->{CATEGORY} :
-<!-- <a href="{SUBCATEGORY_SEARCH}"> -->{SUBCATEGORY}</strong>
+<strong class=bk><!-- <a href="{CATEGORY_SEARCH}"> -->{CATEGORY}
+<!-- <a href="{SUBCATEGORY_SEARCH}"> --></strong>
 
 <table width="100%" border="0" cellspacing="1">
  <tr>
