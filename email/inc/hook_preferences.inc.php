@@ -11,6 +11,7 @@
 
   /* $Id$ */
 {
+  echo "<p>\n";
   $img = "/" . $appname . "/images/" . $appname .".gif";
   if (file_exists($phpgw_info["server"]["server_root"].$img)) {
     $img = $phpgw_info["server"]["webserver_url"].$img;
