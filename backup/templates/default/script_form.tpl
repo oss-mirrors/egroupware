@@ -50,77 +50,52 @@
 		}
 	}
 
-	function get_date($type, $versions = '', $bintval = '')
+	function get_date()
 	{
 		$bdate		= time();
 		$month		= date('m',$bdate);
 		$day		= date('d',$bdate);
 		$year		= date('Y',$bdate);
 
-		if ($type == 'bdate')
-		{
-			$bdateout	=  $month . '_' . $day . '_' . $year;
-			return $bdateout;
-		}
+		$bdateout	=  $month . '_' . $day . '_' . $year;
+		return $bdateout;
+	}
 
-		if ($type == 'rdate')
+	function get_rdate($versions, $bintval)
+	{	
+		switch($bintval)
 		{
-			switch($bintval)
-			{
-				case 'daily':	$dd = '-' . $versions; break;
-				case 'weekly':	$dd = '-(7*' . $versions . ')'; break;
-				case 'monthly':	$dm = '-' . $versions; break;
-			}
-			$rdate = mktime(0,0,0,date('m',$bdate) . $dm,date('d',$bdate) . $dd,date('Y',$bdate));
-			return $rdate;
+			case 'daily':	$dd = '-' . $versions; break;
+			case 'weekly':	$dd = '-(7*' . $versions . ')'; break;
+			case 'monthly':	$dm = '-' . $versions; break;
 		}
+		$rdate = mktime(0,0,0,date('m') . $dm,date('d') . $dd,date('Y'));
+		return $rdate;
 	}
 
 	function check_datedue($dir)
 	{
 		$versions = {versions};
 
-		if (is_integer($versions) && $versions != 0)
+		if (! is_integer($versions) || $versions == 0)
 		{
-			$archive = get_archives($dir);
+			$versions = 1;
+		}
+			
+		$archive = get_archives($dir);
 
-			if (count($archive) >= $versions)
+		$bintval = '{bintval}';
+
+		$rdate = get_rdate($versions,$bintval);
+
+		for ($i=0;$i<=count($archive);$i++)
+		{
+			if ($archive[$i]['bdate'] <= $rdate)
 			{
-				$bintval	= '{bintval}';
-
-/*				$versions	= $versions-1;
-				switch($bintval)
+				if ($archive[$i]['file'] && $archive[$i]['file'] != '')
 				{
-					case 'daily':	$datedue = $versions; break;
-					case 'weekly':	$datedue = $versions*4; break;
-					case 'monthly':	$datedue = $versions*16; break;
-				}
-			//	exec("find " . $dir . '-mtime +' . $datedue . ' -exec rm -- {} ; 2>&1 > /dev/null');
-
-				exec("find " . $dir . ' -mtime +' . $datedue,$rarchives);
-
-				if ($rarchives)
-				{
-					chdir($dir);
-
-					for ($i=0;$i<=count($rarchives);$i++)
-					{
-						system("rm " . substr($rarchives[$i],strlen($dir)+1) . ' 2>&1 > /dev/null');
-					}
-				}																							*/
-
-				$rdate = get_date('rdate',$versions,$bintval);
-
-				for ($i=0;$i<=count($archive);$i++)
-				{
-					if ($archive[$i]['bdate'] <= $rdate)
-					{
-						if ($archive[$i]['file'] && $archive[$i]['file'] != '')
-						{
-							unlink($dir . '/' . $archive[$i]['file']);
-							echo 'removed ' . $dir . '/' . $archive[$i]['file'] . "\n";
-						}
-					}
+					unlink($dir . '/' . $archive[$i]['file']);
+					echo 'removed ' . $dir . '/' . $archive[$i]['file'] . "\n";
 				}
 			}
 		}
@@ -161,7 +136,7 @@
 		}
 
 		chdir($database);
-		$out	= $basedir . '/' . get_date('bdate') . '_phpGWBackup_{bsql}.' . $end;
+		$out	= $basedir . '/' . get_date() . '_phpGWBackup_{bsql}.' . $end;
 		$in		= ' {db_name}';
 
 		system("$command" . $out . $in);
@@ -179,7 +154,7 @@
 	if ($bldap == 'yes')
 	{
 		chdir('/var/lib');
-		$out	= $basedir . '/' . get_date('bdate') . '_phpGWBackup_ldap.' . $end;
+		$out	= $basedir . '/' . get_date() . '_phpGWBackup_ldap.' . $end;
 		$in		= ' ldap';
 
 		system("$command" . $out . $in);
@@ -200,7 +175,7 @@
 		if (is_dir('/home/{lid}') == True)
 		{
 			chdir('/home/{lid}');
-			$out	= $basedir . '/' . get_date('bdate') . '_phpGWBackup_email_{lid}.' . $end;
+			$out	= $basedir . '/' . get_date() . '_phpGWBackup_email_{lid}.' . $end;
 			$in		= ' Maildir';
 			system("$command" . $out . $in . ' 2>&1 > /dev/null');
 
