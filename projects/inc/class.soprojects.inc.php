@@ -31,10 +31,12 @@
 		var $db;
 		var $grants;
 		var $column_array;
+		var $budget_table = 'phpgw_p_budget';
 
 		function soprojects()
 		{
 			$this->db		= $GLOBALS['phpgw']->db;
+			$this->db->set_app('projects');
 			$this->db2		= $this->db;
 			$this->grants		= $GLOBALS['phpgw']->acl->get_grants('projects');
 			$this->account		= $GLOBALS['phpgw_info']['user']['account_id'];
@@ -45,6 +47,37 @@
 			$this->siteconfig	= $this->get_site_config();
 
 			$this->column_array 	= array();
+		}
+
+		/**
+		 * Update the budget of a project
+		 *
+		 * @param int $project_id project-id
+		 * @param array $budgets 2-dim. array of 'year' and 'month' with budget-amount
+		 * @param db-object &$db as this class used so many db-instances, just select the one you want to use
+		 */
+		function _update_budget($project_id,$budgets,&$db)
+		{
+			$db->delete($this->budget_table,array(
+					'project_id' => $project_id,
+				),__LINE__,__FILE__);
+			
+			if(!is_array($budgets)) return;
+
+			foreach($budgets as $year => $yearData)
+			{
+				if(!is_array($yearData)) continue;
+
+				foreach($yearData as $month => $budget)
+				{
+					$db->insert($this->budget_table,array(
+							'project_id'	=> $project_id,
+							'budget_year'	=> $year,
+							'budget_month'	=> $month,
+							'budget_amount'	=> $budget,
+						),False,__LINE__,__FILE__);
+				}
+			}
 		}
 
 		function project_filter($type)
@@ -79,14 +112,9 @@
 								{
 									$projects[$i]['budget']['0']['0'] = $this->db->f('budget');
 									$projects[$i]['budgetSum'] = $this->db->f('budget');
-									$query = "delete from phpgw_p_budget where project_id='" . $this->db->f('project_id') . "'";
-									$db->query($query,__LINE__, __FILE__);
-									$query = "insert into phpgw_p_budget (project_id,month,year,budget) values ('".
-										$this->db->f('project_id')."',".
-										"'0',".
-										"'0','".
-										$this->db->f('budget')."')";
-									$db->query($query,__LINE__, __FILE__);
+									
+									$this->_update_budget($this->db->f('project_id'),array(array($this->db->f('budget'))),$db);
+
 									$query = "update phpgw_p_projects set budget='0' where project_id='".$this->db->f('project_id')."'";
 									$db->query($query,__LINE__, __FILE__);
 								}
@@ -151,14 +179,9 @@
 					{
 						$newProject['budget']['0']['0'] = $this->db->f('budget');
 						$newProject['budgetSum'] = $this->db->f('budget');
-						$query = "delete from phpgw_p_budget where project_id='" . $newProject['project_id'] . "'";
-						$db->query($query,__LINE__, __FILE__);
-						$query = "insert into phpgw_p_budget (project_id,month,year,budget) values ('".
-							$newProject['project_id']."',".
-							"'0',".
-							"'0','".
-							$this->db->f('budget')."')";
-						$db->query($query,__LINE__, __FILE__);
+						
+						$this->_update_budget($newProject['project_id'],array(array($this->db->f('budget'))),$db);
+
 						$query = "update phpgw_p_projects set budget='0' where project_id='". $newProject['project_id'] ."'";
 						$db->query($query,__LINE__, __FILE__);
 					}
@@ -179,9 +202,9 @@
 		{
 			$db = $this->db;
 			
-			$query = "select budget,month,year from phpgw_p_budget where project_id='$_projectID' order by year,month";
-
-			$db->query($query, __LINE__, __FILE__);
+			$db->select($this->budget_table,'budget_amount,budget_month,budget_year',array(
+					'project_id' => $_projectID,
+				 ),__LINE__, __FILE__,false,'ORDER BY budget_year,budget_month');
 			
 			$budget		= array
 			(
@@ -191,8 +214,8 @@
 			
 			while($db->next_record())
 			{
-				$budget['budget'][$db->f('year')][$db->f('month')] = $db->f('budget');
-				$budget['budgetSum'] += $db->f('budget');
+				$budget['budget'][$db->f('budget_year')][$db->f('budget_month')] = $db->f('budget_amount');
+				$budget['budgetSum'] += $db->f('budget_amount');
 			}
 			return $budget;
 		}
@@ -500,23 +523,9 @@
 			$p_id = $this->db->get_last_insert_id($table,'project_id');
 			$this->db->unlock();
 
-			if ($p_id && ($p_id != 0))
+			if ($p_id)
 			{
-				$this->db->query("delete from phpgw_p_budget where project_id='" . $p_id . "'",
-					__LINE__,__FILE__);
-				
-				if(is_array($values['budget']))
-				{
-					//_debug_array($values['budgetBegin']);
-					foreach($values[budget] as $budget)
-					{
-						$this->db->query("insert into phpgw_p_budget (project_id,month,year,budget) values ('".
-									$p_id."','".
-									$budget['month']."','".
-									$budget['year']."','".
-									$budget['text']."')",__LINE__,__FILE__);
-					}
-				}
+				$this->_update_budget($p_id,$values['budget'],$this->db);
 				
 				if ($values['parent'] == 0)
 				{
@@ -707,25 +716,7 @@
 			}
 
 			// update budget
-			$this->db->query("delete from phpgw_p_budget where project_id='" . $values['project_id'] . "'",
-					__LINE__,__FILE__);
-
-			if(is_array($values['budget']))
-			{
-				//_debug_array($values['budgetBegin']);
-				foreach($values[budget] as $year => $budgetData)
-				{
-					foreach($budgetData as $month => $budget)
-					{
-						$query = "insert into phpgw_p_budget (project_id,month,year,budget) values ('".
-									$values['project_id']."','".
-									(int)$month."','".
-									(int)$year."','".
-									$budget."')";
-						$this->db->query($query,__LINE__,__FILE__);
-					}
-				}
-			}
+			$this->_update_budget($values['project_id'],$values['budget'],$this->db);
 			
 			$values['old_edate'] = intval($values['old_edate']);
 			if ($values['old_edate'] > 0 && $values['edate'] > 0 && $values['old_edate'] != $values['edate'])
@@ -1142,9 +1133,9 @@
 
 		function sum_budget($values)
 		{
-			$action		= $values['action']?$values['action']:'mains';
-			$bcolumn	= $values['bcolumn']?$values['bcolumn']:'budget';
-			$project_id	= intval($values['project_id']);
+			//$action		= $values['action']?$values['action']:'mains';
+			//$bcolumn	= $values['bcolumn']?$values['bcolumn']:'budget';
+			//$project_id	= intval($values['project_id']);
 
 			$values['column'] = 'project_id,level';
 
@@ -1152,23 +1143,24 @@
 
 			//_debug_array($projects);
 
+			if(!count($projects))	// no projects found
+			{
+				return 0;
+			}
 			$pro = array();
-			for($i=0;$i<count($projects);$i++)
+			foreach($projects as $project)
 			{
-				$pro[$i] = $projects[$i]['project_id'];
+				$pro[] = $project['project_id'];
 			}
 
-			if(count($pro) == 0)
-			{
-				$pro[0] = 0;
-			}
-
-			$sql = 'SELECT SUM(' . $bcolumn . ') as sumvalue from phpgw_p_budget where project_id in(' . implode(',',$pro) . ')';
-			$this->db->query($sql,__LINE__,__FILE__);
-			if ($this->db->next_record())
-			{
-				return $this->db->f('sumvalue');
-			}
+			// RalfBecker: no idea what this $bcolumn business is about, there are no other columns to sum over !!!
+			//$sql = 'SELECT SUM(' . $bcolumn . ') as sumvalue from phpgw_p_budget where project_id in(' . implode(',',$pro) . ')';
+			
+			$this->db->select($this->budget_table,'SUM(budget_amount)',array(
+					'project_id' => $pro
+				),__LINE__,__FILE__);
+			
+			return $this->db->next_record() ? $this->db->f(0) : 0;
 		}
 
 		function get_planned_value($option)
@@ -1191,8 +1183,6 @@
 
 			switch($action)
 			{
-				case 'bmain':
-				case 'bparent':	$column = 'phpgw_p_budget.budget'; break;
 				case 'ebparent': $column = 'e_budget'; break;
 				case 'tmain':
 				case 'tparent':	$column = 'time_planned'; break;
@@ -1205,8 +1195,9 @@
 
 			switch($action)
 			{
+				case 'bmain':
 				case 'bparent':
-					$query = 'SELECT SUM(' . $column . ') as sumvalue from phpgw_p_budget,phpgw_p_projects where (' . $filter . $editfilter . ' and phpgw_p_budget.project_id=phpgw_p_projects.project_id)';
+					$query = "SELECT SUM($this->budget_table.budget_amount) as sumvalue from $this->budget_table,phpgw_p_projects where ( $filter $editfilter  and $this->budget_table.project_id=phpgw_p_projects.project_id)";
 					break;
 				default:
 					$query = 'SELECT SUM(' . $column . ') as sumvalue from phpgw_p_projects where (' . $filter . $editfilter . ')';
