@@ -38,7 +38,7 @@
 				'adr_region' => 'adr_region',
 				'adr_countryname' => 'adr_countryname');
 
-		$address = $d->read($myaddress,$cols);
+		$address = $d->read_single_entry($myaddress,$cols);
 
 		$t->set_var('ad_company',$address[0]['org_name']);
 		$t->set_var('ad_firstname',$address[0]['n_given']);
@@ -83,7 +83,7 @@
 		'adr_countryname' => 'adr_countryname',
 				'title' => 'title');
 
-	$customer = $d->read($custadr,$cols);
+	$customer = $d->read_single_entry($custadr,$cols);
 
 	$t->set_var('title',$customer[0]['title']);
 	$t->set_var('firstname',$customer[0]['n_given']);
@@ -118,7 +118,9 @@
 	{
 		$pos++;
 		$t->set_var('pos',$pos);
-		if ($phpgw->db->f('start_date') == 0)
+
+		$hours_date = $phpgw->db->f('start_date');
+		if ($hours_date == 0)
 		{
 			$hours_dateout = '&nbsp;';
 		}
