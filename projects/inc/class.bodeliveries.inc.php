@@ -46,15 +46,15 @@
 			$this->contacts		= CreateObject('phpgwapi.contacts');
 		}
 
-		function read_hours($project_id)
+		function read_hours($project_id, $action)
 		{
-			$hours = $this->sodeliveries->read_hours($project_id);
+			$hours = $this->sodeliveries->read_hours($project_id, $action);
 			return $hours;
 		}
 
-		function read_delivery_hours($project_id,$delivery_id)
+		function read_delivery_hours($project_id, $delivery_id, $action)
 		{
-			$hours = $this->sodeliveries->read_delivery_hours($project_id,$delivery_id);
+			$hours = $this->sodeliveries->read_delivery_hours($project_id, $delivery_id, $action);
 			return $hours;
 		}
 

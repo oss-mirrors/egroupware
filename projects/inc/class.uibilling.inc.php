@@ -371,7 +371,7 @@
 
 		function list_invoices()
 		{
-			global $project_id;
+			global $project_id, $action;
 
 			$this->display_app_header();
 
@@ -381,7 +381,7 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uibilling.list_invoices',
-				'action'		=> 'bill',
+				'action'		=> $action,
 				'project_id'	=> $project_id
 			);
 
@@ -474,12 +474,12 @@
 				}
 			}
 			$this->t->pfp('out','projects_list_t',True);
-			$this->save_sessiondata($action);
+			$this->save_sessiondata('bill');
 		}
 
 		function invoice()
 		{
-			global $action, $Invoice, $project_id, $invoice_id, $values, $select, $referer;
+			global $action, $Invoice, $project_id, $action, $invoice_id, $values, $select, $referer;
 
 			if (! $Invoice)
 			{
@@ -537,7 +537,8 @@
 				'menuaction'	=> 'projects.uibilling.invoice',
 				'action'		=> $action,
 				'project_id'	=> $project_id,
-				'invoice_id'	=> $invoice_id
+				'invoice_id'	=> $invoice_id,
+				'action'		=> $action
 			);
 
 			$this->t->set_var('lang_action',lang('Invoice'));
@@ -572,7 +573,7 @@
 				$this->t->set_var('choose','<input type="checkbox" name="values[choose]" value="True">');
 				$this->t->set_var('print_invoice',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.fail'));
 				$this->t->set_var('invoice_num',$values['invoice_num']);
-				$hours = $this->bobilling->read_hours($project_id);
+				$hours = $this->bobilling->read_hours($project_id, $action);
 			}
 			else
 			{
@@ -582,7 +583,7 @@
 																		. '&invoice_id=' . $invoice_id));
 				$bill = $this->bobilling->read_single_invoice($invoice_id);
 				$this->t->set_var('invoice_num',$bill['invoice_num']);
-				$hours = $this->bobilling->read_invoice_hours($project_id,$invoice_id);
+				$hours = $this->bobilling->read_invoice_hours($project_id, $invoice_id, $action);
 			}
 
 			if ($bill['date'])
@@ -666,7 +667,7 @@
 
 			if ($invoice_id)
 			{
-				$hours = $this->bobilling->read_hours($project_id);
+				$hours = $this->bobilling->read_hours($project_id, $action);
 				if (is_array($hours))
 				{
 					while (list($null,$inv) = each($hours))

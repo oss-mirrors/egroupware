@@ -184,7 +184,7 @@
 
 		function list_hours()
 		{
-			global $project_id, $action;
+			global $project_id, $action, $pro_parent;
 
 			$this->display_app_header();
 
@@ -195,6 +195,7 @@
 			(
 				'menuaction'	=> 'projects.uiprojecthours.list_hours',
 				'project_id'	=> $project_id,
+				'pro_parent'	=> $pro_parent,
 				'action'		=> $action
 			);
 
@@ -404,17 +405,19 @@
 
 		function add_hours()
 		{
-			global $project_id, $values, $submit;
+			global $project_id, $pro_parent, $values, $submit;
 
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uiprojecthours.list_hours',
-				'project_id'	=> $project_id
+				'project_id'	=> $project_id,
+				'pro_parent'	=> $pro_parent
 			);
 
 			if ($submit)
 			{
 				$values['project_id'] = $project_id;
+				$values['pro_parent'] = $pro_parent;
 				$error = $this->boprojecthours->check_values($values);
 				if (is_array($error))
 				{
@@ -435,24 +438,19 @@
 
 			$this->t->set_var('doneurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
-			$nopref = $this->boprojects->check_prefs();
-			if ($nopref)
-			{
-				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
-			}
-			else
-			{
-				$currency = $this->boprojects->get_prefs();
-			}
-
 			$link_data['menuaction'] = 'projects.uiprojecthours.add_hours';
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('lang_action',lang('Add work hours'));
 
-			$values['project_id'] = $project_id;
-			$this->t->set_var('project_name',$this->boprojects->return_value('pro',$values['project_id']));
+			$this->t->set_var('project_name',$this->boprojects->return_value('pro',$project_id));
 
-			$this->t->set_var('activity_list',$this->boprojects->select_hours_activities($values['project_id'], $values['activity_id']));
+			if ($pro_parent)
+			{
+				$this->t->set_var('pro_parent',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('pro',$pro_parent)));
+				$this->t->set_var('lang_pro_parent',lang('Parent project'));
+			}
+
+			$this->t->set_var('activity_list',$this->boprojects->select_hours_activities($project_id, $values['activity_id']));
 
 			$sdate = $this->hdate_format($values['sdate']);
 
@@ -545,7 +543,7 @@
 
 		function edit_hours()
 		{
-			global $project_id, $hours_id, $values, $submit, $referer;
+			global $project_id, $pro_parent, $hours_id, $values, $submit, $referer;
 
 			if (! $submit)
 			{
@@ -577,6 +575,7 @@
 				'menuaction'	=> 'projects.uiprojecthours.edit_hours',
 				'hours_id'		=> $hours_id,
 				'project_id'	=> $project_id,
+				'pro_parent'	=> $pro_parent,
 				'delivery_id'	=> $delivery_id,
 				'invoice_id'	=> $invoice_id
 			);
@@ -590,16 +589,6 @@
 			$this->t->set_var('hidden_vars','<input type="hidden" name="referer" value="' . $referer . '">');
 
 			$this->t->set_var('doneurl',$referer);
-
-			$nopref = $this->boprojects->check_prefs();
-			if ($nopref)
-			{
-				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
-			}
-			else
-			{
-				$currency = $this->boprojects->get_prefs();
-			}
 
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('lang_action',lang('Edit work hours'));
@@ -689,6 +678,12 @@
 			$this->t->set_var('hours',floor($values['ae_minutes']/60));
 			$this->t->set_var('minutes',($values['ae_minutes']-((floor($values['ae_minutes']/60)*60))));
 
+			if ($values['pro_parent'] != 0)
+			{
+				$this->t->set_var('pro_parent',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('pro',$values['pro_parent'])));
+				$this->t->set_var('lang_pro_parent',lang('Parent project'));
+			}
+
 			$this->t->set_var('project_name',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('pro',$values['project_id'])));
 
 			$this->t->set_var('activity_list',$this->boprojects->select_hours_activities($values['project_id'],$values['activity_id']));
@@ -734,7 +729,7 @@
 			}
 			else
 			{
-				$currency = $this->boprojects->get_prefs();
+				$prefs = $this->boprojects->get_prefs();
 			}
 
 			$values = $this->boprojecthours->read_single_hours($hours_id);
@@ -756,7 +751,7 @@
 			$this->t->set_var('hours',floor($values['ae_minutes']/60));
 			$this->t->set_var('minutes',($values['ae_minutes']-(floor($values['ae_minutes']/60)*60)));
 
-			$this->t->set_var('currency',$currency);
+			$this->t->set_var('currency',$prefs['currency']);
 			$this->t->set_var('minperae',$values['minperae']);
 			$this->t->set_var('billperae',$values['billperae']);
 
@@ -767,6 +762,12 @@
 			$this->t->set_var('employee',$employeeout);
 
 			$this->t->set_var('project_name',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('pro',$values['project_id'])));
+
+			if ($values['pro_parent'] != 0)
+			{
+				$this->t->set_var('pro_parent',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('pro',$values['pro_parent'])));
+				$this->t->set_var('lang_pro_parent',lang('Parent project'));
+			}
 
 			$this->t->set_var('activity',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('act',$values['activity_id'])));
 

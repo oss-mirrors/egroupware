@@ -435,7 +435,7 @@
 				$this->t->set_var('choose','<input type="checkbox" name="values[choose]" value="True">');
 				$this->t->set_var('print_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.fail'));
 				$this->t->set_var('delivery_num',$values['delivery_num']);
-				$hours = $this->bodeliveries->read_hours($project_id);
+				$hours = $this->bodeliveries->read_hours($project_id, $action);
 			}
 			else
 			{
@@ -445,7 +445,7 @@
 																		. '&delivery_id=' . $delivery_id));
 				$del = $this->bodeliveries->read_single_delivery($delivery_id);
 				$this->t->set_var('delivery_num',$del['delivery_num']);
-				$hours = $this->bodeliveries->read_delivery_hours($project_id,$delivery_id);
+				$hours = $this->bodeliveries->read_delivery_hours($project_id, $delivery_id, $action);
 			}
 
 			if ($del['date'])
@@ -526,7 +526,7 @@
 
 			if ($delivery_id)
 			{
-				$hours = $this->bodeliveries->read_hours($project_id);
+				$hours = $this->bodeliveries->read_hours($project_id, $action);
 				if (is_array($hours))
 				{
 					while (list($null,$note) = each($hours))

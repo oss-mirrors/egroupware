@@ -83,14 +83,20 @@
 			}
 		}
 
-		function read_hours($project_id)
+		function read_hours($project_id, $action)
 		{
 			$ordermethod = "order by end_date asc";
+
+			if ($action == 'mains')
+			{
+				$parent_hours	= " OR phpgw_p_hours.pro_parent='" . $project_id . "'";
+			}
 
 			$this->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,"
 							. "phpgw_p_hours.start_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae FROM phpgw_p_hours " . $this->return_join()
 							. "phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id WHERE (phpgw_p_hours.dstatus='o' "
-							. "AND phpgw_p_hours.status != 'open') AND phpgw_p_hours.project_id='$project_id' $ordermethod",__LINE__,__FILE__);
+							. "AND phpgw_p_hours.status != 'open') AND (phpgw_p_hours.project_id='" . $project_id . "'" . $parent_hours
+							. ") " . $ordermethod,__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{
@@ -109,15 +115,20 @@
 			return $hours;
 		}
 
-		function read_delivery_hours($project_id, $delivery_id)
+		function read_delivery_hours($project_id, $delivery_id, $action)
 		{
 			$ordermethod = "order by end_date asc";
+
+			if ($action == 'mains')
+			{
+				$parent_search = " OR phpgw_p_hours.pro_parent='" . $project_id . "'";
+			}
 
 			$this->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,"
 							. "phpgw_p_hours.start_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae FROM phpgw_p_hours " . $this->return_join()
 							."phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id " . $this->return_join() . "phpgw_p_deliverypos "
-							. "ON phpgw_p_hours.id=phpgw_p_deliverypos.hours_id WHERE phpgw_p_hours.project_id='$project_id' AND "
-							. "phpgw_p_deliverypos.delivery_id='$delivery_id' $ordermethod",__LINE__,__FILE__);
+							. "ON phpgw_p_hours.id=phpgw_p_deliverypos.hours_id WHERE (phpgw_p_hours.project_id='" . $project_id
+							. "'" . $parent_search  . ") AND phpgw_p_deliverypos.delivery_id='" . $delivery_id . "' " . $ordermethod,__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{

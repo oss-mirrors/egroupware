@@ -104,6 +104,7 @@
 			{
 				$hours['hours_id']		= $this->db->f('id');
 				$hours['project_id']	= $this->db->f('project_id');
+				$hours['pro_parent']	= $this->db->f('pro_parent');
 				$hours['hours_descr']	= $this->db->f('hours_descr');
 				$hours['status']		= $this->db->f('status');
 				$hours['ae_minutes']	= $this->db->f('minutes');
@@ -125,10 +126,10 @@
 			$values['remark']		= addslashes($values['remark']);
 
 			$this->db->query("INSERT into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,hours_descr,remark,minutes,"
-							. "status,minperae,billperae,employee) VALUES ('" . $values['project_id'] . "','" . $values['activity_id'] . "','"
+							. "status,minperae,billperae,employee,pro_parent) VALUES ('" . $values['project_id'] . "','" . $values['activity_id'] . "','"
 							. time() . "','" . $values['sdate'] . "','" . $values['edate'] . "','" . $values['hours_descr'] . "','"
 							. $values['remark'] . "','" . $values['ae_minutes'] . "','" . $values['status'] . "','" . $values['minperae']
-							. "','" . $values['billperae'] . "','" . $values['employee'] . "')",__LINE__,__FILE__); 
+							. "','" . $values['billperae'] . "','" . $values['employee'] . "','" . $values['pro_parent'] . "')",__LINE__,__FILE__); 
 		}
 
 		function edit_hours($values)

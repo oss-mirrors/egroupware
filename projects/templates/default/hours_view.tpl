@@ -7,6 +7,10 @@
 <center>
 {error}
 <table width="85%" border="0" cellspacing="3" cellpadding="3">
+	<tr bgcolor="{row_off}">
+		<td colspan="2">{lang_pro_parent}</td>
+		<td>{pro_parent}</td>
+	</tr>
 	<tr bgcolor="{row_on}">
 		<td colspan="2">{lang_project}:</td>
 		<td>{project_name}</td>

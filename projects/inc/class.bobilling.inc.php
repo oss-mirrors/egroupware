@@ -117,15 +117,15 @@
 			$this->sobilling->update_invoice($values,$select);
 		}
 
-		function read_hours($project_id)
+		function read_hours($project_id, $action)
 		{
-			$hours = $this->sobilling->read_hours($project_id);
+			$hours = $this->sobilling->read_hours($project_id, $action);
 			return $hours;
 		}
 
-		function read_invoice_hours($project_id,$invoice_id)
+		function read_invoice_hours($project_id, $invoice_id, $action)
 		{
-			$hours = $this->sobilling->read_invoice_hours($project_id,$invoice_id);
+			$hours = $this->sobilling->read_invoice_hours($project_id, $invoice_id, $action);
 			return $hours;
 		}
 

@@ -288,17 +288,23 @@
 			$this->db2->query("UPDATE phpgw_p_invoice SET sum=round(" . $sum_sum . ",2) WHERE id='" . $values['invoice_id'] . "'",__LINE__,__FILE__);
 		}
 
-		function read_hours($project_id)
+		function read_hours($project_id, $action)
 		{
 			$ordermethod = " order by end_date asc";
+
+			if ($action == 'mains')
+			{
+				$parent_hours	= " OR phpgw_p_hours.pro_parent='" . $project_id . "'";
+			}
+
 			$this->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status, "
 						. "phpgw_p_hours.start_date,phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae,"
 						. "phpgw_p_hours.employee FROM phpgw_p_hours " . $this->return_join() . " phpgw_p_activities ON "
 						. "phpgw_p_hours.activity_id=phpgw_p_activities.id " . $this->return_join() . " phpgw_p_projectactivities ON "
 						. "phpgw_p_hours.activity_id=phpgw_p_projectactivities.activity_id WHERE (phpgw_p_hours.status='done' OR "
-						. "phpgw_p_hours.status='closed') AND phpgw_p_hours.project_id='" . $project_id . "' AND phpgw_p_projectactivities.project_id='"
-						. $project_id . "' AND phpgw_p_projectactivities.billable='Y' AND phpgw_p_projectactivities.activity_id="
-						. "phpgw_p_hours.activity_id " . $ordermethod,__LINE__,__FILE__);
+						. "phpgw_p_hours.status='closed') AND (phpgw_p_hours.project_id='" . $project_id . "'" . $parent_hours . ") AND "
+						. "phpgw_p_projectactivities.project_id='" . $project_id . "' AND phpgw_p_projectactivities.billable='Y' "
+						. "AND phpgw_p_projectactivities.activity_id=phpgw_p_hours.activity_id " . $ordermethod,__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{
@@ -319,14 +325,20 @@
 			return $hours;
 		}
 
-		function read_invoice_hours($project_id,$invoice_id)
+		function read_invoice_hours($project_id, $invoice_id, $action)
 		{
 			$ordermethod = " order by end_date asc";
+
+			if ($action == 'mains')
+			{
+				$parent_search = " OR phpgw_p_hours.pro_parent='" . $project_id . "'";
+			}
+
 			$this->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status, "
 						. "phpgw_p_hours.start_date,phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
 						. "phpgw_p_hours " . $this->return_join() . " phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id "
 						. $this->return_join() . " phpgw_p_invoicepos ON phpgw_p_invoicepos.hours_id=phpgw_p_hours.id WHERE "
-						. "phpgw_p_hours.project_id='" . $project_id . "' AND phpgw_p_invoicepos.invoice_id='"
+						. "(phpgw_p_hours.project_id='" . $project_id . "'" . $parent_search . ") AND phpgw_p_invoicepos.invoice_id='"
 						. $invoice_id . "'" . $ordermethod,__LINE__,__FILE__);
 
 			while ($this->db->next_record())

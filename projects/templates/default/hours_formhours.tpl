@@ -5,10 +5,14 @@
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
 <hr noshade width="98%" align="center" size="1">
 <center>
-{message}{pref_message}
+{message}
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
 <form method="POST" action="{actionurl}">
 {hidden_vars}
+	<tr>
+		<td>{lang_pro_parent}</td>
+		<td>{pro_parent}</td>
+	</tr>
 	<tr>
 		<td>{lang_project}:</td>
 		<td>{project_name}</td>

@@ -120,7 +120,6 @@
 
 		$setup_info['projects']['currentver'] = '0.8.3.001';
 		return $setup_info['projects']['currentver'];
-		//return True;
 	}
 
 	$test[] = '0.8.3.001';
@@ -132,7 +131,6 @@
 
 		$setup_info['projects']['currentver'] = '0.8.3.002';
 		return $setup_info['projects']['currentver'];
-		//return True;
 	}
 
 	$test[] = '0.8.3.002';
@@ -145,7 +143,6 @@
 
 		$setup_info['projects']['currentver'] = '0.8.3.003';
 		return $setup_info['projects']['currentver'];
-		//return True;
 	}
 
 	$test[] = '0.8.3.003';
@@ -205,7 +202,6 @@
 
 		$setup_info['projects']['currentver'] = '0.8.4';
 		return $setup_info['projects']['currentver'];
-		//return True;
 	}
 
 	$test[] = '0.8.4';
@@ -218,7 +214,6 @@
 
 		$setup_info['projects']['currentver'] = '0.8.4.001';
 		return $setup_info['projects']['currentver'];
-		//return True;
 	}
 
 	$test[] = '0.8.4.001';
@@ -230,7 +225,6 @@
 
 		$setup_info['projects']['currentver'] = '0.8.4.002';
 		return $setup_info['projects']['currentver'];
-		//return True;
 	}
 
 	$test[] = '0.8.4.002';
@@ -244,7 +238,6 @@
 
 		$setup_info['projects']['currentver'] = '0.8.4.003';
 		return $setup_info['projects']['currentver'];
-		//return True;
 	}
 
 	$test[] = '0.8.4.003';
@@ -256,7 +249,6 @@
 
 		$setup_info['projects']['currentver'] = '0.8.4.004';
 		return $setup_info['projects']['currentver'];
-		//return True;
 	}
 
 	$test[] = '0.8.4.004';
@@ -269,7 +261,6 @@
 
 		$setup_info['projects']['currentver'] = '0.8.4.005';
 		return $setup_info['projects']['currentver'];
-		//return True;
 	}
 
 	$test[] = '0.8.4.005';
@@ -279,7 +270,6 @@
 
 		$setup_info['projects']['currentver'] = '0.8.4.006';
 		return $setup_info['projects']['currentver'];
-		//return True;
 	}
 
 	$test[] = '0.8.4.006';
@@ -293,7 +283,6 @@
 
 		$setup_info['projects']['currentver'] = '0.8.5.001';
 		return $setup_info['projects']['currentver'];
-		//return True;
 	}
 
 	$test[] = '0.8.5.001';
@@ -305,7 +294,6 @@
 
 		$setup_info['projects']['currentver'] = '0.8.5.002';
 		return $setup_info['projects']['currentver'];
-		//return True;
 	}
 
 	$test[] = '0.8.5.002';
@@ -317,7 +305,6 @@
 
 		$setup_info['projects']['currentver'] = '0.8.5.003';
 		return $setup_info['projects']['currentver'];
-		//return True;
 	}
 
 	$test[] = '0.8.5.003';
@@ -329,7 +316,6 @@
 
 		$setup_info['projects']['currentver'] = '0.8.5.004';
 		return $setup_info['projects']['currentver'];
-		//return True;
 	}
 
 	$test[] = '0.8.5.004';
@@ -352,6 +338,18 @@
 
 		$setup_info['projects']['currentver'] = '0.8.5.006';
 		return $setup_info['projects']['currentver'];
-		//return True;
+	}
+
+	$test[] = '0.8.5.006';
+	function projects_upgrade0_8_5_006()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_hours','pro_parent',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
+
+		$GLOBALS['phpgw_setup']->oProc->query("INSERT INTO phpgw_hooks (hook_appname,hook_location,hook_filename) VALUES ('projects','add_def_pref','hook_add_def_pref.inc.php')");
+		$GLOBALS['phpgw_setup']->oProc->query("INSERT INTO phpgw_hooks (hook_appname,hook_location,hook_filename) VALUES ('projects','manual','hook_manual.inc.php')");
+		$GLOBALS['phpgw_setup']->oProc->query("INSERT INTO phpgw_hooks (hook_appname,hook_location,hook_filename) VALUES ('projects','about','hook_about.inc.php')");
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.5.007';
+		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
 ?>

@@ -12,8 +12,8 @@
 
 	$setup_info['projects']['name']      = 'projects';
 	$setup_info['projects']['title']     = 'Projects';
-	$setup_info['projects']['version']   = '0.8.5.006';
-	$setup_info['projects']['app_order'] = 14;
+	$setup_info['projects']['version']   = '0.8.5.007';
+	$setup_info['projects']['app_order'] = 13;
 	$setup_info['projects']['enable']    = 1;
 
 	$setup_info['projects']['tables'] = array(
@@ -30,8 +30,14 @@
 
 /* The hooks this app includes, needed for hooks registration */
 
-	$setup_info['projects']['hooks'][] = 'preferences';
-	$setup_info['projects']['hooks'][] = 'admin';
+	$setup_info['projects']['hooks'] = array
+	(
+		'preferences',
+		'admin',
+		'about',
+		'manual',
+		'add_def_pref'
+	);
 
 /* Dependacies for this app to work */
 
