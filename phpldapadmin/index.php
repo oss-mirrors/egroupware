@@ -17,7 +17,7 @@ $GLOBALS['phpgw_info']['flags'] = array(
 @require 'common.php';
 
 // as phpldapadmin does not use our link-function, we need to set a cookie to make it work
-if (!$GLOBALS['phpgw']['server']['usecookies'])
+if (!$GLOBALS['phpgw_info']['server']['usecookies'])
 {
 	$GLOBALS['phpgw']->session->phpgw_set_cookiedomain();
 	$GLOBALS['phpgw']->session->phpgw_setcookie('sessionid',$GLOBALS['phpgw']->session->sessionid);
