@@ -74,13 +74,15 @@ class soWikiPage
 			$this->memberships[$n] = (int) $data['account_id'];
 		}
 		$this->user_lang = $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'];
-		$this->use_langs = array($this->user_lang,'','en');
-		$this->lang_priority_sql  = 'CASE lang';
+		$this->use_langs = array($this->user_lang,'');
+		// english as fallback, should be configurable or a pref
+		if ($this->user_lang != 'en') $this->use_langs[] = 'en';
+		$this->lang_priority_sql  = "IF(body='',".(count($this->use_langs)+1).',CASE lang';
 		foreach($this->use_langs as $order => $lang)
 		{
 			$this->lang_priority_sql .= ' WHEN '.$this->db->quote($lang)." THEN $order";
 		}
-		$this->lang_priority_sql  .= ' ELSE '.count($this->use_langs).' END AS lang_priority';
+		$this->lang_priority_sql  .= ' ELSE '.count($this->use_langs).' END) AS lang_priority';
 	}
 
 	/*!
@@ -185,8 +187,12 @@ class soWikiPage
 			$query .= " AND lang=".$this->db->quote($this->lang);
 		}
 		if($this->version != -1)
-		{ 
+		{
 			$query .= " AND version=".$this->db->quote($this->version,'int');
+		}
+		else
+		{
+			$query .= ' AND supercede=time';	// gives the up-to-date version only
 		}
 		$query .= ' ORDER BY lang_priority,version DESC';
 
@@ -719,6 +725,7 @@ class sowiki	// DB-Layer
 	*/
 	function maintain()
 	{
+/* this code created one query for every page in the wiki on each page-request !!!
 		$db2 = $this->db;	// we need a new/second result-pointer
 		
 		$this->db->query("SELECT name,lang,MAX(version) AS version".
@@ -734,6 +741,9 @@ class sowiki	// DB-Layer
 			            intval(time()/86400-$this->ExpireLen).">supercede/86400",__LINE__,__FILE__);
 			            //was "TO_DAYS(NOW()) - TO_DAYS(supercede) > $ExpireLen";
 		}
+the new code generates only one query, by using the fact the time == supercede for the up-to-date version */
+		$this->db->query($sql="DELETE FROM $this->PgTbl WHERE (time != supercede OR body='') AND ".
+			"supercede<".(time()-86400*$this->ExpireLen),__LINE__,__FILE__);
 
 		if($this->RatePeriod)
 		{
