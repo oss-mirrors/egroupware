@@ -11,3 +11,5 @@ stock quotes	common	en	Stock Quotes
 select displayed stocks	preferences	en	Select displayed stock quotes
 stock quote preferences	stocks	en	Stock Quote preferences
 symbol	stocks	en	Symbol
+$ change	common	en	Change
+% change	common	en	Change %
