@@ -31,7 +31,7 @@ operating system	backup	sl	Operacijski sistem
 pgsql	admin	sl	PostgreSQL
 php cgi	admin	sl	Polna pot do vašega PHP programa (npr.: /usr/bin/php)
 please enter the path of the needed applications in *site configuration* !	backup	sl	Prosimo vnesite pot do potrebnih programov v *Site configuration*!
-please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	sl	Prosimo vnesite pot do mape z varnostnimi kopijami in/ali omogočite prikaz arhivov v phpGroupWare!
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	sl	Prosimo vnesite pot do mape z varnostnimi kopijami in/ali omogočite prikaz arhivov v eGroupWare!
 please enter username and password for remote connection !	backup	sl	Prosimo vnesite uporabniško ime in geslo za povezavo!
 please select an application for transport to the remote host !	backup	sl	Prosimo izberite program za prenos na strežnik!
 please set the path to a local dir to store the backup script !	backup	sl	Prosimo določite pot do lokalne mape za shranjevanje skript!
@@ -48,13 +48,13 @@ save backup locally ?	backup	sl	Preveri za shranjevanje varnostnih kopij lokalno
 select archive type	backup	sl	Izberite tip arhiva
 select interval	backup	sl	Določite interval
 settings	admin	sl	nastavitve
-show backup archives in phpgroupware ?	backup	sl	Preveri prikaz arhivov varnostnih kopij v phpGroupWare
+show backup archives in egroupware ?	backup	sl	Preveri prikaz arhivov varnostnih kopij v eGroupWare
 smbmount	backup	sl	smbmount
 sql	backup	sl	SQL
 tar	admin	sl	tar
 tar.bz2	backup	sl	tar.bz2
 tar.gz	backup	sl	tar.gz
-the backup application is not configured for showing the archives in phpgroupware yet !	backup	sl	Program še ni nastavljen za prikaz arhivov v phpGroupWare!
+the backup application is not configured for showing the archives in egroupware yet !	backup	sl	Program še ni nastavljen za prikaz arhivov v eGroupWare!
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	sl	Mapa za shranjevanje skript mora biti v strežnikovem *DocumentRoot*!
 versions can only be a number !	backup	sl	Verzije so lahko samo števila!
 weekly	backup	sl	tedensko
