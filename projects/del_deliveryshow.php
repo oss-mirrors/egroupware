@@ -22,32 +22,24 @@
 					'deliverypos_list' => 'del_deliveryform.tpl'));
 	$t->set_block('delivery_list_t','deliverypos_list','list');
 
-	$d = CreateObject('phpgwapi.contacts');
+	$s = CreateObject('phpgwapi.sbox');
 
-	if (isset($phpgw_info['user']['preferences']['projects']['abid']))
+	if (isset($phpgw_info['user']['preferences']['projects']['abid']) && (isset($phpgw_info['user']['preferences']['projects']['abid'])))
 	{
 		$t->set_var('error','');
-		$myaddress = $phpgw_info['user']['preferences']['projects']['abid'];
+		$id = $phpgw_info['user']['preferences']['projects']['abid'];
 
 		$cols = array('n_given' => 'n_given',
 					'n_family' => 'n_family',
 					'org_name' => 'org_name',
-				'adr_street' => 'adr_street',
-				'adr_locality' => 'adr_locality',
-				'adr_postalcode' => 'adr_postalcode',
-				'adr_region' => 'adr_region',
-				'adr_countryname' => 'adr_countryname');
+					'org_unit' => 'org_unit',
+				'adr_one_street' => 'adr_one_street',
+				'adr_one_locality' => 'adr_one_locality',
+				'adr_one_postalcode' => 'adr_one_postalcode',
+				'adr_one_region' => 'adr_one_region',
+				'adr_one_countryname' => 'adr_one_countryname');
 
-		$address = $d->read_single_entry($myaddress,$cols);
-
-		$t->set_var('ad_company',$address[0]['org_name']);
-		$t->set_var('ad_firstname',$address[0]['n_given']);
-		$t->set_var('ad_lastname',$address[0]['n_family']);
-		$t->set_var('ad_street',$address[0]['adr_street']);
-		$t->set_var('ad_zip',$address[0]['adr_postalcode']);
-		$t->set_var('ad_city',$address[0]['adr_locality']);
-		$t->set_var('ad_state',$address[0]['adr_region']);
-		$t->set_var('ad_country',$address[0]['adr_countryname']);
+        $t->set_var('myaddress',$s->formatted_address($id,$cols,True));
 	}
     else
 	{                                                                                                                                                                      
@@ -76,24 +68,23 @@
 	$cols = array('n_given' => 'n_given',
 				'n_family' => 'n_family',
 				'org_name' => 'org_name',
-				'adr_street' => 'adr_street',
-			'adr_locality' => 'adr_locality',
-			'adr_postalcode' => 'adr_postalcode',
-				'adr_region' => 'adr_region',
-		'adr_countryname' => 'adr_countryname',
+				'org_unit' => 'org_unit',
+				'adr_one_street' => 'adr_one_street',
+			'adr_one_locality' => 'adr_one_locality',
+			'adr_one_postalcode' => 'adr_one_postalcode',
+				'adr_one_region' => 'adr_one_region',
+		'adr_one_countryname' => 'adr_one_countryname',
 				'title' => 'title');
 
-	$customer = $d->read_single_entry($custadr,$cols);
-
-	$t->set_var('title',$customer[0]['title']);
-	$t->set_var('firstname',$customer[0]['n_given']);
-	$t->set_var('lastname',$customer[0]['n_family']);
-	$t->set_var('company',$customer[0]['org_name']);
-	$t->set_var('street',$customer[0]['adr_street']);
-	$t->set_var('zip',$customer[0]['adr_postalcode']);
-	$t->set_var('city',$customer[0]['adr_locality']);
-	$t->set_var('state',$customer[0]['adr_region']);
-	$t->set_var('country',$customer[0]['adr_countryname']);
+	if (isset($phpgw_info['user']['preferences']['common']['country']))
+	{
+		$t->set_var('customer',$s->formatted_address($custadr,$cols,True));
+	}
+	else
+	{
+		$t->set_var('error',lang('Please set your preferences for this application !'));
+		$t->set_var('customer','');
+	}
 
 	$delivery_date = $phpgw->db->f('date');
 	$month = $phpgw->common->show_date(time(),'n');

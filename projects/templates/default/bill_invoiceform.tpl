@@ -21,52 +21,19 @@
 <body bgcolor="#FFFFFF">
 	<table width=70% border="0" cellpadding="3" cellspacing="3">
 		<tr>
-			<td valign="bottom"><font face="{font}">{ad_company}</font></td>
+			<td valign="bottom">{myaddress}</td>
 			<td align="right"><img src="doc/logo.jpg"></td>
 		</tr>
 		<tr>
-			<td><font face="{font}">{ad_firstname}&nbsp;{ad_lastname}</font></td>
+			<td height="2">&nbsp;</td>
+		</tr>
+		<tr>
+		<tr>
+			<td>{customer}</td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr>
-			<td><font face="{font}">{ad_street}</font></td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td><font face="{font}">{ad_zip}&nbsp;{ad_city}</font></td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td><font face="{font}">{ad_state}</font></font></td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td><font face="{font}">{ad_country}</font><br><br><br></td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td><font face="{font}">{company}</font></td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td><font face="{font}">{firstname}&nbsp;{lastname}</font></td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td><font face="{font}">{street}</font></td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td><font face="{font}">{zip}&nbsp;{city}</font></td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td><font face="{font}">{state}</font></td>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td><font face="{font}">{country}<br><br><br></font></td>
-			<td>&nbsp;</td>
+			<td height="2">&nbsp;</td>
 		</tr>
 		<tr>
 			<td><font face="{font}">{lang_invoice}:&nbsp;{invoice_num}</font></td>
