@@ -25,6 +25,8 @@
 
 	$phpgw_info["flags"]["currentapp"] = "tts";
 	$phpgw_info["flags"]["enable_send_class"]       = True;
+	$phpgw_info["flags"]["enable_config_class"]       = True;
+	
 	include("../header.inc.php");
 	if (! $submit)
 	{
