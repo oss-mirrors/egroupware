@@ -31,7 +31,7 @@
 			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$_charSet);
 			$this->preferences	= $this->bopreferences->getPreferences();
 			$this->botranslation	= CreateObject('phpgwapi.translation');
-			
+
 			if (!empty($_composeID))
 			{
 				$this->composeID = $_composeID;
@@ -392,6 +392,7 @@
 			$mail->From 	= $this->preferences['emailAddress'][0]['address'];
 			$mail->FromName = $bofelamimail->encodeHeader($this->preferences['emailAddress'][0]['name'],'q');
 			$mail->Host 	= $this->preferences['smtpServerAddress'];
+			$mail->Port	= $this->preferences['smtpPort'];
 			$mail->Priority = $this->sessionData['priority'];
 			$mail->Encoding = 'quoted-printable';
 			$mail->CharSet	= $this->displayCharset;
