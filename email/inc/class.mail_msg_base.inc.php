@@ -4397,7 +4397,19 @@
 		{
 			if (function_exists('imap_qprint'))
 			{
-				return imap_qprint($string);
+				//return imap_qprint($string);
+				// utf-8 or some high chars do not work right now with this function
+				// so check for blank return, in that case
+				$decoded = imap_qprint($string);
+				if ($decoded != '')
+				{
+					return $decoded;
+				}
+				else
+				{
+					$string = str_replace("=\r\n","",$string);
+					return quoted_printable_decode($string);
+				}
 			}
 			else
 			{
