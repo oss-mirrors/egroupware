@@ -36,9 +36,7 @@
 
 		function display_headers($extras = '')
 		{
-			$this->template->set_file(array(
-				'_header' => 'header.tpl'
-			));
+			$this->template->set_file('_header','header.tpl');
 			$this->template->set_block('_header','global_header');
 			$this->template->set_var('lang_inbox','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.inbox') . '">' . lang('Inbox') . '</a>');
 			$this->template->set_var('lang_compose','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose') . '">' . lang('Compose') . '</a>');
@@ -85,9 +83,7 @@
 
 			$this->display_headers($extra_header_info);
 
-			$this->template->set_file(array(
-				'_inbox' => 'inbox.tpl'
-			));
+			$this->template->set_file('_inbox','inbox.tpl');
 			$this->template->set_block('_inbox','list');
 			$this->template->set_block('_inbox','row');
 			$this->template->set_block('_inbox','row_empty');
@@ -127,9 +123,7 @@
 
 		function set_compose_read_blocks()
 		{
-			$this->template->set_file(array(
-				'_form' => 'form.tpl'
-			));
+			$this->template->set_file('_form','form.tpl');
 
 			$this->template->set_block('_form','form');
 			$this->template->set_block('_form','form_to');
