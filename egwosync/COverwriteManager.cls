@@ -18,6 +18,8 @@ Private Sub Class_Initialize()
     Debug.Print "Overwrite Manager initialized"
     Set myNewContact = Nothing
     Set myOriginalContact = Nothing
+    Unload FrmOverwrite
+    Unload FrmRename
 End Sub
 
 '************************************************************************************************

@@ -56,9 +56,8 @@ Property Get OriginalContactNames() As Collection
 End Property
 
 Private Sub cmdCancel_Click()
-    Me.Hide
     Set FrmOverwrite.Parent = GrandParent
-    FrmOverwrite.Show
+    Me.Visible = False
 End Sub
 
 Private Sub cmdOK_Click()
@@ -86,7 +85,8 @@ Private Sub cmdOK_Click()
         .Add txtNSuffix.Text, "Suffix"
         .Add str, "FullName"
     End With
-    Me.Hide
+    Me.Visible = False
+    FrmOverwrite.Visible = False
 End Sub
 
 Private Sub UserForm_Activate()
@@ -114,7 +114,7 @@ End Sub
 '***************************************************************************************
 Private Sub UserForm_QueryClose(Cancel As Integer, CloseMode As Integer)
     If CloseMode = vbFormControlMenu Then
-        Me.Hide
+        Me.Visible = False
         Set FrmOverwrite.Parent = GrandParent
         FrmOverwrite.Show
     End If

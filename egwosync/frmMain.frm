@@ -71,7 +71,7 @@ Private Sub cmdApply_Click()
 End Sub
 
 Private Sub cmdCancel_Click()
-    Me.Hide
+    Me.Visible = False
 End Sub
 
 Private Sub cmdFilterSave_Click()
@@ -97,7 +97,7 @@ Private Sub cmdOK_Click()
     SaveSettings
     PutSettings
     Master.InitAuto
-    Me.Hide
+    Me.Visible = False
 End Sub
 
 '***********************************************************************************************

@@ -76,6 +76,7 @@ Public Function Create(ByVal egwContact As XMLRPCStruct) As ContactItem
         ElseIf OMResponse = FrmOverwrite.RENAME Then
             bWriteContact = False 'OM will take care of the rest.
         End If
+        Set OM = Nothing
     End If
 
     'If there wasn't an identical contact already, or the user chose to overwrite

@@ -55,20 +55,20 @@ End Property
 
 Private Sub cmdOverwrite_Click()
     RetVal = OVERWRITE
-    Me.Hide
+    'Me.Hide is supposed to yield an error. See MSDN documentation for it.
+    Me.Visible = False
 End Sub
 
 Private Sub cmdSkip_Click()
     RetVal = SKIP
-    Me.Hide
+    Me.Visible = False
 End Sub
 
 Private Sub cmdRename_Click()
     RetVal = RENAME
-    Me.Hide
     Set FrmRename.Parent = Me
     Set FrmRename.GrandParent = Me.Parent
-    FrmRename.Show 1, Me
+    FrmRename.Show 1
 End Sub
 
 Private Sub UserForm_Activate()
