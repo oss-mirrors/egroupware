@@ -34,12 +34,15 @@
 			'read_single_delivery'	=> True,
 			'delivery'				=> True,
 			'update_delivery'		=> True,
-			'read_deliveries'		=> True
+			'read_deliveries'		=> True,
+			'get_address_data'		=> True,
+			'read_delivery_pos'		=> True
 		);
 
 		function bodeliveries()
 		{
 			$this->sodeliveries	= CreateObject('projects.sodeliveries');
+			$this->contacts		= CreateObject('phpgwapi.contacts');
 		}
 
 		function read_hours($project_id)
@@ -54,6 +57,12 @@
 			return $hours;
 		}
 
+		function read_delivery_pos($delivery_id)
+		{
+			$hours = $this->sodeliveries->read_delivery_pos($delivery_id);
+			return $hours;
+		}
+
 		function read_deliveries($query, $sort, $order, $limit, $project_id)
 		{
 			$del = $this->sodeliveries->read_deliveries($query, $sort, $order, $limit, $project_id);
@@ -65,6 +74,23 @@
 		{
 			$del = $this->bodeliveries->read_single_delivery($delivery_id);
 			return $del;
+		}
+
+		function get_address_data($abid)
+		{
+			$cols = array('n_given' => 'n_given',
+						'n_family' => 'n_family',
+						'org_name' => 'org_name',
+						'org_unit' => 'org_unit',
+					'adr_one_street' => 'adr_one_street',
+					'adr_one_locality' => 'adr_one_locality',
+					'adr_one_postalcode' => 'adr_one_postalcode',
+					'adr_one_region' => 'adr_one_region',
+					'adr_one_countryname' => 'adr_one_countryname',
+								'title'	=> 'title');
+
+			$address = $this->contacts->formatted_address($abid,$cols,True));
+			return $address;
 		}
 
 		function check_values($values)

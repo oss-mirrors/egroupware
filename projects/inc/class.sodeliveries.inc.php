@@ -193,11 +193,17 @@
 
 		function read_single_delivery($delivery_id)
 		{
-			$this->db->query("SELECT * FROM phpgw_p_delivery WHERE id='$delivery_id'",__LINE__,__FILE__);
+			$this->db->query("SELECT phpgw_p_delivery.customer,phpgw_p_delivery.num,phpgw_p_delivery.project_id,phpgw_p_delivery.date, "
+					. "phpgw_p_projects.title FROM phpgw_p_delivery,phpgw_p_projects WHERE "
+					. "phpgw_p_delivery.id='$delivery_id' AND phpgw_p_delivery.project_id=phpgw_p_projects.id",__LINE__,__FILE__);
+
 			if ($phpgw->db->next_record())
 			{
 				$del['date']			= $this->db->f('date');
 				$del['delivery_num']	= $this->db->f('num');
+				$del['title']			= $this->db->f('title');
+				$del['customer']		= $this->db->f('customer');
+				$del['project_id']		= $this->db->f('project_id');
 			}
 			return $del;
 		}
@@ -216,6 +222,28 @@
 			{
 				return False;
 			}
+		}
+
+		function read_delivery_pos($delivery_id)
+		{
+			$this->db->query("SELECT phpgw_p_hours.hours_descr,phpgw_p_hours.minperae,phpgw_p_hours.minutes,"
+							. "phpgw_p_activities.descr,phpgw_p_hours.start_date, phpgw_p_hours.end_date FROM phpgw_p_hours,phpgw_p_activities, "
+							. "phpgw_p_deliverypos WHERE phpgw_p_deliverypos.hours_id=phpgw_p_hours.id AND phpgw_p_deliverypos.delivery_id='"
+							. $delivery_id .  "' AND phpgw_p_hours.activity_id=phpgw_p_activities.id",__LINE__,__FILE__);
+
+			while ($this->db->next_record())
+			{
+				$hours[] = array
+				(
+					'hours_descr'	=> $this->db->f('hours_descr'),
+					'act_descr'		=> $this->db->f('descr'),
+					'sdate'			=> $this->db->f('start_date'),
+					'edate'			=> $this->db->f('end_date'),
+					'minutes'		=> $this->db->f('minutes'),
+					'minperae'		=> $this->db->f('minperae')
+				);
+			}
+			return $hours;
 		}
 	}
 ?>

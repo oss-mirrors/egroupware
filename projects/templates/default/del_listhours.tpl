@@ -36,7 +36,7 @@
 		<td width="25%" bgcolor="{th_bg}">{lang_hours}</td>
 		<td width="10%" bgcolor="{th_bg}" align="center">{lang_status}</td>
 		<td width="10%" bgcolor="{th_bg}" align="center">{lang_start_date}</td>
-		<td width="10%" bgcolor="{th_bg}" align="right">{lang_aes}</td>
+		<td width="10%" bgcolor="{th_bg}" align="right">{lang_workunits}</td>
 		<td width="10%" bgcolor="{th_bg}" align="center">{lang_edit}</td>
 	</tr>
 
@@ -60,7 +60,7 @@
 	<tr bgcolor="{tr_color}">
 		<td width="3%">&nbsp;</td>
 		<td width="25%">&nbsp;</td>
-		<td width="25%" align="center"><font size="4"><b>{lang_aes}</b></font></td>
+		<td width="25%" align="center"><font size="4"><b>{lang_sumaes}</b></font></td>
 		<td width="10%">&nbsp;</td>
 		<td width="10%">&nbsp;</td>
 		<td width="10%" align="right"><font size="4"><b>{sum_aes}</b></font></td>

@@ -491,13 +491,13 @@
 			$this->t->set_block('projects_add','edit','edithandle');
 
 			$nopref = $this->boprojects->check_prefs();
-			if ($nopref)
+			if (is_array($nopref))
 			{
-				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
+				$this->t->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
 			}
 			else
 			{
-				$currency = $this->boprojects->get_prefs();
+				$prefs = $this->boprojects->get_prefs();
 			}
 
 			$this->t->set_var('done_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
@@ -508,6 +508,7 @@
 
 			$this->t->set_var('choose','<input type="checkbox" name="values[choose]" value="True">');
 
+			$this->t->set_var('currency',$prefs['currency']);
 			$this->t->set_var('number',$values['number']);
 			$this->t->set_var('title',$values['title']);
 			$this->t->set_var('descr',$values['descr']);
@@ -642,13 +643,13 @@
 			$this->t->set_block('projects_edit','edit','edithandle');
 
 			$nopref = $this->boprojects->check_prefs();
-			if ($nopref)
+			if (is_array($nopref))
 			{
-				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
+				$this->t->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
 			}
 			else
 			{
-				$currency = $this->boprojects->get_prefs();
+				$prefs = $this->boprojects->get_prefs();
 			}
 
 			$this->t->set_var('done_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
@@ -662,6 +663,7 @@
 			$this->t->set_var('lang_choose','');
 			$this->t->set_var('choose','');
 
+			$this->t->set_var('currency',$prefs['currency']);
 			$this->t->set_var('number',$values['number']);
 			$this->t->set_var('title',$values['title']);
 			$this->t->set_var('descr',$values['descr']);
@@ -788,13 +790,13 @@
 			$this->t->set_file(array('view' => 'view.tpl'));
 
 			$nopref = $this->boprojects->check_prefs();
-			if ($nopref)
+			if (is_array($nopref))
 			{
-				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
+				$this->t->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
 			}
 			else
 			{
-				$currency = $this->boprojects->get_prefs();
+				$prefs = $this->boprojects->get_prefs();
 			}
 
 			$this->t->set_var('done_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
@@ -842,6 +844,7 @@
 			$this->t->set_var('descr',$descr);
 			$this->t->set_var('status',$values['status']);
 			$this->t->set_var('budget',$values['budget']);
+			$this->t->set_var('currency',$prefs['currency']);
 
 			$sdate = $values['sdate'];
 			$edate = $values['edate'];
@@ -964,14 +967,13 @@
 			$this->t->set_block('activities_list_t','activities_list','list');
 
 			$nopref = $this->boprojects->check_prefs();
-
-			if ($nopref)
+			if (is_array($nopref))
 			{
-				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
+				$this->t->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
 			}
 			else
 			{
-				$currency = $this->boprojects->get_prefs();
+				$prefs = $this->boprojects->get_prefs();
 			}
 
 			$link_data = array
@@ -1009,7 +1011,7 @@
 
 // ----------------- list header variable template-declarations ---------------------------
   
-			$this->t->set_var('currency',$currency);
+			$this->t->set_var('currency',$prefs['currency']);
 			$this->t->set_var('sort_num',$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Activity ID')));
 			$this->t->set_var('sort_descr',$this->nextmatchs->show_sort_order($this->sort,'descr',$this->order,'/index.php',lang('Description')));
 			$this->t->set_var('sort_billperae',$this->nextmatchs->show_sort_order($this->sort,'billperae',$this->order,'/index.php',lang('Bill per workunit')));
@@ -1106,13 +1108,13 @@
 			$this->t->set_var('cats_list',$this->cats->formated_list('select','all',$cat_id,True));
 
 			$nopref = $this->boprojects->check_prefs();
-			if ($nopref)
+			if (is_array($nopref))
 			{
-				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
+				$this->t->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
 			}
 			else
 			{
-				$currency = $this->boprojects->get_prefs();
+				$prefs = $this->boprojects->get_prefs();
 			}
 
 			$this->t->set_var('lang_choose',lang('Generate Activity ID ?'));
@@ -1126,7 +1128,7 @@
 			$this->t->set_var('num',$values['number']);
 			$this->t->set_var('descr',$values['descr']);
 			$this->t->set_var('minperae',$values['minperae']);
-			$this->t->set_var('currency',$currency);
+			$this->t->set_var('currency',$prefs['currency']);
     		$this->t->set_var('billperae',$billperae);
 
 			if ($values['remarkreq'] == 'N'):
@@ -1191,18 +1193,18 @@
 			$this->t->set_var('lang_action',lang('Edit activity'));
 
 			$nopref = $this->boprojects->check_prefs();
-			if ($nopref)
+			if (is_array($nopref))
 			{
-				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
+				$this->t->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
 			}
 			else
 			{
-				$currency = $this->boprojects->get_prefs();
+				$prefs = $this->boprojects->get_prefs();
 			}
 
 			$this->t->set_var('lang_choose','');
 			$this->t->set_var('choose','');
-			$this->t->set_var('currency',$currency);
+			$this->t->set_var('currency',$prefs['currency']);
 
 			$values = $this->boprojects->read_single_activity($activity_id);
 

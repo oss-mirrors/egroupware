@@ -36,7 +36,7 @@
 		<td height="2">&nbsp;</td>
 	</tr>
 	<tr>
-		<td><font face="{font}">{lang_delivery}:&nbsp;{delivery_num}</font></td>
+		<td><font face="{font}">{lang_delivery_num}:&nbsp;{delivery_num}</font></td>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
@@ -50,14 +50,14 @@
 </table><br><br><br>
 <table width="70%" border="0" cellspacing="3" cellpadding="3">
 	<tr>
-		<td width="5%" align="right"><font face="{font}">{lang_pos}</font></td>
+		<td width="5%" align="right"><font face="{font}">{lang_position}</font></td>
 		<td width="30%"><font face="{font}">{lang_descr}</font></td>
-		<td width="10%" align="center"><font face="{font}">{lang_hours_date}</font></td>
+		<td width="10%" align="center"><font face="{font}">{lang_work_date}</font></td>
 		<td width="10%" align="right"><font face="{font}">{lang_workunits}</font></td>
 	</tr>
 
-<!-- BEGIN deliverypos_list -->
- 
+<!-- BEGIN del_list -->
+
 	<tr>
 		<td align="right"><font face="{font}">{pos}</font></td>
 		<td><font face="{font}">{act_descr}</font></td>
@@ -71,7 +71,7 @@
 		<td>&nbsp;</td>
 	</tr>
 
-<!-- END deliverypos_list -->
+<!-- END del_list -->
 
 </table><br><br>
 <table width="70%" border="0" cellspacing="3" cellpadding="3">
@@ -83,7 +83,7 @@
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
-		<td><font face="{font}">{error}</font></td>
+		<td><font face="{font}">{message}</font></td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 	</tr>
