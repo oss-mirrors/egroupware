@@ -173,7 +173,7 @@
 				{
 					$side_commands .= "
 					<a href=\"javascript:setSomeElement('src','". '$instance' ."->complete();');\">". lang('Complete') ."</a><hr/>
-					<a href=\"javascript:setSomeElement('src','if(isset(". '$_REQUEST' ."[\\'save\\']){\n ". ' $instance' ."->complete();\n}');\">". lang('Process form'). "</a><hr/>";
+					<a href=\"javascript:setSomeElement('src','if(isset(". '$_REQUEST' ."[\\'save\\'])){\n ". ' $instance' ."->complete();\n}');\">". lang('Process form'). "</a><hr/>";
 				}
 				if ($activity_info['type'] == 'switch')
 				{
