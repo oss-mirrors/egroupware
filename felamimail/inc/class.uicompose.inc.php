@@ -27,6 +27,7 @@
 
 		function uicompose()
 		{
+			$this->displayCharset   = $GLOBALS['phpgw']->translation->charset();
 			if (!isset($GLOBALS['HTTP_POST_VARS']['composeid']) && !isset($GLOBALS['HTTP_GET_VARS']['composeid']))
 			{
 				// create new compose session
@@ -43,7 +44,6 @@
 				$this->bocompose   = CreateObject('felamimail.bocompose',$this->composeID,$this->displayCharset);
 			}			
 			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-			$this->displayCharset   = $GLOBALS['phpgw']->translation->charset();
 			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$this->displayCharset);
 
 			$this->t->set_unknowns('remove');
