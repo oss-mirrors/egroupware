@@ -1,4 +1,3 @@
-
 <!-- BEGIN form -->
  <p>
  <table border="0" align="center">
@@ -17,3 +16,12 @@
   <center><input type="submit" name="add" value="{lang_add}"></center>
  </form>
 <!-- END form -->
+
+<!-- BEGIN row -->
+  <tr bgcolor="{tr_color}">
+   <td>{row_title}</td>
+   <td>{row_edit}</td>
+   <td>{row_delete}</td>
+   <td>{row_view}</td>
+  </tr>
+<!-- END row -->
