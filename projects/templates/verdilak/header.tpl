@@ -9,6 +9,10 @@
 <tr>
 <td>
 
+{link_activities}
+&nbsp;
+&nbsp;
+
 {link_hours}
 &nbsp;
 &nbsp;

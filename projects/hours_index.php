@@ -17,7 +17,7 @@
     include("../header.inc.php");
 
     $t = createObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
-    $t->set_file(array('projects_list_t' => 'hours_list.tpl'));
+    $t->set_file(array('projects_list_t' => 'bill_list.tpl'));
     $t->set_block('projects_list_t','projects_list','list');
 
     $d = CreateObject('phpgwapi.contacts');
@@ -28,13 +28,9 @@
 			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
 			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
-    $t->set_var(lang_all_open_hours,lang("All open hours"));
     $t->set_var(lang_action,lang("Project hours"));
-    $t->set_var(all_open_hours,$phpgw->link("hours_listhours.php","status=open"));
-    $t->set_var(lang_all_done_hours,lang("All done hours"));
-    $t->set_var(all_done_hours,$phpgw->link("hours_listhours.php","status=done"));
     $t->set_var('searchurl',$phpgw->link("hours_index.php"));
-
+    $t->set_var('lang_search',lang('Search'));
     $t->set_var(common_hidden_vars,$common_hidden_vars);   
   
     if (! $start) { $start = 0; }
@@ -69,9 +65,8 @@
     $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"hours_index.php",lang("Title")));
     $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"hours_index.php",lang("Date due")));
     $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"hours_index.php",lang("Coordinator")));
-    $t->set_var(h_lang_addhour,lang("Add hours"));
-    $t->set_var(h_lang_viewhour,lang("List hours"));             
-    $t->set_var('lang_search',lang('Search'));
+    $t->set_var(h_lang_part,lang("Add hours"));
+    $t->set_var(h_lang_partlist,lang("List hours"));             
 
 // --------------------------- end header declaration ----------------------------------
 
@@ -117,17 +112,22 @@
       		      "end_date" => $end_dateout,
       		      "coordinator" => $coordinatorout));
 
-    $t->set_var('addhour',$phpgw->link('hours_addhour.php',"id=$id"));
-    $t->set_var('lang_add_hour',lang('Add hours'));
+    $t->set_var('part',$phpgw->link('hours_addhour.php',"id=$id"));
+    $t->set_var('lang_part',lang('Add hours'));
 
-    $t->set_var('viewhour',$phpgw->link('hours_listhours.php',"project_id=$id"));
-    $t->set_var('lang_view_hour',lang('List hours'));
+    $t->set_var('partlist',$phpgw->link('hours_listhours.php',"project_id=$id"));
+    $t->set_var('lang_partlist',lang('List hours'));
 
 
     $t->parse("list", "projects_list", true);
 
 // --------------------------- end record declaration --------------------------------------
     }
+
+    $t->set_var('all_partlist',$phpgw->link("hours_listhours.php","status=open"));
+    $t->set_var('lang_all_partlist',lang("All open hours"));
+    $t->set_var('lang_all_part2list',lang("All done hours"));
+    $t->set_var('all_part2list',$phpgw->link("hours_listhours.php","status=done"));
 
     $t->parse("out", "projects_list_t", true);
     $t->p("out");

@@ -2,9 +2,9 @@
   /**************************************************************************\
   * phpGroupWare - projects                                                  *
   * (http://www.phpgroupware.org)                                            *
-  * Written by Bettina Gille  [aeb@hansenet.de]                              * 
+  * Written by Bettina Gille  [ceb@phpgroupware.org]                         * 
   *          & Jens Lentfoehr <sw@lf.shlink.de>                              *
-  * --------------------------------------------------------                 *
+  * ------------------------------------------------                         *
   *  This program is free software; you can redistribute it and/or modify it *
   *  under the terms of the GNU General Public License as published by the   *
   *  Free Software Foundation; either version 2 of the License, or (at your  *
@@ -19,6 +19,7 @@
     $t->set_var('admin_info', "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] 
                         . "\" align=\"left\"><b>" . $admin_info);
 
+    $t->set_var("link_activities","<a href=\"" . $phpgw->link("activities.php") . "\">" . lang("Activities") ."</a>");
     $t->set_var("link_billing","<a href=\"" . $phpgw->link("bill_index.php") . "\">" . lang("Project billing") ."</a>");
     $t->set_var("link_hours","<a href=\"" . $phpgw->link("hours_index.php") . "\">" . lang("Project hours") ."</a>");
     $t->set_var("link_statistics","<a href=\"" . $phpgw->link("stats_projectlist.php") . "\">" . lang("Project statistics") ."</a>");

@@ -28,8 +28,8 @@
       <td width="20%" bgcolor="{th_bg}" align=center>{sort_coordinator}</td>
       <td width="8%" bgcolor="{th_bg}" align=center>{sort_status}</td>
       <td width="8%" bgcolor="{th_bg}" align=center>{sort_end_date}</td>
-      <td width="8%" align=center>{h_lang_invoice}</td>
-      <td width="8%" align=center>{h_lang_invoicelist}</td>
+      <td width="8%" align=center>{h_lang_part}</td>
+      <td width="8%" align=center>{h_lang_partlist}</td>
     </tr>
   </form>
   
@@ -41,8 +41,8 @@
         <td>{coordinator}</td>
         <td align=center>{status}</td>
         <td align=center>{end_date}</td>
-        <td align=center><a href="{invoice}">{lang_invoice}</a></td>
-        <td align=center><a href="{invoicelist}">{lang_invoicelist}</a></td>
+        <td align=center><a href="{part}">{lang_part}</a></td>
+        <td align=center><a href="{partlist}">{lang_partlist}</a></td>
       </tr>
 <!-- END projects_list -->
 
@@ -51,7 +51,10 @@
 <!-- link fuer alle invoices -->
       <table cellpadding=3 cellspacing=1>     
      <tr>
-    <td><a href="{all_invoicelist}">{lang_all_invoicelist}</a></td>
+    <td><a href="{all_partlist}">{lang_all_partlist}</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><a href="{all_part2list}">{lang_all_part2list}</a></td>
    </tr>
   </table>
 

@@ -68,8 +68,8 @@
   $t->set_var('sort_title',$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"bill_index.php",lang("Title")));
   $t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"bill_index.php",lang("Date due")));
   $t->set_var('sort_coordinator',$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"bill_index.php",lang("Coordinator")));
-  $t->set_var('h_lang_invoice',lang('Invoice'));             
-  $t->set_var('h_lang_invoicelist',lang('Invoice list'));
+  $t->set_var('h_lang_part',lang('Invoice'));             
+  $t->set_var('h_lang_partlist',lang('Invoice list'));
 
 // ----------------------------- end header declaration ------------------------------------
 
@@ -116,19 +116,22 @@
       		      "end_date" => $end_dateout,
       		      "coordinator" => $coordinatorout));
 
-    $t->set_var('invoice',$phpgw->link('bill_invoice.php',"project_id=$id"));
-    $t->set_var('lang_invoice',lang('Invoice'));
+    $t->set_var('part',$phpgw->link('bill_invoice.php',"project_id=$id"));
+    $t->set_var('lang_part',lang('Invoice'));
 
-    $t->set_var('invoicelist',$phpgw->link('bill_invoicelist.php',"project_id=$id"));
-    $t->set_var('lang_invoicelist',lang('Invoice list'));
+    $t->set_var('partlist',$phpgw->link('bill_invoicelist.php',"project_id=$id"));
+    $t->set_var('lang_partlist',lang('Invoice list'));
 
     $t->parse('list','projects_list',True);
 
 // ------------------------------ end record declaration -------------------------------
   }
 
-    $t->set_var('all_invoicelist',$phpgw->link("bill_invoicelist.php","project_id=$id"));
-    $t->set_var('lang_all_invoicelist',lang("All invoices"));
+    $t->set_var('all_partlist',$phpgw->link("bill_invoicelist.php","project_id=$id"));
+    $t->set_var('lang_all_partlist',lang("All invoices"));
+
+    $t->set_var('all_part2list','');
+    $t->set_var('lang_all_part2list','');
 
     $t->parse("out", "projects_list_t", true);
     $t->p("out");

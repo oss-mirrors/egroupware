@@ -28,8 +28,8 @@
       <td width="20%" bgcolor="{th_bg}" align=center>{sort_coordinator}</td>
       <td width="8%" bgcolor="{th_bg}" align=center>{sort_status}</td>
       <td width="8%" bgcolor="{th_bg}" align=center>{sort_end_date}</td>
+      <td width="8%" bgcolor="{th_bg}" align=center>{lang_view}</td>
       <td width="8%" bgcolor="{th_bg}" align=center>{lang_edit}</td>
-      <td width="8%" bgcolor="{th_bg}" align=center>{lang_delete}</td>
     </tr>
   
 <!-- BEGIN projects_list -->
@@ -41,8 +41,8 @@
         <td>{coordinator}</td>
         <td align=center>{status}</td>
         <td align=center>{end_date}</td>
-        <td align=center>{edit}</td>
-        <td align=center>{delete}</td>
+        <td align=center><a href="{view}">{lang_view_entry}</a></td>
+        <td align=center><a href="{edit}">{lang_edit_entry}</a></td>
       </tr>
 
 <!-- END projects_list -->

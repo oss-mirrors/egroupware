@@ -2,105 +2,66 @@
   /**************************************************************************\
   * phpGroupWare - projects/projectstatistics                                *
   * (http://www.phpgroupware.org)                                            *
-  * Written by Bettina Gille  [aeb@hansenet.de]                              *
+  * Written by Bettina Gille  [ceb@phpgroupware.org]                         *
   *          & Jens Lentfoehr <sw@lf.shlink.de>                              *
-  *---------------------------------------------------------                 *
+  *-------------------------------------------------                         *
   *  This program is free software; you can redistribute it and/or modify it *
   *  under the terms of the GNU General Public License as published by the   *
   *  Free Software Foundation; either version 2 of the License, or (at your  *
   *  option) any later version.                                              *
   \**************************************************************************/
 /* $Id$ */
+
+    $phpgw_info["flags"] = array("currentapp" => "projects", 
+		    "enable_nextmatchs_class" => True);
+
+    include("../header.inc.php");
+
+    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t->set_file(array('project_list_t' => 'stats_projectlist.tpl',
+			 'project_list' => 'stats_projectlist.tpl'));
+    $t->set_block('project_list_t','project_list','list');
+
+    $d = CreateObject('phpgwapi.contacts');
+
+    $common_hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
+			. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
+			. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
+			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
+			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
+
+    $t->set_var(lang_action,lang("Project statistics"));  
+    $t->set_var(lang_userlist,lang("User statistics"));
+    $t->set_var(userlisturl,$phpgw->link("stats_userlist.php"));  
+    $t->set_var(common_hidden_vars,$common_hidden_vars);   
   
-  $phpgw_info["flags"] = array("currentapp" => "projects", 
-                               "enable_nextmatchs_class" => True);
-  include("../header.inc.php");
+    if (! $start) { $start = 0; }
 
-  $t = new Template($phpgw_info["server"]["app_tpl"]);
-  $t->set_file(array( "project_list_t" => "stats_projectlist.tpl",
-                      "project_list" => "stats_projectlist.tpl"));
-                      
-  $t->set_block("project_list_t", "project_list", "list");
+    if($phpgw_info["user"]["preferences"]["common"]["maxmatchs"] && $phpgw_info["user"]["preferences"]["common"]["maxmatchs"] > 0) {
+                $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+    }
+    else { $limit = 15; }
 
-  $common_hidden_vars =
-   "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
- . "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
- . "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
- . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
- . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
+    $projects = read_projects($start,$limit,$query,$filter,$sort,$order);
 
-  $t->set_var(lang_action,lang("Project statistics"));  
-  $t->set_var(lang_userlist,lang("User statistics"));
-  $t->set_var(userlisturl,$phpgw->link("stats_userlist.php"));  
-  $t->set_var(common_hidden_vars,$common_hidden_vars);   
-  
-  if (! $start)
-     $start = 0;
-  if ($order)
-     $ordermethod = "order by $order $sort";
-  else
-     $ordermethod = "order by date asc";
+//---------------------- nextmatch variable template-declarations ---------------------------
 
-  if (! $filter) {
-     $filter = "none";
-  }
+    $left = $phpgw->nextmatchs->left('index.php',$start,$total_records);
+    $right = $phpgw->nextmatchs->right('index.php',$start,$total_records);
+    $t->set_var('left',$left);
+    $t->set_var('right',$right);
+
+    if ($total_records > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]) {
+        $lang_showing=lang("showing x - x of x",($start + 1),($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),$total_records);
+    }
+    else { $lang_showing=lang("showing x",$total_records); }
+    $t->set_var('lang_showing',$lang_showing);
+
+// ------------------------------ end nextmatch template ------------------------------------
+
+// ------------------list header variable template-declarations ------------------------------- 
 
 
-   if ($filter != "private") {
-     if ($filter != "none") {
-        $filtermethod = " access like '%,$filter,%' ";
-     } else {
-        $filtermethod = " (coordinator='" . $phpgw_info["user"]["account_id"] 
-                      . "' OR owner='" . $phpgw_info["user"]["account_id"] 
-                      . "' OR access='public' "
-                      . $phpgw->common->sql_search("access") . " ) ";
-     }
-  } else {
-     $filtermethod = " coordinator='" . $phpgw_info["user"]["account_id"] . "' ";
-  }  
-
-
-  if ($query) {
-     $phpgw->db->query("select count(*) from p_projects where $filtermethod and (title "
-                     . "like '%$query%' OR descr like '%$query%')");
-     $phpgw->db->next_record();
-     if ($phpgw->db->f(0) == 1)
-        $t->set_var(total_matchs,lang("your search returned 1 match"));
-     else
-        $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
-  } else {
-     $phpgw->db->query("select count(*) from p_projects where $filtermethod");
-     $phpgw->db->next_record();                                                                      
-
-     if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
-     $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
-                           ($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),
-                           $phpgw->db->f(0));
-  else
-     $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
-     $t->set_var(total_matchs,$total_matchs);
-        }
-     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                   
-      $customer_sortorder = "customer.company_name";                                                                                                      
-      }                                                                                                                                                   
-     else {                                                                                                                                               
-      $customer_sortorder = "ab_company";                                                                                                                 
-     }
-
-    // ===========================================
-    // nextmatch variable template-declarations
-    // ===========================================
-
-     $next_matchs = $phpgw->nextmatchs->show_tpl("stats_projectlist.php",$start,$phpgw->db->f(0),
-                   "&order=$order&filter=$filter&sort="
-                 . "$sort&query=$query","85%",$phpgw_info["theme"][th_bg]);
-     $t->set_var(next_matchs,$next_matchs);
-
-  // ---------- end nextmatch template --------------------
-
-  // ===========================================
-  // list header variable template-declarations
-  // ===========================================
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
   $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"stats_projectlist.php",lang("Project ID")));
   $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"stats_projectlist.php",lang("Customer")));
@@ -112,105 +73,58 @@
 
   // -------------- end header declaration -----------------
 
-    $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
-//  $limit = $phpgw->db->limit($start);
-  
-  $db2 = $phpgw->db;
-  
-  if ($query) {
-     $phpgw->db->query("SELECT p_projects.*,account_id,account_firstname,account_lastname,account_lid FROM "
-                 . "p_projects,phpgw_accounts WHERE $filtermethod AND account_id=p_projects.coordinator AND "
-                 . "(title like '%$query%' OR descr like '%$query%') $ordermethod limit $limit");
-     } 
-    else {
-     $phpgw->db->query("SELECT p_projects.*,account_id,account_firstname,account_lastname,account_lid FROM "
-                 . "p_projects,phpgw_accounts WHERE account_id=p_projects.coordinator AND $filtermethod "
-                 . "$ordermethod limit $limit");
-    }
+    for ($i=0;$i<count($projects);$i++) {    
 
-  while ($phpgw->db->next_record()) {
-    
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                   
+    $title = $phpgw->strip_html($projects[$i]['title']);
         if (! $title)  $title  = "&nbsp;";
 
-    $num = $phpgw->strip_html($phpgw->db->f("num"));
-    $status = lang($phpgw->db->f("status"));
+    $number = $phpgw->strip_html($projects[$i]['number']);
+    $status = lang($projects[$i]['status']);
     $t->set_var(tr_color,$tr_color);
 
-    if ($phpgw->db->f("end_date") == 0)
-             $end_dateout = "&nbsp;";
+    $end_date = $projects[$i]['end_date'];
+    if ($end_date == 0) { $end_dateout = "&nbsp;"; }
     else {
-      $month = $phpgw->common->show_date(time(),"n");
-      $day   = $phpgw->common->show_date(time(),"d");
-      $year  = $phpgw->common->show_date(time(),"Y");
+        $month = $phpgw->common->show_date(time(),"n");
+        $day   = $phpgw->common->show_date(time(),"d");
+        $year  = $phpgw->common->show_date(time(),"Y");
 
-      $end_date = (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-        if (mktime(2,0,0,$month,$day,$year) >= $phpgw->db->f("end_date"))
-        	$end_dateout =  "<font color=\"CC0000\">";
+        $end_date = $end_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
+        if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout =  "<font color=\"CC0000\">"; }
 
-        $end_dateout =  $phpgw->common->show_date($phpgw->db->f("end_date"),$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
-        if (mktime(2,0,0,$month,$day,$year) >= $phpgw->db->f("end_date"))
-                $end_dateout .= "</font>";
-      }
-      
-     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
-    $db2->query("select ab_id,ab_lastname,ab_firstname,ab_company_id,company_name from "
-                        . "addressbook,customers where customers.company_id=addressbook.ab_company_id and "
-                        . "addressbook.ab_company_id='" .$phpgw->db->f("customer")."'");
-      if ($db2->next_record()) {
-        $customerout = $db2->f("company_name")." [ ".$db2->f("ab_firstname"). " " .$db2->f("ab_lastname")." ]";
-	}
-	else {
-	$customerout = $t->set_var("customer","");
-	     }
-	  }		
-	else {		
-    $db2->query("select ab_id,ab_lastname,ab_firstname,ab_company from addressbook where "
-                        . "ab_id='" .$phpgw->db->f("customer")."'");
-                       
-    if ($db2->next_record()) {
-        if (!$phpgw->db->f("ab_company")) {      
-       $customerout = $db2->f("ab_firstname"). " " .$db2->f("ab_lastname");
-        }
-      else {
-       $customerout = $db2->f("ab_company")." [ ".$db2->f("ab_firstname"). " " .$db2->f("ab_lastname")." ]";
-       }
-     }
-    else {
-    $customerout = $t->set_var("customer","");
+        $end_dateout =  $phpgw->common->show_date($end_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
+        if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout .= "</font>"; }
     }
-    }
-        
-    
-    $coordinatorout = $phpgw->db->f("account_lid") . " [ ". $phpgw->db->f("account_firstname"). " " 
-               . $phpgw->db->f("account_lastname"). " ]"; 
-               
-      
+
+    $ab_customer = $projects[$i]['customer'];
+    $cols = array('n_given' => 'n_given',
+                 'n_family' => 'n_family',
+                 'org_name' => 'org_name');
+    $customer = $d->read_single_entry($ab_customer,$cols);
+    $customerout = $customer[0]['org_name'] . " [ " . $customer[0]['n_given'] . " " . $customer[0]['n_family'] . " ]";
+
+    $coordinatorout = $projects[$i]['lid'] . " [ " . $projects[$i]['firstname'] . " " . $projects[$i]['lastname'] . " ]";
+
 // ----------------- template declaration for list records -------------------------------
 
-    $el = $phpgw->link("stats_projectstat.php","id=" . $phpgw->db->f("id") 
-                                         . "&sort=$sort&order=$order&"
-                                         . "query=$query&start=$start&filter="
-                                         . $filter);
-      
-    $t->set_var(array("num" => $num,
+    $t->set_var(array("number" => $number,
                       "customer" => $customerout,
                       "status" => $status,
     		      "title" => $title,
       		      "end_date" => $end_dateout,
-      		      "coordinator" => $coordinatorout,
-      		      "stat" =>  "<a href=\"". $el
-                                 . "\">". lang("Statistic") . "</a>"));
-       $t->parse("list", "project_list", true);
+      		      "coordinator" => $coordinatorout));
+
+    $t->set_var('stat',$phpgw->link('stats_projectstat.php',"id=$id"));
+    $t->set_var('lang_stat',lang('Statistic'));
+
+    $t->parse("list", "project_list", true);
 
 // --------------------------- end record declaration ------------------------------------
   
 }
+    $t->parse("out", "project_list_t", true);
+    $t->p("out");
 
-       $t->parse("out", "project_list_t", true);
-       $t->p("out");
-       // -------------- end Add form declaration ------------------------
-
-$phpgw->common->phpgw_footer();
+    $phpgw->common->phpgw_footer();
 ?>

@@ -71,7 +71,7 @@
     $t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,'end_date',$order,'index.php',lang('Date due')));
     $t->set_var('sort_coordinator',$phpgw->nextmatchs->show_sort_order($sort,'coordinator',$order,'index.php',lang('Coordinator')));
     $t->set_var('lang_edit',lang('Edit'));
-    $t->set_var('lang_delete',lang('Delete'));
+    $t->set_var('lang_view',lang('View'));
     $t->set_var('lang_search',lang('Search'));             
 
   // -------------- end header declaration -----------------
@@ -109,10 +109,11 @@
 
     $coordinatorout = $projects[$i]['lid'] . " [ " . $projects[$i]['firstname'] . " " . $projects[$i]['lastname'] . " ]";
       
-    $edit = $phpgw->common->check_owner($projects[$i]['coordinator'],'edit.php',lang('Edit'),'id=' . $projects[$i]['id']
+/*    $edit = $phpgw->common->check_owner($projects[$i]['coordinator'],'edit.php',lang('Edit'),'id=' . $projects[$i]['id']
                                          . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter");
     $delete = $phpgw->common->check_owner($projects[$i]['coordinator'],'delete.php',lang('Delete'),'id=' . $projects[$i]['id']
-                                         . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter");
+                                         . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"); */
+    $id = $projects[$i]['id'];
     
 // ------------------ template declaration for list records -----------------------------------
       
@@ -121,14 +122,18 @@
                       'status' => $status,
 		       'title' => $title,
 		    'end_date' => $end_dateout,
-		 'coordinator' => $coordinatorout,
-			'edit' => $edit,
-		      'delete' => $delete));
+		 'coordinator' => $coordinatorout));
        
+// ------------------------- end record declaration -------------------------------------------
+
+    $t->set_var('edit',$phpgw->link('edit.php',"id=$id"));  
+    $t->set_var('lang_edit_entry',lang('Edit'));
+
+    $t->set_var('view',$phpgw->link('view_project.php',"id=$id"));
+    $t->set_var('lang_view_entry',lang('View'));
+
     $t->parse('list','projects_list',True);
 
-// ------------------------- end record declaration -------------------------------------------
-  
     }
 
 // ------------------ template declaration for Add Form ---------------------------------------

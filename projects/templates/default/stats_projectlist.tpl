@@ -18,13 +18,13 @@
   
 <!-- BEGIN project_list -->
       <tr bgcolor="{tr_color}">
-        <td>{num}</td>
+        <td>{number}</td>
         <td>{customer}</td>
 	<td>{title}</td>
         <td>{coordinator}</td>
         <td align=center>{status}</td>
         <td align=center>{end_date}</td>
-        <td align=center>{stat}</td>
+        <td align=center><a href="{stat}">{lang_stat}</a></td>
       </tr>
 <!-- END project_list -->
    </table>
