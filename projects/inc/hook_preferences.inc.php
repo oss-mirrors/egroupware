@@ -34,7 +34,7 @@
     $pg = $phpgw->link('/preferences/acl_preferences.php','acl_app=projects');
     echo '<a href=' . $pg . '>' . lang('Project access') . '</a><br>';
 
-    $pg = $phpgw->link('/preferences/categories.php','cats_app=projects');
+    $pg = $phpgw->link('/preferences/categories.php','cats_app=projects&cats_level=True');
     echo '<a href=' . $pg . '>' . lang('Project categories') . '</a>';
     section_end();
     }
