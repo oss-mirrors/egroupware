@@ -58,6 +58,8 @@
 		$today = date("Y-m-d"); 
 			
 		if($value=='0000-00-00') $value=$today; 		
+//		if($value=='0000-00') $value=$today; 		
+		if(!$value) $value=$today; 		
 		
 		list($tyear,$tmonth,$tday)=explode('-',$today);
 		list($year,$month,$day)=explode('-',$value);

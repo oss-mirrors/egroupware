@@ -22,7 +22,50 @@
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 	*/
 
-	/* $id$
+	/* $Id$
+
+	/**
+	* DEFAULT/FALLBACK VARCHAR PLUGIN 
+	*/
+	$this->plugins['def_string']['name'] 			= 'def_string';
+	$this->plugins['def_string']['title']			= 'default varchar';
+	$this->plugins['def_string']['author']			= 'Pim Snel';
+	$this->plugins['def_string']['description']	= 'Default field plugin for handeling string/varchar fields';
+	$this->plugins['def_string']['version']			= '1.1';
+	$this->plugins['def_string']['enable']			= 1;
+	$this->plugins['def_string']['default']			= 1;
+	$this->plugins['def_string']['db_field_hooks']	= array
+	(
+	   'string',
+	   'blob'
+	);
+
+	function plg_fi_def_string($field_name, $value, $config,$attr_arr)
+	{
+	   if($attr_arr['max_size'])
+	   {
+		  if($attr_arr['max_size']>40) $size=40;
+		  else $size=$attr_arr['max_size'];
+
+		  $max='size="'.$size.'" maxlength="'.$attr_arr['max_size'].'"';	
+	   }
+
+	   $input='<input type="text" name="'.$field_name.'" '.$max.' value="'.strip_tags($value).'">';
+
+		return $input;
+	}	
+
+	function plg_bv_def_string($value, $config,$attr_arr)
+	{
+	   if(strlen($value)>20)
+	   {
+		  $value = strip_tags($value);
+
+		  $value = '<span title="'.substr($value,0,200).'">' . substr($value,0,20). ' ...' . '</span>';
+	   }
+	   return $value;   		
+	}
+
 
 	/**
 	* DEFAULT/FALLBACK BLOB/TEXT/TEXTAREA PLUGIN 
@@ -151,46 +194,6 @@
 	}
 
 
-	/**
-	* DEFAULT/FALLBACK VARCHAR PLUGIN 
-	*/
-	$this->plugins['def_string']['name'] 			= 'def_string';
-	$this->plugins['def_string']['title']			= 'default varchar';
-	$this->plugins['def_string']['author']			= 'Pim Snel';
-	$this->plugins['def_string']['description']	= 'Default field plugin for handeling string/varchar fields';
-	$this->plugins['def_string']['version']			= '1.1';
-	$this->plugins['def_string']['enable']			= 1;
-	$this->plugins['def_string']['default']			= 1;
-	$this->plugins['def_string']['db_field_hooks']	= array
-	(
-		'string'
-	);
-
-	function plg_fi_def_string($field_name, $value, $config,$attr_arr)
-	{
-	   if($attr_arr['max_size'])
-	   {
-		  if($attr_arr['max_size']>40) $size=40;
-		  else $size=$attr_arr['max_size'];
-
-		  $max='size="'.$size.'" maxlength="'.$attr_arr['max_size'].'"';	
-	   }
-
-	   $input='<input type="text" name="'.$field_name.'" '.$max.' value="'.strip_tags($value).'">';
-
-		return $input;
-	}	
-
-	function plg_bv_def_string($value, $config,$attr_arr)
-	{
-	   if(strlen($value)>20)
-	   {
-		  $value = strip_tags($value);
-
-		  $value = '<span title="'.substr($value,0,200).'">' . substr($value,0,20). ' ...' . '</span>';
-	   }
-	   return $value;   		
-	}
 	
 	/**
 	* DEFAULT/FALLBACK INTEGER PLUGIN 

@@ -1075,10 +1075,21 @@
 		 {
 			$jinn_field_type=$this->db_ftypes->complete_resolve($metadata[$field[name]]);
 
+			//FIXME create a fortick standard function
+			
 			/* use '' in SQL yes/no */	
 			if($jinn_field_type=='int' || $jinn_field_type=='auto')
 			{
 			   $fortick='';
+			}
+			/* put here all sql-functions
+			NOW() for time, date, timestamp and datestamp
+			PASSWORD for string
+			etc....
+			*/
+			elseif( ($jinn_field_type=='timestamp' || $jinn_field_type=='date') && $field[value]=='Now()')
+			{
+			   $fortick='';//FIXME this is the same as doing nothing!!!
 			}
 			else
 			{
@@ -1199,18 +1210,26 @@
 		 
 		 foreach($data as $field)
 		 {
-			
 			$jinn_field_type=$this->db_ftypes->complete_resolve($metadata[$field[name]]);
 
 			/* use '' in SQL yes/no */	
 			if($jinn_field_type=='int' || $jinn_field_type=='auto')
 			{
-			   $fortick='';
-			 }
-			 else
-			 {
-				$fortick='\'';
-			 }
+			   $fortick='';//FIXME this is the same as doing nothing!!!
+			}
+			/* put here all sql-functions
+			NOW() for time, date, timestamp and datestamp
+			PASSWORD for string
+			etc....
+			*/
+			elseif( ($jinn_field_type=='timestamp' || $jinn_field_type=='date') && $field[value]=='Now()')
+			{
+			   $fortick='';//FIXME this is the same as doing nothing!!!
+			}
+			else
+			{
+			   $fortick='\'';
+			}
 
 			
 			

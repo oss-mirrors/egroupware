@@ -276,7 +276,8 @@
 	  unset($atts_path_new);
 
 	  /* finally adding new attachments */
-	  $atts_to_add=$local_bo->common->filter_array_with_prefix($HTTP_POST_FILES,'ATT_SRC');
+
+	  $atts_to_add=$local_bo->common->filter_array_with_prefix($HTTP_POST_FILES,'ATT_SRC'.$field_name);
 
 	  // quick check for new attchments
 	  if(is_array($atts_to_add))
@@ -294,8 +295,20 @@
 			{
 			   $new_temp_file=$add_att['tmp_name']; // just copy
 
-			   $target_att_name = time().ereg_replace("[^a-zA-Z0-9_.]", '_', $add_att['name']);
+			   $target_att_name = ereg_replace("[^a-zA-Z0-9_.]", '_', $add_att['name']);
+				
+			   /* prevent overwriting files with the same name */
+			   $copynum=0;
+			   while(file_exists($upload_path.SEP.'attachments'.SEP.$target_att_name))
+			   {
+				  if(substr($target_att_name,1,1)=='_') 
+				  {
+					 $target_att_name=substr($target_att_name,2);
+				  }
+				  $target_att_name=$copynum++.'_'.$target_att_name;
+			   }
 
+			   // FIXME better use move
 			   if (copy($new_temp_file, $upload_path.SEP.'attachments'.SEP.$target_att_name))
 			   {
 				  $atts_array[$att_position]=$path_in_db.'attachments'.SEP.$target_att_name;
