@@ -25,7 +25,7 @@
 	//header("Content-disposition: attachment; filename=\"".$name."\"");
 	//header("Content-type: ".strtolower($application)."/".strtolower($subtype));
 
-	$mime = strtolower($application)."/".strtolower($subtype);
+	$mime = strtolower($type)."/".strtolower($subtype);
 	$phpgw->browser->content_header($name,$mime);
 
 	if ($encoding == "base64")
