@@ -4,17 +4,6 @@
 
 ===================================================================================
 
-
-TODO - 0.4.4
-===================================================================================
-- plugins infrastructure completely finished
-- remove all showstoppers
-- finish plugins!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!75%
-- good upgrade functionality
-- FIX the magic-quotes bug or mention it in a FAQ
-- remove sessionless links
-- FIX/CHECK sessionsupport in table. Now only in cookies work
-
 TODO - BUGS!!!
 ===================================================================================
 - als men in access_rights een userlijst krijgt en daar vervolgens in zoekt kan
@@ -22,14 +11,19 @@ TODO - BUGS!!!
   - deze fout zal ook optreden bij meer dan 15 users CHECK THIS, don't know anymore
 - phpgwadmin krijgt niet alle objecten te zien in accessrights CHECK THIS
 
-TODO - 0.4.5 and later Not branched
+TODO - 0.5.1
 ===================================================================================
+- remove all showstoppers
+- remove sessionless links
+- FIX/CHECK sessionsupport in table. Now only in cookies work
 - finish configure-view-function!!!!!!!!!!!!!!!!!!!!!!!!!
 - site administration working for non-phpgw-administrators
-- default demo-site in phpgw-table
-- default demo-site as import-file
-- fix most bugs
-- english translation complete
+- default demo-site in phpgw-table (what about the JiNN project website
+- default demo-site as import-file (Oke quit simple)
+
+Not branched
+===================================================================================
+- translate this file completly to English 
 - some documentation, users/adminisators
 - remove ugly code/functions
 - optimize default template
@@ -41,7 +35,8 @@ TODO - 0.4.5 and later Not branched
 		- make a lot of new classes, e.g. class.form_plugins.php
 
 - language
-    + Dutch translation complete
+	- english translation complete (always a point)
+	+ Dutch translation complete
 	+ check all statusmessages
 	+ give statusmessages colors
 
