@@ -26,7 +26,11 @@
 	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/interserv.php') . '">' . lang('phpgw client/server test') . '</a>' . "\n";
 	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/phpgw_test.php') . '">' . lang('phpgw server test') . '</a>' . "\n";
 	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/client.php') . '">' . lang('Simple Client') . '</a>' . "\n";
-	echo '<br><a href="' . $GLOBALS['phpgw']->link('/meerkat/index.php') . '">' . lang('Meerkat Browser') . '</a>' . "\n";
+
+	if ($GLOBALS['phpgw']->acl->check('run',1,'meerkat'))
+	{
+		echo '<br><a href="' . $GLOBALS['phpgw']->link('/meerkat/index.php') . '">' . lang('Meerkat Browser') . '</a>' . "\n";
+	}
 
 	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
