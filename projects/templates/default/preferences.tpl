@@ -12,7 +12,7 @@
 
       <center>
        <form method="POST" name="prefs_form" action="{actionurl}">
-        <table width="70%" border="0" cellspacing="2" cellpadding="2">
+        <table width="80%" border="0" cellspacing="2" cellpadding="2">
         <tr>       
           <td>{lang_select_tax}:</td>                                                                                                                
           <td><input type="text" name="tax" value="{tax}" size=6 maxlength=6>&nbsp;%</td>
