@@ -18,6 +18,6 @@
 		);
 
 //Do not modify below this line
-		display_section($appname,$file);
+		$GLOBALS['phpgw']->common->display_mainscreen($appname,$file);
 	}
 ?>

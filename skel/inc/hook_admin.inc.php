@@ -13,9 +13,9 @@
 	{
 		$file = Array
 		(
-//			'Administer' => $GLOBALS['phpgw']->link('/skel/admin.php'),
+//			'Administer' => $GLOBALS['phpgw']->link('/index.php','menuaction=skel.uiskel.admin'),
 		);
 //Do not modify below this line
-		display_section($appname,$file);
+		$GLOBALS['phpgw']->common->display_mainscreen($appname,$file);
 	}
 ?>
