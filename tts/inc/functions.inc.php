@@ -90,7 +90,7 @@
 					$prefs = $pref->read_repository();
 					$prefs = $phpgw->common->create_emailpreferences($prefs,$members[$i]['account_id']);
 					$toarray[] = $prefs["email"]["address"];
-					//echo '<br>'.$toarray[$i];
+					// echo '<br>'.$toarray[$i];
 					unset($pref);
 				}
 			}
