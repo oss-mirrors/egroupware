@@ -181,7 +181,8 @@
     if (strtoupper($de_part->subtype) == "PLAIN")
     {
       // nlbr and htmlentities functions are strip latin5 characters
-      $dsp = htmlentities($dsp);
+      if(strtoupper(lang("charset")) <> "BIG5")
+        $dsp = htmlentities($dsp);
       $dsp = ereg_replace( "^","<p>",$dsp);
       $dsp = ereg_replace( "\n","<br>",$dsp);
       $dsp = ereg_replace( "$","</p>", $dsp);
