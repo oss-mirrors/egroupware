@@ -30,36 +30,25 @@
 
 		$stat = 0;
 
-		$phpgw->db->query("select max(id) from	phpgw_forum_body");
+		$phpgw->db->query("select max(id) from	phpgw_forum_body",__LINE__,__FILE__);
 		$phpgw->db->next_record();
 		$next_f_body_id = $phpgw->db->f("0") +	1;
 
-		$phpgw->db->query("select max(id) from	phpgw_forum_threads");
+		$phpgw->db->query("select max(id) from	phpgw_forum_threads",__LINE__,__FILE__);
 		$phpgw->db->next_record();
 		$next_f_threads_id = $phpgw->db->f("0") + 1;
 
 		//print	"$next_f_threads_id <br> $next_f_body_id";
 		$datetime = $phpgw->common->show_date(time(),"Y-m-d h:i:s");
 
-		$phpgw->db->query("insert into	phpgw_forum_threads (postdate,pos,thread,depth,main,parent,cat_id,for_id,author,subject,email,host,stat) VALUES (
-		'$datetime',
-		0,
-		$next_f_body_id,
-		0,
-		$next_f_body_id,
-		-1,
-		$cat,
-		$for,
-		'$author',
-		'$subject',
-		'$email',
-		'$host',
-		$stat)");
+		$phpgw->db->query("insert into phpgw_forum_threads (postdate,pos,thread,depth,main,parent,"
+			. "cat_id,for_id,author,subject,email,host,stat,n_replies) VALUES ('$datetime',0,$next_f_body_id,"
+			. "0,$next_f_body_id,-1,$cat,$for,'$author','$subject','$email','$host',$stat,0)",__LINE__,__FILE__);
 
 		$phpgw->db->query("insert into phpgw_forum_body	(cat_id,for_id,message)	VALUES (
 		$cat,
 		$for,
-		'$message')");
+		'$message')",__LINE__,__FILE__);
 
 
 		Header("Location: ". $phpgw->link("/forum/threads.php","cat=".$cat."&for=".$for."&col=".$col));
@@ -70,11 +59,11 @@
 	$phpgw->template->set_file('POST','post.body.tpl');
 
 
-	$phpgw->db->query("select * from phpgw_forum_categories where id	= $cat");
+	$phpgw->db->query("select * from phpgw_forum_categories where id	= $cat",__LINE__,__FILE__);
 	$phpgw->db->next_record();
 	$category = $phpgw->db->f("name");
 
-	$phpgw->db->query("select * from phpgw_forum_forums where id = $for");
+	$phpgw->db->query("select * from phpgw_forum_forums where id = $for",__LINE__,__FILE__);
 	$phpgw->db->next_record();
 	$forums = $phpgw->db->f("name");
 

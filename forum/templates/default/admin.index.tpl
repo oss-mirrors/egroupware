@@ -1,7 +1,6 @@
 
 <p>&nbsp;</p>
-<table align=center bgcolor=#{TB_BG} border=0 cellpadding=0 cellspacing=0 
-width="80%">
+<table align=center bgcolor=#{TB_BG} border=0 cellpadding=0 cellspacing=0 width="80%">
   <tbody> 
   <tr> 
     <td> 
@@ -40,7 +39,7 @@ width="80%">
           <td bgcolor="#{TD_BG}" width="4%">&nbsp;</td>
           <td bgcolor="#{TD_BG}" width="69%"><font size="2">{CAT_DESC}</font></td>
         </tr>
-      
+
         <!-- BEGIN ForumBlock --> 
         <tr bgcolor="{TR_BG}"> 
           <td bgcolor="#{TR_BG}" width="4%"><img src="{IMG_URL_PREFIX}forum.gif" width="16" height="16" alt="{LANG_SUBCAT}"></td>

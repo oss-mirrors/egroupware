@@ -114,6 +114,9 @@
 		$phpgw->template->fp('CatB','CatBlock',true);
 	}
 
+	$phpgw->template->set_var('BG6',$phpgw_info['theme']['bg03']);
+	$phpgw->template->set_var('TD_BG','ffffff');
+
 	$phpgw->template->pfp('Out','INDEX');
 	$phpgw->common->phpgw_footer();
 ?>
