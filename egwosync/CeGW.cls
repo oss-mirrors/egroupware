@@ -164,6 +164,7 @@ Public Function Exec(szMethod As String, Optional xmlParams) As Boolean
     On Error GoTo Err_Exec
     
     Dim linsRequest As New XMLRPCRequest
+    Dim bEnabled As Boolean 'to tell whether we're ready to exec
 
     linsRequest.Hostname = mHostname
     linsRequest.HostPort = mPort
@@ -171,18 +172,46 @@ Public Function Exec(szMethod As String, Optional xmlParams) As Boolean
     
     linsRequest.methodName = szMethod
     
-    If Not IsMissing(xmlParams) Then
-        If TypeOf xmlParams Is XMLRPCStruct Then
-            linsRequest.Params.AddStruct xmlParams
-        ElseIf TypeOf xmlParams Is XMLRPCArray Then
-            linsRequest.Params.AddArray xmlParams
-        Else
-            linsRequest.Params.AddBoolean xmlParams
-        End If
-    End If
+    bEnabled = Master.Ready
     
-    Set linsResponse = linsRequest.Submit
-    Exec = True
+    If Not bEnabled Then 'Connection settings need to be set.
+        Dim y As VbMsgBoxResult
+        y = MsgBox("You cannot use eGWOSync without first setting the " & _
+                    (Chr(10)) & "server access parameters. Click okay to setup, cancel to abort.", _
+                    vbExclamation + vbOKCancel, "Cannot log in to eGW server")
+        If y = vbOK Then
+            Master.Setup
+        End If
+    Else
+        If Not IsMissing(xmlParams) Then
+            If TypeOf xmlParams Is XMLRPCStruct Then
+                linsRequest.Params.AddStruct xmlParams
+            ElseIf TypeOf xmlParams Is XMLRPCArray Then
+                linsRequest.Params.AddArray xmlParams
+            Else
+                linsRequest.Params.AddBoolean xmlParams
+            End If
+        End If
+        
+        Set linsResponse = linsRequest.Submit
+        'Deal with some possible errors.
+        If linsResponse.Status <> XMLRPC_PARAMSRETURNED Then
+            If linsResponse.Status = XMLRPC_XMLPARSERERROR Then
+            'XML Parse Errors get special treatment for more detail
+                BasUtilities.BugOut 704, "CeGW.Exec", _
+                    "XML Parse Error: " & linsResponse.XMLParseError
+            Else
+                BasUtilities.BugOut 700, "CeGW.Exec", _
+                    "Unexpected response from XML-RPC request. Status = " & Master.eGW.Response.Status
+            End If
+        ElseIf linsResponse.Params.Count <> 1 Then
+            BasUtilities.BugOut 701, "CeGW.Exec", _
+                "Unexpected response from XML-RPC request. " & Master.eGW.Response.Params.Count & _
+                " return parameters, expecting 1"
+        End If
+        
+        Exec = True
+    End If
     
 Exit_Exec:
     Exit Function

@@ -54,6 +54,7 @@ Public Function Create(ByVal ciContact As ContactItem) As XMLRPCResponse
     Dim objTranslator   As New CContactTranslator
     Dim colTemp         As Collection
     Dim valTemp         As XMLRPCStruct
+    Dim bTemp           As Boolean
 
     'A macro to indicate that now writing to the server should be done.
     DONT_WRITE = -1
@@ -102,26 +103,45 @@ Public Function Create(ByVal ciContact As ContactItem) As XMLRPCResponse
         '[ that it should create a new contact. If a duplicate was found, it will be overwritten.
         objTranslator.Outlook2eGW ciContact, xmlParms
         xmlParms.AddString "id", dblDuplicateID
+        
+        bTemp = Master.eGW.Login
+        If bTemp Then
+            bTemp = Master.eGW.Exec("addressbook.boaddressbook.write", xmlParms)
+        Else
+            BasUtilities.BugOut 600, "CeGWContacts.Create", _
+                "Login failed."
+        End If
+        If bTemp Then
+            Set xmlResponse = Master.eGW.Response
 
-        Set xmlResponse = SimpleExec("addressbook.boaddressbook.write", xmlParms)
-
-        '[ > If the write was succesful, get and return the cursory information on the contact
-        '[ The server returns a boolean if an entry was overwritten, or an integer if a new entry
-        '[ was made.
-        If xmlResponse.Params(1).ValueType = XMLRPC_INT_I4 Or _
-           xmlResponse.Params(1).ValueType = XMLRPC_BOOLEAN Then
-            Set xmlParms = New XMLRPCStruct
-            If xmlResponse.Params(1).ValueType = XMLRPC_INT_I4 Then
-                xmlParms.AddInteger "id", xmlResponse.Params(1).IntegerValue
-            ElseIf xmlResponse.Params(1).ValueType = XMLRPC_BOOLEAN And _
-                xmlResponse.Params(1).BooleanValue Then
-                    xmlParms.AddInteger "id", dblDuplicateID
+            '[ > If the write was succesful, get and return the cursory information on the contact
+            '[ The server returns a boolean if an entry was overwritten, or an integer if a new entry
+            '[ was made.
+            If xmlResponse.Params(1).ValueType = XMLRPC_INT_I4 Or _
+               xmlResponse.Params(1).ValueType = XMLRPC_BOOLEAN Then
+                Set xmlParms = New XMLRPCStruct
+                If xmlResponse.Params(1).ValueType = XMLRPC_INT_I4 Then
+                    xmlParms.AddInteger "id", xmlResponse.Params(1).IntegerValue
+                ElseIf xmlResponse.Params(1).ValueType = XMLRPC_BOOLEAN And _
+                    xmlResponse.Params(1).BooleanValue Then
+                        xmlParms.AddInteger "id", dblDuplicateID
+                End If
+                xmlArray.AddString "fn"
+                xmlParms.AddArray "fields", xmlArray
+                bTemp = Master.eGW.Exec("addressbook.boaddressbook.read", xmlParms)
+                If bTemp Then
+                    Set Create = Master.eGW.Response
+                Else
+                    BasUtilities.BugOut 721, "CeGWContacts.Create", _
+                        "Remote execution failed."
+                End If
             End If
-            xmlArray.AddString "fn"
-            xmlParms.AddArray "fields", xmlArray
-            Set Create = SimpleExec("addressbook.boaddressbook.read", xmlParms)
+        Else
+            BasUtilities.BugOut 721, "CeGWContacts.Create", _
+                "Remote execution failed."
         End If
     End If
+    Master.eGW.Logout
 End Function
 
 '***********************************************************************************************
@@ -132,6 +152,7 @@ Public Function GetFullInfoFromServer(strSelectedName As String) As XMLRPCRespon
     Debug.Print "Getting full information on " & strSelectedName & " from the server"
     Dim xmlParms    As New XMLRPCStruct
     Dim varTemp     As XMLRPCStruct
+    Dim bTemp       As Boolean
     '[ Now we need to go back and get the full information on the selected contacts.
     '[ arrResponses holds the id of each contact which we can use in a
     '[ boaddressbook.read call, we just need to get the id out of arrResponses.
@@ -146,10 +167,22 @@ Public Function GetFullInfoFromServer(strSelectedName As String) As XMLRPCRespon
             '[ Get the full information on this contact from the server. The ID needs to be
             '[ converted to an Integer.
             xmlParms.AddInteger "id", Val(varTemp.GetValueByName("id").StringValue)
-            Set GetFullInfoFromServer = BasUtilities.SimpleExec("addressbook.boaddressbook.read", xmlParms)
-            'Break out of the loop since we've found our man.
-            Exit For
-            
+            bTemp = Master.eGW.Login
+            If bTemp Then
+                bTemp = Master.eGW.Exec("addressbook.boaddressbook.read", xmlParms)
+                If bTemp Then
+                    Set GetFullInfoFromServer = Master.eGW.Response
+                    Master.eGW.Logout
+                    'Break out of the loop since we've found our man.
+                    Exit For
+                Else
+                    BasUtilities.BugOut 721, "CeGWContacts.GetFullInfoFromServer", _
+                        "Remote execution failed."
+                End If
+            Else
+                BasUtilities.BugOut 600, "CeGWContacts.GetFullInfoFromServer", _
+                    "Login failed."
+            End If
         End If
     Next varTemp
 End Function

@@ -48,7 +48,7 @@ Private Sub IDTExtensibility2_OnConnection(ByVal Application As Object, _
     Set AddinInstance = AddInInst
     Set oXL = Application
     If oXL Is Nothing Then
-        BasUtilities.ErrorMessage 614, "Connect.OnConnection", "Error in OnConnection. Application = " & _
+        BasUtilities.BugOut 614, "Connect.OnConnection", "Error in OnConnection. Application = " & _
             Application.Name & " ConnectMode = " & ConnectMode
     End If
     If (ConnectMode <> ext_cm_Startup) Then _
@@ -68,7 +68,7 @@ Private Sub IDTExtensibility2_OnStartupComplete(custom() As Variant)
     
     On Error Resume Next
     If oXL Is Nothing Then
-        BasUtilities.ErrorMessage 614, "Connect.OnStartupComplete", "Application reference not received"
+        BasUtilities.BugOut 614, "Connect.OnStartupComplete", "Application reference not received"
     End If
     
     Set oCBs = oXL.CommandBars
@@ -90,7 +90,7 @@ Private Sub IDTExtensibility2_OnStartupComplete(custom() As Variant)
         End With
     End If
     If cbb Is Nothing Then
-        BasUtilities.ErrorMessage 614, "Connect.OnStartupComplete", "Button could not be found or added"
+        BasUtilities.BugOut 614, "Connect.OnStartupComplete", "Button could not be found or added"
     End If
     
     Set oCBs = Nothing

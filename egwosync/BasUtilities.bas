@@ -15,7 +15,7 @@ Dim egwContacts As New CeGWContacts
 ' in listboxes.
 '***********************************************************************************************
 Public Sub GetContacts()
-    On Error GoTo GetContactsError
+    On Error Resume Next
     If Master.Ready Then
         Dim xmlParms    As New XMLRPCStruct
         Dim xmlArray    As New XMLRPCArray
@@ -32,6 +32,7 @@ Public Sub GetContacts()
         Dim strTemp     As Variant
         Dim bLogin      As Boolean
         Dim bContinue   As Boolean
+        Dim bExec       As Boolean
         Dim tempVariant As Variant
         
         FrmMain.lblStatus.Caption = "Getting Contacts..."
@@ -82,32 +83,36 @@ Public Sub GetContacts()
             xmlParms.AddString "sort", SORT
                 
             'Get the contacts from the server and temporarily store them in xmlResponse
-            Set xmlResponse = BasUtilities.SimpleExec("addressbook.boaddressbook.search", _
-                                                        xmlParms, _
-                                                        bLogin)
-                
-            'A touch of Ye Olde Error Handling. Aborts execution if login failed.
-            If xmlResponse.Status <> XMLRPC_PARAMSRETURNED Then
-                FrmMain.lblStatus = "Idle"
+            bTemp = Master.eGW.Exec("addressbook.boaddressbook.search", xmlParms)
+            If Not bTemp Then
+                BasUtilities.BugOut 721, "BasUtilities.GetContacts", _
+                    "Remote execution failed."
                 Exit Sub
-            End If
-                
-            If xmlResponse.Params(1).ValueType = XMLRPC_ARRAY Then
-                For Each tempValue In xmlResponse.Params(1).ArrayValue
-                    'Add each contact to the response collection
-                    egwContacts.CursoryInfo.Add tempValue.StructValue
-                Next tempValue
-            ElseIf xmlResponse.Params(1).ValueType = XMLRPC_STRING And _
-                    xmlResponse.Params(1).StringValue = "" Then
-                MsgBox "No contacts matching your search parameters were found on the server"
-                bContinue = False
-            End If
-    
-            'update our place in the remote list of contacts
-            INT_START = INT_LIMIT + INT_START
-            If bContinue Then
-                If xmlResponse.Params(1).ArrayValue.Count <> INT_LIMIT Then
+            Else
+                Set xmlResponse = Master.eGW.Response
+                'A touch of Ye Olde Error Handling. Aborts execution if login failed.
+                If xmlResponse.Status <> XMLRPC_PARAMSRETURNED Then
+                    FrmMain.lblStatus = "Idle"
+                    Exit Sub
+                End If
+                    
+                If xmlResponse.Params(1).ValueType = XMLRPC_ARRAY Then
+                    For Each tempValue In xmlResponse.Params(1).ArrayValue
+                        'Add each contact to the response collection
+                        egwContacts.CursoryInfo.Add tempValue.StructValue
+                    Next tempValue
+                ElseIf xmlResponse.Params(1).ValueType = XMLRPC_STRING And _
+                        xmlResponse.Params(1).StringValue = "" Then
+                    MsgBox "No contacts matching your search parameters were found on the server"
                     bContinue = False
+                End If
+        
+                'update our place in the remote list of contacts
+                INT_START = INT_LIMIT + INT_START
+                If bContinue Then
+                    If xmlResponse.Params(1).ArrayValue.Count <> INT_LIMIT Then
+                        bContinue = False
+                    End If
                 End If
             End If
         Loop While bContinue
@@ -130,12 +135,6 @@ Public Sub GetContacts()
     Else
         Master.Setup
     End If
-GetContactsError:
-    On Error Resume Next
-    BasUtilities.ErrorMessage 630, "BasUtilities.GetContacts", _
-        "Unknown Error. Please report the following information:\n" & _
-        "Master.Ready = " & Master.Ready & "\n" & _
-        "Logged in = " & bLogin
 End Sub
 
 '***********************************************************************************************
@@ -245,82 +244,6 @@ Public Sub SynchronizeContacts()
 End Sub
 
 '***********************************************************************************************
-' Provides a simplified way of running commands on the eGW XMLRPC server. No command should call
-' SimpleExec unless it has first checked to see if Master.Ready is true, which means that
-' egwosync has all the information it needs to log in to the server.
-'***********************************************************************************************
-Public Function SimpleExec(methodName As String, _
-                            xmlParms As XMLRPCStruct, _
-                            Optional bLogin As Boolean = False) As XMLRPCResponse
-    
-    On Error GoTo SimpleExecError
-    
-    Dim linsUtility As New XMLRPCUtility
-    Dim bEnabled As Boolean
-    Dim bLoginPassed As Boolean
-    
-    '[ grab the login information from the form GUI. eGW is defined in CeGWOSyncMaster
-    '[ so it's always accessible to everyone.
-    bEnabled = Master.Ready
-    
-    If bEnabled Then
-        '[ > login and put the result in a variable for testing
-        '[ bLogin can be passed from the caller, allowing the caller to login, rather
-        '[ than that leaving that to SimpleExec.
-        If bLogin Then
-            bLoginPassed = True
-        Else
-            bLogin = Master.eGW.Login
-            bLoginPassed = False
-        End If
-        
-        'If we logged in successfully...
-        If bLogin Then
-            Master.eGW.Reset
-            Master.eGW.Exec methodName, xmlParms
-            
-            'Error handling bonanza
-            If Master.eGW.Response.Status <> XMLRPC_PARAMSRETURNED Then
-                MsgBox "Unexpected response from XML-RPC request. Status = " & Master.eGW.Response.Status
-                If Master.eGW.Response.Status = 4 Then
-                    MsgBox "XML Parse Error: " & Master.eGW.Response.XMLParseError, , "XML Parse Error"
-                    'The following line will show the full response string from the server in all its glory
-                    'Debug.Print Master.eGW.Response.xmlResponse
-                End If
-            ElseIf Master.eGW.Response.Params.Count <> 1 Then
-                MsgBox "Unexpected response from XML-RPC request. " & Master.eGW.Response.Params.Count & " return parameters, expecting 1"
-            End If
-            
-            'return the response from the XMLRPC server
-            Set SimpleExec = Master.eGW.Response
-            'it's always polite to close the door when you leave
-            If Not bLoginPassed Then
-                Master.eGW.Logout
-            End If
-        'If login failed...
-        Else
-            Dim x As VbMsgBoxResult
-            'Show a message box with a warning icon and an Okay button
-            MsgBox "An attempt to log in to the remote server failed.", vbExclamation + vbOKOnly, "Login Failed"
-        End If
-    Else
-        Dim y As VbMsgBoxResult
-        y = MsgBox("You cannot use eGWOSync without first setting the " & _
-                    (Chr(10)) & "server access parameters. Click okay to setup, cancel to abort.", _
-                    vbExclamation + vbOKCancel, "Cannot log in to eGW server")
-        If y = vbOK Then
-            Master.Setup
-        End If
-    End If
-SimpleExecError:
-    BasUtilities.ErrorMessage 631, "BasUtilities.SimpleExec", _
-        "Unknown Error. Please report the following:\n" & _
-        "Logged in = " & bLogin & "\n" & _
-        "Login Passed = " & bLoginPassed & _
-        "Response Status = " & Master.eGW.Response.Status
-End Function
-
-'***********************************************************************************************
 ' Finds the highest subscript available in an array. Like UBound, only doesn't throw an error if
 ' the array is uninitialized. Note, the default return value is ONE MORE than than the last filled
 ' element.
@@ -345,7 +268,7 @@ Public Function GetUpper(varArray As Variant) As Integer
     GetUpper = Upper
 End Function
 
-Public Sub ErrorMessage(Number As Integer, Source As String, Description As String)
+Public Sub BugOut(Number As Integer, Source As String, Description As String)
     On Error Resume Next
     Err.Clear
     Err.Raise vbObjectError + Number, Source, _

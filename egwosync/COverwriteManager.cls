@@ -27,8 +27,9 @@ End Sub
 ' this should deal with the Rename choice. I know that's messy, maybe I'll fix it.
 '************************************************************************************************
 Public Function Manage(ByRef thisOriginalContact As Object, ByRef thisNewContact As Object) As Integer
-    Dim olC As New COutlookContacts
-    Dim eGWC As New CeGWContacts
+    Dim olC     As New COutlookContacts
+    Dim eGWC    As New CeGWContacts
+    Dim bTemp   As Boolean
     
     Set OriginalContact = thisOriginalContact
     Set NewContact = thisNewContact
@@ -43,7 +44,18 @@ Public Function Manage(ByRef thisOriginalContact As Object, ByRef thisNewContact
         If OriginalContactType = OUTLOOK_CONTACT Then
             OriginalContact.Close (olSave)
         ElseIf OriginalContactType = EGW_CONTACT Then
-            BasUtilities.SimpleExec "addressbook.boaddressbook.write", OriginalContact
+            bTemp = Master.eGW.Login
+            If bTemp Then
+                bTemp = Master.eGW.Exec("addressbook.boaddressbook.write", OriginalContact)
+                Master.eGW.Logout
+                If Not bTemp Then
+                    BasUtilities.BugOut 721, "COverwriteManager.Manage", _
+                        "Remote execution failed."
+                End If
+            Else
+                BasUtilities.BugOut 721, "COverwriteManager.Manage", _
+                    "Login failed."
+            End If
         End If
         
         If NewContactType = OUTLOOK_CONTACT Then
