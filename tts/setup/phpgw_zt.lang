@@ -1,3 +1,6 @@
+<<<<<<< phpgw_en.lang	tts	zt	
+=======	tts	zt	
+>>>>>>> 1.18	tts	zt	
 a new ticket has been reported.	tts	zt	
 accept	tts	zt	
 accept the ticket into verification process.	tts	zt	
@@ -101,18 +104,18 @@ returns a struct of a tickets history	tts	zt	傳回傳票的歷史架構
 returns a struct of values of a single ticket	tts	zt	傳回單一傳票數值的架構
 returns the additional notes attached to a ticket	tts	zt	傳回傳票的附加訊息
 search	tts	zt	搜尋
-selected	tts	zt	已被選擇
+selected	tts	zt	
 show new/updated tickets on main screen	tts	zt	顯示最新及更新過的傳票在主畫面
-source state	tts	zt	來源狀態
+source state	tts	zt	
 state	tts	zt	狀態
 state changed	tts	zt	狀態已改變
 state id	tts	zt	
 state name	tts	zt	狀態名稱
 status/date closed	tts	zt	目前狀態／關閉日期
 subject changed	tts	zt	主題改變
-target state	tts	zt	目標狀態
+target state	tts	zt	
 test	tts	zt	測試
-the closed ticket requires more work. reopen it.	tts	zt	被關閉的傳票需要更多的作業,請重新開啟
+the closed ticket requires more work. reopen it.	tts	zt	
 the owner of the ticket was not able to confirm the issue.	tts	zt	
 the ticket has been accepted by the owner, who is about to work on it.	tts	zt	
 the ticket has been closed without resolution.	tts	zt	
