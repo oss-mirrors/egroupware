@@ -36,7 +36,7 @@
 			<td height="2">&nbsp;</td>
 		</tr>
 		<tr>
-			<td><font face="{font}">{lang_invoice}:&nbsp;{invoice_num}</font></td>
+			<td><font face="{font}">{lang_invoice_num}:&nbsp;{invoice_num}</font></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr>

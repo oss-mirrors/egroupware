@@ -98,7 +98,6 @@
 			$this->t->set_var('lang_budget',lang('Budget'));
 			$this->t->set_var('lang_customer',lang('Customer'));
 			$this->t->set_var('lang_coordinator',lang('Coordinator'));
-			$this->t->set_var('lang_done',lang('Done'));
 			$this->t->set_var('lang_edit',lang('Edit'));
 			$this->t->set_var('lang_hours',lang('Work hours'));
 			$this->t->set_var('lang_project',lang('Project'));
@@ -681,7 +680,7 @@
 			$this->t->set_var('charset',$charset);
 			$this->t->set_var('font',$GLOBALS['phpgw_info']['theme']['font']);
 
-			$del = $this->bodeliveries->get_single_delivery($delivery_id);
+			$del = $this->bodeliveries->read_single_delivery($delivery_id);
 
 			$this->t->set_var('customer',$this->bodeliveries->get_address_data($del['customer']));
 
@@ -721,11 +720,11 @@
 				$sumaes += $aes;
 
 				$this->t->set_var('aes',$aes);
-				$act_descr = $phpgw->strip_html($hours[$i]['descr']);
+				$act_descr = $GLOBALS['phpgw']->strip_html($hours[$i]['descr']);
 				if (! $act_descr) { $act_descr  = '&nbsp;'; }
 				$this->t->set_var('act_descr',$act_descr);
 				$this->t->set_var('billperae',$hours[$i]['billperae']);
-				$hours_descr = $phpgw->strip_html($hours[$i]['hours_descr']);
+				$hours_descr = $GLOBALS['phpgw']->strip_html($hours[$i]['hours_descr']);
 				if (! $hours_descr) { $hours_descr  = '&nbsp;'; }
 				$this->t->set_var('hours_descr',$hours_descr);
 				$this->t->fp('list','del_list',True);

@@ -93,28 +93,20 @@
 			$this->t->set_var('lang_none',lang('None'));
 			$this->t->set_var('lang_start_date',lang('Start Date'));
 			$this->t->set_var('lang_end_date',lang('End Date'));
-			$this->t->set_var('lang_date_due',lang('Date due'));
-			$this->t->set_var('lang_access',lang('Private'));
 			$this->t->set_var('lang_projects',lang('Projects'));
 			$this->t->set_var('lang_jobs',lang('Jobs'));
-			$this->t->set_var('lang_act_number',lang('Activity ID'));
 			$this->t->set_var('lang_title',lang('Title'));
 			$this->t->set_var('lang_status',lang('Status'));
-			$this->t->set_var('lang_save',lang('Save'));
-			$this->t->set_var('lang_budget',lang('Budget'));
 			$this->t->set_var('lang_customer',lang('Customer'));
 			$this->t->set_var('lang_coordinator',lang('Coordinator'));
-			$this->t->set_var('lang_done',lang('Done'));
 			$this->t->set_var('lang_edit',lang('Edit'));
-			$this->t->set_var('lang_view',lang('View'));
 			$this->t->set_var('lang_hours',lang('Work hours'));
 			$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
-    		$this->t->set_var('lang_billperae',lang('Bill per workunit'));
 			$this->t->set_var('lang_invoices',lang('Invoices'));
-			$this->t->set_var('lang_deliveries',lang('Deliveries'));
+			$this->t->set_var('lang_invoice_num',lang('Invoice ID'));
+			$this->t->set_var('lang_invoice_date',lang('Invoice date'));
 			$this->t->set_var('lang_stats',lang('Statistics'));
 			$this->t->set_var('lang_activity',lang('Activity'));
-			$this->t->set_var('lang_status',lang('Status'));
 			$this->t->set_var('lang_aes',lang('Workunits'));
 			$this->t->set_var('lang_billperae',lang('Bill per workunit'));
 			$this->t->set_var('lang_sum',lang('Sum'));
@@ -409,6 +401,7 @@
 			$this->t->set_var('sort_num',$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Invoice ID'),$link_data));
 			$this->t->set_var('sort_customer',$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer'),$link_data));
 			$this->t->set_var('sort_title',$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title'),$link_data));
+			$this->t->set_var('sort_date',$this->nextmatchs->show_sort_order($this->sort,'date',$this->order,'/index.php',lang('Date'),$link_data));
 			$this->t->set_var('sort_sum','<td width="10%" align="right" bgcolor="' . $GLOBALS['phpgw_info']['theme']['th_bg'] . '">'
 			. $currency . '&nbsp;' . $this->nextmatchs->show_sort_order($this->sort,'sum',$this->order,'/index.php',lang('Sum'),$link_data) . '</td>');
 			$this->t->set_var('lang_data',lang('Invoice'));
@@ -417,8 +410,8 @@
 
 			for ($i=0;$i<=count($bill);$i++)
 			{
-				$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-				$title = $phpgw->strip_html($phpgw->db->f('title'));
+				$this->nextmatchs->template_alternate_row_color(&$this->t);
+				$title = $GLOBALS['phpgw']->strip_html($bill[$i]['title']);
 				if (! $title) $title = '&nbsp;';
 
 				$date = $bill[$i]['date'];
@@ -454,7 +447,7 @@
 					$link_data['action']		= 'ubill';
 					$this->t->set_var('td_data',$GLOBALS['phpgw']->link('/index.php',$link_data));
 					$this->t->set_var('lang_td_data',lang('Invoice'));
-
+				}
 				$this->t->fp('list','projects_list',True);
 
 // ------------------------- end record declaration --------------------------------------
