@@ -14,11 +14,11 @@ class fud_sidebox_hooks
 {
 	function all_hooks($args)
 	{
-		if (empty($GLOBALS['t'])) {
+		if (!function_exists('db_saq')) {
 			fud_use('db.inc');
 		}
 		$GLOBALS['adm_file'] = array();
-		list($GLOBALS['fudh_uopt'], $theme_name) = db_saq("SELECT u.users_opt, t.name FROM phpgw_fud_users u INNER JOIN {SQL_TABLE_PREFIX}themes t ON t.id=u.theme WHERE u.id!=1 AND u.egw_id=".(int)$GLOBALS['phpgw_info']['user']['account_id']);
+		list($GLOBALS['fudh_uopt'], $theme_name) = db_saq("SELECT u.users_opt, t.name FROM phpgw_fud_users u INNER JOIN phpgw_fud_themes t ON t.id=u.theme WHERE u.id!=1 AND u.egw_id=".(int)$GLOBALS['phpgw_info']['user']['account_id']);
 		$GLOBALS['fudh_uopt'] = (int) $GLOBALS['fudh_uopt'];
 		if (!empty($GLOBALS['phpgw_info']['user']['apps']['admin'])) {
 			$GLOBALS['fudh_uopt'] |= 1048576;
