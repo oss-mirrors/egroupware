@@ -156,7 +156,7 @@
 		$minutes = floor($hours[$i]['minutes']/60) . ':'
 				. sprintf ("%02d",(int)($hours[$i]['minutes']-floor($hours[$i]['minutes']/60)*60));
 
-		$id = $hours[$i]['id'];
+//		$id = $hours[$i]['id'];
 
 // ---------------- template declaration for list records ------------------------------
 
@@ -172,7 +172,7 @@
 		{
 			if ($projects->check_perms($grants[$hours[$i]['employee']],PHPGW_ACL_EDIT) || $hours[$i]['employee'] == $phpgw_info['user']['account_id'])
 			{
-				$t->set_var('edit',$phpgw->link('/projects/hours_edithour.php','id=' . $id . '&filter=' . $filter . '&order=' . $order
+				$t->set_var('edit',$phpgw->link('/projects/hours_edithour.php','id=' . $hours[$i]['id'] . '&filter=' . $filter . '&order=' . $order
 												. '&query=' . $query . '&start=' . $start . '&sort=' . $sort));
 				$t->set_var('lang_edit',lang('Edit'));
 			}
@@ -183,7 +183,7 @@
 			$t->set_var('lang_edit','&nbsp;');
 		}
 
-		$t->set_var('view',$phpgw->link('/projects/viewhours.php','id=' . $id . '&sort=' . $sort . '&order=' . $order . '&query=' . $query . '&start=' . $start
+		$t->set_var('view',$phpgw->link('/projects/viewhours.php','id=' . $hours[$i]['id'] . '&sort=' . $sort . '&order=' . $order . '&query=' . $query . '&start=' . $start
 											. '&filter=' . $filter));
 		$t->set_var('lang_view',lang('View'));
 
