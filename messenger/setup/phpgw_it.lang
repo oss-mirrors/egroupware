@@ -1,5 +1,6 @@
 compose	messenger	it	Componi
 compose global message	admin	it	Componi messaggio globale
+compose global message	messenger	it	Componi messaggio globale
 compose message	messenger	it	Componi messaggio
 forward	messenger	it	Inoltra
 forward a message	messenger	it	Inoltra un messaggio
@@ -14,3 +15,4 @@ reply to a message	messenger	it	Rispondi a un messaggio
 send	messenger	it	Invia
 send message to	messenger	it	Invia un messaggio a
 you have %1 new messages	messenger	it	Tu hai %1 nuovi messaggi
+you have no messages	messenger	it	Non ci sono messaggi
