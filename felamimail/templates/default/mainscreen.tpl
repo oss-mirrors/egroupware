@@ -230,7 +230,7 @@ doLoad();
 	
 			<!-- StartFolderTree -->
 
-			<div id="divFolderTree" style="overflow:auto; width:200px; height:474px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;">
+			<div id="divFolderTree" style="overflow:auto; width:180px; height:474px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;">
 				<table width=100% BORDER="0" style="table-layout:fixed;padding-left:2;">
 					<tr height="420">
 						<td width="100%" valign="top" nowrap style="font-size:10px">
@@ -241,7 +241,7 @@ doLoad();
 						<td width="100%" valign="bottom" nowrap style="font-size:10px">
 							<br>
 							<p align="center">
-							<small><a href="javascript: d.openAll();">open all</a> | <a href="javascript: d.closeAll();">close all</a></small>
+							<small><a href="javascript: d.openAll();">{lang_open_all}</a> | <a href="javascript: d.closeAll();">{lang_close_all}</a></small>
 							</p>
 						</td>
 					</tr>
@@ -346,7 +346,7 @@ doLoad();
 			<input  style="width:10px; height:10px" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" 
 			onclick="toggleFolderRadio(this)" {row_selected}>
 		</td>
-		<td width="120px" style="overflow:hidden; white-space:nowrap;">
+		<td width="120px"><nobr>
 			<a class="{row_css_class}" href="{url_compose}" title="{full_address}">{sender_name}</a>
 	<!--		<a href="{url_add_to_addressbook}"><img src="{add_address}"  border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>  -->
 		</td>
@@ -359,7 +359,7 @@ doLoad();
 		<td class="{row_css_class}" width="14px" align="center">
 			<nobr>{attachments}
 		</td>
-		<td style="overflow:hidden; white-space:nowrap;">
+		<td style="overflow:hidden; white-space:nowrap;"><nobr>
 			<a  class="{row_css_class}" name="subject_url" href="{url_read_message}" title="{full_subject}">{header_subject}</a>
 		</td>
 		<td colspan=2 align="right" class="{row_css_class}" width="40px">
