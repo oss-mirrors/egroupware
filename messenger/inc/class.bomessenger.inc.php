@@ -91,7 +91,7 @@
 
 			$acct = CreateObject('phpgwapi.accounts',$GLOBALS['phpgw']->accounts->name2id($message['to']));
 			$acct->read_repository();
-			if($acct->is_expired() && $GLOBALS['phpgw']->accounts->name2id($message['to'],'u'))
+			if($acct->is_expired() && $GLOBALS['phpgw']->accounts->name2id($message['to'],'account_lid'))
 			{
 				$errors[] = lang("Sorry, %1's account is not currently active",$message['to']);
 			}
