@@ -20,12 +20,12 @@
    if ($order)
       $ordermethod = "order by $order $sort";
    else
-      $ordermethod = "order by lastname,firstname,email asc";
+      $ordermethod = "order by ab_lastname,ab_firstname,ab_email asc";
 
-   $filtermethod = " or access='public' " . $phpgw->accounts->sql_search("access");
+   $filtermethod = " or ab_access='public' " . $phpgw->accounts->sql_search("ab_access");
 
-   $sql = "select count(*) from addressbook where ( owner='"
-	   . $phpgw_info["user"]["userid"] . "' $filtermethod ) AND email != ''"; 
+   $sql = "select count(*) from addressbook where (ab_owner='"
+	   . $phpgw_info["user"]["userid"] . "' $filtermethod) AND ab_email != ''"; 
 
    $phpgw->db->query($sql);
    $phpgw->db->next_record();
@@ -78,13 +78,13 @@
      <tr bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
        <td width="25%" height="21">
         <font size="-1" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-         <?php echo $phpgw->nextmatchs->show_sort_order($sort,"lastname",$order,"addressbook.php",
+         <?php echo $phpgw->nextmatchs->show_sort_order($sort,"ab_lastname",$order,"addressbook.php",
                                "Last Name"); ?>
         </font>
        </td>
        <td width="25%" height="21" bgcolor="<? echo $phpgw_info["theme"]["th_bg"]; ?>">
         <font size="-1" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-         <?php echo $phpgw->nextmatchs->show_sort_order($sort,"firstname",$order,"addressbook.php",
+         <?php echo $phpgw->nextmatchs->show_sort_order($sort,"ab_firstname",$order,"addressbook.php",
                                "First Name"); ?>
         </font>
        </td>
@@ -107,17 +107,17 @@
 
  <?php
 
-   $phpgw->db->query("SELECT * FROM addressbook WHERE ( owner='"
-	              . $phpgw_info["user"]["userid"] . "' $filtermethod ) AND email != '' "
+   $phpgw->db->query("SELECT * FROM addressbook WHERE (ab_owner='"
+	              . $phpgw_info["user"]["userid"] . "' $filtermethod) AND ab_email != '' "
 	              . $ordermethod);
 
    while ($phpgw->db->next_record()) {
      $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 
-     $firstname  = $phpgw->db->f("firstname");
-     $lastname   = $phpgw->db->f("lastname");
-     $email      = $phpgw->db->f("email");
-     $con        = $phpgw->db->f("con");
+     $firstname  = $phpgw->db->f("ab_firstname");
+     $lastname   = $phpgw->db->f("ab_lastname");
+     $email      = $phpgw->db->f("ab_email");
+     $con        = $phpgw->db->f("ab_id");
 
      /* This for for just showing the company name stored in lastname. */
      if (($lastname) && (! $firstname))
