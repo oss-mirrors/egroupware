@@ -127,13 +127,13 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Are you sure you 
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select tax for work hours','projects','en','Select tax for work hours');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select your address','projects','en','Select your address');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Return to projects','projects','en','Return to projects');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Hours has been added !','projects','en','Hours has been added !');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Hours has been updated !','projects','en','Hours has been updated !');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Job has been added !','projects','en','Hours has been added !');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Job has been updated !','projects','en','Hours has been updated !');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Please enter the bill per workunit !','projects','en','Please enter the bill per workunit !');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Please enter the minutes per workunit !','projects','en','Please enter the minutes per workunit !');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Activity has been added !','projects','en','Activity has been added !');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project has been updated !','projects','en','Project has been updated !');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project has been added !','projects','en','Project has been added !');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project x x has been updated !','projects','en','Project %1 %2 has been updated !');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project x x has been added !','projects','en','Project %1 %2 has been added !');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Invoice ID','projects','en','Invoice ID');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('That Invoice ID has been used already !','projects','en','That Invoice ID has been used already !');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Please enter an Invoice ID for that invoice !','projects','en','Please enter an Invoice ID for that invoice !');

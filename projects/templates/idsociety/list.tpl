@@ -2,26 +2,31 @@
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>                                                                                                                                                  
 <hr noshade width="98%" align="center" size="1">
 <center>
-{hidden_vars}
-<table border="0" width="100%" cellspacing="2" cellpadding="2">	
- <tr>
-  <td colspan="9" align="left">
-   <table border="0" width="100%">
+<table border="0" width="100%">
+    <tr>
+    <td width="33%" align="left">
+    <form action="{cat_url}" name="form" method="POST">
+    {lang_category}&nbsp;&nbsp;<select name="cat_id" onChange="this.form.submit();"><option value="">{lang_all}</option>{category_list}</select>
+    <noscript>&nbsp;<input type="submit" name="submit" value="{lang_submit}"></noscript></form></td>
+    <td width="33%" align="center">{lang_showing}</td>
+    <td width="33%" align="right">
+    <form method="POST" action="{search_url}">
+    <input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
+    </form></td>
+    </tr>
+    <tr>
+    <td colspan="9">
+    <table border="0" width="100%">
     <tr>
     {left}
-    <td align="center">{lang_showing}</td>
+    <td>&nbsp;</td>
     {right}
     </tr>
-   </table>
-   </td>
-  </tr>
- <tr>
-  <td>&nbsp;</td>
-  <td colspan="9" align=right>
-  <form method="post" action="{searchurl}">
-  <input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
-  </form></td>
- </tr>
+    </table>
+    </td>
+    </tr>
+</table>
+<table border="0" width="100%" cellpadding="2" cellspacing="2">
     <tr bgcolor="{th_bg}">
       <td width="8%" bgcolor="{th_bg}" align=center>{sort_number}</td>
       <td width="20%" bgcolor="{th_bg}" align=center>{sort_customer}</td>
@@ -52,7 +57,7 @@
 
     <tr valign="bottom">
     <td height="50">
-  <form method="POST" action="{addurl}">
+  <form method="POST" action="{add_url}">
   {hidden_vars}
     <input type="submit" name="Add" value="{lang_add}"></form></td>
     </tr>

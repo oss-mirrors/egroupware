@@ -13,7 +13,8 @@
 /* $Id$ */
 
     $phpgw_info["flags"] = array('currentapp' => 'projects',
-		    'enable_nextmatchs_class' => True);
+		    'enable_nextmatchs_class' => True,
+		    'enable_categories_class' => True);
 
     include('../header.inc.php');
 
@@ -29,12 +30,17 @@
 			. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
 			. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
 			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
+			. "<input type=\"hidden\" name=\"cat_id\" value=\"$cat_id\">\n"
 			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
     $t->set_var('lang_action',lang('Projects list'));
-    $t->set_var('addurl',$phpgw->link('/projects/add.php'));
-    $t->set_var('searchurl',$phpgw->link('/projects/index.php'));
+    $t->set_var('add_url',$phpgw->link('/projects/add.php'));
+    $t->set_var('search_url',$phpgw->link('/projects/index.php'));
+    $t->set_var('cat_url',$phpgw->link('/projects/index.php'));
     $t->set_var('hidden_vars',$hidden_vars);
+    $t->set_var('category_list',$phpgw->categories->formated_list('select','all',$cat_id,'True'));
+    $t->set_var('lang_all',lang('All'));
+    $t->set_var('lang_category',lang('Category'));
 
     if (! $start) { $start = 0; }
 
@@ -43,7 +49,7 @@
     }
     else { $limit = 15; }
 
-    $pro = $projects->read_projects($start,$limit,$query,$filter,$sort,$order,'active');
+    $pro = $projects->read_projects($start,$limit,$query,$filter,$sort,$order,'active',$cat_id);
 
 //---------------------- nextmatch variable template-declarations ---------------------------
 
@@ -114,22 +120,23 @@
     $coordinatorout = $pro[$i]['lid'] . ' [ ' . $pro[$i]['firstname'] . ' ' . $pro[$i]['lastname'] . ' ]';
 
     $id = $pro[$i]['id'];
-    
+    $cat_id = $pro[$i]['category'];
+
 // ------------------ template declaration for list records -----------------------------------
-      
+
     $t->set_var(array('number' => $number,
 		    'customer' => $customerout,
                       'status' => $status,
 		       'title' => $title,
 		    'end_date' => $end_dateout,
 		 'coordinator' => $coordinatorout));
-       
+
 // ------------------------- end record declaration -------------------------------------------
 
     $t->set_var('jobs',$phpgw->link('/projects/hours_listhours.php',"filter=$id")); 
 
     if ($projects->check_perms($grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $phpgw_info['user']['account_id']) {
-	$t->set_var('edit',$phpgw->link('/projects/edit.php',"id=$id"));
+	$t->set_var('edit',$phpgw->link('/projects/edit.php',"id=$id&cat_id=$cat_id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
 	$t->set_var('lang_edit_entry',lang('Edit'));
     }
     else {
@@ -137,7 +144,7 @@
         $t->set_var('lang_edit_entry','&nbsp;');
     }
 
-    $t->set_var('view',$phpgw->link('/projects/view.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+    $t->set_var('view',$phpgw->link('/projects/view.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter&cat_id=$cat_id"));
     $t->set_var('lang_view_entry',lang('View'));
 
     $t->parse('list','projects_list',True);
@@ -149,7 +156,7 @@
     $t->set_var('lang_add',lang('Add'));
     $t->parse('out','projects_list_t',True);
     $t->p('out');
-       
+
 // ---------------------- end Add form declaration --------------------------------------------
 
     $phpgw->common->phpgw_footer();

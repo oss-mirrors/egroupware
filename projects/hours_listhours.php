@@ -30,7 +30,7 @@
     if (!$status) { $statussort = " (status='open' OR status='done' OR status='billed') "; } 
     else { $statussort = " status='$status' "; }
 
-    if ($access == 'private') { $filtermethod = " AND employee='" . $phpgw_info["user"]["account_id"] . "' "; }
+    if ($access == 'private') { $filtermethod = " AND employee='" . $phpgw_info['user']['account_id'] . "' "; }
 
     if ($query) {
 	$querymethod = "AND (remark like '%$query%' OR start_date like '%$query%' OR end_date like '%$query%' OR minutes like '%$query%') ";
@@ -50,8 +50,8 @@
     else { $pro = $projects->read_single_project($filter); }
 
 
-    if($phpgw_info["user"]["preferences"]["common"]["maxmatchs"] && $phpgw_info["user"]["preferences"]["common"]["maxmatchs"] > 0) {
-        $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+    if($phpgw_info['user']['preferences']['common']['maxmatchs'] && $phpgw_info['user']['preferences']['common']['maxmatchs'] > 0) {
+        $limit = $phpgw_info['user']['preferences']['common']['maxmatchs'];
     }
     else { $limit = 15; }
 
@@ -65,9 +65,9 @@
     $t->set_var('right',$right);
 
     if ($projects->total_records > $limit) {
-        $t->set_var('lang_showing',lang("showing x - x of x",($start + 1),($start + $limit),$projects->total_records));
+        $t->set_var('lang_showing',lang('showing x - x of x',($start + 1),($start + $limit),$projects->total_records));
     }
-    else { $t->set_var('lang_showing',lang("showing x",$projects->total_records)); }
+    else { $t->set_var('lang_showing',lang('showing x',$projects->total_records)); }
 
 // ----------------------- end nextmatch template -------------------------------------
 
@@ -121,24 +121,24 @@
     	    $shour  = date('H',$start_date);
 	    $smin  = date('i',$start_date);
 
-	    $start_date = $start_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-	    $start_dateout = $phpgw->common->show_date($start_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
+	    $start_date = $start_date + (60*60) * $phpgw_info['user']['preferences']['common']['tz_offset'];
+	    $start_dateout = $phpgw->common->show_date($start_date,$phpgw_info['user']['preferences']['common']['dateformat']);
 	    $start_timeout = $phpgw->common->formattime($shour,$smin);
 	}
 
 	$end_date = $hours[$i]['end_date'];
 	if ($end_date == 0) { $end_timeout = '&nbsp;'; }
 	else {
-	    $emonth = $phpgw->common->show_date(time(),"n");
-	    $eday   = $phpgw->common->show_date(time(),"d");
-	    $eyear  = $phpgw->common->show_date(time(),"Y");
+	    $emonth = $phpgw->common->show_date(time(),'n');
+	    $eday   = $phpgw->common->show_date(time(),'d');
+	    $eyear  = $phpgw->common->show_date(time(),'Y');
     	    $ehour  = date('H',$end_date);
     	    $emin  = date('i',$end_date);
 
 	    $end_timeout =  $phpgw->common->formattime($ehour,$emin);
 	}
     
-	$minutes = floor($hours[$i]['minutes']/60).":"
+	$minutes = floor($hours[$i]['minutes']/60) . ':'
 		. sprintf ("%02d",(int)($hours[$i]['minutes']-floor($hours[$i]['minutes']/60)*60));
 
 	$id = $hours[$i]['id'];

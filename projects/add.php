@@ -12,16 +12,18 @@
   \**************************************************************************/
 /* $Id$ */
 
-    $phpgw_info["flags"]["currentapp"] = "projects";
-    include("../header.inc.php");
+    $phpgw_info['flags'] = array('currentapp' => 'projects',
+		    'enable_categories_class' => True);
+    include('../header.inc.php');
 
-    $t = CreateObject('phpgwapi.Template',$phpgw_info["server"]["app_tpl"]);
-    $t->set_file(array( "projects_add" => "form.tpl"));
-    $t->set_block("projects_add", "add", "addhandle");
-    $t->set_block("projects_add", "edit", "edithandle");
-    $t->set_block("projects_add", "edit_act", "acthandle");
+    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t->set_file(array('projects_add' => 'form.tpl'));
+    $t->set_block('projects_add','add','addhandle');
+    $t->set_block('projects_add','edit','edithandle');
 
-    if ($phpgw_info["server"]["db_type"]=="pgsql") { $join = " JOIN "; }
+    if ($new_cat) { $cat_id = $new_cat; }
+
+    if ($phpgw_info['server']['db_type']=="pgsql") { $join = " JOIN "; }
     else { $join = " LEFT JOIN "; }
 
     $db2 = $phpgw->db;
@@ -56,12 +58,12 @@
     if ($access) { $access = 'private'; }
     else { $access = 'public'; }
 
-    $owner = $phpgw_info["user"]["account_id"];
+    $owner = $phpgw_info['user']['account_id'];
     $descr = addslashes($descr);
     $title = addslashes($title);
 
     $phpgw->db->query("insert into phpgw_p_projects (owner,access,category,entry_date,start_date,end_date,coordinator,customer,status,"
-		    . "descr,title,budget,num) values ('$owner','$access','$category','" . time() ."','$sdate','$edate',"
+		    . "descr,title,budget,num) values ('$owner','$access','$cat_id','" . time() ."','$sdate','$edate',"
                    . "'$coordinator','$abid','$status','$descr','$title','$budget','$num')");
 
     $db2->query("SELECT max(id) AS max FROM phpgw_p_projects");
@@ -82,43 +84,51 @@
       }
     }                                                                                                                                                                                  
     if ($errorcount) { $t->set_var('message',$phpgw->common->error_list($error)); }
-    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang("Project $num $title has been added !")); }
+    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Project x x has been added !',$num,$title)); }
     if ((! $submit) && (! $error) && (! $errorcount)) { $t->set_var('message',''); }
 
-    $t->set_var('actionurl',$phpgw->link("/projects/add.php"));
-    $t->set_var('addressbook_link',$phpgw->link("/projects/addressbook.php","query="));
+    $t->set_var('actionurl',$phpgw->link('/projects/add.php'));
+    $t->set_var('addressbook_link',$phpgw->link('/projects/addressbook.php','query='));
     $t->set_var('lang_action',lang('Add project'));
 
-    if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {
-    $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];
-    $t->set_var('error','');
-    $t->set_var('currency',$currency);
+    if (isset($phpgw_info['user']['preferences']['common']['currency'])) {
+	$currency = $phpgw_info['user']['preferences']['common']['currency'];
+	$t->set_var('error','');
+	$t->set_var('currency',$currency);
     }
     else { $t->set_var('error',lang('Please select your currency in preferences !')); }
     
-    $hidden_vars = "<input type=\"hidden\" name=\"id\" value=\"$id\">";
+    $hidden_vars = "<input type=\"hidden\" name=\"id\" value=\"$id\">"
+		 . "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
+                 . "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
+                 . "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
+                 . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
+                 . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
+                 . "<input type=\"hidden\" name=\"cat_id\" value=\"$cat_id\">\n";
+
     $t->set_var('hidden_vars',$hidden_vars);
-    
     $t->set_var('lang_num',lang('Project ID'));
-    
     $t->set_var('num',$num);
 
     if (! $submit) {
-    $choose = "<input type=\"checkbox\" name=\"choose\" value=\"True\">";
-    $t->set_var("lang_choose",lang("Auto generate Project ID ?"));
-    $t->set_var("choose",$choose);
+	$choose = "<input type=\"checkbox\" name=\"choose\" value=\"True\">";
+	$t->set_var('lang_choose',lang('Generate Project ID ?'));
+	$t->set_var('choose',$choose);
     }
     else {
-    $t->set_var('lang_choose','');
-    $t->set_var('choose',''); 
+	$t->set_var('lang_choose','');
+	$t->set_var('choose',''); 
     }
 
     $t->set_var('lang_title',lang('Title'));
     $t->set_var('title',$title);
     $t->set_var('lang_descr',lang('Description'));
     $t->set_var('descrval',$descr);
+    $t->set_var('lang_category',lang('Category'));
+    $t->set_var('lang_select_cat',lang('Select category'));
+    $t->set_var('category_list',$phpgw->categories->formated_list('select','all',$cat_id,'True'));
 
-    $t->set_var("lang_status",lang("Status"));
+    $t->set_var('lang_status',lang('Status'));
     $status_list = "<option value=\"active\" selected>" . lang('Active') . "</option>\n"
 		. "<option value=\"nonactive\">" . lang('Nonactive') . "</option>\n"
 		. "<option value=\"archive\">" . lang('Archive') . "</option>\n";
@@ -251,6 +261,8 @@
     
     $t->set_var('lang_add',lang('Add'));
     $t->set_var('lang_reset',lang('Clear Form'));
+    $t->set_var('lang_done',lang('Done'));
+    $t->set_var('done_url',$phpgw->link('/projects/index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter&cat_id=$cat_id"));
 
     $t->set_var('edithandle','');
     $t->set_var('addhandle','');
@@ -258,5 +270,4 @@
     $t->pparse('addhandle','add');
 
     $phpgw->common->phpgw_footer();
-
 ?>

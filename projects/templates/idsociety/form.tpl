@@ -11,8 +11,8 @@
 
       <center>
        <form method="POST" name="projects_form" action="{actionurl}">
-        {hidden_vars}
         {error}{message}
+	{hidden_vars}
         <table width="85%" border="0" cellspacing="1" cellpadding="3">
           <tr>
           <td>{lang_choose}</td>
@@ -30,6 +30,10 @@
          <td>{lang_descr}:</td>
 	 <td colspan="2"><textarea name="descr" rows=4 cols=50 wrap="VIRTUAL">{descrval}</textarea></td>
          </tr>
+	<tr>
+         <td>{lang_category}:</td>   
+ 	<td><select name="new_cat"><option value="">{lang_select_cat}</option>{category_list}</select></font></td>
+	</tr>
          <tr>
 	 <td><input type="button" value="{lang_customer}" onClick="addressbook();"></td>
 	 <td><input type="hidden" name="abid" value="{abid}">
@@ -71,30 +75,39 @@
 
 <!-- BEGIN add -->
 
-         <table width="75%" border="0" cellspacing="1" cellpadding="3">
+         <table width="50%" border="0" cellspacing="2" cellpadding="2">
          <tr valign="bottom">
-          <td height="62"><input type="submit" name="submit" value="{lang_add}"></td>
-          <td height="62"><input type="reset" name="reset" value="{lang_reset}"></td>
+          <td height="50">
+	    {hidden_vars}
+	    <input type="submit" name="submit" value="{lang_add}"></td>
+          <td height="50"><input type="reset" name="reset" value="{lang_reset}"></form></td>
+	<td height="50">
+	{hidden_vars}
+	<form method="POST" action="{done_url}">
+       <input type="submit" name="done" value="{lang_done}"></form></td>
          </tr>
          </table>
-         </form>
          </center>
          
 <!-- END add -->
         
 <!-- BEGIN edit -->
 
-         <table width="75%" border="0" cellspacing="1" cellpadding="3">
-         <tr valign="bottom">
-          <td height="62"><input type="submit" name="submit" value="{lang_edit}">
-                </form></td>
-          <td height="62">
+    <table width="50%" border="0" cellspacing="2" cellpadding="2">
+    <tr valign="bottom">
+          <td height="50">
+	    {hidden_vars}
+	    <input type="submit" name="submit" value="{lang_edit}"></form></td>
+          <td height="50">
            	<form method="POST" action="{deleteurl}">
                 {hidden_vars}
-                <input type="submit" name="delete" value="{lang_delete}">
-            </form></td>
-          </tr>
-         </table>
-	</center>
+                <input type="submit" name="delete" value="{lang_delete}"></form></td>
+        <td height="50">
+	<form method="POST" action="{done_url}">
+        {hidden_vars}
+        <input type="submit" name="done" value="{lang_done}"></form></td>
+    </tr>
+    </table>
+    </center>
 
 <!-- END edit -->

@@ -22,7 +22,7 @@
 		$this->db		= $phpgw->db;
 		$this->total_records	= $this->db->num_rows();
 		$this->grants 		= $phpgw->acl->get_grants('projects');
-		$this->projects		= $this->read_projects($start, $limit, $query, $filter, $sort, $order);
+		$this->projects		= $this->read_projects($start, $limit, $query, $filter, $sort, $order, $status, $cat_id);
 
 	}
 
@@ -30,7 +30,7 @@
 	    return (!!($has & $needed) == True);
 	}
 
-	function read_projects( $start, $limit, $query = '', $filter = '', $sort = '', $order = '', $status = 'active') {
+	function read_projects( $start, $limit, $query = '', $filter = '', $sort = '', $order = '', $status = 'active', $cat_id) {
 
 	    global $phpgw, $phpgw_info, $total_records, $grants;
 
@@ -66,6 +66,8 @@
             else {
                 $filtermethod = ' coordinator=' . $phpgw_info['user']['account_id'] . ' ';
             }
+
+	    if ($cat_id) { $filtermethod .= " AND category='$cat_id' "; }
 
 	    if ($query) { $querymethod = " AND (title like '%$query%' OR num like '%$query%' OR descr like '%$query%') "; }
 
@@ -126,7 +128,7 @@
 	function select_project_list($selected = '') {
 	    global $phpgw;
 
-		$projects = $this->read_projects($start, $limit, $query, $filter, $sort, $order);
+		$projects = $this->read_projects($start, $limit, $query, $filter, $sort, $order, $status, $cat_id);
 
 		for ($i=0;$i<count($projects);$i++) {
                     $pro_select .= '<option value="' . $projects[$i]['id'] . '"';
