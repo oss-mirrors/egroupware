@@ -113,16 +113,16 @@
 
 // ----------------------- move to remote host --------------------------------
 
-	$lsave = '{lsave}';
-	$lpath = '{lpath}';
-	$lwebsave = '{lwebsave}';
+	$lsave		= '{lsave}';
+	$lpath		= '{lpath}';
+	$lwebsave	= '{lwebsave}';
 
-	$rsave = '{rsave}';
-	$rapp = '{rapp}';
-	$rip = '{rip}';
-	$rpath = '{rpath}';
-	$ruser = '{ruser}';
-	$rpwd = '{rpwd}';
+	$rsave		= '{rsave}';
+	$rapp		= '{rapp}';
+	$rip		= '{rip}';
+	$rpath		= '{rpath}';
+	$ruser		= '{ruser}';
+	$rpwd		= '{rpwd}';
 
 	if ($rsave == 'yes')
 	{
@@ -151,9 +151,41 @@
 				else
 				{
 					echo "ftp backuptransfer $input[$i]: failed !";
+					exit;
 				}
 			}
 			ftp_quit($con);
 		}
 	}
+
+	if ($lsave == 'yes')
+	{
+		if ($lwebsave == 'yes')
+		{
+			$command = 'cp';
+		}
+		else
+		{
+			$command = 'mv';
+		}
+
+		if ($lpath != '')
+		{
+			chdir($lpath);
+
+			for ($i=0;$i<count($output);$i++)
+			{
+				system("$command " . $output[$i] . ' ' . $input[$i]); 
+			}
+		}
+	}
+	else
+	{
+		$command = 'rm';
+		for ($i=0;$i<count($output);$i++)
+		{
+			system("$command " . $output[$i]);
+		}
+	}
+
 ?>

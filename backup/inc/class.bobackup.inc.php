@@ -280,6 +280,7 @@
 
 			if ($co['l_websave'] == 'yes')
 			{
+				$config .= $GLOBALS['phpgw']->template->set_var('lsave','yes');
 				$config .= $GLOBALS['phpgw']->template->set_var('lwebsave','yes');
 			}
 
