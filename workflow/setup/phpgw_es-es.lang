@@ -1,0 +1,181 @@
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	es-es	El directorio /workflow no existe y no se pudo crear. Por foavor, pida al administrador que compruebe la configuración global
+abort instance	workflow	es-es	abortar instancia
+aborted	workflow	es-es	abortado
+act	workflow	es-es	actividad
+act. status	workflow	es-es	Estado de la actividad
+activate	workflow	es-es	activar
+active	workflow	es-es	Activa
+activities	workflow	es-es	Actividades
+activities updated	workflow	es-es	Actividades actualizadas
+activity	workflow	es-es	actividad
+activity %1 is interactive but has no role assigned	workflow	es-es	La actividad %1 es interactiva pero no tiene papel asignado
+activity %1 is interactive so it must use the $instance->complete() method	workflow	es-es	La actividad %1, asi que debe usar el método $instance->complete()
+activity %1 is non-interactive and non-autorouted but has no role assigned	workflow	es-es	La actividad %1 no es interactiva ni autoenrutada, pero no tiene papel asignado
+activity %1 is non-interactive so it must not use the $instance->complete() method	workflow	es-es	La actividad %1 no es interactiva, por lo que no debe usar el método $instance->complete() method
+activity %1 is standalone and is using the $instance object	workflow	es-es	La actividad %1 es independiente y está usando el objeto $instance
+activity %1 is standalone but has transitions	workflow	es-es	La actividad %1 es independiente pero tiene transiciones
+activity %1 is switch so it must use $instance->setnextactivity($actname) method	workflow	es-es	La actividad %1 es un interruptor, por lo que debe usar el método $instance->setNextActivity($actname)
+activity completed	workflow	es-es	Actividad completada
+activity name already exists	workflow	es-es	El nombre de la actividad ya existe
+activity role removed	workflow	es-es	Papel de la actividad eliminado
+activity saved	workflow	es-es	La actividad ha sido guardada
+add a transition	workflow	es-es	Añadir una transición
+add new	workflow	es-es	añadir nueva
+add or edit a process	workflow	es-es	Añadir o editar un proceso
+add or edit an activity	workflow	es-es	Añadir o editar una actividad
+add property	workflow	es-es	Añadir propiedad
+add role	workflow	es-es	Añadir papel
+add role to process	workflow	es-es	Añadir papel al proceso
+add transitions	workflow	es-es	Añadir transiciones
+add transitions from	workflow	es-es	Añadir transiciones de
+add transitions to	workflow	es-es	Añadir transiciones a
+admin instance	workflow	es-es	Instancia administrativa
+admin process activities	workflow	es-es	Actividades del proceso administrativo
+admin process roles	workflow	es-es	Papeles del proceso administrativo
+admin processes	workflow	es-es	Procesos administrativos
+admin processes sources	workflow	es-es	Orígenes de los procesos administrativos
+all	workflow	es-es	Todos
+auto routed	workflow	es-es	Autoenrutado
+automatic	workflow	es-es	Automático
+base directory does not exist, please ask adminstrator to check the global configuration	workflow	es-es	El directorio base no existe, por favor, pida al administrador que compruebe la configuración global
+being run	workflow	es-es	siendo ejecutado
+cannot add transition only split activities can have more than one outbound transition	workflow	es-es	No se puede la transición. Sólo las actividades separadas pueden tener más de una transición saliente
+circular reference found some activity has a transition leading to itself	workflow	es-es	La referencia circular encontró alguna actividad que tiene una transición que vuelve a ella misma
+code	workflow	es-es	código
+completed	workflow	es-es	completado
+couldn't add transition	workflow	es-es	No se pudo añadir la transición
+create	workflow	es-es	crear
+created	workflow	es-es	Creada
+delete selected	workflow	es-es	Borrar lo seleccionado
+delition successful	workflow	es-es	Borrado correcto
+description	workflow	es-es	Descripción
+don't move	workflow	es-es	No mover
+duration	workflow	es-es	Duración
+end	workflow	es-es	fin
+end activity is not reachable from start activity	workflow	es-es	El final de la actividad no se pudo alcanzar desde el principio de la actividad
+exception instance	workflow	es-es	instancia de excepción
+exceptions	workflow	es-es	excepciones
+export	workflow	es-es	Exportar
+fatal error: nextactivity does not match any candidate in autorouting switch activity	workflow	es-es	Error fatal: la siguiente actividad no coincide con ningún candidato en la actividad de cambio de enrutado automático
+fatal error: non-deterministic decision for autorouting activity	workflow	es-es	Error falta: decisión no determinística para actividad de enrutado automático
+fatal error: setting next activity to an unexisting activity	workflow	es-es	Error fatal: estableciendo la actividad siguente a una actividad inexistente
+fatal error: trying to send an instance to an activity but no transition found	workflow	es-es	Error fatal: intentando enviar una instanacia a una actividad, pero no se encontró transición
+filter	workflow	es-es	Filtro
+from	workflow	es-es	De
+grab instance	workflow	es-es	coger instancia
+graph	workflow	es-es	Gráfico
+group	workflow	es-es	Grupo
+id	workflow	es-es	Id
+inactive	workflow	es-es	Inactivo
+inst. status	workflow	es-es	Estado de la instancia
+instance	workflow	es-es	Instancia
+instance properties	workflow	es-es	Propiedades de la instancia
+instance: %1 (process: %2)	workflow	es-es	Instancia: %1 (Proceso: %2)
+instances	workflow	es-es	Instancias
+interactive	workflow	es-es	Interactiva
+interactivity	workflow	es-es	Interactividad
+invalid	workflow	es-es	no válida
+invalid process	workflow	es-es	Proceso inválido
+is active	workflow	es-es	está activa
+join	workflow	es-es	unirse
+list of activities	workflow	es-es	Lista de actividades
+list of instances	workflow	es-es	Lista de instancias
+list of mappings	workflow	es-es	Lista de mapeos
+list of processes	workflow	es-es	Lista de procesos
+list of processes (%1)	workflow	es-es	Lista de procesos (%1)
+list of transitions	workflow	es-es	Lista de transiciones
+list of workitems	workflow	es-es	Lista de elementos de trabajo
+manual	workflow	es-es	Manual
+map	workflow	es-es	mapa
+map users/groups to roles	workflow	es-es	Mapear usuarios/grupos a papeles
+monitor activities	workflow	es-es	Monitorizar actividades
+monitor instances	workflow	es-es	Monitorizar instancias
+monitor processes	workflow	es-es	Monitorizar procesos
+monitor work items	workflow	es-es	Monitorizar elementos de trabajo
+name	workflow	es-es	Nombre
+new mapping added	workflow	es-es	Se ha añadido un nuevo mapeo
+new mayor	workflow	es-es	Nuevo mayor
+new minor	workflow	es-es	Nuevo menor
+new transition added	workflow	es-es	Se ha añadido una nueva transición
+no activity indicated	workflow	es-es	No se ha indicado una actividad
+no instance indicated	workflow	es-es	No se ha inidicado una instancia
+no process indicated	workflow	es-es	No se ha inidicado ningún proceso
+no properties defined	workflow	es-es	No se han definido propiedades
+no roles	workflow	es-es	No hay papeles
+no roles asociated with this activity	workflow	es-es	No hay papeles asociados con esta actividad
+no work item indicated	workflow	es-es	No se ha indicado elemento de trabajo
+or import a process	workflow	es-es	O importar un proceso
+owner	workflow	es-es	Propietario
+process	workflow	es-es	Proceso
+process %d has been activated	workflow	es-es	El proceso %d ha sido activado
+process %d has been deactivated	workflow	es-es	El proceso %d ha sido activado
+process %s %s imported	workflow	es-es	El proceso %s %s ha sido importado
+process %s has been created	workflow	es-es	El proceso %s ha sido creado
+process %s has been updated	workflow	es-es	El proceso %s ha sido actualizado
+process %s removed	workflow	es-es	El proceso %s ha sido eliminado
+process activities	workflow	es-es	Procesar actividades
+process does not have a start activity	workflow	es-es	El proceso no tiene una actividad de inicio
+process does not have exactly one end activity	workflow	es-es	El proceso no tiene exactamente una actividad de fin
+process name already exists	workflow	es-es	El nombre del proceso ya existe
+process roles	workflow	es-es	Procesar papeles
+process transitions	workflow	es-es	Procesar transiciones
+processes	workflow	es-es	Procesos
+properties	workflow	es-es	Propiedades
+property	workflow	es-es	Propiedad
+release instance	workflow	es-es	liberar instancia
+role %1 is not mapped	workflow	es-es	El papel %1 no está mapeado
+role added to process	workflow	es-es	Papel añadido al proceso
+role saved	workflow	es-es	Papel guardado
+roles	workflow	es-es	Papeles
+roles assigned to this activity	workflow	es-es	Papeles asignados a esta actividad
+roles deleted	workflow	es-es	Papeles borrados
+routing	workflow	es-es	Enrutado
+run	workflow	es-es	ejecutar
+run activity	workflow	es-es	ejecutar actividad
+run instance	workflow	es-es	ejecutar instancia
+running	workflow	es-es	ejecutando
+running activity	workflow	es-es	Ejecutando actividad
+select source	workflow	es-es	seleccionar origen
+send all to	workflow	es-es	Enviar a todos
+send instance	workflow	es-es	enviar instancia
+shared code	workflow	es-es	Código compartido
+show code	workflow	es-es	mostrar código
+show template	workflow	es-es	mostrar plantilla
+source saved	workflow	es-es	Origen guardado
+split	workflow	es-es	separar
+standalone	workflow	es-es	independiente
+start	workflow	es-es	Iniciar
+started	workflow	es-es	Iniciado
+status	workflow	es-es	Estado
+stop	workflow	es-es	parar
+switch	workflow	es-es	interruptor
+template	workflow	es-es	plantilla
+the following items must be corrected to be able to activate this process	workflow	es-es	Deben corregirse los siguientes elementos para poder activar este proceso
+there are no activities available	workflow	es-es	No hay actividades disponibles
+there are no instances available	workflow	es-es	No hay instancias disponibles
+there are no mappings defined for this process	workflow	es-es	No hay mapeos definidos para este proceso
+there are no processes defined	workflow	es-es	No hay procesos definidos
+there are no properties available	workflow	es-es	No hay propiedades disponibles
+there are no roles defined for this process	workflow	es-es	No hay papeles definidos para este proceso
+there are no transitions defined	workflow	es-es	No hay transiciones definidas
+there are no user activites available	workflow	es-es	No hay actividades de usuario disponibles
+there are no workitems available	workflow	es-es	No hay elementos de trabajo disponibles
+to	workflow	es-es	A
+transitions removed successfully	workflow	es-es	Las transiciones se han eliminado correctamente
+type	workflow	es-es	tipo
+update	workflow	es-es	actualizar
+upload file	workflow	es-es	Subir fichero
+user	workflow	es-es	Usuario
+user activities	workflow	es-es	Actividades del usuario
+user instances	workflow	es-es	Instancias del usuario
+user processes	workflow	es-es	Procesos del usuairo
+user/group	workflow	es-es	Usuario/Grupo
+users/groups	workflow	es-es	Usuarios/Grupos
+valid	workflow	es-es	Válido
+valid process	workflow	es-es	Proceso válido
+value	workflow	es-es	Valor
+version	workflow	es-es	Versión
+workflow	common	es-es	Flujo de trabajo
+workitem information	workflow	es-es	Información del elemento de trabajo
+workitems	workflow	es-es	Elementos de trabajo
+you have not permission to execute this activity	workflow	es-es	No tiene permiso para ejecutar esta actividad
