@@ -427,7 +427,7 @@
 				'unread_small',
 				'unread_flagged_small',
 				'unread_small',
-				'unread_deleted_small',
+				'trash',
 				'sm_envelope',
 				'new'
 			);

@@ -182,7 +182,7 @@ doLoad();
                                                 &nbsp;&nbsp;
                                         </td>
                                         <td width="12px" align="RIGHT" valign="center">
-						<input type="image" src="{unread_deleted_small}" name="mark_deleted" title="{desc_deleted}">
+						<input type="image" src="{trash}" name="mark_deleted" title="{desc_deleted}">
 					</TD>
 				</TR>
 			</TABLE>
