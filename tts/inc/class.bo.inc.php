@@ -14,7 +14,7 @@
 		function bo()
 		{
 			$this->db         = $GLOBALS['phpgw']->db;
-			$this->so         = createobject('tts.so');
+//			$this->so         = createobject('tts.so');
 			$this->historylog = createobject('phpgwapi.historylog','tts');
 			$this->historylog->types = array(
 				'R' => 'Re-opened',
@@ -42,39 +42,45 @@
 					$xml_functions = array(
 						'list_methods' => array(
 							'function'  => 'list_methods',
-							'signature' => array(array(xmlrpcStruct,xmlrpcString)),
+							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
 							'docstring' => lang('Read this list of methods.')
 						),
-						'save_ticket' => array(
-							'function'  => 'save_ticket',
+						'save' => array(
+							'function'  => 'save',
 							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
 							'docstring' => lang('Creates a new ticket, returns ticket_id')
 						),
-						'list_tickets' => array(
-							'function'  => 'list_tickets',
+						'list' => array(
+							'function'  => '_list',
 							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
 							'docstring' => lang('Creates a struct of tickets')
 						),
-						'read_ticket' => array(
-							'function'  => 'read_ticket',
-							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
+						'read' => array(
+							'function'  => '_read',
+							'signature' => array(array(xmlrpcInt,xmlrpcStruct)),
 							'docstring' => lang('Returns a struct of values of a single ticket')
 						),
-						'ticket_notes' => array(
-							'function'  => 'ticket_notes',
-							'signature' => array(array(xmlrpcStruct,xmlrpcInt)),
-							'docstring' => lang('Returns the aditional notes attached to a ticket')
+						'read_notes' => array(
+							'function'  => 'read_notes',
+							'signature' => array(array(xmlrpcInt,xmlrpcStruct)),
+							'docstring' => lang('Returns the additional notes attached to a ticket')
 						),
-						'ticket_history' => array(
-							'function'  => 'ticket_history',
-							'signature' => array(array(xmlrpcStruct,xmlrpcInt)),
+						'history' => array(
+							'function'  => 'history',
+							'signature' => array(array(xmlrpcInt,xmlrpcStruct)),
 							'docstring' => lang('Returns a struct of a tickets history')
 						),
 						'update' => array(
 							'function'  => 'update',
 							'signature' => array(array(xmlrpcInt,xmlrpcStruct)),
 							'docstring' => lang('Updates ticket')
+						),
+						'test' => array(
+							'function'  => 'test',
+							'signature' => array(array(xmlrpcString)),
+							'docstring' => lang('TEST')
 						)
+						
 					);
 					return $xml_functions;
 					break;
@@ -87,6 +93,11 @@
 					return array();
 					break;
 			}
+		}
+
+		function test()
+		{
+			return 'This is a string';
 		}
 
 		function cached_accounts($account_id)
@@ -103,7 +114,7 @@
 			return $cached_data;
 		}
 
-		function list_tickets($params)
+		function _list($params)
 		{
 			$db2 = $this->db;
 			$this->db->query("select * from phpgw_tts_tickets $filtermethod $sortmethod",__LINE__,__FILE__);
@@ -154,7 +165,7 @@
 			return $r;
 		}
 
-		function read_ticket($params = '')
+		function _read($params = '')
 		{
 			$cat = createobject('phpgwapi.categories');
 
@@ -200,14 +211,14 @@
 			return $r;			
 		}
 
-		function ticket_notes($params)
+		function read_notes($params)
 		{
 			$history_array = $this->historylog->return_array(array(),array('C'),'','',$params[0]);
 
 			return $history_array;
 		}
 
-		function ticket_history($params)
+		function history($params)
 		{
 			$cat = createobject('phpgwapi.categories');
 			// This function needs to make use of the alternate handle option (jengo)
@@ -270,7 +281,7 @@
 			return $r;
 		}
 
-		function save_ticket($params)
+		function save($params)
 		{
 			$this->db->query("insert into phpgw_tts_tickets (ticket_group,ticket_priority,ticket_owner,"
 				. "ticket_assignedto,ticket_subject,ticket_category,ticket_billable_hours,"
