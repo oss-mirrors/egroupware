@@ -40,16 +40,12 @@ Delivery list	projects	en	Delivery list
 Delivery notes	projects	en	Delivery notes
 Delivery x has been created !	projects	en	Delivery %1 has been created !
 Delivery x has been updated !	projects	en	Delivery %1 has been updated !
-Description	projects	en	Description
 Edit Activity	projects	en	Edit activity
 Edit hours	projects	en	Edit Hours
 Edit project administrator list	projects	en	Edit project administrator list
 Edit project	projects	en	Edit project
 Edit project hours	projects	en	Edit project hours
 Employee	projects	en	Employee
-End date	projects	en	End date
-End time	projects	en	End time
-Firstname	projects	en	Firstname
 Generate Activity ID ?	projects	en	Generate Activity ID ?
 Generate Delivery ID ?	projects	en	Generate Delivery ID ?
 Generate Project ID ?	projects	en	Generate Project ID ?
@@ -69,7 +65,6 @@ Job has been added !	projects	en	Job has been added !
 Job has been updated !	projects	en	Job has been updated !
 Job list	projects	en	Job list
 Jobs	projects	en	Jobs
-Lastname	projects	en	Lastname
 List hours	projects	en	List hours
 Minutes per workunit	projects	en	Minutes per workunit
 net	projects	en	net
@@ -108,8 +103,6 @@ Select tax for workhours	projects	en	Select tax for workhours
 Select users	projects	en	Select users
 Select groups	projects	en	Select groups
 Select your address	projects	en	Select your address
-Start date	projects	en	Start date
-Start time	projects	en	Start time
 Statistic	projects	en	Statistic
 Statistics	projects	en	Statistics
 Status	projects	en	Status
@@ -118,11 +111,8 @@ Sum	projects	en	Sum
 Sum workunits	projects	en	Sum workunits
 tax	projects	en	tax
 That ID has been used already !	projects	en	That ID has been used already !
-Title	projects	en	Title
-Time	projects	en	Time
 Update invoice	projects	en	Update invoice
 Update delivery	projects	en	Update delivery
-Username	projects	en	Username
 Username / Group	projects	en	Username / Group
 User statistic	projects	en	User statistic
 View job	projects	en	View job
@@ -132,7 +122,6 @@ Work time	projects	en	Work time
 Workunit	projects	en	Workunit
 Workunits	projects	en	Workunits
 written by:	projects	en	Written by:
-You have entered an invalid date !	projects	en	You have entered an invalid date !
 You have entered an invalid start date !	projects	en	You have entered an invalid start date !
 You have entered an invalid end date !	projects	en	You have entered an invalid end date !
 You have selected an invalid activity !	projects	en	You have selected an invalid activity !
