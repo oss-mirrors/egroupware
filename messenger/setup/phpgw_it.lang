@@ -10,7 +10,7 @@ forwarded	messenger	it	Inoltrato
 from	messenger	it	Da
 global message	messenger	it	Messaggio Globale
 i can't find the username %1 on the system	messenger	it	Non trovo l'utente %1 sul sistema
-inbox	messenger	it	Posta in entrata
+inbox	messenger	it	INBOX
 message from	messenger	it	Messaggio da
 messenger	common	it	Messenger
 new	messenger	it	Nuovo
@@ -29,8 +29,8 @@ sorry, %1's account is not currently active	messenger	it	Spiacente, l'account di
 update a message status	messenger	it	Aggiorna lo stato di un messaggio
 use select box for user list in compose	common	it	In composizione, utilizza la casella di selezione, per la lista utenti
 you didn't enter anything for the message	messenger	it	Non hai inserito niente per il messaggio
-you have %1 new message	messenger	it	Ci sono %1 nuovi messaggi
-you have %1 new messages	messenger	it	Ci sono %1 nuovi messaggi
+you have %1 new message	common	it	Ci sono %1 nuovi messaggi
+you have %1 new messages	common	it	Ci sono %1 nuovi messaggi
 you have no messages	messenger	it	Non ci sono messaggi
 you must enter a subject	messenger	it	Devi inserire in uggetto
 you must enter the username this message is for	messenger	it	Devi inserire il destinatario del messaggio

@@ -10,11 +10,11 @@ failed to create directory %1	ftp	it	Impossibile creare la directory %1
 failed to delete %1	ftp	it	Impossibile cancellare %1
 failed to rename %1 to %2	ftp	it	Impossibile rinominare %1 in %2
 failed to upload %1	ftp	it	Impossibile uploadare %1
-ftp client	ftp	it	Ftp Client
-ftp hostname	ftp	it	Nome server
-ftp server	ftp	it	Ftp Server
+ftp client	ftp	it	Client FTP
+ftp hostname	ftp	it	Nome server FTP
+ftp server	ftp	it	Server FTP
 home	ftp	it	Home
-log into ftp server	ftp	it	Collegati al server FTP
+log into ftp server	ftp	it	Esegui Log in al server FTP
 logout/relogin	ftp	it	ricollegati
 password	ftp	it	Password
 permissions	ftp	it	Permessi
@@ -27,7 +27,7 @@ save	ftp	it	salva
 save to filemanager	ftp	it	salva nel filemanager
 size	ftp	it	Dimensione
 successfully created directory %1	ftp	it	Directory %1 creata correttamente
-successfully deleted %1	ftp	en	Cancellazione di %1 avvenuta
+successfully deleted %1	ftp	it	Cancellazione di %1 avvenuta
 successfully uploaded %1	ftp	it	Upload di %1 avvenuto
 upload	ftp	it	upload
 username	ftp	it	Nome Utente

@@ -1,13 +1,15 @@
+$ change	common	it	Variazione
 %	stocks	it	%
+% change	common	it	Variazione %
 add new stock	stocks	it	Aggiungi una nuova azione
-display stocks on main screen is disabled	stocks	it	Visualizza azioni nella schermata principale è disabilitato
-display stocks on main screen is enabled	stocks	it	Visualizza azioni nella schermata principale è abilitato
-disable	stocks	it	 disattivo
-edit stock	stocks	it	Modificare l'azione
-enable	stocks	it	attivare
+disable	stocks	it	disattiva
+display stocks on main screen is disabled	stocks	it	Visualizza Quotazioni nella schermata principale è disabilitato
+display stocks on main screen is enabled	stocks	it	Visualizza Quotazioni nella schermata principale è abilitato
+edit stock	stocks	it	Modifica l'azione
+enable	stocks	it	attiva
 price	stocks	it	Prezzo
-stocks	common	it	Azione
-stock quotes	common	it	Valore delle azioni
-select displayed stocks	preferences	it	Scegliere le azioni affianco
-stock quote preferences	stocks	it	Preferenza azioni
+select displayed stocks	preferences	it	Seleziona azioni visualizzate
+stock quote preferences	stocks	it	Preferenze Quotazioni Azionarie
+stock quotes	common	it	Quotazioni Azionarie
+stocks	common	it	Quotazioni Azionarie
 symbol	stocks	it	Simbolo

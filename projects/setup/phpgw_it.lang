@@ -16,6 +16,7 @@ activity %1 has been updated	projects	it	L'attività %1 è stata aggiornata.
 activity %1 has been updated !	projects	it	L'attività %1 è stata aggiornata!
 activity id	projects	it	ID Attività
 add activity	projects	it	Aggiungi Attività
+add file	projects	it	aggiungi File
 add job	projects	it	Aggiungi Lavoro
 add milestone	projects	it	Aggiungi traguardo
 add project	projects	it	Aggiungi progetto
@@ -76,13 +77,15 @@ columns to show in the projects list	projects	it	Colonne da mostrare nella lista
 comment	projects	it	commento
 continue	projects	it	Continua
 coordinator	common	it	Coordinatore
+costs list	projects	it	Elenco Costi
+costtype	projects	it	Tipo Costi
 courier new	projects	it	Courier new
-create delivery	projects	it	Crea Bolla
+create delivery	projects	it	Crea Consegna
 create invoice	projects	it	Crea Fattura
 creator	projects	it	Creatore
 customer	common	it	Cliente
 customer nr	projects	it	Cliente n.
-date created	projects	it	Data creata
+date created	projects	it	Data creazione
 date due of milestone %1 of project %2 has been updated	projects	it	La data stabilita per il traguardo %1 del progetto %2 è stata aggiornata.
 date due planned	projects	it	Data stabilita pianificata
 days	projects	it	giorni
@@ -93,6 +96,7 @@ delete factor	projects	it	elimina fattore
 delete hours	projects	it	Cancella ore
 delete job	projects	it	elimina lavoro
 delete project	projects	it	elimina progetto
+delete selected files	projects	it	elimina File selezionati
 delete work hours	projects	it	cancella ore lavorate
 deliveries	projects	it	Consegne
 delivery	projects	it	Consegna
@@ -100,7 +104,7 @@ delivery %1 has been created !	projects	it	La Consegna %1 è stata creata!
 delivery %1 has been updated !	projects	it	La Consegna %1 è stata modificata!
 delivery date	projects	it	Data Consegna
 delivery id	projects	it	ID Consegna
-delivery list	projects	it	Lista Consegne
+delivery list	projects	it	Elenco Consegne
 delivery note	projects	it	Nota Consegna
 delivery note for project	projects	it	Nota di Consegna per progetto
 delivery notes	projects	it	Note di Consegna
@@ -142,6 +146,7 @@ event %1 has been saved	projects	it	L'evento %1 è stato salvato
 event %1 has been updated	projects	it	L'evento%1 è stato aggiornato
 events	projects	it	Eventi
 exact accounting [hh.mm]	admin	it	Conteggio esatto [hh.mm]
+export as	projects	it	esporta come
 external reference	projects	it	Riferimento esterno
 extra budget	projects	it	Budget Extra
 extra budget sum of all sub projects is bigger than the extra budget of the main project	projects	it	La somma dei Budget Extra di tutti i sottoprogetti è maggiore del Budget Extra del progetto principale.
@@ -237,6 +242,7 @@ number	projects	it	Numero
 old end date	projects	it	Vecchia data di termine
 old start date	projects	it	Vecchia data di inizio
 open	projects	it	Apri
+open popup	projects	it	apri popup
 open popup window	projects	it	apri finestra popup
 overall	projects	it	Complessivo
 parent project	projects	it	Progetto superiore
@@ -255,6 +261,7 @@ please choose activities for the project	projects	it	Prego scegli le attività pe
 please choose the accounting system for the project	projects	it	Prego scegli il sistema contabile per il progetto.
 please choose the columns to list in the projects preferences section	projects	it	Scegli le colonne da visualizzare nella sezione Preferenze Progetti.
 please choose the discount type	projects	it	Scegli il tipo di sconto.
+please enable html view of emails.	projects	it	Abilita la visualizzazione HTML delle e-mail.
 please enter a remark	projects	it	Inserisci un'osservazione
 please enter a remark !	projects	it	Inserire le osservazioni!
 please enter an id	projects	it	Inserisci un ID.
@@ -310,7 +317,7 @@ role %1 has been saved	projects	it	Il ruolo %1 è stato salvato
 role %1 has been updated	projects	it	Il ruolo %1 è stato aggiornato
 role has been deleted	projects	it	Il ruolo è stato eliminato
 roles	projects	it	Ruoli
-roles list	projects	it	Lista Ruoli
+roles list	projects	it	Elenco Ruoli
 sales department	admin	it	Dipartimento Vendite
 save factor	projects	it	Fattore Vendite
 save milestone	projects	it	Traguardo Vendite
@@ -327,12 +334,15 @@ select project	projects	it	Seleziona progetto
 select tax for work time	projects	it	Seleziona tasse per tempo lavorato
 select users	projects	it	Selezione utenti
 seller	projects	it	Venditore
-seller list	projects	it	Lista Venditori
+seller list	projects	it	Elenco Venditori
 sequencing project	projects	it	Progetti sequenziali
 settings	admin	it	impostazioni
 short description	projects	it	Descrizione breve
 show gantt chart	projects	it	Mostra il grafico Gantt
+show milestones	projects	it	Mostra traguardi
+show planned resources	projects	it	Mostra risorse pianificate
 site configuration	projects	it	Configurazione sito
+size	projects	it	dimensione
 small	projects	it	Piccolo
 sorry, no preferences to set for you :)	projects	it	Spiacente,  non ci sono preferenze da impostare
 start	projects	it	Inizio
@@ -343,6 +353,7 @@ statistic	projects	it	Statistica
 statistics	projects	it	Statistiche
 stop	projects	it	Stop
 sub project level %1	projects	it	Sottoprogetto livello %1
+subproject	projects	it	Sottoprogetto
 sum	projects	it	Totale
 sum budget	projects	it	Totale Budget
 sum hours	projects	it	Totale Ore
@@ -397,6 +408,7 @@ work hours	common	it	Ore Lavoro
 work hours archive	projects	it	Archivio Ore Lavorate
 work hours list	projects	it	Lista Ore Lavoro
 work time	projects	it	Tempo di Lavoro
+workload warning for project	projects	it	Avvertimento carico di lavoro per il progetto
 workunit	projects	it	Unità di Lavoro
 workunits	projects	it	Unità di Lavoro
 written by:	projects	it	Srcitto da:
