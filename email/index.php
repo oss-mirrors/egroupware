@@ -26,10 +26,15 @@
 		'currentapp' => 'email', 
 		'enable_network_class' => True, 
 		'enable_nextmatchs_class' => True);
-	
+
+	// guarantee a set value for newsmode testing for later on down the page
 	if (isset($newsmode) && $newsmode == "on")
 	{
 		$phpgw_info['flags']['newsmode'] = True;
+	}
+	else
+	{
+		$phpgw_info['flags']['newsmode'] = False;
 	}
 	
 	include("../header.inc.php");
@@ -66,6 +71,57 @@
 	// How Many Messages Are In This Inbox/Folder
 	$nummsg = $phpgw->msg->num_msg($mailbox);
 
+// ---- Messages Sort Order  (AND ensure $sort and $order and $start have usable values) -----
+	/*
+	Sorting defs:
+	SORTDATE:  0	//This is the Date that the senders email client stanp the message with
+	SORTARRIVAL: 1	 //This is the date your email server's MTA stamps the message with
+			// using SORTDATE cause some messages to be displayed in the wrong cronologicall order
+	SORTFROM:  2
+	SORTSUBJECT: 3
+	SORTSIZE:  6
+
+	// imap_sort(STREAM,  CRITERIA,  REVERSE,  OPTIONS)
+	// Stream: is $mailbox
+	// Criteria = $sort : is HOW to sort, we prefer SORTARRIVAL, or "1" as default (see note above)
+	// Reverse = $order : 0 = imap default = lowest to highest  ;;  1 = Reverse sorting  =  highest to lowest
+	// Options: we do not use this (yet)
+	*/
+
+	// SORT: if not set in the url, then assign some defaults
+	if ((isset($sort))
+	  && (($sort >= 0) && ($sort <= 6)) )
+	{
+		// do nothing,  this is a valid $sort variableset in the URL
+	}
+	else
+	{
+		$sort = 1;
+	}
+
+	// ORDER (reverse sorting or not)  if specified in the url, then use it, else use defaults
+	if ((isset($order))
+	  && (($order >= 0) && ($order <= 1)) )
+	{
+		// do nothing, this is a valid $order variableset in the URL
+	}
+	elseif ((isset($phpgw_info["user"]["preferences"]["email"]["default_sorting"]))
+	  && ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old"))
+	{
+		$order = 1;
+	}
+	else
+	{
+		// if no pref is set or the pref is old->new, then order should = 0
+		$order = 0;
+	}
+
+	// START value
+	if (! $start)
+	{
+		$start = 0;
+	}
+
 // ---- lang var for checkbox javascript  -----
 	$t->set_var('select_msg',lang('Please select a message first'));
 
@@ -87,44 +143,20 @@
 		// nothing deleted, so template gets blank string
 		$t->set_var('V_any_deleted','');
 	}
-	
+
 // ----  Previous and Next arrows navigation  -----
-	if (! $start)
-	{
-		$start = 0;
-	}
-	
+
 	$td_prev_arrows = $phpgw->nextmatchs->left('/'.$phpgw_info['flags']['currentapp'].'/index.php',
-					$start,$nummsg,
-					'&sort=' .$sort .'&order=' .$order .'&folder=' .urlencode($folder_short));
+					$start,$nummsg,'&folder=' .urlencode($folder_short));
 
 	$td_next_arrows = $phpgw->nextmatchs->right('/'.$phpgw_info['flags']['currentapp'].'/index.php',
-					$start,$nummsg,
-					'&sort=' .$sort .'&order=' .$order .'&folder=' .urlencode($folder_short));
+					$start,$nummsg,'&folder=' .urlencode($folder_short));
 
 	$t->set_var('arrows_backcolor',$phpgw_info['theme']['bg_color']);
 	$t->set_var('prev_arrows',$td_prev_arrows);
 	$t->set_var('next_arrows',$td_next_arrows);
 
 // ---- Message Folder Stats   -----
-	if ($sort == "ASC") {
-		$oursort = 0;
-	} else {
-		$oursort = 1;
-	}
-
-	if (!isset($order))
-	{
-		// Only do this on first visit to the app, where order should depend on prefs date order
-		$order = 0;
-		if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old") 
-		{
-			$oursort = 1;
-		} else {
-			$oursort = 0;
-		}
-	}
-
 	$mailbox_info = $phpgw->msg->mailboxmsginfo($mailbox);
 	$mailbox_status = $phpgw->msg->status($mailbox,"$server_str" ."$folder_long",SA_UNSEEN);
 
@@ -140,9 +172,9 @@
 		$stats_saved = number_format($nummsg);
 
 		$msg_array = array();
-		// Note: sorting on email is on address, not displayed name per php imap_sort
-		//echo "<br>SORT GOT: column '$order', '$oursort'.";
-		$msg_array = $phpgw->msg->sort($mailbox, $order, $oursort);
+			// Note: sorting on email is on address, not displayed name per php imap_sort
+			//echo "<br>SORT GOT: column '$order', '$oursort'.";
+		$msg_array = $phpgw->msg->sort($mailbox, $sort, $order);
 
 		// NUM NEW MESSAGES
 		$stats_new = $mailbox_status->unseen;
@@ -183,9 +215,6 @@
 	{
 		$folder_maint_button = '<input type="button" value="' . lang("folder") . '" onClick="'
 				. 'window.location=\'' . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php').'\'">';
-				//. 'window.location=\'' . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php\'">');
-				//,'folder=' .urlencode($folder)) . '\'">';
-				// NOTE: the folder=X variable is not really used in folder.php when called from this page
 	} else {
 		$folder_maint_button = '&nbsp';
 	}
@@ -203,14 +232,8 @@
 	$t->set_var('folder_maint_button',$folder_maint_button);
 
 // ----  Messages List Table Headers  -----
-	  /*
-	     Sorting defs:
-	     SORTDATE:  0
-	     SORTFROM:  2
-	     SORTSUBJECT: 3
-	     SORTSIZE:  6
-	  */
-	if ($newsmode == "on")
+	// $phpgw_info['flags']['newsmode'] is checked and set above
+	if ($phpgw_info['flags']['newsmode'])
 	{
 		$sizesort = lang("lines");
 	} else {
@@ -219,10 +242,10 @@
 	
 	$t->set_var('hdr_backcolor',$phpgw_info['theme']['th_bg']);
 	$t->set_var('hdr_font',$phpgw_info['theme']['font']);
-	$t->set_var('hdr_subject',$phpgw->nextmatchs->show_sort_order($sort,"3",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".urlencode($folder_short)) );
-	$t->set_var('hdr_from',$phpgw->nextmatchs->show_sort_order($sort,"2",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".urlencode($folder_short)) );
-	$t->set_var('hdr_date',$phpgw->nextmatchs->show_sort_order($sort,"0",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".urlencode($folder_short)) );
-	$t->set_var('hdr_size',$phpgw->nextmatchs->show_sort_order($sort,"6",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$sizesort) );
+	$t->set_var('hdr_subject',$phpgw->nextmatchs->show_sort_order_imap("3",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".urlencode($folder_short)) );
+	$t->set_var('hdr_from',$phpgw->nextmatchs->show_sort_order_imap("2",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".urlencode($folder_short)) );
+	$t->set_var('hdr_date',$phpgw->nextmatchs->show_sort_order_imap("1",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".urlencode($folder_short)) );
+	$t->set_var('hdr_size',$phpgw->nextmatchs->show_sort_order_imap("6",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$sizesort) );
 
 // ----  Form delmov Intialization  Setup  -----
 	// ----  place in first checkbox cell of the messages list table, ONE TIME ONLY   -----
