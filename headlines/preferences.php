@@ -46,8 +46,6 @@
     </form>
 <?php
   } else {
-//    include($phpgw_info["server"]["server_root"] . "/headlines/inc/functions.inc.php");
-//    headlines_update($phpgw_info["user"]["userid"],$headlines);
    if (count($headlines)) {
       $phpgw->common->preferences_delete("byapp",$phpgw_info["user"]["account_id"],"headlines");
       while ($value = each($headlines)) {
@@ -58,6 +56,5 @@
 
     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"]."/preferences/index.php"));
   }
-
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  $phpgw->common->phpgw_footer();
 ?>
