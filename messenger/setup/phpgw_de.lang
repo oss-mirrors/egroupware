@@ -10,9 +10,6 @@ forwarded	messenger	de	Weitergeleitet
 from	messenger	de	Von
 global message	messenger	de	Globale Mitteilung
 i can't find the username %1 on the system	messenger	de	Benutzername %1 ist im System nicht vorhanden
-i can\'t find the username %1 on the system	messenger	de	Benutzername %1 ist im System nicht vorhanden
-i can\\\'t find the username %1 on the system	messenger	de	Benutzername %1 ist im System nicht vorhanden
-i can\\\\\\\'t find the username %1 on the system	messenger	de	Benutzername %1 ist im System nicht vorhanden
 inbox	messenger	de	Posteingang
 message from	messenger	de	Mitteilung von
 messenger	common	de	Messenger
@@ -29,15 +26,9 @@ send a global message.	messenger	de	Eine globale Nachricht senden
 send a message to a single recipient.	messenger	de	Eine Nachricht zu einem einzelnen Empfänger senden
 send message to	messenger	de	Mitteilung senden an
 sorry, %1's account is not currently active	messenger	de	Sorry, das Benutzerkonto von %1 ist zur Zeit nicht aktiviert
-sorry, %1\'s account is not currently active	messenger	de	Sorry, das Benutzerkonto von %1 ist zur Zeit nicht aktiviert
-sorry, %1\\\'s account is not currently active	messenger	de	Sorry, das Benutzerkonto von %1 ist zur Zeit nicht aktiviert
-sorry, %1\\\\\\\'s account is not currently active	messenger	de	Sorry, das Benutzerkonto von %1 ist zur Zeit nicht aktiviert
 update a message status	messenger	de	Den Status eine Nachricht updaten
 use select box for user list in compose	common	de	Die Auswahlbox benutzen um die Empfänger auszuwählen
 you didn't enter anything for the message	messenger	de	Sie haben in Ihrer Nachrich keinen Inhalt eingegeben
-you didn\'t enter anything for the message	messenger	de	Sie haben in Ihrer Nachrich keinen Inhalt eingegeben
-you didn\\\'t enter anything for the message	messenger	de	Sie haben in Ihrer Nachrich keinen Inhalt eingegeben
-you didn\\\\\\\'t enter anything for the message	messenger	de	Sie haben in Ihrer Nachrich keinen Inhalt eingegeben
 you have %1 new message	common	de	Sie haben %1 neue Mitteilungen
 you have %1 new messages	common	de	Sie haben %1 neue Mitteilungen
 you have no messages	messenger	de	Sie haben keine neuen Nachrichten

@@ -29,8 +29,8 @@ sorry, %1's account is not currently active	messenger	zt	抱歉，%1的帳號停用中
 update a message status	messenger	zt	更新訊息狀態
 use select box for user list in compose	common	zt	使用下拉式選單來列出使用者
 you didn't enter anything for the message	messenger	zt	您沒有輸入任何訊息
-you have %1 new message	messenger	zt	您有 %1 封新訊息
-you have %1 new messages	messenger	zt	您有 %1 封新訊息
+you have %1 new message	common	zt	您有 %1 封新訊息
+you have %1 new messages	common	zt	您有 %1 封新訊息
 you have no messages	messenger	zt	您沒有新訊息
 you must enter a subject	messenger	zt	您必須輸入主題
 you must enter the username this message is for	messenger	zt	您必須輸入收件者名稱

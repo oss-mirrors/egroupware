@@ -29,8 +29,8 @@ sorry, %1's account is not currently active	messenger	es-es	Lo sentimos, la cuen
 update a message status	messenger	es-es	Actualizar el estatus de un mensaje
 use select box for user list in compose	common	es-es	Usar cuadro de selección para lista de usuario en la redacción
 you didn't enter anything for the message	messenger	es-es	No ingresó nada en el mensaje
-you have %1 new message	messenger	es-es	Tiene %1 mensajes nuevos
-you have %1 new messages	messenger	es-es	Tiene %1 mensajes nuevos
+you have %1 new message	common	es-es	Tiene %1 mensajes nuevos
+you have %1 new messages	common	es-es	Tiene %1 mensajes nuevos
 you have no messages	messenger	es-es	No tiene mensajes
 you must enter a subject	messenger	es-es	Debe ingresar un asunto
 you must enter the username this message is for	messenger	es-es	Debe especificar para quién es este mensaje
