@@ -3,6 +3,7 @@ additional info	felamimail	fr	Informations additionnelles
 address book search	felamimail	fr	Recherche dans le carnet d'adresses
 address book	felamimail	fr	Carnet d'adresses
 add	felamimail	fr	ajouter
+add	felamimail	fr	ajouter
 add to address book	felamimail	fr	Ajouter au carnet d'adresses
 add to %s	felamimail	fr	Ajouter à %s
 after message body	felamimail	fr	Après le corps du message
@@ -178,6 +179,7 @@ Size	felamimail	fr	Taille
 Some or all of the help documents are not present!	felamimail	fr	Certains ou tous les documents d'aide ne sont pas présents!
 Source	felamimail	fr	Source
 Special Folder Options	felamimail	fr	Options spéciales de dossier
+felamimail	en	fr	FelaMiMail
 Squirrelmail	felamimail	fr	Squirrelmail
 subject	felamimail	fr	Sujet
 Subject	felamimail	fr	Sujet

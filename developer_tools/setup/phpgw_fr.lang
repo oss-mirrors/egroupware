@@ -12,6 +12,7 @@ create new language file	developer_tools	fr	Créer un nouveau fichier de langage
 create sgml file	developer_tools	fr	Créer un fichier SGML
 developer tools	common	fr	Outils développeurs
 developer tools - preferences	developer_tools	fr	Outils développeurs - préférences
+developer_tools	common	fr	Outils développeurs
 diary	developer_tools	fr	Journal
 done	developer_tools	fr	fait
 download	developer_tools	fr	Download
@@ -36,10 +37,10 @@ search for missing phrase	developer_tools	fr	Chercher les phrases manquantes
 select project	developer_tools	fr	Choisir un projet
 sf project tracker	developer_tools	fr	traceur de projet SF
 sf project tracker preferences	preferences	fr	Préférences du traceur de projet SF
+source language	developer_tools	fr	Langue source
 sourceforge project id	developer_tools	fr	ID de projet Sourceforge
 sourceforge project tracker	developer_tools	fr	traceur de projet Sourceforge
 sourceforge project tracker preferences	developer_tools	fr	Préférences du traceur de projets Sourceforge
-source language	developer_tools	fr	Langue source
 submit	developer_tools	fr	Soumettre
 target language	developer_tools	fr	Langue destination
 title	developer_tools	fr	Titre

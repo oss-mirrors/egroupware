@@ -72,7 +72,6 @@ Invoice list	projects	fr	Liste de factures
 Invoices	projects	fr	Factures
 Invoice x has been created !	projects	fr	La facture %1 a été crée !
 Invoice x has been updated !	projects	fr	La facture %1 a été mise à jour !
-invoicing	projects	fr	Facturation
 invoicing of work time	projects	fr	Facturation du temps de travail
 Job	projects	fr	Tâche
 job archive	projects	fr	Archive des tâches
@@ -113,7 +112,6 @@ Project list	projects	fr	Liste de projets
 Project name	projects	fr	Nom de projet
 preferences for accountancy	projects	fr	Préférences pour la comptabilité
 projects preferences	preferences	fr	Préférences de projets
-project preferences	preferences	fr	Préférences de projets
 Project statistic	projects	fr	Statistique de projet
 project statistics	projects	fr	Statistiques de projet
 Remark	projects	fr	Remarque

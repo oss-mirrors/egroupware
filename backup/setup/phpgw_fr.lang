@@ -13,6 +13,7 @@ interval	backup	fr	Intervalle
 Select interval	backup	fr	Choisissez l'intervalle
 Data	backup	fr	Données
 SQL	backup	fr	SQL
+homedirs	admin	fr	Répertoires "home" (maison)
 LDAP	common	fr	LDAP
 ldap database	admin	fr	Base de données LDAP
 E-MAIL	backup	fr	E-MAIL

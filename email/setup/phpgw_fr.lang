@@ -1,33 +1,36 @@
-<b>apply all</b> filters	email	fr	<b>APPLIQUER TOUS</b> les filtres
 1 message has been deleted	email	fr	1 message a été effacé
 1 message has been moved to	email	fr	1 message a été déplacé vers
+<b>apply all</b> filters	email	fr	<b>APPLIQUER TOUS</b> les filtres
 account	email	fr	compte
 account user name	email	fr	Nom d'utilisateur du compte
+accounts	email	fr	Comptes
 add to addressbook	email	fr	Ajouter au carnet d'adresses
 and	email	fr	et
 arrival date	email	fr	Date d'arrivée
 as	email	fr	comme
 attach file	email	fr	Attacher un fichier
-attachment	email	fr	Attachement
 attach signature	email	fr	Attacher une signature
+attachment	email	fr	Attachement
 bcc	email	fr	bcc
 cc	email	fr	CC
-choose to rename	email	fr	choisir pour renommer
+choose for rename	email	fr	Choisir pour renommer
+choose to rename	email	fr	Choisir pour renommer
 compose	email	fr	Composer
 compose new	common	fr	Composer nouveau
 contains	email	fr	Contient
 could not open this mailbox	email	fr	N'a pas pu ouvrir cette boîte aux lettres
-create a folder email	fr	créer un dossier	
-create (expert)	email	fr	créer (expert)
+create (expert)	email	fr	Créer (expert)
+create a folder	email	fr	Créer un dossier
+current attachments (%1)	email	fr	Pièces jointes actuelles (%1)
 custom e-mail preferences	email	fr	Préférences d'EMail personnalisées
 custom email settings	email	fr	Réglages d'EMail personnalisés
-default:	common	fr	défaut:
 default sorting order	email	fr	Ordre d'affichage par défaut
-delete account	common	fr	Effacer le compte
-delete a folder	email	fr	Effacer un dossier
-deleted messages go to trash	email	fr	Les messages effacés vont vers la poubelle (Trash)
-deleted messages (trash) folder	email	fr	Messages effacés dossier poubelle (Trash)
+default:	common	fr	défaut:
 delete (expert)	email	fr	Effacer (expert)
+delete a folder	email	fr	Effacer un dossier
+delete account	common	fr	Effacer le compte
+deleted messages (trash) folder	email	fr	Messages effacés dossier poubelle (Trash)
+deleted messages go to trash	email	fr	Les messages effacés vont vers la poubelle (Trash)
 discard	email	fr	Mettre de côté
 does not contain	email	fr	Ne contient pas
 e-mail extra accounts list	email	fr	Liste des comptes supplémentaires d'EMail
@@ -56,16 +59,19 @@ extra e-mail accounts	common	fr	Comptes EMail supplémentaires
 fewer actions	email	fr	Moins d'actions
 fewer choices	email	fr	Moins de choix
 file	email	fr	Fichier
+file attachment	email	fr	Pièce jointe
 file into	email	fr	Fichier dans
 filter [number] and name	email	fr	[Numéro] du filtre et nom
+filters	email	fr	Filtres
 folder	email	fr	Dossier
 folder maintenance	email	fr	Maintenance des dossiers
 folder name	email	fr	Nom du dossier
-folders	email	fr	Dossiers
 folder size	email	fr	Taille du dossier
+folders	email	fr	Dossiers
 for these items, fill only what is different from you default e-mail preferences	common	fr	Pour ces éléments, remplissez uniquement ce qui est différent de vos préférences du compte EMail par défaut
 forward	email	fr	Transférer
 from	email	fr	De
+get size	email	fr	Calculer la taille
 hidden	email	fr	Caché
 if applicable	email	fr	Si applicable
 if fileto then select destination folder	email	fr	Si Fichiervers alors sélectionner le dossier de destination
@@ -73,6 +79,7 @@ if messages match	email	fr	Si les messages correspondent
 image	email	fr	Image
 imap mail server hostname or ip address	admin	fr	Nom du serveur de mail IMAP ou adresse IP
 imap server type	common	fr	Type de serveur IMAP
+input error	email	fr	Erreur d'entrée
 keep	email	fr	Garder
 keywords	email	fr	Mots-clés
 layout 1	common	fr	Mise en page 1
@@ -99,11 +106,13 @@ new	email	fr	Nouveau
 new account	email	fr	Nouveau compte
 new filter	email	fr	Nouveau filtre
 new message	email	fr	Nouveau message
+new messages	email	fr	Nouveaux messages
 newest	common	fr	plus récent
 no error returned from server	email	fr	Pas d'erreur retournée par le serveur
 no next message	email	fr	pas de message suivant
-non-standard	email	fr	Non-Standard
 no previous message	email	fr	pas de message précédent
+non-standard	email	fr	Non-Standard
+notify on delivery	email	fr	Accusé de réception
 number	common	fr	Nombre
 oldest	common	fr	plus ancien
 or	common	fr	ou
@@ -111,34 +120,40 @@ or enter text	email	fr	Ou entrer du texte
 please fill in everything you need	email	fr	SVP remplissez tout ce dont vous avez besoin
 please select a folder to rename	email	fr	SVP choisissez un dossier à renommer
 please select a message first	email	fr	Sélectionnez d'abord un message, SVP
+please submit a filename to attach	email	fr	SVP soumettez un fichier à attacher
 please type a folder name in the text box	email	fr	SVP entrez un nom de dossier dans la boîte texte
 previous	email	fr	Précédent
 raw message	email	fr	Message brut
 read mail	email	fr	Lire l'EMail
 redirect	email	fr	Rediriger
 reject	email	fr	Rejeter
-rename a folder	email	fr	Renommer un dossier
 rename (expert)	email	fr	Renommer (expert)
-reply all	email	fr	Répondre à tous
+rename a folder	email	fr	Renommer un dossier
 reply	email	fr	Répondre
+reply all	email	fr	Répondre à tous
 replyto	email	fr	Répondre à
 reset	email	fr	Réinitialiser
 result	email	fr	résultat
-section	email	fr	Section
 search this folder	email	fr	Rechercher dans ce dossier
+section	email	fr	Section
+select home email address	email	fr	Choisissez l'EMail domicile
+select work email address	email	fr	Choisissez l'EMail bureau
 select your mail server type	admin	fr	Choisissez votre type de serveur mail
-send deleted messages to the trash	email	fr	Envoyer les messages effacés dans la corbeille
 send	email	fr	Envoyer
+send deleted messages to the trash	email	fr	Envoyer les messages effacés dans la corbeille
 sent messages folder	common	fr	Dossier messages envoyés
 sent messages saved in &quot;sent&quot; folder	common	fr	Envoyer les messages sauvegardés dans le dossier &quot;sent&quot;
+settings	email	fr	Réglages
 short names	email	fr	noms courts
+show long names	email	fr	Montrer les noms longs
 show new messages on main screen	email	fr	Montrer les nouveaux messages sur la page principale
 show sender's email address with name	email	fr	Montrer l'adresse EMail de l'envoyeur avec le nom
+show short names	email	fr	Montrer les noms courts
 size	email	fr	Taille
 somebody	email	fr	quelqu'un
 sort by	email	fr	Trié par
 standard e-mail preferences	email	fr	Préférences d'EMail standard
-stop if matched	email	fr	S'arrêter si correpondance
+stop if matched	email	fr	S'arrêter si correspondance
 switch accounts	email	fr	Switcher les comptes
 switch current folder to	common	fr	Changer de dossier courant vers
 then take this actions	email	fr	Alors effectuer ces actions
@@ -147,20 +162,22 @@ this data not supplied.	email	fr	Cette donnée non fournie
 this folder is empty	email	fr	Ce dossier est vide
 to	email	fr	A
 total messages	email	fr	Total Messages
+u-wash mail folder	email	fr	Dossier d'EMail U-Wash
 undisclosed recipients	email	fr	Destinataires cachés
 undisclosed sender	email	fr	Envoyeur caché
 unknown action	email	fr	Action inconnue
 unknown error	email	fr	Erreur inconnue
 use custom settings	email	fr	Utiliser les réglages personnalisés
-u-wash mail folder	email	fr	Dossier d'EMail U-Wash
 view as html	email	fr	Voir comme du HTML
 view formatted	email	fr	Voir formaté
 view headers	email	fr	Voir les entêtes
 view unformatted	email	fr	Voir non formaté
+wrote	email	fr	écrivait
 x messages have been deleted	email	fr	%1 messages ont été effacés
 you have 1 new message!	common	fr	Vous avez 1 nouveau message!
 you have messages!	common	fr	Vous avez des messages!
 you have no new messages	common	fr	Vous n'avez pas de nouveaux messages!
 you have x new messages!	common	fr	Vous avez %1 nouveaux messages!
+you must click %1 for the file to actually upload	email	fr	Vous devez cliquer sur %1 pour que le fichier soit réellement uploadé
 your full name	common	fr	Votre nom complet
 your message has been sent	common	fr	Votre message a été envoyé!

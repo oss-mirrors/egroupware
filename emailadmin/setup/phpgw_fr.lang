@@ -11,7 +11,7 @@ email account active	qmailldap	fr	Compte EMail actif
 email address	qmailldap	fr	Adresse EMail
 email settings	admin	fr	Réglages EMail
 forward email's to	qmailldap	fr	Faire suivre l'EMail à
-ldap basedn	qmailldap	fr	DN de BASE LDAP
+qmail dn	qmailldap	fr	QMail DN
 ldap server	qmailldap	fr	Serveur LDAP
 ldap settings	qmailldap	fr	Réglages LDAP
 no alternate email address	qmailldap	fr	Pas d'adresse EMail secondaire
