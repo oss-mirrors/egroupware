@@ -9,7 +9,7 @@ require('parse/html.php');
 require('parse/transforms.php');
 require('template/admin.php');
 
-if($AdminEnabled != 1)
+if(!$GLOBALS['phpgw']['user']['apps']['admin'])
   { die($ErrorAdminDisabled); }
 
 // Harvest script parameters.

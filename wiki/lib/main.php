@@ -8,8 +8,6 @@
 
 $HTTP_REFERER = isset($HTTP_SERVER_VARS['HTTP_REFERER'])
                 ? $HTTP_SERVER_VARS['HTTP_REFERER'] : '';
-$QUERY_STRING = isset($HTTP_SERVER_VARS['QUERY_STRING'])
-                ? $HTTP_SERVER_VARS['QUERY_STRING'] : '';
 $REMOTE_ADDR  = isset($HTTP_SERVER_VARS['REMOTE_ADDR'])
                 ? $HTTP_SERVER_VARS['REMOTE_ADDR'] : '';
 
@@ -87,9 +85,6 @@ $ActionList = array(
                 'style'   => array('action/style.php', 'action_style', '')
               );
 
-// Default action and page names.
-if(empty($page) && empty($action))
-  { $page = $QUERY_STRING; }
 if(empty($action))
   { $action = 'view'; }
 if(empty($page))

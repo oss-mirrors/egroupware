@@ -1,32 +1,32 @@
 <?php
-// Users may redefine these functions if they wish to change the
-// URL scheme, e.g., to enable links like:
-//
-//     http://somewiki.org/PageName
-//
-// The new versions of the relevant functions should be defined in
-// config.php.  Those functions that are redefined will not be
-// redefined here.
-if(!isset($ViewBase))
-  { $ViewBase    = $ScriptBase . '?page='; }
-if(!isset($EditBase))
-  { $EditBase    = $ScriptBase . '?action=edit&page='; }
-if(!isset($HistoryBase))
-  { $HistoryBase = $ScriptBase . '?action=history&page='; }
-if(!isset($FindScript))
-  { $FindScript  = $ScriptBase . '?action=find'; }
-if(!isset($FindBase))
-  { $FindBase    = $FindScript . '&find='; }
-if(!isset($SaveBase))
-  { $SaveBase    = $ScriptBase . '?action=save&page='; }
-if(!isset($DiffScript))
-  { $DiffScript  = $ScriptBase . '?action=diff'; }
-if(!isset($PrefsScript))
-  { $PrefsScript = $ScriptBase . '?action=prefs'; }
-if(!isset($StyleScript))
-  { $StyleScript = $ScriptBase . '?action=style'; }
+/* $Id$ */
 
-if(!function_exists('viewURL'))
+// Under phpgw these URL's are NOT configurable, you can set the phpgw install-patch in setup
+
+$ScriptBase = $GLOBALS['phpgw']->link('/wiki/index.php');
+$ScriptBase .= strstr($ScriptBase,'?') ? '&' : '?';
+$AdminScript = $GLOBALS['phpgw']->link('/wiki/admin/index.php');
+
+//if(!isset($ViewBase))
+  { $ViewBase    = $ScriptBase . 'page='; }
+//if(!isset($EditBase))
+  { $EditBase    = $ScriptBase . 'action=edit&page='; }
+//if(!isset($HistoryBase))
+  { $HistoryBase = $ScriptBase . 'action=history&page='; }
+//if(!isset($FindScript))
+  { $FindScript  = $ScriptBase . 'action=find'; }
+//if(!isset($FindBase))
+  { $FindBase    = $FindScript . '&find='; }
+//if(!isset($SaveBase))
+  { $SaveBase    = $ScriptBase . 'action=save&page='; }
+//if(!isset($DiffScript))
+  { $DiffScript  = $ScriptBase . 'action=diff'; }
+//if(!isset($PrefsScript))
+  { $PrefsScript = $ScriptBase . 'action=prefs'; }
+//if(!isset($StyleScript))
+  { $StyleScript = $ScriptBase . 'action=style'; }
+
+//if(!function_exists('viewURL'))
 {
 function viewURL($page, $version = '', $full = '')
 {
@@ -38,7 +38,7 @@ function viewURL($page, $version = '', $full = '')
 }
 }
 
-if(!function_exists('editURL'))
+//if(!function_exists('editURL'))
 {
 function editURL($page, $version = '')
 {
@@ -49,7 +49,7 @@ function editURL($page, $version = '')
 }
 }
 
-if(!function_exists('historyURL'))
+//if(!function_exists('historyURL'))
 {
 function historyURL($page, $full = '')
 {
@@ -60,7 +60,7 @@ function historyURL($page, $full = '')
 }
 }
 
-if(!function_exists('findURL'))
+//if(!function_exists('findURL'))
 {
 function findURL($page)
 {
@@ -70,7 +70,7 @@ function findURL($page)
 }
 }
 
-if(!function_exists('saveURL'))
+//if(!function_exists('saveURL'))
 {
 function saveURL($page)
 {

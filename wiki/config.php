@@ -15,7 +15,7 @@ $WikiName = 'PhpGroupWare';
 
 // $HomePage determines the "main" page of your wiki.  If browsers do not ask
 // to see a specific page they will be shown the home page.  This should be
-// a wiki page name, like 'AcmeProjectWiki'.
+// a EXISTING (!!!) wiki page name, like 'AcmeProjectWiki'.
 $HomePage = 'PhpGroupWare';
 
 // $InterWikiPrefix determines what interwiki prefix you recommend other
@@ -32,19 +32,19 @@ $EnableFreeLinks = 1;
 $EnableWikiLinks = 1;
 
 // Always have the Preview under the Edit
+// phpGW extension
 $EditWithPreview = 1;
 
 // $ScriptBase determines the location of your wiki script.  It should indicate
 // the full URL of the main index.php script itself.
-# simply set the relative directory here for phpgw support
-$ScriptBase = $GLOBALS['phpgw']->link('/wiki/index.php');
+# this is NOT configurable for phpgw
 
 // $AdminScript indicates the location of your admin wiki script.  It should
 // indicate the full URL of the admin/index.php script itself.
-$AdminScript = $GLOBALS['phpgw']->link('/wiki/admin/index.php');
+# this is NOT configurable for phpgw
 
 // $WikiLogo determines the location of your wiki logo.
-$WikiLogo = $GLOBALS['phpgw']->link('/wiki/templates/default/images/navbar.gif');
+$WikiLogo = $GLOBALS['phpgw']->common->find_image('wiki','navbar.gif');
 
 // $MetaKeywords indicates what keywords to report on the meta-keywords tag.
 // This is useful to aid search engines in indexing your wiki.
@@ -66,6 +66,6 @@ define('TemplateDir', 'template');
 //   If you do not do so, any visitor to your wiki will be able to lock pages
 //   and block others from accessing the wiki.
 // If $AdminEnabled is set to 0, administrator control will be disallowed.
-$AdminEnabled = 1;
+# this is not used in phpGW, only phpGW admins have admin-rights
 
 ?>
