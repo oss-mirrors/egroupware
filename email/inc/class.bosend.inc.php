@@ -458,7 +458,6 @@
 			//var_dump($cc);
 			echo '<br>';
 			
-			$GLOBALS['phpgw']->common->phpgw_footer();
 			exit;
 			// ===== DEBUG ===== 
 			*/
@@ -719,7 +718,6 @@
 			echo $dubug_info;
 			echo '<br>';
 				
-			$GLOBALS['phpgw']->common->phpgw_footer();
 			exit;
 			// ===== DEBUG ===== 
 			*/

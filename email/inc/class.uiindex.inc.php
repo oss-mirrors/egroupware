@@ -674,7 +674,5 @@
 				// if we do that, the client browser will get TWO page footers, so we do not call it here
 			}
 		}
-		
-		
 	}
 ?>

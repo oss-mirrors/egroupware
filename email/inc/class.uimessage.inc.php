@@ -285,7 +285,6 @@
 			else
 			{
 				$GLOBALS['phpgw']->template->pfp('out','T_message_main');
-				//$GLOBALS['phpgw']->common->phpgw_footer();
 			}
 		}
 	}

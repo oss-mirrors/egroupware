@@ -1033,7 +1033,6 @@
 					//  = = = =  = =======  CLEANUP AND EXIT PAGE ======= = = = = = =
 					$this->part_nice = '';
 					$GLOBALS['phpgw']->msg->end_request();
-					$GLOBALS['phpgw']->common->phpgw_footer();
 					exit;
 					*/
 				}

@@ -421,7 +421,6 @@
 			}
 			// you may feed "end_request" a msgball or a fldball and "end_request" will close the acctnum specified therein
 			$GLOBALS['phpgw']->msg->end_request($msgball);
-			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
 		
 		function view_html()
@@ -472,15 +471,11 @@
 				$GLOBALS['phpgw']->msg->end_request();
 				//header('Location: ' . $html_reference);
 				$GLOBALS['phpgw']->redirect($html_reference);
-				$GLOBALS['phpgw']->common->phpgw_footer();
 			}
 			else
 			{
 				$GLOBALS['phpgw']->msg->end_request();
-				$GLOBALS['phpgw']->common->phpgw_footer();
 			}
 		}
-	
-	
 	}
 ?>
