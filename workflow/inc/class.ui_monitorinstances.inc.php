@@ -19,19 +19,25 @@
 			$this->order			= get_var('order', 'GET', 'wf_name');
 			$this->sort				= get_var('sort', 'GET', 'asc');
 			$this->sort_mode		= $this->order . '__'. $this->sort;
+			$filter_process			= (int)get_var('filter_process', 'any', 0);
 			$filter_activity		= (int)get_var('filter_activity', 'any', 0);
 			$filter_status			= get_var('filter_status', 'any', '');
-			$filter_act_status		= get_var('filter_act_status', 'any', '');
 			$filter_user			= get_var('filter_user', 'any', '');
+		    $this->stats			= $this->process_monitor->monitor_stats();
+
+			if ($filter_process) $this->wheres[] = "gi.`wf_p_id`='" . $filter_process . "'";
+			if ($filter_activity) $this->wheres[] = "ga.`wf_activity_id`='" . $filter_activity . "'";
+			if ($filter_status) $this->wheres[] = "gi.`wf_status`='" . $filter_status . "'";
+			if ($filter_user) $this->wheres[] = "wf_owner='" . $filter_user . "'";
+			$this->wheres = implode(' and ', $this->wheres);
 
 			$all_statuses	= array('aborted', 'active', 'completed', 'exception');
 			$users			= $this->process_monitor->monitor_list_users();
-			$instances		= $this->process_monitor->monitor_list_instances($this->start, -1, $this->sort_mode, $this->search_str, '');
+			$instances		= $this->process_monitor->monitor_list_instances($this->start, -1, $this->sort_mode, $this->search_str, $this->wheres);
 
 			$this->show_filter_process();
 			$this->show_filter_activities();
 			$this->show_filter_status($all_statuses, $filter_status);
-			$this->show_filter_act_status($filter_act_status);
 			$this->show_filter_user($users, $filter_user);
 			$this->show_instances_table($instances['data']);
 
@@ -79,16 +85,6 @@
 				));
 				$this->t->parse('filter_status', 'block_filter_status', true);
 			}
-		}
-
-		function show_filter_act_status($filter_act_status)
-		{
-			$this->t->set_var(array(
-				'filter_act_status_selected_all'	=>(!$filter_act_status)? 'selected="selected"' : '',
-				'filter_act_runnning'				=> ($filter_act_status == 'running')? 'selected="selected"' : '',
-				'filter_act_completed'				=> ($filter_act_status == 'completed')? 'selected="selected"' : '',
-
-			));
 		}
 
 		function show_filter_user($users, $filter_user)
