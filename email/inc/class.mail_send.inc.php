@@ -92,7 +92,7 @@
 			$this->err["msg"] = '';
 			do
 			{
-				$rmsg = fgets($socket,255);
+				$rmsg = fgets($socket,1024);
 				$this->err['server_chat'] .= htmlspecialchars('s->c: '.$rmsg);
 				if ($this->trace_flag > 0) { $this->log_trace('socket2msg: rmsg', $rmsg); }
 				$this->err['code'] = substr($rmsg,0,3);
