@@ -340,7 +340,7 @@
 
 // ---------------- list header variable template-declarations --------------------------
 
-			$GLOBALS['phpgw']->template->set_var('sort_number',$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',$action=='mains'?lang('Project ID'):lang('job id'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_number',$this->nextmatchs->show_sort_order($this->sort,'p_number',$this->order,'/index.php',$action=='mains'?lang('Project ID'):lang('job id'),$link_data));
 			$GLOBALS['phpgw']->template->set_var('sort_title',$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title'),$link_data));
 			$GLOBALS['phpgw']->template->set_var('sort_sdate',$this->nextmatchs->show_sort_order($this->sort,'start_date',$this->order,'/index.php',lang('Start date'),$link_data));
 			$GLOBALS['phpgw']->template->set_var('sort_edate',$this->nextmatchs->show_sort_order($this->sort,'end_date',$this->order,'/index.php',lang('Date due'),$link_data));
