@@ -2667,28 +2667,28 @@
 
 			if ($values['smonth'] || $values['sday'] || $values['syear'])
 			{
-				$values['sdate'] = mktime(12,0,0,$values['smonth'], $values['sday'], $values['syear']);
+				$values['sdate'] = mktime(12,0,0,$values['smonth'], $values['sday'], $values['syear']) - 60*60*$GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
 			}
 			
 			if (!$values['sdate'])
 			{
-				$values['sdate'] = time();
+				$values['sdate'] = time() - 60*60*$GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
 			}
 
 			if ($values['emonth'] || $values['eday'] || $values['eyear'])
 			{
-				$values['edate'] = mktime(12,0,0,$values['emonth'],$values['eday'],$values['eyear']);
+				$values['edate'] = mktime(12,0,0,$values['emonth'],$values['eday'],$values['eyear']) - 60*60*$GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
 			}
 			$values['edate'] = intval($values['edate']);
 
 			if ($values['pemonth'] || $values['peday'] || $values['peyear'])
 			{
-				$values['pedate'] = mktime(12,0,0,$values['pemonth'],$values['peday'],$values['peyear']);
+				$values['pedate'] = mktime(12,0,0,$values['pemonth'],$values['peday'],$values['peyear']) - 60*60*$GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
 			}
 
 			if ($values['psmonth'] || $values['psday'] || $values['psyear'])
 			{
-				$values['psdate'] = mktime(12,0,0,$values['psmonth'],$values['psday'],$values['psyear']);
+				$values['psdate'] = mktime(12,0,0,$values['psmonth'],$values['psday'],$values['psyear']) - 60*60*$GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
 			}
 
 			if (!$values['previous'] && $values['parent'])
