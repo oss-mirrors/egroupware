@@ -58,13 +58,14 @@
 
          <!-- BEGIN add -->
          
-         <table width="75%" border="0" cellspacing="0" cellpadding="0">
-         <tr valign="bottom">
-          <td height="62"><input type="submit" name="submit" value="{lang_add}"></td>
-          <td height="62"><input type="reset" name="reset" value="{lang_reset}"></td>
+	<table width="75%" border="0" cellspacing="0" cellpadding="0">
+	<tr valign="bottom">
+	<td height="62"><input type="submit" name="submit" value="{lang_add}"></td>
+	<td height="62"><input type="reset" name="reset" value="{lang_reset}"></form></td>
+	<td><form method="POST" action="{doneurl}"> 
+            <input type="submit" name="done" value="{lang_done}"></form></td>
          </tr>
          </table>
-         </form>
          </center>
          
         <!-- END add -->
@@ -79,6 +80,10 @@
 	    <form method="POST" action="{deleteurl}">
 	    {hidden_vars}
 	    <input type="submit" name="delete" value="{lang_delete}"></form></td>
+	<td height="62">
+	    <form method="POST" action="{doneurl}">
+	    {hidden_vars}
+            <input type="submit" name="done" value="{lang_done}"></form></td>
          </tr>
          </table>
 	</center>

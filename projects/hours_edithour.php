@@ -19,8 +19,7 @@
   
     if (!$id) {
      Header("Location: " . $phpgw->link('/projects/hours_index.php'
-	  . "sort=$sort&order=$order&query=$query&start=$start"
-	  . "&filter=$filter"));
+	  . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
     }
 
     $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
@@ -28,7 +27,11 @@
 		. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
 		. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
 		. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
-		. "<input type=\"hidden\" name=\"id\" value=\"$id\">\n";
+		. "<input type=\"hidden\" name=\"id\" value=\"$id\">\n"
+		. "<input type=\"hidden\" name=\"delivery_id\" value=\"$delivery_id\">\n"
+		. "<input type=\"hidden\" name=\"invoice_id\" value=\"$invoice_id\">\n";
+
+
 
     $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
     $t->set_file(array('hours_edit' => 'hours_formhours.tpl'));
@@ -185,6 +188,9 @@
     $t->set_var('lang_billperae',lang("Bill per workunit"));
     $t->set_var('billperae',$phpgw->db->f('billperae'));
 
+    $t->set_var('lang_done',lang('Done'));
+    $t->set_var('doneurl',$phpgw->link($HTTPREFERRER . '&project_id=' . $phpgw->db->f("id") . "&delivery_id=$delivery_id&invoice_id=$invoice_id&sort=$sort&order=$order&"
+                                        . "query=$query&start=$start&filter=$filter&status=$status"));
 
     $t->set_var('lang_edit',lang('Edit'));
     $t->set_var('lang_delete',lang('Delete'));
