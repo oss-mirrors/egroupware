@@ -1,1 +1,25 @@
+allow anonymous access	admin	de	Anonymen Zgriff erlauben
+anonymous password	admin	de	Password des Anonymen Benutzers
+anonymous session type	admin	de	
+anonymous username	admin	de	Benutzername des Anonymen Benutzers
+block and unblock hosts	admin	de	
+block/unblock hostes	wiki	de	
+edit with preview	admin	de	
+editable	admin	de	editierbar
+emailaddress administrator	admin	de	Email Adresse des Administrators
+enable free links	admin	de	Freie Links erlauben
+enable wiki links	admin	de	Wiki Links erlauben
+interwikiprefix	admin	de	
+lock and unlock pages	admin	de	
+lock/unlock pages	wiki	de	
+metadescription	admin	de	
+metakeywords	admin	de	
+name wiki home link	admin	de	
+please contact the <a href="mailto:%1">administrator</a> for assistence.	wiki	de	Bitte kontaktieren Sie den <a href="mailto:%1">Administrator</a> um Hilfe zu erhalten.
+readonly	admin	de	Nur lesbar
+site configuration	wiki	de	Seiten konfiguration
 wiki	common	de	Wiki
+wiki administration	wiki	de	Wiki Administration
+wiki menu	wiki	de	Wiki Menü
+you have been denied access to this site.	wiki	de	Ihr Zugriff auf diese Seite wurde gesperrt
+you have exeeded the number of pages you are allowed to visit in a given period of time.  please return later.	wiki	de	
