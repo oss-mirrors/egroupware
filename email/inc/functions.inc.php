@@ -564,9 +564,11 @@
     global $phpgw;
     $ret = eregi_replace("([[:alnum:]]+)://([^[:space:]]*)([[:alnum:]#?/&=])",
 	    "<a href=\"\\1://\\2\\3\" target=\"_new\">\\1://\\2\\3</a>", $text);
-    $ret = eregi_replace("(([a-z0-9_]|\\-|\\.)+@([^[:space:]]*)([[:alnum:]-]))",
-	    "<a href=\"".$phpgw->link("compose.php","folder=".urlencode($phpgw_info["user"]["preferences"]["email"]["folder"]))
-	    ."&to=\\1\">\\1</a>", $ret);
+    if($ret == $text) {
+      $ret = eregi_replace("(([a-z0-9_]|\\-|\\.)+@([^[:space:]]*)([[:alnum:]-]))",
+	      "<a href=\"".$phpgw->link("compose.php","folder=".urlencode($phpgw_info["user"]["preferences"]["email"]["folder"]))
+	      ."&to=\\1\">\\1</a>", $ret);
+    }
     return($ret);
   }
 ?>
