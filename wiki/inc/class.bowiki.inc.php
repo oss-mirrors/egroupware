@@ -157,15 +157,23 @@
 
 		function rename_links($old_name,$name,$title,$text)
 		{
-			// construct the new link
-			$new_link = $name != $title ? '(('.$name.'|'.$title.'))' :
-				(strstr($name,' ') !== False ? '(('.$name.'))' : $name);
+			global $LinkPtn;
+			//echo "<p>rename_links('$old_name','$name','$title'), preg_match('/$LinkPtn/',\$name)=".(preg_match('/'.$LinkPtn.'/',$name)?'True':'False')."</p>";
 
-			return preg_replace(array(
-				'/\(\('.preg_quote($old_name).'\ ?\| ?[^)]+\)\)/i',
-				'/\(\('.preg_quote($old_name).'\)\)/i',
-				'/(?=\b)'.preg_quote($old_name).'(?=\b )/i',
-			),$new_link,$text);
+			$is_wiki_link = preg_match('/'.$LinkPtn.'/',$name);
+
+			// construct the new link
+			$new_link = $name != $title ? '(('.$name.'|'.$title.'))' : ($is_wiki_link ? $name : '(('.$name.'))');
+
+			$to_replace = array(
+				'/\(\('.preg_quote($old_name).'\ ?\| ?[^)]+\)\)/i',	// free link with given appearence
+				'/\(\('.preg_quote($old_name).'\)\)/i',				// free link
+			);
+			if (preg_match('/'.$LinkPtn.'/',$old_name))		// only replace the plain old_name, if it is a wiki link
+			{
+				$to_replace[] = '/(?=\b)'.preg_quote($old_name).'(?=\b )/i';	// wiki link
+			}
+			return preg_replace($to_replace,$new_link,$text);
 		}
 
 		function rename(&$values,$old_name,$old_lang)
