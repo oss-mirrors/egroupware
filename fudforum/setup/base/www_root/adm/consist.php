@@ -77,7 +77,7 @@ forum will be disabled.
 <?php echo _hs; ?>
 </form>
 <?php
-		readfile($WWW_ROOT_DISK . 'adm/admclose.php');
+		require($WWW_ROOT_DISK . 'adm/admclose.php');
 		exit;
 	}
 
@@ -97,7 +97,7 @@ forum will be disabled.
 			echo '<font size="+1" color="red">Your forum is currently disabled, to re-enable it go to the <a href="admglobal.php?'._rsid.'">Global Settings Manager</a> and re-enable it.</font><br>';
 		}
 
-		readfile($WWW_ROOT_DISK . 'adm/admclose.php');
+		require($WWW_ROOT_DISK . 'adm/admclose.php');
 		exit;
 	}
 ?>

@@ -38,7 +38,7 @@ and the amount of messages your forum has.
 <?php echo _hs; ?>
 </form>
 <?php
-		readfile($WWW_ROOT_DISK . 'adm/admclose.php');
+		require($WWW_ROOT_DISK . 'adm/admclose.php');
 		exit;
 	}
 ?>
@@ -211,5 +211,5 @@ function eta_calc($start, $pos, $pc)
 	}
 
 	echo '<script language="Javascript1.2">clearInterval(intervalID);</script>';
-	readfile($WWW_ROOT_DISK . 'adm/admclose.php');
+	require($WWW_ROOT_DISK . 'adm/admclose.php');
 ?>

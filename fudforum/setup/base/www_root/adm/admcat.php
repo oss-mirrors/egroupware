@@ -176,4 +176,4 @@
 	}
 ?>
 </table>
-<?php readfile($WWW_ROOT_DISK . 'adm/admclose.php'); ?>
+<?php require($WWW_ROOT_DISK . 'adm/admclose.php'); ?>
