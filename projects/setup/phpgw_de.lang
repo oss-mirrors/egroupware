@@ -88,7 +88,7 @@ delivery	projects	de	Lieferung
 delivery date	projects	de	Lieferungs Datum
 delivery id	projects	de	Lieferungs Nr.
 delivery list	projects	de	Liste der Lieferungen
-delivery note	projects	de	Lieferschein 
+delivery note	projects	de	Lieferschein
 delivery note for project	projects	de	Lieferschein zum Projekt
 description can not exceed 250 characters in length	projects	de	Beschreibung darf 250 Zeichen nicht &uuml;berschreiten.
 description can not exceed 8000 characters in length	projects	de	Beschreibung darf 8000 Zeichen nicht &uuml;berschreiten.
@@ -292,13 +292,13 @@ time of journey	projects	de	Reisezeit
 time planned	projects	de	geplante Zeit
 time tracker	projects	de	Zeiterfassung
 time tracking actions	projects	de	
-time tracking for this project has been stopped already	projects	de	
+time tracking for this project has been stopped already	projects	de	Die Zeiterfassung für dieses Projekt wurde deaktiviert
 time tracking for this project is already active	projects	de	Die Zeiterfassung für dieses Projekt ist aktiviert
 time used	projects	de	verbrauchte Zeit
 time used billable	projects	de	Gesamtzeit buchbar
 time used total	projects	de	Gesamtzeit
 title can not exceed 250 characters in length	projects	de	Titel darf 250 Zeichen nicht &uuml;berschreiten.
-update delivery	projects	de	
+update delivery	projects	de	Lieferschein updaten
 use activities	admin	de	T&auml;tigkeiten benutzen
 used	projects	de	verbraucht
 used - jobs included	projects	de	verbraucht - inklusive Teilprojekte
