@@ -1,66 +1,66 @@
-%1 bookmarks have been deleted	bookmarks	en	%1 书签已被删除。
-%1 bookmarks imported from %2 successfully.	bookmarks	en	%1 书签成功从 %2 导入。
-(comma separate multiple addresses)	bookmarks	en	(逗号分隔多个地址)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	en	<b>Note:</b> 目前仅工作于netscape书签
-all bookmarks	bookmarks	en	所有书签
-and	bookmarks	en	及
-append this message to mailed bookmarks	bookmarks	en	添加本消息到已邮件书签
-ascending	bookmarks	en	正上升
-book marks	common	en	书签
-bookmark changed sucessfully	bookmarks	en	书签成功修改
-bookmark created successfully.	bookmarks	en	书签成功生成
-bookmark not editable	bookmarks	en	书签不可编辑
-bookmark not readable	bookmarks	en	书签不可读
-bookmarks	common	en	书签
-bookmarks settings	bookmarks	en	书签设置
-change bookmark	bookmarks	en	修改书签
-close this window to return	bookmarks	en	关闭窗口并返回
-create bookmark	bookmarks	en	生成书签
-create new bookmark	bookmarks	en	生成新书签
-date added	bookmarks	en	已添加的数据
-date changed	bookmarks	en	已修改的数据
-date last updated	bookmarks	en	最近更新的数据
-date last visited	bookmarks	en	最近访问的数据
-descending	bookmarks	en	正减小
-edit bookmark	bookmarks	en	编辑书签
-edit this bookmark	bookmarks	en	编辑本书签
-enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	en	请在下面输入你想要导入到书签的Netscape书签文件名
-fewer	bookmarks	en	少些
-filter by	bookmarks	en	过滤
-found a link you might like	bookmarks	en	找一个你喜欢的链接
-from	bookmarks	en	从
-from category %1	bookmarks	en	从域 %1
-highest	bookmarks	en	最高的
-i thought you would be interested in the following link(s):	bookmarks	en	你会对以下链接感兴趣
-import bookmarks	preferences	en	导入书签
-like	bookmarks	en	像
-list	bookmarks	en	列表
-lowest	bookmarks	en	最低的
-mail this bookmark	bookmarks	en	邮寄此书签
-mail-this-link message sent to %1.	bookmarks	en	此链接信息发送到 %1.
-mass update:	bookmarks	en	大规模更新:
-message from	bookmarks	en	消息来源
-more	bookmarks	en	更多
-name	bookmarks	en	名称
-name is required	bookmarks	en	缺少名称
-netscape bookmark file	bookmarks	en	Netscape书签文件
-netscape bookmark filename is required!	bookmarks	en	缺少Netscape书签文件名！
-new	bookmarks	en	新的
-please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	en	请填写邮件地址名，主题，和内容!
-query condition	bookmarks	en	查询条件
-rating	bookmarks	en	级别
-search for:	bookmarks	en	搜索:
-send bookmark	bookmarks	en	发送书签
-sub category	bookmarks	en	子域
-to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	en	地址 %1 非法！ 地址格式必须为 <strong>用户名@域名</strong> 且域名毕填！
-to e-mail addresses	bookmarks	en	邮件地址
-to which category should the imported folder hierarchy be attached	bookmarks	en	导入的文件夹应放入哪个域
-total visits	bookmarks	en	总访问
-tree view	bookmarks	en	浏览树
-unable to open temp file %1 for import.	bookmarks	en	不能打开用作导入数据的临时文件 %1 
-url is required.	bookmarks	en	需要地址
-view bookmark	bookmarks	en	浏览书签
-view this bookmark	bookmarks	en	浏览本书签
-warning	bookmarks	en	警告
-you are viewing this site outside of phpgroupware	bookmarks	en	你正浏览 phpGroupWare 以外的网址
-you must select a category	bookmarks	en	你必须选择一个域
+%1 bookmarks have been deleted	bookmarks	zh	%1 书签已删除。
+%1 bookmarks imported from %2 successfully.	bookmarks	zh	%1 书签成功从 %2 导入。
+(comma separate multiple addresses)	bookmarks	zh	(以逗号分隔多个地址)
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	zh	<b>Note:</b> 目前只能使用Netscape书签
+all bookmarks	bookmarks	zh	所有书签
+and	bookmarks	zh	及
+append this message to mailed bookmarks	bookmarks	zh	在已邮寄书签中附加该信息
+ascending	bookmarks	zh	升序
+book marks	common	zh	书签
+bookmark changed sucessfully	bookmarks	zh	书签更改成功
+bookmark created successfully.	bookmarks	zh	书签创建成功
+bookmark not editable	bookmarks	zh	书签不可编辑
+bookmark not readable	bookmarks	zh	书签不可读
+bookmarks	common	zh	书签
+bookmarks settings	bookmarks	zh	书签配置
+change bookmark	bookmarks	zh	更改书签
+close this window to return	bookmarks	zh	关闭窗口并返回
+create bookmark	bookmarks	zh	创建书签
+create new bookmark	bookmarks	zh	创建新书签
+date added	bookmarks	zh	日期已添加
+date changed	bookmarks	zh	日期已更改
+date last updated	bookmarks	zh	最近更新日期
+date last visited	bookmarks	zh	最近访问日期
+descending	bookmarks	zh	降序
+edit bookmark	bookmarks	zh	编辑书签
+edit this bookmark	bookmarks	zh	编辑该书签
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	zh	请指定要导入到收藏夹的Netscape书签文件名
+fewer	bookmarks	zh	少些
+filter by	bookmarks	zh	筛选条件：
+found a link you might like	bookmarks	zh	找到一个您可能喜欢的链接
+from	bookmarks	zh	从
+from category %1	bookmarks	zh	从类别%1
+highest	bookmarks	zh	最高
+i thought you would be interested in the following link(s):	bookmarks	zh	您也许会对以下链接感兴趣
+import bookmarks	preferences	zh	导入书签
+like	bookmarks	zh	像
+list	bookmarks	zh	列表
+lowest	bookmarks	zh	最低
+mail this bookmark	bookmarks	zh	邮寄该书签
+mail-this-link message sent to %1.	bookmarks	zh	该链接信息已发送到%1.
+mass update:	bookmarks	zh	大规模更新:
+message from	bookmarks	zh	消息来自：
+more	bookmarks	zh	更多
+name	bookmarks	zh	名称
+name is required	bookmarks	zh	缺少名称
+netscape bookmark file	bookmarks	zh	Netscape书签文件
+netscape bookmark filename is required!	bookmarks	zh	缺少Netscape书签文件名!
+new	bookmarks	zh	新建
+please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	zh	请填写<b>EMail地址</b>、<b><主题</b>和<b>消息内容</b>!
+query condition	bookmarks	zh	查询条件
+rating	bookmarks	zh	级别
+search for:	bookmarks	zh	查找:
+send bookmark	bookmarks	zh	发送书签
+sub category	bookmarks	zh	子类别
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	zh	地址%1无效。正确格式是 <strong>用户名@域名</strong> ，域名必须存在!
+to e-mail addresses	bookmarks	zh	发送到：
+to which category should the imported folder hierarchy be attached	bookmarks	zh	导入的文件夹属于类别：
+total visits	bookmarks	zh	访问总数
+tree view	bookmarks	zh	树型目录视图
+unable to open temp file %1 for import.	bookmarks	zh	无法打开用于导入的临时文件%1 
+url is required.	bookmarks	zh	缺少地址
+view bookmark	bookmarks	zh	浏览书签
+view this bookmark	bookmarks	zh	浏览该书签
+warning	bookmarks	zh	警告
+you are viewing this site outside of phpgroupware	bookmarks	zh	您正在浏览phpGroupWare以外的网站
+you must select a category	bookmarks	zh	必须选择一个类别

@@ -1,58 +1,360 @@
-1 message has been deleted	email	zh	成功移除 1 封电子邮件
+%1 messages have been deleted	email	zh	已删除%1封邮件
+1 message has been deleted	email	zh	已删除1封邮件
+1 message has been moved to	email	zh	已将1封邮件移至
+<b>*apply*</b> this filter	email	zh	应用该过滤器
+<b>apply all</b> filters	email	zh	应用所有过滤器
+a scrips tag block of code, javascript or otherwise, is in an inline html message. not necessarily bad, but user may want to know. this is script ... code ... script blocks, not the "onmouseover"  stuff.	email	zh	a scrips tag block of code, javascript or otherwise, is in an inline html message. Not necessarily bad, but user may want to know. This is SCRIPT ... code ... SCRIPT blocks, not the "OnMouseOver"  stuff.
+account	email	zh	帐户
+account name	email	zh	帐户名
+account user name	email	zh	帐户用户名
+accounts	email	zh	帐户
+accounts:	email	zh	帐户:
+add to address book	email	zh	加入通讯录
 add to addressbook	email	zh	加入通讯录
-cc	email	zh	附件
-compose	email	zh	写信
-custom email settings	email	zh	自订电子邮件设定
-default sorting order	email	zh	预设排序方式
-email account name	email	zh	电子邮件帐号名称
-email address	email	zh	电子邮件地址
-email password	email	zh	电子邮件信箱密码
-e-mail preferences	common	zh	电子邮件喜好设定
-email signature	email	zh	电子邮件签名
-email type	common	zh	电子邮件类型
-enter your default mail domain ( From: user@domain )	admin	zh	输入您预设的电子邮件网域（From: user@domain）
-enter your pop	admin	zh	输入您的 POP
-enter your smtp server hostname or ip address	admin	zh	输入您的 SMTP 主机名称或网路位址
-enter your smtp server port	admin	zh	输入您的 SMTP 主机连接埠
-folder	email	zh	资料夹
-forward	email	zh	转寄
+address book	email	zh	通讯录
+after	email	zh	之后
+all messages	email	zh	所有邮件
+and	email	zh	及
+and stop filtering	email	zh	并停止过滤
+answered	email	zh	已回复
+apply	email	zh	应用
+apply filters report:	email	zh	过滤器应用报告:
+apr	email	zh	四月
+aqua fusion	email	zh	Aqua Fusion
+arrival date	email	zh	到达日期
+as	email	zh	作为
+attach file	email	zh	附件
+attach signature	email	zh	附上签名
+attachment	email	zh	附件
+aug	email	zh	八月
+bcc	email	zh	暗送
+bcc address	email	zh	暗送地址
+before	email	zh	之前
+big	email	zh	大
+bigger	email	zh	更大
+biggest	email	zh	最大
+body	email	zh	正文
+both	email	zh	都
+button type	email	zh	按钮类型
+cache server data whenever possible	email	zh	可能的话，缓存服务器数据
+cc	email	zh	抄送
+cc address	email	zh	抄送地址
+change font size in your e-mail pages	email	zh	改变E-Mail页面的字体大小
+check flags for type of mails	email	zh	检查邮件类型标记
+choose for rename	email	zh	Choose for rename
+choose to rename	email	zh	choose for rename
+click here for more info in a new window	email	zh	点击此处，在新窗口中显示更多提示
+click here to continue	email	zh	点击此处继续
+click here to edit the settings for this email account.	email	zh	请点击此处编辑该邮件帐户配置。
+click here to return to your home page.	email	zh	点击此处返回主页面。
+company	email	zh	公司
+compose	email	zh	撰写
+compose message	email	zh	撰写邮件
+compose new	common	zh	撰写新邮件
+contains	email	zh	包含
+could not open this mailbox	email	zh	无法打开该邮箱
+create (expert)	email	zh	创建(专家模式)
+create a folder	email	zh	创建邮件夹
+current attachments (%1)	email	zh	当前附件(%1个)
+custom e-mail preferences	email	zh	自定义E-Mail个性化配置
+custom e-mail settings	email	zh	自定义E-Mail配置
+debugging page	email	zh	调试页面
+dec	email	zh	十二月
+default sorting order	email	zh	默认排列次序
+default:	common	zh	默认:
+delete (expert)	email	zh	删除(专家模式)
+delete a folder	email	zh	删除邮件夹
+delete account	common	zh	删除帐户
+deleted	email	zh	已删除
+deleted messages (trash) folder	email	zh	已删邮件(回收站)
+deleted messages folder name	email	zh	回收站名称
+deleted messages go to trash	email	zh	已删邮件放入回收站
+deleted messages saved to folder:	email	zh	已删邮件放入邮件夹:
+discard	email	zh	丢弃
+does not contain	email	zh	不包含
+draft	email	zh	草稿
+e-mail extra account	email	zh	特殊E-Mail帐户
+e-mail extra accounts	email	zh	特殊E-Mail帐户
+e-mail extra accounts list	email	zh	特殊E-Mail帐户列表
+e-mail filters	common	zh	E-Mail过滤器
+e-mail folders	common	zh	E-Mail邮件夹
+e-mail inbox filters list	email	zh	E-Mail收件箱过滤器列表
+e-mail preferences	common	zh	E-Mail个性化配置
+each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account on the users summary home page.	email	zh	Each user has a summary page which can display a variety of information. This option will show a small list of email messages in the INBOX of the users default email account on the users summary home page.
+edit filters	email	zh	编辑过滤器
+email account name	email	zh	Email帐户名
+email address	email	zh	E-Mail地址
+email date	email	zh	Email日期
+email filters	email	zh	Email过滤器
+email password	email	zh	E-Mail密码
+email preferences	email	zh	Email个性化配置
+email signature	email	zh	E-Mail签名
+email type	common	zh	E-Mail类型
+enable this email account	common	zh	启用该EMail帐户
+enable utf-7 encoded folder names	email	zh	邮件夹名称使用UTF-7编码
+enter the search string in the text boxes	email	zh	在文本框中输入查找字符串
+enter your default mail domain ( from: user@domain )	admin	zh	输入默认邮件域名(来自: 用户名@域名 )
+enter your pop	admin	zh	输入POP服务器
+enter your smtp server hostname or ip address	admin	zh	输入SMTP服务器的主机名或IP地址
+enter your smtp server port	admin	zh	输入SMTP服务器的端口号
+error moving messages to	email	zh	移邮件至该邮件夹时出错:
+error text not provided	email	zh	该错误无详细信息
+error: unknown message data	email	zh	错误: 未知的邮件数据
+evolution style	email	zh	演化风格
+extra accounts	email	zh	特殊帐户
+extra e-mail account	common	zh	特殊E-Mail帐户
+extra e-mail accounts	common	zh	特殊E-Mail帐户
+feb	email	zh	二月
+fewer actions	email	zh	较少操作
+fewer choices	email	zh	较少选项
+file	email	zh	文件
+file attachment	email	zh	附件
+file into	email	zh	File Into
+fill in as much as you can	email	zh	尽可能填写
+filter [number] and name	email	zh	过滤器编号和名称
+filter inbox for accounts	email	zh	过滤收件箱
+filter name	email	zh	过滤器名
+filter name:	email	zh	过滤器名:
+filter number	email	zh	Filter Number
+filters	email	zh	过滤器
+filters list	email	zh	过滤器列表
+flag as important	email	zh	已标记为重要
+flagged	email	zh	已标记
+folder	email	zh	邮件夹
+folder maintenance	email	zh	邮件夹管理
+folder name	email	zh	邮件夹名
+folder size	email	zh	邮件夹大小
+folders	email	zh	邮件夹
+for the file to actually upload	email	zh	for the file to actually upload
+for these items, fill only what is different from you default e-mail preferences	common	zh	For these items, fill only what is different from you default E-Mail preferences
+forward	email	zh	转发
 from	email	zh	来自
-if applicable	email	zh	如果可行
-image	email	zh	影像
-imap mail server hostname or ip address	admin	zh	IMAP 主机名称或网路位址
-imap server type	email	zh	IMAP 主机类型
-mail folder(uw-maildir)	email	zh	邮件资料夹型态（uw-maildir）
-mail server	email	zh	电子邮件主机
-mail server login type	admin	zh	电子邮件主机登入类型
-mail server type	email	zh	电子邮件主机类型
-mail settings	admin	zh	信件设定
-messages	email	zh	信件
-move selected messages into	email	zh	移动选择的信件到
-new message	email	zh	新信件
+from address	email	zh	来自地址
+get size	email	zh	获取邮件大小
+go	email	zh	go
+go back	email	zh	返回
+go back to	email	zh	返回至
+header field	email	zh	头部字段
+hidden	email	zh	隐藏
+hide help	email	zh	不显示帮助
+html messages with the iframe  tag may be klez or other worm emails.	email	zh	该超文本(HTML)邮件含有IFRAME标记，可能时KLEZ或其他蠕虫病毒邮件.
+icon size	email	zh	图标大小
+icon theme	email	zh	图标主题
+if &quot; deleted messages go to trash &quot; is checked, deleted message will be sent to the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;trash&quot;. this will be your &quot;trash&quot; folder, but it does not have to actually be called &quot;trash&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	zh	If &quot; Deleted messages go to Trash &quot; is checked, Deleted message will be sent to the folder name you type in this box. If this folder does not exist, it will be created for you automatically. Default name is &quot;Trash&quot;. This will be your &quot;Trash&quot; folder, but it does not have to actually be called &quot;Trash&quot;, you can name it anything. Only works with IMAP servers, POP servers do not have folders.
+if &quot; sent messages folder &quot; is checked, a copy of your sent mail will be stored in the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;sent&quot;. this will be your &quot;sent&quot; folder, but it does not have to actually be called &quot;sent&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	zh	If &quot; Sent messages folder &quot; is checked, a copy of your sent mail will be stored in the folder name you type in this box. If this folder does not exist, it will be created for you automatically. Default name is &quot;Sent&quot;. This will be your &quot;Sent&quot; folder, but it does not have to actually be called &quot;Sent&quot;, you can name it anything. Only works with IMAP servers, POP servers do not have folders.
+if applicable	email	zh	If Applicable
+if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder &quot;. only works with imap servers, pop servers do not have folders.	email	zh	If checked, a copy of your sent mail will be stored in the &quot;Sent&quot; folder name which you specify in the box for &quot;Sent messages folder &quot;. Only works with IMAP servers, POP servers do not have folders.
+if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder&quot;. only works with imap servers, pop servers do not have folders.	email	zh	If checked, a copy of your sent mail will be stored in the &quot;Sent&quot; folder name which you specify in the box for &quot;Sent messages folder&quot;. Only works with IMAP servers, POP servers do not have folders.
+if checked, deleted message will be sent to the &quot;trash&quot; folder name which you specify in the box for &quot; deleted messages (trash) folder &quot;. only works with imap servers, pop servers do not have folders.	email	zh	If checked, Deleted message will be sent to the &quot;Trash&quot; folder name which you specify in the box for &quot; Deleted messages (Trash) folder &quot;. Only works with IMAP servers, POP servers do not have folders.
+if fileto then select destination folder	email	zh	if fileto then select destination folder
+if messages match	email	zh	If messages match
+if there is no obvious error, check your username and password first.	email	zh	if there is no obvious error, check your username and password first.
+if using an imap server, what kind is it, most often this option can safely be set to &quot;cyrus or courier&quot;. technically, this means the server uses a dot between the different parts of the folder names, such as &quot;inbox.sent&quot;. the other major kind of imap server is the university of washington &quot;uwash&quot; imap server. it uses slashes instead of the dots the other servers use, and although it has a folder called &quot;inbox&quot;, it is not considered the &quot;namespace&quot; for the other folder names. the &quot;uw-maildir&quot; is a rare combination of the two above types. this is the least used kind of imap server. if you are unsure, ask your it administrator. only applies to imap servers.	email	zh	If using an IMAP server, what kind is it, most often this option can safely be set to &quot;Cyrus or Courier&quot;. Technically, this means the server uses a dot between the different parts of the folder names, such as &quot;INBOX.Sent&quot;. The other major kind of IMAP server is the University of Washington &quot;UWash&quot; IMAP server. It uses slashes instead of the dots the other servers use, and although it has a folder called &quot;INBOX&quot;, it is not considered the &quot;Namespace&quot; for the other folder names. The &quot;UW-Maildir&quot; is a rare combination of the two above types. This is the least used kind of IMAP server. If you are unsure, ask your IT administrator. Only applies to IMAP servers.
+image	email	zh	图片
+imap mail server hostname or ip address	admin	zh	IMAP服务器主机名或IP地址
+imap server type	common	zh	IMAP服务器类型
+important	email	zh	重要邮件
+in the email index page, the page which lists all the mails in a folder, mail may be sorted by date, author, size, or subject, however all of these need to be ordered from first to last, this options controlls what is first and last. for example, if sorting by date, the newest to oldest displays the most recent emails first, in decending order down to the oldest emails last.	email	zh	查看邮件夹时，邮件可按照日期、发件人、大小或者主题排序。该选项用于控制排序方式，例如，按日期降序排序时，最近的邮件在上而最早的邮件在下。
+inbox	email	zh	收件箱
+input error	email	zh	输入错误
+input error:	email	zh	输入错误:
+it is not rfc standard to base64 encode a part of a message that is not an attachment. note this check is currently done after the message is already being viewed, it should probably stop the message from being automatically displayed, i.e. give a "show this" button instead.	email	zh	使用base64方式为邮件正文部分编码并非RFC标准。注意：通常在查看邮件后执行这项检查，邮件可能无法自动显示，需要点击“显示”按钮以继续。
+jan	email	zh	一月
+jul	email	zh	七月
+jun	email	zh	六月
+keep	email	zh	保持
+keyword	email	zh	关键字
+keywords	email	zh	关键字
+layout 1	common	zh	布局方式1
+layout 2	common	zh	布局方式2
+lines	email	zh	行
+list messages	email	zh	列出邮件
+long names	email	zh	全名
+mail folder(uw-maildir)	email	zh	邮件夹(uw-maildir)
+mail server	email	zh	邮件服务器
+mail server login type	admin	zh	邮件服务器登录类型
+mail server type	email	zh	邮件服务器类型
+mail settings	admin	zh	邮件配置
+mail you send will use this address as the &quot;from&quot; address. this may be the same as your phpgroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	zh	您发送的邮件将使用该地址作为「发送地址」。发送地址也可以是您在phpGroupWare的登录名，或者由服务器管理员指定，以供当收件人回复邮件时使用。此处留空则使用默认发送地址。
+manage accounts	email	zh	管理帐户
+manage folders	email	zh	管理邮件夹
+mar	email	zh	三月
+message has an attachment that is some kind of script or exe file that windows users should be warned not to click on it. these are filenames like attachments the end with the usual "bad stuff", such as bat, inf, pif, com, exe, reg, vbs, and scr	email	zh	警告：该邮件所带附件是可执行脚本或文件，请不要轻易打开。凡带有以下后缀名的附件，都应谨慎处理：bat、inf、pif、com、exe、reg、vbs和scr。
+message list layout	common	zh	邮件列表布局方式
+messages	email	zh	邮件
+messages found in folder	email	zh	邮件在这些邮件夹中找到：
+messages have been moved to	email	zh	邮件已移至
+more actions	email	zh	更多操作
+more choices	email	zh	更多选项
+most us and european users do not need to enable this. if this option is checked then your email server can handle folder names with non us-ascii charactors in them/ default is disabled, not checked. only use if you are really sure you need it. only works with imap servers, pop servers do not have folders.	email	zh	大多数美国和欧洲用户无需启用该选项。启用该选项，可使EMail服务器处理包含非US-ASCII字符的邮件夹名称。/ 该选项默认禁用，在有确切把握之前请勿启用。该选项仅对IMAP服务器有效, POP服务器无邮件夹。
+move down	email	zh	下移
+move selected messages into	email	zh	将选定的邮件移至
+move this message into	email	zh	将该邮件移至
+move up	email	zh	上移
+mozilla modern style	email	zh	Mozilla现代型风格
+name of the mail server you want to access. should be a name like &quot;mail.example.com&quot;. if you leave this box blank then the default value will be used.	email	zh	请输入您要访问的邮件服务器名称，例如：mail.example.com。此处留空则使用默认名称。
+new	email	zh	新
+new account	email	zh	新建帐户
+new filter	email	zh	新建过滤器
+new message	email	zh	新建邮件
+new messages	email	zh	新建邮件
+newest	common	zh	最新
+next message	email	zh	下一封邮件
+no change	email	zh	无任何更改
+no error returned from server	email	zh	No error returned from server
+no message found in folder '%1'	email	zh	'%1'邮件夹是空的
+no next message	email	zh	已是最后一封邮件
+no previous message	email	zh	已是第一封邮件
+noia &#64; carlitus style	email	zh	Noia &#64; Carlitus Style
 non-standard	email	zh	非标准
-please select a message first	email	zh	请先选择一封信件
-previous	email	zh	前一个
-reply all	email	zh	全部回覆
-reply	email	zh	回覆
-replyto	email	zh	回覆给
-section	email	zh	段落
-select your mail server type	admin	zh	选择您的邮件伺服器类型
-send deleted messages to the trash	email	zh	将删除的信件一到回收桶
-send	email	zh	送出
-show new messages on main screen	email	zh	在主画面显示新到达的信件
-show sender's email address with name	email	zh	显示记见者的电子邮件地址及姓名
+not used	email	zh	不在用
+notify on delivery	email	zh	发送时通告
+nov	email	zh	十一月
+number	common	zh	编号
+number of matches:	email	zh	符合条件的邮件数:
+oct	email	zh	十月
+old	email	zh	旧
+oldest	common	zh	最旧
+on	email	zh	在
+only needed with the university of washington &quot;uwash&quot; imap server. the default value is &quot;mail&quot; which means your mail folders, other then inbox, are located in a directory called &quot;mail&quot; directly under your &quot;home&quot; directory. this box may be left empty, which means your mail folders are located in your &quot;home&quot; directory, not a subdirectory. if your mail folders are located in a subdirectory of &quot;home&quot; then put the name of that subdirectory here. generally, it is not necessary to use any special slashes or tildes, &quot;home&quot; is always considered the base directory, and the slash bewteen &quot;home&quot; and the subdirectory will be added for you automatically, do not put the slash in this box.	email	zh	Only needed with the University of Washington &quot;UWash&quot; IMAP server. The default value is &quot;mail&quot; which means your mail folders, other then INBOX, are located in a directory called &quot;mail&quot; directly under your &quot;HOME&quot; directory. This box may be left empty, which means your mail folders are located in your &quot;HOME&quot; directory, not a subdirectory. If your mail folders are located in a subdirectory of &quot;HOME&quot; then put the name of that subdirectory here. Generally, it is not necessary to use any special slashes or tildes, &quot;HOME&quot; is always considered the base directory, and the slash bewteen &quot;HOME&quot; and the subdirectory will be added for you automatically, do not put the slash in this box.
+or	common	zh	或者
+or enter text	email	zh	或者输入文字
+organization	email	zh	组织
+persistent email server session	email	zh	保持EMail服务器会话
+phone	email	zh	电话
+please fill in everything you need	email	zh	请填写所有需要的信息
+please select a folder to rename	email	zh	请选择待重命名的邮件夹
+please select a message first	email	zh	请先选择一封邮件
+please submit a filename to attach	email	zh	提交附件文件名
+please type a folder name in the text box	email	zh	请在文本框中输入邮件夹名称
+previous	email	zh	上一封
+previous message	email	zh	上一封邮件
+printable	email	zh	显示可打印版本
+raw message	email	zh	raw message
+read mail	email	zh	Read Mail
+received headers	email	zh	Received Headers
+recent	email	zh	最近的邮件
+recipient	email	zh	Recipient
+redirect	email	zh	Redirect
+reject	email	zh	拒绝
+rename (expert)	email	zh	Rename (expert)
+rename a folder	email	zh	Rename a Folder
+reply	email	zh	回复
+reply all	email	zh	全部回复
+replyto	email	zh	回复至
+request delivery notification	email	zh	Request delivery notification
+requested filter action:	email	zh	requested filter action:
+required	email	zh	required
+reset	email	zh	复位
+result	email	zh	result
+return mails during this time period	email	zh	Return mails during this time period
+save deleted messages in folder named below	email	zh	在以下邮件夹中保存已删邮件
+save sent messages in folder named below	email	zh	在以下邮件夹中保存已发邮件
+search for mails in these folders	email	zh	在以下邮件夹中查找邮件
+search this folder	email	zh	在该邮件夹中查找
+section	email	zh	节
+seen	email	zh	已读
+select home email address	email	zh	指定家庭EMail地址
+select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message	email	zh	Select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message
+select work email address	email	zh	Select work email address
+select your mail server type	admin	zh	Select your mail server type
+select your screensize for propper showing of the javascript addressbook	email	zh	Select your screensize for propper showing of the Javascript addressbook
+select your style for the addressbook. the traditional, simple style. or the new javascript enabled complex addressbook	email	zh	Select your style for the addressbook. The traditional, simple style. Or the new javascript enabled complex addressbook
+send	email	zh	发送
+send deleted messages to the trash	email	zh	Send deleted messages to the trash
+send forwarded mail as quoted attachment	email	zh	作为引用附件转发
+sender	email	zh	发件人
+sent	email	zh	已发送
+sent folder	email	zh	发件箱
+sent messages folder	common	zh	已发邮件夹
+sent messages folder name	email	zh	已发邮件夹名称
+sent messages saved in &quot;sent&quot; folder	common	zh	在发件箱中保存已发邮件
+sent messages saved to folder:	email	zh	在该邮件夹中保存已发邮件:
+sep	email	zh	Sep
+settings	email	zh	配置
+short names	email	zh	简称
+show help	email	zh	显示帮助
+show long names	email	zh	显示全名
+show message	email	zh	显示邮件
+show new messages in combobox	email	zh	Show New Messages in ComboBox
+show new messages on main screen	email	zh	在主页面中显示新邮件
+show sender's email address with name	email	zh	Show sender's email address with name
+show short names	email	zh	显示简称
+show total folder size by default	email	zh	Show total folder size by default
 size	email	zh	大小
-switch current folder to	email	zh	切换目前的文件夹到
-there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	zh	无法正常连线到邮件伺服器主机，<br>请检查您的登入帐号、密码或和网路管理者联系。
-this folder is empty	email	zh	空的文件夹
-to	email	zh	收件者
+size larger than	email	zh	邮件大小大于
+size smaller than	email	zh	邮件大小小于
+small	email	zh	小
+smaller	email	zh	更小
+smallest	email	zh	最小
+somebody	email	zh	somebody
+sort by	email	zh	排序方式
+spell check	email	zh	拼写检查
+standard e-mail preferences	email	zh	标准E-Mail个性化配置
+stop if matched	email	zh	Stop if Matched
+switch accounts	email	zh	切换帐户
+switch current folder to	common	zh	切换当前邮件夹至
+test all filters	email	zh	测试所有过滤器
+test or apply all filters	email	zh	测试或应用所有过滤器
+test run this filter	email	zh	Test Run This Filter
+text	email	zh	文字
+the email application offers 2 different layouts for the index page, that is the page that lists the emails in a folder. this page may be the page the user looks at the most and so different layouts, or looks, are offered.	email	zh	The email application offers 2 different layouts for the index page, that is the page that lists the emails in a folder. This page may be the page the user looks at the most and so different layouts, or looks, are offered.
+the email application offers different button displays, these buttons can be text, images, or both.	email	zh	The email application offers different button displays, these buttons can be text, images, or both.
+the email application offers different icon image themes, groups of images of a similar style which are used in this email application. currently the available themes are images based on evolution by ximian and the netscape7, mozilla browser buttons. additional themes are anticipated and welcome.	email	zh	The email application offers different icon image themes, groups of images of a similar style which are used in this email application. Currently the available themes are images based on Evolution by Ximian and the Netscape7, Mozilla browser buttons. Additional themes are anticipated and welcome.
+the email application offers different icon image themes, these icons can be big or small.	email	zh	The email application offers different icon image themes, these icons can be big or small.
+the login name to use when checking mail for this email account. this may be the same as your phpgroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you clear this box, then it goes back to the default value. if you only need some custom settings but want this one to be the default value, then leave this box blank, the default value will be used, and you will see that default value in this box the next time you come to this preferences page.	email	zh	The login name to use when checking mail for this email account. This may be the same as your phpGroupWare login name, or the server administrator may have set it for you. If your have multiple email accounts set up, you will need to fill this in. If you have only one email account set up, then you can probably leave this alone. If you clear this box, then it goes back to the default value. If you only need some custom settings but want this one to be the default value, then leave this box blank, the default value will be used, and you will see that default value in this box the next time you come to this preferences page.
+the login name to use when checking mail for this email account. this may be the same as your phpgroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. extra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	zh	The login name to use when checking mail for this email account. This may be the same as your phpGroupWare login name, or the server administrator may have set it for you. If your have multiple email accounts set up, you will need to fill this in. If you have only one email account set up, then you can probably leave this alone. If you do set a custom password, this box will be blank the next time you come to this settings page. This is a security feature because your custom email password is not sent to your browser after you set it. To change your custom password, simply enter a new password in the box. Extra email accounts require you to set this. For your default email account, you can clear your custom password by unchecking the &quot;Use Custom Settings&quot; option.
+the password to use when checking mail for this email account. this may be the same as your phpgroupware password, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. extra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	zh	The password to use when checking mail for this email account. This may be the same as your phpGroupWare password, or the server administrator may have set it for you. If your have multiple email accounts set up, you will need to fill this in. If you have only one email account set up, then you can probably leave this alone. If you do set a custom password, this box will be blank the next time you come to this settings page. This is a security feature because your custom email password is not sent to your browser after you set it. To change your custom password, simply enter a new password in the box. Extra email accounts require you to set this. For your default email account, you can clear your custom password by unchecking the &quot;Use Custom Settings&quot; option.
+the type of mail server you want to access. imap mail servers have folders, such as the sent and trash folders. pop servers do not have folders. pop, pop-3, and pop3 are the same thing. you can have the server connection encrypted by using imaps or pops, only if the mailserver supports it and if your phpgroupware installation has a &quot;ssl&quot; capabable version of php.	email	zh	The type of mail server you want to access. IMAP mail servers have folders, such as the Sent and Trash folders. POP servers do not have folders. POP, POP-3, and POP3 are the same thing. You can have the server connection encrypted by using IMAPS or POPS, only if the mailserver supports it and if your phpGroupWare installation has a &quot;SSL&quot; capabable version of PHP.
+then do this	email	zh	Then do this
+then take this actions	email	zh	Then take this actions
+there is no text or other part of the email to display to the user, all part(s) are attachments.	email	zh	There is no text or other part of the email to display to the user, all part(s) are attachments.
+there was an error trying to connect to your imap server.<br>please contact your admin to check the servername, username or password.	email	zh	There was an error trying to connect to your IMAP server.<br>Please contact your admin to check the servername, username or password.
+there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	zh	There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.
+there was an error trying to connect to your pop3 server.<br>please contact your admin to check the servername, username or password.	email	zh	There was an error trying to connect to your POP3 server.<br>Please contact your admin to check the servername, username or password.
+this confusing and often misunderstood option is left over from this email apps origins as aeromail by mark cushman. when viewing a list of emails in a folder, the from column may show you a) the senders name only, if a name was provided, b) the senders from email address, in addition to the senders name, or c) the senders reply to address if it is different from the senders from address, in addition to the senders name if it was provided. typically users set this to none, which will show only the senders name. if no name was supplied by the sender, then the senders from email address will be shown, whether a seperate reply to address is provided has no effect on this, the from address is always used if the senders name is not provided.	email	zh	This confusing and often misunderstood option is left over from this email apps origins as Aeromail by Mark Cushman. When viewing a list of emails in a folder, the FROM column may show you a) the senders name only, if a name was provided, b) the senders From email address, in addition to the senders name, or c) the senders reply to address if it is different from the senders from address, in addition to the senders name if it was provided. Typically users set this to none, which will show only the senders name. If no name was supplied by the sender, then the senders FROM email address will be shown, whether a seperate reply to address is provided has no effect on this, the FROM address is always used if the senders name is not provided.
+this data not supplied.	email	zh	This data not supplied
+this folder is empty	email	zh	This folder is empty
+this is really a visual template conflict issue. the phpgw template already has it own css, and style sheets are cascading, subsequent css can be inherited by the page and totally b0rk the look of the template theme. or maybe not, only certain css tags are really capable of this such as the css body property, or the a (href) properties.	email	zh	This is really a visual template conflict issue. The phpGW template already has it own CSS, and style sheets are cascading, subsequent CSS can be inherited by the page and TOTALLY B0RK the look of the template theme. Or maybe not, only certain CSS tags are really capable of this such as the css BODY property, or the A (href) properties.
+this is the name that appears in the account combobox. if for leave this blank, your accounts will be given a standard name like account[1]: jane doe, where jane doe is the name you give below as your full name. if you want to give an account a special name you can fill this in. no matter what, this is for your use, your emails will still use your full name as your from name for email messages. note that your full name for your email account 0 is the name you gave in the phpgroupware setup.	email	zh	This is the name that appears in the account combobox. If for leave this blank, your accounts will be given a standard name like Account[1]: Jane Doe, where Jane Doe is the name you give below as Your full name. If you want to give an account a special name you can fill this in. No matter what, this is for your use, your emails will still use Your full name as your FROM name for email messages. Note that Your full name for your email account 0 is the name you gave in the phpgroupware setup.
+this is the name that appears in the users from address. the default mail account gets this value automatically from the phpgwapi. additional accounts are created with the phpgwapi supplied fullname you can specify a different fullname for each extra email account.	email	zh	This is the name that appears in the users FROM address. The default mail account gets this value automatically from the phpgwapi. Additional accounts are created with the phpgwapi supplied fullname you can specify a different fullname for each extra email account.
+this pref currently does nothing users may have more than one email account. in the future it is anticipated that automatic actions may be performed on these accounts, such as automatic new mail checks,auto filtering, etc... perhaps the user may want to disable an account so that these automatic actions do not occur for that account. this is one possible use. also, an admin may want to disable accounts from time to time.	email	zh	THIS PREF CURRENTLY DOES NOTHING Users may have more than one email account. In the future it is anticipated that automatic actions may be performed on these accounts, such as automatic new mail checks,auto filtering, etc... Perhaps the user may want to disable an account so that these automatic actions do not occur for that account. This is one possible use. Also, an admin may want to disable accounts from time to time.
+this specifies whether or not to show the number of new message in the folders combo box on the index screen.	email	zh	This specifies whether or not to show the number of new message in the folders combo box on the index screen.
+this specifies whether or not to show the total size of folders by default. if this is not checked, you will be presented with a button allowing you to display folder size..	email	zh	This specifies whether or not to show the total size of folders by default. If this is not checked, you will be presented with a button allowing you to display folder size..
+this text will be appended to the bottom of the users emails for this email account. currently, html tags are not supported. also, forwarded email will not get this email sig appended to it for reasons such as it clutters the email, the forwarded part probably has its own email sig from the original author, which is really the information that matters the most.	email	zh	This text will be appended to the bottom of the users emails for this email account. Currently, html tags are not supported. Also, forwarded email will NOT get this email sig appended to it for reasons such as it clutters the email, the forwarded part probably has its own email sig from the original author, which is really the information that matters the most.
+to	email	zh	发送至
+to address	email	zh	发送至
+total messages	email	zh	所有邮件
+trash	email	zh	回收站
+trash folder	email	zh	回收站
+u-wash mail folder	email	zh	U-Wash邮件夹
+unable to get source folder name	email	zh	无法获取源邮件夹名称
+unable to get target folder name	email	zh	无法获取目标邮件夹名称
+unanswered	email	zh	撤销回复
+undeleted	email	zh	撤销删除
 undisclosed recipients	email	zh	Undisclosed Recipients
 undisclosed sender	email	zh	Undisclosed Sender
-use custom settings	email	zh	使用自订的设定
-%1 messages have been deleted	email	zh	已删除 %1 封信件
-you have 1 new message!	common	zh	您有 1 封新信件！
-you have messages!	common	zh	您有信件！
-you have no new messages	common	zh	您没有新信件！
-you have %1 new messages!	common	zh	您有 %1 封新信件！
-your message has been sent	common	zh	您的信件以送出！
-
+unflagged	email	zh	撤销标记
+unknown action	email	zh	未知操作
+unknown error	email	zh	未知错误
+unknown translation	email	zh	未知翻译
+unseen	email	zh	未读
+use custom settings	email	zh	使用自定义配置
+view as html	email	zh	以超文本(HTML)方式查看
+view formatted	email	zh	格式化查看
+view headers	email	zh	查看邮件头部
+view unformatted	email	zh	无格式查看
+warn_b64_encoded_displayable	email	zh	warn_b64_encoded_displayable
+warn_style_sheet	email	zh	warn_style_sheet
+we have recently added this new addressbook so that users can choose to have a more complex addressbook that features a) easy, point and click searching, b) best suited for organizations with large central addressbooks with many categories. you can choose here which addressbook do you prefer.	email	zh	We have recently added this new addressbook so that users can choose to have a more complex addressbook that features a) Easy, point and click searching, b) Best suited for organizations with large central addressbooks with many categories. You can choose here which addressbook do you prefer.
+we have three sizes that tell us how to better render the addressbook for you: 800x600 (addressbook will popout in a 700 pixel wide box), 1024x768 (it will be a 800 box), 1200x1600 (will be a 900 box). the fonts for all html stuff will be, respectively set to xx-small, x-small and normal (no font setting).	email	zh	We have three sizes that tell us how to better render the addressbook for you: 800x600 (addressbook will popout in a 700 pixel wide box), 1024x768 (it will be a 800 box), 1200x1600 (will be a 900 box). The fonts for all html stuff will be, respectively set to xx-small, x-small and normal (no font setting).
+wrote	email	zh	wrote
+you have %1 new messages!	common	zh	您有%1封新邮件!
+you have 1 new message!	common	zh	您有1封新邮件!
+you have messages!	common	zh	您有新邮件!
+you have no new messages	common	zh	没有新邮件!
+you must click	email	zh	You must click
+you must click %1 for the file to actually upload	email	zh	You must click %1 for the file to actually upload
+your full name	common	zh	您的全名
+your message has been sent	common	zh	邮件已发送!
+your server administrator will set the default values for the following options. you may never need to change any of them. if you do need to use settings that are different from the defaults for the options below here, then check this box. default is disabled, not checked. if you fill in some of the options, but later decide to go back to the default values, unchecking this box will erase your custom values and put back the default values. all of the following options start out with the default value, so you may see some settings below even if you have never filled them in. this checkbox only shows up for the default email account. if you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.	email	zh	Your server administrator will set the default values for the following options. You may never need to change any of them. If you do need to use settings that are different from the defaults for the options below here, then check this box. Default is disabled, not checked. If you fill in some of the options, but later decide to go back to the default values, unchecking this box will erase your custom values and put back the default values. All of the following options start out with the default value, so you may see some settings below even if you have never filled them in. This checkbox only shows up for the default email account. If you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.

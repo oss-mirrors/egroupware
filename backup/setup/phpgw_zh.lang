@@ -1,65 +1,65 @@
-Absolute path of the backup directory	backup	en	备份目录路径
-Absolute path of the directory to store the backup script	backup	en	存储备份脚本的目录路径
-Archive type	backup	en	归档类型
-Backup	common	en	备份
-Backup administration	common	en	备份管理
-bzip2	admin	en	bzip2
-Configuration backup	backup	en	备份配置
-Configuration localhost	backup	en	本地主机配置
-Configuration remote host	backup	en	远端主机配置
-Create backups of your data ?	backup	en	创建你的数据备份?
-daily	backup	en	日志
-Data	backup	en	数据
-directory locations	admin	en	目录定位
-directory names	admin	en	目录名
-E-MAIL	backup	en	电子邮件
-homedirs	admin	en	主目录
-interval	backup	en	间隔
-ip or hostname	backup	en	IP或主机名
-LDAP	common	en	LDAP
-ldap database	admin	en	LDAP 数据库
-maildir	admin	en	邮件目录
-monthly	backup	en	每月
-mysql	admin	en	MySQL	
-nfs	backup	en	NFS
-No backup archives available !	backup	en	无备份归档可用！
-Number of stored backup versions	backup	en	存储的备份版本数字
-Operating system	backup	en	操作系统
-Password	backup	en	密码
-pgsql	admin	en	PostgreSQL
-php cgi	admin	en	php cgi
-Please enter the path of the needed applications in *Site configuration* !	backup	en	请在站点配置中输入所需应用程序的路径！
-Please enter the path to the backup dir and/or enable showing archives in phpGroupWare !	backup	en	请输入备份目录路径或显示归档！
-Please enter username and password for remote connection !	backup	en	请为远程连接输入用户名和密码
-Please select an application for transport to the remote host !	backup	en	请为传输到远端主机选择应用程序！
-Please set the path to a local dir to store the backup script !	backup	en	请为存储备份脚本设置本地目录路径！
-Please set the path to the LDAP database dir in *Site configuration* !	backup	en	请在站点配置中设置LDAP数据库目录路径！
-Please set the path to the MySQL database dir in *Site configuration* !	backup	en	请在站点配置中设置MySQL数据库目录路径！
-Please set the path to the PostgreSQL database dir in *Site configuration* !	backup	en	请在站点配置中设置PostgreSQL数据库目录路径！
-Please set the values in *Site configuration* !	backup	en	请在站点配置中设置值！
-please specify the ip of the remote host !	backup	en	请指定远端主机IP！
-Please specify the name of the Maildir in *Site configuration* !	backup	en	请在站点配置中指定电子邮件目录名！
-Please specify the path to the backup directory !	backup	en	请指定备份目录路径！
-Please specify the path to the user-homedirectories in *Site configuration* !	backup	en	请在站点配置中指定用户主目录！
-program locations	admin	en	程序定位
-Save backup locally ?	backup	en	保存本地备份？
-Save backup to a remote host ?	backup	en	在远端主机保存备份？
-Select archive type	backup	en	选择归档类型
-Select interval	backup	en	选择间隔
-Select transport application	backup	en	选择传输应用程序
-settings	admin	en	settings
-Show backup archives in phpGroupWare ?	backup	en	在phpGroupWare中显示备份归档？
-smbmount	backup	en	SMBMOUNT
-SQL	backup	en	SQL
-tar	admin	en	tar
-tar.bz2	backup	en	tar.bz2
-tar.gz	backup	en	tar.gz
-The backup application is not configured for showing the archives in phpGroupWare yet !	backup	en	备份程序还未配置用来显示归档！
-The directory to store the backup script must be outside of the webservers *DocumentRoot* !	backup	en	存储备份脚本的目录必须在服务器文档根目录之外！
-The ftp connection failed ! Please check your configuration !	backup	en	ftp连接失败！请检查您的配置！	
-Transport application	backup	en	传输应用程序
-User	backup	en	User
-Versions can only be a number !	backup	en	版本只能是数字！
-weekly	backup	en	weekly
-Your SQL database isnt supported by this application !	backup	en	本应用程序不支持您的SQL数据库！
-zip	common	en	zip
+Absolute path of the backup directory	backup	zh	备份目录的完整路径
+Absolute path of the directory to store the backup script	backup	zh	脚本备份目录的完整路径
+Archive type	backup	zh	档案类型
+Backup	common	zh	备份
+Backup administration	common	zh	备份管理
+bzip2	admin	zh	bzip2
+Configuration backup	backup	zh	备份配置
+Configuration localhost	backup	zh	本地主机配置
+Configuration remote host	backup	zh	远程主机配置
+Create backups of your data ?	backup	zh	要创建数据备份吗?
+daily	backup	zh	日志
+Data	backup	zh	数据
+directory locations	admin	zh	目录位置
+directory names	admin	zh	目录名
+E-MAIL	backup	zh	E-Mail
+homedirs	admin	zh	主目录
+interval	backup	zh	间隔
+ip or hostname	backup	zh	IP地址或主机名
+LDAP	common	zh	LDAP
+ldap database	admin	zh	LDAP数据库
+maildir	admin	zh	邮件目录
+monthly	backup	zh	每月
+mysql	admin	zh	MySQL	
+nfs	backup	zh	NFS
+No backup archives available !	backup	zh	无备份档案可用!
+Number of stored backup versions	backup	zh	存储的备份版本数字
+Operating system	backup	zh	操作系统
+Password	backup	zh	密码
+pgsql	admin	zh	PostgreSQL
+php cgi	admin	zh	PHP CGI
+Please enter the path of the needed applications in *Site configuration* !	backup	zh	请在「站点配置」中输入所需应用程序的路径!
+Please enter the path to the backup dir and/or enable showing archives in phpGroupWare !	backup	zh	请输入备份目录路径或显示档案!
+Please enter username and password for remote connection !	backup	zh	请输入远程连接的用户名和密码
+Please select an application for transport to the remote host !	backup	zh	请选择传输到远程主机应用程序!
+Please set the path to a local dir to store the backup script !	backup	zh	请指定备份脚本目录的本地路径!
+Please set the path to the LDAP database dir in *Site configuration* !	backup	zh	请在「站点配置」中指定LDAP数据库目录的路径!
+Please set the path to the MySQL database dir in *Site configuration* !	backup	zh	请在「站点配置」中指定MySQL数据库目录的路径!
+Please set the path to the PostgreSQL database dir in *Site configuration* !	backup	zh	请在「站点配置」中指定PostgreSQL数据库目录路径!
+Please set the values in *Site configuration* !	backup	zh	请在「站点配置」中指定这些值!
+please specify the ip of the remote host !	backup	zh	请指定远程主机IP地址!
+Please specify the name of the Maildir in *Site configuration* !	backup	zh	请在「站点配置」中指定邮件目录名!
+Please specify the path to the backup directory !	backup	zh	请指定备份目录的路径!
+Please specify the path to the user-homedirectories in *Site configuration* !	backup	zh	请在「站点配置」中指定用户主目录!
+program locations	admin	zh	程序位置
+Save backup locally ?	backup	zh	在本地保存备份？
+Save backup to a remote host ?	backup	zh	在远程主机上保存备份？
+Select archive type	backup	zh	选择档案类型
+Select interval	backup	zh	选择备份间隔
+Select transport application	backup	zh	选定待传输的应用程序
+settings	admin	zh	配置
+Show backup archives in phpGroupWare ?	backup	zh	在phpGroupWare中显示备份档案？
+smbmount	backup	zh	SMBMOUNT
+SQL	backup	zh	SQL
+tar	admin	zh	tar
+tar.bz2	backup	zh	tar.bz2
+tar.gz	backup	zh	tar.gz
+The backup application is not configured for showing the archives in phpGroupWare yet !	backup	zh	备份程序尚未配置，无法显示档案!
+The directory to store the backup script must be outside of the webservers *DocumentRoot* !	backup	zh	备份脚本的目录不能位于服务器的文档目录内!
+The ftp connection failed ! Please check your configuration !	backup	zh	ftp连接失败!请检查配置!
+Transport application	backup	zh	传输应用程序
+User	backup	zh	用户
+Versions can only be a number !	backup	zh	版本号只能是数字!
+weekly	backup	zh	每周
+Your SQL database isnt supported by this application !	backup	zh	该应用程序不支持您的SQL数据库!
+zip	common	zh	zip
