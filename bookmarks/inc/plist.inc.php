@@ -60,7 +60,7 @@
 
 	function print_list ($where_clause, $start, $returnto, &$content, &$error_msg)
 	{
-		global $phpgw, $phpgw_info;
+		global $phpgw, $phpgw_info, $bm_cat;
 
 		$list_tpl = $phpgw->template;
 
@@ -90,6 +90,11 @@
 		}
 
 		$query = sprintf('select * from phpgw_bookmarks where %s',$filtermethod);
+
+		if ($bm_cat)
+		{
+			$where_clause .= " bm_category='$bm_cat' ";
+		}
 
 		if ($where_clause)
 		{

@@ -26,7 +26,7 @@
 	$phpgw->treemenu->last_column_size = 500;
 
 	$phpgw->template->set_file(array(
-		'common' => 'common.tpl',
+		'common_' => 'common.tpl',
 		'body'   => 'list.body_tree.tpl'
 	));
 	app_header(&$phpgw->template);
@@ -106,13 +106,13 @@
 	$db2 = $phpgw->db;
 	while ($cat = each($categorys))
 	{
- 		$tree[] = '.' . $cat[1]['name'] . '|';
+ 		$tree[] = '.<a href="' . $phpgw->link('/bookmarks/list.php','bm_cat=' . $cat[1]['id']) . '">' . $cat[1]['name'] . '</a>' . '|';
 
 		// FIXME: This needs to use the categorys class!
 		$phpgw->db->query("select * from phpgw_categories where cat_parent='" . $cat[1]['id'] . "' and cat_appname='bookmarks' order by cat_name",__LINE__,__FILE__);
 		while ($phpgw->db->next_record())
 		{
-			$tree[] = '..' . $phpgw->db->f('cat_name') . '|';
+			$tree[] = '..' . '<a href="' . $phpgw->link('/bookmarks/list.php','bm_cat=' . $phpgw->db->f('bm_cat')) . '">' . $phpgw->db->f('cat_name') . '</a>' . '|';
 			$db2->query("select * from phpgw_bookmarks where bm_subcategory='" . $phpgw->db->f('cat_id') . "' order by bm_name, bm_url",__LINE__,__FILE__);
 			while ($db2->next_record())
 			{

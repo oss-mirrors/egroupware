@@ -33,7 +33,7 @@
 	$q = createobject('bookmarks.sqlquery');
 
 	$phpgw->template->set_file(array(
-		'common'  => 'common.tpl',
+		'common_'  => 'common.tpl',
 		'body'    => 'search.body.tpl',
 		'results' => 'search.results.tpl'
 	));

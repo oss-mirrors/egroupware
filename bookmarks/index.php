@@ -23,19 +23,24 @@
 	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
 	$location_info    = $phpgw->bookmarks->read_session_data();
 
+	if (is_array($location_info))
+	{
+		$extravars     = 'bm_cat=' . $location_info['bm_cat'];
+	}
+
 	if (is_array($location_info) && $location_info['returnto'])
 	{
-		Header('Location: ' . $phpgw->link('/bookmarks/' . $location_info['returnto']));	
+		$phpgw->redirect($phpgw->link('/bookmarks/' . $location_info['returnto'],$extravars));
 	}
 	else
 	{
 		if ($phpgw_info['user']['preferences']['bookmarks']['defaultview'] == 'tree')
 		{
-			Header('Location: ' . $phpgw->link('/bookmarks/tree.php'));
+			$phpgw->redirect($phpgw->link('/bookmarks/tree.php',$extravars));
 		}
 		else
 		{
-			Header('Location: ' . $phpgw->link('/bookmarks/list.php'));
+			$phpgw->redirect($phpgw->link('/bookmarks/list.php',$extravars));
 		}
 	}
 ?>

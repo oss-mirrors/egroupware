@@ -24,7 +24,7 @@
 	$phpgw->bookmarks       = createobject('bookmarks.bookmarks');
 
 	$phpgw->template->set_file(array(
-		'common' => 'common.tpl',
+		'common_' => 'common.tpl',
 		'body'   => 'list.body.tpl'
 	));
 
@@ -35,19 +35,31 @@
 	{
 		$location_info = array(
 			'start'    => 0,
+			'bm_cat'   => $bm_cat,
 			'returnto' => 'list.php'
 		);
 		$phpgw->bookmarks->save_session_data($location_info);
 	}
 
-	if (!isset($start))
+	if (! $start)
 	{
 		$start = $location_info['start'];
+		if ($bm_cat)
+		{
+			$location_info = array(
+				'start'    => $start,
+				'bm_cat'   => $bm_cat,
+				'returnto' => 'list.php'
+			);
+			$phpgw->bookmarks->save_session_data($location_info);		
+		}
+
 	}
 	else
 	{
 		$location_info = array(
 			'start'    => $start,
+			'bm_cat'   => $bm_cat,
 			'returnto' => 'list.php'
 		);
 		$phpgw->bookmarks->save_session_data($location_info);

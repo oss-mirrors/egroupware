@@ -35,7 +35,7 @@
 	{
 		if ($location_info['bm_id'])
 		{
-			$extravars = 'bm_id=' . $location_info['bm_id'];
+			$extravars = 'bm_id=' . $location_info['bm_id'] . '&bm_cat=' . $location_info['bm_cat'];
 		}
 		$phpgw->redirect($phpgw->link('/bookmarks/' . $location_info['returnto'],$extravars));
 	}

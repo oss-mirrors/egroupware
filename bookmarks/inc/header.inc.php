@@ -18,7 +18,7 @@
 		global $phpgw, $phpgw_info, $PHP_SELF;
 
 		$tpl->set_block('common_','common');
-		$tpl->set_block('common_','preferences_header');
+		$tpl->set_block('common_','preference_header');
 
 		if ($phpgw_info['flags']['preferences_header'])
 		{

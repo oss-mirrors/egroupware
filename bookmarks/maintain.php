@@ -104,7 +104,7 @@
 	}
 
 	$phpgw->template->set_file(array(
-		'common' => 'common.tpl',
+		'common_' => 'common.tpl',
 		'body'   => 'form.tpl',
 		'info'   => 'form_info.tpl'
 	));

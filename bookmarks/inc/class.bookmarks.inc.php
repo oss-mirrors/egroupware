@@ -442,7 +442,7 @@
 
 	function get_totalbookmarks()
 	{
-		global $phpgw, $phpgw_info;
+		global $phpgw, $phpgw_info, $bm_cat;
 
 		$filtermethod = '( bm_owner=' . $phpgw_info['user']['account_id'];
 		if (is_array($phpgw->bookmarks->grants))
@@ -459,6 +459,11 @@
 		else
 		{
 			$filtermethod .= ' )';
+		}
+
+		if ($bm_cat)
+		{
+			$filtermethod .= " and bm_category='$bm_cat' ";
 		}
 
 		$phpgw->db->query("select count(*) from phpgw_bookmarks where $filtermethod",__LINE__,__FILE__);

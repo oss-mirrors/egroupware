@@ -24,7 +24,7 @@
 	$location_info = $phpgw->bookmarks->read_session_data();
 	if ($cancel_x || $cancel_y)
 	{
-		$phpgw->redirect($phpgw->link('/bookmarks/' . $location_info['returnto']));
+		$phpgw->redirect($phpgw->link('/bookmarks/' . $location_info['returnto'],'bm_cat=' . $location_info['bm_cat']));
 	}
 
 	if ($edit_x || $edit_y)
@@ -36,7 +36,7 @@
 	}
 
 	$phpgw->template->set_file(array(
-		'common'   => 'common.tpl',
+		'common_'   => 'common.tpl',
 		'body'     => 'form.tpl',
 		'info'     => 'form_info.tpl',
 		'standard' => 'common.standard.tpl'
@@ -44,7 +44,7 @@
 
 	if (! $phpgw->bookmarks->check_perms($bm_id,PHPGW_ACL_READ))
 	{
-		$phpgw->redirect($phpgw->link('/bookmarks/list.php'));
+		$phpgw->redirect($phpgw->link('/bookmarks/list.php','bm_cat=' . $location_info['bm_cat']));
 	}
 
 	$phpgw->common->phpgw_header();
