@@ -30,7 +30,7 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'close','tts','e
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'in progress','tts','en','In progress');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'closed','tts','en','Closed');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'reopen','tts','en','ReOpen');
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'reopen','tts','en','ReOpen');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Ticket assigned to x','tts','en','Ticket assigned to %1');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'trouble ticket system','tts','de','Trouble Ticket System');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'ticket','tts','de','Ticket');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'prio','tts','de','Prio');
