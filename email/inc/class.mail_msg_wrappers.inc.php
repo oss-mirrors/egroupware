@@ -689,6 +689,12 @@
 			}
 		}
 		
+		/**************************************************************************\
+		* END DCOM WRAPERS								*
+		* - - - - - - - - - - - - - - - - - - - - - - - - -					*
+		* BEGIN INPUT ARG/PARAM HANDLERS			*
+		\**************************************************************************/
+		
 		/*!
 		@function decode_fake_uri
 		@abstract decodes a URI type "query string" into an associative array
@@ -823,9 +829,9 @@
 		@author	Angles
 		@access	Public
 		*/
-		function grab_class_args_gpc($acctnum='')
+		function grab_class_args_gpc()
 		{
-			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: grab_class_args_gpc: ENTERING, (parm $acctnum=['.serialize($acctnum).'])<br>'; }
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: grab_class_args_gpc: ENTERING<br>'; }
 			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: $GLOBALS[HTTP_POST_VARS] dump:<pre>'; print_r($GLOBALS['HTTP_POST_VARS']); echo '</pre>'; }
 			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: $GLOBALS[HTTP_GET_VARS] dump:<pre>'; print_r($GLOBALS['HTTP_GET_VARS']); echo '</pre>'; }
 			
@@ -881,7 +887,7 @@
 			}
 			
 			$got_args = array();
-			
+			// insert *known* external args we find into $got_args[], then return that data
 			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: about to loop thru $this->known_external_args<br>'; }
 			$loops = count($this->known_external_args);
 			for($i=0;$i<$loops;$i++)
@@ -919,154 +925,11 @@
 			}
 			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: post-loop (external args) $got_args[] dump:<pre>'; print_r($got_args); echo '</pre>'; }
 			
-			
-			// in order to handle internal args, we need to determine what account we are dealing with
-			// before we can call "get_isset_arg" or "get_arg_value"
-			
-			// ---  which email account do are these args intended to apply to  ----
-			// ORDER OF PREFERENCE for determining account num
-			// 1) force fed acct num
-			// 2) gpc fldball['acctnum']
-			// 3) gpc msgball['acctnum']
-			// 4-) current class value for acct num
-			// 4a) use class value $this->acctnum if it exists
-			// 4b) get a default value to use (usually = 0)
-			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": searching...: <br>'; }
-			
-			if ((isset($acctnum))
-			&& ((string)$acctnum != ''))
-			{
-				// do nothing, we'll use this value below
-				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use function param $acctnum=['.serialize($acctnum).']<br>'; }
-			}
-			elseif ((isset($got_args['msgball']['acctnum']))
-			&& ((string)$got_args['msgball']['acctnum'] != ''))
-			{
-				$acctnum = (int)$got_args['msgball']['acctnum'];
-				// make sure this is an integer
-				$got_args['msgball']['acctnum'] = $acctnum;
-				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use GPC aquired $got_args[msgball][acctnum] : ['.serialize($got_args['msgball']['acctnum']).']<br>'; }
-			}
-			elseif ((isset($got_args['fldball']['acctnum']))
-			&& ((string)$got_args['fldball']['acctnum'] != ''))
-			{
-				$acctnum = (int)$got_args['fldball']['acctnum'];
-				// make sure this is an integer
-				$got_args['fldball']['acctnum'] = $acctnum;
-				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use GPC aquired $got_args[fldball][acctnum] : ['.serialize($got_args['fldball']['acctnum']).']<br>'; }
-			}
-			elseif ((isset($got_args['source_fldball']['acctnum']))
-			&& ((string)$got_args['source_fldball']['acctnum'] != ''))
-			{
-				$acctnum = (int)$got_args['source_fldball']['acctnum'];
-				// make sure this is an integer
-				$got_args['source_fldball']['acctnum'] = $acctnum;
-				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use GPC aquired $got_args[source_fldball][acctnum] : ['.serialize($got_args['source_fldball']['acctnum']).']<br>'; }
-			}
-			elseif ((isset($got_args['target_fldball']['acctnum']))
-			&& ((string)$got_args['target_fldball']['acctnum'] != ''))
-			{
-				// at the very least we know we need to login to this account to append a message to a folder there
-				$acctnum = (int)$got_args['target_fldball']['acctnum'];
-				// make sure this is an integer
-				$got_args['target_fldball']['acctnum'] = $acctnum;
-				if ($this->debug_args_input_flow > 1)
-				{
-					echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use GPC aquired $got_args[target_fldball][acctnum] : ['.serialize($got_args['target_fldball']['acctnum']).']<br>';
-				}
-			}
-			elseif ((isset($got_args['delmov_list'][0]['acctnum']))
-			&& ((string)$got_args['delmov_list'][0]['acctnum'] != ''))
-			{
-				// at the very least we know that we'll need to login to this account to delete or move this particular msgball
-				$acctnum = (int)$got_args['delmov_list'][0]['acctnum'];
-				if ($this->debug_args_input_flow > 1)
-				{
-					echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use GPC aquired $got_args[delmov_list][0][acctnum] : ['.serialize($got_args['delmov_list'][0]['acctnum']).']<br>';
-				}
-			}
-			else
-			{
-				// ok, we have either a force fed $acctnum or got one from GPC
-				// if neither, we grab the class's current value for $this->acctnum
-				// $this->get_acctnum(True) will return a default value for us to use if $this->acctnum is not set
-				// True means "return a default value, NOT boolean false, if $this->acctnum is not set
-				$acctnum = $this->get_acctnum(True);
-				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": NO *incoming* acctnum specified, called $this->get_acctnum(True), got: ['.serialize($acctnum).']<br>'; }
-			}
-			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: grab_class_args_gpc: * * * *SETTING CLASS ACCTNUM* * * * by calling $this->set_acctnum('.serialize($acctnum).')<br>'; }
-			$this->set_acctnum($acctnum);
-			
-			
-			// INTERNALLY CONTROLLED ARGS
-			// preserve pre-existing value, for which "acctnum" must be already obtained, so we
-			// know what account to check for existing arg values when we use "get_isset_arg" or "get_arg_value"
-			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: about to loop thru $this->known_internal_args<br>'; }
-			$loops = count($this->known_internal_args);
-			for($i=0;$i<$loops;$i++)
-			{
-				$this_arg_name = $this->known_internal_args[$i];
-				//if ($this->debug_args_input_flow > 2) { echo ' * * (grab pref - internal) $this_arg_name: '.$this_arg_name.'<br>'; }
-				// see if there is a value we can preserve for this arg
-				if ($this->get_isset_arg($this_arg_name))
-				{
-					$preserve_this = $this->get_arg_value($this_arg_name);
-					if ($this->debug_args_input_flow> 2) { echo ' * * (grab pref - internal) preserving internal pre-existing arg: ['.$this_arg_name.'] = ['.$preserve_this.']<br>'; }
-					$got_args[$this_arg_name] = $preserve_this;
-				}
-				else
-				{
-					if ($this->debug_args_input_flow > 2) { echo ' * (grab pref - internal) no pre-existing value for ['.$this_arg_name.'], using initialization default: <br>'; }
-					if ($this_arg_name == 'folder_status_info')
-					{
-						$got_args['folder_status_info'] = array();
-					}
-					elseif ($this_arg_name == 'folder_list')
-					{
-						$got_args['folder_list'] = array();
-					}
-					elseif ($this_arg_name == 'mailsvr_callstr')
-					{
-						$got_args['mailsvr_callstr'] = '';
-					}
-					elseif ($this_arg_name == 'mailsvr_namespace')
-					{
-						$got_args['mailsvr_namespace'] = '';
-					}
-					elseif ($this_arg_name == 'mailsvr_delimiter')
-					{
-						$got_args['mailsvr_delimiter'] = '';
-					}
-					elseif ($this_arg_name == 'mailsvr_stream')
-					{
-						$got_args['mailsvr_stream'] = '';
-					}
-					elseif ($this_arg_name == 'mailsvr_account_username')
-					{
-						$got_args['mailsvr_account_username'] = '';
-					}
-					// experimental: Set Flag indicative we've run thru this function
-					elseif ($this_arg_name == 'already_grab_class_args_gpc')
-					{
-						$got_args['already_grab_class_args_gpc'] = True;
-					}
-				}
-			}
-			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: post-loop (internal args) $got_args[] dump:<pre>'; print_r($got_args); echo '</pre>'; }
-			
-			
-			// clear old args (if any) and set the args we just obtained (or preserved)
-			//$this->unset_all_args();
-			// set new args, some may require processing (like folder will go thru prep_folder_in() automatically
-			//while(list($key,$value) = each($got_args))
-			//{
-			//	$this->set_arg_value($key, $got_args[$key]);
-			//}
-			
-			// use this one call to do it all
-			$this->set_arg_array($got_args);
-			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: finished, $this->get_all_args() dump:<pre>'; print_r($this->get_all_args()); echo '</pre>'; }
-			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: grab_class_args_gpc: LEAVING<br>'; }
+			// in order to know wgat account's arg array to insert $got_args[] into, we need to determine what account 
+			// we are dealing with before we can call $this->set_arg_array or "->get_isset_arg" or "->get_arg_value", etc...
+			// so whoever called this function should obtain that before calling $this->set_arg_array() with the data we return here
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: grab_class_args_gpc: LEAVING, returning $got_args<br>'; }
+			return $got_args;
 		}
 		
 		/*!
@@ -1086,6 +949,347 @@
 			echo 'call to un-implemented function grab_class_args_xmlrpc';
 		}
 		
+		
+		/*!
+		@function get_best_acctnum_and_set_it
+		@abstract search a variety of vars to find a legitimate account number, fallsback to $this->get_acctnum
+		@param $args_array ARRAY that was passed to ->begin_request, pass that into here if possible, it is a primary source
+		@param $got_args ARRAY of the *External* params / args fed to this script via GPC or other methods
+		Note: these are NOT the "internal args"
+		@param $force_feed_acctnum INTEGER if for some reason you want to force an account number (DEPRECIATED)
+		@result integer, mostt legitimate account number that was obtained
+		@discussion ?
+		@author	Angles
+		@access	Private
+		*/
+		function get_best_acctnum_and_set_it($args_array='', $got_args='', $force_feed_acctnum='')
+		{
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: searching_for_acctnum: ENTERING, param $force_feed_acctnum ['.$force_feed_acctnum.'] ; parm DUMP $args_array[] then $got_args[] dumps:<pre>'; print_r($args_array);  print_r($got_args); echo '</pre>'; }
+			
+			// ---  which email account do are these args intended to apply to  ----
+			// ORDER OF PREFERENCE for determining account num: just look at the code, it has comments
+			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": searching...: <br>'; }
+			// initialize
+			$acctnum = '';
+			
+			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: get acctnum from feed args if possible<br>'; }
+			$found_acctnum = False;
+			while(list($key,$value) = each($args_array))
+			{
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: (acctnum search) this loop feed arg : ['.$key.'] => ['.serialize($args_array[$key]).'] <br>'; }
+				// try to find feed acctnum value
+				if ($key == 'fldball')
+				{
+					$fldball = $args_array[$key];
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: (acctnum search) $args_array passed in $fldball[] : '.serialize($fldball).'<br>'; }
+					$acctnum = (int)$fldball['acctnum'];
+					
+					// SET OUR ACCTNUM ACCORDING TO FEED ARGS
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: (acctnum search) ACCTNUM from $args_array fldball : ['.$acctnum.']<br>'; }
+					$found_acctnum = True;
+					break;
+				}
+				elseif ($key == 'msgball')
+				{
+					$msgball = $args_array[$key];
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: (acctnum search) $args_array passed in $msgball[] : '.serialize($msgball).'<br>'; }
+					$acctnum = (int)$msgball['acctnum'];
+					// SET OUR ACCTNUM ACCORDING TO FEED ARGS
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: (acctnum search) ACCTNUM from $args_array msgball : ['.$acctnum.']<br>'; }
+					$found_acctnum = True;
+					break;
+				}
+				elseif ($key == 'acctnum')
+				{
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: (acctnum search) $args_array passed in "acctnum" : '.serialize($args_array[$key]).'<br>'; }
+					$acctnum = (int)$args_array[$key];
+					// SET OUR ACCTNUM ACCORDING TO FEED ARGS
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: (acctnum search) ACCTNUM from $args_array "acctnum" feed args : ['.$acctnum.']<br>'; }
+					$found_acctnum = True;
+					break;
+				}
+			}
+			// did the above work?
+			if ($found_acctnum == True)
+			{
+				// SET THE ACCTNUM AND RETURN IT
+				if ($this->debug_args_input_flow > 0) { echo 'mail_msg: searching_for_acctnum: (from $args_array) * * * *SETTING CLASS ACCTNUM* * * * by calling $this->set_acctnum('.serialize($acctnum).')<br>'; }
+				$this->set_acctnum($acctnum);
+				if ($this->debug_args_input_flow > 0) { echo 'mail_msg: searching_for_acctnum: LEAVING early, $args_array had the data, returning $acctnum ['.serialize($acctnum).']<br>'; }
+				return $acctnum;
+			}
+			
+			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": continue searching...: <br>'; }
+			
+			// ok, now we need to broaden the search for a legit account number
+			if ((isset($force_feed_acctnum))
+			&& ((string)$force_feed_acctnum != ''))
+			{
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": will use function param $force_feed_acctnum=['.serialize($force_feed_acctnum).']<br>'; }
+				$acctnum = (int)$force_feed_acctnum;
+			}
+			elseif ((isset($got_args['msgball']['acctnum']))
+			&& ((string)$got_args['msgball']['acctnum'] != ''))
+			{
+				// we are requested to handle (display, move, forward, etc...) this msgball, use it's properties
+				$acctnum = (int)$got_args['msgball']['acctnum'];
+				// make sure this is an integer
+				$got_args['msgball']['acctnum'] = $acctnum;
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": will use GPC aquired $got_args[msgball][acctnum] : ['.serialize($got_args['msgball']['acctnum']).']<br>'; }
+			}
+			elseif ((isset($got_args['fldball']['acctnum']))
+			&& ((string)$got_args['fldball']['acctnum'] != ''))
+			{
+				// we are requested to handle (display, .... ) data concerning this fldball, use it's properties
+				$acctnum = (int)$got_args['fldball']['acctnum'];
+				// make sure this is an integer
+				$got_args['fldball']['acctnum'] = $acctnum;
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": will use GPC aquired $got_args[fldball][acctnum] : ['.serialize($got_args['fldball']['acctnum']).']<br>'; }
+			}
+			elseif ((isset($got_args['source_fldball']['acctnum']))
+			&& ((string)$got_args['source_fldball']['acctnum'] != ''))
+			{
+				// we are *probably* requested to delete or rename this fldball, use it's properties
+				$acctnum = (int)$got_args['source_fldball']['acctnum'];
+				// make sure this is an integer
+				$got_args['source_fldball']['acctnum'] = $acctnum;
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": will use GPC aquired $got_args[source_fldball][acctnum] : ['.serialize($got_args['source_fldball']['acctnum']).']<br>'; }
+			}
+			elseif ((isset($got_args['delmov_list'][0]['acctnum']))
+			&& ((string)$got_args['delmov_list'][0]['acctnum'] != ''))
+			{
+				// at the very least we know that we'll need to login to this account to delete or move this particular msgball
+				// also, we will need to open the particular folder where the msg is localted
+				$acctnum = (int)$got_args['delmov_list'][0]['acctnum'];
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": will use GPC aquired $got_args[delmov_list][0][acctnum] : ['.serialize($got_args['delmov_list'][0]['acctnum']).']<br>'; }
+			}
+			elseif ((isset($got_args['target_fldball']['acctnum']))
+			&& ((string)$got_args['target_fldball']['acctnum'] != ''))
+			{
+				// at the very least we know we need to login to this account to append a message to a folder there
+				// NOTE: we need not open the particular folder we are going to append to,
+				// all we need is a stream to that particular account, "opened" folder is not important
+				// therefor we can just use INBOX as the folder to log into in this case
+				$acctnum = (int)$got_args['target_fldball']['acctnum'];
+				// make sure this is an integer
+				$got_args['target_fldball']['acctnum'] = $acctnum;
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": will use GPC aquired $got_args[target_fldball][acctnum] : ['.serialize($got_args['target_fldball']['acctnum']).']<br>'; }
+			}
+			else
+			{
+				// FALLBACK
+				// ok, we have NO acctnum in $args_array, did NOT get it from GPC got_args, nor the force fed $force_feed_acctnum
+				// so, we grab the class's current value for $this->acctnum
+				// $this->get_acctnum() will return a default value for us to use if $this->acctnum is not set
+				// note, this is identical to $this->get_acctnum(True) because True is the default arg there if one is not passed
+				// True means "return a default value, NOT boolean false, if $this->acctnum is not set
+				$acctnum = $this->get_acctnum(True);
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": NO *incoming* acctnum specified, called $this->get_acctnum(True), got: ['.serialize($acctnum).']<br>'; }
+			}
+			
+			// SET THE ACCTNUM WITH THE "BEST VALUE" WE COULD FIND
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: searching_for_acctnum: * * * *SETTING CLASS ACCTNUM* * * * by calling $this->set_acctnum('.serialize($acctnum).')<br>'; }
+			$this->set_acctnum($acctnum);
+			
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: searching_for_acctnum: LEAVING, returning $acctnum ['.serialize($acctnum).']<br>'; }
+			return $acctnum;
+		}
+		
+		/*!
+		@function init_internal_args_and_set_them
+		@abstract initialize Internally controlled params / args. MUST already have an acctnum
+		@param $acctnum integer the current account number whose array we will fill with these initialized args
+		@result none, this is an object call
+		@discussion ?
+		@author	Angles
+		@access	Public
+		*/
+		function init_internal_args_and_set_them($acctnum='')
+		{
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: init_internal_args: ENTERING, (parm $acctnum=['.serialize($acctnum).'])<br>'; }
+			// we SHOULD have already obtained a valid acctnum before calling this function
+			if (!(isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $this->get_acctnum();
+			}
+			
+			// INTERNALLY CONTROLLED ARGS
+			// preserve pre-existing value, for which "acctnum" must be already obtained, so we
+			// know what account to check for existing arg values when we use "get_isset_arg" or "get_arg_value"
+			$internal_args = Array();
+			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: init_internal_args: about to loop thru $this->known_internal_args<br>'; }
+			$loops = count($this->known_internal_args);
+			for($i=0;$i<$loops;$i++)
+			{
+				$this_arg_name = $this->known_internal_args[$i];
+				//if ($this->debug_args_input_flow > 2) { echo ' * * (grab pref - internal) $this_arg_name: '.$this_arg_name.'<br>'; }
+				// see if there is a value we can preserve for this arg
+				if ($this->get_isset_arg($this_arg_name))
+				{
+					$preserve_this = $this->get_arg_value($this_arg_name);
+					if ($this->debug_args_input_flow> 2) { echo ' * * (grab pref - internal) preserving internal pre-existing arg: ['.$this_arg_name.'] = ['.$preserve_this.']<br>'; }
+					$internal_args[$this_arg_name] = $preserve_this;
+				}
+				else
+				{
+					if ($this->debug_args_input_flow > 2) { echo ' * (grab pref - internal) no pre-existing value for ['.$this_arg_name.'], using initialization default: <br>'; }
+					if ($this_arg_name == 'folder_status_info')
+					{
+						$internal_args['folder_status_info'] = array();
+					}
+					elseif ($this_arg_name == 'folder_list')
+					{
+						$internal_args['folder_list'] = array();
+					}
+					elseif ($this_arg_name == 'mailsvr_callstr')
+					{
+						$internal_args['mailsvr_callstr'] = '';
+					}
+					elseif ($this_arg_name == 'mailsvr_namespace')
+					{
+						$internal_args['mailsvr_namespace'] = '';
+					}
+					elseif ($this_arg_name == 'mailsvr_delimiter')
+					{
+						$internal_args['mailsvr_delimiter'] = '';
+					}
+					elseif ($this_arg_name == 'mailsvr_stream')
+					{
+						$internal_args['mailsvr_stream'] = '';
+					}
+					elseif ($this_arg_name == 'mailsvr_account_username')
+					{
+						$internal_args['mailsvr_account_username'] = '';
+					}
+					// experimental: Set Flag indicative we've run thru this function
+					elseif ($this_arg_name == 'already_grab_class_args_gpc')
+					{
+						$internal_args['already_grab_class_args_gpc'] = True;
+					}
+				}
+			}
+			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: init_internal_args: post-loop (internal args) $internal_args[] dump:<pre>'; print_r($internal_args); echo '</pre>'; }
+			
+			
+			// clear old args (if any) and set the args we just obtained (or preserved)
+			//$this->unset_all_args();
+			// set new args, some may require processing (like folder will go thru prep_folder_in() automatically
+			//while(list($key,$value) = each($internal_args))
+			//{
+			//	$this->set_arg_value($key, $internal_args[$key]);
+			//}
+			
+			// use this one call to do it all
+			//$this->set_arg_array($internal_args);
+			
+			// add these items to the args array for the appropriate account
+			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: init_internal_args: about to add $internal_args to acounts class args array<br>'; }
+			while(list($key,$value) = each($internal_args))
+			{
+				if ($this->debug_args_input_flow > 2) { echo ' * mail_msg: init_internal_args: (looping) setting internal arg: $this->set_arg_value('.$key.', '.$internal_args[$key].', '.$acctnum.'); <br>'; }
+				$this->set_arg_value($key, $internal_args[$key], $acctnum);
+				//$this->set_arg_value($key, $internal_args[$key]);
+			}
+			
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: grab_class_args_gpc: LEAVING, returning $internal_args<br>'; }
+			return $internal_args;
+		}
+		
+		/*!
+		@function get_best_folder_arg
+		@abstract search a variety of vars to find a legitimate folder value to open on the mail server number, 
+		@param $args_array ARRAY that was passed to ->begin_request, pass that into here if possible, it is a primary source
+		@param $got_args ARRAY of the *External* params / args fed to this script via GPC or other methods
+		Note: these are NOT the "internal args"
+		@param $acctnum INTEGER used to querey various already-set args
+		@result string, mostt legitimate folder value that was obtained
+		@discussion ?
+		@author	Angles
+		@access	Private
+		*/
+		function get_best_folder_arg($args_array='', $got_args='', $acctnum='')
+		{
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: get_best_folder_arg: ENTERING <br>'; }
+			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: get_best_folder_arg: param $acctnum ['.$acctnum.'] ; parm DUMP $args_array[] then $got_args[] dumps:<pre>'; print_r($args_array);  print_r($got_args); echo '</pre>'; }
+			// we SHOULD have already obtained a valid acctnum before calling this function
+			if (!(isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $this->get_acctnum();
+			}
+			//  ----  Get Folder Value  ----
+			// ORDER OF PREFERENCE for pre-processed "folder" input arg
+			// (1) $args_array, IF FILLED, overrides any previous data or any other data source, look for these:
+			//	$args_array['msgball']['folder']
+			//	$args_array['fldball']['folder']
+			//	$args_array['folder']
+			// (2) GPC ['msgball']['folder']
+			// (3) GPC ['fldball']['folder']
+			// (4) GPC ['delmov_list'][0]['folder']
+			// (5) if "folder" arg it is already set, (probably during the reuse attempt, probably obtained from $args_array alreadt) then use that
+			// (6) default to blank string, which "prep_folder_in()" changes to defaultg value INBOX
+			
+			// note: it's OK to send blank string to "prep_folder_in", because it will return a default value of "INBOX"
+			if ((isset($args_array['folder']))
+			&& ($args_array['folder'] != ''))
+			{
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_folder_arg: $input_folder_arg chooses $args_array[folder] ('.$args_array['folder'].') over any existing "folder" arg<br>'; }
+				$input_folder_arg = $args_array['folder'];
+			}
+			elseif ($this->get_isset_arg('["msgball"]["folder"]'))
+			{
+				$input_folder_arg = $this->get_arg_value('["msgball"]["folder"]');
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_folder_arg: $input_folder_arg chooses $this->get_arg_value(["msgball"]["folder"]): ['.$input_folder_arg.']<br>'; }
+			}
+			elseif ($this->get_isset_arg('["fldball"]["folder"]'))
+			{
+				$input_folder_arg = $this->get_arg_value('["fldball"]["folder"]');
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_folder_arg: $input_folder_arg chooses $this->get_arg_value(["fldball"]["folder"]): ['.$input_folder_arg.']<br>'; }
+			}
+			elseif ($this->get_isset_arg('delmov_list'))
+			{
+				// we know we'll need to loginto this folder to get this message and move/delete it
+				// there may be other msgballs in the delmov_list array, but we know at the very list we'll need to open this folder anyway
+				$this_delmov_list = $this->get_arg_value('delmov_list');
+				$input_folder_arg = $this_delmov_list[0]['folder'];
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_folder_arg: $input_folder_arg chooses $this_delmov_list[0][folder]: ['.$input_folder_arg.']<br>'; }
+			}
+			else
+			{
+				if (($this->get_isset_arg('folder'))
+				&& ((string)trim($this->get_arg_value('folder')) != ''))
+				{
+					$input_folder_arg = $this->get_arg_value('folder');
+				}
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_folder_arg: $input_folder_arg *might* chooses $this->get_arg_value(folder): ['.serialize($input_folder_arg).']<br>'; }
+				
+				$input_folder_arg = (string)$input_folder_arg;
+				$input_folder_arg = trim($input_folder_arg);
+				if ($input_folder_arg != '')
+				{
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_folder_arg: $this->get_arg_value(folder) passes test, so $input_folder_arg chooses $this->get_arg_value(folder): ['.serialize($input_folder_arg).']<br>'; }
+				}
+				else
+				{
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_folder_arg: no folder value found, so $input_folder_arg takes an empty string<br>'; }
+					$input_folder_arg = '';
+				}
+			}
+			// ---- Prep the Folder Name (remove encodings, verify it's long name (with namespace)
+			// folder prepping does a lookup which requires a folder list which *usually* (unless caching) requires a login
+			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_folder_arg: about to issue $processed_folder_arg = $this->prep_folder_in('.$input_folder_arg.')<br>'; }
+			$processed_folder_arg = $this->prep_folder_in($input_folder_arg);
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: get_best_folder_arg: LEAVING, returning $processed_folder_arg value: ['.$processed_folder_arg.']<br>'; }
+			return $processed_folder_arg;
+		}	
+		
+		
+		/**************************************************************************\
+		* END INPUT ARG/PARAM HANDLERS								*
+		* - - - - - - - - - - - - - - - - - - - - - - - - -									*
+		* BEGIN APPSESSION TEMPORARY CACHING HANDLERS		*
+		\**************************************************************************/
 		
 		/*!
 		@cabability appsession TEMPORARY DATA CACHING
@@ -1320,6 +1524,12 @@
 			}
 		}
 		
+		/**************************************************************************\
+		* END APPSESSION TEMPORARY CACHING HANDLERS		*
+		* - - - - - - - - - - - - - - - - - - - - - - - - -									*
+		* BEGIN **DEPRECIATED *** UNUSED *** 						*
+		* 		SEMI-PERMENANT CACHING HANDLERS					*
+		\**************************************************************************/
 		
 		/*!
 		@cabability Pref-Based SEMI-PERMENANT DATA CACHING
@@ -1536,6 +1746,13 @@
 			if ($this->debug_longterm_caching > 0) { echo 'mail_msg: remove_cached_data: LEAVING, returning true<br>';}
 			return True;
 		}
+		
+		/**************************************************************************\
+		* END **DEPRECIATED *** UNUSED *** 							*
+		* 		SEMI-PERMENANT CACHING HANDLERS					*
+		* - - - - - - - - - - - - - - - - - - - - - - - - -									*
+		* BEGIN PARAM / ARGS / PREFS  ACCESS FUNCTIONS 			*
+		\**************************************************************************/
 		
 		/*!
 		@capability OOP-Style Access Methods to Private Object Properties

@@ -86,7 +86,7 @@
 	var $enabled_ex_accounts = array();
 	
 	// DEBUG FLAGS generally take int 0, 1, 2, or 3
-	var $debug_logins = 0;
+	var $debug_logins =0;
 	var $debug_session_caching = 0;
 	var $debug_longterm_caching = 0;
 	var $debug_accts = 0;
@@ -401,19 +401,6 @@
 			'mailsvr_delimiter',
 			'mailsvr_stream',
 			'mailsvr_account_username',
-			
-			/*
-			// DEPRECIATED
-			// these are the supported menuaction strings
-			'index_menuaction',
-			'mlist_menuaction',
-			// for message delete or move
-			'delmov_menuaction',
-			'folder_menuaction',
-			'send_menuaction',
-			'get_attach_menuaction',
-			'view_html_menuaction',
-			*/
 			// use this uri in any auto-refresh request - filled during "fill_sort_order_start_msgnum()"
 			'index_refresh_uri',
 			// experimental: Set Flag indicative we've run thru this function
@@ -422,6 +409,7 @@
 		//if ($this->debug_logins > 2) { echo 'mail_msg: constructor: $this->known_args[] dump<pre>'; print_r($this->known_args); echo '</pre>'; }
 	}
 	
+	// currently unused, concept in transation
 	function is_logged_in()
 	{
 		if ($this->debug_logins > 0) { echo 'mail_msg: is_logged_in: ENTERING'.'<br>'; }
@@ -498,83 +486,41 @@
 		// IF RE-USING YOU BETTER FEED THE DESIRED FOLDER IN "$args_array['folder']"
 		// or better yet: IF RE-USING YOU BETTER FEED THE DESIRED FOLDER IN "$args_array['fldball']['folder'] " or ['msgball']['folder']
 		// IF RE-USING YOU BETTER MAKE SURE THE CORRECT ACCTNUM IS SET via "get_acctnum"/"set_acctnum"
-		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: get acctnum from feed args if possible<br>'; }
-		$found_acctnum = False;
-		while(list($key,$value) = each($args_array))
-		{
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) this loop feed arg : ['.$key.'] => ['.serialize($args_array[$key]).'] <br>'; }
-			// try to find feed acctnum value
-			if ($key == 'fldball')
-			{
-				$fldball = $args_array[$key];
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) feed args passed in $fldball[] : '.serialize($fldball).'<br>'; }
-				$acctnum = (int)$fldball['acctnum'];
-				
-				// SET OUR ACCTNUM ACCORDING TO FEED ARGS
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) SETTING ACCTNUM from fldball : ['.$acctnum.']<br>'; }
-				$this->set_acctnum($acctnum);
-				$found_acctnum = True;
-				break;
-			}
-			elseif ($key == 'msgball')
-			{
-				$msgball = $args_array[$key];
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) feed args passed in $msgball[] : '.serialize($msgball).'<br>'; }
-				$acctnum = (int)$msgball['acctnum'];
-				// SET OUR ACCTNUM ACCORDING TO FEED ARGS
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) SETTING ACCTNUM from msgball : ['.$acctnum.']<br>'; }
-				$this->set_acctnum($acctnum);
-				$found_acctnum = True;
-				break;
-			}
-			elseif ($key == 'acctnum')
-			{
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) feed args passed in "acctnum" : '.serialize($args_array[$key]).'<br>'; }
-				$acctnum = (int)$args_array[$key];
-				// SET OUR ACCTNUM ACCORDING TO FEED ARGS
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) SETTING ACCTNUM from "acctnum" feed args : ['.$acctnum.']<br>'; }
-				$this->set_acctnum($acctnum);
-				$found_acctnum = True;
-				break;
-			}
-		}
-		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) locate acctnum in feed args $found_acctnum boolean result: ['.serialize($found_acctnum).'] <br>'; }
 		
-		// grab GPC values, only pass an acctnumm to that function if we already found it
-		if ($found_acctnum == True)
-		{
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: grab_class_args_gpc, if called, will be called WITH already found acctnum: ('.serialize($acctnum).')<br>'; }
-			$feed_acctnum = $acctnum;
-			//$this->grab_class_args_gpc($acctnum);
-		}
-		else
-		{
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: grab_class_args_gpc, if called,  will be called with NO acctnum yet having been found<br>'; }
-			$feed_acctnum = '';
-			//$this->grab_class_args_gpc();
-		}
-		
-		// Grab GPC vars, they'll go into the "args" data
-		// feed the $feed_acctnum to the function
-		// Note: which acctnum arg array would this be talking to?
-		if ( ($this->get_isset_arg('already_grab_class_args_gpc', $feed_acctnum))
-		&& ((string)$this->get_arg_value('already_grab_class_args_gpc', $feed_acctnum) != '') )
+		// Grab GPC vars, after we get an acctnum, we'll put them in the appropriate account's "args" data
+		// issue?: which acctnum arg array would this be talking to when we inquire about "already_grab_class_args_gpc"?
+		if ( ($this->get_isset_arg('already_grab_class_args_gpc'))
+		&& ((string)$this->get_arg_value('already_grab_class_args_gpc') != '') )
 		{
 			// somewhere, there's already been a call to grab_class_args_gpc(), do NOT re-run
 			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: "already_grab_class_args_gpc" is set, do not re-grab<br>'; }
 			if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: "already_grab_class_args_gpc" pre-existing $this->get_all_args() dump:<pre>'; print_r($this->get_all_args()) ; echo '</pre>';}
+			$got_args=array();
 		}
 		else
 		{
 			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: "already_grab_class_args_gpc" is NOT set, call grab_class_args_gpc() now<br>'; }
-			$this->grab_class_args_gpc($feed_acctnum);
+			$got_args=array();
+			$got_args = $this->grab_class_args_gpc();
 		}
 		
-		if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST "grab_class_args_gpc": $this->get_all_args() dump <pre>';  print_r($this->get_all_args()); echo '</pre>'; }
-		// grab_class_args_gpc will look for an acctnum in GPC values if one is not yet found
-		// grab_class_args_gpc will ASSIGN A DEFAULT acctnum if NONE is foud anywhere
-		// so by now, WE HAVE AN ACCT NUM
-		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: POST "grab_class_args_gpc": $this->get_acctnum() returns: '.serialize($this->get_acctnum()).'<br>'; }
+		// FIND THE "BEST ACCTNUM" and set it
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call:  get_best_acctnum_and_set_it($args_array, $got_args) <br>'; }
+		$acctnum = $this->get_best_acctnum_and_set_it($args_array, $got_args);
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: "get_best_acctnum_and_set_it" returns $acctnum ['.$acctnum.']<br>'; }
+		
+		// SET GOT_ARGS TO THAT ACCTNUM
+		// use that acctnum to set "got_args" to the appropiate acctnum
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call: $this->set_arg_array($got_args); <br>'; }
+		$this->set_arg_array($got_args, $acctnum);
+		if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: post set_arg_array $this->get_all_args() dump:<pre>'; print_r($this->get_all_args()) ; echo '</pre>';}
+		
+		// Initialize Internal Args
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call: "init_internal_args_and_set_them('.$acctnum.')"<br>'; }
+		$this->init_internal_args_and_set_them($acctnum);
+		
+		if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST "grab_class_args_gpc", "get_best_acctnum_and_set_it", and "init_internal_args_and_set_them" : this->get_all_args() dump:<pre>'; print_r($this->get_all_args()) ; echo '</pre>';}
+		
 		
 		/*
 		// disable this for the moment, will re-enable it later
@@ -873,31 +819,31 @@
 			// remember, by now we have determined an acctnum
 			$this_server_type = $this->get_pref_value('mail_server_type');
 			// ok, now put that object into the array
-			$this_acctnum = $this->get_acctnum();
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: creating new dcom_holder at $GLOBALS["phpgw_dcom_".$this_acctnum('.$this_acctnum.')] = new mail_dcom_holder'.'<br>'; }
-			$GLOBALS['phpgw_dcom_'.$this_acctnum] = new mail_dcom_holder;
-			$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom = CreateObject("email.mail_dcom", $this_server_type);
+			//$this_acctnum = $this->get_acctnum();
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: creating new dcom_holder at $GLOBALS[phpgw_dcom_'.$acctnum.'] = new mail_dcom_holder'.'<br>'; }
+			$GLOBALS['phpgw_dcom_'.$acctnum] = new mail_dcom_holder;
+			$GLOBALS['phpgw_dcom_'.$acctnum]->dcom = CreateObject("email.mail_dcom", $this_server_type);
 			// initialize the dcom class variables
-			$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->mail_dcom_base();
+			$GLOBALS['phpgw_dcom_'.$acctnum]->dcom->mail_dcom_base();
 			
 			// ----  there are 2 settings from this mail_msg object we need to pass down to the child dcom object:  ----
 			// (1)  Do We Use UTF7 encoding/decoding of folder names
 			if (($this->get_isset_pref('enable_utf7'))
 			&& ($this->get_pref_value('enable_utf7')))
 			{
-				$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->enable_utf7 = True;
+				$GLOBALS['phpgw_dcom_'.$acctnum]->dcom->enable_utf7 = True;
 			}
 			// (2)  Do We Force use of msg UID's
 			if ($this->force_msg_uids == True)
 			{
-				$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->force_msg_uids = True;
+				$GLOBALS['phpgw_dcom_'.$acctnum]->dcom->force_msg_uids = True;
 			}
 			
 			set_time_limit(60);
 			// login to INBOX because we know that always(?) should exist on an imap server and pop server
 			// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call dcom->open: $GLOBALS["phpgw_dcom_".$this_acctnum('.$this_acctnum.')]->dcom->open('.$mailsvr_callstr."INBOX".', '.$user.', '.$pass.', )'.'<br>'; }
-			$mailsvr_stream = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->open($mailsvr_callstr."INBOX", $user, $pass, '');
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call dcom->open: $GLOBALS["phpgw_dcom_".$acctnum('.$acctnum.')]->dcom->open('.$mailsvr_callstr."INBOX".', '.$user.', '.$pass.', )'.'<br>'; }
+			$mailsvr_stream = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->open($mailsvr_callstr."INBOX", $user, $pass, '');
 			$pass = '';
 			set_time_limit(0);
 			
@@ -915,8 +861,8 @@
 			}
 			
 			// SUCCESS - we are logged in to the server, at least we got to "INBOX"
-			$this->set_arg_value('mailsvr_stream', $mailsvr_stream);
-			$this->set_arg_value('mailsvr_account_username', $user);
+			$this->set_arg_value('mailsvr_stream', $mailsvr_stream, $acctnum);
+			$this->set_arg_value('mailsvr_account_username', $user, $acctnum);
 			// BUT if "folder" != "INBOX" we still have to "reopen" the stream to that "folder"
 			
 			// ----  Get additional Data now that we are logged in to the mail server  ----
@@ -926,82 +872,28 @@
 			$mailsvr_delimiter = $this->get_arg_value('mailsvr_delimiter');
 			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $mailsvr_delimiter: '.serialize($mailsvr_delimiter).'<br>'; }
 			
-			//  ----  Get Folder Value  ----
-			// ORDER OF PREFERENCE for pre-processed "folder" input arg
-			// (1) $args_array, IF FILLED, overrides any previous data or any other data source, look for these:
-			//	$args_array['msgball']['folder']
-			//	$args_array['fldball']['folder']
-			//	$args_array['folder']
-			// (2) GPC ['msgball']['folder']
-			// (3) GPC ['fldball']['folder']
-			// (4) if "folder" arg it is already set, (probably during the reuse attempt, probably obtained from $args_array alreadt) then use that
-			// (5) default to blank string, which "prep_folder_in()" changes to defaultg value INBOX
 			
-			// note: it's OK to send blank string to "prep_folder_in", because it will return a default value of "INBOX"
-			if ((isset($args_array['folder']))
-			&& ($args_array['folder'] != ''))
-			{
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $input_folder_arg chooses $args_array[folder] ('.$args_array['folder'].') over any existing "folder" arg<br>'; }
-				$input_folder_arg = $args_array['folder'];
-			}
-			elseif ($this->get_isset_arg('["msgball"]["folder"]'))
-			{
-				$input_folder_arg = $this->get_arg_value('["msgball"]["folder"]');
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $input_folder_arg chooses $this->get_arg_value(["msgball"]["folder"]): ['.$input_folder_arg.']<br>'; }
-			}
-			elseif ($this->get_isset_arg('["fldball"]["folder"]'))
-			{
-				$input_folder_arg = $this->get_arg_value('["fldball"]["folder"]');
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $input_folder_arg chooses $this->get_arg_value(["fldball"]["folder"]): ['.$input_folder_arg.']<br>'; }
-			}
-			elseif ($this->get_isset_arg('delmov_list'))
-			{
-				$this_delmov_list = $this->get_arg_value('delmov_list');
-				$input_folder_arg = $this_delmov_list[0]['folder'];
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $input_folder_arg chooses $this_delmov_list[0][folder]: ['.$input_folder_arg.']<br>'; }
-			}
-			else
-			{
-				if (($this->get_isset_arg('folder'))
-				&& ((string)trim($this->get_arg_value('folder')) != ''))
-				{
-					$input_folder_arg = $this->get_arg_value('folder');
-				}
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $input_folder_arg *might* chooses $this->get_arg_value(folder): ['.serialize($input_folder_arg).']<br>'; }
-				
-				$input_folder_arg = (string)$input_folder_arg;
-				$input_folder_arg = trim($input_folder_arg);
-				if ($input_folder_arg != '')
-				{
-					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $this->get_arg_value(folder) passes test, so $input_folder_arg chooses $this->get_arg_value(folder): ['.serialize($input_folder_arg).']<br>'; }
-				}
-				else
-				{
-					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: no folder value found, so $input_folder_arg takes an empty string<br>'; }
-					$input_folder_arg = '';
-				}
-			}
-			// ---- Prep the Folder Name (remove encodings, verify it's long name (with namespace)
-			// folder prepping does a lookup which requires a folder list which *usually* (unless caching) requires a login
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to issue $processed_folder_arg = $this->prep_folder_in('.$input_folder_arg.')<br>'; }
-			$processed_folder_arg = $this->prep_folder_in($input_folder_arg);
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $processed_folder_arg value: ['.$processed_folder_arg.']<br>'; }
+			// FIND FOLDER VALUE
+			// get best available, most legit, folder value that we can find, and prep it in
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call: "get_best_folder_arg($args_array, $got_args, $acctnum(='.$acctnum.'))"<br>'; }
+			$processed_folder_arg = $this->get_best_folder_arg($args_array, $got_args, $acctnum);
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: "get_best_folder_arg" returns $processed_folder_arg ['.htmlspecialchars(serialize($processed_folder_arg)).']<br>'; }
 			
 			// ---- Switch To Desired Folder If Necessary  ----
 			if ($processed_folder_arg == 'INBOX')
 			{
 				// NO need to switch to another folder
 				// put this $processed_folder_arg in arg "folder", replacing any unprocessed value that may have been there
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: NO need to switch folders, about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.')<br>'; }
-				$this->set_arg_value('folder', $processed_folder_arg);
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: NO need to switch folders, about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.', '.serialize($acctnum).')<br>'; }
+				$this->set_arg_value('folder', $processed_folder_arg, $acctnum);
 			}
 			else
 			{
 				// switch to the desired folder now that we are sure we have it's official name
 				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: need to switch folders (reopen) from INBOX to $processed_folder_arg: '.$processed_folder_arg.'<br>';}
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to issue: $this->a['.$this->acctnum.'][dcom]->reopen('.$mailsvr_stream.', '.$mailsvr_callstr.$processed_folder_arg,', )'.'<br>';}
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to issue: $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->reopen('.$mailsvr_stream.', '.$mailsvr_callstr.$processed_folder_arg,', )'.'<br>';}
 				//$did_reopen = $tmp_a['dcom']->reopen($mailsvr_stream, $mailsvr_callstr.$processed_folder_arg, '');
-				$did_reopen = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->reopen($mailsvr_stream, $mailsvr_callstr.$processed_folder_arg, '');
+				$did_reopen = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->reopen($mailsvr_stream, $mailsvr_callstr.$processed_folder_arg, '');
 				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: reopen returns: '.serialize($did_reopen).'<br>';}
 				// error check
 				if ($did_reopen == False)
@@ -1015,10 +907,11 @@
 				{
 					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: Successful switch folders (reopen) from (default initial folder) INBOX to ['.$processed_folder_arg.']<br>';}
 					// put this $processed_folder_arg in arg "folder", since we were able to successfully switch folders
-					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: switched folders (via reopen), about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.')<br>'; }
-					$this->set_arg_value('folder', $processed_folder_arg);
+					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: switched folders (via reopen), about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.', $acctnum(='.$acctnum.'))<br>'; }
+					$this->set_arg_value('folder', $processed_folder_arg, $acctnum);
 				}
 			}
+			
 			// ----  Process "sort" "order" "start" and "msgnum" GPC args (if any) passed to the script  -----
 			// these args are so fundamental, they get stored in their own class vars
 			// no longer referenced as args after this
@@ -1027,18 +920,20 @@
 			
 			// now we have folder, sort and order, make a URI for auto-refresh use
 			// we can NOT put "start" in auto refresh or user may not see the 1st index page on refresh
-			$this->index_refresh_uri = 
+			$this_index_refresh_uri = 
 				'menuaction=email.uiindex.index'
 				.'&fldball[folder]='.$this->prep_folder_out()
 				.'&fldball[acctnum]='.$this->get_acctnum()
 				.'&sort='.$this->get_arg_value('sort')
 				.'&order='.$this->get_arg_value('order');
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call $this->set_arg_value(index_refresh_uri, $this_index_refresh_uri, $acctnum(='.$acctnum.')); ; where $this_index_refresh_uri: '.htmlspecialchars($this_index_refresh_uri).'<br>'; }
+			$this->set_arg_value('index_refresh_uri', $this_index_refresh_uri, $acctnum);
 			
 			if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: about to leave, direct access dump of $this->a  :<pre>'; print_r($this->a) ; echo '</pre>';}
 			if ($this->debug_logins > 0) { echo 'mail_msg: begin_request: LEAVING, success'.'<br>';}
 			// returning this is vestigal, not really necessary, but do it anyway
 			// it's importance is that it returns something other then "False" on success
-			return $this->get_arg_value('mailsvr_stream');
+			return $this->get_arg_value('mailsvr_stream', $acctnum);
 		}
 	}
  
@@ -1046,7 +941,7 @@
 	{
 		// args array currently not used
 		if ($this->debug_logins > 0) { echo 'mail_msg: end_request: ENTERING'.'<br>';}
-		if ($this->debug_logins > 2) { echo 'mail_msg: end_request: direct access info dump of $this->a  :<pre>'; print_r($this->a) ; echo '</pre>';}
+		//if ($this->debug_logins > 2) { echo 'mail_msg: end_request: direct access info dump of $this->a  :<pre>'; print_r($this->a) ; echo '</pre>';}
 		
 		if (($this->get_isset_arg('mailsvr_stream') == True)
 		&& ($this->get_arg_value('mailsvr_stream') != ''))
