@@ -24,16 +24,39 @@
 	$phpgw_info['flags'] = $phpgw_flags;
 	include('../header.inc.php');
 
-	$num_expected = 0;
-	$total_files = 0;
+// ----  Add Email Sig to Body   -----
+	if (($phpgw_info['user']['preferences']['email']['email_sig'])
+	&& ($attach_sig))
+	{
+		//$body .= "\n-----\n".$phpgw_info['user']['preferences']['email']['email_sig'];
+		$user_sig = $phpgw_info['user']['preferences']['email']['email_sig'];
+		// obsoleted: ereg_replace should not be needed after pgpgw ver 0.9.13
+		$user_sig = ereg_replace('&quot;', '"', $user_sig);
+		$user_sig = ereg_replace('&#039;', '\'', $user_sig);
+		$body .= "\n-----\n" .$user_sig;
+	}
 
-	$upload_dir = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'];
+// ----  Prepare Body for RFC821 Compliance  -----
+	/* // thanks to: Squirrelmail <Luke Ehresman> http://www.squirrelmail.org
+	// In order to remove the problem of users not able to create
+	// messages with "." on a blank line, RFC821 has made provision  in section 4.5.2 (Transparency). */
+	$body = ereg_replace("\n\.", "\n\.\.", $body);
+	$body = ereg_replace("^\.", "\.\.", $body);
+
+	// this is to catch all plain \n instances and replace them with \r\n.  
+	$body = ereg_replace("\r\n", "\n", $body);
+	$body = ereg_replace("\n", "\r\n", $body);
+
+// ----  Attachment Handling   -----
+	$sep = $phpgw->common->filesystem_separator();
+	$upload_dir = $phpgw_info['server']['temp_dir'].$sep.$phpgw_info['user']['sessionid'];
 
 	if (file_exists($upload_dir))
 	{
 		@set_time_limit(0);
+		// how many attachments do we need to process?
 		$dh = opendir($upload_dir);
-		// how many attachments do we have?
+		$num_expected = 0;
 		while ($file = readdir($dh))
 		{
 			if (($file != '.')
@@ -45,21 +68,9 @@
 		}
 		closedir($dh);
 
-		// if there are attachments then we need to add the sig to the body BEFORE the attachments
-		if (($num_expected > 0)
-		&& ($phpgw_info['user']['preferences']['email']['email_sig'])
-		&& ($attach_sig))
-		{
-			//$body .= "\n-----\n".$phpgw_info['user']['preferences']['email']['email_sig'];
-			$user_sig = $phpgw_info['user']['preferences']['email']['email_sig'];
-			// obsoleted: ereg_replace should not be needed after 0.9.13
-			$user_sig = ereg_replace('&quot;', '"', $user_sig);
-			$user_sig = ereg_replace('&#039;', '\'', $user_sig);
-			$body .= "\n-----\n" .$user_sig;
-		}
-
+		// process (encode) attachments and add to the email body
+		$total_files = 0;
 		$dh = opendir($upload_dir);
-		// encode attachments and add to the email
 		while ($file = readdir($dh))
 		{
 			if (($file != '.')
@@ -68,27 +79,32 @@
 				if (! ereg("\.info",$file))
 				{
 					$total_files++;
-					$size = filesize($upload_dir.SEP.$file);
+					$size = filesize($upload_dir.$sep.$file);
 
-					$info_file = $upload_dir.SEP.$file.'.info';
+					$info_file = $upload_dir.$sep.$file.'.info';
 					$file_info = file($info_file);
 					$content_type = trim($file_info[0]);
 					$content_name = trim($file_info[1]);
 					
-					// what boundry do we use
+					// what boundry do we use?
 					if ($total_files >= $num_expected)
 					{
+						// the "final" boundry (IS THIS TRUE?)
 						$mess_boundary = '--Message-Boundary--';
 					}
 					else
 					{
+						/* // attachments have their own boundry preceeding them (see below)
+						// do not add another one between attachments
+						// or else (some/all) MUAs will not see the later attachments
+						// (IS THIS TRUE?) */
 						$mess_boundary = '';
 					}
-					//echo 'tot: '.$total_files .' expext: '.$num_expected;
+					//echo 'tot: '.$total_files .' expext: '.$num_expected; // for debugging
 
 					set_magic_quotes_runtime(0); 
-					$fh = fopen($upload_dir.SEP.$file,'rb');
-//					$rawfile = fread($fh,$size);
+					$fh = fopen($upload_dir.$sep.$file,'rb');
+					// $rawfile = fread($fh,$size);
 					$encoded_attach = chunk_split(base64_encode(fread($fh,$size)));
 					fclose($fh);
 					set_magic_quotes_runtime(get_magic_quotes_gpc());
@@ -97,34 +113,21 @@
 						. 'Content-type: '.$content_type.'; name="'.$content_name.'"'."\n"
 						. 'Content-Transfer-Encoding: BASE64'."\n"
 						. 'Content-disposition: attachment; filename="'.$content_name.'"'."\n\n"
-						//. $encoded_attach."$message_boundary"."\n";
 						. $encoded_attach .$mess_boundary ."\n";
-					unlink($upload_dir.SEP.$file);
+					unlink($upload_dir.$sep.$file);
 
-					unlink($upload_dir.SEP.$file.'.info');
-				}	// if ! .info
-			}	// if ! . or ..
-		} 		// while dirread
+					unlink($upload_dir.$sep.$file.'.info');
+				}
+			}
+		}
 		rmdir($upload_dir);
-	}		// if dir
-
-	// if there are NO attachments then add the sig to the body here
-	if (($num_expected == 0)
-	&& ($phpgw_info['user']['preferences']['email']['email_sig'])
-	&& ($attach_sig))
-	{
-		//$body .= "\n-----\n".$phpgw_info['user']['preferences']['email']['email_sig'];
-		$user_sig = $phpgw_info['user']['preferences']['email']['email_sig'];
-		// obsoleted: ereg_replace should not be needed after 0.9.13
-		$user_sig = ereg_replace('&quot;', '"', $user_sig);
-		$user_sig = ereg_replace('&#039;', '\'', $user_sig);
-		$body .= "\n-----\n" .$user_sig;
 	}
 
+// ----  Send The Email  -----
 	$rc = $phpgw->send->msg('email', $to, $subject, stripslashes($body), '', $cc, $bcc);
 	if ($rc)
 	{
-//		header('Location: '.$phpgw->link('index.php','cd=13&folder='.urlencode($return)));
+		//header('Location: '.$phpgw->link('index.php','cd=13&folder='.urlencode($return)));
 		$return = ereg_replace ("^\r\n", '', $return);
 		header('Location: '.$phpgw->link('/email/index.php','folder='.urlencode($return)));
 	}
