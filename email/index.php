@@ -356,4 +356,4 @@ function check_all()
   <td align="left"><font color="FF0000">*</font>&nbsp;<?php echo lang("New message"); ?></td>
  </tr>
 </table>
-<?php include($phpgw_info["server"]["api_dir"]."/footer.inc.php"); ?>
+<?php $phpgw->common->phpgw_footer(); ?>
