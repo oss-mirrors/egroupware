@@ -444,6 +444,7 @@
 						}
 					}
 				}
+				
 				if (!$input) $input=call_user_func('plg_fi_def_'.$type,$input_name,$value,'');
 
 				return $input;
