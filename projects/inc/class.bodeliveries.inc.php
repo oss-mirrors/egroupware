@@ -89,7 +89,7 @@
 					'adr_one_countryname' => 'adr_one_countryname',
 								'title'	=> 'title');
 
-			$address = $this->contacts->formatted_address($abid,$cols,True));
+			$address = $this->contacts->formatted_address($abid,$cols,True);
 			return $address;
 		}
 

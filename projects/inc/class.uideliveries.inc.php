@@ -39,7 +39,8 @@
 			'list_projects'		=> True,
 			'delivery'			=> True,
 			'list_deliveries'	=> True,
-			'show_delivery'		=> True
+			'show_delivery'		=> True,
+			'fail'				=> True
 		);
 
 		function uideliveries()
@@ -398,7 +399,7 @@
 
 			if (!$delivery_id)
 			{
-				$this->t->set_var('print_delivery',$GLOBALS['phpgw']->link('/projects/fail.php'));
+				$this->t->set_var('print_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.fail'));
 			}
 			else
 			{
@@ -656,7 +657,7 @@
 		{
 			global $delivery_id;
 
-			$this->display_app_header();
+			$this->set_app_langs();
 
 			$this->t->set_file(array('del_list_t' => 'del_deliveryform.tpl'));
 			$this->t->set_block('del_list_t','del_list','list');
@@ -712,7 +713,7 @@
 
 				if ($hours[$i]['minperae'] != 0)
 				{
-					$aes = ceil($hours[$i]'minutes']/$hours[$i]['minperae']);
+					$aes = ceil($hours[$i]['minutes']/$hours[$i]['minperae']);
 				}
 				$sumaes += $aes;
 
@@ -729,6 +730,13 @@
 			$this->t->set_var('sumaes',$sumaes);
 
 			$this->t->pfp('out','del_list_t',True);
+		}
+
+		function fail()
+		{
+			echo '<p><center>' . lang('You have to CREATE a delivery or invoice first !');
+			echo '</center>';
+			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
 	}
 ?>

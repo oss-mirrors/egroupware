@@ -35,7 +35,7 @@
 		<td width="25%" bgcolor="{th_bg}">{lang_activity}</td>
 		<td width="25%" bgcolor="{th_bg}">{lang_hours}</td>
 		<td width="10%" bgcolor="{th_bg}" align="center">{lang_status}</td>
-		<td width="10%" bgcolor="{th_bg}" align="center">{lang_start_date}</td>
+		<td width="10%" bgcolor="{th_bg}" align="center">{lang_work_date}</td>
 		<td width="10%" bgcolor="{th_bg}" align="right">{lang_workunits}</td>
 		<td width="10%" bgcolor="{th_bg}" align="center">{lang_edit}</td>
 	</tr>
