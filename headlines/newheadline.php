@@ -62,7 +62,7 @@
 
       $phpgw->db->unlock();
 
-      Header("Location: " . $phpgw->link("admin.php", "cd=28"));
+      Header("Location: " . $phpgw->link("/headlines/admin.php", "cd=28"));
     }
   }
 
@@ -72,7 +72,7 @@
     echo "<center>".$error."</center>";
   }
      ?>
-       <form method="POST" action="<?php echo $phpgw->link("newheadline.php"); ?>">
+       <form method="POST" action="<?php echo $phpgw->link("/headlines/newheadline.php"); ?>">
         <center>
          <table border=0 width=65%>
            <tr>
