@@ -225,6 +225,13 @@
 				mkdir($co['script_path'] . '/backup',0700);
 			}
 
+			$co['basedir'] = $co['server_root'] . '/backup/archives';
+
+			if (!is_dir($co['basedir']))
+			{
+				mkdir($co['basedir'], 0700);
+			}
+
 			$co['script_path'] = $co['script_path'] . '/backup';
 
 			if ($co['b_create'] == 'yes')
@@ -259,6 +266,7 @@
 				$config = $GLOBALS['phpgw']->template->set_file(array('script_ba_t' => 'script_form.tpl'));
 				$config .= $GLOBALS['phpgw']->template->set_block('script_ba_t','script_ba','ba');
 
+				$config .= $GLOBALS['phpgw']->template->set_var('basedir',$co['basedir']);
 				$config .= $GLOBALS['phpgw']->template->set_var('server_root',$co['server_root']);
 
 				$config .= $GLOBALS['phpgw']->template->set_var('bcomp',$co['b_type']);

@@ -9,7 +9,7 @@
 	</tr>
 <!-- BEGIN archive_list -->
 
-	<tr>
+	<tr bgcolor="{tr_color}">
 		<td><a href="{archive}">{archive}</a></td>
 	</tr>
 

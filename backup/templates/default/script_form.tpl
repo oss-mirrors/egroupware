@@ -31,12 +31,7 @@
 	$year   = date('Y',$bdate);
 	$bdateout =  $day . '_' . $month . '_' . $year;
 
-	$basedir = '{server_root}/backup/archives';
-
-	if (!is_dir($basedir))
-	{
-		mkdir($basedir, 0700);
-	}
+	$basedir = '{basedir}';
 
 	$bmysql = '{bmysql}';
 //	$bpsql = '{bpsql}';
@@ -64,7 +59,7 @@
 	if ($bmysql == 'yes')
 	{
 		chdir('/var/lib/mysql');
-		$out = $basedir . '/' . $bdateout . '_backup_{db_type}.' . $end;
+		$out = $basedir . '/' . $bdateout . '_phpGWBackup_{db_type}.' . $end;
 		$in = ' {db_name}';
 
 		system("$command" . $out . $in);
@@ -76,13 +71,13 @@
 			$out = $out . $end;
 		}
 		$output[] = $out;
-		$input[] = $bdateout . '_backup_{db_type}.' . $end;
+		$input[] = $bdateout . '_phpGWBackup_{db_type}.' . $end;
 	}
 
 	if ($bldap == 'yes')
 	{
 		chdir('/var/lib');
-		$out = $basedir . '/' . $bdateout . '_backup_ldap.' . $end;
+		$out = $basedir . '/' . $bdateout . '_phpGWBackup_ldap.' . $end;
 		$in = ' ldap';
 
 		system("$command" . $out . $in);
@@ -94,7 +89,7 @@
 			$out = $out . $end;
 		}
 		$output[] = $out;
-		$input[] = $bdateout . '_backup_ldap.' . $end;
+		$input[] = $bdateout . '_phpGWBackup_ldap.' . $end;
 	}
 
 	if ($bemail == 'yes')
@@ -103,18 +98,18 @@
 		if (is_dir('/home/{lid}') == True)
 		{
 			chdir('/home/{lid}');
-			$out = $basedir . '/' . $bdateout . '_backup_email_{lid}.' . $end;
+			$out = $basedir . '/' . $bdateout . '_phpGWBackup_email_{lid}.' . $end;
 			$in = ' Maildir';
 			system("$command" . $out . $in);
 
 			if ($bcomp == 'tar.bz2')
 			{
 				$end = '.bz2';
-				system("$bzip2 -z " . $out); 
+				system("$bzip2 -z " . $out);
 				$out = $out . $end;
 			}
 			$output[] = $out;
-			$input[] = $bdateout . '_backup_email_{lid}.' . $end;
+			$input[] = $bdateout . '_phpGWBackup_email_{lid}.' . $end;
 		}
 <!-- END script_ba -->
 	}
@@ -198,11 +193,13 @@
 				mkdir($smbdir, 0700);
 			}
 
-			$pipe = system("mount.smbfs " . '//' . "$rip$rpath $smbdir -o username=$ruser,password=$rpwd,rw");
+			$rip = '//' . $rip;
+
+			$pipe = system("mount.smbfs $rip$rpath $smbdir -o username=$ruser,password=$rpwd,rw");
 
 			if (!$pipe)
 			{
-				echo 'mounting service ' . $rip$rpath . 'trough smbmount failed !' . "\n";
+				echo 'mounting service ' . $rip . $rpath . 'trough smbmount failed !' . "\n";
 				exit;
 			}
 
@@ -213,11 +210,11 @@
 
 				if ($put)
 				{
-					echo 'smbmount backuptransfer $input[$i]: success !' . "\n";
+					echo 'smbmount backuptransfer ' . $input[$i] . ': success !' . "\n";
 				}
 				else
 				{
-					echo 'smbmount backuptransfer $input[$i]: failed !' . "\n";
+					echo 'smbmount backuptransfer ' . $input[$i] . ': failed !' . "\n";
 					exit;
 				}
 			}
