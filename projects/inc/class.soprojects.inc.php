@@ -456,6 +456,7 @@
 		function return_admins()
 		{
 			$this->db->query("select account_id,type from phpgw_p_projectmembers WHERE type='aa' OR type='ag'");
+			$this->total_records = $this->db->num_rows();
 			while ($this->db->next_record())
 			{
 				$admins[] = array('account_id' => $this->db->f('account_id'),

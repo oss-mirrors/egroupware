@@ -32,6 +32,6 @@
 	);
 	include('../header.inc.php');
 
-	Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
+	Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
 	$GLOBALS['phpgw']->common->phpgw_exit();
 ?>

@@ -8,16 +8,16 @@
 	*  Free Software Foundation; either version 2 of the License, or (at your  *
 	*  option) any later version.                                              *
 	\**************************************************************************/
-
 	/* $Id$ */
 
-{
+	{
 // Only Modify the $file and $title variables.....
-	$title = $appname;
-	$file = Array(
-		'Project Administration' => $GLOBALS['phpgw']->link('/projects/admin.php')
-	);
+		$title = $appname;
+		$file = Array
+		(
+			'Project Administration' => $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_admins&action=pad')
+		);
 //Do not modify below this line
-	display_section($appname,$title,$file);
-}
+		display_section($appname,$title,$file);
+	}
 ?>

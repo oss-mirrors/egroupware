@@ -45,7 +45,8 @@
 			'add_activity'		=> True,
 			'edit_activity'		=> True,
 			'add_sub'			=> True,
-			'view_project'		=> True
+			'view_project'		=> True,
+			'list_admins'		=> True
 		);
 
 		function uiprojects()
@@ -1244,6 +1245,86 @@
 			$this->t->set_var('addhandle','');
 			$this->t->pfp('out','activity_edit');
 			$this->t->pfp('edithandle','edit');
+		}
+
+		function list_admins()
+		{
+			global $phpgw, $phpgw_info, $action;
+
+			$GLOBALS['phpgw']->common->phpgw_header();
+			echo parse_navbar();
+
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uiprojects.list_admins',
+				'action'		=> 'pad'
+			);
+
+			$this->set_app_langs();
+
+			$this->t->set_file(array('admin_list_t' => 'list_admin.tpl'));
+			$this->t->set_block('admin_list_t','admin_list','list');
+
+			$this->t->set_var('lang_action',lang('Project administration'));
+			$this->t->set_var('addurl',$phpgw->link('/projects/add_admin.php'));
+			$this->t->set_var('search_action',$phpgw->link('/index.php',$link_data));
+			$this->t->set_var('search_list',$this->nextmatchs->search(1));
+			$this->t->set_var('doneurl',$phpgw->link('/admin/index.php'));
+
+			if (!$this->start)
+			{
+				$this->start = 0;
+			}
+
+			$admins = $this->boprojects->read_admins($this->start, True, $this->query, $this->sort, $this->order);
+
+//--------------------------------- nextmatch --------------------------------------------
+ 
+			$left = $this->nextmatchs->left('/index.php',$this->start,$this->boprojects->total_records,$link_data);
+			$right = $this->nextmatchs->right('/index.php',$this->start,$this->boprojects->total_records,$link_data);
+			$this->t->set_var('left',$left);
+			$this->t->set_var('right',$right);
+
+    		$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->boprojects->total_records,$this->start));
+ 
+// ------------------------------ end nextmatch ------------------------------------------
+ 
+//------------------- list header variable template-declarations -------------------------
+
+			$this->t->set_var('sort_lid',$this->nextmatchs->show_sort_order($this->sort,'account_lid',$this->order,'/index.php',lang('Username / Group'),$link_data));
+			$this->t->set_var('sort_lastname',$this->nextmatchs->show_sort_order($this->sort,'account_lastname',$this->order,'/index.php',lang('Lastname'),$link_data));
+			$this->t->set_var('sort_firstname',$this->nextmatchs->show_sort_order($this->sort,'account_firstname',$this->order,'/index.php',lang('Firstname'),$link_data));
+
+// -------------------------- end header declaration --------------------------------------
+
+			for ($i=0;$i<count($admins);$i++)
+			{
+				$this->nextmatchs->template_alternate_row_color(&$this->t);
+				$lid = $admins[$i]['lid'];
+
+				if ($admins[$i]['type']=='aa')
+				{
+					$firstname = $admins[$i]['firstname'];
+					if (!$firstname) { $firstname = '&nbsp;'; }
+					$lastname = $admins[$i]['lastname'];
+					if (!$lastname) { $lastname = '&nbsp;'; }
+				}
+				else
+				{
+					$firstname = '&nbsp;';
+					$lastname = '&nbsp;';
+				}
+
+				$this->t->set_var(array('lid' => $lid,
+							'firstname' => $firstname,
+							'lastname' => $lastname));
+
+				$this->t->fp('list','admin_list',True);
+			}
+
+			$this->t->pfp('out','admin_list_t',True);
+			$this->save_sessiondata($action);
+			$phpgw->common->phpgw_footer();
 		}
 	}
 ?>

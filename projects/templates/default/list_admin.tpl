@@ -17,9 +17,7 @@
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
-		<td colspan="3" align="right">
-			<form method="post" action="{actionurl}">
-			<input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}"></form></td>
+		<td colspan="3" align="right"><form method="POST" name="query" action="{search_action}">{search_list}</form></td>
 	</tr>
 	<tr bgcolor="{th_bg}">
 		<td bgcolor="{th_bg}">{sort_lid}</td>

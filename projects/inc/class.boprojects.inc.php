@@ -87,6 +87,7 @@
 				case 'mains'	: $column = 'projects_mains'; break;
 				case 'subs'		: $column = 'projects_subs'; break;
 				case 'act'		: $column = 'projects_act'; break;
+				case 'pad'		: $column = 'projects_pad'; break;
 			}
 			return $column;
 		}
@@ -180,6 +181,36 @@
 
 			$employees = $phpgw->accounts->get_list('accounts');
 			return $employees;
+		}
+
+		function read_admins($start, $limit, $query, $sort, $order)
+		{ 
+			global $phpgw;
+
+			$admins = $this->soprojects->return_admins();
+			$this->total_records = $this->soprojects->total_records;
+
+			$allaccounts = $phpgw->accounts->get_list('both', $start, $sort, $order, $query, $limit);
+			while (list($null,$account) = each($allaccounts))
+			{
+				for ($i=0;$i<count($admins);$i++)
+				{
+					if ($account['account_id'] == $admins[$i]['account_id'])
+					{
+						$admin_data[] = Array
+						(
+							'account_id'	=> $account['account_id'],
+							'lid'			=> $account['account_lid'],
+							'firstname'		=> $account['account_firstname'],
+							'lastname'		=> $account['account_lastname'],
+							'type'			=> $admins[$i]['type']
+						);
+					}
+				}
+			}
+//			_debug_array($admin_data);
+//			exit;
+			return $admin_data;
 		}
 
 		function isprojectadmin()
