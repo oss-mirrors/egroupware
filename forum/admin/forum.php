@@ -70,12 +70,12 @@
 <p>
 <table border="0" width=100%>
 <tr>
-<?  echo "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] . "\" align=\"left\"><b>" . lang("Forums") . " " . lang("Admin") . "</b></td>" . "</tr>"; ?>
+<?php echo "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] . "\" align=\"left\"><b>" . lang("Forums") . " " . lang("Admin") . "</b></td>" . "</tr>"; ?>
 
 <tr>
  <td>
   <font size=-1>
-<?
+<?php
 echo "<a href=\"" . $phpgw->link("admin/category.php") . "\">" . lang("New Category") ."</a>";
 echo " | ";
 echo "<a href=\"" . $phpgw->link("admin/forum.php") . "\">" . lang("New Forum") ."</a>";   
@@ -88,21 +88,21 @@ echo "<a href=\"" . $phpgw->link("/forum") . "\">" . lang("Return to Forums") ."
   </font>
   <br><br>
   <center>
-  <table border="0" width=80% bgcolor="<? echo $phpgw_info["theme"]["table_bg"]?>">
+  <table border="0" width=80% bgcolor="<?php echo $phpgw_info["theme"]["table_bg"]?>">
    <tr>
-    <td colspan=2 bgcolor="<?echo $phpgw_info["theme"]["th_bg"]?>">
-     <center><?echo $buttontext ?></center>
+    <td colspan=2 bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]?>">
+     <center><?php echo $buttontext ?></center>
     </td>
    </tr>
    <tr>
     <form method="POST" action="<?php echo $phpgw->link("admin/forum.php"); ?>">
-    <? echo $extrahidden ?> 
-    <input type="hidden" name="action" value="<?echo $actiontype?>">
+    <?php echo $extrahidden ?> 
+    <input type="hidden" name="action" value="<?php echo $actiontype?>">
 
-    <td><? echo lang("Belongs to Category") ?>:</td>
+    <td><?php echo lang("Belongs to Category") ?>:</td>
     <td>
      <select name="goestocat">
-<?
+<?php
     $q = $phpgw->db->query("select * from f_categories");
 
     while($phpgw->db->next_record($q)) {
@@ -112,21 +112,21 @@ echo "<a href=\"" . $phpgw->link("/forum") . "\">" . lang("Return to Forums") ."
       else { echo "<option value=\"$cat_id\">$cat_name</option>\n"; }
     }
 ?>
-    <option value=-1><? echo lang("No Category") ?></option>
+    <option value=-1><?php echo lang("No Category") ?></option>
     </select>
    </td>
    <tr>
-    <td><? echo lang("Forum Name") ?>:</td>
-    <td><input type="text" name="forname" size=40 maxlength=49 value="<? echo $forname ?>"></td>
+    <td><?php echo lang("Forum Name") ?>:</td>
+    <td><input type="text" name="forname" size=40 maxlength=49 value="<?php echo $forname ?>"></td>
    </tr>  
    <tr>
-    <td><? echo lang("Forum Description") ?>:</td>
-    <td><textarea rows="3" cols="40" name="fordescr" virtual-wrap maxlength=240><? echo $fordescr ?></textarea></td>
+    <td><?php echo lang("Forum Description") ?>:</td>
+    <td><textarea rows="3" cols="40" name="fordescr" virtual-wrap maxlength=240><?php echo $fordescr ?></textarea></td>
    </tr>
    <tr>
     <td colspan=2 align=right>
 
-     <input type="submit" value="<?echo $buttontext?>">
+     <input type="submit" value="<?php echo $buttontext?>">
     </td>
    </tr>
 

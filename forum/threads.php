@@ -18,7 +18,7 @@
 <p>
 <table border="0" width="100%">
  <tr>
-<? 
+<?php
  $phpgw->db->query("select * from f_categories where id = $cat");
  $phpgw->db->next_record();
  $category = $phpgw->db->f("name");

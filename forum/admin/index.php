@@ -18,12 +18,12 @@
 <p>
 <table border="0" width=100%>
 <tr>
-<?  echo "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] . "\" align=\"left\"><b>" . lang("Forums") . " " . lang("Admin") . "</b></td>" . "</tr>"; ?>
+<?php echo "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] . "\" align=\"left\"><b>" . lang("Forums") . " " . lang("Admin") . "</b></td>" . "</tr>"; ?>
 
 <tr>
  <td>
   <font size=-1>
-<?
+<?php
 echo "<a href=\"" . $phpgw->link("admin/category.php") . "\">" . lang("New Category") ."</a>";
 echo " | ";
 echo "<a href=\"" . $phpgw->link("admin/forum.php") . "\">" . lang("New Forum") ."</a>";
@@ -34,17 +34,17 @@ echo "<a href=\"" . $phpgw->link("/forum") . "\">" . lang("Return to Forums") ."
   </font>
   <br><br>
   <center>
-  <table border="0" width=80% bgcolor="<? echo $phpgw_info["theme"]["table_bg"]?>">
+  <table border="0" width=80% bgcolor="<?php echo $phpgw_info["theme"]["table_bg"]?>">
    <tr>
-    <td colspan=3 bgcolor="<?echo $phpgw_info["theme"]["th_bg"]?>">
-     <center><?echo lang("Current Categories and Sub Forums")?></center>
+    <td colspan=3 bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]?>">
+     <center><?php echo lang("Current Categories and Sub Forums")?></center>
     </td>
    </tr>
    <tr>
     <td>
     </td>
    </tr>
-<?
+<?php
   $f_tree = array();
   $phpgw->db->query("select * from f_categories");
   while($phpgw->db->next_record()) {
@@ -100,7 +100,7 @@ echo "<a href=\"" . $phpgw->link("/forum") . "\">" . lang("Return to Forums") ."
  </td>
 </tr>
 </table>
-<?
+<?php
 
 echo "</center>";
   $phpgw->common->phpgw_footer();

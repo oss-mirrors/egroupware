@@ -67,12 +67,12 @@
 <p>
 <table border="0" width=100%>
 <tr>
-<?  echo "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] . "\" align=\"left\"><b>" . lang("Forums") . " " . lang("Admin") . "</b></td>" . "</tr>"; ?>
+<?php echo "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] . "\" align=\"left\"><b>" . lang("Forums") . " " . lang("Admin") . "</b></td>" . "</tr>"; ?>
 
 <tr>
  <td>
   <font size=-1>
-<?
+<?php
 echo "<a href=\"" . $phpgw->link("admin/category.php") . "\">" . lang("New Category") ."</a>";
 echo " | ";
 echo "<a href=\"" . $phpgw->link("admin/forum.php") . "\">" . lang("New Forum") ."</a>";   
@@ -85,24 +85,24 @@ echo "<a href=\"" . $phpgw->link("/forum") . "\">" . lang("Return to Forums") ."
   </font>
   <br><br>
   <center>
-  <table border="0" width=80% bgcolor="<? echo $phpgw_info["theme"]["table_bg"]?>">
+  <table border="0" width=80% bgcolor="<?php echo $phpgw_info["theme"]["table_bg"]?>">
    <tr>
-    <td colspan=2 bgcolor="<?echo $phpgw_info["theme"]["th_bg"]?>">
-     <center><?echo $newold?></center>
+    <td colspan=2 bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]?>">
+     <center><?php echo $newold?></center>
     </td>
    </tr>
    <tr>
     <form method="POST" action="<?php echo $phpgw->link("admin/category.php"); ?>">
     <?php echo $extrahidden; ?> 
-    <input type="hidden" name="action" value="<?echo $actiontype?>">
+    <input type="hidden" name="action" value="<?php echo $actiontype?>">
     <td><?php echo lang("Category Name") ?>:</td>
-    <td><input type="text" name="catname" size=40 maxlength=49 value="<? echo $catname ?>"></td>
+    <td><input type="text" name="catname" size=40 maxlength=49 value="<?php echo $catname ?>"></td>
    </tr>  
    <tr>
-    <td><? echo lang("Category Description") ?>:</td>
-    <td><textarea rows="3" cols="40" name="catdescr" virtual-wrap maxlength=240><? echo $catdescr ?></textarea></td>
+    <td><?php echo lang("Category Description") ?>:</td>
+    <td><textarea rows="3" cols="40" name="catdescr" virtual-wrap maxlength=240><?php echo $catdescr ?></textarea></td>
    </tr>
-   <tr><td colspan=2 align=right><input type="submit" value="<? echo $buttontext ?>"></td></tr>
+   <tr><td colspan=2 align=right><input type="submit" value="<?php echo $buttontext ?>"></td></tr>
 
   </table>
   </center>
