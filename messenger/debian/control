@@ -1,0 +1,16 @@
+Source: phpgroupware-messenger
+Section: web
+Priority: optional
+Maintainer: Luca - De Whiskey's - De Vitis <luca@debian.org>
+Build-Depends: debhelper (>> 3.0.0)
+Standards-Version: 3.5.2
+
+Package: phpgroupware-messenger
+Section: web
+Architecture: all
+Depends: phpgroupware (>= ${Source-Version}), php3-pgsql | php3-cgi-pgsql | php4-pgsql | php3-mysql | php3-cgi-mysql | php4-mysql
+Description: The phpGroupWare messenger module
+ This phpGroupWare application allows messages to be sent between phpGroupWare
+ users. Features a message inbox, notification upon new messages, Reply-To,
+ Forward-To, and more.
+
