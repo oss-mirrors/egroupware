@@ -293,6 +293,7 @@
 		var $sparts;
 		var $hsub=array();
 		var $bsub=array();
+		var $folder = '';
 		
 		var $imap_builtin=False;
 		// DEBUG FLAG
@@ -412,6 +413,10 @@
 			{
 				$port_only_len = strlen($svr_data['port_with_junk']) - strlen($port_junk);
 				$svr_data['port'] = substr($svr_data['port_with_junk'], 0, $port_only_len);
+			}
+			else
+			{
+				$svr_data['port'] = trim($svr_data['port_with_junk']);
 			}
 			return $svr_data;
 		}

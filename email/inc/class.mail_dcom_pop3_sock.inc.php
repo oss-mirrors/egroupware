@@ -251,7 +251,28 @@
 		/**************************************************************************\
 		*	Message Sorting
 		\**************************************************************************/
-		function sort($stream_notused='',$criteria=SORTDATE,$reverse=False,$options='')
+		/*!
+		@function sort
+		@abstract implements IMAP_SORT
+		@param $stream_notused : socket class handles stream reference internally
+		@param $criteria :  integer : HOW to sort the messages, we prefer SORTARRIVAL, or "1" as default
+			SORTDATE:  0:  This is the Date that the senders email client stamps the message with
+			SORTARRIVAL: 1:  This is the date the email arrives at your email server (MTA)
+			SORTFROM:  2
+			SORTSUBJECT: 3
+			SORTSIZE:  6
+		@param $reverse : boolean : the ordering if the messages , low to high, or high to low
+			FALSE: 0:  lowest to highest  (default for php's builtin imap)
+			TRUE: 1:  highest to lowest, a.k.a. "Reverse Sorting"
+		@param $options : not implemented
+		@result returns an array of integers which are messages numbers for the
+		messages sorted as requested.
+		@discussion: using SORTDATE can cause some messages to be displayed in the wrong
+		cronologicall order, because the sender's MUA can be innaccurate in date stamping
+		@author Angles, Skeeter, Itzchak Rehberg, Joseph Engo
+		@access	public
+		*/
+		function sort($stream_notused='',$criteria=SORTARRIVAL,$reverse=False,$options='')
 		{
 			if ($this->debug_dcom) { echo 'pop3: Entering sort<br>'; }
 			
@@ -385,6 +406,7 @@
 		@result returns an instance of Class "msg_structure" is sucessful, False if error
 		@discussion  basiclly a replacement for PHP's c-client logic which is missing if IMAP is not builtin
 		@author Angles, (some sub-parts by Skeeter, Itzchak Rehberg, Joseph Engo)
+		@access	public
 		*/
 		function fetchstructure($stream_notused,$msg_num,$flags="")
 		{
@@ -411,14 +433,13 @@
 			// $this->header_array_msgnum
 			// $this->body_array
 			// $this->body_array_msgnum
-			// $this->msg_structure  (PARTIAL - INCOMPLETE)
+			// $this->msg_structure  (PARTIAL - INCOMPLETE, completed below)
 			// $this->msg_structure_msgnum
 			
 			/*
 			// ---  Create Sub-Parts FetchStructure Data  (if necessary)  ---
+			// NOTE: param to  create_embeded_fetchstructure  is a REFERENCE
 			$this->create_embeded_fetchstructure(&$this->msg_structure);
-			*/
-			/*
 			// TEST: attempt 3rd level MIME discovery
 			$level_3_loops = count($this->msg_structure->parts);
 			for ($i=0; $i < $level_3_loops ;$i++)
@@ -428,6 +449,7 @@
 					// grap 3rd level embedded data (if any)
 					if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: attempting ['.$i.'] 3rd level parts embedded discovery<br>'; }
 					// ---  Create 3rd Level Sub-Parts FetchStructure Data  (if necessary)  ---
+					// NOTE: param to  create_embeded_fetchstructure  is a REFERENCE
 					$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$i]);
 				}
 				else
@@ -437,93 +459,8 @@
 			}
 			*/
 
-
-			/*
-			$this->create_embeded_fetchstructure(&$this->msg_structure);
-			
-			if (isset($this->msg_structure->parts))
-			{
-				for ($lev_1=0; $lev_1 < count($this->msg_structure->parts) ;$lev_1++)
-				{
-					// grap 3rd level embedded data (if any)
-					if ($this->debug_dcom_extra) { echo '<br>* * * * * * * * * * *<br>pop3: fetchstructure: attempting base->parts['.$lev_1.'] of ['.(string)(count($this->msg_structure->parts)-1).'] embedded parts discovery * * * * *<br>'; }
-					// ---  Create 3rd Level Sub-Parts FetchStructure Data  (if necessary)  ---
-					$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]);
-				}
-			}
-			else
-			{
-					if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Traversal SKIP 2rd level parts NOT SET<br>'; }
-			}
-			// SECOND PASS
-			if (isset($this->msg_structure->parts))
-			{
-				for ($lev_1=0; $lev_1 < count($this->msg_structure->parts) ;$lev_1++)
-				{
-					// grap 3rd level embedded data (if any)
-					if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Parent is base->parts['.$lev_1.'] of ['.(string)(count($this->msg_structure->parts)-1).']<br>'; }
-					if (isset($this->msg_structure->parts[$lev_1]->parts))
-					{
-						for ($lev_2=0; $lev_2 < count($this->msg_structure->parts[$lev_1]->parts) ;$lev_2++)
-						{
-							// grap 3rd level embedded data (if any)
-							if ($this->debug_dcom_extra) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting base->parts['.$lev_1.']->parts['.$lev_2.'] of ['.(string)(count($this->msg_structure->parts[$lev_1]->parts)-1).'] embedded parts discovery * * * * *<br>'; }
-							// ---  Create 3rd Level Sub-Parts FetchStructure Data  (if necessary)  ---
-							$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]->parts[$lev_2]);
-						}
-					}
-					else
-					{
-						if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Traversal SKIP 3rd level parts NOT SET<br>'; }
-					}
-				}
-			}
-			else
-			{
-					if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: Traversal BREAK 2rd level parts NOT SET<br>'; }
-			}
-			
-			// THIRD PASS
-			if (isset($this->msg_structure->parts))
-			{
-				for ($lev_1=0; $lev_1 < count($this->msg_structure->parts) ;$lev_1++)
-				{
-					// grap 3rd level embedded data (if any)
-					if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Parent is base->parts['.$lev_1.'] of ['.(string)(count($this->msg_structure->parts)-1).']<br>'; }
-					if (isset($this->msg_structure->parts[$lev_1]->parts))
-					{
-						for ($lev_2=0; $lev_2 < count($this->msg_structure->parts[$lev_1]->parts) ;$lev_2++)
-						{
-							if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Parent is base->parts['.$lev_1.']->parts['.$lev_2.'] of ['.(string)(count($this->msg_structure->parts[$lev_1]->parts)-1).']<br>'; }
-							if (isset($this->msg_structure->parts[$lev_1]->parts[$lev_2]))
-							{
-								for ($lev_3=0; $lev_3 < count($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts) ;$lev_3++)
-								{
-									// grap 3rd level embedded data (if any)
-									if ($this->debug_dcom_extra) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting base->parts['.$lev_1.']->parts['.$lev_2.']->parts['.$lev_3.'] of ['.(string)(count($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts)-1).'] embedded parts discovery * * * * *<br>'; }
-									// ---  Create 3rd Level Sub-Parts FetchStructure Data  (if necessary)  ---
-									$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts[$lev_3]);
-								}
-							}
-							else
-							{
-								if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Traversal SKIP THIRD PASS level parts NOT SET<br>'; }
-							}
-						}
-					}
-					else
-					{
-						if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: Traversal SKIP 3rd level parts NOT SET<br>'; }
-					}
-				}
-			}
-			else
-			{
-					if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: Traversal BREAK 2rd level parts NOT SET<br>'; }
-			}
-			*/
-
 			// ---  Create Sub-Parts FetchStructure Data  (if necessary)  ---
+			// NOTE: param to  create_embeded_fetchstructure  is a REFERENCE
 			$this->create_embeded_fetchstructure(&$this->msg_structure);
 			// FOUR PASS ANALYSIS
 			if (isset($this->msg_structure->parts))
@@ -533,6 +470,7 @@
 					// grap 1st level embedded data (if any)
 					if ($this->debug_dcom_extra) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting this->msg_structure->parts['.$lev_1.'] of ['.(string)(count($this->msg_structure->parts)-1).'] embedded parts discovery * * * * *<br>'; }
 					// Create Sub-Parts FetchStructure Data  (if necessary)  ---
+					// NOTE: param to  create_embeded_fetchstructure  is a REFERENCE
 					$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]);
 					
 					// go deeper
@@ -543,6 +481,7 @@
 							// grap 2nd level embedded data (if any)
 							if ($this->debug_dcom_extra) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting this->msg_structure->parts['.$lev_1.']->parts['.$lev_2.'] of ['.(string)(count($this->msg_structure->parts[$lev_1]->parts)-1).'] embedded parts discovery * * * * *<br>'; }
 							// Create Sub-Parts FetchStructure Data  (if necessary)  ---
+							// NOTE: param to  create_embeded_fetchstructure  is a REFERENCE
 							$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]->parts[$lev_2]);
 							
 							// go deeper
@@ -553,6 +492,7 @@
 									// grap 3rd level embedded data (if any)
 									if ($this->debug_dcom_extra) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting this->msg_structure->parts['.$lev_1.']->parts['.$lev_2.']->parts['.$lev_3.'] of ['.(string)(count($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts)-1).'] embedded parts discovery * * * * *<br>'; }
 									// Create 3rd Level Sub-Parts FetchStructure Data  (if necessary)  ---
+									// NOTE: param to  create_embeded_fetchstructure  is a REFERENCE
 									$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts[$lev_3]);
 									
 									// go deeper
@@ -563,6 +503,7 @@
 											// grap 3rd level embedded data (if any)
 											if ($this->debug_dcom_extra) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting this->msg_structure->parts['.$lev_1.']->parts['.$lev_2.']->parts['.$lev_3.']->parts['.$lev_4.'] of ['.(string)(count($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts[$lev_3]->parts)-1).'] embedded parts discovery * * * * *<br>'; }
 											// Create Sub-Parts FetchStructure Data  (if necessary)  ---
+											// NOTE: param to  create_embeded_fetchstructure  is a REFERENCE
 											$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts[$lev_3]->parts[$lev_4]);
 										}
 									}
@@ -589,9 +530,7 @@
 				if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: Traversal SKIP FIRST PARTS level parts NOT SET<br>'; }
 			}
 			
-			
 			if ($this->debug_dcom_extra) { echo '<br>***<br>pop3: fetchstructure: * * * * * * Traversal OVER * * * * * * * * * * <br>'; }
-			
 			
 			if ($this->debug_dcom_extra)
 			{
@@ -599,12 +538,22 @@
 				var_dump($this->msg_structure);
 				echo '<br><br><br>';
 			}
-
+			
 			if ($this->debug_dcom) { echo 'pop3: Leaving fetchstructure<br>'; }
 			return $this->msg_structure;
 		}
 
-
+		/*!
+		@function fill_toplevel_fetchstructure
+		@abstract HELPER  function for fetchstructure / IMAP_FETCHSTRUCTURE
+		@param $stream_notused : socket class handles stream reference internally
+		@param $msg_num :  integer
+		@param $flags : integer - FT_UID (not implimented)
+		@result returns an instance of Class "msg_structure" is sucessful, False if error
+		@discussion  basiclly a replacement for PHP's c-client logic which is missing if IMAP is not builtin
+		@author Angles, (some sub-parts by Skeeter, Itzchak Rehberg, Joseph Engo)
+		@access	private
+		*/
 		function fill_toplevel_fetchstructure($stream_notused,$msg_num,$flags="")
 		{
 			if ($this->debug_dcom) { echo 'pop3: Entering fill_toplevel_fetchstructure<br>'; }
@@ -658,7 +607,7 @@
 			$this->msg_structure->custom['parent_cookie'] = ''; // no parent at top level
 			$this->msg_structure->custom['detect_state'] = 'out'; // not doing multi part detection on this yet
 			// ---  Fill  Top Level Fetchstructure  ---
-			//$this->msg_structure = $this->sub_get_structure(&$this->msg_structure,$header_array);
+			// NOTE: first param to sub_get_structure is a REFERENCE
 			$this->sub_get_structure(&$this->msg_structure,$header_array);
 			
 			// ---  Fill Any Missing Necessary Data  ---
@@ -691,6 +640,7 @@
 				$this->msg_structure->encoding = $this->default_encoding();
 			}
 			// unset any elements that have not been filled
+			// NOTE: param to  unset_unfilled_fetchstructure  is a REFERENCE
 			$this->unset_unfilled_fetchstructure(&$this->msg_structure);
 			if ($this->debug_dcom_extra)
 			{
@@ -701,7 +651,16 @@
 			if ($this->debug_dcom) { echo 'pop3: Leaving fill_toplevel_fetchstructure<br>'; }
 			return True;
 		}
-		
+
+		/*!
+		@function create_embeded_fetchstructure
+		@abstract HELPER  function for fetchstructure / IMAP_FETCHSTRUCTURE
+		@param $info : **REFERENCE** to a class "msg_structure" object
+		@result NONE : this function DIRECTLY manipulates the referenced object
+		@discussion  as implemented, reference is to some part of class var $this->msg_structure
+		@author Angles
+		@access	private
+		*/
 		function create_embeded_fetchstructure($info)
 		{
 			if ($this->debug_dcom) { echo 'pop3: Entering create_embeded_fetchstructure<br>'; }
@@ -758,6 +717,7 @@
 							$info->parts[$cur_part_idx]->custom['detect_state'] = 'out';
 							// we are DONE with this part for now 
 							// unset any unfilled elements
+							// NOTE: param to  unset_unfilled_fetchstructure  is a REFERENCE
 							$this->unset_unfilled_fetchstructure(&$info->parts[$cur_part_idx]);
 						}
 						// so now deal with this NEW part we just discovered
@@ -807,7 +767,7 @@
 						// this MUST be a start point for the next part
 						$info->parts[$new_part_idx]->custom['part_start'] = (int)($y+1);
 						// fill the conventional info on this fetchstructure sub-part
-						//$info->parts[$new_part_idx] = $this->sub_get_structure(&$info->parts[$new_part_idx],$part_header_array);
+						// NOTE: first param to sub_get_structure is a REFERENCE
 						$this->sub_get_structure(&$info->parts[$new_part_idx],$part_header_array);
 						// ADVANCE INDEX $x TO AFTER WHAT WE'VE ALREADY LOOKED AT
 						if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: mime loop: advance x from ['.$x.'] to ['.$y.']<br>'; }
@@ -823,6 +783,7 @@
 						// we are DONE with this part for now 
 						if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: mime loop: final boundary at ['.(string)($x-1).'] byte cumula: ['.$info->parts[$cur_part_idx]->bytes.']<br>'; }
 						// unset any unfilled elements
+						// NOTE: param to  unset_unfilled_fetchstructure  is a REFERENCE
 						$this->unset_unfilled_fetchstructure(&$info->parts[$cur_part_idx]);
 					}
 					else
@@ -909,6 +870,7 @@
 				
 				// 2) Feed these Headers thru "sub_get_structure"
 				// fill the conventional info on this fetchstructure sub-part
+				// NOTE: first param to sub_get_structure is a REFERENCE
 				$this->sub_get_structure(&$info->parts[$enc_part_idx],$part_header_array);
 				
 				// 3) fill Part Start and Part End
@@ -979,6 +941,16 @@
 			return True;
 		}
 		
+		/*!
+		@function sub_get_structure
+		@abstract HELPER  function for fetchstructure / IMAP_FETCHSTRUCTURE
+		@param $info : **REFERENCE** to a class "msg_structure" object
+		@param $header_array : array of headers to process
+		@result NONE : this function DIRECTLY manipulates the referenced object
+		@discussion  as implemented, reference is to some part of class var $this->msg_structure
+		@author Angles, Itzchak Rehberg, Joseph Engo
+		@access	private
+		*/
 		function sub_get_structure($info,$header_array)
 		{
 			$debug_mime = $this->debug_dcom_extra;
@@ -997,7 +969,6 @@
 			$info->custom['header_end'] = ''; // this parts MIME headers ending index in body array
 			$info->custom['part_start'] = $extra_args['part_start'];
 			$info->custom['part_end'] = ''; // unknown ending point at this stage, we just got past it's headers
-			$info->parts = array();
 			*/
 			// FILL THE DATA
 			for ($i=0; $i < count($header_array) ;$i++)
@@ -1020,6 +991,7 @@
 				{
 				  case "content-type:" :
 					// this will fill type and (hopefully) subtype
+					// NOTE: first param to  parse_type_subtype  is a REFERENCE
 					$this->parse_type_subtype(&$info,$content);
 					// ALSO, typically Paramaters are on this line as well
 					$pos_param = strpos($content,";");
@@ -1027,6 +999,7 @@
 					{
 						// feed the whole param line into this function
 						$content = substr($content,$pos_param+1);
+						// NOTE: first param to  parse_msg_params  is a REFERENCE
 						$this->parse_msg_params(&$info,$content);
 					}
 					break;
@@ -1052,6 +1025,7 @@
 					{
 						// feed the whole param line into this function
 						$content = substr($content,$pos_param+1);
+						// NOTE: first param to  parse_msg_params  is a REFERENCE
 						$this->parse_msg_params(&$info,$content,False);
 					}
 					break;
@@ -1098,6 +1072,17 @@
 			return $info;
 		}
 		
+		/*!
+		@function unset_unfilled_fetchstructure
+		@abstract HELPER  function for fetchstructure / IMAP_FETCHSTRUCTURE
+		@param $info : **REFERENCE** to a class "msg_structure" object
+		@result NONE : this function DIRECTLY manipulates the referenced object
+		@discussion  as implemented, reference is to some part of class var $this->msg_structure
+		unsets any unfilled elements of the referenced part in the fetchstructure object 
+		to mimic PHP's return structure
+		@author Angles
+		@access	private
+		*/
 		function unset_unfilled_fetchstructure($info)
 		{
 			if ($this->debug_dcom) { echo 'pop3: Entering unset_unfilled_fetchstructure<br>'; }
@@ -1163,7 +1148,17 @@
 			if ($this->debug_dcom) { echo 'pop3: Leaving unset_unfilled_fetchstructure<br>'; }
 		}
 		
-		// used to get type and subtype
+		/*!
+		@function parse_type_subtype
+		@abstract HELPER  function for sub_get_structure / IMAP_FETCHSTRUCTURE
+		@param $info : **REFERENCE** to a class "msg_structure" object
+		@param $content : the text associated with the "content-type:" header
+		@result NONE : this function DIRECTLY manipulates the referenced object
+		@discussion  as implemented, reference is to some part of class var $this->msg_structure
+		parses "content-type:" header into fetchstructure data ->type and ->subtype
+		@author Angles, Itzchak Rehberg, Joseph Engo
+		@access	private
+		*/
 		function parse_type_subtype($info,$content)
 		{
 			if ($this->debug_dcom) { echo 'pop3: Entering parse_type_subtype<br>'; }
@@ -1203,6 +1198,20 @@
 			if ($this->debug_dcom) { echo 'pop3: Leaving parse_type_subtype<br>'; }
 		}
 		
+		/*!
+		@function parse_msg_params
+		@abstract HELPER  function for sub_get_structure / IMAP_FETCHSTRUCTURE
+		@param $info : **REFERENCE** to a class "msg_structure" object
+		@param $content : string from the "content-type:" or "content-disposition:" header
+		@param $is_disposition_param : boolean : true if parsing "content-disposition:" header string
+		tells this function to fill info->dparameters instead of the more common info->parameters
+		@result NONE : this function DIRECTLY manipulates the referenced object
+		@discussion  as implemented, reference is to some part of class var $this->msg_structure
+		parses "content-type:" header string into fetchstructure data info->parameters
+		 or "content-disposition:" header string into fetchstructure data info->dparameters
+		@author Angles, Itzchak Rehberg, Joseph Engo
+		@access	private
+		*/
 		function parse_msg_params($info,$content,$is_disposition_param=False)
 		{
 			// seperate param strings into an string list array
@@ -1360,6 +1369,7 @@
 		@result returns an instance of Class "hdr_info_envelope", or returns False on error
 		@discussion  ?
 		@author Angles, Skeeter, Itzchak Rehberg, Joseph Engo
+		@access	public
 		*/
 		function header($stream_notused,$msg_num,$fromlength="",$tolength="",$defaulthost="")
 		{
@@ -1420,30 +1430,37 @@
 					case "to"	:
 					case "to:"	: 
 					  // following two lines need to be put into a loop!
+					  // NOTE: 3rd and 4th params to  get_addr_details  are REFERENCES
 					  $info->to   = $this->get_addr_details("to",$content,&$header_array,&$i);
 					  break;
 					case "from"	:
 					case "from:"	:
+					  // NOTE: 3rd and 4th params to  get_addr_details  are REFERENCES
 					  $info->from = $this->get_addr_details("from",$content,&$header_array,&$i);
 					  break;
 					case "cc"	:
 					case "cc:"	:
+					  // NOTE: 3rd and 4th params to  get_addr_details  are REFERENCES
 					  $info->cc   = $this->get_addr_details("cc",$content,&$header_array,&$i);
 					  break;
 					case "bcc"	:
 					case "bcc:"	:
+					  // NOTE: 3rd and 4th params to  get_addr_details  are REFERENCES
 					  $info->bcc  = $this->get_addr_details("bcc",$content,&$header_array,&$i);
 					  break;
 					case "reply-to"	:
 					case "reply-to:"	:
+					  // NOTE: 3rd and 4th params to  get_addr_details  are REFERENCES
 					  $info->reply_to = $this->get_addr_details("reply_to",$content,&$header_array,&$i);
 					  break;
 					case "sender"	:
 					case "sender:"	:
+					  // NOTE: 3rd and 4th params to  get_addr_details  are REFERENCES
 					  $info->sender = $this->get_addr_details("sender",$content,&$header_array,&$i);
 					  break;
 					case "return-path"	:
 					case "return-path:"	:
+					  // NOTE: 3rd and 4th params to  get_addr_details  are REFERENCES
 					  $info->return_path = $this->get_addr_details("return_path",$content,&$header_array,&$i);
 					  break;
 					default	:
@@ -1464,6 +1481,7 @@
 		@result ?
 		@discussion ?
 		@author Itzchak Rehberg, Joseph Engo
+		@access	private
 		*/
 		function get_addr_details($people,$address,$header,$count)
 		{
@@ -1590,6 +1608,7 @@
 		This is done (1) by immediately closing the connection after your done marking, this will cause POP3 to expunge
 		or (2) by issuing PHP's buildin IMAP_EXPUNGE command which we DO NOT emulate here
 		@author Angles
+		@access	public
 		*/
 		function delete($stream_notused,$msg_num,$flags="")
 		{
@@ -1677,6 +1696,7 @@
 		@discussion  This function implements the  FT_PREFETCHTEXT text option
 		This function uses the helper function "get_header_raw"
 		@author Angles
+		@access	public
 		*/
 		function fetchheader($stream_notused,$msg_num,$flags='')
 		{
@@ -1708,6 +1728,7 @@
 		@discussion  This function UN-FOLDS the headers as per RFC2822 "folding, so each element is 
 		in fact the intended complete header line, eliminates partial "folded" lines
 		@author Angles
+		@access	public (custom function, also used privately)
 		*/
 		function get_header_array($stream_notused,$msg_num,$flags='')
 		{
@@ -1746,6 +1767,7 @@
 		@discussion  This function causes a fetch of the complete, unfiltered RFC2822  format 
 		header of the specified message as a text string and returns that text string (i.e. glob)
 		@author Angles
+		@access	private
 		*/
 		function get_header_raw($stream_notused,$msg_num,$flags='')
 		{
@@ -1782,6 +1804,30 @@
 		/**************************************************************************\
 		*	Get Message Body (Parts) From Server
 		\**************************************************************************/
+		
+		/*!
+		@function fetchbody
+		@abstract implements IMAP_FETCHBODY
+		@param $stream_notused : socket class handles stream reference internally
+		@param $msg_num : integer
+		@param $part_num : integer or a string of integers seperated by dots  "2.4.1"
+		references the MIME part number, or section, inside of the message
+		@param $flags : Not Used in helper function
+		@result returns string which is the desired message / part
+		@discussion  NOTE: as of Oct 17, 2001, the $part_num used here is not always
+		the same as the part number used for official imap servers. But because this same 
+		class produced the fetchstructure, and provided it to the client, and that client 
+		will again use this class to get that part, the part number is consistant internally 
+		and is MUCH easier to implement in the fetchbody code. However, in the future, the 
+		part numbering logic in fetchbody will be coded to exactly match what an official imap 
+		server would expect. In the mail_msg class I refer to this "inexact" part number 
+		as "mime number dumb" as it is based only on the part's position in the 
+		fetchstructure array, before the processing to convert to official imap part 
+		number, which mail_msg class refers to as "mime number smart", which 
+		is used to access mime parts when using PHP's builtin IMAP module.
+		@author Angles
+		@access	public
+		*/
 		function fetchbody($stream_notused,$msg_num,$part_num="",$flags="")
 		{
 			if ($this->debug_dcom) { echo 'pop3: Entering fetchbody<br>'; }
@@ -1836,6 +1882,7 @@
 					$the_part_array[$i] = $the_part_array[$i] - 1;
 				}
 				// build the recursive parts structure to obtain this parts data
+				// use REFERENCES to do this
 				$temp_part = &$this->msg_structure;
 				for($i=0;$i < count($the_part_array);$i++)
 				{
@@ -1870,55 +1917,10 @@
 			{
 				// screw it, just return the whole thing
 				if ($this->debug_dcom) { echo 'pop3: fetchbody - something is unsupported, using fallback pass thru<br>'; }
+				// the false arg here is a temporary, custom option, says to NOT include the headers in the return
 				$body_blob = $this->get_body($stream_notused,$msg_num,$flags,False);
 			}
-
-			/*
-			// handle 3nd level parts
-			elseif (strlen((string)$part_num) == 5)
-			{
-				// explode part number into its component part numbers
-				$the_part = explode(".",$part_num);
-				// convert to fetchstructure part number
-				for($i=0;$i < count($the_part);$i++)
-				{
-					$the_part[$i] = (int)$the_part[$i];
-					$the_part[$i] = $the_part[$i] - 1;
-				}
-				// return part one
-				if ($this->debug_dcom) { echo 'pop3: fetchbody: returning part '.$part_num.', internally ['.serialize($the_part).']<br>'; }
-				if ((count($the_part) > 3) // there should only be 3 levels here
-				|| (!isset($this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->parts[$the_part[2]]->custom['part_start']))
-				|| (!isset($this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->parts[$the_part[2]]->custom['part_start'])))
-				{
-					if ($this->debug_dcom) { echo 'pop3: fetchbody: ERROR: required part data not present for '.$part_num.', internally ['.serialize($the_part).']<br>'; }
-					// screw it, just return the whole thing
-					if ($this->debug_dcom) { echo 'pop3: fetchbody - using fallback pass thru<br>'; }
-					$body_blob = $this->get_body($stream_notused,$msg_num,$flags,False);
-				}
-				else
-				{
-					// attempt to make the part
-					$part_start = (int)$this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->parts[$the_part[2]]->custom['part_start'];
-					$part_end = (int)$this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->parts[$the_part[2]]->custom['part_end'];
-					if ($this->debug_dcom) { echo 'pop3: fetchbody: returning part '.$part_num.' starts ['.$part_start.'] ends ['.$part_end.']<br>'; }
-					// assemble the body [art part
-					$body_blob = '';
-					for($i=$part_start;$i < $part_end+1;$i++)
-					{
-						$body_blob .= $this->body_array[$i]."\r\n";
-					}
-				}
-			}
-			else
-			{
-				// screw it, just return the whole thing
-				if ($this->debug_dcom) { echo 'pop3: fetchbody - something is unsupported, using fallback pass thru<br>'; }
-				$body_blob = $this->get_body($stream_notused,$msg_num,$flags,False);
-			}
-			*/
 			
-			// the false above is a temporary, custom option, says to NOT include the headers in the retuen
 			if ($this->debug_dcom) { echo 'pop3: Leaving fetchbody<br>'; }
 			return $body_blob;
 		}
@@ -1934,6 +1936,7 @@
 		@discussion  This function implements the  IMAP_BODY and also includes a custom
 		boolean param "phpgw_include_header" which also includes unfiltered headers in the return string
 		@author Angles
+		@access	public
 		*/
 		function get_body($stream_notused,$msg_num,$flags='',$phpgw_include_header=True)
 		{
