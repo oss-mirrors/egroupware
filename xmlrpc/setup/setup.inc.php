@@ -19,8 +19,9 @@
 	$setup_info['xmlrpc']['enable']    = 1;
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['xmlrpc']['hooks'][] = 'preferences';
-	$setup_info['xmlrpc']['hooks'][] = 'admin';
+	//$setup_info['xmlrpc']['hooks'][] = 'preferences';
+	//$setup_info['xmlrpc']['hooks'][] = 'admin';
+	$setup_info['xmlrpc']['hooks'][] = 'sidebox_menu';
 
 	/* Dependencies for this app to work */
 	$setup_info['xmlrpc']['depends'][] = array(

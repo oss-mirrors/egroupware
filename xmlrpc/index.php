@@ -23,8 +23,8 @@
 
 	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/testsuite.php') . '">' . lang('Test Suite') . '</a>' . "\n";
 	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/introspect.php') . '">' . lang('Introspection') . '</a>' . "\n";
-	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/interserv.php') . '">' . lang('phpgw client/server test') . '</a>' . "\n";
-	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/phpgw_test.php') . '">' . lang('phpgw server test') . '</a>' . "\n";
+	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/interserv.php') . '">' . lang('eGroupWare client/server test') . '</a>' . "\n";
+	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/phpgw_test.php') . '">' . lang('eGroupWare server test') . '</a>' . "\n";
 	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/client.php') . '">' . lang('Simple Client') . '</a>' . "\n";
 
 	if ($GLOBALS['phpgw']->acl->check('run',1,'meerkat'))
