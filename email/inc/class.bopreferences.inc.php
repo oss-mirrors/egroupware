@@ -133,7 +133,7 @@
 				// note that after the comma there is NO space, this means default is no value
 				'init_default'	=> 'string,',
 				'values'	=> array(),
-				'long_desc' => lang('This is the name that appears in the account combobox. If for leave this blank, your accounts will be given a standard name like Account[1]: Jane Doe, where Jane Doe is the name you give below as Your full name. If you want to give an account a special name you can fill this in. No matter what, this is for your use, your emails will still use Your full name as your FROM name for email messages. Note that Your full name for your email account 0 is the name you gave in the phpgroupware setup.')
+				'long_desc' => lang('This is the name that appears in the account combobox. If for leave this blank, your accounts will be given a standard name like Account[1]: Jane Doe, where Jane Doe is the name you give below as Your full name. If you want to give an account a special name you can fill this in. No matter what, this is for your use, your emails will still use Your full name as your FROM name for email messages. Note that Your full name for your email account 0 is the name you gave in the egroupware setup.')
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -197,9 +197,9 @@
 			@capability Adding a preference option, HOWTO example.
 			@abstract this example will help you understand how the email preferences work.
 			@author Angles
-			@discussion email preferences, like many other phpGW preference items, do not have a 
+			@discussion email preferences, like many other eGW preference items, do not have a 
 			Database table devoted only to email preferences. If there were such a Database table, its fields 
-			would describe a schema similar to the one we are about to study. Email prefs are stored in the phpGW 
+			would describe a schema similar to the one we are about to study. Email prefs are stored in the eGW 
 			preferences table, which is shared by many apps and has the charactoristics of a dynamic data store, i.e. 
 			we can add, remove, or change email preference details without having to alter the Database table itself. 
 			This can make programming easier, but it also can present a chalange if your app has many preferences, 
@@ -516,7 +516,7 @@
 				'lang_blurb'	=> lang('Email Account Name'),
 				'init_default'	=> 'function,sub_default_userid',
 				'values'	=> array(),
-				'long_desc' => lang('The login name to use when checking mail for this email account. This may be the same as your phpGroupWare login name, or the server administrator may have set it for you. If your have multiple email accounts set up, you will need to fill this in. If you have only one email account set up, then you can probably leave this alone. If you clear this box, then it goes back to the default value. If you only need some custom settings but want this one to be the default value, then leave this box blank, the default value will be used, and you will see that default value in this box the next time you come to this preferences page.')
+				'long_desc' => lang('The login name to use when checking mail for this email account. This may be the same as your eGroupWare login name, or the server administrator may have set it for you. If your have multiple email accounts set up, you will need to fill this in. If you have only one email account set up, then you can probably leave this alone. If you clear this box, then it goes back to the default value. If you only need some custom settings but want this one to be the default value, then leave this box blank, the default value will be used, and you will see that default value in this box the next time you come to this preferences page.')
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -529,7 +529,7 @@
 				'lang_blurb'	=> lang('Email Password'),
 				'init_default'	=> 'init_no_fill',
 				'values'	=> array(),
-				'long_desc' => lang('The password to use when checking mail for this email account. This may be the same as your phpGroupWare password, or the server administrator may have set it for you. If your have multiple email accounts set up, you will need to fill this in. If you have only one email account set up, then you can probably leave this alone. If you do set a custom password, this box will be blank the next time you come to this settings page. This is a security feature because your custom email password is not sent to your browser after you set it. To change your custom password, simply enter a new password in the box. Extra email accounts require you to set this. For your default email account, you can clear your custom password by unchecking the &quot;Use Custom Settings&quot; option.')
+				'long_desc' => lang('The password to use when checking mail for this email account. This may be the same as your eGroupWare password, or the server administrator may have set it for you. If your have multiple email accounts set up, you will need to fill this in. If you have only one email account set up, then you can probably leave this alone. If you do set a custom password, this box will be blank the next time you come to this settings page. This is a security feature because your custom email password is not sent to your browser after you set it. To change your custom password, simply enter a new password in the box. Extra email accounts require you to set this. For your default email account, you can clear your custom password by unchecking the &quot;Use Custom Settings&quot; option.')
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -543,7 +543,7 @@
 			//	'init_default'	=> 'function,$this->sub_default_address($account_id);',
 				'init_default'	=> 'function,sub_default_address',
 				'values'	=> array(),
-				'long_desc' => lang('Mail you send will use this address as the &quot;From&quot; address. This may be the same as your phpGroupWare login name, or the server administrator may have set it for you. When the recipient clicks reply, this address will be used. You can leave this box blank and the default value will be used.')
+				'long_desc' => lang('Mail you send will use this address as the &quot;From&quot; address. This may be the same as your eGroupWare login name, or the server administrator may have set it for you. When the recipient clicks reply, this address will be used. You can leave this box blank and the default value will be used.')
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -573,7 +573,7 @@
 					'imaps'		=> 'IMAPS',
 					'pop3s'		=> 'POP-3S'
 				),
-				'long_desc' => lang('The type of mail server you want to access. IMAP mail servers have folders, such as the Sent and Trash folders. POP servers do not have folders. POP, POP-3, and POP3 are the same thing. You can have the server connection encrypted by using IMAPS or POPS, only if the mailserver supports it and if your phpGroupWare installation has a &quot;SSL&quot; capabable version of PHP.')
+				'long_desc' => lang('The type of mail server you want to access. IMAP mail servers have folders, such as the Sent and Trash folders. POP servers do not have folders. POP, POP-3, and POP3 are the same thing. You can have the server connection encrypted by using IMAPS or POPS, only if the mailserver supports it and if your eGroupWare installation has a &quot;SSL&quot; capabable version of PHP.')
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(

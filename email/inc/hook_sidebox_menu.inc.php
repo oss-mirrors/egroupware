@@ -62,7 +62,7 @@ function CreateSidebox_MenuLink($mailacct,$mailfolder='INBOX',$mailpage='email.u
 @result (array) list of menu items used to construct the sidebox menu. 
 @author edave 
 @discussion This function creates the sidebox menu that can be used to navigate around 
-email module of phpgroupware and replaces the navigation buttons normally shown accross the top. 
+email module of egroupware and replaces the navigation buttons normally shown accross the top. 
 */
 function CreateSidebox_EmailMenu($mailacct)
 {

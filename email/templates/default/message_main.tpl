@@ -8,7 +8,7 @@ function do_action(act)
 </script>
 <!-- BEGIN B_x-phpgw-type -->
 <center>
-<h1>THIS IS A phpGroupWare-{application} EMAIL</h1>
+<h1>THIS IS A eGroupWare-{application} EMAIL</h1>
 In the future, this will process a specially formated email msg.<hr>
 </center>
 <!-- END B_x-phpgw-type -->

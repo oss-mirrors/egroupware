@@ -1,6 +1,6 @@
 <?php
 	/**************************************************************************\
-	* Anglemail - setup files for phpGroupWare                                 *
+	* Anglemail - setup files for eGroupWare                                   *
 	* http://www.anglemail.org                                                 *
 	* eGroupWare - Email                                                       *
 	* http://www.egroupware.org                                                *

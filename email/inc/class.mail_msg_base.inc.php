@@ -3984,7 +3984,7 @@
 		other things that an email address can contain, such as a users name (personal part) which itself can contain chars outside 
 		of the ASCII range  (whether ISO encoded or not) that the MTA does not need and does not want to see in the RCPT TO: commands.
 		@example * * using html special chars so the inline doc parser will show the brackets and stuff * *
-		-&gt;make_rfc_addy_array&#040;&#039;john&#064;doe.com,&quot;Php Group&quot;&lt;info&#064;phpgroupware.org&gt;,jerry&#064;example.com,&quot;joe john&quot; &lt;jj&#064;example.com&gt;&#039;&#041
+		-&gt;make_rfc_addy_array&#040;&#039;john&#064;doe.com,&quot;Php Group&quot;&lt;info&#064;egroupware.org&gt;,jerry&#064;example.com,&quot;joe john&quot; &lt;jj&#064;example.com&gt;&#039;&#041
 		 which will be decomposed into an array of individual email addresses
 		 where each numbered item will be like this this:
 		 	array[x][&#039;personal&#039;] 
@@ -3993,13 +3993,13 @@
 		 	array[0][&#039;personal&#039;] = &quot;&quot;
 		 	array[0][&#039;plain&#039;] = &quot;john&#064;doe.com&quot;
 		 	array[1][&#039;personal&#039;] = &quot;Php Group&quot;
-		 	array[1][&#039;plain&#039;] = &quot;info&#064;phpgroupware.org&quot;
+		 	array[1][&#039;plain&#039;] = &quot;info&#064;egroupware.org&quot;
 		 	array[2][&#039;personal&#039;] = &quot;&quot;
 		 	array[2][&#039;plain&#039;] = &quot;jerry&#064;example.com&quot;
 		 	array[3][&#039;personal&#039;] = &quot;joe john&quot;
 		 	array[3][&#039;plain&#039;] = &quot;jj&#064;example.com&quot;
 		@syntax ASCII example, inline docs will not show correctly  
-		 john@doe.com,"Php Group" <info@phpgroupware.org>,jerry@example.com,"joe john" <jj@example.com>  <br>
+		 john@doe.com,"Php Group" <info@egroupware.org>,jerry@example.com,"joe john" <jj@example.com>  <br>
 		 which will be decomposed into an array of individual email addresses <br>
 		 where each numbered item will be like this this: <br>
 		 	array[x]['personal'] 
@@ -4008,7 +4008,7 @@
 		 	array[0]['personal'] = ""
 		 	array[0]['plain'] = "john@doe.com"
 		 	array[1]['personal'] = "Php Group"
-		 	array[1]['plain'] = "info@phpgroupware.org"
+		 	array[1]['plain'] = "info@egroupware.org"
 		 	array[2]['personal'] = ""
 		 	array[2]['plain'] = "jerry@example.com"
 		 	array[3]['personal'] = "joe john"
@@ -4993,14 +4993,14 @@
 		@function html_quotes_encode
 		@abstract &quot;poor-mans&quot; database compatibility, encode database unfriendly chars as html entities
 		@author Angles
-		@discussion phpGroupWare supports a variets of databases and to date still needs certain database 
+		@discussion eGroupWare supports a variets of databases and to date still needs certain database 
 		unfriendly chars to be encoded into something else so as not to corrupt data. Such database unfriendly 
 		chars are the double quote, single quote, comma, forward slash, and back slash. Adding to this need is 
-		the fact that some of phpGroupWare data is stored in the database in the form of php serialized items, 
+		the fact that some of eGroupWare data is stored in the database in the form of php serialized items, 
 		which are sensitive to the same chars. Various databases may escape or otherwise alter the data 
 		as their native handling of these unencoded chars, which data altering may completely destroy the 
 		integrity of a php serialized item, i.e. the ability of the serialized item to be converted back into its 
-		native unserialized format. phpGroupWare preference database is the primary use for this encoding.
+		native unserialized format. eGroupWare preference database is the primary use for this encoding.
 		NOTE this function uses html entities as replacements for the database unfriendly chars, but any 
 		encoding technique that does not itself use those chars could have been used.
 		*/

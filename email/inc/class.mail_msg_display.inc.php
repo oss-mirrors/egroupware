@@ -2404,7 +2404,7 @@ class mail_msg extends mail_msg_wrappers
 	@discussion This code inherited from previous maintainer, who said this - 
 	function make_clickable taken from text_to_links() in the SourceForge Snipplet Library
 	http://sourceforge.net/snippet/detail.php?type=snippet&id=100004
-	modified to make mailto: addresses compose in phpGW (not by Angles) 
+	modified to make mailto: addresses compose in eGW (not by Angles) 
 	*/
 	function make_clickable($data, $folder)
 	{
