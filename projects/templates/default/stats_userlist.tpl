@@ -15,6 +15,7 @@
 			</table>
 		</td>
 	</tr>
+<form method="POST" action="{action_url}">
 	<tr>
 		<td>{search_list}</td>
 	</tr>
@@ -24,8 +25,6 @@
 		<td width="20%">{sort_lastname}</td>
 		<td align="center" width="8%">{lang_projects}</td>
 	</tr>
-
-<form method="POST" action="{action_url}">
 
 <!-- BEGIN user_list -->
 
