@@ -448,7 +448,7 @@
 				$this->cat_id = $_GET['cat_id'];
 			}
 
-			if (!$action)
+			if (!$action || !$pro_main)
 			{
 				$action = 'mains';
 			}
