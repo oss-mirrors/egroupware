@@ -21,6 +21,13 @@
 
 	include('../header.inc.php');
 
+	echo '
+<form action="' . $GLOBALS['phpgw']->link('/xmlrpc/client.php') . '" method="post">
+<input name="stateno" VALUE="' . $stateno . '">
+<input type="submit" value="go" name="submit">
+</form>
+<p>enter a US state number to query its name</p>';
+
 	if ($_POST['stateno'] != '')
 	{
 		$f = CreateObject('phpgwapi.xmlrpcmsg','examples.getStateName',array(CreateObject('phpgwapi.xmlrpcval',$_POST['stateno'], 'int')));
@@ -43,17 +50,11 @@
 		else
 		{
 			print 'Fault: ';
-			print 'Code: ' . $r->faultCode() . " Reason '" .$r->faultString()."'<br>";
+			print 'Code: ' . $r->faultCode() . " Reason '" .$r->faultString()."'";
+
+			echo "<p><b>Plese Note</b>: To be able to use this test, you have to <b>uncomment</b> the following line in <b>xmlrpc.php</b> on your server:<br>
+include(PHPGW_API_INC . '/xmlrpc.interop.php');</p>\n";;
 		}
 	}
-
-	echo '
-<form action="' . $GLOBALS['phpgw']->link('/xmlrpc/client.php') . '" method="post">
-<input name="stateno" VALUE="' . $stateno . '">
-<input type="submit" value="go" name="submit">
-</form>
-<p>
-enter a US state number to query its name';
-
 	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
