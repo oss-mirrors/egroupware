@@ -1,4 +1,4 @@
-<?php 
+<?php
   /**************************************************************************\
   * phpGroupWare - Bookmarks                                                 *
   * http://www.phpgroupware.org                                              *
@@ -13,15 +13,11 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"]["currentapp"] = "bookmarks";
-  $phpgw_info["flags"]["enabled_nextmatchs_class"] = True;
-  include("../header.inc.php");
+  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/messages.inc.php");
+  if (isset ($bk_output_html)) {
+     $phpgw->template->set_var(MESSAGES, $bk_output_html);
+  }
 
-  $phpgw->template->set_file(array(standard   => "common.standard.tpl",
-                                   body       => "useropt.body.tpl"
-                            ));
-
-  set_standard("user preferences",&$phpgw->template);
-
-  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
+  $phpgw->template->parse("BODY", array("body", "standard"));
+  $phpgw->template->p("BODY");
 ?>

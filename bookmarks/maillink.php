@@ -160,5 +160,5 @@ $tpl->set_var(array(
   SITE_FOOTER     => nl2br($bookmarker->site_footer)
 ));
 
-include(LIBDIR . "bkend.inc");
+  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
 ?>

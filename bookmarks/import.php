@@ -259,5 +259,5 @@
 }
 
   $phpgw->template->set_var(array(FORM_ACTION => $phpgw->link()));
-  include(LIBDIR . "bkend.inc");
+  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
 ?>

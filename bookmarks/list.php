@@ -183,5 +183,5 @@ $phpgw->template->set_var(BOOKMARK_LIST, $bookmark_list);
 
 set_standard("list ($page of $last_page)", &$phpgw->template);
 
-include(LIBDIR . "bkend.inc");
+  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
 ?>

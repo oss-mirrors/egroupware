@@ -239,5 +239,5 @@ if ($q->query == $noquery) {
 
 set_standard("search", &$tpl);
 
-include(LIBDIR . "bkend.inc");
+  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
 ?>
