@@ -12,8 +12,6 @@
 
    /* $Id$ */
    {
-
-
 	  $menu_title = lang('JiNN Editors Menu');
 
 	  $file = Array(
@@ -28,7 +26,7 @@
 	  {
 		 $object = Array(
 			'Browse current object' => array(
-			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.browse_objects'),
+			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'),
 			   'icon'=>'browse',
 			   'text'=>'List record(s) in current object'
 			),

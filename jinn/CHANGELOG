@@ -3,6 +3,14 @@ CHANGELOG JiNN for eGroupWare
 =============================
 $Id$
 
+Version 0.8.205
+Wed Dec 22 16:42:47 CET 2004
+=============================
+- new file for list records
+- moved main_menu to uicommon
+- fixed wrong saving of list configurations
+- added a link to this changelog in About JiNN
+
 Version 0.8.204a
 Mon Oct 25 18:59:25 CEST 2004
 =============================

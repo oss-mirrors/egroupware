@@ -43,7 +43,7 @@
 	  {
 		 $this->bo = $bo;
 		 $this->template = $GLOBALS['phpgw']->template;
-		 $this->ui = CreateObject('jinn.uicommon');
+		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
 	  }
 
 	  function render_form($where_key, $where_value)

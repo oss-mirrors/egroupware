@@ -71,7 +71,7 @@
 		 $this->bo = CreateObject('jinn.boadmin');
 		 $this->template = $GLOBALS['phpgw']->template;
 
-		 $this->ui = CreateObject('jinn.uicommon');
+		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
 
 		 if($this->bo->so->config[server_type]=='dev')
 		 {

@@ -192,7 +192,7 @@ jinn editors menu	jinn	en	JiNN Editors Menu
 jinn main	jinn	en	JiNN Main
 jinn main menu	jinn	en	JiNN Main Menu
 jinn preferences	jinn	en	JiNN Preferences
-jinn-description	common	en	JiNN is a recursive acronime meaning 'JiNN is Not Nuke' because the main author doesn't like the Nuke-method to create a Content Management System. With JiNN you can build your own CMS's completely adapted to your database-structure and webdesign. For configuring user input forms we make use of plugins to show/process the field data. For more information please visit: <a href='http://www.egroupware.org/jinn-webpage'>www.egroupware.org/jinn-webpage</a>.
+jinn-description	common	en	JiNN is a recursive acronime meaning 'JiNN is Not Nuke' because the main author doesn't like the Nuke-method to create a Content Management System. With JiNN you can build your own CMS's completely adapted to your database-structure and webdesign. For configuring user input forms we make use of plugins to show/process the field data. For more information please visit: <a href='http://www.egroupware.org/jinn-webpage'>www.egroupware.org/jinn-webpage</a>. <p>Here's our <a href="jinn/CHANGELOG" target="_blank">changelog</a>.</p>
 keep current timestamp	jinn	en	Keep current timestamp
 keep this empty to let is auto increment	jinn	en	keep this empty to let is auto increment
 last edited record	jinn	en	Last edited record

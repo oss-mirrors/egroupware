@@ -56,7 +56,7 @@
 		 //$this->bo = CreateObject('jinn.boadmin');
 		 $this->template = $GLOBALS['phpgw']->template;
 
-		 $this->ui = CreateObject('jinn.uicommon');
+		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
 
 		 /*if($this->bo->so->config[server_type]=='dev')
 		 {
@@ -89,7 +89,7 @@
 //		 $this->bo = CreateObject('jinn.boadmin');
 //		 $this->template = $GLOBALS['phpgw']->template;
 
-//		 $this->ui = CreateObject('jinn.uicommon');
+//		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
 
 		 if($this->bo->so->config[server_type]=='dev')
 		 {
@@ -109,7 +109,7 @@
 		 }
 
 			
-		 $this->ui = CreateObject('jinn.uicommon');
+		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
 		 $this->nextmatchs=CreateObject('phpgwapi.nextmatchs');
 		 $this->template = $GLOBALS['phpgw']->template;
 		 $this->common = CreateObject('jinn.bocommon');

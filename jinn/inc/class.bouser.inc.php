@@ -937,7 +937,7 @@
 		 {
 
 			$prefs_order_new=$GLOBALS[HTTP_POST_VARS][ORDER];
-			$prefs_show_hide_read=$this->read_preferences('show_fields');
+			$prefs_show_hide_read=$this->read_preferences('show_fields'.$this->site_object[object_id]);
 
 			$show_fields_entry=$this->site_object[object_id];
 
@@ -969,10 +969,10 @@
 			   $prefs_show_hide_new=$show_fields_entry;
 			}
 
-			$this->save_preferences('show_fields',$prefs_show_hide_new);
-			$this->save_preferences('default_order',$prefs_order_new);
+			$this->save_preferences('show_fields'.$this->site_object[object_id],$prefs_show_hide_new);
+			$this->save_preferences('default_order'.$this->site_object[object_id],$prefs_order_new);
 
-			$this->common->exit_and_open_screen('jinn.uiuser.browse_objects');
+			$this->common->exit_and_open_screen('jinn.uiu_list_records.display');
 		 }
 
 

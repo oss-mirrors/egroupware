@@ -33,10 +33,12 @@
 	  var $app_title;
 	  var $template;
 	  var $message;
+	  var $bo;
 
-	  function uicommon()
+	  function uicommon($bo=false)
 	  {
 		 $this->template = $GLOBALS['phpgw']->template;
+		 $this->bo = $bo;
 	  }
 
 	  /**
@@ -162,8 +164,8 @@
 
 		 if(is_array($list_array))
 		 {
-			foreach ( $list_array as $array ) {
-
+			foreach ( $list_array as $array ) 
+			{
 			   unset($SELECTED);
 			   if ($array[value]==$selected_value)
 			   {
@@ -182,6 +184,81 @@
 		 return $options;
 	  }
 
-   }		
+	  /**
+	  * this function parses the main moderators menu
+	  * with this menu you can scroll through sites and objects
+	  */
+	  function main_menu()
+	  {
+		 $this->template->set_file(array(
+			'main_menu' => 'main_menu.tpl'));
 
-?>
+			// get sites for user and group and make options
+			$sites=$this->bo->common->get_sites_allowed($GLOBALS['phpgw_info']['user']['account_id']);
+
+			if(is_array($sites))
+			{
+			   foreach($sites as $site_id)
+			   {
+				  $site_arr[]=array(
+					 'value'=>$site_id,
+					 'name'=>$this->bo->so->get_site_name($site_id)
+				  );
+			   }
+			}
+
+			$site_options=$this->select_options($site_arr,$this->bo->site_id,true);
+
+
+			if ($this->bo->site_id)
+			{
+			   $objects=$this->bo->common->get_objects_allowed($this->bo->site_id, $GLOBALS['phpgw_info']['user']['account_id']);
+
+			   if (is_array($objects))
+			   {
+				  foreach ( $objects as $object_id) 
+				  {
+					 $objects_arr[]=array(
+						'value'=>$object_id,
+						'name'=>$this->bo->so->get_object_name($object_id)
+					 );
+				  }
+			   }
+
+			   $object_options=$this->select_options($objects_arr,$this->bo->site_object_id,true);
+
+			}
+			else
+			{
+			   unset($this->bo->site_object_id);
+			}
+
+			$this->template->set_var('jinn_main_menu',lang('JiNN Main Menu'));
+
+			// set menu
+			$this->template->set_var('site_objects',$object_options);
+			$this->template->set_var('site_options',$site_options);
+
+			$this->template->set_var('main_form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.index'));
+			$this->template->set_var('select_site',lang('select site'));
+			$this->template->set_var('select_object',lang('select_object'));
+			$this->template->set_var('go',lang('go'));
+
+			/* set admin shortcuts */
+			// if site if site admin
+			if($this->bo->site_id && $userisadmin)
+			{
+			   $admin_site_link='<br><a href="'.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadminaddedit.').'">'.
+				  lang('admin:: edit site').'</a>';
+			}
+			$this->template->set_var('admin_site_link',$admin_site_link);
+			$this->template->set_var('admin_object_link',$admin_object_link);
+
+			$this->template->pparse('out','main_menu');
+
+		 }
+
+
+	  }		
+
+   ?>

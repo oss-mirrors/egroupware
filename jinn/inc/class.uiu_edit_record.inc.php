@@ -22,7 +22,7 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
    */
 
-   /* $id$ */
+   /* $Id$ */
 
    /**
    @package jinn_users_classes
@@ -46,10 +46,10 @@
 
 	  var $record_id_key;
 	  var $record_id_val;
-	  
+
 	  var $submit_javascript;
 	  var $jstips;
-	  	
+
 	  var $db_ftypes;
 
 	  /**
@@ -60,7 +60,7 @@
 	  {
 		 $this->bo = CreateObject('jinn.bouser');
 		 $this->template = $GLOBALS['phpgw']->template;
-		 $this->ui = CreateObject('jinn.uicommon');
+		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
 		 if($this->bo->so->config[server_type]=='dev')
 		 {
 			$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
@@ -68,7 +68,7 @@
 		 $this->ui->app_title=$dev_title_string;//.lang('Moderator Mode');
 
 		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
-	  
+
 	  }
 
 	  /**
@@ -102,7 +102,7 @@
 		 $this->render_many_to_many_input();
 		 $this->render_footer();
 
-//		 unset($this->bo->message);
+		 //		 unset($this->bo->message);
 
 		 #FIXME does this belong here?
 		 if (!is_object($GLOBALS['phpgw']->js))
@@ -126,7 +126,7 @@
 		 $this->ui->msg_box($this->bo->message);
 		 unset($this->bo->message);
 
-		 $this->main_menu();	
+		 $this->ui->main_menu();	
 
 		 $popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
 
@@ -153,15 +153,14 @@
 		 {
 			$GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
 		 }
-		 
-		 
+
+
 		 if (!$_GET['insert'] && is_array($this->bo->mult_where_array))
 		 {
 			$this->ui->header('edit records');
 			$mult_where_array=$this->bo->mult_where_array; // get local en unset bo
 			$this->bo->where_string=true;
 			$this->mult_records=count($mult_where_array);
-			//_debug_array($mult_where_array);
 		 }
 		 else
 		 {
@@ -180,7 +179,7 @@
 			   $this->mult_records=$this->bo->mult_records_amount;// FIXME get from user
 			}
 		 }
-		 
+
 		 if(!$this->bo->so->test_JSO_table($this->bo->site_object))
 		 {
 			unset($this->bo->site_object_id);
@@ -194,7 +193,7 @@
 			'frm_edit_record' => 'frm_edit_multiple_records.tpl'
 		 ));
 
-	
+
 		 // move to function?
 		 $this->template->set_block('frm_edit_record','form_header','');
 		 $this->template->set_block('frm_edit_record','change_num','');
@@ -208,10 +207,10 @@
 
 
 		 $this->render_header();
-		 
+
 		 $this->ui->msg_box($this->bo->message);
 
-		 $this->main_menu();	
+		 $this->ui->main_menu();	
 
 		 if (!is_array($mult_where_array))
 		 {
@@ -236,8 +235,8 @@
 			{
 			   $this->bo->where_string=$where_string;
 			   $this->mult_index=sprintf("%02d",$i);
-			   
-				
+
+
 			   $this->render_mult_table_header($setwhere);
 			   $i++;
 
@@ -268,16 +267,16 @@
 			   $this->render_mult_table_footer();
 			}
 		 }
-		 
-		 
+
+
 		 $this->render_footer();
-		
+
 		 $this->template->set_var('submit_script',$this->submit_javascript);
 		 $this->template->set_var('jstips',$this->jstips);
 		 $this->template->parse('js','js');
 		 $this->template->pparse('out','js');
 		 $this->template->set_var('colfield_lang_confirm_delete_multiple',lang('Are you sure you want to delete these multiple records?'));
-		 
+
 		 $this->template->pparse('out','form_footer');
 
 		 $this->bo->save_sessiondata();
@@ -290,7 +289,7 @@
 		 {
 			$where_string_record='<input type="hidden" name="MLTWHR'.$this->mult_index.'" value="'.base64_encode($this->bo->where_string).'">';
 		 }
-		 
+
 		 $this->template->set_var('where_string_record',$where_string_record);
 
 		 //$this->template->parse('table_header','table_header');
@@ -336,7 +335,7 @@
 
 	  function render_fields($alt_values_object=false,$alt_object_arr=false)
 	  {
-		
+
 		 if($this->mult_records>1 && is_numeric($this->mult_index)) 
 		 {
 			$input_prefix='MLTX'.$this->mult_index; //becoming like MLTFLD02name_field
@@ -363,7 +362,7 @@
 		 if($this->bo->where_string && !$alt_object_arr)
 		 {
 			$this->values_object= $this->bo->so->get_record_values($this->bo->site_id,$object_arr[table_name],'','','','','name','','*',$this->bo->where_string);
-		 
+
 		 }
 
 		 /* get one with many relations */
@@ -379,13 +378,13 @@
 
 		 /* get all fieldproperties (name, type, etc...) */
 		 $fields = $this->bo->so->site_table_metadata($this->bo->site_id,$object_arr[table_name]);
- 
+
 		 /* The main loop to create all rows with input fields start here */ 
 		 foreach ( $fields as $fprops )
 		 {
 			unset($input);
 			unset($ftype);
-			
+
 			if(is_array($alt_values_object) && $alt_object_arr) 
 			{
 			   $value=$alt_values_object[0][$fprops[name]];	/* get value from o2o-relation */
@@ -410,7 +409,7 @@
 			}
 
 
-			
+
 			unset($tipmouseover);
 			if(trim($field_conf_arr[field_help_info]))
 			{
@@ -418,16 +417,16 @@
 			   $tipmouseover='<img onMouseover="tooltip(\''.$tooltip.'\')" onMouseout="hidetooltip()" src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="" />'; 
 			}
 
-			
 
-			
+
+
 			/* ---------------------- start fields -------------------------------- */
 
 			// auto
 			if (eregi("auto_increment", $fprops[flags]) || eregi("nextval",$fprops['default']))
 			{
 			   $ftype='auto';
-			   
+
 			   $this->record_id_key=$input_name;
 			   $record_identifier[name]=$input_name;
 
@@ -468,7 +467,7 @@
 				  $input.= '</sel'.'ect> ('.lang('real value').': '.$value.')';
 			   }
 			}
-			
+
 			/* if input is not set above do it the standard way below */
 			if(!$input)
 			{
@@ -484,7 +483,7 @@
 				  $input = $this->bo->get_plugin_fi($input_name,$value,$ftype, $attr_arr,$object_arr[plugins]);
 			   }
 			}
-			
+
 			/* if there is something to render to this */
 			if($input!='__hide__')
 			{
@@ -499,7 +498,7 @@
 
 				  }
 			   }
-			   
+
 			   /* set the row colors */
 			   $GLOBALS['phpgw_info']['theme']['row_off']='#eeeeee';
 			   if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on']) $row_color=$GLOBALS['phpgw_info']['theme']['row_off'];
@@ -519,8 +518,8 @@
 	  {
 		 $this->template->set_block('frm_edit_record','form_footer','form_footer');
 
-//		_debug_array($this->bo->site_object);
-		if(!$this->bo->where_string && $this->bo->site_object[max_records]!=1)
+		 //		_debug_array($this->bo->site_object);
+		 if(!$this->bo->where_string && $this->bo->site_object[max_records]!=1)
 		 {
 			if($this->repeat_input=='true') $REPEAT_INPUT_CHECKED='CHECKED';
 
@@ -531,7 +530,7 @@
 		 $add_edit_button_continue=lang('save and continue');
 		 $add_edit_button=lang('save and finish');
 
-		 $cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.browse_objects').'\'" value="'.lang('cancel').'">';
+		 $cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_list_records.display').'\'" value="'.lang('cancel').'">';
 
 		 $this->template->set_var('add_edit_button_continue',$add_edit_button_continue);
 		 $this->template->set_var('add_edit_button',$add_edit_button);
@@ -586,7 +585,7 @@
 	  function render_one_to_one_input()
 	  {
 		 $O2O_arr=$this->bo->extract_O2O_relations($this->bo->site_object[relations]);
-		 
+
 		 if (count($O2O_arr)>0)
 		 {
 			if(!$this->bo->where_string && !$this->bo->mult_where_array)
@@ -597,9 +596,9 @@
 			   $this->template->parse('row','rows',true);
 			   return;
 			}
-			
+
 			$i=1;
-			
+
 			foreach($O2O_arr as $O2O_rule_arr)
 			{
 			   $O2O_where_key=$O2O_rule_arr[related_with];
@@ -608,7 +607,7 @@
 			   $O2O_related_key=$tmp_arr[1];
 			   $O2O_where_value=$this->values_object[0][$O2O_rule_arr[field_org]];
 			   $O2O_where_string="($O2O_where_key='$O2O_where_value')";
-			   
+
 			   $O2O_object_arr=$this->bo->so->get_object_values($O2O_rule_arr[object_conf]);
 
 			   //fixme we do nee hide field
@@ -618,7 +617,7 @@
 				  $O2O_object_arr[plugins].='|';
 			   }
 			   $O2O_object_arr[plugins].=$O2O_related_key.':hidefield::';
-*/			   
+			   */			   
 
 			   $O2O_values_object = $this->bo->so->get_record_values($this->bo->site_id,$O2O_object_arr[table_name],'','','','','name','','*',$O2O_where_string);
 
@@ -637,7 +636,7 @@
 			   $this->template->set_var('fieldname','');
 
 			   $this->template->parse('row','rows',true);
-			   
+
 			   $this->render_fields($O2O_values_object,$O2O_object_arr);
 
 			   $this->template->set_var('input','<input type="hidden" name="O2OX'.$this->o2o_index.$O2O_related_key.'" value="'.$O2O_where_value.'"/>');
@@ -651,7 +650,7 @@
 		 }
 	  }
 
-	  
+
 	  function render_many_to_many_input()
 	  {
 
@@ -661,7 +660,7 @@
 			$prefix2='M2MA'.$this->mult_index;
 			$prefix3='M2MO'.$this->mult_index;
 			$prefix4='M2MR'.$this->mult_index;
-//			$input_prefix='MLTX'.$this->mult_index; //becoming like MLTFLD02name_field
+			//			$input_prefix='MLTX'.$this->mult_index; //becoming like MLTFLD02name_field
 		 }
 		 else
 		 {
@@ -739,7 +738,7 @@
 		 $this->ui->header('View record');
 		 $this->ui->msg_box($this->bo->message);
 
-		 $this->main_menu();	
+		 $this->ui->main_menu();	
 
 		 $this->template->set_file(array(
 			'view_record' => 'view_record.tpl'
@@ -754,13 +753,13 @@
 		 $this->template->set_block('view_record','footer','footer');
 
 		 $where_string=$this->bo->where_string;
-//		 if(!$where_string) $where_string='';
-//		 _debug_array($this->bo);
-//		 die();
+		 //		 if(!$where_string) $where_string='';
+		 //		 _debug_array($this->bo);
+		 //		 die();
 
 		 $this->values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','','','','name','','*',$where_string);
 		 $fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
-		 
+
 		 /* The main loop to create all rows with input fields start here */ 
 		 foreach ( $fields as $fprops )
 		 {
@@ -769,7 +768,7 @@
 
 			$value=$this->values_object[0][$fprops[name]];
 			$input_name=$fprops[name];	
-			
+
 			unset($field_conf_arr);
 			$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$fprops[name]);
 
@@ -820,12 +819,12 @@
 				  $input.= '</se'.'lect> ('.lang('real value').': '.$value.')';
 			   }
 			}
-	
+
 			if(!$input)
 			{
 			   if(!$ftype) $ftype=$this->db_ftypes->complete_resolve($fprops);
 			   if(!$ftype) $ftype='string';
-			   
+
 			   if(!$this->bo->site_object[plugins])
 			   {
 				  $input=$this->bo->plug->call_plugin_ro($value,$field_conf_arr);
@@ -873,7 +872,7 @@
 
 		 if($this->bo->site_object[max_records]!=1)
 		 {
-			$back_onclick='location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.browse_objects').'\'';
+			$back_onclick='location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_list_records.display').'\'';
 			$this->template->set_var('back_onclick',$back_onclick);
 
 			$this->template->parse('extra_back_button','back_button');
@@ -895,75 +894,7 @@
 		 $this->template->pparse('out','footer');
 
 	  }
-	  function main_menu()
-	  {
-		 $this->template->set_file(array(
-			'main_menu' => 'main_menu.tpl'));
 
-			// get sites for user and group and make options
-			$sites=$this->bo->common->get_sites_allowed($GLOBALS['phpgw_info']['user']['account_id']);
+   }
 
-			if(is_array($sites))
-			{
-			   foreach($sites as $site_id)
-			   {
-				  $site_arr[]=array(
-					 'value'=>$site_id,
-					 'name'=>$this->bo->so->get_site_name($site_id)
-				  );
-			   }
-			}
-
-			$site_options=$this->ui->select_options($site_arr,$this->bo->site_id,true);
-
-
-			if ($this->bo->site_id)
-			{
-			   $objects=$this->bo->common->get_objects_allowed($this->bo->site_id, $GLOBALS['phpgw_info']['user']['account_id']);
-
-			   if (is_array($objects))
-			   {
-				  foreach ( $objects as $object_id) 
-				  {
-					 $objects_arr[]=array(
-						'value'=>$object_id,
-						'name'=>$this->bo->so->get_object_name($object_id)
-					 );
-				  }
-			   }
-
-			   $object_options=$this->ui->select_options($objects_arr,$this->bo->site_object_id,true);
-
-			}
-			else
-			{
-			   unset($this->bo->site_object_id);
-			}
-
-			$this->template->set_var('jinn_main_menu',lang('JiNN Main Menu'));
-
-			// set menu
-			$this->template->set_var('site_objects',$object_options);
-			$this->template->set_var('site_options',$site_options);
-
-			$this->template->set_var('main_form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.index'));
-			$this->template->set_var('select_site',lang('select site'));
-			$this->template->set_var('select_object',lang('select_object'));
-			$this->template->set_var('go',lang('go'));
-
-			/* set admin shortcuts */
-			// if site if site admin
-			if($this->bo->site_id && $userisadmin)
-			{
-			   $admin_site_link='<br><a href="'.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadminaddedit.').'">'.
-				  lang('admin:: edit site').'</a>';
-			}
-			$this->template->set_var('admin_site_link',$admin_site_link);
-			$this->template->set_var('admin_object_link',$admin_object_link);
-
-			$this->template->pparse('out','main_menu');
-
-		 }
-	  }
-
-   ?>
+?>

@@ -215,7 +215,7 @@ jinn editors menu	jinn	nl	JiNN Redactiemenu
 jinn main	jinn	nl	JiNN Voorpagina
 jinn main menu	jinn	nl	JiNN Hoofdmenu
 jinn preferences	jinn	nl	JiNN Voorkeuren
-jinn-description	common	nl	JiNN is een Content Management Systeem, en Database Management Systeem en een ontwikkelomgeving voor CMS'en. JiNN is een recursief acroniem dat 'JiNN is Not Nuke' betekend omdat de Auteur niet van de Nuke-Methode houden om een C.M.S. te implementeren. Deze systemen zijn zowel website als cms in een. Als u JiNN gaat gebruiken zult u nog steeds zelf u op een database gebaseerde website moeten bouwen. JiNN is echter zo universeel toepasbaar dat u ook vele bestaande sites kunt koppelen aan JiNN.
+jinn-description	common	nl	JiNN is een Content Management Systeem, en Database Management Systeem en een ontwikkelomgeving voor CMS'en. JiNN is een recursief acroniem dat 'JiNN is Not Nuke' betekend omdat de Auteur niet van de Nuke-Methode houden om een C.M.S. te implementeren. Deze systemen zijn zowel website als cms in een. Als u JiNN gaat gebruiken zult u nog steeds zelf u op een database gebaseerde website moeten bouwen. JiNN is echter zo universeel toepasbaar dat u ook vele bestaande sites kunt koppelen aan JiNN.  <p>Hier staat ons <a href="jinn/CHANGELOG" target="_blank">changelog</a>.</p>
 keep current timestamp	jinn	nl	Behoudt huidige tijdstempel
 keep this empty to let is auto increment	jinn	nl	Laat deze leeg om het automatisch op te laten slaan
 last edited record	jinn	nl	Laatst gewijzigde record

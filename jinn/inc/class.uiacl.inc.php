@@ -36,7 +36,7 @@
 
 	  function uiacl()
 	  {
-		 $this->ui = CreateObject('jinn.uicommon');
+		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
 		 $this->nextmatchs=CreateObject('phpgwapi.nextmatchs');
 		 $this->template = $GLOBALS['phpgw']->template;
 		 $this->common = CreateObject('jinn.bocommon');

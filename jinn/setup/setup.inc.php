@@ -23,7 +23,7 @@
 
 	$setup_info['jinn']['name']			= 'jinn';
 	$setup_info['jinn']['title']		= 'JiNN CMS/Database Manager';
-	$setup_info['jinn']['version']		= '0.8.200';
+	$setup_info['jinn']['version']		= '0.8.205';
 	$setup_info['jinn']['app_order']	= 15;
 	$setup_info['jinn']['author'] 		= 'Pim Snel';
 	$setup_info['jinn']['license']  	= 'GPL';
