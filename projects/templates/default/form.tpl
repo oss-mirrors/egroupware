@@ -1,4 +1,4 @@
- <script>
+ <script language="JavaScript">
     self.name="first_Window";
     function addressbook()
     {

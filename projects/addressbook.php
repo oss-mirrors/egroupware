@@ -69,7 +69,7 @@
       }
 
     $phpgw->db->next_record();
-
+     
      if ($phpgw->db->f(0) == 1)
        $t->set_var(total_matchs,lang("your search returned 1 match"));
      else

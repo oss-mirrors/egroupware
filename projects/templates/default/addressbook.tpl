@@ -18,7 +18,6 @@
 
  {total_matchs}
  {next_matchs}
- {common_hidden_vars}	
   
   <table width=100% border=0 cellspacing=1 cellpadding=3>
     <tr bgcolor="{th_bg}">
@@ -34,8 +33,8 @@
 	<td>{firstname}</td>
         <td>{lastname}</td>
 	<form>
-        <input type="hidden" size="25" name="EX1" value="{id}">
-	<input type="hidden" size="25" name="EX2" value="{company}">
+        <input type="hidden" size="25" name="hidden" value="{id}">
+	<input type="hidden" size="25" name="hidden" value="{company}">
 	<td align=center><input type="button" value="{lang_select_customer}" onClick="ExchangeCustomer(this.form);" name="button"></td>
       </form>    
       </tr>
