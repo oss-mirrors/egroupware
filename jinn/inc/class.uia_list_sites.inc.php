@@ -42,7 +42,7 @@
 		{
 			$this->template->set_file(array(
 
-				'browse' => 'browse.tpl'
+				'browse' => 'list_sites.tpl'
 			));
 
 			if ($GLOBALS['HTTP_POST_VARS']['limit_start']) $limit_start=$GLOBALS['HTTP_POST_VARS']['limit_start'];

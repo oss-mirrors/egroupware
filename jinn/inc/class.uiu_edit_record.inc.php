@@ -26,7 +26,8 @@
 	{
 		var $public_functions = Array
 		(
-			'display_form'		=> True
+			'display_form'		=> True,
+			'view_record'		=> True
 		);
 		var $bo;
 		var $template;
@@ -46,8 +47,207 @@
 
 		function display_form()
 		{
+			$this->render_header();
+			$this->render_fields();
+			$this->render_many_to_many();
+			$this->render_one_to_one();
+		}
+
+		function view_record()
+		{
+		   $this->ui->header('View record');
+		   $this->ui->msg_box($this->bo->message);
+
+		   $this->main_menu();	
+  
+		   $this->template->set_file(array(
+			  'view_record' => 'view_record.tpl'
+		   ));
+
+		   $this->template->set_block('view_record','header','');
+		   $this->template->set_block('view_record','rows','rows');
+		   $this->template->set_block('view_record','back_button','back_button');
+		   $this->template->set_block('view_record','footer','footer');
+
+		   $where_string=$this->bo->where_string;
+		   $form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.object_update');
+		   $where_string_form='<input type="hidden" name="where_string" value="'.base64_encode($where_string).'">';
+		   $this->template->set_var('form_attributes',$form_attributes);
+		   $this->template->set_var('form_action',$form_action);
+		   $this->template->set_var('where_string_form',$where_string_form);
+
+		   $values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','','','','name','','*',$where_string);
 		
-			if(!$this->bo->so->test_JSO_table($this->bo->site_object))
+		   /* get all fieldproperties (name, type, etc...) */
+		   $fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
+
+		   /* The main loop to create all rows with input fields start here */ 
+		   foreach ( $fields as $fieldproperties )
+		   {
+			  $value=$values_object[0][$fieldproperties[name]];	/* get value */
+			  $input_name='FLD'.$fieldproperties[name];	/* add FLD so we can identify the real input HTTP_POST_VARS */
+			  $display_name = ucfirst(strtolower(ereg_replace("_", " ", $fieldproperties[name]))); /* replace _ for a space */
+			  /* ---------------------- start fields -------------------------------- */
+
+			  /* Its an identifier field */
+			  if (eregi("auto_increment", $fieldproperties[flags]) || eregi("nextval",$fieldproperties['default']))
+			  //				if (eregi("auto_increment", $fieldproperties[flags]))
+			  {
+				 if(!$value) $display_value=lang('automaticly incrementing');
+				 $input='<b>'.$value.'</b><input type="hidden" name="'.$input_name.'" value="'.$value.'">'.$display_value;
+				 $record_identifier[name]=$input_name;
+				 $record_identifier[value]=$value;
+			  }
+
+			  elseif ($fieldproperties[type]=='varchar' || $fieldproperties[type]=='string' ||  $fieldproperties[type]=='char')
+			  {
+				 /* If this integer has a relation get that options */
+				 if (is_array($fields_with_relation1) && in_array($fieldproperties[name],$fields_with_relation1))
+				 {
+					//get related field vals en displays
+					$related_fields=$this->bo->get_related_field($relation1_array[$fieldproperties[name]]);
+
+					$input= '<select name="'.$input_name.'">';
+					   $input.= $this->ui->select_options($related_fields,$value,true);
+					   $input.= '</select> ('.lang('real value').': '.$value.')';
+				 }
+				 else
+				 {
+					if($fieldproperties[len] && $fieldproperties[len]!=-1)
+					{
+					   $attr_arr=array(
+						  'max_size'=>$fieldproperties[len],
+					   );
+					}
+					$input=$this->bo->get_plugin_ro($input_name,$value,'string', $attr_arr);
+				 }
+			  }
+
+			  elseif ($fieldproperties[type]=='int' || $fieldproperties[type]=='real' || $fieldproperties[type]=='smallint'|| $fieldproperties[type]=='tinyint' || $fieldproperties[type]=='int4' )
+			  {
+				 /* If this integer has a relation get that options */
+				 if (is_array($fields_with_relation1) && in_array($fieldproperties[name],$fields_with_relation1))
+				 {
+					//get related field vals en displays
+					$related_fields=$this->bo->get_related_field($relation1_array[$fieldproperties[name]]);
+
+
+					$input= '<select name="'.$input_name.'">';
+					   $input.= $this->ui->select_options($related_fields,$value,true);
+					   $input.= '</select> ('.lang('real value').': '.$value.')';
+				 }
+				 else
+				 {	
+					$input=$this->bo->get_plugin_ro($input_name,$value,'int',$attr_arr);
+				 }
+			  }
+
+			  elseif ($fieldproperties[type]=='timestamp')
+			  {
+				 if ($value)
+				 {
+					$input=$this->bo->get_plugin_ro($input_name,$value,'timestamp',$attr_arr);
+				 }
+				 else
+				 {
+					$input = lang('automatic');
+				 }
+			  }
+
+			  elseif ($fieldproperties[type]=='blob' && ereg('binary',$fieldproperties[flags]))
+			  {
+				 // FIXME this is a quick hack make a standard routine
+				 $tmpplugins=explode('|',str_replace('~','=',$this->bo->site_object['plugins']));
+				 foreach ($tmpplugins as $tval)
+				 {
+					if (stristr($tval, $fieldproperties[name])) 
+					{
+					   $has_plugin=true;
+					   break;
+					}
+				 }
+				 if($has_plugin)
+				 {
+					$input=$this->bo->get_plugin_ro($input_name,$value,'blob',$attr_arr);
+				 }
+				 else
+				 {
+					$input = lang('binary');
+				 }
+			  }
+
+			  elseif (ereg('text',$fieldproperties[type]) && ereg('binary',$fieldproperties[flags]))
+			  {
+				 $input = lang('binary');
+			  }
+			  elseif ($fieldproperties[type]=='blob' || ereg('text',$fieldproperties[type])) //then it is a textblob
+			  {
+				 $input=$this->bo->get_plugin_ro($input_name,$value,'blob',$attr_arr);
+			  }
+			  else
+			  {
+				 $input=$this->bo->get_plugin_ro($input_name,$value,'string',$attr_arr);
+			  }
+
+			  /* if there is something to render to this */
+			  if($input!='hide')
+			  {
+				 if($this->bo->read_preferences('table_debugging_info')=='yes')
+				 {
+					$keys=array_keys($fieldproperties);
+					$input.='<br/>';
+					foreach($keys as $key)
+					{
+					   if(!$fieldproperties[$key]) continue;
+					   $input.= $key.'='.$fieldproperties[$key].' ';
+
+					}
+				 }
+
+				 /* set the row colors */
+				 $GLOBALS['phpgw_info']['theme']['row_off']='#eeeeee';
+				 if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on']) $row_color=$GLOBALS['phpgw_info']['theme']['row_off'];
+				 else $row_color=$GLOBALS['phpgw_info']['theme']['row_on'];
+
+				 $this->template->set_var('row_color',$row_color);
+				 $this->template->set_var('input',$input);
+				 $this->template->set_var('fieldname',$display_name);
+
+				 $this->template->parse('row','rows',true);
+			  }
+		   }
+
+		   
+		   if($this->bo->site_object[max_records]!=1)
+		   {
+			  $back_onclick='location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.browse_objects').'\'';
+			  $this->template->set_var('back_onclick',$back_onclick);
+
+			  $this->template->parse('extra_back_button','back_button');
+		   }
+		   else
+		   {
+			  $this->template->set_var('extra_back_button','');
+		  }
+
+		   
+		   $edit_onclick='location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.display_form&where_string='.base64_encode($where_string)).'\'';
+
+		   $this->template->set_var('lang_edit',lang('edit this record'));
+		   $this->template->set_var('lang_back',lang('back to record list'));
+		   $this->template->set_var('edit_onclick',$edit_onclick);
+
+		   $this->template->pparse('out','header');
+		   $this->template->pparse('out','row');
+		   $this->template->pparse('out','footer');
+		
+		}
+
+
+
+		function render_header()
+		{		
+		if(!$this->bo->so->test_JSO_table($this->bo->site_object))
 			{
 				unset($this->bo->site_object_id);
 				$this->bo->message['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
@@ -106,10 +306,6 @@
 			
 			/* get all fieldproperties (name, type, etc...) */
 			$fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
-			//			_debug_array($fields);
-
-
-
 			
 			/* The main loop to create all rows with input fields start here */ 
 			foreach ( $fields as $fieldproperties )
@@ -200,7 +396,6 @@
 						 break;
 					  }
 				   }
-//				   die($has_plugin);
 				   if($has_plugin)
 				   {
 					  $input=$this->bo->get_plugin_fi($input_name,$value,'blob',$attr_arr);
@@ -256,10 +451,6 @@
 			/***********************************************
 			* MANY WITH MANY RELATION SECTION OF FORM      *
 			***********************************************/
-
-			// this below must move to class.uirelations.inc.php
-			/*	check for many with many relations. 
-			if so make double selectionbox		*/
 
 			$relation2_array=$this->bo->extract_1wX_relations($this->bo->site_object[relations]);
 			if (count($relation2_array)>0)
@@ -319,9 +510,7 @@
 					$this->template->set_var('fieldname',$display_name);
 
 					$this->template->parse('row','rows',true);
-
 				}
-
 			}
 
 			if(!$where_string)
@@ -371,6 +560,12 @@
 			$this->bo->save_sessiondata();
 		}
 
+		function render_fields(){}
+
+		function render_many_to_many(){}
+
+		function render_one_to_one(){}
+		
 		function main_menu()
 		{
 			$this->template->set_file(array(
@@ -416,12 +611,7 @@
 					unset($this->bo->site_object_id);
 				}
 
-				// set theme_colors
-//				$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-//				$this->template->set_var('th_text',$GLOBALS['phpgw_info']['theme']['th_text']);
-//				$this->template->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
-//				$this->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
-$this->template->set_var('jinn_main_menu',lang('JiNN Main Menu'));
+				$this->template->set_var('jinn_main_menu',lang('JiNN Main Menu'));
 
 				// set menu
 				$this->template->set_var('site_objects',$object_options);
@@ -445,9 +635,6 @@ $this->template->set_var('jinn_main_menu',lang('JiNN Main Menu'));
 				$this->template->pparse('out','main_menu');
 
 			}
-
-
-
 		}
 
 		?>

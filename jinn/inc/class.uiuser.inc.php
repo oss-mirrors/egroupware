@@ -183,13 +183,70 @@
 
 		 }
 
+
+		 function browse_objects()
+		 {
+			if($this->bo->site_object[max_records]==1)
+			{
+			   $columns=$this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
+			   if(!is_array($columns)) $columns=array();
+
+			   /* walk through all table columns and fill different array */
+			   foreach($columns as $onecol)
+			   {
+				  //create more simple col_list with only names //why
+				  $all_col_names_list[]=$onecol[name];
+
+				  /* check for primaries and create array */
+				  if (eregi("primary_key", $onecol[flags]) && $onecol[type]!='blob') // FIXME howto select long blobs
+				  {						
+					 $pkey_arr[]=$onecol[name];
+				  }
+				  elseif($onecol[type]!='blob') // FIXME howto select long blobs
+				  {
+					 $akey_arr[]=$onecol[name];
+				  }
+			   }
+
+			   $records=$this->bo->get_records($this->bo->site_object[table_name],'','',0,1,'name',$orderby,'*',$where_condition);
+			   if(count($records)>0)
+			   {
+				  foreach($records as $recordvalues)
+				  {
+					 unset($where_string);
+					 if(count($pkey_arr)>0)
+					 {
+						foreach($pkey_arr as $pkey)
+						{
+						   if($where_string) $where_string.=' AND ';
+						   $where_string.= '('.$pkey.' = \''. $recordvalues[$pkey].'\')';
+						}
+
+						$where_string=base64_encode($where_string);
+					 }
+				  }
+			   
+				  $this->bo->common->exit_and_open_screen('jinn.uiu_edit_record.view_record&where_string='.$where_string);
+			   }
+	
+			   else
+			   {
+				  $this->list_records();
+			   }
+			}
+			else
+			{
+   			   $this->list_records();
+			}
+			
+		 }
+
 		 /*******************************\
 		 * 	Browse through site_objects  *
 		 \*******************************/
 
-		 function browse_objects()
+		 function list_records()
 		 {
-
 			if(!$this->bo->so->test_JSO_table($this->bo->site_object))
 			{
 			   unset($this->bo->site_object_id);
@@ -198,32 +255,28 @@
 			   $this->bo->save_sessiondata();
 			   $this->bo->common->exit_and_open_screen('jinn.uiuser.index');
 			}				
-/*
-			if (!is_object($GLOBALS['phpgw']->js))
-			{
-			   $GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
-			}
-			if (!strstr($GLOBALS['phpgw_info']['flags']['java_script'],'jinn'))
-			{
-			   $GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
-			}
-*/
+
 			$this->ui->header('browse through objects');
 			$this->ui->msg_box($this->bo->message);
+
 			$this->main_menu();	
 
 			$this->template->set_file(array(
-			   'browse_menu' => 'browse_menu.tpl',
-			   'browse' => 'browse.tpl'
+			   'list_records' => 'list_records.tpl',
 			));
 
+			$this->template->set_block('list_records','header','header');
+			$this->template->set_block('list_records','column_name','column_name');
+			$this->template->set_block('list_records','column_field','column_field');
+			$this->template->set_block('list_records','row','row');
+			$this->template->set_block('list_records','empty_row','empty_row');
+			$this->template->set_block('list_records','footer','footer');
+			
 			$pref_columns_str=$this->bo->read_preferences('show_fields'); 
 			$default_order=$this->bo->read_preferences('default_order');
 
 			list($offset,$asc,$orderby,$filter,$navdir,$limit_start,$limit_stop,$direction,$show_all_cols,$search)=$this->bo->common->get_global_vars(array('offset','asc','orderby','filter','navdir','limit_start','limit_stop','direction','show_all_cols','search'));
-//			_debug_array($_GET);
 
-			
 			if(!$offset) $offset= $this->bo->browse_settings['offset'];
 			if(!$asc)    $asc=    $this->bo->browse_settings['asc']; // FIXME remove?
 			if(!$filter) $filter= $this->bo->browse_settings['filter'];
@@ -263,10 +316,12 @@
 			$this->template->set_var('copy',lang('copy'));
 			$this->template->set_var('show_all_cols',$show_all_cols);
 
+			$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+			$this->template->set_var('table_title',$this->bo->site_object[name]);
+
 			$popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
 
 			$this->template->set_var('popuplink',$popuplink);
-			$this->template->pparse('out','browse_menu');
 
 			$LIMIT="LIMIT $limit[start],$limit[stop]";
 
@@ -379,11 +434,18 @@
 				  $orderby_link = $col[name].' ASC';
 			   }
 
-			   // FIXME replace by template block
-			   $col_headers_t.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" ';
-				  $col_headers_t.=' style="font-weight:bold;padding:3px;"  align=\"center\">';
-				  $col_headers_t.='<a href="'.$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiuser.browse_objects&orderby=$orderby_link&search=$search&limit_start=$limit_start&limit_stop=$limit_stop&show_all_cols=$show_all_cols").'">'.str_replace('_','&nbsp;',$col[name]).'&nbsp;'.$orderby_image.'</a></td>';
+			   $this->template->set_var('colhead_bg_color',$GLOBALS['phpgw_info']['theme']['th_bg']);
+			   $this->template->set_var('colhead_order_link',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiuser.browse_objects&orderby=$orderby_link&search=$search&limit_start=$limit_start&limit_stop=$limit_stop&show_all_cols=$show_all_cols"));
+			   $this->template->set_var('colhead_name',str_replace('_','&nbsp;',$col[name]));
+			   $this->template->set_var('colhead_order_by_img',$orderby_image);
+
+			   $this->template->parse('colnames','column_name',true);
 			}
+
+			$this->template->parse('out','header');
+			$this->template->pparse('out','header');
+
+			//------------ end header --------------//
 
 			if(!is_array($pkey_arr))
 			{
@@ -393,9 +455,8 @@
 
 			$records=$this->bo->get_records($this->bo->site_object[table_name],'','',$limit[start],$limit[stop],'name',$orderby,'*',$where_condition);
 
-			if (count($records)>0)
+			if(count($records)>0)
 			{
-
 			   foreach($records as $recordvalues)
 			   {
 				  unset($where_string);
@@ -412,26 +473,40 @@
 
 				  if ($bgclr==$GLOBALS['phpgw_info']['theme']['row_off'])
 				  {
-//					 $bgclr=$GLOBALS['phpgw_info']['theme']['row_on'];
-					$bgclr='#ffffff';
-				 }
+					 $bgclr='#ffffff';
+				  }
 				  else
 				  {
 					 $bgclr=$GLOBALS['phpgw_info']['theme']['row_off'];
 				  }
 
-
 				  if(count($recordvalues)>0)
 				  {
-					 $table_rows.='<tr valign="top">';
-						$table_rows.='<td bgcolor="'.$bgclr.'" align="left"><a title="'.lang('edit').'" href="'.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.display_form&where_string='.$where_string).'"><img src="'.$GLOBALS[phpgw]->common->image('phpgwapi','edit').'" alt="'.lang('edit').'" /></a></td><td bgcolor="'.$bgclr.'" align="left"><a title="'.lang('delete').'" href="'.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.del_object&where_string='.$where_string).'" onClick="return window.confirm(\''.lang('Are you sure?').'\');"><img src="'.$GLOBALS[phpgw]->common->image('phpgwapi','delete').'" alt="'.lang('delete').'" /></a></td>';
+						// action_links
+						$this->template->set_var('colfield_bg_color',$bgclr);
+						$this->template->set_var('colfield_lang_edit',lang('edit'));
+						$this->template->set_var('colfield_edit_link',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.display_form&where_string='.$where_string));
+						$this->template->set_var('colfield_edit_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','edit'));
+
+						$this->template->set_var('colfield_lang_view',lang('view'));
+						$this->template->set_var('colfield_view_link',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.view_record&where_string='.$where_string));
+						$this->template->set_var('colfield_view_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','view'));
+						
+						$this->template->set_var('colfield_lang_delete',lang('delete'));
+						$this->template->set_var('colfield_delete_link',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.del_object&where_string='.$where_string));
+						$this->template->set_var('colfield_lang_confirm',lang('Are you sure?'));
+						$this->template->set_var('colfield_delete_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','delete'));
+
+						$this->template->set_var('colfields','');
 
 						foreach($col_names_list  as $onecolname)
 						{
+   
 						   $recordvalue=$recordvalues[$onecolname];
 						   if (empty($recordvalue))
 						   {
-							  $table_rows.="<td bgcolor=\"$bgclr\">&nbsp;</td>";
+							  $recordvalue="&nbsp;";
+
 						   }
 						   else
 						   {
@@ -445,45 +520,34 @@
 							  {	
 								 $recordvalue=$this->bo->get_plugin_bv($onecolname,$recordvalue,$where_string,$onecolname);
 							  }
-
-							  $display_value=$recordvalue;
-							  $table_rows.="<td bgcolor=\"$bgclr\" valign=\"top\">".$display_value."</td>";
 						   }
 
+						   $this->template->set_var('colfield_bg_color',$bgclr);
+						   $this->template->set_var('colfield_value',$recordvalue);
+
+						   $this->template->parse('colfields','column_field',true);
 						}
 
-						$table_rows.='</tr>';
+						$this->template->parse('rows','row',true);
+						$this->template->pparse('out','row');
 
-				  }
+			
+
+				  }// end if table has fields
 
 
-			   }
+			   }//end foreach row
+
 			}
 			else
 			{
-
-			   $table_rows.='<tr><td colspan="'.(count($col_names_list)+3).'">'.lang('No records found').'</td></tr>';		   
-
+			   $this->template->set_var('lang_no_records',lang('No records found'));
+			   $this->template->set_var('colspan',(count($col_names_list)+3));
+			   $this->template->pparse('out','empty_row');
 			}
 
-
-			$button_config='<td><form name=form2 action="'.
-				  $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.config_objects') .
-				  '" method="post"><input type="submit" name="action" value="'.lang('Configure this View').'"></form></td>';
-
-
-			$this->template->set_var('button_add',$button_add);
-			$this->template->set_var('button_browse',$button_browse);
-			$this->template->set_var('button_show_all_cols',$button_show_all_cols);
-			$this->template->set_var('button_config',$button_config);
-			$this->template->set_var('table_title',$this->bo->site_object[name]);
-			$this->template->set_var('record_info',lang('record').' '.$limit[start].' '.lang('t/m').' '.$limit[stop]);
-			$this->template->set_var('fieldnames',$col_headers_t);
-			$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-			$this->template->set_var('fieldnames',$col_headers_t);
-			$this->template->set_var('table_row',$table_rows);
-
-			$this->template->pparse('out','browse');
+			$this->template->parse('out','footer');
+			$this->template->pparse('out','footer');
 
 			unset($this->message);
 

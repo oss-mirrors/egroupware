@@ -43,12 +43,12 @@
 	  {
 		 $this->template->set_file(array(
 
-			'object_list' => 'object_list.tpl'
+			'list_objects' => 'list_objects.tpl'
 		 ));
 
-		 $this->template->set_block('object_list','listheader','listheader');
-		 $this->template->set_block('object_list','rows','rows');
-		 $this->template->set_block('object_list','listfooter','listfooter');
+		 $this->template->set_block('list_objects','listheader','listheader');
+		 $this->template->set_block('list_objects','rows','rows');
+		 $this->template->set_block('list_objects','listfooter','listfooter');
 
 		 $table_title=lang('Site-objects');
 		 $this->template->set_var('table_title',$table_title);
