@@ -13,6 +13,16 @@
 	\***************************************************************************/
 	/* $Id$ */
 
+	/**
+	* the core logic of FeLaMiMail
+	*
+	* This class contains all logic of FeLaMiMail.
+	* @package FeLaMiMail
+	* @author Lars Kneschke
+	* @version 1.35
+	* @copyright Lars Kneschke 2002,2003,2004
+	* @license http://opensource.org/licenses/gpl-license.php GPL
+	*/
 	class bofelamimail
 	{
 		var $public_functions = array
@@ -79,6 +89,14 @@
 			
 		}
 		
+		/**
+		* hook to add account
+		*
+		* this function is a wrapper function for emailadmin
+		*
+		* @param _hookValues contains the hook values as array
+		* @returns nothing
+		*/
 		function addAccount($_hookValues)
 		{
 			if($this->profileID > 0 && is_numeric($this->profileID))

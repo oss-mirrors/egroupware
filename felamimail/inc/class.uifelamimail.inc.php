@@ -953,6 +953,7 @@
 			d = new dTree('d','".$folderImageDir."');";
 			
 			
+			$parentStack = array();
 			while(list($key,$value) = @each($folders))
 			{
 				$selected = '';
@@ -966,16 +967,18 @@
 							htmlspecialchars($key),
 							$selected,
 							htmlspecialchars($value));
-			
+							
 				$counted_dots = substr_count($value,".");
 
 				if ($this->mailbox == $key) 
 				{
 					$folder_name = "<font style=\"background-color: #dddddd\">".str_replace(".","",$value)."</font>";
+#					$folderOpen = 'true';
 				}
 				else
 				{
 					$folder_name = str_replace(".","",$value);
+					$folderOpen = '';
 				}
 
 				$folder_title = str_replace(".","",$value);
@@ -987,17 +990,31 @@
 					$folder_icon = $folderImageDir."/foldertree_felamimail_sm.png";
 				}
 
-				if($counted_dots == 2) 
+				$countedDots = $counted_dots/2-1;
+
+				if($countedDots == 0) 
 				{
 					$parent = 0;
-					$last_parent = $counter;
+					$parentStack = array($counter);
 				}
-				if($counted_dots > 2)
+
+				if($countedDots > count($parentStack)-1 && $countedDots > 0)
 				{
-					$parent = $last_parent;
+					$parent = end($parentStack);
+					array_push($parentStack, $counter);
 				}
-// Node(id, pid, name, url, urlClick, urlOut, title, target, icon, iconOpen, open) {
-				$folder_tree_new .= "d.add($counter,$parent,'$folder_name','#','document.messageList.mailbox.value=\'$key\'; document.messageList.submit();','','$folder_title $key','','$folder_icon');";
+				elseif($countedDots < count($parentStack)-1 && $countedDots > 0)
+				{
+					$stackCounter = count($parentStack);
+					while(count($parentStack) > $countedDots)
+					{
+						array_pop($parentStack);
+					}
+					$parent = end($parentStack);
+				}
+				
+				// Node(id, pid, name, url, urlClick, urlOut, title, target, icon, iconOpen, open) {
+				$folder_tree_new .= "d.add($counter,$parent,'$folder_name','#','document.messageList.mailbox.value=\'$key\'; document.messageList.submit();','','$folder_title $key','','$folder_icon','$folderOpen');";
 				$counter++;
 			}
 
