@@ -9,7 +9,7 @@
 	*                                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2001,2002 Bettina Gille                             *
+	* Copyright (C) 2001 - 2003 Bettina Gille                           *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -36,14 +36,13 @@
 
 			$this->read_sessiondata();
 
-			$country = get_var('country',Array('GET','POST'));
+			$country = get_var('country',Array('POST','GET'));
 
-			if (isset($country) && !empty($country))
+			if ($country)
 			{
 				$this->country = $country;
 			}
-
-			if($country == '')
+			else
 			{
 				$prefs = $this->read_prefs();
 				if ($prefs['country'])
@@ -79,7 +78,6 @@
 		{
 			switch($this->country)
 			{
-				case 'US':	$url = 'http://finance.yahoo.com/d/quotes.csv?f=sl1d1t1c1ohgv&e=.csv&s='; break;
 				case 'DE':	$url = 'http://de.finance.yahoo.com/d/quotes_de.csv?f=sl1d1t1c1ohgv&e=.csv&s='; break;
 				default :	$url = 'http://finance.yahoo.com/d/quotes.csv?f=sl1d1t1c1ohgv&e=.csv&s='; break;
 			}

@@ -19,9 +19,5 @@
 		'nonavbar'   => True
 	);
 	include('../header.inc.php');
-
-	$obj = CreateObject('stocks.ui');
-	$obj->index();
-
-	$GLOBALS['phpgw']->common->phpgw_footer();
+	$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=stocks.ui.index');
 ?>

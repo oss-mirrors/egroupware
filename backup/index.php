@@ -33,7 +33,5 @@
 	);
 	include('../header.inc.php');
 
-	$obj = CreateObject('backup.uibackup');
-	$obj->web_backup();
-	$GLOBALS['phpgw']->common->phpgw_footer();
+	$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=backup.uibackup.web_backup');
 ?>

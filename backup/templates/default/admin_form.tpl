@@ -1,9 +1,7 @@
 <!-- $Id$ -->
 
-<p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
-<hr noshade width="98%" align="center" size="1">
 <center>
-<form method="POST" name="admin_form" action="{actionurl}">
+<form method="POST" action="{action_url}">
 {message}
 <table width="85%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
@@ -99,9 +97,12 @@
 </table>
 
 <table width="85%" border="0" cellspacing="2" cellpadding="2">
-	<tr valign="bottom" align="left">
-		<td height="50">
-			<input type="submit" name="submit" value="{lang_save}"></form></td>
+	<tr valign="bottom" height="50">
+		<td>
+			<input type="submit" name="values[save]" value="{lang_save}"></form></td>
+		<td align="right">
+			<form method="POST" action="{done_url}">
+			<input type="submit" name="done" value="{lang_done_cancel}"></form></td>
 	</tr>
 </table>
 </center>

@@ -13,9 +13,6 @@
 	</tr>
 </table>
 <table width="60%" border="0" cellspacing="2" cellpadding="2">
-	<tr bgcolor="{tr_color2}">
-		<td colspan="5"><b>{lang_list}</b></td>
-	</tr>
 	<tr bgcolor="{th_bg}">
 		<td width="30%">{lang_symbol}</td>
 		<td width="40%">{lang_company}</td>
