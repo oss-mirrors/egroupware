@@ -1,14 +1,14 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - E-Mail								*
-	* http://www.phpgroupware.org							*
-	* Based on Aeromail by Mark Cushman <mark@cushman.net>			*
-	*          http://the.cushman.net/							*
-	* --------------------------------------------						*
-	*  This program is free software; you can redistribute it and/or modify it 	*
-	*  under the terms of the GNU General Public License as published by the	*
-	*  Free Software Foundation; either version 2 of the License, or (at your		*
-	*  option) any later version.								*
+	* phpGroupWare - E-Mail                                                    *
+	* http://www.phpgroupware.org                                              *
+	* Based on Aeromail by Mark Cushman <mark@cushman.net>                     *
+	*          http://the.cushman.net/                                         *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
 	\**************************************************************************/
 
 	/* $Id$ */
@@ -36,10 +36,10 @@
 // ----  Set Some Debug Flags ==  -----
 	//$debug_logins = True;
 	$debug_logins = False;
-	
+
 	//$debug_args_array = True;
 	$debug_args_array = False;
-	
+
 // ----  == IS IT OK TO LOGIN To Mailserver ==  -----
 	/*
 	@Discussion	Is It OK to Login To The Server?
@@ -50,7 +50,7 @@
 	*/
 	// OK TO LOGIN pre-conditions
 	// were we called from the main screen (user's home page)
-	if (strstr($GLOBALS['phpgw_info']['server']['versions']['phpgwapi'], '0.9.12'))
+	if(strstr($GLOBALS['phpgw_info']['server']['versions']['phpgwapi'], '0.9.12'))
 	{
 		// user's welcome page was called "index.php" in ver 0.9.12
 		// perhaps still needed during the upgrade procedure - so keep this check
@@ -63,10 +63,10 @@
 	}
 	// were we in a typical email session
 	$in_email = eregi("^.*\/email\/.*$",$GLOBALS['PHP_SELF']);
-	
+
 	// DO NOT LOGIN for these conditions  --------
 	$login_allowed = True; // initialize
-	
+
 	// these files do not require login to email server, or have been replaced by n-tier classes.
 	$no_login_check = Array(
 		"attach_file\.php",
@@ -78,12 +78,12 @@
 		"index\.php",
 		"indexx\.php"
 	);
-	if ($debug_logins) { echo 'email functions.php: $no_login_check[]: '.serialize($no_login_check).'<br>'; }
+	if($debug_logins) { echo 'email functions.php: $no_login_check[]: '.serialize($no_login_check).'<br>'; }
 	
-	for ($i=0; $i<count($no_login_check); $i++)
+	for($i=0; $i<count($no_login_check); $i++)
 	{
 		$match_this = $no_login_check[$i];
-		if (eregi("^.*\/email\/$match_this.*$",$GLOBALS['PHP_SELF']))
+		if(eregi("^.*\/email\/$match_this.*$",$GLOBALS['PHP_SELF']))
 		{
 			$login_allowed = False;
 			break;
@@ -140,7 +140,7 @@
 	by the mail_msg class to accomplish more specific and/or more complicated mail requests.
 	See below for the currently available array elements that mail_msg class will accept.
 	Here are some simplified instructions on initializing and using the mail_msg class.
-	
+
 	----  INSTRUCTIONS:   -------
 	1: create an instance of the mail_msg class
 		$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
@@ -166,7 +166,7 @@
 			$inbox_data = $GLOBALS['phpgw']->msg->new_message_check();
 	7: when you are done, end the request with this command:
 		$GLOBALS['phpgw']->msg->end_request('');
-	
+
 	Simple Example:
 		$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 		$args_array = Array();
@@ -181,13 +181,13 @@
 
 	// ----  Create the mail_msg Class    -----
 	//$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-	if (is_object($GLOBALS['phpgw']->msg))
+	if(is_object($GLOBALS['phpgw']->msg))
 	{
-		if ($debug_logins) { echo 'email: functions.inc.php: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
+		if($debug_logins) { echo 'email: functions.inc.php: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
 	}
 	else
 	{
-		if ($debug_logins) { echo 'email: functions.inc.php: is_object test: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
+		if($debug_logins) { echo 'email: functions.inc.php: is_object test: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
 		$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 	}
 
@@ -201,24 +201,23 @@
 		$GLOBALS['phpgw']->msg->grab_set_prefs_args_gpc();
 	}
 	*/
-	
+
 	// UNKNOWN if $totalerrors and $errors are still used or not
 	// $args_array['totalerrors'] = $totalerrors;
 	// $args_array['errors'] = $errors;
 
 // ----  CONNECT TO MAILSERVER - IF IT'S OK  -------
-	if ((($in_email) || ($in_mainscreen))
-	&& ($login_allowed))
+	if ((($in_email) || ($in_mainscreen)) && ($login_allowed))
 	{
 		// this will expose sensitive data, beter to comment it out when not debugging
 		//if ($debug_logins) {  echo 'CALL TO LOGIN IN FUNCTIONS.INC.PHP'.'<br>'.'userid='.$GLOBALS['phpgw_info']['user']['preferences']['email']['userid']; }
-		
+
 		/*
 		// DEPRECIATED - not happens aytomatically in "->begin_request()"
 		// ----  GRAB CLASS VARIABLES FROM HTTP POST OR GET GLOBALS  ------
 		$GLOBALS['phpgw']->msg->grab_class_args_gpc();
 		*/
-		
+
 		// ----  INITIALIZE SIMPLE REQUEST ARGS ARRAY HOLDER VARIABLE  -------
 		// needed whether you intend to login or not
 		$args_array = Array();
@@ -233,13 +232,13 @@
 		// OVERRIDE any previous arg value, such as gotten from the GPC vars in "->grab_class_args_*()"
 		// Otherwise, just let the "->grab_class_args_*()" set these arg values.
 		// NOTE: you can supply the "folder" and "do_login" values from any data source, xml-rpc is planned
-		
+
 		// (1) ----  do_login: true/false  ----
 		// if true: class dcom is created and a login is attaemted, and a reopen to the "foler" var is attempted
 		// if false: used for information only, such as to fill preferences for squirrelmail,
-		//	or for the preferences page, where info necessary for logino may not yet be filled in
+		//  or for the preferences page, where info necessary for logino may not yet be filled in
 		$args_array['do_login'] = True;
-				
+
 		// "begin_request" will obtain the email preferences from the db
 		// currently db table "phpgw_preferences", accessed via object $GLOBALS['phpgw']->preferences
 		// and also containing integrated pref handling code in /mail/class.bopreferences.inc.php
@@ -251,7 +250,7 @@
 		$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
 
 		// ----  Error Msg And Exit If Mailbox Connection Not Established  -----
-		if (!$some_stream)
+		if(!$some_stream)
 		{
 			$GLOBALS['phpgw']->msg->login_error('email_(slash)_functions.inc.php');
 			// this exits the script, calling $GLOBALS['phpgw']->common->phpgw_exit(True);
@@ -272,7 +271,6 @@
 	// it's no longer needed
 	$args_array = Array();
 
-
 	// FROM HERE DOWN IS ALL DEPRECIATED CODE
 // ----  Various Functions Used To Support Email   -----
 	// note these are probably unused, because most (all ?) useful functions have migrated into mail_msg class
@@ -280,9 +278,9 @@
 	// this is BROKEN
 	function mime_is_packagelist($part_nice)
 	{
-		if ((stristr($part_nice['subtype'], 'MIXED')) 
-		|| (stristr($part_nice['type'], 'multipart'))
-		|| (stristr($part_nice['param_attribute'], 'boundry')))
+		if ((stristr($part_nice['subtype'], 'MIXED')) ||
+		(stristr($part_nice['type'], 'multipart')) ||
+		(stristr($part_nice['param_attribute'], 'boundry')))
 		{
 			return True;
 		}
@@ -291,5 +289,4 @@
 			return False;
 		}
 	}
-
 ?>

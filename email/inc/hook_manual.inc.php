@@ -1,6 +1,6 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - Calendar Holidays                                         *
+  * phpGroupWare - Manual                                                    *
   * http://www.phpgroupware.org                                              *
   * Written by Mark Peters <skeeter@phpgroupware.org>                        *
   * --------------------------------------------                             *
@@ -13,10 +13,10 @@
 	/* $Id$ */
 
 	$file = Array(
-		'Viewing'	=> 'viewing.php',
-		'Replying'	=> 'replying.php',
-		'Composing/Saving/Deleting'	=> 'other.php',
-		'Notes'		=> 'notes.php'
+		'Viewing'  => 'viewing.php',
+		'Replying' => 'replying.php',
+		'Composing/Saving/Deleting' => 'other.php',
+		'Notes'    => 'notes.php'
 	);
 //Do not modify below this line
 	display_manual_section($appname,$file);
