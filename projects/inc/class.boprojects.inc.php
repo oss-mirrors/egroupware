@@ -33,6 +33,7 @@
 		var $order;
 		var $sort;
 		var $cat_id;
+		var $status;
 
 		var $public_functions = array
 		(
@@ -77,7 +78,13 @@
 				$this->use_session = True;
 			}
 
-			global $start, $query, $filter, $order, $sort, $cat_id;
+			$start	= $GLOBALS['HTTP_POST_VARS']['start'] ? $GLOBALS['HTTP_POST_VARS']['start'] : $GLOBALS['HTTP_GET_VARS']['start'];
+			$query	= $GLOBALS['HTTP_POST_VARS']['query'] ? $GLOBALS['HTTP_POST_VARS']['query'] : $GLOBALS['HTTP_GET_VARS']['query'];
+			$sort	= $GLOBALS['HTTP_POST_VARS']['sort'] ? $GLOBALS['HTTP_POST_VARS']['sort'] : $GLOBALS['HTTP_GET_VARS']['sort'];
+			$order	= $GLOBALS['HTTP_POST_VARS']['order'] ? $GLOBALS['HTTP_POST_VARS']['order'] : $GLOBALS['HTTP_GET_VARS']['order'];
+			$cat_id	= $GLOBALS['HTTP_POST_VARS']['cat_id'] ? $GLOBALS['HTTP_POST_VARS']['cat_id'] : $GLOBALS['HTTP_GET_VARS']['cat_id'];
+			$filter	= $GLOBALS['HTTP_POST_VARS']['filter'] ? $GLOBALS['HTTP_POST_VARS']['filter'] : $GLOBALS['HTTP_GET_VARS']['filter'];
+			$status	= $GLOBALS['HTTP_POST_VARS']['status'] ? $GLOBALS['HTTP_POST_VARS']['status'] : $GLOBALS['HTTP_GET_VARS']['status'];
 
 			if(isset($start)) { $this->start = $start; }
 			if(isset($query)) { $this->query = $query; }
@@ -85,6 +92,13 @@
 			if(isset($sort)) { $this->sort = $sort; }
 			if(isset($order)) { $this->order = $order; }
 			if(isset($cat_id)) { $this->cat_id = $cat_id; }
+
+			if ($cat_id == 'none')
+			{
+				$this->cat_id = '';
+			}
+
+			if(isset($status)) { $this->status = $status; }
 		}
 
 		function type($action)
@@ -123,6 +137,7 @@
 			$this->order	= $data['order'];
 			$this->sort		= $data['sort'];
 			$this->cat_id	= $data['cat_id'];
+			$this->status	= $data['status'];
 		}
 
 		function check_perms($has, $needed)

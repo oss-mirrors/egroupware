@@ -33,6 +33,7 @@
 		var $sort;
 		var $order;
 		var $cat_id;
+		var $status;
 
 		var $public_functions = array
 		(
@@ -70,6 +71,7 @@
 			$this->order					= $this->boprojects->order;
 			$this->sort						= $this->boprojects->sort;
 			$this->cat_id					= $this->boprojects->cat_id;
+			$this->status					= $this->boprojects->status;
 		}
 
 		function save_sessiondata($action)
@@ -81,7 +83,8 @@
 				'filter'	=> $this->filter,
 				'order'		=> $this->order,
 				'sort'		=> $this->sort,
-				'cat_id'	=> $this->cat_id
+				'cat_id'	=> $this->cat_id,
+				'status'	=> $this->status
 			);
 			$this->boprojects->save_sessiondata($data, $action);
 		}
@@ -166,6 +169,26 @@
 			echo parse_navbar();
 		}
 
+		function status_format()
+		{
+			if (! $this->status)
+			{
+				$this->status = 'active';
+			}
+
+			switch ($this->status)
+			{
+				case 'active':		$stat_sel[0]=' selected'; break;
+				case 'nonactive':	$stat_sel[1]=' selected'; break;
+				case 'archive':		$stat_sel[2]=' selected'; break;
+			}
+
+			$status_list = '<option value="active"' . $stat_sel[0] . '>' . lang('Active') . '</option>' . "\n"
+						. '<option value="nonactive"' . $stat_sel[1] . '>' . lang('Nonactive') . '</option>' . "\n"
+						. '<option value="archive"' . $stat_sel[2] . '>' . lang('Archive') . '</option>' . "\n";
+			return $status_list;
+		}
+
 		function list_projects()
 		{
 			global $action, $pro_parent;
@@ -193,12 +216,17 @@
 				$this->start = 0;
 			}
 
+			if (!$this->status)
+			{
+				$this->status = 'active';
+			}
+
 			if (!$pro_parent)
 			{
 				$pro_parent = 0;
 			}
 
-			$pro = $this->boprojects->list_projects($this->start,True,$this->query,$this->filter,$this->sort,$this->order,'active',$this->cat_id,$action,$pro_parent);
+			$pro = $this->boprojects->list_projects($this->start,True,$this->query,$this->filter,$this->sort,$this->order,$this->status,$this->cat_id,$action,$pro_parent);
 
 // --------------------- nextmatch variable template-declarations ------------------------
 
@@ -214,7 +242,7 @@
 			if ($action == 'mains')
 			{
 				$action_list= '<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data) . '" name="form">' . "\n"
-							. '<select name="cat_id" onChange="this.form.submit();"><option value="">' . lang('None') . '</option>' . "\n"
+							. '<select name="cat_id" onChange="this.form.submit();"><option value="none">' . lang('Select category') . '</option>' . "\n"
 							. $this->cats->formated_list('select','all',$this->cat_id,True) . '</select>';
 				$this->t->set_var(lang_header,lang('Project list'));
 				$this->t->set_var(lang_action,lang('Jobs'));
@@ -233,6 +261,8 @@
 			$this->t->set_var('filter_list',$this->nextmatchs->filter(1,array('yours' => 1,'filter' => $this->filter)));
 			$this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('search_list',$this->nextmatchs->search(array('search_obj' => 1,'query' => $this->query)));
+			$this->t->set_var('status_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->t->set_var('status_list',$this->status_format());
 
 // ---------------- list header variable template-declarations --------------------------
 
@@ -422,23 +452,6 @@
 			}
 			return $coordinator_list;
 		}
-
-		function status_format($status = '')
-		{
-			switch ($status)
-			{
-				case 'active':		$stat_sel[0]=' selected'; break;
-				case 'nonactive':	$stat_sel[1]=' selected'; break;
-				case 'archive':		$stat_sel[2]=' selected'; break;
-			}
-
-			$status_list = '<option value="active"' . $stat_sel[0] . '>' . lang('Active') . '</option>' . "\n"
-						. '<option value="nonactive"' . $stat_sel[1] . '>' . lang('Nonactive') . '</option>' . "\n"
-						. '<option value="archive"' . $stat_sel[2] . '>' . lang('Archive') . '</option>' . "\n";
-			return $status_list;
-		}
-
-
 
 		function add_project()
 		{
