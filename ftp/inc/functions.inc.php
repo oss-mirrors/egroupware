@@ -133,7 +133,7 @@
 		$remotefile=$dir . "/" . $file;
 		if ( ! ftp_get( $ftp, $tmpfile, $remotefile, FTP_BINARY ) )
 		{
-			echo "tmpfile=\"$tmpfile\",file=\"$remotefile\"<BR>\n";
+			echo 'tmpfile="' . $tmpfile . '",file="' . $remotefile . '"<br>' . "\n";
 			ftp_quit( $ftp );
 			echo macro_get_Link("newlogin","Start over?");
 			$retval=0;
@@ -142,7 +142,15 @@
 		{
 			ftp_quit( $ftp );
 			$b = CreateObject('phpgwapi.browser');
-			$b->content_header($file);
+			if ($phpgw_info['server']['ftp_use_mime'])
+			{
+				$mime = getMimeType($file);
+				$b->content_header($file,$mime);
+			}
+			else
+			{
+				$b->content_header($file);
+			}
 			//header( "Content-Type: application/octet-stream" );
 			//header( "Content-Disposition: attachment; filename=" . $file );
 			readfile( $tmpfile );
@@ -152,32 +160,38 @@
 		return $retval;
 	}
 
-   function getMimeType($file) {
-      global $phpgw_info;
-      $file=basename($file);
-      $mimefile=$phpgw_info["server"]["server_root"]."/ftp/mime.types";
-      $fp=fopen($mimefile,"r");
-      $contents = explode("\n",fread ($fp, filesize($mimefile)));
-      fclose($fp);
+	function getMimeType($file)
+	{
+		global $phpgw_info;
+		$file=basename($file);
+		$mimefile = PHPGW_APP_ROOT . SEP . 'mime.types';
+		$fp=fopen($mimefile,"r");
+		$contents = explode("\n",fread ($fp, filesize($mimefile)));
+		fclose($fp);
 
-      $parts=explode(".",$file);
-      $ext=$parts[(sizeof($parts)-1)];
+		$parts=explode(".",$file);
+		$ext=$parts[(sizeof($parts)-1)];
 
-      for($i=0;$i<sizeof($contents);$i++) {
-         if (! ereg("^#",$contents[$i])) {
-            $line=split("[[:space:]]+", $contents[$i]);
-            if (sizeof($line) >= 2) {
-               for($j=1;$j<sizeof($line);$j++) {
-                  if ($line[$j] == $ext) {
-                     $mimetype=$line[0];
-                     return $mimetype;
-                  }
-               }
-            }
-         }
-      }
-      return "text/plain";
-   }
+		for($i=0;$i<sizeof($contents);$i++)
+		{
+			if (! ereg("^#",$contents[$i]))
+			{
+				$line=split("[[:space:]]+", $contents[$i]);
+				if (sizeof($line) >= 2)
+				{
+					for($j=1;$j<sizeof($line);$j++)
+					{
+						if ($line[$j] == $ext)
+						{
+							$mimetype=$line[0];
+							return $mimetype;
+						}
+					}
+				}
+			}
+		}
+		return "text/plain";
+	}
 
    function phpftp_view( $ftp, $tempdir, $dir, $file ) {
 		srand((double)microtime()*1000000);
