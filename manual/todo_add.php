@@ -14,10 +14,7 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
-<table cellpadding="10">
-<?php include("side.php"); ?>
-<td valign="top">
-<img src="images/title_todo.gif" border=0>
+<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_todo.gif" border=0>
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
 A searchable todo list for keeping a quick note of things todo.
@@ -43,8 +40,4 @@ same groups as you are in) will be able to see the too,
 <br>Drop down menu of groups you are a member of, select one or more. 
 <p>
 </ul>
-</td>
-</table>
-</body>
-</html>
-
+<?php $phpgw->common->phpgw_footer(); ?>

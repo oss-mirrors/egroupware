@@ -14,10 +14,7 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
-<table cellpadding="10">
-<?php include("side.php"); ?>
-<td valign="top">
-<img src="images/title_filemanager.gif" border=0>
+<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_filemanager.gif" border=0>
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
 The file manager function is to allow users to upload files to the system, allowing both
@@ -68,8 +65,5 @@ Click on yes, and the file will be deleted.
 you want rename, a new box will appear at the top of the screen.  
 Click on yes, and the file will be deleted.
 <p>
+<?php $phpgw->common->phpgw_footer(); ?>
 
-</td>
-</table>
-</body>
-</html>

@@ -14,17 +14,14 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
-<table cellpadding="10">
-<?php include("side.php"); ?>
-<td valign="top">
-<img src="images/title_calendar.gif" border=0> 
+<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_calendar.gif" border=0> 
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
 A searchable daily,weekly,monthly calendar/scheduling application with alerts for high priority events.
 <br>
 <ul>
 <p>
-<li><b>Adding an entry:</b> <img src="images/addevent.gif"> 
+<li><b>Adding an entry:</b> <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/addevent.gif"> 
 <br>To add a new entry for yourself other members of your group click on the small icon as shown above.
 A form page will be presented, where you can input the relevant fields.
 <p>
@@ -53,8 +50,5 @@ Simply fill in the fields, and click Submit.
 <br><b>Note:</b> Access can be set as with other applications in this suite, Private,Group Readable,Globally
 Readable.
 <p>
-</td>
-</table>
-</body>
-</html>
+<?php $phpgw->common->phpgw_footer(); ?>
 

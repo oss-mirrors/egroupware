@@ -14,11 +14,6 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
-<table cellpadding="10">
-<td valign="top">
-<?php echo show_menu($p); ?>
-</td>
-<td valign="top">
 <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_administration.gif" border=0>
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
@@ -32,7 +27,4 @@ Administration of all applications, user and group accounts, session logging and
 <br>Create, edit and delete groups.
 <p>
 </ul>
-</td>
-</table>
-</body>
-</html>
+<?php $phpgw->common->phpgw_footer(); ?>

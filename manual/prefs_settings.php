@@ -14,10 +14,7 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
-<table cellpadding="10">
-<?php include("side.php"); ?>
-<td valign="top">
-<img src="images/title_preferences.gif" border=0>
+<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_preferences.gif" border=0>
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
 The place to make changes to your personal piece of groupware.
@@ -56,7 +53,4 @@ in the calendar when displaying the days schedule.
 <br>Click on as many news headline news sites as you wish, these will be displayed for you
 when using the headlines function.The systems admin set these as default, so be sure to
 let them know if you want some that are not there ;)
-</td>
-</table>
-</body>
-</html>
+<?php $phpgw->common->phpgw_footer(); ?>

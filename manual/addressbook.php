@@ -14,11 +14,6 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
-<table cellpadding="10">
-<td valign="top">
-<?php echo show_menu($p); ?>
-</td>
-<td valign="top">
 <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_addressbook.gif" border=0>
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
@@ -61,8 +56,5 @@ same groups as you are in, will be able to see the too, and globally readable, a
 users to the system will be able to see the entry.
 <p>
 Users can only edit their own entries, regardless of readability settings.
-</td>
-</table>
-</body>
-</html>
+<?php $phpgw->common->phpgw_footer(); ?>
 

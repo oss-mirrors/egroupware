@@ -14,11 +14,6 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
-<table cellpadding="10">
-<td valign="top">
-<?php echo show_menu($p); ?>
-</td>
-<td valign="top">
 <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_administration.gif" border=0>
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
@@ -53,7 +48,4 @@ you a checking page to be sure you do want to delete.
 <br>At present phpinfo of the server that is running.
 <p>
 </ul>
-</td>
-</table>
-</body>
-</html>
+<?php $phpgw->common->phpgw_footer(); ?>

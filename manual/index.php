@@ -14,7 +14,5 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 
-  echo show_menu($p);
-
   $phpgw->common->phpgw_footer();
 ?>

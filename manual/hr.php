@@ -14,10 +14,7 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
-<table cellpadding="10">
-<?php include("side.php"); ?>
-<td valign="top">
-<img src="images/title_hr.gif" border=0>
+<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_hr.gif" border=0>
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
 This page serves as the "human resource" area and lists all users and groups in the system.
@@ -38,7 +35,4 @@ profile setting option in preferences.
 <li><b>Groups:</b>
 <br>Click on the name of the group to see a complete listing of all members of that group.
 </ul>
-</td>
-</table>
-</body>
-</html>
+<?php $phpgw->common->phpgw_footer(); ?>

@@ -14,10 +14,7 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
-<table cellpadding="10">
-<?php include("side.php"); ?>
-<td valign="top">
-<img src="images/title_calendar.gif" border=0> 
+<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_calendar.gif" border=0> 
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
 A searchable daily,weekly,monthly calendar/scheduling application with alerts for high priority events.
@@ -25,7 +22,7 @@ A searchable daily,weekly,monthly calendar/scheduling application with alerts fo
 icons at the top left hand corner.
 <br>
 <ul>
-<li><b>Viewing:</b><img src="images/today.gif">Day <img src="images/week.gif">Week <img src="images/month.gif">Month
+<li><b>Viewing:</b><img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/today.gif">Day <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/week.gif">Week <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/month.gif">Month
 <p><i>Day:</i>
 <br>Current day is displayed, broken down in hour slots. Start and end time of the day
 can be set in the preferences.
@@ -36,8 +33,5 @@ can be set in the preferences.
 months easily accessible with one click.
 <p>
 </ul>
-</td>
-</table>
-</body>
-</html>
+<?php $phpgw->common->phpgw_footer(); ?>
 

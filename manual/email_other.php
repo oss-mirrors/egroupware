@@ -14,10 +14,7 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
-<table cellpadding="10">
-<?php include("side.php"); ?>
-<td valign="top">
-<img src="images/title_email.gif" border=0>
+<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_email.gif" border=0>
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
 At present there are many new improvements being built into the 
@@ -38,8 +35,5 @@ into and the email will be saved  into that folder.
 <p><li><b>Deleting:</b>
 <br>Click the small box on the left of the screen, next to the message you want to delete. A tick will appear in
 the box, then scroll down to the bottom of the screen, click on delete. The mail will then be deleted.
-</td>
-</table>
-</body>
-</html>
+<?php $phpgw->common->phpgw_footer(); ?>
 

@@ -14,10 +14,7 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
-<table cellpadding="10">
-<?php include("side.php"); ?>
-<td valign="top">
-<img src="images/title_headlines.gif" border=0>
+<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_headlines.gif" border=0>
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
 This area is for catching up on the lates online sites, news headlines.
@@ -27,10 +24,7 @@ choose their own personal favorites from the list available in the
 profiles setting option in preferences.
 <p>
 <font size="1">
-<img src="images/headlinesscreen.gif"  border=0>
+<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/headlinesscreen.gif"  border=0>
 <br>ScreenShot
-</td>
-</table>
-</body>
-</html>
+<?php $phpgw->common->phpgw_footer(); ?>
 

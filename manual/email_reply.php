@@ -14,10 +14,7 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
-<table cellpadding="10">
-<?php include("side.php"); ?>
-<td valign="top">
-<img src="images/title_email.gif" border=0>
+<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_email.gif" border=0>
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
 At present there are many new improvements being built into the 
@@ -45,8 +42,5 @@ on the send button, top right of your screen.
 To send email to an address not in the address book, type the address in the field marked To: 
 to send a copy to another email address, type in the field marked CC:, add a subject in 
 the subject line, type the body of the large text field, then click on the send button.
-</td>
-</table>
-</body>
-</html>
+<?php $phpgw->common->phpgw_footer(); ?>
 

@@ -14,11 +14,6 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
-<table cellpadding="10">
-<td valign="top">
-<?php echo show_menu(); ?>
-</td>
-<td valign="top">
 <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_calendar.gif" border=0> 
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
@@ -33,8 +28,4 @@ Chose edit or delete from the bottom of the page.
 <p><b>Note:</b>You can only make changes or delete those calendar entries created by you.
 <p>
 </ul>
-</td>
-</table>
-</body>
-</html>
-
+<?php $phpgw->common->phpgw_footer(); ?>

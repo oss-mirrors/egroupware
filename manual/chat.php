@@ -14,14 +14,8 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
-<table cellpadding="10">
-<?php include("side.php"); ?>
-<td valign="top">
-<img src="images/title_chat.gif" border=0>
+<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_chat.gif" border=0>
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
 This is the chat place
-</td>
-</table>
-</body>
-</html>
+<?php $phpgw->common->phpgw_footer(); ?>

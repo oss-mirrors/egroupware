@@ -14,10 +14,7 @@
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
-<table cellpadding="10">
-<?php include("side.php"); ?>
-<td valign="top">
-<img src="images/title_email.gif" border=0>
+<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_email.gif" border=0>
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
 At present there are many new improvements being built into the 
@@ -39,10 +36,10 @@ to your mailserver (as set by the systems admin). All your mail should then be d
 <br>To read a particular mail, click on the subject line of the mail.
 </ul>
 <p>The following icons will be displayed at the top right of the screen and the email will then be displayed.
-<br><img src="images/sm_reply.gif">  Reply to sender
-<br><img src="images/sm_reply_all.gif">  Reply to all (sender and other cc recipients)
-<br><img src="images/sm_forward.gif">  Forward to another address
-<br><img src="images/sm_delete.gif">  Delete 
+<br><img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_reply.gif">  Reply to sender
+<br><img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_reply_all.gif">  Reply to all (sender and other cc recipients)
+<br><img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_forward.gif">  Forward to another address
+<br><img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_delete.gif">  Delete 
 <br>Make a choice ! :)
 <ul>
 <p><li><b>Replying:</b>
@@ -81,8 +78,5 @@ into and the email will be saved  into that folder.
 <p><li><b>Deleting:</b>
 <br>Click the small box on the left of the screen, next to the message you want to delete. A tick will appear in
 the box, then scroll down to the bottom of the screen, click on delete. The mail will then be deleted.
-</td>
-</table>
-</body>
-</html>
+<?php $phpgw->common->phpgw_footer(); ?>
 
