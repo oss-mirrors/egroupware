@@ -35,7 +35,7 @@
 	if ($edit_category_x || $edit_category_y)
 	{
 		grab_form_values('maintain.php',True);
-		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/preferences/categories.php','cats_app=bookmarks&global_cats=True'));
+		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&global_cats=True'));
 	}
 
 	$location_info = $GLOBALS['phpgw']->bookmarks->read_session_data();
