@@ -1,0 +1,46 @@
+are you sure you want to delete this news site ?	headlines	zh	您想删除该新闻网站吗？
+base url	headlines	zh	首选网址
+basic	headlines	zh	要点
+choose layout	headlines	zh	选择布局
+color	headlines	zh	颜色
+create new headline	headlines	zh	新建标题
+current headlines in cache	headlines	zh	缓存中的当前标题
+display	headlines	zh	显示
+edit headline sites	headlines	zh	编辑标题网站
+edit headlines shown by default	headlines	zh	编辑缺省标题
+grab new news sites	common	zh	获取新的新闻网站
+gray	headlines	zh	灰色
+headline preferences	common	zh	标题个性化配置
+headline site management	common	zh	标题网站管理
+headline sites	headlines	zh	标题网站
+headlines	common	zh	标题
+headlines administration	headlines	zh	标题管理
+headlines administration - delete headline	headlines	zh	标题管理 - 删除标题
+headlines layout	headlines	zh	标题布局
+listings displayed	headlines	zh	已显示的列表
+minutes between refresh	headlines	zh	刷新时间间隔(分钟)
+minutes between reloads	headlines	zh	重新加载时间间隔(分钟)
+monitor	common	zh	监视器
+news file	headlines	zh	新闻文件
+news headlines	common	zh	新闻标题
+news type	headlines	zh	新闻类型
+no headlines found	headlines	zh	找不到标题
+other preferences	preferences	zh	其它个性化配置
+reload news sites	headlines	zh	重新加载新闻网站
+reset	headlines	zh	复位
+sample	headlines	zh	例子
+select headline news sites	headlines	zh	选择标题新闻网站
+select headlines to display	common	zh	选择待显示标题
+select layout	common	zh	选择布局
+site	headlines	zh	网站
+that site has already been entered	headlines	zh	已登录该网站
+unable to retrieve links	headlines	zh	无法恢复链接
+update headline	headlines	zh	更新标题
+view headline	headlines	zh	查看标题
+you can only enter numbers for listings display	headlines	zh	只能输入显示的列表数
+you can only enter numbers minutes between refresh	headlines	zh	只能输入刷新时间间隔
+you must enter a base url	headlines	zh	必须输入首选网址
+you must enter a display	headlines	zh	必须输入显示的信息
+you must enter a news url	headlines	zh	必须输入新闻网址
+you must enter the number of listings display	headlines	zh	必须输入显示的列表数
+you must enter the number of minutes between reload	headlines	zh	必须输入重新加载时间间隔
