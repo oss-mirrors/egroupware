@@ -18,12 +18,17 @@
 
   if ($submit) {
      $phpgw->preferences->read_repository();
-     
+
+     $phpgw->preferences->delete("email","show_addresses");
+     if ($show_addresses) {
+        $phpgw->preferences->add("email","show_addresses");
+     }
+    
      $phpgw->preferences->delete("email","mainscreen_showmail");
      if ($mainscreen_showmail) {
         $phpgw->preferences->add("email","mainscreen_showmail");
      }
-     
+
      $phpgw->preferences->delete("email","use_trash_folder");
      if ($use_trash_folder) {
         $phpgw->preferences->add("email","use_trash_folder");
@@ -92,7 +97,32 @@
        </select>
      </td>
     </tr>
-
+    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
+    <tr bgcolor="<?php echo $tr_color; ?>">
+     <td align="left"><?php echo lang("Show sender's email address with name"); ?></td>
+     <td align="center">
+     <select name="show_addresses">
+     <option value="none"<?php
+       if ($phpgw_info["user"]["preferences"]["email"]["show_addresses"] == 'none')
+       {
+          echo " selected";
+       }
+       echo ">". lang('none'); ?></option>
+     <option value="from"<?php
+       if ($phpgw_info["user"]["preferences"]["email"]["show_addresses"] == 'from')
+       {
+          echo " selected";
+       }
+       echo ">". lang('From'); ?></option>
+     <option value="replyto"<?php
+       if ($phpgw_info["user"]["preferences"]["email"]["show_addresses"] == 'replyto')
+       {
+          echo " selected";
+       }
+       echo ">". lang('ReplyTo'); ?></option>
+     </select>
+     </td>
+    </tr>
     <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
     <tr bgcolor="<?php echo $tr_color; ?>">
      <td align="left"><?php echo lang("show new messages on main screen"); ?></td>
