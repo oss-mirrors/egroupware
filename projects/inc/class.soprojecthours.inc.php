@@ -112,8 +112,8 @@
 		function add_hours($values)
 		{
 			$values['ae_minutes']	= $values['hours']*60+$values['minutes'];
-			$values['hours_descr']	= addslashes($values['hours_descr']);
-			$values['remark']		= addslashes($values['remark']);
+			$values['hours_descr']	= $this->db->db_addslashes($values['hours_descr']);
+			$values['remark']		= $this->db->db_addslashes($values['remark']);
 
 			$this->db->query("INSERT into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,hours_descr,remark,minutes,"
 							. "status,minperae,billperae,employee,pro_parent) VALUES ('" . $values['project_id'] . "','" . $values['activity_id'] . "','"
@@ -125,8 +125,8 @@
 		function edit_hours($values)
 		{
 			$values['ae_minutes']	= $values['hours']*60+$values['minutes'];
-			$values['hours_descr']	= addslashes($values['hours_descr']);
-			$values['remark']		= addslashes($values['remark']);
+			$values['hours_descr']	= $this->db->db_addslashes($values['hours_descr']);
+			$values['remark']		= $this->db->db_addslashes($values['remark']);
 
 			$this->db->query("UPDATE phpgw_p_hours SET activity_id='" . $values['activity_id'] . "',entry_date='" . time() . "',start_date='"
 							. $values['sdate'] . "',end_date='" . $values['edate'] . "',hours_descr='" . $values['hours_descr'] . "',remark='"

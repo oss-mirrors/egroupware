@@ -127,7 +127,7 @@
 
 		function invoice($values,$select)
 		{
-			$values['invoice_num'] = addslashes($values['invoice_num']);
+			$values['invoice_num'] = $this->db->db_addslashes($values['invoice_num']);
 			$this->db->query("INSERT INTO phpgw_p_invoice (num,sum,project_id,customer,date) VALUES ('" . $values['invoice_num'] . "',0,'"
 							. $values['project_id'] . "','" . $values['customer'] . "','" . $values['date'] . "')",__LINE__,__FILE__);
 			$this->db2->query("SELECT id from phpgw_p_invoice WHERE num='" . $values['invoice_num'] . "'",__LINE__,__FILE__);
@@ -163,6 +163,7 @@
 
 		function update_invoice($values,$select)
 		{
+			$values['invoice_num'] = $this->db->db_addslashes($values['invoice_num']);
 			$this->db->query("UPDATE phpgw_p_invoice set num='" . $values['invoice_num'] . "',date='" . $values['date'] . "',customer='"
 							. $values['customer'] . "' WHERE id='" . $values['invoice_id'] . "'",__LINE__,__FILE__);
 

@@ -797,19 +797,37 @@
 
 			$this->t->set_var('cat',$this->cats->id2name($values['cat']));
 
+// ------------ activites bookable ----------------------
+
+			$boact = $this->boprojects->activities_list($project_id,False);
+			if (is_array($boact))
+			{
+				while (list($null,$bo) = each($boact))
+				{
+					$boact_list .=	$bo['descr'] . ' [' . $bo['num'] . ']' . '<br>';
+				}
+			}
+
+			$this->t->set_var('book_activities_list',$boact_list);
+// -------------- activities billable ---------------------- 
+
+			$billact = $this->boprojects->activities_list($project_id,True);
+			if (is_array($billact))
+			{
+				while (list($null,$bill) = each($billact))
+				{
+					$billact_list .=	$bill['descr'] . ' [' . $bill['num'] . ']' . "\n";
+				}
+			}
+
+			$this->t->set_var('bill_activities_list',$billact_list);
+
 			if ($action == 'mains')
 			{
 				$this->t->set_var('lang_action',lang('View project'));
 				$this->t->set_var('lang_number',lang('Project ID'));
 				$this->t->set_var('lang_parent','');
 				$this->t->set_var('pro_parent','');
-// ------------ activites bookable ----------------------
-
-				$this->t->set_var('book_activities_list',$this->boprojects->select_activities_list($project_id,False));
-
-// -------------- activities billable ---------------------- 
-
-    			$this->t->set_var('bill_activities_list',$this->boprojects->select_activities_list($project_id,True));
 			}
 			else
 			{
@@ -819,8 +837,6 @@
 
 					$this->t->set_var('pro_parent',$GLOBALS['phpgw']->strip_html($parent['number']) . ' ' . $GLOBALS['phpgw']->strip_html($parent['title']));
 					$this->t->set_var('cat',$this->cats->id2name($parent['cat']));
-					$this->t->set_var('book_activities_list',$this->boprojects->select_pro_activities($project_id, $pro_parent, False));				
-    				$this->t->set_var('bill_activities_list',$this->boprojects->select_pro_activities($project_id, $pro_parent, True));
 				}
 				$this->t->set_var('lang_action',lang('View job'));
 				$this->t->set_var('lang_number',lang('Job ID'));

@@ -230,15 +230,10 @@
 
 		function add_project($values, $book_activities, $bill_activities)
 		{
-			if (!$values['budget'])
-			{
-				$values['budget'] = 0;
-			}
-
-			$values['owner'] = $this->account;
-			$values['descr'] = addslashes($values['descr']);
-			$values['title'] = addslashes($values['title']);
-			$values['number'] = addslashes($values['number']);
+			$values['owner']	= $this->account;
+			$values['descr']	= $this->db->db_addslashes($values['descr']);
+			$values['title']	= $this->db->db_addslashes($values['title']);
+			$values['number']	= $this->db->db_addslashes($values['number']);
 
 			$table = 'phpgw_p_projects';
 
@@ -282,21 +277,15 @@
 
 		function edit_project($values, $book_activities, $bill_activities)
 		{
-			if (!$values['budget'])
-			{
-				$values['budget'] = 0;
-			}
-
-			$values['descr'] = addslashes($values['descr']);
-			$values['title'] = addslashes($values['title']);
-			$values['number'] = addslashes($values['number']);
+			$values['descr']	= $this->db->db_addslashes($values['descr']);
+			$values['title']	= $this->db->db_addslashes($values['title']);
+			$values['number']	= $this->db->db_addslashes($values['number']);
 
 			$this->db->query("update phpgw_p_projects set access='" . $values['access'] . "', category='" . $values['cat'] . "', entry_date='"
 							. time() . "', start_date='" . $values['sdate'] . "', end_date='" . $values['edate'] . "', coordinator='"
 							. $values['coordinator'] . "', customer='" . $values['customer'] . "', status='" . $values['status'] . "', descr='"
 							. $values['descr'] . "', title='" . $values['title'] . "', budget='" . $values['budget'] . "', num='"
 							. $values['number'] . "' where id='" . $values['project_id'] . "'",__LINE__,__FILE__);
-
 
 			if (count($book_activities) != 0)
 			{
@@ -310,7 +299,6 @@
 				}
 			}
 
-
 			if (count($bill_activities) != 0)
 			{
 				$this->db2->query("delete from phpgw_p_projectactivities where project_id='" . $values['project_id']
@@ -322,6 +310,33 @@
 									. "','$activ[1]','Y')",__LINE__,__FILE__);
 				}
 			}
+		}
+
+		function activities_list($project_id = '',$billable = False)
+		{
+			if ($billable)
+			{
+				$bill_filter = " AND billable='Y'";
+			}
+			else
+			{
+				$bill_filter = " AND billable='N'";
+			}
+
+			$this->db->query("SELECT phpgw_p_activities.id,num,descr,billperae,activity_id from phpgw_p_activities,phpgw_p_projectactivities "
+							. "WHERE phpgw_p_projectactivities.project_id='" . $project_id . "' AND phpgw_p_activities.id="
+							. "phpgw_p_projectactivities.activity_id" . $bill_filter,__LINE__,__FILE__);
+
+			while ($this->db->next_record())
+			{
+				$act[] = array
+				(
+					'num'		=> $this->db->f('num'),
+					'descr'		=> $this->db->f('descr'),
+					'billperae'	=> $this->db->f('billperae')
+				);
+			}
+			return $act;
 		}
 
 		function select_activities_list($project_id = '',$billable = False)
@@ -438,28 +453,41 @@
 
 		function return_value($action,$item)
 		{
-			if ($action == 'pro')
-			{
-				$this->db->query("select num, title from phpgw_p_projects where id='$item'",__LINE__,__FILE__);
-				if ($this->db->next_record())
-				{
-					$thing = $GLOBALS['phpgw']->strip_html($this->db->f('title')) . ' [' . $GLOBALS['phpgw']->strip_html($this->db->f('num')) . ']';
-				}
-			}
 			if ($action == 'act')
 			{			
-				$this->db->query("select num, descr from phpgw_p_activities where id='$item'",__LINE__,__FILE__);
+				$this->db->query("SELECT num,descr from phpgw_p_activities where id='" . $item . "'",__LINE__,__FILE__);
 				if ($this->db->next_record())
 				{
 					$thing = $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' [' . $GLOBALS['phpgw']->strip_html($this->db->f('num')) . ']';
 				}
 			}
-			if ($action == 'co')
+			elseif ($action == 'co')
 			{
-				$this->db->query("select coordinator from phpgw_p_projects where id='$item'",__LINE__,__FILE__);
+				$this->db->query("SELECT coordinator from phpgw_p_projects where id='" . $item . "'",__LINE__,__FILE__);
 				if ($this->db->next_record())
 				{
 					$thing = $this->db->f('coordinator');
+				}
+			}
+			else
+			{
+				switch ($action)
+				{
+					case 'pro':		$column = ' num,title '; break;
+					case 'edate':	$column = ' end_date '; break;
+					case 'sdate':	$column = ' start_date '; break;
+				}
+
+				$this->db->query('SELECT ' . $column . "from phpgw_p_projects where id='" . $item . "'",__LINE__,__FILE__);
+				if ($this->db->next_record())
+				{
+					switch ($action)
+					{
+						case 'pro':		$thing = $GLOBALS['phpgw']->strip_html($this->db->f('title')) . ' ['
+											. $GLOBALS['phpgw']->strip_html($this->db->f('num')) . ']'; break;
+						case 'edate':	$thing = $this->db->f('end_date'); break;
+						case 'sdate':	$thing = $this->db->f('start_date'); break;
+					}
 				}
 			}
 			return $thing;
@@ -786,29 +814,18 @@
 
 		function add_activity($values)
 		{
-			$values['number']	= addslashes($values['number']);
-			$values['descr'] 	= addslashes($values['descr']);
-
-			if (! $values['minperae'])
-			{
-				$values['minperae']	= 0;
-			}
+			$values['number']	= $this->db->db_addslashes($values['number']);
+			$values['descr'] 	= $this->db->db_addslashes($values['descr']);
 
 			$this->db->query("insert into phpgw_p_activities (num,category,descr,remarkreq,billperae,minperae) values ('"
 							. $values['number'] . "','" . $values['cat'] . "','" . $values['descr'] . "','" . $values['remarkreq'] . "','"
 							. $values['billperae'] . "','" . $values['minperae'] . "')",__LINE__,__FILE__);
 		}
 
-
 		function edit_activity($values)
 		{
-			$values['number']	= addslashes($values['number']);
-			$values['descr']	= addslashes($values['descr']);
-
-			if (! $values['minperae'])
-			{
-				$values['minperae']	= 0;
-			}
+			$values['number']	= $this->db->db_addslashes($values['number']);
+			$values['descr']	= $this->db->db_addslashes($values['descr']);
 
 			$this->db->query("update phpgw_p_activities set num='" . $values['number'] . "', category='" . $values['cat']
 							. "',remarkreq='" . $values['remarkreq'] . "',descr='" . $values['descr'] . "',billperae='"

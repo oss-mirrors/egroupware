@@ -26,12 +26,12 @@
 	);
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['developer_tools']['hooks'][] = 'preferences';
 	$setup_info['developer_tools']['hooks'][] = 'admin';
+	$setup_info['developer_tools']['hooks'][] = 'preferences';
 
 	/* Dependencies for this app to work */
 	$setup_info['developer_tools']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.11','0.9.12','0.9.13')
+		 'versions' => Array('0.9.11','0.9.12','0.9.13', '0.9.14')
 	);
 ?>

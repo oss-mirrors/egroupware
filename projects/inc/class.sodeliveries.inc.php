@@ -48,7 +48,7 @@
 
 		function delivery($values,$select)
 		{
-			$values['delivery_num'] = addslashes($values['delivery_num']);
+			$values['delivery_num'] = $this->db->db_addslashes($values['delivery_num']);
 			$this->db->query("INSERT INTO phpgw_p_delivery (num,project_id,date,customer) VALUES ('" . $values['delivery_num'] . "','"
 							. $values['project_id'] . "','" . time() . "','" . $values['customer'] . "')",__LINE__,__FILE__);
 
@@ -68,7 +68,7 @@
 
 		function update_delivery($values,$select)
 		{
-			$values['delivery_num'] = addslashes($values['delivery_num']);
+			$values['delivery_num'] = $this->db->db_addslashes($values['delivery_num']);
 			$this->db->query("UPDATE phpgw_p_delivery set num='" . $values['delivery_num'] . "',date='" . $values['date'] . "',customer='"
 								. $values['customer'] . "' where id='" . $values['delivery_id'] . "'",__LINE__,__FILE__);
 

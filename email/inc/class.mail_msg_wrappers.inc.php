@@ -69,7 +69,10 @@
 			}
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			
-			return $this->a[$acctnum]['dcom']->fetchstructure($stream, $msgball['msgnum']);
+			$tmp_a = $this->a[$this->acctnum];
+			$retval = $tmp_a['dcom']->fetchstructure($stream, $msgball['msgnum']);
+			$this->a[$this->acctnum] = $tmp_a;
+			return $retval;
 		}
 	
 		/*!
@@ -96,7 +99,10 @@
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			
 			// Message Information: THE MESSAGE'S HEADERS RETURNED AS A STRUCTURE
-			return $this->a[$acctnum]['dcom']->header($stream, $msgball['msgnum']);
+			$tmp_a = $this->a[$this->acctnum];
+			$retval = $tmp_a['dcom']->header($stream, $msgball['msgnum']);
+			$this->a[$this->acctnum] = $tmp_a;
+			return $retval;
 		}
 		
 		function phpgw_fetchheader($msgball='')
@@ -115,7 +121,10 @@
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 		
 			// Message Information: THE MESSAGE'S HEADERS RETURNED RAW (no processing)
-			return $this->a[$acctnum]['dcom']->fetchheader($stream, $msgball['msgnum']);
+			$tmp_a = $this->a[$this->acctnum];
+			$retval = $tmp_a['dcom']->fetchheader($stream, $msgball['msgnum']);
+			$this->a[$this->acctnum] = $tmp_a;
+			return $retval;
 		}
 	
 		function phpgw_get_flag($flag='')
@@ -127,7 +136,10 @@
 			}
 			else
 			{
-				return $this->a[$this->acctnum]['dcom']->get_flag($this->get_arg_value('mailsvr_stream'),$this->get_arg_value('["msgball"]["msgnum"]'),$flag);
+				$tmp_a = $this->a[$this->acctnum];
+				$retval = $tmp_a['dcom']->get_flag($this->get_arg_value('mailsvr_stream'),$this->get_arg_value('["msgball"]["msgnum"]'),$flag);
+				$this->a[$this->acctnum] = $tmp_a;
+				return $retval;
 			}
 		}
 		
@@ -147,7 +159,10 @@
 				$acctnum = $this->get_acctnum();
 			}
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-			return $this->a[$acctnum]['dcom']->get_body($stream, $msgball['msgnum']);
+			$tmp_a = $this->a[$this->acctnum];
+			$retval = $tmp_a['dcom']->get_body($stream, $msgball['msgnum']);
+			$this->a[$this->acctnum] = $tmp_a;
+			return $retval;
 		}
 		
 		//FIXME: msgball
@@ -173,7 +188,10 @@
 			$msgnum = $msgball['msgnum'];
 			$part_no = $msgball['part_no'];
 			//echo 'mail_msg(_wrappers): phpgw_fetchbody: processed: $acctnum: '.$acctnum.'; $stream: '.serialize($stream).'; $msgnum: '.$msgnum.'; $part_no: '.$part_no.'<br> * $msgball dump<pre>'; print_r($msgball); echo '</pre>';
-			return $this->a[$acctnum]['dcom']->fetchbody($stream, $msgnum, $part_no, $flags);
+			$tmp_a = $this->a[$this->acctnum];
+			$retval = $tmp_a['dcom']->fetchbody($stream, $msgnum, $part_no, $flags);
+			$this->a[$this->acctnum] = $tmp_a;
+			return $retval;
 		}
 		/*
 		function phpgw_fetchbody($msgball='', $part_num_mime='', $flags='')
@@ -231,7 +249,9 @@
 			else
 			{
 				$server_msgnum_list = array();
-				$server_msgnum_list = $this->a[$this->acctnum]['dcom']->sort($this->get_arg_value('mailsvr_stream'), $this->get_arg_value('sort'), $this->get_arg_value('order'));
+				$tmp_a = $this->a[$this->acctnum];
+				$server_msgnum_list = $tmp_a['dcom']->sort($this->get_arg_value('mailsvr_stream'), $this->get_arg_value('sort'), $this->get_arg_value('order'));
+				$this->a[$this->acctnum] = $tmp_a;
 				// put more information about these particular messages into the msgball_list[] structure
 				$msgball_list = array();
 				$loops = count($server_msgnum_list);
@@ -273,7 +293,9 @@
 		*/
 		function get_folder_size()
 		{
-			$mailbox_detail = $this->a[$this->acctnum]['dcom']->mailboxmsginfo($this->get_arg_value('mailsvr_stream'));
+			$tmp_a = $this->a[$this->acctnum];
+			$mailbox_detail = $tmp_a['dcom']->mailboxmsginfo($this->get_arg_value('mailsvr_stream'));
+			$this->a[$this->acctnum] = $tmp_a;
 			return $mailbox_detail->Size;
 		}
 		
@@ -325,8 +347,10 @@
 			$return_data['uidvalidity'] = 0;
 			
 			$server_str = $this->get_arg_value('mailsvr_callstr');
-			$mailbox_status = $this->a[$this->acctnum]['dcom']->status($this->get_arg_value('mailsvr_stream'),$server_str.$this->get_arg_value('folder'),SA_ALL);
-			
+			$tmp_a = $this->a[$this->acctnum];
+			$mailbox_status = $tmp_a['dcom']->status($this->get_arg_value('mailsvr_stream'),$server_str.$this->get_arg_value('folder'),SA_ALL);
+			$this->a[$this->acctnum] = $tmp_a;
+
 			// cache validity data - will be used to cache msg_list_array data, which is good until UID_NEXT changes
 			$return_data['uidnext'] = $mailbox_status->uidnext;
 			$return_data['uidvalidity'] = $mailbox_status->uidvalidity;
@@ -378,22 +402,34 @@
 		function phpgw_status($feed_folder_long='')
 		{
 			$server_str = $this->get_arg_value('mailsvr_callstr');
-			return $this->a[$this->acctnum]['dcom']->status($this->get_arg_value('mailsvr_stream'),"$server_str"."$feed_folder_long",SA_ALL);
+			$tmp_a = $this->a[$this->acctnum];
+			$retval = $tmp_a['dcom']->status($this->get_arg_value('mailsvr_stream'),"$server_str"."$feed_folder_long",SA_ALL);
+			$this->a[$this->acctnum] = $tmp_a;
+			return $retval;
 		}
-		
+
 		function phpgw_server_last_error()
 		{
-			return $this->a[$this->acctnum]['dcom']->server_last_error();
+			$tmp_a = $this->a[$this->acctnum];
+			$retval = $tmp_a['dcom']->server_last_error();
+			$this->a[$this->acctnum] = $tmp_a;
+			return $retval;
 		}
 		
 		function phpgw_ping()
 		{
-			return $this->a[$this->acctnum]['dcom']->noop_ping_test($this->get_arg_value('mailsvr_stream'));
+			$tmp_a = $this->a[$this->acctnum];
+			$retval = $tmp_a['dcom']->noop_ping_test($this->get_arg_value('mailsvr_stream'));
+			$this->a[$this->acctnum] = $tmp_a;
+			return $retval;
 		}
 		
 		function phpgw_search($criteria,$flags='')
 		{
-			return $this->a[$this->acctnum]['dcom']->i_search($this->get_arg_value('mailsvr_stream'),$criteria,$flags);
+			$tmp_a = $this->a[$this->acctnum];
+			$retval = $tmp_a['dcom']->i_search($this->get_arg_value('mailsvr_stream'),$criteria,$flags);
+			$this->a[$this->acctnum] = $tmp_a;
+			return $retval;
 		}
 		
 		function phpgw_createmailbox($target_fldball)
@@ -401,7 +437,10 @@
 			$acctnum = (int)$target_fldball['acctnum'];
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			$folder = $target_fldball['folder'];
-			return $this->a[$acctnum]['dcom']->createmailbox($stream, $folder);
+			$tmp_a = $this->a[$this->acctnum];
+			$retval = $tmp_a['dcom']->createmailbox($stream, $folder);
+			$this->a[$this->acctnum] = $tmp_a;
+			return $retval;
 		}
 		
 		function phpgw_deletemailbox($target_fldball)
@@ -409,7 +448,10 @@
 			$acctnum = (int)$target_fldball['acctnum'];
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			$folder = $target_fldball['folder'];
-			return $this->a[$acctnum]['dcom']->deletemailbox($stream, $folder);
+			$tmp_a = $this->a[$this->acctnum];
+			$retval = $tmp_a['dcom']->deletemailbox($stream, $folder);
+			$this->a[$this->acctnum] = $tmp_a;
+			return $retval;
 		}
 		
 		function phpgw_renamemailbox($source_fldball,$target_fldball)
@@ -418,7 +460,10 @@
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			$folder_old = $source_fldball['folder'];
 			$folder_new = $target_fldball['folder'];
-			return $this->a[$acctnum]['dcom']->renamemailbox($stream, $folder_old, $folder_new);
+			$tmp_a = $this->a[$this->acctnum];
+			$retval = $tmp_a['dcom']->renamemailbox($stream, $folder_old, $folder_new);
+			$this->a[$this->acctnum] = $tmp_a;
+			return $retval;
 		}
 		
 		function phpgw_append($folder = "Sent", $message, $flags=0)
@@ -471,7 +516,10 @@
 				// delete session msg array data thAt is now stale
 				$this->expire_session_cache_item('msgball_list');
 				// do the append
-				return $this->a[$this->acctnum]['dcom']->append($this->get_arg_value('mailsvr_stream'), "$server_str"."$official_folder_long", $message, $flags);
+				$tmp_a = $this->a[$this->acctnum];
+				$retval = $tmp_a['dcom']->append($this->get_arg_value('mailsvr_stream'), "$server_str"."$official_folder_long", $message, $flags);
+				$this->a[$this->acctnum] = $tmp_a;
+				return $retval;
 			}
 			else
 			{
@@ -488,7 +536,10 @@
 			// delete session msg array data thAt is now stale
 			$this->expire_session_cache_item('msgball_list');
 			
-			return $this->a[$this->acctnum]['dcom']->mail_move($this->get_arg_value('mailsvr_stream'), $msg_list, $mailbox);
+			$tmp_a = $this->a[$this->acctnum];
+			$retval = $tmp_a['dcom']->mail_move($this->get_arg_value('mailsvr_stream'), $msg_list, $mailbox);
+			$this->a[$this->acctnum] = $tmp_a;
+			return $retval;
 		}
 		
 		function interacct_mail_move($mov_msgball='', $to_fldball='')
@@ -512,7 +563,10 @@
 			//echo 'mail_msg(_wrappers): interacct_mail_move: $acctnum: '.$acctnum.' $stream: '.$stream.' $msgnum: '.$msgnum.' $mailsvr_callstr: '.$mailsvr_callstr.' $mailbox: '.$mailbox.'<br>';
 			// the acctnum we are moving FROM *may* be different from the acctnum we are moving TO
 			// that requires a fetch then an append - FIXME!!!
-			return $this->a[$acctnum]['dcom']->mail_move($stream ,$msgnum, $mailbox);
+			$tmp_a = $this->a[$this->acctnum];
+			$retval = $tmp_a['dcom']->mail_move($stream ,$msgnum, $mailbox);
+			$this->a[$this->acctnum] = $tmp_a;
+			return $retval;
 		}
 		
 		function phpgw_expunge($acctnum='')
@@ -523,7 +577,10 @@
 				$acctnum = $this->get_acctnum();
 			}
 			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-			return $this->a[$acctnum]['dcom']->expunge($stream);
+			$tmp_a = $this->a[$this->acctnum];
+			$retval = $tmp_a['dcom']->expunge($stream);
+			$this->a[$this->acctnum] = $tmp_a;
+			return $retval;
 		}
 		
 		//function phpgw_delete($msg_num,$flags=0, $currentfolder="") 
@@ -555,7 +612,10 @@
 					$this->expire_session_cache_item('msgball_list');
 					
 					//return imap_delete($stream,$msg_num);
-					return $this->a[$this->acctnum]['dcom']->delete($stream, $msg_num);
+					$tmp_a = $this->a[$this->acctnum];
+					$retval = $tmp_a['dcom']->delete($stream, $msg_num);
+					$this->a[$this->acctnum] = $tmp_a;
+					return $retval;
 				}
 				// FIXME: from here on needs that $acctnum and.or $stream NEEDS TO BE SPECIFIED!
 				else
@@ -606,7 +666,10 @@
 						// can't just leave the mail sitting there
 						// so just straight delete the message
 						//return imap_delete($stream,$msg_num);
-						return $this->a[$this->acctnum]['dcom']->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
+						$tmp_a = $this->a[$this->acctnum];
+						$retval = $tmp_a['dcom']->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
+						$this->a[$this->acctnum] = $tmp_a;
+						return $retval;
 					}
 				}
 			}
@@ -616,7 +679,10 @@
 				$this->expire_session_cache_item('msgball_list');
 				
 				//return imap_delete($stream,$msg_num);
-				return $this->a[$this->acctnum]['dcom']->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
+				$tmp_a = $this->a[$this->acctnum];
+				$retval = $tmp_a['dcom']->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
+				$this->a[$this->acctnum] = $tmp_a;
+				return $retval;
 			}
 		}
 		
@@ -734,50 +800,53 @@
 			
 			// ----  extract any "fake_uri" embedded data from HTTP_POST_VARS  ----
 			// note: this happens automatically for HTTP_GET_VARS 
-			while(list($key,$value) = each($GLOBALS['HTTP_POST_VARS']))
+			if (is_array($GLOBALS['HTTP_POST_VARS']))
 			{
-				if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: looking for "_fake_uri" token in HTTP_POST_VARS ['.$key.'] = '.$GLOBALS['HTTP_POST_VARS'][$key].'<br>'; }
-				if ($key == 'delmov_list')
+				while(list($key,$value) = each($GLOBALS['HTTP_POST_VARS']))
 				{
-					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: FOUND "delmov_list_fake_uri" needs decoding HTTP_POST_VARS['.$key.'] = ['.$GLOBALS['HTTP_POST_VARS'][$key].'] <br>'; }
-					$sub_loops = count($GLOBALS['HTTP_POST_VARS'][$key]);				
-					for($i=0;$i<$sub_loops;$i++)
+					if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: looking for "_fake_uri" token in HTTP_POST_VARS ['.$key.'] = '.$GLOBALS['HTTP_POST_VARS'][$key].'<br>'; }
+					if ($key == 'delmov_list')
 					{
-						$sub_embedded_data = array();
-						// True = attempt to "raise up" embedded data to top level
-						$sub_embedded_data = $this->decode_fake_uri($GLOBALS['HTTP_POST_VARS'][$key][$i], True);
-						// this array needs to be taken up one level
-						$top_of_sub = Array();
-						$GLOBALS['HTTP_POST_VARS'][$key][$i] = $sub_embedded_data;
+						if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: FOUND "delmov_list_fake_uri" needs decoding HTTP_POST_VARS['.$key.'] = ['.$GLOBALS['HTTP_POST_VARS'][$key].'] <br>'; }
+						$sub_loops = count($GLOBALS['HTTP_POST_VARS'][$key]);				
+						for($i=0;$i<$sub_loops;$i++)
+						{
+							$sub_embedded_data = array();
+							// True = attempt to "raise up" embedded data to top level
+							$sub_embedded_data = $this->decode_fake_uri($GLOBALS['HTTP_POST_VARS'][$key][$i], True);
+							// this array needs to be taken up one level
+							$top_of_sub = Array();
+							$GLOBALS['HTTP_POST_VARS'][$key][$i] = $sub_embedded_data;
+						}
+						if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: decoded ARRAY "_fake_uri" data: HTTP_POST_VARS['.$key.'] data dump: <pre>'; print_r($GLOBALS['HTTP_POST_VARS'][$key]); echo '</pre>'; }
 					}
-					if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: decoded ARRAY "_fake_uri" data: HTTP_POST_VARS['.$key.'] data dump: <pre>'; print_r($GLOBALS['HTTP_POST_VARS'][$key]); echo '</pre>'; }
-				}
-				elseif (strstr($key, '_fake_uri'))
-				{
-					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: FOUND "_fake_uri" token in HTTP_POST_VARS['.$key.'] = ['.$GLOBALS['HTTP_POST_VARS'][$key].'] <br>'; }
-					$embedded_data = array();
-					$embedded_data = $this->decode_fake_uri($GLOBALS['HTTP_POST_VARS'][$key]);
-					// Strip "_fake_uri" from $key and insert the associative array into HTTP_POST_VARS
-					$new_key = str_replace('_fake_uri', '', $key);
-					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: embedded "_fake_uri" data will be inserted into POST VARS with key name: ['.$new_key.'] = ['.$GLOBALS['HTTP_POST_VARS'][$key].'] <br>'; }
-					$GLOBALS['HTTP_POST_VARS'][$new_key] = array();
-					$GLOBALS['HTTP_POST_VARS'][$new_key] = $embedded_data;
-					if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: decoded "_fake_uri" data: HTTP_POST_VARS['.$new_key.'] data dump: <pre>'; print_r($GLOBALS['HTTP_POST_VARS'][$new_key]); echo '</pre>'; }
-				}
-				/*
-				elseif ($key == 'delmov_list')
-				{
-					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: FOUND "delmov_list" needs decoding HTTP_POST_VARS['.$key.'] = ['.$GLOBALS['HTTP_POST_VARS'][$key].'] <br>'; }
-					$sub_loops = count($GLOBALS['HTTP_POST_VARS'][$key]);				
-					for($i=0;$i<$sub_loops;$i++)
+					elseif (strstr($key, '_fake_uri'))
 					{
-						$sub_embedded_data = array();
-						$sub_embedded_data = $this->decode_fake_uri($GLOBALS['HTTP_POST_VARS'][$key][$i]);
-						$GLOBALS['HTTP_POST_VARS'][$key][$i] = $sub_embedded_data;
+						if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: FOUND "_fake_uri" token in HTTP_POST_VARS['.$key.'] = ['.$GLOBALS['HTTP_POST_VARS'][$key].'] <br>'; }
+						$embedded_data = array();
+						$embedded_data = $this->decode_fake_uri($GLOBALS['HTTP_POST_VARS'][$key]);
+						// Strip "_fake_uri" from $key and insert the associative array into HTTP_POST_VARS
+						$new_key = str_replace('_fake_uri', '', $key);
+						if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: embedded "_fake_uri" data will be inserted into POST VARS with key name: ['.$new_key.'] = ['.$GLOBALS['HTTP_POST_VARS'][$key].'] <br>'; }
+						$GLOBALS['HTTP_POST_VARS'][$new_key] = array();
+						$GLOBALS['HTTP_POST_VARS'][$new_key] = $embedded_data;
+						if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: decoded "_fake_uri" data: HTTP_POST_VARS['.$new_key.'] data dump: <pre>'; print_r($GLOBALS['HTTP_POST_VARS'][$new_key]); echo '</pre>'; }
 					}
-					if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: decoded ARRAY "_fake_uri" data: HTTP_POST_VARS['.$key.'] data dump: <pre>'; print_r($GLOBALS['HTTP_POST_VARS'][$key]); echo '</pre>'; }
+					/*
+					elseif ($key == 'delmov_list')
+					{
+						if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: FOUND "delmov_list" needs decoding HTTP_POST_VARS['.$key.'] = ['.$GLOBALS['HTTP_POST_VARS'][$key].'] <br>'; }
+						$sub_loops = count($GLOBALS['HTTP_POST_VARS'][$key]);				
+						for($i=0;$i<$sub_loops;$i++)
+						{
+							$sub_embedded_data = array();
+							$sub_embedded_data = $this->decode_fake_uri($GLOBALS['HTTP_POST_VARS'][$key][$i]);
+							$GLOBALS['HTTP_POST_VARS'][$key][$i] = $sub_embedded_data;
+						}
+						if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: decoded ARRAY "_fake_uri" data: HTTP_POST_VARS['.$key.'] data dump: <pre>'; print_r($GLOBALS['HTTP_POST_VARS'][$key]); echo '</pre>'; }
+					}
+					*/
 				}
-				*/
 			}
 			
 			$got_args = array();
@@ -874,7 +943,10 @@
 				$acctnum = (int)$got_args['target_fldball']['acctnum'];
 				// make sure this is an integer
 				$got_args['target_fldball']['acctnum'] = $acctnum;
-				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use GPC aquired $got_args[target_fldball][acctnum] : ['.serialize($got_args['target_fldball']['acctnum']).']<br>'; }
+				if ($this->debug_args_input_flow > 1)
+				{
+					echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use GPC aquired $got_args[target_fldball][acctnum] : ['.serialize($got_args['target_fldball']['acctnum']).']<br>';
+				}
 			}
 			else
 			{

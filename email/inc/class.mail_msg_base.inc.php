@@ -799,28 +799,28 @@
 			$this_dcom = CreateObject("email.mail_dcom", $this_server_type);
 			// ok, now put that object into the array
 			$this->a[$this->acctnum]['dcom'] = $this_dcom;
-			
+			$tmp_a = $this->a[$this->acctnum];
 			// initialize the dcom class variables
-			$this->a[$this->acctnum]['dcom']->mail_dcom_base();
+			$tmp_a['dcom']->mail_dcom_base();
 			
 			// ----  there are 2 settings from this mail_msg object we need to pass down to the child dcom object:  ----
 			// (1)  Do We Use UTF7 encoding/decoding of folder names
 			if (($this->get_isset_pref('enable_utf7'))
 			&& ($this->get_pref_value('enable_utf7')))
 			{
-				$this->a[$this->acctnum]['dcom']->enable_utf7 = True;
+				$tmp_a['dcom']->enable_utf7 = True;
 			}
 			// (2)  Do We Force use of msg UID's
 			if ($this->force_msg_uids == True)
 			{
-				$this->a[$this->acctnum]['dcom']->force_msg_uids = True;
+				$tmp_a['dcom']->force_msg_uids = True;
 			}
 			
 			set_time_limit(60);
 			// login to INBOX because we know that always(?) should exist on an imap server and pop server
 			// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
 			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call dcom->open: this->a['.$this->acctnum.'][dcom]->open('.$mailsvr_callstr."INBOX".', '.$user.', '.$pass.', )'.'<br>'; }
-			$mailsvr_stream = $this->a[$this->acctnum]['dcom']->open($mailsvr_callstr."INBOX", $user, $pass, '');
+			$mailsvr_stream = $tmp_a['dcom']->open($mailsvr_callstr."INBOX", $user, $pass, '');
 			$pass = '';
 			set_time_limit(0);
 			
@@ -923,7 +923,7 @@
 				// switch to the desired folder now that we are sure we have it's official name
 				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: need to switch folders (reopen) from INBOX to $processed_folder_arg: '.$processed_folder_arg.'<br>';}
 				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to issue: $this->a['.$this->acctnum.'][dcom]->reopen('.$mailsvr_stream.', '.$mailsvr_callstr.$processed_folder_arg,', )'.'<br>';}
-				$did_reopen = $this->a[$this->acctnum]['dcom']->reopen($mailsvr_stream, $mailsvr_callstr.$processed_folder_arg, '');
+				$did_reopen = $tmp_a['dcom']->reopen($mailsvr_stream, $mailsvr_callstr.$processed_folder_arg, '');
 				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: reopen returns: '.serialize($did_reopen).'<br>';}
 				// error check
 				if ($did_reopen == False)
@@ -972,10 +972,12 @@
 		&& ($this->get_arg_value('mailsvr_stream') != ''))
 		{
 			if ($this->debug_logins > 0) { echo 'mail_msg: end_request: stream exists, logging out'.'<br>';}
-			$this->a[$this->acctnum]['dcom']->close($this->get_arg_value('mailsvr_stream'));
+			$tmp_a = $this->a[$this->acctnum];
+			$tmp_a['dcom']->close($this->get_arg_value('mailsvr_stream'));
 			$this->set_arg_value('mailsvr_stream', '');
 		}
 		if ($this->debug_logins > 0) { echo 'mail_msg: end_request: LEAVING'.'<br>';}
+		$this->a[$this->acctnum] = $tmp_a;
 	}
 		
 	function login_error($called_from='')
@@ -1224,7 +1226,8 @@
 			// see http://www.faqs.org/rfcs/rfc2060.html  section 6.3.8 (which is not entirely clear on this)
 			// FIXME: abstract this class dcom call in mail_msg_wrappers
 			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_namespace: issuing: $this->a['.$this->acctnum.'][dcom]->listmailbox('.$mailsvr_stream.', '.$server_str.', %)'.'<br>'; }
-			$name_space = $this->a[$this->acctnum]['dcom']->listmailbox($mailsvr_stream, $server_str, '%');
+			$tmp_a = $this->a[$this->acctnum];
+			$name_space = $tmp_a['dcom']->listmailbox($mailsvr_stream, $server_str, '%');
 			if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_mailsvr_namespace: raw $name_space dump<pre>'; print_r($name_space); echo '</pre>'; }
 			
 			if (!$name_space)
@@ -1278,6 +1281,7 @@
 		
 		// cache the result in "level one cache" class var holder
 		$this->set_arg_value('mailsvr_namespace', $name_space);
+		$this->a[$this->acctnum] = $tmp_a;
 		
 		// -----------
 		// SAVE DATA TO PREFS DB CACHE
@@ -1505,13 +1509,15 @@
 		}
 		
 		// check if class dcom reports that the folder list has changed
-		if ((isset($this->a[$this_acctnum]['dcom']))
-		&& ($this->a[$this_acctnum]['dcom']->folder_list_changed == True))
+		$tmp_a = $this->a[$this->acctnum];
+
+		if ((isset($tmp_a['dcom']))
+		&& ($tmp_a['dcom']->folder_list_changed == True))
 		{
 			// class dcom recorded a change in the folder list
 			// supposed to happen when create or delete mailbox is called
 			// reset the changed flag
-			$this->a[$this_acctnum]['dcom']->folder_list_changed = False;
+			$tmp_a['dcom']->folder_list_changed = False;
 			// set up for a force_refresh
 			$force_refresh = True;
 			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: class dcom report folder list changed<br>'; }
@@ -1611,7 +1617,7 @@
 			// At this time we use "unqualified" a.k.a. "relative" directory names if the user provides a namespace
 			// UWash will consider it relative to the mailuser's $HOME property as with "emails/*" (DOES THIS WORK ON ALL PLATFORMS??)
 			// BUT we use <tilde><slash> "~/" if no namespace is given
-			$mailboxes = $this->a[$this_acctnum]['dcom']->listmailbox($mailsvr_stream, $server_str, "$name_space" ."$delimiter" ."*");
+			$mailboxes = $tmp_a['dcom']->listmailbox($mailsvr_stream, $server_str, "$name_space" ."$delimiter" ."*");
 			// UWASH IMAP returns information in this format:
 			// {SERVER_NAME:PORT}FOLDERNAME
 			// example:
@@ -1629,7 +1635,7 @@
 			//$mailboxes = $this->a[$this_acctnum]['dcom']->listmailbox($mailsvr_stream, $server_str, "$name_space" ."*");
 			// UPDATED information of this issue: to get shared folders included in the return, better NOT include the "." delimiter
 			// example: Cyrus does not like anything but a "*" as the pattern IF you want shared folders returned.
-			$mailboxes = $this->a[$this_acctnum]['dcom']->listmailbox($mailsvr_stream, $server_str, "*");
+			$mailboxes = $tmp_a['dcom']->listmailbox($mailsvr_stream, $server_str, "*");
 			// returns information in this format:
 			// {SERVER_NAME:PORT} NAMESPACE DELIMITER FOLDERNAME
 			// example:
@@ -1731,6 +1737,7 @@
 		// finished, return the folder_list array atructure
 		if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_folder_list: finished, $my_folder_list dump:<pre>'; print_r($my_folder_list); echo '</pre>'; }
 		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_folder_list: LEAVING, got folder data from server<br>'; }
+		$this->a[$this->acctnum] = $tmp_a;
 		return $my_folder_list;
 	}
 

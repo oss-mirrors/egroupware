@@ -325,6 +325,8 @@
 		$oldpriority = $GLOBALS['phpgw']->db->f('ticket_priority');
 		$oldcategory = $GLOBALS['phpgw']->db->f('ticket_category');
 		$old_status  = $GLOBALS['phpgw']->db->f('ticket_status');
+		$old_billable_hours = $GLOBALS['phpgw']->db->f('ticket_billable_hours');
+		$old_billable_rate = $GLOBALS['phpgw']->db->f('ticket_billable_rate');
 
 		$GLOBALS['phpgw']->db->transaction_begin();
 

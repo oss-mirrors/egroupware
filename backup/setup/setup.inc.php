@@ -23,7 +23,7 @@
 	$setup_info['backup']['depends'][] = array
 	(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.13','0.9.14')
+		'versions' => Array('0.9.13', '0.9.14')
 	);
 
 	$setup_info['backup']['depends'][] = array

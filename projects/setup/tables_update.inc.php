@@ -352,4 +352,14 @@
 		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.5.007';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
+
+	$test[] = '0.8.5.007';
+	function projects_upgrade0_8_5_007()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_p_activities','minperae',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_p_hours','minperae',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.5.008';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
 ?>

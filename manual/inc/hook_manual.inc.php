@@ -1,6 +1,6 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - Calendar Holidays                                         *
+  * phpGroupWare - Manual                                                    *
   * http://www.phpgroupware.org                                              *
   * Written by Mark Peters <skeeter@phpgroupware.org>                        *
   * --------------------------------------------                             *

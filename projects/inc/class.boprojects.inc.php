@@ -62,7 +62,8 @@
 			'select_activities_list'	=> True,
 			'select_pro_activities'		=> True,
 			'select_hours_activities'	=> True,
-			'change_owner'				=> True
+			'change_owner'				=> True,
+			'activities_list'			=> True
 		);
 
 		function boprojects($session=False, $action = '')
@@ -368,6 +369,12 @@
 			return $act_list;
 		}
 
+		function activities_list($project_id, $billable)
+		{
+			$activities_list = $this->soprojects->activities_list($project_id, $billable);
+			return $activities_list;
+		}
+
 		function select_activities_list($project_id, $billable)
 		{
 			$activities_list = $this->soprojects->select_activities_list($project_id, $billable);
@@ -420,12 +427,9 @@
 				}
 			}
 
-			if ($action == 'mains')
+			if ((! $book_activities) && (! $bill_activities))
 			{
-				if ((! $book_activities) && (! $bill_activities))
-				{
-					$error[] = lang('Please choose activities for that project first !');
-				}
+				$error[] = lang('Please choose activities for that project first !');
 			}
 
 			if ($values['smonth'] || $values['sday'] || $values['syear'])
@@ -448,6 +452,33 @@
 			{
 				$error[] = lang('Ending date can not be before start date');
 			} */
+
+			if ($action == 'subs')
+			{
+				$main_edate = $this->return_value('edate',$values['parent']);				
+
+				if ($main_edate != 0)
+				{
+					$checkdate = mktime(0,0,0,$values['emonth'],$values['eday'],$values['eyear']);
+
+					if ($checkdate > $main_edate)
+					{
+						$error[] = lang('Ending date can not be after main projects ending date !');
+					}
+				}
+
+				$main_sdate = $this->return_value('sdate',$values['parent']);				
+
+				if ($main_sdate != 0)
+				{
+					$checkdate = mktime(0,0,0,$values['smonth'],$values['sday'],$values['syear']);
+
+					if ($checkdate < $main_sdate)
+					{
+						$error[] = lang('Start date can not be before main projects start date !');
+					}
+				}
+			}
 
 			if (is_array($error))
 			{
@@ -486,7 +517,7 @@
 
 			if ((! $values['billperae']) || ($values['billperae'] == 0))
 			{
-				$error[] = lang('Please enter the bill per workunit !');
+				$error[] = lang('Please enter the bill !');
 			}
 
 			if ($GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'] == 'wu')
@@ -524,6 +555,11 @@
 			else
 			{
 				$values['access'] = 'public';
+			}
+
+			if (!$values['budget'])
+			{
+				$values['budget'] = 0;
 			}
 
 			if ($values['smonth'] || $values['sday'] || $values['syear'])

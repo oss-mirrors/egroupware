@@ -21,17 +21,17 @@
 	$setup_info['bookmarks']['enable']    = 1;
 
 	/* The tables this app creates */
-	$setup_info['bookmarks']['tables']    = array(
+	$setup_info['bookmarks']['tables']	= Array(
 		'phpgw_bookmarks'
 	);
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['bookmarks']['hooks'][] = 'preferences';
 	$setup_info['bookmarks']['hooks'][] = 'admin';
+	$setup_info['bookmarks']['hooks'][] = 'preferences';
 
 	/* Dependencies for this app to work */
 	$setup_info['bookmarks']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.11','0.9.12','0.9.13')
+		'versions' => Array('0.9.11','0.9.12','0.9.13','0.9.14')
 	);
 ?>

@@ -166,8 +166,12 @@
 		}
 
 
-		function index_data($reuse_feed_args=array())
+		function index_data($reuse_feed_args = '##NOTHING##')
 		{
+			if ($reuse_feed_args == '##NOTHING##')
+			{
+				$reuse_feed_args = array();
+			}
 			// attempt (or not) to reuse an existing mail_msg object, i.e. if one ALREADY exists before entering
 			// this function. As of Dec 14, 2001 only class.boaction can pass a useful, existing object for us to use here
 			$attempt_reuse = True;
