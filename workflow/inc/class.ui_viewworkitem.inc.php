@@ -37,16 +37,22 @@
 			));
 
 			$this->t->set_block('view_workitem', 'block_properties', 'properties');
-			foreach ($wi['properties'] as $key=>$prop)
-			{
-				$this->t->set_var(array(
-					'key'			=> $key,
-					'prop_value'	=> $prop,
-					'color_line'	=> $this->nextmatchs->alternate_row_color($tr_color),
-				));
-				$this->t->parse('properties', 'block_properties', true);
+			
+			if (!count($wi['properties'])) {
+				$this->t->set_var('properties', '<tr><td colspan="2" align="center">'. lang('No properties defined') .'</td></tr>');
 			}
-			if (!count($wi['properties'])) $this->t->set_var('properties', '<tr><td colspan="2" align="center">'. lang('No properties defined') .'</td></tr>');
+			else {
+			
+				foreach ($wi['properties'] as $key=>$prop)
+				{
+					$this->t->set_var(array(
+						'key'			=> $key,
+						'prop_value'	=> $prop,
+						'color_line'	=> $this->nextmatchs->alternate_row_color($tr_color),
+					));
+					$this->t->parse('properties', 'block_properties', true);
+				}
+			}
 
 
 
