@@ -637,6 +637,9 @@
 		{
 			$part_nice['param_value'] = $part_params->value;
 		}
+		// there may be additional params, at least look at the 2nd set
+		$part_nice['param_2_attribute'] = $struct_not_set; // Default value if not filled
+		$part_nice['param_2_value'] = $struct_not_set; // Default value if not filled
 		if ($part_nice['ex_num_param_pairs'] > 1)
 		{
 			$part_params = $part->parameters[1];
@@ -665,26 +668,50 @@
 			$part_nice['subpart'][$p] = $part_subpart;
 		}
 	}
-	// Attachment Detection PART1 = Test For Files
-	// non-file stuff like X-VCARD is tested for at a higher level
-	// where the code can be more easily modified
+	// ADDITIONAL INFORMATION (often uses array key "ex_" )
+
+	// NOTE: initially I wanted to treat base64 attachments with more "respect", but many other attachments are NOT
+	// base64 encoded and are still attachments - if param_value NAME has a value, pretend it's an attachment
+	// however, a base64 part IS an attachment even if it has no name, just make one up
+	
+	// Attachment Detection PART1 = Test For Files (base64 is a sign of a "REAL ATTACHMENT" like a file, image, etc...)
 	if ($part_nice['encoding'] == 'base64')
 	{
 		if (($part_nice['param_attribute'] == 'name') 
 		  && ($part_nice['param_value'] != $struct_not_set))
 		{
 			$part_nice['ex_part_name'] = $part_nice['param_value'];
-			// ALSO - this is a sign of a "REAL ATTACHMENT" like a file, image, etc...
+			$part_nice['ex_has_attachment'] = True;
+		}
+		elseif (($part_nice['param_2_attribute'] == 'name') 
+		  && ($part_nice['param_2_value'] != $struct_not_set))
+		{
+			// maybe the name is in the 2nd pair of attribute/value pairs...
+			$part_nice['ex_part_name'] = $part_nice['param_2_value'];
 			$part_nice['ex_has_attachment'] = True;
 		}
 		else
 		{
 			// base64 means this IS *some* kind of attachment
 			$part_nice['ex_has_attachment'] = True;
-			// BUT we have no idea of it's name, and *maybe* idea of it's content type (eg. name.gif = image/gif)
+			// BUT we have no idea of it's name, and *maybe* no idea of it's content type (eg. name.gif = image/gif)
 			// sometimes the name's extention is the only info we have, i.e. ".doc" implies a WORD file
 			$part_nice['ex_part_name'] = 'no_name.att';
 		}
+	}
+	// Attachment Detection PART2 = non base64 encoded stuff, if it has a name, let's pretend it is an attachment
+	elseif (($part_nice['param_attribute'] == 'name') 
+	  && ($part_nice['param_value'] != $struct_not_set))
+	{
+		$part_nice['ex_part_name'] = $part_nice['param_value'];
+		$part_nice['ex_has_attachment'] = True;
+	}
+	// maybe the name is in the 2nd pair of attribute/value pairs...
+	elseif (($part_nice['param_2_attribute'] == 'name') 
+	  && ($part_nice['param_2_value'] != $struct_not_set))
+	{
+		$part_nice['ex_part_name'] = $part_nice['param_2_value'];
+		$part_nice['ex_has_attachment'] = True;
 	}
 	else
 	{
@@ -692,6 +719,7 @@
 		$part_nice['ex_part_name'] = 'unknown.html';
 		$part_nice['ex_has_attachment'] = False;
 	}
+
 	// "dumb" mime part number based only on array position, will be made "smart" later
 	$part_nice['ex_mime_number_dumb'] = $feed_dumb_mime;
 	$part_nice['ex_parent_flat_idx'] = $parent_flat_idx;

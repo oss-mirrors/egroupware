@@ -612,12 +612,21 @@
 				$part_nice[$i]['m_keywords'] .= $part_nice[$i]['param_value'] .' ';
 			}
 		}
+		if ($part_nice[$i]['param_2_attribute'] != $struct_not_set)
+		{
+			$part_nice[$i]['m_keywords'] .= $part_nice[$i]['param_2_attribute'] .' ';
+			if ($part_nice[$i]['param_2_attribute'] == 'charset')
+			{
+				$part_nice[$i]['m_keywords'] .= $part_nice[$i]['param_2_value'] .' ';
+			}
+		}
 		if ($part_nice[$i]['ex_has_attachment'])
 		{
 			$part_nice[$i]['m_keywords'] .= 'ex_has_attachment' .' ';
 		}
 		//$part_nice[$i]['m_keywords'] = trim($part_nice[$i]['m_keywords']);
 
+		/* B0RKED --(any part with a name is considered an attachment, so this is not needed)
 		// ------  Test For Non-File Attachments like X-VCARD  ------
 		// add any others that I missed to the $other_attach_types array above
 		for ($oa = 0; $oa < count($other_attach_types); $oa++)
@@ -634,6 +643,7 @@
 				}
 			}
 		}
+		*/
 
 		// POSSIBLE VALUES FOR ['m_description'] ARE:
 		//	container
@@ -841,6 +851,8 @@
 				//$msg_body_info .= 'ex_num_param_pairs: '. $part_nice[$i]['ex_num_param_pairs'] .$crlf;
 				$msg_body_info .= 'param_attribute: '. $part_nice[$i]['param_attribute'] .$crlf;
 				$msg_body_info .= 'param_value: '. $part_nice[$i]['param_value']  .$crlf;
+				$msg_body_info .= 'param_2_attribute: '. $part_nice[$i]['param_2_attribute'] .$crlf;
+				$msg_body_info .= 'param_2_value: '. $part_nice[$i]['param_2_value']  .$crlf;
 			}
 			if ($part_nice[$i]['ex_num_subparts'] != $struct_not_set)
 			{
@@ -1085,6 +1097,7 @@
 			if (strlen($dsp) < 3)
 			{
 				$skip_this_part = True;
+				$t->set_var('V_display_part','');
 			}
 
 			// ----- show the part 
