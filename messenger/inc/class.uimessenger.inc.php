@@ -210,6 +210,38 @@
 					$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
 				}
 			}
+			// recipient dropdown field stuff added by tobi (gabele@uni-sql.de)
+			$tobox = '<input name="message[to]" value="' . $message['to'] . '" size="30">';
+			$sndid = 0;
+			if($message['to'] != '')
+			{
+				$sndid=$GLOBALS['phpgw']->accounts->name2id($message['to']);
+			}
+			$myownid=$GLOBALS['phpgw_info']['user']['account_id'];
+			if(@isset($GLOBALS['phpgw_info']['server']['messenger']['use_selectbox']))
+			{
+				$accounts = $GLOBALS['phpgw']->acl->get_ids_for_location('run',1,'messenger');
+				$users = array();
+				$this->build_part_list($users,$accounts,$myownid);
+
+				$str = '';
+				@asort($users);
+
+				foreach($users as $id => $user_array)
+				{
+					if($id != (int)$myownid)
+					{
+						$str .= '    <option value="' .$GLOBALS['phpgw']->accounts->id2name($id). '"'.($sndid==$id ?' selected':'').'>'.$user_array['name'].'</option>'."\n";
+					}
+				}
+
+				$tobox = "\n".'   <select name="message[to]" size="1">'."\n".$str.'   </select>';
+				if(count($users) <= 1)
+				{
+					$tobox = '<input name="n_message[to]" value="' . $message['from'] . '" size="30">';
+				}
+			}
+
 			$this->display_headers();
 			$this->set_compose_read_blocks();
 
@@ -217,7 +249,7 @@
 			$GLOBALS['phpgw']->template->set_var('header_message',lang('Compose message'));
 
 			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose'));
-			$GLOBALS['phpgw']->template->set_var('value_to','<input name="message[to]" value="' . $message['to'] . '" size="30">');
+			$GLOBALS['phpgw']->template->set_var('value_to',$tobox);
 			$GLOBALS['phpgw']->template->set_var('value_subject','<input name="message[subject]" value="' . $message['subject'] . '" size="30">');
 			$GLOBALS['phpgw']->template->set_var('value_content','<textarea name="message[content]" rows="20" wrap="hard" cols="76">' . $message['content'] . '</textarea>');
 
@@ -284,6 +316,45 @@
 			$GLOBALS['phpgw']->template->pfp('out','form');
 		}
 
+		// recipient dropdown field stuff added by tobi (gabele@uni-sql.de)
+		function build_part_list(&$users,$accounts,$owner)
+		{
+			if(!is_array($accounts))
+			{
+				return;
+			}
+			foreach($accounts as $id)
+			{
+				$id = (int)$id;
+				if($id == $owner)
+				{
+					continue;
+				}
+				elseif(!isset($users[$id]))
+				{
+					if($GLOBALS['phpgw']->accounts->exists($id) == True && $GLOBALS['phpgw']->accounts->get_type($id) == 'u')
+					{
+						$users[$id] = Array(
+							'name' => $GLOBALS['phpgw']->common->grab_owner_name($id),
+							'type' => $GLOBALS['phpgw']->accounts->get_type($id)
+						);
+					}
+				}
+			}
+			if(!function_exists('strcmp_name'))
+			{
+				function strcmp_name($arr1,$arr2)
+				{
+					if($diff = strcmp($arr1['type'],$arr2['type']))
+					{
+						return $diff; // groups before users
+					}
+					return strnatcasecmp($arr1['name'],$arr2['name']);
+				}
+			}
+			uasort($users,'strcmp_name');
+		}
+
 		function reply()
 		{
 			$message_id = get_var('message_id', array('GET','POST'));
@@ -306,6 +377,38 @@
 					$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
 				}
 			}
+			// recipient dropdown field stuff added by tobi (gabele@uni-sql.de)
+			$tobox = '<input name="n_message[to]" value="' . $message['from'] . '" size="30">';
+			$sndid = 0;
+			if($message['from'] != '')
+			{
+				$sndid=$GLOBALS['phpgw']->accounts->name2id($message['from']);
+			}
+			$myownid=$GLOBALS['phpgw_info']['user']['account_id'];
+			if(@isset($GLOBALS['phpgw_info']['server']['messenger']['use_selectbox']))
+			{
+				$accounts = $GLOBALS['phpgw']->acl->get_ids_for_location('run',1,'messenger');
+				$users = array();
+				$this->build_part_list($users,$accounts,$myownid);
+
+				$str = '';
+				@asort($users);
+				foreach($users as $id => $user_array)
+				{
+					if($id != (int)$myownid)
+					{
+						$str .= '    <option value="' .$GLOBALS['phpgw']->accounts->id2name($id). '"'.($sndid==$id ?' selected':'').'>'.$user_array['name'].'</option>'."\n";
+					}
+				}
+
+				$tobox = "\n".'   <select name="message[to]" size="1">'."\n".$str.'   </select>';
+				if(count($users) <= 1)
+				{
+					$tobox = '<input name="n_message[to]" value="' . $message['from'] . '" size="30">';
+				}
+			}
+
+			// end dropdown
 
 			$this->display_headers();
 			$this->set_compose_read_blocks();
@@ -314,7 +417,7 @@
 			$GLOBALS['phpgw']->template->set_var('header_message',lang('Reply to a message'));
 
 			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.reply&message_id=' . $message['id']));
-			$GLOBALS['phpgw']->template->set_var('value_to','<input name="n_message[to]" value="' . $message['from'] . '" size="30">');
+			$GLOBALS['phpgw']->template->set_var('value_to',$tobox);
 			$GLOBALS['phpgw']->template->set_var('value_subject','<input name="n_message[subject]" value="' . stripslashes($message['subject']) . '" size="30">');
 			$GLOBALS['phpgw']->template->set_var('value_content','<textarea name="n_message[content]" rows="20" wrap="hard" cols="76">' . stripslashes($message['content']) . '</textarea>');
 
@@ -348,6 +451,37 @@
 					$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
 				}
 			}
+			// recipient dropdown field stuff added by tobi (gabele@uni-sql.de)
+			$tobox = '<input name="n_message[to]" value="' . $message['from'] . '" size="30">';
+			$sndid = 0;
+			if($message['from'] != '')
+			{
+				$sndid=$GLOBALS['phpgw']->accounts->name2id($message['from']);
+			}
+			$myownid = $GLOBALS['phpgw_info']['user']['account_id'];
+			if(@isset($GLOBALS['phpgw_info']['server']['messenger']['use_selectbox']))
+			{
+				$accounts = $GLOBALS['phpgw']->acl->get_ids_for_location('run',1,'messenger');
+				$users = array();
+				$this->build_part_list($users,$accounts,$myownid);
+
+				$str = '';
+				@asort($users);
+				foreach($users as $id => $user_array)
+				{
+					if($id != (int)$myownid)
+					{
+						$str .= '    <option value="' .$GLOBALS['phpgw']->accounts->id2name($id). '"'.($sndid==$id ?' selected':'').'>'.$user_array['name'].'</option>'."\n";
+					}
+				}
+
+				$tobox = "\n".'   <select name="message[to]" size="1">'."\n".$str.'   </select>';
+				if(count($users) <= 1)
+				{
+					$tobox = '<input name="n_message[to]" value="' . $message['from'] . '" size="30">';
+				}
+			}
+			// end dropdown
 
 			$this->display_headers();
 			$this->set_compose_read_blocks();
@@ -356,7 +490,7 @@
 			$GLOBALS['phpgw']->template->set_var('header_message',lang('Forward a message'));
 
 			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.forward&message_id=' . $message['id']));
-			$GLOBALS['phpgw']->template->set_var('value_to','<input name="n_message[to]" value="' . $message['from'] . '" size="30">');
+			$GLOBALS['phpgw']->template->set_var('value_to',$tobox);
 			$GLOBALS['phpgw']->template->set_var('value_subject','<input name="n_message[subject]" value="' . stripslashes($message['subject']) . '" size="30">');
 			$GLOBALS['phpgw']->template->set_var('value_content','<textarea name="n_message[content]" rows="20" wrap="hard" cols="76">' . stripslashes($message['content']) . '</textarea>');
 

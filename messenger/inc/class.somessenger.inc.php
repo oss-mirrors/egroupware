@@ -24,6 +24,10 @@
 		{
 			$this->db    = &$GLOBALS['phpgw']->db;
 			$this->owner = $GLOBALS['phpgw_info']['user']['account_id'];
+			$config = CreateObject('phpgwapi.config');
+			$config->read_repository();
+			$GLOBALS['phpgw_info']['server']['messenger'] = $config->config_data;
+			unset($config);
 		}
 
 		function update_message_status($status, $message_id)
