@@ -129,7 +129,7 @@
         }
         
         $prefs_tpl->set_var(array(OPTION_SELECTED => $selected,
-                                  OPTION_VALUE    => $g_censor_level[$loop],
+                                  OPTION_VALUE    => $loop,
                                   OPTION_NAME     => $g_censor_level[$loop]));
         $prefs_tpl->parse(censor_list, "censor", TRUE);
     }
@@ -185,11 +185,14 @@
             }
             
         }
+        $name = sprintf("%s - %s",
+                        $phpgw->db->f("data_resolve"),
+                        $phpgw->db->f("data_title"));
         
         $prefs_tpl->set_var
             (array(OPTION_SELECTED => $selected,
                    OPTION_VALUE    => $phpgw->db->f("data_id"),
-                   OPTION_NAME     => $phpgw->db->f("data_title")));
+                   OPTION_NAME     => $name));
         $prefs_tpl->parse(comic_list, "comic", TRUE);
     }
     

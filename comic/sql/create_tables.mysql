@@ -7,17 +7,16 @@ CREATE TABLE phpgw_comic (
   comic_perpage    tinyint(4) DEFAULT '4' NOT NULL,
   comic_frontpage  int(11) DEFAULT '0' NOT NULL,
   comic_fpscale    tinyint(4) DEFAULT '0' NOT NULL,
-  comic_censorlvl  enum('G', 'PG', 'R') DEFAULT 'G' NOT NULL,
+  comic_censorlvl  tinyint(4) DEFAULT '0' NOT NULL,
   comic_template   tinyint(4) DEFAULT '0' NOT NULL,
   PRIMARY KEY      (comic_id)
 );
 
 CREATE TABLE phpgw_comic_admin(
   admin_imgsrc     tinyint(4) DEFAULT '0' NOT NULL,
-  admin_gdenabled  tinyint(4) DEFAULT '0' NOT NULL,
-  admin_gdtype     tinyint(4) DEFAULT '0' NOT NULL,
   admin_rmtenabled tinyint(4) DEFAULT '0' NOT NULL,
-  admin_censorlvl  enum('G', 'PG', 'R') DEFAULT 'G' NOT NULL,
+  admin_censorlvl  tinyint(4) DEFAULT '0' NOT NULL,
+  admin_coverride  tinyint(4) DEFAULT '0' NOT NULL,
   PRIMARY KEY      (admin_imgsrc)
 );
 
@@ -36,9 +35,9 @@ CREATE TABLE phpgw_comic_data(
   data_imageurl    varchar(255) NOT NULL,
   data_pubdays     varchar(25) DEFAULT 'Su:Mo:Tu:We:Th:Fr:Sa' NOT NULL,
   data_parser      enum('United', 'King', 'Comics', 'Comiczone7', 'Comiczone10', 'Creators', 'None') DEFAULT 'None' NOT NULL,
-  data_class       enum('Geek', 'Business', 'Political', 'General') DEFAULT 'Geek' NOT NULL,
-  data_censorlvl   enum('G', 'PG', 'R') DEFAULT 'G' NOT NULL,
+  data_class       enum('Geek', 'Political', 'General') DEFAULT 'General' NOT NULL,
+  data_censorlvl   tinyint(4) DEFAULT '0' NOT NULL,
   data_resolve     enum('Remote', 'Static') DEFAULT 'Remote' NOT NULL,
-  data_location    enum('L','R','C') DEFAULT 'C' NOT NULL,
+  data_location    enum('S','C') DEFAULT 'C' NOT NULL,
   PRIMARY KEY      (data_id)
 );

@@ -35,17 +35,20 @@
 
     $phpgw->db->next_record();
 
-    $comic_id      = explode(":", $phpgw->db->f("comic_list"));
-    $comic_perpage = $phpgw->db->f("comic_perpage");
-    $template_id   = $phpgw->db->f("comic_template");
+    $comic_list     = explode(":", $phpgw->db->f("comic_list"));
+    $comic_scale    = $phpgw->db->f("comic_scale");
+    $comic_perpage  = $phpgw->db->f("comic_perpage");
+    $user_censorlvl = $phpgw->db->f("comic_censorlvl");
+    
+    $template_id    = $phpgw->db->f("comic_template");
     
     if (!$page_number)
     {
         $page_number = 0;
     }
     
-    comic_display($comic_id, $comic_perpage, $start,
-                  &$comic_left_c, &$comic_right_c, &$comic_center_c,
+    comic_display($comic_list, $comic_scale, $comic_perpage, $user_censorlvl,
+                  $start, &$comic_left_c, &$comic_right_c, &$comic_center_c,
                   &$matchs_c);
 
     /**************************************************************************
