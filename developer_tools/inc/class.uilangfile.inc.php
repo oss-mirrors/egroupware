@@ -32,6 +32,7 @@
 		function uilangfile()
 		{
 			$this->template = $GLOBALS['phpgw']->template;
+			$this->template->egroupware_hack = False;	// else the phrases got translated
 			$this->bo = CreateObject('developer_tools.bolangfile');
 			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
 			$GLOBALS['phpgw']->translation->add_app('developer_tools');
@@ -367,7 +368,7 @@
 			@reset($db_perms);
 			while (list($userapp) = each($db_perms))
 			{
-				if ($GLOBALS['phpgw_info']['apps'][$userapp]['enabled'])
+				if ($GLOBALS['phpgw_info']['apps'][$userapp]['enabled'] || $userapp == 'setup')
 				{
 					$userapps .= '<option value="' . $userapp . '"';
 					if ($application_name == $userapp)
@@ -378,7 +379,7 @@
 					{
 						$userapps .= ' selected';
 					}
-					$userapps .= '>' . $GLOBALS['phpgw_info']['apps'][$userapp]['title'] . '</option>' . "\n";
+					$userapps .= '>' . (isset($GLOBALS['phpgw_info']['apps'][$userapp]['title']) ? $GLOBALS['phpgw_info']['apps'][$userapp]['title'] : lang($userapp)) . '</option>' . "\n";
 				}
 			}
 			$this->template->set_var('userapps',$userapps);
@@ -462,9 +463,9 @@
 					$this->template->set_var('content',htmlspecialchars($transy));
 					$this->template->set_var('transapp',$this->lang_option($app_name,$data['app_name'],$mess_id));
 					$this->template->set_var('tr_color',empty($transy) ? $GLOBALS['phpgw_info']['theme']['bg06'] : $this->nextmatchs->alternate_row_color());
-					if (strlen($key) > 50)
+					if (($len = max(strlen($key),strlen($content))) > 50)
 					{
-						$this->template->set_var('rows',min(intval(strlen($key)/80+0.5),10));
+						$this->template->set_var('rows',min(intval($len/80+0.5),10));
 						$this->template->pfp('out','detail_long');
 					}
 					else
@@ -563,6 +564,12 @@
 
 			$offset = $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
 
+			$apps = array(
+				strtolower(lang('Setup')) => array(
+					'name'  => 'setup',
+					'title' => lang('Setup')
+				)
+			);
 			foreach($GLOBALS['phpgw_info']['apps'] as $app => $data)
 			{
 				$apps[strtolower($data['title'])] = $data;
