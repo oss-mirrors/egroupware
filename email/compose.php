@@ -22,8 +22,13 @@
     $msg = $phpgw->msg->header($mailbox, $msgnum);
     $struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
     if ($action == "reply") {
-	    $from = $msg->from[0];
-	    $to = $from->mailbox."@".$from->host;
+            if ($msg->reply_to[0]) {
+                $reply = $msg->reply_to[0];
+            }
+            else {
+                $reply = $msg->from[0];
+            }
+            $to = $reply->mailbox."@".$reply->host;
 	    $subject = !$msg->Subject ? lang("no subject") : decode_header_string($msg->Subject);
 	    $begin = strtoupper(substr($subject, 0, 3)) != "RE:" ? "Re: " : "";
 	    $subject = $begin . $subject;
