@@ -534,6 +534,7 @@
 		return $rfc_addy;
 	}
 
+	/*
 	// ----  Ensures To, CC, and BCC are properly comma seperated   -----
 	// param $data should be the desired header string, with one or more addresses 
 	function rfc_comma_sep($data)
@@ -582,7 +583,7 @@
 					$addr_spec_parts[0] = str_replace(")", "\)", $addr_spec_parts[0]);
 					//echo 'addr_spec_parts: '.$this->htmlspecialchars_encode($addr_spec_parts[0]).'<br>';
 					
-					// REASSEMBLE the personal and plain address into 1 string
+					// REASSEMBLE the personal and plain address into 1 string (note the final ">" was NEVER stripped, it's still there
 					$data[$i] = '"'.$addr_spec_parts[0].'" <'.$addr_spec_parts[1];
 					//echo 'trimmed and slashes stripped data[i]: '.$this->htmlspecialchars_encode($data[$i]).'<br>';
 				}
@@ -601,7 +602,7 @@
 			}
 			else
 			{
-				/*// CLASS SEND CAN NOT HANDLE FOLDED HEADERS YET (7/10/01)
+				/ * // CLASS SEND CAN NOT HANDLE FOLDED HEADERS YET (7/10/01)
 				// this snippit just assembles the headers
 				for ($i=0;$i<count($data);$i++)
 				{
@@ -611,8 +612,9 @@
 				$data = implode(",", $data);
 				// catch any situations where a blank string was included, resulting in two commas with nothing inbetween
 				$data = ereg_replace("[,]{2}", ',', $data);
-				*/
+				// * /
 
+				
 				// if folding headers - use SEND_2822  instead of class.send
 				// FRC2822 recommended max header line length, excluding the required CRLF
 				$rfc_max_length = 78;
@@ -667,10 +669,188 @@
 				$data = trim($new_data);
 				// add the final CRLF to finish off this header string
 				//$data = $data ."\r\n";
+				
 			}
 			// data leaves here with NO FINAL (trailing) CRLF - will add that later
 			return $data;
 		}
+	}
+	*/
+
+	// ----  Ensures To, CC, and BCC are properly comma seperated   -----
+	// param $data should be the desired header string, with one or more addresses 
+	function make_rfc_addy_array($data)
+	{
+		// if we are fed a null value, return nothing (i.e. a null value)
+		if (isset($data))
+		{
+			$data = trim($data);
+			// if we are fed a whitespace only string, return a blank string
+			if ($data == '')
+			{
+				return $data;
+				// return performs an implicit break, so we are outta here
+			}
+			// in some cases the data may be in html entity form
+			// i.e. the compose page uses html entities when filling the To: box with a predefined value
+			$data = $this->htmlspecialchars_decode($data);
+			//reduce all multiple spaces to just one space
+			//$data = ereg_replace("[' ']{2,20}", ' ', $data);
+			$this_space = " ";
+			$data = ereg_replace("$this_space{2,20}", " ", $data);
+			// explode into an array of email addys
+			$data = explode(",", $data);
+			
+			// --- Create Compund Array Structure To Hold Decomposed Addresses -----
+			// addy_array is a simple numbered array, each element is a addr_spec_array
+			$addy_array = Array();
+			// addr_spec_array is this addr_spec_array['plain']  addr_spec_array['personal']
+			//$addr_spec_array = Array();
+				
+			// decompose addy's into that array, and format according to rfc specs
+			for ($i=0;$i<count($data);$i++)
+			{
+				// trim off leading and trailing whitespaces and \r and \n
+				$data[$i] = trim($data[$i]);
+				// is this a rfc 2822 compound address (not a simple one)
+				if (strstr($data[$i], '" <'))
+				{
+					// SEPERATE "personal" part from the <x@x.com> part
+					$addr_spec_parts = explode('" <', $data[$i]);
+					// that got rid of the closing " in personal, now get rig of the first "
+					$addy_array[$i]['personal'] = substr($addr_spec_parts[0], 1);
+					// now get the plain address, the "<" was already removed, remove the closing ">"
+					$grab_to = strlen($addr_spec_parts[1]) - 1;
+					$addy_array[$i]['plain'] = substr($addr_spec_parts[1], 0, $grab_to);
+
+					// QPRINT NON US-ASCII CHARS in "personal" string
+					// header ENCODE non us-ascii chars as per RFC2822
+					// -- future -- not yet implemented
+
+					// ESCAPE SPECIALS:  rfc2822 requires the "personal" comment string to escape "specials" inside the quotes
+					// the non-simple (i.e. "personal" info is included) need special escaping
+					// escape these:  ' " ( ) 
+					$addy_array[$i]['personal'] = ereg_replace('\'', "\\'", $addy_array[$i]['personal']);
+					$addy_array[$i]['personal'] = str_replace('"', '\"', $addy_array[$i]['personal']);
+					$addy_array[$i]['personal'] = str_replace("(", "\(", $addy_array[$i]['personal']);
+					$addy_array[$i]['personal'] = str_replace(")", "\)", $addy_array[$i]['personal']);
+				}
+				else
+				{
+					// this is an old style simple address
+					$addy_array[$i]['personal'] = '';
+					$addy_array[$i]['plain'] = $data[$i];
+				}
+
+				//echo 'addy_array['.$i.'][personal]: '.$this->htmlspecialchars_encode($addy_array[$i]['personal']).'<br>';
+				//echo 'addy_array['.$i.'][plain]: '.$this->htmlspecialchars_encode($addy_array[$i]['plain']).'<br>';
+			}
+			$addy_array = serialize($addy_array);
+			//echo 'serialized addy_array: '.$addy_array.'<br>';
+			return $addy_array;
+		}
+	}
+	function addy_array_to_str($data, $include_personal=True)
+	{
+		$addy_string = '';
+		
+		// reconstruct data in the correct email address format
+		//if (count($data) == 0)
+		//{
+		//	$addy_string = '';
+		//}
+		if (count($data) == 1)
+		{
+			if ($include_personal == False)
+			{
+				$addy_string = $data[0]['plain'];
+			}
+			else
+			{
+				$addy_string = '"'.$data[0]['personal'].'" <'.$data[0]['plain'].'>';
+			}
+		}
+		elseif ($include_personal == False)
+		{
+			// CLASS SEND CAN NOT HANDLE FOLDED HEADERS OR PERSONAL ADDRESSES
+			// this snippit just assembles the headers
+			for ($i=0;$i<count($data);$i++)
+			{
+				// addresses should be seperated by one comma with NO SPACES AT ALL
+				$addy_string = $addy_string .trim($data[$i]['plain']) .',';
+			}
+			// catch any situations where a blank string was included, resulting in two commas with nothing inbetween
+			$addy_string = ereg_replace("[,]{2}", ',', $addy_string);
+			// eliminate that final comma
+			$grab_to = strlen($addy_string) - 1;
+			$addy_string = substr($addy_string, 0, $grab_to);
+		}
+		else
+		{
+			// if folding headers - use SEND_2822  instead of class.send
+			// FRC2822 recommended max header line length, excluding the required CRLF
+			$rfc_max_length = 78;
+
+			// establish an arrays in case we need a multiline header string
+			$header_lines = Array();
+			$line_num = 0;
+			$header_lines[$line_num] = '';
+			// loop thru the addresses, construct the header string
+			for ($z=0;$z<count($data);$z++)
+			{
+				// make a string for this individual address
+				if ($data[$z]['personal'] != '')
+				{
+					$this_address = '"'.$data[$z]['personal'].'" <'.$data[$z]['plain'].'>';
+				}
+				else
+				{
+					$this_address = $data[$z]['plain'];
+				}
+				// see how long this line would be if this address were added
+				//if ($z == 0)
+				$cur_len = strlen($header_lines[$line_num]);
+				if ($cur_len < 1)
+				{
+					$would_be_str = $this_address;
+				}
+				else
+				{
+					$would_be_str = $header_lines[$line_num] .','.$this_address;
+				}
+				//echo 'would_be_str: '.$this->htmlspecialchars_encode($would_be_str).'<br>';
+				//echo 'strlen(would_be_str): '.strlen($would_be_str).'<br>';
+				if ((strlen($would_be_str) > $rfc_max_length)
+				&& ($cur_len > 1))
+				{
+					// Fold Header: RFC2822 "fold" = CRLF followed by a "whitespace" (#9 or #20)
+					// preferable to "fold" after the comma, and DO NOT TRIM that white space, preserve it
+					$rfc_fold_a = "\r\n";
+					$rfc_fold_b = " ";
+					//$rfc_fold = "\r\n".(chr(9));
+					$header_lines[$line_num] = $header_lines[$line_num].','.$rfc_fold_a;
+					// advance to the next line
+					$line_num++;
+					// now start the new line with the "folding whitespace" this address
+					$header_lines[$line_num] = $rfc_fold_b;
+					$header_lines[$line_num] = $header_lines[$line_num] .$this_address;
+				}
+				else
+				{
+					// simply comma sep the items (as we did when making "would_be_str")
+					$header_lines[$line_num] = $would_be_str;
+				}
+			}
+			// assemble $header_lines array into a single string
+			$addy_string = '';
+			for ($x=0;$x<count($header_lines);$x++)
+			{
+				$addy_string = $addy_string .$header_lines[$x];
+			}
+			$addy_string = trim($addy_string);
+		}
+		// data leaves here with NO FINAL (trailing) CRLF - will add that later
+		return $addy_string;
 	}
 
 	// ----  Ensure CR and LF are always together, RFCs prefer the CRLF combo  -----

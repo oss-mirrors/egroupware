@@ -16,22 +16,21 @@
 	$phpgw_flags = Array(
 		'currentapp'		=> 'email',
 		'enable_network_class'	=> True,
-		//'enable_send_class'	=> True,
 		'enable_send_class'	=> True,
+		'use_send_2822'		=> False,
 		'noheader'		=> True,
 		'nonavbar'		=> True
 	);
 	
 	$phpgw_info['flags'] = $phpgw_flags;
 	include('../header.inc.php');
-	//include(PHPGW_INCLUDE_ROOT."/email/inc/class.send_2822.inc.php");
-	$phpgw->send_2822 = CreateObject("email.send_2822");
-
+	
 	/* get rid of the escape \ that magic_quotes (if enabled) HTTP POST will add, " becomes \" and  '  becomes  \'  */
-	$body = $phpgw->msg->stripslashes_gpc($body);
-	$subject = $phpgw->msg->stripslashes_gpc($subject);
 	$to = $phpgw->msg->stripslashes_gpc($to);
 	$cc = $phpgw->msg->stripslashes_gpc($cc);
+	//$bcc = $phpgw->msg->stripslashes_gpc($bcc);
+	$body = $phpgw->msg->stripslashes_gpc($body);
+	$subject = $phpgw->msg->stripslashes_gpc($subject);
 
 // ----  DE-code HTML SpecialChars in the body   -----
 	// THIS NEEDS TO BE CHANGED WHEN MULTIPLE PART FORWARDS ARE ENABLED
@@ -63,22 +62,40 @@
 	$body = ereg_replace("\n", "\r\n", $body);
 
 // ----  Ensure To: and CC:  and BCC: are properly formatted   -----
-	$to = $phpgw->msg->rfc_comma_sep($to);
-	$cc = $phpgw->msg->rfc_comma_sep($cc);
-	$bcc = $phpgw->msg->rfc_comma_sep($bcc);
+	if ($to)
+	{
+		$to = unserialize($phpgw->msg->make_rfc_addy_array($to));
+	}
+	if ($cc)
+	{
+		$cc = unserialize($phpgw->msg->make_rfc_addy_array($cc));
+	}
+	if ($bcc)
+	{
+		$bcc = unserialize($phpgw->msg->make_rfc_addy_array($bcc));
+	}
 
 
 	/*
 	// ===== DEBUG =====	
 	echo '<br>';
-	$dubug_info = $to;
-	$dubug_info = ereg_replace("\r\n.", "CRLF_WSP", $dubug_info);
-	$dubug_info = ereg_replace("\r\n", "CRLF", $dubug_info);
-	$dubug_info = ereg_replace(" ", "SP", $dubug_info);
-	$dubug_info = $phpgw->msg->htmlspecialchars_encode($dubug_info);
-	echo serialize($dubug_info);
-	echo '<br>';
-	
+	//$dubug_info = $to;
+	//$dubug_info = ereg_replace("\r\n.", "CRLF_WSP", $dubug_info);
+	//$dubug_info = ereg_replace("\r\n", "CRLF", $dubug_info);
+	//$dubug_info = ereg_replace(" ", "SP", $dubug_info);
+	//$dubug_info = $phpgw->msg->htmlspecialchars_encode($dubug_info);
+	//echo serialize($dubug_info);
+
+	$to = $phpgw->msg->addy_array_to_str($to, True);
+	echo 'to including personal: '.$phpgw->msg->htmlspecialchars_encode($to).'<br>';
+
+
+	//echo '<br> var dump to <br>';
+	//var_dump($to);
+	//echo '<br> var dump cc <br>';
+	//var_dump($cc);
+	//echo '<br>';
+
 	$phpgw->common->phpgw_footer();
 	exit;
 	// ===== DEBUG ===== 
@@ -167,26 +184,46 @@
 	}
 
 // ----  Send The Email  -----
-	//$rc = $phpgw->send_2822->msg('email', $to, $subject, stripslashes($body), '', $cc, $bcc);
-	// do not stripslash the body because we already stripped it above
-	//$rc = $phpgw->send_2822->msg('email', $to, $subject, $body, '', $cc, $bcc);
-	
-	$rc = $phpgw->send->msg('email', $to, $subject, $body, '', $cc, $bcc);
-	
-	if ($rc)
+	if ($phpgw_info['flags']['use_send_2822'] == False)
 	{
-		//header('Location: '.$phpgw->link('index.php','cd=13&folder='.urlencode($return)));
-		$return = ereg_replace ("^\r\n", '', $return);
-		header('Location: '.$phpgw->link('/email/index.php','folder='.urlencode($return)));
+
+		if ($to)
+		{
+			$to = $phpgw->msg->addy_array_to_str($to, False);
+		}
+		if ($cc)
+		{
+			$cc = $phpgw->msg->addy_array_to_str($cc, False);
+		}
+		if ($bcc)
+		{
+			$bcc = $phpgw->msg->addy_array_to_str($bcc, False);
+		}
+	
+		$rc = $phpgw->send->msg('email', $to, $subject, $body, '', $cc, $bcc);
+		
+		if ($rc)
+		{
+			//header('Location: '.$phpgw->link('index.php','cd=13&folder='.urlencode($return)));
+			$return = ereg_replace ("^\r\n", '', $return);
+			header('Location: '.$phpgw->link('/email/index.php','folder='.urlencode($return)));
+		}
+		else
+		{
+			echo 'Your message could <B>not</B> be sent!<BR>'."\n"
+			. 'The mail server returned:<BR>'
+				. "err_code: '".$phpgw->send_2822->err['code']."';<BR>"
+				. "err_msg: '".htmlspecialchars($phpgw->send_2822->err['msg'])."';<BR>\n"
+				. "err_desc: '".$phpgw->err['desc']."'.<P>\n"
+				. 'To go back to the msg list, click <a href="'.$phpgw->link('/email/index.php','cd=13&folder='.urlencode($return)).'">here</a>';
+		}
 	}
 	else
 	{
-		echo 'Your message could <B>not</B> be sent!<BR>'."\n"
-    		. 'The mail server returned:<BR>'
-			. "err_code: '".$phpgw->send_2822->err['code']."';<BR>"
-			. "err_msg: '".htmlspecialchars($phpgw->send_2822->err['msg'])."';<BR>\n"
-			. "err_desc: '".$phpgw->err['desc']."'.<P>\n"
-			. 'To go back to the msg list, click <a href="'.$phpgw->link('/email/index.php','cd=13&folder='.urlencode($return)).'">here</a>';
+		// USE CLASS SEND_2822
+		$phpgw->send_2822 = CreateObject("email.send_2822");
+		$rc = $phpgw->send_2822->msg('email', $to, $subject, $body, '', $cc, $bcc);
 	}
+
 	$phpgw->common->phpgw_footer();
 ?>
