@@ -25,8 +25,11 @@ width="80%">
           </td>
         </tr>
         <!-- BEGIN CatBlock --> 
-        <tr> 
-          <td bgcolor="#{TD_BG}" width="4%"><img src="{IMG_URL_PREFIX}category.gif" width="18" height="18"></td>
+          <tr bgcolor="#999999"> 
+          <td colspan="3" height="20">&nbsp;</td>
+        </tr>
+		<tr> 
+          <td bgcolor="#{TD_BG}" width="4%"><img src="{IMG_URL_PREFIX}category.gif" width="18" height="18" alt="{LANG_CATEGORY}"></td>
           <td bgcolor="#{TD_BG}" width="69%">{CAT_NAME}</td>
           <td rowspan="2" bgcolor="#{TD_BG}" width="27%"> 
             <div align="center"><a href="{EDIT_LINK}"><font size="2">{LANG_EDIT}</font></a><font size="2">| 
@@ -37,12 +40,10 @@ width="80%">
           <td bgcolor="#{TD_BG}" width="4%">&nbsp;</td>
           <td bgcolor="#{TD_BG}" width="69%"><font size="2">{CAT_DESC}</font></td>
         </tr>
-        <tr bgcolor="#999999"> 
-          <td colspan="3" height="20">&nbsp;</td>
-        </tr>
+      
         <!-- BEGIN ForumBlock --> 
         <tr> 
-          <td bgcolor="#{TD_BG}" width="4%"><img src="{IMG_URL_PREFIX}forum.gif" width="16" height="16"></td>
+          <td bgcolor="#{TD_BG}" width="4%"><img src="{IMG_URL_PREFIX}forum.gif" width="16" height="16" alt="{LANG_SUBCAT}"></td>
           <td bgcolor="#{TD_BG}" width="69%">{SUBCAT_NAME} </td>
           <td bgcolor="#{TD_BG}" width="27%" rowspan="2"> 
             <div align="center"><font size=2><a href="{SUBEDIT_LINK}">{LANG_EDIT}</a> 
@@ -57,8 +58,8 @@ width="80%">
         </tr>
         <!-- END ForumBlock --> 
 <!-- END CatBlock --> 
-        <tr> 
-          <td colspan=3 bgcolor="#{TD_BG}">&nbsp; </td>
+          <tr bgcolor="#999999"> 
+          <td colspan="3" height="20">&nbsp;</td>
         </tr>
       </table>
     </td>
