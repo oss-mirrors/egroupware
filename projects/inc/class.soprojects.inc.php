@@ -96,11 +96,11 @@
 			{
 				if ($this->isprojectadmin('pad') || $this->isbookkeeper('pbo'))
 				{
-					$filtermethod = " access != 'private'";
+					$filtermethod = " ( access != 'private' OR coordinator ='" . $this->account . "' )";
 				}
 				else
 				{
-					$filtermethod = " ( coordinator=" . $this->account;
+					$filtermethod = " ( coordinator='" . $this->account . "'";
 					if (is_array($this->grants))
 					{
 						$grants = $this->grants;
@@ -146,9 +146,6 @@
 
 			$sql = "SELECT * from phpgw_p_projects WHERE $filtermethod $statussort $querymethod";
 
-			$this->db2->query($sql,__LINE__,__FILE__);
-			$this->total_records = $this->db2->num_rows();
-
 			if ($limit)
 			{
 				$this->db->limit_query($sql . $ordermethod,$start,__LINE__,__FILE__);
@@ -157,6 +154,8 @@
 			{
 				$this->db->query($sql . $ordermethod,__LINE__,__FILE__);
 			}
+
+			$this->total_records = $this->db->num_rows();
 
 			$i = 0;
 			while ($this->db->next_record())
