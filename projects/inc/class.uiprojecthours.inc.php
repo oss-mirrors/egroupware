@@ -901,6 +901,7 @@
 			if ($_POST['save'])
 			{
 				$values['pro_main']		= $pro_main;
+				$values['project_id'] 		= $this->project_id;
 				$values['hours_id']		= $hours_id;
 				$error = $this->bohours->check_values($values);
 				if (is_array($error))
