@@ -13,7 +13,7 @@
 
 	$setup_info['email']['name']      = 'email';
 	$setup_info['email']['title']     = 'Email';
-	$setup_info['email']['version']   = '0.9.11';
+	$setup_info['email']['version']   = '0.9.13.002';
 	$setup_info['email']['app_order'] = '2';
 	$setup_info['email']['enable']    = 1;
 	$setup_info['email']['tables']    = '';
