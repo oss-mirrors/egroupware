@@ -108,18 +108,10 @@ if (!isset($groupby)) {
 }
 $last_groupby = $groupby;
 
-  $public_sql = " or bookmarks.public_f='Y' ";
+  //$public_sql = " or bookmarks.public_f='Y' ";
 
 
-$query = sprintf("select bookmarks_category.name as category_name, 
-                  bookmarks_subcategory.name as subcategory_name, bookmarks.id, bookmarks.url,
-                  bookmarks.name as bookmark_name, bookmarks.ldesc 
-                  from bookmarks, bookmarks_category, bookmarks_subcategory 
-                  where bookmarks.category_id = bookmarks_category.id and 
-                  bookmarks_category.username=bookmarks.username 
-                  and bookmarks.subcategory_id = bookmarks_subcategory.id 
-                  and bookmarks_subcategory.username=bookmarks.username 
-                  and (bookmarks.username = '%s' %s)", $phpgw_info["user"]["account_id"], $public_sql);
+$query = sprintf("select * from phpgw_bookmarks where bm_owner= '%s' %s", $phpgw_info['user']['account_id'], $public_sql);
 
 # if saved search loaded then use it first
 if (isset($saved_search)) {
@@ -132,7 +124,7 @@ if (isset($saved_search)) {
 }
 
 if ($groupby) {
-  $query .= " order by category_name, subcategory_name, bookmark_name";
+//  $query .= " order by category_name, subcategory_name, bookmark_name";
   $groupby_default = "checked";
 } else {
   $query .= " order by bookmarks.name, bookmarks.url";
@@ -201,7 +193,7 @@ if ($phpgw->db->Errno == 0) {
 
   load_ddlb("bookmarks_search", $default_search, &$search_select, TRUE);
   $phpgw->template->set_var(array(SEARCH_SELECT => $search_select,
-                                  FORM_ACTION   => $phpgw->link()
+                                  FORM_ACTION   => $phpgw->link('/bookmarks/tree.php')
                            ));
 
   $phpgw->template->set_var(array(FILTER_MSG       => $filter_msg,
@@ -211,8 +203,6 @@ if ($phpgw->db->Errno == 0) {
                                   IMAGE_EXT        => $bookmarker->image_ext
                            ));
 
-
-  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
 
   // standard error message, and message handler.
 /*  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/messages.inc.php");

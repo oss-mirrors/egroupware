@@ -13,41 +13,24 @@
 
 	/* $Id$ */
 
-	function app_header(&$tpl)
+	$phpgw_info['flags'] = array(
+		'currentapp' => 'bookmarks',
+		'noheader'   => True,
+		'nofooter'   => True,
+		'nonavbar'   => True
+	);
+	include('../header.inc.php');
+
+	$bookmarks = new bmark;
+
+	if ($delete_x || $delete_y)
 	{
-		global $phpgw, $PHP_SELF;
-
-		$tabs[1]['label'] = 'Tree view';
-		$tabs[1]['link']  = $phpgw->link('/bookmarks/tree.php');
-		if (ereg('tree.php',$PHP_SELF))
+		while (list(,$id) = each($item_cb))
 		{
-			$selected = 1;
+			$bookmarks->delete($id);
 		}
-
-		$tabs[2]['label'] = 'List';
-		$tabs[2]['link']  = $phpgw->link('/bookmarks/list.php');
-		if (ereg('list.php',$PHP_SELF))
-		{
-			$selected = 2;
-		}
-
-		if (! $phpgw->acl->check('anonymous',1,'bookmarks'))
-		{
-			$tabs[3]['label'] = 'New';
-			$tabs[3]['link']  = $phpgw->link('/bookmarks/create.php');
-			if (ereg('create.php',$PHP_SELF))
-			{
-				$selected = 3;
-			}
-		}
-
-		$tabs[4]['label'] = 'Search';
-		$tabs[4]['link']  = $phpgw->link('/bookmarks/search.php');
-		if (ereg('search.php',$PHP_SELF))
-		{
-			$selected = 4;
-		}
-   
-		$tpl->set_var('app_navbar',$phpgw->common->create_tabs($tabs,$selected));
-		set_standard('',&$tpl);
+		$phpgw->common->appsession('message','bookmarks',count($item_cb) . 'bookmarks have been deleted');
 	}
+
+	Header('Location: ' . $phpgw->link('/bookmarks/list.php'));
+?>

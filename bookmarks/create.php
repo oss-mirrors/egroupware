@@ -106,6 +106,8 @@
                                          . '</select>');
 
 	$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
+	$phpgw->template->set_var('th_text',$phpgw_info['theme']['th_text']);
+	$phpgw->template->set_var('public_id',$phpgw->accounts->name2id($phpgw_info['user']['account_lid'] . '_'));
 
 	$phpgw->template->set_var('form_action',$phpgw->link('/bookmarks/create.php','create=True'));
 	$phpgw->template->set_var('lang_url',lang('URL'));
@@ -128,9 +130,9 @@
 
 	$phpgw->template->set_var('delete_link','');
 	$phpgw->template->set_var('cancel_link','');
-	$phpgw->template->set_var('form_link','<input type="image" name="bk_create" title="'
+	$phpgw->template->set_var('form_link','<input type="image" name="bk_create" alt="'
                                       . lang('Create bookmark') . '" src="' . $phpgw_info['server']['app_images']
-                                      . '/save.gif" border="0" width="24" height="24">');
+                                      . '/save.gif" border="0">');
 
 	$phpgw->common->phpgw_footer();
 ?>

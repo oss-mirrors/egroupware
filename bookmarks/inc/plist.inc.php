@@ -61,6 +61,8 @@
                               item_keyw      => "common.list.item_keyw.tpl"
                        ));
 
+		$list_tpl->set_var('list_mass_select_form',$phpgw->link('/bookmarks/mass_maintain.php'));
+		$list_tpl->set_var('lang_massupdate',lang('Mass update'));
 
    // db callout to set big temporary tables option
    // $bk_db_callout->set_big_temp_tables ($bk_c);
@@ -116,13 +118,15 @@
       // Check owner
       if ($phpgw->db->f("bm_owner") == $phpgw_info["user"]["account_id"]) {
          $maintain_url  = $phpgw->link("/bookmarks/maintain.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
-         $maintain_link = sprintf("<a href=\"%s\"><img src=\"%s%s.%s\" width=24 height=24 align=top border=0 alt=\"Edit this Bookmark\"></a>", $maintain_url, $bookmarker->image_url_prefix, "edit", $bookmarker->image_ext);
+         $maintain_link = sprintf("<a href=\"%s\"><img src=\"%s%s.%s\" align=top border=0 alt=\"Edit this Bookmark\"></a>", $maintain_url, $bookmarker->image_url_prefix, "edit", $bookmarker->image_ext);
 
          $view_url  = $phpgw->link("/bookmarks/view.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
-         $view_link     = sprintf("<a href=\"%s\"><img src=\"" . $phpgw_info["server"]["app_images"] . "/document.gif\" width=17 height=16 align=top border=0 alt=\"" . lang("View this Bookmark") . "\"></a>", $view_url);
+         $view_link     = sprintf("<a href=\"%s\"><img src=\"" . $phpgw_info["server"]["app_images"] . "/document.gif\" align=top border=0 alt=\"" . lang("View this Bookmark") . "\"></a>", $view_url);
       } else {
          $maintain_link = sprintf("<!-- owned by: %s -->&nbsp;", $phpgw->db->f("bm_owner"));
       }
+
+		$list_tpl->set_var('checkbox','<input type="checkbox" name="item_cb[]" value="' . $phpgw->db->f('bm_id') . '">');
       if ($phpgw->acl->check("anonymous",1,"bookmarks")) {
          $list_tpl->set_var("MAIL_THIS_LINK_URL",$phpgw->link("/bookmarks/maillink.php","bm_id=".$phpgw->db->f("bm_id")));
       } else {

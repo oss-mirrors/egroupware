@@ -48,7 +48,14 @@
 	{
 		$bk_print_msg = $msg;
 	}
-  
+
+/*	$session_message = unserialize($phpgw->common->appsession('message','bookmarks'));
+	if ($session_message)
+	{
+		$bk_print_msg = $session_message;
+	} */
+
+
 	// print any other info msgs that haven't
 	// been printed yet - like from another page
 	if ($sess_msg)

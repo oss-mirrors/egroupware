@@ -67,11 +67,11 @@
        TITLE            => $title,
        START_URL        => $phpgw->link("index.php"),
        TREE_URL         => $phpgw->link("tree.php"),
-       LIST_URL         => $phpgw->link("list.php"),
-       CREATE_URL       => $phpgw->link("create.php"),
+//       LIST_URL         => $phpgw->link("list.php"),
+//       CREATE_URL       => $phpgw->link("create.php"),
        MAINTAIN_URL     => $phpgw->link("maintain.php"),
        MAILLINK_URL     => $phpgw->link("maillink.php"),
-       SEARCH_URL       => $phpgw->link("search.php"),
+//       SEARCH_URL       => $phpgw->link("search.php"),
        FAQ_URL          => $phpgw->link("faq.php"),
        CATEGORY_URL     => $phpgw->link("codes.php","codetable=bookmarks_category"),
        SUBCATEGORY_URL  => $phpgw->link("codes.php","codetable=bookmarks_subcategory"),
@@ -88,6 +88,10 @@
        NAME_HTML        => $name_html,
        SERVER_NAME      => $SERVER_NAME
      ));
+     $p_tpl->set_var('img_root',$bookmarker->image_url_prefix);
+     $p_tpl->set_var('search_link',$phpgw->link('/bookmarks/search.php'));
+     $p_tpl->set_var('create_link',$phpgw->link('/bookmarks/create.php'));
+     $p_tpl->set_var('list_link',$phpgw->link('/bookmarks/list.php'));
   }
 
   // function to load a drop down list box from one
@@ -167,9 +171,15 @@
            return False;
         }
 
-        if ($access != "private" && $access != "public") {
-           $access = $phpgw->accounts->array_to_string($access,$groups);
-        }
+				if (ereg('^[0-9]+',$access))
+				{
+					$groups[] = $access;
+					$access   = 'group';
+				}
+				if ($access != "private" && $access != "public")
+				{
+					$access = $phpgw->common->array_to_string($access,$groups);
+				}
 
         // Insert the bookmark
         $query = sprintf("insert into phpgw_bookmarks (bm_url, bm_name, bm_desc, bm_keywords, bm_category,"
@@ -233,7 +243,7 @@
        $db = $phpgw->db;
        
        // Delete that bookmark.
-       $query = sprintf("delete from bookmarks where id='%s' and username='%s'", $id, $phpgw_info["user"]["account_id"]);
+       $query = sprintf("delete from phpgw_bookmarks where bm_id='%s' and bm_owner='%s'", $id, $phpgw_info["user"]["account_id"]);
        $db->query($query,__LINE__,__FILE__);
        if ($db->Errno != 0) {
           return False;
