@@ -265,7 +265,7 @@
 				$error_msg .= "<br>URL is required.";
 			}
 
-			if ($name)
+			if (! $name)
 			{
 				$error_msg .= "<br>Name is required.";
 			}

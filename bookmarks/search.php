@@ -1,67 +1,80 @@
 <?php 
-  /**************************************************************************\
-  * phpGroupWare - Bookmarks                                                 *
-  * http://www.phpgroupware.org                                              *
-  * Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
-  *                     http://www.renaghan.com/bookmarker                   *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare - Bookmarks                                                 *
+	* http://www.phpgroupware.org                                              *
+	* Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
+	*                     http://www.renaghan.com/bookmarker                   *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 
-  $phpgw_info["flags"]["currentapp"] = "bookmarks";
-  $phpgw_info["flags"]["enable_nextmatchs_class"] = True;
-  $phpgw_info["flags"]["enable_categories_class"] = True;
-  include("../header.inc.php");
+	$phpgw_info['flags'] = array(
+		'currentapp'              => 'bookmarks',
+		'enable_nextmatchs_class' => True,
+		'enable_categories_class' => True
+	);
+	include('../header.inc.php');
 
-  $phpgw->template->set_file(array("common"  => "common.tpl",
-                                   "body"    => "search.body.tpl",
-                                   "results" => "search.results.tpl"
-                            ));
+	$phpgw->template->set_file(array(
+		'common'  => 'common.tpl',
+		'body'    => 'search.body.tpl',
+		'results' => 'search.results.tpl'
+	));
 
-  app_header(&$phpgw->template);
+	app_header(&$phpgw->template);
 
-  // the following fields are selectable
-  $field = array("phpgw_bookmarks.bm_name"        => "Name",
-                 "phpgw_bookmarks.bm_keywords"    => "Keywords",
-                 "phpgw_bookmarks.bm_url"         => "URL",
-                 "phpgw_bookmarks.bm_desc"        => "Description"
-//               "phpgw_bookmarks.bm_category"    => "Category",
-//               "phpgw_bookmarks.bm_subcategory" => "Sub Category",
-                );
+	// the following fields are selectable
+	$field = array(
+		'phpgw_bookmarks.bm_name'        => 'Name',
+		'phpgw_bookmarks.bm_keywords'    => 'Keywords',
+		'phpgw_bookmarks.bm_url'         => 'URL',
+		'phpgw_bookmarks.bm_desc'        => 'Description'
+//		'phpgw_bookmarks.bm_category'    => 'Category',
+//		'phpgw_bookmarks.bm_subcategory' => 'Sub Category',
+	);
 
-  // PHPLIB's sqlquery class loads this string when
-  // no query has been specified.
-  $noquery = "1=0";
+	// PHPLIB's sqlquery class loads this string when
+	// no query has been specified.
+	$noquery = "1=0";
 
-  // if we don't have a query object for this session yet,
-  // then create one and save as a session variable.
+	// if we don't have a query object for this session yet,
+	// then create one and save as a session variable.
 
-  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/sqlquery.inc.php");
-  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/plist.inc.php");
+	include(PHPGW_SERVER_ROOT . '/bookmarks/inc/sqlquery.inc.php');
+	include(PHPGW_SERVER_ROOT . '/bookmarks/inc/plist.inc.php');
 
-  class bk_Sql_Query extends Sql_Query
-  {
-    var $classname = "bk_Sql_Query";
-    var $persistent_slots = array("conditions","input_size","input_max","method","lang","translate",
-                                  "container","variable","query"
-                                 );
-    var $query = "1=0";       // last WHERE clause used
-    var $conditions = 1;      // Allow for that many Query Conditions
-    var $input_size = 35;     // Used in text input field creation
-    var $input_max  = 80;
+	class bk_Sql_Query extends Sql_Query
+	{
+		var $classname = 'bk_Sql_Query';
+		var $persistent_slots = array(
+				'conditions',
+				'input_size',
+				'input_max',
+				'method',
+				'lang',
+				'translate',
+				'container',
+				'variable',
+				'query'
+		);
+
+		var $query = '1=0';       // last WHERE clause used
+		var $conditions = 1;      // Allow for that many Query Conditions
+		var $input_size = 35;     // Used in text input field creation
+		var $input_max  = 80;
   
-    var $method     = "post"; // Generate get or post form...
-    var $lang       = "en";   // HTML Widget language
+		var $method     = 'post'; // Generate get or post form...
+		var $lang       = 'en';   // HTML Widget language
   
-    var $translate = "on";    // If set, translate column names
-    var $container = "";      // If set, create a container table
-    var $variable  = "on";    // if set, create variable size buttons
-  }
+		var $translate = 'on';    // If set, translate column names
+		var $container = '';      // If set, create a container table
+		var $variable  = 'on';    // if set, create variable size buttons
+	}
 
 
 //  if (!isset($q)) {
@@ -75,7 +88,7 @@
 //  }
 
   ## Check if there was a submission
-  while (is_array($HTTP_POST_VARS) && list($key, $val) = each($HTTP_POST_VARS)) {
+/*  while (is_array($HTTP_POST_VARS) && list($key, $val) = each($HTTP_POST_VARS)) {
   switch ($key) {
 
   ## Load a Saved Search
@@ -105,12 +118,12 @@
     ## Change Saved Search
     case "bks_save":
     ## Do we have permission to do so?
-/*
+
     if (! $perm->have_perm("editor")) {
        $error_msg .= "<br>You do not have permission to change Saved Searches.";
        break;
     }
-*/
+
 
     ## Do we have all necessary data?
     if ($search > 0 ) {
@@ -159,10 +172,10 @@
   case "bks_create":
 
     ## Do we have permission to do so?
-/*    if (!$perm->have_perm("editor")) {
+    if (!$perm->have_perm("editor")) {
       $error_msg .= "<br>You do not have permission to create Saved Searches.";
       break;
-    } */
+    }
 
     ## Trim form fields
     $name = trim($name);
@@ -206,7 +219,7 @@
   default:
   break;
  }
-}
+} */
 
 # build the where clause based on user entered fields
 if (isset($x)) {
@@ -224,14 +237,14 @@ if (isset($x)) {
 
 # load the list of previously saved searches
 # and prepare the save search form
-load_ddlb("bookmarks_search", $search, &$search_select, FALSE);
+//load_ddlb("bookmarks_search", $search, &$search_select, FALSE);
 $phpgw->template->set_var(array(
   SEARCH_SELECT => $search_select,
-  FORM_ACTION   => $phpgw->link("search.php")
+  FORM_ACTION   => $phpgw->link('/bookmarks/search.php')
 ));
 
 # build the search form
-$phpgw->template->set_var(QUERY_FORM, $q->form("x", $field, "qry", $phpgw->link("search.php")));
+$phpgw->template->set_var(QUERY_FORM, $q->form("x", $field, "qry", $phpgw->link('/bookmarks/search.php')));
 
 if ($q->query == $noquery) {
 } else {
@@ -245,7 +258,7 @@ if ($q->query == $noquery) {
 
   print_list ($q->query, $start, "search.php", &$bookmark_list, &$error_msg);
   
-  $tree_search_url = $phpgw->link("tree.php","where=" . base64_encode($q->query));
+  $tree_search_url = $phpgw->link('/bookmarks/tree.php',"where=" . base64_encode($q->query));
   $phpgw->template->set_var(array(
     QUERY_CONDITION => htmlspecialchars($q->query),
     BOOKMARK_LIST   => $bookmark_list,
