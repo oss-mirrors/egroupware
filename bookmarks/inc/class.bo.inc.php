@@ -26,6 +26,8 @@
 		//following two are used by the export function
 		var $type;
 		var $expanded;
+		var $error_msg;
+		var $msg;
 
 		function bo()
 		{
@@ -36,7 +38,7 @@
 			$GLOBALS['phpgw']->config     = createobject('phpgwapi.config');
 			$GLOBALS['phpgw']->config->read_repository();
 			$this->config      = $GLOBALS['phpgw']->config->config_data;
-			$this->url_format_check = 2;
+			$this->url_format_check = True;
 			$this->validate = createobject('phpgwapi.validator');
 		}
 
@@ -158,10 +160,19 @@
 
 		function add($values)
 		{
-
 			if ($this->validate($values))
 			{
-				return $this->so->add($values);
+				if ($this->so->exists($values['url']))
+				{
+					$this->error_msg .= sprintf('<br>URL <B>%s</B> already exists!', $values['url']);
+					return False;
+				}
+				$bm_id = $this->so->add($values);
+				if ($bm_id)
+				{
+					$this->msg .= lang('Bookmark created successfully.');
+					return $bm_id;
+				}
 			}
 			else
 			{
@@ -173,7 +184,11 @@
 		{
 			if ($this->validate($values) && $this->check_perms($id,PHPGW_ACL_EDIT))
 			{
-				return $this->so->update($id,$values);
+				if ($this->so->update($id,$values))
+				{
+					$this->msg .= lang('Bookmark changed sucessfully');
+					return True;
+				}
 			}
 			else
 			{
@@ -185,11 +200,16 @@
 		{
 			$this->so->updatetimestamp($id,$timestamp);
 		}
+
 		function delete($id)
 		{
 			if ($this->check_perms($id,PHPGW_ACL_DELETE))
 			{
-				return $this->so->delete($id);
+				if ($this->so->delete($id))
+				{
+					$this->msg .= "Bookmark deleted sucessfully.";
+					return True;
+				}
 			}
 			else
 			{
@@ -197,58 +217,38 @@
 			}
 		}
 
-		function validate ($values)
+		function validate($values)
 		{
-			global $error_msg, $msg;
-
-			$error_msg = '';
-			// Do we have all necessary data?
-			if (! $values['url'] || $values['url'] == 'http://')
-			{
-				$error_msg .= '<br>URL is required.';
-			}
-
+			$result = True;
 			if (! $values['name'])
 			{
-				$error_msg .= '<br>' . lang('Name is required');
-			}   
+				$this->error_msg .= '<br>' . lang('Name is required');
+				$result = False;
+			}
 
+			if (! $values['category'])
+			{
+				$this->error_msg .= '<br>' . lang('You must select a category');
+				$result = False;
+			}
+
+			if (! $values['url'] || $values['url'] == 'http://')
+			{
+				$this->error_msg .= '<br>' . lang('URL is required.');
+				$result = False;
+			}
 			// does the admin want us to check URL format
-			if ($this->url_format_check > 0)
+			elseif ($this->url_format_check)
 			{
-				// Is the URL format valid
-				if ($values['url'] == 'http://')
+				if (! $this->validate->is_url($values['url']))
 				{
-					$error_msg .= '<br>You must enter a URL';
+					$this->error_msg = '<br>URL invalid. Format must be <strong>http://</strong> or 
+                            <strong>ftp://</strong> followed by a valid hostname and 
+                            URL!<br><small>' .  $this->validate->ERROR . '</small>';
+					$result = False;
 				}
-				else
-				{
-					if (! $this->validate->is_url($values['url']))
-					{
-						$format_msg = '<br>URL invalid. Format must be <strong>http://</strong> or 
-	                            <strong>ftp://</strong> followed by a valid hostname and 
-	                            URL!<br><small>' .  $this->validate->ERROR . '</small>';
-	  
-						// does the admin want this formatted as a warning or an error?
-						if ($this->url_format_check == 2)
-						{
-							$error_msg .= $format_msg;
-						}
-						else
-						{
-							$msg .= $format_msg;
-						}
-					}
-				}
-			} 
-			if ($error_msg)
-			{
-				return False;
 			}
-			else
-			{
-				return True;
-			}
+			return $result;
 		}
 
 		function save_session_data($data)
@@ -300,8 +300,6 @@
 
 		function import($bkfile,$parent)
 		{
-			global $error_msg,$msg;
-
 			$this->_debug('<p><b>DEBUG OUTPUT:</b>');
 			$this->_debug('<br>file_name: ' . $bkfile['name']);
 			$this->_debug('<br>file_size: ' . $bkfile['size']);
@@ -313,7 +311,7 @@
 			//			if ($bkfile['error'])
 			if (!$bkfile['name'])
 			{
-				$error_msg .= '<br>'.lang('Netscape bookmark filename is required!');
+				$this->error_msg .= '<br>'.lang('Netscape bookmark filename is required!');
 			}
 			else
 			{
@@ -360,10 +358,6 @@
 								{
 									$inserts++;
 								}
-								else
-								{
-									$all_errors .= $error_msg;
-								}
 
 								$this->_debug(sprintf("<tr><td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>",$cid,$scid,$match[2],$match[1],$add_info[1],$change_info[1],$vist_info[1]));
 							}
@@ -388,12 +382,11 @@
 					}
 					@fclose($fd);
 					$this->_debug('</table>');
-					$msg = '<br>'.lang("%1 bookmarks imported from %2 successfully.", $inserts, $bkfile['name']);
-					$error_msg = $all_errors;
+					$this->msg = '<br>'.lang("%1 bookmarks imported from %2 successfully.", $inserts, $bkfile['name']);
 				}
 				else
 				{
-					$error_msg .= '<br>'.lang('Unable to open temp file %1 for import.',$bkfile['name']);
+					$this->error_msg .= '<br>'.lang('Unable to open temp file %1 for import.',$bkfile['name']);
 				}
 			}
 		}

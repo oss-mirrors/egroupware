@@ -108,15 +108,13 @@ define('SEARCH',4);
 
 		function app_messages()
 		{
-			global $error_msg,$msg;
-
-			if ($error_msg)
+			if ($this->bo->error_msg)
 			{
-				$bk_output_html = '<center>' . lang('Error') . ': ' . $error_msg . '</center>';
+				$bk_output_html = '<center style="color:red">' . lang('Error') . ': ' . $this->bo->error_msg . '</center>';
 			}
-			if ($msg)
+			if ($this->bo->msg)
 			{
-				$bk_output_html .= '<center>' . $msg . '</center>';
+				$bk_output_html .= '<center>' . $this->bo->msg . '</center>';
 			}
 
 			if ($bk_output_html)
@@ -165,7 +163,13 @@ define('SEARCH',4);
 			if ($GLOBALS['HTTP_POST_VARS']['save_x'] || $GLOBALS['HTTP_POST_VARS']['save_y'])
 			{
 				$bookmark = $GLOBALS['HTTP_POST_VARS']['bookmark'];
-				$this->bo->add($bookmark);
+				$bm_id = $this->bo->add($bookmark);
+				if ($bm_id)
+				{
+					$this->location_info['bm_id'] = $bm_id;
+					$this->view();
+					return;
+				}
 			}
 			//if we come back from editing categories we restore form values
 			elseif ($this->location_info['returnto2'] == 'create')
@@ -274,17 +278,22 @@ define('SEARCH',4);
 				$this->bo->grab_form_values($this->location_info['returnto'],'edit',$GLOBALS['HTTP_POST_VARS']['bookmark']);
 				$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&global_cats=True'));
 			}
-			//save bookmark and return to view we came from
+			//save bookmark and go to view interface
 			if ($GLOBALS['HTTP_POST_VARS']['save_x'] || $GLOBALS['HTTP_POST_VARS']['save_y'])
 			{
 				$bookmark = $GLOBALS['HTTP_POST_VARS']['bookmark'];
-				$this->bo->update($bm_id,$bookmark);
+				if ($this->bo->update($bm_id,$bookmark))
+				{
+					$this->location_info['bm_id'] = $bm_id;
+					$this->view();
+					return;
+				}
 			}
 			$bookmark = $this->bo->read($bm_id);
 
 			if (!$bookmark[PHPGW_ACL_EDIT])
 			{
-				$GLOBALS['error_msg'] = lang('Bookmark not editable');
+				$this->bo->error_msg = lang('Bookmark not editable');
 				unset($this->location_info['returnto2']);
 				$this->init();
 				return;
@@ -740,8 +749,7 @@ define('SEARCH',4);
 				'common_' => 'common.tpl',
 			));
 			$this->t->set_var(Array(
-				'th_bg' => $GLOBALS['phpgw_info']['theme']['th_bg'],
-				'messages' => lang('Tree view')
+				'th_bg' => $GLOBALS['phpgw_info']['theme']['th_bg']
 			));
 
 			$categories = $this->bo->categories->return_array('mains',0,False,'','cat_name','',True);
@@ -905,7 +913,7 @@ function toggle(image, catid)
 
 			if (!$bookmark[PHPGW_ACL_READ])
 			{
-				$GLOBALS['error_msg'] = lang('Bookmark not readable');
+				$this->bo->error_msg = lang('Bookmark not readable');
 				unset($this->location_info['returnto2']);
 				$this->init();
 				return;
@@ -976,7 +984,6 @@ function toggle(image, catid)
 
 		function mail()
 		{
-			global $error_msg, $msg;
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 			$this->app_header();
@@ -1000,7 +1007,7 @@ function toggle(image, catid)
 				// Do we have all necessary data?
 				if (empty($to) || empty($subject) || empty($message))
 				{
-					$error_msg .= '<br>'.lang('Please fill out <B>To E-Mail Address</B>, <B>Subject</B>, and <B>Message</B>!');
+					$this->bo->error_msg .= '<br>'.lang('Please fill out <B>To E-Mail Address</B>, <B>Subject</B>, and <B>Message</B>!');
 				}
 				else
 				{
@@ -1013,14 +1020,14 @@ function toggle(image, catid)
 						// Is email address in the proper format?
 						if (!$validate->is_email($val))
 						{
-							$error_msg .= '<br>' .
+							$this->bo->error_msg .= '<br>' .
 								lang('To address %1 invalid. Format must be <strong>user@domain</strong> and domain must exist!',$val).
 								'<br><small>'.$validate->ERROR.'</small>';
 							break;
 						}
 					}
 				}
-				if (!isset ($error_msg))
+				if (!isset ($this->bo->error_msg))
 				{
 					$send     = createobject('phpgwapi.send');
 					// add additional headers to our email
@@ -1036,7 +1043,7 @@ function toggle(image, catid)
 					}
 					// send the message
 					$send->msg('email',$to,$subject,$message ."\n". $this->bo->config['mail_footer'],'','','',$reply_to);
-					$msg .= '<br>'.lang('mail-this-link message sent to %1.',$to);
+					$this->bo->msg .= '<br>'.lang('mail-this-link message sent to %1.',$to);
 				}
 			}
 
@@ -1095,7 +1102,6 @@ function toggle(image, catid)
 
 		function mass()
 		{
-			global $msg;
 			$item_cb = $GLOBALS['HTTP_POST_VARS']['item_cb'];
 			if ($GLOBALS['HTTP_POST_VARS']['delete_x'] || $GLOBALS['HTTP_POST_VARS']['delete_y'])
 			{
@@ -1109,7 +1115,7 @@ function toggle(image, catid)
 							$i++;
 						}
 					}
-					$msg = lang('%1 bookmarks have been deleted',$i);
+					$this->bo->msg = lang('%1 bookmarks have been deleted',$i);
 				}
 
 				$this->_list();

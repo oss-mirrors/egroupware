@@ -100,23 +100,17 @@
 			}
 		}
 
-		function add($values)
+		function exists($url)
 		{
-			global $error_msg, $msg;
-
-			unset($error_msg);
-
-			// Does the bookmark already exist?
-			$query = sprintf("select count(*) from phpgw_bookmarks where bm_url='%s' and bm_owner='%s'",$values['url'], $GLOBALS['phpgw_info']['user']['account_id']);
+			$query = sprintf("select count(*) from phpgw_bookmarks where bm_url='%s' and bm_owner='%s'",$url, $GLOBALS['phpgw_info']['user']['account_id']);
 			$this->db->query($query,__LINE__,__FILE__);
 			$this->db->next_record();
 
-			if ($this->db->f(0) != 0)
-			{
-				$error_msg .= sprintf('<br>URL <B>%s</B> already exists!', $values['url']);
-				return False;
-			}
+			return (bool)$this->db->f(0);
+		}
 
+		function add($values)
+		{
 			if (! $values['access'])
 			{
 				$values['access'] = 'public';
@@ -125,12 +119,6 @@
 			if (! $values['timestamps'])
 			{
 				$values['timestamps'] = time() . ',0,0';
-			}
-
-			if (! $values['category'])
-			{
-				$error_msg .= 'You must select a category';
-				return False;
 			}
 
 			$query = sprintf("insert into phpgw_bookmarks (bm_url, bm_name, bm_desc, bm_keywords, bm_category,"
@@ -142,8 +130,7 @@
 
 			if ($this->db->query($query,__LINE__,__FILE__))
 			{
-				$msg .= 'Bookmark created successfully.';
-				return true;
+				return $this->db->get_last_insert_id('phpgw_bookmarks','bm_id');
 			}
 			else
 			{
@@ -153,8 +140,6 @@
 
 		function update($id, $values)
 		{
-			global $error_msg, $msg;
-
 			if (! $values['access'])
 			{
 				$values['access'] = 'public';
@@ -177,7 +162,7 @@
 
 			if ($this->db->query($query,__LINE__,__FILE__))
 			{
-				$msg .= lang('Bookmark changed sucessfully');
+				
 				return true;
 			}
 			else
@@ -194,15 +179,12 @@
 
 		function delete($id)
 		{
-			global $error_msg, $msg;
-
 			$query = "delete from phpgw_bookmarks where bm_id=$id";
 			$this->db->query($query,__LINE__,__FILE__);
 			if ($this->db->Errno != 0)
 			{
 				return False;
 			}
-			$msg .= "Bookmark deleted sucessfully.";
 			return true;
 		}
 	}
