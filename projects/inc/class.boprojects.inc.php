@@ -259,9 +259,9 @@
 			return $activities_list;
 		}
 
-		function select_pro_activities($project_id, $billable)
+		function select_pro_activities($project_id, $pro_parent, $billable)
 		{
-			$activities_list = $this->soprojects->select_pro_activities($project_id, $billable);
+			$activities_list = $this->soprojects->select_pro_activities($project_id, $pro_parent, $billable);
 			return $activities_list;
 		}
 
@@ -294,9 +294,9 @@
 						$error[] = lang('That ID has been used already !');
 					}
 
-					if (strlen($values['number']) > 19)
+					if (strlen($values['number']) > 25)
 					{
-						$error[] = lang('ID can not exceed 19 characters in length !');
+						$error[] = lang('ID can not exceed 25 characters in length !');
 					}
 				}
 			}
@@ -432,7 +432,7 @@
 			}
 			else
 			{
-				$this->soprojects->add_project($action, $values, $book_activities, $bill_activities);
+				$this->soprojects->add_project($values, $book_activities, $bill_activities);
 			}
 		}
 

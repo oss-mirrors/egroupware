@@ -210,7 +210,7 @@
 			return $pro_select;
 		}
 
-		function add_project($action, $values, $book_activities, $bill_activities)
+		function add_project($values, $book_activities, $bill_activities)
 		{
 			global $phpgw;
 
@@ -242,8 +242,8 @@
 
 			$this->db->unlock();
 
-			if ($action == 'mains')
-			{
+	//		if ($action == 'mains')
+	//		{
 				if ($p_id && ($p_id != 0))
 				{
 					if (count($book_activities) != 0)
@@ -265,7 +265,7 @@
 					}
 				}
 			}
-		}
+//		}
 
 		function edit_project($values, $book_activities, $bill_activities)
 		{
@@ -357,7 +357,7 @@
 			return $activities_list;
 		}
 
-		function select_pro_activities($project_id, $billable = False)
+		function select_pro_activities($project_id = '', $pro_parent, $billable = False)
 		{
 			global $phpgw, $phpgw_info;
 
@@ -372,11 +372,30 @@
 				$bill_filter = " AND billable='N'";
 			}
 
+			$this->db2->query("SELECT activity_id from phpgw_p_projectactivities WHERE project_id='$project_id' $bill_filter",__LINE__,__FILE__);
+			while ($this->db2->next_record())
+			{
+				$selected[] = array('activity_id' => $this->db2->f('activity_id'));
+			}
+
 			$this->db->query("SELECT a.id, a.descr, a.billperae, pa.activity_id FROM phpgw_p_activities as a, phpgw_p_projectactivities as pa"
-							. " WHERE pa.project_id='$project_id' $bill_filter AND pa.activity_id=a.id ORDER BY a.descr asc");
+							. " WHERE pa.project_id='$pro_parent' $bill_filter AND pa.activity_id=a.id ORDER BY a.descr asc");
 			while ($this->db->next_record())
 			{
-				$activities_list = '<option value="' . $this->db->f('id') . '" selected';
+				$activities_list .= '<option value="' . $this->db->f('id') . '"';
+				for ($i=0;$i<count($selected);$i++)
+				{
+					if($selected[$i]['activity_id'] == $this->db->f('id'))
+					{
+						$activities_list .= ' selected';
+					}
+				}
+
+				if (! is_array($selected))
+				{
+					$activities_list .= ' selected';
+				}
+
 				$activities_list .= '>' . $phpgw->strip_html($this->db->f('descr'));
 
 				if($billable)

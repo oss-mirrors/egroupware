@@ -25,7 +25,7 @@
 	</tr>
 	<tr>
 		<td>{lang_number}:</td>
-		<td><input type="text" name="values[number]" value="{number}" size="20" maxlength="15"></td>
+		<td><input type="text" name="values[number]" value="{number}" size="25" maxlength="20"></td>
 	</tr>
 	<tr>
 		<td>{lang_title}:</font></td>
@@ -40,7 +40,9 @@
 		<td>{cat}</td>
 	</tr>
 	<tr>
-		<td>{customer}</td>
+		<td><input type="button" value="{lang_customer}" onClick="abook();"></td>
+		<td><input type="hidden" name="abid" value="{abid}">
+		<input type="text" name="name" size="50" value="{name}" readonly>&nbsp;&nbsp;&nbsp;{lang_select}</td>
 	</tr>
 	<tr>
 		<td>{lang_coordinator}:</td>
