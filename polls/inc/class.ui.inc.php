@@ -264,7 +264,7 @@
 			if ($_POST['submit'])
 			{
 				$newid = $this->bo->add_question();
-				$newlink = $this->adminlink('edit','question',array('poll_id'=>$newid));
+				$newlink = $this->adminlink('edit','answer',array('poll_id'=>$newid));
 				$this->t->set_var("message",'<a href="'.$newlink.'">'.lang("New poll has been added.  You should now add some answers for this poll").'</a>');
 			}
 			else

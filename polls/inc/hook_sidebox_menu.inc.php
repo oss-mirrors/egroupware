@@ -24,6 +24,15 @@
 	display_sidebox can be called as much as you like
  */
 
+	$menu_title = 'Polls Menu';
+	$file = Array(
+		'Current Poll'
+			=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.index')),
+		'View Results' 
+			=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.vote','show_results'=>$GLOBALS['poll_settings']['currentpoll']))
+	);
+	display_sidebox($appname,$menu_title,$file);
+
 /*
 	$menu_title = 'Preferences';
 	$file = Array(
