@@ -69,7 +69,7 @@
 		<td>{r_host}</td>
 	</tr>
 	<tr bgcolor="{row_on}">
-		<td>{lang_app}</td>
+		<td>{lang_app}:</td>
 		<td><select name="values[r_app]"><option value="">{lang_select_app}</option>{r_app_list}</select></td>
 	</tr>
 	<tr bgcolor="{row_off}">

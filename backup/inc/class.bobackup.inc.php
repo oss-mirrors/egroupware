@@ -184,7 +184,7 @@
 
 		function save_config($conf_file, $config)
 		{
-			$file = fopen($conf_file,'w+');
+			$file = fopen($conf_file,'w');
  //			ftruncate($file,0);
 			fwrite($file,$config);
 			fclose($file);
@@ -198,6 +198,7 @@
 			$co['db_name'] = $GLOBALS['phpgw_info']['server']['db_name'];
 			$co['server_root'] = PHPGW_SERVER_ROOT;
 
+// ------------------------------------ check -----------------------------------------------
 
 			$check_exists = $co['server_root'] . '/backup/phpgw_check_for_backup';
 			if (file_exists($check_exists) == False)
@@ -208,32 +209,55 @@
 				$conf_file = $co['server_root'] . '/backup/phpgw_check_for_backup';
 				$this->save_config($conf_file,$check);
 			}
+// -------------------------------- end check -----------------------------------------------
 
-			$config = $GLOBALS['phpgw']->template->set_file(array('config' => 'backup_form.tpl'));
+// --------------------------------- backup -------------------------------------------------
 
-			if ($co['db_type'] == 'mysql')
+			$config = $GLOBALS['phpgw']->template->set_file(array('backup' => 'backup_form.tpl'));
+			$config .= $GLOBALS['phpgw']->template->set_var('server_root',$co['server_root']);
+			$config .= $GLOBALS['phpgw']->template->fp('out','backup',True);
+			$conf_file = $co['server_root'] . '/backup/phpgw_start_backup.' . $co['b_intval'];
+			$this->save_config($conf_file,$config);
+
+// -------------------------------- end backup ----------------------------------------------
+
+// --------------------------------- script --------------------------------------------------
+
+			$config = $GLOBALS['phpgw']->template->set_file(array('script_ba_t' => 'script_form.tpl'));
+			$config .= $GLOBALS['phpgw']->template->set_block('script_ba_t','script_ba','ba');
+
+			$config .= $GLOBALS['phpgw']->template->set_var('server_root',$co['server_root']);
+
+			if ($co['b_sql'] == 'yes')
 			{
-				$bsqlin = 'cd /var/lib/mysql' . "\n";
-			}					
-
-			$config .= $GLOBALS['phpgw']->template->set_var('bsqlin',$bsqlin);
-
-			$bdate = time();
-			$bdate = $bdate + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
-			$month  = $GLOBALS['phpgw']->common->show_date(time(),'n');
-			$day    = $GLOBALS['phpgw']->common->show_date(time(),'d');
-			$year   = $GLOBALS['phpgw']->common->show_date(time(),'Y');
-			$bdateout = $day . '_' . $month . '_' . $year;
-
-			if ($co['b_type'] == 'tgz')
-			{
-				$sql_comp = 'tar -czf ' . $co['server_root'] . '/backup/' . $bdateout . '_backup_' . $co['db_type'] . '.tar.gz ' . $co['db_name'];
-				$config .= $GLOBALS['phpgw']->template->set_var('sql_comp',$sql_comp);
+				if ($co['db_type'] == 'mysql')
+				{
+					$config .= $GLOBALS['phpgw']->template->set_var('bmysql','yes');
+				}
+				$config .= $GLOBALS['phpgw']->template->set_var('db_type',$co['db_type']);
+				$config .= $GLOBALS['phpgw']->template->set_var('db_name',$co['db_name']);
 			}
 
-			$config .= $GLOBALS['phpgw']->template->fp('out','config',True);
+			if ($co['b_email'] == 'yes')
+			{
+				$config .= $GLOBALS['phpgw']->template->set_var('bemail','yes');
 
-			$conf_file = $co['server_root'] . '/backup/phpgw_data_backup.' . $co['b_intval'];
+				$allaccounts = $GLOBALS['phpgw']->accounts->get_list('accounts');
+
+				while (list($null,$account) = each($allaccounts))
+				{
+					$config .= $GLOBALS['phpgw']->template->set_var(array
+					(
+						'lid'			=> stripslashes($account['account_lid']),
+						'server_root'	=> $co['server_root']
+					));
+					$GLOBALS['phpgw']->template->fp('ba','script_ba',True);
+				}
+			}
+
+			$config .= $GLOBALS['phpgw']->template->fp('out','script_ba_t',True);
+
+			$conf_file = $co['server_root'] . '/backup/inc/phpgw_data_backup.php';
 			$this->save_config($conf_file,$config);
 		}
 	}

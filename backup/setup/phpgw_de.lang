@@ -5,8 +5,7 @@ Configuration backup	backup	de	Konfiguration der Datensicherung
 Configuration localhost	backup	de	Konfiguration des lokalen Rechners
 Create backups of your data ?	backup	de	Erstellen von Datensicherungen ?
 daily	backup	de	täglich
-httpd	backup	de	HTTPD
-Interval	backup	de	Intervall
+interval	backup	de	Intervall
 Select interval	backup	de	Intervall auswählen
 Data	backup	de	Daten
 SQL	backup	de	SQL
@@ -28,7 +27,7 @@ tar.bz2	backup	de	tar.bz2
 The ftp connection failed ! Please check your configuration !	backup	de	Die ftp Verbindung schlug fehl ! Bitte die Konfiguration überprüfen !
 Transport application	backup	de	Transport Programm
 Absolute path of the backup directory	backup	de	Absoluter Pfad des Backup-Verzeichnisses
-IP	backup	de	IP
+ip	backup	de	IP
 monthly	backup	de	monatlich
 User	backup	de	Benutzer
 Password	backup	de	Paßwort

@@ -14,30 +14,33 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 export PATH
 
 # check for daily backup-file
-if	test -e {server_root}/backup/phpgw_data_backup.daily ; then
-    mv {server_root}/backup/phpgw_data_backup.daily /etc/cron.daily/phpgw_data_backup.daily ;
-	chown root.root /etc/cron.daily/phpgw_data_backup.daily ;
-	chmod go-r /etc/cron.daily/phpgw_data_backup.daily ;
-	chmod u+x /etc/cron.daily/phpgw_data_backup.daily ;
+if	test -e {server_root}/backup/phpgw_start_backup.daily ; then
+    mv {server_root}/backup/phpgw_start_backup.daily /etc/cron.daily/phpgw_start_backup.daily ;
+	chown root.root /etc/cron.daily/phpgw_start_backup.daily ;
+	chmod go-r /etc/cron.daily/phpgw_start_backup.daily ;
+	chmod u+x /etc/cron.daily/phpgw_start_backup.daily ;
+	chmod u+x {server_root}/backup/inc/phpgw_data_backup.php ;
 else echo -e -n "\nno script for daily backup of the phpgroupware data\n" ;
 fi
 
 # check for weekly backup-file
-if test -e {server_root}/backup/backup.weekly ; then
-    mv {server_root}/backup/phpgw_data_backup.weekly /etc/cron.weekly/phpgw_data_backup.weekly ;
-	chown root.root /etc/cron.weekly/phpgw_data_backup.weekly ;
-	chmod go-r /etc/cron.weekly/phpgw_data_backup.weekly ;
-	chmod u+x /etc/cron.weekly/phpgw_data_backup.weekly ;
+if test -e {server_root}/backup/phpgw_start_backup.weekly ; then
+    mv {server_root}/backup/phpgw_start_backup.weekly /etc/cron.weekly/phpgw_start_backup.weekly ;
+	chown root.root /etc/cron.weekly/phpgw_start_backup.weekly ;
+	chmod go-r /etc/cron.weekly/phpgw_start_backup.weekly ;
+	chmod u+x /etc/cron.weekly/phpgw_start_backup.weekly ;
+	chmod u+x {server_root}/backup/inc/phpgw_data_backup.php ;
 else echo -e -n "no script for weekly backup of the phpgroupware data\n";
 fi
 
 # check for monthly backup-file
-if test -e {server_root}/backup/backup.monthly ; then
-    mv {server_root}/backup/phpgw_data_backup.monthly /etc/cron.monthly/phpgw_data_backup.monthly ;
-	chown root.root /etc/cron.monthly/phpgw_data_backup.monthly ;
-	chmod go-r /etc/cron.monthly/phpgw_data_backup.monthly ;
-	chmod u+x /etc/cron.monthly/phpgw_data_backup.monthly ;
-else echo -n "no script for monthly backup of the phpgroupware data\n";
+if test -e {server_root}/backup/phpgw_start_backup.monthly ; then
+    mv {server_root}/backup/phpgw_start_backup.monthly /etc/cron.monthly/phpgw_start_backup.monthly ;
+	chown root.root /etc/cron.monthly/phpgw_start_backup.monthly ;
+	chmod go-r /etc/cron.monthly/phpgw_start_backup.monthly ;
+	chmod u+x /etc/cron.monthly/phpgw_start_backup.monthly ;
+	chmod u+x {server_root}/backup/inc/phpgw_data_backup.php ;
+else echo -e -n "no script for monthly backup of the phpgroupware data\n";
 fi
 
 exit 0
