@@ -20,7 +20,7 @@ CREATE TABLE phpgw_polls_user (
 
 create table phpgw_polls_settings (
    setting_name   varchar(255),
-   setting_value  varchar(255),
+   setting_value  varchar(255)
 );
 
 insert into phpgw_polls_settings values ('allow_multiable_votes','False');
