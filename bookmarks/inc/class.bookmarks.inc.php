@@ -203,15 +203,13 @@
 				'name'    => '--'
 			);
 
-			$_mains = $phpgw->categories->return_array('appandmains',0,$phpgw->categories->total(),'','cat_name','');
-			while ($main = each($_mains))
-			{
-				$mains[] = $main[1];
-			}
+			$mains = $phpgw->categories->return_array('appandmains',0,$phpgw->categories->total(),'','cat_name','');
 
-			while ($main = each($mains))
+			$s = '<option value="0">-- :: --</option>';
+
+			while (is_array($_mains) && $main = each($mains))
 			{
-				$phpgw->db->query("select * from phpgw_categories where cat_parent='" . $main[1]['id'] . "' order by cat_name",__LINE__,__FILE__);
+				$phpgw->db->query("select * from phpgw_categories where cat_parent='" . $main[1]['id'] . "' and cat_appname='bookmarks' order by cat_name",__LINE__,__FILE__);
 				while ($phpgw->db->next_record())
 				{
 					$id = $main[1]['id'] . '|' . $phpgw->db->f('cat_id');
@@ -263,7 +261,7 @@
                        . "bm_subcategory, bm_rating, bm_owner, bm_access, bm_info, bm_visits) "
                        . "values ('%s','%s','%s','%s',%s,%s,%s,'%s','%s','%s',0)", 
                           $values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']),
-                          $category, $subcategory, $values['rating'], $phpgw_info['user']['account_id'], $values['access'],
+                          $category, '0', $values['rating'], $phpgw_info['user']['account_id'], $values['access'],
                           $values['timestamps']);
     
 			$db->query($query,__LINE__,__FILE__);
@@ -300,7 +298,7 @@
 	                      . "bm_keywords='%s', bm_category='%s', bm_subcategory='%s', bm_rating='%s',"
 	                      . "bm_info='%s', bm_access='%s' where bm_id='%s'", 
 	                         $values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']), 
-	                         $category, $subcategory, $values['rating'], $timestamps, $values['access'], $id);
+	                         $category, '0', $values['rating'], $timestamps, $values['access'], $id);
 
 			$phpgw->db->query($query,__LINE__,__FILE__);
 
