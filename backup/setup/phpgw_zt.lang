@@ -32,7 +32,6 @@ pgsql	admin	zt	PostgreSQL
 php cgi	admin	zt	PHP執行程式的完整路徑
 please enter the path of the needed applications in *site configuration* !	backup	zt	請輸入"網站設定"中需要的程式路徑！
 please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	zt	請輸入備份資料夾路徑並且/或在eGroupWare啟用顯示備份資料！
-please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	zt	請輸入備份資料存放的路徑 並且/或是 在EGROUPWARE中啟用顯示備份資料！
 please enter username and password for remote connection !	backup	zt	請輸入遠端連線的帳號與密碼！
 please select an application for transport to the remote host !	backup	zt	請選擇一個應用程式來傳輸到遠端的主機！
 please set the path to a local dir to store the backup script !	backup	zt	請設置一個本地端的資料夾來儲存備份的指令檔！
@@ -51,14 +50,12 @@ select archive type	backup	zt	選擇檔案格式
 select interval	backup	zt	選擇備份頻率
 settings	admin	zt	設定
 show backup archives in egroupware ?	backup	zt	勾選後可以在eGroupWare顯示備份資料
-show backup archives in phpgroupware ?	backup	zt	在EGroupWare 顯示備份檔案？
 smbmount	backup	zt	smbmount
 sql	backup	zt	SQL
 tar	admin	zt	tar
 tar.bz2	backup	zt	tar.bz2
 tar.gz	backup	zt	tar.gz
 the backup application is not configured for showing the archives in egroupware yet !	backup	zt	還沒設定可以在eGroupWare顯示備份資料！
-the backup application is not configured for showing the archives in phpgroupware yet !	backup	zt	備份程式還沒設定在EGROUPWARE顯示備份檔案！
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	zt	備份指令檔存放的位置必須在網站根目錄之中！
 versions can only be a number !	backup	zt	版本只能是數字！
 weekly	backup	zt	每週
