@@ -19,13 +19,15 @@
 		</table>
 	</td>
 	<td width="90%" valign="top">
-		<table>
+		<form action="{form_action}" method="post">
+		<table width="100%" cellspacing="1" cellpading="0" border="0">
 		<tr>
 			<td>
 				Data
 			</td>
 		</tr>
 		</table>
+		</form>
 	</td>
 </tr>
 </table>

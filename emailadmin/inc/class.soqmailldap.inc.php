@@ -53,11 +53,35 @@
 			{
 				$allValues = ldap_get_entries($ldap, $sri);
 				
+				unset($allValues[0]['rcpthosts']['count']);
+				unset($allValues[0]['locals']['count']);
+				
 				$data = array
 				(
 					'rcpthosts'	=> $allValues[0]['rcpthosts'],
-					'locals'	=> $allValues[0]['locals']
+					'locals'	=> $allValues[0]['locals'],
+					'ldapbasedn'	=> $allValues[0]['ldapbasedn'][0]
 				);
+				
+				if (isset($allValues[0]['ldaplocaldelivery'][0]))
+				{
+					$data['ldaplocaldelivery'] = $allValues[0]['ldaplocaldelivery'][0];
+				}
+				else
+				{
+					//set to default
+					$data['ldaplocaldelivery'] = 1;
+				}
+
+				if (isset($allValues[0]['ldapdefaultdotmode'][0]))
+				{
+					$data['ldapdefaultdotmode'] = $allValues[0]['ldapdefaultdotmode'][0];
+				}
+				else
+				{
+					//set to default
+					$data['ldapdefaultdotmode'] = 'ldaponly';
+				}
 
 				return $data;
 			}

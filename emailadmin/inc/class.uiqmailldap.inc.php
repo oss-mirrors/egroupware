@@ -73,6 +73,11 @@
 					   	'name'		=> lang('virtual domains'),
 					   	'template'	=> 'defaultpage.tpl'
 					   ),
+				'20'	=> array
+					   (
+					   	'name'		=> lang('options'),
+					   	'template'	=> 'options.tpl'
+					   ),
 				'99'	=> array
 					   (
 					   	'name'		=> lang('LDAP settings'),
@@ -187,6 +192,13 @@
 
 
 					break;
+				
+				case "20":
+					$this->t->set_var("ldaplocaldelivery_".$ldapData['ldaplocaldelivery'],'selected');
+					$this->t->set_var("ldapdefaultdotmode_".$ldapData['ldapdefaultdotmode'],'selected');
+					$this->t->set_var("ldapbasedn",$ldapData['ldapbasedn']);
+				
+					break;
 					
 				case "99":
 					if ($storageData = $this->boqmailldap->getLDAPStorageData($serverid))
@@ -272,6 +284,8 @@
 			$this->t->set_var('lang_edit',lang('edit'));
 			$this->t->set_var('lang_save',lang('save'));
 			$this->t->set_var('lang_delete',lang('delete'));
+			$this->t->set_var('lang_disabled',lang('disabled'));
+			$this->t->set_var('lang_enabled',lang('enabled'));
 			$this->t->set_var('lang_add',lang('add'));
 			$this->t->set_var('lang_done',lang('Done'));
 			$this->t->set_var('lang_remove',lang('remove'));
@@ -280,6 +294,10 @@
 			$this->t->set_var('lang_ldap_basedn',lang('LDAP basedn'));
 			$this->t->set_var('lang_ldap_server_admin',lang('admin dn'));
 			$this->t->set_var('lang_ldap_server_password',lang('admin password'));
+			
+			$this->t->set_var('desc_ldaplocaldelivery',lang('To lookup the local passwd file if the LDAP lookup finds no match. This affects qmail-lspawn and auth_* if the LDAP lookup returns nothing.'));
+			$this->t->set_var('desc_ldapdefaultdotmode',lang('The default interpretation of .qmail files.<br><b>Note:</b> Works only for deliveries based on LDAP lookups. Local mails use dotonly like in normal qmail.'));
+			$this->t->set_var('desc_ldapbasedn',lang('The base DN from where the search in the LDAP tree begins.'));
 		}
 	}
 ?>
