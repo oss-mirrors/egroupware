@@ -2,6 +2,7 @@
 	/*******************************************************************\
 	* eGroupWare - Projects                                             *
 	* http://www.egroupware.org                                         *
+	* This program is part of the GNU project, see http://www.gnu.org/  *
 	*                                                                   *
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
@@ -128,8 +129,8 @@
 			DEFINE("TTF_DIR",PHPGW_SERVER_ROOT."/projects/ttf-bitstream-vera-1.10/");
 			if(file_exists(PHPGW_SERVER_ROOT . '/../jpgraph/src/jpgraph.php'))
 			{
-				include('/var/www/www.phpgw.de/htdocs/jpgraph/src/jpgraph.php');
-				include('/var/www/www.phpgw.de/htdocs/jpgraph/src/jpgraph_gantt.php');
+				include(PHPGW_SERVER_ROOT . '/../jpgraph/src/jpgraph.php');
+				include(PHPGW_SERVER_ROOT . '/../jpgraph/src/jpgraph_gantt.php');
 			}
 			else
 			{
