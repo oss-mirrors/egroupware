@@ -231,7 +231,7 @@
 
 		function read_message()
 		{
-			$message_id = $GLOBALS['HTTP_GET_VARS']['message_id'] ? $GLOBALS['HTTP_GET_VARS']['message_id'] : $GLOBALS['HTTP_POST_VARS']['message_id'];
+			$message_id = $_GET['message_id'] ? $_GET['message_id'] : $_POST['message_id'];
 			$message = $this->bo->read_message($message_id);
 
 			$this->display_headers();
@@ -246,16 +246,16 @@
 			$GLOBALS['phpgw']->template->set_var('value_content','<pre>' . $GLOBALS['phpgw']->strip_html($message['content']) . '</pre>');
 
 			$GLOBALS['phpgw']->template->set_var('link_delete','<a href="'
-					. $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.delete&messages%5B%5D=' . $message['id'])
-					. '">' . lang('Delete') . '</a>');
+				. $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.delete&messages%5B%5D=' . $message['id'])
+				. '">' . lang('Delete') . '</a>');
 
 			$GLOBALS['phpgw']->template->set_var('link_reply','<a href="'
-					. $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.reply&message_id=' . $message['id'])
-					. '">' . lang('Reply') . '</a>');
+				. $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.reply&message_id=' . $message['id'])
+				. '">' . lang('Reply') . '</a>');
 
 			$GLOBALS['phpgw']->template->set_var('link_forward','<a href="'
-					. $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.forward&message_id=' . $message['id'])
-					. '">' . lang('Forward') . '</a>');
+				. $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.forward&message_id=' . $message['id'])
+				. '">' . lang('Forward') . '</a>');
 
 			switch($message['status'])
 			{

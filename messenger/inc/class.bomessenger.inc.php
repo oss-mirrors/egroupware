@@ -185,7 +185,7 @@
 				);
 			}
 
-			if(gettype($_messages) == 'NULL')
+			if(@is_null($_messages))
 			{
 				return array();
 			}
