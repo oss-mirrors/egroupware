@@ -157,7 +157,7 @@ define('SEARCH',4);
 			if ($_POST['edit_category_x'] || $_POST['edit_category_y'])
 			{
 				$this->bo->grab_form_values($this->location_info['returnto'],'create',$_POST['bookmark']);
-				$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&global_cats=True'));
+				$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&cats_level=True&global_cats=True'));
 			}
 			//save bookmark
 			if ($_POST['save_x'] || $_POST['save_y'])
@@ -276,7 +276,7 @@ define('SEARCH',4);
 			if ($_POST['edit_category_x'] || $_POST['edit_category_y'])
 			{
 				$this->bo->grab_form_values($this->location_info['returnto'],'edit',$_POST['bookmark']);
-				$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&global_cats=True'));
+				$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&cats_level=True&global_cats=True'));
 			}
 			//save bookmark and go to view interface
 			if ($_POST['save_x'] || $_POST['save_y'])
@@ -912,7 +912,7 @@ function toggle(image, catid)
 			}
 			if ($_POST['edit_category_x'] || $_POST['edit_category_y'])
 			{
-				$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&global_cats=True');
+				$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&cats_level=True&global_cats=True');
 				return;
 			}
 
