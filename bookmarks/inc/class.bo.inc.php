@@ -330,6 +330,11 @@
 					$folderstack = array($parent);
 
 					$utf8flag = False;
+					
+					//In the bookmark import file, description for site is allowd to be empty
+					//The description of folders in the bookmark will be skiped.
+					$have_desc = True;
+					$dir_desc = False;
 
 					while ($line = @fgets($fd, 2048))
 					{
@@ -341,6 +346,17 @@
 						// URLs are recognized by A HREF tags in the NS file.
 						elseif (eregi('<A HREF="([^"]*)[^>]*>(.*)</A>', $line, $match))
 						{
+						        if(!$have_desc)
+							{
+							  unset($values['desc']);
+							  if ($this->add($values))
+						          {
+							      $inserts++;
+						          }
+						        }
+							$have_desc = False;
+							$dir_desc = False;
+						  
 							$url_parts = @parse_url($match[1]);
 							if
 							(
@@ -361,10 +377,9 @@
 
 								$values['timestamps'] = sprintf('%s,%s,%s',$add_info[1],$vist_info[1],$change_info[1]);
 
-								if ($this->add($values))
-								{
-									$inserts++;
-								}
+								unset($keywords);
+								eregi('SHORTCUTURL="([^"]*)"',$line,$keywords);
+								$values['keywords']=$keywords[1];
 
 								$this->_debug(sprintf("<tr><td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>",$cid,$scid,$match[2],$match[1],$add_info[1],$change_info[1],$vist_info[1]));
 							}
@@ -376,15 +391,43 @@
 						elseif (eregi('<H3[^>]*>(.*)</H3>', $line, $match))
 						{
 							$folder_name = $this->translation->convert($match[1],$from_charset);
-
 							$current_cat_id = $this->get_category($folder_name,end($folderstack));
+							$dir_desc = True;
 							array_push($folderstack,$current_cat_id);
+						}
+						// description start with tag <DD> and the description for folders 
+						// will be skiped
+						elseif (eregi('<DD>(.*)',$line,$desc))
+						{
+						        if($dir_desc)
+						        {
+							    continue;
+						        }
+						        else
+						        {  
+							    $values['desc']     = str_replace(array('&amp;','&lt;','&gt;','&quot;','&#039;'),array('&','<','>','"',"'"),$this->translation->convert($desc[1],$from_charset));
+							    if ($this->add($values))
+							    {
+							         $inserts++;
+							    }
+							    $have_desc = True;
+							}  
 						}
 						elseif (eregi('</DL>', $line))
 						{
 							array_pop($folderstack);
 						}
 					}
+
+					if(!$have_desc)
+					{
+					        unset($values['desc']);
+					        if ($this->add($values))
+				                {
+						  $inserts++;
+						}
+				        }
+
 					@fclose($fd);
 					$this->_debug('</table>');
 					$this->msg = '<br>'.lang("%1 bookmarks imported from %2 successfully.", $inserts, $bkfile['name']);
