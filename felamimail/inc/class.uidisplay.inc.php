@@ -133,7 +133,8 @@
 			$partID		= $_GET['part'];
 			$transformdate	= CreateObject('felamimail.transformdate');
 			$htmlFilter	= CreateObject('felamimail.htmlfilter');
-
+			// (regis) seems to be necessary to reopen...
+			$this->bofelamimail->reopen($this->mailbox);
 			$headers	= $this->bofelamimail->getMessageHeader($this->uid, $partID);
 			$rawheaders	= $this->bofelamimail->getMessageRawHeader($this->uid, $partID);
 			$bodyParts	= $this->bofelamimail->getMessageBody($this->uid,'',$partID);

@@ -27,7 +27,8 @@
 	{
 		var $public_functions = array
 		(
-			'flagMessages'		=> True
+			'flagMessages'		=> True,
+			'reopen'		=> True
 		);
 
 		var $mbox;		// the mailbox identifier any function should use
@@ -45,11 +46,14 @@
 		// what type of mimeTypes do we want from the body(text/html, text/plain)
 		var $htmlOptions;
 
+		var $sessionData;
+
 		function bofelamimail($_displayCharset='iso-8859-1')
 		{
 			$this->restoreSessionData();
 			
-			$this->foldername	= $this->sessionData['mailbox'];
+			// FIXME: this->foldername seems to be unused
+			//$this->foldername	= $this->sessionData['mailbox'];
 			$this->accountid	= $GLOBALS['phpgw_info']['user']['account_id'];
 			
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
@@ -58,11 +62,12 @@
 			
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
 			$this->imapBaseDir	= '';
-			
+
 			$this->displayCharset	= $_displayCharset;
 			
 			// set some defaults
-			if(count($this->sessionData) == 0)
+			//if(count($this->sessionData) == 0) // regis (for me PHP4.1.3it's not working)
+			if(empty($this->sessionData))
 			{
 				// this should be under user preferences
 				// sessionData empty
@@ -443,7 +448,7 @@
 			}
 
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$this->imapBaseDir,3,$this->profileID);
-			
+				
 		
 			if($_subscribedOnly == 'true')
 			{
@@ -498,6 +503,13 @@
 			}
 		}
 		
+		function reopen($_foldername)
+		{// (regis) seems to be necessary/usefull to reopen in the good folder
+		//echo "<hr>reopening imap mailbox in:".$_foldername;
+			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_foldername,3,$this->bofelamimail->profileID);
+			imap_reopen ($this->mbox, $mailboxString);
+		}
+		
 		function getHeaders($_startMessage, $_numberOfMessages, $_sort)
 		{
 
@@ -514,16 +526,18 @@
 			$status = imap_status ($this->mbox, $mailboxString, SA_ALL);
 			$cachedStatus = $caching->getImapStatus();
 
-			// no data chached already?
+			// no data cached already?
 			// get all message informations from the imap server for this folder
 			if ($cachedStatus['uidnext'] == 0)
 			{
 				#print "nix gecached!!<br>";
 				#print "current UIDnext :".$cachedStatus['uidnext']."<br>";
 				#print "new UIDnext :".$status->uidnext."<br>";
+				// (regis) seems to be necessary to reopen...
+				$this->reopen($this->sessionData['mailbox']);
 				for($i=1; $i<=$status->messages; $i++)
 				{
-					@set_time_limit();
+					@set_time_limit();// FIXME: beware no effect if in PHP safe_mode
 					$messageData['uid'] = imap_uid($this->mbox, $i);
 					$header = imap_headerinfo($this->mbox, $i);
 					// parse structure to see if attachments exist
@@ -539,8 +553,9 @@
 					$messageData['sender_name']	= $header->from[0]->personal;
 					$messageData['sender_address']	= $header->from[0]->mailbox."@".$header->from[0]->host;
 					$messageData['size']		= $header->Size;
-					
+
 					$messageData['attachments']     = "false";
+
 					foreach($sections as $key => $value)
 					{
 						if($value['type'] == 'attachment')
@@ -549,9 +564,9 @@
 							break;
 						}
 					}
-					
+				
 					$caching->addToCache($messageData);
-					
+
 					unset($messageData);
 				}
 
@@ -560,6 +575,9 @@
 			// update cache, but only add new emails
 			elseif($status->uidnext != $cachedStatus['uidnext'])
 			{
+				// (regis) seems to be necessary to reopen...
+				$this->reopen($this->sessionData['mailbox']);
+
 				#print "found new messages<br>";
 				#print "new uidnext: ".$status->uidnext." old uidnext: ".$cachedStatus['uidnext']."<br>";
 				$uidRange = $cachedStatus['uidnext'].":".$status->uidnext;
@@ -643,14 +661,17 @@
 				#$rawHeader = imap_fetchheader($this->mbox,$displayHeaders[$i]['uid'],FT_UID);
 				#$headers = $this->sofelamimail->fetchheader($rawHeader);
 				
-				$retValue['header'][$count]['subject'] 		= $this->decode_header($header[0]->subject);
+				//$retValue['header'][$count]['subject'] 		= $this->decode_header($header[0]->subject);
+				$retValue['header'][$count]['subject'] 		= $this->decode_header($displayHeaders[$i]['subject']);
 				$retValue['header'][$count]['sender_name'] 	= $this->decode_header($displayHeaders[$i]['sender_name']);
 				$retValue['header'][$count]['sender_address'] 	= $this->decode_header($displayHeaders[$i]['sender_address']);
 				$retValue['header'][$count]['to_name'] 		= $this->decode_header($displayHeaders[$i]['to_name']);
 				$retValue['header'][$count]['to_address'] 	= $this->decode_header($displayHeaders[$i]['to_address']);
 				$retValue['header'][$count]['attachments']	= $displayHeaders[$i]['attachments'];
-				$retValue['header'][$count]['size'] 		= $header[0]->size;
-
+				//$retValue['header'][$count]['size'] 		= $this->decode_header($displayHeaders[$i]['size']);
+				//$retValue['header'][$count]['size'] 		= $header[0]->size;
+				$retValue['header'][$count]['size'] 		= $this->decode_header($header[0]->size);
+				
 				$timestamp = $displayHeaders[$i]['date'];
 				$timestamp7DaysAgo = 
 					mktime(date("H"), date("i"), date("s"), date("m"), date("d")-7, date("Y"));
