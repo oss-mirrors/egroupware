@@ -45,6 +45,7 @@ edit the transition	tts	de	Übergang bearbeiten
 force	tts	de	erzwungen
 global categories	tts	de	Globale Kategorien
 group ownership changed	tts	de	Gruppen-Eigentümer geändert
+history	tts	de	Historie
 i worked on the ticket and the work requires validation.	tts	de	Ich habe an dem Ticket gearbeitet und die Arbeit verlangt eine Überprüfung.
 i worked on the ticket, but did not finish.	tts	de	Ich habe habe an dem Ticket gearbeitet, habe es aber nicht beendet.
 in progress	tts	de	in Bearbeitung
@@ -72,6 +73,7 @@ not assigned	tts	de	Nicht zugewiesen
 not completed	tts	de	NICHT ABGESCHLOSSEN
 old value	tts	de	Alter Wert
 open	tts	de	Offen
+open / closed	tts	de	Offen / Geschlossen
 open date	tts	de	Angelegt am
 opened	tts	de	Angelegt
 opened by	tts	de	Angelegt von

@@ -51,6 +51,68 @@
 
 	if(!$_POST['save'] && !$_POST['apply'])
 	{
+		// load the necessary css for the tabs
+		function css()
+		{
+			$appCSS =
+			'th.activetab
+			{
+				color:#000000;
+				background-color:#D3DCE3;
+				border-top-width : 2px;
+				border-top-style : solid;
+				border-top-color : Black;
+				border-left-width : 2px;
+				border-left-style : solid;
+				border-left-color : Black;
+				border-right-width : 2px;
+				border-right-style : solid;
+				border-right-color : Black;
+			}
+
+			th.inactivetab
+			{
+				color:#000000;
+				background-color:#E8F0F0;
+				border-width : 1px;
+				border-style : solid;
+				border-color : Black;
+				border-bottom-width : 2px;
+				border-bottom-style : solid;
+				border-bottom-color : Black;
+			}
+
+			table.tabcontent
+			{
+				border-bottom-width : 2px;
+				border-bottom-style : solid;
+				border-bottom-color : Black;
+				border-left-width : 2px;
+				border-left-style : solid;
+				border-left-color : Black;
+				border-right-width : 2px;
+				border-right-style : solid;
+				border-right-color : Black;
+			}
+
+			.td_left { border-left : 1px solid Gray; border-top : 1px solid Gray; }
+			.td_right { border-right : 1px solid Gray; border-top : 1px solid Gray; }
+
+			div.activetab{ display:inline; }
+			div.inactivetab{ display:none; }';
+
+			return $appCSS;
+		}
+		$GLOBALS['phpgw_info']['flags']['css'] = css();
+
+		// load the necessary javascript for the tabs
+		if(!@is_object($GLOBALS['phpgw']->js))
+		{
+			$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+		}
+		$GLOBALS['phpgw']->js->validate_file('tabs','tabs');
+		$GLOBALS['phpgw']->js->set_onload('javascript:initAll();');
+
 		$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['tts']['title'] . ' - ' . lang('View Job Detail');
 		$GLOBALS['phpgw']->common->phpgw_header();
 		echo parse_navbar();
@@ -111,7 +173,7 @@
 		$priority_selected[$ticket['priority']] = ' selected';
 		$priority_comment[1]  = ' - '.lang('Lowest'); 
 		$priority_comment[5]  = ' - '.lang('Medium'); 
-		$priority_comment[10] = ' - '.lang('Highest'); 
+		$priority_comment[10] = ' - '.lang('Highest');
 
 		for($i=1; $i<=10; $i++)
 		{
@@ -183,7 +245,7 @@
 		$s .= '<option value="X"' . $ticket_status['X'] . '>' . lang('Closed') . '</option>';
 
 		$GLOBALS['phpgw']->template->set_var('options_status',$s);
-		$GLOBALS['phpgw']->template->set_var('lang_status',lang('Status'));
+		$GLOBALS['phpgw']->template->set_var('lang_status',lang('Open / Closed'));
 
 		/**************************************************************\
 		* Display additional notes                                     *
@@ -213,6 +275,7 @@
 		/**************************************************************\
 		* Display record history                                       *
 		\**************************************************************/
+		$GLOBALS['phpgw']->template->set_var('lang_history',lang('History'));
 		$GLOBALS['phpgw']->template->set_var('lang_user',lang('User'));
 		$GLOBALS['phpgw']->template->set_var('lang_date',lang('Date'));
 		$GLOBALS['phpgw']->template->set_var('lang_action',lang('Action'));
