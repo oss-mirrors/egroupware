@@ -51,56 +51,49 @@
         $t->set_var(total_matchs,lang("your search returned 1 match"));
      else
         $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
-  } else {
-     $phpgw->db->query("select count(*) from phpgw_accounts where $filtermethod");
-  }
-
-  $phpgw->db->next_record();                                                                      
-
-  if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
+    } 
+   else {
+    $phpgw->db->query("select count(*) from phpgw_accounts where $filtermethod");
+    $phpgw->db->next_record();                                                                      
+     if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
      $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
                            ($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),
                            $phpgw->db->f(0));
-  else
+     else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
+     $t->set_var(total_matchs,$total_matchs);
+     }
 
-
-    // ===========================================
-    // nextmatch variable template-declarations
-    // ===========================================
+// ------------- nextmatch variable template-declarations -------------------------------
 
      $next_matchs = $phpgw->nextmatchs->show_tpl("stats_userlist.php",$start,$phpgw->db->f(0),
                    "&order=$order&filter=$filter&sort="
                  . "$sort&query=$query","85%",$phpgw_info["theme"][th_bg]);
      $t->set_var(next_matchs,$next_matchs);
-     $t->set_var(total_matchs,$total_matchs);
 
-  // ---------- end nextmatch template --------------------
+// ------------------------ end nextmatch template --------------------------------------
 
-  // ===========================================
-  // list header variable template-declarations
-  // ===========================================
+// --------------- list header variable template-declarations ---------------------------
+
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
   $t->set_var(sort_lid,$phpgw->nextmatchs->show_sort_order($sort,"account_lid",$order,"stats_userlist.php",lang("Username")));
   $t->set_var(sort_firstname,$phpgw->nextmatchs->show_sort_order($sort,"account_firstname",$order,"stats_userlist.php",lang("Firstname")));
   $t->set_var(sort_lastname,$phpgw->nextmatchs->show_sort_order($sort,"account_lastname",$order,"stats_userlist.php",lang("Lastname")));
   $t->set_var(h_lang_stat,lang("Statistic"));
 
-  // -------------- end header declaration -----------------
+// ------------------------- end header declaration -------------------------------------
 
     $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
 //  $limit = $phpgw->db->limit($start);
 
-     $phpgw->db->query("SELECT account_id,account_lid,accounts.account_firstname,accounts.account_lastname FROM "
+     $phpgw->db->query("SELECT account_id,account_lid,account_firstname,account_lastname FROM "
                  . "phpgw_accounts WHERE $filtermethod $ordermethod limit $limit");
 
      while ($phpgw->db->next_record()) {
      $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
      $t->set_var(tr_color,$tr_color);
 
-    // ============================================
-    // template declaration for list records
-    // ============================================
+// --------------------- template declaration for list records ---------------------------
 
     $el = $phpgw->link("stats_userstat.php","account_id=" . $phpgw->db->f("account_id") 
                                          . "&sort=$sort&order=$order&"
@@ -114,12 +107,11 @@
                                  . "\">". lang("Statistic") . "</a>"));
        $t->parse("list", "user_list", true);
 
-       // -------------- end record declaration ------------------------
+// ------------------------------- end record declaration ---------------------------------
   }
 
        $t->parse("out", "user_list_t", true);
        $t->p("out");
-       // -------------- end Add form declaration ------------------------
 
 $phpgw->common->phpgw_footer();
 ?>

@@ -36,18 +36,13 @@
      $t->set_file(array( "project_stat" => "stats_projectstat.tpl"));
      $t->set_block("project_stat","stat_list","list");
      
-     // ====================================================================
-     // create two seperate blocks, addblock will be cut off from template
-     // editblock contains the buttons and forms for edit
-     // ====================================================================
-     
      $t->set_var("actionurl",$phpgw->link("stats_projectstat.php"));
      $t->set_var("lang_action",lang("Project statistic"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      $t->set_var("lang_num",lang("Project ID"));
-     $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
+     $t->set_var("num",stripslashes($phpgw->db->f("num")));
      $t->set_var("lang_title",lang("Title"));
-     $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                   
+     $title = stripslashes($phpgw->db->f("title"));                                                                                                                                   
      if (! $title)  $title  = "&nbsp;";
      $t->set_var("title",$title);
      $t->set_var("lang_status",lang("Status"));
