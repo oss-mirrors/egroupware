@@ -1,0 +1,256 @@
+(no subject)	felamimail	sv	(inget ämne)
+(only cc/bcc)	felamimail	sv	(bara Cc/Bcc)
+(unknown sender)	felamimail	sv	(okänd avsändare)
+activate	felamimail	sv	Aktivera
+activate script	felamimail	sv	aktivera script
+add address	felamimail	sv	Lägg till adress
+add rule	felamimail	sv	Lägg till regel
+add script	felamimail	sv	Lägg till script
+add to %1	felamimail	sv	Lägg till i %1
+add to address book	felamimail	sv	Lägg till i adressboken
+add to addressbook	felamimail	sv	lägg till i adressboken
+additional info	felamimail	sv	Mera info
+address book	felamimail	sv	Adressbok
+address book search	felamimail	sv	Adressbokssökning
+after message body	felamimail	sv	Efter meddelande
+all address books	felamimail	sv	Alla adressböcker
+all folders	felamimail	sv	Alla mappar
+always show html emails	felamimail	sv	Visa alltid HTML E-post
+anyone	felamimail	sv	vem som helst
+as a subfolder of	felamimail	sv	som undermapp till
+attachments	felamimail	sv	Bifogat
+auto refresh folder list	felamimail	sv	Auto uppdatera mapplistan
+back to folder	felamimail	sv	Tillbaka till mapp
+based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	sv	Baserat på vald kriterie så kan inkommande meddelanden ha olika bakgrundsfärger i meddelandelistan. Detta gör det lättare att skilja på vem meddelandena är ifrån, speciellt för mailinglistor.
+bcc	felamimail	sv	BCC
+before headers	felamimail	sv	Före headers
+between headers and message body	felamimail	sv	Mellan headers och meddelandekropp
+can't connect to inbox!!	felamimail	sv	kan inte koppla upp mot inkorgen!
+cc	felamimail	sv	CC
+change folder	felamimail	sv	Ändra mapp
+checkbox	felamimail	sv	Kryssruta
+click here to log back in.	felamimail	sv	Klicka här för att logga in igen
+click here to return to %1	felamimail	sv	Klicka här för att gå tillbaka till %1
+close all	felamimail	sv	stäng alla
+close this page	felamimail	sv	stäng den här sidan
+close window	felamimail	sv	Stäng fönster
+color	felamimail	sv	Färg
+compose	felamimail	sv	Författa
+compress folder	felamimail	sv	Packa mapp
+configuration	felamimail	sv	Inställning
+contains	felamimail	sv	innehåller
+create	felamimail	sv	Skapa
+create folder	felamimail	sv	Skapa mapp
+create sent	felamimail	sv	Skapa skickat
+create subfolder	felamimail	sv	Skapa undermapp
+create trash	felamimail	sv	Skapa papperskorg
+created folder successfully!	felamimail	sv	Mappen skapad!
+dark blue	felamimail	sv	Mörk blå
+dark cyan	felamimail	sv	Mörk cyan
+dark gray	felamimail	sv	Mörk grå
+dark green	felamimail	sv	Mörk grön
+dark magenta	felamimail	sv	Mörk mangenta
+dark yellow	felamimail	sv	Mörk gul
+date(newest first)	felamimail	sv	Datum (nyaste först)
+date(oldest first)	felamimail	sv	Datum (äldsta först)
+deactivate script	felamimail	sv	inaktivera skript
+default sorting order	felamimail	sv	Standard sorteringsordning
+delete all	felamimail	sv	ta bort alla
+delete folder	felamimail	sv	Ta bort mapp
+delete selected	felamimail	sv	Ta bort valda
+delete selected messages	felamimail	sv	ta bort valda meddelanden
+deleted	felamimail	sv	borttagen
+deleted folder successfully!	felamimail	sv	Mappen borttagen!
+disable	felamimail	sv	Inaktivera
+display message in new window	felamimail	sv	Visa meddelande i nytt fönster
+display of html emails	felamimail	sv	Visning av HTML epost
+display only when no plain text is available	felamimail	sv	Visa bara när ingen ren text finns
+display preferences	felamimail	sv	Visnings egenskaper
+do it!	felamimail	sv	utför!
+do not use sent	felamimail	sv	Använd inte Sänt
+do not use trash	felamimail	sv	Använd inte Papperskorgen
+do you really want to delete the '%1' folder?	felamimail	sv	Är du säker på att du vill ta bort '%1' mappen?
+does not contain	felamimail	sv	som inte innehåller
+does not match	felamimail	sv	som inte matchar
+does not match regexp	felamimail	sv	som inte matchar regexp
+don't use sent	felamimail	sv	Använd inte säntmappen
+don't use trash	felamimail	sv	Använd inte borttagetmappen
+down	felamimail	sv	ner
+download	felamimail	sv	ladda ner
+download this as a file	felamimail	sv	Ladda ner denna som en fil
+e-mail	felamimail	sv	Epost
+e-mail address	felamimail	sv	Epost adress
+e-mail folders	felamimail	sv	Epost mappar
+edit filter	felamimail	sv	Ändra filter
+edit rule	felamimail	sv	ändra regel
+edit selected	felamimail	sv	Ändra vald
+email address	felamimail	sv	Epost adress
+email signature	felamimail	sv	Epost signatur
+empty trash	felamimail	sv	töm borttagetmappen
+enable	felamimail	sv	använd
+enter your default mail domain ( from: user@domain )	admin	sv	Lägg in din standard domän (Från: användare@domän)
+error	felamimail	sv	FEL
+error connecting to imap serv	felamimail	sv	Fel vid uppkopplingen till IMAP servern
+error opening	felamimail	sv	Fel vid öppningen
+felamimail	common	sv	FelaMiMail
+file into	felamimail	sv	spara i
+files	felamimail	sv	filer
+filter active	felamimail	sv	filtrera aktiv
+filter name	felamimail	sv	Filternamn
+first name	felamimail	sv	Förnamn
+flagged	felamimail	sv	flaggad
+flags	felamimail	sv	Flaggor
+folder name	felamimail	sv	Mapp namn
+folder path	felamimail	sv	Mapp sökväg
+folder preferences	felamimail	sv	Mapp egenskaper
+folder settings	felamimail	sv	Mapp inställningar
+folder status	felamimail	sv	Mapp status
+folderlist	felamimail	sv	Mapplista
+foldername	felamimail	sv	Mappnamn
+folders	felamimail	sv	Mappar
+folders created successfully!	felamimail	sv	Mapparna är skapade!
+forward	felamimail	sv	Skicka vidare
+found	felamimail	sv	Hittad
+fri	felamimail	sv	Fre
+from	felamimail	sv	Från
+from(a->z)	felamimail	sv	Från (A->Ö)
+from(z->a)	felamimail	sv	Från (Ö->A)
+full name	felamimail	sv	Hela namnet
+header lines	felamimail	sv	Header rader
+hide header	felamimail	sv	göm header
+html	felamimail	sv	HTML
+icons and text	felamimail	sv	Ikoner och text
+icons only	felamimail	sv	Bara ikoner
+if	felamimail	sv	OM
+illegal folder name.  please select a different name.	felamimail	sv	Felaktigt mappnamn, välj ett annat.
+imap	felamimail	sv	IMAP
+imap server	felamimail	sv	IMAP server
+imap server address	felamimail	sv	IMAP server adress
+imap server type	felamimail	sv	IMAP server typ
+imaps authentication	felamimail	sv	IMAPS autentisering
+imaps encryption only	felamimail	sv	Bara IMAPS kryptering
+in	felamimail	sv	i
+in the center	felamimail	sv	i mitten
+index order	felamimail	sv	Index ordning
+info	felamimail	sv	Info
+invalid user name or password	felamimail	sv	Felaktigt användarnamn eller lösenord
+javascript	felamimail	sv	JavaScript
+language	felamimail	sv	Språk
+last name	felamimail	sv	Efternamn
+left	felamimail	sv	Vänster
+less	felamimail	sv	mindre
+let this folder contain subfolders	felamimail	sv	Låt den här mappen innehålla undermappar
+light blue	felamimail	sv	Ljus blå
+light cyan	felamimail	sv	Ljus cyan
+light gray	felamimail	sv	Ljus grå
+light green	felamimail	sv	Ljus grön
+light magenta	felamimail	sv	Ljus magenta
+light yellow	felamimail	sv	Ljus gul
+list all	felamimail	sv	Lista alla
+mail server login type	admin	sv	Epost server logintyp
+mail settings	felamimail	sv	Epost inställningar
+manage folders	felamimail	sv	Hantera mappar
+manage sieve	felamimail	sv	Hantera Sieve script
+mark as deleted	felamimail	sv	Markera som borttagen
+mark messages as	felamimail	sv	Markera valda meddelanden som
+mark selected as flagged	felamimail	sv	Markera valda som flaggad
+mark selected as read	felamimail	sv	Markera valda som läst
+mark selected as unflagged	felamimail	sv	Markera valda som oflaggade
+mark selected as unread	felamimail	sv	Markera valda som olästa
+match	felamimail	sv	Matcha
+matches	felamimail	sv	matchar
+matches regexp	felamimail	sv	matchar regexp
+medium gray	felamimail	sv	Mellan grå
+message	felamimail	sv	Meddelande
+message list	felamimail	sv	Meddelandelista
+messages	felamimail	sv	meddelanden
+minute	felamimail	sv	Minut
+minutes	felamimail	sv	Minuter
+mon	felamimail	sv	Mån
+more	felamimail	sv	mer
+move	felamimail	sv	flytta
+move messages	felamimail	sv	flytta meddelanden
+move selected to	felamimail	sv	flytta valda till
+move to trash	felamimail	sv	Flytta till borttagetmappen
+must be unique	felamimail	sv	Måste vara unik
+name	felamimail	sv	Namn
+never display html emails	felamimail	sv	Visa aldrig HTML epost
+new	common	sv	Ny
+new filter	felamimail	sv	Nytt filter
+next	felamimail	sv	Nästa
+next message	felamimail	sv	nästa meddelande
+nickname	felamimail	sv	Smeknamn
+no filter	felamimail	sv	Inget filter
+no folders found	felamimail	sv	Inga mappar funna
+no folders were found to subscribe to!	felamimail	sv	Inga mappar fanns att prenumerera på!
+no folders were found to unsubscribe from!	felamimail	sv	Inga mappar fanns att ta bort prenumerationen på!
+no messages were selected.	felamimail	sv	Inga meddelanden var valda.
+no next message	felamimail	sv	inget nästa meddelande
+no personal address book is defined. contact administrator.	felamimail	sv	Ingen personlig adressbok definerad, kontakta administratören.
+no persons matching your search was found	felamimail	sv	Inga personer som passar din sökning fanns
+no previous message	felamimail	sv	inget föregående meddelande
+no valid emailprofile selected!!	felamimail	sv	Ingen fungerande epost profil vald
+none	felamimail	sv	ingen
+number of messages to index	felamimail	sv	Antal meddelanden att indexera
+only inbox	felamimail	sv	Bara INBOX
+only unseen	felamimail	sv	Bara osedda
+open all	felamimail	sv	öppna alla
+options	felamimail	sv	Alternativ
+organisation	felamimail	sv	organisation
+organization	felamimail	sv	organisation
+organization name	admin	sv	Organisations namn
+participants	felamimail	sv	Deltagare
+personal information	felamimail	sv	Personlig information
+previous	felamimail	sv	Föregående
+previous message	felamimail	sv	föregående meddelande
+print it	felamimail	sv	skriv ut
+print this page	felamimail	sv	skriv ut den här sidan
+quicksearch	felamimail	sv	Snabbsök
+read	felamimail	sv	läs
+reading	felamimail	sv	läser
+recent	felamimail	sv	nyligen
+refresh folder list	felamimail	sv	uppdatera mapplistan
+refresh page	felamimail	sv	Uppdatera sidan
+refresh time in minutes	felamimail	sv	Uppdateringstid i minuter
+remove	felamimail	sv	ta bort
+remove immediately	felamimail	sv	Ta bort direkt
+rename	felamimail	sv	Döp om
+rename a folder	felamimail	sv	Döp om en mapp
+rename folder	felamimail	sv	Döp om mapp
+renamed successfully!	felamimail	sv	Omdöpt!
+replied	felamimail	sv	svarad
+reply	felamimail	sv	Svara
+reply all	felamimail	sv	Svara alla
+reply to	felamimail	sv	Svara till
+replyto	felamimail	sv	SvaraTill
+return	felamimail	sv	Gå tillbaka
+return to options page	felamimail	sv	Gå tillbaka till alternativsidan
+right	felamimail	sv	Höger
+rule	felamimail	sv	Regel
+running squirrelmail version %1 (c) 1999-2000.	felamimail	sv	Running SquirrelMail version %1 (c) 1999-2000.
+same window - not functional yet	felamimail	sv	Samma fönster - inte fungerande än
+sat	felamimail	sv	Lör
+save	felamimail	sv	Spara
+search	felamimail	sv	Sök
+search for	felamimail	sv	Sök efter
+seconds	felamimail	sv	Sekunder
+select	felamimail	sv	Välj
+select all	felamimail	sv	Välj alla
+select emailprofile	felamimail	sv	Välj epost profil
+select home email address	felamimail	sv	Välj hemma epostadress
+select work email address	felamimail	sv	Välj arbets epostadress
+select your mail server type	admin	sv	Välj din epostservertyp
+send	felamimail	sv	Skicka
+sent folder	felamimail	sv	Skickat mappen
+server respond	felamimail	sv	Server svar
+show header	felamimail	sv	visa header
+show new messages on main screen	felamimail	sv	Visa nya meddelanden på förstasidan
+sieve settings	admin	sv	Sieve inställningar
+signature	felamimail	sv	Signatur
+simply click the target-folder	felamimail	sv	Klicka bara på målmappen
+site configuration	felamimail	sv	site inställning
+size	felamimail	sv	Storlek
+size(...->0)	felamimail	sv	Storlek (...->0)
+size(0->...)	felamimail	sv	Storlek (0->...)
+small view	felamimail	sv	liten vy
+smtp settings	admin	sv	SMTP inställningar
