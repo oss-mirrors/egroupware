@@ -1,4 +1,16 @@
 <?php
+  /**************************************************************************\
+  * phpGroupWare - Trouble Ticket System                                     *
+  * http://www.phpgroupware.org                                              *
+  * --------------------------------------------                             *
+  *  This program is free software; you can redistribute it and/or modify it *
+  *  under the terms of the GNU General Public License as published by the   *
+  *  Free Software Foundation; either version 2 of the License, or (at your  *
+  *  option) any later version.                                              *
+  \**************************************************************************/
+
+  /* $Id$ */
+  
   if ($submit) {
      $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
   }
@@ -106,10 +118,10 @@ include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
      $txtDetail = addslashes($txtDetail);
 
      $phpgw->db->query("INSERT INTO ticket (t_category,t_detail,t_priority,t_user,t_assignedto, "
-		 . " t_timestamp_opened,t_subject) VALUES ('$lstCategory','$txtDetail',"
-		 . "'$optPriority','" . $phpgw_info["user"]["userid"] . "','$assignto','"
-		 . time() . "','$subject');");
+		           . " t_timestamp_opened,t_subject) VALUES ('$lstCategory','$txtDetail',"
+ 		           . "'$optPriority','" . $phpgw_info["user"]["userid"] . "','$assignto','"
+		           . time() . "','$subject');");
 
-     Header("Location: " . $phpgw_info["server"]["webserver_url"] . "/tts/?sessionid=" . $sessionid);
+     Header("Location: " . $phpgw->link("index.php"));
   }
 ?>

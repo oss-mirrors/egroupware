@@ -1,10 +1,18 @@
 <?php
+  /**************************************************************************\
+  * phpGroupWare - Trouble Ticket System                                     *
+  * http://www.phpgroupware.org                                              *
+  * --------------------------------------------                             *
+  *  This program is free software; you can redistribute it and/or modify it *
+  *  under the terms of the GNU General Public License as published by the   *
+  *  Free Software Foundation; either version 2 of the License, or (at your  *
+  *  option) any later version.                                              *
+  \**************************************************************************/
+
+  /* $Id$ */
 
   $phpgw_info["flags"]["currentapp"] = "tts";
   include("../header.inc.php");
-// INCLUDE CONFIGURATION FILES
-//include("config/html.conf.php3");
-
 ?>
  <center><?php echo lang_tts("Trouble Ticket System"); ?>
  <p>

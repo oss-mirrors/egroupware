@@ -11,10 +11,10 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  $phpgw_flags["currentapp"] = "headlines";
-  $phpgw_flags["disable_network_class"] = True;
-  $phpgw_flags["disable_vfs_class"] = True;
-  $phpgw_flags["disable_msg_class"] = True;
+  $phpgw_info["flags"]["currentapp"] = "headlines";
+  $phpgw_info["flags"]["disable_network_class"] = True;
+  $phpgw_info["flags"]["disable_vfs_class"] = True;
+  $phpgw_info["flags"]["disable_msg_class"] = True;
   include("../header.inc.php");
   
   $sql = "SELECT site FROM users_headlines "
