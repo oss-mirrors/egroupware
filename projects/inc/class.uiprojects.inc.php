@@ -1476,7 +1476,7 @@
 				(
 					'employees[]',
 					'employees_accounts',
-					array_flip($this->boprojects->get_acl_for_project($project_id?$project_id:$parent['project_id'])),
+					@array_flip($this->boprojects->get_acl_for_project($project_id?$project_id:$parent['project_id'])),
 					'accounts',
 					5,false,'style="width:250px;"'
 				)
