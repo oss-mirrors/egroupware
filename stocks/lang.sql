@@ -1,7 +1,7 @@
 DELETE from lang WHERE app_name='stocks' and lang='en';
-DELETE from lang WHERE message_id='Stock Quotes' AND app_name='preferences' AND lang='en' AND content='Stock Quotes';                                                                           
-DELETE from lang WHERE message_id='Select displayed stocks' AND app_name='preferences' AND lang='en' AND content='Select displayed stocks';                                                     
-DELETE from lang WHERE message_id='Stocks' AND app_name='common' AND lang='en' AND content='Stocks';                                                                                            
+DELETE from lang WHERE message_id='Stock Quotes' AND app_name='preferences' AND lang='en' AND content='Stock Quotes'; 
+DELETE from lang WHERE message_id='Select displayed stocks' AND app_name='preferences' AND lang='en' AND content='Select displayed stocks'; 
+DELETE from lang WHERE message_id='Stocks' AND app_name='common' AND lang='en' AND content='Stocks';
 DELETE from lang WHERE message_id='Stocks' AND app_name='admin' AND lang='en' AND content='Stocks';
 
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Stock Quote preferences','stocks','en','Stock Quote preferences');
@@ -15,4 +15,4 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Stock Quotes','pr
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select displayed stocks','preferences','en','Select displayed stocks');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Stocks','common','en','Stocks');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Stocks','admin','en','Stocks');
-							    
+

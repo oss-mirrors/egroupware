@@ -10,18 +10,18 @@
   \**************************************************************************/
   /* $Id$ */
 
-    $phpgw_info["flags"] = array("currentapp" => "stocks", 
-                               "enable_network_class" => True);
+    $phpgw_info["flags"] = array(
+		"currentapp" => "stocks", 
+		"enable_network_class" => True
+	);
 
-    include("../header.inc.php");
-        
-    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('stocks'));                                                                                                                                     
-    $t->set_file(array( "quotes_list" => "main.tpl"));
-     
-    if ($phpgw_info["user"]["preferences"]["stocks"]["disabled"]) { $t->set_var("quotes",return_quotes($quotes)); }
-    else { $t->set_var("quotes",""); }
-  
-    $t->pparse("out", "quotes_list");
-  
-    $phpgw->common->phpgw_footer();
+	include("../header.inc.php");
+
+	$t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('stocks'));
+	$t->set_file(array( "quotes_list" => "main.tpl"));
+
+	$t->set_var("quotes",return_quotes($quotes));
+	$t->pparse("out", "quotes_list");
+
+	$phpgw->common->phpgw_footer();
 ?>
