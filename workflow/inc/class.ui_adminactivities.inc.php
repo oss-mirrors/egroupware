@@ -298,7 +298,7 @@
 					'act_inter_checked'	=> ($activity['isInteractive'] == 'y')? 'checked="checked"' : '',
 					'act_route_checked'	=> ($activity['isAutoRouted'] == 'y')? 'checked="checked"' : '',
 					'act_href_code'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&pid='. $this->pId .'&activityId='. $activity['activityId']),
-					'act_template'		=> ($activity['isInteractive'] == 'y')? '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=ui_adminsource.form&pid='. $this->pId .'&activityId='. $activity['activityId'] .'&template=1') .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'template') .'" alt="' .lang('template') .'" title="' . lang('template') .'" /></a>' : '',
+					'act_template'		=> ($activity['isInteractive'] == 'y')? '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&pid='. $this->pId .'&activityId='. $activity['activityId'] .'&template=1') .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'template') .'" alt="' .lang('template') .'" title="' . lang('template') .'" /></a>' : '',
 					'img_code'			=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
 					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
 
