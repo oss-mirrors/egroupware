@@ -40,6 +40,9 @@
 			$this->config      = $GLOBALS['phpgw']->config->config_data;
 			$this->url_format_check = True;
 			$this->validate = createobject('phpgwapi.validator');
+
+			$this->translation = &$GLOBALS['phpgw']->translation;
+			$this->charset = $this->translation->charset();
 		}
 
 		function grab_form_values($returnto,$returnto2,$bookmark)
@@ -309,11 +312,13 @@
 			$this->_debug('<table border="1" width="100%">');
 			$this->_debug('<tr><td>cat id</td> <td>sub id</td> <td>name</td> <td>url</td> <td>add date</td> <td>change date</td> <td>vist date</td></tr>');
 
-			//only from PHP 4.2.0
-			//			if ($bkfile['error'])
-			if (!$bkfile['name'])
+			if (!$bkfile['name'] || $bkfile['name'] == 'none' || @$bkfile['error'])
 			{
 				$this->error_msg .= '<br>'.lang('Netscape bookmark filename is required!');
+			}
+			elseif (!$parent)
+			{
+				$this->error_msg .= '<br>'.lang('You need to select a category!');
 			}
 			else
 			{
@@ -328,9 +333,10 @@
 
 					while ($line = @fgets($fd, 2048))
 					{
-						if ((strcmp('<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">', rtrim($line)) == 0) && function_exists('iconv'))
+						$from_charset = False;
+						if (preg_match('/<META HTTP-EQUIV="Content-Type" CONTENT="text\\/html; charset=([^"]*)/',$line,$matches))
 						{
-							 $utf8flag = True;
+							 $from_charset = $matches[1];
 						}
 						// URLs are recognized by A HREF tags in the NS file.
 						elseif (eregi('<A HREF="([^"]*)[^>]*>(.*)</A>', $line, $match))
@@ -345,9 +351,8 @@
 								$values['category'] = end($folderstack);
 								$values['url']      = $match[1];
 
-								//if iconv fails, fall back to undecoded string
-								$name_iconv = ($utf8flag ? iconv('UTF-8','ISO-8859-1',$match[2]) : False);
-								$values['name']     = ($name_iconv ? $name_iconv : $match[2]);
+								$values['name']     = str_replace(array('&amp;','&lt;','&gt;','&quote;','&#039;'),
+									array('&','<','>','"',"'"),$this->translation->convert($match[2],$from_charset));
 								$values['rating']   = $default_rating;
 
 								eregi('ADD_DATE="([^"]*)"',$line,$add_info);
@@ -370,9 +375,7 @@
 						// folder hierarchy.
 						elseif (eregi('<H3[^>]*>(.*)</H3>', $line, $match))
 						{
-							//if iconv fails, fall back to undecoded string
-							$folder_name_iconv = ($utf8flag ? iconv('UTF-8','ISO-8859-1',$match[1]) : False);
-							$folder_name = ($folder_name_iconv ? $folder_name_iconv : $match[1]);
+							$folder_name = $this->translation->convert($match[1],$from_charset);
 
 							$current_cat_id = $this->get_category($folder_name,end($folderstack));
 							array_push($folderstack,$current_cat_id);
@@ -430,7 +433,7 @@
 			}
 
 			$t->set_var(array(
-				'catname' => iconv("ISO-8859-1","UTF-8",$GLOBALS['phpgw']->strip_html($this->categories->id2name($catid))),
+				'catname' => $this->translation->convert($GLOBALS['phpgw']->strip_html($this->categories->id2name($catid)),$this->charset,'utf-8'),
 				'catid' => $catid,
 				'folded' => (in_array($catid,$this->expanded) ? 'no' : 'yes')
 			));
@@ -441,8 +444,8 @@
 			{
 				$t->set_var(array(
 					'url' => $bookmark['url'],
-					'name' => iconv("ISO-8859-1","UTF-8",$bookmark['name']),
-					'desc' => iconv("ISO-8859-1","UTF-8",$bookmark['desc'])
+					'name' => $this->translation->convert($bookmark['name'],$this->charset,'utf-8'),
+					'desc' => $this->translation->convert($bookmark['desc'],$this->charset,'utf-8'),
 				));
 				$t->fp('urls','urllist',True);
 			}

@@ -20,7 +20,7 @@
  </tr>
  <tr>
   <td colspan="2" align="right">
-   <input type="submit" name="export" value="Exporter Signets">
+   <input type="submit" name="export" value="{lang_export_bookmarks}">
   </td>
  </tr>
 </table>

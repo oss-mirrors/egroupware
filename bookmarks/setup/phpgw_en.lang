@@ -25,8 +25,7 @@ descending	bookmarks	en	Descending
 edit bookmark	bookmarks	en	Edit bookmark
 edit this bookmark	bookmarks	en	Edit this bookmark
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	en	Enter the name of the Netscape bookmark file<br>that you want imported into bookmarker below.
-export bookmarks	preferences	en	Export Bookmarks
-export bookmarks	bookmarks	en	Export Bookmarks
+export bookmarks	common	en	Export Bookmarks
 fewer	bookmarks	en	Fewer
 filter by	bookmarks	en	Filter by
 found a link you might like	bookmarks	en	Found a link you might like
@@ -34,8 +33,7 @@ from	bookmarks	en	From
 from category %1	bookmarks	en	from category %1
 highest	bookmarks	en	Highest
 i thought you would be interested in the following link(s):	bookmarks	en	I thought you would be interested in the following link(s):
-import bookmarks	preferences	en	Import bookmarks
-import bookmarks	bookmarks	en	Import bookmarks
+import bookmarks	common	en	Import bookmarks
 like	bookmarks	en	like
 list	bookmarks	en	List
 lowest	bookmarks	en	Lowest
