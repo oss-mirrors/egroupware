@@ -72,7 +72,7 @@
 <tr bgcolor="#D3DCE3">
 	<td colspan="3" align="left">
 		<a href="javascript:check_all('{form_name}')"><img src="/phpgroupware/email/templates/default/images/check.gif" border="0" height="16" width="21"></a>&nbsp;&nbsp;
-	<a href="javascript:do_action('{form_name}', 'delall')"><img src="/phpgroupware/email/templates/default/images/evo-trash-24.gif" border="0" alt="[image]">&nbsp;Delete</a>
+	<a href="javascript:do_action('{form_name}', 'delall')"><img src="/phpgroupware/email/templates/default/images/evo/trash-24.gif" border="0" alt="[image]">&nbsp;Delete</a>
 	</td>
 	<td colspan="3" align="right">
 		<select name="to_fldball_fake_uri" onChange="do_action('{form_name}', 'move')">
