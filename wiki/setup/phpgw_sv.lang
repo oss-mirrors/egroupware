@@ -1,5 +1,5 @@
 (don't offer the possibility)	admin	sv	(erbjud inte möjligheten)
-<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	sv	<em>Men</em> visa åtminstone så många poster i SenasteÄndring och andra prenumerations listor:
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	sv	<em>Men</em> visa åtminstone så många poster i Senaste Ändring och andra prenumerationsistor:
 add document to category	wiki	sv	Lägg till dokument i kategori
 added	wiki	sv	Tillagd
 administration features are disabled for this wiki.	wiki	sv	Administrations möjligheterna är avaktiverade i denna Wiki.
@@ -36,7 +36,7 @@ emailaddress administrator	admin	sv	E-post adress administratör
 enable free links	admin	sv	Aktivera "Fria länkar"
 enable wiki links	admin	sv	Aktiver "Wiki länkar"
 enter here the maximum number of entries to display in a document's history list.	wiki	sv	Antal poster som visas i dokumentets historik.
-enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	sv	Ange antal dagar med ändringar att visa i SenasteÄndringar eller i annan prenumerations tjänst. Sätt till noll för att se alla sidor i SenasteÄndringar, oavsett när ändringen gjordes.
+enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	sv	Ange antal dagar med ändringar att visa i Senaste Ändringar eller i annan prenumerations tjänst. Sätt till noll för att se alla sidor i Senaste Ändringar, oavsett när ändringen gjordes.
 enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	sv	Ange IP adress omfång enligt <tt>12.*</tt>, <tt>34.56.*</tt> eller <tt>78.90.123.*</tt>
 error creating temporary file.	wiki	sv	Fel vid skapande av temporär fil.
 error writing to temporary file.	wiki	sv	Fel vid skrivning till temporär fil.
@@ -92,6 +92,6 @@ writable by	wiki	sv	Skrivbar för
 yes always	admin	sv	Alltid ja
 you have been denied access to this site.	wiki	sv	Du nekas tillträde till denna site.
 you have entered an invalid user name.	wiki	sv	Du har angett ett ogiltigt användarnamn.
-you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	sv	Du har besökt fler sidor änn du har rätt till under given period. Var god och återkom senare.
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	sv	Du har besökt fler sidor än du har rätt till under given period. Var god och återkom senare.
 your changes	wiki	sv	Dina ändringar
 your user name is "%1".	wiki	sv	Ditt användarnamn är "%1".

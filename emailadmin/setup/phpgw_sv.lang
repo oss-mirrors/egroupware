@@ -16,7 +16,7 @@ email account active	emailadmin	sv	Aktivt e-post konto
 email address	emailadmin	sv	e-post adress
 emailadmin	emailadmin	sv	E-post administration
 enable cyrus imap server administration	emailadmin	sv	Aktivera Cyrus IMAP server administration
-enable sieve	emailadmin	sv	Aktiver Sieve
+enable sieve	emailadmin	sv	Aktivera Sieve
 enter your default mail domain (from: user@domain)	emailadmin	sv	Standard e-post domän (från: user@domain)
 forward also to	emailadmin	sv	Vidarebefodra även till
 forward email's to	emailadmin	sv	Vidarebefodra e-post till
