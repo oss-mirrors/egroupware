@@ -136,4 +136,105 @@
 		$GLOBALS['setup_info']['felamimail']['currentver'] = '1.0.0';
 		return $GLOBALS['setup_info']['felamimail']['currentver'];
 	}
+
+
+	$test[] = '1.0.0';
+	function felamimail_upgrade1_0_0()
+	{
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','accountid','fmail_accountid');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','hostname','fmail_hostname');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','accountname','fmail_accountname');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','foldername','fmail_foldername');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','uid','fmail_uid');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','subject','fmail_subject');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','striped_subject','fmail_striped_subject');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','sender_name','fmail_sender_name');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','sender_address','fmail_sender_address');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','to_name','fmail_to_name');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','to_address','fmail_to_address');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','date','fmail_date');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','size','fmail_size');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_cache','attachments','fmail_attachments');
+		$GLOBALS['phpgw_setup']->oProc->RefreshTable('phpgw_felamimail_cache',array(
+			'fd' => array(
+				'fmail_accountid' => array('type' => 'int','precision' => '4','nullable' => False),
+				'fmail_hostname' => array('type' => 'varchar','precision' => '60','nullable' => False),
+				'fmail_accountname' => array('type' => 'varchar','precision' => '25','nullable' => False),
+				'fmail_foldername' => array('type' => 'varchar','precision' => '200','nullable' => False),
+				'fmail_uid' => array('type' => 'int','precision' => '4','nullable' => False),
+				'fmail_subject' => array('type' => 'text'),
+				'fmail_striped_subject' => array('type' => 'text'),
+				'fmail_sender_name' => array('type' => 'varchar','precision' => '120'),
+				'fmail_sender_address' => array('type' => 'varchar','precision' => '120'),
+				'fmail_to_name' => array('type' => 'varchar','precision' => '120'),
+				'fmail_to_address' => array('type' => 'varchar','precision' => '120'),
+				'fmail_date' => array('type' => 'int','precision' => '8'),
+				'fmail_size' => array('type' => 'int','precision' => '4'),
+				'fmail_attachments' => array('type' => 'varchar','precision' => '120')
+			),
+			'pk' => array('fmail_accountid','fmail_hostname','fmail_accountname','fmail_foldername','fmail_uid'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		));
+
+		$GLOBALS['setup_info']['felamimail']['currentver'] = '1.0.0.001';
+		return $GLOBALS['setup_info']['felamimail']['currentver'];
+	}
+
+
+	$test[] = '1.0.0.001';
+	function felamimail_upgrade1_0_0_001()
+	{
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_folderstatus','accountid','fmail_accountid');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_folderstatus','hostname','fmail_hostname');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_folderstatus','accountname','fmail_accountname');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_folderstatus','foldername','fmail_foldername');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_folderstatus','messages','fmail_messages');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_folderstatus','recent','fmail_recent');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_folderstatus','unseen','fmail_unseen');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_folderstatus','uidnext','fmail_uidnext');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_folderstatus','uidvalidity','fmail_uidvalidity');
+		$GLOBALS['phpgw_setup']->oProc->RefreshTable('phpgw_felamimail_folderstatus',array(
+			'fd' => array(
+				'fmail_accountid' => array('type' => 'int','precision' => '4','nullable' => False),
+				'fmail_hostname' => array('type' => 'varchar','precision' => '60','nullable' => False),
+				'fmail_accountname' => array('type' => 'varchar','precision' => '200','nullable' => False),
+				'fmail_foldername' => array('type' => 'varchar','precision' => '200','nullable' => False),
+				'fmail_messages' => array('type' => 'int','precision' => '4'),
+				'fmail_recent' => array('type' => 'int','precision' => '4'),
+				'fmail_unseen' => array('type' => 'int','precision' => '4'),
+				'fmail_uidnext' => array('type' => 'int','precision' => '4'),
+				'fmail_uidvalidity' => array('type' => 'int','precision' => '4')
+			),
+			'pk' => array('fmail_accountid','fmail_hostname','fmail_accountname','fmail_foldername'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		));
+
+		$GLOBALS['setup_info']['felamimail']['currentver'] = '1.0.0.002';
+		return $GLOBALS['setup_info']['felamimail']['currentver'];
+	}
+
+
+	$test[] = '1.0.0.002';
+	function felamimail_upgrade1_0_0_002()
+	{
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_displayfilter','accountid','fmail_filter_accountid');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_felamimail_displayfilter','filter','fmail_filter_data');
+		$GLOBALS['phpgw_setup']->oProc->RefreshTable('phpgw_felamimail_displayfilter',array(
+			'fd' => array(
+				'fmail_filter_accountid' => array('type' => 'int','precision' => '4','nullable' => False),
+				'fmail_filter_data' => array('type' => 'text')
+			),
+			'pk' => array('fmail_filter_accountid'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		));
+
+		$GLOBALS['setup_info']['felamimail']['currentver'] = '1.0.0.003';
+		return $GLOBALS['setup_info']['felamimail']['currentver'];
+	}
 ?>

@@ -13,7 +13,7 @@
 
 	$setup_info['felamimail']['name']      		= 'felamimail';
 	$setup_info['felamimail']['title']     		= 'FeLaMiMail';
-	$setup_info['felamimail']['version']		= '1.0.0';
+	$setup_info['felamimail']['version']     	= '1.0.0.003';
 	$setup_info['felamimail']['app_order'] 		= 2;
 	$setup_info['felamimail']['enable']    		= 1;
 
@@ -50,4 +50,6 @@
 		'appname'  => 'emailadmin',
 		'versions' => Array('0.0.008','1.0.0')
 	);
-?>
+
+
+

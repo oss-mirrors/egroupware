@@ -22,39 +22,34 @@
 			'flagMessages'		=> True
 		);
 		*/
+		var $filter_table = 'phpgw_felamimail_displayfilter';	// only reference to table-prefix
 
 		function sofilter()
 		{
 			$this->accountid	= $GLOBALS['phpgw_info']['user']['account_id'];
-			
 		}
 		
 		function saveFilter($_filterArray)
 		{
-			#$data = $GLOBALS['phpgw']->crypto->encrypt($_filterArray);
-			$data = addslashes(serialize($_filterArray));
-			$query = sprintf("delete from phpgw_felamimail_displayfilter where accountid='%s'",
-				$this->accountid);
-			$GLOBALS['phpgw']->db->query($query);
-
-			$query = sprintf("insert into phpgw_felamimail_displayfilter(accountid,filter) values('%s','%s')",
-				$this->accountid,$data);
-			$GLOBALS['phpgw']->db->query($query);
+			$GLOBALS['phpgw']->db->insert($this->filter_table,array(
+					'fmail_filter_data' => serialize($_filterArray)
+				),array(
+					'fmail_filter_accountid' => $this->accountid
+				),__LINE__,__FILE__,'felamimail');
 
 			unset($this->sessionData['filter'][$_filterID]);
 		}
 		
 		function restoreFilter()
 		{
-			$query = sprintf("select filter from phpgw_felamimail_displayfilter where accountid='%s'",
-				$this->accountid);
-			$GLOBALS['phpgw']->db->query($query);
+			$GLOBALS['phpgw']->db->select($this->filter_table,'fmail_filter_data',array(
+					'fmail_filter_accountid' => $this->accountid
+				),__LINE__,__FILE__,False,False,'felamimail');
 			
-			if ($GLOBALS['phpgw']->db->num_rows() > 0)
+			
+			if ($GLOBALS['phpgw']->db->next_record())
 			{
-				$GLOBALS['phpgw']->db->next_record();
-				#$filter = $GLOBALS['phpgw']->crypto->decrypt($GLOBALS['phpgw']->db->f('filter'));
-				$filter = unserialize($GLOBALS['phpgw']->db->f('filter'));
+				$filter = unserialize($GLOBALS['phpgw']->db->f('fmail_filter_data'));
 				return $filter;
 			}
 		}

@@ -20,6 +20,9 @@
 			'addAtachment'	=> True,
 			'action'	=> True
 		);
+		var $cache_table = 'phpgw_felamimail_cache';
+		var $folder_table = 'phpgw_felamimail_folderstatus';
+		var $hostname,$accountname,$foldername,$accountid,$host_account_folder;	// set by the constructor
 		
 		function socaching($_hostname, $_accountname, $_foldername, $_accountid)
 		{
@@ -28,196 +31,157 @@
 			$this->foldername	= $_foldername;
 			$this->accountid	= $_accountid;
 			
-			$this->db		= $GLOBALS['phpgw']->db;
+			$this->host_account_folder = array(
+				'fmail_accountid'	=> $this->accountid,
+				'fmail_hostname'	=> $this->hostname,
+				'fmail_foldername'	=> $this->foldername,
+				'fmail_accountname'	=> $this->accountname,
+			);
+			
+			$this->db = $GLOBALS['phpgw']->db;
+			$this->db->set_app('felamimail');
 		}
 		
 		function addToCache($_data)
 		{
-		
-			$query = 'insert into phpgw_felamimail_cache '.
-					 '(accountid, hostname, foldername, accountname, uid, date, subject, sender_name, sender_address, to_name, to_address, size, attachments) '.
-					 "values('".$this->accountid
-					 ."','".addslashes($this->hostname)
-					 ."','".addslashes($this->foldername)
-					 ."','".addslashes($this->accountname)
-					 ."','".$_data['uid']
-					 ."','".$_data['date']
-					 ."','".addslashes($_data['subject'])
-					 ."','".addslashes($_data['sender_name'])
-					 ."','".addslashes($_data['sender_address'])
-					 ."','".addslashes($_data['to_name'])
-					 ."','".addslashes($_data['to_address'])
-					 ."','".$_data['size']
-					 ."','".$_data['attachments']
-					 ."')";
-		
-			$this->db->query($query);
+			// we need to truncate the to_address field, as it can be easyly longer then the
+			// allowed size of atm. 120 chars, DB's other then mysql, give an SQL error
+			$table_def = $this->db->get_table_definitions('',$this->cache_table);
+			$to_address_size = $table_def['fd']['fmail_to_address']['precision'];
+			unset($table_def);
 			
-			#print "$query<br>";
+			$this->db->insert($this->cache_table,array_merge($this->host_account_folder,array(
+				'fmail_uid'				=> $_data['uid'],
+				'fmail_date'			=> $_data['date'],
+				'fmail_subject'			=> $_data['subject'],
+				'fmail_sender_name'		=> $_data['sender_name'],
+				'fmail_sender_address'	=> $_data['sender_address'],
+				'fmail_to_name'			=> $_data['to_name'],
+				'fmail_to_address'		=> substr($_data['to_address'],0,$to_address_size),
+				'fmail_size'			=> $_data['size'],
+				'fmail_attachments'		=> $_data['attachments'],
+			)),False,__LINE__,__FILE__);	
 		}
 		
-		// create sql from the filter array
+		/**
+		 * create sql from the filter array
+		 *
+		 * @param array $_filter values/searchpattern for 'from', 'to' or 'subject'
+		 * @return string SQL to be AND'ed into a query
+		 */
 		function getFilterSQL($_filter)
 		{
+			$filter = '';
+
 			if(is_array($_filter))
 			{
-				$filter = '';
-				while(list($key,$value) = @each($_filter))
+				foreach($_filter as $key => $value)
 				{
-					if($filter != '') $filter .= " or ";
+					$value = $this->db->quote('%'.$value.'%');
+
+					if($filter != '') $filter .= 'OR ';
+
 					switch($key)
 					{
-						case "from":
-							$filter .= "(sender_name like '%$value%' or sender_address like '%$value%') ";
+						case 'from':
+							$filter .= "(fmail_sender_name LIKE $value OR fmail_sender_address LIKE $value) ";
 							break;
-						case "to":
-							$filter .= "(to_name like '%$value%' or to_address like '%$value%') ";
+						case 'to':
+							$filter .= "(fmail_to_name LIKE $value OR fmail_to_address LIKE $value) ";
 							break;
-						case "subject":
-							$filter .= "subject like '%$value%' ";
+						case 'subject':
+							$filter .= "fmail_subject LIKE $value ";
 							break;
 					}
 				}
-				if($filter != '') $filter = " and ($filter) ";
-				return $filter;
+				if($filter != '') $filter = "($filter) ";
 			}
-			return '';
-			
+			return $filter;
 		}
 		
 		function getHeaders($_firstMessage='', $_numberOfMessages='', $_sort='', $_filter='')
 		{
-			$sort = $this->getSortSQL($_sort);
+			$where = $this->host_account_folder;
 			$filter = $this->getFilterSQL($_filter);
-			
-			$query = sprintf("select uid, date, subject, sender_name, sender_address, to_name, to_address, size, attachments from phpgw_felamimail_cache ".
-					 "where accountid='%s' and hostname='%s' and foldername = '%s' and accountname='%s' %s $sort",
-					 $this->accountid, addslashes($this->hostname),
-					 addslashes($this->foldername), addslashes($this->accountname),
-					 $filter);
-			
-			if($_firstMessage == '' && $_numberOfMessages == '')
-			{
-				$this->db->query("$query",__LINE__,__FILE__);
-			}
-			else
-			{
-				$this->db->limit_query("$query",$_firstMessage-1,__LINE__,__FILE__,$_numberOfMessages);
-			}
+			if ($filter) $where[] = $filter;
+				
+			$this->db->select($this->cache_table,'fmail_uid,fmail_date,fmail_subject,fmail_sender_name,fmail_sender_address,fmail_to_name,fmail_to_address,fmail_size,fmail_attachments',
+				$where,__LINE__,__FILE__,$_firstMessage,$this->getSortSQL($_sort),False,$_numberOfMessages);
+				
 			while($this->db->next_record())
 			{
 				$retValue[] = array(
-						'uid'			=> $this->db->f('uid'),
-						'sender_name'		=> $this->db->f('sender_name'), 
-						'sender_address'	=> $this->db->f('sender_address'), 
-						'to_name'		=> $this->db->f('to_name'), 
-						'to_address'		=> $this->db->f('to_address'),
-						'attachments'		=> $this->db->f('attachments'),
-						'date'			=> $this->db->f('date')
-						);
+					'uid'			=> $this->db->f('fmail_uid'),
+					'sender_name'	=> $this->db->f('fmail_sender_name'), 
+					'sender_address'=> $this->db->f('fmail_sender_address'), 
+					'to_name'		=> $this->db->f('fmail_to_name'), 
+					'to_address'	=> $this->db->f('fmail_to_address'),
+					'attachments'	=> $this->db->f('fmail_attachments'),
+					'date'			=> $this->db->f('fmail_date')
+				);
 			}
 			return $retValue;
 		}
 		
-		//return the cached status numbers
-		// 
-		// return values
-		// 0 : nothing cached for this folder so far
-		// array with the currently cached infos
+		/**
+		 * get folder status
+		 * @return array/int array with the currently cached infos or 0 if nothing cached for this folder so far
+		 */
 		function getImapStatus()
 		{
-			$query = sprintf("select messages,recent,unseen,uidnext,uidvalidity ".
-					 "from phpgw_felamimail_folderstatus where ".
-					 "hostname='%s' and ".
-					 "accountname='%s' and ".
-					 "foldername='%s' and ".
-					 "accountid='%s'",
-					 $this->hostname, 
-					 $this->accountname,
-					 $this->foldername,
-					 $this->accountid);
-			$this->db->query($query);
+			$this->db->select($this->folder_table,'fmail_messages,fmail_recent,fmail_unseen,fmail_uidnext,fmail_uidvalidity',
+				$this->host_account_folder,__LINE__,__FILE__);
+
 			if ($this->db->next_record())
 			{
-				$retValue = array
-				(
-					'messages'	=> $this->db->f("messages"),
-					'recent'	=> $this->db->f("recent"),
-					'unseen'	=> $this->db->f("unseen"),
-					'uidnext'	=> $this->db->f("uidnext"),
-					'uidvalidity'	=> $this->db->f("uidvalidity")
+				return array(
+					'messages'		=> $this->db->f('fmail_messages'),
+					'recent'		=> $this->db->f('fmail_recent'),
+					'unseen'		=> $this->db->f('fmail_unseen'),
+					'uidnext'		=> $this->db->f('fmail_uidnext'),
+					'uidvalidity'	=> $this->db->f('fmail_uidvalidity')
 				);
-				return $retValue;
 			}
-			else
-			{
-				return 0;
-			}
+			return 0;
 		}
 		
-		// return the numbers of messages in cache currently
-		// but use the use filter
+		/**
+		 * Numbers of messages in cache currently, by using the given filter
+		 * @param array $filter see getFilterSQL
+		 * @return int 
+		 */
 		function getMessageCounter($_filter)
 		{
-			if(is_array($_filter))
-			{
-				$filter = '';
-				while(list($key,$value) = @each($_filter))
-				{
-					if($filter != '') $filter .= " or ";
-					switch($key)
-					{
-						case "from":
-							$filter .= "(sender_name like '%$value%' or sender_address like '%$value%') ";
-							break;
-						case "to":
-							$filter .= "(to_name like '%$value%' or to_address like '%$value%') ";
-							break;
-						case "subject":
-							$filter .= "subject like '%$value%' ";
-							break;
-					}
-				}
-				if($filter !='') $filter = " and ($filter) ";
-			}
+			$where = $this->host_account_folder;
+			$filter = $this->getFilterSQL($_filter);
+			if ($filter) $where[] = $filter;
 			
-			$query = sprintf("select count(*) as count from phpgw_felamimail_cache ".
-					 "where accountid='%s' and hostname='%s' and foldername = '%s' and accountname='%s' %s",
-					 $this->accountid, addslashes($this->hostname),
-					 addslashes($this->foldername), addslashes($this->accountname),
-					 $filter);
-			#print "<br>$query<br>";
+			$this->db->select($this->cache_table,'count(*)',$where,__LINE__,__FILE__);
 			
-			$this->db->query("$query",__LINE__,__FILE__);
-			
-			$this->db->next_record();
-			
-			return $this->db->f("count");
+			return $this->db->next_record() ? $this->db->f(0) : 0;
 		}
 		
-		// get the next message
+		/**
+		 * get the next message
+		 */
 		function getNextMessage($_uid, $_sort='', $_filter='')
 		{
-			$sort = $this->getSortSQL($_sort);
+			$where = $this->host_account_folder;
 			$filter = $this->getFilterSQL($_filter);
-			
-			$query = sprintf("select uid, date, subject, sender_name, sender_address, to_name, to_address from phpgw_felamimail_cache ".
-					 "where accountid='%s' and hostname='%s' and foldername = '%s' and accountname='%s' %s $sort",
-					 $this->accountid, addslashes($this->hostname),
-					 addslashes($this->foldername), addslashes($this->accountname),
-					 $filter);
+			if ($filter) $where[] = $filter;
+				
+			$this->db->select($this->cache_table,'fmail_uid',
+				$where,__LINE__,__FILE__,FALSE,$this->getSortSQL($_sort));
 
-			$this->db->query($query,__LINE__,__FILE__);
-			
 			while($this->db->next_record())
 			{
 				// we found the current message
-				if($this->db->f('uid') == $_uid)
+				if($this->db->f('fmail_uid') == $_uid)
 				{
 					// jump to the next messages
 					if($this->db->next_record())
 					{
-						$retValue['next'] = $this->db->f('uid');
+						$retValue['next'] = $this->db->f('fmail_uid');
 					}
 					// we are done
 					if($retValue) return $retValue;
@@ -228,7 +192,7 @@
 				else
 				{
 					// we found (maybe!) the previous message
-					$retValue['previous'] = $this->db->f('uid');
+					$retValue['previous'] = $this->db->f('fmail_uid');
 				}
 			}
 			
@@ -241,64 +205,51 @@
 			switch($_sort)
 			{
 				case "0":
-					$sort = "order by date desc";
+					$sort = "ORDER BY fmail_date DESC";
 					break;
 				case "1":
-					$sort = "order by date asc";
+					$sort = "ORDER BY fmail_date ASC";
 					break;
 				case "2":
-					$sort = "order by sender_address desc";
+					$sort = "ORDER BY fmail_sender_address DESC";
 					break;
 				case "3":
-					$sort = "order by sender_address asc";
+					$sort = "ORDER BY fmail_sender_address ASC";
 					break;
 				case "4":
-					$sort = "order by subject desc";
+					$sort = "ORDER BY fmail_subject DESC";
 					break;
 				case "5":
-					$sort = "order by subject asc";
+					$sort = "ORDER BY fmail_subject ASC";
 					break;
 				case "6":
-					$sort = "order by size desc";
+					$sort = "ORDER BY fmail_size DESC";
 					break;
 				case "7":
-					$sort = "order by size asc";
+					$sort = "ORDER BY fmail_size ASC";
 					break;
 				default:
-					$sort = "order by date desc";
+					$sort = "ORDER BY fmail_date DESC";
 			}
 			return $sort;
 		}
 		
 		function removeFromCache($_uid)
 		{
-			$query = sprintf("delete from phpgw_felamimail_cache ".
-					 "where accountid='%s' and hostname='%s' and foldername = '%s' and accountname='%s' ".
-					 "and uid='%s'",
-					 $this->accountid, addslashes($this->hostname),
-					 addslashes($this->foldername), addslashes($this->accountname),
-					 $_uid);
-			$this->db->query($query);
-			
-			#print "$query<br>";
+			$this->db->delete($this->cache_table,array_merge($this->host_account_folder,array(
+					'fmail_uid'			=> $_uid,
+				)),__LINE__,__FILE__);
 		}
 		
 		function updateImapStatus($_status, $firstUpdate)
 		{
-			$query = sprintf("delete from phpgw_felamimail_folderstatus where ".
-				 "accountid='%s' and hostname='%s' and foldername='%s' and accountname='%s'",
-				 $this->accountid, addslashes($this->hostname),
-				 addslashes($this->foldername), addslashes($this->accountname));
-			$this->db->query($query);
-
-			$query = sprintf("insert into phpgw_felamimail_folderstatus ".
-				 "(accountid,hostname,foldername,accountname,messages,recent,unseen,uidnext,uidvalidity) ".
-				 "values('%s','%s','%s','%s','%s','%s','%s','%s','%s')",
-				 $this->accountid, addslashes($this->hostname),
-				 addslashes($this->foldername), addslashes($this->accountname),
-				 $_status->messages, $_status->recent, $_status->unseen, $_status->uidnext,
-				 $_status->uidvalidity);
-			$this->db->query($query);
+			$this->db->insert($this->folder_table,array(
+					'fmail_messages'	=> $_status->messages,
+					'fmail_recent'		=> $_status->recent,
+					'fmail_unseen'		=> $_status->unseen,
+					'fmail_uidnext'		=> $_status->uidnext,
+					'fmail_uidvalidity'	=> $_status->uidvalidity,
+				),$this->host_account_folder,__LINE__,__FILE__);
 		}
 	}
 ?>
