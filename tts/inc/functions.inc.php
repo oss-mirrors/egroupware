@@ -62,12 +62,12 @@
 				$pref = CreateObject('phpgwapi.preferences',$members[$i]['account_id']);
 				$prefs = $pref->read_repository();
 				$prefs = $phpgw->common->create_emailpreferences($prefs,$members[$i]['account_id']);
-				$toarray[$i] = $prefs["email"]["address"];
+				$toarray[] = $prefs["email"]["address"];
 				//echo '<br>'.$toarray[$i];
 				unset($pref);
 			}
 		}
-		if(count($toarray))
+		if(count($toarray) > 1)
 		{
 			$to = implode(",",$toarray);
 		}
