@@ -45,7 +45,8 @@
 		}
 		$cat_opt = $c['cat_opt'];
 	} else {
-		$c = get_class_vars('fud_cat');
+		$new = fud_cat;
+		$c = get_object_vars($tmp);
 		foreach ($c as $k => $v) {
 			${'cat_'.$k} = '';
 		}

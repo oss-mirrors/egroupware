@@ -69,7 +69,8 @@ function get_max_upload_size()
 			${'frm_'.$k} = $v;
 		}
 	} else {
-		$c = get_class_vars('fud_forum');
+		$tmp = new fud_forum;
+		$c = get_object_vars($tmp);
 		foreach ($c as $k => $v) {
 			${'frm_'.$k} = '';
 		}

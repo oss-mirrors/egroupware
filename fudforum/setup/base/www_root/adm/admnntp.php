@@ -35,7 +35,8 @@
 			${'nntp_' . $k} = $v;
 		}
 	} else { /* Set the some default values */
-		$c = get_class_vars('fud_nntp_adm');
+		$tmp = new fud_nntp_adm;
+		$c = get_object_vars($tmp);
 		foreach ($c as $k => $v) {
 			${'nntp_' . $k} = $v;
 		}

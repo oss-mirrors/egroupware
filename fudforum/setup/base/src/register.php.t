@@ -247,7 +247,7 @@ function decode_uent(&$uent)
 		$old_avatar = $uent->avatar;
 
 		/* import data from _POST into $uent object */
-		$vars = array_keys(get_class_vars("fud_user"));
+		$vars = array_keys(get_object_vars($uent));
 		foreach ($vars as $v) {
 			if (isset($_POST['reg_'.$v])) {
 				$uent->{$v} = $_POST['reg_'.$v];

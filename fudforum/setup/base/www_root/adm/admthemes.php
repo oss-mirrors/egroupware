@@ -172,7 +172,8 @@ function clean_code($path, $toks)
 		closedir($dir);
 	}
 	if (!$edit) {
-		$c = get_class_vars('fud_theme');
+		$tmp = new fud_theme;
+		$c = get_object_vars($tmp);
 		foreach ($c as $k => $v) {
 			${'thm_'.$k} = '';
 		}

@@ -51,7 +51,8 @@ function format_regex(&$regex)
 		$ml_subject_regex_haystack_opt = format_regex($ml_subject_regex_haystack);
 		$ml_body_regex_haystack_opt = format_regex($ml_body_regex_haystack);
 	} else {
-		$c = get_class_vars('fud_mlist');
+		$tmp = new fud_mlist;
+		$c = get_object_vars($tmp);
 		foreach ($c as $k => $v) {
 			${'ml_' . $k} = $v;
 		}
