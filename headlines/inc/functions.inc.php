@@ -11,6 +11,8 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
+  /* $Id$ */
+
   function headlines_update($lid,$headlines)
   {
      global $phpgw;

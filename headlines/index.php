@@ -11,6 +11,8 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
+  /* $Id$ */
+
   $phpgw_info["flags"]["currentapp"] = "headlines";
   $phpgw_info["flags"]["disable_vfs_class"] = True;
   $phpgw_info["flags"]["disable_msg_class"] = True;
@@ -67,3 +69,4 @@
 <p>
 <?php
   include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+?>
