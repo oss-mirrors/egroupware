@@ -31,8 +31,8 @@
 
 	<tr bgcolor="{tr_color}">                                                                                                                                                                
 		<td>{lid}</td>
-		<td>{lastname}</td>
 		<td>{firstname}</td>
+		<td>{lastname}</td>
 	</tr>
 
 <!-- END admin_list -->
