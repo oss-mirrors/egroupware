@@ -35,7 +35,7 @@
 //	$GLOBALS['phpgw']->template->set_var('massupdate_mail_icon','<input type="image" name="mail" border="0" src="' . PHPGW_IMAGES . '/mail.gif">');
 
 	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-	$GLOBALS['phpgw']->template->set_var('messages',lang('Tree view'));
+//	$GLOBALS['phpgw']->template->set_var('messages',lang('Tree view'));
 
 	$location_info = $GLOBALS['phpgw']->bookmarks->read_session_data();
 	if (! is_array($location_info))
