@@ -362,7 +362,7 @@
 				  else
 				  {
 					 $plugin_conf_arr=$this->bo->so->get_field_values($this->object_values[object_id],$field['name']);
-
+					 
 					 if($plugin_conf_arr[field_plugins])
 					 {
 						$plugin_settings=unserialize(base64_decode($plugin_conf_arr[field_plugins]));
@@ -371,7 +371,18 @@
 						{
 						   $plg_name=$plugin_settings[name];
 						}
-					 }
+
+						 $this->template->set_var('mandatory',(($plugin_conf_arr[field_mandatory]==1) ? ' checked' : ''));
+						 $this->template->set_var('default',(($plugin_conf_arr[field_show_default]==1) ? ' checked' : ''));
+						 $this->template->set_var('position',$plugin_conf_arr[field_position]);
+					}
+					else
+					{
+							//default values:
+						 $this->template->set_var('mandatory', '');
+						 $this->template->set_var('default', ' checked');
+						 $this->template->set_var('position', '');
+					}
 				  }
 
 				  $this->template->set_var('field_name',$field['name']);
@@ -385,9 +396,9 @@
 
 				  if ($options) 
 				  {
-					 $popup_onclick_plug='parent.window.open(\''.$GLOBALS['phpgw']->link('/jinn/plgconfwrapper.php','screen=plugconf').'&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&field_name='.$field['name'].'&object_id='.$this->object_values['object_id'].'&hidden_val='.rawurlencode($plg_conf).'\', \'pop'.$field['name'].'\', \'width=600,height=500,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')';
+					 $popup_onclick_plug='parent.window.open(\''.$GLOBALS['phpgw']->link('/jinn/plgconfwrapper.php','screen=plugconf').'&plug_orig='.$plg_name.'&plug_name=\'+document.frm.FIELD_'.$field['name'].'_PLG.value+\'&hidden_name=FIELD_'.$field['name'].'_PLC&field_name='.$field['name'].'&object_id='.$this->object_values['object_id'].'&hidden_val='.rawurlencode($plg_conf).'\', \'pop'.$field['name'].'\', \'width=600,height=500,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')';
 
-					 $popup_onclick_name_and_help='parent.window.open(\''.$GLOBALS['phpgw']->link('/jinn/plgconfwrapper.php','screen=helpconf').'&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&field_name='.$field['name'].'&object_id='.$this->object_values['object_id'].'&hidden_val='.rawurlencode($plg_conf).'\', \'pop'.$field['name'].'\', \'width=500,height=400,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')';
+					 $popup_onclick_name_and_help='parent.window.open(\''.$GLOBALS['phpgw']->link('/jinn/plgconfwrapper.php','screen=helpconf').'&plug_orig='.$plg_name.'&plug_name=\'+document.frm.FIELD_'.$field['name'].'_PLG.value+\'&hidden_name=FIELD_'.$field['name'].'_PLC&field_name='.$field['name'].'&object_id='.$this->object_values['object_id'].'&hidden_val='.rawurlencode($plg_conf).'\', \'pop'.$field['name'].'\', \'width=500,height=400,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')';
 
 					 $this->template->set_var('plg_options',$options);
 
@@ -398,6 +409,7 @@
 					 $this->template->set_var('lang_name_and_help',lang('name and help info'));
 					 $this->template->set_var('lang_mandatory',lang('mandatory'));
 					 $this->template->set_var('lang_show_by_default_listview',lang('show by default_listview'));
+					 $this->template->set_var('lang_position',lang('field position'));
 					 $this->template->set_var('popup_onclick_plug',$popup_onclick_plug);
 					 $this->template->set_var('popup_onclick_name_and_help',$popup_onclick_name_and_help);
 					 $this->template->parse('plugins_rows','plugins_row',true);

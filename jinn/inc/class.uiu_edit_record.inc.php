@@ -71,6 +71,47 @@
 
 	  }
 
+	  function incl_js_validation_script()
+	  {
+		 $this->submit_javascript = '
+		 
+		 var valid = true;
+/*
+		 _console = window.open("","console", "width=600,height=600,resizable");
+		 _console.document.open("text/plain");
+		 _console.document.writeln("checking mandatory fields:<br>");
+*/
+		 for(var i = 0; i < document.frm.length; i++)
+		 {
+			var element = document.frm.elements[i];
+			//_console.document.writeln(element.name + " > " + element.value + "<br>");
+			if(element.mandatory)
+			{
+				//_console.document.writeln("mandatory field. checking value: <br>");
+				//_console.document.writeln("field type: " + element.type + "<br>");
+				if(element.value == \'\' && element.type != "option")
+				{
+					//_console.document.writeln("error... element is empty!<br>");
+					valid=false;
+					element.style.backgroundColor="#FFAAAA";
+				}
+				else
+				{
+					element.style.backgroundColor="";
+				}
+			}
+		 }
+
+		//_console.document.close();
+		 
+		 if(!valid)
+		 {
+			alert("'.lang('please fill in all mandatory fields').'");
+			return false;
+		 }
+		 ';
+	  }
+	  
 	  /**
 	  @function display_form 
 	  @abstract main public function to create the complete record editing form for a single record
@@ -126,6 +167,8 @@
 			$this->ui->header('add new record');
 		 }
 
+		 $this->incl_js_validation_script();
+		 
 		 $this->ui->msg_box($this->bo->message);
 		 unset($this->bo->message);
 
@@ -151,6 +194,9 @@
 
 	  function multiple_entries()// new
 	  {
+
+		$this->incl_js_validation_script();
+
 		 if (!is_object($GLOBALS['phpgw']->js))
 		 {
 			$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
@@ -497,6 +543,16 @@
 			   }
 			}
 
+			// check if this field is mandatory. If yes, add a javascript warning.
+			if($field_conf_arr[field_mandatory]==1)
+			{
+				$this->template->set_var('js_mandatory','<script language="JavaScript">document.frm.' . $input_name . '.mandatory=true;</script>');
+			}
+			else
+			{
+				$this->template->set_var('js_mandatory','');
+			}
+
 			/* if there is something to render to this */
 			if($input!='__hide__')
 			{
@@ -521,7 +577,7 @@
 			   $this->template->set_var('input',$input);
 			   $this->template->set_var('tipmouseover',$tipmouseover);
 			   $this->template->set_var('fieldname',$display_name);
-
+			   
 			   $this->template->parse('row','rows',true);
 			}
 		 }

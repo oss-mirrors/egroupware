@@ -3,6 +3,18 @@ CHANGELOG JiNN for eGroupWare
 =============================
 $Id$
 
+Version 0.8.208
+Thu Jan 20 21:18:32 CET 2005
+============================
+- streamline loop for updating table fields
+- finish mandatory field implementation
+- start of field position implementation
+- start of default columnview implementation
+- reactivate gifs
+
+Version 0.8.207b
+Fri Jan 14 21:18:32 CET 2005
+============================
 1 fixed ticket 61: many2many relationships failed on new record creation
 
 Version 0.8.207

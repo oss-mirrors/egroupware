@@ -1615,6 +1615,46 @@
 		 return $status;
 	  }
 
+	  function save_field($object_ID,$fieldname,$conf_serialed_string,$mandatory,$show_default,$position)
+	  {
+		if(!$object_ID) $object_ID=-1;
+		$sql="SELECT * FROM egw_jinn_obj_fields WHERE field_parent_object=$object_ID AND field_name='$fieldname'";
+		$this->phpgw_db->query($sql,__LINE__,__FILE__);
+		if($this->phpgw_db->num_rows()>0)
+		{
+			$this->phpgw_db->next_record();
+			$old_setting=unserialize(base64_decode($this->phpgw_db->f('field_plugins')));
+			$new_setting=unserialize(base64_decode($conf_serialed_string));
+
+			// test if conf is set is not and new plugin is the same as old plugin don't save 
+			if(is_array($old_setting) AND ($old_setting[name]==$new_setting[name]) AND !is_array($new_setting[conf]) )
+			{
+				$sql="UPDATE egw_jinn_obj_fields SET field_mandatory='$mandatory', field_show_default='$show_default', field_position='$position' WHERE (field_parent_object=$object_ID) AND (field_name='$fieldname')";
+			}
+			else
+			{
+				$sql="UPDATE egw_jinn_obj_fields SET field_plugins='$conf_serialed_string', field_mandatory='$mandatory', field_show_default='$show_default', field_position='$position'  WHERE (field_parent_object=$object_ID) AND (field_name='$fieldname')";
+			}
+		}
+		else
+		{
+			$sql="INSERT INTO egw_jinn_obj_fields (field_parent_object,field_name,field_plugins,field_mandatory,field_show_default,field_position) VALUES ($object_ID, '$fieldname', '$conf_serialed_string', '$mandatory', '$show_default', '$position')";
+		}
+
+		$status[sql]=$sql;
+
+		if($this->phpgw_db->query($sql,__LINE__,__FILE__))
+		{
+			$status[ret_code]=0;
+		}
+		else
+		{
+			$status[ret_code]=1;
+		}
+		return $status;
+
+	  }
+
 	  function save_field_info_conf($object_id,$fieldname,$data,$where_string)
 	  {
 		 if(!$object_id) $object_id=-1;

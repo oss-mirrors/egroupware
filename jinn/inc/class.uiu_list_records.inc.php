@@ -347,7 +347,6 @@
 				  {
 					 $valid_pref_columns[]=array('name'=>$pref_col);
 				  }
-
 			   }
 			}
 		 }
@@ -425,8 +424,6 @@
 			   $where_condition= " ($adv_filter_str)"; 	
 			}
 		 }
-
-		
 
 		 /* which/how many column to show, all, the prefered, or the default thirst 4 */
 		 if ($show_all_cols=='True' || $default_col_num=='-1')

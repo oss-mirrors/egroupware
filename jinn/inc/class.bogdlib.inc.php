@@ -119,7 +119,7 @@
 		 if ($ext == "GIF") 
 		 { 
 			$src = ImageCreateFromGIF($filename); 
-			echo 'hallo';
+			//echo 'hallo';
 		 }
 		 
 		 if ($ext == "PNG") { $src = ImageCreateFromPNG($filename); }

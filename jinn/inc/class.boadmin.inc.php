@@ -232,24 +232,40 @@
 			$HTTP_POST_VARS['FLDrelations'].=$new_relation;
 		 }
 
-		 // check all pluginfield for values
-		 // put values in http_post_var
-		 // FIXME speed this loop up?
-
-		 $plug_data=$this->http_vars_pairs_plugins($HTTP_POST_VARS);
-		 if(is_array($plug_data))
+		 
+			//create an array of field properties from the FIELD_ form section
+		 $fields=$this->get_field_array($HTTP_POST_VARS);
+		 
+			//iterate through that array, compile all properties from ONE field and save those properties all at once.
+		 if(is_array($fields))
 		 {
-			while (list ($key, $arr) = each ($plug_data))
+			foreach($fields as $field)
 			{
-			   $conf_serialed_string=base64_encode(serialize($arr)); 
-			   $status=$this->so->save_field_plugin_conf($where_value,$key,$conf_serialed_string);
+				switch($field[property])
+				{
+					case 'PLG': //plugin type
+						$plugin[name]=$field[value];
+						break;
+					case 'PLC': //plugin configuration
+						$plugin[conf]=$field[value];
+						$conf_serialed_string=base64_encode(serialize($plugin)); 
+						break;
+					case 'MAN': //is this a mandatory field?
+						$mandatory=$field[value];
+						break;
+					case 'DEF': //show in listview by default?
+						$show_default=$field[value];
+						break;
+					case 'POS': //position of field in listview
+						$position=$field[value];
+
+						//BEWARE: if new properties are added, make sure the LAST one ends with saving the record!
+						//POS is the last field, so now update the object field record:
+						$status=$this->so->save_field($where_value,$field[name],$conf_serialed_string,$mandatory,$show_default,$position);
+						break;
+				}
 			}
 		 }
-
-		//FIXME TODO
-		// give all single field settings a default prefix_prefix
-		// and loop through them and save them add once as ig we were saving multiple records\
-		// ?? /egrate the above loop
 
 		 $data=$this->http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES);
 		 $status=$this->so->update_phpgw_data($table,$data, $where_key,$where_value);
@@ -257,6 +273,22 @@
 		 return $status;
 	  }
 
+	  function get_field_array($HTTP_POST_VARS)
+	  {
+		 while(list($key, $val) = each($HTTP_POST_VARS)) 
+		 {
+			if(substr($key,0,6)=='FIELD_')
+			{
+			   $data[] = array
+			   (
+				name      => substr(substr($key, 6), 0, -4),
+				property  => substr(substr($key, 6), -3),
+				value     => addslashes($val)
+			   );
+			}
+		 }
+		 return $data;
+	  }
 
 	  /**
 	  @function save_field_info_conf

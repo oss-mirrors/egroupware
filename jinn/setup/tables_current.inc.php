@@ -89,7 +89,7 @@
 				'field_help_info' => array('type' => 'text'),
 				'field_plugins' => array('type' => 'text'),
 				'field_mandatory' => array('type' => 'int','precision' => '4'),
-				'field_order' => array('type' => 'int','precision' => '4','default' => '100'),
+				'field_position' => array('type' => 'varchar','precision' => '10'),
 				'field_show_default' => array('type' => 'int','precision' => '4')
 			),
 			'pk' => array('field_id'),

@@ -121,6 +121,7 @@ function onSubmitForm()
 
 <!-- BEGIN rows -->
 <tr><td bgcolor="{row_color}" valign="top">{fieldname}&nbsp;{tipmouseover}</td><td bgcolor="{row_color}">{input}</td></tr>
+{js_mandatory}
 <!-- END rows -->
 
 <!-- BEGIN many_to_many -->
