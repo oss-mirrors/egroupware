@@ -28,6 +28,7 @@ Public Sub GetContacts()
         Dim oContacts   As New COutlookContacts
         Dim colFields   As Collection
         Dim strTemp     As Variant
+        Dim bLogin      As Boolean
         
         FrmMain.lblStatus.Caption = "Getting Contacts..."
         
@@ -53,6 +54,8 @@ Public Sub GetContacts()
             End If
         Next strTemp
         
+        bLogin = Master.eGW.Login
+        
         '[ > Get the contacts from the eGW server.
         '[ When I tried to grab all the contacts from the server at once I got an Overflow
         '[ XML Parse Error, so now I grab them 100 at a time.
@@ -67,7 +70,9 @@ Public Sub GetContacts()
             xmlParms.AddString "sort", SORT
             
             'Get the contacts from the server and temporarily store them in xmlResponse
-            Set xmlResponse = BasUtilities.SimpleExec("addressbook.boaddressbook.search", xmlParms)
+            Set xmlResponse = BasUtilities.SimpleExec("addressbook.boaddressbook.search", _
+                                                        xmlParms, _
+                                                        bLogin)
             
             'A touch of Ye Olde Error Handling. Aborts execution if login failed.
             If xmlResponse.Status <> XMLRPC_PARAMSRETURNED Then
@@ -210,18 +215,27 @@ End Sub
 ' SimpleExec unless it has first checked to see if Master.Ready is true, which means that
 ' egwosync has all the information it needs to log in to the server.
 '***********************************************************************************************
-Public Function SimpleExec(methodName As String, xmlParms As XMLRPCStruct) As XMLRPCResponse
+Public Function SimpleExec(methodName As String, _
+                            xmlParms As XMLRPCStruct, _
+                            Optional bLogin As Boolean = False) As XMLRPCResponse
     Dim linsUtility As New XMLRPCUtility
-    Dim bLogin As Boolean
     Dim bEnabled As Boolean
+    Dim bLoginPassed As Boolean
     
     '[ grab the login information from the form GUI. eGW is defined in CeGWOSyncMaster
     '[ so it's always accessible to everyone.
     bEnabled = Master.Ready
     
     If bEnabled Then
-        'login and put the result in a variable for testing
-        bLogin = Master.eGW.Login
+        '[ > login and put the result in a variable for testing
+        '[ bLogin can be passed from the caller, allowing the caller to login, rather
+        '[ than that leaving that to SimpleExec.
+        If bLogin Then
+            bLoginPassed = True
+        Else
+            bLogin = Master.eGW.Login
+            bLoginPassed = False
+        End If
         
         'If we logged in successfully...
         If bLogin Then
@@ -243,7 +257,9 @@ Public Function SimpleExec(methodName As String, xmlParms As XMLRPCStruct) As XM
             'return the response from the XMLRPC server
             Set SimpleExec = Master.eGW.Response
             'it's always polite to close the door when you leave
-            Master.eGW.Logout
+            If Not bLoginPassed Then
+                Master.eGW.Logout
+            End If
         'If login failed...
         Else
             Dim x As VbMsgBoxResult
