@@ -1,0 +1,3 @@
+stocks	common	de	Aktienkurse
+stock quotes	common	de	Aktienkurse
+select displayed stocks	preferences	de	Ausw&auml;hlen der angezeigten Aktienkurse
