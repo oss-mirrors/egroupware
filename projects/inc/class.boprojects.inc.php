@@ -205,6 +205,11 @@
 		{
 			return (!!($has & $needed) == True);
 		}
+		
+		function create_activityid()
+		{
+			return $this->soprojects->create_activityid();
+		}
 
 		function edit_perms($pro)
 		{

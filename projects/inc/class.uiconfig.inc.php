@@ -415,7 +415,7 @@
 // ----------------- list header variable template-declarations ---------------------------
   
 			$GLOBALS['phpgw']->template->set_var('currency',$GLOBALS['phpgw_info']['user']['preferences']['common']['currency']);
-			$GLOBALS['phpgw']->template->set_var('sort_num',$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Activity ID')));
+			$GLOBALS['phpgw']->template->set_var('sort_num',$this->nextmatchs->show_sort_order($this->sort,'a_number',$this->order,'/index.php',lang('Activity ID')));
 			$GLOBALS['phpgw']->template->set_var('sort_descr',$this->nextmatchs->show_sort_order($this->sort,'descr',$this->order,'/index.php',lang('Description')));
 			$GLOBALS['phpgw']->template->set_var('sort_billperae',$this->nextmatchs->show_sort_order($this->sort,'billperae',$this->order,'/index.php',$bill));
 

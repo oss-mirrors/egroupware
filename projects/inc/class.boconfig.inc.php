@@ -59,7 +59,7 @@
 
 		function boconfig()
 		{
-			$action				= get_var('action',array('GET'));
+			$action			= get_var('action',array('GET'));
 			$this->debug		= False;
 			$this->boprojects	= CreateObject('projects.boprojects',True,$action);
 			$this->soconfig		= $this->boprojects->soconfig;
@@ -67,7 +67,7 @@
 			$this->query		= $this->boprojects->query;
 			$this->filter		= $this->boprojects->filter;
 			$this->order		= $this->boprojects->order;
-			$this->sort			= $this->boprojects->sort;
+			$this->sort		= $this->boprojects->sort;
 			$this->cat_id		= $this->boprojects->cat_id;
 		}
 
@@ -310,7 +310,7 @@
 		{
 			if ($values['choose'])
 			{
-				$values['number'] = $this->boprojects->soconfig->create_activityid();
+				$values['number'] = $this->boprojects->create_activityid();
 			}
 
 			if ($values['activity_id'])
