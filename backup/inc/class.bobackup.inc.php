@@ -84,6 +84,14 @@
 					$error[] = lang('Please set the path to a local dir to store the backup script !');
 				}
 
+				if ($values['versions'])
+				{
+					if (intval($values['versions']) == 0)
+					{
+						$error[] = lang('Versions can only be a number !');
+					}
+				}
+
 				if ($values['l_save'])
 				{
 					if (! $values['l_path'] && ! $values['l_websave'])
@@ -128,6 +136,10 @@
 			if ($values['versions'])
 			{
 				$values['versions'] = intval($values['versions']);
+			}
+			else
+			{
+				$values['versions'] = 1;
 			}
 
 			if ($values['b_create'])

@@ -31,14 +31,15 @@
 		{
 			$basedir = opendir($dir);
 
-			$i = 0;
 			while ($files = readdir($basedir))
 			{
 				if (($files != '.') && ($files != '..'))
 				{
-					$archive[$i]['file'] = $files;
-					$archive[$i]['bdate'] = filemtime($dir . '/' . $files);
-					$i++;
+					$archive[] = array
+					(
+						'file'	=> $files,
+						'bdate'	=> filemtime($dir . '/' . $files)
+					);
 				}
 			}
 			closedir($basedir);
@@ -77,26 +78,18 @@
 	{
 		$versions = {versions};
 
-		if (! is_integer($versions) || $versions == 0)
-		{
-			$versions = 1;
-		}
-			
 		$archive = get_archives($dir);
 
 		$bintval = '{bintval}';
 
 		$rdate = get_rdate($versions,$bintval);
 
-		for ($i=0;$i<=count($archive);$i++)
+		while (list($null,$rfiles) = each($archive))
 		{
-			if ($archive[$i]['bdate'] <= $rdate)
+			if ($rfiles['bdate'] <= $rdate)
 			{
-				if ($archive[$i]['file'] && $archive[$i]['file'] != '')
-				{
-					unlink($dir . '/' . $archive[$i]['file']);
-					echo 'removed ' . $dir . '/' . $archive[$i]['file'] . "\n";
-				}
+				unlink($dir . '/' . $rfiles['file']);
+				echo 'removed ' . $dir . '/' . $rfiles['file'] . "\n";
 			}
 		}
 	}
