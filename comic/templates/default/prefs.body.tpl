@@ -3,6 +3,7 @@
 <p>
 <form method="POST" action="{action_url}">
   <input type="hidden" name="comic_id" value="{comic_id}">
+  <input type="hidden" name="returnmain" value="{returnmain}">
   <table border="0" cellpadding="0" cellspacing="0" width="85%" align="center">
     <tr align=center>
       <td colspan=2 align=center>

@@ -30,12 +30,15 @@
     $doneurl           = $phpgw->link('/admin/index.php');
     $message           = "";
     
-    if ($submit)
+    if ($_POST['submit'])
     {
         $message = lang("Global Options Updated");
         
-        $remote_enabled = intval($remote_enabled);
-        $override_enabled = intval($override_enabled);
+        $image_source = intval($_POST['image_source']);
+        $remote_enabled = intval($_POST['remote_enabled']);
+        $censor_level = intval($_POST['censor_level']);
+        $override_enabled = intval($_POST['override_enabled']);
+        $filesize = intval($_POST['filesize']);
         
         $phpgw->db->lock("phpgw_comic_admin");
         $phpgw->db->query("update phpgw_comic_admin set "
@@ -43,7 +46,7 @@
                           ."admin_rmtenabled='".$remote_enabled."', "
                           ."admin_censorlvl='".$censor_level."', "
                           ."admin_coverride='".$override_enabled."', "
-                          ."admin_filesize='".$filesize."'");
+                          ."admin_filesize='".$filesize."'",__LINE__,__FILE__);
         $phpgw->db->unlock();
     }
 
@@ -72,7 +75,7 @@
               options   => "admin.options.tpl",
               coptions  => "option.common.tpl"));
     
-    for ($loop = 0; $loop < count($g_censor_level); $loop++)
+	for ($loop = 0; $loop < count($g_censor_level); $loop++)
     {
         $selected = "";
         

@@ -16,7 +16,9 @@ front page comic	comic	pl	Komiks na stronie g³ównej
 front page comic scaled	comic	pl	Skalowany komiks na sronie g³ównej
 genre	comic	pl	
 global comics	admin	pl	
+global comics	comic	pl	
 global options	admin	pl	Opcje globalne
+global options	comic	pl	Opcje globalne
 image source	comic	pl	
 max file size	comic	pl	
 parser	comic	pl	

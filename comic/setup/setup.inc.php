@@ -37,6 +37,8 @@
 	$setup_info['comic']['hooks'][] = 'admin';
 	$setup_info['comic']['hooks'][] = 'home';
 	$setup_info['comic']['hooks'][] = 'preferences';
+	$setup_info['comic']['hooks'][] = 'sidebox_menu';
+
 
 	/* Dependencies for this app to work */
 	$setup_info['comic']['depends'][] = array(

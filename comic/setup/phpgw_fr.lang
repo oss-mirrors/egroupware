@@ -20,10 +20,13 @@ front page comic	comic	fr	Page de garde du comic
 front page comic scaled	comic	fr	Page de garde du comic étagée
 genre	comic	fr	Genre
 global comics	admin	fr	Comics globaux
+global comics	comic	fr	Comics globaux
 global options	admin	fr	Options globales
+global options	comic	fr	Options globales
 global options updated	comic	fr	Options globales mises à jour
 image source	comic	fr	Source d'image
 max file size	comic	fr	Taille maximale de fichier
+my comics	comic	fr	Mes Bandes Dessiné
 no_entries	comic	fr	Aucune entrée
 parser	comic	fr	Parseur
 performed %1 of element	comic	fr	Réalisé %1 de l'élément

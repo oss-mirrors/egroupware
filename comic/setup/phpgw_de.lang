@@ -21,10 +21,13 @@ front page comic	comic	de	Front Page Comic
 front page comic scaled	comic	de	Front Page Comic einstufung
 genre	comic	de	Genre
 global comics	admin	de	Globale Comics
+global comics	comic	de	Globale Comics
 global options	admin	de	Globale Optionen
+global options	comic	de	Globale Optionen
 global options updated	comic	de	Globale Optionen upgedated
 image source	comic	de	Bildquelle
 max file size	comic	de	Maximale Dateigrösse
+my comics	comic	de	Meine Comics
 no_entries	comic	de	keine Einträge
 parser	comic	de	Parser
 performed %1 of element	comic	de	Durchgeführt %1 des Elements

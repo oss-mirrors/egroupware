@@ -75,6 +75,7 @@
     
 		$likeness = 'like';
 		$myquery  = '%'.$query.'%';
+		$myqfield = $qfield;
     
 		if ($qfield == 'data_censorlvl')
 		{
@@ -87,11 +88,28 @@
 					break;
 				}
 			}
+		} 
+		elseif ($qfield == "data_title") 
+		{
+			$myqfield = "lower($qfield)";
+			$myquery = "%".strtolower($query)."%";
 		}
     
-		$sql_query = 'select count(*) from phpgw_comic_data';
 
-		$GLOBALS['phpgw']->db->query($sql_query,__LINE__,__FILE__);
+		if(!$query)
+		{
+			$sql_clause = ''; 
+		}
+		else
+		{
+			$sql_clause = 'WHERE '.$myqfield.' '.$likeness." '$myquery' ";
+		}
+
+		$sql_query = 'select * from phpgw_comic_data '.$sql_clause .$ordermethod;
+		$sql_query_count = 'select count(*) from phpgw_comic_data '.$sql_clause;
+
+
+		$GLOBALS['phpgw']->db->query($sql_query_count,__LINE__,__FILE__);
     
 		$GLOBALS['phpgw']->db->next_record();
 
@@ -114,15 +132,6 @@
 			$match_comment = lang('showing %1',$total_records);
 		}
     
-		if(!$query)
-		{
-			$sql_query = 'select * from phpgw_comic_data '.$ordermethod;
-		}
-		else
-		{
-			$sql_query = 'select * from phpgw_comic_data WHERE '.$qfield.' '.$likeness." '$myquery' ".$ordermethod;
-		}
-
 		$GLOBALS['phpgw']->db->limit_query($sql_query,intval($start),__LINE__,__FILE__);
     
 		$table_tpl = CreateObject('phpgwapi.Template',$GLOBALS['phpgw']->common->get_tpl_dir('comic'));
@@ -138,42 +147,42 @@
 		{
 			$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
         
-			$comic_id = $GLOBALS['phpgw']->db->f('data_id');
-			$comic_encoded = urlencode($comic_id);
+			$data_id = $GLOBALS['phpgw']->db->f('data_id');
+			$comic_encoded = urlencode($data_id);
         
 			$comic_censor = $GLOBALS['g_censor_level'][$GLOBALS['phpgw']->db->f('data_censorlvl')];
         
 			$table_tpl->set_var(
 				Array(
 					'row_color'    => $tr_color,
-					'comic_name'   => get_db_var('data_title'),
+					'data_title'   => get_db_var('data_title'),
 					'comic_parser' => get_db_var('data_parser'),
 					'comic_resolve'=> get_db_var('data_resolve'),
 					'comic_class'  => get_db_var('data_class'),
 					'comic_censor' => $comic_censor,
 					'edit_url'     => $GLOBALS['phpgw']->link('/comic/admin_comics.php',
 							Array(
-								'con'    => $comic_encoded,
-								'act'    => 'edit',
-								'start'  => $start,
-								'order'  => $order,
-								'filter' => $filter,
-								'sort'   => $sort,
-								'query'  => urlencode($query),
-								'qfield' => $qfield
+								'data_id' 	=> $comic_encoded,
+								'act'    	=> 'edit',
+								'start'  	=> $start,
+								'order'  	=> $order,
+								'filter' 	=> $filter,
+								'sort'   	=> $sort,
+								'query'  	=> urlencode($query),
+								'qfield' 	=> $qfield
 							)
 						),
 					'edit_label'   => $edit_label,
 					'delete_url'   => $GLOBALS['phpgw']->link('/comic/admin_comics.php',
 							Array(
-								'con'    => $comic_encoded,
-								'act'    => 'delete',
-								'start'  => $start,
-								'order'  => $order,
-								'filter' => $filter,
-								'sort'   => $sort,
-								'query'  => urlencode($query),
-								'qfield' => $qfield
+								'data_id'  	=> $comic_encoded,
+								'act'    	=> 'delete',
+								'start'  	=> $start,
+								'order'  	=> $order,
+								'filter' 	=> $filter,
+								'sort'   	=> $sort,
+								'query'  	=> urlencode($query),
+								'qfield' 	=> $qfield
 							)
 						),
 					'delete_label' => $delete_label
@@ -204,7 +213,7 @@
 		$table_c = $table_tpl->get('table_part');
 	}
 
-	function comic_entry($con, $act, $order, $sort, $filter, $start, $query, $qfield, &$form_c)
+	function comic_entry($data_id, $act, $order, $sort, $filter, $start, $query, $qfield, &$form_c)
 	{
 		$action_url   = $GLOBALS['phpgw']->link('/comic/admin_comics.php',
 			Array(
@@ -231,15 +240,15 @@
 				break;
 		}
 
-		$comic_name = '';
+		$data_title = '';
     
-		if($con!='')
+		if($data_id!='')
 		{
-			$GLOBALS['phpgw']->db->query('select * from phpgw_comic_data where data_id='.$con);
+			$GLOBALS['phpgw']->db->query('select * from phpgw_comic_data where data_id='.$data_id);
 
 			$GLOBALS['phpgw']->db->next_record();
 
-			$comic_name = $GLOBALS['phpgw']->db->f('data_title');
+			$data_title = $GLOBALS['phpgw']->db->f('data_title');
 		}
         
 		$modify_tpl = CreateObject('phpgwapi.Template',$GLOBALS['phpgw']->common->get_tpl_dir('comic'));
@@ -249,9 +258,9 @@
 		$modify_tpl->set_var(
 			Array(
 				'bg_color'        => $bg_color,
-				'comic_id'        => $con,
+				'data_id'         => $data_id,
 				'comic_label'     => lang('Title'),
-				'comic_name'      => $comic_name,
+				'data_title'      => $data_title,
 				'action_url'      => $action_url,
 				'action_label'    => lang($act),
 				'reset_label'     => lang('Reset')

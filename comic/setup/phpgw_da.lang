@@ -16,7 +16,9 @@ front page comic	comic	da	Forside Tegneserie
 front page comic scaled	comic	da	Forside Tegneserie Skaleret
 genre	comic	da	Genre
 global comics	admin	da	Globale Tegneserier
+global comics	comic	da	Globale Tegneserier
 global options	admin	da	Globale Indstillinger
+global options	comic	da	Globale Indstillinger
 image source	comic	da	Billedkilde
 max file size	comic	da	Maks filstørrelse
 parser	comic	da	Parser

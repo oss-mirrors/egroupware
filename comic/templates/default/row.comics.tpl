@@ -1,5 +1,5 @@
   <tr bgcolor="{row_color}">
-    <td>{comic_name}</td>
+    <td>{data_title}</td>
     <td>{comic_class}</td>
     <td>{comic_censor}</td>
     <td>{comic_parser}</td>

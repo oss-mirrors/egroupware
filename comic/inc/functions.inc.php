@@ -658,7 +658,7 @@ function comic_display($comic_list, $comic_scale, $comic_perpage,
              *****************************************************************/
             $phpgw->db->query("select * from phpgw_comic_data "
                               ."WHERE data_id='"
-                              .$comic_list[$index]."' AND "
+                              .intval($comic_list[$index])."' AND "
                               ."data_enabled='T'");
 
             if ($phpgw->db->next_record())
@@ -902,7 +902,7 @@ function comic_display_frontpage($data_id, $scale, $censor_level)
     else
     {
         $match_str =
-            "WHERE data_id='".$data_id."' AND "
+            "WHERE data_id='".intval($data_id)."' AND "
             ."data_enabled='T'";
     }
 

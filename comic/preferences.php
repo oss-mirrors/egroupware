@@ -33,21 +33,35 @@
     
     $actionurl         = $phpgw->link('/comic/preferences.php');
     $doneurl           = $phpgw->link('/preferences/index.php');
+	$returnmain        = intval(get_var('returnmain',array('GET','POST')));
+	if ( $returnmain == 1 ) 
+	{
+		$doneurl       = $phpgw->link('/comic/index.php');
+	}
+
     $message           = "";
     
-    if ($submit)
+    if ($_POST['submit'])
     {
         $message = lang("Comic Preferences Updated");
 
-        if ($data_ids)
+        if ($_POST['data_ids'])
         {
-            $data_ids = implode($data_ids,":");
+            $data_ids = implode($_POST['data_ids'],":");
         }
         else
         {
             $data_ids = "";
         }
         
+		$scale_enabled = intval($_POST['scale_enabled']);
+		$perpage = intval($_POST['perpage']);
+		$frontpage = intval($_POST['frontpage']);
+		$fpscale_enabled = intval($_POST['fpscale_enabled']);
+		$censor_level = intval($_POST['censor_level']);
+		$comic_template = intval($_POST['comic_template']);
+		$comic_id = intval($_POST['comic_id']);
+
         $phpgw->db->lock("phpgw_comic");
         $phpgw->db->query("update phpgw_comic set "
                           ."comic_list='".$data_ids."', "
@@ -235,6 +249,7 @@
                  censor_options   => $censor_c,
                  comic_options    => $comic_c,
                  comic_id         => $comic_id,
+                 returnmain       => $returnmain,
                  th_bg            => $phpgw_info["theme"]["th_bg"],
                  th_text          => $phpgw_info["theme"]["th_text"]));
 
