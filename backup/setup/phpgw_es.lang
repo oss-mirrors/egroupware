@@ -1,43 +1,67 @@
-Absolute path of the backup directory	backup	es	Camino absoluto del directorio de resguardos
-Absolute path of the directory to store the backup script	backup	es	Camino absoluto del directorio para almacenar el programa de resguardo
-Archive type	backup	es	Tipo de Archivo
-Backup administration	common	es	Administracion del Sistema de Resguardo
-Backup	common	es	Resguardo
-Configuration backup	backup	es	Configuracion del Sistema de Resguardo
-Configuration localhost	backup	es	Configuracion del Servidor local
-Configuration remote host	backup	es	Configuracio de sistema remoto
-Create backups of your data ?	backup	es	Crear copias de resguardo de sus datos ?
-daily	backup	es	diario
-Data	backup	es	Datos
-E-MAIL	backup	es	Correo
+absolute path of the backup directory	backup	es	Ruta absoluta del directorio de la copia de seguridad
+absolute path of the directory to store the backup script	backup	es	Ruta absoluta del directorio para almacenar el script de la copia de seguridad
+archive type	backup	es	Tipo de archivo
+backup	common	es	Copia de seguridad
+backup administration	common	es	Administración de la copia de seguridad
+bzip2	admin	es	Compresión bzip2
+configuration backup	backup	es	Configuracin de la copia de seguridad
+configuration localhost	backup	es	Configuracioón del equipo local
+configuration remote host	backup	es	Configuración del equipo remoto
+create backups of your data ?	backup	es	¿Crear copias de seguridad de sus datos ?
+daily	backup	es	todos los días
+data	backup	es	Datos
+directory locations	admin	es	ubicación de los directorios
+directory names	admin	es	nombres de los directorios
+e-mail	backup	es	Correo electrónico
+homedirs	admin	es	Directorios de inicio
 interval	backup	es	Intervalo
-ip or hostname	backup	es	IP o nombre de host
-LDAP	backup	es	LDAP
-monthly	backup	es	mensual
+ip or hostname	backup	es	IP o nombre del equipo
+ldap	common	es	LDAP
+ldap database	admin	es	Base de datos LDAP
+maildir	admin	es	Directorio del correo
+monthly	backup	es	Cada mes
+mysql	admin	es	MySQL
 nfs	backup	es	NFS
-No backup archives available !	backup	es	No hay archivos de resguardo disponibles !
-Number of stored backup versions	backup	es	Numero de versiones de resguardo almacenadas
-Operating system	backup	es	Sistema Operativo
-Password	backup	es	Clave
-Plase enter username and password for remote connection !	backup	es	Ingrese usuario y clave para la coneccion remota !
-Please enter the path of the backup dir and/or enable showing archives in phpGroupWare !	backup	es	Ingrese el camino absoluto del directorio de resguardos !
-Please select an application for transport to the remote host !	backup	es	Seleccione una aplicacion para el transporte remoto !
-Please set the path to a local dir to store the backup script !	backup	es	Seleccione el camino al directorio local para almacenar el programa de resguardos !
-Please specify the ip of the remote host !	backup	es	Especifique la direccion IP del sistema remoto !
-Save backup locally ?	backup	es	Grabar copia de resguardo localmente ?
-Save backup to a remote host ?	backup	es	Grabar copia de resguardo en un servidor remoto?
-Select archive type	backup	es	Seleccione tipo de archivo
-Select interval	backup	es	Seleccione intervalo
-Select transport application	backup	es	Seleccione aplicacion de transporte
-Show backup archives in phpGroupWare ?	backup	es	Mostrar archivos de resguardo en el sistema ?
+no backup archives available !	backup	es	No hay archivos de copia de seguridad disponibles
+number of stored backup versions	backup	es	Número de las versiones de copia de seguridad almacenadas
+operating system	backup	es	Sistema operativo
+password	backup	es	Contrseña
+pgsql	admin	es	PostgreSQL
+php cgi	admin	es	php cgi
+plase enter username and password for remote connection !	backup	es	Ingrese usuario y clave para la coneccion remota !
+please enter the path of the backup dir and/or enable showing archives in phpgroupware !	backup	es	Ingrese el camino absoluto del directorio de resguardos !
+please enter the path of the needed applications in *site configuration* !	backup	es	Por favor, introduzca la ruta de las aplicaciones necesarias en "Configuración del sitio"
+please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	es	Por favor, introduzca la ruta al directorio de la copia de seguridad y/o active mostrar archivos en eGroupWare
+please enter username and password for remote connection !	backup	es	Por favor, introduzca el nombre de usuario y contraeña para la conexión remota
+please select an application for transport to the remote host !	backup	es	Por favor, seleccione una aplicación para el transporte al equipo remoto
+please set the path to a local dir to store the backup script !	backup	es	Por favor, seleccione la ruta al directorio local para almacenar el script de la copia de seguridad
+please set the path to the ldap database dir in *site configuration* !	backup	es	Por favor, indique la ruta a la base de datos LDAP en "Configuración del sitio"
+please set the path to the mysql database dir in *site configuration* !	backup	es	Por favor, indique la ruta a la base de datos MySQL en "Configuración del sitio"
+please set the path to the postgresql database dir in *site configuration* !	backup	es	Por favor, indique la ruta a la base de datos PostgreSQL en "Configuración del sitio"
+please set the values in *site configuration* !	backup	es	Por favor, indique los valores en "Configuracion del sitio"
+please specify the ip of the remote host !	backup	es	Especifique la direccion IP del sistema remoto
+please specify the name of the maildir in *site configuration* !	backup	es	Por favor, indique el nombre del directorio Maildir en "Configuración del sitio"
+please specify the path to the backup directory !	backup	es	Por favor, indique la ruta al directorio de la copia de seguridad
+please specify the path to the user-homedirectories in *site configuration* !	backup	es	Por favor, indique la ruta a los directorios de los usuarios en "Configuración del sitio"
+program locations	admin	es	Ubicación de los programas
+save backup locally ?	backup	es	¿Guardar copia de seguridad localmente?
+save backup to a remote host ?	backup	es	¿Guardar copia de seguridad en un servidor remoto?
+select archive type	backup	es	Seleccione tipo de archivo
+select interval	backup	es	Seleccione intervalo
+select transport application	backup	es	Seleccione aplicación de transporte
+settings	admin	es	Configuración
+show backup archives in phpgroupware ?	backup	es	¿Mostrar archivos de la copia de seguridad en el eGroupWare?
 smbmount	backup	es	SMBMOUNT
-SQL	backup	es	SQL
+sql	backup	es	SQL
+tar	admin	es	tar
 tar.bz2	backup	es	tar.bz2
 tar.gz	backup	es	tar.gz
-The backup application is not configured for showing the archives in phpGroupWare yet !	backup	es	La aplicacion de resguardos no esta configurada para mostrar los archivos !
-The directory to store the backup script must be outside of the webservers *DocumentRoot* !	backup	es	El directorio que almacena el programa de resguardo debe estar fuera de los directorios del servidor web !
-The ftp connection failed ! Please check your configuration !	backup	es	La coneccion por ftp fallo! Revise su configuracion
-Transport application	backup	es	Aplicacion de Transporte
-User	backup	es	Usuario
-weekly	backup	es	semanal
-zip	backup	es	zip
+the backup application is not configured for showing the archives in phpgroupware yet !	backup	es	La aplicación de copia de seguridad todavía no está configurada para mostrar los archivos
+the directory to store the backup script must be outside of the webservers *documentroot* !	backup	es	¡El directorio que almacena el script de copias de seguridad debe estar fuera de los directorios del servidor web¡
+the ftp connection failed ! please check your configuration !	backup	es	¡La conexión por ftp falló! Por favor, compruebe su configuración
+transport application	backup	es	Aplicación de transporte
+user	backup	es	Usuario
+versions can only be a number !	backup	es	Las versiones sólo pueden ser un número
+weekly	backup	es	cada semana
+your sql database isnt supported by this application !	backup	es	Su base de datos SQL no está soportada por esta aplicación
+zip	common	es	zip

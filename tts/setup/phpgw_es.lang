@@ -1,1 +1,155 @@
-trouble ticket system	common	es	Sistema de Ticket de problemas
+a new ticket has been reported.	tts	es	Se ha creado una nueva incidencia
+accept	tts	es	ACEPTAR
+accept the ticket into verification process.	tts	es	Aceptar la incidencia en el proceso de verificación
+accepted	tts	es	ACEPTADA
+action	tts	es	Acción
+add new ticket	tts	es	Añadir nueva incidencia
+add ticket	tts	es	Añadir incidencia
+additional notes	tts	es	Notas adicionales
+admin options	common	es	Opciones de administración
+assign to	tts	es	Asignar a
+assigned from	tts	es	Asignado desde
+assigned to	tts	es	Asignado a
+billable hours	tts	es	Horas facturables
+billable hours changed	tts	es	Horas facturables cambiadas
+billable hours rate	tts	es	Valoración de las horas facturables
+billable rate	tts	es	Valoración facturable
+billable rate changed	tts	es	Valoración facturable cambiada
+category changed	tts	es	Categoría cambiada
+check here to generate the state's id automatically or enter a particular id below.	tts	es	Marque la casilla para generar los identificadores de estados automáticamente o introduzca un id particular debajo.
+clear form	tts	es	Despejar formulario
+close the invalid ticket.	tts	es	Cerrar la incidencia no válida
+closed	tts	es	Cerrada
+completed	tts	es	COMPLETADA
+configure the states	tts	es	Configurar los estados
+configure the transitions	tts	es	Configurar las transiciones
+create new state	tts	es	Crear un nuevo estado
+create new ticket	tts	es	Crear una incidencia nueva
+create new transition	tts	es	Crear nueva transición
+creates a new ticket, returns ticket_id	tts	es	Crea una nueva incidencia y devuelve el identificador
+creates a struct of tickets	tts	es	Crea una estructura de incidencias
+date opened	tts	es	Fecha de apertura
+default assign to	tts	es	Asignar por defecto a
+default group	tts	es	Grupo predeterminado
+default priority	tts	es	Prioridad predeterminada
+delete the listed tickets.	tts	es	Borrar las incidencias listadas
+deleting the state	tts	es	Borrar el estado
+deleting the transition	tts	es	Borrar la transición
+detail	tts	es	Detalle
+duplicate	tts	es	DUPLICADA
+edit the state	tts	es	Editar el estado
+edit the transition	tts	es	Editar la transición
+force	tts	es	Forzar
+global categories	tts	es	Categorías globales
+group ownership changed	tts	es	El propietario del grupo ha cambiado
+history	tts	es	Historial
+i worked on the ticket and the work requires validation.	tts	es	Trabajé en la incidencia y el trabajo requiere validación.
+i worked on the ticket, but did not finish.	tts	es	Trabajé en la incidencia, pero no está acabada
+in progress	tts	es	En progreso
+initial state	tts	es	Estado inicial
+invalid	tts	es	NO VALIDA
+invalidate	tts	es	INVALIDAR
+keep the present state [%1].	tts	es	Mantener el estado actual [%1]
+latest note added	tts	es	Ultima nota añadida
+list of available tickets' states.	tts	es	Lista de los estados de las incidencias disponibles
+list of available tickets' transitions.	tts	es	Lista de las transiciones de las incidencias disponibles
+missing description	tts	es	Falta la descripción
+morework	tts	es	MAS TRABAJO
+needswork	tts	es	NECESITA TRABAJO
+new	tts	es	NUEVA
+new ticket	tts	es	Nueva incidencia
+new tickets can be put into this state.	tts	es	Las incidencias nuevas se pueden poner en este estado
+new value	tts	es	Nuevo valor
+no additional notes	tts	es	No hay notas adicionales
+no duplicate	tts	es	SIN DUPLICAR
+no notes for this ticket	tts	es	No hay notas para esta incidencia
+no states found	tts	es	No se encontraron estados
+no tickets found	tts	es	No se encontraron incidencias
+no transitions found	tts	es	No se encontraron transiciones
+not assigned	tts	es	Sin asignar
+not completed	tts	es	SIN COMPLETAR
+old value	tts	es	Valor anterior
+open	tts	es	Abrir
+open / closed	tts	es	Abierta / Cerrada
+open date	tts	es	Fecha de apertura
+opened	tts	es	Abierta
+opened by	tts	es	Abierta por
+original ticket details	tts	es	Detalles de la inicidencia original
+perform irregular transition into the following state	tts	es	Realizar transición irregular en el siguiente estado
+prio	tts	es	Prioridad
+priority	tts	es	Prioridad
+priority changed	tts	es	Prioridad modificada
+put the preexistent ticket into the state %1.	tts	es	Poner la incidencia ya existente en el estado %1.
+re-assigned	tts	es	Reasignada
+re-opened	tts	es	Reabierta
+refresh every (seconds)	tts	es	Refrescar cada (segundos)
+reopen	tts	es	REABRIR
+reopened	tts	es	REABIERTA
+resolve	tts	es	RESOLVER
+resolved	tts	es	RESUELTA
+returns a struct of a tickets history	tts	es	Devuelve una estructura del historial de la incidencia
+returns a struct of values of a single ticket	tts	es	Devuelve una estructura de valores de una sola incidencia
+returns the additional notes attached to a ticket	tts	es	Devuelve las notas adicionales adjuntas a una incidencia
+selected	tts	es	selected
+show new/updated tickets on main screen	tts	es	mostrar incidencias nuevas o actualizadas en la pantalla principal
+source state	tts	es	Estado de origen
+state	tts	es	Estado
+state changed	tts	es	Estado modificado
+state id	tts	es	Identificador del estado
+state name	tts	es	Nombre del estado
+status/date closed	tts	es	Estado/Fecha de cierre
+subject changed	tts	es	El asunto ha cambiado
+target state	tts	es	Estado
+test	tts	es	PRUEBA
+the closed ticket requires more work. reopen it.	tts	es	La incidencia cerrada necesita más trabajo. Reabrir.
+the owner of the ticket was not able to confirm the issue.	tts	es	El propietario de la incidencia no pudo confirmar los hechos.
+the ticket has been accepted by the owner, who is about to work on it.	tts	es	La incidencia ha sido aceptada por el propietario, que está a punto de trabajar en ella.
+the ticket has been closed without resolution.	tts	es	La incidencia ha sido cerrada sin resolución.
+the ticket has been reopened for further work.	tts	es	La incidencia ha sido reabierta para realizar más trabajos.
+the ticket has been successfully resolved.	tts	es	La incidencia ha sido resuelta satisfactoriamente.
+the ticket has been verified and has to be worked on.	tts	es	La incidencia ha sido verificada y es necesario trabajar en ella.
+the ticket has been worked on and the work requires validation.	tts	es	Se han realizado trabajos en la incidencia que requieren validación.
+the ticket has been worked on, but requires more work.	tts	es	Se han realizado trabajos en la incidencia, pero es necesario hacer más.
+the ticket is a duplicate of another ticket and should be closed.	tts	es	Esta incidencia es un duplicado de otra, por lo que debe cerrarse.
+the ticket is essentially not a duplicate of another ticket. reopen it.	tts	es	La no es esencialmente un duplicado de otra. Reábrala.
+the ticket is invalid and cannot be worked on.	tts	es	La incidencia no es válida y no se puede investigar.
+the ticket resolution was successfully validated. close the ticket.	tts	es	La solución de la incidencia se comprobó satisfactoriamente. Cierre la incidencia.
+the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	es	La incidencia existía antes de estar definida la infraestructura de Petri Net, por lo que debe asignarle un estado.
+the ticket was found a duplicate of another ticket.	tts	es	La incidencia se encontró como duplicada de otra.
+the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	es	Las incidencias en la lista siguiente están en el estado %1. Por favor, decida lo que debe hacerse con ellas.
+the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	es	La validación de la incidencia no fue satisfactoria. La incidencia necesita más trabajos a realizar.
+ticket	tts	es	Incidencia
+ticket has been updated	tts	es	La incidencia ha sido actualizada
+tickets found %1	tts	es	Incidencias encontradas: %1
+tickets open %1	tts	es	Incidencias abiertas: %1
+tickets total %1	tts	es	Total de incidencias: %1
+toaccept	tts	es	PARA ACEPTAR
+toclosed	tts	es	PARA CERRAR
+toduplicate	tts	es	PARA DUPLICAR
+toinvalid	tts	es	PARA INVALIDAR
+toneedswork	tts	es	PARA MAS TRABAJO
+tonew	tts	es	PARA NUEVA
+toreopened	tts	es	PARA REABIERTA
+toresolved	tts	es	PARA RESUELTA
+total billable	tts	es	Total facturable
+totovalidate	tts	es	PARA PARAVALIDAR
+tovalidate	tts	es	PARA VALIDAR
+toverified	tts	es	PARA VERIFICADA
+transition	tts	es	Transición
+transition name	tts	es	Nombre de la transición
+trouble ticket system	common	es	Sistema de notificación de incidencias
+tts	common	es	Sistema de notificación de incidencias
+tts preferences	tts	es	Sistema de notificación de incidencias - preferencias
+undefined	tts	es	SIN DEFINIR
+update ticket state	tts	es	Actualizar estado de incidencia
+updates ticket	tts	es	Actualiza la incidencia
+use email notification	tts	es	Usar notificación por correo electrónico
+verified	tts	es	VERIFICADA
+verify	tts	es	VERIFICAR
+verify the ticket to work on it.	tts	es	Verificar la incidencia en la que se va a trabajar.
+view all tickets	tts	es	Ver todas las incidencias
+view job detail	tts	es	Ver el detalle del trabajo
+view only open tickets	tts	es	Ver sólo incidencias abiertas
+you can only close a ticket if it is assigned to you.	tts	es	Sólo puede cerrar una incidencia si está asignada a usted.
+you want to delete the state %1. are you sure?	tts	es	¿Está seguro de que desea borrar el estado %!?
+you want to delete the transition %1. are you sure?	tts	es	¿Está seguro de que desea borrar la transición %!?
