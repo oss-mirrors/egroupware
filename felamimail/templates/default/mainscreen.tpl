@@ -232,7 +232,7 @@ doLoad();
 
 			<div id="divFolderTree" style="overflow:auto; width:180px; height:474px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;">
 				<table width=100% BORDER="0" style="table-layout:fixed;padding-left:2;">
-					<tr height="420">
+					<tr>
 						<td width="100%" valign="top" nowrap style="font-size:10px">
 							{folder_tree}
 						</td>
