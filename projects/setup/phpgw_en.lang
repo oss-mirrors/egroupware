@@ -61,6 +61,7 @@ Invoices	projects	en	Invoices
 Invoice x has been created !	projects	en	Invoice %1 has been created !
 Invoice x has been updated !	projects	en	Invoice %1 has been updated !
 Job	projects	en	Job
+job archive	projects	en	Job archive
 Job date	projects	en	Job date
 Job description	projects	en	Job description
 Job has been added !	projects	en	Job has been added !
@@ -124,6 +125,7 @@ View job	projects	en	View job
 View project	projects	en	View project
 Work date	projects	en	Work date
 Work hours	projects	en	Work hours
+Work hours archive	projects	en	Work hours archive
 Work hours list	projects	en	Work hours list
 Work time	projects	en	Work time
 Workunit	projects	en	Workunit

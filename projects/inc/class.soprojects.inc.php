@@ -49,11 +49,11 @@
 			return $s;
 		}
 
-		function read_projects($start, $limit = True, $query = '', $filter = '', $sort = '', $order = '', $status = 'active', $cat_id = '', $type = 'mains', $pro_parent = '')
+		function read_projects($start, $limit = True, $query = '', $filter = '', $sort = '', $order = '', $status = '', $cat_id = '', $type = 'mains', $pro_parent = '')
 		{
-			if ($status == 'archive')
+			if ($status)
 			{
-				$statussort = " AND status = 'archive' ";
+				$statussort = " AND status = '" . $status . "' ";
 			}
 			else
 			{
@@ -115,6 +115,8 @@
 			{
 				case 'mains':	$filtermethod .= " AND parent = '0' "; break;
 				case 'subs' :	$filtermethod .= " AND parent = '$pro_parent' AND parent != '0' "; break;
+				case 'amains':	$filtermethod .= " AND parent = '0' "; break;
+				case 'asubs':	$filtermethod .= " AND parent = '$pro_parent' AND parent != '0' "; break;
 			}
 
 			if ($query)
@@ -181,7 +183,7 @@
 			return $project;
 		}
 
-		function select_project_list($type,$selected = '')
+		function select_project_list($type, $status, $selected = '')
 		{
 			$projects = $this->read_projects($start, False, $query, $filter, $sort, $order, $status, $cat_id, $type);
 
@@ -299,7 +301,7 @@
 
 				while($activ=each($bill_activities))
 				{
-					$phpgw->db->query("insert into phpgw_p_projectactivities (project_id, activity_id, billable) values ('" . $values['project_id']
+					$this->db->query("insert into phpgw_p_projectactivities (project_id, activity_id, billable) values ('" . $values['project_id']
 									. "','$activ[1]','Y')",__LINE__,__FILE__);
 				}
 			}

@@ -94,6 +94,8 @@
 				case 'subs'		: $column = 'projects_subs'; break;
 				case 'act'		: $column = 'projects_act'; break;
 				case 'pad'		: $column = 'projects_pad'; break;
+				case 'amains'	: $column = 'projects_amains'; break;
+				case 'asubs'	: $column = 'projects_asubs'; break;
 			}
 			return $column;
 		}
@@ -571,9 +573,9 @@
 			}
 		}
 
-		function select_project_list($type, $project_id)
+		function select_project_list($type, $status, $project_id)
 		{
-			$list = $this->soprojects->select_project_list($type,$project_id);
+			$list = $this->soprojects->select_project_list($type, $status, $project_id);
 			return $list;
 		}
 

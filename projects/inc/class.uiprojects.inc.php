@@ -49,7 +49,8 @@
 			'list_admins'		=> True,
 			'edit_admins'		=> True,
 			'abook'				=> True,
-			'preferences'		=> True
+			'preferences'		=> True,
+			'archive'			=> True
 		);
 
 		function uiprojects()
@@ -122,6 +123,9 @@
     		$this->t->set_var('lang_billperae',lang('Bill per workunit'));
 			$this->t->set_var('lang_remarkreq',lang('Remark required'));
 			$this->t->set_var('lang_select',lang('Select per button !'));
+			$this->t->set_var('lang_invoices',lang('Invoices'));
+			$this->t->set_var('lang_deliveries',lang('Deliveries'));
+			$this->t->set_var('lang_stats',lang('Statistics'));
 		}
 
 		function display_app_header()
@@ -156,7 +160,7 @@
 			$this->t->set_var('lang_delivery',lang('Delivery'));
 			$this->t->set_var('link_projects',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
 			$this->t->set_var('lang_projects',lang('Projects'));
-			$this->t->set_var('link_archiv',$GLOBALS['phpgw']->link('/projects/archive.php'));
+			$this->t->set_var('link_archiv',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.archive&action=amains'));
 			$this->t->set_var('lang_archiv',lang('archive'));
 
 			$this->t->fp('app_header','projects_header');
@@ -222,7 +226,7 @@
 			{
 				$action_list= '<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data) .'" name="form">' . "\n"
 							. '<select name="pro_parent" onChange="this.form.submit();"><option value="">' . lang('Select main project') . '</option>' . "\n"
-							. $this->boprojects->select_project_list('mains',$pro_parent) . '</select>';
+							. $this->boprojects->select_project_list('mains', $status, $pro_parent) . '</select>';
 				$this->t->set_var('lang_header',lang('Job list'));
 				$this->t->set_var('lang_action',lang('Work hours'));
 			}
@@ -1503,6 +1507,192 @@
 			$this->t->set_var('abid',$abid);
 
 			$this->t->pfp('out','prefs');
+		}
+
+		function archive()
+		{
+			global $action, $pro_parent;
+
+			$this->display_app_header();
+
+			$this->t->set_file(array('projects_list_t' => 'archive.tpl'));
+			$this->t->set_block('projects_list_t','projects_list','list');
+
+			if (!$action)
+			{
+				$action = 'amains';
+			}
+
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uiprojects.archive',
+				'pro_parent'	=> $pro_parent,
+				'action'		=> $action,
+				'cat_id'		=> $this->cat_id
+			);
+
+			if (!$this->start)
+			{
+				$this->start = 0;
+			}
+
+			if (!$pro_parent)
+			{
+				$pro_parent = 0;
+			}
+
+			$pro = $this->boprojects->list_projects($this->start,True,$this->query,$this->filter,$this->sort,$this->order,'archive',$this->cat_id,$action,$pro_parent);
+
+// --------------------- nextmatch variable template-declarations ------------------------
+
+			$left = $this->nextmatchs->left('/index.php',$this->start,$this->boprojects->total_records,$link_data);
+			$right = $this->nextmatchs->right('/index.php',$this->start,$this->boprojects->total_records,$link_data);
+			$this->t->set_var('left',$left);
+			$this->t->set_var('right',$right);
+
+			$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->boprojects->total_records,$this->start));
+
+// ------------------------------ end nextmatch template ------------------------------------
+
+			if ($action == 'amains')
+			{
+				$action_list= '<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data) . '" name="form">' . "\n"
+							. '<select name="cat_id" onChange="this.form.submit();"><option value="">' . lang('None') . '</option>' . "\n"
+							. $this->cats->formated_list('select','all',$this->cat_id,True) . '</select>';
+				$this->t->set_var(lang_header,lang('Project archive'));
+				$this->t->set_var(lang_action,lang('Jobs'));
+			}
+			else
+			{
+				$action_list= '<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data) .'" name="form">' . "\n"
+							. '<select name="pro_parent" onChange="this.form.submit();"><option value="">' . lang('Select main project') . '</option>' . "\n"
+							. $this->boprojects->select_project_list('mains', 'archive', $pro_parent) . '</select>';
+				$this->t->set_var('lang_header',lang('Job archive'));
+				$this->t->set_var('lang_action',lang('Work hours'));
+			}
+
+			$this->t->set_var('action_list',$action_list);
+			$this->t->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->t->set_var('filter_list',$this->nextmatchs->filter(1,1));
+			$this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->t->set_var('search_list',$this->nextmatchs->search(1));
+
+// ---------------- list header variable template-declarations --------------------------
+
+			$this->t->set_var('sort_number',$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Project ID'),$link_data));
+
+			if ($action == 'amains')
+			{
+				$this->t->set_var('sort_action',$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer'),$link_data));
+			}
+			else
+			{
+				$this->t->set_var('sort_action',$this->nextmatchs->show_sort_order($this->sort,'start_date',$this->order,'/index.php',lang('Start date'),$link_data));
+			}
+
+			$this->t->set_var('sort_title',$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('title'),$link_data));
+			$this->t->set_var('sort_end_date',$this->nextmatchs->show_sort_order($this->sort,'end_date',$this->order,'/index.php',lang('End date'),$link_data));
+			$this->t->set_var('sort_coordinator',$this->nextmatchs->show_sort_order($this->sort,'coordinator',$this->order,'/index.php',lang('Coordinator'),$link_data));
+
+// ----------------------------- end header declaration ----------------------------------
+
+            for ($i=0;$i<count($pro);$i++)
+            {
+				$this->nextmatchs->template_alternate_row_color(&$this->t);
+				$title = $GLOBALS['phpgw']->strip_html($pro[$i]['title']);
+				if (! $title) $title = '&nbsp;';
+
+				$edate = $pro[$i]['edate'];
+				if ($edate == 0)
+				{
+					$edateout = '&nbsp;';
+				}
+				else
+				{
+					$edate = $edate + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+					$edateout = $GLOBALS['phpgw']->common->show_date($edate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+				}
+
+				if ($action == 'amains')
+				{
+					if ($pro[$i]['customer'] != 0) 
+					{
+						$customer = $this->boprojects->read_customer_data($pro[$i]['customer']);
+            			if ($customer[0]['org_name'] == '') { $td_action = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+            			else { $td_action = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
+					}
+					else { $td_action = '&nbsp;'; }
+				}
+				else
+				{
+					$sdate = $pro[$i]['sdate'];
+					if ($sdate == 0) { $sdateout = '&nbsp;'; }
+					else
+					{
+						$sdate = $sdate + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+						$td_action = $GLOBALS['phpgw']->common->show_date($sdate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+					}
+				}
+
+				$cached_data = $this->boprojects->cached_accounts($pro[$i]['coordinator']);
+				$coordinatorout = $GLOBALS['phpgw']->strip_html($cached_data[$pro[$i]['coordinator']]['account_lid']
+                                        . ' [' . $cached_data[$pro[$i]['coordinator']]['firstname'] . ' '
+                                        . $cached_data[$pro[$i]['coordinator']]['lastname'] . ' ]');
+
+// --------------- template declaration for list records -------------------------------------
+
+				$this->t->set_var(array
+				(
+					'number'		=> $GLOBALS['phpgw']->strip_html($pro[$i]['number']),
+					'td_action'		=> $td_action,
+					'status'		=> lang($pro[$i]['status']),
+					'title'			=> $title,
+					'end_date'		=> $edateout,
+					'coordinator'	=> $coordinatorout
+				));
+
+				$link_data['project_id'] = $pro[$i]['project_id'];
+
+				if ($this->boprojects->check_perms($this->grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $this->account)
+				{
+					$link_data['menuaction'] = 'projects.uiprojects.edit_project';
+					$this->t->set_var('edit',$GLOBALS['phpgw']->link('/index.php',$link_data));
+					$this->t->set_var('lang_edit_entry',lang('Edit'));
+				}
+				else
+				{
+					$this->t->set_var('edit','');
+					$this->t->set_var('lang_edit_entry','&nbsp;');
+				}
+
+				if ($action == 'amains')
+				{
+					$this->t->set_var('action_entry',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.archive&pro_parent='
+										. $pro[$i]['project_id'] . '&action=asubs'));
+					$this->t->set_var('lang_action_entry',lang('Jobs'));
+				}
+				else
+				{
+					$link_data['menuaction'] = 'projects.uiprojecthours.list_hours';
+					$link_data['action'] = 'asubs';
+					$this->t->set_var('action_entry',$GLOBALS['phpgw']->link('/index.php',$link_data)); 
+					$this->t->set_var('lang_action_entry',lang('Work hours'));
+				}
+
+				$this->t->set_var('delivery',$GLOBALS['phpgw']->link('/projects/del_deliverylist.php','project_id=' . $pro[$i]['project_id']));
+				$this->t->set_var('invoice',$GLOBALS['phpgw']->link('/projects/bill_invoicelist.php','project_id=' . $pro[$i]['project_id']));
+				$this->t->set_var('stats',$GLOBALS['phpgw']->link('/projects/stats_projectstat.php','id=' . $pro[$i]['project_id']));
+				$this->t->set_var('lang_invoice_entry',lang('Invoices'));
+				$this->t->set_var('lang_delivery_entry',lang('Deliveries'));
+				$this->t->set_var('lang_stats_entry',lang('Statistics'));
+
+				$this->t->fp('list','projects_list',True);
+			}
+
+// ------------------------- end record declaration ------------------------
+
+			$this->t->pfp('out','projects_list_t',True);
+			$this->save_sessiondata($action);
 		}
 	}
 ?>

@@ -58,6 +58,7 @@ Invoices	projects	de	Rechnungen
 Invoice x has been created !	projects	de	Rechnung %1 wurde erstellt !
 Invoice x has been updated !	projects	de	Rechnung %1 wurde &uuml;berarbeitet !
 Job	projects	de	Job
+job archive	projects	de	Job Archiv
 Job date	projects	de	Job Datum
 Job description	projects	de	Job Beschreibung
 Job has been added !	projects	de	Job wurde hinzugef&uuml;gt !
@@ -121,6 +122,7 @@ View job	projects	de	Job anzeigen
 View project	projects	de	Projekt anzeigen
 Work date	projects	de	Arbeitsdatum
 Work hours	projects	de Arbeitsstunden
+Work hours archive	projects	de	Arbeitsstunden Archiv
 Work hours list	projects	de	Arbeitsstunden Liste
 Work time	projects	de	Arbeitszeit
 Workunit	projects	de	Arbeitseinheit

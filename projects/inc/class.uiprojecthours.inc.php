@@ -154,7 +154,7 @@
 			$this->t->set_var('lang_delivery',lang('Delivery'));
 			$this->t->set_var('link_projects',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
 			$this->t->set_var('lang_projects',lang('Projects'));
-			$this->t->set_var('link_archiv',$GLOBALS['phpgw']->link('/projects/archive.php'));
+			$this->t->set_var('link_archiv',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.archive&action=amains'));
 			$this->t->set_var('lang_archiv',lang('archive'));
 
 			$this->t->fp('app_header','projects_header');
@@ -184,7 +184,7 @@
 
 		function list_hours()
 		{
-			global $project_id;
+			global $project_id, $action;
 
 			$this->display_app_header();
 
@@ -194,19 +194,27 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uiprojecthours.list_hours',
-				'project_id'	=> $project_id
+				'project_id'	=> $project_id,
+				'action'		=> $action
 			);
 
 			$this->t->set_var('project_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$this->t->set_var('project_list',$this->boprojects->select_project_list('all',$project_id));
 			$this->t->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('filter_list',$this->nextmatchs->filter(1));
 			$this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('search_list',$this->nextmatchs->search(1));
 			$this->t->set_var('state_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
-			$this->t->set_var(lang_action,lang('Work hours list'));
-    		$this->t->set_var('lang_select_project',lang('Select project'));
+			if ($action != 'asubs')
+			{
+				$this->t->set_var(lang_action,lang('Work hours list'));
+				$this->t->set_var('project_list',$this->boprojects->select_project_list('all',$status,$project_id));
+			}
+			else
+			{
+				$this->t->set_var(lang_action,lang('Work hours archive'));
+				$this->t->set_var('project_list',$this->boprojects->select_project_list('all','archive',$project_id));
+			}
 
 			switch($this->state)
 			{
@@ -318,15 +326,21 @@
 
 			}
 
-			$pro = $this->boprojects->read_single_project($project_id);
-
-			if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
+			if ($action != 'asubs')
 			{
-				$link_data['menuaction'] = 'projects.uiprojecthours.add_hours';
-				$this->t->set_var('action','<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data)
+				$pro = $this->boprojects->read_single_project($project_id);
+
+				if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
+				{
+					$link_data['menuaction'] = 'projects.uiprojecthours.add_hours';
+					$this->t->set_var('action','<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data)
 																	. '"><input type="submit" value="' . lang('Add') . '"></form>');
+				}
 			}
-			else { $this->t->set_var('action',''); }
+			else
+			{
+				$this->t->set_var('action','');
+			}
 
 			$this->t->pfp('out','hours_list_t',True);
 			$this->save_sessiondata();
