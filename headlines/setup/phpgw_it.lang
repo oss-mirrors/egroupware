@@ -5,7 +5,7 @@ headline preferences	common	it	Preferenze NEWS
 headline sites	admin	it	Siti NEWS
 minutes between reloads	admin	it	Minuti fra gli aggiornamenti
 news file	admin	it	File delle NEWS
-news headlines  common  it	Titoli delle NEWS
+news headlines	common	it	Titoli delle NEWS
 news type	admin	it	Tipo di NEWS
 that site has already been entered	admin	it	Quel sito è già stato inserito
 you must enter a base url	admin	it	Devi inserire un url di base
