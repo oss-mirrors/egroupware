@@ -20,7 +20,7 @@
   // Some on the methods where borrowed from
   // Squirrelmail <Luke Ehresman> http://www.squirrelmail.org
 
-  $sep = $phpgw->common->filesystem_sepeartor();
+  $sep = $phpgw->common->filesystem_separator();
 
   $uploaddir = $phpgw_info["server"]["temp_dir"] . $sep . $phpgw->session->id . $sep;
 

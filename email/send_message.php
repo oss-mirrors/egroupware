@@ -23,7 +23,7 @@
      exit;
   }
 
-  $sep = $phpgw->common->filesystem_sepeartor();
+  $sep = $phpgw->common->filesystem_separator();
 
   if (file_exists($phpgw_info["server"]["temp_dir"].$sep.$phpgw_info["user"]["sessionid"])) {
      $dh = opendir($phpgw_info["server"]["temp_dir"] . $sep . $phpgw_info["user"]["sessionid"]);
