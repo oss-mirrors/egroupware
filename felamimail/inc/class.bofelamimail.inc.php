@@ -80,10 +80,13 @@
 		
 		function addAccount($_hookValues)
 		{
-			$hookData = array(
-				'profileID'	=> $this->profileID,
-				'hookValues'	=> $_hookValues);
-			ExecMethod('emailadmin.bo.addAccount',$hookData);
+			if($this->profileID > 0 && is_numeric($this->profileID))
+			{
+				$hookData = array(
+					'profileID'	=> $this->profileID,
+					'hookValues'	=> $_hookValues);
+				ExecMethod('emailadmin.bo.addAccount',$hookData);
+			}
 		}
 		
 		function adminMenu()
@@ -204,10 +207,13 @@
 		
 		function deleteAccount($_hookValues)
 		{
-			$hookData = array(
-				'profileID'	=> $this->profileID,
-				'hookValues'	=> $_hookValues);
-			ExecMethod('emailadmin.bo.deleteAccount',$hookData);
+			if($this->profileID > 0 && is_numeric($this->profileID))
+			{
+				$hookData = array(
+					'profileID'	=> $this->profileID,
+					'hookValues'	=> $_hookValues);
+				ExecMethod('emailadmin.bo.deleteAccount',$hookData);
+			}
 		}
 		
 		function deleteMessages($_messageUID)
@@ -1458,30 +1464,33 @@
 
 		function updateAccount($_hookValues)
 		{
-			$hookData = array(
-				'profileID'	=> $this->profileID,
-				'hookValues'	=> $_hookValues);
-			ExecMethod('emailadmin.bo.updateAccount',$hookData);
+			if($this->profileID > 0 && is_numeric($this->profileID))
+			{
+				$hookData = array(
+					'profileID'	=> $this->profileID,
+					'hookValues'	=> $_hookValues);
+				ExecMethod('emailadmin.bo.updateAccount',$hookData);
+			}
 		}
 		
-		function validate_email($_emailAddress)
-		{
-			if($val != "")
-			{
-				$pattern = "/^([a-zA-Z0-9])+([\.a-zA-Z0-9_-])*@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-]+)+/";
-				if(preg_match($pattern, $val))
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else
-			{
-				return false;
-			}
-		}
+#		function validate_email($_emailAddress)
+#		{
+#			if($val != "")
+#			{
+#				$pattern = "/^([a-zA-Z0-9])+([\.a-zA-Z0-9_-])*@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-]+)+/";
+#				if(preg_match($pattern, $val))
+#				{
+#					return true;
+#				}
+#				else
+#				{
+#					return false;
+#				}
+#			}
+#			else
+#			{
+#				return false;
+#			}
+#		}
 	}
 ?>
