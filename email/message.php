@@ -85,7 +85,7 @@
         $lnk_goback_folder = $GLOBALS['phpgw']->msg->href_maketag(
 		$GLOBALS['phpgw']->link('/email/index.php',
 			'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-			.'&sort='.$phpgw']->msg->sort
+			.'&sort='.$GLOBALS['phpgw']->msg->sort
 			.'&order='.$GLOBALS['phpgw']->msg->order
 			.'&start='.$GLOBALS['phpgw']->msg->start),
 		$GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->folder));
