@@ -572,7 +572,7 @@
 		 . "&p=".$part_no."&s=".strtolower($de_part->subtype)."&n=".$att_name;
     if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"]) 
       $extra_parms .= "&newsmode=on";
-    $view_link = $phpgw->link("viewimage.php",$extra_parms);
+    $view_link = $phpgw->link("view_image.php",$extra_parms);
     echo "\n<img src=\"".$view_link."\">\n<p>\n";
   }
 
