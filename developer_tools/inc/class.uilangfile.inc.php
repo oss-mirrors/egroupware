@@ -15,27 +15,42 @@
 	{
 		var $helpme;
 		var $public_functions = array(
-			'index'    => True,
-			'add'      => True,
-			'edit'     => True,
-			'create'   => True,
-			'save'     => True,
-			'addphrase'=> True,
-			'download' => True
+			'index'     => True,
+			'edit'      => True,
+			'create'    => True,
+			'save'      => True,
+			'load'      => True,
+			'addphrase' => True,
+			'download'  => True
 		);
 		var $bo;
 
 		function uilangfile()
 		{
-			global $phpgw;
+			global $phpgw,$phpgw_info,$lang;
+
 			$this->template = $phpgw->template;
 			$this->bo = CreateObject('developer_tools.bolangfile');
 			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
+			$phpgw->translation->add_app('developer_tools');
+			$phpgw->translation->add_app('common');
+			$phpgw->translation->add_app('transy');
 		}
 
-		function add()
+		function load()
 		{
-			global $phpgw,$appname;
+			global $phpgw,$app_name,$sourcelang,$targetlang;
+
+			$phpgw->common->phpgw_header();
+			echo parse_navbar();
+
+			echo '<br>' . lang('Loading source langfile') . ': ' . $sourcelang . '... ';
+			echo $this->bo->loaddb($app_name,$sourcelang);
+			echo '<br>' . lang('Loading target langfile') . ': ' . $targetlang . '... ';
+			echo $this->bo->loaddb($app_name,$targetlang);
+
+			echo '<br><a href="' . $phpgw->link('/index.php','menuaction=developer_tools.uilangfile.edit&app_name=' . $app_name
+				. '&sourcelang=' . $sourcelang . '&targetlang=' . $targetlang) . '">' . lang('ok') . '</a>';
 		}
 
 		function addphrase()
@@ -130,7 +145,9 @@
 			$this->template->set_var('action_url',$phpgw->link('/index.php','menuaction=developer_tools.uilangfile.edit'));
 			$this->template->set_var('revert_url',$phpgw->link('/index.php','menuaction=developer_tools.uilangfile.edit'));
 			$this->template->set_var('cancel_link',$phpgw->link('/index.php','menuaction=developer_tools.uilangfile.index'));
+			$this->template->set_var('loaddb_url',$phpgw->link('/index.php','menuaction=developer_tools.uilangfile.load'));
 			$this->template->set_var('lang_remove',lang('Remove'));
+			$this->template->set_var('lang_loaddb',lang('Write to lang table'));
 			$this->template->set_var('lang_application',lang('Application'));
 			$this->template->set_var('lang_source',lang('Source Language'));
 			$this->template->set_var('lang_target',lang('Target Language'));
@@ -150,46 +167,46 @@
 				$targetlang = 'en';
 			}
 
-			while (list($x,$lang) = @each($languages))
+			while (list($x,$_lang) = @each($languages))
 			{
-				$sourcelangs .= '      <option value="' . $lang['lang_id'] . '"';
+				$sourcelangs .= '      <option value="' . $_lang['lang_id'] . '"';
 				if ($sourcelang)
 				{
-					if ($lang['lang_id'] == $sourcelang)
+					if ($_lang['lang_id'] == $sourcelang)
 					{
 						$sourcelangs .= ' selected';
 					}
 				}
-				elseif ($lang['lang_id'] == 'EN')
+				elseif ($_lang['lang_id'] == 'EN')
 				{
 					$sourcelangs .= ' selected';
 				}
-				$sourcelangs .= '>' . $lang['lang_name'] . '</option>' . "\n";
+				$sourcelangs .= '>' . $_lang['lang_name'] . '</option>' . "\n";
 			}
 			@reset($languages);
 
-			while (list($x,$lang) = @each($languages))
+			while (list($x,$_lang) = @each($languages))
 			{
-				$targetlangs .= '      <option value="' . $lang['lang_id'] . '"';
+				$targetlangs .= '      <option value="' . $_lang['lang_id'] . '"';
 				if ($targetlang)
 				{
-					if ($lang['lang_id'] == $targetlang)
+					if ($_lang['lang_id'] == $targetlang)
 					{
 						$targetlangs .= ' selected';
 					}
 				}
-				elseif ($lang['lang_id'] == 'EN')
+				elseif ($_lang['lang_id'] == 'EN')
 				{
 					$targetlangs .= ' selected';
 				}
-				$targetlangs .= '>' . $lang['lang_name'] . '</option>' . "\n";
+				$targetlangs .= '>' . $_lang['lang_name'] . '</option>' . "\n";
 			}
 			$this->template->set_var('sourcelangs',$sourcelangs);
 			$this->template->set_var('targetlangs',$targetlangs);
 			$this->template->set_var('app_name',$app_name);
 			$this->template->pfp('out','header');
 
-			$db_perms = $phpgw->acl->get_user_applications($phpgw_info["user"]["account_id"]);
+			$db_perms = $phpgw->acl->get_user_applications($phpgw_info['user']['account_id']);
 			@ksort($db_perms);
 			@reset($db_perms);
 			while (list($userapp) = each($db_perms))
@@ -314,21 +331,16 @@
 			$phpgw->common->phpgw_footer();
 		}
 
-		function create()
-		{
-			global $phpgw,$appname;
-		}
-
-		function save($which,$lang)
+		function save($which,$userlang)
 		{
 			global $phpgw, $app_name;
 
-			$this->bo->write_file($which,$app_name,$lang);
+			$this->bo->write_file($which,$app_name,$userlang);
 			Header('Location: ' . $phpgw->link('/index.php','menuaction=developer_tools.uilangfile.edit&app_name='.$app_name
 				. '&sourcelang=' . $sourcelang . '&targetlang=' . $targetlang));
 		}
 
-		function download($which,$lang)
+		function download($which,$userlang)
 		{
 			global $phpgw;
 
@@ -344,10 +356,10 @@
 					break;
 			}
 			$browser = CreateObject('phpgwapi.browser');
-			$browser->content_header('phpgw_' . $lang . '.lang');
+			$browser->content_header('phpgw_' . $userlang . '.lang');
 			while(list($mess_id,$data) = @each($langarray))
 			{
-				echo $mess_id . "\t" . $data['app_name'] . "\t" . $lang . "\t" . $data['content'] . "\n";
+				echo $mess_id . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $data['content'] . "\n";
 			}
 			$phpgw->common->phpgw_exit();
 		}

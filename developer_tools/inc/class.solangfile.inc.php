@@ -27,7 +27,7 @@
 
 		function solangfile()
 		{
-			global $phpgw,$phpgw_info, $lang;
+			global $phpgw;
 			$this->db = $phpgw->db;
 		}
 
@@ -183,16 +183,56 @@
 			return $languages;
 		}
 
-		function write_file($app_name,$langarray,$lang)
+		function write_file($app_name,$langarray,$userlang)
 		{
-			$fn = PHPGW_SERVER_ROOT . SEP . $app_name . SEP . 'setup' . SEP . 'phpgw_' . $lang . '.lang';
+			$fn = PHPGW_SERVER_ROOT . SEP . $app_name . SEP . 'setup' . SEP . 'phpgw_' . $userlang . '.lang';
 			$fp = fopen($fn,'wb');
 			while(list($mess_id,$data) = each($langarray))
 			{
-				fwrite($fp,$mess_id . "\t" . $data['app_name'] . "\t" . $lang . "\t" . $data['content'] . "\n");
+				fwrite($fp,$mess_id . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $data['content'] . "\n");
 			}
 			fclose($fp);
 			return;
+		}
+
+		function loaddb($app_name,$userlang)
+		{
+			$this->db->transaction_begin();
+
+			$langarray = $this->load_app($app_name,$userlang);
+
+			@reset($langarray);
+			while (list($x,$data) = @each($langarray))
+			{
+				$addit = False;
+				/* echo '<pre> checking ' . $data['message_id'] . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $data['content']; */
+				$this->db->query("SELECT COUNT(*) FROM lang WHERE message_id='" . $data['message_id'] . "' and lang='$userlang'",__LINE__,__FILE__);
+				$this->db->next_record();
+
+				if ($this->db->f(0) == 0)
+				{
+					$addit = True;
+					/* echo '... no</pre>'; */
+				}
+				else
+				{
+					/* echo '... yes</pre>'; */
+				}
+
+				if ($addit)
+				{
+					if($data['message_id'] && $data['content'])
+					{
+						/* echo "<br>adding - insert into lang values ('" . $data['message_id'] . "','$app_name','$userlang','" . $data['content'] . "')"; */
+						$this->db->query("INSERT into lang VALUES ('"
+							. addslashes($data['message_id']) . "','"
+							. $data['app_name'] . "','$userlang','"
+							. addslashes($data['content']) . "')",__LINE__,__FILE__);
+					}
+				}
+			}
+			$this->db->transaction_commit();
+			return lang('done');
 		}
 	}
 ?>

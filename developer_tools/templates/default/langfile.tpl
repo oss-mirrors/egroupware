@@ -105,15 +105,21 @@
 <hr>
 <table width="90%" align="center">
   <tr valign="top">
-     <input name="app_name" type="hidden" value="{app_name}">
+     <input name="app_name"  type="hidden" value="{app_name}">
    <td align="center"><input type="submit" name="update" value="{lang_update}"></td>
   </form>
+  <form method="post" action="{loaddb_url}">
+     <input name="app_name"   type="hidden" value="{app_name}">
+     <input name="sourcelang" type="hidden" value="{sourcelang}">
+     <input name="targetlang" type="hidden" value="{targetlang}">
+   <td align="center"><input  type="submit" name="loaddb" value="{lang_loaddb}"></td>
+  </form>
   <form method="post" action="{phrase_link}">
-     <input name="app_name" type="hidden" value="{app_name}">
+     <input name="app_name"  type="hidden" value="{app_name}">
    <td align="center"><input type="submit" name="addphrase" value="{lang_addphrase}"></td>
   </form>
   <form method="post" action="{revert_url}">
-     <input name="app_name" type="hidden" value="{app_name}">
+     <input name="app_name"  type="hidden" value="{app_name}">
    <td align="center"><input name="revert" type="submit" value="{lang_revert}"></td>
   </form>
   <form method="post" action="{cancel_link}">

@@ -10,7 +10,6 @@ no file	developer_tools	en	No file
 remove	developer_tools	en	Remove
 revert	developer_tools	en	Revert
 sf project tracker	developer_tools	en	SF Project Tracker
-source language	developer_tools	en	Source Language
-target language	developer_tools	en	Target Language
 update	developer_tools	en	Update
 write	developer_tools	en	Write
+write to lang table	developer_tools	en	Write to lang table

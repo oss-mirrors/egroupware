@@ -130,7 +130,7 @@
 			return $this->target_langarray;
 		}
 
-		function write_file($which,$app_name,$lang)
+		function write_file($which,$app_name,$userlang)
 		{
 			switch ($which)
 			{
@@ -143,8 +143,13 @@
 				default:
 					break;
 			}
-			$this->so->write_file($app_name,$langarray,$lang);
+			$this->so->write_file($app_name,$langarray,$userlang);
 			return;
+		}
+
+		function loaddb($app_name,$userlang)
+		{
+			return $this->so->loaddb($app_name,$userlang);
 		}
 	}
 ?>
