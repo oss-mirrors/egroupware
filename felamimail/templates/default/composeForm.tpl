@@ -77,9 +77,9 @@
 	<td align="right">
 		{lang_priority}
 		<select name="priority">
-			<option value="5">{lang_high}</option>
+			<option value="1">{lang_high}</option>
 			<option value="3" selected>{lang_normal}</option>
-			<option value="1">{lang_low}</option>
+			<option value="5">{lang_low}</option>
 		</select>
 	</td>
 </tr>
