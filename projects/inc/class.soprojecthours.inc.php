@@ -76,7 +76,7 @@
 						'employee'		=> $this->db->f('employee'),
 						'activity_id'	=> $this->db->f('activity_id'),
 						'remark'		=> $this->db->f('remark'),
-						'billable'		=> $this->db->f('billable')=='Y' ? 'N' : 'Y',
+						'billable'		=> $this->db->f('billable'),
 						'km_distance'	=> $this->db->f('km_distance'),
 						't_journey'		=> $this->db->f('t_journey')
 					);
@@ -172,7 +172,7 @@
 					'end_date'		=> $values['edate'],
 					'hours_descr'	=> $values['hours_descr'],
 					'remark'		=> $values['remark'],
-					'billable'		=> $values['billable'] == 'Y' ? 'N' : 'Y',
+					'billable'		=> $values['billable'],
 					'minutes'		=> $values['w_minutes'],
 					'status'		=> $values['status'],
 					'employee'		=> $values['employee'],
@@ -195,7 +195,7 @@
 					'end_date'		=> $values['edate'],
 					'hours_descr'	=> $values['hours_descr'],
 					'remark'		=> $values['remark'],
-					'billable'		=> $values['billable'] == 'Y' ? 'N' : 'Y',
+					'billable'		=> $values['billable'],
 					'minutes'		=> $values['w_minutes'],
 					'status'		=> $values['status'],
 					'employee'		=> $values['employee'],
@@ -283,7 +283,7 @@
 				$activity['billperae'] = $this->db->f('billperae');
 				
 				$where['activity_id'] = $activity['activity_id'];
-				$where['billable'] = $activity['billable'] == 'Y' ? 'N' : 'Y';	// billable in hours means not-billable !!!
+				$where['billable'] = $activity['billable'];	
 				$this->db->select($this->hours_table,'SUM(minutes)',$where,__LINE__,__FILE__);
 				$this->db->next_record();
 				$activity['utime'] = $this->db->f(0);
@@ -304,7 +304,7 @@
 
 			if($params['no_billable'] || $params['is_billable'])
 			{
-				$where['billable'] = $params['no_billable'] ? 'Y' : 'N';
+				$where['billable'] = $params['no_billable'] ? 'N' : 'Y';
 			}
 			$this->db->select($this->hours_table,'SUM(minutes)',$where,__LINE__,__FILE__);
 
@@ -330,7 +330,7 @@
 
 			if($params['no_billable'] || $params['is_billable'])
 			{
-				$where['billable'] = $params['no_billable'] ? 'Y' : 'N';
+				$where['billable'] = $params['no_billable'] ? 'N' : 'Y';
 			}
 			$this->db->select($this->hours_table,'SUM(minutes)',$where,__LINE__,__FILE__);
 
@@ -368,13 +368,9 @@
 		{
 			$where = array('project_id' => is_array($params['project_array']) ? $params['project_array'] : $params['project_id']);
 
-			if($params['no_billable'])
+			if($params['no_billable'] || $params['is_billable'])
 			{
-				$where['billable'] = 'N';
-			}
-			else if($params['is_billable'])
-			{
-				$where['billable'] = 'Y';
+				$where['billable'] = $params['no_billable'] ? 'N' : 'Y';
 			}
 			foreach($this->get_project_employees($params) as $emp)
 			{
@@ -629,7 +625,7 @@
 						'employee'		=> $hour['employee'],
 						'pro_parent'	=> $hour['pro_parent'],
 						'pro_main'		=> $hour['pro_main'],
-						'billable'		=> $hour['billable'] == 'Y' ? 'N' : 'Y',	// hours saves a not-billable flag !!!
+						'billable'		=> $hour['billable'],
 						't_journey'		=> 0.0 + $hour['t_journey'],
 						'km_distance'	=> 0.0 + $hour['km_distance'],
 					),false,__LINE__,__FILE__);

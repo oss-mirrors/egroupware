@@ -1099,4 +1099,17 @@
 		$GLOBALS['setup_info']['projects']['currentver'] = '1.0.0.003';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
+
+
+	$test[] = '1.0.0.003';
+	function projects_upgrade1_0_0_003()
+	{
+		// change the wired billable column in the hours-table to have 'Y' for billable times and 'N' for not billable times
+		$GLOBALS['phpgw_setup']->oProc->query("UPDATE phpgw_p_hours SET billable='x' WHERE billable='N'",__LINE__,__FILE__);
+		$GLOBALS['phpgw_setup']->oProc->query("UPDATE phpgw_p_hours SET billable='N' WHERE billable='Y'",__LINE__,__FILE__);
+		$GLOBALS['phpgw_setup']->oProc->query("UPDATE phpgw_p_hours SET billable='Y' WHERE billable='x'",__LINE__,__FILE__);
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '1.0.0.004';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
 ?>
