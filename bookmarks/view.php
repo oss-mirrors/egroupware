@@ -91,7 +91,7 @@
 	$GLOBALS['phpgw']->template->set_var('lang_header',lang('View bookmark'));
 
 	$GLOBALS['phpgw']->template->set_var('input_url','<a href="' . $GLOBALS['phpgw']->link('/bookmarks/redirect.php','bm_id=' . $GLOBALS['phpgw']->db->f('bm_id'))
-													. '" target="_new">' . $GLOBALS['phpgw']->db->f('bm_url') . '</a>');
+		. '" target="_new">' . $GLOBALS['phpgw']->db->f('bm_url') . '</a>');
 	$GLOBALS['phpgw']->template->set_var('input_name',$GLOBALS['phpgw']->db->f('bm_name'));
 	$GLOBALS['phpgw']->template->set_var('input_desc',$GLOBALS['phpgw']->db->f('bm_desc'));
 	$GLOBALS['phpgw']->template->set_var('input_keywords',$GLOBALS['phpgw']->db->f('bm_keywords'));
@@ -106,18 +106,18 @@
 	$GLOBALS['phpgw']->template->set_var('input_category',$category);
 
 	$GLOBALS['phpgw']->template->set_var('cancel_button','<input type="image" name="cancel" title="' . lang('Done') . '" src="'
-										. $GLOBALS['phpgw']->common->image('bookmarks','cancel') . '" border="0">');
+		. $GLOBALS['phpgw']->common->image('bookmarks','cancel') . '" border="0">');
 
 	if ($GLOBALS['phpgw']->bookmarks->check_perms($bm_id,PHPGW_ACL_EDIT))
 	{
 		$GLOBALS['phpgw']->template->set_var('edit_button','<input type="image" name="edit" title="' . lang('Edit') . '" src="'
-										. $GLOBALS['phpgw']->common->image('bookmarks','edit') . '" border="0">');
+			. $GLOBALS['phpgw']->common->image('bookmarks','edit') . '" border="0">');
 	}
 
 	if ($GLOBALS['phpgw']->bookmarks->check_perms($bm_id,PHPGW_ACL_DELETE))
 	{
 		$GLOBALS['phpgw']->template->set_var('delete_button','<input type="image" name="delete" title="' . lang('Delete') . '" src="'
-										. $GLOBALS['phpgw']->common->image('bookmarks','delete') . '" border="0">');
+			. $GLOBALS['phpgw']->common->image('bookmarks','delete') . '" border="0">');
 	}
 
 	$GLOBALS['phpgw']->common->phpgw_footer();

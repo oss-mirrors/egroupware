@@ -171,11 +171,11 @@
 			$GLOBALS['phpgw']->config->read_repository();
 			$this->config      = $this->config_data;
 
-			if (! $GLOBALS['phpgw']->categories->exists('appandmains','No category'))
+			if(!$GLOBALS['phpgw']->categories->exists('appandmains','No category'))
 			{
 				$newcat = array(
-					'name'	 => 'No category',
-					'descr'	 => '',
+					'name'   => 'No category',
+					'descr'  => '',
 					'parent' => 0,
 					'access' => '',
 					'data'   => ''
@@ -191,7 +191,8 @@
 
 			//echo "<br>id: $id required: $required grants: " . $this->grants[$this->db->f('bm_owner')] . " owner: " . $this->db->f('bm_owner') . " user: " . $GLOBALS['phpgw_info']['user']['account_id'];
 
-			if (($this->grants[$this->db->f('bm_owner')] & $required) || ($this->db->f('bm_owner') == $GLOBALS['phpgw_info']['user']['account_id']))
+			if(($this->grants[$this->db->f('bm_owner')] & $required) ||
+				($this->db->f('bm_owner') == $GLOBALS['phpgw_info']['user']['account_id']))
 			{
 				return True;
 			}
@@ -270,7 +271,7 @@
 
 			$db = $GLOBALS['phpgw']->db;
 
-			if (! $this->validate($values))
+			if(!$this->validate($values))
 			{
 				return False;
 			}
@@ -280,23 +281,23 @@
 			$db->query($query,__LINE__,__FILE__);
 			$db->next_record();
 
-			if (! $return_no_errors && $db->f(0) != 0)
+			if(!$return_no_errors && $db->f(0) != 0)
 			{
 				$error_msg .= sprintf('<br>URL <B>%s</B> already exists!', $values['url']);
 				return False;
 			}
 
-			if ($return_no_errors && $db->f(0) != 0)
+			if($return_no_errors && $db->f(0) != 0)
 			{
 				return True;
 			}
 
-			if (! $values['access'])
+			if(!$values['access'])
 			{
 				$values['access'] = 'public';
 			}
 
-			if (! $values['timestamps'])
+			if(!$values['timestamps'])
 			{
 				$values['timestamps'] = time() . ',0,0';
 			}
@@ -304,7 +305,7 @@
 			list($category,$subcategory) = explode('|',$values['category']);
 			$subcategory = ereg_replace('!','',$subcategory);
 
-			if (! $return_no_errors && ! $category)
+			if(!$return_no_errors && ! $category)
 			{
 				$error_msg .= 'You must select a category';
 				return False;
@@ -319,7 +320,7 @@
     
 			$db->query($query,__LINE__,__FILE__);
 
-			if (! $return_no_errors)
+			if(!$return_no_errors)
 			{
 				$msg .= 'Bookmark created successfully.';
 			}
@@ -332,13 +333,13 @@
 			global $error_msg, $msg, $validate;
 
 			/*
-			if (!$this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory, &$rating, &$public, &$public_db))
+			if(!$this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory, &$rating, &$public, &$public_db))
 			{
 				return False;
 			}
 			*/
 
-			if (! $values['access'])
+			if(!$values['access'])
 			{
 				$values['access'] = 'public';
 			}
@@ -354,15 +355,15 @@
 
 			// Update bookmark information.
 			$query = sprintf("update phpgw_bookmarks set bm_url='%s', bm_name='%s', bm_desc='%s', "
-	                      . "bm_keywords='%s', bm_category='%s', bm_subcategory='%s', bm_rating='%s',"
-	                      . "bm_info='%s', bm_access='%s' where bm_id='%s'", 
-	                         $values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']), 
-	                         $category, $subcategory, $values['rating'], $timestamps, $values['access'], $id);
+				. "bm_keywords='%s', bm_category='%s', bm_subcategory='%s', bm_rating='%s',"
+				. "bm_info='%s', bm_access='%s' where bm_id='%s'", 
+				$values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']), 
+				$category, $subcategory, $values['rating'], $timestamps, $values['access'], $id);
 
 			$GLOBALS['phpgw']->db->query($query,__LINE__,__FILE__);
 
 			$msg .= lang('Bookmark changed sucessfully');
-	
+
 			return true;
 		}
 
@@ -375,7 +376,7 @@
 			// Delete that bookmark.
 			$query = sprintf("delete from phpgw_bookmarks where bm_id='%s' and bm_owner='%s'", $id, $GLOBALS['phpgw_info']["user"]["account_id"]);
 			$db->query($query,__LINE__,__FILE__);
-			if ($db->Errno != 0)
+			if($db->Errno != 0)
 			{
 				return False;
 			}
@@ -401,34 +402,33 @@
 //			$keyw = trim($keywords);
        
 			// Do we have all necessary data?
-			if (! $values['url'] || $values['url'] == 'http://')
+			if(!$values['url'] || $values['url'] == 'http://')
 			{
 				$error_msg .= '<br>URL is required.';
 			}
 
-			if (! $values['name'])
+			if(!$values['name'])
 			{
 				$error_msg .= '<br>' . lang('Name is required');
 			}   
 
 			// does the admin want us to check URL format
-			if ($GLOBALS['phpgw']->bookmarks->url_format_check > 0)
+			if($GLOBALS['phpgw']->bookmarks->url_format_check > 0)
 			{
 				// Is the URL format valid
-				if ($values['url'] == 'http://')
+				if($values['url'] == 'http://')
 				{
 					$error_msg .= '<br>You must enter a URL';
 				}
 				else
 				{
-					if (! $validate->is_url($values['url']))
+					if(!$validate->is_url($values['url']))
 					{
-						$format_msg = '<br>URL invalid. Format must be <strong>http://</strong> or 
-	                            <strong>ftp://</strong> followed by a valid hostname and 
-	                            URL!<br><small>' .  $validate->ERROR . '</small>';
-	  
+						$format_msg = '<br>URL invalid. Format must be <strong>http://</strong> or
+ <strong>ftp://</strong> followed by a valid hostname and URL!<br><small>' .  $validate->ERROR . '</small>';
+
 						// does the admin want this formatted as a warning or an error?
-						if ($GLOBALS['phpgw']->bookmarks->url_format_check == 2)
+						if($GLOBALS['phpgw']->bookmarks->url_format_check == 2)
 						{
 							$error_msg .= $format_msg;
 						}
@@ -440,7 +440,7 @@
 				}
 			}    
 
-			if ($error_msg)
+			if($error_msg)
 			{
 				return False;
 			}
@@ -458,7 +458,7 @@
 
 			/*
 			$db->query("select count(*) as total_bookmarks from bookmarks where username = '"
-			. $GLOBALS['phpgw_info']["user"]["account_id"] . "' or bookmarks.public_f='Y'",__LINE__,__FILE__);
+				. $GLOBALS['phpgw_info']["user"]["account_id"] . "' or bookmarks.public_f='Y'",__LINE__,__FILE__);
 			$db->next_record();
 			$GLOBALS['phpgw']->common->appsession($db->f("total_bookmarks"));
 
@@ -470,11 +470,14 @@
 			$query = sprintf("select count(id) as total_public from bookmarks where username = '%s' and public_f='Y'",$GLOBALS['phpgw_info']["user"]["account_id"]);
 			$db->query($query,__LINE__,__FILE__);
 			if ($db->Errno == 0) {
-				if ($db->next_record()) {
+				if($db->next_record())
+				{
 					//               $total_public = $db->f("total_public");
 					echo "TEST: " . $db->f("total_public");
 					$GLOBALS['phpgw']->common->appsession($db->f("total_public"));
-				} else {
+				}
+				else
+				{
 					echo "TEST: False";
 					return False;
 				} */
@@ -483,11 +486,12 @@
 				/*
 				$query = sprintf("update auth_user set total_public_bookmarks=%s where username = '%s'",$total_public, $uname);
 				$db->query($query,__LINE__,__FILE__);
-				if ($db->Errno != 0) {
+				if($db->Errno != 0)
+				{
 					return False;
 				}
 				return true;*/
-				//}
+			//}
 		}
 
 		function get_totalbookmarks()
@@ -495,11 +499,11 @@
 			global $bm_cat,$bm_subcat;
 
 			$filtermethod = '( bm_owner=' . $GLOBALS['phpgw_info']['user']['account_id'];
-			if (is_array($GLOBALS['phpgw']->bookmarks->grants))
+			if(is_array($GLOBALS['phpgw']->bookmarks->grants))
 			{
 				$grants = $GLOBALS['phpgw']->bookmarks->grants;
 				reset($grants);
-				while (list($user) = each($grants))
+				while(list($user) = each($grants))
 				{
 					$public_user_list[] = $user;
 				}
@@ -511,7 +515,7 @@
 				$filtermethod .= ' )';
 			}
 
-			if ($bm_cat || $bm_subcat)
+			if($bm_cat || $bm_subcat)
 			{
 				if($bm_cat)
 				{
