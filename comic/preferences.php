@@ -24,6 +24,7 @@
     $scale_label       = lang("Comics Scaled");
     $frontpage_label   = lang("Front Page Comic");
     $fpscale_label     = lang("Front Page Comic Scaled");
+    $censor_label      = lang("Censorship Level");
     $comic_label       = lang("Comics");
     $action_label      = lang("Submit");
     $reset_label       = lang("Reset");
@@ -56,6 +57,7 @@
                           ."comic_perpage='".$perpage."', "
                           ."comic_frontpage='".$frontpage."', "
                           ."comic_fpscale='".$fpscale_enabled."', "
+                          ."comic_censorlvl='".$censor_level."', "
                           ."comic_template='".$comic_template."' "
                           ."WHERE comic_id='".$comic_id."'");
         $phpgw->db->unlock();
@@ -75,6 +77,7 @@
         $perpage         = $phpgw->db->f("comic_perpage");
         $frontpage       = $phpgw->db->f("comic_frontpage");
         $fpscale_enabled = $phpgw->db->f("comic_fpscale");
+        $censor_level    = $phpgw->db->f("comic_censorlvl");
         $comic_template  = $phpgw->db->f("comic_template");
 
         $indexlimit = count($data_ids);
@@ -99,7 +102,8 @@
               prefs     => "prefs.body.tpl",
               perpage   => "option.common.tpl",
               frontpage => "option.common.tpl",
-              comic     => "option.common.tpl"));
+              comic     => "option.common.tpl",
+              censor    => "option.common.tpl"));
 
     for ($loop = 1; $loop <= 15; $loop++)
     {
@@ -116,6 +120,21 @@
     }
     $perpage_c = $prefs_tpl->get("option_list");
 
+    for ($loop = 0; $loop < count($g_censor_level); $loop++)
+    {
+        $selected = "";
+        if ($censor_level == $g_censor_level[$loop])
+        {
+            $selected = "selected";
+        }
+        
+        $prefs_tpl->set_var(array(OPTION_SELECTED => $selected,
+                                  OPTION_VALUE    => $g_censor_level[$loop],
+                                  OPTION_NAME     => $g_censor_level[$loop]));
+        $prefs_tpl->parse(censor_list, "censor", TRUE);
+    }
+    $censor_c = $prefs_tpl->get("censor_list");
+    
     for ($loop = -1; $loop < 1; $loop++)
     {
         $selected = "";
@@ -153,7 +172,7 @@
         $prefs_tpl->set_var
             (array(OPTION_SELECTED => $selected,
                    OPTION_VALUE    => $phpgw->db->f("data_id"),
-                   OPTION_NAME     => $phpgw->db->f("data_name")));
+                   OPTION_NAME     => $phpgw->db->f("data_title")));
         $prefs_tpl->parse(fpage_list, "frontpage", TRUE);
 
         for ($index = 0; $index < $indexlimit; $index++)
@@ -170,7 +189,7 @@
         $prefs_tpl->set_var
             (array(OPTION_SELECTED => $selected,
                    OPTION_VALUE    => $phpgw->db->f("data_id"),
-                   OPTION_NAME     => $phpgw->db->f("data_name")));
+                   OPTION_NAME     => $phpgw->db->f("data_title")));
         $prefs_tpl->parse(comic_list, "comic", TRUE);
     }
     
@@ -201,6 +220,8 @@
                  template_images  => $t_images_c,
                  perpage_options  => $perpage_c,
                  frontpage_options=> $frontpage_c,
+                 censor_label     => $censor_label,
+                 censor_options   => $censor_c,
                  comic_options    => $comic_c,
                  comic_id         => $comic_id,
                  th_bg            => $phpgw_info["theme"]["th_bg"],

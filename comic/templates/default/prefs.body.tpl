@@ -43,6 +43,13 @@
         <input type="checkbox" {fpscale_checked} name="fpscale_enabled" value="1">
       </td>
     </tr>
+    <tr>
+      <td width="50%" colspan=1 align="center">{censor_label}:
+        <select name="censor_level">
+          {censor_options}
+        </select>
+      </td>
+    </tr>
     <th bgcolor="{th_bg}" fgcolor="{th_text}" align="left">
       <td colspan=1 align="left">{comic_label}:</td>
       <td colspan=1>&nbsp;</td>

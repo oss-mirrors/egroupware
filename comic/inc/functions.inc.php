@@ -22,70 +22,113 @@ define("STD_FORBIDDEN", 3);
 
 $g_image_type = array(COMIC_PNG => "png",
                       COMIC_GIF => "gif");
+$g_censor_level = array(0 => 'G',
+                        1 => 'PG',
+                        2 => 'R');
 
 function comic_initialize_admin()
 {
     global $phpgw;
 
-    $phpgw->db->query("insert into phpgw_comic_admin values (0,0,0)");
+    $phpgw->db->query("insert into phpgw_comic_admin values (0,0,0,0,'G')");
 }
 
 function comic_resolve_url($coded_url, &$comic_url)
 {
     $status = STD_SUCCESS;
     
-    if (preg_match_all("/{[A-Za-z]*}/", $coded_url, $strings))
+    if (preg_match_all("/{[A-Za-z0-9\-]*}/", $coded_url, $strings))
     {
-        $comic_url = $coded_url;
+        $comic_url  = $coded_url;
+        $timeoffset = 0;
         
         /**********************************************************************
          * replace matches
          *********************************************************************/
-        for ($loop = 0; $loop <= sizeof($strings[0]); $loop++)
+        for ($loop = 0; $loop < sizeof($strings[0]); $loop++)
         {
             switch($strings[0][$loop])
             {
-              case "{yM}":
-                $CurrentMonth = date("M");
-                $CurrentYear  = date("y");
+              case "{y}":
+                $CurrentYear  = date("y", time() - $timeoffset);
+
+                $comic_url =
+                    str_replace($strings[0][$loop], $CurrentYear,
+                                $comic_url);
+                break;
+              case "{Ml}":
+                $CurrentMonth = date("M", time() - $timeoffset);
                 $CurrentMonth = strtolower($CurrentMonth);
 
                 $comic_url =
-                    str_replace($strings[0][$loop], $CurrentYear.$CurrentMonth,
+                    str_replace($strings[0][$loop], $CurrentMonth,
                                 $comic_url);
                 break;
               case "{Y}":
-                $CurrentYear = date("Y");
+                $CurrentYear = date("Y", time() - $timeoffset);
                 $comic_url =
                     str_replace($strings[0][$loop], $CurrentYear,
                                 $comic_url);
                 break;
               case "{ym}":
-                $CurrentYearMonth = date("ym");
+                $CurrentYearMonth = date("ym", time() - $timeoffset);
                 $comic_url = 
                     str_replace($strings[0][$loop], $CurrentYearMonth,
                                 $comic_url);
                 break;
+              case "{ymd}":
+                $CurrentYearMonthDay = date("ymd", time() - $timeoffset);
+                $comic_url = 
+                    str_replace($strings[0][$loop], $CurrentYearMonthDay,
+                                $comic_url);
+                break;
+              case "{-1d}":
+                $timeoffset =  (1*3600*24);
+                $comic_url =
+                    str_replace($strings[0][$loop], "", $comic_url);
+                break;
+              case "{-14d}":
+                $timeoffset =  (14*3600*24);
+                $comic_url =
+                    str_replace($strings[0][$loop], "", $comic_url);
+                break;
+                
               default:
                 $status = STD_ERROR;
                 break;
             }
         }
-
-        /**********************************************************************
-         * connect and parse
-         *********************************************************************/
-        $DateToday = date("Ymd");
-        
     }
     return $status;
 }
 
-function comic_snarf()
-{}
+function comic_snarf(&$comic_url)
+{
+    $status = STD_SUCCESS;
+    
+    return $status;
+}
 
-function comic_error()
-{}
+function comic_error($gdenabled, $image_type, $image_location,
+                     $status, &$comic_url)
+{
+    global $phpgw_info;
+
+    switch ($image_location)
+    {
+      case 'L':
+      case 'R':
+        $image_size = "_sm";
+        break;
+      default:
+        $image_size = "";
+        break;
+    }
+    
+    $comic_url = $phpgw_info["server"]["webserver_url"]."/"
+        .$phpgw_info["flags"]["currentapp"]."/images/template"
+        .$image_size.".png";
+}
 
 function comic_match_bar($start, $end, $indexlimit, &$matchs_c)
 {
@@ -203,10 +246,13 @@ function comic_display($comic_id, $comic_perpage, $start,
             {
                 $phpgw->db->next_record();
 
+                $image_location = $phpgw->db->f("data_location");
+                $comic_url      = "";
+                
                 /**************************************************************
                  * resolve the url
                  *************************************************************/
-                $status = comic_resolve_url($phpgw->db->f("data_imageurl"),
+                $status = comic_resolve_url($phpgw->db->f("data_baseurl"),
                                                &$comic_url);
             
                 /**************************************************************
@@ -222,7 +268,8 @@ function comic_display($comic_id, $comic_perpage, $start,
                  *************************************************************/
                 if ($status != STD_SUCCESS)
                 {
-                    comic_error($gdenabled, $image_type, $status, &$comic_url);
+                    comic_error($gdenabled, $image_type, $image_location,
+                                $status, &$comic_url);
                 }
 
                 /**************************************************************
@@ -233,28 +280,37 @@ function comic_display($comic_id, $comic_perpage, $start,
                 /**************************************************************
                  * find which template set (left/center/right) gets comic
                  *************************************************************/
-                switch($phpgw->db->f("data_location"))
+                switch($image_location)
                 {
                   case 'L':
                     $side = "left";
+                    $image_width = 280;
                     break;
                   case 'R':
                     $side = "right";
+                    $image_width = 280;
                     break;
                   case 'C':
                     $side = "center";
+                    $image_width = 580;
                     break;
                 }
 
+                $name = lang("%1 by %2",
+                             $phpgw->db->f("data_title"),
+                             $phpgw->db->f("data_author"));
+                $comment =  lang("Visit %1", $phpgw->db->f("data_linkurl"));
+                
                 $comic_tpl->
                     set_var
                     (array
-                     (image_url => $comic_url,
-                      link_url  => $phpgw->db->f("data_linkurl"),
-                      comment   => lang($phpgw->db->f("data_comment")),
-                      name      => $phpgw->db->f("data_name"),
-                      th_bg     => $phpgw_info["theme"]["th_bg"],
-                      th_text   => $phpgw_info["theme"]["th_text"]));
+                     (image_url   => $comic_url,
+                      image_width => $image_width,
+                      link_url    => $phpgw->db->f("data_linkurl"),
+                      comment     => $comment,
+                      name        => $name,
+                      th_bg       => $phpgw_info["theme"]["th_bg"],
+                      th_text     => $phpgw_info["theme"]["th_text"]));
                 $comic_tpl->parse($side."_part", "row", TRUE);
             }
         }
