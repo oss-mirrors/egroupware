@@ -17,9 +17,7 @@
 
 		function sochangelogs()
 		{
-			global $phpgw;
-
-			$this->db = $phpgw->db;
+			$this->db = $GLOBALS['phpgw']->db;
 		}
 
 		function list_changelogs()

@@ -16,11 +16,11 @@
 		var $so;
 		var $ui;
 		var $public_functions = array(
-				'list_changelogs' => True,
-				'add'             => True,
-				'search'          => True,
-				'create_sgml'     => True
-			);
+			'list_changelogs' => True,
+			'add'             => True,
+			'search'          => True,
+			'create_sgml'     => True
+		);
 
 		function bochangelogs()
 		{
@@ -34,7 +34,7 @@
 
 		function add()
 		{
-			global $fields;
+			$fields = $GLOBALS['HTTP_POST_VARS']['fields'];
 
 			$this->ui = createobject('developer_tools.uichangelogs');
 			if (! $fields['project'])
@@ -65,7 +65,6 @@
 				$_fields['project'] = $fields['project'];
 				$this->ui->add(lang('Changelog entry has been added'),$_fields);
 			}
-
 		}
 
 		function search()
@@ -77,6 +76,4 @@
 		{
 
 		}
-
-
 	}
