@@ -88,8 +88,8 @@
 
   // -------------- end header declaration -----------------
 
-
-  $limit = $phpgw->nextmatchs->sql_limit($start);
+    $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+//  $limit = $phpgw->db->limit($start);
 
      $phpgw->db->query("SELECT account_id,account_lid,accounts.account_firstname,accounts.account_lastname FROM "
                  . "accounts WHERE $filtermethod $ordermethod limit $limit");

@@ -107,8 +107,8 @@
 
   // -------------- end header declaration -----------------
 
-
-  $limit = $phpgw->nextmatchs->sql_limit($start);
+    $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+//  $limit = $phpgw->db->limit($start);
   
   $db2 = $phpgw->db;
   

@@ -106,8 +106,8 @@
 
   // -------------- end header declaration -----------------
 
-
-  $limit = $phpgw->nextmatchs->sql_limit($start);
+    $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+//  $limit = $phpgw->db->limit($start);
 
   if ($query) {
      $phpgw->db->query("SELECT p_hours.id as id,p_hours.remark as remark,p_activities.descr as descr,status,"

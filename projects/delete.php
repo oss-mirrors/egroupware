@@ -32,11 +32,13 @@
   if ($confirm) {
      if($isadmin == 1) {
      $phpgw->db->query("delete from p_projects where id='$id'");
+     $phpgw->db->query("delete from p_hours where project_id='$id'");
      $phpgw->db->query("delete from p_projectactivities where project_id='$id'");
      }
      else { 
      $phpgw->db->query("delete from p_projects where coordinator='" . $phpgw_info["user"]["account_id"]                                                                                      
-                    . "' and id='$id'");                                                                                                                                                     
+                    . "' and id='$id'");             
+     $phpgw->db->query("delete from p_hours where project_id='$id'");
      $phpgw->db->query("delete from p_projectactivities where project_id='$id'");     
      }
 
