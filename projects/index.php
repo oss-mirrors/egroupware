@@ -105,11 +105,9 @@
 		 'n_family' => 'n_family',
 		 'org_name' => 'org_name');
     $customer = $d->read_single_entry($ab_customer,$cols);    
-    $customerout = $entry[$i]['org_name'] . " [ " . $entry[$i]['n_given'] . " " . $entry[$i]['n_family'] . " ]";
-
+    $customerout = $customer[0]['org_name'] . " [ " . $customer[0]['n_given'] . " " . $customer[0]['n_family'] . " ]";
 
     $coordinatorout = $projects[$i]['lid'] . " [ " . $projects[$i]['firstname'] . " " . $projects[$i]['lastname'] . " ]";
-               
       
     $edit = $phpgw->common->check_owner($projects[$i]['coordinator'],'edit.php',lang('Edit'),'id=' . $projects[$i]['id']
                                          . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter");

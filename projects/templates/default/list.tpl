@@ -5,7 +5,7 @@
 <table border="0" cellspacing="2" cellpadding="2">	
  <tr>
   <td colspan="8" align="left">
-   <table border="0">
+   <table border="0" width="100%">
     <tr>
     {left}
     <td align="center">{lang_showing}</td>

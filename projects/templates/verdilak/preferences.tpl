@@ -1,9 +1,9 @@
 <!-- $Id$ -->
 <script language="JavaScript">                                                                                                                                                                 
     self.name="first_Window";
-    function addresses()                                                                                                                                                                       
+    function addressbook()                                                                                                                                                                       
     {                                                                                                                                                                                          
-       Window1=window.open('{addresses_link}',"Search","width=800,height=600","scrolling=yes,toolbar=yes,resizable=yes");                                      
+       Window1=window.open('{addressbook_link}',"Search","width=800,height=600","scrolling=yes,toolbar=yes,resizable=yes");                                      
     }                                                                                                                                                                                          
    </script>      
 <br><br>    
@@ -11,16 +11,16 @@
       <hr noshade width="98%" align="center" size="1">
 
       <center>
-       <form method="POST" name="prefs_form" action="{actionurl}">
+       <form method="POST" name="projects_form" action="{actionurl}">
         <table width="80%" border="0" cellspacing="2" cellpadding="2">
         <tr>       
           <td>{lang_select_tax}:</td>                                                                                                                
           <td><input type="text" name="tax" value="{tax}" size=6 maxlength=6>&nbsp;%</td>
          </tr>    
          <tr>                                                                                                                                                                                  
-         <td><input type="button" value="{lang_address}" onClick="addresses();"></td>                                                                                                          
-         <td><input type="hidden" name="address" value="{address_con}">                                                                                                                        
-             <input type="text" name="addressname" size="50" value="{address_name}" readonly>&nbsp;&nbsp;&nbsp;{lang_select}</td>                                                         
+         <td><input type="button" value="{lang_address}" onClick="addressbook();"></td>                                                                                                          
+         <td><input type="hidden" name="abid" value="{abid}">                                                                                                                        
+             <input type="text" name="name" size="50" value="{name}" readonly>&nbsp;&nbsp;&nbsp;{lang_select}</td>                                                         
          </tr>       
       </table> 
        <table width="39%" border="0" cellspacing="0" cellpadding="0">

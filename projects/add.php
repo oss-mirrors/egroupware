@@ -56,7 +56,7 @@
 
     $phpgw->db->query("insert into phpgw_p_projects (owner,entry_date,start_date,end_date,coordinator,customer,status,descr,title,budget,num) "
                    . "values ('$owner','" . time() ."','$sdate','$edate',"
-                   . "'$coordinator','$customer','$status','$descr','$title','$budget','$num')");
+                   . "'$coordinator','$abid','$status','$descr','$title','$budget','$num')");
 
     $db2->query("SELECT max(id) AS max FROM phpgw_p_projects");
 	if($db2->next_record()) {
@@ -76,7 +76,7 @@
       }
     }                                                                                                                                                                                  
     if ($errorcount) { $t->set_var('message',$phpgw->common->error_list($error)); }
-    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',"Project $num - $title has been added !"); }
+    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang("Project $num - $title has been added !")); }
     if ((! $submit) && (! $error) && (! $errorcount)) { $t->set_var('message',""); }
 
     $t->set_var("actionurl",$phpgw->link("add.php"));
@@ -161,8 +161,8 @@
 
     $t->set_var("lang_select",lang("Select per button !"));
     $t->set_var("lang_customer",lang("Customer"));
-    $t->set_var("customer_con","");
-    $t->set_var("customer_name","");
+    $t->set_var('abid',$abid);
+    $t->set_var('name',$name);
 
 // activities bookable     
     $t->set_var("lang_bookable_activities",lang("Bookable activities"));       

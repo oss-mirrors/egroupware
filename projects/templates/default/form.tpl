@@ -32,8 +32,8 @@
          </tr>
          <tr>
 	 <td><input type="button" value="{lang_customer}" onClick="addressbook();"></td>
-	 <td><input type="hidden" name="customer" value="{customer_con}">
-	     <input type="text" name="customername" size="50" value="{customer_name}" readonly>&nbsp;&nbsp;&nbsp;{lang_select}</td>
+	 <td><input type="hidden" name="abid" value="{abid}">
+	     <input type="text" name="name" size="50" value="{name}" readonly>&nbsp;&nbsp;&nbsp;{lang_select}</td>
 	 </tr>
 	 <tr>
 	 <td>{lang_coordinator}:</td>

@@ -4,9 +4,14 @@
       <center>
        {error}
         <form method="POST" name="activity_form" action="{actionurl}">
-         {common_hidden_vars}
+         {hidden_vars}
+	    {error}{message}
           <table width="75%" border="0" cellspacing="1" cellpadding="3">
          <tr>
+          <td>{lang_choose}</td>
+          <td>{choose}</td>
+         </tr>
+	<tr>
           <td>{lang_num}:</td>
           <td><input type="text" name="num" value="{num}"></td>
          </tr>
@@ -32,8 +37,8 @@
          
          <table width="75%" border="0" cellspacing="1" cellpadding="3">
          <tr valign="bottom">
-          <td height="62"><input type="submit" name="submit" value="{lang_addsubmitb}"></td>
-          <td height="62"><input type="reset" name="reset" value="{lang_addresetb}"></td>
+          <td height="62"><input type="submit" name="submit" value="{lang_add}"></td>
+          <td height="62"><input type="reset" name="reset" value="{lang_reset}"></td>
          </tr>
          </table>
          </form>
@@ -45,9 +50,9 @@
          
          <table width="75%" border="0" cellspacing="1" cellpadding="3">
          <tr valign="bottom">
-          <td height="62"><input type="submit" name="submit" value="{lang_editsubmitb}">&nbsp;</form></td>
-          <td height="62"><form method="POST" action="{deleteurl}">{common_hidden_vars}
-            <input type="submit" name="delete" value="{lang_editdeleteb}"></form></td>
+          <td height="62"><input type="submit" name="submit" value="{lang_edit}">&nbsp;</form></td>
+          <td height="62"><form method="POST" action="{deleteurl}">{hidden_vars}
+            <input type="submit" name="delete" value="{lang_delete}"></form></td>
          </tr>
          </table>
 	</center>

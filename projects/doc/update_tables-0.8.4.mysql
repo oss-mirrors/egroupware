@@ -1,0 +1,31 @@
+# $Id$
+#######################
+# update : 03/03/2001 #
+#######################
+
+alter table p_projects rename phpgw_p_projects;
+alter table phpgw_p_projects change column date start_date int(11) DEFAULT '0' NOT NULL;
+alter table phpgw_p_projects drop column access;
+alter table phpgw_p_projects modify column title varchar(255) NOT NULL;
+
+CREATE INDEX phpgw_p_projects_key ON phpgw_p_projects(id,num);
+
+alter table p_activities rename phpgw_p_activities;
+alter table phpgw_p_activities modify column descr varchar(255) NOT NULL;
+
+CREATE INDEX phpgw_p_activities_key ON phpgw_p_activities(id,num);
+
+alter table p_projectactivities rename phpgw_p_projectactivities;
+alter table p_hours rename phpgw_p_hours;
+alter table p_projectmembers rename phpgw_p_projectmembers;
+
+alter table p_invoice rename phpgw_p_invoice;
+
+CREATE INDEX phpgw_p_invoice_key ON phpgw_p_invoice(id,num); 
+
+alter table p_invoicepos rename phpgw_p_invoicepos;
+alter table p_delivery rename phpgw_p_delivery;
+
+CREATE INDEX phpgw_p_delivery_key ON phpgw_p_delivery(id,num);
+
+alter table p_deliverypos rename phpgw_p_deliverypos;

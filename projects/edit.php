@@ -63,7 +63,7 @@
 
     $phpgw->db->query("update phpgw_p_projects set entry_date='" . time() . "', start_date='"
 		    . "$sdate', end_date='$edate', coordinator='$coordinator', "
-		    . "customer='$customer', status='$status', descr='$descr', title='$title', "
+		    . "customer='$abid', status='$status', descr='$descr', title='$title', "
 		    . "budget='$budget', num='$num' where id='$id'");
 
     $phpgw->db->query("delete from phpgw_p_projectactivities where project_id='$id' and billable='N'");
@@ -86,7 +86,7 @@
     }
 
     if ($errorcount) { $t->set_var('message',$phpgw->common->error_list($error)); }
-    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',"Project $num - $title has been updated !"); }
+    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang("Project $num - $title has been updated !")); }
     if ((! $submit) && (! $error) && (! $errorcount)) { $t->set_var('message',""); }
 
 
@@ -103,7 +103,6 @@
 
 
      $t->set_var("addressbook_link",$phpgw->link("addressbook.php","query="));
-     $t->set_var("addresses_link",$phpgw->link("addresses.php","query="));
      $t->set_var("actionurl",$phpgw->link("edit.php","id=$id"));
      $t->set_var("deleteurl",$phpgw->link("delete.php","id=$id"));
      $t->set_var("lang_action",lang("Edit project"));
@@ -189,15 +188,14 @@
     $t->set_var("lang_customer",lang("Customer"));
 
     $d = CreateObject('phpgwapi.contacts');
-    $ab_customer = $projects[$i]['customer'];
+    $abid = $phpgw->db->f("customer");
     $cols = array('n_given' => 'n_given',
                  'n_family' => 'n_family',
                  'org_name' => 'org_name');
-    $customer = $d->read_single_entry($ab_customer,$cols);
-    $customerout = $entry[$i]['org_name'] . " [ " . $entry[$i]['n_given'] . " " . $entry[$i]['n_family'] . " ]";
 
-    $t->set_var("customer_name",$customerout);
-    $t->set_var("customer_con","");		
+    $customer = $d->read_single_entry($abid,$cols);
+    
+    $t->set_var('name',$customer[0]['org_name'] . " [ " . $customer[0]['n_given'] . " " . $customer[0]['n_family'] . " ]");
 
 // activites bookable
     $t->set_var("lang_bookable_activities",lang("Bookable activities"));
