@@ -40,6 +40,9 @@
 //	 . lang("You have x new messages!",$mailbox_status->unseen) . "</A></td></tr>";
 	  $str .= lang("You have x new messages!",$mailbox_status->unseen);
     }
+    if ($mailbox_status->unseen == 0) {
+       $str .= lang("You have no new messages");
+    }
     $nummsg = $phpgw->msg->num_msg($mailbox);
     include($phpgw_info["server"]["api_inc"].'/phpgw_utilities_portalbox.inc.php');
     //$title = '<a href="'.$phpgw->link($phpgw_info["server"]["webserver_url"]."/email/index.php").'">EMail'.($str ? ' - '.$str : '').'</a>';
