@@ -64,7 +64,6 @@
 			// save new process
 			if (isset($_POST['save']))
 			{
-				$this->wf_p_id  = get_var('wf_p_id','POST');
 				$this->wf_p_id = $this->save_process($name, $version, $description, $is_active);
 			}
 
