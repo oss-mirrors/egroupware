@@ -20,6 +20,7 @@
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['stocks']['hooks'][] = 'preferences';
+	$setup_info['stocks']['hooks'][] = 'home';
 
 	/* Dependencies for this app to work */
 	$setup_info['stocks']['depends'][] = array(
