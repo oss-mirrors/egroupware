@@ -17,7 +17,7 @@
 		{email_sig_blurb}
 	</td>
 	<td align="center" bgcolor="{bg_row1}">
-		<textarea name="{email_sig_textarea_name}" rows="3" cols="30">{email_sig_textarea_content}</textarea>
+		<textarea name="{email_sig_textarea_name}" rows="6" cols="60">{email_sig_textarea_content}</textarea>
 	</td>
 </tr>
 <tr>
