@@ -207,7 +207,6 @@ if (!function_exists('file_get_contents')) {
 
 	/* Create an Acccount for every existing eGW user in the forum */
 	$GLOBALS['phpgw']->db->query("DELETE FROM phpgw_fud_users WHERE id>1");
-	get_list($_type='both',$start = '',$sort = '', $order = '', $query = '', $offset = '')
 	$users = $GLOBALS['phpgw']->accounts->get_list('accounts', '', 'ASC');
 	foreach ($users as $row) {
 		$preferences = CreateObject('phpgwapi.preferences', $row['account_id']);
