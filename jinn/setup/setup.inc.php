@@ -24,7 +24,7 @@
 	$setup_info['jinn']['name']		= 'jinn';
 	$setup_info['jinn']['title']	= 'JiNN Data Manager';
 	$setup_info['jinn']['version']	= '0.6.004';
-	$setup_info['jinn']['app_order']= 5;
+	$setup_info['jinn']['app_order']= 12;
 	$setup_info['jinn']['author'] = 'Pim Snel';
 	$setup_info['jinn']['license']  = 'GPL';
 	$setup_info['jinn']['note'] =
@@ -60,7 +60,7 @@
 	$setup_info['jinn']['depends'][]	= array
 	(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.13','0.9.14','0.9.15')
+		'versions' => Array('0.9.14','0.9.15','1.0.0')
 	);
 
 

@@ -17,7 +17,7 @@
 	$setup_info['bookmarks']['name']      = 'bookmarks';
 	$setup_info['bookmarks']['title']     = 'Bookmarks';
 	$setup_info['bookmarks']['version']   = '0.9.2';
-	$setup_info['bookmarks']['app_order'] = '20';
+	$setup_info['bookmarks']['app_order'] = '10';
 	$setup_info['bookmarks']['enable']    = 1;
 
 	$setup_info['bookmarks']['author'] = 'Joseph Engo';
@@ -40,6 +40,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['bookmarks']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.13','0.9.14','0.9.15')
+		'versions' => Array('0.9.14','0.9.15','1.0.0')
 	);
 ?>
