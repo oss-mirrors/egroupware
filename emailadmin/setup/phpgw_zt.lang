@@ -1,4 +1,4 @@
-add profile	emailadmin	zt	新增基本資料
+add profile	emailadmin	zt	新增資料
 admin dn	emailadmin	zt	管理 dn
 admin password	emailadmin	zt	管理密碼
 admin passwort	emailadmin	zt	管理密碼
@@ -67,3 +67,4 @@ use tls authentication	emailadmin	zt	使用TLS認證
 use tls encryption	emailadmin	zt	使用TLS加密
 users can define their own emailaccounts	emailadmin	zt	使用者可以自行定義郵件帳號
 virtual mail manager	emailadmin	zt	虛擬郵件管理者
+﻿add profile	emailadmin	zt	新增基本資料

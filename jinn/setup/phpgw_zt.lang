@@ -1,4 +1,9 @@
+"you don't have access to any sites. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	zt	"您無法存取任何網站，詢問您的管理員來取得存取權限或是確認是否有網站資料存在
+%1 has a one-to-many with %2 showing %3	jinn	zt	%1 與 %2 有一個一對多顯示 %3
+%1 has a one-to-one relation with %2 using the configuration of object %3	jinn	zt	%1 與 %2 有個一對一關係使用物件 %3 的設定
+%1 site obj-fields have been imported.	jinn	zt	匯入了 %1 個網站物件
 %1 site objects have been imported.	jinn	zt	已經匯入%1個網站物件
+4 (default)	jinn	zt	4 (預設)
 access rights	jinn	zt	存取權限
 access rights for site not succesfully editted	jinn	zt	還沒完成編輯網站存取權限
 access rights for site succesfully editted	jinn	zt	完成編輯網站存取權限
@@ -6,18 +11,28 @@ access rights for site-object not succesfully editted	jinn	zt	還沒完成編輯
 access rights for site-object succesfully editted	jinn	zt	完成編輯網站存取權限
 access rights site-objects	jinn	zt	網站存取權限
 access_rights	jinn	zt	存取權限
+action was not succesful. unknown error	jinn	zt	動作未完成，不知名的錯誤
+action was succesful.	jinn	zt	動作完成
+actions	jinn	zt	舵做
+actions to apply on all selected record	jinn	zt	所有選取項目要使用的動作
+activate experimental features which are in development	jinn	zt	這個功能還在開發當中
 add	jinn	zt	新增
 add %1st image	jinn	zt	新增第 %1 張圖片
 add attachent	jinn	zt	新增附加檔案
 add attachment	jinn	zt	新增附加檔案
 add attachment %1	jinn	zt	新增附加檔案 %1
 add edit	jinn	zt	新增編輯
+add egw_jinn_sites	jinn	zt	新增egw_jinn_sites
 add image	jinn	zt	新增圖片
 add image %1	jinn	zt	新增圖片 %1
+add multiple records	jinn	zt	新增多筆資料
 add new	jinn	zt	新增資料
 add new entry	jinn	zt	新增資料
+add new many to many relation	jinn	zt	新增多對多關係
 add new many with many relation	jinn	zt	新增多對多關係
+add new one to many	jinn	zt	新增一對多關係
 add new one with many	jinn	zt	新增一對多關係
+add new one-to-one relation	jinn	zt	新增一對一關係
 add object	jinn	zt	新增物件
 add or remove	jinn	zt	新增或移除
 add site	jinn	zt	新增網站
@@ -26,12 +41,27 @@ add site-object	jinn	zt	新增網站物件
 admin:: edit site	jinn	zt	管理 - 編輯網站
 administrator mode	jinn	zt	管理者模式
 administrators for site $site_name	jinn	zt	$site_name 的管理員
+advanced configuration	jinn	zt	進階設定
 all from	jinn	zt	全部來自
+alternative fieldname for display	jinn	zt	顯示的替換欄位
+an error occured.	jinn	zt	發生錯誤
+an unknown error has occured (error code 109)	jinn	zt	不知名的錯誤發生(錯誤編號109)
+an unknown error has occured (error code 110)	jinn	zt	不知名的錯誤發生(錯誤編號110)
 another	jinn	zt	另一個
+are you sure you want to delete these multiple records?	jinn	zt	您確定要刪除多筆資料？
+are you sure you want to delete this record?	jinn	zt	您確定要刪除這筆資料？
+are you sure your want to edit these records?	jinn	zt	您確定要修改這些資料？
 are you sure?	jinn	zt	您確定？
+ascending	jinn	zt	升冪
 attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	zt	附加檔案資料夾不存在或是不正確，或是尚未建立<br>請檢查您物件的上傳資料夾：
 automatic	jinn	zt	自動
+automaticly add objects for all tables	jinn	zt	自動為所有表格新增物件
+automaticly incrementing	jinn	zt	自動增加
+available for field types	common	zt	可以使用的欄位類型
+back to record list	jinn	zt	回到資料清單
 binary	jinn	zt	編繹過
+binary, contains data	jinn	zt	編繹過, 包含資料
+binary, empty	jinn	zt	編繹過, 無資料
 browse	jinn	zt	瀏覽
 browse current object	jinn	zt	瀏覽目前物件
 browse sites	jinn	zt	瀏覽網站
@@ -40,8 +70,11 @@ browse through sites	jinn	zt	從網站瀏覽
 browses through sites	admin	zt	從網站瀏覽
 c_all	jinn	zt	c_all
 c_none	jinn	zt	c_none
+can't edit more then 99 record at once (error code 108)	jinn	zt	無法一次編輯超過99筆資料(錯誤編號108)
 cancel	jinn	zt	取消
+cannot copy a record from this table. (error code 103)	jinn	zt	無法從這個表格複製記錄(錯誤編號103)
 category	jinn	zt	類別
+change number of records	jinn	zt	修改記錄數
 check:	jinn	zt	檢查：
 choose	jinn	zt	選擇
 close this window	jinn	zt	關閉視窗
@@ -49,48 +82,91 @@ column name	jinn	zt	欄位名稱
 come back after new valid tablename is saved to configure plugins	jinn	zt	在新的資料表名稱儲存到設定外掛中回到這裡
 come back in edit mode for configuring plugins	jinn	zt	回到編輯模式來設定外掛
 come back in edit mode to configure plugins	jinn	zt	回到編輯模式去設定外掛
+come back in edit mode to enter one-to-one fields for this record.	jinn	zt	回到編輯模式去輸入這筆資料的一對一欄位
 configure	jinn	zt	設定
 configure browse view	jinn	zt	設定瀏覽模式
+configure field plugin	jinn	zt	設定欄位外掛
 configure this object list view	jinn	zt	設定這個物件清單瀏覽模式
 configure this tableview	jinn	zt	設定這個資料表瀏覽模式
 configure this view	jinn	zt	設定這個瀏覽模式
 configure view of	jinn	zt	設定瀏覽模式
 convert exec ( e.g. /usr/x11r6/bin/convert )	admin	zt	從ImageMagick轉換的路徑(例如/usr/X11R6/bin/convert )
 copy	jinn	zt	複製
+copy and edit the new record	jinn	zt	複製與編輯新紀錄
 could not find any tables! check your database name, database username or database password or create one or more  tables in the database.	jinn	zt	找不到任何資料表！請檢查您的資料庫名稱、帳號或密碼或是在資料庫中建立一或多個資料表。
+create a new site now	jinn	zt	立刻建立一個新網站
+current color:	jinn	zt	目前顏色：
 database connection failed! <p>please recheck your settings.	jinn	zt	資料庫連線錯誤！<P>請檢查您的設定
 database connection was succesfull. <p>you can go on with the site-objects	jinn	zt	資料庫連線成功！<P>您可以繼續使用網站物件
 days	jinn	zt	日
+default	jinn	zt	預設
 default image type (jpg, gif, png)	admin	zt	預設圖片格式(jpg, gif, png)
 default image width	admin	zt	預設圖片寬度
+default number of visable columns	jinn	zt	預設顯示欄位數量
 default order	jinn	zt	預設順序
 default thumb width	admin	zt	預設縮圖寬度
 default:	jinn	zt	預設：
 delete	jinn	zt	刪除
+delete all selected records	jinn	zt	刪除所有選取的記錄
+descending	jinn	zt	降冪
+descrition	common	zt	說明
+dev site db host	jinn	zt	開發(測試)網站資料庫主機名稱
+dev site db name	jinn	zt	開發(測試)網站資料庫名稱
+dev site db password	jinn	zt	開發(測試)網站資料庫密碼
+dev site db type	jinn	zt	開發(測試)網站資料庫類型
+dev site db user	jinn	zt	開發(測試)網站資料庫帳號
+dev upload path	jinn	zt	開發(測試)網站上傳路徑
 developer links	jinn	zt	開發中連結
 development	admin	zt	開發
 development server	jinn	zt	開發用伺服器
 dimensions	jinn	zt	尺寸
+disable the wysiwyg/htmlarea plugin	jinn	zt	停用所見即所得編輯器
+do you want to copy and then edit this record?	jinn	zt	是否要複製並且接著編輯這筆記錄？
 edit	jinn	zt	編輯
+edit all selected records	jinn	zt	編輯所有選取的記錄
+edit egw_jinn_sites	jinn	zt	編輯egw_jinn_sites
 edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	zt	編輯JiNN網站物件參數：<li>選擇一個要顯示的JiNN物件名稱</li> <li>選擇這個物件要使用的資料庫資料表</li> <li>如果需要就修正上傳的絕對路徑</li><li>如果需要一個與上傳元件一致的預覽網址</li><br><li>定義欄位關係</li><li>設定欄位外掛</li>
+edit object	jinn	zt	編輯物件
+edit object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	zt	編輯物件設定： <li>選擇要顯示的物件名稱</li> <li>選擇這個物件要使用的資料表</li> <li>需要時可以輸入一個替換的上傳絕對路徑</li><li>需要時也可以輸入一個預覽上傳元件的路徑</li><br><li>定義欄位關係</li><li>設定欄位外掛</li>
+edit site	jinn	zt	編輯網站
+edit this record	jinn	zt	編輯這筆記錄
 edit this site	jinn	zt	編輯這個網站
 edit this site object	jinn	zt	編輯這個網站物件
 editors for object $object_name in site $site_name	jinn	zt	在網站$site_name物件$object_name的編輯器
+editors for object %1 in site %2	jinn	zt	在網站%2的物件%1編輯器
 error path_open %1	jinn	zt	錯誤的路徑 %1
+error: the file %1 doesn't exists, please contact the webmaster	jinn	zt	錯誤： 檔案%1不存在，請聯絡管理員
 export this site	jinn	zt	匯出這個網站
+extra help information for this field	jinn	zt	這個欄位的附加資訊
+failed to copy: %1 to %2 ...	jinn	zt	無法複製： %1 到 %2 ...
 failed to open table. please check if table <i>%1</i> still exists in database	jinn	zt	無法開啟資料表，請檢查資料表<i>%1</i>是否存在於資料庫中
+field	jinn	zt	欄位
+field configuration	jinn	zt	欄位設定
+field helpinfo and alternative name configuration	jinn	zt	欄位求助訊息與替代名稱設定
+field info configuration	jinn	zt	欄位訊息設定
+field info configuration successfully saved	jinn	zt	欄位訊息設定儲存成功
+field plugin	jinn	zt	欄位外掛
 field plugin configuration	jinn	zt	欄位外掛設定
+field plugins	jinn	zt	欄位外掛
+field to display	jinn	zt	顯示的欄位
+fieldname	jinn	zt	欄位名稱
 fields	jinn	zt	欄位
 filename	jinn	zt	欄位名稱
 filesize	jinn	zt	檔案大小
 form input plugin	jinn	zt	輸入表單外掛
 general preferences	jinn	zt	一般偏好
 general settings	admin	zt	一般設定
+give new timestamp	jinn	zt	使用新的時區
 global configuration	jinn	zt	全域設定
 global site configuration	admin	zt	全域網站設定
 go	jinn	zt	GO
+has a many to many relation with	jinn	zt	有一個多對多關係於
+has a one to many relation with	jinn	zt	有一個一對多關係於
+has a one-to-one relation with	jinn	zt	有一個一對一關係於
 height:	jinn	zt	高度：
 hidden	jinn	zt	隱藏
+hide from menu	jinn	zt	從物件選單隱藏
+how many columns do you want to be visible by default in list view?	jinn	zt	在清單顯示時預設要出現多少欄位？
 image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	zt	圖片資料夾不存在或是不正確 ...<br>請檢查物件的上傳資料夾
 image settings	admin	zt	圖片設定
 imagemagick directory ( e.g. /usr/x11r6/bin )	admin	zt	ImageMagick路徑(例如/usr/X11R6/bin )
@@ -106,20 +182,60 @@ insert jinn site parameters: <li>insert a jinn site name for display</li> <li>in
 insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	zt	插入/選取 JiNN 網站參數：<li>選取一個要顯示的JiNN物件名稱</li> <li>選取這個物件要使用的資料庫資料表</li> <li>需要時設定一個上傳的絕對路徑</li><li>需要時選取一個與上傳元件一致的預覽網址</li>
 jinn	common	zt	JiNN
 jinn editors menu	jinn	zt	JiNN編輯器選單
+jinn main menu	jinn	zt	JiNN主要選單
 jinn preferences	jinn	zt	JiNN設定
+jinn-description	common	zt	JiNN 是一個縮寫，意思是 'JiNN is Not Nuke'。因為主要的設計者並不喜歡 Nuke 類型的內容管理系統。透過 JiNN 您依據自己的資料庫結構與網頁設計來來建立自己的網站。相關資訊可以參觀： <a href='http://www.egroupware.org/jinn-webpage'>www.egroupware.org/jinn-webpage</a>.
+last edited record	jinn	zt	最後編輯資料
+license	common	zt	授權
+list sites	jinn	zt	網站列表
+load site conf from file	jinn	zt	從檔案讀取網站設定
+maintainer	common	zt	維護者
+mandatory	jinn	zt	委託人
+manually enter a new relative file path	jinn	zt	手動輸入一個新的相對檔案路徑
+many 2 many relations will not work	jinn	zt	多對多關係將無法運作
+max records	jinn	zt	資料數上限
 max. number of previews in form	jinn	zt	在表單預覽的項目數上限
 maximum image width isn	jinn	zt	圖片寬度上限isn
 maximum image width isn\	jinn	zt	圖片寬度上限isn
 moderator mode	jinn	zt	管理者模式
 months	jinn	zt	月
 months_abbr	jinn	zt	months_abbr
+move down	jinn	zt	下移
+move to last position	jinn	zt	移到最後位置
+move up	jinn	zt	上移
+moved record one row down.	jinn	zt	移動的資料向下一列
+moved record one row up.	jinn	zt	移動的資料向上一列
+moved record to last row.	jinn	zt	移動的資料到最後一列
+name and help info	jinn	zt	名稱與求助訊息
 new image size limits.	jinn	zt	新圖片大小限制
 no matchs found	jinn	zt	找不到符合條件的資料
 no max. number	jinn	zt	沒有最大數字
+no object selected. no able to configure this view	jinn	zt	沒有選取物件，無法設定這個瀏覽模式
+no objects found for this site.	jinn	zt	這個網站沒有任何物件
+no records found	jinn	zt	找不到記錄
 normal view	jinn	zt	一般瀏覽模式
+not yet implemented	jinn	zt	未配置
+notice that jinn needs imagemagick 5.4.9 or a later version	admin	zt	注意：JiNN需要ImageMagick 5.4.9 或更新的版本
+number of objects	jinn	zt	物件數量
+object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	zt	物件設定： <li>選取一個要顯示的JiNN物件名稱</li> <li>選取這個物件要使用的資料庫資料表</li> <li>需要時設定一個上傳的絕對路徑</li><li>需要時選取一個與上傳元件一致的預覽網址</li>
+object id	jinn	zt	物件編號
+one or more records not succesfully added. (error code 107)	jinn	zt	一或多筆記錄新增失敗(錯誤編號107)
+one or more records not succesfully saved. (error code 106)	jinn	zt	一或多筆記錄儲存失敗(錯誤編號106)
+only activate this if you know what your doing. you can destroy your data using experimental features.	jinn	zt	請確認您清楚技術問題才啟用這個項目，這可能會造成資料遺失。
 only if thumnails exits	jinn	zt	只有在縮圖存在時
+only one	jinn	zt	只有一個
+operation on multiple records failed. (error code 100)	jinn	zt	在多筆資料的操作錯誤(錯誤編號100)
+optional max. height	jinn	zt	附加的高度上限
+optional max. width	jinn	zt	附加的寬度上限
+parent site id	jinn	zt	上層網站編號
 path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	zt	ImageMagick路徑(例如/usr/X11R6/bin )
+please contact administrator with this message	jinn	zt	請將這個訊息帶給管理員
+please contact administrator with this message.	jinn	zt	請將這個訊息帶給管理員
 please set your preferences for this application	jinn	zt	請設定這個應用程式的偏好
+plugin configuration	jinn	zt	外掛設定
+plugin configuration successfully saved	jinn	zt	外掛設定儲存成功
+plugin name	jinn	zt	外掛名稱
+postgresql support is not stable. wanna help?	common	zt	PostgreSQL的支援還未穩定，想要幫忙嗎？
 preview thumbs or images in form	jinn	zt	在表單預覽縮圖或圖片
 preview website	jinn	zt	預覽網站
 production	admin	zt	產品
@@ -127,20 +243,33 @@ real value	jinn	zt	實際值
 record	jinn	zt	記錄
 record added succesfully	jinn	zt	新增記錄成功
 record deleted succesfully	jinn	zt	刪除記錄成功
+record not succesfully copied. (error code 102)	jinn	zt	記錄複製失敗(錯誤編號102)
 record not succesfully copied. unknown error	jinn	zt	複製記錄失敗，不知名的錯誤
+record not succesfully deleted. (error code 105)	jinn	zt	刪除記錄失敗(錯誤編號105)
 record not succesfully deleted. unknown error	jinn	zt	刪除記錄失敗，不知名的錯誤
 record succesfully copied	jinn	zt	複製記錄成功
 record succesfully deleted	jinn	zt	刪除記錄成功
 record succesfully editted	jinn	zt	編輯記錄成功
+records not succesfully deleted. (error code 101)	jinn	zt	刪除記錄失敗(錯誤編號101)
+records succesfully deleted	jinn	zt	刪除記錄成功
+registered field plugins	common	zt	註冊的欄位外掛
 related	jinn	zt	相關的
+related entries from table %1	jinn	zt	表格 %1 的相關資料
 relation %1	jinn	zt	關係 %1
+relations	jinn	zt	關係
 relations for this object	jinn	zt	這個物件的關係
 remote	admin	zt	遠端
 remove	jinn	zt	移除
+remove all	jinn	zt	全部移除
 replace existing site with the same name?	jinn	zt	用同樣的名稱置換已經存在的網站？
 replaced existing site named <strong>%1</strong>.	jinn	zt	置換已經存在的網站名稱<strong>%1</strong>
+represented by:	jinn	zt	作者：
 reset form	jinn	zt	重設表單
 save	jinn	zt	儲存
+save and continue	jinn	zt	儲存後繼續
+save and contiue	jinn	zt	儲存後繼續
+save and finish	jinn	zt	儲存後完成
+screenshot	jinn	zt	畫面擷取
 search	jinn	zt	搜尋
 search for string	jinn	zt	搜尋字串
 select directory	jinn	zt	搜尋資料夾
@@ -148,28 +277,34 @@ select jinn site file	jinn	zt	選取JiNN網站檔案
 select site	jinn	zt	選取網站
 select site to moderate	jinn	zt	選取要管理的網站
 select site-object to moderate	jinn	zt	選取要管理的網站物件
+select which graphic library jinn must use	admin	zt	選擇JiNN要使用的圖片資料庫
 select_object	jinn	zt	選取物件
+serialnumber	jinn	zt	物件流水號
 server type?	admin	zt	伺服器種類？
 set access right for site objects	jinn	zt	設定網站物件的存取權限
-set access rights	admin	zt	設定存取權限
+set access rights	jinn	zt	設定存取權限
 set access rights for sites	jinn	zt	設定網站的存取權限
 set administrators for	jinn	zt	設定管理員
+set administrators for %1	jinn	zt	設定 %1 的網站管理員
 set object moderator	jinn	zt	設定物件管理員
 set site admin	jinn	zt	設定網站管理員
 show	jinn	zt	顯示
 show all columns	jinn	zt	顯示所有欄位
+show all colums, always	jinn	zt	預設顯示所有欄位
 show colomn	jinn	zt	顯示欄位
+show extra table debugging information	jinn	zt	顯示表格的其他偵錯訊息
 show upload path	admin	zt	顯示上傳路徑
+showing	jinn	zt	顯示
 site beheerders	jinn	zt	網站管理員
-site db host	admin	zt	網站資料庫主機
-site db name	admin	zt	網站資料庫名稱
-site db password	admin	zt	網站資料庫密碼
-site db type	admin	zt	網站資料庫類型
-site db user	admin	zt	網站資料庫帳號
+site db host	jinn	zt	網站資料庫主機
+site db name	jinn	zt	網站資料庫名稱
+site db password	jinn	zt	網站資料庫密碼
+site db type	jinn	zt	網站資料庫類型
+site db user	jinn	zt	網站資料庫帳號
 site description	admin	zt	網站介紹
-site id	admin	zt	網站編號
+site id	jinn	zt	網站編號
 site media and documents	jinn	zt	網站多媒體與文件
-site name	admin	zt	網站名稱
+site name	jinn	zt	網站名稱
 site not succesfully added, unknown error	jinn	zt	網站新增失敗，不知名的錯誤
 site not succesfully deleted, unknown error	jinn	zt	網站刪除失敗，不知名的錯誤
 site not succesfully saved, unknown error	jinn	zt	網站儲存失敗，不知名的錯誤
@@ -185,24 +320,58 @@ site succesfully saved	jinn	zt	網站儲存成功
 site title	admin	zt	網站標題
 site-objects	jinn	zt	網站物件
 sites	jinn	zt	網站
+some errors accured while upgrading. we have not touched the old settings so you can try again. if this error keeps coming back please contact your administrator or the jinn developers<br/><br/>	jinn	zt	升級時發生了一些錯誤，原本的設定被保留下來，您可以重試；如果這個問題持續發生，請將錯誤訊息寄給您的管理員或是 JiNN 開發人員<br/><br/>
 start	admin	zt	開始
 start at record	jinn	zt	開始記錄
 stop at record	jinn	zt	結束記錄
 submit and import	jinn	zt	送出與匯入
+switchboard	jinn	zt	切換板
 t/m	jinn	zt	t/m
+table name	jinn	zt	表格名稱
 tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	zt	資料表名稱 <i>%1</i> 不正確，或許資料表名稱有改變或是已經刪除了，請選取一個新的資料表或是刪除這個物件
 test database access	jinn	zt	測試資料庫存取
+the administrator set an invalid max. file upload size. for safety reasons we now use a max. filesize of 1mb. please contact your jinn administrator.	jinn	zt	管理者設定了一個錯誤的檔案上傳上限，基於安全理由目前系統自動設定檔案上傳上限為1MB，請聯絡您的管理員。
+the attachments subdirectory does not exist and cannot be created ...	jinn	zt	附加檔案的目錄不存在或是無法建立
+the attachments subdirectory is not writable by the webserver ...	jinn	zt	附加檔案的目錄網頁伺服器無法寫入
 the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	zt	您上傳的檔案 %1 不是圖片，或是JiNN不支援這種格式
 the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	zt	您上傳的檔案 %1 不是圖片，或是JiNN不支援這種格式。如果這個錯誤重複，請檢查您的ImageMagick設定。舊版的ImageMagick無法支援JiNN，請確認安裝的版本是5.4.9或更新！
+the identifierfield of this table, %1, represented by %2 has a many-to-many with %3 represented by %4 showing %5	jinn	zt	顯示於 %2 的表格自訂欄位 %1 中，與顯示於 %4 的 %3 有一個多對多關係顯示在 %5
+the identifyer from this table (%1.id) represented by	jinn	zt	這個表格的編號( %1.id )顯示於
+the image normal_size-directory subdirectory does not exist and cannot be created ...	jinn	zt	圖片資料夾不存在且無法建立
+the image_path normal_size subdirectory is not writable by the webserver ...	jinn	zt	網站伺服器無法寫入圖片資料夾
+the image_path thumb subdirectory is not writable by the webserver ...	jinn	zt	網站伺服器無法寫入縮圖資料夾
+the max. file upload size is %1 mb.	jinn	zt	檔案上傳上限為 %1 MB
 the name of the new site is <strong>%1</strong>.	jinn	zt	新網站的名稱<strong>%1</strong>
+the old confguration data is replaced<br/><br/>	jinn	zt	舊的設定已經被替換了<br/><br/>
+the path to upload files is not correct, please contact your jinn administrator.	jinn	zt	檔案上傳的路徑不正確，請聯絡您的JINN管理員
+the path to upload files is not set, please contact your jinn administrator.	jinn	zt	檔案上傳的路徑未設定，請聯絡您的JINN管理員
+the path to upload images is not correct, please contact your jinn administrator.	jinn	zt	圖片上傳的路徑不正確，請聯絡您的JINN管理員
+the path to upload images is not set, please contact your jinn administrator.	jinn	zt	圖片上傳的路徑未設定，請聯絡您的JINN管理員
 the resize process failed, please contact the administrator	jinn	zt	調整大小的處理發生錯誤，請聯絡管理員
+the upgrade process has is finished. you can now close this windows and start over again<br/><br/>	jinn	zt	升級處理已經完成，您現在可以關閉這個視窗並且重新執行<br/><br/>
+the wysiwyg plugin makes you edit text like you do in a program like openoffice writer or word. some people don't like this feature though, so you can force jinn not to use it.	jinn	zt	所見即所得外掛可以讓您編輯文字像是在使用OpenOffice Writer 或是 Word 一樣，不過有些朋友不見得喜歡這個功能，您可以設定強制不要啟用它。
 there are no directories in this site you have access to.	jinn	zt	您尚未存取這個網站的任何資料夾
+there are no records found for this object. you can now at a new record.	jinn	zt	這個物件目前沒有任何紀錄，您現在可以新增一筆
+there is not site you have access to. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	zt	您無法存取這個網站，請聯絡您的管理員
+this table has not unique identifier field	jinn	zt	這個資料表沒有不可重複的編號欄位
 thisfile	jinn	zt	這個檔案
+thumb directory does not exist or is not correct ...	jinn	zt	縮圖資料夾不存在或是不正確...
 thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	zt	縮圖資料夾不存在或是不正確...<br>請檢查物件的上傳資料夾
 thumbnail	jinn	zt	縮圖
+toggle all above checkboxes	jinn	zt	全部勾選
+unexpected error	jinn	zt	無法預期的錯誤
+unlimited	jinn	zt	無限制
+upload path	jinn	zt	上傳路徑
+using object configuration	jinn	zt	使用物件設定
 version	jinn	zt	版本
+view all selected records	jinn	zt	瀏覽所有選取的記錄
+we must upgrade your plugin configuration. <p>please don't click on back or stop untill i'm finished and a close button appears</p>	jinn	zt	我們必須更新您的外掛設定<p>在完成前，也就是關閉的按鈕還沒出現前，請不要中斷或是回上頁</p>
+website url	jinn	zt	預覽的網站網址
 when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	zt	當許多圖片附加到同一筆記錄時，表單的讀取會非常緩慢。您可以設定表單顯示圖片數量的上限。
+when this is enables information like field length and field type is shown when editing record	jinn	zt	當您啟用了像是欄位長度等資訊，欄位類型將會在編輯時顯示
 when you choose 'never', only links to the images are displayed; when you choose 'only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'yes' all images are shown	jinn	zt	當您選擇'從不'，只有連到這個圖片的連結會顯示；當您選擇'只有在縮圖存在時'則只有在縮圖存在時才會顯示預覽；如果您選擇'是'，所有的圖片都會顯示
 width:	jinn	zt	寬度：
 with_checked_files	jinn	zt	with_checked_files
+yes, hide from menu	jinn	zt	是的，從選單隱藏
+you must select one or more records for this function.	jinn	zt	使用這個功能必須選取一或多筆記錄
 you're not allowed to administrate media files	jinn	zt	您無法管理多媒體檔案

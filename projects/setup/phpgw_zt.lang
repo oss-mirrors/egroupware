@@ -15,6 +15,7 @@ activity %1 has been updated	projects	zt	更新了活動：%1
 activity %1 has been updated !	projects	zt	已經成功更新活動 %1 ！
 activity id	projects	zt	動作代碼
 add activity	projects	zt	新增活動
+add file	projects	zt	新增檔案
 add hours	projects	zt	新增時數
 add job	projects	zt	新增工作
 add milestone	projects	zt	新增專案階段
@@ -227,7 +228,7 @@ number	projects	zt	編號
 old end date	projects	zt	舊的結束日期
 old start date	projects	zt	舊的開始日期
 open	projects	zt	開放
-open popup	projects	zt	開啟跳出視窗
+open popup	projects	zt	開啟彈出式視窗
 open popup window	projects	zt	開啟彈出式視窗
 overall	projects	zt	總覽
 parent project	projects	zt	主要專案
@@ -309,6 +310,7 @@ select factor	projects	zt	選擇要素
 select groups	projects	zt	選擇群組
 select main project	common	zt	選擇主要專案
 select project	projects	zt	選擇專案
+select role	projects	zt	選擇角色
 select tax for workhours	projects	zt	選擇工作時數的稅率
 select users	projects	zt	選擇使用者
 select your address	projects	zt	選擇您的地址
@@ -329,6 +331,7 @@ statistic	projects	zt	統計
 statistics	projects	zt	統計
 stop	projects	zt	結束
 sub project level %1	projects	zt	附屬專案層級 %1
+subproject	projects	zt	子專案
 sum	projects	zt	總計
 sum budget	projects	zt	預算總計
 sum hours	projects	zt	工時總計
@@ -373,6 +376,7 @@ view work hours	projects	zt	檢視工時
 work date	common	zt	工作日期
 work hours	common	zt	時數
 work time	projects	zt	工作時間
+workload warning for project	projects	zt	專案工作進度警告
 workunit	projects	zt	工作單位
 workunits	projects	zt	工作單位
 written by:	projects	zt	作者：

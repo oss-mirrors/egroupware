@@ -53,16 +53,27 @@ import	phpldapadmin	zt	匯入
 import_from_ldif	phpldapadmin	zt	從LDIF檔案匯入資料
 inappropriate_matching_note	phpldapadmin	zt	注意： 如果您沒有在LDAP伺服器上設定這個屬性的對等規則，您將會看到 "inappropriate matching" 的錯誤
 info	phpldapadmin	zt	資訊
+inherits	phpldapadmin	zt	繼承
 internal_attributes	phpldapadmin	zt	內部屬性
+internal_attrs_tooltip	phpldapadmin	zt	這個系統自動設定的屬性
+is_obsolete	phpldapadmin	zt	這個物件類別是<b>過時的</b>
 jump_to_attr	phpldapadmin	zt	跳到一個屬性
 jump_to_objectclass	phpldapadmin	zt	跳到一個物件類別
 jump_to_this_oclass	phpldapadmin	zt	跳到這個物件類別定義
+ldap_refuses_to_give_root	phpldapadmin	zt	LDAP伺服器被設定為不顯示根目錄
 logged_in_as	phpldapadmin	zt	登入為：
 logout	phpldapadmin	zt	登出
 logout_of_this_server	phpldapadmin	zt	登出這個伺服器
+matching_rule_oid	phpldapadmin	zt	符合規則的OID
 new_attributes	phpldapadmin	zt	新的屬性
 new_required_attrs	phpldapadmin	zt	新的必要屬性
+new_required_attrs_instructions	phpldapadmin	zt	注意： 為了新增這個物件類別到這筆資料，您必須指定
+new_required_attrs_note	phpldapadmin	zt	注意： 您也許需要輸入這個物件類別需要的新屬性
+no_new_attrs_available	phpldapadmin	zt	這筆資料沒有新的屬性
+no_updates_in_read_only_mode	phpldapadmin	zt	當伺服器在唯讀模式時您無法更新任何資料
 none	phpldapadmin	zt	無
+none_remove_value	phpldapadmin	zt	無，移除值
+not_enough_login_info	phpldapadmin	zt	沒有足夠的資訊來登入伺服器，請檢查您的設定
 oid	phpldapadmin	zt	OID
 optional_attrs	phpldapadmin	zt	選擇性屬性
 please_specify_in_config	phpldapadmin	zt	請在 config.php 指定
@@ -94,5 +105,15 @@ sounds_like	phpldapadmin	zt	聽起來像
 starts_with	phpldapadmin	zt	開始在
 syntax	phpldapadmin	zt	語法
 syntax_oid	phpldapadmin	zt	語法 OID
+that_this_oclass_requires	phpldapadmin	zt	這個物件類別需要，您可以在這個表單進行
+the_following_attributes	phpldapadmin	zt	下面的<b>屬性類型</b>是LDAP伺服器提供的
+the_following_matching	phpldapadmin	zt	下面的<b>符合規則</b>是LDAP伺服器提供的
+the_following_objectclasses	phpldapadmin	zt	下面的<b>物件類別</b>是LDAP伺服器提供的
+the_following_syntaxes	phpldapadmin	zt	下面的<b>語法</b>是LDAP伺服器提供的
 true	phpldapadmin	zt	是
+value_to	phpldapadmin	zt	值
+values_for_attribute	phpldapadmin	zt	屬性值
 view	phpldapadmin	zt	瀏覽
+view_schema_for	phpldapadmin	zt	瀏覽概要
+view_server_info	phpldapadmin	zt	瀏覽伺服器提供的資訊
+viewing_read_only	phpldapadmin	zt	在唯讀模式瀏覽資料

@@ -123,11 +123,13 @@ for mail to be send - not functional yet	felamimail	zt	要寄出的郵件 - 尚�
 for received mail	felamimail	zt	收到的郵件
 forward	felamimail	zt	轉寄
 found	felamimail	zt	找到
+fri	felamimail	zt	五
 from	felamimail	zt	來自
 from(a->z)	felamimail	zt	從 (A->Z)
 from(z->a)	felamimail	zt	從 (Z->A)
 full name	felamimail	zt	全名
 have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	zt	更多訊息請參考<a href="http://www.felamimail.org" target="_new">www.felamimail.org</a><br>
+header lines	felamimail	zt	頭條新聞
 hide header	felamimail	zt	隱藏標頭
 html	felamimail	zt	HTML
 icons and text	felamimail	zt	圖示與文字
@@ -165,8 +167,8 @@ location of folder list	felamimail	zt	資料夾清單的位置
 mail server login type	admin	zt	郵件伺服器登入種類
 mail settings	felamimail	zt	郵件設定
 mainmessage	felamimail	zt	郵件主體
-manage folders	felamimail	zt	管理資料夾
-manage sieve	felamimail	zt	管理Sieve程式
+manage folders	common	zt	管理資料夾
+manage sieve	common	zt	管理Sieve程式
 mark as deleted	felamimail	zt	標示刪除
 mark messages as	felamimail	zt	標示選取的訊息為
 mark selected as flagged	felamimail	zt	標示選取的為標註
@@ -177,11 +179,13 @@ match	felamimail	zt	符合
 matches	felamimail	zt	符合
 matches regexp	felamimail	zt	符合規則
 medium gray	felamimail	zt	灰色
+message	felamimail	zt	訊息
 message highlighting	felamimail	zt	訊息醒目標示
 message list	felamimail	zt	訊息清單
 messages	felamimail	zt	訊息
 minute	felamimail	zt	分
 minutes	felamimail	zt	分鐘
+mon	felamimail	zt	一
 more	felamimail	zt	更多
 move	felamimail	zt	移動
 move messages	felamimail	zt	移動訊息
@@ -190,7 +194,7 @@ move to trash	felamimail	zt	移到垃圾桶
 must be unique	felamimail	zt	必須是唯一的
 name	felamimail	zt	名稱
 never display html emails	felamimail	zt	不顯示HTML郵件
-new	felamimail	zt	新增
+new	common	zt	新增
 new filter	felamimail	zt	新規則
 next	felamimail	zt	下一個
 next message	felamimail	zt	下一封郵件
@@ -254,6 +258,7 @@ right	felamimail	zt	正確
 rule	felamimail	zt	規則
 running squirrelmail version %1 (c) 1999-2000.	felamimail	zt	執行SquirrelMail %1 版(c) 1999-2000.
 same window - not functional yet	felamimail	zt	同一個視窗 - 未執行
+sat	felamimail	zt	六
 save	felamimail	zt	儲存
 search	felamimail	zt	搜尋
 search for	felamimail	zt	搜尋
@@ -294,6 +299,7 @@ subscribed successfully!	felamimail	zt	訂閱完成！
 successfully saved display preferences!	felamimail	zt	顯示偏好儲存完成！
 successfully saved folder preferences!	felamimail	zt	資料夾偏好儲存完成！
 successfully saved personal information!	felamimail	zt	個人資訊儲存完成！
+sun	felamimail	zt	日
 switch current folder to	felamimail	zt	切換目前的文件夾到
 table of contents	felamimail	zt	內容表單
 text only	felamimail	zt	純文字
@@ -308,6 +314,7 @@ this contains personal information about yourself such as your name, your email 
 this folder is empty	felamimail	zt	這個資料夾沒有任何信件
 this php has no imap support compiled in!!	felamimail	zt	您的PHP並未編譯為支援IMAP的狀態
 this port is based on squirrelmail, which is a standalone imap client.<br>	felamimail	zt	這是建立於標準的IMAP終端軟體Squirrelmail<br>
+thu	felamimail	zt	四
 to	felamimail	zt	到
 to the left	felamimail	zt	到左邊
 to the right	felamimail	zt	到右邊
@@ -317,6 +324,7 @@ translation preferences	felamimail	zt	翻譯偏好
 translation server	felamimail	zt	翻譯伺服器
 trash fold	felamimail	zt	垃圾桶
 trash folder	felamimail	zt	垃圾桶
+tue	felamimail	zt	二
 type	felamimail	zt	格式
 unable to list addresses from %1	felamimail	zt	無法從 %1 列出位址
 unflagged	felamimail	zt	取消標示
@@ -324,7 +332,7 @@ unknown err	felamimail	zt	不知名的錯誤
 unknown error	felamimail	zt	不知名的錯誤
 unknown sender	felamimail	zt	不知名的寄件人
 unknown user or password incorrect.	felamimail	zt	不知名的使用者或是密碼錯誤
-unread	felamimail	zt	未讀取
+unread	common	zt	未讀取
 unseen	felamimail	zt	未讀取
 unseen and total	felamimail	zt	未讀取與全部
 unseen message notification	felamimail	zt	未讀取訊息提示
@@ -335,6 +343,7 @@ unsubscribed	felamimail	zt	取消訂閱
 unsubscribed successfully!	felamimail	zt	取消訂閱完成！
 up	felamimail	zt	上一層
 update address	felamimail	zt	更新位址
+use <a href="%1">emailadmin</a> to create profiles	felamimail	zt	使用 <a href="%1">郵件管理</a> 來建立資料
 use a signature	felamimail	zt	使用簽名檔
 use a signature?	felamimail	zt	使用簽名檔？
 use addresses	felamimail	zt	使用位址
@@ -348,6 +357,7 @@ view message	felamimail	zt	顯示訊息
 viewing full header	felamimail	zt	顯示完整標頭中
 viewing message	felamimail	zt	顯示訊息中
 viewing messages	felamimail	zt	顯示訊息中
+wed	felamimail	zt	三
 welcome to %1's webmail system	felamimail	zt	歡迎來到 %1 的網頁郵件系統
 when deleting messages	felamimail	zt	當刪除訊息時
 white	felamimail	zt	白色
