@@ -48,6 +48,25 @@
      } 
   }
 
+	// This will drop all form values into appsessions for later use
+	function grab_form_values($returnto, $need_done_button = False)
+	{
+		global $phpgw, $bookmark;
+
+		$location_info = array(
+			'returnto'             => $returnto,
+			'need_done_button'     => $need_done_button,
+			'bookmark_url'         => $bookmark['url'],
+			'bookmark_name'        => $bookmark['name'],
+			'bookmark_desc'        => $bookmark['desc'],
+			'bookmark_keywords'    => $bookmark['keywords'],
+			'bookmark_category'    => $bookmark['category'],
+			'bookmark_subcategory' => $bookmark['subcategory'],
+			'bookmark_rating'      => $bookmark['rating']
+		);
+		$phpgw->bookmarks->save_session_data($location_info);
+	}
+
 	function date_information(&$tpl, $raw_string)
 	{
 		global $phpgw;
@@ -73,9 +92,8 @@
        MAILLINK_URL     => $phpgw->link("maillink.php"),
 //       SEARCH_URL       => $phpgw->link("search.php"),
        FAQ_URL          => $phpgw->link("faq.php"),
-       CATEGORY_URL     => $phpgw->link("codes.php","codetable=bookmarks_category"),
-       SUBCATEGORY_URL  => $phpgw->link("codes.php","codetable=bookmarks_subcategory"),
-       RATINGS_URL      => $phpgw->link("codes.php","codetable=bookmarks_rating"),
+//       CATEGORY_URL     => $phpgw->link("codes.php","codetable=bookmarks_category"),
+//       SUBCATEGORY_URL  => $phpgw->link("codes.php","codetable=bookmarks_subcategory"),
        USER_URL         => $phpgw->link("useropt.php"),
        USER_SETTINGS_URL=> $phpgw->link("user.php"),
        IMPORT_URL       => $phpgw->link("import.php"),
@@ -174,38 +192,38 @@
 			}
 		}
 
-		function add(&$id,$url,$name,$ldesc,$keywords,$category,$subcategory,$rating,$access,$groups)
+		function add(&$id,$values)
 		{
-			global $phpgw_info, $error_msg, $msg, $bookmarker, $phpgw;
+			global $phpgw_info, $error_msg, $msg, $phpgw;
 
 			$db = $phpgw->db;
 
-			if (! $this->validate($url,$name,$ldesc,$keywords,$category,$subcategory,$rating,$public,$public_db))
+			if (! $this->validate($values))
 			{
 				return False;
 			}
 
 			// Does the bookmark already exist?
-			$query = sprintf("select count(*) from phpgw_bookmarks where bm_url='%s' and bm_owner='%s'",$url, $phpgw_info["user"]["account_id"]);
+			$query = sprintf("select count(*) from phpgw_bookmarks where bm_url='%s' and bm_owner='%s'",$values['url'], $phpgw_info['user']['account_id']);
 			$db->query($query,__LINE__,__FILE__);
 
 			if ($db->f(0))
 			{
-				$error_msg .= sprintf('<br>URL <B>%s</B> already exists!', $url);
+				$error_msg .= sprintf('<br>URL <B>%s</B> already exists!', $values['url']);
 				return False;
 			}
 
-			if (! $access)
+			if (! $values['access'])
 			{
-				$access = 'public';
+				$values['access'] = 'public';
 			}
 
 			// Insert the bookmark
 			$query = sprintf("insert into phpgw_bookmarks (bm_url, bm_name, bm_desc, bm_keywords, bm_category,"
                        . "bm_subcategory, bm_rating, bm_owner, bm_access, bm_info, bm_visits) "
                        . "values ('%s', '%s', '%s','%s',%s,%s,%s, '%s', '%s','%s,0,0',0)", 
-                          $url, addslashes($name), addslashes($ldesc), addslashes($keywords), 
-                          $category, $subcategory, $rating, $phpgw_info['user']['account_id'], $access,
+                          $values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']),
+                          $values['category'], $values['subcategory'], $values['rating'], $phpgw_info['user']['account_id'], $values['access'],
                           time());
     
 			$db->query($query,__LINE__,__FILE__);
@@ -219,51 +237,41 @@
 			$this->update_user_total_bookmarks($phpgw_info['user']['account_id']);
 
 			return true;
-	}
+		}
 
-	function update($id, $url, $name, $ldesc, $keywords, $category, $subcategory, $rating, $access)
-	{
-		global $error_msg, $msg, $bookmarker, $validate, $phpgw_info, $phpgw;
+		function update($id, $values)
+		{
+			global $error_msg, $msg, $validate, $phpgw_info, $phpgw;
 
 /*       if (!$this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory,
                         &$rating, &$public, &$public_db)) {
           return False;
        } */
 
-		if (! $access)
-		{
-			$access = 'public';
+			if (! $values['access'])
+			{
+				$values['access'] = 'public';
+			}
+
+			$phpgw->db->query("select bm_info from phpgw_bookmarks where bm_id='$id'",__LINE__,__FILE__);
+			$phpgw->db->next_record();
+			$ts = explode(',',$phpgw->db->f('bm_info'));
+	
+			$timestamps = sprintf('%s,%s,%s',$ts[0],$ts[1],time());
+
+			// Update bookmark information.
+			$query = sprintf("update phpgw_bookmarks set bm_url='%s', bm_name='%s', bm_desc='%s', "
+	                      . "bm_keywords='%s', bm_category='%s', bm_subcategory='%s', bm_rating='%s',"
+	                      . "bm_info='%s', bm_access='%s' where bm_id='%s'", 
+	                         $values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']), 
+	                         $values['category'], $values['subcategory'], $values['rating'], $timestamps, $values['access'], $id);
+	
+			$phpgw->db->query($query,__LINE__,__FILE__);
+
+			$msg .= lang('Bookmark changed sucessfully');
+	
+			return true;
 		}
-
-		if ($visted == 1)
-		{
-			$visted = 0;
-		}
-
-		$phpgw->db->query("select bm_info from phpgw_bookmarks where bm_id='$id'",__LINE__,__FILE__);
-		$phpgw->db->next_record();
-		$ts = explode(',',$phpgw->db->f('bm_info'));
-
-		$timestamps = sprintf('%s,%s,%s',$ts[0],$ts[1],time());
-
-		// Update bookmark information.
-		$query = sprintf("update phpgw_bookmarks set bm_url='%s', bm_name='%s', bm_desc='%s', "
-                      . "bm_keywords='%s', bm_category='%s', bm_subcategory='%s', bm_rating='%s',"
-                      . "bm_info='%s', bm_access='%s' where bm_id='%s'", 
-                         $url, addslashes($name), addslashes($ldesc), addslashes($keywords), 
-                         $category, $subcategory, $rating, $timestamps, $access, $id);
-
-		$phpgw->db->query($query,__LINE__,__FILE__);
-
-		$msg .= lang('Bookmark changed sucessfully');
-
-		// Update the PHPLIB user variable that keeps track of how
-		// many bookmarks this user has.
-		// NOTE: This needs to be moved into appsessions
-		//$this->update_user_total_bookmarks($phpgw_info["user"]["acount_id"]);
-
-		return true;
-	}
 
     function delete($id)
     {
@@ -288,9 +296,9 @@
        return true;
     }
 
-		function validate ($url,$name,$ldesc,$keywords,$category,$subcategory,$rating,$public,$public_db)
+		function validate ($values)
 		{
-			global $error_msg, $msg, $bookmarker, $validate;
+			global $error_msg, $msg, $validate;
 
 			// trim the form fields
 			// $url = $validate->strip_space($url);
@@ -299,82 +307,54 @@
 //			$keyw = trim($keywords);
        
 			// Do we have all necessary data?
-			if (! $url || $url == 'http://')
+			if (! $values['url'] || $values['url'] == 'http://')
 			{
-				$error_msg .= "<br>URL is required.";
+				$error_msg .= '<br>URL is required.';
 			}
 
-			if (! $name)
+			if (! $values['name'])
 			{
-				$error_msg .= "<br>Name is required.";
-			}
-   
-       if (isset($category) && $category >= 0 ) {
-       } else {
-          $error_msg .= "<br>Category is required.";
-       }
-   
-       if (isset($subcategory) && $subcategory >= 0 ) {
-       } else {
-          $error_msg .= "<br>Subcategory is required.";
-       }
-   
-/*
-       if (isset($rating) && $rating >= 0 ) {
-       } else {
-          $error_msg .= "<br>Rating is required.";
-       }
-*/
+				$error_msg .= '<br>Name is required.';
+			}   
 
-       // does the admin want us to check URL format
-		if ($bookmarker->url_format_check > 0)
-		{
-			// Is the URL format valid
-			if ($url == 'http://')
+			// does the admin want us to check URL format
+			if ($phpgw->bookmarks->url_format_check > 0)
 			{
-				$error_msg .= '<br>You must enter a URL';
+				// Is the URL format valid
+				if ($values['url'] == 'http://')
+				{
+					$error_msg .= '<br>You must enter a URL';
+				}
+				else
+				{
+					if (! $validate->is_url($values['url']))
+					{
+						$format_msg = '<br>URL invalid. Format must be <strong>http://</strong> or 
+	                            <strong>ftp://</strong> followed by a valid hostname and 
+	                            URL!<br><small>' .  $validate->ERROR . '</small>';
+	  
+						// does the admin want this formatted as a warning or an error?
+						if ($phpgw->bookmarks->url_format_check == 2)
+						{
+							$error_msg .= $format_msg;
+						}
+						else
+						{
+							$msg .= $format_msg;
+						}
+					}
+				}
+			}    
+
+			if ($error_msg)
+			{
+				return False;
 			}
 			else
 			{
-				if (!$validate->is_url($url))
-				{
-					$format_msg = "<br>URL invalid. Format must be <strong>http://</strong> or 
-	                            <strong>ftp://</strong> followed by a valid hostname and 
-	                            URL!<br><small> $validate->ERROR </small>";
-	  
-					// does the admin want this formatted as a warning or an error?
-					if ($bookmarker->url_format_check == 2)
-					{
-						$error_msg .= $format_msg;
-					}
-					else
-					{
-						$msg .= $format_msg;
-					}
-				}
+				return True;
 			}
-		}    
-
-/*
-		if ($public == "on")
-		{
-			$public_db = "Y";
 		}
-		else
-		{
-			$public_db = "N";
-		}
-*/
-
-		if ($error_msg)
-		{
-			return False;
-		}
-		else
-		{
-			return True;
-		}
-	}
 
    function update_user_total_bookmarks($uname)
    {
@@ -454,7 +434,7 @@
 	{
 		global $phpgw;
 
-		return unserialize($phpgw->session->appsession('session_data','bookmarks'));
+		return $phpgw->session->appsession('session_data','bookmarks');
 	}
 
 }

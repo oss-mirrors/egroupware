@@ -18,6 +18,8 @@
   $phpgw_info["flags"]["enabled_nextmatchs_class"] = True;
   include("../header.inc.php");
 
+	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
+
   # if mode is not GET, then we want to redirect
   # back to ourselves which will put us in GET mode.
   # The reason is the javascript reload() and go()

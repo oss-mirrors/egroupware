@@ -13,15 +13,17 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"]["currentapp"] = "bookmarks";
-  $phpgw_info["flags"]["enable_nextmatchs_class"] = True;
-  $phpgw_info["flags"]["enable_categories_class"] = True;
-  if ($submit || $method == "delete") {
-     $phpgw_info["flags"]["nonavbar"] = True;
-     $phpgw_info["flags"]["noheader"] = True;
-     $phpgw_info["flags"]["nofooter"] = True;
-  }
-  include("../header.inc.php");
+	$phpgw_info['flags']['currentapp'] = 'bookmarks';
+	$phpgw_info['flags']['enable_nextmatchs_class'] = True;
+	$phpgw_info['flags']['enable_categories_class'] = True;
+	if ($submit || $method == 'delete')
+	{
+		$phpgw_info['flags']['nonavbar'] = True;
+		$phpgw_info['flags']['noheader'] = True;
+		$phpgw_info['flags']['nofooter'] = True;
+	}
+	include('../header.inc.php');
+	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
 
   if ($submit || $method == "delete") {
      if ($type == "subcategory") {
@@ -67,8 +69,13 @@
      $phpgw->template->set_var("header_message",lang("Edit new x",$type));
   }
 
-  $phpgw->template->set_var("name_value",$name);
-  $phpgw->template->set_var("submit_value",lang("Add"));
+	$phpgw->template->set_var('name_value',$name);
+	$phpgw->template->set_var('submit_value',lang('Add'));
 
-  $phpgw->common->phpgw_footer();
+	if ($location_info['need_done_button'])
+	{
+		$phpgw->template->set_var('done_link','<a href="' . $phpgw->link('/bookmarks/' . $location_info['returnto']) . '">' . lang('Done') . '</a>');
+	}
+
+	$phpgw->common->phpgw_footer();
 ?>

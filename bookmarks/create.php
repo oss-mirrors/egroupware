@@ -16,10 +16,41 @@
 	$phpgw_info['flags'] = array(
 		'currentapp'              => 'bookmarks',
 		'enable_nextmatchs_class' => True,
-		'enable_categories_class' => True
+		'enable_categories_class' => True,
+		'noheader'                => True,
+		'nonavbar'                => True,
 	);
 	include('../header.inc.php');
 	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
+
+	if ($edit_category_x || $edit_category_y)
+	{
+		grab_form_values('create.php',True);
+		$phpgw->redirect($phpgw->link('/bookmarks/categories.php','type=category'));
+	}
+
+	if ($edit_subcategory_x || $edit_subcategory_y)
+	{
+		grab_form_values('create.php',True);
+		$phpgw->redirect($phpgw->link('/bookmarks/categories.php','type=subcategory'));
+	}
+
+	$location_info = $phpgw->bookmarks->read_session_data();
+	if ($location_info['returnto'] == 'create.php')
+	{
+		$bookmark['name']        = $location_info['bookmark_name'];
+		$bookmark['url']         = $location_info['bookmark_url'];
+		$bookmark['desc']        = $location_info['bookmark_desc'];
+		$bookmark['keywords']    = $location_info['bookmark_keywords'];
+		$bookmark['category']    = $location_info['bookmark_category'];
+		$bookmark['subcategory'] = $location_info['bookmark_subcategory'];
+		$bookmark['rating']      = $location_info['bookmark_rating'];
+	}
+
+
+	$phpgw->common->phpgw_header();
+	include(PHPGW_APP_INC . '/header.inc.php');
+	echo parse_navbar();
 
 	$phpgw->template->set_file(array(
 		'common'             => 'common.tpl',
@@ -44,7 +75,12 @@
 
 	if ($create)
 	{
-		$phpgw->bookmarks->add(&$id,$url,$name,$desc,$keyw,$bookmarks_category,$bookmarks_subcategory,$bookmarks_rating, $access,$groups);
+		$phpgw->bookmarks->add(&$id,$bookmark);
+		$location_info = array(
+			'start'    => 0,
+			'returnto' => 'list.php'
+		);
+		$phpgw->bookmarks->save_session_data($location_info);
 	}
 
 	// Check to see if any existing bookmarks are a "close match".
@@ -79,28 +115,31 @@
 
 	$phpgw->template->set_var('lang_header',lang('Create new bookmark'));
 
-	$phpgw->template->set_var('input_category','<select name="bookmarks_category">'
+	$phpgw->template->set_var('input_category','<select name="bookmark[category]">'
                                            . '<option value="0">--</option>'
-                                           . $phpgw->categories->formated_list('select','mains')
+                                           . $phpgw->categories->formated_list('select','mains',$bookmark['category'])
                                            . '</select>');
+	$phpgw->template->set_var('category_image','<input type="image" name="edit_category" src="' . PHPGW_IMAGES . '/edit.gif" border="0">');
 
-	$phpgw->template->set_var('input_subcategory','<select name="bookmarks_subcategory">'
+	$phpgw->template->set_var('input_subcategory','<select name="bookmark[subcategory]">'
                                               . '<option value="0">--</option>'
-                                              . $phpgw->categories->formated_list('select','subs')
+                                              . $phpgw->categories->formated_list('select','subs',$bookmark['subcategory'])
                                               . '</select>');
+	$phpgw->template->set_var('subcategory_image','<input type="image" name="edit_subcategory" src="' . PHPGW_IMAGES . '/edit.gif" border="0">');
 
-	$phpgw->template->set_var('input_rating','<select name="bookmarks_rating">'
-                                         . ' <option value="0">--</option>'
-                                         . ' <option value="1">1 - ' . lang('Lowest') . '</option>'
-                                         . ' <option value="2">2</option>'
-                                         . ' <option value="3">3</option>'
-                                         . ' <option value="4">4</option>'
-                                         . ' <option value="5">5</option>'
-                                         . ' <option value="6">6</option>'
-                                         . ' <option value="7">7</option>'
-                                         . ' <option value="8">8</option>'
-                                         . ' <option value="9">9</option>'
-                                         . ' <option value="10">10 - ' . lang('Highest') . '</option>'
+	$selected[$bookmark['rating']] = ' selected';
+	$phpgw->template->set_var('input_rating','<select name="bookmark[rating]">'
+                                         . ' <option value="0"' . $selected[0] . '>--</option>'
+                                         . ' <option value="1"' . $selected[1] . '>1 - ' . lang('Lowest') . '</option>'
+                                         . ' <option value="2"' . $selected[2] . '>2</option>'
+                                         . ' <option value="3"' . $selected[3] . '>3</option>'
+                                         . ' <option value="4"' . $selected[4] . '>4</option>'
+                                         . ' <option value="5"' . $selected[5] . '>5</option>'
+                                         . ' <option value="6"' . $selected[6] . '>6</option>'
+                                         . ' <option value="7"' . $selected[7] . '>7</option>'
+                                         . ' <option value="8"' . $selected[8] . '>8</option>'
+                                         . ' <option value="9"' . $selected[9] . '>9</option>'
+                                         . ' <option value="10"' . $selected[10] . '>10 - ' . lang('Highest') . '</option>'
                                          . '</select>');
 
 	$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
@@ -117,11 +156,11 @@
 	$phpgw->template->set_var('lang_subcategory',lang('Sub Category'));
 	$phpgw->template->set_var('lang_rating',lang('Rating'));
 
-	$phpgw->template->set_var('input_url','<input name="url" size="60" maxlength="255" value="' . ($url?$url:'http://') . '">');
-	$phpgw->template->set_var('input_name','<input name="name" size="60" maxlength="255" value="' . $name . '">');
+	$phpgw->template->set_var('input_url','<input name="bookmark[url]" size="60" maxlength="255" value="' . ($bookmark['url']?$bookmark['url']:'http://') . '">');
+	$phpgw->template->set_var('input_name','<input name="bookmark[name]" size="60" maxlength="255" value="' . $bookmark['name'] . '">');
 
-	$phpgw->template->set_var('input_desc','<textarea name="desc" rows="3" cols="60" wrap="virtual">' . $desc . '</textarea>');
-	$phpgw->template->set_var('input_keywords','<input type="text" name="keyw" size="60" maxlength="255" value="' . $keyw . '">');
+	$phpgw->template->set_var('input_desc','<textarea name="bookmark[desc]" rows="3" cols="60" wrap="virtual">' . $bookmark['desc'] . '</textarea>');
+	$phpgw->template->set_var('input_keywords','<input type="text" name="bookmark[keywords]" size="60" maxlength="255" value="' . $bookmark['keywords'] . '">');
 
 	if ($create)
 	{
@@ -139,7 +178,7 @@
 		$checked = ' checked';
 	}
 
-	$phpgw->template->set_var('input_access','<input type="checkbox" name="access" value="private"' . $checked . '>');
+	$phpgw->template->set_var('input_access','<input type="checkbox" name="bookmark[access]" value="private"' . $checked . '>');
 
 	$phpgw->template->set_var('delete_link','');
 	$phpgw->template->set_var('cancel_link','');

@@ -23,7 +23,20 @@
 	include('../header.inc.php');
 	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
 
+	if ($edit_category_x || $edit_category_y)
+	{
+		grab_form_values('maintain.php',True);
+		$phpgw->redirect($phpgw->link('/bookmarks/categories.php','type=category'));
+	}
+
+	if ($edit_subcategory_x || $edit_subcategory_y)
+	{
+		grab_form_values('maintain.php',True);
+		$phpgw->redirect($phpgw->link('/bookmarks/categories.php','type=subcategory'));
+	}
+
 	$location_info = $phpgw->bookmarks->read_session_data();
+
 	if ($delete_x || $delete_y)
 	{
 		if (! $phpgw->bookmarks->check_perms($bm_id,PHPGW_ACL_DELETE))
@@ -32,25 +45,71 @@
 		}
 		else
 		{
-			$phpgw->bookmarks->delete($id);
+			$phpgw->bookmarks->delete($bm_id);
 			$phpgw->redirect($phpgw->link('/bookmarks/' . $location_info['returnto']));
 		}
 	}
 
-	// This is going to use appsession()
-  function return_to()
-  {
-     global $returnto, $msg, $error_msg, $sess_msg, $sess_error_msg, $phpgw;
+	if ($cancel_x || $cancel_y)
+	{
+		// TODO: If they go to categorys, it will not redirect them properly.
+		if ($location_info['returnto'] == 'maintain.php')
+		{
+			$location_info = array(
+				'start'    => 0,
+				'returnto' => 'list.php'
+			);
+			$phpgw->bookmarks->save_session_data($location_info);
+		}
+		if ($location_info['bm_id'])
+		{
+			$extravars = 'bm_id=' . $location_info['bm_id'];
+		}
+		$phpgw->redirect($phpgw->link('/bookmarks/' . $location_info['returnto'],$extravars));
+	}
 
-     if (!empty($returnto)) {
-        list($file,$vars) = explode("----",urldecode($returnto));
-        $sess_msg       = $msg;
-        $sess_error_msg = $error_msg;
-        header("Location: " . $phpgw->link($file,$vars));
-        page_close();
-        $phpgw->common->phpgw_exit();
-     }
-  }
+	if ($edit_x || $edit_y)
+	{
+		if (! $phpgw->bookmarks->check_perms($bm_id,PHPGW_ACL_EDIT))
+		{
+			$phpgw->redirect($phpgw->link('/bookmarks/list.php'));
+		}
+		else
+		{
+			$phpgw->bookmarks->update($bm_id,$bookmark);
+
+			if ($location_info['bm_id'])
+			{
+				$extravars = 'bm_id=' . $bm_id;
+			}
+			$phpgw->redirect($phpgw->link('/bookmarks/view.php',$extravars));
+		}	
+	}
+
+	$location_info = $phpgw->bookmarks->read_session_data();
+	if ($location_info['returnto'] == 'maintain.php')
+	{
+		$bookmark['name']        = $location_info['bookmark_name'];
+		$bookmark['url']         = $location_info['bookmark_url'];
+		$bookmark['desc']        = $location_info['bookmark_desc'];
+		$bookmark['keywords']    = $location_info['bookmark_keywords'];
+		$bookmark['category']    = $location_info['bookmark_category'];
+		$bookmark['subcategory'] = $location_info['bookmark_subcategory'];
+		$bookmark['rating']      = $location_info['bookmark_rating'];
+	}
+	else if (! $edit_x || ! $edit_y)
+	{
+		$phpgw->db->query("select * from phpgw_bookmarks where bm_id='$bm_id'",__LINE__,__FILE__);
+		$phpgw->db->next_record();
+
+		$bookmark['name']        = $phpgw->db->f('bm_name');
+		$bookmark['url']         = $phpgw->db->f('bm_url');
+		$bookmark['desc']        = $phpgw->db->f('bm_desc');
+		$bookmark['keywords']    = $phpgw->db->f('bm_keywords');
+		$bookmark['category']    = $phpgw->db->f('bm_category');
+		$bookmark['subcategory'] = $phpgw->db->f('bm_subcategory');
+		$bookmark['rating']      = $phpgw->db->f('bm_rating');
+	}
 
 	$phpgw->template->set_file(array(
 		'common' => 'common.tpl',
@@ -64,50 +123,14 @@
 
 	app_header(&$phpgw->template);
 
-  ## Check if there was a submission
-  while (is_array($HTTP_POST_VARS) && list($key, $val) = each($HTTP_POST_VARS)) {
-     switch ($key) {
+	if (empty($error_msg))
+	{
+		date_information(&$phpgw->template,$phpgw->db->f('bm_info'));
 
-     ## Change bookmark
-//     case "bk_edit":
-     case "bk_edit_x":
-     if (! $phpgw->bookmarks->update($bm_id, $url, $name, $desc, $keyw, $bookmarks_category, $bookmarks_subcategory, $bookmarks_rating, $access)) break;
-
-     return_to();
-     break;
-
-//     ## Delete the bookmark
-//     case "bk_delete":
-/*     case 'delete':
-     if (! $phpgw->bookmarks->delete($id))
-        break;
-     return_to();
-     break; */
-  
-     ## Cancel the changes, send user back to referring page.
-     case "bk_cancel":
-     case "bk_cancel_x":
-      $msg .= "Bookmark maintain cancelled.";
-      return_to();
-      break;
-
-     default: break;
- }
-}
-
-  if (empty($error_msg)) {
-     // Add ACL checks to see if they have rights to update it
-     $phpgw->db->query("select * from phpgw_bookmarks where bm_id='$bm_id' and bm_owner='"
-                     . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
-  
-     $phpgw->db->next_record();
-  
-     date_information(&$phpgw->template,$phpgw->db->f("bm_info"));
-  
-     $rs[$phpgw->db->f("bm_rating")] = " selected";
-     $rating_select = '<select name="bookmarks_rating">'
+		$rs[$bookmark['rating']] = ' selected';
+		$rating_select = '<select name="bookmark[rating]">'
                     . ' <option value="0">--</option>'
-                    . ' <option value="1"' . $rs[1] . '>1 - ' . lang("Lowest") . '</option>'
+                    . ' <option value="1"' . $rs[1] . '>1 - ' . lang('Lowest') . '</option>'
                     . ' <option value="2"' . $rs[2] . '>2</option>'
                     . ' <option value="3"' . $rs[3] . '>3</option>'
                     . ' <option value="4"' . $rs[4] . '>4</option>'
@@ -116,60 +139,58 @@
                     . ' <option value="7"' . $rs[7] . '>7</option>'
                     . ' <option value="8"' . $rs[8] . '>8</option>'
                     . ' <option value="9"' . $rs[9] . '>9</option>'
-                    . ' <option value="10"' . $rs[10] . '>10 - ' . lang("Highest") . '</option>'
+                    . ' <option value="10"' . $rs[10] . '>10 - ' . lang('Highest') . '</option>'
                     . '</select>';
-  
-     if (!empty($returnto)) {
-        $cancel_button = sprintf("<input type=\"image\" name=\"bk_cancel\" title=\"Cancel Maintain\" src=\"%scancel.%s\" border=0 width=24 height=24>", $bookmarker->image_url_prefix, $bookmarker->image_ext);
-     }
-  
-     $phpgw->template->set_var("lang_header",lang("Edit bookmark"));
-     $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
-     $phpgw->template->set_var("updated",$f_ts[2]);
-     $phpgw->template->set_var("total_visits",$phpgw->db->f("bm_visits"));
+    
+		$phpgw->template->set_var('lang_header',lang('Edit bookmark'));
+		$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
+		$phpgw->template->set_var('updated',$f_ts[2]);
+		$phpgw->template->set_var('total_visits',$phpgw->db->f('bm_visits'));
 
 		$phpgw->template->set_var('lang_owner',lang('Created by'));
 		$account = createobject('phpgwapi.accounts',$phpgw->db->f('bm_owner'));
 		$ad      = $account->read_repository();
 		$phpgw->template->set_var('owner_value',$phpgw->common->display_fullname($ad['account_lid'],$ad['firstname'],$ad['lastname']));
 
-     $phpgw->template->set_var("lang_added",lang("Date added"));
-     $phpgw->template->set_var("lang_updated",lang("Date last updated"));
-     $phpgw->template->set_var("lang_visited",lang("Date last visited"));
-     $phpgw->template->set_var("lang_visits",lang("Total visits"));
-        
-     $phpgw->template->parse("info","info");
-      
-     $phpgw->template->set_var("form_action",$phpgw->link('/bookmarks/maintain.php','bm_id=' . $bm_id));
-     $phpgw->template->set_var("lang_url",lang("URL"));
-     $phpgw->template->set_var("lang_name",lang("Name"));
-     $phpgw->template->set_var("lang_desc",lang("Description"));
-     $phpgw->template->set_var("lang_keywords",lang("Keywords"));
-      
-     $phpgw->template->set_var("lang_category",lang("Category"));
-     $phpgw->template->set_var("lang_subcategory",lang("Sub Category"));
-     $phpgw->template->set_var("lang_rating",lang("Rating"));
-        
-		$phpgw->template->set_var('lang_access',lang('Private'));
-		$phpgw->template->set_var('input_access','<input type="checkbox" name="access" value="private"' . ($bm_access=='private'?' checked':'') . '>');
+		$phpgw->template->set_var('lang_added',lang('Date added'));
+		$phpgw->template->set_var('lang_updated',lang('Date last updated'));
+		$phpgw->template->set_var('lang_visited',lang('Date last visited'));
+		$phpgw->template->set_var('lang_visits',lang('Total visits'));
 
-     $phpgw->template->set_var("input_rating",$rating_select);
-  
-     $phpgw->template->set_var("input_category",'<select name="bookmarks_category">'
+		$phpgw->template->parse('info','info');
+
+		$phpgw->template->set_var('form_action',$phpgw->link('/bookmarks/maintain.php','bm_id=' . $bm_id));
+		$phpgw->template->set_var('lang_url',lang('URL'));
+		$phpgw->template->set_var('lang_name',lang('Name'));
+		$phpgw->template->set_var('lang_desc',lang('Description'));
+		$phpgw->template->set_var('lang_keywords',lang('Keywords'));
+
+		$phpgw->template->set_var('lang_category',lang('Category'));
+		$phpgw->template->set_var('lang_subcategory',lang('Sub Category'));
+		$phpgw->template->set_var('lang_rating',lang('Rating'));
+
+		$phpgw->template->set_var('lang_access',lang('Private'));
+		$phpgw->template->set_var('input_access','<input type="checkbox" name="bookmark[access]" value="private"' . ($bookmark['access']=='private'?' checked':'') . '>');
+
+		$phpgw->template->set_var('input_rating',$rating_select);
+
+		$phpgw->template->set_var('input_category','<select name="bookmark[category]">'
                                               . '<option value="0">--</option>'
-                                              . $phpgw->categories->formated_list("select","mains",$phpgw->db->f("bm_category"))
+                                              . $phpgw->categories->formated_list('select','mains',$bookmark['bm_category'])
                                               . '</select>');
+		$phpgw->template->set_var('category_image','<input type="image" name="edit_category" src="' . PHPGW_IMAGES . '/edit.gif" border="0">');
   
-     $phpgw->template->set_var("input_subcategory",'<select name="bookmarks_subcategory">'
+		$phpgw->template->set_var('input_subcategory','<select name="bookmark[subcategory]">'
                                                  . '<option value="0">--</option>'
-                                                 . $phpgw->categories->formated_list("select","subs",$phpgw->db->f("bm_subcategory"))
+                                                 . $phpgw->categories->formated_list('select','subs',$bookmark['bm_subcategory'])
                                                  . '</select>');
+		$phpgw->template->set_var('subcategory_image','<input type="image" name="edit_subcategory" src="' . PHPGW_IMAGES . '/edit.gif" border="0">');
   
   
-		$phpgw->template->set_var('input_url','<input name="url" size="60" maxlength="255" value="' . $phpgw->db->f('bm_url') . '">');
-		$phpgw->template->set_var('input_name','<input name="name" size="60" maxlength="255" value="' . $phpgw->db->f('bm_name') . '">');
-		$phpgw->template->set_var('input_desc','<textarea name="desc" rows="3" cols="60" wrap="virtual">' . $phpgw->db->f('bm_desc') . '</textarea>');
-		$phpgw->template->set_var('input_keywords','<input type="text" name="keyw" size="60" maxlength="255" value="' . $phpgw->db->f('bm_keywords') . '">');
+		$phpgw->template->set_var('input_url','<input name="bookmark[url]" size="60" maxlength="255" value="' . $bookmark['url'] . '">');
+		$phpgw->template->set_var('input_name','<input name="bookmark[name]" size="60" maxlength="255" value="' . $bookmark['name'] . '">');
+		$phpgw->template->set_var('input_desc','<textarea name="bookmark[desc]" rows="3" cols="60" wrap="virtual">' . $bookmark['desc'] . '</textarea>');
+		$phpgw->template->set_var('input_keywords','<input type="text" name="bookmark[keywords]" size="60" maxlength="255" value="' . $bookmark['keywords'] . '">');
 
 		$phpgw->template->parse('BODY','body');
 
@@ -178,10 +199,9 @@
 			$phpgw->template->set_var('delete_button','<input type="image" name="delete" title="' . lang('Delete') . '" src="' . PHPGW_IMAGES . '/delete.gif" border="0">');
 		}
 
-		$phpgw->template->set_var('cancel_link','');
-		$phpgw->template->set_var('form_link','<input type="image" name="bk_edit" title="'
-                                         . LANG("Change Bookmark") . '" src="'
-                                         . $phpgw_info["server"]["app_images"] . '/save.gif" border="0">');
+		$phpgw->template->set_var('cancel_button','<input type="image" name="cancel" title="' . lang('Done') . '" src="' . PHPGW_IMAGES . '/cancel.gif" border="0">');
+		$phpgw->template->set_var('form_link','<input type="image" name="edit" title="' . lang('Change Bookmark') . '" src="'
+                                         . PHPGW_IMAGES . '/save.gif" border="0">');
 	}
 	$phpgw->common->phpgw_footer();
 ?>

@@ -27,6 +27,14 @@
 		$phpgw->redirect($phpgw->link('/bookmarks/' . $location_info['returnto']));
 	}
 
+	if ($edit_x || $edit_y)
+	{
+		$location_info['returnto'] = 'view.php';
+		$location_info['bm_id']    = $bm_id;
+		$phpgw->bookmarks->save_session_data($location_info);
+		$phpgw->redirect($phpgw->link('/bookmarks/maintain.php','bm_id=' . $bm_id));
+	}
+
 	$phpgw->template->set_file(array(
 		'common'   => 'common.tpl',
 		'body'     => 'form.tpl',
@@ -66,7 +74,7 @@
 
 	$phpgw->template->parse('info','info');
 
-	$phpgw->template->set_var('form_action',$phpgw->link('/bookmarks/view.php'));
+	$phpgw->template->set_var('form_action',$phpgw->link('/bookmarks/view.php','bm_id=' . $bm_id));
 	$phpgw->template->set_var('lang_url',lang('URL'));
 	$phpgw->template->set_var('lang_name',lang('Name'));
 	$phpgw->template->set_var('lang_desc',lang('Description'));

@@ -10,8 +10,11 @@
  {rows}
 
  <tr>
-  <td colspan="3" align="left">
+  <td colspan="2" align="left">
    &nbsp;{add_link}
+  </td>
+  <td align="right">
+   {done_link}
   </td>
  </tr>
 </table>

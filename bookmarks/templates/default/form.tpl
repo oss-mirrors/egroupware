@@ -31,8 +31,8 @@
  
   <tr>
    <td rowspan="2">&nbsp;</td>
-   <td width="25%" align="center"><a href="{CATEGORY_URL}">{lang_category}</a></td>
-   <td width="25%" align="center"><a href="{SUBCATEGORY_URL}">{lang_subcategory}</a></td>
+   <td width="25%" align="center">{lang_category}&nbsp; &nbsp;{category_image}</td>
+   <td width="25%" align="center">{lang_subcategory}&nbsp; &nbsp;{subcategory_image}</a></td>
    <td width="25%" align="center">{lang_rating}</td>
   </tr>
 
