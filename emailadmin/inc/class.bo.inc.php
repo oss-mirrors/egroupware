@@ -422,11 +422,9 @@
 					
 					while(list($key, $value) = @each($this->userSessionData[$_accountID]['mailRoutingAddress']))
 					{
-						#print ".. $key: $value<br>";
 						if ($key != $_formData['remove_mailRoutingAddress'])
 						{
 							$newMailRoutingAddress[$i]=$value;
-							#print "!! $i: $value<br>";
 							$i++;
 						}
 					}
@@ -445,6 +443,7 @@
 					$bofelamimail->imapSetQuota($GLOBALS['phpgw']->accounts->id2name($_accountID),
 								    $this->userSessionData[$_accountID]['quotaLimit']);
 					$bofelamimail->closeConnection();
+					$GLOBALS['phpgw']->accounts->cache_invalidate($_accountID);
 					
 					
 					break;

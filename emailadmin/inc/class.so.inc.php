@@ -272,6 +272,19 @@
 			#print "DN: $accountDN<br>";
 			ldap_mod_replace ($ldap, $accountDN, $newData);
 			#print ldap_error($ldap);
+			
+			// also update the account_email field in phpgw_accounts
+			// when using sql account storage
+			if($GLOBALS['phpgw_info']['server']['account_repository'] == 'sql')
+			{
+				$this->db->update('phpgw_accounts',array(
+						'account_email'	=> $_accountData["mailLocalAddress"]
+					),
+					array(
+						'account_id'	=> $_accountID
+					),__LINE__,__FILE__
+				);
+			}
 		}
 	}
 ?>

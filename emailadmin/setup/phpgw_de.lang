@@ -18,7 +18,7 @@ domainname	emailadmin	de	Domänenname
 edit email settings	emailadmin	de	EMail Einstellungen
 email account active	emailadmin	de	EMailkonto aktiv
 email address	emailadmin	de	EMailadresse
-email settings	emailadmin	de	EMailkonto
+email settings	common	de	EMailkonto
 emailadmin	common	de	EMailAdmin
 enable cyrus imap server administration	emailadmin	de	Cyrus IMAP-Server Administration aktivieren
 enable sieve	emailadmin	de	Sieve aktivieren
