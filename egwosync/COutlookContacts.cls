@@ -7,6 +7,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+
+
 'This software is Licensed Public Domain. This software is provided 'as-is'.
 'I assume no responsibility for its usage or losses of any kind that may
 'ensue thereof or otherwise. Feedback would be nice.
@@ -264,5 +266,3 @@ Public Function Field(fld As FieldType, Optional idx As Variant) As Variant
         m.Save
     End If
 End Function
-
-

@@ -1,14 +1,14 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} eGWForm 
-   Caption         =   "MerceNet eGroupWare Synchronization"
-   ClientHeight    =   1530
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmMain 
+   Caption         =   "eGroupWare Synchronization"
+   ClientHeight    =   3390
    ClientLeft      =   45
    ClientTop       =   315
-   ClientWidth     =   6840
-   OleObjectBlob   =   "eGWForm.frx":0000
+   ClientWidth     =   8415
+   OleObjectBlob   =   "frmMain.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
-Attribute VB_Name = "eGWForm"
+Attribute VB_Name = "frmMain"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -17,12 +17,15 @@ Private Sub cmdTest_Click()
     Dim eGW As CeGW 'eGW is the object that handles the connection to eGW
     Dim linsUtility As XMLRPCUtility
     Dim bLogin As Boolean
-    
-    'Create the connection objects
+    Dim xmlParms As XMLRPCStruct
+    Dim xmlArray As XMLRPCArray
+   
     Set eGW = New CeGW
     Set linsUtility = New XMLRPCUtility
-    
-    'Save connection details to the registry
+    Set xmlParms = New XMLRPCStruct
+    Set xmlArray = New XMLRPCArray
+   
+    'Save connection details to registry
     SaveSetting AppName:="eGWOSync", Section:="Settings", _
         Key:="Hostname", Setting:=txtHostname
     SaveSetting AppName:="eGWOSync", Section:="Settings", _
@@ -42,25 +45,35 @@ Private Sub cmdTest_Click()
     eGW.Password = txtPassword
     bLogin = eGW.Login
     If bLogin Then
-        'List eGW methods
+        xmlParms.AddInteger "id", 14
+        xmlArray.AddString "n_family"
+        xmlArray.AddString "n_given"
+        xmlArray.AddString "email"
+        xmlParms.AddArray "fields", xmlArray
+        
         eGW.Reset
-        eGW.Exec "system.listMethods"
+        eGW.Exec "addressbook.boaddressbook.read", xmlParms
+           
         If eGW.Response.Status <> XMLRPC_PARAMSRETURNED Then
             Debug.Print "Unexpected response from XML-RPC request " & eGW.Response.Status
+            If eGW.Response.Status = 4 Then
+                Debug.Print "XML Parse Error:" & eGW.Response.XMLParseError
+            End If
         ElseIf eGW.Response.Params.Count <> 1 Then
             Debug.Print "Unexpected response from XML-RPC request " & eGW.Response.Params.Count & " return parameters, expecting 1"
         ElseIf eGW.Response.Params(1).ValueType <> XMLRPC_ARRAY Then
             Debug.Print "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(eGW.Response.Params(1).ValueType) & " returned, expecting an array"
         End If
-        For Each linsValue In eGW.Response.Params(1).ArrayValue
-            Debug.Print linsValue.StringValue
-            List1.AddItem linsValue.StringValue
-            DoEvents
-        Next linsValue
-        'End of List eGW methods
         
-        'Try pushing Contacts to eGW
-        eGWOSync.PushContacts
+        'Extract response items
+        For Each responseItem In eGW.Response.Params(1).ArrayValue(1).StructValue
+            If responseItem.Value.ValueType = 3 Then
+                List1.AddItem responseItem.Name & ": " & responseItem.Value.StringValue
+            ElseIf responseItem.Value.ValueType = 1 Then
+                List1.AddItem responseItem.Name & ": " & responseItem.Value.IntegerValue
+            End If
+        Next
+        'End of List eGW methods
         eGW.Logout
     End If
 End Sub

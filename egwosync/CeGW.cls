@@ -41,6 +41,7 @@ End Function
 Public Property Let Hostname(szHostname As String)
     mHostname = szHostname
 End Property
+
 Public Property Get Hostname() As String
     Hostname = mHostname
 End Property
@@ -48,6 +49,7 @@ End Property
 Public Property Let Port(szPort As String)
     mPort = szPort
 End Property
+
 Public Property Get Port() As String
     Port = mPort
 End Property
@@ -55,6 +57,7 @@ End Property
 Public Property Let URI(szURI As String)
     mURI = szURI
 End Property
+
 Public Property Get URI() As String
     URI = mURI
 End Property
@@ -62,6 +65,7 @@ End Property
 Public Property Let Domain(szDomain As String)
     mDomain = szDomain
 End Property
+
 Public Property Get Domain() As String
     Domain = mDomain
 End Property
@@ -69,6 +73,7 @@ End Property
 Public Property Let Username(szUsername As String)
     mUsername = szUsername
 End Property
+
 Public Property Get Username() As String
     Username = mUsername
 End Property
@@ -76,6 +81,7 @@ End Property
 Public Property Let Password(szPass As String)
     mPassword = szPass
 End Property
+
 Public Property Get Password() As String
     Password = mPassword
 End Property
@@ -172,4 +178,3 @@ Private Sub BugOut(ByVal vstrError As String)
     MsgBox vstrError, vbOKOnly + vbCritical, App.Title
     End
 End Sub
-
