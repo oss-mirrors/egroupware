@@ -16,27 +16,67 @@
 
 		function form()
 		{
-			$this->order			= get_var('order', 'GET', 'flowNum');
-			$this->sort				= get_var('sort', 'GET', 'asc');
-			$this->sort_mode		= $this->order . '_'. $this->sort;
-			$filter_activity		= (int)get_var('filter_activity', 'any', 0);
-			$filter_type			= (int)get_var('filter_type', 'any', '');
-			$filter_isInteractive	= get_var('filter_isInteractive', 'any', '');
-			$filter_isAutorouted	= get_var('filter_isInteractive', 'any', '');
 
-			$activities		= $this->process_monitor->monitor_list_activities($this->start, -1, $this->sort_mode, $this->search_str,'');
-			$all_types		= $this->process_monitor->monitor_list_activity_types();
-			$stats			= $this->process_monitor->monitor_stats();
+		        $where = '';
+		        $wheres = array();
 
-			$this->show_filter_process();
-			$this->show_filter_activities();
-			$this->show_filter_types($all_types, $filter_type);
-			$this->show_filter_isInteractive($filter_isInteractive);
-			$this->show_filter_isAutorouted($filter_isAutorouted);
-			$this->show_activities_table($activities['data']);
+		        if (isset($_REQUEST['filter_isInteractive']) && $_REQUEST['filter_isInteractive'])
+		        {  
+		          $filter_isInteractive= get_var('filter_isInteractive', 'any', '');
+		          $wheres[] = "isInteractive='" .$filter_isInteractive. "'";
+		        }  
 
-			$this->fill_general_variables();
-			$this->finish();
+		        if (isset($_REQUEST['filter_isAutoRouted']) && $_REQUEST['filter_isAutoRouted'])
+		        {
+		          $filter_isAutorouted= get_var('filter_isAutoRouted', 'any', '');
+		          $wheres[] = "isAutoRouted='" .$filter_isAutorouted. "'";
+		        }  
+
+		        if (isset($_REQUEST['filter_process']) && $_REQUEST['filter_process'])
+		        {  
+	                  $filter_process= (int)get_var('filter_process','any','');
+		          $wheres[] = "pId=" .$filter_process. "";
+		        }  
+
+		        if (isset($_REQUEST['filter_activity']) && $_REQUEST['filter_activity'])
+		        {  
+		          $filter_activity= (int)get_var('filter_activity', 'any', 0);
+		          $wheres[] = "activityId=" .$filter_activity. "";
+		        }
+  
+		        if (isset($_REQUEST['filter_type']) && $_REQUEST['filter_type'])
+		        { 
+		          $filter_type= get_var('filter_type', 'any', '');
+		          $wheres[] = "type= '".$filter_type."'";
+		        }  
+		        if (isset($_REQUEST['search_str']))
+		        {  
+		          $this->search_str = get_var('search_str','any','');
+		        } 
+		        else {
+		          $this->search_str = '';
+		        }
+
+
+		        $where = implode(' and ', $wheres);
+		  
+		        $this->order			= get_var('order', 'GET', 'flowNum');
+		        $this->sort				= get_var('sort', 'GET', 'asc');
+		        $this->sort_mode		= $this->order . '_'. $this->sort;
+			
+		        $activities		= $this->process_monitor->monitor_list_activities($this->start, -1, $this->sort_mode, $this->search_str,$where);
+		        $all_types		= $this->process_monitor->monitor_list_activity_types();
+		        $stats			= $this->process_monitor->monitor_stats();
+
+		        $this->show_filter_process();
+		        $this->show_filter_activities();
+		        $this->show_filter_types($all_types, $filter_type);
+		        $this->show_filter_isInteractive($filter_isInteractive);
+		        $this->show_filter_isAutorouted($filter_isAutorouted);
+		        $this->show_activities_table($activities['data']);
+
+		        $this->fill_general_variables();
+		        $this->finish();
 		}
 
 		function show_activities_table($activities_data)
@@ -89,15 +129,17 @@
 		function show_filter_types($all_types, $filter_type)
 		{
 			$this->t->set_var('filter_type_selected_all', (!$filter_type)? 'selected="selected"' : '');
-			$this->t->set_block('monitor_activities', 'block_filter_type', 'filter_type');
+			$this->t->set_block('monitor_activities', 'block_filter_type', 'FilterType');
 			foreach ($all_types as $type)
 			{
+
 				$this->t->set_var(array(
 					'filter_type_selected'	=> ($type == $filter_type)? 'selected="selected"' : '',
 					'filter_type'			=> $type,
+					'filter_types'                  => $type,
 
 				));
-				$this->t->parse('filter_type', 'block_filter_type', true);
+				$this->t->parse('FilterType', 'block_filter_type', true);
 			}
 		}
 
