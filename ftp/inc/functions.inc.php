@@ -6,7 +6,7 @@
 
    function getConnectionInfo() {
       global $phpgw;
-      $unencrypted=$phpgw->common->appsession();
+      $unencrypted=$phpgw->session->appsession();
       return $unencrypted;
    }
 
@@ -203,6 +203,7 @@
       // have to do a rawlist and get the directories by the values
       // with a : after their name
       $list=ftp_nlist($ftp,$dir);
+//		echo '<pre>'; print_r($list); echo '</pre>';
       $dirsfound=0;
       for($i=0;$i<sizeof($list);$i++) {
          if (ftp_size($ftp,$list[$i]) == -1) {

@@ -80,7 +80,7 @@
       $ftp=@phpftp_connect($connInfo["ftpserver"],$connInfo["username"],$connInfo["password"]);
       if ($ftp) {
          $homedir=ftp_pwd($ftp);
-         // $retval=ftp_pasv($ftp,1);
+          $retval=ftp_pasv($ftp,1);
          if ($action == "delete" || $action == "rmdir") {
             if ($confirm) {
                if ($action=="delete") {
@@ -100,6 +100,7 @@
                   confirmDeleteForm($t,$session,$file,$olddir),true);
             }
          }
+
          if ($action == "rename") {
             if ($confirm) {
                if (ftp_rename($ftp,$olddir . "/" . $filename, $olddir . 
