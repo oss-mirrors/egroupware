@@ -32,14 +32,15 @@
 
 	    section_start('projects',$imgpath);
 
-	    $pg = $phpgw->link('/projects/preferences.php');
-	    printf("<A href=\"%s\">%s</A><br>", $pg, lang('Preferences'));
+	    section_item($phpgw->link('/projects/preferences.php'),
+		    lang('Preferences'));
 
-	    $pg = $phpgw->link('/preferences/acl_preferences.php','acl_app=projects');
-	    echo '<a href=' . $pg . '>' . lang('Grant access') . '</a><br>';
+	    section_item($phpgw->link('/preferences/acl_preferences.php','acl_app=projects'),
+		    lang('Grant access'));
 
-	    $pg = $phpgw->link('/preferences/categories.php','cats_app=projects&cats_level=True');
-	    echo '<a href=' . $pg . '>' . lang('Edit categories') . '</a>';
+	    section_item($phpgw->link('/preferences/categories.php','cats_app=projects&cats_level=True&global_cats=True'),
+		    lang('Edit categories'));
+
 	    section_end();
     }
 ?>

@@ -8,27 +8,34 @@
   *  Free Software Foundation; either version 2 of the License, or (at your  *
   *  option) any later version.                                              *
   \**************************************************************************/
-
   /* $Id$ */
 
-{
-  echo "<p>\n";                                                                                                                                                                                
-  $imgfile = $phpgw->common->get_image_dir("stocks")."/" . $appname .".gif";                                                                                                                 
-  if (file_exists($imgfile)) {                                                                                                                                                                 
-    $imgpath = $phpgw->common->get_image_path("stocks")."/" . $appname .".gif";                                                                                                              
-  } else {                                                                                                                                                                                     
-    $imgfile = $phpgw->common->get_image_dir("stocks")."/navbar.gif";                                                                                                                        
-    if (file_exists($imgfile)) {                                                                                                                                                               
-      $imgpath = $phpgw->common->get_image_path("stocks")."/navbar.gif";                                                                                                                     
-    } else {                                                                                                                                                                                   
-      $imgpath = "";
+    {
+	echo "<p>\n";
+	$imgfile = $phpgw->common->get_image_dir('stocks') . '/' . $appname . '.gif';
+	if (file_exists($imgfile))
+	{
+	    $imgpath = $phpgw->common->get_image_path('stocks') . '/' . $appname . '.gif';
+	}
+	else
+	{
+	    $imgfile = $phpgw->common->get_image_dir('stocks') . '/navbar.gif';
+	    if (file_exists($imgfile))
+	    {
+    		$imgpath = $phpgw->common->get_image_path('stocks') . '/navbar.gif';
+	    }
+	    else
+	    {
+    		$imgpath = '';
+	    }
+	}
+
+	section_start('Stock Quotes',$imgpath);
+
+	section_item($phpgw->link('/stocks/preferences.php'),
+		lang('Select displayed stocks'));
+
+	section_end();
     }
-  }
-  section_start("Stock Quotes",$imgpath);
-
-  $pg = $phpgw->link('/stocks/preferences.php');
-  echo "<A href=".$pg.">" . lang("Select displayed stocks") . "</A>";
-
-  section_end(); 
-}
 ?>
+
