@@ -24,7 +24,7 @@
 	);
 
 	include('../header.inc.php');
-
+	
 	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 	$t->set_file(array(		
 		'T_message_main' => 'message_main.tpl',
@@ -94,6 +94,7 @@
 // ----  What Folder To Return To  -----
         $lnk_goback_folder = href_maketag($phpgw->link('/email/index.php','folder='.urlencode($folder)),$folder);
 
+/*
 // ----  Images and Hrefs For Reply, ReplyAll, Forward, and Delete  -----
         $reply_img = img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'19','26','0');
 	$reply_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=reply&folder='.urlencode($folder).'&msgnum='.$msgnum);
@@ -119,6 +120,7 @@
 	$t->set_var('ilnk_replyall',$ilnk_replyall);
 	$t->set_var('ilnk_forward',$ilnk_forward);
 	$t->set_var('ilnk_delete',$ilnk_delete);
+	*/
 
 // ----  Go To Previous Message Handling  -----
 	if ($msgnum != 1 || ($default_sorting == 'new_old' && $msgnum != $totalmeesages))
@@ -626,7 +628,7 @@
 
 		// ------  Test For Non-File Attachments like X-VCARD  ------
 		// add any others that I missed to the $other_attach_types array above
-		for ($oa = 0; $oa < count($oa); $oa++)
+		for ($oa = 0; $oa < count($other_attach_types); $oa++)
 		{
 			if (stristr($part_nice[$i]['m_keywords'], $other_attach_types[$oa]))
 			{
@@ -727,6 +729,47 @@
 	{
 		$t->set_var('V_attach_list','');
 	}
+
+// ----  Reply to First Presentable Part  (needed for Reply, ReplyAll, and Forward below)  -----
+	$first_presentable = '';
+	// what's the first presentable part?
+	for ($i = 0; $i < count($part_nice); $i++)
+	{
+		if (($part_nice[$i]['m_description'] == 'presentable')
+		&& ($first_presentable == ''))
+		{
+			$first_presentable = '&part_no='.$part_nice[$i]['m_part_num_mime'];
+			break;
+		}
+	}
+	// FUTURE: Forward needs entirely different handling
+	
+// ----  Images and Hrefs For Reply, ReplyAll, Forward, and Delete  -----
+        $reply_img = img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'19','26','0');
+	$reply_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=reply&folder='.urlencode($folder).'&msgnum='.$msgnum .$first_presentable);
+	$ilnk_reply = href_maketag($reply_url, $reply_img);
+
+        $replyall_img = img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),"19","26",'0');
+	$replyall_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=replyall&folder='.urlencode($folder).'&msgnum='.$msgnum .$first_presentable);
+	$ilnk_replyall = href_maketag($replyall_url, $replyall_img);
+
+	$forward_img = img_maketag($image_dir .'/sm_forward.gif',lang('forward'),"19","26",'0');
+	$forward_url =  $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=forward&folder='.urlencode($folder).'&msgnum='.$msgnum .$first_presentable);
+	$ilnk_forward = href_maketag($forward_url, $forward_img);
+
+	$delete_img = img_maketag($image_dir .'/sm_delete.gif',lang('delete'),"19","26",'0');
+	$delete_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/action.php','what=delete&folder='.urlencode($folder).'&msgnum='.$msgnum);
+	$ilnk_delete = href_maketag($delete_url, $delete_img);
+
+	$t->set_var('theme_font',$phpgw_info['theme']['font']);
+	$t->set_var('reply_btns_bkcolor',$phpgw_info['theme']['em_folder']);
+	$t->set_var('reply_btns_text',$phpgw_info['theme']['em_folder_text']);
+	$t->set_var('lnk_goback_folder',$lnk_goback_folder);
+	$t->set_var('ilnk_reply',$ilnk_reply);
+	$t->set_var('ilnk_replyall',$ilnk_replyall);
+	$t->set_var('ilnk_forward',$ilnk_forward);
+	$t->set_var('ilnk_delete',$ilnk_delete);
+
 
 // ---- DEBUG: Show Information About Each Part  -----
 	$show_debug_parts = False;
@@ -832,6 +875,15 @@
 	{
 		$t->set_var('V_debug_parts','');
 	}
+
+// -----  Pass part_nice into $phpgw_info['flags']  for Temporary Storage  --------
+	/*
+	$phpgw_info["user"]["preferences"]
+	$phpgw_info['flags']['part_nice_serial'] = serialize($part_nice);
+	$phpgw_info['flags']['part_nice_msgnum'] = $msgnum;
+	$phpgw_info['flags']['part_nice_folder'] = $folder;
+	*/
+	
 
 // -----  Message_Display Template Handles it from here  -------
 	$t->set_var('theme_font',$phpgw_info['theme']['font']);

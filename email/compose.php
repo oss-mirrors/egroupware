@@ -78,8 +78,31 @@
 		$lang_wrote = 'wrote';
 		$body = "\n\n\n" .$who_wrote .' '. $lang_wrote .": \n&gt\n";
 
-		// ----  Process Multiple Body Parts (if necessary)  of Fw or Re Body  -----
-		if (!$struct->parts)
+		
+		// ----  Quoted Bodystring of Fw: or Re: Message is "First Presentable" from message.php  -----
+		// passed in the uri as "part_no"
+		// FUTURE: Forward needs entirely different handling
+		if (isset($part_no)
+		&& ($part_no != '')
+		&& (($action == 'reply') || ($action == 'replyall')))
+		{
+			$bodystring = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no);
+			$body_array = array();
+			$body_array = explode("\n", $bodystring);
+			$bodycount = count ($body_array);
+			for ($bodyidx = 0; $bodyidx < ($bodycount -1); ++$bodyidx)
+			{
+				if ($body_array[$bodyidx] != "\r")
+				{
+					$body .= "&gt;" . $body_array[$bodyidx];
+					$body = chop ($body);
+					$body .= "\n";
+				}
+			}
+			trim ($body);
+		}
+		// ----  Process Multiple Body Parts (if necessary)  of Fw or Re Body  "the OLD WAY" -----
+		elseif (!$struct->parts)
 		{
 			$numparts = "1";
 		}
