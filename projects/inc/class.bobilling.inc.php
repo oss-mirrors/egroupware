@@ -68,7 +68,7 @@
 				}
 				else
 				{
-					$num = $this->sobilling->exists($values['invoice_num']);
+					$num = $this->sobilling->exists($values);
 					if ($num)
 					{
 						$error[] = lang('That ID has been used already !');

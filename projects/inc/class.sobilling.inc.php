@@ -104,9 +104,14 @@
 			return $bill;
 		}
 
-		function exists($num)
+		function exists($values)
 		{
-			$this->db->query("select count(*) from phpgw_p_invoice where num = '$num'",__LINE__,__FILE__);
+			if ($values['invoice_id'] && ($values['invoice_id'] != 0))
+			{
+				$editexists = " and id != '" . $values['invoice_id'] . "'";
+			}
+
+			$this->db->query("select count(*) from phpgw_p_invoice where num='" . $values['invoice_num'] . "'" . $editexists,__LINE__,__FILE__);
 
 			$this->db->next_record();
 
@@ -139,9 +144,18 @@
 							."WHERE phpgw_p_invoicepos.invoice_id='" . $invoice_id . "' AND phpgw_p_hours.id=phpgw_p_invoicepos.hours_id",__LINE__,__FILE__);
 			while ($this->db->next_record())
 			{
-				$aes = ceil($this->db->f('minutes')/$this->db->f('minperae'));
-				$sum = $this->db->f('billperae')*$aes;
-				$sum_sum += $sum;
+				if ($GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'] == 'wu')
+				{
+					$aes = ceil($this->db->f('minutes')/$this->db->f('minperae'));
+					$sum = $this->db->f('billperae')*$aes;
+					$sum_sum += $sum;
+				}
+				else
+				{
+					$aes = $this->db->f('minutes')/60;
+					$sum = $this->db->f('billperae')*$aes;
+					$sum_sum += $sum;
+				}
 			}
 			$this->db->query("UPDATE phpgw_p_invoice SET sum=round(" . $sum_sum . ",2) WHERE id='" . $invoice_id . "'",__LINE__,__FILE__);
 			return $invoice_id;
@@ -167,9 +181,18 @@
 
 			while($this->db->next_record())
 			{
-				$aes = ceil($this->db->f('minutes')/$this->db->f('minperae'));
-				$sum = $this->db->f('billperae')*$aes;
-				$sum_sum += $sum;
+				if ($GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'] == 'wu')
+				{
+					$aes = ceil($this->db->f('minutes')/$this->db->f('minperae'));
+					$sum = $this->db->f('billperae')*$aes;
+					$sum_sum += $sum;
+				}
+				else
+				{
+					$aes = $this->db->f('minutes')/60;
+					$sum = $this->db->f('billperae')*$aes;
+					$sum_sum += $sum;
+				}
 			}
 
 			$this->db2->query("UPDATE phpgw_p_invoice SET sum=round(" . $sum_sum . ",2) WHERE id='" . $values['invoice_id'] . "'",__LINE__,__FILE__);

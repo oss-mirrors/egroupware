@@ -24,6 +24,7 @@
 			<form method="POST" name="query" action="{search_action}">{search_list}</form></td>
 	</tr>
 </table>
+{pref_message}
 <table width="79%" border="0" cellspacing="2" cellpadding="2">
 	<tr bgcolor="{th_bg}">
 		<td width="10%" bgcolor="{th_bg}">{sort_num}</td>

@@ -221,9 +221,13 @@
 			return $del;
 		}
 
-		function exists($num)
+		function exists($values)
 		{
-			$this->db->query("select count(*) from phpgw_p_delivery where num = '$num'",__LINE__,__FILE__);
+			if ($values['delivery_id'] && ($values['delivery_id'] != 0))
+			{
+				$editexists = " and id != '" . $values['delivery_id'] . "'";
+			}
+			$this->db->query("select count(*) from phpgw_p_delivery where num='" . $values['delivery_num'] . "'" . $editexists,__LINE__,__FILE__);
 
 			$this->db->next_record();
 

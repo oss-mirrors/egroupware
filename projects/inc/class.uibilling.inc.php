@@ -109,16 +109,12 @@
 			$this->t->set_var('lang_invoice_date',lang('Invoice date'));
 			$this->t->set_var('lang_stats',lang('Statistics'));
 			$this->t->set_var('lang_activity',lang('Activity'));
-			$this->t->set_var('lang_aes',lang('Workunits'));
-			$this->t->set_var('lang_billperae',lang('Bill per workunit'));
 			$this->t->set_var('lang_sum',lang('Sum'));
 			$this->t->set_var('lang_print_invoice',lang('Print invoice'));
 			$this->t->set_var('lang_netto',lang('Sum net'));
 			$this->t->set_var('lang_tax',lang('tax'));
 			$this->t->set_var('lang_position',lang('Position'));
 			$this->t->set_var('lang_work_date',lang('Work date'));
-			$this->t->set_var('lang_workunits',lang('Workunits'));
-			$this->t->set_var('lang_per',lang('per workunit'));
 		}
 
 		function display_app_header()
@@ -385,6 +381,16 @@
 				'project_id'	=> $project_id
 			);
 
+			$nopref = $this->boprojects->check_prefs();
+			if (is_array($nopref))
+			{
+				$this->t->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
+			}
+			else
+			{
+				$prefs = $this->boprojects->get_prefs();
+			}
+
 			if (!$this->start)
 			{
 				$this->start = 0;
@@ -424,7 +430,7 @@
 			$this->t->set_var('sort_title',$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title'),$link_data));
 			$this->t->set_var('sort_date',$this->nextmatchs->show_sort_order($this->sort,'date',$this->order,'/index.php',lang('Date'),$link_data));
 			$this->t->set_var('sort_sum','<td width="10%" align="right" bgcolor="' . $GLOBALS['phpgw_info']['theme']['th_bg'] . '">'
-			. $currency . '&nbsp;' . $this->nextmatchs->show_sort_order($this->sort,'sum',$this->order,'/index.php',lang('Sum'),$link_data) . '</td>');
+			. $prefs['currency'] . '&nbsp;' . $this->nextmatchs->show_sort_order($this->sort,'sum',$this->order,'/index.php',lang('Sum'),$link_data) . '</td>');
 			$this->t->set_var('lang_data',lang('Invoice'));
 
 // ----------------------- end header declaration -----------------------------
@@ -509,7 +515,10 @@
 			if ($Invoice)
 			{
 				$values['project_id']	= $project_id;
-
+				if ($invoice_id)
+				{
+					$values['invoice_id'] = $invoice_id;
+				}
 				$pro = $this->boprojects->read_single_project($project_id);
 				$values['customer']		= $pro['customer'];
 
@@ -522,7 +531,6 @@
 				{
 					if ($invoice_id)
 					{
-						$values['invoice_id'] = $invoice_id;
 						$this->bobilling->update_invoice($values,$select);
 					}
 					else
@@ -602,6 +610,16 @@
 			$this->t->set_var('date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[year]',$values['year']),
 																				$this->sbox->getMonthText('values[month]',$values['month']),
 																				$this->sbox->getDays('values[day]',$values['day'])));    
+			if ($prefs['bill'] == 'wu')
+			{
+				$this->t->set_var('lang_billperae',lang('Bill per workunit'));
+				$this->t->set_var('lang_workunits',lang('Workunits'));
+			}
+			else
+			{
+				$this->t->set_var('lang_billperae',lang('Bill per hour'));
+				$this->t->set_var('lang_workunits',lang('Hours'));
+			}
 
 			$sumaes=0;
 			if (is_array($hours))
@@ -626,12 +644,29 @@
 						$start_dateout = $GLOBALS['phpgw']->common->show_date($start_date,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
 					}
 
-					if ($inv['minperae'] != 0)
+					if ($prefs['bill'] == 'wu')
 					{
-						$aes = ceil($inv['minutes']/$inv['minperae']);
+						if ($inv['minperae'] != 0)
+						{
+							$aes = ceil($inv['minutes']/$inv['minperae']);
+						}
+						$onehour = $aes*$inv['billperae'];
+						$sumaes += $aes;
+						$summe += $inv['billperae']*$aes;
 					}
-					$sumaes += $aes;
-					$summe += $inv['billperae']*$aes;
+					else
+					{
+						$onehour = ($inv['minutes']/60)*$inv['billperae'];
+
+						$aes = floor($inv['minutes']/60) . ':'
+								. sprintf ("%02d",(int)($inv['minutes']-floor($inv['minutes']/60)*60));
+
+						$sumhours += $inv['minutes'];
+						$sumaes = floor($sumhours/60) . ':'
+								. sprintf ("%02d",(int)($sumhours-floor($sumhours/60)*60));
+
+						$summe = ($sumhours/60)*$inv['billperae'];
+					}
 
 // --------------------- template declaration for list records ---------------------------
 
@@ -642,7 +677,7 @@
 									'start_date' => $start_dateout,
 											'aes' => $aes,
 									'billperae' => $inv['billperae'],
-										'sum' => sprintf ("%01.2f",$inv['billperae']*$aes)));
+										'sum' => sprintf("%01.2f",round($onehour,2))));
 
 					if (($inv['status'] != 'billed') && ($inv['status'] != 'closed'))
 					{
@@ -687,12 +722,20 @@
 							$start_dateout = $GLOBALS['phpgw']->common->show_date($start_date,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
 						}
 
-						if ($inv['minperae'] != 0)
+						if ($prefs['bill'] == 'wu')
 						{
-							$aes = ceil($inv['minutes']/$inv['minperae']);
+							if ($inv['minperae'] != 0)
+							{
+								$aes = ceil($inv['minutes']/$inv['minperae']);
+							}
+							$onehour = $aes*$inv['billperae'];
 						}
-					//	$sumaes += $aes;
-					//	$summe += $inv['billperae']*$aes;
+						else
+						{
+							$onehour = ($inv['minutes']/60)*$inv['billperae'];
+							$aes = floor($inv['minutes']/60) . ':'
+									. sprintf ("%02d",(int)($inv['minutes']-floor($inv['minutes']/60)*60));
+						}
 
 // --------------------- template declaration for list records ---------------------------
 
@@ -703,7 +746,7 @@
 										'start_date' => $start_dateout,
 												'aes' => $aes,
 										'billperae' => $inv['billperae'],
-											'sum' => sprintf ("%01.2f",$inv['billperae']*$aes)));
+											'sum' => sprintf("%01.2f",round($onehour,2))));
 
 						if (($inv['status'] != 'billed') && ($inv['status'] != 'closed'))
 						{
@@ -725,7 +768,7 @@
 			}
 
 			$this->t->set_var('sum_aes',$sumaes);
-			$this->t->set_var('sum_sum',sprintf("%01.2f",$summe));
+			$this->t->set_var('sum_sum',sprintf("%01.2f",round($summe,2)));
 
 			if (! $invoice_id)
 			{
@@ -791,6 +834,17 @@
 			if (! $title) { $title  = '&nbsp;'; }
 			$this->t->set_var('title',$title);
 
+			if ($prefs['bill'] == 'wu')
+			{
+				$this->t->set_var('lang_per',lang('per workunit'));
+				$this->t->set_var('lang_workunits',lang('Workunits'));
+			}
+			else
+			{
+				$this->t->set_var('lang_per',lang('per hour'));
+				$this->t->set_var('lang_workunits',lang('Hours'));
+			}
+
 			$pos = 0;
 			$sum_netto = 0;
 			$hours = $this->bobilling->read_invoice_pos($invoice_id);
@@ -814,15 +868,29 @@
 
 					$this->t->set_var('hours_date',$hours_dateout);
 
-					if ($inv['minperae'] != 0)
+					if ($prefs['bill'] == 'wu')
 					{
-						$aes = ceil($inv['minutes']/$inv['minperae']);
+						if ($inv['minperae'] != 0)
+						{
+							$aes = ceil($inv['minutes']/$inv['minperae']);
+						}
+						$onehour = $inv['billperae']*$aes;
+        				$sum_netto += $sumpos;
 					}
-					$sumaes += $aes;
-					$sumpos = $inv['billperae']*$aes;
+					else
+					{
+						$onehour = ($inv['minutes']/60)*$inv['billperae'];
+
+						$aes = floor($inv['minutes']/60) . ':'
+								. sprintf ("%02d",(int)($inv['minutes']-floor($inv['minutes']/60)*60));
+						$sum_netto += $onehour;
+
+						$sumhours += $inv['minutes'];
+						$sum_netto = ($sumhours/60)*$inv['billperae'];
+					}
 
 					$this->t->set_var('billperae',$inv['billperae']);
-					$this->t->set_var('sumpos',$sumpos);
+					$this->t->set_var('sumpos',sprintf("%01.2f",round($onehour,2)));
 					$this->t->set_var('aes',$aes);
 
 					$act_descr = $GLOBALS['phpgw']->strip_html($inv['descr']);
@@ -835,8 +903,6 @@
 					if (! $hours_descr) { $hours_descr  = '&nbsp;'; }
 					$this->t->set_var('hours_descr',$hours_descr);
 
-        			$sum_netto += $sumpos;
-
 					$this->t->fp('list','bill_list',True);
 				}
 			}
@@ -846,13 +912,17 @@
 
 			$tax = $this->format_tax($prefs['tax']);
 			$taxpercent = ($tax/100);
+
 			$this->t->set_var('tax',$taxpercent);
-			$sum_tax = round($sum_netto*$taxpercent,2);
-			$this->t->set_var('sum_netto',sprintf("%01.2f",$sum_netto));
-			$this->t->set_var('sum_tax',$sum_tax);
+
+			$sum_tax = $sum_netto*$taxpercent;
+
+			$this->t->set_var('sum_netto',sprintf("%01.2f",round($sum_netto,2)));
+			$this->t->set_var('sum_tax',sprintf("%01.2f",round($sum_tax,2)));
+
 			$sum_sum = $sum_tax + $sum_netto;
-			$this->t->set_var('sum_sum',sprintf("%01.2f",$sum_sum));
-			$this->t->set_var('sumaes',$sumaes);
+			$this->t->set_var('sum_sum',sprintf("%01.2f",round($sum_sum,2)));
+		//	$this->t->set_var('sumaes',$sumaes);
 
 			$this->t->pfp('out','bill_list_t',True);
 			$GLOBALS['phpgw']->common->phpgw_exit();

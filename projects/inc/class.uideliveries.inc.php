@@ -381,6 +381,11 @@
 				$pro = $this->boprojects->read_single_project($project_id);
 				$values['customer']		= $pro['customer'];
 
+				if ($delivery_id)
+				{
+					$values['delivery_id'] = $delivery_id;
+				}
+
 				$error = $this->bodeliveries->check_values($values, $select);
 				if (is_array($error))
 				{
@@ -390,7 +395,6 @@
 				{
 					if ($delivery_id)
 					{
-						$values['delivery_id'] = $delivery_id;
 						$this->bodeliveries->update_delivery($values, $select);
 					}
 					else
@@ -519,11 +523,11 @@
 					else
 					{
 						$aes = floor($note['minutes']/60) . ':'
-								. sprintf ("%02d",(int)($note['minutes']-floor($note['minutes']/60)*60));
+								. sprintf("%02d",(int)($note['minutes']-floor($note['minutes']/60)*60));
 
 						$sumhours += $note['minutes'];
 						$sumaes = floor($sumhours/60) . ':'
-								. sprintf ("%02d",(int)($sumhours-floor($sumhours/60)*60));
+								. sprintf("%02d",(int)($sumhours-floor($sumhours/60)*60));
 					}
 // --------------------- template declaration for list records ---------------------------
 
@@ -588,11 +592,11 @@
 					else
 					{
 						$aes = floor($note['minutes']/60) . ':'
-								. sprintf ("%02d",(int)($note['minutes']-floor($note['minutes']/60)*60));
+								. sprintf("%02d",(int)($note['minutes']-floor($note['minutes']/60)*60));
 
 					/*	$sumhours += $note['minutes'];
 						$sumaes = floor($sumhours/60) . ':'
-								. sprintf ("%02d",(int)($sumhours-floor($sumhours/60)*60)); */
+								. sprintf("%02d",(int)($sumhours-floor($sumhours/60)*60)); */
 					}
 
 // --------------------- template declaration for list records ---------------------------
@@ -828,11 +832,11 @@
 					else
 					{
 						$aes = floor($note['minutes']/60) . ':'
-								. sprintf ("%02d",(int)($note['minutes']-floor($note['minutes']/60)*60));
+								. sprintf("%02d",(int)($note['minutes']-floor($note['minutes']/60)*60));
 
 						$sumhours += $note['minutes'];
 						$sumaes = floor($sumhours/60) . ':'
-								. sprintf ("%02d",(int)($sumhours-floor($sumhours/60)*60));
+								. sprintf("%02d",(int)($sumhours-floor($sumhours/60)*60));
 					}
 
 					$this->t->set_var('aes',$aes);

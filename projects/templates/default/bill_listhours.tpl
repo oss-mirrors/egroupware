@@ -38,7 +38,7 @@
 		<td width="20%" bgcolor="{th_bg}">{lang_hours}</td>
 		<td width="5%" bgcolor="{th_bg}" align="center">{lang_status}</td>
 		<td width="10%" bgcolor="{th_bg}" align="center">{lang_start_date}</td>
-		<td width="10%" bgcolor="{th_bg}" align="right">{lang_aes}</td>
+		<td width="10%" bgcolor="{th_bg}" align="right">{lang_workunits}</td>
 		<td width="10%" bgcolor="{th_bg}" align="right">{currency}&nbsp;{lang_billperae}</td>
 		<td width="10%" bgcolor="{th_bg}" align="right">{currency}&nbsp;{lang_sum}</td>
 		<td width="10%" bgcolor="{th_bg}" align="center">{lang_edit}</td>

@@ -104,7 +104,7 @@
 				}
 				else
 				{
-					$num = $this->sodeliveries->exists($values['delivery_num']);
+					$num = $this->sodeliveries->exists($values);
 					if ($num)
 					{
 						$error[] = lang('That ID has been used already !');
