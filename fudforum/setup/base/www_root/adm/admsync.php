@@ -38,7 +38,7 @@ function copy_dir($base, $dest, $dir_ar)
 	echo "Syncronizing FUDforum sources!<br />\n";
 
 	/* data directories */
-	copy_dir(PHPGW_SERVER_ROOT."/fudforum/setup/base/", $DATA_DIR, array('include', 'src', 'thm'));
+	copy_dir(PHPGW_SERVER_ROOT."/fudforum/setup/base/", $DATA_DIR, array('include', 'src', 'thm', 'sql'));
 
 	/* web directories */
 	copy_dir(PHPGW_SERVER_ROOT."/fudforum/setup/base/www_root/", $WWW_ROOT_DISK, array('adm', 'images'));
