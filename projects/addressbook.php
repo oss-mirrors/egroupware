@@ -71,8 +71,8 @@
 
 //--------------------------------- nextmatch --------------------------------------------
 
-	$left = $phpgw->nextmatchs->left('addressbook.php',$start,$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");
-	$right = $phpgw->nextmatchs->right('addressbook.php',$start,$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");
+	$left = $phpgw->nextmatchs->left('/projects/addressbook.php',$start,$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");
+	$right = $phpgw->nextmatchs->right('/projects/addressbook.php',$start,$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");
 	$t->set_var('left',$left);
 	$t->set_var('right',$right);
 
