@@ -95,7 +95,6 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'close','tts','de
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'in progress','tts','de','In Bearbeitung');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'closed','tts','de','Geschlossen');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'reopen','tts','de','Wieder &ouml;ffnen');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'reopen','tts','de','Wieder &ouml;ffnen');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'trouble ticket system','tts','br','Trouble Ticket System');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'ticket','tts','br','Ticket');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'prio','tts','br','Prio');
@@ -126,7 +125,6 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'update','tts','b
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'close','tts','br','Feche');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'in progress','tts','br','Em progresso');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'closed','tts','br','Fechado');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'reopen','tts','br','Reaberto');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'reopen','tts','br','Reaberto');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'trouble ticket system','tts','fr','Trouble Ticket System');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'ticket','tts','fr','Ticket');
@@ -159,7 +157,6 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'close','tts','fr
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'in progress','tts','fr','En cours');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'closed','tts','fr','Ferm&eacute;');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'reopen','tts','fr','ReOuvert');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'reopen','tts','fr','ReOuvert');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'trouble ticket system','tts','kr','에러리포트 시스템');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'ticket','tts','kr','작업');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'prio','tts','kr','중요도');
@@ -190,7 +187,6 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'update','tts','k
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'close','tts','kr','종료');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'in progress','tts','kr','진행중');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'closed','tts','kr','종료됨');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'reopen','tts','kr','재시작');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'reopen','tts','kr','재시작');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'trouble ticket system','tts','nl','Problemen Registratie Systeem');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'ticket','tts','nl','Melding');
@@ -224,7 +220,6 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'close','tts','nl
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'in progress','tts','nl','In uitvoering');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'closed','tts','nl','Gesloten');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'reopen','tts','nl','Heropenen');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'reopen','tts','nl','Heropenen');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'trouble ticket system','tts','sp','Trouble Ticket System');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'ticket','tts','sp','Ticket');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'prio','tts','sp','Prioridad');
@@ -256,5 +251,4 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'update','tts','s
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'close','tts','sp','Cerrar');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'in progress','tts','sp','En progreso');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'closed','tts','sp','Cerrado');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'reopen','tts','sp','ReAbierto');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES( 'reopen','tts','sp','ReAbierto');
