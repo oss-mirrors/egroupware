@@ -15,33 +15,33 @@
 	if($d1 == 'htt' || $d1 == 'ftp' )
 	{
 		echo "Failed attempt to break in via an old Security Hole!<br>\n";
-		$phpgw->common->phpgw_exit();
+		$GLOBALS['phpgw']->common->phpgw_exit();
 	}
 	unset($d1);
 
-	$tmp_app_inc = $phpgw->common->get_inc_dir('email');
+	$tmp_app_inc = $GLOBALS['phpgw']->common->get_inc_dir('email');
 
-	if ($phpgw_info['user']['preferences']['email']['mainscreen_showmail'] == True)
+	if ($GLOBALS['phpgw_info']['user']['preferences']['email']['mainscreen_showmail'] == True)
 	{
 		// ----  Create the base email Msg Class    -----
-		$phpgw->msg = CreateObject("email.mail_msg");
+		$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 		$args_array = Array();
 		$args_array['folder'] = 'INBOX';
 		$args_array['do_login'] = True;
-		$phpgw->msg->begin_request($args_array);
+		$GLOBALS['phpgw']->msg->begin_request($args_array);
 
-		if (!$phpgw->msg->mailsvr_stream)
+		if (!$GLOBALS['phpgw']->msg->mailsvr_stream)
 		{
 			$error_msg = '<b>Mail error:</b> Can not open connection to mail server';
-			echo "\r\n"
-			.'<tr>'."\r\n"
-				.'<td align="left">'."\r\n"
+			echo "\r\n<br>\r\n"
+//			.'<tr>'."\r\n"
+//				.'<td align="left">'."\r\n"
 					.'<!-- start Mailbox info -->'."\r\n"
 					.$error_msg."\r\n"
-					.'<!-- ends Mailox info -->'."\r\n"
-				.'</td>'."\r\n"
-			.'</tr>'."\r\n";
-			//$phpgw->common->phpgw_exit(True);
+					.'<!-- ends Mailbox info -->'."\r\n";
+//				.'</td>'."\r\n"
+//			.'</tr>'."\r\n";
+			//$GLOBALS['phpgw']->common->phpgw_exit(True);
 		}
 		else
 		{
@@ -54,14 +54,34 @@
 			  $inbox_data['number_all'] integer - for IMAP and pop3 is total number messages in that inbox
 			*/
 			$inbox_data = Array();
-			$inbox_data = $phpgw->msg->new_message_check();
+			$inbox_data = $GLOBALS['phpgw']->msg->new_message_check();
 
-			$title = '<font color="FFFFFF">'.lang('EMail').' '.$inbox_data['alert_string'].'</font>';
+			$title = '<font color="#FFFFFF">'.lang('EMail').' '.$inbox_data['alert_string'].'</font>';
 
-			$portalbox = CreateObject('phpgwapi.linkbox',Array($title,$phpgw_info['theme']['navbar_bg'],$phpgw_info['theme']['bg_color'],$phpgw_info['theme']['bg_color']));
-			$portalbox->setvar('width',600);
-			$portalbox->outerborderwidth = 0;
-			$portalbox->header_background_image = $phpgw_info['server']['webserver_url'] . '/phpgwapi/templates/verdilak/images/bg_filler.gif';
+			$portalbox = CreateObject('phpgwapi.listbox',
+				Array(
+					'title'	=> $title,
+					'primary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+					'secondary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+					'tertiary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+					'width'	=> '90%',
+					'outerborderwidth'	=> '0',
+					'header_background_image'	=> $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler.gif')
+				)
+			);
+
+			$var = Array(
+				'up'	=> Array('url'	=> '/set_box.php', 'app'	=> 'email'),
+				'down'	=> Array('url'	=> '/set_box.php', 'app'	=> 'email'),
+				'close'	=> Array('url'	=> '/set_box.php', 'app'	=> 'email'),
+				'question'	=> Array('url'	=> '/set_box.php', 'app'	=> 'email'),
+				'edit'	=> Array('url'	=> '/set_box.php', 'app'	=> 'email')
+			);
+
+			while(list($key,$value) = each($var))
+			{
+				$portalbox->set_controls($key,$value);
+			}
 
 			if($inbox_data['number_all'] >= 5)
 			{
@@ -75,22 +95,22 @@
 			if ($inbox_data['number_all'] > 0)
 			{
 				$msg_nums_array = array();
-				$msg_nums_array = $phpgw->msg->get_message_list();
+				$msg_nums_array = $GLOBALS['phpgw']->msg->get_message_list();
 			}
 			for($i=0; $i<$check_msgs; $i++)
 			{
-				//$msg_headers = $phpgw->dcom->header($phpgw->msg->mailsvr_stream,$msg_nums_array[$i]);
-				$msg_headers = $phpgw->msg->phpgw_header($msg_nums_array[$i]);
-				$subject = $phpgw->msg->get_subject($msg_headers,'');
+				//$msg_headers = $GLOBALS['phpgw']->dcom->header($GLOBALS['phpgw']->msg->mailsvr_stream,$msg_nums_array[$i]);
+				$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msg_nums_array[$i]);
+				$subject = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'');
 				if (strlen($subject) > 65)
 				{
 					$subject = substr($subject,0,65).' ...';
 				}
-				$portalbox->data[$i] = array($subject,$phpgw->link('/email/message.php','folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$msg_nums_array[$i]));
+				$portalbox->data[$i] = array('text'=>$subject,'link'=>$GLOBALS['phpgw']->link('/email/message.php','folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$msg_nums_array[$i]));
 			}
 			// ADD FOLDER LISTBOX TO HOME PAGE (Needs to be TEMPLATED)
 			// Does This Mailbox Support Folders (i.e. more than just INBOX)?
-			if ($phpgw->msg->get_mailsvr_supports_folders() == False)
+			if ($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders() == False)
 			{
 				$switchbox_tablerow = '';
 			}
@@ -101,28 +121,31 @@
 				$listbox_show_unseen = False;
 				$switchbox_listbox = '<select name="folder" onChange="document.switchbox.submit()">'
 						. '<option>' . lang('switch current folder to') . ':'
-						. $phpgw->msg->all_folders_listbox('','','',$listbox_show_unseen)
+						. $GLOBALS['phpgw']->msg->all_folders_listbox('','','',$listbox_show_unseen)
 						. '</select>';
 				// make it another TR we can insert
-				$switchbox_action = $phpgw->link('/email/index.php');
+				$switchbox_action = $GLOBALS['phpgw']->link('/email/index.php');
 				$switchbox_tablerow = 
-					'<tr>'."\r\n"
-					.'<form name="switchbox" action="'.$switchbox_action.'" method="post">'."\r\n"
+//					'</td>'."\r\n"
+//					.'</tr>'."\r\n"
+//					.'<tr>'."\r\n"
+					'<form name="switchbox" action="'.$switchbox_action.'" method="post">'."\r\n"
 						.'<td align="left">'."\r\n"
 							.'&nbsp;<strong>E-Mail Folders:</strong>&nbsp;'.$switchbox_listbox
 						.'</td>'."\r\n"
-					.'</form>'."\r\n"
-					.'</tr>'."\r\n";
+					.'</form>'."\r\n";
+//					.'</tr>'."\r\n"
+//					.'<tr>'."\r\n"
+//					.'<td>'."\r\n";
 			}
-			$phpgw->msg->end_request();
+			$GLOBALS['phpgw']->msg->end_request();
 			// output the portalbox and (if applicable) the folders listbox below it
-			echo '<!-- start Mailbox info -->'."\r\n"
-			.'<tr>'."\r\n"
-				.'<td align="left">'."\r\n"
-					.$portalbox->draw()
-				.'</td>'."\r\n"
-			.'</tr>'."\r\n"
-			.$switchbox_tablerow
+			echo "\r\n".'<!-- start Mailbox info -->'."\r\n"
+//			.'<tr>'."\r\n"
+//				.'<td align="left">'."\r\n"
+					.$portalbox->draw($switchbox_tablerow)
+//				.'</td>'."\r\n"
+//			.'</tr>'."\r\n"
 			.'<!-- ends Mailox info -->'."\r\n";
 		}
 	}
