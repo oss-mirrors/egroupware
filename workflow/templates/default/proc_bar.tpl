@@ -17,7 +17,7 @@
 								<td><a href="{link_admin_shared_source}"><img border='0' src='{img_code}' alt='{lang_Code}' title='{lang_Code}' /></a></td>		
 								<td><a href="{link_admin_roles}"><img border='0' src='{img_roles}' alt='{lang_Roles}' title='{lang_Roles}' /></a></td>		
 								<td><a href="{link_graph}" target="_external"><img src='{img_process}' border='0' title='{lang_Graph}' alt='{lang_Graph}' /></a></td>		
-								<td><a href="{link_save_process}"><img border='0' src='{img_save}' alt='{lang_Export}' title='{lang_Export}' /></a></td>
+								<td><a href="{link_admin_export}"><img border='0' src='{img_save}' alt='{lang_Export}' title='{lang_Export}' /></a></td>
 							</tr>
 						</table>
 					</td>	
