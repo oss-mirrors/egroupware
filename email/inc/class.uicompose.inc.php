@@ -85,6 +85,7 @@
 			$tpl_vars = Array(
 				'to_box_value'		=> $this->bo->xi['to_box_value'],
 				'cc_box_value'		=> $this->bo->xi['cc_box_value'],
+				'bcc_box_value'		=> $this->bo->xi['bcc_box_value'],
 				'subj_box_value'	=> $this->bo->xi['subject'],
 				'body_box_value'	=> $this->bo->xi['body'],
 				'form1_action'		=> $this->bo->xi['send_btn_action'],
@@ -104,6 +105,8 @@
 				'to_box_name'		=> $this->bo->xi['to_box_name'],
 				'cc_box_desc'		=> $this->bo->xi['cc_box_desc'],
 				'cc_box_name'		=> $this->bo->xi['cc_box_name'],
+				'bcc_box_desc'		=> $this->bo->xi['bcc_box_desc'],
+				'bcc_box_name'		=> $this->bo->xi['bcc_box_name'],
 				'subj_box_desc'		=> $this->bo->xi['subj_box_desc'],
 				'subj_box_name'		=> $this->bo->xi['subj_box_name'],
 				'checkbox_sig_desc'	=> $this->bo->xi['checkbox_sig_desc'],

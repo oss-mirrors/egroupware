@@ -47,6 +47,14 @@
 </tr>
 <tr>
 	<td bgcolor="{to_boxs_bgcolor}">
+		<font size="2" face="{to_boxs_font}"><strong>&nbsp;{bcc_box_desc}</strong></font>
+	</td>
+	<td bgcolor="{to_boxs_bgcolor}" width="570">
+		<input type="text" name="{bcc_box_name}" size="80" value="{bcc_box_value}">
+	</td>
+</tr>
+<tr>
+	<td bgcolor="{to_boxs_bgcolor}">
 		<font size="2" face="{to_boxs_font}">
 		<strong>&nbsp;{subj_box_desc}</strong></font>
 	</td>
@@ -81,7 +89,7 @@
 </table>
 </form>
 
-<script>
+<script type="text/javascript">
   document.doit.body.focus();
   if(document.doit.subject.value == "") document.doit.subject.focus();
   if(document.doit.to.value == "") document.doit.to.focus();

@@ -21,6 +21,7 @@
 		);
 		var $nextmatchs;
 		var $debug = 0;
+		//var $debug = 3;
 		var $xi;
 		var $part_nice = '';
 		var $xml_functions = array();
@@ -45,8 +46,8 @@
 			}
 			// attempt (or not) to reuse an existing mail_msg object, i.e. if one ALREADY exists before entering
 			// this function. As of Dec 14, 2001 only class.boaction can pass a useful, existing object for us to use here
-			$attempt_reuse = True;
-			//$attempt_reuse = False;
+			//$attempt_reuse = True;
+			$attempt_reuse = False;
 			
 			if ($this->debug > 0) { echo 'ENTERING: email.bomessage.message_data'.'<br>'; }
 			if ($this->debug > 0) { echo 'email.bomessage.message_data: local var attempt_reuse=['.serialize($attempt_reuse).'] ; reuse_feed_args[] dump<pre>'; print_r($reuse_feed_args); echo '</pre>'; }
@@ -96,11 +97,114 @@
 			
 			// ---- BEGIN BOMESSAGE ----
 			
+			// ---- LANGS ----
+			$this->xi['lang_add_to_address_book'] = lang('Add to address book');
+			$this->xi['lang_previous_message'] = lang('Previous Message');
+			$this->xi['lang_no_previous_message'] = lang('No Previous Message');
+			$this->xi['lang_next_message'] = lang('Next Message');		
+			$this->xi['lang_no_next_message'] = lang('No Next Message');
+			$this->xi['lang_from'] = lang('from');
+			$this->xi['lang_to'] = lang('to');
+			$this->xi['lang_cc'] = lang('cc');
+			$this->xi['lang_date'] = lang('date');
+			$this->xi['lang_files'] = lang('files');
+			$this->xi['lang_subject'] = lang('subject');
+			$this->xi['lang_undisclosed_sender'] = lang('Undisclosed Sender');			
+			$this->xi['lang_undisclosed_recipients'] = lang('Undisclosed Recipients');
+			$this->xi['lang_reply'] = lang('reply');
+			$this->xi['lang_reply_all'] = lang('reply all');
+			$this->xi['lang_forward'] = lang('forward');
+			$this->xi['lang_delete'] = lang('delete');
+			$this->xi['lang_view_headers'] = lang('view headers');
+			$this->xi['lang_view_raw_message'] = lang('raw message');
+			$this->xi['lang_message'] = lang('message');
+			$this->xi['lang_keywords'] = lang('keywords');
+			$this->xi['lang_section'] = lang('section');
+			$this->xi['lang_view_as_html'] = lang('View as HTML');
+			$this->xi['lang_view_formatted'] = lang('view formatted');
+			$this->xi['lang_view_unformatted'] = lang('view unformatted');
+			$this->xi['lang_charset'] = lang('charset');
+			$this->xi['lang_attachment'] = lang('Attachment');
+			$this->xi['lang_size'] = lang('size');
+			$this->xi['lang_error_unknown_message_data'] = lang('ERROR: Unknown Message Data');
+			$this->xi['accounts_label'] = lang('Switch Accounts');
+			$this->xi['lang_move_this_message_into'] = lang('Move This Message into');
+			
+			
+			//  ----  TOOL BAR / MENU BAR ----
+			$this->xi['ctrl_bar_font'] = $GLOBALS['phpgw_info']['theme']['font'];
+			$this->xi['ctrl_bar_font_size'] =  '-1';
+			$this->xi['ctrl_bar_back1'] = $GLOBALS['phpgw_info']['theme']['row_on'];
+			// pass on (preserve these valus) after the message move
+			$this->xi['current_sort'] = $GLOBALS['phpgw']->msg->get_arg_value('sort');
+			$this->xi['current_order'] = $GLOBALS['phpgw']->msg->get_arg_value('order');
+			$this->xi['current_start'] = $GLOBALS['phpgw']->msg->get_arg_value('start');
+			// ---- account switchbox  ----
+			// make a HTML comobox used to switch accounts
+			$make_acctbox = True;
+			//$make_acctbox = False;
+			// borrow code from boindex and uiindex for this functionality
+			if ($make_acctbox)
+			{
+				$feed_args = Array(
+					'pre_select_acctnum'	=> $GLOBALS['phpgw']->msg->get_acctnum(),
+					'widget_name'		=> 'fldball_fake_uri',
+					'folder_key_name'	=> 'folder',
+					'acctnum_key_name'	=> 'acctnum',
+					'on_change'		=> 'document.acctbox.submit()'
+				);
+				$this->xi['acctbox_listbox'] = $GLOBALS['phpgw']->msg->all_ex_accounts_listbox($feed_args);
+			}
+			else
+			{
+				$this->xi['acctbox_listbox'] = '&nbsp';
+			}
+			$this->xi['acctbox_frm_name'] = 'acctbox';
+			// switchbox will itself contain "fake_uri" embedded data which includes the applicable account number for the folder
+			$this->xi['acctbox_action'] = $GLOBALS['phpgw']->link(
+								'/index.php',
+								 'menuaction=email.uiindex.index');
+			
+			// ---- Move Message Box  ----
+			// borrow code from boindex and uiindex for this functionality
+			$this->xi['mlist_checkbox_name'] = 'delmov_list[]';
+			
+			$this->xi['frm_delmov_action'] = $GLOBALS['phpgw']->link(
+								'/index.php',
+								'menuaction=email.boaction.delmov');
+			$this->xi['frm_delmov_name'] = 'delmov';
+			$this->xi['mlist_embedded_uri'] = $GLOBALS['phpgw']->msg->get_arg_value('["msgball"]["uri"]');
+			// add a special flag to the uri to indicate we should goto the next message, not to the index page
+			$this->xi['mlist_embedded_uri'] .= '&msgball[called_by]=uimessage';
+			$this->xi['mailsvr_supports_folders'] = $GLOBALS['phpgw']->msg->get_mailsvr_supports_folders();
+			if ($this->xi['mailsvr_supports_folders'])
+			{
+				$feed_args = Array();
+				$feed_args = Array(
+					'mailsvr_stream'	=> '',
+					'pre_select_folder'	=> '',
+					'skip_folder'		=> $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->get_arg_value('folder')),
+					'show_num_new'		=> False,
+					'widget_name'		=> 'to_fldball_fake_uri',
+					'folder_key_name'	=> 'folder',
+					'acctnum_key_name'	=> 'acctnum',
+					'on_change'		=> 'do_action(\'move\')',
+					'first_line_txt'	=> $this->xi['lang_move_this_message_into']
+				);
+				$this->xi['delmov_listbox'] = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);
+			}
+			else
+			{
+				$this->xi['delmov_listbox'] = '&nbsp;';
+			}
+			
+			
+			
+			
 			// ----  Fill Some Important Variables  -----
 			$svr_image_dir = PHPGW_IMAGES_DIR;
 			$image_dir = PHPGW_IMAGES;
-			$sm_envelope_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_envelope.gif','Add to address book','8','10','0');
-			//$default_sorting = $GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting'];
+			$sm_envelope_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_envelope.gif',$this->xi['lang_add_to_address_book'],'8','10','0');
 			$not_set = $GLOBALS['phpgw']->msg->not_set;
 			
 			// ----  General Information about The Message  -----
@@ -115,6 +219,7 @@
 			$subject = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'');
 			$message_date = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
 			
+			if ($this->debug > 2) { echo 'class.bomessage.message_data: $msg_struct DUMP:<pre>'; print_r($msg_struct); echo '</pre>';  }
 			#set_time_limit(0);
 			
 			// ----  Special X-phpGW-Type Message Flag  -----
@@ -160,20 +265,18 @@
 			if ($nav_data['prev_msg'] != $not_set)
 			{
 				$prev_msg_link = $GLOBALS['phpgw']->link(
-					// '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
 					'/index.php',
 					 'menuaction=email.uimessage.message'
 					.'&'.$nav_data['prev_msg']['msgball']['uri']
 					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
-				$prev_msg_img = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/left.gif',lang('Previous Message'),'','','0');
+				$prev_msg_img = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/left.gif',$this->xi['lang_previous_message'],'','','0');
 				$ilnk_prev_msg = $GLOBALS['phpgw']->msg->href_maketag($prev_msg_link,$prev_msg_img);
 			}
 			else
 			{
-				//if ($this->debug > 0) { echo 'messages.php '.lang('No Previous Message').'<br>'; }
-				$ilnk_prev_msg = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/left-grey.gif',lang('No Previous Message'),'','','0');
+				$ilnk_prev_msg = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/left-grey.gif',$this->xi['lang_no_previous_message'],'','','0');
 			}
 			
 			//if ($this->debug > 0) { echo 'messages.php step3 $nav_data[] $ilnk_prev_msg: '.$ilnk_prev_msg.'<br>'; }
@@ -182,20 +285,18 @@
 			if ($nav_data['next_msg'] != $not_set)
 			{
 				$next_msg_link = $GLOBALS['phpgw']->link(
-//					 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
 					'/index.php',
 					 'menuaction=email.uimessage.message'
 					.'&'.$nav_data['next_msg']['msgball']['uri']
 					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
-				$next_msg_img = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/right.gif',lang('Next Message'),'','','0');
+				$next_msg_img = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/right.gif',$this->xi['lang_next_message'],'','','0');
 				$ilnk_next_msg = $GLOBALS['phpgw']->msg->href_maketag($next_msg_link,$next_msg_img);
 			}
 			else
 			{
-				//if ($this->debug > 0) { echo 'messages.php '.lang('No Next Message').'<br>'; }
-				$ilnk_next_msg = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/right-grey.gif',lang('No Next Message'),'','','0');
+				$ilnk_next_msg = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/right-grey.gif',$this->xi['lang_no_next_message'],'','','0');
 			}
 			
 			//if ($this->debug > 0) { echo 'messages.php step4 $nav_data[] $ilnk_next_msg: '.$ilnk_next_msg.'<br>'; }
@@ -207,18 +308,11 @@
 			$this->xi['tofrom_labels_bkcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
 			$this->xi['tofrom_data_bkcolor'] = $GLOBALS['phpgw_info']['theme']['row_on'];
 			
-			$this->xi['lang_from'] = lang('from');
-			$this->xi['lang_to'] = lang('to');
-			$this->xi['lang_cc'] = lang('cc');
-			$this->xi['lang_date'] = lang('date');
-			$this->xi['lang_files'] = lang('files');
-			$this->xi['lang_subject'] = lang('subject');
-			
 			// ----  From: Message Data  -----
 			if (!$msg_headers->from)
 			{
 				// no header info about this sender is available
-				$from_data_final = lang('Undisclosed Sender');
+				$from_data_final = $this->xi['lang_undisclosed_sender'];
 			}
 			else
 			{
@@ -238,8 +332,6 @@
 					$from_personal = $GLOBALS['phpgw']->msg->decode_header_string($from->personal);
 				}
 				// display "From" according to user preferences
-				//if (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'])
-				//&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] != 'none')
 				if (($GLOBALS['phpgw']->msg->get_isset_pref('show_addresses'))
 				&& ($GLOBALS['phpgw']->msg->get_pref_value('show_addresses') != 'none')
 				&& ($from_personal != $from_plain))
@@ -258,8 +350,7 @@
 					$GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link(
 						'/index.php',
 						 'menuaction=email.uicompose.compose'
-						 // DO NOT USE msgball - bosend will interpret this the wrong way
-						//.'&'.$msgball['uri']
+						 // DO NOT USE msgball[] - bosend will interpret this incorrectly as a reply or forward
 						.'&fldball[folder]='.$msgball['folder']
 						.'&fldball[acctnum]='.$msgball['acctnum']
 						.'&to='.urlencode($from_plain)
@@ -290,7 +381,7 @@
 			// ----  To:  Message Data  -----
 			if (!$msg_headers->to)
 			{
-				$to_data_final = lang('Undisclosed Recipients');
+				$to_data_final = $this->xi['lang_undisclosed_recipients'];
 			}
 			else
 			{
@@ -306,7 +397,6 @@
 					{
 						$to_personal = $GLOBALS['phpgw']->msg->decode_header_string($topeople->personal);
 					}
-					//if (($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] != 'none')
 					if (($GLOBALS['phpgw']->msg->get_pref_value('show_addresses') != 'none')
 					&& ($to_personal != $to_plain))
 					{
@@ -321,8 +411,7 @@
 						$GLOBALS['phpgw']->link(
 							'/index.php',
 							 'menuaction=email.uicompose.compose'
-							// DO NOT USE msgball - bosend will interpret this the wrong way
-							//.'&'.$msgball['uri']
+							// DO NOT USE msgball[] - bosend will interpret this incorrectly as a reply or forward
 							.'&fldball[folder]='.$msgball['folder']
 							.'&fldball[acctnum]='.$msgball['acctnum']
 							.'&to='.urlencode($to_plain)
@@ -488,7 +577,7 @@
 			$fwd_proc = 'encapsulate';
 			
 			// ----  Images and Hrefs For Reply, ReplyAll, Forward, and Delete  -----
-			$reply_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'','','0');
+			$reply_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_reply.gif',$this->xi['lang_reply'],'','','0');
 			$reply_url = $GLOBALS['phpgw']->link(
 					'/index.php',
 					 'menuaction=email.uicompose.compose'
@@ -501,7 +590,7 @@
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 			$ilnk_reply = $GLOBALS['phpgw']->msg->href_maketag($reply_url, $reply_img);
 			
-			$replyall_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),'','','0');
+			$replyall_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_reply_all.gif',$this->xi['lang_reply_all'],'','','0');
 			$replyall_url = $GLOBALS['phpgw']->link(
 					'/index.php',
 					 'menuaction=email.uicompose.compose'
@@ -514,7 +603,7 @@
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 			$ilnk_replyall = $GLOBALS['phpgw']->msg->href_maketag($replyall_url, $replyall_img);
 			
-			$forward_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_forward.gif',lang('forward'),'','','0');
+			$forward_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_forward.gif',$this->xi['lang_forward'],'','','0');
 			$forward_url =  $GLOBALS['phpgw']->link(
 					'/index.php',
 					 'menuaction=email.uicompose.compose'
@@ -528,7 +617,7 @@
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 			$ilnk_forward = $GLOBALS['phpgw']->msg->href_maketag($forward_url, $forward_img);
 			
-			$delete_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_delete.gif',lang('delete'),'','','0');
+			$delete_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_delete.gif',$this->xi['lang_delete'],'','','0');
 			$delete_url = $GLOBALS['phpgw']->link(
 					 '/index.php',
 					'menuaction=email.boaction.delmov'
@@ -640,13 +729,20 @@
 							$msg_body_info .= 'params['.$p.']: '.$this->part_nice[$i]['params'][$p]['attribute'].'='.$this->part_nice[$i]['params'][$p]['value'] .$crlf;
 						}
 					}
+					if ($this->part_nice[$i]['ex_num_dparam_pairs'] > 0)
+					{
+						for ($p = 0; $p < $this->part_nice[$i]['ex_num_dparam_pairs']; $p++)
+						{
+							$msg_body_info .= 'dparams['.$p.']: '.$this->part_nice[$i]['dparams'][$p]['attribute'].'='.$this->part_nice[$i]['dparams'][$p]['value'] .$crlf;
+						}
+					}
 					if ($this->part_nice[$i]['ex_num_subparts'] != $not_set)
 					{
 						$msg_body_info .= 'ex_num_subparts: '. $this->part_nice[$i]['ex_num_subparts'] .$crlf;
-						if (strlen($this->part_nice[$i]['m_part_num_mime']) > 2)
-						{
-							$msg_body_info .= 'subpart: '. serialize($this->part_nice[$i]['subpart']) .$crlf;
-						}
+						//if (strlen($this->part_nice[$i]['m_part_num_mime']) > 2)
+						//{
+						//	$msg_body_info .= 'subpart: '. serialize($this->part_nice[$i]['subpart']) .$crlf;
+						//}
 					}
 					if ($this->part_nice[$i]['ex_attachment'])
 					{
@@ -703,9 +799,24 @@
 				.'&name=headers.txt'
 				.'&encoding=7bit'
 				);
-			//$view_headers_href = $GLOBALS['phpgw']->msg->href_maketag($view_headers_url, lang('view headers'));
-			$view_headers_href = '<a href="'.$view_headers_url.'" target="new">'.lang('view headers').'</a>';
+			
+			$view_headers_href = '<a href="'.$view_headers_url.'" target="new">'.$this->xi['lang_view_headers'].'</a>';
 			$this->xi['view_headers_href'] = $view_headers_href;
+			
+			// (3) view or download the raw message, including headers
+			$this_msgball = $msgball;
+			$this_msgball['part_no'] = 'raw_message';
+			$view_raw_message_url = $GLOBALS['phpgw']->link(
+				 '/index.php',
+				'menuaction=email.boaction.get_attach'
+				.'&'.$msgball['uri'].'&msgball[part_no]='.$this_msgball['part_no']
+				.'&type=text'
+				.'&subtype=plain'
+				.'&name=raw_message.txt'
+				.'&encoding=7bit'
+				);
+			$view_raw_message_href = '<a href="'.$view_raw_message_url.'" target="new">'.$this->xi['lang_view_raw_message'].'</a>';
+			$this->xi['view_raw_message_href'] = $view_raw_message_href;
 			
 			// Force Echo Out Unformatted Text for email with 1 part which is a large text messages (in bytes) , such as a system report from cron
 			// php (4.0.4pl1 last tested) and some imap servers (courier and uw-imap are confirmed) will time out retrieving this type of message
@@ -773,7 +884,7 @@
 					// ====  MIME IGNORANT SERVER  ====
 					$title_text = '&nbsp;Mime-Ignorant Email Server: ';
 					$this->part_nice[$i]['title_text'] = $title_text;
-					$display_str = lang('keywords').': '.$this->part_nice[$i]['m_keywords'].' - '.$GLOBALS['phpgw']->msg->format_byte_size(strlen($dsp));
+					$display_str = $this->xi['lang_keywords'].': '.$this->part_nice[$i]['m_keywords'].' - '.$GLOBALS['phpgw']->msg->format_byte_size(strlen($dsp));
 					$this->part_nice[$i]['display_str'] = $display_str;
 					
 					//$msg_raw_headers = $GLOBALS['phpgw']->dcom->fetchheader($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
@@ -830,8 +941,8 @@
 				&& (($this->part_nice[$i]['m_part_num_mime'] == 1) || ((string)$this->part_nice[$i]['m_part_num_mime'] == '1.1'))
 				&& ((int)$this->part_nice[$i]['bytes'] > $force_echo_size))
 				{
-					$title_text = '&nbsp;'.lang('message').': ';
-					$display_str = lang('keywords').': '.$this->part_nice[$i]['m_keywords'].' - '.$GLOBALS['phpgw']->msg->format_byte_size($this->part_nice[$i]['bytes'])
+					$title_text = '&nbsp;'.$this->xi['lang_message'].': ';
+					$display_str = $this->xi['lang_keywords'].': '.$this->part_nice[$i]['m_keywords'].' - '.$GLOBALS['phpgw']->msg->format_byte_size($this->part_nice[$i]['bytes'])
 						.'; meets force_echo ('.$GLOBALS['phpgw']->msg->format_byte_size($force_echo_size).') criteria';
 					
 					$this->part_nice[$i]['title_text'] = $title_text;
@@ -851,9 +962,9 @@
 					$GLOBALS['phpgw']->template->pparse('out','T_message_main');
 					
 					// -----  Prepare a Table for this Echo Dump
-					$title_text = '&nbsp;'.lang('message').': ';
+					$title_text = '&nbsp;'.$this->xi['lang_message'].': ';
 					$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
-					$display_str = lang('keywords').': '.$this->part_nice[$i]['m_keywords'].' - '.$GLOBALS['phpgw']->msg->format_byte_size($this->part_nice[$i]['bytes'])
+					$display_str = $this->xi['lang_keywords'].': '.$this->part_nice[$i]['m_keywords'].' - '.$GLOBALS['phpgw']->msg->format_byte_size($this->part_nice[$i]['bytes'])
 						.'; meets force_echo ('.$GLOBALS['phpgw']->msg->format_byte_size($force_echo_size).') criteria';
 					$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
 					$GLOBALS['phpgw']->template->parse('V_setup_echo_dump','B_setup_echo_dump');
@@ -890,15 +1001,15 @@
 					// NEEDS FIXING - is this simple test accurate enough?
 					if ($count_part_nice > 2)
 					{
-						$title_text = lang('section').': '.$this->part_nice[$i]['m_part_num_mime'];
+						$title_text = $this->xi['lang_section'].': '.$this->part_nice[$i]['m_part_num_mime'];
 					}
 					else
 					{
-						$title_text = '&nbsp;'.lang('message').': ';
+						$title_text = '&nbsp;'.$this->xi['lang_message'].': ';
 					}
 					
 					//$display_str = $this->part_nice[$i]['type'].'/'.strtolower($this->part_nice[$i]['subtype']);
-					$display_str = lang('keywords').': '.$this->part_nice[$i]['m_keywords']
+					$display_str = $this->xi['lang_keywords'].': '.$this->part_nice[$i]['m_keywords']
 						.' - '.$GLOBALS['phpgw']->msg->format_byte_size(strlen($dsp));
 					$this->part_nice[$i]['title_text'] = $title_text;
 					$this->part_nice[$i]['display_str'] = $display_str;
@@ -980,7 +1091,7 @@
 							.'<form action="'.$view_html_form_action.'" method="post">'."\r\n"
 								.'<input type="hidden" name="html_part" value="'.base64_encode($dsp).'">'."\r\n"
 								.'&nbsp;&nbsp;'
-								.'<input type="submit" value="'.lang('View as HTML').'">'."\r\n"
+								.'<input type="submit" value="'.$this->xi['lang_view_as_html'].'">'."\r\n"
 							.'</p>'
 							.'<br>';
 							
@@ -1017,7 +1128,7 @@
 								.'<form action="'.$view_html_form_action.'" method="post">'."\r\n"
 								.'<input type="hidden" name="html_reference" value="'.$part_href.'">'."\r\n"
 								.'&nbsp;&nbsp;'
-								.'<input type="submit" value="'.lang('View as HTML').'">'."\r\n"
+								.'<input type="submit" value="'.$this->xi['lang_view_as_html'].'">'."\r\n"
 							.'</p>'
 							.'<br>';
 							
@@ -1080,7 +1191,6 @@
 					if (strlen($dsp) < 3)
 					{
 						$skip_this_part = True;
-						//$GLOBALS['phpgw']->template->set_var('V_display_part','');
 						$this->part_nice[$i]['title_text'] = '';
 						$this->part_nice[$i]['display_str'] = '';
 						$this->part_nice[$i]['message_body'] = '';
@@ -1121,15 +1231,15 @@
 							// enforce HARD WRAP - X chars per line
 							// how many chars to allow on any single line, if more then we ADD a CRLF and split the line
 							$wrap_text_at = 85;
-							$dsp = $GLOBALS['phpgw']->msg->body_hard_wrap($dsp, $wrap_text_at);
+							$dsp = $GLOBALS['phpgw']->msg->body_hard_wrap($dsp, $wrap_text_at) ."\r\n";
 							$dsp = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($dsp);
 							$dsp = '<pre>'.$dsp.'</pre>';
 							// alternate (toggle) to view formatted
-							$view_option = $GLOBALS['phpgw']->msg->href_maketag($view_option_url, lang('view formatted'));
+							$view_option = $GLOBALS['phpgw']->msg->href_maketag($view_option_url, $this->xi['lang_view_formatted']);
 						}
 						else
 						{
-							if (strtoupper(lang('charset')) <> 'BIG5')
+							if (strtoupper($this->xi['lang_charset']) <> 'BIG5')
 							{
 								// before we can encode some chars into html entities (ex. change > to &gt;)
 								// we need to make sure there are no html entities already there
@@ -1148,7 +1258,7 @@
 							// add a line after the last line of the message
 							$dsp = $dsp .'<br><br>';
 							// alternate (toggle) to view unformatted, for this we add "&no_fmt=1" to the URL
-							$view_option = $GLOBALS['phpgw']->msg->href_maketag($view_option_url.'&no_fmt=1', lang('view unformatted'));
+							$view_option = $GLOBALS['phpgw']->msg->href_maketag($view_option_url.'&no_fmt=1', $this->xi['lang_view_unformatted']);
 						}
 						
 						// "view formatted/unformatted" link being moved to the "toolbar"
@@ -1159,15 +1269,15 @@
 						// NEEDS FIXING - is this simple test accurate enough?
 						if ($count_part_nice > 2)
 						{
-							$title_text = lang('section').': '.$this->part_nice[$i]['m_part_num_mime'];
+							$title_text = $this->xi['lang_section'].': '.$this->part_nice[$i]['m_part_num_mime'];
 						}
 						else
 						{
-							$title_text = '&nbsp;'.lang('message').': ';
+							$title_text = '&nbsp;'.$this->xi['lang_message'].': ';
 						}
 						//$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
 						$this->part_nice[$i]['title_text'] = $title_text;
-						$display_str = lang('keywords').': '.$this->part_nice[$i]['m_keywords']
+						$display_str = $this->xi['lang_keywords'].': '.$this->part_nice[$i]['m_keywords']
 							.' - '.$GLOBALS['phpgw']->msg->format_byte_size(strlen($dsp));
 						// View formatted / unformatted moved to toolbar, do not show it here
 						// however, template var "display_str" was set to empty above
@@ -1186,10 +1296,10 @@
 				}
 				elseif ($this->part_nice[$i]['m_description'] == 'presentable/image')
 				{
-					$title_text = lang('section').': '.$this->part_nice[$i]['m_part_num_mime'];
+					$title_text = $this->xi['lang_section'].': '.$this->part_nice[$i]['m_part_num_mime'];
 					$display_str = $GLOBALS['phpgw']->msg->decode_header_string($this->part_nice[$i]['ex_part_name'])
 						.' - ' .$GLOBALS['phpgw']->msg->format_byte_size((int)$this->part_nice[$i]['bytes']) 
-						.' - '.lang('keywords').': ' .$this->part_nice[$i]['m_keywords'];
+						.' - '.$this->xi['lang_keywords'].': ' .$this->part_nice[$i]['m_keywords'];
 					$this->part_nice[$i]['title_text'] = $title_text;
 					$this->part_nice[$i]['display_str'] = $display_str;
 					// we add an href that points to the exact msg_number/mime_part number that is the image
@@ -1206,14 +1316,14 @@
 				}
 				elseif ($this->part_nice[$i]['m_description'] == 'attachment')
 				{
-					$title_text = lang('section').': '.$this->part_nice[$i]['m_part_num_mime'];
-					$display_str = lang('keywords').': ' .$this->part_nice[$i]['m_keywords'];
+					$title_text = $this->xi['lang_section'].': '.$this->part_nice[$i]['m_part_num_mime'];
+					$display_str = $this->xi['lang_keywords'].': ' .$this->part_nice[$i]['m_keywords'];
 					$this->part_nice[$i]['title_text'] = $title_text;
 					$this->part_nice[$i]['display_str'] = $display_str;
 					
-					$msg_text = '&nbsp;&nbsp; <strong>'.lang('Attachment').':</strong>'
+					$msg_text = '&nbsp;&nbsp; <strong>'.$this->xi['lang_attachment'].':</strong>'
 						.'&nbsp;&nbsp; '.$this->part_nice[$i]['ex_part_clickable']
-						.'&nbsp;&nbsp; '.lang('size').': '.$GLOBALS['phpgw']->msg->format_byte_size((int)$this->part_nice[$i]['bytes'])
+						.'&nbsp;&nbsp; '.$this->xi['lang_size'].': '.$GLOBALS['phpgw']->msg->format_byte_size((int)$this->part_nice[$i]['bytes'])
 						.'<br><br>';
 					
 					$this->part_nice[$i]['message_body'] = $msg_text;
@@ -1229,9 +1339,9 @@
 				&& ($this->part_nice[$i]['m_description'] != 'packagelist'))
 				{
 					// if we get here then we've got some kind of error, all things we know about are handle above
-					$title_text = lang("section").': '.$this->part_nice[$i]['m_part_num_mime'];
+					$title_text = $this->xi['lang_section'].': '.$this->part_nice[$i]['m_part_num_mime'];
 					$display_str = $GLOBALS['phpgw']->msg->decode_header_string($this->part_nice[$i]['ex_part_name'])
-						.' - '.lang('keywords').': ' .$this->part_nice[$i]['m_keywords'];
+						.' - '.$this->xi['lang_keywords'].': ' .$this->part_nice[$i]['m_keywords'];
 					//$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
 					$this->part_nice[$i]['title_text'] = $title_text;
 					//$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
@@ -1239,7 +1349,7 @@
 					
 					$msg_text = '';
 					// UNKNOWN DATA
-					$msg_text = $msg_text .'<br><strong>'.lang('ERROR: Unknown Message Data').'</strong><br>';
+					$msg_text = $msg_text .'<br><strong>'.$this->xi['lang_error_unknown_message_data'].'</strong><br>';
 					if ($this->part_nice[$i]['encoding'] == 'base64')
 					{
 							$this_msgball = $msgball;

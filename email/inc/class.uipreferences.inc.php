@@ -421,7 +421,7 @@
 			
 			// ---  Extra Account Pref Items  ---
 			// section title
-			$GLOBALS['phpgw']->template->set_var('section_title', '*** '.lang('Extra E-Mail Account').' *** '.lang('Number.' '.$this->bo->acctnum));
+			$GLOBALS['phpgw']->template->set_var('section_title', '*** '.lang('Extra E-Mail Account').' *** '.lang('Number').' '.$this->bo->acctnum);
 			// parse the block,
 			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 			// get the parsed data and put into a local variable

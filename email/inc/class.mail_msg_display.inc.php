@@ -399,9 +399,8 @@ class mail_msg extends mail_msg_wrappers
 
 	function all_ex_accounts_listbox($feed_args)
 	{
-		// $this->num_ex_accounts
-		// $this->defined_ex_accounts
-		// $this->enabled_ex_accounts
+		// $this->ex_accounts_count
+		// $this->extra_accounts
 		
 		if(!$feed_args)
 		{
@@ -451,6 +450,7 @@ class mail_msg extends mail_msg_wrappers
 		
 		$item_tags = '';
 		
+		// ----  add the default email account, account number 0  ----
 		// this logic determines if the combobox should be initialized with certain account already selected
 		if ((string)$local_args['pre_select_acctnum'] == '0')
 		{
@@ -460,8 +460,6 @@ class mail_msg extends mail_msg_wrappers
 		{
 			$sel = '';
 		}
-		
-		// add the default email account, account number 0
 		// this fake_uri data will be converted to fldball data on submit processing
 		$option_value =  '&'.$local_args['folder_key_name'].'=INBOX'
 				.'&'.$local_args['acctnum_key_name'].'=0';
@@ -472,28 +470,23 @@ class mail_msg extends mail_msg_wrappers
 		$item_tags .= '<option value="'.$option_value.'"'.$sel.'>'.$option_text.'</option>'."\r\n";
 		
 		// iterate thru the ex_accounts list, building the HTML tags using that data
-		for ($i=0; $i < count($this->defined_ex_accounts); $i++)
+		for ($i=0; $i < count($this->extra_accounts); $i++)
 		{
-			// the option values below are in the form of embedded fake_uri
-			$this_acctnum = $this->defined_ex_accounts[$i];
-			// is this account "enabled" ?
-			// array_search_ex($needle='', $haystack='', $strict=False)
-			$enabled = $this->array_search_ex($this_acctnum, $this->enabled_ex_accounts);
-			// note: is_bool is in the php3 compat library
-			// note: array position 0 != boolean false, thus the test below
-			if ((is_bool($enabled))
-			&& ($enabled == False))
+			$this_acctnum = $this->extra_accounts[$i]['acctnum'];
+			// is this account "enabled", "disabled", or "empty"
+			if ($this->extra_accounts[$i]['status'] == 'disabled')
 			{
+				// the option values below are in the form of embedded fake_uri
 				// FUTURE: take user to the extra accounts management page for this particular account
 				// now: put the user back to the default account
 				$option_value =  '&'.$local_args['folder_key_name'].'=INBOX'
 						.'&'.$local_args['acctnum_key_name'].'=0';
-				$option_text = lang('account').' ['.$this_acctnum.'] disabled';
+				$option_text = lang('account').' ['.$this_acctnum.'] '.lang('disabled');
 				
 				// note: a disabled account can not be pre-selected
 				$item_tags .= '<option value="'.$option_value.'">'.$option_text.'</option>'."\r\n";
 			}
-			else
+			elseif ($this->extra_accounts[$i]['status'] == 'enabled')
 			{
 				// this logic determines if the combobox should be initialized with certain account already selected
 				if ((string)$local_args['pre_select_acctnum'] == (string)$this_acctnum)
@@ -517,6 +510,7 @@ class mail_msg extends mail_msg_wrappers
 				
 				$item_tags .= '<option value="'.$option_value.'"'.$sel.'>'.$option_text.'</option>'."\r\n";
 			}
+			// if not enabled or disabed, it must be empty, in which case we ignore it
 		}
 		// now $item_tags contains the internal folder list
 		
@@ -763,7 +757,7 @@ class mail_msg extends mail_msg_wrappers
 											$part_nice[$array_position] = $this->pgw_msg_struct($d5_part, $d4_array_pos, $d5_mime_num, ($d5+1), $d5_num_parts, 5);
 											if ($deepest_level < 5) { $deepest_level=5; }
 											
-											// get SISTH LEVEL EMBEDDED level part information
+											// get SIXTH LEVEL EMBEDDED level part information
 											$d5_array_pos = $array_position;
 											if ($d5_part['ex_num_subparts'] != $not_set)
 											{
@@ -889,13 +883,15 @@ class mail_msg extends mail_msg_wrappers
 			// base64 encoded and are still attachments - if param_value NAME has a value, pretend it's an attachment
 			// however, a base64 part IS an attachment even if it has no name, just make one up
 			// also, if "disposition" header = "attachment", same thing, it's an attachment, and if no name is in the params, make one up
+			// note: we do not use "elseif" during this because an attachment may be detected in *any* of the following code blocks
+			// in no particular, nor predictable, order
 			
 			// Fallback / Default: assume No Attachment here
 			//$part_nice['ex_part_name'] = 'unknown.html';
 			$part_nice[$i]['ex_part_name'] = 'attachment.txt';
 			$part_nice[$i]['ex_attachment'] = False;
 			
-			// Attachment Detection PART1 = if a part has a NAME=FOO in the param pairs, then treat as an attachment
+			// Attachment Detection PART1-A = if a part has a NAME=FOO in the param pairs, then treat as an attachment
 			if (($part_nice[$i]['ex_num_param_pairs'] > 0)
 			&& ($part_nice[$i]['ex_attachment'] == False))
 			{
@@ -910,6 +906,22 @@ class mail_msg extends mail_msg_wrappers
 					}
 				}
 			}
+			// Attachment Detection PART1-B = if a part has a NAME=FOO in the dparam pairs, then treat as an attachment
+			if (($part_nice[$i]['ex_num_dparam_pairs'] > 0)
+			&& ($part_nice[$i]['ex_attachment'] == False))
+			{
+				for ($p = 0; $p < $part_nice[$i]['ex_num_dparam_pairs']; $p++)
+				{
+					if (($part_nice[$i]['dparams'][$p]['attribute'] == 'name') 
+					  && ($part_nice[$i]['dparams'][$p]['value'] != $not_set))
+					{
+						$part_nice[$i]['ex_part_name'] = $part_nice[$i]['dparams'][$p]['value'];
+						$part_nice[$i]['ex_attachment'] = True;
+						break;
+					}
+				}
+			}
+			
 			// Attachment Detection PART2 = if a part has encoding=base64 , then treat as an attachment
 			//	eventhough the above code did not find a name for the part
 			if (($part_nice[$i]['encoding'] == 'base64')
@@ -948,7 +960,7 @@ class mail_msg extends mail_msg_wrappers
 					$part_nice[$i]['ex_attachment'] = True;
 					// Digression: why we can't do any more then this
 					// we have no idea of it's name, and *maybe* no idea of it's content type
-					// (eg. name.gif = image/gif  which is "OBVIOUS" even if the mail headers fon't tell us that)
+					// (eg. name.gif = image/gif  which is "OBVIOUS" even if the mail headers don't tell us that)
 					// sometimes the name's extention is the only info we have, i.e. ".doc" implies a WORD file
 					// but we can not do much here because we have NO name
 					// even if we have type/subtype data (see above text/plain and text/html)
@@ -1088,9 +1100,6 @@ class mail_msg extends mail_msg_wrappers
 
 			// TEMPORARY HACK FOR SOCKET POP3 CLASS - feed it DUMB mime part numbers
 			
-			//$tmp_a = $this->a[$this->acctnum];
-			//if ((isset($tmp_a['dcom']->imap_builtin))
-			//&& ($tmp_a['dcom']->imap_builtin == False)
 			if ((isset($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin))
 			&& ($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin == False)
 			&& (stristr($this->get_pref_value('mail_server_type'), 'pop3')))
@@ -1103,7 +1112,6 @@ class mail_msg extends mail_msg_wrappers
 				// Make Smart Mime Number THE PRIMARY MIME NUMBER we will use
 				$part_nice[$i]['m_part_num_mime'] = $part_nice[$i]['ex_mime_number_smart'];
 			}
-			//$this->a[$this->acctnum] = $tmp_a;
 			
 			// ------  MAKE CLICKABLE HREF TO THIS PART  -------
 			
@@ -1155,6 +1163,12 @@ class mail_msg extends mail_msg_wrappers
 				default			: $part_type = 'unknown';
 			}
 			$part_nice['type'] = $part_type;
+		}
+		// RFC SAYS TYPE "TEXT" IS *DEFAULT* AND MAY BE *ASSUMED* IN THE ABSENCE OF IT BEING SPECIFIED
+		if (($part_nice['type'] == 'unknown')
+		|| ($part_nice['type'] == $not_set))
+		{
+			$part_nice['type'] = 'text';
 		}
 		
 		// 2: ENCODING
@@ -1224,7 +1238,34 @@ class mail_msg extends mail_msg_wrappers
 			$part_nice['disposition'] = trim(strtolower($part_nice['disposition']));
 		}
 		//13:  ifdparameters : True if the dparameters array exists SKIPPED -  ifparameters is more useful (I think)
-		//14:  dparameters : Disposition parameter array SKIPPED -  parameters is more useful (I think)
+		//14:  dparameters : Disposition parameter array
+		// *not* SKIPPED, although parameters is more useful (I think), dparameters may sometimes hold an attachment name
+		// ex_num_dparam_pairs defaults to 0 (no dparams)
+		$part_nice['ex_num_dparam_pairs'] = 0;
+		if ( (isset($part->ifdparameters)) && ($part->ifdparameters)
+		&& (isset($part->dparameters)) && ($part->dparameters) )
+		{
+			// Custom/Extra Information (ex_):  ex_num_dparam_pairs
+			$part_nice['ex_num_dparam_pairs'] = count($part->dparameters);
+			// capture data from all dparam attribute=value pairs
+			for ($pairs = 0; $pairs < $part_nice['ex_num_dparam_pairs']; $pairs++)
+			{
+				$part_dparams = $part->dparameters[$pairs];
+				$part_nice['dparams'][$pairs]['attribute'] = $not_set; // default / fallback
+				if ((isset($part_dparams->attribute) && ($part_dparams->attribute)))
+				{
+					$part_nice['dparams'][$pairs]['attribute'] = $part_dparams->attribute;
+					$part_nice['dparams'][$pairs]['attribute'] = trim(strtolower($part_nice['dparams'][$pairs]['attribute']));
+				}
+				$part_nice['dparams'][$pairs]['value'] = $not_set; // default / fallback
+				if ((isset($part_dparams->value) && ($part_dparams->value)))
+				{
+					$part_nice['dparams'][$pairs]['value'] = $part_dparams->value;
+					// stuff like file names should retain their case
+					//$part_nice['dparams'][$pairs]['value'] = strtolower($part_nice['dparams'][$pairs]['value']);
+				}
+			}
+		}
 		// 15:  ifparameters : True if the parameters array exists (SKIP)
 		// 16:  parameters : MIME parameters array  - this *may* have more than a single attribute / value pair  but I'm not sure
 		// ex_num_param_pairs defaults to 0 (no params)

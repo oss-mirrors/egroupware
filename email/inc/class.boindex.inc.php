@@ -140,18 +140,18 @@
 				'lang_sort_by'		=> lang('Sort By'),
 				'lang_email_date'	=> lang('Email Date'),
 				'lang_arrival_date'	=> lang('Arrival Date'),
-				'lang_from'		=> lang('From'),
+				'lang_from'			=> lang('From'),
 				'lang_subject'		=> lang('Subject'),
-				'lang_size'		=> lang('Size'),
+				'lang_size'			=> lang('Size'),
 				// folder stats Information bar
-				'lang_new'		=> lang('New'),
-				'lang_new2'		=> lang('New Messages'),
+				'lang_new'			=> lang('New'),
+				'lang_new2'			=> lang('New Messages'),
 				'lang_total'		=> lang('Total'),
 				'lang_total2'		=> lang('Total Messages'),
 				'lang_size2'		=> lang('Folder Size'),
 				'stats_to_txt'		=> lang('to'),
 				'lang_get_size'		=> lang('get size'),
-				'lang_date'		=> lang('date'),
+				'lang_date'			=> lang('date'),
 				'lang_lines'		=> lang('lines'),
 				'lang_counld_not_open'	=> lang('Could not open this mailbox'),
 				'lang_empty_folder'	=> lang('this folder is empty'),
@@ -261,7 +261,7 @@
 			
 			
 			// establish all manner of important data
-			// can not put acctnum=X here because any single peice of data may apply to a different account
+			// can not put acctnum=X here because any single piece of data may apply to a different account
 			$this->xi['svr_image_dir'] = PHPGW_IMAGES_DIR;
 			$this->xi['image_dir'] = PHPGW_IMAGES;
 			$this->xi['current_sort'] = $GLOBALS['phpgw']->msg->get_arg_value('sort');
@@ -429,6 +429,7 @@
 				$this->xi['ctrl_bar_current_acctnum'] = 'extra '.(string)$GLOBALS['phpgw']->msg->get_acctnum();
 			}
 			
+			// DEPRECIATED
 			$this->xi['ctrl_bar_acct_0_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',
 								 'menuaction=email.uiindex.index'
@@ -440,6 +441,7 @@
 								.'&start=');
 			$this->xi['ctrl_bar_acct_0_link'] = '<a href="'.$this->xi['ctrl_bar_acct_0_link'].'">'.'goto default'.'</a>';
 			
+			// DEPRECIATED
 			$this->xi['ctrl_bar_acct_1_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',
 								 'menuaction=email.uiindex.index'

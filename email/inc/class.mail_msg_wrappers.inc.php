@@ -163,8 +163,7 @@
 				$acctnum = $this->get_acctnum();
 			}
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->get_body($mailsvr_stream, $msgball['msgnum']);
-			return $retval;
+			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->get_body($mailsvr_stream, $msgball['msgnum']);
 		}
 		
 		//FIXME: msgball

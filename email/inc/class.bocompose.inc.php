@@ -458,6 +458,11 @@
 			$this->xi['send_btn_action'] = $send_btn_action;
 			$this->xi['to_box_value'] = $to_box_value;
 			$this->xi['cc_box_value'] = $cc_box_value;
+			// FUTURE: when we do spell check or message GPG encoding, we may need to submit whatever is in 
+			// the bcc box (along with the other filled in data) simply so we can re-display this same page with 
+			// spell checked or encoded message text
+			$bcc_box_value = '';
+			$this->xi['bcc_box_value'] = $bcc_box_value;
 			$this->xi['subject'] = $subject;
 			$this->xi['body'] = $body;
 			
@@ -477,6 +482,8 @@
 			$this->xi['to_box_name'] = 'to';
 			$this->xi['cc_box_desc'] = lang('cc');
 			$this->xi['cc_box_name'] = 'cc';
+			$this->xi['bcc_box_desc'] = lang('bcc');
+			$this->xi['bcc_box_name'] = 'bcc';
 			$this->xi['subj_box_desc'] = lang('subject');
 			$this->xi['subj_box_name'] = 'subject';
 			$this->xi['checkbox_sig_desc'] = lang('Attach signature');

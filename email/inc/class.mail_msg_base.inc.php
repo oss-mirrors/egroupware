@@ -79,14 +79,15 @@
 	);
 	
 	// EXTRA ACCOUNTS
-	var $num_ex_accounts = 0;
+	var $ex_accounts_count = 0;
 	// holds the integer array key(s) of any defined extra account that has data, whether enabled or not
-	var $defined_ex_accounts = array();
+	//var $defined_ex_accounts = array();
 	// same as above BUT only has "enabled" extra accounts integer array key(s)
-	var $enabled_ex_accounts = array();
+	//var $enabled_ex_accounts = array();
+	var $extra_acounts = array();
 	
 	// DEBUG FLAGS generally take int 0, 1, 2, or 3
-	var $debug_logins =0;
+	var $debug_logins = 0;
 	var $debug_session_caching = 0;
 	var $debug_longterm_caching = 0;
 	var $debug_accts = 0;
@@ -100,39 +101,8 @@
 	
 	// future (maybe never) usage
 	//var $known_subtypes = array();
-
-
-
-	
-	// ----  the "old" way, straight up class vars
-	////var $dcom;
-	////var $args = Array();
-	// data from $GLOBALS['phpgw_info']['user']['preferences']['email'] goes here
-	////var $prefs = Array();
-	// holds data retored from appsession (this var not needed)
-	// var $session_data = array();
-	// holding data in a class var for very temporary caching (L1 cache)
-	////var $folder_status_info = array();
-	////var $folder_list = array();
-	////var $mailsvr_callstr = '';
-	////var $mailsvr_namespace = '';
-	////var $mailsvr_delimiter = '';
-	
-	// mailsvr_stream and mailsvr_account_username are also used to determine if we are logged in already
-	// pointer (well, actually a data holder) to the primary mailbox stream (you may open others) returned by the first login 
-	////var $mailsvr_stream = '';
-	// user name the we logged in as on the mailserver
-	////var $mailsvr_account_username = '';
-	////var $folder = '';
-	//var $newsmode = False;
-	//var $sort = '';
-	//var $order = '';
-	//var $start = '';
-	////var $msgnum = '';
-	////var $msgnum_idx = '-1';
 	
 	
-
 	/*
 	function mail_msg_init()
 	{
@@ -326,6 +296,8 @@
 			// (in) (b) send_message.php: (fill me in - I got lazy)
 			'to',
 			'cc',
+			// bcc: we send the MTA the "RCPT TO" command for these BUT no bcc info is put in the message headers
+			'bcc',
 			// body - POST var, never in URI (GET) that I know of, but it is possible, URI (EXTREMELY rare)
 			'body',
 			'subject',
@@ -645,51 +617,75 @@
 		if ((isset($tmp_prefs['email']['ex_accounts']))
 		&& (is_array($tmp_prefs['email']['ex_accounts'])))
 		{
-			$this->num_ex_accounts = count($tmp_prefs['email']['ex_accounts']);
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $tmp_prefs[email][ex_accounts] is set and is_array, its count: $this->num_ex_accounts: ['.$this->num_ex_accounts.']<br>';}
-		}
-		else
-		{
-			$this->num_ex_accounts = 0;
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $tmp_prefs[email][ex_accounts] NOT set or NOT is_array, $this->num_ex_accounts: ['.$this->num_ex_accounts.']<br>';}
-		}
+			$this->ex_accounts_count = count($tmp_prefs['email']['ex_accounts']);
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $tmp_prefs[email][ex_accounts] is set and is_array, its count: $this->ex_accounts_count: ['.$this->ex_accounts_count.']<br>'; }
+			if ($this->debug_logins > 2) { echo '$tmp_prefs[email][ex_accounts] DUMP<pre>'; print_r($tmp_prefs[email][ex_accounts]); echo '</pre>'; }
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to process extra account data ; $this->ex_accounts_count: ['.$this->ex_accounts_count.']<br>'; }
+			// note: extra accounts lowest possible value = 1, NOT 0
+			// also, $key, although numbered integers, may not be conticuous lowest to highest (may be empty or missing elements inbetween)
 		
-		// ---- what accounts have some data defined
-		if ($this->num_ex_accounts > 0)
-		{
-			while(list($key,$value) = each($tmp_prefs['email']['ex_accounts']))
+			// ---- what accounts have some data defined
+			// array_extra_accounts[X]['acctnum'] : integer
+			// array_extra_accounts[X]['status'] string = "enabled" | "disabled" | "empty"
+			// NOTE: WHY does this cause this error *even* WHEN IT IS AN ARRAY?:
+			//	Warning: Variable passed to each() is not an array or object in /phpgroupware/email/inc/class.mail_msg_base.inc.php on line 661
+			//while(list($key,$value) = each($tmp_prefs['email']['ex_accounts']))
+			while(list($key,$value) = @each($tmp_prefs['email']['ex_accounts']))
 			{
 				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: for each $tmp_prefs[email][ex_accounts] ; $key: ['.serialize($key).'] $value: ['.serialize($value).']<br>';}
 				// if we are here at all then this array item must have some data defined
-				$next_pos = count($this->defined_ex_accounts);
-				$this->defined_ex_accounts[$next_pos] = $key;
-				// is this account "enabled"
-				if ( (isset($tmp_prefs['email']['ex_accounts'][$key]['ex_account_enabled']))
+				$next_pos = count($this->extra_accounts);
+				$this->extra_accounts[$next_pos] = array();
+				$this->extra_accounts[$next_pos]['acctnum'] = (int)$key;
+				// ----  is this account "enabled", "disabled" or is this array item "empty"
+				// first, see if it has essential data, if not, it's an empty array item
+				if ( (!isset($tmp_prefs['email']['ex_accounts'][$key]['fullname']))
+				|| (!isset($tmp_prefs['email']['ex_accounts'][$key]['email_sig']))
+				|| (!isset($tmp_prefs['email']['ex_accounts'][$key]['layout'])) )
+				{
+					// this account lacks essential data needed to describe an account, it must be an "empty" element
+					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: account ['.$key.'] is *empty*: $tmp_prefs[email][ex_accounts]['.$key.']: ['.serialize($tmp_prefs['email']['ex_accounts'][$key]).']<br>';}
+					$this->extra_accounts[$next_pos]['status'] = 'empty';
+				}
+				// ... so the account is not empty ...
+				elseif ( (isset($tmp_prefs['email']['ex_accounts'][$key]['ex_account_enabled']))
 				&& ((string)$tmp_prefs['email']['ex_accounts'][$key]['ex_account_enabled'] != ''))
 				{
-					// this account is defined AND enabled, add it to $this->enabled_ex_accounts
-					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: account enabled: $tmp_prefs[email][ex_accounts]['.$key.'][ex_account_enabled]:  ['.serialize($tmp_prefs['email']['ex_accounts'][$key]['ex_account_enabled']).']<br>';}
-					$next_pos = count($this->enabled_ex_accounts);
-					$this->enabled_ex_accounts[$next_pos] = $key;
+					// this account is defined AND enabled, 
+					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: account ['.$key.'] is *enabled*: $tmp_prefs[email][ex_accounts]['.$key.'][ex_account_enabled]:  ['.serialize($tmp_prefs['email']['ex_accounts'][$key]['ex_account_enabled']).']<br>';}
+					$this->extra_accounts[$next_pos]['status'] = 'enabled';
+				}
+				else
+				{
+					// this account is defined BUT not enabled
+					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: account ['.$key.'] is *disabled*: $tmp_prefs[email][ex_accounts]['.$key.'][ex_account_enabled]:  ['.serialize($tmp_prefs['email']['ex_accounts'][$key]['ex_account_enabled']).']<br>';}
+					$this->extra_accounts[$next_pos]['status'] = 'disabled';
+				}
+				
+				// IF ENABLED, then 
+				if ($this->extra_accounts[$next_pos]['status'] == 'enabled')
+				{
+					// PROCESS EXTRA ACCOUNT PREFS
+					// run thru the create prefs function requesting this particular acctnum
+					// fills in certain missing data, and does some sanity checks, and any data processing that may be necessary
+					$tmp_prefs = array();
+					// we "fool" create_email_preferences into processing extra account info as if it were top level data
+					// by specifing the secong function arg as the integer of this particular enabled account
+					$this_ex_acctnum = $this->extra_accounts[$next_pos]['acctnum'];
+					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call create_email_preferences("", $this_ex_acctnum) where $this_ex_acctnum: ['.serialize($this_ex_acctnum).'] <br>'; }
+					$tmp_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences('', $this_ex_acctnum);
+					// now put these processed prefs in the correct location  in our prefs array
+					$this->set_pref_array($tmp_prefs['email'], $this_ex_acctnum);
 				}
 			}
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $this->defined_ex_accounts: ['.serialize($this->defined_ex_accounts).'] ; $this->enabled_ex_accounts: ['.serialize($this->enabled_ex_accounts).']<br>';}
-			
-			// PROCESS EXTRA ACCOUNT PREFS
-			// run thru the create prefs function requesting this particular acctnum
-			// fills in certain missing data, and does some sanity checks, and any data processing that may be necessary
-			for ($i=0; $i <count($this->enabled_ex_accounts); $i++)
-			{
-				$tmp_prefs = array();
-				// we "fool" create_email_preferences into processing extra account info as if it were top level data
-				// by specifing the secong function arg as the integer of this particular enabled account
-				$this_ex_acctnum = $this->enabled_ex_accounts[$i];
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call create_email_preferences("", $this_ex_acctnum) where $this_ex_acctnum: ['.serialize($this_ex_acctnum).'] <br>'; }
-				$tmp_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences('', $this_ex_acctnum);
-				// now put these processed prefs in the correct location  in our prefs array
-				$this->set_pref_array($tmp_prefs['email'], $this_ex_acctnum);
-			}
+			if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: $this->extra_accounts dump:<pre>'; print_r($this->extra_accounts); echo '</pre>';}
 		}
+		else
+		{
+			$this->ex_accounts_count = 0;
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $tmp_prefs[email][ex_accounts] NOT set or NOT is_array, $this->ex_accounts_count: ['.$this->ex_accounts_count.']<br>';}
+		}
+		
 		// clear the temp var
 		$tmp_prefs = array();
 		// -end- extra account init handling
@@ -760,8 +756,11 @@
 		
 		// ----  Things Specific To Loging In, and Actually Logging In  -----
 		// $args_array['folder'] gets prep_folder_in and then is stored in class var $this->get_arg_value('folder')
+		
 		if ($args_array['do_login'] == True)
 		{
+			
+			
 			//  ----  Get Email Password
 			if ($this->get_isset_pref('passwd') == False)
 			{
@@ -912,6 +911,30 @@
 				}
 			}
 			
+			
+			
+			/*
+			$fake_fldball = array();
+			$fake_fldball['acctnum'] = $acctnum;
+			$fake_fldball['folder'] = '';
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to issue: $this->open_stream_extra($fake_fldball, $args_array, $got_args): $this->open_stream_extra($fake_fldball, $args_array, $got_args);  $this->open_stream_extra('.serialize($fake_fldball).', '.serialize($args_array).', '.serialize($got_args).')'.'<br>';}
+			$did_open_stream = $this->open_stream_extra($fake_fldball, $args_array, $got_args);
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $this->open_stream_extra returns: '.serialize($did_open_stream).'<br>';}
+			// error check
+			if ($did_open_stream == False)
+			{
+				if ($this->debug_logins > 0) { echo 'mail_msg: begin_request: LEAVING with did_open_stream ERROR, closing stream, FAILURE in $this->open_stream_extra <br>';}
+				// log out since we could not reopen, something must have gone wrong
+				$this->end_request(
+					array(
+						'acctnum' => $acctnum
+					)
+				);
+				return False;
+			}
+			*/
+			
+			
 			// ----  Process "sort" "order" "start" and "msgnum" GPC args (if any) passed to the script  -----
 			// these args are so fundamental, they get stored in their own class vars
 			// no longer referenced as args after this
@@ -939,38 +962,64 @@
  
 	function end_request($args_array='')
 	{
-		// args array currently not used
 		if ($this->debug_logins > 0) { echo 'mail_msg: end_request: ENTERING'.'<br>';}
 		//if ($this->debug_logins > 2) { echo 'mail_msg: end_request: direct access info dump of $this->a  :<pre>'; print_r($this->a) ; echo '</pre>';}
-		
-		if (($this->get_isset_arg('mailsvr_stream') == True)
-		&& ($this->get_arg_value('mailsvr_stream') != ''))
+		if ((isset($args_array['acctnum']))
+		&& ((string)$args_array['acctnum'] != ''))
 		{
-			if ($this->debug_logins > 0) { echo 'mail_msg: end_request: stream exists, logging out'.'<br>'; }
-			$this_acctnum = $this->acctnum;
-			$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->close($this->get_arg_value('mailsvr_stream'));
-			$this->set_arg_value('mailsvr_stream', '');
+			$acctnum = (int)$args_array['acctnum'];
+		}
+		else
+		{
+			$acctnum = $this->get_acctnum();
+		}
+		
+		if (($this->get_isset_arg('mailsvr_stream', $acctnum) == True)
+		&& ($this->get_arg_value('mailsvr_stream', $acctnum) != ''))
+		{
+			if ($this->debug_logins > 0) { echo 'mail_msg: end_request: stream exists, for $acctnum ['.$acctnum.'] logging out'.'<br>'; }
+			$GLOBALS['phpgw_dcom_'.$acctnum]->dcom->close($this->get_arg_value('mailsvr_stream', $acctnum));
+			$this->set_arg_value('mailsvr_stream', '', $acctnum);
 		}
 		if ($this->debug_logins > 0) { echo 'mail_msg: end_request: LEAVING'.'<br>';}
-		//$this->a[$this->acctnum] = $tmp_a;
 	}
 
 
 
-	function open_stream_extra($fldball='')
-	{
-		if ($this->debug_logins > 0) { echo 'mail_msg: open_stream_extra: ENTERING, fldball: ['.serialize($fldball).'] <br>'; }
-		$existing_mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-		if ((isset($existing_mailsvr_stream))
-		&& ((string)$existing_mailsvr_stream != ''))
+	function open_stream_extra($fldball='', $args_array='', $got_args='')
+	{		
+		if ($this->debug_logins > 0) { echo 'mail_msg: open_stream_extra: ENTERING, $fldball: ['.serialize($fldball).'] ; $args_array: ['.serialize($args_array).'] ; $got_args: ['.serialize($got_args).']<br>'; }
+		
+		if ((isset($fldball['acctnum']))
+		&& ((string)$fldball['acctnum'] != ''))
 		{
-			if ($this->debug_logins > 0) { echo 'mail_msg: open_stream_extra: LEAVING, stream already exists, returning $existing_mailsvr_stream ['.serialize($existing_mailsvr_stream).'] <br>'; }
-			return $existing_mailsvr_stream;
+			$acctnum = (int)$fldball['acctnum'];
 		}
 		else
 		{
-			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: stream for this account needs tp be opened'.'<br>'; }
-			$acctnum = $fldball['acctnum'];
+			$acctnum = $this->get_acctnum();
+		}
+		if ((isset($fldball['folder']))
+		&& ((string)$fldball['folder'] != ''))
+		{
+			$input_folder_arg = $fldball['folder'];
+		}
+		else
+		{
+			$input_folder_arg = '';
+		}
+		if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: $acctnum: ['.serialize($acctnum).'] ; $input_folder_arg: ['.serialize($input_folder_arg).']<br>'; }		
+		
+		$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+		if ((isset($mailsvr_stream))
+		&& ((string)$mailsvr_stream != ''))
+		{
+			if ($this->debug_logins > 0) { echo 'mail_msg: open_stream_extra: PRE-EXISTING stream, do not re-login, $mailsvr_stream ['.serialize($mailsvr_stream).'] <br>'; }
+		}
+		else
+		{
+			$mailsvr_stream = '';
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: stream for this account needs to be opened, login to $acctnum ['.$acctnum.']'.'<br>'; }
 			$mailsvr_callstr = $this->get_pref_value('mailsvr_callstr', $acctnum);
 			if ($this->get_isset_pref('passwd', $acctnum) == False)
 			{
@@ -1003,7 +1052,7 @@
 			
 			// ----  Create email server Data Communication Class  ----
 			$this_server_type = $this->get_pref_value('mail_server_type', $acctnum);
-			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: creating new dcom_holder at $GLOBALS["phpgw_dcom_".$this_acctnum('.$this_acctnum.')] = new mail_dcom_holder'.'<br>'; }
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: creating new dcom_holder at $GLOBALS["phpgw_dcom_'.$acctnum.'] = new mail_dcom_holder'.'<br>'; }
 			$GLOBALS['phpgw_dcom_'.$acctnum] = new mail_dcom_holder;
 			$GLOBALS['phpgw_dcom_'.$acctnum]->dcom = CreateObject("email.mail_dcom", $this_server_type);
 			$GLOBALS['phpgw_dcom_'.$acctnum]->dcom->mail_dcom_base();
@@ -1017,9 +1066,9 @@
 			{
 				$GLOBALS['phpgw_dcom_'.$acctnum]->dcom->force_msg_uids = True;
 			}
-			
+			// log in to INBOX because we know INBOX should exist on every mail server, "reopen" to desired folder (if different) later
 			set_time_limit(60);
-			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: about to call dcom->open: $GLOBALS["phpgw_dcom_".$this_acctnum('.$this_acctnum.')]->dcom->open('.$mailsvr_callstr."INBOX".', '.$user.', '.$pass.', )'.'<br>'; }
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: about to call dcom->open: $GLOBALS["phpgw_dcom_'.$acctnum.']->dcom->open('.$mailsvr_callstr."INBOX".', '.$user.', '.$pass.', )'.'<br>'; }
 			$mailsvr_stream = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->open($mailsvr_callstr."INBOX", $user, $pass, '');
 			$pass = '';
 			set_time_limit(0);
@@ -1032,47 +1081,62 @@
 				if ($this->debug_logins > 0) { echo 'mail_msg: open_stream_extra: LEAVING with ERROR: failed to open mailsvr_stream : '.$mailsvr_stream.'<br>';}
 				return False;
 			}
-			
 			$this->set_arg_value('mailsvr_stream', $mailsvr_stream, $acctnum);
 			$this->set_arg_value('mailsvr_account_username', $user, $acctnum);
-			
-			$mailsvr_namespace = $this->get_arg_value('mailsvr_namespace', $acctnum);
-			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: $mailsvr_namespace: '.serialize($mailsvr_namespace).'<br>'; }
-			$mailsvr_delimiter = $this->get_arg_value('mailsvr_delimiter', $acctnum);
-			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: $mailsvr_delimiter: '.serialize($mailsvr_delimiter).'<br>'; }
-			
-			$input_folder_arg = $fldball['folder'];
-			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: about to issue $processed_folder_arg = $this->prep_folder_in('.$input_folder_arg.')<br>'; }
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: ... we just opened stream for $acctnum: ['.serialize($acctnum).'] continue ...<br>'; }
+		}
+		if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: we have a stream for $acctnum: ['.serialize($acctnum).'] continue ...<br>'; }
+		
+		// ---- Switch To Desired Folder If Necessary  ----
+		// class will get this data on its own to do the lookup in prep_folder_in anyway, so might as well get it for us here at the same time
+		$mailsvr_namespace = $this->get_arg_value('mailsvr_namespace', $acctnum);
+		if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: $mailsvr_namespace: '.serialize($mailsvr_namespace).'<br>'; }
+		$mailsvr_delimiter = $this->get_arg_value('mailsvr_delimiter', $acctnum);
+		if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: $mailsvr_delimiter: '.serialize($mailsvr_delimiter).'<br>'; }
+		
+		// FIND FOLDER VALUE
+		// get best available, most legit, folder value that we can find, and prep it in
+		if ($input_folder_arg == '')
+		{
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: about to call: "get_best_folder_arg($args_array, $got_args, $acctnum(='.$acctnum.'))"<br>'; }
+			$processed_folder_arg = $this->get_best_folder_arg($args_array, $got_args, $acctnum);
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: "get_best_folder_arg" returns $processed_folder_arg ['.htmlspecialchars(serialize($processed_folder_arg)).']<br>'; }
+		}
+		else
+		{
 			$processed_folder_arg = $this->prep_folder_in($input_folder_arg);
-			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: $processed_folder_arg value: ['.$processed_folder_arg.']<br>'; }
-			
-			// ---- Switch To Desired Folder If Necessary  ----
-			if ($processed_folder_arg == 'INBOX')
+		}
+		
+		
+		if ($processed_folder_arg == 'INBOX')
+		{
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: NO need to switch folders, about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.')<br>'; }
+			$this->set_arg_value('folder', $processed_folder_arg, $acctnum);
+		}
+		else
+		{
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: need to switch folders (reopen) from INBOX to $processed_folder_arg: '.$processed_folder_arg.'<br>';}
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: about to issue: $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->reopen('.$mailsvr_stream.', '.$mailsvr_callstr.$processed_folder_arg,', )'.'<br>';}
+			$did_reopen = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->reopen($mailsvr_stream, $mailsvr_callstr.$processed_folder_arg, '');
+			if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: reopen returns: '.serialize($did_reopen).'<br>';}
+			if ($did_reopen == False)
 			{
-				if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: NO need to switch folders, about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.')<br>'; }
-				$this->set_arg_value('folder', $processed_folder_arg, $acctnum);
+				if ($this->debug_logins > 0) { echo 'mail_msg: open_stream_extra: LEAVING with re-open ERROR, closing stream, FAILED to reopen (change folders) $mailsvr_stream ['.$mailsvr_stream.'] INBOX to ['.$mailsvr_callstr.$processed_folder_arg.'<br>';}
+				$this->end_request(
+					array(
+						'acctnum' => $acctnum
+					)
+				);
+				return False;
 			}
 			else
 			{
-				if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: need to switch folders (reopen) from INBOX to $processed_folder_arg: '.$processed_folder_arg.'<br>';}
-				if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: about to issue: $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->reopen('.$mailsvr_stream.', '.$mailsvr_callstr.$processed_folder_arg,', )'.'<br>';}
-				$did_reopen = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->reopen($mailsvr_stream, $mailsvr_callstr.$processed_folder_arg, '');
-				if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: reopen returns: '.serialize($did_reopen).'<br>';}
-				if ($did_reopen == False)
-				{
-					if ($this->debug_logins > 0) { echo 'mail_msg: open_stream_extra: LEAVING with re-open ERROR, closing stream, FAILED to reopen (change folders) $mailsvr_stream ['.$mailsvr_stream.'] INBOX to ['.$mailsvr_callstr.$processed_folder_arg.'<br>';}
-					$this->end_request($acctnum);
-					return False;
-				}
-				else
-				{
-					if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: Successful switch folders (reopen) from (default initial folder) INBOX to ['.$processed_folder_arg.']<br>';}
-					if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: switched folders (via reopen), about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.')<br>'; }
-					$this->set_arg_value('folder', $processed_folder_arg, $acctnum);
-				}
+				if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: Successful switch folders (reopen) from (default initial folder) INBOX to ['.$processed_folder_arg.']<br>';}
+				if ($this->debug_logins > 1) { echo 'mail_msg: open_stream_extra: switched folders (via reopen), about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.')<br>'; }
+				$this->set_arg_value('folder', $processed_folder_arg, $acctnum);
 			}
-			return $this->get_arg_value('mailsvr_stream', $acctnum);
 		}
+		return $this->get_arg_value('mailsvr_stream', $acctnum);
 	}
 
 

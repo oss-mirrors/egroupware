@@ -101,6 +101,47 @@
 				$GLOBALS['phpgw']->template->set_var('V_x-phpgw-type','');
 			}
 			
+			//  ----  TOOL BAR / MENU BAR ----
+			$GLOBALS['phpgw']->template->set_var('accounts_label',$this->bo->xi['accounts_label']);
+			$GLOBALS['phpgw']->template->set_var('ctrl_bar_font',$this->bo->xi['ctrl_bar_font']);
+			$GLOBALS['phpgw']->template->set_var('ctrl_bar_font_size',$this->bo->xi['ctrl_bar_font_size']);
+			$GLOBALS['phpgw']->template->set_var('ctrl_bar_back1',$this->bo->xi['ctrl_bar_back1']);
+			$GLOBALS['phpgw']->template->set_var('current_sort',$this->bo->xi['current_sort']);
+			$GLOBALS['phpgw']->template->set_var('current_order',$this->bo->xi['current_order']);
+			$GLOBALS['phpgw']->template->set_var('current_start',$this->bo->xi['current_start']);
+			// ---- account switchbox  ----
+			$GLOBALS['phpgw']->template->set_var('acctbox_listbox',$this->bo->xi['acctbox_listbox']);
+			$GLOBALS['phpgw']->template->set_var('acctbox_frm_name',$this->bo->xi['acctbox_frm_name']);
+			$GLOBALS['phpgw']->template->set_var('acctbox_action',$this->bo->xi['acctbox_action']);
+			// ---- Move Message Box  ----
+			$GLOBALS['phpgw']->template->set_var('mlist_checkbox_name',$this->bo->xi['mlist_checkbox_name']);
+			$GLOBALS['phpgw']->template->set_var('mlist_embedded_uri',$this->bo->xi['mlist_embedded_uri']);
+			$GLOBALS['phpgw']->template->set_var('frm_delmov_action',$this->bo->xi['frm_delmov_action']);
+			$GLOBALS['phpgw']->template->set_var('frm_delmov_name',$this->bo->xi['frm_delmov_name']);
+			$GLOBALS['phpgw']->template->set_var('delmov_listbox',$this->bo->xi['delmov_listbox']);
+			
+		
+		/*
+		ok	acctbox_frm_name
+		ok	acctbox_action
+		ok	ctrl_bar_back1
+		ok	acctbox_listbox
+		ok	ctrl_bar_font
+		ok	ctrl_bar_font_size
+		ok	accounts_label
+			
+		ok	frm_delmov_name
+		ok	frm_delmov_action
+		ok	current_sort
+		ok	current_order
+		ok	current_start
+		ok	mlist_checkbox_name
+		ok	mlist_embedded_uri
+		ok	delmov_listbox
+		*/	
+			
+			
+			
 			$GLOBALS['phpgw']->template->set_var('ilnk_prev_msg',$this->bo->xi['ilnk_prev_msg']);
 			$GLOBALS['phpgw']->template->set_var('ilnk_next_msg',$this->bo->xi['ilnk_next_msg']);
 			
@@ -184,6 +225,7 @@
 			// ----  so called "TOOLBAR" between the msg header data and the message siaplay
 			$GLOBALS['phpgw']->template->set_var('view_option',$this->bo->xi['view_option']);
 			$GLOBALS['phpgw']->template->set_var('view_headers_href',$this->bo->xi['view_headers_href']);
+			$GLOBALS['phpgw']->template->set_var('view_raw_message_href',$this->bo->xi['view_raw_message_href']);
 			
 			// -----  SHOW MESSAGE  -------
 			set_time_limit(120);

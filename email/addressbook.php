@@ -1,15 +1,16 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - email/addressbook                                         *
-  * http://www.phpgroupware.org                                              *
-  * Written by Bettina Gille [ceb@phpgroupware.org]                          *
-  * -----------------------------------------------                          *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
-  /* $Id$ */
+	/**************************************************************************\
+	* phpGroupWare - email/addressbook                                         *
+	* http://www.phpgroupware.org                                              *
+	* Written by Bettina Gille [ceb@phpgroupware.org]                          *
+	* -----------------------------------------------                          *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
+	
+	/* $Id$ */
 
 	$GLOBALS['phpgw_info']['flags'] = array(
 		'noheader' => True,
@@ -29,7 +30,10 @@
 	$d = CreateObject('phpgwapi.contacts');
 	$c = CreateObject('phpgwapi.categories');
 	$c->app_name = 'addressbook';
-
+	
+	$include_personal = True;
+	//$include_personal = False;
+	
 	$charset = $GLOBALS['phpgw']->translation->translate('charset');
 	$GLOBALS['phpgw']->template->set_var('charset',$charset);
 	$GLOBALS['phpgw']->template->set_var('title',$GLOBALS['phpgw_info']['site_title']);
@@ -41,24 +45,49 @@
 	$GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php'));
 	$GLOBALS['phpgw']->template->set_var('lang_select_cats',lang('Select category'));
 
-	if (! $start) { $start = 0; }
+	if (! $start)
+	{
+		$start = 0;
+	}
 
-	if (!$filter) { $filter = 'none'; }
+	if (!$filter)
+	{
+		$filter = 'none';
+	}
 
 	if (!$cat_id)
 	{
-		if ($filter == 'none') { $qfilter  = 'tid=n'; }
-		elseif ($filter == 'private') { $qfilter  = 'tid=n,owner='.$GLOBALS['phpgw_info']['user']['account_id']; }
-		else { $qfilter = 'tid=n,owner='.$filter; }
+		if ($filter == 'none')
+		{
+			$qfilter  = 'tid=n';
+		}
+		elseif ($filter == 'private')
+		{
+			$qfilter  = 'tid=n,owner='.$GLOBALS['phpgw_info']['user']['account_id'];
+		}
+		else
+		{
+			$qfilter = 'tid=n,owner='.$filter;
+		}
 	}
 	else
 	{
-		if ($filter == 'none') { $qfilter  = 'tid=n,cat_id='.$cat_id; }
-		elseif ($filter == 'private') { $qfilter  = 'tid=n,owner='.$GLOBALS['phpgw_info']['user']['account_id'].',cat_id='.$cat_id; }
-		else { $qfilter = 'tid=n,owner='.$filter.'cat_id='.$cat_id; }
+		if ($filter == 'none')
+		{
+			$qfilter  = 'tid=n,cat_id='.$cat_id;
+		}
+		elseif ($filter == 'private')
+		{
+			$qfilter  = 'tid=n,owner='.$GLOBALS['phpgw_info']['user']['account_id'].',cat_id='.$cat_id; 
+		}
+		else
+		{
+			$qfilter = 'tid=n,owner='.$filter.'cat_id='.$cat_id;
+		}
 	}
 
-	if($GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'] && $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'] > 0)
+	if (($GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
+	&& ($GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'] > 0))
 	{
 		$offset = $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
 	}
@@ -110,12 +139,63 @@
 		$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
 		$GLOBALS['phpgw']->template->set_var(tr_color,$tr_color);
 		$firstname = $entries[$i]['n_given'];
-		if (!$firstname) { $firstname = '&nbsp;'; }
+		if (!$firstname)
+		{
+			$firstname = '&nbsp;';
+		}
 		$lastname = $entries[$i]['n_family'];
-		if (!$lastname) { $lastname = '&nbsp;'; }
-		$id     = $entries[$i]['id'];
-		$email  = $entries[$i]['email'];
-		$hemail = $entries[$i]['email_home'];
+		if (!$lastname)
+		{
+			$lastname = '&nbsp;';
+		}
+		
+		$personal_firstname = '';
+		$personal_lastname = '';
+		$personal_part = '';
+		if ((isset($firstname))
+		&& ($firstname != '')
+		&& ($firstname != '&nbsp;'))
+		{
+			$personal_firstname = $firstname.' ';
+		}
+		if ((isset($lastname))
+		&& ($lastname != '')
+		&& ($lastname != '&nbsp;'))
+		{
+			$personal_lastname = $lastname;
+		}
+		$personal_part = $personal_firstname.$personal_lastname;
+		
+		if (($personal_part == '')
+		|| ($include_personal == False))
+		{
+			$id     = $entries[$i]['id'];
+			$email  = $entries[$i]['email'];
+			$hemail = $entries[$i]['email_home'];
+		}
+		else
+		{
+			$id = $entries[$i]['id'];
+			if ((isset($entries[$i]['email']))
+			&& (trim($entries[$i]['email']) != ''))
+			{
+				$email  = '&quot;'.$personal_part.'&quot; &lt;'.$entries[$i]['email'].'&gt;';
+			}
+			else
+			{
+				$email  = $entries[$i]['email'];
+			}
+			if ((isset($entries[$i]['email_home']))
+			&& (trim($entries[$i]['email_home']) != ''))
+			{
+				$hemail = '&quot;'.$personal_part.'&quot; &lt;'.$entries[$i]['email_home'].'&gt;';
+			}
+			else
+			{
+				$hemail = $entries[$i]['email_home'];
+			}
+		}
+		
 		// --------------------- template declaration for list records --------------------------
 		$GLOBALS['phpgw']->template->set_var(array(
 			'firstname' => $firstname,

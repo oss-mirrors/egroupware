@@ -90,11 +90,23 @@
 							.'&'.$msgball_list[$i]['uri'])
 				);
 			}
+			
+			// COMPOSE NEW email link
+			$compose_link = $GLOBALS['phpgw']->link(
+								'/index.php',
+								 'menuaction=email.uicompose.compose'
+								// this data tells us where to return to after sending a message
+								// since we started from home page, send can not (at this time) take us back there
+								// so instead take user to INBOX for the default account (acctnum 0) after clicking the send button
+								.'&fldball[folder]=INBOX'
+								.'&fldball[acctnum]=0');
+			$compose_href = '<a href="'.$compose_link.'">'.lang('Compose New').'</a>'."\r\n";
+			
 			// ADD FOLDER LISTBOX TO HOME PAGE (Needs to be TEMPLATED)
 			// Does This Mailbox Support Folders (i.e. more than just INBOX)?
 			if ($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders() == False)
 			{
-				$extra_data = '';
+				$extra_data = '&nbsp; &nbsp;'.$compose_href;
 			}
 			else
 			{
@@ -117,14 +129,15 @@
 				// get you custom built HTML listbox (a.k.a. selectbox) widget
 				$switchbox_listbox = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);
 				// make it another TR we can insert into the home page portal object
-				// and surround it in FORM tage so the submit will work
+				// and surround it in FORM tags so the submit will work
 				$switchbox_action = $GLOBALS['phpgw']->link(
 								'/index.php',
 								'menuaction=email.uiindex.index');
 				$extra_data = 
 					'<form name="switchbox" action="'.$switchbox_action.'" method="post">'."\r\n"
 						.'<td align="left">'."\r\n"
-							.'&nbsp;<strong>E-Mail Folders:</strong>&nbsp;'.$switchbox_listbox
+							.'&nbsp;<strong>E-Mail Folders:</strong>&nbsp;'.$switchbox_listbox."\r\n"
+							.'&nbsp; &nbsp;'.$compose_href."\r\n"
 						.'</td>'."\r\n"
 					.'</form>'."\r\n";
 			}
@@ -162,7 +175,7 @@
 			$portalbox->data = $data;
 		}
 
-		// output the portalbox and (if applicable) the folders listbox below it
+		// output the portalbox and below it (1) the folders listbox (if applicable) and (2) Compose New mail link
 		echo "\r\n".'<!-- start Mailbox info -->'."\r\n"
 			.$portalbox->draw($extra_data)
 			.'<!-- ends Mailox info -->'."\r\n";

@@ -73,7 +73,9 @@
 			if ($GLOBALS['phpgw']->msg->get_arg_value('what') == "move")
 			{
 				if ($this->debug > 0) { echo 'emai.boaction.delmov: get_arg_value(what) == "move") <br>'; }
-				// called by the "move selected messages to" listbox onChange action
+				// (1) generally called by the "move selected messages to" listbox onChange action
+				// (2) also can be called by uimessage "move this message into" listbox onChange action
+				//  if (2) then this flag is set as such: msgball[called_by] = uimessage
 				
 				/*
 				$fromacctnum = (int)$GLOBALS['phpgw']->msg->get_arg_value('acctnum');
@@ -99,6 +101,49 @@
 				*/
 				
 				$delmov_list = $GLOBALS['phpgw']->msg->get_arg_value('delmov_list');
+				
+				// were we called by uimessage, if so, then treat the post-move navigation like a "delete_single_msg"
+				if ((isset($delmov_list[0]['called_by']))
+				&& ($delmov_list[0]['called_by'] == 'uimessage'))
+				{
+					// BEFORE we move, if there is no mext message, then we will go back to index page
+					$nav_data = $GLOBALS['phpgw']->msg->prev_next_navigation();
+					if ($this->debug > 2) { echo 'emai.boaction.delmov: move single *called by uimessage*: pre-move $nav_data[] dump <pre>: '; print_r($nav_data); echo '</pre>'; }
+					// ----  "Go To Previous Message" Handling  -----
+					// this is actually a little broken when moving a single message when called by uimessage
+					// this is a workaround the almost works, it takes you to the message you looked a 1 message ago
+					// whereas I think you should go to the next message, but next_msg data is not passed by prev_next_navigation when
+					// we're called by uimessage, this also means that with one message left in the folder *after* the move, this code
+					// thinks the folder is empty and takes us to uiindex *for the same folder* though, so at lease the user knows
+					// there's a mail left in that folder
+					// FUTURE: pass these insrustions from hidden data obtained from uimessage when prev_next_navigation is more accurate
+					if (($nav_data['prev_msg'] != $not_set)
+					&& ((string)$nav_data['lowest_left'] != '0') 
+					&& ((string)$nav_data['highest_right'] != '0'))
+					{
+						$this->redirect_to = $GLOBALS['phpgw']->link(
+							'/index.php',
+							 'menuaction=email.uimessage.message'
+							.'&'.$nav_data['prev_msg']['msgball']['uri']
+							.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+							.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+							.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+					}
+					else
+					{
+						// go back to index page
+						$this->redirect_to = $GLOBALS['phpgw']->link(
+							'/index.php',
+							 'menuaction=email.uiindex.index'
+							.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out($delmov_list[0]['folder'])
+							.'&fldball[acctnum]='.(int)$delmov_list[0]['acctnum']
+							.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+							.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+							.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+					}
+					if ($this->debug > 1) { echo 'emai.boaction.delmov: move single *called by uimessage*: pre-move determination of $this->redirect_to : ['.$this->redirect_to.']<br>'; }
+				}
+				
 				$to_fldball = $GLOBALS['phpgw']->msg->get_arg_value('to_fldball');
 				$to_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_in($to_fldball['folder']);
 				$to_fldball['acctnum'] = (int)$to_fldball['acctnum'];
@@ -138,29 +183,37 @@
 				// report folder messages were moved to
 				$tf = $GLOBALS['phpgw']->msg->prep_folder_out($to_fldball['folder']);
 				// folder we should go back to
-				$return_to_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out($delmov_list[0]['folder']);
-				$return_to_fldball['acctnum'] = $delmov_list[0]['acctnum'];
-				
-				$this->redirect_to = $GLOBALS['phpgw']->link(
-								'/index.php',
-								 'menuaction=email.uiindex.index'
-								.'&fldball[folder]='.$return_to_fldball['folder']
-								.'&fldball[acctnum]='.$return_to_fldball['acctnum']
-								.'&tm='.$tm
-								.'&tf='.$tf
-								.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
-								.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-								.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
-				
-				$goto_args=array( 
-					'folder'  => $return_to_fldball['folder'],
-					'acctnum' => $return_to_fldball['acctnum'],
-					'tm'	=> $tm,
-					'tf'	=> $tf,
-					'sort'  => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
-					'order'  => $GLOBALS['phpgw']->msg->get_arg_value('order'),
-					'start'  => $GLOBALS['phpgw']->msg->get_arg_value('start')
-				);
+				if ((isset($delmov_list[0]['called_by']))
+				&& ($delmov_list[0]['called_by'] == 'uimessage'))
+				{
+					// we already figured this out before the move
+				}
+				else
+				{
+					$return_to_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out($delmov_list[0]['folder']);
+					$return_to_fldball['acctnum'] = $delmov_list[0]['acctnum'];
+					
+					$this->redirect_to = $GLOBALS['phpgw']->link(
+									'/index.php',
+									 'menuaction=email.uiindex.index'
+									.'&fldball[folder]='.$return_to_fldball['folder']
+									.'&fldball[acctnum]='.$return_to_fldball['acctnum']
+									.'&tm='.$tm
+									.'&tf='.$tf
+									.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+									.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+									.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+					
+					$goto_args=array( 
+						'folder'  => $return_to_fldball['folder'],
+						'acctnum' => $return_to_fldball['acctnum'],
+						'tm'	=> $tm,
+						'tf'	=> $tf,
+						'sort'  => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
+						'order'  => $GLOBALS['phpgw']->msg->get_arg_value('order'),
+						'start'  => $GLOBALS['phpgw']->msg->get_arg_value('start')
+					);
+				}
 				// end session if we are not going to reuse the current object
 				if ($attempt_reuse == False)
 				{
@@ -374,23 +427,34 @@
 			//echo '$mime: ['.$mime.']<br>';
 			//echo '$GLOBALS[phpgw]->msg->get_arg_value(encoding): ['.$GLOBALS['phpgw']->msg->get_arg_value('encoding').']<br>';
 			
-			if ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'base64')
+			// ----  'irregular' "view raw message" functionality  ----
+			if ($msgball['part_no'] == 'raw_message')
 			{
-				//echo $GLOBALS['phpgw']->msg->de_base64($GLOBALS['phpgw']->msg->phpgw_fetchbody($part_no));
+				// to dump out the whole raw message, do this:
+				// 1) output the headers, 2) output the raw body 3) output a "closing" CRLF
+				//headers_msgball will be used get the message headers, by specifying "part_no" = 0
+				$headers_msgball = $msgball;
+				$headers_msgball['part_no'] = 0;
+				// that can also be used to ge tthe raw message body because phpgw_body() doesn't care about "part_no" 
+				echo $GLOBALS['phpgw']->msg->phpgw_fetchbody($headers_msgball);
+				echo $GLOBALS['phpgw']->msg->phpgw_body($headers_msgball);
+				echo "\r\n";
+			}
+			// ---- "regular" attachment handling  ----
+			elseif ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'base64')
+			{
 				echo $GLOBALS['phpgw']->msg->de_base64($GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball));
 			}
 			elseif ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'qprint')
 			{
-				//echo $GLOBALS['phpgw']->msg->qprint($GLOBALS['phpgw']->msg->phpgw_fetchbody($part_no));
 				echo $GLOBALS['phpgw']->msg->qprint($GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball));
 			}
 			else
 			{
-				//echo $GLOBALS['phpgw']->msg->phpgw_fetchbody($part_no);
 				echo $GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball);
 			}
-			
-			$GLOBALS['phpgw']->msg->end_request();
+			// you may feed "end_request" a msgball or a fldball and "end_request" will close the acctnum specified therein
+			$GLOBALS['phpgw']->msg->end_request($msgball);
 			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
 		

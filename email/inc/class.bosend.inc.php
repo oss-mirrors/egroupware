@@ -296,6 +296,7 @@
 			}
 			
 			// ----  Attachment Detection  -----
+			// some of this attachment uploading and handling code is from squirrelmail (www.squirrelmail.org)
 			$upload_dir = $GLOBALS['phpgw']->msg->att_files_dir;
 			if (file_exists($upload_dir))
 			{
@@ -324,6 +325,7 @@
 			// convert script GPC args into useful mail_out structure information
 			$to = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('to'));
 			$cc = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('cc'));
+			$bcc = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('bcc'));
 			$body = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($GLOBALS['phpgw']->msg->get_arg_value('body')));
 			$subject = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('subject'));
 			// after this,  do NOT use ->msg->get_arg_value() for these anymore
@@ -334,9 +336,10 @@
 			// ----  DE-code HTML SpecialChars in the body   -----
 			// THIS NEEDS TO BE CHANGED WHEN MULTIPLE PART FORWARDS ARE ENABLED
 			// BECAUSE WE CAN ONLY ALTER THE 1ST PART, I.E. THE PART THE USER JUST TYPED IN
-			/*  // I think the email needs to be sent out as if it were PLAIN text (at least the part we are handling here)
-			// i.e. with NO ENCODED HTML ENTITIES, so use > instead of $rt; and " instead of &quot; . etc...
-			// it's up to the endusers MUA to handle any htmlspecialchars, whether to encode them or leave as it, the MUA should decide  */
+			/*  email needs to be sent out as if it were PLAIN text (at least the part we are handling here)
+			i.e. with NO ENCODED HTML ENTITIES, so use > instead of $rt; and " instead of &quot; . etc...
+			it's up to the endusers MUA to handle any htmlspecialchars, whether to encode them or leave as it, the MUA should decide 
+			*/
 			$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
 			
 			// ----  Add Email Sig to Body   -----
@@ -366,6 +369,13 @@
 			{
 				$this->mail_out['cc'] = $GLOBALS['phpgw']->msg->make_rfc_addy_array($cc);
 				$mta_to .= ',' .$GLOBALS['phpgw']->msg->addy_array_to_str($this->mail_out['cc'], False);
+			}
+			if ($bcc)
+			{
+				// here we will add bcc addresses to the list of adresses we will feed the MTA via the "RCPT TO" command
+				// *however* this bcc data NEVER actually gets put in the message headers
+				$this->mail_out['bcc'] = $GLOBALS['phpgw']->msg->make_rfc_addy_array($bcc);
+				$mta_to .= ',' .$GLOBALS['phpgw']->msg->addy_array_to_str($this->mail_out['bcc'], False);
 			}
 			// now make mta_to an array because we will loop through it in class mail_send
 			$this->mail_out['mta_to'] = explode(',', $mta_to);
@@ -493,6 +503,8 @@
 			&& ($this->mail_out['fwd_proc'] == 'pushdown'))
 			{
 				// -----   INCOMPLETE CODE HERE  --------
+				// -----   INCOMPLETE CODE HERE  --------
+				// -----   INCOMPLETE CODE HERE  --------
 				$body_part_num++;
 				$this->mail_out['body'][$body_part_num]['mime_headers'] = Array();
 				$this->mail_out['body'][$body_part_num]['mime_body'] = Array();
@@ -600,6 +612,9 @@
 				//$fwd_this['sub_body'] = $GLOBALS['phpgw']->msg->normalize_crlf($fwd_this['sub_body']);
 				
 				// Make Sure ALL INLINE BOUNDARY strings actually have CRLF CRLF preceeding them
+				// because some lame MUA's don't properly format the message with CRLF CRLF BOUNDARY
+				// in which case when we encapsulate such a malformed message, it *may* not be understood correctly 
+				// by the receiving MUA, so we attempt to correct such a malformed message before we encapsulate it
 				// ---- not yet complete ----
 				$char_quot = '"';
 				preg_match("/boundary=[$char_quot]{0,1}.*[$char_quot]{0,1}\r\n/",$fwd_this['sub_header'],$fwd_this['matches']);
@@ -641,6 +656,8 @@
 				//$fwd_this['processed'] = $GLOBALS['phpgw']->msg->normalize_crlf($fwd_this['processed']);
 				//$this->mail_out['body'][$body_part_num]['mime_body'] = explode("\r\n", $fwd_this['processed']);
 				$this->mail_out['body'][$body_part_num]['mime_body'] = $GLOBALS['phpgw']->msg->explode_linebreaks(trim($fwd_this['processed']));
+				// clear this no longer needed var
+				$fwd_this = '';
 				unset($fwd_this);
 			}
 			
