@@ -57,7 +57,7 @@
 		'f_threads' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
-				'postdate' => array('type' => 'timestamp','nullable' => False,'default' => '0000-00-00 00:00:00'),
+				'postdate' => array('type' => 'char','precision' => 19, 'nullable' => False,'default' => '0000-00-00 00:00:00'),
 				'main' => array('type' => 'int', 'precision' => 8,'nullable' => False),
 				'parent' => array('type' => 'int', 'precision' => 8,'nullable' => False),
 				'cat_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
