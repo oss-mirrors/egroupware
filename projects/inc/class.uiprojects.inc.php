@@ -376,6 +376,7 @@
 				else
 				{
 					$link_data['menuaction'] = 'projects.uiprojecthours.list_hours';
+					$link_data['pro_parent'] = $pro[$i]['parent'];
 					$GLOBALS['phpgw']->template->set_var('action_entry',$GLOBALS['phpgw']->link('/index.php',$link_data)); 
 					$GLOBALS['phpgw']->template->set_var('lang_action_entry',lang('Work hours'));
 				}
@@ -1092,7 +1093,7 @@
 				$GLOBALS['phpgw']->template->set_var('pcosts',$main['pcosts']);
 				$GLOBALS['phpgw']->template->set_var('lang_number',lang('Job ID'));
 
-				$GLOBALS['phpgw']->template->set_var('pro_parent',$this->boprojects->return_value('pro',$values['parent']));	
+				$GLOBALS['phpgw']->template->set_var('pro_parent',$this->boprojects->return_value('pro',$values['parent']));
 				$GLOBALS['phpgw']->template->fp('subhandle','sub',True);
 			}
 
