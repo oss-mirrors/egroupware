@@ -75,7 +75,7 @@
     $to .= "Bcc: $bcc";
   }
 */
-  $rc = $phpgw->send->msg("email", $to, $subject, stripslashes($body), "calendar", $cc, $bcc);
+  $rc = $phpgw->send->msg("email", $to, $subject, stripslashes($body), "", $cc, $bcc);
   if ($rc) {
     header("Location: " . $phpgw->link("index.php","cd=13&folder=" . urlencode($return)) );
   } else {

@@ -11,20 +11,12 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  /* $Id$ */
+  /* $Id $ */
 
 // This will eventually be written using templates.
 
-  $phpgw_flags = array("noheader" => True, "currentapp" => "email");
+  $phpgw_flags["currentapp"] = "email";
   include("../header.inc.php");
-
-  $msgtype = $phpgw->msg->get_flag($mailbox,$msgnum,"X-phpGW-Type");
-  if (!empty($msgtype)) {
-    Header("Location: " . $phpgw->link("message_$msgtype.php","folder=". urlencode($folder)."&msgnum=".$msgnum));
-    exit;
-  } else {
-    $phpgw->common->header();
-  }
 
   $msg = $phpgw->msg->header($mailbox, $msgnum);
   $struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
@@ -41,14 +33,8 @@
   if (! $folder)
      $folder = "INBOX";
 ?>
-
-<? 
-  $msgtype = $phpgw->msg->get_flag($mailbox,$msgnum,"X-phpGW-Type");
-  if (!empty($msgtype)) {
-    echo "the type is: ".$msgtype; 
-  }
-?>
-
+<h1>THIS IS A SPECIAL CALENDAR TYPE EMAIL</h1>
+In the future, this will process a specially formated email msg, intended to accept, or reject meeting requests.<hr>
 <table cellpadding="1" cellspacing="1" width="95%" align="center"><form>
 <tr><td colspan="2" bgcolor="<?php echo $phpgw_info["theme"]["em_folder"]; ?>">
 
