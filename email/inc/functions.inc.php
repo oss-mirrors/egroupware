@@ -1,14 +1,26 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - E-Mail                                                    *
-  * http://www.phpgroupware.org                                              *
-  * Based on Aeromail by Mark Cushman <mark@cushman.net>                     *
-  *          http://the.cushman.net/                                         *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
+  * phpGroupWare Email - Mail Abstraction Layer                              *
+  * http://www.phpgroupware.org/api                                          *
+  * This file written by Joseph Engo <jengo@phpgroupware.org>                *
+  * and Itzchak Rehberg <izzy@phpgroupware.org>                              *
+  * and Dan Kuykendall <dan@phpgroupware.org>                                *
+  * and Mark Peters <skeeter@phpgroupware.org>                               *
+  * Mail Abstraction Layer                                                   *
+  * Copyright (C) 2000, 2001 Itzchak Rehberg                                 *
+  * -------------------------------------------------------------------------*
+  * This library is part of phpGroupWare (http://www.phpgroupware.org)       * 
+  * This library is free software; you can redistribute it and/or modify it  *
+  * under the terms of the GNU Lesser General Public License as published by *
+  * the Free Software Foundation; either version 2.1 of the License,         *
+  * or any later version.                                                    *
+  * This library is distributed in the hope that it will be useful, but      *
+  * WITHOUT ANY WARRANTY; without even the implied warranty of               *
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                     *
+  * See the GNU Lesser General Public License for more details.              *
+  * You should have received a copy of the GNU Lesser General Public License *
+  * along with this library; if not, write to the Free Software Foundation,  *
+  * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            *
   \**************************************************************************/
 
   /* $Id$ */
