@@ -32,7 +32,7 @@
 
 		function uiprojects()
 		{
-			global $phpgw;
+			global $phpgw, $phpgw_info;
 
 			$this->boprojects				= CreateObject('projects.boprojects',True);
 			$this->nextmatchs				= CreateObject('phpgwapi.nextmatchs');
@@ -115,7 +115,7 @@
 			$this->t->set_var('lang_statistics',lang("Statistics"));
 			$this->t->set_var('link_delivery',$phpgw->link('/projects/del_index.php'));
 			$this->t->set_var('lang_delivery',lang('Delivery'));
-			$this->t->set_var('link_projects',$phpgw->link('/projects/index.php'));
+			$this->t->set_var('link_projects',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects'));
 			$this->t->set_var('lang_projects',lang('Projects'));
 			$this->t->set_var('link_archiv',$phpgw->link('/projects/archive.php'));
 			$this->t->set_var('lang_archiv',lang('archive'));
@@ -165,12 +165,12 @@
 
 // ---------------- list header variable template-declarations --------------------------
 
-			$this->t->set_var(sort_number,$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Project ID','&menuaction=projects.list_projects')));
-			$this->t->set_var(sort_customer,$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer')));
-			$this->t->set_var(sort_status,$this->nextmatchs->show_sort_order($this->sort,'status',$this->order,'/index.php',lang('Status')));
-			$this->t->set_var(sort_title,$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title')));
-			$this->t->set_var(sort_end_date,$this->nextmatchs->show_sort_order($this->sort,'end_date',$this->order,'/index.php',lang('Date due')));
-			$this->t->set_var(sort_coordinator,$this->nextmatchs->show_sort_order($this->sort,'coordinator',$this->order,'/index.php',lang('Coordinator')));
+			$this->t->set_var(sort_number,$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Project ID'),'&menuaction=projects.list_projects'));
+			$this->t->set_var(sort_customer,$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer'),'&menuaction=projects.list_projects'));
+			$this->t->set_var(sort_status,$this->nextmatchs->show_sort_order($this->sort,'status',$this->order,'/index.php',lang('Status'),'&menuaction=projects.list_projects'));
+			$this->t->set_var(sort_title,$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title'),'&menuaction=projects.list_projects'));
+			$this->t->set_var(sort_end_date,$this->nextmatchs->show_sort_order($this->sort,'end_date',$this->order,'/index.php',lang('Date due'),'&menuaction=projects.list_projects'));
+			$this->t->set_var(sort_coordinator,$this->nextmatchs->show_sort_order($this->sort,'coordinator',$this->order,'/index.php',lang('Coordinator'),'&menuaction=projects.list_projects'));
 			$this->t->set_var(lang_h_jobs,lang('Jobs'));
 			$this->t->set_var(lang_edit,lang('Edit'));
 			$this->t->set_var(lang_view,lang('View'));
@@ -227,7 +227,7 @@
 
 				$this->t->set_var('jobs',$phpgw->link('/projects/sub_projects.php','pro_parent=' . $pro[$i]['id']));
 
-				if ($this->boprojects->check_perms($this->grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $phpgw_info['user']['account_id'])
+				if ($this->boprojects->check_perms($this->grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $this->account)
 				{
 					$this->t->set_var('edit',$phpgw->link('/projects/edit.php','id=' . $pro[$i]['id'] . '&cat_id=' . $cat_id));
 					$this->t->set_var('lang_edit_entry',lang('Edit'));
@@ -246,7 +246,7 @@
 
 // ------------------------- end record declaration ------------------------
 
-// --------------- template declaration for Add Form --------------------------                                                                                                          
+// --------------- template declaration for Add Form --------------------------
 
 			if ($this->cat_id && $this->cat_id != 0)
 			{
@@ -260,7 +260,7 @@
 			}
 			else
 			{
-				if ($this->boprojects->check_perms($this->grants[$cat[0]['owner']],PHPGW_ACL_ADD) || $cat[0]['owner'] == $phpgw_info['user']['account_id'])
+				if ($this->boprojects->check_perms($this->grants[$cat[0]['owner']],PHPGW_ACL_ADD) || $cat[0]['owner'] == $this->account)
 				{
 					$this->t->set_var('add','<form method="POST" action="' . $phpgw->link('/projects/add.php','cat_id=' . $this->cat_id)
 											. '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
