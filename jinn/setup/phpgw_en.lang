@@ -51,6 +51,7 @@ add site-object	jinn	en	add site-object
 add your zip-file with images here	jinn	en	Add your ZIP-file with images here
 admin:: edit site	jinn	en	admin:: edit site
 administrator mode	jinn	en	Administrator Mode
+administrators for site %1	jinn	en	administrators for site %1
 advanced configuration	jinn	en	advanced configuration
 all from	jinn	en	all from
 alternative fieldname for display	jinn	en	Alternative Fieldname for display
@@ -68,6 +69,7 @@ attachment directory does not exist or is not correct, nor can it be created...<
 automatic	jinn	en	automatic
 automaticly add objects for all tables	jinn	en	automaticly add objects for all tables
 automaticly incrementing	jinn	en	automaticly incrementing
+available for events	jinn	en	Available for events
 available for field types	common	en	Available for field types
 back to record list	jinn	en	back to record list
 binary	jinn	en	binary
@@ -150,6 +152,8 @@ edit this record	jinn	en	edit this record
 edit this site	jinn	en	Edit this Site
 edit this site object	jinn	en	Edit this Site Object
 editors for object %1 in site %2	jinn	en	editors for object %1 in site %2
+empty	jinn	en	empty
+empty filter	jinn	en	empty filter
 error code %1	jinn	en	ERROR CODE %1
 error path_open %1	jinn	en	error opening path %1
 error: the file %1 doesn't exists, please contact the webmaster	jinn	en	ERROR: the file %1 doesn't exists, please contact the webmaster
@@ -298,6 +302,7 @@ records not succesfully deleted.	jinn	en	Records NOT succesfully deleted.
 records not succesfully deleted. (error code 101)	jinn	en	Records NOT succesfully deleted. (error code 101)
 records succesfully deleted	jinn	en	Records succesfully deleted
 registered field plugins	common	en	Registered field plugins
+registered object event plugins	jinn	en	Registered object event plugins
 related	jinn	en	related
 related entries from table %1	jinn	en	Related entries from table %1
 relation %1	jinn	en	relation %1
@@ -334,6 +339,7 @@ select which graphic library jinn must use	admin	en	Select which graphic library
 select_object	jinn	en	Select object
 serialnumber	jinn	en	Object serialnumber
 server type?	admin	en	Server Type?
+session filter	jinn	en	session filter
 set access right for site objects	jinn	en	Set Access Right for Site Objects
 set access rights	jinn	en	Set Access Rights
 set access rights for sites	jinn	en	Set Access Rights for Sites

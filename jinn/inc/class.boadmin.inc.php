@@ -189,6 +189,7 @@
 		 if($status[ret_code])
 		 {
 			$this->message[error]=lang('An unknown error has occured (error code 110)');
+			$this->message[error_code]=110;
 		 }
 		 else
 		 {
@@ -278,6 +279,7 @@
 			   if($status[ret_code])
 			   {
 				  $this->message[error]=lang('An unknown error has occured (error code 109)');
+				  $this->message[error_code]=-1;
 				  _debug_array(lang('An unknown error has occured (error code 109)'));
 			   }
 			   else
@@ -330,6 +332,7 @@
 		 if($status[ret_code])
 		 {
 			$this->message[error]=lang('An unknown error has occured (error code 109)');
+			$this->message[error_code]=109;
 		 }
 		 else
 		 {

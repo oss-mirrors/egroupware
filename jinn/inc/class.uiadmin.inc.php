@@ -34,11 +34,6 @@
 		 'add_edit_site' => True,
 		 'add_edit_object' => True,
 		 'browse_egw_jinn_sites' => True,
-		 'access_rights'=> True,
-		 'set_access_rights_site_objects'=> True,
-		 'set_access_rights_sites'=> True,
-		 'save_access_rights_object'=> True,
-		 'save_access_rights_site'=> True,
 		 'export_site'=> True,
 		 'export_object'=> True,
 		 'plug_config'=> True,
@@ -223,51 +218,6 @@
 		 $this->bo->save_sessiondata();
 
 	  }
-
-	  function access_rights()
-	  {
-		 $this->ui->header(lang('Set Access Rights'));
-		 $this->ui->msg_box($this->bo->message);
-		 unset($this->bo->message);
-
-		 $access_rights = CreateObject('jinn.uiadminacl', $this->bo);
-		 $access_rights->main_screen();
-
-		 unset($this->bo->message);
-
-		 $this->bo->save_sessiondata();
-
-	  }
-
-	  /*
-	  f unction set_access_rights_site_objects()
-	  {
-		 $this->ui->header(lang('Set Access Right for Site Objects'));
-		 $this->ui->msg_box($this->bo->message);
-		 unset($this->bo->message);
-
-		 $access_rights = CreateObject('jinn.uiadminacl',$this->bo);
-		 $access_rights->set_site_objects();
-
-		 unset($this->bo->message);
-
-		 $this->bo->save_sessiondata();
-	  }
-
-	  f unction set_access_rights_sites()
-	  {
-		 $this->ui->header(lang('Set Access Rights for Sites'));
-		 $this->ui->msg_box($this->bo->message);
-		 unset($this->bo->message);
-		 $access_rights = CreateObject('jinn.uiadminacl',$this->bo);
-		 $access_rights->set_sites();
-
-		 unset($this->bo->message);
-
-		 $this->bo->save_sessiondata();
-	  }
-
-	  */
 
 	  /**
 	  @function field_help_config

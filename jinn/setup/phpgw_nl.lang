@@ -54,6 +54,7 @@ add your zip-file with images here	jinn	nl	Voeg uw zip-bestand met beelden toe
 admin:: edit site	jinn	nl	Beheer - Wijzig Site
 administrator mode	jinn	nl	Beheermodus
 administrators for site $site_name	jinn	nl	Beheerders voor site $site_name
+administrators for site %1	jinn	nl	Beheerder voor site %1
 advanced configuration	jinn	nl	geavanceerde configuratie
 all from	jinn	nl	alle opties uit
 alternative fieldname for display	jinn	nl	Altenatieve veldnaam om weer te geven
@@ -75,6 +76,7 @@ attachment directory does not exist or is not correct, nor can it be created...<
 automatic	jinn	nl	automatisch
 automaticly add objects for all tables	jinn	nl	voor alle tabellen automatisch objecten maken
 automaticly incrementing	jinn	nl	telt automatisch op
+available for events	jinn	nl	Beschikbaar voor events
 available for field types	common	nl	Beschikbaar voor veldtype
 back to record list	jinn	nl	terug naar lijstweergave
 binary	jinn	nl	binair
@@ -168,6 +170,8 @@ editors for object $object_name in site $site_name	jinn	nl	redacteuren voor het 
 editors for object %1 in site %2	jinn	nl	redacteuren voor object %1 in site %2
 emailaddress for testing	jinn	nl	Emailadres om te testen
 emailtype	jinn	nl	Type email
+empty	jinn	nl	geen
+empty filter	jinn	nl	geen filter
 error code %1	jinn	nl	FOUTCODE %1
 error path_open %1	jinn	nl	Kon het pad %1 niet openen
 error: the file %1 doesn't exists, please contact the webmaster	jinn	nl	FOUT: het bestand %1 bestaat niet, neem a.u.b. contact op met uw webmaster
@@ -340,6 +344,7 @@ records not succesfully deleted.	jinn	nl	Record is niet met succes vewijderd.
 records not succesfully deleted. (error code 101)	jinn	nl	Records zijn niet met succes vewijderd (foutcode 101)
 records succesfully deleted	jinn	nl	Records zijn met succes verwijderd
 registered field plugins	common	nl	Geregistreerde veldplugins
+registered object event plugins	jinn	nl	Geregistreerde object event plugins
 related	jinn	nl	gerelateerde
 related entries from table %1	jinn	nl	Gerelateerde records from tabel %1
 relation %1	jinn	nl	relatie %1
@@ -371,6 +376,7 @@ select a plugin	jinn	nl	selecteer een plugin
 select an event	jinn	nl	selecteer een event
 select directory	jinn	nl	Selecteer directorie
 select email field	jinn	nl	Selecteer emailveld
+select jinn object file (*.jobj	jinn	nl	Selecteer JiNN object bestand (*.jobj)
 select jinn site file	jinn	nl	Selecteer JiNN Site bestand
 select site	jinn	nl	selecteer site
 select site to moderate	jinn	nl	Selecteer site om te bewerken
@@ -380,6 +386,7 @@ select_object	jinn	nl	Selecteer site-object
 send test email	jinn	nl	Verzend test email
 serialnumber	jinn	nl	Object serienummer
 server type?	admin	nl	Servertype?
+session filter	jinn	nl	filter in huidige sessie
 set access right for site objects	jinn	nl	Stel toegangsrechten voor site objecten in
 set access rights	jinn	nl	Toegangsrechten
 set access rights for sites	jinn	nl	Stel toegangsrechten in voor Sites

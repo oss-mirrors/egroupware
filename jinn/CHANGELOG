@@ -11,6 +11,10 @@ Version 0.8.210f
 Wed Feb 16 17:01:53 CET 2005
 - code cleanup in boadmin
 - fix Timestamp plugin display
+- code cleanup uiadmin, uiacl
+- removed uiadminacl
+- fixed langs
+- added dutch and english phrases
 
 Version 0.8.210e
 ===========================

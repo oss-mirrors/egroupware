@@ -622,13 +622,15 @@
 		 }
 	  }
 
+		/* fixme move to common */
 	  function addtoErrorArr($msg,$error_code)
 	  {
 		 $this->message[error][]=$msg;
-		 $this->message[error_code]=$error_code;
+		 $this->message[error_code][]=$error_code;
 	  }
 
 
+		/* fixme move to common */
 	  function addtoDebugArr($msg)
 	  {
 		 if($this->debug_sql==true)
