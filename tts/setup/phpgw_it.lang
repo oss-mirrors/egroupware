@@ -20,6 +20,7 @@ creates a struct of tickets	tts	it	Crea una struct di ticket
 date opened	tts	it	Data apertura
 detail	tts	it	Dettagli
 details	tts	it	Dettagli
+group ownership changed	tts	it	Cambiato gruppo di proprietà
 in progress	tts	it	In esecuzione
 new ticket	tts	it	Nuovo Ticket
 new value	tts	it	Nuovo Valore
