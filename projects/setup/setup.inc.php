@@ -15,11 +15,16 @@
 	$setup_info['projects']['app_order'] = 13;
 	$setup_info['projects']['enable']    = 1;
 
-	$setup_info['projects']['author'] = 'Bettina Gille';
+	$setup_info['projects']['author'] = array
+	(
+		'name'	=> 'Bettina Gille',
+		'email'	=> 'ceb@phpgroupware.org'
+	);
+
 	$setup_info['projects']['license']  = 'GPL';
 	$setup_info['projects']['description'] = 'Advanced project management';
+
 	$setup_info['projects']['maintainer'] = $setup_info['projects']['author'];
-	$setup_info['projects']['maintainer_email'] = 'ceb@phpgroupware.org';
 
 	$setup_info['projects']['tables'] = array
 	(
@@ -40,7 +45,6 @@
 	(
 		'preferences',
 		'admin',
-		'about',
 		'manual',
 		'add_def_pref',
 		'deleteaccount'

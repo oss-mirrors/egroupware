@@ -15,19 +15,23 @@
 	$setup_info['backup']['app_order']	= 72;
 	$setup_info['backup']['enable'] = 1;
 
-	$setup_info['backup']['author'] = 'Bettina Gille';
+	$setup_info['backup']['author'] = array
+	(
+		'name'	=> 'Bettina Gille',
+		'email'	=> 'ceb@phpgroupware.org'
+	);
+
 	$setup_info['backup']['license']  = 'GPL';
 	$setup_info['backup']['description'] =
 		'phpGroupWare data backup for sql, ldap and email.<br>
 		An online configurable backup app to store data offline.';
+
 	$setup_info['backup']['maintainer'] = $setup_info['backup']['author'];
-	$setup_info['backup']['maintainer_email'] = 'ceb@phpgroupware.org';
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['backup']['hooks'] = array
 	(
 		'admin',
-		'about',
 		'manual'
 	);
 
@@ -35,7 +39,7 @@
 	$setup_info['backup']['depends'][] = array
 	(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.13', '0.9.14','0.9.15')
+		'versions' => Array('0.9.15')
 	);
 
 	$setup_info['backup']['depends'][] = array
