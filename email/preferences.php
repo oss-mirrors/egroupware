@@ -275,10 +275,12 @@
 	// row2 = Sort Order 
 	// old_new means "lowest to highest", and new_old means "highest to lowest", which is imap-speak for reverse sorting
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$lang_oldest = lang("oldest");
+	$lang_newest = lang("newest");
 	$default_order_selected[$phpgw_info["user"]["preferences"]["email"]["default_sorting"]] = " selected";
 	$sorting_select_options =
-		 '<option value="old_new"' .$default_order_selected["old_new"] .'>oldest -> newest</option>' ."\n"
-		.'<option value="new_old"' .$default_order_selected["new_old"] .'>newest -> oldest</option>' ."\n";
+		 '<option value="old_new"' .$default_order_selected["old_new"] .'>'.$lang_oldest.' -> '.$lang_newest.'</option>' ."\n"
+		.'<option value="new_old"' .$default_order_selected["new_old"] .'>'.$lang_newest.' -> '.$lang_oldest.'</option>' ."\n";
 	$t->set_var('bg_row2',$tr_color);
 	$t->set_var('sorting_blurb',lang("Default sorting order"));
 	$t->set_var('sorting_select_name','default_sorting');
@@ -483,7 +485,7 @@
 	// row13 = Mail Folder(UW-Maildir)
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 	$t->set_var('bg_row13',$tr_color);
-	$t->set_var('mail_folder_blurb',lang("U-Wash Mail Folder"));
+	$t->set_var('mail_folder_blurb',lang("U-Wash Mail Folder").' - ' .lang("If Applicable"));
 	$t->set_var('mail_folder_text_name','mail_folder');
 	$t->set_var('mail_folder_text_value',$phpgw_info["user"]["preferences"]["email"]["mail_folder"]);
 

@@ -1447,7 +1447,7 @@
 					$dsp = $phpgw->msg->htmlspecialchars_encode($dsp);
 					$dsp = '<pre>'.$dsp.'</pre>';
 					// alternate to view formatted
-					$view_option = $phpgw->msg->href_maketag($view_option_url, 'view formatted');
+					$view_option = $phpgw->msg->href_maketag($view_option_url, lang('view formatted'));
 				}
 				else
 				{
@@ -1470,7 +1470,7 @@
 					// add a line after the last line of the message
 					$dsp = $dsp .'<br><br>';
 					// choice to view unformatted
-					$view_option = $phpgw->msg->href_maketag($view_option_url."&no_fmt=1", 'view unformatted');
+					$view_option = $phpgw->msg->href_maketag($view_option_url."&no_fmt=1", lang('view unformatted'));
 				}
 
 				// one last thing with "view option" - only show it with PLAIN email parts
