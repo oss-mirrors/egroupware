@@ -695,7 +695,7 @@
 			else
 			{
 			   $this->ui->msg_box($this->bo->message);
-			unset($this->bo->message);
+			   unset($this->bo->message);
 			   $this->main_menu();	
 			   $main = CreateObject('jinn.uiconfig',$this->bo);
 			   $main->show_fields();
@@ -706,13 +706,57 @@
 
 		 function file_download()
 		 {
+			/* check current site  and object*/
+			if(!$this->bo->site_id || !$this->bo->site_object_id)
+			{
+			   $this->bo->message[error]=lang('You have no access to this file.');
+			   $this->bo->message[error_code]=118;
+
+			   $this->bo->save_sessiondata();
+			   $this->bo->common->exit_and_open_screen('jinn.uiuser.index');
+			}
+
+			/* get available allowed paths from current site  and object*/
+			if($this->bo->site[cur_upload_path])
+			{
+			   $legal_paths[]=$this->bo->site[cur_upload_path];
+			}
+			if($this->bo->site_object[cur_upload_path])
+			{
+			   $legal_paths[]=$this->bo->site_object[cur_upload_path];
+			}
+
+			/* check if file is in one of the above paths */
+			foreach($legal_paths as $lpath)
+			{
+			   /* don't allow ../ in download string */
+			   if (preg_match("/%2F/i", $_GET['file']) || preg_match("/\.\./i", $_GET['file'])) 
+			   {
+				  continue;	
+			   } 
+			   
+			   if(substr($_GET['file'],0,strlen($lpath))==$lpath)
+			   {
+				  $allowed_action=true;	 
+			   }
+			}
+
+			if(!$allowed_action)
+			{
+			   $this->bo->message[error]=lang('You have no access to this file.');
+			   $this->bo->message[error_code]=118;
+
+			   $this->bo->save_sessiondata();
+			   $this->bo->common->exit_and_open_screen('jinn.uiuser.index');
+
+			}
 
 			$file_name=$_GET['file'];
 
 			if(file_exists($file_name))
 			{
 
-			   $browser=	CreateObject('phpgwapi.browser'); 
+			   $browser = CreateObject('phpgwapi.browser'); 
 
 			   $browser->content_header($file_name);
 

@@ -1,6 +1,13 @@
 =============================
 CHANGELOG JiNN for eGroupWare
 =============================
+$Id$
+
+Fri Oct 15 14:31:40 CEST 2004
+Version 0.8.203
+=============================
+- security fix to avoid abritairy download of files
+
 
 Wed Oct 13 13:54:07 CEST 2004
 Version 0.8.202

@@ -3,6 +3,7 @@ Error codes for the applications JiNN
 $Id$
 =============================================================
 
+118: class.uiuser.inc.php: You have no access to this file
 117: class.uiuser.inc.php: table defines in this object does not exist
 116: class.uiuser.inc.php: no access to this object
 115: class.uiuser.inc.php: no access to any sites
