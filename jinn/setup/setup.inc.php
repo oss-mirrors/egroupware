@@ -30,7 +30,7 @@
 	(
 		'phpgw_jinn_acl',
 		'phpgw_jinn_sites',
-        'phpgw_jinn_site_objects'
+		'phpgw_jinn_site_objects'
 	);
 
 	$setup_info['jinn']['enable']		= 1;
@@ -42,7 +42,7 @@
 		'sidebox_menu'
 	);
 
-	/* Dependacies for this app to work */
+	/* Dependencies for this app to work */
 	$setup_info['jinn']['depends'][]	= array
 	(
 		'appname'  => 'phpgwapi',
