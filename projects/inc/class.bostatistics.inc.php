@@ -121,7 +121,7 @@
 
 			$this->graph = CreateObject('phpgwapi.gdgraph',$this->debug);
 
-			$this->boprojects->order = 'level';
+			$this->boprojects->order = 'level DESC, start_date';
 			$this->boprojects->sort = 'DESC';
 			$pro = $this->boprojects->list_projects(array('type' => 'mainandsubs','main' => $project_id,'mstones_stat' => True));
 
