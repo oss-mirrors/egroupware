@@ -38,6 +38,7 @@
 		var $cat_id;
 		var $status;
 		var $html_output;
+		var $xmlrpc;
 
 		var $public_functions = array
 		(
@@ -58,6 +59,25 @@
 			'change_owner'			=> True
 		);
 
+		var $xml_functions  = array();
+		var $xmlrpc_methods = array();
+		
+		//viniciuscb: This soap is not tested. How are SOAP prototypes defined?
+		var $soap_functions = array(
+			'read_list' => array(
+				'in'  => array('struct'),
+				'out' => array('struct')
+			),
+			'search' => array(
+				'in'  => array('struct'),
+				'out' => array('struct')
+			),			
+			'list_methods' => array(
+				'in'  => array('struct'),
+				'out' => array('struct')
+			)			
+		);
+
 		function boprojects($is_active=False, $action = '')
 		{
 			$this->soprojects	= CreateObject('projects.soprojects');
@@ -71,9 +91,12 @@
 			$this->account			= $GLOBALS['phpgw_info']['user']['account_id'];
 			$this->grants			= $GLOBALS['phpgw']->acl->get_grants('projects');
 			$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
+			
+			// are we called via xmlrpc?
+			$this->xmlrpc = is_object($GLOBALS['server']) && $GLOBALS['server']->last_method;
 
-			$this->html_output	= True;
-
+			$this->html_output = ($this->xmlrpc)?False:True;
+			
 			if ($is_active)
 			{
 				$this->read_sessiondata($action);
@@ -209,7 +232,7 @@
 			$profileID 	= 1;
 
 			$template	= CreateObject('phpgwapi.Template',$GLOBALS['phpgw']->common->get_tpl_dir('projects'));
-			$bocalendar	= CreateObject('calendar.bocalendar');
+			$bocalendar	= CreateObject('appointmentcenter.bocalendar');
 			$bolink		= CreateObject('infolog.bolink');
 			
 			// find all calendar entries for event participants
@@ -2213,7 +2236,7 @@
 					$ubudget_jobs	= $this->colored($acc['u_budget_jobs'],$pro['budgetSum'],$acc['u_budget_jobs']);
 
 					$spaceset = '';
-					if ($pro['level'] > 0)
+					if ($pro['level'] > 0 && !$this->xmlrpc)
 					{
 						$spaceset = str_repeat($this->html_output?'&nbsp;.&nbsp;':'.',$pro['level']);
 					}
@@ -3465,6 +3488,48 @@
 				return $list_list;
 			}
 			return False;
+		}
+
+		function list_methods($_type='xmlrpc')
+		{
+			/*
+			  This handles introspection or discovery by the logged in client,
+			  in which case the input might be an array.  The server always calls
+			  this function to fill the server dispatch map using a string.
+			*/
+			if(is_array($_type))
+			{
+				$_type = $_type['type'] ? $_type['type'] : $_type[0];
+			}
+			switch($_type)
+			{
+				case 'xmlrpc':
+					$xml_functions = array(
+						'read_list' => array(
+							'function'  => 'list_projects',
+							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
+							'docstring' => lang('Read a list / search for entries.')
+						),
+						'search' => array(	// alias for consitent nameing
+							'function'  => 'list_projects',
+							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
+							'docstring' => lang('Read a list / search for entries.')
+						),						
+						'list_methods' => array(
+							'function'  => 'list_methods',
+							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
+							'docstring' => lang('Read this list of methods.')
+						),						
+					);
+					return $xml_functions;
+					break;
+				case 'soap':
+					return $this->soap_functions;
+					break;
+				default:
+					return array();
+					break;
+			}
 		}
 	}
 ?>
