@@ -197,16 +197,17 @@
 	// WHAT IS THIS PREF SUPPOSED TO DO ???
 	$from = $msg->from[0];
 	$personal = !isset($from->personal) || !$from->personal ? $from->mailbox.'@'.$from->host : $from->personal;
-	if ($phpgw_info['user']['preferences']['email']['show_addresses'] != 'no' && ($personal != $from->mailbox.'@'.$from->host))
+        //$display_address = Object();
+        if ($phpgw_info['user']['preferences']['email']['show_addresses'] != 'no' && ($personal != $from->mailbox.'@'.$from->host))
 	{
-		$display_address->from = '('.$from->mailbox.'@'.$from->host.')';
+		$display_address['from'] = '('.$from->mailbox.'@'.$from->host.')';
 	}
 	if ($msg->from)
 	{
 
 		$from_real_name = href_maketag($phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder).'&to='.urlencode($from->mailbox.'@'.$from->host)),
 			decode_header_string($personal) );
-		$from_raw_addy = trim($display_address->from);
+		$from_raw_addy = trim($display_address['from']);
 
 		$from_addybook_add = href_maketag(
 			$phpgw->link('/addressbook/add.php','add_email='.urlencode($from->mailbox.'@'.$from->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
@@ -235,14 +236,14 @@
 			$personal = decode_header_string($personal);
 			if ($phpgw_info['user']['preferences']['email']['show_addresses'] != 'no' && ($personal != $topeople->mailbox.'@'.$topeople->host))
 			{
-				$display_address->to = '('.$topeople->mailbox.'@'.$topeople->host.')';
+				$display_address['to'] = '('.$topeople->mailbox.'@'.$topeople->host.')';
 			}
 
 			$to_real_name = href_maketag(
 				$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder).'&to='.$topeople->mailbox.'@'.$topeople->host),
 				$personal
 			);
-			$to_raw_addy = trim($display_address->to);
+			$to_raw_addy = trim($display_address['to']);
 
 			$to_addybook_add = href_maketag(
 				$phpgw->link('/addressbook/add.php','add_email='.urlencode($topeople->mailbox.'@'.$topeople->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
@@ -371,7 +372,7 @@
 */
 
 // ---- Message Structure Analysis   -----
-	global $struct_not_set;
+//	global $struct_not_set;
 	$struct_not_set = '-1';
 
 
@@ -1012,7 +1013,7 @@
 				.'<pre>'.$boundary.'</pre> <br>'
 				.'<br> === BODY ==== <br><br>';
 			$dsp = $dsp .$phpgw->msg->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
-			
+
 			$t->set_var('message_body',$dsp);
 			$t->parse('V_display_part','B_display_part');
 		}
@@ -1020,14 +1021,14 @@
 		elseif (($part_nice[$i]['m_description'] == 'presentable')
 		&& (stristr($part_nice[$i]['m_keywords'], 'PLAIN'))
 		&& ($d1_num_parts <= 2)
-		&& (($part_nice[$i]['m_part_num_mime'] === '1') || ($part_nice[$i]['m_part_num_mime'] === '1.1'))
+		&& (($part_nice[$i]['m_part_num_mime'] == '1') || ($part_nice[$i]['m_part_num_mime'] == '1.1'))
 		&& ((int)$part_nice[$i]['bytes'] > $force_echo_size))
 		{
 			// output a blank message body, we'll use an alternate method below
 			$t->set_var('V_display_part','');
 			// -----  Finished With Message_Mail Template, Output It
 			$t->pparse('out','T_message_main');
-			
+
 			// -----  Prepare a Table for this Echo Dump
 			$title_text = '&nbsp;message: ';
 			$t->set_var('title_text',$title_text);
