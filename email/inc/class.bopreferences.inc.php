@@ -327,7 +327,6 @@
 				//'write_props'	=> 'no_db_defang',
 				'write_props'	=> '',
 				'lang_blurb'	=> lang('Email Account Name'),
-			//	'init_default'	=> 'function,$this->sub_default_userid($account_id);',
 				'init_default'	=> 'function,sub_default_userid',
 				'values'	=> array()
 			);
@@ -337,6 +336,7 @@
 				'type'		=> 'user_string',
 				'widget'	=> 'passwordbox',
 				'accts_usage'	=> 'default, extra_accounts',
+				//'write_props'	=> 'password, hidden, encrypted, empty_no_delete, no_db_defang',
 				'write_props'	=> 'password, hidden, encrypted, empty_no_delete',
 				'lang_blurb'	=> lang('Email Password'),
 				'init_default'	=> 'init_no_fill',
@@ -670,8 +670,10 @@
 				if ((!isset($this->args[$this_pref['id']]))
 				|| (trim($this->args[$this_pref['id']]) == ''))
 				{
-					// nothing submitted for this preference item
-					// OR an empty string was submitted for this pref item
+					// ----  nothing submitted for this preference item  ----
+					// ----  OR an empty string was submitted for this pref item  ----
+					
+					// so how do we handle this, for this pref...
 					if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_submitted_prefs: submitted_pref for ["'.$this_pref['id'].'"] not set or empty string<br>'; }
 					if (stristr($this_pref['write_props'], 'empty_no_delete'))
 					{
@@ -704,6 +706,8 @@
 				else
 				{
 					// ---  we have real data submitted for this preference item  ---
+					
+					// so how do we handle this, for this pref...
 					$submitted_pref = $this->args[$this_pref['id']];
 					// init a var to hold the processed submitted_pref
 					$processed_pref = '';
@@ -727,10 +731,21 @@
 						elseif (stristr($this_pref['write_props'], 'encrypted'))
 						{
 							// certain data (passwords) should be encrypted before going into the repository
-							// "user_string"s to be "encrypted" do NOT get "html_quotes_encode"
+							// "user_string"s to be "encrypted" do NOT get "db_defanged"
 							// before going into the encryption routine
+							// UPDATE: password STILL required "database defanging" because
+							// as of Jan 24 2002, it is verified that un-defanged passwords *may* destroy
+							// all user prefs because they may have the database unfriendly chars that 
+							// "de-fanging" encodes, i.e. this is STILL an issue at the database level
 							$processed_pref = $GLOBALS['phpgw']->msg->stripslashes_gpc($submitted_pref);
+							// we SHOULD feed the password as UNALTERED as possible into the encryption
+							// after that, we may manipulate it for database "friendliness"
 							$processed_pref = $GLOBALS['phpgw']->msg->encrypt_email_passwd($processed_pref);
+							// the last thing you do before saving to the DB is "de-fang"
+							$processed_pref = $GLOBALS['phpgw']->msg->html_quotes_encode($processed_pref);
+							// so the FIRST thing you do when reading from the db MUST be to "UN-defang"
+							// note this IS INDEED what happens in api/class,preferences,
+							// unless "no_db_defang" is specified, any "user_string" will be defanged
 						}
 						else
 						{

@@ -707,6 +707,16 @@
 			$this->ex_accounts_count = 0;
 			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $this->unprocessed_prefs[email][ex_accounts] NOT set or NOT is_array, $this->ex_accounts_count: ['.$this->ex_accounts_count.']<br>';}
 		}
+		// if NO extra accounts axist, we STILL need to put the default account inextra_and_default_acounts
+		// extra_and_default_acounts will not have been handled whatsoever if no extra accounts exist
+		// so make sure the default account is there
+		if (count($this->extra_and_default_acounts) == 0)
+		{
+			$this->extra_and_default_acounts = array();
+			// first put in the default account
+			$this->extra_and_default_acounts[0]['acctnum'] = 0;
+			$this->extra_and_default_acounts[0]['status'] = 'enabled';
+		}
 		// -end- extra account init handling
 		
 		//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST create_email_preferences GLOBALS[phpgw_info][user][preferences][email] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']['email']) ; echo '</pre>';}
@@ -795,10 +805,14 @@
 			{
 				// DO NOT alter the password and do NOT put that altered password BACK into the preferences array
 				// keep the one in GLOBALS in encrypted form if possible ????
-				//$this->a[$this->acctnum]['prefs']['passwd'] = $this->decrypt_email_passwd($this->a[$this->acctnum]['prefs']['passwd']);
-				$pass = $this->decrypt_email_passwd($this->get_pref_value('passwd'));
-				//$this->set_pref_value('passwd', $pass);
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: pass decoded from prefs: '.htmlspecialchars(serialize($this->get_pref_value('passwd'))).'<br>'; }
+				$pass = $this->get_pref_value('passwd');
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: pass from prefs: already defanged for us, but still encrypted <pre>'.$pass.'</pre><br>'."\r\n"; }
+				// IMPORTANT: (this note on "defanging" still valid as of Jan 24, 2002
+				// the last thing you do before saving to the DB is "de-fang"
+				// so the FIRST thing class prefs does when reading from the db MUST be to "UN-defang", and that IS what happens there
+				// so by now phpgwapi/class.preferences has ALREADY done the "de-fanging"
+				$pass = $this->decrypt_email_passwd($pass);
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: pass from prefs: decrypted: <pre>'.$pass.'</pre><br>'."\r\n"; }
 			}
 			// ----  ISSET CHECK for userid and passwd to avoid garbage logins  ----
 			if ( $this->get_isset_pref('userid')
@@ -807,8 +821,6 @@
 			&& ($pass != '') )
 			{
 				$user = $this->get_pref_value('userid');
-				// we set pass up above, we no longer alter the pass and put it back intoi the prefs array
-				//$pass = $this->get_pref_value('passwd');
 			}
 			else
 			{
@@ -1048,8 +1060,10 @@
 			}
 			else
 			{
-				$pass = $this->decrypt_email_passwd($this->get_pref_value('passwd', $acctnum));
-				if ($this->debug_logins > 1) { echo 'mail_msg: ensure_stream_and_folder: pass decoded from prefs: '.htmlspecialchars(serialize($this->get_pref_value('passwd'))).'<br>'; }
+				$pass = $this->get_pref_value('passwd', $acctnum);
+				if ($this->debug_logins > 1) { echo 'mail_msg: ensure_stream_and_folder: pass from prefs: already "defanged" for us, but still ancrypted '.htmlspecialchars(serialize($pass)).'<br>'; }
+				$pass = $this->decrypt_email_passwd($pass);
+				if ($this->debug_logins > 1) { echo 'mail_msg: ensure_stream_and_folder: pass from prefs: decrypted: '.htmlspecialchars(serialize($pass)).'<br>'; }
 			}
 			if ( $this->get_isset_pref('userid', $acctnum)
 			&& ($this->get_pref_value('userid', $acctnum) != '')
@@ -3114,6 +3128,10 @@
 	}
 
 	// ==  "poor-man's" database compatibility ==
+	function db_defang_encode($str)
+	{
+		return $this->html_quotes_encode($str);
+	}
 	function html_quotes_encode($str)
 	{
 		// ==  "poor-man's" database compatibility ==
@@ -3132,6 +3150,10 @@
 	}
 
 	// ==  "poor-man's" database compatibility ==
+	function db_defang_decode($str)
+	{
+		return $this->html_quotes_decode($str);
+	}
 	function html_quotes_decode($str)
 	{
 		// ==  "poor-man's" database compatibility ==
