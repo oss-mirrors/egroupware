@@ -222,14 +222,13 @@
 			$status=$this->so->update_phpgw_data($table,$data, $where_key,$where_value);
 
 			return $status;
-
-
 		}
 
 		function save_access_rights_site()
 		{
 			reset ($GLOBALS[HTTP_POST_VARS]);
-
+			$site_id=$GLOBALS[HTTP_POST_VARS]['site_id'];
+			
 			while (list ($key, $val) = each ($GLOBALS[HTTP_POST_VARS])) 
 			{
 				if (substr($key,0,6)=='editor')	$editors[]=$val;
@@ -237,20 +236,24 @@
 
 			if (is_array($editors)) $editors=array_unique($editors);
 
-			$status=$this->so->update_site_access_rights($editors,$GLOBALS[HTTP_POST_VARS]['site_id']);
+			$status=$this->so->update_site_access_rights($editors,$site_id);
 
 			if ($status==1)	$this->message[info]=lang('Access rights for Site succesfully editted');
 			else $this->message[error]=lang('Access rights for Site NOT succesfully editted');
 
 			$this->save_sessiondata();
-			$this->common->exit_and_open_screen('jinn.uiadmin.access_rights');
+//			$this->common->exit_and_open_screen('jinn.uiadmin.access_rights');
+			// FIXME keep nextmatch sorting filter etc...
+			$this->common->exit_and_open_screen('jinn.uiadmin.set_access_rights_sites&site_id='.$site_id);
 		}
 
 
 		function save_access_rights_object()
 		{
 			reset ($GLOBALS[HTTP_POST_VARS]);
-
+			$site_id=$GLOBALS[HTTP_POST_VARS]['site_id'];
+			$object_id=$GLOBALS[HTTP_POST_VARS]['object_id'];
+			
 			while (list ($key, $val) = each ($GLOBALS[HTTP_POST_VARS])) 
 			{
 			   if (substr($key,0,6)=='editor')	$editors[]=$val;
@@ -265,7 +268,11 @@
 			else $this->message[error]=lang('Access rights for site-object NOT succesfully editted');
 
 			$this->save_sessiondata();
-			$this->common->exit_and_open_screen('jinn.uiadmin.access_rights');
+			
+			
+			//			$this->common->exit_and_open_screen('jinn.uiadmin.access_rights');
+			// FIXME keep nextmatch sorting filter etc...
+			$this->common->exit_and_open_screen('jinn.uiadmin.set_access_rights_site_objects&object_id='.$object_id.'&site_id='.$site_id);
 		}
 
 		// FIXME rename
