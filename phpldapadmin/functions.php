@@ -920,7 +920,7 @@ function password_hash($password_clear, $enc_type)
 			{
 				$salt = randomsalt(8);
 				$hash = mhash(MHASH_MD5, $password_clear . $salt);
-				$e_password = '{SMD5}' . base64_encode($hash . $salt);
+				$new_value = '{SMD5}' . base64_encode($hash . $salt);
 			}
 			else
 			{
