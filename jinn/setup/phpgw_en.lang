@@ -1,0 +1,64 @@
+access rights for site succesfully editted	jinn	en	Access rights for site succesfully editted
+access rights for site-object succesfully editted	jinn	en	Access rights for site-object succesfully editted
+access rights site-objects	jinn	en	Access rights site-objects
+access_rights	jinn	en	access_rights
+add	jinn	en	add
+add attachent	jinn	en	add attachment
+add image	jinn	en	add image
+add new	jinn	en	Add new
+add object	jinn	en	add object
+add or remove	jinn	en	add or remove
+add site	admin	en	Add site
+add site object	jinn	en	add site object
+all from	jinn	en	all from
+attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	en	attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir: 
+automatic	jinn	en	 automatic
+binary	jinn	en	binary
+browse	jinn	en	Browse
+browse sites	jinn	en	browse sites
+browse through object settings	admin	en	Browse through object settings
+browses through sites	admin	en	Browses through sites
+jinn	common	en	jinn
+convert exec ( e.g. /usr/x11r6/bin/convert )	admin	en	path to Convert from ImageMagick ( e.g. /usr/X11R6/bin/convert )
+default image type (jpg, gif, png)	admin	en	Default image type (jpg, gif, png)
+default image width	admin	en	Default image width
+default thumb width	admin	en	Default thumb width
+delete	jinn	en	Delete
+edit	jinn	en	edit 
+global site configuration	admin	en	Global site configuration
+go	jinn	en	go
+image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	en	image directory does not exist or is not correct ...<br>please check object's upload dir
+no matchs found	jinn	en	No matchs found
+real value	jinn	en	real value
+record added succesfully	jinn	en	Record added succesfully
+record deleted succesfully	jinn	en	Record deleted succesfully
+record succesfully editted	jinn	en	Record succesfully editted
+related	jinn	en	related
+remove	jinn	en	remove
+reset form	jinn	en	reset form
+save	jinn	en	save
+search	jinn	en	Search
+search for string	jinn	en	search for string
+select site	jinn	en	select site
+select site to moderate	jinn	en	Select site to moderate
+select site-object to moderate	jinn	en	Select site-object to moderate
+select_object	jinn	en	Select object
+set access rights	admin	en	Set access rights
+set administrators for	jinn	en	Set administrators for
+set object moderator	jinn	en	set object moderator
+show	jinn	en	show
+show upload path	admin	en	Show upload path
+site beheerders	jinn	en	Site Administrators
+site db host	admin	en	Site datebase host
+site db name	admin	en	Site database name
+site db password	admin	en	Site database password
+site db type	admin	en	Site database type
+site db user	admin	en	Site database user
+site description	admin	en	Site description
+site id	admin	en	Site id
+site name	admin	en	Site name
+site title	admin	en	Site title
+start	admin	en	Start
+start at record	jinn	en	start at record
+stop at record	jinn	en	stop at record
+thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	en	thumb directory does not exist or is not correct ...<br>please check object's upload dir

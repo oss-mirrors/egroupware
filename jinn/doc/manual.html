@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.0.1  (Linux)">
+	<META NAME="CREATED" CONTENT="20021015;14545500">
+	<META NAME="CHANGED" CONTENT="20021017;1242200">
+	<STYLE>
+	<!--
+		@page { size: 209.99mm 296.99mm; margin: 20mm }
+		P { margin-bottom: 2.12mm }
+		P.western { font-size: 10pt }
+		H1 { margin-bottom: 2.12mm; page-break-after: avoid }
+		H1.western { font-family: "Arial"; font-size: 16pt; font-weight: bold }
+		H1.cjk { font-family: "HG Mincho Light J"; font-size: 16pt; font-weight: bold }
+		H1.ctl { font-family: "Arial Unicode MS"; font-size: 16pt; font-weight: bold }
+		H2 { margin-bottom: 2.12mm; page-break-after: avoid }
+		H2.western { font-family: "Arial"; font-size: 14pt; font-style: italic; font-weight: bold }
+		H2.cjk { font-family: "HG Mincho Light J"; font-size: 14pt; font-style: italic; font-weight: bold }
+		H2.ctl { font-family: "Arial Unicode MS"; font-size: 14pt; font-style: italic; font-weight: bold }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="nl-NL" LINK="#000080" VLINK="#800000">
+<H1 CLASS="western" ALIGN=CENTER>Jinn for phpGroupWare</H1>
+<H2 CLASS="western" ALIGN=CENTER>Pim Snel &lt;pim@lingewoud.nl&gt; 
+</H2>
+<H2 CLASS="western" ALIGN=CENTER>version 0.1 - 15 october 2002</H2>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western">This document explains howto use Jinn
+for phpGroupWare as webdeveloper, administrator and end user which we
+call moderator from now on.</P>
+<H1 CLASS="western"><BR><BR>
+</H1>
+<H1 CLASS="western">Contents</H1>
+<P STYLE="margin-bottom: 0mm"><FONT FACE="Arial">1. Introduction	1</FONT></P>
+<P STYLE="margin-bottom: 0mm"><BR>
+</P>
+<P STYLE="margin-bottom: 0mm"><FONT FACE="Arial">2. Database design	2</FONT></P>
+<P STYLE="margin-left: 4.99mm; margin-bottom: 0mm"><FONT FACE="Arial">1.
+Database requirements	2</FONT></P>
+<P STYLE="margin-left: 4.99mm; margin-bottom: 0mm"><BR>
+</P>
+<P STYLE="margin-bottom: 0mm"><FONT FACE="Arial">3. Setup /
+Administration	3</FONT></P>
+<P STYLE="margin-left: 4.99mm; margin-bottom: 0mm"><FONT FACE="Arial">1.
+Global Settings	3</FONT></P>
+<P STYLE="margin-left: 9.98mm; margin-bottom: 0mm"><FONT FACE="Arial">1.
+Setting and modifying global settings</FONT></P>
+<P STYLE="margin-left: 4.99mm; margin-bottom: 0mm"><FONT FACE="Arial">2.
+Sites and Site-objects	3</FONT></P>
+<P STYLE="margin-left: 9.98mm; margin-bottom: 0mm"><FONT FACE="Arial">1.
+Global Configuration	3</FONT></P>
+<P STYLE="margin-left: 9.98mm; margin-bottom: 0mm"><FONT FACE="Arial">2.
+Creating a site	3</FONT></P>
+<P STYLE="margin-left: 9.98mm; margin-bottom: 0mm"><FONT FACE="Arial">3.
+Browsing, deleting and modifying sites	3</FONT></P>
+<P STYLE="margin-left: 9.98mm; margin-bottom: 0mm"><FONT FACE="Arial">4.
+Creating site-objects	4</FONT></P>
+<P STYLE="margin-left: 9.98mm; margin-bottom: 0mm"><FONT FACE="Arial">5.
+Browsing, deleting and modifying sites-objects	3</FONT></P>
+<P STYLE="margin-left: 9.98mm; margin-bottom: 0mm"><FONT FACE="Arial">6.
+Adding additional relations	5</FONT></P>
+<P STYLE="margin-left: 9.98mm; margin-bottom: 0mm"><FONT FACE="Arial">7.
+Adding additional form-plugins	6</FONT></P>
+<P STYLE="margin-left: 4.99mm; margin-bottom: 0mm"><FONT FACE="Arial">3.
+Access rights</FONT></P>
+<P STYLE="margin-left: 9.98mm; margin-bottom: 0mm"><FONT FACE="Arial">1.
+Setting access rights for a site	7</FONT></P>
+<P STYLE="margin-left: 9.98mm; margin-bottom: 0mm"><FONT FACE="Arial">2.
+Setting access rights for a site-object	8</FONT></P>
+<P STYLE="margin-left: 9.98mm; margin-bottom: 0mm"><BR>
+</P>
+<P STYLE="margin-bottom: 0mm"><FONT FACE="Arial">4. Site Moderation</FONT></P>
+<P STYLE="margin-left: 4.99mm; margin-bottom: 0mm"><FONT FACE="Arial">1.
+Select Site and Site-object	9</FONT></P>
+<P STYLE="margin-left: 4.99mm; margin-bottom: 0mm"><FONT FACE="Arial">2.
+Add new entry	10</FONT></P>
+<P STYLE="margin-left: 4.99mm; margin-bottom: 0mm"><FONT FACE="Arial">3.
+Browsing, modifying and deleting entries	11<BR></FONT><BR>
+</P>
+<P STYLE="margin-bottom: 0mm"><FONT FACE="Arial">5. Example site for
+practice  <BR></FONT><BR>
+</P>
+<H1 CLASS="western">1. Introduction</H1>
+<P CLASS="western">Jinn for phpGroupWare is a multi-site,
+multi-database, multi-user/-group, database driven jinn
+written in and for the phpGroupWare Framework. Jinn for
+phpGroupWare makes it possible to have a lot of site-databases
+moderated by a lot of people all in one system. Access Rights are
+asigned at table-level and every site can have one or more
+site-administrators. 
+</P>
+<P CLASS="western">Jinn for phpGroupWare is a very useful
+tool for webdevelopers who need to setup a jinn for their
+frontend product. You're able to setup a nice idiot-proof interface
+for you're complex database design within minutes. Even one with
+many, and many with many relations are a peace of cake. 
+</P>
+<P CLASS="western">Currently it's only tested with MySQL but because
+it only uses the phpGW-API database calls it's must be able to work
+with PostgreSQL too.</P>
+<P CLASS="western"><BR><BR>
+</P>
+<H1 CLASS="western">2. Database design</H1>
+<P CLASS="western">Jinn for phpGroupWare is ideal for
+creating a moderators interface for existing databases. Developers
+have the freedom to design what ever they want at the frontend of the
+database, without having to worry about the moderaters side of the
+database. They can simply attach the Jinn for phpGroupWare
+to their database and voila a complete moderators interface is their.
+This is the beauty of the Jinn for phpGroupWare. There are
+only a few things database designers have to keep in mind before they
+create a new datebase. This section discusses the requirements of the
+database and then gives an example howto create a valid database
+which can be attached to the Jinn. 
+</P>
+<P STYLE="margin-top: 4.23mm; page-break-after: avoid"><FONT FACE="Arial"><FONT SIZE=4>1.
+Database requirements/conditions</FONT></FONT></P>
+<P CLASS="western">There are only a few conditions a database have to
+meet. These conditions have to do with reserved fieldnames,
+fieldtypes etc....</P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><B>Thirst field, 'id'</B></P>
+<P CLASS="western">For a start when you design a table the thirst
+field has to be called 'id' and has to be a unique integer that is
+the primary key of the table and is auto incrementing. The size of
+the integer doesn't matter. Look at the examble below for creating a
+table with a valid thirst field.</P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier, monospace">CREATE TABLE news
+(</FONT></P>
+<P CLASS="western"><FONT FACE="Courier, monospace">  id mediumint(9)
+NOT NULL auto_increment,</FONT></P>
+<P CLASS="western"><FONT FACE="Courier, monospace">  body text NOT
+NULL,</FONT></P>
+<P CLASS="western"><FONT FACE="Courier, monospace">  PRIMARY KEY 
+(id)</FONT></P>
+<P CLASS="western"><FONT FACE="Courier, monospace">) TYPE=MyISAM;</FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><B>Reserved fieldnames: id, image_path,
+attachment_path</B></P>
+<P CLASS="western" STYLE="font-weight: medium">When you read the text
+above you can imagine that the fieldname 'id' is a reserved name.
+When the jinn sees a field of this name it automaticly
+assumes this is the first identifierfield of the table. There are e
+few more reserved fieldnames. for a start 'image_path'. When the
+jinn sees a field with this name and the fieldtype is
+textblob it automaticly creates a file-uploading field. Images are
+uploaded to the configured upload directory. Go to section 3.3 to
+read more about configuring upload directories. The path relative to
+this directory is stored in the image_path column. Users can upload
+more then one image because the patyhs are seperated by a ';'
+(semicolumn ?). Webdevelopers can user the explode function to get
+the seperate image locations. 
+</P>
+<P CLASS="western" STYLE="font-weight: medium">The fieldname
+attachment_path has the same story. When the jinn sees a
+fieldname called attachment_path and the fieldtype is a textblob it
+automoticly creates a uploadfield so users can upload any kind of
+files, like movies, zip-archives,  java-applets, etc. The attached
+files are stored in the configured upload directory and the file
+locations are stores in the the textfield seperated by semicolomns.</P>
+<P CLASS="western" STYLE="font-weight: medium"><BR><BR>
+</P>
+<H1 CLASS="western">Setup / Administration 
+</H1>
+<P CLASS="western">This chapter describes how to setup site and
+site-objects in Jinn for phpGroupWare and howto assign
+access rights to this sites or site-objects.</P>
+<P CLASS="western"><U>Name conventions</U></P>
+<P CLASS="western" STYLE="text-decoration: none">Before going on
+explaning how to setup site and site-objects I'll first explain them
+meaning of these things. Sites in Jinn for phpGroupWare are
+synchrone to the a database in MySQL or PostgreSQL. Every site has
+its own database assigned to it.Site-objects are synchrone to
+database tables. After the configuration of a database you can assign
+site-objects to the tables of that database. We have chosen for these
+names because it's more understandable for the end-users, the
+site-moderators.</P>
+<P STYLE="margin-top: 4.23mm; text-decoration: none; page-break-after: avoid">
+<FONT FACE="Arial"><FONT SIZE=4>1. Global Configuration</FONT></FONT></P>
+<P CLASS="western"><SPAN STYLE="text-decoration: none">The section
+Global Configuration has the purpose to set the locations to system
+utilities like Convert, to set standard file types and sizes and
+other global settings or defaults. You can keep this settings
+unchanged, but if you want to use the image upload feature you have
+to set a calid path for convert. This tiny command line application
+comes with the terrific ImageMagick package and is used for
+converting images to specific web formats, gif, png or jpg or to
+change the size of an uploaded image. The beauty of convert is that
+it can handle almost every known image type and is able to convert or
+modify them. This way we make it possible for non-technical
+moderators to concentrate on the image itself instead of the
+filetype. More information on convert and ImageMagick and the
+software itself can be found on the official website
+</SPAN><FONT SIZE=2>www.imagemagick.org. It is free to use and
+distribute.</FONT></P>
+<P STYLE="margin-top: 4.23mm; text-decoration: none; page-break-after: avoid">
+<FONT FACE="Arial"><FONT SIZE=4>2. Creating a site</FONT></FONT></P>
+<P CLASS="western"><SPAN STYLE="text-decoration: none">To create a
+site login as adminstrator in phpGroupWare and go to administration.
+At the Section Jinn you'll find the link of button 'Add
+Site'.</SPAN></P>
+<P CLASS="western"><SPAN STYLE="text-decoration: none">After choosing
+this a form is opened where you must fill in all the site settings.
+The essential settings are Site name, Site db name, Site db host,
+Site db user, Site db password, Site db type. </SPAN>
+</P>
+<P CLASS="western" STYLE="text-decoration: none">Site name is used to
+identify your site to you and the moderators in the rest of the
+application. The database settings are used to create connections to
+the site database. If you make a typo in the database settings the
+application will stop.</P>
+</BODY>
+</HTML>
