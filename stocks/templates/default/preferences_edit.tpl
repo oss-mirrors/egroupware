@@ -5,25 +5,25 @@
 
 <center>
 <form method="POST" name="preferences_edit" action="{actionurl}">
-{common_hidden_vars}
+{hidden_vars}
 <table border="0" cellspacing="2" cellpadding="2" width="40%">
 	<tr bgcolor="{th_bg}">
 		<td colspan="2" align="center">{h_lang_edit}</td>
 	</tr>
 	<tr bgcolor="{tr_color1}">
 		<td>{lang_symbol}:</td>
-		<td align="center"><input type="text" name="symbol" value="{symbol}"></td>
+		<td align="center"><input type="text" name="values[symbol]" value="{symbol}"></td>
 	</tr>
 	<tr bgcolor="{tr_color2}">
 		<td>{lang_company}:</td> 
-		<td align="center"><input type="text" name="name" value="{name}"></td>
+		<td align="center"><input type="text" name="values[name]" value="{name}"></td>
 	</tr>
 
 <!-- BEGIN edit -->
 
 	<tr valign="bottom">
 		<td colspan="2" align="center">
-			<input type="submit" name="edit" value="{lang_edit}">
+			<input type="submit" name="edit" value="{lang_save}">
 		</td>
 	</tr>
 </table>

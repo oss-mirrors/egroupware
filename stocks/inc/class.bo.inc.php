@@ -145,6 +145,11 @@
 			return $this->so->read_stocks();
 		}
 
+		function read_single($stock_id)
+		{
+			return $this->so->read_single($stock_id);
+		}
+
 		function save_stock($values)
 		{
 			if ($values['id'] && $values['id'] != 0)

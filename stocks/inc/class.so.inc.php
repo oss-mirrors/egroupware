@@ -53,6 +53,21 @@
 			return $stocks;
 		}
 
+		function read_single($stock_id)
+		{
+			$this->db->query("SELECT * from phpgw_stocks where stock_id='" . $stock_id . "'",__LINE__,__FILE__);
+
+			if ($this->db->next_record())
+			{
+				$stock['id']		= $this->db->f('stock_id');
+				$stock['owner']		= $this->db->f('stock_owner');
+				$stock['access']	= $this->db->f('stock_access');
+				$stock['name']		= $this->db->f('stock_name');
+				$stock['symbol']	= $this->db->f('stock_symbol');
+			}
+			return $stock;
+		}
+
 		function add_stock($values)
 		{
 			$this->db->query("INSERT into phpgw_stocks (stock_owner,stock_access,stock_name,stock_symbol) values('"
@@ -63,6 +78,12 @@
 		function delete_stock($stock_id)
 		{
 			$this->db->query("DELETE from phpgw_stocks where stock_id='" . $stock_id . "'",__LINE__,__FILE__);
+		}
+
+		function edit_stock($values)
+		{
+			$this->db->query("UPDATE phpgw_stocks set stock_name='" . $values['name'] . "', stock_symbol='" . $values['symbol']
+							. " where stock_id='" . $values['id'] . "'",__LINE__,__FILE__);
 		}
 	}
 ?>

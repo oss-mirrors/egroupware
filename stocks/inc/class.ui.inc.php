@@ -32,7 +32,8 @@
 		var $public_functions = array
 		(
 			'index'			=> True,
-			'preferences'	=> True
+			'preferences'	=> True,
+			'edit_stock'	=> True
 		);
 
 		function ui()
@@ -53,6 +54,7 @@
 			$this->t->set_var('lang_add',lang('Add'));
 			$this->t->set_var('lang_add_stock',lang('Add new stock'));
 			$this->t->set_var('lang_delete',lang('Delete'));
+			$this->t->set_var('lang_save',lang('Save'));
 		}
 
 		function return_html($quotes)
@@ -190,7 +192,8 @@
 						'dname' => rawurldecode($stock['name'])
 					));
 
-					$this->t->set_var('edit',$GLOBALS['phpgw']->link('/stocks/preferences_edit.php','sym=' . $dsymbol));
+					$this->t->set_var('edit',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.edit_stock&stock_id='
+																	. $stock['id']));
 					$this->t->set_var('delete',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences&action=delete&stock_id='
 												. $stock['id']));
 					$this->t->fp('prefs','stock_prefs',True);
@@ -214,6 +217,49 @@
 			$this->t->set_var('add_action',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences&name=' . $name
 																	. '&symbol=' . $symbol));
 			$this->t->pfp('out','stock_prefs_t',True);
+		}
+
+		function edit_stock()
+		{
+			$submit		= $GLOBALS['HTTP_POST_VARS']['submit'];
+			$values		= $GLOBALS['HTTP_POST_VARS']['values'];
+			$stock_id	= $GLOBALS['HTTP_POST_VARS']['stock_id'];
+
+			if ($stock_id)
+			{
+				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences'));
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+
+			if ($submit)
+			{
+				$values['symbol']	= urlencode(strtoupper($values['symbol']));
+				$values['name']		= urlencode($values['name']);
+				$values['id']		= $stock_id;
+
+				$this->bo->save_stock($values);
+				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences'));
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+
+			$GLOBALS['phpgw']->common->phpgw_header();
+			echo parse_navbar();
+
+			$this->set_app_langs();
+
+			$this->t->set_file(array('edit' => 'preferences_edit.tpl'));
+			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.edit_stock&stock_id=' . $stock_id));
+			$this->t->set_var('lang_action',lang('Stock Quote preferences'));
+
+			$this->t->set_var('hidden_vars','<input type="hidden" name="stock_is" value="' . $stock_id . '">' . "\n");
+			$this->t->set_var('h_lang_edit',lang('Edit stock'));
+
+			$stock = $this->bo->read_single($stock_id);
+
+			$this->t->set_var('symbol',rawurldecode($stock['symbol']));
+			$this->t->set_var('name',rawurldecode($stock['name']));
+
+			$this->t->pfp('out','edit');
 		}
 	}
 ?>

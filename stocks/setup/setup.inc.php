@@ -24,7 +24,8 @@
 		'preferences',
 		'manual',
 		'home',
-		'add_def_pref'
+		'add_def_pref',
+		'about'
 	);
 
 	/* Dependencies for this app to work */
