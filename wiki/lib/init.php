@@ -61,7 +61,7 @@
 	$EditWithPreview = (isset($config[Edit_With_Preview])?$config[Edit_With_Preview]:1);
 
 	$UserName = $GLOBALS['phpgw_info']['user']['account_lid'];
-	if (!($action == 'save' && !$Preview) && $action != 'admin' && !($action == 'prefs' && $Save))
+	if (!($action == 'save' && !$Preview) && $action != 'admin' && !($action == 'prefs' && $Save) && $action != 'xml')
 	{
 		$GLOBALS['phpgw']->common->phpgw_header();
 	}

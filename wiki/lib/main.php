@@ -81,6 +81,7 @@ require('parse/transforms.php');
 //   is the file to load, second is the function to call, and third is how
 //   to treat it for rate-checking purposes ('view', 'edit', or 'search').
 $ActionList = array(
+                'xml'  => array('wiki.xmlwiki.export','','view'),
                 'view' => array('action/view.php', 'action_view', 'view'),
                 'edit' => array('action/edit.php', 'action_edit', 'view'),
                 'save' => array('action/save.php', 'action_save', 'edit'),
@@ -112,16 +113,19 @@ if($ActionList[$action][2] != '')
 // Dispatch the appropriate action.
 if(!empty($ActionList[$action]))
 {
-  include($ActionList[$action][0]);
-  if ($ActionList[$action][1])
-    $ActionList[$action][1]();
+	if ($ActionList[$action][0] && !$ActionList[$action][1])
+	{
+		ExecMethod($ActionList[$action][0]);
+	}
+	else
+	{
+		include($ActionList[$action][0]);
+		if ($ActionList[$action][1])
+			$ActionList[$action][1]();
+	}
 }
 
 // Expire old versions, etc.
 $pagestore->maintain();
 
-if (!$anonymous)
-{
-	$GLOBALS['phpgw']->common->phpgw_footer();
-}
-?>
+$GLOBALS['phpgw']->common->phpgw_footer();

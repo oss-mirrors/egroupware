@@ -368,7 +368,7 @@ class sowiki	// DB-Layer
 	*/
 	function find($text,$search_in=False)
 	{
-		$sql="SELECT t1.name,t1.lang,t1.version,MAX(t2.version),t1.title,t1.body".
+		$sql="SELECT t1.name,t1.lang,t1.version,MAX(t2.version) as max,t1.title,t1.body".
 			" FROM $this->PgTbl AS t1,$this->PgTbl AS t2".
 			" WHERE t1.name=t2.name AND t1.lang=t2.lang AND t1.wiki_id=$this->wiki_id AND t2.wiki_id=$this->wiki_id".
 			" GROUP BY t1.name,t1.lang,t1.version,t1.title,t1.body".
@@ -389,6 +389,7 @@ class sowiki	// DB-Layer
 		$list = array();
 		while($row = $this->db->row(True))
 		{
+			unset($row['max']);
 			$list[] = $row;
 		}
 		return $list;
