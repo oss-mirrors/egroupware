@@ -10,7 +10,7 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  $phpgw_info["flags"]["currentapp"] = "forum";
+  $phpgw_info["flags"] = array("currentapp" => "forum", "enable_nextmatchs_class" => True);
   include("../header.inc.php");
 
 ?>
@@ -18,7 +18,7 @@
 <p>
 <table border="0" width="100%">
  <tr>
-<? 
+<?
  $phpgw->db->query("select * from f_categories where id = $cat");
  $phpgw->db->next_record();
  $category = $phpgw->db->f("name");

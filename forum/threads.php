@@ -10,7 +10,7 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  $phpgw_info["flags"]["currentapp"] = "forum";
+  $phpgw_info["flags"] = array("currentapp" => "forum", "enable_nextmatchs_class" => True);
   include("../header.inc.php");
 
 ?>
@@ -58,9 +58,9 @@ if(!$col) {
    // Threaded view  ...... I hate these darn threads, and this gotta redo soon
 } else {
     echo "<tr bgcolor=" . $phpgw_info["theme"]["th_bg"] . " align=left>";
-	echo "<th width=40%>" .lang("Topic") ."</th>";
-	echo "<th>".lang("Author") ."</th>";
-	echo "<th>".lang("Date")."</th>";
+  echo "<th width=40%>" .lang("Topic") ."</th>";
+  echo "<th>".lang("Author") ."</th>";
+  echo "<th>".lang("Date")."</th>";
     echo "</tr>";
     echo "<tr>";
 

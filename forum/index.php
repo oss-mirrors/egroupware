@@ -10,7 +10,10 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  $phpgw_info["flags"]["currentapp"] = "forum";
+  if (! $sessionid)
+    Header("Location: ../login.php");
+
+  $phpgw_info["flags"] = array("currentapp" => "forum", "enable_nextmatchs_class" => True);
   include("../header.inc.php");
 
 ?>
@@ -18,22 +21,20 @@
 <p>
 <table border="0" width="100%">
  <tr>
-<?   echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left">' . lang("Forums") .'</td>' . '</tr>'; ?>
+<?   echo "<td bgcolor=" . $phpgw_info["theme"]["th_bg"] . " align='left'>" . lang("Forums") ."</td></tr>"; ?>
  <tr>
   <td align="left" width="50%" valign="top">
    <?php
- if($phpgw_info["user"]["app_perms"][1]) 
-  echo "<font size=-1><a href=" . $phpgw->link("admin/") . ">" . lang("Admin") . "</a></font>"; 
+      echo "<center>";
+      echo '<table border="0" width="80%">';
 
-    echo "<center>";
-    echo '<table border="0" width="80%">';
+      //  Pull all the categories from the table f_categories and display them
+      $phpgw->db->query("select * from f_categories");
 
-//  Pull all the categories from the table f_categories and display them
-	$phpgw->db->query("select * from f_categories");
-	while($phpgw->db->next_record()) {
-		$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-		echo "<tr bgcolor=".$tr_color."><td><a href=" . $phpgw->link("forums.php","cat=" . $phpgw->db->f("id")) .">". $phpgw->db->f("name") . "</a></td><td align=left valign=top>" . $phpgw->db->f("descr") . "</td></tr>\n";
-	}
+      while($phpgw->db->next_record()) {
+        $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+        echo "<tr bgcolor=".$tr_color."><td><a href=" . $phpgw->link("forums.php","cat=" . $phpgw->db->f("id")) .">". $phpgw->db->f("name") . "</a></td><td align=left valign=top>" . $phpgw->db->f("descr") . "</td></tr>\n";
+      }
 
      echo "</table>";
      echo "</center>";

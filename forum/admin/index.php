@@ -10,7 +10,7 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  $phpgw_info["flags"]["currentapp"] = "forum";
+  $phpgw_info["flags"] = array("currentapp" => "forum", "enable_nextmatchs_class" => True);
   include("../../header.inc.php");
 
 ?>

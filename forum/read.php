@@ -12,7 +12,7 @@
 
   if($action) $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
 
-  $phpgw_info["flags"]["currentapp"] = "forum";
+  $phpgw_info["flags"] = array("currentapp" => "forum", "enable_nextmatchs_class" => True);
   include("../header.inc.php");
 
 
@@ -36,35 +36,35 @@ $dattim = date("Y-m-d H:i:s",time());
 if($pos != 0) {
  $tmp = $phpgw->db->query("select id,pos from f_threads where thread = $thread and pos >= $pos order by pos desc");
  while($phpgw->db->next_record($tmp)) {
-	$oldpos = $phpgw->db->f("pos") + 1;
-	$oldid = $phpgw->db->f("id");
-	//print "$oldid $oldpos<br>";
-	$phpgw->db->query("update f_threads set pos=$oldpos where thread = $thread and id = $oldid");
+  $oldpos = $phpgw->db->f("pos") + 1;
+  $oldid = $phpgw->db->f("id");
+  //print "$oldid $oldpos<br>";
+  $phpgw->db->query("update f_threads set pos=$oldpos where thread = $thread and id = $oldid");
  }
 } else $pos = 1;
 
 
  $phpgw->db->query("insert into f_threads (postdate,pos,thread,depth,main,parent,cat_id,for_id,author,subject,email,host,stat) VALUES (
-	'$dattim',
-	$pos,
-	$thread,
-	$depth,
-	$next_f_body_id,
-	$msg,
-	$cat,
-	$for,
-	'$author',
-	'$subject',
-	'$email',
-	'$host',
-	$stat)");
+  '$dattim',
+  $pos,
+  $thread,
+  $depth,
+  $next_f_body_id,
+  $msg,
+  $cat,
+  $for,
+  '$author',
+  '$subject',
+  '$email',
+  '$host',
+  $stat)");
 $phpgw->db->query("update f_threads set n_replies = n_replies+1 where thread='$thread'");
 
 
   $phpgw->db->query("insert into f_body (cat_id,for_id,message) VALUES (
-	$cat,
-	$for,
-	'$message')");
+  $cat,
+  $for,
+  '$message')");
 
 
   Header("Location: ". $phpgw->link("threads.php","cat=".$cat."&for=".$for."&col=".$col));

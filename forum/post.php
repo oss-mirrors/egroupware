@@ -12,7 +12,7 @@
 
   if($action) $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
 
-  $phpgw_info["flags"]["currentapp"] = "forum";
+  $phpgw_info["flags"] = array("currentapp" => "forum", "enable_nextmatchs_class" => True);
   include("../header.inc.php");
 
 
@@ -36,25 +36,25 @@ if($action == "post") {
 $dattim = date("Y-m-d H:i:s",time());
 
  $phpgw->db->query("insert into f_threads (postdate,pos,thread,depth,main,parent,cat_id,for_id,author,subject,email,host,stat) VALUES (
-	'$dattim',
-	0,
-	$next_f_body_id,
-	0,
-	$next_f_body_id,
-	-1,
-	$cat,
-	$for,
-	'$author',
-	'$subject',
-	'$email',
-	'$host',
-	$stat)");
+  '$dattim',
+  0,
+  $next_f_body_id,
+  0,
+  $next_f_body_id,
+  -1,
+  $cat,
+  $for,
+  '$author',
+  '$subject',
+  '$email',
+  '$host',
+  $stat)");
 
   $phpgw->db->query("insert into f_body (cat_id,for_id,message) VALUES (
-	$cat,
-	$for,
-	'$message')");
-	
+  $cat,
+  $for,
+  '$message')");
+  
 
   Header("Location: ". $phpgw->link("threads.php","cat=".$cat."&for=".$for."&col=".$col));
   exit;
