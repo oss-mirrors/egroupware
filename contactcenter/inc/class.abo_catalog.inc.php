@@ -1069,6 +1069,28 @@
 				)));
 			}
 
+			/* Search for states with the same data */
+			$what = array('state.id_state');
+			$rules = array(
+				0 => array(
+					'field' => 'state.state_name',
+					'type'  => 'iLIKE',
+					'value' => $state_info['state_name']
+				),
+				1 => array(
+					'field' => 'state.id_country',
+					'type'  => 'iLIKE',
+					'value' => $state_info['id_country']
+				)
+			);
+			
+			$result = $this->find($what, $rules);
+
+			if (is_array($result) and count($result))
+			{
+				return $result[0]['id_state'];
+			}
+
 			$state =& CreateObject('contactcenter.so_state');
 
 			$state->set_id_country($state_info['id_country']);
