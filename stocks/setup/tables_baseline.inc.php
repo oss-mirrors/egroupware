@@ -10,19 +10,5 @@
 	\**************************************************************************/
 	/* $Id$ */
 
-	$phpgw_baseline = array(
-		'phpgw_stocks' => array(
-			'fd' => array(
-				'stock_id' => array('type' => 'auto', 'nullable' => False),
-				'stock_owner' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
-				'stock_access' => array('type' => 'varchar','precision' => 7),
-				'stock_name' => array('type' => 'varchar','precision' => 255,'nullable' => False),
-				'stock_symbol' => array('type' => 'varchar','precision' => 255,'nullable' => False)
-			),
-			'pk' => array('stock_id'),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		)
-	);
+	$phpgw_baseline = array();
 ?>
