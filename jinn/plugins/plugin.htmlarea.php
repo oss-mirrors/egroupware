@@ -1,74 +1,91 @@
 <?php
 	/*************************************************************************\
-	* phpGroupWare - HTMLAREA-form-plugin for phpGW-jinn            *
+	* eGroupWare - HTMLAREA-form-plugin for eGW-jinn                          *
 	* The original script is written by interactivetools.com, inc.            *
-	* Ported to phpGW by Pim Snel info@lingewoud.nl                           *
+	* Ported to eGroupWare by Pim Snel info@lingewoud.nl                      *
 	* --------------------------------------------                            *
-	* http://www.phpgroupware.org                                             *
+	* http://www.egroupware.org                                               *
 	* http://www.interactivetools.com/                                        *
 	* http://www.lingewoud.nl                                                 *
 	* --------------------------------------------                            *
 	* The original script HTMLAREA is distributed under a Open Source-licence *
 	* See the readme.txt in the htmlarea-directory for the complete licence   *
 	* text.                                                                   *
-	* phpGroupWare and the jinn are free software; you can          *
+	* eGroupWare and the jinn are free software; you can                      *
 	* redistribute it and/or modify it under the terms of the GNU General     *
-	* Public License as published by the Free Software Foundation; either     *
-	* version 2 of the License, or (at your option) any later version.        *
+	* Public License as published by the Free Software Foundation;            *
+	* Version 2 of the License.                                               *
 	\*************************************************************************/
 
-	$description='htmlArea is a plugin implementation of htmlArea rich text box 
-	editor by interactivetools.com, inc. It\'s requires Internet Explorer 5.5+ 
-	for WYSIWYG functionality, if you\'re looking for a cross platform rich 
-	textbox editor check the htmlArea v3, also available as JiNN input plugin';
+	$description = '
+	the htmlArea plugin is based on htmlArea v3beta from interactivetools.com
+	licenced under the BSD licence.<P>
+	htmlArea is a WYSIWYG editor replacement for any textarea field. Instead
+	of teaching your software users how to code basic HTML to format their
+	content.<P>
+	Known issues: 
+	<li>all configuration options don\'t work anymore. This will be fixed soon.</li>';
 
-	$this->plugins['htmlarea']['name']		= 'htmlarea';
-	$this->plugins['htmlarea']['title']		= 'HTMLarea plugin';
-	$this->plugins['htmlarea']['version']	= '0.9.2';
-	$this->plugins['htmlarea']['enable']	= 1;
-	$this->plugins['htmlarea']['description']	= $description;
-	$this->plugins['htmlarea']['db_field_hooks']= array
+	$this->plugins['htmlAreaV3']['name']			= 'htmlAreaV3';
+	$this->plugins['htmlAreaV3']['title']			= 'htmlArea v3';
+	$this->plugins['htmlAreaV3']['version']			= '0.8.5';
+	$this->plugins['htmlAreaV3']['enable']			= 1;
+	$this->plugins['htmlAreaV3']['description']		= $description;
+	$this->plugins['htmlAreaV3']['db_field_hooks']	= array
 	(
-		'text',
-		'varchar',
-		'blob'
+	   'blob',
+		'text'
 	);
-	$this->plugins['htmlarea']['config']	= array
+
+	$this->plugins['htmlAreaV3']['config']		= array
 	(
-		'Allow_table_insert'=>array('3','text','maxlength=2 size=2'),
+		'enable_font_buttons'=>array(array('Yes','No'),'select',''),
+		'enable_alignment_buttons'=>array(array('Yes','No'),'select',''),
+		'enable_list_buttons'=>array(array('Yes','No'),'select',''),
+		'enable_html_source_button'=>array(array('Yes','No'),'select',''),
+		'enable_tables_button'=>array(array('Yes','No'),'select',''),
+		'enable_image_button'=>array(array('Yes','No'),'select',''),
+		'enable_color_buttons'=>array(array('Yes','No'),'select',''),
+		'enable_horizontal_ruler_button'=>array(array('Yes','No'),'select',''),
+		'enable_fullscreen_editor_button'=>array(array('Yes','No'),'select',''),
+		'enable_link_button'=>array(array('Yes','No'),'select',''),
+		'custom_css'=>array('','area','')
 	);
 
-	// funcion must be called like this: 'plugin_[plugin_name]'
-
-	function plg_fi_htmlarea($field_name,$value, $config)
+	function plg_fi_htmlArea($field_name, $value, $config)
 	{
+		
+		$editor_url=$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/htmlareaV3/';
 
-		$editor_url=$GLOBALS['phpgw_info']['server']['webserver_url'].'/';
+		if($config[enable_image_button]!='No') $bar_image = '"insertimage",';
+		if($config[enable_html_source_button]!='No') $bar_html = '"htmlmode",';
+		if($config[enable_alignment_buttons]!='No') $bar_align = '[ "justifyleft", "justifycenter", "justifyright", "justifyfull", "separator" ],';
+		if($config[enable_font_buttons]!='No') $bar_font = '[ "fontname", "space" ], [ "fontsize", "space" ], [ "formatblock", "space"], 	[ "bold", "italic", "underline", "separator" ], [ "strikethrough", "subscript", "superscript", "linebreak" ],';
+		if($config[enable_list_buttons]!='No') $bar_list = '[ "orderedlist", "unorderedlist", "outdent", "indent", "separator" ],';
+		if($config[enable_tables_button]!='No') $bar_table = '"inserttable",';
+		if($config[enable_color_buttons]!='No') $bar_colors = '[ "forecolor", "backcolor", "textindicator", "separator" ],';
+		if($config[enable_horizontal_ruler_button]!='No') $bar_ruler = '"horizontalrule",';
+		if($config[enable_fullscreen_editor_button]!='No') $bar_fullscreen = '"popupeditor",';
+		if($config[enable_link_button]!='No') $bar_link = '"createlink",';
+		
+			// TODO
+			// make these configuration options
+			// make extra cmscode buttons and extra reset lay-out(remove tags) button
+			// activate all configuration options
+			// import css file options
+			// add special class selectbox
+			$width=470;
+			$height=300;
+			
+			$style='width:100%; min-width:'.$width.'px; height:'.$height.'px;';
 
-		/*********************************************************************\
-		* $input['field'] will be rendered in the form                        *
-		\*********************************************************************/
-
-		$input='
-		<script language="Javascript1.2" src="jinn/plugins/htmlarea/editor.js"></script>
-		<script>
-		_editor_url = "'.$editor_url.'";
-		</script>
-		<style type="text/css">
-		<!--
-		.btn   { BORDER-WIDTH: 1; width: 26px; height: 24px; }
-		.btnDN { BORDER-WIDTH: 1; width: 26px; height: 24px; BORDER-STYLE: inset; BACKGROUND-COLOR: buttonhighlight; }
-		.btnNA { BORDER-WIDTH: 1; width: 26px; height: 24px; filter: alpha(opacity=25); }
-		-->
-		</style>
-
-		<textarea name="'.$field_name.'" id="'.$field_name.'" style="width:100%; height:200">'.$value.'</textarea>
-		<script language="javascript1.2">
-		editor_generate(\''.$field_name.'\'); // field, width, height
-		</script>
-		';
-
+			if (!is_object($GLOBALS['phpgw']->html))
+			{
+				$GLOBALS['phpgw']->html = CreateObject('phpgwapi.html');
+			}
+			$input = $GLOBALS['phpgw']->html->htmlarea($field_name, $value,$style);
+		
 		return $input;
 	}
-
-	?>
+	
+?>
