@@ -167,7 +167,7 @@ function check_all()
              if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" || $phpgw_info["flags"]["newsmode"]) {
                 echo '<select name="folder" onChange="document.switchbox.submit()">'
                    . '<option>' . lang("switch current folder to") . ':';
-                echo list_folders($mailbox);
+                echo list_folders($mailbox,$folder);
                 echo "</select>";
              }
            ?>

@@ -366,7 +366,7 @@
     } else return $string;
   }
 
-  function list_folders($mailbox)
+  function list_folders($mailbox,$folder="")
   {
     global $phpgw, $phpgw_info;
     // UWash patched for Maildir style: $Maildir.Junque
@@ -399,7 +399,8 @@
         $stdoffset = 1;
       }
 
-      $mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"].":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]."}",$filter."*");  
+      $mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
+        .":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]."}",$filter."*");
       if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] != "pop3")
         if (gettype($mailboxes) == "array") {
  	        sort($mailboxes); // added sort for folder names 
@@ -417,7 +418,9 @@
 	          } else {
 	             $foldername = "INBOX";
 	          }
-	          echo urlencode($foldername) . '">' . $foldername . '</option>';
+              if ($foldername == $folder) { $sel = " selected"; }
+              else                        { $sel = ""; }
+	          echo urlencode($foldername) . '"'.$sel.'>' . $foldername . '</option>';
 	          echo "\n";
 	        }
         } else {
