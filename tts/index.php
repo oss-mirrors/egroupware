@@ -29,7 +29,7 @@
 		'ticket_id_unread'   => 't_id_unread.tpl',
 		'ticket_id_read'   => 't_id_read.tpl'
     	));
-
+	$p->set_unknowns('remove');
 	$p->set_var('tts_appname', lang("Trouble Ticket System"));
 	$p->set_var('tts_newticket_link', $phpgw->link("/tts/newticket.php"));
 	$p->set_var('tts_newticket', lang("New ticket"));
@@ -82,15 +82,7 @@
 	$p->set_var('tts_ticketstotal', lang("Tickets total x",$numtotal));
 	$p->set_var('tts_ticketsopen', lang("Tickets open x",$numopen));
 	
-	
-	if ($phpgw->db->num_rows() == 0)
-	{
-		echo "<p><center>".lang("No tickets found")."</center>";
-		$phpgw->common->phpgw_exit(True);
-	}
-
-
-	// fill header
+    	// fill header
 	$p->set_var('tts_head_bgcolor',$phpgw_info["theme"]["th_bg"] );
 	$p->set_var('tts_head_ticket', $phpgw->nextmatchs->show_sort_order($sort,"t_id",$order,"/tts/index.php",lang("Ticket")." #"));
 	$p->set_var('tts_head_prio', $phpgw->nextmatchs->show_sort_order($sort,"t_priority",$order,"/tts/index.php",lang("Prio")));
@@ -103,6 +95,11 @@
 	  $p->parse('tts_head_ifviewall','head_ifviewall',false);
 	}
 	$p->set_var('tts_head_subject', $phpgw->nextmatchs->show_sort_order($sort,"t_subject",$order,"/tts/index.php",lang("Subject")));
+	
+	if ($phpgw->db->num_rows() == 0)
+	{
+    	  $p->set_var('rows', "<p><center>".lang("No tickets found")."</center>");
+	} else {
 
 	while ($phpgw->db->next_record())
 	{
@@ -170,8 +167,9 @@
 
 		$p->parse('rows','row',true);
 		
+	  }
 	}
-
+	
 	$p->parse('title','title');
 	$p->parse('links','links');
 	$p->parse('list','list');
