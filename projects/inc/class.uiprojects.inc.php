@@ -760,8 +760,8 @@
 			);
 
 			$this->t->set_var('lang_header',lang('Activities list'));
-			$this->t->set_var('actionurl',$phpgw->link('/index.php',$link_data));
-			$this->t->set_var('projectsurl',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
+			$this->t->set_var('add_url',$phpgw->link('/projects/addactivity.php'));
+			$this->t->set_var('project_url',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
 
 			if (!$this->start)
 			{

@@ -58,10 +58,9 @@
 </table>
 <table border="0" cellpadding="2" cellspacing="2">
 	<tr>
-		<td><form method="POST" action="{actionurl}">
-			{hidden_vars}
+		<td><form method="POST" action="{add_url}">
 			<input type="submit" name="Add" value="{lang_add}"></form></td>
-		<td><form method="POST" action="{projectsurl}"> 
+		<td><form method="POST" action="{project_url}"> 
 			<input type="submit" name="pro" value="{lang_projects}"></form></td>
 	</tr>
 </table>

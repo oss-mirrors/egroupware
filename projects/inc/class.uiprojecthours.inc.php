@@ -122,8 +122,8 @@
 			if ($isadmin)
 			{
 				$this->t->set_var('admin_info',lang('Administrator'));
-				$this->t->set_var('link_activities',$phpgw->link('/projects/activities.php'));                                                                                                         
-				$this->t->set_var('lang_activities',lang('Activities'));                                                                                                                               
+				$this->t->set_var('link_activities',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_activities&action=act'));                                                                                                         
+				$this->t->set_var('lang_activities',lang('Activities'));
 			}
 			else
 			{
@@ -137,7 +137,7 @@
 			$this->t->set_var('link_jobs',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'));
 			$this->t->set_var('link_hours',$phpgw->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
 			$this->t->set_var('link_statistics',$phpgw->link('/projects/stats_projectlist.php'));
-			$this->t->set_var('lang_statistics',lang("Statistics"));
+			$this->t->set_var('lang_statistics',lang('Statistics'));
 			$this->t->set_var('link_delivery',$phpgw->link('/projects/del_index.php'));
 			$this->t->set_var('lang_delivery',lang('Delivery'));
 			$this->t->set_var('link_projects',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
