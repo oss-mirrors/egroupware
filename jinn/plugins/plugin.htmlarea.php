@@ -33,16 +33,13 @@
 		'varchar',
 		'blob'
 	);
-	$this->plugins['htmlarea']['config']		= array
-	(
-		'Enable_Tables'=>'False',
-		'Enable_Image_Handling'=>'False',
-		'Enable_Sub_and_Superscript'=>'False'
-	);
+	$this->plugins['htmlarea']['config']		= array(
+			'Max_files'=>array('3','text','maxlength=2 size=2'),
+		);
 
 	// funcion must be called like this: 'plugin_[plugin_name]'
 
-	function plg_fi_htmlarea($field_name,$value, $config, $local_bo)
+	function plg_fi_htmlarea($field_name,$value, $config)
 	{
 
 	$editor_url=$GLOBALS['phpgw_info']['server']['webserver_url'].'/';

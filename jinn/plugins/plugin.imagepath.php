@@ -36,17 +36,19 @@ $this->plugins['imagepath']['db_field_hooks']	= array
    use underscores for spaces */
 $this->plugins['imagepath']['config']		= array
 (
-	'Max_files'=>'3',
-	'Max_Image_width'=>'',
-	'Max_Image_height'=>'',
-	'Image_filetype'=>'png',
-	'Generate_thumbnail'=>'False',
-	'Store_thumbnail_in_thumb_pathfield_for_backwards_compatibility'=>'True',
-	'Max_thumbnail_width'=>'',
-	'Show_image_in_form'=>'False'
+	/* array('default value','input field type', 'extra html properties')*/
+	
+	'Max_files'=>array('3','text','maxlength=2 size=2'), 
+	'Max_Image_width'=>array('','text','maxlength=4 size=4'),
+	'Max_Image_height'=>array('','text','maxlength=4 size=4'),
+	'Image_filetype'=>array(array('png','gif','jpg'),'select','maxlength=3 size=3'),
+	'Generate_thumbnail'=>array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
+	'Store_thumbnail_in_thumb_pathfield_for_backwards_compatibility'=>array( array('False', 'True') ,'select',''),
+	'Max_thumbnail_width'=>array('100','text','maxlength=3 size=3'),
+	'Show_image_in_form'=>array( array('False','True') ,'select',''),
 );
 
-function plg_fi_imagepath($field_name,$value,$config,$bo_vars)
+function plg_fi_imagepath($field_name,$value,$config)
 {	
 	/* replace FLD for SEP to let the processor know the field is seperated by semicolons */
 	
@@ -118,7 +120,7 @@ function plg_fi_imagepath($field_name,$value,$config,$bo_vars)
 
 
 
-function plg_sf_imagepath($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config,$bo_vars)
+function plg_sf_imagepath($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 /****************************************************************************\
 * main image data function                                                   *
 \****************************************************************************/
