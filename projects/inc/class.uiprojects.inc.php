@@ -474,9 +474,11 @@
 
 			$this->status = 'active';
 
-			$this->boprojects->filter = 'public';
-			//$this->boprojects->limit = False;
-			$pro = $this->boprojects->list_projects($action,$pro_main);
+			$pro = $this->boprojects->list_projects(array(
+				'type' => $action,
+				'parent' => $pro_main,
+				'filter' => 'yours'
+			));
 
 // --------------------- nextmatch variable template-declarations ------------------------
 
