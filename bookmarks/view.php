@@ -20,8 +20,11 @@
                             ));
   set_standard("create", &$phpgw->template);
   
-  $phpgw->db->query("select * from bookmarks where username='" . $phpgw_info["user"]["account_id"]
-                  . "'",__LINE__,__FILE__);
+  $phpgw->db->query("select bookmarks.*,bookmarks_category.name as category_name,"
+                  . "bookmarks_subcategory.name  as subcategory_name from "
+                  . "bookmarks,bookmarks_category,bookmarks_subcategory where bookmarks.username='"
+                  . $phpgw_info["user"]["account_id"] . "' and bookmarks_subcategory.id="
+                  . "bookmarks.subcategory_id and bookmarks_category.id=bookmarks.category_id",__LINE__,__FILE__);
   $phpgw->db->next_record();
 
   $ts = explode(",",$bm_timestamps_raw);
@@ -37,29 +40,31 @@
      $f_ts[2] = $phpgw->common->show_date($ts[2]);
   } else {
      $f_ts[2] = lang("Never");
-  }
+  }  
 
-  $phpgw->template->set_var(array(
-    DEFAULT_URL            => $default_url,
-    DEFAULT_NAME           => htmlspecialchars(stripslashes($default_name)),
-    DEFAULT_DESC           => htmlspecialchars(stripslashes($default_desc)),
-    DEFAULT_KEYW           => htmlspecialchars(stripslashes($default_keyw)),
-    DEFAULT_CATEGORY       => $default_category,
-    DEFAULT_SUBCATEGORY    => $default_subcategory,
-    DEFAULT_RATING         => $default_rating,
-    RATING_SELECT          => $rating_select,
-    CATEGORY_SELECT        => $category_select,
-    SUBCATEGORY_SELECT     => $subcategory_select,
-    RATING_SELECT          => $rating_select,
-    DEFAULT_PUBLIC         => $default_public
-                                        ADDED              => $f_ts[0],
-                                        VISTED             => $f_ts[1],
-                                        UPDATED            => $f_ts[2],
-                                        ADDED_VALUE        => $ts[0],
-                                        VISTED_VALUE       => $ts[1],
-                                        TOTAL_VISTS        => $total_vists,
-
+ /*
+  $phpgw->template->set_var(array(DEFAULT_URL         => $default_url,
+                                  DEFAULT_NAME        => htmlspecialchars(stripslashes($default_name)),
+                                  DEFAULT_DESC        => htmlspecialchars(stripslashes($default_desc)),
+                                  DEFAULT_KEYW        => htmlspecialchars(stripslashes($default_keyw)),
+                                  DEFAULT_CATEGORY    => $default_category,
+                                  DEFAULT_SUBCATEGORY => $default_subcategory,
+                                  DEFAULT_RATING      => $default_rating,
+//                                  RATING_SELECT       => $phpgw->db->f("bm_rating"),
+//                                  CATEGORY_SELECT     => $phpgw->db->f("category_name"),
+                                  SUBCATEGORY_SELECT  => $phpgw->db->f("subcategory_name"),
+                                  DEFAULT_PUBLIC      => $default_public,
+                                  ADDED               => $f_ts[0],
+                                  VISTED              => $f_ts[1],
+                                  UPDATED             => $f_ts[2],
+                                  ADDED_VALUE         => $ts[0],
+                                  VISTED_VALUE        => $ts[1],
+                                  TOTAL_VISTS         => $phpgw->db->f("bm_vists")
   ));
+*/
+
+  $phpgw->template->set_var("CATEGORY_SELECT",$phpgw->db->f("category_name"));
+  $phpgw->template->set_var("RATING_SELECT",'<img src="images/bar-' . $phpgw->db->f("rating_id") . '.jpg">');
 
   include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
 ?>

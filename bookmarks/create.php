@@ -183,7 +183,6 @@ load_ddlb("bookmarks_subcategory", $default_subcategory, &$subcategory_select, F
     DEFAULT_CATEGORY       => $default_category,
     DEFAULT_SUBCATEGORY    => $default_subcategory,
     DEFAULT_RATING         => $default_rating,
-    RATING_SELECT          => $rating_select,
     CATEGORY_SELECT        => $category_select,
     SUBCATEGORY_SELECT     => $subcategory_select,
     RATING_SELECT          => $rating_select,
