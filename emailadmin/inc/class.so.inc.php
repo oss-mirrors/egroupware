@@ -173,7 +173,6 @@
 		
 		function saveUserData($_accountID, $_accountData)
 		{
-			_debug_array($_accountData);_debug_array($_accountData);
 			$ldap = $GLOBALS['phpgw']->common->ldapConnect();
 			// need to be fixed
 			if(is_numeric($_accountID))
