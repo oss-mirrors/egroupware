@@ -47,7 +47,7 @@
 	$image_dir = PHPGW_IMAGES;
 	$sm_envelope_img = $phpgw->msg->img_maketag($image_dir.'/sm_envelope.gif',"Add to address book","8","10","0");
 	$default_sorting = $phpgw_info['user']['preferences']['email']['default_sorting'];
-	$struct_not_set = $phpgw->msg->not_set;
+	$not_set = $phpgw->msg->not_set;
 
 // ----  General Information about The Message  -----
 	$msg = $phpgw->msg->phpgw_header('');
@@ -333,8 +333,8 @@
 /*
 // ---- Flatten Message Structure Array   -----
 	// prepare for recursive traversal of this multi-dimentional array structure
-	global $struct_not_set, $index_flat_array, $part_nice, $control_array;
-	$struct_not_set = '-1';
+	global $not_set, $index_flat_array, $part_nice, $control_array;
+	$not_set = '-1';
 	//$index_flat_array = -1; // it will be advanced to 0 before its used
 	// need this unset so we can call this function recursively
 	unset($part_nice);
@@ -342,7 +342,7 @@
 	// this function will be called recursively
 	function traverse_part_struct($part, $loops, $parent_part)
 	{
-		global $struct_not_set, $index_flat_array, $part_nice, $control_array;
+		global $not_set, $index_flat_array, $part_nice, $control_array;
 		//echo '=*=*=*=*=*' .serialize($part) .'=*=*=*=*=*' ." <br> \r\n";
 		for ($i = 0; $i < $loops; $i++)
 		{
@@ -350,7 +350,7 @@
 			// NEW CONTROL TEST
 			// has this parent been seen by the control_array?
 			$z = count($control_array);
-			$seen_before = $struct_not_set;
+			$seen_before = $not_set;
 			if ($z != 0)
 				for ($y = 0; $y < $z; $y++)
 				{
@@ -361,7 +361,7 @@
 					}
 				}
 			// if not seen, add it, using $z as the the "next blank" index num in control_array 
-			if ($seen_before == $struct_not_set)
+			if ($seen_before == $not_set)
 			{
 				$control_array[$z] = serialize($part);
 				$debth = $z + 1;
@@ -370,7 +370,7 @@
 			$index_flat_array++;
 			$part_nice[$index_flat_array] = pgw_msg_struct($part[$i], ($i+1), $loops, $debth, $folder, $phpgw->msg->msgnum);
 
-			if ($part_nice[$index_flat_array]['ex_num_subparts'] != $struct_not_set)
+			if ($part_nice[$index_flat_array]['ex_num_subparts'] != $not_set)
 			{
 				traverse_part_struct($part_nice[$index_flat_array]['subpart'], $part_nice[$index_flat_array]['ex_num_subparts'], $part_nice[$index_flat_array]);
 			}
@@ -396,7 +396,7 @@
 		$index_flat_array = -1; // it will be advanced  its used (we added 3 sudo parts to zero level before traverse_part_struct)
 		$start_analysis_pos = 0;
 		$control_array = Array();
-		traverse_part_struct($part, count($part), $struct_not_set);
+		traverse_part_struct($part, count($part), $not_set);
 	}
 	set_time_limit(0);
 */
@@ -432,12 +432,12 @@
 	{
 		$array_position++;
 		$d1_mime_num = (string)($d1+1);
-		$part_nice[$array_position] = pgw_msg_struct($part[$d1], $struct_not_set, $d1_mime_num, ($d1+1), $d1_num_parts, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
+		$part_nice[$array_position] = pgw_msg_struct($part[$d1], $not_set, $d1_mime_num, ($d1+1), $d1_num_parts, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
 		if ($deepest_level < 1) { $deepest_level=1; }
 		
 		// get SECONDARY/EMBEDDED level part information
 		$d1_array_pos = $array_position;
-		if ($part_nice[$d1_array_pos]['ex_num_subparts'] != $struct_not_set)
+		if ($part_nice[$d1_array_pos]['ex_num_subparts'] != $not_set)
 		{
 			$d2_num_parts = $part_nice[$d1_array_pos]['ex_num_subparts'];
 			for ($d2 = 0; $d2 < $d2_num_parts; $d2++)
@@ -450,7 +450,7 @@
 				
 				// get THIRD/EMBEDDED level part information
 				$d2_array_pos = $array_position;
-				if ($d2_part['ex_num_subparts'] != $struct_not_set)
+				if ($d2_part['ex_num_subparts'] != $not_set)
 				{
 					$d3_num_parts = $part_nice[$d2_array_pos]['ex_num_subparts'];
 					for ($d3 = 0; $d3 < $d3_num_parts; $d3++)
@@ -463,7 +463,7 @@
 
 						// get FOURTH/EMBEDDED level part information
 						$d3_array_pos = $array_position;
-						if ($d3_part['ex_num_subparts'] != $struct_not_set)
+						if ($d3_part['ex_num_subparts'] != $not_set)
 						{
 							$d4_num_parts = $part_nice[$d3_array_pos]['ex_num_subparts'];
 							for ($d4 = 0; $d4 < $d4_num_parts; $d4++)
@@ -476,7 +476,7 @@
 
 								// get FIFTH LEVEL EMBEDDED level part information
 								$d4_array_pos = $array_position;
-								if ($d4_part['ex_num_subparts'] != $struct_not_set)
+								if ($d4_part['ex_num_subparts'] != $not_set)
 								{
 									$d5_num_parts = $part_nice[$d4_array_pos]['ex_num_subparts'];
 									for ($d5 = 0; $d5 < $d5_num_parts; $d5++)
@@ -489,7 +489,7 @@
 
 										// get SISTH LEVEL EMBEDDED level part information
 										$d5_array_pos = $array_position;
-										if ($d5_part['ex_num_subparts'] != $struct_not_set)
+										if ($d5_part['ex_num_subparts'] != $not_set)
 										{
 											$d6_num_parts = $part_nice[$d5_array_pos]['ex_num_subparts'];
 											for ($d6 = 0; $d6 < $d6_num_parts; $d6++)
@@ -502,7 +502,7 @@
 
 												// get SEVENTH LEVEL EMBEDDED level part information
 												$d6_array_pos = $array_position;
-												if ($d6_part['ex_num_subparts'] != $struct_not_set)
+												if ($d6_part['ex_num_subparts'] != $not_set)
 												{
 													$d7_num_parts = $part_nice[$d6_array_pos]['ex_num_subparts'];
 													for ($d7 = 0; $d7 < $d7_num_parts; $d7++)
@@ -515,7 +515,7 @@
 
 														// get EIGTH LEVEL EMBEDDED level part information
 														$d7_array_pos = $array_position;
-														if ($d7_part['ex_num_subparts'] != $struct_not_set)
+														if ($d7_part['ex_num_subparts'] != $not_set)
 														{
 															$d8_num_parts = $part_nice[$d7_array_pos]['ex_num_subparts'];
 															for ($d8 = 0; $d8 < $d8_num_parts; $d8++)
@@ -528,7 +528,7 @@
 
 																// get NINTH LEVEL EMBEDDED level part information
 																$d8_array_pos = $array_position;
-																if ($d8_part['ex_num_subparts'] != $struct_not_set)
+																if ($d8_part['ex_num_subparts'] != $not_set)
 																{
 																	$d9_num_parts = $part_nice[$d8_array_pos]['ex_num_subparts'];
 																	for ($d9 = 0; $d9 < $d9_num_parts; $d9++)
@@ -541,7 +541,7 @@
 
 																		// get 10th LEVEL EMBEDDED level part information
 																		$d9_array_pos = $array_position;
-																		if ($d9_part['ex_num_subparts'] != $struct_not_set)
+																		if ($d9_part['ex_num_subparts'] != $not_set)
 																		{
 																			$d10_num_parts = $part_nice[$d9_array_pos]['ex_num_subparts'];
 																			for ($d10 = 0; $d10 < $d10_num_parts; $d10++)
@@ -554,7 +554,7 @@
 
 																				// get 11th LEVEL EMBEDDED level part information
 																				$d10_array_pos = $array_position;
-																				if ($d10_part['ex_num_subparts'] != $struct_not_set)
+																				if ($d10_part['ex_num_subparts'] != $not_set)
 																				{
 																					$d11_num_parts = $part_nice[$d10_array_pos]['ex_num_subparts'];
 																					for ($d11 = 0; $d11 < $d11_num_parts; $d11++)
@@ -568,7 +568,7 @@
 
 																						// get 12th LEVEL EMBEDDED level part information
 																						$d11_array_pos = $array_position;
-																						if ($d11_part['ex_num_subparts'] != $struct_not_set)
+																						if ($d11_part['ex_num_subparts'] != $not_set)
 																						{
 																							$d12_num_parts = $part_nice[$d11_array_pos]['ex_num_subparts'];
 																							for ($d12 = 0; $d12 < $d12_num_parts; $d12++)
@@ -616,19 +616,19 @@
 	{
 		// ------  Make a Keyword List for this Part  ------
 		$part_nice[$i]['m_keywords'] = '';
-		if ($part_nice[$i]['type'] != $struct_not_set)
+		if ($part_nice[$i]['type'] != $not_set)
 		{
 			$part_nice[$i]['m_keywords'] .= $part_nice[$i]['type'] .' ';
 		}
-		if ($part_nice[$i]['subtype'] != $struct_not_set)
+		if ($part_nice[$i]['subtype'] != $not_set)
 		{
 			$part_nice[$i]['m_keywords'] .= $part_nice[$i]['subtype'] .' ';
 		}
-		if ($part_nice[$i]['encoding'] != $struct_not_set)
+		if ($part_nice[$i]['encoding'] != $not_set)
 		{
 			$part_nice[$i]['m_keywords'] .= $part_nice[$i]['encoding'] .' ';
 		}
-		//if ($part_nice[$i]['description'] != $struct_not_set)
+		//if ($part_nice[$i]['description'] != $not_set)
 		//{
 		//	$part_nice[$i]['m_keywords'] .= $part_nice[$i]['description'] .' ';
 		//}
@@ -889,15 +889,15 @@
 			//$msg_body_info .= 'Array Keys (len='.strlen($keystr).'): '.$keystr .$crlf;
 			
 			if ((isset($part_nice[$i]['m_level_total_parts']))
-			&& ($part_nice[$i]['m_level_total_parts'] != $struct_not_set))
+			&& ($part_nice[$i]['m_level_total_parts'] != $not_set))
 			{
 				$msg_body_info .= 'm_level_total_parts: '. $part_nice[$i]['m_level_total_parts'] .$crlf;
 			}
-			if ($part_nice[$i]['type'] != $struct_not_set)
+			if ($part_nice[$i]['type'] != $not_set)
 			{
 				$msg_body_info .= 'type: '. $part_nice[$i]['type'] .$crlf;
 			}
-			if ($part_nice[$i]['subtype'] != $struct_not_set)
+			if ($part_nice[$i]['subtype'] != $not_set)
 			{
 				$msg_body_info .= 'subtype: '. $part_nice[$i]['subtype'] .$crlf;
 			}
@@ -905,27 +905,27 @@
 			{
 				$msg_body_info .= '*m_html_related_kids: True*' .$crlf;
 			}
-			if ($part_nice[$i]['encoding'] != $struct_not_set)
+			if ($part_nice[$i]['encoding'] != $not_set)
 			{
 				$msg_body_info .= 'encoding: '. $part_nice[$i]['encoding'] .$crlf;
 			}
-			if ($part_nice[$i]['description'] != $struct_not_set)
+			if ($part_nice[$i]['description'] != $not_set)
 			{
 				$msg_body_info .= 'description: '. $part_nice[$i]['description']  .$crlf;
 			}
-			if ($part_nice[$i]['id'] != $struct_not_set)
+			if ($part_nice[$i]['id'] != $not_set)
 			{
 				$msg_body_info .= 'id: '. $part_nice[$i]['id'] .$crlf;
 			}
-			if ($part_nice[$i]['lines'] != $struct_not_set)
+			if ($part_nice[$i]['lines'] != $not_set)
 			{
 				$msg_body_info .= 'lines: '. $part_nice[$i]['lines'] .$crlf;
 			}
-			if ($part_nice[$i]['bytes'] != $struct_not_set)
+			if ($part_nice[$i]['bytes'] != $not_set)
 			{
 				$msg_body_info .= 'bytes: '. $part_nice[$i]['bytes'] .$crlf;
 			}
-			if ($part_nice[$i]['disposition'] != $struct_not_set)
+			if ($part_nice[$i]['disposition'] != $not_set)
 			{
 				$msg_body_info .= 'disposition: '. $part_nice[$i]['disposition'] .$crlf;
 			}
@@ -944,7 +944,7 @@
 				$msg_body_info .= 'param_2_value: '. $part_nice[$i]['param_2_value']  .$crlf;
 				*/
 			}
-			if ($part_nice[$i]['ex_num_subparts'] != $struct_not_set)
+			if ($part_nice[$i]['ex_num_subparts'] != $not_set)
 			{
 				$msg_body_info .= 'ex_num_subparts: '. $part_nice[$i]['ex_num_subparts'] .$crlf;
 				if (strlen($part_nice[$i]['m_part_num_mime']) > 2)
@@ -1005,7 +1005,7 @@
 
 	//$support_test_struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
 	$support_test_struct = $phpgw->msg->phpgw_fetchstructure('');
-	$support_test_struct_nice = pgw_msg_struct($support_test_struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
+	$support_test_struct_nice = pgw_msg_struct($support_test_struct, $not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
 
 	if (($support_test_struct_nice['type'] == 'multipart')
 	&& ($support_test_struct_nice['subtype'] == 'report'))
@@ -1200,7 +1200,7 @@
 				for ($rel = $i+1; $rel < count($part_nice)+1; $rel++)
 				{
 					if ((isset($part_nice[$rel]))
-					&& ($part_nice[$rel]['id'] != $struct_not_set))
+					&& ($part_nice[$rel]['id'] != $not_set))
 					{
 						// Set this Flag for Later Use
 						$probable_replace = True;
@@ -1305,7 +1305,7 @@
 				{
 					// in this case, we need only refer to the part number in an href, then redirect
 					// make a submit button with this html part as a hidden var
-					if ($part_nice[$i]['encoding'] != $struct_not_set)
+					if ($part_nice[$i]['encoding'] != $not_set)
 					{
 						$part_encoding = $part_nice[$i]['encoding'];
 					}

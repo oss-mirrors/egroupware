@@ -81,6 +81,22 @@
 			$phpgw->preferences->add("email","use_sent_folder",$phpgw->msg->args['use_sent_folder']);
 		}
 
+		// sent folder name to use
+		$phpgw->preferences->delete("email","sent_folder_name");
+		if ((isset($phpgw->msg->args['sent_folder_name']))
+		&& ($phpgw->msg->args['sent_folder_name'] != ''))
+		{
+			// get rid of the escape \ that magic_quotes HTTP POST will add
+ 			// " becomes \" and  '  becomes  \'  and  \  becomes \\
+			$sent_folder_name = trim($phpgw->msg->stripslashes_gpc($phpgw->msg->args['sent_folder_name']));
+			if ($sent_folder_name == '')
+			{
+				// for some reason the user did not fill it in properly
+				$sent_folder_name = $phpgw->msg->default_sent_folder;
+			}
+			$phpgw->preferences->add("email","sent_folder_name",$sent_folder_name);
+		}
+
 		// use trash folder
 		$phpgw->preferences->delete("email","use_trash_folder");
 		if ((isset($phpgw->msg->args['use_trash_folder']))
@@ -102,22 +118,6 @@
 				$trash_folder_name = $phpgw->msg->default_trash_folder;
 			}
 			$phpgw->preferences->add("email","trash_folder_name",$trash_folder_name);
-		}
-
-		// sent folder name to use
-		$phpgw->preferences->delete("email","sent_folder_name");
-		if ((isset($phpgw->msg->args['sent_folder_name']))
-		&& ($phpgw->msg->args['sent_folder_name'] != ''))
-		{
-			// get rid of the escape \ that magic_quotes HTTP POST will add
- 			// " becomes \" and  '  becomes  \'  and  \  becomes \\
-			$sent_folder_name = trim($phpgw->msg->stripslashes_gpc($phpgw->msg->args['sent_folder_name']));
-			if ($sent_folder_name == '')
-			{
-				// for some reason the user did not fill it in properly
-				$sent_folder_name = $phpgw->msg->default_sent_folder;
-			}
-			$phpgw->preferences->add("email","sent_folder_name",$sent_folder_name);
 		}
 
 		// use utf 7 internationalization encoding/decoding of folder names
@@ -144,6 +144,7 @@
 		else
 		{
 			$phpgw->preferences->add("email","use_custom_settings",$phpgw->msg->args['use_custom_settings']);
+			
 			if ((isset($phpgw->msg->args['userid']))
 			&& ($phpgw->msg->args['userid'] != ''))
 			{
@@ -151,7 +152,7 @@
 			}
 			else
 			{
-				// should probably be an error message here
+				// so we'll use phpgwapi supplied value instead
 				$phpgw->preferences->delete("email","userid");
 			}
 			if ((isset($phpgw->msg->args['passwd']))
@@ -184,7 +185,7 @@
 			}
 			else
 			{
-				// should probably be an error message here
+				// so we'll use phpgwapi supplied value instead
 				$phpgw->preferences->delete("email","address");
 			}
 			if ((isset($phpgw->msg->args['mail_server']))
@@ -194,7 +195,7 @@
 			}
 			else
 			{
-				// should probably be an error message here
+				// so we'll use phpgwapi supplied value instead
 				$phpgw->preferences->delete("email","mail_server");
 			}
 			if ((isset($phpgw->msg->args['mail_server_type']))
@@ -204,7 +205,7 @@
 			}
 			else
 			{
-				// should probably be an error message here
+				// so we'll use phpgwapi supplied value instead
 				$phpgw->preferences->delete("email","mail_server_type");
 			}
 			if ((isset($phpgw->msg->args['imap_server_type']))
@@ -225,7 +226,7 @@
 			}
 			else
 			{
-				// if (imap_server_type=='UW-Maildir')  then
+				// if (imap_server_type=='UW-Maildir') || UWash  then
 				// should probably be an error message here
 				$phpgw->preferences->delete("email","mail_folder");
 			}
@@ -420,6 +421,7 @@
 	$t->set_var('bg_row7',$tr_color);
 	$t->set_var('userid_blurb',lang("Email Account Name"));
 	$t->set_var('userid_text_name','userid');
+	$t->set_var('userid_sys_default','FIX_ME');
 	$t->set_var('userid_text_value',$phpgw_info["user"]["preferences"]["email"]["userid"]);
 
 	// row8 = Email Password

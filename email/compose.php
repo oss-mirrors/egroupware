@@ -18,7 +18,7 @@
 		'enable_network_class' => True
 	);
 	include('../header.inc.php');
-	$struct_not_set = $phpgw->msg->not_set;
+	$not_set = $phpgw->msg->not_set;
 
 	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 	$t->set_file(array(		
@@ -200,14 +200,14 @@
 			//$body = "\r\n"."\r\n".'forwarded mail'."\r\n";
 			
 			/*
-			$part_nice = pgw_msg_struct($msg_struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
+			$part_nice = pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
 			// see if one of the params if the boundry
-			$part_nice['boundary'] = $struct_not_set;  // initialize
+			$part_nice['boundary'] = $not_set;  // initialize
 			for ($p = 0; $p < $part_nice['ex_num_param_pairs']; $p++)
 			{
 				//echo '<br>params['.$p.']: '.$part_nice['params'][$p]['attribute'].'='.$part_nice['params'][$p]['value'] .'<br>';
 				if (($part_nice['params'][$p]['attribute'] == 'boundary') 
-				  && ($part_nice['params'][$p]['value'] != $struct_not_set))
+				  && ($part_nice['params'][$p]['value'] != $not_set))
 				{
 					$part_nice['boundary'] = $part_nice['params'][$p]['value'];
 					break;

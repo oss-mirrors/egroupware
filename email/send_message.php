@@ -23,7 +23,7 @@
 	$phpgw_info['flags'] = $phpgw_flags;
 	include('../header.inc.php');
 
-	$struct_not_set = $phpgw->msg->not_set;
+	$not_set = $phpgw->msg->not_set;
 
 //  -------  This will be called just before leaving this page, to clear / unset variables / objects -----------
 	function send_message_cleanup()
@@ -319,7 +319,7 @@
 		//$msg_struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
 		$msg_struct = $phpgw->msg->phpgw_fetchstructure('');
 
-		$mail_out['fwd_info'] = pgw_msg_struct($msg_struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
+		$mail_out['fwd_info'] = pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
 		if (($mail_out['fwd_info']['type'] == 'multipart')
 		|| ($mail_out['fwd_info']['subtype'] == 'mixed'))
 		{
@@ -343,38 +343,38 @@
 		$msg_struct = $phpgw->msg->phpgw_fetchstructure('');
 
 		// use the "pgw_msg_struct" function to get the orig message main header info
-		$mail_out['fwd_info'] = pgw_msg_struct($msg_struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
+		$mail_out['fwd_info'] = pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
 		// add some more info
 		$mail_out['fwd_info']['from'] = $phpgw->msg->make_rfc2822_address($msg_headers->from[0]);
 		$mail_out['fwd_info']['date'] = $phpgw->common->show_date($msg_headers->udate);
 		$mail_out['fwd_info']['subject'] = $phpgw->msg->get_subject($msg_headers,'');
 
 		// normalize data to rfc2046 defaults, in the event data is not provided
-		if ($mail_out['fwd_info']['type'] == $struct_not_set)
+		if ($mail_out['fwd_info']['type'] == $not_set)
 		{
 			$mail_out['fwd_info']['type'] = 'text';
 		}
-		if ($mail_out['fwd_info']['subtype'] == $struct_not_set)
+		if ($mail_out['fwd_info']['subtype'] == $not_set)
 		{
 			$mail_out['fwd_info']['subtype'] = 'plain';
 		}
-		if ($mail_out['fwd_info']['disposition'] == $struct_not_set)
+		if ($mail_out['fwd_info']['disposition'] == $not_set)
 		{
 			$mail_out['fwd_info']['disposition'] = 'inline';
 		}
 
-		$mail_out['fwd_info']['boundary'] = $struct_not_set;
+		$mail_out['fwd_info']['boundary'] = $not_set;
 		for ($p = 0; $p < $part_nice['ex_num_param_pairs']; $p++)
 		{
 			//echo '<br>params['.$p.']: '.$part_nice['params'][$p]['attribute'].'='.$part_nice['params'][$p]['value'] .'<br>';
 			if (($part_nice['params'][$p]['attribute'] == 'boundary') 
-			  && ($part_nice['params'][$p]['value'] != $struct_not_set))
+			  && ($part_nice['params'][$p]['value'] != $not_set))
 			{
 				$mail_out['fwd_info']['boundary'] = $part_nice['params'][$p]['value'];
 				break;
 			}
 		}
-		if ($mail_out['fwd_info']['boundary'] != $struct_not_set)
+		if ($mail_out['fwd_info']['boundary'] != $not_set)
 		{
 			// original email ALREADY HAS a boundary., so use it!
 			$mail_out['boundary'] = $mail_out['fwd_info']['boundary'];

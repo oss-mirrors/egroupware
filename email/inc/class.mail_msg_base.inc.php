@@ -159,7 +159,8 @@
 			set_time_limit(60);
 			// login to INBOX because we know that always(?) should exist on an imap server
 			// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
-			$this->mailsvr_stream = $this->dcom->open($this->mailsvr_callstr."INBOX", $user, $pass, '');
+			$server_str = $phpgw->msg->get_mailsvr_callstr();
+			$this->mailsvr_stream = $this->dcom->open($server_str."INBOX", $user, $pass, '');
 			  if ($debug_logins) { echo 'this->mailsvr_stream: '.serialize($this->mailsvr_stream).'<br>';}
 			set_time_limit(0);
 
@@ -324,9 +325,31 @@
 		// ---  DELETE THE ABOVE WHEN THIS OPTION GETS INTO THE SYSTEM SETUP
 		// pick up custom "mail_folder" if it exists (used for UWash and UWash Maildor servers)
 		// else use the system default (which we temporarily hard coded to "mail" just above here)
-		if (!isset($phpgw_info['user']['preferences']['email']['mail_folder']))
+		
+		// because of the way this option works, an empty string IS ACTUALLY a valid value
+		// which represents the $HOME/* as the UWash mail files location
+		// THERFOR we must check the "Use_custom_setting" option to help us figure out what to do
+		if (!isset($phpgw_info['user']['preferences']['email']['use_custom_settings']))
 		{
+			// we are NOT using custom settings so this MUST be the server default
 			$phpgw_info['user']['preferences']['email']['mail_folder'] = $phpgw_info['server']['mail_folder'];
+		}
+		else
+		{
+			// we ARE using custom settings AND a BLANK STRING is a valid option, so...
+			if ((isset($phpgw_info['user']['preferences']['email']['mail_folder']))
+			&& ($phpgw_info['user']['preferences']['email']['mail_folder'] != ''))
+			{
+				// using custom AND an string exists, so "mail_folder" is that string stored in the custom prefs by the user
+				// DO NOTING - VALID OPTION VALUE for $phpgw_info['user']['preferences']['email']['mail_folder']
+			}
+			else
+			{
+				// using Custom Prefs BUT this text box was left empty by the user on submit, so no value stored
+				// BUT since we are using custom prefs, "mail_folder" MUST BE AN EMPTY STRING
+				// which is an acceptable, valid preference, overriding any value which may have been set in ["server"]["mail_folder"]
+				$phpgw_info['user']['preferences']['email']['mail_folder'] = '';
+			}
 		}
 
 		// This is going to be used to switch to the nntp class
@@ -492,38 +515,54 @@
 			// return the cached data
 			return $this->mailsvr_callstr;
 		}
+
+		// what's the name or IP of the mail server
+		$mail_server = $phpgw_info['user']['preferences']['email']['mail_server'];
+		
+		/*
+		// EXPERIMENTAL WORKOUND for the "localhost" php bug
+		// php does not like "localhost" used as serever name, may cause folders to appear empty
+		// so TRY FIXING by changing localhost to 127.0.0.1
+		if ((stristr($mail_server, 'localhost'))
+		&& (strlen($mail_server) == strlen('localhost')))
+		{
+			$mail_server = '127.0.0.1';
+		}
+		*/
+		
 		// determine the Mail Server Call String
 		// construct the email server call string from the opening bracket "{"  to the closing bracket  "}"
 		if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
 		{
 			// IMAP normal connection, No SSL
-			$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':' .$this->get_mailsvr_port().'}';
+			$server_call = '{' .$mail_server .':' .$this->get_mailsvr_port().'}';
 		}
 		elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps')
 		{
 			// IMAP over SSL
-			$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.$this->get_mailsvr_port().'/imap/ssl/novalidate-cert}';
-			//$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.$this->get_mailsvr_port().'/imap/ssl/novalidate-cert}';
+			$server_call = '{' .$mail_server .':'.$this->get_mailsvr_port().'/imap/ssl/novalidate-cert}';
+			//$server_call = '{' .$mail_server .':'.$this->get_mailsvr_port().'/imap/ssl/novalidate-cert}';
 		}
 		elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s')
 		{
 			// POP3 over SSL:
-			$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.$this->get_mailsvr_port().'/pop3/ssl/novalidate-cert}';
-			//$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.$this->get_mailsvr_port().'/pop3/ssl}';
+			$server_call = '{' .$mail_server .':'.$this->get_mailsvr_port().'/pop3/ssl/novalidate-cert}';
+			//$server_call = '{' .$mail_server .':'.$this->get_mailsvr_port().'/pop3/ssl}';
 		}
 		elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3')
 		{
 			// POP3 normal connection, No SSL
-			$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.$this->get_mailsvr_port().'/pop3}';
+			$server_call = '{' .$mail_server .':'.$this->get_mailsvr_port().'/pop3}';
 		}
 		else
 		{
 			//UNKNOWN SERVER in Preferences, return a default value that is likely to work
 			// probably should raise some kind of error here
-			$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'].':'.$this->get_mailsvr_port().'}';
+			$server_call = '{' .$mail_server.':'.$this->get_mailsvr_port().'}';
 		}
 		// cache the result
 		$this->mailsvr_callstr = $server_call;
+		//echo $server_call.'<br>';
 		return $server_call;
 	}
 
