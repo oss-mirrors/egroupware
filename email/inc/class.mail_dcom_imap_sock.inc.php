@@ -535,7 +535,6 @@
 			}
 			if ($this->debug_dcom > 1) { echo 'imap.renamemailbox('.__LINE__.'): processed $folder: ['.htmlspecialchars($folder).'] <br>'; }
 			// assemble the server querey, looks like this:  00000004 Rename INBOX.New1 "INBOX.New TWO"
-			
 			$cmd_tag = 'm012';
 			$full_command = $cmd_tag.' Rename '.$folder_old.' '.$folder_new;
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
@@ -569,25 +568,123 @@
 		*	DELETE a Message From the Server
 		\**************************************************************************/
 		/*!
-		@function delete
-		@abstract not yet implemented in IMAP sockets module
-		@discussion implements imap_delete
+		@function setflag_full
+		@abstract implements IMAP_SETFLAG_FULL
+		@discussion often used by mail move and delete
+		@author Angles
 		*/
-		function delete($stream_notused,$msg_num,$flags="")
+		function setflag_full($stream_notused,$msg_list,$flags_str='',$flags)
 		{
-			if ($this->debug_dcom > 0) { echo 'imap: delete NOT YET IMPLEMENTED imap sockets function<br>'; }
-			return False;
+			if ($this->debug_dcom > 0) { echo 'imap_sock.setflag_full('.__LINE__.'): ENTERING <br>'; }
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & SE_UID)) )
+			{
+				$flags |= SE_UID;
+			}
+			// flags blank or  SE_UID
+			// only SE_UID is supported right now, no flag is not supported because we only use the "UID" command right now
+			if ($this->debug_dcom > 1) { echo 'imap_sock.setflag_full('.__LINE__.'): param $flags ['.htmlspecialchars(serialize($flags)).'], ($flags & SE_UID) is ['.htmlspecialchars(serialize(($flags & SE_UID))).'] <br>'; }
+			if ($flags & SE_UID)
+			{
+				$using_uid = True;
+			}
+			else
+			{
+				echo 'imap_sock.setflag_full('.__LINE__.'): LEAVING on ERROR, flag SE_UID is not present, nothing else coded for yet <br>';
+				if ($this->debug_dcom > 0) { echo 'imap_sock.setflag_full('.__LINE__.'): LEAVING on ERROR, flag SE_UID is not present, nothing else coded for yet <br>'; }
+				return False;
+			}
+			if ($this->debug_dcom > 1) { echo 'imap_sock.setflag_full('.__LINE__.'): $flags ['.htmlspecialchars(serialize($flags)).'], $using_uid ['.htmlspecialchars(serialize($using_uid)).'] only SE_UID coded for, so continuing...<br>'; }
+			// assemble the server querey, looks like this:  00000007 UID STORE 20 +Flags (\Deleted)
+			$cmd_tag = 'n014';
+			$full_command = $cmd_tag.' UID STORE '.$msg_list.' +Flags ('.$flags_str.')';
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
+			
+			if ($this->debug_dcom > 1) { echo 'imap_sock.setflag_full('.__LINE__.'): write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap_sock.setflag_full('.__LINE__.'): expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			// proceed
+			if(!$this->write_port($full_command))
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.setflag_full('.__LINE__.'): LEAVING with error: could not write_port<br>'; }
+				$this->error();
+				return False;				
+			}
+			// read the server data
+			$response = $this->imap_read_port($expecting);
+			if ($response == False)
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.setflag_full('.__LINE__.'): LEAVING on ERROR: returning False, $this->server_last_error_str ['. htmlspecialchars($this->server_last_error_str) .']<br>'; }
+				return False;
+			}
+			else
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.setflag_full('.__LINE__.'): LEAVING with success: returning True <br>'; }
+				return True;
+			}
 		}
+		
+		/*!
+		@function delete
+		@abstract implements IMAP_DELETE
+		@discussion really this is a passthru to setflag_full with DELETED as the flags_str param
+		@author Angles
+		*/
+		function delete($stream_notused,$msg_list,$flags=0)
+		{
+			if ($this->debug_dcom > 0) { echo 'imap_sock.delete('.__LINE__.'): ENTERING <br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap_sock.delete('.__LINE__.'): this is primary a passthru command to setflag_full with DELETED flag<br>'; }
+			
+			// assemble the server querey, looks like this:  00000006 UID STORE 21:25 +Flags (\DELETED)
+			$response = $this->setflag_full($stream_notused, $msg_list, "\\DELETED", $flags);
+			if ($response == False)
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.delete('.__LINE__.'): LEAVING on ERROR: returning False, $this->server_last_error_str ['. htmlspecialchars($this->server_last_error_str) .']<br>'; }
+				return False;
+			}
+			else
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.delete('.__LINE__.'): LEAVING with success: returning True <br>'; }
+				return True;
+			}
+		}
+		
 		/*!
 		@function expunge
-		@abstract not yet implemented in IMAP sockets module
+		@abstract implements IMAP_EXPUNGE
+		@author Angles
 		*/
-		function expunge($stream)
+		function expunge($stream_notused)
 		{
-			// not yet implemented
-			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: expunge<br>'; }
-			return true;
+			if ($this->debug_dcom > 0) { echo 'imap_sock.expunge('.__LINE__.'): ENTERING <br>'; }
+			// assemble the server querey, looks like this:  00000007 EXPUNGE
+			$cmd_tag = 'n015';
+			$full_command = $cmd_tag.' EXPUNGE';
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
+			
+			if ($this->debug_dcom > 1) { echo 'imap_sock.expunge('.__LINE__.'): write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap_sock.expunge('.__LINE__.'): expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			// proceed
+			if(!$this->write_port($full_command))
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.expunge('.__LINE__.'): LEAVING with error: could not write_port<br>'; }
+				$this->error();
+				return False;				
+			}
+			// read the server data
+			$response = $this->imap_read_port($expecting);
+			if ($response == False)
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.expunge('.__LINE__.'): LEAVING on ERROR: returning False, $this->server_last_error_str ['. htmlspecialchars($this->server_last_error_str) .']<br>'; }
+				return False;
+			}
+			else
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.expunge('.__LINE__.'): LEAVING with success: returning True <br>'; }
+				return True;
+			}
 		}
+		
 		// SEE BELOW for:  fetchbody
 		// SEE BELOW for:  header
 		//  headers  is DEPRECIATED - NOT USED
@@ -609,28 +706,121 @@
 			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: mailcopy<br>'; }
 			return False;
 		}
+		
 		/*!
 		@function mail_move
-		@abstract not yet implemented in IMAP sockets module
-		@discussion implements imap_mail_move
+		@abstract implements IMAP_MAIL_MOVE
+		@discussion also uses setflag_full
+		@author Angles
 		*/
-		function mail_move($stream,$msg_list,$mailbox)
+		function mail_move($stream_notused,$msg_list,$fq_folder,$flags=0)
 		{
-			// not yet implemented
-			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: mail_move<br>'; }
-			return False;
+			if ($this->debug_dcom > 0) { echo 'imap_sock.mail_move('.__LINE__.'): ENTERING <br>'; }
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & SE_UID)) )
+			{
+				$flags |= SE_UID;
+			}
+			// flags blank or  SE_UID
+			// only SE_UID is supported right now, no flag is not supported because we only use the "UID" command right now
+			if ($this->debug_dcom > 1) { echo 'imap_sock.mail_move('.__LINE__.'): param $flags ['.htmlspecialchars(serialize($flags)).'], ($flags & SE_UID) is ['.htmlspecialchars(serialize(($flags & SE_UID))).'] <br>'; }
+			if ($flags & SE_UID)
+			{
+				$using_uid = True;
+			}
+			else
+			{
+				echo 'imap_sock.mail_move('.__LINE__.'): LEAVING on ERROR, flag SE_UID is not present, nothing else coded for yet <br>';
+				if ($this->debug_dcom > 0) { echo 'imap_sock.mail_move('.__LINE__.'): LEAVING on ERROR, flag SE_UID is not present, nothing else coded for yet <br>'; }
+				return False;
+			}
+			if ($this->debug_dcom > 1) { echo 'imap_sock.mail_move('.__LINE__.'): $flags ['.htmlspecialchars(serialize($flags)).'], $using_uid ['.htmlspecialchars(serialize($using_uid)).'] only SE_UID coded for, so continuing...<br>'; }
+			$svr_data = array();
+			$svr_data = $this->distill_fq_folder($fq_folder);
+			$folder = $svr_data['folder'];
+			// if folder has a space we need to enclose it in quotes
+			if (strpos($folder, ' ') > 1)
+			{
+				$folder = '"'.$folder.'"';
+			}
+			if ($this->debug_dcom > 1) { echo 'imap.mail_move('.__LINE__.'): processed $folder: ['.htmlspecialchars($folder).'] <br>'; }
+			// assemble the server querey, looks like this:  00000006 UID COPY 12:14 INBOX.Trash
+			$cmd_tag = 'n016';
+			$full_command = $cmd_tag.' UID COPY '.$msg_list.' '.$folder;
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
+			
+			if ($this->debug_dcom > 1) { echo 'imap_sock.mail_move('.__LINE__.'): write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap_sock.mail_move('.__LINE__.'): expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			// proceed
+			if(!$this->write_port($full_command))
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.mail_move('.__LINE__.'): LEAVING with error: could not write_port<br>'; }
+				$this->error();
+				return False;				
+			}
+			// read the server data
+			$success = $this->imap_read_port($expecting);
+			if ($success == False)
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.mail_move('.__LINE__.'): LEAVING on ERROR: returning False, $this->server_last_error_str ['. htmlspecialchars($this->server_last_error_str) .']<br>'; }
+				return False;
+			}
+			
+			//... CONTINUE ... with FLAGS passthru call
+			if ($this->debug_dcom > 0) { echo 'imap_sock.mail_move('.__LINE__.'): $success is ['.serialize($success).'] so CONTINUE with flag set <br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap_sock.mail_move('.__LINE__.'): from here on this is primary a passthru command to setflag_full with DELETED flag<br>'; }
+			
+			// assemble the server querey, looks like this:  00000006 UID STORE 21:25 +Flags (\DELETED)
+			$response = $this->setflag_full($stream_notused, $msg_list, "\\DELETED", $flags);
+			if ($response == False)
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.mail_move('.__LINE__.'): LEAVING on ERROR: returning False, $this->server_last_error_str ['. htmlspecialchars($this->server_last_error_str) .']<br>'; }
+				return False;
+			}
+			else
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.mail_move('.__LINE__.'): LEAVING with success: returning True <br>'; }
+				return True;
+			}
 		}
+		
 		//  num_msg  is DEPRECIATED - NOT USED
 		/*!
 		@function noop_ping_test
-		@abstract not yet implemented in IMAP sockets module
+		@abstract implements IMAP_PING
 		@discussion implements imap_ping
+		@author Angles
 		*/
-		function noop_ping_test($stream)
+		function noop_ping_test($stream_notused)
 		{
-			// not yet implemented
-			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: noop_ping_test<br>'; }
-			return False;
+			if ($this->debug_dcom > 0) { echo 'imap_sock.noop_ping_test('.__LINE__.'): ENTERING <br>'; }
+			// assemble the server querey, looks like this:  00000007 NOOP
+			$cmd_tag = 'n016';
+			$full_command = $cmd_tag.' NOOP';
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
+			
+			if ($this->debug_dcom > 1) { echo 'imap_sock.noop_ping_test('.__LINE__.'): write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap_sock.noop_ping_test('.__LINE__.'): expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			// proceed
+			if(!$this->write_port($full_command))
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.noop_ping_test('.__LINE__.'): LEAVING with error: could not write_port<br>'; }
+				$this->error();
+				return False;				
+			}
+			// read the server data
+			$response = $this->imap_read_port($expecting);
+			if ($response == False)
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.noop_ping_test('.__LINE__.'): LEAVING on ERROR: returning False, $this->server_last_error_str ['. htmlspecialchars($this->server_last_error_str) .']<br>'; }
+				return False;
+			}
+			else
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.noop_ping_test('.__LINE__.'): LEAVING with success: returning True <br>'; }
+				return True;
+			}
 		}
 		// SEE BELOW for:  open  *=DONE=*
 		// function qprint moved to main msg class
