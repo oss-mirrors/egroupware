@@ -2,9 +2,9 @@
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>                                                                                                      
 <hr noshade width="98%" align="center" size="1">
 <center> 
+{error}
 {total_matchs}
  {next_matchs}
-  {error}	
   <table width=85% border=0 cellspacing=1 cellpadding=3>
     <tr bgcolor="{th_bg}">
       <td width="8%" bgcolor="{th_bg}" align=center>{sort_num}</td>

@@ -37,10 +37,10 @@
 
    if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {                                                                                                                
    $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];                                                                                                                 
-   $phpgw->template->set_var("error","");                                                                                                                                                
+   $t->set_var("error","");                                                                                                                                                
    }                                                                                                                                                                                     
    else {                                                                                                                                                                                
-   $phpgw->template->set_var("error",lang("Please select your currency in preferences!"));                                                                                               
+   $t->set_var("error",lang("Please select your currency in preferences!"));                                                                                               
    }
 
 

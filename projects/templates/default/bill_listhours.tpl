@@ -2,9 +2,8 @@
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>                                                                                                                                                     
 <hr noshade width="98%" align="center" size="1">                                                                                                                                                  
 <center>
- 
+{error} 
 <form method="POST" action="{actionurl}">
-
 <table border=0 cellspacing=1 cellpadding=3>
 <tr>
 <td>{title_invoice_num} :</td>
@@ -23,10 +22,7 @@
 <td>{date_formatorder} {date_hint}</td>
 </tr>
 </table> 
-
  {common_hidden_vars}
-   {error}
-
 <table width=100% border=0 cellspacing=1 cellpadding=3>
     <tr bgcolor="{th_bg}">
       <td width="3%" bgcolor="{th_bg}" align=center>{h_lang_select}</td>
