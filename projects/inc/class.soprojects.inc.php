@@ -35,6 +35,7 @@
 			$this->db2		= $this->db;
 			$this->grants	= $GLOBALS['phpgw']->acl->get_grants('projects');
 			$this->account	= $GLOBALS['phpgw_info']['user']['account_id'];
+			$this->currency = $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
 		}
 
 		function project_filter($type)
@@ -193,7 +194,8 @@
 				}
 				if ($projects[$i]['title'])
 				{
-					$pro_select .= '>' . $GLOBALS['phpgw']->strip_html($projects[$i]['title']) . ' [ ' . $GLOBALS['phpgw']->strip_html($projects[$i]['number']) . ' ]';
+					$pro_select .= '>' . $GLOBALS['phpgw']->strip_html($projects[$i]['title']) . ' [ '
+								. $GLOBALS['phpgw']->strip_html($projects[$i]['number']) . ' ]';
 				}
 				else
 				{
@@ -305,8 +307,6 @@
 
 		function select_activities_list($project_id = '',$billable = False)
 		{
-			$currency = $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
-
 			if ($billable)
 			{
 				$bill_filter = " AND billable='Y'";
@@ -337,7 +337,7 @@
 
 				if($billable)
 				{
-					$activities_list .= ' ' . $currency . ' ' . $this->db->f('billperae') . ' ' . lang('per workunit');
+					$activities_list .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . lang('per workunit');
 				}
 
 				$activities_list .= '</option>' . "\n";
@@ -347,8 +347,6 @@
 
 		function select_pro_activities($project_id = '', $pro_parent, $billable = False)
 		{
-			$currency = $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
-
 			if ($billable)
 			{
 				$bill_filter = " AND billable='Y'";
@@ -386,7 +384,7 @@
 
 				if($billable)
 				{
-					$activities_list .= ' ' . $currency . ' ' . $this->db->f('billperae') . ' ' . lang('per workunit');
+					$activities_list .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . lang('per workunit');
 				}
 
 				$activities_list .= '</option>' . "\n";
@@ -396,7 +394,7 @@
 
 		function select_hours_activities($project_id, $activity = '')
 		{
-			$this->db->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='"
+			$this->db->query("SELECT activity_id,descr,billperae,billable FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='"
 							. $project_id . "' AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id order by descr asc",__LINE__,__FILE__);
 
 			while ($this->db->next_record())
@@ -406,7 +404,13 @@
 				{
 					$hours_act .= ' selected';
 				}
-				$hours_act .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . '</option>';
+				$hours_act .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr'));
+
+				if($this->db->f('billable') == 'Y')
+				{
+					$hours_act .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . lang('per workunit');
+				}
+				$hours_act .= '</option>' . "\n";
 			}
 			return $hours_act;
 		}

@@ -35,18 +35,15 @@
 
 		var $public_functions = array
 		(
-			'list_hours'			=> True,
-			'check_values'			=> True,
-			'save_project'			=> True,
-			'read_single_project'	=> True,
-			'delete_project'		=> True,
-			'exists'				=> True
+			'list_hours'		=> True,
+			'check_values'		=> True,
+			'save_hours'		=> True,
+			'read_single_hours'	=> True,
+			'delete_hours'		=> True
 		);
 
 		function boprojecthours($session=False)
 		{
-			global $phpgw;
-
 			$this->soprojecthours	= CreateObject('projects.soprojecthours');
 
 			if ($session)
@@ -67,19 +64,15 @@
 
 		function save_sessiondata($data)
 		{
-			global $phpgw;
-
 			if ($this->use_session)
 			{
-				$phpgw->session->appsession('session_data','projects_hours',$data);
+				$GLOBALS['phpgw']->session->appsession('session_data','projects_hours',$data);
 			}
 		}
 
 		function read_sessiondata()
 		{
-			global $phpgw;
-
-			$data = $phpgw->session->appsession('session_data','projects_hours');
+			$data = $GLOBALS['phpgw']->session->appsession('session_data','projects_hours');
 
 			$this->start	= $data['start'];
 			$this->query	= $data['query'];
@@ -96,107 +89,128 @@
 			return $hours_list;
 		}
 
-		function read_single_project($project_id)
+		function read_single_hours($hours_id)
 		{
-			$single_pro = $this->soprojects->read_single_project($project_id);
-
-			return $single_pro;
+			$hours = $this->soprojecthours->read_single_hours($hours_id);
+			return $hours;
 		}
 
-/*		function check_values($values)
+		function check_values($values)
 		{
-			if (strlen($values['descr']) >= 8000)
+			if (strlen($values['hours_descr']) >= 255)
 			{
-				$error[] = lang('Description can not exceed 8000 characters in length');
+				$error[] = lang('Description can not exceed 255 characters in length !');
 			}
 
-			if ($shour && ($shour != 0) && ($shour != 12))
+			if (strlen($values['remark']) >= 8000)
 			{
-				if ($sampm=='pm') { $shour = $shour + 12; }
+				$error[] = lang('Remark can not exceed 8000 characters in length !');
 			}
 
-			if ($shour && ($shour == 12))
+			if ($values['shour'] && ($values['shour'] != 0) && ($values['shour'] != 12))
 			{
-				if ($sampm=='am') { $shour = 0; }
-			}
-
-			if ($ehour && ($ehour != 0) && ($ehour != 12))
-			{
-				if ($eampm=='pm') { $ehour = $ehour + 12; }
-			}
-
-			if ($ehour && ($ehour == 12))
-			{
-				if ($eampm=='am') { $ehour = 0; }
-			}
-
-			if (checkdate($smonth,$sday,$syear)) { $sdate = mktime($shour,$smin,0,$smonth,$sday,$syear); } 
-			else
-			{
-				if ($shour && $smin && $smonth && $sday && $syear)
+				if ($values['sampm']=='pm')
 				{
-					$error[$errorcount++] = lang('You have entered an invalid start date !') . '<br>' . $shour . ':' . $smin  . ' ' . $smonth . '/' . $sday . '/' . $syear;
+					$values['shour'] = $values['shour'] + 12;
 				}
 			}
 
-			if (checkdate($emonth,$eday,$eyear)) { $edate = mktime($ehour,$emin,0,$emonth,$eday,$eyear); } 
-			else
+			if ($values['shour'] && ($values['shour'] == 12))
 			{
-				if ($ehour && $emin && $emonth && $eday && $eyear)
+				if ($values['sampm']=='am')
 				{
-					$error[$errorcount++] = lang('You have entered an invalid end date !') . '<br>' . $ehour . ':' . $emin . ' ' . $emonth . '/' . $eday . '/' . $eyear;
+					$values['shour'] = 0;
 				}
 			}
 
-			$phpgw->db->query("SELECT minperae,billperae,remarkreq FROM phpgw_p_activities WHERE id ='$activity'");
-			$phpgw->db->next_record();
-			if ($phpgw->db->f(0) == 0) { $error[$errorcount++] = lang('You have selected an invalid activity !'); }
+			if ($values['ehour'] && ($values['ehour'] != 0) && ($values['ehour'] != 12))
+			{
+				if ($values['eampm']=='pm')
+				{
+					$values['ehour'] = $values['ehour'] + 12;
+				}
+			}
+
+			if ($values['ehour'] && ($values['ehour'] == 12))
+			{
+				if ($values['eampm']=='am')
+				{
+					$values['ehour'] = 0;
+				}
+			}
+
+			if (! checkdate($values['smonth'],$values['sday'],$values['syear']))
+			{
+				$error[] = lang('You have entered a starting invalid date !');
+			}
+
+			if (! checkdate($values['emonth'],$values['eday'],$values['eyear']))
+			{
+				$error[] = lang('You have entered an ending invalid date !');
+			}
+
+			$activity = $this->boprojects->read_single_activity($values['activity']);
+
+			if (! is_array($activity))		
+			{
+				$error[] = lang('You have selected an invalid activity !');
+			}
 			else
 			{
-				$billperae = $phpgw->db->f('billperae');
-				$minperae = $phpgw->db->f('minperae');
-				if (($phpgw->db->f('remarkreq')=='Y') and (!$remark)) { $error[$errorcount++] = lang('Please enter a remark !'); }
+				if ($activity['remarkreq']=='Y' && (!$values['remark']))
+				{
+					$error[] = lang('Please enter a remark !');
+				}
 			}
 
-			if (! $error)
-			{
-				$remark = addslashes($remark);
-				$ae_minutes = $hours*60+$minutes;
-//    $ae_minutes = ceil($ae_minutes / $phpgw->db->f("minperae"));
-
-			$phpgw->db->query("INSERT into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,hours_descr,remark,minutes,status,minperae,"
-							. "billperae,employee) VALUES ('$project_id','$activity','" . time() . "','$sdate','$edate','$hours_descr','$remark','$ae_minutes',"
-							. "'$status','$minperae','$billperae','$employee')"); 
-
-			}
-		
 			if (is_array($error))
 			{
 				return $error;
 			}
-		} */
+		}
 
-		function save_project($values, $book_activities, $bill_activities)
+		function save_hours($values)
 		{
-			global $phpgw;
+			$activity = $this->boprojects->read_single_activity($values['activity_id']);
 
-			if ($values['choose'])
+			$values['minperae'] = $activity['minperae'];
+			$values['billperae'] = $activity['billperae'];
+
+			if ($values['shour'] && ($values['shour'] != 0) && ($values['shour'] != 12))
 			{
-				$values['number'] = $this->soprojects->create_projectid();
+				if ($values['sampm']=='pm')
+				{
+					$values['shour'] = $values['shour'] + 12;
+				}
 			}
 
-			if ($values['access'])
+			if ($values['shour'] && ($values['shour'] == 12))
 			{
-				$values['access'] = 'private';
+				if ($values['sampm']=='am')
+				{
+					$values['shour'] = 0;
+				}
 			}
-			else
+
+			if ($values['ehour'] && ($values['ehour'] != 0) && ($values['ehour'] != 12))
 			{
-				$values['access'] = 'public';
+				if ($values['eampm']=='pm')
+				{
+					$values['ehour'] = $values['ehour'] + 12;
+				}
+			}
+
+			if ($values['ehour'] && ($values['ehour'] == 12))
+			{
+				if ($values['eampm']=='am')
+				{
+					$values['ehour'] = 0;
+				}
 			}
 
 			if ($values['smonth'] || $values['sday'] || $values['syear'])
 			{
-				$values['sdate'] = mktime(0,0,0,$values['smonth'], $values['sday'], $values['syear']);
+				$values['sdate'] = mktime($values['shour'],$values['smin'],0,$values['smonth'], $values['sday'], $values['syear']);
 			}
 
             if (!$values['sdate'])
@@ -206,19 +220,19 @@
 
 			if ($values['emonth'] || $values['eday'] || $values['eyear'])
 			{
-				$values['edate'] = mktime(2,0,0,$values['emonth'],$values['eday'],$values['eyear']);
+				$values['edate'] = mktime($values['ehour'],$values['emin'],0,$values['emonth'],$values['eday'],$values['eyear']);
 			}
 
-			if ($values['project_id'])
+			if ($values['hours_id'])
 			{
-				if ($values['project_id'] != 0)
+				if ($values['hours_id'] != 0)
 				{
-					$this->soprojects->edit_project($values, $book_activities, $bill_activities);
+					$this->soprojecthours->edit_hours($values);
 				}
 			}
 			else
 			{
-				$this->soprojects->add_project($values, $book_activities, $bill_activities);
+				$this->soprojecthours->add_hours($values);
 			}
 		}
 	}

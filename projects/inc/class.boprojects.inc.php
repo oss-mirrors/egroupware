@@ -229,13 +229,6 @@
 		function employee_list()
 		{		
 			$employees = $GLOBALS['phpgw']->accounts->get_list('accounts');
-
-
-
-
-
-
-
 			return $employees;
 		}
 

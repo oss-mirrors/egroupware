@@ -114,8 +114,6 @@
 			$this->t->set_var('lang_start_time',lang('Start time'));
 			$this->t->set_var('lang_end_time',lang('End time'));
 			$this->t->set_var('lang_select_project',lang('Select project'));
-			$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
-			$this->t->set_var('lang_billperae',lang('Bill per workunit'));
 			$this->t->set_var('lang_reset',lang('Clear Form'));
 		}
 
@@ -329,8 +327,9 @@
 
 			if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
 			{
-				$this->t->set_var('action','<form method="POST" action="' . $GLOBALS['phpgw']->link('/projects/hours_addhour.php','project_id=' . $pro['project_id']) . '&pro_parent=' . $pro[0]['parent']
-															. '"><input type="submit" value="' . lang('Add') .'"></form>');
+				$link_data['menuaction'] = 'projects.uiprojecthours.add_hours';
+				$this->t->set_var('action','<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data)
+																	. '"><input type="submit" value="' . lang('Add') . '"></form>');
 			}
 			else { $this->t->set_var('action',''); }
 
@@ -391,7 +390,7 @@
 				}
 				else
 				{
-					$this->boprojecthours->save_project($values);
+					$this->boprojecthours->save_hours($values);
 					Header('Location: ' . $GLOBALS['phpgw']->link('/index.php',$link_data));
 				}
 			}
@@ -420,7 +419,7 @@
 
 			$this->t->set_var('project_name',$this->boprojects->return_value($project_id));
 
-			$this->t->set_var('activity_list',$this->boprojects->select_hours_activities($project_id));
+			$this->t->set_var('activity_list',$this->boprojects->select_hours_activities($project_id, $values['activity_id']));
 
 			$values['amsel'] = ' checked'; $values['pmsel'] = '';
 
@@ -533,8 +532,11 @@
 
 			$this->t->set_var('employee_list',$this->employee_format($values['employee']));
 
-			$this->t->set_var('minperae',$minperae);
-			$this->t->set_var('billperae',$billperae);
+			$this->t->set_var('lang_minperae','');
+			$this->t->set_var('lang_billperae','');
+			$this->t->set_var('minperae','');
+			$this->t->set_var('billperae','');
+			$this->t->set_var('currency','');
 
 			$this->t->set_var('edithandle','');
 			$this->t->set_var('addhandle','');

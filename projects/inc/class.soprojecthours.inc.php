@@ -124,61 +124,20 @@
 		}
 
 
-		function add_project($values, $book_activities, $bill_activities)
+		function add_hours($values)
 		{
-			global $phpgw;
+			$values['ae_minutes']	= $values['hours']*60+$values['minutes'];
+			$values['hours_descr']	= addslashes($values['hours_descr']);
+			$values['remark']		= addslashes($values['remark']);
 
-			if (!$values['budget'])
-			{
-				$values['budget'] = 0;
-			}
-
-			$values['owner'] = $this->account;
-			$values['descr'] = addslashes($values['descr']);
-			$values['title'] = addslashes($values['title']);
-			$values['number'] = addslashes($values['number']);
-
-			$table = 'phpgw_p_projects';
-
-			$this->db->lock($table);
-
-			$this->db->query("insert into phpgw_p_projects (owner,access,category,entry_date,start_date,end_date,coordinator,customer,status,"
-							. "descr,title,budget,num) values ('" . $values['owner'] . "','" . $values['access'] . "','" . $values['cat'] . "','"
-							. time() ."','" . $values['sdate'] . "','" . $values['edate'] . "','" . $values['coordinator'] . "','" . $values['customer']
-							. "','" . $values['status'] . "','" . $values['descr'] . "','" . $values['title'] . "','" . $values['budget'] . "','"
-							. $values['number'] . "')",__LINE__,__FILE__);
-
-			$this->db->query("SELECT max(id) AS max FROM phpgw_p_projects");
-			if($this->db->next_record())
-			{
-				$p_id = $this->db->f('max');
-			}
-
-			$this->db->unlock();
-
-			if ($p_id && ($p_id != 0))
-			{
-				if (count($book_activities) != 0)
-				{
-					while($activ=each($book_activities))
-					{
-						$this->db->query("insert into phpgw_p_projectactivities (project_id,activity_id,billable) values ('$p_id','"
-										. $activ[1] . "','N')",__LINE__,__FILE__);
-					}
-				}
-
-				if (count($bill_activities) != 0)
-				{
-					while($activ=each($bill_activities))
-					{
-						$this->db->query("insert into phpgw_p_projectactivities (project_id,activity_id,billable) values ('$p_id','"
-										. $activ[1] . "','Y')",__LINE__,__FILE__);
-					}
-				}
-			}
+			$this->db->query("INSERT into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,hours_descr,remark,minutes,"
+							. "status,minperae,billperae,employee) VALUES ('" . $values['project_id'] . "','" . $values['activity_id'] . "','"
+							. time() . "','" . $values['sdate'] . "','" . $values['edate'] . "','" . $values['hours_descr'] . "','"
+							. $values['remark'] . "','" . $values['ae_minutes'] . "','" . $values['status'] . "','" . $values['minperae']
+							. "','" . $values['billperae'] . "','" . $values['employee'] . "')",__LINE__,__FILE__); 
 		}
 
-		function edit_project($values, $book_activities, $bill_activities)
+		function edit_hours($values)
 		{
 			global $phpgw;
 

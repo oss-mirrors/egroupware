@@ -1,8 +1,11 @@
 <!-- $Id$ -->
+
+{app_header}
+
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
 <hr noshade width="98%" align="center" size="1">
 <center>
-{error}{message}
+{message}{pref_message}
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
 <form method="POST" action="{actionurl}">
 {hidden_vars}
@@ -12,7 +15,7 @@
 	</tr>
 	<tr>
 		<td>{lang_activity}:</td>
-		<td><select name="activity">{activity_list}</select></td>
+		<td><select name="values[activity_id]">{activity_list}</select></td>
 	</tr>
 	<tr>
 		<td height="35">{lang_minperae}</td>
@@ -24,11 +27,11 @@
 	</tr>
 	<tr>
 		<td>{lang_descr}:</td>
-		<td><input type="text" name="hours_descr" size="50" value="{hours_descr}"></td>
+		<td><input type="text" name="values[hours_descr]" size="50" value="{hours_descr}"></td>
 	</tr>
 	<tr>
 		<td>{lang_remark}:</td>
-		<td colspan="2"><textarea name="remark" rows="5" cols="50" wrap="VIRTUAL">{remark}</textarea></td>
+		<td colspan="2"><textarea name="values[remark]" rows="5" cols="50" wrap="VIRTUAL">{remark}</textarea></td>
 	</tr>
 	<tr>
 		<td height="35"><b>{lang_work_date}</b></td>
@@ -49,33 +52,33 @@
 	<tr>
 		<td>{lang_start_time}:</td>
 		<td>
-			<input type="text" name="shour" value="{shour}" size="3" maxlength="2">
-			<input type="text" name="smin" value="{smin}" size="3" maxlength="2">
+			<input type="text" name="values[shour]" value="{shour}" size="3" maxlength="2">
+			<input type="text" name="values[smin]" value="{smin}" size="3" maxlength="2">
 			&nbsp;{sradio}
 		</td>
 	</tr>
 	<tr>
 		<td>{lang_end_time}:</td>
 		<td>
-			<input type="text" name="ehour" value="{ehour}" size=3 maxlength=2>
-			<input type="text" name="emin" value="{emin}" size=3 maxlength=2>
+			<input type="text" name="values[ehour]" value="{ehour}" size=3 maxlength=2>
+			<input type="text" name="values[emin]" value="{emin}" size=3 maxlength=2>
 			&nbsp;{eradio}
 		</td>
 	</tr>
 	<tr>
 		<td>{lang_hours}:</td>
 		<td>
-			<input type="text" name="hours" value="{hours}" size=3 maxlength=2>
-			<input type="text" name="minutes" value="{minutes}" size=3 maxlength=2>
+			<input type="text" name="values[hours]" value="{hours}" size=3 maxlength=2>
+			<input type="text" name="values[minutes]" value="{minutes}" size=3 maxlength=2>
 		</td>
 	</tr>
 	<tr>
 		<td>{lang_status}:</td>
-		<td><select name="status">{status_list}</select></td>
+		<td><select name="values[status]">{status_list}</select></td>
 	</tr>
 	<tr>
 		<td>{lang_employee}:</td>
-		<td><select name="employee">{employee_list}</select></td>
+		<td><select name="values[employee]">{employee_list}</select></td>
 	</tr>
 </table>
 
@@ -83,11 +86,9 @@
          
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
-	{hidden_vars}
-		<td height="50"><input type="submit" name="submit" value="{lang_add}"></td>
+		<td height="50"><input type="submit" name="submit" value="{lang_save}"></td>
 		<td height="50"><input type="reset" name="reset" value="{lang_reset}"></form></td>
 		<td height="50"><form method="POST" action="{doneurl}"> 
-			{hidden_vars}
 			<input type="submit" name="done" value="{lang_done}"></form></td>
 	</tr>
 </table>
@@ -99,13 +100,11 @@
 
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
-	{hidden_vars}
-		<td height="50"><input type="submit" name="submit" value="{lang_edit}">
+		<td height="50"><input type="submit" name="submit" value="{lang_save}">
 			</form></td>
-		<td height="50">{hidden_vars}{delete}</td>
+		<td height="50">{delete}</td>
 		<td height="50">
 			<form method="POST" action="{doneurl}">
-			{hidden_vars}
 			<input type="submit" name="done" value="{lang_done}"></form></td>
 	</tr>
 </table>
