@@ -7,10 +7,14 @@
 					{rows}
 			</td>
 			<td>
-				<table border=0 width=100%>
+				<table border=0 width=100% cellspacing="0" cellpadding="2">
 					<tr bgcolor="{th_bg}">
-						<td colspan="4">
+						<td colspan="2">
 							<b>{lang_email_config}</b>
+						</td>
+						<td align="right">
+							{lang_emailaccount_active}
+							<input type="checkbox" name="accountStatus" {account_checked}>
 						</td>
 					</tr>
 					<tr bgcolor="{tr_color1}">
@@ -38,50 +42,65 @@
 							<input name="mailAlternateAddressInput" value="{mailAlternateAddress}" size=35>
 						</td>
 					</tr>
-					<tr bgcolor="{tr_color1}">
+					<tr bgcolor="{tr_color2}">
 						<td align="center">
 							<input type="submit" value="<-- {lang_add}" name="add_mailAlternateAddress">
 						</td>
 					</tr>
+
 					<tr bgcolor="{tr_color1}">
-						<td width="150">{lang_mailRoutingAddress}</td>
+						<td>
+							{lang_forward_only}
+						</td>
 						<td colspan="2">
-							<input name="mailRoutingAddress" value="{mailRoutingAddress}" size=35>
+							<input type="checkbox" name="forwardOnly" {forwardOnly_checked}>
+						</td>
+					</tr>
+					
+					<tr bgcolor="{tr_color2}">
+						<td rowspan="4">{lang_mailRoutingAddress}</td>
+						<td rowspan="4" align="center">
+								{options_mailRoutingAddress}
+						</td>
+						<td align="center">
+							<input type="submit" value="{lang_remove} -->" name="remove_mailRoutingAddress">
+						</td>
+					</tr>
+					<tr bgcolor="{tr_color1}">
+						<td>
+							&nbsp;
 						</td>
 					</tr>
 					<tr bgcolor="{tr_color2}">
-						<td>
-							{lang_emailaccount_active}
-						</td>
-						<td colspan="2">
-							<input type="checkbox" name="accountStatus" {account_checked}>
+						<td align="center">
+							<input name="mailRoutingAddressInput" value="{mailRoutingAddress}" size=35>
 						</td>
 					</tr>
-				</table>
-				<table border=0 width=100%>
+					<tr bgcolor="{tr_color2}">
+						<td align="center" >
+							<input type="submit" value="<-- {lang_add}" name="add_mailRoutingAddress">
+						</td>
+					</tr>
+
+					<tr>
+						<td colspan="3">
+							&nbsp;
+						</td>
+					</tr>
 					<tr bgcolor="{th_bg}">
 						<td colspan="3">
-							<b>{lang_advanced_options}</b>
-						</td>
-					</tr>
-					<tr bgcolor="{tr_color1}">
-						<td width="200">
-							{lang_qmaildotmode}
-						</td>
-						<td colspan="2">
-							<select name="qmailDotMode">
-								<option value="both" {selected_both}>both</option>
-								<option value="dotonly" {selected_dotonly}>dotonly</option>
-								<option value="ldaponly" {selected_ldaponly}>ldaponly ({lang_default})</option>
-								<option value="ldapwithprog" {selected_ldapwithprog}>ldapwithprog</option>
-								<option value="none" {selected_none}>none</option>
-							</select>
+							<b>{lang_quota_settings}</b>
 						</td>
 					</tr>
 					<tr bgcolor="{tr_color2}">
-						<td width="150">{lang_deliveryProgramPath}</td>
+						<td width="200">{lang_qoutainmbyte}</td>
 						<td colspan="2">
-							<input name="deliveryProgramPath" value="{deliveryProgramPath}" size=35>
+							<input name="quotaLimit" value="{quotaLimit}" size=35> ({lang_0forunlimited})
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							&nbsp;
 						</td>
 					</tr>
 				</table>

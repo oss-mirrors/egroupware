@@ -31,7 +31,7 @@
 		</tr>
 		<tr bgcolor="{bg_02}">
 			<td>
-				{lang_qmail_dn}
+				{lang_ldap_basedn}
 			</td>
 			<td>
 				<input type="text" size="50" name="ldap_basedn" value="{ldap_basedn}">

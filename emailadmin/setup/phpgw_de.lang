@@ -1,30 +1,36 @@
 email settings	admin	de	EMailkonto
-remove	qmailldap	de	Entfernen
-server list	qmailldap	de	Serverliste
-server name	qmailldap	de	Servername
-LDAP settings	qmailldap	de	LDAP Einstellungen
-virtual domains	qmailldap	de	virtuelle Domänen
-domain names	qmailldap	de	Domänennamen
-LDAP server	qmailldap	de	LDAP Server
-admin dn	qmailldap	de	Admin DN
-admin password	qmailldap	de	Admin Passwort
-qmail dn	qmailldap	de	QMail DN
-userdata	qmailldap	de	Benutzerkonto
-email settings	qmailldap	de	EMailkonto
-We don't accept any email!	qmailldap	de	Es werden keine EMail's aktzeptiert!
-add also to local domains	qmailldap	de	auch zu den lokalen Domänen hinzufügen
-We don't deliver any email local!	qmailldap	de	Es werden keine EMail's lokal ausgeliefert!
-edit email settings	qmailldap	de	EMail Einstellungen bearbeiten
-email address	qmailldap	de	EMailadresse
-alternate email address	qmailldap	de	zusätzliche EMailadressen
-forward email's to	qmailldap	de	EMail's weiterleiten an
-email account active	qmailldap	de	EMailkonto aktiv
+remove	emailadmin	de	Entfernen
+server list	emailadmin	de	Serverliste
+server name	emailadmin	de	Servername
+LDAP settings	emailadmin	de	LDAP Einstellungen
+virtual domains	emailadmin	de	virtuelle Domänen
+domain names	emailadmin	de	Domänennamen
+LDAP server	emailadmin	de	LDAP Server
+admin dn	emailadmin	de	Admin DN
+admin password	emailadmin	de	Admin Passwort
+LDAP basedn	emailadmin	de	LDAP BaseDN
+userdata	emailadmin	de	Benutzerkonto
+email settings	emailadmin	de	EMailkonto
+We don't accept any email!	emailadmin	de	Es werden keine EMail's aktzeptiert!
+add also to local domains	emailadmin	de	auch zu den lokalen Domänen hinzufügen
+We don't deliver any email local!	emailadmin	de	Es werden keine EMail's lokal ausgeliefert!
+edit email settings	emailadmin	de	EMail Einstellungen
+email address	emailadmin	de	EMailadresse
+alternate email address	emailadmin	de	zusätzliche EMailadressen
+forward email's to	emailadmin	de	EMail's weiterleiten an
+email account active	emailadmin	de	EMailkonto aktiv
 back	common	de	zurück
 options	common	de	Optionen
-no alternate email address	qmailldap	de	keine zusätzlichen EMailadressen
-add server	qmailldap	de	Server hinzufügen
-smtp routing	qmailldap	de	SMTP Routing
-domainname	qmailldap	de	Domänenname
-qmailldap	common	de	QMailLDAP
-remote server	qmailldap	de	Zielserver
-remote port	qmailldap	de	Zielport
+no alternate email address	emailadmin	de	keine zusätzlichen EMailadressen
+add server	emailadmin	de	Server hinzufügen
+smtp routing	emailadmin	de	SMTP Routing
+domainname	emailadmin	de	Domänenname
+remote server	emailadmin	de	Zielserver
+remote port	emailadmin	de	Zielport
+forward only	emailadmin	de	nur weiterleiten
+no forwarding email address	emailadmin	de	keine Weiterleitungsadresse definiert
+quota settings	emailadmin	de	Quota Einstellungen
+qouta size in MByte	emailadmin	de	Quota Größe in MByte
+leave empty for no quota	emailadmin 	de	leer lassen um Quota zu deaktivieren
+user data	emailadmin	de	Benutzerdaten
+emailadmin	common	de	EMailAdmin

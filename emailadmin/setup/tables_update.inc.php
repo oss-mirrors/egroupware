@@ -1,7 +1,9 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Setup                                                     *
-	* http://www.phpgroupware.org                                              *
+	* EGroupWare - Setup                                                       *
+	* http://www.egroupware.org                                                *
+	* http://www.phpgw.de                                                      *
+	* Author: lkneschke@phpgw.de                                               *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -11,16 +13,18 @@
 	/* $Id$ */
 
 	$test[] = '0.0.1';
-	function qmailldap_upgrade0_0_1()
+	function emailadmin_upgrade0_0_1()
 	{
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_qmailldap','description', array('type' => 'varchar', 'precision' => 200));		
+		global $setup_info,$phpgw_setup;
 
-		$GLOBALS['setup_info']['qmailldap']['currentver'] = '0.0.2';
-		return $GLOBALS['setup_info']['qmailldap']['currentver'];
+		$phpgw_setup->oProc->AddColumn('phpgw_qmailldap','description', array('type' => 'varchar', 'precision' => 200));		
+
+		$setup_info['qmailldap']['currentver'] = '0.0.2';
+		return $setup_info['qmailldap']['currentver'];
 	}
 
 	$test[] = '0.0.2';
-	function qmailldap_upgrade0_0_2()
+	function emailadmin_upgrade0_0_2()
 	{
 		$GLOBALS['phpgw_setup']->oProc->query("INSERT INTO phpgw_hooks (hook_appname,hook_location,hook_filename) VALUES ('qmailldap','add_def_pref','hook_add_def_pref.inc.php')");
 		$GLOBALS['phpgw_setup']->oProc->query("INSERT INTO phpgw_hooks (hook_appname,hook_location,hook_filename) VALUES ('qmailldap','manual','hook_manual.inc.php')");

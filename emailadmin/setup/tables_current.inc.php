@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare                                                             *
-	* http://www.phpgroupware.org                                              *
+	* EGroupWare                                                               *
+	* http://www.egroupware.org                                                *
 	* http://www.phpgw.de                                                      *
 	* Author: lkneschke@phpgw.de                                               *
 	* --------------------------------------------                             *
@@ -14,11 +14,11 @@
 	/* $Id$ */
 
 	$phpgw_baseline = array(
-		'phpgw_qmailldap' => array(
+		'phpgw_emailadmin' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto', 'nullable' => false),
-				'qmail_servername' => array('type' => 'varchar', 'precision' => 50),
-				'qmail_dn' => array('type' => 'varchar', 'precision' => 200),
+				'mail_servername' => array('type' => 'varchar', 'precision' => 50),
+				'mail_dn' => array('type' => 'varchar', 'precision' => 200),
 				'use_default_ldap_server' => array('type' => 'int', 'precision' => 2),
 				'ldap_servername' => array('type' => 'varchar', 'precision' => 50),
 				'ldap_basedn' => array('type' => 'varchar', 'precision' => 200),

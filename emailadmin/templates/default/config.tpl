@@ -1,59 +1,42 @@
-
-
 <!-- BEGIN header -->
-
 <form method="POST" action="{action_url}">
-<table border="0" align="center" cellpadding="2" cellspacing="2">
-	<tr class="th">
-		<td colspan="2">&nbsp;<b>{title}</b></td>
-	</tr>
-
+<table border="0" align="center">
+   <tr bgcolor="{th_bg}">
+    <td colspan="2"><font color="{th_text}">&nbsp;<b>{title}</b></font></td>
+   </tr>
 <!-- END header -->
-
 <!-- BEGIN body -->
+   <tr bgcolor="{row_on}">
+    <td colspan="2">&nbsp;</td>
+   </tr>
 
-	<tr class="row_on">
-		<td colspan="2">&nbsp;</td>
-	</tr>
-	<tr class="row_off">
-		<td colspan="2">&nbsp;<b>{lang_qmail_ldap_schema} - {lang_attribute_names}</b></td>
-	</tr>
-	<tr class="row_on">
-		<td>{lang_mail_address}:</td>
-		<td>
-			<select name="newsettings[mail]">
-				<option value="mail"{selected_mail_mail}>mail</option>
-				<option value="maillocaladdress"{selected_mail_maillocaladdress}>mailLocalAddress</option>
-			</select>
-		</td>
-	</tr>
-	<tr class="row_off">
-		<td>{lang_forwarding_address}:</td>
-        <td>
-            <select name="newsettings[routing]">
-                <option value="mailforwardingaddress"{selected_routing_mailforwardingaddress}>mailForwardingAddress</option>
-                <option value="mailroutingaddress"{selected_routing_mailroutingaddress}>mailRoutingAddress</option>
-            </select>
-        </td>
-	</tr>
-	<tr class="row_off">
-		<td colspan="2">&nbsp;</td>
-	</tr>
+   <tr bgcolor="{row_off}">
+    <td colspan="2">&nbsp;<b>{lang_Mail_settings}</b></td>
+   </tr>
+
+   <tr bgcolor="{row_on}">
+    <td>{lang_IMAP_admin_user}:</td>
+    <td><input name="newsettings[imapAdminUser]" value="{value_imapAdminUser}"></td>
+   </tr>
+
+   <tr bgcolor="{row_off}">
+    <td>{lang_IMAP_admin_password}:</td>
+    <td><input name="newsettings[imapAdminPassword]" value="{value_imapAdminPassword}"></td>
+   </tr>
 
 <!-- END body -->
-
 <!-- BEGIN footer -->
-
-	<tr class="th">
-		<td colspan="2">&nbsp;</td>
-	</tr>
-	<tr>
-		<td colspan="2" align="center">
-			<input type="submit" name="submit" value="{lang_submit}">
-			<input type="submit" name="cancel" value="{lang_cancel}">
-		</td>
-	</tr>
+  <tr bgcolor="{th_bg}">
+    <td colspan="2">
+&nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" name="submit" value="{lang_submit}">
+      <input type="submit" name="cancel" value="{lang_cancel}">
+    </td>
+  </tr>
 </table>
 </form>
-
 <!-- END footer -->
