@@ -21,7 +21,7 @@
 	);
 	include('../header.inc.php');
 
-	$dropall = $HTTP_GET_VARS['dropall'] ? $HTTP_GET_VARS['dropall'] : '';
+	$dropall = get_var('dropall',Array('GET'));
 
 	$headlines = CreateObject('headlines.headlines');
 	$headlines->getList($dropall);

@@ -63,9 +63,10 @@
 			$GLOBALS['phpgw']->preferences->delete('headlines',$preference[0]);
 		}
 
-		if(count($GLOBALS['HTTP_POST_VARS']['headlines']))
+		$user_selected = get_var('headlines',Array('POST'));
+		if(count($user_selected))
 		{
-			while($value = each($GLOBALS['HTTP_POST_VARS']['headlines']))
+			while($value = each($user_selected))
 			{
 				$GLOBALS['phpgw']->preferences->add('headlines',$value[1],'True');
 			}

@@ -27,8 +27,9 @@
 		$GLOBALS['phpgw']->common->phpgw_header();
 		echo parse_navbar();
 	}
+	$submit = get_var('submit',Array('POST'));
 
-	if($GLOBALS['HTTP_POST_VARS']['submit'])
+	if($submit)
 	{
 		$GLOBALS['phpgw']->preferences->change('headlines','headlines_layout');
 		$GLOBALS['phpgw']->preferences->change('headlines','mainscreen_showheadlines');
@@ -50,7 +51,7 @@
 
 	$GLOBALS['phpgw']->template->set_var('template_label',lang('Choose layout'));
 
-	if($GLOBALS['HTTP_POST_VARS']['submit'])
+	if($submit)
 	{
 		$selected[$headlines_layout] = ' selected';
 	}
