@@ -12,8 +12,8 @@ add to addressbook	felamimail	it	aggiungi alla rubrica
 additional info	felamimail	it	Informazioni Addizionali
 address book	felamimail	it	Agenda
 address book search	felamimail	it	Ricerca in Agenda
-after message body	felamimail	em	After message body
-all address books	felamimail	en	All address books
+after message body	felamimail	it	Dopo il corpo del messaggio
+all address books	felamimail	it	Tutte le agende
 all folders	felamimail	it	Tutte le Cartelle
 always show html emails	felamimail	it	Visualiza sempre le e-mail HTML
 anyone	felamimail	it	nessuno
@@ -24,60 +24,60 @@ back to folder	felamimail	it	Torna alla cartella
 bad reque	felamimail	en	Bad reque
 based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	en	Based upon given criteria, incoming messages can have different background colors in the message list.  This helps to easily distinguish who the messages are from, especially for mailing lists.
 bcc	felamimail	it	BCC
-before headers	felamimail	en	Before headers
-between headers and message body	felamimail	en	Between headers and message body
+before headers	felamimail	it	Prima degli header
+between headers and message body	felamimail	it	Tra gli header e il corpo del messaggio
 body part	felamimail	en	body part
-cc	felamimail	ut	CC
+cc	felamimail	it	CC
 change folder	felamimail	it	Cambia cartella
 checkbox	felamimail	it	Checkbox
 click here to log back in.	felamimail	en	Click here to log back in.
-click here to return to %1	felamimail	en	Click here to return to %1
+click here to return to %1	felamimail	it	Clicca qui per tornare al %1
 close this page	felamimail	it	chiudi questa pagina
 close window	felamimail	it	Chiudi la finestra
 color	felamimail	it	Colori
 compose	felamimail	it	Componi
 compress folder	felamimail	it	Comprimi cartelle
 configuration	felamimail	it	Configurazione
-contains	felamimail	en	contains
+contains	felamimail	it	contiene
 create	felamimail	it	Crea
 create folder	felamimail	it	Crea Cartella
-create sent	felamimail	en	Create Sent
+create sent	felamimail	it	Crea Messaggi Inviati
 create subfolder	felamimail	it	Crea sottocartella
 create trash	felamimail	it	Crea Cestino
-created folder successfully!	felamimail	en	Created folder successfully!
+created folder successfully!	felamimail	it	Cartella creata correttamente!
 dark blue	felamimail	it	Blu Scuro
-dark cyan	felamimail	en	Dark Cyan
+dark cyan	felamimail	it	Ciano Scuro
 dark gray	felamimail	it	Grigio Scuro
 dark green	felamimail	it	Verde Scuro
-dark magenta	felamimail	en	Dark Magenta
+dark magenta	felamimail	it	Magenta Scuro
 dark yellow	felamimail	ut	Giallo Scuro
 date(newest first)	felamimail	it	Data (più recenti)
 date(oldest first)	felamimail	it	Data (meno recenti)
 deactivate script	felamimail	it	disattiva script
-default sorting order	felamimail	en	Default sorting order
+default sorting order	felamimail	it	Ordinamento predefinito
 delete all	felamimail	it	cancella tutto
 delete folder	felamimail	it	Cancella Cartella
 delete selected	felamimail	it	Cancella selezionati
-delete selected messages	felamimail	en	delete selected messages
+delete selected messages	felamimail	it	cancella i messaggi selezionati
 deleted	felamimail	it	cancellato
-deleted folder successfully!	felamimail	en	Deleted folder successfully!
+deleted folder successfully!	felamimail	it	Cartella cancellata!
 disable	felamimail	it	Disabilitato
-display message in new window	felamimail	en	Display message in new window
-display of html emails	felamimail	en	Display of HTML emails
-display only when no plain text is available	felamimail	en	Display only when no plain text is available
+display message in new window	felamimail	it	Visualizza i messaggi in una nuova finestra
+display of html emails	felamimail	it	Visualizzazione delle e-mail HTML
+display only when no plain text is available	felamimail	it	Visualizza solo quando non c'è il testo normale
 display preferences	felamimail	it	Visualizza Preferenze
-do it!	felamimail	en	do it!
+do it!	felamimail	it	do it!
 do not use sent	felamimail	it	Non usere Inviati
 do not use trash	felamimail	it	Non usere Cestino
 do you really want to delete the '%1' folder?	felamimail	en	Do you really want to delete the '%1' folder?
-does not contain	felamimail	en	does not contain
-does not match	felamimail	en	does not match
+does not contain	felamimail	it	non deve contenere
+does not match	felamimail	it	non deve corrispondere
 does not match regexp	felamimail	en	does not match regexp
-don't use sent	felamimail	en	Don't use Sent
-don't use trash	felamimail	en	Don't use Trash
+don't use sent	felamimail	it	Non usare Posta Inviata
+don't use trash	felamimail	it	Non usare il Cestino
 down	felamimail	it	sotto
 download	felamimail	it	download
-download this as a file	felamimail	en	Download this as a file
+download this as a file	felamimail	it	Download come un file
 e-mail	felamimail	it	E-Mail
 e-mail address	felamimail	it	indirizzo E-Mail
 e-mail folders	felamimail	it	Cartelle E-Mail
@@ -97,30 +97,30 @@ enter your smtp server port	admin	en	Enter your SMTP server port
 error	felamimail	it	ERRORE
 error connecting to imap serv	felamimail	en	Error connecting to IMAP serv
 error opening	felamimail	en	Error opening
-expunge	felamimail	en	Expunge
+expunge	felamimail	it	Svuota
 felamimail	common	it	FelaMiMail
 file into	felamimail	en	file into
 files	felamimail	it	files
-filter active	felamimail	en	filter active
-filter name	felamimail	it	nome Filtro
+filter active	felamimail	it	filtro attivo
+filter name	felamimail	it	Nome Filtro
 first name	felamimail	ir	Nome
 flagged	felamimail	it	contrassegnato
 flags	felamimail	en	Flags
 folder acl	felamimail	it	acl cartella
 folder name	felamimail	it	Nome Cartella
 foldername	felamimail	it	Nome cartella
-folder path	felamimail	en	Folder Path
-folder preferences	felamimail	en	Folder Preferences
-folder settings	felamimail	en	Folder settings
-folder status	felamimail	en	Folder status
-folderlist	felamimail	en	Folderlist
-folders	felamimail	en	Folders
-folders created successfully!	felamimail	en	Folders created successfully!
-follow	felamimail	en	follow
+folder path	felamimail	it	Path della Cartella
+folder preferences	felamimail	it	Preferenze Cartelle
+folder settings	felamimail	it	Impostazioni Cartelle
+folder status	felamimail	it	Stato Cartelle
+folderlist	felamimail	it	Lista Cartele
+folders	felamimail	it	Cartelle
+folders created successfully!	felamimail	it	Cartella creata correttamente!
+follow	felamimail	it	segue
 for mail to be send - not functional yet	felamimail	en	For mail to be send - not functional yet
 for received mail	felamimail	en	For received mail
 forward	felamimail	it	Inoltra
-found	felamimail	en	Found
+found	felamimail	it	Trovato
 from	felamimail	it	Da
 from(a->z)	felamimail	it	Da (A->Z)
 from(z->a)	felamimail	it	Da (Z->A)
@@ -140,43 +140,43 @@ imaps authentication	felamimail	en	IMAPS Authentication
 imaps encryption only	felamimail	en	IMAPS Encryption only
 in	felamimail	it	nel
 in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	en	In order for SquirrelMail to provide the full set of options you need to create the special folders listed below.  Just click the check box and hit the create button.
-in the center	felamimail	en	in the center
+in the center	felamimail	it	al centro
 index order	felamimail	en	Index Order
 info	felamimail	it	Info
-invalid user name or password	felamimail	en	Invalid user name or password
+invalid user name or password	felamimail	it	Nome utente o password sbagliati
 javascript	felamimail	it	JavaScript
-language	felamimail	en	Language
+language	felamimail	it	Lingua
 last name	felamimail	it	Cognome
 left	felamimail	it	Sinistra
 less	felamimail	it	pochi
 let this folder contain subfolders	felamimail	en	Let this folder contain subfolders
-light blue	felamimail	en	Light Blue
-light cyan	felamimail	en	Light Cyan
-light gray	felamimail	en	Light Gray
-light green	felamimail	en	Light Green
-light magenta	felamimail	en	Light Magenta
-light yellow	felamimail	en	Light Yellow
-list all	felamimail	en	List all
+light blue	felamimail	it	Blu Chiaro
+light cyan	felamimail	it	Ciano Chiaro
+light gray	felamimail	it	Grigio Chiaro
+light green	felamimail	it	Verde Chiaro
+light magenta	felamimail	it	Magenta Chiaro
+light yellow	felamimail	it	Giallo Chiaro
+list all	felamimail	it	Visualizza tutti
 location of buttons when composing	felamimail	en	Location of buttons when composing
 location of folder list	felamimail	en	Location of folder list
 mail server login type	admin	en	Mail server login type
-mail settings	felamimail	en	Mail Settings
-manage folders	felamimail	en	Manage Folders
+mail settings	felamimail	it	Imposazioni Mail
+manage folders	felamimail	it	Gestione Cartelle
 EMailfilter	felamimail	en	EMailfilter
 Vacation	felamimail	en	Vacation
-mark as deleted	felamimail	en	Mark as deleted
-mark messages as	felamimail	en	Mark selected messages as
-mark selected as flagged	felamimail	en	Mark selected as flagged
-mark selected as read	felamimail	en	Mark selected as read
-mark selected as unflagged	felamimail	en	Mark selected as unflagged
-mark selected as unread	felamimail	en	Mark selected as unread
-match	felamimail	en	Match
-matches	felamimail	en	matches
+mark as deleted	felamimail	it	Segna come cancellato
+mark messages as	felamimail	it	Segna i messaggi selezionati come
+mark selected as flagged	felamimail	it	Segna come contrassegnati
+mark selected as read	felamimail	it	Segna come già letto
+mark selected as unflagged	felamimail	it	Segna come non contrassegnati
+mark selected as unread	felamimail	it	Segna come da leggere
+match	felamimail	it	Corrisponde
+matches	felamimail	it	corrispondenze
 matches regexp	felamimail	en	matches regexp
-medium gray	felamimail	en	Medium Gray
+medium gray	felamimail	it	Grigio
 message highlighting	felamimail	en	Message Highlighting
-message list	felamimail	en	Message List
-messages	felamimail	en	messages
+message list	felamimail	it	Lista Messaggi
+messages	felamimail	it	messaggi
 minute	felamimail	it	Minuto
 minutes	felamimail	it	Minuti
 more	felamimail	it	ancora
@@ -184,158 +184,158 @@ move	felamimail	it	sposta
 move messages	felamimail	it	sposta messaggi
 move selected to	felamimail	it	sposta selezionato in
 move to trash	felamimail	it	Sposta nel cestino
-must be unique	felamimail	en	Must be unique
+must be unique	felamimail	it	Deve essere unico
 name	felamimail	it	Nome
-never display html emails	felamimail	en	Never display HTML emails
+never display html emails	felamimail	it	Non visualizzare mai le e-mail HTML
 new	felamimail	it	Nuovo
 new filter	felamimail	it	Nuovo Filtro
 next	felamimail	it	Prossimo
-next message	felamimail	en	next message
+next message	felamimail	it	prossimo messaggio
 nickname	felamimail	it	Nickname
 no filter	felamimail	it	Nessun Filtro
-no folders found	felamimail	en	No folders found
+no folders found	felamimail	it	Nessuna cartella trovata
 no folders were found to subscribe to!	felamimail	en	No folders were found to subscribe to!
 no folders were found to unsubscribe from!	felamimail	en	No folders were found to unsubscribe from!
 no highlighting is defined	felamimail	en	No highlighting is defined
-no messages were selected.	felamimail	en	No messages were selected.
-no next message	felamimail	en	no next Message
-no notification	felamimail	en	No notification
+no messages were selected.	felamimail	it	Nessun messaggio selezionato.
+no next message	felamimail	it	nessun prossimo Messaggio
+no notification	felamimail	it	Nessuna notifica
 no personal address book is defined. contact administrator.	felamimail	en	No personal address book is defined. Contact administrator.
 no persons matching your search was found	felamimail	en	No persons matching your search was found
-no previous message	felamimail	en	no previous Message
-no valid emailprofile selected!!	felamimail	en	No Valid Email Profile Selected!!
-none	felamimail	en	none
+no previous message	felamimail	it	nessun Messaggio precedente
+no valid emailprofile selected!!	felamimail	it	Nessun Profilo E-Mail Selezionato!!
+none	felamimail	it	nessuno
 number of messages to index	felamimail	en	Number of Messages to Index
 on behalf of	felamimail	en	on behalf of
-only inbox	felamimail	en	Only INBOX
-only unseen	felamimail	en	Only unseen
-options	felamimail	en	Options
-organisation	felamimail	en	organisation
-organization	felamimail	en	organization
-organization name	admin	en	Organization name
+only inbox	felamimail	it	Solo INBOX
+only unseen	felamimail	it	Solo nuovi
+options	felamimail	it	Opzioni
+organisation	felamimail	it	ditta
+organization	felamimail	it	ditta
+organization name	admin	it	Nome ditta
 oth	felamimail	en	Oth
-participants	felamimail	en	Participants
-personal information	felamimail	en	Personal Information
-posting	felamimail	en	posting
+participants	felamimail	it	Partecipanti
+personal information	felamimail	it	Informazioni Personali
+posting	felamimail	it	invio
 preference file %1 not found. exiting abnormally	felamimail	en	Preference file %1 not found. Exiting abnormally
 preference file, %1, does not exist. log out, and log back in to create a default preference file.	felamimail	en	Preference file, %1, does not exist. Log out, and log back in to create a default preference file.
-previous	felamimail	en	Previous
-previous message	felamimail	en	previous message
-print it	felamimail	en	print it
-print this page	felamimail	en	print this page
-purge	felamimail	en	purge
-quicksearch	felamimail	en	Quicksearch
-read	felamimail	en	read
+previous	felamimail	it	Precedente
+previous message	felamimail	it	messaggio precedente
+print it	felamimail	it	stampa
+print this page	felamimail	it	stampa questa pagina
+purge	felamimail	it	svuota
+quicksearch	felamimail	it	Ricerca Veloce
+read	felamimail	it	leggi
 read da	felamimail	en	Read da
-reading	felamimail	en	reading
+reading	felamimail	it	leggendo
 reason giv	felamimail	en	Reason Giv
-recent	felamimail	en	recent
-refresh folder list	felamimail	en	refresh folder list
-refresh page	felamimail	en	Refresh Page
-refresh time in minutes	felamimail	en	Refresh time in minutes
-remove	felamimail	en	remove
-remove immediately	felamimail	en	Remove immediately
-rename	felamimail	en	Rename
-rename a folder	felamimail	en	Rename a Folder
-rename folder	felamimail	en	Rename folder
-renamed successfully!	felamimail	en	Renamed successfully!
-replied	felamimail	en	replied
-reply	felamimail	en	Reply
-reply all	felamimail	en	Reply All
-reply to	felamimail	en	Reply To
-replyto	felamimail	en	ReplyTo
-return	felamimail	en	Return
+recent	felamimail	it	recenti
+refresh folder list	felamimail	it	aggiorna la lista delle caretlle
+refresh page	felamimail	it	Aggiorna Pagina
+refresh time in minutes	felamimail	it	Tempo di aggiornamento in minuti
+remove	felamimail	it	rimuovi
+remove immediately	felamimail	it	Rimuovi subito
+rename	felamimail	it	Rinomina
+rename a folder	felamimail	it	Rinomina una Cartella
+rename folder	felamimail	it	Rinomina cartella
+renamed successfully!	felamimail	it	Rinominato correttamente!
+replied	felamimail	it	risposto
+reply	felamimail	it	Rispondi
+reply all	felamimail	it	Rispondi a Tutti
+reply to	felamimail	it	Rispondi A
+replyto	felamimail	it	Rispondi A
+return	felamimail	it	Ritorna
 return to options page	felamimail	en	Return to options page
-right	felamimail	en	Right
-rule	felamimail	en	Rule
+right	felamimail	it	Destra
+rule	felamimail	it	Regole
 running squirrelmail version %1 (c) 1999-2000.	felamimail	en	Running SquirrelMail version %1 (c) 1999-2000.
 same window - not functional yet	felamimail	en	Same Window - not functional yet
-save	felamimail	en	Save
-search	felamimail	en	Search
+save	felamimail	it	Salva
+search	felamimail	it	Cerca
 search for	felamimail	en	Search for
-seconds	felamimail	en	Seconds
-select	felamimail	en	Select
-select all	felamimail	en	Select All
-select emailprofile	felamimail	en	Select Email Profile
-select home email address	felamimail	en	Select home email address
-select work email address	felamimail	en	Select work email address
-select your mail server type	admin	en	Select your mail server type
-send	felamimail	en	Send
+seconds	felamimail	it	Secondi
+select	felamimail	it	Seleziona
+select all	felamimail	it	Seleziona Tutti
+select emailprofile	felamimail	it	Seleziona Profilo E-Mail
+select home email address	felamimail	it	Seleziona indirizzo e-mail di casa
+select work email address	felamimail	it	Seleziona indirizzo e-mail del lavoro
+select your mail server type	admin	it	Selezona il tipo di server mail
+send	felamimail	it	Invia
 sent fold	felamimail	en	Sent Fold
-sent folder	felamimail	en	Sent Folder
+sent folder	felamimail	it	Carella Posta Inviata
 server respond	felamimail	en	Server respond
-show header	felamimail	en	show header
-show new messages on main screen	felamimail	en	Show new messages on main screen
+show header	felamimail	it	visualizza header
+show new messages on main screen	felamimail	it	Visualizza i nuovi messaggi nella schermata principale
 sieve settings	admin	en	Sieve settings
-signature	felamimail	en	Signature
-site configuration	felamimail	en	site configuration
-size	felamimail	en	Size
-size of editor window	felamimail	en	Size of editor window
-size(...->0)	felamimail	en	Size (...->0)
-size(0->...)	felamimail	en	Size (0->...)
-small view	felamimail	en	small view
-smtp settings	admin	en	SMTP settings
+signature	felamimail	it	Firma
+site configuration	felamimail	it	configurazione del sito
+size	felamimail	it	Dimensione
+size of editor window	felamimail	it	Dimensione della finestra di edit
+size(...->0)	felamimail	it	Dimensione (...->0)
+size(0->...)	felamimail	it	Dimensione (0->...)
+small view	felamimail	it	visualizzazione ridotta
+smtp settings	admin	it	Impostazioni SMTP
 some or all of the help documents are not present!	felamimail	en	Some or all of the help documents are not present!
-source	felamimail	it	Sorgente
-special folder options	felamimail	en	Special Folder Options
+source	felamimail	it	Origine
+special folder options	felamimail	it	Opzioni Cartelle Speciali
 squirrelmail	felamimail	it	Squirrelmail
-subject	felamimail	en	Subject
+subject	felamimail	it	Oggetto
 subject(a->z)	felamimail	it	Oggetto (A->Z)
 subject(z->a)	felamimail	it	Oggetto (Z->A)
-submit	felamimail	en	Submit
+submit	felamimail	it	Invia
 subscribe	felamimail	it	Sottoscrivi
 subscribed	felamimail	it	Sottoscritti
 subscribed successfully!	felamimail	en	Subscribed successfully!
 successfully saved display preferences!	felamimail	en	Successfully saved display preferences!
 successfully saved folder preferences!	felamimail	en	Successfully saved folder preferences!
 successfully saved personal information!	felamimail	en	Successfully saved personal information!
-switch current folder to	felamimail	en	switch current folder to
-table of contents	felamimail	en	Table of Contents
+switch current folder to	felamimail	it	cambia la cartella corrente in
+table of contents	felamimail	it	Indice
 text only	felamimail	it	Solo testo
 the connection to the imap server failed!!	felamimail	en	The connection to the IMAP Server failed!!
 the help has not been translated to %1.  it will be displayed in english instead.	felamimail	en	The help has not been translated to %1.  It will be displayed in English instead.
 the index order is the order that the columns are arranged in the message index.  you can add, remove, and move columns around to customize them to fit your needs.	felamimail	en	The index order is the order that the columns are arranged in the message index.  You can add, remove, and move columns around to customize them to fit your needs.
 the order of the message index can be rearanged and changed to contain the headers in any order you want.	felamimail	en	The order of the message index can be rearanged and changed to contain the headers in any order you want.
 theme	felamimail	it	Tema
-then	felamimail	en	THEN
+then	felamimail	it	ALLORA
 these settings change the way your folders are displayed and manipulated.	felamimail	en	These settings change the way your folders are displayed and manipulated.
 this contains personal information about yourself such as your name, your email address, etc.	felamimail	en	This contains personal information about yourself such as your name, your email address, etc.
 this folder is empty	felamimail	en	THIS FOLDER IS EMPTY
 this php has no imap support compiled in!!	felamimail	en	This PHP has no IMAP support compiled in!!
 this port is based on squirrelmail, which is a standalone imap client.<br>	felamimail	en	This port is based on Squirrelmail, which is a standalone IMAP client.<br>
 to	felamimail	it	To
-to the left	felamimail	en	to the left
-to the right	felamimail	en	to the right
+to the left	felamimail	it	a sinistra
+to the right	felamimail	it	a destra
 top	felamimail	it	Alto
 translation location	felamimail	en	Translation location
 translation preferences	felamimail	en	Translation Preferences
 translation server	felamimail	en	Translation server
-trash fold	felamimail	en	Trash Fold
-trash folder	felamimail	en	Trash Folder
+trash fold	felamimail	it	Cestino
+trash folder	felamimail	it	Cestino
 type	felamimail	it	tipo
 unable to list addresses from %1	felamimail	en	Unable to list addresses from %1
 unflagged	felamimail	it	non contrassegnato
-unknown err	felamimail	en	Unknown err
-unknown error	felamimail	en	Unknown error
-unknown sender	felamimail	en	Unknown Sender
-unknown user or password incorrect.	felamimail	en	Unknown user or password incorrect.
-unread	felamimail	it	non letto
-unseen and total	felamimail	en	Unseen and Total
-unseen	felamimail	it	Non visto
-unseen message notification	felamimail	en	Unseen message notification
-unseen message notification type	felamimail	en	Unseen message notification type
+unknown err	felamimail	it	Errore Sconosciuto
+unknown error	felamimail	it	Errore Sconosciuto
+unknown sender	felamimail	it	Mittente Sconosciuto
+unknown user or password incorrect.	felamimail	it	Utente sconosciuto o password sbagliata.
+unread	felamimail	it	da leggere
+unseen and total	felamimail	it	Nuovi e Totale
+unseen	felamimail	it	Nuovi
+unseen message notification	felamimail	it	notifica nuovi messaggi
+unseen message notification type	felamimail	en	tipo di notifica nuovi messaggi
 unselect all	felamimail	it	Deseleziona Tutto
 unsubscribe	felamimail	en	Unsubscribe
 unsubscribed	felamimail	en	Unsubscribed
 unsubscribed successfully!	felamimail	en	Unsubscribed successfully!
-up	felamimail	en	up
+up	felamimail	it	su
 update address	felamimail	it	Aggiorna indirizzo
 use a signature	felamimail	it	Usa una firma
 use a signature?	felamimail	it	Usare una firma?
 use addresses	felamimail	it	Usa Indirizzo
 use custom settings	felamimail	it	Usa Impostazioni Personali
 use javascript or html addressbook?	felamimail	en	Use Javascript or HTML addressbook?
-use smtp auth	admin	en	Use SMTP auth
+use smtp auth	admin	it	Usa SMTP auth
 users can define their own emailaccounts	admin	en	Users can define their own emailaccounts
 view full header	felamimail	it	Visualizza gli header completi
 view message	felamimail	it	Visualizza messaggio
@@ -344,8 +344,8 @@ viewing message	felamimail	en	Viewing message
 viewing messages	felamimail	en	Viewing messages
 welcome to %1's webmail system	felamimail	en	Welcome to %1's WebMail system
 when deleting messages	felamimail	en	When deleting messages
-white	felamimail	en	White
-width of folder list	felamimail	en	Width of folder list
+white	felamimail	it	Bianco
+width of folder list	felamimail	it	Larghezza lista cartelle
 wrap incoming text at	felamimail	en	Wrap incoming text at
 writing	felamimail	en	writing
 wrote	felamimail	en	wrote
