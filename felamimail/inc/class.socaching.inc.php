@@ -46,10 +46,12 @@
 		{
 			// we need to truncate the to_address field, as it can be easyly longer then the
 			// allowed size of atm. 120 chars, DB's other then mysql, give an SQL error
-			$table_def = $this->db->get_table_definitions('',$this->cache_table);
-			$to_address_size = $table_def['fd']['fmail_to_address']['precision'];
-			unset($table_def);
-			
+			if (!$this->to_address_size)
+			{
+				$table_def = $this->db->get_table_definitions('',$this->cache_table);
+				$this->to_address_size = $table_def['fd']['fmail_to_address']['precision'];
+				unset($table_def);
+			}
 			$this->db->insert($this->cache_table,array_merge($this->host_account_folder,array(
 				'fmail_uid'				=> $_data['uid'],
 				'fmail_date'			=> $_data['date'],
@@ -57,7 +59,7 @@
 				'fmail_sender_name'		=> $_data['sender_name'],
 				'fmail_sender_address'	=> $_data['sender_address'],
 				'fmail_to_name'			=> $_data['to_name'],
-				'fmail_to_address'		=> substr($_data['to_address'],0,$to_address_size),
+				'fmail_to_address'		=> substr($_data['to_address'],0,$this->to_address_size),
 				'fmail_size'			=> $_data['size'],
 				'fmail_attachments'		=> $_data['attachments'],
 			)),False,__LINE__,__FILE__);	
