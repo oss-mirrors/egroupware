@@ -597,9 +597,16 @@
 		return $rfc_addy;
 	}
 
-	// ----  Ensures To, CC, and BCC are properly comma seperated   -----
+	// ----  Make a To: string of addresses into an array  -----
+	/*
 	// param $data should be the desired header string, with one or more addresses, ex:
 	// john@doe.com,"Php Group" <info@phpgroupware.org>
+	// this will make an array, each numbered item will be this:
+	// array[0]['personal'] = ""
+	// array[0]['plain'] = "john@doe.com"
+	// array[1]['personal'] = "Php Group"
+	// array[1]['plain'] = "info@phpgroupware.org"
+	*/
 	function make_rfc_addy_array($data)
 	{
 		// if we are fed a null value, return nothing (i.e. a null value)
@@ -625,9 +632,10 @@
 			// --- Create Compund Array Structure To Hold Decomposed Addresses -----
 			// addy_array is a simple numbered array, each element is a addr_spec_array
 			$addy_array = Array();
-			// addr_spec_array is this addr_spec_array['plain']  addr_spec_array['personal']
-			//$addr_spec_array = Array();
-				
+			// $addr_spec_array has this structure:
+			//  addr_spec_array['plain'] 
+			//  addr_spec_array['personal']
+
 			// decompose addy's into that array, and format according to rfc specs
 			for ($i=0;$i<count($data);$i++)
 			{
@@ -640,14 +648,17 @@
 					$addr_spec_parts = explode('" <', $data[$i]);
 					// that got rid of the closing " in personal, now get rig of the first "
 					$addy_array[$i]['personal'] = substr($addr_spec_parts[0], 1);
-					// now get the plain address, the "<" was already removed, remove the closing ">"
+					//  the "<" was already removed, , NOW remove the closing ">"
 					$grab_to = strlen($addr_spec_parts[1]) - 1;
 					$addy_array[$i]['plain'] = substr($addr_spec_parts[1], 0, $grab_to);
 
-					// QPRINT NON US-ASCII CHARS in "personal" string
-					// header ENCODE non us-ascii chars as per RFC2822
-					// -- future -- not yet implemented
+					// QPRINT NON US-ASCII CHARS in "personal" string, as per RFC2047
+					// the actual "plain" address may NOT have any other than US-ASCII chars, as per rfc2822
+					$addy_array[$i]['personal'] = $this->encode_header($addy_array[$i]['personal']);
 
+					// REVISION: rfc2047 says the following escaping technique is not much help
+					// use the encoding above instead
+					/*
 					// ESCAPE SPECIALS:  rfc2822 requires the "personal" comment string to escape "specials" inside the quotes
 					// the non-simple (i.e. "personal" info is included) need special escaping
 					// escape these:  ' " ( ) 
@@ -655,6 +666,7 @@
 					$addy_array[$i]['personal'] = str_replace('"', '\"', $addy_array[$i]['personal']);
 					$addy_array[$i]['personal'] = str_replace("(", "\(", $addy_array[$i]['personal']);
 					$addy_array[$i]['personal'] = str_replace(")", "\)", $addy_array[$i]['personal']);
+					*/
 				}
 				else
 				{
@@ -666,7 +678,8 @@
 				//echo 'addy_array['.$i.'][personal]: '.$this->htmlspecialchars_encode($addy_array[$i]['personal']).'<br>';
 				//echo 'addy_array['.$i.'][plain]: '.$this->htmlspecialchars_encode($addy_array[$i]['plain']).'<br>';
 			}
-			$addy_array = serialize($addy_array);
+			// NO NEED TO SERIALIZE THIS!!!!!
+			//$addy_array = serialize($addy_array);
 			//echo 'serialized addy_array: '.$addy_array.'<br>';
 			return $addy_array;
 		}
@@ -896,6 +909,8 @@
 	}
 	*/
 
+	
+	// SUB-FUNCTION - do not call directly
 	function encode_iso88591_word($string)
 	{
 		$qprint_prefix = '=?iso-8859-1?Q?';
@@ -907,17 +922,21 @@
 		{
 			$val = ord($string[$i]);
 			// my interpetation of what to encode from RFC2045 and RFC2822
-			if (($val <= 36)
+			if ( (($val >= 1) && ($val <= 31))
+			|| (($val >= 33) && ($val <= 47))
 			|| ($val == 61)
 			|| ($val == 62)
 			|| ($val == 64)
-			|| ($val == 61)
 			|| (($val >= 91) && ($val <= 94))
 			|| ($val == 96)
 			|| ($val >= 123))
 			{
 				$did_encode = True;
+				//echo 'val needs encode: '.$val.'<br>';
 				$val = dechex($val);
+				// rfc2045 requires quote printable HEX letters to be uppercase
+				$val = strtoupper($val);
+				//echo 'val AFTER encode: '.$val.'<br>';
 				//$text .= '='.$val;
 				$new_str = $new_str .'='.$val;
 			}
@@ -931,6 +950,57 @@
 			$new_str =  $qprint_prefix .$new_str .$qprint_suffix;
 		}
 		return $new_str;
+	}
+	
+	
+	function encode_header($data)
+	{
+		// explode string into an array or words
+		$words = explode(' ', $data);
+		
+		for($i=0; $i<count($words); $i++)
+		{
+			//echo 'words['.$i.'] in loop: '.$words[$i].'<br>';
+			
+			// my interpetation of what to encode from RFC2045, RFC2047, and RFC2822
+			if (preg_match('/'
+				. '['.chr(1).'-'.chr(31).']'
+				. '['.chr(33).'-'.chr(38).']'
+				.'|[\\'.chr(39).']'
+				.'|['.chr(40).'-'.chr(46).']'
+				.'|[\\'.chr(47).']'
+				.'|['.chr(61).'-'.chr(62).']'
+				.'|['.chr(64).']'
+				.'|['.chr(91).'-'.chr(94).']'
+				.'|['.chr(96).']'
+				.'|['.chr(123).'-'.chr(255).']'
+				.'/', $words[$i]))
+			{
+				/*
+				// qprint this word, and add rfc2047 header special words
+				$len_before = strlen($words[$i]);
+				echo 'words['.$i.'] needs encode: '.$words[$i].'<br>';
+				$words[$i] = imap_8bit($words[$i]);
+				echo 'words['.$i.'] AFTER encode: '.$words[$i].'<br>';
+				// php may not encode everything that I expect, so check to see if encoding happened
+				$len_after = strlen($words[$i]);
+				if ($len_before != $len_after)
+				{
+					// indeed, encoding did happen, add rfc2047 header special words
+					$words[$i] = $qprint_prefix .$words[$i] .$qprint_suffix;
+				}
+				*/
+				
+				// qprint this word, and add rfc2047 header special words
+				//echo 'words['.$i.'] needs encode: '.$words[$i].'<br>';
+				$words[$i] = $this->encode_iso88591_word($words[$i]);
+				//echo 'words['.$i.'] AFTER encode: '.$words[$i].'<br>';
+			}
+		}
+		
+		// reassemble the string
+		$encoded_str = implode(' ',$words);
+		return $encoded_str;
 	}
 
 	function htmlspecialchars_encode($str)

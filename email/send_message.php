@@ -52,10 +52,10 @@
 	$mail_out['charset'] = '';
 
 //  -------  Start Filling Array Structure For Outgoing Mail  -----------
-	$mail_out['from'] = unserialize($phpgw->msg->make_rfc_addy_array('"'.$phpgw_info['user']['fullname'].'" <'.$phpgw_info['user']['preferences']['email']['address'].'>'));
+	$mail_out['from'] = $phpgw->msg->make_rfc_addy_array('"'.$phpgw_info['user']['fullname'].'" <'.$phpgw_info['user']['preferences']['email']['address'].'>');
 	if (isset($sender) && ($sender))
 	{
-		$mail_out['sender'] = unserialize($phpgw->msg->make_rfc_addy_array($sender));
+		$mail_out['sender'] = $phpgw->msg->make_rfc_addy_array($sender);
 	}
 	if (lang('charset') != '')
 	{
@@ -135,13 +135,13 @@
 	if ($to)
 	{
 		// mail_out[to] is an array of addresses, each has properties [plain] and [personal]
-		$mail_out['to'] = unserialize($phpgw->msg->make_rfc_addy_array($to));
+		$mail_out['to'] = $phpgw->msg->make_rfc_addy_array($to);
 		// this will make a simple comma seperated string of the plain addresses
 		$mta_to = $phpgw->msg->addy_array_to_str($mail_out['to'], False);
 	}
 	if ($cc)
 	{
-		$mail_out['cc'] = unserialize($phpgw->msg->make_rfc_addy_array($cc));
+		$mail_out['cc'] = $phpgw->msg->make_rfc_addy_array($cc);
 		$mta_to .= ',' .$phpgw->msg->addy_array_to_str($mail_out['cc'], False);
 	}
 	// now make mta_to an array because we will loop through it in class send_2822
@@ -684,7 +684,11 @@
 
 		
 		//  -------  Put in "Sent" Folder, if Applicable  -------
-		if (($returnccode == True)
+		$skip_this = False;
+		//$skip_this = True;
+		
+		if (($skip_this == False)
+		&& ($returnccode == True)
 		&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
 		&& ($phpgw_info['user']['apps']['email'])
 		&& (is_object($phpgw->msg)) )
