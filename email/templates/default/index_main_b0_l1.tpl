@@ -130,9 +130,8 @@ function check_all()
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td>
-				<a href="{delmov_onclick}">{delmov_image}&nbsp;{delmov_text}</a>
-				<!-- <input type="button" value="{delmov_button}" onClick="do_action('delall')"> -->
 				<font face="{stats_font}" size="{stats_font_size}">
+					{delmov_button} &nbsp;
 					&nbsp;&nbsp;<a href="{compose_link}">{compose_img}&nbsp;{compose_text}</a>
 					<!-- BEGIN B_get_size -->
 					&nbsp;&nbsp;&nbsp;<a href="{get_size_link}">{lang_get_size}</a>
