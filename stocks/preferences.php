@@ -36,9 +36,8 @@
 	}
 	elseif($action == 'delete')
 	{
-		// This needs to be fixed
 		$GLOBALS['phpgw']->preferences->read_repository();
-		$GLOBALS['phpgw']->preferences->delete('stocks',urlencode(strtoupper($value)));
+		$GLOBALS['phpgw']->preferences->delete('stocks',strtoupper($value));
 		$GLOBALS['phpgw']->preferences->save_repository(True);
 		$GLOBALS['phpgw']->redirect_link('/stocks/preferences.php');
 		$GLOBALS['phpgw']->common->phpgw_exit();
