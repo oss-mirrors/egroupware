@@ -532,7 +532,7 @@
       global $phpgw_info;
 
       $file=basename($file);
-      $mimefile=$phpgw_info["server"]["api_dir"]."/phpgw_mime.types";
+      $mimefile=$phpgw_info["server"]["api_inc"]."/phpgw_mime.types";
       $fp=fopen($mimefile,"r");
       $contents = explode("\n",fread ($fp, filesize($mimefile)));
       fclose($fp);

@@ -25,4 +25,4 @@ Note: Some of this information is out of date<br>
 ?>
 </td>
 </table>
-<?php include($phpgw_info["server"]["api_dir"] . "/footer.inc.php"); ?>
+<?php include($phpgw_info["server"]["api_inc"] . "/footer.inc.php"); ?>
