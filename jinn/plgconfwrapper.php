@@ -39,11 +39,10 @@
 
 
 
-//var_dump($GLOBALS[hidden_val]);
 //die();
 //echo urlencode($GLOBALS[hidden_val]);
 //die();
-Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.plug_config&plug_orig='.$GLOBALS[plug_orig].'&plug_name='.$GLOBALS[plug_name].'&hidden_name='.$GLOBALS[hidden_name].'&hidden_val='.$GLOBALS[hidden_val]));
+Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.plug_config&plug_orig='.$GLOBALS[HTTP_GET_VARS][plug_orig].'&plug_name='.$GLOBALS[HTTP_GET_VARS][plug_name].'&hidden_name='.$GLOBALS[HTTP_GET_VARS][hidden_name].'&hidden_val='.$GLOBALS[HTTP_GET_VARS][hidden_val]));
 
 	$GLOBALS['phpgw']->common->phpgw_exit();
 

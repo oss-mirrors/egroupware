@@ -248,7 +248,8 @@
 				$this->main_menu();	
 
 				//  if directory show directory else show sections with all directories
-				if(!isset($GLOBALS[dir]))
+				// FIXME register globals off
+				if(!isset($GLOBALS[dir])
 				{
 
 					foreach($this->dir_arr as $dir)
@@ -265,10 +266,13 @@
 				}
 				else
 				{
+				// FIXME register globals off
 					echo $GLOBALS[dir];
 
+				// FIXME register globals off
 					if($this->dir_arr[$GLOBALS[dir]][ftype]=='/normal_size')
 					{
+				// FIXME register globals off
 						$list=$this->getImgFileList($this->dir_arr[$GLOBALS[dir]][path]);
 
 						$this->show_image_list($list[0],$list[1]);
@@ -276,6 +280,7 @@
 					}
 					else
 					{
+				// FIXME register globals off
 						$list=$this->getFileList($this->dir_arr[$GLOBALS[dir]][path]);
 
 					}
@@ -292,6 +297,7 @@
 			// Open images directory and splitting the
 			// thumbnails from the original in 2 arrays.
 			function getImgFileList($cur_dir) {
+								// FIXME register globals off
 				global $Cfg, $fileArray, $thumbArray;
 
 				$fileArray = Array();
@@ -339,6 +345,7 @@
 
 			function show_image_list($fileArray,$thumbArray)
 			{
+				// FIXME register globals off
 				global $Cfg, $Pivot_Vars, $base_url;
 
 

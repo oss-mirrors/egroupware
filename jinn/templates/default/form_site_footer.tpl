@@ -6,7 +6,7 @@
 		<input type="submit" name="continue" value="{save_and_continue_button}">
 		<input type="submit" name="add" value="{save_button}">
 <!--		<input type="reset" value="{reset_form}">-->
-		<input type="submit" name="delete" value="{delete}">
+		{delete}
 		{cancel}
 		{extra_buttons}
 	</tr>

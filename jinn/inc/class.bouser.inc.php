@@ -50,6 +50,10 @@
 		var $common;
 		var $browse_settings;
 
+		var $repeat_input;
+		var $where_key;
+		var $where_value;
+
 		function bouser()
 		{
 			$this->common = CreateObject('jinn.bocommon');
@@ -65,6 +69,27 @@
 			$_form = $GLOBALS['HTTP_POST_VARS']['form'];
 			$_site_id = $GLOBALS['HTTP_POST_VARS']['site_id'];
 			$_site_object_id = $GLOBALS['HTTP_POST_VARS']['site_object_id'];
+			$_where_key = $GLOBALS['HTTP_POST_VARS']['where_key'] ? $GLOBALS['HTTP_POST_VARS']['where_key']    : $GLOBALS['HTTP_GET_VARS']['where_key'];
+
+			$_where_value = $GLOBALS['HTTP_POST_VARS']['where_value'] ? $GLOBALS['HTTP_POST_VARS']['where_value']    : $GLOBALS['HTTP_GET_VARS']['where_value'];
+
+			$_repeat_input = $GLOBALS['HTTP_POST_VARS']['repeat_input'] ? $GLOBALS['HTTP_POST_VARS']['repeat_input']    : $GLOBALS['HTTP_GET_VARS']['repeat_input'];
+
+			if(!empty($_repeat_input))
+			{
+				$this->repeat_input  = $_repeat_input;
+			}
+
+
+			if(!empty($_where_key))
+			{
+				$this->where_key  = $_where_key;
+			}
+
+			if(!empty($_where_value))
+			{
+				$this->where_value  = $_where_value;
+			}
 
 			if (($_form=='main_menu')|| !empty($site_id)) $this->site_id  = $_site_id;
 			if (($_form=='main_menu') || !empty($site_object_id)) $this->site_object_id  = $_site_object_id;
@@ -148,14 +173,14 @@
 
 
 		//remove this one
-		function get_records($table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by='',$field_list='*')
+		function get_records($table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by='',$field_list='*',$where_condition='')
 		{
 			if (!$value_reference)
 			{
 				$value_reference='num';
 			}
 
-			$records = $this->so->get_record_values($this->site_id,$table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by,$field_list);
+			$records = $this->so->get_record_values($this->site_id,$table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by,$field_list,$where_condition);
 
 			return $records;
 		}
@@ -195,8 +220,8 @@
 				$this->del_object();
 			}
 
-			$where_key = $GLOBALS[where_key];
-			$where_value = $GLOBALS[where_value];
+			$where_key = $this->where_key;
+			$where_value = $this->where_value;
 			$table=$this->site_object[table_name];
 
 			$many_data=$this->http_vars_pairs_many($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
@@ -218,8 +243,8 @@
 		function del_object()
 		{
 			$table=$this->site_object[table_name];
-			$where_key=stripslashes($GLOBALS[where_key]);
-			$where_value=stripslashes($GLOBALS[where_value]);
+			$where_key=stripslashes($this->where_key);
+			$where_value=stripslashes($this->where_value);
 
 			$status=$this->so->delete_object_data($this->site_id, $table, $where_key,$where_value);
 
@@ -233,8 +258,8 @@
 		function copy_object()
 		{
 			$table=$this->site_object[table_name];
-			$where_key=$GLOBALS[where_key];
-			$where_value=$GLOBALS[where_value];
+			$where_key=$this->where_key;
+			$where_value=$this->where_value;
 
 			$status=$this->so->copy_object_data($this->site_id,$table,$where_key,$where_value);
 			if ($status==1)	$this->message[info]=lang('Record succesfully copied');

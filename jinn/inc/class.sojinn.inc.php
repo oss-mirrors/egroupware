@@ -626,7 +626,7 @@
 			return $records;
 		}
 
-		function get_record_values($site_id,$table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by='',$field_list='*')
+		function get_record_values($site_id,$table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by='',$field_list='*',$where_condition='')
 		{
 /*			
 			echo "site_id 1 $site_id <br>";
@@ -649,10 +649,23 @@
 				$WHERE="WHERE $SQL_WHERE_KEY='$SQL_WHERE_VALUE'";
 			}
 
+			if($where_condition)
+			{
+				if($WHERE)
+				{
+					$WHERE.=' AND ('.$where_condition.')';
+				}
+				else
+				{
+					$WHERE=' WHERE '.$where_condition;
+				}
+			}
 			if ($order_by)
 			{
 				$ORDER_BY = ' ORDER BY '.$order_by;
 			}
+
+			
 
 			$fieldproperties = $this->site_table_metadata($site_id,$table);
 			$field_list_arr=(explode(',',$field_list));
@@ -840,11 +853,11 @@
 		}
 
 		// $site_id can be removed here!!!
-		function delete_phpgw_data($site_id,$table,$where_key,$where_value)
+		function delete_phpgw_data($table,$where_key,$where_value)
 		{
 
 			$SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."='".$this->strip_magic_quotes_gpc($where_value)."'";
-
+//			die( $SQL);
 			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 			{
 				$status=1;

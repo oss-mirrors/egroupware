@@ -167,11 +167,10 @@
 			}
 
 
-
 			/**********************************
 			* 	create form to new objectrecord                                          
 			*/ 
-			function add_edit_object()
+/*			function add_edit_object()
 			{
 
 				if(!$this->bo->so->test_JSO_table($this->bo->site_object))
@@ -193,7 +192,7 @@
 				$this->bo->save_sessiondata();
 			}
 
-
+*/
 
 			/****************************************************************************\
 			* 	Browse through site_objects                                              *
@@ -224,21 +223,21 @@
 				$default_order=$this->bo->read_preferences('default_order');
 
 				if ($GLOBALS['HTTP_POST_VARS']['offset']) $offset=$GLOBALS['HTTP_POST_VARS']['offset'];
-				elseif($GLOBALS['offset']) $offset=$GLOBALS['offset'];
+				elseif($GLOBALS[HTTP_GET_VARS]['offset']) $offset=$GLOBALS[HTTP_GET_VARS]['offset'];
 				else $offset = $this->bo->browse_settings['offset'];
 
 				if ($GLOBALS['HTTP_POST_VARS']['asc']) $asc=$GLOBALS['HTTP_POST_VARS']['asc'];
-				elseif($GLOBALS['asc']) $asc=$GLOBALS['asc'];
+				elseif($GLOBALS[HTTP_GET_VARS]['asc']) $asc=$GLOBALS[HTTP_GET_VARS]['asc'];
 				else $asc = $this->bo->browse_settings['asc'];
 
 				if ($GLOBALS['HTTP_POST_VARS']['order']) $order=$GLOBALS['HTTP_POST_VARS']['order'];
-				elseif($GLOBALS['order']) $order=$GLOBALS['order'];
+				elseif($GLOBALS[HTTP_GET_VARS]['order']) $order=$GLOBALS[HTTP_GET_VARS]['order'];
 				elseif($this->bo->browse_settings['order']) $order = $this->bo->browse_settings['order'];
 				else $order = $default_order;
 
 
 				if ($GLOBALS['HTTP_POST_VARS']['filter']) $filter=$GLOBALS['HTTP_POST_VARS']['filter'];
-				elseif($GLOBALS['filter']) $filter=$GLOBALS['filter'];
+				elseif($GLOBALS[HTTP_GET_VARS]['filter']) $filter=$GLOBALS[HTTP_GET_VARS]['filter'];
 				else $filter = $this->bo->browse_settings['filter'];
 
 				$this->bo->browse_settings = array
@@ -251,20 +250,20 @@
 				);
 
 				if ($GLOBALS['HTTP_POST_VARS']['limit_start']) $limit_start=$GLOBALS['HTTP_POST_VARS']['limit_start'];
-				else $limit_start=$GLOBALS['limit_start'];
+				else $limit_start=$GLOBALS[HTTP_GET_VARS]['limit_start'];
 
 				if ($GLOBALS['HTTP_POST_VARS']['limit_stop']) $limit_stop = $GLOBALS['HTTP_POST_VARS']['limit_stop'];
-				else $limit_stop = $GLOBALS['limit_stop'];
+				else $limit_stop = $GLOBALS[HTTP_GET_VARS]['limit_stop'];
 
 
 				if ($GLOBALS['HTTP_POST_VARS']['direction']) $direction = $GLOBALS['HTTP_POST_VARS']['direction'];
-				else $direction = $GLOBALS['direction'];
+				else $direction = $GLOBALS[HTTP_GET_VARS]['direction'];
 
 				if ($GLOBALS['HTTP_POST_VARS']['show_all_cols']) $show_all_cols = $GLOBALS['HTTP_POST_VARS']['show_all_cols'];
-				else $show_all_cols = $GLOBALS['show_all_cols'];
+				else $show_all_cols = $GLOBALS[HTTP_GET_VARS]['show_all_cols'];
 
 				if ($GLOBALS['HTTP_POST_VARS']['search']) $search_string=$GLOBALS['HTTP_POST_VARS']['search'];
-				else $search_string=$GLOBALS['search'];
+				else $search_string=$GLOBALS[HTTP_GET_VARS]['search'];
 
 				$num_rows=$this->bo->so->num_rows_table($this->bo->site_id,$this->bo->site_object['table_name']);
 
@@ -305,7 +304,7 @@
 
 				}
 
-				
+					
 				//FIXME SEARCH
 				if (count($columns)>0)
 				{
@@ -314,7 +313,7 @@
 
 						if ($search_string)
 						{
-							if ($where_key && $where_value)
+							if ($where_condition)
 							{
 								$where_condition.= " OR $col[name] LIKE '%$search_string%'";
 								$limit="";
@@ -325,9 +324,6 @@
 							}
 						}
 					}
-
-
-
 
 					if ($pref_columns_str)
 					{
@@ -409,9 +405,12 @@
 							$col_headers_t.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" style="font-weight:bold;padding:3px;"  align=\"center\"><a href="'.$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiuser.browse_objects&order=$order_link&search=$search_string&limit_start=$limit_start&limit_stop=$limit_stop&show_all_cols=$show_all_cols").'">'.str_replace('_','&nbsp;',$col[name]).'&nbsp;'.$order_image.'</a></td>';
 						}
 					}
+					
 
-					$records=$this->bo->get_records($this->bo->site_object[table_name],$where_key,$where_value,$limit[start],$limit[stop],'name',$order,implode(',',$col_names_list));
+					$records=$this->bo->get_records($this->bo->site_object[table_name],$where_key,$where_value,$limit[start],$limit[stop],'name',$order,implode(',',$col_names_list),$where_condition);
 
+
+					
 					if (count($records)>0)
 					{
 
@@ -528,6 +527,7 @@
 					$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 					$this->template->set_var('fieldnames',$col_headers_t);
 					$this->template->set_var('table_row',$table_rows);
+
 					$this->template->pparse('out','browse');
 
 					unset($this->message);

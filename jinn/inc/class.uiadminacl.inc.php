@@ -104,8 +104,8 @@
 				'accounts' => 'accounts.tpl'
 			));
 
-			$site_id=$GLOBALS['site_id'];
-			$object_id=$GLOBALS['object_id'];
+			$site_id=$GLOBALS[HTTP_GET_VARS]['site_id'];
+			$object_id=$GLOBALS[HTTP_GET_VARS]['object_id'];
 
 			$object_name =$this->bo->so->get_object_name($object_id);
 			$site_name = $this->bo->so->get_site_name($site_id);
@@ -116,7 +116,7 @@
 
 
 			$account_hidden_info = $GLOBALS['phpgw']->accounts->get_list('accounts','','','','',$total);
-			$account_info = $GLOBALS['phpgw']->accounts->get_list('accounts',$start,$sort,$order,$GLOBALS['query'],$total);
+			$account_info = $GLOBALS['phpgw']->accounts->get_list('accounts',$start,$sort,$order,$GLOBALS[HTTP_POST_VARS]['query'],$total);
 			$total = $GLOBALS['phpgw']->accounts->total;
 
 			$url = $GLOBALS['phpgw']->link('/index.php',"menuaction=jinn.uiadmin.set_access_rights_site_objects&object_id=$object_id&site_id=$site_id");
@@ -159,7 +159,7 @@
 			else
 			{
 				// if searched show all editor hidden
-				if($GLOBALS['query']){
+				if($GLOBALS[HTTP_POST_VARS]['query']){
 					while (list($null,$account) = each($account_hidden_info))
 					{
 						// kijk of account_id in acl voorkomt
@@ -221,7 +221,7 @@
 				'accounts' => 'accounts.tpl'
 			));
 
-			$site_id=$GLOBALS['site_id'];
+			$site_id=$GLOBALS[HTTP_GET_VARS]['site_id'];
 
 			$site_name = $this->bo->so->get_site_name($site_id);
 
@@ -233,7 +233,7 @@
 
 
 			$account_hidden_info = $GLOBALS['phpgw']->accounts->get_list('accounts','','','','',$total);
-			$account_info = $GLOBALS['phpgw']->accounts->get_list('accounts',$start,$sort,$order,$GLOBALS['query'],$total);
+			$account_info = $GLOBALS['phpgw']->accounts->get_list('accounts',$start,$sort,$order,$GLOBALS[HTTP_POST_VARS]['query'],$total);
 			$total = $GLOBALS['phpgw']->accounts->total;
 
 			$url = $GLOBALS['phpgw']->link('/index.php',"menuaction=jinn.uiadmin.set_access_rights_sites&site_id=$site_id");
@@ -275,7 +275,7 @@
 			else
 			{
 				// if searched show all editor hidden
-				if($GLOBALS['query']){
+				if($GLOBALS[HTTP_POST_VARS]['query']){
 					while (list($null,$account) = each($account_hidden_info))
 					{
 						// kijk of account_id in acl voorkomt

@@ -509,13 +509,14 @@
 			}
 
 
-			$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.add_edit_site&cancel=true&where_key=site_id&where_value='.$parent_site_id).'\'" value="'.lang('cancel').'">';
+			$cancel_button='<input type="button" onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.add_edit_site&cancel=true&where_key=site_id&where_value='.$parent_site_id).'\'" value="'.lang('cancel').'">';
 
+			$delete_button='<input type="button" onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boadmin.del_phpgw_jinn_site_objects&where_key=object_id&where_value='.$where_value).'\'" value="'.lang('delete').'">';
 
 			$this->template->set_var('save_button',lang('save and finish'));
 			$this->template->set_var('save_and_continue_button',lang('save and contiue'));
 			$this->template->set_var('reset_form',lang('reset form'));
-			$this->template->set_var('delete',lang('delete'));
+			$this->template->set_var('delete',$delete_button);
 			$this->template->set_var('cancel',$cancel_button);
 			$this->template->set_var('test_access',$test_access);
 			$this->template->set_var('extra_buttons',$extra_buttons);
