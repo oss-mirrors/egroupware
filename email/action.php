@@ -39,9 +39,15 @@
 
   if ($what == "delete") {
      $phpgw->msg->delete($mailbox, $msgnum);
-     if ($totalmessages != $msgnum) {
+     if ($totalmessages != $msgnum || $phpgw_info["user"]["preferences"]["default_sorting"] == "new_old") {
+        if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old") {
+           $nm = $msgnum - 1;
+        } else {
+           $nm = $msgnum;
+        }
+
         Header("Location: ".$phpgw->link("message.php","folder="
-		.urlencode($folder)."&msgnum=".$msgnum));
+		.urlencode($folder)."&msgnum=".$nm));
         $dontforward = True;
      }
   }
@@ -52,4 +58,4 @@
   if (! $dontforward) {
      Header("Location: ".$phpgw->link("index.php","folder=" . urlencode($folder) . $totaldeleted));
   }
-?>
+

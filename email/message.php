@@ -66,7 +66,7 @@
                  $pm = $msgnum - 1;
               }
 
-              if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old" && ($msgnum == $totalmessages && $msgnum != 1)) {
+              if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old" && ($msgnum == $totalmessages && $msgnum != 1 || $totalmessages == 1)) {
                  echo "<img border=0 src=\"".$phpgw_info["server"]["images_dir"]."/left-grey.gif"
 			. "\" alt=\"No Previous Message\">";
               } else {
