@@ -11,7 +11,7 @@
   *  option) any later version.                                              *
   \**************************************************************************/
                                                                                                                                                                                           
-//       $lid = $phpgw_info["user"]["userid"];
+       $lid = $phpgw_info["user"]["userid"];
 
        $db2 = $phpgw->db;                                                                                                                                                                 
                                                                                                                                                                                           
