@@ -1,6 +1,9 @@
 <!-- BEGIN form -->
+ <p>
  <b>{header_message}</b>
  <hr><p>
+
+ <center>{message}</center>
 
  <form method="POST" action="{form_action}">
   <table border="0" align="center">
