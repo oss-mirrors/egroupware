@@ -234,8 +234,9 @@ class headlines extends network {
                     . "FROM news_site WHERE display='".$title[$i]."' AND "
 		    . "base_url='$server' AND newsfile='$file'");
       if ($this->db->num_rows() == 0) {
-	$this->db->query("INSERT INTO news_site(display,base_url,newsfile,newstype) VALUES("
-			."'".$title[$i]."','$server','$file','".$type[$i]."')");
+	$this->db->query("INSERT INTO news_site(display,base_url,newsfile,"
+		        ."newstype,lastread,cachetime,listings) VALUES("
+			."'".$title[$i]."','$server','$file','".$type[$i]."',0,60,20)");
 	continue;
       }
       $this->db->next_record();
