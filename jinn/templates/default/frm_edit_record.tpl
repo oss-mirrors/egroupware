@@ -38,16 +38,15 @@ return true;
 <!-- END rows -->
 
 
-
 <!-- BEGIN form_footer -->
 	</tr>
 	<tr><td colspan="2" bgcolor="{row_color}">&nbsp;</td></tr>
-	<tr><td colspan="2" bgcolor="{row_color}">
-	<table align="right">
+	<tr><td colspan="2" >
+	<table align="right" style="background-color:#ffffff">
 	<tr>
 	<td><input type="submit" name="continue" value="{add_edit_button_continue}"></td>
 	<td><input type="submit" name="save" value="{add_edit_button}"></td>
-	<td><input type="reset" value="{reset_form}"></td>
+<!--	<td><input type="reset" value="{reset_form}"></td>-->
 	<td><input type="submit" name="delete" value="{delete}"></td>
 	<td>{cancel}</td>
 	</tr>
@@ -57,14 +56,6 @@ return true;
 
 </table>
 <table align="center" ><tr><td>{extra_buttons}</td></tr></table>
-<!--<table width="80%" align="center">
-	<tr>
-		<td><input type="submit" name="continue" value="{add_edit_button_continue}"></td>
-		<td><input type="submit" name="save" value="{add_edit_button}"></td>
-		<td><input type="submit" name="delete" value="{delete}"></td>
-		<td>{cancel}</td>
-	</tr>
-</table>-->
 </form>
 <!-- END form_footer -->
 
