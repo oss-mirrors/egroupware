@@ -348,10 +348,19 @@
 				$lang = $this->db->f('lang');
 				$installed[] = $lang;
 			}
-			$installed = "('".implode("','",$installed)."')"; 
+			$installed = "('".implode("','",$installed)."')";
+			
+			$f = fopen(PHPGW_SERVER_ROOT.'/setup/lang/languages','rb');
+			while($line = fgets($f,200))
+			{
+				list($id,$name) = explode("\t",$line);
+				$availible[]  = trim($id);
+			}
+			fclose($f);
+			$availible = "('".implode("','",$availible)."')";
 			
 			// this shows first the installed, then the available and then the rest
-			$this->db->query("SELECT lang_id,lang_name,lang_id IN $installed as installed FROM phpgw_languages ORDER BY installed DESC,available DESC,lang_name");
+			$this->db->query("SELECT lang_id,lang_name,lang_id IN $installed AS installed,lang_id IN $availible AS availible FROM phpgw_languages ORDER BY installed DESC,availible DESC,lang_name");
 			$i = 0;
 			while ($this->db->next_record())
 			{
