@@ -2,6 +2,808 @@
 # tag: automatic-ChangeLog--angles@aminvestments.com--2002/anglemail--brubaker--1.1
 #
 
+2003-04-28 GMT	Angles Puglisi <angles@aminvestments.com>	patch-66
+
+    Summary:
+      prefer gzip over bz2, fix several html RELATED detection corner cases
+    Revision:
+      anglemail--brubaker--1.1--patch-66
+
+    Prefer gzip over bz2, compression testing indicated the bz2 compression 
+    of the msgball_list was slower than gzcompress, and the compression 
+    ratio was similar for both. So revert to preferring zlib compression.
+    
+    Fix several html RELATED detection corner cases, such as when the RELATED
+    subtype is specified in the top level headers of a complicated message, 
+    and when the direct parent of an html part is designated RELATED instead 
+    of the grandparent of the html part. In both these cases there was no 
+    required alteration of "container" vs "packagelist" as is the case 
+    with the one detection scheme that was already existing in the part_nice 
+    code. So this is a simple case of detection of "RELATED", no big deal.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.bomessage.inc.php inc/class.html_widgets.inc.php
+     inc/class.mail_msg_display.inc.php
+     inc/class.so_mail_msg.inc.php
+
+
+2003-04-28 GMT	Angles Puglisi <angles@aminvestments.com>	patch-65
+
+    Summary:
+      prefer BZ2 compression, no serialize for native string data
+    Revision:
+      anglemail--brubaker--1.1--patch-65
+
+    Prefer BZ2 compression, previously we used ZLib, or GZ compress, 
+    now we check for BZ2 compression and use that as a first choice 
+    of compression, then use GZ only is BZ2 in not available. Of 
+    course if neither is installed then no compression takes place.
+    
+    No serialization for native string data. Message body parts and 
+    any other data that is a string is NOT serialized b4 going to the 
+    DB table. It is already a string, no need to serialize it.
+    
+    Also this will allow for better SQL searching, and also avoids 
+    errors of unserization due to offensive chars that 
+    sometimes b0rk unserizlize.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.html_widgets.inc.php inc/class.so_mail_msg.inc.php
+
+
+2003-04-27 GMT	Angles Puglisi <angles@aminvestments.com>	patch-64
+
+    Summary:
+      initial CACHING OF BODIES test implememtation
+    Revision:
+      anglemail--brubaker--1.1--patch-64
+
+    Initial CACHING OF BODIES test implememtation.
+    
+    These message body parts are only cached on demand, ie 
+    you need to look at a message once to cache it.
+    
+    The size is limited to 60000k because msgball caching 
+    revealed a size limit in some DB installs, for 
+    example MySQL default installation limit is 65000k.
+    
+    The bodies are cached ENCODED, whether it be qprint 
+    or base64, so a simple SQL search WOULD NOT be accurate 
+    at this time.
+    
+    This is a test implememtation.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.boaction.inc.php inc/class.bomessage.inc.php
+     inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_display.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+     inc/class.uimessage.inc.php templates/default/message_main.tpl
+
+
+2003-04-27 GMT	Angles Puglisi <angles@aminvestments.com>	patch-63
+
+    Summary:
+      add content length header to download HTTP header
+    Revision:
+      anglemail--brubaker--1.1--patch-63
+
+    Add content length header to download HTTP header. This 
+    _should_ mean the client browser should show an accurate 
+    progess dialog on downloads now. We shall see.
+    
+    Data is first de_base64 or de_qprint before measuring 
+    length to get a good length number to put in the http header.
+    
+    Also ported most debug calls in file boaction to the new 
+    msg->dbug object.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.boaction.inc.php
+
+
+2003-04-26 GMT	Angles Puglisi <angles@aminvestments.com>	patch-62
+
+    Summary:
+      port bomessage debuging, echo out threshold raised to 60k, fix xslt message part dups
+    Revision:
+      anglemail--brubaker--1.1--patch-62
+
+    port bomessage debuging to using the new msg->dbug object, so it works with HEAD now too.
+    
+    Echo out threshold raised to 60k, used to be 20k, it should show no speed hit 
+    at this 60k size hopefully.
+    
+    Fix xslt message part dups, HEAD message display used old tpl and new xsl 
+    hybrid, for some reason the last part was shoing as first part then again 
+    as last part. Tweaked tpl appending to local var appending followed by final 
+    aggregated set var, works in pre XSLT and fixes XSLT bug too.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.bomessage.inc.php inc/class.svc_debug.inc.php
+     inc/class.uimessage.inc.php
+
+
+2003-04-22 GMT	Angles Puglisi <angles@aminvestments.com>	patch-61
+
+    Summary:
+      ui_mail_debug page now XSLT able and now use OB for print_r emulation
+    Revision:
+      anglemail--brubaker--1.1--patch-61
+
+    ui_mail_debug page now XSLT able, before it had not been "ported", aka hacked up,  
+    to work with the XSLT templating system. Using the usual shortcut, it still 
+    uses the old tpl phplib system then injects that result into the XSLT system.
+    
+    Now use OB for print_r emulation. When outputting debug data to a popup window, 
+    there was a problem getting the Seek3r "fake_print_r" to really work because 
+    it could not traverse objects. A simple example on the php site showed 
+    how to use OutputBuffering to get ptint_r output into a variable as a string, 
+    so now I can output it to to the popup window and, using pre tags, it looks excellent.
+    
+    Also some other minor porting to XSLT small cleanup here and there.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.svc_debug.inc.php inc/class.ui_mail_debug.inc.php
+     inc/class.uicompose.inc.php inc/class.uifilters.inc.php
+     inc/class.uifolder.inc.php inc/class.uiindex.inc.php
+     inc/class.uimessage.inc.php inc/class.uipreferences.inc.php
+     templates/default/debug.tpl
+
+
+2003-04-22 GMT	Angles Puglisi <angles@aminvestments.com>	patch-60
+
+    Summary:
+      make XSLT work in HEAD to comply with new app_header usage
+    Revision:
+      anglemail--brubaker--1.1--patch-60
+
+    Make XSLT work in HEAD to comply with new app_header usage. Previously 
+    there had been an api XSL file called app_header, this file is gone 
+    now and calls to it had to be removed from the email app_data.xsl file. 
+    Now app_header is a simple page title thing in the phpgw_flags array.
+    
+    Also added GeekBar to the index page which under XSLT is fully xslt 
+    and needed it added to the app_data.xsl file and its xml data feed.
+    
+
+    new files:
+     templates/default/app_data-K.xsl
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.html_widgets.inc.php inc/class.mail_msg_base.inc.php
+     inc/class.uicompose.inc.php inc/class.uifilters.inc.php
+     inc/class.uifolder.inc.php inc/class.uiindex.inc.php
+     inc/class.uimessage.inc.php inc/class.uipreferences.inc.php
+     templates/default/app_data.xsl templates/default/filters.tpl
+     templates/default/filters_list.tpl
+
+
+2003-04-21 GMT	Angles Puglisi <angles@aminvestments.com>	patch-59
+
+    Summary:
+      fix get_msgball_list connecting for no reason, add a "geekbar" to index page
+    Revision:
+      anglemail--brubaker--1.1--patch-59
+
+    Fix get_msgball_list connecting for no reason, as a side effect of caching 
+    msgball_list for every folder, the function "get_msgball_list" needed further 
+    fixing where if acctnum and folder were passed, a mailserver login occurred 
+    for no particular reason, apparently related to the way the filter class 
+    used to call this function. However, if a stream is needed it is opened 
+    on demand later in the function anyway.
+    
+    Add a "geekbar" to index page, with some basic info about the installation 
+    and AngleMail, including if a mailserver connection had been established or not, 
+    and for which account(s).
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.html_widgets.inc.php inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_wrappers.inc.php inc/class.uiindex.inc.php
+     templates/default/index_main_b0_l2.tpl
+
+
+2003-04-21 GMT	Angles Puglisi <angles@aminvestments.com>	patch-58
+
+    Summary:
+      msgball_list now saved for EVERY folder, not only one folder per account
+    Revision:
+      anglemail--brubaker--1.1--patch-58
+
+    msgball_list now saved for EVERY folder, not only one folder per account. As a 
+    left over limitation of using only appsession and prior limited hardware, the 
+    msgball_list wes saved for only ONE folder at a time, the current folder you are 
+    operating in. This vestige of a previous era was no longer applicable since the 
+    advent of the dedicated anglemail database table.
+    
+    Now you may switch away from a folder and when you come back to it, there 
+    is still msgball_list data for that folder in the database.
+    
+    This also involved changing the navigation and message list procedures, as 
+    these try to directly access the msgball_list in the ref_SESSION array to 
+    avoid requesting it more than once per page view.
+    
+    Also, the events in session_cache_extreme also operate directly 
+    on this array and also read and save directly to the datastore 
+    so these also had to be altered to handle the inclusion of a 
+    folder name as a data key for the msgball_list.
+    
+    This is actually a major change since the concept of "one folder at a time" 
+    was heavily entreanched in most of the edited functions, while the changes 
+    I made also incorporated the forward looking concept of virtual folder handling 
+    where the msgball_list may be data of a psuedo folder, messages sourced from 
+    many different locations - this is not implemented yet but some of the associated 
+    changes were lookinf forward to this eventuality.
+    
+    Not fully tested in all cases, but so far this change seems to work OK.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_display.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2003-04-20 GMT	Angles Puglisi <angles@aminvestments.com>	patch-57
+
+    Summary:
+      gzcompress msgball_list data in anglemail table to reduce data size
+    Revision:
+      anglemail--brubaker--1.1--patch-57
+
+    gzcompress msgball_list data in anglemail table to reduce data size. Note 
+    that this is only used if param compression is passed True to the 
+    so_set_data and so_get_data functions.
+    
+    There has been a problem storing large msgball_list data, over 1,000 messages
+    in a folder, in the anglemail table. Eventhough the table column for this 
+    data is TEXT which is aka BLOB and should handle it, data size was 
+    maxing out at approx. 65,000 bytes. It is unknown where this limitation 
+    was coming from.
+    
+    So now the data is gzcompressed to reduce size and it works. Seems 
+    to reduce data size by about 80% in approx terms.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+     inc/class.so_mail_msg.inc.php
+
+
+2003-04-18 GMT	Angles Puglisi <angles@aminvestments.com>	patch-56
+
+    Summary:
+      add timestamping to debug class, save am_table_exists result in appsession
+    Revision:
+      anglemail--brubaker--1.1--patch-56
+
+    Add timestamping to debug class, so each debug output had a difference in microsec to 
+    the time the dbug class was created. Also enhanced the popup in another window debug 
+    thing by using some of Seek3r's pop3 compat print_r as a way to print_r an array without 
+    actually echoing out the data, this string data can then popup in another window.
+    
+    Save am_table_exists result in appsession, so there is only 1 time PER SESSION that 
+    the email code checks for the existance of the anglemail table. This includes addition 
+    of an actual APPSESSION passthru function for the so class, so real session only 
+    data can be kept in appsession store and will NOT attempt to use the anglemail table 
+    as will all the other datastore functions.
+    
+    Now tracking down a bug where large magball lists, say 1,500 message in a folder, 
+    get stored in the AM table, and get retrieved but b0rk during the unserialization, 
+    I do not think it is a add/strip slashes problem, it appears to have to do with the 
+    size of the glob data. More to come on this. For smaller folders it works fine.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+     inc/class.so_mail_msg.inc.php inc/class.svc_debug.inc.php
+     inc/class.ui_mail_debug.inc.php templates/default/debug.tpl
+
+
+2003-04-16 GMT	Angles Puglisi <angles@aminvestments.com>	patch-55
+
+    Summary:
+      commit ralfbecker patch for X "to" X now is X "-" X with no translation
+    Revision:
+      anglemail--brubaker--1.1--patch-55
+
+    Commit ralfbecker patch for X "to" X now is X "-" X with no translation.
+    
+    The word "to" as in 1 to 5 does not translate into other languages, so 
+    ralfbecker recommended change it to a dash as in 1 - 5 for better 
+    language neutrality.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.boindex.inc.php
+
+
+2003-04-15 GMT	Angles Puglisi <angles@aminvestments.com>	patch-54
+
+    Summary:
+      xslt detection no longer users vesion test, and hook_home works with xslt
+    Revision:
+      anglemail--brubaker--1.1--patch-54
+
+    xslt detection no longer users vesion test, it simply looks for existence of the 
+    xslttpl object and sets a msg->phpgw_pre_xslt var which is used by the other 
+    email classes. Also made the change to the hook_preferences page because it 
+    also needs an xslt test of its owm.
+    
+    hook_home works with xslt template now. It detects use of xslttpl and uses 
+    alternate code to assemble the data and display the box.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.mail_msg_base.inc.php inc/class.uicompose.inc.php
+     inc/class.uifilters.inc.php inc/class.uifolder.inc.php
+     inc/class.uiindex.inc.php inc/class.uimessage.inc.php
+     inc/class.uipreferences.inc.php inc/hook_home.inc.php
+     inc/hook_preferences.inc.php
+
+
+2003-04-11 GMT	Angles Puglisi <angles@aminvestments.com>	patch-53
+
+    Summary:
+      fix png flags images for MS transparency
+    Revision:
+      anglemail--brubaker--1.1--patch-53
+
+    Fix png flags images for MS transparency. Images for 
+    IMAP flags deleted, answered, flagged, and for the 
+    image to be used for ms "important" designation; 
+    those 5 png images did not have correct transparency 
+    in MS web browser.
+    
+    This was fixed using GIMP by opening the image, 
+    setting color mode to "indexed", then saving 
+    again the png but make sure "save with background color" 
+    is NOT CHECKED in the gimp dialog you get just before 
+    the save to disk.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     templates/default/images/deleted.png
+     templates/default/images/flag-for-followup-16.png
+     templates/default/images/mark-as-important-16.png
+     templates/default/images/regular_draft.png
+     templates/default/images/replied.png
+
+
+2003-04-11 GMT	Angles Puglisi <angles@aminvestments.com>	patch-52
+
+    Summary:
+      finish fix for ampersand in foldernames 
+    Revision:
+      anglemail--brubaker--1.1--patch-52
+
+    Finish fix for ampersand in foldernames, this was done by 
+    using the function where the foldername is isolated 
+    from the rest of the fldball or msgball, that is "prep_folder_out".
+    There I can string replace the ampersand & with %26, its URI 
+    encoded equivalent, without effecting any & that is part of 
+    the URI encoding.
+    
+    Also, some other places needed similar alterings.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.boaction.inc.php inc/class.html_widgets.inc.php
+     inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2003-04-08 GMT	Angles Puglisi <angles@aminvestments.com>	patch-51
+
+    Summary:
+      fix for handling foldernames with non-standard chars
+    Revision:
+      anglemail--brubaker--1.1--patch-51
+
+    Fix for handling foldernames with non-standard chars. This was 
+    in 2 areas:
+    
+    1. When viewing the index page and clicking on a message, 
+    the GET var was adding slashes, magic slashes, which 
+    needed to be checked for and removed, because the 
+    message view page was falling back to INBOX when it could not 
+    understand said foldername. Perhaps php4.2+ with 
+    apache 2 has different handling, before these slashes 
+    could be controlled better, now they must be checked for and 
+    removed if necessary, both fldball and msgball.
+    
+    2. Create, Rename, or Delete folder names with non-standard 
+    names is fixed ASSUMING you TURN ON the utf7 preference. Before, 
+    even with utf7 on, this was not handling said folder names. The 
+    fix included making updated versions of rename, create, and delete 
+    functions in mail_msg_wrappers which are more in line with current 
+    usage of the fldball.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.bofolder.inc.php inc/class.bomessage.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+     inc/class.svc_debug.inc.php
+
+
+2003-03-08 GMT	Angles Puglisi <angles@aminvestments.com>	patch-50
+
+    Summary:
+      fix show_foldersize pref, add langs for flags, use folder widget for all move cboxes
+    Revision:
+      anglemail--brubaker--1.1--patch-50
+
+    Fix show_foldersize pref, is user has checked that preference now the folder size will 
+    always be shown in the index page, instead of the "get size" link.
+    
+    Add langs for flags, and add also for future use of the MS "important" header.
+    
+    Use folder widget for all move comboboxes. Now the "Move Message To" combo boxes 
+    on the index page and the message view page use the html widget class to make 
+    the combobox. I do not think any more code uses the old style combo box code 
+    anymore.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.boindex.inc.php inc/class.bomessage.inc.php
+     inc/class.html_widgets.inc.php
+     inc/class.mail_msg_display.inc.php
+
+
+2003-03-08 GMT	Angles Puglisi <angles@aminvestments.com>	patch-49
+
+    Summary:
+      add "title" element to all image tags to browser tooltip appears
+    Revision:
+      anglemail--brubaker--1.1--patch-49
+
+    Add "title" element to all image tags to browser tooltip appears. This way 
+    when the user hovers over an image the browser pops up a tool tip with the 
+    text of the "title" element which I set the same as the alt text element.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.boindex.inc.php inc/class.html_widgets.inc.php
+     inc/class.mail_msg_base.inc.php
+     inc/class.svc_nextmatches.inc.php
+
+
+2003-04-04 GMT	Angles Puglisi <angles@aminvestments.com>	patch-48
+
+    Summary:
+      add AquaFusion theme, msg envelope info 20/80 not 50/50 size, add docs to noia dir
+    Revision:
+      anglemail--brubaker--1.1--patch-48
+
+    Add AquaFusion theme, based in KDE icon theme of the same name.
+    
+    Message view envelope info 20/80 not 50/50 size. When reaging mail, the part 
+    that has the To From Subject info is now split 20% and 80%, which looks 
+    better than the previous 50/50 split.
+    
+    Add docs, readme, license, etc. for the noia images to the noia image dir.
+    
+
+    new files:
+     templates/default/images/AquaFusion/AquaFusion.readme
+     templates/default/images/AquaFusion/accounts-16.gif
+     templates/default/images/AquaFusion/accounts-16.png
+     templates/default/images/AquaFusion/accounts-24.gif
+     templates/default/images/AquaFusion/accounts-24.png
+     templates/default/images/AquaFusion/add-attachment-16.gif
+     templates/default/images/AquaFusion/add-attachment-16.png
+     templates/default/images/AquaFusion/add-attachment-24.gif
+     templates/default/images/AquaFusion/add-attachment-24.png
+     templates/default/images/AquaFusion/address-conduit-16.gif
+     templates/default/images/AquaFusion/address-conduit-16.png
+     templates/default/images/AquaFusion/address-conduit-24.gif
+     templates/default/images/AquaFusion/address-conduit-24.png
+     templates/default/images/AquaFusion/arrow-2left-16.gif
+     templates/default/images/AquaFusion/arrow-2left-16.png
+     templates/default/images/AquaFusion/arrow-2left-24.gif
+     templates/default/images/AquaFusion/arrow-2left-24.png
+     templates/default/images/AquaFusion/arrow-2left-no-16.gif
+     templates/default/images/AquaFusion/arrow-2left-no-16.png
+     templates/default/images/AquaFusion/arrow-2left-no-24.gif
+     templates/default/images/AquaFusion/arrow-2left-no-24.png
+     templates/default/images/AquaFusion/arrow-2right-16.gif
+     templates/default/images/AquaFusion/arrow-2right-16.png
+     templates/default/images/AquaFusion/arrow-2right-24.gif
+     templates/default/images/AquaFusion/arrow-2right-24.png
+     templates/default/images/AquaFusion/arrow-2right-no-16.gif
+     templates/default/images/AquaFusion/arrow-2right-no-16.png
+     templates/default/images/AquaFusion/arrow-2right-no-24.gif
+     templates/default/images/AquaFusion/arrow-2right-no-24.png
+     templates/default/images/AquaFusion/arrow-left-16.gif
+     templates/default/images/AquaFusion/arrow-left-16.png
+     templates/default/images/AquaFusion/arrow-left-24.gif
+     templates/default/images/AquaFusion/arrow-left-24.png
+     templates/default/images/AquaFusion/arrow-left-no-16.gif
+     templates/default/images/AquaFusion/arrow-left-no-16.png
+     templates/default/images/AquaFusion/arrow-left-no-24.gif
+     templates/default/images/AquaFusion/arrow-left-no-24.png
+     templates/default/images/AquaFusion/arrow-right-16.gif
+     templates/default/images/AquaFusion/arrow-right-16.png
+     templates/default/images/AquaFusion/arrow-right-24.gif
+     templates/default/images/AquaFusion/arrow-right-24.png
+     templates/default/images/AquaFusion/arrow-right-no-16.gif
+     templates/default/images/AquaFusion/arrow-right-no-16.png
+     templates/default/images/AquaFusion/arrow-right-no-24.gif
+     templates/default/images/AquaFusion/arrow-right-no-24.png
+     templates/default/images/AquaFusion/compose-message-16.gif
+     templates/default/images/AquaFusion/compose-message-16.png
+     templates/default/images/AquaFusion/compose-message-24.gif
+     templates/default/images/AquaFusion/compose-message-24.png
+     templates/default/images/AquaFusion/customize-16.gif
+     templates/default/images/AquaFusion/customize-16.png
+     templates/default/images/AquaFusion/customize-24.gif
+     templates/default/images/AquaFusion/customize-24.png
+     templates/default/images/AquaFusion/delete-message.gif
+     templates/default/images/AquaFusion/delete-message.png
+     templates/default/images/AquaFusion/filters-16.gif
+     templates/default/images/AquaFusion/filters-16.png
+     templates/default/images/AquaFusion/filters-24.gif
+     templates/default/images/AquaFusion/filters-24.png
+     templates/default/images/AquaFusion/folder-16.gif
+     templates/default/images/AquaFusion/folder-16.png
+     templates/default/images/AquaFusion/folder-24.gif
+     templates/default/images/AquaFusion/folder-24.png
+     templates/default/images/AquaFusion/forward.gif
+     templates/default/images/AquaFusion/forward.png
+     templates/default/images/AquaFusion/reply-all.gif
+     templates/default/images/AquaFusion/reply-all.png
+     templates/default/images/AquaFusion/reply.gif
+     templates/default/images/AquaFusion/reply.png
+     templates/default/images/AquaFusion/send-16.gif
+     templates/default/images/AquaFusion/send-16.png
+     templates/default/images/AquaFusion/send-24.gif
+     templates/default/images/AquaFusion/send-24.png
+     templates/default/images/AquaFusion/spellcheck-16.gif
+     templates/default/images/AquaFusion/spellcheck-16.png
+     templates/default/images/AquaFusion/spellcheck-24.gif
+     templates/default/images/AquaFusion/spellcheck-24.png
+     templates/default/images/AquaFusion/trash-16.gif
+     templates/default/images/AquaFusion/trash-16.png
+     templates/default/images/AquaFusion/trash-24.gif
+     templates/default/images/AquaFusion/trash-24.png
+     templates/default/images/noia/noia.changelog
+     templates/default/images/noia/noia.gpl.txt
+     templates/default/images/noia/noia.license
+     templates/default/images/noia/noia.readme
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.bopreferences.inc.php
+     templates/default/message_main.tpl
+
+    new directories:
+     templates/default/images/AquaFusion
+
+
+2003-04-03 GMT	Angles Puglisi <angles@aminvestments.com>	patch-47
+
+    Summary:
+      add lame gif files for noia theme images
+    Revision:
+      anglemail--brubaker--1.1--patch-47
+
+    Add lame gif files for noia theme images. The noia images 
+    are png in their native form. Making transparent gif 
+    images out of them required indexing the images so they 
+    lost some of their clarity. So I call them "lame" gif 
+    images because they look no where as good as the png versions.
+    
+    I left the png images as-is even though MSIE does not 
+    handle the transparency of the gif images. This could 
+    be fixed by indexing the png images and re-saving without the 
+    background color, this will look correct on MSIE. HOWEVER, 
+    this would cause the same image quality loss that is the problem 
+    with the gif images, so I left the png omages as-is and hope 
+    someday MSIE can show them.
+    
+    Until then I set PREFER to ".gif" in the substitute "_image_on" function. 
+    So that MSIE at least shows the more acceptable gif images at this time. 
+    Mozilla can handle the png images OK.
+    
+
+    new files:
+     templates/default/images/deleted.gif
+     templates/default/images/flag-for-followup-16.gif
+     templates/default/images/mark-as-important-16.gif
+     templates/default/images/noia/accounts-16.gif
+     templates/default/images/noia/accounts-24.gif
+     templates/default/images/noia/add-attachment-16.gif
+     templates/default/images/noia/add-attachment-24.gif
+     templates/default/images/noia/address-conduit-16.gif
+     templates/default/images/noia/address-conduit-24.gif
+     templates/default/images/noia/arrow-2left-16.gif
+     templates/default/images/noia/arrow-2left-24.gif
+     templates/default/images/noia/arrow-2left-no-16.gif
+     templates/default/images/noia/arrow-2left-no-24.gif
+     templates/default/images/noia/arrow-2right-16.gif
+     templates/default/images/noia/arrow-2right-24.gif
+     templates/default/images/noia/arrow-2right-no-16.gif
+     templates/default/images/noia/arrow-2right-no-24.gif
+     templates/default/images/noia/arrow-left-16.gif
+     templates/default/images/noia/arrow-left-24.gif
+     templates/default/images/noia/arrow-left-no-16.gif
+     templates/default/images/noia/arrow-left-no-24.gif
+     templates/default/images/noia/arrow-right-16.gif
+     templates/default/images/noia/arrow-right-24.gif
+     templates/default/images/noia/arrow-right-no-16.gif
+     templates/default/images/noia/arrow-right-no-24.gif
+     templates/default/images/noia/compose-message-16.gif
+     templates/default/images/noia/compose-message-24.gif
+     templates/default/images/noia/customize-16.gif
+     templates/default/images/noia/customize-24.gif
+     templates/default/images/noia/delete-message.gif
+     templates/default/images/noia/envelope.gif
+     templates/default/images/noia/filters-16.gif
+     templates/default/images/noia/filters-24.gif
+     templates/default/images/noia/folder-16.gif
+     templates/default/images/noia/folder-24.gif
+     templates/default/images/noia/forward.gif
+     templates/default/images/noia/next-message.gif
+     templates/default/images/noia/previous-message.gif
+     templates/default/images/noia/reply-all.gif
+     templates/default/images/noia/reply.gif
+     templates/default/images/noia/send-16.gif
+     templates/default/images/noia/send-24.gif
+     templates/default/images/noia/spellcheck-16.gif
+     templates/default/images/noia/spellcheck-24.gif
+     templates/default/images/noia/trash-16.gif
+     templates/default/images/noia/trash-24.gif
+     templates/default/images/regular_draft.gif
+     templates/default/images/replied.gif
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.mail_msg_display.inc.php
+
+
+2003-03-30 GMT	Angles Puglisi <angles@aminvestments.com>	patch-46
+
+    Summary:
+      bugfix change of folder list not propagating, boaction parse_str now stripslashes, prefs can expire folder_list
+    Revision:
+      anglemail--brubaker--1.1--patch-46
+
+    Bugfix change in folder list not expiring cached list, this problem was either in the 
+    function for expire_session_cache_item, or in the way the msg class picked up the 
+    flag from the dcom class indicating a change in folder list. Both places were modified 
+    so the problem is hopefully fixed. This includes adding a callback funtion in the 
+    main msg class for use by the dcom class when a change to the folder list is made.
+    
+    Function for creating the next page view args in file boaction uses a call to parse_str, 
+    if there are any folder name in the URI string that was passed there, slashes will be added 
+    to any quotation marks, so the function now stripslashes expected folder names. Recall 
+    this is the set of functions that generate the next pageview env args and directly 
+    make the page, instead of using the slower redirect method.
+    
+    A side effect of the above fix is the report on moved messages to a non-stripslashed
+    folder, and going back to a non-stripslashed folder name, have been fixed.
+    
+    Prefs can expire folder_list. Certain changes to preferences require expiration of some 
+    cached data, such as mailsvr_callstr, mailsvr_namespace, and mailsvr_delimiter. NOW 
+    I realized that if any of these change it is required to ALSO expire the folder_list 
+    because the components of those folder names have probably changed, making the 
+    fully qualified folder names different.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.boaction.inc.php inc/class.bopreferences.inc.php
+     inc/class.mail_dcom_base.inc.php
+     inc/class.mail_dcom_base_sock.inc.php
+     inc/class.mail_dcom_imap.inc.php
+     inc/class.mail_dcom_imap_sock.inc.php
+     inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_display.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2003-03-29 GMT	Angles Puglisi <angles@aminvestments.com>	patch-45
+
+    Summary:
+      set_time_limit 2 min during filter, add back some Sam Przyswa translations
+    Revision:
+      anglemail--brubaker--1.1--patch-45
+
+    set_time_limit 2 min during filter, 120 seconds, so large filterings 
+    do not time out before finishing.
+    
+    Add back some Sam Przyswa translations that got deleted during the 
+    recent sync from 0..9.14.002 CVS, which were EN and FR files 
+    specifically for the phrases "Go Back To" and "Inbox"
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.bofilters.inc.php setup/phpgw_en.lang
+     setup/phpgw_fr.lang
+
+
+2003-03-29 GMT	Angles Puglisi <angles@aminvestments.com>	patch-44
+
+    Summary:
+      import of changes from 0.9.14.002 CVS as of Mar 29 2003 
+    Revision:
+      anglemail--brubaker--1.1--patch-44
+
+    import of changes from 0.9.14.002 CVS as of Mar 29 2003
+    
+    Mostly lang related, replacing x with %1 and stuff like that. 
+    The lang files in the setup dir (that is where they are located) 
+    have changed a lot as new translations were added and the 
+    changing of x to % there also.
+    
+
+    new files:
+     setup/phpgw_pl.lang
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     addressbook.php inc/class.boattach_file.inc.php
+     inc/class.bopreferences.inc.php
+     inc/class.mail_msg_display.inc.php
+     inc/class.mail_msg_wrappers.inc.php setup/phpgw_da.lang
+     setup/phpgw_de.lang setup/phpgw_en.lang setup/phpgw_es.lang
+     setup/phpgw_fi.lang setup/phpgw_fr.lang setup/phpgw_hu.lang
+     setup/phpgw_it.lang setup/phpgw_ja.lang setup/phpgw_ko.lang
+     setup/phpgw_nl.lang setup/phpgw_pt.lang setup/phpgw_sv.lang
+     setup/phpgw_zt.lang
+
+
 2003-03-13 GMT	Angles Puglisi <angles@aminvestments.com>	patch-43
 
     Summary:
