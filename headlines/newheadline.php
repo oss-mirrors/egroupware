@@ -94,6 +94,7 @@
 		'admin_form' => 'admin_form.tpl'
 	));
 	$phpgw->template->set_block('admin_form','form');
+	$phpgw->template->set_block('admin_form','buttons');
 
 	if (is_array($errors))
 	{
@@ -129,6 +130,7 @@
 
 	$phpgw->template->set_var('action_url',$phpgw->link('/headlines/newheadline.php'));
 
+	$phpgw->template->parse('buttons','buttons');
 	$phpgw->template->pfp('out','form');
 	$phpgw->common->phpgw_footer();
 ?>

@@ -7,7 +7,7 @@
   <form method="POST" action="{action_url}">
    <table border="0" width="65%" align="center">
     <tr bgcolor="{th_bg}">
-     <td colspan="2">{lang_header}</td>
+     <td colspan="2">&nbsp;{lang_header}</td>
     </tr>
     <tr bgcolor="{row_on}">
      <td>{lang_display}</td>
@@ -33,9 +33,27 @@
      <td>{lang_type}</td>
      <td>{input_type}</td>
     </tr>
+    {buttons}
+    <tr>
+     <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr bgcolor="{th_bg2}">
+     <td colspan="2">&nbsp;{lang_current_cache}</td>
+    </tr>
+    {listing_rows}
+   </table>
+  </form>
+
+<!-- END form -->
+
+<!-- BEGIN buttons -->
     <tr bgcolor="{row_on}">
      <td colspan="2" align="right"><input type="submit" name="submit" value="{lang_button}"></td>
     </tr>
-   </table>
-  </form>
-<!-- END form -->
+<!-- END buttons -->
+
+<!-- BEGIN listing_row -->
+ <tr bgcolor="{tr_color}">
+  <td colspan="2">{value}&nbsp;</td>
+ </tr> 
+<!-- END listing_row -->
