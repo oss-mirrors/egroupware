@@ -11,7 +11,8 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "polls", "enable_nextmatchs_class" => True);
+  $phpgw_info["flags"] = array("currentapp"   => "polls", "enable_nextmatchs_class" => True,
+                               "admin_header" => True);
   include("../header.inc.php");
 
   $phpgw->template->set_file(array("form"   => "admin_form.tpl",
