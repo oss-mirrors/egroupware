@@ -21,7 +21,7 @@
 	</tr>
 	<tr>
 		<td>{lang_billedonly}:</td>
-		<td><input type="checkbox" name="billed" value="billed" {billed}></td>
+		<td>{billed}</td>
 	</tr>
 </table>
 <table width="75%" border="0" cellspacing="2" cellpadding="2">

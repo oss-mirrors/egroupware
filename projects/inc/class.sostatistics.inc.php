@@ -28,10 +28,42 @@
 	{
 		function sostatistics()
 		{
-			$this->db		= $GLOBALS['phpgw']->db;
+			$this->db = $GLOBALS['phpgw']->db;
 		}
 
-		function user_stat_pro($account_id, $filter)
+		function stat_filter($values)
+		{
+			if (checkdate($values['smonth'],$values['sday'],$values['syear']))
+			{
+				$values['sdate'] = mktime(2,0,0,$values['smonth'],$values['sday'],$values['syear']);
+			}
+
+			if (checkdate($values['emonth'],$values['eday'],$values['eyear']))
+			{
+				$values['edate'] = mktime(2,0,0,$values['emonth'],$values['eday'],$values['eyear']);
+			}
+
+			if ($values['billed'])
+			{
+				$filter = " AND status='billed'";
+			}
+
+			if ($values['sdate'])
+			{
+				$filter .= " AND start_date >='" . $values['sdate'] . "'";
+			}
+
+			if ($values['edate'])
+			{
+				$filter .= " AND end_date <='" . $values['edate'] . "'";
+			}
+
+		//	_debug_array($values);
+		//	exit;
+			return $filter;
+		}
+
+		function user_stat_pro($account_id, $values)
 		{
 			if ($GLOBALS['phpgw_info']['server']['db_type']=='pgsql')
 			{
@@ -43,7 +75,7 @@
 			}
 
 			$this->db->query("SELECT title,num,phpgw_p_projects.id as id FROM phpgw_p_projects $join phpgw_p_hours ON "
-							."phpgw_p_hours.employee='$account_id' $filter GROUP BY title,phpgw_p_projects.id");
+							. "phpgw_p_hours.employee='" . $account_id . "' GROUP BY title,phpgw_p_projects.id",__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{
@@ -59,7 +91,7 @@
 			return $pro;
 		}
 
-		function stat_hours($type = 'account', $account_id = '', $project_id = '', $filter)
+		function stat_hours($type = 'account', $account_id = '', $project_id = '', $values)
 		{
 			switch($type)
 			{
@@ -69,7 +101,7 @@
 			}
 
 			$this->db->query('SELECT SUM(minutes) as min,num,descr FROM phpgw_p_hours,phpgw_p_activities ' . $idfilter
-							. ' AND phpgw_p_hours.activity_id=phpgw_p_activities.id ' . $filter
+							. ' AND phpgw_p_hours.activity_id=phpgw_p_activities.id' . $this->stat_filter($values)
 							. ' GROUP BY phpgw_p_activities.descr,phpgw_p_activities.num',__LINE__,__FILE__);
 
 			while ($this->db->next_record())
@@ -84,9 +116,11 @@
 			return $hours;
 		}
 
-		function pro_stat_employees($project_id, $filter)
+		function pro_stat_employees($project_id, $values)
 		{
-			$this->db->query("SELECT employee from phpgw_p_hours WHERE project_id='$project_id' $filter",__LINE__,__FILE__);
+
+			$this->db->query("SELECT employee from phpgw_p_hours WHERE project_id='" . $project_id . "'" . $this->stat_filter($values)
+							. " GROUP BY employee",__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{

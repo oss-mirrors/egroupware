@@ -447,14 +447,13 @@
 
 		function user_stat()
 		{
-			global $submit, $billed, $account_id;
+			global $submit, $account_id, $values;
 
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uistatistics.user_stat',
 				'action'		=> 'ustat',
-				'account_id'	=> $account_id,
-				'billed'		=> $billed
+				'account_id'	=> $account_id
 			);
 
 			if (! $account_id)
@@ -479,68 +478,45 @@
 
 			$this->nextmatchs->alternate_row_color(&$this->t);
 
-			if (!$submit)
+			if (!$values['sdate'])
 			{
-				$emonth = date('m',time());
-				$eday = date('d',time());
-				$eyear = date('Y',time());
-				$edate = mktime(2,0,0,$emonth,$eday,$eyear);
-			}
-
-			if (!$sdate)
-			{
-				$smonth = 0;
-				$sday = 0;
-				$syear = 0;
+				$values['smonth']	= 0;
+				$values['sday']		= 0;
+				$values['syear']	= 0;
 			}
 			else
 			{
-				$smonth = date('m',$sdate);
-				$sday = date('d',$sdate);
-				$syear = date('Y',$sdate);
+				$values['smonth']	= date('m',$values['sdate']);
+				$values['sday']		= date('d',$values['sdate']); 
+				$values['syear']	= date('Y',$values['sdate']);
 			}
 
-			if (!$edate)
+			if (!$values['edate'])
 			{
-				$emonth = 0;
-				$eday = 0;
-				$eyear = 0;
+				$values['emonth']	= 0;
+				$values['eday']		= 0;
+				$values['eyear']	= 0;
 			}
 			else
 			{
-				$emonth = date('m',$edate);
-				$eday = date('d',$edate);
-				$eyear = date('Y',$edate);
+				$values['emonth']	= date('m',$values['edate']);
+				$values['eday']		= date('d',$values['edate']); 
+				$values['eyear']	= date('Y',$values['edate']);
 			}
 
-			$this->t->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('syear',$syear),
-																						$this->sbox->getMonthText('smonth',$smonth),
-																						$this->sbox->getDays('sday',$sday)));
-			$this->t->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('eyear',$eyear),
-																					$this->sbox->getMonthText('emonth',$emonth),
-																					$this->sbox->getDays('eday',$eday)));
+			$this->t->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$values['syear']),
+																							$this->sbox->getMonthText('values[smonth]',$values['smonth']),
+																							$this->sbox->getDays('values[sday]',$values['sday'])));
+			$this->t->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$values['eyear']),
+																							$this->sbox->getMonthText('values[emonth]',$values['emonth']),
+																							$this->sbox->getDays('values[eday]',$values['eday'])));
 
 // -------------- calculate statistics --------------------------
 
-			if($billed)
-			{
-				$this->t->set_var('billed','checked');
-				$filter .= " AND phpgw_p_hours.status='billed' ";
-			}
+			$this->t->set_var('billed','<input type="checkbox" name="values[billed]" value="True"'
+										. ($values['billed'] == 'private'?' checked':'') . '>');
 
-			if (checkdate($smonth,$sday,$syear))
-			{
-				$sdate = mktime(2,0,0,$smonth,$sday,$syear);
-				$filter .= " AND phpgw_p_hours.start_date>='$sdate' ";
-			}
-
-			if (checkdate($emonth,$eday,$eyear))
-			{
-				$edate = mktime(2,0,0,$emonth,$eday,$eyear);
-				$filter .= " AND phpgw_p_hours.end_date<='$edate' ";
-			}
-
-			$pro = $this->bostatistics->get_userstat_pro($account_id, $filter);
+			$pro = $this->bostatistics->get_userstat_pro($account_id, $values);
 
 			if (is_array($pro))
 			{
@@ -550,16 +526,16 @@
 					$this->nextmatchs->template_alternate_row_color(&$this->t);
 					$this->t->set_var('e_project',$GLOBALS['phpgw']->strip_html($userpro['title']) . ' ['
 											. $GLOBALS['phpgw']->strip_html($userpro['num']) . ']');
-					$this->t->set_var('e_activity','');
-					$this->t->set_var('e_hours','');
+					$this->t->set_var('e_activity','&nbsp;');
+					$this->t->set_var('e_hours','&nbsp;');
 					$this->t->fp('stat','user_stat',True);
 
-					$hours = $this->bostatistics->get_stat_hours('both', $account_id, $userpro['project_id'], $filter); 
+					$hours = $this->bostatistics->get_stat_hours('both', $account_id, $userpro['project_id'], $values); 
 					for ($i=0;$i<=count($hours);$i++)
 					{
 						if ($hours[$i]['num'] != '')
 						{
-							$this->t->set_var('e_project','');
+							$this->t->set_var('e_project','&nbsp;');
 							$this->t->set_var('e_activity',$GLOBALS['phpgw']->strip_html($hours[$i]['descr']) . ' ['
 													. $GLOBALS['phpgw']->strip_html($hours[$i]['num']) . ']');
 							$summin += $hours[$i]['min'];
@@ -569,28 +545,28 @@
 						}
 					}
 
-					$this->t->set_var('e_project','');
-					$this->t->set_var('e_activity','');
+					$this->t->set_var('e_project','&nbsp;');
+					$this->t->set_var('e_activity','&nbsp;');
 					$hrs = floor($summin/60) . ':' . sprintf ("%02d",(int)($summin-floor($summin/60)*60)); 
 					$this->t->set_var('e_hours',$hrs);
 					$this->t->fp('stat','user_stat',True);
 				}
 			}
 
-			$allhours = $this->bostatistics->get_stat_hours('account', $account_id, $project_id ='', $filter);
+			$allhours = $this->bostatistics->get_stat_hours('account', $account_id, $project_id ='', $values);
 
 			$summin=0;
 			$this->nextmatchs->template_alternate_row_color(&$this->t);
 			$this->t->set_var('e_project','<b>' . lang('Overall') . '</b>');
-			$this->t->set_var('e_activity','');
-			$this->t->set_var('e_hours','');
+			$this->t->set_var('e_activity','&nbsp;');
+			$this->t->set_var('e_hours','&nbsp;');
 			$this->t->fp('stat','user_stat',True);
 
 			if (is_array($allhours))
 			{
 				while (list($null,$userall) = each($allhours))
 				{
-					$this->t->set_var('e_project','');
+					$this->t->set_var('e_project','&nbsp;');
 					$this->t->set_var('e_activity',$GLOBALS['phpgw']->strip_html($userall['descr']) . ' ['
 													. $GLOBALS['phpgw']->strip_html($userall['num']) . ']');
 					$summin += $userall['min'];
@@ -602,24 +578,22 @@
 			
 			$this->nextmatchs->template_alternate_row_color(&$this->t);
 			$this->t->set_var('e_project','<b>' . lang('Sum') . '</b>');
-			$this->t->set_var('e_activity','');
+			$this->t->set_var('e_activity','&nbsp;');
 			$hrs = floor($summin/60) . ':' . sprintf ("%02d",(int)($summin-floor($summin/60)*60)); 
 			$this->t->set_var('e_hours',$hrs);
 			$this->t->fp('stat','user_stat',True);
-
 			$this->t->pfp('out','user_stat_t',True);
 		}
 
 		function project_stat()
 		{
-			global $submit, $billed, $project_id, $action;
+			global $submit, $project_id, $action, $values;
 
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uistatistics.project_stat',
 				'action'		=> $action,
-				'project_id'	=> $project_id,
-				'billed'		=> $billed
+				'project_id'	=> $project_id
 			);
 
 			if (! $project_id)
@@ -632,6 +606,16 @@
 			$this->t->set_file(array('project_stat' => 'stats_projectstat.tpl'));
 			$this->t->set_block('project_stat','stat_list','list');
 
+			$nopref = $this->boprojects->check_prefs();
+			if (is_array($nopref))
+			{
+				$this->t->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
+			}
+			else
+			{
+				$prefs = $this->boprojects->get_prefs();
+			}
+
 			$pro = $this->boprojects->read_single_project($project_id);
 
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
@@ -642,49 +626,62 @@
 			$this->t->set_var('project',$title . ' [' . $GLOBALS['phpgw']->strip_html($pro['number']) . ']');
 			$this->t->set_var('status',lang($pro['status']));
 			$this->t->set_var('budget',$pro['budget']);
+			$this->t->set_var('currency',$prefs['currency']);
 
 			$this->t->set_var('lang_account',lang('Account'));
 			$this->t->set_var('lang_activity',lang('Activity'));
 			$this->t->set_var('lang_hours',lang('Hours'));
 
-			if (!$submit)
+			if (!$values['sdate'])
 			{
-				$sdate = $pro['sdate'];
-				$edate = $pro['edate'];
-			}
-
-			if (!$sdate)
-			{
-				$smonth = 0;
-				$sday = 0; 
-				$syear = 0;
-			}
-			else
-			{
-				$smonth = date('m',$sdate);
-				$sday = date('d',$sdate);
-				$syear = date('Y',$sdate);
-			}
-
-			if (!$edate)
-			{
-				$emonth = 0;
-				$eday = 0;
-				$eyear = 0;
+				if (! $pro['sdate'] || $pro['sdate'] == 0)
+				{
+					$values['smonth']	= 0;
+					$values['sday']		= 0; 
+					$values['syear']	= 0;
+				}
+				else
+				{
+					$values['smonth']	= date('m',$pro['sdate']);
+					$values['sday']		= date('d',$pro['sdate']); 
+					$values['syear']	= date('Y',$pro['sdate']);
+				}
 			}
 			else
 			{
-				$emonth = date('m',$edate);
-				$eday = date('d',$edate);
-				$eyear = date('Y',$edate);
+				$values['smonth']	= date('m',$values['sdate']);
+				$values['sday']		= date('d',$values['sdate']); 
+				$values['syear']	= date('Y',$values['sdate']);
 			}
 
-			$this->t->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('syear',$syear),
-																							$this->sbox->getMonthText('smonth',$smonth),
-																							$this->sbox->getDays('sday',$sday)));
-			$this->t->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('eyear',$eyear),
-																							$this->sbox->getMonthText('emonth',$emonth),
-																							$this->sbox->getDays('eday',$eday)));
+			if (!$values['edate'])
+			{
+				if (! $pro['edate'] || $pro['edate'] == 0)
+				{
+					$values['emonth']	= 0;
+					$values['eday']		= 0; 
+					$values['eyear']	= 0;
+				}
+				else
+				{
+					$values['emonth']	= date('m',$pro['edate']);
+					$values['eday']		= date('d',$pro['edate']); 
+					$values['eyear']	= date('Y',$pro['edate']);
+				}
+			}
+			else
+			{
+				$values['emonth']	= date('m',$values['edate']);
+				$values['eday']		= date('d',$values['edate']); 
+				$values['eyear']	= date('Y',$values['edate']);
+			}
+
+			$this->t->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$values['syear']),
+																							$this->sbox->getMonthText('values[smonth]',$values['smonth']),
+																							$this->sbox->getDays('values[sday]',$values['sday'])));
+			$this->t->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$values['eyear']),
+																							$this->sbox->getMonthText('values[emonth]',$values['emonth']),
+																							$this->sbox->getDays('values[eday]',$values['eday'])));
 
 			$cached_data = $this->boprojects->cached_accounts($pro['coordinator']);
 			$coordinatorout = $GLOBALS['phpgw']->strip_html($cached_data[$pro['coordinator']]['account_lid']
@@ -709,33 +706,12 @@
 				$this->t->set_var('customer','&nbsp;');
 			}
 
-			if($billed)
-			{
-				$this->t->set_var('billed','checked');
-			}
+			$this->t->set_var('billed','<input type="checkbox" name="values[billed]" value="True"'
+										. ($values['billed'] == 'private'?' checked':'') . '>');
 
-// -------------------------------- calculate statistics -------------------------------------------                                                                                                                                         
+// -------------------------------- calculate statistics -----------------------------------------
 
-//    $filter= '';
-
-			if($billed)
-			{
-				$filter .= " AND phpgw_p_hours.status='billed' ";
-			}
-
-			if (checkdate($smonth,$sday,$syear))
-			{
-				$sdate = mktime(2,0,0,$smonth,$sday,$syear);
-				$filter .= " AND start_date >= '$sdate' ";
-			}
-
-			if (checkdate($emonth,$eday,$eyear))
-			{
-				$edate = mktime(2,0,0,$emonth,$eday,$eyear);
-				$filter .= " AND end_date <= '$edate' ";
-			}
-
-			$employees = $this->bostatistics->get_employees($project_id, $filter);
+			$employees = $this->bostatistics->get_employees($project_id, $values);
 
 			if (is_array($employees))
 			{
@@ -751,42 +727,41 @@
 											. $GLOBALS['phpgw']->strip_html($account_data[$employee['employee']]['lastname']) . ' ['
 											. $GLOBALS['phpgw']->strip_html($account_data[$employee['employee']]['account_lid']) . ']');
 
-					$this->t->set_var('e_activity','');
-					$this->t->set_var('e_hours','');
+					$this->t->set_var('e_activity','&nbsp;');
+					$this->t->set_var('e_hours','&nbsp;');
 					$this->t->fp('list','stat_list',True);
 
-					$hours = $this->bostatistics->get_stat_hours('both', $account_id, $project_id, $filter);
+					$hours = $this->bostatistics->get_stat_hours('both', $account_id, $project_id, $values);
 
 					for ($i=0;$i<=count($hours);$i++)
 					{
 						if ($hours[$i]['num'] != '')
 						{
-							$this->t->set_var('e_account','');
+							$this->t->set_var('e_account','&nbsp;');
 							$this->t->set_var('e_activity',$GLOBALS['phpgw']->strip_html($hours[$i]['descr']) . ' ['
 														. $GLOBALS['phpgw']->strip_html($hours[$i]['num']) . ']');
-							$summin += $hours[$i]['min'];
 							$hrs = floor($hours[$i]['min']/60). ':' . sprintf ("%02d",(int)($hours[$i]['min']-floor($hours[$i]['min']/60)*60));
 							$this->t->set_var('e_hours',$hrs);
-
+							$summin += $hours[$i]['min'];
 							$this->t->fp('list','stat_list',True);
 						}
 					}
-				}
-				$this->t->set_var('e_account','');
-				$this->t->set_var('e_activity','');
-				$hrs = floor($summin/60). ':' . sprintf ("%02d",(int)($summin-floor($summin/60)*60));
-				$this->t->set_var('e_hours',$hrs);
 
-				$this->t->fp('list','stat_list',True);
+					$this->t->set_var('e_account','&nbsp;');
+					$this->t->set_var('e_activity','&nbsp;');
+					$sumhours = floor($summin/60). ':' . sprintf ("%02d",(int)($summin-floor($summin/60)*60));
+					$this->t->set_var('e_hours',$sumhours); 
+					$this->t->fp('list','stat_list',True);
+				}
 			}
 
-			$prohours = $this->bostatistics->get_stat_hours('project', $account_id = '', $project_id, $filter); 
+			$prohours = $this->bostatistics->get_stat_hours('project', $account_id = '', $project_id, $values); 
 
 			$summin=0;
 			$this->nextmatchs->template_alternate_row_color(&$this->t);
 			$this->t->set_var('e_account','<b>' . lang('Overall') . '</b>');
-			$this->t->set_var('e_activity','');
-			$this->t->set_var('e_hours','');
+			$this->t->set_var('e_activity','&nbsp;');
+			$this->t->set_var('e_hours','&nbsp;');
 
 			$this->t->fp('list','stat_list',True);
 
@@ -794,7 +769,7 @@
 			{
 				while (list($null,$proall) = each($prohours))
 				{
-					$this->t->set_var('e_account','');
+					$this->t->set_var('e_account','&nbsp;');
 					$this->t->set_var('e_activity',$GLOBALS['phpgw']->strip_html($proall['descr']) . ' ['
 												. $GLOBALS['phpgw']->strip_html($proall['num']) . ']');
 					$summin += $proall['min'];
@@ -806,7 +781,7 @@
 			}
 			$this->nextmatchs->template_alternate_row_color(&$this->t);
 			$this->t->set_var('e_account','<b>' . lang('sum') . '</b>');
-			$this->t->set_var('e_activity','');
+			$this->t->set_var('e_activity','&nbsp;');
 			$hrs = floor($summin/60). ':' . sprintf ("%02d",(int)($summin-floor($summin/60)*60));
 			$this->t->set_var('e_hours',$hrs);
 

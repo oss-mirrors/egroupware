@@ -5,6 +5,7 @@
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
 <hr noshade width="98%" align="center" size="1">
 <center>
+{pref_message}
 <form method="POST" name="projects_form" action="{actionurl}">
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
@@ -37,7 +38,7 @@
 	</tr>
 	<tr>
 		<td>{lang_billedonly}:</td>
-		<td><input type="checkbox" name="billed" value="billed" {billed}></td>
+		<td>{billed}</td>
 	</tr>
 </table>
 <table width="75%" border="0" cellspacing="2" cellpadding="2">

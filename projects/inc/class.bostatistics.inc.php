@@ -53,21 +53,21 @@
 			return $users;
 		}
 
-		function get_userstat_pro($account_id, $filter)
+		function get_userstat_pro($account_id, $values)
 		{
-			$pro = $this->sostatistics->user_stat_pro($account_id, $filter);
+			$pro = $this->sostatistics->user_stat_pro($account_id, $values);
 			return $pro;
 		}
 
-		function get_stat_hours($type, $account_id, $project_id, $filter)
+		function get_stat_hours($type, $account_id, $project_id, $values)
 		{
-			$hours = $this->sostatistics->stat_hours($type, $account_id, $project_id, $filter);
+			$hours = $this->sostatistics->stat_hours($type, $account_id, $project_id, $values);
 			return $hours;
 		}
 
-		function get_employees($project_id, $filter)
+		function get_employees($project_id, $values)
 		{
-			$employees = $this->sostatistics->pro_stat_employees($project_id, $filter);
+			$employees = $this->sostatistics->pro_stat_employees($project_id, $values);
 			return $employees;
 		}
 	}
