@@ -34,12 +34,12 @@
 
 		function soprojects()
 		{
-			$this->db		= $GLOBALS['phpgw']->db;
-			$this->db2		= $this->db;
+			$this->db			= $GLOBALS['phpgw']->db;
+			$this->db2			= $this->db;
 			$this->grants		= $GLOBALS['phpgw']->acl->get_grants('projects');
 			$this->account		= $GLOBALS['phpgw_info']['user']['account_id'];
 			$this->currency 	= $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
-			$this->year		= $GLOBALS['phpgw']->common->show_date(time(),'Y');
+			$this->year			= $GLOBALS['phpgw']->common->show_date(time(),'Y');
 			$this->member		= $this->get_acl_projects();
 			$this->soconfig		= CreateObject('projects.soconfig');
 			$this->siteconfig	= $this->get_site_config();
@@ -59,6 +59,8 @@
 
 		function db2projects($column = False)
 		{
+			$db = $this->db;
+			
 			$i = 0;
 			while ($this->db->next_record())
 			{
@@ -67,44 +69,71 @@
 					$projects[$i] = array();
 					for($k=0;$k<count($this->column_array);$k++)
 					{
-						$projects[$i][$this->column_array[$k]] = $this->db->f($this->column_array[$k]);
+						switch($this->column_array[$k])
+						{
+							case 'budget':
+								// some legacy code, to move existing budgets to the new
+								// budget table
+								if(intval($this->db->f('budget')))
+								{
+									$projects[$i]['budget']['0']['0'] = $this->db->f('budget');
+									$projects[$i]['budgetSum'] = $this->db->f('budget');
+									$query = "delete from phpgw_p_budget where project_id='" . $this->db->f('project_id') . "'";
+									$db->query($query,__LINE__, __FILE__);
+									$query = "insert into phpgw_p_budget (project_id,month,year,budget) values ('".
+										$this->db->f('project_id')."',".
+										"'0',".
+										"'0','".
+										$this->db->f('budget')."')";
+									$db->query($query,__LINE__, __FILE__);
+									$query = "update phpgw_p_projects set budget='0' where project_id='".$this->db->f('project_id')."'";
+									$db->query($query,__LINE__, __FILE__);
+								}
+								$projects[$i] = array_merge($projects[$i], 
+									$this->getBudget($this->db->f('project_id')));
+								break;
+							default:
+								$projects[$i][$this->column_array[$k]] = 
+									$this->db->f($this->column_array[$k]);
+								break;
+						}
 					}
 					$i++;
 				}
 				else
 				{
-					$projects[] = array
+					$newProject = array
 					(
-						'project_id'			=> $this->db->f('project_id'),
+						'project_id'		=> $this->db->f('project_id'),
 						'parent'			=> $this->db->f('parent'),
 						'number'			=> $this->db->f('p_number'),
 						'access'			=> $this->db->f('access'),
 						'cat'				=> $this->db->f('category'),
 						'sdate'				=> $this->db->f('start_date'),
 						'edate'				=> $this->db->f('end_date'),
-						'coordinator'			=> $this->db->f('coordinator'),
+						'coordinator'		=> $this->db->f('coordinator'),
 						'customer'			=> $this->db->f('customer'),
 						'status'			=> $this->db->f('status'),
 						'descr'				=> $this->db->f('descr'),
 						'title'				=> $this->db->f('title'),
-						'budget'			=> $this->db->f('budget'),
+						//'budget'			=> $this->db->f('budget'),
 						'e_budget'			=> $this->db->f('e_budget'),
 						'ptime'				=> $this->db->f('time_planned'),
 						'owner'				=> $this->db->f('owner'),
 						'cdate'				=> $this->db->f('date_created'),
 						'processor'			=> $this->db->f('processor'),
 						'udate'				=> $this->db->f('entry_date'),
-						'investment_nr'			=> $this->db->f('investment_nr'),
+						'investment_nr'		=> $this->db->f('investment_nr'),
 						'main'				=> $this->db->f('main'),
 						'level'				=> $this->db->f('level'),
 						'previous'			=> $this->db->f('previous'),
-						'customer_nr'			=> $this->db->f('customer_nr'),
+						'customer_nr'		=> $this->db->f('customer_nr'),
 						'url'				=> $this->db->f('url'),
 						'reference'			=> $this->db->f('reference'),
 						'result'			=> $this->db->f('result'),
 						'test'				=> $this->db->f('test'),
 						'quality'			=> $this->db->f('quality'),
-						'accounting'			=> $this->db->f('accounting'),
+						'accounting'		=> $this->db->f('accounting'),
 						'project_accounting_factor'	=> $this->db->f('acc_factor'),
 						'project_accounting_factor_d'	=> $this->db->f('acc_factor_d'),
 						'billable'			=> $this->db->f('billable'),
@@ -112,12 +141,59 @@
 						'pedate'			=> $this->db->f('pedate'),
 						'priority'			=> $this->db->f('priority'),
 						'discount'			=> $this->db->f('discount'),
-						'discount_type'			=> $this->db->f('discount_type'),
-						'inv_method'			=> $this->db->f('inv_method')
+						'discount_type'		=> $this->db->f('discount_type'),
+						'inv_method'		=> $this->db->f('inv_method')
 					);
+					// some legacy code, to move existing budgets to the new
+					// budget table
+					if(intval($this->db->f('budget')))
+					{
+						$newProject['budget']['0']['0'] = $this->db->f('budget');
+						$newProject['budgetSum'] = $this->db->f('budget');
+						$query = "delete from phpgw_p_budget where project_id='" . $newProject['project_id'] . "'";
+						$db->query($query,__LINE__, __FILE__);
+						$query = "insert into phpgw_p_budget (project_id,month,year,budget) values ('".
+							$newProject['project_id']."',".
+							"'0',".
+							"'0','".
+							$this->db->f('budget')."')";
+						$db->query($query,__LINE__, __FILE__);
+						$query = "update phpgw_p_projects set budget='0' where project_id='". $newProject['project_id'] ."'";
+						$db->query($query,__LINE__, __FILE__);
+					}
+					$newProject = array_merge($newProject, $this->getBudget($newProject['project_id']));
+					$projects[] = $newProject;
 				}
 			}
 			return $projects;
+		}
+		
+		/**
+		* @return array
+		* @param int $_projectID the project_id
+		* @desc Reads the budget data from the database and merges them with
+		* first parameter
+		*/
+		function getBudget($_projectID)
+		{
+			$db = $this->db;
+				
+			$query = "select budget,month,year from phpgw_p_budget where project_id='$_projectID'";
+			
+			$db->query($query, __LINE__, __FILE__);
+			
+			$budget		= array
+			(
+				'budget'	=> array(),
+				'budgetSum'	=> 0
+			);
+			
+			while($db->next_record())
+			{
+				$budget['budget'][$db->f('year')][$db->f('month')] = $db->f('budget');
+				$budget['budgetSum'] += $db->f('budget');
+			}
+			return $budget;
 		}
 		
 		function getProjectResources($_projectID, $_employees)
@@ -317,6 +393,7 @@
 			$this->db->query('SELECT * from phpgw_p_projects WHERE project_id=' . intval($project_id),__LINE__,__FILE__);
 	
 			list($project) = $this->db2projects();
+			$this->getBudget($project);
 			return $project;
 		}
 
@@ -369,6 +446,11 @@
 			return $formatted?$s:$pro;
 		}
 
+		/**
+		* @return unknown
+		* @param unknown $values
+		* @desc adds a new project
+		*/
 		function add_project($values)
 		{
 			$values['descr']			= $this->db->db_addslashes($values['descr']);
@@ -383,7 +465,7 @@
 			$values['url']				= $this->db->db_addslashes($values['url']);
 			$values['reference']		= $this->db->db_addslashes($values['reference']);
 
-			$values['budget']			= $values['budget'] + 0.0;
+			//$values['budget']			= $values['budget'] + 0.0;
 			$values['e_budget']			= $values['e_budget'] + 0.0;
 			$values['discount']			= $values['discount'] + 0.0;
 			$values['project_accounting_factor'] = $values['project_accounting_factor'] + 0.0;
@@ -400,12 +482,12 @@
 			$this->db->lock($table);
 
 			$this->db->query('INSERT into phpgw_p_projects (owner,access,category,entry_date,start_date,end_date,coordinator,customer,status,'
-							. 'descr,title,budget,p_number,parent,time_planned,date_created,processor,investment_nr,main,level,previous,'
+							. 'descr,title,p_number,parent,time_planned,date_created,processor,investment_nr,main,level,previous,'
 							. 'customer_nr,url,reference,result,test,quality,accounting,acc_factor,acc_factor_d,billable,inv_method,psdate,pedate,priority,e_budget,
 							discount,discount_type) VALUES ('
 							. $this->account . ",'" . (isset($values['access'])?$values['access']:'public') . "'," . intval($values['cat']) . ',' . time() . ','
 							. intval($values['sdate']) . ',' . intval($values['edate']) . ',' . intval($values['coordinator']) . ',' . intval($values['customer']) . ",'"
-							. $values['status'] . "','" . $values['descr'] . "','" . $values['title'] . "'," . $values['budget'] . ",'" . $values['number'] . "',"
+							. $values['status'] . "','" . $values['descr'] . "','" . $values['title'] . "','" . $values['number'] . "',"
 							. $values['parent'] . ',' . intval($values['ptime']) . ',' . time() . ',' . $this->account . ",'" . $values['investment_nr']
 							. "'," . intval($values['main']) . ',' . intval($values['level']) . ',' . intval($values['previous']) . ",'"
 							. $values['customer_nr'] . "','" . $values['url'] . "','" . $values['reference'] . "','" . $values['result'] . "','"
@@ -419,6 +501,22 @@
 
 			if ($p_id && ($p_id != 0))
 			{
+				$this->db->query("delete from phpgw_p_budget where project_id='" . $p_id . "'",
+					__LINE__,__FILE__);
+				
+				if(is_array($values['budget']))
+				{
+					//_debug_array($values['budgetBegin']);
+					foreach($values[budget] as $budget)
+					{
+						$this->db->query("insert into phpgw_p_budget (project_id,month,year,budget) values ('".
+									$p_id."','".
+									$budget['month']."','".
+									$budget['year']."','".
+									$budget['text']."')",__LINE__,__FILE__);
+					}
+				}
+				
 				if ($values['parent'] == 0)
 				{
 					$this->db->query('UPDATE phpgw_p_projects SET main=' . $p_id . ' WHERE project_id=' . $p_id,__LINE__,__FILE__);
@@ -510,9 +608,17 @@
 			}
 		}
 
+		/**
+		* @return unknown
+		* @param unknown $values
+		* @desc modifies a already existing project
+		*/
 		function edit_project($values)
 		{
 			$values['project_id'] = intval($values['project_id']);
+			
+			if($values['project_id'] == 0)
+				return false;
 
 			if (is_array($values['book_activities']))
 			{
@@ -538,23 +644,23 @@
 				}
 			}
 
-			$values['descr']		= $this->db->db_addslashes($values['descr']);
-			$values['title']		= $this->db->db_addslashes($values['title']);
-			$values['number']		= $this->db->db_addslashes($values['number']);
+			$values['descr']			= $this->db->db_addslashes($values['descr']);
+			$values['title']			= $this->db->db_addslashes($values['title']);
+			$values['number']			= $this->db->db_addslashes($values['number']);
 			$values['investment_nr']	= $this->db->db_addslashes($values['investment_nr']);
 			$values['customer_nr']		= $this->db->db_addslashes($values['customer_nr']);
-			$values['result']		= $this->db->db_addslashes($values['result']);
-			$values['test']			= $this->db->db_addslashes($values['test']);
-			$values['quality']		= $this->db->db_addslashes($values['quality']);
-			$values['url']			= $this->db->db_addslashes($values['url']);
+			$values['result']			= $this->db->db_addslashes($values['result']);
+			$values['test']				= $this->db->db_addslashes($values['test']);
+			$values['quality']			= $this->db->db_addslashes($values['quality']);
+			$values['url']				= $this->db->db_addslashes($values['url']);
 			$values['reference']		= $this->db->db_addslashes($values['reference']);
 			$values['inv_method']		= $this->db->db_addslashes($values['inv_method']);
-			$values['parent']		= intval($values['parent']);
-			$values['edate']		= intval($values['edate']);
+			$values['parent']			= intval($values['parent']);
+			$values['edate']			= intval($values['edate']);
 
-			$values['budget']		= $values['budget'] + 0.0;
-			$values['e_budget']		= $values['e_budget'] + 0.0;
-			$values['discount']		= $values['discount'] + 0.0;
+			//$values['budget']			= $values['budget'] + 0.0;
+			$values['e_budget']			= $values['e_budget'] + 0.0;
+			$values['discount']			= $values['discount'] + 0.0;
 			$values['project_accounting_factor'] = $values['project_accounting_factor'] + 0.0;
 			$values['project_accounting_factor_d'] = $values['project_accounting_factor_d'] + 0.0;
 
@@ -578,7 +684,7 @@
 			$this->db->query("UPDATE phpgw_p_projects set access='" . (isset($values['access'])?$values['access']:'public') . "', category=" . intval($values['cat']) . ", entry_date="
 							. time() . ", start_date=" . intval($values['sdate']) . ", end_date=" . $values['edate'] . ", coordinator="
 							. intval($values['coordinator']) . ", customer=" . intval($values['customer']) . ", status='" . $values['status'] . "', descr='"
-							. $values['descr'] . "', title='" . $values['title'] . "', budget=" . $values['budget'] . ", p_number='"
+							. $values['descr'] . "', title='" . $values['title'] . "', p_number='"
 							. $values['number'] . "', time_planned=" . intval($values['ptime']) . ', processor=' . $this->account . ", investment_nr='"
 							. $values['investment_nr'] . "', inv_method='" . $values['inv_method'] . "', parent=" . $values['parent'] . ', main=' . intval($values['main'])
 							. ', level=' . intval($values['level']) . ', previous=' . intval($values['previous']) . ", customer_nr='" . $values['customer_nr']
@@ -599,6 +705,23 @@
 				$this->db->query("Update phpgw_p_projects set status='" . $values['status'] . "' WHERE parent=" . $values['project_id'],__LINE__,__FILE__);
 			}
 
+			// update budget
+			$this->db->query("delete from phpgw_p_budget where project_id='" . $values['project_id'] . "'",
+					__LINE__,__FILE__);
+
+			if(is_array($values['budget']))
+			{
+				//_debug_array($values['budgetBegin']);
+				foreach($values[budget] as $budget)
+				{
+					$this->db->query("insert into phpgw_p_budget (project_id,month,year,budget) values ('".
+									$values['project_id']."','".
+									$budget['month']."','".
+									$budget['year']."','".
+									$budget['text']."')",__LINE__,__FILE__);
+				}
+			}
+			
 			$values['old_edate'] = intval($values['old_edate']);
 			if ($values['old_edate'] > 0 && $values['edate'] > 0 && $values['old_edate'] != $values['edate'])
 			{
@@ -682,50 +805,55 @@
 		function return_value($action,$pro_id)
 		{
 			$pro_id = intval($pro_id);
-			if ($action == 'act')
-			{			
-				$this->db->query('SELECT a_number,descr from phpgw_p_activities where id=' . $pro_id,__LINE__,__FILE__);
-				if ($this->db->next_record())
-				{
-					$bla = $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' [' . $GLOBALS['phpgw']->strip_html($this->db->f('a_number')) . ']';
-				}
-			}
-			else
+			switch ($action)
 			{
-				switch ($action)
-				{
-					case 'co':			$column = 'coordinator'; break;		
-					case 'main':		$column = 'main'; break;
-					case 'level':		$column = 'level'; break;
-					case 'parent':		$column = 'parent'; break;
-					case 'pro':			$column = 'p_number,title'; break;
-					case 'edate':		$column = 'end_date'; break;
-					case 'sdate':		$column = 'start_date'; break;
-					case 'phours':
-					case 'ptime':		$column = 'time_planned'; break;
-					case 'invest':		$column = 'investment_nr'; break;
-					case 'budget':		$column = 'budget'; break;
-					case 'e_budget':	$column = 'e_budget'; break;
-					case 'previous':	$column = 'previous'; break;
-					case 'billable':	$column = 'billable'; break;
-				}
-
-				$this->db->query('SELECT ' . $column . ' from phpgw_p_projects where project_id=' . $pro_id,__LINE__,__FILE__);
-				if ($this->db->next_record())
-				{
-					switch($action)
+				case 'act':
+					$this->db->query('SELECT a_number,descr from phpgw_p_activities where id=' . $pro_id,__LINE__,__FILE__);
+					if ($this->db->next_record())
 					{
-						case 'pro':
-							$bla = $GLOBALS['phpgw']->strip_html($this->db->f('title')) . ' ['
-									. $GLOBALS['phpgw']->strip_html($this->db->f('p_number')) . ']';
-							break;
-						case 'phours':
-							$bla = $this->db->f('time_planned')/60;
-							break;
-						default:
-							$bla = $GLOBALS['phpgw']->strip_html($this->db->f($column));
+						$bla = $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' [' . $GLOBALS['phpgw']->strip_html($this->db->f('a_number')) . ']';
 					}
-				}
+					break;
+				case 'budget':
+				case 'budgetSum':
+					$budgetData = $this->getBudget($pro_id);
+					$bla = $budgetData[$action];
+					break;
+				default:
+					switch ($action)
+					{
+						case 'co':			$column = 'coordinator'; break;		
+						case 'main':		$column = 'main'; break;
+						case 'level':		$column = 'level'; break;
+						case 'parent':		$column = 'parent'; break;
+						case 'pro':			$column = 'p_number,title'; break;
+						case 'edate':		$column = 'end_date'; break;
+						case 'sdate':		$column = 'start_date'; break;
+						case 'phours':
+						case 'ptime':		$column = 'time_planned'; break;	
+						case 'invest':		$column = 'investment_nr'; break;
+						//case 'budget':		$column = 'budget'; break;
+						case 'e_budget':	$column = 'e_budget'; break;
+						case 'previous':	$column = 'previous'; break;
+						case 'billable':	$column = 'billable'; break;
+					}
+
+					$this->db->query('SELECT ' . $column . ' from phpgw_p_projects where project_id=' . $pro_id,__LINE__,__FILE__);
+					if ($this->db->next_record())
+					{
+						switch($action)
+						{
+							case 'pro':
+								$bla = $GLOBALS['phpgw']->strip_html($this->db->f('title')) . ' ['
+									. $GLOBALS['phpgw']->strip_html($this->db->f('p_number')) . ']';
+								break;
+							case 'phours':
+								$bla = $this->db->f('time_planned')/60;
+								break;
+							default:
+								$bla = $GLOBALS['phpgw']->strip_html($this->db->f($column));
+						}
+					}
 			}
 			return $bla;
 		}
@@ -1052,7 +1180,7 @@
 			switch($action)
 			{
 				case 'bmain':
-				case 'bparent':	$column = 'budget'; break;
+				case 'bparent':	$column = 'phpgw_p_budget.budget'; break;
 				case 'ebparent': $column = 'e_budget'; break;
 				case 'tmain':
 				case 'tparent':	$column = 'time_planned'; break;
@@ -1060,10 +1188,20 @@
 
 			if($project_id > 0)
 			{
-				$editfilter = ' and project_id !=' . $project_id;
+				$editfilter = ' and phpgw_p_projects.project_id !=' . $project_id;
 			}
 
-			$this->db->query('SELECT SUM(' . $column . ') as sumvalue from phpgw_p_projects where (' . $filter . $editfilter . ')',__LINE__,__FILE__);
+			switch($action)
+			{
+				case 'bparent':
+					$query = 'SELECT SUM(' . $column . ') as sumvalue from phpgw_p_budget,phpgw_p_projects where (' . $filter . $editfilter . ' and phpgw_p_budget.project_id=phpgw_p_projects.project_id)';
+					break;
+				default:
+					$query = 'SELECT SUM(' . $column . ') as sumvalue from phpgw_p_projects where (' . $filter . $editfilter . ')';
+					break;
+			}
+			//print "$query<br>";
+			$this->db->query($query ,__LINE__,__FILE__);
 			if ($this->db->next_record())
 			{
 				return $this->db->f('sumvalue');

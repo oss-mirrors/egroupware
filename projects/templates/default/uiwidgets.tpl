@@ -1,3 +1,166 @@
+<!-- BEGIN dateSelectBoxRW -->
+<script LANGUAGE="JavaScript" TYPE="text/javascript">
+
+	var rowCounter=0;
+
+	function addTableRow(_valueName)
+	{
+		var table	= document.getElementById('dateSelectBox_table');
+		var lastRow	= table.rows.length-1;
+		if(rowCounter == 0)
+		{
+			rowCounter = lastRow;
+		}
+
+		var newRow	= table.insertRow(lastRow);
+		var valueYear	= document.getElementById(_valueName + '_year').value;
+		var valueMonth	= document.getElementById('{dateSelectBox_valueName}_month').value;
+		var valueText	= document.getElementById('{dateSelectBox_valueName}_text').value;
+		
+		var cell1	= newRow.insertCell(0);
+		cell1.setAttribute('align','center');
+		var textNode	= document.createTextNode(valueYear);
+		cell1.appendChild(textNode);
+		
+		var el		= document.createElement('input');
+		el.setAttribute('type', 'hidden');
+		el.setAttribute('name', _valueName + '[' + rowCounter + '][year]');
+		el.setAttribute('value', valueYear);
+		cell1.appendChild(el);
+
+		var cell2	= newRow.insertCell(1);
+		cell2.setAttribute('align','center');
+		var textNode	= document.createTextNode(valueMonth);
+		cell2.appendChild(textNode);
+		
+		var el		= document.createElement('input');
+		el.setAttribute('type', 'hidden');
+		el.setAttribute('name', _valueName + '[' + rowCounter + '][month]');
+		el.setAttribute('value', valueMonth);
+		cell2.appendChild(el);
+		
+		var cell3	= newRow.insertCell(2);
+		var el		= document.createElement('input');
+		el.setAttribute('type', 'text');
+		el.setAttribute('name', _valueName + '[' + rowCounter + '][text]');
+		el.setAttribute('value', valueText);
+		el.setAttribute('size', 15);
+		cell3.appendChild(el);
+
+		var cell4	= newRow.insertCell(3);
+		var el		= document.createElement('a');
+		el.setAttribute('href', 'javascript:deleteTableRow(' + lastRow + ');');
+		
+		var linkText=document.createTextNode('{lang_delete}');
+		el.appendChild(linkText);
+		
+		cell4.appendChild(el);
+		
+		rowCounter++;
+		
+		// clear the input field
+		document.getElementById('{dateSelectBox_valueName}_text').value = '';
+	}
+	
+	function deleteTableRow(_rowID)
+	{
+		var table	= document.getElementById('dateSelectBox_table');
+
+		table.deleteRow(_rowID)
+
+		for(var i=1; i < table.rows.length-1; i++)
+		{
+			var el		= document.createElement('a');
+			el.setAttribute('href', 'javascript:deleteTableRow(' + i + ');');
+			
+			var linkText=document.createTextNode('{lang_delete}');
+			el.appendChild(linkText);
+			table.rows[i].cells[3].replaceChild(el,table.rows[i].cells[3].firstChild);
+		}
+	}
+
+</script>
+	<table id="dateSelectBox_table" border="0" cellspacing="0" cellpading="0" width="{dateSelectBox_boxWidth}">
+		<tr class="th">
+			<td align="center">
+				{lang_year}
+			</td>
+			<td align="center">
+				{lang_month}
+			</td>
+			<td align="center">
+				{dateSelectBox_description}
+			</td>
+			<td>
+				&nbsp;
+			</td>
+		</tr>
+		{dateSelectBox_tableRows}
+		<tr>
+			<td align="center">
+				{dateSelectBox_year}
+			</td>
+			<td align="center">
+				{dateSelectBox_month}
+			</td>
+			<td>
+				<input id="{dateSelectBox_valueName}_text" size="15" type="text">
+			</td>
+			<td>
+				<a href="javascript:addTableRow('{dateSelectBox_valueName}');">{lang_add}</a>
+			</td>
+		</tr>
+	</table>
+<!-- END dateSelectBoxRW -->
+
+<!-- BEGIN dateSelectBoxTableRowRW -->
+	<tr>
+		<td align="center">
+			{dateSelectBoxTableRow_year}<INPUT type="hidden" value="{dateSelectBoxTableRow_valueYear}" name="{dateSelectBoxTableRow_nameYear}">
+		</td>
+		<td align="center">
+			{dateSelectBoxTableRow_month}<INPUT type="hidden" value="{dateSelectBoxTableRow_valueMonth}" name="{dateSelectBoxTableRow_nameMonth}">
+		</td>
+		<td>
+			<INPUT type="text" size="15" value="{dateSelectBoxTableRow_valueText}" name="{dateSelectBoxTableRow_nameText}">
+		</td>
+		<td>
+			<a href="javascript:deleteTableRow('{dateSelectBoxTableRow_counter}');">{lang_delete}</a>
+		</td>
+	</tr>
+<!-- END dateSelectBoxTableRowRW -->
+
+<!-- BEGIN dateSelectBoxRO -->
+	<table id="dateSelectBox_table" border="0" cellspacing="0" cellpading="0" width="{dateSelectBox_boxWidth}">
+		<tr class="th">
+			<td align="center">
+				{lang_year}
+			</td>
+			<td align="center">
+				{lang_month}
+			</td>
+			<td align="center">
+				{dateSelectBox_description}
+			</td>
+		</tr>
+		{dateSelectBox_tableRows}
+	</table>
+<!-- END dateSelectBoxRO -->
+
+<!-- BEGIN dateSelectBoxTableRowRO -->
+	<tr>
+		<td align="center">
+			{dateSelectBoxTableRow_year}
+		</td>
+		<td align="center">
+			{dateSelectBoxTableRow_month}
+		</td>
+		<td align="right">
+			{dateSelectBoxTableRow_valueText}
+		</td>
+	</tr>
+<!-- END dateSelectBoxTableRowRO -->
+
 <!-- BEGIN multiSelectBox -->
 <script LANGUAGE="JavaScript" TYPE="text/javascript">
 

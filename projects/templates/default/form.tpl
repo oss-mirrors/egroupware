@@ -20,27 +20,13 @@
 	{
 		Window3=window.open('{e_accounts_link}',"Search","width=800,height=600,toolbar=no,scrollbars=yes,resizable=yes");
 	}
-</script>
-
-<script language="JavaScript">
-	var oldNumberInputValue;
-
-	function changeProjectIDInput($_selectBox)
+	
+	function editMilestone(_url)
 	{
-		$numberInput = eval(document.getElementById("id_number"));
-		if($_selectBox.checked == true)
-		{
-			$numberInput.disabled = true;
-			$oldNumberInputValue = $numberInput.value;
-			$numberInput.value = '';
-		}
-		else
-		{
-			$numberInput.disabled = false;
-			$numberInput.value = $oldNumberInputValue;
-		}
+		window.open(_url,"EditMilestone","width=600,height=220,toolbar=no,scrollbars=yes,resizable=yes");
 	}
 </script>
+
 {app_header}
 
 <center>
@@ -52,6 +38,8 @@
 		<th width="33%" id="tab3" class="activetab" onclick="javascript:tab.display(3);"><a href="#" tabindex="0" accesskey="3" onfocus="tab.display(3);" onclick="tab.display(3); return(false);" style="font-size:10px;">{lang_files}</a></th>
 	</tr>
 </table>
+{message_main}
+{message_milestone}
 <br>
 <div id="tabcontent1" class="inactivetab" bgcolor="white">
 <form method="POST" name="app_form" action="{action_url}">
@@ -209,30 +197,30 @@
 		<td align="right" valign="top">{edit_roles_events_button}</td>
 	</tr>
 
-<!--begin rolefield1
+<!-- BEGIN rolefield1 -->
 
 	<tr bgcolor="{row_off}">
 		<td valign="top">{lang_roles}:</td>
 		<td colspan="2">
 			<table width="100%" border="0" cellspacing="2" cellpadding="2">
 
-end rolefield1
-begin rolelist
+<!-- END rolefield1 -->
+
+<!-- BEGIN rolelist -->
 
 				<tr>
 					<td width="50%">{emp_name}</td>
 					<td width="50%">{role_name}</td>
 				</tr>
+<!-- END rolelist -->
 
-end rolelist
-
-begin rolefield2
+<!-- BEGIN rolefield2 -->
 				</table>
 		</td>
 		<td valign="top" align="right"><input type="submit" name="roles" value="{lang_edit_roles}"></td>
 	</tr>
 
-end rolefield2-->
+<!-- END rolefield2 -->
 
 	<tr height="15">
 		<td>&nbsp;</td>
@@ -244,7 +232,7 @@ end rolefield2-->
 	</tr>
 	<tr bgcolor="{row_off}">
 		<td>{lang_budget}:&nbsp;{currency}</td>
-		<td><input type="text" name="values[budget]" value="{budget}">&nbsp;[{currency}.c]</td>
+		<td><!--<input type="text" name="values[budget]" value="{budget}">&nbsp;[{currency}.c]<br>-->{budget_select}</td>
 		<td>{lang_extra_budget}:&nbsp;{currency}</td>
 		<td><input type="text" name="values[e_budget]" value="{e_budget}">&nbsp;[{currency}.c]</td>
 	</tr>
@@ -266,7 +254,7 @@ end rolefield2-->
 
 	<tr bgcolor="{row_on}">
 		<td valign="top">{lang_accounting}:</td>
-		<td valign="top"><select name="values[accounting]">
+		<td valign="top"><select id="acc_factor" name="values[accounting]" onchange="updateAccountingForm(this)">
 				<option value="">{lang_select_factor}</option>
 				<option value="employee" {acc_employee_selected}>{lang_factor_employee}</option>
 				<option value="project" {acc_project_selected}>{lang_factor_project}</option>
@@ -276,12 +264,12 @@ end rolefield2-->
 		<td>
 			<table border="0" cellspacing="0" cellpadding="1">
 				<tr>
-					<td><input type="radio" name="values[radio_acc_factor]" value="hour" {acc_factor_hour}>{lang_per_hour}</td>
-					<td><input type="text" name="values[project_accounting_factor]" value="{project_accounting_factor}"></td>
+					<td><input type="radio" id="radio_acc_factor_hour" name="values[radio_acc_factor]" value="hour" {acc_factor_hour}>{lang_per_hour}</td>
+					<td><input type="text" id="input_acc_factor_hour" name="values[project_accounting_factor]" value="{project_accounting_factor}"></td>
 				</tr>
 				<tr>
-					<td><input type="radio" name="values[radio_acc_factor]" value="day" {acc_factor_day}>{lang_per_day}</td>
-					<td><input type="text" name="values[project_accounting_factor_d]" value="{project_accounting_factor_d}"></td>
+					<td><input type="radio" id="radio_acc_factor_day" name="values[radio_acc_factor]" value="day" {acc_factor_day}>{lang_per_day}</td>
+					<td><input type="text" id="input_acc_factor_day" name="values[project_accounting_factor_d]" value="{project_accounting_factor_d}"></td>
 				</tr>
 			</table>
 		</td>
@@ -353,10 +341,10 @@ end rolefield2-->
 		</td>
 		<td valign="top" align="right"><input type="submit" name="mstone" value="{lang_add_mstone}"></td>
 	</tr>
-end msfield2 -->
+end msfield2
 	<tr>
 		<td align="right" colspan="4">{edit_mstones_button}</td>
-	</tr>
+	</tr> -->
 	<tr valign="bottom" height="50" width="100%">
 		<td width="25%"><input type="hidden" name="values[old_status]" value="{old_status}">
 			<input type="hidden" name="values[old_parent]" value="{old_parent}">
@@ -371,6 +359,80 @@ end msfield2 -->
 </form>
 </div>
 <div id="tabcontent2" class="inactivetab" bgcolor="white">
+<!-- BEGIN project_data -->
+
+<table border="0" width="100%" cellpadding="2" cellspacing="0">
+	<tr bgcolor="{th_bg}">
+		<td colspan="4"><b>{lang_project}:&nbsp;<a href="{pro_url}">{title_pro}</a></b></td>
+	</tr>
+	<tr bgcolor="{row_off}">
+		<td>{lang_number}:</td>
+		<td>{number_pro}</td>
+		<td>{lang_url}:</td>
+		<td><a href="http://{url_pro}" taget="_blank">{url_pro}</a></td>
+	</tr>
+	<tr bgcolor="{row_off}">
+		<td>{lang_coordinator}:</td>
+		<td>{coordinator_pro}</td>
+		<td>{lang_customer}:</td>
+		<td>{customer_pro}</td>
+	</tr>
+	<tr height="5">
+		<td></td>
+	</tr>
+</table>
+<!-- END project_data -->
+
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+	<TR>
+		<TD align="right" colspan="3">
+			&nbsp;
+		</TD>
+	</TR>
+	<TR>
+		<TD align="right" colspan="3">
+			<A href="javascript:editMilestone('{add_url}');">{lang_add_milestone}</A>
+		</TD>
+	</TR>
+
+	<tr bgcolor="{th_bg}">
+		<td width="79%">{lang_title}</td>
+		<td width="19%" align="center">{lang_date_due}</td>
+		<td>&nbsp;</td>
+	</tr>
+
+<!-- BEGIN mstone_list -->
+
+	<tr bgcolor="{tr_color}">
+		<td><a href="javascript:editMilestone('{edit_url}');">{title}</a></td>
+		<td align="center">{datedue}</td>
+		<td align="center"><a href="{delete_url}">{delete_img}</a></td>
+	</tr>
+
+<!-- END mstone_list -->
+</table>
+<!-- <form method="POST" action="{action_url}">
+<table border="0" cellspacing="0" cellpadding="2">
+	<tr height="50" valign="bottom">
+		<td><input type="text" name="values[title]" size="50" value="{title}"></td>
+		<td>{end_date_select}</td>
+		<td>
+			<input type="hidden" name="values[old_edate]" value="{old_edate}">
+			<input type="hidden" name="s_id" value="{s_id}">
+			<input type="submit" name="save" value="{lang_save_mstone}">
+		</td>
+		<td><input type="checkbox" name="values[new]" value="True" {new_checked}>{lang_new}</td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<textarea name="values[description]" cols="50" rows="5">{description}</textarea>
+		</td>
+	</tr>
+	<tr valign="bottom" height="50">
+		<td align="right" colspan="4"><input type="submit" name="done" value="{lang_done}"></td>
+	</tr>
+</table>
+</form> -->
 </div>
 <div id="tabcontent3" class="inactivetab" bgcolor="white">
 <form method="POST" name="form_manage_files" action="{action_url_files}">
@@ -405,6 +467,9 @@ end msfield2 -->
 	</td>
 	</tr>
 </table>
+<script language="JavaScript">
+	updateAccountingForm(document.getElementById("acc_factor"));
+</SCRIPT>
 </form>
 </div>
 </center>

@@ -185,25 +185,6 @@
 		<td>&nbsp;</td>
 	</tr>
 
-	<tr bgcolor="{row_on}">
-		<td valign="top">{lang_milestones}:</td>
-		<td colspan="2">
-			<table width="100%" border="0" cellspacing="2" cellpadding="2">
-
-<!-- BEGIN mslist -->
-
-				<tr>
-					<td width="50%">{s_title}</td>
-					<td width="50%">{s_edateout}</td>
-				</tr>
-
-<!-- END mslist -->
-
-			</table>
-		</td>
-		<td align="right" valign="top">{edit_milestones_button}</td>
-	</tr>
-
 <!-- BEGIN done -->
          
 	<tr height="50" valign="bottom">
@@ -211,10 +192,21 @@
 		<td align="right"><input type="submit" name="back" value="{lang_back}"></td>
 		<td align="right"><input type="submit" name="done" value="{lang_done}"></td>
 	</tr>
-</form>
+
 </table>
 </div>
 <div id="tabcontent2" class="inactivetab" bgcolor="white">
+{milestones_table}
+<table width="100%" border="0" cellspacing="2" cellpadding="2">
+	<tr height="15">
+		<td>&nbsp;</td>
+	</tr>
+	<tr height="50" valign="bottom">
+		<td colspan="2">{edit_button}</td>
+		<td align="right"><input type="submit" name="back" value="{lang_back}"></td>
+		<td align="right"><input type="submit" name="done" value="{lang_done}"></td>
+	</tr>
+</table>
 </div>
 <div id="tabcontent3" class="inactivetab" bgcolor="white">
 {files_table}

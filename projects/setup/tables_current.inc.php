@@ -260,6 +260,19 @@
 			'fk' => array('project_id','employee'),
 			'ix' => array('project_id','employee'),
 			'uc' => array()
+		),
+		'phpgw_p_budget' => array(
+			'fd' => array(
+				'budget_id' => array('type' => 'auto','nullable' => False),
+				'project_id'	=> array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'budget' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False),
+				'year'	=> array('type' => 'int','precision' => 4,'default' => 0,'nullable' => True),
+				'month'	=> array('type' => 'int','precision' => 4,'default' => 0,'nullable' => True)
+			),
+			'pk' => array('budget_id'),
+			'fk' => array(),
+			'ix' => array('project_id','year','month'),
+			'uc' => array()
 		)
 	);
 ?>

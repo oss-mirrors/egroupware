@@ -42,6 +42,8 @@
 		var $public_functions = array
 		(
 			'edit_resources'	=> True,
+			'editMilestone'		=> True,
+			'editMilestone'		=> True,
 			'export_project'	=> True,
 			'handle_fileupload'	=> True,
 			'list_projects'		=> True,
@@ -182,7 +184,8 @@
 			}
 			elseif($_POST['addfile'])
 			{
-				$bolink->link('projects',$project_id,$bolink->vfs_appname,$_FILES['attachfile']);
+				if($_FILES['attachfile']['error'] == 0)
+					$bolink->link('projects',$project_id,$bolink->vfs_appname,$_FILES['attachfile']);
 			}
 			
 			$this->edit_project();
@@ -362,6 +365,7 @@
 			$GLOBALS['phpgw']->js->set_onload('javascript:initAll();');
 
 			$GLOBALS['phpgw']->common->phpgw_header();
+			#if(get_var('menuaction',array('POST','GET')) != 'projects.uiprojects.editMilestone')
 			echo parse_navbar();
 			$this->set_app_langs();
 		}
@@ -901,12 +905,87 @@
 		{
 			$GLOBALS['phpgw']->accounts->accounts_popup('e_projects');
 		}
+		
+		function editMilestone()
+		{
+
+			if ($_GET['deleteMS'])
+			{
+				$this->boprojects->delete_item(array('id' => intval($_GET['s_id'])));
+				$message = lang('milestone has been deleted');
+				$this->edit_project();
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+			
+			$GLOBALS['phpgw']->common->phpgw_header();
+			$this->set_app_langs();
+			
+			if (!is_object($this->jscal))
+			{
+				$this->jscal = CreateObject('phpgwapi.jscalendar');
+			}
+
+			// called as link
+			$msID 		= intval(get_var('s_id',array('GET')));
+			$projectID	= intval(get_var('project_id',array('GET')));
+
+			if(!$projectID) return false;
+
+			if(get_var('save',array('POST')))
+			{
+				$msID			= intval(get_var('milestoneID',array('GET')));
+				$values 		= get_var('values',array('POST'));
+				$edate 			= $this->jscal->input2date($values['edate']);
+				$values['edate']	= $edate['raw'];
+				$values['s_id']		= $msID;
+				$values['old_edate']	= get_var('old_edate',array('POST'));
+				$values['project_id']	= $projectID;
+				$values['title']	= $values['title'];
+				$values['description']	= $values['description'];
+
+				$this->boprojects->save_mstone($values);
+				
+				$refreshURL = urldecode(get_var('refresh_url',array('GET')));
+#				print $refreshURL;
+				print "<script type=\"text/javascript\">
+				opener.location.href = '".$refreshURL."';
+				window.close();
+				</script>";
+			}
+			
+			$linkData = array
+			(
+				'menuaction'	=> 'projects.uiprojects.editMilestone',
+				'project_id'	=> $projectID,
+				'refresh_url'	=> urlencode($_SERVER["HTTP_REFERER"])
+			);			
+			if($msID > 0)
+			{
+				$msData = $this->boprojects->get_single_mstone($msID);
+				$linkData['milestoneID'] = $msID;			
+			}
+			
+			//_debug_array($msData);
+
+			$GLOBALS['phpgw']->template->set_file(array('milestoneForm' => 'editMilestones.tpl'));
+			$GLOBALS['phpgw']->template->set_block('milestoneForm','main');
+			
+			$GLOBALS['phpgw']->template->set_var('title',$msData['title']);
+			$GLOBALS['phpgw']->template->set_var('description',$msData['description']);
+			
+			$GLOBALS['phpgw']->template->set_var('actionURL',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			
+			$GLOBALS['phpgw']->template->set_var('end_date_select',$this->jscal->input('values[edate]',$msData['edate']?$msData['edate']:time()));
+			$GLOBALS['phpgw']->template->set_var('old_edate',$msData['edate']);
+			
+			$GLOBALS['phpgw']->template->pfp('out','main');
+		}
 
 		function edit_project()
 		{
 			if (!is_object($this->jscal))
 			{
-				$tihs->jscal = CreateObject('phpgwapi.jscalendar');
+				$this->jscal = CreateObject('phpgwapi.jscalendar');
 			}
 
 			$action			= get_var('action',array('GET','POST'));
@@ -922,8 +1001,8 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uiprojects.list_projects',
-				'pro_main'	=> $pro_main,
-				'action'	=> $action,
+				'pro_main'		=> $pro_main,
+				'action'		=> $action,
 				'project_id'	=> $project_id,
 				'pro_parent'	=> $pro_parent
 			);
@@ -936,21 +1015,21 @@
 				$values['employees']	= $_POST['employees'];
 
 				$values['project_id']	= $project_id;
-				$values['customer']		= $_POST['abid'];
+				$values['customer']	= $_POST['abid'];
 
 				$values['book_activities'] = $book_activities;
 				$values['bill_activities'] = $bill_activities;
 
 				$startdate = $this->jscal->input2date($values['startdate']);
-				$values['sdate'] = $startdate['raw'];
-				$values['sday'] = $startdate['day'];
-				$values['smonth'] = $startdate['month'];
-				$values['syear'] = $startdate['year'];
+				$values['sdate']	= $startdate['raw'];
+				$values['sday']		= $startdate['day'];
+				$values['smonth']	= $startdate['month'];
+				$values['syear']	= $startdate['year'];
 
 				$error = $this->boprojects->check_values($action, $values);
 				if (is_array($error))
 				{
-					$GLOBALS['phpgw']->template->set_var('message',$GLOBALS['phpgw']->common->error_list($error));
+					$GLOBALS['phpgw']->template->set_var('message_main',$GLOBALS['phpgw']->common->error_list($error));
 				}
 				else
 				{
@@ -1015,14 +1094,18 @@
 
 			/*$GLOBALS['phpgw']->template->set_block('edit_form','msfield1','msfield1handle');
 			$GLOBALS['phpgw']->template->set_block('edit_form','msfield2','msfield2handle');
-			$GLOBALS['phpgw']->template->set_block('edit_form','mslist','mslisthandle');
+			$GLOBALS['phpgw']->template->set_block('edit_form','mslist','mslisthandle');*/
 
 			$GLOBALS['phpgw']->template->set_block('edit_form','rolefield1','rolefield1handle');
 			$GLOBALS['phpgw']->template->set_block('edit_form','rolefield2','rolefield2handle');
-			$GLOBALS['phpgw']->template->set_block('edit_form','rolelist','rolelisthandle');*/
+			$GLOBALS['phpgw']->template->set_block('edit_form','rolelist','rolelisthandle');
 
 			$GLOBALS['phpgw']->template->set_block('edit_form','accounting_act','accounting_acthandle');
 			$GLOBALS['phpgw']->template->set_block('edit_form','accounting_own','accounting_ownhandle');
+
+			//milestones
+			$GLOBALS['phpgw']->template->set_block('edit_form','mstone_list','list');
+			$GLOBALS['phpgw']->template->set_block('edit_form','project_data','pro');
 
 			$nopref = $this->boprojects->check_prefs();
 			if (is_array($nopref))
@@ -1065,6 +1148,7 @@
 			if ($project_id)
 			{
 				$values = $this->boprojects->read_single_project($project_id);
+//				_debug_array($values);
 				$GLOBALS['phpgw']->template->set_var('old_status',$values['status']);
 				$GLOBALS['phpgw']->template->set_var('old_parent',$values['parent']);
 				$GLOBALS['phpgw']->template->set_var('old_edate',$values['edate']);
@@ -1106,7 +1190,7 @@
 				}
 				$GLOBALS['phpgw']->template->set_var('lang_edit_mstones',lang('edit milestones'));
 				$GLOBALS['phpgw']->template->fp('msfield2handle','msfield2',True);
-
+*/
 //-- roles --
 
 				$GLOBALS['phpgw']->template->fp('rolefield1handle','rolefield1',True);
@@ -1123,7 +1207,7 @@
 					$GLOBALS['phpgw']->template->fp('rolelisthandle','rolelist',True);
 				}
 				$GLOBALS['phpgw']->template->set_var('lang_edit_roles',lang('edit roles'));
-				$GLOBALS['phpgw']->template->fp('rolefield2handle','rolefield2',True);*/
+				$GLOBALS['phpgw']->template->fp('rolefield2handle','rolefield2',True);
 
 				$GLOBALS['phpgw']->template->set_var('edit_mstones_button','<input type="submit" name="mstone" value="' . lang('edit milestones') . '">');
 				$GLOBALS['phpgw']->template->set_var('edit_roles_events_button','<input type="submit" name="roles" value="' . lang('edit roles and events') . '">');
@@ -1220,6 +1304,7 @@
 			$GLOBALS['phpgw']->template->set_var('pend_date_select',$this->jscal->input('values[penddate]',$values['pedate']?$values['pedate']:''));
 
 //ndee 130504 new date selectors
+			$uiwidgets	= CreateObject('projects.uiwidgets');
 
 			if ($action == 'mains')
 			{
@@ -1229,6 +1314,7 @@
 				$GLOBALS['phpgw']->template->set_var('cat',$cat);
 				$GLOBALS['phpgw']->template->set_var('lang_number',lang('Project ID'));
 				$GLOBALS['phpgw']->template->set_var('lang_choose',($project_id?'':lang('generate project id')));
+				$GLOBALS['phpgw']->template->set_var('budget_select',$uiwidgets->dateSelectBox($values['budget'],'values[budget]','['.$prefs['currency'].'.c]'));
 
 				//$GLOBALS['phpgw']->template->set_var('pcosts','<input type="text" name="values[pcosts]" value="' . $values['pcosts'] . '"> [' . $prefs['currency'] . $prefs['currency'] . '.cc]');
 			}
@@ -1244,7 +1330,7 @@
 				$GLOBALS['phpgw']->template->set_var('ptime_jobs',sprintf("%01.2f",$main['ptime_jobs']));
 				$GLOBALS['phpgw']->template->set_var('atime',sprintf("%01.2f",$main['atime']));
 				$GLOBALS['phpgw']->template->set_var('lang_budget_main',lang('budget main project') . ':&nbsp;' . $prefs['currency']);
-				$GLOBALS['phpgw']->template->set_var('budget_main',$main['budget']);
+				$GLOBALS['phpgw']->template->set_var('budget_main',$main['budgetSum']);
 				$GLOBALS['phpgw']->template->set_var('pbudget_jobs',sprintf("%01.2f",$main['pbudget_jobs']));
 				$GLOBALS['phpgw']->template->set_var('apbudget',sprintf("%01.2f",$main['ap_budget_jobs']));
 
@@ -1252,25 +1338,26 @@
 
 				$values['coordinator']		= isset($values['coordinator'])?$values['coordinator']:$parent['coordinator'];
 				$values['coordinatorout']	= isset($values['coordinatorout'])?$values['coordinatorout']:$parent['coordinatorout'];
-				$values['parent']			= isset($values['parent'])?$values['parent']:$parent['project_id'];
-				$values['customer']			= isset($values['customer'])?$values['customer']:$parent['customer'];
-				$values['number']			= isset($values['number'])?$values['number']:$parent['number'];
+				$values['parent']		= isset($values['parent'])?$values['parent']:$parent['project_id'];
+				$values['customer']		= isset($values['customer'])?$values['customer']:$parent['customer'];
+				$values['number']		= isset($values['number'])?$values['number']:$parent['number'];
 				$values['investment_nr']	= isset($values['investment_nr'])?$values['investment_nr']:$parent['investment_nr'];
 				$values['customer_nr']		= isset($values['customer_nr'])?$values['customer_nr']:$parent['customer_nr'];
-				$values['url']				= isset($values['url'])?$values['url']:$parent['url'];
+				$values['url']			= isset($values['url'])?$values['url']:$parent['url'];
 				$values['reference']		= isset($values['reference'])?$values['reference']:$parent['reference'];
 
-				$values['budget']			= isset($values['budget'])?$values['budget']:sprintf("%01.2f",$parent['ap_budget_jobs']);
-				$values['ptime']			= isset($values['ptime'])?$values['ptime']:sprintf("%01.2f",$parent['atime']);
+				$values['budget']		= isset($values['budget'])?$values['budget']:sprintf("%01.2f",$parent['ap_budget_jobs']);
+				$GLOBALS['phpgw']->template->set_var('budget_select',$uiwidgets->dateSelectBox($values['budget'],'values[budget]','['.$prefs['currency'].'.c]'));
+				$values['ptime']		= isset($values['ptime'])?$values['ptime']:sprintf("%01.2f",$parent['atime']);
 
-				$values['e_budget']			= isset($values['e_budget'])?$values['e_budget']:$parent['e_budget'];
-				$values['access']			= isset($values['access'])?$values['access']:$parent['access'];
-				$values['priority']			= isset($values['priority'])?$values['priority']:$parent['priority'];
-				$values['accounting']					= isset($values['accounting'])?$values['accounting']:$parent['accounting'];
+				$values['e_budget']		= isset($values['e_budget'])?$values['e_budget']:$parent['e_budget'];
+				$values['access']		= isset($values['access'])?$values['access']:$parent['access'];
+				$values['priority']		= isset($values['priority'])?$values['priority']:$parent['priority'];
+				$values['accounting']		= isset($values['accounting'])?$values['accounting']:$parent['accounting'];
 				$values['project_accounting_factor']	= isset($values['project_accounting_factor'])?$values['project_accounting_factor']:$parent['project_accounting_factor'];
 				$values['project_accounting_factor_d']	= isset($values['project_accounting_factor_d'])?$values['project_accounting_factor_d']:$parent['project_accounting_factor_d'];
-				$values['billable']						= isset($values['billable'])?$values['billable']:$parent['billable'];
-				$values['inv_method']					= isset($values['inv_method'])?$values['inv_method']:$parent['inv_method'];
+				$values['billable']		= isset($values['billable'])?$values['billable']:$parent['billable'];
+				$values['inv_method']		= isset($values['inv_method'])?$values['inv_method']:$parent['inv_method'];
 
 				$GLOBALS['phpgw']->template->set_var('parent_select','<select name="values[parent]">' . $this->boprojects->select_project_list(array('action' => 'mainandsubs',
 																																				'status' => $values['status'],
@@ -1435,6 +1522,89 @@
 				$GLOBALS['phpgw']->template->set_var('delete_button','<input type="submit" name="delete" value="' . lang('Delete') .'">');
 			}
 
+
+// the milestones part
+			$pro = $this->boprojects->read_single_project($project_id);
+			$GLOBALS['phpgw']->template->set_var('title_pro',$pro['title']);
+			$GLOBALS['phpgw']->template->set_var('pro_url',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.view_project&action='
+														. ($pro['level']==0?'mains':'subs') . '&project_id=' . $project_id));
+			$GLOBALS['phpgw']->template->set_var('coordinator_pro',$pro['coordinatorout']);
+			$GLOBALS['phpgw']->template->set_var('number_pro',$pro['number']);
+			$GLOBALS['phpgw']->template->set_var('customer_pro',$pro['customerout']);
+			$GLOBALS['phpgw']->template->set_var('url_pro',$pro['url']);
+			$GLOBALS['phpgw']->template->parse('pro','project_data',True);
+
+			$GLOBALS['phpgw']->template->set_var('message',$message);
+			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
+
+			$mstones = $this->boprojects->get_mstones($project_id);
+
+			$link_data['menuaction'] = 'projects.uiprojects.editMilestone';
+			$GLOBALS['phpgw']->template->set_var('add_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
+
+			for($i=0;$i<count($mstones);$i++)
+			{
+				$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
+
+				$link_data['s_id']			= $mstones[$i]['s_id'];
+				$link_data['edit']			= True;
+				
+				if($mstones[$i]['description'])
+				{
+					$msTitle = '<b>'.$mstones[$i]['title'].'</b><br>'.$mstones[$i]['description'];
+				}
+				else
+				{
+					$msTitle = '<b>'.$mstones[$i]['title'].'</b>';
+				}
+				$GLOBALS['phpgw']->template->set_var(array
+				(
+					'datedue'	=> $this->boprojects->formatted_edate($mstones[$i]['edate']),
+					'edit_url'	=> $GLOBALS['phpgw']->link('/index.php',$link_data),
+					'title'		=> $msTitle
+				));
+				unset($link_data['edit']);
+
+				if ($this->boprojects->edit_perms(array('action' => $action,'project_id' => $project_id,'mstone' => True,'type' => 'delete')))
+				{
+					$link_data['menuaction']	= 'projects.uiprojects.editMilestone';
+					$link_data['deleteMS']		= True;
+
+					$GLOBALS['phpgw']->template->set_var('delete_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
+					$GLOBALS['phpgw']->template->set_var('delete_img','<img src="' . $GLOBALS['phpgw']->common->image('phpgwapi','delete')
+																		. '" border="0" title="' . lang('delete') . '">');
+					unset($link_data['deleteMS']);
+				}
+				$GLOBALS['phpgw']->template->parse('list','mstone_list',True);
+			}
+
+			$GLOBALS['phpgw']->template->set_var('old_edate',$values['edate']);
+			$GLOBALS['phpgw']->template->set_var('s_id',$values['s_id']);
+			$GLOBALS['phpgw']->template->set_var('lang_new',lang('new milestone'));
+			$GLOBALS['phpgw']->template->set_var('lang_save_mstone',lang('save milestone'));
+			$GLOBALS['phpgw']->template->set_var('new_checked',$values['new']?' checked':'');
+			$GLOBALS['phpgw']->template->set_var('title',$GLOBALS['phpgw']->strip_html($values['title']));
+			$GLOBALS['phpgw']->template->set_var('description',$GLOBALS['phpgw']->strip_html($values['description']));
+
+			if (!$values['edate'])
+			{
+				$values['emonth']	= $values['emonth']?$values['emonth']:date('m',time());
+				$values['eday']		= $values['eday']?$values['eday']:date('d',time());
+				$values['eyear']	= $values['eyear']?$values['eyear']:date('Y',time());
+			}
+			else
+			{
+				$values['eday'] = date('d',$values['edate']);
+				$values['emonth'] = date('m',$values['edate']);
+				$values['eyear'] = date('Y',$values['edate']);
+			}
+
+			$GLOBALS['phpgw']->template->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$values['eyear']),
+				$this->sbox->getMonthText('values[emonth]',$values['emonth']),
+				$this->sbox->getDays('values[eday]',$values['eday'])));
+
+			unset($uiwidgets);
+
 			// the file manager part
 			$uiwidgets	= CreateObject('projects.uiwidgets');
 			$bolink		= CreateObject('infolog.bolink');
@@ -1558,7 +1728,7 @@
 
 			$GLOBALS['phpgw']->template->set_block('view','nonanonym','nonanonymhandle');
 
-			$GLOBALS['phpgw']->template->set_block('view','mslist','mslisthandle');
+#			$GLOBALS['phpgw']->template->set_block('view','mslist','mslisthandle');
 			$GLOBALS['phpgw']->template->set_block('view','emplist','emplisthandle');
 
 			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
@@ -1611,8 +1781,8 @@
 			$GLOBALS['phpgw']->template->set_var('descr',($values['descr']?$values['descr']:'&nbsp;'));
 			$GLOBALS['phpgw']->template->set_var('status',lang($values['status']));
 			$GLOBALS['phpgw']->template->set_var('access',lang($values['access']));
-
-			$GLOBALS['phpgw']->template->set_var('budget',$values['budget']);
+			$uiwidgets	= CreateObject('projects.uiwidgets');
+			$GLOBALS['phpgw']->template->set_var('budget',$uiwidgets->dateSelectBox($values['budget'],'values[budget]','['.$prefs['currency'].'.c]',true));
 			$GLOBALS['phpgw']->template->set_var('ebudget',$values['e_budget']);
 
 			$GLOBALS['phpgw']->template->set_var('discount',$values['discount']);
@@ -1660,17 +1830,17 @@
 
 // --------- milestones ------------------------------
 
-			$mstones = $this->boprojects->get_mstones($project_id);
-			//$link_data['menuaction'] = 'projects.uiprojects.edit_mstone';
-
-			while (is_array($mstones) && list(,$ms) = each($mstones))
-			{
-				//$link_data['s_id'] = $ms['s_id'];
-				$GLOBALS['phpgw']->template->set_var('s_title',$ms['title']);
-				//$GLOBALS['phpgw']->template->set_var('mstone_edit_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
-				$GLOBALS['phpgw']->template->set_var('s_edateout',$this->boprojects->formatted_edate($ms['edate']));
-				$GLOBALS['phpgw']->template->fp('mslisthandle','mslist',True);
-			}
+#			$mstones = $this->boprojects->get_mstones($project_id);
+#			//$link_data['menuaction'] = 'projects.uiprojects.edit_mstone';
+#
+#			while (is_array($mstones) && list(,$ms) = each($mstones))
+#			{
+#				//$link_data['s_id'] = $ms['s_id'];
+#				$GLOBALS['phpgw']->template->set_var('s_title',$ms['title']);
+#				//$GLOBALS['phpgw']->template->set_var('mstone_edit_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
+#				$GLOBALS['phpgw']->template->set_var('s_edateout',$this->boprojects->formatted_edate($ms['edate']));
+#				$GLOBALS['phpgw']->template->fp('mslisthandle','mslist',True);
+#			}
 
 // --------- emps & roles ------------------------------
 
@@ -1735,7 +1905,35 @@
 			$GLOBALS['phpgw']->template->set_var('ownhandle','');
 			$GLOBALS['phpgw']->template->set_var('acthandle','');
 			$GLOBALS['phpgw']->template->set_var('bothhandle','');
+			
+			// the milestones part
+			$uiwidgets	= CreateObject('projects.uiwidgets');
 
+			$mstones = $this->boprojects->get_mstones($project_id);
+
+			if(is_array($mstones))
+			{
+				while(list(,$ms) = each($mstones))
+				{
+					#_debug_array($ms);
+					$GLOBALS['phpgw']->template->set_var('s_title',$ms['title']);
+					$GLOBALS['phpgw']->template->set_var('s_edateout',$this->boprojects->formatted_edate($ms['edate']));
+					$rowID = $uiwidgets->tableViewAddRow();
+					if($ms['description'])
+					{
+						$uiwidgets->tableViewAddTextCell($rowID,'<b>'.$ms['title'].'</b><br>'.$ms['description']);
+					}
+					else
+					{
+						$uiwidgets->tableViewAddTextCell($rowID,'<b>'.$ms['title'].'</b>');
+					}
+					$uiwidgets->tableViewAddTextCell($rowID,$this->boprojects->formatted_edate($ms['edate']),'center');
+				}
+				$headValues = array(lang('title'),lang('Date due'));
+				$GLOBALS['phpgw']->template->set_var('milestones_table',$uiwidgets->tableView($headValues));
+			}
+			unset($uiwidgets);
+			
 			// the file manager part
 			$uiwidgets	= CreateObject('projects.uiwidgets');
 			$bolink		= CreateObject('infolog.bolink');

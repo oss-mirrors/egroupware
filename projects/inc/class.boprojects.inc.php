@@ -1106,7 +1106,7 @@
 				{
 					$sub_pro[$i] = $sub['project_id'];
 					$i++;
-					$sum_budget += $sub['budget'];
+					$sum_budget += $sub['budgetSum'];
 					$sum_ptime += $sub['time_planned'];
 				}
 
@@ -1192,7 +1192,17 @@
 
 						$sub_pro[$i] = $sub['project_id'];
 						$i++;
-						$sum_budget += $sub['budget'];
+						//if(is_array($sub['budget']))
+						//{
+						//	foreach($sub['budget'] as $budgetYear)
+						//	{
+						//		foreach($budgetYear as $budgetMonth)
+						//		{
+						//			$sum_budget += $budgetMonth;
+						//		}
+						//	}
+						//}
+						$sum_budget += $sub['budgetSum'];
 						$sum_ptime += $sub['time_planned'];
 					}
 				}
@@ -1358,7 +1368,6 @@
 			//echo 'limit: ' . $limit . '<br>';
 			$used_percent = ($limit*intval($event_extra))/100;
 			//echo 'percent: ' . $used_percent . '<br>';
-
 			//echo 'used: ' . $used . '<br>';
 			if($this->html_output && ($used > $used_percent))
 			{
@@ -1448,11 +1457,11 @@
 						$acc = $this->get_budget($params);
 					}
 
-					$uhours_pro	= $this->colored($acc['uhours_pro'],$pro['ptime'],$acc['uhours_pro_wminutes'],'hours');
+					$uhours_pro		= $this->colored($acc['uhours_pro'],$pro['ptime'],$acc['uhours_pro_wminutes'],'hours');
 					$uhours_jobs	= $this->colored($acc['uhours_jobs'],$pro['ptime'],$acc['uhours_jobs_wminutes'],'hours');
 
-					$ubudget_pro	= $this->colored($acc['u_budget'],$pro['budget'],$acc['u_budget']);
-					$ubudget_jobs	= $this->colored($acc['u_budget_jobs'],$pro['budget'],$acc['u_budget_jobs']);
+					$ubudget_pro	= $this->colored($acc['u_budget'],$pro['budgetSum'],$acc['u_budget']);
+					$ubudget_jobs	= $this->colored($acc['u_budget_jobs'],$pro['budgetSum'],$acc['u_budget_jobs']);
 
 					$space = '';
 					if ($pro['level'] > 0)
@@ -1481,6 +1490,7 @@
 						'pedateout'		=> $this->formatted_edate($pro['pedate'],False),
 						'previousout'		=> $this->return_value('pro',$pro['previous']),
 						'phours'		=> ($pro['ptime']/60) . '.00',
+						'budgetSum'		=> $pro['budgetSum'],
 						'budget'		=> $pro['budget'],
 						'e_budget'		=> $pro['e_budget'],
 						'url'			=> $GLOBALS['phpgw']->strip_html($pro['url']),
@@ -1508,8 +1518,8 @@
 						'ahours_jobs'		=> $acc['ahours_jobs']?$acc['ahours_jobs']:'0.00',
 						'u_budget'		=> $ubudget_pro,     //$acc['u_budget']?$acc['u_budget']:'0.00',
 						'u_budget_jobs'		=> $ubudget_jobs,    //$acc['u_budget_jobs']?$acc['u_budget_jobs']:'0.00',
-						'a_budget'		=> $pro['budget']-$acc['u_budget'],
-						'a_budget_jobs'		=> $pro['budget']-$acc['u_budget_jobs'],
+						'a_budget'		=> $pro['budgetSum']-$acc['u_budget'],
+						'a_budget_jobs'		=> $pro['budgetSum']-$acc['u_budget_jobs'],
 						'b_budget'		=> $acc['b_budget']?$acc['b_budget']:'0.00',
 						'b_budget_jobs'		=> $acc['b_budget_jobs']?$acc['b_budget_jobs']:'0.00',
 					);
@@ -1569,36 +1579,37 @@
 				$atime = $this->sohours->format_wh($pro['ptime']-$acc['ptime_jobs_min']);
 			}
 
-			$uhours_pro	= $this->colored($acc['uhours_pro'],$pro['ptime'],$acc['uhours_pro_wminutes'],'hours');
+			$uhours_pro		= $this->colored($acc['uhours_pro'],$pro['ptime'],$acc['uhours_pro_wminutes'],'hours');
 			$uhours_jobs	= $this->colored($acc['uhours_jobs'],$pro['ptime'],$acc['uhours_jobs_wminutes'],'hours');
 
-			$ubudget_pro	= $this->colored($acc['u_budget'],$pro['budget'],$acc['u_budget']);
-			$ubudget_jobs	= $this->colored($acc['u_budget_jobs'],$pro['budget'],$acc['u_budget_jobs']);
+			$ubudget_pro	= $this->colored($acc['u_budget'],$pro['budgetSum'],$acc['u_budget']);
+			$ubudget_jobs	= $this->colored($acc['u_budget_jobs'],$pro['budgetSum'],$acc['u_budget_jobs']);
 
 			$project = array
 			(
 				'ptime'			=> ($pro['ptime']/60) . '.00',
 				'ptime_min'		=> $pro['ptime'],
-				'ptime_jobs'		=> $acc['ptime_jobs'],
+				'ptime_jobs'	=> $acc['ptime_jobs'],
 				'atime'			=> $atime['whwm'],
 				'title'			=> $GLOBALS['phpgw']->strip_html($pro['title']),
 				'number'		=> $GLOBALS['phpgw']->strip_html($pro['number']),
-				'investment_nr'		=> $GLOBALS['phpgw']->strip_html($pro['investment_nr']),
+				'investment_nr'	=> $GLOBALS['phpgw']->strip_html($pro['investment_nr']),
 				'descr'			=> $GLOBALS['phpgw']->strip_html($pro['descr']),
+				'budgetSum'		=> $pro['budgetSum'],
 				'budget'		=> $pro['budget'],
 				'e_budget'		=> $pro['e_budget'],
-				'pbudget_jobs'		=> $acc['pbudget_jobs']?$acc['pbudget_jobs']:'0.00',
-				'ap_budget_jobs'	=> $pro['budget']-$acc['pbudget_jobs'],
-				'a_budget'		=> $pro['budget']-$acc['u_budget'],
-				'a_budget_jobs'		=> $pro['budget']-$acc['u_budget_jobs'],
+				'pbudget_jobs'	=> $acc['pbudget_jobs']?$acc['pbudget_jobs']:'0.00',
+				'ap_budget_jobs'	=> $pro['budgetSum']-$acc['pbudget_jobs'],
+				'a_budget'		=> $pro['budgetSum']-$acc['u_budget'],
+				'a_budget_jobs'	=> $pro['budgetSum']-$acc['u_budget_jobs'],
 				'u_budget'		=> $ubudget_pro,       //$acc['u_budget']?$acc['u_budget']:'0.00',
-				'u_budget_jobs'		=> $ubudget_jobs,      //$acc['u_budget_jobs']?$acc['u_budget_jobs']:'0.00',
-				'project_id'		=> $pro['project_id'],
+				'u_budget_jobs'	=> $ubudget_jobs,      //$acc['u_budget_jobs']?$acc['u_budget_jobs']:'0.00',
+				'project_id'	=> $pro['project_id'],
 				'parent'		=> $pro['parent'],
 				'main'			=> $pro['main'],
 				'cat'			=> $pro['cat'],
 				'access'		=> $pro['access'],
-				'coordinator'		=> $pro['coordinator'],
+				'coordinator'	=> $pro['coordinator'],
 				'coordinatorout'	=> $GLOBALS['phpgw']->common->grab_owner_name($pro['coordinator']),
 				'customer'		=> $pro['customer'],
 				'status'		=> $pro['status'],
@@ -1607,27 +1618,27 @@
 				'previous'		=> $pro['previous'],
 				'url'			=> $GLOBALS['phpgw']->strip_html($pro['url']),
 				'reference'		=> $GLOBALS['phpgw']->strip_html($pro['reference']),
-				'customer_nr'		=> $GLOBALS['phpgw']->strip_html($pro['customer_nr']),
+				'customer_nr'	=> $GLOBALS['phpgw']->strip_html($pro['customer_nr']),
 				'test'			=> $GLOBALS['phpgw']->strip_html($pro['test']),
 				'quality'		=> $GLOBALS['phpgw']->strip_html($pro['quality']),
 				'result'		=> $GLOBALS['phpgw']->strip_html($pro['result']),
-				'accounting'		=> $pro['accounting'],
+				'accounting'	=> $pro['accounting'],
 				'project_accounting_factor'	=> $pro['project_accounting_factor'],
 				'project_accounting_factor_d'	=> $pro['project_accounting_factor_d'],
 				'billable'		=> $pro['billable'],
 				'uhours_pro'		=> $uhours_pro,          //$acc['uhours_pro']?$acc['uhours_pro']:'0.00',
 				'uhours_pro_nobill'	=> $acc['uhours_pro_nobill']?$acc['uhours_pro_nobill']:'0.00',
 				'uhours_pro_bill'	=> $acc['uhours_pro_bill']?$acc['uhours_pro_bill']:'0.00',
-				'uhours_jobs'		=> $uhours_jobs,          //$acc['uhours_jobs']?$acc['uhours_jobs']:'0.00',
+				'uhours_jobs'	=> $uhours_jobs,          //$acc['uhours_jobs']?$acc['uhours_jobs']:'0.00',
 				'uhours_jobs_nobill'	=> $acc['uhours_jobs_nobill']?$acc['uhours_jobs_nobill']:'0.00',
 				'uhours_jobs_bill'	=> $acc['uhours_jobs_bill']?$acc['uhours_jobs_bill']:'0.00',
 				'uhours_jobs_wminutes'	=> $acc['uhours_jobs_wminutes']?$acc['uhours_jobs_wminutes']:0,
-				'ahours_pro'		=> $acc['ahours_pro']?$acc['ahours_pro']:'0.00',
-				'ahours_jobs'		=> $acc['ahours_jobs']?$acc['ahours_jobs']:'0.00',
+				'ahours_pro'	=> $acc['ahours_pro']?$acc['ahours_pro']:'0.00',
+				'ahours_jobs'	=> $acc['ahours_jobs']?$acc['ahours_jobs']:'0.00',
 				'priority'		=> $pro['priority'],
-				'inv_method'		=> $GLOBALS['phpgw']->strip_html($pro['inv_method']),
+				'inv_method'	=> $GLOBALS['phpgw']->strip_html($pro['inv_method']),
 				'discount'		=> $pro['discount'],
-				'discount_type'		=> $pro['discount_type']
+				'discount_type'	=> $pro['discount_type']
 			);
 
 			$project['edate']			= $pro['edate'];
@@ -1671,6 +1682,7 @@
 
 			//_debug_array($project);
 			return $project;
+
 		}
 
 		function sum_budget($values)
@@ -1834,7 +1846,7 @@
 				}
 
 				$ptime_parent	= $this->soprojects->return_value('ptime',$values['parent']);
-				$sum_ptime		= $this->soprojects->get_planned_value(array('action' => 'tparent','parent_id' => $values['parent']
+				$sum_ptime	= $this->soprojects->get_planned_value(array('action' => 'tparent','parent_id' => $values['parent']
 																	,'project_id' => $values['project_id']));
 				$pminutes = intval($values['ptime'])*60;
 
@@ -1843,10 +1855,20 @@
 					$error[] = lang('planned time sum of all sub projects is bigger than the planned time of the main project');
 				}
 
-				$budget_parent	= $this->soprojects->return_value('budget',$values['parent']);
-				$sum_budget		= $this->soprojects->get_planned_value(array('action' => 'bparent','parent_id' => $values['parent']
+				$budget_parent	= $this->soprojects->return_value('budgetSum',$values['parent']);
+				$sum_budget	= $this->soprojects->get_planned_value(array('action' => 'bparent','parent_id' => $values['parent']
 																	,'project_id' => $values['project_id']));
-				if (($values['budget']+$sum_budget) > $budget_parent)
+				//print "Parent: $budget_parent Sum: $sum_budget<br>";
+				//_debug_array($values['budget']);
+				$sumProjectBudget=0;
+				if(is_array($values['budget']))
+				{
+					foreach ($values['budget'] as $budgetData)
+					{
+							$sumProjectBudget += $budgetData['text'];
+					}
+				}
+				if (($sumProjectBudget+$sum_budget) > $budget_parent)
 				{
 					$error[] = lang('budget sum of all sub projects is bigger than the budget of the main project');
 				}
@@ -2066,7 +2088,7 @@
 					$stones[] = array
 					(
 						'title'		=> $GLOBALS['phpgw']->strip_html($ms['title']),
-						'description'		=> $GLOBALS['phpgw']->strip_html($ms['description']),
+						'description'	=> $GLOBALS['phpgw']->strip_html($ms['description']),
 						'edate'		=> $ms['edate'],
 						's_id'		=> $ms['s_id']
 					);

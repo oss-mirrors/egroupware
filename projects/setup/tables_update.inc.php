@@ -935,4 +935,29 @@
 		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.037';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
+
+	$test[] = '0.8.7.037';
+	function projects_upgrade0_8_7_037()
+	{
+		$GLOBALS['phpgw_setup']->oProc->CreateTable
+		(
+			'phpgw_p_budget',array
+			(
+				'fd' => array(
+					'budget_id' 	=> array('type' => 'auto','nullable' => False),
+					'project_id'	=> array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+					'budget'	=> array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False),
+					'year'		=> array('type' => 'int','precision' => 4,'default' => 0,'nullable' => True),
+					'month'		=> array('type' => 'int','precision' => 4,'default' => 0,'nullable' => True)
+				),
+				'pk' => array('budget_id'),
+				'fk' => array(),
+				'ix' => array('project_id','year','month'),
+				'uc' => array()
+			)
+		);
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.038';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
 ?>

@@ -60,6 +60,95 @@
 		}
 
 		/**
+		* @return unknown
+		* @param array $_rows 
+		* @param string $_valueName
+		* @param string $_description The description of the text row
+		* @param bool $_readOnly display a readonly(true) or readWrite(false) widget
+		* @param timestamp $_startDate
+		* @param timestamp $_endDate
+		* @param string $_boxWidth
+		* @desc creates a table, which contains rows with a textfield per month/year
+		*/
+		function dateSelectBox($_rows, $_valueName, $_description, $_readOnly=false, $_startDate=false, $_endDate=false, $_boxWidth="100%")
+		{
+			$currentYear = date('Y');
+
+			$this->template->set_block('body','dateSelectBoxRO');
+			$this->template->set_block('body','dateSelectBoxRW');
+			$this->template->set_block('body','dateSelectBoxTableRowRO');
+			$this->template->set_block('body','dateSelectBoxTableRowRW');
+			if($_readOnly)
+			{
+				$dateSelectBox = 'dateSelectBoxRO';
+				$dateSelectBoxTableRow = 'dateSelectBoxTableRowRO';
+			}
+			else
+			{
+				$dateSelectBox = 'dateSelectBoxRW';
+				$dateSelectBoxTableRow = 'dateSelectBoxTableRowRW';
+			}
+			
+			$dateSelectBoxYear = '<select id="'.$_valueName.'_year" nname="v'.$_valueName.'_year">';
+			$dateSelectBoxYear .= "<option value=\"0\" >---</option>";
+			for($i=$currentYear-2; $i<$currentYear+6; $i++)
+			{
+				$dateSelectBoxYear .= "<option value=\"$i\" >".htmlspecialchars($i,ENT_QUOTES)."</option>";
+			}
+			$dateSelectBoxYear .= '</select>';
+
+			$dateSelectBoxMonth = '<select id="'.$_valueName.'_month" nname="v'.$_valueName.'_month">';
+			$dateSelectBoxMonth .= "<option value=\"0\" >---</option>";
+			for($i=1; $i<=12; $i++)
+			{
+				$dateSelectBoxMonth .= "<option value=\"$i\" >".htmlspecialchars($i,ENT_QUOTES)."</option>";
+			}
+			$dateSelectBoxMonth .= '</select>';
+
+			if(is_array($_rows))
+			{
+				$rowCounter=1;
+				foreach($_rows as $year => $months)
+				{
+					foreach($months as $month => $textField)
+					{
+						if($year == 0) $year='---';
+						if($month == 0) $month='---';
+						$this->template->set_var('dateSelectBoxTableRow_year',$year);
+						$this->template->set_var('dateSelectBoxTableRow_month',$month);
+						$this->template->set_var('dateSelectBoxTableRow_counter',$rowCounter);
+						$this->template->set_var('dateSelectBoxTableRow_nameYear',$_valueName."[$rowCounter][year]");
+#						$this->template->set_var('dateSelectBoxTableRow_nameYear',$_valueName."[".$rowCounter."_y]");
+						$this->template->set_var('dateSelectBoxTableRow_valueYear',$year);
+						$this->template->set_var('dateSelectBoxTableRow_nameMonth',$_valueName."[$rowCounter][month]");
+#						$this->template->set_var('dateSelectBoxTableRow_nameMonth',$_valueName."[".$rowCounter."_m]");
+						$this->template->set_var('dateSelectBoxTableRow_valueMonth',$month);
+						$this->template->set_var('dateSelectBoxTableRow_nameText',$_valueName."[$rowCounter][text]");
+#						$this->template->set_var('dateSelectBoxTableRow_nameText',$_valueName."[".$rowCounter."_t]");
+						$this->template->set_var('dateSelectBoxTableRow_valueText',$textField);
+						$this->template->set_var('lang_delete',lang('delete'));
+						
+						$this->template->parse('dateSelectBox_tableRows',$dateSelectBoxTableRow,True);
+						
+						$rowCounter++;
+					}
+				}
+				//$this->template->set_var('multiSelectBox_predefinded_options',$options);
+			}
+
+			$this->template->set_var('lang_add',lang('add'));
+			$this->template->set_var('lang_year',lang('year'));
+			$this->template->set_var('lang_month',lang('month'));
+			$this->template->set_var('dateSelectBox_month',$dateSelectBoxMonth);
+			$this->template->set_var('dateSelectBox_year',$dateSelectBoxYear);
+			$this->template->set_var('dateSelectBox_valueName', $_valueName);
+			$this->template->set_var('dateSelectBox_boxWidth', $_boxWidth);
+			$this->template->set_var('dateSelectBox_description', $_description);
+			
+			return $this->template->fp('out',$dateSelectBox);
+		}
+
+		/**
 		* create multiselectbox
 		*
 		* this function will create a multiselect box. Hard to describe! :)
