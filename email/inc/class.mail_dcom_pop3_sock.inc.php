@@ -94,6 +94,12 @@
 			if ($this->debug_dcom) { echo 'pop3: call to not-yet-implemented function in POP3: fetch_overview<br>'; }
 			return False;
 		}
+		function server_last_error()
+		{
+			// not yet implemented
+			if ($this->debug_dcom) { echo 'pop3: call to not-yet-implemented socket function: server_last_error<br>'; }
+			return '';
+		}
 		
 		/**************************************************************************\
 		*	OPEN and CLOSE Server Connection

@@ -286,8 +286,11 @@
 		var $msg_structure = '';
 		var $msg_structure_msgnum = '';
 		var $hdr_info_envelope;
+		// server error strings *should* get stored here
+		var $server_last_error_str = '';
 		
 		// future use
+		var $refto_msg_parent;
 		var $mailbox;
 		var $numparts;
 		var $sparts;
@@ -350,6 +353,27 @@
 			return false;
 		}
 		
+		/*!
+		@function distill_fq_folder
+		@abstract break down a php fully qualified folder name into its seperate barts
+		@param $fq_folder : string : {SERVER_NAME:PORT/OPTIONS}FOLDERNAME
+		@result  array structure like this:
+		result['folder'] : string is the folder (a.k.a. mailbox) name WITHOUT the bracketed {server:port/options}
+		result['svr_and_port'] string : for Internal Use
+		result['server'] : string is the IP or NAME of the server
+		result['port_with_junk'] string : for Internal Use
+		result['port'] string is the port number
+		@discussion $fq_folder name arrives as:
+		{SERVER_NAME:PORT}FOLDERNAME
+		OR some variation like this:
+		{SERVER_NAME:PORT/pop3}FOLDERNAME
+		{SERVER_NAME:PORT/imap/ssl/novalidate-cert}FOLDERNAME
+		this is how php passes around this data in its builtin IMAP extensions
+		this function breaks down that string into it's parts
+		@syntax ?
+		@author Angles
+		@access	private
+		*/
 		function distill_fq_folder($fq_folder)
 		{
 			// initialize return structure array
@@ -420,7 +444,19 @@
 			}
 			return $svr_data;
 		}
-
+		
+		/*!
+		@function read_port_glob
+		@abstract used with POP3, reads data from port until we encounted param $end
+		@param $end : string is the flag to look for that tells us when to stop reading the port's data
+		@result  string raw string of data (glob) as received from the server
+		@discussion POP3 servers data typically ends with special charactor(s),
+		usually an empty line, i.e. a lone CRLF pair, or line that is a period "." followed br a CRLF pair
+		thus we can direct this function to read the server's data until such special end flag is reached
+		@syntax ?
+		@author Angles, skeeter
+		@access	private
+		*/
 		function read_port_glob($end='.')
 		{
 			$glob_response = '';
@@ -436,28 +472,20 @@
 			return $glob_response;
 		}
 		
-		/*
-		function imap_read_port_array($end_begins_with='')
-		{
-			$return_me = Array();
-			if ($end_begins_with == '')
-			{
-				return $return_me;
-			}
-			while ($line = $this->read_port())
-			{
-				//echo $line."<br>\r\n";
-				if ($this->str_begins_with($line, $end_begins_with))
-				{
-					break;
-				}
-				$next_pos = count($return_me);
-				$return_me[$next_pos] = $line;
-			}
-			return $return_me;
-		}
+		/*!
+		@function glob_to_array
+		@abstract used with POP3, converts raw string server data into an array
+		@param $data : string
+		@param $keep_blank_lines : boolean
+		@param $cut_from_here : string
+		@param $keep_received_lines : boolean
+		@param $idx_offset : integer : where to start the returned array at (if not zero)
+		@result  array
+		@discussion ?
+		@syntax ?
+		@author Angles
+		@access	private
 		*/
-		
 		function glob_to_array($data,$keep_blank_lines=True,$cut_from_here='',$keep_received_lines=True,$idx_offset=0)
 		{
 			$data_array = explode("\r\n",$data);
@@ -495,46 +523,6 @@
 				}
 			}
 			return $return_array;
-		}
-		
-		/*!
-		@function str_begins_with
-		@abstract determine if string $haystack begins with string $needle
-		@param $haystack : string : data to examine to determine if it starts with $needle
-		@param $needle : string : $needle should or should not start at position 0 (zero) of $haystack
-		@result  Boolean, True or False
-		@discussion this is a NON-REGEX way to to so this, and is NOT case sensitive
-		this *should* be faster then Regular expressions and *should* not be confused by
-		regex special chars such as the period "." or the slashes "/" and "\" , etc...
-		@syntax ?
-		@author Angles
-		@access	public or private
-		*/
-		function str_begins_with($haystack,$needle='')
-		{
-			if ((trim($haystack) == '')
-			|| (trim($needle) == ''))
-			{
-				return False;
-			}
-			// now do a case insensitive search for needle as the beginning part of haystack
-			if (stristr($haystack,$needle) == False)
-			{
-				// needle is not anywhere in haystack
-				return False;
-			}
-			// so needle IS in haystack
-			// now see if needle is the same as the begining of haystack (case insensitive)
-			if (strpos(strtolower($haystack),strtolower($needle)) == 0)
-			{
-				// in this case we know 0 means "at position zero" (i.e. NOT "could not find")
-				// because we already checked for the existance of needle above
-				return True;
-			}
-			else
-			{
-				return False;
-			}
 		}
 		
 		/*!

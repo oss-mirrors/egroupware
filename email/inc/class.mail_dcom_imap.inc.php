@@ -25,6 +25,12 @@
 
   class mail_dcom extends mail_dcom_base
   {
+    function append($stream, $folder, $message, $flags = "")
+    {
+	$folder = $this->utf7_encode($folder);
+	return imap_append($stream, $folder, $message, $flags);
+    }
+
     function base64($text) 
     {
 	return imap_base64($text);
@@ -57,76 +63,6 @@
 	return imap_renamemailbox($stream,$mailbox_old,$mailbox_new);
     }
 
-    /*
-    function delete($stream,$msg_num,$flags="", $currentfolder="") 
-    {
-	global $phpgw_info, $phpgw;
-    
-	if ((isset($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]))
-	&& ($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]))
-	{
-		$trash_folder_long = $phpgw->msg->get_folder_long($phpgw_info['user']['preferences']['email']['trash_folder_name']);
-		$trash_folder_short = $phpgw->msg->get_folder_short($phpgw_info['user']['preferences']['email']['trash_folder_name']);
-		if ($currentfolder != '')
-		{
-			$currentfolder_short = $phpgw->msg->get_folder_short($currentfolder);
-		}
-		// if we are deleting FROM the trash folder, we do a straight delete
-		if ($currentfolder_short == $trash_folder_short)
-		{
-			return imap_delete($stream,$msg_num);
-		}
-		else
-		{
-			// does the trash folder actually exist ?
-			$official_trash_folder_long = $phpgw->msg->folder_lookup($stream, $phpgw_info['user']['preferences']['email']['trash_folder_name']);
-			if ($official_trash_folder_long != '')
-			{
-				$havefolder = True;
-			}
-			else
-			{
-				$havefolder = False;
-			}
-
-			if (!$havefolder)
-			{
-				// create the Trash folder so it will exist (Netscape does this too)
-				$server_str = $phpgw->msg->get_mailsvr_callstr();
-				$this->createmailbox($stream,$server_str .$trash_folder_long);
-				// try again to get the real long folder name of the just created trash folder
-				$official_trash_folder_long = $phpgw->msg->folder_lookup($stream, $phpgw_info['user']['preferences']['email']['trash_folder_name']);
-				// did the folder get created and do we now have the official full name of that folder?
-				if ($official_trash_folder_long != '')
-				{
-					$havefolder = True;
-				}
-			}
-
-			// at this point we've tries 2 time to obtain the "server approved" long name for the trash folder
-			// even tries creating it if necessary
-			// if we have the name, do the move to the trash folder
-			if ($havefolder)
-			{
-				$official_trash_folder_long = $this->utf7_encode($official_trash_folder_long);
-				return imap_mail_move($stream,$msg_num,$official_trash_folder_long);
-			}
-			else
-			{
-				// we do not have the trash official folder name, but we have to do something
-				// can't just leave the mail sitting there
-				// so just straight delete the message
-				return imap_delete($stream,$msg_num);
-			}
-		}
-	}
-	else
-	{
-		return imap_delete($stream,$msg_num);
-	}
-    }
-    */
-
     function delete($stream,$msg_num,$flags="") 
     {
 	return imap_delete($stream,$msg_num);
@@ -157,12 +93,6 @@
 	return imap_fetchheader($stream,$msg_num);
     }
     
-    function get_header($stream,$msg_num)
-    {
-	// alias for compatibility with some old code
-	return $this->fetchheader($stream,$msg_num);
-    }
-
     function fetchstructure($stream,$msg_num,$flags="") 
     {
 	return imap_fetchstructure($stream,$msg_num);
@@ -173,17 +103,18 @@
 	return imap_body($stream,$msg_num,$flags);
     }
 
+    function get_header($stream,$msg_num)
+    {
+	// alias for compatibility with some old code
+	return $this->fetchheader($stream,$msg_num);
+    }
+
     function listmailbox($stream,$ref,$pattern)
     {
     	//return imap_listmailbox($stream,$ref,$pattern);
 	$pattern = $this->utf7_encode($pattern);
 	$return_list = imap_listmailbox($stream,$ref,$pattern);
     	return $this->utf7_decode($return_list);
-    }
-
-    function num_msg($stream) // returns number of messages in the mailbox
-    { 
-	return imap_num_msg($stream);
     }
 
     function mailboxmsginfo($stream) 
@@ -201,6 +132,11 @@
     {
     	$mailbox = $this->utf7_encode($mailbox);
 	return imap_mail_move($stream,$msg_list,$mailbox);
+    }
+
+    function num_msg($stream) // returns number of messages in the mailbox
+    { 
+	return imap_num_msg($stream);
     }
 
     function open($mailbox,$username,$password,$flags="")
@@ -222,6 +158,12 @@
 	return imap_reopen($stream,$mailbox,$flags);
     }
 
+    function server_last_error()
+    {
+	// supported in PHP >= 3.0.12
+	return imap_last_error();
+    }
+
     function sort($stream,$criteria,$reverse="",$options="")
     {
 	return imap_sort($stream,$criteria,$reverse,$options);
@@ -233,64 +175,7 @@
 	return imap_status($stream,$mailbox,$options);
     }
 
-    /*
-    function append($stream, $folder = "Sent", $message, $flags = "")
-    {
-	global $phpgw_info, $phpgw;
-
-	$server_str = $phpgw->msg->get_mailsvr_callstr();
-
-	// does the target folder actually exist ?
-	$official_folder_long = $phpgw->msg->folder_lookup($stream, $folder);
-	if ($official_folder_long != '')
-	{
-		$havefolder = True;
-	}
-	else
-	{
-		$havefolder = False;
-	}
-
-	if ($havefolder == False)
-	{
-		// create the specified target folder so it will exist
-		$folder_long = $phpgw->msg->get_folder_long($folder);
-		$this->createmailbox($stream,"$server_str"."$folder_long");
-		// try again to get the real long folder name of the just created trash folder
-		$official_folder_long = $phpgw->msg->folder_lookup($stream, $folder);
-		// did the folder get created and do we now have the official full name of that folder?
-		if ($official_folder_long != '')
-		{
-			$havefolder = True;
-		}
-	}
-
-	// at this point we've tries 2 time to obtain the "server approved" long name for the target folder
-	// even tries creating it if necessary
-	// if we have the name, append the message to that folder
-	if (($havefolder == True)
-	&& ($official_folder_long != ''))
-	{
-		$official_folder_long = $this->utf7_encode($official_folder_long);
-		return imap_append($stream, "$server_str"."$official_folder_long", $message, $flags);
-	}
-	else
-	{
-		// we do not have the official long folder name for the target folder
-		// we can NOT append the message to a folder name we are not SURE is corrent
-		// it will fail  HANG the browser for a while
-		// so just SKIP IT
-		return False;
-	}
-    }
-    */
-
-    function append($stream, $folder, $message, $flags = "")
-    {
-	$folder = $this->utf7_encode($folder);
-	return imap_append($stream, $folder, $message, $flags);
-    }
-
+    // DEPRECIATED - OBSOLETE - DO NOT CALL
     function login( $folder = "INBOX")
     {
 	global $phpgw, $phpgw_info;

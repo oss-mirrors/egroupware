@@ -21,6 +21,12 @@
 
   class mail_dcom extends mail_dcom_base
   {
+    function append($stream, $folder = "Sent", $header, $body, $flags = "")
+    {
+	// N/A for pop3
+	return False;
+    }
+
     function base64($text) 
     {
 	return imap_base64($text);
@@ -59,25 +65,14 @@
 	return imap_fetchbody($stream,$msgnr,$partnr,$flags);
     }
 
-    function header($stream,$msg_nr,$fromlength="",$tolength="",$defaulthost="")
-    {
-	return imap_header($stream,$msg_nr,$fromlength,$tolength,$defaulthost);
-    }
-
-    function fetch_raw_mail($stream,$msg_num)
-    {
-	return imap_fetchheader($stream,$msg_num,FT_PREFETCHTEXT);
-    }
-
     function fetchheader($stream,$msg_num)
     {
 	return imap_fetchheader($stream,$msg_num);
     }
 
-    function get_header($stream,$msg_num)
+    function fetch_raw_mail($stream,$msg_num)
     {
-	// alias for compatibility with some old code
-	return $this->fetchheader($stream,$msg_num);
+	return imap_fetchheader($stream,$msg_num,FT_PREFETCHTEXT);
     }
 
     function fetchstructure($stream,$msg_num,$flags="") 
@@ -90,15 +85,21 @@
 	return imap_body($stream,$msg_num,$flags);
     }
 
+    function get_header($stream,$msg_num)
+    {
+	// alias for compatibility with some old code
+	return $this->fetchheader($stream,$msg_num);
+    }
+
+    function header($stream,$msg_nr,$fromlength="",$tolength="",$defaulthost="")
+    {
+	return imap_header($stream,$msg_nr,$fromlength,$tolength,$defaulthost);
+    }
+
     function listmailbox($stream,$ref,$pattern)
     {
 	// N/A for pop3
 	return False;
-    }
-
-    function num_msg($stream) // returns number of messages in the mailbox
-    { 
-	return imap_num_msg($stream);
     }
 
     function mailboxmsginfo($stream) 
@@ -116,6 +117,11 @@
     {
 	// N/A for pop3
 	return False;
+    }
+
+    function num_msg($stream) // returns number of messages in the mailbox
+    { 
+	return imap_num_msg($stream);
     }
 
     function open($mailbox,$username,$password,$flags="")
@@ -136,6 +142,13 @@
 	return False;
     }
 
+    function server_last_error()
+    {
+	// supported in PHP >= 3.0.12
+	//UNKNOWN if POP3 server errors also get put here
+	return imap_last_error();
+    }
+
     function sort($stream,$criteria,$reverse="",$options="",$msg_info="")
     {
 	return imap_sort($stream,$criteria,$reverse,$options);
@@ -147,12 +160,7 @@
 	return imap_status($stream,$mailbox,$options);
     }
 
-    function append($stream, $folder = "Sent", $header, $body, $flags = "")
-    {
-	// N/A for pop3
-	return False;
-    }
-
+    // DEPRECIATED - OBSOLETE - DO NOT CALL
     function login( $folder = "INBOX")
     {
 	global $phpgw, $phpgw_info;
