@@ -18,7 +18,7 @@
 			'fd' => array(
 				'account_id' => array('type' => 'varchar', 'precision' => 20, 'nullable' => false),
 				'data_key' => array('type' => 'varchar', 'precision' => 255, 'nullable' => False, 'default' => ''),
-				'content' => array('type' => 'text', 'nullable' => False, 'default' => ''),
+				'content' => array('type' => 'blob', 'nullable' => False, 'default' => '')
 			),
 			'pk' => array('account_id', 'data_key'),
 			'fk' => array(),

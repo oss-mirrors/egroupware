@@ -16,7 +16,7 @@
 	$setup_info['email']['name']      = 'email';
 	$setup_info['email']['title']     = 'Email';
 	//$setup_info['email']['version']   = '0.9.13.110805';
-	$setup_info['email']['version']   = '0.9.13.004';
+	$setup_info['email']['version']   = '0.9.13.005';
 	$setup_info['email']['app_order'] = '2';
 	$setup_info['email']['enable']    = 1;
 	$setup_info['email']['tables']    = array('phpgw_anglemail');
