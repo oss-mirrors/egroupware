@@ -479,8 +479,9 @@
 
 			$this->kses->AddHTML(
 				"a", array(
-					"href" => array('maxlen' => 45, 'minlen' => 10),
-					"name" => array('minlen' => 2)
+					"href" 		=> array('maxlen' => 145, 'minlen' => 10),
+					"name" 		=> array('minlen' => 2),
+					'target'	=> array('maxlen' => 10)
 				)
 			);
 
@@ -582,14 +583,23 @@
 					// search http[s] links and make them as links available again
 					// to understand what's going on here, have a look at 
 					// http://www.php.net/manual/en/function.preg-replace.php
-			
+
 					// create links for websites
-					$newBody = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
+					$newBody = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,!&gt;,\%,@,\*,#,:,~,\+]+)/ie", 
 						"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
 			
 					// create links for ftp sites
 					$newBody = preg_replace("/((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/i", 
 						"<a href=\"ftp://$3$4\" target=\"_blank\"><font color=\"blue\">$1$3$4</font></a>", $newBody);
+
+					// create links for email addresses
+					$linkData = array
+					(
+						'menuaction'    => 'felamimail.uicompose.compose'
+					);
+					$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
+					$newBody = preg_replace("/(?<=\s{1}|&lt;)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))/ie", 
+						"'<a href=\"$link&send_to='.base64_encode('$0').'\"><font color=\"blue\">$0</font></a>'", $newBody);
 
 					$newBody	= $this->highlightQuotes($newBody);
 					$newBody	= "<pre>".$newBody."</pre>";
@@ -601,12 +611,33 @@
 					$newBody 	= $this->kses->Parse($newBody);
 
 					// create links for websites
-					$newBody = preg_replace("/href=(\"|\')((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)(\"|\')/ie", 
+					#$newBody = preg_replace("/(?<!\>)((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
+					#	"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
+					$newBody = preg_replace("/(?<!>|\/|\")((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
+						"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
+
+					// create links for websites
+					$newBody = preg_replace("/href=(\"|\')((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\(,\),\*,#,:,~,\+]+)(\"|\')/ie", 
 						"'href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$4://$5$6'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"'", $newBody);
 
 					// create links for ftp sites
 					$newBody = preg_replace("/href=(\"|\')((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)(\"|\')/i", 
 						"href=\"ftp://$4$5\" target=\"_blank\"", $newBody);
+
+					// create links for email addresses
+					$linkData = array
+					(
+						'menuaction'    => 'felamimail.uicompose.compose'
+					);
+					$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
+					$newBody = preg_replace("/href=(\"|\')mailto:([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)(\"|\')/ie", 
+						"'href=\"$link&send_to='.base64_encode('$2').'\"'", $newBody);
+					#print "<pre>".htmlentities($newBody)."</pre><hr>";
+
+					$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
+					#$newBody = preg_replace("/(?<!:)(?<=\s{1}|&lt;)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))/ie", 
+					$newBody = preg_replace("/(?<!:)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))/ie", 
+						"'<a href=\"$link&send_to='.base64_encode('$0').'\"><font color=\"blue\">$0</font></a>'", $newBody);
 				}
 				$body .= $newBody;
 				#print "<hr><pre>$body</pre><hr>";
@@ -617,14 +648,6 @@
 			$body = preg_replace("/(\\\\\\\\)([\w,\\\\,-]+)/i", 
 				"<a href=\"file:$1$2\" target=\"_blank\"><font color=\"blue\">$1$2</font></a>", $body);
 			
-			// create links for email addresses
-			$linkData = array
-			(
-				'menuaction'    => 'felamimail.uicompose.compose'
-			);
-			$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
-			$body = preg_replace("/([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+)/i", 
-				"<a href=\"$link&send_to=$0\"><font color=\"blue\">$0</font></a>", $body);
 				
 			$this->t->set_var("body",$body);
 			$this->t->set_var("signature",$sessionData['signature']);
