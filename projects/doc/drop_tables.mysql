@@ -8,3 +8,4 @@ drop table p_projectmembers;
 drop table p_invoice;
 drop table p_invoicepos;
 drop table p_delivery;
+drop table p_deliverypos;
