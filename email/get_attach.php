@@ -13,18 +13,31 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True, 
-                                "noheader" => True, "nonavbar" => True);
-  include("../header.inc.php");
+	$phpgw_info["flags"] = array(
+		"currentapp" => "email",
+		"enable_network_class" => True,
+		"enable_browser_class" => True,
+		"noheader" => True,
+		"nonavbar" => True
+	);
+	include("../header.inc.php");
 
-  header("Content-disposition: attachment; filename=\"".$name."\"");
-  header("Content-type: ".strtolower($application)."/".strtolower($subtype));
+	//header("Content-disposition: attachment; filename=\"".$name."\"");
+	//header("Content-type: ".strtolower($application)."/".strtolower($subtype));
 
-  if ($encoding == "base64") {
-     echo $phpgw->msg->base64($phpgw->msg->fetchbody($mailbox, $msgnum, $part_no));
-  } elseif ($encoding == "qprint") {
-     echo $phpgw->msg->qprint($phpgw->msg->fetchbody($mailbox, $msgnum, $part_no));
-  } else {
-     echo $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no);
-  }
+	$mime = strtolower($application)."/".strtolower($subtype);
+	$phpgw->browser->content_header($name,$mime);
+
+	if ($encoding == "base64")
+	{
+		echo $phpgw->msg->base64($phpgw->msg->fetchbody($mailbox, $msgnum, $part_no));
+	}
+	elseif ($encoding == "qprint")
+	{
+		echo $phpgw->msg->qprint($phpgw->msg->fetchbody($mailbox, $msgnum, $part_no));
+	}
+	else
+	{
+		echo $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no);
+	}
 ?>
