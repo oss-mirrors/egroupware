@@ -1,33 +1,36 @@
-<b>apply all</b> filters	email	en	<b>APPLY ALL</b> Filters
 1 message has been deleted	email	en	1 message has been deleted
 1 message has been moved to	email	en	1 message has been moved to
+<b>apply all</b> filters	email	en	<b>APPLY ALL</b> Filters
 account	email	en	account
 account user name	email	en	Account User Name
+accounts	email	en	Accounts
 add to addressbook	email	en	Add to addressbook
 and	email	en	and
 arrival date	email	en	Arrival Date
 as	email	en	as
 attach file	email	en	Attach File
-attachment	email	en	Attachment
 attach signature	email	en	Attach signature
+attachment	email	en	Attachment
 bcc	email	en	bcc
 cc	email	en	CC
+choose for rename	email	en	Choose for rename
 choose to rename	email	en	choose for rename
 compose	email	en	Compose
 compose new	common	en	Compose new
 contains	email	en	Contains
 could not open this mailbox	email	en	Could not open this mailbox
-create a folder email	en	create a folder
 create (expert)	email	en	create (expert)
+create a folder	email	en	Create a folder
+current attachments (%1)	email	en	Current attachments (%1)
 custom e-mail preferences	email	en	Custom E-Mail preferences
 custom email settings	email	en	custom email settings
-default:	common	en	default:
 default sorting order	email	en	Default sorting order
-delete account	common	en	Delete Account
-delete a folder	email	en	Delete a folder
-deleted messages go to trash	email	en	Deleted messages go to Trash
-deleted messages (trash) folder	email	en	Deleted messages (Trash) folder
+default:	common	en	default:
 delete (expert)	email	en	Delete (expert)
+delete a folder	email	en	Delete a folder
+delete account	common	en	Delete Account
+deleted messages (trash) folder	email	en	Deleted messages (Trash) folder
+deleted messages go to trash	email	en	Deleted messages go to Trash
 discard	email	en	Discard
 does not contain	email	en	Does Not Contain
 e-mail extra accounts list	email	en	E-Mail Extra Accounts List
@@ -56,16 +59,19 @@ extra e-mail accounts	common	en	Extra E-Mail Accounts
 fewer actions	email	en	Fewer Actions
 fewer choices	email	en	Fewer Choices
 file	email	en	File
+file attachment	email	en	File attachment
 file into	email	en	File Into
 filter [number] and name	email	en	Filter [number] and Name
+filters	email	en	Filters
 folder	email	en	Folder
 folder maintenance	email	en	Folder Maintenance
 folder name	email	en	Folder name
-folders	email	en	Folders
 folder size	email	en	Folder Size
+folders	email	en	Folders
 for these items, fill only what is different from you default e-mail preferences	common	en	For these items, fill only what is different from you default E-Mail preferences
 forward	email	en	Forward
 from	email	en	From
+get size	email	en	get size
 hidden	email	en	hidden
 if applicable	email	en	If Applicable
 if fileto then select destination folder	email	en	if fileto then select destination folder
@@ -73,6 +79,7 @@ if messages match	email	en	If messages match
 image	email	en	Image
 imap mail server hostname or ip address	admin	en	IMAP mail server hostname or IP address
 imap server type	common	en	IMAP Server Type
+input error	email	en	Input Error
 keep	email	en	Keep
 keywords	email	en	Keywords
 layout 1	common	en	Layout 1
@@ -99,11 +106,13 @@ new	email	en	New
 new account	email	en	New Account
 new filter	email	en	New Filter
 new message	email	en	New message
+new messages	email	en	New messages
 newest	common	en	newest
 no error returned from server	email	en	No error returned from server
 no next message	email	en	no next message
-non-standard	email	en	Non-Standard
 no previous message	email	en	no previous message
+non-standard	email	en	Non-Standard
+notify on delivery	email	en	Notify on delivery
 number	common	en	Number
 oldest	common	en	oldest
 or	common	en	or
@@ -111,29 +120,35 @@ or enter text	email	en	or enter text
 please fill in everything you need	email	en	Please Fill in everything you need
 please select a folder to rename	email	en	Please select a folder to rename
 please select a message first	email	en	Please select a message first
+please submit a filename to attach	email	en	Please submit a filename to attach
 please type a folder name in the text box	email	en	Please type a folder name in the text box
 previous	email	en	Previous
 raw message	email	en	raw message
 read mail	email	en	Read Mail
 redirect	email	en	Redirect
 reject	email	en	Reject
-rename a folder	email	en	Rename a Folder
 rename (expert)	email	en	Rename (expert)
-reply all	email	en	Reply All
+rename a folder	email	en	Rename a Folder
 reply	email	en	Reply
+reply all	email	en	Reply All
 replyto	email	en	ReplyTo
 reset	email	en	Reset
 result	email	en	result
-section	email	en	Section
 search this folder	email	en	search this folder
+section	email	en	Section
+select home email address	email	en	Select home email address
+select work email address	email	en	Select work email address
 select your mail server type	admin	en	Select your mail server type
-send deleted messages to the trash	email	en	Send deleted messages to the trash
 send	email	en	Send
+send deleted messages to the trash	email	en	Send deleted messages to the trash
 sent messages folder	common	en	Sent messages folder
 sent messages saved in &quot;sent&quot; folder	common	en	Sent messages saved in &quot;sent&quot; folder
+settings	email	en	Settings
 short names	email	en	short names
+show long names	email	en	Show long names
 show new messages on main screen	email	en	Show new messages on main screen
 show sender's email address with name	email	en	Show sender's email address with name
+show short names	email	en	Show short names
 size	email	en	Size
 somebody	email	en	somebody
 sort by	email	en	Sort By
@@ -147,12 +162,12 @@ this data not supplied.	email	en	This data not supplied
 this folder is empty	email	en	This folder is empty
 to	email	en	To
 total messages	email	en	Total Messages
+u-wash mail folder	email	en	U-Wash Mail Folder
 undisclosed recipients	email	en	Undisclosed Recipients
 undisclosed sender	email	en	Undisclosed Sender
 unknown action	email	en	Unknown Action
 unknown error	email	en	Unknown error
 use custom settings	email	en	Use custom settings
-u-wash mail folder	email	en	U-Wash Mail Folder
 view as html	email	en	View as HTML
 view formatted	email	en	View formatted
 view headers	email	en	View headers
@@ -162,5 +177,6 @@ you have 1 new message!	common	en	You have 1 new message!
 you have messages!	common	en	You have messages!
 you have no new messages	common	en	You have no new messages!
 you have x new messages!	common	en	You have %1 new messages!
+you must click %1 for the file to actually upload	email	en	You must click %1 for the file to actually upload
 your full name	common	en	Your Full Name
 your message has been sent	common	en	Your message has been sent!

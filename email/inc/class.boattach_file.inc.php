@@ -383,9 +383,9 @@
 				(($this->file_data['file_tmp_name'] == '') || ($this->file_data['file_tmp_name'] == 'none')))
 			{
 				$langed_attach_file = lang("Attach File");
-				$alert_msg = lang('Input Error:').'<br>'
-					. lang('Please submit a filename to attach').'<br>'
-					. lang('You must click').' "'.lang('Attach File').'" '.lang('for the file to actually upload').'<br>'
+				$alert_msg = lang('Input Error').':<br>'
+					. lang('Please submit a filename to attach').'.<br>'
+					. lang('You must click %1 for the file to actually upload','"'.lang('Attach File').'"').'.<br>'
 					. '<br>';
 			}
 		

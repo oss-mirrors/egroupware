@@ -696,6 +696,7 @@
 			$this->xi['hdr_backcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
 			$this->xi['mlist_newmsg_char'] = '<strong>*</strong>';
 			$this->xi['mlist_newmsg_color'] = '#ff0000';
+			$this->xi['mlist_newmsg_txt'] = lang('new messages');
 			$this->xi['mlist_new_msg'] = '<font color="'.$this->xi['mlist_newmsg_color'].'">'.$this->xi['mlist_newmsg_char'].'</font>';
 			$this->xi['mlist_attach'] =
 				'<div align="right">'

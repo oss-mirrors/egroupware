@@ -5,9 +5,9 @@ account	email	de	Benutzerkonto
 account name	email	de	Name des Benutzerkontos
 account user name	email	de	Benutzername
 accounts	email	de	Benutzerkonten
-and stop filtering	email	de	und beende das filtern
 add to addressbook	email	de	Zum Addressbuch hinzufügen
 and	email	de	und
+and stop filtering	email	de	und beende das filtern
 arrival date	email	de	Eingangsdatum
 as	email	de	als
 attach file	email	de	Datei anhängen
@@ -27,6 +27,7 @@ could not open this mailbox	email	de	Kann diese Mailbox nicht öffnen
 create (expert)	email	de	Anlegen (Experte)
 create a folder	email	de	Ordner anlegen
 create a folder email	email	de	Folder anlegen
+current attachments (%1)	email	de	Momentane Anhänge (%1)
 custom e-mail preferences	email	de	Benutzerdefinierte E-Mail Einstellungen
 custom email settings	email	de	Benutzerdefinierte Email Einstellungen
 default sorting order	email	de	Standard Sortierung
@@ -66,6 +67,7 @@ extra e-mail accounts	common	de	Zusätzliche E-Mail Benutzerkonten
 fewer actions	email	de	Weniger Befehle
 fewer choices	email	de	Weniger Auswahl
 file	email	de	Datei
+file attachment	email	de	Datei anhängen
 file into	email	de	Ablegen unter
 filter [number] and name	email	de	Filter [Nummer] und Name
 filter inbox for accounts	email	de	Filtere die INBOX folgender E-Mail Konten
@@ -91,6 +93,7 @@ if messages match	email	de	Wenn für die Nachricht gilt
 image	email	de	Grafik
 imap mail server hostname or ip address	admin	de	IMAP Mail-Server Hostname oder IP Adresse
 imap server type	common	de	IMAP-Servertyp
+input error	email	de	Eingabefehler
 keep	email	de	Behalten
 keywords	email	de	Schlüsselworte
 layout 1	common	de	Layout 1
@@ -133,6 +136,7 @@ or enter text	email	de	oder Text eingeben
 please fill in everything you need	email	de	Bitte alles ausfüllen das benötigt wird
 please select a folder to rename	email	de	Bitte einen Ordner zum umbenennen auswählen
 please select a message first	email	de	Bitte zuerst eine Nachricht wählen
+please submit a filename to attach	email	de	Bitte einen Dateinamen zum Anhängen eingeben
 please type a folder name in the text box	email	de	Bitte den Ordnername in das Textfeld eingeben
 previous	email	de	Vorige
 raw message	email	de	Orginal Nachricht
@@ -169,6 +173,7 @@ show long names	email	de	Lange Namen anzeigen
 show new messages in combobox	email	de	Neue Nachrichten als einzeiliges Auswahlfeld anzeigen
 show new messages on main screen	email	de	Neue Nachrichten auf der Startseite anzeigen
 show sender's email address with name	email	de	Email-Adresse des Senders mit Namen anzeigen
+show short names	email	de	Kurze Namen anzeigen
 size	email	de	Größe
 small	email	de	klein
 somebody	email	de	irgendjemand
@@ -201,5 +206,6 @@ you have messages!	common	de	Sie haben neue Nachrichten
 you have messages!  common	de	de	
 you have no new messages	common	de	Keine neuen Nachrichten
 you have x new messages!	common	de	Sie haben %1 neue Nachrichten!
+you must click %1 for the file to actually upload	email	de	Sie müssen auf %1 klicken um die Datei tatsächlich zu übertragen
 your full name	common	de	Ihr vollständiger Name
 your message has been sent	common	de	Ihre Nachricht wurde versandt
