@@ -33,13 +33,17 @@
 		var $mail_out = array();
 		var $xi;
 		
-		// debug level between 0 to 3
+		// --- DEBUG FLAGS ---  level between 0 to 3, level 4 *sometimes* will dump info and exit
+		// this debugs stuff in the constructor AND passes the debug flag to msg_bootstrap
 		var $debug_constructor = 0;
+		// this debugs decisions made in the "sendorspell" function
 		var $debug_sendorspell = 0;
+		// this debugs stuff in the "spellcheck" function
 		var $debug_spellcheck = 0;
+		// this debugs the general "send" function, if = 4 then dump info and exit send immediately
 		var $debug_send = 0;
+		// this debugs stuff in the attachment handling section inside the send section
 		var $debug_struct = 0;
-		//var $debug_struct = 3;
 		var $company_disclaimer = '';
 		
 		function bosend()
@@ -51,7 +55,7 @@
 			//var $company_disclaimer = "\r\n\r\n-- \r\n This message was sent using Forester GroupWare. Visit the Forest City Regional website at http://www.forestcityschool.org.\r\nThis message does not necessarily reflect the views of the Forest City Regional School District, nor has it been approved or sanctioned by it. \r\n";
 			
 			$this->msg_bootstrap = CreateObject("email.msg_bootstrap");
-			$this->msg_bootstrap->ensure_mail_msg_exists('email.bosend.constructor', $this->debug_send);
+			$this->msg_bootstrap->ensure_mail_msg_exists('email.bosend.constructor', $this->debug_constructor);
 			
 			$this->not_set = $GLOBALS['phpgw']->msg->not_set;
 			if ($this->debug_constructor > 0) { echo 'email.bosend *constructor*: LEAVING<br>'; }
@@ -176,30 +180,30 @@
 		*/
 		function sendorspell()
 		{
-			if ($this->debug_sendorspell > 0) { echo 'ENTERING: email.bosend.sendorspell'.'<br>'; }
+			if ($this->debug_sendorspell > 0) { $GLOBALS['phpgw']->msg->dbug->out('ENTERING: email.bosend.sendorspell('.__LINE__.') <br>'); }
 			
-			if ($this->debug_sendorspell > 2) { 	echo 'email.bosend.sendorspell: data dump: $GLOBALS[HTTP_POST_VARS]<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST); echo '</pre>'."\r\n";
-									echo 'email.bosend.sendorspell: data dump: $GLOBALS[HTTP_GET_VARS]<pre>'; print_r($GLOBALS['phpgw']->msg->ref_GET); echo '</pre>'."\r\n"; }
+			if ($this->debug_sendorspell > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.sendorspell('.__LINE__.'): $GLOBALS[HTTP_POST_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_POST); }
+			if ($this->debug_sendorspell > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.sendorspell('.__LINE__.'): $GLOBALS[HTTP_GET_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_GET); }
 			
 			if ((isset($GLOBALS['phpgw']->msg->ref_POST['btn_spellcheck']))
 			&& ($GLOBALS['phpgw']->msg->ref_POST['btn_spellcheck'] != ''))
 			{
-				if ($this->debug_sendorspell > 1) { echo 'email.bosend.sendorspell: "btn_spellcheck" is set; calling $this->spellcheck()'.'<br>'; }
+				if ($this->debug_sendorspell > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.sendorspell('.__LINE__.'): "btn_spellcheck" is set; calling $this->spellcheck()'.'<br>'); }
 				$this->spellcheck();
 			}
 			elseif ((isset($GLOBALS['phpgw']->msg->ref_POST['btn_send']))
 			&& ($GLOBALS['phpgw']->msg->ref_POST['btn_send'] != ''))
 			{
-				if ($this->debug_sendorspell > 1) { echo 'email.bosend.sendorspell: "btn_send" is set; calling $this->send()'.'<br>'; }
+				if ($this->debug_sendorspell > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.sendorspell('.__LINE__.'): "btn_send" is set; calling $this->send()'.'<br>'); }
 				$this->send();
 			}
 			else
 			{
-				if ($this->debug_sendorspell > 1) { echo ': email.bosend.sendorspell: ERROR: neither "btn_spellcheck" not "btn_send" is set; fallback action $this->send()'.'<br>'; }
+				if ($this->debug_sendorspell > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.sendorspell('.__LINE__.'): ERROR: neither "btn_spellcheck" not "btn_send" is set; fallback action $this->send()'.'<br>'); }
 				$this->send();
 			}
 			
-			if ($this->debug_sendorspell > 0) { echo 'LEAVING: email.bosend.sendorspell'.'<br>'; }
+			if ($this->debug_sendorspell > 0) { $GLOBALS['phpgw']->msg->dbug->out('LEAVING: email.bosend.sendorspell('.__LINE__.')'.'<br>'); }
 		}
 		
 		
@@ -212,10 +216,10 @@
 		*/
 		function spellcheck()
 		{
-			if ($this->debug_spellcheck > 0) { echo 'ENTERING: email.bosend.spellcheck'.'<br>'; }
+			if ($this->debug_spellcheck > 0) { $GLOBALS['phpgw']->msg->dbug->out('ENTERING: email.bosend.spellcheck('.__LINE__.')'.'<br>'); }
 			
-			if ($this->debug_spellcheck > 2) { 	echo 'email.bosend.spellcheck: data dump: $GLOBALS[HTTP_POST_VARS]<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST); echo '</pre>'."\r\n";
-									echo 'email.bosend.spellcheck: data dump: $GLOBALS[HTTP_GET_VARS]<pre>'; print_r($GLOBALS['phpgw']->msg->ref_GET); echo '</pre>'."\r\n"; }
+			if ($this->debug_spellcheck > 2) { 	$GLOBALS['phpgw']->msg->dbug->out('email.bosend.spellcheck('.__LINE__.'): $GLOBALS[HTTP_POST_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_POST); }
+			if ($this->debug_spellcheck > 2) { 	$GLOBALS['phpgw']->msg->dbug->out('email.bosend.spellcheck: data dump('.__LINE__.'): $GLOBALS[HTTP_GET_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_GET); }
 			
 			// we may strip slashes, but that is all we should do before handing the body to the spell class
 			//$my_body = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($GLOBALS['phpgw']->msg->get_arg_value('body')));
@@ -253,7 +257,7 @@
 			
 			
 			
-			if ($this->debug_spellcheck > 0) { echo 'LEAVING: email.bosend.spellcheck'.'<br>'; }
+			if ($this->debug_spellcheck > 0) { echo 'LEAVING: email.bosend.spellcheck('.__LINE__.')'.'<br>'; }
 		}
 		
 		/*!
@@ -268,17 +272,22 @@
 		*/
 		function send()
 		{
-			if ($this->debug_send> 0) { echo 'ENTERING: email.bosend.send'.'<br>'; }
-			
-			if ($this->debug_send> 2) { 	echo 'email.bosend.send: data dump: $GLOBALS[HTTP_POST_VARS]<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST); echo '</pre>'."\r\n";
-									echo 'email.bosend.send: data dump: $GLOBALS[HTTP_GET_VARS]<pre>'; print_r($GLOBALS['phpgw']->msg->ref_GET); echo '</pre>'."\r\n";
-									return; }
-
+			if ($this->debug_send> 0) { $GLOBALS['phpgw']->msg->dbug->out('ENTERING: mail.bosend.send('.__LINE__.') <br>'); }
+			if ($this->debug_send> 2) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.send('.__LINE__.'): $GLOBALS[HTTP_POST_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_POST); }
+			if ($this->debug_send> 2) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.send('.__LINE__.'): $GLOBALS[HTTP_GET_VARS] DUMP:', $GLOBALS['phpgw']->msg->ref_GET); }
+			if ($this->debug_send> 3) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.send('.__LINE__.'): $this->debug_send > 3 PREMATURE EXIT, returning...'); return; }
 			
 			// ---- BEGIN BO SEND LOGIC
 			
-			$not_set = $GLOBALS['phpgw']->msg->not_set;
-			$msgball = $GLOBALS['phpgw']->msg->get_arg_value('msgball');
+			if (($GLOBALS['phpgw']->msg->get_isset_arg('msgball'))
+			&& ($GLOBALS['phpgw']->msg->get_arg_value('msgball') != ''))
+			{
+				$msgball = $GLOBALS['phpgw']->msg->get_arg_value('msgball');
+			}
+			else
+			{
+				$msgball = $this->not_set;
+			}
 			
 			//  -------  Init Array Structure For Outgoing Mail  -----------
 			$this->mail_out = Array();
@@ -289,6 +298,7 @@
 			$this->mail_out['mta_from'] = '<'.trim($GLOBALS['phpgw']->msg->get_pref_value('address')).'>';
 			$this->mail_out['mta_elho_domain'] = '';
 			$this->mail_out['message_id'] = $GLOBALS['phpgw']->msg->make_message_id();
+			$this->mail_out['in_reply_to'] = '';
 			$this->mail_out['boundary'] = $GLOBALS['phpgw']->msg->make_boundary();
 			$this->mail_out['date'] = '';
 			$this->mail_out['originating_ip'] = '['.$this->get_originating_ip().']';
@@ -495,6 +505,38 @@
 			}
 			$this->mail_out['date'] = gmdate('D, d M Y H:i:s').' '.$this->tz_offset;
 			
+			// -----  IN-REPLY-TO  -----
+			/*!
+			@property in-reply-to
+			@abstract if REPLY then this is the message ID of the msg we are replying to 
+			@discussion If this is a REPLY or REPLYALL then this is the main header value 
+			is the message ID of the msg we are replying to. Otherwise empty and not used.
+			Note: requires a mailserver_call.
+			*/
+			if
+			(
+				(	($GLOBALS['phpgw']->msg->recall_desired_action()== 'reply')
+					|| ($GLOBALS['phpgw']->msg->recall_desired_action()== 'replyall')
+				)
+				&&
+				(
+					$msgball != $not_set
+				)
+			)
+			{
+				// ===MAILSERVER_CALL===
+				$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msgball);
+				if ($this->debug_send > 2) { $GLOBALS['phpgw']->msg->dbug->out('class.bosend.send('.__LINE__.'): in-reply-to handling: $msg_headers DUMP:', $msg_headers);  }
+				if ($this->debug_send > 1) { $GLOBALS['phpgw']->msg->dbug->out('class.bosend.send('.__LINE__.'): in-reply-to handling: using value: '.htmlspecialchars($msg_headers->message_id) .'<br>'); }
+				$this->mail_out['in_reply_to'] = $msg_headers->message_id;
+			}
+			else
+			{
+				if ($this->debug_send > 2) { $GLOBALS['phpgw']->msg->dbug->out('class.bosend.send('.__LINE__.'): reply BUT no msgball so NO msg_headers, and $this->mail_out[in_reply_to] = $this->not_set <br>');  }
+				$this->mail_out['in_reply_to'] = $this->not_set;
+			}
+			
+			
 			// -----  MYMACHINE - The MTA HELO/ELHO DOMAIN ARG  -----
 			/*!
 			@property elho SMTP handshake domain value
@@ -595,6 +637,7 @@
 				$body = $body .$this->company_disclaimer;
 			}
 			
+			// ----  LINE LENGTH for formatting body   -----
 			// LINE LENGTH for "new" and our text of a forwarded text are 78 chars, 
 			// which is SHORTER than for reply quoted bodies that have ">" chars 
 			// this is only for text WE have written, not any other part of the body
@@ -836,12 +879,15 @@
 			
 			// -----  FORWARD HANDLING  ------
 			// Sanity Check - we can not "pushdown" a multipart/mixed original mail, it must be encaposulated
+			// PUSHDOWN NOT YET IMPLEMENTED
 			if (($this->mail_out['is_forward'] == True)
 			&& ($this->mail_out['fwd_proc'] == 'pushdown'))
 			{
+				// ===MAILSERVER_CALL===
 				$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header('');
 				$msg_struct = $GLOBALS['phpgw']->msg->phpgw_fetchstructure('');
 				
+				// === PGW_MSG_STRUCT CALL ===
 				$this->mail_out['fwd_info'] = $GLOBALS['phpgw']->msg->pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1);
 				if (($this->mail_out['fwd_info']['type'] == 'multipart')
 				|| ($this->mail_out['fwd_info']['subtype'] == 'mixed'))
@@ -851,6 +897,7 @@
 			}
 			
 			// Add Forwarded Mail as An Additional Encapsulated "message/rfc822" MIME Part
+			// PUSHDOWN NOT IMLEMENTED YET!!!
 			if (($this->mail_out['is_forward'] == True)
 			&& ($this->mail_out['fwd_proc'] == 'pushdown'))
 			{
@@ -862,10 +909,12 @@
 				$this->mail_out['body'][$body_part_num]['mime_body'] = Array();
 				
 				// ----  General Information about The Original Message  -----
+				// ===MAILSERVER_CALL===
 				$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header('');
 				$msg_struct = $GLOBALS['phpgw']->msg->phpgw_fetchstructure('');
 				
 				// use the "pgw_msg_struct" function to get the orig message main header info
+				// === PGW_MSG_STRUCT CALL ===
 				$this->mail_out['fwd_info'] = $GLOBALS['phpgw']->msg->pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1);
 				// add some more info
 				$this->mail_out['fwd_info']['from'] = $GLOBALS['phpgw']->msg->make_rfc2822_address($msg_headers->from[0]);
@@ -930,6 +979,7 @@
 				$m_line++;
 				
 				// dump the original BODY (with out its headers) here
+				// ===MAILSERVER_CALL===
 				$fwd_this = $GLOBALS['phpgw']->msg->phpgw_body();
 				// Explode Body into Array of strings
 				$this->mail_out['body'][$body_part_num]['mime_body'] = $GLOBALS['phpgw']->msg->explode_linebreaks(trim($fwd_this));
@@ -938,6 +988,8 @@
 			elseif (($this->mail_out['is_forward'] == True)
 			&& ($this->mail_out['fwd_proc'] == 'encapsulate'))
 			{
+				// RIGHT NOW THIS IS THE ONLY REALLY USED FORWARD METHOD
+				// even the "foward as quoted test" preference ALSO sends an encalsulated msg with whatever it quoted for forward in main body
 				// generate the message/rfc822 part that is the container for the forwarded mail
 				$body_part_num++;
 				$this->mail_out['body'][$body_part_num]['mime_headers'] = Array();
@@ -950,6 +1002,7 @@
 				$this->mail_out['body'][$body_part_num]['mime_headers'][2] = 'Content-Disposition: inline';
 				
 				// DUMP the original message verbatim into this part's "body" - i.e. encapsulate the original mail
+				// ===MAILSERVER_CALL===
 				$fwd_this['sub_header'] = trim($GLOBALS['phpgw']->msg->phpgw_fetchheader());
 				$fwd_this['sub_header'] = $GLOBALS['phpgw']->msg->normalize_crlf($fwd_this['sub_header']);
 				
@@ -960,6 +1013,7 @@
 				$fwd_this['sub_header'] = trim($fwd_this['sub_header']);
 				
 				// get the body
+				// ===MAILSERVER_CALL===
 				$fwd_this['sub_body'] = trim($GLOBALS['phpgw']->msg->phpgw_body());
 				//$fwd_this['sub_body'] = $GLOBALS['phpgw']->msg->normalize_crlf($fwd_this['sub_body']);
 				
@@ -1163,6 +1217,11 @@
 			if (count($this->mail_out['cc']) > 0)
 			{
 				$this->mail_out['main_headers'][$hdr_line] = 	'Cc: '.$GLOBALS['phpgw']->msg->addy_array_to_str($this->mail_out['cc']);
+				$hdr_line++;
+			}
+			if ($this->mail_out['in_reply_to'] != $this->not_set)
+			{
+				$this->mail_out['main_headers'][$hdr_line] = 	'In-Reply-To: '.$this->mail_out['in_reply_to'];
 				$hdr_line++;
 			}
 			$this->mail_out['main_headers'][$hdr_line] = 		'Subject: '.$subject;
