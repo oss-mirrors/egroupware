@@ -55,8 +55,6 @@
 
 	<span class="linkgroup">User Management</span><br>
 	<a href="admuser.php?<?php echo _rsidl; ?>">Moderator/User Manager</a><br>
-	<a href="admadduser.php?<?php echo _rsidl; ?>">Add User</a><br>
-	<a href="admaccapr.php?<?php echo _rsidl; ?>">Account Approval</a><br>
 	<a href="admgroups.php?<?php echo _rsidl; ?>">Groups Manager</a><br>
 	<a href="admmassemail.php?<?php echo _rsidl; ?>">Mass Email</a><br>
 	<a href="admlevel.php?<?php echo _rsidl; ?>">Rank Manager</a><br><br>
