@@ -43,7 +43,7 @@ save backup locally ?	backup	el	Τσεκάρετε για να αποθηκεύσετε τα αντίγραφα ασφαλ
 select archive type	backup	el	Επιλέξτε τύπο αρχειοθέτησης
 select interval	backup	el	Επιλέξτε μεσοδιάστημα
 settings	admin	el	Ρυθμίσεις
-show backup archives in phpgroupware ?	backup	el	Τσεκάρετε για εμφάνιση των αρχελιων αντιγράφων ασφαλείας στο phpGroupWare:
+show backup archives in egroupware ?	backup	el	Τσεκάρετε για εμφάνιση των αρχελιων αντιγράφων ασφαλείας στο eGroupWare:
 sql	backup	el	SQL
 tar	admin	el	tar
 tar.bz2	backup	el	tar.bz2

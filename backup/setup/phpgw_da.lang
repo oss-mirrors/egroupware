@@ -49,7 +49,7 @@ save backup locally ?	backup	da	Vælg for at gemme backuppen lokalt:
 select archive type	backup	da	Vælg arkiv type
 select interval	backup	da	Vælg interval
 settings	admin	da	indstillinger
-show backup archives in phpgroupware ?	backup	da	Vælg for at vise backup arkiver i eGroupWare:
+show backup archives in egroupware ?	backup	da	Vælg for at vise backup arkiver i eGroupWare:
 smbmount	backup	da	smbmount
 sql	backup	da	tar.gz
 tar	admin	da	tar

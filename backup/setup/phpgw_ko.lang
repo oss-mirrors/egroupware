@@ -49,7 +49,7 @@ save backup locally ?	backup	ko	로컬에 백업 저장 확인:
 select archive type	backup	ko	저장 타입을 선택하세요.
 select interval	backup	ko	간격을 선택하세요.
 settings	admin	ko	설정
-show backup archives in phpgroupware ?	backup	ko	그룹웨어에서 보여줄 백업 아카이브 확인:
+show backup archives in egroupware ?	backup	ko	그룹웨어에서 보여줄 백업 아카이브 확인:
 smbmount	backup	ko	smbmount
 sql	backup	ko	SQL
 tar	admin	ko	tar

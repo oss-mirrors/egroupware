@@ -43,7 +43,7 @@ save backup locally ?	backup	pt-br	Selecione para salvar a Cópia de Segurança lo
 select archive type	backup	pt-br	Selecione o tipo de arquivo
 select interval	backup	pt-br	Selecione o intervalo
 settings	admin	pt-br	configurações
-show backup archives in phpgroupware ?	backup	pt-br	Selecione para mostrar os arquivos de Cópia de Segurança no eGroupware
+show backup archives in egroupware ?	backup	pt-br	Selecione para mostrar os arquivos de Cópia de Segurança no eGroupware
 sql	backup	pt-br	SQL
 tar	admin	pt-br	tar
 tar.bz2	backup	pt-br	tar.bz2

@@ -53,7 +53,7 @@ select archive type	backup	bg	Изберете вид на архива
 select interval	backup	bg	Изберете интервал
 select transport application	backup	bg	Изберете приложение за прехвърляне на данните
 settings	admin	bg	настройки
-show backup archives in phpgroupware ?	backup	bg	Да се показват ли архивите в phpGroupWare?
+show backup archives in egroupware ?	backup	bg	Да се показват ли архивите в eGroupWare?
 smbmount	backup	bg	SMBMOUNT
 sql	backup	bg	SQL
 tar	admin	bg	tar

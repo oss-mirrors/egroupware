@@ -49,7 +49,7 @@ save backup locally ?	backup	zt	儲存本地備份？
 select archive type	backup	zt	選擇檔案格式
 select interval	backup	zt	選擇備份頻率
 settings	admin	zt	設定
-show backup archives in phpgroupware ?	backup	zt	在EGroupWare 顯示備份檔案？
+show backup archives in egroupware ?	backup	zt	在eGroupWare 顯示備份檔案？
 sql	backup	zt	SQL
 tar	admin	zt	tar
 tar.bz2	backup	zt	tar.bz2

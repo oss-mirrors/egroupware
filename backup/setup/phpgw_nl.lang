@@ -43,7 +43,7 @@ save backup locally ?	backup	nl	Aankruizen om local te archiveren:
 select archive type	backup	nl	Kies backup type
 select interval	backup	nl	Kies interval
 settings	admin	nl	instellingen
-show backup archives in phpgroupware ?	backup	nl	Aankruizen om backups te tonen in eGroupWate
+show backup archives in egroupware ?	backup	nl	Aankruizen om backups te tonen in eGroupWate
 sql	backup	nl	SQL
 tar	admin	nl	tar
 tar.bz2	backup	nl	tar.bz2

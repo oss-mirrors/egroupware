@@ -55,7 +55,7 @@ select archive type	backup	es-es	Seleccione tipo de archivo
 select interval	backup	es-es	Seleccione intervalo
 select transport application	backup	es-es	Seleccione aplicación de transporte
 settings	admin	es-es	Configuración
-show backup archives in phpgroupware ?	backup	es-es	¿Mostrar archivos de la copia de seguridad en el eGroupWare?
+show backup archives in egroupware ?	backup	es-es	¿Mostrar archivos de la copia de seguridad en el eGroupWare?
 smbmount	backup	es-es	SMBMOUNT
 sql	backup	es-es	SQL
 tar	admin	es-es	tar

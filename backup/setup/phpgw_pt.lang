@@ -43,7 +43,7 @@ save backup locally ?	backup	pt	Salvar local?
 select archive type	backup	pt	Sel. tipo arquivo
 select interval	backup	pt	Sel. intervalo
 settings	admin	pt	Configs
-show backup archives in phpgroupware ?	backup	pt	Mostrar Backup em phpGroupWare ?
+show backup archives in egroupware ?	backup	pt	Mostrar Backup em eGroupWare ?
 sql	backup	pt	SQL
 tar	admin	pt	tar
 tar.bz2	backup	pt	tar.bz2

@@ -49,7 +49,7 @@ save backup locally ?	backup	zh	选中此处将在本地保存备份档案:
 select archive type	backup	zh	选择档案类型
 select interval	backup	zh	选择备份时间间隔
 settings	admin	zh	配置
-show backup archives in phpgroupware ?	backup	zh	选中此处将在eGroupWare中显示备份档案:
+show backup archives in egroupware ?	backup	zh	选中此处将在eGroupWare中显示备份档案:
 sql	backup	zh	SQL
 tar	admin	zh	tar
 tar.bz2	backup	zh	tar.bz2
