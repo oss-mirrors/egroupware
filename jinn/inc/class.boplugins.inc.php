@@ -107,11 +107,14 @@
 
 				/* make plug config array for this field */
 				if($sets[3]) $conf_str = explode(';',$sets[3]);
+				if(is_array($conf_str))
+				{
 				foreach($conf_str as $conf_entry)
 				{
 					list($key,$val)=explode('=',$conf_entry);	
 					$conf_arr[$key]=$val;		
 				}
+			}
 
 				if (substr($input_name,3)==$sets[0])
 				{

@@ -42,7 +42,7 @@
 			));
 
 			$phpgw_table=$table;
-			$where_condition=$GLOBALS[where_condition];
+			$where_condition=stripslashes($GLOBALS[where_condition]);
 
 			if ($where_condition)
 			{
@@ -66,6 +66,8 @@
 			$this->template->pparse('out','form_header');
 
 			$fields = $this->bo->get_phpgw_fieldproperties($table);
+
+//die(var_dump($GLOBALS['HTTP_POST_VARS']));
 
 			foreach ( $fields as $fieldproperties )
 			{
@@ -132,7 +134,6 @@
 
 					//set vars for further generation
 					$table_name=$value;
-
 					// on change submit
 					$input='<select name="'.$input_name.'">';
 					$tables=$this->bo->get_site_tables($parent_site_id);
@@ -437,7 +438,6 @@
 				}
 				else
 				{
-					die();
 					$value = ereg_replace ("(<br />|<br/>)","",$value);
 					$input='<textarea name="'.$input_name.'" cols="60" rows="15">'.$value.'</textarea>';
 				}

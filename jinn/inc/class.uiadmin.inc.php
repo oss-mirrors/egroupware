@@ -133,6 +133,7 @@
 			if ($GLOBALS[where_condition])
 			{
 
+				//die(var_dump($GLOBALS));
 				$new_where='parent_'.$GLOBALS[where_condition];
 
 				$this->browse_record('phpgw_jinn_site_objects',$new_where);

@@ -103,7 +103,7 @@
 
 					$table_row.='<tr valign="top">';
 
-					$where_condition=$fieldnames[0]."='$recordvalues[0]'";
+					$where_condition=$fieldnames[0]."=$recordvalues[0]";
 					if ($bgclr==$GLOBALS['phpgw_info']['theme']['row_off'])
 					{
 						$bgclr=$GLOBALS['phpgw_info']['theme']['row_on'];

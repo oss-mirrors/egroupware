@@ -211,7 +211,7 @@
 				{
 					$SELECTED='SELECTED';
 				}
-				$options.="<option value=\"".$table['table_name']."\" $SELECTED>".$table['table_name']."</option>\n";
+				$options.="<option value=\"".$table['table_name']."\" $SELECTED>".stripslashes($table['table_name'])."</option>\n";
 			}
 			return $options;
 		}
@@ -232,7 +232,7 @@
 					{
 						$SELECTED='SELECTED';
 					}
-					$options.="<option value=\"$site\" $SELECTED>$display</option>\n";
+					$options.="<option value=\"$site\" $SELECTED>".stripslashes($display)."</option>\n";
 				}
 			}
 			return $options;
@@ -255,7 +255,7 @@
 					{
 						$SELECTED='SELECTED';
 					}
-					$options.="<option value=\"".$array[value]."\" $SELECTED>".$array[name]."</option>\n";
+					$options.="<option value=\"".$array[value]."\" $SELECTED>".stripslashes($array[name])."</option>\n";
 				}
 
 			}
@@ -274,7 +274,7 @@
 					{
 						$SELECTED='SELECTED';
 					}
-					$options.="<option value=\"".$array[value]."\" $SELECTED>".$array[name]."</option>\n";
+					$options.="<option value=\"".$array[value]."\" $SELECTED>".stripslashes($array[name])."</option>\n";
 				}
 
 			}
