@@ -281,7 +281,7 @@
 			if (!$target) $this->src_apps = array();
 
 			$from = $GLOBALS['phpgw']->translation->charset($userlang);
-			$to = $GLOBALS['phpgw']->translation->system_charset;
+			$to = $GLOBALS['phpgw']->translation->charset();
 			//echo "<p>solangfile::load_app('$app','$userlang') converting from charset('$userlang')='$from' to '$to'</p>\n";
 
 			if (file_exists($fn))
@@ -364,7 +364,7 @@
 		function write_file($app_name,$langarray,$userlang,$which='target')
 		{
 			$to = $GLOBALS['phpgw']->translation->charset($userlang);
-			$from = $GLOBALS['phpgw']->translation->system_charset;
+			$from = $GLOBALS['phpgw']->translation->charset();
 			//echo "<p>solangfile::write_file('$app_name',,'$userlang') converting from '$from' to charset('$userlang')='$to'</p>\n";
 
 			$fn = PHPGW_SERVER_ROOT . SEP . $app_name . SEP . ($app_name == 'setup' ? 'lang' : 'setup') . SEP . 'phpgw_' . $userlang . '.lang';

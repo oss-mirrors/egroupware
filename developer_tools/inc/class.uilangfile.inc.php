@@ -540,10 +540,14 @@
 			$browser = CreateObject('phpgwapi.browser');
 			$browser->content_header('phpgw_' . $userlang . '.lang');
 			$to = $GLOBALS['phpgw']->translation->charset($userlang);
-			$from = $GLOBALS['phpgw']->translation->system_charset;
+			$from = $GLOBALS['phpgw']->translation->charset();
 			while(list($mess_id,$data) = @each($langarray))
 			{
-				echo $mess_id . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $GLOBALS['phpgw']->translation->convert(trim($data['content']),$from,$to) . "\n";
+				$content = $GLOBALS['phpgw']->translation->convert(trim($data['content']),$from,$to);
+				if (!empty($content))
+				{
+					echo $mess_id . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $content . "\n";
+				}
 			}
 			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
