@@ -46,7 +46,7 @@
 	$t->set_var('lang_action',lang('Project preferences'));
 	$t->set_var('lang_select_tax',lang('Select tax for workhours'));
 	$t->set_var('lang_select',lang('Select per button !'));
-	$t->set_var('lang_procent',lang('%'));
+	$t->set_var('lang_percent',lang('%'));
 
 	$tax = $phpgw_info['user']['preferences']['projects']['tax'];
 	$t->set_var('tax',$tax);
