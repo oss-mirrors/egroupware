@@ -253,7 +253,8 @@
 
 			while (list ($key, $val) = each ($GLOBALS[HTTP_POST_VARS])) 
 			{
-				if (substr($key,0,6)=='editor')	$editors[]=$val;
+			   if (substr($key,0,6)=='editor')	$editors[]=$val;
+			   //if (substr($key,0,7)=='xeditor')	$existing_editors[]=$val;//existing editors
 			}
 
 			if (is_array($editors)) $editors=array_unique($editors);
@@ -270,9 +271,7 @@
 		// FIXME rename
 		function insert_phpgw_jinn_sites()
 		{
-//			$where_key = $GLOBALS[HTTP_GET_VARS][where_key];
-//  		$where_value = $GLOBALS[HTTP_GET_VARS][where_value];
-			$table='phpgw_jinn_sites';
+		   $table='phpgw_jinn_sites';
 
 			$status=$this->insert_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES]);
 

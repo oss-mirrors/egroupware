@@ -91,8 +91,43 @@
 			return $return_array;
 		}
 
+		/*
+		Function to retrieve a global get or post var where get overrules post
+		*/
+		function get_global_var($name,$priority='get')
+		{
+		   if($priority=='post')
+		   {
+			  $tmp_var=($GLOBALS[HTTP_POST_VARS][$name]?$GLOBALS[HTTP_POST_VARS][$name]:$GLOBALS[HTTP_GET_VARS][$name]);
+		   }
+		   else
+		   {
+			  $tmp_var=($GLOBALS[HTTP_GET_VARS][$name]?$GLOBALS[HTTP_GET_VARS][$name]:$GLOBALS[HTTP_POST_VARS][$name]);
+		   }
 
-		
+		   if($tmp_var)
+		   {
+			  return $tmp_var;
+		   }
+		   else
+		   {
+			  return false;
+		   }
+		}
+
+		function get_global_vars($name_arr,$priority='get')
+		{
+		   if(is_array($name_arr))
+		   {
+			  foreach($name_arr as $name)
+			  {
+				 $tmp_arr[]=$this->get_global_var($name,$priority);
+			  }
+			  return $tmp_arr;
+		   }
+		}
+
+
 
 		function check_safe_mode()
 		{

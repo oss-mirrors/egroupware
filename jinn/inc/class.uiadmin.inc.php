@@ -334,6 +334,8 @@
 			$access_rights = CreateObject('jinn.uiadminacl', $this->bo);
 			$access_rights->main_screen();
 
+			unset($this->bo->message);
+
 			$this->bo->save_sessiondata();
 
 		}
@@ -345,6 +347,8 @@
 			$access_rights = CreateObject('jinn.uiadminacl',$this->bo);
 			$access_rights->set_site_objects();
 
+			unset($this->bo->message);
+
 			$this->bo->save_sessiondata();
 		}
 
@@ -354,6 +358,8 @@
 			$this->ui->msg_box($this->bo->message);
 			$access_rights = CreateObject('jinn.uiadminacl',$this->bo);
 			$access_rights->set_sites();
+
+			unset($this->bo->message);
 
 			$this->bo->save_sessiondata();
 		}

@@ -120,7 +120,9 @@
 			$site_metadata=$this->phpgw_db->metadata('phpgw_jinn_sites');
 			$this->phpgw_db->free();	
 
-			$SQL="SELECT * FROM phpgw_jinn_sites WHERE site_id='$site_id'";
+			
+			//FIXME psql error;
+			$SQL="SELECT * FROM phpgw_jinn_sites WHERE site_id='$site_id';";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			$this->phpgw_db->next_record();
@@ -836,6 +838,7 @@
 		{
 			$this->site_db_connection($site_id);
 
+//			_debug_array($data);
 			foreach($data as $field)
 			{
 				if ($SQL_SUB) $SQL_SUB .= ', ';
