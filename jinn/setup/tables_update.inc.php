@@ -266,4 +266,28 @@
 		$GLOBALS['setup_info']['jinn']['currentver'] = '0.6.009';
 		return $GLOBALS['setup_info']['jinn']['currentver'];
 	}
+
+
+	$test[] = '0.6.009';
+	function jinn_upgrade0_6_009()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_jinn_sites','last_edit_date',array(
+			'type' => 'timestamp'
+		));
+
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.6.010';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	}
+
+
+	$test[] = '0.6.010';
+	function jinn_upgrade0_6_010()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_jinn_site_objects','last_edit_date',array(
+			'type' => 'timestamp'
+		));
+
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.6.011';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	}
 ?>

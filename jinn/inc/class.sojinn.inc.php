@@ -188,7 +188,6 @@
 		 $object_values[cur_upload_path] =$object_values[$pre.'upload_path'];
 
 		 return $object_values;
-
 	  }
 
 	  /****************************************************************************\
@@ -222,7 +221,7 @@
 		 return $num_rows;
 	  }
 
-
+	 
 	  function phpgw_table_metadata($table,$associative=false)
 	  {
 		 if($associative)
@@ -623,7 +622,6 @@
 
 		 while ($this->phpgw_db->next_record())
 		 {
-
 			unset($row);
 			foreach($fieldproperties as $field)
 			{
@@ -637,9 +635,8 @@
 			   }
 			}
 			$rows[]=$row;
-
 		 }
-
+		 
 		 return $rows;
 	  }
 

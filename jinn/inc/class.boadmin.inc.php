@@ -209,6 +209,17 @@
 				$HTTP_POST_VARS['FLDrelations'].=$new_relation;
 			}
 
+			// check if new ONE TO ONE relation parts are complete else drop them
+			if($HTTP_POST_VARS['3_relation_org_field'] && $HTTP_POST_VARS['3_relation_table_field'] 
+			&& $HTTP_POST_VARS['3_relation_object_conf'])
+			{
+			   $new_relation='3:'.$HTTP_POST_VARS['3_relation_org_field'].':null:'.$HTTP_POST_VARS['3_relation_table_field']
+			   .':'.$HTTP_POST_VARS['3_relation_object_conf'];
+
+			   if ($HTTP_POST_VARS['FLDrelations']) $HTTP_POST_VARS['FLDrelations'].='|';
+			   $HTTP_POST_VARS['FLDrelations'].=$new_relation;
+			}
+
 			// check all pluginfield for values
 			// put values in http_post_var
 
@@ -328,8 +339,6 @@
 		// FIXME rename
 		function update_phpgw_jinn_sites()
 		{
-//			$where_key = $GLOBALS[HTTP_POST_VARS][where_key];
-//			$where_value = $GLOBALS[HTTP_POST_VARS][where_value];
 			$table='phpgw_jinn_sites';
 
 			$status = $this->update_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES],$this->where_key,$this->where_value);
@@ -350,10 +359,11 @@
 
 		function update_phpgw_jinn_site_objects()
 		{
-//			$where_key = $GLOBALS[HTTP_POST_VARS][where_key];
-//			$where_value = $GLOBALS[HTTP_POST_VARS][where_value];
 			$table='phpgw_jinn_site_objects';
 
+
+//			_debug_array($_POST);
+//			die();
 			$status = $this->update_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES],$this->where_key,$this->where_value);
 
 			if ($status==1)	$this->message[info]=lang('Site Object succesfully saved');

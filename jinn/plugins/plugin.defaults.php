@@ -37,8 +37,7 @@
 
 	function plg_fi_def_blob($field_name,$value, $config,$attr_arr)
 	{
-		$input='<textarea name="'.$field_name.'" style="width:100%; height:200">'.$value.'</textarea>';
-
+		$input='<textarea name="'.$field_name.'" style="width:460px; height:80px">'.$value.'</textarea>';
 		return $input;
 	}
 
