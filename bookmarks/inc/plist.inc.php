@@ -15,8 +15,7 @@
 
 	function print_list_break (&$list_tpl, $category, $subcategory)
 	{
-		global $phpgw;
-		static $massupdate_shown;
+		global $phpgw, $massupdate_shown;
 
 		// construct URLs that include WHERE clauses for linking to the
 		// search page. The Category link will show a search WHERE the

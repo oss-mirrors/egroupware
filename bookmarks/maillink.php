@@ -1,60 +1,54 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - Bookmarks                                                 *
-  * http://www.phpgroupware.org                                              *
-  * Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
-  *                     http://www.renaghan.com/bookmarker                   *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare - Bookmarks                                                 *
+	* http://www.phpgroupware.org                                              *
+	* Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
+	*                     http://www.renaghan.com/bookmarker                   *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
-  /* $Id$ */
-  
-  // NOTE: This file hasn't been ported yet.
-  
-  $phpgw_info["flags"] = array("currentapp" => "bookmarks", "enabled_nextmatchs_class" => True);
-  include("../header.inc.php");  
-?>
-<center>Not avaiable</center>
-<?php
-  $phpgw->common->phpgw_exit();
+	/* $Id$ */
 
-$tpl->set_file(array(
-  standard   => "common.standard.tpl",
-  msie_js    => "common.msie_js.tpl",
-  body       => "maillink.body.tpl"
-));
+	$phpgw_info['flags'] = array(
+		'currentapp'              => 'bookmarks',
+		'enable_nextmatchs_class' => True,
+		'enable_categories_class' => True
+	);
 
-set_standard("mail-this-link", &$tpl);
+	include('../header.inc.php');
+	$phpgw->bookmarks  = createobject('bookmarks.bookmarks');
+	$phpgw->send       = createobject('phpgwapi.send');
 
-# if browser is MSIE, then need to add this bit
-# of javascript to the page so that MSIE correctly
-# brings quik-mark and mail-this-link popups to the front.
-if (check_browser() == "MSIE") {
-  $tpl->parse(MSIE_JS, "msie_js");
-}
+	$phpgw->template->set_file(array(
+		'common'     => 'common.tpl',
+		'footer'     => 'maillink_footer.tpl',
+		'body'       => 'maillink.body.tpl'
+	));
+	app_header(&$phpgw->template);
 
-### Submit Handler
-### Get a database connection
-$db   = new bk_db;
+	// if browser is MSIE, then need to add this bit
+	// of javascript to the page so that MSIE correctly
+	// brings quik-mark and mail-this-link popups to the front.
+	if (check_browser() == 'MSIE')
+	{
+		$phpgw->template->parse(MSIE_JS,'msie_js');
+	}
 
-## get from info from database based on current PHPLIB user
-## do NOT accept these as variables from the form page - big
-## security hole if you do!
-unset($from_name);
-unset($from);
-$query = sprintf("select name, email from auth_user where username = '%s'"
-  , ($auth->is_nobody()?"":$auth->auth["uname"]));
-$db->query($query);
-if ($db->Errno == 0) {
-  if ($db->next_record()){
-    $from_name = $db->f("name");
-    $from = $db->f("email");
+/*
+	unset($from_name);
+	unset($from);
+	$query = sprintf("select name, email from auth_user where username = '%s'", ($auth->is_nobody()?"":$auth->auth["uname"]));
+	$db->query($query);
+	if ($db->Errno == 0) {
+	  if ($db->next_record()){
+ 	   $from_name = $db->f("name");
+  	  $from = $db->f("email");
   }
-}
+} */
 
 ## Check if there was a submission
 while ( is_array($HTTP_POST_VARS)
@@ -63,12 +57,6 @@ while ( is_array($HTTP_POST_VARS)
 
   ## Send button clicked
   case "bk_send":
-
-    ## Do we have permission to do so?
-    if (!$perm->have_perm($bookmarker->mail_this_link_permission_required)) {
-      $error_msg .= "<br>You do not have permission to use this feature!";
-      break;
-    }
 
     ## Strip space and tab from anywhere in the To field
     $to = $validate->strip_space($to);
@@ -98,18 +86,11 @@ while ( is_array($HTTP_POST_VARS)
       break;
     }
 
-    ## if a site footer is defined, append it to the message
-    if (! empty($bookmarker->site_footer)) {
-      $mail_message = sprintf("%s\n\n%s", $message, $bookmarker->site_footer);
-    }
-
     ## add additional headers to our email
     $addl_headers = sprintf("From: %s <%s>", stripslashes($from_name), $from);
 
-    ## if site headers are defined, add them
-    if (! empty($bookmarker->site_headers)) {
-      $addl_headers = sprintf("%s\n%s", $addl_headers, $bookmarker->site_headers);
-    }
+		$addl_headers = sprintf('%s\n%s',$addl_headers,$phpgw->template->parse('_footer','footer'));
+
 
     ## send the message
     mail($to, $subject, $mail_message, $addl_headers);
@@ -127,31 +108,69 @@ if (empty($subject)) {
 }
 
 if (empty($message)) {
-## if a bookmarker id is passed, then get title and URL
-## from the database. otherwise those fields should be
-## passed in.
-  if ($id > 0) {
-## get record
-    $query = sprintf("select * from bookmark where id ='%s' 
-      and (username='%s' or public_f='Y')", $id, 
-      ($auth->is_nobody()?"":$auth->auth["uname"]));
-    $db->query($query);
-    if ($db->Errno == 0) {
-      if ($db->next_record()){
-        $title = htmlspecialchars(stripslashes($db->f("name")));
-        $url = $db->f("url");
-      }
-    }
-  } else {
-    $url = $murl;
-    $title = $mtitle;
-  }
-  $message = "I thought you would be interested in this website:\n$title\n$url";
+
+	$filtermethod = '( bm_owner=' . $phpgw_info['user']['account_id'];
+	if (is_array($phpgw->bookmarks->grants))
+	{
+		$grants = $phpgw->bookmarks->grants;
+		reset($grants);
+		while (list($user) = each($grants))
+		{
+			$public_user_list[] = $user;
+		}
+		reset($public_user_list);
+		$filtermethod .= " OR (bm_access='public' AND bm_owner in(" . implode(',',$public_user_list) . ')))';
+	}
+	else
+	{
+		$filtermethod .= ' )';
+	}
+
+	if ($mass_bm_id)
+	{
+		$bm_id = unserialize(stripslashes($mass_bm_id));
+		echo '<pre>'; print_r($bm_id); echo '</pre>';
+
+		while (list(,$id) = each($bm_id) && is_array($bm_id))
+		{
+			$phpgw->db->query("select * from phpgw_bookmarks where bm_id='$id' and $filtermethod",__LINE__,__FILE__);
+			$phpgw->db->next_record();
+
+			$links[] = array(
+				'name' => $phpgw->db->f('bm_name'),
+				'url'  => $phpgw->db->f('bm_url')
+			);		
+		}
+	}
+	else
+	{
+		$phpgw->db->query("select * from phpgw_bookmarks where bm_id='$bm_id' and $filtermethod",__LINE__,__FILE__);
+		$phpgw->db->next_record();
+
+		$links[] = array(
+			'name' => $phpgw->db->f('bm_name'),
+			'url'  => $phpgw->db->f('bm_url')
+		);
+	}
+
+	$message = "I thought you would be interested in the following link(s):\n";
+	while (list(,$link) = each($links))
+	{
+		$message .= sprintf("%s - %s\n",$link['name'],$link['url']);
+	}
 }
 
+	$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
+	$phpgw->template->set_var('header_message',lang('Send bookmark'));
+	$phpgw->template->set_var('lang_from',lang('Message from'));
+	$phpgw->template->set_var('lang_to',lang('To E-Mail Addresses'));
+	$phpgw->template->set_var('lang_subject',lang('Subject'));
+	$phpgw->template->set_var('lang_message',lang('Message'));
+	$phpgw->template->set_var('lang_send',lang('Send'));
+	$phpgw->template->set_var('from_name',$phpgw->common->display_fullname());
 
-$tpl->set_var(array(
-  FORM_ACTION     => $sess->self_url(),
+$phpgw->template->set_var(array(
+  FORM_ACTION     => $phpgw->link('/bookmarks/maillink.php'),
   FROM_NAME       => htmlspecialchars(stripslashes($from_name)),
   FROM            => $from,
   TO              => $to,

@@ -20,17 +20,26 @@
 		'nonavbar'   => True
 	);
 	include('../header.inc.php');
-
-	$bookmarks = new bmark;
+	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
+	$location_info = $phpgw->bookmarks->read_session_data();
 
 	if ($delete_x || $delete_y)
 	{
-		while (list(,$id) = each($item_cb))
+		if (is_array($item_cb))
 		{
-			$bookmarks->delete($id);
+			while (list(,$id) = each($item_cb))
+			{
+				$phpgw->bookmarks->delete($id);
+			}
+			$phpgw->session->appsession('message','bookmarks',count($item_cb) . ' bookmarks have been deleted');
 		}
-		$phpgw->common->appsession('message','bookmarks',count($item_cb) . 'bookmarks have been deleted');
 	}
 
-	Header('Location: ' . $phpgw->link('/bookmarks/list.php'));
+	if ($mail_x || $mail_y)
+	{
+		$mass_bm_id = serialize($item_cb);
+		$phpgw->redirect($phpgw->link('/bookmarks/maillink.php','mass_bm_id=' . urlencode($mass_bm_id)));
+	}
+
+	$phpgw->redirect($phpgw->link('/bookmarks/' . $location_info['returnto']));
 ?>

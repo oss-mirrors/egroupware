@@ -20,8 +20,8 @@
 	);
 
 	include('../header.inc.php');
-	$phpgw->bookmarks       = createobject('bookmarks.bookmarks');
 	include(PHPGW_APP_ROOT . '/inc/plist.inc.php');
+	$phpgw->bookmarks       = createobject('bookmarks.bookmarks');
 
 	$phpgw->template->set_file(array(
 		'common' => 'common.tpl',
@@ -40,7 +40,7 @@
 		$phpgw->bookmarks->save_session_data($location_info);
 	}
 
-	if (! $start && $start != 0)
+	if (!isset($start))
 	{
 		$start = $location_info['start'];
 	}
@@ -93,7 +93,7 @@
 	{
 		$total_matchs = lang('showing x',$total_bookmarks);
 	}
-	$phpgw->template->set_var('messages',$total_matchs);
+	$phpgw->template->set_var('showing',$total_matchs);
 
 
   // store the last page this user looked at in

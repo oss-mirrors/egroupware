@@ -1,4 +1,5 @@
 <!-- BEGIN common -->
+<center>{messages}</center>
 <table border="0" width="100%">
  <tr>
   <td align="right">
@@ -12,4 +13,6 @@
   </td>
  </tr>
 </table>
+
+</form>
 <!-- END common -->

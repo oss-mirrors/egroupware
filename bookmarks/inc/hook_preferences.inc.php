@@ -38,10 +38,10 @@
 		. '">' . lang('Import bookmarks') . '</a>';
 
 	echo '<br><a href="' . $phpgw->link('/preferences/acl_preferences.php','acl_app=bookmarks')
-		. '">' . lang('Grant Bookmark access') . '</a>';
+		. '">' . lang('Grant access') . '</a>';
 
 	echo '<br><a href="' . $phpgw->link('/preferences/categories.php','cats_app=bookmarks')
-		. '">' . lang('Bookmark categorys') . '</a>';
+		. '">' . lang('Categories') . '</a>';
 
 
 	section_end(); 

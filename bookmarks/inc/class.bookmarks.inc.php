@@ -110,6 +110,7 @@
      $p_tpl->set_var('search_link',$phpgw->link('/bookmarks/search.php'));
      $p_tpl->set_var('create_link',$phpgw->link('/bookmarks/create.php'));
      $p_tpl->set_var('list_link',$phpgw->link('/bookmarks/list.php'));
+     $p_tpl->set_var('tree_link',$phpgw->link('/bookmarks/tree.php'));
   }
 
   // function to load a drop down list box from one

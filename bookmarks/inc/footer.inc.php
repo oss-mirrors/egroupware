@@ -46,15 +46,15 @@
 	// print any info msgs from the current page
 	if ($msg)
 	{
-		$bk_print_msg = $msg;
+		$bk_print_msg .= $msg;
 	}
 
-/*	$session_message = unserialize($phpgw->common->appsession('message','bookmarks'));
+	$session_message = $phpgw->session->appsession('message','bookmarks');
 	if ($session_message)
 	{
-		$bk_print_msg = $session_message;
-	} */
-
+		$phpgw->session->appsession('message','bookmarks','');
+		$bk_print_msg .= $session_message;
+	}
 
 	// print any other info msgs that haven't
 	// been printed yet - like from another page
@@ -66,15 +66,15 @@
 
 	if ($bk_print_error_msg)
 	{
-		$bk_output_html = sprintf("<tr><td align=\"center\"><table cellpadding=2><tr><td><b>" . lang("error") . ":</b>%s</td></tr></table></td></tr>\n", $bk_print_error_msg);
+		$bk_output_html = '<center>' . lang('Error') . ': ' . $bk_print_error_msg . '</center>';
 	}
 	if ($bk_print_warn_msg)
 	{
-		$bk_output_html .= sprintf("<tr><td align=\"center\"><table cellpadding=2><tr><td><b>" . lang("Warning") . ":</b>%s</td></tr></table></td></tr>\n", $bk_print_warn_msg);
+		$bk_output_html .= '<center>' . lang("Warning") . ': ' . $bk_print_warn_msg . '</center>';
 	}
 	if ($bk_print_msg)
 	{
-		$bk_output_html .= sprintf("<tr><td align=\"center\"><table cellpadding=2><tr><td>%s</td></tr></table></td></tr>\n", $bk_print_msg);
+		$bk_output_html .= '<center>' . $bk_print_msg . '</center>';
 	}
 
 	if ($bk_output_html)

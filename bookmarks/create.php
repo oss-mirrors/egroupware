@@ -26,7 +26,7 @@
 	if ($edit_category_x || $edit_category_y)
 	{
 		grab_form_values('create.php',True);
-		$phpgw->redirect($phpgw->link('/bookmarks/categories.php','type=category'));
+		$phpgw->redirect($phpgw->link('/preferences/categories.php','cats_app=bookmarks'));
 	}
 
 	$location_info = $phpgw->bookmarks->read_session_data();
@@ -69,7 +69,7 @@
 	// brings quik-mark and mail-this-link popups to the front.
 	if (check_browser() == 'MSIE')
 	{
-		$phpgw->template->parse(MSIE_JS, 'msie_js');
+		#$phpgw->template->parse(MSIE_JS, 'msie_js');
 	}
 
 	// initialize variable that holds id of newly created bookmark

@@ -1,17 +1,17 @@
 <?php 
-  /**************************************************************************\
-  * phpGroupWare - Bookmarks                                                 *
-  * http://www.phpgroupware.org                                              *
-  * Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
-  *                     http://www.renaghan.com/bookmarker                   *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare - Bookmarks                                                 *
+	* http://www.phpgroupware.org                                              *
+	* Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
+	*                     http://www.renaghan.com/bookmarker                   *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 
 	$phpgw_info['flags'] = array(
 		'currentapp'               => 'bookmarks',
@@ -25,9 +25,15 @@
 
 	$phpgw->template->set_file(array(
 		'common' => 'common.tpl',
-		'body'   => 'list.body.tpl'
+		'body'   => 'list.body_tree.tpl'
 	));
 	app_header(&$phpgw->template);
+
+	$phpgw->template->set_var('list_mass_select_form',$phpgw->link('/bookmarks/mass_maintain.php'));
+	$phpgw->template->set_var('lang_massupdate',lang('Mass update:'));
+	$phpgw->template->set_var('massupdate_delete_icon','<input type="image" name="delete" border="0" src="' . PHPGW_IMAGES . '/delete.gif">');
+	$phpgw->template->set_var('massupdate_mail_icon','<input type="image" name="mail" border="0" src="' . PHPGW_IMAGES . '/mail.gif">');
+
 
 	$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
 	$phpgw->template->set_var('messages',lang('Tree view'));
@@ -108,7 +114,7 @@
 			$db2->query("select * from phpgw_bookmarks where bm_subcategory='" . $phpgw->db->f('cat_id') . "' order by bm_name, bm_url",__LINE__,__FILE__);
 			while ($db2->next_record())
 			{
-				$_tree = '...' . $db2->f('bm_name') . '|' . '<input type="checkbox" name="item_cb[]" value="' . $db2->f('bm_id') . '">';
+				$_tree = '...' . $db2->f('bm_name') . '|'; // . '<input type="checkbox" name="item_cb[]" value="' . $db2->f('bm_id') . '">';
 				if (($phpgw->bookmarks->grants[$db2->f('bm_owner')] & PHPGW_ACL_EDIT) || ($db2->f('bm_owner') == $phpgw_info['user']['account_id']))
 				{
 					$maintain_url  = $phpgw->link('/bookmarks/maintain.php','bm_id=' . $db2->f('bm_id'));
@@ -117,13 +123,15 @@
 					$view_url      = $phpgw->link('/bookmarks/view.php','bm_id=' . $db2->f('bm_id'));
 					$view_link     = sprintf('<a href="%s"><img src="%s/document.gif" align="top" border="0" alt="%s"></a>', $view_url,PHPGW_IMAGES,lang('View this bookmark'));
 
-					$mail_link     = sprintf('<a href="%s"><img align="top" border="0" src="%s/mail.gif" alt="%s"></a>',
-							$phpgw->link('/bookmarks/maillink.php','bm_id='.$db2->f("bm_id")),PHPGW_IMAGES,lang('Mail this bookmark'));
+//					$mail_link     = sprintf('<a href="%s"><img align="top" border="0" src="%s/mail.gif" alt="%s"></a>',
+//							$phpgw->link('/bookmarks/maillink.php','bm_id='.$db2->f("bm_id")),PHPGW_IMAGES,lang('Mail this bookmark'));
 
 					$rating_link   = sprintf('<img src="%s/bar-%s.jpg">',PHPGW_IMAGES,$db2->f('bm_rating'));
 
 					$redirect_link = '<a href="' . $phpgw->link('/bookmarks/redirect.php','bm_id=' . $db2->f('bm_id')) . '" target="_new">' . $phpgw->strip_html($db2->f('bm_name')) . '</a>';
-					$_tree        .= $maintain_link . $view_link . $mail_link . $rating_link . $redirect_link;
+					$_tree        .= '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $maintain_link . $view_link
+									. '</td><td>' . $redirect_link . '</td></tr><tr><td align="right"><input type="checkbox" name="item_cb[]" value="' . $db2->f('bm_id') . '"></td><td>'
+									. $db2->f('bm_desc') . '</td></tr></table>'; //$mail_link . $rating_link . $redirect_link;
 				}
 
 				$tree[] = $_tree;
