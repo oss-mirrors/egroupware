@@ -10,7 +10,7 @@
 	\**************************************************************************/
 	/* $Id$ */
 
-	$d1 = strtolower(substr(PHPGW_APP_INC,0,3));
+	$d1 = strtolower(substr($GLOBALS['phpgw_info']['server']['app_inc'],0,3));
 	if($d1 == 'htt' || $d1 == 'ftp' )
 	{
 		echo 'Failed attempt to break in via an old Security Hole!<br>'."\n";
@@ -22,7 +22,7 @@
 
 	if ($GLOBALS['phpgw_info']['user']['apps']['stocks'] && $GLOBALS['phpgw_info']['user']['preferences']['stocks']['enabled'])
 	{
-		$title = '<font color="#FFFFFF">'.lang('Stocks').'</font>';
+		$title = lang('Stocks');
 		
 		$portalbox = CreateObject('phpgwapi.listbox',
 			Array(

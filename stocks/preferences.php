@@ -51,12 +51,14 @@
 		{
 			$GLOBALS['phpgw']->preferences->delete('stocks','disabled','True');
 			$GLOBALS['phpgw']->preferences->add('stocks','enabled','True');
+			$GLOBALS['phpgw']->preferences->add('stocks','homepage_display','True');
 		}
 
 		if($mainscreen == 'disable')
 		{
 			$GLOBALS['phpgw']->preferences->delete('stocks','enabled','True');
 			$GLOBALS['phpgw']->preferences->add('stocks','disabled','True');
+			$GLOBALS['phpgw']->preferences->delete('stocks','homepage_display','True');
 		}
 
 		$GLOBALS['phpgw']->preferences->save_repository(True);
@@ -98,7 +100,7 @@
 
 	while($stock = @each($GLOBALS['phpgw_info']['user']['preferences']['stocks']))
 	{
-		if(($stock[0] != 'enabled') && ($stock[0] != 'disabled'))
+		if(($stock[0] != 'enabled') && ($stock[0] != 'disabled') && ($stock[0] != 'homepage_display'))
 		{
 			$dsymbol = urldecode($stock[0]);
 			$dname = urldecode($stock[1]);
