@@ -15,8 +15,13 @@
 	} else {
 		$d = opendir('.');
 		readdir($d); readdir($d);
-		$dom = readdir($d);
+		while (($dom = readdir($d)) && !is_numeric($dom));
 		closedir($d);
+
+		if (!$dom) {
+			/* should not happen */
+			exit("Fatal Error");
+		}
 	}
 
 	$path = dirname($_SERVER["REQUEST_URI"]) . "/" . $dom . "/index.php?" . $_SERVER["QUERY_STRING"];
