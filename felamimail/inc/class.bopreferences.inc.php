@@ -34,13 +34,14 @@
 		{
 			$data['emailConfigValid'] = true;
 
-			$imapServerTypes	= $this->boemailadmin->getIMAPServerTypes();
-			$profileData		= $this->boemailadmin->getProfile($this->profileID);
 			if($this->profileID < 0 || $this->profileID == '')
 			{
 				$data['emailConfigValid'] = false;
+				return $data;
 			}
 			
+			$imapServerTypes	= $this->boemailadmin->getIMAPServerTypes();
+			$profileData		= $this->boemailadmin->getProfile($this->profileID);
 			if($imapServerTypes[$profileData['imapType']]['protocol'] != 'imap')
 			{
 				$data['emailConfigValid'] = false;
