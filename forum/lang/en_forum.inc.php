@@ -9,7 +9,21 @@
 
 
 	case "forums":		$s = "Forums";		break;
-
+	case "return to forums":		$s = "Return to Forums";		break;
+	case "return to admin":		$s = "Return to Admin";		break;
+	case "new forum":		$s = "New Forum";		break;
+	case "new category":		$s = "New Category";		break;
+	case "edit":		$s = "Edit";		break;
+	case "category name":		$s = "Category Name";		break;
+	case "category description":		$s = "Category Description";		break;
+	case "forum name":		$s = "Forum Name";		break;
+	case "forum description":		$s = "Forum Description";		break;
+	case "add forum":		$s = "Add Forum";		break;
+	case "belongs to category":		$s = "Belongs to Category";		break;
+	case "add category":		$s = "Add Category";		break;
+	case "create new category":		$s = "Create New Category";		break;
+	case "create new forum":		$s = "Create New Forum";		break;
+	case "current categories and sub forums":		$s = "Current Categories and Sub Forums";		break;
 	case "new topic":		$s = "New Topic";		break;
 
 	case "admin":		$s = "Admin";		break;
