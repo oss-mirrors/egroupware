@@ -223,8 +223,58 @@
 	}
 	$this->got_structure = true;
 	return $info;
-    } 
-     
+    }
+
+	// ----  High-Level Function To Get The Subject String  -----
+	function get_subject($msg, $desired_prefix='Re: ')
+	{
+		if ( (! $msg->Subject) || ($msg->Subject == '') )
+		{
+			$subject = lang('no subject');
+		}
+		else
+		{
+			$subject = decode_header_string($msg->Subject);
+		}
+		// do we add a prefix like Re: or Fw:
+		if ($desired_prefix != '')
+		{
+			if (strtoupper(substr($subject, 0, 3)) != strtoupper(trim($desired_prefix)))
+			{
+				$subject = $desired_prefix . $subject;
+			}
+		}
+		return $subject;
+	}
+
+// ----  High-Level Function To Get The "so-and-so" wrote String   -----
+	function get_who_wrote($msg)
+	{
+		if ( (!isset($msg->from)) && (!isset($msg->reply_to)) )
+		{
+			$lang_somebody = 'somebody';
+			return $lang_somebody;
+		}
+		elseif ($msg->from[0])
+		{
+			$from = $msg->from[0];
+		}
+		else
+		{
+			$from = $msg->reply_to[0];
+		}
+		if ((!isset($from->personal)) || ($from->personal == ''))
+		{
+			$personal = $from->mailbox.'@'.$from->host;
+			//$personal = 'not set or blank';
+		}
+		else
+		{
+			$personal = $from->personal." ($from->mailbox@$from->host)";
+		}
+		return $personal;
+	}
+
     function header($stream,$msg_nr,$fromlength="",$tolength="",$defaulthost="")
     {
 	$info = new msg_headinfo;

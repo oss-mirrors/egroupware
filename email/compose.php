@@ -25,6 +25,7 @@
 	));
 	$t->set_block('T_compose_out','B_checkbox_sig','V_checkbox_sig');
 
+// ----  Handle Replying and Forwarding  -----
 	if ($msgnum)
 	{
 		$msg = $phpgw->msg->header($mailbox, $msgnum);
@@ -40,9 +41,7 @@
 				$reply = $msg->from[0];
 			}
 			$to = $reply->mailbox.'@'.$reply->host;
-			$subject = !$msg->Subject ? lang('no subject') : decode_header_string($msg->Subject);
-			$begin = strtoupper(substr($subject, 0, 3)) != 'RE:' ? 'Re: ' : '';
-			$subject = $begin . $subject;
+			$subject = $phpgw->msg->get_subject($msg,'Re: ');
 		}
 		if ($action == 'replyall')
 		{
@@ -66,26 +65,38 @@
 				}
 				$cc = implode(", ", $cclist);
 			}
-
-			$subject = !$msg->Subject ? lang('no subject') : decode_header_string($msg->Subject);
-			$begin = strtoupper(substr($subject, 0, 3)) != 'RE:' ? 'Re: ' : '';
-			$subject = $begin . $subject;
+			$subject = $phpgw->msg->get_subject($msg,'Re: ');
 		}
 
 		if ($action == 'forward')
 		{
-			$subject = !$msg->Subject ? lang('no subject') : decode_header_string($msg->Subject);
-			$begin = strtoupper(substr($subject, 0, 3)) != 'FW:' ? 'Fw: ' : '';
-			$subject = $begin . $subject;
+			$subject = $phpgw->msg->get_subject($msg,'Fw: ');
 		}
 
-		// This may be needed for multi-language support
-		//  $body = "\n\n\n$L_ORIG_MSG\n&gt\n";
-		$body = "\n\n\n$to wrote:\n&gt\n";
-		$numparts = !$struct->parts ? "1" : count($struct->parts);
+		// ----  Begin The Message Body  (of Fw or Re Body) -----
+		$who_wrote = $phpgw->msg->get_who_wrote($msg);
+		$lang_wrote = 'wrote';
+		$body = "\n\n\n" .$who_wrote .' '. $lang_wrote .": \n&gt\n";
+
+		// ----  Process Multiple Body Parts (if necessary)  of Fw or Re Body  -----
+		if (!$struct->parts)
+		{
+			$numparts = "1";
+		}
+		else
+		{
+			$numparts = count($struct->parts);
+		}
 		for ($i = 0; $i < $numparts; $i++)
 		{
-			$part = !$struct->parts[$i] ? $part = $struct : $part = $struct->parts[$i];
+			if (!$struct->parts[$i])
+			{
+				$part = $struct;
+			}
+			else
+			{
+				$part = $struct->parts[$i];
+			}
 			if (get_att_name($part) == "Unknown")
 			{
 				if (strtoupper($part->subtype) == 'PLAIN')
