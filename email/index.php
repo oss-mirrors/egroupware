@@ -320,8 +320,8 @@ function check_all()
 
            echo $phpgw->common->show_date($msg->udate);
 
-           echo "<td bgcolor=\"$bg\"><font size=\"2\" face=\"".$phpgw_info["theme"]["font"]."\">$size</font>"
-              . "</td></tr></font></td></tr>";
+           echo "</td><td bgcolor=\"$bg\"><font size=\"2\" face=\"".$phpgw_info["theme"]["font"]."\">$size</font>"
+              . "</td></tr></font></td></tr>\n\n";
         }
 ?>
 <tr>
