@@ -1,4 +1,4 @@
-#!/usr/bin/php
+#!/usr/bin/php -q
 <?php
 	/*******************************************************************\
 	* phpGroupWare - Backup                                             *
@@ -67,7 +67,7 @@
 		if ($bcomp == 'tar.bz2')
 		{
 			$end = '.bz2';
-			system("$bzip2 -z " . $out); 
+			system("$bzip2 -z " . $out . ' 2>&1 > /dev/null'); 
 			$out = $out . $end;
 		}
 		$output[]	= $out;
@@ -85,7 +85,7 @@
 		if ($bcomp == 'tar.bz2')
 		{
 			$end = '.bz2';
-			system("$bzip2 -z " . $out); 
+			system("$bzip2 -z " . $out . ' 2>&1 > /dev/null'); 
 			$out = $out . $end;
 		}
 		$output[]	= $out;
@@ -100,7 +100,7 @@
 			chdir('/home/{lid}');
 			$out	= $basedir . $bdateout . '_phpGWBackup_email_{lid}.' . $end;
 			$in		= ' Maildir';
-			system("$command" . $out . $in);
+			system("$command" . $out . $in . ' 2>&1 > /dev/null');
 
 			if ($bcomp == 'tar.bz2')
 			{
@@ -190,14 +190,13 @@
 
 			$rip = '//' . $rip;
 
-			system("mount.smbfs $rip$rpath $smbdir -o username=$ruser,password=$rpwd,rw");
+			system("mount.smbfs $rip$rpath $smbdir -o username=$ruser,password=$rpwd,rw 2>&1 > /dev/null");
 
-			chdir($smbdir);
 			for ($i=0;$i<count($output);$i++)
 			{
-				system("cp " . $output[$i] . ' ' . $input[$i]);
+				system("cp " . $output[$i] . ' ' . $smbdir . '/');
+				echo 'transfer of ' . $output[$i] . ' through smbmount: success !' . "\n";
 			}
-			chdir($basedir);
 			system("smbumount " . $smbdir);
 		}
 	}

@@ -212,7 +212,7 @@
 
 						$this->t->set_var(array
 						(
-							'archive' => $GLOBALS['phpgw']->strip_html($archives[$i])
+							'archive' => 'archives/' . $archives[$i]
 						));
 
 						$this->t->set_var('delete',$GLOBALS['phpgw']->link('/index.php','menuaction=backup.uibackup.web_backup&delete=True&archive='

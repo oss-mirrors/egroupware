@@ -11,7 +11,7 @@ umask 022
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 export PATH
 
-php {script_path}/phpgw_data_backup.php
+php -q {script_path}/phpgw_data_backup.php
 
 echo -e -n "\nbackup of the phpgroupware data done\n" ;
 
