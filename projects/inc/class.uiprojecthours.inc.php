@@ -232,6 +232,8 @@
 
 			$this->t->set_var('state_list',$state_list);
 
+			$coordinator = $this->boprojects->return_value('co',$project_id);
+
 			if (!$this->start)
 			{
 				$this->start = 0;
@@ -301,8 +303,6 @@
 										'minutes' => $minutes));
 
 				$link_data['hours_id'] = $hours[$i]['hours_id'];
-
-				$coordinator = $this->boprojects->return_value('co',$project_id);
 
 				if ($this->state != 'billed')
 				{

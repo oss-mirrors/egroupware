@@ -68,8 +68,9 @@
 				case 'both':	$idfilter = "WHERE employee='" . $account_id . "' AND  project_id='" . $project_id . "'"; break;
 			}
 
-			$this->db->query('SELECT SUM(minutes) as min,num,descr FROM phpgw_p_hours,phpgw_p_activities ' . $idfilter . ' AND phpgw_p_hours.activity_id='
-							. 'phpgw_p_activities.id ' . $filter . ' GROUP BY phpgw_p_activities.descr',__LINE__,__FILE__);
+			$this->db->query('SELECT SUM(minutes) as min,num,descr FROM phpgw_p_hours,phpgw_p_activities ' . $idfilter
+							. ' AND phpgw_p_hours.activity_id=phpgw_p_activities.id ' . $filter
+							. ' GROUP BY phpgw_p_activities.descr,phpgw_p_activities.num',__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{
