@@ -1,3 +1,4 @@
+actions	polls	da	handlinger
 add answer to poll	polls	da	Tilføj svar til afstemning
 add answers	polls	da	Tilføj svarene
 add new poll question	polls	da	Tilføj ny afstemnings spørgsmål
@@ -18,6 +19,7 @@ poll settings	common	da	Afstemnings indstillinger
 polls	common	da	Afstemninger
 question has been updated	polls	da	Spørgsmål er opdateret
 select current poll	polls	da	Vælg den nuværende afstemning
+settings	polls	da	indstillinger
 settings updated	polls	da	Indstillingerne er opdateret
 show answers	polls	da	Vis svar
 show questions	common	da	Vis spørgsmål
