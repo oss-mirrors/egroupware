@@ -386,12 +386,7 @@ class sowiki	// DB-Layer
 	{
 		global $PgTbl, $IwTbl, $SwTbl, $LkTbl;
 
-		$this->db->lock(array(
-			$this->tblNames['PgTbl'],
-			$this->tblNames['IwTbl'],
-			$this->tblNames['SwTbl'],
-			$this->tblNames['LkTbl']
-		),'write');
+		$this->db->lock(array($this->PgTbl,$this->IwTbl,$this->SwTbl,$this->LkTbl),'write');
 	}
 
 	/*
