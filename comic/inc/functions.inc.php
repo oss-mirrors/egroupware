@@ -31,8 +31,8 @@ $g_censor_level = array(0 => 'G',
                         1 => 'PG',
                         2 => 'R');
 
-$g_image_source = array(0 => 'STATIC',
-                        1 => 'SNARFED');
+$g_image_source = array(0 => 'Remote',
+                        1 => 'Local');
 $g_dayofweek    = array(Mon => 1,
                         Tue => 2,
                         Wed => 3,
@@ -155,7 +155,7 @@ function comic_resolve_linkurl($status, $fetch_url, &$link_url, &$comment)
                  *************************************************************/
                 if ($link_url == "")
                 {
-                    $link_url = $phpgw->link($PHP_SELF);
+                    $link_url = $phpgw->link("/comic/index.php");
                     $link_tgt = "_self";
                 }
                 
@@ -167,7 +167,7 @@ function comic_resolve_linkurl($status, $fetch_url, &$link_url, &$comment)
         /**********************************************************************
          * need to break the link url
          *********************************************************************/
-        $link_url = $phpgw->link($PHP_SELF);
+        $link_url = $phpgw->link("/comic/index.php");
         $link_tgt = "_self";
     }
 
@@ -579,10 +579,10 @@ function comic_match_bar($start, $end, $indexlimit,
     $matchs_tpl->
         set_var
         (array(next_matchs_left  =>
-               $phpgw->nextmatchs->left($PHP_SELF,$start,$indexlimit,""),
+               $phpgw->nextmatchs->left("/comic/index.php",$start,$indexlimit,""),
                next_matchs_label => $showstring,
                next_matchs_right =>
-               $phpgw->nextmatchs->right($PHP_SELF,$start,$indexlimit,""),
+               $phpgw->nextmatchs->right("/comic/index.php",$start,$indexlimit,""),
                navbar_bg         => $phpgw_info["theme"]["navbar_bg"],
                navbar_text       => $phpgw_info["theme"]["navbar_text"]));
     $matchs_tpl->parse(MATCHS, "matchs");

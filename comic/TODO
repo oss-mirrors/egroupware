@@ -9,3 +9,5 @@ TODO:
 06) get the pgsql table built
 07) investigate using libcurl with php
 08) a number of comic parsers should be resolved static
+09) reset date/imageurl
+   update phpgw_comic_data set data_imageurl='', data_date='' where data_date>'0'
