@@ -37,17 +37,17 @@
 					'bm_owner' => $public_user_list,
 				),'))',(boolean)$cat_list,' AND ',array(
 					'bm_category' => $cat_list,
-				),(boolean)$where_clause,' AND ',$where_clause,' ORDER BY bm_category, bm_name');
+				),(boolean)$where_clause,' AND ',$where_clause);
 
 			if ($start !== False)
 			{
 				$this->db->select($this->table,'count(*)',$where,__LINE__,__FILE__);
 				$this->total_records = $this->db->next_record() ? $this->db->f(0) : 0;
-				$this->db->select($this->table,'*',$where,__LINE__,__FILE__,$start);
+				$this->db->select($this->table,'*',$where.' ORDER BY bm_category, bm_name',__LINE__,__FILE__,$start);
 			}
 			else
 			{
-				$this->db->select($this->table,'*',$where,__LINE__,__FILE__);
+				$this->db->select($this->table,'*',$where.' ORDER BY bm_category, bm_name',__LINE__,__FILE__);
 				$this->total_records = $this->db->num_rows();
 			}
 			while ($this->db->next_record())
