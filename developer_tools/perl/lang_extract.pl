@@ -12,7 +12,7 @@
   # $Id$ #
  
 	# lang_extract.pl (c) 2001 Miles Lott
-	# grep the current dir for lang calls, parse into an english lang file
+	# grep the current dir and subdir for lang calls, parse into an english lang file
 	# Requires perl and the source files.
 	# May only work in bash also.  Makes system calls to grep and sort.
 	# Takes one arg, the appname (default is 'appname')
@@ -27,7 +27,8 @@
 	$_appname = $appname;
 	$_appname =~ s/_/ /g;
 
-	%all_lang = `grep 'lang\(' *.php`;
+	%all_lang = `grep -r 'lang\(' *`;
+	# %all_lang = `grep 'lang\(' *.php`;
 
 	sub inarray
 	{
