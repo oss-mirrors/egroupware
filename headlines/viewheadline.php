@@ -22,11 +22,11 @@
 
 	$con = (int)get_var('con',array('POST','GET'));
 
-	if (! $con || $_POST['cancel'])
+	if(!$con || $_POST['cancel'])
 	{
 		$GLOBALS['phpgw']->redirect_link('/headlines/admin.php');
 	}
-	
+
 	$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Headlines Administration');
 	$GLOBALS['phpgw']->common->phpgw_header();
 	echo parse_navbar();
@@ -70,14 +70,14 @@
 	$GLOBALS['phpgw']->template->set_var('th_bg2',$GLOBALS['phpgw_info']['theme']['th_bg']);
 	$GLOBALS['phpgw']->template->set_var('lang_current_cache',lang('Current headlines in cache'));
 
-	if ($GLOBALS['phpgw']->db->num_rows() == 0)
+	if($GLOBALS['phpgw']->db->num_rows() == 0)
 	{
 		$GLOBALS['phpgw']->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 		$GLOBALS['phpgw']->template->set_var('value',lang('None'));
 		$GLOBALS['phpgw']->template->parse('listing_rows','listing_row',True);
 	}
 
-	while ($GLOBALS['phpgw']->db->next_record())
+	while($GLOBALS['phpgw']->db->next_record())
 	{
 		$GLOBALS['phpgw']->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 		$GLOBALS['phpgw']->template->set_var('value','<a href="' . $GLOBALS['phpgw']->db->f('link') . '" target="_new">' . $GLOBALS['phpgw']->db->f('title') . '</a>');
