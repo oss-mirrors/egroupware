@@ -151,7 +151,7 @@
     } else {
        if ($month && $day && $year) {
           $phpgw->common->phpgw_header();
-          $phpgw->common->navbar();
+          echo parse_navbar();
           echo "<p><center>" . lang("You have entered an invalid date"). "</center>";
           echo "<br>$month - $day - $year";
           exit;
@@ -162,7 +162,7 @@
     } else {
        if ($end_month && $end_day && $end_year) {
           $phpgw->common->phpgw_header();
-          $phpgw->common->navbar();
+          echo parse_navbar();
           echo "<p><center>" . lang("You have entered an invalid date"). "</center>";
           echo "<br>$end_month - $end_day - $end_year";
           exit;
@@ -173,13 +173,13 @@
                         . " WHERE id = '".$activity."'");
     if (!$phpgw->db->next_record()) {
         $phpgw->common->phpgw_header();
-        $phpgw->common->navbar();
+        echo parse_navbar();
         echo "<p><center>" . lang("You have selected an invalid activity"). "</center>";
         exit;
     }
     if (($phpgw->db->f("remarkreq")=="Y") and (!$remark)){
         $phpgw->common->phpgw_header();
-        $phpgw->common->navbar();
+        echo parse_navbar();
         echo "<p><center>" . lang("You have to enter a remark"). "</center>";
         exit;
     }
