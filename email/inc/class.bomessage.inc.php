@@ -596,6 +596,20 @@
 					{
 						$first_presentable = $first_presentable .'&encoding=qprint';
 					}
+					elseif (stristr($this->part_nice[$i]['m_keywords'], 'base64'))
+					{
+						// usually only spammers do this, but *RARELY* the text message is base 64 encoded
+						// then we must decode in the reply process
+						$first_presentable = $first_presentable .'&encoding=base64';
+					}
+					// also check for this mess...
+					if (stristr($this->part_nice[$i]['m_keywords'], 'html'))
+					{
+						// hotmail.com is the ONLY mailer to BREAK RFC RULES and send
+						// out html parts WITHOUT the required PLAIN part
+						// then we must decode in the reply process
+						$first_presentable = $first_presentable .'&subtype=html';
+					}
 					break;
 				}
 			}

@@ -22,6 +22,7 @@
 		var $debug = False;
 		var $xi;
 		var $xml_functions = array();
+		var $my_validator;
 		
 		var $soap_functions = array(
 			'get_langed_labels' => array(
@@ -62,25 +63,9 @@
 				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 			}
 			
-			// do we attempt to reuse the existing msg object?
-			if ($attempt_reuse)
-			{
-				// no not create, we will reuse existing
-				if ($this->debug) { echo 'email.bocompose.compose: reusing existing mail_msg login'.'<br>'; }
-				// we need to feed the existing object some params begin_request uses to re-fill the msg->args[] data
-				$args_array = Array();
-				// any args passed in $args_array will override or replace any pre-existing arg value
-				$args_array = $reuse_feed_args;
-				// add this to keep the error checking code (below) happy
-				$args_array['do_login'] = True;
-			}
-			else
-			{
-				if ($this->debug) { echo 'email.bocompose.compose: cannot or not trying to reusing existing'.'<br>'; }
-				$args_array = Array();
-				// should we log in or not
-				$args_array['do_login'] = True;
-			}
+			$args_array = Array();
+			// should we log in or not
+			$args_array['do_login'] = True;
 			
 			// "start your engines"
 			if ($this->debug == True) { echo 'email.bocompose.compose: call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
@@ -210,6 +195,8 @@
 					// to quote the first body port that has some text, which could be anywhere.
 					// NOTE: we should ALWAYS get a "First Presentable" value from class.bomessage
 					// if not (a rare and screwed up situation) then assume msgball[part_no]=1
+					// Also, if the first presentable part is encoded as qprint or base64, or is subtype html
+					// class.bomessage should pass that info along as well
 					if ((!isset($msgball['part_no']))
 					|| ($msgball['part_no'] == ''))
 					{
@@ -220,7 +207,8 @@
 					
 					$bodystring = $GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball);
 					// see if we have to un-do qprint (or other) encoding of the part we are about to quote
-					if ($GLOBALS['phpgw']->msg->get_isset_arg('encoding'))
+					if (($GLOBALS['phpgw']->msg->get_isset_arg('encoding'))
+					|| ($GLOBALS['phpgw']->msg->get_isset_arg('subtype')))
 					{
 						// see if we have to un-do qprint encoding (fairly common)
 						if ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'qprint')
@@ -228,11 +216,21 @@
 							$bodystring = $GLOBALS['phpgw']->msg->qprint($bodystring);
 						}
 						// *rare, maybe never seen* see if we have to un-do base64 encoding
-						elseif ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'qprint')
+						elseif ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'base64')
 						{
 							// a human readable body part (non-attachment) should NOT be base64 encoded
 							// but you can never account for idiots
 							$bodystring = $GLOBALS['phpgw']->msg->de_base64($bodystring);
+						}
+						// after that idiot check, we need another now as well...
+						// *TOTALLY IDIOTIC* hotmail.com may send HTML ONLY mail
+						// without the rfc REQUIRED text only part, so we have to strip html
+						if ($GLOBALS['phpgw']->msg->get_arg_value('subtype') == 'html')
+						{
+							// class validator has the required function
+							$this->my_validator = CreateObject("phpgwapi.validator");
+							// you can never account for idiots, there should be a plain version of this IN THE MAIL
+							$bodystring = $this->my_validator->strip_html($bodystring);
 						}
 					}
 					// "normalize" all line breaks into CRLF pairs

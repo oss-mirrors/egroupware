@@ -12,25 +12,9 @@
 &nbsp;	<!-- &nbsp; Lame Seperator &nbsp; --> &nbsp;
 
 <!-- BEGIN B_arrows_form_table -->
-<script type="text/javascript">
-function do_navigate(act)
-{
-	document.{arrows_form_name}.start.value = act;
-	document.{arrows_form_name}.submit();
-}
-
-</script>
 <table border="0" cellpadding="0" cellspacing="1" width="95%" align="center">
 <tr bgcolor="{arrows_backcolor}">
 	<td width="2%" align="left" valign="top">
-		<form method="POST" action="{arrows_form_action}" name="{arrows_form_name}">
-		<input type="hidden" name="fldball_fake_uri" value="{current_fldball_fake_uri}">
-		<input type="hidden" name="sort" value="{current_sort}">
-		<input type="hidden" name="order" value="{current_order}">
-		<!-- bogus initial start value, will be changed by on click call -->
-		<input type="hidden" name="start" value="0">
-		<!-- preserve search results here -->
-		{mlist_hidden_vars}
 		<table border="0" bgcolor="{arrows_td_backcolor}" cellspacing="0" cellpadding="0">
 		<tr>
 			<td align="left">
@@ -66,7 +50,6 @@ function do_navigate(act)
 		</tr>
 		</table>
 	</td>
-  </form>
 </tr>
 </table>
 <!-- END B_arrows_form_table -->

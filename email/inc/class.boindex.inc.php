@@ -337,11 +337,23 @@
 			$this->xi['arrows_backcolor'] = $GLOBALS['phpgw_info']['theme']['row_off'];
 			//$this->xi['arrows_td_backcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
 			$this->xi['arrows_td_backcolor'] = '';
+			
+			$this->xi['current_sort'] = $GLOBALS['phpgw']->msg->get_arg_value('sort');
+			$this->xi['current_order'] = $GLOBALS['phpgw']->msg->get_arg_value('order');
+			$this->xi['current_start'] = $GLOBALS['phpgw']->msg->get_arg_value('start');
+
+			$nav_common_uri = $GLOBALS['phpgw']->link(
+								'/index.php',
+								 'menuaction=email.uiindex.index'
+								.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
+								.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum()
+								.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+								.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order'));
+			
 			$nav_args = Array (
 				'start'		=> $GLOBALS['phpgw']->msg->get_arg_value('start'),
-				'total'		=> $this->xi['folder_info']['number_all'],
-				'cmd_prefix'	=> 'do_navigate(\'',
-				'cmd_suffix'	=> '\')'
+				'common_uri'	=> $nav_common_uri,
+				'total'		=> $this->xi['folder_info']['number_all']
 			);
 			$arrows_links = array();
 			$arrows_links = $this->nextmatchs->nav_left_right_imap($nav_args);
