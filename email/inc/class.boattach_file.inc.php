@@ -2,7 +2,7 @@
 	/**************************************************************************\
 	* AngleMail - email BO Class for Attaching Files						*
 	* http://www.anglemail.org									*
-	* File adapted directly from phpGroupWare file email/attach_file.php		*
+	* File adapted directly from eGroupWare file email/attach_file.php		*
 	* http://www.egroupware.org									*
 	* That file was authored by Joseph Engo <jengo@phpgroupware.org>		*
 	* Previous Maintainer notes that server side file handling was borrowed 	*
@@ -283,7 +283,7 @@
 			$alert_msg = '';
 			$totalfiles = 0;
 		
-			// ensure existance of PHPGROUPWARE temp dir
+			// ensure existance of eGroupWare temp dir
 			// note: this is different from apache temp dir, and different from any other temp file location set in php.ini
 			//if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir']))
 			if (!is_dir($GLOBALS['phpgw_info']['server']['temp_dir']))
