@@ -15,8 +15,59 @@
 	$test[] = '0.0.0';
 	function tts_upgrade0_0_0()
 	{
-		$GLOBALS['phpgw_setup']->oProc->RenameTable('ticket','phpgw_tts_tickets');
+		$GLOBALS['phpgw_setup']->oProc->CreateTable('phpgw_tts_tickets',array(
+			'fd' => array(
+				'ticket_id' 			=> array('type' => 'auto','nullable' => False),
+				'ticket_group' 			=> array('type' => 'varchar','precision' => '40'),
+				'ticket_priority' 		=> array('type' => 'int','precision' => '2','nullable' => False),
+				'ticket_owner' 			=> array('type' => 'varchar','precision' => '10'),
+				'ticket_assignedto' 	=> array('type' => 'varchar','precision' => '10'),
+				'ticket_subject' 		=> array('type' => 'varchar','precision' => '255'),
+				'ticket_category' 		=> array('type' => 'varchar','precision' => '25'),
+				'ticket_billable_hours' => array('type' => 'decimal','precision' => '8','scale' => '2','nullable' => False),
+				'ticket_billable_rate' 	=> array('type' => 'decimal','precision' => '8','scale' => '2','nullable' => False),
+				'ticket_status' 		=> array('type' => 'char','precision' => '1','nullable' => False),
+				'ticket_details' 		=> array('type' => 'text','nullable' => False),
+			),
+			'pk' => array('ticket_id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		));
 
+		$GLOBALS['phpgw_setup']->oProc->CreateTable('phpgw_tts_views',array(
+			'fd' => array(
+				'view_id' 					=> array('type' => 'int','precision' => '4','nullable' => False),
+				'view_account_id' 		=> array('type' => 'varchar','precision' => '40','nullable' => True),
+				'view_time' 				=> array('type' => 'int','precision' => '4','nullable' => False)
+			),
+			'pk' => array(),
+			'ix' => array(),
+			'fk' => array(),
+			'uc' => array()
+		));
+
+		$db2 = $GLOBALS['phpgw_setup']->db;	// we need a 2. result-set
+		$GLOBALS['phpgw_setup']->oProc->query($sql="SELECT t.*,u.account_id AS owner,a.account_id as assingedto FROM ticket t,phpgw_accounts u LEFT JOIN phpgw_accounts a ON t.t_assignedto=a.account_lid WHERE t.t_user=u.account_lid");
+
+		while ($GLOBALS['phpgw_setup']->oProc->next_record())
+		{
+			$ticket = array(
+				't_id' => $GLOBALS['phpgw_setup']->oProc->f('t_id'),
+				't_priority' => $GLOBALS['phpgw_setup']->oProc->f('t_priority'),
+				'owner' => $GLOBALS['phpgw_setup']->oProc->f('owner'),
+				'assignedto' => $GLOBALS['phpgw_setup']->oProc->f('assignedto'),
+				't_subject' => $GLOBALS['phpgw_setup']->oProc->f('t_subject'),
+				't_timestamp_closed' => $GLOBALS['phpgw_setup']->oProc->f('t_timestamp_closed'),
+				't_detail' => $GLOBALS['phpgw_setup']->oProc->f('t_detail')
+			);
+			$db2->query($sql="INSERT INTO phpgw_tts_tickets (ticket_id,ticket_group,ticket_priority,ticket_owner,ticket_assignedto,ticket_subject,ticket_category,ticket_billable_hours,ticket_billable_rate,ticket_status,ticket_details) VALUES ($ticket[t_id],'0',$ticket[t_priority],'$ticket[owner]','$ticket[assignedto]','$ticket[t_subject]','','0.00','0.00','".(!$ticket['t_timestamp_closed']?'O':'X')."','$ticket[t_detail]')",__LINE__,__FILE__);
+		}
+
+		$GLOBALS['phpgw_setup']->oProc->DropTable('ticket');
+		$GLOBALS['phpgw_setup']->oProc->DropTable('category');
+		$GLOBALS['phpgw_setup']->oProc->DropTable('department');
+		
 		$GLOBALS['setup_info']['tts']['currentver'] = '0.8.1.003';
 		return $GLOBALS['setup_info']['tts']['currentver'];
 	}
