@@ -21,7 +21,7 @@
 	);
 	include('../header.inc.php');
 
-	if (! count($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
+	if(!count($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
 	{
 		$GLOBALS['phpgw']->redirect_link('/headlines/preferences.php');
 	}
@@ -31,7 +31,7 @@
 		echo parse_navbar();
 	}
 
-	if (! $GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'])
+	if(!$GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'])
 	{
 		$GLOBALS['phpgw']->preferences->add('headlines','headlines_layout','basic');
 		$GLOBALS['phpgw']->preferences->save_repository();
@@ -46,7 +46,7 @@
 		}
 	}
 
-	$headlines = new headlines;
+	$headlines = CreateObject('headlines.headlines');
 	$GLOBALS['phpgw']->template->set_file(array(
 		'layout_row' => 'layout_row.tpl',
 		'form'       => $GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'] . '.tpl'
@@ -56,7 +56,7 @@
 
 	$j = 0;
 	$i = count($sites);
-	if (is_array($sites))
+	if(is_array($sites))
 	{
 		foreach($sites as $site)
 		{
@@ -79,9 +79,8 @@
 			}
 			else
 			{
-				while (list($title,$link) = each($links))
+				while(list($title,$link) = each($links))
 				{
-
 					$var = Array(
 						'item_link'  => stripslashes($link),
 						'item_label' => stripslashes($title),
@@ -96,7 +95,7 @@
 
 			$GLOBALS['phpgw']->template->set_var('section_' . $j,$GLOBALS['phpgw']->template->parse('o','channel'));
 
-			if ($j == 3 || $i == 1)
+			if($j == 3 || $i == 1)
 			{
 				$GLOBALS['phpgw']->template->pfp('out','layout_row');
 				$GLOBALS['phpgw']->template->set_var('section_1', '');

@@ -30,7 +30,7 @@
 		var $error_timeout = False;
 
 		// wired news was messing up, I dunno
-		// "wired" => array("Wired&nbsp;News","http://www.wired.com","/news_drop/netcenter/netcenter.rdf/","rdf"),	
+		// "wired" => array("Wired&nbsp;News","http://www.wired.com","/news_drop/netcenter/netcenter.rdf/","rdf"),
 
 		function headlines()
 		{
@@ -40,12 +40,12 @@
 		// try to get the links for the site
 		function getLinks($site)
 		{
-			if (! $this->readtable($site))
+			if(!$this->readtable($site))
 			{
 				return $links;
 			}
 
-			if ($this->isCached())
+			if($this->isCached())
 			{
 				$links = $this->getLinksDB();
 			}
@@ -53,7 +53,7 @@
 			{
 				$links = $this->getLinksSite();
 
-				if ($links)
+				if($links)
 				{
 					$this->saveToDB($links);
 				}
@@ -70,8 +70,8 @@
 		function readtable($site)
 		{
 			$GLOBALS['phpgw']->db->query("SELECT con,display,base_url,newsfile,lastread,newstype,"
-                    . "cachetime,listings FROM phpgw_headlines_sites WHERE con = $site",__LINE__,__FILE__);
-			if (! $GLOBALS['phpgw']->db->num_rows())
+				. "cachetime,listings FROM phpgw_headlines_sites WHERE con = $site",__LINE__,__FILE__);
+			if(!$GLOBALS['phpgw']->db->num_rows())
 			{
 				return False;
 			}
@@ -99,12 +99,13 @@
 		// get the links from the database
 		function getLinksDB()
 		{
-			$GLOBALS['phpgw']->db->query("SELECT title, link FROM phpgw_headlines_cached WHERE site = ".$this->con);
-		
-			if (! $GLOBALS['phpgw']->db->num_rows())
+//			return $this->getLinksSite();
+			$GLOBALS['phpgw']->db->query('SELECT title, link FROM phpgw_headlines_cached WHERE site=' . (int)$this->con);
+
+			if(!$GLOBALS['phpgw']->db->num_rows())
 			{
 				$links = $this->getLinksSite();  // try from site again
-				if (!$links)
+				if(!$links)
 				{
 					$display = htmlspecialchars($this->display);
 //					die("</table><b>error</b>: unable to get links for <br><a href=\""
@@ -113,7 +114,7 @@
 				}
 			}
 
-			while ($GLOBALS['phpgw']->db->next_record())
+			while($GLOBALS['phpgw']->db->next_record())
 			{
 				$links[$GLOBALS['phpgw']->db->f('title')] = $GLOBALS['phpgw']->db->f('link');
 			}
@@ -123,72 +124,44 @@
 		// get a new set of links from the site
 		function getLinksSite()
 		{
-			// determine the options to properly extract the links
-			$startat = '</image>';
-			$linkstr = 'link';
-			$exclude = '';
-
-
-			switch ($this->newstype)
-			{
-				case 'rdf-chan': $startat = '</channel>'; break;
-				case 'lt':       $linkstr = 'url'; break;
-				case 'fm':       $exclude = 'quick finder'; break;
-				case 'sf':       $startat = '</textinput>'; break;
-				default: break;
-			}
-
-			// get the file that contains the links
-			$lines = $GLOBALS['phpgw']->network->gethttpsocketfile($this->base_url.$this->newsfile);
-			if (!is_array($lines))
+			/* get the file that contains the links as one string */
+			$data = $GLOBALS['phpgw']->network->gethttpsocketfile($this->base_url . $this->newsfile,NULL,NULL,True);
+			if(!$data)
 			{
 				return False;
 			}
-			foreach($lines as $line)
-			{
-				if (eregi('encodeing="([^"]*)"',$line,$encoding) || eregi('content="[^;]*; charset=([^"]*)"',$encodeing))	// standard xml
-				{
-					break;
-				}
-			}
-			$encoding = is_array($encoding) ? strtolower($encoding[1]) : 'iso-8859-1';
-			$lines = $GLOBALS['phpgw']->translation->convert($lines,$encoding,$GLOBALS['phpgw']->translation->charset());
 
-			$startnum = 0;
-
-			// determine which line to begin grabbing the links
-			for ($i=0;$i<count($lines);$i++)
+			switch($this->newstype)
 			{
-				if (ereg($startat,$lines[$i],$regs))
-				{
-					$startnum = $i;
+				case 'rdf':
+				case 'fm':
+					$simple = True;
 					break;
-				}
+				case 'lt':
+					$data = @str_replace('<story>','<item>',$data);
+					$data = @str_replace('</story>','</item>',$data);
+					$data = @str_replace('<url>','<link>',$data);
+					$data = @str_replace('</url>','</link>',$data);
+					$simple = True;
+					break;
+				default: 
+					$simple = False;
 			}
 
-			// extract the links and assemble into array $links
+			$rss = CreateObject('headlines.rss',$data,$simple);
+			$allItems = $rss->getAllItems();
+			unset($rss);
+
+			$i = 1;
 			$links = array();
-			for ($i=$startnum;$i<count($lines);$i++)
+			while(list($key,$val) = @each($allItems))
 			{
-				if (count($links)>=$this->listings)
+				if($i == $this->listings)
 				{
 					break;
 				}
-
-				if (ereg("<title>(.*)</title>",$lines[$i],$regs))
-				{
-					if ($regs[1] == $exclude)
-					{
-						$i+=1;
-						break;
-					}
-					$title = $regs[1];
-					$title = ereg_replace("&amp;apos;","'",$title);
-				}
-				else if (ereg("<$linkstr>(.*)</$linkstr>",$lines[$i],$regs))
-				{
-					$links[$title] = $regs[1];
-				}
+				$i++;
+				$links[$key] = $val;
 			}
 
 			return $links;
@@ -205,9 +178,9 @@
 			$exclude = '';
 
 			// get the file that contains the links
-			// "http://www.phpgroupware.org/headlines.rdf";
-			$lines = $GLOBALS['phpgw']->network->gethttpsocketfile("http://blinkylight.com/headlines.rdf");
-			if (!$lines)
+//			$lines = $GLOBALS['phpgw']->network->gethttpsocketfile("http://blinkylight.com/headlines.rdf");
+			$lines = $GLOBALS['phpgw']->network->gethttpsocketfile('http://egroupware.org/egroupware/headlines.rdf');
+			if(!$lines)
 			{
 				return False;
 			}
@@ -215,9 +188,9 @@
 			$startnum = 0;
 
 			// determine which line to begin grabbing the links
-			for ($i=0;$i<count($lines);$i++)
+			for($i=0;$i<count($lines);$i++)
 			{
-				if (ereg($startat,$lines[$i],$regs))
+				if(ereg($startat,$lines[$i],$regs))
 				{
 					$startnum = $i;
 					break;
@@ -226,11 +199,11 @@
 
 			// extract the links and assemble into array $links
 			$links = array();
-			for ($i=$startnum,$j=0;$i<count($lines);$i++)
+			for($i=$startnum,$j=0;$i<count($lines);$i++)
 			{
-				if (ereg("<title>(.*)</title>",$lines[$i],$regs))
+				if(ereg("<title>(.*)</title>",$lines[$i],$regs))
 				{
-					if ($regs[1] == $exclude)
+					if($regs[1] == $exclude)
 					{
 						$i+=1;
 						break;
@@ -238,11 +211,11 @@
 					$title[$j] = $regs[1];
 					$title[$j] = ereg_replace("&amp;apos;","'",$title[$j]);
 				}
-				elseif (ereg("<$linkstr>(.*)</$linkstr>",$lines[$i],$regs))
+				elseif(ereg("<$linkstr>(.*)</$linkstr>",$lines[$i],$regs))
 				{
 					$links[$j] = $regs[1];
 				}
-				elseif (ereg("<description>(.*)</description>",$lines[$i],$regs))
+				elseif(ereg("<description>(.*)</description>",$lines[$i],$regs))
 				{
 					$type[$j] = $regs[1];
 					$j++;
@@ -250,27 +223,28 @@
 			}
 
 			$GLOBALS['phpgw']->db->transaction_begin();
-			for ($i=0;$i<count($title);$i++)
+			for($i=0;$i<count($title);$i++)
 			{
 				$server = str_replace('http://','',$links[$i]);
 				$file   = strstr($server,'/');
 				$server = 'http://' . str_replace($file,'',$server);
 
 				$GLOBALS['phpgw']->db->query("SELECT con,display,base_url,newsfile,newstype "
-					. "FROM phpgw_headlines_sites WHERE display='".$title[$i]."' AND "
+					. "FROM phpgw_headlines_sites WHERE display='" . $title[$i] . "' AND "
 					. "base_url='$server' AND newsfile='$file'",__LINE__,__FILE__);
-				if ($GLOBALS['phpgw']->db->num_rows() == 0)
+				if($GLOBALS['phpgw']->db->num_rows() == 0)
 				{
 					$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_headlines_sites (display,base_url,newsfile,"
-						."newstype,lastread,cachetime,listings) VALUES("
-						."'".$title[$i]."','$server','$file','".$type[$i]."',0,60,20)",__LINE__,__FILE__);
+						. "newstype,lastread,cachetime,listings) VALUES('"
+						. $title[$i] . "','$server','$file','" . $type[$i] . "',0,60,20)",__LINE__,__FILE__);
 					continue;
 				}
 				$GLOBALS['phpgw']->db->next_record();
 
-				if ($GLOBALS['phpgw']->db->f('newstype') <> $type[$i])
+				if($GLOBALS['phpgw']->db->f('newstype') <> $type[$i])
 				{
-					$GLOBALS['phpgw']->db->query("UPDATE phpgw_headlines_sites SET newstype='".$type[$i]."' WHERE con=".$this->db->f('con'),__LINE__,__FILE__);
+					$GLOBALS['phpgw']->db->query("UPDATE phpgw_headlines_sites SET newstype='" . $type[$i]
+						. "' WHERE con=" . (int)$GLOBALS['phpgw']->db->f('con'),__LINE__,__FILE__);
 				}
 			}
 			$GLOBALS['phpgw']->db->transaction_commit();
@@ -279,22 +253,20 @@
 		// save the new set of links and update the cache time
 		function saveToDB($links)
 		{
-			$GLOBALS['phpgw']->db->query("DELETE FROM phpgw_headlines_cached WHERE site='" . $this->con . "'",__LINE__,__FILE__);
+			$GLOBALS['phpgw']->db->query("DELETE FROM phpgw_headlines_cached WHERE site=" . (int)$this->con,__LINE__,__FILE__);
 
 			// save links
-			while (list($title,$link) = each($links))
+			while(list($title,$link) = each($links))
 			{
-				$link  = addslashes($link);
-				$title = addslashes($title);
+				$link  = $GLOBALS['phpgw']->db->db_addslashes($link);
+				$title = $GLOBALS['phpgw']->db->db_addslashes($title);
 				$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_headlines_cached VALUES("
-					.$this->con.",'$title','$link')",__LINE__,__FILE__);
-			}		
-		
+					. $this->con .",'$title','$link')",__LINE__,__FILE__);
+			}
+
 			// save cache time
-			$GLOBALS['phpgw']->db->query("UPDATE phpgw_headlines_sites SET lastread = '" . $this->current_time
-				. "' WHERE con='" . $this->con . "'",__LINE__,__FILE__);
+			$GLOBALS['phpgw']->db->query("UPDATE phpgw_headlines_sites SET lastread='" . $this->current_time
+				. "' WHERE con=" . (int)$this->con,__LINE__,__FILE__);
 		}
 	}
-
-
 ?>

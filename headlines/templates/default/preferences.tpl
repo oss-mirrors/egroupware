@@ -9,7 +9,7 @@
 
    <tr>
     <td align="center" bgcolor="{tr_color_1}">
-     <select name="headlines[]" multiple size="10">
+     <select name="headlines[]" multiple size="15">
       {select_options}
      </select>
     </td>

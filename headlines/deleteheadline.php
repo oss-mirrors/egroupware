@@ -21,7 +21,7 @@
 	);
 	include('../header.inc.php');
 
-	$con = intval(get_var('con',array('POST','GET')));
+	$con = (int)get_var('con',array('POST','GET'));
 
 	if ($_POST['no'])
 	{

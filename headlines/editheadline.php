@@ -68,8 +68,8 @@
 		}
 
 		$GLOBALS['phpgw']->db->query("select display from phpgw_headlines_sites where base_url='"
-				. addslashes(strtolower($_POST['n_base_url'])) . "' and newsfile='"
-				. addslashes(strtolower($_POST['n_newsfile'])) . "' and con != ".intval($_GET['con']),__LINE__,__FILE__);
+				. $GLOBALS['phpgw']->db->db_addslashes(strtolower($_POST['n_base_url'])) . "' and newsfile='"
+				. $GLOBALS['phpgw']->db->db_addslashes(strtolower($_POST['n_newsfile'])) . "' and con != ".(int)$_GET['con'],__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
 		if ($GLOBALS['phpgw']->db->f('display'))
 		{
@@ -78,18 +78,18 @@
 
 		if (!is_array($errors))
 		{
-			$GLOBALS['phpgw']->db->query("UPDATE phpgw_headlines_sites SET display='" . addslashes($_POST['n_display']) . "', "
-				. "base_url='" . addslashes($_POST['n_base_url']) . "', "
-				. "newsfile='" . addslashes($_POST['n_newsfile']) . "', "
-				. "lastread=0, newstype='" . addslashes($n_newstype) . "', "
-				. 'cachetime='.intval($_POST['n_cachetime']).', listings='.intval($_POST['n_listings']).' WHERE con='.intval($_GET['con']),__LINE__,__FILE__);
+			$GLOBALS['phpgw']->db->query("UPDATE phpgw_headlines_sites SET display='" . $GLOBALS['phpgw']->db->db_addslashes($_POST['n_display']) . "', "
+				. "base_url='" . $GLOBALS['phpgw']->db->db_addslashes($_POST['n_base_url']) . "', "
+				. "newsfile='" . $GLOBALS['phpgw']->db->db_addslashes($_POST['n_newsfile']) . "', "
+				. "lastread=0, newstype='" . $GLOBALS['phpgw']->db->db_addslashes($n_newstype) . "', "
+				. 'cachetime='.(int)$_POST['n_cachetime'].', listings='.(int)$_POST['n_listings'].' WHERE con='.(int)$_GET['con'],__LINE__,__FILE__);
 
 			$GLOBALS['phpgw']->redirect_link('/headlines/admin.php');
 		}
 	}
 	else
 	{
-  		$GLOBALS['phpgw']->db->query('select * from phpgw_headlines_sites where con='.intval($_GET['con']),__LINE__,__FILE__);
+  		$GLOBALS['phpgw']->db->query('select * from phpgw_headlines_sites where con='.(int)$_GET['con'],__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
 
 		$_POST['n_display']   = $GLOBALS['phpgw']->db->f('display');

@@ -11,7 +11,7 @@
 
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'              => 'headlines',
 		'noheader'                => True,
 		'nonavbar'                => True,
@@ -19,30 +19,30 @@
 	);
 	include('../header.inc.php');
 
-	if ($_POST['cancel'] || $_POST['save'])
+	if($_POST['cancel'] || $_POST['save'])
 	{
-
-		if ($_POST['save'])
+		if($_POST['save'])
 		{
-			if (is_array($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
+			if(is_array($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
 			{
 				foreach($GLOBALS['phpgw_info']['user']['preferences']['headlines'] as $n => $name)
 				{
-					if ($n != 'headlines_layout')
+					if($n != 'headlines_layout')
 					{
 						$GLOBALS['phpgw']->preferences->delete('headlines',$n);
 					}
 				}
 			}
 
-			if (is_array($_POST['headlines']))
+			if(is_array($_POST['headlines']))
 			{
-				foreach ($_POST['headlines'] as $n)
+				foreach($_POST['headlines'] as $n)
 				{
 					$GLOBALS['phpgw']->preferences->add('headlines',$n,'True');
 				}
 			}
 
+//			$GLOBALS['phpgw']->preferences->add('headlines', 'mainscreen_showheadlines',True);
 			$GLOBALS['phpgw']->preferences->save_repository(True);
 		}
 		$GLOBALS['phpgw']->redirect_link('/headlines/index.php');
@@ -54,16 +54,16 @@
 
 	$GLOBALS['phpgw']->template->set_file(array('form' => 'preferences.tpl'));
 
-	$GLOBALS['phpgw']->template->set_var('form_action',$phpgw->link('/headlines/preferences.php'));
+	$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/headlines/preferences.php'));
 	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 	$GLOBALS['phpgw']->template->set_var('lang_header',lang('select headline news sites'));
 
 	$GLOBALS['phpgw']->db->query('SELECT con,display FROM phpgw_headlines_sites ORDER BY display asc',__LINE__,__FILE__);
-	while ($GLOBALS['phpgw']->db->next_record())
+	while($GLOBALS['phpgw']->db->next_record())
 	{
 		$html_select .= '<option value="' . $GLOBALS['phpgw']->db->f('con') . '"';
 
-		if ($GLOBALS['phpgw_info']['user']['preferences']['headlines'][$GLOBALS['phpgw']->db->f('con')])
+		if($GLOBALS['phpgw_info']['user']['preferences']['headlines'][$GLOBALS['phpgw']->db->f('con')])
 		{
 			$html_select .= ' selected';
 		}

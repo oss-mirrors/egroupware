@@ -63,8 +63,8 @@
 		}
 
 		$GLOBALS['phpgw']->db->query("select display from phpgw_headlines_sites where base_url='"
-				. addslashes(strtolower($_POST['n_base_url'])) . "' and newsfile='"
-				. addslashes(strtolower($_POST['n_newsfile'])) . "'",__LINE__,__FILE__);
+			. $GLOBALS['phpgw']->db->db_addslashes(strtolower($_POST['n_base_url'])) . "' and newsfile='"
+			. $GLOBALS['phpgw']->db->db_addslashes(strtolower($_POST['n_newsfile'])) . "'",__LINE__,__FILE__);
 
 		$GLOBALS['phpgw']->db->next_record();
 		if ($GLOBALS['phpgw']->db->f('display'))
@@ -75,11 +75,11 @@
 		if (! is_array($errors))
 		{
 			$sql = "insert into phpgw_headlines_sites (display,base_url,newsfile,"
-					. "lastread,newstype,cachetime,listings) "
-					. "values ('" . addslashes($_POST['n_display']) . "','"
-					. addslashes(strtolower($_POST['n_base_url'])) . "','" 
-					. addslashes(strtolower($_POST['n_newsfile'])) . "',0,'"
-					. addslashes($n_newstype) . "',".intval($_POST['n_cachetime']).",".intval($_POST['n_listings']).")";
+				. "lastread,newstype,cachetime,listings) "
+				. "values ('" . $GLOBALS['phpgw']->db->db_addslashes($_POST['n_display']) . "','"
+				. $GLOBALS['phpgw']->db->db_addslashes(strtolower($_POST['n_base_url'])) . "','" 
+				. $GLOBALS['phpgw']->db->db_addslashes(strtolower($_POST['n_newsfile'])) . "',0,'"
+				. $GLOBALS['phpgw']->db->db_addslashes($n_newstype) . "',".(int)$_POST['n_cachetime'].",".(int)$_POST['n_listings'].")";
 
 			$GLOBALS['phpgw']->db->query($sql,__LINE__,__FILE__);
 
@@ -128,7 +128,7 @@
 	while (list(,$item) = each($news_type))
 	{
 		$_select .= '<option value="' . $item . '"' . ($n_newstype == $item?' checked':'')
-					. '>' . $item . '</option>';
+			. '>' . $item . '</option>';
 	}
 	$GLOBALS['phpgw']->template->set_var('input_type','<select name="n_newstype">' . $_select . '</select>');
 

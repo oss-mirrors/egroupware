@@ -33,6 +33,7 @@ select headline news sites	headlines	en	Select Headline News sites
 select headlines to display	common	en	Select Headlines to Display
 select layout	common	en	Select layout
 site	headlines	en	Site
+show headlines on homepage	headlines	en	Show headlines on homepage
 that site has already been entered	headlines	en	That site has already been entered
 unable to retrieve links	headlines	en	Unable to retrieve links
 update headline	headlines	en	Update headline
