@@ -27,8 +27,8 @@ Operating system	backup	fr	Système d'exploitation
 Password	backup	fr	Mot de passe
 pgsql	admin	fr	PostgreSQL
 php cgi	admin	fr	php cgi
-please enter the path of the backup dir and/or enable showing archives in phpgroupware !	backup	fr	Svp entrez le chemin du répertoire de sauvegarde et/ou activez montrer les archives de sauvegarde dans phpGroupWare !
 please enter the path of the needed applications in *site configuration* !	backup	fr	SVP entrez le chemin des applications nécessaires dans *Configuration du site* !
+please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	fr	SVP entrez le chemin vers le rép. de sauvegarde et/ou activez l'affichage des archives dans phpGroupWare !
 please enter username and password for remote connection !	backup	fr	SVP entrez le nom d'utilisateur et le mot de passe pour la connexion à distance !
 please select an application for transport to the remote host !	backup	fr	SVP choisissez une application comme transport vers la machine distante !
 please set the path to a local dir to store the backup script !	backup	fr	SVP configurez le chemin vers un répertoire local où stocker le script de sauvegarde !

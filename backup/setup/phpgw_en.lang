@@ -27,9 +27,8 @@ Operating system	backup	en	Operating system
 Password	backup	en	Password
 pgsql	admin	en	PostgreSQL
 php cgi	admin	en	php cgi
-please enter username and password for remote connection !	backup	en	Please enter username and password for remote connection !
-please enter the path of the backup dir and/or enable showing archives in phpgroupware !	backup	en	Please enter the path of the backup dir and/or enable showing archives in phpGroupWare !
 please enter the path of the needed applications in *site configuration* !	backup	en	Please enter the path of the needed applications in *Site configuration* !
+please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	en	Please enter the path to the backup dir and/or enable showing archives in phpGroupWare !
 please enter username and password for remote connection !	backup	en	Please enter username and password for remote connection !
 please select an application for transport to the remote host !	backup	en	Plase select an application for transport to the remote host !
 please set the path to a local dir to store the backup script !	backup	en	Please set the path to a local dir to store the backup script !
