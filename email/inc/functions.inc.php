@@ -224,7 +224,51 @@
       }
       $this->got_structure = true;
       return $info;
-    } 
+    }
+
+   function make_udate($msg_date) { // used only by pop_header
+     global $phpgw_info;
+     $pos = strpos($msg_date,",");
+     if ($pos): $msg_date = trim(substr($msg_date,$pos+1)); endif;
+     $pos = strpos($msg_date," ");
+     $day = substr($msg_date,0,$pos);
+     $msg_date = trim(substr($msg_date,$pos));
+     $month = substr($msg_date,0,3);
+     switch (strtolower($month)) {
+       case "jan" : $month =  1; break;
+       case "feb" : $month =  2; break;
+       case "mar" : $month =  3; break;
+       case "apr" : $month =  4; break;
+       case "may" : $month =  5; break;
+       case "jun" : $month =  6; break;
+       case "jul" : $month =  7; break;
+       case "aug" : $month =  8; break;
+       case "sep" : $month =  9; break;
+       case "oct" : $month = 10; break;
+       case "nov" : $month = 11; break;
+       default    : $month = 12; break;
+     }
+     $msg_date = trim(substr($msg_date,3));
+     $pos  = strpos($msg_date," ");
+     $year = trim(substr($msg_date,0,$pos));
+     $msg_date = trim(substr($msg_date,$pos));
+     $hour = substr($msg_date,0,2);
+     $minute = substr($msg_date,3,2);
+     $second = substr($msg_date,6,2);
+     $pos = strrpos($msg_date," ");
+     $tzoff = trim(substr($msg_date,$pos));
+     if (strlen($tzoff)==5) {
+       $diffh = substr($tzoff,1,2); $diffm = substr($tzoff,3);
+       if ((substr($tzoff,0,1)=="+") && is_int($diffh)) {
+         $hour -= $diffh; $minute -= $diffm;
+       } else {
+         $hour += $diffh; $minute += $diffm;
+       }
+     }
+     $utime = mktime($hour,$minute,$second,$month,$day,$year);
+     return $utime;
+   }
+
      
     function header($stream,$msg_nr,$fromlength="",$tolength="",$defaulthost="") {
       $info = new msg_headinfo;
