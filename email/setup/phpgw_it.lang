@@ -21,9 +21,9 @@ answered	email	it	risposto
 apply	email	it	applica
 apply filters report:	email	it	Report dei Filtri Applicati:
 apr	email	it	Apr
-aqua fusion	email	en	Aqua Fusion
+aqua fusion	email	it	Aqua Fusion
 arrival date	email	it	Data di Arrivo
-as	email	en	as
+as	email	it	come
 attach file	email	it	Allega File
 attach signature	email	it	Allega firma
 attachment	email	it	Allegato
@@ -44,12 +44,13 @@ change font size in your e-mail pages	email	it	Cambia la grandezze dei Font nell
 check flags for type of mails	email	it	Controlla i Flags per tipo di email
 choose for rename	email	it	Seleziona per rinominarlo
 choose to rename	email	it	seleziona per rinominarlo
+clear cache	email	it	Svuota la Cache
 click here for more info in a new window	email	it	premi qui per avere più informazione in una nuova finestra
 click here to continue	email	it	Premi qui per continuare
 click here to edit the settings for this email account.	email	it	premi qui per modificare le impostazioni per questo account.
 click here to return to your home page.	email	it	premi qui per tornare alla home page.
 company	email	it	Società
-compose	email	it	Componi
+compose	common	it	Componi
 compose message	email	it	componi il messaggio
 compose new	common	it	Componi nuovo
 contains	email	it	Contenuto
@@ -66,14 +67,15 @@ default:	common	it	predefinito:
 delete (expert)	email	it	Cancella (esperti)
 delete a folder	email	it	Cancella una cartella
 delete account	common	it	Cancella Account
-deleted	email	it	cancellato
-deleted messages (trash) folder	email	en	Deleted messages (Trash) folder
+deleted	email	it	Cancellate
+deleted messages (trash) folder	email	it	Cartella messaggi cancellati (Cestino)
 deleted messages folder name	email	it	Nome della cartella dei messaggi Cancellati
 deleted messages go to trash	email	it	I messaggi Cancellati vanno nel Cestino
 deleted messages saved to folder:	email	it	Salvare i messaggi Cancellati nella cartella:
 discard	email	it	Annulla
 does not contain	email	it	Non contiene
 draft	email	it	bozze
+e-mail clear cache	preferences	it	E-Mail Svuolta la Cache
 e-mail extra account	email	it	E-Mail: Account Extra
 e-mail extra accounts	email	it	E-Mail: Accounts Extra
 e-mail extra accounts list	email	it	Lista degli Accounts Extra
@@ -83,51 +85,50 @@ e-mail inbox filters list	email	it	Lista Filtri INBOX E-Mail
 e-mail preferences	common	it	Preferenze E-Mail
 each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account on the users summary home page.	email	en	Each user has a summary page which can display a variety of information. This option will show a small list of email messages in the INBOX of the users default email account on the users summary home page.
 each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account onthe users summary home page.	email	en	Each user has a summary page which can display a variety of information. This option will show a small list of email messages in the INBOX of the users default email account onthe users summary home page.
-each user has a summary page which can display a variety of information. this option willshow a small list of email messages in the inbox of the users default email account onthe users summary home page.	email	en	Each user has a summary page which can display a variety of information. This option willshow a small list of email messages in the INBOX of the users default email account onthe users summary home page.
 edit filters	email	it	Modifica Filtri
 email account name	email	it	Nome Account E-Mail
 email address	email	it	Indirizzo E-Mail
-email date	email	en	Data Email
-email filters	email	it	Filtri Email
+email date	email	it	Data E-mail
+email filters	email	it	Filtri E-mail
 email password	email	it	Password E-Mail
-email preferences	email	it	Preferenze Email
+email preferences	email	it	Preferenze E-mail
 email signature	email	it	Firma E-Mail
-email type	common	it	Tipo email
-enable this email account	common	it	Abilita questo account email
+email type	common	it	Tipo E-mail
+enable this email account	common	it	Abilita questo account e-mail
 enable utf-7 encoded folder names	email	it	Abilita le cartelle con encoding utf-7
 enter the search string in the text boxes	email	it	Inserisci la stringa di ricerca nella casella di testo
 enter your default mail domain ( from: user@domain )	admin	it	Inserisci il dominio predefinito per l'email ( Da: utente@dominio )
 enter your pop	admin	it	Inserisci il POP
-enter your smtp server hostname or ip address	admin	en	Inserisci l'host o l'IP del server SMTP
+enter your smtp server hostname or ip address	admin	it	Inserisci l'host o l'IP del server SMTP
 enter your smtp server port	admin	it	Inserisci la porta del server SMTP
 error moving messages to	email	it	Errore nello spostamento dei messaggi in
 error text not provided	email	it	testo dell'errore non previsto
 error: unknown message data	email	it	Errore: Messaggio sconosciuto
-evolution style	email	en	Evolution Style
+evolution style	email	it	Stile Evolution
 extra accounts	email	it	Accounts Extra
 extra e-mail account	common	it	E-Mail: Extra Account
 extra e-mail accounts	common	it	E-Mail: Extra Accounts
 extra e-mail preferences number %1	email	it	E-Mail Extra: Preferenze Numero %1
 feb	email	it	Feb
-fewer actions	email	en	Fewer Actions
-fewer choices	email	en	Fewer Choices
+fewer actions	email	it	Poche Azioni
+fewer choices	email	it	Poche Scelte
 file	email	it	File
 file attachment	email	it	File allegato
-file into	email	it	File in
+file into	email	it	Archivia in
 fill in as much as you can	email	it	riempilo più che puoi
 filter [number] and name	email	it	Filtro [numero] e Nome
 filter inbox for accounts	email	it	Filtro INBOX per accounts
 filter name	email	it	Nomi Filtri
 filter name:	email	it	nome filtro:
-filter number	email	en	Numero Filtro
+filter number	email	it	Filtro Numero
 filters	email	it	Filtri
 filters list	email	it	Lista Filtri
 flag as important	email	it	Segnalo come importante
 flagged	email	it	segnato
-folder	email	it	Cartella
+folder	common	it	Cartella
 folder maintenance	email	it	Manutenzione Cartelle
-folder name	email	en	Nome Cartella
-folder size	email	en	Dimensione Cartella
+folder name	email	it	Nome Cartella
+folder size	email	it	Dimensione Cartella
 folders	email	it	Cartelle
 for the file to actually upload	email	it	per il file appena caricato
 for these items, fill only what is different from you default e-mail preferences	common	en	For these items, fill only what is different from you default E-Mail preferences
@@ -155,8 +156,9 @@ if checked, a copy of your sent mail will be stored in the &quot;sent&quot; fold
 if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder&quot;. only works with imap servers, pop servers do not have folders.	email	en	If checked, a copy of your sent mail will be stored in the &quot;Sent&quot; folder name which you specify in the box for &quot;Sent messages folder&quot;. Only works with IMAP servers, POP servers do not have folders.
 if checked, deleted message will be sent to the &quot;trash&quot; folder name which you specify in the box for &quot; deleted messages (trash) folder &quot;. only works with imap servers, pop servers do not have folders.	email	en	If checked, Deleted message will be sent to the &quot;Trash&quot; folder name which you specify in the box for &quot; Deleted messages (Trash) folder &quot;. Only works with IMAP servers, POP servers do not have folders.
 if checked, deleted message will be sent to the &quot;trash&quot; folder name which you specify in the box for &quot;deleted messages (trash) folder&quot; only works with imap servers, pop servers do not have folders.	email	en	If checked, Deleted message will be sent to the &quot;Trash&quot; folder name which you specify in the box for &quot;Deleted messages (Trash) folder&quot; Only works with IMAP servers, POP servers do not have folders.
-if fileto then select destination folder	email	en	if fileto then select destination folder
-if messages match	email	en	If messages match
+if fileto then select destination folder	email	it	se archivia allora seleziona un cartella di destinazione
+if messages match	email	it	Se i messaggi corrispondono
+if there is no obvious error, check your email account name and password first.	email	en	if there is no obvious error, check your Email Account Name and password first.
 if there is no obvious error, check your username and password first.	email	en	if there is no obvious error, check your username and password first.
 if using an imap server, what kind is it, most often this option can safely be set to &quot;cyrus or courier&quot;. technically, this means the server uses a dot between the different parts of the folder names, such as &quot;inbox.sent&quot;. the other major kind of imap server is the university of washington &quot;uwash&quot; imap server. it uses slashes instead of the dots the other servers use, and although it has a folder called &quot;inbox&quot;, it is not considered the &quot;namespace&quot; for the other folder names. the &quot;uw-maildir&quot; is a rare combination of the two above types. this is the least used kind of imap server. if you are unsure, ask your it administrator. only applies to imap servers.	email	en	If using an IMAP server, what kind is it, most often this option can safely be set to &quot;Cyrus or Courier&quot;. Technically, this means the server uses a dot between the different parts of the folder names, such as &quot;INBOX.Sent&quot;. The other major kind of IMAP server is the University of Washington &quot;UWash&quot; IMAP server. It uses slashes instead of the dots the other servers use, and although it has a folder called &quot;INBOX&quot;, it is not considered the &quot;Namespace&quot; for the other folder names. The &quot;UW-Maildir&quot; is a rare combination of the two above types. This is the least used kind of IMAP server. If you are unsure, ask your IT administrator. Only applies to IMAP servers.
 image	email	it	Immagine
@@ -168,12 +170,13 @@ in the email index page, the page which lists all the mails in a folder, mail ma
 inbox	email	it	Inbox
 input error	email	it	Input Error
 input error:	email	it	Input Error:
+is not set so your administrator should set email site configuration for mail server hostname or ip address	email	en	is not set so your administrator should set email site configuration for mail server hostname or IP address
 it is not rfc standard to base64 encode a part of a message that is not an attachment. note this check is currently done after the message is already being viewed, it should probably stop the message from being automatically displayed, i.e. give a "show this" button instead.	email	en	It is not RFC standard to base64 encode a part of a message that is NOT an attachment. NOTE this check is currently done after the message is already being viewed, it should probably stop the message from being automatically displayed, i.e. give a "show this" button instead.
 jan	email	it	Gen
 javascript	email	it	Javascript
 jul	email	it	Lug
 jun	email	it	Giu
-keep	email	en	Keep
+keep	email	it	Conserva
 keyword	email	it	keyword
 keywords	email	it	Keywords
 layout 1	common	it	Layout 1
@@ -195,13 +198,13 @@ message has an attachment that is some kind of script or exe file that windows u
 message list layout	common	it	Layout Lista Messaggi
 messages	email	it	Messaggi
 messages found in folder	email	it	Messaggi trovati nella cartella
-messages have been moved to	email	en	i messaggi sono stato spostati in
-more actions	email	it	Altre Azioni
-more choices	email	en	Altre Scelte
+messages have been moved to	email	it	i messaggi sono stato spostati in
+more actions	email	it	Più Azioni
+more choices	email	it	Più Scelte
 most us and european users do not need to enable this. if this option is checked then your email server can handle folder names with non us-ascii charactors in them / default is disabled, not checked. only use if you are really sure you need it. only works with imap servers, pop servers do not have folders.	email	en	Most US and European users do not need to enable this. If this option is checked then your email server can handle folder names with non US-ASCII charactors in them / default is disabled, not checked. Only use if you are really sure you need it. Only works with IMAP servers, POP servers do not have folders.
 most us and european users do not need to enable this. if this option is checked then your email server can handle folder names with non us-ascii charactors in them/ default is disabled, not checked. only use if you are really sure you need it. only works with imap servers, pop servers do not have folders.	email	en	Most US and European users do not need to enable this. If this option is checked then your email server can handle folder names with non US-ASCII charactors in them/ Default is disabled, not checked. Only use if you are really sure you need it. Only works with IMAP servers, POP servers do not have folders.
 move down	email	it	Sposta in Basso
-move selected messages into	email	it	Move Selected Messages into
+move selected messages into	email	it	Sposta i messaggi selezionati in
 move this message into	email	it	Sposta il messagio in
 move up	email	it	Sposta in Su
 mozilla modern style	email	it	Stile Mozilla Modern
@@ -232,10 +235,11 @@ on	email	it	Su
 only needed with the university of washington &quot;uwash&quot; imap server. the default value is &quot;mail&quot; which means your mail folders, other then inbox, are located in a directory called &quot;mail&quot; directly under your &quot;home&quot; directory. this box may be left empty, which means your mail folders are located in your &quot;home&quot; directory, not a subdirectory. if your mail folders are located in a subdirectory of &quot;home&quot; then put the name of that subdirectory here. generally, it is not necessary to use any special slashes or tildes, &quot;home&quot; is always considered the base directory, and the slash bewteen &quot;home&quot; and the subdirectory will be added for you automatically, do not put the slash in this box.	email	en	Only needed with the University of Washington &quot;UWash&quot; IMAP server. The default value is &quot;mail&quot; which means your mail folders, other then INBOX, are located in a directory called &quot;mail&quot; directly under your &quot;HOME&quot; directory. This box may be left empty, which means your mail folders are located in your &quot;HOME&quot; directory, not a subdirectory. If your mail folders are located in a subdirectory of &quot;HOME&quot; then put the name of that subdirectory here. Generally, it is not necessary to use any special slashes or tildes, &quot;HOME&quot; is always considered the base directory, and the slash bewteen &quot;HOME&quot; and the subdirectory will be added for you automatically, do not put the slash in this box.
 or	common	it	o
 or enter text	email	it	o inserisci il testo
+or you can use custom settings for this email account	email	en	or you can use custom settings for this email account
 organization	email	it	Società
 persistent email server session	email	it	sessione persistente col server email server
 phone	email	it	Telefono
-please fill in everything you need	email	en	Please Fill in everything you need
+please fill in everything you need	email	it	Per favore compila tutto quello di cui hai bisogno
 please select a folder to rename	email	it	Per favore seleziona una cartella da rinominare
 please select a message first	email	it	Per favore prima seleziona un messaggio
 please submit a filename to attach	email	it	Per favore inserisci un nome per il file da allegare
@@ -244,7 +248,7 @@ previous	email	it	Precedente
 previous message	email	it	Messaggio Precedente
 printable	email	it	versione per la stampa
 raw message	email	it	messaggio grezzo
-read mail	email	en	Leggi Mail
+read mail	email	it	Leggi E-Mail
 received headers	email	it	Header Ricevuti
 recent	email	it	Recente
 recipient	email	it	Destinatario
@@ -252,7 +256,7 @@ redirect	email	it	Ridireziona
 reject	email	it	Rifiuta
 rename (expert)	email	it	Rinomina (esperti)
 rename a folder	email	it	Rinomina una Cartella
-reply	email	en	Rispondi
+reply	email	it	Rispondi
 reply all	email	it	Rispondi a tutti
 replyto	email	it	Rispondi A
 request delivery notification	email	it	Richiesta di notifica alla consegna
@@ -263,15 +267,15 @@ result	email	it	risultato
 return mails during this time period	email	en	Return mails during this time period
 save deleted messages in folder named below	email	en	save Deleted messages in folder named below
 save sent messages in folder named below	email	en	save Sent messages in folder named below
-search for mails in these folders	email	en	Search for mails in these folders
+search for mails in these folders	email	it	Cerca i messaggi in queste cartelle
 search this folder	email	it	cerca questa cartella
 section	email	it	Sezione
 seen	email	it	Visto
 select home email address	email	it	Select home email address
 select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message	email	en	Select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message
 select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message.	email	en	Select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message.
-select work email address	email	en	Select work email address
-select your mail server type	admin	en	Select your mail server type
+select work email address	email	it	Seleziona un indirizzo e-mail valido
+select your mail server type	admin	it	Seleziona il tipo di mail server
 select your screensize for proper showing of the javascript addressbook	email	en	Select your screensize for proper showing of the Javascript addressbook
 select your screensize for propper showing of the javascript addressbook	email	en	Select your screensize for propper showing of the Javascript addressbook
 select your style for the addressbook. the traditional, simple style. or the new javascript enabled complex addressbook	email	en	Select your style for the addressbook. The traditional, simple style. Or the new javascript enabled complex addressbook
@@ -279,14 +283,14 @@ send	email	it	Invia
 send deleted messages to the trash	email	it	Invia messaggi cancellati al Cestino
 send forwarded mail as quoted attachment	email	en	Send forwarded mail as quoted attachment
 sender	email	it	Mittente
-sent	email	it	inviato
+sent	common	it	inviato
 sent folder	email	it	cartella inviati
 sent messages folder	common	it	Cartella messaggi inviati
 sent messages folder name	email	it	Nome cartella messaggi inviati
-sent messages saved in &quot;sent&quot; folder	common	en	Sent messages saved in &quot;sent&quot; folder
+sent messages saved in &quot;sent&quot; folder	common	it	Salva i messaggi inviati nella cartella &quot;sent&quot;
 sent messages saved to folder:	email	it	Salvare i messaggi inviati in:
 sep	email	it	Set
-settings	email	it	Impostazioni
+settings	common	it	Impostazioni
 short names	email	it	nomi brevi
 show help	email	it	Mostra Aiuto
 show long names	email	it	mostra il nome completo
@@ -301,16 +305,17 @@ size	email	it	Dimensione
 size larger than	email	it	Dimensione più larga di
 size smaller than	email	it	Dimensione più piccola di
 small	email	it	Piccolo
-small view	email	en	small view
+small view	email	it	vista rimpicciolita
 smaller	email	it	Più piccolo
 smallest	email	it	Il più piccolo
 somebody	email	it	qualcuno
 sort by	email	it	Ordina per
+source accounts	email	it	accounts di origine
 spell check	email	it	Controllo ortografico
 standard e-mail preferences	email	it	E-Mail: Preferenze Standard
 stop if matched	email	en	Stop if Matched
-switch accounts	email	en	Switch Accounts
-switch current folder to	email	it	Passa alla Cartella
+switch accounts	email	it	Cambia Accounts
+switch current folder to	common	it	Camba la cartella corrente in
 test all filters	email	it	Prova tutti i Filtri
 test or apply all filters	email	it	prova o applica TUTTI i filtri
 test run this filter	email	it	Prova questo Filtro
@@ -322,10 +327,10 @@ the email application offers different icon image themes, groups of images of a 
 the email application offers different icon image themes, these icons can be big or small.	email	en	The email application offers different icon image themes, these icons can be big or small.
 the login name to use when checking mail for this email account. this may be the same as your egroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you clear this box, then it goes back to the default value. if you only need some custom settings but want this one to be the default value, then leave this box blank, the default value will be used, and you will see that default value in this box the next time you come to this preferences page.	email	en	The login name to use when checking mail for this email account. This may be the same as your eGroupWare login name, or the server administrator may have set it for you. If your have multiple email accounts set up, you will need to fill this in. If you have only one email account set up, then you can probably leave this alone. If you clear this box, then it goes back to the default value. If you only need some custom settings but want this one to be the default value, then leave this box blank, the default value will be used, and you will see that default value in this box the next time you come to this preferences page.
 the login name to use when checking mail for this email account. this may be the same as your egroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. exra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	en	The login name to use when checking mail for this email account. This may be the same as your eGroupWare login name, or the server administrator may have set it for you. If your have multiple email accounts set up, you will need to fill this in. If you have only one email account set up, then you can probably leave this alone. If you do set a custom password, this box will be blank the next time you come to this settings page. This is a security feature because your custom email password is not sent to your browser after you set it. To change your custom password, simply enter a new password in the box. Exra email accounts require you to set this. For your default email account, you can clear your custom password by unchecking the &quot;Use Custom Settings&quot; option.
-the login name to use when checking mail for this email account. this may be the same as your egroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. extra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	en	The login name to use when checking mail for this email account. This may be the same as your eGroupWare login name, or the server administrator may have set it for you. If your have multiple email accounts set up, you will need to fill this in. If you have only one email account set up, then you can probably leave this alone. If you do set a custom password, this box will be blank the next time you come to this settings page. This is a security feature because your custom email password is not sent to your browser after you set it. To change your custom password, simply enter a new password in the box. Extra email accounts require you to set this. For your default email account, you can clear your custom password by unchecking the &quot;Use Custom Settings&quot; option.
 the password to use when checking mail for this email account. this may be the same as your egroupware password, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. extra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	en	The password to use when checking mail for this email account. This may be the same as your eGroupWare password, or the server administrator may have set it for you. If your have multiple email accounts set up, you will need to fill this in. If you have only one email account set up, then you can probably leave this alone. If you do set a custom password, this box will be blank the next time you come to this settings page. This is a security feature because your custom email password is not sent to your browser after you set it. To change your custom password, simply enter a new password in the box. Extra email accounts require you to set this. For your default email account, you can clear your custom password by unchecking the &quot;Use Custom Settings&quot; option.
 the type of mail server you want to access. imap mail servers have folders, such as the sent and trash folders. pop servers do not have folders. pop, pop-3, and pop3 are the same thing. you can have the server connection encrypted by using imaps or pops, only if the mailserver supports it and if your egroupware installation has a &quot;ssl&quot; capabable version of php.	email	en	The type of mail server you want to access. IMAP mail servers have folders, such as the Sent and Trash folders. POP servers do not have folders. POP, POP-3, and POP3 are the same thing. You can have the server connection encrypted by using IMAPS or POPS, only if the mailserver supports it and if your eGroupWare installation has a &quot;SSL&quot; capabable version of PHP.
-then do this	email	it	Dopo fai
+then check the	email	it	Dopo controlla il
+then do this	email	it	Dopo fai questo
 then take this actions	email	it	Prendi questa azione
 there is no text or other part of the email to display to the user, all part(s) are attachments.	email	en	There is no text or other part of the email to display to the user, all part(s) are attachments.
 there was an error trying to connect to your imap server.<br>please contact your admin to check the servername, username or password.	email	en	There was an error trying to connect to your IMAP server.<br>Please contact your admin to check the servername, username or password.
@@ -336,7 +341,8 @@ this confusing and often misunderstood option is left over from this email apps 
 this data not supplied.	email	en	This data not supplied
 this folder is empty	email	it	Questa cartella è vuota
 this is really a visual template conflict issue. the phpgw template already has it own css, and style sheets are cascading, subsequent css can be inherited by the page and totally b0rk the look of the template theme. or maybe not, only certain css tags are really capable of this such as the css body property, or the a (href) properties.	email	en	This is really a visual template conflict issue. The eGW template already has it own CSS, and style sheets are cascading, subsequent CSS can be inherited by the page and TOTALLY B0RK the look of the template theme. Or maybe not, only certain CSS tags are really capable of this such as the css BODY property, or the A (href) properties.
-this is the name that appears in the account combobox. if for leave this blank, your accounts will be given a standard name like account[1]: jane doe, where jane doe is the name you give below as your full name. if you want to give an account a special name you can fill this in. no matter what, this is for your use, your emails will still use your full name as your from name for email messages. note that your full name for your email account 0 is the name you gave in the egroupware setup.	email	en	This is the name that appears in the account combobox. If for leave this blank, your accounts will be given a standard name like Account[1]: Jane Doe, where Jane Doe is the name you give below as Your full name. If you want to give an account a special name you can fill this in. No matter what, this is for your use, your emails will still use Your full name as your FROM name for email messages. Note that Your full name for your email account 0 is the name you gave in the egroupware setup.
+this is the name that appears in the account combobox. if for leave this blank, your accounts will be given a standard name like account[1]: jane doe, where jane doe is the name you give below as "your full name". if you want to give an account a special name you can fill this in. no matter what, this is for your use, your emails will still use "your full name" as your from name for email messages. note that "your full name" for your email account 0 is the name you gave in the egroupware setup.	email	en	This is the name that appears in the account combobox. If for leave this blank, your accounts will be given a standard name like Account[1]: Jane Doe, where Jane Doe is the name you give below as "Your full name". If you want to give an account a special name you can fill this in. No matter what, this is for your use, your emails will still use "Your full name" as your FROM name for email messages. Note that "Your full name" for your email account 0 is the name you gave in the eGroupWare setup.
+this is the name that appears in the account combobox. if for leave this blank, your accounts will be given a standard name like account[1]: jane doe, where jane doe is the name you give below as your full name. if you want to give an account a special name you can fill this in. no matter what, this is for your use, your emails will still use your full name as your from name for email messages. note that your full name for your email account 0 is the name you gave in the egroupware setup.	email	en	This is the name that appears in the account combobox. If for leave this blank, your accounts will be given a standard name like Account[1]: Jane Doe, where Jane Doe is the name you give below as Your full name. If you want to give an account a special name you can fill this in. No matter what, this is for your use, your emails will still use Your full name as your FROM name for email messages. Note that Your full name for your email account 0 is the name you gave in the eGroupWare setup.
 this is the name that appears in the users from address. the default mail account gets this value automatically from the phpgwapi. additional accounts are created with the phpgwapi supplied fullname you can specify a different fullname for each extra email account.	email	en	This is the name that appears in the users FROM address. The default mail account gets this value automatically from the phpgwapi. Additional accounts are created with the phpgwapi supplied fullname you can specify a different fullname for each extra email account.
 this pref currently does nothing users may have more than one email account. in the future it is anticipated that automatic actions may be performed on these accounts, such as automatic new mail checks,auto filtering, etc... perhaps the user may want to disable an account so that these automatic actions do not occur for that account. this is one possible use. also, an admin may want to disable accounts from time to time.	email	en	THIS PREF CURRENTLY DOES NOTHING Users may have more than one email account. In the future it is anticipated that automatic actions may be performed on these accounts, such as automatic new mail checks,auto filtering, etc... Perhaps the user may want to disable an account so that these automatic actions do not occur for that account. This is one possible use. Also, an admin may want to disable accounts from time to time.
 this pref currently does nothing<br>users may have more than one email account. in the future it is anticipated that automatic actions may be performedon these accounts, such as automatic new mail checks, auto filtering, etc... perhaps the user may want to disable an account so that these automatic actions do not occur for that account. this is one possible use.<br>also, an admin may want to disable accounts from time to time.	email	en	THIS PREF CURRENTLY DOES NOTHING<br>Users may have more than one email account. In the future it is anticipated that automatic actions may be performedon these accounts, such as automatic new mail checks, auto filtering, etc... Perhaps the user may want to disable an account so that these automatic actions do not occur for that account. This is one possible use.<br>Also, an admin may want to disable accounts from time to time.
@@ -345,22 +351,22 @@ this specifies whether or not to show the total size of folders by default. if t
 this specifies whether or not to show the total size of folders by default. if this is not checked, you will be presented with a button allowing you to display folder size..	email	en	This specifies whether or not to show the total size of folders by default. If this is not checked, you will be presented with a button allowing you to display folder size..
 this text will be appended to the bottom of the users emails for this email account. currently, html tags are not supported. also, forwarded email will not get this email sig appended to it for reasons such as it clutters the email, the forwarded part probably has its own email sig from the original author, which is really the information that matters the most.	email	en	This text will be appended to the bottom of the users emails for this email account. Currently, html tags are not supported. Also, forwarded email will NOT get this email sig appended to it for reasons such as it clutters the email, the forwarded part probably has its own email sig from the original author, which is really the information that matters the most.
 to	email	it	A
-to address	email	en	To Address
+to address	email	it	Indirizzo A
 total messages	email	it	Totale Messaggi
 trash	email	it	Cestino
 trash folder	email	it	cestino
-u-wash mail folder	email	en	U-Wash Mail Folder
-u-wash mail folder - if applicable	email	en	U-Wash Mail Folder - If Applicable
+u-wash mail folder	email	it	Cartelle U-Wash Mail
+u-wash mail folder - if applicable	email	it	Cartelle U-Wash Mail - Se Applicabile
 unable to get source folder name	email	en	Unable to get source folder name
 unable to get target folder name	email	en	Unable to get target folder name
 unanswered	email	it	Senza riposta
 undeleted	email	it	Non Cancellati
 undisclosed recipients	email	it	Destinatari nascosti
 undisclosed sender	email	it	Mittente nascosto
-unflagged	email	en	Unflagged
+unflagged	email	it	Non Contrassegnati
 unknown action	email	it	Azione Sconosciuta
 unknown error	email	it	Errore sconosciuto
-unknown translation	email	en	unknown translation
+unknown translation	email	it	traduzione sconosciuta
 unseen	email	it	Non Visto
 use custom settings	email	it	Usa settaggi personalizzati
 view as html	email	it	Visualizza in HTML
