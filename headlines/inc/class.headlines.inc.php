@@ -133,6 +133,12 @@
 			{
 				return False;
 			}
+			// if the xml-file specifys an encoding, convert it to our own encoding
+			if (preg_match('/\<\?xml.*encoding="([^"]+)"/i',$data,$matches) && $matches[1])
+			{
+				//echo "<p>converting from charset '$matches[1]'</p>\n";
+				$data = $GLOBALS['phpgw']->translation->convert($data,$matches[1]);
+			}
 
 			switch($this->newstype)
 			{
