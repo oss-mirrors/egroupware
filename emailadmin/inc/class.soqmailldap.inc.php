@@ -18,19 +18,15 @@
 			$this->db			= $GLOBALS['phpgw']->db;
 			$this->ldap			= $GLOBALS['phpgw']->common->ldapConnect();
 
-			/*$this->config		= CreateObject('phpgwapi.config','phpgwapi');
-			$this->config->read_repository();*/
-			$ldap_version	= $GLOBALS['phpgw_info']['server']['ldap_version'];
+			$config = CreateObject('phpgwapi.config','qmailldap');
+			$config->read_repository();
 
-			if ($ldap_version == 3)
-			{
-				$this->mail_address		= 'mail';
-				$this->routing_address	= 'mailRoutingAddress';
-			}
-			else
-			{
-				$this->mail_address		= 'maillocaladdress';
-				$this->routing_address	= 'mailForwardingAddress';
+			if ($config->config_data)
+            {
+                $items = $config->config_data;
+
+				$this->mail_address		= $config['mail'];
+				$this->routing_address	= $config['routing'];
 			}
 		}
 
