@@ -65,7 +65,7 @@ class bmark  {
 
   function update($id, $url, $name, $ldesc, $keywords, $category, $subcategory, 
                   $rating, $public) {
-    global $auth, $perm, $error_msg, $msg, $bookmarker, $validate, $db, $phpgw_info, $added;
+    global $error_msg, $msg, $bookmarker, $validate, $phpgw_info, $added, $visted, $db;
 
     if (!$this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory, 
                         &$rating, &$public, &$public_db)) return false;

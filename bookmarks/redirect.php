@@ -22,8 +22,8 @@
   $ts = explode(",",$phpgw->db->f("bm_timestamps"));
   $newtimestamp = sprintf("%s,%s,%s",$ts[0],time(),$ts[2]);
 
-  $phpgw->db->query("update bookmarks set bm_timestamps='$newtimestamp' where username='"
-                  . $phpgw_info["user"]["account_id"] . "' and id='$bm_id'");
+  $phpgw->db->query("update bookmarks set bm_timestamps='$newtimestamp', bm_vists=bm_vists+1 "
+                  . "where username='" . $phpgw_info["user"]["account_id"] . "' and id='$bm_id'");
 
   if (isset($showheader)) {
      ?>

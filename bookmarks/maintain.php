@@ -89,6 +89,7 @@ if (empty($error_msg)) {
         $subcategory = $db->f("subcategory_id");
         $bm_timestamps_raw = $db->f("bm_timestamps");
         $public      = $db->f("public_f");
+        $total_vists = $db->f("bm_vists");
 
         $ts = explode(",",$bm_timestamps_raw);
 
@@ -133,6 +134,7 @@ if (empty($error_msg)) {
                                         UPDATED            => $f_ts[2],
                                         ADDED_VALUE        => $ts[0],
                                         VISTED_VALUE       => $ts[1],
+                                        TOTAL_VISTS        => $total_vists,
                                         PUBLIC_SELECTED    => $public_selected,
                                         CANCEL_BUTTON      => $cancel_button
                                 ));
