@@ -133,11 +133,15 @@
 			   }
 			   $this->ui->msg_box($this->bo->message);
 			   unset($this->bo->message);
-
-
 			}
 
-			$site_options=$this->ui->select_options($site_arr,$this->bo->site_id,true);
+			if(@count($site_arr)==1)
+			{
+			   $allow_empty=false;
+			}
+			else $allow_empty=true;
+			
+			$site_options=$this->ui->select_options($site_arr,$this->bo->site_id,$allow_empty);
 
 
 			if ($this->bo->site_id)

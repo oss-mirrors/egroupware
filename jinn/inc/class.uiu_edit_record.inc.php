@@ -753,6 +753,9 @@
 		 $this->template->set_block('view_record','footer','footer');
 
 		 $where_string=$this->bo->where_string;
+//		 if(!$where_string) $where_string='';
+//		 _debug_array($this->bo);
+//		 die();
 
 		 $this->values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','','','','name','','*',$where_string);
 		 $fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);

@@ -70,7 +70,7 @@
 
 		/* day */
 		
-		$input.='<select name="DATD'.$field_name.'">';
+		$input.='<select name="DATE_DD'.$field_name.'">';
 		$input.='<option value=""></option>';
 
 		for($i=1;$i<=31;$i++)
@@ -83,7 +83,7 @@
 		/* months */
 		
 
-		$input.='<select name="DATM'.$field_name.'">';
+		$input.='<select name="DATE_MM'.$field_name.'">';
 		$input.='<option value=""></option>';
 	
 		for($i=1;$i<=12;$i++)
@@ -96,7 +96,7 @@
 
 		/* year */
 		
-		$input.='<select name="DATY'.$field_name.'">';
+		$input.='<select name="DATE_YY'.$field_name.'">';
 		$input.='<option value=""></option>';
 
 		for($i=2000;$i<=2015;$i++)
@@ -115,10 +115,12 @@
 	{
 		global $local_bo;
 		
-		$dates=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'DAT');
+		$dates=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'DATE');
+//		_debug_array($HTTP_POST_VARS);
 		$new_date=$dates[2].'-'.$dates[1].'-'.$dates[0];
 
 		$HTTP_POST_VARS[$field_name]==$new_date;
+//		_debug_array($HTTP_POST_VARS);
 
 		//die(_debug_array($dates));
 		if($new_date) return $new_date;

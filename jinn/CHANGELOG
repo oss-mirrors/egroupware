@@ -2,11 +2,19 @@
 CHANGELOG JiNN for eGroupWare
 =============================
 
+version 0.8.105c
+Thu Sep 16 22:11:18 CEST 2004
+=============================
+- fix: wrong behaviour of date plugin when editing multiple records
+- doc: add documentation to bouser about processing multiple records
+- eff: automaticly open site when user has only access to one site (reducing clicks)
+
 version 0.8.105b
 Thu Sep  9 21:46:07 CEST 2004
 ============================
 - fix: clicking on 'add multiple records' while in edit multiple records screen jumps backs to same screen
 - fix: clicking continue in mult-rec-ins return edit screen with incorrect records 
+- fix: delete button doesn't work in multi edit screen
 
 version 0.8.105
 Thu Sep  9 11:53:57 CEST 2004

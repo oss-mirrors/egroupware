@@ -261,6 +261,12 @@
 	  }
 
 
+	  /* 
+	  @function mult_to_fld
+	  @abstract when multiple records are updated this function translates all fields 
+	  to single records so the records can be processed normally.
+	  @note  If a plugin developer wants to use a prefix it must be exactly charachter long
+	  */
 	  function mult_to_fld($i,$type='_POST')
 	  {
 		 if($type=='_POST')
@@ -268,12 +274,13 @@
 			reset($_POST);
 			while (list($key, $val) = each($_POST))
 			{
-				// normal fields
-			   if (substr($key,0,4)=='MLTX' && intval(substr($key,4,2)) == $i) 
+			   // normal fields
+				if (substr($key,0,4)=='MLTX' && intval(substr($key,4,2)) == $i) 
 			   {
 				  $post_arr['FLDXXX'.substr($key,6)]=$val;
 			   }
-			   // special plugin fields
+			   /* special plugin fields */
+			   /* If a plugin user wants to use a prefix it must be exactly charachter long  */ 
 			   elseif (substr($key,7,4)=='MLTX' && intval(substr($key,11,2)) == $i) 
 			   {
 				  $post_arr[substr($key,0,7).'FLDXXX'.substr($key,13)]=$val;
@@ -400,9 +407,11 @@
 			   {
 				  $post_arr=$this->mult_to_fld($i,'_POST');
 				  $files_arr=$this->mult_to_fld($i,'_FILES');
-
+//				_debug_array($post_arr);
 				  $data=$this->http_vars_pairs($post_arr,$files_arr);
 
+//				  _debug_array($data);
+				  
 				  $where_string=base64_decode($_POST['MLTWHR'.sprintf("%02d",$i)]);
 				  $this->mult_where_array[]=$where_string;
 
