@@ -133,10 +133,20 @@ function check_all()
          $t_folder_s = $phpgw->msg->construct_folder_str($folder);
       } else {
          $t_folder_s = "INBOX";
+      }	
+
+      if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
+      {
+ 	/* IMAP over SSL */
+	$mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/ssl/novalidate-cert:993}$t_folder_s", SA_UNSEEN);
+      } 
+      else 
+      {
+        /* No SSL, normal connection */
+        $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":". $phpgw_info["server"]["mail_port"] ."}$t_folder_s",SA_UNSEEN);
+
       }
-      $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["user"]["preferences"]["email"]["mail_port"] . "}$t_folder_s",SA_UNSEEN);
-
-
+      
       if ($nummsg > 0) {
 	 $msg_array = array();
          // Note: sorting on email is on address, not displayed name per php imap_sort
@@ -163,7 +173,7 @@ function check_all()
         <tr>
          <td>
            <?php
-             if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" || $phpgw_info["flags"]["newsmode"]) {
+             if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" || $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imaps" || $phpgw_info["flags"]["newsmode"]) {
                 echo '<select name="folder" onChange="document.switchbox.submit()">'
                    . '<option>' . lang("switch current folder to") . ':';
                 echo list_folders($mailbox,$folder);
@@ -174,7 +184,7 @@ function check_all()
          <td>
            &nbsp;&nbsp;
            <?php
-             if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
+             if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" || $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imaps" ) {
 		echo '<input type="button" value="' . lang("folder") . '" onClick="'
 		   . 'window.location=\'' . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php',"folder="
 		   . urlencode($folder)) . '\'">';
@@ -349,7 +359,7 @@ function check_all()
           </td>
           <td align="right">
            <?php
-             if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
+             if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" || $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imaps") {
                 echo '<select name="tofolder" onChange="do_action(\'move\')">'
                    . '<option>' . lang("move selected messages into") . ':';
                 echo list_folders($mailbox);

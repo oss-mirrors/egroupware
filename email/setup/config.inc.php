@@ -19,6 +19,9 @@
      <select name="newsettings[mail_server_type]">
       <option value="imap"<?php echo $selected["imap"]; ?>>IMAP</option>
       <option value="pop3"<?php echo $selected["pop3"]; ?>>POP-3</option>
+<?php /* HvG20010502, Added IMAPS and POP3S as supported mail server types: */ ?>
+      <option value="imaps"<?php echo $selected["imaps"]; ?>>IMAPS</option>
+      <option value="pop3s"<?php echo $selected["pop3s"]; ?>>POP-3S"</option>
      </select>
     </td>
    </tr>

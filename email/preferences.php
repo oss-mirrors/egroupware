@@ -179,8 +179,11 @@
      <td align="center">
       <select name="mail_server_type">
        <?php $selected[$phpgw_info["user"]["preferences"]["email"]["mail_server_type"]] = " selected"; ?>
-       <option value="imap"<?php echo $selected["imap"]; ?>>IMAP</option>
-       <option value="pop3"<?php echo $selected["pop3"]; ?>>POP-3</option>
+       <option value="imap" <?php echo $selected["imap"]; ?>>IMAP</option>
+       <option value="pop3" <?php echo $selected["pop3"]; ?>>POP-3</option>
+<?php /* HvG20010502, Added IMAPS and POP3S support here:	*/ ?>
+       <option value="imaps"<?php echo $selected["imaps"]; ?>>IMAPS</option>
+       <option value="pop3s"<?php echo $selected["pop3s"]; ?>>POP-3S</option>
        <?php $selected = array(); ?>
       </select>
      </td>

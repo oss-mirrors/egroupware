@@ -54,7 +54,23 @@
          if (isset($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]) &&
 	     $phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]) {
             $filter = $phpgw->msg->construct_folder_str("");
-            $imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . "143" . "}";
+
+	    if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')		
+	    {
+		/* HvG20010502: Secure IMAP, extra parameters, other port: */
+                $imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/ssl/novalidate-cert:993}";
+	    }
+	    elseif  ($phpgw_info['user']['preferences']['email']['mail_server_type']=='pop3s')
+	    { 	/* HvG20010502: Secure POP3S support: */
+		$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/pop3/ssl/novalidate-cert:995" . "}";
+	    }
+	    else
+	    {	
+		/* Normal imap, no special stuff: */
+            	$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . "143" . "}";
+
+	    }
+
             $mailboxes = $phpgw->msg->listmailbox($stream, $imap_str, "$filter*");
 
             if (count($mailboxes) != 0) {
@@ -159,7 +175,23 @@
       global $phpgw_info, $phpgw;
 
       $filter = $phpgw->msg->construct_folder_str("");
-      $imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . "143" . "}";
+      
+      if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps' )
+      {
+	/* HvG20010502:	Use IMAPS (other port, other parameters): */
+      	$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/ssl/novalidate-cert:993}";
+      }
+      elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s' )
+      {
+	/* HvG20010502: Use POP3S: */
+	$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/pop3/ssl/novalidate-cert:995}";
+      }
+      else
+      {
+	/* Normal imap, nothing special: */
+        $imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . "143" . "}";
+      }
+
       $mailboxes = $phpgw->msg->listmailbox($stream, $imap_str, "$filter*");
       if (count($mailboxes) != 0) {
         $havefolder = False;
@@ -174,7 +206,22 @@
       }
 
       $folder = $this->construct_folder_str($folder);
-      return imap_append($stream, "{".$phpgw_info["user"]["preferences"]["email"]["mail_server"].":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]."}".$folder, $header ."\n". $body, $flags);
+      if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
+      {
+	/* IMAP over SSL: */	
+	return imap_append($stream, "{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]."/ssl/novalidate-cert:993}".$folder, $header ."\n". $body, $flags);
+      }
+      elseif ($phpgw_info['user']['preferences']['email']['mail_server_type']=='pop3s')
+      {
+	/* POP3 over SSL: */
+	/* HvG20010502: Actually POP3 doesn't support folders, so the following could
+	   actually not be done. */
+	return imap_append($stream, "{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]."/pop3/ssl/novalidate-cert:995}".$folder, $header ."\n". $body, $flags); 
+      }
+      else
+      {
+      	return imap_append($stream, "{".$phpgw_info["user"]["preferences"]["email"]["mail_server"].":143}".$folder, $header ."\n". $body, $flags);
+      }
     }
 
     function login( $folder = "INBOX")
@@ -187,9 +234,25 @@
 
       $pass = $phpgw_info["user"]["preferences"]["email"]["passwd"];
       $user = $phpgw_info["user"]["preferences"]["email"]["userid"];
-      $mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
-			     .":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]."}"
-			     .$folder, $user , $pass);
+      if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
+      {
+	/* SSL enabled IMAP: */
+      	$mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"] ."/ssl/novalidate-cert:993}".$folder, 
+				$user , $pass);
+      }
+      elseif ($phpgw_info['user']['preferences']['email']['mail_server_type']=='pop3s')
+      {
+	/* SSL enabled POP3: */
+	$mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"] ."/pop3/ssl/novalidate-cert:995}".$folder,
+                                $user , $pass);
+      }
+      else
+      {
+	/* Normal IMAP, nothing special: */
+	$mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
+			.":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]
+			."}".$folder, $user, $pass);
+      }
 
       error_reporting(error_reporting() + 2);
       return $mbox;

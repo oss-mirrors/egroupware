@@ -33,7 +33,7 @@
 		}
 		else
 		{
-			$mailbox_status = $phpgw->msg->status($mailbox,'{' . $phpgw_info['user']['preferences']['email']['mail_server'] . ':' . $phpgw_info['user']['preferences']['email']['mail_port'] . '}INBOX',SA_UNSEEN);
+			$mailbox_status = $phpgw->msg->status($mailbox,'{' . $phpgw_info['user']['preferences']['email']['mail_server'] . '/ssl/novalidate-cert:993}INBOX',SA_UNSEEN);
 			$str = '';
 			if ($mailbox_status->unseen == 1)
 			{

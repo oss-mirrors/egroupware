@@ -125,8 +125,22 @@
         $stdoffset = 1;
       }
 
-      $mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
+      if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap")
+      {	/* Normal IMAP: */
+      	$mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
         .":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]."}",$filter."*");
+      }
+      elseif ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "pop3s")
+      {	/* POP3 over SSL: */
+	$mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
+        ."/pop3/ssl/novalidate-cert:995}",$filter."*");
+      }
+      else
+      { /* IMAP over SSL: */
+  	$mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
+        ."/ssl/novalidate-cert:993}",$filter."*");
+      }
+
       if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] != "pop3")
         if (gettype($mailboxes) == "array") {
  	        sort($mailboxes); // added sort for folder names 
