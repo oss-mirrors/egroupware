@@ -1,7 +1,8 @@
 <?php
 	/*****************************************************************************\
-	* eGroupWare - boForums                                                     *
-	* http://www.egroupware.org                                                 *
+	* phpGroupWare - soForums                                                     *
+	* http://www.egroupware.org                                                   *
+	* storage layer reworked by Ralf Becker <RalfBecker-AT-outdoor-training.de>   *
 	* Written by Mark A Peters <skeeter@phpgroupware.org>                         *
 	* Based off of Jani Hirvinen <jpkh@shadownet.com>                             *
 	* -------------------------------------------                                 *
@@ -17,46 +18,52 @@
 	{
 		var $debug=False;
 		
-		var $db;
+		var $db;	/* @var $db db */
+		var $threads_table,$body_table,$forums_table,$categories_table;
 
 		function soforum()
 		{
 			$this->db = $GLOBALS['phpgw']->db;
+			$this->db->set_app('forum');
+			
+			foreach(array('threads','body','forums','categories') as $name)
+			{
+				$table = $name . '_table';
+				$this->$table = 'phpgw_forum_'.$name;	// only reference to the prefix
+			}
 		}
 
 		function delete_category($cat_id)
 		{
-			$query = 'DELETE FROM phpgw_forum_threads WHERE cat_id='.$cat_id;
-			$this->db->query($query,__LINE__,__FILE__);
-			$query = 'DELETE FROM phpgw_forum_body WHERE cat_id='.$cat_id;
-			$this->db->query($query,__LINE__,__FILE__);
-			$query = 'DELETE FROM phpgw_forum_forums WHERE cat_id='.$cat_id;
-			$this->db->query($query,__LINE__,__FILE__);
-			$query = 'DELETE FROM phpgw_forum_categories WHERE id='.$cat_id;
-			$this->db->query($query,__LINE__,__FILE__);
+			$this->db->delete($this->threads_table,array('cat_id'=>$cat_id),__LINE__,__FILE__);
+			$this->db->delete($this->body_table,array('cat_id'=>$cat_id),__LINE__,__FILE__);
+			$this->db->delete($this->forums_table,array('cat_id'=>$cat_id),__LINE__,__FILE__);
+			$this->db->delete($this->categories_table,array('id'=>$cat_id),__LINE__,__FILE__);
 		}
 
 		function delete_forum($cat_id,$forum_id)
 		{
-			$query = 'DELETE FROM phpgw_forum_threads WHERE cat_id='.$cat_id.' AND for_id='.$forum_id;
-			$this->db->query($query,__LINE__,__FILE__);
-			$query = 'DELETE FROM phpgw_forum_body WHERE cat_id='.$cat_id.' AND for_id='.$forum_id;
-			$this->db->query($query,__LINE__,__FILE__);
-			$query = 'DELETE FROM phpgw_forum_forums WHERE cat_id='.$cat_id.' AND id='.$forum_id;
-			$this->db->query($query,__LINE__,__FILE__);
+			$this->db->delete($this->threads_table,array('cat_id'=>$cat_id,'for_id'=>$forum_id),__LINE__,__FILE__);
+			$this->db->delete($this->body_table,array('cat_id'=>$cat_id,'for_id'=>$forum_id),__LINE__,__FILE__);
+			$this->db->delete($this->forums_table,array('cat_id'=>$cat_id,'id'=>$forum_id),__LINE__,__FILE__);
 		}
 
 		function save_category($cat)
 		{
+			$data = array(
+				'name'	=> $cat['name'],
+				'descr'	=> $cat['descr']
+			);	
+			
+			
 			if($cat['id'])
 			{
-				$query = "UPDATE phpgw_forum_categories SET name='".$cat['name']."', descr='".$cat['descr']."' WHERE id=".$cat['id'];
+				$this->db->update($this->categories_table,$data,array('id' => $cat['id']),__LINE__,__FILE__);
 			}
 			else
 			{
-				$query = "INSERT INTO phpgw_forum_categories(name,descr) VALUES('".$cat['name']."','".$cat['descr']."')";
+				$this->db->insert($this->categories_table,$data,false,__LINE__,__FILE__);
 			}
-			$this->db->query($query,__LINE__,__FILE__);
 		}
 
 		function save_forum($forum)
@@ -69,15 +76,38 @@
 					{
 						echo '<!-- Setting name/descr for CAT_ID: '.$forum['cat_id'].' and ID: '.$forum['id'].' -->'."\n";
 					}
-					$query = "UPDATE phpgw_forum_forums SET name='".$forum['name']."', descr='".$forum['descr']."' WHERE id=".$forum['id'].' AND cat_id='.$forum['cat_id'];
+					$this->db->update($this->forums_table,array(
+							'name'		=> $forum['name'],
+							'descr'		=> $forum['descr'],
+						),array(
+							'id'		=> $forum['id'],
+							'cat_id'	=> $forum['cat_id'],
+						),__LINE__,__FILE__);
 				}
 				else
 				{
-					$query = 'UPDATE phpgw_forum_forums SET cat_id='.$forum['cat_id'].", name='".$forum['name']."', descr='".$forum['descr']."' WHERE cat_id=".$forum['orig_cat_id'].' and id='.$forum['id'];
-					$this->db->query($query,__LINE__,__FILE__);
-					$query = 'UPDATE phpgw_forum_threads SET cat_id='.$forum['cat_id'].' WHERE cat_id='.$forum['orig_cat_id'].' and for_id='.$forum['id'];
-					$this->db->query($query,__LINE__,__FILE__);
-					$query = 'UPDATE phpgw_forum_body SET cat_id='.$forum['cat_id'].' WHERE cat_id='.$forum['orig_cat_id'].' and for_id='.$forum['id'];
+					$this->db->update($this->forums_table,array(
+							'name'		=> $forum['name'],
+							'descr'		=> $forum['descr'],
+							'cat_id'	=> $forum['cat_id'],
+						),array(
+							'id'		=> $forum['id'],
+							'cat_id'	=> $forum['orig_cat_id'],
+						),__LINE__,__FILE__);
+
+					$this->db->update($this->threads_table,array(
+							'cat_id'	=> $forum['cat_id'],
+						),array(
+							'for_id'	=> $forum['id'],
+							'cat_id'	=> $forum['orig_cat_id'],
+						),__LINE__,__FILE__);
+
+					$this->db->update($this->body_table,array(
+							'cat_id'	=> $forum['cat_id'],
+						),array(
+							'for_id'	=> $forum['id'],
+							'cat_id'	=> $forum['orig_cat_id'],
+						),__LINE__,__FILE__);
 				}
 			}
 			else
@@ -86,86 +116,135 @@
 				{
 					echo '<-- Cat ID: '.$forum['cat_id'].' -->'."\n";
 				}
-				$query = 'INSERT INTO phpgw_forum_forums (cat_id,name,descr,perm,groups) VALUES ('.$forum['cat_id'].",'".$forum['name']."','".$forum['descr']."',0,'0')";
+				$this->db->insert($this->forums_table,array(
+						'cat_id'	=> $forum['cat_id'],
+						'name'		=> $forum['name'],
+						'descr'		=> $forum['descr'],
+						'perm'		=> 0,
+						'groups'	=> 0,
+					),false,__LINE__,__FILE__);
 			}
-			$this->db->query($query,__LINE__,__FILE__);
 		}
 
 		function add_reply($data)
 		{
-			$this->db->query('insert into phpgw_forum_threads (pos,thread,depth,postdate,main,parent,cat_id,for_id,thread_owner,subject,stat,n_replies) '
-				.'VALUES('.$data['pos'].','.$data['thread'].','.$data['depth'].",'".$this->db->to_timestamp($data['postdate'])."',"
-					. ($this->get_max_body_id() + 1).','.$data['parent'].','.$data['cat_id'].','
-					. $data['forum_id'].','.$GLOBALS['phpgw_info']['user']['account_id'].",'"
-					. $this->db->db_addslashes($data['subject']) . "',0,0)",__LINE__,__FILE__);
-			$this->db->query('update phpgw_forum_threads set n_replies = n_replies+1 where thread='.$data['thread'],__LINE__,__FILE__);
-			$this->db->query('insert into phpgw_forum_body (cat_id,for_id,message) VALUES ('.$data['cat_id'].','.$data['forum_id'].",'".$this->db->db_addslashes($data['message'])."')",__LINE__,__FILE__);
+			$this->db->insert($this->body_table,array(
+					'cat_id'	=> $data['cat_id'],
+					'for_id'	=> $data['forum_id'],
+					'message'	=> $data['message'],
+				),false,__LINE__,__FILE__);
+
+			$this->db->insert($this->threads_table,array(
+					'pos'		=> $data['pos'],
+					'thread'	=> $data['thread'],
+					'depth'		=> $data['depth'],
+					'postdate'	=> $data['postdate'],
+					'main'		=> $this->db->get_last_insert_id($this->body_table,'id'),
+					'parent'	=> $data['parent'],
+					'cat_id'	=> $data['cat_id'],
+					'for_id'	=> $data['forum_id'],
+					'thread_owner' => $GLOBALS['phpgw_info']['user']['account_id'],
+					'subject'	=> $data['subject'],
+					'stat'		=> 0,
+					'n_replies'	=> 0,
+				),false,__LINE__,__FILE__);
+					
+			$this->db->update($this->threads_table,array(
+					'n_replies = n_replies+1'
+				),array(
+					'thread'	=> $data['thread']
+				),__LINE__,__FILE__);
+
 		}
 
 		function add_post($data)
 		{
-			$next_f_body_id = $this->get_max_body_id() + 1;
-			$this->db->query('insert into phpgw_forum_threads (pos,thread,depth,postdate,main,parent,cat_id,for_id,thread_owner,subject,stat,n_replies) '
-				.'VALUES (0,'.$next_f_body_id.",0,'".$this->db->to_timestamp($data['postdate'])."',".$next_f_body_id.',-1,'.$data['cat_id'].','.$data['forum_id']
-				.','.$GLOBALS['phpgw_info']['user']['account_id'] . ",'".$this->db->db_addslashes($data['subject'])."',0,0)",__LINE__,__FILE__);
-				
-			$this->db->query('insert into phpgw_forum_body (cat_id,for_id,message) VALUES ('.$data['cat_id'].','.$data['forum_id'].",'".$this->db->db_addslashes($data['message'])."')",__LINE__,__FILE__);
+			$this->db->insert($this->body_table,array(
+					'cat_id'	=> $data['cat_id'],
+					'for_id'	=> $data['forum_id'],
+					'message'	=> $data['message'],
+				),false,__LINE__,__FILE__);
+
+			$body_id = $this->db->get_last_insert_id($this->body_table,'id');
+
+			$this->db->insert($this->threads_table,array(
+					'pos'		=> 0,
+					'thread'	=> $body_id,
+					'depth'		=> 0,
+					'postdate'	=> $data['postdate'],
+					'main'		=> $body_id,
+					'parent'	=> -1,
+					'cat_id'	=> $data['cat_id'],
+					'for_id'	=> $data['forum_id'],
+					'thread_owner' => $GLOBALS['phpgw_info']['user']['account_id'],
+					'subject'	=> $data['subject'],
+					'stat'		=> 0,
+					'n_replies'	=> 0,
+				),false,__LINE__,__FILE__);
 		}
 
+		// RalfBecker: the following 3 functions are quite riscy in a true multiuser environment, one should use db::get_last_insert_id() instead !!!
 		function get_max_forum_id()
 		{
-			$this->db->query('select max(id) from phpgw_forum_forums',__LINE__,__FILE__);
-			$this->db->next_record();
-			return $this->db->f(0);
+			$this->db->select($this->forums_table,'max(id)',false,__LINE__,__FILE__);
+
+			return $this->db->next_record() ? $this->db->f(0) : 0;
 		}
 
 		function get_max_body_id()
 		{
-			$this->db->query('select max(id) from phpgw_forum_body',__LINE__,__FILE__);
-			$this->db->next_record();
-			return $this->db->f(0);
+			$this->db->select($this->body_table,'max(id)',false,__LINE__,__FILE__);
+
+			return $this->db->next_record() ? $this->db->f(0) : 0;
 		}
 
 		function get_max_thread_id()
 		{
-			$this->db->query('select max(id) from phpgw_forum_threads',__LINE__,__FILE__);
-			$this->db->next_record();
-			return $this->db->f(0);
+			$this->db->select($this->threads_table,'max(id)',false,__LINE__,__FILE__);
+
+			return $this->db->next_record() ? $this->db->f(0) : 0;
 		}
 
 		function fix_pos($thread,$pos)
 		{
 			$db2 = $GLOBALS['phpgw']->db;
-			$tmp = $this->db->query('select id,pos from phpgw_forum_threads where thread='.$thread.' and pos>='.$pos.' order by pos desc',__LINE__,__FILE__);
-			while($this->db->next_record($tmp))
+			$this->db->select($this->threads_table,'id,pos',array(
+					'thread' => $thread,
+					'pos>='.(int)$pos,
+				),__LINE__,__FILE__,false,'ORDER BY pos DESC');
+
+			while($this->db->next_record())
 			{
-				$oldpos = $this->db->f('pos') + 1;
-				$oldid = $this->db->f('id');
-//				print "$oldid $oldpos<br>";
-				$db2->query('update phpgw_forum_threads set pos='.$oldpos.' where thread='.$thread.' and id='.$oldid,__LINE__,__FILE__);
+				$db2->update($this->threads_table,array(
+						'pos'		=> $this->db->f('pos') + 1,
+					),array(
+						'thread'	=> $thread,
+						'id'		=> $this->db->f('id'),
+					),__LINE__,__FILE__);
 			}
 		}
 
 		function get_cat_ids()
 		{
-			$this->db->query('select * from phpgw_forum_categories order by id',__LINE__,__FILE__);
+			$this->db->select($this->categories_table,'*',false,__LINE__,__FILE__,false,'ORDER BY id');
+
 			while($this->db->next_record())
 			{
-				$cat[] = Array(
+				$cats[] = Array(
 					'id'	=> $this->db->f('id'),
 					'name'	=> $this->db->f('name'),
 					'descr'	=> $this->db->f('descr')
 				);
 			}
-			return $cat;
+			return $cats;
 		}
 
 		function get_cat_info($cat_id)
 		{
-			$this->db->query('select * from phpgw_forum_categories where id='.$cat_id,__LINE__,__FILE__);
-			if($this->db->num_rows())
+			$this->db->select($this->categories_table,'*',array('id'=>$cat_id),__LINE__,__FILE__);
+
+			if($this->db->next_record())
 			{
-				$this->db->next_record();
 				$cat = Array(
 					'id'	=>	$cat_id,
 					'name'	=> $this->db->f('name'),
@@ -177,17 +256,14 @@
 
 		function get_thread_summary($cat_id,$forum_id=0,$thread_id=0)
 		{
+			$where = array(
+				'cat_id' => $cat_id,
+			);
+			if($forum_id) $where['for_id'] = $forum_id;
+			if($thread_id) $where['thread'] = $thread_id;
+
 			$db2 = $GLOBALS['phpgw']->db;
-			$query = 'select max(postdate), count(id) from phpgw_forum_threads where cat_id='.$cat_id;
-			if($forum_id!=0)
-			{
-				$query .= ' and for_id='.$forum_id;
-			}
-			if($thread_id!=0)
-			{
-				$query .= ' and thread='.$thread_id;
-			}
-			$db2->query($query,__LINE__,__FILE__);
+			$db2->select($this->threads_table,'max(postdate),count(id)',$where,__LINE__,__FILE__);
 			$db2->next_record();
 			if($db2->f(0))
 			{
@@ -198,17 +274,18 @@
 				$forum['last_post'] = '&nbsp;';
 			}
 			$forum['total'] = $db2->f(1);
+
 			return $forum;
 		}
 
 		function get_forum_info($cat_id,$forum_id=0)
 		{
-			$query = 'select * from phpgw_forum_forums where cat_id='.$cat_id;
-			if($forum_id!=0)
-			{
-				$query .= ' and id='.$forum_id;
-			}
-			$this->db->query($query,__LINE__,__FILE__);
+			$where = array(
+				'cat_id' => $cat_id,
+			);
+			if($forum_id) $where['id'] = $forum_id;
+			
+			$this->db->select($this->forums_table,'*',$where,__LINE__,__FILE__);
 			while($this->db->next_record())
 			{
 				$forum[] = Array(
@@ -223,16 +300,12 @@
 
 		function get_thread($cat_id,$forum_id,$collapsed)
 		{
-			$query = 'select * from phpgw_forum_threads where cat_id='.$cat_id.' and for_id='.$forum_id;
-			if($collapsed)
-			{
-				$query .= ' and parent = -1 order by postdate DESC';
-			}
-			else
-			{
-				$query .= ' order by thread DESC, postdate, depth';
-			}
-			$this->db->query($query,__LINE__,__FILE__);
+			$where = array(
+				'cat_id' => $cat_id,
+				'for_id' => $forum_id,
+			);
+
+			$this->db->select($this->threads_table,'*',$where,__LINE__,__FILE__,false,'ORDER BY '.($collapsed ? 'postdate DESC' : 'thread DESC, postdate, depth'));
 			while($this->db->next_record())
 			{
 				if($collapsed)
@@ -257,9 +330,15 @@
 		function read_msg($cat_id,$forum_id,$msg_id)
 		{
 			$db2 = $GLOBALS['phpgw']->db;
-			$db2->query('select thread from phpgw_forum_threads where id='.$msg_id,__LINE__,__FILE__);
+			$db2->select($this->threads_table,'thread',array('id'=>$msg_id),__LINE__,__FILE__);
 			$db2->next_record();
-			$this->db->query('select * from phpgw_forum_threads where id >= '.$msg_id.' and cat_id='.$cat_id.' and for_id='.$forum_id.' and thread='.$db2->f('thread').' order by parent,id',__LINE__,__FILE__);
+			$this->db->select($this->threads_table,'*',array(
+					'id >= '.(int)$msg_id,
+					'cat_id' => $cat_id,
+					'for_id' => $forum_id,
+					'thread' => $db2->f('thread'),
+				),__LINE__,__FILE__,false,'ORDER BY parent,id');
+
 			if(!$this->db->num_rows())
 			{
 				return False;
@@ -272,7 +351,7 @@
 					$subject = '[ ' . lang('No subject') . ' ]';
 				}
 
-				$db2->query('select * from phpgw_forum_body where id='.$this->db->f('id'),__LINE__,__FILE__);
+				$db2->select($this->body_table,'*',array('id'=>$this->db->f('id')),__LINE__,__FILE__);
 				$db2->next_record();
 				$message = $GLOBALS['phpgw']->strip_html($db2->f('message'));
 
