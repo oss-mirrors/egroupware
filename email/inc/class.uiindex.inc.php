@@ -3,10 +3,10 @@
 	* phpGroupWare - email UI Class for Message Lists				*
 	* http://www.phpgroupware.org							*
 	* Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>		*
-	* --------------------------------------------						*
-	*  This program is free software; you can redistribute it and/or modify it 	*
+	* --------------------------------------------							*
+	*  This program is free software; you can redistribute it and/or modify it 		*
 	*  under the terms of the GNU General Public License as published by the	*
-	*  Free Software Foundation; either version 2 of the License, or (at your  	*
+	*  Free Software Foundation; either version 2 of the License, or (at your  		*
 	*  option) any later version.								*
 	\**************************************************************************/
 
@@ -75,7 +75,7 @@
 				// even though we had to output the header (go figure... :)
 			}
 			
-			$this->bo->xi['my_layout'] = $GLOBALS['phpgw_info']['user']['preferences']['email']['layout'];
+			$this->bo->xi['my_layout'] = $GLOBALS['phpgw']->msg->prefs['layout'];
 			$this->bo->xi['my_browser'] = $GLOBALS['phpgw']->msg->browser;
 			
 			//$GLOBALS['phpgw']->template = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
@@ -388,7 +388,7 @@
 			}
 
 			// MUCH of this data may not be necessary nor used for mlists 
-			$this->bo->xi['my_layout'] = $GLOBALS['phpgw_info']['user']['preferences']['email']['layout'];
+			$this->bo->xi['my_layout'] = $GLOBALS['phpgw']->msg->prefs['layout'];
 			$this->bo->xi['my_browser'] = $GLOBALS['phpgw']->msg->browser;
 			
 			//$GLOBALS['phpgw']->template = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
@@ -410,8 +410,8 @@
 			$GLOBALS['phpgw']->template->parse('V_mlist_form_init','B_mlist_form_init');
 			$this->bo->xi['V_mlist_form_init'] = $GLOBALS['phpgw']->template->get_var('V_mlist_form_init');
 			
-			// font size options
-			$this->bo->xi['font_size_offset'] = 1;
+			// font size options (this feature currently BROKEN)
+			$this->bo->xi['font_size_offset'] = 0;
 			//$this->bo->xi['font_size_offset'] = 2;
 			// FIXME:  font_size_offset  needs to be put into the prefs db, bo, and ui
 			

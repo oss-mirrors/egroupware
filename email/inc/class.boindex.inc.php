@@ -469,8 +469,8 @@
 					 $this->xi['lang_lines'] = $this->xi['lang_lines'] .$flag_sort_post; break;
 			}
 			// default order is needed for the "nextmatchs" args, to know when to toggle this between normal and reverse
-			if ((isset($GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting']))
-			  && ($GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting'] == 'new_old'))
+			if ((isset($GLOBALS['phpgw']->msg->prefs['default_sorting']))
+			  && ($GLOBALS['phpgw']->msg->prefs['default_sorting'] == 'new_old'))
 			{
 				$this->xi['default_order'] = 1;
 			}
@@ -787,8 +787,8 @@
 					 $this->xi['lang_lines'] = $this->xi['lang_lines'] .$flag_sort_post; break;
 			}
 			// default order is needed for the "nextmatchs" args, to know when to toggle this between normal and reverse
-			if ((isset($GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting']))
-			  && ($GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting'] == 'new_old'))
+			if ((isset($GLOBALS['phpgw']->msg->prefs['default_sorting']))
+			  && ($GLOBALS['phpgw']->msg->prefs['default_sorting'] == 'new_old'))
 			{
 				$this->xi['default_order'] = 1;
 			}

@@ -187,8 +187,8 @@ class mail_msg_wrappers extends mail_msg_base
 		$server_str = $this->get_mailsvr_callstr();
 		$mailbox_status = $this->dcom->status($this->mailsvr_stream,$server_str.$this->folder,SA_ALL);
 
-		if (($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] == 'imap')
-		|| ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] == 'imaps'))
+		if (($this->prefs['mail_server_type'] == 'imap')
+		|| ($this->prefs['mail_server_type'] == 'imaps'))
 		{
 			$return_data['is_imap'] = True;
 			$return_data['number_new'] = $mailbox_status->unseen;
@@ -322,11 +322,11 @@ class mail_msg_wrappers extends mail_msg_base
 	{
 		//$this->dcom->delete($this->mailsvr_stream, $this->args['msglist'][$i],"",$this->folder);
 
-		if ((isset($GLOBALS['phpgw_info']['user']['preferences']['email']['use_trash_folder']))
-		&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['use_trash_folder']))
+		if ((isset($this->prefs['use_trash_folder']))
+		&& ($this->prefs['use_trash_folder']))
 		{
-			$trash_folder_long = $this->get_folder_long($GLOBALS['phpgw_info']['user']['preferences']['email']['trash_folder_name']);
-			$trash_folder_short = $this->get_folder_short($GLOBALS['phpgw_info']['user']['preferences']['email']['trash_folder_name']);
+			$trash_folder_long = $this->get_folder_long($this->prefs['trash_folder_name']);
+			$trash_folder_short = $this->get_folder_short($this->prefs['trash_folder_name']);
 			if ($currentfolder != '')
 			{
 				$currentfolder_short = $this->get_folder_short($currentfolder);
@@ -340,7 +340,7 @@ class mail_msg_wrappers extends mail_msg_base
 			else
 			{
 				// does the trash folder actually exist ?
-				$official_trash_folder_long = $this->folder_lookup('', $GLOBALS['phpgw_info']['user']['preferences']['email']['trash_folder_name']);
+				$official_trash_folder_long = $this->folder_lookup('', $this->prefs['trash_folder_name']);
 				if ($official_trash_folder_long != '')
 				{
 					$havefolder = True;
@@ -357,7 +357,7 @@ class mail_msg_wrappers extends mail_msg_base
 					//$this->createmailbox($stream,$server_str .$trash_folder_long);
 					$this->phpgw_createmailbox("$server_str"."$trash_folder_long");
 					// try again to get the real long folder name of the just created trash folder
-					$official_trash_folder_long = $this->folder_lookup('', $GLOBALS['phpgw_info']['user']['preferences']['email']['trash_folder_name']);
+					$official_trash_folder_long = $this->folder_lookup('', $this->prefs['trash_folder_name']);
 					// did the folder get created and do we now have the official full name of that folder?
 					if ($official_trash_folder_long != '')
 					{

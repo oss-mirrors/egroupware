@@ -21,6 +21,7 @@
 
 	$tmp_app_inc = $GLOBALS['phpgw']->common->get_inc_dir('email');
 
+	// does this array item actually exist before we create the mail_msg, where is it created?
 	if ($GLOBALS['phpgw_info']['user']['preferences']['email']['mainscreen_showmail'] == True)
 	{
 		// ----  Create the base email Msg Class    -----

@@ -23,6 +23,7 @@
 	//$GLOBALS['phpgw_info']['server']['app_inc'] = PHPGW_SERVER_ROOT . SEP . 'email' . SEP . 'inc';
 
 	// NOTE: notify for email not available if the welcome screen show mail option if off
+	// just wondering, where and when is this pref array data created prior to mail_msg object creation?
 	if (($GLOBALS['phpgw_info']['user']['preferences']['email']['mainscreen_showmail'])
 	&& (isset($GLOBALS['phpgw_info']['user']['apps']['email'])
 	&& $GLOBALS['phpgw_info']['user']['apps']['email']))

@@ -352,6 +352,7 @@
 		var $folder = '';
 		
 		var $imap_builtin=False;
+		var $force_msg_uids = False;
 		
 		// DEBUG FLAG: Debug Levels are 0=none, 1=basic, 2=detailed, 3=more detailed
 		var $debug_dcom=0;

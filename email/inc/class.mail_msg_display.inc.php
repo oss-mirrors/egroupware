@@ -238,8 +238,8 @@ class mail_msg extends mail_msg_wrappers
 			// this is a valid $this->args['order'] variable passed as an arg
 			$this->order = $this->args['order'];
 		}
-		elseif ((isset($GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting']))
-		  && ($GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting'] == "new_old"))
+		elseif ((isset($this->prefs['default_sorting']))
+		  && ($this->prefs['default_sorting'] == "new_old"))
 		{
 			// user has a preference set to see new mail first
 			// this is considered "reverse" order because it is "highest to lowest"
@@ -833,7 +833,7 @@ class mail_msg extends mail_msg_wrappers
 			// TEMPORARY HACK FOR SOCKET POP3 CLASS - feed it DUMB mime part numbers
 			if ((isset($this->dcom->imap_builtin))
 			&& ($this->dcom->imap_builtin == False)
-			&& (stristr($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'], 'pop3')))
+			&& (stristr($this->prefs['mail_server_type'], 'pop3')))
 			{
 				// Make ***DUMB*** Mime Number THE PRIMARY MIME NUMBER we will use
 				$part_nice[$i]['m_part_num_mime'] = $part_nice[$i]['ex_mime_number_dumb'];
@@ -1590,7 +1590,7 @@ class mail_msg extends mail_msg_wrappers
 			// so PHP can build the fetchstructure data (IMAP server does this internally)
 			if ((isset($this->dcom->imap_builtin))
 			&& ($this->dcom->imap_builtin == False)
-			&& (stristr($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'], 'pop3')))
+			&& (stristr($this->prefs['mail_server_type'], 'pop3')))
 			{
 				// do Nothing - socket class pop3 not ready for this stress yet
 				$msg_list[$x]['has_attachment'] = False;
@@ -1696,7 +1696,7 @@ class mail_msg extends mail_msg_wrappers
 				$personal = $replyto;
 			}
 			
-			if (($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] == 'from')
+			if (($this->prefs['show_addresses'] == 'from')
 			&& ($personal != $from->mailbox.'@'.$from->host))
 			{
 				/*
@@ -1709,7 +1709,7 @@ class mail_msg extends mail_msg_wrappers
 				$msg_list[$x]['display_address_from'] = '('.$from->mailbox.'@'.$from->host.')';
 				$msg_list[$x]['who_to'] = $from->mailbox.'@'.$from->host;
 			}
-			elseif (($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] == 'replyto')
+			elseif (($this->prefs['show_addresses'] == 'replyto')
 			&& ($personal != $from->mailbox.'@'.$from->host))
 			{
 				/*

@@ -100,6 +100,7 @@
 	//}
 
 	/*
+	// this this debug report looks to be somewhat dated
 	if ($debug_logins)
 	{
 		echo '<br>';

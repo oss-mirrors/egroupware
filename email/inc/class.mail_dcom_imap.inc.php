@@ -1,31 +1,31 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare Email - IMAP abstraction                                    *
-  * http://www.phpgroupware.org/api                                          *
-  * This file written by Itzchak Rehberg <izzy@phpgroupware.org>             *
-  * and Joseph Engo <jengo@phpgroupware.org>                                 *
-  * Mail function abstraction for IMAP servers                               *
-  * Copyright (C) 2000, 2001 Itzchak Rehberg                                 *
-  * -------------------------------------------------------------------------*
+  * phpGroupWare Email - IMAP abstraction				*
+  * http://www.phpgroupware.org/api					*
+  * This file written by Itzchak Rehberg <izzy@phpgroupware.org>	*
+  * and Joseph Engo <jengo@phpgroupware.org>				*
+  * Mail function abstraction for IMAP servers				*
+  * Copyright (C) 2000, 2001 Itzchak Rehberg				*
+  * -------------------------------------------------------------------------		*
   * This library is part of phpGroupWare (http://www.phpgroupware.org)       * 
   * This library is free software; you can redistribute it and/or modify it  *
   * under the terms of the GNU Lesser General Public License as published by *
-  * the Free Software Foundation; either version 2.1 of the License,         *
-  * or any later version.                                                    *
-  * This library is distributed in the hope that it will be useful, but      *
-  * WITHOUT ANY WARRANTY; without even the implied warranty of               *
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                     *
-  * See the GNU Lesser General Public License for more details.              *
+  * the Free Software Foundation; either version 2.1 of the License,	*
+  * or any later version.							*
+  * This library is distributed in the hope that it will be useful, but	*
+  * WITHOUT ANY WARRANTY; without even the implied warranty of	*
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	*
+  * See the GNU Lesser General Public License for more details.		*
   * You should have received a copy of the GNU Lesser General Public License *
   * along with this library; if not, write to the Free Software Foundation,  *
-  * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            *
+  * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA	*
   \**************************************************************************/
 
   /* $Id$ */
 
 	class mail_dcom extends mail_dcom_base
 	{
-		function append($stream, $folder, $message, $flags='')
+		function append($stream, $folder, $message, $flags=0)
 		{
 			$folder = $this->utf7_encode($folder);
 			return imap_append($stream, $folder, $message, $flags);
@@ -63,9 +63,15 @@
 			return imap_renamemailbox($stream,$mailbox_old,$mailbox_new);
 		}
 
-		function delete($stream,$msg_num,$flags='')
+		function delete($stream,$msg_num,$flags=0)
 		{
-			return imap_delete($stream,$msg_num);
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & FT_UID)) )
+			{
+				$flags |= FT_UID;
+			}
+			return imap_delete($stream,$msg_num,$flags);
 		}
 
 		function expunge($stream)
@@ -73,40 +79,81 @@
 			return imap_expunge($stream);
 		}
 
-		function fetchbody($stream,$msgnr,$partnr,$flags='')
+		function fetchbody($stream,$msgnr,$partnr,$flags=0)
 		{
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & FT_UID)) )
+			{
+				$flags |= FT_UID;
+			}
 			return imap_fetchbody($stream,$msgnr,$partnr,$flags);
 		}
 
 		function header($stream,$msg_nr,$fromlength='',$tolength='',$defaulthost='')
 		{
+			// do we need to temporarily switch to regular msg num sequence for this function?
+			if ($this->force_msg_uids == True)
+			{
+				// this function can nothandle UIDs, switch to sequence number
+				$new_msg_nr = imap_msgno($stream,$msg_nr);
+				if ($new_msg_nr)
+				{
+					$msg_nr = $new_msg_nr;
+				}
+			}
 			return imap_header($stream,$msg_nr,$fromlength,$tolength,$defaulthost);
 		} 
 
-		function fetch_raw_mail($stream,$msg_num)
+		function fetch_raw_mail($stream,$msg_num,$flags=0)
 		{
-			return imap_fetchheader($stream,$msg_num,FT_PREFETCHTEXT);
+			$flags |= FT_PREFETCHTEXT;
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & FT_UID)) )
+			{
+				$flags |= FT_UID;
+			}
+			return imap_fetchheader($stream,$msg_num,$flags);
 		}
 
-		function fetchheader($stream,$msg_num)
+		function fetchheader($stream,$msg_num,$flags=0)
 		{
-			return imap_fetchheader($stream,$msg_num);
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & FT_UID)) )
+			{
+				$flags |= FT_UID;
+			}
+			return imap_fetchheader($stream,$msg_num,$flags);
 		}
 
-		function fetchstructure($stream,$msg_num,$flags='')
+		function fetchstructure($stream,$msg_num,$flags=0)
 		{
-			return imap_fetchstructure($stream,$msg_num);
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & FT_UID)) )
+			{
+				$flags |= FT_UID;
+			}
+			return imap_fetchstructure($stream,$msg_num,$flags);
 		}
 
-		function get_body($stream,$msg_num,$flags='')
+		function get_body($stream,$msg_num,$flags=0)
 		{
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & FT_UID)) )
+			{
+				$flags |= FT_UID;
+			}
 			return imap_body($stream,$msg_num,$flags);
 		}
 
-		function get_header($stream,$msg_num)
+		function get_header($stream,$msg_num,$flags)
 		{
 			// alias for compatibility with some old code
-			return $this->fetchheader($stream,$msg_num);
+			return $this->fetchheader($stream,$msg_num,$flags);
 		}
 
 		function listmailbox($stream,$ref,$pattern)
@@ -122,14 +169,26 @@
 			return imap_mailboxmsginfo($stream);
 		}
 
-		function mailcopy($stream,$msg_list,$mailbox,$flags)
+		function mailcopy($stream,$msg_list,$mailbox,$flags=0)
 		{
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & CP_UID)) )
+			{
+				$flags |= CP_UID;
+			}
 			$mailbox = $this->utf7_encode($mailbox);
-			return imap_mailcopy($stream,$msg_list,$mailbox,$flags);
+			return imap_mail_copy($stream,$msg_list,$mailbox,$flags);
 		}
 
-		function mail_move($stream,$msg_list,$mailbox)
+		function mail_move($stream,$msg_list,$mailbox,$flags=0)
 		{
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & CP_UID)) )
+			{
+				$flags |= CP_UID;
+			}
 			$mailbox = $this->utf7_encode($mailbox);
 			return imap_mail_move($stream,$msg_list,$mailbox);
 		}
@@ -144,7 +203,7 @@
 			return imap_ping($stream);
 		}
 
-		function open($mailbox,$username,$password,$flags='')
+		function open($mailbox,$username,$password,$flags=0)
 		{
 			$mailbox = $this->utf7_encode($mailbox);
 			return imap_open($mailbox,$username,$password,$flags);
@@ -157,7 +216,7 @@
 			return str_replace("=\n",'',$str);
 		}
 
-		function reopen($stream,$mailbox,$flags='')
+		function reopen($stream,$mailbox,$flags=0)
 		{
 			$mailbox = $this->utf7_encode($mailbox);
 			return imap_reopen($stream,$mailbox,$flags);
@@ -169,22 +228,36 @@
 			return imap_last_error();
 		}
 
-		function i_search($stream,$criteria,$flags='')
+		function i_search($stream,$criteria,$flags=0)
 		{
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & SE_UID)) )
+			{
+				$flags |= SE_UID;
+			}
 			return imap_search($stream,$criteria,$flags);
 		}
 		
-		function sort($stream,$criteria,$reverse='',$options='')
+		function sort($stream,$criteria,$reverse='',$flags=0)
 		{
-			return imap_sort($stream,$criteria,$reverse,$options);
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & SE_UID)) )
+			{
+				$flags |= SE_UID;
+			}
+			//echo 'class dcom: sort: $this->force_msg_uids= '.serialize($this->force_msg_uids).'; $flags: ['.serialize($flags).']<br>';
+			return imap_sort($stream,$criteria,$reverse,$flags);
 		}
 
-		function status($stream,$mailbox,$options)
+		function status($stream,$mailbox,$options=0)
 		{
 			$mailbox = $this->utf7_encode($mailbox);
 			return imap_status($stream,$mailbox,$options);
 		}
 
+		/*
 		// DEPRECIATED - OBSOLETE - DO NOT CALL
 		function login($folder='INBOX')
 		{
@@ -224,6 +297,7 @@
 			error_reporting(error_reporting() + 2);
 			return $mbox;
 		}
+		*/
 
 		function construct_folder_str($folder)
 		{ 
@@ -257,11 +331,16 @@
 			Note:	$flag should _NOT_ begin with a space
 			$field_no should be given strarting at 1
 		*/
-		function rfc_get_flag($stream,$msg_num,$flag,$field_no=1)
+		function rfc_get_flag($stream,$msg_num,$flags=0,$field_no=1)
 		{
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & FT_UID)) )
+			{
+				$flags |= FT_UID;
+			}
 			$fieldCount = 0;
-
-			$header = imap_fetchheader ($stream, $msg_num);
+			$header = imap_fetchheader ($stream, $msg_num, $flags);
 			$header = explode("\n", $header);
 			$flag = strtolower($flag);
 

@@ -21,7 +21,7 @@
 
 	class mail_dcom extends mail_dcom_base
 	{
-		function append($stream, $folder = 'Sent', $header, $body, $flags = '')
+		function append($stream, $folder = 'Sent', $header, $body, $flags=0)
 		{
 			// N/A for pop3
 			return False;
@@ -32,7 +32,7 @@
 			return imap_base64($text);
 		}
 
-		function close($stream,$flags='')
+		function close($stream,$flags=0)
 		{
 			return imap_close($stream,$flags);
 		}
@@ -49,9 +49,15 @@
 			return true;
 		} 
 
-		function delete($stream,$msg_num,$flags='',$currentfolder='')
+		function delete($stream,$msg_num,$flags=0)
 		{
-			return imap_delete($stream,$msg_num);
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & FT_UID)) )
+			{
+				$flags |= FT_UID;
+			}
+			return imap_delete($stream,$msg_num,$flags);
 		}
      
 		function expunge($stream)
@@ -60,39 +66,80 @@
 			return true;
 		}
      
-		function fetchbody($stream,$msgnr,$partnr,$flags='')
+		function fetchbody($stream,$msgnr,$partnr,$flags=0)
 		{
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & FT_UID)) )
+			{
+				$flags |= FT_UID;
+			}
 			return imap_fetchbody($stream,$msgnr,$partnr,$flags);
 		}
 
-		function fetchheader($stream,$msg_num)
+		function fetchheader($stream,$msg_num,$flags=0)
 		{
-			return imap_fetchheader($stream,$msg_num);
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & FT_UID)) )
+			{
+				$flags |= FT_UID;
+			}
+			return imap_fetchheader($stream,$msg_num,$flags);
 		}
 
-		function fetch_raw_mail($stream,$msg_num)
+		function fetch_raw_mail($stream,$msg_num,$flags=0)
 		{
-			return imap_fetchheader($stream,$msg_num,FT_PREFETCHTEXT);
+			$flags |= FT_PREFETCHTEXT;
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & FT_UID)) )
+			{
+				$flags |= FT_UID;
+			}
+			return imap_fetchheader($stream,$msg_num,$flags);
 		}
 
-		function fetchstructure($stream,$msg_num,$flags='')
+		function fetchstructure($stream,$msg_num,$flags=0)
 		{
-			return imap_fetchstructure($stream,$msg_num);
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & FT_UID)) )
+			{
+				$flags |= FT_UID;
+			}
+			return imap_fetchstructure($stream,$msg_num,$flags);
 		}
 
-		function get_body($stream,$msg_num,$flags='')
+		function get_body($stream,$msg_num,$flags=0)
 		{
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & FT_UID)) )
+			{
+				$flags |= FT_UID;
+			}
 			return imap_body($stream,$msg_num,$flags);
 		}
 
-		function get_header($stream,$msg_num)
+		function get_header($stream,$msg_num,$flags)
 		{
 			// alias for compatibility with some old code
-			return $this->fetchheader($stream,$msg_num);
+			return $this->fetchheader($stream,$msg_num,$flags);
 		}
 
 		function header($stream,$msg_nr,$fromlength='',$tolength='',$defaulthost='')
 		{
+			// do we need to temporarily switch to regular msg num sequence for this function?
+			if ($this->force_msg_uids == True)
+			{
+				// this function can nothandle UIDs, switch to sequence number
+				$new_msg_nr = imap_msgno($stream,$msg_nr);
+				if ($new_msg_nr)
+				{
+					$msg_nr = $new_msg_nr;
+				}
+			}
 			return imap_header($stream,$msg_nr,$fromlength,$tolength,$defaulthost);
 		}
 
@@ -129,7 +176,7 @@
 			return imap_ping($stream);
 		}
 
-		function open($mailbox,$username,$password,$flags='')
+		function open($mailbox,$username,$password,$flags=0)
 		{
 			return imap_open($mailbox,$username,$password,$flags);
 		}
@@ -154,9 +201,28 @@
 			return imap_last_error();
 		}
 
-		function sort($stream,$criteria,$reverse='',$options='',$msg_info='')
+		// does this work for pop3?
+		function i_search($stream,$criteria,$flags=0)
 		{
-			return imap_sort($stream,$criteria,$reverse,$options);
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & SE_UID)) )
+			{
+				$flags |= SE_UID;
+			}
+			return imap_search($stream,$criteria,$flags);
+		}
+		
+		//function sort($stream,$criteria,$reverse='',$options='',$msg_info='')
+		function sort($stream,$criteria,$reverse='',$flags=0)
+		{
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & SE_UID)) )
+			{
+				$flags |= SE_UID;
+			}
+			return imap_sort($stream,$criteria,$reverse,$flags);
 		}
 
 		function status($stream,$mailbox,$options)
@@ -165,6 +231,7 @@
 			return imap_status($stream,$mailbox,$options);
 		}
 
+		/*
 		// DEPRECIATED - OBSOLETE - DO NOT CALL
 		function login( $folder='INBOX')
 		{	
@@ -205,7 +272,8 @@
 			error_reporting(error_reporting() + 2);
 			return $mbox;
 		}
-
+		*/
+		
 		function construct_folder_str($folder)
 		{
 			// pop3 has only 1 "folder" - inbox

@@ -175,7 +175,63 @@
 				return array();
 			}
 			
-			$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+			$attempt_reuse = True;
+			//$attempt_reuse = False;
+			if ((is_object($GLOBALS['phpgw']->msg))
+			&& ($attempt_reuse == True))
+			{
+				// no not create, we will reuse existing
+				echo 'mail_filters: do_imap_search: reusing existing mail_msg object'.'<br>';
+				//DO NOT call msg->grab_class_args_gpc() when REUSING existing, the begin_request function does it in this case
+				// // // $GLOBALS['phpgw']->msg->grab_class_args_gpc();
+				// we need to feed the existing object some params begin_request uses to re-fill the msg->args[] data
+				$reuse_feed_args = $GLOBALS['phpgw']->msg->args;
+				$args_array = Array();
+				$args_array = $reuse_feed_args;
+				if ((isset($this->filters[0]['source_folder']))
+				&& ($this->filters[0]['source_folder'] != ''))
+				{
+					if ($this->debug_level > 0) { echo 'mail_filters: do_imap_search: this->filters[0][source_folder] = ' .$this->filters[0]['source_folder'].'<br>'."\r\n"; }
+					$args_array['folder'] = $this->filters[0]['source_folder'];
+				}
+				else
+				{
+					$args_array['folder'] = 'INBOX';
+				}
+				// add this to keep the error checking code (below) happy
+				$args_array['do_login'] = True;
+				// add this for NO reason at all, just maybe use in the future
+				$args_array['newsmode'] = False;
+			}
+			else
+			{
+				if ($this->debug_index_data == True) { echo 'mail_filters: do_imap_search: creating object email.mail_msg, cannot or not trying to reusing existing'.'<br>'; }
+				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+				// only do grab_class_args_gpc() when creating a new object, AND call it BEFORE begin_request
+				$GLOBALS['phpgw']->msg->grab_class_args_gpc();
+				if ($this->debug_index_data == True) { echo 'mail_filters: do_imap_search: grab_class_args_gpc makes ->args[] dump:<pre>'; print_r($GLOBALS['phpgw']->msg->args); echo '</pre>'; }
+				// new login 
+				// (1) folder (if specified) - can be left empty or unset, mail_msg will then assume INBOX
+				$args_array = Array();
+				if ((isset($this->filters[0]['source_folder']))
+				&& ($this->filters[0]['source_folder'] != ''))
+				{
+					if ($this->debug_level > 0) { echo 'mail_filters: do_imap_search: this->filters[0][source_folder] = ' .$this->filters[0]['source_folder'].'<br>'."\r\n"; }
+					$args_array['folder'] = $this->filters[0]['source_folder'];
+				}
+				else
+				{
+					$args_array['folder'] = 'INBOX';
+				}
+				// (2) should we log in
+				$args_array['do_login'] = True;
+				// (3) NOT IMPLEMENTED YET  -- newsmode
+				$args_array['newsmode'] = False;
+			}
+
+
+			/*
+			//$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 			//$GLOBALS['phpgw']->msg->grab_class_args_gpc();
 			$args_array = Array();
 			if ((isset($this->filters[0]['source_folder']))
@@ -190,6 +246,8 @@
 			}
 			
 			$args_array['do_login'] = True;
+			*/
+			
 			$GLOBALS['phpgw']->msg->begin_request($args_array);
 			
 			$initial_result_set = Array();

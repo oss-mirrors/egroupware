@@ -194,9 +194,9 @@
 				//$GLOBALS['phpgw']->dcom->delete($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum,'',$GLOBALS['phpgw']->msg->folder);
 				$GLOBALS['phpgw']->msg->phpgw_delete($GLOBALS['phpgw']->msg->msgnum,'',$GLOBALS['phpgw']->msg->folder);
 				if (($totalmessages != $GLOBALS['phpgw']->msg->msgnum)
-				|| ($GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting'] == 'new_old'))
+				|| ($GLOBALS['phpgw']->msg->prefs['default_sorting'] == 'new_old'))
 				{
-					if ($GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting'] == 'new_old')
+					if ($GLOBALS['phpgw']->msg->prefs['default_sorting'] == 'new_old')
 					{
 						$nm = $GLOBALS['phpgw']->msg->msgnum - 1;
 					}

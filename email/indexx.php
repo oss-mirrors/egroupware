@@ -52,7 +52,7 @@
 
 // ----  Prepare Browser and Layout for Template File Name  -----
 	// Layout Template from Preferences (used below)
-	$xi['my_layout'] = $GLOBALS['phpgw_info']['user']['preferences']['email']['layout'];
+	$xi['my_layout'] = $GLOBALS['phpgw']->msg->prefs['layout'];
 	// Browser the client is using (used below)
 	$xi['my_browser'] = $GLOBALS['phpgw']->msg->browser;
 	// example: if browser=0 (no CSS) and layout pref = 1 (default) then template used is:
@@ -352,8 +352,8 @@
 	// any extra stuff you want to pass, url style
 	
 	// get users default order preference (hi to lo OR lo to hi) as its use was noted above
-	if ((isset($GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting']))
-	  && ($GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting'] == 'new_old'))
+	if ((isset($GLOBALS['phpgw']->msg->prefs['default_sorting']))
+	  && ($GLOBALS['phpgw']->msg->prefs['default_sorting'] == 'new_old'))
 	{
 		$xi['default_order'] = 1;
 	}
