@@ -207,6 +207,7 @@
 			$data=$this->http_vars_pairs($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
 			$status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value);
 
+			
 			if ($status==1)	$this->message[info]='Record succesfully saved';
 			else $this->message[error]='Record NOT succesfully saved';
 

@@ -30,12 +30,12 @@
 
 	$this->plugins['imagepath']['name']				= 'imagepath';
 	$this->plugins['imagepath']['title']			= 'ImagePath plugin';
-	$this->plugins['imagepath']['version']			= '0.8.6';
+	$this->plugins['imagepath']['version']			= '0.8.7';
 	$this->plugins['imagepath']['description']		= 'plugin for uploading/resizing images and storing their imagepaths in to database, using default uploadpath for site or object';
 	$this->plugins['imagepath']['enable']			= 1;
 	$this->plugins['imagepath']['changelog']		= 
 	'
-	0.8.6
+	0.8.7
 	- added changelog
 	- changed varchar to string so it actually binds to varchars ;)
 	';

@@ -88,7 +88,7 @@
 		'text',	
 		'string',	
 		'int',	
-		'blob',	
+		//		'blob',	// blob doesn't exist
 		'date',
 		'timestamp'	
 	);
@@ -152,7 +152,7 @@
 
 	function plg_bv_boolian($value,$config)
 	{
-		
+
 		if(!is_null($config['ON_output_value_If_not_the_same_as_input_value'])) $val_on=$config['ON_output_value_If_not_the_same_as_input_value'];
 		else $val_on=$config['ON_input_display_value'];
 
@@ -175,16 +175,18 @@
 	-------------------------------------------------------------------*/
 	$this->plugins['selectbox']['name'] 			= 'selectbox';
 	$this->plugins['selectbox']['title']			= 'Select Box';
-	$this->plugins['selectbox']['version']		= '0.2';
+	$this->plugins['selectbox']['version']		= '0.3';
 	$this->plugins['selectbox']['enable']			= 1;
 	$this->plugins['selectbox']['description']	= 'List a couple of values in a listbox....';
 	$this->plugins['selectbox']['db_field_hooks']	= array
 	(
-		'string'	
+		'string',
+		'text'
 	);
 	$this->plugins['selectbox']['config']		= array
 	(
-		'Value_seperated_by_commas'=>array('one,two,three','text',''),
+		'keys_seperated_by_commas'=>array('one,two,three','area',''),
+		'Value_seperated_by_commas'=>array('one,two,three','area',''),
 		'Default_value'=>array('one','text',''),
 		'Empty_option_available'=> array(array('yes','no'),'select','')
 	);
@@ -192,17 +194,35 @@
 	function plg_fi_selectbox($field_name,$value, $config)
 	{
 		$pos_values=explode(',',$config['Value_seperated_by_commas']);
+
 		if(is_array($pos_values))
 		{
+
+			if($config['keys_seperated_by_commas'])
+			{
+				$pos_keys=explode(',',$config['keys_seperated_by_commas']);
+				if(is_array($pos_keys) && count($pos_keys)==count($pos_values)) 
+				{
+					$keys=$pos_keys;
+				}
+				else
+				{
+					$keys=$pos_values;
+				}
+
+			}
+
 			$input='<select name="'.$field_name.'">';
 			if($config['Empty_option_available']=='yes') $input.='<option>';
+			$i=0;
 			foreach($pos_values as $pos_val) 
 			{
 				unset($selected);
 				if(empty($value) && $pos_val==$config['Default_value']) $selected='SELECTED';	
 				//	  die($value.' '.$pos_val);
 				if($value==$pos_val) $selected='SELECTED';	
-				$input.='<option '.$selected.' value="'.$pos_val.'">'.$pos_val.'</option>';
+				$input.='<option '.$selected.' value="'.$pos_val.'">'.$keys[$i].'</option>';
+				$i++;
 			}
 			$input.='</select>';
 		}	
@@ -280,7 +300,7 @@
 		);
 
 		$new_input = '';
-		for($i = 0; $i < strlen($input); $i++) 
+		for($i = 0; $i < strlen($input); $
 		{
 			$num = ord($input{$i});
 			//die($num);
@@ -303,4 +323,4 @@
 		return $output;
 	}
 
-?>
+	?>
