@@ -104,11 +104,6 @@
 				$this->bofelamimail->sessionData['startMessage'] = $GLOBALS['HTTP_GET_VARS']["startMessage"];
 			}
 			
-			// if sorting was not set, set it to the user definded default
-			if(!isset($this->bofelamimail->sessionData['sort']))
-			{
-				$this->bofelamimail->sessionData['sort'] = $this->preferences['sortOrder'];
-			}
 			$this->bofelamimail->saveSessionData();
 			
 			$this->mailbox 		= $this->bofelamimail->sessionData['mailbox'];
@@ -127,7 +122,6 @@
 
 			$this->dataRowColor[0] = $GLOBALS['phpgw_info']["theme"]["bg01"];
 			$this->dataRowColor[1] = $GLOBALS['phpgw_info']["theme"]["bg02"];
-			                 
 		}
 
 		function addVcard()

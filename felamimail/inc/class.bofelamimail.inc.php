@@ -39,6 +39,16 @@
 		{
 			$this->restoreSessionData();
 			
+
+			$this->foldername	= $this->sessionData['mailbox'];
+			$this->accountid	= $GLOBALS['phpgw_info']['user']['account_id'];
+			
+			$this->bopreferences	= CreateObject('felamimail.bopreferences');
+			$this->sofelamimail	= CreateObject('felamimail.sofelamimail');
+			
+			$this->mailPreferences	= $this->bopreferences->getPreferences();
+			$this->imapBaseDir	= '';
+			
 			// set some defaults
 			if(count($this->sessionData) == 0)
 			{
@@ -53,25 +63,9 @@
 				// default mailbox for preferences pages
 				$this->sessionData['preferences']['mailbox']	= "INBOX";
 				// default sorting
-				if(!empty($GLOBALS['phpgw_info']['user']['preferences']['felamimail']['sortOrder']))
-				{
-					$this->sessionData['sort']	= $GLOBALS['phpgw_info']['user']['preferences']['felamimail']['sortOrder'];
-				}
-				else
-				{
-					$this->sessionData['sort']	= 6;
-				}
+				$this->sessionData['sort']	= $this->mailPreferences['sortOrder'];
 				$this->saveSessionData();
 			}
-			
-			$this->foldername	= $this->sessionData['mailbox'];
-			$this->accountid	= $GLOBALS['phpgw_info']['user']['account_id'];
-			
-			$this->bopreferences	= CreateObject('felamimail.bopreferences');
-			$this->sofelamimail	= CreateObject('felamimail.sofelamimail');
-			
-			$this->mailPreferences	= $this->bopreferences->getPreferences();
-			$this->imapBaseDir	= '';
 			
 			if (function_exists('mb_convert_encoding')) $this->mbAvailable = TRUE;
 			
