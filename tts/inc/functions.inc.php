@@ -188,7 +188,7 @@
       $body=html_deactivate_urls($body);
       if ($members)
       {
-      	$rc = $GLOBALS['phpgw']->send->msg('email', $to, $subject, stripslashes($body), '', $cc, $bcc);
+      	$rc = $GLOBALS['phpgw']->send->msg('email', $to, $subject, $body, '', $cc, $bcc);
       	if (!$rc)
       	{
 	        echo  lang('Your message could <B>not</B> be sent!<BR>')."\n"
