@@ -68,7 +68,6 @@ columns to show in the projects list	projects	en	Columns to show in the projects
 comment	projects	en	comment
 continue	projects	en	Continue
 coordinator	common	en	Coordinator
-costs	admin	en	Costs
 costs	projects	en	Costs
 costs list	projects	en	Costs list
 costtype	projects	en	Cost Type
@@ -235,7 +234,7 @@ project	projects	en	Project
 project %1 has been saved	projects	en	Project %1 has been saved.
 project %1 has been updated	projects	en	Project %1 has been updated.
 project accounting	admin	en	Project accounting
-project administrators	projects	en	Project Administrators
+project administrators	common	en	Project Administrators
 project data due	projects	en	Project date due
 project date due	projects	en	Project date due
 project dependencies	common	en	Project dependencies

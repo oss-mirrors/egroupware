@@ -178,7 +178,7 @@ main project	projects	de	Hauptprojekt
 main project:	projects	de	Hauptprojekt:
 manager	projects	de	Projektmanager
 manager list	projects	de	Liste der Projektmanager
-managing committee	admin	de	Projektmanagement
+managing committee	projects	de	Projektmanagement
 manuell entries	projects	de	Manuelle Einträge
 milestone	projects	de	Meilenstein
 milestone date due	projects	de	Fälligkeit des Meilensteins
@@ -237,7 +237,8 @@ project	projects	de	Projekt
 project %1 has been saved	projects	de	Projekt %1 wurde gespeichert.
 project %1 has been updated	projects	de	Projekt %1 wurde bearbeitet.
 project accounting	admin	de	Projektabrechnung
-project administrators	admin	de	Projektadministratoren
+project administrators	common	de	Projektadministratoren
+project data due	projects	de	Projektfälligkeit
 project date due	projects	de	Projektfälligkeit
 project dependencies	common	de	Projektabhängigkeiten
 project id	common	de	Projekt-ID
@@ -260,7 +261,7 @@ role %1 has been updated	projects	de	Rolle %1 wurde upgedated
 role has been deleted	projects	de	Rolle wurde hinzugefügt
 roles	projects	de	Rollen
 roles list	projects	de	Rollenliste
-sales department	admin	de	Vertrieb
+sales department	projects	de	Vertrieb
 save factor	projects	de	Faktor speichern
 save milestone	projects	de	Meilenstein gespeichert
 select factor	projects	de	Faktor auswählen
@@ -327,7 +328,7 @@ view work hours	projects	de	Arbeitsstunden anzeigen
 work date	common	de	Arbeitsdatum
 work hours	common	de	Arbeitsstunden
 work time	projects	de	Arbeitszeit
-workload warning for project	common	de	Auslastungwarnung für Projekt
+workload warning for project	projects	de	Auslastungwarnung für Projekt
 workunit	projects	de	Arbeitseinheit
 workunits	projects	de	Arbeitseinheiten
 you have entered an invalid date !	projects	de	Sie haben ein ungültiges Datum eingegeben!
