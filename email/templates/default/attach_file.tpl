@@ -21,7 +21,7 @@
 		for(i=0;i<document.attach_form.elements.length;i++)
 		{
 		
-			if(document.attach_form.elements[i].type == "hidden" )
+			if(document.attach_form.elements[i].type == "hidden" && document.attach_form.elements[i].name != "sessionid")
 			{
 				if(window.opener.document.{form1_name}.attached_filenames.value)
 				{
