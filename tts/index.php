@@ -136,35 +136,35 @@
 		$GLOBALS['phpgw']->template->set_var('tts_searchfilter','');
 		$GLOBALS['phpgw']->template->set_var('tts_numfound','');
 	}
-        $tag = '';
-        $GLOBALS['phpgw']->template->set_var('optionname', lang('View all tickets'));
-        $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewall');
-        if ($filter == 'viewall' )
+    $tag = '';
+    $GLOBALS['phpgw']->template->set_var('optionname', lang('View all tickets'));
+    $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewall');
+    if ($filter == 'viewall' )
 	{
 		$tag = 'selected';
 	}
-        $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
-        $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
- 
-        $tag = '';
-        $GLOBALS['phpgw']->template->set_var('optionname', lang('View only open tickets'));
-        $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewopen');
-        if ($filter == 'viewopen' )
-        {
-                $tag = 'selected';
-        }
-        $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
-        $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
+    $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
+    $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
 
-        $tag = '';
-        $GLOBALS['phpgw']->template->set_var('optionname', lang('View only my open tickets'));
-        $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewmyopen');
-        if ($filter == 'viewmyopen' )
+    $tag = '';
+    $GLOBALS['phpgw']->template->set_var('optionname', lang('View only open tickets'));
+    $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewopen');
+    if ($filter == 'viewopen' )
+    {
+            $tag = 'selected';
+    }
+    $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
+    $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
+
+    $tag = '';
+    $GLOBALS['phpgw']->template->set_var('optionname', lang('View only my open tickets'));
+    $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewmyopen');
+    if ($filter == 'viewmyopen' )
 	{
 		$tag = 'selected';
 	}
-        $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
-        $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
+    $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
+    $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
 
 
 	$GLOBALS['phpgw']->template->set_var('tts_ticketstotal', lang('Tickets total %1',$numtotal));
@@ -248,14 +248,13 @@
 			{
 				$GLOBALS['phpgw']->template->set_var('row_status','&nbsp;');
 			}
-
 			$priostr = '';
 			while ($priority > 0)
 			{
 				$priostr = $priostr . "||";
 				$priority--;
 			}
-			$GLOBALS['phpgw']->template->set_var('tts_t_priostr',$priostr );
+			$GLOBALS['phpgw']->template->set_var('tts_t_prio',$priostr );
 
 			$cat_name   = $GLOBALS['phpgw']->categories->id2name($db->f('ticket_category'));
 			$GLOBALS['phpgw']->template->set_var('row_category',$cat_name);
