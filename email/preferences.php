@@ -13,6 +13,8 @@
 
 	$phpgw_info["flags"] = array(
 		'currentapp' => 'email',
+		'noheader'                => True, 
+		'nonavbar'                => True, 
 		'enable_nextmatchs_class' => True);
 
 	include("../header.inc.php");
@@ -88,7 +90,10 @@
 		
 		Header("Location: " . $phpgw->link("/preferences/index.php"));
 	}
-	
+
+	$phpgw->common->phpgw_header();
+	echo parse_navbar();
+
 	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 	$t->set_file(array(		
 		'T_preferences_out' => 'preferences.tpl'
