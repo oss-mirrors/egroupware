@@ -85,6 +85,15 @@
 				}
 				else
 				{
+					if ($GLOBALS['phpgw_info']['server']['webserver_url'] != '/')
+					{
+						list(,$referer) = explode($GLOBALS['phpgw_info']['server']['webserver_url'],$referer,2);
+					}
+					else
+					{
+						$referer = parse_url($referer);	// remove the protocol + domain
+						$referer = $referer['path'];
+					}
 					$parts = explode('/',$referer);
 					$file = str_replace('.php','',array_pop($parts));
 					if (empty($file)) $file = 'index';
