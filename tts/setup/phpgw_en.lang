@@ -146,7 +146,9 @@ tts preferences	tts	en	Trouble Ticket System - preferences
 undefined	tts	en	UNDEFINED
 update ticket state	tts	en	Update ticket state
 updates ticket	tts	en	Updates ticket
-use email notification	tts	en	Use email notification
+notify changes to ticket owner by e-mail	tts	en	Notify changes to ticket owner by e-mail
+notify changes to ticket group by e-mail	tts	en	Notify changes to ticket group by e-mail
+notify changes to ticket assignee by e-mail	tts	en	Notify changes to ticket assignee by e-mail
 verified	tts	en	VERIFIED
 verify	tts	en	VERIFY
 verify the ticket to work on it.	tts	en	Verify the ticket to work on it.

@@ -139,7 +139,6 @@
       $body .= stripslashes(strip_tags($GLOBALS['phpgw']->db->f('ticket_detail')))."\n\n.";
 
 
-      $GLOBALS['phpgw']->config->config_data['groupnotification']=True;
       // do we need to email all the users in the group assigned to this ticket?
       if ($GLOBALS['phpgw']->config->config_data['groupnotification'])
       {
@@ -152,7 +151,7 @@
       if ($GLOBALS['phpgw']->config->config_data['ownernotification'])
       {
         // add owner to recipients
-//AW -temporary     $members[] = array('account_id' => $GLOBALS['phpgw']->accounts->name2id($GLOBALS['phpgw']->db->f('ticket_owner')), 'account_name' => $GLOBALS['phpgw']->db->f('ticket_owner'));
+		$members[] = array('account_id' => $GLOBALS['phpgw']->accounts->name2id($GLOBALS['phpgw']->db->f('ticket_owner')), 'account_name' => $GLOBALS['phpgw']->db->f('ticket_owner'));
       }
 
       // do we need to email the user who is assigned to this ticket?
@@ -187,19 +186,22 @@
       }
 
       $body=html_deactivate_urls($body);
-      $rc = $GLOBALS['phpgw']->send->msg('email', $to, $subject, stripslashes($body), '', $cc, $bcc);
-      if (!$rc)
+      if ($members)
       {
-        echo  lang('Your message could <B>not</B> be sent!<BR>')."\n"
-          . lang('the mail server returned').':<BR>'
-          . "err_code: '".$GLOBALS['phpgw']->send->err['code']."';<BR>"
-          . "err_msg: '".htmlspecialchars($GLOBALS['phpgw']->send->err['msg'])."';<BR>\n"
-          . "err_desc: '".$GLOBALS['phpgw']->err['desc']."'.<P>\n"
-          . lang('To go back to the tts index, click <a href= %1 >here</a>',$GLOBALS['phpgw']->link('/tts/index.php','cd=13'));
-        $GLOBALS['phpgw']->common->phpgw_exit();
-      }
-    }
-  }
+      	$rc = $GLOBALS['phpgw']->send->msg('email', $to, $subject, stripslashes($body), '', $cc, $bcc);
+      	if (!$rc)
+      	{
+	        echo  lang('Your message could <B>not</B> be sent!<BR>')."\n"
+          	. lang('the mail server returned').':<BR>'
+          	. "err_code: '".$GLOBALS['phpgw']->send->err['code']."';<BR>"
+          	. "err_msg: '".htmlspecialchars($GLOBALS['phpgw']->send->err['msg'])."';<BR>\n"
+          	. "err_desc: '".$GLOBALS['phpgw']->err['desc']."'.<P>\n"
+          	. lang('To go back to the tts index, click <a href= %1 >here</a>',$GLOBALS['phpgw']->link('/tts/index.php','cd=13'));
+        	$GLOBALS['phpgw']->common->phpgw_exit();
+      	}
+  	 }
+   }
+}
 
 function html_activate_urls($str)
 {

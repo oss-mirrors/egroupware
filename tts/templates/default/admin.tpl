@@ -1,39 +1,18 @@
-<!-- $Id$ -->
-<!-- BEGIN tts_select_options -->
-    <option value="{tts_optionvalue}" {tts_optionselected}>{tts_optionname}</option>
-<!-- END tts_select_options -->
-
 <!-- BEGIN admin.tpl -->
 <br>
    <form method="POST" action="{action_url}">
    <table border="0" align="center" cellspacing="1" cellpadding="1">
     <tr bgcolor="#EEEEEE">
-     <td>{lang_mailnotification}</td>
-     <td><input type="checkbox" name="usemailnotification"{mailnotification}></td>
-    </tr>
-    <tr bgcolor="#EEEEEE">
      <td>{lang_ownernotification}</td>
-     <td>
-       <select size="1" name="ownernotification">
-           {tts_owneroptions}
-       </select>
-     </td>
+     <td><input type="checkbox" name="ownernotification"{ownernotification}></td>
     </tr>
     <tr bgcolor="#EEEEEE">
      <td>{lang_groupnotification}</td>
-     <td>
-       <select size="1" name="groupnotification">
-           {tts_groupoptions}
-       </select>
-     </td>
+     <td><input type="checkbox" name="groupnotification"{groupnotification}></td>
     </tr>
     <tr bgcolor="#EEEEEE">
      <td>{lang_assignednotification}</td>
-     <td>
-       <select size="1" name="assignednotification">
-           {tts_assignedoptions}
-       </select>
-     </td>
+     <td><input type="checkbox" name="assignednotification"{assignednotification}></td>
     </tr>
     <tr>
       <td colspan="3" align="center" height="40">
