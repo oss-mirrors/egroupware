@@ -1,2 +1,68 @@
-book marks	common	nl	bladwijzers
-bookmarks	common	nl	bladwijzers
+%1 bookmarks have been deleted	bookmarks	nl	
+%1 bookmarks imported from %2 successfully.	bookmarks	nl	
+(comma separate multiple addresses)	bookmarks	nl	
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	nl	
+all bookmarks	bookmarks	nl	Alle Favorieten
+and	bookmarks	nl	En
+append this message to mailed bookmarks	bookmarks	nl	
+ascending	bookmarks	nl	
+book marks	common	nl	Favorieten
+bookmark changed sucessfully	bookmarks	nl	
+bookmark created successfully.	bookmarks	nl	
+bookmark not editable	bookmarks	nl	
+bookmark not readable	bookmarks	nl	
+bookmarks	common	nl	Favorieten
+bookmarks settings	bookmarks	nl	
+change bookmark	bookmarks	nl	
+close this window to return	bookmarks	nl	
+create bookmark	bookmarks	nl	
+create new bookmark	bookmarks	nl	
+date added	bookmarks	nl	
+date changed	bookmarks	nl	
+date last updated	bookmarks	nl	
+date last visited	bookmarks	nl	
+descending	bookmarks	nl	
+edit bookmark	bookmarks	nl	
+edit this bookmark	bookmarks	nl	
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	nl	
+export bookmarks	preferences	nl	
+fewer	bookmarks	nl	
+filter by	bookmarks	nl	
+found a link you might like	bookmarks	nl	
+from	bookmarks	nl	
+from category %1	bookmarks	nl	
+highest	bookmarks	nl	
+i thought you would be interested in the following link(s):	bookmarks	nl	
+import bookmarks	preferences	nl	
+like	bookmarks	nl	
+list	bookmarks	nl	
+lowest	bookmarks	nl	
+mail this bookmark	bookmarks	nl	
+mail-this-link message sent to %1.	bookmarks	nl	
+mass update:	bookmarks	nl	
+message from	bookmarks	nl	
+more	bookmarks	nl	
+name	bookmarks	nl	
+name is required	bookmarks	nl	
+netscape bookmark file	bookmarks	nl	
+netscape bookmark filename is required!	bookmarks	nl	
+new	bookmarks	nl	
+or	bookmarks	nl	
+please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	nl	
+query condition	bookmarks	nl	
+rating	bookmarks	nl	
+search for:	bookmarks	nl	
+send bookmark	bookmarks	nl	
+sub category	bookmarks	nl	
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	nl	
+to e-mail addresses	bookmarks	nl	
+to which category should the imported folder hierarchy be attached	bookmarks	nl	
+total visits	bookmarks	nl	
+tree view	bookmarks	nl	
+unable to open temp file %1 for import.	bookmarks	nl	
+url is required.	bookmarks	nl	
+view bookmark	bookmarks	nl	
+view this bookmark	bookmarks	nl	
+warning	bookmarks	nl	
+you are viewing this site outside of phpgroupware	bookmarks	nl	
+you must select a category	bookmarks	nl	

@@ -1,0 +1,60 @@
+!!! you have to [save] every manual change in the above fields, before you can go to the next step !!!		nl	!!! U moet na elke handeling hierboven op [Opslaan] klikken, voordat u verder kunt met de volgende stap !!!
+add		nl	toevoegen
+add change		nl	Verandering toevoegen
+add new phrase		nl	Nieuwe phrase toevoegen
+add phrase		nl	Phrase toevoegen
+allows you to add a single phrase		nl	Staat u toe een enkele phrase toe te voegen
+application		nl	Toepassing
+back		nl	Terug
+cancel		nl	Annuleren
+change		nl	Veranderen
+clears the internal buffer, all changes made sofar are lost		nl	Maakt de inerne buffer leeg, alle verandering tot nu gaan verloren.
+create new language file		nl	Maak nieuw taalbestand
+create sgml file		nl	Maak SQML-bestand
+developer tools - preferences		nl	Ontwikkelaarshulpmiddelen - voorkeuren
+developer_tools		nl	Vertaal Hulpmiddelen
+diary		nl	Dagboek
+done		nl	klaar
+download		nl	download
+download the lang-file to be saved in the apps setup-dir		nl	Download het taalbestand om het op te slaan in de setupdirectorie van de toepassing.
+edit		nl	Wijzig
+installed applications		nl	Geïnstalleerde toepassingen
+language file management		nl	Taalbestandenbeheer
+load		nl	Openen
+loading source langfile		nl	bezig brontaalbestand te openen ...
+loading target langfile		nl	bezig doeltaalbestand te openen ...
+loads the selected lang-files, to be modified in the next steps		nl	Opent de geselecteerde taalbestanden, om gewijzigd to worden in de volgende stappen
+message		nl	Bericht
+message_id in english		nl	bericht_code in Engels
+no file		nl	geen bestand
+ok		nl	Oké
+original		nl	Originele
+phrase in english		nl	Phrase in Engels
+preferences		nl	Voorkeuren
+preferences have been updated		nl	Voorkeuren zijn bijgewerkt
+project		nl	Project
+remove		nl	Verwijder
+returns to the application list, not saved changes get lost !!!		nl	Ga terug naar de lijst met toepassingen. Niet opgeslagen verandering gaan verloren !!!
+revert		nl	Draai terug
+saves the added/changed translations to an internal buffer, to be used in further steps		nl	Slaat de toegevoegde en gewijzigde vertalingen op in een intern geheugen om gebruikt te worden in de volgende stappen
+search for missing phrase		nl	Zoek naar missende phrasen
+search new phrases		nl	Zoek naar nieuwe  phrasen
+searches the source-code for phrases not in the actual source-lang-file		nl	Doorzoekt de broncode naar phrasen die niet voorkomen in de huidige taalbestanden
+select project		nl	Selecteer project
+source language		nl	Brontaal
+step		nl	Stap
+submit		nl	Verzend
+target language		nl	Doeltaal
+title		nl	Titel
+translate		nl	Vertaal
+translation		nl	Vertaling
+update		nl	Bijwerken
+update database		nl	Database bijwerken
+updates the translations of both lang-files in your database, so you can verify your work imediatly		nl	Werkt de vertalingen van beide taalbestanden bij in de database zodat u uw werk direct kunt controleren
+version		nl	Versie
+write		nl	Naar bestand schrijven
+write the lang-file to the apps setup-dir		nl	Schrijf het taalbestand naar de setupdirectory van de toepassing
+write to lang table		nl	Schrijf naar de taaltabel in de database
+you must enter a change		nl	U moet een verandering toevoegen
+you must select a project		nl	U moet een project selecteren
+you need to set your preferences for this app		nl	U moet de voorkeuren voor deze toepassingen instellen
