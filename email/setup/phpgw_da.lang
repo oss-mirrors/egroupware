@@ -5,12 +5,11 @@ compose	email	da	Skriv ny e-mail
 date	email	da	Dato
 default sorting order	email	da	Standard sorteringsrækkefølge
 delete	email	da	Slet
-email	email	da	E-mail
 email account name	email	da	E-mail brugernavn
 email address	email	da	E-mail adresse
 email password	email	da	E-mail password
+e-mail preferences	common	da	E-mail preferencer
 email signature	email	da	E-mail underskrift
-files	email	da	Filer
 folder	email	da	Mappe
 forward	email	da	Videresend e-mail
 from	email	da	Fra

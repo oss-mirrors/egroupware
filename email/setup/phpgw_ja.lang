@@ -11,6 +11,8 @@ email account name	email	ja	電子メールアカウント名
 email address	email	ja	電子メールアドレス
 email password	email	ja	電子メールパスワード
 email signature	email	ja	署名
+e-mail preferences	common	ja	電子メールユーザ設定
+email type	common	ja	電子メールタイプ
 files	email	ja	ファイル
 firstname	email	ja	姓
 folder	email	ja	フォルダ

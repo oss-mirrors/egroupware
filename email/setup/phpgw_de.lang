@@ -5,6 +5,9 @@ compose	email	de	Verfassen
 email account name	email	de	Name des E-Mail Kontos
 email address	email	de	E-Mail Adresse
 email password	email	de	E-Mail Passwort
+email signature	common	de	E-Mail Signatur
+email type	common	de	E-Mail Typ
+e-mail preferences	common	de	E-Mail Einstellungen
 folder	email	de	Ordner
 forward	email	de	Weiterleiten
 from	email	de	Von

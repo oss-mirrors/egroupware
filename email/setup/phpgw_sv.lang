@@ -10,6 +10,7 @@ email account name	email	sv	EPost Konto namn
 email address	email	sv	EPost Adress
 email password	email	sv	EPost Lösenord
 email signature	email	sv	E-Post signatur
+e-mail preferences	common	sv	E-Post intällningar
 files	email	sv	Filer
 folder	email	sv	Mapp
 forward	email	sv	Vidarebefodra

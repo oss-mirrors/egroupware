@@ -7,6 +7,8 @@ email account name	email	it	nome accoune email
 email address	email	it	Indirizzo email
 email password	email	it	Password dell'email
 email signature	email	it	Firma email
+e-mail preferences	common	it	Preferenze email
+email type	common	it	Tipo email
 folder	email	it	Cartella
 forward	email	it	Inoltra
 from	email	it	Da

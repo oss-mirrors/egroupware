@@ -8,6 +8,8 @@ email account name	email	en	Email Account Name
 email address	email	en	E-Mail address
 email password	email	en	E-Mail password
 email signature	email	en	E-Mail signature
+e-mail preferences	common	en	E-Mail preferences
+email type	common	en	E-Mail Type
 folder	email	en	Folder
 forward	email	en	Forward
 from	email	en	From
