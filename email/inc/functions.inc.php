@@ -36,40 +36,43 @@
 
   function list_folders($mailbox)
   {
-    global $phpgw, $phpgw_info, $msgtype;
+    global $phpgw, $phpgw_info;
     // Cyrus style: INBOX.Junque
     // UWash style: ./aeromail/Junque
 
-    if ($phpgw_info["server"]["imap_server_type"] == "Cyrus") {
-      $filter = "INBOX";
+    if ($phpgw_info["flags"]["newsmode"]) {
+      $phpgw->db->query("SELECT newsgroups.name, users_newsgroups.owner FROM newsgroups, users_newsgroups WHERE newsgroups.con = users_newsgroups.newsgroup AND users_newsgroups.owner = ".$phpgw_info["user"]["con"]);
+      while($phpgw->db->next_record()) {
+	echo "<option>".$phpgw->db->f("name");
+      }
     } else {
-      $filter = "mail/";
-    }
+      if ($phpgw_info["server"]["imap_server_type"] == "Cyrus") {
+	$filter = "INBOX";
+      } else {
+	$filter = "mail/";
+      }
 
-    $mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["server"]["mail_server"].":".$phpgw_info["server"]["mail_port"]."}",$filter."*");  
-    if ($phpgw_info["server"]["mail_server_type"] != "pop3")
-      sort($mailboxes); // added sort for folder names 
-    if($mailboxes)
-    {
-      $num_boxes = count($mailboxes);
-      if ($filter != "INBOX") 
-      { 
-        echo "<option>INBOX"; 
+      $mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["server"]["mail_server"].":".$phpgw_info["server"]["mail_port"]."}",$filter."*");  
+      if ($phpgw_info["server"]["mail_server_type"] != "pop3")
+	sort($mailboxes); // added sort for folder names 
+      if($mailboxes) {
+	$num_boxes = count($mailboxes);
+	if ($filter != "INBOX") { 
+	  echo "<option>INBOX"; 
+	}
+	for ($index = 0; $index < $num_boxes; $index++) {
+	  $nm = substr($mailboxes[$index], strrpos($mailboxes[$index], "}") + 1, strlen($mailboxes[$index]));
+	  echo "<option>";
+	  if ($nm != "INBOX") {
+	    echo $phpgw->msg->deconstruct_folder_str($nm);
+	  } else {
+	    echo "INBOX";
+	  }
+	  echo "\n";
+	}
+      } else {
+	echo "<option>INBOX";
       }
-      for ($index = 0; $index < $num_boxes; $index++)
-      {
-	      $nm = substr($mailboxes[$index], strrpos($mailboxes[$index], "}") + 1, strlen($mailboxes[$index]));
-	      echo "<option>";
-	      if ($nm != "INBOX")
-	      {
-	        echo $phpgw->msg->deconstruct_folder_str($nm);
-	      } else {
-	        echo "INBOX";
-	      }
-	      echo "\n";
-      }
-    } else {
-      echo "<option>INBOX";
     }
   }
 

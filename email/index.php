@@ -23,7 +23,9 @@
 
   $phpgw_info["flags"]["currentapp"] = "email";
   include("../header.inc.php");
-  
+
+  if ($newsmode == "on")
+    set_time_limit(0);
 ?>
 
 <script>
@@ -155,7 +157,7 @@ function check_all()
         <tr>
          <td>
            <?php
-             if ($phpgw_info["server"]["mail_server_type"] == "imap") {
+             if ($phpgw_info["server"]["mail_server_type"] == "imap" || $phpgw_info["flags"]["newsmode"]) {
                 echo '<select name="folder" onChange="document.switchbox.submit()">'
                    . '<option>' . lang("switch current folder to") . ':';
                 echo list_folders($mailbox);
