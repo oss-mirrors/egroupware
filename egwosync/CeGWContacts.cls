@@ -30,13 +30,13 @@ End Sub
 '***********************************************************************************************
 ' Returns a collection of all the XMLRPCStructs that match the query
 '***********************************************************************************************
-Public Function Filter(colContacts As Collection, field As String, query As String) As Collection
+Public Function filter(colContacts As Collection, field As String, query As String) As Collection
     Dim xvalTemp As XMLRPCStruct
-    Set Filter = New Collection
+    Set filter = New Collection
     
     For Each xvalTemp In colContacts
         If query = xvalTemp.GetValueByName(field).StringValue Then
-            Filter.Add xvalTemp
+            filter.Add xvalTemp
         End If
     Next xvalTemp
 End Function
@@ -63,7 +63,7 @@ Public Function Create(ByVal ciContact As ContactItem) As XMLRPCResponse
     
     'Look for the local contact in the downloaded list of remote contacts
     If CursoryInfo.Count > 0 Then
-        Set colTemp = Filter(CursoryInfo, "fn", ciContact.FullName)
+        Set colTemp = filter(CursoryInfo, "fn", ciContact.FullName)
         For Each valTemp In colTemp
             'record the contact's id number
             dblDuplicateID = Val(valTemp.GetValueByName("id").StringValue)
@@ -154,31 +154,31 @@ Public Function GetFullInfoFromServer(strSelectedName As String) As XMLRPCRespon
     Next varTemp
 End Function
 
-Public Function List(putItHere As MsForms.ListBox)
-    Dim colFiltered As Collection
-    Dim colFields   As Collection
-    Dim colQueries  As Collection
-    Dim i           As Integer
+Public Function List(putItHere As MSForms.ListBox)
+'    Dim colFiltered As Collection
+'    Dim colFields   As Collection
+'    Dim colQueries  As Collection
+'    Dim i           As Integer
     Dim Contact     As XMLRPCStruct
     
-    Set colFields = FrmMain.AdditionalFields
-    Set colQueries = FrmMain.FieldQueries
-    
-    If colFields.Count > 0 And colQueries.Count = colFields.Count Then
-        For i = 1 To colFields.Count
-            Set colFiltered = Filter(CursoryInfo, colFields(i), colQueries(i))
-        Next i
-    ElseIf colQueries.Count <> colFields.Count Then
-        MsgBox "You must specify a query for each field to be filtered"
-    End If
-    
-    If colFiltered Is Nothing Then
+'    Set colFields = FrmMain.AdditionalFields
+'    Set colQueries = FrmMain.FieldQueries
+'
+'    If colFields.Count > 0 And colQueries.Count = colFields.Count Then
+'        For i = 1 To colFields.Count
+'            Set colFiltered = filter(CursoryInfo, colFields(i), colQueries(i))
+'        Next i
+'    ElseIf colQueries.Count <> colFields.Count Then
+'        MsgBox "You must specify a query for each field to be filtered"
+'    End If
+'
+'    If colFiltered Is Nothing Then
         For Each Contact In CursoryInfo
             putItHere.AddItem Contact.GetValueByName("fn").StringValue
         Next Contact
-    Else
-        For Each Contact In colFiltered
-            putItHere.AddItem Contact.GetValueByName("fn").StringValue
-        Next Contact
-    End If
+'    Else
+'        For Each Contact In colFiltered
+'            putItHere.AddItem Contact.GetValueByName("fn").StringValue
+'        Next Contact
+'    End If
 End Function

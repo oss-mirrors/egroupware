@@ -78,6 +78,4 @@ Contacts:
 
 Thanks:
 	Ralf Becker, Chris Carter, Reiner Jung, Lars Kneschke, Carsten Wolff 
-	and the rest of	the eGroupWare development team. Cunningham Dance 
-	Foundation and Marlboro College for sponsoring the intitial 
-	developement.
+	and the rest of	the eGroupWare development team.

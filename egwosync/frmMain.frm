@@ -28,34 +28,30 @@ Attribute VB_Exposed = False
 '#################################################################################################
 Private myFilter As String
 
-Property Get Filter() As String
-    Filter = myFilter
+Property Get filter() As String
+    filter = myFilter
 End Property
 
-Property Get AdditionalFields() As Collection
-    Dim Control As Variant
-    Set AdditionalFields = New Collection
+Property Get Filters() As Collection
+    Dim cbControl As Variant
+    Dim strQueryName As String
+    Dim strQuery As String
+    Dim colTemp As Collection
+    Dim Trans As New CContactTranslator
+    Set Filters = New Collection
     
-    For Each Control In FilterFrame.Controls
-        If TypeOf Control Is MsForms.ComboBox Then
-            If Control.Value <> "" Then
-                AdditionalFields.Add Control.Value
+    For Each cbControl In FilterFrame.Controls
+        If TypeOf cbControl Is MSForms.ComboBox Then
+            If cbControl.Value <> "" Then
+                Set colTemp = New Collection
+                colTemp.Add Trans.DefaultFields(cbControl.Value)("eGWName"), "field"
+                strQueryName = "txt" & Right(cbControl.Name, 6) & "Query"
+                strQuery = CallByName(FilterFrame, strQueryName, VbGet)
+                colTemp.Add strQuery, "query"
+                Filters.Add colTemp
             End If
         End If
-    Next Control
-End Property
-
-Property Get FieldQueries() As Collection
-    Dim Control As Variant
-    Set FieldQueries = New Collection
-    
-    For Each Control In FilterFrame.Controls
-        If TypeOf Control Is MsForms.TextBox Then
-            If Control.Value <> "" Then
-                FieldQueries.Add Control.Text
-            End If
-        End If
-    Next Control
+    Next cbControl
 End Property
 
 '***********************************************************************************************
@@ -100,6 +96,7 @@ Private Sub cmdSynchronize_Click()
     Me.MousePointer = vbDefault
 End Sub
 
+
 '***********************************************************************************************
 ' Set things up for frmMain
 '***********************************************************************************************
@@ -117,7 +114,7 @@ Private Sub UserForm_Initialize()
     
     'Populate the Filter comboboxes with available fields
     For Each Control In FilterFrame.Controls
-        If TypeOf Control Is MsForms.ComboBox Then
+        If TypeOf Control Is MSForms.ComboBox Then
             For Each FieldName In Translator.Descriptions
                 Control.AddItem FieldName
             Next FieldName
@@ -180,7 +177,7 @@ End Sub
 '***********************************************************************************************
 ' Makes it easy to get selected items from a listBox. Returns a collection of strings
 '***********************************************************************************************
-Public Function GetSelectedListItems(ByRef myList As MsForms.ListBox) As Collection
+Public Function GetSelectedListItems(ByRef myList As MSForms.ListBox) As Collection
     Dim i As Integer
     Set GetSelectedListItems = New Collection
 

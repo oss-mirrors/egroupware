@@ -23,6 +23,7 @@ Public Sub GetContacts()
         Dim INT_START   As Integer
         Dim INT_LIMIT   As Integer
         Dim query       As String
+        Dim filter      As String
         Dim ORDER       As String
         Dim SORT        As String
         Dim oContacts   As New COutlookContacts
@@ -39,7 +40,7 @@ Public Sub GetContacts()
         
         'Get Filter and search info
         query = FrmMain.txtSearch
-        Set colFields = FrmMain.AdditionalFields
+        'Set colFields = FrmMain.AdditionalFields
         
         'Some Defaults
         INT_START = 1
@@ -48,17 +49,19 @@ Public Sub GetContacts()
         SORT = "ASC"
         
         xmlArray.AddString "fn"
-        For Each strTemp In colFields
-            If strTemp <> "" Then
-                xmlArray.AddString strTemp
-            End If
-        Next strTemp
+        If FrmMain.Filters.Count > 0 Then
+            For Each strTemp In FrmMain.Filters
+                filter = filter & strTemp("field") & "=" & strTemp("query") & ","
+            Next strTemp
+            'chop off the last comma
+            filter = Left(filter, Len(filter) - 1)
+        End If
         
         bLogin = Master.eGW.Login
         
         '[ > Get the contacts from the eGW server.
         '[ When I tried to grab all the contacts from the server at once I got an Overflow
-        '[ XML Parse Error, so now I grab them 100 at a time.
+        '[ XML Parse Error, so now I grab them 25 at a time.
         Do
             '[ It's not sufficient to only add the parameters that need updating, they all need to be
             '[ re-added in a specific order
@@ -66,6 +69,7 @@ Public Sub GetContacts()
             xmlParms.AddInteger "limit", INT_LIMIT
             xmlParms.AddArray "fields", xmlArray
             xmlParms.AddString "query", query
+            xmlParms.AddString "filter", filter
             xmlParms.AddString "order", ORDER
             xmlParms.AddString "sort", SORT
             
