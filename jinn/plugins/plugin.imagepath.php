@@ -250,7 +250,7 @@
 					$filetype=$magick->Get_Imagetype($add_image['tmp_name']);	
 					if(!$filetype)
 					{
-						die(lang("The file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by JiNN."));
+						die(lang("The file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by JiNN. If this error repeates, please check your ImageMagick. Version 4.2.9 and older doesn't work with JiNN for sure. Be sure to install a recent version",$add_image['name']));
 					}
 					elseif($filetype!='JPEG' && $filetype!='GIF' && $filetype!='PNG')
 					{
