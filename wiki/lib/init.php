@@ -51,7 +51,7 @@
 		// we redirect to the same page again, as we cant reset some of the defines in the API
 		if ($_GET['action'] != 'xml')	// for the xml-export, we cant do that and dont care for these settings
 		{
-			$GLOBALS['phpgw']->redirect_link('/wiki/index.php',$_SERVER['QUERY_STRING']);
+			$GLOBALS['phpgw']->redirect_link('/wiki/index.php',urldecode($_SERVER['QUERY_STRING']));
 		}
 	}
 	else
