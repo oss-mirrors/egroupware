@@ -116,11 +116,11 @@
 					}
 					if($retval)
 					{
-						$GLOBALS['phpgw']->template->set_var("misc_data",lang('deleted',"$olddir/$file"), true);
+						$GLOBALS['phpgw']->template->set_var("misc_data",lang('Successfully deleted %1',"$olddir/$file"), true);
 					}
 					else
 					{
-						$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to delete', "$olddir/$file"), true);
+						$GLOBALS['phpgw']->template->set_var('misc_data',lang('Failed to delete %1', "$olddir/$file"), true);
 					}
 				}
 				elseif(!$cancel)
@@ -135,12 +135,12 @@
 				{
 					if(ftp_rename($ftp,$olddir . '/' . $filename, $olddir . '/' . $newfilename))
 					{
-						$GLOBALS['phpgw']->template->set_var('misc_data',lang('renamed',
+						$GLOBALS['phpgw']->template->set_var('misc_data',lang('renamed %1 to %2',
 							"$filename", "$newfilename"), true);
 					}
 					else
 					{
-						$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to rename',
+						$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to rename %1 to %2',
 							"$filename", "$newfilename"), true);
 					}
 				}
@@ -164,11 +164,11 @@
 				$newfile=$olddir . '/' . $uploadfile_name;
 				if(ftp_put($ftp,$newfile, $uploadfile, FTP_BINARY))
 				{
-					$GLOBALS['phpgw']->template->set_var('misc_data',lang('uploaded',$newfile), true);
+					$GLOBALS['phpgw']->template->set_var('misc_data',lang('successfully uploaded %1',$newfile), true);
 				}
 				else
 				{
-					$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to upload',$newfile), true);
+					$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to upload %1',$newfile), true);
 				}
 				unlink($uploadfile);
 			}
@@ -178,12 +178,12 @@
 				{
 					if(ftp_mkdir($ftp,$olddir . '/' . $newdirname))
 					{
-						$GLOBALS['phpgw']->template->set_var('misc_data',lang('created directory',
+						$GLOBALS['phpgw']->template->set_var('misc_data',lang('successfully created directory %1',
 							"$olddir/$newdirname"), true);
 					}
 					else
 					{
-						$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to mkdir',
+						$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to create directory %1',
 							"$olddir/$newdirname"), true);
 					}
 				}
@@ -340,7 +340,7 @@
 				{
 					$pass.="*";
 				}
-				$GLOBALS['phpgw']->template->set_var('error_message', lang('bad connection',
+				$GLOBALS['phpgw']->template->set_var('error_message', lang('Failed to connect to %1 with user %2 and password %3',
 					$connInfo['ftpserver'], $connInfo['username'], $pass), true);
 				$GLOBALS['phpgw']->template->parse('out','bad_connect',false);
 				$GLOBALS['phpgw']->template->p('out');

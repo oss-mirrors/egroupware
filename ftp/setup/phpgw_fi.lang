@@ -1,30 +1,27 @@
-relogin	ftp	fi	poistu/kirjaudu uudelleen
-cd	ftp	fi	cd
-delete	ftp	fi	poista %1
-deleted	ftp	fi	Kohde %1 poistettu
-failed to delete	ftp	fi	Kohteen %1 poistaminen epäonnistui
-view	ftp	fi	näytä
-save	ftp	fi	tallenna
-save to filemanager	ftp	fi	tallenna tiedostonhallintaan
-upload	ftp	fi	siirrä
-uploaded	ftp	fi	Kohde %1 siirretty
-failed to upload	ftp	fi	Kohteen %1 siirtäminen epäonnistui
-create new directory	ftp	fi	Tee uusi kansio
-failed to mkdir	ftp	fi	Kansion %1 tekeminen epäonnistui
-empty dirname	ftp	fi	Yritys luoda nimetön kansio
-module name	ftp	fi	Ftp -asiakas
-home	ftp	fi	Koti
-username	ftp	fi	Käyttäjätunnus
-password	ftp	fi	Salasana
-ftpserver	ftp	fi	Ftp -palvelin
-connect	ftp	fi	Yhdistä
-bad connection	ftp	fi	Kohteeseen %1 yhdistäminen epäonnistui (käyttäjä %2, salasana %3)
 cancel	ftp	fi	peruuta
-rename	ftp	fi	nimeä uudelleen %1
-renamed	ftp	fi	Kohde %1 on nyt %2
-created directory	ftp	fi	Luotiin kohde %1
-failed to rename	ftp	fi	Kohteen %1 nimen vaihto %2:ksi epäonnistui
+cd	ftp	fi	cd
+connect	ftp	fi	Yhdistä
+delete	ftp	fi	poista
+empty dirname	ftp	fi	Yritys luoda nimetön kansio
+failed to connect to %1 with user %2 and password %3	ftp	fi	Kohteeseen %1 yhdistäminen epäonnistui (käyttäjä %2, salasana %3)
+failed to create directory %1	ftp	fi	Kansion %1 tekeminen epäonnistui
+failed to delete %1	ftp	fi	Kohteen %1 poistaminen epäonnistui
+failed to rename %1 to %2	ftp	fi	Kohteen %1 nimen vaihto %2:ksi epäonnistui
+failed to upload %1	ftp	fi	Kohteen %1 siirtäminen epäonnistui
+ftpserver	ftp	fi	Ftp -palvelin
+home	ftp	fi	Koti
+module name	ftp	fi	Ftp -asiakas
+password	ftp	fi	Salasana
+relogin	ftp	fi	poistu/kirjaudu uudelleen
+rename	ftp	fi	nimeä uudelleen
 rename from	ftp	fi	Vanha nimi
 rename to	ftp	fi	uusi nimi
-confirm delete	ftp	fi	Haluatko poistaa kohteen %1 ?
-	ftp	fi	
+renamed %1 to %2	ftp	fi	Kohde %1 on nyt %2
+save	ftp	fi	tallenna
+save to filemanager	ftp	fi	tallenna tiedostonhallintaan
+successfully created directory %1	ftp	fi	Luotiin kohde %1
+successfully deleted %1	ftp	fi	Kohde %1 poistettu
+successfully uploaded %1	ftp	fi	Kohde %1 siirretty
+upload	ftp	fi	siirrä
+username	ftp	fi	Käyttäjätunnus
+view	ftp	fi	näytä
