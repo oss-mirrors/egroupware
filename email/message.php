@@ -40,7 +40,7 @@
   $subject = decode_header_string($subject);
   $from = $msg->from[0];
 
-  $message_date = $phpgw->preferences->show_date($msg->udate);
+  $message_date = $phpgw->common->show_date($msg->udate);
 
   $personal = !$from->personal ? "$from->mailbox@$from->host" : $from->personal;
 
