@@ -1,3 +1,7 @@
+log into ftp server	ftp	en	Log into FTP server
+permissions	ftp	en	Permissions
+size	ftp	en	Size
+ftp hostname	ftp	en	FTP hostname
 relogin	ftp	en	logout/relogin
 cd	ftp	en	cd
 delete	ftp	en	delete %1
