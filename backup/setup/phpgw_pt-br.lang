@@ -26,7 +26,7 @@ operating system	backup	pt-br	Sistema operacional
 pgsql	admin	pt-br	PostgreSQL
 php cgi	admin	pt-br	Caminho completo do executável do PHP (ex.: /usr/local/bin/php)
 please enter the path of the needed applications in *site configuration* !	backup	pt-br	Por favor digite o caminho do aplicativo necessário em *Configuração do Site*!
-please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	pt-br	Digite o caminho do diretório de Cópia de Segurança e/ou habilite a exibição de arquivos no eGroupWare!
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	pt-br	Digite o caminho do diretório de Cópia de Segurança e/ou habilite a exibição de arquivos no eGroupWare!
 please enter username and password for remote connection !	backup	pt-br	Informe: Usuário e senha para a conexão remota
 please select an application for transport to the remote host !	backup	pt-br	Selecione um aplicativo para transporte para o servidor remoto!
 please set the path to a local dir to store the backup script !	backup	pt-br	Especifique o caminho do diretório local que armazenará o script de Cópia de Segurança!

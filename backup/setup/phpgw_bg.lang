@@ -33,7 +33,7 @@ password	backup	bg	Парола
 pgsql	admin	bg	PostgreSQL
 php cgi	admin	bg	php cgi
 please enter the path of the needed applications in *site configuration* !	backup	bg	Моля задайте пътя до нужните приложения в "Общи настройки"!
-please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	bg	Моля задайте пътя до директорията за архиви и/или включете показването на архивите в phpGroupWare!
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	bg	Моля задайте пътя до директорията за архиви и/или включете показването на архивите в eGroupWare!
 please enter username and password for remote connection !	backup	bg	Моля въведете име и парола за отдалечено свързнаве!
 please select an application for transport to the remote host !	backup	bg	Моля изберете приложение за пренос до отдалечената система!
 please set the path to a local dir to store the backup script !	backup	bg	Моля задайте пътя до локална директория за запазване на архивиращия скрипт!

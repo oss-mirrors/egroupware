@@ -26,7 +26,7 @@ operating system	backup	nl	Operating system
 pgsql	admin	nl	PostgreSQL
 php cgi	admin	nl	Volledige verwijzing naar PHP (bijv: /usr/local/bin/php)
 please enter the path of the needed applications in *site configuration* !	backup	nl	
-please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	nl	
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	nl	
 please enter username and password for remote connection !	backup	nl	
 please select an application for transport to the remote host !	backup	nl	
 please set the path to a local dir to store the backup script !	backup	nl	

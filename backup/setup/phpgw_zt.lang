@@ -31,7 +31,7 @@ operating system	backup	zt	作業系統
 pgsql	admin	zt	PostgreSQL
 php cgi	admin	zt	PHP執行程式的完整路徑
 please enter the path of the needed applications in *site configuration* !	backup	zt	請輸入"網站設定"中需要的程式路徑！
-please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	zt	請輸入備份資料存放的路徑 並且/或是 在EGROUPWARE中啟用顯示備份資料！
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	zt	請輸入備份資料存放的路徑 並且/或是 在eGroupWare中啟用顯示備份資料！
 please enter username and password for remote connection !	backup	zt	請輸入遠端連線的帳號與密碼！
 please select an application for transport to the remote host !	backup	zt	請選擇一個應用程式來傳輸到遠端的主機！
 please set the path to a local dir to store the backup script !	backup	zt	請設置一個本地端的資料夾來儲存備份的指令檔！

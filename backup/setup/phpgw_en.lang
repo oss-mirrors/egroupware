@@ -31,7 +31,7 @@ operating system	backup	en	Operating system
 pgsql	admin	en	PostgreSQL
 php cgi	admin	en	Full path to your PHP exec (eg: /usr/bin/php)
 please enter the path of the needed applications in *site configuration* !	backup	en	Please enter the path of the needed applications in *Site configuration* !
-please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	en	Please enter the path to the backup dir and/or enable showing archives in phpGroupWare !
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	en	Please enter the path to the backup dir and/or enable showing archives in eGroupWare !
 please enter username and password for remote connection !	backup	en	Please enter username and password for remote connection !
 please select an application for transport to the remote host !	backup	en	Please select an application for transport to the remote host !
 please set the path to a local dir to store the backup script !	backup	en	Please set the path to a local dir to store the backup script !

@@ -31,7 +31,7 @@ operating system	backup	ko	운영체제
 pgsql	admin	ko	PostgreSQL
 php cgi	admin	ko	PHP 실행파일의 경로 (예 /usr/bin/php)
 please enter the path of the needed applications in *site configuration* !	backup	ko	*사이트 구성*에 필요한 응용프로그램의 경로를 입력 해주세요!
-please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	ko	백업 디렉토리의 경로를 입력하거나 phpGroupWare 에서 보여질 아카이브를 활성화 하세요!
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	ko	백업 디렉토리의 경로를 입력하거나 eGroupWare 에서 보여질 아카이브를 활성화 하세요!
 please enter username and password for remote connection !	backup	ko	원격 연결할 사용자이름과 암호를 입력하세요!
 please select an application for transport to the remote host !	backup	ko	원격 호스트로 전송할 응용프로그램을 선택하세요!
 please set the path to a local dir to store the backup script !	backup	ko	백업 스크립트를 저장할 로컬 디렉토리의 경로를 정하세요!

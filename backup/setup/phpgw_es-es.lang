@@ -33,9 +33,9 @@ password	backup	es-es	Contrseña
 pgsql	admin	es-es	PostgreSQL
 php cgi	admin	es-es	php cgi
 plase enter username and password for remote connection !	backup	es-es	Ingrese usuario y clave para la coneccion remota !
-please enter the path of the backup dir and/or enable showing archives in phpgroupware !	backup	es-es	Ingrese el camino absoluto del directorio de resguardos !
+please enter the path of the backup dir and/or enable showing archives in egroupware !	backup	es-es	Ingrese el camino absoluto del directorio de resguardos !
 please enter the path of the needed applications in *site configuration* !	backup	es-es	Por favor, introduzca la ruta de las aplicaciones necesarias en "Configuración del sitio"
-please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	es-es	Por favor, introduzca la ruta al directorio de la copia de seguridad y/o active mostrar archivos en eGroupWare
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	es-es	Por favor, introduzca la ruta al directorio de la copia de seguridad y/o active mostrar archivos en eGroupWare
 please enter username and password for remote connection !	backup	es-es	Por favor, introduzca el nombre de usuario y contraeña para la conexión remota
 please select an application for transport to the remote host !	backup	es-es	Por favor, seleccione una aplicación para el transporte al equipo remoto
 please set the path to a local dir to store the backup script !	backup	es-es	Por favor, seleccione la ruta al directorio local para almacenar el script de la copia de seguridad

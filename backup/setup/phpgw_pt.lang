@@ -26,7 +26,7 @@ operating system	backup	pt	Operating system
 pgsql	admin	pt	PostgreSQL
 php cgi	admin	pt	Caminho para seu PHP (/usr/bin/php)
 please enter the path of the needed applications in *site configuration* !	backup	pt	Please enter the path of the needed applications in *Site configuration* !
-please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	pt	Please enter the path to the backup dir and/or enable showing archives in phpGroupWare !
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	pt	Please enter the path to the backup dir and/or enable showing archives in eGroupWare !
 please enter username and password for remote connection !	backup	pt	Please enter username and password for remote connection !
 please select an application for transport to the remote host !	backup	pt	Please select an application for transport to the remote host !
 please set the path to a local dir to store the backup script !	backup	pt	Please set the path to a local dir to store the backup script !

@@ -31,7 +31,7 @@ operating system	backup	da	Operativ system
 pgsql	admin	da	PostgreSQL
 php cgi	admin	da	Fuldstændig sti til den PHP program fil (f.eks. /usr/bin/php)
 please enter the path of the needed applications in *site configuration* !	backup	da	Indtast venligst stien til den behøvede applikation i *Site konfiguration*!
-please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	da	Indtast venligst stien til backup biblioteket og/eller aktiver visning af arkiver i eGroupWare!
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	da	Indtast venligst stien til backup biblioteket og/eller aktiver visning af arkiver i eGroupWare!
 please enter username and password for remote connection !	backup	da	Indtast venligst brugernavn og adgangskode for fjernforbindelsen!
 please select an application for transport to the remote host !	backup	da	Vælg venligst en applikation til transport til den fjerne vært!
 please set the path to a local dir to store the backup script !	backup	da	Sæt venligst stien til et lokalt bibliotek for at gemme backup scriptet!
