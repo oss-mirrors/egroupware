@@ -731,8 +731,8 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array(array('conf_key'), array('last_visit'), array('referer_id'), array('reset_key'), array('users_opt')),
-			'uc' => array(array('login'), array('alias'), array('email'), array('egw_id'))
+			'ix' => array(array('conf_key'), array('last_visit'), array('referer_id'), array('reset_key'), array('users_opt'), array('email')),
+			'uc' => array(array('login'), array('alias'), array('egw_id'))
 		)
 	);
 ?>
