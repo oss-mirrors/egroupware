@@ -88,6 +88,8 @@ function init_user()
 	/* set locale */
 	setlocale(LC_ALL, $u->locale);
 
+	ini_set("mbstring.internal_encoding", "{TEMPLATE: main_CHARSET}");
+
 	/* view format for threads & messages */
 	define('d_thread_view', $u->users_opt & 256 ? 'msg' : 'tree');
 	define('t_thread_view', $u->users_opt & 128 ? 'thread' : 'threadt');
