@@ -20,7 +20,6 @@
 		'nonavbar'             => True
 	);
 	include('../header.inc.php');
-	include(PHPGW_SERVER_ROOT . '/headlines/inc/functions.inc.php');
 
 	$headlines = new headlines;
 	$headlines->getList();
