@@ -1,0 +1,19 @@
+Backup	common	de	Backup
+Backup administration	common	de	Backup Administration
+Create backups of your data ?	backup	de	Erstellen von Datensicherungen ?
+daily	backup	de	täglich
+Interval	backup	de	Intervall
+Select interval	backup	de	Intervall auswählen
+Data	backup	de	Daten
+SQL	backup	de	SQL
+LDAP	backup	de	LDAP
+E-MAIL	backup	de	E-MAIL
+Operating system	backup	de	Betriebssystem
+Configuration remote host	backup	de	Konfiguration des entfernten Hosts
+Save backup to a remote host ?	backup	de	Backup auf einen entfernten Host sichern ?
+Absolute path of the backup directory	backup	de	Absoluter Pfad des Backup-Verzeichnisses
+IP	backup	de	IP
+monthly	backup	de	monatlich
+User	backup	de	Benutzer
+Password	backup	de	Paßwort
+weekly	backup	de	wöchentlich
