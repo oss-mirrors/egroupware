@@ -1,27 +1,23 @@
 This application is inspired by phpcomic.
 
-However, proxy servers that are .pac configured
-do not allow direct http requests. 
-They, therefore, do not allow snarfing of 
-image or html data and cannot perform  the
-"connect and parse" of phpcomic.  So, either
-those comics need flagged that they cannot
-be resolved or I opt for some flat parsing rules
-that precludes some comics.  I am going to attempt
-the latter.
+If you utilize a proxy server that is .pac
+configured, you will need to determine the
+actual proxy machine.  In your .netscape
+directory there should be a proxyconf file
+(brought local to you by netscape) that
+will give you this information.  Use
+this instead of a proxy configuration file
+as your proxy/port information via manual
+configuration (and in phpgw configuration).
 
-For the same reason as above, comics can either
-be static or snarfed.  Static is simply a fully
-qualified url to the host site that inlines the
-graphic.  Snarfed will download the graphic to
-the image directory and set the date in the
-comic data table.  I, also, plan to allow
-(at least snarfed images) to be scaled.
+Comics can either be static or snarfed.  Static 
+is simply a fully qualified url to the host site
+that inlines the graphic.  Snarfed will download
+the graphic to the image directory and set the 
+date in the comic data table.  I, also, plan to
+allow (at least snarfed images) to be scaled.
 
 Why snarf?  If your phpgw site runs on https,
 then static images will be broken (external
 links to otherwise unsecure sites).  The 
 "work around" for this is snarfing.
-
-If you run secure behind a .pac configured
-proxy server, then it sucks being you.
