@@ -29,25 +29,35 @@
 				. '<input type="hidden" name="start" value="' . $start . '">' . "\n"
 				. '<input type="hidden" name="filter" value="' . $filter . '">' . "\n";
 
-	if (! $start) { $start = 0; }
-	if ($order) { $ordermethod = "order by $order $sort"; }
-	else { $ordermethod = "order by phpgw_p_hours.start_date asc"; }
+	if (! $start)
+	{
+		$start = 0;
+	}
 
-	if (!$status) { $statussort = " (status='open' OR status='done' OR status='billed' OR status='closed') "; } 
-	else { $statussort = " status='$status' "; }
+	if (!$status)
+	{
+		$statussort = " (status='open' OR status='done' OR status='billed' OR status='closed') ";
+	} 
+	else
+	{
+		$statussort = " status='$status' ";
+	}
 
-	if ($access == 'private') { $filtermethod = " AND employee='" . $phpgw_info['user']['account_id'] . "' "; }
+	if ($access == 'private')
+	{
+		$filtermethod = " AND employee='" . $phpgw_info['user']['account_id'] . "' ";
+	}
 
 	if ($query)
 	{
-		$querymethod = "AND (remark like '%$query%' OR start_date like '%$query%' OR end_date like '%$query%' OR minutes like '%$query%') ";
+		$querymethod = "AND (remark like '%$query%' OR hours_descr like '%$query%' OR start_date like '%$query%' OR end_date like '%$query%' OR minutes like '%$query%') ";
 	}
 
 	if (! $filter)
 	{
 		$phpgw->db->query("SELECT project_id from phpgw_p_hours WHERE $statussort $filtermethod $querymethod");
 		$phpgw->db->next_record();
-		$pro = $projects->read_single_project($phpgw->db->f("project_id"));
+		$pro = $projects->read_single_project($phpgw->db->f('project_id'));
 		if ($pro)
 		{
 			if ($projects->check_perms($grants[$pro[0]['coordinator']],PHPGW_ACL_READ) || $pro[0]['coordinator'] == $phpgw_info['user']['account_id'])
@@ -55,7 +65,7 @@
 				$filter = $phpgw->db->f('project_id');
 			}
 		}
-		else { $filter = "999"; }
+		else { $filter = 0; }
 	}
 	else { $pro = $projects->read_single_project($filter); }
 

@@ -56,10 +56,7 @@
 <!-- END projects_list -->
 
 	<tr valign="bottom">
-		<td height="50">
-			<form method="POST" action="{add_url}">
-			{hidden_vars}
-			<input type="submit" name="Add" value="{lang_add}"></form></td>
+		<td height="50">{add}</td>
 	</tr>
 </table>
 </center>

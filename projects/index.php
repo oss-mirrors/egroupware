@@ -12,7 +12,7 @@
 	\**************************************************************************/
 	/* $Id$ */
 
-	$phpgw_info["flags"] = array('currentapp' => 'projects',
+	$phpgw_info['flags'] = array('currentapp' => 'projects',
 					'enable_nextmatchs_class' => True,
 					'enable_categories_class' => True);
 
@@ -114,7 +114,7 @@
 		$coordinatorout = $pro[$i]['lid'] . ' [ ' . $pro[$i]['firstname'] . ' ' . $pro[$i]['lastname'] . ' ]';
 
 		$id = $pro[$i]['id'];
-		$cat_id = $pro[$i]['category'];
+	//	$cat_id = $pro[$i]['category'];
 
 // ------------------ template declaration for list records -----------------------------------
 
@@ -150,7 +150,30 @@
 
 // ------------------ template declaration for Add Form ---------------------------------------
 
-	$t->set_var('lang_add',lang('Add'));
+	if ($cat_id && $cat_id != 0)
+	{
+		$owner = $phpgw->categories->id2name($cat_id,'owner');
+		$appname = $phpgw->categories->id2name($cat_id,'app');
+	}
+
+	if ($appname == 'phpgw' || !$cat_id)
+	{
+        $t->set_var('add','<form method="POST" action="' . $phpgw->link('/projects/add.php','start=' . $start . '&sort=' . $sort                                                                
+                        . '&order=' . $order . '&query=' . $query . '&filter=' . $filter) . '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
+	}
+	else
+	{
+		if ($projects->check_perms($grants[$owner],PHPGW_ACL_ADD) || $owner == $phpgw_info['user']['account_id'])
+		{
+			$t->set_var('add','<form method="POST" action="' . $phpgw->link('/projects/add.php','cat_id=' . $cat_id . '&start=' . $start . '&sort=' . $sort
+					. '&order=' . $order . '&query=' . $query . '&filter=' . $filter) . '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
+		}
+		else
+		{
+			$t->set_var('add','');
+		}
+	}
+
 	$t->parse('out','projects_list_t',True);
 	$t->p('out');
 

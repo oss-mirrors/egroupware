@@ -85,7 +85,8 @@
 			while($select && $entry=each($select))
 			{
 				$phpgw->db->query("INSERT INTO phpgw_p_deliverypos (delivery_id,hours_id) VALUES ('$delivery_id','$entry[0]')");
-				$db2->query("UPDATE phpgw_p_hours set status='closed' WHERE id='$entry[0]'");
+				$db2->query("UPDATE phpgw_p_hours set status='closed' WHERE status='done' AND id='$entry[0]'");
+				$db2->query("UPDATE phpgw_p_hours set dstatus='d' WHERE id='$entry[0]'");
 			}
 		}
 	}
@@ -166,8 +167,7 @@
 		$date=0;
 		$phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,phpgw_p_hours.start_date,"
 						. "phpgw_p_hours.minutes,phpgw_p_hours.minperae FROM phpgw_p_hours $join phpgw_p_activities ON "
-						. "phpgw_p_hours.activity_id=phpgw_p_activities.id WHERE (phpgw_p_hours.status='done' OR phpgw_p_hours.status='billed') "
-						. "AND phpgw_p_hours.project_id='$project_id' $ordermethod");
+						. "phpgw_p_hours.activity_id=phpgw_p_activities.id WHERE phpgw_p_hours.dstatus='o' AND phpgw_p_hours.project_id='$project_id' $ordermethod");
 	}
 	else
 	{

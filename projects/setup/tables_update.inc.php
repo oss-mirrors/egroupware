@@ -307,4 +307,16 @@
 		return $setup_info['projects']['currentver'];
 		//return True;
 	}
+
+	$test[] = '0.8.5.002';
+	function projects_upgrade0_8_5_002()
+	{
+		global $setup_info,$phpgw_setup;
+
+		$phpgw_setup->oProc->AddColumn('phpgw_p_hours','dstatus',array('type' => 'char','precision' => 1,'default' => 'o','nullable' => False));
+
+		$setup_info['projects']['currentver'] = '0.8.5.003';
+		return $setup_info['projects']['currentver'];
+		//return True;
+	}
 ?>
