@@ -919,52 +919,47 @@
 		{
 			// folder_haystack is the official folder long name returned from the server during "get_folder_list"
 			$folder_haystack = $folder_list[$i]['folder_long'];
-			  if ($debug_folder_lookup) { echo '['.$i.'] [folder_needle] '.$folder_needle.' [folder_haystack] '.$folder_haystack.'<br>' ;}
+			  if ($debug_folder_lookup) { echo '['.$i.'] [folder_needle] '.$folder_needle.' len='.strlen($folder_needle).' [folder_haystack] '.$folder_haystack.' len='.strlen($folder_haystack).'<br>' ;}
 
 			// first try to match the whole name, i.e. needle is already a folder long type name
 			//if ($folder_needle == $folder_haystack)
 			// the NAMESPACE should NOT be case sensitive
-			if ( (stristr($folder_needle, $folder_haystack))
-			&& (strlen($folder_haystack) == strlen($folder_needle)) )
+			if (stristr($folder_haystack, $folder_needle))
 			{
-				// exact match - needle is already a fully legit folder_long name
-				$needle_official_long = $folder_haystack;
-				  if ($debug_folder_lookup) { echo 'folder exists, exact match, already legit long name: '.$needle_official_long.'<br>'; }
-				break;
-			}
-			// look for pattern [delimiter][folder_needle]
-			// because we do NOT want to match a partial word, folder_needle should be a whole folder name
-			//elseif (preg_match('/.*'.$folder_needle.'$/', $folder_haystack))
-			// known delimiters pregstyle ( . = [.])  ( \ = [\])  ( / = [\\/])
-			// the NAMESPACE should NOT be case sensitive
-			//elseif (preg_match('/.*([\]|[.]|[\\\]){1}'.$folder_needle.'$/i', $folder_haystack))
-			// problem: unescaped forward slashes will be in UWASH folder names
-			// and unescaped dots will be in other folder names
-			// so use non-regex comparing
-			// haystack must be larger then needle+1 (needle + a delimiter) for this to work
-			elseif ( (stristr($folder_needle, $folder_haystack))
-			&& (strlen($folder_haystack) > strlen($folder_needle)) )
-			{
-				// at least the needle is somewhere in the haystack
-				// 1) get the length of the needle
-				$needle_len = strlen($folder_needle);
-				// get a negative value for use in substr
-				$needle_len_negative = ($needle_len * (-1));
-				// go back one more char in haystack to get the delimiter
-				$needle_len_negative = $needle_len_negative - 1;
-				  if ($debug_folder_lookup) { echo 'needle_len: '.$needle_len.' and needle_len_negative-1: '.$needle_len_negative.'<br>' ;}
-				// get the last part of haystack that is that length
-				$haystack_end = substr($folder_haystack, $needle_len_negative);
-				// look for pattern [delimiter][folder_needle]
-				// because we do NOT want to match a partial word, folder_needle should be a whole folder name
-				  if ($debug_folder_lookup) { echo 'haystack_end: '.$haystack_end.'<br>' ;}
-				if ((stristr('/'.$folder_needle, $haystack_end))
-				|| (stristr('.'.$folder_needle, $haystack_end))
-				|| (stristr('\\'.$folder_needle, $haystack_end)))
+				if ($debug_folder_lookup) { echo 'entered stristr statement<br>'; }
+				if (strlen($folder_haystack) == strlen($folder_needle))
 				{
+					// exact match - needle is already a fully legit folder_long name
+					  if ($debug_folder_lookup) { echo 'folder exists, exact match, already legit long name: '.$needle_official_long.'<br>'; }
 					$needle_official_long = $folder_haystack;
-					  if ($debug_folder_lookup) { echo 'folder exists, lookup found partial match, official long name: '.$needle_official_long.'<br>'; }
 					break;
+				}
+				  if ($debug_folder_lookup) { echo 'exact match failed<br>'; }
+				if (strlen($folder_haystack) > strlen($folder_needle))
+				{
+					if ($debug_folder_lookup) { echo 'entered partial match logic<br>'; }
+					// at least the needle is somewhere in the haystack
+					// 1) get the length of the needle
+					$needle_len = strlen($folder_needle);
+					// get a negative value for use in substr
+					$needle_len_negative = ($needle_len * (-1));
+					// go back one more char in haystack to get the delimiter
+					$needle_len_negative = $needle_len_negative - 1;
+					  if ($debug_folder_lookup) { echo 'needle_len: '.$needle_len.' and needle_len_negative-1: '.$needle_len_negative.'<br>' ;}
+					// get the last part of haystack that is that length
+					$haystack_end = substr($folder_haystack, $needle_len_negative);
+					// look for pattern [delimiter][folder_needle]
+					// because we do NOT want to match a partial word, folder_needle should be a whole folder name
+					  if ($debug_folder_lookup) { echo 'haystack_end: '.$haystack_end.'<br>' ;}
+					if ((stristr('/'.$folder_needle, $haystack_end))
+					|| (stristr('.'.$folder_needle, $haystack_end))
+					|| (stristr('\\'.$folder_needle, $haystack_end)))
+					{
+						$needle_official_long = $folder_haystack;
+						  if ($debug_folder_lookup) { echo 'folder exists, lookup found partial match, official long name: '.$needle_official_long.'<br>'; }
+						break;
+					}
+					 if ($debug_folder_lookup) { echo 'partial match failed<br>'; }
 				}
 			}
 		}
