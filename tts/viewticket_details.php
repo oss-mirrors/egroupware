@@ -205,7 +205,9 @@
 				$phpgw->db->query("UPDATE ticket set t_timestamp_closed='" . time() . "' WHERE t_id=$t_id");
 			}
 
-			mail_ticket($t_id);
+			if ($phpgw_info['server']['tts_mailticket']) {
+			  mail_ticket($t_id);
+			}
 		}
 		Header("Location: " . $phpgw->link("/tts/index.php"));
 	}
