@@ -73,7 +73,7 @@ function check_all()
 ?>
 
 
-<form name="switchbox" action="<?php echo $phpgw->link("index.php")?>" method="post">
+<form name="switchbox" action="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php')?>" method="post">
  <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
   <tr bgcolor="<?php echo $phpgw_info["theme"]["bg_color"]; ?>" align="center">
     <td>&nbsp;</td>
@@ -86,12 +86,12 @@ function check_all()
       if (! $start)
          $start = 0;
 
-     echo $phpgw->nextmatchs->left("index.php",$start,$nummsg,"&sort=$sort&order=$order"
+     echo $phpgw->nextmatchs->left('/'.$phpgw_info['flags']['currentapp'].'/index.php',$start,$nummsg,"&sort=$sort&order=$order"
                                  . "&folder=" . urlencode($folder));
 
      echo "<td>&nbsp;</td>";
 
-     echo $phpgw->nextmatchs->right("index.php",$start,$nummsg,"&sort=$sort&order=$order"
+     echo $phpgw->nextmatchs->right('/'.$phpgw_info['flags']['currentapp'].'/index.php',$start,$nummsg,"&sort=$sort&order=$order"
                                   . "&folder=" . urlencode($folder));
 ?>
     <td>&nbsp;</td>
@@ -165,7 +165,7 @@ function check_all()
                 echo '<select name="folder" onChange="document.switchbox.submit()">'
                    . '<option>' . lang("switch current folder to") . ':';
                 echo list_folders($mailbox);
-	 	echo "</select>";
+                echo "</select>";
              }
            ?>
          </td>
@@ -174,7 +174,7 @@ function check_all()
            <?php
              if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
 		echo '<input type="button" value="' . lang("folder") . '" onClick="'
-		   . 'window.location=\'' . $phpgw->link("folder.php","folder="
+		   . 'window.location=\'' . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php',"folder="
 		   . urlencode($folder)) . '\'">';
              }
            ?>
@@ -189,7 +189,7 @@ function check_all()
 
   <tr>
   </form>
- <form name="delmov" action="<?php echo $phpgw->link("action.php"); ?>" method="post">
+ <form name="delmov" action="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/action.php'); ?>" method="post">
   <input type="hidden" name="what" value="delete">
   <input type="hidden" name="folder" value="<?php echo $folder; ?>">
 
@@ -212,22 +212,22 @@ function check_all()
 
  <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="34%">
   <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"3",$order,"index.php",lang("subject"),"&folder=".urlencode($folder)); ?></b>
+   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"3",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".urlencode($folder)); ?></b>
   </font>
  </td>
  <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="23%">
   <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"2",$order,"index.php",lang("from"),"&folder=".urlencode($folder)); ?></b>
+   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"2",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".urlencode($folder)); ?></b>
   </font>
  </td>
  <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="12%">
   <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"0",$order,"index.php",lang("date"),"&folder=".urlencode($folder)); ?></b>
+   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"0",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".urlencode($folder)); ?></b>
   </font>
  </td>
  <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="4%">
   <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"6",$order,"index.php",($newsmode=="on"?lang("lines"):lang("size")),"&folder=".urlencode($folder)); ?></b>
+   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"6",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',($newsmode=="on"?lang("lines"):lang("size")),"&folder=".urlencode($folder)); ?></b>
   </font>
  </td>
 </tr>
@@ -293,9 +293,8 @@ function check_all()
            else
               echo "<td bgcolor=\"$bg\" width=\"1%\">&nbsp;$attach</td>";
 
-           echo "<td bgcolor=\"$bg\"><font size=\"2\" face=\"".$phpgw_info["theme"]["font"]."\">"
-              . "<a href=\"".$phpgw->link("message.php","folder="
-              . urlencode($folder)."&msgnum=".$msg_array[$i]) . "\">"
+           echo '<td bgcolor="'.$bg.'"><font size="2" face="'.$phpgw_info['theme']['font'].'">'
+              . '<a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php','folder='.urlencode($folder).'&msgnum='.$msg_array[$i]).'">'
               . decode_header_string($subject) . "</a></font></td>\n"
               . "<td bgcolor=\"$bg\"><font size=\"2\" face=\"".$phpgw_info["theme"]["font"]."\">";
 
@@ -317,7 +316,7 @@ function check_all()
           else
                $display_address->from = "";
 
-           echo "<a href=\"" . $phpgw->link("compose.php","folder="
+           echo "<a href=\"" . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',"folder="
               . urlencode($folder) . "&to=" . urlencode($replyto)) . "\">"
               . decode_header_string($personal) . "</a> $display_address->from";
 
@@ -343,7 +342,7 @@ function check_all()
          <tr>
           <td>
             <input type="button" value="<?php echo lang("delete"); ?>" onClick="do_action('delall')">
-            <a href="<?php echo $phpgw->link("compose.php","folder=".urlencode($folder)); ?>"><?php echo lang("compose"); ?></a>
+            <a href="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',"folder=".urlencode($folder)); ?>"><?php echo lang("compose"); ?></a>
           </td>
           <td align="right">
            <?php
