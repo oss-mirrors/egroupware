@@ -346,7 +346,7 @@
   if (!$mailbox && !ereg("preferences",$PHP_SELF)) {
      echo "<p><center><b>" . lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
         . "</b></center>";
-     $phpgw->common->phpgw_exit();
+     $phpgw->common->phpgw_exit(True);
   }
 
   function decode_header_string($string) {
