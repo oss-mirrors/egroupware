@@ -22,15 +22,13 @@ function fud_sql_error_handler($query, $error_string, $error_number, $server_ver
 		$tmp = debug_backtrace();
 		$_SERVER['PATH_TRANSLATED'] = '';
 		foreach ($tmp as $v) {
-			$_SERVER['PATH_TRANSLATED'] .= "{$v['file']}:{$v['line']}\n";
+			$_SERVER['PATH_TRANSLATED'] .= "{$v['file']}:{$v['line']}<br />\n";
 		}
-	} else {
-		if (!isset($_SERVER['PATH_TRANSLATED'])) {
-			$_SERVER['PATH_TRANSLATED'] = realpath(__FILE__);
-		}
+	} else if (!isset($_SERVER['PATH_TRANSLATED'])) {
+		$_SERVER['PATH_TRANSLATED'] = realpath(__FILE__);
 	}
 
-	$error_msg = "(".basename($_SERVER['PATH_TRANSLATED']).") ".$error_number.": ".$error_string."<br />\n";
+	$error_msg = "(".$_SERVER['PATH_TRANSLATED'].") ".$error_number.": ".$error_string."<br />\n";
 	$error_msg .= "Query: ".htmlspecialchars($query)."<br />\n";
 	$error_msg .= "Server Version: ".$server_version."<br />\n";
 	if (isset($_SERVER['HTTP_REFERER'])) {
@@ -41,7 +39,7 @@ function fud_sql_error_handler($query, $error_string, $error_number, $server_ver
 		echo "<b>UNABLE TO WRITE TO SQL LOG FILE</b><br>\n";
 		echo $error_msg;
 	} else {
-		if (defined('forum_debug') || (_uid && $GLOBALS['usr']->users_opt & 1048576)) {
+		if (defined('forum_debug') || (isset($GLOBALS['usr']->users_opt) && $GLOBALS['usr']->users_opt & 1048576)) {
 			echo $error_msg;
 		} else {
 			trigger_error('SQL Error has occurred, please contact the <a href="mailto:'.$GLOBALS['ADMIN_EMAIL'].'?subject=SQL%20Error">administrator</a> of the forum and have them review the forum&#39;s SQL query log', E_USER_ERROR);
@@ -66,25 +64,6 @@ function get_version()
 	return __FUD_SQL_VERSION__;
 }
 
-function intnull($val)
-{
-	return (!is_null($val) ? $val : 'NULL');
-}
-
-function intzero($val)
-{
-	return (!empty($val) ? $val : '0');
-}
-
-function ifnull($val, $alt)
-{
-	return (!is_null($val) ? "'".$val."'" : $alt);
-}
-
-function strnull($val)
-{
-	return (!is_null($val) ? "'".$val."'" : 'NULL');
-}
 
 function db_lock($tables)
 {
@@ -203,22 +182,6 @@ function db_qid($q)
 function &db_arr_assoc($q)
 {
 	return mysql_fetch_array(q($q), MYSQL_ASSOC);
-}
-function ssn($str)
-{
-	if (is_null($str) || $str === '') {
-		return 'NULL';
-	} else {
-		return "'" . addslashes($str) . "'";
-	}
-}
-function in($str)
-{
-	return (!(int)$str) ? 'NULL' : (int)$str;
-}
-function iz($str)
-{
-	return (int)$str;
 }
 
 function db_li($q, &$ef, $li=0)
