@@ -1,0 +1,1 @@
+<?php include($phpgw_info["server"]["include_root"]."/email/inc/class.msg_".$phpgw_info["user"]["preferences"]["email"]["mail_server_type"].".inc.php"); ?>

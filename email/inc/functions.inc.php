@@ -320,8 +320,7 @@
   /* This is going to be used to switch to the nntp class */
   if ($phpgw_info["flags"]["newsmode"]){$phpgw_info["user"]["preferences"]["email"]["mail_server_type"] = "nntp";}
 
-  include($phpgw_info["server"]["app_inc"]."/msg_".$phpgw_info["user"]["preferences"]["email"]["mail_server_type"].".inc.php");
-  $phpgw->msg  = new msg;
+  $phpgw->msg = CreateObject("email.msg");
   $phpgw->msg->msg_common_();
 
   /*Set some defults*/
