@@ -29,6 +29,13 @@
 	}
 	else
 	{
-		Header('Location: ' . $phpgw->link('/bookmarks/list.php'));
+		if ($phpgw_info['user']['preferences']['bookmarks']['defaultview'] == 'tree')
+		{
+			Header('Location: ' . $phpgw->link('/bookmarks/tree.php'));
+		}
+		else
+		{
+			Header('Location: ' . $phpgw->link('/bookmarks/list.php'));
+		}
 	}
 ?>
