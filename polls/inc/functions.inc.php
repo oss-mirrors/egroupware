@@ -13,6 +13,16 @@
 
   /* $Id$ */
   
+  function add_template_row(&$tpl,$label,$value)
+  {
+     global $phpgw;
+
+     $tpl->set_var("tr_color",$phpgw->nextmatchs->alternate_row_color());
+     $tpl->set_var("td_1",$label);
+     $tpl->set_var("td_2",$value);
+     $tpl->parse("rows","row",True);
+  }
+  
   function verify_uservote($poll_id)
   {
      global $phpgw,$phpgw_info;
