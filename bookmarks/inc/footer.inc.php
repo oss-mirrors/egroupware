@@ -14,7 +14,7 @@
 	/* $Id$ */
 
 	// This is becuase this file is included inside of a function
-	global $error_msg,$sess_error_msg,$warn_msg,$sess_warn_msg,$msg,$sess_msg;
+	global $phpgw,$error_msg,$sess_error_msg,$warn_msg,$sess_warn_msg,$msg,$sess_msg;
 
 	if ($error_msg)
 	{
@@ -49,10 +49,12 @@
 		$bk_print_msg .= $msg;
 	}
 
-	$session_message = $phpgw->session->appsession('message','bookmarks');
+	$phpgw->sessions = CreateObject('phpgwapi.sessions');
+
+	$session_message = $phpgw->sessions->appsession('message','bookmarks');
 	if ($session_message)
 	{
-		$phpgw->session->appsession('message','bookmarks','');
+		$phpgw->sessions->appsession('message','bookmarks','');
 		$bk_print_msg .= $session_message;
 	}
 
