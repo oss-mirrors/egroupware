@@ -1946,7 +1946,7 @@
 				$GLOBALS['phpgw']->template->set_var('ubudget_main',$main['u_budget_jobs']);    //sprintf("%01.2f",$main['u_budget_jobs']));
 				$GLOBALS['phpgw']->template->set_var('abudget_main',sprintf("%01.2f",$main['a_budget_jobs']));
 
-				$GLOBALS['phpgw']->template->set_var('pbudget_main',$main['budget']);
+				$GLOBALS['phpgw']->template->set_var('pbudget_main',sprintf("%01.2f",$main['budgetSum']));
 				$GLOBALS['phpgw']->template->parse('main','project_main',True);
 			}
 
