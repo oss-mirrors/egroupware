@@ -26,6 +26,10 @@
 		var $public_functions = array(
 			'message_data'		=> True
 		);
+		var $preserve_no_fmt = True;
+		//var $preserve_no_fmt = False;
+		var $no_fmt='';
+		
 		var $debug = 0;
 		//var $debug = 2;
 		//var $debug = 3;
@@ -157,6 +161,13 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 			
 			// ---- BEGIN BOMESSAGE ----
 			
+			// if preserving no_fmt then add it to every navigation (prev, next) links
+			if (($GLOBALS['phpgw']->msg->get_isset_arg('no_fmt'))
+			&& ($GLOBALS['phpgw']->msg->get_arg_value('no_fmt') != '')
+			&& ($this->preserve_no_fmt == True))
+			{
+				$this->no_fmt = '&no_fmt=1';
+			}
 			//  ----  TOOL BAR / MENU BAR ----
 			$this->xi['ctrl_bar_font'] = $GLOBALS['phpgw_info']['theme']['font'];
 			$this->xi['ctrl_bar_font_size'] =  '-1';
@@ -217,7 +228,7 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 			$this->xi['mlist_checkbox_name'] = 'delmov_list[]';
 			$this->xi['frm_delmov_action'] = $GLOBALS['phpgw']->link(
 								'/index.php',
-								'menuaction=email.boaction.delmov');
+								'menuaction=email.boaction.delmov'.$this->no_fmt);
 			$this->xi['frm_delmov_name'] = 'delmov';
 			// imitate the stuff that happens when message(s) is/are selected on the uiindex page, then the move combobox is used
 			$this->xi['mlist_embedded_uri'] = $GLOBALS['phpgw']->msg->get_arg_value('["msgball"]["uri"]');
@@ -291,7 +302,8 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 				.'&'.@$msgball['uri']
 				.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 				.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-				.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+				.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+				.$this->no_fmt);
 			
 			if ($this->debug > 2) { echo 'class.bomessage.message_data: $msg_struct DUMP:<pre>'; print_r($msg_struct); echo '</pre>';  }
 			#@set_time_limit(0);
@@ -344,7 +356,8 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 					.'&'.@$nav_data['prev_msg']['msgball']['uri']
 					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+					.$this->no_fmt);
 				$prev_msg_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/'.$this->icon_theme.'-arrow-left-24.gif',$this->xi['lang_previous_message'],'','','0');
 				$ilnk_prev_msg = $GLOBALS['phpgw']->msg->href_maketag($prev_msg_link,$prev_msg_img);
 			}
@@ -365,7 +378,8 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 					.'&'.@$nav_data['next_msg']['msgball']['uri']
 					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+					.$this->no_fmt);
 				$next_msg_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/'.$this->icon_theme.'-arrow-right-24.gif',$this->xi['lang_next_message'],'','','0');
 				$ilnk_next_msg = $GLOBALS['phpgw']->msg->href_maketag($next_msg_link,$next_msg_img);
 			}
@@ -404,7 +418,8 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 						.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum()
 						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+						.$this->no_fmt);
 			}
 			
 			// ----  Labels and Colors for From, To, CC, Files, and Subject  -----

@@ -445,6 +445,634 @@
      angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-9
 
 
+2002-11-01 GMT	Angles Puglisi <angles@aminvestments.com>	patch-71
+
+    Summary:
+      add auto refresh widget, deal with parse_str always adding slashes
+    Revision:
+      anglemail--codehere--1.1--patch-71
+
+    Add auto refresh widget. Html widgets now has some code to generate an 
+    auto refresh javascript block based on certain args you give it. Hard 
+    coded to 4 minutes for the layout 2 index page right now, it is 
+    designed to eventually pull the refresh time from prefs database. It 
+    uses javascript delay to reload the page in such a way the the browser 
+    will use the images in cache, as opposed to the "meta refresh" command 
+    which instructs the browser to re download the images, which is not 
+    what we want here.
+    
+    Deal with parse_str always adding slashes. Turns out that parse_str command 
+    will always add slashes to escape quotes, just like GPC magic quotes, except that 
+    parse_str always does it no matter what the setting for magic quotes is. Therefor 
+    in several places "stripslashes" must be done to remove any such slashes from 
+    folder names because add such slashes b0rks the name of the folder if it has quotes 
+    in it, which is allowed for IMAP folders. There probably needs to be more handling 
+    for this added elsewhere, but this is a start.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.boindex.inc.php
+     inc/class.html_widgets.inc.php inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_wrappers.inc.php inc/class.uiindex.inc.php
+     templates/default/index_main_b0_l2.tpl
+
+
+2002-10-30 GMT	Angles Puglisi <angles@aminvestments.com>	patch-70
+
+    Summary:
+      deletes buffered, fix expiring folder status info handler, fix buffer series string 
+    Revision:
+      anglemail--codehere--1.1--patch-70
+
+    Fix buffer series string. This BUGFIX is for some occasions when the 
+    assembly of the string holding the collection of msgnums to move 
+    or delete was not adding a comma or colon in certain circumstances.
+    
+    Deletes buffered. Deletes not use the same buffering code that moves 
+    do, therefor block deletes are sent to the server in one command 
+    if possible.
+    
+    Fix expiring folder status info handler. In examining extreme mode 
+    step 3b where the TARGET folder of a move has its folder_status_info 
+    expired, (because we know we are moving mail INTO that folder thus 
+    chaging in its folder status info in a way that is hard to imitate), 
+    it was observed that expiring said data did not have the correct handler 
+    in "expire_session_cache" for this item, resulting in the expiring 
+    of ALL folder status info for that account, not just the info 
+    for the target folder only! Any cached data whose extraction 
+    requires what is referred to as a "specific key" or "extra special stuff" 
+    must have an expiring handler that also uses that, so sub data is 
+    expited, not an entire superstructire of data.
+    
+    That last fix should mean "extrame caching" should be able to 
+    handle the large moves and deletes without having to 
+    get additional info from the mail server but still the 
+    "large move" threshold is 3 or more moves or deletes at a time, 
+    less than such "large move" use the "extreme cache" tracking of moves and 
+    deletes which manually alters cache to imitate what data the 
+    mailserver would have after such moves are done, except for the 
+    target folder which we will not guess about due to the complexity of 
+    guessing about messages numbers used for mail moved INTO a folder.
+    
+    However, over such a "big move" threshold, the extreme caching is 
+    disabled for the duration of the move and the cache is flushed so 
+    that the data after the move will definately be fresh data just 
+    obtained from the mailserver itself.
+    
+    All that is not new, it is just reviewing what was impacted by the 
+    incorrect handler for the folder_status_info target folder expiring 
+    all account folder_status_data. This means no "extreme cache" tracking 
+    of moves or deletes was possible because this crucial info was 
+    wiped out needlessly during every move, requiring the data to be 
+    obtained from the server and slowing down the entire process, so 
+    that data could not be manually altered and saved in step2 because 
+    step 3b was wiping it out every time. IF extreme caching was on 
+    and IF the "big move threshold" was not exceeded, and IF the codebase 
+    was before this fix, this part of extreme caching was not operational, 
+    HOWEVER the other parts of extreme caching NOT the parts that track 
+    moves and deletes were probably not effected except perhaps every 
+    4 minutes when fresh folder_status_data was obtained, and only 
+    for the script run when that happened.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.boaction.inc.php
+     inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2002-10-26 GMT	Angles Puglisi <angles@aminvestments.com>	patch-69
+
+    Summary:
+      fixes: msgball_list handling extreme and non, comma for last 2 series msgnuns 
+    Revision:
+      anglemail--codehere--1.1--patch-69
+
+    Fix comma for last 2 series msgnums, this bug was for when the final 2 numbers in a 
+    msgnum grouping string were continuous, yet still need a comma because the series 
+    is ended with the end of the buffered_move_commands array.
+    
+    Caching (and specifically msgball_list handling extreme and non-extreme mode), totally 
+    examined and extra or redundant calls removed and previously unhandled situations 
+    now handled (that I could find).
+    
+    Straight delete (not a move to trash) code streamlined in preparation for 
+    migrating straight deletes to a buffered list regime.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.boaction.inc.php
+     inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2002-10-26 GMT	Angles Puglisi <angles@aminvestments.com>	patch-68
+
+    Summary:
+      remember "no_fmt" value across pageviews and moves / deletes
+    Revision:
+      anglemail--codehere--1.1--patch-68
+
+    Remember "no_fmt" value across pageviews and moves / deletes. If you 
+    are viewing a message and you click on "View Unformatted" you get the 
+    fixed font version of the text. Now this is remembered so when you view 
+    the next message it will also be in the "view unformatted" look. This 
+    is remembered while going to the next or previous message, and also 
+    when clicking delete or moving the message from the uimessage page. 
+    Any other activity, like going back to the INDEX page, or composing mail, 
+    these things do not preserve the "no_fmt" value.
+    
+    This is instead of making this a preference, because I can see people 
+    wanting to switch back and forth between formatted and fixed font, which 
+    would be a PITA to gave to goto the settings page each time to change this.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.boaction.inc.php
+     inc/class.bomessage.inc.php
+
+
+2002-10-25 GMT	Angles Puglisi <angles@aminvestments.com>	patch-67
+
+    Summary:
+      more streamlining of moves 
+    Revision:
+      anglemail--codehere--1.1--patch-67
+
+    More streamlining of moves. Moves are collected in a single class var 
+    instead of account by account. Track expungable folders not uses reference 
+    if possible.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2002-10-24 GMT	Angles Puglisi <angles@aminvestments.com>	patch-66
+
+    Summary:
+      fix msgnum series bug and speed up trash logic
+    Revision:
+      anglemail--codehere--1.1--patch-66
+
+    Fix msgnum series bug and speed up trash logic. Also 
+    removed some commented out code twas no longer needed.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.mail_msg_wrappers.inc.php
+
+
+2002-10-24 GMT	Angles Puglisi <angles@aminvestments.com>	patch-65
+
+    Summary:
+      spead tweaks for large moves, including using refernces 
+    Revision:
+      anglemail--codehere--1.1--patch-65
+
+    Spead tweaks for large moves, including using refernces to arg values. 
+    Also made a simage move a param for pgpgw_delete in cases where we 
+    are certain there is only one message to proces through the move command.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.boaction.inc.php
+     inc/class.bofolder.inc.php inc/class.bopreferences.inc.php
+     inc/class.html_widgets.inc.php inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_display.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2002-10-24 GMT	Angles Puglisi <angles@aminvestments.com>	patch-64
+
+    Summary:
+      MASSIVE change to buffer similar moves and issue a single flush 
+    Revision:
+      anglemail--codehere--1.1--patch-64
+
+    MASSIVE change to buffer similar moves and issue a single flush.
+    
+    Function "industrial_interacct_mail_move" is not a shell that just 
+    recordes the desired move in an arg that each account has called 
+    "buffered_move_commands". Only in boaction where total moved it known 
+    to be 1 message, then that directly calls "single_interacct_mail_move" 
+    which is substantially the same as the OLD "industrial_interacct_mail_move" 
+    and is useful for a single move AND FOR moves between different accounts 
+    which must happen one at a time. 
+    
+    Then, when the calling process calls "expunge_expungable_folders", as it 
+    would have done before anyway, now that function first calls to 
+    "flush_buffered_move_commands" which is a similar function to the 
+    expunge code, it looks at one account at a time, for its "buffered_move_commands" 
+    list. That list is constructed or URI type strings designed to group 
+    moves as much as possible simply by calling sort. Then each move is 
+    grouped with each similar move, until no more grouping is possible, 
+    then the entire move is issued in a single command to the mailserver. 
+    Note that extreme caching is ALWAYS flushed and turned off for the duration 
+    of the flush move function.
+    
+    If moves do not match us for account and folder, then they are issues right 
+    away and the loop continues looking for more similar moves to group, since 
+    this is done by account we know immediately that the from account is 
+    always the same right there. In such cases as moves between different 
+    accounts this must be handed off to "single_interacct_mail_move" which 
+    moves happenn one at a time. 
+    
+    Note that if using the trash folder, deleting mail that should be moved to 
+    the trash folder will be grouped thru this same process, however 
+    actuall deletes still occur one at a time.
+    
+    Code is not yet tested with filters althought the design for 
+    non-limited moves and groupings should allow for filters to 
+    work with this.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.boaction.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2002-10-24 GMT	Angles Puglisi <angles@aminvestments.com>	patch-63
+
+    Summary:
+      fix submit prefs not expiring all cached args
+    Revision:
+      anglemail--codehere--1.1--patch-63
+
+    Fix submit prefs not expiring all cached args. There 
+    was a bug where if you changed your pref setting for 
+    "U-Wash Mail Folder", the setting would not take effect 
+    until you logged out of phpgw then logged back in. This is 
+    because the cached arg mailsvr_delimiter was not being expired 
+    on the submitting of new prefs. Fixed now.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.bopreferences.inc.php
+
+
+2002-10-23 GMT	Angles Puglisi <angles@aminvestments.com>	patch-62
+
+    Summary:
+      login immediately if not caching, reduce "big move" to 10
+    Revision:
+      anglemail--codehere--1.1--patch-62
+
+    If not extreme caching, attempt login immediately. Fact is that 
+    if you are not caching you are going to need to log in to the 
+    mailserver, in all cases except for login NEVER such as is set 
+    by the bopreferences page in its constructor, as an example for 
+    this never login functionality.
+    
+    Reduce "big move" to 10, in file boaction, until it is proven that the 
+    larger number, was 95, in fact makes things faster. This means that moving 
+    or deleting 10 messages or more at once will clear the cache and reset 
+    all that stuff, instead of manually adjusting the cache to reflect 
+    the changes as they take place.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.boaction.inc.php
+     inc/class.mail_msg_base.inc.php
+
+
+2002-10-23 GMT	Angles Puglisi <angles@aminvestments.com>	patch-61
+
+    Summary:
+      extend rh bug recovery to on-demand streams, start a 3 way login instruction logic
+    Revision:
+      anglemail--codehere--1.1--patch-61
+
+    Extend rh bug recovery to on-demand streams. The recovery code actually uses a function 
+    called "ensure_stream_and_folder" to do on-the-fly recovery. However, opening streams 
+    "on demand" (as required) also uses that same function, so it had to be tweaked to 
+    allow for the recursive calling from the recovery function, then a check by the first 
+    process to see if the recursive call succeeded in recovering from the RH bug.
+    
+    This now extends the RH recovery fix to all attempts to open streams, not just the 
+    initial login during the "begin_request" function. This now allows for the 
+    filters edit page to work correctly, for example, since those streams, if needed, 
+    are open on demand, and the RH recovery now works during that process.
+    
+    Start a 3 way login instruction logic. In cases of caching the simple boolean 
+    do_login yes or no may be too simple. This requires the testing of 3 possibilities, 
+    to NEVER login no matter what, such as with prefernces pages, to login in only 
+    on demand, or to definatey login.
+    
+    Additionally, if it is decided to skip the the "begin_request" login sequence, there 
+    are still 2 or 3 important vars that must be gathered before exiting the function, this 
+    now happens in all cases when this initial login is skipped.
+    
+    Found an unwrapped call to "imap_last_error" in file mail_msg_base in the 
+    RH recovery code. Trouble is, since there was an error there is no dcom object 
+    available so no wrapped call is existing, so the bare php-imap extension call must 
+    be used there if you do indeed want the server error string (which may not be necessary 
+    anymore anyway) but that is now wrapped in a "function_exists" test for 
+    installs without IMAP module compiled in.
+    
+    Now this commit works with caching enabled. After this needs to be tested with 
+    caching turned off.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.bofilters.inc.php
+     inc/class.bopreferences.inc.php
+     inc/class.mail_msg_base.inc.php
+     inc/class.msg_bootstrap.inc.php inc/hook_home.inc.php
+
+
+2002-10-22 GMT	Angles Puglisi <angles@aminvestments.com>	patch-60
+
+    Summary:
+      fix qprint decoding, add some additional but minor utf7 capability
+    Revision:
+      anglemail--codehere--1.1--patch-60
+
+    fix qprint decoding, for some reason the "qprint" function was doing 2 extra 
+    things before using the php "quoted_printable_decode" command.  First, it would 
+    change any underscores "_" to a space, and second, it would change the 
+    sequence "=CRLF" to nothing, in other words erasing that. Now the function 
+    simply returns the result of the php "quoted_printable_decode" like an alias 
+    function, no modification to the input string takes place now.
+    
+    Add utf7 stuff that make have some corner case fixes. Added capability in the utf7_decode_string 
+    function to handle foldernames coming from the server that are not fully qualified with 
+    brackets and server name. It is possible that with sub folders this may happen, but generally 
+    the mailserver only spits out folder names that are fully qualified. But just in case, this 
+    handling has been added.
+    
+    Added 2 functions that are not used yet and may never be used, just testing the idea, called 
+    "needs_utf7_encoding" and "needs_utf7_decoding" just to check for the need for even 
+    calling the utf7 functions, however some degree of guessing is required for the decode test 
+    so the only way to know for sure is to actually try to decode it. The "needs encoding" function 
+    simply looks for char 37 (the ampersand) and any chars greater than or equal to 127, which 
+    is the char range where utf7 encoding is required. According to RFC2060 the ampersand is 
+    also required to be encoded because the modified utf7 scheme described there uses the 
+    ampersand as a special token.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.mail_dcom_base.inc.php
+     inc/class.mail_msg_base.inc.php
+
+
+2002-10-21 GMT	Angles Puglisi <angles@aminvestments.com>	patch-59
+
+    Summary:
+      fix utf7 encoding for mail_move, now skips duplicate delmov_list elements
+    Revision:
+      anglemail--codehere--1.1--patch-59
+
+    Fix utf7 encoding for mail_move. Most commands issued to the mailserver require 
+    a fully qualified BRACKET_MAILSERVER_BRACKER_NAMESPACE_DELIMITED_FOLDERNAME 
+    syntax, so the utf7 encoding code had been tuned for this. However, the 
+    command to move mail to different folders within the same account does not 
+    have the BRACKET_SERVER_BRACKET part in the folder name string. Now the 
+    utf7 encoding function can handle this syntax too. Thus moving or deleting 
+    mail to or from folders having names requiring utf7 modifications not 
+    work as expected.
+    
+    Now skips duplicate delmov_list elements. Apache2 on a test install on RH8.0 
+    was submitting duplicate items in the delmov_list that gets submitted from 
+    the index page. It seemed like a good thing to check for duplicates anyway, 
+    so that part of the GPC arg collection routine checks for duplicate items in 
+    the submitted delmov_list array.
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.mail_dcom_base.inc.php
+     inc/class.mail_dcom_imap.inc.php
+     inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2002-10-21 GMT	Angles Puglisi <angles@aminvestments.com>	patch-58
+
+    Summary:
+      trash folder now handled by arg "veified_trash_folder_long", fix dup "javascript" string in boindex
+    Revision:
+      anglemail--codehere--1.1--patch-58
+
+    Trash folder now handled by arg "veified_trash_folder_long". Code to obtain verified 
+    long name for trash folder, or to create it if necessary, moved to function called 
+    "get_verified_trash_folder_long" which is a "special handler" that is used when you 
+    call ->get_arg_value("verified_trash_folder_long"). The result is cached in L1 class 
+    var cache (not appsession cache, [not yet at least]), which is a good thing because the 
+    delete function may be called many times in a row, now the trash folder stuff happens 
+    only once.
+    
+    It checks for preference to use the trash folder also, because if user pref to 
+    use trash folder is false we can not, in that case, obtain a "verified" name for 
+    it then. NOTE THIS REPLACES your need to call get_pref_value("trash_folder_name"), 
+    this new capability to use get_arg_value("verified_trash_folder_long") handles 
+    for you all the logic of obtaining the trash folder name in official long name form, 
+    or even will try to attempt to create it if it does not already exist (and if user 
+    pref is in fact to use the trash folder).
+    
+    Fix duplicate "javascript" string in boindex, resulting in delete button with string 
+    "javascript:javascript:do_something(delall)" as an href. I actually noticed no 
+    functional difference for the browser when this was fixed, maybe js checks for 
+    that anyway.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.boindex.inc.php
+     inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2002-10-20 GMT	Angles Puglisi <angles@aminvestments.com>	patch-57
+
+    Summary:
+      fix disallow logins if do_login is false, and add link to login err msg
+    Revision:
+      anglemail--codehere--1.1--patch-57
+
+    Fix disallow logins if do_login is false. The caching was 
+    still testing the cache even if do_login was false, which is 
+    bad because testing the cache may require a login itself. So 
+    not do_login set to False disallows any attempt to login, 
+    which is needed for preferences pages or other places where 
+    we do not want a login, may not have enough info for a login, 
+    or simply have no need for a login anyway.
+    
+    Also added a link to the login error message to return to 
+    the users "home" page.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.mail_msg_base.inc.php
+
+
+2002-10-20 GMT	Angles Puglisi <angles@aminvestments.com>	patch-56
+
+    Summary:
+      better memory handling of prefs, fixes for prefs handling for new acctname
+    Revision:
+      anglemail--codehere--1.1--patch-56
+
+    Better memory handling of prefs, previously there were several copies of prefs 
+    data in memory at the same time, this has been eliminated.
+    
+    Msg object now has a var "raw_filters" which is the unprocessed filter 
+    data from the prefs as collected by the msg object during initialization.
+    
+    Fixes for prefs handling for new acctname, default value is NO value, previously 
+    was a one char empty string. The no value will cause (hopefully) the value to be 
+    picked up from the more generic name handling from before, if the new 
+    acctname pref is not specified.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.boaction.inc.php
+     inc/class.bofilters.inc.php inc/class.bopreferences.inc.php
+     inc/class.mail_msg_base.inc.php
+     inc/class.ui_mail_debug.inc.php templates/default/debug.tpl
+
+
+2002-10-18 GMT	Angles Puglisi <angles@aminvestments.com>	patch-55
+
+    Summary:
+      fix prefs handling of addybook, js of old addybook, remove VFS strings
+    Revision:
+      anglemail--codehere--1.1--patch-55
+
+    fix prefs handling of addybook, it needed to use the OOP prefs access 
+    functions.
+    
+    js of old addybook was broken since the link has no GET args, this 
+    cause the js in the compose page to fail if "extraparam" was not 
+    filled, so I added a bogus arg to the URI just to make that happy.
+    
+    remove "VFS" string that was a reminder for me, just a placeholder.
+    
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
+     ChangeLog.ryan--1.1 inc/class.bocompose.inc.php
+     inc/class.bomessage.inc.php
+
+
+2002-10-18 GMT	Angles Puglisi <angles@aminvestments.com>	patch-54
+
+    Summary:
+      reverse update trick syncing codehere to ryan on 021017
+    Revision:
+      anglemail--codehere--1.1--patch-54
+
+    reverse update trick syncing codehere to ryan on 021017
+    
+    These 2 commands failed:
+    > larch star-merge ./anglemail-codehere anglemail--codehere--1.1 anglemail--ryan--1.1 ./anglemail-codestar
+    > larch star-merge anglemail--codehere--1.1 ./anglemail-codehere anglemail--ryan--1.1 ./anglemail-codestar
+    because branch codehere had no patchlog for branch ryan.
+    
+    Solution, reverse update trick:
+    > larch update --force ./anglemail-ryan ./anglemail-ryanupdated anglemail--codehere--1.1
+    Update codehere INTO ryan into a new dir, copy differences from that temp dir  
+    to codehere, trick is done. Also note any file removals, but do not remove any other 
+    than those files removed via development, i.e. different trees will have certain arch 
+    control files different no matter what.
+    
+    Note that all of ryan's changelogs, and some others, were copied to codehere in the process, 
+    thus increasing codehere's patchlog awareness, assuming this trick preserves merge integriry 
+    down the road. 
+    
+
+    new files:
+     ChangeLog.core--1.1 ChangeLog.ryan--1.1 {arch}/=tagging-method
+     {arch}/anglemail/anglemail--core/anglemail--core--1.1/angles@aminvestments.com--2002/patch-log/patch-1
+     {arch}/anglemail/anglemail--core/anglemail--core--1.1/angles@aminvestments.com--2002/patch-log/patch-2
+     {arch}/anglemail/anglemail--core/anglemail--core--1.1/angles@aminvestments.com--2002/patch-log/patch-3
+     {arch}/anglemail/anglemail--lex/anglemail--lex--1.1/angles@aminvestments.com--2002/patch-log/patch-18
+     {arch}/anglemail/anglemail--lex/anglemail--lex--1.1/angles@aminvestments.com--2002/patch-log/patch-19
+     {arch}/anglemail/anglemail--lex/anglemail--lex--1.1/angles@aminvestments.com--2002/patch-log/patch-20
+     {arch}/anglemail/anglemail--lex/anglemail--lex--1.1/angles@aminvestments.com--2002/patch-log/patch-21
+     {arch}/anglemail/anglemail--lex/anglemail--lex--1.1/angles@aminvestments.com--2002/patch-log/patch-22
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/base-0
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-1
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-10
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-11
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-12
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-2
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-3
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-4
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-5
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-6
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-7
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-8
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-9
+
+    removed files:
+     brother1.html brother2.html data1.html frameset.html
+
+    modified files:
+     ChangeLog.codehere--1.1 ChangeLog.lex--1.1
+     addressbook-js.changelog.txt inc/class.bocompose.inc.php
+     inc/class.boindex.inc.php inc/class.bojsaddressbook.inc.php
+     inc/class.bopreferences.inc.php inc/class.html_widgets.inc.php
+     inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_display.inc.php
+     inc/class.mail_msg_wrappers.inc.php inc/class.spell.inc.php
+     inc/class.ui_mail_debug.inc.php inc/class.uicompose.inc.php
+     inc/class.uiindex.inc.php inc/class.uijsaddressbook.inc.php
+     inc/class.uipreferences.inc.php inc/hook_home.inc.php
+     inc/selectboxes.js templates/default/addressbook-js-bits.tpl
+     templates/default/addressbook-js-frameset.tpl
+     templates/default/addressbook-js.tpl
+     templates/default/addressbook-real-plain.tpl-UNUSED
+     templates/default/addressbook.tpl
+     templates/default/addressbook.tpl-BAD
+     templates/default/addressbook.tpl-ORIG
+     templates/default/compose.tpl
+     templates/default/index_main_b0_l2.tpl
+
+    new directories:
+     {arch}/anglemail/anglemail--ryan
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log
+
+    new patches:
+     angles@aminvestments.com--2002/anglemail--core--1.1--patch-1
+     angles@aminvestments.com--2002/anglemail--core--1.1--patch-2
+     angles@aminvestments.com--2002/anglemail--core--1.1--patch-3
+     angles@aminvestments.com--2002/anglemail--lex--1.1--patch-18
+     angles@aminvestments.com--2002/anglemail--lex--1.1--patch-19
+     angles@aminvestments.com--2002/anglemail--lex--1.1--patch-20
+     angles@aminvestments.com--2002/anglemail--lex--1.1--patch-21
+     angles@aminvestments.com--2002/anglemail--lex--1.1--patch-22
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--base-0
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-1
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-10
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-11
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-12
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-2
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-3
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-4
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-5
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-6
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-7
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-8
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-9
+
+
 2002-10-08 GMT	Angles Puglisi <angles@aminvestments.com>	patch-53
 
     Summary:

@@ -38,7 +38,7 @@
 		
 		function boindex()
 		{
-			return;
+			//return;
 		}
 		
 		
@@ -301,13 +301,22 @@
 			$this->msg_bootstrap = CreateObject("email.msg_bootstrap");
 			$this->msg_bootstrap->ensure_mail_msg_exists('email.boindex.index_data LINE '.__LINE__.' ', $this->debug_index_data);
 			
-			// if auto-refresh is in use, it will need to know what to refresh, use with ->link to get full http string
-			$GLOBALS['phpgw_info']['flags']['email_refresh_uri'] = $GLOBALS['phpgw']->msg->get_arg_value('index_refresh_uri');
 			// any app may use these lang'd labels in their email UI
 			$this->get_langed_labels();
 			
 			
 			// ---  this->xi ("eXternal Interface") is an array that will hold ALL data necessary for an index page
+			// if auto-refresh is in use, it will need to know what to refresh, use with ->link to get full http string
+			$GLOBALS['phpgw_info']['flags']['email_refresh_uri'] = $GLOBALS['phpgw']->msg->get_arg_value('index_refresh_uri');
+			// EXPERIMENTAL: auto refresh widget
+			// create widgets class, $GLOBALS['phpgw']->widgets produce errors, so make a local one
+			$my_other_widgets = CreateObject('email.html_widgets');
+			// this returns an empty string if not enough info provided
+			$this->xi['auto_refresh_widget'] = 
+				$my_other_widgets->auto_refresh(
+					$GLOBALS['phpgw_info']['flags']['email_refresh_uri'],
+					240000);
+			
 			// if we just moved or deleted messages, make a report string
 			$this->xi['report_this'] = $GLOBALS['phpgw']->msg->report_moved_or_deleted();
 			

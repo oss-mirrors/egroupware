@@ -25,6 +25,8 @@
 			'get_attach'	=> True,
 			'view_html'	=> True
 		);
+		// if bomessage wants this preserves, we detect that and store it here
+		var $no_fmt='';
 		var $debug = 0;
 		//var $debug = 3;
 		//var $debug = 4;
@@ -79,7 +81,8 @@
 			$this->msg_bootstrap->ensure_mail_msg_exists('emai.boaction.delmov', $this->debug);
 			
 			// initialize this to an "ignore me" value, we change it later only if it should have a meaning
-			$initial_session_cache_extreme = '-1';
+			// MOVED TO MSG CLASS
+			//$initial_session_cache_extreme = '-1';
 			
 			// get the not set value, usually '-1', 
 			// because php False, empty and 0 are too similar we use this instead, where a value of -1 is unlikely
@@ -285,16 +288,17 @@
 				
 				$delmov_list = $GLOBALS['phpgw']->msg->get_arg_value('delmov_list');
 				// is this a "big move" as far as the "smart caching" is concerned?
-				if (count($delmov_list) > $this->big_move_threshold)
-				{
-					if ($this->debug > 0) { echo 'email.boaction.delmov: LINE '.__LINE__.' $this->big_move_threshold ['.$this->big_move_threshold.'] exceeded, call "->msg->event_begin_big_move" to notice event of impending big batch moves or deletes<br>'; }
-					$initial_session_cache_extreme = $GLOBALS['phpgw']->msg->event_begin_big_move(array(), 'email.boaction.delmov: LINE '.__LINE__);
-				}
-				else
-				{
-					// this "-1" tells us no big move was done
-					$initial_session_cache_extreme = '-1';
-				}
+				// MOVED TOP MSG CLASS
+				//if (count($delmov_list) > $this->big_move_threshold)
+				//{
+				//	if ($this->debug > 0) { echo 'email.boaction.delmov: LINE '.__LINE__.' $this->big_move_threshold ['.$this->big_move_threshold.'] exceeded, call "->msg->event_begin_big_move" to notice event of impending big batch moves or deletes<br>'; }
+				//	$initial_session_cache_extreme = $GLOBALS['phpgw']->msg->event_begin_big_move(array(), 'email.boaction.delmov: LINE '.__LINE__);
+				//}
+				//else
+				//{
+				//	// this "-1" tells us no big move was done
+				//	$initial_session_cache_extreme = '-1';
+				//}
 				
 				$loops = count($delmov_list);
 				for ($i = 0; $i < $loops; $i++)
@@ -315,7 +319,7 @@
 					}
 					else
 					{
-						if ($this->debug > 1) { echo 'email.boaction.delmov: (delete) $GLOBALS[phpgw]->msg->phpgw_delete() returns True<br>'; }
+						if ($this->debug > 1) { echo 'email.boaction.delmov: (delete) $GLOBALS[phpgw]->msg->phpgw_delete() returns True (so it buffered the command, really does not mean anything not that we buffer commands)<br>'; }
 						
 						//if ($this->debug > 0) { echo 'email.boaction.delmov: (delete) calling $GLOBALS[phpgw]->msg->phpgw_expunge('.$delmov_list[$i]['acctnum'].', $delmov_list[$i])<br>'; }
 						//$did_expunge = False;
@@ -407,6 +411,13 @@
 				that was the last message to view (with respect to user prefs on sort and order). 
 				*/
 				
+				// if preserving no_fmt then add it to every navigation (prev, next) links
+				// if no_fmt=1 is in the args it is because bomesage wants us to preserve it
+				if (($GLOBALS['phpgw']->msg->get_isset_arg('no_fmt'))
+				&& ($GLOBALS['phpgw']->msg->get_arg_value('no_fmt') != ''))
+				{
+					$this->no_fmt = '&no_fmt=1';
+				}
 				if ($this->debug > 0) { echo 'emai.boaction.delmov ('.__LINE__.'): get_arg_value(what) == "delete_single_msg") <br>'; }
 				// called by clicking the "X" dutton while reading an individual message
 				$msgball = $GLOBALS['phpgw']->msg->get_arg_value('msgball');
@@ -425,7 +436,8 @@
 						.'&'.$nav_data['prev_msg']['msgball']['uri']
 						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+						.$this->no_fmt);
 				}
 				else
 				{
@@ -512,7 +524,8 @@
 				'tf'.','.
 				'sort'.','.
 				'order'.','.
-				'start';
+				'start'.','.
+				'no_fmt';
 				//sessionid
 				//kp3
 				//domain
@@ -527,17 +540,18 @@
 			$my_menuaction = $this->apply_new_args_env();
 			if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): $my_menuaction is ['.$my_menuaction.'] which was returned from $this->apply_new_args_env()<br>'; }
 			// (c) IF A "BIG MOVE", THEN TURN BACK ON THE SMART CACHE
-			if ((isset($initial_session_cache_extreme))
-			&& ($initial_session_cache_extreme != '-1'))
-			{
-				if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): $initial_session_cache_extreme is set and is NOT "-1", meaning we issued a "big move" cache event, $initial_session_cache_extreme is ['.serialize($initial_session_cache_extreme).'] <br>'; }
-				if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): "big move" will turn off session_cache_extreme if it was TRUE, so we undo that for the next page view with: $GLOBALS[phpgw]->msg->session_cache_extreme = $initial_session_cache_extreme<br>'; }
-				$GLOBALS['phpgw']->msg->session_cache_extreme = $initial_session_cache_extreme;
-			}
-			else
-			{
-				if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): $initial_session_cache_extreme is either NOT set or is "-1", meaning we did NOT issued a "big move" cache event earlier<br>'; }
-			}
+			// MOVED TO MSG CLASS
+			//if ((isset($initial_session_cache_extreme))
+			//&& ($initial_session_cache_extreme != '-1'))
+			//{
+			//	if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): $initial_session_cache_extreme is set and is NOT "-1", meaning we issued a "big move" cache event, $initial_session_cache_extreme is ['.serialize($initial_session_cache_extreme).'] <br>'; }
+			//	if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): "big move" will turn off session_cache_extreme if it was TRUE, so we undo that for the next page view with: $GLOBALS[phpgw]->msg->session_cache_extreme = $initial_session_cache_extreme<br>'; }
+			//	$GLOBALS['phpgw']->msg->session_cache_extreme = $initial_session_cache_extreme;
+			//}
+			//else
+			//{
+			//	if ($this->debug > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): $initial_session_cache_extreme is either NOT set or is "-1", meaning we did NOT issued a "big move" cache event earlier<br>'; }
+			//}
 			
 			// imitate the next menuaction command with direct object calls
 			if ($this->debug > 0) { echo 'emai.boaction.delmov ('.__LINE__.'): LEAVING by creating "next_obj" and calling its menuaction verb ...<br>'; }
@@ -672,11 +686,12 @@
 					}
 				}
 				// (c) IF A "BIG MOVE", THEN TURN BACK ON THE SMART CACHE
-				if ((isset($initial_session_cache_extreme))
-				&& ($initial_session_cache_extreme != '-1'))
-				{
-					$GLOBALS['phpgw']->msg->session_cache_extreme = $initial_session_cache_extreme;
-				}
+				// MOVED TO MSG CLASS
+				//if ((isset($initial_session_cache_extreme))
+				//&& ($initial_session_cache_extreme != '-1'))
+				//{
+				//	$GLOBALS['phpgw']->msg->session_cache_extreme = $initial_session_cache_extreme;
+				//}
 				// (d) make object and issue command
 				$new_menuaction = $new_args_env['index_php?menuaction'];
 				if ($this->debug > 1 || $this->debug_new_env > 1) { echo 'emai.boaction.delmov ('.__LINE__.'): $new_menuaction ['.$new_menuaction.'] <br>'; } 
