@@ -79,7 +79,8 @@
 				'minutes' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'minperae' => array('type' => 'decimal','precision' => 4,'scale' => 0,'default' => 0,'nullable' => False),
 				'billperae' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False),
-				'status' => array('type' => 'varchar','precision' => 6,'default' => 'done','nullable' => False)
+				'status' => array('type' => 'varchar','precision' => 6,'default' => 'done','nullable' => False),
+				'pro_parent' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
 			),
 			'pk' => array('id'),
 			'fk' => array(),
