@@ -14,7 +14,10 @@
 		<td>{end_date_select}</td>
 	</tr>
 	<tr valign="bottom" height="50">
-		<td><input type="submit" name="save" value="{lang_save}"></td>
+		<td>
+			<input type="hidden" name="values[old_edate]" value="{old_edate}">
+			<input type="submit" name="save" value="{lang_save}">
+		</td>
 		<td align="right">{delete}</td>
 		<td align="right"><input type="submit" name="cancel" value="{lang_cancel}"></td>
 	</tr>

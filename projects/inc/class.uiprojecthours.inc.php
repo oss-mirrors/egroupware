@@ -466,6 +466,7 @@
 			$GLOBALS['phpgw']->template->set_file(array('hours_' . $form => 'hours_formhours.tpl'));
 			$GLOBALS['phpgw']->template->set_block('hours_' . $form,'add','addhandle');
 			$GLOBALS['phpgw']->template->set_block('hours_' . $form,'edit','edithandle');
+			$GLOBALS['phpgw']->template->set_block('hours_' . $form,'emp','emphandle');
 
 			$GLOBALS['phpgw']->template->set_var('hidden_vars','<input type="hidden" name="referer" value="' . $referer . '">');
 
@@ -483,7 +484,6 @@
 			}
 
 			$GLOBALS['phpgw']->template->set_var('status_list',$this->status_format($values['status']));
-			$GLOBALS['phpgw']->template->set_var('employee_list',$this->employee_format($values['employee']));
 
 			$sdate = $this->hdate_format($values['sdate']);
 
@@ -584,6 +584,12 @@
 			else if ($values['employee'] == $this->account)
 			{
 				$deletehour = True;
+			}
+
+			if ($this->boprojects->check_perms($grants[$coordinator],PHPGW_ACL_EDIT) || $coordinator == $this->account)
+			{
+				$GLOBALS['phpgw']->template->set_var('employee_list',$this->employee_format($values['employee']));
+				$GLOBALS['phpgw']->template->fp('emphandle','emp',True);
 			}
 
 			if ($deletehour)

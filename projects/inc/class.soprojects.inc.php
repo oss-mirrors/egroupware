@@ -1345,7 +1345,7 @@
 				$members[] = $this->db->f(0);
 			}
 
-			if (in_array($this->account,$members))
+			if (is_array($members) && in_array($this->account,$members))
 			{
 				return True;
 			}

@@ -232,6 +232,9 @@
 				$prefs['ifont'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['ifont'];
 				$prefs['mysize'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['mysize'];
 				$prefs['allsize'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['allsize'];
+				$prefs['notify_mstone'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_mstone'];
+				$prefs['notify_task'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_task'];
+				$prefs['notify_assign'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_assign'];
 			}
 			return $prefs;
 		}
@@ -240,7 +243,7 @@
 		{
 			$GLOBALS['phpgw']->preferences->read_repository();
 
-			if ($prefs)
+			if (is_array($prefs))
 			{
 				$GLOBALS['phpgw']->preferences->change('projects','tax',$prefs['tax']);
 				$GLOBALS['phpgw']->preferences->change('projects','abid',$prefs['abid']);
@@ -248,6 +251,10 @@
 				$GLOBALS['phpgw']->preferences->change('projects','ifont',$prefs['ifont']);
 				$GLOBALS['phpgw']->preferences->change('projects','mysize',$prefs['mysize']);
 				$GLOBALS['phpgw']->preferences->change('projects','allsize',$prefs['allsize']);
+				$GLOBALS['phpgw']->preferences->change('projects','notify_mstone',(isset($prefs['notify_mstone'])?'yes':''));
+				$GLOBALS['phpgw']->preferences->change('projects','notify_task',(isset($prefs['notify_task'])?'yes':''));
+				$GLOBALS['phpgw']->preferences->change('projects','notify_assign',(isset($prefs['notify_assign'])?'yes':''));
+
 				$GLOBALS['phpgw']->preferences->save_repository(True);
 		//	_debug_array($prefs);
 		//	exit;
@@ -303,6 +310,9 @@
 					$prefs['ifont']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['ifont'];
 					$prefs['mysize']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['mysize'];
 					$prefs['allsize']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['allsize'];
+					$prefs['notify_mstone']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_mstone'];
+					$prefs['notify_task']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_task'];
+					$prefs['notify_assign']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_assign'];
 				}
 			}
 			return $prefs;
@@ -915,7 +925,15 @@
 		{
 			$values['edate'] = mktime(0,0,0,$values['emonth'],$values['eday'],$values['eyear']);
 
-			if ($values['s_id'] && $values['s_id'] > 0)
+			if (isset($values['old_edate']) && intval($values['old_edate']) > 0)
+			{
+				if ($values['old_edate'] != $values['edate'])
+				{
+					$this->send_alarm($values);
+				}
+			}
+
+			if (intval($values['s_id']) > 0)
 			{
 				$this->so->edit_mstone($values);
 			}
@@ -959,6 +977,11 @@
 		function member($project_id = '')
 		{
 			return $this->so->member($project_id);
+		}
+
+		function send_alarm($values)
+		{
+
 		}
 	}
 ?>

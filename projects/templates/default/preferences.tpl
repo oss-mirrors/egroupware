@@ -11,37 +11,35 @@
 {bill_message}
 <form method="POST" name="app_form" action="{actionurl}">
 <table width="97%" border="0" cellspacing="2" cellpadding="2">
-	<tr bgcolor="{row_on}">
 
 <!-- BEGIN book -->
-
+	<tr bgcolor="{row_off}">
 		<td><input type="button" value="{lang_address}" onClick="abook();"></td>
 		<td><input type="hidden" name="abid" value="{abid}">
-			<input type="text" name="name" size="50" value="{name}" readonly>&nbsp;&nbsp;&nbsp;{lang_select}</td>
+			<input type="text" name="name" size="50" value="{name}" readonly></td>
 	</tr>
-	<tr>
+	<tr height="5">
 		<td>&nbsp;</td>
 	</tr>
-	<tr bgcolor="{row_off}">
+	<tr bgcolor="{row_on}">
 		<td>{lang_select_tax}:</td>
 		<td><input type="text" name="prefs[tax]" value="{tax}" size="6" maxlength="6">&nbsp;%</td>
 	</tr>
 	<tr bgcolor="{row_off}">
 		<td valign="top">{lang_bill}:</td>
-		<td>{bill}</td>
+		<td><input type="hidden" name="prefs[oldbill]" value="{oldbill}">{bill}</td>
 	</tr>
-	<tr>
+	<tr height="5">
 		<td>&nbsp;</td>
 	</tr>
-	<tr bgcolor="{row_on}">
-		<td><b>{lang_layout}</b></td>
-		<td>&nbsp;</td>
+	<tr bgcolor="{th_bg}">
+		<td colspan="2"><b>{lang_layout}</b></td>
 	</tr>
 	<tr bgcolor="{row_on}">
 		<td>{lang_select_font}:</td>
 		<td><select name="prefs[ifont]">{ifont}</select></td>
 	</tr>
-	<tr bgcolor="{row_on}">
+	<tr bgcolor="{row_off}">
 		<td>{lang_select_mysize}:</td>
 		<td><select name="prefs[mysize]">{mysize}</select></td>
 	</tr>
@@ -49,33 +47,35 @@
 		<td>{lang_select_allsize}:</td>
 		<td><select name="prefs[allsize]">{allsize}</select></td>
 	</tr>
-</table>
-<table width="80%" border="0" cellspacing="2" cellpadding="2">
-	<tr valign="bottom">
-		<td height="50" align="left">
-			<input type="submit" name="save" value="{lang_save}">
-			</form>
-		</td>
-		<td height="50" align="left">
-			<form method="POST" action="{doneurl}">
-			<input type="submit" name="done" value="{lang_done}"></form></td>
+	<tr height="5">
+		<td>&nbsp;</td>
 	</tr>
-</table>
-</center>
-
 <!-- END book -->
 
-<!-- BEGIN no -->
-
-		<td>{lang_no_prefs}</td>
+<!-- BEGIN all -->
+	<tr bgcolor="{th_bg}">
+		<td colspan="2"><b>{lang_notifications}</b></td>
 	</tr>
-	<tr valign="bottom">
-		<td height="50" align="left">
-			<input type="submit" name="done" value="{lang_done}">
-			</form>
+	<tr bgcolor="{row_off}">
+		<td>{lang_notify_mstone}:</td>
+		<td><input type="checkbox" name="prefs[notify_mstone]" value="True" {notify_mstone_selected}></td>
+	</tr>
+	<tr bgcolor="{row_on}">
+		<td>{lang_notify_task}:</td>
+		<td><input type="checkbox" name="prefs[notify_task]" value="True" {notify_task_selected}></td>
+	</tr>
+	<tr bgcolor="{row_off}">
+		<td>{lang_notify_assign}:</td>
+		<td><input type="checkbox" name="prefs[notify_assign]" value="True" {notify_assign_selected}></td>
+	</tr>
+	<tr valign="bottom" height="50">
+		<td align="left">
+			<input type="submit" name="save" value="{lang_save}">
 		</td>
+		<td align="right">
+			<input type="submit" name="done" value="{lang_done}"></td>
 	</tr>
 </table>
+</form>
 </center>
-
-<!-- END no -->
+<!-- END all -->

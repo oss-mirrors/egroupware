@@ -1498,34 +1498,54 @@
 		{
 			$prefs		= get_var('prefs',array('POST'));
 			$abid		= get_var('abid',array('POST'));
-			$oldbill	= get_var('oldbill',array('POST'));
 
 			if ($_POST['save'])
 			{
 				$prefs['abid']		= $abid;
-				$prefs['oldbill']	= $oldbill;
 				$obill = $this->bo->save_prefs($prefs);
 
-				if ($obill == False)
+				if (!$obill)
 				{
 					$GLOBALS['phpgw']->redirect_link('/preferences/index.php');
 				}
 			}
 
+			if ($_POST['done'])
+			{
+				$GLOBALS['phpgw']->redirect_link('/preferences/index.php');
+			}
+
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uiprojects.preferences',
+			);
+
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('preferences');
+
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 
+			$GLOBALS['phpgw']->template->set_file(array('prefs' => 'preferences.tpl'));
+			$GLOBALS['phpgw']->template->set_block('prefs','book','bookhandle');
+			$GLOBALS['phpgw']->template->set_block('prefs','all','allhandle');
+			$this->set_app_langs();
+
+			$GLOBALS['phpgw']->template->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
+
+			$GLOBALS['phpgw']->template->set_var('lang_notify_mstone',lang('would you like to get notified via email about changes of milestones date due'));
+			$GLOBALS['phpgw']->template->set_var('lang_notify_task',lang('would you like to get notified via email about changes of tasks'));
+			$GLOBALS['phpgw']->template->set_var('lang_notify_assign',lang('would you like to get notified via email if you get assigned to a project'));
+
+			$GLOBALS['phpgw']->template->set_var('lang_notifications',lang('notifications'));
+
+			$prefs = $this->bo->read_prefs();
+			$GLOBALS['phpgw']->template->set_var('notify_mstone_selected',($prefs['notify_mstone'] == 'yes'? ' checked':''));
+			$GLOBALS['phpgw']->template->set_var('notify_task_selected',($prefs['notify_task'] == 'yes'? ' checked':''));
+			$GLOBALS['phpgw']->template->set_var('notify_assign_selected',($prefs['notify_assign'] == 'yes'? ' checked':''));
+
 			if ($this->bo->isprojectadmin('pbo') || $this->bo->isprojectadmin('pad'))
 			{
-				$GLOBALS['phpgw']->template->set_file(array('book_prefs' => 'preferences.tpl'));
-				$GLOBALS['phpgw']->template->set_block('book_prefs','book','bookhandle');
-				$GLOBALS['phpgw']->template->set_block('book_prefs','no','nohandle');
-
-				$this->set_app_langs();
-
-				$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('preferences for accountancy');
-
-				if ($obill == True)
+				if ($obill)
 				{
 					$GLOBALS['phpgw']->template->set_var('bill_message',lang('Please set the minutes per workunit for each activity now !'));
 				}
@@ -1538,12 +1558,8 @@
 				$GLOBALS['phpgw']->template->set_var('lang_select_tax',lang('Select tax for work time'));
 				$GLOBALS['phpgw']->template->set_var('lang_address',lang('Select own address'));
 
-				$prefs = $this->bo->read_prefs();
+				$GLOBALS['phpgw']->template->set_var('oldbill',$prefs['bill']);
 
-				$oldbill = $prefs['bill'];
-
-				$GLOBALS['phpgw']->template->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.preferences&oldbill=' . $oldbill));
-				$GLOBALS['phpgw']->template->set_var('doneurl',$GLOBALS['phpgw']->link('/preferences/index.php'));
 				$GLOBALS['phpgw']->template->set_var('addressbook_link',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.abook'));
 
 				$GLOBALS['phpgw']->template->set_var('tax',$prefs['tax']);
@@ -1627,24 +1643,19 @@
 				$GLOBALS['phpgw']->template->set_var('abid',$abid);
 
 				$GLOBALS['phpgw']->template->set_var('bookhandle','');
-				$GLOBALS['phpgw']->template->set_var('nohandle','');
-				$GLOBALS['phpgw']->template->pfp('out','book_prefs');
+				$GLOBALS['phpgw']->template->set_var('allhandle','');
+
+				$GLOBALS['phpgw']->template->pfp('out','prefs');
 				$GLOBALS['phpgw']->template->pfp('bookhandle','book');
+				$GLOBALS['phpgw']->template->pfp('allhandle','all');
 			}
 			else
 			{
-				$GLOBALS['phpgw']->template->set_file(array('no_prefs' => 'preferences.tpl'));
-				$GLOBALS['phpgw']->template->set_block('no_prefs','book','bookhandle');
-				$GLOBALS['phpgw']->template->set_block('no_prefs','no','nohandle');
-
-				$GLOBALS['phpgw']->template->set_var('actionurl',$GLOBALS['phpgw']->link('/preferences/index.php'));
-				$GLOBALS['phpgw']->template->set_var('lang_action',lang('Project preferences'));
-				$GLOBALS['phpgw']->template->set_var('lang_no_prefs',lang('Sorry, no preferences to set for you :)'));
-				$GLOBALS['phpgw']->template->set_var('lang_done',lang('Done'));
 				$GLOBALS['phpgw']->template->set_var('bookhandle','');
-				$GLOBALS['phpgw']->template->set_var('nohandle','');
-				$GLOBALS['phpgw']->template->pfp('out','no_prefs');
-				$GLOBALS['phpgw']->template->pfp('nohandle','no');
+				$GLOBALS['phpgw']->template->set_var('allhandle','');
+
+				$GLOBALS['phpgw']->template->pfp('out','prefs');
+				$GLOBALS['phpgw']->template->pfp('allhandle','all');
 			}
 		}
 
@@ -2031,6 +2042,8 @@
 			if($s_id)
 			{
 				$values = $this->bo->get_single_mstone($s_id);
+
+				$GLOBALS['phpgw']->template->set_var('old_edate',$values['edate']);
 
 				//if ($this->bo->check_perms($this->grants[$values['coordinator']],PHPGW_ACL_DELETE) || $values['coordinator'] == $this->account)
 				//{

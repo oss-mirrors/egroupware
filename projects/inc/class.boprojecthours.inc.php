@@ -240,7 +240,12 @@
 				$values['edate'] = mktime($values['ehour'],$values['emin'],0,$values['emonth'],$values['eday'],$values['eyear']);
 			}
 
-			if ($values['hours_id'] && $values['hours_id'] != 0)
+			if (!$values['employee'])
+			{
+				$values['employee'] = $this->soprojecthours->account;
+			}
+
+			if (intval($values['hours_id']) > 0)
 			{
 				$this->soprojecthours->edit_hours($values);
 			}

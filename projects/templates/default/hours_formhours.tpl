@@ -70,10 +70,15 @@
 		<td>{lang_status}:</td>
 		<td><select name="values[status]">{status_list}</select></td>
 	</tr>
+
+<!-- BEGIN emp -->
 	<tr>
 		<td>{lang_employee}:</td>
 		<td><select name="values[employee]">{employee_list}</select></td>
 	</tr>
+
+<!-- END emp -->
+
 </table>
 
 <!-- BEGIN add -->
