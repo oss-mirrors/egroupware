@@ -130,7 +130,7 @@
 			$this->phpgw_db->next_record();
 			foreach($object_metadata as $fieldmeta)
 			{
-				$object_values[$fieldmeta['name']]=$this->phpgw_db->f($fieldmeta['name']);
+				$object_values[$fieldmeta['name']]=$this->strip_magic_quotes_gpc($this->phpgw_db->f($fieldmeta['name']));
 			}
 			return $object_values;
 
