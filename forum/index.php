@@ -18,10 +18,13 @@
 <p>
 <table border="0" width="100%">
  <tr>
-<?    echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left">' . lang_forums("Forums") .'</td>' . '</tr>'; ?>
+<?   echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left">' . lang_forums("Forums") .'</td>' . '</tr>'; ?>
  <tr>
   <td align="left" width="50%" valign="top">
    <?php
+ if($phpgw_info["user"]["app_perms"][1]) 
+  echo "<font size=-1><a href=" . $phpgw->link("admin/") . ">" . lang_forums("Admin") . "</a></font>"; 
+
     echo "<center>";
     echo '<table border="0" width="80%">';
 
@@ -38,25 +41,6 @@
   </td>
 </table>
 
-
 <?php
   include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
-
-
-
-/*
-
-     $phpgw->db->query("select con,loginid,lastname,firstname from accounts where status !="
-		    . " 'L' order by lastname, firstname, loginid");
-     while ($phpgw->db->next_record()) {
-       $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-       echo '<tr><td bgcolor="' . $tr_color . '"><a href="'
-	  . $phpgw->link("index.php","user=" . $phpgw->db->f("con")) . '">&nbsp;'
-	  . $phpgw->common->display_fullname($phpgw->db->f("loginid"),
-									 $phpgw->db->f("firstname"),
-					 				 $phpgw->db->f("lastname")) . '</a></td></tr>';
-     }
-
-*/
-
 ?>

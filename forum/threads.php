@@ -13,8 +13,6 @@
   $phpgw_flags["currentapp"] = "forum";
   include("../header.inc.php");
 
-
-
 ?>
 
 <p>
@@ -38,21 +36,10 @@
  echo "<tr>";
  echo '<td align="left" width="50%" valign="top">';
 
-/*
- echo "<font size=-1>";
- echo "[ <a href=" . $phpgw->link("post.php","$catfor&type=new") . ">" . lang_forums("New Topic") . "</a> | ";
- if(!$col) echo "<a href=" . $phpgw->link("threads.php","$catfor&col=1") . ">" . lang_forums("View Threads") . "</a> | ";
- if($col) echo "<a href=" . $phpgw->link("threads.php","$catfor&col=0") . ">" . lang_forums("Collapse Threads") . "</a> | ";
- echo "<a href=" . $phpgw->link("search.php","$catfor") . ">" . lang_forums("Search") . "</a> ]";
- echo "</font><br><br>";
-*/
  include("./inc/bar.inc.php");
 
  echo "<center>";
  echo ' <table border="0" width="80%">';
-
-// $db_handler = mysql_connect($phpgw->db->Host,$phpgw->db->User,$phpgw->db->Pass);
-
 
    // Collapsed view
    if(!$col) {
@@ -91,7 +78,7 @@
      echo "</tr>\n";
 
 
-   // Threaded view  ...... I hate these darn threads
+   // Threaded view  ...... I hate these darn threads, and this gotta redo soon
    } else {
     echo "<tr bgcolor=" . $phpgw_info["theme"]["th_bg"] . " align=left>";
 	echo "<th width=40%>" .lang_forums("Topic") ."</th>";
@@ -106,11 +93,11 @@
          showthread($phpgw->db->f("thread"),NULL);
     }
 
-    if(!$phpgw->db->num_rows()) echo "<b>" . lang_forums("No messages available!") . "</b>";
+
 
    }
  echo "</table>";
-
+ if(!$phpgw->db->num_rows()) echo "<b>" . lang_forums("No messages available!") . "</b>";
 
  echo "</center>";
    ?>
