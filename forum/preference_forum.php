@@ -1,7 +1,7 @@
 <?php
 	/*****************************************************************************\
-	* phpGroupWare - Forums                                                       *
-	* http://www.phpgroupware.org                                                 *
+	* eGroupWare - Forums                                                       *
+	* http://www.egroupware.org                                                 *
 	* Written by Jani Hirvinen <jpkh@shadownet.com>                               *
 	* -------------------------------------------                                 *
 	*  This program is free software; you	can redistribute it and/or modify it   *

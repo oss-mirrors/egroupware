@@ -1,7 +1,7 @@
 <?php
 	/*****************************************************************************\
-	* phpGroupWare - boForums                                                     *
-	* http://www.phpgroupware.org                                                 *
+	* eGroupWare - boForums                                                     *
+	* http://www.egroupware.org                                                 *
 	* Written by Mark A Peters <skeeter@phpgroupware.org>                         *
 	* Based off of Jani Hirvinen <jpkh@shadownet.com>                             *
 	* -------------------------------------------                                 *

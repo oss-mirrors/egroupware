@@ -1,7 +1,7 @@
 <?php
 	/*****************************************************************************\
-	* phpGroupWare - uiForums                                                     *
-	* http://www.phpgroupware.org                                                 *
+	* eGroupWare - uiForums                                                     *
+	* http://www.egroupware.org                                                 *
 	* Written by Mark A Peters <skeeter@phpgroupware.org>                         *
 	* Based off of Jani Hirvinen <jpkh@shadownet.com>                             *
 	* -------------------------------------------                                 *
