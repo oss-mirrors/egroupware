@@ -379,7 +379,11 @@
 			{
 				$data['content'] = $GLOBALS['phpgw']->translation->convert(trim($data['content']),$from,$to);
 
-				fwrite($fp,$mess_id . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $data['content'] . "\n");
+				// dont write empty content
+				if (!empty($data['content']))
+				{
+					fwrite($fp,$mess_id . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $data['content'] . "\n");
+				}
 			}
 			fclose($fp);
 
