@@ -24,4 +24,14 @@
 		$setup_info['forum']['currentver'] = '0.9.13.001';
 		return $setup_info['forum']['currentver'];
 	}
+
+	$test[] = '0.9.13.001';
+	function forum_upgrade0_9_13_001()
+	{
+		global $setup_info, $phpgw_setup;
+
+		$phpgw_setup->oProc->AlterColumn('phpgw_forum_threads','postdate',array('type' => 'timestamp','nullable' => False,'default' => 'current_timestamp'));
+		$setup_info['forum']['currentver'] = '0.9.13.002';
+		return $setup_info['forum']['currentver'];
+	}
 ?>

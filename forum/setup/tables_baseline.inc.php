@@ -18,58 +18,58 @@
 	$phpgw_baseline = array(
 		'f_body' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => false),
-				'cat_id' => array('type' => 'int','nullable' => false, 'precision' => 25, 'default' => 0),
-				'for_id' => array('type' => 'int','nullable' => false, 'precision' => 25, 'default' => 0),
+				'id' => array('type' => 'auto'),
+				'cat_id' => array('type' => 'int','nullable' => false, 'precision' => 4, 'default' => 0),
+				'for_id' => array('type' => 'int','nullable' => false, 'precision' => 4, 'default' => 0),
 				'message' => array('type' => 'blob')
 			),
 			'pk' => array('id'),
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
-		)
+		),
 		'f_categories' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => false),
+				'id' => array('type' => 'auto'),
 				'name' => array('type' => 'varchar','nullable' => false, 'precision' => 50),
-				'desc' => array('type' => 'varchar','nullable' => false, 'precision' => 255)
+				'descr' => array('type' => 'varchar','nullable' => false, 'precision' => 255)
 			),
 			'pk' => array('id'),
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
-		)
+		),
 		'f_forums' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => false),
+				'id' => array('type' => 'auto'),
 				'name' => array('type' => 'varchar','nullable' => false, 'precision' => 50),
-				'perm' => array('type' => 'tinyint','nullable' => false, 'precision' => 1, 'default' => 0),
+				'perm' => array('type' => 'int','nullable' => false, 'precision' => 2, 'default' => 0),
 				'groups' => array('type' => 'varchar','nullable' => false, 'precision' => 50, 'default' => 0),
-				'desc' => array('type' => 'varchar','nullable' => false, 'precision' => 255),
-				'cat_id' => array('type' => 'int','nullable' => false, 'precision' => 11, 'default' => 0)
+				'descr' => array('type' => 'varchar','nullable' => false, 'precision' => 255),
+				'cat_id' => array('type' => 'int','nullable' => false, 'precision' => 4, 'default' => 0)
 			),
 			'pk' => array('id'),
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
-		)
+		),
 		'f_threads' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => false),
-				'postdate' => array('type' => 'datetime','nullable' => false, 'default' => '0000-00-00 00:00:00'),
-				'main' => array('type' => 'int','nullable' => false, 'precision' => 11, 'default' => 0),
-				'parent' => array('type' => 'int','nullable' => false, 'precision' => 11, 'default' => 0),
-				'cat_id' => array('type' => 'int','nullable' => false, 'precision' => 11, 'default' => 0),
-				'for_id' => array('type' => 'int','nullable' => false, 'precision' => 11, 'default' => 0),
+				'id' => array('type' => 'auto'),
+				'postdate' => array('type' => 'date','nullable' => false),
+				'main' => array('type' => 'int','nullable' => false, 'precision' => 4, 'default' => 0),
+				'parent' => array('type' => 'int','nullable' => false, 'precision' => 4, 'default' => 0),
+				'cat_id' => array('type' => 'int','nullable' => false, 'precision' => 4, 'default' => 0),
+				'for_id' => array('type' => 'int','nullable' => false, 'precision' => 4, 'default' => 0),
 				'author' => array('type' => 'varchar','nullable' => false, 'precision' => 50, 'default' => 0),
 				'subject' => array('type' => 'varchar','nullable' => false, 'precision' => 50),
 				'email' => array('type' => 'varchar','nullable' => false, 'precision' => 11),
 				'host' => array('type' => 'varchar','nullable' => false, 'precision' => 18),
-				'stat' => array('type' => 'tinyint','nullable' => false, 'precision' => 255,'default' => 0),
-				'thread' => array('type' => 'int','nullable' => false, 'precision' => 11, 'default' => 0),
-				'depth' => array('type' => 'int','nullable' => false, 'precision' => 11, 'default' => 0),
-				'pos' => array('type' => 'int','nullable' => false, 'precision' => 11, 'default' => 0),
-				'n_replies' => array('type' => 'int','nullable' => false, 'precision' => 11, 'default' => 0)
+				'stat' => array('type' => 'int','nullable' => false, 'precision' => 2,'default' => 0),
+				'thread' => array('type' => 'int','nullable' => false, 'precision' => 4, 'default' => 0),
+				'depth' => array('type' => 'int','nullable' => false, 'precision' => 4, 'default' => 0),
+				'pos' => array('type' => 'int','nullable' => false, 'precision' => 4, 'default' => 0),
+				'n_replies' => array('type' => 'int','nullable' => false, 'precision' => 4, 'default' => 0)
 			),
 			'pk' => array('id'),
 			'fk' => array(),
