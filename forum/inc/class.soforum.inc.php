@@ -1,13 +1,13 @@
 <?php
 	/*****************************************************************************\
-	* phpGroupWare - soForums                                                     *
+	* phpGroupWare - boForums                                                     *
 	* http://www.phpgroupware.org                                                 *
 	* Written by Mark A Peters <skeeter@phpgroupware.org>                         *
 	* Based off of Jani Hirvinen <jpkh@shadownet.com>                             *
 	* -------------------------------------------                                 *
-	*  This program is free software; you can redistribute it and/or modify it    *
-	*  under the terms of the GNU General Public License as published by the      *
-	*  Free Software Foundation; either version 2 of the License, or (at your     *
+	*  This program is free software; you	can redistribute it and/or modify it  *
+	*  under the terms of	the GNU	General	Public License as published by the    *
+	*  Free Software Foundation; either version 2	of the License,	or (at your   *
 	*  option) any later version.                                                 *
 	\*****************************************************************************/
 
@@ -15,7 +15,8 @@
 
 	class soforum
 	{
-		var $debug = False;
+		var $debug=False;
+		
 		var $db;
 
 		function soforum()
@@ -94,9 +95,9 @@
 		{
 			$this->db->query('insert into phpgw_forum_threads (pos,thread,depth,postdate,main,parent,cat_id,for_id,thread_owner,subject,stat,n_replies) '
 				.'VALUES('.$data['pos'].','.$data['thread'].','.$data['depth'].",'".$this->db->to_timestamp($data['postdate'])."',"
-				. ($this->get_max_body_id() + 1).','.$data['parent'].','.$data['cat_id'].','
-				. $data['forum_id'].','.$GLOBALS['phpgw_info']['user']['account_id'].",'"
-				. $this->db->db_addslashes($data['subject']) . "',0,0)",__LINE__,__FILE__);
+					. ($this->get_max_body_id() + 1).','.$data['parent'].','.$data['cat_id'].','
+					. $data['forum_id'].','.$GLOBALS['phpgw_info']['user']['account_id'].",'"
+					. $this->db->db_addslashes($data['subject']) . "',0,0)",__LINE__,__FILE__);
 			$this->db->query('update phpgw_forum_threads set n_replies = n_replies+1 where thread='.$data['thread'],__LINE__,__FILE__);
 			$this->db->query('insert into phpgw_forum_body (cat_id,for_id,message) VALUES ('.$data['cat_id'].','.$data['forum_id'].",'".$this->db->db_addslashes($data['message'])."')",__LINE__,__FILE__);
 		}
@@ -107,7 +108,7 @@
 			$this->db->query('insert into phpgw_forum_threads (pos,thread,depth,postdate,main,parent,cat_id,for_id,thread_owner,subject,stat,n_replies) '
 				.'VALUES (0,'.$next_f_body_id.",0,'".$this->db->to_timestamp($data['postdate'])."',".$next_f_body_id.',-1,'.$data['cat_id'].','.$data['forum_id']
 				.','.$GLOBALS['phpgw_info']['user']['account_id'] . ",'".$this->db->db_addslashes($data['subject'])."',0,0)",__LINE__,__FILE__);
-
+				
 			$this->db->query('insert into phpgw_forum_body (cat_id,for_id,message) VALUES ('.$data['cat_id'].','.$data['forum_id'].",'".$this->db->db_addslashes($data['message'])."')",__LINE__,__FILE__);
 		}
 
@@ -151,9 +152,9 @@
 			while($this->db->next_record())
 			{
 				$cat[] = Array(
-					'id'    => $this->db->f('id'),
-					'name'  => $this->db->f('name'),
-					'descr' => $this->db->f('descr')
+					'id'	=> $this->db->f('id'),
+					'name'	=> $this->db->f('name'),
+					'descr'	=> $this->db->f('descr')
 				);
 			}
 			return $cat;
@@ -166,9 +167,9 @@
 			{
 				$this->db->next_record();
 				$cat = Array(
-					'id'    => $cat_id,
-					'name'  => $this->db->f('name'),
-					'descr' => $this->db->f('descr')
+					'id'	=>	$cat_id,
+					'name'	=> $this->db->f('name'),
+					'descr'	=> $this->db->f('descr')
 				);
 			}
 			return $cat;
@@ -211,10 +212,10 @@
 			while($this->db->next_record())
 			{
 				$forum[] = Array(
-					'cat_id' => $cat_id,
-					'id'     => $this->db->f('id'),
-					'name'   => $this->db->f('name'),
-					'descr'  => $this->db->f('descr')
+					'cat_id'	=>	$cat_id,
+					'id'	=> $this->db->f('id'),
+					'name'	=> $this->db->f('name'),
+					'descr'	=> $this->db->f('descr')
 				);
 			}
 			return $forum;
@@ -240,14 +241,15 @@
 					$last_post = $temp['last_post'];
 				}
 				$thread[] = Array(
-					'id'      => $this->db->f('id'),
-					'subject' => $this->db->f('subject'),
-					'author'  => $this->db->f('thread_owner'),
-					'replies' => $this->db->f('n_replies'),
-					'pos'     => $this->db->f('pos'),
-					'depth'   => $this->db->f('depth'),
+					'id'	=> $this->db->f('id'),
+					'subject'	=> $this->db->f('subject'),
+					'author'		=> $this->db->f('thread_owner'),
+					'replies'	=> $this->db->f('n_replies'),
+					'pos'		=> $this->db->f('pos'),
+					'depth'	=> $this->db->f('depth'),
 					'last_reply'=> ($last_post?$last_post:$GLOBALS['phpgw']->common->show_date($this->db->from_timestamp($this->db->f('postdate'))))
 				);
+
 			}
 			return $thread;
 		}
@@ -265,7 +267,7 @@
 			while($this->db->next_record())
 			{
 				$subject = $this->db->f('subject');
-				if(!$subject)
+				if (!$subject)
 				{
 					$subject = '[ ' . lang('No subject') . ' ]';
 				}
@@ -275,17 +277,18 @@
 				$message = $GLOBALS['phpgw']->strip_html($db2->f('message'));
 
 				$msg[] = Array(
-					'id'       => $this->db->f('id'),
-					'main'     => $this->db->f('main'),
-					'parent'   => $this->db->f('parent'),
-					'thread'   => $this->db->f('thread'),
-					'depth'    => ($this->db->f('depth') + 1),
-					'pos'      => $this->db->f('pos'),
-					'subject'  => $subject,
-					'thread_owner' => $this->db->f('thread_owner'),
-					'postdate' => $this->db->f('postdate'),
-					'message'  => $message
+					'id'	=> $this->db->f('id'),
+					'main'	=> $this->db->f('main'),
+					'parent'	=> $this->db->f('parent'),
+					'thread'	=> $this->db->f('thread'),
+					'depth'	=> ($this->db->f('depth') + 1),
+					'pos'		=> $this->db->f('pos'),
+					'subject'	=> $subject,
+					'thread_owner'	=> $this->db->f('thread_owner'),
+					'postdate'	=> $this->db->f('postdate'),
+					'message'	=> $message
 				);
+
 			}
 			return $msg;
 		}

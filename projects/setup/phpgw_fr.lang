@@ -8,6 +8,7 @@ Activity %1 has been updated !	projects	fr	L'activité %1 a été mise à jour !
 Activity ID	projects	fr	ID Activité
 Add Activity	projects	fr	Ajouter activité
 Add job	projects	fr	Ajouter tâche
+add milestone	projects	fr	Ajouter étape
 Add project	projects	fr	Ajouter projet
 Add project hours	projects	fr	Ajouter heures de projet
 Add work hours	projects	fr	Ajouter heures de travail
@@ -15,7 +16,6 @@ Administrator	projects	fr	Administrateur
 All	projects	fr	Tout
 All delivery notes	projects	fr	Toutes les notes de livraison
 All invoices	projects	fr	Toutes les factures
-apply	projects	fr	Appliquer
 archive	projects	fr	Archive
 are you sure you want to delete this activity	projects	fr	Etes-vous sûr de vouloir effacer cette activité ?
 are you sure you want to delete this project	projects	fr	Etes-vous sûr de vouloir effacer ce projet ?
@@ -59,7 +59,7 @@ Do you also want to delete all sub projects ?	projects	fr	Voulez-vous aussi effa
 Edit Activity	projects	fr	Modifier l'activité
 Edit administrator list	projects	fr	Modifier la liste des administrateurs
 edit bookkeeper list	projects	fr	Modifier la liste des comptables
-Edit job	projects	fr	Modifier le job
+Edit job	projects	fr	Modifier la tâche
 Edit project	projects	fr	Modifier le projet
 Edit project hours	projects	fr	Modifier les heures de projet
 Edit work hours	projects	fr	Modifier les heures de travail
@@ -104,11 +104,13 @@ large	projects	fr	Large
 last update	projects	fr	Dernière mise à jour
 list activities	projects	fr	Lister les activités
 list budget	projects	fr	Lister le budget
+list jobs	projects	fr	Lister les tâches
 list pcosts	projects	fr	Lister les coûts planifiés
 list projects	projects	fr	Lister les projets
 list work hours	projects	fr	Lister les heures de travail
 main project	projects	fr	Projet principal
 Main project:	projects	fr	Projet principal:
+milestones	projects	fr	Etapes
 Minutes per workunit	projects	fr	Minutes par unité de travail
 month	projects	fr	Mois
 net	projects	fr	net
@@ -118,6 +120,8 @@ Number	projects	fr	Nombre
 open	projects	fr	Ouvert
 open popup window	projects	fr	Ouvrir une fenêtre Popup
 Overall	projects	fr	Total
+parent project	projects	fr	Projet parent
+parent project:	projects	fr	Projet parent:
 pcosts can not be higher than the budget	projects	fr	Les coûts planifiés ne peuvent être plus élevés que le budget !
 per hour	projects	fr	Par heure
 per hour/workunit	projects	fr	Unité de travai/heure

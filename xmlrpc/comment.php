@@ -45,7 +45,7 @@
 				$resp->faultString() . "</p>";
 			bomb();
 		} 
-		return xmlrpc_decode($resp->value());	
+		return phpgw_xmlrpc_decode($resp->value());	
 	}
 
 	// create client for discussion server

@@ -1,7 +1,12 @@
-<p><b>{lang_message}</b><hr><p>
-{lang_error_messages}
+<br>
+{lang_error_messages}<br>
 
 <form method="POST" action="{form_action}">
+ <input name="entry[app_name]" type="hidden" value="{app_name}">
+ <input name="app_name"  type="hidden" value="{app_name}">
+ <input name="sourcelang" type="hidden" value="{sourcelang}">
+ <input name="targetlang" type="hidden" value="{targetlang}">
+
  <table border="0" align="center">
   <tr>
    <td>{lang_message_id}</td>
@@ -12,12 +17,11 @@
    <td>{translation_field}</td>
   </tr>
   <tr>
-{app_name}
-     <input name="entry[app_name]" type="hidden" value="{app_name}">
-     <input name="app_name"  type="hidden" value="{app_name}">
-     <input name="sourcelang" type="hidden" value="{sourcelang}">
-     <input name="targetlang" type="hidden" value="{targetlang}">
-   <td colspan="2" align="center"><input type="submit" name="submit" value="{lang_button}"></td>
+   <td>&nbsp;</td>
+   <td>
+    <input type="submit" name="add" value="{lang_add}"> &nbsp;
+    <input type="submit" name="cancel" value="{lang_cancel}">
+   </td>
   </tr>
  </table>
 </form>

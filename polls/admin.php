@@ -20,9 +20,9 @@
 	);
 	include('../header.inc.php');
 
- 	$show  = get_var('show',Array('GET'));
- 	$order = get_var('order',Array('GET'));
- 	$sort  = get_var('sort',Array('GET'));
+	$show  = $HTTP_GET_VARS['show'];
+	$order = $HTTP_GET_VARS['order'];
+	$sort  = $HTTP_GET_VARS['sort'];
 
 	if(!$show)
 	{
@@ -85,10 +85,17 @@
 		}
 		else
 		{
-			$GLOBALS['phpgw']->template->set_var('row_answer',stripslashes(($GLOBALS['phpgw']->db->f('option_text')));
+			$GLOBALS['phpgw']->template->set_var('row_answer',stripslashes($GLOBALS['phpgw']->db->f('option_text')));
 			$GLOBALS['phpgw']->template->set_var('row_title',stripslashes($GLOBALS['phpgw']->db->f('poll_title')));
-			$GLOBALS['phpgw']->template->set_var('row_edit','<a href="' . $GLOBALS['phpgw']->link('/polls/admin_editanswer.php','vote_id=' . $GLOBALS['phpgw']->db->f('vote_id')) . '">' . lang('Edit') . '</a>');
-			$GLOBALS['phpgw']->template->set_var('row_delete','<a href="' . $GLOBALS['phpgw']->link('/polls/admin_deleteanswer.php','vote_id=' . $GLOBALS['phpgw']->db->f('vote_id')) . '">' . lang('Delete') . '</a>');
+			$GLOBALS['phpgw']->template->set_var('row_edit','<a href="' . $GLOBALS['phpgw']->link('/polls/admin_editanswer.php',
+																		array ('vote_id' => $GLOBALS['phpgw']->db->f('vote_id'),
+																			  'poll_id' => $GLOBALS['phpgw']->db->f('poll_id')
+																			  ) ) .'">' . lang('Edit') . '</a>');
+			$GLOBALS['phpgw']->template->set_var('row_delete','<a href="' . $GLOBALS['phpgw']->link('/polls/admin_deleteanswer.php',
+																		array ('vote_id' => $GLOBALS['phpgw']->db->f('vote_id'),
+																			  'poll_id' => $GLOBALS['phpgw']->db->f('poll_id')
+																			  ) ) .'">' . lang('Delete') . '</a>');
+
 		}
 		$GLOBALS['phpgw']->template->parse('rows','row',True);
 	}

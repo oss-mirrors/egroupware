@@ -21,16 +21,9 @@
 	);
                                         
 	$file = array(
-		'Mail Settings '       	  => $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=felamimail'),
-		'Mail Settings'           => $GLOBALS['phpgw']->link('/felamimail/preferences_email.php'),
-		'Message Highlighting'    => $GLOBALS['phpgw']->link('/felamimail/preferences_highlight.php'),
-		'Index Order'             => $GLOBALS['phpgw']->link('/felamimail/preferences_index_order.php'),
-		'Translation Preferences' => $GLOBALS['phpgw']->link('/felamimail/preferences_translate.php'),
-		'Display Preferences'     => $GLOBALS['phpgw']->link('/felamimail/preferences_display.php'),
+		'Preferences'       	  => $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=felamimail'),
 		'Manage Sieve'     	  => $GLOBALS['phpgw']->link('/index.php',$sieveLinkData),
-		'Folder Preferences'      => $GLOBALS['phpgw']->link('/felamimail/preferences_folder.php'),
-		'Manage Folders '	  => $GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder'),
-		'Manage Folders'          => $GLOBALS['phpgw']->link('/felamimail/folders.php')	
+		'Manage Folders'	  => $GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')	
 	);
 //Do not modify below this line
 	display_section($appname,$title,$file);

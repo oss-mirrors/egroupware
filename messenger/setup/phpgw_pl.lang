@@ -16,4 +16,5 @@ reply	messenger	pl	Odpowiedz
 reply to a message	messenger	pl	Odpowiedz na tê wiadomo¶æ
 send	messenger	pl	Wy¶lij
 send message to	messenger	pl	Wy¶lij wiadomo¶æ do
+you have %1 new message	messenger	pl	Masz %1 nowych wiadomo¶ci
 you have %1 new messages	messenger	pl	Masz %1 nowych wiadomo¶ci

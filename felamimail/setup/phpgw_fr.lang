@@ -10,23 +10,20 @@ add to addressbook	felamimail	fr	Ajouter au carnet d'adresses
 additional info	felamimail	fr	Informations additionnelles
 address book	felamimail	fr	Carnet d'adresses
 address book search	felamimail	fr	Recherche dans le carnet d'adresses
-addressbook is read-only	felamimail	fr	Le carnet d'adresses est en lecture seule
-addresses	felamimail	fr	Adresses
 after message body	felamimail	fr	Après le corps du message
 all address books	felamimail	fr	Tous les carnets d'adresses
 all folders	felamimail	fr	Tous les dossiers
+always show html emails	felamimail	fr	Toujours montrer les EMails HTML
 as a subfolder of	felamimail	fr	Comme un sous-dossier de
-attach	felamimail	fr	Attacher
 attachments	felamimail	fr	Attachements
 auto refresh folder list	felamimail	fr	Auto-rafraîchir la liste des dossiers
 back to folder	felamimail	fr	Retour au dossier
-bad request: %1	felamimail	fr	Mauvaise requête: %1
+bad reque	felamimail	fr	Mauvaise requête
 based upon given criteria, incoming messages can have different background colors in the message list.  This helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	fr	En se basant sur les critères donnés, les messages entrants peuvent avoir des couleurs de fond différentes dans la liste des messages. Ceci aide à distinguer aisément de qui sont les messages, spécialement pour les listes de diffusion.
-bcc	felamimail	fr	bcc
 bcc	felamimail	fr	bcc
 before headers	felamimail	fr	Avant les entêtes
 between headers and message body	felamimail	fr	Entre les entêtes et le corps du message
-body	felamimail	fr	Corps
+body part	felamimail	fr	Corps du message
 cc	felamimail	fr	cc
 change folder	felamimail	fr	Changer de dossier
 checkbox	felamimail	fr	Boite à cocher
@@ -37,21 +34,18 @@ close window	felamimail	fr	Fermer la fenêtre
 color	felamimail	fr	Couleur
 compose	felamimail	fr	Composer
 compress folder	felamimail	fr	Compresser le dossier
-could not lock datafile	felamimail	fr	N'a pas pu verouiller le fichier de données
-could not move/copy file. file not attached	felamimail	fr	N'a pas pu déplacer/copier le fichier. Fichier non attaché
 create	felamimail	fr	Créer
 create folder	felamimail	fr	Créer dossier
 create sent	felamimail	fr	Créer Sent (envoyés)
+create subfolder	felamimail	fr	Créer un sous-dossier
 create trash	felamimail	fr	Créer Trash (poubelle)
 created folder successfully!	felamimail	fr	Dossier crée avec succès!
-custom email settings	felamimail	fr	Réglages EMail personnalisés
 dark blue	felamimail	fr	Bleu foncé
 dark cyan	felamimail	fr	Cyan foncé
 dark gray	felamimail	fr	Gris foncé
 dark green	felamimail	fr	Vert foncé
 dark magenta	felamimail	fr	Magenta foncé
 dark yellow	felamimail	fr	Jaune foncé
-database error: %1	felamimail	fr	Erreur de base de données: %1
 date	felamimail	fr	Date
 date(newest first)	felamimail	fr	Date(plus récente d'abord)
 date(oldest first)	felamimail	fr	Date(plus ancienne d'abord)
@@ -60,10 +54,10 @@ delete	felamimail	fr	Effacer
 delete all	felamimail	fr	Effacer tous
 delete folder	felamimail	fr	Effacer dossier
 delete selected	felamimail	fr	Effacer sélectionnés
-delete selected attachments	felamimail	fr	Effacer les attachements sélectionnés
 delete selected messages	felamimail	fr	Effacer les messages sélectionnés
 deleted	felamimail	fr	Effacés
 deleted folder successfully!	felamimail	fr	Dossier effacé avec succès!
+display only when no plain text is available	felamimail	fr	Afficher seulement quand aucun texte standard n'est disponible
 display preferences	felamimail	fr	Afficher les préférences
 do it!	felamimail	fr	Fais-le!
 do not use sent	felamimail	fr	Ne pas utiliser Sent (envoyés)
@@ -76,27 +70,19 @@ download	felamimail	fr	Downloader
 download this as a file	felamimail	fr	Downloader ceci comme un fichier
 e-mail	felamimail	fr	EMail
 e-mail address	felamimail	fr	Adresse EMail
-e-mail address is missing	felamimail	fr	L'adresse EMail est manquante
 e-mail folders	felamimail	fr	Dossiers EMail
-e-mail preferences	felamimail	fr	Préférences EMail
 edit	felamimail	fr	Modifier
 edit filter	felamimail	fr	Modifier le filtre
 edit selected	felamimail	fr	Modifier sélectionné
-email account name	felamimail	fr	Nom du compte EMail
-email address	felamimail	fr	Adresse EMail
-email password	felamimail	fr	Mot de passe EMail
 email signature	felamimail	fr	Signature EMail
 empty trash	felamimail	fr	Poubelle (Trash) vide
+Enter your IMAP mail server hostname or IP address	admin	fr	Entrez le nom de votre serveur de mail IMAP ou son adresse IP
+Enter your SIEVE server hostname or IP address	admin	fr	Entrez le nom de votre serveur SIEVE ou son adresse IP
+Enter your SIEVE server port	admin	fr	Entrez le port de votre serveur SIEVE
 erro	felamimail	fr	ERR
 error	felamimail	fr	ERREUR
-error : bad or malformed request.	felamimail	fr	ERREUR : requête incorrecte ou malformée.
-error : could not complete request.	felamimail	fr	ERREUR : n'a pas pu mener la requête à terme.
-error connecting to imap server: %1.	felamimail	fr	Erreur à la connexion au serveur IMAP: %1.
-error initializing ldap server %1:	felamimail	fr	Erreur à l'initialisation du serveur LDAP %1:
+error connecting to IMAP serv	felamimail	fr	Erreur à la connexion au serveur IMAP
 error opening 	felamimail	fr	Erreur à l'ouverture
-error opening file %1	felamimail	fr	Erreur à l'ouverture du fichier %1
-everywhere	felamimail	fr	Partout
-ex: 63aa7f	felamimail	fr	Ex: 63aa7f
 expunge	felamimail	fr	Purger
 felamimail	common	fr	FelaMiMail
 files	felamimail	fr	Fichiers
@@ -108,7 +94,9 @@ flags	felamimail	fr	Drapeaux
 folder name	felamimail	fr	Nom du dossier
 folder path	felamimail	fr	Chemin du dossier
 folder preferences	felamimail	fr	Préférences du dossier
+folder settings	felamimail	fr	Réglages dossier
 folder status	felamimail	fr	Etat dossier
+folderlist	felamimail	fr	Liste de dossiers
 folders	felamimail	fr	Dossiers
 folders created successfully!	felamimail	fr	Dossiers crées avec succès!
 follow	felamimail	fr	Suivre
@@ -118,7 +106,7 @@ forward	felamimail	fr	Transférer
 found	felamimail	fr	Trouvé
 from	felamimail	fr	De
 full name	felamimail	fr	Nom complet
-have a look at <a href="ht	felamimail	fr	Jettez un oeil à <a href="ht
+Have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about Squirrelmail.<br>	felamimail	fr	Jettez un oeil à <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> pour en savoir plus suur Squirrelmail.<br>
 help	felamimail	fr	Aide
 hide header	felamimail	fr	Cacher l'entête
 html	felamimail	fr	HTML
@@ -126,16 +114,16 @@ Icons and text	felamimail	fr	Icônes et texte
 Icons only	felamimail	fr	Icônes seulement
 identifying name	felamimail	fr	Identifie le nom
 illegal folder name.  please select a different name.	felamimail	fr	Nom de dossier illégal. SVP choisissez-en un autre.
-imap server type	felamimail	fr	Type de serveur IMAP
+imap	felamimail	fr	IMAP
+IMAP Server	felamimail	fr	Serveur IMAP
+imaps authentication	felamimail	fr	Authentification IMAPS
+imaps encryption only	felamimail	fr	Cryptage IMAPS seulement
 in	felamimail	fr	Dans
-in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	fr	Afin que Felamimail puisse vous proposer l'ensemble des options vous devez créer les dossiers spéciaux listés ci-dessous. Cliquez simplement sur les boites de sélection et cliquez sur le bouton Créer.
 in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	fr	Afin que Felamimail puisse vous proposer l'ensemble des options vous devez créer les dossiers spéciaux listés ci-dessous. Cliquez simplement sur les boites de sélection et cliquez sur le bouton Créer.
 in the center	felamimail	fr	Au centre
 index order	felamimail	fr	Ordre d'index
-index_what_is	felamimail	fr	Index qu'est-ce
 info	felamimail	fr	Info
 invalid user name or password	felamimail	fr	Nom d'utilisateur ou mot de passe invalide
-invalid input data	felamimail	fr	Données d'entrée invalides
 javaScript	felamimail	fr	JavaScript
 language	felamimail	fr	Langue
 last name	felamimail	fr	Nom de famille
@@ -151,11 +139,9 @@ light yellow	felamimail	fr	jaune léger
 list all	felamimail	fr	Lister tous
 location of buttons when composing	felamimail	fr	Emplacement des boutons lors de la composition
 location of folder list	felamimail	fr	Emplacement de la liste des dossiers
-mail folder(uw-maildir)	felamimail	fr	Dossier EMail(UW-Maildir)
-mail server	felamimail	fr	Serveur EMail
-mail server type	felamimail	fr	Type de serveur EMail
 mail settings	felamimail	fr	Réglages EMail
 manage folders	felamimail	fr	Gérer les dossiers
+Manage Sieve	preferences	fr	Gérer les scripts SIEVE
 mark as deleted	felamimail	fr	Marquer comme effacé
 mark messages as	felamimail	fr	Marquer les messages sélectionnés comme
 mark selected as flagged	felamimail	fr	Marquer le choix comme marqués
@@ -176,13 +162,12 @@ move selected to	felamimail	fr	Déplacer le choix vers
 move to trash	felamimail	fr	Déplacer vers la poubelle (Trash)
 Must be unique	felamimail	fr	Doit être unique
 Name	felamimail	fr	Nom
-name is missing	felamimail	fr	Le nom est manquant
+never display html emails	felamimail	fr	Ne jamais afficher les EMails HTML
 New	felamimail	fr	Nouveau
 new filter	felamimail	fr	Nouveau filtre
-new name:	felamimail	fr	Nouveau nom:
 Next	felamimail	fr	Suivant
+next message	felamimail	fr	Message suivant
 Nickname	felamimail	fr	Surnom
-nickname contain illegal characters	felamimail	fr	Le surnom contient des caractères illégaux
 no filter	felamimail	fr	Pas de filtre
 No folders found	felamimail	fr	Aucun dossier trouvé
 No folders were found to subscribe to!	felamimail	fr	Aucun dossier auquel s'inscrire n'a été trouvé!
@@ -194,37 +179,36 @@ No notification	felamimail	fr	Pas de notification
 No personal address book is defined. Contact administrator.	felamimail	fr	Aucun carnet d'adresses personnel défini. Contactez l'administrateur.
 No persons matching your search was found	felamimail	fr	Aucune personne correspondant à votre recherche n'a été trouvée
 no previous Message	felamimail	fr	Pas de message précédent
-no such file or directory	felamimail	fr	Aucun fichier ou répertoire
 none	felamimail	fr	Aucun
-not a file name	felamimail	fr	Pas un nom de fichier
 Number of Messages to Index	felamimail	fr	Nombre de messages à indexer
-on	felamimail	fr	sur
+on behalf of	felamimail	fr	sur la base de
 Only INBOX	felamimail	fr	Seulement INBOX
 Only unseen	felamimail	fr	Seulement les non-vus
-open failed	felamimail	fr	L'ouverture a échoué
 Options	felamimail	fr	Options
-original message	felamimail	fr	Message original
+organization	felamimail	fr	Organisation
+Organization name	admin	fr	Nom d'organisation
 Oth	felamimail	fr	Oth
-other:	felamimail	fr	Autre:
-personal address book	felamimail	fr	Carnet d'adresses personnel
 Personal Information	felamimail	fr	Informations personelles
-Preference file %1 not found. Exiting abnormally	felamimail	fr	Fichier de préférences %1 non trouvé. Fin anormale
-Preference file, %1, does not exist. Log out, and log back in to create a default preference file.	felamimail	fr	Le fichier de préférences, %1, n'existe pas. Déconnectez-vous, et reconnectez-vous pour créér un fichier de préférences par défaut.
+Preference file %1 not found. Exiting abnormally	felamimail	fr	Fichier de préférences %1 non trouvé. Arrêt anormal.
+Preference file, %1, does not exist. Log out, and log back in to create a default preference file.	felamimail	fr	Le fichier de préférences, %1, n'existe pas. Déconnectez-vous, puis reconnectez-vous pour en créer un par défaut.
 Previous	felamimail	fr	Précédent
+previous message	felamimail	fr	Message précédent
 print it	felamimail	fr	Imprimes-la
 print this page	felamimail	fr	Imprimer cette page
 purge	felamimail	fr	Purge
+Quicksearch	felamimail	fr	Recherche Rapide
+read	felamimail	fr	Lire
 Read da	felamimail	fr	Lire da
-read data:	felamimail	fr	Lire les données:
 Reason Giv	felamimail	fr	Raison donnée
-reason given: 	felamimail	fr	Raison donnée:
 recent	felamimail	fr	Récent
 refresh folder list	felamimail	fr	Rafraîchir la liste des dossiers
 Refresh Page	felamimail	fr	Rafraîchir la page
+Refresh time in minutes	felamimail	fr	Temps de rafraîchissement en minutes
 remove	felamimail	fr	Enlever
 remove immediately	felamimail	fr	Enlever immédiatement
 Rename	felamimail	fr	Renommer
 Rename a Folder	felamimail	fr	Renommer un dossier
+rename folder	felamimail	fr	Renommer le dossier
 Renamed successfully!	felamimail	fr	Renommage réussi!
 replied	felamimail	fr	Répondu
 Reply	felamimail	fr	Répondre
@@ -234,7 +218,7 @@ ReplyTo	felamimail	fr	RépondreA
 Return	felamimail	fr	Retourner
 Return to options page	felamimail	fr	Retourner à la page des options
 Right	felamimail	fr	Droit
-Running SquirrelMail version %1 (c) 1999-2000.	felamimail	fr	Exécute SquirrelMail version %1 (c) 1999-2000.
+Running SquirrelMail version %1 (c) 1999-2000.	felamimail	fr	Exécute Felamimail version %1 (c) 1999-2000.
 Same Window - not functional yet	felamimail	fr	Même fenêtre - pas encore fonctionnel
 save	felamimail	fr	Sauver
 Search	felamimail	fr	Rechercher
@@ -244,17 +228,15 @@ Select	felamimail	fr	Sélectionner
 Select All	felamimail	fr	Sélectionner tous
 Select home email address	felamimail	fr	Sélectionner l'adresse EMail domicile
 Select work email address	felamimail	fr	Sélectionner l'adresse EMail travail
-send deleted messages to the trash	felamimail	fr	Envoyer les messages effacés à la poubelle (Trash)
+send	felamimail	fr	Envoyer
 Sent Fold	felamimail	fr	Dossier envoyés (Sent)
-sent folder:	felamimail	fr	Dossier envoyés:
 Server respond	felamimail	fr	Réponse du serveur
-server responded: 	felamimail	fr	Réponse du serveur:
 show header	felamimail	fr	Montrer les entêtes
-show new messages on main screen	felamimail	fr	Montrer les nouveaux messages sur l'écran principal
-show sender's email address with name	felamimail	fr	Montrer l'adresse EMail de l'envoyeur avec son nom
+Sieve settings	admin	fr	Réglages SIEVE
 Signature	felamimail	fr	Signature
 Size	felamimail	fr	Taille
 Size of editor window	felamimail	fr	Taille de la fenêtre d'édition
+SMTP settings	admin	fr	Réglages SMTP
 Some or all of the help documents are not present!	felamimail	fr	Certains ou tous les documents d'aide ne sont pas présents!
 Source	felamimail	fr	Source
 Special Folder Options	felamimail	fr	Options spéciales de dossier
@@ -287,12 +269,11 @@ Translation location	felamimail	fr	Emplacement de la traduction
 Translation Preferences	felamimail	fr	Préférences de traduction
 Translation server	felamimail	fr	Serveur de traduction
 Trash Fold	felamimail	fr	Dossier poubelle (Trash)
-trash folder:	felamimail	fr	Dossier poubelle (Trash):
 type	felamimail	fr	Type
-Unable to list addresses from %1	felamimail	fr	Incapable de lister les adresses depuis %1
+Unable to list addresses from %1	felamimail	fr	Impossible de lister les adresses depuis %1
 unflagged	felamimail	fr	Dé-marqué
+Unknown err	felamimail	fr	Erreur inconnue
 Unknown error	felamimail	fr	Erreur inconnue
-unknown error: %1	felamimail	fr	Erreur inconnue: %1
 Unknown Sender	felamimail	fr	Envoyeur inconnu
 Unknown user or password incorrect.	felamimail	fr	Utilisateur inconnu ou mot de passe incorrect.
 unread	felamimail	fr	Non-lu
@@ -308,13 +289,10 @@ Update address	felamimail	fr	Mettre à jour l'adresse
 Use a signature	felamimail	fr	Utiliser une signature
 Use a signature?	felamimail	fr	Utiliser une signature?
 Use Addresses	felamimail	fr	Utiliser les adresses
-use custom settings	felamimail	fr	Utiliser les réglages personnalisés
 Use Javascript or HTML addressbook?	felamimail	fr	Utiliser le carnet d'adresses Javascript ou HTML?
-user '%1' already exist	felamimail	fr	L'utilisateur '%1' existe déjà
-user '%1' does not exist	felamimail	fr	L'utilisateur '%1' n'existe pas
+Use SMTP auth	admin	fr	Utiliser l'authentification SMTP
 View full header	felamimail	fr	Voir toutes les entêtes
 View message	felamimail	fr	Voir message
-viewing a text attachment	felamimail	fr	Affiche un attachement texte
 Viewing full header	felamimail	fr	Visualise toutes les entêtes
 Viewing message	felamimail	fr	Visualise le message
 Viewing messages	felamimail	fr	Visualise les messages
@@ -323,11 +301,9 @@ when deleting messages	felamimail	fr	Quand j'efface les messages
 White	felamimail	fr	Blanc
 Width of folder list	felamimail	fr	Largeur de la liste des dossiers
 Wrap incoming text at	felamimail	fr	Couper le texte entrant à
-write to addressbook failed	felamimail	fr	L'écriture dans le carnet d'adresses a échoué
 wrote	felamimail	fr	écrivait
 You can change the way that SquirrelMail looks and displays information to you, such as the colors, the language, and other settings.	felamimail	fr	Vous pouvez modifier le look de Felamimail et sa manière de vous afficher les informations, comme les couleurs, la langue, et d'autres réglages.
 You can only edit one address at the time	felamimail	fr	Vous pouvez modifier une seule adresse à la fois
-you have not filled in the "To:" field.	felamimail	fr	Vous n'avez pas rempli le champ "To:".
 You must login first.	felamimail	fr	Vous devez vous connecter d'abord.
 You need a valid user and password to access this page!	felamimail	fr	Vous avez besoin d'un utilisateur et d'un mot de passe valides pour accéder à cette page!
 Your search failed with the following error(s)	felamimail	fr	Votre recherche a échoué avec l'(es) erreur(s) suivante(s)

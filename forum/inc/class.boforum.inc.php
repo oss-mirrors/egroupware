@@ -5,9 +5,9 @@
 	* Written by Mark A Peters <skeeter@phpgroupware.org>                         *
 	* Based off of Jani Hirvinen <jpkh@shadownet.com>                             *
 	* -------------------------------------------                                 *
-	*  This program is free software; you can redistribute it and/or modify it    *
-	*  under the terms of the GNU General Public License as published by the      *
-	*  Free Software Foundation; either version 2 of the License, or (at your     *
+	*  This program is free software; you	can redistribute it and/or modify it  *
+	*  under the terms of	the GNU	General	Public License as published by the    *
+	*  Free Software Foundation; either version 2	of the License,	or (at your   *
 	*  option) any later version.                                                 *
 	\*****************************************************************************/
 
@@ -18,14 +18,14 @@
 		var $public_functions = array(
 			'reply' => True,
 			'post'  => True,
-			'delete_category' => True,
-			'delete_forum'    => True,
-			'category' => True,
-			'forum' => True
+			'delete_category'	=> True,
+			'delete_forum'	=> True,
+			'category'	=> True,
+			'forum'	=> True
 		);
 
 		var $debug = False;
-
+		
 		var $so;
 
 		var $use_session;
@@ -55,8 +55,10 @@
 			for($i=0;$i<count($var);$i++)
 			{
 				$var_str = $var[$i];
-//				$this->$var_str = intval(get_var($var_str,'Array('DEFAULT','GET','POST'),$this->$var_str));
-				$this->$var_str = get_var($var_str,Array('DEFAULT','GET','POST'),$this->$var_str);
+//				$this->$var_str = (@isset($GLOBALS['HTTP_GET_VARS'][$var_str])?intval($GLOBALS['HTTP_GET_VARS'][$var_str]):$this->$var_str);
+//				$this->$var_str = (@isset($GLOBALS['HTTP_POST_VARS'][$var_str])?intval($GLOBALS['HTTP_POST_VARS'][$var_str]):$this->$var_str);
+				$this->$var_str = (@isset($GLOBALS['HTTP_GET_VARS'][$var_str])?$GLOBALS['HTTP_GET_VARS'][$var_str]:$this->$var_str);
+				$this->$var_str = (@isset($GLOBALS['HTTP_POST_VARS'][$var_str])?$GLOBALS['HTTP_POST_VARS'][$var_str]:$this->$var_str);
 			}
 			if(!@isset($this->view))
 			{
@@ -83,17 +85,17 @@
 			$this->cat_id   = $data['cat_id'];
 			$this->forum_id = $data['forum_id'];
 		}
-
+		
 		function post()
 		{
-			if (get_var('action',Array('POST')) == 'post')
+			if ($GLOBALS['HTTP_POST_VARS']['action'] == 'post')
 			{
 				$data = Array(
-					'cat_id'   => get_var('cat_id',Array('POST')),
-					'forum_id' => get_var('forum_id',Array('POST')),
-					'postdate' => time() - ((60 * 60) * intval($GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])),
-					'subject'  => get_var('subject',Array('POST')),
-					'message'  => get_var('message',Array('POST'))
+					'cat_id'	=> $GLOBALS['HTTP_POST_VARS']['cat_id'],
+					'forum_id'	=> $GLOBALS['HTTP_POST_VARS']['forum_id'],
+					'postdate'	=> time() - ((60 * 60) * intval($GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])),
+					'subject'	=> $GLOBALS['HTTP_POST_VARS']['subject'],
+					'message'	=> $GLOBALS['HTTP_POST_VARS']['message']
 				);
 
 				$this->so->add_post($data);
@@ -104,7 +106,7 @@
 
 		function reply()
 		{
-			if (get_var('action',Array('POST')) == 'reply')
+			if ($GLOBALS['HTTP_POST_VARS']['action'] == 'reply')
 			{
 				$stat = 0;
 
@@ -112,27 +114,25 @@
 
 				$next_f_threads_id = $this->so->get_max_thread_id() + 1;
 
-				$pos = get_var('pos',Array('POST'));
-				$thread = get_var('thread',Array('POST'));
-				if($pos != 0)
+				if ($GLOBALS['HTTP_POST_VARS']['pos'] != 0)
 				{
-					$this->so->fix_pos($thread,$pos);
+					$this->so->fix_pos($GLOBALS['HTTP_POST_VARS']['thread'],$GLOBALS['HTTP_POST_VARS']['pos']);
 				}
 				else
 				{
-					$pos = 1;
+					$GLOBALS['HTTP_POST_VARS']['pos'] = 1;
 				}
 
 				$data = Array(
-					'pos' => $pos,
-					'thread'   => $thread,
-					'depth'    => get_var('depth',Array('POST')),
-					'postdate' => time() - ((60 * 60) * intval($GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])),
-					'parent'   => get_var('msg',Array('POST')),
-					'cat_id'   => get_var('cat_id',Array('POST')),
-					'forum_id' => get_var('forum_id',Array('POST')),
-					'subject'  => get_var('subject',Array('POST')),
-					'message'  => get_var('message',Array('POST'))
+					'pos' => $GLOBALS['HTTP_POST_VARS']['pos'],
+					'thread'	=> $GLOBALS['HTTP_POST_VARS']['thread'],
+					'depth'	=> $GLOBALS['HTTP_POST_VARS']['depth'],
+					'postdate'	=> time() - ((60 * 60) * intval($GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])),
+					'parent'	=> $GLOBALS['HTTP_POST_VARS']['msg'],
+					'cat_id'	=> $GLOBALS['HTTP_POST_VARS']['cat_id'],
+					'forum_id'	=> $GLOBALS['HTTP_POST_VARS']['forum_id'],
+					'subject'	=> $GLOBALS['HTTP_POST_VARS']['subject'],
+					'message'	=> $GLOBALS['HTTP_POST_VARS']['message']
 				);
 
 				$this->so->add_reply($data);
@@ -172,7 +172,7 @@
 				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'));
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
-			$this->so->save_category(get_var('cat',Array('POST')));
+			$this->so->save_category($GLOBALS['HTTP_POST_VARS']['cat']);
 			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'));
 			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
@@ -184,7 +184,7 @@
 				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'));
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
-			$this->so->save_forum(get_var('forum',Array('POST')));
+			$this->so->save_forum($GLOBALS['HTTP_POST_VARS']['forum']);
 			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'));
 			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
@@ -192,14 +192,18 @@
 		function get_all_cat_info()
 		{
 			$cats = $this->so->get_cat_ids();
-			while(list($key,$cat) = each($cats))
+
+			if (is_array($cats))
 			{
-				$summary[$key] = $cat;
-				$temp = $this->so->get_thread_summary($cat['id']);
-				$summary[$key]['last_post'] = $temp['last_post'];
-				$summary[$key]['total'] = $temp['total'];
+				while(list($key,$cat) = each($cats))
+				{
+					$summary[$key] = $cat;
+					$temp = $this->so->get_thread_summary($cat['id']);
+					$summary[$key]['last_post'] = $temp['last_post'];
+					$summary[$key]['total'] = $temp['total'];
+				}
+				return $summary;
 			}
-			return $summary;
 		}
 
 		function get_cat_info($cat_id)

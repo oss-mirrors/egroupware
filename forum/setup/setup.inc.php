@@ -13,6 +13,7 @@
 	/* $Id$ */
 
 	$setup_info['forum']['name'] = 'forum';
+	$setup_info['forum']['title'] = 'forum';
 	$setup_info['forum']['version'] = '0.9.13.006';
 	$setup_info['forum']['app_order'] = 7;
 	$setup_info['forum']['enable'] = 1;

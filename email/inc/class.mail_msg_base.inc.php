@@ -1889,7 +1889,7 @@
 				$widgets = CreateObject("email.html_widgets");
 				$widgets->init_error_report_values();
 				$widgets->prop_error_report_text($error_text_formatted);
-				
+/* TEST-RALFBECKER
 				if ((string)$acctnum == '0')
 				{
 					$go_somewhere_url = $GLOBALS['phpgw']->link('/index.php',array(
@@ -1903,6 +1903,11 @@
 															'ex_acctnum' => $acctnum,
 															'show_help'  => '1'));
 				}
+*/
+				$go_somewhere_url = $GLOBALS['phpgw']->link('/preferences/preferences.php',array(
+					'appname' => 'email',
+					'prefix'  => $acctnum ? 'ex_accounts/'.$acctnum : ''
+				));
 				$go_somewhere_text = lang('click here to edit the settings for this email account.');
 				$widgets->prop_go_somewhere_link($go_somewhere_url, $go_somewhere_text);
 				

@@ -66,6 +66,7 @@
 		*/
 		function create_prefs_block($feed_prefs='')
 		{
+//echo "feed_prefs=<pre>"; print_r($feed_prefs); echo "</pre>\n";
 			if ($this->debug > 0 ) { echo 'email.uipreferences.create_prefs_block: ENTERING, $this->bo->account_group: ['.$this->bo->account_group.']; $this->bo->acctnum: ['.$this->bo->acctnum.']<br>'; }
 			$return_block = '';
 			if(!$feed_prefs)

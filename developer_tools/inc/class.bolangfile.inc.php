@@ -15,15 +15,14 @@
 	{
 		var $total;
 		var $debug = False;
-		var $public_functions = array(
-			'index' => True
-		);
 		var $so;
 		var $loaded_apps = array();
 		var $source_langarray = '';
 		var $missing_langarray = '';
 		var $target_langarray = '';
+		var $extra_langarray = array();
 		var $src_file;
+		var $src_apps = array();
 		var $tgt_file;
 		var $tgt_lang;
 
@@ -35,20 +34,17 @@
 			settype($this->missing_langarray,'string');
 		}
 
-		function cmp($a,$b)
-		{
-			$c = strtolower($a);
-			$d = strtolower($b);
-			if ($c == $d)
-			{
-				return 0;
-			}
-			return ($c < $d) ? -1 : 1;
-		}
-
 		/* Sessions used to save state and not reread the langfile between adding/deleting phrases */
-		function save_sessiondata($source,$target)
+		function save_sessiondata($source='##unset##',$target='##unset##')
 		{
+			if ($source == '##unset##')
+			{
+				$source = &$this->source_langarray;
+			}
+			if ($target == '##unset##')
+			{
+				$target = &$this->target_langarray;
+			}
 			if($this->debug) { echo '<br>Save:'; _debug_array($source); }
 			$GLOBALS['phpgw']->session->appsession('developer_source_lang','developer_tools',$source);
 			if($this->debug) { echo '<br>Save:'; _debug_array($target); }
@@ -57,6 +53,8 @@
 			$GLOBALS['phpgw']->session->appsession('developer_target_file','developer_tools',$this->tgt_file);
 			$GLOBALS['phpgw']->session->appsession('developer_t_lang','developer_tools',$this->tgt_lang);
 			$GLOBALS['phpgw']->session->appsession('developer_loaded_apps','developer_tools',$this->loaded_apps);
+			$GLOBALS['phpgw']->session->appsession('developer_src_apps','developer_tools',$this->src_apps);
+			$GLOBALS['phpgw']->session->appsession('developer_missing_lang','developer_tools',$this->missing_langarray);
 		}
 
 		function read_sessiondata()
@@ -71,12 +69,13 @@
 			$tgt_file = $GLOBALS['phpgw']->session->appsession('developer_target_file','developer_tools');
 			$tgt_lang = $GLOBALS['phpgw']->session->appsession('developer_t_lang','developer_tools');
 			$loaded_apps = $GLOBALS['phpgw']->session->appsession('developer_loaded_apps','developer_tools');
+			$src_apps = $GLOBALS['phpgw']->session->appsession('developer_src_apps','developer_tools');
+			$missing = $GLOBALS['phpgw']->session->appsession('developer_missing_lang','developer_tools');
 
-			$this->set_sessiondata($source,$target,$src_file,$tgt_file,$tgt_lang,$loaded_apps);
-			return;
+			$this->set_sessiondata($source,$target,$src_file,$tgt_file,$tgt_lang,$loaded_apps,$src_apps,$missing);
 		}
 
-		function set_sessiondata($source,$target,$src_file,$tgt_file,$tgt_lang,$loaded_apps)
+		function set_sessiondata($source,$target,$src_file,$tgt_file,$tgt_lang,$loaded_apps,$src_apps,$missing)
 		{
 			$this->source_langarray = $source;
 			$this->target_langarray = $target;
@@ -84,6 +83,8 @@
 			$this->tgt_file = $tgt_file;
 			$this->tgt_lang = $tgt_lang;
 			$this->loaded_apps = $loaded_apps;
+			$this->src_apps = $src_apps;
+			$this->missing_langarray = $missing;
 		}
 
 		function clear_sessiondata()
@@ -96,13 +97,6 @@
 			$GLOBALS['phpgw']->session->appsession('developer_loaded_apps','developer_tools','');
 		}
 
-		function list_apps()
-		{
-			$apps = $this->so->list_apps();
-			$this->total = $this->so->total;
-			return $apps;
-		}
-
 		function list_langs()
 		{
 			return $this->so->list_langs();
@@ -111,23 +105,21 @@
 		function addphrase($entry)
 		{
 			/* _debug_array($this->source_langarray);exit; */
-			$mess_id = strtolower(trim($entry['message_id']));
+			$mess_id = stripslashes(strtolower(trim($entry['message_id'])));
 			$this->source_langarray[$mess_id] = array(
 				'message_id' => $mess_id,
-				'content'    => $entry['content'],
-				'app_name'   => $entry['app_name'],
+				'content'    => stripslashes($entry['content']),
+				'app_name'   => $entry['app_name'] == 'phpgwapi' ? 'common' : $entry['app_name'],
 				'lang'       => 'en'
 			);
 			@ksort($this->source_langarray);
-			/* _debug_array($this->source_langarray);exit; */
-			return;
 		}
 
 		function movephrase($mess='')
 		{
 			if ($mess !='' && ($this->missing_langarray[$mess]['message_id']))
 			{
-				$this->source_langarray[$mess] = array(
+				$this->source_langarray[$mess] = $m = array(
 					'message_id' => $this->missing_langarray[$mess]['message_id'],
 					'content'    => $this->missing_langarray[$mess]['content'],
 					'app_name'   => $this->missing_langarray[$mess]['app_name'],
@@ -135,30 +127,49 @@
 				);
 				@ksort($this->source_langarray);
 				reset($this->source_langarray);
+				
+				if ($this->tgt_lang == 'en')
+				{
+					$this->target_langarray[$mess] = $m;
 
+					@ksort($this->target_langarray);
+					reset($this->target_langarray);
+				}
 			}
-			/*echo '<HR>'.$mess.'<HR><pre>';
-			print_r($this->source_langarray[$mess]);
-			print_r($this->missing_langarray);
-			echo '</pre>';*/
-			return;
+			//else echo "'$mess' not found in missing_langarray !!!<br>\n";
 		}
 
 		function missing_app($app,$userlang='en')
 		{
-			//$this->src_file = $this->so->src_file;
-			//if ($this->missing_langarray=='')
-			//{
-			//$this->missing_langarray=array();
-			$plist = $this->so->missing_app($app,$userlang);
-			while (list($p,$loc) = each($plist))
+			$this->missing_langarray = array();
+
+			if (!is_array($this->extra_langarray['common']))
+			{
+				$this->extra_langarray['common'] = $this->so->add_app('phpgwapi',$userlang);
+			}
+			$plist = $this->so->missing_app($app = trim($app),$userlang);
+			
+			foreach($plist as $p => $loc)
 			{
 				$_mess_id = strtolower(trim($p));
-				if (!$this->source_langarray[$_mess_id])
+				if ($loc != $app)
 				{
-					$this->missing_langarray[$_mess_id]['message_id'] = $_mess_id;
-					$this->missing_langarray[$_mess_id]['app_name']   = trim($app);
-					$this->missing_langarray[$_mess_id]['content']    = $p;
+					if (!is_array($this->extra_langarray[$loc]))
+					{
+						$this->extra_langarray[$loc] = $this->so->add_app($loc,$userlang);
+						//echo "<p>loading translations for '$loc'</p>\n";
+					}
+				}
+				if (!empty($_mess_id) && !$this->source_langarray[$_mess_id] &&
+				    !$this->extra_langarray['common'][$_mess_id] &&
+					($app == $loc || !$this->extra_langarray[$loc][$_mess_id]))
+				{
+					//echo "Havn't found '$_mess_id'/$loc !!!<br>\n";
+					$this->missing_langarray[$_mess_id] = array(
+						'message_id' => $_mess_id,
+						'app_name'   => $loc,
+						'content'    => $p
+					);
 				}
 			}
 			if (is_array($this->missing_langarray))
@@ -178,6 +189,7 @@
 			$this->source_langarray = $this->so->add_app($app,$userlang);
 			$this->src_file = $this->so->src_file;
 			$this->loaded_apps = $this->so->loaded_apps;
+			$this->src_apps = $this->so->src_apps;
 			return $this->source_langarray;
 		}
 

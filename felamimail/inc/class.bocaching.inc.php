@@ -101,11 +101,17 @@
 		{
 			return $this->socaching->getMessageCounter($_filter);
 		}
-
+		
+		function getNextMessage($_uid, $_sort, $_filter)
+		{
+			return $this->socaching->getNextMessage($_uid, $_sort, $_filter);
+		}
+		
 		function removeFromCache($_uid)
 		{
 			$this->socaching->removeFromCache($_uid);
 		}		
+		
 		// expects the result from imap_status ($mbox, "{".$imapServerAddress.":$imapPort}$mailbox", SA_ALL);
 		function updateImapStatus($_status)
 		{

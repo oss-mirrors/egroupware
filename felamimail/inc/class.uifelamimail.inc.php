@@ -18,11 +18,12 @@
 		var $public_functions = array
 		(
 			'addVcard'		=> True,
+			'changeFilter'		=> True,
+			'compressFolder'	=> True,
 			'deleteMessage'		=> True,
 			'handleButtons'		=> True,
 			'toggleFilter'		=> True,
-			'viewMainScreen'	=> True,
-			'compressFolder'	=> True
+			'viewMainScreen'	=> True
 		);
 		
 		var $mailbox;		// the current folder in use
@@ -45,21 +46,11 @@
 			if(isset($GLOBALS['HTTP_POST_VARS']["mark_deleted_x"])) 
 				$GLOBALS['HTTP_POST_VARS']["mark_deleted"] = "true";
 
-			$this->bofelamimail		= CreateObject('felamimail.bofelamimail');
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail');
+			$this->bofilter		= CreateObject('felamimail.bofilter');
 			
 			
-			if($GLOBALS['HTTP_POST_VARS']["changeFilter"] == 'changeFilter' &&
-				isset($GLOBALS['HTTP_POST_VARS']["filter"]))
-			{
-				// change filter
-				$this->bofelamimail->sessionData['activeFilter'] = $GLOBALS['HTTP_POST_VARS']["filter"];
-			}
-			elseif(isset($GLOBALS['HTTP_GET_VARS']["filter"]))
-			{
-				// change filter
-				$this->bofelamimail->sessionData['activeFilter'] = $GLOBALS['HTTP_GET_VARS']["filter"];
-			}
-			elseif(isset($GLOBALS['HTTP_POST_VARS']["mailbox"]) && 
+			if(isset($GLOBALS['HTTP_POST_VARS']["mailbox"]) && 
 				$GLOBALS['HTTP_GET_VARS']["menuaction"] == "felamimail.uifelamimail.handleButtons" &&
 				empty($GLOBALS['HTTP_POST_VARS']["mark_unread"]) &&
 				empty($GLOBALS['HTTP_POST_VARS']["mark_read"]) &&
@@ -99,6 +90,11 @@
 				// delete 1 message from the mail reading window
 				$this->bofelamimail->sessionData['startMessage']= 1;
 			}
+			elseif(isset($GLOBALS['HTTP_POST_VARS']["filter"]) || isset($GLOBALS['HTTP_GET_VARS']["filter"]))
+			{
+				// new search filter defined, lets start with message 1
+				$this->bofelamimail->sessionData['startMessage']= 1;
+			}
 
 			// navigate for and back
 			if(isset($GLOBALS['HTTP_GET_VARS']["startMessage"]))
@@ -115,7 +111,7 @@
 			$this->mailbox 		= $this->bofelamimail->sessionData['mailbox'];
 			$this->startMessage 	= $this->bofelamimail->sessionData['startMessage'];
 			$this->sort 		= $this->bofelamimail->sessionData['sort'];
-			$this->filter 		= $this->bofelamimail->sessionData['activeFilter'];
+			#$this->filter 		= $this->bofelamimail->sessionData['activeFilter'];
 
 			#$this->cats			= CreateObject('phpgwapi.categories');
 			#$this->nextmatchs		= CreateObject('phpgwapi.nextmatchs');
@@ -164,6 +160,22 @@
 			
 			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
+		
+		function changeFilter()
+		{
+			if(isset($GLOBALS['HTTP_POST_VARS']["filter"]))
+			{
+				$data['quickSearch']	= $GLOBALS['HTTP_POST_VARS']["quickSearch"];
+				$data['filter']		= $GLOBALS['HTTP_POST_VARS']["filter"];
+				$this->bofilter->updateFilter($data);
+			}
+			elseif(isset($GLOBALS['HTTP_GET_VARS']["filter"]))
+			{
+				$data['filter']		= $GLOBALS['HTTP_GET_VARS']["filter"];
+				$this->bofilter->updateFilter($data);
+			}
+			$this->viewMainScreen();
+		}
 
 		function compressFolder()
 		{
@@ -174,8 +186,9 @@
 		function deleteMessage()
 		{
 			$message[] = $GLOBALS['HTTP_GET_VARS']["message"];
-
+			
 			$this->bofelamimail->deleteMessages($message);
+
 			$this->viewMainScreen();
 		}
 		
@@ -233,6 +246,7 @@
 		function viewMainScreen()
 		{
 			$bopreferences		= CreateObject('felamimail.bopreferences');
+			$preferences		= $bopreferences->getPreferences();
 			$bofilter		= CreateObject('felamimail.bofilter');
 			$mailPreferences	= $bopreferences->getPreferences();
 
@@ -246,30 +260,80 @@
 			$this->t->set_file(array("body" => 'mainscreen.tpl'));
 			$this->t->set_block('body','main');
 			$this->t->set_block('body','status_row_tpl');
-			$this->t->set_block('body','header_row_S');
-			$this->t->set_block('body','header_row_');
-			$this->t->set_block('body','header_row_AS');
-			$this->t->set_block('body','header_row_RAS');
-			$this->t->set_block('body','header_row_ADS');
-			$this->t->set_block('body','header_row_F');
-			$this->t->set_block('body','header_row_FA');
-			$this->t->set_block('body','header_row_FS');
-			$this->t->set_block('body','header_row_FAS');
-			$this->t->set_block('body','header_row_R');
-			$this->t->set_block('body','header_row_RS');
-			$this->t->set_block('body','header_row_D');
-			$this->t->set_block('body','header_row_DS');
-			$this->t->set_block('body','header_row_A');
+			$this->t->set_block('body','header_row');
 			$this->t->set_block('body','error_message');
+			$this->t->set_block('body','quota_block');
 
 			$this->translate();
 			
 			$this->t->set_var('oldMailbox',$urlMailbox);
 			$this->t->set_var('image_path',PHPGW_IMAGES);
-			$refreshTime = $GLOBALS['phpgw_info']['user']['preferences'][felamimail]['refreshTime'];
+			
+			// ui for the quotas
+			if($quota = $this->bofelamimail->getQuotaRoot())
+			{
+				if($quota['limit'] == 0)
+				{
+					$quotaPercent=100;
+				}
+				else
+				{
+					$quotaPercent=round(($quota['usage']*100)/$quota['limit']);
+				}
+				$quotaLimit=$this->show_readable_size($quota['limit']*1024);
+				$quotaUsage=$this->show_readable_size($quota['usage']*1024);
+
+				$this->t->set_var('leftWidth',$quotaPercent);
+				if($quotaPercent > 90)
+				{
+					$this->t->set_var('quotaBG','red');
+				}
+				elseif($quotaPercent > 80)
+				{
+					$this->t->set_var('quotaBG','yellow');
+				}
+				else
+				{
+					$this->t->set_var('quotaBG','#33ff33');
+				}
+				
+				if($quotaPercent > 50)
+				{
+					$this->t->set_var('quotaUsage_right','&nbsp;');
+					$this->t->set_var('quotaUsage_left',$quotaUsage .'/'.$quotaLimit);
+				}
+				else
+				{
+					$this->t->set_var('quotaUsage_left','&nbsp;');
+					$this->t->set_var('quotaUsage_right',$quotaUsage .'/'.$quotaLimit);
+				}
+				
+				$this->t->parse('quota_display','quota_block',True);
+			}
+			else
+			{
+				$this->t->set_var('quota_display','&nbsp;');
+			}
+			
+			// set the images
+			$listOfImages = array(
+				'read_small',
+				'unread_small',
+				'unread_flagged_small',
+				'unread_small',
+				'unread_deleted_small',
+				'sm_envelope'
+			);
+
+			foreach ($listOfImages as $image) 
+			{
+				$this->t->set_var($image,$GLOBALS['phpgw']->common->image('felamimail',$image));
+			}
+			// refresh settings
+			$refreshTime = $preferences['refreshTime'];
 			if($refreshTime > 0)
 			{
-				$this->t->set_var('refreshTime',sprintf("setTimeout( \"refresh()\", %s );",$refreshTime*60*1000));
+				$this->t->set_var('refreshTime',sprintf("aktiv = window.setTimeout( \"refresh()\", %s );",$refreshTime*60*1000));
 			}
 			else
 			{
@@ -281,6 +345,7 @@
 				'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
 			);
 			$this->t->set_var('refresh_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			
 			
 			// set the default values for the sort links (sort by url)
 			$linkData = array
@@ -311,17 +376,22 @@
 			
 			// create the filter ui
 			$filterList = $bofilter->getFilterList();
-			if($this->filter == -1)
-				$filterUI .= "<option value=\"-1\">".lang('no filter')."</option>";
-			else
+			$activeFilter = $bofilter->getActiveFilter();
+			// -1 == no filter selected
+			if($activeFilter == -1)
 				$filterUI .= "<option value=\"-1\" selected>".lang('no filter')."</option>";
+			else
+				$filterUI .= "<option value=\"-1\">".lang('no filter')."</option>";
 			while(list($key,$value) = @each($filterList))
 			{
 				$selected="";
-				if($this->filter == $key) $selected="selected";
+				if($activeFilter == $key) $selected="selected";
 				$filterUI .= "<option value=".$key." $selected>".$value['filterName']."</option>";
 			}
 			$this->t->set_var('filter_options',$filterUI);
+			// 0 == quicksearch
+			if($activeFilter == '0')
+				$this->t->set_var('quicksearch',$filterList[0]['subject']);
 			
 			// create the urls for sorting
 			switch($this->sort)
@@ -370,7 +440,7 @@
 				$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
 			
 				// create the listing of subjects
-				$maxSubjectLength = 80;
+				$maxSubjectLength = 75;
 				$maxAddressLength = 30;
 				for($i=0; $i<count($headers['header']); $i++)
 				{
@@ -384,7 +454,7 @@
 						$headers['header'][$i]['subject'] = htmlentities($headers['header'][$i]['subject']);
 						if($headers['header'][$i]['attachments'] == "true")
 						{
-							$image = '<img src="'.PHPGW_IMAGES.'/attach.gif" border="0">';
+							$image = '<img src="'.$GLOBALS['phpgw']->common->image('felamimail','attach').'" border="0">';
 							$headers['header'][$i]['subject'] = "$image&nbsp;".$headers['header'][$i]['subject'];
 						}
 						$this->t->set_var('header_subject', $headers['header'][$i]['subject']);
@@ -488,13 +558,65 @@
 					$this->t->set_var('url_add_to_addressbook',$GLOBALS['phpgw']->link('/index.php',$linkData));
 					
 					$this->t->set_var('phpgw_images',PHPGW_IMAGES);
+					$this->t->set_var('row_css_class','header_row_'.$flags);
+					switch($flags)
+					{
+						case "":
+							$this->t->set_var('imageName','unread_small.png');
+							$this->t->set_var('row_text',lang('new'));
+							break;
+						case "D":
+						case "DS":
+						case "ADS":
+							$this->t->set_var('imageName','unread_small.png');
+							$this->t->set_var('row_text',lang('deleted'));
+							break;
+						case "F":
+							$this->t->set_var('imageName','unread_flagged_small.png');
+							$this->t->set_var('row_text',lang('new'));
+							break;
+						case "FS":
+							$this->t->set_var('imageName','read_flagged_small.png');
+							$this->t->set_var('row_text',lang('replied'));
+							break;
+						case "FAS":
+							$this->t->set_var('imageName','read_answered_flagged_small.png');
+							$this->t->set_var('row_text',lang('replied'));
+							break;
+						case "S":
+						case "RS":
+							$this->t->set_var('imageName','read_small.png');
+							$this->t->set_var('row_text',lang('read'));
+							break;
+						case "R":
+							$this->t->set_var('imageName','recent_small.gif');
+							$this->t->set_var('row_text','*'.lang('recent').'*');
+							break;
+						case "AS":
+							$this->t->set_var('imageName','read_answered_small.png');
+							$this->t->set_var('row_text',lang('replied'));
+							break;
+						default:
+							$this->t->set_var('row_text',$flags);
+							break;
+					}
 			
-					$this->t->parse('header_rows','header_row_'.$flags,True);
+					$this->t->parse('header_rows','header_row',True);
 				}
 				$firstMessage = $headers['info']['first'];
 				$lastMessage = $headers['info']['last'];
 				$totalMessage = $headers['info']['total'];
 				$langTotal = lang("total");		
+			}
+
+			$this->t->set_var('maxMessages',$i);
+			if($GLOBALS['HTTP_GET_VARS']["select_all"] == "select_all")
+			{
+				$this->t->set_var('checkedCounter',$i);
+			}
+			else
+			{
+				$this->t->set_var('checkedCounter','0');
 			}
 			
 			// set the select all/nothing link
@@ -589,17 +711,18 @@
 			}
 			$this->t->parse('status_row','status_row_tpl',True);
 			
-			for($i=0; $i<count($folders); $i++)
+			@reset($folders);
+			while(list($key,$value) = @each($folders))
 			{
 				$selected = '';
-				if ($this->mailbox == $folders[$i]) 
+				if ($this->mailbox == $key) 
 				{
 					$selected = ' selected';
 				}
 				$options_folder .= sprintf('<option value="%s"%s>%s</option>',
-							htmlspecialchars($folders[$i]),
+							htmlspecialchars($key),
 							$selected,
-							htmlspecialchars($folders[$i]));
+							htmlspecialchars($value));
 			}
 			$this->t->set_var('options_folder',$options_folder);
 			
@@ -620,8 +743,15 @@
 				'menuaction'    => 'felamimail.uifelamimail.handleButtons'
 			);
 			$this->t->set_var('url_change_folder',$GLOBALS['phpgw']->link('/index.php',$linkData));
+
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uifelamimail.changeFilter'
+			);
+			$this->t->set_var('url_search_settings',$GLOBALS['phpgw']->link('/index.php',$linkData));
+
 			$this->t->set_var('lang_mark_messages_as',lang('mark messages as'));
-			$this->t->set_var('lang_delete_selected',lang('delete selected messages'));
+			$this->t->set_var('lang_delete',lang('delete'));
 			                                                                                                                                                                        
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
@@ -635,7 +765,7 @@
 		}
 
 		/* Returns a string showing the size of the message/attachment */
-		function show_readable_size($bytes)
+		function show_readable_size($bytes, $_mode='short')
 		{
 			$bytes /= 1024;
 			$type = 'k';
@@ -643,7 +773,7 @@
 			if ($bytes / 1024 > 1)
 			{
 				$bytes /= 1024;
-				$type = 'm';
+				$type = 'M';
 			}
 			
 			if ($bytes < 10)
@@ -655,7 +785,7 @@
 			else
 				settype($bytes, 'integer');
 			
-			return $bytes . '<small>&nbsp;' . $type . '</small>';
+			return $bytes . '&nbsp;' . $type ;
 		}
 		
 		function toggleFilter()
@@ -685,6 +815,7 @@
 			$this->t->set_var('desc_deleted',lang("delete selected"));
 			$this->t->set_var('lang_date',lang("date"));
 			$this->t->set_var('lang_size',lang("size"));
+			$this->t->set_var('lang_quicksearch',lang("Quicksearch"));
 			$this->t->set_var('lang_replied',lang("replied"));
 			$this->t->set_var('lang_read',lang("read"));
 			$this->t->set_var('lang_unread',lang("unread"));

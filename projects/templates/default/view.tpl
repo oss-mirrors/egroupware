@@ -5,13 +5,17 @@
 <center>
 <table width="85%" border="0" cellspacing="3" cellpadding="3">
 
-	<tr bgcolor="{row_off}">
-		<td><b>{lang_parent}</b></td>
-		<td>{pro_parent}</td>
-	</tr>
 	<tr bgcolor="{row_on}">
+		<td><b>{lang_main}</b></td>
+		<td>{pro_main}</td>
+	</tr>
+	<tr bgcolor="{row_off}">
 		<td><b>{lang_investment_nr}</b></td>
 		<td>{investment_nr}</td>
+	</tr>
+	<tr bgcolor="{row_on}">
+		<td><b>{lang_parent}</b></td>
+		<td>{pro_parent}</td>
 	</tr>
 	<tr bgcolor="{row_off}">
 		<td><b>{lang_number}:</b></td>
@@ -42,11 +46,11 @@
 		<td>{status}</td>
 	</tr>
 	<tr bgcolor="{row_on}">
-		<td><b>{lang_bookable_activities}:</b></td>
+		<td valign="top"><b>{lang_bookable_activities}:</b></td>
 		<td>{book_activities_list}&nbsp;</td>
 	</tr>
 	<tr bgcolor="{row_off}">
-		<td><b>{lang_billable_activities}:</b></td>
+		<td valign="top"><b>{lang_billable_activities}:</b></td>
 		<td>{bill_activities_list}&nbsp;</td>
 	</tr>
 	<tr height="15">
@@ -103,6 +107,24 @@
 	<tr bgcolor="{row_off}">
 		<td><b>{lang_last_update}:</b></td>
 		<td>{udate}</td>
+	</tr>
+
+	<tr bgcolor="{row_on}">
+		<td valign="top"><b>{lang_milestones}:</b></td>
+		<td>
+			<table width="100%" border="0" cellspacing="2" cellpadding="2">
+
+<!-- BEGIN mslist -->
+
+				<tr>
+					<td width="50%">{s_title}</td>
+					<td width="50%">{s_edateout}</td>
+				</tr>
+
+<!-- END mslist -->
+
+			</table>
+		</td>
 	</tr>
 </table>
 

@@ -18,15 +18,42 @@
 	}
 	unset($d1);
 
-	if ($GLOBALS['phpgw_info']['user']['apps']['stocks'] && $GLOBALS['phpgw_info']['user']['preferences']['stocks']['mainscreen'] == 'enabled')
-	{
-		$app_id	= $GLOBALS['phpgw']->applications->name2id('stocks');
-		$GLOBALS['portal_order'][] = $app_id;
+	$tmp_app_inc = $GLOBALS['phpgw']->common->get_inc_dir('stocks');
 
-		$GLOBALS['phpgw']->portalbox->set_params(array('app_name'	=> 'stocks',
-														'app_id'	=> $app_id,
-														'title'		=> lang('Stocks')));
-		$stocks = CreateObject('stocks.ui');
-		$GLOBALS['phpgw']->portalbox->xdraw($stocks->return_quotes());
+	if ($GLOBALS['phpgw_info']['user']['apps']['stocks'] && $GLOBALS['phpgw_info']['user']['preferences']['stocks']['enabled'])
+	{
+		$title = '<font color="#FFFFFF">'.lang('Stocks').'</font>';
+		
+		$portalbox = CreateObject('phpgwapi.listbox',
+			Array(
+				'title'	=> $title,
+				'primary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'secondary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'tertiary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'width'	=> '100%',
+				'outerborderwidth'	=> '0',
+				'header_background_image'	=> $GLOBALS['phpgw']->common->image('phpgwapi/templates/default','bg_filler')
+			)
+		);
+
+		$app_id = $GLOBALS['phpgw']->applications->name2id('stocks');
+		$GLOBALS['portal_order'][] = $app_id;
+		$var = Array(
+			'up'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+			'down'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+			'close'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+			'question'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+			'edit'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id)
+		);
+
+		while(list($key,$value) = each($var))
+		{
+			$portalbox->set_controls($key,$value);
+		}
+
+		include($tmp_app_inc . '/functions.inc.php');
+		$portalbox->data = Array();
+
+		echo "\n".'<!-- BEGIN Stock Quotes info -->'."\n".$portalbox->draw('<td>'."\n".return_quotes()."\n".'</td>')."\n".'<!-- END Stock Quotes info -->'."\n";
 	}
 ?>

@@ -18,7 +18,7 @@
 		'enable_nextmatchs_class' => True,
 		'admin_header'            => True
 	);
-	if($HTTP_GET_VARS['confirm'])
+	if ($HTTP_GET_VARS['confirm'])
 	{
 		$GLOBALS['phpgw_info']['flags']['noheader'] = True;
 		$GLOBALS['phpgw_info']['flags']['nonavbar'] = True;
@@ -26,10 +26,9 @@
 	}
 	include('../header.inc.php');
 
-	$vote_id = get_vars('vots_id',Array('GET'));
-	if(get_var('confirm',Array('GET')))
+	if ($HTTP_GET_VARS['confirm'])
 	{
-		$GLOBALS['phpgw']->db->query("delete from phpgw_polls_data where vote_id='".$vote_id."'",__LINE__,__FILE__);
+		$GLOBALS['phpgw']->db->query("delete from phpgw_polls_data where vote_id='" . $HTTP_GET_VARS['vote_id'] . "' AND poll_id=". $HTTP_GET_VARS['poll_id']);
 		Header('Location: ' . $GLOBALS['phpgw']->link('/polls/admin.php','show=answers'));
 	}
 	else
@@ -38,7 +37,7 @@
 		echo lang('Are you sure want to delete this answer ?') . '</td></tr>';
 		echo '<tr><td align="left"><a href="' . $GLOBALS['phpgw']->link('/polls/admin.php','show=answers') . '">' . lang('No') . '</td>';
 		echo '    <td align="right"><a href="' . $GLOBALS['phpgw']->link('/polls/admin_deleteanswer.php','vote_id='
-			.$vote_id.'&confirm=True') . '">' . lang('Yes') . '</td></tr>';
+			. $HTTP_GET_VARS['vote_id'] . '&poll_id=' . $HTTP_GET_VARS['poll_id'] . '&confirm=True') . '">' . lang('Yes') . '</td></tr>';
 		echo '</table>';
 	}
 	$GLOBALS['phpgw']->common->phpgw_footer();

@@ -13,6 +13,7 @@
 	/* $Id$ */
 
 	$setup_info['qmailldap']['name']      = 'qmailldap';
+	$setup_info['qmailldap']['title']     = 'QMailLDAP';
 	$setup_info['qmailldap']['version']   = '0.0.3';
 	$setup_info['qmailldap']['app_order'] = 99;
 	$setup_info['qmailldap']['tables']    = array('phpgw_qmailldap');
@@ -24,14 +25,12 @@
 		'preferences',
 		'manual',
 		'edit_user',
-		'admin',
 		'about'
 	);
 
-	/* Dependencies for this app to work */
-	$setup_info['qmailldap']['depends'][] = array
-	(
+	/* Dependacies for this app to work */
+	$setup_info['qmailldap']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.15')
+		'versions' => Array('0.9.13','0.9.14')
 	);
 ?>

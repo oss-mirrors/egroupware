@@ -6,6 +6,8 @@ color	headlines	fr	Couleur
 create new headline	headlines	fr	Créer un nouveau titre
 current headlines in cache	headlines	fr	Titres actuellement dans le cache
 display	headlines	fr	Afficher
+edit headline sites	headlines	fr	Modifier les sites de titres
+edit headlines shown by default	headlines	fr	Modifier les titres montrés par défaut
 grab new news sites	common	fr	Récupérer les nouveaux sites de nouvelles
 headline preferences	common	fr	Préférences de titres
 headline site management	admin	fr	Gestion des sites de titres
@@ -28,7 +30,6 @@ reset	headlines	fr	Réinitialisation
 select headline news sites	common	fr	Sélectionner les sites de titres de nouvelles
 select headlines to display	preferences	fr	Sélectionner les titres à afficher
 select layout	preferences	fr	Sélectionner la mise en page
-show headlines on main screen	headlines	fr	Montrer les titres sur l'écran principal
 site	headlines	fr	Site
 that site has already been entered	admin	fr	Ce site a déjà été entré
 unable to retrieve links	headlines	fr	Incapable de récupérer les liens

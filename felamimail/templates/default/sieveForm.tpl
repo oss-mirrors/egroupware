@@ -38,7 +38,7 @@
 	</tr>
 	<tr>
 		<td colspan=2>
-			<textarea name=scriptContent cols=100 rows=20>{scriptContent}</textarea>
+			<textarea name=scriptContent cols=90 rows=20>{scriptContent}</textarea>
 		</td>
 	</tr>
 	<tr>

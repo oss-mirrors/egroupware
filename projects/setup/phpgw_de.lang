@@ -1,12 +1,13 @@
 account	projects	de	Account
 accountancy	common	de	Rechnungswesen
-active	projects	de	Activ
+active	projects	de	Aktiv
 activities	projects	de	Aktivit&auml;ten
 activity	projects	de	Aktivit&auml;t
 activity %1 has been added !	projects	de	Aktivit&auml;t %1 wurde hinzugef&uuml;gt.
 activity %1 has been updated !	projects	de	Aktivit&auml;t %1 wurde &uuml;berarbeitet.
 activity id	projects	de	Aktivit&auml;ts ID
 add activity	projects	de	Aktivit&auml;t hinzuf&uuml;gen
+add milestone	projects	de	Meilenstein hinzuf&uuml;gen
 add project	projects	de	Projekt hinzuf&uuml;gen
 add project hours	projects	de	Projektstuden hinzuf&uuml;gen
 add work hours	projects	de	Arbeitsstunden hinzuf&uuml;gen
@@ -50,15 +51,19 @@ delivery note for project	projects	de	Lieferschein f&uuml;r Projekt
 delivery notes	projects	de	Lieferscheine
 edit activity	projects	de	Aktivit&auml;t &uuml;berarbeiten
 edit bookkeeper list	projects	de	Projekt-Buchhalter Liste &uuml;berarbeiten
+edit job	projects	de	Job &uuml;berarbeiten
+edit milestone	projects	de	Meilenstein &uuml;berarbeiten
 edit project	projects	de	Projekt &uuml;berarbeiten
 edit administrator list	projects	de	Projekt-Administrator Liste &uuml;berarbeiten
 edit project hours	projects	de	Projektstunden &uuml;berarbeiten
 edit work hours	projects	de	Arbeitsstunden &uuml;berarbeiten
 employee	projects	de	Mitarbeiter
+employees	projects	de	Mitarbeiter
 exactly accounting	projects	de	exakte Abrechnung
 generate activity id ?	projects	de	Activit&auml;ts ID generieren ?
 generate delivery id ?	projects	de	Lieferungs ID generieren ?
 generate invoice id ?	projects	de	Rechnungs ID generieren ?
+generate job id ?	projects	de	Job ID generieren ?
 generate project id ?	projects	de	Projekt ID generieren ?
 georgia	projects	de	Georgia
 helvetica	projects	de	Helvetica
@@ -81,15 +86,17 @@ job description	projects	de	Job Beschreibung
 job has been added !	projects	de	Job wurde hinzugef&uuml;gt.
 job has been updated !	projects	de	Job wurde &uuml;berarbeitet.
 job id	projects	de	Job ID
-job list	projects	de	Job Liste
 jobs	projects	de	Jobs
 large	projects	de	Gro&szlig;
 last update	projects	de	letzte Aktualisierung
 list activities	projects	de	Aktivit&auml;tenliste
 list budget	projects	de	Budgetliste
+list jobs	projects	de	Jobliste
 list pcosts	projects	de	Plankostenliste
 list projects	projects	de	Projektliste
+list work hours	projects	de	Arbeitsstundenliste
 main project	projects	de	Hauptprojekt
+milestones	projects	de	Meilensteine
 minutes per workunit	projects	de	Minuten pro Arbeitseinheit
 month	projects	de	Monat
 net	projects	de	netto
@@ -98,6 +105,7 @@ nonactive	projects	de	Nicht aktiv
 number	projects	de	Nummer
 open	projects	de	Offen
 overall	projects	de	Gesammt
+parent project	projects	de	&Uuml;bergeordnetes Projekt
 pcosts can not be bigger than the budget	projects	de	Die Plankosten k&ouml;nnen nicht h&ouml;her als das Budget sein !
 per hour	projects	de	pro Stunde
 per hour/workunit	projects	de	pro Stunde/Arbeitseinheit

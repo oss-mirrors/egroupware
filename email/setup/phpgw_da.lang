@@ -194,11 +194,11 @@ view as html	email	da	Se som html
 view formatted	email	da	Se formatteret
 view headers	email	da	Se mail-headers
 view unformatted	email	da	Se uformatteret
-x messages have been deleted	email	da	%1 beskeder er slettet
+%1 messages have been deleted	email	da	%1 beskeder er slettet
 you have 1 new message!	common	da	Du har 1 ny besked!
 you have messages!	common	da	Du har nye beskeder!
 you have no new messages	common	da	Du har ingen nye beskeder!
-you have x new messages!	common	da	Du har %1 nye beskeder!
+you have %1 new messages!	common	da	Du har %1 nye beskeder!
 you must click	email	da	Du skal klikke
 your full name	common	da	Dit fulde navn
 your message has been sent	common	da	Din besked er blevet sendt!

@@ -18,24 +18,38 @@
 	{
 		var $db;
 		var $owner;
+		var $xmlrpc_methods = array();
 
 		function somessenger()
 		{
 			$this->db    = $GLOBALS['phpgw']->db;
 			$this->owner = $GLOBALS['phpgw_info']['user']['account_id'];
+
+			$this->xmlrpc_methods[] = array(
+				'name'        => 'read_inbox',
+				'description' => 'Read the inbox and return raw values'
+			);
 		}
 
 		function update_message_status($status, $message_id)
 		{
 			$this->db->query("update phpgw_messenger_messages set message_status='$status' where message_id='"
 				. $message_id . "' and message_owner='" . $this->owner ."'",__LINE__,__FILE__);
+
+			return ($this->db->affected_rows() ? True : False);
 		}
 
 		function read_inbox($start,$order,$sort)
 		{
+			$messages = array();
+
 			if ($sort && $order)
 			{
 				$sortmethod = " order by $order $sort";
+			}
+			else
+			{
+				$sortmethod = ' order by message_date asc';
 			}
 
 			$this->db->limit_query("select * from phpgw_messenger_messages where message_owner='" . $this->owner
@@ -44,10 +58,11 @@
 			{
 				$messages[] = array(
 					'id'      => $this->db->f('message_id'),
-					'from'    => $this->db->f('message_from'),
+					'from'    => (int)$this->db->f('message_from'),
 					'status'  => $this->db->f('message_status'),
 					'date'    => $this->db->f('message_date'),
-					'subject' => $this->db->f('message_subject')
+					'subject' => $this->db->f('message_subject'),
+					'content' => $this->db->f('message_content')
 				);
 			}
 			return $messages;

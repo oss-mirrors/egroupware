@@ -190,7 +190,7 @@
 
 				$linkData = array
 				(
-					'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
+					'menuaction'	=> 'felamimail.uifelamimail.changeFilter',
 					'filter'	=> $key
 				);
 				$link = $GLOBALS['phpgw']->link('/index.php',$linkData);

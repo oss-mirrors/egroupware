@@ -128,7 +128,7 @@
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
 
-		$is->send('system.list_apps','',$is->server['server_url']);
+		$is->send('system.listApps','',$is->server['server_url']);
 	}
 	elseif($HTTP_POST_VARS['users'])
 	{
@@ -182,23 +182,6 @@
 			$is->server['server_url']
 		);
 	}
-	elseif($HTTP_POST_VARS['appbyid'])
-	{
-		$param = Array(
-			'server'    => $server_id,
-			'sessionid' => $xsessionid,
-			'kp3'       => $xkp3
-		);
-
-		echo ExecMethod('phpgwapi.app_registry.request_packaged_app','etemplate',3,$param);
-//		echo ExecMethod('phpgwapi.app_registry.request_packaged_app','nntp',3,$param);
-//		echo ExecMethod('phpgwapi.app_registry.request_newer_applist','',3,$param);
-//		echo ExecMethod('phpgwapi.app_registry.request_appbyid',10,3,$param);
-//		echo ExecMethod('phpgwapi.app_registry.request_appbyname','infolog',3,$param);
-//		echo _debug_array(ExecMethod('phpgwapi.app_registry.request_appbyname','infolog'));
-		/* TODO - Adjust the values below as desired */
-//		$is->send('phpgwapi.app_registry.get_appbyid',1,$is->server['server_url']);
-	}
 
 	$GLOBALS['phpgw']->template->set_file('interserv','interserv.tpl');
 
@@ -215,7 +198,6 @@
 	$GLOBALS['phpgw']->template->set_var('lang_list',lang('List'));
 	$GLOBALS['phpgw']->template->set_var('lang_apps',lang('Apps'));
 	$GLOBALS['phpgw']->template->set_var('lang_bogus',lang('Bogus Request'));
-	$GLOBALS['phpgw']->template->set_var('lang_appbyid',lang('App Registry by ID'));
 	$GLOBALS['phpgw']->template->set_var('lang_users',lang('Users'));
 	$GLOBALS['phpgw']->template->set_var('lang_methods',lang('Methods'));
 	$GLOBALS['phpgw']->template->set_var('lang_username',lang('Username'));

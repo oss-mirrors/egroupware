@@ -17,7 +17,6 @@
 	{
 		var $public_functions = array
 		(
-			'updateImapStatus'	=> True,
 			'flagMessages'		=> True
 		);
 
@@ -29,6 +28,12 @@
 		
 		// message encodings
 		var $encoding = array("7bit", "8bit", "binary", "base64", "quoted-printable", "other");
+		
+		// set to true, if php is compiled with multi byte string support
+		var $mbAvailable = FALSE;
+
+		// what type of mimeTypes do we want from the body(text/html, text/plain)
+		var $htmlOptions;
 
 		function bofelamimail()
 		{
@@ -45,6 +50,8 @@
 				$this->sessionData['mailbox']		= "INBOX";
 				// default start message
 				$this->sessionData['startMessage']	= 1;
+				// default mailbox for preferences pages
+				$this->sessionData['preferences']['mailbox']	= "INBOX";
 				// default sorting
 				if(!empty($GLOBALS['phpgw_info']['user']['preferences']['felamimail']['sortOrder']))
 				{
@@ -66,18 +73,59 @@
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
 			$this->imapBaseDir	= '';
 			
+			if (function_exists('mb_convert_encoding')) $this->mbAvailable = TRUE;
+			
+			$this->htmlOptions 	= $this->mailPreferences['htmlOptions'];
+			
 		}
 		
 		function appendMessage($_folder, $_header, $_body)
 		{
-			imap_append($this->mbox, $_folder, $_header.$_body);
+			#print "<pre>$_header.$_body</pre>";
+			$mailboxString = $this->createMailboxString($_folder);
+			$header = str_replace("\n","\r\n",$_header);
+			$body   = str_replace("\n","\r\n",$_body);
+			#$result = @imap_append($this->mbox, $mailboxString, "$header"."$_body");
+			$result = @imap_append($this->mbox, $mailboxString, "$header"."$body");
+			#print imap_last_error();
+			return $result;
 		}
 		
 		function closeConnection()
 		{
 			imap_close($this->mbox);
 		}
+		
+		// creates the mailbox string needed for the various imap functions
+		function createMailboxString($_folderName='')
+		{
+			switch($this->mailPreferences['imap_server_type'])
+			{
+				case "imap":
+					$mailboxString = sprintf("{%s:%s}%s",
+							$this->mailPreferences['imapServerAddress'],
+							$this->mailPreferences['imapPort'],
+							$_folderName);
+					break;
+					
+				case "imaps-encr-only":
+					$mailboxString = sprintf("{%s:%s/ssl/novalidate-cert}%s",
+						$this->mailPreferences['imapServerAddress'],
+						$this->mailPreferences['imapPort'],
+						$_folderName);
+					break;
+					
+				case "imaps-encr-auth":
+					$mailboxString = sprintf("{%s:%s/ssl}%s",
+						$this->mailPreferences['imapServerAddress'],
+						$this->mailPreferences['imapPort'],
+						$_folderName);
+					break;
+			}
 
+			return $this->encodeFolderName($mailboxString);
+		}
+		
 		function compressFolder()
 		{
 			$prefs	= $this->bopreferences->getPreferences();
@@ -88,10 +136,11 @@
 			if($this->sessionData['mailbox'] == $trashFolder && $deleteOptions == "move_to_trash")
 			{
 				// delete all messages in the trash folder
-				$mailboxString = sprintf("{%s:%s}%s",
-						$this->mailPreferences['imapServerAddress'],
-						$this->mailPreferences['imapPort'],
-						imap_utf7_encode($this->sessionData['mailbox']));
+				#$mailboxString = sprintf("{%s:%s}%s",
+				#		$this->mailPreferences['imapServerAddress'],
+				#		$this->mailPreferences['imapPort'],
+				#		imap_utf7_encode($this->sessionData['mailbox']));
+				$mailboxString = $this->createMailboxString($this->sessionData['mailbox']);
 				$status = imap_status ($this->mbox, $mailboxString, SA_ALL);
 				$numberOfMessages = $status->messages;
 				$msgList = "1:$numberOfMessages";
@@ -104,26 +153,52 @@
 				imap_expunge($this->mbox);
 			}
 		}
-
-		function decode_header2($_charset, $_string)
+		
+		function decodeFolderName($_folderName)
 		{
-			$_string = str_replace('_', ' ', $_string);
-			$string = quoted_printable_decode($_string);
-			return $string;
+			if($this->mbAvailable)
+			{
+				return mb_convert_encoding( $_folderName, "ISO_8859-1", "UTF7-IMAP");
+			}
+			
+			// if not
+			return imap_utf7_decode($_folderName);
 		}
 
 		function decode_header($string)
 		{
-			/* Decode from qp or base64 form */
-			if (preg_match("/\=\?(.*?)\?b\?/i", $string))
+			/* Decode from base64 form */
+			if (preg_match_all("/\=\?(.*?)\?b\?(.*?)\?\=/i", $string, $matches, PREG_SET_ORDER))
 			{
-				$string = ereg_replace("'", "\'", $string);
-				$string = preg_replace("/\=\?(.*?)\?b\?(.*?)\?\=/ieU","base64_decode('\\2')",$string);
+				for($i=0; $i < count($matches); $i++)
+				{
+					#print "Match 0:".$matches[$i][0]."<br>";
+					#print "Match 1:".$matches[$i][1]."<br>";
+					#print "Match 2:".$matches[$i][2]."<br>";
+					$string = str_replace($matches[$i][0],base64_decode($matches[$i][2]),$string);
+				}
 				return $string;
 			}
-			if (preg_match("/\=\?(.*?)\?q\?/i", $string))
+			/* Decode from qouted printable */
+			elseif (preg_match_all("/\=\?(.*?)\?q\?(.*?)\?\=/i", $string, $matches, PREG_SET_ORDER))
 			{
-				$string = preg_replace("/\=\?(.*?)\?q\?(.*?)\?\=/ie","\$this->decode_header2('\\1','\\2')",$string);
+				for($i=0; $i < count($matches); $i++)
+				{
+					#print "Match 0:".$matches[$i][0]."<br>";
+					#print "Match 1:".$matches[$i][1]."<br>";
+					#print "Match 2:".$matches[$i][2]."<br>";
+					// replace any _ with " ". You define " " as " " or "_" in qouted printable
+					$matches[$i][2] = str_replace("_"," ",$matches[$i][2]);
+					switch($matches[$i][1])
+					{
+						case 'utf-8':
+							$string = str_replace($matches[$i][0],utf8_decode(imap_qprint($matches[$i][2])),$string);
+							break;
+						default:
+							$string = str_replace($matches[$i][0],imap_qprint($matches[$i][2]),$string);
+							break;
+					}
+				}
 				return $string;
 			}
 			return $string;
@@ -158,7 +233,7 @@
 				case "move_to_trash":
 					if(!empty($trashFolder))
 					{
-						if (imap_mail_move ($this->mbox, $msglist, imap_utf7_encode($trashFolder), CP_UID))
+						if (imap_mail_move ($this->mbox, $msglist, $this->encodeFolderName($trashFolder), CP_UID))
 						{
 							imap_expunge($this->mbox);
 							reset($_messageUID);
@@ -190,6 +265,46 @@
 			}
 		}
 		
+		function encodeFolderName($_folderName)
+		{
+			if($this->mbAvailable)
+			{
+				return mb_convert_encoding( $_folderName, "UTF7-IMAP", "ISO_8859-1" );
+			}
+			
+			// if not
+			return imap_utf7_encode($_folderName);
+		}
+
+		function encodeHeader($_string, $_encoding="q")
+		{
+			switch($_encoding)
+			{
+				case "q":
+					if(!preg_match("/[\x80-\xFF]/",$_string))
+					{
+						// nothing to quote, only 7 bit ascii
+						return $_string;
+					}
+					
+					$string = imap_8bit($_string);
+					$stringParts = explode("=\r\n",$string);
+					while(list($key,$value) = each($stringParts))
+					{
+						if(!empty($retString)) $retString .= " ";
+						$value = str_replace(" ","_",$value);
+						// imap_8bit does not convert "?"
+						// it does not need, but it should
+						$value = str_replace("?","=3F",$value);
+						$retString .= "=?ISO-8859-1?Q?".$value."?=";
+					}
+					#exit;
+					return $retString;
+					break;
+				default:
+					return $_string;
+			}
+		}
 		function flagMessages($_flag, $_messageUID)
 		{
 			reset($_messageUID);
@@ -230,21 +345,11 @@
 		{
 			// parse message structure
 			$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
-			$this->structure = array();
-			$this->parse2($structure);
-			$sections = $this->structure;
+			$sections = $this->parseMessage($structure);
 			
-			// look for specified part
-			while(list($key,$value) = each($sections))
-			{
-				#print $value["pid"]." ".$_partID."<br>";
-				if($value["pid"] == $_partID)
-				{
-					$type = $value["type"];
-					$encoding = $value["encoding"];
-					$filename = $value["name"];
-				}
-			}
+			$type 		= $sections['attachment'][$_partID]["mimeType"];
+			$encoding 	= $sections['attachment'][$_partID]["encoding"];
+			$filename 	= $sections['attachment'][$_partID]["name"];
 			
 			$attachment = imap_fetchbody($this->mbox, $_uid, $_partID, FT_UID);
 			
@@ -273,30 +378,10 @@
 				);
 		}
 
-		// this function is based on a on "Building A PHP-Based Mail Client"
-		// http://www.devshed.com
-		// iterate through object returned by parse()
-		// create a new array holding information only on message attachments
-		function get_attachments($arr)
-		{
-			reset($arr);
-			while(list($key,$value) = @each($arr))
-			{
-				if(strtolower($value["disposition"])		== "attachment" ||
-					strtolower($value["disposition"])	== "inline" ||
-					($value["type"] != "text/plain" && substr($value["type"],0,9) != "multipart"))
-				{
-					$ret[] = $value;
-				}
-			}
-			
-			return $ret;
-		}
-		
 		function getFolderStatus($_folderName)
 		{
 			// now we have the keys as values
-			$subscribedFolders = array_flip($this->getFolderList(true));
+			$subscribedFolders = $this->getFolderList(true);
 			#print_r($subscribedFolders);
 			#print $subscribedFolders[$_folderName]." - $_folderName<br>";
 			if(isset($subscribedFolders[$_folderName]))
@@ -313,10 +398,7 @@
 		
 		function getFolderList($_subscribedOnly=false)
 		{
-			$mailboxString = sprintf("{%s:%s}%s",
-					$this->mailPreferences['imapServerAddress'],
-					$this->mailPreferences['imapPort'],
-					imap_utf7_encode($this->imapBaseDir));
+			$mailboxString = $this->createMailboxString($this->imapBaseDir);
 		
 			if($_subscribedOnly == 'true')
 			{
@@ -326,20 +408,46 @@
 			{
 				$list = imap_getmailboxes($this->mbox,$mailboxString,"*");
 			}
+
 			if(is_array($list))
 			{
+				// return always the inbox
+				$folders['INBOX'] = 'INBOX';
 				reset($list);
 				while (list($key, $val) = each($list))
 				{
-					$folders[] = preg_replace("/{.*}/","",$val->name);
-					#$folders[] = $val->name;
+					// remove the {host:port/imap/...} part
+					$folderNameIMAP = $this->decodeFolderName(preg_replace("/{.*}/","",$val->name));
+					$folderParts = explode(".",$folderNameIMAP);
+					reset($folderParts);
+					$displayName = "";
+					#print_r($folderParts);print"<br>";
+					for($i=0; $i<count($folderParts); $i++)
+					{
+						if($i+1 == count($folderParts))
+						{
+							$displayName .= $folderParts[$i];
+						}
+						else
+						{
+							$displayName .= ". . ";
+						}
+					}
+					$folders["$folderNameIMAP"] = $displayName;
 				}
-				sort($folders,SORT_STRING);
+				#exit;
+				ksort($folders,SORT_STRING);
 				reset($folders);
 				return $folders;
 			}
 			else
 			{
+				if($_subscribedOnly == 'true' && 
+					is_array(imap_list($this->mbox,$mailboxString,'INBOX')))
+				{
+					$folders['INBOX'] = 'INBOX';
+					return $folders;
+				}
 				return false;
 			}
 		}
@@ -356,10 +464,7 @@
 			$bofilter = CreateObject('felamimail.bofilter');
 			$transformdate = CreateObject('felamimail.transformdate');
 
-			$mailboxString = sprintf("{%s:%s}%s",
-					$this->mailPreferences['imapServerAddress'],
-					$this->mailPreferences['imapPort'],
-					imap_utf7_encode($this->sessionData['mailbox']));
+			$mailboxString = $this->createMailboxString($this->sessionData['mailbox']);
 			$status = imap_status ($this->mbox, $mailboxString, SA_ALL);
 			$cachedStatus = $caching->getImapStatus();
 
@@ -378,20 +483,9 @@
 					// parse structure to see if attachments exist
 					// display icon if so
 					$structure = imap_fetchstructure($this->mbox, $i);
-					$sections = $this->parse($structure);
-					$attachments = $this->get_attachments($sections);
+					$sections = $this->parseMessage($structure);
 					
-					if (isset($header->date))
-					{
-						$header->date = ereg_replace('  ', ' ', $header->date);
-						$tmpdate = explode(' ', trim($header->date));
-					}
-					else
-					{
-						$tmpdate = $date = array("","","","","","");
-					}
-					$messageData['date']		= date("Y-m-d H:i:s",$transformdate->getTimeStamp($tmpdate));
-					
+					$messageData['date']		= $header->udate;
 					$messageData['subject']		= $header->subject;
 					$messageData['to_name']		= $header->to[0]->personal;
 					$messageData['to_address']	= $header->to[0]->mailbox."@".$header->to[0]->host;
@@ -400,7 +494,7 @@
 					$messageData['size']		= $header->Size;
 					
 					$messageData['attachments']     = "false";
-					if (is_array($attachments))
+					if (is_array($sections['attachment']))
 					{
 						$messageData['attachments']	= "true";
 					}
@@ -430,20 +524,9 @@
 					// parse structure to see if attachments exist
 					// display icon if so
 					$structure = imap_fetchstructure($this->mbox, $newHeaders[$i]->msgno);
-					$sections = $this->parse($structure);
-					$attachments = $this->get_attachments($sections);
+					$sections = $this->parseMessage($structure);
 				
-					if (isset($header->date)) 
-					{	
-						$header->date = ereg_replace('  ', ' ', $header->date);
-						$tmpdate = explode(' ', trim($header->date));
-					}
-					else
-					{
-						$tmpdate = $date = array("","","","","","");	
-					}
-					$messageData['date'] 		= date("Y-m-d H:i:s",$transformdate->getTimeStamp($tmpdate));
-				
+					$messageData['date'] 		= $header->udate;
 					$messageData['subject'] 	= $header->subject;
 					$messageData['to_name']		= $header->to[0]->personal;
 					$messageData['to_address']	= $header->to[0]->mailbox."@".$header->to[0]->host;
@@ -452,7 +535,7 @@
 					$messageData['size'] 		= $header->Size;
 
 					$messageData['attachments']     = "false";
-					if (is_array($attachments))
+					if (is_array($sections['attachment']))
 					{
 						$messageData['attachments']	= "true";
 					}
@@ -490,7 +573,7 @@
 
 			// now lets gets the important messages
 			$filterList = $bofilter->getFilterList();
-			$activeFilter = $this->sessionData['activeFilter'];
+			$activeFilter = $bofilter->getActiveFilter();
 			$filter = $filterList[$activeFilter];
 			$displayHeaders = $caching->getHeaders($_startMessage, $_numberOfMessages, $_sort, $filter);
 
@@ -498,6 +581,9 @@
 			for ($i=0;$i<count($displayHeaders);$i++)
 			{
 				$header = imap_fetch_overview($this->mbox,$displayHeaders[$i]['uid'],FT_UID);
+				#print $header[0]->date;print "<br>";
+				#print_r($displayHeaders[$i]);print "<br>";
+				#print_r($header);exit;
 
 				#$rawHeader = imap_fetchheader($this->mbox,$displayHeaders[$i]['uid'],FT_UID);
 				#$headers = $this->sofelamimail->fetchheader($rawHeader);
@@ -509,17 +595,8 @@
 				$retValue['header'][$count]['to_address'] 	= $this->decode_header($displayHeaders[$i]['to_address']);
 				$retValue['header'][$count]['attachments']	= $displayHeaders[$i]['attachments'];
 				$retValue['header'][$count]['size'] 		= $header[0]->size;
-				if (isset($header[0]->date)) 
-				{	
-					$header[0]->date = ereg_replace('  ', ' ', $header[0]->date);
-					$tmpdate = explode(' ', trim($header[0]->date));
-				}
-				else
-				{
-					$tmpdate = $date = array("","","","","","");	
-				}
 
-				$timestamp = $transformdate->getTimeStamp($tmpdate);
+				$timestamp = $displayHeaders[$i]['date'];
 				$timestamp7DaysAgo = 
 					mktime(date("H"), date("i"), date("s"), date("m"), date("d")-7, date("Y"));
 				$timestampNow = 
@@ -539,6 +616,7 @@
 				{
 					$retValue['header'][$count]['date'] = lang(date("l",$timestamp));
 					#$retValue['header'][$count]['date'] = date("Y-m-d H:i:s",$timestamp7DaysAgo)." - ".date("Y-m-d",$timestamp);
+					$retValue['header'][$count]['date'] = date("H:i:s",$timestamp)."(".lang(date("D",$timestamp)).")";
 				}
 				else
 				{
@@ -570,92 +648,118 @@
 				return 0;
 			}
 		}
-
+		
+		function getMailPreferences()
+		{
+			return $this->mailPreferences;
+		}
+		
 		function getMessageAttachments($_uid)
 		{
 			$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
-			if(sizeof($structure->parts) > 0 && is_array($structure->parts))
+			$structure = $this->parseMessage($structure);
+			if(isset($structure['attachment']) && is_array($structure['attachment']))
 			{
-				$this->structure = array();
-				$this->parse2($structure);
-				$sections = $this->structure;
-				#$sections = $this->parse($structure);
-				return $this->get_attachments($sections);
-			}
-		}
-		
-		function getMessageBody($_uid)
-		{
-			$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
-			if(sizeof($structure->parts) > 0 && is_array($structure->parts))
-			{
-				#print "<pre>";print_r($structure);print"</pre>";
-				$this->structure = array();
-				$this->parse2($structure);
-				$sections = $this->structure;
-				#print "<hr><pre>";print_r($this->structure);print"</pre>";
+				#_debug_array($structure['attachment']);
+				return $structure['attachment'];
 			}
 			
-			if(is_array($sections))
+			return false;
+
+		}
+		
+		function getMessageBody($_uid, $_htmlOptions = '')
+		{
+			if($_htmlOptions != '')
+				$this->htmlOptions = $_htmlOptions; 
+			#'only_if_no_text';
+				
+			$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
+			$sections = $this->parseMessage($structure);
+			
+			if(is_array($sections['body']) && !isset($sections['body']['0']))
 			{
-				reset($sections);
-				while(list($key,$value) = each($sections))
-				#for($x=0; $x<sizeof($sections); $x++)
+				reset($sections['body']);
+				while(list($key,$value) = each($sections['body']))
 				{
 					unset($newPart);
-					if(($value["type"] == "text/plain" || 
-						$value["type"] == "message/rfc822") && 
-						strtolower($value["disposition"]) != "attachment")
-					{
-						$newPart = stripslashes(trim(imap_fetchbody($this->mbox, $_uid, $value["pid"], FT_UID)));
-					}
-					
-					if(isset($newPart)) 
-					{
-					switch ($value['encoding']) 
-					{
-						case ENCBASE64:
-							// use imap_base64 to decode
-							$newPart = imap_base64($newPart);
-							break;
-						case ENCQUOTEDPRINTABLE:
-							// use imap_qprint to decode
-							$newPart = imap_qprint($newPart);
-							break;
-						case ENCOTHER:
-							// not sure if this needs decoding at all
-							break;
-						default:
-							// it is either not encoded or we don't know about it
-					}
-						$bodyPart[] = $newPart;
-					}
+					#if(($value["mimeType"] == $wantedMimeType ))
+					#{
+						#$newPart = stripslashes(trim(imap_fetchbody($this->mbox, $_uid, $value["partID"], FT_UID)));
+						$newPart = imap_fetchbody($this->mbox, $_uid, $value["partID"], FT_UID);
+						
+						#print $value['charset']."<br>";
+						switch ($value['encoding']) 
+						{
+							case ENCBASE64:
+								// use imap_base64 to decode
+								$newPart = imap_base64($newPart);
+								break;
+							case ENCQUOTEDPRINTABLE:
+								// use imap_qprint to decode
+								switch(strtolower($value['charset']))
+								{
+									case 'utf-8':
+										$newPart = utf8_decode(imap_qprint($newPart));
+										break;
+									default:
+										$newPart = imap_qprint($newPart);
+										break;
+								}
+								break;
+							case ENCOTHER:
+								// not sure if this needs decoding at all
+								break;
+							default:
+								// it is either not encoded or we don't know about it
+						}
+						
+						$bodyPart[] = array('body' => $newPart,
+								    'mimeType' => $value['mimeType']);
+					#}
 				}
 			}
 			else
 			{
-				$newPart = stripslashes(trim(imap_body($this->mbox, $_uid, FT_UID)));
+				#print imap_body($this->mbox, $_uid, FT_UID);
+				#_debug_array($structure);
 				switch ($structure->encoding) 
 				{
 					case ENCBASE64:
 						// use imap_base64 to decode
+						$newPart = stripslashes(trim(imap_body($this->mbox, $_uid, FT_UID)));
 						$newPart = imap_base64($newPart);
 						break;
 					case ENCQUOTEDPRINTABLE:
 						// use imap_qprint to decode
-						$newPart = imap_qprint($newPart);
+						$newPart = imap_body($this->mbox, $_uid, FT_UID);
+						$newPart = quoted_printable_decode($newPart);
 						break;
 					case ENCOTHER:
+						$newPart = stripslashes(trim(imap_body($this->mbox, $_uid, FT_UID)));
 						// not sure if this needs decoding at all
 						break;
 					default:
+						$newPart = stripslashes(trim(imap_body($this->mbox, $_uid, FT_UID)));
+						$newPart = imap_body($this->mbox, $_uid, FT_UID);
 						// it is either not encoded or we don't know about it
 				}
-				$bodyPart[] = $newPart;
+				if(strtolower($structure->subtype) == 'html')
+				{
+					$mimeType = 'text/html';
+				}
+				else
+				{
+					$mimeType = 'text/plain';
+				}
+				 
+				$bodyPart[] = array('body' => $newPart,
+						    'mimeType' => $mimeType);
 			}
 			
 			return $bodyPart;
 		}
+
 
 		function getMessageHeader($_uid)
 		{
@@ -672,7 +776,95 @@
 		{
 			return imap_fetchstructure($this->mbox, $_uid, FT_UID);
 		}
+		
+		// return the qouta of the users INBOX
+		function getQuotaRoot()
+		{
+			if(is_array($this->storageQuota))
+			{
+				return $this->storageQuota;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		function imap_createmailbox($_folderName, $_subscribe = False)
+		{
+			$mailboxString = $this->createMailboxString($_folderName);
+			
+			$result = @imap_createmailbox($this->mbox,$mailboxString);
+			
+			if($_subscribe)
+			{
+				return @imap_subscribe($this->mbox,$mailboxString);
+			}
+			
+			return $result;
+		}
+		
+		function imap_deletemailbox($_folderName)
+		{
+			$mailboxString = $this->createMailboxString($_folderName);
+			
+			$result = imap_deletemailbox($this->mbox, $mailboxString);
+			
+			#print imap_last_error();
+			
+			return $result;
+		}
 
+		function imapGetQuota($_username)
+		{
+			$quota_value = @imap_get_quota($this->mbox, "user.".$_username);
+
+			if(is_array($quota_value) && count($quota_value) > 0)
+			{
+				return array('limit' => $quota_value['limit']/1024);
+			}
+			else
+			{
+				return false;
+			}
+		}		
+		
+		function imap_get_quotaroot($_folderName)
+		{
+			return @imap_get_quotaroot($this->mbox, $_folderName);
+		}
+		
+		function imap_renamemailbox($_oldMailboxName, $_newMailboxName)
+		{
+			if(strcasecmp("inbox",$_oldMailboxName) == 0 || strcasecmp("inbox",$_newMailboxName) == 0)
+			{
+				return False;
+			}
+			
+			$oldMailboxName = $this->createMailboxString($_oldMailboxName);
+			$newMailboxName = $this->createMailboxString($_newMailboxName);
+			
+			$result =  @imap_renamemailbox($this->mbox,$oldMailboxName, $newMailboxName);
+			
+			#print imap_last_error();
+			
+			return $result;
+		}
+		
+		function imapSetQuota($_username, $_quotaLimit)
+		{
+			if(is_numeric($_quotaLimit) && $_quotaLimit >= 0)
+			{
+				// enable quota
+				$quota_value = imap_set_quota($this->mbox, "user.".$_username, $_quotaLimit*1024);
+			}
+			else
+			{
+				// disable quota
+				$quota_value = imap_set_quota($this->mbox, "user.".$_username, -1);
+			}
+		}
+		
 		function moveMessages($_foldername, $_messageUID)
 		{
 			$caching = CreateObject('felamimail.bocaching',
@@ -689,9 +881,9 @@
 			}
 			#print $msglist."<br>";
 			
-			#print "destination folder: ".imap_utf7_encode($_foldername)."<br>";
+			#print "destination folder($_folderName): ".$this->encodeFolderName($_foldername)."<br>";
 			
-			if (imap_mail_move ($this->mbox, $msglist, imap_utf7_encode($_foldername), CP_UID))
+			if (imap_mail_move ($this->mbox, $msglist, $this->encodeFolderName($_foldername), CP_UID))
 			{
 				#print "allet ok<br>";
 				if($deleteOptions != "mark_as_deleted")
@@ -711,337 +903,299 @@
 			
 		}
 
-		function openConnection($_folderName='',$_options=0)
+		function openConnection($_folderName='', $_options=0, $_adminConnection=false)
 		{
-			switch($this->mailPreferences['imap_server_type'])
+			
+			if($_folderName == '')
 			{
-				case "imap":
-					$mailboxString = sprintf("{%s:%s}%s",
-							$this->mailPreferences['imapServerAddress'],
-							$this->mailPreferences['imapPort'],
-							imap_utf7_encode($this->sessionData['mailbox']));
-					break;
-					
-				case "imaps-encr-only":
-					$mailboxString = sprintf("{%s:%s/ssl/novalidate-cert}%s",
-						$this->mailPreferences['imapServerAddress'],
-						$this->mailPreferences['imapPort'],
-						imap_utf7_encode($this->sessionData['mailbox']));
-					break;
-					
-				case "imaps-encr-auth":
-					$mailboxString = sprintf("{%s:%s/ssl}%s",
-						$this->mailPreferences['imapServerAddress'],
-						$this->mailPreferences['imapPort'],
-						imap_utf7_encode($this->sessionData['mailbox']));
-					break;
+				$_folderName = $this->sessionData['mailbox'];
 			}
+			
+			if($_adminConnection)
+			{
+				$config = CreateObject('phpgwapi.config','qmailldap');
+				$config->read_repository();
+				$qmailldapConfig = $config->config_data;
+				
+				$folderName	= '';
+				$username	= $qmailldapConfig['imapAdminUser'];
+				$password	= $qmailldapConfig['imapAdminPassword'];
+				$options	= '';
+			}
+			else
+			{
+				$folderName	= $_folderName;
+				$username	= $this->mailPreferences['username'];
+				$password	= $this->mailPreferences['key'];
+				$options	= $_options;
+			}
+			
+			$mailboxString = $this->createMailboxString($_folderName);
 
-			if(!$this->mbox = @imap_open ($mailboxString, 
-					$this->mailPreferences['username'], $this->mailPreferences['key'], $_options))
+			if(!$this->mbox = imap_open ($mailboxString, $username, $password, $options))
 			{
 				return imap_last_error();
 			}
 			else
 			{
+				// get the quota for this mailboxbox
+				if (function_exists('imap_get_quotaroot'))
+				{
+					$quota = imap_get_quotaroot($this->mbox, $_folderName);
+					if(is_array($quota['STORAGE'])) 
+					{
+						$storage = $this->storageQuota = $quota['STORAGE'];
+					}
+				}
 				return True;
 			}
 			
 		}		
 
-		// this function is based on a on "Building A PHP-Based Mail Client"
-		// http://www.devshed.com
-		function parse($structure)
+		function parseMessage($_structure, $_partID = '')
 		{
-			// create an array to hold message sections
-			$ret = array();
+			#if ($_partID == '') _debug_array($_structure);
 			
-			// split structure into parts
-			$parts = $structure->parts;
-			                                                                                        
-			for($x=0; $x<sizeof($parts); $x++)
+			switch ($_structure->type)
 			{
-				$ret[$x]["pid"] = ($x+1);
-				
-				$part = $parts[$x];
-				
-				// default to text
-				if ($part->type == "") { $part->type = 0; }
-				
-				$ret[$x]["type"] = $this->type[$part->type] . "/" . strtolower($part->subtype);
-				
-				// default to 7bit
-				if ($part->encoding == "") { $part->encoding = 0; }
-				$ret[$x]["encoding"] = $this->encoding[$part->encoding];
-				$ret[$x]["Encoding"] = $part->encoding;
-				
-				$ret[$x]["size"] = strtolower($part->bytes);
-				
-				$ret[$x]["disposition"] = strtolower($part->disposition);
-				
-				if (strtolower($part->disposition) == "attachment")
-				{
-				
-					$params = $part->dparameters;
-					foreach ($params as $p)
+				case TYPETEXT:
+					#print "found text $_partID<br>";
+					$mime_type = "text";
+					$data['encoding']	= $_structure->encoding;
+					$data['size']		= $_structure->bytes;
+					$data['partID']	= $_partID;
+					$data["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
+					$data["name"]		= lang("unknown");
+					for ($lcv = 0; $lcv < count($_structure->parameters); $lcv++)
 					{
-						if($p->attribute == "FILENAME")
+						$param = $_structure->parameters[$lcv];
+						switch(strtolower($param->attribute))
 						{
-							$ret[$x]["name"] = $p->value;
-							break;
+							case 'name':
+								$data["name"] = $param->value;
+								break;
+							case 'charset':
+								$data["charset"] = $param->value;
+								break;
 						}
-					}
-				}
-			}
-			
-			return $ret;
-		}
-		
-
-		// this function is based on
-		// http://www.bitsense.com/PHPNotes/IMAP/imap_fetchstructure.asp/
-		function parse2($this_part,$part_no="")
-		{
-				if ($this_part->ifdisposition && strtolower($this_part->disposition) == "attachment") 
-				{
-					// See if it has a disposition
-					// The only thing I know of that this
-					// would be used for would be an attachment
-					// Lets check anyway
-					if (strtolower($this_part->disposition) == "attachment" ||
-						strtolower($this_part->disposition) == "inline" ) 
-					{
-						$this->structure[$part_no]['encoding']	= $this_part->encoding;
-						$this->structure[$part_no]['size']	= $this_part->bytes;
-						$this->structure[$part_no]['disposition']	= $this_part->disposition;
-						$this->structure[$part_no]['pid']	= $part_no;
-						$this->structure[$part_no]["type"]	= $mime_type."/". strtolower($this_part->subtype);
-						// If it is an attachment, then we let people download it
-						// First see if they sent a filename
-						$att_name = lang("unknown");
-						if($this_part->ifparameters)
-						{
-							for ($lcv = 0; $lcv < count($this_part->parameters); $lcv++) 
-							{
-								$param = $this_part->parameters[$lcv];
-								if (strtolower($param->attribute) == "name") 
-								{
-									$this->structure[$part_no]["name"] = $param->value;
-									break;
-								}
-							}
-						}
-						if($this_part->ifdparameters)
-						{
-							for ($lcv = 0; $lcv < count($this_part->dparameters); $lcv++) 
-							{
-								$param = $this_part->dparameters[$lcv];
-								if (strtolower($param->attribute) == "filename") 
-								{
-									$this->structure[$part_no]["name"] = $param->value;
-									break;
-								}
-							}
-						}
-						// You could give a link to download the attachment here....
-						switch ($this_part->type) 
-						{
-							case TYPETEXT:
-								$mime_type = "text";
-								break;
-							case TYPEMULTIPART:
-								$mime_type = "multipart";
-								break;
-							case TYPEMESSAGE:
-								$mime_type = "message";
-								break;
-							case TYPEAPPLICATION:
-								$mime_type = "application";
-								break;
-							case TYPEAUDIO:
-								$mime_type = "audio";
-								break;
-							case TYPEIMAGE:
-								$mime_type = "image";
-								break;
-							case TYPEVIDEO:
-								$mime_type = "video";
-								break;
-							case TYPEMODEL:
-								$mime_type = "model";
-								break;
-							default:
-								$mime_type = "unknown";
-								// hmmm....
-						}
-						$this->structure[$part_no]["type"] = $mime_type."/". strtolower($this_part->subtype);
-					} 
-					else 
-					{
-						// disposition can also be used for images in HTML (Inline)
-					}
-				}
-				else
-				{
-					// Not an attachment, lets see what this part is...
-					#print "Type: ".$this_part->type."<br>";
-					switch ($this_part->type) 
-					{
-						case TYPETEXT:
-							$mime_type = "text";
-							$this->structure[$part_no]['encoding']	= $this_part->encoding;
-							$this->structure[$part_no]['size']	= $this_part->bytes;
-							$this->structure[$part_no]['pid']	= $part_no;
-							$this->structure[$part_no]["type"]	= $mime_type."/". strtolower($this_part->subtype);
-							$this->structure[$part_no]["name"]	= lang("unknown");
-							for ($lcv = 0; $lcv < count($this_part->parameters); $lcv++) 
-							{
-								$param = $this_part->parameters[$lcv];
-								if (strtolower($param->attribute) == "name") 
-								{
-									$this->structure[$part_no]["name"] = $param->value;
-									break;
-								}
-							}
-							break;
 						
-						case TYPEMULTIPART:
-							$mime_type = "multipart";
-							#print "found $mime_type<br>";
-							// Hey, why not use this function to deal with all the parts
-							// of this multipart part :)
-							for ($i = 0; $i < count($this_part->parts); $i++) 
-							{
-								if ($part_no != "") 
-								{
-									$part_no = $part_no.".";
-								}
-								$this->structure[$part_no.($i + 1)]['encoding']	= $this_part->encoding;
-								$this->structure[$part_no.($i + 1)]['size']	= $this_part->bytes;
-								$this->structure[$part_no.($i + 1)]['pid']	= $part_no.($i + 1);
-								$this->structure[$part_no.($i + 1)]["type"]	= $mime_type."/". strtolower($this_part->subtype);
-								for ($i = 0; $i < count($this_part->parts); $i++) 
-								{
-									$this->parse2($this_part->parts[$i], $part_no.($i + 1));
-								}
-							}
-							break;
-						case TYPEMESSAGE:
-							$mime_type = "message";
-							$this->structure[$part_no]['encoding']	= $this_part->encoding;
-							$this->structure[$part_no]['size']	= $this_part->bytes;
-							$this->structure[$part_no]['pid']	= $part_no;
-							$this->structure[$part_no]["type"]	= $mime_type."/". strtolower($this_part->subtype);
-							$att_name = "unknown";
-							for ($lcv = 0; $lcv < count($this_part->parameters); $lcv++) 
-							{
-								$param = $this_part->parameters[$lcv];
-								if ($param->attribute == "NAME" ||
-									$param->attribute == "name") 
-								{
-									$this->structure[$part_no]["name"] = $param->value;
-									break;
-								}
-							}
-							break;
-						case TYPEAPPLICATION:
-							$mime_type = "application";
-							$this->structure[$part_no]['encoding']	= $this_part->encoding;
-							$this->structure[$part_no]['size']	= $this_part->bytes;
-							$this->structure[$part_no]['pid']	= $part_no;
-							$this->structure[$part_no]["type"]	= $mime_type."/". strtolower($this_part->subtype);
-							$att_name = "unknown";
-							for ($lcv = 0; $lcv < count($this_part->parameters); $lcv++) 
-							{
-								$param = $this_part->parameters[$lcv];
-								if ($param->attribute == "NAME" ||
-									$param->attribute == "name") 
-								{
-									$this->structure[$part_no]["name"] = $param->value;
-									break;
-								}
-							}
-							break;
-						case TYPEAUDIO:
-							$mime_type = "audio";
-							$this->structure[$part_no]['encoding']	= $this_part->encoding;
-							$this->structure[$part_no]['size']	= $this_part->bytes;
-							$this->structure[$part_no]['pid']	= $part_no;
-							$this->structure[$part_no]["type"]	= $mime_type."/". strtolower($this_part->subtype);
-							$att_name = "unknown";
-							for ($lcv = 0; $lcv < count($this_part->parameters); $lcv++) 
-							{
-								$param = $this_part->parameters[$lcv];
-								if ($param->attribute == "NAME" ||
-									$param->attribute == "name") 
-								{
-									$this->structure[$part_no]["name"] = $param->value;
-									break;
-								}
-							}
-							break;
-						case TYPEIMAGE:
-							$mime_type = "image";
-							$this->structure[$part_no]['encoding']	= $this_part->encoding;
-							$this->structure[$part_no]['size']	= $this_part->bytes;
-							$this->structure[$part_no]['pid']	= $part_no;
-							$this->structure[$part_no]["type"]	= $mime_type."/". strtolower($this_part->subtype);
-							$att_name = "unknown";
-							for ($lcv = 0; $lcv < count($this_part->parameters); $lcv++) 
-							{
-								$param = $this_part->parameters[$lcv];
-								if ($param->attribute == "NAME" ||
-									$param->attribute == "name") 
-								{
-									$this->structure[$part_no]["name"] = $param->value;
-									break;
-								}
-							}
-							break;
-						case TYPEVIDEO:
-							$mime_type = "video";
-							$this->structure[$part_no]['encoding']	= $this_part->encoding;
-							$this->structure[$part_no]['size']	= $this_part->bytes;
-							$this->structure[$part_no]['pid']	= $part_no;
-							$this->structure[$part_no]["type"]	= $mime_type."/". strtolower($this_part->subtype);
-							$att_name = "unknown";
-							for ($lcv = 0; $lcv < count($this_part->parameters); $lcv++) 
-							{
-								$param = $this_part->parameters[$lcv];
-								if ($param->attribute == "NAME" ||
-									$param->attribute == "name") 
-								{
-									$this->structure[$part_no]["name"] = $param->value;
-									break;
-								}
-							}
-							break;
-						case TYPEMODEL:
-							$mime_type = "model";
-							break;
-						default:
-							$mime_type = "unknown";
-							// hmmm....
 					}
-					$full_mime_type = $mime_type."/".$this_part->subtype;
 					
-					// Decide what you what to do with this part
-					// If you want to show it, figure out the encoding and echo away
-					switch ($this_part->encoding) 
+					// set this to zero, when we have a plaintext message
+					// if partID[0] is set, we have no attachments
+					if($_partID == '') $_partID = '0';
+					
+					if (strtolower($_structure->disposition) == "attachment" ||
+						$data["name"] != lang("unknown"))
 					{
-						case ENCBASE64:
-							// use imap_base64 to decode
-							break;
-						case ENCQUOTEDPRINTABLE:
-							// use imap_qprint to decode
-							break;
-						case ENCOTHER:
-							// not sure if this needs decoding at all
-							break;
-						default:
-							// it is either not encoded or we don't know about it
+						#print "found a attachment<br>";
+						// must be a attachment
+						$retData['attachment'][$_partID] = $data;
 					}
-				}
+					else
+					{
+						#print "found a body part $_partID<br>";
+						// must be a body part
+						$retData['body']["$_partID"] = $data;
+						$retData['body']["$_partID"]['name'] = lang('body part')." $_partID";
+					}
+					#print "<hr>";
+					#_debug_array($retData);
+					#print "<hr>";
+					break;
+					
+				case TYPEMULTIPART:
+					#print "found multipart $_partID<br>";
+					// lets cycle trough all parts
+					if($_partID != '') $_partID .= '.';
+					$lastPartID = 0;
+					for($i = 0; $i < count($_structure->parts); $i++)
+					{
+						
+						$structureData = $this->parseMessage($_structure->parts[$i], $_partID.($i+1));
+						if(is_array($structureData['body']))
+						{
+							reset($structureData['body']);
+							while(list($partID,$partData) = each($structureData['body']))
+							{
+								if(strtolower($_structure->subtype) == 'alternative')
+								{
+									switch($this->htmlOptions)
+									{
+										case 'always_display':
+											$allowedMimeType = 
+												array('text/plain' => 1,
+												      'text/html'  => 1);
+											$orderOfMimeType = 
+												array('text/html'  => 2,
+												      'text/plain' => 1);
+											break;
+						
+										case 'only_if_no_text':
+											$allowedMimeType = 
+												array('text/plain' => 1,
+												      'text/html'  => 1);
+											$orderOfMimeType = 
+												array('text/plain' => 2,
+												      'text/html'  => 1);
+											break;	
+						
+										default:
+											$allowedMimeType = 
+												array("text/plain" => 1);
+											$orderOfMimeType = 
+												array("text/plain" => 1);
+											break;
+									}
+									// add only allowed mime types to the list
+									if($allowedMimeType[$partData['mimeType']])
+									{
+										// now let only the prefered part one survive
+										#print $orderOfMimeType[$partData['mimeType']]."<br>".
+										#$partData['mimeType']."<br>".
+										#$lastPartID."<br>";
+										if($orderOfMimeType[$partData['mimeType']] > $lastPartID)
+										{
+											unset($retData['body'][$lastPartID]);
+											$retData['body'][$partID] = $partData;
+											$lastPartID = $partID;
+										}
+									}
+								}
+								else
+								{
+									$retData['body'][$partID] = $partData;
+								}
+							}
+						}
+						if(is_array($structureData['attachment']))
+						{
+							reset($structureData['attachment']);
+							while(list($partID,$partData) = each($structureData['attachment']))
+							{
+								$retData['attachment'][$partID] = $partData;
+							}
+						}
+					}
+					break;
+				
+				case TYPEMESSAGE:
+					#print "found message $_partID<br>";
+					$mime_type = "message";
+					$retData['attachment'][$_partID]['encoding']	= $_structure->encoding;
+					$retData['attachment'][$_partID]['size']	= $_structure->bytes;
+					$retData['attachment'][$_partID]['partID']	= $_partID;
+					$retData['attachment'][$_partID]["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
+					$retData['attachment'][$_partID]["name"]	= lang("unknown");
+					if(!empty($_structure->description))
+					{
+						$retData['attachment'][$_partID]["name"] = lang($_structure->description);
+					}
+					break;
+					
+				case TYPEAPPLICATION:
+					$mime_type = "application";
+					$retData['attachment'][$_partID]['encoding']	= $_structure->encoding;
+					$retData['attachment'][$_partID]['size']	= $_structure->bytes;
+					$retData['attachment'][$_partID]['partID']	= $_partID;
+					$retData['attachment'][$_partID]["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
+					$retData['attachment'][$_partID]["name"]	= lang("unknown");
+					for ($lcv = 0; $lcv < count($_structure->dparameters); $lcv++)
+					{
+						$param = $_structure->dparameters[$lcv];
+						switch(strtolower($param->attribute))
+						{
+							case 'filename':
+								$retData['attachment'][$_partID]["name"] = $param->value;
+								break;
+						}
+					}
+					break;
+					
+				case TYPEAUDIO:
+					$mime_type = "audio";
+					$retData['attachment'][$_partID]['encoding']	= $_structure->encoding;
+					$retData['attachment'][$_partID]['size']	= $_structure->bytes;
+					$retData['attachment'][$_partID]['partID']	= $_partID;
+					$retData['attachment'][$_partID]["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
+					$retData['attachment'][$_partID]["name"]	= lang("unknown");
+					for ($lcv = 0; $lcv < count($_structure->dparameters); $lcv++)
+					{
+						$param = $_structure->dparameters[$lcv];
+						switch(strtolower($param->attribute))
+						{
+							case 'filename':
+								$retData['attachment'][$_partID]["name"] = $param->value;
+								break;
+						}
+					}
+					break;
+					
+				case TYPEIMAGE:
+					#print "found image $_partID<br>";
+					$mime_type = "image";
+					$retData['attachment'][$_partID]['encoding']	= $_structure->encoding;
+					$retData['attachment'][$_partID]['size']	= $_structure->bytes;
+					$retData['attachment'][$_partID]['partID']	= $_partID;
+					$retData['attachment'][$_partID]["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
+					$retData['attachment'][$_partID]["name"]	= lang("unknown");
+					for ($lcv = 0; $lcv < count($_structure->dparameters); $lcv++)
+					{
+						$param = $_structure->dparameters[$lcv];
+						switch(strtolower($param->attribute))
+						{
+							case 'filename':
+								$retData['attachment'][$_partID]["name"] = $param->value;
+								break;
+						}
+					}
+					break;
+					
+				case TYPEVIDEO:
+					$mime_type = "video";
+					$retData['attachment'][$_partID]['encoding']	= $_structure->encoding;
+					$retData['attachment'][$_partID]['size']	= $_structure->bytes;
+					$retData['attachment'][$_partID]['partID']	= $_partID;
+					$retData['attachment'][$_partID]["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
+					$retData['attachment'][$_partID]["name"]	= lang("unknown");
+					for ($lcv = 0; $lcv < count($_structure->dparameters); $lcv++)
+					{
+						$param = $_structure->dparameters[$lcv];
+						switch(strtolower($param->attribute))
+						{
+							case 'filename':
+								$retData['attachment'][$_partID]["name"] = $param->value;
+								break;
+						}
+					}
+					break;
+					
+				case TYPEMODEL:
+					$mime_type = "model";
+					$retData['attachment'][$_partID]['encoding']	= $_structure->encoding;
+					$retData['attachment'][$_partID]['size']	= $_structure->bytes;
+					$retData['attachment'][$_partID]['partID']	= $_partID;
+					$retData['attachment'][$_partID]["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
+					$retData['attachment'][$_partID]["name"]	= lang("unknown");
+					for ($lcv = 0; $lcv < count($_structure->dparameters); $lcv++)
+					{
+						$param = $_structure->dparameters[$lcv];
+						switch(strtolower($param->attribute))
+						{
+							case 'filename':
+								$retData['attachment'][$_partID]["name"] = $param->value;
+								break;
+						}
+					}
+					break;
+					
+				default:
+					break;
+			}
+
+			#if ($_partID == '') _debug_array($retData);
+			
+			return $retData;
 		}
 		
 		function restoreSessionData()
@@ -1076,7 +1230,7 @@
 			#$this->mailPreferences['imapServerAddress']
 			#$this->mailPreferences['imapPort'],
 			
-			$folderName = imap_utf7_encode($_folderName);
+			$folderName = $this->encodeFolderName($_folderName);
 			$folderName = "{".$this->mailPreferences['imapServerAddress'].":".$this->mailPreferences['imapPort']."}".$folderName;
 			
 			if($_status == 'unsubscribe')
@@ -1101,7 +1255,7 @@
 			}
 			$this->saveSessionData();
 		}
-		
+
 		function validate_email($_emailAddress)
 		{
 			if($val != "")

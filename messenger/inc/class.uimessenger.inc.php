@@ -24,7 +24,8 @@
 			'compose_global' => True,
 			'read_message'   => True,
 			'reply'          => True,
-			'forward'        => True
+			'forward'        => True,
+			'delete'         => True
 		);
 
 		function uimessenger()
@@ -54,6 +55,7 @@
 			$this->template->fp('app_header','global_header');
 
 			$GLOBALS['phpgw']->common->phpgw_header();
+			echo parse_navbar();
 		}
 
 		function set_common_langs()
@@ -69,11 +71,19 @@
 			$this->template->set_var('lang_date',lang('Date'));
 		}
 
+		function delete()
+		{
+			$messages = $GLOBALS['HTTP_GET_VARS']['messages'] ? $GLOBALS['HTTP_GET_VARS']['messages'] : $GLOBALS['HTTP_POST_VARS']['messages'];
+			$this->bo->delete_message($messages);
+
+			$this->inbox();
+		}
+
 		function inbox()
 		{
-			$start = get_var('start',Array('POST','GET'));
-			$order = get_var('order',Array('POST','GET'));
-			$sort  = get_var('sort',Array('POST','GET'));
+			$start = $GLOBALS['HTTP_GET_VARS']['start'] ? $GLOBALS['HTTP_GET_VARS']['start'] : $GLOBALS['HTTP_POST_VARS']['start'];
+			$order = $GLOBALS['HTTP_GET_VARS']['order'] ? $GLOBALS['HTTP_GET_VARS']['order'] : $GLOBALS['HTTP_POST_VARS']['order'];
+			$sort  = $GLOBALS['HTTP_GET_VARS']['sort']  ? $GLOBALS['HTTP_GET_VARS']['sort']  : $GLOBALS['HTTP_POST_VARS']['sort'];
 			$total = $this->bo->total_messages();
 
 			$extra_menuaction = '&menuaction=messenger.uimessenger.inbox';
@@ -92,15 +102,25 @@
 			$this->template->set_var('sort_subject','<a href="' . $this->nextmatchs->show_sort_order($sort,'message_subject',$order,'/index.php','','&menuaction=messenger.uimessenger.inbox',False) . '" class="topsort">' . lang('Subject') . '</a>');
 			$this->template->set_var('sort_from','<a href="' . $this->nextmatchs->show_sort_order($sort,'message_from',$order,'/index.php','','&menuaction=messenger.uimessenger.inbox',False) . '" class="topsort">' . lang('From') . '</a>');
 
-			$messages = $this->bo->read_inbox($start,$order,$sort);
+			$params = array(
+				'start' => $start,
+				'order' => $order,
+				'sort'  => $sort
+			);
+			$messages = $this->bo->read_inbox($params);
 
 			while (is_array($messages) && list(,$message) = each($messages))
 			{
-				$this->template->set_var('row_status',$message['status']);
+				$status = $message['status'] . '-';
+				if ($message['status'] == 'N' || $message['status'] == 'O')
+				{
+					$status = '&nbsp;';
+				}
+
 				$this->template->set_var('row_from',$message['from']);
 				$this->template->set_var('row_date',$message['date']);
 				$this->template->set_var('row_subject','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.read_message&message_id=' . $message['id']) . '">' . $message['subject'] . '</a>');
-				$this->template->set_var('row_status',$message['status']);
+				$this->template->set_var('row_status',$status);
 				$this->template->set_var('row_checkbox','<input type="checkbox" name="messages[]" value="' . $message['id'] . '">');
 
 				$this->template->fp('rows','row',True);
@@ -109,11 +129,11 @@
 			if (! is_array($messages))
 			{
 				$this->template->set_var('lang_empty',lang('You have no messages'));
-				$this->template->fp('rows','row_empty',True);
+				$this->template->fp('rows','row_empty',True);				
 			}
 			else
 			{
-				$this->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=messenger.bomessenger.delete_message'));
+				$this->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.delete'));
 				$this->template->set_var('button_delete','<input type="image" src="' . PHPGW_IMAGES . '/delete.gif" name="delete" title="' . lang('Delete selected') . '" border="0">');
 			}
 
@@ -167,7 +187,7 @@
 
 		function compose($errors = '')
 		{
-			$message = get_var('message',Array('POST'));
+			$message = $GLOBALS['HTTP_POST_VARS']['message'];
 
 			$this->display_headers();
 			$this->set_compose_read_blocks();
@@ -185,10 +205,8 @@
 			$this->template->set_var('value_subject','<input name="message[subject]" value="' . $message['subject'] . '" size="30">');
 			$this->template->set_var('value_content','<textarea name="message[content]" rows="20" wrap="hard" cols="76">' . $message['content'] . '</textarea>');
 
-			$gdbutton = CreateObject('phpgwapi.gdbutton');
-
-			$this->template->set_var('button_send',$gdbutton->input_button(array('font_text' => lang('send'),'button_name' => 'send')));
-			$this->template->set_var('button_cancel',$gdbutton->input_button(array('font_text' => lang('cancel'),'button_name' => 'cancel')));
+			$this->template->set_var('button_send','<input type="submit" name="send" value="' . lang('Send') . '">');
+			$this->template->set_var('button_cancel','<input type="submit" name="cancel" value="' . lang('Cancel') . '">');
 
 			$this->template->fp('to','form_to');
 			$this->template->fp('buttons','form_buttons');
@@ -197,7 +215,7 @@
 
 		function read_message()
 		{
-			$message_id = get_var('message_id',Array('POST','GET'));
+			$message_id = $GLOBALS['HTTP_GET_VARS']['message_id'] ? $GLOBALS['HTTP_GET_VARS']['message_id'] : $GLOBALS['HTTP_POST_VARS']['message_id'];
 			$message = $this->bo->read_message($message_id);
 
 			$this->display_headers();
@@ -212,7 +230,7 @@
 			$this->template->set_var('value_content','<pre>' . $GLOBALS['phpgw']->strip_html($message['content']) . '</pre>');
 
 			$this->template->set_var('link_delete','<a href="'
-					. $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.bomessenger.delete_message&messages%5B%5D=' . $message['id'])
+					. $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.delete&messages%5B%5D=' . $message['id'])
 					. '">' . lang('Delete') . '</a>');
 
 			$this->template->set_var('link_reply','<a href="'
@@ -225,9 +243,9 @@
 
 			switch($message['status'])
 			{
-				case 'N': $this->template->set_var('value_status',lang('New'));       break;
-				case 'R': $this->template->set_var('value_status',lang('Replied'));   break;
-				case 'F': $this->template->set_var('value_status',lang('Forwarded')); break;
+				case 'N': $this->template->set_var('value_status',lang('New'));		break;
+				case 'R': $this->template->set_var('value_status',lang('Replied'));	break;
+				case 'F': $this->template->set_var('value_status',lang('Forwarded'));	break;
 			}
 
 			if ($message['global_message'])
@@ -236,7 +254,7 @@
 			}
 			else
 			{
-				$this->template->fp('read_buttons','form_read_buttons');
+				$this->template->fp('read_buttons','form_read_buttons');			
 			}
 
 			$this->template->fp('date','form_date');
@@ -246,7 +264,7 @@
 
 		function reply($errors = '', $message = '')
 		{
-			$message_id = get_var('message_id',Array('POST','GET'));
+			$message_id = $GLOBALS['HTTP_GET_VARS']['message_id'] ? $GLOBALS['HTTP_GET_VARS']['message_id'] : $GLOBALS['HTTP_POST_VARS']['message_id'];
 
 			if(is_array($errors))
 			{
@@ -285,7 +303,7 @@
 
 		function forward($errors = '', $message = '')
 		{
-			$message_id = get_var('message_id',Array('POST','GET'));
+			$message_id = $GLOBALS['HTTP_GET_VARS']['message_id'] ? $GLOBALS['HTTP_GET_VARS']['message_id'] : $GLOBALS['HTTP_POST_VARS']['message_id'];
 
 			if(is_array($errors))
 			{

@@ -25,7 +25,7 @@
 				'sender_address'=> array('type' => 'varchar', 'precision' => 120),
 				'to_name'	=> array('type' => 'varchar', 'precision' => 120),
 				'to_address'	=> array('type' => 'varchar', 'precision' => 120),
-				'date'		=> array('type' => 'timestamp'),
+				'date'		=> array('type' => 'varchar', 'precision' => 120),
 				'size'		=> array('type' => 'int', 'precision' => 4),
 				'attachments'	=> array('type' => 'varchar', 'precision' =>120)
 			),

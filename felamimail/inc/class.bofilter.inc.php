@@ -17,7 +17,7 @@
 	{
 		var $public_functions = array
 		(
-			'updateImapStatus'	=> True,
+			'getActiveFilter'	=> True,
 			'flagMessages'		=> True
 		);
 
@@ -27,10 +27,20 @@
 			
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
 			$this->sofelamimail	= CreateObject('felamimail.sofelamimail');
+			$this->sofilter		= CreateObject('felamimail.sofilter');
 			
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
+			$this->sessionData['activeFilter'] = "-1";
 			
 			$this->restoreSessionData();
+			
+			if(!is_array($this->sessionData['filter']))
+			{
+				$this->sessionData['filter'][0]['filterName'] = lang('Quicksearch');
+				$this->saveSessionData();
+			}
+			if(!isset($this->sessionData['activeFilter']))
+				$this->sessionData['activeFilter'] = "-1";
 		}
 		
 		function deleteFilter($_filterID)
@@ -38,7 +48,12 @@
 			unset($this->sessionData['filter'][$_filterID]);
 			$this->saveSessionData();
 		}
-
+		
+		function getActiveFilter()
+		{
+			return $this->sessionData['activeFilter'];
+		}
+		
 		function getFilterList()
 		{
 			return $this->sessionData['filter'];
@@ -46,7 +61,40 @@
 		
 		function restoreSessionData()
 		{
-			$this->sessionData = $GLOBALS['phpgw']->session->appsession('session_data');
+			$arrayFunctions = CreateObject('phpgwapi.arrayfunctions');
+
+			$this->sessionData = $GLOBALS['phpgw']->session->appsession('filter_session_data');
+
+			// sort the filter list
+			$unsortedFilter = $this->sofilter->restoreFilter();
+			
+			// save the quicksearchfilter
+			// must always have id=0
+			if(is_array($unsortedFilter[0]))
+			{
+				$quickSearchFilter[0] = $unsortedFilter[0];
+				unset($unsortedFilter[0]);
+			}
+			// or create the array
+			else
+			{
+				$quickSearchFilter[0] = array('filterName' => lang('quicksearch'));
+			}
+			
+			// _debug_array($this->sessionData['filter']);
+			// the first one is always the quicksearch filter
+			if(count($unsortedFilter) > 0)
+			{
+				$sortedFilter = $arrayFunctions->arfsort($unsortedFilter, array('filterName'));
+				$sortedFilter = array_merge($quickSearchFilter, $sortedFilter);
+			}
+			else
+			{
+				$sortedFilter = $quickSearchFilter;
+			}
+			#_debug_array($sortedFilter);
+
+			$this->sessionData['filter'] = $sortedFilter;
 		}
 		
 		function saveFilter($_formData, $_filterID='')
@@ -63,6 +111,12 @@
 			{
 				$data['filterActive']= "true";
 			}
+			
+			if(!is_array($this->sessionData['filter']))
+			{
+				print "<font color=\"red\">reset array</font><br>";
+				$this->sessionData['filter'] = array();
+			}
 
 			if($_filterID == '')
 			{
@@ -72,24 +126,49 @@
 			{
 				$this->sessionData['filter'][$_filterID] = $data;
 			}
+			
 			$this->saveSessionData();
-		}
-		function saveSessionData()
-		{
-			$GLOBALS['phpgw']->session->appsession('session_data','',$this->sessionData);
+			
+			$this->sofilter->saveFilter($this->sessionData['filter']);
 		}
 		
-		function toggleFilter()
+		function saveSessionData()
 		{
-			if($this->sessionData['filter']['filterActive'] == 'true')
+			$GLOBALS['phpgw']->session->appsession('filter_session_data','',$this->sessionData);
+		}
+		
+		function setActiveFilter($_filter)
+		{
+			$this->sessionData['activeFilter'] = "$_filter";
+			$this->saveSessionData();
+		}
+		
+		function updateFilter($_data)
+		{
+			$filter = $this->getFilterList();
+			$activeFilter = $this->getActiveFilter();
+			
+			// check for new quickfilter
+			if($activeFilter == $_data['filter'] && isset($_data['quickSearch']))
 			{
-				$this->sessionData['filter']['filterActive'] = 'false';
+				#print "&nbsp;new Quickfilter $_quickSearch<br>";
+				if($_data['quickSearch'] == '')
+				{
+					$this->setActiveFilter("-1");
+				}
+				else
+				{
+					$this->setActiveFilter("0");
+					$data['filterName']	= lang('Quicksearch');
+					$data['subject']	= $_data['quickSearch'];
+					$data['from']		= $_data['quickSearch'];
+					$this->saveFilter($data, '0');
+				}
 			}
 			else
 			{
-				$this->sessionData['filter']['filterActive'] = 'true';
+				$this->setActiveFilter($_data['filter']);
 			}
-			$this->saveSessionData();
 		}
 	}
 

@@ -2,11 +2,12 @@
 	/*******************************************************************\
 	* phpGroupWare - Projects                                           *
 	* http://www.phpgroupware.org                                       *
+	* This program is part of the GNU project, see http://www.gnu.org/	*
 	*                                                                   *
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000 - 2003 Bettina Gille                           *
+	* Copyright 2000 - 2003 Free Software Foundation, Inc               *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -23,6 +24,7 @@
 	* Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.         *
 	\*******************************************************************/
 	/* $Id$ */
+	// $Source$
 
 	class boprojects
 	{
@@ -72,6 +74,7 @@
 			$this->so		= CreateObject('projects.soprojects');
 			$this->sohours	= CreateObject('projects.soprojecthours');
 			$this->contacts	= CreateObject('phpgwapi.contacts');
+			$this->cats		= CreateObject('phpgwapi.categories');
 
 			if ($session)
 			{
@@ -162,8 +165,8 @@
 
 			$cached_data[$this->accounts->data['account_id']]['account_id']		= $this->accounts->data['account_id'];
 			$cached_data[$this->accounts->data['account_id']]['account_lid']	= $this->accounts->data['account_lid'];
-			$cached_data[$this->accounts->data['account_id']]['firstname']   	= $this->accounts->data['firstname'];
-			$cached_data[$this->accounts->data['account_id']]['lastname']    	= $this->accounts->data['lastname'];
+			$cached_data[$this->accounts->data['account_id']]['firstname']		= $this->accounts->data['firstname'];
+			$cached_data[$this->accounts->data['account_id']]['lastname']		= $this->accounts->data['lastname'];
 
 			return $cached_data;
 		}
@@ -311,6 +314,34 @@
 			return $employees;
 		}
 
+		function get_acl_for_project($project_id)
+		{
+			return $GLOBALS['phpgw']->acl->get_ids_for_location($project_id, 7);
+		}
+
+		function selected_employees($project_id)
+		{
+			$emps = $this->get_acl_for_project($project_id);
+
+			if (is_array($emps))
+			{
+				for($i=0;$i<count($emps);$i++)
+				{
+					$this->accounts = CreateObject('phpgwapi.accounts',$emps[$i]);
+					$this->accounts->read_repository();
+
+					$empl[] = array
+					(
+						'account_id'		=> $this->accounts->data['account_id'],
+						'account_lid'		=> $this->accounts->data['account_lid'],
+						'account_firstname'	=> $this->accounts->data['firstname'],
+						'account_lastname'	=> $this->accounts->data['lastname']
+					);
+				}
+			}
+			return $empl;
+		}
+
 		function read_admins($action, $type)
 		{ 
 			$admins = $this->so->return_admins($action, $type);
@@ -389,9 +420,21 @@
 			return $admin;
 		}
 
-		function list_projects($start, $limit, $query, $filter, $sort, $order, $status, $cat_id, $type, $pro_parent)
+		function list_projects($type, $parent)
 		{
-			$pro_list = $this->so->read_projects($start, $limit, $query, $filter, $sort, $order, $status, $cat_id, $type, $pro_parent);
+			$pro_list = $this->so->read_projects(array
+									(
+										'start'		=> $this->start,
+										'limit'		=> True,
+										'query'		=> $this->query,
+										'filter'	=> $this->filter,
+										'sort'		=> $this->sort,
+										'order'		=> $this->order,
+										'status'	=> $this->status,
+										'cat_id'	=> $this->cat_id,
+										'type'		=> $type,
+										'parent'	=> $parent
+									));
 
 			while (is_array($pro_list) && list(,$pro)=each($pro_list))
 			{
@@ -399,7 +442,7 @@
 				$coordinatorout = $GLOBALS['phpgw']->strip_html($cached_data[$pro['coordinator']]['account_lid']
                                         . ' [' . $cached_data[$pro['coordinator']]['firstname'] . ' '
                                         . $cached_data[$pro['coordinator']]['lastname'] . ' ]');
-				if ($pro['customer'])
+				/*if ($pro['customer'])
 				{
 					$customer = $this->read_single_contact($pro['customer']);
             		if ($customer[0]['org_name'] == '') { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
@@ -407,7 +450,19 @@
 				}
 
 				$pro['sdate'] = $pro['sdate'] + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
-				$sdateout = $GLOBALS['phpgw']->common->show_date($pro['sdate'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+				$sdateout = $GLOBALS['phpgw']->common->show_date($pro['sdate'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);*/
+
+				$mlist = '';
+				$mstones = $this->get_mstones($pro['project_id']);
+				if (is_array($mstones))
+				{
+					$mlist = '<table width="100%" border="0" cellpadding="0" cellspacing="0">' . "\n";
+					for ($i=0;$i<count($mstones);$i++)
+					{
+						$mlist .= '<tr><td width="50%">' . $mstones[$i]['title'] . '</td><td width="50%" align="right">' . $this->formatted_edate($mstones[$i]['edate']) . '</td></tr>' . "\n";
+					}
+					$mlist .= '</table>';
+				}
 
 				$projects[] = array
 				(
@@ -424,7 +479,9 @@
 					'budget'			=> $pro['budget'],
 					'pcosts'			=> $pro['pcosts'],
 					'edate'				=> $pro['edate'],
-					'status'			=> $pro['status']
+					'status'			=> $pro['status'],
+					'level'				=> $pro['level'],
+					'mstones'			=> $mlist
 				);
 			}
 
@@ -763,18 +820,26 @@
 
 			//_debug_array($values);
 
-			if ($values['project_id'])
+			if (intval($values['project_id']) > 0)
 			{
-				if ($values['project_id'] != 0)
-				{
-					$this->so->edit_project($values, $book_activities, $bill_activities);
-					return $values['project_id'];
-				}
+				$this->so->edit_project($values, $book_activities, $bill_activities);
 			}
 			else
 			{
-				return $this->so->add_project($values, $book_activities, $bill_activities);
+				$values['project_id'] = $this->so->add_project($values, $book_activities, $bill_activities);
 			}
+
+			$values['project_id'] = intval($values['project_id']);
+
+			if (is_array($values['employees']))
+			{
+				$this->so->delete_acl($values['project_id']);
+				for($i=0;$i<count($values['employees']);$i++)
+				{
+					$GLOBALS['phpgw']->acl->add_repository('projects',$values['project_id'],$values['employees'][$i],7);
+				}
+			}
+			return $values['project_id'];
 		}
 
 		function save_activity($values)
@@ -803,10 +868,9 @@
 			}
 		}
 
-		function select_project_list($type, $status, $project_id)
+		function select_project_list($values)
 		{
-			$list = $this->so->select_project_list($type, $status, $project_id);
-			return $list;
+			return $this->so->select_project_list($values);
 		}
 
 		function delete_pa($action, $pa_id, $subs)
@@ -824,6 +888,77 @@
 		function change_owner($old, $new)
 		{
 			$this->so->change_owner($old, $new);
+		}
+
+		function get_mstones($project_id)
+		{
+			$mstones = $this->so->get_mstones($project_id);
+
+			while (is_array($mstones) && list(,$ms) = each($mstones))
+			{
+				$stones[] = array
+				(
+					'title'		=> $GLOBALS['phpgw']->strip_html($ms['title']),
+					'edate'		=> $ms['edate'],
+					's_id'		=> $ms['s_id']
+				);
+			}
+			return $stones;
+		}
+
+		function get_single_mstone($s_id)
+		{
+			return $this->so->get_single_mstone($s_id);
+		}
+
+		function save_mstone($values)
+		{
+			$values['edate'] = mktime(0,0,0,$values['emonth'],$values['eday'],$values['eyear']);
+
+			if ($values['s_id'] && $values['s_id'] > 0)
+			{
+				$this->so->edit_mstone($values);
+			}
+			else
+			{
+				return $this->so->add_mstone($values);
+			}
+		}
+
+		function delete_mstone($s_id)
+		{
+			$this->so->delete_mstone($s_id);
+		}
+
+		function formatted_edate($edate = '')
+		{
+			$edate = intval($edate);
+
+			$month  = $GLOBALS['phpgw']->common->show_date(time(),'n');
+			$day    = $GLOBALS['phpgw']->common->show_date(time(),'d');
+			$year   = $GLOBALS['phpgw']->common->show_date(time(),'Y');
+
+			if ($edate > 0)
+			{
+				$edate = $edate + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+				$edateout = $GLOBALS['phpgw']->common->show_date($edate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+			}
+
+			if (mktime(2,0,0,$month,$day,$year) == $edate)
+			{
+				$edateout = '<b>' . $edateout . '</b>';
+			}
+			if (mktime(2,0,0,$month,$day,$year) >= $edate)
+			{
+				$edateout = '<font color="CC0000"><b>' . $edateout . '</b></font>';
+			}
+
+			return $edateout;
+		}
+
+		function member($project_id = '')
+		{
+			return $this->so->member($project_id);
 		}
 	}
 ?>

@@ -9,13 +9,15 @@
 	*  Free Software Foundation; either version 2 of the License, or (at your  *
 	*  option) any later version.                                              *
 	\**************************************************************************/
+
 	/* $Id$ */
-	{
-		$file = Array
-		(
-			'Voting Booth Admin' => $GLOBALS['phpgw']->link('/polls/admin.php')
-		);
+{
+// Only Modify the $file and $title variables.....
+	$title = $appname;
+	$file = Array(
+		'Voting Booth Admin' => $GLOBALS['phpgw']->link('/polls/admin.php')
+	);
 //Do not modify below this line
-		$GLOBALS['phpgw']->common->display_mainscreen($appname,$file);
-	}
+	display_section($appname,$title,$file);
+}
 ?>

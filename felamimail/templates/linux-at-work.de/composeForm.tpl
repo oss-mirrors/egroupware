@@ -86,20 +86,16 @@
 </tr>
 </table>
 
-<script language="javascript1.2">
-<!--
-// position cursor in top form field
-document.doit.to.focus();
-//-->
-</script>
-
 <!-- END header -->
 
 <!-- BEGIN body_input -->
 <table width="98%" border="0" cellspacing="0" cellpading="0">
 <tr>
-	<td class="body" colspan="2">
-		&nbsp;<br>
+	<td class="body">
+		&nbsp;
+	</td>
+	<td class="body" colspan="1">
+		{errorInfo}<br>
 	</td>
 </tr>
 <tr>
@@ -124,6 +120,14 @@ document.doit.to.focus();
 	</td>
 </tr>
 </table>
+
+<script language="javascript1.2">
+<!--
+// position cursor in top form field
+document.doit.{focusElement}.focus();
+//-->
+</script>
+
 <!-- END body_input -->
 
 <!-- BEGIN attachment -->

@@ -12,7 +12,7 @@ All Folders	felamimail	pt	Todas as pastas
 as a subfolder of	felamimail	pt	como subpasta de
 Attachments	felamimail	pt	Anexos
 Auto refresh folder list	felamimail	pt	Autoatualizar lista de pastas
-Bad request: %1	felamimail	pt	Pedido inválido: %1
+Bad request	felamimail	pt	Pedido inválido
 Based upon given criteria, incoming messages can have different background colors in the message list.  This helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	pt	Baseado em criterias dadas, mensagens de entrada podem ter cores de fundo diferentes na lista de mensagens.  Isso ajuda facilmente distinguir de quem são as mensagens, particularmente no caso de listas de mensagens.
 Before headers	felamimail	pt	Antes dos headers
 Between headers and message body	felamimail	pt	Entre cabeçalho e corpo da mensagem
@@ -55,7 +55,7 @@ E-mail address	felamimail	pt	Endereço de email
 E-Mail Address	felamimail	pt	Endereço de email
 E-mail	felamimail	pt	EMail
 empty trash	felamimail	pt	Lixo (trash) vazil
-Error connecting to IMAP server: %1.	felamimail	pt	Erro na conexão ao servidor IMAP: %1.
+Error connecting to IMAP server	felamimail	pt	Erro na conexão ao servidor IMAP
 Error opening 	felamimail	pt	Erro abrindo 
 ERROR	felamimail	pt	ERRO
 ERRO	felamimail	pt	ERRO

@@ -13,6 +13,7 @@
 
 	/* Basic information about this app */
 	$setup_info['headlines']['name']      = 'headlines';
+	$setup_info['headlines']['title']     = 'Headlines';
 	$setup_info['headlines']['version']   = '0.8.1.001';
 	$setup_info['headlines']['app_order'] = 19;
 	$setup_info['headlines']['enable']    = 1;
@@ -31,17 +32,14 @@
 	);
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['headlines']['hooks'][] = 'home';
-	$setup_info['headlines']['hooks'][] = 'admin';
-	$setup_info['headlines']['hooks'][] = 'manual';
-	$setup_info['headlines']['hooks'][] = 'settings';
-	$setup_info['headlines']['hooks'][] = 'preferences';
-	$setup_info['headlines']['hooks'][] = 'website_left';
-	$setup_info['headlines']['hooks'][] = 'website_right';
+	$setup_info['headlines']['hooks'][]   = 'admin';
+	$setup_info['headlines']['hooks'][]   = 'manual';
+	$setup_info['headlines']['hooks'][]   = 'settings';
+	$setup_info['headlines']['hooks'][]   = 'preferences';
 
 	/* Dependencies for this app to work */
 	$setup_info['headlines']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.15','0.9.16')
+		'versions' => Array('0.9.13', '0.9.14')
 	);
 ?>

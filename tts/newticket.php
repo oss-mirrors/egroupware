@@ -1,18 +1,20 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - Trouble Ticket System                                     *
-  * http://www.phpgroupware.org                                              *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare - Trouble Ticket System                                     *
+	* http://www.phpgroupware.org                                              *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
-  /* $Id$ */
+	// $Id$
+	// $Source$
 
 	$submit = $HTTP_POST_VARS['submit'];
-	if ($submit || $cancel)
+	$cancel = $HTTP_POST_VARS['cancel'];
+	if($submit || $cancel)
 	{
 		$GLOBALS['phpgw_info']['flags'] = array(
 			'noheader' => True,
@@ -27,16 +29,19 @@
 
 	include('../header.inc.php');
 
-	if ($cancel)
+	$GLOBALS['phpgw']->config->read_repository();
+
+	if($cancel)
 	{
-		$phpgw->redirect($phpgw->link('/tts/index.php'));
+		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/tts/index.php'));
 	}
 
-	if ($submit)
+	if($submit)
 	{
-		$phpgw->db->query("insert into phpgw_tts_tickets (ticket_group,ticket_priority,ticket_owner,"
+		$GLOBALS['phpgw']->db->query("insert into phpgw_tts_tickets (ticket_group,ticket_priority,ticket_owner,"
 			. "ticket_assignedto,ticket_subject,ticket_category,ticket_billable_hours,"
-			. "ticket_billable_rate,ticket_status,ticket_details) values ('0','"
+			. "ticket_billable_rate,ticket_status,ticket_details) values ('"
+                        . $ticket['group'] . "','"
 			. $ticket['priority'] . "','"
 			. $GLOBALS['phpgw_info']['user']['account_id'] . "','"
 			. $ticket['assignedto'] . "','"
@@ -46,46 +51,46 @@
 			. $ticket['billable_rate'] . "','O','"
 			. addslashes($ticket['details']) . "')",__LINE__,__FILE__);
 
-		$ticket_id = $phpgw->db->get_last_insert_id('phpgw_tts_tickets','ticket_id');
+		$ticket_id = $GLOBALS['phpgw']->db->get_last_insert_id('phpgw_tts_tickets','ticket_id');
 
 		$historylog = createobject('phpgwapi.historylog','tts');
-		$historylog->add('O',$ticket_id,'');
+		$historylog->add('O',$ticket_id,' ','');
 
-		if ($GLOBALS['phpgw_info']['server']['tts_mailticket'])
+		if($GLOBALS['phpgw']->config->config_data['mailnotification'])
 		{
 			mail_ticket($ticket_id);
 		}
 
-		$phpgw->redirect($phpgw->link('/tts/viewticket_details.php','&ticket_id=' . $ticket_id));
+		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/tts/viewticket_details.php','&ticket_id=' . $ticket_id));
 	}
-
 
 	$account_selected  = array();
 	$entry_selected    = array();
 	$priority_selected = array();
 	$priority_comment  = array();
 
-	if (! $submit)
+	if(!$submit)
 	{
 		$GLOBALS['phpgw']->preferences->read_repository();
-		if ($GLOBALS['phpgw_info']['user']['preferences']['tts']['groupdefault'])
+		if($GLOBALS['phpgw_info']['user']['preferences']['tts']['groupdefault'])
 		{
-			$entry_selected[$GLOBALS['phpgw_info']['user']['preferences']['tts']['groupdefault']]=' selected';
+			$entry_selected[$GLOBALS['phpgw_info']['user']['preferences']['tts']['groupdefault']] = ' selected';
 		}
 
-		if ($GLOBALS['phpgw_info']['user']['preferences']['tts']['assigntodefault'])
+		if($GLOBALS['phpgw_info']['user']['preferences']['tts']['assigntodefault'])
 		{
-			$account_selected[$GLOBALS['phpgw_info']['user']['preferences']['tts']['assigntodefault']]=' selected';
+			$account_selected[$GLOBALS['phpgw_info']['user']['preferences']['tts']['assigntodefault']] = ' selected';
 		}
 
-		if ($GLOBALS['phpgw_info']['user']['preferences']['tts']['prioritydefault'])
+		if($GLOBALS['phpgw_info']['user']['preferences']['tts']['prioritydefault'])
 		{
-			$priority_selected[$GLOBALS['phpgw_info']['user']['preferences']['tts']['prioritydefault']]=' selected';
+			$priority_selected[$GLOBALS['phpgw_info']['user']['preferences']['tts']['prioritydefault']] = ' selected';
 		}
 
 		$GLOBALS['phpgw']->template->set_file(array(
 			'newticket'   => 'newticket.tpl'
 		));
+		$GLOBALS['phpgw']->template->set_block('newticket','options_select');
 		$GLOBALS['phpgw']->template->set_block('newticket','form');
 
 		$GLOBALS['phpgw']->template->set_var('lang_create_new_ticket',lang('Create new ticket'));
@@ -120,13 +125,16 @@
 
 		unset($s);
 		$groups = CreateObject('phpgwapi.accounts');
-		$group_list = $groups->get_list('groups');
-		while (list($key,$entry) = each($group_list))
+		$group_list = array();
+		$group_list = $GLOBALS['phpgw']->accounts->membership($GLOBALS['phpgw_info']['user']['account_id']);
+
+		while(list($key,$entry) = each($group_list))
 		{
-			$s .= '<option value="' . $entry['account_id'] . '" ' . $entry_selected[$entry['account_lid']]
-				. '>' . $entry['account_lid'] . '</option>';
+			$GLOBALS['phpgw']->template->set_var('optionname', $entry['account_name']);
+			$GLOBALS['phpgw']->template->set_var('optionvalue', $entry['account_id']);
+			$GLOBALS['phpgw']->template->set_var('optionselected', $tag);
+			$GLOBALS['phpgw']->template->parse('options_group','options_select',true);
 		}
-		$GLOBALS['phpgw']->template->set_var('value_group','<select name="ticket[group]">' . $s . '</select>');
 
 		$s = '<select name="ticket[category]">' . $GLOBALS['phpgw']->categories->formated_list('select','',$group,True) . '</select>';
 		$GLOBALS['phpgw']->template->set_var('value_category',$s);
@@ -135,9 +143,9 @@
 		$accounts = $groups;
 		$accounts->account_id = $group_id;
 		$account_list = $accounts->get_list('accounts');
-		while (list($key,$entry) = each($account_list))
+		while(list($key,$entry) = each($account_list))
 		{
-			$s .= '<option value="' . $entry['account_id'] . '" ' . $entry_selected[$entry['account_lid']]
+			$s .= '<option value="' . $entry['account_id'] . '" ' . $account_selected[$entry['account_lid']]
 				. '>' . $entry['account_lid'] . '</option>';
 		}
 		$GLOBALS['phpgw']->template->set_var('value_assignedto','<select name="ticket[assignedto]">' . $s . '</select>');
@@ -147,10 +155,10 @@
 
 		// Choose the correct priority to display
 		$prority_selected[$ticket['priority']] = ' selected';
-		$priority_comment[1]=' - '.lang('Lowest');
-		$priority_comment[5]=' - '.lang('Medium');
-		$priority_comment[10]=' - '.lang('Highest');
-		for ($i=1; $i<=10; $i++)
+		$priority_comment[1]  = ' - '.lang('Lowest');
+		$priority_comment[5]  = ' - '.lang('Medium');
+		$priority_comment[10] = ' - '.lang('Highest');
+		for($i=1; $i<=10; $i++)
 		{
 			$priority_select .= '<option value="' . $i . '">' . $i . $priority_comment[$i] . '</option>';
 		}
@@ -159,12 +167,11 @@
 		$GLOBALS['phpgw']->template->set_var('tts_select_options','');
 		$GLOBALS['phpgw']->template->set_var('tts_new_lstcategory','');
 		$GLOBALS['phpgw']->template->set_var('tts_new_lstassignto','');
-	
+
 		$GLOBALS['phpgw']->template->pfp('out','form');
 		$GLOBALS['phpgw']->common->phpgw_footer();
 	}
 	else
 	{
-
 	}
 ?>

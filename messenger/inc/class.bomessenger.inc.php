@@ -18,7 +18,6 @@
 	{
 		var $so;
 		var $public_functions = array(
-			'delete_message'      => True,
 			'send_message'        => True,
 			'send_global_message' => True,
 			'reply'               => True,
@@ -26,10 +25,44 @@
 			'list_methods'        => True
 		);
 		var $soap_functions = array();
+		var $xmlrpc_methods = array();
 
 		function bomessenger()
 		{
 			$this->so = createobject('messenger.somessenger');
+
+			$this->xmlrpc_methods[] = array(
+				'name'        => 'read_inbox',
+				'description' => 'This will return an struct within an array of users inbox (Note: If you want raw, unformated values, use messenger.somessenger.read_inbox)',
+				'author'      => 'Joseph Engo <jengo@phpgroupware.org>',
+				'params'      => 'Struct: start => (int), order => (string), sort -> (string)',
+				'type'        => 'array'
+			);
+			$this->xmlrpc_methods[] = array(
+				'name'        => 'send_global_messsage',
+				'description' => 'Send a global message to all users'
+			);
+			$this->xmlrpc_methods[] = array(
+				'name'        => 'send',
+				'description' => 'Create a new message'
+			);
+			$this->xmlrpc_methods[] = array(
+				'name'        => 'update_message_status',
+				'description' => 'Update a message status'
+			);
+			$this->xmlrpc_methods[] = array(
+				'name'        => 'delete_message',
+				'description' => 'Deletes messages'
+			);
+			$this->xmlrpc_methods[] = array(
+				'name'        => 'total_messages',
+				'description' => 'Returns the number of messages in the inbox'
+			);
+		}
+
+		function update_message_status($p)
+		{
+			return $this->so->update_message_status($p['status'],$p['message_id']);
 		}
 
 		function send_global_message($data='')
@@ -42,9 +75,9 @@
 			}
 			else
 			{
-				$message = get_var('message',Array('POST'));
-				$send    = get_var('send',Array('POST'));
-				$cancel  = get_var('cancel',Array('POST'));
+				$message = $GLOBALS['HTTP_POST_VARS']['message'];
+				$send    = $GLOBALS['HTTP_POST_VARS']['send'];
+				$cancel  = $GLOBALS['HTTP_POST_VARS']['cancel'];
 			}
 
 			if (! $GLOBALS['phpgw']->acl->check('run',1,'admin') || $cancel)
@@ -129,9 +162,9 @@
 			}
 			else
 			{
-				$message = get_var('message',Array('POST'));
-				$send    = get_var('send',Array('POST'));
-				$cancel  = get_var('cancel',Array('POST'));
+				$message = $GLOBALS['HTTP_POST_VARS']['message'];
+				$send    = $GLOBALS['HTTP_POST_VARS']['send'];
+				$cancel  = $GLOBALS['HTTP_POST_VARS']['cancel'];
 			}
 
 			if ($cancel)
@@ -154,9 +187,13 @@
 			}
 		}
 
-		function read_inbox($start,$order,$sort)
+		function read_inbox($values)
 		{
-			$messages = $this->so->read_inbox($start,$order,$sort);
+			$start = $values['start'];
+			$order = $values['order'];
+			$sort  = $values['sort'];
+
+			$messages = $this->so->read_inbox((int)$start,$order,$sort);
 
 			while (is_array($messages) && list(,$message) = each($messages))
 			{
@@ -184,7 +221,7 @@
 				if ($message['status'] == 'N')
 				{
 					$message['subject'] = '<b>' . $message['subject'] . '</b>';
-					$message['status'] = '&nbsp';
+					//$message['status'] = 'N';
 					$message['date'] = '<b>' . $GLOBALS['phpgw']->common->show_date($message['date']) . '</b>';
 					$message['from'] = '<b>' . $cached_names[$message['from']] . '</b>';
 				}
@@ -196,7 +233,7 @@
 
 				if ($message['status'] == 'O')
 				{
-					$message['status'] = '&nbsp;';
+					//$message['status'] = '&nbsp;';
 				}
 
 				$_messages[] = array(
@@ -204,15 +241,22 @@
 					'from'    => $message['from'],
 					'status'  => $message['status'],
 					'date'    => $message['date'],
-					'subject' => $message['subject']
+					'subject' => $message['subject'],
+					'content' => $message['content']
 				);
 			}
+
+			if (gettype($_messages) == 'NULL')
+			{
+				return array();
+			}
+
 			return $_messages;
 		}
 
 		function read_message($message_id)
 		{
-			$message = $this->so->read_message($message_id);
+			$message = $this->so->read_message((int)$message_id);
 
 			$message['date'] = $GLOBALS['phpgw']->common->show_date($message['date']);
 
@@ -235,7 +279,7 @@
 		{
 			if(!$n_message)
 			{
-				$n_message = get_var('n_message',Array('POST'));
+				$n_message = $GLOBALS['HTTP_POST_VARS']['n_message'];
 			}
 
 			$message = $this->so->read_message($message_id);
@@ -265,31 +309,27 @@
 
 		function delete_message($messages='')
 		{
-			if(!$messages)
-			{
-				$messages = get_var('messages',Array('GET','POST'));
-			}
-
 			if (! is_array($messages))
 			{
-				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.inbox'));
 				return False;
 			}
+
 			$this->so->db->transaction_begin();
 			while (list(,$message_id) = each($messages))
 			{
 				$this->so->delete_message($message_id);
 			}
 			$this->so->db->transaction_commit();
-			Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.inbox'));
+
+			return True;
 		}
 
 		function reply($message_id='',$n_message='')
 		{
 			if(!$message_id)
 			{
-				$message_id = get_var('message_id',Array('POST'));
-				$n_message  = get_var('n_message',Array('POST'));
+				$message_id = $GLOBALS['HTTP_POST_VARS']['message_id'];
+				$n_message  = $GLOBALS['HTTP_POST_VARS']['n_message'];
 			}
 
 			$errors = $this->check_for_missing_fields($n_message);
@@ -310,8 +350,8 @@
 		{
 			if(!$message_id)
 			{
-				$message_id = get_var('message_id',Array('POST'));
-				$n_message  = get_var('n_message',Array('POST'));
+				$message_id = $GLOBALS['HTTP_POST_VARS']['message_id'];
+				$n_message  = $GLOBALS['HTTP_POST_VARS']['n_message'];
 			}
 
 			$errors = $this->check_for_missing_fields($n_message);
@@ -356,18 +396,23 @@
 						),
 						'read_message' => array(
 							'function'  => 'read_message',
-							'signature' => array(array(xmlrpcStruct,xmlrpcString)),
+							'signature' => array(array(xmlrpcStruct,xmlrpcInt)),
 							'docstring' => lang('Read a single message.')
 						),
 						'read_inbox' => array(
 							'function'  => 'read_inbox',
-							'signature' => array(array(xmlrpcStruct,xmlrpcString,xmlrpcString,xmlrpcString)),
+							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
 							'docstring' => lang('Read a list of messages.')
 						),
 						'send_message' => array(
 							'function'  => 'send_message',
 							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
 							'docstring' => lang('Send a message to a single recipient.')
+						),
+						'update_message_status' => array(
+							'function'  => 'update_message_status',
+							'signature' => array(array(xmlrpcBoolean,xmlrpcStruct)),
+							'docstring' => lang('Update a message status')
 						),
 						'send_global_message' => array(
 							'function'  => 'send_global_message',

@@ -6,9 +6,11 @@ Build-Depends: debhelper (>> 3.0.0)
 Standards-Version: 3.5.2
 
 Package: phpgroupware-skel
-Section: web
 Architecture: all
-Depends: phpgroupware (>= ${Source-Version}), php3-pgsql | php3-cgi-pgsql | php4-pgsql | php3-mysql | php3-cgi-mysql | php4-mysql
-Description: The phpGroupWare skeleton module
- This phpGroupWare module provide a base skeleton as starting point to
- create other phpGroupWare modules.
+Depends: phpgroupware-core
+Description: A phpGroupWare skel application
+ This package provides a phpGroupWare compliant example application.
+ It also provides some documentation including:
+ .
+ * HOWTO build a phpGroupWare compliant application
+ * HOWTO build a Debian package for that application

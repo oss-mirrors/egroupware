@@ -1,7 +1,6 @@
 Activate	qmailldap	fr	Activer
 add also to local domains	qmailldap	fr	Ajouter aussi au domaine local
 add server	qmailldap	fr	Ajouter un serveur
-additional settings for qmail	qmailldap	fr	Réglages additionnels pour QMail
 admin dn	qmailldap	fr	DN de l'administrateur
 admin password	qmailldap	fr	Mot de passe de l'administrateur
 advanced options	qmailldap	fr	Options avancées
@@ -17,14 +16,13 @@ email account active	qmailldap	fr	Compte EMail actif
 email address	qmailldap	fr	Adresse EMail
 email settings	admin	fr	Réglages EMail
 forward also to	qmailldap	fr	faire suivre aussi à
+forward email's to	qmailldap	fr	Faire suivre l'EMail à
 forward emails to	qmailldap	fr	Faire suivre les EMails à
-ldap base settings	qmailldap	fr	Réglages de base LDAP
 ldap server	qmailldap	fr	Serveur LDAP
 ldap settings	qmailldap	fr	Réglages LDAP
 no alternate email address	qmailldap	fr	Pas d'adresse EMail secondaire
 options	common	fr	Options
 qmail dn	qmailldap	fr	QMail DN
-qmail settings	qmailldap	fr	Réglages QMail
 qmaildotmode	qmailldap	fr	qmail .mode
 qmailldap	common	fr	QMailLDAP
 remote port	qmailldap	fr	Port distant
@@ -38,5 +36,6 @@ The default interpretation of .qmail files.<br><b>Note:</b> Works only for deliv
 To lookup the local passwd file if the LDAP lookup finds no match. This affects qmail-lspawn and auth_* if the LDAP lookup returns nothing.	qmailldap	fr	Pour rechercher dans le fichier passwd local si la recherce LDAP ne trouve aucune occurrence. Ceci affecte qmail-lspawn et auth_* si la recherche LDAP ne retourne rien.
 userdata	qmailldap	fr	Données utilisateur
 virtual domains	qmailldap	fr	Domaines virtuels
+we do not deliver any email locally !	qmailldap	fr	Nous ne délivrons aucun EMail localement !
 we don't accept any email!	qmailldap	fr	Nous n'acceptons aucun EMail!
 we don't deliver any email local!	qmailldap	fr	Nous ne délivrons pas d'EMail local!

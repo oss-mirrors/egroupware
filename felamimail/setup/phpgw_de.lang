@@ -39,6 +39,7 @@ Index Order	preferences	de	Spaltenanordnung
 Display Preferences	preferences	de	Anzeigeneinstellungen
 Folder Preferences	preferences	de	Ordnereinstellungen
 Manage Folders	preferences	de	Ordner verwalten
+Manage Folders	felamimail	de	Ordner verwalten
 email signature	felamimail	de	EMail Signatur
 empty trash	felamimail	de	Trash-Ordner leeren
 Viewing messages	felamimail	de	zeige Nachrichten
@@ -131,8 +132,48 @@ Refresh time in minutes	felamimail	de	Aktualisierungsinterval in Minuten
 date(oldest first)	felamimail	de	Datum(alte zuerst)
 date(newest first)	felamimail	de	Datum(neue zuerst)
 Manage Sieve	preferences	de	Sieve Scripte verwalten
+Manage Sieve	felamimail	de	Sieve Scripte verwalten
 show header	felamimail	de	Kopfzeilen anzeigen
 hide header	felamimail	de	Kopfzeilen verbergen
 print it	felamimail	de	EMail drucken
 print this page	felamimail	de	Diese Seite drucken
 close this page	felamimail	de	Diese Seite schließen
+folder status	felamimail	de	Ordner Status
+folder name	felamimail	de	Ordner Name
+folderlist	felamimail	de	Ordnerliste
+rename folder	felamimail	de	Ordner umbenennen
+create subfolder	felamimail	de	Unterordner anlegen
+subscribed	felamimail	de	abonniert
+unsubscribed	felamimail	de	abbestellt
+IMAP Server	felamimail	de	IMAP Server
+folder settings	felamimail	de	Ordner Einstellungen
+on behalf of	felamimail	de	im Auftrag von
+wrote	felamimail	de	schrieb
+delete all	felamimail	de	alle löschen
+Quicksearch	felamimail	de	Schnellsuche
+Mon	felamimail	de	Mo
+Tue	felamimail	de	Di
+Wed	felamimail	de	Mi
+Thu	felamimail	de	Do
+Fri	felamimail	de	Fr
+Sat	felamimail	de	Sa
+Sun	felamimail	de	So
+SMTP settings	admin	de	SMTP Einstellungen
+Use SMTP auth	admin	de	SMTP Auth benutzen
+Organization name	admin	de	Name der Organisation
+Sieve settings	admin	de	Sieve Einstellungen
+Enter your SIEVE server hostname or IP address	admin	de	Sieve-Server Hostname oder IP-Adresse
+Enter your SIEVE server port	admin	de	Port Adresse des Sieve Servers
+Enter your IMAP mail server hostname or IP address	admin	de	IMAP-Server Hostname oder IP-Adresse
+no Quota set	felamimail	de	keine Quota aktiviert
+next message	felamimail	de	nächste Nachricht
+previous message	felamimail	de	vorherige Nachricht
+trash folder	felamimail	de	Ordner für gelöschte Nachrichten
+sent folder	felamimail	de	Ordner für gesendete Nachrichten
+Configuration	felamimail	de	Konfiguration
+Users can define their own emailaccounts	admin	de	Anwender können ihre eigenen Konten definieren
+display of html emails	preferences	de	HTML EMails anzeigen
+IMAP Server Address	preferences	de	IMAP Server Adresse
+always show html emails	preferences	de	immer anzeigen
+never display html emails	preferences	de	niemals anzeigen
+display only when no plain text is available	preferences	de	nur anzeigen wenn kein Plain Text vorhanden ist

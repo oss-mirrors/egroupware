@@ -71,6 +71,8 @@
 		$GLOBALS['phpgw']->config->save_repository(True);
 		Header('Location: ' . $GLOBALS['phpgw']->link('/admin/index.php'));
 	}
+$after= $GLOBALS['phpgw']->config->config_data['mailnotification'];
+echo "after: $after <br>";
 
 	$GLOBALS['phpgw']->common->phpgw_header();
 	echo parse_navbar();

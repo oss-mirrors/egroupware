@@ -207,6 +207,7 @@ define('SEARCH',4);
 
 			$selected[$bookmark['rating']] = ' selected';
 			$this->app_template();
+
 			$this->t->set_var(array(
 				'form_info' => '',
 				'lang_header' => lang('Create new bookmark'),
@@ -241,7 +242,6 @@ define('SEARCH',4);
 					($bookmark['access'] ?' checked' : '') . '>'
 				),
 			));
-
 			$this->t->fp('body','form');
 			$this->app_messages();
 			$this->t->pfp('out','common_');

@@ -60,3 +60,14 @@
 		$setup_info['bookmarks']['currentver'] = '0.9.1';
 		return $setup_info['bookmarks']['currentver'];
 	}
+
+	$test[] = '0.9.1';
+	function bookmarks_upgrade0_9_1()
+	{
+		global $setup_info,$phpgw_setup;
+
+		$phpgw_setup->oProc->AlterColumn('phpgw_bookmarks','bm_desc',array('type' => 'text', 'nullable' => True));
+
+		$setup_info['bookmarks']['currentver'] = '0.9.2';
+		return $setup_info['bookmarks']['currentver'];
+	}

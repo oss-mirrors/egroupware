@@ -141,7 +141,8 @@
 		function getcatnested($cat_id,$idsonly=False,$parentalso=False)
 		{
 			$retval = $parentalso ? array($cat_id) : array();
-			$root_list = $this->categories->return_array('all',0,False,'','cat_name','',True,$cat_id);
+			$root_list = $this->categories->return_array($cat_id ? 'all' : 'mains',0,False,'','cat_name','',True,$cat_id,-1,$idsonly ? 'id' : '');
+
 			if (is_array($root_list))
 			{
 				foreach($root_list as $cat)

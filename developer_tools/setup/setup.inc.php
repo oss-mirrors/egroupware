@@ -8,40 +8,35 @@
 	*  Free Software Foundation; either version 2 of the License, or (at your  *
 	*  option) any later version.                                              *
 	\**************************************************************************/
+
 	/* $Id$ */
 
 	/* Basic information about this app */
-	$setup_info['developer_tools']['name']				= 'developer_tools';
-	$setup_info['developer_tools']['version']			= '0.8.1';
-	$setup_info['developer_tools']['app_order']			= 8;
-	$setup_info['developer_tools']['enable']			= 1;
+	$setup_info['developer_tools']['name']      = 'developer_tools';
+	$setup_info['developer_tools']['title']     = 'TranslationTools';
+	$setup_info['developer_tools']['version']   = '0.8.1';
+	$setup_info['developer_tools']['app_order'] = 8;
+	$setup_info['developer_tools']['enable']    = 1;
 
-	$setup_info['developer_tools']['author']			= 'Joseph Engo';
-	$setup_info['developer_tools']['note']				= '';
-	$setup_info['developer_tools']['license']			= 'GPL';
-	$setup_info['developer_tools']['description']		= 'Contains the language management system.';
-	$setup_info['developer_tools']['maintainer']		= 'Joseph Engo';
-	$setup_info['developer_tools']['maintainer_email']	= 'jengo@phpgroupware.org';
+	$setup_info['developer_tools']['author'] = 'Miles Lott';
+	$setup_info['developer_tools']['description'] =
+		'The TranslationTools allow to create and extend translations-files for phpGroupWare. 
+		They can search the sources for new / added phrases and show you the ones missing in your language.';
+	$setup_info['developer_tools']['note'] =
+		'Reworked and imporved version of the former language-management of Miloschi\'s the developer_tools.';
+	$setup_info['developer_tools']['license']  = 'GPL';
+	$setup_info['developer_tools']['maintainer'] = 'Ralf Becker';
+	$setup_info['developer_tools']['maintainer_email']    = 'RalfBecker@outdoor-training.de';
 
 	/* The tables this app creates */
-	$setup_info['developer_tools']['tables'] = array
-	(
-		'phpgw_devtools_diary',
-		'phpgw_devtools_sf_cache',
-		'phpgw_devtools_changelogs'
-	);
+	$setup_info['developer_tools']['tables']    = array();
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['developer_tools']['hooks'][] = array
-	(
-		'admin',
-		'preferences'
-	);
+	$setup_info['developer_tools']['hooks']     = array();
 
 	/* Dependencies for this app to work */
-	$setup_info['developer_tools']['depends'][] = array
-	(
+	$setup_info['developer_tools']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.15')
+		 'versions' => Array('0.9.11','0.9.12','0.9.13', '0.9.14')
 	);
 ?>

@@ -10,14 +10,16 @@
 	\**************************************************************************/
 	/* $Id$ */
 
-	$GLOBALS['phpgw_info'] = array();
-
-	$GLOBALS['phpgw_info']['flags'] = array
-	(
-		'currentapp' => 'stocks',
-		'noheader'   => True,
-		'nonavbar'   => True
+	$GLOBALS['phpgw_info']['flags'] = array(
+		'currentapp' => 'stocks', 
+		'enable_network_class' => True
 	);
+
 	include('../header.inc.php');
-	$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=stocks.ui.index');
+
+	$GLOBALS['phpgw']->template->set_file(array('quotes_list' => 'main.tpl'));
+	$GLOBALS['phpgw']->template->set_var('quotes',return_quotes($quotes));
+	$GLOBALS['phpgw']->template->pparse('out','quotes_list');
+
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

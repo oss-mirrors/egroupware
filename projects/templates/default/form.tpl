@@ -13,6 +13,14 @@
 		Window2=window.open('{accounts_link}',"Search","width=800,height=600,toolbar=no,scrollbars=yes,resizable=yes");
 	}
 </script>
+
+<script language="JavaScript">
+	self.name="third_Window";
+	function e_accounts_popup()
+	{
+		Window3=window.open('{e_accounts_link}',"Search","width=800,height=600,toolbar=no,scrollbars=yes,resizable=yes");
+	}
+</script>
 {app_header}
 
 <center>
@@ -20,8 +28,12 @@
 {pref_message}<br>{message}
 <table width="98%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
-		<td width="35%" colspan"2">{lang_parent}</td>
-		<td colspan"2">{pro_parent}</td>
+		<td width="35%" colspan"2">{lang_main}</td>
+		<td colspan"2">{pro_main}</td>
+	</tr>
+	<tr>
+		<td colspan"2">{lang_parent}</td>
+		<td colspan"2">{parent_select}</td>
 	</tr>
 	<tr>
 		<td colspan"2">{lang_investment_nr}</td>
@@ -85,6 +97,33 @@
 
 		</td>
 	</tr>
+
+	<tr>
+		<td colspan"2" valign="top">{lang_employees}:</td>
+		<td colspan"2">
+
+<!-- BEGIN elist -->
+
+		<select name="employees[]" multiple>{employee_list}</select>
+
+<!-- END elist -->
+
+<!-- BEGIN efield -->
+
+			<table>
+				<tr>
+					<td>
+						<select name="employees[]" multiple>{employee_list}</select>
+					</td>
+					<td valign="top"><input type="button" value="{lang_open_popup}" onClick="e_accounts_popup();"></td>
+				</tr>
+			</table>
+
+<!-- END efield -->
+
+		</td>
+	</tr>
+
 	<tr>
 		<td colspan"2">{lang_status}:</td>
 		<td colspan"2"><select name="values[status]">{status_list}</select></td>
@@ -141,8 +180,37 @@
 		<td colspan"2">{lang_billable_activities}:</td>
 		<td colspan"2"><select name="bill_activities[]" multiple>{bill_activities_list}</select></td>
 	</tr>
+	<tr height="15">
+		<td>&nbsp;</td>
+	</tr>
+<!-- BEGIN msfield1 -->
+
+	<tr>
+		<td colspan"2" valign="top">{lang_milestones}:</td>
+		<td>
+			<table width="100%" border="0" cellspacing="2" cellpadding="2">
+
+<!-- END msfield1 -->
+<!-- BEGIN mslist -->
+
+				<tr>
+					<td width="50%"><a href="{mstone_edit_url}">{s_title}</a></td>
+					<td width="50%">{s_edateout}</td>
+				</tr>
+
+<!-- END mslist -->
+
+<!-- BEGIN msfield2 -->
+			</table>
+		</td>
+		<td valign="top"><input type="submit" name="mstone" value="{lang_add_milestone}"></td>
+	</tr>
+<!-- END msfield2 -->
+
 	<tr valign="bottom" height="50">
-		<td><input type="submit" name="save" value="{lang_save}"></td>
+		<td><input type="hidden" name="values[old_status]" value="{old_status}">
+			<input type="hidden" name="values[old_parent]" value="{old_parent}">
+			<input type="submit" name="save" value="{lang_save}"></td>
 		<td><input type="submit" name="apply" value="{lang_apply}"></td>
 		<td>{delete}</td>
 		<td><input type="submit" name="cancel" value="{lang_cancel}"></form></td>

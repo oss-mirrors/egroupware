@@ -9,17 +9,17 @@
 	*  Free Software Foundation; either version 2 of the License, or (at your  *
 	*  option) any later version.                                              *
 	\**************************************************************************/
+
 	/* $Id$ */
-
-	{
-		$file = Array
-		(
-			'Global Options'	=> $GLOBALS['phpgw']->link('/comic/admin_options.php'),
-			'Global Comics'		=> $GLOBALS['phpgw']->link('/comic/admin_comics.php'),
-			'Reset Comic Data'	=> $GLOBALS['phpgw']->link('/comic/admin_comics_reset.php')
-		);
-
+{
+// Only Modify the $file and $title variables.....
+	$title = 'Daily Comics';
+	$file = Array(
+		'Global Options'		=> $GLOBALS['phpgw']->link('/comic/admin_options.php'),
+		'Global Comics'	=> $GLOBALS['phpgw']->link('/comic/admin_comics.php'),
+		'Reset Comic Data'	=> $GLOBALS['phpgw']->link('/comic/admin_comics_reset.php')
+	);
 //Do not modify below this line
-		$GLOBALS['phpgw']->common->display_mainscreen($appname,$file);
-	}
+	display_section($appname,$title,$file);
+}
 ?>

@@ -18,23 +18,42 @@
    -->
 </STYLE>
 <script LANGUAGE="JavaScript">
-   function ExchangeTo(thisform)
-   {
-    if (opener.document.doit.to.value =='') {
-   opener.document.doit.to.value = thisform.elements[0].value;
-   }
-  else {
-   opener.document.doit.to.value +=","+thisform.elements[0].value;
-  }
-}
-function ExchangeCc(thisform)
-   {
-     if (opener.document.doit.cc.value=='') {
-        opener.document.doit.cc.value=thisform.elements[0].value;
-     } else {
-        opener.document.doit.cc.value+=","+thisform.elements[0].value;
-     }
-   }
+	function ExchangeTo(thisform)
+	{
+		var address;
+	
+		address = thisform.elements[1].value+' <'+thisform.elements[0].value+'>';
+		//alert(address);
+		if (opener.document.doit.to.value =='') 
+		{
+			opener.document.doit.to.value = address;
+		}
+		else 
+		{
+			opener.document.doit.to.value +=", "+address;
+		}
+	}
+	
+	function ExchangeCc(thisform)
+	{
+		var address;
+		
+		address = thisform.elements[1].value+' <'+thisform.elements[0].value+'>';
+		if (opener.document.doit.cc.value=='') 
+		{
+			opener.document.doit.cc.value=address;
+		} 
+		else 
+		{
+			opener.document.doit.cc.value+=", "+address;
+		}
+	}
+	
+	function closeWindow()
+	{
+		window.close();
+	}
+	
 </script>
 </head>
 <body bgcolor="{bg_color}">
@@ -68,10 +87,10 @@ function ExchangeCc(thisform)
 </table>
 <table border="0" width="100%" cellpadding="2" cellspacing="2">
     <tr bgcolor="{th_bg}">
-      <td width="15%" bgcolor="{th_bg}" align=center><font face="{font}">{sort_firstname}</font></td>
-      <td width="15%" bgcolor="{th_bg}" align=center><font face="{font}">{sort_lastname}</font></td>
-      <td width="25%" bgcolor="{th_bg}" align=center><font face="{font}">{lang_email}</font></td>
-      <td width="25%" bgcolor="{th_bg}" align=center><font face="{font}">{lang_hemail}</font></td>
+      <td width="14%" bgcolor="{th_bg}" align=center><font face="{font}">{sort_firstname}</font></td>
+      <td width="14%" bgcolor="{th_bg}" align=center><font face="{font}">{sort_lastname}</font></td>
+      <td width="26%" bgcolor="{th_bg}" align=center><font face="{font}">{lang_email}</font></td>
+      <td width="26%" bgcolor="{th_bg}" align=center><font face="{font}">{lang_hemail}</font></td>
     </tr>
   
 <!-- BEGIN addressbook_list -->
@@ -79,27 +98,39 @@ function ExchangeCc(thisform)
 	<td><font face="{font}">{firstname}</font></td>
         <td><font face="{font}">{lastname}</font></td>
         <form>
-        <td align="center"><font face="{font}"><input type="text" size="25" name="email" value="{email}">
-        <input type="button" size="25" name="button" value="To" onClick="ExchangeTo(this.form);">
-        <input type="button" size="25" name="button" value="Cc" onClick="ExchangeCc(this.form);"></font></td>
+        <td align="center">
+        	<ffont face="{font}"><input type="text" size="25" name="email" value="{email}">
+        	<input type="hidden" name="realName" value="{realName}">
+        	<input type="button" size="25" name="button" value="To" onClick="ExchangeTo(this.form);">
+        	<input type="button" size="25" name="button" value="Cc" onClick="ExchangeCc(this.form);">
+        	</ffont>
+        </td>
         </form>
         <form>
-        <td align="center"><font face="{font}"><input type="text" size="25" name="hemail" value="{hemail}">
-        <input type="button" size="25" name="button" value="To" onClick="ExchangeTo(this.form);">
-        <input type="button" size="25" name="button" value="Cc" onClick="ExchangeCc(this.form);"></font></td>
+        <td align="center">
+        	<ffont face="{font}"><input type="text" size="25" name="hemail" value="{hemail}">
+        	<input type="hidden" name="realName" value="{realName}">
+        	<input type="button" size="25" name="button" value="To" onClick="ExchangeTo(this.form);">
+        	<input type="button" size="25" name="button" value="Cc" onClick="ExchangeCc(this.form);">
+        	</ffont>
+        </td>
         </form>
       </tr>
 <!-- END addressbook_list -->
 
-  </table>
-  <table cellpadding="2" cellspacing="2">
-      <tr>
-    <form>
-    <td><font face="{font}"><input class="text" type="button" name="done" value="{lang_done}" onClick="window.close()"></font>
-      </form>
-      </td>
-    </tr>
-  </table>
+</table>
+<br>
+<table cellpadding="2" cellspacing="2">
+	<tr>
+		<td>
+			<form>
+			<font face="{font}">
+			<a href="javascript:closeWindow();">{lang_done}</a>
+			</font>
+			</form>
+		</td>
+	</tr>
+</table>
 </center>
 </body>
 </html>

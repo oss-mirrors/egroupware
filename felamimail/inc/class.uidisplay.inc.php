@@ -26,11 +26,23 @@
 		function uidisplay()
 		{
 			$this->t 		= $GLOBALS['phpgw']->template;
+			#$this->t 		= CreateObject('phpgwapi.Template_Smarty',PHPGW_APP_TPL);
 			$this->bofelamimail	= CreateObject('felamimail.bofelamimail');
+			$this->bofilter 	= CreateObject('felamimail.bofilter');
+			$this->bopreferences	= CreateObject('felamimail.bopreferences');
+			$this->mailPreferences	= $this->bopreferences->getPreferences();
+			
 			$this->bofelamimail->openConnection();
 			
 			$this->mailbox		= $this->bofelamimail->sessionData['mailbox'];
+			$this->sort		= $this->bofelamimail->sessionData['sort'];
+			
 			$this->uid		= $GLOBALS['HTTP_GET_VARS']['uid'];
+
+			$this->bocaching	= CreateObject('felamimail.bocaching',
+							$this->mailPreferences['imapServerAddress'],
+							$this->mailPreferences['username'],
+							$this->mailbox);
 
 			$this->rowColor[0] = $GLOBALS['phpgw_info']["theme"]["bg01"];
 			$this->rowColor[1] = $GLOBALS['phpgw_info']["theme"]["bg02"];
@@ -40,6 +52,7 @@
 				$this->bofelamimail->sessionData['showHeader'] = 'False';
 				$this->bofelamimail->saveSessionData();
 			}
+			
 		}
 		
 		function createLinks($_data)
@@ -49,13 +62,45 @@
 		
 		function display()
 		{
+			$transformdate	= CreateObject('felamimail.transformdate');
+			$htmlFilter	= CreateObject('felamimail.htmlfilter');
+
 			$headers	= $this->bofelamimail->getMessageHeader($this->uid);
 			$rawheaders	= $this->bofelamimail->getMessageRawHeader($this->uid);
 			$bodyParts	= $this->bofelamimail->getMessageBody($this->uid);
 			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid);
+			$filterList 	= $this->bofilter->getFilterList();
+			$activeFilter 	= $this->bofilter->getActiveFilter();
+			$filter 	= $filterList[$activeFilter];
+			$nextMessage	= $this->bocaching->getNextMessage($this->uid, $this->sort, $filter);
+
+			#print "<pre>";print_r($rawheaders);print"</pre>";exit;
 
 			// add line breaks to $rawheaders
 			$newRawHeaders = explode("\n",$rawheaders);
+			reset($newRawHeaders);
+			// find the Organization header
+			// the header can also span multiple rows
+			while(is_array($newRawHeaders) && list($key,$value) = each($newRawHeaders))
+			{
+				#print $value."<br>";
+				if(preg_match("/Organization: (.*)/",$value,$matches))
+				{
+					$organization = $this->bofelamimail->decode_header(chop($matches[1]));
+					#$organization = chop($matches[1]);
+					continue;
+				}
+				if(!empty($organization) && preg_match("/^\s+(.*)/",$value,$matches))
+				{
+					$organization .= $this->bofelamimail->decode_header(chop($matches[1]));
+					break;
+				}
+				elseif(!empty($organization))
+				{
+					break;
+				}
+			}
+			
 			// reset $rawheaders
 			$rawheaders 	= "";
 			// create it new, with good line breaks
@@ -79,13 +124,15 @@
 			$this->t->set_block('displayMsg','message_navbar');
 			$this->t->set_block('displayMsg','message_navbar_print');
 			$this->t->set_block('displayMsg','message_cc');
+			$this->t->set_block('displayMsg','message_organization');
 			$this->t->set_block('displayMsg','message_attachement_row');
+			$this->t->set_block('displayMsg','previous_message_block');
+			$this->t->set_block('displayMsg','next_message_block');
 			
 			$this->translate();
 			
 			if(!isset($GLOBALS['HTTP_GET_VARS']['printable']))
 			{
-
 				// navbar
 				$linkData = array
 				(
@@ -142,6 +189,38 @@
 					'uid'		=> $this->uid
 				);
 				$this->t->set_var("link_printable",$GLOBALS['phpgw']->link('/index.php',$linkData));
+				
+				if($nextMessage['previous'])
+				{
+					$linkData = array
+					(
+						'menuaction'	=> 'felamimail.uidisplay.display',
+						'showHeader'	=> 'false',
+						'uid'		=> $nextMessage['previous']
+					);
+					$this->t->set_var('previous_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					$this->t->parse('previous_message','previous_message_block',True);
+				}
+				else
+				{
+					$this->t->set_var('previous_message','&nbsp');
+				}
+	
+				if($nextMessage['next'])
+				{
+					$linkData = array
+					(
+						'menuaction'	=> 'felamimail.uidisplay.display',
+						'showHeader'	=> 'false',
+						'uid'		=> $nextMessage['next']
+					);
+					$this->t->set_var('next_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					$this->t->parse('next_message','next_message_block',True);
+				}
+				else
+				{
+					$this->t->set_var('next_message','&nbsp');
+				}
 	
 				$langArray = array
 				(
@@ -175,7 +254,7 @@
 			
 			
 			// rawheader
-			if($this->bofelamimail->sessionData['showHeader'] == 'True')
+/*			if($this->bofelamimail->sessionData['showHeader'] == 'True')
 			{
 				$this->t->set_var("raw_header_data",htmlentities($rawheaders));
 				$this->t->parse("rawheader",'message_raw_header',True);
@@ -186,41 +265,260 @@
 				$this->t->set_var("rawheader",'');
 				$this->t->set_var("view_header",lang('show header'));
 			}
+*/
 			
 
 			// header
-			$this->t->set_var("from_data",htmlentities($this->bofelamimail->decode_header($headers->fromaddress)));
-			$this->t->set_var("to_data",htmlentities($this->bofelamimail->decode_header($headers->toaddress)));
+			// sent by a mailinglist??
+			// parse the from header
+			if($headers->senderaddress != $headers->fromaddress)
+			{
+				$senderAddress = $this->emailAddressToHTML($headers->senderaddress);
+				$fromAddress   = $this->emailAddressToHTML($headers->fromaddress);
+				$this->t->set_var("from_data",
+					$senderAddress.
+					"&nbsp;".lang('on behalf of')."&nbsp;".
+					$fromAddress);
+			}
+			else
+			{
+				$fromAddress   = $this->emailAddressToHTML($headers->fromaddress);
+				$this->t->set_var("from_data",
+					$fromAddress);
+			}
+			
+			// parse the to header
+			$toAddress = $this->emailAddressToHTML($headers->toaddress);
+			$this->t->set_var("to_data",$toAddress);
+			
+			// parse the cc header
 			if($headers->ccaddress)
 			{
-				$this->t->set_var("cc_data",htmlentities($this->bofelamimail->decode_header($headers->ccaddress)));
+				$ccAddress = $this->emailAddressToHTML($headers->ccaddress);
+				$this->t->set_var("cc_data",$ccAddress);
 				$this->t->parse('cc_data_part','message_cc',True);
 			}
 			else
 			{
 				$this->t->set_var("cc_data_part",'');
 			}
-			$this->t->set_var("date_data",htmlentities($GLOBALS['phpgw']->common->show_date($headers->udate)));
+
+			// parse the cc header
+			if(!empty($organization))
+			{
+				$this->t->set_var("organization_data",$organization);
+				$this->t->parse('organization_data_part','message_organization',True);
+			}
+			else
+			{
+				$this->t->set_var("organization_data_part",'');
+			}
+
+			if (isset($headers->date))
+			{
+				$headers->date = ereg_replace('  ', ' ', $headers->date);
+				$tmpdate = explode(' ', trim($headers->date));
+			}
+			else
+			{
+				$tmpdate = $date = array("","","","","","");
+			}
+                                                                                                                                                                                                                                                                                                                
+			$this->t->set_var("date_data",htmlentities($GLOBALS['phpgw']->common->show_date($transformdate->getTimeStamp($tmpdate))));
 			$this->t->set_var("subject_data",htmlentities($this->bofelamimail->decode_header($headers->subject)));
+			//if(isset($organization)) exit;
 			$this->t->parse("header","message_header",True);
 
 			// body
+			if($this->bofelamimail->sessionData['showHeader'] == 'True')
+			{
+				$body = "<pre>".htmlentities($rawheaders)."</pre>";
+				$this->t->set_var("rawheader",'');
+				$this->t->set_var("view_header",lang('hide header'));
+			}
+			else
+			{
+				$body = '';
+				$this->t->set_var("rawheader",'');
+				$this->t->set_var("view_header",lang('show header'));
+			}
+
+#$tag_list = Array(
+#                  false,
+#                  'blink',
+#                  'object',
+#                  'meta',
+#                  'font',
+#                  'html',
+#                  'link',
+#                  'frame',
+#                  'iframe',
+#                  'layer',
+#                  'ilayer'
+#                 );
+
+$tag_list = Array(true, "b", "a", "i", "img", "strong", "em", "p");
+$tag_list = Array(true, "b", "a", "i", "strong", 'pre', 'ul', 'li', 
+			"em", "p", 'td', 'tr', 'table', 
+			'font', 'hr', 'br', 'div');
+
+$rm_tags_with_content = Array(
+                              'script',
+                              'style',
+                              'applet',
+                              'embed',
+                              'head',
+                              'frameset',
+                              'xml'
+                              );
+
+$self_closing_tags =  Array(
+                            'img',
+                            'br',
+                            'hr',
+                            'input'
+                            );
+
+$force_tag_closing = false;
+
+$rm_attnames = Array(
+    '/.*/' =>
+        Array(
+              '/target/i',
+              '/^on.*/i',
+              '/^dynsrc/i',
+              '/^datasrc/i',
+              '/^data.*/i',
+              '/^lowsrc/i'
+              )
+    );
+
+/**
+ * Yeah-yeah, so this looks horrible. Check out htmlfilter.inc for
+ * some idea of what's going on here. :)
+ */
+
+$bad_attvals = Array(
+    '/.*/' =>
+        Array(
+	      '/.*/' =>
+	          Array(
+	                Array(
+                          '/^([\'\"])\s*\S+\s*script\s*:*(.*)([\'\"])/i',
+#                          '/^([\'\"])\s*https*\s*:(.*)([\'\"])/i',
+                          '/^([\'\"])\s*mocha\s*:*(.*)([\'\"])/i',
+                          '/^([\'\"])\s*about\s*:(.*)([\'\"])/i'
+			     ),
+		        Array(
+                      '\\1oddjob:\\2\\3',
+#                      '\\1uucp:\\2\\3',
+                      '\\1amaretto:\\2\\3',
+                      '\\1round:\\2\\3'
+		             )
+			),     
+						
+              '/^style/i' =>
+                  Array(
+                        Array(
+                              '/expression/i',
+                              '/behaviou*r/i',
+                              '/binding/i',
+                              '/url\(([\'\"]*)\s*https*:.*([\'\"]*)\)/i',
+                              '/url\(([\'\"]*)\s*\S+script:.*([\'\"]*)\)/i'
+                             ),
+                        Array(
+                              'idiocy',
+                              'idiocy',
+                              'idiocy',
+                              'url(\\1http://securityfocus.com/\\2)',
+                              'url(\\1http://securityfocus.com/\\2)'
+                             )
+                        )
+              )
+    );
+
+$add_attr_to_tag = Array(
+                         '/^a$/i' => Array('target' => '"_new"')
+                         );
+                         $add_attr_to_tag = Array();
+
+			
+			
 			for($i=0; $i<count($bodyParts); $i++ )
 			{
-				if(!empty($body)) $body .= "<hr>";
+				// if($i > 0) $body .= "<br><br>Atachment -------------------<br><br>";
 			
 				// add line breaks to $bodyParts
-				$newBody	= explode("\n",$bodyParts[$i]);
-				$bodyAppend	= '';
+				#$newBody	= explode("\n",$bodyParts[$i]);
+				#$bodyAppend	= '';
 				// create it new, with good line breaks
-				reset($newBody);
-				while(list($key,$value) = @each($newBody))
-				{
-					$bodyAppend .= wordwrap($value,90);
-				}
+				#reset($newBody);
+				#while(list($key,$value) = @each($newBody))
+				#{
+				#	$bodyAppend .= wordwrap($value,90,"\n",1);
+				#}
 				
-				$body .= htmlentities($bodyAppend);
+				#$body .= htmlspecialchars($bodyAppend,ENT_QUOTES);
+
+				// add line breaks to $bodyParts
+				#$newBody	= wordwrap($bodyParts[$i],90,"\n",1);
+				#$newBody	= wordwrap($bodyParts[$i],90,"<br>",1);
+				if($bodyParts[$i]['mimeType'] == 'text/plain')
+				{
+					#$newBody	= ereg_replace("\n","<br>",$bodyParts[$i]['body']);
+					
+					$newBody	= wordwrap($bodyParts[$i]['body'],90,"\n",1);
+					$newBody	= htmlspecialchars($newBody,ENT_QUOTES);
+					$newBody	= "<pre>".$newBody."</pre>";
+					
+				}
+				else
+				{
+					$newBody	= $bodyParts[$i]['body'];
+					$newBody	= $htmlFilter->sanitize($newBody,
+								$tag_list, $rm_tags_with_content,
+								$self_closing_tags, $force_tag_closing,
+								$rm_attnames, $bad_attvals, $add_attr_to_tag);
+				}
+				$body .= $newBody;
+				#print "<hr><pre>$body</pre><hr>";
 			}
+			
+			// search http[s] links and make them as links available again
+			// to understand what's going on here, have a look at 
+			// http://www.php.net/manual/en/function.preg-replace.php
+			
+			#$body = preg_replace("/(\&gt\;)/", 
+			#	"<font color=\"blue\">$1</font>", $body);
+			
+			
+			// create links for websites
+			#$body = preg_replace("/((http(s?):\/\/)|(www\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/ie", 
+			#	"'<a href=\"/phpgroupware/redirect.php?go='.htmlentities(urlencode('http$3://$4$5')).'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
+			$body = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
+				"'<a href=\"/phpgroupware/redirect.php?go='.htmlentities(urlencode('http$3://$4$5')).'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
+			
+			// create links for ftp sites
+			$body = preg_replace("/((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/i", 
+				"<a href=\"ftp://$3$4\" target=\"_blank\"><font color=\"blue\">$1$3$4</font></a>", $body);
+
+			// create links for windows shares
+			// \\\\\\\\ == '\\' in real life!! :)
+			$body = preg_replace("/(\\\\\\\\)([\w,\\\\,-]+)/i", 
+				"<a href=\"file:$1$2\" target=\"_blank\"><font color=\"blue\">$1$2</font></a>", $body);
+			
+			// make the signate light grey
+			#$body = preg_replace("/(--)/im","<font color=\"grey\">$1</font>", $body);
+			
+			// create links for email addresses
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uicompose.compose'
+			);
+			$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
+			$body = preg_replace("/([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+)/i", 
+				"<a href=\"$link&send_to=$0\"><font color=\"blue\">$0</font></a>", $body);
+				
 			$this->t->set_var("body",$body);
 			$this->t->set_var("signature",$sessionData['signature']);
 
@@ -236,14 +534,14 @@
 				{
 					$this->t->set_var('row_color',$this->rowColor[($key+1)%2]);
 					$this->t->set_var('filename',htmlentities($this->bofelamimail->decode_header($value['name'])));
-					$this->t->set_var('mimetype',$value['type']);
+					$this->t->set_var('mimetype',$value['mimeType']);
 					$this->t->set_var('size',$value['size']);
 					$this->t->set_var('attachment_number',$key);
 					$linkData = array
 					(
 						'menuaction'	=> 'felamimail.uidisplay.getAttachment',
 						'uid'		=> $this->uid,
-						'part'		=> $value['pid']
+						'part'		=> $value['partID']
 					);
 					$this->t->set_var("link_view",$GLOBALS['phpgw']->link('/index.php',$linkData));
 
@@ -252,7 +550,7 @@
 						'menuaction'	=> 'felamimail.uidisplay.getAttachment',
 						'mode'		=> 'save',
 						'uid'		=> $this->uid,
-						'part'		=> $value['pid']
+						'part'		=> $value['partID']
 					);
 					$this->t->set_var("link_save",$GLOBALS['phpgw']->link('/index.php',$linkData));
 					
@@ -263,20 +561,12 @@
 			{
 				$this->t->set_var('attachment_rows','');
 			}
-
+			
 			#$this->t->pparse("out","message_attachment_rows");
 
 			// print it out
 			$this->t->pparse("out","message_main");
 
-			global $calendar_id;
-			list(,$app,,,,$calendar_id) = explode('"',strstr($rawheaders,'X-phpGW-Type:'));
-			if(!isset($GLOBALS['HTTP_GET_VARS']['printable']) && !empty($app))
-			{
-				echo '<table align="center" width="100%"><tr><td align="center">';
-				$GLOBALS['phpgw']->hooks->single('email',$app);
-				echo '</td></tr></table>';
-			}
 		}
 
 		function display_app_header()
@@ -284,26 +574,82 @@
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 		}
+
+		function emailAddressToHTML($_emailAddress)
+		{		
+			// create some nice formated HTML for senderaddress
+			$addressData = imap_rfc822_parse_adrlist
+					($this->bofelamimail->decode_header($_emailAddress),'');
+			if(is_array($addressData))
+			{
+				$senderAddress = '';
+				while(list($key,$val)=each($addressData))
+				{
+					if(!empty($senderAddress)) $senderAddress .= ", ";
+					if(!empty($val->personal))
+					{
+						$tempSenderAddress = $val->mailbox."@".$val->host;
+						$newSenderAddress  = imap_rfc822_write_address($val->mailbox,
+									$val->host,
+									$val->personal);
+						$linkData = array
+						(
+							'menuaction'	=> 'felamimail.uicompose.compose',
+							'send_to'	=> htmlentities($newSenderAddress)
+						);
+						$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
+						$senderAddress .= sprintf('<a href="%s" title="%s">%s</a>',
+									$link,
+									htmlentities($newSenderAddress),
+									htmlentities($val->personal));
+					}
+					else
+					{
+						$tempSenderAddress = $val->mailbox."@".$val->host;
+						$linkData = array
+						(
+							'menuaction'	=> 'felamimail.uicompose.compose',
+							'send_to'	=> $tempSenderAddress
+						);
+						$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
+						$senderAddress .= sprintf('<a href="%s">%s</a>',
+									$link,htmlentities($tempSenderAddress));
+					}
+				}
+				return $senderAddress;
+			}
+			
+			// if something goes wrong, just return the original address
+			return $_emailAddress;
+		}
 		
 		function getAttachment()
 		{
 			
-			$part	= $GLOBALS['HTTP_GET_VARS']['part'];
+			$part		= $GLOBALS['HTTP_GET_VARS']['part'];
 			
 			$attachment 	= $this->bofelamimail->getAttachment($this->uid,$part);
 			
 			$this->bofelamimail->closeConnection();
 			
+			header ("Content-Type: ".$attachment['type']."; name=\"".$attachment['filename']."\"");
 			if($GLOBALS['HTTP_GET_VARS']['mode'] == "save")
 			{
-				header ("Content-Type: application/octet-stream");
+				// ask for download
+				header ("Content-Disposition: attachment; filename=\"".$attachment['filename']."\"");
 			}
 			else
 			{
-				header ("Content-Type: ".$attachment['type']);
+				// display it
+				header ("Content-Disposition: inline; filename=\"".$attachment['filename']."\"");
 			}
-			header("Content-Disposition: filename=\"".$attachment['filename']."\"");
+			header("Expires: 0");
+			// the next headers are for IE and SSL
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+			header("Pragma: public"); 
+
 			echo $attachment['attachment'];
+			
 			$GLOBALS['phpgw']->common->phpgw_exit();
 			exit;
 			                                
@@ -348,8 +694,15 @@
 			$this->t->set_var("lang_compose",lang('compose'));
 			$this->t->set_var("lang_date",lang('date'));
 			$this->t->set_var("lang_view",lang('view'));
+			$this->t->set_var("lang_organization",lang('organization'));
 			$this->t->set_var("lang_save",lang('save'));
 			$this->t->set_var("lang_printable",lang('print it'));
+			$this->t->set_var("lang_reply",lang('reply'));
+			$this->t->set_var("lang_reply_all",lang('reply all'));
+			$this->t->set_var("lang_forward",lang('forward'));
+			$this->t->set_var("lang_delete",lang('delete'));
+			$this->t->set_var("lang_previous_message",lang('previous message'));
+			$this->t->set_var("lang_next_message",lang('next message'));
 			
 			$this->t->set_var("th_bg",$GLOBALS['phpgw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['phpgw_info']["theme"]["bg01"]);

@@ -19,37 +19,160 @@ doLoad();
 
 //-->
 </script>
+<STYLE type="text/css">
+	.header_row_, A.header_row_
+	{
+		FONT-SIZE: 12px;
+		height : 12px;
+		padding: 0;
+		font-weight : bold;
+	}
+	
+	.header_row_D, A.header_row_D
+	{
+		FONT-SIZE: 12px;
+		height : 12px;
+		padding: 0;
+		color: silver;
+		text-decoration : line-through;
+		font-weight : bold;
+	}
+	
+	.header_row_DS, A.header_row_DS, .header_row_ADS, A.header_row_ADS
+	{
+		FONT-SIZE: 12px;
+		height : 12px;
+		padding: 0;
+		color: silver;
+		text-decoration : line-through;
+	}
+	
+	.header_row_S, A.header_row_S
+	{
+		FONT-SIZE: 12px;
+		height : 12px;
+		padding: 0;
+		vertical-align : middle;
+	}
+	
+	.header_row_AS, A.header_row_AS
+	{
+		FONT-SIZE: 12px;
+		height : 12px;
+		padding: 0;
+		vertical-align : middle;
+	}
+
+	.header_row_FAS, A.header_row_FAS, .header_row_FS, A.header_row_FS
+	{
+		color: red;
+		FONT-SIZE: 12px;
+		height : 12px;
+		padding: 0;
+		vertical-align : middle;
+	}
+
+	.header_row_F, A.header_row_F
+	{
+		color: red;
+		FONT-SIZE: 12px;
+		height : 12px;
+		padding: 0;
+		font-weight : bold;
+		vertical-align : middle;
+	}
+
+	.header_row_R, A.header_row_R
+	{
+		FONT-SIZE: 12px;
+		height : 12px;
+		padding: 0;
+		font-weight : bold;
+		vertical-align : middle;
+	}
+	
+</STYLE>
+
 <script type="text/javascript">
 <!--
-	function toggleFolderRadio()
+	var checkedCounter={checkedCounter}, aktiv;
+	var maxMessages = {maxMessages};
+	
+	function ttoggleFolderRadio()
 	{
 		//alert(document.getElementsByTagName("input")[0].checked);
 		document.getElementsByTagName("input")[1].checked = "true";
 	}
+
+	function toggleFolderRadio(_counter)
+	{
+		if(aktiv)
+		{
+			// do not reload, while we try to select some messages
+			window.clearTimeout(aktiv);
+			{refreshTime}
+		}
+
+		var counter = parseInt(_counter);
+		//alert(document.getElementById("msg_input_"+_counter).checked);
+		//document.getElementsByTagName("input")[1].checked = "true";
+		//tr	= eval(document.getElementsByTagName("tr")[counter+23]);
+		//input	= eval(document.getElementsByTagName("input")[counter+10]);
+		tr	= document.getElementById("msg_tr_"+_counter);
+		input	= document.getElementById("msg_input_"+_counter);
+		if(input.checked == true)
+		{
+			checkedCounter+=1;
+		}
+		else
+		{
+			checkedCounter-=1;
+		}
+		if (checkedCounter > 0)
+		{
+			document.getElementsByTagName("input")[3].checked = "true";
+		}
+		else
+		{
+			document.getElementsByTagName("input")[2].checked = "true";
+		}
+	}
+
 //-->
 </script>
-<TABLE BORDER=0 WIDTH="100%" CELLSPACING=0 CELLPADDING=2>
+<TABLE BORDER="0" WIDTH="100%" CELLSPACING=0 CELLPADDING=2>
 	<TR BGCOLOR="{row_off}">
-		<TD ALIGN="left" WIDTH="40%">
+		<TD ALIGN="left" WIDTH="70%">
 			<a href="{url_compose_empty}">{lang_compose}</a>&nbsp;&nbsp;
 			<a href="{url_filter}">{lang_edit_filter}</a>&nbsp;&nbsp;
-			<a href="{url_status_filter}">{lang_status_filter}</a>
 		</td>
-		<td align="right" width="60%">
-			&nbsp;
+		<td align='right' width="30%">
+			{quota_display}
 		</td>
+	</tr>
+	<TR valign="middle">
+		<form name=searchForm method=post action="{url_search_settings}">
+		<td colspan="1" bgcolor="#ffffcc" align="left" width="70%">
+			{lang_quicksearch}:
+			<input type="text" size="50" name="quickSearch" value="{quicksearch}"
+			onChange="javascript:document.searchForm.submit()">
+		</td>
+		<td bgcolor="#ffffcc" align="right" width="30%" valign="middle">
+			<input type=hidden name="changeFilter">
+			<select name="filter" onChange="javascript:document.searchForm.submit()">
+				{filter_options}
+			</select>
+		</td>
+		</form>
 	</tr>
 </table>
 
 <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
-	<FORM name=messageList method=post action="{url_change_folder}">
-	<colgroup>
-		<col width="100%">
-	</colgroup>
 	<TR>
 		<TD BGCOLOR="{row_off}">
-			<TABLE BGCOLOR="{row_off}" COLS=2 BORDER=0 cellpadding=0 cellspacing=0 width="100%">
+			<TABLE BGCOLOR="{row_off}" COLS=2 BORDER='0' cellpadding=0 cellspacing=0 width="100%">
 				<TR valign="middle">
+					<FORM name=messageList method=post action="{url_change_folder}">
 					<td nowrap width="40%" align="LEFT" valign="center" bgcolor="#ffffcc">
 						<TT><SMALL>
 						<SELECT NAME="mailbox" onChange="document.messageList.submit()">
@@ -62,29 +185,35 @@ doLoad();
 						</noscript>
 						<INPUT TYPE=hidden NAME="oldMailbox" value="{oldMailbox}">
 					</TD>
-                                        <td width="50%">
+                                        <td width="40%">
                                                 &nbsp;
                                         </td>
 					<td width="2%" align="LEFT" valign="center">
-						<input type="image" src="{image_path}/read_small.png" name="mark_read" alt="{desc_read}" title="{desc_read}" width="16">
+						<input type="image" src="{read_small}" name="mark_read" alt="{desc_read}" title="{desc_read}" width="16">
                                         </td>
                                         <TD WIDTH="2%" ALIGN="MIDDLE" valign="center">
                                                 &nbsp;|&nbsp;
                                         </td>
                                         <td width="2%" align="RIGHT" valign="center">
-						<input type="image" src="{image_path}/unread_small.png" name="mark_unread" title="{desc_unread}" width="16">&nbsp;&nbsp;
+						<input type="image" src="{unread_small}" name="mark_unread" title="{desc_unread}" width="16">
+                                        </td>
+                                        <TD WIDTH="2%" ALIGN="MIDDLE" valign="center">
+                                                &nbsp;
                                         </td>
                                         <td width="2%" align="LEFT" valign="center">
-						<input type="image" src="{image_path}/unread_flagged_small.png" name="mark_flagged" title="{desc_important}" width="16">
+						<input type="image" src="{unread_flagged_small}" name="mark_flagged" title="{desc_important}" width="16">
                                         </td>
                                         <TD WIDTH="2%" ALIGN="MIDDLE" valign="center">
                                                 &nbsp;|&nbsp;
                                         </td>
                                         <td width="2%" align="RIGHT" valign="center">
-						<input type="image" src="{image_path}/unread_small.png" name="mark_unflagged" title="{desc_unimportant}">&nbsp;&nbsp;
+						<input type="image" src="{unread_small}" name="mark_unflagged" title="{desc_unimportant}">
+                                        </td>
+                                        <TD WIDTH="2%" ALIGN="MIDDLE" valign="center">
+                                                &nbsp;&nbsp;
                                         </td>
                                         <td width="2%" align="RIGHT" valign="center">
-						<input type="image" src="{image_path}/unread_deleted_small.png" name="mark_deleted" title="{desc_deleted}">
+						<input type="image" src="{unread_deleted_small}" name="mark_deleted" title="{desc_deleted}">
 					</TD>
 				</TR>
 			</TABLE>
@@ -134,15 +263,15 @@ doLoad();
 <!-- BEGIN status_row_tpl -->
 	<tr>
 		<TD>
-			<table WIDTH=100% BORDER=0 CELLPADDING=1 CELLSPACING=0>
+			<table WIDTH="100%" BORDER="0" CELLPADDING="1" CELLSPACING="0">
 				<tr BGCOLOR="#FFFFFF">
 					<td width="18%">
 						{link_previous} | {link_next}
 					</td>
-					<td width="18%">
+					<td width="10%">
 						&nbsp;
 					</td>
-					<TD align="center" width="28%">
+					<TD align="center" width="36%">
 						{message}
 					</td>
 					<td width="18%">
@@ -158,341 +287,32 @@ doLoad();
 
 <!-- END status_row_tpl -->
 
-<!-- BEGIN header_row_S -->
-<tr>
+<!-- BEGIN header_row -->
+<tr class="{row_css_class}">
 	<td width="1%" bgcolor="#FFFFFF" align="center">
-		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
+		<iinput type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
+		<input class="{row_css_class}" type="checkbox" id="msg_input_{message_counter}" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio('{message_counter}')" {row_selected}>
 	</td>
 	<td width="10%" bgcolor="#FFFFFF" nowrap>
-		<a href="{url_compose}" title="{full_address}">{sender_name}</a>
-		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
+		<a class="{row_css_class}" href="{url_compose}" title="{full_address}">{sender_name}</a>
+		<a href="{url_add_to_addressbook}"><img src="{sm_envelope}" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
 	</td>
 	<td bgcolor="#FFFFFF" nowrap align="center">
 		{date}
 	</td>
 	<td bgcolor="#FFFFFF" valign="middle" align="center">
-		<img src="{image_path}/read_small.png" width="16" border="0" alt="{lang_read}" title="{lang_read}">
+		{state}
+<!--		<img src="{image_path}/read_small.png" width="16" border="0" alt="{lang_read}" title="{lang_read}">
+-->		{row_text}
 	</td>
 	<td bgcolor="#FFFFFF">
-		<a name="subject_url" href="{url_read_message}">{header_subject}</a>
-	</td>
-	<td bgcolor="#FFFFFF">
-		{size}
-	</td>
-</tr>
-<!-- END header_row_S -->
-
-<!-- BEGIN header_row_RS -->
-<tr>
-	<td width="1%" bgcolor="#FFFFFF" align="center">
-		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
-	</td>
-	<td width="10%" bgcolor="#FFFFFF" nowrap>
-		<a href="{url_compose}" title="{full_address}">{sender_name}</a>
-		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
-	</td>
-	<td bgcolor="#FFFFFF" nowrap align="center">
-		{date}
-	</td>
-	<td bgcolor="#FFFFFF" valign="middle" align="center">
-		<img src="{image_path}/read_small.png" width="16" border="0" alt="{lang_read}" title="{lang_read}">
-	</td>
-	<td bgcolor="#FFFFFF">
-		<a name="subject_url" href="{url_read_message}">{header_subject}</a>
+		<a class="{row_css_class}" name="subject_url" href="{url_read_message}">{header_subject}</a>
 	</td>
 	<td bgcolor="#FFFFFF">
 		{size}
 	</td>
 </tr>
-<!-- END header_row_RS -->
-
-<!-- BEGIN header_row_ -->
-<tr>
-	<td width="1%" bgcolor="#FFFFFF" align="center">
-		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
-	</td>
-	<td width="10%" bgcolor="#FFFFFF" nowrap>
-		<b><a href="{url_compose}" title="{full_address}">{sender_name}</a></b>
-		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
-	</td>
-	<td bgcolor="#FFFFFF" nowrap align="center">
-		{date}
-	</td>
-	<td bgcolor="#FFFFFF" valign="middle" align="center">
-		<img src="{image_path}/unread_small.png" width="16" border="0" alt="{lang_unread}" title="{lang_unread}">
-	</td>
-	<td bgcolor="#FFFFFF">
-		<b><a href="{url_read_message}">{header_subject}</a></b>
-	</td>
-	<td bgcolor="#FFFFFF">
-		{size}
-	</td>
-</tr>
-<!-- END header_row_ -->
-
-<!-- BEGIN header_row_F -->
-<tr>
-	<td width="1%" bgcolor="#FFFFFF" align="center">
-		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
-	</td>
-	<td width="10%" bgcolor="#FFFFFF" nowrap>
-		<b><a href="{url_compose}" title="{full_address}"><font color="red">{sender_name}</font></a></b>
-		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
-	</td>
-	<td bgcolor="#FFFFFF" nowrap align="center">
-		{date}
-	</td>
-	<td bgcolor="#FFFFFF">
-		<img src="{image_path}/unread_flagged_small.png" width="16" border="0" alt="{lang_unread}, {lang_flagged}" title="{lang_unread}, {lang_flagged}">
-	</td>
-	<td bgcolor="#FFFFFF">
-		<b><a href="{url_read_message}"><font color="red">{header_subject}</font></a></b>
-	</td>
-	<td bgcolor="#FFFFFF">
-		{size}
-	</td>
-</tr>
-<!-- END header_row_F -->
-
-<!-- BEGIN header_row_R -->
-<tr>
-	<td width="1%" bgcolor="#FFFFFF" align="center">
-		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
-	</td>
-	<td width="10%" bgcolor="#FFFFFF" nowrap>
-		<b><a href="{url_compose}" title="{full_address}">{sender_name}</a></b>
-		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
-	</td>
-	<td bgcolor="#FFFFFF" nowrap align="center">
-		{date}
-	</td>
-	<td bgcolor="#FFFFFF">
-		<img src="{image_path}/recent_small.gif" width="16" border="0" alt="{lang_recent}" title="{lang_recent}">
-	</td>
-	<td bgcolor="#FFFFFF">
-		<b><a href="{url_read_message}">{header_subject}</a></b>
-	</td>
-	<td bgcolor="#FFFFFF">
-		{size}
-	</td>
-</tr>
-<!-- END header_row_R -->
-
-<!-- BEGIN header_row_AS -->
-<tr>
-	<td width="1%" bgcolor="#FFFFFF" align="center">
-		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
-	</td>
-	<td width="10%" bgcolor="#FFFFFF" nowrap>
-		<a href="{url_compose}" title="{full_address}">{sender_name}</a>
-		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
-	</td>
-	<td bgcolor="#FFFFFF" nowrap align="center">
-		{date}
-	</td>
-	<td bgcolor="#FFFFFF" valign="middle" align="center">
-		<img src="{image_path}/read_answered_small.png" width="16" border="0" alt="{lang_replied}" title="{lang_replied}">
-	</td>
-	<td bgcolor="#FFFFFF">
-		<a href="{url_read_message}">{header_subject}</a>
-	</td>
-	<td bgcolor="#FFFFFF">
-		{size}
-	</td>
-</tr>
-<!-- END header_row_AS -->
-
-<!-- BEGIN header_row_RAS -->
-<tr>
-	<td width="1%" bgcolor="#FFFFFF" align="center">
-		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
-	</td>
-	<td width="10%" bgcolor="#FFFFFF" nowrap>
-		<a href="{url_compose}" title="{full_address}">{sender_name}</a>
-		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
-	</td>
-	<td bgcolor="#FFFFFF" nowrap align="center">
-		{date}
-	</td>
-	<td bgcolor="#FFFFFF" valign="middle" align="center">
-		<img src="{image_path}/read_answered_small.png" width="16" border="0" alt="{lang_replied}" title="{lang_replied}">
-	</td>
-	<td bgcolor="#FFFFFF">
-		<a href="{url_read_message}">{header_subject}</a>
-	</td>
-	<td bgcolor="#FFFFFF">
-		{size}
-	</td>
-</tr>
-<!-- END header_row_RAS -->
-
-<!-- BEGIN header_row_A -->
-<tr>
-	<td width="1%" bgcolor="#FFFFFF" align="center">
-		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
-	</td>
-	<td width="10%" bgcolor="#FFFFFF" nowrap>
-		<b><a href="{url_compose}" title="{full_address}">{sender_name}</a></b>
-		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
-	</td>
-	<td bgcolor="#FFFFFF" nowrap align="center">
-		{date}
-	</td>
-	<td bgcolor="#FFFFFF" valign="middle" align="center">
-		<img src="{image_path}/read_answered_small.png" width="16" border="0" alt="{lang_replied}" title="{lang_replied}">
-	</td>
-	<td bgcolor="#FFFFFF">
-		<b><a href="{url_read_message}">{header_subject}</a></b>
-	</td>
-	<td bgcolor="#FFFFFF">
-		{size}
-	</td>
-</tr>
-<!-- END header_row_A -->
-
-<!-- BEGIN header_row_ADS -->
-<tr>
-	<td width="1%" bgcolor="#FFFFFF" align="center">
-		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
-	</td>
-	<td width="10%" bgcolor="#FFFFFF" nowrap>
-		<a href="{url_compose}" title="{full_address}"><font color="#CCCCCC">{sender_name}</font></a>
-		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
-	</td>
-	<td bgcolor="#FFFFFF" nowrap align="center">
-		<font color="#CCCCCC">{date}</font>
-	</td>
-	<td bgcolor="#FFFFFF" valign="middle" align="center">
-		<img src="{image_path}/read_answered_deleted_small.png" width="16" border="0" alt="{lang_replied}, {lang_deleted}" title="{lang_replied}, {lang_deleted}">
-	</td>
-	<td bgcolor="#FFFFFF">
-		<a href="{url_read_message}"><font color="#CCCCCC">{header_subject}</font></a>
-	</td>
-	<td bgcolor="#FFFFFF">
-		<font color="#CCCCCC">{size}</font>
-	</td>
-</tr>
-<!-- END header_row_ADS -->
-
-<!-- BEGIN header_row_FS -->
-<tr>
-	<td width="1%" bgcolor="#FFFFFF" align="center">
-		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
-	</td>
-	<td width="10%" bgcolor="#FFFFFF" nowrap>
-		<a href="{url_compose}" title="{full_address}"><font color="red">{sender_name}</font></a>
-		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
-	</td>
-	<td bgcolor="#FFFFFF" nowrap align="center">
-		{date}
-	</td>
-	<td bgcolor="#FFFFFF">
-                 <img src="{image_path}/read_flagged_small.png" width="16" border="0" alt="{lang_read}, {lang_flagged}" title="{lang_read}, {lang_flagged}">
-	</td>
-	<td bgcolor="#FFFFFF">
-		<a href="{url_read_message}"><font color="red">{header_subject}</font></a>
-	</td>
-	<td bgcolor="#FFFFFF">
-		{size}
-	</td>
-</tr>
-<!-- END header_row_FS -->
-
-<!-- BEGIN header_row_FAS -->
-<tr>
-	<td width="1%" bgcolor="#FFFFFF" align="center">
-		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
-	</td>
-	<td width="10%" bgcolor="#FFFFFF" nowrap>
-		<a href="{url_compose}" title="{full_address}"><font color="red">{sender_name}</font></a>
-		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
-	</td>
-	<td bgcolor="#FFFFFF" nowrap align="center">
-		{date}
-	</td>
-	<td bgcolor="#FFFFFF" valign="middle" align="center">
-		<img src="{image_path}/read_answered_small.png" width="16" border="0" alt="{lang_replied}, {lang_flagged}" title="{lang_replied}, {lang_flagged}">
-	</td>
-	<td bgcolor="#FFFFFF">
-		<a href="{url_read_message}"><font color="red">{header_subject}</font></a>
-	</td>
-	<td bgcolor="#FFFFFF">
-		{size}
-	</td>
-</tr>
-<!-- END header_row_FAS -->
-
-<!-- BEGIN header_row_FA -->
-<tr>
-	<td width="1%" bgcolor="#FFFFFF" align="center">
-		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
-	</td>
-	<td width="10%" bgcolor="#FFFFFF" nowrap>
-		<a href="{url_compose}" title="{full_address}"><font color="red">{sender_name}</font></a>
-		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
-	</td>
-	<td bgcolor="#FFFFFF" nowrap align="center">
-		{date}
-	</td>
-	<td bgcolor="#FFFFFF" valign="middle" align="center">
-		<img src="{image_path}/read_answered_small.png" width="16" border="0" alt="{lang_replied}, {lang_flagged}" title="{lang_replied}, {lang_flagged}">
-	</td>
-	<td bgcolor="#FFFFFF">
-		<a href="{url_read_message}"><font color="red">{header_subject}</font></a>
-	</td>
-	<td bgcolor="#FFFFFF">
-		{size}
-	</td>
-</tr>
-<!-- END header_row_FA -->
-
-<!-- BEGIN header_row_D -->
-<tr>
-	<td width="1%" bgcolor="#FFFFFF" align="center">
-		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
-	</td>
-	<td width="10%" bgcolor="#FFFFFF" nowrap>
-		<b><a href="{url_compose}" title="{full_address}"><font color="#CCCCCC">{sender_name}</font></a></b>
-		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
-	</td>
-	<td bgcolor="#FFFFFF" nowrap align="center">
-		<font color="#CCCCCC">{date}</font>
-	</td>
-	<td bgcolor="#FFFFFF" valign="middle" align="center">
-		<img src="{image_path}/unread_deleted_small.png" width="16" border="0" alt="{lang_unread}, {lang_deleted}" title="{lang_unread}, {lang_deleted}">
-	</td>
-	<td bgcolor="#FFFFFF">
-		<b><a name="subject_url" href="{url_read_message}"><font color="#CCCCCC">{header_subject}</font></a></b>
-	</td>
-	<td bgcolor="#FFFFFF">
-		<font color="#CCCCCC">{size}</font>
-	</td>
-</tr>
-<!-- END header_row_D -->
-
-<!-- BEGIN header_row_DS -->
-<tr>
-	<td width="1%" bgcolor="#FFFFFF" align="center">
-		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
-	</td>
-	<td width="10%" bgcolor="#FFFFFF" nowrap>
-		<a href="{url_compose}" title="{full_address}"><font color="#CCCCCC">{sender_name}</font></a>
-		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
-	</td>
-	<td bgcolor="#FFFFFF" nowrap align="center">
-		<font color="#CCCCCC">{date}</font>
-	</td>
-	<td bgcolor="#FFFFFF" valign="middle" align="center">
-		<img src="{image_path}/read_deleted_small.png" width="16" border="0" alt="{lang_read}, {lang_deleted}" title="{lang_read}, {lang_deleted}">
-	</td>
-	<td bgcolor="#FFFFFF">
-		<a name="subject_url" href="{url_read_message}"><font color="#CCCCCC">{header_subject}</font></a>
-	</td>
-	<td bgcolor="#FFFFFF">
-		<font color="#CCCCCC">{size}</font>
-	</td>
-</tr>
-<!-- END header_row_DS -->
+<!-- END header_row -->
 
 <!-- BEGIN error_message -->
 	<tr>
@@ -502,3 +322,16 @@ doLoad();
 		</td>
 	</tr>
 <!-- END error_message -->
+
+<!-- BEGIN quota_block -->
+	<table border="1" cellpadding="0" cellspacing="0" width="200">
+		<tr valign="middle">
+			<td width="{leftWidth}%" bgcolor="{quotaBG}" align="center" valign="middle">
+				<small>{quotaUsage_left}</small>
+			</td>
+			<td align="center" valign="middle">
+				<small>{quotaUsage_right}</small>
+			</td>
+		</tr>
+	</table>
+<!-- END quota_block -->

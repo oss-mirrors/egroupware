@@ -37,11 +37,6 @@
 		// UNDER DEVELOPMENT debug info can be stored in array for later retrieval
 		var $debugdata=array();
 		
-		// for timimg, this is filled with data the first CALL to a class functions
-		var $t_first_call = '##NOTHING##';
-		// this is filled on CREATION of this class
-		var $t_on_creation = '##NOTHING##';
-		
 		// available debug output types
 		var $available_debug_outputs=array('echo_out','fill_array','fill_array__another_window','FUTURE');
 		
@@ -56,64 +51,7 @@
 		*/
 		function svc_debug()
 		{
-			// fill a timestamp
-			if ($this->t_on_creation == '##NOTHING##')
-			{
-				$this->t_on_creation = array();
-				$this->t_on_creation['raw'] = microtime();
-				// we'll finish it later
-				$this->t_on_creation['useful'] == '##NOTHING##';
-			}
-		}
-		
-		
-		/*!
-		@function ensure_time_stamps
-		@abstract ? 
-		*/
-		function ensure_time_stamps()
-		{
-			// get a useful timestamp out of the constructor filled creation mtime
-			if (!isset($this->t_on_creation['useful'])
-			|| ($this->t_on_creation['useful'] == '##NOTHING##'))
-			{
-				list($this->t_on_creation['t_micro'], $this->t_on_creation['t_int']) = explode(' ', $this->t_on_creation['raw']);
-				$this->t_on_creation['full_str'] = '';
-				$this->t_on_creation['full_str'] = (string)$this->t_on_creation['t_int'].(string)substr($this->t_on_creation['t_micro'], 1);
-				$this->t_on_creation['useful'] = $this->microtime_to_useful($this->t_on_creation['raw']);
-				// add one second in for use when time rolls over from 9 sec to "10" sec 
-				//$this->t_on_creation['useful_plus_one_sec'] = $this->useful_add_one_sec($this->t_on_creation['useful']);
-			}
-			// not the "since first call to a function here" timestamp
-			if ($this->t_first_call == '##NOTHING##')
-			{
-				$this->t_first_call = array();
-				$this->t_first_call['raw'] = microtime();
-				list($this->t_first_call['t_micro'], $this->t_first_call['t_int']) = explode(' ', $this->t_first_call['raw']);
-				$this->t_first_call['full_str'] = '';
-				$this->t_first_call['full_str'] = (string)$this->t_first_call['t_int'].(string)substr($this->t_first_call['t_micro'], 1);
-				
-				$this->t_first_call['useful'] = $this->microtime_to_useful($this->t_first_call['raw']);
-				//$this->t_on_creation['useful_plus_one_sec'] = $this->useful_add_one_sec($this->t_on_creation['useful']);
-			}
-		}
-		
-		/*!
-		@function microtime_to_useful
-		@abstract ? 
-		*/
-		function microtime_to_useful($feed_micro_str)
-		{
-			// microtime gives us "0.26469400 1050637805"
-			// split the parts
-			list($t_micro, $t_int) = explode(' ', $feed_micro_str);
-			// shorten the microsec by 2 numbers
-			$t_micro_short = substr($t_micro,0, -2);
-			// replace the "0." at pos 1 of microsec with the2  final sec digit (05 in this example)
-			$last_sec_digits = substr($t_int,-2);
-			$useful_t_micro = str_replace('0.',$last_sec_digits,$t_micro_short);
-			// now return an int that is last_sec_digitS concat with t_micro into one BIG INT
-			return (int)$useful_t_micro;
+			// do nothing here
 		}
 		
 		/*!
@@ -132,7 +70,7 @@
 		@author Angles
 		*/
 		function out($str='', $dump_obj='', $output_to='')
-		{	
+		{			
 			// normalize some params
 			if ((!$output_to)
 			|| ( ($output_to) && (in_array($output_to, $this->available_debug_outputs) == False) ) )
@@ -141,25 +79,10 @@
 			}
 			$output_to = $this->debugoutput_to;
 			
-			$this->ensure_time_stamps();
-			$current_mtime = microtime();
-			// this returns mtime as an INTEGER so we can actually use it
-			$current_useful = $this->microtime_to_useful($current_mtime);
-			//$diff = $current_useful - $this->t_first_call['useful'];
-			$diff = $current_useful - $this->t_on_creation['useful'];
-			$diff = (string)$diff;
-			
 			if (!$str)
 			{
-				$str = 'svc_debug: out('.__LINE__.'): out: no debug message provided';
+				$str = 'mail_msg_display: out: no debug message provided';
 			}
-			
-			// add time stamp
-			//$str = '<small>('.$this->t_first_call['raw'].' :: '.$this->t_first_call['useful'].')</small> '.$str;
-			//$str = '<small>('.$this->t_first_call['full_str'].')</small> '.$str;
-			//$str = '<small>('.$this->t_first_call['float'].')</small> '.$str;
-			$str = '<small><font color="brown">(+'.$diff.')</font></small> '.$str;
-			
 			// output the debug info
 			if ($output_to == 'echo_out')
 			{
@@ -167,9 +90,9 @@
 				if ((isset($dump_obj))
 				&& ($dump_obj))
 				{
-					echo '<pre>'; print_r($dump_obj); echo '</pre>';
-					// EXPIREMENTAL
-					//echo '<br><small>'.$this->fake_print_r($dump_obj).'</small></br>';
+					echo '<pre>';
+					print_r($dump_obj);
+					echo '</pre>';
 				}
 			}
 			elseif (($output_to == 'fill_array')
@@ -177,22 +100,12 @@
 			{
 				// do this for simple "fill_array" and for "fill_array__another_window"
 				$this->debugdata[] = $str;
-				// fake_print_r does not yet work on objects
 				if ((isset($dump_obj))
-				&& (is_object($dump_obj)))
-				{
-					//$this->debugdata[] = '<br />'.serialize($dump_obj).'<br />';
-					$this->debugdata[] = '<br /> <pre>'.$this->print_r_log($dump_obj).'</pre> <br />';
-				}
-				elseif ((isset($dump_obj))
 				&& ($dump_obj))
 				{
 					//$this->debugdata[] = '<pre>'.serialize($dump_obj).'</pre>';
-					//$this->debugdata[] = '<br />'.serialize($dump_obj).'<br />';
+					$this->debugdata[] = '<br />'.serialize($dump_obj).'<br />';
 					//$this->debugdata[] = '<br />'.$this->htmlspecialchars_encode(serialize($dump_obj)).'<br />';
-					// this works ok
-					//$this->debugdata[] = '<br /><small>'.$this->fake_print_r($dump_obj).'</small><br />';
-					$this->debugdata[] = '<br /> <pre>'.$this->print_r_log($dump_obj).'</pre> <br />';
 				}
 			}
 			else
@@ -261,30 +174,6 @@
 					//$this_line = preg_replace('/(&lt;font color=&quot;)(.*)(&quot;&gt;)(.*)(&lt;\/font&gt;)/','FONTREPLACEMENT \2 \4 FONTREPLACEMENT',$this_line);
 					$this_line = preg_replace('/(&lt;font color=&quot;)(.*)(&quot;&gt;)(.*)(&lt;\/font&gt;)/U','<font color="\2"> \4 </font>',$this_line);
 					$this_line = str_replace(' __LINEBREAK_BR__ ', '<br />', $this_line);
-					$this_line = str_replace(' __LINEBREAK__ ', '<br />', $this_line);
-					// NEW STUFF
-					// <small> .. </small>
-					$this_line = str_replace('&lt;small&gt;', '<small>', $this_line);
-					$this_line = str_replace('&lt;/small&gt;', '</small>', $this_line);
-					// <li> .. </li>
-					$this_line = str_replace('&lt;li&gt;', '<li>', $this_line);
-					$this_line = str_replace('&lt;/li&gt;', '</li>', $this_line);
-					// =&gt
-					$this_line = str_replace('=&amp;gt;', '=&gt;', $this_line);
-					// <code> .. </code>
-					$this_line = str_replace('&lt;code&gt;', '<code>', $this_line);
-					$this_line = str_replace('&lt;/code&gt;', '</code>', $this_line);
-					// <pre> .. </pre>
-					$this_line = str_replace('&lt;pre&gt;', '<pre>', $this_line);
-					$this_line = str_replace('&lt;/pre&gt;', '</pre>', $this_line);
-					// <ul style="list-style-type: none;"> .. </ul>
-					$this_line = str_replace('&lt;ul style=&quot;list-style-type: none;&quot;&gt;', '<ul style="list-style-type: none;">', $this_line);
-					$this_line = str_replace('&lt;/ul&gt;', '</ul>', $this_line);
-					//$this_line = preg_replace('/(&lt;font color=&quot;)(.*)(&quot;&gt;)(.*)(&lt;\/font&gt;)/U','<font color="\2"> \4 </font>',$this_line);
-					// &gt .. &lt
-					$this_line = str_replace('&amp;lt;', '&lt;', $this_line);
-					$this_line = str_replace('&amp;gt;', '&gt;', $this_line);
-					
 					$temp_data .= '<br />+ '.$this_line;
 				}
 				
@@ -345,10 +234,6 @@ $other_window_js = <<<EOD
 <script type="text/javascript">
 var _console = null;
 var _did_output = 0;
-// do we close it every page view and start blank with next page
-// do we keep the window open and keep appending
-var _append_to_console = 0;
-//var _append_to_console = 1;
 function do_debug(msg)
 {
 	if ((_console == null) || (_console.closed)) {
@@ -367,9 +252,7 @@ function do_debug(msg)
 	// calling close will end the page and the next page starts a new page
 	// or not calling close will add the next page view debug data to the existing text here
 	// ALSO calling close requires the open statement check above
-	if (_append_to_console == 0) {
-		_console.document.close();
-	}
+	//_console.document.close();
 	_did_output = 1;
 }
 </script>
@@ -388,59 +271,6 @@ EOD;
 				.'</script>'."\r\n";
 			
 			return $other_window_js;
-		}
-		
-		
-		/*!
-		@function fake_print_r
-		@abstract like php print_r EXCEPT it returns an html string instead of echoing out
-		@discussion This made by Seek3r as part of the phpgwapi file "php3_support_functions", it 
-		is simply copied here for easier use. I, Angles, made almost no changes to the original Seek3r code 
-		in this function which had been called "print_r" in said file. 
-		@author Seek3r, Angles
-		*/
-		function fake_print_r($array,$print=False)
-		{
-			$str = '';
-			if(gettype($array)=="array")
-			{
-				//$str .= '<ul>';
-				$str .= '<ul style="list-style-type: none;">';
-				while (list($index, $subarray) = each($array) )
-				{
-					$str .= '<li>'.$index.' <code>=&gt;</code>';
-					//$str .= print_r($subarray,$print);
-					$str .= $this->fake_print_r($subarray,$print);
-					$str .= '</li>';
-				}
-				$str .= '</ul>';
-			}
-			else
-			{
-				$str .= $array;
-			}
-			if($print)
-			{
-				echo $str;
-			}
-			else
-			{
-				return $str;
-			}
-		}
-		
-		/*!
-		@function print_r_log
-		@abstract user example on php site about print_r as a var string using OB
-		@discussion ?
-		*/
-		function print_r_log($var)
-		{
-			ob_start();
-			print_r($var);
-			$ret_str = ob_get_contents();
-			ob_end_clean();
-			return $ret_str;
 		}
 		
 	}

@@ -2,11 +2,12 @@
 	/*******************************************************************\
 	* phpGroupWare - Projects                                           *
 	* http://www.phpgroupware.org                                       *
+	* This program is part of the GNU project, see http://www.gnu.org/	*
 	*                                                                   *
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000, 2001 Bettina Gille                            *
+	* Copyright 2000 - 2003 Free Software Foundation, Inc               *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -23,6 +24,7 @@
 	* Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.         *
 	\*******************************************************************/
 	/* $Id$ */
+	/* $Source$ */
 
 	class sostatistics
 	{
@@ -50,12 +52,12 @@
 
 			if ($values['sdate'])
 			{
-				$filter .= " AND start_date >='" . $values['sdate'] . "'";
+				$filter .= ' AND start_date >=' . $values['sdate'];
 			}
 
 			if ($values['edate'])
 			{
-				$filter .= " AND end_date <='" . $values['edate'] . "'";
+				$filter .= ' AND end_date <=' . $values['edate'];
 			}
 
 		//	_debug_array($values);
@@ -67,15 +69,15 @@
 		{
 			if ($GLOBALS['phpgw_info']['server']['db_type']=='pgsql')
 			{
-				$join = " JOIN ";
+				$join = ' JOIN ';
 			}
 			elseif ($GLOBALS['phpgw_info']['server']['db_type']=='mysql')
 			{
-				$join = " LEFT JOIN ";
+				$join = ' LEFT JOIN ';
 			}
 
-			$this->db->query("SELECT title,num,phpgw_p_projects.id as id FROM phpgw_p_projects $join phpgw_p_hours ON "
-							. "phpgw_p_hours.employee='" . $account_id . "' GROUP BY title,num,phpgw_p_projects.id",__LINE__,__FILE__);
+			$this->db->query('SELECT title,num,phpgw_p_projects.id as id FROM phpgw_p_projects' . $join . 'phpgw_p_hours ON '
+							. 'phpgw_p_hours.employee=' . $account_id . ' GROUP BY title,num,phpgw_p_projects.id',__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{
@@ -95,9 +97,9 @@
 		{
 			switch($type)
 			{
-				case 'account': $idfilter = "WHERE employee='" . $account_id . "'"; break;
-				case 'project': $idfilter = "WHERE project_id='" . $project_id . "'"; break;
-				case 'both':	$idfilter = "WHERE employee='" . $account_id . "' AND  project_id='" . $project_id . "'"; break;
+				case 'account': $idfilter = 'WHERE employee=' . $account_id; break;
+				case 'project': $idfilter = 'WHERE project_id=' . $project_id; break;
+				case 'both':	$idfilter = 'WHERE employee=' . $account_id . ' AND  project_id=' . $project_id; break;
 			}
 
 			$this->db->query('SELECT SUM(minutes) as min,num,descr FROM phpgw_p_hours,phpgw_p_activities ' . $idfilter
@@ -119,8 +121,8 @@
 		function pro_stat_employees($project_id, $values)
 		{
 
-			$this->db->query("SELECT employee from phpgw_p_hours WHERE project_id='" . $project_id . "'" . $this->stat_filter($values)
-							. " GROUP BY employee",__LINE__,__FILE__);
+			$this->db->query('SELECT employee from phpgw_p_hours WHERE project_id=' . $project_id . $this->stat_filter($values)
+							. ' GROUP BY employee',__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{

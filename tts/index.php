@@ -17,7 +17,13 @@
 	** select distinct group_ticket_id, phpgw_tts_groups.group_ticket_id, phpgw_tts_tickets.*
 	** from phpgw_tts_tickets, phpgw_tts_groups where ticket_id = group_ticket_id and group_id in (14,15);
 	*/
- 
+
+	/* ACL levels
+	** 1 - Read ticket within your group only
+	** 2 - Close ticket
+	** 4 - Allow to make changes to priority, billing hours, billing rate, category, and assigned to
+	*/
+
 	$GLOBALS['phpgw_info']['flags']['currentapp'] = 'tts';
 	$GLOBALS['phpgw_info']['flags']['enable_contacts_class'] = True;
 	$GLOBALS['phpgw_info']['flags']['enable_categories_class'] = True;
@@ -34,8 +40,8 @@
 	$GLOBALS['phpgw']->template->set_block('index', 'tts_row', 'tts_row');
 	$GLOBALS['phpgw']->template->set_block('index', 'tts_col_ifviewall', 'tts_col_ifviewall');
 	$GLOBALS['phpgw']->template->set_block('index', 'tts_head_ifviewall', 'tts_head_ifviewall');
-	$GLOBALS['phpgw']->template->set_block('index', 'tts_ticket_id_read', 'tts_ticket_id_read');
-	$GLOBALS['phpgw']->template->set_block('index', 'tts_ticket_id_unread', 'tts_ticket_id_unread');
+//	$GLOBALS['phpgw']->template->set_block('index', 'tts_ticket_id_read', 'tts_ticket_id_read');
+//	$GLOBALS['phpgw']->template->set_block('index', 'tts_ticket_id_unread', 'tts_ticket_id_unread');
 
 	$GLOBALS['phpgw']->template->set_var('lang_appname', lang('Trouble Ticket System'));
 	$GLOBALS['phpgw']->template->set_var('tts_newticket_link', $GLOBALS['phpgw']->link('/tts/newticket.php'));
@@ -99,7 +105,7 @@
 	$GLOBALS['phpgw']->template->set_var('tts_numopen',lang('Tickets open %1',$numopen));
 
 
-	$db2 = $phpgw->db;
+	$db2 = $GLOBALS['phpgw']->db;
 	$GLOBALS['phpgw']->db->query("select * from phpgw_tts_tickets $filtermethod $sortmethod",__LINE__,__FILE__);
 	$numfound = $GLOBALS['phpgw']->db->num_rows();
 
@@ -131,9 +137,11 @@
 	
 	// fill header
 	$GLOBALS['phpgw']->template->set_var('tts_head_bgcolor',$GLOBALS['phpgw_info']['theme']['th_bg'] );
+	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg'] );
 	$GLOBALS['phpgw']->template->set_var('tts_head_ticket', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_id',$order,'/tts/index.php',lang('Ticket').' #'));
 	$GLOBALS['phpgw']->template->set_var('tts_head_prio', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_priority',$order,'/tts/index.php',lang('Prio')));
-	$GLOBALS['phpgw']->template->set_var('tts_head_group',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_category',$order,'/tts/index.php',lang('Group')) );
+	$GLOBALS['phpgw']->template->set_var('tts_head_group',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_group',$order,'/tts/index.php',lang('Group')));
+	$GLOBALS['phpgw']->template->set_var('tts_head_category',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_category',$order,'/tts/index.php',lang('Category')));
 	$GLOBALS['phpgw']->template->set_var('tts_head_assignedto', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_assignedto',$order,'/tts/index.php',lang('Assigned to')));
 	$GLOBALS['phpgw']->template->set_var('tts_head_openedby', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_owner',$order,'/tts/index.php',lang('Opened by')));
 
@@ -193,34 +201,42 @@
 			$GLOBALS['phpgw']->template->set_var('tts_row_color', $tr_color );
 			$GLOBALS['phpgw']->template->set_var('tts_ticketdetails_link', $GLOBALS['phpgw']->link('/tts/viewticket_details.php','ticket_id=' . $GLOBALS['phpgw']->db->f('ticket_id')));
 
-			$GLOBALS['phpgw']->template->set_var('tts_t_id',$GLOBALS['phpgw']->db->f('ticket_id') );
+			$GLOBALS['phpgw']->template->set_var('row_ticket_id','<a href="' . $GLOBALS['phpgw']->link('/tts/viewticket_details.php','ticket_id=' . $GLOBALS['phpgw']->db->f('ticket_id')) . '">' . $GLOBALS['phpgw']->db->f('ticket_id') . '</a>');
 
 			if (! $ticket_read)
 			{
-				$GLOBALS['phpgw']->template->parse('tts_ticket_id','tts_ticket_id_unread');
+				$GLOBALS['phpgw']->template->set_var('row_status','<img src="templates/default/images/updated.gif">');
 			}
 			else
 			{
-				$GLOBALS['phpgw']->template->parse('tts_ticket_id','tts_ticket_id_read');
+				$GLOBALS['phpgw']->template->set_var('row_status','&nbsp;');
 			}
 
 			$priostr = '';
-			while ($priority > 0) { $priostr=$priostr . "||"; $priority--; }
+			while ($priority > 0)
+			{
+				$priostr = $priostr . "||";
+				$priority--;
+			}
 			$GLOBALS['phpgw']->template->set_var('tts_t_priostr',$priostr );
 
-			$cat_name = $phpgw->categories->id2name($GLOBALS['phpgw']->db->f('ticket_category'));
+			$cat_name   = $GLOBALS['phpgw']->categories->id2name($GLOBALS['phpgw']->db->f('ticket_category'));
 			$GLOBALS['phpgw']->template->set_var('row_category',$cat_name);
+
+			$group_name = $GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_group'));
+			$group_name = ($group_name ? $group_name : '--');
+			$GLOBALS['phpgw']->template->set_var('row_group',$group_name);
 
 			$GLOBALS['phpgw']->template->set_var('tts_t_assignedto', $GLOBALS['phpgw']->db->f('ticket_assignedto')?$GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_assignedto')):lang('None'));
 			$GLOBALS['phpgw']->template->set_var('tts_t_user',$GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_owner')));
 
 			$history_values = $GLOBALS['phpgw']->historylog->return_array(array(),array('O'),'history_timestamp','ASC',$GLOBALS['phpgw']->db->f('ticket_id'));
-			$GLOBALS['phpgw']->template->set_var('tts_t_timestampopened',$GLOBALS['phpgw']->common->show_date($history_values[0]['datetime']));
+			$GLOBALS['phpgw']->template->set_var('tts_t_timestampopened',$GLOBALS['phpgw']->common->show_date($history_values[0]['datetime'] - ((60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])));
 
 			if ($GLOBALS['phpgw']->db->f('ticket_status') == 'X')
 			{
 				$history_values = $GLOBALS['phpgw']->historylog->return_array(array(),array('X'),'history_timestamp','DESC',$GLOBALS['phpgw']->db->f('ticket_id'));
-				$GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',$GLOBALS['phpgw']->common->show_date($history_values[0]['datetime']));
+				$GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',$GLOBALS['phpgw']->common->show_date($history_values[0]['datetime'] - ((60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])));
 				$GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
 			}
 			elseif ($filter != 'viewopen')

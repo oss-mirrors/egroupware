@@ -24,11 +24,11 @@
 	$GLOBALS['phpgw']->template->set_block('admin','form','form');
 	$GLOBALS['phpgw']->template->set_block('admin','row','row');
 
-	if ($HTTP_POST_VARS['submit'])
+	if($HTTP_POST_VARS['submit'])
 	{
- 		$poll_id = $HTTP_POST_VARS['poll_id'];
- 		$answer  = $HTTP_POST_VARS['answer'];
- 		$vote_id = $HTTP_POST_VARS['vote_id'];
+		$poll_id = $HTTP_POST_VARS['poll_id'];
+		$answer  = $HTTP_POST_VARS['answer'];
+		$vote_id = $HTTP_POST_VARS['vote_id'];
 
 		$GLOBALS['phpgw']->db->query("select max(vote_id)+1 from phpgw_polls_data where poll_id='$poll_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();

@@ -13,7 +13,6 @@
 
 	/* $Id$ */
 
-	$phpgw_info = array();
 	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'           => 'headlines',
 		'enable_network_class' => True,
@@ -22,33 +21,32 @@
 	);
 	include('../header.inc.php');
 
-	if(!count($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
+	if (! count($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
 	{
 		Header('Location: ' . $GLOBALS['phpgw']->link('/headlines/preferences.php'));
 	}
 	else
 	{
 		$GLOBALS['phpgw']->common->phpgw_header();
+		echo parse_navbar();
 	}
 
-	if(!$GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'])
+	if (! $GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'])
 	{
 		$GLOBALS['phpgw']->preferences->change('headlines','headlines_layout','basic');
 		$GLOBALS['phpgw']->preferences->commit(True);
 		$GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'] = 'basic';
 	}
 
-	while($preference = each($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
+	while ($preference = each($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
 	{
-		if($preference[0] != 'headlines_layout' &&
-			$preference[0] != 'mainscreen_showheadlines')
+		if ($preference[0] != 'headlines_layout')
 		{
 			$sites[] = $preference[0];
 		}
 	}
 
-	$headlines = CreateObject('headlines.headlines');
-
+	$headlines = new headlines;
 	$GLOBALS['phpgw']->template->set_file(array(
 		'layout_row' => 'layout_row.tpl',
 		'form'       => $GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'] . '.tpl'
@@ -62,7 +60,7 @@
 	{
 		echo '<center>' . lang('please set your preferences for this application') . '.</center>';
 	}
-	while(list(,$site) = @each($sites))
+	while (list(,$site) = @each($sites))
 	{
 		$j++;
 		$headlines->readtable($site);
@@ -83,18 +81,16 @@
 		}
 		else
 		{
-			while(list($title,$link) = @each($links))
+			while (list($title,$link) = each($links))
 			{
-				if($link && $title)
-				{
-					$var = Array(
-						'item_link'  => stripslashes($link),
-						'item_label' => stripslashes($title),
-						'error'      => ''
-					);
-					$GLOBALS['phpgw']->template->set_var($var);
-					$s .= $GLOBALS['phpgw']->template->parse('o_','row');
-				}
+
+				$var = Array(
+					'item_link'  => stripslashes($link),
+					'item_label' => stripslashes($title),
+					'error'      => ''
+				);
+				$GLOBALS['phpgw']->template->set_var($var);
+				$s .= $GLOBALS['phpgw']->template->parse('o_','row');
 			}
 		}
 		$GLOBALS['phpgw']->template->set_var('rows',$s);
@@ -102,7 +98,7 @@
 
 		$GLOBALS['phpgw']->template->set_var('section_' . $j,$GLOBALS['phpgw']->template->parse('o','channel'));
 
-		if($j == 3 || $i == 1)
+		if ($j == 3 || $i == 1)
 		{
 			$GLOBALS['phpgw']->template->pfp('out','layout_row');
 			$GLOBALS['phpgw']->template->set_var('section_1', '');

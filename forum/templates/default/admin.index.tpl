@@ -17,7 +17,7 @@
 		<tr> 
           <td bgcolor="{TD_BG}" width="4%"><img src="{CAT_IMG}" width="18" height="18" alt="{LANG_CATEGORY}"></td>
           <td bgcolor="{TD_BG}" width="69%">{CAT_NAME}</td>
-          <td rowspan="2" bgcolor="{TD_BG}" width="27%"> 
+          <td rowspan="2" bgcolor="#{TD_BG}" width="27%"> 
             <div align="center">[ <a href="{EDIT_LINK}"><font size="2">{LANG_EDIT}</font></a><font size="2"> |  
               <a href="{DEL_LINK}">{LANG_DEL}</a> ]</font></div>
           </td>

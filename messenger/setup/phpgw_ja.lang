@@ -19,8 +19,8 @@ reply to a message	messenger	ja	返信
 send	messenger	ja	送信
 send message to	messenger	ja	送信先
 you didn't enter anything for the message	messenger	ja	メッセージを入力して下さい
-you have %1 new messages	common	ja	%1 つのメッセージがあります
 you have %1 new message	common	ja	%1 つのメッセージがあります
+you have %1 new messages	common	ja	%1 つのメッセージがあります
 you have no messages	messenger	ja	メッセージがありません
 you must enter a subject	messenger	ja	件名を入力して下さい
 you must enter the username this message is for	messenger	ja	送信先のユーザを入力して下さい

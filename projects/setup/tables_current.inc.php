@@ -18,7 +18,7 @@
 		'phpgw_p_projects' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
-				'num' => array('type' => 'varchar','precision' => 25,'nullable' => False),
+				'num' => array('type' => 'varchar','precision' => 255,'nullable' => False),
 				'owner' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'access' => array('type' => 'varchar','precision' => 7,'nullable' => True),
 				'entry_date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
@@ -36,7 +36,9 @@
 				'date_created' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'processor' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'investment_nr' => array('type' => 'varchar','precision' => 50,'nullable' => False),
-				'pcosts' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False)
+				'pcosts' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False),
+				'main' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'level' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
 			),
 			'pk' => array('id'),
 			'fk' => array(),
@@ -162,6 +164,18 @@
 				'pcosts' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False)
 			),
 			'pk' => array('c_id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		),
+		'phpgw_p_mstones' => array(
+			'fd' => array(
+				's_id' => array('type' => 'auto','nullable' => False),
+				'project_id' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'title' => array('type' => 'varchar','precision' => 255,'nullable' => False),
+				'edate' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
+			),
+			'pk' => array('s_id'),
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()

@@ -47,54 +47,45 @@
 			#print "$query<br>";
 		}
 		
+		// create sql from the filter array
+		function getFilterSQL($_filter)
+		{
+			if(is_array($_filter))
+			{
+				$filter = '';
+				while(list($key,$value) = @each($_filter))
+				{
+					if($filter != '') $filter .= " or ";
+					switch($key)
+					{
+						case "from":
+							$filter .= "(sender_name like '%$value%' or sender_address like '%$value%') ";
+							break;
+						case "to":
+							$filter .= "(to_name like '%$value%' or to_address like '%$value%') ";
+							break;
+						case "subject":
+							$filter .= "subject like '%$value%' ";
+							break;
+					}
+				}
+				if($filter != '') $filter = " and ($filter) ";
+				return $filter;
+			}
+			return '';
+			
+		}
+		
 		function getHeaders($_firstMessage='', $_numberOfMessages='', $_sort='', $_filter='')
 		{
-			switch($_sort)
-			{
-				case "0":
-					$sort = "order by date desc";
-					break;
-				case "1":
-					$sort = "order by date asc";
-					break;
-				case "2":
-					$sort = "order by sender_address desc";
-					break;
-				case "3":
-					$sort = "order by sender_address asc";
-					break;
-				case "4":
-					$sort = "order by subject desc";
-					break;
-				case "5":
-					$sort = "order by subject asc";
-					break;
-				default:
-					$sort = "order by date desc";
-			}
-			
-			while(list($key,$value) = @each($_filter))
-			{
-				switch($key)
-				{
-					case "from":
-						$filter .= " and (sender_name like '%$value%' or sender_address like '%$value%') ";
-						break;
-					case "to":
-						$filter .= " and (to_name like '%$value%' or to_address like '%$value%') ";
-						break;
-					case "subject":
-						$filter .= " and subject like '%$value%' ";
-						break;
-				}
-			}
+			$sort = $this->getSortSQL($_sort);
+			$filter = $this->getFilterSQL($_filter);
 			
 			$query = sprintf("select uid, date, subject, sender_name, sender_address, to_name, to_address, size, attachments from phpgw_felamimail_cache ".
 					 "where accountid='%s' and hostname='%s' and foldername = '%s' and accountname='%s' %s $sort",
 					 $this->accountid, addslashes($this->hostname),
 					 addslashes($this->foldername), addslashes($this->accountname),
 					 $filter);
-			#print "$query<br>";
 			
 			if($_firstMessage == '' && $_numberOfMessages == '')
 			{
@@ -112,7 +103,8 @@
 						'sender_address'	=> $this->db->f('sender_address'), 
 						'to_name'		=> $this->db->f('to_name'), 
 						'to_address'		=> $this->db->f('to_address'),
-						'attachments'		=> $this->db->f('attachments')
+						'attachments'		=> $this->db->f('attachments'),
+						'date'			=> $this->db->f('date')
 						);
 			}
 			return $retValue;
@@ -158,20 +150,26 @@
 		// but use the use filter
 		function getMessageCounter($_filter)
 		{
-			while(list($key,$value) = @each($_filter))
+			if(is_array($_filter))
 			{
-				switch($key)
+				$filter = '';
+				while(list($key,$value) = @each($_filter))
 				{
-					case "from":
-						$filter .= " and (sender_name like '%$value%' or sender_address like '%$value%') ";
-						break;
-					case "to":
-						$filter .= " and (to_name like '%$value%' or to_address like '%$value%') ";
-						break;
-					case "subject":
-						$filter .= " and subject like '%$value%' ";
-						break;
+					if($filter != '') $filter .= " or ";
+					switch($key)
+					{
+						case "from":
+							$filter .= "(sender_name like '%$value%' or sender_address like '%$value%') ";
+							break;
+						case "to":
+							$filter .= "(to_name like '%$value%' or to_address like '%$value%') ";
+							break;
+						case "subject":
+							$filter .= "subject like '%$value%' ";
+							break;
+					}
 				}
+				if($filter !='') $filter = " and ($filter) ";
 			}
 			
 			$query = sprintf("select count(*) as count from phpgw_felamimail_cache ".
@@ -179,13 +177,82 @@
 					 $this->accountid, addslashes($this->hostname),
 					 addslashes($this->foldername), addslashes($this->accountname),
 					 $filter);
-			#print "$query<br>";
+			#print "<br>$query<br>";
 			
 			$this->db->query("$query",__LINE__,__FILE__);
 			
 			$this->db->next_record();
 			
 			return $this->db->f("count");
+		}
+		
+		// get the next message
+		function getNextMessage($_uid, $_sort='', $_filter='')
+		{
+			$sort = $this->getSortSQL($_sort);
+			$filter = $this->getFilterSQL($_filter);
+			
+			$query = sprintf("select uid, date, subject, sender_name, sender_address, to_name, to_address from phpgw_felamimail_cache ".
+					 "where accountid='%s' and hostname='%s' and foldername = '%s' and accountname='%s' %s $sort",
+					 $this->accountid, addslashes($this->hostname),
+					 addslashes($this->foldername), addslashes($this->accountname),
+					 $filter);
+
+			$this->db->query($query,__LINE__,__FILE__);
+			
+			while($this->db->next_record())
+			{
+				// we found the current message
+				if($this->db->f('uid') == $_uid)
+				{
+					// jump to the next messages
+					if($this->db->next_record())
+					{
+						$retValue['next'] = $this->db->f('uid');
+					}
+					// we are done
+					if($retValue) return $retValue;
+					
+					// we should never get here
+					return false;
+				}
+				else
+				{
+					// we found (maybe!) the previous message
+					$retValue['previous'] = $this->db->f('uid');
+				}
+			}
+			
+			// we should never get here
+			return false;
+		}
+		
+		function getSortSQL($_sort)
+		{
+			switch($_sort)
+			{
+				case "0":
+					$sort = "order by date desc";
+					break;
+				case "1":
+					$sort = "order by date asc";
+					break;
+				case "2":
+					$sort = "order by sender_address desc";
+					break;
+				case "3":
+					$sort = "order by sender_address asc";
+					break;
+				case "4":
+					$sort = "order by subject desc";
+					break;
+				case "5":
+					$sort = "order by subject asc";
+					break;
+				default:
+					$sort = "order by date desc";
+			}
+			return $sort;
 		}
 		
 		function removeFromCache($_uid)

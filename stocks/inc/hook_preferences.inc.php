@@ -8,17 +8,17 @@
 	* Free Software Foundation; either version 2 of the License, or (at your   *
 	* option) any later version.                                               *
 	\**************************************************************************/
+
 	/* $Id$ */
 
-	{
-		$file = Array
-		(
-			'Preferences' => $GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences')
-		);
-
+{
+// Only Modify the $file and $title variables.....
+	$title = 'Stock Quotes';
+	$file = Array(
+		'Select displayed stocks' => $GLOBALS['phpgw']->link('/stocks/preferences.php')
+	);
 //Do not modify below this line
-
-		display_section($appname,$file);
-	}
+	display_section($appname,$title,$file);
+}
 ?>
 

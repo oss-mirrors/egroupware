@@ -9,13 +9,15 @@
 	*  Free Software Foundation; either version 2 of the License, or (at your  *
 	*  option) any later version.                                              *
 	\**************************************************************************/
-	/* $Id$ */
-	{
-		$file = Array
-		(
-			'site configuration' => $GLOBALS['phpgw']->link('/tts/admin.php')
-		);
-//Do not modify below this line
-		$GLOBALS['phpgw']->common->display_mainscreen($appname,$file);
-	}
+
+	// $Id$
+	// $Source$
+
+	$values = array
+	(
+		'Admin options'     => $GLOBALS['phpgw']->link('/tts/admin.php'),
+		'Global Categories' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uicategories.index&appname=tts')
+	);
+
+	display_section('tts','Trouble Ticket System',$values);
 ?>

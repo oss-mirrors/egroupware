@@ -1,6 +1,6 @@
 (optional: set domain for user/client login, required: set this servername for server login)	xmlrpc	en	(optional: set domain for user/client login, required: set this servername for server login)
 addressbook test	xmlrpc	en	Addressbook test
-app registry by id	xmlrpc	en	App Registry by ID
+App	xmlrpc	en	App
 apps	xmlrpc	en	Apps
 assigned kp3	xmlrpc	en	Assigned kp3
 assigned sessionid	xmlrpc	en	Assigned sessionid

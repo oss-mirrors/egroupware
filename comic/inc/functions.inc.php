@@ -1089,7 +1089,7 @@ function template_options($app_template, &$options_c, &$images_c)
 
     $appname = $phpgw_info["flags"]["currentapp"];
     
-    $directory = opendir(PHPGW_APP_TPL);
+    $directory = opendir(PHPGW_SERVER_ROOT . SEP. $appname . SEP . 'templates' . SEP . 'default' . SEP);
 
     $index=0;
 
@@ -1113,8 +1113,6 @@ function template_options($app_template, &$options_c, &$images_c)
         $template_name["$template_id"] = $tname[0];
     }
 
-    asort($template_name);
-
     /**************************************************************************
      * start our template
      *************************************************************************/
@@ -1125,53 +1123,60 @@ function template_options($app_template, &$options_c, &$images_c)
               rows    => "row.images.tpl",
               cells   => "cell.images.tpl"));
 
-    while (list($value, $name) = each($template_name))
+    if(count($template_name))
     {
-        $selected = "";
-        if ((int)$value == $app_template)
-        {
-            $selected = "selected";
-        }
+       asort($template_name);
+         while (list($value, $name) = each($template_name))
+         {
+             $selected = "";
+             if ((int)$value == $app_template)
+             {
+                 $selected = "selected";
+             }
 
-        $image_tpl->set_var(array(OPTION_SELECTED => $selected,
-                                  OPTION_VALUE    => (int)$value,
-                                  OPTION_NAME     => $name));
+             $image_tpl->set_var(array(OPTION_SELECTED => $selected,
+                                       OPTION_VALUE    => (int)$value,
+                                       OPTION_NAME     => $name));
         
-        $image_tpl->parse(option_list, "options", TRUE);
+             $image_tpl->parse(option_list, "options", TRUE);
+         }
     }
     $options_c = $image_tpl->get("option_list");
     
-    reset($template_name);
-    $counter = 0;
-
-    while (list($value, $name) = each($template_name))
+    if(count($template_name))
     {
-        $index--;
+       reset($template_name);
+       $counter = 0;
+
+       while (list($value, $name) = each($template_name))
+       {
+           $index--;
         
-        $imgname = $name.".gif";
+           $imgname = $name.".gif";
 
-        $filename_f =
-            $phpgw->common->get_image_dir($appname)."/".$imgname;
-        $filename_a =
-            $phpgw->common->get_image_path($appname)."/".$imgname;
+           $filename_f =
+               $phpgw->common->get_image_dir($appname)."/".$imgname;
+           $filename_a =
+               $phpgw->common->get_image_path($appname)."/".$imgname;
 
-        if (file_exists($filename_f))
-        {
-            $counter++;
+           if (file_exists($filename_f))
+           {
+               $counter++;
 
-            $image_tpl->set_var(array(image_number => $name,
+               $image_tpl->set_var(array(image_number => $name,
                                       image_url    => $filename_a));
-            $image_tpl->parse(image_row, "cells", TRUE);
-        }
+               $image_tpl->parse(image_row, "cells", TRUE);
+           }
         
-        if (($counter == 5) || ($index == 0))
-        {
-            $cells_c = $image_tpl->get("image_row");
+           if (($counter == 5) || ($index == 0))
+           {
+               $cells_c = $image_tpl->get("image_row");
             
-            $image_tpl->set_var(image_cells, $cells_c);
-            $image_tpl->parse(IMAGE_ROWS, rows, TRUE);
+               $image_tpl->set_var(image_cells, $cells_c);
+               $image_tpl->parse(IMAGE_ROWS, rows, TRUE);
             
-            $counter = 0;
+               $counter = 0;
+           }
         }
     }
     $images_c = $image_tpl->get("IMAGE_ROWS");

@@ -12,7 +12,7 @@
 
 	/* $Id$ */
 
-	$GLOBALS['phpgw_info']['flags'] = array(
+	$phpgw_info['flags'] = array(
 		'admin_only'           => True,
 		'currentapp'           => 'headlines',
 		'enable_network_class' => True,
@@ -21,11 +21,9 @@
 	);
 	include('../header.inc.php');
 
-	$dropall = get_var('dropall',Array('GET'));
+	$headlines = new headlines;
+	$headlines->getList();
 
-	$headlines = CreateObject('headlines.headlines');
-	$headlines->getList($dropall);
-
-	header('Location: ' . $GLOBALS['phpgw']->link('/headlines/admin.php'));
+	header('Location: ' . $phpgw->link('/headlines/admin.php'));
 ?>
 

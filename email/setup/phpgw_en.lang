@@ -30,15 +30,14 @@ cache server data whenever possible	email	en	cache server data whenever possible
 cc	email	en	CC
 cc address	email	en	CC Address
 change font size in your e-mail pages	email	en	Change Font Size in your E-Mail Pages
-choose for rename	email	en	choose for rename
+choose for rename	email	en	Choose for rename
 click here for more info in a new window	email	en	click here for more info in a new window
 click here to continue	email	en	Click here to continue
 click here to edit the settings for this email account.	email	en	click here to edit the settings for this email account.
 click here to return to your home page.	email	en	click here to return to your home page.
-company	email	en	Company
 compose	email	en	Compose
 compose message	email	en	compose message
-compose new	email	en	Compose New
+compose new	email	en	Compose new
 contains	email	en	Contains
 could not open this mailbox	email	en	Could not open this mailbox
 create (expert)	email	en	Create (expert)
@@ -66,19 +65,19 @@ edit filters	email	en	Edit Filters
 email account name	email	en	Email Account Name
 email address	email	en	Email address
 email date	email	en	Email Date
-email filters	email	en	EMail Filters
-email password	email	en	Email Password
+email filters	email	en	Email Filters
+email password	email	en	Email password
 email preferences	email	en	Email Preferences
-email signature	email	en	email signature
-enable this email account	email	en	enable this email account
-enable utf-7 encoded folder names	email	en	enable UTF-7 encoded folder names
+email signature	email	en	Email signature
+enable this email account	email	en	Enable this email account
+enable utf-7 encoded folder names	email	en	Enable UTF-7 encoded folder names
 error moving messages to	email	en	Error moving messages to
 error text not provided	email	en	error text not provided
 error: unknown message data	email	en	ERROR: Unknown Message Data
 evolution style	email	en	Evolution Style
 extra accounts	email	en	Extra Accounts
 extra e-mail preferences number %1	email	en	Extra E-Mail preferences Number %1
-file	email	en	file
+file	email	en	File
 file attachment	email	en	File attachment
 file into	email	en	File into
 fill in as much as you can	email	en	fill in as much as you can
@@ -89,14 +88,14 @@ filter [number] and name	email	en	Filter [number] and Name
 filters	email	en	Filters
 filters list	email	en	Filters List
 flag as important	email	en	Flag as important
-folder	email	en	folder
+folder	email	en	Folder
 folder maintenance	email	en	Folder Maintenance
 folder name	email	en	Folder name
 folder size	email	en	Folder Size
 folders	email	en	Folders
 for the file to actually upload	email	en	for the file to actually upload
-forward	email	en	forward
-from	email	en	from
+forward	email	en	Forward
+from	email	en	From
 from address	email	en	From Address
 get size	email	en	get size
 go	email	en	go
@@ -117,7 +116,6 @@ if there is no obvious error, check your username and password first.	email	en	i
 if using an imap server, what kind is it, most often this option can safely be set to &quot;cyrus or courier&quot;. technically, this means the server uses a dot between the different parts of the folder names, such as &quot;inbox.sent&quot;. the other major kind of imap server is the university of washington &quot;uwash&quot; imap server. it uses slashes instead of the dots the other servers use, and although it has a folder called &quot;inbox&quot;, it is not considered the &quot;namespace&quot; for the other folder names. the &quot;uw-maildir&quot; is a rare combination of the two above types. this is the least used kind of imap server. if you are unsure, ask your it administrator. only applies to imap servers.	email	en	If using an IMAP server, what kind is it, most often this option can safely be set to &quot;Cyrus or Courier&quot;. Technically, this means the server uses a dot between the different parts of the folder names, such as &quot;INBOX.Sent&quot;. The other major kind of IMAP server is the University of Washington &quot;UWash&quot; IMAP server. It uses slashes instead of the dots the other servers use, and although it has a folder called &quot;INBOX&quot;, it is not considered the &quot;Namespace&quot; for the other folder names. The &quot;UW-Maildir&quot; is a rare combination of the two above types. This is the least used kind of IMAP server. If you are unsure, ask your IT administrator. Only applies to IMAP servers.
 image	email	en	Image
 imap server type	email	en	IMAP Server Type
-imap server type - if applicable	email	en	IMAP Server Type - If Applicable
 in the email index page, the page which lists all the mails in a folder, mail may be sorted by date, author, size, or subject, however all of these need to be ordered from first to last, this options controlls what is first and last. for example, if sorting by date, the newest to oldest displays the most recent emails first, in decending order down to the oldest emails last.	email	en	In the email index page, the page which lists all the mails in a folder, mail may be sorted by date, author, size, or subject, HOWEVER all of these need to be ordered from first to last, this options controlls what is first and last. For example, if sorting by date, the newest to oldest displays the most recent emails first, in decending order down to the oldest emails last.
 inbox	email	en	INBOX
 input error:	email	en	Input Error:
@@ -125,7 +123,7 @@ javascript	email	en	Javascript
 keep	email	en	Keep
 layout 1	email	en	Layout 1
 layout 2	email	en	Layout 2
-lines	email	en	lines
+lines	email	en	Lines
 list messages	email	en	list messages
 long names	email	en	long names
 mail server	email	en	Mail Server
@@ -137,19 +135,19 @@ messages	email	en	Messages
 messages have been moved to	email	en	messages have been moved to
 most us and european users do not need to enable this. if this option is checked then your email server can handle folder names with non us-ascii charactors in them / default is disabled, not checked. only use if you are really sure you need it. only works with imap servers, pop servers do not have folders.	email	en	Most US and European users do not need to enable this. If this option is checked then your email server can handle folder names with non US-ASCII charactors in them / default is disabled, not checked. Only use if you are really sure you need it. Only works with IMAP servers, POP servers do not have folders.
 move down	email	en	Move Down
-move selected messages into	email	en	move selected messages into
-move this message into	email	en	Move This Message into
+move selected messages into	email	en	Move selected messages into
+move this message into	email	en	Move this message into
 move up	email	en	Move Up
 mozilla modern style	email	en	Mozilla Modern Style
 name of the mail server you want to access. should be a name like &quot;mail.example.com&quot;. if you leave this box blank then the default value will be used.	email	en	Name of the mail server you want to access. Should be a name like &quot;mail.example.com&quot;. If you leave this box blank then the default value will be used.
 new	email	en	New
 new account	email	en	New Account
 new filter	email	en	New Filter
-new messages	email	en	new messages
+new messages	email	en	New messages
 newest	email	en	newest
 next message	email	en	Next Message
 no change	email	en	no change
-no error returned from server	email	en	No Error Returned From Server
+no error returned from server	email	en	No error returned from server
 no next message	email	en	No Next Message
 no previous message	email	en	No Previous Message
 noia &#64; carlitus style	email	en	Noia &#64; Carlitus Style
@@ -177,8 +175,8 @@ recipient	email	en	Recipient
 redirect	email	en	Redirect
 rename (expert)	email	en	Rename (expert)
 rename a folder	email	en	Rename a folder
-reply	email	en	reply
-reply all	email	en	reply all
+reply	email	en	Reply
+reply all	email	en	Reply All
 replyto	email	en	ReplyTo
 request delivery notification	email	en	Request delivery notification
 required	email	en	required
@@ -194,7 +192,7 @@ send forwarded mail as quoted attachment	email	en	Send forwarded mail as quoted 
 sender	email	en	Sender
 sent	email	en	sent
 sent folder	email	en	sent folder
-sent messages folder	email	en	sent messages folder
+sent messages folder	email	en	Sent messages folder
 sent messages folder name	email	en	Sent messages folder name
 sent messages saved in &quot;sent&quot; folder	email	en	Sent messages saved in &quot;Sent&quot; folder
 sent messages saved to folder:	email	en	Sent messages saved to folder:
@@ -204,12 +202,12 @@ show help	email	en	Show Help
 show long names	email	en	Show long names
 show message	email	en	show message
 show new messages in combobox	email	en	Show New Messages in ComboBox
-show new messages on main screen	email	en	show new messages on main screen
+show new messages on main screen	email	en	Show new messages on main screen
 show sender's email address with name	email	en	Show sender's email address with name
 show short names	email	en	Show short names
 show total folder size by default	email	en	Show total folder size by default
 simple	email	en	Simple
-size	email	en	size
+size	email	en	Size
 size larger than	email	en	Size Larger Than
 size smaller than	email	en	Size Smaller Than
 small	email	en	Small
@@ -219,7 +217,7 @@ sort by	email	en	Sort By
 spell check	email	en	Spell Check
 standard e-mail preferences	email	en	Standard E-Mail preferences
 switch accounts	email	en	Switch Accounts
-switch current folder to	email	en	switch current folder to
+switch current folder to	email	en	Switch current folder to
 test or apply all filters	email	en	test or apply ALL filters
 text	email	en	Text
 the email application offers 2 different layouts for the index page, that is the page that lists the emails in a folder. this page may be the page the user looks at the most and so different layouts, or looks, are offered.	email	en	The email application offers 2 different layouts for the index page, that is the page that lists the emails in a folder. This page may be the page the user looks at the most and so different layouts, or looks, are offered.
@@ -234,8 +232,8 @@ there was an error trying to connect to your imap server.<br>please contact your
 there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	en	There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.
 there was an error trying to connect to your pop3 server.<br>please contact your admin to check the servername, username or password.	email	en	There was an error trying to connect to your POP3 server.<br>Please contact your admin to check the servername, username or password.
 this confusing and often misunderstood option is left over from this email apps origins as aeromail by mark cushman. when viewing a list of emails in a folder, the from column may show you<br>a) the senders name only, if a name was provided,<br>b) the senders from email address, in addition to the senders name, or<br>c) the senders reply to address if it is different from the senders<br>from address, in addition to the senders name if it was provided. typically users set this to none, which will show only the senders name. if no name was supplied by the sender, then the senders from email address will be shown, whether a seperate reply to address is provided has no effect on this, the from address is always used if the senders name is not provided.	email	en	This confusing and often misunderstood option is left over from this email apps origins as Aeromail by Mark Cushman. When viewing a list of emails in a folder, the FROM column may show you<br>a) the senders name only, if a name was provided,<br>b) the senders From email address, in addition to the senders name, or<br>c) the senders reply to address if it is different from the senders<br>from address, in addition to the senders name if it was provided. Typically users set this to none, which will show only the senders name. If no name was supplied by the sender, then the senders FROM email address will be shown, whether a seperate reply to address is provided has no effect on this, the FROM address is always used if the senders name is not provided.
-this data not supplied.	email	en	this data not supplied.
-this folder is empty	email	en	this folder is empty
+this data not supplied.	email	en	This data not supplied.
+this folder is empty	email	en	This folder is empty
 this is the name that appears in the account combobox. if for leave this blank, your accounts will be given a standard name like account[1]: jane doe, where jane doe is the name you give below as "your full name". if you want to give an account a special name you can fill this in. no matter what, this is for your use, your emails will still use "your full name" as your from name for email messages. note that "your full name" for your email account 0 is the name you gave in the phpgroupware setup.	email	en	This is the name that appears in the account combobox. If for leave this blank, your accounts will be given a standard name like Account[1]: Jane Doe, where Jane Doe is the name you give below as "Your full name". If you want to give an account a special name you can fill this in. No matter what, this is for your use, your emails will still use "Your full name" as your FROM name for email messages. Note that "Your full name" for your email account 0 is the name you gave in the phpgroupware setup.
 this is the name that appears in the users from address. the default mail account gets this value automatically from the phpgwapi. additional accounts are created with the phpgwapi supplied fullname you can specify a different fullname for each extra email account.	email	en	This is the name that appears in the users FROM address. The default mail account gets this value automatically from the phpgwapi. Additional accounts are created with the phpgwapi supplied fullname you can specify a different fullname for each extra email account.
 this pref currently does nothing<br>users may have more than one email account. in the future it is anticipated that automatic actions may be performedon these accounts, such as automatic new mail checks, auto filtering, etc... perhaps the user may want to disable an account so that these automatic actions do not occur for that account. this is one possible use.<br>also, an admin may want to disable accounts from time to time.	email	en	THIS PREF CURRENTLY DOES NOTHING<br>Users may have more than one email account. In the future it is anticipated that automatic actions may be performedon these accounts, such as automatic new mail checks, auto filtering, etc... Perhaps the user may want to disable an account so that these automatic actions do not occur for that account. This is one possible use.<br>Also, an admin may want to disable accounts from time to time.
@@ -253,13 +251,13 @@ undisclosed recipients	email	en	Undisclosed Recipients
 undisclosed sender	email	en	Undisclosed Sender
 undisclosed_recipients	email	en	undisclosed_recipients
 unknown action	email	en	UNKNOWN ACTION
-unknown error	email	en	unknown error
+unknown error	email	en	Unknown error
 unknown translation	email	en	unknown translation
 use custom settings	email	en	Use custom settings
 view as html	email	en	View as HTML
-view formatted	email	en	view formatted
-view headers	email	en	view headers
-view unformatted	email	en	view unformatted
+view formatted	email	en	View formatted
+view headers	email	en	View headers
+view unformatted	email	en	View unformatted
 warn_attachment_name_dangerous	email	en	warn_attachment_name_DANGEROUS
 warn_attachment_only_mail	email	en	warn_attachment_only_mail
 warn_b64_encoded_displayable	email	en	warn_b64_encoded_displayable

@@ -1,3 +1,7 @@
+<!-- BEGIN options_select -->
+    <option value="{optionvalue}" {optionselected}>{optionname}</option>
+<!-- END options_select -->
+
 <!-- BEGIN form -->
 <form method="POST" action="{form_action}">
 
@@ -27,20 +31,11 @@
 		<td align="left"><input name="ticket[billable_rate]" value="{value_billable_hours_rate}"></td>
 	</tr>
 
-<!--
 	<tr bgcolor="{row_off}">
 		<td align="left">{lang_group}:</td>
-		<td align="left">{value_group}</b></td>
-		<td align="left">&nbsp;</td>
-		<td align="left">&nbsp;</td>
-	</tr>
--->
-
-	<tr bgcolor="{row_off}">
+		<td align="left"><select name="ticket[group]">{options_group}</select></b></td>
 		<td align="left">{lang_category}:</td>
 		<td align="left">{value_category}</td>
-		<td align="left">&nbsp;</td>
-		<td align="left">&nbsp;</td>
 	</tr>
 
 	<tr bgcolor="{row_off}">

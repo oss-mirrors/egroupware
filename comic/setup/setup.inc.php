@@ -13,6 +13,7 @@
 
 	/* Basic information about this app */
 	$setup_info['comic']['name']      = 'comic';
+	$setup_info['comic']['title']     = 'Comics';
 	$setup_info['comic']['version']   = '0.0.1';
 	$setup_info['comic']['app_order'] = 21;
 	$setup_info['comic']['enable']    = 1;
@@ -40,6 +41,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['comic']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.13', '0.9.14', '0.9.15')
+		 'versions' => Array('0.9.10', '0.9.11' , '0.9.12', '0.9.13', '0.9.14')
 	);
 ?>

@@ -4,7 +4,7 @@
 	* http://www.phpgroupware.org                                               *
 	* http://www.linux-at-work.de                                               *
 	* Written by : Lars Kneschke [lkneschke@linux-at-work.de]                   *
-	* -------------------------------------------------                         *
+	* -------------------------------------------------------                   *
 	* This program is free software; you can redistribute it and/or modify it   *
 	* under the terms of the GNU General Public License as published by the     *
 	* Free Software Foundation; either version 2 of the License, or (at your    *
@@ -14,7 +14,6 @@
 
 	class uiuserdata
 	{
-
 		var $public_functions = array
 		(
 			'editUserData'	=> True,
@@ -23,18 +22,35 @@
 
 		function uiuserdata()
 		{
-			$this->boqmailldap = CreateObject('qmailldap.boqmailldap');
+			$this->boqmailldap	= CreateObject('qmailldap.boqmailldap');
+
+			$this->rowColor[0]	= $GLOBALS['phpgw_info']["theme"]["bg01"];
+			$this->rowColor[1]	= $GLOBALS['phpgw_info']["theme"]["bg02"];
+			                 
+		}
+	
+		function display_app_header()
+		{
+			$GLOBALS['phpgw']->common->phpgw_header();
+			echo parse_navbar();
 		}
 
 		function editUserData($_useCache='0')
 		{
-			$accountID = get_var('account_id',array('GET'));			
+			$HTTP_GET_VARS = get_var('HTTP_GET_VARS',array('GET'));
+			
+			$accountID = $HTTP_GET_VARS['account_id'];			
+
+			$this->display_app_header();
+
 			$this->translate();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('qmailldap') . ': ' . lang('edit user data');
+
 
 			$GLOBALS['phpgw']->template->set_file(array('editUserData' => 'edituserdata.tpl'));
 			$GLOBALS['phpgw']->template->set_block('editUserData','form','form');
 			$GLOBALS['phpgw']->template->set_block('editUserData','link_row','link_row');
-
+			
 			$GLOBALS['phpgw']->template->set_var('lang_email_config',lang('edit email settings'));
 			$GLOBALS['phpgw']->template->set_var('lang_emailAddress',lang('email address'));
 			$GLOBALS['phpgw']->template->set_var('lang_emailaccount_active',lang('email account active'));
@@ -43,17 +59,16 @@
 			$GLOBALS['phpgw']->template->set_var('lang_forward_also_to',lang('forward also to'));
 			$GLOBALS['phpgw']->template->set_var('lang_button',lang('save'));
 			$GLOBALS['phpgw']->template->set_var('lang_deliver_extern',lang('deliver extern'));
-			$GLOBALS['phpgw']->template->set_var('lang_deliver_extern',lang('deliver extern'));
 			$GLOBALS['phpgw']->template->set_var('lang_edit_email_settings',lang('edit email settings'));
-			$GLOBALS['phpgw']->template->set_var('lang_ready',lang("Done"));
+			$GLOBALS['phpgw']->template->set_var('lang_ready',lang('Done'));
 			$GLOBALS['phpgw']->template->set_var('link_back',$GLOBALS['phpgw']->link('/admin/accounts.php'));
-			
+
 			$linkData = array
 			(
 				'menuaction'	=> 'qmailldap.uiuserdata.saveUserData',
 				'account_id'	=> $accountID
 			);
-			$GLOBALS['phpgw']->template->set_var("form_action", $GLOBALS['phpgw']->link('/index.php',$linkData));
+			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
 			
 			// only when we show a existing user
 			if($userData = $this->boqmailldap->getUserData($accountID, $_useCache))
@@ -73,23 +88,19 @@
 				{
 					$options_mailAlternateAddress = lang('no alternate email address');
 				}
-
+			
 				$GLOBALS['phpgw']->template->set_var('mailLocalAddress',$userData['mailLocalAddress']);
 				$GLOBALS['phpgw']->template->set_var('mailAlternateAddress','');
 				$GLOBALS['phpgw']->template->set_var('options_mailAlternateAddress',$options_mailAlternateAddress);
 				$GLOBALS['phpgw']->template->set_var('mailRoutingAddress',$userData['mailRoutingAddress']);
 				$GLOBALS['phpgw']->template->set_var('selected_'.$userData['qmailDotMode'],'selected');
-				$GLOBALS['phpgw']->template->set_var('deliveryProgramPath',$userData['deliveryProgramPath']);
+				$GLOBALS['phpgw']->template->set_var('deliveryProgramPath',$userData["deliveryProgramPath"]);
 				
 				$GLOBALS['phpgw']->template->set_var('uid',rawurlencode($_accountData['dn']));
-				if ($userData["accountStatus"] == 'active')
-				{
+				if ($userData['accountStatus'] == 'active')
 					$GLOBALS['phpgw']->template->set_var('account_checked','checked');
-				}
 				if ($_accountData['deliverExtern'] == 'active')
-				{
 					$GLOBALS['phpgw']->template->set_var('deliver_checked','checked');
-				}
 			}
 			else
 			{
@@ -104,13 +115,13 @@
 			$menuClass = CreateObject('admin.uimenuclass');
 			$GLOBALS['phpgw']->template->set_var('rows',$menuClass->createHTMLCode('edit_user'));
 
-			$GLOBALS['phpgw']->template->pparse("out","form");
+			$GLOBALS['phpgw']->template->pfp('out','form');
 
 		}
 		
 		function saveUserData()
 		{
-			$HTTP_POST_VARS	= get_var('HTTP_POST_VARS',array('POST'));
+			$HTTP_POST_VARS = get_var('HTTP_POST_VARS',array('POST'));
 			$HTTP_GET_VARS	= get_var('HTTP_GET_VARS',array('GET'));
 			
 			if($HTTP_POST_VARS['accountStatus'] == 'on')
@@ -128,19 +139,11 @@
 				'deliveryProgramPath'			=> $HTTP_POST_VARS['deliveryProgramPath'],
 				'accountStatus'					=> $accountStatus
 			);
+			
+			if($HTTP_POST_VARS['add_mailAlternateAddress']) $bo_action='add_mailAlternateAddress';
+			if($HTTP_POST_VARS['remove_mailAlternateAddress']) $bo_action='remove_mailAlternateAddress';
+			if($HTTP_POST_VARS['save']) $bo_action='save';
 
-			if($HTTP_POST_VARS['add_mailAlternateAddress'])
-			{
-				$bo_action='add_mailAlternateAddress';
-			}
-			if($HTTP_POST_VARS['remove_mailAlternateAddress'])
-			{
-				$bo_action='remove_mailAlternateAddress';
-			}
-			if($HTTP_POST_VARS['save'])
-			{
-				$bo_action='save';
-			}
 			$this->boqmailldap->saveUserData($HTTP_GET_VARS['account_id'], $formData, $bo_action);
 
 			if ($bo_action == 'save')
@@ -157,6 +160,9 @@
 		
 		function translate()
 		{
+			$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+			$GLOBALS['phpgw']->template->set_var('tr_color1',$GLOBALS['phpgw_info']['theme']['row_on']);
+			$GLOBALS['phpgw']->template->set_var('tr_color2',$GLOBALS['phpgw_info']['theme']['row_off']);
 			$GLOBALS['phpgw']->template->set_var('lang_add',lang('add'));
 			$GLOBALS['phpgw']->template->set_var('lang_done',lang('Done'));
 			$GLOBALS['phpgw']->template->set_var('lang_remove',lang('remove'));

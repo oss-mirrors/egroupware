@@ -13,15 +13,10 @@
 	class skel
 	{
 		var $db;
-
-		function skel()
-		{
-			// constructor
-		}
-
 		function someotherfunc()
 		{
 			//nothing to be added yet
 		}
+
 	}
 ?>

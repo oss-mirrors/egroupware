@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000, 2001 Bettina Gille                            *
+	* Copyright (C) 2000 - 2003 Bettina Gille                           *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -32,6 +32,11 @@
 	);
 	include('../header.inc.php');
 
-	Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
+	if ($_GET['cat_id'])
+	{
+		$catsfilter = '&cat_id=' . $_GET['cat_id'];
+	}
+
+	Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains' . $catsfilter));
 	$GLOBALS['phpgw']->common->phpgw_exit();
 ?>

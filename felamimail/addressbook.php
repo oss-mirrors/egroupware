@@ -114,6 +114,7 @@
 		if (!$firstname) { $firstname = '&nbsp;'; }
 		$lastname = $entries[$i]['n_family'];
 		if (!$lastname) { $lastname = '&nbsp;'; }
+		$fullname = trim($firstname." ".$lastname);
 		$id     = $entries[$i]['id'];
 		$email  = $entries[$i]['email'];
 		$hemail = $entries[$i]['email_home'];
@@ -126,6 +127,7 @@
 		$t->set_var('id',$id);
 		$t->set_var('email',$email);
 		$t->set_var('hemail',$hemail);
+		$t->set_var('realName',$fullname);
 
 		$t->parse('list','addressbook_list',True);
 	}

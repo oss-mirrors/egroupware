@@ -31,4 +31,5 @@
 	this is undesirable - turn it off.
 	*/
 	set_magic_quotes_runtime(0);
+
 ?>

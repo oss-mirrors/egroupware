@@ -41,9 +41,9 @@ ID.';
 	{
 		$err = '';
 		// get the first param
-		$msgID   = xmlrpc_decode($m->getParam(0));
-		$name    = xmlrpc_decode($m->getParam(1));
-		$comment = xmlrpc_decode($m->getParam(2));
+		$msgID   = phpgw_xmlrpc_decode($m->getParam(0));
+		$name    = phpgw_xmlrpc_decode($m->getParam(1));
+		$comment = phpgw_xmlrpc_decode($m->getParam(2));
 	
 		$countID = "${msgID}_count";
 		$sql = 'SELECT COUNT(msg_id) FROM phpgw_discuss';
@@ -83,7 +83,7 @@ and comment text.';
 		$err = '';
 		$ra = array();
 		// get the first param
-		$msgID = xmlrpc_decode($m->getParam(0));
+		$msgID = phpgw_xmlrpc_decode($m->getParam(0));
 
 		$countID = "${msgID}_count";
 		$sql = 'SELECT * FROM phpgw_discuss WHERE msg_id=' . $msgID;

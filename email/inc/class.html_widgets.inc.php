@@ -952,9 +952,16 @@
 								'fldball[folder]' => $GLOBALS['phpgw']->msg->prep_folder_out(),
 								'fldball[acctnum]' => $GLOBALS['phpgw']->msg->get_acctnum()));
 			$accounts_link = $GLOBALS['phpgw']->link('/index.php','menuaction=email.uipreferences.ex_accounts_list');
+/* TEST-RALFBECKER
 			$email_prefs_link = $GLOBALS['phpgw']->link('/index.php',array(
 								'menuaction' => 'email.uipreferences.preferences',
-								'ex_acctnum' => $GLOBALS['phpgw']->msg->get_acctnum()));					
+								'ex_acctnum' => $GLOBALS['phpgw']->msg->get_acctnum()));
+*/
+			$acctnum = $GLOBALS['phpgw']->msg->get_acctnum();
+			$email_prefs_link = $GLOBALS['phpgw']->link('/preferences/preferences.php',array(
+				'appname' => 'email',
+				'prefix'  => $acctnum ? 'ex_accounts/'.$acctnum : ''
+			));
 			// Check to see if mailserver supports folders.
 			$has_folders = $GLOBALS['phpgw']->msg->get_mailsvr_supports_folders();
 			// Create Buttons

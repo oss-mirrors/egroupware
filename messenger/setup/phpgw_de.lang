@@ -7,10 +7,11 @@ forwarded	messenger	de	Weitergeleitet
 global message	messenger	de	Globale Mitteilung
 inbox	messenger	de	Posteingang
 message from	messenger	de	Mitteilung von
-messenger	common	de	Bote
+messenger	common	de	Messenger
 read message	messenger	de	Mitteilung lesen
 reply	messenger	de	Antworten
 reply to a message	messenger	de	Mitteilung beantworten
 send	messenger	de	Absenden
 send message to	messenger	de	Mitteilung senden an
+you have %1 new message	messenger	de	Sie haben %1 neue Mitteilungen
 you have %1 new messages	messenger	de	Sie haben %1 neue Mitteilungen

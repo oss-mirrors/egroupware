@@ -11,10 +11,8 @@
 
   /* $Id$ */
 
-	$GLOBALS['phpgw_info']['flags'] = array
-	(
-		'nonavbar'		=> True,
-		'currentapp'	=> 'manual'
+	$GLOBALS['phpgw_info']['flags'] = array(
+		'currentapp' => 'manual'
 	);
 	include('../header.inc.php');
 

@@ -73,7 +73,7 @@
 				'lang_total'		=> lang('Total'),
 				'lang_total2'		=> lang('Total Messages'),
 				'lang_size2'		=> lang('Folder Size'),
-				'stats_to_txt'		=> lang('to'),
+				'stats_to_txt'		=> '-', // this is not the word in other lang's as the other lang('to')'s
 				'lang_to'			=> lang('to'),
 				'lang_get_size'		=> lang('get size'),
 				'lang_date'			=> lang('date'),
@@ -572,10 +572,17 @@
 			$this->xi['filters_href'] = '<a href="'.$this->xi['filters_link'].'">'.$this->xi['filters_txt'].'</a>';
 			
 			// FIXME
+/* TEST-RALFBECKER
 			$this->xi['email_prefs_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',
 								 'menuaction=email.uipreferences.preferences'
 								.'&ex_acctnum='.$GLOBALS['phpgw']->msg->get_acctnum());
+*/
+			$acctnum = $GLOBALS['phpgw']->msg->get_acctnum();
+			$this->xi['email_prefs_link'] = $GLOBALS['phpgw']->link('/preferences/preferences.php',array(
+				'appname' => 'email',
+				'prefix'  => $acctnum ? 'ex_accounts/'.$acctnum : ''
+			));
 			
 			$this->xi['email_prefs_img'] = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/customize-'.$this->icon_size,'_on'),$this->xi['folders_txt1'],'','','0');
 			$this->xi['ilnk_email_prefs'] = $GLOBALS['phpgw']->msg->href_maketag($this->xi['email_prefs_link'],$this->xi['email_prefs_img']);
@@ -1059,9 +1066,17 @@
 				$this->xi['folders_href'] = '&nbsp;';
 				$this->xi['folders_btn'] = '&nbsp;';
 			}
+/* TEST-RALFBECKER
 			$this->xi['email_prefs_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',
 								'menuaction=email.uipreferences.preferences');
+*/
+			$acctnum = $GLOBALS['phpgw']->msg->get_acctnum();
+			$this->xi['email_prefs_link'] = $GLOBALS['phpgw']->link('/preferences/preferences.php',array(
+				'appname' => 'email',
+				'prefix'  => $acctnum ? 'ex_accounts/'.$acctnum : ''
+			));
+
 			$this->xi['filters_link'] = $GLOBALS['phpgw']->link(
 								'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/filters.php');
 			$this->xi['filters_href'] = '<a href="'.$this->xi['filters_link'].'">'.$this->xi['filters_txt'].'</a>';

@@ -14,5 +14,6 @@ reply	messenger	it	Rispondi
 reply to a message	messenger	it	Rispondi a un messaggio
 send	messenger	it	Invia
 send message to	messenger	it	Invia un messaggio a
+you have %1 new message	messenger	it	Tu hai %1 nuovi messaggi
 you have %1 new messages	messenger	it	Tu hai %1 nuovi messaggi
 you have no messages	messenger	it	Non ci sono messaggi

@@ -13,9 +13,9 @@
 
   /* $Id$ */
 
-	if($GLOBALS['HTTP_POST_VARS']['submit'])
+	if ($GLOBALS['HTTP_POST_VARS']['submit'])
 	{
-		$GLOBALS['phpgw_info']['flags'] = Array(
+		$GLOBALS['phpgw_info']['flags'] = array(
 			'noheader' => True,
 			'nonavbar' => True
 		);
@@ -25,26 +25,23 @@
 	$GLOBALS['phpgw_info']['flags']['enable_nextmatchs_class'] = True;
 	include('../header.inc.php');
 
-	if(get_var('submit',Array('POST')))
+	if ($GLOBALS['HTTP_POST_VARS']['submit'])
 	{
-		$poll_id = get_var('poll_id',Array('POST'));
-		$poll_voteNr = get_var('poll_voteNr',Array('POST'));
-		if(verify_uservote($poll_id))
+		if (verify_uservote($GLOBALS['HTTP_POST_VARS']['poll_id']))
 		{
 			//$GLOBALS['phpgw']->db->lock(array("phpgw_polls_data","phpgw_polls_user"));
 			$GLOBALS['phpgw']->db->query("UPDATE phpgw_polls_data SET option_count=option_count+1 WHERE "
-				. "poll_id='" . $poll_id . "' AND vote_id='" . $poll_voteNr . "'",__LINE__,__FILE__);
-			$GLOBALS['phpgw']->db->query("insert into phpgw_polls_user values ('" . $poll_id . "','','"
+				. "poll_id='" . $GLOBALS['HTTP_POST_VARS']['poll_id'] . "' AND vote_id='" . $GLOBALS['HTTP_POST_VARS']['poll_voteNr'] . "'",__LINE__,__FILE__);
+			$GLOBALS['phpgw']->db->query("insert into phpgw_polls_user values ('" . $GLOBALS['HTTP_POST_VARS']['poll_id'] . "','','"
 				. $GLOBALS['phpgw_info']['user']['account_id'] . "','" . time() . "')",__LINE__,__FILE__);
 			//$GLOBALS['phpgw']->db->unlock();
 		}
-		Header('Location: ' . $GLOBALS['phpgw']->link('/polls/vote.php','show_results=' . $poll_id));
+		Header('Location: ' . $GLOBALS['phpgw']->link('/polls/vote.php','show_results=' . $GLOBALS['HTTP_POST_VARS']['poll_id']));
 		$GLOBALS['phpgw']->common->phpgw_exit();
 	}
-	$show_results = get_var('show_results',Array('GET'));
-	if($show_results)
+	if ($GLOBALS['HTTP_GET_VARS']['show_results'])
 	{
-		poll_viewResults($show_results);
+		poll_viewResults($GLOBALS['HTTP_GET_VARS']['show_results']);
 	}
 	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

@@ -89,7 +89,7 @@
 <script language="javascript1.2">
 <!--
 // position cursor in top form field
-document.doit.to.focus();
+document.doit.{focusElement}.focus();
 //-->
 </script>
 
@@ -98,8 +98,11 @@ document.doit.to.focus();
 <!-- BEGIN body_input -->
 <table width="98%" border="0" cellspacing="0" cellpading="0">
 <tr bgcolor="{bg02}">
-	<td colspan="2">
+	<td>
 		&nbsp;<br>
+	</td>
+	<td>
+		{errorInfo}<br>
 	</td>
 </tr>
 <tr bgcolor="{bg02}">

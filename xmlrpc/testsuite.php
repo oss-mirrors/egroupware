@@ -107,15 +107,15 @@
 			$got="";
 			for($i=0; $i<$sz; $i++)
 			{
-				$b=$v->arraymem($i);
-				if($b->scalarval())
-				{
-					$got.="1";
-				}
-				else
-				{
-					$got.="0";
-				}
+				 $b=$v->arraymem($i);
+				 if ($b->scalarval())
+				 {
+					 $got.="1";
+				 }
+				 else
+				 {
+					 $got.="0";
+				 }
 			}
 			$this->assertEquals($answer, $got);
 		}
@@ -137,28 +137,6 @@ And turned it into nylon";
 			$r = $this->client->send($f);
 			$v = $r->value();
 			$this->assertEquals($sendstring, $v->scalarval());
-		}
-
-		function countEntities()
-		{
-			$sendstring = "h'fd>onc>>l>>rw&bpu>q>e<v&gxs<ytjzkami<";
-			$f = CreateObject('phpgwapi.xmlrpcmsg','validator1.countTheEntities',array(
-				CreateObject('phpgwapi.xmlrpcval',$sendstring, 'string')
-			));
-			$r = $this->client->send($f);
-			$v = $r->value();
-
-			$got = '';
-			$expected = '37210';
-			$expect_array = array('ctLeftAngleBrackets','ctRightAngleBrackets','ctAmpersands','ctApostrophes','ctQuotes');
-
-			while(list(,$val) = each($expect_array))
-			{
-				$b = $v->structmem($val);
-				$got .= $b->me['int'];
-			}
-
-			$this->assertEquals($expected, $got);
 		}
 	}
 
@@ -266,7 +244,6 @@ And turned it into nylon";
 	$suite->addTest(new TestLocalhost('invalidNumber'));
 	$suite->addTest(new TestLocalhost('booleanTest'));
 	$suite->addTest(new TestLocalhost('base64Test'));
-	$suite->addTest(new TestLocalhost('countEntities'));
 	$suite->addTest(new TestInvalidHost('test404'));
 	$suite->addTest(new TestFileCases('stringBug'));
 	$suite->addTest(new TestFileCases('whiteSpace'));

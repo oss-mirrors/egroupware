@@ -17,7 +17,6 @@ closed	tts	en	Closed
 create new ticket	tts	en	Create new ticket
 creates a new ticket, returns ticket_id	tts	en	Creates a new ticket, returns ticket_id
 creates a struct of tickets	tts	en	Creates a struct of tickets
-date closed	tts	en	Date Closed
 date opened	tts	en	Date opened
 detail	tts	en	Detail
 force	tts	en	Force
@@ -27,6 +26,7 @@ latest note added	tts	en	Latest Note Added
 new ticket	tts	en	New Ticket
 new value	tts	en	New Value
 no additional notes	tts	en	No additional notes
+no notes for this ticket	tts	en	No notes for this ticket
 no tickets found	tts	en	No tickets found.
 not assigned	tts	en	Not Assigned
 old value	tts	en	Old Value
@@ -34,6 +34,7 @@ open	tts	en	Open
 open date	tts	en	Open Date
 opened	tts	en	Opened
 opened by	tts	en	Opened by
+original ticket details	tts	en	Original Ticket Details
 prio	tts	en	Prio
 priority	tts	en	Priority
 priority changed	tts	en	Priority changed

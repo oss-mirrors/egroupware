@@ -30,85 +30,103 @@
 
 		$GLOBALS['phpgw']->config->read_repository();
 
-		
-		if ($GLOBALS['phpgw']->config->config_data['mailnotification'])
-		{
-			$db2 = $GLOBALS['phpgw']->db;
+		if ($GLOBALS['phpgw']->config->config_data['mailnotification']) {
 		
 			$GLOBALS['phpgw']->send = CreateObject('phpgwapi.send');
 	
-			$GLOBALS['phpgw']->db->query('SELECT * FROM phpgw_tts_tickets WHERE ticket_id='.$ticket_id,__LINE__,__FILE__);
+			$GLOBALS['phpgw']->db->query("select * from phpgw_tts_tickets where ticket_id='$ticket_id'");
 			$GLOBALS['phpgw']->db->next_record();
+    
+			$group_id = $GLOBALS['phpgw']->db->f('ticket_group');
+			$group_name = $GLOBALS['phpgw']->accounts->id2name($group_id);
+			$t_subject = $GLOBALS['phpgw']->db->f('ticket_subject');
+			$t_assigned = $GLOBALS['phpgw']->db->f('ticket_assignedto');
+			$t_assigned_name = $GLOBALS['phpgw']->accounts->id2name($t_assigned);
+			$t_owner_name = $GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_owner'));
 			
-			$db2->query('SELECT * FROM phpgw_tts_views WHERE view_id='.$ticket_id,__LINE__,__FILE);
-			$db2->next_record();
-
-			$group = $GLOBALS['phpgw']->db->f('ticket_category');
-
-			$stat = $GLOBALS['phpgw']->db->f('ticket_status');
-			$status = array(
-				'R' => 'Re-opened',
-				'X' => 'Closed',
-				'O' => 'Opened',
-				'A' => 'Re-assigned',
-				'P' => 'Priority changed',
-				'T' => 'Category changed',
-				'S' => 'Subject changed',
-				'B' => 'Billing rate',
-				'H' => 'Billing hours'
-			);
-
 			// build subject
-			$subject = '['.lang('Ticket').' #'.$ticket_id.' '.$group.'] '.lang($status[$stat]).': '.$GLOBALS['phpgw']->db->f('ticket_subject');
+			$subject = '['.lang('Ticket').' #'.$ticket_id.' '.$group_name.'] '.lang(($GLOBALS['phpgw']->db->f('ticket_status')!='X')?'Updated':'Closed').': '.$GLOBALS['phpgw']->db->f('ticket_subject');
 
 			// build body
 			$body  = '';
 			$body .= lang('Ticket').' #'.$ticket_id."\n";
-			$body .= lang('Subject').': '.$GLOBALS['phpgw']->db->f('ticket_subject')."\n";
-			$body .= lang('Assigned To').': '.$GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_assignedto'))."\n";
+			$body .= lang('Subject').': '.$t_subject."\n";
+			$body .= lang('Assigned To').': '.$t_assigned_name."\n";
 			$body .= lang('Priority').': '.$GLOBALS['phpgw']->db->f('ticket_priority')."\n";
 			$body .= lang('Group').': '.$group_name."\n";
-			$body .= lang('Opened By').': '.$GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_owner'))."\n\n";
+			$body .= lang('Opened By').': '.$t_owner_name."\n\n";
 			$body .= lang('Latest Note Added').":\n";
-			if($GLOBALS['phpgw']->db->f('t_timestamp_closed'))
+			/**************************************************************\
+			* Display latest note                                         *
+			\**************************************************************/
+
+			$GLOBALS['phpgw']->historylog = createobject('phpgwapi.historylog','tts');
+
+			$history_array = $GLOBALS['phpgw']->historylog->return_array(array(),array('C'),'','',$ticket_id);
+			while (is_array($history_array) && list(,$value) = each($history_array))
 			{
-				$body .= lang('Date Closed').': '.$GLOBALS['phpgw']->common->show_date($GLOBALS['phpgw']->db->f('t_timestamp_closed'))."\n\n";
+				$latest_note=$GLOBALS['phpgw']->common->show_date($value['datetime'])." - ".$value['owner'];
+                                $latest_note.=" - ".stripslashes($value['new_value'])."\n";
+//				$GLOBALS['phpgw']->template->set_var('value_date',$GLOBALS['phpgw']->common->show_date($value['datetime']));
+//				$body.= "$GLOBALS['phpgw']->template->set_var('value_date',$GLOBALS['phpgw']->common->show_date($value['datetime']));
+//				$GLOBALS['phpgw']->template->set_var('value_user',$value['owner']);
+				
+//				$GLOBALS['phpgw']->template->set_var('value_note',nl2br(stripslashes($value['new_value'])));
+//				$GLOBALS['phpgw']->template->fp('rows_notes','additional_notes_row',True);
 			}
-			$body .= stripslashes(strip_tags($GLOBALS['phpgw']->db->f('t_details')))."\n\n.";
 			
+			if (! count($history_array))
+			{
+				$latest_note=lang('No notes for this ticket')."\n";
+			}
+			
+			$body .= $latest_note;
+
+			$body .= "\n\n".lang('Original Ticket Details').":\n".$GLOBALS['phpgw']->db->f('ticket_details')."\n\n";
+
+
+//			if($GLOBALS['phpgw']->db->f('t_timestamp_closed'))
+//			{
+//				$body .= 'Date Closed: '.$GLOBALS['phpgw']->common->show_date($GLOBALS['phpgw']->db->f('t_timestamp_closed'))."\n\n";
+//			}
+			$body .= stripslashes(strip_tags($GLOBALS['phpgw']->db->f('ticket_detail')))."\n\n.";
+			
+			
+			$GLOBALS['phpgw']->config->config_data['groupnotification']=True;
+			// do we need to email all the users in the group assigned to this ticket?
 			if ($GLOBALS['phpgw']->config->config_data['groupnotification']) 
 			{
 				// select group recipients
-				$group_id = $GLOBALS['phpgw']->accounts->name2id($group);
-				$members  = $GLOBALS['phpgw']->accounts->members($group_id);
+				$members  = $GLOBALS['phpgw']->accounts->member($group_id);
 			}
 
+
+			// do we need to email the owner of this ticket?
 			if ($GLOBALS['phpgw']->config->config_data['ownernotification'])
 			{
 				// add owner to recipients
-//				$members[] = array('account_id' => $GLOBALS['phpgw']->accounts->name2id($GLOBALS['phpgw']->db->f('t_user')), 'account_name' => $GLOBALS['phpgw']->db->f('t_user'));
-				$members[] = array('account_id' => $GLOBALS['phpgw']->db->f('ticket_owner'), 'account_name' => $GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_owner')));
+//AW -temporary			$members[] = array('account_id' => $GLOBALS['phpgw']->accounts->name2id($GLOBALS['phpgw']->db->f('ticket_owner')), 'account_name' => $GLOBALS['phpgw']->db->f('ticket_owner'));
 			}
 
+			// do we need to email the user who is assigned to this ticket?
 			if ($GLOBALS['phpgw']->config->config_data['assignednotification'])
 			{
 				// add assigned to recipients
-//				$members[] = array('account_id' => $GLOBALS['phpgw']->accounts->name2id($GLOBALS['phpgw']->db->f('t_assignedto')), 'account_name' => $GLOBALS['phpgw']->db->f('t_assignedto'));
-				$members[] = array('account_id' => $GLOBALS['phpgw']->db->f('ticket_assignedto'), 'account_name' => $GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_assignedto')));
+				$members[] = array('account_id' => $t_assigned, 'account_name' => $t_assigned_name);
 			}
+
 
 			$toarray = Array();
 			$i=0;
 			for ($i=0;$i<count($members);$i++)
 			{
-				if ($members[$i]['account_id'])
+				if ($members[$i]['account_name'])
 				{
 					$prefs = $GLOBALS['phpgw']->preferences->create_email_preferences($members[$i]['account_id']);
 //					$pref = CreateObject('phpgwapi.preferences',$members[$i]['account_id']);
 //					$prefs = $pref->read_repository();
 //					$prefs = $phpgw->common->create_emailpreferences($prefs,$members[$i]['account_id']);
 					$toarray[$prefs['email']['address']] = $prefs['email']['address'];
-					// echo '<br>'.$toarray[$i];
 //					unset($pref);
 				}
 			}
@@ -125,7 +143,7 @@
 			if (!$rc)
 			{
 				echo  lang('Your message could <B>not</B> be sent!<BR>')."\n"
-					. lang('The mail server returned').':<BR>'
+					. lang('the mail server returned').':<BR>'
 					. "err_code: '".$GLOBALS['phpgw']->send->err['code']."';<BR>"
 					. "err_msg: '".htmlspecialchars($GLOBALS['phpgw']->send->err['msg'])."';<BR>\n"
 					. "err_desc: '".$GLOBALS['phpgw']->err['desc']."'.<P>\n"

@@ -23,7 +23,7 @@
 				'bm_access' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
 				'bm_url' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
 				'bm_name' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
-				'bm_desc' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
+				'bm_desc' => array('type' => 'text', 'nullable' => True),
 				'bm_keywords' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
 				'bm_category' => array('type' => 'int', 'precision' => 4,'nullable' => True),
 				'bm_rating' => array('type' => 'int', 'precision' => 4,'nullable' => True),

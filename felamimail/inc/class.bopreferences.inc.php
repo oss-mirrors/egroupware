@@ -23,7 +23,6 @@
 		
 		function bopreferences()
 		{
-			#$this->bocompose	= CreateObject('felamimail.bocompose');
 		}
 		
 		function getPreferences()
@@ -44,15 +43,21 @@
 			$config = CreateObject('phpgwapi.config','felamimail');
 			$config->read_repository();
 			$felamimailConfig = $config->config_data;
+			#_debug_array($felamimailConfig);
 			unset($config);
 			
-			#_debug_array($felamimailConfig);
+			$felamimailUserPrefs = $GLOBALS['phpgw_info']['user']['preferences']['felamimail'];
+			
+			#_debug_array($GLOBALS['phpgw_info']['user']);
 			#print "<hr>";
 			
 			// set values to the global values
 			$data['imapServerAddress']	= $GLOBALS['phpgw_info']['server']['mail_server'];
 			$data['key']			= $GLOBALS['phpgw_info']['user']['passwd'];
-			$data['username']		= $GLOBALS['phpgw_info']['user']['userid'];
+			if ($felamimailConfig["mailLoginType"] == 'vmailmgr')
+				$data['username']		= $GLOBALS['phpgw_info']['user']['userid']."@".$felamimailConfig["mailSuffix"];
+			else
+				$data['username']		= $GLOBALS['phpgw_info']['user']['userid'];
 			$data['imap_server_type']	= strtolower($felamimailConfig["imapServerMode"]);
 			$data['realname']		= $GLOBALS['phpgw_info']['user']['fullname'];
 			$data['defaultDomainname']	= $GLOBALS['phpgw_info']["server"]["mail_suffix"];
@@ -60,17 +65,6 @@
 			$data['smtpServerAddress']	= $GLOBALS['phpgw_info']["server"]["smtp_server"];
 			$data['smtpPort']		= $GLOBALS['phpgw_info']["server"]["smtp_port"];
 
-			switch($data['imap_server_type'])
-			{
-				case "imaps-encr-only":
-				case "imaps-encr-auth":
-					$data['imapPort']	= 993;
-					break;
-				default:
-					$data['imapPort']	= 143;
-					break;
-			}
-			
 			// check for felamimail specific settings
 			if(!empty($felamimailConfig['imapServer']))
 				$data['imapServerAddress']	= $felamimailConfig['imapServer'];
@@ -84,7 +78,11 @@
 			if(!empty($felamimailConfig['mailSuffix']))
 				$data['defaultDomainname']	= $felamimailConfig['mailSuffix'];
 
+			if(!empty($felamimailConfig['organizationName']))
+				$data['organizationName']	= $felamimailConfig['organizationName'];
+
 			$data['emailAddress']		= $data['username']."@".$data['defaultDomainname'];
+			$data['smtpAuth']		= $felamimailConfig['smtpAuth'];
 
 			if($GLOBALS['phpgw_info']['server']['account_repository'] == 'ldap')
 			{
@@ -114,51 +112,70 @@
 			}
 			
 			// check for user specific settings
-			if ($GLOBALS['phpgw_info']['user']['preferences']['email']['use_custom_settings'] == 'True')
+			#_debug_array($felamimailUserPrefs);
+			if ($felamimailConfig['userDefinedAccounts'] == 'yes' &&
+				$felamimailUserPrefs['use_custom_settings'] == 'yes')
 			{
-				if(!empty($GLOBALS['phpgw_info']['user']['preferences']['email']['userid']))
-					$data['username']		= $GLOBALS['phpgw_info']['user']['preferences']['email']['userid'];
+				if(!empty($felamimailUserPrefs['username']))
+					$data['username']		= $felamimailUserPrefs['username'];
 
-				if(!empty($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd']))
-					$data['key']			= $GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'];
+				if(!empty($felamimailUserPrefs['key']))
+					$data['key']			= $felamimailUserPrefs['key'];
 
-				if(!empty($GLOBALS['phpgw_info']['user']['preferences']['email']['address']))
-					$data['emailAddress']		= $GLOBALS['phpgw_info']['user']['preferences']['email']['address'];
+				if(!empty($felamimailUserPrefs['emailAddress']))
+					$data['emailAddress']		= $felamimailUserPrefs['emailAddress'];
 
-				if(!empty($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server']))
-					$data['imapServerAddress']	= $GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server'];
+				if(!empty($felamimailUserPrefs['imapServerAddress']))
+					$data['imapServerAddress']	= $felamimailUserPrefs['imapServerAddress'];
 
-				if(!empty($GLOBALS['phpgw_info']['user']['preferences']['email']['imap_server_type']))
-					$data['imap_server_type']	= strtolower($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type']);
+				if(!empty($felamimailUserPrefs['imap_server_type']))
+					$data['imap_server_type']	= strtolower($felamimailUserPrefs['imap_server_type']);
 			}
 			
-			// preferences
-			$data['deleteOptions']		= $GLOBALS['phpgw_info']['user']['preferences']['felamimail']['deleteOptions'];
-			if(empty($data['deleteOptions']))
+			switch($data['imap_server_type'])
 			{
-				$data['deleteOptions'] = 'remove_immediately';
+				case "imaps-encr-only":
+				case "imaps-encr-auth":
+					$data['imapPort']	= 993;
+					break;
+				default:
+					$data['imapPort']	= 143;
+					break;
 			}
 			
-			$data['trash_folder']		= $GLOBALS['phpgw_info']['user']['preferences']['felamimail']['trashFolder'];
-			if(empty($data['trash_folder']))
+			#_debug_array($data);
+			
+			$GLOBALS['phpgw']->preferences->read_repository();
+			$userPrefs = $GLOBALS['phpgw_info']['user']['preferences'];
+			
+			// how to handle deleted messages
+			if(isset($userPrefs['felamimail']['deleteOptions']))
 			{
-				$data['trash_folder'] = 'INBOX.Trash';
+				$data['deleteOptions'] = $userPrefs['felamimail']['deleteOptions'];
 			}
-
-			$data['sent_folder']		= $GLOBALS['phpgw_info']['user']['preferences']['felamimail']['sent_folder'];
-
-			if (empty($data['sent_folder']))
+			else
 			{
-				$data['sent_folder'] = 'INBOX.Sent'; 
+				$data['deleteOptions'] = 'mark_as_deleted';
 			}
+			
+			$data['htmlOptions'] = $userPrefs['felamimail']['htmlOptions'];
+			
+			// where is the trash folder
+			$data['trash_folder']		= $userPrefs['felamimail']['trashFolder'];
+			if(!empty($userPrefs['felamimail']['sentFolder']))
+			{
+				$data['sent_folder']		= $userPrefs['felamimail']['sentFolder'];
+				$data['sentFolder']		= $userPrefs['felamimail']['sentFolder'];
+			}
+			$data['refreshTime'] 		= $userPrefs['felamimail']['refreshTime'];
 
 			if (!empty($data['trash_folder'])) 
 				$data['move_to_trash'] 	= True;
 			if (!empty($data['sent_folder'])) 
 				$data['move_to_sent'] 	= True;
-			$data['signature']		= $GLOBALS['phpgw_info']['user']['preferences']['felamimail']['email_sig'];
+			$data['signature']		= $userPrefs['felamimail']['email_sig'];
 
-		//	_debug_array($data);
+			#_debug_array($data);
 			return $data;
 		}
 }

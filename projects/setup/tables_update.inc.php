@@ -326,76 +326,41 @@
 	$test[] = '0.8.5.008';
 	function projects_upgrade0_8_5_008()
 	{
-		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.001';
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.6';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
 
 	$test[] = '0.8.6';
 	function projects_upgrade0_8_6()
 	{
-		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.001';
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_projects','time_planned',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_projects','date_created',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_projects','processor',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.6.001';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
 
 	$test[] = '0.8.6.001';
 	function projects_upgrade0_8_6_001()
 	{
-		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.002';
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_projects','investment_nr',array('type' => 'varchar','precision' => 50,'nullable' => False));
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.6.002';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
 
 	$test[] = '0.8.6.002';
 	function projects_upgrade0_8_6_002()
 	{
-		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.003';
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_projects','pcosts',array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False));
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.6.003';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
 
 	$test[] = '0.8.6.003';
 	function projects_upgrade0_8_6_003()
-	{
-		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.004';
-		return $GLOBALS['setup_info']['projects']['currentver'];
-	}
-
-	$test[] = '0.8.6.004';
-	function projects_upgrade0_8_6_004()
-	{
-		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.005';
-		return $GLOBALS['setup_info']['projects']['currentver'];
-	}
-
-	$test[] = '0.8.7.001';
-	function projects_upgrade0_8_7_001()
-	{
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_projects','time_planned',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_projects','date_created',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_projects','processor',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
-
-		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.002';
-		return $GLOBALS['setup_info']['projects']['currentver'];
-	}
-
-	$test[] = '0.8.7.002';
-	function projects_upgrade0_8_7_002()
-	{
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_projects','investment_nr',array('type' => 'varchar','precision' => 50,'nullable' => False));
-
-		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.003';
-		return $GLOBALS['setup_info']['projects']['currentver'];
-	}
-
-	$test[] = '0.8.7.003';
-	function projects_upgrade0_8_7_003()
-	{
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_projects','pcosts',array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False));
-
-		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.004';
-		return $GLOBALS['setup_info']['projects']['currentver'];
-	}
-
-	$test[] = '0.8.7.004';
-	function projects_upgrade0_8_7_004()
 	{
 		$GLOBALS['phpgw_setup']->oProc->CreateTable(
 			'phpgw_p_pcosts', array(
@@ -411,7 +376,40 @@
 				'uc' => array()
 			)
 		);
-		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.005';
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.6.004';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
+
+	$test[] = '0.8.6.004';
+	function projects_upgrade0_8_6_004()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_projects','main',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_projects','level',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_p_projects','num',array('type' => 'varchar','precision' => 255,'nullable' => False));
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.6.005';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
+
+	$test[] = '0.8.6.005';
+	function projects_upgrade0_8_6_005()
+	{
+		$GLOBALS['phpgw_setup']->oProc->CreateTable(
+			'phpgw_p_mstones', array(
+				'fd' => array(
+					's_id' => array('type' => 'auto','nullable' => False),
+					'project_id' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+					'title' => array('type' => 'varchar','precision' => 255,'nullable' => False),
+					'edate' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
+				),
+				'pk' => array('s_id'),
+				'fk' => array(),
+				'ix' => array(),
+				'uc' => array()
+			)
+		);
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.6.006';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
+
 ?>

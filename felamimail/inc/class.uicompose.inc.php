@@ -104,7 +104,12 @@
 					break;
 					
 				case "send":
-					$this->bocompose->send($formData);
+					if(!$this->bocompose->send($formData))
+					{
+						$this->compose();
+						return;
+					}
+					
 					$linkData = array
 					(
 						'mailbox'	=> $GLOBALS['HTTP_GET_VARS']['mailbox'],
@@ -117,7 +122,7 @@
 			}
 		}
 		
-		function compose()
+		function compose($_focusElement="to")
 		{
 			// read the data from session
 			// all values are empty for a new compose window
@@ -126,7 +131,7 @@
 			// is the to address set already?
 			if (!empty($GLOBALS['HTTP_GET_VARS']['send_to']))
 			{
-				$sessionData['to'] = urldecode($GLOBALS['HTTP_GET_VARS']['send_to']);
+				$sessionData['to'] = stripslashes(urldecode($GLOBALS['HTTP_GET_VARS']['send_to']));
 			}
 			
 			$this->display_app_header();
@@ -141,6 +146,7 @@
 			$this->translate();
 			
 			$this->t->set_var("link_addressbook",$GLOBALS['phpgw']->link('/felamimail/addressbook.php'));
+			$this->t->set_var("focusElement",$_focusElement);
 
 			$linkData = array
 			(
@@ -156,6 +162,16 @@
 			$this->t->set_var("link_action",$GLOBALS['phpgw']->link('/index.php',$linkData));
 			$this->t->set_var('folder_name',$this->bofelamimail->sessionData['mailbox']);
 
+			// check for some error messages from last posting attempt
+			if($errorInfo = $this->bocompose->getErrorInfo())
+			{
+				$this->t->set_var('errorInfo',"<font color=\"red\"><b>$errorInfo</b></font>");
+			}
+			else
+			{
+				$this->t->set_var('errorInfo','&nbsp;');
+			}
+			
 			// header
 			$this->t->set_var("from",htmlentities($this->bocompose->getUserName(),ENT_QUOTES));
 			$this->t->set_var("to",htmlentities($sessionData['to'],ENT_QUOTES));
@@ -222,7 +238,7 @@
 				// this fill the session data with the values from the original email
 				$this->bocompose->getReplyData('single', $replyID);
 			}
-			$this->compose();
+			$this->compose('body');
 		}
 		
 		function replyAll()
@@ -233,7 +249,7 @@
 				// this fill the session data with the values from the original email
 				$this->bocompose->getReplyData('all', $replyID);
 			}
-			$this->compose();
+			$this->compose('body');
 		}
 		
 		function translate()

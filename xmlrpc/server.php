@@ -521,7 +521,7 @@ function i_whichToolkit($m) {
 						 "toolkitName" => $xmlrpcName,
 						 "toolkitVersion" => $xmlrpcVersion,
 						 "toolkitOperatingSystem" => $SERVER_SOFTWARE);
-	return CreateObject('phpgwapi.xmlrpcresp',xmlrpc_encode($ret));
+	return CreateObject('phpgwapi.xmlrpcresp',phpgw_xmlrpc_encode($ret));
 }
 
 $s=CreateObject('phpgwapi.xmlrpc_server',array( "examples.getStateName" => 

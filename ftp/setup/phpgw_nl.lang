@@ -1,18 +1,20 @@
+are you sure you want to delete %1 ?	ftp	nl	Wilt u %1 echt verwijderen?
+attempt to create a directory with empty name	ftp	nl	Poging om een folder zonder naam te maken
 cancel	ftp	nl	annuleren
 cd	ftp	nl	cd
 connect	ftp	nl	Verbinden
+create new directory	ftp	nl	Maak een nieuwe folder
 delete	ftp	nl	verwijder
-empty dirname	ftp	nl	Poging om een folder zonder naam te maken
 failed to connect to %1 with user %2 and password %3	ftp	nl	Verbinden met server %1 als gebruiker %2 met wachtwoord %3 is mislukt
 failed to create directory %1	ftp	nl	Maken van folder %1 is mislukt
 failed to delete %1	ftp	nl	Verwijderen van %1 is mislukt
 failed to rename %1 to %2	ftp	nl	Hernoemen van %1 als %2 is mislukt
 failed to upload %1	ftp	nl	Upload van %1 is mislukt
-ftpserver	ftp	nl	Ftp Server
+ftp client	ftp	nl	Ftp Client
+ftp server	ftp	nl	Ftp Server
 home	ftp	nl	Home
-module name	ftp	nl	Ftp Client
+logout/relogin	ftp	nl	afmelden/opnieuw aanmelden
 password	ftp	nl	Wachtwoord
-relogin	ftp	nl	afmelden/opnieuw aanmelden
 rename	ftp	nl	hernoemen
 rename from	ftp	nl	Hernoem
 rename to	ftp	nl	als

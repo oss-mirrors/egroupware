@@ -36,14 +36,16 @@
   <td align="center"><font color="{em_text_color}">
   {ul_form_open}
   {ul_select}{ul_submit}
-  {ul_form_close}</font>
+  {ul_form_close}
+</font>
   </td>
  </tr>
  <tr width="95%">
   <td align="center"><font color="{em_text_color}">
    {crdir_form_open}
    {crdir_textfield}{crdir_submit}
-   {crdir_form_close}</font>
+   {crdir_form_close}
+</font>
   </td>
  </tr>
 </table>

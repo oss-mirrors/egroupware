@@ -2,8 +2,7 @@ Add address	felamimail	fi	Lis‰‰ osoite
 Additional info	felamimail	fi	Lis‰tietoja
 Address Book Search	felamimail	fi	Etsi osoitekirjasta
 Address Book	felamimail	fi	Osoitekirja
-add	felamimail	fi	lis‰‰
-Add	felamimail	fi	Lis‰‰
+add	felamimail	fi	Lis‰‰
 Add to address book	felamimail	fi	Lis‰‰ osoitekirjaan
 Add to %1	felamimail	fi	Lis‰‰ kohteeseen %1
 After message body	felamimail	fi	Viestin j‰lkeen
@@ -12,6 +11,7 @@ All Folders	felamimail	fi	Kaikki kansiot
 as a subfolder of	felamimail	fi	alikansiona kohteelle
 Attachments	felamimail	fi	Liitteet
 Auto refresh folder list	felamimail	fi	P‰ivit‰ kansiolista automaattisesti
+Bad reque	felamimail	fi	Bad reque
 Based upon given criteria, incoming messages can have different background colors in the message list.  This helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	fi	Based upon given criteria, incoming messages can have different background colors in the message list.  This helps to easily distinguish who the messages are from, especially for mailing lists.
 Before headers	felamimail	fi	Ennen otsikkotietoja
 Between headers and message body	felamimail	fi	Otsikkotietojen ja viestin v‰liss‰
@@ -34,7 +34,6 @@ Dark Green	felamimail	fi	Tumma vihre‰
 Dark Magenta	felamimail	fi	Tumma purppura
 Dark Yellow	felamimail	fi	Tumma keltainen
 date	felamimail	fi	p‰iv‰
-Date	felamimail	fi	P‰iv‰ys
 Deleted folder successfully!	felamimail	fi	Kansio poistettu!
 Delete Folder	felamimail	fi	Poista kansio
 Delete selected	felamimail	fi	Poista valitut
@@ -50,11 +49,10 @@ Download this as a file	felamimail	fi	Lataa tiedostona
 down	felamimail	fi	alas
 Edit selected	felamimail	fi	Muokkaa valittua
 Edit	felamimail	fi	Muokkaa
-E-mail address	felamimail	fi	E-mail osoite
-E-Mail Address	felamimail	fi	E-Mail Osoite
+e-mail address	felamimail	fi	E-Mail Osoite
 E-mail	felamimail	fi	E-mail
 empty trash	felamimail	fi	tyhjenn‰ roskakori
-Error connecting to IMAP server: %1.	felamimail	fi	Virhe yhdistett‰ess‰ IMAP palvelimeen: %1.
+Error connecting to IMAP serv	felamimail	fi	Virhe yhdistett‰ess‰ IMAP palvelimeen
 Error opening 	felamimail	fi	Virhe avattaessa
 ERROR	felamimail	fi	VIRHE
 ERRO	felamimail	fi	VIRH
@@ -71,8 +69,7 @@ For mail to be send - not functional yet	felamimail	fi	L‰hetett‰ville viesteille
 For received mail	felamimail	fi	Saapuneille viesteille
 Forward	felamimail	fi	Eteenp‰in
 Found	felamimail	fi	Lˆytyi
-from	felamimail	fi	l‰hett‰j‰
-From	felamimail	fi	L‰hett‰j‰
+from	felamimail	fi	L‰hett‰j‰
 Full Name	felamimail	fi	Koko nimi
 Have a look at <a href="ht	felamimail	fi	Katso <a href="ht
 Help	felamimail	fi	Ohje
@@ -127,7 +124,6 @@ No folders were found to unsubscribe from!	felamimail	fi	Ei peruttavia kansioita
 No highlighting is defined	felamimail	fi	Korostusta ei m‰‰ritelty
 No messages were selected.	felamimail	fi	Ei valittuja viestej‰.
 none	felamimail	fi	ei mit‰‰n
-None	felamimail	fi	Ei mit‰‰n
 no next Message	felamimail	fi	ei seuraavaa viesti‰
 No notification	felamimail	fi	Ei tiedotetta
 No personal address book is defined. Contact administrator.	felamimail	fi	Henkilˆkohtaista osoitekirjaa ei m‰‰ritelty. Ota yhteys yll‰pitoon.
@@ -147,8 +143,7 @@ Previous	felamimail	fi	Edellinen
 purge	felamimail	fi	tuhoa
 Read da	felamimail	fi	Lue da
 Reason Giv	felamimail	fi	Syy ann
-refresh folder list	felamimail	fi	p‰ivit‰ kansiolista
-Refresh Folder List	felamimail	fi	P‰ivit‰ kansiolista
+refresh folder list	felamimail	fi	P‰ivit‰ kansiolista
 Refresh Page	felamimail	fi	P‰ivit‰ sivu
 remove	felamimail	fi	poista
 Rename a Folder	felamimail	fi	Vaihda kansion nimi
@@ -179,8 +174,7 @@ Source	felamimail	fi	L‰hde
 Special Folder Options	felamimail	fi	Kansion erikoisasetukset
 	felamimail	fi
 Squirrelmail	felamimail	fi	Squirrelmail
-subject	felamimail	fi	aihe
-Subject	felamimail	fi	Aihe
+subject	felamimail	fi	Aihe
 Submit	felamimail	fi	L‰het‰
 Subscribed successfully!	felamimail	fi	Tilattu!
 Subscribe	felamimail	fi	Tilaa
@@ -197,8 +191,7 @@ This contains personal information about yourself such as your name, your email 
 THIS FOLDER IS EMPTY	felamimail	fi	KANSIO ON TYHJƒ
 This port is based on Squirrelmail, which is a standalone IMAP client.<br>	felamimail	fi	T‰m‰ sovellus perustuu Squirrelmail:iin, joka on IMAP asiakasohjelma.<br>
 Top	felamimail	fi	Ylˆs
-to	felamimail	fi	to
-To	felamimail	fi	To
+to	felamimail	fi	To
 to the left	felamimail	fi	vasemmalle
 to the right	felamimail	fi	oikealle
 Translation location	felamimail	fi	Translation location
@@ -207,6 +200,7 @@ Translation server	felamimail	fi	K‰‰nnˆspalvelin
 Trash Fold	felamimail	fi	Roskakori
 Unable to list addresses from %1	felamimail	fi	Osoitteiden listaus kohteesta %1 ep‰onnistui
 Unknown error	felamimail	fi	Tuntematon virhe
+Unknown err	felamimail	fi	Tunt. virh.
 (unknown sender)	felamimail	fi	(tuntematon l‰hett‰j‰)
 Unknown Sender	felamimail	fi	Tuntematon L‰hett‰j‰
 Unknown user or password incorrect.	felamimail	fi	Tuntematon k‰ytt‰j‰ tai salasana v‰‰rin.

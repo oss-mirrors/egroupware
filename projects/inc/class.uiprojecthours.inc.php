@@ -2,11 +2,12 @@
 	/*******************************************************************\
 	* phpGroupWare - Projects                                           *
 	* http://www.phpgroupware.org                                       *
+	* This program is part of the GNU project, see http://www.gnu.org/	*
 	*                                                                   *
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000 - 2003 Bettina Gille                           *
+	* Copyright 2000 - 2003 Free Software Foundation, Inc               *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -23,6 +24,7 @@
 	* Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.         *
 	\*******************************************************************/
 	/* $Id$ */
+	// $Source$
 
 	class uiprojecthours
 	{
@@ -213,7 +215,7 @@
 			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(array('query' => $this->query)));
 			$GLOBALS['phpgw']->template->set_var('state_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
-			$GLOBALS['phpgw']->template->set_var('project_list',$this->boprojects->select_project_list('all',(($action != 'asubs')?$status:'archive'),$this->project_id));
+			$GLOBALS['phpgw']->template->set_var('project_list',$this->boprojects->select_project_list(array('type' => 'all','status' => (($action != 'asubs')?$status:'archive'),'selected' => $this->project_id)));
 
 			switch($this->state)
 			{
@@ -340,15 +342,13 @@
 
 			}
 
-			if ($action != 'asubs')
+			if ($action != 'asubs' && ($this->boprojects->check_perms($this->grants[$coordinator],PHPGW_ACL_ADD) || $coordinator == $this->account
+										|| $this->bo->member()))
 			{
-				if ($this->boprojects->check_perms($this->grants[$coordinator],PHPGW_ACL_ADD) || $coordinator == $this->account)
-				{
-					$link_data['menuaction'] = 'projects.uiprojecthours.edit_hours';
-					unset($link_data['hours_id']);
-					$GLOBALS['phpgw']->template->set_var('action','<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data)
-																	. '"><input type="submit" value="' . lang('Add') . '"></form>');
-				}
+				$link_data['menuaction'] = 'projects.uiprojecthours.edit_hours';
+				unset($link_data['hours_id']);
+				$GLOBALS['phpgw']->template->set_var('action','<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data)
+																. '"><input type="submit" value="' . lang('Add') . '"></form>');
 			}
 			else
 			{

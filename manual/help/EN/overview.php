@@ -1,25 +1,21 @@
 <?php
-	/**************************************************************************\
-	* phpGroupWare - User manual                                               *
-	* http://www.phpgroupware.org                                              *
-	* --------------------------------------------                             *
-	*  This program is free software; you can redistribute it and/or modify it *
-	*  under the terms of the GNU General Public License as published by the   *
-	*  Free Software Foundation; either version 2 of the License, or (at your  *
-	*  option) any later version.                                              *
-	\**************************************************************************/
-	/* $Id$ */
+  /**************************************************************************\
+  * phpGroupWare - User manual                                               *
+  * http://www.phpgroupware.org                                              *
+  * --------------------------------------------                             *
+  *  This program is free software; you can redistribute it and/or modify it *
+  *  under the terms of the GNU General Public License as published by the   *
+  *  Free Software Foundation; either version 2 of the License, or (at your  *
+  *  option) any later version.                                              *
+  \**************************************************************************/
 
-	$GLOBALS['phpgw_info']['flags'] = array
-	(
-		'currentapp'				=> 'manual',
-		'enable_utilities_class'	=> True
-	);
-	include('../../../header.inc.php');
-	$font = $phpgw_info['theme']['font'];
+  /* $Id$ */
 
-	echo '<img src="' . $GLOBALS['phpgw']->common->image($GLOBALS['phpgw_info']['flags']['currentapp'],'title_overview') . '" border="0">';
+  $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
+  include("../../../header.inc.php");
+  $font = $phpgw_info['theme']['font'];
 ?>
+<img src="<?php echo $phpgw->common->image('phpgwapi','logo.gif'); ?>" border="0">
 <font face="<?php echo $font; ?>" size="2"><p/>
 The following pages are an to be used as a guideline/ready reference
 for how to navigate the pages found here, and the functionality of
@@ -30,7 +26,7 @@ people who wrote (or at least put together much of this) , <b>Thank You</b>.
 Without such keen and enthusiastic joint co-operation, many projects on the
 internet as we know it, would not be available, or would at the very least
 be similar to many other well known <b> costly </b> alternatives.<br/>
-For those of you who are not familar with <a href="http://www.gnu.org/philosophy/free-sw.html" target=_new>Free Software</a>, please visit 
+For those of you who are not familar with "<a href="http://www.gnu.org/philosophy/free-sw.html" target=_new>free software</a>", please visit 
 a short philosophy of the <a href="http://www.fsf.org" target=_new>Free Software Foundation</a>.<p/>
 Now on with the overview: (NB: please be aware this is an evolving project, so some
 functionality may not be available to you yet, or perhaps there will be be extra
@@ -63,8 +59,6 @@ The first page you reach after you log in to the system</li><p/>
 View where all the people on the network fit in.. which group they belong to and what groups have what users.</li><p/>
 <li><b>Preferences</b><br/>
 Here you can change your passwd, select differement themes, change your settings and choose which news groups you would like to monitor... fun with color :)</li><p/>
-<li><b>Infolog:</b><br/>
-Replacement for ToDo List, Notes and Phonelog in one app. Infolog entries can be linked to and viewed from addressbook and projekt entries.</li><p/>
 <li><b>Inventory:</b><br/>
 Build and maintain an inventory.</li><p/>
 <li><b>Todo list:</b><br/>

@@ -1,10 +1,10 @@
      <center>
       <table border=0 width=65%>
-       <th colspan=2 bgcolor={th_bg}>
-        <td align=center>
+       <tr bgcolor={th_bg}>
+        <td colspan=2 align=center>
          <b>{question}</b>
         </td>
-       </th>
+       </tr>
        <tr>
          <td bgcolor={yes_color} width=50% align=center>
            {yeslink}

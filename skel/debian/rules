@@ -7,24 +7,18 @@
 # package.
 
 # Uncomment this to turn on verbose mode. 
-# export DH_VERBOSE=1
+#export DH_VERBOSE=1
 
 
 # This is the debhelper compatability version to use.
 export DH_COMPAT=3
 
-APP = skel
-PACKAGE = debian/phpgroupware-$(APP)/usr/share/phpgroupware/$(APP)
-PACKAGEDOC = debian/phpgroupware-$(APP)/usr/share/doc/phpgroupware-$(APP)
+# Architecture independent package.
+export DH_OPTIONS=-i
 
-COPYRIGHT = -iname copyright\* -or -iname license
-CHANGELOG = -iname change\*
-INSTALL = -iname install
-FINDOPT = -type f -not \( -path \*CVS\* -or -path \*debian\* -or -name .cvsignore \)
-SPECIAL = -size 0 -or $(INSTALL) -or $(CHANGELOG) -or $(COPYRIGHT) -or -name \*.sgml
-STAMPS = -name configure-stamp -or -name build-stamp
-APPFILES = -not \( -path \*doc\* -or -path \. -or $(STAMPS) \)
-DOCFILES = -not \( $(SPECIAL) \)
+APP=skel
+PACKAGE=debian/phpgroupware-$(APP)/usr/share/phpgroupware-$(APP)
+PACKAGEDOC=debian/phpgroupware-$(APP)/usr/share/doc/phpgroupware-$(APP)
 
 configure: configure-stamp
 configure-stamp:
@@ -35,40 +29,74 @@ configure-stamp:
 build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
-	# Here should go the commands necessary to build the sgml documentation...
+	# I should place here the commands necessary to build the sgml
+	# documentation...
 	touch build-stamp
 
 clean:
 	dh_testdir
+	dh_testroot
 	rm -f build-stamp configure-stamp
-	rm -f debian/.builded
-	rm -f debian/files
-	# Here should go the commands to clean the builded sgml documents.
+	# No source cleaning needed
 	dh_clean
 
 install: build
 	dh_testdir
+	dh_testroot
+	dh_clean -k build-stamp configure-stamp
+	dh_installdirs
 
 	# Install $(APP) files in $(PACKAGE)
-	find $(FINDOPT) $(APPFILES) \
-		-exec install -D --mode=644 {} $(PACKAGE)/{} \;
-	
-	# Install $(APP) doc files in $(PACKAGEDOC)
+	find \
+	-maxdepth 1 \
+	-not -name '.' \
+	-not -name CVS \
+	-not -name doc \
+	-not -name debian \
+	-not -name $(APP).spec \
+	-exec cp -a {} $(PACKAGE) \;
+	# Install $(APP)-doc files in $(PACKAGEDOC)
 	cd doc ;\
-		find $(FINDOPT) $(DOCFILES) \
-			-exec install -D --mode=644 {} ../$(PACKAGEDOC)/{} \;
-	
+	find \
+	-maxdepth 1 \
+	-not -name '.' \
+	-not -name CVS \
+	-not -name changes.txt \
+	-not -name install.txt \
+	-not -name copyright\* \
+	-exec cp -a {} ../$(PACKAGEDOC) \; ;\
+	cd ..
+	cp $(APP).spec $(PACKAGEDOC)
+	touch build-stamp configure-stamp
+
+# Build architecture-independent files here.
+# Pass -i to all debhelper commands in this target to reduce clutter.
+binary-indep: DH_OPTIONS=-i
 binary-indep: build install
 	dh_testdir
 	dh_testroot
+	dh_installexamples
+	dh_installmenu
+	dh_installcron
+	dh_installman
+	dh_installinfo
 	dh_installdocs
+	dh_undocumented
 	dh_installchangelogs doc/changes.txt
+	dh_link
 	dh_compress
+	find $(PACKAGE) $(PACKAGEDOC) \
+		-type f \
+		-perm +111 \
+		-not -name '*.pl' \
+		-not -path "*DEBIAN*" \
+		-exec chmod -x {} \;
 	dh_fixperms
 	dh_installdeb
+	dh_perl
 	dh_gencontrol
 	dh_md5sums
-	dh_builddeb | tee debian/.builded
+	dh_builddeb
 
 binary: binary-indep
 .PHONY: build clean binary-indep binary-arch binary install configure

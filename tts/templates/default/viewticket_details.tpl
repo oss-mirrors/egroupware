@@ -25,6 +25,7 @@
 			<td>{value_date}</td>
 			<td>{value_user}</td>
 			<td>{value_action}</td>
+			<td>{value_old_value}</td>
 			<td>{value_new_value}</td>
 		</tr>
 <!-- END row_history -->
@@ -39,7 +40,7 @@
 <b>{lang_viewjobdetails}</b>
 <hr><p>
 
-<center>{messages}</center>
+<center><font color=red>{messages}</font></center>
 
 <form method="POST" action="{viewticketdetails_link}">
 <input type="hidden" name="ticket_id" value="{ticket_id}">
@@ -85,14 +86,12 @@
 		<td align="left">&nbsp;</td>
 	</tr>
 
-<!--
 	<tr bgcolor="{row_off}">
 		<td align="left">{lang_group}:</td>
 		<td align="left"><b>{value_group}</b></td>
 		<td align="left">&nbsp;</td>
 		<td align="left">&nbsp;</td>
 	</tr>
--->
 
 	<tr bgcolor="{row_off}">
 		<td colspan="4" align="center"><hr></td>
@@ -128,8 +127,9 @@
 
 	<tr bgcolor="{row_off}">
 		<td align="right"><b>{lang_status}:</b><select name="ticket[status]">{options_status}</select></td>
+		<td align="right"><b>{lang_group}:</b><select name="ticket[group]">{options_group}</select></td>
 		<td><b>{lang_billable_hours_rate}: <input name="ticket[billable_rate]" value="{value_billable_hours_rate}"></td>
-		<td colspan="2"><b>{lang_billable_hours}: <input name="ticket[billable_hours]" value="{value_billable_hours}"></td>
+		<td><b>{lang_billable_hours}: <input name="ticket[billable_hours]" value="{value_billable_hours}"></td>
 	</tr>
 
 	<tr bgcolor="{row_off}">
@@ -142,11 +142,8 @@
 
 	<tr bgcolor="{row_off}">
 		<td>&nbsp;</td>
-		<td align="left"><input type="submit" value="{lang_ok}" name="submit"></td>
-        </form>
-        <form method="post" action="{done_url}">
-		<td align="left"><input type="submit" value="{lang_done}" name="cancel"></td>
-		<td>&nbsp;</td>
+		<td align="center"><input type="submit" value="{lang_ok}" name="submit"></td>
+		<td colspan="2">&nbsp;</td>
 	</tr>
 
 		<tr>
@@ -165,6 +162,7 @@
 						<td width="10%">{lang_date}</td>
 						<td>{lang_user}</td>
 						<td>{lang_action}</td>
+						<td>{lang_old_value}</td>
 						<td>{lang_new_value}</td>
 					</tr>
 {rows_history}

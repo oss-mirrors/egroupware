@@ -12,62 +12,65 @@
 <!-- _END tts_links -->
 
 <!-- BEGIN tts_search -->
-<b>{lang_appname}</b><hr><p>
-<center>[&nbsp;<a href="{tts_newticket_link}">{tts_newticket}</a>&nbsp;|&nbsp;<a href="{tts_prefs_link}">{lang_preferences}</a>&nbsp;|&nbsp;<a href="{tts_changeview_link}">{tts_changeview}</a>&nbsp;]<br></center>
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+	<tr bgcolor="{th_bg}">
+		<td colspan="2">{lang_appname}</td>
+	</tr>
+	<tr>
+		<td align="left"><a href="{tts_newticket_link}">{tts_newticket}</a>&nbsp;|&nbsp;<a href="{tts_prefs_link}">{lang_preferences}</a>&nbsp;|&nbsp;<a href="{tts_changeview_link}">{tts_changeview}</a>&nbsp;</td>
+		<td align="right">
+			<form action="{tts_search_link}" method="POST" name="search">
+				<input type="hidden" name="filter" value="search">
+				<input name="searchfilter" value="{tts_searchfilter}">
+				<input type="submit" value="{lang_search}">
+			</form>
+		</td>
+	</tr>
+</table>
 
 <center>
-<form action="{tts_search_link}" method="POST" name="search">
-<input type="hidden" name="filter" value="search">
-<input name="searchfilter" value="{tts_searchfilter}">
-<input type="submit" value="{lang_search}">
-</form>
 <b>{tts_numfound}</b>
 <br />
 </center>
 <!-- END tts_search -->
 
 <!-- BEGIN tts_list -->
+<!--
 <center>{tts_numtotal}<br />{tts_numopen}</center><p />
 <center>{tts_notickets}</center>
-<center><br />
-  <table width="98%" cellspacing="1" cellpadding="1" border="0">
-   <tr bgcolor="{tts_head_bgcolor}">
-    <td align=center>{tts_head_ticket}</td>
-    <td align=center>{tts_head_subject}</td>
-    <td align=center>{tts_head_dateopened}</td>
-<!--    <td align=center>{lang_category}</td> -->
-    <td align=center>{tts_head_assignedto}</td>
-    <td align=center>{tts_head_openedby}</td>
+-->
+<table width="98%" cellspacing="1" cellpadding="1" border="0" align="center">
+	<tr bgcolor="{tts_head_bgcolor}">
+		<td width="22">&nbsp;</td>
+		<td align="center">{tts_head_ticket}</td>
+		<td align="center">{tts_head_subject}</td>
+		<td align="center">{tts_head_dateopened}</td>
+		<td align="center">{tts_head_group}</td>
+		<td align="center">{tts_head_category}</td>
+		<td align="center">{tts_head_assignedto}</td>
+		<td align="center">{tts_head_openedby}</td>
 
-    {tts_head_status}
-   </tr>
-   {rows}
-  </table>
-</center>
+		{tts_head_status}
+	</tr>
+	{rows}
+</table>
 <!-- END tts_list -->
 
 <!-- END index.tpl -->
 
 <!-- BEGIN tts_row -->
-   <tr bgcolor="{tts_row_color}">
-     <td align=center>{tts_ticket_id}</td>
-     <td align=center>{tts_t_subject}</td>
-     <td align=center>{tts_t_timestampopened}</td>
-<!--     <td align=center>{row_category}</td> -->
-     <td align=center>{tts_t_assignedto}</td>
-     <td align=center>{tts_t_user}</td>
-
-     {tts_col_status}
-   </tr>
+	<tr bgcolor="{tts_row_color}">
+		<td width="22">{row_status}</td>
+		<td align="center">{row_ticket_id}</td>
+		<td align="center">{tts_t_subject}</td>
+		<td align="center">{tts_t_timestampopened}</td>
+		<td style="font-size=12" align=center>{row_group}</td>
+		<td style="font-size=12" align=center>{row_category}</td>
+		<td align="center">{tts_t_assignedto}</td>
+		<td align="center">{tts_t_user}</td>
+		{tts_col_status}
+	</tr>
 <!-- END tts_row -->
-
-<!-- BEGIN tts_ticket_id_unread -->
-<img src="templates/default/images/updated.gif"><a href="{tts_ticketdetails_link}">{tts_t_id}</a>
-<!-- END tts_ticket_id_unread -->
-
-<!-- BEGIN tts_ticket_id_read -->
-<a href="{tts_ticketdetails_link}">{tts_t_id}</a>
-<!-- END tts_ticket_id_read -->
 
 <!-- BEGIN tts_col_ifviewall -->
   <td align=center>{tts_t_timestampclosed}</td>

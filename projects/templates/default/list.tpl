@@ -31,7 +31,7 @@
 		<td width="10%">{sort_number}</td>
 		<td width="20%">{sort_title}</td>
 		<td width="20%">{sort_coordinator}</td>
-        <td width="20%">{sort_action}</td>
+        <td width="20%" align="center">{lang_milestones}</td>
 		<td width="10%" align="center">{sort_end_date}</td>
 		<td width="10%" align="center">{lang_action}</td>
 		<td width="5%" align="center">{lang_view}</td>
@@ -41,14 +41,14 @@
 <!-- BEGIN projects_list -->
 
 	<tr bgcolor="{tr_color}">
-		<td>{number}</td>
-		<td>{title}</td>
-		<td>{coordinator}</td>
-        <td>{td_action}</td>
-		<td align="center">{end_date}</td>
-		<td align="center"><a href="{action_entry}">{lang_action_entry}</a></td>
-		<td align="center"><a href="{view}">{lang_view_entry}</a></td>
-		<td align="center"><a href="{edit}">{lang_edit_entry}</a></td>
+		<td valign="top">{number}</td>
+		<td valign="top">{title}</td>
+		<td valign="top">{coordinator}</td>
+        <td>{milestones}</td>
+		<td align="center" valign="top">{end_date}</td>
+		<td align="center" valign="top"><a href="{action_entry}">{lang_action_entry}</a></td>
+		<td align="center" valign="top"><a href="{view}">{lang_view_entry}</a></td>
+		<td align="center" valign="top"><a href="{edit}">{lang_edit_entry}</a></td>
 	</tr>
 
 <!-- END projects_list -->

@@ -6,10 +6,12 @@ color	headlines	en	Color
 create new headline	headlines	en	Create New Headline
 current headlines in cache	headlines	en	Current headlines in cache
 display	headlines	en	Display
+edit headline sites	headlines	en	Edit headline sites
+edit headlines shown by default	headlines	en	Edit headlines shown by default
 grab new news sites	common	en	Grab new news sites
 headline preferences	common	en	Headline preferences
 headline site management	admin	en	Headline Site Management
-headline sites	common	en	Headline Sites
+headline sites	admin	en	Headline Sites
 headlines	common	en	Headlines
 headlines administration	headlines	en	Headlines Administration
 headlines administration - delete headline	headlines	en	Headlines Administration - Delete headline
@@ -28,7 +30,6 @@ reset	headlines	en	Reset
 select headline news sites	common	en	Select Headline News sites
 select headlines to display	preferences	en	Select Headlines to Display
 select layout	preferences	en	Select layout
-show headlines on main screen	headlines	en	Show headlines on main screen
 site	headlines	en	Site
 that site has already been entered	admin	en	That site has already been entered
 unable to retrieve links	headlines	en	Unable to retrieve links

@@ -6,7 +6,7 @@ allow users to vote more then once	polls	en	allow users to vote more then once
 answer	polls	en	Answer
 answer has been added to poll	polls	en	Answer has been added to poll
 answer has been updated	polls	en	Answer has been updated
-answers	polls	en	Answers
+Answers	polls	en	Answers
 are you sure want to delete this answer ?	polls	en	Are you sure want to delete this answer ?
 are you sure want to delete this question ?	polls	en	Are you sure want to delete this question ?
 edit answer	polls	en	Edit answer
@@ -22,7 +22,7 @@ settings updated	polls	en	Settings updated
 show answers	polls	en	Show answers
 show questions	polls	en	Show questions
 total votes	polls	en	Total
-view poll	polls	en	View poll
+View poll	polls	en	View poll
 vote	polls	en	Vote
 voting booth admin	admin	en	Voting Booth
 voting booth administration	polls	en	Voting Booth Administration

@@ -118,6 +118,17 @@
 			return $this->composeID;
 		}
 		
+		function getErrorInfo()
+		{
+			if(isset($this->errorInfo))
+			{
+				$errorInfo = $this->errorInfo;
+				unset($this->errorInfo);
+				return $errorInfo;
+			}
+			return false;
+		}
+		
 		function getForwardData($_uid)
 		{
 			$bofelamimail    = CreateObject('felamimail.bofelamimail');
@@ -129,12 +140,12 @@
 			// check for Re: in subject header
 			$this->sessionData['subject'] = "[FWD: " . $bofelamimail->decode_header($headers->Subject)."]";
 
-			$structure     = $bofelamimail->getMessageStructure($_uid, ST_UID);
-			if(sizeof($structure->parts) > 1)
-			{
-				$sections = $bofelamimail->parse($structure);
-				$attachments = $bofelamimail->get_attachments($sections);
-			}
+			#$structure     = $bofelamimail->getMessageStructure($_uid, ST_UID);
+			#if(sizeof($structure->parts) > 1)
+			#{
+			#	$sections = $bofelamimail->parse($structure);
+			#	$attachments = $bofelamimail->get_attachments($sections);
+			#}
 			
 			$this->sessionData['body']	 = "                  -----------Originalnachricht-----------\n\n";
 			$this->sessionData['body']	.= "Betreff: ".$bofelamimail->decode_header($headers->Subject)."\n";
@@ -143,31 +154,63 @@
 			
 			// iterate through message parts
 			// get the body
-			$bodyParts = $bofelamimail->getMessageBody($_uid);
+			$bodyParts = $bofelamimail->getMessageBody($_uid, 'only_if_no_text');
 			for($i=0; $i<count($bodyParts); $i++)
 			{
-				$this->sessionData['body']	.= $bodyParts[$i];
+				$this->sessionData['body']	.= $bodyParts[$i]['body'];
 			}
-/*			if(is_array($sections))
+			
+			$this->sessionData['body']	 .= "\n\n                  -----------Originalnachricht-----------\n\n";
+					
+			$attachments = $bofelamimail->getMessageAttachments($_uid);
+			if(is_array($attachments))
 			{
-				for($x=0; $x<sizeof($sections); $x++)
+				// ensure existance of PHPGROUPWARE temp dir
+				// note: this is different from apache temp dir, 
+				// and different from any other temp file location set in php.ini
+				if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir']))
 				{
-					// if text type, display
-					if($sections[$x]["type"] == "text/plain" && $sections[$x]["disposition"] 
-						!= "attachment")
+					@mkdir($GLOBALS['phpgw_info']['server']['temp_dir'],0700);
+				}
+				
+				// if we were NOT able to create this temp directory, then make an ERROR report
+				if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir']))
+				{
+					$alert_msg .= 'Error:'.'<br>'
+						.'Server is unable to access phpgw tmp directory'.'<br>'
+						.$phpgw_info['server']['temp_dir'].'<br>'
+						.'Please check your configuration'.'<br>'
+						.'<br>';
+				}
+
+				while(list($partID, $partData) = each($attachments))
+				{
+					$attachmentData = $bofelamimail->getAttachment($_uid, $partID);
+					#_debug_array($attachmentData);
+					
+					$tmpFileName = $GLOBALS['phpgw_info']['server']['temp_dir'].
+						SEP.
+						$GLOBALS['phpgw_info']['user']['account_id'].
+						$this->composeID.
+						basename($attachmentData['filename']);
+				
+					if ($handle = fopen($tmpFileName, 'w')) 
 					{
-						$bodyPart = $bofelamimail->getMessageBody($_uid, $sections[$x]["pid"], ST_UID);
-						$this->sessionData['body'] .= quoted_printable_decode($bodyPart);
+						fwrite($handle, $attachmentData['attachment']);
+						fclose($handle);
+				
+						$this->sessionData['attachments'][]=array
+						(
+							'name'	=> $attachmentData['filename'],
+							'type'	=> $attachmentData['type'],
+							'file'	=> $tmpFileName,
+							'size'	=> filesize($tmpFileName)
+						);
+						
 					}
 				}
 			}
-			else
-			{
-				$this->sessionData['body']	.= $bofelamimail->getMessageBody($_uid, '', ST_UID);
-			}
-*/																
-			$this->sessionData['body']	 .= "\n\n                  -----------Originalnachricht-----------\n\n";
-					
+																
 			$bofelamimail->closeConnection();
 			
 			$this->saveSessionData();
@@ -269,23 +312,23 @@
 				$this->sessionData['subject'] = "Re: " . $bofelamimail->decode_header($headers->Subject);
 			}
 
-			$structure = $bofelamimail->getMessageStructure($_uid);
-			if(sizeof($structure->parts) > 1)
-			{
-				$sections = $bofelamimail->parse($structure);
-				$attachments = $bofelamimail->get_attachments($sections);
-			}
+			#$structure = $bofelamimail->getMessageStructure($_uid);
+			#if(sizeof($structure->parts) > 1)
+			#{
+			#	$sections = $bofelamimail->parse($structure);
+			#	$attachments = $bofelamimail->get_attachments($sections);
+			#}
 			
-			$this->sessionData['body']	= lang("on")." " . $headers->Date . ", ".lang("you wrote").": \n>";
+			$this->sessionData['body']	= $bofelamimail->decode_header($headers->fromaddress) . " ".lang("wrote").": \n>";
 			
 			// get the body
-			$bodyParts = $bofelamimail->getMessageBody($_uid);
+			$bodyParts = $bofelamimail->getMessageBody($_uid, 'only_if_no_text');
 
 			for($i=0; $i<count($bodyParts); $i++)
 			{
 				if(!empty($this->sessionData['body'])) $$this->sessionData['body'] .= "\n\n";
 				// add line breaks to $bodyParts
-				$newBody        = explode("\n",$bodyParts[$i]);
+				$newBody        = explode("\n",$bodyParts[$i]['body']);
 				
 				// create it new, with good line breaks
 				reset($newBody);
@@ -357,6 +400,8 @@
 
 		function send($_formData)
 		{
+			$bofelamimail    = CreateObject('felamimail.bofelamimail');
+			
 			$this->sessionData['to']	= $_formData['to'];
 			$this->sessionData['cc']	= $_formData['cc'];
 			$this->sessionData['bcc']	= $_formData['bcc'];
@@ -379,11 +424,14 @@
 				
 			$mail->IsSMTP();
 			$mail->From 	= $this->preferences['emailAddress'];
-			$mail->FromName = $this->preferences['realname'];
+			$mail->FromName = $bofelamimail->encodeHeader($this->preferences['realname']);
 			$mail->Host 	= $this->preferences['smtpServerAddress'];
 			$mail->Priority = $this->sessionData['priority'];
 			$mail->Encoding = '8bit';
 			$mail->PluginDir = PHPGW_SERVER_ROOT."/felamimail/inc/";
+			$mail->AddCustomHeader("X-Mailer: FeLaMiMail version 0.9.4");
+			if(isset($this->preferences['organizationName']))
+				$mail->AddCustomHeader("Organization: ".$this->preferences['organizationName']);
 
 			if (!empty($this->sessionData['to']))
 			{
@@ -393,7 +441,7 @@
 					for($i=0;$i<count($address_array);$i++)
 					{
 						$emailAddress = $address_array[$i]->mailbox."@".$address_array[$i]->host;
-						$emailName = $address_array[$i]->personal;
+						$emailName = $bofelamimail->encodeHeader($address_array[$i]->personal);
 						$mail->AddAddress($emailAddress,$emailName);
 					}
 				}
@@ -407,7 +455,7 @@
 					for($i=0;$i<count($address_array);$i++)
 					{
 						$emailAddress = $address_array[$i]->mailbox."@".$address_array[$i]->host;
-						$emailName = $address_array[$i]->personal;
+						$emailName = $bofelamimail->encodeHeader($address_array[$i]->personal);
 						$mail->AddCC($emailAddress,$emailName);
 					}
 				}
@@ -421,7 +469,7 @@
 					for($i=0;$i<count($address_array);$i++)
 					{
 						$emailAddress = $address_array[$i]->mailbox."@".$address_array[$i]->host;
-						$emailName = $address_array[$i]->personal;
+						$emailName = $bofelamimail->encodeHeader($address_array[$i]->personal);
 						$mail->AddBCC($emailAddress,$emailName);
 					}
 				}
@@ -433,13 +481,13 @@
 				if(count($address_array)>0)
 				{
 					$emailAddress = $address_array[0]->mailbox."@".$address_array[0]->host;
-					$emailName = $address_array[0]->personal;
+					$emailName = $bofelamimail->encodeHeader($address_array[0]->personal);
 					$mail->AddReplyTo($emailAddress,$emailName);
 				}
 			}
 			
 			$mail->WordWrap = 76;
-			$mail->Subject = "=?iso-8859-1?Q?".imap_8bit($this->sessionData['subject'])."?=";
+			$mail->Subject = $bofelamimail->encodeHeader($this->sessionData['subject'],'q');
 			$mail->IsHTML(false);
 			$mail->Body    = $this->sessionData['body'];
 			if (!empty($this->sessionData['signature']))
@@ -462,19 +510,29 @@
 			}
 			#$mail->AltBody = $this->sessionData['body'];
 			
+			// SMTP Auth??
+			if($this->preferences['smtpAuth'] == 'yes')
+			{
+				$mail->SMTPAuth	= true;
+				$mail->Username	= $this->preferences['username'];
+				$mail->Password	= $this->preferences['key'];
+			}
+			
+			// set a higher timeout for big messages
+			@set_time_limit(120);
+			#$mail->SMTPDebug = 10;
 			if(!$mail->Send())
 			{
-				echo "Message could not be sent. <p>";
-				echo "Mailer Error: " . $mail->ErrorInfo;
-				exit;
+				$this->errorInfo = $mail->ErrorInfo;
+				return false;
 			}
 
-			if ($this->preferences['move_to_sent'] == "true")
+			if (isset($this->preferences['sentFolder']))
 			{
 				// mark message as answered
-				$bofelamimail = CreateObject('felamimail.bofelamimail',$this->sessionData['folder']);
-				$bofelamimail->openConnection();
-				$bofelamimail->appendMessage($this->preferences['sent_folder'],$mail->header,$mail->body);
+				$bofelamimail = CreateObject('felamimail.bofelamimail');
+				$bofelamimail->openConnection($this->preferences['sentFolder']);
+				$bofelamimail->appendMessage($this->preferences['sentFolder'],$mail->sentHeader,$mail->sentBody);
 				$bofelamimail->closeConnection();
 			}
 
@@ -487,14 +545,20 @@
 				$bofelamimail->closeConnection();
 			}
 
-			while(list($key,$value) = @each($this->sessionData['attachments']))
+			if(is_array($this->sessionData['attachments']))
 			{
-				#print "$key: $value<br>";
-				unlink($value['file']);
+				reset($this->sessionData['attachments']);
+				while(list($key,$value) = @each($this->sessionData['attachments']))
+				{
+					#print "$key: ".$value['file']."<br>";
+					unlink($value['file']);
+				}
 			}
-			
+
 			$this->sessionData = '';
 			$this->saveSessionData();
+
+			return true;
 		}
 		
 		function setDefaults()

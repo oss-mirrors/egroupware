@@ -13,6 +13,7 @@
 
 	/* Basic information about this app */
 	$setup_info['soap']['name']      = 'soap';
+	$setup_info['soap']['title']     = 'Soap Test';
 	$setup_info['soap']['version']   = '0.0.1';
 	$setup_info['soap']['app_order'] = 4;
 	$setup_info['soap']['enable']    = 1;
@@ -24,6 +25,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['soap']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.13', '0.9.14','0.9.15')
+		 'versions' => Array('0.9.13', '0.9.14')
 	);
 ?>

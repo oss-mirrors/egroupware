@@ -55,4 +55,59 @@
 		return $GLOBALS['setup_info']['felamimail']['currentver'];
 	}
 
+	$test[] = '0.9.2';
+	function felamimail_upgrade0_9_2()
+	{
+		$GLOBALS['phpgw_setup']->oProc->CreateTable('phpgw_felamimail_displayfilter',
+			Array(
+				'fd' => array(
+					'accountid' 	=> array('type' => 'int', 'precision' => 4, 'nullable' => false),
+					'filter' 	=> array('type' => 'text')
+				),
+				'pk' => array('accountid'),
+				'fk' => array(),
+				'ix' => array(),
+				'uc' => array()
+			)
+
+		);
+
+		$GLOBALS['setup_info']['felamimail']['currentver'] = '0.9.3';
+		return $GLOBALS['setup_info']['felamimail']['currentver'];
+	}
+
+	$test[] = '0.9.3';
+	function felamimail_upgrade0_9_3()
+	{
+		$GLOBALS['phpgw_setup']->oProc->DropTable('phpgw_felamimail_cache');
+		$GLOBALS['phpgw_setup']->oProc->query('delete from phpgw_felamimail_folderstatus',__LINE__,__FILE__);
+		$GLOBALS['phpgw_setup']->oProc->CreateTable('phpgw_felamimail_cache',
+			Array(
+				'fd' => array(
+					'accountid' 	=> array('type' => 'int', 'precision' => 4, 'nullable' => false),
+					'hostname' 	=> array('type' => 'varchar', 'precision' => 60, 'nullable' => false),
+					'accountname' 	=> array('type' => 'varchar', 'precision' => 200, 'nullable' => false),
+					'foldername' 	=> array('type' => 'varchar', 'precision' => 200, 'nullable' => false),
+					'uid' 		=> array('type' => 'int', 'precision' => 4, 'nullable' => false),
+					'subject'	=> array('type' => 'text'),
+					'striped_subject'=> array('type' => 'text'),
+					'sender_name'	=> array('type' => 'varchar', 'precision' => 120),
+					'sender_address'=> array('type' => 'varchar', 'precision' => 120),
+					'to_name'	=> array('type' => 'varchar', 'precision' => 120),
+					'to_address'	=> array('type' => 'varchar', 'precision' => 120),
+					'date'		=> array('type' => 'varchar', 'precision' => 120),
+					'size'		=> array('type' => 'int', 'precision' => 4),
+					'attachments'	=> array('type' => 'varchar', 'precision' =>120)
+				),
+				'pk' => array('accountid','hostname','accountname','foldername','uid'),
+				'fk' => array(),
+				'ix' => array(),
+				'uc' => array()
+			)
+		);
+
+		$GLOBALS['setup_info']['felamimail']['currentver'] = '0.9.4';
+		return $GLOBALS['setup_info']['felamimail']['currentver'];
+	}
+
 ?>

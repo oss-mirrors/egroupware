@@ -216,7 +216,7 @@
 		@access Private 
 		@author Angles
 		*/
-		function expire_db_session_bulk_data($called_by='not_specified', $wipe_absolutely_everything=False)
+		function expire_db_session_bulk_data($called_by='not_specified')
 		{
 			
 			// for DB sessions_db, OR used for anglemail table
@@ -260,46 +260,43 @@
 					$GLOBALS['phpgw']->db->query($query);
 				}
 				
-				if ($wipe_absolutely_everything == False)
+				// RE-INSERT IMPORTANT DATA
+				for ($i=0; $i < count($GLOBALS['phpgw']->msg->extra_and_default_acounts); $i++)
 				{
-					// RE-INSERT IMPORTANT DATA
-					for ($i=0; $i < count($GLOBALS['phpgw']->msg->extra_and_default_acounts); $i++)
+					if ($GLOBALS['phpgw']->msg->extra_and_default_acounts[$i]['status'] == 'enabled')
 					{
-						if ($GLOBALS['phpgw']->msg->extra_and_default_acounts[$i]['status'] == 'enabled')
+						$this_acctnum = $GLOBALS['phpgw']->msg->extra_and_default_acounts[$i]['acctnum'];
+						if ($retained_data[$this_acctnum]['mailsvr_callstr'])
 						{
-							$this_acctnum = $GLOBALS['phpgw']->msg->extra_and_default_acounts[$i]['acctnum'];
-							if ($retained_data[$this_acctnum]['mailsvr_callstr'])
+							if ($GLOBALS['phpgw']->msg->use_private_table == True)
 							{
-								if ($GLOBALS['phpgw']->msg->use_private_table == True)
-								{
-									$this->so_set_data((string)$this_acctnum.';mailsvr_callstr', $retained_data[$this_acctnum]['mailsvr_callstr']);
-								}
-								else
-								{
-									$GLOBALS['phpgw']->session->appsession((string)$this_acctnum.';mailsvr_callstr', 'email', $retained_data[$this_acctnum]['mailsvr_callstr']);
-								}
+								$this->so_set_data((string)$this_acctnum.';mailsvr_callstr', $retained_data[$this_acctnum]['mailsvr_callstr']);
 							}
-							if ($retained_data[$this_acctnum]['folder_list'])
+							else
 							{
-								if ($GLOBALS['phpgw']->msg->use_private_table == True)
-								{
-									$this->so_set_data((string)$this_acctnum.';folder_list', $retained_data[$this_acctnum]['folder_list']);
-								}
-								else
-								{
-									$GLOBALS['phpgw']->session->appsession((string)$this_acctnum.';folder_list', 'email', $retained_data[$this_acctnum]['folder_list']);
-								}
+								$GLOBALS['phpgw']->session->appsession((string)$this_acctnum.';mailsvr_callstr', 'email', $retained_data[$this_acctnum]['mailsvr_callstr']);
 							}
-							if ($retained_data[$this_acctnum]['mailsvr_namespace'])
+						}
+						if ($retained_data[$this_acctnum]['folder_list'])
+						{
+							if ($GLOBALS['phpgw']->msg->use_private_table == True)
 							{
-								if ($GLOBALS['phpgw']->msg->use_private_table == True)
-								{
-									$this->so_set_data((string)$this_acctnum.';mailsvr_namespace', $retained_data[$this_acctnum]['mailsvr_namespace']);
-								}
-								else
-								{
-									$GLOBALS['phpgw']->session->appsession((string)$this_acctnum.';mailsvr_namespace', 'email', $retained_data[$this_acctnum]['mailsvr_namespace']);
-								}
+								$this->so_set_data((string)$this_acctnum.';folder_list', $retained_data[$this_acctnum]['folder_list']);
+							}
+							else
+							{
+								$GLOBALS['phpgw']->session->appsession((string)$this_acctnum.';folder_list', 'email', $retained_data[$this_acctnum]['folder_list']);
+							}
+						}
+						if ($retained_data[$this_acctnum]['mailsvr_namespace'])
+						{
+							if ($GLOBALS['phpgw']->msg->use_private_table == True)
+							{
+								$this->so_set_data((string)$this_acctnum.';mailsvr_namespace', $retained_data[$this_acctnum]['mailsvr_namespace']);
+							}
+							else
+							{
+								$GLOBALS['phpgw']->session->appsession((string)$this_acctnum.';mailsvr_namespace', 'email', $retained_data[$this_acctnum]['mailsvr_namespace']);
 							}
 						}
 					}
@@ -317,37 +314,15 @@
 		function so_am_table_exists()
 		{
 			$look_for_me = 'phpgw_anglemail';
-			
-			// have we cached this in SESSION cache - NOT the AM table itself!
-			$appsession_key = $look_for_me.'_exists';
-			$affirmative_value = 'yes';
-			$negative_value = 'no';
-			$appsession_returns = $this->so_appsession_passthru($appsession_key);
-			if ($appsession_returns == $affirmative_value)
-			{
-				//echo 'so_am_table_exists: result: Actual APPSESSION reports stored info saying table ['.$look_for_me.'] DOES exist<br>';
-				return True;
-			}
-			elseif ($appsession_returns == $negative_value)
-			{
-				//echo 'so_am_table_exists: result: Actual APPSESSION reports stored info saying table ['.$look_for_me.'] does NOT exist<br>';
-				return False;
-			}
-			
-			// NO APPSESSION data, continue ...
 			$table_names = $GLOBALS['phpgw']->db->table_names();
 			$table_names_serialized = serialize($table_names);
 			if (strstr($table_names_serialized, $look_for_me))
 			{
-				// STORE THE POSITIVE ANSWER
-				$this->so_appsession_passthru($appsession_key, $affirmative_value);
 				//echo 'so_am_table_exists: result: table ['.$look_for_me.'] DOES exist<br>';
 				return True;
 			}
 			else
 			{
-				// STORE THE NEGATIVE ANSWER
-				$this->so_appsession_passthru($appsession_key, $negative_value);
 				//echo 'so_am_table_exists: result: table ['.$look_for_me.'] does NOT exist<br>';
 				return False;
 			}
@@ -361,45 +336,12 @@
 		@function so_set_data
 		@abstract ?
 		*/
-		function so_set_data($data_key, $content, $compression=False)
+		function so_set_data($data_key, $content)
 		{
-			if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_set_data('.__LINE__.'): ENTERING, $data_key ['.$data_key.'], $compression ['.serialize($compression).']<br>'); }
 			$account_id = get_account_id($accountid,$GLOBALS['phpgw']->session->account_id);
 			$data_key = $GLOBALS['phpgw']->db->db_addslashes($data_key);
-			// for compression, first choice is BZ2, second choice is GZ
-			//if (($compression)
-			//&& (function_exists('bzcompress')))
-			//{
-			//	$content_preped = base64_encode(bzcompress(serialize($content)));
-			//	$content = '';
-			//	unset($content);
-			//	if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_set_data('.__LINE__.'): $compression is ['.serialize($compression).'] AND we did serialize and <font color="green">did BZ2 compress</font>, no addslashes for compressed content<br>'); }
-			//}
-			//else
-			if (($compression)
-			&& (function_exists('gzcompress')))
-			{
-				$content_preped = base64_encode(gzcompress(serialize($content)));
-				$content = '';
-				unset($content);
-				if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_set_data('.__LINE__.'): $compression is ['.serialize($compression).'] AND we did serialize and <font color="green">did GZ compress</font>, no addslashes for compressed content<br>'); }
-			}
-			else
-			{
-				// addslashes only if NOT compressing data
-				// serialize only is NOT a string
-				if (is_string($content))
-				{
-					$content_preped = $GLOBALS['phpgw']->db->db_addslashes($content);
-				}
-				else
-				{
-					$content_preped = $GLOBALS['phpgw']->db->db_addslashes(serialize($content));
-				}
-				$content = '';
-				unset($content);
-				if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_set_data('.__LINE__.'): $compress is ['.serialize($compress).'] AND we did serialize with NO compression<br>'); }
-			}
+			$content = serialize($content);
+			$content = $GLOBALS['phpgw']->db->db_addslashes($content);
 			
 			$GLOBALS['phpgw']->db->query("SELECT content FROM phpgw_anglemail WHERE "
 				. "account_id = '".$account_id."' AND data_key = '".$data_key."'",__LINE__,__FILE__);
@@ -407,127 +349,42 @@
 			if ($GLOBALS['phpgw']->db->num_rows()==0)
 			{
 				$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_anglemail (account_id,data_key,content) "
-					. "VALUES ('" . $account_id . "','" . $data_key . "','" . $content_preped . "')",__LINE__,__FILE__);
+					. "VALUES ('" . $account_id . "','" . $data_key . "','" . $content . "')",__LINE__,__FILE__);
 			}
 			else
 			{
-				$GLOBALS['phpgw']->db->query("UPDATE phpgw_anglemail set content='" . $content_preped 
+				$GLOBALS['phpgw']->db->query("UPDATE phpgw_anglemail set content='" . $content 
 					. "' WHERE account_id='" . $account_id . "' AND data_key='" . $data_key . "'",__LINE__,__FILE__);
 			}
-			if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_set_data('.__LINE__.'): LEAVING <br>'); }
 		}
 		
 		/*!
 		@function so_get_data
 		@abstract ?
 		*/
-		function so_get_data($data_key, $compression=False)
+		function so_get_data($data_key)
 		{
-			if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): ENTERING, $data_key ['.$data_key.'], $compression ['.serialize($compression).']<br>'); }
 			$account_id = get_account_id($accountid,$GLOBALS['phpgw']->session->account_id);
 			$data_key = $GLOBALS['phpgw']->db->db_addslashes($data_key);
 			
 			$GLOBALS['phpgw']->db->query("SELECT content FROM phpgw_anglemail WHERE "
 				. "account_id = '".$account_id."' AND data_key = '".$data_key."'",__LINE__,__FILE__);
 			
-			if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): $GLOBALS[phpgw]->db->num_rows() = ['.$GLOBALS['phpgw']->db->num_rows().'] <br>'); } 
-			
 			if ($GLOBALS['phpgw']->db->num_rows()==0)
 			{
-				if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): LEAVING, returning False<br>'); }
 				return False;
-			}
-			elseif (($compression)
-			//&& ((function_exists('bzdecompress')) || (function_exists('gzuncompress')) )
-			&& (function_exists('gzuncompress')))
-			{
-				$GLOBALS['phpgw']->db->next_record();
-				// no stripslashes for compressed data
-				$my_content = $GLOBALS['phpgw']->db->f('content');
-				$comp_desc = array();
-				$comp_desc['before_decomp'] = 'NA';
-				$comp_desc['after_decomp'] = 'NA';
-				$comp_desc['ratio_txt'] = 'NA';
-				$comp_desc['ratio_math'] = 'NA';
-				if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $comp_desc['before_decomp'] = strlen($my_content); } 
-				if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): strlen($my_content) is ['.$comp_desc['before_decomp'].'], BEFORE decompress, $compression is ['.serialize($compression).']<br>'); }
-				//if ($GLOBALS['phpgw']->msg->debug_so_class > 2) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): $GLOBALS[phpgw]->db->next_record() yields $my_content DUMP:', $my_content); }
-				if (!$my_content)
-				{
-					if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): LEAVING, returning False<br>'); }
-					return False;
-				}
-				// for compression, first choice is BZ2, second choice is GZ
-				// NEW: BZ2 is SLOWER than zlib
-				//if (function_exists('bzdecompress'))
-				//{
-				//	$my_content_preped = unserialize(bzdecompress(base64_decode($my_content)));
-				//	if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $comp_desc['after_decomp'] = strlen(serialize($my_content_preped)); $comp_desc['ratio_math'] = (string)(round(($comp_desc['after_decomp']/$comp_desc['before_decomp']), 1) * 1).'X'; $comp_desc['ratio_txt'] = 'pre/post is ['.$comp_desc['before_decomp'].' to '.$comp_desc['after_decomp']; }
-				//	if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): $compression: ['.serialize($compression).'] using <font color="brown">BZ2 decompress</font> pre/post is ['.$comp_desc['ratio_txt'].']; ratio: ['.$comp_desc['ratio_math'].'] <br>'); }
-				//}
-				//else
-				if (function_exists('gzuncompress'))
-				{
-					$my_content_preped = unserialize(gzuncompress(base64_decode($my_content)));
-					if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $comp_desc['after_decomp'] = strlen(serialize($my_content_preped)); $comp_desc['ratio_math'] = (string)(round(($comp_desc['after_decomp']/$comp_desc['before_decomp']), 1) * 1).'X'; $comp_desc['ratio_txt'] = 'pre/post is ['.$comp_desc['before_decomp'].' to '.$comp_desc['after_decomp']; }
-					if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): $compression: ['.serialize($compression).'] using <font color="brown">GZ uncompress</font> pre/post is ['.$comp_desc['ratio_txt'].']; ratio: ['.$comp_desc['ratio_math'].'] <br>'); }
-				}
-				else
-				{
-					$my_content_preped = '';
-					if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): ERROR: $compression: ['.serialize($compression).'] <font color="brown">decompression ERROR</font> neither "bzdecompress" (first choice) nor "gzuncompress" (second choice) is available<br>'); }
-				}
-				$my_content = '';
-				unset($my_content);
-				if (!$my_content_preped)
-				{
-					if ($GLOBALS['phpgw']->msg->debug_so_class > 2) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): AFTER DECOMPRESS and UNserialization $my_content_preped is GONE!'); }
-					if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): LEAVING, returning False, <font color="red">content did not unserialize, compression was in use </font> <br>'); }
-					return False;
-				}
-				else
-				{
-					if ($GLOBALS['phpgw']->msg->debug_so_class > 2) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): AFTER DECOMPRESS and UNserialization $my_content_preped DUMP:', $my_content_preped); }
-					if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): LEAVING, got content, <font color="brown"> did decompress </font> , returning that content<br>'); }
-					return $my_content_preped;
-				}
 			}
 			else
 			{
 				$GLOBALS['phpgw']->db->next_record();
-				// NOTE: we only stripslashes when NOT using compression
+				//return unserialize($GLOBALS['phpgw']->db->f('content', 'stripslashes'));
 				$my_content = $GLOBALS['phpgw']->db->f('content', 'stripslashes');
-				if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): strlen($my_content) is ['.strlen($my_content).']<br>'); }
-				//if ($GLOBALS['phpgw']->msg->debug_so_class > 2) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): $GLOBALS[phpgw]->db->next_record() yields $my_content DUMP:', $my_content); }
 				if (!$my_content)
 				{
-					if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): LEAVING, returning False<br>'); }
 					return False;
 				}
-				// we serialize only NON-strings, 
-				// so unserialize only if content is already serialized
-				if ($GLOBALS['phpgw']->msg->is_serialized_str($my_content) == True)
-				{
-					$my_content_preped = unserialize($my_content);
-				}
-				else
-				{
-					$my_content_preped = $my_content;
-				}
-				$my_content = '';
-				unset($my_content);
-				if (!$my_content_preped)
-				{
-					if ($GLOBALS['phpgw']->msg->debug_so_class > 2) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): AFTER UNserialization $my_content_preped is GONE!'); }
-					if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): LEAVING, returning False, <font color="red">content did not unserialize </font> <br>'); }
-					return False;
-				}
-				else
-				{
-					if ($GLOBALS['phpgw']->msg->debug_so_class > 2) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): AFTER UNserialization $my_content_preped DUMP:', $my_content_preped); }
-					if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): LEAVING, got content, returning that content<br>'); }
-					return $my_content_preped;
-				}
+				$my_content = unserialize($my_content);
+				return $my_content;
 			}
 		}
 		
@@ -554,27 +411,5 @@
 				. " WHERE account_id='" . $account_id . "'",__LINE__,__FILE__);
 		}
 		
-		/*!
-		@function so_appsession_passthru
-		@abstract this will ONLY use the ACTUAL REAL APPSESSION of phpgwapi 
-		@param $location (string) in phpgwapi session speak this is the "name" of the information aka the 
-		key in a key value pair
-		@param $location (string) OPTIONAL the value in the key value pair. Empty will erase I THINK the 
-		apsession data stored for the "name" aka the "location". 
-		@discussion This is a SIMPLE PASSTHRU for the real phpgwapi session call. This function will 
-		never use the anglemail table, it is intended for stuff we REALLY want to last only for one session. 
-		@author Angles
-		*/
-		function so_appsession_passthru($location='',$data='##NOTHING##')
-		{
-			if ($data == '##NOTHING##')
-			{
-				return $GLOBALS['phpgw']->session->appsession($location, 'email');
-			}
-			else
-			{
-				return $GLOBALS['phpgw']->session->appsession($location, 'email', $data);
-			}
-		}
 	}
 ?>

@@ -2,11 +2,12 @@
 	/*******************************************************************\
 	* phpGroupWare - Projects                                           *
 	* http://www.phpgroupware.org                                       *
+	* This program is part of the GNU project, see http://www.gnu.org/	*
 	*                                                                   *
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
+	* Copyright 2000 - 2003 Free Software Foundation, Inc               *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -23,6 +24,7 @@
 	* Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.         *
 	\*******************************************************************/
 	/* $Id$ */
+	// $Source$
 
 	class boprojecthours
 	{
@@ -53,12 +55,12 @@
 				$this->use_session = True;
 			}
 
-			$start	= get_var('start',array('POST','GET'));
-			$query	= get_var('query',array('POST','GET'));
-			$sort	= get_var('sort',array('POST','GET'));
-			$order	= get_var('order',array('POST','GET'));
-			$state	= get_var('state',array('POST','GET'));
-			$filter	= get_var('filter',array('POST','GET'));
+			$start		= get_var('start',array('POST','GET'));
+			$query		= get_var('query',array('POST','GET'));
+			$sort		= get_var('sort',array('POST','GET'));
+			$order		= get_var('order',array('POST','GET'));
+			$state		= get_var('state',array('POST','GET'));
+			$filter		= get_var('filter',array('POST','GET'));
 			$project_id	= get_var('project_id',array('POST','GET'));
 
 
@@ -83,12 +85,12 @@
 		{
 			$data = $GLOBALS['phpgw']->session->appsession('session_data','projects_hours');
 
-			$this->start	= $data['start'];
-			$this->query	= $data['query'];
-			$this->filter	= $data['filter'];
-			$this->order	= $data['order'];
-			$this->sort		= $data['sort'];
-			$this->state	= $data['state'];
+			$this->start		= $data['start'];
+			$this->query		= $data['query'];
+			$this->filter		= $data['filter'];
+			$this->order		= $data['order'];
+			$this->sort			= $data['sort'];
+			$this->state		= $data['state'];
 			$this->project_id	= $data['project_id'];
 		}
 
@@ -103,6 +105,11 @@
 		{
 			$hours = $this->soprojecthours->read_single_hours($hours_id);
 			return $hours;
+		}
+
+		function member()
+		{
+			return $this->boprojects->member($this->project_id);
 		}
 
 		function check_values($values)

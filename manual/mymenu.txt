@@ -1,0 +1,31 @@
+.<font face="Arial, Helvetica, san-serif">overview|overview.php
+..<img src="templates/default/images/addressbook.gif" border="0"><font face="Arial, Helvetica, san-serif">addressbook|addressbook.php
+..<img src="templates/default/images/admin.gif" border="0"><font face="Arial, Helvetica, san-serif">administration|administration.php
+...<font face="Arial, Helvetica, san-serif">account_management|admin_account.php
+...<font face="Arial, Helvetica, san-serif">session_management|admin_session.php
+...<font face="Arial, Helvetica, san-serif">headline_setting|admin_headline.php
+...<font face="Arial, Helvetica, san-serif">network_tools|admin_other.php
+..<img src="templates/default/images/calendar.gif" border="0"><font face="Arial, Helvetica, san-serif">calendar|calendar.php
+...<font face="Arial, Helvetica, san-serif">viewing_entries|cal_view.php
+...<font face="Arial, Helvetica, san-serif">adding_entries|cal_add.php
+...<font face="Arial, Helvetica, san-serif">edit_deleting|cal_edit_delete.php
+..<img src="templates/default/images/email.gif" border="0"><font face="Arial, Helvetica, san-serif">email|email.php
+...<font face="Arial, Helvetica, san-serif">Notes|email_notes.php
+...<font face="Arial, Helvetica, san-serif">Viewing|email_viewing.php
+...<font face="Arial, Helvetica, san-serif">Replying|email_reply.php
+...<font face="Arial, Helvetica, san-serif">Composing_Saving_Deleting|email_other.php
+..<img src="templates/default/images/filemanager.gif" border="0"><font face="Arial, Helvetica, san-serif">filemanager|filemanager.php
+..<img src="templates/default/images/headlines.gif" border="0"><font face="Arial, Helvetica, san-serif">headlines|headlines.php
+..<img src="templates/default/images/home.gif" border="0"><font face="Arial, Helvetica, san-serif">home|home.php
+..<img src="templates/default/images/hr.gif" border="0"><font face="Arial, Helvetica, san-serif">hr|hr.php
+..<img src="templates/default/images/preferences.gif" border="0"><font face="Arial, Helvetica, san-serif">preferences|preferences.php
+...<font face="Arial, Helvetica, san-serif">Settings|prefs_settings.php
+...<font face="Arial, Helvetica, san-serif">Other|prefs_other.php
+..<img src="templates/default/images/todo.gif" border="0"><font face="Arial, Helvetica, san-serif">todolist|todo.php
+...<font face="Arial, Helvetica, san-serif">Adding a task|todo_add.php
+...<font face="Arial, Helvetica, san-serif">Options|todo_other.php
+..<img src="templates/default/images/tts.gif" border="0"><font face="Arial, Helvetica, san-serif">trouble_tickets|tts.php
+...<font face="Arial, Helvetica, san-serif">Viewing|tts_view.php
+...<font face="Arial, Helvetica, san-serif">Creating|tts_create.php
+...<font face="Arial, Helvetica, san-serif">Editing/Closing|tts_edit_close.php
+

@@ -11,18 +11,19 @@
 
 	/* $Id$ */
 
-	$templates = $GLOBALS['phpgw']->common->list_templates();
-	while (list($var,$value) = each($templates))
-	{
-		$_templates[$var] = $templates[$var]['title'];
-	}
-
-	$themes = $GLOBALS['phpgw']->common->list_themes();
-	while (list(,$value) = each($themes))
-	{
-		$_themes[$value] = $value;
-	}
-
+	$this->bofelamimail = CreateObject('felamimail.bofelamimail');
+	$this->bofelamimail->openConnection('',OP_HALFOPEN);
+	$folderList = $this->bofelamimail->getFolderList();
+	reset($folderList);
+	
+	$this->bofelamimail->closeConnection();
+	
+	$config = CreateObject('phpgwapi.config','felamimail');
+	$config->read_repository();
+	$felamimailConfig = $config->config_data;
+	#_debug_array($felamimailConfig);
+	unset($config);
+	                                                                                                
 
 	$refreshTime = array(
 		'0' => lang('disabled'),
@@ -41,99 +42,73 @@
 		'30' => '30'
 	);
 	create_select_box('Refresh time in minutes','refreshTime',$refreshTime);
-	create_text_area('email signature','email_sig',3,30);
-	$selectOptions = array(
+
+	create_text_area('email signature','email_sig',3,50);
+
+	$sortOrder = array(
 		'0' => lang('date(newest first)'),
 		'1' => lang('date(oldest first)')
 	);
-	create_select_box('Default sorting order','sortOrder',$selectOptions);
+	create_select_box('Default sorting order','sortOrder',$sortOrder);
+
 	$selectOptions = array(
 		'0' => lang('no'),
 		'1' => lang('yes')
 	);
 	create_select_box('show new messages on main screen','mainscreen_showmail',$selectOptions);
+
+	$deleteOptions = array(
+		'move_to_trash'		=> lang('move to trash'),
+		'mark_as_deleted'	=> lang('mark as deleted'),
+		'remove_immediately'	=> lang('remove immediately')
+	);
+	create_select_box('when deleting messages','deleteOptions',$deleteOptions);
+
+	$htmlOptions = array(
+		'never_display'		=> lang('never display html emails'),
+		'only_if_no_text'	=> lang('display only when no plain text is available'),
+		'always_display'	=> lang('always show html emails')
+	);
+	create_select_box('display of html emails','htmlOptions',$htmlOptions);
+
+	$trashOptions = array_merge(
+		array(
+		'none' => lang("Don't use Trash")),
+		$folderList
+	);
+	create_select_box('trash folder','trashFolder',$trashOptions);
+
+	$sentOptions = array_merge(
+		array(
+		'none' => lang("Don't use Sent")),
+		$folderList
+	);
+	create_select_box('sent folder','sentFolder',$sentOptions);
 	
-/*	create_input_box('Max matches per page','maxmatchs');
-	create_select_box('Interface/Template Selection','template_set',$_templates);
-	create_select_box('Theme (colors/fonts) Selection','theme',$_themes);
-
-	$navbar_format = array(
-		'icons'          => lang('Icons only'),
-		'icons_and_text' => lang('Icons and text'),
-		'text'           => lang('Text only')
-	);
-	create_select_box('Show navigation bar as','navbar_format',$navbar_format);
-
-	for ($i = -23; $i<24; $i++)
+	if ($felamimailConfig['userDefinedAccounts'] == 'yes')
 	{
-		$tz_offset[$i] = $i;
-	}
-	create_select_box('Time zone offset','tz_offset',$tz_offset);
-
-	$date_formats = array(
-		'm/d/Y' => 'm/d/Y',
-		'm-d-Y' => 'm-d-Y',
-		'm.d.Y' => 'm.d.Y',
-		'Y/d/m' => 'Y/d/m',
-		'Y-d-m' => 'Y-d-m',
-		'Y.d.m' => 'Y.d.m',
-		'Y/m/d' => 'Y/m/d',
-		'Y-m-d' => 'Y-m-d',
-		'Y.m.d' => 'Y.m.d',
-		'd/m/Y' => 'd/m/Y',
-		'd-m-Y' => 'd-m-Y',
-		'd.m.Y' => 'd.m.Y'
-	);
-	create_select_box('Date format','dateformat',$date_formats);
-
-	$time_formats = array(
-		'12' => '12 hour',
-		'24' => '24 hour'
-	);
-	create_select_box('Time format','timeformat',$time_formats);
-
-	$sbox = createobject('phpgwapi.sbox');
-	create_select_box('Country','country',$sbox->country_array);
-
-	$db2 = $GLOBALS['phpgw']->db;
-	$GLOBALS['phpgw']->db->query("select distinct lang from lang",__LINE__,__FILE__);
-	while ($GLOBALS['phpgw']->db->next_record())
-	{
-//		$phpgw_info['installed_langs'][$phpgw->db->f('lang')] = $phpgw->db->f('lang');
-
-		$db2->query("select lang_name from languages where lang_id = '"
-			. $GLOBALS['phpgw']->db->f('lang') . "'",__LINE__,__FILE__);
-		$db2->next_record();
-
-		// When its not in the phpgw_languages table, it will show ??? in the field
-		// otherwise
-		if ($db2->f('lang_name'))
-		{
-			$langs[$GLOBALS['phpgw']->db->f('lang')] = $db2->f('lang_name');
-		}
-	}
-	create_select_box('Language','lang',$langs);
-
-	// preference.php handles this function
-	if (is_admin())
-	{
-		// The 'True' is *NOT* being used as a constant, don't change it
-		$yes_and_no = array(
-			'True' => 'Yes',
-			''     => 'No'
+		$selectOptions = array(
+			'no' => lang('no'),
+			'yes' => lang('yes')
 		);
-		create_select_box('Show current users on navigation bar','show_currentusers',$yes_and_no);
-	}
+		create_select_box('use custom settings','use_custom_settings',$selectOptions);
+		
+		create_input_box('username','username','','',40);
+		create_password_box('password','key','','',40);
+		create_input_box('EMail Address','emailAddress','','',40);
+		create_input_box('IMAP Server Address','imapServerAddress','','',40);
 
-	reset($GLOBALS['phpgw_info']['user']['apps']);
-	while (list($permission) = each($GLOBALS['phpgw_info']['user']['apps']))
-	{
-		if ($GLOBALS['phpgw_info']['apps'][$permission]['status'] != 2)
-		{
-			$user_apps[$permission] = $permission;
-		}
-	}
-	create_select_box('Default application','default_app',$user_apps);
+		$selectOptions = array(
+			'no'			=> lang('IMAP'),
+			'yes'			=> lang('IMAPS Encryption only'),
+			'imaps-encr-auth'	=> lang('IMAPS Authentication')
+		);
+		create_select_box('IMAP Server type','imapServerMode',$selectOptions);
 
-	create_input_box('Currency','currency');
-*/
+		#$selectOptions = array(
+		#	'no' => lang('no'),
+		#	'yes' => lang('yes')
+		#);
+		#create_select_box('use custom settings','use_custom_settings',$selectOptions);
+	}
+?>

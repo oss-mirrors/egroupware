@@ -17,7 +17,6 @@ closed	tts	fr	Fermé
 create new ticket	tts	fr	Créer un nouveau ticket
 creates a new ticket, returns ticket_id	tts	fr	Crée un nouveau ticket, retourne l'id du ticket
 creates a struct of tickets	tts	fr	Crée une structure de tickets
-date closed	tts	fr	Date de fermeture
 date opened	tts	fr	Date d'ouverture
 detail	tts	fr	Détail
 force	tts	fr	Force
@@ -27,6 +26,7 @@ latest note added	tts	fr	Dernière note ajoutée
 new ticket	tts	fr	Nouveau ticket
 new value	tts	fr	Nouvelle valeur
 no additional notes	tts	fr	Pas de notes additionnelles
+no notes for this ticket	tts	fr	Pas de notes pour ce ticket
 no tickets found	tts	fr	Pas de ticket trouvé
 not assigned	tts	fr	Non assigné
 old value	tts	fr	Ancienne valeur
@@ -34,6 +34,7 @@ open	tts	fr	Ouvrir
 open date	tts	fr	Date d'ouverture
 opened	tts	fr	Ouvert
 opened by	tts	fr	Ouvert par
+original ticket details	tts	fr	Détails du ticket original
 prio	tts	fr	Prio
 priority	tts	fr	Priorité
 priority changed	tts	fr	Priorité changée

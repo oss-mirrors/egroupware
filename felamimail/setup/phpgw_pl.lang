@@ -14,6 +14,7 @@ all folders	felamimail	pl
 as a subfolder of	felamimail	pl	jako podfolder w
 attachments	felamimail	pl	Za³±czniki
 auto refresh folder list	felamimail	pl	
+bad reque	felamimail	pl	
 based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	pl	
 before headers	felamimail	pl	Przed nag³ówkiem
 between headers and message body	felamimail	pl	Pomiêdzy nag³ówkiem a tre¶ci±
@@ -63,6 +64,7 @@ email signature	felamimail	pl	Sygnaturka
 empty trash	felamimail	pl	
 erro	felamimail	pl	
 error	felamimail	pl	
+error connecting to imap serv	felamimail	pl	
 error opening	felamimail	pl	
 expunge	felamimail	pl	
 felamimail	common	pl	FelaMiMail

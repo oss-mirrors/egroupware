@@ -7,22 +7,22 @@
     <tr align=center>
       <td colspan=2 align=center>
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
-          <th bgcolor="{th_bg}" fgcolor="{th_text}" align="left">
+          <tr bgcolor="{th_bg}" fgcolor="{th_text}" align="left">
             <td colspan=1 align=left><b>{layout_label}:</b></td>
             <td colspan=1 align=right>{template_label}:
               <select name="comic_template">
                 {template_options}
               </select>
             </td>
-          </th>
+          </tr>
 	  {template_images}
         </table>
       </td>
     </tr>
-    <th bgcolor="{th_bg}" fgcolor="{th_text}" align="left">
+    <tr bgcolor="{th_bg}" fgcolor="{th_text}" align="left">
       <td colspan=1 align="left">{option_label}:</td>
       <td colspan=1>&nbsp;</td>
-    </th>
+    </tr>
     <tr>
       <td width="50%" colspan=1 align="center">{perpage_label}:
         <select name="perpage">
@@ -50,10 +50,10 @@
         </select>
       </td>
     </tr>
-    <th bgcolor="{th_bg}" fgcolor="{th_text}" align="left">
+    <tr bgcolor="{th_bg}" fgcolor="{th_text}" align="left">
       <td colspan=1 align="left">{comic_label}:</td>
       <td colspan=1>&nbsp;</td>
-    </th>
+    </tr>
     <tr>
       <td colspan=2 align="left">
         <select name="data_ids[]" multiple size={comic_size}>

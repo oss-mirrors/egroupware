@@ -23,6 +23,7 @@ enter the name of the netscape bookmark file<br>that you want imported into book
 fewer	bookmarks	de	Weniger
 filter by	bookmarks	de	Filtern nach
 found a link you might like	bookmarks	de	Habe einen interessanten Link gefunden
+from	bookmarks	de	von
 highest	bookmarks	de	Höchste
 i thought you would be interested in the following link(s):	bookmarks	de	Ich dachte Du könnest an den folgenden Links interessiert sein:
 import bookmarks	preferences	de	Bookmarks importieren
@@ -41,6 +42,7 @@ netscape bookmark file	bookmarks	de	Netscape Bookmark-Datei
 netscape bookmark filename is required!	bookmarks	de	Dateinamen der Netscape Bookmarks ist erforderlich!
 never	bookmarks	de	Nie
 new	bookmarks	de	Neu
+or	bookmarks	de	oder
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	de	Bitte <b>An Email Adresse</b>, <b>Betreff</b> and <b>Nachricht</b> ausfüllen!
 query condition	bookmarks	de	Abfrage
 rating	bookmarks	de	Rating

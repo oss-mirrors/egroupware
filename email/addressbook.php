@@ -105,7 +105,7 @@
 		'email_home' => 'email_home'
 	);
 
-	$entries = $d->read($start,$offset,$cols,$query,$qfilter,$sort,$order,$account_id);
+	$entries = $d->read($start,$offset,$cols,$query,$qfilter,$sort,$order);
 
 	//------------------------------------------- nextmatch --------------------------------------------
 	$left = $GLOBALS['phpgw']->nextmatchs->left('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',$start,$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");

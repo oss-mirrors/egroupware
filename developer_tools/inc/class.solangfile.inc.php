@@ -22,6 +22,23 @@
 		var $src_file;
 		var $tgt_file;
 		var $loaded_apps = array(); // Loaded app langs
+		
+		var $functions = array(		// functions containing phrases to translate and param#
+			'lang'                => array(1),
+			'create_input_box'    => array(1,3),
+			'create_check_box'    => array(1,3),
+			'create_select_box'   => array(1,4),
+			'create_text_area'    => array(1,5),
+			'create_notify'       => array(1,5),
+			'create_password_box' => array(1,3)
+		);
+		var $files = array(
+			'config.tpl' => 'config',
+			'hook_admin.inc.php' => 'file_admin',
+			'hook_preferences.inc.php' => 'file_preferences',
+			'hook_sidebox_menu.inc.php' => 'file',
+			'hook_acl_manager.inc.php' => 'acl_manager'
+		);
 
 		var $public_functions = array(
 			'index' => True
@@ -32,9 +49,111 @@
 			$this->db = $GLOBALS['phpgw']->db;
 		}
 
-		//Known Issue, if a phrase contains a ' or a " the parse will be thrown off. unless ' are nested inside " or vice versa
-		function parse_php_app($fd,$plist)
+		function fetch_keys($app,$arr)
 		{
+			if (!is_array($arr))
+			{
+				return;
+			}
+			foreach($arr as $key => $val)
+			{
+				$this->plist[$key] = $app;
+			}
+		}
+
+		function config_file($app,$fname)
+		{
+			//echo "<p>solangfile::config_file(app='$app',fname='$fname')</p>\n";
+			$lines = file($fname);
+
+			if ($app != 'setup')
+			{
+				$app = 'admin';
+			}
+			foreach($lines as $n => $line)
+			{
+				while (ereg('\{lang_([^}]+)\}(.*)',$line,$found))
+				{
+					$lang = str_replace('_',' ',$found[1]);
+					$this->plist[$lang] = $app;
+
+					$line = $found[2];
+				}
+			}
+		}
+
+		function special_file($app,$fname,$langs_in)
+		{
+			//echo "<p>solangfile::special_file(app='$app',fname='$fname',langs_in='$langs_in')</p>\n";
+			switch ($langs_in)
+			{
+			 	case 'config':
+					$this->config_file($app,$fname);
+					return;
+				case 'file_admin':
+				case 'file_preferences':
+					$app = substr($langs_in,5);
+					break;
+				case 'phpgwapi':
+					$app = 'common';
+					break;
+			}
+			if (!function_exists('display_sidebox'))
+			{
+				function display_sidebox($appname,$menu_title,$file)	// hook_sidebox_menu
+				{
+					unset($file['_NewLine_']);
+					$GLOBALS['file'] += $file;
+				}
+				function display_section($appname,$file,$file2='')		// hook_preferences, hook_admin
+				{
+					if (is_array($file2))
+					{
+						$file = $file2;
+					}
+					$GLOBALS['file'] += $file;
+				}
+			}
+			$GLOBALS['file'] = array();
+			unset($GLOBALS['acl_manager']);
+			include($fname);
+			
+			if (isset($GLOBALS['acl_manager']))	// hook_acl_manager
+			{
+				foreach($GLOBALS['acl_manager'] as $app => $data)
+				{
+					foreach ($data as $item => $arr)
+					{
+						foreach ($arr as $key => $val)
+						{
+							switch ($key)
+							{
+								case 'name':
+									$this->plist[$val] = $app;
+									break;
+								case 'rights':
+									foreach($val as $lang => $right)
+									{
+										$this->plist[$lang] = $app;
+									}
+									break;
+							}
+						}
+					}
+				}
+			}
+			if (count($GLOBALS['file']))	// hook_{admin|preferences|sidebox_menu}
+			{
+				foreach ($GLOBALS['file'] as $lang => $link)
+				{
+					$this->plist[$lang] = $app;
+				}
+			}
+		}
+
+		function parse_php_app($app,$fd)
+		{
+			$reg_expr = '('.implode('|',array_keys($this->functions)).")[ \t]*\([ \t]*(.*)$";
 			define('SEP',filesystem_separator());
 			$d=dir($fd);
 			while ($fn=$d->read())
@@ -43,79 +162,74 @@
 				{
 					if (($fn!='.')&&($fn!='..')&&($fn!='CVS'))
 					{
-						$plist=$this->parse_php_app($fd.$fn.SEP,$plist);
+						$this->parse_php_app($app,$fd.$fn.SEP);
 					}
 				}
-				elseif ((strpos($fn,'.php')>1) && (is_readable($fd.$fn)))
+				elseif (is_readable($fd.$fn))
 				{
-					$fp=fopen($fd.SEP.$fn,'r');
-					$fds=substr($fd,strpos($fd,SEP));
-					while (!feof($fp))
+					if (isset($this->files[$fn]))
 					{
-						$str=fgets($fp,8192);
-						while (strlen($str=$this->strstr_multiple($str,'lang','(','')))
+						$this->special_file($app,$fd.$fn,$this->files[$fn]);
+					}
+					if (strpos($fn,'.php') === False)
+					{
+						continue;
+					}
+					$lines = file($fd.$fn);
+
+					foreach($lines as $n => $line)
+					{
+						//echo "line='$line', lines[1+$n]='".$lines[1+$n]."'<br>\n";
+						while (eregi($reg_expr,$line,$parts))
 						{
-							if ($str[0]=="\"" || $str[0]=="'")
+							//echo "***func='$parts[1]', rest='$parts[2]'<br>\n";
+							$args = $this->functions[$parts[1]];
+							$rest = $parts[2];
+							for($i = 1; $i <= $args[0]; ++$i)
 							{
-								if ($str[0] == "'")
+								$next = 1;
+								if (!$rest || strpos($rest,$del,1) === False)
 								{
-									$str=substr($str,1);
-									$s2=substr($str,0,strpos($str,"'"));
+									$rest .= trim($lines[++$n]);
 								}
-								else
+								$del = $rest[0];
+								if ($del == '"' || $del == "'")
 								{
-									$str=substr($str,1);
-									$s2=substr($str,0,strpos($str,"\""));                                                                 
+									//echo "rest='$rest'<br>\n";
+									while (($next = strpos($rest,$del,$next)) !== False && $rest[$next-1] == '\\')
+									{
+										$rest = substr($rest,0,$next-1).substr($rest,$next);
+									}
+									if ($next === False)
+									{
+										break;
+									}
+									$phrase = str_replace('\\\\','\\',substr($rest,1,$next-1));
+									//echo "next2=$next, phrase='$phrase'<br>\n";
+									if ($args[0] == $i)
+									{
+										//if (!isset($this->plist[$phrase])) echo ">>>$phrase<<<<br>\n";
+										$this->plist[$phrase] = $app;
+										array_shift($args);
+										if (!count($args))
+										{
+											break;	// no more args needed
+										}
+									}
+									$rest = substr($rest,$next+1);
 								}
-								if ($s2!='')
+								if(!ereg("[ \t\n]*,[ \t\n]*(.*)$",$rest,$parts))
 								{
-									$plist[$s2]=$fds;
+									break;	// nothing found
 								}
+								$rest = $parts[1];
 							}
+							$line = $rest;
 						}
 					}
-					fclose($fp);
 				}
 			}
 			$d->close();
-			return ($plist);
-		}
-
-		/*!
-		 @function strstr_multiple
-		 @abstract search for a substring consisted of parts separated by whitespaces
-		 @param $str original string
-		 @param $sub1 first part of substring
-		 @param $sub2 second part of substring
-		 @result returns portion of $str from the end of substring to the end of $str, or empty string if substring was not found
-		*/
-		function strstr_multiple($str,$sub1,$sub2)
-		{
-			if (isset($sub1))
-			{
-				if(is_integer($pos=strpos($str,$sub1)))
-				{
-					$str=substr($str,$pos+strlen($sub1));
-					if (isset($sub2))
-					{
-						$str=ltrim($str);
-						if(substr($str,0,strlen($sub2)) == $sub2)
-						{
-							$str=substr($str,strlen($sub2));
-							return $str;
-						}
-					}
-					else
-					{
-						return $str;
-					}
-				}
-			}
-			else
-			{
-				return $str;
-			}
-			return "";
 		}
 
 		function missing_app($app,$userlang=en)
@@ -123,10 +237,11 @@
 			$cur_lang=$this->load_app($app,$userlang);
 			define('SEP',filesystem_separator());
 			$fd = PHPGW_SERVER_ROOT . SEP . $app . SEP;
-			$plist=array();
-			$plist = $this->parse_php_app($fd,$plist);
-			reset($plist);
-			return($plist);
+			$this->plist = array();
+			$this->parse_php_app($app == 'phpgwapi' ? 'common' : $app,$fd);
+
+			reset($this->plist);
+			return($this->plist);
 		}
 
 		/*!
@@ -138,17 +253,14 @@
 		{
 			define('SEP',filesystem_separator());
 
-			$fd = PHPGW_SERVER_ROOT . SEP . $app . SEP . 'setup';
+			$fd = PHPGW_SERVER_ROOT . SEP . $app . SEP . ($app == 'setup' ? 'lang' : 'setup');
 			$fn = $fd . SEP . 'phpgw_' . $userlang . '.lang';
-			if (is_writeable($fn))
+			if (@is_writeable($fn) || is_writeable($fd))
 			{
 				$wr = True;
 			}
-			elseif(!file_exists($fn) && is_writeable($fd))
+			$this->src_apps = array($app => $app);
 
-			{
-				$wr = True;
-			}
 			if (file_exists($fn))
 			{
 				$this->src_file = $fn;
@@ -162,9 +274,11 @@
 					}
 					//echo '<br>add_app(): adding phrase: $this->langarray["'.$message_id.'"]=' . trim($content);
 					$_mess_id = strtolower(trim($message_id));
+					$app_name = trim($app_name);
 					$this->langarray[$_mess_id]['message_id'] = $_mess_id;
-					$this->langarray[$_mess_id]['app_name']   = trim($app_name);
+					$this->langarray[$_mess_id]['app_name']   = $app_name;
 					$this->langarray[$_mess_id]['content']    = trim($content);
+					$this->src_apps[$app_name] = $app_name;
 				}
 				fclose($fp);
 			}
@@ -190,13 +304,10 @@
 		{
 			define('SEP',filesystem_separator());
 
-			$fd = PHPGW_SERVER_ROOT . SEP . $app . SEP . 'setup';
+			$langarray = array();
+			$fd = PHPGW_SERVER_ROOT . SEP . $app . SEP . ($app == 'setup' ? 'lang' : 'setup');
 			$fn = $fd . SEP . 'phpgw_' . $userlang . '.lang';
-			if (@is_writeable($fn))
-			{
-				$wr = True;
-			}
-			elseif(!file_exists($fn) && is_writeable($fd))
+			if (@is_writeable($fn) || is_writeable($fd))
 			{
 				$wr = True;
 			}
@@ -234,30 +345,18 @@
 			return $langarray;
 		}
 
-		function list_apps()
-		{
-			$this->db->query("SELECT * FROM phpgw_applications",__LINE__,__FILE__);
-			if($this->db->num_rows())
-			{
-				while($this->db->next_record())
-				{
-					$name   = $this->db->f('app_name');
-					$title  = $this->db->f('app_title');
-					$apps[$name] = array(
-						'title'  => $title,
-						'name'   => $name
-					);
-				}
-			}
-			@reset($apps);
-			$this->total = count($apps);
-			if ($this->debug) { _debug_array($apps); }
-			return $apps;
-		}
-
 		function list_langs()
 		{
-			$this->db->query("SELECT lang_id,lang_name FROM phpgw_languages ORDER BY lang_name");
+			$this->db->query("SELECT DISTINCT lang FROM phpgw_lang");
+			while($this->db->next_record())
+			{
+				$lang = $this->db->f('lang');
+				$installed[] = $lang;
+			}
+			$installed = "('".implode("','",$installed)."')"; 
+			
+			// this shows first the installed, then the available and then the rest
+			$this->db->query("SELECT lang_id,lang_name,lang_id IN $installed as installed FROM phpgw_languages ORDER BY installed DESC,available DESC,lang_name");
 			$i = 0;
 			while ($this->db->next_record())
 			{
@@ -272,7 +371,13 @@
 
 		function write_file($app_name,$langarray,$userlang)
 		{
-			$fn = PHPGW_SERVER_ROOT . SEP . $app_name . SEP . 'setup' . SEP . 'phpgw_' . $userlang . '.lang';
+			$fn = PHPGW_SERVER_ROOT . SEP . $app_name . SEP . ($app_name == 'setup' ? 'lang' : 'setup') . SEP . 'phpgw_' . $userlang . '.lang';
+			if (file_exists($fn))
+			{
+				$backup = $fn . '.old';
+				@unlink($backup);
+				@rename($fn,$backup);
+			}
 			$fp = fopen($fn,'wb');
 			while(list($mess_id,$data) = @each($langarray))
 			{
@@ -284,18 +389,25 @@
 
 		function loaddb($app_name,$userlang)
 		{
+			$langarray = $this->load_app($app_name,$userlang);
+			if (!is_array($langarray))
+			{
+				return False;
+			}
+
 			$this->db->transaction_begin();
 
-			$langarray = $this->load_app($app_name,$userlang);
-
-			@reset($langarray);
-			while (list($x,$data) = @each($langarray))
+			$userlang = $this->db->db_addslashes($userlang);
+			foreach($langarray as $x => $data)
 			{
+				$message_id = $this->db->db_addslashes(trim(substr($data['message_id'],0,MAX_MESSAGE_ID_LENGTH)));
+				$app = $this->db->db_addslashes($data['app_name']);
+				$content = $this->db->db_addslashes($data['content']);
+
 				$addit = False;
 				/*echo '<br><br><pre> checking ' . $data['message_id'] . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $data['content'];*/
-				$this->db->query('SELECT COUNT(*) FROM phpgw_lang'
-					."  WHERE message_id='" . $this->db->db_addslashes($data['message_id'])
-					."' AND lang='".$userlang."' AND app_name='".$app_name."'",__LINE__,__FILE__);
+				$this->db->query("SELECT COUNT(*) FROM phpgw_lang"
+					."  WHERE message_id='$message_id' AND lang='$userlang' AND app_name='$app'",__LINE__,__FILE__);
 				$this->db->next_record();
 
 				if ($this->db->f(0) == 0)
@@ -312,20 +424,17 @@
 				{
 					if($data['message_id'] && $data['content'])
 					{
-						/* echo "<br>adding - insert into phpgw_lang values ('" . $data['message_id'] . "','$app_name','$userlang','" . $data['content'] . "')"; */
-						$this->db->query("INSERT into phpgw_lang VALUES ('"
-							. $this->db->db_addslashes($data['message_id'])
-							. "','$app_name','$userlang','"
-							. $this->db->db_addslashes($data['content']) . "')",__LINE__,__FILE__);
+						/* echo "<br>adding - insert into lang values ('" . $data['message_id'] . "','$app_name','$userlang','" . $data['content'] . "')"; */
+						$this->db->query("INSERT into phpgw_lang VALUES ('$message_id','$app','$userlang','$content')",__LINE__,__FILE__);
 					}
 				}
 				else
 				{
 					if($data['message_id'] && $data['content'])
 					{
-						$this->db->query("UPDATE phpgw_lang SET content='". $this->db->db_addslashes($data['content']) . "'"
-							. " WHERE message_id='" . $this->db->db_addslashes($data['message_id']) . "'"
-							. " AND app_name='$app_name' AND lang='$userlang'",__LINE__,__FILE__);
+						$this->db->query("UPDATE phpgw_lang SET content='$content'"
+							. " WHERE message_id='$message_id'"
+							. " AND app_name='$app' AND lang='$userlang'",__LINE__,__FILE__);
 						if ($this->db->affected_rows() > 0)
 						{
 /*

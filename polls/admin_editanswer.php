@@ -35,9 +35,9 @@
 		$GLOBALS['phpgw']->template->set_var('message','');
 	}
 
-	$GLOBALS['phpgw']->db->query("select * from phpgw_polls_data where vote_id='$vote_id'");
+	$GLOBALS['phpgw']->db->query("select * from phpgw_polls_data where vote_id=$vote_id AND poll_id=$poll_id");
 	$GLOBALS['phpgw']->db->next_record();
-	$answer_value = stripslashes($GLOBALS['phpgw']->db->f('option_text'));
+	$answer_value = $GLOBALS['phpgw']->db->f('option_text');
 	$poll_id = $GLOBALS['phpgw']->db->f('poll_id');
 
 	$GLOBALS['phpgw']->template->set_var('header_message',lang('Edit answer'));
@@ -58,7 +58,7 @@
 		{
 			$poll_select .= ' selected';
 		}
-		$poll_select .= '>' . stripslashes($GLOBALS['phpgw']->db->f('poll_title')) . '</option>';
+		$poll_select .= '>' . $GLOBALS['phpgw']->db->f('poll_title') . '</option>';
 	}
 	$poll_select .= '</select>';
 

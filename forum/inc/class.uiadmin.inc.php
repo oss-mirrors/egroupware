@@ -47,7 +47,7 @@
 
 			$this->template_dir = $GLOBALS['phpgw']->common->get_tpl_dir('forum');
 			$this->template = CreateObject('phpgwapi.Template',$this->template_dir);
-			$info = explode('.',MENUACTION);
+			$info = explode('.',$GLOBALS['HTTP_GET_VARS']['menuaction']);
 			$this->current_page = $info[2];
 		}
 
@@ -118,79 +118,84 @@
 			);
 			$this->template->set_var($var);
 
-			while(list($key,$cat) = each($cats))
+			if (is_array($cats))
 			{
-				$var = Array(
-					'CAT_NAME'  => $cat['name'],
-					'CAT_DESC'  => ($cat['descr']?$cat['descr']:'&nbsp;'),
-					'EDIT_LINK'	=> $GLOBALS['phpgw']->link('/index.php',
-							Array(
-								'menuaction'	=> 'forum.uiadmin.edit_category',
-								'cat_id'	=> $cat['id']
-							)
-						),
-					'DEL_LINK'  => $GLOBALS['phpgw']->link('/index.php',
-							Array(
-								'menuaction'	=> 'forum.uiadmin.delete_category',
-								'cat_id'	=> $cat['id']
-							)
-						)
-				);
-				$this->template->set_var($var);
-
-				$GLOBALS['tr_color'] = $GLOBALS['phpgw_info']['theme']['row_off'];
-				//Cleaning the ForumB variable because the blocks use more than	once
-				$this->template->set_var('ForumB','');
-
-				$forums = $this->bo->get_forums_for_cat($cat['id']);
-				if(sizeof($forums))
+				while(list($key,$cat) = each($cats))
 				{
-					while(list($key,$forum) = each($forums))
-					{
-						$GLOBALS['tr_color'] = $GLOBALS['phpgw']->nextmatchs->alternate_row_color();
-						$var = Array(
-							'TR_BG'        => $GLOBALS['tr_color'],
-							'SUBCAT_NAME'  => $forum['name'],
-							'SUBCAT_DESC'  => ($forum['descr']?$forum['descr']:'&nbsp;'),
-							'SUBEDIT_LINK' => $GLOBALS['phpgw']->link('/index.php',
-									Array(
-										'menuaction'	=> 'forum.uiadmin.edit_forum',
-										'cat_id'	=> $cat['id'],
-										'forum_id'	=> $forum['id']
-									)
-								),
-							'SUBDEL_LINK'  => $GLOBALS['phpgw']->link('/index.php',
-									Array(
-										'menuaction'	=> 'forum.uiadmin.delete_forum',
-										'cat_id'	=> $cat['id'],
-										'forum_id'	=> $forum['id']
-									)
+					$var = Array(
+						'CAT_NAME'  => $cat['name'],
+						'CAT_DESC'  => ($cat['descr']?$cat['descr']:'&nbsp;'),
+						'EDIT_LINK'	=> $GLOBALS['phpgw']->link('/index.php',
+								Array(
+									'menuaction'	=> 'forum.uiadmin.edit_category',
+									'cat_id'		=> $cat['id']
 								)
-						);
-						$this->template->set_var($var);
-						//Parsing the inner block
-						$this->template->fp('ForumB','ForumBlock',true);
+							),
+						'DEL_LINK'  => $GLOBALS['phpgw']->link('/index.php',
+								Array(
+									'menuaction'	=> 'forum.uiadmin.delete_category',
+									'cat_id'		=> $cat['id']
+								)
+							)
+					);
+
+					$this->template->set_var($var);
+
+					$GLOBALS['tr_color'] = $GLOBALS['phpgw_info']['theme']['row_off'];
+					//Cleaning the ForumB variable because the blocks use more than	once
+					$this->template->set_var('ForumB','');
+
+					$forums = $this->bo->get_forums_for_cat($cat['id']);
+
+					if(sizeof($forums) != 0)
+					{
+						while(list($key,$forum) = each($forums))
+						{
+							$GLOBALS['tr_color'] = $GLOBALS['phpgw']->nextmatchs->alternate_row_color();
+							$var = Array(
+								'TR_BG'        => $GLOBALS['tr_color'],
+								'SUBCAT_NAME'  => $forum['name'],
+								'SUBCAT_DESC'  => ($forum['descr']?$forum['descr']:'&nbsp;'),
+								'SUBEDIT_LINK' => $GLOBALS['phpgw']->link('/index.php',
+										Array(
+											'menuaction'	=> 'forum.uiadmin.edit_forum',
+											'cat_id'	=> $cat['id'],
+											'forum_id'	=> $forum['id']
+										)
+									),
+								'SUBDEL_LINK'  => $GLOBALS['phpgw']->link('/index.php',
+										Array(
+											'menuaction'	=> 'forum.uiadmin.delete_forum',
+											'cat_id'	=> $cat['id'],
+											'forum_id'	=> $forum['id']
+										)
+									)
+							);
+							$this->template->set_var($var);
+							//Parsing the inner block
+							$this->template->fp('ForumB','ForumBlock',true);
+						}
 					}
+					// Parsing the outer block
+					$var = Array(
+						'TD_BG'		=> 'ffffff',
+						'TR_BG'		=> $GLOBALS['tr_color']
+					);
+					$this->template->set_var($var);
+					$this->template->fp('CatB','CatBlock',true);
 				}
-				// Parsing the outer block
-				$var = Array(
-					'TD_BG'		=> 'ffffff',
-					'TR_BG'		=> $GLOBALS['tr_color']
-				);
-				$this->template->set_var($var);
-				$this->template->fp('CatB','CatBlock',true);
 			}
 			$this->template->pfp('Out','INDEX');
 		}
 
 		function edit_category()
 		{
-			$this->category_screen(get_var('cat_id',Array('GET')));
+			$this->category_screen($GLOBALS['HTTP_GET_VARS']['cat_id']);
 		}
 
 		function edit_forum()
 		{
-			$this->forum_screen(get_var('forum_id',Array('GET')));
+			$this->forum_screen($GLOBALS['HTTP_GET_VARS']['forum_id']);
 		}
 
 		function add_category()
@@ -231,7 +236,7 @@
 				'action_url_button'	=> $GLOBALS['phpgw']->link('/index.php',
 						Array(
 							'menuaction'	=> 'forum.boforum.delete_category',
-							'cat_id'	=> get_var('cat_id',Array('GET'))
+							'cat_id'	=> $GLOBALS['HTTP_GET_VARS']['cat_id']
 						)
 					),
 				'action_text_button'	=> lang('Delete'),
@@ -282,8 +287,8 @@
 				'action_url_button'	=> $GLOBALS['phpgw']->link('/index.php',
 						Array(
 							'menuaction'	=> 'forum.boforum.delete_forum',
-							'cat_id'	=> get_var('cat_id',Array('GET')),
-							'forum_id'	=> get_var('forum_id',Array('GET'))
+							'cat_id'	=> $GLOBALS['HTTP_GET_VARS']['cat_id'],
+							'forum_id'	=> $GLOBALS['HTTP_GET_VARS']['forum_id']
 						)
 					),
 				'action_text_button'	=> lang('Delete'),
@@ -412,10 +417,14 @@
 
 			// for the drop down category
 			$cats = $this->bo->get_all_cat_info();
-			while(list($key,$cat) = each($cats))
+
+			if (is_array($cats))
 			{
-				$this->template->set_var('SELECTED','<option'.($this->bo->cat_id == $cat['id']?' selected':'').' value="'.$cat['id'].'">'.$cat['name'].'</option>');
-				$this->template->parse('DROP_DOWN','SELECTED',true);
+				while(list($key,$cat) = each($cats))
+				{
+					$this->template->set_var('SELECTED','<option'.($this->bo->cat_id == $cat['id']?' selected':'').' value="'.$cat['id'].'">'.$cat['name'].'</option>');
+					$this->template->parse('DROP_DOWN','SELECTED',true);
+				}
 			}
 
 			if($forum_id)

@@ -1,6 +1,6 @@
 <?php
     /**************************************************************************\
-    * phpGroupWare - Manual                                                    *
+    * phpGroupWare - Manual						     *
     * http://www.phpgroupware.org                                              *
     * Written by Mark Peters <skeeter@phpgroupware.org>                        *
     * --------------------------------------------                             *

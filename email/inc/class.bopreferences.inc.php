@@ -1866,9 +1866,15 @@
 					$return_list[$next_pos]['display_string'] = '['.$this_acctnum.'] '.$accountname;
 					
 					// NEXT: control action links
+/* TEST-RALFBECKER
 					$return_list[$next_pos]['edit_url'] = $GLOBALS['phpgw']->link(														'/index.php',
 														 'menuaction=email.uipreferences.ex_accounts_edit'
 														.'&ex_acctnum='.$this_acctnum);
+*/
+					$return_list[$next_pos]['edit_url'] = $GLOBALS['phpgw']->link('/preferences/preferences.php',array(
+						'appname' => 'email',
+						'prefix'  => $this_acctnum ? 'ex_accounts/'.$this_acctnum : ''
+					));
 					$return_list[$next_pos]['edit_href'] = '<a href="'.$return_list[$next_pos]['edit_url'].'">'.lang('Edit').'</a>';
 
 					$return_list[$next_pos]['delete_url'] = $GLOBALS['phpgw']->link(

@@ -25,7 +25,7 @@
 				'sender_address'=> array('type' => 'varchar', 'precision' => 120),
 				'to_name'	=> array('type' => 'varchar', 'precision' => 120),
 				'to_address'	=> array('type' => 'varchar', 'precision' => 120),
-				'date'		=> array('type' => 'timestamp'),
+				'date'		=> array('type' => 'varchar', 'precision' => 120),
 				'size'		=> array('type' => 'int', 'precision' => 4),
 				'attachments'	=> array('type' => 'varchar', 'precision' =>120)
 			),
@@ -47,6 +47,16 @@
 				'uidvalidity'	=> array('type' => 'int', 'precision' => 4)
 			),
 			'pk' => array('accountid','hostname','accountname','foldername'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		),
+		'phpgw_felamimail_displayfilter' => array(
+			'fd' => array(
+				'accountid' 	=> array('type' => 'int', 'precision' => 4, 'nullable' => false),
+				'filter' 	=> array('type' => 'text')
+			),
+			'pk' => array('accountid'),
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()

@@ -1,16 +1,14 @@
 <!-- BEGIN list -->
-<p><b>{lang_installed}</b><hr><p>
-
-<p>
+<br>
  <table border="0" width="45%" align="center">
-  <tr>
+  <tr bgcolor="{bg_color}">
 {left}
     <td align="center">{lang_showing}</td>
 {right}
   </tr>
  </table>
  <table border="0" width="45%" align="center">
-  <tr class="th">
+  <tr bgcolor="{th_bg}">
    <td> {sort_title} </td>
    <td>{lang_edit}</td>
   </tr>
@@ -32,7 +30,7 @@
 <!-- END list -->
 
 <!-- BEGIN row -->
-  <tr class="{tr_color}">
+  <tr bgcolor="{tr_color}">
    <td>{name}</td>
    <td width="5%">{edit}</td>
   </tr>

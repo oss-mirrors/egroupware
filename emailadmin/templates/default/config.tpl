@@ -19,7 +19,7 @@
 		<td colspan="2">&nbsp;<b>{lang_qmail_ldap_schema} - {lang_attribute_names}</b></td>
 	</tr>
 	<tr class="row_on">
-		<td>{lang_mail_address_}:</td>
+		<td>{lang_mail_address}:</td>
 		<td>
 			<select name="newsettings[mail]">
 				<option value="mail"{selected_mail_mail}>mail</option>

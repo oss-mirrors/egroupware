@@ -28,7 +28,7 @@
 
 	if ($HTTP_POST_VARS['edit'])
 	{
-		$question = $HTTP_POST_VARS['question'];
+		 $question = $HTTP_POST_VARS['question'];
 		$GLOBALS['phpgw']->db->query("update phpgw_polls_desc set poll_title='" . addslashes($question)
 			. "' where poll_id='$poll_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->template->set_var('message',lang('Question has been updated'));

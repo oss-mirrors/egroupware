@@ -14,6 +14,3 @@
 	</tr>
 	<!-- END CategoryForum --> 
 </table>
-
-
-

@@ -2,11 +2,12 @@
 	/*******************************************************************\
 	* phpGroupWare - Projects                                           *
 	* http://www.phpgroupware.org                                       *
+	* This program is part of the GNU project, see http://www.gnu.org/	*
 	*                                                                   *
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000, 2001 Bettina Gille                            *
+	* Copyright 2000 - 2003 Free Software Foundation, Inc               *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -23,6 +24,7 @@
 	* Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.         *
 	\*******************************************************************/
 	/* $Id$ */
+	/* $Source$ */
 
 	class bostatistics
 	{
@@ -55,20 +57,17 @@
 
 		function get_userstat_pro($account_id, $values)
 		{
-			$pro = $this->sostatistics->user_stat_pro($account_id, $values);
-			return $pro;
+			return $this->sostatistics->user_stat_pro($account_id, $values);
 		}
 
 		function get_stat_hours($type, $account_id, $project_id, $values)
 		{
-			$hours = $this->sostatistics->stat_hours($type, $account_id, $project_id, $values);
-			return $hours;
+			return $this->sostatistics->stat_hours($type, $account_id, $project_id, $values);
 		}
 
 		function get_employees($project_id, $values)
 		{
-			$employees = $this->sostatistics->pro_stat_employees($project_id, $values);
-			return $employees;
+			return $this->sostatistics->pro_stat_employees($project_id, $values);
 		}
 	}
 ?>

@@ -10,7 +10,7 @@ include("xmlrpc.inc");
   $c->setDebug(0);
   $r=$c->send($f);
   if (!$r) { die("send failed"); }
-  $v=xmlrpc_decode($r->value());
+  $v=phpgw_xmlrpc_decode($r->value());
   if (!$r->faultCode()) {
 	print "<pre>";
 	print "name: " . $v["toolkitName"] . "\n";

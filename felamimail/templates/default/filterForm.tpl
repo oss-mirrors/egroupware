@@ -19,7 +19,7 @@
 <form method="post" name="filterForm" action="{link_action}">
 <table width="50%" border="0" cellspacing="1" cellpading="1">
 <tr>
-	<td class="body" width="40%" align="right">
+	<td class="body" width="40%" align="left">
 		{lang_filter_name}:
 	</td>
 	<td class="body" width="60%" colspan="2">
@@ -27,7 +27,7 @@
 	</td>
 </tr>
 <tr>
-	<td class="body" width="40%" align="right">
+	<td class="body" width="40%" align="left">
 		{lang_from}:
 	</td>
 	<td class="body" width="60%" colspan="2">
@@ -35,7 +35,7 @@
 	</td>
 </tr>
 <tr>
-	<td class="body" width="40%" align="right">
+	<td class="body" width="40%" align="left">
 		{lang_to}:
 	</td>
 	<td class="body" width="60%" colspan="2">
@@ -43,7 +43,7 @@
 	</td>
 </tr>
 <tr>
-	<td class="body" width="10%" align="right">
+	<td class="body" width="10%" align="left">
 		{lang_subject}:
 	</td>
 	<td class="body" colspan="2">

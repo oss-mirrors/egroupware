@@ -13,6 +13,7 @@
 
 	/* Basic information about this app */
 	$setup_info['polls']['name']      = 'polls';
+	$setup_info['polls']['title']     = 'Polls';
 	$setup_info['polls']['version']   = '0.8.1';
 	$setup_info['polls']['app_order'] = 15;
 	$setup_info['polls']['enable']    = 1;
@@ -25,13 +26,10 @@
 		'phpgw_polls_settings'
 	);
 
-	$setup_info['polls']['hooks'][] = 'admin';
-	$setup_info['polls']['hooks'][] = 'website_left';
-	$setup_info['polls']['hooks'][] = 'website_right';
-
+	$setup_info['polls']['hooks'][]   = 'admin';
 	/* Dependencies for this app to work */
 	$setup_info['polls']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.13','0.9.14','0.9.15')
+		 'versions' => Array('0.9.10','0.9.11','0.9.12','0.9.13','0.9.14')
 	);
 ?>

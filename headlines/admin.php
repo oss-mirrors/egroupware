@@ -42,16 +42,14 @@
 	if (! $GLOBALS['phpgw']->db->f(0))
 	{
 		$GLOBALS['phpgw']->template->set_var('lang_row_empty',lang('No headlines found'));
-		$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
-		$GLOBALS['phpgw']->template->set_var('tr_color',$tr_color);
+		$GLOBALS['phpgw']->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 		$GLOBALS['phpgw']->template->parse('rows','row_empty');
 	}
 
 	$GLOBALS['phpgw']->db->query('select con,display from phpgw_headlines_sites order by display',__LINE__,__FILE__);
 	while ($GLOBALS['phpgw']->db->next_record())
 	{
-		$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
-		$GLOBALS['phpgw']->template->set_var('tr_color',$tr_color);
+		$GLOBALS['phpgw']->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 
 		$GLOBALS['phpgw']->template->set_var('row_display',$GLOBALS['phpgw']->db->f('display'));
 		$GLOBALS['phpgw']->template->set_var('row_edit',$GLOBALS['phpgw']->link('/headlines/editheadline.php','con='.$GLOBALS['phpgw']->db->f('con')));
@@ -64,8 +62,6 @@
 	$GLOBALS['phpgw']->template->set_var('add_url',$GLOBALS['phpgw']->link('/headlines/newheadline.php'));
 	$GLOBALS['phpgw']->template->set_var('grab_more_url',$GLOBALS['phpgw']->link('/headlines/grabnewssites.php'));
 	$GLOBALS['phpgw']->template->set_var('lang_grab_more',lang('Grab New News Sites'));
-	$GLOBALS['phpgw']->template->set_var('reload_url',$GLOBALS['phpgw']->link('/headlines/grabnewssites.php','dropall=True'));
-	$GLOBALS['phpgw']->template->set_var('lang_reload',lang('Reload news sites'));
 
 	$GLOBALS['phpgw']->template->pfp('out','list');
 
