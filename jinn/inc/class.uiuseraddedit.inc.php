@@ -312,7 +312,7 @@
 				elseif ($fieldproperties[type]=='blob') //then it is a textblob
 				{
 
-					$input=$this->plugins->get_form_plugin($input_name,$value,'text');
+					$input=$this->plugins->get_fip_plugin($input_name,$value,'text');
 				}
 
 				$this->template->set_var('row_color',$row_color);

@@ -9,6 +9,22 @@
 <!-- END header -->
 <!-- BEGIN body -->
    <tr bgcolor="{row_on}">
+   <td colspan="2">&nbsp;</td>
+  </tr>
+
+  <tr bgcolor="{row_off}">
+   <td colspan="2">&nbsp;<b>{lang_General_settings}</b></td>
+  </tr>
+
+  <tr bgcolor="{row_on}">
+   <td>{lang_Filebrowser_starting_directory_(_default=[/]_)}:</td>
+   <td><input name="newsettings[filebrowser_start_dir]" size="60" value="{value_filebrowser_start_dir}">
+   <input type=button onClick='PcjsOpenExplorer("jinn/inc/pcsexplorer.php", "forms.frm.newsettings[value_filebrowser_start_dir].value", "type=file", "calling_dir=", "start_dir=")' value="{lang_select_executable}">
+
+   
+   </td>
+  </tr>
+  <tr bgcolor="{row_on}">
     <td colspan="2">&nbsp;</td>
    </tr>
 

@@ -29,6 +29,7 @@
 
 		var $public_functions = Array(
 			'index' => True,
+			'import_phpgw_jinn_site' => True,
 			'add_edit_phpgw_jinn_sites' => True,
 			'add_edit_phpgw_jinn_site_objects' => True,
 			'browse_phpgw_jinn_sites' => True,
@@ -96,22 +97,52 @@
 			if ($GLOBALS[where_condition])
 			{
 
-				/*
-				$action=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_phpgw_jinn_site_objects');
-				echo "<div align=center><br><form action=$action method=post>
-				<input type=hidden name=parent_site_id value=".substr($GLOBALS[where_condition],8).">
-				<input type=submit value=\"".lang('add site object')."\">
-				</form></div>";
-				*/
 				$new_where='parent_'.$GLOBALS[where_condition];
-
 				
 				$this->browse_record('phpgw_jinn_site_objects',$new_where);
 			}
 
 			$this->save_sessiondata();
 		}
+		function import_phpgw_jinn_site()
+		{
+			unset($GLOBALS['phpgw_info']['flags']['noheader']);
+			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+			unset($GLOBALS['phpgw_info']['flags']['noappheader']);
+			unset($GLOBALS['phpgw_info']['flags']['noappfooter']);
 
+			$GLOBALS['phpgw']->common->phpgw_header();
+
+			$this->template->set_file(array('header' => 'header.tpl'));
+
+			$action=lang('Import JiNN-Site'.$table);
+			$this->template->set_var('title',$this->app_title);
+			$this->template->set_var('action',$action);
+			$this->template->pparse('out','header');
+
+			$this->admin_menu();
+
+			// plan
+			/*
+				export_file uploaden als temp file
+				controleren of er ongeldige instructie in bestand staan
+				controleren of het bestand ok is en zonder problemen include
+				bestand includen
+				temp file unlinken
+				arrays controleren
+				nieuwe site aanmaken met array data
+				status teruggeven en naar link naar site aanbieden
+
+			*/
+			
+			include('./Bolder_en_Plante.JiNN.php');	
+			var_dump($import_site_objects);
+			
+			$this->save_sessiondata();
+
+
+		}
+		
 		function browse_phpgw_jinn_sites()
 		{
 
@@ -140,30 +171,99 @@
 
 		function export_site()
 		{
+			global $where_condition;
 
-			unset($GLOBALS['phpgw_info']['flags']['noheader']);
-			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-			unset($GLOBALS['phpgw_info']['flags']['noappheader']);
-			unset($GLOBALS['phpgw_info']['flags']['noappfooter']);
+			$GLOBALS['phpgw_info']['flags']['noheader']=True;
+			$GLOBALS['phpgw_info']['flags']['nonavbar']=True;
+			$GLOBALS['phpgw_info']['flags']['noappheader']=True;
+			$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
+			$GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
-			$GLOBALS['phpgw']->common->phpgw_header();
+			/* plan:
 
-			$this->template->set_file(array('header' => 'header.tpl'));
+			** get all site data en all site objects
+			** present this data and render a cancel button and a save exportfile button
+			** if cancel go back to site admin page else
+			** open a saveas button and render a txtfile with an array
 
-			$action=lang('Browse '.$table);
-			$this->template->set_var('title',$this->app_title);
-			$this->template->set_var('action',$action);
-			$this->template->pparse('out','header');
+			*/
 
+			$site_data=$this->bo->get_phpgw_records('phpgw_jinn_sites',$where_condition,'','','name');
 
-			$this->debug_info();
-			$this->admin_menu();
+			$filename=ereg_replace(' ','_',$site_data[0][site_name]).'.JiNN.php';
+			$date=date("d-m-Y",time());
 
-			$this->export_site('');
-			$this->save_sessiondata();
+			header("Content-type: text");
+			header("Content-Disposition:attachment; filename=$filename");
 
+			$out="<?php\n\n";
+			$out.='	/***************************************************************************'."\n";
+			$out.='	**                                                                        **'."\n";
+			$out.="	** JiNN Site Export:  ".$filename."\n";
+			$out.="	** Date: ".$date."\n";
+			$out.='	** ---------------------------------------------------------------------- **'."\n";
+			$out.='	**                                                                        **'."\n";
+			$out.='	** JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for phpGroupWare **'."\n";
+			$out.='	** Copyright (C)2002, 2003 Pim Snel <pim.jinn@lingewoud.nl>               **'."\n";
+			$out.='	**                                                                        **'."\n";
+			$out.='	** JiNN - http://linuxstart.nl/jinn                                       **'."\n";
+			$out.='	** phpGroupWare - http://www.phpgroupware.org                             **'."\n";
+			$out.='	** This file is part of JiNN                                              **'."\n";
+			$out.='	**                                                                        **'."\n";
+			$out.='	** JiNN is free software; you can redistribute it and/or modify it under  **'."\n";
+			$out.='	** the terms of the GNU General Public License as published by the Free   **'."\n";
+			$out.='	** Software Foundation; either version 2 of the License, or (at your      **'."\n";
+			$out.='	** option) any later version.                                             **'."\n";
+			$out.='	**                                                                        **'."\n";
+			$out.='	** JiNN is distributed in the hope that it will be useful,but WITHOUT ANY **'."\n";
+			$out.='	** WARRANTY; without even the implied warranty of MERCHANTABILITY or      **'."\n";
+			$out.='	** FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License  **'."\n";
+			$out.='	** for more details.                                                      **'."\n";
+			$out.='	**                                                                        **'."\n";
+			$out.='	** You should have received a copy of the GNU General Public License      **'."\n";
+			$out.='	** along with JiNN; if not, write to the Free Software Foundation, Inc.,  **'."\n";
+			$out.='	** 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA                 **'."\n";
+			$out.='	**                                                                        **'."\n";
+			$out.='	***************************************************************************/'."\n";
+			$out.="\n";
+
+			$out.= "/* SITE ARRAY */\n";
+			
+			$out.= '$import_site=array('."\n";
+					
+			while (list ($key, $val) = each($site_data[0])) 
+			{
+				if($key!='site_id') $out.= "	'$key '=> '$val',\n";
+			}
+			$out.=");\n\n";
+			
+			$site_object_data=$this->bo->get_phpgw_records('phpgw_jinn_site_objects','parent_'.$where_condition,'','','name');
+			
+			$out.= "\n/* SITE_OBJECT ARRAY */\n";
+			
+			foreach($site_object_data as $object)
+			{
+
+				$out.= '$import_site_objects[]=array('."\n";
+				
+				while (list ($key, $val) = each ($object)) 
+				{ 
+					if ($key != 'site_object_id') 
+					{
+						$out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
+	
+					}
+				
+				}
+				$out.=");\n\n";
+				
+			}
+	
+			$out.='$checkbit=true;'."\n";
+			$out.='?>';
+			echo $out;
 		}
-		
+
 		function browse_phpgw_jinn_site_objects()
 		{
 
@@ -597,9 +697,11 @@
 			$GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=jinn'));
 			$this->template->set_var('global_configuration',lang('Global Configuration'));
 			$this->template->set_var('add_site',lang('add site'));
+			$this->template->set_var('import_site',lang('import site'));
 			$this->template->set_var('browse_sites',lang('browse sites'));
 			$this->template->set_var('access_rights',lang('access_rights'));
 			$this->template->set_var('add_site_link',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_phpgw_jinn_sites'));
+			$this->template->set_var('import_site_link',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.import_phpgw_jinn_site'));
 			$this->template->set_var('browse_sites_link',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.browse_phpgw_jinn_sites'));
 			$this->template->set_var('access_rights_link',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.access_rights'));
 			$this->template->pparse('out','admin_menu');

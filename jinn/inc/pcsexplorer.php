@@ -145,18 +145,21 @@ window.close();
   // --------------------------------------------------------------------------------
   function PcsExplorerStart()
   {
-    TrFctStart(__FILE__, __LINE__, "PcsExplorerStart", "");
-    $v_result = 1;
-    global $a_calling_dir;
-    global $a_start_dir;
-    global $a_home_dir;
-    global $g_script_dir;
+    //TrFctStart(__FILE__, __LINE__, "PcsExplorerStart", "");
+    //$v_result = 1;
+	global $jinn_start_dir;
+	if (!$jinn_start_dir) $jinn_start_dir='/';
+	//global $a_calling_dir;
+    //global $a_start_dir;
+    //global $a_home_dir;
+    //global $g_script_dir;
 
     // ----- Calculate the absolute start path ($PATH_INFO as 'root' reference)
     //       The absolute start path is composed by the absolute path of the
     //       calling script + the relative start path from that calling script.
     //       The result is reduced.
-    $v_abs_start_path = PcsExplorerPathReduction($a_calling_dir."/".$a_start_dir);
+    
+	//$v_abs_start_path = PcsExplorerPathReduction($a_calling_dir."/".$a_start_dir);
 
     TrFctMessage(__FILE__, __LINE__, 2, "Absolute calling path='$a_calling_dir'");
     TrFctMessage(__FILE__, __LINE__, 2, "Relative start path='$a_start_dir'");
@@ -165,12 +168,13 @@ window.close();
     // ----- Calculate the relative start path for PcsExplorer
     //       The relative path of the start path is needed to navigate
     //       from the PcsExplorer script.
-    $a_home_dir = PcsExplorerPathRelative($g_script_dir, $v_abs_start_path);
+  //  $a_home_dir = PcsExplorerPathRelative($g_script_dir, $v_abs_start_path);
 
-    TrFctMessage(__FILE__, __LINE__, 2, "Home directory='$a_home_dir'");
+    //TrFctMessage(__FILE__, __LINE__, 2, "Home directory='$a_home_dir'");
 
     // ----- Call the explorer
-    $v_result = PcsExplorer($a_home_dir);
+//    $v_result = PcsExplorer($a_home_dir);
+	$v_result = PcsExplorer($jinn_start_dir);
 
     // ----- Return
     TrFctEnd(__FILE__, __LINE__, $v_result);

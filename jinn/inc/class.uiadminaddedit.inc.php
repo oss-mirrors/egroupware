@@ -576,8 +576,10 @@
 				$this->bo->site_id.'"><input type=submit value="'.
 				lang('cancel').'"></form>';
 
-				$extra_buttons='<td><form method=post action="index.php?menuaction=jinn.uiadmin.export_site&where_condition=site_id='.
-				$this->bo->site_id.'"><input type=submit value="'.
+				$extra_buttons='<td><input type=button value="'.lang('test database access').'" onclick="alert(\'Not yet implemented\')"></td>
+				
+				<td><form method=post action="index.php?menuaction=jinn.uiadmin.export_site&where_condition=site_id='.
+				$values_object[0][site_id].'"><input type=submit value="'.
 				lang('export this site').'"></form></td>';
 
 			}
@@ -585,6 +587,7 @@
 			$this->template->set_var('reset_form',lang('reset form'));
 			$this->template->set_var('delete',lang('delete'));
 			$this->template->set_var('cancel',$cancel_button);
+			$this->template->set_var('test_access',$test_access);
 			$this->template->set_var('extra_buttons',$extra_buttons);
 			$this->template->pparse('out','form_footer');
 
