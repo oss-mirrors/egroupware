@@ -8,7 +8,7 @@ a scrips tag block of code, javascript or otherwise, is in an inline html messag
 account	email	en	account
 account name	email	en	Account Name
 account user name	email	en	Account User Name
-accounts	email	en	Accounts
+accounts	common	en	Accounts
 accounts:	email	en	Accounts:
 add to address book	email	en	Add to address book
 add to addressbook	email	en	Add to addressbook
@@ -50,7 +50,7 @@ click here to continue	email	en	Click here to continue
 click here to edit the settings for this email account.	email	en	click here to edit the settings for this email account.
 click here to return to your home page.	email	en	click here to return to your home page.
 company	email	en	Company
-compose	email	en	Compose
+compose	common	en	Compose
 compose message	email	en	compose message
 compose new	common	en	Compose new
 contains	email	en	Contains
@@ -125,7 +125,7 @@ filters	email	en	Filters
 filters list	email	en	Filters List
 flag as important	email	en	Flag as important
 flagged	email	en	flagged
-folder	email	en	Folder
+folder	common	en	Folder
 folder maintenance	email	en	Folder Maintenance
 folder name	email	en	Folder name
 folder size	email	en	Folder Size
@@ -283,7 +283,7 @@ send	email	en	Send
 send deleted messages to the trash	email	en	Send deleted messages to the trash
 send forwarded mail as quoted attachment	email	en	Send forwarded mail as quoted attachment
 sender	email	en	Sender
-sent	email	en	sent
+sent	common	en	sent
 sent folder	email	en	sent folder
 sent messages folder	common	en	Sent messages folder
 sent messages folder name	email	en	Sent messages folder name
