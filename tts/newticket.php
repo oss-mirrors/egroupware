@@ -65,7 +65,10 @@
 	echo "<option value=none SELECTED>none</option>\n";
 	while (list($key,$entry) = each($account_list))
 	{
-    	echo "<option value= " . $entry['account_lid'] . ">" . $entry['account_lid'] . "</option>\n";
+		if ($entry['account_lid'])
+		{
+	    	echo "<option value= " . $entry['account_lid'] . ">" . $entry['account_lid'] . "</option>\n";
+		}
 	}
 ?>
               </select>
@@ -128,7 +131,7 @@ $phpgw->common->phpgw_footer();
 		           . time() . "',0,'$subject');");
      $phpgw->db->query("SELECT t_id FROM ticket WHERE t_subject='$subject' AND t_user='".$phpgw_info["user"]["userid"]."'");
      $phpgw->db->next_record();
-     //mail_ticket($phpgw->db->f("t_id"));
+     mail_ticket($phpgw->db->f("t_id"));
 
      Header("Location: " . $phpgw->link("/tts/index.php"));
   }
