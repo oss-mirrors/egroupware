@@ -18,7 +18,7 @@ password	ftp	fi	Salasana
 rename	ftp	fi	nimeä uudelleen %1
 rename from	ftp	fi	Vanha nimi
 rename to	ftp	fi	uusi nimi
-renamed	%1 to %2	ftp	fi	Kohde %1 on nyt %2
+renamed %1 to %2	ftp	fi	Kohde %1 on nyt %2
 save	ftp	fi	tallenna
 save to filemanager	ftp	fi	tallenna tiedostonhallintaan
 successfully created directory %1	ftp	fi	Luotiin kohde %1
