@@ -3,6 +3,12 @@ CHANGELOG JiNN for eGroupWare
 =============================
 $Id$
 
+Wed Oct 20 15:58:11 CEST 2004
+Version 0.8.204
+=============================
+- fix when user is not a member of a group
+- fix wrong use of count()
+
 Fri Oct 15 14:31:40 CEST 2004
 Version 0.8.203
 =============================

@@ -211,7 +211,7 @@
 	  {
 		 $groups=$GLOBALS['phpgw']->accounts->membership();
 
-		 if (count ($groups)>0)
+		 if (is_array ($groups))
 		 {
 			foreach ( $groups as $groupfields )
 			{
@@ -278,7 +278,7 @@
 	 {
 		$groups=$GLOBALS['phpgw']->accounts->membership();
 
-		if (count ($groups)>0)
+		if (is_array ($groups))
 		{
 		   foreach ( $groups as $groupfields )
 		   {
@@ -310,7 +310,7 @@
 	 {
 		$groups=$GLOBALS['phpgw']->accounts->membership();
 
-		if (count ($groups)>0)
+		if (is_array($groups))
 		{
 		   foreach ( $groups as $groupfields )
 		   {

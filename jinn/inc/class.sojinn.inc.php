@@ -486,7 +486,7 @@
 			/* get sites from site_objects of which user is owner */
 			$objects = $this->get_site_objects_for_user($uid,$gid);
 				
-			if (count($objects)>0)
+			if (is_array($objects))
 			{
 			   foreach ($objects as $object)
 			   {
@@ -717,7 +717,7 @@
 	  {
 		 $egw_bt=$this->backtick('egw');
 
-		 if (count($gid>0) )
+		 if (is_array($gid>0) )
 		 {
 			foreach ( $gid as $group )
 			{
@@ -786,7 +786,7 @@
 
 		 }
 
-		 if (count($objects)>0)
+		 if (is_array($objects))
 		 {
 			$objects=array_unique($objects);
 		 }
@@ -1149,7 +1149,7 @@
 			$status[id]=$this->site_db->get_last_insert_id($site_object, $autokey);
 
 			if($autokey) $where_string= $autokey.'=\''.$status[id].'\'';
-			elseif(count($pkey_arr)>0)
+			elseif(is_array($pkey_arr))
 			{
 			   foreach($pkey_arr as $pkey)
 			   {
@@ -1293,7 +1293,7 @@
 			$value[status]=1;
 
 			if($autokey) $where_string= $autokey;
-			elseif(count($pkey_arr)>0)
+			elseif(is_array($pkey_arr))
 			{
 			   foreach($pkey_arr as $pkey)
 			   {
@@ -1698,7 +1698,8 @@
 			$SQL="DELETE FROM egw_jinn_acl WHERE site_object_id='$object_id' AND uid IS NOT NULL";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
-			if (count($editors)>0){
+			if (is_array($editors))
+			{
 			   foreach ($editors as $editor)
 			   {
 				  $SQL="INSERT INTO egw_jinn_acl (site_object_id, uid) VALUES ('$object_id','$editor')";
@@ -1731,7 +1732,8 @@
 			$SQL="DELETE FROM egw_jinn_acl WHERE site_id='$site_id' AND uid IS NOT NULL";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
-			if (count($editors)>0){
+			if (is_array($editors))
+			{
 			   foreach ($editors as $editor)
 			   {
 				  $SQL="INSERT INTO egw_jinn_acl (site_id, uid) VALUES ('$site_id','$editor')";

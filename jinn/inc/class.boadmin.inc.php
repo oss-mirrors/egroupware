@@ -182,7 +182,8 @@
 		 {
 			// check if there are relations to delete
 			$relations_to_delete=$this->common->filter_array_with_prefix($HTTP_POST_VARS,'DEL');
-			if (count($relations_to_delete)>0){
+			if (is_array($relations_to_delete))
+			{
 
 			   $relations_org=explode('|',$HTTP_POST_VARS[FLDrelations]);
 			   foreach($relations_org as $relation_org)
