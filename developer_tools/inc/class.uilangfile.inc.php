@@ -21,6 +21,7 @@
 			'save'      => True,
 			'load'      => True,
 			'addphrase' => True,
+			'missingphrase'=> True,
 			'download'  => True
 		);
 		var $bo;
@@ -98,6 +99,167 @@
 				$this->template->pfp('out','form');
 				$GLOBALS['phpgw']->common->phpgw_footer();
 			}
+		}
+
+		function missingphrase()
+		{
+			$app_name    = $GLOBALS['HTTP_POST_VARS']['app_name'] ? $GLOBALS['HTTP_POST_VARS']['app_name'] : $GLOBALS['HTTP_GET_VARS']['app_name'];
+			$newlang     = $GLOBALS['HTTP_POST_VARS']['newlang'];
+			$sourcelang  = $GLOBALS['HTTP_POST_VARS']['sourcelang'];
+			$targetlang  = $GLOBALS['HTTP_POST_VARS']['targetlang'];
+			$dlsource    = $GLOBALS['HTTP_POST_VARS']['dlsource'];
+			$writesource = $GLOBALS['HTTP_POST_VARS']['writesource'];
+			$dltarget    = $GLOBALS['HTTP_POST_VARS']['dltarget'];
+			$writetarget = $GLOBALS['HTTP_POST_VARS']['writetarget'];
+			$update      = $GLOBALS['HTTP_POST_VARS']['update'];
+			$entry       = $GLOBALS['HTTP_POST_VARS']['entry'];
+			$submit      = $GLOBALS['HTTP_POST_VARS']['submit'];
+			$this->bo->read_sessiondata();
+			// $GLOBALS['phpgw']->common->phpgw_header();
+			// echo parse_navbar();
+			// include(PHPGW_APP_INC . '/header.inc.php');
+
+			$this->template->set_file(array('langfile' => 'langmissing.tpl'));
+			$this->template->set_block('langfile','header','header');
+			$this->template->set_block('langfile','postheader','postheader');
+			$this->template->set_block('langfile','detail','detail');
+			$this->template->set_block('langfile','prefooter','prefooter');
+			$this->template->set_block('langfile','srcwrite','srcwrite');
+			$this->template->set_block('langfile','tgtwrite','tgtwrite');
+			$this->template->set_block('langfile','srcdownload','srcdownload');
+			$this->template->set_block('langfile','tgtdownload','tgtdownload');
+			$this->template->set_block('langfile','footer','footer');
+			if(!$sourcelang)
+			{
+				$sourcelang = 'en';
+			}
+			if(!$targetlang)
+			{
+				$targetlang = 'en';
+			}
+			$missingarray = $this->bo->missing_app($app_name,$sourcelang);
+			if ($update)
+			{
+				$deleteme     = $GLOBALS['HTTP_POST_VARS']['delete'];
+				while (list($_mess,$_checked) = @each($deleteme))
+				{
+					if($_checked == 'on')
+					{
+						$this->bo->movephrase($_mess);
+						//		echo '<pre>';
+						///			print_r($missingarray[$_mess]);
+						//			echo '</pre>';
+						unset($missingarray[strtolower($_mess)]);
+						//          echo '<pre>';
+						//          print_r($missingarray[$_mess]);
+						//          echo '</pre>';
+					}
+				}
+				unset($deleteme);
+				/*if ($deleteme!='')
+				{
+					echo 'tEST';
+					Header('Location: ' .$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.edit&app_name=' . $app_name)),TRUE);
+					exit;
+				}*/
+			}
+			$GLOBALS['phpgw']->common->phpgw_header();
+			echo parse_navbar();
+			include(PHPGW_APP_INC . '/header.inc.php');
+
+			$this->template->set_var('lang_remove',lang('add phrase'));
+			$this->template->set_var('lang_application',lang('Application'));
+			//          $this->template->set_var('lang_source',lang('Source Language'));
+			//          $this->template->set_var('lang_target',lang('Target Language'));
+			//           $this->template->set_var('lang_submit',lang('Submit'));
+			$this->template->set_var('lang_update',lang('Update'));
+			//            $this->template->set_var('lang_cancel',lang('Cancel'));
+			$this->template->set_var('lang_view',lang('Back'));
+			$languages = $this->bo->list_langs();
+			while (list($x,$_lang) = @each($languages))
+			{
+				$sourcelangs .= '      <option value="' . $_lang['lang_id'] . '"';
+				if ($sourcelang)
+				{
+					if ($_lang['lang_id'] == $sourcelang)
+					{
+						$sourcelangs .= ' selected';
+					}
+				}
+				elseif ($_lang['lang_id'] == 'EN')
+				{
+					$sourcelangs .= ' selected';
+				}
+				$sourcelangs .= '>' . $_lang['lang_name'] . '</option>' . "\n";
+			}
+			@reset($languages);
+			while (list($x,$_lang) = @each($languages))
+			{
+				$targetlangs .= '      <option value="' . $_lang['lang_id'] . '"';
+				if ($targetlang)
+				{
+					if ($_lang['lang_id'] == $targetlang)
+					{
+						$targetlangs .= ' selected';
+					}
+				}
+				elseif ($_lang['lang_id'] == 'EN')
+				{
+					$targetlangs .= ' selected';
+				}
+				$targetlangs .= '>' . $_lang['lang_name'] . '</option>' . "\n";
+			}
+			$this->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.missingphrase'));
+			$this->template->set_var('sourcelangs',$sourcelangs);
+			$this->template->set_var('targetlangs',$targetlangs);
+			$this->template->set_var('app_name',$app_name);
+			$this->template->pfp('out','header');
+			if($sourcelang && $targetlang)
+			{
+				$this->template->set_var('lang_appname',lang('Application'));
+				$this->template->set_var('lang_message',lang('Message'));
+				$this->template->set_var('lang_original',lang('Original'));
+				//$this->template->set_var('lang_translation',lang('Translation'));
+				$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+				$this->template->set_var('view_link',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.edit&app_name='.$app_name.'&sourcelang=' . $sourcelang . '&targetlang=' . $targetlang));
+				$this->template->pfp('out','postheader');
+				$translation = $this->bo->load_app($app_name,$targetlang);
+				//       $this->template->set_var('src_file',$this->bo->src_file);
+				while(list($key,$data) = @each($missingarray))
+				{
+					$mess_id  = $data['message_id'];
+					$content  = $data['content'];
+					$transapp = $data['app_name'];
+					//         $transy   = $content;
+					$this->template->set_var('mess_id',$GLOBALS['phpgw']->strip_html($mess_id));
+					$this->template->set_var('source_content',$GLOBALS['phpgw']->strip_html($content));
+					//       $this->template->set_var('content',$GLOBALS['phpgw']->strip_html($transy));
+					$this->template->set_var('transapp',$this->lang_option($app_name,$transapp,$mess_id));
+					$this->template->set_var('tr_color',$this->nextmatchs->alternate_row_color());
+					$this->template->pfp('out','detail');
+				}
+				//    $this->template->set_var('sourcelang',$sourcelang);
+				//    $this->template->set_var('targetlang',$targetlang);
+				//    $this->template->set_var('app_name',$app_name);
+				$this->template->pfp('out','prefooter');
+				//       $this->template->pfp('out','srcdownload');
+			if($this->bo->loaded_apps[$sourcelang]['writeable'])
+			{
+				$this->template->pfp('out','srcwrite');
+			}
+
+			//        $this->template->set_var('tgt_file',$this->bo->tgt_file);
+			//       $this->template->set_var('targetlang',$targetlang);
+			//       $this->template->pfp('out','tgtdownload');
+			//           if($this->bo->loaded_apps[$targetlang]['writeable'])
+			//           {
+				//               $this->template->pfp('out','tgtwrite');
+				//           }
+
+				$this->template->pfp('out','footer');
+			}
+			/* _debug_array($this->bo->loaded_apps); */
+			$this->bo->save_sessiondata($this->bo->source_langarray,$this->bo->target_langarray);
 		}
 
 		function edit()
@@ -247,9 +409,9 @@
 
 			if ($update)
 			{
-				$transapp     = $GLOBALS['transapp'];
-				$translations = $GLOBALS['translations'];
-				$deleteme     = $GLOBALS['delete'];
+				$transapp     = $GLOBALS['HTTP_POST_VARS']['transapp'];
+				$translations = $GLOBALS['HTTP_POST_VARS']['translations'];
+				$deleteme     = $GLOBALS['HTTP_POST_VARS']['delete'];
 				while (list($_mess,$_app) = each($transapp))
 				{
 					if($_mess)
@@ -296,8 +458,12 @@
 				$this->template->set_var('lang_message',lang('Message'));
 				$this->template->set_var('lang_original',lang('Original'));
 				$this->template->set_var('lang_translation',lang('Translation'));
+				$this->template->set_var('lang_missingphrase',lang('Search for missing phrase'));
 				$this->template->set_var('lang_addphrase',lang('Add Phrase'));
 				$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+				$this->template->set_var('missing_link',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.missingphrase&app_name='.$app_name
+					. '&sourcelang=' . $sourcelang . '&targetlang=' . $targetlang
+				));
 				$this->template->set_var('phrase_link',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.addphrase&app_name='.$app_name
 					. '&sourcelang=' . $sourcelang . '&targetlang=' . $targetlang
 				));
@@ -346,7 +512,7 @@
 			}
 			/* _debug_array($this->bo->loaded_apps); */
 			$this->bo->save_sessiondata($this->bo->source_langarray,$this->bo->target_langarray);
-			$GLOBALS['phpgw']->common->phpgw_footer();
+	//		$GLOBALS['phpgw']->common->phpgw_footer();
 		}
 
 		function save($which,$userlang)
@@ -461,7 +627,7 @@
 			$this->template->set_var('right',$this->nextmatchs->right('/index.php',$start,$total,'&menuaction=developer_tools.uilangfile.index'));
 
 			$this->template->set_var('lang_edit',lang('Edit'));
-			$this->template->set_var('lang_translate',lang('Translate'));
+			//$this->template->set_var('lang_translate',lang('Translate'));
 			$this->template->set_var('new_action',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.create'));
 			$this->template->set_var('create_new',lang('Create New Language File'));
 
@@ -483,7 +649,7 @@
 				$this->template->set_var('name',$name);
 
 				$this->template->set_var('edit','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.edit&app_name=' . urlencode($app['name'])) . '"> ' . lang('Edit') . ' </a>');
-				$this->template->set_var('translate','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.translate&app_name=' . urlencode($app['name'])) . '"> ' . lang('Translate') . ' </a>');
+			//	$this->template->set_var('translate','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.translate&app_name=' . urlencode($app['name'])) . '"> ' . lang('Translate') . ' </a>');
 
 				$this->template->set_var('status',$status);
 
@@ -518,6 +684,5 @@
 
 			return $select;
 		}
-
 	}
 ?>

@@ -114,6 +114,10 @@
      <input name="targetlang" type="hidden" value="{targetlang}">
    <td align="center"><input  type="submit" name="loaddb" value="{lang_loaddb}"></td>
   </form>
+  <form method="post" action="{missing_link}">
+     <input name="app_name"  type="hidden" value="{app_name}">
+   <td align="center"><input type="submit" name="addphrase" value="{lang_missingphrase}"></td>
+  </form>
   <form method="post" action="{phrase_link}">
      <input name="app_name"  type="hidden" value="{app_name}">
    <td align="center"><input type="submit" name="addphrase" value="{lang_addphrase}"></td>

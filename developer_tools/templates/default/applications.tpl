@@ -13,7 +13,6 @@
   <tr bgcolor="{th_bg}">
    <td> {sort_title} </td>
    <td>{lang_edit}</td>
-   <td>{lang_translate}</td>
   </tr>
 
   {rows}
@@ -36,6 +35,5 @@
   <tr bgcolor="{tr_color}">
    <td>{name}</td>
    <td width="5%">{edit}</td>
-   <td width="5%">{translate}</td>
   </tr>
 <!-- END row -->

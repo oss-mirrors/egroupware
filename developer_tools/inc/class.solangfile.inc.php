@@ -17,6 +17,8 @@
 		var $debug = False;
 
 		var $langarray;   // Currently loaded translations
+		// array of missing phrases.
+		var $missingarray;
 		var $src_file;
 		var $tgt_file;
 		var $loaded_apps = array(); // Loaded app langs
@@ -42,6 +44,70 @@
 			return False;
 		}
 
+		//Known Issue, if a phrase contains a ' or a " the parse will be thrown off. unless ' are nesed inside "
+		function parse_php_app($fd,$plist)
+		{
+			define('SEP',filesystem_separator());
+			$d=dir($fd);
+			while ($fn=$d->read())
+			{
+				if (is_dir($fd.$fn.SEP))
+				{
+					if (($fn!='.')&&($fn!='..')&&($fn!='CVS'))
+					{
+						$plist=$this->parse_php_app($fd.$fn.SEP,$plist);
+					}
+				}
+				elseif ((strpos($fn,'.php')>1) && (is_readable($fd.$fn)))
+				{
+					$fp=fopen($fd.SEP.$fn,'r');
+					$fds=substr($fd,strpos($fd,SEP));
+					while (!feof($fp))
+					{
+						$str=fgets($fp,8192);
+						while ($pos=strpos($str,'lang('))
+						{
+							$str=substr($str,$pos);
+							if (strpos($str,'$')==5)
+							{
+								$str=substr($str,6);
+							}
+							else
+							{
+								$str=substr($str,6);
+								if (!strpos($str,'\")'))
+								{
+									$s2=substr($str,0,strpos($str,'\')'));
+								}
+								else
+								{
+									$s2=substr($str,0,strpos($str,'\")'));
+								}
+								if ($s2!='')
+								{
+									$plist[$s2]=$fds;
+								}
+							}
+						}
+					}
+					fclose($fp);
+				}
+			}
+			$d->close();
+			return ($plist);
+		}
+
+		function missing_app($app,$userlang=en)
+		{
+			$cur_lang=$this->load_app($app,$userlang);
+			define('SEP',filesystem_separator());
+			$fd = PHPGW_SERVER_ROOT . SEP . $app . SEP;
+			$plist=array();
+			$plist = $this->parse_php_app($fd,$plist);
+			reset($plist);
+			return($plist);
+		}
+
 		/*!
 		@function add_app
 		@abstract loads all app phrases into langarray
@@ -58,6 +124,7 @@
 				$wr = True;
 			}
 			elseif(!file_exists($fn) && is_writeable($fd))
+
 			{
 				$wr = True;
 			}
@@ -95,7 +162,7 @@
 		/*!
 		@function add_app
 		@abstract loads all app phrases into langarray
-		@param $lang	user lang variable (defaults to en)
+		@param $lang user lang variable (defaults to en)
 		*/
 		function load_app($app,$userlang='en')
 		{

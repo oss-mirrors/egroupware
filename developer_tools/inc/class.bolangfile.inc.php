@@ -11,7 +11,6 @@
 
   /* $Id$ */
 
-
 	class bolangfile
 	{
 		var $total;
@@ -22,6 +21,7 @@
 		var $so;
 		var $loaded_apps = array();
 		var $source_langarray = '';
+		var $missing_langarray = '';
 		var $target_langarray = '';
 		var $src_file;
 		var $tgt_file;
@@ -31,6 +31,18 @@
 			$this->so = CreateObject('developer_tools.solangfile');
 			settype($this->source_langarray,'string');
 			settype($this->target_langarray,'string');
+			settype($this->missing_langarray,'string');
+		}
+
+		function cmp($a,$b)
+		{
+			$c=strtolower($a);
+			$d=strtolower($b);
+			if ($c == $d)
+			{
+				return 0;
+			}
+			return ($c < $d) ? -1 : 1;
 		}
 
 		/* Sessions used to save state and not reread the langfile between adding/deleting phrases */
@@ -100,6 +112,53 @@
 			@ksort($this->source_langarray);
 			return;
 		}
+
+		function movephrase($mess='')
+		{
+			if (($mess !='')&&($this->missing_langarray[strtolower($mess)]['message_id']))
+			{
+				$_mess=strtolower($mess);
+				$this->source_langarray[$mess] = array(
+					'message_id' => $this->missing_langarray[$_mess]['message_id'],
+					'content'    => $this->missing_langarray[$_mess]['content'],
+					'app_name'   => $this->missing_langarray[$_mess]['app_name'],
+					'lang'       => 'en'
+				);
+				@ksort($this->source_langarray);
+				reset($this->source_langarray);
+
+			}
+			/*echo '<HR>'.$mess.'<HR><pre>';
+			print_r($this->source_langarray[$mess]);
+			print_r($this->missing_langarray);
+			echo '</pre>';*/
+			return;
+
+		}
+
+		function missing_app($app,$userlang='en')
+		{
+			$this->src_file = $this->so->src_file;
+			$this->loaded_apps = $this->so->loaded_apps;
+			//if ($this->missing_langarray=='')
+			//{
+				//$this->missing_langarray=array();
+				$plist = $this->so->missing_app($app,$userlang);
+				while (list($p,$loc) = each($plist))
+				{
+					if ((!$this->source_langarray[strtolower($p)])&&(!$this->source_langarray[$p]))
+					{
+						$this->missing_langarray[strtolower(trim($p))]['message_id'] = trim($p);
+						$this->missing_langarray[strtolower(trim($p))]['app_name']   = trim($app);
+						$this->missing_langarray[strtolower(trim($p))]['content']    = $p;
+					}
+				}
+				//}        
+				reset ($this->missing_langarray);
+				@ksort($this->missing_langarray);
+				$this->save_sessiondata($this->bo->source_langarray,$this->bo->target_langarray);
+				return $this->missing_langarray;
+			}
 
 		function add_app($app,$userlang='en')
 		{
