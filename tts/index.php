@@ -95,8 +95,8 @@
 	$GLOBALS['phpgw']->db->next_record();
 	$numopen = $GLOBALS['phpgw']->db->f('0') ;
 
-	$GLOBALS['phpgw']->template->set_var('tts_numtotal',lang('Tickets total %1',$numtotal));
-	$GLOBALS['phpgw']->template->set_var('tts_numopen',lang('Tickets open %1',$numopen));
+	$GLOBALS['phpgw']->template->set_var('tts_numtotal',lang('Tickets total x',$numtotal));
+	$GLOBALS['phpgw']->template->set_var('tts_numopen',lang('Tickets open x',$numopen));
 
 
 	$db2 = $phpgw->db;
