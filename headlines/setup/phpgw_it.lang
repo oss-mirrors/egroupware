@@ -1,2 +1,5 @@
 headlines	common	it	NEWS
 headline preferences	common	it	Preferenze NEWS
+you must enter a base url	admin	it	Devi inserire un url di base
+you must enter a display	admin	it	Dedi inserire un display
+you must enter a news url	admin	it	Devi inserire un url per le news

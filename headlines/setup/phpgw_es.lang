@@ -4,3 +4,4 @@ headlines	common	es	Encabezados
 headline sites	admin	es	Sitios encabezados de noticias
 select headline news sites	preferences	es	Seleccione sites de Encabezados de Noticias
 select headlines to display	preferences	es	Seleccione los encabezados a mostrar
+you must enter a display	admin	es	Debe entrar un display

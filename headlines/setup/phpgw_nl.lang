@@ -1,3 +1,6 @@
 headlines	common	nl	Krantekoppen
 headline sites	admin	nl	Krantekoppen Sites
 select headline news sites	preferences	nl	Selecteer Krantekoppen sites
+you must enter a base url	admin	nl	U moet een basis-url invoeren
+you must enter a display	admin	nl	U moet een weergave invoeren
+you must enter a news url	admin	nl	U moet een nieuws-url invoeren
