@@ -18,6 +18,10 @@
   $phpgw_info["flags"]["currentapp"] = "projects";
   include("../header.inc.php");
 
+  
+  $db2 = $phpgw->db;
+  
+  
   if (! $submit) {
      ?>
       
@@ -45,9 +49,9 @@
         		
         $t->set_var("common_hidden_vars",$common_hidden_vars);
         $t->set_var("lang_num",lang("num"));
-        $phpgw->dbtemp->query("select max(num+1) as max from p_activities");
-	if($phpgw->dbtemp->next_record()) {
-	$t->set_var("num",(int)($phpgw->dbtemp->f("max")));
+        $db2->query("select max(num+1) as max from p_activities");
+	if($db2->next_record()) {
+	$t->set_var("num",(int)($db2->f("max")));
 	}
 	else {
 	$t->set_var("num","1");

@@ -22,6 +22,10 @@
                         
   $t->set_block("projects_list_t", "projects_list", "list");
 
+  
+  $db2 = $phpgw->db;
+  
+  
   $common_hidden_vars =
    "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
   . "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
@@ -115,7 +119,7 @@
 
 <?php
   $limit = $phpgw->nextmatchs->sql_limit($start);
-
+  
   if ($query) {
      $phpgw->db->query("SELECT p_projects.*,accounts.account_firstname,accounts.account_lastname FROM "
                  . "p_projects,accounts WHERE $filtermethod AND accounts.account_id=p_projects.coordinator AND"
@@ -127,6 +131,7 @@
   }
 
   while ($phpgw->db->next_record()) {
+    
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     $title = $phpgw->db->f("title");
     if ($title != "")
@@ -155,21 +160,21 @@
       }
 
     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
-    $phpgw->dbtemp->query("select ab_id,ab_lastname,ab_firstname,ab_company_id,company_name from "
+    $db2->query("select ab_id,ab_lastname,ab_firstname,ab_company_id,company_name from "
                         . "addressbook,customers where ab_id='" .$phpgw->db->f("customer")."'");
-      if ($phpgw->dbtemp->next_record()) {
-        $customerout = $phpgw->dbtemp->f("company_name")." [ ".$phpgw->dbtemp->f("ab_lastname")." ]";
+      if ($db2->next_record()) {
+        $customerout = $db2->f("company_name")." [ ".$db2->f("ab_lastname")." ]";
 	}
 	else {
 	$customerout = $t->set_var("customer","");
 	     }
 	  }		
 	else {		
-    $phpgw->dbtemp->query("select ab_id,ab_lastname,ab_firstname,ab_company from addressbook where "
+    $db2->query("select ab_id,ab_lastname,ab_firstname,ab_company from addressbook where "
                         . "ab_id='" .$phpgw->db->f("customer")."'");
                        
-    if ($phpgw->dbtemp->next_record()) {
-      $customerout = $phpgw->dbtemp->f("ab_company")." [ ".$phpgw->dbtemp->f("ab_lastname")." ]";
+    if ($db2->next_record()) {
+      $customerout = $db2->f("ab_company")." [ ".$db2->f("ab_lastname")." ]";
     }
     else {
     $customerout = $t->set_var("customer","");

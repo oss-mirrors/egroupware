@@ -18,6 +18,11 @@
 
   $phpgw_info["flags"]["currentapp"] = "projects";
   include("../header.inc.php");
+  
+  
+  $db2 = $phpgw->db;
+  
+  
   if (!$id)
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/"
 	  . "sort=$sort&order=$order&query=$query&start=$start"
@@ -141,16 +146,17 @@
      $t->set_var("end_date_formatorder",$end_date_formatorder);
 
      $t->set_var("lang_coordinator",lang("coordinator"));
-     $phpgw->dbtemp->query("SELECT account_id,account_firstname,account_lastname FROM accounts where "
+     
+     $db2->query("SELECT account_id,account_firstname,account_lastname FROM accounts where "
                      . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
-     while ($phpgw->dbtemp->next_record()) {
-        $coordinator_list .= "<option value=\"" . $phpgw->dbtemp->f("account_id") . "\"";
-        if($phpgw->dbtemp->f("account_id")==$phpgw->db->f("coordinator"))
+     while ($db2->next_record()) {
+        $coordinator_list .= "<option value=\"" . $db2->f("account_id") . "\"";
+        if($db2->f("account_id")==$phpgw->db->f("coordinator"))
             $coordinator_list .= " selected";
         $coordinator_list .= ">"        
-                    . $phpgw->common->display_fullname($phpgw->dbtemp->f("account_id"),
-                      $phpgw->dbtemp->f("account_firstname"),
-                      $phpgw->dbtemp->f("account_lastname")) . "</option>";
+                    . $phpgw->common->display_fullname($db2->f("account_id"),
+                      $db2->f("account_firstname"),
+                      $db2->f("account_lastname")) . "</option>";
      }
      $t->set_var("coordinator_list",$coordinator_list);  
 
@@ -159,20 +165,20 @@
     $t->set_var("customer_con",$phpgw->db->f("customer"));
 
     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
-    $phpgw->dbtemp->query("SELECT ab_id,ab_firstname,ab_lastname,ab_company_id,company_name FROM "
+    $db2->query("SELECT ab_id,ab_firstname,ab_lastname,ab_company_id,company_name FROM "
                      . "addressbook,customers where "
                      . "ab_id='" .$phpgw->db->f("customer")."'");
-    if ($phpgw->dbtemp->next_record()) {
-        $t->set_var("customer_name",$phpgw->dbtemp->f("company_name")." [ ".$phpgw->dbtemp->f("ab_firstname")." ".$phpgw->dbtemp->f("ab_lastname")." ]");
+    if ($db2->next_record()) {
+        $t->set_var("customer_name",$db2->f("company_name")." [ ".$db2->f("ab_firstname")." ".$db2->f("ab_lastname")." ]");
     } else {
         $t->set_var("customer_name","");
     }
     }
     else {
-    $phpgw->dbtemp->query("select ab_id,ab_lastname,ab_firstname,ab_company from addressbook where "
+    $db2->query("select ab_id,ab_lastname,ab_firstname,ab_company from addressbook where "
                         . "ab_id='" .$phpgw->db->f("customer")."'");
-	if ($phpgw->dbtemp->next_record()) {
-        $t->set_var("customer_name",$phpgw->dbtemp->f("ab_company")." [ ".$phpgw->dbtemp->f("ab_firstname")." ".$phpgw->dbtemp->f("ab_lastname")." ]");
+	if ($db2->next_record()) {
+        $t->set_var("customer_name",$db2->f("ab_company")." [ ".$db2->f("ab_firstname")." ".$db2->f("ab_lastname")." ]");
 	}
 	else {
 	$t->set_var("customer_name","");		
@@ -180,18 +186,18 @@
       }
 // activites bookable
      $t->set_var("lang_bookable_activities",lang("bookable activities"));
-     $phpgw->dbtemp->query("SELECT p_activities.id as id,p_activities.descr,"
+     $db2->query("SELECT p_activities.id as id,p_activities.descr,"
 		     . "p_projectactivities.project_id FROM p_activities "
 		     . "LEFT JOIN p_projectactivities ON "
                      . "(p_activities.id=p_projectactivities.activity_id) and  "
                      . "((project_id='$id') or (project_id IS NULL)) "
                      . " WHERE billable IS NULL OR billable='N' ORDER BY descr asc");
-     while ($phpgw->dbtemp->next_record()) {
-        $ba_activities_list .= "<option value=\"" . $phpgw->dbtemp->f("id") . "\"";
-        if($phpgw->dbtemp->f("project_id"))
+     while ($db2->next_record()) {
+        $ba_activities_list .= "<option value=\"" . $db2->f("id") . "\"";
+        if($db2->f("project_id"))
             $ba_activities_list .= " selected";
         $ba_activities_list .= ">"        
-                    . $phpgw->dbtemp->f("descr")
+                    . $db2->f("descr")
                     . "</option>";
      }
      $t->set_var("lang_descr",lang("description"));
@@ -199,21 +205,21 @@
 
 // activities billable
      $t->set_var("lang_billable_activities",lang("billable activities"));
-     $phpgw->dbtemp->query("SELECT p_activities.id as id,p_activities.descr,"
+     $db2->query("SELECT p_activities.id as id,p_activities.descr,"
 		     . "p_projectactivities.project_id,p_projectactivities.billable"
 		     . " FROM p_activities LEFT JOIN p_projectactivities ON "
                      . "(p_activities.id=p_projectactivities.activity_id) and  "
                      . "((project_id='$id') or (project_id IS NULL)) "
 //                     . " WHERE billable IS NULL OR billable='Y' ORDER BY descr asc");
                      . " ORDER BY descr asc");
-     while ($phpgw->dbtemp->next_record()) {
-        $bill_activities_list .= "<option value=\"" . $phpgw->dbtemp->f("id") . "\"";
-        if($phpgw->dbtemp->f("billable")=="Y")
+     while ($db2->next_record()) {
+        $bill_activities_list .= "<option value=\"" . $db2->f("id") . "\"";
+        if($db2->f("billable")=="Y")
             $bill_activities_list .= " selected";
         $bill_activities_list .= ">"        
-                    . $phpgw->dbtemp->f("descr")
+                    . $db2->f("descr")
                     . " " . lang("billperae") . " "
-                    . $phpgw->dbtemp->f("billperae") . "</option>";
+                    . $db2->f("billperae") . "</option>";
      }
      $t->set_var("bill_activities_list",$bill_activities_list);  
 //

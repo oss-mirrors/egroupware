@@ -6,27 +6,6 @@
 +                              projectdelivery            +          
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+       first edit the inc/phpgwapi/phpgw.inc.php        +
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  add to class phpgw:
-        
-        var $dbtemp;
-
-
-  add to function phpgw: 
-
-  $this->dbtemp           = new db;
-  $this->dbtemp->Host     = $phpgw_info["server"]["db_host"];                           
-  $this->dbtemp->type     = $phpgw_info["server"]["db_type"]; 
-  $this->dbtemp->Database = $phpgw_info["server"]["db_name"];  
-  $this->dbtemp->User     = $phpgw_info["server"]["db_user"];   
-  $this->dbtemp->Password = $phpgw_info["server"]["db_pass"];                                                                                                                                                    
-                                                                                                                                                   
-    if ($this->debug) {                                                                                                                          
-        $this->dbtemp->Debug = 1;                                                                                                                
-            }
-
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +                install the datebase                      +
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
