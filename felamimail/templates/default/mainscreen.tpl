@@ -19,92 +19,13 @@ doLoad();
 
 //-->
 </script>
-<STYLE type="text/css">
-	.header_row_, A.header_row_
-	{
-		FONT-SIZE: 12px;
-		height : 12px;
-		padding: 0;
-		font-weight : bold;
-	}
-	
-	.header_row_D, A.header_row_D
-	{
-		FONT-SIZE: 12px;
-		height : 12px;
-		padding: 0;
-		color: silver;
-		text-decoration : line-through;
-		font-weight : bold;
-	}
-	
-	.header_row_DS, A.header_row_DS, .header_row_ADS, A.header_row_ADS
-	{
-		FONT-SIZE: 12px;
-		height : 12px;
-		padding: 0;
-		color: silver;
-		text-decoration : line-through;
-	}
-	
-	.header_row_S, A.header_row_S
-	{
-		FONT-SIZE: 12px;
-		height : 12px;
-		padding: 0;
-		vertical-align : middle;
-	}
-	
-	.header_row_AS, A.header_row_AS
-	{
-		FONT-SIZE: 12px;
-		height : 12px;
-		padding: 0;
-		vertical-align : middle;
-	}
-
-	.header_row_FAS, A.header_row_FAS, .header_row_FS, A.header_row_FS
-	{
-		color: red;
-		FONT-SIZE: 12px;
-		height : 12px;
-		padding: 0;
-		vertical-align : middle;
-	}
-
-	.header_row_F, A.header_row_F
-	{
-		color: red;
-		FONT-SIZE: 12px;
-		height : 12px;
-		padding: 0;
-		font-weight : bold;
-		vertical-align : middle;
-	}
-
-	.header_row_R, A.header_row_R
-	{
-		FONT-SIZE: 12px;
-		height : 12px;
-		padding: 0;
-		font-weight : bold;
-		vertical-align : middle;
-	}
-	
-</STYLE>
 
 <script type="text/javascript">
 <!--
 	var checkedCounter={checkedCounter}, aktiv;
 	var maxMessages = {maxMessages};
 	
-	function ttoggleFolderRadio()
-	{
-		//alert(document.getElementsByTagName("input")[0].checked);
-		document.getElementsByTagName("input")[1].checked = "true";
-	}
-
-	function toggleFolderRadio(_counter)
+	function selectAll(inputBox)
 	{
 		if(aktiv)
 		{
@@ -113,51 +34,108 @@ doLoad();
 			{refreshTime}
 		}
 
-		var counter = parseInt(_counter);
+		if(inputBox.checked)
+		{
+			value = true;
+			checkedCounter = maxMessages;
+		}
+		else
+		{
+			value = false;
+			checkedCounter = 0;
+		}
+		//alert(document.forms["messageList"].elements['msg[]'][10].checked);
+		for (var i = 0; i < document.forms["messageList"].elements['msg[]'].length; i++)
+		{
+			document.forms["messageList"].elements['msg[]'][i].checked = value;
+		}
+		folderFunctions = document.getElementById('folderFunction');
+		if(inputBox.checked)
+		{
+			checkedCounter = maxMessages;
+			document.getElementsByTagName("input")[3].checked = "true";
+//			//{lang_move_message}
+			while (folderFunctions.hasChildNodes())
+			    folderFunctions.removeChild(folderFunctions.lastChild);
+			var textNode = document.createTextNode('{lang_move_message}');
+			folderFunctions.appendChild(textNode);
+			document.getElementsByName("folderAction")[0].value = "moveMessage";
+		}
+		else
+		{
+			checkedCounter = 0;
+			document.getElementsByTagName("input")[2].checked = "true";
+//			//{lang_change_folder}
+			while (folderFunctions.hasChildNodes())
+			    folderFunctions.removeChild(folderFunctions.lastChild);
+			var textNode = document.createTextNode('{lang_change_folder}');
+			folderFunctions.appendChild(textNode);
+			document.getElementsByName("folderAction")[0].value = "changeFolder";
+		}
+		//alert(checkedCounter);
+		//alert(document.getElementsByName("folderaction")[0].value);
+		
+	}
+
+	function toggleFolderRadio(inputBox)
+	{
+		if(aktiv)
+		{
+			// do not reload, while we try to select some messages
+			window.clearTimeout(aktiv);
+			{refreshTime}
+		}
+
+		folderFunctions = document.getElementById("folderFunction");
+		//var counter = parseInt(_counter);
 		//alert(document.getElementById("msg_input_"+_counter).checked);
 		//document.getElementsByTagName("input")[1].checked = "true";
 		//tr	= eval(document.getElementsByTagName("tr")[counter+23]);
 		//input	= eval(document.getElementsByTagName("input")[counter+10]);
-		tr	= document.getElementById("msg_tr_"+_counter);
-		input	= document.getElementById("msg_input_"+_counter);
-		if(input.checked == true)
-		{
-			checkedCounter+=1;
-		}
-		else
-		{
-			checkedCounter-=1;
-		}
+		//tr	= document.getElementById("msg_tr_"+_counter);
+		//input	= document.getElementById("msg_input_"+_counter);
+		checkedCounter += (inputBox.checked) ? 1 : -1;
 		if (checkedCounter > 0)
 		{
-			document.getElementsByTagName("input")[3].checked = "true";
+			//document.getElementsByTagName("input")[3].checked = true;
+			while (folderFunctions.hasChildNodes())
+			    folderFunctions.removeChild(folderFunctions.lastChild);
+			var textNode = document.createTextNode('{lang_move_message}');
+			folderFunctions.appendChild(textNode);
+			document.getElementsByName("folderAction")[0].value = "moveMessage";
 		}
 		else
 		{
-			document.getElementsByTagName("input")[2].checked = "true";
+			//document.getElementsByTagName("input")[2].checked = true;
+			document.getElementById('messageCheckBox').checked = false;
+			while (folderFunctions.hasChildNodes())
+			    folderFunctions.removeChild(folderFunctions.lastChild);
+			var textNode = document.createTextNode('{lang_change_folder}');
+			folderFunctions.appendChild(textNode);
+			document.getElementsByName("folderAction")[0].value = "changeFolder";
 		}
 	}
 
 //-->
 </script>
-<TABLE BORDER="0" WIDTH="100%" CELLSPACING=0 CELLPADDING=2>
-	<TR BGCOLOR="{row_off}">
-		<TD ALIGN="left" WIDTH="70%">
+<TABLE BBORDER="0" WIDTH="100%" CELLSPACING="0" CELLPADDING="2">
+	<TR bgcolor="#ffffcc">
+		<TD ALIGN="left" WIDTH="70%" >
 			<a href="{url_compose_empty}">{lang_compose}</a>&nbsp;&nbsp;
 			<a href="{url_filter}">{lang_edit_filter}</a>&nbsp;&nbsp;
 		</td>
-		<td align='right' width="30%">
+		<td align='right' width="30%" >
 			{quota_display}
 		</td>
 	</tr>
-	<TR valign="middle">
+	<TR bgcolor="#ffffcc">
 		<form name=searchForm method=post action="{url_search_settings}">
-		<td colspan="1" bgcolor="#ffffcc" align="left" width="70%">
-			{lang_quicksearch}:
+		<td align="left" width="70%"  style="border-color:silver; border-style:solid; border-width:1px 0px 1px 0px; font-size:10px;">
+			{lang_quicksearch}
 			<input type="text" size="50" name="quickSearch" value="{quicksearch}"
 			onChange="javascript:document.searchForm.submit()">
 		</td>
-		<td bgcolor="#ffffcc" align="right" width="30%" valign="middle">
+		<td align="right" width="30%" valign="middle" style="border-color:silver; border-style:solid; border-width:1px 0px 1px 0px; ">
 			<input type=hidden name="changeFilter">
 			<select name="filter" onChange="javascript:document.searchForm.submit()">
 				{filter_options}
@@ -170,49 +148,44 @@ doLoad();
 <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
 	<TR>
 		<TD BGCOLOR="{row_off}">
-			<TABLE BGCOLOR="{row_off}" COLS=2 BORDER='0' cellpadding=0 cellspacing=0 width="100%">
-				<TR valign="middle">
+			<TABLE BGCOLOR="#ffffcc" COLS=2 BORDER='0' cellpadding="2" cellspacing=0 width="100%" sstyle="table-layout:fixed">
+				<TR valign="middle" bgcolor="#ffffcc">
 					<FORM name=messageList method=post action="{url_change_folder}">
-					<td nowrap width="40%" align="LEFT" valign="center" bgcolor="#ffffcc">
+					<td nowrap id="folderFunction" width="1%" align="left" style="font-size:10px;">
+						{lang_change_folder}
+					</td>
+					<td align="LEFT" valign="center">
 						<TT><SMALL>
 						<SELECT NAME="mailbox" onChange="document.messageList.submit()">
 							{options_folder}
 						</SELECT></SMALL></TT>
-						<SMALL><INPUT TYPE=radio NAME="folderAction" value="changeFolder" {change_folder_checked}>{lang_change_folder}</SMALL>
-						<SMALL><INPUT TYPE=radio NAME="folderAction" value="moveMessage" {move_message_checked}>{lang_move_message}</SMALL>
+						<input type="hidden" name="folderAction" value="changeFolder">
 						<noscript>
 							<NOBR><SMALL><INPUT TYPE=SUBMIT NAME="moveButton" VALUE="{lang_doit}"></SMALL></NOBR>
 						</noscript>
 						<INPUT TYPE=hidden NAME="oldMailbox" value="{oldMailbox}">
 					</TD>
-                                        <td width="40%">
-                                                &nbsp;
-                                        </td>
-					<td width="2%" align="LEFT" valign="center">
+					<td width="12px" align="right" valign="center">
 						<input type="image" src="{read_small}" name="mark_read" alt="{desc_read}" title="{desc_read}" width="16">
                                         </td>
-                                        <TD WIDTH="2%" ALIGN="MIDDLE" valign="center">
-                                                &nbsp;|&nbsp;
-                                        </td>
-                                        <td width="2%" align="RIGHT" valign="center">
+                                        <TD WIDTH="4px" ALIGN="MIDDLE" valign="center">|</td>
+                                        <td width="12px" align="left" valign="center">
 						<input type="image" src="{unread_small}" name="mark_unread" title="{desc_unread}" width="16">
                                         </td>
-                                        <TD WIDTH="2%" ALIGN="MIDDLE" valign="center">
+                                        <TD WIDTH="2px" ALIGN="MIDDLE" valign="center">
                                                 &nbsp;
                                         </td>
-                                        <td width="2%" align="LEFT" valign="center">
+                                        <td width="12px" align="right" valign="center">
 						<input type="image" src="{unread_flagged_small}" name="mark_flagged" title="{desc_important}" width="16">
                                         </td>
-                                        <TD WIDTH="2%" ALIGN="MIDDLE" valign="center">
-                                                &nbsp;|&nbsp;
-                                        </td>
-                                        <td width="2%" align="RIGHT" valign="center">
+                                        <TD WIDTH="4px" ALIGN="MIDDLE" valign="center">|</td>
+                                        <td width="12px" align="left" valign="center">
 						<input type="image" src="{unread_small}" name="mark_unflagged" title="{desc_unimportant}">
                                         </td>
-                                        <TD WIDTH="2%" ALIGN="MIDDLE" valign="center">
+                                        <TD WIDTH="2px" ALIGN="MIDDLE" valign="center">
                                                 &nbsp;&nbsp;
                                         </td>
-                                        <td width="2%" align="RIGHT" valign="center">
+                                        <td width="12px" align="RIGHT" valign="center">
 						<input type="image" src="{unread_deleted_small}" name="mark_deleted" title="{desc_deleted}">
 					</TD>
 				</TR>
@@ -223,32 +196,24 @@ doLoad();
 	{status_row}
 	<TR>
 		<TD>
-			<table WIDTH=100% BORDER=0 CELLPADDING=1 CELLSPACING=1>
-				<colgroup>
-					<col width="1%">
-					<col width="10%">
-					<col width="10%">
-					<col width="1%">
-					<col width="70%">
-					<col width="8%">
-				</colgroup>
+			<table WIDTH=100% BORDER=0 CELLPADDING=1 CELLSPACING=1 style="table-layout:fixed">
 				<tr>
-					<td width="1%" bgcolor="#FFFFCC" align="center">
-						&nbsp;
+					<td width="20px" bgcolor="#FFFFCC" align="center">
+						<input type="checkbox" id="messageCheckBox" onClick="selectAll(this)">
 					</td>
-					<td width="20%" bgcolor="#FFFFCC" align="center">
+					<td width="145px" bgcolor="#FFFFCC" align="center">
 						<b><a href="{url_sort_from}"><font color="black">{lang_from}</font></a></b>
 					</td>
-					<td bgcolor="#FFFFCC" align="center">
+					<td width="95px" bgcolor="#FFFFCC" align="center">
 						<b><a href="{url_sort_date}"><font color="black">{lang_date}</font></a></b>
 					</td>
-					<td bgcolor="#FFFFCC" align="center">
+					<td width="70px" bgcolor="#FFFFCC" align="center">
 						&nbsp;
 					</td>
 					<td bgcolor="#FFFFCC" align="center">
 						<b><a href="{url_sort_subject}"><font color="black">{lang_subject}</font></a
 					</td>
-					<td bgcolor="#FFFFCC" align="center">
+					<td width="40px" bgcolor="#FFFFCC" align="center">
 						<b>{lang_size}</b>
 					</td>
 				</tr>
@@ -278,7 +243,7 @@ doLoad();
 						{trash_link}
 					</td>
 					<td align="right" width="18%">
-						{select_all_link}
+						<noscript>{select_all_link}</noscript>
 					</td>
 				</tr>
 			</table>
@@ -288,10 +253,9 @@ doLoad();
 <!-- END status_row_tpl -->
 
 <!-- BEGIN header_row -->
-<tr class="{row_css_class}">
+<tr class="{row_css_class}" style=" height:15px; ">
 	<td width="1%" bgcolor="#FFFFFF" align="center">
-		<iinput type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
-		<input class="{row_css_class}" type="checkbox" id="msg_input_{message_counter}" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio('{message_counter}')" {row_selected}>
+		<input class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" onClick="toggleFolderRadio(this)" {row_selected}>
 	</td>
 	<td width="10%" bgcolor="#FFFFFF" nowrap>
 		<a class="{row_css_class}" href="{url_compose}" title="{full_address}">{sender_name}</a>
@@ -300,13 +264,11 @@ doLoad();
 	<td bgcolor="#FFFFFF" nowrap align="center">
 		{date}
 	</td>
-	<td bgcolor="#FFFFFF" valign="middle" align="center">
-		{state}
-<!--		<img src="{image_path}/read_small.png" width="16" border="0" alt="{lang_read}" title="{lang_read}">
--->		{row_text}
+	<td bgcolor="#FFFFFF" align="center">
+		{state}{row_text}
 	</td>
 	<td bgcolor="#FFFFFF">
-		<a class="{row_css_class}" name="subject_url" href="{url_read_message}">{header_subject}</a>
+		<a class="{row_css_class}" name="subject_url" href="{url_read_message}" title="{full_subject}">{header_subject}</a>
 	</td>
 	<td bgcolor="#FFFFFF">
 		{size}

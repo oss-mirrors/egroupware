@@ -112,7 +112,7 @@
 			}
 			
 			if(($profileData['imapTLSEncryption'] == 'yes' ||
-				$profileData['imapTLSEncryption'] == 'yes') &&
+				$profileData['imapTLSAuthentication'] == 'yes') &&
 				empty($profileData['imapPort']))
 			{
 				$data['imapPort']	= 993;
@@ -120,6 +120,27 @@
 			else
 			{
 				$data['imapPort']	= 143;
+			}
+			
+			if($profileData['imapTLSEncryption'] == 'yes' &&
+			   $profileData['imapTLSAuthentication'] == 'yes')
+			{
+				$data['imapOptions']	= '/imap/tls';
+			}
+			elseif($profileData['imapTLSEncryption'] == 'yes')
+			{
+				$data['imapOptions']	= '/imap/tls/novalidate-cert';
+			}
+			else
+			{
+				if(version_compare(phpversion(),'4.3.0'))
+				{
+					$data['imapOptions']    = '/imap';
+				}
+				else
+				{
+					$data['imapOptions']	= '/imap/notls';
+				}
 			}
 			
 			#_debug_array($data);

@@ -1,5 +1,8 @@
 Version 0.9.5
 
+- improved mainview
+	- javascript selectbutton to select all messages
+	- fixed layout
 - added support for emailadmin
 - updated PHPMailer to version 0.7.1
 - added support for localized smtp error messages

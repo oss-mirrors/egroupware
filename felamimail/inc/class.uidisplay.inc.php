@@ -18,6 +18,7 @@
 
 		var $public_functions = array
 		(
+			'css'		=> 'True',
 			'display'	=> 'True',
 			'showHeader'	=> 'True',
 			'getAttachment'	=> 'True'
@@ -25,7 +26,7 @@
 
 		function uidisplay()
 		{
-			$this->t 		= $GLOBALS['phpgw']->template;
+			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			#$this->t 		= CreateObject('phpgwapi.Template_Smarty',PHPGW_APP_TPL);
 			$this->bofelamimail	= CreateObject('felamimail.bofelamimail');
 			$this->bofilter 	= CreateObject('felamimail.bofilter');
@@ -70,19 +71,58 @@
 			
 		}
 		
+		function css()
+		{
+			$appCSS = 
+			'th.activetab
+			{
+				color:#000000;
+				background-color:#D3DCE3;
+				border-top-width : 1px;
+				border-top-style : solid;
+				border-top-color : Black;
+				border-left-width : 1px;
+				border-left-style : solid;
+				border-left-color : Black;
+				border-right-width : 1px;
+				border-right-style : solid;
+				border-right-color : Black;
+			}
+			
+			th.inactivetab
+			{
+				color:#000000;
+				background-color:#E8F0F0;
+				border-bottom-width : 1px;
+				border-bottom-style : solid;
+				border-bottom-color : Black;
+			}
+			
+			.td_left { border-left : 1px solid Gray; border-top : 1px solid Gray; }
+			.td_right { border-right : 1px solid Gray; border-top : 1px solid Gray; }
+			
+			div.activetab{ display:inline; }
+			div.inactivetab{ display:none; }';
+			
+			return $appCSS;
+		}
+		
 		function display()
 		{
+			$partID		= $_GET['part'];
 			$transformdate	= CreateObject('felamimail.transformdate');
 			$htmlFilter	= CreateObject('felamimail.htmlfilter');
 
 			$headers	= $this->bofelamimail->getMessageHeader($this->uid);
 			$rawheaders	= $this->bofelamimail->getMessageRawHeader($this->uid);
-			$bodyParts	= $this->bofelamimail->getMessageBody($this->uid);
-			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid);
+			$bodyParts	= $this->bofelamimail->getMessageBody($this->uid,'',$partID);
+			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid,$partID);
 			$filterList 	= $this->bofilter->getFilterList();
 			$activeFilter 	= $this->bofilter->getActiveFilter();
 			$filter 	= $filterList[$activeFilter];
 			$nextMessage	= $this->bocaching->getNextMessage($this->uid, $this->sort, $filter);
+			
+			$webserverURL	= $GLOBALS['phpgw_info']['server']['webserver_url'];
 
 			#print "<pre>";print_r($rawheaders);print"</pre>";exit;
 
@@ -122,27 +162,33 @@
 			
 			$this->bofelamimail->closeConnection();
 			
-			if(!isset($GLOBALS['HTTP_GET_VARS']['printable']))
+			if(!isset($_GET['printable']))
 			{
 				$this->display_app_header();
+				$this->t->set_file(array("displayMsg" => "view_message.tpl"));
+			}
+			else
+			{
+				$this->t->set_file(array("displayMsg" => "view_message_printable.tpl"));
 			}
 			
-			$this->t->set_file(array("displayMsg" => "view_message.tpl"));
 			$this->t->set_block('displayMsg','message_main');
 			$this->t->set_block('displayMsg','message_header');
 			$this->t->set_block('displayMsg','message_raw_header');
 			$this->t->set_block('displayMsg','message_navbar');
-			$this->t->set_block('displayMsg','message_navbar_print');
+			$this->t->set_block('displayMsg','message_onbehalfof');
 			$this->t->set_block('displayMsg','message_cc');
-			$this->t->set_block('displayMsg','message_organization');
 			$this->t->set_block('displayMsg','message_attachement_row');
 			$this->t->set_block('displayMsg','previous_message_block');
 			$this->t->set_block('displayMsg','next_message_block');
+			$this->t->set_block('displayMsg','message_org');
+
+			$this->t->egroupware_hack = False;
 			
 			$this->translate();
 			
-			if(!isset($GLOBALS['HTTP_GET_VARS']['printable']))
-			{
+//			if(!isset($GLOBALS['HTTP_GET_VARS']['printable']))
+//			{
 				// navbar
 				$linkData = array
 				(
@@ -213,7 +259,7 @@
 				}
 				else
 				{
-					$this->t->set_var('previous_message','&nbsp');
+					$this->t->set_var('previous_message',lang('previous message'));
 				}
 	
 				if($nextMessage['next'])
@@ -229,7 +275,7 @@
 				}
 				else
 				{
-					$this->t->set_var('next_message','&nbsp');
+					$this->t->set_var('next_message',lang('next message'));
 				}
 	
 				$langArray = array
@@ -246,7 +292,7 @@
 				);
 				$this->t->set_var($langArray);
 				$this->t->parse('navbar','message_navbar',True);
-			}
+/*			}
 			else
 			{	
 				$langArray = array
@@ -262,7 +308,7 @@
 				);
 				$this->t->set_var($langArray);
 				$this->t->parse('print_navbar','message_navbar_print',True);
-			}
+			}*/
 			
 			
 			// rawheader
@@ -287,16 +333,17 @@
 			{
 				$senderAddress = $this->emailAddressToHTML($headers->senderaddress);
 				$fromAddress   = $this->emailAddressToHTML($headers->fromaddress);
-				$this->t->set_var("from_data",
-					$senderAddress.
-					"&nbsp;".lang('on behalf of')."&nbsp;".
-					$fromAddress);
+				$this->t->set_var("from_data",$senderAddress);
+				#	"&nbsp;".lang('on behalf of')."&nbsp;".
+				#	$fromAddress);
+				$this->t->set_var("onbehalfof_data",$fromAddress);
+				$this->t->parse('on_behalf_of_part','message_onbehalfof',True);
 			}
 			else
 			{
 				$fromAddress   = $this->emailAddressToHTML($headers->fromaddress);
-				$this->t->set_var("from_data",
-					$fromAddress);
+				$this->t->set_var("from_data", $fromAddress);
+				$this->t->set_var('on_behalf_of_part','');
 			}
 			
 			// parse the to header
@@ -319,11 +366,11 @@
 			if(!empty($organization))
 			{
 				$this->t->set_var("organization_data",$organization);
-				$this->t->parse('organization_data_part','message_organization',True);
+				$this->t->parse('org_part','message_org',True);
 			}
 			else
 			{
-				$this->t->set_var("organization_data_part",'');
+				$this->t->set_var("org_part",'');
 			}
 
 			if (isset($headers->date))
@@ -341,19 +388,7 @@
 			//if(isset($organization)) exit;
 			$this->t->parse("header","message_header",True);
 
-			// body
-			if($this->bofelamimail->sessionData['showHeader'] == 'True')
-			{
-				$body = "<pre>".htmlentities($rawheaders)."</pre>";
-				$this->t->set_var("rawheader",'');
-				$this->t->set_var("view_header",lang('hide header'));
-			}
-			else
-			{
-				$body = '';
-				$this->t->set_var("rawheader",'');
-				$this->t->set_var("view_header",lang('show header'));
-			}
+			$this->t->set_var("rawheader",htmlentities($rawheaders));
 
 #$tag_list = Array(
 #                  false,
@@ -508,7 +543,7 @@ $add_attr_to_tag = Array(
 			#$body = preg_replace("/((http(s?):\/\/)|(www\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/ie", 
 			#	"'<a href=\"/phpgroupware/redirect.php?go='.htmlentities(urlencode('http$3://$4$5')).'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
 			$body = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
-				"'<a href=\"/phpgroupware/redirect.php?go='.htmlentities(urlencode('http$3://$4$5')).'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
+				"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5')).'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
 			
 			// create links for ftp sites
 			$body = preg_replace("/((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/i", 
@@ -535,6 +570,11 @@ $add_attr_to_tag = Array(
 			$this->t->set_var("signature",$sessionData['signature']);
 
 			// attachments
+			if(is_array($attachments))
+				$this->t->set_var('attachment_count',count($attachments));
+			else
+				$this->t->set_var('attachment_count','0');
+
 			if (is_array($attachments) && count($attachments) > 0)
 			{
 				$this->t->set_var('row_color',$this->rowColor[0]);
@@ -559,6 +599,16 @@ $add_attr_to_tag = Array(
 								'uid'		=> $this->uid,
 								'part'		=> $value['partID']
 							);
+							$target = '';
+							break;
+						case 'image/jpeg':
+							$linkData = array
+							(
+								'menuaction'	=> 'felamimail.uidisplay.getAttachment',
+								'uid'		=> $this->uid,
+								'part'		=> $value['partID']
+							);
+							$target = '_blank';
 							break;
 						default:
 							$linkData = array
@@ -567,9 +617,11 @@ $add_attr_to_tag = Array(
 								'uid'		=> $this->uid,
 								'part'		=> $value['partID']
 							);
+							$target = '';
 							break;
 					}
 					$this->t->set_var("link_view",$GLOBALS['phpgw']->link('/index.php',$linkData));
+					$this->t->set_var("target",$target);
 
 					$linkData = array
 					(
@@ -597,6 +649,14 @@ $add_attr_to_tag = Array(
 
 		function display_app_header()
 		{
+			if(!@is_object($GLOBALS['phpgw']->js))
+			{
+				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+			}
+			$GLOBALS['phpgw']->js->validate_file('tabs','tabs');
+			$GLOBALS['phpgw']->js->validate_file('jscode','view_message','felamimail');
+			$GLOBALS['phpgw']->js->set_onload('javascript:initAll();');
+			
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 		}
@@ -604,6 +664,9 @@ $add_attr_to_tag = Array(
 		function emailAddressToHTML($_emailAddress)
 		{		
 			// create some nice formated HTML for senderaddress
+			if($_emailAddress == 'undisclosed-recipients: ;')
+				return $_emailAddress;
+				
 			$addressData = imap_rfc822_parse_adrlist
 					($this->bofelamimail->decode_header($_emailAddress),'');
 			if(is_array($addressData))
@@ -628,6 +691,23 @@ $add_attr_to_tag = Array(
 									$link,
 									htmlentities($newSenderAddress),
 									htmlentities($val->personal));
+						$linkData = array
+						(
+							'menuaction'	=> 'addressbook.uiaddressbook.add_email',
+							'add_email'	=> $tempSenderAddress,
+							'name'		=> $val->personal,
+							'referer'	=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
+						);
+						$urlAddToAddressbook = $GLOBALS['phpgw']->link('/index.php',$linkData);
+						$image = $GLOBALS['phpgw']->common->image('felamimail','sm_envelope');
+						$senderAddress .= sprintf('<a href="%s">
+							<img src="%s" width="10" height="8" border="0" 
+							align="absmiddle" alt="%s" 
+							title="%s"></a>',
+							$urlAddToAddressbook,
+							$image,
+							lang('add to addressbook'),
+							lang('add to addressbook'));
 					}
 					else
 					{
@@ -640,6 +720,22 @@ $add_attr_to_tag = Array(
 						$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
 						$senderAddress .= sprintf('<a href="%s">%s</a>',
 									$link,htmlentities($tempSenderAddress));
+						$linkData = array
+						(
+							'menuaction'	=> 'addressbook.uiaddressbook.add_email',
+							'add_email'	=> $tempSenderAddress,
+							'referer'	=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
+						);
+						$urlAddToAddressbook = $GLOBALS['phpgw']->link('/index.php',$linkData);
+						$image = $GLOBALS['phpgw']->common->image('felamimail','sm_envelope');
+						$senderAddress .= sprintf('<a href="%s">
+							<img src="%s" width="10" height="8" border="0" 
+							align="absmiddle" alt="%s" 
+							title="%s"></a>',
+							$urlAddToAddressbook,
+							$image,
+							lang('add to addressbook'),
+							lang('add to addressbook'));
 					}
 				}
 				return $senderAddress;
@@ -729,6 +825,8 @@ $add_attr_to_tag = Array(
 			$this->t->set_var("lang_delete",lang('delete'));
 			$this->t->set_var("lang_previous_message",lang('previous message'));
 			$this->t->set_var("lang_next_message",lang('next message'));
+			$this->t->set_var("lang_organisation",lang('organisation'));
+			$this->t->set_var("lang_on_behalf_of",lang('on behalf of'));
 			
 			$this->t->set_var("th_bg",$GLOBALS['phpgw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['phpgw_info']["theme"]["bg01"]);

@@ -31,12 +31,39 @@
 		{navbar}
 	</td>
 </tr>
+</table>
+<br>
+<table border="0" cellpadding="1" cellspacing="0" width="100%" style="table-layout:fixed">
+
+<tr class="row_on">
+	<td style="font-weight:bold;">
+		{subject_data}
+	</td>
+	<td style="text-align:right; width:100px;">
+		<a href="{link_printable}" target="_blank">{lang_printable}</a>
+	</td>
+</tr>
+</table>
+<br>
+<table width="100%" border="0" cellspacing="0" cellpading="0" bgcolor="white">
+	<tr>
+		<th id="tab1" class="activetab" onclick="javascript:tab.display(1);"><a href="#" tabindex="0" accesskey="1" onfocus="tab.display(1);" onclick="tab.display(1); return(false);" style="font-size:10px;">Message</a></th>
+		<th id="tab2" class="activetab" onclick="javascript:tab.display(2);"><a href="#" tabindex="0" accesskey="2" onfocus="tab.display(2);" onclick="tab.display(2); return(false);" style="font-size:10px;">Attachment ({attachment_count})</a></th>
+		<th id="tab3" class="activetab" onclick="javascript:tab.display(3);"><a href="#" tabindex="0" accesskey="3" onfocus="tab.display(3);" onclick="tab.display(3); return(false);" style="font-size:10px;">Header Lines</a></th>
+	</tr>
+</table>
+<div id="tabcontent1" class="inactivetab" bgcolor="white">
+<table border="0" width="100%" cellspacing="0" cellpading="0" bgcolor="white" style="table-layout:fixed">
+<tr>
+	<td>
+		&nbsp;
+	</td>
+</tr>
 <tr>
 	<td>
 {header}
 	</td>
 </tr>
-{rawheader}
 <tr>
 	<td bgcolor="white">
 <div class="body">
@@ -44,17 +71,42 @@
 {body}
 <!-- Body End -->
 </div>
-	<td>
-</tr>
-<tr>
-	<td>
-		<br>
-		<table border="0" cellspacing="1" width="100%" bgcolor="white">
-			{attachment_rows}
-		</table>
 	</td>
 </tr>
 </table>
+</div>
+
+<div id="tabcontent2" class="inactivetab">
+<table border="0" width="100%" cellspacing="0" bgcolor="white">
+	<tr bgcolor="{bg01}">
+		<td align="center">
+			Name
+		</td>
+		<td align="center">
+			Type
+		</td>
+		<td align="center">
+			Size
+		</td>
+		<td align="center">
+			&nbsp;
+		</td>
+	</tr>
+{attachment_rows}
+</table>
+</div>
+
+<div id="tabcontent3" class="inactivetab">
+<table border="0" width="100%" cellspacing="0" bgcolor="white">
+	<tr>
+		<td>
+			<pre>{rawheader}</pre>
+		</td>
+	</tr> 
+</tr>
+</table>
+</div>
+
 <!-- END message_main -->
 
 <!-- BEGIN message_raw_header -->
@@ -70,8 +122,6 @@
 	<tr bgcolor="{th_bg}">
 		<td width="50%">
 			{lang_back_to_folder}:&nbsp;<a class="head_link" href="{link_message_list}">{folder_name}</a>
-			&nbsp;|&nbsp;
-			<a class="head_link" href="{link_compose}">{lang_compose}</a>
 		</td>
 		<td align="right">
 			{previous_message}
@@ -111,21 +161,21 @@
 
 <!-- BEGIN message_attachement_row -->
 <tr>
-	<td valign="top" bgcolor={bg01}>
-		<a href="{link_view}" target="_blank"><font size="2" face="{theme_font}">
+	<td valign="top">
+		<a href="{link_view}" target="{target}"><font size="2" face="{theme_font}">
 		<b>{filename}</b></font><a>
 	</td> 
-	<td colspan="2" bgcolor={bg01}>
+	<td>
 		<font size="2" face="{theme_font}">
 		{mimetype}
 		</font>
 	</td>
-	<td colspan="2" bgcolor={bg01}>
+	<td>
 		<font size="2" face="{theme_font}">
 		{size}
 		</font>
 	</td>
-	<td colspan="2" bgcolor={bg01} width="10%" align="center">
+	<td width="10%" align="center">
 		<font size="2" face="{theme_font}">
 		<a href="{link_save}">{lang_save}</a>
 		</font>
@@ -135,66 +185,76 @@
 
 <!-- BEGIN message_cc -->
 <tr>
-	<td class="subject" valign="top" bgcolor={bg01} width="100">
+	<td width="100" style="font-weight:bold;">
 		{lang_cc}:
 	</td> 
-	<td class="subject" colspan="2" bgcolor={bg01}>
+	<td>
 		{cc_data}
 	</td>
 </tr>
 <!-- END message_cc -->
 
-<!-- BEGIN message_organization -->
-		[{organization_data}]
-<!-- END message_organization -->
+<!-- BEGIN message_org -->
+<tr>
+	<td width="100" style="font-weight:bold;">
+		{lang_organisation}:
+	</td> 
+	<td>
+		{organization_data}
+	</td>
+</tr>
+<!-- END message_org -->
+
+<!-- BEGIN message_onbehalfof -->
+<tr>
+	<td width="100" style="font-weight:bold;">
+		{lang_on_behalf_of}:
+	</td> 
+	<td>
+		{onbehalfof_data}
+	</td>
+</tr>
+<!-- END message_onbehalfof -->
 
 <!-- BEGIN message_header -->
+<table border="0" cellpadding="1" cellspacing="0" width="100%" style="table-layout:fixed">
+
 <table border="0" cellpadding="1" cellspacing="0" width="100%">
-<tr>
-	<td class="subject" valign="top" width="100" bgcolor="{bg01}">
+<tr cclass="row_on">
+	<td style="text-align:left; width:120px; font-weight:bold;">
 		{lang_from}:
 	</td>
-	<td class="subjectBold" bgcolor="{bg01}">
-		{from_data}{organization_data_part}
-
-	</td>
-	<td class="subject" nowrap align=right width="120" bgcolor={bg01}>
-		<a href="{link_header}">{view_header}</a>
+	<td style="font-weight:bold;">
+		{from_data}
 	</td>
 </tr>
-<tr>
-	<td class="subject" class="subject" valign="top" bgcolor="{bg01}">
+
+{on_behalf_of_part}
+
+{org_part}
+
+<tr cclass="row_off">
+	<td style="font-weight:bold;">
 		{lang_to}:
 	</td> 
-	<td class="subject" bgcolor="{bg01}">
+	<td>
 		{to_data}
 	</td>
-	<td class="subject" nowrap align=right width="1%" bgcolor={bg01}>
-		<a href="{link_printable}" target="_blank">{lang_printable}</a>
-	</td>
 </tr>
-
 
 {cc_data_part}
 
-<tr>
-	<td class="subject" valign="top" bgcolor="{bg01}">
+<tr cclass="row_on">
+	<td style="font-weight:bold;">
 		{lang_date}:
 	</td> 
-	<td class="subject" colspan="2" bgcolor="{bg01}">
+	<td>
 		{date_data}
 	</td>
 </tr>
 
-<tr>
-	<td class="subject" valign="top" bgcolor="{bg01}">
-		{lang_subject}:
-	</td> 
-	<td class="subjectBold" colspan="2" bgcolor="{bg01}">
-		{subject_data}
-	</td>
-</tr>
 </table>
+<br>
 <!-- END message_header -->
 
 <!-- BEGIN previous_message_block -->

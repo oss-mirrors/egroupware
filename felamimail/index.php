@@ -13,14 +13,18 @@
 	\**************************************************************************/
 	/* $Id$ */
 
+	// this is to get css inclusion working
+	$_GET['menuaction']	= 'felamimail.uifelamimail.viewMainScreen';
+	
+	$phpgw_info = array();
 	$phpgw_info['flags'] = array
 	(
 		'currentapp' => 'felamimail',
 		'noheader'   => True,
 		'nonavbar'   => True
 	);
+                
 	include('../header.inc.php');
 
-	$obj = CreateObject('felamimail.uifelamimail');
-	$obj->viewMainScreen();
+	execmethod('felamimail.uifelamimail.viewMainScreen');
 ?>

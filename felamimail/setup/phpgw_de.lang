@@ -179,4 +179,6 @@ display only when no plain text is available	preferences	de	nur anzeigen wenn ke
 IMAP emailclient for EGroupware	common	de	IMAP-EMailclient für EGroupware
 site configuration	felamimail	de	Konfiguration der Anwendung
 select emailprofile	felamimail	de	EMailprofil auswählen
-
+Undelivered Message	felamimail	de	Unzustellbare Nachricht
+type	felamimail	de	Typ
+organisation	felamimail	de	Organisation

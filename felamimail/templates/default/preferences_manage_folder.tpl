@@ -96,7 +96,7 @@
 						{lang_folder_settings}
 					</td>
 					<td width="50%" align="center">
-						<a href="{acl_url}">{lang_folder_acl}</a>
+						<!--<a href="{acl_url}">{lang_folder_acl}</a>-->
 					</td>
 				</tr>
 			</table>

@@ -210,7 +210,80 @@
 			.td_right { border-right : 1px solid Gray; border-top : 1px solid Gray; }
 			
 			div.activetab{ display:inline; }
-			div.inactivetab{ display:none; }';
+			div.inactivetab{ display:none; }
+
+	.header_row_, A.header_row_
+	{
+		FONT-SIZE: 11px;
+		height : 14px;
+		padding: 0;
+		font-weight : bold;
+	}
+	
+	.header_row_D, A.header_row_D
+	{
+		FONT-SIZE: 11px;
+		height : 14px;
+		padding: 0;
+		color: silver;
+		text-decoration : line-through;
+		font-weight : bold;
+	}
+	
+	.header_row_DS, A.header_row_DS, .header_row_ADS, A.header_row_ADS
+	{
+		FONT-SIZE: 11px;
+		height : 14px;
+		padding: 0;
+		color: silver;
+		text-decoration : line-through;
+	}
+	
+	.header_row_S, A.header_row_S
+	{
+		FONT-SIZE: 11px;
+		height : 14px;
+		padding: 0;
+		vvertical-align : middle;
+	}
+	
+	.header_row_AS, A.header_row_AS
+	{
+		FONT-SIZE: 11px;
+		height : 14px;
+		padding: 0;
+		vvertical-align : middle;
+	}
+
+	.header_row_FAS, A.header_row_FAS, .header_row_FS, A.header_row_FS
+	{
+		color: red;
+		FONT-SIZE: 11px;
+		height : 14px;
+		padding: 0;
+		vvertical-align : middle;
+	}
+
+	.header_row_F, A.header_row_F
+	{
+		color: red;
+		FONT-SIZE: 11px;
+		height : 14px;
+		padding: 0;
+		font-weight : bold;
+		vvertical-align : middle;
+	}
+
+	.header_row_R, A.header_row_R
+	{
+		FONT-SIZE: 11px;
+		height : 14px;
+		padding: 0;
+		font-weight : bold;
+		vvertical-align : middle;
+	}
+			
+			';
 			
 			return $appCSS;
 		}
@@ -226,6 +299,7 @@
 			$message[] = $GLOBALS['HTTP_GET_VARS']["message"];
 			
 			$this->bofelamimail->deleteMessages($message);
+
 
 			$this->viewMainScreen();
 		}
@@ -544,17 +618,75 @@
 			
 				$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
 			
-				// create the listing of subjects
-				$maxSubjectLength = 75;
-				$maxAddressLength = 30;
 				
 				$headerCount = count($headers['header']);
 				
 				for($i=0; $i<$headerCount; $i++)
 				{
+					// create the listing of subjects
+					$maxSubjectLength = 60;
+					$maxAddressLength = 20;
+					$maxSubjectLengthBold = 50;
+					$maxAddressLengthBold = 14;
+					
+					$flags = "";
+					if(!empty($headers['header'][$i]['recent'])) $flags .= "R";
+					if(!empty($headers['header'][$i]['flagged'])) $flags .= "F";
+					if(!empty($headers['header'][$i]['answered'])) $flags .= "A";
+					if(!empty($headers['header'][$i]['deleted'])) $flags .= "D";
+					if(!empty($headers['header'][$i]['seen'])) $flags .= "S";
+
+					switch($flags)
+					{
+						case "":
+							$this->t->set_var('imageName','unread_small.png');
+							$this->t->set_var('row_text',lang('new'));
+							$maxAddressLength = $maxAddressLengthBold;
+							$maxSubjectLength = $maxSubjectLengthBold;
+							break;
+						case "D":
+						case "DS":
+						case "ADS":
+							$this->t->set_var('imageName','unread_small.png');
+							$this->t->set_var('row_text',lang('deleted'));
+							break;
+						case "F":
+							$this->t->set_var('imageName','unread_flagged_small.png');
+							$this->t->set_var('row_text',lang('new'));
+							$maxAddressLength = $maxAddressLengthBold;
+							break;
+						case "FS":
+							$this->t->set_var('imageName','read_flagged_small.png');
+							$this->t->set_var('row_text',lang('replied'));
+							break;
+						case "FAS":
+							$this->t->set_var('imageName','read_answered_flagged_small.png');
+							$this->t->set_var('row_text',lang('replied'));
+							break;
+						case "S":
+						case "RS":
+							$this->t->set_var('imageName','read_small.png');
+							$this->t->set_var('row_text',lang('read'));
+							break;
+						case "R":
+							$this->t->set_var('imageName','recent_small.gif');
+							$this->t->set_var('row_text','*'.lang('recent').'*');
+							$maxAddressLength = $maxAddressLengthBold;
+							break;
+						case "AS":
+							$this->t->set_var('imageName','read_answered_small.png');
+							$this->t->set_var('row_text',lang('replied'));
+							#$maxAddressLength = $maxAddressLengthBold;
+							break;
+						default:
+							$this->t->set_var('row_text',$flags);
+							break;
+					}
+					
 					if (!empty($headers['header'][$i]['subject']))
 					{
 						// make the subject shorter if it is to long
+						$fullSubject = $headers['header'][$i]['subject'];
 						if(strlen($headers['header'][$i]['subject']) > $maxSubjectLength)
 						{
 							$headers['header'][$i]['subject'] = substr($headers['header'][$i]['subject'],0,$maxSubjectLength)."...";
@@ -566,7 +698,7 @@
 							$headers['header'][$i]['subject'] = "$image&nbsp;".$headers['header'][$i]['subject'];
 						}
 						$this->t->set_var('header_subject', $headers['header'][$i]['subject']);
-					
+						$this->t->set_var('full_subject', $fullSubject);
 					}
 					else
 					{
@@ -625,12 +757,6 @@
 					$this->t->set_var('message_uid',$headers['header'][$i]['uid']);
 					$this->t->set_var('date',$headers['header'][$i]['date']);
 					$this->t->set_var('size',$this->show_readable_size($headers['header'][$i]['size']));
-					$flags = "";
-					if(!empty($headers['header'][$i]['recent'])) $flags .= "R";
-					if(!empty($headers['header'][$i]['flagged'])) $flags .= "F";
-					if(!empty($headers['header'][$i]['answered'])) $flags .= "A";
-					if(!empty($headers['header'][$i]['deleted'])) $flags .= "D";
-					if(!empty($headers['header'][$i]['seen'])) $flags .= "S";
 					#$this->t->set_var('flags',$flags);	
 
 #					$linkData = array
@@ -667,47 +793,6 @@
 					
 					$this->t->set_var('phpgw_images',PHPGW_IMAGES);
 					$this->t->set_var('row_css_class','header_row_'.$flags);
-					switch($flags)
-					{
-						case "":
-							$this->t->set_var('imageName','unread_small.png');
-							$this->t->set_var('row_text',lang('new'));
-							break;
-						case "D":
-						case "DS":
-						case "ADS":
-							$this->t->set_var('imageName','unread_small.png');
-							$this->t->set_var('row_text',lang('deleted'));
-							break;
-						case "F":
-							$this->t->set_var('imageName','unread_flagged_small.png');
-							$this->t->set_var('row_text',lang('new'));
-							break;
-						case "FS":
-							$this->t->set_var('imageName','read_flagged_small.png');
-							$this->t->set_var('row_text',lang('replied'));
-							break;
-						case "FAS":
-							$this->t->set_var('imageName','read_answered_flagged_small.png');
-							$this->t->set_var('row_text',lang('replied'));
-							break;
-						case "S":
-						case "RS":
-							$this->t->set_var('imageName','read_small.png');
-							$this->t->set_var('row_text',lang('read'));
-							break;
-						case "R":
-							$this->t->set_var('imageName','recent_small.gif');
-							$this->t->set_var('row_text','*'.lang('recent').'*');
-							break;
-						case "AS":
-							$this->t->set_var('imageName','read_answered_small.png');
-							$this->t->set_var('row_text',lang('replied'));
-							break;
-						default:
-							$this->t->set_var('row_text',$flags);
-							break;
-					}
 			
 					$this->t->parse('header_rows','header_row',True);
 				}
