@@ -17,7 +17,7 @@
                                 "noheader" => True, "nonavbar" => True);
   include("../header.inc.php");
 
-  header("Content-disposition: atachment; filename=\"".$name."\"");
+  header("Content-disposition: attachment; filename=\"".$name."\"");
   header("Content-type: ".strtolower($application)."/".strtolower($subtype));
 
   if ($encoding == "base64") {
