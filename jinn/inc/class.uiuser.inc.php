@@ -467,11 +467,21 @@
 		 function config_objects()
 		 {
 			$this->ui->header(lang('configure browse view'));
-			$this->ui->msg_box($this->bo->message);
-			$this->main_menu();	
 
-			$main = CreateObject('jinn.uiconfig',$this->bo);
-			$main->show_fields();
+			if(!$this->bo->site_object_id)
+			{
+			   $this->bo->message['error']=lang('No object selected. No able to configure this view');
+			   $this->ui->msg_box($this->bo->message);
+			   $this->main_menu();	
+
+			}
+			else
+			{
+			   $this->ui->msg_box($this->bo->message);
+			   $this->main_menu();	
+			   $main = CreateObject('jinn.uiconfig',$this->bo);
+			   $main->show_fields();
+			}
 
 			$this->bo->save_sessiondata();
 		 }

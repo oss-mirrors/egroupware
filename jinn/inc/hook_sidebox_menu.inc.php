@@ -115,7 +115,7 @@
 		);
 		display_sidebox($appname,$menu_title,$file);
 
-		$menu_title = lang('Developer Links');
+/*		$menu_title = lang('Developer Links');
 		$file = Array(
 			'Site Media and Documents' => array
 			(
@@ -125,7 +125,7 @@
 			)
 		);
 		display_sidebox($appname,$menu_title,$file);
-
+*/
 	}
 
 }
