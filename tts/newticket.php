@@ -102,7 +102,7 @@ include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
   } else {
      //$current_date = date("ymdHi");		//set timestamp
 
-    $txtDetail .= $phpgw->session->loginid . " - " . $phpgw->preferences->show_date($phpgw->db->f(6)) . "<BR>\n";
+    $txtDetail .= $phpgw->session->loginid . " - " . $phpgw->common->show_date($phpgw->db->f(6)) . "<BR>\n";
     $txtDetail .= $txtAdditional;
      $txtDetail = addslashes($txtDetail);
 

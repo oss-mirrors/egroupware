@@ -114,9 +114,9 @@ include("config/html.conf.php3");
 
     echo "<TD align=center>" . $phpgw->db->f("t_assignedto") . "</TD>";
     echo "<TD align=center>" . $phpgw->db->f("t_user") . "</TD>";
-    echo "<TD align=center>" . $phpgw->preferences->show_date($phpgw->db->f("t_timestamp_opened")) . "</TD>";
+    echo "<TD align=center>" . $phpgw->common->show_date($phpgw->db->f("t_timestamp_opened")) . "</TD>";
     if ( $phpgw->db->f("t_timestamp_closed") > 0 )  {
-      echo "<TD align=center>" . $phpgw->preferences->show_date($phpgw->db->f("t_timestamp_closed")) . "</TD>";
+      echo "<TD align=center>" . $phpgw->common->show_date($phpgw->db->f("t_timestamp_closed")) . "</TD>";
     } elseif ($filter == "viewall") {
       if ( $phpgw->db->f("t_assignedto") == "none" ) {
         echo "<TD align=center>not assigned</TD>";

@@ -69,11 +69,11 @@ $lstCategory=$phpgw->db->f(1);
          <?php echo lang_tts("Assigned from"); ?>: <br><b><?php echo $phpgw->db->f(4);?></b>
        </td>
        <td align=center>
-         <?php echo lang_tts("Open Date"); ?>: <br><b><?php echo $phpgw->preferences->show_date($phpgw->db->f(6)); ?></b>
+         <?php echo lang_tts("Open Date"); ?>: <br><b><?php echo $phpgw->common->show_date($phpgw->db->f(6)); ?></b>
          <br>
          <?php echo lang_tts("Close Date"); ?>: <br><b><?php
                         if ($phpgw->db->f(7) > 0) {
-                          echo $phpgw->preferences->show_date($phpgw->db->f(7));
+                          echo $phpgw->common->show_date($phpgw->db->f(7));
                         } else {
                           echo lang_tts("in progress");
                         }
@@ -179,7 +179,7 @@ $lstCategory=$phpgw->db->f(1);
     $txtDetail = $prevtxtdetail;
 
     if (! empty($txtAdditional)) {
-      $txtDetail .= "<BR><i>\n" . $phpgw->session->loginid . " - " . $phpgw->preferences->show_date(time()) . "</i><BR>\n";
+      $txtDetail .= "<BR><i>\n" . $phpgw->session->loginid . " - " . $phpgw->common->show_date(time()) . "</i><BR>\n";
     }
 
     if ($optUpdateclose == "letclosed" ) {
