@@ -772,8 +772,8 @@
 
 
 // ---- DEBUG: Show Information About Each Part  -----
-	$show_debug_parts = False;
-	//$show_debug_parts = True;
+	//$show_debug_parts = False;
+	$show_debug_parts = True;
 	
 	if ($show_debug_parts)
 	{
@@ -892,7 +892,7 @@
 
 	// Force Echo Out Unformatted Text for email with 1 part which is a large text messages (in bytes) , such as a system replrt from cron
 	// php (4.0.4pl1 last tested) and some imap servers (courier and uw-imap are confirmed) will time out retrieving this type of message
-	$force_echo_size = 80000;
+	$force_echo_size = 60000;
 	$too_many_crlf = 18;
 
 // -----  GET BODY AND SHOW MESSAGE  -------
@@ -921,13 +921,18 @@
 
 
 			// ---- strip html - FUTURE: only strip "bad" html
-			if (strtoupper(lang("charset")) <> "BIG5")
-			{
-				$dsp = $phpgw->strip_html($dsp);
-			}
-			$dsp = ereg_replace( "^","<p>",$dsp);
-			$dsp = ereg_replace( "\n","<br>",$dsp);
-			$dsp = ereg_replace( "$","</p>", $dsp);
+			//if (strtoupper(lang("charset")) <> "BIG5")
+			//{
+			//	$dsp = $phpgw->strip_html($dsp);
+			//}
+			
+			//  TEST: only strip "bad" html
+			// eliminate JS code
+			//$dsp = preg_replace("'<script[^>]*?\>.*?</script>'", "",$dsp);
+			
+			//$dsp = ereg_replace( "^","<p>",$dsp);
+			//$dsp = ereg_replace( "\n","<br>",$dsp);
+			//$dsp = ereg_replace( "$","</p>", $dsp);
 
 
 			//$t->set_var('message_body',"<tt>$dsp</tt>");
@@ -974,8 +979,8 @@
 		// do we Force Echo Out Unformatted Text ?
 		elseif (($part_nice[$i]['m_description'] == 'presentable')
 		&& (stristr($part_nice[$i]['m_keywords'], 'PLAIN'))
-		&& ($d1_num_parts == 1)
-		&& ($part_nice[$i]['m_part_num_mime'] === '1')
+		&& ($d1_num_parts <= 2)
+		&& (($part_nice[$i]['m_part_num_mime'] === '1') || ($part_nice[$i]['m_part_num_mime'] === '1.1'))
 		&& ((int)$part_nice[$i]['bytes'] > $force_echo_size))
 		{
 			// output a blank message body, we'll use an alternate method below
@@ -1007,7 +1012,9 @@
 			$phpgw->common->phpgw_footer();
 			exit;
 		}
-		elseif ($part_nice[$i]['m_description'] == 'presentable')
+		elseif (($part_nice[$i]['m_description'] == 'presentable')
+		// or some lame servers do not give any mime data out
+		|| ((count($part_nice) == 1) &&  ($part_nice[$i]['m_description'] != 'presentable')) )
 		{
 			// ----- get the part from the server
 			$dsp = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
@@ -1015,12 +1022,10 @@
 			
 			// ----- when to skip showing a part (i.e. blank part - no alpha chars)
 			$skip_this_part = False;
-			//if (((int)$part_nice[$i]['bytes'] == 3)  && ((int)$part_nice[$i]['lines'] == 1))
 			if (strlen($dsp) < 3)
 			{
 				$skip_this_part = True;
 			}
-			//if (strlen($dsp) < 3)  //if (strlen(trim($dsp)) > 2)  //if (strlen($dsp) > 2)
 
 			// ----- show the part 
 			if ($skip_this_part == False)
