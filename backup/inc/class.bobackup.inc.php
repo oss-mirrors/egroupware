@@ -68,21 +68,9 @@
 		{
 			if ($values['l_save'])
 			{
-				if (! $values['l_app'])
+				if (! $values['l_path'] && ! $values['l_websave'])
 				{
-					$error[] = lang('Plase select an application for transport !');					
-				}
-				elseif ($values['l_user'] != 'httpd' && (! $values['l_user'] || !$values['l_pwd']))
-				{
-					$error[] = lang('Plase enter username and password !');					
-				}
-				elseif ($values['l_app'] == 'ftp')
-				{
-					$ftp = $this->phpftp_connect('localhost',$values['l_user'],$values['l_pwd']);
-					if (! $ftp)
-					{
-						$error[] = lang('The connection through ftp failed ! Please check your config values !');
-					}
+					$error[] = lang('Plase enter the path of the backup dir and/or enable showing archives in phpGroupWare !');					
 				}
 			}
 
@@ -90,18 +78,18 @@
 			{
 				if (! $values['r_app'])
 				{
-					$error[] = lang('Plase select an application for transport !');					
+					$error[] = lang('Plase select an application for transport to the remote host !');					
 				}
 				elseif (! $values['r_user'] || ! $values['r_pwd'])
 				{
-					$error[] = lang('Plase enter username and password !');					
+					$error[] = lang('Plase enter username and password for remote connection !');					
 				}
 				elseif ($values['r_app'] == 'ftp')
 				{
 					$ftp = $this->phpftp_connect($values['r_ip'],$values['r_user'],$values['r_pwd']);
 					if (! $ftp)
 					{
-						$error[] = lang('The connection through ftp failed ! Please check your config values !');
+						$error[] = lang('The ftp connection failed ! Please check your configuration !');
 					}
 				}
 			}

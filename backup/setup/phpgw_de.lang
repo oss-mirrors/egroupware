@@ -13,6 +13,9 @@ SQL	backup	de	SQL
 LDAP	backup	de	LDAP
 E-MAIL	backup	de	E-MAIL
 Operating system	backup	de	Betriebssystem
+Plase enter username and password for remote connection !	backup	de	Bitte Benutzername and Paßwort für die Verbindung angeben !
+Plase enter the path of the backup dir and/or enable showing archives in phpGroupWare !	backup	de	Bitte den Pfad zum Sicherungsverzeichnis angeben und/oder das anzeigen der Archive in phpGroupWare aktivieren !
+Plase select an application for transport to the remote host !	backup	de	bitte ein Programm zum Transport zum entfernten Host auswählen !
 Configuration remote host	backup	de	Konfiguration des entfernten Hosts
 Save backup locally ?	backup	de	Daten lokal sichern ?
 Save backup to a remote host ?	backup	de	Daten auf einen entfernten Host sichern ?
@@ -22,6 +25,7 @@ Select transport application	backup	de	Transport Programm auswählen
 Show backup archives in phpGroupWare ?	backup	de	Datensicherungs-Archive in phpGroupWare anzeigen ?
 tar.gz	backup	de	tar.gz
 tar.bz2	backup	de	tar.bz2
+The ftp connection failed ! Please check your configuration !	backup	de	Die ftp Verbindung schlug fehl ! Bitte die Konfiguration überprüfen !
 Transport application	backup	de	Transport Programm
 Absolute path of the backup directory	backup	de	Absoluter Pfad des Backup-Verzeichnisses
 IP	backup	de	IP

@@ -13,6 +13,9 @@ LDAP	backup	en	LDAP
 E-MAIL	backup	en	E-MAIL
 httpd	backup	en	HTTPD
 Operating system	backup	en	Operating system
+Plase enter username and password for remote connection !	backup	en	Plase enter username and password for remote connection !
+Plase enter the path of the backup dir and/or enable showing archives in phpGroupWare !	backup	en	Plase enter the path of the backup dir and/or enable showing archives in phpGroupWare !
+Plase select an application for transport to the remote host !	backup	en	Plase select an application for transport to the remote host !
 Configuration remote host	backup	en	Configuration remote host
 Save backup locally ?	backup	en	Save backup locally ?
 Save backup to a remote host ?	backup	en	Save backup to a remote host ?
@@ -22,6 +25,7 @@ Select transport application	backup	en	Select transport application
 Show backup archives in phpGroupWare ?	backup	en	Show backup archives in phpGroupWare ?
 tar.gz	backup	en	tar.gz
 tar.bz2	backup	en	tar.bz2
+The ftp connection failed ! Please check your configuration !	backup	en	The ftp connection failed ! Please check your configuration !	
 Transport application	backup	en	Transport application
 Absolute path of the backup directory	backup	en	Absolute path of the backup directory
 IP	backup	en	IP
