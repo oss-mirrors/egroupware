@@ -15,7 +15,16 @@
   //       I will also make a preference for the frames part of things
   $phpgw_info["flags"]= array("currentapp" => "bookmarks", "nonavbar" => True, "noheader" => True);
   include("../header.inc.php");
+
+  $phpgw->db->query("select bm_timestamps from bookmarks where id='$bm_id'",__LINE__,__FILE__);
+  $phpgw->db->next_record();
   
+  $ts = explode(",",$phpgw->db->f("bm_timestamps"));
+  $newtimestamp = sprintf("%s,%s,%s",$ts[0],time(),$ts[2]);
+
+  $phpgw->db->query("update bookmarks set bm_timestamps='$newtimestamp' where username='"
+                  . $phpgw_info["user"]["account_id"] . "' and id='$bm_id'");
+
   if (isset($showheader)) {
      ?>
       <body bgcolor="FFFFFF">

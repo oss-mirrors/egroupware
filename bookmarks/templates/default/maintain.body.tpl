@@ -51,6 +51,11 @@
  </tr>
 
  <tr>
+   <td>Total vists</td>
+   <td><strong>{TOTAL_VISTS}&nbsp;</strong>
+ </tr>
+
+ <tr>
    <td>Date Last updated</td>
    <td><strong>{UPDATED}&nbsp;</strong>
  </tr>
