@@ -189,7 +189,7 @@
 
 		function preferences()
 		{
-			$mainscreen = $GLOBALS['HTTP_POST_VARS']['mainscreen'];
+			$mainscreen = $GLOBALS['HTTP_GET_VARS']['mainscreen'];
 
 			$link_data = array
 			(
@@ -201,14 +201,12 @@
 				$GLOBALS['phpgw']->preferences->read_repository();
 				if ($mainscreen == 'enable')
 				{
-					$GLOBALS['phpgw']->preferences->delete('stocks','mainscreen');
-					$GLOBALS['phpgw']->preferences->add('stocks','mainscreen','enabled');
+					$GLOBALS['phpgw']->preferences->change('stocks','mainscreen','enabled');
 				}
 
 				if ($mainscreen == 'disable')
 				{
-					$GLOBALS['phpgw']->preferences->delete('stocks','mainscreen');
-					$GLOBALS['phpgw']->preferences->add('stocks','mainscreen','disabled');
+					$GLOBALS['phpgw']->preferences->delete('stocks','mainscreen','disabled');
 				}
 
 				$GLOBALS['phpgw']->preferences->save_repository(True);
@@ -241,6 +239,7 @@
 
 			$this->t->set_var('newstatus',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences&mainscreen=' . $newstatus));
 			$this->t->set_var('lang_newstatus',lang($newstatus));
+			$this->t->set_var('doneurl',$GLOBALS['phpgw']->link('/preferences/index.php'));
 			$this->t->pfp('out','stock_prefs',True);
 		}
 

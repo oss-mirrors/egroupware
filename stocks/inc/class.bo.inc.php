@@ -156,7 +156,13 @@
 
 		function save_stock($values)
 		{
+			if (!$values['name'])
+			{
+				$values['name'] = $values['symbol'];
+			}
+
 			$values['sysmbol']	= urlencode(strtoupper($values['symbol']));
+			$values['name']		= urlencode($values['name']);
 
 			if ($values['id'] && $values['id'] != 0)
 			{

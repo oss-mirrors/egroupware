@@ -10,5 +10,9 @@
         <td>{lang_display}</td>
         <td align="center"><a href="{newstatus}">{lang_newstatus}</a></td>
 	</tr>
+	<tr valign="bottom">
+		<form method="POST" action="{doneurl}">
+		<td><input type="submit" name="done" value="{lang_done}"></form></td>
+	</tr>
 </table>
 </center>
