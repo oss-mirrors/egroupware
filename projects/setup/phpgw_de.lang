@@ -155,8 +155,6 @@ hours used total	projects	de	Stunden verbraucht gesamt
 id can not exceed 20 characters in length	projects	de	ID darf 250 Zeichen nicht überschreiten.
 id can not exceed 250 characters in length	projects	de	ID darf 250 Zeichen nicht überschreiten.
 if using activities	admin	de	Wenn Tätigkeiten benutzt werden
-if you are an administrator, please edit the site configuration for projects in the admin section	projects	de	Sind Sie ein Administrator, bearbeiten Sie bitte die Konfiguration für Projekte in der Admin-Sektion.
-if you are not an administrator, please inform the administrator to configure projects	projects	de	Sind Sie kein Administrator, informieren Sie bitte den Administrator zum Konfigurieren der Projekte Anwendung .
 investment nr	projects	de	Investitions-Nr.
 invoicing method	projects	de	Art der Abrechnung
 invoicing of work time	admin	de	Arbrechnung von Arbeitszeit
@@ -218,7 +216,6 @@ planned time sum of all sub projects is bigger than the planned time of the main
 please choose a project coordinator	projects	de	Bitte wählen Sie einen Projektkoordinator.
 please choose activities for the project	projects	de	Bitte wählen Sie Tätigkeiten für das Projekt.
 please choose the accounting system for the project	projects	de	Bitte wählen Sie die Abrechnungsart.
-please choose the columns to list in the projects preferences section	projects	de	Bitte wählen Sie die Listenspalten in den Benutzereinstellungen für Projekte.
 please choose the discount type	projects	de	Bitte wählen Sie einen Rabatt aus.
 please enable html view of emails.	projects	de	Bitte erlauben Sie E-Mails als HTML darzustellen
 please enter a remark	projects	de	Bitte geben Sie einen Betreff an.
@@ -230,7 +227,6 @@ please select a project for time tracking	projects	de	Bitte wählen Sie ein Proje
 please set the accounting factor for the project	projects	de	Bitte geben Sie den Abrechnungsfaktor des Projektes an.
 please set your preferences for this application !	projects	de	Bitte konfigurieren Sie die Einstellungen für diese Applikation!
 please specify the budget	projects	de	Bitte geben Sie das Budget an.
-please specify the currency in the global preferences section	common	de	Bitte geben Sie die Währung in der globalen Sektion der Benutzereinstellungen an.
 position	projects	de	Position
 previous	projects	de	Vorprojekt
 previous project	projects	de	Vorprojekt

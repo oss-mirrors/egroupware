@@ -368,15 +368,7 @@
 
 			$template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
-			$nopref = $this->check_prefs();
-			if (is_array($nopref))
-			{
-				$template->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
-			}
-			else
-			{
-				$prefs = $this->read_prefs();
-			}
+			$prefs = $this->read_prefs();
 
 			#$values = $this->read_single_project($project_id);
 
@@ -3219,30 +3211,6 @@
 			}
 			$prefs['currency'] = $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
 			return $prefs;
-		}
-
-		function check_prefs()
-		{
-			$prefs = $this->read_prefs(False);
-
-			if (! isset($prefs['currency']))
-			{
-				$error[] = lang('please specify the currency in the global preferences section');
-			}
-
-			if(! isset($prefs['columns']))
-			{
-				$error[] = lang('please choose the columns to list in the projects preferences section');
-			}
-
-			$config = $this->soprojects->get_site_config(False);
-
-			if (! isset($config['accounting']))
-			{
-				$error[] = lang('if you are an administrator, please edit the site configuration for projects in the admin section');
-				$error[] = lang('if you are not an administrator, please inform the administrator to configure projects');
-			}
-			return $error;
 		}
 
 		function get_prefs()

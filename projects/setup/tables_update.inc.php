@@ -1057,4 +1057,32 @@
 		$GLOBALS['setup_info']['projects']['currentver'] = '1.0.0.001';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
+
+
+	$test[] = '1.0.0.001';
+	function projects_upgrade1_0_0_001()
+	{
+		// setting some reasonable config defaults, if none set so far
+		$GLOBALS['phpgw_setup']->oProc->query("SELECT config_name,config_app FROM phpgw_config WHERE config_app='projects'",__LINE__,__FILE__);
+		$config = array();
+		while($GLOBALS['phpgw_setup']->oProc->next_record())
+		{
+			$config[$GLOBALS['phpgw_setup']->oProc->f(0)] = $GLOBALS['phpgw_setup']->oProc->f(1);
+		}
+		foreach(array(
+			'hwday' => 8,
+			'accounting' => 'own',
+			'activity_bill' => 'h',
+			'dateprevious' => 'no',
+		) as $name => $value)
+		{
+			if (!isset($config[$name]))
+			{
+				$GLOBALS['phpgw_setup']->oProc->query("INSERT INTO phpgw_config (config_app,config_name,config_value) VALUES ('projects','$name','$value')",__LINE__,__FILE__);
+			}
+		}
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '1.0.0.002';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
 ?>

@@ -534,11 +534,6 @@
 
 // ---------------- list header variable template-declarations --------------------------
 
-			$nopref = $this->boprojects->check_prefs();
-			if (is_array($nopref))
-			{
-				$GLOBALS['phpgw']->template->set_var('message',$GLOBALS['phpgw']->common->error_list($nopref));
-			}
 			$prefs = $this->boprojects->read_prefs();
 
 			$GLOBALS['phpgw']->template->set_var('sort_title',$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('title'),$link_data));
@@ -1134,11 +1129,6 @@
 			$GLOBALS['phpgw']->template->set_block('edit_form','mstone_list','list');
 			$GLOBALS['phpgw']->template->set_block('edit_form','project_data','pro');
 
-			$nopref = $this->boprojects->check_prefs();
-			if (is_array($nopref))
-			{
-				$GLOBALS['phpgw']->template->set_var('message',$GLOBALS['phpgw']->common->error_list($nopref));
-			}
 			$prefs = $this->boprojects->read_prefs();
 
 			$GLOBALS['phpgw']->template->set_var('addressbook_link',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.abook'));
@@ -1728,15 +1718,7 @@
 			$GLOBALS['phpgw']->template->set_file(array('view' => 'view3.tpl'));
 			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
-			$nopref = $this->boprojects->check_prefs();
-			if (is_array($nopref))
-			{
-				$GLOBALS['phpgw']->template->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
-			}
-			else
-			{
-				$prefs = $this->boprojects->read_prefs();
-			}
+			$prefs = $this->boprojects->read_prefs();
 
 			$values = $this->boprojects->read_single_project($project_id);
 
@@ -1966,15 +1948,7 @@
 			$GLOBALS['phpgw']->template->set_block('projects_list_t','pcosts','pc');
 			$GLOBALS['phpgw']->template->set_block('projects_list_t','project_main','main');
 
-			$nopref = $this->boprojects->check_prefs();
-			if (is_array($nopref))
-			{
-				$GLOBALS['phpgw']->template->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
-			}
-			else
-			{
-				$prefs = $this->boprojects->read_prefs();
-			}
+			$prefs = $this->boprojects->read_prefs();
 			$GLOBALS['phpgw']->template->set_var('currency',$prefs['currency']);
 
 			if (!$action)

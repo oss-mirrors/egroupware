@@ -12,7 +12,7 @@
   /* $Id$ */
 
 	$setup_info['projects']['name']      = 'projects';
-	$setup_info['projects']['version']   = '1.0.0.001';
+	$setup_info['projects']['version']   = '1.0.0.002';
 	$setup_info['projects']['app_order'] = 8;
 	$setup_info['projects']['enable']    = 1;
 
@@ -67,4 +67,9 @@
 	(
 		 'appname' => 'phpgwapi',
 		 'versions' => Array('0.9.16','0.9.17','0.9.14','1.0.0','1.0.1')
+	);	
+	$setup_info['projects']['depends'][] = array
+	(
+		 'appname' => 'infolog',
+		 'versions' => Array('1.0.0','1.0.1')
 	);

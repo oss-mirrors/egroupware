@@ -155,8 +155,6 @@ hours used total	projects	en	hours used total
 id can not exceed 20 characters in length	projects	en	id can not exceed 20 characters in length
 id can not exceed 250 characters in length	projects	en	ID can not exceed 250 characters in length.
 if using activities	admin	en	If using activities
-if you are an administrator, please edit the site configuration for projects in the admin section	projects	en	If you are an administrator, please edit the site configuration for projects in the admin section.
-if you are not an administrator, please inform the administrator to configure projects	projects	en	If you are not an administrator, please inform the administrator to configure projects.
 investment nr	projects	en	Investment Nr.
 invoicing method	projects	en	Invoicing method
 invoicing of work time	admin	en	Invoicing of work time
@@ -216,7 +214,6 @@ planned time sum of all sub projects is bigger than the planned time of the main
 please choose a project coordinator	projects	en	Please choose a project coordinator.
 please choose activities for the project	projects	en	Please choose activities for the project.
 please choose the accounting system for the project	projects	en	Please choose the accounting system for the project.
-please choose the columns to list in the projects preferences section	projects	en	Please choose the columns to list in the projects preferences section.
 please choose the discount type	projects	en	Please choose the discount type.
 please enable html view of emails.	projects	en	Please enable HTML view of E-Mails.
 please enter a remark	projects	en	Please enter a remark.
@@ -228,7 +225,6 @@ please select a project for time tracking	projects	en	please select a project fo
 please set the accounting factor for the project	projects	en	Please set the accounting factor for the project.
 please set your preferences for this application !	projects	en	Please set your preferences for this application !
 please specify the budget	projects	en	Please specify the budget.
-please specify the currency in the global preferences section	common	en	Please specify the currency in the global preferences section.
 position	projects	en	Position
 previous	projects	en	Previous project
 previous project	projects	en	Previous project
