@@ -1,7 +1,7 @@
 <?php
 /**************************************************************************\
-* phpGroupWare - Wiki DB-Layer                                             *
-* http://www.phpgroupware.org                                              *
+* eGroupWare - Wiki DB-Layer                                               *
+* http://www.egroupware.org                                                *
 * Written by Ralf Becker <RalfBecker@outdoor-training.de>                  *
 * originaly based on WikkiTikkiTavi tavi.sf.net and www.axisgroupware.org: *
 * former files lib/pagestore.php + lib/page.php                            *
