@@ -1,5 +1,5 @@
 #! /bin/sh
-# postinst script for phpgroupware-skel
+# postinst script for egroupware-skel
 #
 # see: dh_installdeb(1)
 
@@ -22,10 +22,10 @@ set -e
 #     installation fails and the `postinst' is called with `abort-upgrade',
 #     `abort-remove' or `abort-deconfigure'.
 
-APP=$(echo $0 | sed 's/.*phpgroupware-\([^\.]\+\).*/\1/')
+APP=$(echo $0 | sed 's/.*egroupware-\([^\.]\+\).*/\1/')
 case "$1" in
 	configure)
-		ln -s /usr/share/phpgroupware-core/${APP} ../phpgroupware-${APP}
+		ln -s /usr/share/egroupware-core/${APP} ../egroupware-${APP}
 	;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 	;;

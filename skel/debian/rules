@@ -17,8 +17,8 @@ export DH_COMPAT=3
 export DH_OPTIONS=-i
 
 APP=skel
-PACKAGE=debian/phpgroupware-$(APP)/usr/share/phpgroupware-$(APP)
-PACKAGEDOC=debian/phpgroupware-$(APP)/usr/share/doc/phpgroupware-$(APP)
+PACKAGE=debian/egroupware-$(APP)/usr/share/egroupware-$(APP)
+PACKAGEDOC=debian/egroupware-$(APP)/usr/share/doc/egroupware-$(APP)
 
 configure: configure-stamp
 configure-stamp:

@@ -4,9 +4,9 @@
 <ArtHeader>
 <Title>Credits</Title>
 <AUTHOR>
-<FirstName>Dan Kuykendall &lt;dan@kuykendall.org&gt;</FirstName>
+<FirstName>eGroupWare Developers &lt;egroupware-developers@sourceforge.net&gt;</FirstName>
 </AUTHOR>
-<PubDate>v1.0, 19 May 2001</PubDate>
+<PubDate>31 Aug 2004</PubDate>
 
 <Abstract>
 <Para>
@@ -19,12 +19,12 @@
 <Sect1>
 <Title>Credits</Title>
 	<Para>
-		<ulink url="mailto:dan@kuykendall.org">Dan Kuykendall</ulink>
+		<ulink url="mailto:egroupware-developers@sourceforge.net">eGroupWare Developers</ulink>
     Created this app
   </Para>
 
 	<Para>
-		Many thanks to the whole phpGroupWare team!
+		Many thanks to the whole eGroupWare team!
 	</Para>
 </Sect1>
 </Article>

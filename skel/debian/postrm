@@ -1,5 +1,5 @@
 #! /bin/sh
-# postrm script for phpgroupware-skel
+# postrm script for egroupware-skel
 #
 # see: dh_installdeb(1)
 
@@ -16,10 +16,10 @@ set -e
 #        * <disappearer's-postrm> `disappear' <r>overwrit>r> <new-version>
 # for details, see /usr/share/doc/packaging-manual/
 
-APP=$(echo $0 | sed 's/.*phpgroupware-\([^\.]\+\).*/\1/')
+APP=$(echo $0 | sed 's/.*egroupware-\([^\.]\+\).*/\1/')
 case "$1" in
 	purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
-		rm -f /usr/share/phpgroupware-core/${APP}
+		rm -f /usr/share/egroupware-core/${APP}
 	;;
 	*)
 		echo "postrm called with unknown argument \`$1'" >&2

@@ -4,9 +4,9 @@
 <ArtHeader>
 <Title>Skeleton App Installation Guide</Title>
 <AUTHOR>
-<FirstName>Dan Kuykendall &lt;dan@kuykendall.org&gt;</FirstName>
+<FirstName>eGroupWare Developers &lt;egroupware-developers@sourceforge.net&gt;</FirstName>
 </AUTHOR>
-<PubDate>v1.0, 19 May 2001</PubDate>
+<PubDate>31 Aug 2004</PubDate>
 
 <Abstract>
 <Para>
@@ -29,7 +29,7 @@ Can be downloaded from some url.
 <Sect2>
 <Title>Installing</Title>
 <Para>
-Point your browser to your http://www.yourdomain.com/phpgroupware/setup
+Point your browser to your http://www.yourdomain.com/egroupware/setup
 The setup prog will autodetect this application and allow you to have it create the tables.
 From there you will need to assign this app to the users you want to have be able to use it.
 </Para>

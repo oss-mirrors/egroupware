@@ -1,11 +1,11 @@
-This package was debianized by Luca - De Whiskey's - De Vitis <luca@debian.org> on
-Mon, 21 May 2001 15:00:56 +0200.
+This package was debianized by  Peter Eisentraut  - Peter Eisentraut <peter_e@gmx.net> on 
+Mon, 31 Aug 2004 15:00:56 +0200
 
 It was downloaded from 
-http://sourceforge.net/project/showfiles.php?group_id=7305
+https://sourceforge.net/project/showfiles.php?group_id=78745
 
 Upstream Author(s):
-Please, see /usr/share/phpgroupware-skel/credits.txt
+Please, see /usr/share/egroupware-skel/credits.txt
 
 Copyright:
 A copy of the GNU General Public License, version 2, can be found in
