@@ -16,5 +16,5 @@
 		'Grant access'     => $GLOBALS['phpgw']->link('/preferences/acl_preferences.php','acl_app=bookmarks'),
 		'Categories'       => $GLOBALS['phpgw']->link('/preferences/categories.php','cats_app=bookmarks&global_cats=True')
 	);
-	display_section('Bookmarks','Bookmarks',$file);
+	display_section('bookmarks','Bookmarks',$file);
 ?>
