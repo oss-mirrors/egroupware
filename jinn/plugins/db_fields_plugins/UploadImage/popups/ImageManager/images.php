@@ -103,11 +103,20 @@
 			$w = $img_info[0]; 
 			$h = $img_info[1];
 
+			
+			if($_POST[thumb]=='true')
+			{
+				if(!$_POST[thumbwidth]) $_POST[thumbwidth] = 10000;
+				if(!$_POST[thumbheight]) $_POST[thumbheight] = 10000;
+				$prefix='.thumb_01_';
+				adapt_size($file['tmp_name'],$dest_dir.$prefix.$file['name'], $_POST[thumbwidth], $_POST[thumbheight]);
+			}
+			
 			if(!$_POST[width]) $_POST[width] = 10000;
 			if(!$_POST[height]) $_POST[height] = 10000;
 			if( $w > $_POST[width] || $h > $_POST[height] )
 			{
-				adapt_size($file['tmp_name'],$dest_dir.$file['name']);
+				adapt_size($file['tmp_name'],$dest_dir.$file['name'], $_POST[width], $_POST[height]);
 			}
 			else
 			{
@@ -120,7 +129,7 @@
    }
 
    
-   function adapt_size($img,$dest_file) 
+   function adapt_size($img,$dest_file, $nw, $nh) 
    {
 	  global $BASE_DIR, $BASE_URL;
 
@@ -130,8 +139,6 @@
 
 	  $img_info = getimagesize($path.$img_file);
 	  $w = $img_info[0]; $h = $img_info[1];
-
-	  $nw = $_POST[width]; $nh = $_POST[height];
 
 	  $img_resize = Image_Transform::factory(IMAGE_CLASS);
 	  $img_resize->load($path.$img_file);
@@ -174,7 +181,7 @@
 	  global $BASE_DIR, $refresh_dirs;
 	  
 	  $del_folder = dir_name($BASE_DIR).$folder;
-	  
+//_debug_array($del_folder);	  
 	  if(is_dir($del_folder) && num_files($del_folder) <= 0) 
 	  {
 		 rm_all_dir($del_folder);
@@ -219,7 +226,8 @@
 	  global $BASE_DIR,$IMG_ROOT;
 
 	  $del_image = dir_name($BASE_DIR).$IMG_ROOT.$file;
-	  $del_thumb = dir_name($BASE_DIR).$IMG_ROOT.$file;
+	  $del_thumb = dir_name($BASE_DIR).$IMG_ROOT.'.'.$file;
+	  $del_thumb_01 = dir_name($BASE_DIR).$IMG_ROOT.'.thumb_01_'.$file;
 
 	  if(is_file($del_image)) 
 	  {
@@ -230,7 +238,12 @@
 	  {
 		 unlink($del_thumb);	
 	  }
-   }
+
+	  if(is_file($del_thumb_01)) 
+	  {
+		 unlink($del_thumb_01);	
+	  }
+	}
 
    function create_folder() 
    {
@@ -369,7 +382,7 @@ function show_dir($path, $dir)
 		 <td><table width="100%" border="0" cellspacing="1" cellpadding="2">
 			   <tr> 
 				  <td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-					 <a href="images.php?delFolder=<? echo $BASE_URL.$path; ?>&dir=<? echo $newPath; ?>" onClick="return deleteFolder('<? echo $dir; ?>', <? echo $num_files; ?>);"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
+					 <a href="images.php?delFolder=<? echo $path; ?>&dir=<? echo $newPath; ?>" onClick="return deleteFolder('<? echo $dir; ?>', <? echo $num_files; ?>);"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
 				  <td width="99%" class="imgCaption"><? echo $dir; ?></td>
 			   </tr>
 		 </table></td>
@@ -502,7 +515,8 @@ function draw_table_header()
 
 	  function newFolder(oldDir, newFolder) 
 	  {
-			location.href = "ImageManager/images.php?dir="+oldDir+'&create=folder&foldername='+newFolder;
+			//location.href = "ImageManager/images.php?dir="+oldDir+'&create=folder&foldername='+newFolder;
+			location.href = "images.php?dir="+oldDir+'&create=folder&foldername='+newFolder;
 	  }
 
 	  function updateDir() 
@@ -550,14 +564,8 @@ function refreshDirs()
 
    var newPath = "<? echo $newPath; ?>";
 
-   while(allPaths.length > 0) 
-   {
-		 for(i=0; i<allPaths.length; i++) 
-		 {
-			   allPaths.remove(i);	
-		 }		
-   }
-
+	allPaths.length=0;
+   
    for(i=0; i<fields.length; i++) 
    {
 		 var newElem =	document.createElement("OPTION");

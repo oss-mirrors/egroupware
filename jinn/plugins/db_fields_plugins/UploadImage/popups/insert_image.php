@@ -57,7 +57,7 @@
    <head>
 	  <title>Browse Image</title>
 	  <script type="text/javascript" src="popup.js"></script>
-	  <script type="text/javascript" src="../../../dialog.js"></script>
+	  <!--script type="text/javascript" src="dialog.js"></script-->
 	  <script type="text/javascript">
 		 var preview_window = null;
 
@@ -76,6 +76,12 @@
 			   <?php if($config['Allow_other_images_sizes']=="False") : ?>
 					document.getElementById("f_width").readOnly=true;
 					document.getElementById("f_height").readOnly=true;
+				<?php endif ?>
+
+			   <?php if($config['Generate_thumbnail']=='True') : ?>
+					document.getElementById("thumb").value="true";
+					document.getElementById("thumbwidth").value="<?php echo($config['Max_thumbnail_width']); ?>";
+					document.getElementById("thumbheight").value="<?php echo($config['Max_thumbnail_height']); ?>";
 				<?php endif ?>
 		 };
 
@@ -202,22 +208,20 @@
 		 changeLoadingStatus('load');
    }
 
-   function newFolder() 
+   function process_new_folder(param)
    {
 		 var selection = document.forms[0].dirPath;
 		 var dir = selection.options[selection.selectedIndex].value;
-		 Dialog("ImageManager/newFolder.html", function(param) {
-			   if (!param) {	// user must have pressed Cancel
-				  return false;
-			}
-			else
-			{
-				  var folder = param['f_foldername'];
-				  if (folder && folder != '') {
-						imgManager.newFolder(dir,folder); 
-				  }
-			}
-	  }, null);
+	  var folder = param['f_foldername'];
+	  if (folder && folder != '') {
+			imgManager.newFolder(dir,folder); 
+	  }
+   }
+   
+   function newFolder() 
+   {
+		 childWindow=open("ImageManager/newFolder.html","newfolder","resizable=no");
+		 if (childWindow.opener == null)	childWindow.opener = self;
 }
 
 function toggleConstrains(constrains) 
@@ -371,9 +375,9 @@ function toggleConstrains(constrains)
 																  <td class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
 																	 <a href="#" onClick="javascript:goUpDir();"><img src="ImageManager/btnFolderUp.gif" width="15" height="15" border="0" alt="Up"></a></td>
 																  <? if ($SAFE_MODE == false) { ?>
-																  <!--td><div class="separator"></div></td>
+																  <td><div class="separator"></div></td>
 																  <td class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-																	 <a href="#" onClick="javascript:newFolder();"><img src="ImageManager/btnFolderNew.gif" width="15" height="15" border="0" alt="New Folder"></a></td-->
+																	 <a href="#" onClick="javascript:newFolder();"><img src="ImageManager/btnFolderNew.gif" width="15" height="15" border="0" alt="New Folder"></a></td>
 																  <? } ?>
 															   </tr>
 														 </table></td>
@@ -399,7 +403,10 @@ function toggleConstrains(constrains)
 												   <tr> 
 													  <td><div align="right">Upload </div></td>
 													  <td><input type="file" name="upload" id="upload"> 
-														 <input type="submit" style="width:5em" value="Upload" onClick="javascript:changeLoadingStatus('upload');" />
+														<input type="hidden" name="thumb" id="thumb" value="">
+														<input type="hidden" name="thumbwidth" id="thumbwidth" value="">
+														<input type="hidden" name="thumbheight" id="thumbheight" value="">
+														<input type="submit" style="width:5em" value="Upload" onClick="javascript:changeLoadingStatus('upload');" />
 													  </td>
 													  <td><div align="right">Max Height </div></td>
 													  <td><input name="height" id="f_height" type="text" size="5" style="width:4em" onChange="javascript:checkConstrains('height');"></td>

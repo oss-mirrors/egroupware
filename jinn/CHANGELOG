@@ -7,6 +7,13 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.212c
+===========================
+Tue Mar 08 16:45:00 CET 2005
+- FileManager plugin now automatically creates and uses standard 100 px wide thumbnails
+- FileManager plugin can now also create custom thumbnails where max width/height is defined by the user
+- fixed bug in path validation checks where automatic lang() occurence finder crashed
+
 Version 0.8.212b
 ===========================
 Thu Mar 03 15:30:00 CET 2005
@@ -15,7 +22,7 @@ Thu Mar 03 15:30:00 CET 2005
 Version 0.8.212a
 ===========================
 Thu Mar 03 14:15:00 CET 2005
-- implemented upload path validation checks (edit_site/test_database_and_paths)
+- implemented upload path validation checks (button edit_site/test_database_and_paths)
 
 Version 0.8.212
 ===========================
@@ -94,19 +101,16 @@ Mon Feb 14 CET 2005
 ============================
 - implemented multiple records view
 - small layout change single record view
-
 Version 0.8.210b
 Thu Feb 11 CET 2005
 ============================
 - implemented object event plugin system
 - fixed class variable 'plug' was not declared in boadmin class
-
 Version 0.8.210
 Thu Feb 11 CET 2005
 ============================
 - implemented column filters in List Records
 - started object event plugin system
-
 Version 0.8.209
 Thu Feb 04 10:34:32 CET 2005
 ============================
@@ -120,7 +124,6 @@ Thu Feb 04 10:34:32 CET 2005
 - refactored mandatory field code
 - refactoring: replaced '_HIDE_' with '_DISABLED_' in plugin system
 - depreciated 'hide this field plugin'. Is now 'disable field' plugin.
-
 Version 0.8.208
 Thu Jan 20 21:18:32 CET 2005
 ============================
@@ -133,14 +136,13 @@ Thu Jan 20 21:18:32 CET 2005
 Version 0.8.207b
 Fri Jan 14 21:18:32 CET 2005
 ============================
-1 fixed ticket 61: many2many relationships failed on new record creation
-
+- fixed ticket 61: many2many relationships failed on new record creation
 Version 0.8.207
 Thu Jan 13 00:06:02 CET 2005
 =============================
-1 improved layout of edit object a little
-2 introduced JiNN's own css file in default
-3 started with implementation of 'default field diplay in listview'
+- improved layout of edit object a little
+- introduced JiNN's own css file in default
+- started with implementation of 'default field diplay in listview'
 
 Version 0.8.206
 Thu Jan  6 17:15:14 CET 2005

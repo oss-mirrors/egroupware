@@ -29,11 +29,10 @@ border-bottom: 1px solid black; letter-spacing: 2px;
 //-->
 </style>
 <script type="text/javascript" src="../popup.js"></script>
-<script type="text/javascript" src="../../dialog.js"></script>
+<!--script type="text/javascript" src="../dialog.js"></script-->
 <script type="text/javascript">
 function onCancel() {
-  __dlg_close(null);
-  return false;
+  self.close();
 };
 
 function onOK() 
@@ -46,8 +45,8 @@ function onOK()
     var el = MM_findObj(id);
     param[id] = el.value;
   }
-  __dlg_close(param);
-  return false;
+  opener.process_new_folder(param);
+  self.close();
 }
 function Init() {
   __dlg_init();

@@ -232,13 +232,13 @@
 			//first check the upload path by writing a test file
 		 if(file_exists($path))
 		 {
-			$this->status($dev.'upload_path', 'good', "the $server upload path exists");
+			$this->status($dev.'upload_path', 'good', "the %1 upload path exists", $server);
 			if(is_writable($path))
 			{
-				$this->status($dev.'upload_path', 'good', "the $server upload path is writable");
+				$this->status($dev.'upload_path', 'good', "the %1 upload path is writable", $server);
 				if(!$file = @fopen($path.'/'.$filename, 'w'))
 				{
-					$this->status($dev.'upload_path', 'bad', "unknown error writing to the $server upload path. Please contact your system administrator");
+					$this->status($dev.'upload_path', 'bad', "unknown error writing to the %1 upload path. Please contact your system administrator", $server);
 				}
 				else
 				{
@@ -248,29 +248,29 @@
 					
 					if(!$file = @fopen($url, 'r'))
 					{
-						$this->status($dev.'upload_url', 'bad', "the $server upload url does not exist. <p>Please recheck your settings.");
+						$this->status($dev.'upload_url', 'bad', "the %1 upload url does not exist. <p>Please recheck your settings.", $server);
 					}
 					else
 					{
-						$this->status($dev.'upload_url', 'good', "the $server upload url exists");
+						$this->status($dev.'upload_url', 'good', "the %1 upload url exists", $server);
 						if(!$file = @fopen($url.'/'.$filename, 'r'))
 						{
-							$this->status($dev.'upload_url', 'bad', "the $server upload url does not point to a known upload path. <p>Please recheck your settings.");
+							$this->status($dev.'upload_url', 'bad', "the %1 upload url does not point to a known upload path. <p>Please recheck your settings.", $server);
 						}
 						else
 						{
-							$this->status($dev.'upload_url', 'good', "the $server upload url points to a known upload path");
+							$this->status($dev.'upload_url', 'good', "the %1 upload url points to a known upload path", $server);
 							
 							$result = fread($file, filesize($path.'/'.$filename));
 							if($result==$uid)
 							{
-								$this->status($dev.'upload_url', 'good', "the $server upload url correctly points to the $server upload path");
+								$this->status($dev.'upload_url', 'good', "the %1 upload url correctly points to the $server upload path", $server);
 								echo('<hr/>');
 								echo '<span style="color:green">'.lang("All tests were successful. You can go on with the site-objects").'</span>';
 							}
 							else
 							{
-								$this->status($dev.'upload_url', 'bad', "the $server upload url points to an inappropriate upload path. <p>Please recheck your settings.");
+								$this->status($dev.'upload_url', 'bad', "the %1 upload url points to an inappropriate upload path. <p>Please recheck your settings.", $server);
 							}
 						}
 					}
@@ -278,52 +278,29 @@
 			}
 			else
 			{
-				$this->status($dev.'upload_path', 'bad', "the $server upload path is not writable. <p>Please recheck your settings.");
+				$this->status($dev.'upload_path', 'bad', "the %1 upload path is not writable. <p>Please recheck your settings.", $server);
 			}
 		 }
 		 else
 		 {
-			$this->status($dev.'upload_path', 'bad', "the $server upload path does not exist. <p>Please recheck your settings.");
+			$this->status($dev.'upload_path', 'bad', "the %1 upload path does not exist. <p>Please recheck your settings.", $server);
 		 }
-		 
-		 /*
-		 //$wget = "wget -v -S $url/$filename";
-		 $wget = "wget -v -S http://www.vogelaar.cc";
-
-		 echo $wget;
-		 //$result = shell_exec($wget);
-		 //$result = shell_exec('ls');
-		 $result = shell_exec('wget http://www.vogelaar.cc');
-		 echo '<pre>'.$result.'</pre>';
-		 
-			//then check the url path by reading that file
-		 ini_set('user_agent','MSIE 4\.0b2;'); 
-		 if(!$file = fopen($url.'/'.$filename, 'r'))
-		 {
-			echo ('<span style="color:red">'.lang("the $server upload url does not exist. <p>Please recheck your settings.").'</span><br/>');
-		 }
-		 else
-		 {
-			echo ('<span style="color:green">'.lang("the $server upload url exists").'</span><br/>');
-		 }
-		 */
-		 
 		 
 		 echo '<hr/>';			
 		 echo '<P><input type=button value="'.lang('close this window').'" onClick="self.close();"></div>';
 		 
 	  }
 
-	 function status($field, $type, $message)
+	 function status($field, $type, $message, $server='')
 	 {
 		if($type=='good')
 		{
-			echo ('<span style="color:green">'.lang($message).'</span><br/>');
+			echo ('<span style="color:green">'.lang($message, $server).'</span><br/>');
 			$this->set_field_color('FLD'.$field, '#FFFFFF');
 		}
 		else
 		{
-			echo ('<span style="color:red">'.lang($message).'</span><br/>');
+			echo ('<span style="color:red">'.lang($message, $server).'</span><br/>');
 			$this->set_field_color('FLD'.$field, '#FFAAAA');
 		}
 	 }

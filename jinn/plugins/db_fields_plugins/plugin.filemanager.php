@@ -80,6 +80,7 @@
 		 $input=lang('The path to upload images is not correct, please contact your JiNN administrator.');
 		 return $input;
 	  }
+/*	  
 	  elseif(!is_dir($upload_path.SEP.'/normal_size') && !mkdir($upload_path.SEP.'/normal_size', 0755))
 	  {
 		 $input=lang('The image normal_size-directory subdirectory does not exist and cannot be created ...');
@@ -92,8 +93,9 @@
 		 $input.=lang('please contact Administrator with this message');
 		 return $input;
 	  }
+*/
 
-	  
+/*	  
 	  // everything ok, remove temporary file
 	  unlink($upload_path.SEP.'normal_size'.SEP.'JiNN_write_test');
 
@@ -115,7 +117,7 @@
 		 // everything ok, remove temporary file
 		 unlink($upload_path.SEP.'thumb'.SEP.'JiNN_write_test');
 	  }
-
+*/
 	  $table_style='';
 	  $cell_style='style="border-width:1px;border-style:solid;border-color:grey"';
 	  $img_style='style="border-style:solid;border-width:1px;border-color:#000000"';
@@ -159,8 +161,15 @@
 			
 			cmd = "document.frm.IMG_EDIT_" + field + slot + ".value = \"" + val1 + "\";";
 			eval(cmd);
-		
-			cmd = "document.IMG_" + field + slot + ".src = \"" + val2 + "\";";
+			
+				//we need to put a dot in front of the filename to display the thumbnail
+				//fixme: can this be done easier with RegEx?
+			var val2_arr = val2.split("/");
+			var idx = val2_arr.length - 1;
+			val2_arr[idx] = "." + val2_arr[idx];
+			var thumb = val2_arr.join("/");
+
+			cmd = "document.IMG_" + field + slot + ".src = \"" + thumb + "\";";
 			eval(cmd);
 
 			cmd = "document.frm.IMG_EDIT_BUTTON_" + field + slot + ".value = \"" + val3 + "\";";
@@ -238,14 +247,22 @@
 					 $pop_height = ($image_size[1]+50);
 
 					 $popup = "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
-			   
+//_debug_array($imglink);			   
 				  }
 
+//_debug_array($upload_path . SEP . '.thumb_01_'.$img_path);
+				  $path_array = explode('/', $img_path);
+//_debug_array($path_array);
+				  $path_array[count($path_array)-1] = '.'.$path_array[count($path_array)-1];
+//_debug_array($path_array);
+				  $thumb_path = implode('/', $path_array);
+//_debug_array($thumb_path);
+				  
 				  /* check for thumb and create previewlink */
-				  if(is_file($upload_path . SEP . str_replace('normal_size','thumb',$img_path)))
+				  if(is_file($upload_path . SEP . $thumb_path))
 				  {
-					 $tmpthumbpath=$upload_path.SEP.str_replace('normal_size','thumb',$img_path);
-					 $thumblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$tmpthumbpath);
+					 $thumblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path . SEP . $thumb_path);
+//_debug_array($thumblink);			   
 				  }
 
 				  $input.='<tr><td '.$cell_style.' valign="top">'.$i.'.</td><td '.$cell_style.'>';
