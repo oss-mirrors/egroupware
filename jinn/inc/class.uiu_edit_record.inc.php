@@ -22,30 +22,52 @@
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 	*/
 
-	class uiuseraddedit extends uiuser
+	class uiu_edit_record // extends uiuser
 	{
-		function uiuseraddedit($bo)
+		var $public_functions = Array
+		(
+			'display_form'		=> True
+		);
+		var $bo;
+		var $template;
+		var $ui;
+		
+		function uiu_edit_record()
 		{
-			$this->bo=$bo;
+			$this->bo = CreateObject('jinn.bouser');
 			$this->template = $GLOBALS['phpgw']->template;
 			$this->ui = CreateObject('jinn.uicommon');
+			if($this->bo->so->config[server_type]=='dev')
+			{
+				$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
+			}
+			$this->ui->app_title=$dev_title_string;//.lang('Moderator Mode');
 		}
 
-		
-		
-		/****************************************************************************\
-		* create form to new objectrecord                                            *
-		\****************************************************************************/
-
-		function render_form()
+		function display_form()
 		{
+		
+			if(!$this->bo->so->test_JSO_table($this->bo->site_object))
+			{
+				unset($this->bo->site_object_id);
+				$this->bo->message['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
+
+				$this->bo->save_sessiondata();
+				$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
+			}				
+			
+			
 			$this->template->set_file(array(
-				'form_header' => 'form_header.tpl',
-				'object_field' => 'object_field.tpl',
-				'javascript' => 'javascript.tpl',
-				'form_footer' => 'form_footer.tpl'
+				'frm_edit_record' => 'frm_edit_record.tpl'
 			));
 
+			$this->template->set_block('frm_edit_record','form_header','');
+			$this->template->set_block('frm_edit_record','js','js');
+			$this->template->set_block('frm_edit_record','rows','rows');
+			$this->template->set_block('frm_edit_record','form_footer','form_footer');
+	
+			
+			
 			$where_key=$GLOBALS[where_key];
 			$where_value=$GLOBALS[where_value];
 			
@@ -64,7 +86,7 @@
 			{
 				/* vars for new record form */
 				$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.object_insert');
-				$add_edit_button='voeg toe';
+				$add_edit_button=lang('add');
 				$action=lang('add object');
 			}
 
@@ -74,7 +96,8 @@
 			$this->template->set_var('form_action',$form_action);
 			$this->template->set_var('where_key_form',$where_key_form);
 			$this->template->set_var('where_value_form',$where_value_form);
-			$this->template->pparse('out','form_header');
+			$this->template->parse('form_header','form_header');
+//			$this->template->pparse('out','form_header');
 
 
 			/* get one with many relations */
@@ -178,10 +201,10 @@
 					$this->template->set_var('input',$input);
 					$this->template->set_var('fieldname',$display_name);
 
-					$this->template->pparse('out','object_field');
+					$this->template->parse('row','rows',true);
 				}
 			}
-
+			
 			/***********************************************
 			* MANY WITH MANY RELATION SECTION OF FORM      *
 			***********************************************/
@@ -241,7 +264,7 @@
 					$this->template->set_var('input',$input);
 					$this->template->set_var('fieldname',$display_name);
 
-					$this->template->pparse('out','object_field');
+					$this->template->parse('rows','rows');
 
 				}
 
@@ -256,24 +279,106 @@
 			$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.browse_objects').'\'" value="'.lang('cancel').'">';
 
 			$this->template->set_var('submit_script',$submit_javascript);
-			$this->template->pparse('out','javascript');
+			$this->template->parse('js','js');
 
 			$this->template->set_var('add_edit_button',$add_edit_button);
 			$this->template->set_var('reset_form',lang('reset form'));
 			$this->template->set_var('delete',lang('delete'));
 			$this->template->set_var('cancel',$cancel_button);
 			$this->template->set_var('extra_buttons',$extra_buttons);
-			$this->template->pparse('out','form_footer');
+			$this->template->parse('form_footer','form_footer');
 
 			unset($this->bo->message);
+
+			// FIXME say add new record in blokken or say edit record in blokken
+			$this->ui->header('add or edit objects');
+			$this->ui->msg_box($this->bo->message);
+			$this->main_menu();	
+			
+			$this->template->pparse('out','form_header');
+			$this->template->pparse('out','js');
+			$this->template->pparse('out','row');
+//			$this->template->pparse('out','rows');
+			$this->template->pparse('out','form_footer');
+			$this->bo->save_sessiondata();
+		}
+
+		function main_menu()
+		{
+			$this->template->set_file(array(
+				'main_menu' => 'main_menu.tpl'));
+
+				// get sites for user and group and make options
+				$sites=$this->bo->common->get_sites_allowed($GLOBALS['phpgw_info']['user']['account_id']);
+
+				if(is_array($sites))
+				{
+					foreach($sites as $site_id)
+					{
+						$site_arr[]=array(
+							'value'=>$site_id,
+							'name'=>$this->bo->so->get_site_name($site_id)
+						);
+					}
+				}
+
+				$site_options=$this->ui->select_options($site_arr,$this->bo->site_id,true);
+
+
+				if ($this->bo->site_id)
+				{
+					$objects=$this->bo->common->get_objects_allowed($this->bo->site_id, $GLOBALS['phpgw_info']['user']['account_id']);
+
+					if (is_array($objects))
+					{
+						foreach ( $objects as $object_id) 
+						{
+							$objects_arr[]=array(
+								'value'=>$object_id,
+								'name'=>$this->bo->so->get_object_name($object_id)
+							);
+						}
+					}
+
+					$object_options=$this->ui->select_options($objects_arr,$this->bo->site_object_id,true);
+
+				}
+				else
+				{
+					unset($this->bo->site_object_id);
+				}
+
+				// set theme_colors
+				$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+				$this->template->set_var('th_text',$GLOBALS['phpgw_info']['theme']['th_text']);
+				$this->template->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
+				$this->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
+
+				// set menu
+				$this->template->set_var('site_objects',$object_options);
+				$this->template->set_var('site_options',$site_options);
+
+				$this->template->set_var('main_form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.index'));
+				$this->template->set_var('select_site',lang('select site'));
+				$this->template->set_var('select_object',lang('select_object'));
+				$this->template->set_var('go',lang('go'));
+
+				/* set admin shortcuts */
+				// if site if site admin
+				if($this->bo->site_id && $userisadmin)
+				{
+					$admin_site_link='<br><a href="'.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadminaddedit.').'">'.
+					lang('admin:: edit site').'</a>';
+				}
+				$this->template->set_var('admin_site_link',$admin_site_link);
+				$this->template->set_var('admin_object_link',$admin_object_link);
+
+				$this->template->pparse('out','main_menu');
+
+			}
+
 
 
 		}
 
-
-
-
-
-	}
-
-?>
+		?>

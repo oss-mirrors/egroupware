@@ -3,14 +3,13 @@
 	JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for phpGroupWare
 	Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
 
-	phpGroupWare - http://www.phpgroupware.org
+	eGroupWare - http://www.egroupware.org
 
 	This file is part of JiNN
 
 	JiNN is free software; you can redistribute it and/or modify it under
 	the terms of the GNU General Public License as published by the Free
-	Software Foundation; either version 2 of the License, or (at your 
-	option) any later version.
+	Software Foundation; version 2 of the License.
 
 	JiNN is distributed in the hope that it will be useful,but WITHOUT ANY
 	WARRANTY; without even the implied warranty of MERCHANTABILITY or 
@@ -48,7 +47,7 @@
 			{
 				$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
 			}
-			$this->ui->app_title=$dev_title_string.lang('Moderator Mode');
+			$this->ui->app_title=$dev_title_string;//.lang('Moderator Mode');
 		}
 
 		/********************************
@@ -443,12 +442,13 @@
 							{
 								$table_rows.='<tr valign="top">';
 								$table_rows.="<td bgcolor=$bgclr align=\"left\">
-								<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiuser.add_edit_object&where_key=$where_key&where_value=$where_value")."\">".lang('edit')."</a>
+								<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiu_edit_record.display_form&where_key=$where_key&where_value=$where_value")."\">".lang('edit')."</a>
 								</td>
 								<td bgcolor=$bgclr align=\"left\"><a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.bouser.del_object&where_key=$where_key&where_value=$where_value")."\"  onClick=\"return window.confirm('".lang('Are you sure?')."');\">".lang('delete')."</a>
 								</td>
-								<td bgcolor=$bgclr align=\"left\">
-								<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.bouser.copy_object&where_key=$where_key&where_value=$where_value")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('copy')."</a>
+<!-- FIXME fix copy record after the new selection method is implemented -->
+<!--								<td bgcolor=$bgclr align=\"left\">
+								<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.bouser.copy_object&where_key=$where_key&where_value=$where_value")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('copy')."</a>-->
 								</td>
 								";
 //								var_dump($recordvalues[0]);
@@ -497,7 +497,7 @@
 
 
 					$button_add='<td><form name=form1 action="'	.
-					$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.add_edit_object') .
+					$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.display_form') .
 					'" method="post"><input type="submit" name="action" value="'.lang('Add new').'"></form></td>';
 
 					/*					$button_browse='<td><form name=form2 action="'.

@@ -16,8 +16,15 @@
 	$menu_title = lang('JiNN Editors Menu');
 	$file = Array(
 		'Browse current object' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.browse_objects'),
-		'Add new entry' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.add_edit_object')
+		'Add new entry' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.display_form')
 	);
+	display_sidebox($appname,$menu_title,$file);
+
+	$menu_title = lang('JiNN Preferences');
+	$file = Array(
+		'General Preferences' => $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=jinn'),
+	);
+
 	display_sidebox($appname,$menu_title,$file);
 
 	if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
@@ -25,13 +32,23 @@
 		$menu_title = lang('Administration');
 		$file = Array(
 			'Global Configuration' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
-			'Edit this Site' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_this_jinn_site'),
 			'Add Site' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_phpgw_jinn_sites'),
 			'Browse through sites' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.browse_phpgw_jinn_sites'),
 			'Import JiNN Site' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.import_phpgw_jinn_site'),
-			'Access Rights' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.access_rights')
+			'Access Rights' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.access_rights'),
+			'_NewLine_', // give a newline
+			'Edit this Site' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_this_jinn_site'),
+			'Edit this Site Object' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_this_jinn_site_object')
 		);
 		display_sidebox($appname,$menu_title,$file);
+
+		$menu_title = lang('Developer Links');
+		$file = Array(
+			'Site Media and Documents' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiumedia.index')
+		);
+		display_sidebox($appname,$menu_title,$file);
+
 	}
+
 }
 ?>

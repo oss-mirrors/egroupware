@@ -66,7 +66,8 @@
 				'plugins' => array('type' => 'text'),
 				'help_information' => array('type' => 'text'),
 				'dev_upload_url' => array('type' => 'varchar','precision' => '255'),
-				'dev_upload_path' => array('type' => 'varchar','precision' => '255')
+				'dev_upload_path' => array('type' => 'varchar','precision' => '255'),
+				'max_records' => array('type' => 'int','precision' => '4')
 			),
 			'pk' => array('object_id'),
 			'fk' => array(),

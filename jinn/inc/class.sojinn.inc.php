@@ -130,6 +130,16 @@
 				$site_values[$fieldmeta['name']]=$this->phpgw_db->f($fieldmeta['name']);
 			}
 
+			if($this->config["server_type"]=='dev') $pre='dev_';
+			
+			$site_values[cur_site_db_name] = $site_values[$pre.'site_db_name'];
+			$site_values[cur_site_db_host] = $site_values[$pre.'site_db_host'];
+			$site_values[cur_site_db_user] = $site_values[$pre.'site_db_user'];
+			$site_values[cur_site_db_password] = $site_values[$pre.'site_db_password'];
+			$site_values[cur_site_db_type] = $site_values[$pre.'site_db_type'];
+			$site_values[cur_upload_path] =$site_values[$pre.'upload_path'];
+			$site_values[cur_upload_url] =$site_values[$pre.'upload_url'];
+
 			return $site_values;
 		}
 
@@ -163,6 +173,12 @@
 			{
 				$object_values[$fieldmeta['name']]=$this->strip_magic_quotes_gpc($this->phpgw_db->f($fieldmeta['name']));
 			}
+		
+			if($this->config["server_type"]=='dev') $pre='dev_';
+			
+			$object_values[cur_upload_url] =$object_values[$pre.'upload_url'];
+			$object_values[cur_upload_path] =$object_values[$pre.'upload_path'];
+			
 			return $object_values;
 
 		}
@@ -402,7 +418,7 @@
 
 			while($this->phpgw_db->next_record())
 			{
-				$ids[]=$this->phpgw_db->f('id');
+				$ids[]=$this->phpgw_db->f('site_id');
 			}
 			return $ids;
 
@@ -821,6 +837,7 @@
 			return $status;
 		}
 
+		// $site_id can be removed here!!!
 		function delete_phpgw_data($site_id,$table,$where_key,$where_value)
 		{
 

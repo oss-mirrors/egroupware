@@ -1,16 +1,15 @@
 <?php
 	/*
-	JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for phpGroupWare
+	JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare
 	Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
 
-	phpGroupWare - http://www.phpgroupware.org
+	eGroupWare - http://www.egroupware.org
 
 	This file is part of JiNN
 
 	JiNN is free software; you can redistribute it and/or modify it under
 	the terms of the GNU General Public License as published by the Free
-	Software Foundation; either version 2 of the License, or (at your 
-	option) any later version.
+	Software Foundation; version 2 of the License.
 
 	JiNN is distributed in the hope that it will be useful,but WITHOUT ANY
 	WARRANTY; without even the implied warranty of MERCHANTABILITY or 
@@ -24,7 +23,6 @@
 
 	class bocommon
 	{
-
 		var $so;
 
 		function bocommon()
@@ -160,4 +158,3 @@
 	}
 
 
-	?>

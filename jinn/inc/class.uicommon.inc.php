@@ -28,7 +28,7 @@
 	class uicommon
 	{
 
-		var $app_title='JiNN';
+		var $app_title;
 		var $template;
 		var $message;
 
@@ -48,16 +48,19 @@
 			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
 			unset($GLOBALS['phpgw_info']['flags']['noappheader']);
 			unset($GLOBALS['phpgw_info']['flags']['noappfooter']);
+			if($this->app_title) $extra_title =' ('.$this->app_title.')';
+			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['jinn']['title']. ' - '.$screen_title . $extra_title;
 
 			if($phpgw_header)$GLOBALS['phpgw']->common->phpgw_header();
 			
-			$this->template->set_file(array(
+/*			$this->template->set_file(array(
 				'header' => 'header.tpl'
 			));
 
 			$this->template->set_var('app_title',$this->app_title);
 			$this->template->set_var('screen_title',$screen_title);	
 			$this->template->pparse('out','header');
+*/
 		}
 
 

@@ -52,6 +52,7 @@
 			'export_site'=> True,
 			'plug_config'=> True,
 			'edit_this_jinn_site'=> True,
+			'edit_this_jinn_site_object'=> True,
 			'test_db_access'=> True
 		);
 
@@ -114,6 +115,14 @@
 			$GLOBALS[where_value]=$this->bo->site_id;
 
 			$this->edit_phpgw_jinn_sites();
+		}
+
+		function edit_this_jinn_site_object()
+		{
+			$GLOBALS[where_key]='object_id';
+			$GLOBALS[where_value]=$this->bo->site_object_id;
+
+			$this->add_edit_phpgw_jinn_site_objects();
 		}
 
 		function add_edit_phpgw_jinn_site_objects()
@@ -237,28 +246,42 @@
 						);
 
 					}
+					
+				    $new_site_name=$data[0][value];	
+					$thissitename=$this->bo->so->get_sites_by_name($new_site_name);
 
-					/* insert site */
-					if ($new_site_id=$this->bo->so->insert_phpgw_data('phpgw_jinn_sites',$data))
+					if($GLOBALS[HTTP_POST_VARS][replace_existing] && count($thissitename)>=1)
 					{
-						// check is name exist and if add another to this name 
-						$new_site_name=$this->bo->so->get_site_name($new_site_id);
-						$thissitename=$this->bo->so->get_sites_by_name($new_site_name);
+						$new_site_id=$thissitename[0];
+						$this->bo->so->update_phpgw_data('phpgw_jinn_sites',$data,'site_id',$new_site_id);
 
-						if(count($thissitename)>1)
+						// remove all existing objects
+						$this->bo->so->delete_phpgw_data('','phpgw_jinn_site_objects',parent_site_id,$new_site_id);
+						
+						$msg= lang('Import was succesfull').'<br/>'.lang('Replaced existing site named <strong>%1</strong>.',$new_site_name);
+						$proceed=true;
+					}
+					/* insert as new site */
+					elseif ($new_site_id=$this->bo->so->insert_phpgw_data('phpgw_jinn_sites',$data))
+					{
+						
+						if(count($thissitename)>=1)
 						{
 							$new_name=$new_site_name.' ('.lang('another').')';
 
-							//							unset($data);
 							$datanew[]=array(
 								'name'=>'site_name',
 								'value'=>$new_name
 							);
-							//							var_dump($data);
-							//die();
 							$this->bo->so->update_phpgw_data('phpgw_jinn_sites',$datanew,'site_id',$new_site_id);
 						}
+						$proceed=true;
+						$msg= lang('Import was succesfull'). '<br/>' .lang('The name of the new site is <strong>%1</strong>.',$new_name);
+				
+					}
 
+					if($proceed)
+					{
 						if (is_array($import_site_objects))
 						{
 							foreach($import_site_objects as $object)
@@ -279,19 +302,18 @@
 								{
 									$num_objects=count($object_id);
 								} 
-
-								/* insert objects */
-
 							}
 
 						}
-						echo lang('import was succesfull<br>Imported one site with '.$num_objects.' object(s)');
+						
+						$msg.='<br/>'.lang('%1 Site Objects have been imported.',$num_objects);
+						echo $msg;
+
 					}
 					else
 					{
-						echo lang('import failed');
+						echo lang('Import failed');
 					}
-
 				}
 
 			}
@@ -299,6 +321,7 @@
 			{
 				$this->template->set_var('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.import_phpgw_jinn_site'));
 				$this->template->set_var('lang_Select_JiNN_site_file',lang('Select JiNN site file'));
+				$this->template->set_var('lang_Replace_existing_Site_with_the_same_name',lang('Replace existing site with the same name?'));
 				$this->template->set_var('lang_submit_and_import',lang('submit and import'));
 				$this->template->pparse('out','import_form');
 			}

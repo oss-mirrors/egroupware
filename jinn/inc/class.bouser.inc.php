@@ -178,7 +178,7 @@
 
 			if($GLOBALS[HTTP_POST_VARS][repeat_input]=='true')
 			{
-				$this->common->exit_and_open_screen('jinn.uiuser.add_edit_object&repeat_input=true');
+				$this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&repeat_input=true');
 			}
 			else
 			{
