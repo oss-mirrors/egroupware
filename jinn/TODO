@@ -11,6 +11,7 @@ TODO - BUGS!!!
   - deze fout zal ook optreden bij meer dan 15 users CHECK THIS, don't know anymore
 - phpgwadmin krijgt niet alle objecten te zien in accessrights CHECK THIS
 - browser navigator completly wrong
+- import is broken
 
 TODO - 0.5.1
 ===================================================================================
