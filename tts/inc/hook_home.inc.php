@@ -130,6 +130,6 @@
 			$portalbox->set_controls($key,$value);
 		}
 		$portalbox->data = array();
-		echo "\n".'<!-- Begin TTS New/Updated -->'."\n".$portalbox->draw($extra_data)."\n".'<!-- End TTS New/Updated -->'."\n";
+		$GLOBALS['phpgw']->template->set_var('phpgw_body', "\n".'<!-- Begin TTS New/Updated -->'."\n".$portalbox->draw($extra_data)."\n".'<!-- End TTS New/Updated -->'."\n",True);
 	}
 ?>

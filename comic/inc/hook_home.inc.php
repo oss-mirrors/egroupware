@@ -9,22 +9,23 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-	/* $Id$ */
-{
+  /* $Id$ */
+
 	$d1 = strtolower(substr(PHPGW_APP_INC,0,3));
 	if($d1 == 'htt' || $d1 == 'ftp' )
 	{
 		echo "Failed attempt to break in via an old Security Hole!<br>\n";
 		$GLOBALS['phpgw']->common->phpgw_exit();
-	} unset($d1);
+	}
+	unset($d1);
 
 	$tmp_app_inc = $GLOBALS['phpgw']->common->get_inc_dir('comic');
 
-	$GLOBALS['phpgw']->db->query("select * from phpgw_comic "
-		."WHERE comic_owner='"
-		.$GLOBALS['phpgw_info']["user"]["account_id"]."'");
+	$GLOBALS['phpgw']->db->query('SELECT * FROM phpgw_comic '
+		. "WHERE comic_owner='"
+		. $GLOBALS['phpgw_info']['user']['account_id'] . "'");
 
-	if ($GLOBALS['phpgw']->db->num_rows())
+	if($GLOBALS['phpgw']->db->num_rows())
 	{
 		$GLOBALS['phpgw']->db->next_record();
 
@@ -32,29 +33,29 @@
 		$scale        = $GLOBALS['phpgw']->db->f('comic_fpscale');
 		$censor_level = $GLOBALS['phpgw']->db->f('comic_censorlvl');
 
-		if ($data_id != -1)
+		if($data_id != -1)
 		{
-			$title = '<font color="#FFFFFF">'.lang('Comic').'</font>';
+			$title = '<font color="#FFFFFF">' . lang('Comic') . '</font>';
 
 			$portalbox = CreateObject('phpgwapi.listbox',
 				Array(
-					'title'	=> $title,
-					'primary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-					'secondary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-					'tertiary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-					'width'	=> '100%',
-					'outerborderwidth'	=> '0',
-					'header_background_image'	=> $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler.gif')
+					'title'     => $title,
+					'primary'   => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+					'secondary' => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+					'tertiary'  => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+					'width'     => '100%',
+					'outerborderwidth' => '0',
+					'header_background_image' => $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler.gif')
 				)
 			);
 			$app_id = $GLOBALS['phpgw']->applications->name2id('comic');
 			$GLOBALS['portal_order'][] = $app_id;
 			$var = Array(
-				'up'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
-				'down'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
-				'close'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
-				'question'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
-				'edit'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id)
+				'up'       => Array('url' => '/set_box.php', 'app' => $app_id),
+				'down'     => Array('url' => '/set_box.php', 'app' => $app_id),
+				'close'    => Array('url' => '/set_box.php', 'app' => $app_id),
+				'question' => Array('url' => '/set_box.php', 'app' => $app_id),
+				'edit'     => Array('url' => '/set_box.php', 'app' => $app_id)
 			);
 
 			while(list($key,$value) = each($var))
@@ -62,10 +63,11 @@
 				$portalbox->set_controls($key,$value);
 			}
 			include($tmp_app_inc . '/functions.inc.php');
-			echo "\r\n".'<!-- start Comic info -->'."\r\n"
-				.$portalbox->draw(comic_display_frontpage($data_id, $scale, $censor_level))
-				.'<!-- ends Comic info -->'."\r\n";
+			$tmp = "\r\n" . '<!-- start Comic info -->' . "\r\n"
+				. $portalbox->draw(comic_display_frontpage($data_id, $scale, $censor_level))
+				. '<!-- ends Comic info -->'."\r\n";
+			$GLOBALS['phpgw']->template->set_var('phpgw_body',$tmp,True);
+			unset($tmp);
 		}
 	}
-}
 ?>
