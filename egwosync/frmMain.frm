@@ -47,7 +47,7 @@ Private Sub cmdTest_Click()
         xmlParms.AddInteger "limit", intLimit
         xmlArray.AddString "fn"
         xmlParms.AddArray "fields", xmlArray
-        xmlParms.AddString "query", "And"
+        'xmlParms.AddString "query", "And"
         xmlParms.AddString "order", "n_given"
         xmlParms.AddString "sort", "ASC"
         
