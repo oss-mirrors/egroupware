@@ -117,7 +117,7 @@
       $GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
     }
     $GLOBALS['phpgw']->js->validate_file('tabs','tabs');
-    $GLOBALS['phpgw']->js->set_onload('javascript:initAll();');
+    $GLOBALS['phpgw']->js->set_onload('tab.init();');
 
     $GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['tts']['title'] . ' - ' . lang('View Job Detail');
     $GLOBALS['phpgw']->common->phpgw_header();

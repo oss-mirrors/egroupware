@@ -37,13 +37,6 @@
 <!-- BEGIN form -->
 <script type="text/javascript">
 var tab = new Tabs(3,'activetab','inactivetab','tab','tabcontent','','','tabpage');
-
-function initAll()
-{
-	tab.init();
-
-	setActiveTabs();
-}
 </script>
 
 <br>
