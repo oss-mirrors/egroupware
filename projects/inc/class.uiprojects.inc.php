@@ -1028,6 +1028,24 @@
 				$values['sday']		= $startdate['day'];
 				$values['smonth']	= $startdate['month'];
 				$values['syear']	= $startdate['year'];
+
+				$startdate = $this->jscal->input2date($values['enddate']);
+				$values['edate']	= $startdate['raw'];
+				$values['eday']		= $startdate['day'];
+				$values['emonth']	= $startdate['month'];
+				$values['eyear']	= $startdate['year'];
+
+				$startdate = $this->jscal->input2date($values['pstartdate']);
+				$values['psdate']	= $startdate['raw'];
+				$values['psday']	= $startdate['day'];
+				$values['psmonth']	= $startdate['month'];
+				$values['psyear']	= $startdate['year'];
+				
+				$startdate = $this->jscal->input2date($values['penddate']);
+				$values['pedate']	= $startdate['raw'];
+				$values['peday']	= $startdate['day'];
+				$values['pemonth']	= $startdate['month'];
+				$values['peyear']	= $startdate['year'];
 				
 				if(is_array($values['budget']))
 				{
@@ -1206,7 +1224,7 @@
 			}
 			else
 			{
-				$GLOBALS['phpgw']->template->set_var('choose','<input type="checkbox" name="values[choose]" onclick="changeProjectIDInput(this)" value="True"' . (isset($values['choose'])?' checked':'') . '>');
+				$GLOBALS['phpgw']->template->set_var('choose','<input type="checkbox" id="createProjectID" name="values[choose]" onclick="changeProjectIDInput(this)" value="True"' . (isset($values['choose'])?' checked':'') . '>');
 
 				switch($action)
 				{
@@ -1463,6 +1481,14 @@
 				)
 			);
 
+			if(is_array($values['employees']))
+			{
+				$selectedAccounts = $values['employees'];
+			}
+			else
+			{
+				$selectedAccounts = @array_flip($this->boprojects->get_acl_for_project($project_id?$project_id:$parent['project_id']));
+			}
 			$GLOBALS['phpgw']->template->set_var
 			(
 				'employees_accounts',
@@ -1470,7 +1496,7 @@
 				(
 					'employees[]',
 					'employees_accounts',
-					@array_flip($this->boprojects->get_acl_for_project($project_id?$project_id:$parent['project_id'])),
+					$selectedAccounts,
 					'accounts',
 					5,false,'style="width:250px;"'
 				)

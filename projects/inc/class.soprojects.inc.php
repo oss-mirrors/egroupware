@@ -94,7 +94,10 @@
 
 		function db2projects($column = False)
 		{
-			$db = $this->db;
+			if(floor(phpversion()) > 4)
+				$db = clone $this->db;
+			else
+				$db = $this->db;
 			
 			$i = 0;
 			while ($this->db->next_record())
@@ -201,7 +204,10 @@
 		*/
 		function getBudget($_projectID)
 		{
-			$db = $this->db;
+			if(floor(phpversion()) > 4)
+				$db = clone $this->db;
+			else
+				$db = $this->db;
 			
 			$db->select($this->budget_table,'budget_amount,budget_month,budget_year',array(
 					'project_id' => $_projectID,
@@ -487,11 +493,11 @@
 		*/
 		function add_project($values)
 		{
-			$values['e_budget']		= $values['e_budget'] + 0.0;
-			$values['discount']		= $values['discount'] + 0.0;
+			$values['e_budget']	= $values['e_budget'] + 0.0;
+			$values['discount']	= $values['discount'] + 0.0;
 			$values['project_accounting_factor'] = $values['project_accounting_factor'] + 0.0;
 			$values['project_accounting_factor_d'] = $values['project_accounting_factor_d'] + 0.0;
-			$values['parent']		= intval($values['parent']);
+			$values['parent']	= intval($values['parent']);
 
 			if ($values['parent'] > 0)
 			{
@@ -610,42 +616,42 @@
 		function _add_update_project(&$values)
 		{
 			$data = array(
-					'access'		=> isset($values['access']) ? $values['access'] : 'public',
-					'category'		=> $values['cat'],
+					'access'	=> isset($values['access']) ? $values['access'] : 'public',
 					'entry_date'	=> time(),
 					'start_date'	=> $values['sdate'],
-					'end_date'		=> $values['edate'],
+					'end_date'	=> $values['edate'],
 					'coordinator'	=> $values['coordinator'],
-					'customer'		=> $values['customer'],
-					'status'		=> $values['status'],
-					'descr'			=> $values['descr'],
-					'title'			=> $values['title'],
-					'p_number'		=> $values['number'],
+					'customer'	=> $values['customer'],
+					'status'	=> $values['status'],
+					'descr'		=> $values['descr'],
+					'title'		=> $values['title'],
+					'p_number'	=> $values['number'],
 					'time_planned'	=> $values['ptime'],
-					'processor'		=> $this->account,
+					'processor'	=> $this->account,
 					'investment_nr'	=> $values['investment_nr'],
 					'inv_method'	=> $values['inv_method'],
-					'parent'		=> $values['parent'],
-					'main'			=> $values['main'],
-					'level'			=> $values['level'],
-					'previous'		=> $values['previous'],
+					'parent'	=> $values['parent'],
+					'previous'	=> $values['previous'],
 					'customer_nr'	=> $values['customer_nr'],
-					'url'			=> $values['url'],
-					'reference'		=> $values['reference'],
-					'result'		=> $values['result'],
-					'test'			=> $values['test'],
-					'quality'		=> $values['quality'],
+					'url'		=> $values['url'],
+					'reference'	=> $values['reference'],
+					'result'	=> $values['result'],
+					'test'		=> $values['test'],
+					'quality'	=> $values['quality'],
 					'accounting'	=> $values['accounting'],
 					'acc_factor'	=> $values['project_accounting_factor'],
 					'acc_factor_d'	=> $values['project_accounting_factor_d'],
-					'billable'		=> $values['billable'] ? 'N' : 'Y',
+					'billable'	=> $values['billable'] ? 'N' : 'Y',
 					'discount_type'	=> $values['discount_type'],
-					'psdate'		=> $values['psdate'],
-					'pedate'		=> $values['pedate'],
-					'priority'		=> $values['priority'],
-					'e_budget'		=> $values['e_budget'],
-					'discount'		=> $values['discount'],
+					'psdate'	=> $values['psdate'],
+					'pedate'	=> $values['pedate'],
+					'priority'	=> $values['priority'],
+					'e_budget'	=> $values['e_budget'],
+					'discount'	=> $values['discount'],
 				);
+			if(isset($values['main']))	$data['main']		= $values['main'];
+			if(isset($values['level']))	$data['level']		= $values['level'];
+			if(isset($values['cat']))	$data['category']	= $values['cat'];
 				
 			if (!(int) $values['project_id'])
 			{

@@ -96,11 +96,11 @@
 			$project_id		= intval($values['project_id']);
 			$query			= $values['query'];
 			$column			= isset($values['column']) ? $values['column'] : False;
-			$parent_select	= isset($values['parent_select']);
+			$parent_select		= isset($values['parent_select']);
 
 			//_debug_array($values);
 
-			$ordermethod = "ORDER BY $order $sort";
+			$ordermethod = $order?"ORDER BY $order $sort":'';
 
 			if ($parent_select)
 			{

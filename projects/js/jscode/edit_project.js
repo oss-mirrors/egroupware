@@ -3,6 +3,7 @@ var tab = new Tabs(3,'activetab','inactivetab','tab','tabcontent','','','tabpage
 function initAll()
 {
 	tab.init();
+	changeProjectIDInput(document.getElementById("createProjectID"));
 }
 
 function updateAccountingForm(_selectBox)
@@ -28,7 +29,7 @@ function updateAccountingForm(_selectBox)
 	}
 }
 
-var oldNumberInputValue;
+var oldNumberInputValue = '';
 
 function changeProjectIDInput($_selectBox)
 {
