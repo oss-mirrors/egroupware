@@ -446,6 +446,11 @@
 			$this->kses->AddHTML("strike");
 			$this->kses->AddHTML("center");
 			$this->kses->AddHTML(
+				"font",array(
+					"color"	=> array('maxlen' => 10)
+				)
+			);
+			$this->kses->AddHTML(
 				"hr",array(
 					"class"	=> array('maxlen' => 20)
 				)
@@ -509,14 +514,15 @@
 			);
 			$this->kses->AddHTML(
 				"tr",array(
-					"colspan" => array('minval' =>   2, 'maxval' =>   5),
-					"rowspan" => array('minval' =>   3, 'maxval' =>   6),
-					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
-					"width"   => array("maxlen" => 5),
-					"style"   => array('minlen' =>  10, 'maxlen' => 100),
-					"align"   => array('maxlen' =>  10),
-					"valign"   => array('maxlen' =>  10),
-					"nowrap"  => array('valueless' => 'y')
+					"colspan"	=> array('minval' =>   2, 'maxval' =>   5),
+					"rowspan"	=> array('minval' =>   3, 'maxval' =>   6),
+					"class"		=> array("minlen" =>   1, 'maxlen' =>  20),
+					"width"		=> array("maxlen" => 5),
+					"style"		=> array('minlen' =>  10, 'maxlen' => 100),
+					"align"		=> array('maxlen' =>  10),
+					'bgcolor'	=> array('maxlen' => 10),
+					"valign"	=> array('maxlen' =>  10),
+					"nowrap"	=> array('valueless' => 'y')
 				)
 			);
 			$this->kses->AddHTML(
@@ -527,6 +533,7 @@
 					"width"   => array("maxlen" => 5),
 					"style"   => array('minlen' =>  10, 'maxlen' => 100),
 					"align"   => array('maxlen' =>  10),
+					'bgcolor' => array('maxlen' => 10),
 					"valign"   => array('maxlen' =>  10),
 					"nowrap"  => array('valueless' => 'y')
 				)
