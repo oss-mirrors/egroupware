@@ -53,6 +53,7 @@
 		var $repeat_input;
 		var $where_key;
 		var $where_value;
+		var $where_string;
 
 		function bouser()
 		{
@@ -61,44 +62,37 @@
 
 			$this->so = CreateObject('jinn.sojinn');
 
-
 			$this->include_plugins();
-//			die('hallo'); 
 			$this->magick = CreateObject('jinn.boimagemagick.inc.php');	
 
 			$this->read_sessiondata();
 
-			$_form = $GLOBALS['HTTP_POST_VARS']['form'];
-			$_site_id = $GLOBALS['HTTP_POST_VARS']['site_id'];
-			$_site_object_id = $GLOBALS['HTTP_POST_VARS']['site_object_id'];
-			$_where_key = $GLOBALS['HTTP_POST_VARS']['where_key'] ? $GLOBALS['HTTP_POST_VARS']['where_key']    : $GLOBALS['HTTP_GET_VARS']['where_key'];
+			$_form = $_POST['form'];
+			$_site_id = $_POST['site_id'];
+			$_site_object_id = $_POST['site_object_id'];
 
-			$_where_value = $GLOBALS['HTTP_POST_VARS']['where_value'] ? $GLOBALS['HTTP_POST_VARS']['where_value']    : $GLOBALS['HTTP_GET_VARS']['where_value'];
+			list($_where_string,$_where_key,$_where_value,$_repeat_input)=$this->common->get_global_vars(array('where_string','where_key','where_value','repeat_input'));
 
-			$_repeat_input = $GLOBALS['HTTP_POST_VARS']['repeat_input'] ? $GLOBALS['HTTP_POST_VARS']['repeat_input']    : $GLOBALS['HTTP_GET_VARS']['repeat_input'];
+			if(!empty($_repeat_input)) $this->repeat_input  = $_repeat_input;
 
-			if(!empty($_repeat_input))
+			if(!empty($_where_key))	$this->where_key  = $_where_key;
+
+			if(!empty($_where_value)) $this->where_value  = $_where_value;
+
+			if(!empty($_where_string)) 
 			{
-				$this->repeat_input  = $_repeat_input;
+			   $this->where_string  = base64_decode($_where_string);
+			   $this->where_string_encoded  = $_where_string;
 			}
-
-
-			if(!empty($_where_key))
-			{
-				$this->where_key  = $_where_key;
-			}
-
-			if(!empty($_where_value))
-			{
-				$this->where_value  = $_where_value;
-			}
-
+			
 			if (($_form=='main_menu')|| !empty($site_id)) $this->site_id  = $_site_id;
 			if (($_form=='main_menu') || !empty($site_object_id)) $this->site_object_id  = $_site_object_id;
 
 			if ($this->site_id) $this->site = $this->so->get_site_values($this->site_id);
 			if ($this->site_object_id) $this->site_object = $this->so->get_object_values($this->site_object_id);
 		}
+
+
 
 		function save_sessiondata()
 		{
@@ -191,25 +185,31 @@
 		{
 			$data=$this->http_vars_pairs($GLOBALS[HTTP_POST_VARS],$GLOBALS[HTTP_POST_FILES]);
 			$status=$this->so->insert_object_data($this->site_id,$this->site_object[table_name],$data);
-			//die($status[id]);
-			
 			
 			$many_data=$this->http_vars_pairs_many($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
 			$many_data['FLD'.$status['idfield']]=$status['id'];
 			$status_relations=$this->so->update_object_many_data($this->site_id, $many_data);
 			
-			if ($status[status]==1)	$this->message['info']='Record met succes toegevoegd';
+			if ($status[status]==1)	$this->message['info']='Record successfully added';
 			else $this->message[error]=lang('Record NOT succesfully deleted. Unknown error');
 
 			$this->save_sessiondata();
 
-			if($GLOBALS[HTTP_POST_VARS][repeat_input]=='true')
+			if($_POST['continue'] && $status[where_string])
 			{
-				$this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&repeat_input=true');
+			   $this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&where_string='.base64_encode($status[where_string]));
 			}
 			else
 			{
-				$this->common->exit_and_open_screen('jinn.uiuser.index');
+
+			   if($_POST[repeat_input]=='true')
+			   {
+				  $this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&repeat_input=true');
+			   }
+			   else
+			   {
+				  $this->common->exit_and_open_screen('jinn.uiuser.index');
+			   }
 			}
 
 		}
@@ -224,6 +224,7 @@
 
 			$where_key = $this->where_key;
 			$where_value = $this->where_value;
+			$where_string=$this->where_string;
 			$table=$this->site_object[table_name];
 
 			$many_data=$this->http_vars_pairs_many($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
@@ -231,23 +232,37 @@
 			$status=$this->so->update_object_many_data($this->site_id, $many_data);
 
 			$data=$this->http_vars_pairs($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
-			$status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value);
+			$status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
 
 			
-			if ($status==1)	$this->message[info]='Record succesfully saved';
+			if ($status[status]==1)	$this->message[info]='Record succesfully saved';
 			else $this->message[error]='Record NOT succesfully saved';
 
 			$this->save_sessiondata();
-			$this->common->exit_and_open_screen('jinn.uiuser.index');
-		}
+
+			if($_POST['continue'])
+			{
+			   //   die($this->where_string);
+//			   die($status[where_string]);
+
+			   $this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&where_string='.base64_encode($status[where_string]));
+
+			}
+			else
+			{
+			   $this->common->exit_and_open_screen('jinn.uiuser.index');
+
+			}
+		 }
 
 		function del_object()
 		{
 			$table=$this->site_object[table_name];
 			$where_key=stripslashes($this->where_key);
 			$where_value=stripslashes($this->where_value);
+			$where_string=stripslashes($this->where_string);
 
-			$status=$this->so->delete_object_data($this->site_id, $table, $where_key,$where_value);
+			$status=$this->so->delete_object_data($this->site_id, $table, $where_key,$where_value,$where_string);
 
 			if ($status==1)	$this->message[info]=lang('Record succesfully deleted');
 			else $this->message[error]=lang('Record NOT succesfully deleted. Unknown error');
@@ -345,7 +360,35 @@
 				);
 			}
 			return $related_fields;
-		}
+		 }
+		 
+		 function get_related_value($relation_array,$value)
+		 {
+			$table_info=explode('.',$relation_array[related_with]);
+			$table=$table_info[0];
+			$related_field=$table_info[1];
+
+			$table_info2=explode('.',$relation_array[display_field]);
+			$table_display=$table_info2[0];
+			$display_field=$table_info2[1];
+
+			$allrecords=$this->get_records($table,'','','','','name',$display_field);
+
+
+			if(is_array($allrecords))
+			foreach ($allrecords as $record)
+			{
+			   if($record[$related_field]==$value) return $record[$display_field];
+//			   $related_fields[]=array
+//			   (
+//				  'value'=>$record[$related_field],
+//				  'name'=>$record[$display_field]
+//			   );
+			}
+//			return $related_fields;
+		 }
+
+
 
 		function http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES) 
 		{

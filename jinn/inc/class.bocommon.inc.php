@@ -98,11 +98,11 @@
 		{
 		   if($priority=='post')
 		   {
-			  $tmp_var=($GLOBALS[HTTP_POST_VARS][$name]?$GLOBALS[HTTP_POST_VARS][$name]:$GLOBALS[HTTP_GET_VARS][$name]);
+			  $tmp_var=($_POST[$name]?$_POST[$name]:$_GET[$name]);
 		   }
 		   else
 		   {
-			  $tmp_var=($GLOBALS[HTTP_GET_VARS][$name]?$GLOBALS[HTTP_GET_VARS][$name]:$GLOBALS[HTTP_POST_VARS][$name]);
+			  $tmp_var=($_GET[$name]?$_GET[$name]:$_POST[$name]);
 		   }
 
 		   if($tmp_var)
@@ -126,8 +126,6 @@
 			  return $tmp_arr;
 		   }
 		}
-
-
 
 		function check_safe_mode()
 		{

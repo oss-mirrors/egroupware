@@ -66,36 +66,31 @@
 			$this->template->set_block('frm_edit_record','rows','rows');
 			$this->template->set_block('frm_edit_record','form_footer','form_footer');
 	
+			$where_string=$this->bo->where_string;
 			
-			
-			$where_key=$this->bo->where_key;
-			$where_value=$this->bo->where_value;
-			
-			if ($where_key && $where_value)
+			if ($where_string)
 			{
-				/* set vars for edit form */
+			   /* set vars for edit form */
 				$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.object_update');
-				$where_key_form="<input type=\"hidden\" name=\"where_key\" value=\"$where_key\">";
-				$where_value_form="<input type=\"hidden\" name=\"where_value\" value=\"$where_value\">";
+				$where_string_form='<input type="hidden" name="where_string" value="'.base64_encode($where_string).'">';
 
-				$values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],$where_key,$where_value,'','','name');
+				$values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','','','','name','','*',$where_string);
 				
-				$add_edit_button=lang('edit');
 			}
 			else
 			{
 				/* vars for new record form */
 				$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.object_insert');
-				$add_edit_button=lang('add');
-				$action=lang('add object');
 			}
+			
+			$add_edit_button_continue=lang('save and continue');
+			$add_edit_button=lang('save and finish');
 
 			$form_attributes='onSubmit="return onSubmitForm()"';
 
 			$this->template->set_var('form_attributes',$form_attributes);
 			$this->template->set_var('form_action',$form_action);
-			$this->template->set_var('where_key_form',$where_key_form);
-			$this->template->set_var('where_value_form',$where_value_form);
+			$this->template->set_var('where_string_form',$where_string_form);
 			$this->template->parse('form_header','form_header');
 //			$this->template->pparse('out','form_header');
 
@@ -116,11 +111,8 @@
 			$fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
 
 			/* The main loop to create all rows with input fields start here */ 
-//			die(var_dump($fields));
 			foreach ( $fields as $fieldproperties )
 			{
-
-
 				$value=$values_object[0][$fieldproperties[name]];	/* get value */
 				$input_name='FLD'.$fieldproperties[name];	/* add FLD so we can identify the real input HTTP_POST_VARS */
 				$display_name = ucfirst(strtolower(ereg_replace("_", " ", $fieldproperties[name]))); /* replace _ for a space */
@@ -135,8 +127,10 @@
 				/* Its an identifier field */
 				if (eregi("auto_increment", $fieldproperties[flags]))
 				{
-					$input='<b>'.$value.'</b><input type="hidden" name="'.$input_name.'" value="'.$value.'">'.$display_value;
-					$record_identifier=$value;
+					if(!$value) $display_value=lang('automaticly incrementing');
+				   $input='<b>'.$value.'</b><input type="hidden" name="'.$input_name.'" value="'.$value.'">'.$display_value;
+					$record_identifier[name]=$input_name;
+					$record_identifier[value]=$value;
 				}
 
 				elseif ($fieldproperties[type]=='string')
@@ -189,7 +183,6 @@
 					$input=$this->bo->get_plugin_fi($input_name,$value,'string');
 				}
 
-				
 				/* if there is something to render to this */
 				if($input!='hide')
 				{
@@ -232,7 +225,6 @@
 					$input.= '<select onDblClick=SelectPlace(\'M2M'.$rel_i.'\',\'all_related'.$rel_i.'\') multiple size=5 name="all_related'.$rel_i.'">';
 
 					// make all possible options
-//					$options=$this->bo->get_1wX_options($relation2,"all",'');
 					$options_arr= $this->bo->so->get_1wX_record_values($this->bo->site_id,'',$relation2,'all');
 					
 					$input.= $this->ui->select_options($options_arr,'',false);
@@ -248,11 +240,18 @@
 					$input.= '<select onDblClick="DeSelectPlace(\'M2M'.$rel_i.'\')"  multiple size=5 name="M2M'.$rel_i.'"><br>';
 					$submit_javascript.='saveOptions(\'M2M'.$rel_i.'\',\'MANY_OPT_STR_'.$rel_i.'\');';
 
-					if($where_key && $where_value) $record_id=$record_identifier;
+					if(is_array($record_identifier) && $record_identifier[value])
+					{
+					   $record_id=$record_identifier[value];
+					   $options_arr= $this->bo->so->get_1wX_record_values($this->bo->site_id,$record_id,$relation2,'stored');
+					   $input.= $this->ui->select_options($options_arr,'',false);
+					}
+					elseif(!is_array($record_identifier))
+					{
+					   $input.= '<option>'.lang('This table has not unique identifier field').'</option>';
+					   $input.= '<option>'.lang('Many 2 Many relations will not work').'</option>';
+					}
 					
-					$options_arr= $this->bo->so->get_1wX_record_values($this->bo->site_id,$record_id,$relation2,'stored');
-					
-					$input.= $this->ui->select_options($options_arr,'',false);
 					$input.= '</select>';
 					$input.= '<input type=hidden name=MANY_REL_STR_'.$rel_i.' value='.$relation2[via_primary_key].'|'.$relation2[via_foreign_key].'>';
 					$input.= '<input type=hidden name=MANY_OPT_STR_'.$rel_i.'>';
@@ -271,7 +270,7 @@
 
 			}
 
-			if(!$where_key && !$where_value)
+			if(!$where_string)
 			{
 				if($this->repeat_input=='true') $REPEAT_INPUT_CHECKED='CHECKED';
 				$extra_buttons='<input type="checkbox" '.$REPEAT_INPUT_CHECKED.' name="repeat_input" value="true" /> '.lang('insert another record after saving');
@@ -281,6 +280,7 @@
 			$this->template->set_var('submit_script',$submit_javascript);
 			$this->template->parse('js','js');
 
+			$this->template->set_var('add_edit_button_continue',$add_edit_button_continue);
 			$this->template->set_var('add_edit_button',$add_edit_button);
 			$this->template->set_var('reset_form',lang('reset form'));
 			$this->template->set_var('delete',lang('delete'));

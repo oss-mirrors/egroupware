@@ -236,6 +236,28 @@
 			return $metadata;
 		}
 
+		// FIXME arg has to be site object_id in stead site_id and tablename
+		function site_table_metadata2($site_id,$table)
+		{
+		   $this->site_db_connection($site_id);
+
+		   $metadata = $this->site_db->metadata($table);
+
+		   foreach($metadata as $mdat)
+		   {
+			  $redat[$mdat[name]]=array
+			  (
+				 'type'=>$mdat[type],
+				 'flags'=>$mdat[flags],
+				 'len'=>$mdat[len]
+			  );
+
+		   }
+
+		   $this->site_close_db_connection();
+
+		   return $redat;
+		}
 
 
 		// new, without group(this has to be done seperately) and without objectsection(this also has to be done seperately)
@@ -649,22 +671,25 @@
 				$SQL_WHERE_KEY = $this->strip_magic_quotes_gpc($where_key);
 				$SQL_WHERE_VALUE = $this->strip_magic_quotes_gpc($where_value);
 				$WHERE="WHERE $SQL_WHERE_KEY='$SQL_WHERE_VALUE'";
-			}
+			 }
+//			 elseif($where_condition)
+
 
 			if($where_condition)
 			{
-				if($WHERE)
-				{
-					$WHERE.=' AND ('.$where_condition.')';
-				}
-				else
-				{
-					$WHERE=' WHERE '.$where_condition;
-				}
+			   $where_condition = $this->strip_magic_quotes_gpc($where_condition);
+			   if($WHERE)
+			   {
+				  $WHERE.=' AND ('.$where_condition.')';
+			   }
+			   else
+			   {
+				  $WHERE=' WHERE '.$where_condition;
+			   }
 			}
 			if ($order_by)
 			{
-				$ORDER_BY = ' ORDER BY '.$order_by;
+			   $ORDER_BY = ' ORDER BY '.$order_by;
 			}
 
 			
@@ -672,7 +697,7 @@
 			$fieldproperties = $this->site_table_metadata($site_id,$table);
 			$field_list_arr=(explode(',',$field_list));
 			$SQL="SELECT $field_list FROM $table $WHERE $ORDER_BY";
-		//	echo($SQL);
+//			die($SQL);
 			if (!$limit) $limit=1000000;
 
 			$this->site_db->limit_query($SQL, $offset,__LINE__,__FILE__,$limit); 
@@ -713,12 +738,19 @@
 		}
 
 
-		function delete_object_data($site_id,$table,$where_key,$where_value)
+		function delete_object_data($site_id,$table,$where_key,$where_value,$where_string='')
 		{
 			$this->site_db_connection($site_id);
 
-			$SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key) ."='".$this->strip_magic_quotes_gpc($where_value)."'";
-
+			if($where_string)
+			{
+			   $SQL = 'DELETE FROM ' . $table . ' WHERE ' . $where_string . ' LIMIT 1';
+			}
+			else
+			{
+			   $SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key) ."='".$this->strip_magic_quotes_gpc($where_value)."'";
+			}
+			   
 			if ($this->site_db->query($SQL,__LINE__,__FILE__))
 			{
 				$status=1;
@@ -728,7 +760,7 @@
 
 		}
 
-		function copy_object_data($site_id,$table,$where_key,$where_value)
+/*		function copy_object_data($site_id,$table,$where_key,$where_value)
 		{
 
 			$this->site_db_connection($site_id);
@@ -760,12 +792,13 @@
 
 		}
 
-
+*/
 
 		function insert_object_data($site_id,$site_object,$data)
 		{
 
 			$this->site_db_connection($site_id);
+			$metadata=$this->site_table_metadata2($site_id,$site_object);
 
 			foreach($data as $field)
 			{
@@ -774,85 +807,159 @@
 				if ($SQLvalues) $SQLvalues .= ',';
 
 				$SQLfields .= $field[name];
-//				$SQLvalues .= "'".addslashes($this->strip_magic_quotes_gpc($field[value]))."'"; // FIX THIS magic kut quotes
 				$SQLvalues .= "'".$this->strip_magic_quotes_gpc($field[value])."'"; // FIX THIS magic kut quotes
-//				$SQLvalues .= "'$field[value]'";
+
+
+				/* check for primaries and create array */
+				if (eregi("auto_increment", $metadata[$field[name]][flags]))
+				{
+				   $autokey=$field[name];
+				}
+				elseif (!$autokey && eregi("primary_key", $metadata[$field[name]][flags]) && $metadata[$field[name]][type]!='blob') // FIXME howto select long blobs
+				{						
+				   $pkey_arr[]=$field[name];
+				}
+				elseif(!$autokey && $metadata[$field[name]][type]!='blob') // FIXME howto select long blobs
+				{
+				   $akey_arr[]=$field[name];
+				}
+
+				$aval[$field[name]]=substr($field[value],0,$metadata[$field[name]][len]);
+							
 			}
 
+			if(!is_array($pkey_arr))
+			{
+			   $pkey_arr=$akey_arr;
+			   unset($akey_arr);
+			}
+
+			
 			$SQL='INSERT INTO ' . $site_object . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
 
-			//die($SQL);
 			if ($this->site_db->query($SQL,__LINE__,__FILE__))
 			{
-				$value[status]=1;
-				$value[idfield]=$thirstfield;
-				$value[id]=$this->site_db->get_last_insert_id($site_object, $thirstfield);
+			   $value[status]=1;
+			   $value[idfield]=$thirstfield;
+			   $value[id]=$this->site_db->get_last_insert_id($site_object, $thirstfield);
 
+			   if($autokey) $where_string= $autokey.'=\''.$value[id].'\'';
+			   elseif(count($pkey_arr)>0)
+			   {
+				  foreach($pkey_arr as $pkey)
+				  {
+					 if($where_string) $where_string.=' AND ';
+					 $where_string.= '('.$pkey.' = \''. $aval[$pkey].'\')';
+				  }
+			   }
+
+				$value[where_string]=$where_string;
 			}
 			return $value;
 
 
 		}
 
-		function update_object_many_data($site_id, $data)
-		{
-
-			$this->site_db_connection($site_id);
-			$status=True;
-			$i=1;
-
-			while (isset($data['MANY_REL_STR_'.$i]))
-			{
-				list($via_primary_key,$via_foreign_key) = explode("|",$data['MANY_REL_STR_'.$i]);
-				list($table,) = explode(".",$via_primary_key);
-
-				$SQL="DELETE FROM $table WHERE $via_primary_key='$data[FLDid]'";
-
-				if (!$this->site_db->query($SQL,__LINE__,__FILE__))
-				{
-					$status=-1;
-				}
-
-				$related_data=explode(",",$data['MANY_OPT_STR_'.$i]);
-				foreach($related_data as $option)
-				{
-					$SQL="INSERT INTO $table ($via_primary_key,$via_foreign_key) VALUES ('$data[FLDid]', '$option')";
-
-			if (!$this->site_db->query($SQL,__LINE__,__FILE__))
-					{
-						$status=False;
-					}
-
-				}
-
-				$i++;
-			}
-			return $status;
-
-		}
-
-
-
-
-		function update_object_data($site_id,$site_object,$data,$where_key,$where_value)
+		
+		function update_object_data($site_id,$site_object,$data,$where_key,$where_value,$curr_where_string='')
 		{
 			$this->site_db_connection($site_id);
+			$metadata=$this->site_table_metadata2($site_id,$site_object);
 
-//			_debug_array($data);
 			foreach($data as $field)
 			{
 				if ($SQL_SUB) $SQL_SUB .= ', ';
 				$SQL_SUB .= "$field[name]='".$this->strip_magic_quotes_gpc($field[value])."'";
-			}
+ 
+				/* check for primaries and create array */
+				if (eregi("auto_increment", $metadata[$field[name]][flags]))
+				{
+				   $autokey=$field[name].'=\''.$field[value].'\'';
+				}
+				elseif (!$autokey && eregi("primary_key", $metadata[$field[name]][flags]) && $metadata[$field[name]][type]!='blob') // FIXME howto select long blobs
+				{						
+				   $pkey_arr[]=$field[name];
+				}
+				elseif(!$autokey && $metadata[$field[name]][type]!='blob') // FIXME howto select long blobs
+				{
+				   $akey_arr[]=$field[name];
+				}
 
-			$SQL = 'UPDATE ' . $site_object . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($this->strip_magic_quotes_gpc($where_key))."='".$this->strip_magic_quotes_gpc($this->strip_magic_quotes_gpc($where_value))."'";
+				$aval[$field[name]]=substr($field[value],0,$metadata[$field[name]][len]);
+		  
+			 }
+
+			 if(!is_array($pkey_arr))
+			 {
+				$pkey_arr=$akey_arr;
+				unset($akey_arr);
+			 }
+			 
+			 if($curr_where_string)
+			{
+			   $SQL = 'UPDATE ' . $site_object . ' SET ' . $SQL_SUB . ' WHERE ' . $curr_where_string ." LIMIT 1";
+
+			}
+			else
+			{
+			   $SQL = 'UPDATE ' . $site_object . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($this->strip_magic_quotes_gpc($where_key))."='".$this->strip_magic_quotes_gpc($this->strip_magic_quotes_gpc($where_value))."'";
+
+			}
 
 			if ($this->site_db->query($SQL,__LINE__,__FILE__))
 			{
-				$status=1;
-			}
+			   $value[status]=1;
 
-			return $status;
+			   if($autokey) $where_string= $autokey;
+			   elseif(count($pkey_arr)>0)
+			   {
+				  foreach($pkey_arr as $pkey)
+				  {
+					 if($where_string) $where_string.=' AND ';
+					 $where_string.= '('.$pkey.' = \''. $aval[$pkey].'\')';
+				  }
+			   }
+
+			   $value[where_string]=$where_string;
+			}
+			return $value;
+		}
+		
+		
+		
+		function update_object_many_data($site_id, $data)
+		{
+		   $this->site_db_connection($site_id);
+		   $status=True;
+		   $i=1;
+
+		   while (isset($data['MANY_REL_STR_'.$i]))
+		   {
+			  list($via_primary_key,$via_foreign_key) = explode("|",$data['MANY_REL_STR_'.$i]);
+			  list($table,) = explode(".",$via_primary_key);
+
+			  $SQL="DELETE FROM $table WHERE $via_primary_key='$data[FLDid]'";
+
+			  if (!$this->site_db->query($SQL,__LINE__,__FILE__))
+			  {
+				 $status=-1;
+			  }
+
+			  $related_data=explode(",",$data['MANY_OPT_STR_'.$i]);
+			  foreach($related_data as $option)
+			  {
+				 $SQL="INSERT INTO $table ($via_primary_key,$via_foreign_key) VALUES ('$data[FLDid]', '$option')";
+				 if (!$this->site_db->query($SQL,__LINE__,__FILE__))
+				 {
+					$status=False;
+				 }
+
+			  }
+
+			  $i++;
+		   }
+		   return $status;
+
 		}
 
 		// $site_id can be removed here!!!
@@ -860,7 +967,7 @@
 		{
 
 			$SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."='".$this->strip_magic_quotes_gpc($where_value)."'";
-//			die( $SQL);
+			
 			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 			{
 				$status=1;
