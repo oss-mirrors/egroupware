@@ -318,7 +318,18 @@ $mypassword = "xxxxxxxxxx";
 				{
 					for ($i=0; $i<count($mail_out['body'][$part_num]['mime_headers']); $i++)
 					{
-						$this_line = rtrim($this_line = $mail_out['body'][$part_num]['mime_headers'][$i])."\r\n";
+						//$this_line = rtrim($this_line = $mail_out['body'][$part_num]['mime_headers'][$i])."\r\n";
+						// note by angles: anglemail forward does not add senders sig, so this may not be necessary here, but definately is below
+						// patch egw #821245 thanks Carsten Wolff
+						// the signature-delimiter must not be trimmed!
+						if ($mail_out['body'][$part_num]['mime_headers'][$i] == '-- ')
+						{
+							$this_line = $mail_out['body'][$part_num]['mime_headers'][$i]."\r\n";
+						}
+						else
+						{
+							$this_line = rtrim($mail_out['body'][$part_num]['mime_headers'][$i])."\r\n";
+						}
 						if (!$this->msg2socket($socket,$this_line))
 						{
 							return false;
@@ -333,7 +344,17 @@ $mypassword = "xxxxxxxxxx";
 				// the part itself
 				for ($i=0; $i<count($mail_out['body'][$part_num]['mime_body']); $i++)
 				{
-					$this_line = rtrim($mail_out['body'][$part_num]['mime_body'][$i])."\r\n";
+					//$this_line = rtrim($mail_out['body'][$part_num]['mime_body'][$i])."\r\n";
+					// patch egw #821245 thanks Carsten Wolff
+					// the signature-delimiter must not be trimmed!
+					if ($mail_out['body'][$part_num]['mime_body'][$i] == '-- ')
+					{
+						$this_line = $mail_out['body'][$part_num]['mime_body'][$i]."\r\n";
+					}
+					else
+					{
+						$this_line = rtrim($mail_out['body'][$part_num]['mime_body'][$i])."\r\n";
+					}
 					// TRANSPARENCY - rfc2821 sect 4.5.2 - any line beginning with a dot, add another dot
 					if ((strlen($this_line) > 0)
 					&& ($this_line[0] == '.'))
