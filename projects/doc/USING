@@ -3,24 +3,30 @@
 +                             quick instruction                              +
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-This file provided that you have successfully installed the projects
-application under phpgroupware and can access the "Projects" menu
-page including Jobs-, Statistics-, Delivery-, Billing- and Archive-links.  
+This file provides you have successfully installed the projects_application
+under phpgroupware and can access the "Projects" menu page including
+Jobs-, Workhours-, Statistics- and Archive-links.
 
-Projects is the main application for Jobs, Statistics, Billing, Delivery and
-Archive. 
-Jobs mean sub-projects, Billing is needed to create invoices, Statistics
-creates user- and projectstatistics, Delivery manages  delivery notes and the
-Archive shows the closed projects.
+Projects is the main application for Jobs, Workhours, Statistics and Archive.
 
-The phpGroupWare adminstrator has the ability to choose project administrators.
-This users are able to edit the activities list. The chosen project administrators 
-will have an additional link to manage the activities at their projects_app navbar
-at the top of the page.
+Jobs mean sub-projects, Workhours is the time you worked on a project, Statistics
+creates user- and projectstatistics and Archive shows the closed projects.
+
+The phpGroupWare adminstrator has the ability to choose projects_administrators and
+projects_bookkeepers.
+This users are able to edit the activities list and set preferences for the
+projects_application.
+
+The chosen projects_administrators will have an additional link to manage the
+activities on their projects_application navbar at the top of the page.
+
 Activities mean global categories of your work for sort your jobs and regulate 
 the minutes per workunit and the bill per workunit for each job.
 
 NOTE: THE ACTIVITIES NEED TO BE CREATED AT FIRST, BEFORE YOU CAN ADD A PROJECT!  
+
+The projects_bookkeepers will have additional links (invoices and deliveries) to
+manage the billing section.
 
 The Projects main page contains an ADD button to create projects. There you also
 can choose the type of an activity for a project: bookable(no invoice) or billable.
