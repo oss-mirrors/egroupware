@@ -27,8 +27,8 @@ save	ftp	zt	Àx¦s
 save to filemanager	ftp	zt	Àx¦s¨ìÀÉ®×ºÞ²z­û
 size	ftp	zt	¤j¤p
 successfully created directory %1	ftp	zt	¦¨¥\«Ø¥ß¸ê®Æ§¨%1
-successfully deleted %1	ftp	zt	%1§R°£¦¨¥\
-successfully uploaded %1	ftp	zt	%1¤W¶Ç¦¨¥\
+successfully deleted %1	ftp	zt	%1§R°£¦¨¥
+successfully uploaded %1	ftp	zt	%1¤W¶Ç¦¨¥
 upload	ftp	zt	¤W¶Ç
 username	ftp	zt	¨Ï¥ÎªÌ¦WºÙ
 view	ftp	zt	ÂsÄý
