@@ -555,13 +555,36 @@
 			if ($this->debug > 0) { echo 'bofilters.make_imap_search_str: ENTERING<br>'; }
 			if ($this->debug > 2) { echo 'bofilters.make_imap_search_str: $feed_filter DUMP:<pre>'; print_r($feed_filter); echo "</pre>\r\n"; }
 			/*
-			examples of how to construct IMAP search strings
+			RFC2060:
+			search  =  "SEARCH" [SP "CHARSET" SP astring] 1*(SP search-key)
+			search-key = 
+				"ALL" / "ANSWERED" / "BCC" SP astring /
+				"BEFORE" SP date / "BODY" SP astring /
+				"CC" SP astring / "DELETED" / "FLAGGED" /
+				"FROM" SP astring / "KEYWORD" SP flag-keyword / "NEW" /
+				"OLD" / "ON" SP date / "RECENT" / "SEEN" /
+				"SINCE" SP date / "SUBJECT" SP astring /
+				"TEXT" SP astring / "TO" SP astring /
+				"UNANSWERED" / "UNDELETED" / "UNFLAGGED" /
+				"UNKEYWORD" SP flag-keyword / "UNSEEN" /
+			; Above this line were in [IMAP2]
+				"DRAFT" / "HEADER" SP header-fld-name SP astring /
+				"LARGER" SP number / "NOT" SP search-key /
+				"OR" SP search-key SP search-key /
+				"SENTBEFORE" SP date / "SENTON" SP date /
+				"SENTSINCE" SP date / "SMALLER" SP number /
+				"UID" SP set / "UNDRAFT" / set /
+				"(" search-key *(SP search-key) ")"
+			*/
+			/*
+			examples of how to construct IMAPrev4 search strings
+			Prior to IMAPrev4, 
 			From a google search in a "turnpike" newsgroup:
 			
 			IMAP's [AND] OR and NOT are all prefix operators, i.e. there is no 
 			precedence or hierarchy (I put the [AND] in brackets as it is implied, 
 			there is no AND keyword).
-
+			
 			[AND] and OR operate on the next two search-keys.
 			NOT operates on the next search-key.
 			
@@ -580,7 +603,7 @@
 			OR NOT k1 k2            means (not k1) or k2
 			NOT k1 NOT k2           means (not k1) and (not k2)
 			*/
-			
+		
 			if ($this->debug > 2) { echo 'bofilters: make_imap_search_str: mappings are:<pre>'; print_r($this->sieve_to_imap_fields); echo "</pre>\r\n"; }
 			
 			// do we have one search or two, or more
@@ -596,6 +619,10 @@
 			$comparator = $feed_filter['matches'][0]['comparator'];
 			// DOES NOT CONTAIN - BROKEN - FIXME
 			$search_str_1_criteria = $search_key_imap.' "'.$search_for.'"';
+			if ($comparator == 'notcontains')
+			{
+				$search_str_1_criteria = " NOT $search_str_1_criteria";
+			}
 			
 			// 2nd Line 
 			if ($num_search_criteria == 1)
@@ -614,6 +641,10 @@
 				$comparator = $feed_filter['matches'][1]['comparator'];
 				// DOES NOT CONTAIN - BROKEN - FIXME
 				$search_str_2_criteria = $search_key_imap.' "'.$search_for.'"';
+				//if ($comparator == 'notcontains')
+				//{
+				//	$search_str_2_criteria = "( NOT $search_str_2_criteria)";
+				//}
 				// preliminary  compound search string
 				$final_search_str = $search_str_1_criteria .' '.$search_str_2_criteria;
 				// final syntax of this limited 2 line search

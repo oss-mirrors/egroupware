@@ -96,11 +96,7 @@
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			
 			// Message Information: THE MESSAGE'S HEADERS RETURNED AS A STRUCTURE
-			//$tmp_a = $this->a[$this->acctnum];
-			//$retval = $tmp_a['dcom']->header($mailsvr_stream, $msgball['msgnum']);
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->header($mailsvr_stream, $msgball['msgnum']);
-			//$this->a[$this->acctnum] = $tmp_a;
-			return $retval;
+			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->header($mailsvr_stream, $msgball['msgnum']);
 		}
 		
 		function phpgw_fetchheader($msgball='')
@@ -638,6 +634,9 @@
 			// multiple accounts means one stream may be open but another may not
 			// "ensure_stream_and_folder" will verify for us, 
 			$this->ensure_stream_and_folder($mov_msgball, 'industrial_interacct_mail_move');
+			// GET MESSAGE FLAGS (before you get the mgs, so unseen/seen is not tainted by our grab)
+			$hdr_envelope = $this->phpgw_header($mov_msgball);
+			$mov_msgball['flags'] = $this->make_flags_str($hdr_envelope);
 			// GET THE MESSAGE
 			// part_no 0 only used to get the headers
 			$mov_msgball['part_no'] = 0;
@@ -666,7 +665,7 @@
 			$mailsvr_callstr = $this->get_arg_value('mailsvr_callstr', $to_fldball['acctnum']);
 			$to_mailsvr_stream = $this->get_arg_value('mailsvr_stream', $to_fldball['acctnum']);
 			$to_fldball['folder'] = $remember_to_fldball;
-			$good_to_go = $GLOBALS['phpgw_dcom_'.$to_fldball['acctnum']]->dcom->append($to_mailsvr_stream, $mailsvr_callstr.$to_fldball['folder'], $moving_message, '');
+			$good_to_go = $GLOBALS['phpgw_dcom_'.$to_fldball['acctnum']]->dcom->append($to_mailsvr_stream, $mailsvr_callstr.$to_fldball['folder'], $moving_message, $mov_msgball['flags']);
 			if (!$good_to_go)
 			{
 				return False;

@@ -2841,6 +2841,62 @@
 		$mess_id = '<'.$stamp[1].'.'.$rand_middle.'.'.$stamp[0].'@'.$id_suffix.'>';
 		return $mess_id;
 	}
+	
+	function make_flags_str($hdr_envelope='')
+	{
+		/*
+		// --- Message Flags ---
+		var $Recent = '';		//  'R' if recent and seen, 'N' if recent and not seen, ' ' if not recent
+		var $Unseen = '';		//  'U' if not seen AND not recent, ' ' if seen OR not seen and recent
+		var $Answered = '';	//  'A' if answered, ' ' if unanswered
+		var $Deleted = '';		//  'D' if deleted, ' ' if not deleted
+		var $Draft = '';		//  'X' if draft, ' ' if not draft
+		var $Flagged = '';		//  'F' if flagged, ' ' if not flagged
+		*/
+		/*  == RFC2060: ==
+		\Seen				Message has been read
+		\Answered		Message has been answered
+		\Flagged			Message is "flagged" for urgent/special attention
+		\Deleted			Message is "deleted" for removal by later EXPUNGE
+		\Draft				Message has not completed composition (marked as a draft).
+		\Recent			Message is "recently" arrived in this mailbox. (long story...
+		Note: The \Recent system flag is a special case of a 
+		session flag.  \Recent can not be used as an argument in a
+		STORE command, and thus can not be changed at all.	
+		*/
+		if ($hdr_envelope == '')
+		{
+			return 'ERROR';
+		}
+		$flags_str = '';
+		$flags_array = array();
+		if (($hdr_envelope->Recent != 'N') && ($hdr_envelope->Unseen != 'U'))
+		{
+			$flags_str .= "\\Seen ";
+		}
+		if ((isset($hdr_envelope->Answered))
+		&& ($hdr_envelope->Answered == 'A'))
+		{
+			$flags_str .= "\\Answered ";
+		}
+		if ((isset($hdr_envelope->Flagged))
+		&& ($hdr_envelope->Flagged == 'F'))
+		{
+			$flags_str .= "\\Flagged ";
+		}
+		if ((isset($hdr_envelope->Deleted))
+		&& ($hdr_envelope->Deleted == 'D'))
+		{
+			$flags_str .= "\\Deleted ";
+		}
+		if ((isset($hdr_envelope->Draft))
+		&& ($hdr_envelope->Draft != ''))
+		{
+			$flags_str .= "\\Draft ";
+		}
+		// Recent is not settable in an append, so forge about it
+		return trim($flags_str);
+	}
 
   // ----  HTML - Related Utility Functions   -----
 	function qprint($string)

@@ -2069,9 +2069,6 @@ class mail_msg extends mail_msg_wrappers
 			// SKIP this for POP3 - fetchstructure for POP3 requires download the WHOLE msg
 			// so PHP can build the fetchstructure data (IMAP server does this internally)
 			
-			//$tmp_a = $this->a[$this->acctnum];
-			//if ((isset($tmp_a['dcom']->imap_builtin))
-			//&& ($tmp_a['dcom']->imap_builtin == False)
 			if ((isset($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin))
 			&& ($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin == False)
 			&& (stristr($this->get_pref_value('mail_server_type'), 'pop3')))
@@ -2082,15 +2079,12 @@ class mail_msg extends mail_msg_wrappers
 			else
 			{
 				// need Message Information: STRUCTURAL for this
-				//$msg_structure = $this->phpgw_fetchstructure($msgball_list[$i]['msgnum']);
 				$msg_structure = $this->phpgw_fetchstructure($msgball_list[$i]);
 				// now examine that msg_struct for signs of an attachment
 				$msg_list_display[$x]['has_attachment'] = $this->has_real_attachment($msg_structure);
 			}
-			//$this->a[$this->acctnum] = $tmp_a;
-
+			
 			// Message Information: THE MESSAGE'S HEADERS ENVELOPE DATA
-			//$hdr_envelope = $this->phpgw_header($msgball_list[$i]['msgnum']);
 			$hdr_envelope = $this->phpgw_header($msgball_list[$i]);
 			
 			// MESSAGE REFERENCE (a) NUMBER (b) FOLDER (c) ACCTNUM and (d) FAKE_URL EMBEDDED MULTI DATA
@@ -2103,13 +2097,12 @@ class mail_msg extends mail_msg_wrappers
 			// NOTE: the acctnum MUST be matched to this individual message and folder
 			$msg_list_display[$x]['subject'] = $this->get_subject($hdr_envelope,'');
 			$msg_list_display[$x]['subject_link'] = $GLOBALS['phpgw']->link(
-				//'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
-				'/index.php',
-				 'menuaction=email.uimessage.message'
-				.'&'.$msgball_list[$i]['uri']
-				.'&sort='.$this->get_arg_value('sort')
-				.'&order='.$this->get_arg_value('order')
-				.'&start='.$this->get_arg_value('start'));
+							'/index.php',
+							 'menuaction=email.uimessage.message'
+							.'&'.$msgball_list[$i]['uri']
+							.'&sort='.$this->get_arg_value('sort')
+							.'&order='.$this->get_arg_value('order')
+							.'&start='.$this->get_arg_value('start'));
 			
 			// SIZE
 			if ($this->newsmode)
@@ -2132,6 +2125,9 @@ class mail_msg extends mail_msg_wrappers
 			{
 				$msg_list_display[$x]['is_unseen'] = False;
 			}
+			
+			// FLAGS array with all IMAP flags, for utility purposes, such as appending and preserving these flags
+			$msg_list_display[$x]['flags'] = $this->make_flags_str($hdr_envelope);
 
 			// FROM and REPLY TO  HANDLING
 			
@@ -2246,7 +2242,6 @@ class mail_msg extends mail_msg_wrappers
 			// said button is in the "show the message contents" page, email/message.php
 			$msg_list_display[$x]['from_link'] = $GLOBALS['phpgw']->link(
 								'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-								// 'folder='.$this->prep_folder_out('')
 								 $msgball_list[$i]['uri']
 								.'&sort='.$this->get_arg_value('sort')
 								.'&order='.$this->get_arg_value('order')
@@ -2278,6 +2273,9 @@ class mail_msg extends mail_msg_wrappers
 				// this strips the time part, leaving only the date, better for single line TD cells
 				$msg_list_display[$x]['msg_date'] = ereg_replace("^.* -", '', $msg_date_time);
 			}
+			// *raw* date for utility purposes, such as appending and specifying a date
+			// php built in append does not let you specify the data during an append
+			//$msg_list_display[$x]['msg_date_raw'] = $hdr_envelope->udate;
 		}
 		if ($debug_msg_list_display > 2) { echo 'mail_msg: get_msg_list_display: exiting $msg_list_display[] dump:<pre>'; print_r($msg_list_display); echo '</pre>'; }
 		return $msg_list_display;
