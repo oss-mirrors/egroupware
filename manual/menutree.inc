@@ -15,6 +15,7 @@
   /*  main file                                */
   /*                                           */ 
   /*********************************************/
+function createtree($treefile, $num_menus = 50, $invisible_menus = Null){
   
   $script       = $SCRIPT_NAME;
   
@@ -105,19 +106,54 @@
   /*********************************************/
   /*  Determine visible nodes                  */
   /*********************************************/
+
+
   
   $visible[0]=1;   // root is always visible
   $visible[1]=1;   // root is always visible
   $visible[2]=1;   // root is always visible
+  $visible[3]=0;   // root is always visible
+  $visible[4]=0;   // root is always visible
+  $visible[5]=0;   // root is always visible
+  $visible[6]=0;   // root is always visible
   $visible[7]=1;   // root is always visible
+  $visible[8]=0;   // root is always visible
+  $visible[9]=0;   // root is always visible
+  $visible[10]=0;   // root is always visible
   $visible[11]=1;   // root is always visible
+  $visible[12]=0;   // root is always visible
+  $visible[13]=0;   // root is always visible
+  $visible[14]=0;   // root is always visible
+  $visible[15]=0;   // root is always visible
   $visible[16]=1;   // root is always visible
   $visible[17]=1;   // root is always visible
   $visible[18]=1;   // root is always visible
   $visible[19]=1;   // root is always visible
   $visible[20]=1;   // root is always visible
+  $visible[21]=0;   // root is always visible
+  $visible[22]=0;   // root is always visible
   $visible[23]=1;   // root is always visible
+  $visible[24]=0;   // root is always visible
+  $visible[25]=0;   // root is always visible
   $visible[26]=1;   // root is always visible
+  $visible[27]=0;   // root is always visible
+  $visible[28]=0;   // root is always visible
+
+
+  for ($i=0; $i<count($explevels); $i++)
+  {
+    $n=$explevels[$i];
+    if ( ($visible[$n]==1) && ($expand[$n]==1) )
+    {
+       $j=$n+1;
+       while ( $tree[$j][0] > $tree[$n][0] )
+       {
+         if ($tree[$j][0]==$tree[$n][0]+1) $visible[$j]=1;     
+         $j++;
+       }
+    }
+  }
+
 
   for ($i=0; $i<count($explevels); $i++)
   {
@@ -261,4 +297,5 @@
   /* ...item 2.3|item23.htm|main                     */
   /*                                                 */  
   /***************************************************/
+}
 ?>

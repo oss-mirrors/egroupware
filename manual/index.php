@@ -10,16 +10,16 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  $phpgw_info["flags"] = array("currentapp" => "manual");
+  $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
 ?>
 <table cellpadding="10" width=20%>
 <td>
 <font face="Arial, Helvetica, san-serif" size="2">
 <?php
-  $treefile = "mymenu.txt";
-
-  require "./menutree.inc";
+  $phpgw->utilities->menutree->showtree("mymenu.txt");
+//  $treefile = "mymenu.txt";
+//  require "./menutree.inc";
 ?>
 </td>
 </table>
