@@ -36,10 +36,12 @@
 	  'int',
 	  'blob'
    );
+   $this->plugins['selectbox']['help']			=  'If the hidden fields arent available they won\'t work';
    $this->plugins['selectbox']['config']		= array
    (
 	  'Keys_seperated_by_commas'=>array('one,two,three','area',''),
 	  'Value_seperated_by_commas'=>array('one,two,three','area',''),
+	  'Activate_hidden_fields'=>array('two:emailaddress,three:phonenumber','area',''),
 	  'Default_value'=>array('one','text',''),
 	  'Empty_option_available'=> array(array('yes','no'),'select','')
    );
@@ -72,12 +74,25 @@
 			$keys=$pos_values;
 		 }
 
+/*		 if($config[Activate_hidden_fields])
+		 $script="<script type=\"text/javascript\">
+			function fillrouter(obj) {
+			      if(obj.options[obj.selectedIndex].value == 'DSL') 
+				        document.getElementById(\"dslarea\").style.display='';
+						   else 
+						         document.getElementById(\"dslarea\").style.display='none';  
+							  }"
+							  */
 
+		 
 		 $input='<select name="'.$field_name.'">';
 			if($config['Empty_option_available']=='yes') $input.='<option>';
 			$i=0;
 			foreach($pos_values as $pos_val) 
 			{
+				
+			   $pos_val=trim($pos_val);
+			   $value=trim($value);
 			   
 				// quick fix for handling with 0's 
 			   if(strval($pos_val)=='0')
@@ -104,7 +119,7 @@
 			   }
 			   elseif(strval($value)==strval($pos_val))
 			   {
-//				  die($value .' '. $pos_val);
+	//				  die($value .' '. $pos_val);
 				  $selected='SELECTED';	
 			   }
 

@@ -31,7 +31,7 @@
    $this->plugins['vorder']['name']				= 'vorder';
    $this->plugins['vorder']['title']			= 'Visual Ordering plugin';
    $this->plugins['vorder']['author']			= 'Pim Snel';
-   $this->plugins['vorder']['version']			= '0.1.2';
+   $this->plugins['vorder']['version']			= '0.1.3';
    $this->plugins['vorder']['enable']			= 1;
 
    $this->plugins['vorder']['description']		= '

@@ -53,6 +53,21 @@
 		 $file=array_merge($file,$object);
 	  }
 
+	  if($GLOBALS[local_bo]->last_where_string)
+	  {
+		 $last_record=Array(
+			'Last edited record' => array
+			(
+			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.display_form&where_string='.$GLOBALS[local_bo]->last_where_string),
+			   'text'=>'Last edited record',
+			   'icon'=>'edit'
+			)
+		 );
+
+		 $file=array_merge($file,$last_record);
+	  }
+
+	  
 	  $file['_NewLine_']='_NewLine_'; // give a newline
 
 
@@ -187,36 +202,25 @@
 			$file=array_merge($file,$object);
 		 }
 
-		 if($GLOBALS[local_bo]->last_where_string)
+
+		 display_sidebox($appname,$menu_title,$file);
+
+		 if($GLOBALS[local_bo]->common->prefs['experimental']=='yes')
 		 {
-			$last_record=Array(
-			   'Last edited record' => array(
-				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.display_form&where_string='.$GLOBALS[local_bo]->last_where_string),
-				  'text'=>'Last edited record',
-				  'icon'=>'edit'
-			   ));
-
-			   $file=array_merge($file,$last_record);
-
-			}
+			$menu_title = lang('Developer Links');
+			$file = Array(
+			   'Site Media and Documents' => array
+			   (
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiumedia.index'),
+				  'text'=>'Site Media and Documents',
+				  'icon'=>'thumbnail'
+			   ),
+			);
 			display_sidebox($appname,$menu_title,$file);
-
-			if($GLOBALS[local_bo]->common->prefs['experimental']=='yes')
-			{
-			   $menu_title = lang('Developer Links');
-			   $file = Array(
-				  'Site Media and Documents' => array
-				  (
-					 'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiumedia.index'),
-					 'text'=>'Site Media and Documents',
-					 'icon'=>'thumbnail'
-				  ),
-			   );
-			   display_sidebox($appname,$menu_title,$file);
-			}
-
-
 		 }
 
+
 	  }
-   ?>
+
+   }
+?>

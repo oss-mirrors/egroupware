@@ -624,16 +624,15 @@
 
 					 $this->bo->message[info].='<br/>'.lang('%1 Site Objects have been imported.',1);
 					 $this->bo->message[info].='<br/>'.lang('%1 Site Obj-fields have been imported.',$num_fields);
-					 $this->bo->save_sessiondata();
-					 $this->bo->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
 				  }
 				  else
 				  {
 					 $this->bo->message[error].= lang('Import failed');
-					 $this->bo->save_sessiondata();
-					 $this->bo->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
 				  }
-			   }
+				  
+				  $this->bo->save_sessiondata();
+				  $this->bo->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$_POST[parent_site_id]);
+		 }
 
 			}
 			else
@@ -647,7 +646,7 @@
 			   unset($this->bo->message);
 
 			   $this->template->set_var('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.import_object'));
-			   $this->template->set_var('lang_Select_JiNN_site_file',lang('Select JiNN site file'));
+			   $this->template->set_var('lang_Select_JiNN_site_file',lang('Select JiNN object file (*.jobj'));
 			   //			   $this->template->set_var('lang_Replace_existing_Site_with_the_same_name',lang('Replace existing site with the same name?'));
 			   $this->template->set_var('parent_site_id',$this->bo->where_value);
 			   $this->template->set_var('lang_submit_and_import',lang('submit and import'));

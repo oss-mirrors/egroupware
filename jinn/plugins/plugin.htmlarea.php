@@ -133,9 +133,8 @@
 	  if($config[enable_image_upload_button]=='Yes')
 	  {
 		 if($plugins) $plugins.=',';
-		 $plugins.='ContextMenu';
+		 $plugins.='ContextMenu ';
 	  }
-
 	  /* Do stuff to activate uploadImage Plugin in htmlArea */
 	  if($config[enable_image_upload_button]=='Yes')
 	  {

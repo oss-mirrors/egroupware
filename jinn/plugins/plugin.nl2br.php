@@ -37,7 +37,7 @@
 
 	$this->plugins['nl2br']['name']				= 'nl2br';
 	$this->plugins['nl2br']['title']			= 'Newline2Break Filter';
-	$this->plugins['nl2br']['version']			= '1.0';
+	$this->plugins['nl2br']['version']			= '1.1';
 	$this->plugins['nl2br']['enable']			= 1;
 	$this->plugins['nl2br']['author']			= 'Pim Snel';
 	$this->plugins['nl2br']['description']		= $description;
@@ -53,7 +53,7 @@
 
 	function plg_fi_nl2br($field_name, $value, $config,$attr_arr)
 	{
-		$input='<textarea name="'.$field_name.'" style="width:100%; height:200">'.str_replace('<br />','',$value).'</textarea>';
+		$input='<textarea name="'.$field_name.'" style="width:100%; height:200px">'.str_replace('<br />','',$value).'</textarea>';
 		return $input;
 	}
 
