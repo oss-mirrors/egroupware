@@ -15,7 +15,7 @@
 	$setup_info['ftp']['name']      = 'ftp';
 	$setup_info['ftp']['title']     = 'FTP';
 	$setup_info['ftp']['version']   = '0.8.1';
-	$setup_info['ftp']['app_order'] = 19;
+	$setup_info['ftp']['app_order'] = 20;
 	$setup_info['ftp']['enable']    = 1;
 
 	$setup_info['ftp']['author'] = 'Joseph Engo';

@@ -15,7 +15,7 @@
 	$setup_info['headlines']['name']      = 'headlines';
 	$setup_info['headlines']['title']     = 'Headlines';
 	$setup_info['headlines']['version']   = '0.8.1.001';
-	$setup_info['headlines']['app_order'] = 14;
+	$setup_info['headlines']['app_order'] = 13;
 	$setup_info['headlines']['enable']    = 1;
 
 	$setup_info['headlines']['author'] = 'Mark Peters';

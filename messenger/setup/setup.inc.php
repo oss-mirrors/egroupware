@@ -18,7 +18,7 @@
 	$setup_info['messenger']['name']      = 'messenger';
 	$setup_info['messenger']['title']     = 'Messenger';
 	$setup_info['messenger']['version']   = '0.8.1';
-	$setup_info['messenger']['app_order'] = '17';
+	$setup_info['messenger']['app_order'] = '19';
 	$setup_info['messenger']['enable']    = 1;
 
 	/* The tables this app creates */

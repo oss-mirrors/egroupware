@@ -17,7 +17,7 @@
 	$setup_info['polls']['name']      = 'polls';
 	$setup_info['polls']['title']     = 'Polls';
 	$setup_info['polls']['version']   = '0.9.1';
-	$setup_info['polls']['app_order'] = 16;
+	$setup_info['polls']['app_order'] = 17;
 	$setup_info['polls']['enable']    = 1;
 
 	/* The tables this app creates */
