@@ -59,14 +59,14 @@
 			</select>
 		</td>
 		<td align="center">
-			<select name="filter_isInteractive">
+			<select name="filter_is_interactive">
 				<option {filter_interac_selected_all} value="">{lang_All}</option>
 				<option value="y" {filter_interac_selected_y}>{lang_Interactive}</option>
 				<option value="n" {filter_interac_selected_n}>{lang_Automatic}</option>
 			</select>
 		</td>
 		<td align="center">
-			<select name="filter_isAutoRouted">
+			<select name="filter_is_autorouted">
 				<option {filter_route_selected_all} value="">{lang_All}</option>
 				<option value="n" {filter_route_selected_n}>{lang_Manual}</option>
 				<option value="y" {filter_route_selected_y}>{lang_Automatic}</option>
@@ -90,8 +90,9 @@
 <input type="hidden" name="order" value="{order}" />
 <table style="border: 1px solid black;width:100%;">
 	<tr class="th" style="font-weight:bold">
-		<td>&nbsp;</td>
+		<td>{header_process}</td>
 		<td>{header_name}</td>
+		<td>&nbsp;</td>
 		<td>{header_type}</td>
 		<td align="center">{header_int}</td>
 		<td align="center">{header_routing}</td>
@@ -99,11 +100,14 @@
 	</tr>
 	<!-- BEGIN block_act_table -->
 	<tr bgcolor="{color_line}">
-		<td style="text-align:center;">
-			{act_icon}
+		<td>
+		  {act_process}&nbsp;{act_process_version}
 		</td>
 		<td>
 		  <a href="{act_href}">{act_name}</a> {act_run}
+		</td>
+		<td style="text-align:center;">
+			{act_icon}
 		</td>
 		<td style="text-align:left;">
 			{act_type}
