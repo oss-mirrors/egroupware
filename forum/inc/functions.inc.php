@@ -15,8 +15,8 @@
 	// Keep track of what they are doing
 	$GLOBALS['session_info'] = $GLOBALS['phpgw']->session->appsession('session_data','forum');
 
-	$GLOBALS['cat_id'] = (@$GLOBALS['HTTP_GET_VARS']['cat_id']?@$GLOBALS['HTTP_GET_VARS']['cat_id']:$GLOBALS['session_info']['cat_id']);
-	$GLOBALS['forum_id'] = (@$GLOBALS['HTTP_GET_VARS']['forum_id']?@$GLOBALS['HTTP_GET_VARS']['forum_id']:$GLOBALS['session_info']['forum_id']);
+	$GLOBALS['cat_id'] = get_var('cat_id',Array('DEFAULT','GET'),$GLOBALS['session_info']['cat_id']);
+	$GLOBALS['forum_id'] = get_var('forum_id',Array('DEFAULT','GET'),$GLOBALS['session_info']['forum_id']);
 
 	if (!is_array($GLOBALS['session_info']))
 	{

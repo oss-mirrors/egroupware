@@ -47,7 +47,7 @@
 
 			$this->template_dir = $GLOBALS['phpgw']->common->get_tpl_dir('forum');
 			$this->template = CreateObject('phpgwapi.Template',$this->template_dir);
-			$info = explode('.',$GLOBALS['HTTP_GET_VARS']['menuaction']);
+			$info = explode('.',MENUACTION);
 			$this->current_page = $info[2];
 		}
 
@@ -185,12 +185,12 @@
 
 		function edit_category()
 		{
-			$this->category_screen($GLOBALS['HTTP_GET_VARS']['cat_id']);
+			$this->category_screen(get_var('cat_id',Array('GET')));
 		}
 
 		function edit_forum()
 		{
-			$this->forum_screen($GLOBALS['HTTP_GET_VARS']['forum_id']);
+			$this->forum_screen(get_var('forum_id',Array('GET')));
 		}
 
 		function add_category()
@@ -231,7 +231,7 @@
 				'action_url_button'	=> $GLOBALS['phpgw']->link('/index.php',
 						Array(
 							'menuaction'	=> 'forum.boforum.delete_category',
-							'cat_id'	=> $GLOBALS['HTTP_GET_VARS']['cat_id']
+							'cat_id'	=> get_var('cat_id',Array('GET'))
 						)
 					),
 				'action_text_button'	=> lang('Delete'),
@@ -282,8 +282,8 @@
 				'action_url_button'	=> $GLOBALS['phpgw']->link('/index.php',
 						Array(
 							'menuaction'	=> 'forum.boforum.delete_forum',
-							'cat_id'	=> $GLOBALS['HTTP_GET_VARS']['cat_id'],
-							'forum_id'	=> $GLOBALS['HTTP_GET_VARS']['forum_id']
+							'cat_id'	=> get_var('cat_id',Array('GET')),
+							'forum_id'	=> get_var('forum_id',Array('GET'))
 						)
 					),
 				'action_text_button'	=> lang('Delete'),

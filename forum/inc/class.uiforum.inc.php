@@ -335,8 +335,8 @@
 			$this->template->set_block('READ','read_body','read_body');
 			$this->template->set_block('READ','msg_template','msg_template');
 
-			$msg = $GLOBALS['HTTP_GET_VARS']['msg'];
-			$pos = $GLOBALS['HTTP_GET_VARS']['pos'];
+			$msg = get_var('msg',Array('GET'));
+			$pos = get_var('pos',Array('GET'));
 
 			$this->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
 			$this->template->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
@@ -483,7 +483,7 @@
 				'POST_ACTION'   => $GLOBALS['phpgw']->link('/index.php','menuaction=forum.boforum.post'),
 				'CAT_ID'        => $this->bo->cat_id,
 				'FORUM_ID'      => $this->bo->forum_id,
-				'TYPE'          => $GLOBALS['HTTP_GET_VARS']['type'],
+				'TYPE'          => get_var('type',Array('GET')),
 				'ACTION'        => 'post',
 				'LANG_DATE'     => lang('Date'),
 				'LANG_SUBJECT'  => lang('Subject'),

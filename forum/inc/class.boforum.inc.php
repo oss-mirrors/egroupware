@@ -55,10 +55,8 @@
 			for($i=0;$i<count($var);$i++)
 			{
 				$var_str = $var[$i];
-//				$this->$var_str = (@isset($GLOBALS['HTTP_GET_VARS'][$var_str])?intval($GLOBALS['HTTP_GET_VARS'][$var_str]):$this->$var_str);
-//				$this->$var_str = (@isset($GLOBALS['HTTP_POST_VARS'][$var_str])?intval($GLOBALS['HTTP_POST_VARS'][$var_str]):$this->$var_str);
-				$this->$var_str = (@isset($GLOBALS['HTTP_GET_VARS'][$var_str])?$GLOBALS['HTTP_GET_VARS'][$var_str]:$this->$var_str);
-				$this->$var_str = (@isset($GLOBALS['HTTP_POST_VARS'][$var_str])?$GLOBALS['HTTP_POST_VARS'][$var_str]:$this->$var_str);
+//				$this->$var_str = intval(get_var($var_str,'Array('DEFAULT','GET','POST'),$this->$var_str));
+				$this->$var_str = get_var($var_str,'Array('DEFAULT','GET','POST'),$this->$var_str);
 			}
 			if(!@isset($this->view))
 			{
@@ -88,14 +86,14 @@
 		
 		function post()
 		{
-			if ($GLOBALS['HTTP_POST_VARS']['action'] == 'post')
+			if (get_var('action',Array('POST')) == 'post')
 			{
 				$data = Array(
-					'cat_id'   => $GLOBALS['HTTP_POST_VARS']['cat_id'],
-					'forum_id' => $GLOBALS['HTTP_POST_VARS']['forum_id'],
+					'cat_id'   => get_var('cat_id',Array('POST')),
+					'forum_id' => get_var('forum_id',Array('POST')),
 					'postdate' => time() - ((60 * 60) * intval($GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])),
-					'subject'  => $GLOBALS['HTTP_POST_VARS']['subject'],
-					'message'  => $GLOBALS['HTTP_POST_VARS']['message']
+					'subject'  => get_var('subject',Array('POST')),
+					'message'  => get_var('message',Array('POST'))
 				);
 
 				$this->so->add_post($data);
@@ -106,7 +104,7 @@
 
 		function reply()
 		{
-			if ($GLOBALS['HTTP_POST_VARS']['action'] == 'reply')
+			if (get_var('action',Array('POST')) == 'reply')
 			{
 				$stat = 0;
 
@@ -114,25 +112,27 @@
 
 				$next_f_threads_id = $this->so->get_max_thread_id() + 1;
 
-				if ($GLOBALS['HTTP_POST_VARS']['pos'] != 0)
+				$pos = get_var('pos',Array('POST'));
+				$thread = get_var('thread',Array('POST'));
+				if($pos != 0)
 				{
-					$this->so->fix_pos($GLOBALS['HTTP_POST_VARS']['thread'],$GLOBALS['HTTP_POST_VARS']['pos']);
+					$this->so->fix_pos($thread,$pos);
 				}
 				else
 				{
-					$GLOBALS['HTTP_POST_VARS']['pos'] = 1;
+					$pos = 1;
 				}
 
 				$data = Array(
-					'pos' => $GLOBALS['HTTP_POST_VARS']['pos'],
-					'thread'   => $GLOBALS['HTTP_POST_VARS']['thread'],
-					'depth'    => $GLOBALS['HTTP_POST_VARS']['depth'],
+					'pos' => $pos,
+					'thread'   => $thread,
+					'depth'    => get_var('depth',Array('POST')),
 					'postdate' => time() - ((60 * 60) * intval($GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])),
-					'parent'   => $GLOBALS['HTTP_POST_VARS']['msg'],
-					'cat_id'   => $GLOBALS['HTTP_POST_VARS']['cat_id'],
-					'forum_id' => $GLOBALS['HTTP_POST_VARS']['forum_id'],
-					'subject'  => $GLOBALS['HTTP_POST_VARS']['subject'],
-					'message'  => $GLOBALS['HTTP_POST_VARS']['message']
+					'parent'   => get_var('msg',Array('POST')),
+					'cat_id'   => get_var('cat_id',Array('POST')),
+					'forum_id' => get_var('forum_id',Array('POST')),
+					'subject'  => get_var('subject',Array('POST')),
+					'message'  => get_var('message',Array('POST'))
 				);
 
 				$this->so->add_reply($data);
@@ -172,7 +172,7 @@
 				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'));
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
-			$this->so->save_category($GLOBALS['HTTP_POST_VARS']['cat']);
+			$this->so->save_category(get_var('cat',Array('POST')));
 			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'));
 			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
@@ -184,7 +184,7 @@
 				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'));
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
-			$this->so->save_forum($GLOBALS['HTTP_POST_VARS']['forum']);
+			$this->so->save_forum(get_var('forum',Array('POST')));
 			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'));
 			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
