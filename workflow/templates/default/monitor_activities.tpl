@@ -68,8 +68,8 @@
 		<td align="center">
 			<select name="filter_isAutoRouted">
 				<option {filter_route_selected_all} value="">{lang_All}</option>
-				<option value="y" {filter_route_selected_y}>{lang_Manual}</option>
-				<option value="n" {filter_route_selected_n}>{lang_Automatic}</option>
+				<option value="n" {filter_route_selected_n}>{lang_Manual}</option>
+				<option value="y" {filter_route_selected_y}>{lang_Automatic}</option>
 			</select>
 		</td>
 		<td align="center">
