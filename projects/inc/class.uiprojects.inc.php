@@ -166,7 +166,6 @@
 			$this->t->fp('app_header','projects_header');
 
 			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
 		}
 
 		function status_format()
