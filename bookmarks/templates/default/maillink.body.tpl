@@ -1,24 +1,27 @@
 <!-- $Id$ -->
-<form method="post" action="{FORM_ACTION}">
+<!-- BEGIN form -->
+<form method="post" action="{form_action}">
  <table border="0" bgcolor="#EEEEEE" align="center">
+<!--
   <tr>
    <td>{lang_from}:</td>
-   <td><strong>{FROM_NAME} &lt;{FROM}&gt;</strong></td>
+   <td><strong>{from_name}</strong></td>
   </tr>
+-->
 
   <tr>
    <td>{lang_to} <!-- To E-Mail Addresses --></td>
-   <td><input type="text" name="to" size="60" maxlength="255" value="{TO}"><br><small>(comma separate multiple addresses)</small></td>
+   <td><input type="text" name="to" size="60" maxlength="255" value="{to}"><br><small>(comma separate multiple addresses)</small></td>
   </tr>
 
   <tr>
    <td>{lang_subject}</td>
-   <td><input type="text" name="subject" size="60" maxlength="255" value="{SUBJECT}"></td>
+   <td><input type="text" name="subject" size="60" maxlength="255" value="{subject}"></td>
   </tr>
  
   <tr>
    <td>{lang_message}</td>
-   <td><TEXTAREA NAME="message" WRAP="physical" COLS="60" ROWS="6">{MESSAGE}</TEXTAREA></td>
+   <td><TEXTAREA NAME="message" WRAP="physical" COLS="60" ROWS="6">{message}</TEXTAREA></td>
   </tr>
 
   <tr>
@@ -28,3 +31,5 @@
  </tr>
 </table>
 </form>
+<!-- END form -->
+

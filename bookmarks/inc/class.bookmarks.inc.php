@@ -174,6 +174,9 @@
 			$this->grants      = $phpgw->acl->get_grants('bookmarks');
 			$phpgw->nextmatchs = createobject('phpgwapi.nextmatchs');
 			$phpgw->categories = createobject('phpgwapi.categories');
+			$phpgw->config     = createobject('phpgwapi.config');
+			$phpgw->config->read_repository();
+			$this->config      = $this->config_data;
 
 			if (! $phpgw->categories->exists('appandmains','No category'))
 			{
