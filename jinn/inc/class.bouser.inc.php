@@ -48,6 +48,7 @@
 		var $current_config;
 		var $action;
 		var $common;
+		var $browse_settings;
 
 		function bouser()
 		{
@@ -64,13 +65,12 @@
 			$_form = $GLOBALS['HTTP_POST_VARS']['form'];
 			$_site_id = $GLOBALS['HTTP_POST_VARS']['site_id'];
 			$_site_object_id = $GLOBALS['HTTP_POST_VARS']['site_object_id'];
-
+			
 			if (($_form=='main_menu')|| !empty($site_id)) $this->site_id  = $_site_id;
 			if (($_form=='main_menu') || !empty($site_object_id)) $this->site_object_id  = $_site_object_id;
 
-			$this->site = $this->so->get_site_values($this->site_id);
+			if ($this->site_id) $this->site = $this->so->get_site_values($this->site_id);
 			if ($this->site_object_id) $this->site_object = $this->so->get_object_values($this->site_object_id);
-
 		}
 
 		function save_sessiondata()
@@ -78,7 +78,8 @@
 			$data = array(
 				'message' => $this->message, 
 				'site_id' => $this->site_id,
-				'site_object_id' => $this->site_object_id
+				'site_object_id' => $this->site_object_id,
+				'browse_settings'=>	$this->browse_settings
 			);
 
 			$GLOBALS['phpgw']->session->appsession('session_data','jinn',$data);
@@ -92,6 +93,7 @@
 				$this->message 		= $data['message'];
 				$this->site_id 		= $data['site_id'];
 				$this->site_object_id	= $data['site_object_id'];
+				$this->browse_settings	= $data['browse_settings'];
 			}
 		}
 
