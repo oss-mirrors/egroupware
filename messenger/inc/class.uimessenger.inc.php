@@ -162,7 +162,7 @@
 			$message = $_POST['message'];
 			if($_POST['send'])
 			{
-				$errors = $this->bo->send_message($message);
+				$errors = $this->bo->send_global_message($message);
 				if(@is_array($errors))
 				{
 					$GLOBALS['phpgw']->template->set_var('errors',$GLOBALS['phpgw']->common->error_list($errors));

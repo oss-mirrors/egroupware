@@ -37,18 +37,11 @@
 			return $this->so->update_message_status($p['status'],$p['message_id']);
 		}
 
-		function send_global_message($data='')
+		function send_global_message($message='')
 		{
 			if(!$GLOBALS['phpgw']->acl->check('run',PHPGW_ACL,'admin') || $cancel)
 			{
 				return False;
-			}
-
-			if(@is_array($data))
-			{
-				$message = $data['message'];
-				$send    = $data['send'];
-				$cancel  = $data['cancel'];
 			}
 
 			if(!$message['subject'])
@@ -63,9 +56,6 @@
 
 			if(is_array($errors))
 			{
-				/* TODO - return errors */
-//				ExecMethod('messenger.uimessenger.compose',$errors);
-				//$this->ui->compose($errors);
 				return $errors;
 			}
 			else
