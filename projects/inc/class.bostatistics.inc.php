@@ -161,7 +161,6 @@
 			$showResources	= $params['showResources'];
 
 			$bocalendar	= CreateObject('calendar.bocalendar');
-			$this->graph	= CreateObject('phpgwapi.gdgraph',$this->debug);
 			$bolink		= CreateObject('infolog.bolink');
 
 			//$this->boprojects->order = 'parent';
@@ -195,7 +194,6 @@
 
 				$edate = $edate + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
 				$edateout = $GLOBALS['phpgw']->common->show_date($edate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
-#				$this->graph->title = lang('Gantt chart from %1 to %2',$sdateout,$edateout);
 
 				// Standard calls to create a new graph
 				if($modernJPGraph)
