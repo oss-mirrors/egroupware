@@ -947,8 +947,7 @@
 			$folderImageDir = substr($GLOBALS['phpgw']->common->image('phpgwapi','foldertree_line.gif'),0,-19);
 			
 			// careful! "d = new..." MUST be on a new line!!!
-			$folder_tree_new = "<script type='text/javascript'><!--	
-			d = new dTree('d','".$folderImageDir."');";
+			$folder_tree_new = "<script type='text/javascript'>d = new dTree('d','".$folderImageDir."');d.config.inOrder=true;d.config.closeSameLevel=true;";
 			
 			$allFolders = array();
 
@@ -969,25 +968,44 @@
 			// keep track of the last parent id
 			$parentStack = array();
 			$counter = 0;
+			$folder_name = 'IMAP Server';
+			$folder_title = $mailPreferences['username'].'@'.$mailPreferences['imapServerAddress'];
+			$folder_icon = $folderImageDir."foldertree_base.gif";
+			// and put the current counter on top
+			array_push($parentStack, 0);
+			$parent = -1;
+			#$folder_tree_new .= "d.add('0','-1','$folder_name','#','','','$folder_title','','$folder_icon');";
+			$folder_tree_new .= "d.add(0,-1,'$folder_name','javascript:void(0);','','','$folder_title');";
+			$counter++;
+			
 			foreach($allFolders as $key => $value)
 			{
 				$countedDots = substr_count($key,".");
 				#print "$value => $counted_dots<br>";
+				
 
 				// hihglight currently selected mailbox
 				if ($this->mailbox == $key)
 				{
 					$folder_name = "<font style=\"background-color: #dddddd\">$value</font>";
-#					$folderOpen = 'true';
+					$openTo = $counter;
 				}
 				else
 				{
 					$folder_name = $value;
-					$folderOpen = '';
 				}
 
 				$folder_title = $value;
-				$folder_icon = $folderImageDir."/foldertree_folder.gif";
+				if ($key == 'INBOX')
+				{
+					$folder_icon = $folderImageDir."foldertree_felamimail_sm.png";
+					$folderOpen_icon = $folderImageDir."foldertree_felamimail_sm.png";
+				}
+				else
+				{
+					$folder_icon = $folderImageDir."foldertree_folder.gif";
+					$folderOpen_icon = '';
+				}
 
 				// we are on the same level
 				if($countedDots == count($parentStack) -1)
@@ -1021,18 +1039,22 @@
 
 				// some special handling for the root icon
 				// the first icon requires $parent to be -1
-				if($counter==0)
-				{
-					$parent = -1;
-					$folder_icon = $folderImageDir."/foldertree_felamimail_sm.png";
-				}
+				#if($counter==0)
+				#{
+				#	$parent = -1;
+				#	$folder_icon = $folderImageDir."/foldertree_felamimail_sm.png";
+				#}
+				if($parent == '')
+					$parent = 0;
 				
 				// Node(id, pid, name, url, urlClick, urlOut, title, target, icon, iconOpen, open) {
-				$folder_tree_new .= "d.add($counter,$parent,'$folder_name','#','document.messageList.mailbox.value=\'$key\'; document.messageList.submit();','','$folder_title $key','','$folder_icon','$folderOpen');";
+				$folder_tree_new .= "d.add($counter,$parent,'$folder_name','#','document.messageList.mailbox.value=\'$key\'; document.messageList.submit();','','$folder_title $key','','$folder_icon','$folderOpen_icon');\n";
 				$counter++;
 			}
 
-			$folder_tree_new.= "document.write(d);//--></script>";
+			$folder_tree_new.= "document.write(d);
+			d.openTo('$openTo','true');
+			</script>";
 
 			$this->t->set_var('current_mailbox',$current_mailbox);
 			$this->t->set_var('folder_tree',$folder_tree_new);
