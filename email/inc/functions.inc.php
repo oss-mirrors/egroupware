@@ -54,7 +54,9 @@
 
       $mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["server"]["mail_server"].":".$phpgw_info["server"]["mail_port"]."}",$filter."*");  
       if ($phpgw_info["server"]["mail_server_type"] != "pop3")
-	sort($mailboxes); // added sort for folder names 
+         if (gettype($mailboxes) == "array") {
+ 	    sort($mailboxes); // added sort for folder names 
+         }
       if($mailboxes) {
 	$num_boxes = count($mailboxes);
 	if ($filter != "INBOX") { 
