@@ -2,17 +2,24 @@
 add to addressbook	email	ja	アドレス帳へ追加
 attach file	email	ja	添付ファイル
 attach signature	email	ja	署名追加
+choose for rename	email	ja	変更フォルダ選択
+compose new	email	ja	メッセージ作成
 create a folder	email	ja	フォルダ作成
+create (expert)	email	ja	フォルダ作成（エキスパート）
 custom email settings	email	ja	カスタム設定
 date	email	ja	送信日付
 default sorting order	email	ja	ソート順（既定）
 delete a folder	email	ja	フォルダ削除
+delete (expert)	email	ja	フォルダ削除（エキスパート）
+deleted messages saved to folder:	email	ja	削除メッセージをフォルダに保存
 email account name	email	ja	電子メールアカウント名
 email address	email	ja	電子メールアドレス
 email password	email	ja	電子メールパスワード
+email preferences	email	ja	環境設定
 email signature	email	ja	署名
 e-mail preferences	common	ja	電子メールユーザ設定
 email type	common	ja	電子メールタイプ
+enable utf-7 encoded folder names	email	ja	UTF-7 エンコードのフォルダ名を使用
 enter your default mail domain ( from: user@domain )	admin	ja	メールドメイン名 ( 書式 user@domain の domain部分 )
 enter your pop	admin	ja	POP
 enter your smtp server hostname or ip address	admin	ja	SMTP サーバ名または IP アドレス
@@ -21,36 +28,53 @@ files	email	ja	ファイル
 firstname	email	ja	姓
 folder	email	ja	フォルダ
 folder maintenance	email	ja	フォルダメンテナンス
+folder name	email	ja	フォルダ名
+folder size	email	ja	フォルダサイズ
+get size	email	ja	サイズ
 if applicable	email	ja	適用時
 image	email	ja	Image
 imap server type	email	ja	IMAP サーバタイプ
 imap mail server hostname or ip address	admin	ja	IMAP サーバ名または IP アドレス
 lastname	email	ja	名
+long names	email	ja	長い名前
 mail folder(uw-maildir)	email	ja	メールフォルダ（UW-MailDir）
 mail server	email	ja	メールサーバ
 mail server login type	admin	ja	メールサーバログインタイプ
 mail server type	email	ja	メールサーバタイプ
 mail settings	admin	ja	電子メール設定
+manage folders	email	ja	フォルダ管理
 messages	email	ja	メッセージ
+message list layout	email	ja	メッセージリストレイアウト
 move selected messages into	email	ja	選択メッセージを移動
-newest -> oldest	email	ja	新から旧
+oldest	email	ja	旧
+new	email	ja	新着
 new message	email	ja	新着メッセージ
+new messages	email	ja	新着
 no subject	email	ja	No Subject
 non-standard	email	ja	既定値を使用しない
-oldest -> newest	email	ja	旧から新
+newest	email	ja	新
 please select a message first	email	ja	メッセージを選択してください。
+rename a folder	email	ja	フォルダ名変更
+rename (expert)	email	ja	フォルダ名変更（エキスパート）
 section	email	ja	Section
 select email address	email	ja	電子メールアドレス
 select home email address	email	ja	電子メール（個人）
 select your mail server type	admin	ja	メールサーバタイプ
 select work email address	email	ja	電子メール（仕事）
 send deleted messages to the trash	email	ja	削除メッセージをゴミ箱へ
+sent messages saved to folder:	email	ja	送信メッセージをフォルダに保存
+short names	email	ja	短い名前
 show new messages on main screen	email	ja	新着メッセージをメイン画面に表示
 show sender's email address with name	email	ja	送信者名の表示方法
 size	email	ja	サイズ
 switch current folder to	email	ja	カレントフォルダ変更
 to	email	ja	宛先
+total messages	email	ja	合計
+u-wash mail folder	email	ja	U-Wash メールフォルダ
 undisclosed recipients	email	ja	受信者未公開
 undisclosed sender	email	ja	送信者未公開
 use custom settings	email	ja	カスタム設定を使用
+view formatted	email	ja	フォーマット表示
+view unformatted	email	ja	未フォーマット表示
 x messages have been deleted	email	ja	%1 件削除しました。
+wrote	email	ja	wrote

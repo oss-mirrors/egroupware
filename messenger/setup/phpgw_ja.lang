@@ -1,5 +1,6 @@
 compose	messenger	ja	作成
 compose global message	admin	ja	共通メッセージ
+compose global message	messenger	ja	共通メッセージ
 compose message	messenger	ja	作成
 delete selected	messenger	ja	選択メッセージを削除
 forward	messenger	ja	転送
