@@ -16,139 +16,140 @@
     $phpgw_info["flags"]["nonavbar"] = True;
   }
   include("../../header.inc.php");
-
-  $actiontype = "addforum";
-  $buttontext = lang("Add Forum");
-
-  if($act == "edit") {
-    if(!$phpgw->db->query("select * from f_forums where id=$for_id")) {
-      print "Error in reading database<br>\n";
-      $phpgw->common->phpgw_exit();
-    } else {
-      $phpgw->db->next_record(); 
-      $forname = $phpgw->db->f("name");
-      $fordescr = $phpgw->db->f("descr");
-      $cat_id = $phpgw->db->f("cat_id");
-      if ($cat_id > 0) {
-        if(!$phpgw->db->query("select * from f_categories where id=$cat_id")) {
-          print "Error in readindg database<br>\n";
-          $phpgw->common->phpgw_exit();
-        } else $phpgw->db->next_record();
-        $catname = $phpgw->db->f("name");
-      } else $catname = lang("No Category");
-      $extrahidden = "<input type=\"hidden\" name=\"for_id\" value=\"$for_id\">";
-      $buttontext = lang("Update Forum");
-      $actiontype = "updforum";
-    }
-  }
-
   
+  // setting up the template
+  
+  $phpgw->template->set_file('FORUM','admin.forum.tpl');
+  
+  $phpgw->template->set_var(array(
+	'FORUM_ADMIN' 	=> lang("Forums") . " " . lang("Admin"),
+	'TABLEBG'	=> $phpgw_info["theme"]["th_bg"],
+	//TRY TO FIND A PERFECT CHOICE
+	'THBG'		=>  $phpgw_info["theme"]["bg09"],
+	//'TRBG'		=> $phpgw_info["theme"]["row_off"],
+	'CAT_LINK'	=> $phpgw->link("/forum/admin/category.php"),
+	'FOR_LINK'	=> $phpgw->link("/forum/admin/forum.php"),
+	'MAIN_LINK'	=> $phpgw->link("/forum/index.php"),
+	'ADM_LINK'	=> $phpgw->link("/forum/admin/index.php"),
+	'LANG_ADM_MAIN'	=> lang("Return to Admin"),
+	'LANG_CAT'	=> lang("New Category"),
+	'LANG_FOR'	=> lang("New Forum"),
+	'LANG_MAIN' 	=> lang("Return to Forums"),
+	'LANG_FORUM'	=> lang("Forum Name"),
+	'LANG_FORUM_DESC'	=> lang("Forum Description"),
+	
+	'BELONG_TO'	=> lang("Belongs to Category"),
+	'ACTION'	=> 'addforum'
+	));
+
+
+   if($act == "edit") {
+  	
+   $phpgw->db->query("select * from f_forums where id=$for_id");
+   
+    $phpgw->db->next_record(); 
+    $forname = $phpgw->db->f("name");
+    $fordescr = $phpgw->db->f("descr");
+    $cat_id = $phpgw->db->f("cat_id");
+   
+   // for the drop down category
+    	$phpgw->db->query("select * from f_categories");
+   	while($phpgw->db->next_record()) 
+   	{
+   		if($catname == $phpgw->db->f("name"))
+  	{
+   		 $phpgw->template->set_var(
+    		 'SELECTED', "<option selected value=\"" . $phpgw->db->f("id") . "\">". $phpgw->db->f("name")."</option>");
+ 	}
+ 		if($catname != $phpgw->db->f("name"))
+ 	{
+  		 $phpgw->template->set_var(
+    		 'SELECTED', "<option value=\"" . $phpgw->db->f("id") . "\">". $phpgw->db->f("name")."</option>");
+  	}
+  	$phpgw->template->parse('DROP_DOWN','SELECTED',true);
+    	
+    	}//end while
+   
+   	if ($cat_id > 0) {
+   	$phpgw->db->query("select * from f_categories where id=$cat_id");
+   	$phpgw->db->next_record();
+        
+      	$catname = $phpgw->db->f("name");
+      	$phpgw->template->set_var(array(
+ 	'FORUM_NAME'	=> $forname,
+ 	'FOR_DESC'	=> $fordescr,
+     	'FORID'		=> $for_id,
+    	'BUTTONTEXT'	=> lang("Update Forum"),
+    	'ACTION'	=> 'updforum',
+    	'LANG_ADD_FORUM' => lang("Update Forum"),
+    	'ACTION_LINK'	=> $phpgw->link("/forum/admin/forum.php"),
+	'BUTTONLANG'	=> lang("Update Forum")
+    	));
+   
+   	         
+    		} //end of if ($cat_id > 0)
+    	else //Not yet check. Anyone have test this case please let me know
+    		{ 
+    		
+    	$catname = lang("No Category");
+    	$extraselect = "<option value=\"" . $cat_id . "\">" . $catname ."</option>";
+    	$phpgw->template->set_var(array(
+    	 'CATID' 	=> $cat_id,
+    	 'CATNAME'	=> $catname,
+    	 'FORID'	=> $for_id,
+    	 'BUTTONTEXT'	=> lang("Update Forum"),
+    	 'ACTION'	=> 'updforum'
+    	 ));
+    		}
+   
+ 
+
+   	
+  } //End act == edit
+
+if(!$act) {
+$phpgw->template->set_var(array(
+	'BUTTONLANG'	=> lang("Add Forum"),
+	'ACTION'	=> 'addforum',
+	'LANG_ADD_FORUM' => lang("Add Forum"),
+	'ACTION_LINK'	=> $phpgw->link("/forum/admin/forum.php")
+	));
+
+
+   $phpgw->db->query("select * from f_categories");
+    while($phpgw->db->next_record()) {
+    $phpgw->template->set_var(
+    'NOT_SEL' , "<option value=\"" . $phpgw->db->f("id") . "\">". $phpgw->db->f("name")."</option>");
+    $phpgw->template->parse('DROP_DOWN','NOT_SEL',true);
+    }
+	} //end if(!act)
+
+ // parsing the template
+ 	
+ 
+
+
+// Better using switch function << todo  
   if($action) {
-   if($action == "addforum") {
-    if(!$phpgw->db->query("insert into f_forums (name,descr,cat_id) values ('$forname','$fordescr',$goestocat)")) {
-     print "Error in adding forum to database<br>\n";
-     $phpgw->common->phpgw_exit();
-    } else {
-     Header("Location: " . $phpgw->link("/forum/admin/index.php"));
-     $phpgw->common->phpgw_exit();
-    }
-   } elseif ($action == "updforum" && $for_id) {
-    if(!$phpgw->db->query("update f_forums set name='$forname',descr='$fordescr',cat_id=$goestocat where id=$for_id ")) {
-     print "Error in updating forum on database<br>\n";
-     $phpgw->common->phpgw_exit();
-    } else {
-     Header("Location: " . $phpgw->link("/forum/admin/index.php"));
-     $phpgw->common->phpgw_exit();
-    }
+   	if($action == "addforum") {
+    	$phpgw->db->query("insert into f_forums (name,descr,cat_id) values ('$forname','$fordescr',$goestocat)");
+    	Header("Location: " . $phpgw->link("/forum/admin/index.php"));
+     	$phpgw->common->phpgw_exit();
+     	} 
+	elseif ($action == "updforum" && $for_id) {
+    	$phpgw->db->query("update f_forums set name='$forname',descr='$fordescr',cat_id=$goestocat where id=$for_id ");
+	Header("Location: " . $phpgw->link("/forum/admin/index.php"));
+     	$phpgw->common->phpgw_exit();
+	} 
+	else {
+     	Header("Location: " . $phpgw->link("/forum/admin/index.php"));
+     	$phpgw->common->phpgw_exit();
+    	}
    }
-  }
 
 
-
-?>
-
-<p>
-<table border="0" width=100%>
-<tr>
-<?php echo "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] . "\" align=\"left\"><b>" . lang("Forums") . " " . lang("Admin") . "</b></td>" . "</tr>"; ?>
-
-<tr>
- <td>
-  <font size=-1>
-<?php
-echo "<a href=\"" . $phpgw->link("/forum/admin/category.php") . "\">" . lang("New Category") ."</a>";
-echo " | ";
-echo "<a href=\"" . $phpgw->link("/forum/admin/forum.php") . "\">" . lang("New Forum") ."</a>";   
-echo " | ";
-echo "<a href=\"" . $phpgw->link("/forum/admin/") . "\">" . lang("Return to Admin") ."</a>";  
-echo " | ";
-echo "<a href=\"" . $phpgw->link("/forum/index.php") . "\">" . lang("Return to Forums") ."</a>";
-  
-?>
-  </font>
-  <br><br>
-  <center>
-  <table border="0" width=80% bgcolor="<?php echo $phpgw_info["theme"]["table_bg"]?>">
-   <tr>
-    <td colspan=2 bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]?>">
-     <center><?php echo $buttontext ?></center>
-    </td>
-   </tr>
-   <tr>
-    <form method="POST" action="<?php echo $phpgw->link("/forum/admin/forum.php"); ?>">
-    <?php echo $extrahidden ?> 
-    <input type="hidden" name="action" value="<?php echo $actiontype?>">
-
-    <td><?php echo lang("Belongs to Category") ?>:</td>
-    <td>
-     <select name="goestocat">
-<?php
-    $q = $phpgw->db->query("select * from f_categories");
-
-    while($phpgw->db->next_record($q)) {
-      $cat_id = $phpgw->db->f("id");
-      $cat_name = $phpgw->db->f("name");
-      if ($catname==$cat_name) { echo "<option value=\"$cat_id\" selected>$cat_name</option>\n"; }
-      else { echo "<option value=\"$cat_id\">$cat_name</option>\n"; }
-    }
-?>
-    <option value=-1><?php echo lang("No Category") ?></option>
-    </select>
-   </td>
-   <tr>
-    <td><?php echo lang("Forum Name") ?>:</td>
-    <td><input type="text" name="forname" size=40 maxlength=49 value="<?php echo $forname ?>"></td>
-   </tr>  
-   <tr>
-    <td><?php echo lang("Forum Description") ?>:</td>
-    <td><textarea rows="3" cols="40" name="fordescr" virtual-wrap maxlength=240><?php echo $fordescr ?></textarea></td>
-   </tr>
-   <tr>
-    <td colspan=2 align=right>
-
-     <input type="submit" value="<?php echo $buttontext?>">
-    </td>
-   </tr>
-
-  </table>
-  </center>
-  <br>
- </td>
-</tr>
-
-   </tr>
-  </table>
-  </center>
-  <br>
-
-
-
-
- </td>
-</tr>
-</table>
-
-
-<?php
+$phpgw->template->parse('Out','FORUM');
+ $phpgw->template->p('Out');
+ 
   $phpgw->common->phpgw_footer();
 ?>

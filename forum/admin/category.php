@@ -9,120 +9,92 @@
   *  Free Software Foundation; either version 2 of the License, or (at your  *
   *  option) any later version.                                              *
   \**************************************************************************/
-
+//$phpgw_info["server"]["app_images"]
   $phpgw_info["flags"]["currentapp"] = "forum";
   if($action) {
     $phpgw_info["flags"]["noheader"] = True;
     $phpgw_info["flags"]["nonavbar"] = True;
   }
   include("../../header.inc.php");
-
-  $actiontype = "addcat";
-  $buttontext = lang("Add Category");
-  $extrahidden = "";
-
-  if($act == "edit") {
-    $newold = lang("Update Category");
-    if(!$phpgw->db->query("select * from f_categories where id=$cat_id")) {
-      print "Error in reading database<br>\n";
-      $phpgw->common->phpgw_exit();
-    } else {
-      $phpgw->db->next_record();
-      $catname = $phpgw->db->f("name");
-      $catdescr = $phpgw->db->f("descr");
-      $cat_id = $phpgw->db->f("id"); 
-
-      $extrahidden = "<input type=\"hidden\" name=\"cat_id\" value=\"$cat_id\">"; 
-      $buttontext = lang("Update Category");
-      $actiontype = "updcat";
-    }
-  } else {
-    $newold = lang("Create New Category");
-  }
   
+  //setting up template file
+  $phpgw->template->set_file('CATEGORY','admin.category.tpl');
+  
+   $phpgw->template->set_var(array(
+	'FORUM_ADMIN' 	=> lang("Forums") . " " . lang("Admin"),
+	'TABLEBG'	=> $phpgw_info["theme"]["th_bg"],
+	//TRY TO FIND A PERFECT CHOICE
+	'THBG'		=>  $phpgw_info["theme"]["bg09"],
+	//'TRBG'		=> $phpgw_info["theme"]["row_off"],
+	'CAT_LINK'	=> $phpgw->link("/forum/admin/category.php"),
+	'FOR_LINK'	=> $phpgw->link("/forum/admin/forum.php"),
+	'MAIN_LINK'	=> $phpgw->link("/forum/index.php"),
+	'ADM_LINK'	=> $phpgw->link("/forum/admin/index.php"),
+	'LANG_ADM_MAIN'	=> lang("Return to Admin"),
+	'LANG_CAT'	=> lang("New Category"),
+	'LANG_FOR'	=> lang("New Forum"),
+	'LANG_MAIN' 	=> lang("Return to Forums"),
+	'LANG_FORUM'	=> lang("Forum Name"),
+	'LANG_FORUM_DESC'	=> lang("Forum Description"),
+	'LANG_CAT_NAME'	=> lang("Category Name"),
+	'LANG_CAT_DESC' => lang("Category Description"),
+	'BELONG_TO'	=> lang("Belongs to Category"),
+	'ACTION'	=> 'addforum',
+	'ACTION_LINK'	=> $phpgw->link("/forum/admin/category.php")
+	));
+
+
+    if($act == "edit") {
+    $phpgw->db->query("select * from f_categories where id=$cat_id");
+    $phpgw->db->next_record();
+    $catname = $phpgw->db->f("name");
+    $catdescr = $phpgw->db->f("descr");
+    $cat_id = $phpgw->db->f("id");
+    
+    $phpgw->template->set_var(array(
+   		'BUTTONLANG'	=> lang("Update Category"),
+   		'LANG_ADD_CAT' 	=> lang("Edit Category"),
+   		'CAT_NAME'	=> $phpgw->db->f("name"),
+   		'CAT_DESC'	=> $phpgw->db->f("descr"),
+   		'CAT_ID'	=> $phpgw->db->f("id"),
+   		'ACTIONTYPE'	=> 'updcat'
+   		));
+    
+   }	
+   //Need to set up some var that different for the edit act and add act
+   else {
+   	
+   	$phpgw->template->set_var(array(
+   		'BUTTONLANG' 	=> lang("Add Category"),
+   		'LANG_ADD_CAT' 	=> lang("Edit Category"),
+   		'ACTIONTYPE' 	=> 'addcat'
+   		));
+   	
+   	}
+
+
+
   if($action) {
-   if($action == "addcat") {
-    if(!$phpgw->db->query("insert into f_categories (name,descr) values ('$catname','$catdescr')")) {
-     print "Error in adding forum to database<br>\n";
+	if($action == "addcat") {
+	$phpgw->db->query("insert into f_categories (name,descr) values ('$catname','$catdescr')");
+	Header("Location: " . $phpgw->link("/forum/admin/index.php"));
+	$phpgw->common->phpgw_exit();
+	 }
+	elseif ($action == "updcat" && $cat_id) {
+	$phpgw->db->query("update f_categories set name='$catname',descr='$catdescr' where id = $cat_id");
+        Header("Location: " . $phpgw->link("/forum/admin/index.php"));
+        }
+        else { 
+        echo "This should not happened";
+        Header("Location: " . $phpgw->link("/forum/admin/index.php"));
+        }
      $phpgw->common->phpgw_exit();
-    } else {
-     Header("Location: " . $phpgw->link("/forum/admin/index.php"));
-     $phpgw->common->phpgw_exit();
-    }
-   } elseif ($action == "updcat" && $cat_id) {
-    if(!$phpgw->db->query("update f_categories set name='$catname',descr='$catdescr' where id = $cat_id")) {
-     print "Error in adding forum to database<br>\n";
-     $phpgw->common->phpgw_exit();
-    } else {
-     Header("Location: " . $phpgw->link("/forum/admin/index.php"));  
-     $phpgw->common->phpgw_exit();
-    }
-
-   }
-  } 
+   
 
 
-?>
-
-<p>
-<table border="0" width=100%>
-<tr>
-<?php echo "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] . "\" align=\"left\"><b>" . lang("Forums") . " " . lang("Admin") . "</b></td>" . "</tr>"; ?>
-
-<tr>
- <td>
-  <font size=-1>
-<?php
-echo "<a href=\"" . $phpgw->link("/forum/admin/category.php") . "\">" . lang("New Category") ."</a>";
-echo " | ";
-echo "<a href=\"" . $phpgw->link("/forum/admin/forum.php") . "\">" . lang("New Forum") ."</a>";   
-echo " | ";
-echo "<a href=\"" . $phpgw->link("/forum/admin/index.php") . "\">" . lang("Return to Admin") ."</a>";
-echo " | ";
-echo "<a href=\"" . $phpgw->link("/forum/index.php") . "\">" . lang("Return to Forums") ."</a>";
-  
-?>
-  </font>
-  <br><br>
-  <center>
-  <table border="0" width=80% bgcolor="<?php echo $phpgw_info["theme"]["table_bg"]?>">
-   <tr>
-    <td colspan=2 bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]?>">
-     <center><?php echo $newold?></center>
-    </td>
-   </tr>
-   <tr>
-    <form method="POST" action="<?php echo $phpgw->link("/forum/admin/category.php"); ?>">
-    <?php echo $extrahidden; ?> 
-    <input type="hidden" name="action" value="<?php echo $actiontype?>">
-    <td><?php echo lang("Category Name") ?>:</td>
-    <td><input type="text" name="catname" size=40 maxlength=49 value="<?php echo $catname ?>"></td>
-   </tr>  
-   <tr>
-    <td><?php echo lang("Category Description") ?>:</td>
-    <td><textarea rows="3" cols="40" name="catdescr" virtual-wrap maxlength=240><?php echo $catdescr ?></textarea></td>
-   </tr>
-   <tr><td colspan=2 align=right><input type="submit" value="<?php echo $buttontext ?>"></td></tr>
-
-  </table>
-  </center>
-  <br>
- </td>
-</tr>
-
-   </tr>
-  </table>
-  </center>
-  <br>
+  } // end if($action)
 
 
-
-
- </td>
-</tr>
-</table>
-
-
-<?php
+  $phpgw->template->pfp('Out','CATEGORY');
   $phpgw->common->phpgw_footer();
 ?>
