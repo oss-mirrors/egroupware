@@ -101,7 +101,6 @@ document.onmousemove=positiontip
 <!-- BEGIN rows -->
 <tr><td bgcolor="{row_color}" valign="top" nowrap="nowrap">{fieldname}&nbsp;{tipmouseover}</td>
 <td bgcolor="{row_color}">{input}</td></tr>
-{js_mandatory}
 <!-- END rows -->
 
 <!-- BEGIN many_to_many -->
@@ -154,6 +153,8 @@ document.onmousemove=positiontip
 <!-- END form_buttons -->
 
 <!-- BEGIN form_footer -->
+{hiddenfields}
+{jsmandatory}
 </form>
 <!-- END form_footer -->
 

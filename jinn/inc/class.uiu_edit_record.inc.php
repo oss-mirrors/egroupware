@@ -49,7 +49,9 @@
 
 	  var $submit_javascript;
 	  var $jstips;
-
+	  var $jsmandatory;	//stores javascript calls that set specific fields to be checked if filled in
+	  var $hiddenfields; //stores hidden inputs for rendering outside the form tables
+	  
 	  var $db_ftypes;
 
 	  /**
@@ -187,6 +189,8 @@
 		 $this->template->pparse('out','js');
 		 $this->template->pparse('out','row');
 		 $this->template->pparse('out','form_buttons');
+	     $this->template->set_var('hiddenfields',$this->hiddenfields);
+	     $this->template->set_var('jsmandatory',$this->jsmandatory);
 		 $this->template->pparse('out','form_footer');
 		 $this->bo->save_sessiondata();
 
@@ -330,6 +334,8 @@
 		 $this->template->set_var('colfield_lang_confirm_delete_multiple',lang('Are you sure you want to delete these multiple records?'));
 
 		 $this->template->pparse('out','form_buttons');
+	     $this->template->set_var('hiddenfields',$this->hiddenfields);
+	     $this->template->set_var('jsmandatory',$this->jsmandatory);
 		 $this->template->pparse('out','form_footer');
 
 		 $this->bo->save_sessiondata();
@@ -541,20 +547,30 @@
 			   {
 				  $input = $this->bo->get_plugin_fi($input_name,$value,$ftype, $attr_arr,$object_arr[plugins]);
 			   }
+			   
+			   //some plugins return an array containing extra info to be considered:
+			   if(is_array($input))
+			   {
+					if($input[__hidden__])	//render this field as a hidden parameter
+					{
+						$this->hiddenfields .= $input[html];
+						$input='__disabled__';
+					}
+					else
+					{
+						$input=$input[html];
+					}
+			   }
 			}
 
 			// check if this field is mandatory. If yes, add a javascript warning.
 			if($field_conf_arr[field_mandatory]==1)
 			{
-				$this->template->set_var('js_mandatory','<script language="JavaScript">document.frm.' . $input_name . '.mandatory=true;</script>');
-			}
-			else
-			{
-				$this->template->set_var('js_mandatory','');
+				$this->jsmandatory .= '<script language="JavaScript">document.frm.' . $input_name . '.mandatory=true;</script>';
 			}
 
 			/* if there is something to render to this */
-			if($input!='__hide__')
+			if($input!='__disabled__')
 			{
 			   if($this->bo->read_preferences('table_debugging_info')=='yes')
 			   {
@@ -918,7 +934,7 @@
 			}
 
 			/* if there is something to render to this */
-			if($input!='__hide__')
+			if($input!='__disabled__')
 			{
 			   if($this->bo->read_preferences('table_debugging_info')=='yes')
 			   {

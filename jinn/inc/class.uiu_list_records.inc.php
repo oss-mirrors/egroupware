@@ -347,6 +347,7 @@
 				  {
 					 $valid_pref_columns[]=array('name'=>$pref_col);
 				  }
+
 			   }
 			}
 		 }
@@ -425,6 +426,8 @@
 			}
 		 }
 
+		
+
 		 /* which/how many column to show, all, the prefered, or the default thirst 4 */
 		 if ($show_all_cols=='True' || $default_col_num=='-1')
 		 {
@@ -474,7 +477,7 @@
 			   $testvalue=$this->bo->plug->call_plugin_bv($col[name],'x',$where_string,$field_conf_arr);
 			}
 
-			if($testvalue=='__hide__')
+			if($testvalue=='__disabled__')
 			{
 			   continue ;
 			}

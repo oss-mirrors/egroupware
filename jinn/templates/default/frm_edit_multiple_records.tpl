@@ -121,7 +121,6 @@ function onSubmitForm()
 
 <!-- BEGIN rows -->
 <tr><td bgcolor="{row_color}" valign="top">{fieldname}&nbsp;{tipmouseover}</td><td bgcolor="{row_color}">{input}</td></tr>
-{js_mandatory}
 <!-- END rows -->
 
 <!-- BEGIN many_to_many -->
@@ -177,6 +176,8 @@ function onSubmitForm()
 <!-- END form_buttons -->
 
 <!-- BEGIN form_footer -->
+{hiddenfields}
+{jsmandatory}
 </form>
 <!-- END form_footer -->
 

@@ -27,11 +27,11 @@
 	Hide This Field PLUGIN
 	-------------------------------------------------------------------*/
 	$this->plugins['hidefield']['name'] 			= 'hidefield';
-	$this->plugins['hidefield']['title']			= 'Hide This Field';
+	$this->plugins['hidefield']['title']			= 'Hide This Field (depreciated)';
 	$this->plugins['hidefield']['author']		= 'Pim Snel';
 	$this->plugins['hidefield']['version']			= '1.0';
 	$this->plugins['hidefield']['enable']			= 1;
-	$this->plugins['hidefield']['description']		= 'This just hides the input field for users';
+	$this->plugins['hidefield']['description']		= 'This just hides the input field for users (depreciated, use Disable Field instead)';
 	$this->plugins['hidefield']['db_field_hooks']	= array
 	(
 		'string',
@@ -44,17 +44,17 @@
 
 	function plg_fi_hidefield($field_name,$value, $config,$attr_arr)
 	{
-	   return '__hide__';
+	   return '__disabled__';
 	}
 	
 	function plg_ro_hidefield($field_name,$value)
 	{
-	   return '__hide__';
+	   return '__disabled__';
 	}
 	
 	function plg_bv_hidefield($field_name,$value, $config,$attr_arr)
 	{
-	   return '__hide__';
+	   return '__disabled__';
 	}
 
  ?>
