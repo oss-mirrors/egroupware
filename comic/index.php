@@ -52,7 +52,7 @@
      *************************************************************************/
     $template_format     = sprintf("format%02d", $template_id);
 		  if (!file_exists($GLOBALS['phpgw']->template->root
-                      ."/".$template_format.".comic.tpl")))
+                      ."/".$template_format.".comic.tpl"))
     {
         $template_format = "format00";
     }
