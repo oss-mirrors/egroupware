@@ -34,4 +34,5 @@
 	 edit activities is only possible for projectadmins now
 	 added archive functions
 
-05/25/2001: update table phpgw_p_projectsactivities in psql 
+05/25/2001: update table phpgw_p_projectsactivities in psql - change type bolean to char(1)
+05/28/2001: update table phpgw_p_activities in psql - change type bolean to char(1)

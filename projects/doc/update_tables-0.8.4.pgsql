@@ -1,30 +1,30 @@
 -- $Id$
 
-    create table temp as select * from p_projects;
-    drop sequence p_projects_id_seq;
-    drop table p_projects;
+	create table temp as select * from p_projects;
+	drop sequence p_projects_id_seq;
+	drop table p_projects;
 
-CREATE TABLE phpgw_p_projects (
-    id          serial,
-    num         varchar(20) NOT NULL,
-    owner       int,
-    access      char(7),
-    category	int,
-    entry_date  int,
-    start_date  int,
-    end_date    int,
-    coordinator int,
-    customer    int,
-    status      text check(status in('active','nonactive','archive')) DEFAULT 'active' NOT NULL,
-    descr       text,
-    title       varchar(255) NOT NULL,
-    budget      decimal(20,2)
-);
+	CREATE TABLE phpgw_p_projects (
+		id          serial,
+		num         varchar(20) NOT NULL,
+		owner       int,
+		access      varchar(7),
+		category	int,
+		entry_date  int,
+		start_date  int,
+		end_date    int,
+		coordinator int,
+		customer    int,
+		status      text check(status in('active','nonactive','archive')) DEFAULT 'active' NOT NULL,
+		descr       text,
+		title       varchar(255) NOT NULL,
+		budget      decimal(20,2)
+	);
 
-insert into phpgw_p_projects select * from temp;
-drop table temp;
+	insert into phpgw_p_projects select * from temp;
+	drop table temp;
 
-CREATE INDEX phpgw_p_projects_key ON phpgw_p_projects(id,num);
+	CREATE INDEX phpgw_p_projects_key ON phpgw_p_projects(id,num);
 
 ------------------
 
@@ -189,8 +189,7 @@ CREATE INDEX phpgw_p_delivery_key ON phpgw_p_delivery(id,num);
     drop sequence phpgw_p_projectactivitie_id_seq;
     drop table phpgw_p_projectactivities;
 
-	CREATE TABLE phpgw_p_projectactivities
-	(
+	CREATE TABLE phpgw_p_projectactivities (
 		id          serial,
 		project_id  int,
 		activity_id int,
@@ -199,3 +198,19 @@ CREATE INDEX phpgw_p_delivery_key ON phpgw_p_delivery(id,num);
 
     insert into phpgw_p_projectactivities select * from temp;
     drop table temp;
+
+	create table temp as select * from phpgw_p_activities;
+	drop sequence phpgw_p_activities_id_seq;
+	drop table phpgw_p_activities;
+
+	CREATE TABLE phpgw_p_activities (                                                                                                                                                           
+		id			serial,                                                                                                                                                                     
+		num			varchar(20) NOT NULL,                                                                                                                                                       
+		descr		varchar(255) NOT NULL,                                                                                                                                                      
+		remarkreq	char(1) DEFAULT 'N' NOT NULL,                                                                                                                                               
+		minperae	decimal(4,0),                                                                                                                                                               
+		billperae	decimal(20,2)                                                                                                                                                               
+	);
+
+	insert into phpgw_p_activities select * from temp;
+	drop table temp;
