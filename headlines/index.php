@@ -58,8 +58,11 @@
 		{
 			$phpgw->template->set_var('item_link',stripslashes($link));
 			$phpgw->template->set_var('item_label',stripslashes($title));
-			$phpgw->template->parse('rows','row',True);
+			$s .= $phpgw->template->parse('o_','row');
 		}
+		$phpgw->template->set_var('rows',$s);
+		unset($s);
+
 		$phpgw->template->set_var('section_' . $j,$phpgw->template->parse('o','channel'));
 
 		if ($j == 3 || $i == 1)
