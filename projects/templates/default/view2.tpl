@@ -255,13 +255,12 @@
 <!-- END overview_footer --> 
 
 <!-- BEGIN div_milestone -->
-<div id="ttabcontent2" class="iinactivetab" bgcolor="red">
-{mmilestones_table}
+<div id="tabcontent2" class="inactivetab" bgcolor="white">
+{milestones_table}
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
 	<tr height="15">
 		<td>&nbsp;</td>
 	</tr>
-{ooverview_footer_placeholder}
 </table>
 </div>
 <!-- END div_milestone -->

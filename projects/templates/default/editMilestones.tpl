@@ -8,7 +8,7 @@
 	</tr>
 	<tr>
 		<td colspan="2" align="center">
-			<textarea name="values[description]" cols="50" rows="5">{description}</textarea>
+			<textarea name="values[description]" rows="5" style="width:100%;">{description}</textarea>
 		</td>
 	</tr>
 	<tr valign="bottom">
