@@ -449,8 +449,7 @@
 		function phpgw_search($criteria,$flags='')
 		{
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream');
-			$retval = $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->i_search($mailsvr_stream,$criteria,$flags);
-			return $retval;
+			return $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->i_search($mailsvr_stream,$criteria,$flags);
 		}
 		
 		function phpgw_createmailbox($target_fldball)
@@ -458,8 +457,7 @@
 			$acctnum = (int)$target_fldball['acctnum'];
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			$folder = $target_fldball['folder'];
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->createmailbox($mailsvr_stream, $folder);
-			return $retval;
+			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->createmailbox($mailsvr_stream, $folder);
 		}
 		
 		function phpgw_deletemailbox($target_fldball)
@@ -467,8 +465,7 @@
 			$acctnum = $target_fldball['acctnum'];
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			$folder = $target_fldball['folder'];
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->deletemailbox($mailsvr_stream, $folder);
-			return $retval;
+			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->deletemailbox($mailsvr_stream, $folder);
 		}
 		
 		function phpgw_renamemailbox($source_fldball,$target_fldball)
@@ -477,8 +474,29 @@
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			$folder_old = $source_fldball['folder'];
 			$folder_new = $target_fldball['folder'];
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->renamemailbox($mailsvr_stream, $folder_old, $folder_new);
-			return $retval;
+			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->renamemailbox($mailsvr_stream, $folder_old, $folder_new);
+		}
+
+		function phpgw_listmailbox($ref,$pattern,$acctnum)
+		{
+			if (!(isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $this->get_acctnum();
+			}
+			// Make Sure Stream Exists
+			// multiple accounts means one stream may be open but another may not
+			// "ensure_stream_and_folder" will verify for us, 
+			// folder logged into does not matter for listmailbox, so leave it blank
+			$fake_fldball = array();
+			$fake_fldball['acctnum'] = $acctnum;
+			$fake_fldball['folder'] = '';
+			$this->ensure_stream_and_folder($fake_fldball, 'phpgw_listmailbox');
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			
+			// ... so stream exists, do the transaction ...
+			//echo '<b>phpgw_listmailbox</b>: about to call $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->listmailbox($mailsvr_stream['.$mailsvr_stream.'],$ref['.$ref.'], $pattern['.$pattern.']); <br>';
+			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->listmailbox($mailsvr_stream,$ref,$pattern);
 		}
 		
 		function phpgw_append($folder = "Sent", $message, $flags=0)

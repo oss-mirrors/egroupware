@@ -2,18 +2,25 @@
 
 &nbsp; <!-- === block seperator == --> &nbsp; 
 
-<!-- BEGIN B_account_and_or_ignore -->
+<!-- BEGIN B_match_account_box -->
+{lang_inbox_for_account}<br>
+{account_multi_box}
+<!-- END B_match_account_box -->
+
+&nbsp; <!-- === block seperator == --> &nbsp; 
+
+<!-- BEGIN B_match_and_or_ignore -->
 <select name="{andor_select_name}">
 	<option value="ignore_me" selected>&lt;{lang_ignore_me1}&gt;</option>
 	<option value="or">{lang_or}</option>
 	<option value="and">{lang_and}</option>
 </select>
-<!-- END B_account_and_or_ignore -->
+<!-- END B_match_and_or_ignore -->
 
 &nbsp; <!-- === block seperator == --> &nbsp; 
 	
 <!-- BEGIN B_action_no_ignore -->
-<select name="{actionbox_name}">
+<select name="{actionbox_judgement_name}">
 	<option value="keep">{lang_keep}</option>
 	<option value="discard">{lang_discard}</option>
 	<option value="reject">{lang_reject}</option>
@@ -26,7 +33,7 @@
 &nbsp; <!-- === block seperator == --> &nbsp; 
 	
 <!-- BEGIN B_action_with_ignore_me -->
-<select name="{actionbox_name}">
+<select name="{actionbox_judgement_name}">
 	<option value="ignore_me" selected>&lt;{lang_ignore_me2}&gt;</option>
 	<option value="keep">{lang_keep}</option>
 	<option value="discard">{lang_discard}</option>

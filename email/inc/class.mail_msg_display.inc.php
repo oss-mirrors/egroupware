@@ -213,7 +213,168 @@ class mail_msg extends mail_msg_wrappers
 		return $listbox_widget;
 	}
 
-
+	/*!
+	@function folders_mega_listbox
+	@abstract like "all_folders_listbox" except it really shows ALL folder from EVERY account
+	@param $feed_args[] array or args that you will "feed" into the function ??
+	@result string representing an HTML listbox widget 
+	@discussion ?
+	@access : private
+	*/
+	function folders_mega_listbox($feed_args='')
+	{
+		if(!$feed_args)
+		{
+			$feed_args=array();
+		}
+		//$debug_widget = True;
+		$debug_widget = False;
+		
+		$acctnum = $this->get_acctnum();
+		// establish fallback default args
+		$local_args = Array(
+			'acctnum'		=> $acctnum,
+			'mailsvr_stream'	=> $this->get_arg_value('mailsvr_stream', $acctnum),
+			'pre_select_folder'	=> '',
+			'pre_select_folder_acctnum'	=> $acctnum,
+			'skip_folder'		=> '',
+			'show_num_new'		=> False,
+			'widget_name'		=> 'folder_fake_uri',
+			'folder_key_name'	=> 'folder',
+			'acctnum_key_name'	=> 'acctnum',
+			'on_change'		=> 'document.switchbox.submit()',
+			'first_line_txt'	=> lang('switch current folder to')
+		);		
+		// loop thru $local_args[], replacing defaults with any args specified in $feed_args[]
+		if ($debug_widget) { echo 'folders_mega_listbox $feed_args data dump<pre>'; print_r($feed_args); echo '</pre>'; }
+		if (count($feed_args) == 0)
+		{
+			if ($debug_widget) { echo 'folders_mega_listbox $feed_args is EMPTY<br>'.serialize($feed_args).'<br>'; }
+		}
+		else
+		{
+			reset($local_args);
+			// the feed args may not be an array, the @ will supress warnings
+			@reset($feed_args);		
+			while(list($key,$value) = each($local_args))
+			{
+				// DEBUG
+				if ($debug_widget) { echo 'a: local_args: key=['.$key.'] value=['.(string)$value.']<br>'; }
+				if ($debug_widget) { echo 'b: feed_args: key=['.$key.'] value=['.(string)$feed_args[$key].']<br>'; }
+				if ((isset($feed_args[$key]))
+				&& ($feed_args[$key] != $value))
+				{
+					if (($key == 'mailsvr_stream')
+					&& ($feed_args[$key] == ''))
+					{
+						// do nothing, keep the default value, can not over write a good default stream with an empty value
+						if ($debug_widget) { echo '* keeping default [mailsvr_stream] value, can not override with a blank string<br>'; }
+					}
+					else
+					{
+						// we have a specified arg that should replace the default value
+						if ($debug_widget) { echo '*** override default value of ['.$local_args[$key] .'] with feed_args['.$key.'] of ['.(string)$feed_args[$key].']<br>'; }
+						$local_args[$key] = $feed_args[$key];
+					}
+				}
+			}
+			reset($local_args);
+			@reset($feed_args);
+		}
+		// at this point, local_args[] has anything that was passed in the feed_args[]
+		if ($debug_widget) { echo 'FINAL Listbox Local Args:<br>'.serialize($local_args).'<br>'; }
+		
+		$item_tags = '';
+		
+		// we need the loop to include the default account AS WELL AS the extra accounts
+		for ($x=0; $x < count($this->extra_and_default_acounts); $x++)
+		{
+			$this_acctnum = $this->extra_and_default_acounts[$x]['acctnum'];
+			$this_status = $this->extra_and_default_acounts[$x]['status'];
+			if ($this_status != 'enabled')
+			{
+				// Do Nothing, This account is not in use
+			}
+			else
+			{
+				// get the actual list of folders we are going to put into the combobox
+				$folder_list = $this->get_folder_list($this_acctnum);
+				if ($debug_widget) { echo 'folders_mega_listbox $folder_list for $this_acctnum ['.$this_acctnum.'] DUMP<pre>'; print_r($folder_list); echo '</pre>'; }
+				// NNTP = BORKED CODE!!!  (ignore for now) ...
+				if ($this->get_arg_value('newsmode', $this_acctnum))
+				{
+					while($pref = each($GLOBALS['phpgw_info']['user']['preferences']['nntp']))
+					{
+						$GLOBALS['phpgw']->db->query('SELECT name FROM newsgroups WHERE con='.$pref[0]);
+						while($GLOBALS['phpgw']->db->next_record())
+						{
+							$item_tags .= '<option value="' . urlencode($GLOBALS['phpgw']->db->f('name')) . '">' . $GLOBALS['phpgw']->db->f('name')
+							  . '</option>';
+						}
+					}
+					break;
+				}
+				// ... back to working code
+				
+				// iterate thru the folder list, building the HTML tags using that data
+				for ($i=0; $i<count($folder_list);$i++)
+				{
+					$folder_long = $folder_list[$i]['folder_long'];
+					$folder_short = $folder_list[$i]['folder_short'];
+					// yes we need $folder_acctnum to help make the "folder ball", yes I know it *should* be the same as $this_acctnum
+					$folder_acctnum = $folder_list[$i]['acctnum'];
+					// this logic determines if the combobox should be initialized with certain folder already selected
+					// we use "folder short" as the comparator because that way at least we know we are comparing syntatic-ally similar items
+					if (($folder_short == $this->get_folder_short($local_args['pre_select_folder']))
+					&& ($folder_acctnum == $local_args['pre_select_folder_acctnum']))
+					{
+						$sel = ' selected';
+					}
+					else
+					{
+						$sel = '';
+					}
+					// this logic determines we should not include a certain folder in the combobox list
+					if ($folder_short != $this->get_folder_short($local_args['skip_folder']))
+					{
+						// we need to make value="X" imitate URI type data, so we can embed the acctnum data 
+						// for the folder in there with folder name, whereas normally option value="X" can only 
+						// hold no nore than one data item as limited by BOTH html and php 's treatment of a combobox					
+						
+						$option_value =  '&'.$local_args['folder_key_name'].'='.$this->prep_folder_out($folder_long)
+								.'&'.$local_args['acctnum_key_name'].'='.$folder_acctnum;
+								
+						$text_blurb = '['.$folder_acctnum.'] '.$folder_short;
+						
+						$item_tags .= '<option value="'.$option_value.'"'.$sel.'>'.$text_blurb.'</option>'."\r\n";
+					}
+				}
+			}
+		}
+		// now $item_tags contains the internal (i.e. "option" items) folder list for this "select" combobox widget
+		
+		// ----  add the HTML tags that surround this internal list data  ----
+		if ((isset($local_args['on_change']))
+		&& ($local_args['on_change'] != ''))
+		{
+			$on_change_tag = 'onChange="'.$local_args['on_change'].'"';
+		}
+		else
+		{
+			$on_change_tag = '';
+		}
+		
+		// the widget_name with "_fake_uri" tells the script what to do with this data
+		$listbox_widget =
+			 '<select name="'.$local_args['widget_name'].'" '.$on_change_tag.'>'
+				.'<option value="">'.$local_args['first_line_txt'].' '
+				. $item_tags
+			.'</select>';
+		// return a pre-built HTML listbox (selectbox) widget
+		return $listbox_widget;
+	}
+	
+	
 	// ---- Messages Sort Order Start and Msgnum  -----
 	function fill_sort_order_start_msgnum()
 	{
@@ -416,7 +577,10 @@ class mail_msg extends mail_msg_wrappers
 			'widget_name'		=> 'fldball_fake_uri',
 			'folder_key_name'	=> 'folder',
 			'acctnum_key_name'	=> 'acctnum',
-			'on_change'		=> 'document.acctbox.submit()'
+			'on_change'			=> 'document.acctbox.submit()',
+			'is_multiple'		=> False,
+			'multiple_rows'		=> '4',
+			'show_status_is'	=> 'enabled,disabled'
 		);		
 		// loop thru $local_args[], replacing defaults with any args specified in $feed_args[]
 		if ($debug_widget) { echo 'all_ex_accounts_listbox $feed_args data dump<pre>'; print_r($feed_args); echo '</pre>'; }
@@ -450,31 +614,13 @@ class mail_msg extends mail_msg_wrappers
 		
 		$item_tags = '';
 		
-		// ----  add the default email account, account number 0  ----
-		// this logic determines if the combobox should be initialized with certain account already selected
-		if ((string)$local_args['pre_select_acctnum'] == '0')
-		{
-			$sel = ' selected';
-		}
-		else
-		{
-			$sel = '';
-		}
-		// this fake_uri data will be converted to fldball data on submit processing
-		$option_value =  '&'.$local_args['folder_key_name'].'=INBOX'
-				.'&'.$local_args['acctnum_key_name'].'=0';
-		//$option_text = lang('default account').' '.lang('as').' &quot;'.$this->get_pref_value('fullname', 0).'&quot;';
-		//$option_text = lang('default').'&nbsp;&nbsp;'.$this->get_pref_value('fullname', 0);
-		$option_text = lang('default:').'&nbsp;&nbsp;'.$this->get_pref_value('fullname', 0);
-		
-		$item_tags .= '<option value="'.$option_value.'"'.$sel.'>'.$option_text.'</option>'."\r\n";
-		
 		// iterate thru the ex_accounts list, building the HTML tags using that data
-		for ($i=0; $i < count($this->extra_accounts); $i++)
+		for ($i=0; $i < count($this->extra_and_default_acounts); $i++)
 		{
-			$this_acctnum = $this->extra_accounts[$i]['acctnum'];
+			$this_acctnum = $this->extra_and_default_acounts[$i]['acctnum'];
 			// is this account "enabled", "disabled", or "empty"
-			if ($this->extra_accounts[$i]['status'] == 'disabled')
+			if ((stristr($local_args['show_status_is'], 'disabled'))
+			&& ($this->extra_and_default_acounts[$i]['status'] == 'disabled'))
 			{
 				// the option values below are in the form of embedded fake_uri
 				// FUTURE: take user to the extra accounts management page for this particular account
@@ -486,7 +632,8 @@ class mail_msg extends mail_msg_wrappers
 				// note: a disabled account can not be pre-selected
 				$item_tags .= '<option value="'.$option_value.'">'.$option_text.'</option>'."\r\n";
 			}
-			elseif ($this->extra_accounts[$i]['status'] == 'enabled')
+			elseif ((stristr($local_args['show_status_is'], 'enabled'))
+			&& ($this->extra_and_default_acounts[$i]['status'] == 'enabled'))
 			{
 				// this logic determines if the combobox should be initialized with certain account already selected
 				if ((string)$local_args['pre_select_acctnum'] == (string)$this_acctnum)
@@ -525,9 +672,18 @@ class mail_msg extends mail_msg_wrappers
 			$on_change_tag = '';
 		}
 		
+		// if this is a multi-selectable scroll box, make the necessary tags
+		if (!$local_args['is_multiple'])
+		{
+			$if_multiple_tags = '';
+		}
+		else
+		{
+			$if_multiple_tags = 'size="'.$local_args['multiple_rows'].'" multiple';
+		}
 		// the widget_name with "_fake_uri" tells the script what to do with this data
 		$listbox_widget =
-			 '<select name="'.$local_args['widget_name'].'" '.$on_change_tag.'>'
+			 '<select name="'.$local_args['widget_name'].'" '.$on_change_tag.' '.$if_multiple_tags.'>'
 				. $item_tags
 			.'</select>';
 		// return a pre-built HTML listbox (selectbox) widget

@@ -25,8 +25,7 @@
 		var $template = '';
 		var $finished_mlist = '';
 		var $submit_mlist_to_class_form = '';
-		var $submit_flag = '';
-		var $debug = 0;
+		var $debug = 3;
 		var $sieve_to_imap_fields=array();
 		var $result_set = Array();
 		var $result_set_mlist = Array();
@@ -55,6 +54,7 @@
 			$args_array = Array();
 			// should we log in or not
 			$args_array['do_login'] = False;
+			//$args_array['do_login'] = True;
 			if ($this->debug > 1) { echo 'email.bofilters. *constructor*: call msg->begin_request with args array:'.serialize($args_array).'<br>'; }
 			$GLOBALS['phpgw']->msg->begin_request($args_array);
 			$already_initialized = True;
@@ -90,17 +90,14 @@
 		{
 			if ($this->debug > 2) { echo 'bofilters: $GLOBALS[HTTP_POST_VARS] count=['.count($GLOBALS['HTTP_POST_VARS']).'] ; dump <strong><pre>'; print_r($GLOBALS['HTTP_POST_VARS']); echo "</pre></strong>\r\n"; }
 			// do we have data
-			if  (!isset($GLOBALS['HTTP_POST_VARS'][$this->submit_flag]))
-			{
-				if ($this->debug > 0) { echo 'bofilters: distill_filter_args: NO data submitted<br>'."\r\n"; }
-				return Array();
-			}
+			// we must have data because the form action made this code run
 			@reset($GLOBALS['HTTP_POST_VARS']);
 			// look for top level "filter_X" array
 			while(list($key,$value) = each($GLOBALS['HTTP_POST_VARS']))
 			{
 				if ($this->debug > 1) { echo 'bofilters: $GLOBALS[HTTP_POST_VARS] key,value walk thru: $key: ['.$key.'] ; $value DUMP:<pre>'; print_r($value); echo "</pre>\r\n"; }
-				if (strstr($key, 'filter_'))
+				if ((strstr($key, 'filter_'))
+				&& (strstr($key, 'filter_0_source_accounts') == False))
 				{
 					// put the raw data dor this particular filter into a local var
 					$filter_X = $GLOBALS['HTTP_POST_VARS'][$key];
@@ -108,13 +105,13 @@
 					
 					// prepare to fill your structured array
 					$this_idx = count($this->filters);
+					
 					// grab the "filter name" associated with this data
 					$this->filters[$this_idx]['filtername'] = $filter_X['filtername'];
-					// what folder so we search
-					$this->filters[$this_idx]['source_account'] = $filter_X['source_account'];
 					// init sub arrays
 					$this->filters[$this_idx]['matches'] = Array();
 					$this->filters[$this_idx]['actions'] = Array();
+
 					// extract match and action data from this filter_X data array
 					while(list($filter_X_key,$filter_X_value) = each($filter_X))
 					{
@@ -147,6 +144,7 @@
 							$match_grabbed_key = substr($filter_X_key, 8);
 							if ($this->debug > 1) { echo 'bofilters: distill_filter_args: match_grabbed_key value: ['.$match_grabbed_key.']<br>'; }
 							$this->filters[$this_idx]['matches'][$match_this_idx][$match_grabbed_key] = $filter_X[$filter_X_key];
+							
 						}
 						/*
 						@capability: extract multidimentional filter data embedded in this 1 dimentional array
@@ -175,6 +173,16 @@
 						}
 					}
 				}
+				if ((isset($GLOBALS['HTTP_POST_VARS']['filter_'.$this_idx.'_source_accounts']))
+				&& (!isset($this->filters[$this_idx]['source_accounts'])))
+				{
+					// what account(s) do we examine 
+					// because this comes from a multiselect list box, it's not in the same "array" format as the others
+					// lest it become a 2 level deep array which php3 could not handle
+					$source_accounts = array();
+					$source_accounts = $GLOBALS['HTTP_POST_VARS']['filter_0_source_accounts'];
+					$this->filters[$this_idx]['source_accounts'] = $source_accounts;
+				}	
 			}
 			if ($this->debug > 0) { echo 'bofilters: distill_filter_args: this->filters[] dump <strong><pre>'; print_r($this->filters); echo "</pre></strong>\r\n"; }
 		}

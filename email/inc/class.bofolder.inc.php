@@ -49,15 +49,9 @@
 			// ----  Langs  ----			
 		}
 		
-		function folder($reuse_feed_args=array())
+		function folder()
 		{
-			// attempt (or not) to reuse an existing mail_msg object, i.e. if one ALREADY exists before entering
-			// FIXME:   What????   can pass a useful, existing object for us to use here
-			//$attempt_reuse = True;
-			$attempt_reuse = False;
-			
 			if ($this->debug) { echo 'ENTERING: email.bofolder.folder'.'<br>'; }
-			if ($this->debug) { echo 'email.bofolder.folder: local var attempt_reuse=['.serialize($attempt_reuse).'] ; reuse_feed_args[] dump<pre>'; print_r($reuse_feed_args); echo '</pre>'; }
 			// create class objects
 			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
 			
@@ -71,27 +65,8 @@
 				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 			}
 			
-			// do we attempt to reuse the existing msg object?
-			if ($attempt_reuse)
-			{
-				// no not create, we will reuse existing
-				if ($this->debug) { echo 'email.bofolder.folder: reusing existing mail_msg login'.'<br>'; }
-				// we need to feed the existing object some params begin_request uses to re-fill the msg->args[] data
-				$args_array = Array();
-				// any args passed in $args_array will override or replace any pre-existing arg value
-				$args_array = $reuse_feed_args;
-				// add this to keep the error checking code (below) happy
-				$args_array['do_login'] = True;
-			}
-			else
-			{
-				if ($this->debug) { echo 'email.bofolder.folder: cannot or not trying to reusing existing'.'<br>'; }
-				$args_array = Array();
-				// should we log in or not
-				$args_array['do_login'] = True;
-			}
-			
-			// "start your engines"
+			$args_array = Array();
+			$args_array['do_login'] = True;
 			if ($this->debug == True) { echo 'email.bofolder.folder: call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
 			$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
 			// error if login failed
@@ -267,10 +242,8 @@
 			// we may have been  called externally, return if we succeeded or not
 			return $success;
 		}
-
-
-
-
+		
+		
 		function folder_data()
 		{
 			//  ----  Establish Email Server Connectivity Conventions  ----

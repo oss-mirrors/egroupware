@@ -1400,7 +1400,7 @@
 			
 			// ---- BEGIN EX_ACCOUNTS_LIST ----
 			
-			// list accounts, except "empty" ones
+			// list accounts, except "empty" ones (show "enabled" and "disabled"
 			$return_list = array();
 			$loops = count($GLOBALS['phpgw']->msg->extra_accounts);
 			for($i=0; $i < $loops; $i++)
@@ -1420,6 +1420,12 @@
 					$return_list[$next_pos]['acctnum'] = $this_acctnum;
 					$return_list[$next_pos]['status'] = $this_status;
 					$fullname = $GLOBALS['phpgw']->msg->get_pref_value('fullname', $this_acctnum);
+					// "disabled" accounts will not return a fullname because they were not initialized during "begin_request"
+					if (trim($fullname) == '')
+					{
+						// try to directly obtain it from RAW prefs data
+						$fullname = '(direct) '.$GLOBALS['phpgw']->msg->get_pref_value('["ex_accounts"]["'.$this_acctnum.'"]["fullname"]', 0);
+					}
 					$return_list[$next_pos]['display_string'] = '['.$this_acctnum.'] '.$GLOBALS['phpgw']->msg->htmlspecialchars_encode($fullname);
 					// control action links
 					$return_list[$next_pos]['edit_url'] = $GLOBALS['phpgw']->link(
