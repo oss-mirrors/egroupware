@@ -138,9 +138,14 @@
 			return $this->return_html($quotes);
 		}
 
-		function selected_country()
+		function selected_country($country = '')
 		{
-			switch($this->country)
+			if (!$country)
+			{
+				$country = $this->country;
+			}
+
+			switch($country)
 			{
 				case 'US': $country_sel[0]=' selected'; break;
 				case 'DE': $country_sel[1]=' selected'; break;

@@ -112,7 +112,14 @@
 				}
 			}
 
-			$regexp_stocks = '/(' . implode('|',$symbollist) . ')/';
+			if ($this->country == 'US')
+			{
+				$regexp_stocks = '/^\"(' . implode('|',$symbollist) . ')/';
+			}
+			else
+			{
+				$regexp_stocks = '/(' . implode('|',$symbollist) . ')/';
+			}
 
 			$url = $this->get_url($this->country) . $symbolstr;
 			$lines = $this->http_fetch($url,false,80,'');
