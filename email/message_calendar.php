@@ -11,27 +11,33 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  /* $Id $ */
+	/* $Id$ */
 
 // This will eventually be written using templates.
 
-  $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True, "enable_nextmatchs_class" => True);
-  include("../header.inc.php");
+	$phpgw_info['flags'] = array(
+		'currentapp'					=>	'email',
+		'enable_network_class'		=>	True,
+		'enable_nextmatchs_class'	=>	True
+	);
+	include('../header.inc.php');
 
-  $msg = $phpgw->msg->header($mailbox, $msgnum);
-  $struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
-  $totalmessages = $phpgw->msg->num_msg($mailbox);
+	$msg = $phpgw->msg->header($mailbox, $msgnum);
+	$struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
+	$totalmessages = $phpgw->msg->num_msg($mailbox);
 
-  $subject = !$msg->Subject ? lang("no subject") : $msg->Subject;
-  $subject = decode_header_string($subject);
-  $from = $msg->from[0];
+	$subject = !$msg->Subject ? lang('no subject') : $msg->Subject;
+	$subject = decode_header_string($subject);
+	$from = $msg->from[0];
 
-  $message_date = $phpgw->common->show_date($msg->udate);
+	$message_date = $phpgw->common->show_date($msg->udate);
 
-  $personal = !$from->personal ? "$from->mailbox@$from->host" : $from->personal;
+	$personal = !$from->personal ? $from->mailbox.'@'.$from->host : $from->personal;
 
-  if (! $folder)
-     $folder = "INBOX";
+	if (! $folder)
+	{
+		$folder = "INBOX";
+	}
 ?>
 <h1>THIS IS A SPECIAL CALENDAR TYPE EMAIL</h1>
 In the future, this will process a specially formated email msg, intended to accept, or reject meeting requests.<hr>
@@ -41,67 +47,80 @@ In the future, this will process a specially formated email msg, intended to acc
       <table border="0" cellpadding="0" cellspacing="1" width="100%">
        <tr>
          <td>
-  	  <font size="3" face="<?php echo $phpgw_info["theme"]["font"] . "\" color=\"" . $phpgw_info["theme"]["em_folder_text"]; ?>">
-	   <a href="<?php echo $phpgw->link('/email/index.php',"folder=" . urlencode($folder)); ?>"><?php echo $folder; ?></a>
+  	  <font size="3" face="<?php echo $phpgw_info['theme']['font'] . "\" color=\"" . $phpgw_info['theme']['em_folder_text']; ?>">
+	   <a href="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','folder='.urlencode($folder)); ?>"><?php echo $folder; ?></a>
          </font>
         </td>
 
-        <td align=right><font size="3" face="<?php echo $phpgw_info["theme"]["font"] . "\" color=\"" . $phpgw_info["theme"]["em_folder_text"]; ?>">
-         <a href="<?php echo $phpgw->link("compose.php","action=reply&folder=".urlencode($folder)."&msgnum=$msgnum"); ?>">
-          <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_reply.gif" height=19 width=26 alt="<?php echo lang("reply"); ?>"></a>
-         <a href="<?php echo $phpgw->link("compose.php","action=replyall&folder=".urlencode($folder)."&msgnum=$msgnum"); ?>">
-          <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_reply_all.gif" height=19 width=26 alt="<?php echo lang("reply all"); ?>"></a>
-         <a href="<?php echo $phpgw->link("compose.php","action=forward&folder=".urlencode($folder)."&msgnum=$msgnum"); ?>">
-         <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_forward.gif" height=19 width=26 alt="<?php echo lang("forward"); ?>"></a>
-         <a href="<?php echo $phpgw->link("action.php","what=delete&folder=".urlencode($folder)."&msgnum=$msgnum"); ?>">
-          <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_delete.gif" height=19 width=26 alt="<?php echo lang("delete"); ?>"></a></font>
+        <td align=right><font size="3" face="<?php echo $phpgw_info['theme']['font'] . "\" color=\"" . $phpgw_info['theme']['em_folder_text']; ?>">
+         <a href="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=reply&folder='.urlencode($folder).'&msgnum='.$msgnum); ?>">
+         <img src="<?php echo $phpgw_info['server']['app_images']; ?>/sm_reply.gif" height=19 width=26 alt="<?php echo lang('reply'); ?>"></a>
+         <a href="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=replyall&folder='.urlencode($folder).'&msgnum='.$msgnum); ?>">
+         <img src="<?php echo $phpgw_info['server']['app_images']; ?>/sm_reply_all.gif" height=19 width=26 alt="<?php echo lang('reply all'); ?>"></a>
+         <a href="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=forward&folder='.urlencode($folder).'&msgnum='.$msgnum); ?>">
+         <img src="<?php echo $phpgw_info['server']['app_images']; ?>/sm_forward.gif" height=19 width=26 alt="<?php echo lang('forward'); ?>"></a>
+         <a href="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/action.php','what=delete&folder='.urlencode($folder).'&msgnum='.$msgnum); ?>">
+         <img src="<?php echo $phpgw_info['server']['app_images']; ?>/sm_delete.gif" height=19 width=26 alt="<?php echo lang('delete'); ?>"></a></font>
 	</td>
         <td align="right">
-         <?php
-           // Move this up top.
-	   $session_folder = "folder=".urlencode($folder)."&msgnum";
+<?php
+	// Move this up top.
+	$session_folder = 'folder='.urlencode($folder).'&msgnum';
 
-           if ($msgnum != 1 || ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old" && $msgnum != $totalmeesages)) {
-              if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old") {
-                 $pm = $msgnum + 1;
-              } else {
-                 $pm = $msgnum - 1;
-              }
+	$default_sorting = $phpgw_info['user']['preferneces']['email']['default_sorting'];
 
-              if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old" && ($msgnum == $totalmessages && $msgnum != 1 || $totalmessages == 1)) {
-                 echo "<img border=0 src=\"".$phpgw_info["server"]["images_dir"]."/left-grey.gif"
-			. "\" alt=\"No Previous Message\">";
-              } else {
-                 echo "<a href=\"".$phpgw->link("message.php","$session_folder=$pm")."\"><img "
-		    . "border=0 src=\"".$phpgw_info["server"]["images_dir"]."/left.gif\" alt=\""
-		    . "Previous Message\"></a>";
-              }
-           } else {
-              echo "<img border=0 src=\"".$phpgw_info["server"]["images_dir"]."/left-grey.gif\""
-		 . " alt=\"No Previous Message\">";
-           }
+	if ($msgnum != 1 || ($default_sorting == 'new_old' && $msgnum != $totalmessages))
+	{
+		if ($default_sorting == 'new_old')
+		{
+			$pm = $msgnum + 1;
+		}
+		else
+		{
+			$pm = $msgnum - 1;
+		}
 
-           if ($msgnum < $totalmessages || ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old" && $msgnum != 1)) {
-              if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old") {
-                 $nm = $msgnum - 1;
-              } else {
-                 $nm = $msgnum + 1;
-              }
+		if ($defaulkt_sorting == 'new_old' && ($msgnum == $totalmessages && $msgnum != 1 || $totalmessages == 1))
+		{
+			echo '<img border="0" src="'.$phpgw_info['server']['images_dir'].'/left-grey.gif" alt="No Previous Message">';
+		}
+		else
+		{
+			echo '<a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php',$session_folder.'='.$pm).'">'
+				. '<img border="0" src="'.$phpgw_info['server']['images_dir'].'/left.gif" alt="Previous Message"></a>';
+		}
+	}
+	else
+	{
+		echo '<img border="0" src="'.$phpgw_info['server']['images_dir'].'/left-grey.gif" alt="No Previous Message">';
+	}
 
-              if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old"
-		 && $msgnum == 1 && $totalmessages != $msgnum) {
-                 echo "<img border=0 src=\"".$phpgw_info["server"]["images_dir"]."/"
-			. "right-grey.gif\" alt=\"No Next Message\">";
-              } else {
-                 echo "<a href=\"".$phpgw->link("message.php","$session_folder=$nm")."\"><img "
-		    . "border=0 src=\"".$phpgw_info["server"]["images_dir"]."/right.gif\" alt=\""
-		    . "Next Message\"></a>";
-              }
-           } else {
-              echo "<img border=0 src=\"".$phpgw_info["server"]["images_dir"]."/right-grey.gif\""
-		 . " alt=\"No Next Message\">";
-           }
-         ?>
+	if ($msgnum < $totalmessages || ($default_sorting == 'new_old' && $msgnum != 1))
+	{
+		if ($default_sorting == 'new_old')
+		{
+			$nm = $msgnum - 1;
+		}
+		else
+		{
+			$nm = $msgnum + 1;
+		}
+
+		if ($default_sorting == 'new_old' && $msgnum == 1 && $totalmessages != $msgnum)
+		{
+			echo '<img border="0" src="'.$phpgw_info['server']['images_dir'].'/right-grey.gif" alt="No Next Message">';
+		}
+		else
+		{
+			echo '<a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php',$session_folder.'='.$nm).'">'
+				. '<img border="0" src="'.$phpgw_info['server']['images_dir'].'/right.gif" alt="Next Message"></a>';
+		}
+	}
+	else
+	{
+		echo '<img border="0" src="'.$phpgw_info['server']['images_dir'].'/right-grey.gif" alt="No Next Message"></a>';
+	}
+?>
         </td>
        </tr>
       </table>
@@ -109,20 +128,20 @@ In the future, this will process a specially formated email msg, intended to acc
 </td>
 
 <tr>
- <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" valign="top">
-  <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo lang("from"); ?>:</b>
+ <td bgcolor="<?php echo $phpgw_info['theme']['th_bg']; ?>" valign="top">
+  <font size="2" face="<?php echo $phpgw_info['theme']['font']; ?>">
+   <b><?php echo lang('from'); ?>:</b>
   </font> 
  </td> 
- <td bgcolor="<?php echo $phpgw_info["theme"]["row_on"]; ?>" width="570">
+ <td bgcolor="<?php echo $phpgw_info['theme']['row_on']; ?>" width="570">
   
 <?php 
 
 if ($msg->from) {
    echo "<font size=\"2\" face=\""
-      . $phpgw_info["theme"]["font"]."\">"
+      . $phpgw_info['theme']['font']."\">"
       . "<a href=\""
-      . $phpgw->link("compose.php","folder="
+      . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',"folder="
         . urlencode($folder) . "&to=" . urlencode($from->mailbox . "@"
         . $from->host)) 
       . "\">". decode_header_string($personal)
