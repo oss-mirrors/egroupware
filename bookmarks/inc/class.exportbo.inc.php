@@ -83,8 +83,8 @@ class exportbo
 		while ($db2->next_record())
 		{
 			$t->set_var(array(
-				'url' => $db2->f('bm_url'),
-				'name' => iconv("ISO-8859-1","UTF-8",$db2->f('bm_name'))
+				'url' => htmlspecialchars($db2->f('bm_url')),
+				'name' => iconv("ISO-8859-1","UTF-8",htmlspecialchars($db2->f('bm_name')))
 			));
 			$t->fp('urls','urllist',True);
 		}
