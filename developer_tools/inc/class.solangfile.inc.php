@@ -134,7 +134,10 @@
 				}
 			}
 			unset($GLOBALS['acl_manager']);
+
+			ob_start();		// suppress all output
 			include($fname);
+			ob_end_clean();
 
 			if (isset($GLOBALS['acl_manager']))	// hook_acl_manager
 			{
