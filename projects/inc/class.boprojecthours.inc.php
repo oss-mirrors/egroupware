@@ -204,7 +204,8 @@
 					'employee'			=> $hour['employee'],
 					'employeeout'		=> $GLOBALS['phpgw']->common->grab_owner_name($hour['employee']),
 					'sdate_formatted'	=> $this->format_htime($hour['sdate']),
-					'edate_formatted'	=> $this->format_htime($hour['edate'])
+					'edate_formatted'	=> $this->format_htime($hour['edate']),
+					'billable'			=> $hour['billable'],
 				);
 			}
 			return $hours;
@@ -541,7 +542,8 @@
 								'edate'				=> $track['edate'],
 								'edate_formatted'	=> $this->format_htime($track['edate']),
 								'remark'			=> nl2br($GLOBALS['phpgw']->strip_html($track['remark'])),
-								'wh'				=> $this->sohours->format_wh($track['minutes'])
+								'wh'				=> $this->sohours->format_wh($track['minutes']),
+								'billable'			=> $track['billable'],
 							);
 						}
 					}
@@ -584,11 +586,12 @@
 				'sdate'				=> $hours['sdate'],
 				'edate'				=> $hours['edate'],
 				'activity_id'		=> $hours['activity_id'],
-				'remark'			=> nl2br($GLOBALS['phpgw']->strip_html($hours['remark'])),
+				'remark'			=> $GLOBALS['phpgw']->strip_html($hours['remark']),
 				'sdate_formatted'	=> $this->hdate_format($hours['sdate']),
 				'edate_formatted'	=> $hours['edate']>0?$this->hdate_format($hours['edate']):0,
 				'stime_formatted'	=> $this->format_htime($hours['sdate']),
-				'etime_formatted'	=> $this->format_htime($hours['edate'])
+				'etime_formatted'	=> $this->format_htime($hours['edate']),
+				'billable'			=> $hours['billable'],
 			);
 			return $hour;
 		}

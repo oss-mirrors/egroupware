@@ -58,7 +58,7 @@
 
 <!-- BEGIN activity_own -->
 
-			<input type="text" name="values[hours_descr]" size="30" value="{hours_descr}">
+			<input type="text" name="values[hours_descr]" size="30" value="{hours_descr}"> &nbsp; {billable_checked}
 
 <!-- END activity_own -->
 
@@ -112,9 +112,7 @@
 	</tr>
 	<tr bgcolor="{row_off}">
 		<td>{lang_status}:</td>
-		<td colspan="2"><select name="values[status]">{status_list}</select></td>
-		<td>{lang_non_billable}:</td>
-		<td colspan="2"><input type="checkbox" name="values[billable]" value="True" {hours_billable_checked}></td>
+		<td colspan="5"><select name="values[status]">{status_list}</select></td>
 	</tr>
 
 	<tr bgcolor="{row_off}">
@@ -125,9 +123,9 @@
 	</tr>
 
 	<tr valign="bottom" height="50">
-		<td colspan="4"><input type="submit" name="save" value="{lang_save}"></td>
-		<td align="right">{delete}</td>
-		<td align="right"><input type="submit" name="cancel" value="{lang_cancel}"></td>
+		<td><input type="submit" name="save" value="{lang_save}"></td>
+		<td><input type="submit" name="cancel" value="{lang_cancel}"></td>
+		<td colspan="4" align="right">{delete}</td>
 	</tr>
 </form>
 </table>

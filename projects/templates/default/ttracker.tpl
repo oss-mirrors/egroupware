@@ -11,11 +11,12 @@
 		</tr>
 		<tr class="row_on">
 			<td valign="top">{lang_activity}:</td>
-			<td valign="top" colspan="2">
+			<td valign="top" colspan="3">
 
 <!-- BEGIN act_own -->
 
-				<input type="text" name="values[hours_descr]" size="20" value="{hours_descr}">
+				<input type="text" name="values[hours_descr]" size="40" value="{hours_descr}">
+				{billable_checked}
 
 <!-- END act_own -->
 <!-- BEGIN activity -->
@@ -25,8 +26,7 @@
 <!-- END activity -->
 
 			</td>
-			<td valign="top">{lang_costtype}:</td>
-			<td colspan="2">
+			<td valign="top" colspan="2">{lang_costtype}:
 <!-- BEGIN cost -->
 				<select name="values[cost_id]">{cost_list}</select>
 <!-- END cost -->
@@ -76,8 +76,8 @@
 		<tr class="th" width="100%">
 			<td>{lang_entry}</td>
 			<td>{lang_activity}</td>
-			<td>{lang_from}</td>
-			<td>{lang_till}</td>
+			<td>{lang_billable}</td>
+			<td>{lang_from} - {lang_till}</td>
 			<td>{lang_hours}</td>
 			<td align="center">{lang_select}</td>
 		</tr>
@@ -105,8 +105,8 @@
 		<tr bgcolor="{tr_color}">
 			<td>{statusout}: {apply_time}</td>
 			<td><a href="{edit_url}">{hours_descr}</a></td>
-			<td>{start_time}</td>
-			<td>{end_time}</td>
+			<td align="center">{billable}</td>
+			<td>{start_time} - {end_time}</td>
 			<td>{wh}</td>
 			<td align="center"><a href="{delete_url}"><img src="{delete_img}" border="0" title="{lang_delete}"></a></td>
 		</tr>

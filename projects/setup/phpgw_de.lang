@@ -1,5 +1,5 @@
 % to	projects	de	% bis
-+ jobs	projects	de	+ Jobs
++ jobs	projects	de	+ Unter-<br>projekte
 account	projects	de	Benutzerkonto
 accounting	common	de	Abrechnung
 accounting factor	projects	de	Abrechnungsfaktor
@@ -42,7 +42,7 @@ before	projects	de	vor
 bill per hour	projects	de	Preis pro Stunde
 bill per hour/workunit	projects	de	Preis pro Stunde/Arbeitseinheit
 bill per workunit	projects	de	Preis pro Arbeitseinheit
-billable	projects	de	Buchbar
+billable	projects	de	Abrechenbar
 billable activities	projects	de	Abrechenbare Aktivitäten
 billed	projects	de	Bezahlt
 billed only	projects	de	nur bezahlte
@@ -195,13 +195,12 @@ new milestone	projects	de	Neuer Meilenstein
 new project	projects	de	Neues Projekt
 new start date	projects	de	Neues Startdatum
 nonactive	common	de	Nicht aktiv
-not billable	projects	de	Nicht buchbar
 number	projects	de	Nummer
 old end date	projects	de	Altes Enddatum
 old start date	projects	de	Altes Startdatum
 open	projects	de	Offen
 open popup	projects	de	Popup Fenter öffnen
-open popup window	projects	de	Popup-Fenster &ouml;ffnen
+open popup window	projects	de	Popup-Fenster öffnen
 overall	projects	de	Gesamt
 parent project	projects	de	&Uuml;bergeordnetes Projekt
 pause	projects	de	Pause
@@ -268,6 +267,7 @@ select factor	projects	de	Faktor auswählen
 select groups	projects	de	Gruppen auswählen
 select main project	common	de	Hauptprojekt auswählen
 select project	projects	de	Projekt auswählen
+select role	projects	de	Rolle auswählen
 select users	projects	de	Projektmitarbeiter auswählen
 seller	projects	de	Vertriebsmitarbeiter
 seller list	projects	de	Liste der Vertriebsmitarbeiter
@@ -313,8 +313,8 @@ update delivery	projects	de	Lieferschein updaten
 use activities	admin	de	Tätigkeiten benutzen
 used	projects	de	verbraucht
 used - jobs included	projects	de	verbraucht - inklusive Teilprojekte
-used billable	projects	de	Verbraucht abzurechnen
-used not billable	projects	de	Verbraucht nicht abzurechnen
+used billable	projects	de	Verbraucht abrechnenbar
+used not billable	projects	de	Verbraucht nicht abrechnenbar
 used total	projects	de	Verbraucht total
 user statistic	projects	de	Mitarbeiterstatistik
 user statistics	projects	de	Mitarbeiterstatistiken

@@ -1085,4 +1085,18 @@
 		$GLOBALS['setup_info']['projects']['currentver'] = '1.0.0.002';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
+
+
+	$test[] = '1.0.0.002';
+	function projects_upgrade1_0_0_002()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_ttracker','billable',array(
+			'type' => 'char',
+			'precision' => '1',
+			'default' => 'Y'
+		));
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '1.0.0.003';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
 ?>

@@ -394,8 +394,8 @@
 				$link_data['project_id'] = $_values['parent'];
 				$template->set_var('pro_parent',$this->return_value('pro',$_values['parent']));	
 				$template->set_var('parent_url',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.view_project&action='
-					. ($values['main']==$values['parent']?'mains':'subs') . '&project_id='
-					. $values['parent'] . '&pro_main=' . $values['main']));
+					. ($_values['main']==$_values['parent']?'mains':'subs') . '&project_id='
+					. $_values['parent'] . '&pro_main=' . $_values['main']));
 
 				$template->set_var('pro_main',$this->return_value('pro',$_values['main']));
 				$template->set_var('main_url',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.view_project&action=mains&project_id='
@@ -1824,7 +1824,7 @@
 			}
 		}
 
-		function calculate_budget($factor = 0,$minutes, $project_id = 0,$project_array = 0,$is_billable = False)
+		function calculate_budget($factor,$minutes, $project_id = 0,$project_array = 0,$is_billable = False)
 		{
 			if($this->siteconfig['accounting'] == 'activity')
 			{
@@ -1838,7 +1838,7 @@
 			}
 		}
 
-// BUGET FOR ACTIVIES
+// BUDGET FOR ACTIVIES
 
 		function get_activity_budget($params)
 		{
@@ -3207,10 +3207,21 @@
 			return $activities_list;
 		}
 
-		function select_hours_activities($project_id, $act)
+		function select_hours_activities($project_id,$act,$billable='')
 		{
-			$activities_list = $this->soprojects->soconfig->select_hours_activities($project_id, $act);
-			return $activities_list;
+			if (!$billable)
+			{
+				$billable = substr($act,-1);
+				if ($billable == 'Y' || $billable == 'N')
+				{
+					$act = substr($act,0,-1);
+				}
+				else
+				{
+					$billable = '';
+				}
+			}
+			return $this->soprojects->soconfig->select_hours_activities($project_id,$act,$billable);
 		}
 
 		function select_hours_costs($_projectID, $_costID)

@@ -414,7 +414,8 @@
 		function list_projects($_action=false, $_pro_main=false)
 		{
 			$action		= get_var('action',array('POST','GET'));
-			$pro_main	= get_var('pro_main',array('POST','GET'));
+			$pro_main	= get_var('pro_main',array('POST','GET'),
+				$GLOBALS['phpgw']->session->appsession('pro_main','projects'));
 
 			if ($_GET['cat_id'])
 			{
@@ -445,6 +446,7 @@
 
 			if($pro_main)
 			{
+				$GLOBALS['phpgw']->session->appsession('pro_main','projects',$pro_main);
 				$main = $this->boprojects->read_single_project($pro_main);
 				$GLOBALS['phpgw']->template->set_var('title_main',$main['title']);
 				$GLOBALS['phpgw']->template->set_var('main_url',$GLOBALS['phpgw']->link('/index.php',
@@ -2303,7 +2305,7 @@
 			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$GLOBALS['phpgw']->template->set_var('role_select',$this->boprojects->action_format($values['role_id']));
 			$GLOBALS['phpgw']->template->set_var('event_select',$this->boprojects->action_format($values['events'],'event'));
-			$GLOBALS['phpgw']->template->set_var('lang_select_role',lang('select role'));
+			$GLOBALS['phpgw']->template->set_var('lang_select_role',lang('select'));
 			$GLOBALS['phpgw']->template->set_var('emp_select',$this->employee_format(array('type' => 'selectbox','project_id' => $project_id,'selected' => $values['account_id']
 																							,'project_only' => True,'admins_included' => True)));
 			$GLOBALS['phpgw']->template->set_var('lang_assign',lang('assign'));

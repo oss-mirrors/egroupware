@@ -4,7 +4,6 @@
 
 <center>
 <table border="0" width="79%" cellspacing="2" cellpadding="2">
-<form method="POST" action="{action_url}">
 	<tr>
 		<td colspan="4">
 			<table border="0" width="100%">
@@ -25,6 +24,8 @@
 		<td width="20%">{sort_lastname}</td>
 		<td align="center" width="8%">{lang_projects}</td>
 	</tr>
+
+<form method="POST" action="{action_url}">
 
 <!-- BEGIN user_list -->
 

@@ -32,7 +32,7 @@
 		function sodeliveries()
 		{
 			$this->db			= $GLOBALS['phpgw']->db;
-			$this->db2			= $this->db;
+			$this->db2			= clone($this->db);
 			$this->account		= $GLOBALS['phpgw_info']['user']['account_id'];
 		}
 

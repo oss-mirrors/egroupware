@@ -170,7 +170,7 @@
 
 			$GLOBALS['phpgw']->template->set_var('lang_ttracker_actions',lang('time tracking actions'));
 			$GLOBALS['phpgw']->template->set_var('lang_manuell_entries',lang('manuell entries'));
-			$GLOBALS['phpgw']->template->set_var('lang_non_billable',lang('not billable'));
+			$GLOBALS['phpgw']->template->set_var('lang_billable',lang('billable'));
 			$GLOBALS['phpgw']->template->set_var('lang_time_of_journey',lang('time of journey'));
 			$GLOBALS['phpgw']->template->set_var('lang_distance',lang('distance'));
 		}
@@ -249,8 +249,6 @@
 			$GLOBALS['phpgw']->template->set_file(array('projects_list_t' => 'list_pro_hours.tpl'));
 			$GLOBALS['phpgw']->template->set_block('projects_list_t','projects_list','list');
 			$GLOBALS['phpgw']->template->set_block('projects_list_t','project_main','main');
-
-
 
 			if($pro_main)
 			{
@@ -397,6 +395,7 @@
 
 			$GLOBALS['phpgw']->template->set_var('project_list',$this->boprojects->select_project_list(array('action' => 'all','status' => $this->status,'selected' => $this->project_id)));
 
+			/* seems not to be used atm. RalfBecker 2004/11/04
 			switch($this->state)
 			{
 				case 'all': $state_sel[0]=' selected';break;
@@ -411,6 +410,7 @@
 						. '<option value="billed"' . $state_sel[3] . '>' . lang('Billed') . '</option>' . "\n";
 
 			$GLOBALS['phpgw']->template->set_var('state_list',$state_list);
+			*/
 
 			$hours = $this->bohours->list_hours();
 
@@ -446,7 +446,7 @@
 				$link_data['hours_id'] = $hours[$i]['hours_id'];
 
 				$hours_desr = $this->siteconfig['accounting']=='own'?$hours[$i]['hours_descr']:$hours[$i]['activity_title'];
-				if(empty($hours_desr)) $hours_desr=lang('no description');
+				if(empty($hours_desr)) $hours_desr = '--';
 				if ($this->bohours->edit_perms
 					(
 						array
@@ -474,6 +474,7 @@
 					(
 						'employee'	=> $hours[$i]['employeeout'],
 						'hours_descr'	=> $descr,
+						'billable'	=> $hours[$i]['billable'] == 'Y' ? 'X' : '',
 						'status'	=> $hours[$i]['statusout'],
 						'start_date'	=> $hours[$i]['sdate_formatted']['date'],
 						'start_time'	=> $hours[$i]['sdate_formatted']['time'],
@@ -520,13 +521,20 @@
 			{
 				$this->jscal = CreateObject('phpgwapi.jscalendar');
 			}
-			//$project_id	= get_var('project_id',array('POST','GET'));
-			//$pro_main	= get_var('pro_main',array('POST','GET'));
 			$values		= get_var('values',array('POST'));
 
 			//_debug_array($values);
 
 			$this->project_id = intval($values['project_id']);
+			if ($this->siteconfig['accounting'] == 'activity')
+			{
+				$values['billable'] = substr($values['activity_id'],-1);
+			}
+			else
+			{
+				$project = $this->boprojects->read_single_project($this->project_id);
+				$values['billable'] = !is_array($values) || $values['billable'] == 'Y' && $project['billable'] != 'N' ? 'Y' : 'N';
+			}
 			if($values['start'] || $values['stop'] || $values['continue'] || $values['pause'])
 			{
 				$error = $this->bohours->check_ttracker($values);
@@ -615,6 +623,11 @@
 			else
 			{
 				$GLOBALS['phpgw']->template->set_var('hours_descr',$values['hours_descr']);
+				if ($project['billable'] != 'N')
+				{
+	 				$GLOBALS['phpgw']->template->set_var('billable_checked','<input type="checkbox" name="values[billable]" value="Y"'.
+						($values['billable'] == 'N' ? '' : ' checked="1"').'> '.lang('billable'));
+				}
 				$GLOBALS['phpgw']->template->fp('actownhandle','act_own',True);
 			}
 			$GLOBALS['phpgw']->template->set_var('cost_list',$this->boprojects->select_hours_costs($this->project_id,$values['cost_id']));
@@ -627,6 +640,8 @@
 			foreach((array)$tracking as $track)
 			{
 				$projects[$track['project_id']] = $track['project_title'];
+
+				if (!count($track['hours'])) continue;	// dont list projects without hours
 
 				$GLOBALS['phpgw']->template->set_var('project_title',$track['project_title']);
 				$GLOBALS['phpgw']->template->set_var('project_id',$track['project_id']);
@@ -655,18 +670,20 @@
 					}
 
 					$GLOBALS['phpgw']->template->set_var(array(
-													'hours_descr'	=> $this->siteconfig['accounting']=='own'?$track['hours'][$i]['hours_descr']:$track['hours'][$i]['activity_title'],
-													'statusout'		=> lang($track['hours'][$i]['status']),
-													'start_date'	=> $track['hours'][$i]['sdate_formatted']['date'],
-													'start_time'	=> ($track['hours'][$i]['status']!='apply')?$track['hours'][$i]['sdate_formatted']['time']:$track['hours'][$i]['sdate_formatted']['date'],
-													'apply_time'	=> $at,
-													'end_time'		=> ($track['hours'][$i]['status']!='apply'?($track['hours'][$i]['edate']>0?$track['hours'][$i]['edate_formatted']['time']:
-																		''):$track['hours'][$i]['sdate_formatted']['date']),
-													'wh'			=> $wh,
-													'delete_url'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.ttracker&delete=True&track_id=' . $track['hours'][$i]['track_id']),
-													'edit_url'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.edit_ttracker&track_id=' . $track['hours'][$i]['track_id']),
-													'delete_img'	=> $GLOBALS['phpgw']->common->image('phpgwapi','delete'),
-													'lang_delete'	=> lang('delete')));
+						'hours_descr'	=> $this->siteconfig['accounting']=='own'?$track['hours'][$i]['hours_descr']:$track['hours'][$i]['activity_title'],
+						'billable'		=> $track['hours'][$i]['billable']=='Y' ? 'X' : '',
+						'statusout'		=> lang($track['hours'][$i]['status']),
+						'start_date'	=> $track['hours'][$i]['sdate_formatted']['date'],
+						'start_time'	=> ($track['hours'][$i]['status']!='apply')?$track['hours'][$i]['sdate_formatted']['time']:$track['hours'][$i]['sdate_formatted']['date'],
+						'apply_time'	=> $at,
+						'end_time'		=> ($track['hours'][$i]['status']!='apply'?($track['hours'][$i]['edate']>0?$track['hours'][$i]['edate_formatted']['time']:
+											''):$track['hours'][$i]['sdate_formatted']['date']),
+						'wh'			=> $wh,
+						'delete_url'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.ttracker&delete=True&track_id=' . $track['hours'][$i]['track_id']),
+						'edit_url'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.edit_ttracker&track_id=' . $track['hours'][$i]['track_id']),
+						'delete_img'	=> $GLOBALS['phpgw']->common->image('phpgwapi','delete'),
+						'lang_delete'	=> lang('delete'),
+					));
 
 					$GLOBALS['phpgw']->template->fp('thours_list','ttracker_list',True);
 				}
@@ -677,8 +694,7 @@
 				$GLOBALS['phpgw']->html = CreateObject('phpgwapi.html');
 			}
 			$GLOBALS['phpgw']->template->set_var('select_project',
-				$GLOBALS['phpgw']->html->select('values[project_id]',$this->project_id,$projects,true,
-					$this->siteconfig['accounting'] == 'activity' ? 'onchange="this.form.submit();"' : ''));
+				$GLOBALS['phpgw']->html->select('values[project_id]',$this->project_id,$projects,true,'onchange="this.form.submit();"'));
 
 			$GLOBALS['phpgw']->template->set_var('listhandle','');
 			$GLOBALS['phpgw']->template->pfp('out','ttracker_t',True);
@@ -690,11 +706,22 @@
 			$track_id	= get_var('track_id',array('POST','GET'));
 			$values		= $_POST['values'];
 
+			if ($this->siteconfig['accounting'] == 'activity')
+			{
+				$values['billable'] = substr($values['activity_id'],-1);
+			}
+			else
+			{
+				$values['billable'] = $values['billable'] == 'Y' ? 'Y' : 'N';
+			}
 			if($_POST['save'] || $_POST['cancel'])
 			{
 				if($_POST['save'])
 				{
 					$values['track_id']	= $track_id;
+					
+					$values['billable'] = $this->siteconfig['accounting'] == 'activity' ? substr($values['activity_id'],-1) :
+						($values['billable'] == 'Y' ? 'Y' : 'N');
 					$this->bohours->save_hours($values);
 				}
 				$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=projects.uiprojecthours.ttracker');
@@ -719,12 +746,18 @@
 
 			if($this->siteconfig['accounting'] == 'activity')
 			{
-				$GLOBALS['phpgw']->template->set_var('activity_list',$this->boprojects->select_hours_activities($values['project_id'],$values['activity_id']));
+				$GLOBALS['phpgw']->template->set_var('activity_list',$this->boprojects->select_hours_activities($values['project_id'],$values['activity_id'],$values['billable']));
 				$GLOBALS['phpgw']->template->fp('activityhandle','activity',True);
 			}
 			else
 			{
 				$GLOBALS['phpgw']->template->set_var('hours_descr',$values['hours_descr']);
+				$project = $this->boprojects->read_single_project($values['project_id']);
+				if ($project['billable'] != 'N')
+				{
+	 				$GLOBALS['phpgw']->template->set_var('billable_checked','<input type="checkbox" name="values[billable]" value="Y"'.
+						($values['billable'] == 'N' ? '' : ' checked="1"').'> '.lang('billable'));
+				}
 				$GLOBALS['phpgw']->template->fp('actownhandle','act_own',True);
 			}
 
@@ -906,6 +939,16 @@
 				$values['pro_main']		= $pro_main;
 				$values['project_id'] 		= $this->project_id;
 				$values['hours_id']		= $hours_id;
+				
+				if ($this->siteconfig['accounting'] == 'activity')
+				{
+					$values['billable'] = substr($values['activity_id'],-1);
+				}
+				else
+				{
+					$values['billable'] = $values['billable'] == 'Y' ? 'Y' : 'N';
+				}
+				
 				$error = $this->bohours->check_values($values);
 				if (is_array($error))
 				{
@@ -1053,17 +1096,22 @@
 
 			$GLOBALS['phpgw']->template->set_var('project_name',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('pro',$this->project_id)));
 
-			$GLOBALS['phpgw']->template->set_var('hours_billable_checked',($values['billable']=='N'?' CHECKED':''));
 			$GLOBALS['phpgw']->template->set_var('km_distance',$values['km_distance']);
 			$GLOBALS['phpgw']->template->set_var('t_journey',$this->boprojects->formatTime($values['t_journey']));
 
 			if($this->siteconfig['accounting'] == 'activity')
 			{
-				$GLOBALS['phpgw']->template->set_var('activity_list',$this->boprojects->select_hours_activities($this->project_id,$activity_id));
+				$GLOBALS['phpgw']->template->set_var('activity_list',$this->boprojects->select_hours_activities($this->project_id,$values['activity_id'],$values['billable']));
 				$GLOBALS['phpgw']->template->fp('activityhandle','activity',True);
 			}
 			else
 			{
+				$project = $this->boprojects->read_single_project($this->project_id);
+				if ($project['billable'] != 'N')
+				{
+	 				$GLOBALS['phpgw']->template->set_var('billable_checked','<input type="checkbox" name="values[billable]" value="Y"'.
+						($values['billable'] == 'N' ? '' : ' checked="1"').'> '.lang('billable'));
+				}
 				$GLOBALS['phpgw']->template->fp('actownhandle','activity_own',True);
 			}
 			$GLOBALS['phpgw']->template->set_var('cost_list',$this->boprojects->select_hours_costs($this->project_id, $costID));

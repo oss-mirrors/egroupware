@@ -178,15 +178,16 @@
 			return $activities_list;
 		}
 
-		function select_hours_activities($project_id, $activity = '')
+		function select_hours_activities($project_id, $activity = '',$billable = '')
 		{
 			$this->db2->query('SELECT activity_id,a_number,descr,billperae,billable FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='
 							. intval($project_id) . ' AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id order by descr asc',__LINE__,__FILE__);
 
 			while ($this->db2->next_record())
 			{
-				$hours_act .= '<option value="' . $this->db2->f('activity_id') . '"';
-				if($this->db2->f('activity_id') == intval($activity))
+				$hours_act .= '<option value="' . $this->db2->f('activity_id') . $this->db2->f('billable') . '"';
+				if(!$billable && $this->db2->f('activity_id') == intval($activity) || 
+					$this->db2->f('activity_id').$this->db2->f('billable') == $activity.$billable)
 				{
 					$hours_act .= ' selected';
 				}

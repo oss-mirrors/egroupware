@@ -17,7 +17,7 @@
 
 <!-- BEGIN act_own -->
 
-			<input type="text" name="values[hours_descr]" size="50" value="{hours_descr}">
+			<input type="text" name="values[hours_descr]" size="50" value="{hours_descr}"> &nbsp; {billable_checked}
 
 <!-- END act_own -->
 
@@ -61,8 +61,8 @@
 		</td>
 	</tr>
 	<tr valign="bottom" height="50">
-		<td colspan="3"><input type="submit" name="save" value="{lang_save}"></td>
-		<td align="right"><input type="submit" name="cancel" value="{lang_cancel}"></td>
+		<td><input type="submit" name="save" value="{lang_save}"></td>
+		<td><input type="submit" name="cancel" value="{lang_cancel}"></td>
 	</tr>
 </form>
 </table>

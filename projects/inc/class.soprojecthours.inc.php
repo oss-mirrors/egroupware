@@ -76,7 +76,7 @@
 						'employee'		=> $this->db->f('employee'),
 						'activity_id'	=> $this->db->f('activity_id'),
 						'remark'		=> $this->db->f('remark'),
-						'billable'		=> $this->db->f('billable'),
+						'billable'		=> $this->db->f('billable')=='Y' ? 'N' : 'Y',
 						'km_distance'	=> $this->db->f('km_distance'),
 						't_journey'		=> $this->db->f('t_journey')
 					);
@@ -172,7 +172,7 @@
 					'end_date'		=> $values['edate'],
 					'hours_descr'	=> $values['hours_descr'],
 					'remark'		=> $values['remark'],
-					'billable'		=> isset($values['billable']) ? 'N' : 'Y',
+					'billable'		=> $values['billable'] == 'Y' ? 'N' : 'Y',
 					'minutes'		=> $values['w_minutes'],
 					'status'		=> $values['status'],
 					'employee'		=> $values['employee'],
@@ -195,7 +195,7 @@
 					'end_date'		=> $values['edate'],
 					'hours_descr'	=> $values['hours_descr'],
 					'remark'		=> $values['remark'],
-					'billable'		=> isset($values['billable']) ? 'N' : 'Y',
+					'billable'		=> $values['billable'] == 'Y' ? 'N' : 'Y',
 					'minutes'		=> $values['w_minutes'],
 					'status'		=> $values['status'],
 					'employee'		=> $values['employee'],
@@ -233,15 +233,15 @@
 		{
 			if($minutes)
 			{
-				$wh = array
-				(
-					'whours_formatted'	=> floor($minutes/60),
-					'wmin_formatted'	=> ($minutes-(floor($minutes/60)*60)),
-					'wminutes'			=> $minutes
-					//'whwm'				=> floor($minutes/60) . ':' . ($minutes-(floor($minutes/60)*60))
+				$sign = $minutes < 0 ? '-' : '';
+				$abs_minutes = abs($minutes);
+
+				$wh = array(
+					'whours_formatted'	=> $sign . (int) ($abs_minutes/60),
+					'wmin_formatted'	=> sprintf('%02d',$abs_minutes - 60*(int)($abs_minutes/60)),
+					'wminutes'			=> $minutes,
+					'whwm'				=> sprintf('%s%d:%02d',$sign,(int) ($abs_minutes/60),$abs_minutes - 60*(int)($abs_minutes/60)),
 				);
-				$wh['wmin_formatted'] = $wh['wmin_formatted']<=9?'0' . $wh['wmin_formatted']:$wh['wmin_formatted'];
-				$wh['whwm']	= $wh['whours_formatted'] . '.' . (($wh['wmin_formatted']==0)?'00':$wh['wmin_formatted']);
 			}
 			else
 			{
@@ -295,7 +295,7 @@
 				}
 				$budget += round($factor_per_minute * $activity['utime'],2);
 			}
-			return count($activities) ? array('bbuget' => $bbudget,'budget' => $budget) : false;
+			return count($activities) ? array('bbudget' => $bbudget,'budget' => $budget) : false;
 		}
 
 		function get_activity_time_used($params = 0)
@@ -304,19 +304,7 @@
 
 			if($params['no_billable'] || $params['is_billable'])
 			{
-				$this->db->select($this->projectactivities_table,'activity_id',array_merge($where,array(
-						'billable' => $params['no_billable'] ? 'N' : 'Y'
-					)),__LINE__,__FILE__);
-
-				while($this->db->next_record())
-				{
-				 	$act[] = $this->db->f('activity_id');
-				}
-
-				if(is_array($act))
-				{
-					$where['activity_id'] = $act;
-				}
+				$where['billable'] = $params['no_billable'] ? 'Y' : 'N';
 			}
 			$this->db->select($this->hours_table,'SUM(minutes)',$where,__LINE__,__FILE__);
 
@@ -340,13 +328,9 @@
 					break;
 			}
 
-			if($params['no_billable'])
+			if($params['no_billable'] || $params['is_billable'])
 			{
-				$where['billable'] = 'N';
-			}
-			else if($params['is_billable'])
-			{
-				$where['billable'] = 'Y';
+				$where['billable'] = $params['no_billable'] ? 'Y' : 'N';
 			}
 			$this->db->select($this->hours_table,'SUM(minutes)',$where,__LINE__,__FILE__);
 
@@ -426,7 +410,8 @@
 					'activity_id'	=> $this->db->f('activity_id'),
 					'remark'		=> $this->db->f('remark'),
 					'km_distance'	=> $this->db->f('km_distance'),
-					't_journey'		=> $this->db->f('t_journey') 
+					't_journey'		=> $this->db->f('t_journey'),
+					'billable'		=> $this->db->f('billable'),
 				);
 			}
 			return $track;
@@ -536,6 +521,7 @@
 								'status'		=> 'pause',
 								'hours_descr'	=> 'pause',
 								'remark'		=> '',
+								'billable'  	=> $values['billable'],
 							),false,__LINE__,__FILE__);
 					};
 					// fall-through
@@ -566,6 +552,7 @@
 							'status'		=> $values['action'],
 							'hours_descr'	=> $values['hours_descr'] ? $values['hours_descr'] : $values['action'],
 							'remark'		=> $values['remark'],
+							'billable'  	=> $values['billable'],
 						),false,__LINE__,__FILE__);
 
 					if($values['action'] == 'stop')
@@ -585,6 +572,7 @@
 							'minutes'		=> $values['w_minutes'],
 							'hours_descr'	=> $values['hours_descr'],
 							'remark'		=> $values['remark'],
+							'billable'  	=> $values['billable'],
 						),array(
 							'track_id'		=> $values['track_id']
 						),__LINE__,__FILE__);
@@ -594,17 +582,18 @@
 					$this->db->insert($this->ttracker_table,array(
 							'project_id'	=> $project_id,
 							'activity_id'	=> (int)$values['activity_id'],
-							'cost_id'	=> $values['cost_id'],
-							'employee'	=> $this->account,
+							'cost_id'		=> $values['cost_id'],
+							'employee'		=> $this->account,
 							'start_date'	=> $values['sdate'],
-							'end_date'	=> $values['sdate'],	// RalfBecker: is that correct not $values['edate'] ?
-							'minutes'	=> $values['w_minutes'],
+							'end_date'		=> $values['sdate'],	// RalfBecker: is that correct not $values['edate'] ?
+							'minutes'		=> $values['w_minutes'],
 							'hours_descr'	=> $values['hours_descr']?$values['hours_descr']:'',
-							'status'	=> $values['action'],
-							'remark'	=> $values['remark'],
-							't_journey'	=> 0.0 + $values['t_journey'],
+							'status'		=> $values['action'],
+							'remark'		=> $values['remark'],
+							't_journey'		=> 0.0 + $values['t_journey'],
 							'km_distance'	=> 0.0 + $values['km_distance'],
-							'stopped'	=> 'Y',
+							'stopped'		=> 'Y',
+							'billable'  	=> $values['billable'],
 						),false,__LINE__,__FILE__);
 
 					//return $this->db->get_last_insert_id('phpgw_p_ttracker','track_id');
@@ -640,7 +629,7 @@
 						'employee'		=> $hour['employee'],
 						'pro_parent'	=> $hour['pro_parent'],
 						'pro_main'		=> $hour['pro_main'],
-						'billable'		=> 'Y',
+						'billable'		=> $hour['billable'] == 'Y' ? 'N' : 'Y',	// hours saves a not-billable flag !!!
 						't_journey'		=> 0.0 + $hour['t_journey'],
 						'km_distance'	=> 0.0 + $hour['km_distance'],
 					),false,__LINE__,__FILE__);

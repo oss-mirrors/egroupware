@@ -37,7 +37,7 @@
 
 <table border="0" width="100%" cellpadding="2" cellspacing="2">
 	<tr width="100%">
-		<td colspan="9" align="left" width="100%">
+		<td colspan="8" align="left" width="100%">
 			<table boder="0" width="100%">
 				<tr>
 				{left}
@@ -54,18 +54,14 @@
 			</form>
 		</td>
 		<td width="20%" align="center"><form method="POST" name="filter" action="{action_url}">{filter_list}</form></td>
-		<td width="20%" align="center">
-			<form method="POST" action="{action_url}" name="state">
-			<select name="state" onChange="this.form.submit();">{state_list}</select>
-			</form>
-		</td>
-		<td width="35%" align="right"><form method="POST" name="query" action="{action_url}">{search_list}</form></td>
+		<td align="right"><form method="POST" name="query" action="{action_url}">{search_list}</form></td>
 	</tr>
 </table>
 
 <table border="0" width="100%" cellpadding="2" cellspacing="2">
 	<tr bgcolor="{th_bg}">
 		<td width="25%">{sort_hours_descr}</td>
+		<td>{lang_billable}</td>
 		<td width="10%" align="center">{sort_status}</td>
 		<td width="10%" align="center">{sort_start_date}</td>
 		<td width="10%" align="center">{sort_start_time}</td>
@@ -79,6 +75,7 @@
 
 	<tr bgcolor="{tr_color}">
 		<td>{hours_descr}</td>
+		<td align="center">{billable}</td>
 		<td align="center">{status}</td>
 		<td align="center">{start_date}</td>
 		<td align="center">{start_time}</td>
