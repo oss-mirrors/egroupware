@@ -1,4 +1,4 @@
-phpgroupware-skel for Debian
+egroupware-skel for Debian
 ----------------------------
 
 ------------------------------------
@@ -12,16 +12,16 @@ HOWTO build the skel Debian package.
 
 
 ---------------------------------------------------------
-HOWTO build your phpGroupWare application debian package.
+HOWTO build your eGroupWare application debian package.
 ---------------------------------------------------------
 -------
 Preface - This file is not intended to by a comprehensive documentation  on
 -------   how to build "a Debian package", nor it will teach you to be a Debian
 developer. This file will only explain HOWTO build the _first_ Debian package
-for your phpGroupWare application.
+for your eGroupWare application.
 
 ---------
-The files - To build your phpGroupWare Debian package, you need simply to copy
+The files - To build your eGroupWare Debian package, you need simply to copy
 ---------   the debian directory from the skel module into your application
 base directory. For example, suppose to have both the skel and your application
 base directory on same level and run:
@@ -51,11 +51,11 @@ the followings:
 
 <changelog>
 
-phpgroupware-skel (0.0.1-1) unstable; urgency=low
+egroupware-skel (0.0.1-1) unstable; urgency=low
 
   * Initial Release.
 
- -- Luca - De Whiskey's - De Vitis <luca@debian.org>  Mon, 21 May 2001 15:00:56 +0200
+ -- Peter Eisentraut  - Peter Eisentraut <peter_e@gmx.net>  Mon, 31 Aug 2004 15:00:56 +0200
 
 Local variables:
 mode: debian-changelog
@@ -64,34 +64,34 @@ End:
 </changelog>
 <control>
 
-Source: phpgroupware-skel
+Source: egroupware-skel
 Section: web
 Priority: optional
-Maintainer: Luca - De Whiskey's - De Vitis <luca@debian.org>
+Maintainer: Peter Eisentraut  - Peter Eisentraut <peter_e@gmx.net>
 Build-Depends: debhelper (>> 3.0.0)
 Standards-Version: 3.5.2
 
-Package: phpgroupware-skel
+Package: egroupware-skel
 Architecture: all
-Depends: phpgroupware-core
-Description: A phpGroupWare skel application
- This package provides a phpGroupWare compliant example application.
+Depends: egroupware-core
+Description: A eGroupWare skel application
+ This package provides a eGroupWare compliant example application.
  It also provides some documentation including:
  .
- * HOWTO build a phpGroupWare compliant application
+ * HOWTO build a eGroupWare compliant application
  * HOWTO build a Debian package for that application
 
 </control>
 <copyright>
 
-This package was debianized by Luca - De Whiskey's - De Vitis <luca@debian.org> on
-Mon, 21 May 2001 15:00:56 +0200.
+This package was debianized by Peter Eisentraut  - Peter Eisentraut <peter_e@gmx.net> on
+Mon, 31 Aug 2004 15:00:56 +0200.
 
 It was downloaded from 
 http://sourceforge.net/project/showfiles.php?group_id=7305
 
 Upstream Author(s):
-Please, see /usr/share/phpgroupware-skel/credits.txt
+Please, see /usr/share/egroupware-skel/credits.txt
 
 Copyright:
 A copy of the GNU General Public License, version 2, can be found in
@@ -99,12 +99,12 @@ A copy of the GNU General Public License, version 2, can be found in
 
 </copyright>
 
-Now suppose to use a phpGroupWare api template system on these file: they
+Now suppose to use a eGroupWare api template system on these file: they
 should look like the followings:
 
 <changelog>
 
-phpgroupware-{APP} ({VERSION}-1) {DISTRIBUTION}; urgency={URGENCY}
+egroupware-{APP} ({VERSION}-1) {DISTRIBUTION}; urgency={URGENCY}
 
   * {MESSAGE}
 
@@ -117,16 +117,16 @@ End:
 </changelog>
 <control>
 
-Source: phpgroupware-{APP}
+Source: egroupware-{APP}
 Section: web
 Priority: optional
 Maintainer: {MAINTAINER}
 Build-Depends: debhelper (>> 3.0.0)
 Standards-Version: 3.5.2
 
-Package: phpgroupware-{APP}
+Package: egroupware-{APP}
 Architecture: all
-Depends: phpgroupware-core
+Depends: egroupware-core
 Description: {SHORT}
 {LONG}
 
@@ -140,7 +140,7 @@ It was downloaded from
 {SOURCE}
 
 Upstream Author(s):
-Please, see /usr/share/phpgroupware-{APP}/credits.txt
+Please, see /usr/share/egroupware-{APP}/credits.txt
 
 Copyright:
 {COPYRIGHT}
@@ -203,4 +203,4 @@ Further readings - You may need to read the Debian policy at
 installed as Debian package (doc-rfc, doc-rfc-fyi-bcp, doc-rfc-misc,
 doc-rfc-old-std, doc-rfc-std, doc-rfc-std-proposed)
 
- -- Luca - De Whiskey's - De Vitis <luca@debian.org>, Mon, 21 May 2001 15:00:56 +0200
+ --  Peter Eisentraut  - Peter Eisentraut <peter_e@gmx.net>  Mon, 31 Aug 2004 15:00:56 +0200
