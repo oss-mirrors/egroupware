@@ -11,23 +11,29 @@
   \**************************************************************************/
   /* $ Id $ */
 {
-  echo "<p>\n";
-  $imgfile = $phpgw->common->get_image_dir("email")."/" . $appname .".gif";
-  if (file_exists($imgfile)) {
-    $imgpath = $phpgw->common->get_image_path("email")."/" . $appname .".gif";
-  } else {
-    $imgfile = $phpgw->common->get_image_dir("email")."/navbar.gif";
-    if (file_exists($imgfile)) {
-      $imgpath = $phpgw->common->get_image_path("email")."/navbar.gif";
-    } else {
-      $imgpath = "";
-    }
-  }
-  section_start("E-Mail",$imgpath);
+	echo "<p>\n";
+	$imgfile = $phpgw->common->get_image_dir($appname) . '/' . $appname . '.gif';
+	if (file_exists($imgfile))
+	{
+		$imgpath = $phpgw->common->get_image_path($appname) . '/' . $appname . '.gif';
+	}
+	else
+	{
+		$imgfile = $phpgw->common->get_image_dir($appname) . '/navbar.gif';
+		if (file_exists($imgfile))
+		{
+			$imgpath = $phpgw->common->get_image_path($appname) . '/navbar.gif';
+		}
+		else
+		{
+			$imgpath = '';
+		}
+	}
 
-  $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]."/email/preferences.php");
-  echo "<A href=".$pg.">" . lang("E-Mail preferences") . "</A>";
+	section_start(ucfirst($appname),$imgpath);
 
-  section_end(); 
+	echo '<a href="' . $phpgw->link('/email/preferences.php') . '">' . lang('E-Mail preferences') . '</a>';
+
+	section_end(); 
 }
 ?>

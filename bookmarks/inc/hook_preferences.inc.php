@@ -1,29 +1,48 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - Bookmarks                                                 *
-  * http://www.phpgroupware.org                                              *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare - Bookmarks                                                 *
+	* http://www.phpgroupware.org                                              *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 {
-  section_start($appname,$phpgw_info["server"]["webserver_url"] . "/bookmarks/templates/"
-              . $phpgw_info["server"]["template_set"] . "/images/navbar.gif");
 
-  echo "<a href=" . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/bookmarks/preferences.php")
-     . ">" . lang("Bookmark preferences") . "</a>";
+	echo "<p>\n";
+	$imgfile = $phpgw->common->get_image_dir($appname) . '/' . $appname . '.gif';
+	if (file_exists($imgfile))
+	{
+		$imgpath = $phpgw->common->get_image_path($appname) . '/' . $appname . '.gif';
+	}
+	else
+	{
+		$imgfile = $phpgw->common->get_image_dir($appname) . '/navbar.gif';
+		if (file_exists($imgfile))
+		{
+			$imgpath = $phpgw->common->get_image_path($appname) . '/navbar.gif';
+		}
+		else
+		{
+			$imgpath = '';
+		}
+	}
 
-  echo "<br><a href=" . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/bookmarks/categories.php","type=category")
-     . ">" . lang("Bookmark categorys") . "</a>";
-
-  echo "<br><a href=" . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/bookmarks/categories.php","type=subcategory")
-     . ">" . lang("Bookmark sub-categorys") . "</a>";
+	section_start(ucfirst($appname),$imgpath);
 
 
-  section_end(); 
+	echo '<a href="' . $phpgw->link('/bookmarks/preferences.php')
+		. '">' . lang('Bookmark preferences') . '</a>';
+
+	echo '<br><a href="' . $phpgw->link('/bookmarks/categories.php','type=category')
+		. '">' . lang('Bookmark categorys') . '</a>';
+
+	echo '<br><a href="' . $phpgw->link('/bookmarks/categories.php','type=subcategory')
+		. '">' . lang('Bookmark sub-categorys') . '</a>';
+
+	section_end(); 
 }
 ?>
