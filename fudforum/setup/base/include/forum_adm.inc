@@ -17,7 +17,7 @@ class fud_forum
 
 	function fud_forum()
 	{
-		foreach ($this as $k => $v) {
+		foreach (array('id','cat_id','name','descr','post_passwd','forum_icon','forum_opt','date_created','view_order','message_threshold','max_attach_size','max_file_attachments') as $k) {
 			if (isset($_POST['frm_'.$k])) {
 				$this->{$k} = $_POST['frm_'.$k];
 			}
