@@ -29,8 +29,8 @@
 
  $catfor = "cat=" . $cat . "&for=" . $for;
 
- echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><font size=+1><a href=' . $phpgw->link("index.php") .'>' . lang("Forums") ;
- echo '</a> : <a href=' . $phpgw->link("forums.php","cat=" . $cat) . '>' . $category . '</a> : ' . $forums . '</font></td></tr>';
+ echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><font size=+1><a href=' . $phpgw->link("/forum/index.php") .'>' . lang("Forums") ;
+ echo '</a> : <a href=' . $phpgw->link("/forum/forums.php","cat=" . $cat) . '>' . $category . '</a> : ' . $forums . '</font></td></tr>';
 
 
  echo "<tr>";

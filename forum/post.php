@@ -57,7 +57,7 @@ $dattim = date("Y-m-d H:i:s",time());
   '$message')");
   
 
-  Header("Location: ". $phpgw->link("threads.php","cat=".$cat."&for=".$for."&col=".$col));
+  Header("Location: ". $phpgw->link("/forum/threads.php","cat=".$cat."&for=".$for."&col=".$col));
   $phpgw->common->phpgw_exit();
 
 }
@@ -81,25 +81,25 @@ $dattim = date("Y-m-d H:i:s",time());
 
  $catfor = "cat=" . $cat . "&for=" . $for;
 
- echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><font size=+1><a href=' . $phpgw->link("index.php") .'>' . lang("Forums") ;
- echo '</a> : <a href=' . $phpgw->link("forums.php","cat=" . $cat) . '>' . $category . '</a> : ';
- echo "<a href=" . $phpgw->link("threads.php","$catfor&col=" . $col) . ">". $forums . "</a></font></td></tr>";
+ echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><font size=+1><a href=' . $phpgw->link("/forum/index.php") .'>' . lang("Forums") ;
+ echo '</a> : <a href=' . $phpgw->link("/forum/forums.php","cat=" . $cat) . '>' . $category . '</a> : ';
+ echo "<a href=" . $phpgw->link("/forum/threads.php","$catfor&col=" . $col) . ">". $forums . "</a></font></td></tr>";
 
 
  echo "<tr>";
  echo '<td align="left" width="50%" valign="top">';
 
  echo "<font size=-1>";
- echo "[ <a href=" . $phpgw->link("post.php","$catfor&type=new") . ">" . lang("New Topic") . "</a>";
- if(!$col) echo " | <a href=" . $phpgw->link("threads.php","$catfor&col=1") . ">" . lang("View Threads") . "</a>";
- else echo " | <a href=" . $phpgw->link("threads.php","$catfor&col=0") . ">" . lang("Collapse Threads") . "</a>";
+ echo "[ <a href=" . $phpgw->link("/forum/post.php","$catfor&type=new") . ">" . lang("New Topic") . "</a>";
+ if(!$col) echo " | <a href=" . $phpgw->link("/forum/threads.php","$catfor&col=1") . ">" . lang("View Threads") . "</a>";
+ else echo " | <a href=" . $phpgw->link("/forum/threads.php","$catfor&col=0") . ">" . lang("Collapse Threads") . "</a>";
  # This file doesn't exist yet
  #echo " | <a href=" . $phpgw->link("search.php","$catfor") . ">" . lang("Search") . "</a>";
  echo " ]\n</font><br><br>\n";
 
 
  echo "<center>\n";
- echo "<form method=post action=\"".$phpgw->link("post.php")."\">\n";
+ echo "<form method=post action=\"".$phpgw->link("/forum/post.php")."\">\n";
  echo "<input type=\"hidden\" name=\"cat\" value=\"$cat\">\n";
  echo "<input type=\"hidden\" name=\"for\" value=\"$for\">\n";
  echo "<input type=\"hidden\" name=\"type\" value=\"$type\">\n";

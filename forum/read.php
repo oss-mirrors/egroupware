@@ -56,7 +56,7 @@ if($pos != 0) {
   $phpgw->db->query("insert into f_body (cat_id,for_id,message) VALUES ('$cat','$for','" . addslashes($message) . "')");
 
 
-  Header("Location: ". $phpgw->link("threads.php","cat=".$cat."&for=".$for."&col=".$col));
+  Header("Location: ". $phpgw->link("/forum/threads.php","cat=".$cat."&for=".$for."&col=".$col));
   $phpgw->common->phpgw_exit();
 
 }

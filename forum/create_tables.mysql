@@ -81,10 +81,10 @@ CREATE TABLE f_threads (
 
 
 #
-# Add forum to applications table too
+# Add forum to phpgw_applications table too
 #
 
-INSERT INTO applications VALUES ('forum','Forum',1,13,'',0.01);
+INSERT INTO phpgw_applications VALUES ('forum','Forum',1,13,'',0.01);
 
 
 INSERT INTO f_body (cat_id, for_id, message) VALUES ('1', '1','Here is an example message.');

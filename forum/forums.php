@@ -23,7 +23,7 @@
  $phpgw->db->next_record();
  $category = $phpgw->db->f("name");
 
- echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><a href=' . $phpgw->link("index.php") .'>' . lang("Forums") .'</a> : ' . $category . '</td>' . '</tr>';
+ echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><a href=' . $phpgw->link("/forum/index.php") .'>' . lang("Forums") .'</a> : ' . $category . '</td>' . '</tr>';
  echo "<tr>";
  echo '<td align="left" width="50%" valign="top">';
  echo "<center>";
@@ -33,7 +33,7 @@
    $phpgw->db->query("select * from f_forums where cat_id = $cat");
    while($phpgw->db->next_record()) {
      $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-     echo "<tr bgcolor=".$tr_color."><td><a href=" . $phpgw->link("threads.php","cat=" . $cat . "&for=" . $phpgw->db->f("id")) .">". $phpgw->db->f("name") . "</a></td><td align=left valign=top>" . $phpgw->db->f("descr") . "</td></tr>\n";
+     echo "<tr bgcolor=".$tr_color."><td><a href=" . $phpgw->link("/forum/threads.php","cat=" . $cat . "&for=" . $phpgw->db->f("id")) .">". $phpgw->db->f("name") . "</a></td><td align=left valign=top>" . $phpgw->db->f("descr") . "</td></tr>\n";
    }
 
  echo "</table>";

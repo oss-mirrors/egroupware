@@ -33,7 +33,7 @@
 
       while($phpgw->db->next_record()) {
         $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-        echo "<tr bgcolor=".$tr_color."><td><a href=" . $phpgw->link("forums.php","cat=" . $phpgw->db->f("id")) .">". $phpgw->db->f("name") . "</a></td><td align=left valign=top>" . $phpgw->db->f("descr") . "</td></tr>\n";
+        echo "<tr bgcolor=".$tr_color."><td><a href=" . $phpgw->link("/forum/forums.php","cat=" . $phpgw->db->f("id")) .">". $phpgw->db->f("name") . "</a></td><td align=left valign=top>" . $phpgw->db->f("descr") . "</td></tr>\n";
       }
 
      echo "</table>";

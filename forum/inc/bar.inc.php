@@ -13,10 +13,10 @@
  // Forums bar is created here
 
  echo "<font size=-1>";
- echo "[ <a href=" . $phpgw->link("post.php","$catfor&type=new&col=$col") . ">" . lang("New Topic") . "</a> | ";
- if(!$col) echo "<a href=" . $phpgw->link("threads.php","$catfor&col=1") . ">" . lang("View Threads") . "</a>  ";
- if($col) echo "<a href=" . $phpgw->link("threads.php","$catfor&col=0") . ">" . lang("Collapse Threads") . "</a> ";
- //echo "<a href=" . $phpgw->link("search.php","$catfor") . ">" . lang("Search") . "</a> ";
+ echo "[ <a href=" . $phpgw->link("/forum/post.php","$catfor&type=new&col=$col") . ">" . lang("New Topic") . "</a> | ";
+ if(!$col) echo "<a href=" . $phpgw->link("/forum/threads.php","$catfor&col=1") . ">" . lang("View Threads") . "</a>  ";
+ if($col) echo "<a href=" . $phpgw->link("/forum/threads.php","$catfor&col=0") . ">" . lang("Collapse Threads") . "</a> ";
+ //echo "<a href=" . $phpgw->link("/forum/search.php","$catfor") . ">" . lang("Search") . "</a> ";
 
  echo "]</font><br><br>";
 
