@@ -29,34 +29,34 @@
      ?>
 
      <form method="POST" action="<?php echo $phpgw->link("editheadline.php"); ?>">
-      <input type="hidden" name="o_con" value="<? echo $con; ?>">
+      <input type="hidden" name="o_con" value="<?php echo $con; ?>">
 
       <center>
        <table border=0 width=65%>
         <tr>
          <td><?php echo lang("Display"); ?></td>
-         <td><input name="n_display" value="<?echo $phpgw->db->f("display"); ?>"></td>
+         <td><input name="n_display" value="<?php echo $phpgw->db->f("display"); ?>"></td>
         </tr>
         <tr>
          <td><?php echo lang("Base URL"); ?></td>
-         <td><input name="n_base_url" value="<? echo $phpgw->db->f("base_url"); ?>"></td>
+         <td><input name="n_base_url" value="<?php echo $phpgw->db->f("base_url"); ?>"></td>
         </tr>
         <tr>
          <td><?php echo lang("News File"); ?></td>
-         <td><input name="n_newsfile" value="<? echo $phpgw->db->f("newsfile"); ?>"></td>
+         <td><input name="n_newsfile" value="<?php echo $phpgw->db->f("newsfile"); ?>"></td>
         </tr>
         <tr>
          <td><?php echo lang("Minutes between Reloads"); ?></td>
-         <td><input name="n_cachetime" value="<? echo $phpgw->db->f("cachetime"); ?>"></td>
+         <td><input name="n_cachetime" value="<?php echo $phpgw->db->f("cachetime"); ?>"></td>
         </tr>
         <tr>
          <td><?php echo lang("Listings Displayed"); ?></td>
-         <td><input name="n_listings" value="<? echo $phpgw->db->f("listings"); ?>"></td>
+         <td><input name="n_listings" value="<?php echo $phpgw->db->f("listings"); ?>"></td>
         </tr>
         <tr>
          <td><?php echo lang("News Type"); ?></td>
          <td>
-<?
+<?php
 	 $news_type = array('rdf','fm','lt','sf','rdf-chan');
          for ($i=0;$i<count($news_type);$i++) {
            echo "<input type=\"radio\" name=\"n_newstype\" value=\"" . $news_type[$i] . "\"";
