@@ -91,12 +91,9 @@
 <hr>
 <table width="80%" align="center">
   <tr valign="top">
-   <td align="center">&nbsp;</td>
-     <input name="update" type="submit" value="{lang_update}">
-   <td align="center"><input type="submit" name="addphrase" value="{lang_addphrase}"></td>
+   <td align="center"><input type="submit" name="update" value="{lang_update}"></td>
   </form>
   <form method="post" action="{phrase_link}">
-   <td align="center">&nbsp;</td>
      <input name="app_name" type="hidden" value="{app_name}">
    <td align="center"><input type="submit" name="addphrase" value="{lang_addphrase}"></td>
   </form>
