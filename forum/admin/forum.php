@@ -10,9 +10,11 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  if($action) $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
-
   $phpgw_info["flags"] = array("currentapp" => "forum", "enable_nextmatchs_class" => True);
+  if($action) {
+    $phpgw_info["flags"]["noheader"] = True;
+    $phpgw_info["flags"]["nonavbar"] = True;
+  }
   include("../../header.inc.php");
 
   $actiontype = "addforum";
@@ -28,15 +30,17 @@
     $forname = $phpgw->db->f("name");
     $fordescr = $phpgw->db->f("descr");
     $cat_id = $phpgw->db->f("cat_id");
-    if(!$phpgw->db->query("select * from f_categories where id=$cat_id")) {
-     print "Error in readindg database<br>\n";
-     exit;
-    } else $phpgw->db->next_record();
-    $catname = $phpgw->db->f("name");
-    $extraselect = "<option value=\"" . $cat_id . "\">" . $catname ."</option>";
-    $extrahidden = "<input type=\"hidden\" name=\"for_id\" value=\"$for_id\">";
-    $buttontext = lang("Update Forum");
-    $actiontype = "updforum";
+    if ($cat_id > 0) {
+      if(!$phpgw->db->query("select * from f_categories where id=$cat_id")) {
+       print "Error in readindg database<br>\n";
+       exit;
+      } else $phpgw->db->next_record();
+      $catname = $phpgw->db->f("name");
+    } else $catname = lang("No Catagory");
+      $extraselect = "<option value=\"" . $cat_id . "\">" . $catname ."</option>";
+      $extrahidden = "<input type=\"hidden\" name=\"for_id\" value=\"$for_id\">";
+      $buttontext = lang("Update Forum");
+      $actiontype = "updforum";
    }
   }
 
@@ -89,7 +93,7 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a
   <table border="0" width=80% bgcolor="<? echo $phpgw_info["theme"]["table_bg"]?>">
    <tr>
     <td colspan=2 bgcolor="<?echo $phpgw_info["theme"]["th_bg"]?>">
-     <center><?echo lang("Create New Forum")?></center>
+     <center><?echo $buttontext ?></center>
     </td>
    </tr>
    <tr>
@@ -109,6 +113,7 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a
      echo "<option value=\"$cat_id\">$cat_name</option>\n";
     }
 ?>
+    <option value=-1><? echo lang("No Catagory") ?></option>
     </select>
    </td>
    <tr>
@@ -149,4 +154,3 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a
 
   include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
 ?>
-

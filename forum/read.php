@@ -10,9 +10,11 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  if($action) $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
-
   $phpgw_info["flags"] = array("currentapp" => "forum", "enable_nextmatchs_class" => True);
+  if($action) {
+    $phpgw_info["flags"]["noheader"] = True;
+    $phpgw_info["flags"]["nonavbar"] = True;
+  } 
   include("../header.inc.php");
 
 
@@ -160,5 +162,3 @@ $phpgw->db->query("update f_threads set n_replies = n_replies+1 where thread='$t
 <?php
   include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
 ?>
-
-

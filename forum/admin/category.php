@@ -10,9 +10,11 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  if($action) $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
-
   $phpgw_info["flags"]["currentapp"] = "forum";
+  if($action) {
+    $phpgw_info["flags"]["noheader"] = True;
+    $phpgw_info["flags"]["nonavbar"] = True;
+  }
   include("../../header.inc.php");
 
   $actiontype = "addcat";
@@ -123,4 +125,3 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a
 
   include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
 ?>
-

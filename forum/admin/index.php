@@ -42,49 +42,52 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a
    </tr>
    <tr>
     <td>
+    </td>
+   </tr>
 <?
- $q1 = $phpgw->db->query("select * from f_categories");
- while($phpgw->db->next_record($q1)) {
-  $cat_id = $phpgw->db->f("id");
-  $cat_name = $phpgw->db->f("name");
-  $cat_descr = $phpgw->db->f("descr");
-
-  echo "<tr bgcolor=\"" . $phpgw_info["theme"]["bg06"] . "\">\n";
-  echo " <td valign=top align=left width=20%>$cat_name</td>\n";
-  echo " <td valign=top align=left width=70%>$cat_descr</td>\n"; 
-  echo "   <td width=150><a href=\"" . $phpgw->link("category.php","act=edit&cat_id=$cat_id") ."\">" . lang("Edit") . "</td>\n";
-  echo "</tr>\n";
-  echo "<tr>\n";
-  echo " <td colspan=3 align=right valign=top>\n";
-  echo "  <table border=0 width=95%>\n";
-  
-/*  $q2 = $phpgw->db->query("select * from f_forums where cat_id=$cat_id");
-   while($phpgw->db->next_record($q2)) {
-   echo "  <tr>\n";
-   echo "   <td width=20%>" . $phpgw->db->f("name") . "</td>\n";
-   echo "   <td width=70%>" . $phpgw->db->f("descr") . "</td>\n";
-   echo "   <td width=150>" . lang("Edit") . "</td>\n";
-   echo "  </tr>\n";
-*/
-
-   $tr_color = $phpgw_info["theme"]["row_off"];
-   $phpgw->db->query("select * from f_forums where cat_id=$cat_id");
-   while($phpgw->db->next_record()) {
-    $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-    $for_id = $phpgw->db->f("id");
-    echo "  <tr bgcolor=\"$tr_color\">\n";
-    echo "   <td width=20%>" . $phpgw->db->f("name") . "</td>\n";
-    echo "   <td width=70%>" . $phpgw->db->f("descr") . "</td>\n";
-    echo "   <td width=150><a href=\"" . $phpgw->link("forum.php","act=edit&for_id=$for_id") ."\">" . lang("Edit") . "</td>\n";
-    echo "  </tr>\n";
-
-
+  $f_tree = array();
+  $phpgw->db->query("select * from f_categories");
+  while($phpgw->db->next_record()) {
+    $f_tree[$phpgw->db->f("id")] = array("name"=>$phpgw->db->f("name"), "descr"=>$phpgw->db->f("descr"), "forums"=>array());
   }
-  echo "  </table><br>\n";
-  echo " </td>\n";
-  echo "</tr>\n";
- }
+  $phpgw->db->query("select * from f_forums");
+  while($phpgw->db->next_record()) {
+    $f_tree[$phpgw->db->f("cat_id")]["forums"][$phpgw->db->f("id")] = array("name"=>$phpgw->db->f("name"), "descr"=>$phpgw->db->f("descr"));
+  }
+  ksort($f_tree);
+  for(reset($f_tree);$id=key($f_tree);next($f_tree)) {
+    if($id > 0) {
+      echo "<tr><td></td></tr>";
+      echo "<tr bgcolor=\"" . $phpgw_info["theme"]["bg06"] . "\">\n";
+      echo " <td valign=top align=left width=20%>" . $f_tree[$id]["name"] . "</td>\n";
+      echo " <td valign=top align=left width=70%>" . $f_tree[$id]["descr"] . "</td>\n";
+      echo "   <td nowrap><a href=\"" . $phpgw->link("category.php","act=edit&cat_id=$id") ."\">" . lang("Edit") . "</A> | ";
+      echo "<A href=\"" . $phpgw->link("deletecategory.php", "cat_id=$id") . "\">" . lang("Delete") . "</A></td>\n";
+      echo "</tr>\n";
+      echo "<tr>\n";
+      echo " <td colspan=3 align=right valign=top>\n";
+      echo "<table border=0 width=95%>\n";
+    } else {
+      echo "<tr>\n";
+      echo " <td colspan=3 align=right valign=top>\n";
+      echo "<table border=0 width=100%>\n";
+    }
 
+    $tr_color = $phpgw_info["theme"]["row_off"];
+
+    for(reset($f_tree[$id]["forums"]); $fid=key($f_tree[$id]["forums"]); next($f_tree[$id]["forums"])) {
+      $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+      echo "  <tr bgcolor=\"$tr_color\">\n";
+      echo "   <td width=20%>" . $f_tree[$id]["forums"][$fid]["name"] . "</td>\n";
+      echo " <td valign=top align=left width=70%>". $f_tree[$id]["forums"][$fid]["descr"] . "</td>\n";
+      echo "   <td nowrap><a href=\"" . $phpgw->link("forum.php","act=edit&for_id=$fid") ."\">" . lang("Edit") . "</A> | ";
+      echo "<A href=\"" . $phpgw->link("deleteforum.php", "for_id=$fid") . "\">" . lang("Delete") . "</A></td>\n";
+      echo "  </tr>\n";
+    }
+    echo "  </table>\n";
+    echo " </td>\n";
+    echo "</tr>\n";
+  }
 ?>
     </td>
    </tr>
@@ -98,14 +101,6 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a
 </tr>
 </table>
 <?
-
-
-
-
-
-
-
-
 
 echo "</center>";
   include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");

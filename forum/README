@@ -3,16 +3,25 @@ But i warn you :)
 
 jpkh jpkh@vip.fi
 
+--
+
+Looks like I'm taking care of this thing now.
+
+tweaker tweaker@users.sourceforge.net
+
+
 -------------------------------------------------------
 TODO:
 
 - admin pages
 - permissions for forum admins
 - selection for how many messages are shown in one page
-- create ability to create forums without categories
+- make uncategorized forums show up in the forum list
 - email notification on replyed posting
 - number of new messages from "last login"
 
 
 Done:
+- admin can delete forums and categories
+- create ability to create forums without categories
 - lang section
