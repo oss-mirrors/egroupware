@@ -45,7 +45,6 @@
 
 	$GLOBALS['phpgw']->template->set_var('lang_appname', lang('Trouble Ticket System'));
 	$GLOBALS['phpgw']->template->set_var('tts_newticket_link', $GLOBALS['phpgw']->link('/tts/newticket.php'));
-	$GLOBALS['phpgw']->template->set_var('tts_search_link', $GLOBALS['phpgw']->link('/tts/index.php'));
 	$GLOBALS['phpgw']->template->set_var('tts_prefs_link', $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=tts'));
 	$GLOBALS['phpgw']->template->set_var('lang_preferences', lang('Preferences'));
 	$GLOBALS['phpgw']->template->set_var('lang_search', lang('search'));
@@ -59,6 +58,10 @@
 	$start  = reg_var('start','GET','numeric',0);
 	$sort   = reg_var('sort','GET');
 	$order  = reg_var('order','GET');
+	$searchfilter = reg_var('searchfilter','POST');
+	
+	// Append the filter to the search URL, so that the mode carries forward on a search
+	$GLOBALS['phpgw']->template->set_var('tts_search_link',$GLOBALS['phpgw']->link('/tts/index.php',"filter=$filter"));
 
 	if (!$filter)
 	{
@@ -78,7 +81,8 @@
 			$GLOBALS['phpgw']->template->set_var('autorefresh','');
 		}
 	}
-	if ($filter == 'search') 
+	// set for a possible search filter, outside of the all/open only "state" filter above
+	if ($searchfilter) 
 	{
 		$filtermethod = "where ticket_details like '%".addslashes($searchfilter)."%'";
 		$GLOBALS['phpgw']->template->set_var('tts_searchfilter',addslashes($searchfilter));
@@ -109,10 +113,8 @@
 	$db->query("select * from phpgw_tts_tickets $filtermethod $sortmethod",__LINE__,__FILE__);
 	$numfound = $db->num_rows();
 
-	if ($filter == 'search')
+	if ($searchfilter)
 	{
-		$filtermethod = "where ticket_details like '%".addslashes($searchfilter)."%'";
-		$GLOBALS['phpgw']->template->set_var('tts_searchfilter',addslashes($searchfilter));
 		$GLOBALS['phpgw']->template->set_var('tts_numfound',lang('Tickets found %1',$numfound));
 	}
 	else
