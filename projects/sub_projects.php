@@ -117,7 +117,10 @@
 			$start_dateout = $phpgw->common->show_date($start_date,$phpgw_info['user']['preferences']['common']['dateformat']);
 		}
 
-		$coordinatorout = $pro[$i]['lid'] . ' [ ' . $pro[$i]['firstname'] . ' ' . $pro[$i]['lastname'] . ' ]';
+		$cached_data = $projects->cached_accounts($pro[$i]['coordinator']);
+		$coordinatorout = $phpgw->strip_html($cached_data[$pro[$i]['coordinator']]['account_lid']
+						. ' [' . $cached_data[$pro[$i]['coordinator']]['firstname'] . ' '
+						. $cached_data[$pro[$i]['coordinator']]['lastname'] . ']');
 
 		$id = $pro[$i]['id'];
 
@@ -132,7 +135,7 @@
 
 // ------------------------- end record declaration -------------------------------------------
 
-		$t->set_var('hours',$phpgw->link('/projects/hours_listhours.php','filter=' . $id)); 
+		$t->set_var('hours',$phpgw->link('/projects/hours_listhours.php','project_id=' . $id)); 
 		$t->set_var('lang_hours',lang('Work hours'));
 
 		if ($projects->check_perms($grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $phpgw_info['user']['account_id'])

@@ -27,7 +27,7 @@
 				. '<input type="hidden" name="query" value="' . $query . '">' . "\n"
 				. '<input type="hidden" name="start" value="' . $start . '">' . "\n"
 				. '<input type="hidden" name="filter" value="' . $filter . '">' . "\n"
-				. '<input type="hidden" name="id" value="' . $id . '">' . "\n";
+				. '<input type="hidden" name="project_id" value="' . $project_id . '">' . "\n";
 
 	if ($submit)
 	{
@@ -88,7 +88,7 @@
 //    $ae_minutes = ceil($ae_minutes / $phpgw->db->f("minperae"));
 
 			$phpgw->db->query("INSERT into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,hours_descr,remark,minutes,status,minperae,"
-							. "billperae,employee) VALUES ('$filter','$activity','" . time() . "','$sdate','$edate','$hours_descr','$remark','$ae_minutes',"
+							. "billperae,employee) VALUES ('$project_id','$activity','" . time() . "','$sdate','$edate','$hours_descr','$remark','$ae_minutes',"
 							. "'$status','$minperae','$billperae','$employee')");
 
 		}
@@ -108,9 +108,9 @@
 		$t->set_var('error',lang('Please set your preferences for this application'));
 	}
 
-	$t->set_var('actionurl',$phpgw->link('/projects/hours_addhour.php'));
-	$t->set_var('doneurl',$phpgw->link('/projects/hours_listhours.php','filter=' . $filter . '&sort=' . $sort . '&order=' . $order . '&query=' . $query
-										. '&start=' . $start));
+	$t->set_var('actionurl',$phpgw->link('/projects/hours_addhour.php','project_id=' . $project_id . '&pro_parent=' . $pro_parent));
+	$t->set_var('doneurl',$phpgw->link('/projects/hours_listhours.php','project_id=' . $project_id . '&filter=' . $filter . '&sort=' . $sort . '&order='
+										. $order . '&query=' . $query . '&start=' . $start));
 
 	$t->set_var('hidden_vars',$hidden_vars);
 	$t->set_var('lang_action',lang('Add project hours'));
@@ -151,25 +151,32 @@
 	$t->set_var('lang_reset',lang('Clear Form'));
 	$t->set_var('lang_select_project',lang('Select project'));
 
-	if ($filter)
+	if ($pro_parent > 0)
 	{
-		$t->set_var('project_list',$projects->select_project_list($filter));
-
-		$phpgw->db->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='$filter' "
-						. "AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id order by descr asc");
-		while ($phpgw->db->next_record())
-		{
-			$activity_list .= '<option value="' . $phpgw->db->f('activity_id') . '">'
-							. $phpgw->strip_html($phpgw->db->f('descr')) . '</option>';
-		}
-
-		$t->set_var('activity_list',$activity_list);
+		$pro_activities = $pro_parent;
 	}
 	else
-	{ 
-		$t->set_var('project_list',lang('Please select a project first !')); 
-		$t->set_var('activity_list','');
+	{
+		$pro_activities = $project_id;
 	}
+
+	$t->set_var('project_name',$projects->return_value('num',$project_id));
+
+	$phpgw->db->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='$pro_activities' "
+						. "AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id order by descr asc");
+
+	while ($phpgw->db->next_record())
+	{
+		$activity_list .= '<option value="' . $phpgw->db->f('activity_id') . '"';
+		if($phpgw->db->f('activity_id') == $activity)
+		{
+			$activity_list .= ' selected';
+		}
+		$activity_list .= '>'
+		. $phpgw->strip_html($phpgw->db->f('descr')) . '</option>';
+	}
+
+	$t->set_var('activity_list',$activity_list);
 
 	$sm = CreateObject('phpgwapi.sbox');
 	$amsel = ' checked'; $pmsel = '';
@@ -278,7 +285,7 @@
                       $phpgw->db->f("account_firstname"),                                                                                                                                    
                       $phpgw->db->f("account_lastname")) . "</option>";
         } */
-        
+
 	$employees = $phpgw->accounts->get_list('accounts', $start = '', $sort = '', $order = '', $query = '');
 	while (list($null,$account) = each($employees))
 	{

@@ -261,6 +261,7 @@
 			while ($this->db->next_record())
 			{
 				$hours[$i]['id']			= $this->db->f('id');
+				$hours[$i]['project_id']	= $this->db->f('project_id');
 				$hours[$i]['hours_descr']	= $this->db->f('hours_descr');
 				$hours[$i]['descr']			= $this->db->f('descr');
 				$hours[$i]['status']		= $this->db->f('status');
@@ -314,6 +315,16 @@
 				$activities_list .= '</option>' . "\n";
 			}
 			return $activities_list;
+		}
+
+		function return_value($item = 'num', $value = '')
+		{
+			$this->db->query("select num from phpgw_p_projects where id='$value'",__LINE__,__FILE__);
+			if ($this->db->next_record())
+			{
+				$item = $this->db->f('num');
+			}
+			return $item;
 		}
 	}
 ?>

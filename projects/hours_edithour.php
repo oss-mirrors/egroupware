@@ -30,6 +30,7 @@
 				. '<input type="hidden" name="filter" value="' . $filter . '">' . "\n"
 				. '<input type="hidden" name="referer" value="' . $referer . '">' . "\n"
 				. '<input type="hidden" name="id" value="' . $id . '">' . "\n"
+				. '<input type="hidden" name="pro_parent" value="' . $pro_parent . '">' . "\n"
 				. '<input type="hidden" name="delivery_id" value="' . $delivery_id . '">' . "\n"
 				. '<input type="hidden" name="invoice_id" value="' . $invoice_id . '">' . "\n";
 
@@ -99,7 +100,7 @@
 			$remark = addslashes($remark);
 			$hours_descr = addslashes($hours_descr);
 
-			$phpgw->db->query("update phpgw_p_hours set project_id='$filter',activity_id='$activity',entry_date='" . time() . "',start_date='$sdate',end_date='$edate',"
+			$phpgw->db->query("update phpgw_p_hours set activity_id='$activity',entry_date='" . time() . "',start_date='$sdate',end_date='$edate',"
 							. "hours_descr='$hours_descr',remark='$remark',"
 							. "minutes='$ae_minutes',status='$status',minperae='$minperae',billperae='$billperae',employee='$employee' where id='$id'");
 		}
@@ -120,7 +121,7 @@
 	}
 
 	$t->set_var('currency',$currency);
-	$t->set_var('actionurl',$phpgw->link('/projects/hours_edithour.php'));
+	$t->set_var('actionurl',$phpgw->link('/projects/hours_edithour.php','pro_parent=' . $pro_parent));
 	$t->set_var('deleteurl',$phpgw->link('/projects/hours_deletehour.php','id=' . $id));
 	$t->set_var('doneurl',$referer);
 	$t->set_var('lang_action',lang('Edit project hours'));
@@ -147,7 +148,7 @@
 	$phpgw->db->query("select * from phpgw_p_hours where id='$id'");
 	$phpgw->db->next_record();
 
-	$filter = $phpgw->db->f('project_id');
+	$project_id = $phpgw->db->f('project_id');
 
 	if ($phpgw->db->f('status')=='open'): 
 		$stat_sel[0]=' selected';
@@ -247,18 +248,6 @@
 	$t->set_var('minperae',$phpgw->db->f('minperae'));
 	$t->set_var('billperae',$phpgw->db->f('billperae'));
 
-/*    $db2->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
-                     . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
-     while ($db2->next_record()) {
-        $employee_list .= "<option value=\"" . $db2->f("account_id") . "\"";
-        if($db2->f("account_id")==$phpgw->db->f("employee"))
-            $employee_list .= " selected";
-        $employee_list .= ">"        
-                    . $phpgw->common->display_fullname($db2->f("account_lid"),
-                      $db2->f("account_firstname"),
-                      $db2->f("account_lastname")) . "</option>";
-     } */
-
 	$employees = $phpgw->accounts->get_list('accounts', $start = '', $sort = '', $order = '', $query = '');
 	while (list($null,$account) = each($employees))
 	{
@@ -271,18 +260,29 @@
 
 	$t->set_var('employee_list',$employee_list);
 
-	$t->set_var('project_list',$projects->select_project_list($filter));
+	$t->set_var('project_name',$phpgw->strip_html($projects->return_value('num',$project_id)));
+
+	if ($pro_parent > 0)
+	{
+		$pro_activities = $pro_parent;
+	}
+	else
+	{
+		$pro_activities = $project_id;
+	}
 
 	$db2 = $phpgw->db;
-	$db2->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='$filter' "
+	$db2->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='$pro_activities' "
 				. "AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id");
 	while ($db2->next_record())
 	{
 		$activity_list .= '<option value="' . $db2->f('activity_id') . '"';
-		if($db2->f('activitiy_id')==$phpgw->db->f('activity_id'))
+		if($db2->f('activity_id') == $phpgw->db->f('activity_id'))
+		{
 			$activity_list .= ' selected';
-			$activity_list .= '>'
-						. $phpgw->strip_html($db2->f('descr')) . '</option>';
+		}
+		$activity_list .= '>'
+		. $phpgw->strip_html($db2->f('descr')) . '</option>';
 	}
 
 	$t->set_var('activity_list',$activity_list);

@@ -8,7 +8,7 @@
 {hidden_vars}
 	<tr>
 		<td>{lang_project}:</td>
-		<td><select name="filter"><option value="">{lang_select_project}</option>{project_list}</select></td>
+		<td>{project_name}</td>
 	</tr>
 	<tr>
 		<td>{lang_activity}:</td>

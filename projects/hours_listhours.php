@@ -54,7 +54,7 @@
 		$querymethod = "AND (remark like '%$query%' OR hours_descr like '%$query%' OR start_date like '%$query%' OR end_date like '%$query%' OR minutes like '%$query%') ";
 	}
 
-	if (! $filter)
+	if (! $project_id)
 	{
 		$phpgw->db->query("SELECT project_id from phpgw_p_hours WHERE $statussort $filtermethod $querymethod");
 		$phpgw->db->next_record();
@@ -63,14 +63,17 @@
 		{
 			if ($projects->check_perms($grants[$pro[0]['coordinator']],PHPGW_ACL_READ) || $pro[0]['coordinator'] == $phpgw_info['user']['account_id'])
 			{
-				$filter = $phpgw->db->f('project_id');
+				$project_id = $phpgw->db->f('project_id');
 			}
 		}
-		else { $filter = 0; }
+		else { $project_id = 0; }
 	}
-	else { $pro = $projects->read_single_project($filter); }
+	else
+	{
+		$pro = $projects->read_single_project($project_id);
+	}
 
-	$hours = $projects->read_hours($start,True,$query,$filter,$sort,$order,$access,$status);
+	$hours = $projects->read_hours($start,True,$query,$project_id,$sort,$order,$access,$status);
 
 // ------------ nextmatch variable template-declarations ----------------------------
 
@@ -101,7 +104,7 @@
 	$t->set_var('search_action',$phpgw->link('/projects/hours_listhours.php'));
 	$t->set_var('project_action',$phpgw->link('/projects/hours_listhours.php'));
 	$t->set_var('lang_submit',lang('Submit'));
-	$t->set_var('project_list',$projects->select_project_list('all',$filter));
+	$t->set_var('project_list',$projects->select_project_list('all',$project_id));
 	$t->set_var('lang_select_project',lang('Select project'));
 
 // -------------- end header declaration -----------------
@@ -172,8 +175,8 @@
 		{
 			if ($projects->check_perms($grants[$hours[$i]['employee']],PHPGW_ACL_EDIT) || $hours[$i]['employee'] == $phpgw_info['user']['account_id'])
 			{
-				$t->set_var('edit',$phpgw->link('/projects/hours_edithour.php','id=' . $hours[$i]['id'] . '&filter=' . $filter . '&order=' . $order
-												. '&query=' . $query . '&start=' . $start . '&sort=' . $sort));
+				$t->set_var('edit',$phpgw->link('/projects/hours_edithour.php','id=' . $hours[$i]['id'] . '&pro_parent=' . $pro[0]['parent']
+												. '&filter=' . $filter . '&order=' . $order . '&query=' . $query . '&start=' . $start . '&sort=' . $sort));
 				$t->set_var('lang_edit',lang('Edit'));
 			}
 		}
@@ -183,8 +186,8 @@
 			$t->set_var('lang_edit','&nbsp;');
 		}
 
-		$t->set_var('view',$phpgw->link('/projects/viewhours.php','id=' . $hours[$i]['id'] . '&sort=' . $sort . '&order=' . $order . '&query=' . $query . '&start=' . $start
-											. '&filter=' . $filter));
+		$t->set_var('view',$phpgw->link('/projects/viewhours.php','id=' . $hours[$i]['id'] . '&pro_parent=' . $pro[0]['parent']
+										. '&sort=' . $sort . '&order=' . $order . '&query=' . $query . '&start=' . $start . '&filter=' . $filter));
 		$t->set_var('lang_view',lang('View'));
 
 		$t->parse('list','hours_list',True);
@@ -195,7 +198,8 @@
 
 	if ($projects->check_perms($grants[$pro[0]['coordinator']],PHPGW_ACL_ADD) || $pro[0]['coordinator'] == $phpgw_info['user']['account_id'])
 	{
-		$t->set_var('action','<form method="POST" action="' . $phpgw->link('/projects/hours_addhour.php','filter=' . $filter) . '"><input type="submit" value="' . lang('Add') .'"></form>');
+		$t->set_var('action','<form method="POST" action="' . $phpgw->link('/projects/hours_addhour.php','project_id=' . $pro[0]['id']) . '&pro_parent=' . $pro[0]['parent']
+															. '"><input type="submit" value="' . lang('Add') .'"></form>');
 	}
 	else { $t->set_var('action',''); }
 

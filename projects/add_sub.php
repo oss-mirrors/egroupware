@@ -97,7 +97,6 @@
 			$phpgw->db->query("insert into phpgw_p_projects (owner,access,entry_date,start_date,end_date,coordinator,status,"
 							. "descr,title,budget,num,parent) values ('$owner','$access','" . time() ."','$sdate','$edate',"
 							. "'$coordinator','$status','$descr','$title','$budget','$num','$pro_parent')");
-
 		}
 	}
 
