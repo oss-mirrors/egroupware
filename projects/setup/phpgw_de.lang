@@ -14,6 +14,7 @@ Add project hours	projects	de	Projektstuden hinzuf&uuml;gen
 Administrator	projects	de	Administrator
 All invoices	projects	de	Alle Rechnungen
 All delivery notes	projects	de	Alle Lieferscheine
+arial	projects	de	Arial
 archive	projects	de	Archiv
 billed	projects	de	Bezahlt
 Billed only	projects	de	nur bezahlte
@@ -27,6 +28,7 @@ Budget	projects	de	Budget
 Calculate	projects	de	Berechnen
 closed	projects	de	Abgeschlossen
 Coordinator	projects	de	Koordinator
+courier new	projects	de	Courier New
 Create delivery	projects	de	Lieferung erstellen
 Create invoice	projects	de	Rechnung erstellen
 Customer	projects	de	Kunde
@@ -52,6 +54,8 @@ Generate Activity ID ?	projects	de	Activit&auml;s ID generieren ?
 Generate Delivery ID ?	projects	de	Lieferungs ID generieren ?
 Generate Project ID ?	projects	de	Projekt ID generieren ?
 Generate Invoice ID ?	projects	de	Rechnungs ID generieren ?
+georgia	projects	de	Georgia
+helvetica	projects	de	Helvetica
 Hours	projects	de	Stunden
 Invoice	projects	de	Rechnung
 Invoice date	projects	de	Rechnungs Datum
@@ -72,6 +76,7 @@ Job has been updated !	projects	de	Job wurde &uuml;berarbeitet !
 Job ID	projects	de	Job ID
 Job list	projects	de	Job Liste
 Jobs	projects	de	Jobs
+large	projects	de	Groß
 Main project	projects	de	Hauptprojekt
 Minutes per workunit	projects	de	Minuten pro Arbeitseinheit
 net	projects	de	netto
@@ -114,6 +119,7 @@ Select tax for workhours	projects	de	Mehrwertsteuer für Arbeitsstunden
 Select users	projects	de	Benutzer auswählen
 Select groups	projects	de	Gruppen auswählen
 Select your address	projects	de	Eigene Adresse ausw&auml;hlen
+small	projects	de	Klein
 Statistic	projects	de	Statistik
 Statistics	projects	de	Statistiken
 Short description	projects	de	Kurzbeschreibung
@@ -121,6 +127,7 @@ Sorry, no preferences to set for you :)	projects	de	Sorry, keine Einstellungen f
 sum net	projects	de	Summe netto
 Sum	projects	de	Summe
 Sum workunits	projects	de	Summe Arbeitseinheiten
+tahoma	projects	de	Tahoma
 tax	projects	de	Mwst.
 That ID has been used already !	projects	de	Diese ID ist bereits in Benutzung !
 Update invoice	projects	de	Rechnung &uuml;berarbeiten
@@ -128,6 +135,9 @@ Update delivery	projects	de	Lieferung &uuml;berarbeiten
 Username / Group	projects	de	Benutzername / Gruppe
 User statistic	projects	de	Benutzer Statistik
 User statistics	projects	de	Benutzer Statistiken
+verdana	projects	de	Verdana
+very large	projects	de	Sehr groß
+very small	projects	de	Sehr klein
 View work hours	projects	de	Arbeitsstunden anzeigen
 View job	projects	de	Job anzeigen
 View project	projects	de	Projekt anzeigen
