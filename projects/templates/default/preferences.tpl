@@ -19,7 +19,7 @@
          <tr>                                                                                                                                                                                  
          <td><input type="button" value="{lang_address}" onClick="addresses();"></td>                                                                                                          
          <td><input type="hidden" name="address" value="{address_con}">                                                                                                                        
-             <input type="text" name="addressname" size="50" value="{address_name}" readonly>&nbsp;&nbsp;&nbsp;Select per Button!</td>                                                         
+             <input type="text" name="addressname" size="50" value="{address_name}" readonly>&nbsp;&nbsp;&nbsp;{lang_select}</td>                                                         
          </tr>       
       </table> 
        <table width="39%" border="0" cellspacing="0" cellpadding="0">

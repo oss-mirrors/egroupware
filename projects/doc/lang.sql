@@ -7,7 +7,8 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Project preferen
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Please select currency,tax and your address in preferences!','projects','en','Please select currency,tax and your address in preferences!');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Please select your address in preferences!','projects','en','Please select your address in preferences!');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Please select your currency in preferences!','projects','en','Please select your currency in preferences!'); 
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Projects','admin','en','Projects');                                                                
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Projects','admin','en','Projects');  
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Select per button !','projects','en','Select per button !');                                                                
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Projects','projects','en','Projects');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Project','projects','en','Project');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('All open hours','projects','en','All open hours');           

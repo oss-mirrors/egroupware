@@ -10,14 +10,15 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Please select y
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Projects','common','de','Projekte');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Return to projects','projects','de','Zur&uuml;ck zu Projekte');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Project billing','common','de','Projekt Abrechnung');
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'All open hours','projecthours','de','Alle offenen Stunden');     
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'All done hours','projecthours','de','Alle erledigten Stunden');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'All open hours','projects','de','Alle offenen Stunden');     
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'All done hours','projects','de','Alle erledigten Stunden');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Projects','admin','de','Projekte');                                                                
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Activity','projects','de','Abrechnungskategorie');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Active','projects','de','Aktiv');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'New project','projects','de','Neues Projekt');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Address book','projects','de','Adress Buch');
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'My address','projects','de','Meine Adresse');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Select per button !','projects','de','Bitte per Button ausw&auml;hlen !');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Select your address','projects','de','W&auml;hlen Sie Ihre Adresse');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Firstname','projects','de','Vorname');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Lastname','projects','de','Nachname');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'net','projects','de','netto');

@@ -130,6 +130,7 @@
         }
         $t->set_var("coordinator_list",$coordinator_list);
 
+        $t->set_var("lang_select",lang("Select per button !"));
         $t->set_var("lang_customer",lang("Customer"));
         $t->set_var("customer_con","");
         $t->set_var("customer_name","");

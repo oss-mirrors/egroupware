@@ -41,6 +41,7 @@ if ($submit) {
     
      $t->set_var("lang_action",lang("Project preferences"));
      $t->set_var("lang_select_tax",lang("Select tax for work hours"));
+     $t->set_var("lang_select",lang("Select per button !"));
      
      $tax = $phpgw_info["user"]["preferences"]["projects"]["tax"];
      $t->set_var("tax",$tax);
