@@ -202,9 +202,8 @@ if (!function_exists('file_get_contents')) {
 
 	/* Create an Acccount for every existing eGW user in the forum */
 	$GLOBALS['phpgw']->db->query("DELETE FROM phpgw_fud_users WHERE id>1");
-	$myq = $GLOBALS['phpgw']->db;
-	$myq->query("SELECT account_id, account_lid, account_pwd, account_firstname, account_lastname, account_status FROM phpgw_accounts");
-	while ($row = $myq->row(true)) {
+	$users = $GLOBALS['phpgw']->accounts->get_list('accounts', 0,'ASC','account_lid', '');
+	foreach ($users as $row) {
 		$preferences = CreateObject('phpgwapi.preferences', $row['account_id']);
 		$preferences->read_repository();
 		$email = $preferences->email_address($row['account_id']);
@@ -220,7 +219,6 @@ if (!function_exists('file_get_contents')) {
 		}
 		$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_fud_users (last_visit, join_date, theme, alias, login, email, passwd, name, users_opt, egw_id) VALUES(".time().", ".time().", {$theme}, '{$alias}', '{$login}', '{$email}', '{$row['account_pwd']}', '{$name}', {$users_opt}, {$egw_id})");
 	}
-	$myq->free();
 
 	header('Location: '.$WWW_ROOT.'index.php?S='.$_GET['sessionid']);
 	$GLOBALS['phpgw']->common->phpgw_exit();
