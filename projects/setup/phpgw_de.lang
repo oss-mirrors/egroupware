@@ -77,7 +77,7 @@ ending date can not be after main projects ending date	projects	de	Das Enddatum 
 ending date can not be before start date	projects	de	Das Enddatum kann nicht vor dem Startdatum liegen
 error in calculation sum does not match !	projects	de	Fehler in der Kalkulation. Die berechnete Summe stimmt nicht.
 exactly accounting	projects	de	exakte Abrechnung
-failed sending message to '%1' #%2 subject='%3', sender='%4' !!!	projects	de	Das senden der Nachricht an "%1" #%2, Betreff="%3", Absender="%4", ist fehlgeschlagen!.
+failed sending message to '%1' #%2 subject='%3', sender='%4' !!!	projects	de	Das senden der Nachricht an '%1' #%2, Betreff='%3', Absender='%4', ist fehlgeschlagen!.
 gantt chart for project %1	projects	de	Gantt chart f&uuml;r Projekt %1
 gantt chart from %1 to %2	projects	de	Gantt chart von %1 bis %2
 generate activity id ?	projects	de	Activit&auml;ts ID generieren ?
