@@ -820,7 +820,8 @@
 							break;
 						case ENCQUOTEDPRINTABLE:
 							// use imap_qprint to decode
-							$newPart = imap_qprint($newPart);
+							#$newPart = imap_qprint($newPart);
+							$newPart = quoted_printable_decode($newPart);
 							break;
 						case ENCOTHER:
 							// not sure if this needs decoding at all
