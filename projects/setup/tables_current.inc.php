@@ -59,8 +59,8 @@
 			),
 			'pk' => array('project_id'),
 			'fk' => array(),
-			'ix' => array('project_id'),
-			'uc' => array('project_id')
+			'ix' => array(),
+			'uc' => array()
 		),
 		'phpgw_p_activities' => array(
 			'fd' => array(
@@ -74,7 +74,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('id','a_number'),
+			'ix' => array('a_number'),
 			'uc' => array()
 		),
 		'phpgw_p_projectactivities' => array(
@@ -143,7 +143,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('id','i_number'),
+			'ix' => array(),
 			'uc' => array('i_number')
 		),
 		'phpgw_p_invoicepos' => array(
@@ -168,7 +168,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('id','d_number'),
+			'ix' => array(),
 			'uc' => array('d_number')
 		),
 		'phpgw_p_deliverypos' => array(
@@ -234,7 +234,7 @@
 			),
 			'pk' => array('track_id'),
 			'fk' => array(),
-			'ix' => array('project_id','track_id'),
+			'ix' => array('project_id'),
 			'uc' => array()
 		),
 		'phpgw_p_events' => array(
@@ -270,7 +270,7 @@
 			),
 			'pk' => array('project_id'),
 			'fk' => array('project_id','employee'),
-			'ix' => array('project_id','employee'),
+			'ix' => array('employee'),
 			'uc' => array()
 		),
 		'phpgw_p_budget' => array(
