@@ -212,7 +212,7 @@
 			{
 				if ($this->so->delete($id))
 				{
-					$this->msg .= "Bookmark deleted sucessfully.";
+					$this->msg .= lang('Bookmark deleted sucessfully.');
 					return True;
 				}
 			}
