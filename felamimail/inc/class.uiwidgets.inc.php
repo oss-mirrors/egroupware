@@ -54,7 +54,8 @@
 		*/
 		function uiwidgets()
 		{
-			$this->template = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			$template = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			$this->template = $template;
 			$this->template->set_file(array("body" => 'uiwidgets.tpl'));
 		}
 
@@ -99,6 +100,60 @@
 			
 			
 			return $this->template->fp('out','multiSelectBox');
+		}
+
+		function tableView($_headValues, $_tableWidth="100%")
+		{
+			$this->template->set_block('body','tableView');
+			$this->template->set_block('body','tableViewHead');
+			
+			if(is_array($_headValues))
+			{
+				foreach($_headValues as $head)
+				{
+					$this->template->set_var('tableHeadContent',$head);
+					$this->template->parse('tableView_Head','tableViewHead',True);
+				}
+			}
+			
+			if(is_array($this->tableViewRows))
+			{
+				foreach($this->tableViewRows as $tableRow)
+				{
+					$rowData .= "<tr>";
+					foreach($tableRow as $tableData)
+					{
+						switch($tableData['type'])
+						{
+							default:
+								$rowData .= '<td>'.$tableData['text'].'</td>';
+								break;
+						}
+					}
+					$rowData .= "</tr>";
+				}
+			}
+			
+			$this->template->set_var('tableView_width', $_tableWidth);
+			$this->template->set_var('tableView_Rows', $rowData);
+			
+			return $this->template->fp('out','tableView');
+		}
+		
+		function tableViewAddRow()
+		{
+			$this->tableViewRows[] = array();
+			end($this->tableViewRows);
+			return key($this->tableViewRows);
+		}
+		
+		function tableViewAddTextCell($_rowID,$_text)
+		{
+			$this->tableViewRows[$_rowID][]= array
+			(
+				'type'	=> 'text',
+				'text'	=> $_text
+			);
 		}
 	}
 ?>

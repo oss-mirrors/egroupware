@@ -138,3 +138,19 @@
 	</tr>
 </table>
 <!-- END multiSelectBox -->
+
+<!-- BEGIN tableView -->
+<table width="{tableView_width}">
+
+<tr>
+	{tableView_Head}
+</tr>
+
+{tableView_Rows}
+
+</table>
+<!-- END tableView -->
+
+<!-- BEGIN tableViewHead -->
+<td>{tableHeadContent}</td>
+<!-- END tableViewHead -->
