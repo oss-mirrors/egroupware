@@ -26,6 +26,7 @@
 
 	/* get rid of the escape \ that magic_quotes (if enabled) HTTP POST will add, " becomes \" and  '  becomes  \'  */
 	$body = $phpgw->msg->stripslashes_gpc($body);
+	$subject = $phpgw->msg->stripslashes_gpc($subject);
 
 // ----  DE-code HTML SpecialChars in the body   -----
 	// THIS NEEDS TO BE CHANGED WHEN MULTIPLE PART FORWARDS ARE ENABLED
@@ -55,6 +56,11 @@
 	// this is to catch all plain \n instances and replace them with \r\n.  
 	$body = ereg_replace("\r\n", "\n", $body);
 	$body = ereg_replace("\n", "\r\n", $body);
+
+// ----  Ensure To: and CC:  and BCC: are comma seperated   -----
+	$to = $phpgw->msg->rfc_comma_sep($to);
+	$cc = $phpgw->msg->rfc_comma_sep($cc);
+	$bcc = $phpgw->msg->rfc_comma_sep($bcc);
 
 // ----  Attachment Handling   -----
 	//$sep = $phpgw->common->filesystem_separator();

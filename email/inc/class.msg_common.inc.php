@@ -492,6 +492,43 @@
 		return $personal;
 	}
 
+	// ----  Ensures To, CC, and BCC are properly comma seperated   -----
+	function rfc_comma_sep($data)
+	{
+		if (isset($data))
+		{
+			$data = trim($data);
+			if ($data == '')
+			{
+				return $data;
+				// return performs an implicit break, so we are outta here
+			}
+		
+			$data = str_replace(", ", " ", $data);
+			$data = ereg_replace("[' ']{2,20}", ' ', $data);
+			$data = explode(" ", $data);
+			for ($i=0;$i<count($data);$i++)
+			{
+				$data[$i] = trim($data[$i]);
+			}
+		
+			if (count($data) == 0)
+			{
+				$data = '';
+			}
+			elseif (count($data) == 1)
+			{
+				$data = (string)$data[0];
+			}
+			else
+			{
+				$data = implode(", ", $data);
+			}
+
+			return $data;
+		}
+	}
+
 	// ----  HTML - Related Utility Functions   -----
 	function qprint($string)
 	{
