@@ -22,8 +22,6 @@
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
  */
 
-
-
 	class uijinn
 	{
 		var $public_functions = Array
@@ -39,15 +37,18 @@
 			'copy_object'			=> True
 		);
 		
-		var $app_title='jinn';
-		var $bo;
+		var $app_title='JiNN';
+		var $bo;// = CreateObject('jinn.bojinn');
 		var $template;
 		var $debug=False;
 		var $add_edit;
+		var $message;
 
 		function uijinn()
 		{
 			$this->bo = CreateObject('jinn.bojinn');
+			$this->message = $this->bo->message;
+			$GLOBALS['phpgw']->nextmatchs = CreateObject('phpgwapi.nextmatchs');
 			$this->template = $GLOBALS['phpgw']->template;
 		}
 
@@ -163,7 +164,7 @@
 		\****************************************************************************/
 		function add_edit_object()
 		{
-			$this->add_edit= CreateObject('jinn.uiuseraddedit');
+			$this->add_edit= CreateObject('jinn.uiuseraddedit',$this->bo);
 
 			$this->debug_info();
 			$this->header();
@@ -182,7 +183,7 @@
 		function browse_objects()
 		{
 			
-			$this->browse= CreateObject('jinn.uiuserbrowse');
+			$this->browse= CreateObject('jinn.uiuserbrowse',$this->bo);
 
 			$this->debug_info();
 			$this->header();

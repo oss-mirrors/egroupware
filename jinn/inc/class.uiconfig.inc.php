@@ -39,7 +39,7 @@
 		var $app_title='jinn';
 		var $bo;
 		var $template;
-		var $plugins;
+		//var $plugins;
 		var $relations;
 		var $debug=False;
 
@@ -47,7 +47,7 @@
 		{
 
 			$this->bo = CreateObject('jinn.bojinn');
-			$this->plugins = CreateObject('jinn.boplugins.inc.php');
+			//$this->plugins = CreateObject('jinn.boplugins.inc.php');
 			$this->relations = CreateObject('jinn.borelations.inc.php');
 			$this->template = $GLOBALS['phpgw']->template;
 		}

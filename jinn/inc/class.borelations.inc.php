@@ -22,18 +22,16 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 */
 
-
-
-	class borelations
+	class borelations extends bojinn
 	{
 
-		var $bo;
-		var $so;
+		//var $bo;
+		//var $so;
 
 		function borelations()
 		{
 			//$this->so = CreateObject('jinn.sojinn');
-			$this->bo = CreateObject('jinn.bojinn');
+			//$this->bo = CreateObject('jinn.bojinn');
 		}
 
 		/****************************************************************************\

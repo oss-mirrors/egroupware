@@ -46,27 +46,25 @@
 			'save_access_rights_object'=> True,
 			'save_access_rights_site'=> True,
 			'export_site'=> True,
-			'FIP_config'=> True,
-			'SFP_config'=> True
+			'plug_config'=> True,
+			'test_db_access'=> True
 		);
 
-		var $app_title='jinn';
+		var $app_title='JiNN';
 		var $bo;
 		var $template;
 		var $debug=False;
 		var $browse;
-		var $plugins;
 
 		function uiadmin()
 		{
-
+				
 			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
 			{
 				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.index'));
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 
-			//$GLOBALS['phpgw']->nextmatchs = CreateObject('phpgwapi.nextmatchs');
 			$this->bo = CreateObject('jinn.bojinn');
 			$this->template = $GLOBALS['phpgw']->template;
 		}
@@ -88,6 +86,44 @@
 			$this->add_edit_record('phpgw_jinn_site_objects');
 			$this->save_sessiondata();
 		}
+
+		function test_db_access()
+
+		{
+			$GLOBALS['phpgw_info']['flags']['noheader']=True;
+			$GLOBALS['phpgw_info']['flags']['nonavbar']=True;
+			$GLOBALS['phpgw_info']['flags']['noappheader']=True;
+			$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
+			$GLOBALS['phpgw_info']['flags']['nofooter']=True;
+
+			$this->template->set_file(array(
+				'header' => 'header.tpl',
+				'import_form' => 'import.tpl',
+			));
+
+			$action=lang('Test Database Access');
+			$this->template->set_var('title',$this->app_title);
+			$this->template->set_var('action',$action);
+			$this->template->pparse('out','header');
+
+			list($data['db_name'],$data['db_host'],$data['db_user'],$data['db_password'],$data['db_type'])=explode(":",$GLOBALS['dbvals']);
+			//var_dump($data);
+
+			
+			if ($this->bo->so->test_db_conn($data))
+			{
+				echo lang("Database connection was succesfull. <P>You can go on with the site-objects");
+			}
+			else 
+			{
+				echo lang("database connection failed! <P>Please recheck your settings.");
+			}
+
+			$this->save_sessiondata();
+
+
+		}
+
 
 		function add_edit_phpgw_jinn_sites()
 		{
@@ -182,13 +218,13 @@
 										'name' => $key2,
 										'value' => addslashes($val2) // removed nl2br, now using plugins
 									);
-										
+
 
 								}
-									if ($object_id[]=$this->bo->so->insert_phpgw_data('phpgw_jinn_site_objects',$data_objects))
-									{
-										$num_objects=count($object_id);
-									} 
+								if ($object_id[]=$this->bo->so->insert_phpgw_data('phpgw_jinn_site_objects',$data_objects))
+								{
+									$num_objects=count($object_id);
+								} 
 
 								//die(var_dump($data_objects));
 								/* insert objects */
@@ -206,7 +242,6 @@
 						echo lang('import failed');
 					}
 
-					//var_dump($data);
 				}
 
 
@@ -290,7 +325,7 @@
 			header("Content-type: text");
 			header("Content-Disposition:attachment; filename=$filename");
 
-			$out="<?php\n\n";
+			$out='<?php'."\n\n";
 				$out.='	/***************************************************************************'."\n";
 				$out.='	**                                                                        **'."\n";
 				$out.="	** JiNN Site Export:  ".$filename."\n";
@@ -451,7 +486,7 @@
 				$this->header();
 				$this->debug_info();
 				$this->admin_menu();
-				$access_rights = CreateObject('jinn.uiadminacl');
+				$access_rights = CreateObject('jinn.uiadminacl', $this->bo);
 				$access_rights->main_screen();
 
 				$this->save_sessiondata();
@@ -463,7 +498,7 @@
 				$this->header();
 				$this->debug_info();
 				$this->admin_menu();
-				$access_rights = CreateObject('jinn.uiadminacl');
+				$access_rights = CreateObject('jinn.uiadminacl',$this->bo);
 				$access_rights->set_site_objects();
 
 				$this->save_sessiondata();
@@ -475,7 +510,7 @@
 				$this->header();
 				$this->debug_info();
 				$this->admin_menu();
-				$access_rights = CreateObject('jinn.uiadminacl');
+				$access_rights = CreateObject('jinn.uiadminacl',$this->bo);
 				$access_rights->set_sites();
 
 				$this->save_sessiondata();
@@ -487,10 +522,11 @@
 			\****************************************************************************/
 			function add_edit_record($table)
 			{
+
 				$this->header();
 				$this->debug_info();
 				$this->admin_menu();
-				$add_edit = CreateObject('jinn.uiadminaddedit');
+				$add_edit = CreateObject('jinn.uiadminaddedit',$this->bo);
 				$add_edit->render_form($table);
 
 				$this->save_sessiondata();
@@ -507,7 +543,7 @@
 				//$this->header();
 				//$this->debug_info();
 				//$this->admin_menu();
-				$browse = CreateObject('jinn.uiadminbrowse');
+				$browse = CreateObject('jinn.uiadminbrowse',$this->bo);
 				$browse->render_list($table,$where_condition);
 
 				$this->save_sessiondata();
@@ -612,7 +648,7 @@
 			}
 
 
-			function FIP_config()
+			function plug_config()
 			{
 				$GLOBALS['phpgw_info']['flags']['noheader']=True;
 				$GLOBALS['phpgw_info']['flags']['nonavbar']=True;
@@ -620,20 +656,18 @@
 				$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 				$GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
-				//var $plugins;
-				$this->plugins =  CreateObject('jinn.boplugins');
 				$use_records_cfg=False;
 
-				$plugin_name=$this->plugins->plugins['fip'][$GLOBALS['FIP_name']]['title'];
-				$plugin_version=$this->plugins->plugins['fip'][$GLOBALS['FIP_name']]['version'];
+				$plugin_name=$this->bo->plug->plugins[$GLOBALS['plug_name']]['title'];
+				$plugin_version=$this->bo->plug->plugins[$GLOBALS['plug_name']]['version'];
 
 				echo '<h1>'.$plugin_name.'</h1> '.lang('version').' '. $plugin_version.'<P>';
-				echo '<b>'.lang('field plugin configuration').'</b><p>';	
+				echo '<b>'.lang('field plugin configuration').'</b><BR>';	
 
 				if ($GLOBALS[hidden_val]) 
 				{
 					$orig_conf=explode(";",$GLOBALS[hidden_val]);
-					if ($GLOBALS[FIP_name]==$GLOBALS[FIP_orig]) $use_records_cfg=True;
+					if ($GLOBALS[plug_name]==$GLOBALS[plug_orig]) $use_records_cfg=True;
 				}
 
 				if (is_array($orig_conf))
@@ -642,23 +676,23 @@
 					{
 						unset($cnf_pair);
 						$cnf_pair[]=explode("=",$orig_conf_entry);
-						//var_dump($cnf_pair);die();
 						$def_orig_conf[$cnf_pair[0][0]]=$cnf_pair[0][1];
-						//var_dump($def_orig_conf);
 					}
 				}
 				// get config fields for this plugin
 				// if hidden value is empty get defaults vals for this plugin
 
-
-				$cfg=$this->plugins->plugins['fip'][$GLOBALS['FIP_name']]['config'];
+				$cfg=$this->bo->plug->plugins[$GLOBALS['plug_name']]['config'];
 				if(is_array($cfg))
 				{
-					echo '<form name=popfrm><table>';
+					echo '<form name=popfrm><table border=1>';
 					foreach($cfg as $cfg_key => $cfg_val)
 					{
+						/* replace underscores for spaces */
+						$render_cfg_key=ereg_replace('_',' ',$cfg_key);
+						
 						echo '<tr>';
-						echo '<td>'.$cfg_key.'</td>';
+						echo '<td valign=top>'.$render_cfg_key.'</td>';
 						if ($use_records_cfg)
 						{
 							$val=$def_orig_conf[$cfg_key];
@@ -667,7 +701,7 @@
 						{
 							$val=$cfg_val;
 						}
-						echo '<td><input name="'.$cfg_key.'" type=text value="'.$val.'"></td>';
+						echo '<td valign=top><input name="'.$cfg_key.'" type=text value="'.$val.'"></td>';
 						echo '</tr>';
 
 						if($newconfig) $newconfig.='+";"+';
@@ -683,8 +717,8 @@
 					newconfig='.$newconfig.';
 
 					window.opener.document.frm.'.$GLOBALS[hidden_name].'.value=newconfig;
-
-					//alert(window.opener.document.frm.'.$GLOBALS[hidden_name].'.value);
+			
+				//	alert(window.opener.document.frm.'.$GLOBALS[hidden_name].'.value);
 					self.close();
 				}
 
@@ -705,11 +739,11 @@
 				$GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
 				//var $plugins;
-				$this->plugins =  CreateObject('jinn.boplugins');
+				//$this->plugins =  CreateObject('jinn.boplugins');
 				$use_records_cfg=False;
 
-				$plugin_name=$this->plugins->plugins['sfp'][$GLOBALS['SFP_name']]['title'];
-				$plugin_version=$this->plugins->plugins['sfp'][$GLOBALS['SFP_name']]['version'];
+				$plugin_name=$this->bo->plugins['sfp'][$GLOBALS['SFP_name']]['title'];
+				$plugin_version=$this->bo->plugins['sfp'][$GLOBALS['SFP_name']]['version'];
 
 				echo '<h1>'.$plugin_name.'</h1> '.lang('version').' '. $plugin_version.'<P>';
 				echo '<b>'.lang('field plugin configuration').'</b><p>';	
@@ -735,7 +769,7 @@
 				// if hidden value is empty get defaults vals for this plugin
 
 
-				$cfg=$this->plugins->plugins['sfp'][$GLOBALS['SFP_name']]['config'];
+				$cfg=$this->bo->plugins['sfp'][$GLOBALS['SFP_name']]['config'];
 				if(is_array($cfg))
 				{
 					echo '<form name=popfrm><table>';

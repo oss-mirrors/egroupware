@@ -24,32 +24,35 @@
 
 
 
-class boplugins
+class boplugins extends bojinn
 {
 
-	var $bo;
-	var $plugins;	
+	//var $bo;
 
-	function boplugins()
-	{
+	function boplugins($site,$site_object) {
 
-		$this->bo = CreateObject('jinn.bojinn');
-		$this->include_fip_plugins(); // include all form input plugins
-		$this->include_sfp_plugins(); // include all storage filter plugins
+		$this->bo->site=$site;
+		$this->bo->site_object=$site_object;
+		
+		//$this->bo = CreateObject('jinn.bojinn');
+		$this->include_plugins(); // include all form input plugins
+		//$this->include_sfp_plugins(); // include all storage filter plugins
 
 	}
 
 	/****************************************************************************\
-	* include all FIP plugins							                         *
+	* include ALL plugins
 	\***************************************************************************/
 
-	function include_fip_plugins()
+	function include_plugins()
 	{
 		// read form_plugin directory
 		// include all 'plugin.' files;
 
 
-		if ($handle = opendir('jinn/plugins/fip')) {
+		//$local_bo=$this->bo;
+		//var_dump($local_bo);
+		if ($handle = opendir('jinn/plugins')) {
 
 			/* This is the correct way to loop over the directory. */
 
@@ -58,7 +61,7 @@ class boplugins
 				if (substr($file,0,7)=='plugin.')
 				{
 
-					include('jinn/plugins/fip/'.$file);
+					include('jinn/plugins/'.$file);
 
 
 				}
@@ -105,14 +108,14 @@ class boplugins
 	* make possible plugin options for this fieldtype                            *
 	\****************************************************************************/
 
-	function make_fip_plugins_options($fieldtype,$value)
+	function make_plugins_options($fieldtype,$value)
 	{
 		if ($fieldtype=='blob') $fieldtype='text';
 
-		if (count($this->plugins['fip']>0))
+		if (count($this->plugins>0))
 		{
 
-			foreach($this->plugins['fip'] as $plugin)
+			foreach($this->plugins as $plugin)
 			{
 				$enable=false; //set off again
 
@@ -127,6 +130,7 @@ class boplugins
 				if ($enable)
 				{
 					unset($selected);
+					//var_dump($value);
 					if ($value==$plugin['name']) $selected='selected';
 					$input.= '<option value="'.$plugin['name'].'" '.$selected.'>'.$plugin['title'].'</option>';
 				}
@@ -173,7 +177,7 @@ class boplugins
 		}
 
 	}
-
+/*
 	function get_plugin($input_name,$value,$type)
 	{
 		$plugins=explode('|',$this->bo->site_object['plugins']);
@@ -184,7 +188,7 @@ class boplugins
 
 			if (substr($input_name,3)==$sets[0])
 			{
-				$input=call_user_func('plugin_'.$sets[1],$input_name,$value);
+				$input=call_user_func('plugin_'.$sets[1],$input_name,$value,$this->bo);
 
 				return $input;
 			}
@@ -196,7 +200,34 @@ class boplugins
 		}
 	}
 
-	function get_fip_plugin($input_name,$value,$type)
+*/
+
+	
+	/* form input plugin */
+	function get_plugin($input_name,$value,$type)
+	{
+		$plugins=explode('|',$this->bo->site_object['plugins']);
+		foreach($plugins as $plugin)
+		{
+
+			//var_dump($plugins);
+			$sets=explode(':',$plugin);
+			if (substr($input_name,3)==$sets[0])
+			{
+				$input=call_user_func('plugin_'.$sets[1],$input_name,$value,$sets[3],$this);
+
+				return $input;
+			}
+			else /* fall back on default plugin */
+			{
+				$input=call_user_func('plugin_def_'.$type,$input_name,$value,'','');
+				return $input;	
+			}
+		}
+	}
+
+	/* storage filter plugin */
+	function get_sfp_plugin($key,$value)
 	{
 		$plugins=explode('|',$this->bo->site_object['plugins']);
 		foreach($plugins as $plugin)
@@ -204,21 +235,24 @@ class boplugins
 
 			$sets=explode(':',$plugin);
 
-			if (substr($input_name,3)==$sets[0])
+			if ($sets[2]=='sf' && substr($input_name,3)==$sets[0])
 			{
-				$input=call_user_func('plugin_'.$sets[1],$input_name,$value);
+				$data=call_user_func('plugin_'.$sets[1],$key,$value,$sets[3],$this);
 
-				return $input;
+				return $data;
 			}
-			else // anders terugvallen op standaard plugin
+			
+			else return False;
+			/* fall back on default plugin */
+			/*
 			{
-				$input=call_user_func('plugin_def_'.$type,$input_name,$value);
+				$input=call_user_func('plugin_def_'.$type,$input_name,$value,'','');
 				return $input;	
 			}
+			*/
+			
 		}
 	}
-
-
 
 
 

@@ -24,9 +24,9 @@
 
 
 
-	class uiadminacl
+	class uiadminacl extends uiadmin
 	{
-		var $public_functions = Array(
+/*		var $public_functions = Array(
 			'index' => True,
 			'add_edit_phpgw_jinn_sites' => True,
 			'add_edit_phpgw_jinn_site_objects' => True,
@@ -44,16 +44,16 @@
 			'save_access_rights_object'=> True,
 			'save_access_rights_site'=> True
 		);
+*/
 
-
-		var $app_title='jinn';
+		/*var $app_title='jinn';
 		var $bo;
 		var $template;
 		var $nextmatchs;
 		var $debug=False;
+*/
 
-
-		function uiadminacl()
+		function uiadminacl($bo)
 		{
 
 			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
@@ -62,8 +62,9 @@
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 
+			$this->bo=$bo;
 			$this->nextmatchs=CreateObject('phpgwapi.nextmatchs');
-			$this->bo = CreateObject('jinn.bojinn');
+			//$this->bo = CreateObject('jinn.bojinn');
 			$this->template = $GLOBALS['phpgw']->template;
 		}
 

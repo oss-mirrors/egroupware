@@ -22,51 +22,13 @@
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 	*/
 
-
-
-	class uiadminaddedit
+	class uiadminaddedit extends uiadmin
 	{
 
-		var $public_functions = Array
-		(
-			'index' => True,
-			'add_edit_phpgw_jinn_sites' => True,
-			'add_edit_phpgw_jinn_site_objects' => True,
-			'browse_phpgw_jinn_sites' => True,
-			'browse_phpgw_jinn_site_objects' => True,
-			'del_phpgw_jinn_sites'=> True,
-			'del_phpgw_jinn_site_objects' => True,
-			'insert_phpgw_jinn_sites'=> True,
-			'insert_phpgw_jinn_site_objects'=> True,
-			'update_phpgw_jinn_sites'=> True,
-			'update_phpgw_jinn_site_objects' => True,
-			'access_rights'=> True,
-			'set_access_rights_site_objects'=> True,
-			'set_access_rights_sites'=> True,
-			'save_access_rights_object'=> True,
-			'save_access_rights_site'=> True
-		);
-
-
-		var $app_title='jinn';
-		var $bo;
-		var $template;
-		var $debug=False;
-		var $plugins;
-
-		function uiadminaddedit()
+		function uiadminaddedit($bo)
 		{
-
-			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
-			{
-				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.index'));
-				$GLOBALS['phpgw']->common->phpgw_exit();
-			}
-
-			$this->bo = CreateObject('jinn.bojinn');
+			$this->bo = $bo; 
 			$this->template = $GLOBALS['phpgw']->template;
-			$this->plugins=  CreateObject('jinn.boplugins');
-
 		}
 
 		function render_form($table)
@@ -81,6 +43,7 @@
 
 			$phpgw_table=$table;
 			$where_condition=$GLOBALS[where_condition];
+
 			if ($where_condition)
 			{
 				$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.uiadmin.update_$table");
@@ -101,7 +64,6 @@
 			$this->template->set_var('form_action',$form_action);
 			$this->template->set_var('where_condition_form',$where_condition_form);
 			$this->template->pparse('out','form_header');
-
 
 			$fields = $this->bo->get_phpgw_fieldproperties($table);
 
@@ -192,14 +154,6 @@
 				elseif ($fieldproperties[name]=='upload_path')
 				{
 					$input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" $input_max_length" value="'.$value.'"><input type=button onClick=\'PcjsOpenExplorer("jinn/inc/pcsexplorer.php", "forms.frm.'.$input_name.'.value", "type=dir", "calling_dir=", "start_dir=")\' value="'.lang('select directory').'">';
-				}
-				elseif ($fieldproperties[name]=='image_path')
-				{
-					$input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" $input_max_length" value="'.$value.'">';
-				}
-				elseif ($fieldproperties[name]=='thumb_path')
-				{
-					$input='automatisch';
 				}
 				elseif ($fieldproperties[type]=='string')
 				{
@@ -319,9 +273,6 @@
 						if (is_array($table_array))
 						{
 
-
-
-
 							$input.='<b>'.lang('Add new MANY WITH MANY relation')."<b><br><table><tr><td colspan=2>The identifyer from this table ('$table_name.id') represented by:<br>";
 							$input.='<select name="2_relation_via_primary_key">';
 
@@ -415,82 +366,34 @@
 				*************************************************/
 				elseif($fieldproperties[name]=='plugins')
 				{
-
 					unset($input);
 					if ($where_condition)
 					{
 
 						if(!$value) $value='TRUE';
-						// getfieldnames
+
 						$input.='<input type="hidden" name="FLDplugins" value="'.$value.'">';
 
 						if ($fields=$this->bo->get_site_fieldproperties($parent_site_id,$table_name))
 						{
 
-							$input.='<table border=1><tr><td>'.lang('fields').'</td><td>'.lang('form input plugin').'</td><td>&nbsp;</td><td>'.lang('storage filter plugin').'</td><td>&nbsp;</td></tr>';
+							$input.='<table border=1><tr><td>'.lang('fields').'</td>';
+							$input.='<td>'.lang('form input plugin').'</td><td>&nbsp;</td></tr>';
+
 							$plugin_settings=explode('|',$value);
-							//var_dump($plugin_settings);
 
 							foreach($fields as $field)
 							{
 
 								unset($sets);
 								unset($plg_name);
-								unset($plg_name);
-								//unset($plugin_settings);
-								if (is_array($plugin_settings))
-								{
-									foreach($plugin_settings as $setting)
-									{
-										$setsfip=explode(':',$setting);
-										if ($setsfip[0]==$field['name'] && $setsfip[2]=='fi')
-										{
-											$plg_name=$setsfip[1];
-											$plg_conf=$setsfip[3];
-										}
-
-									}
-								}
-								//								die($setsfip[2]);	
-								$input.='<tr><td>';
-								$input.=$field['name'] . '</td><td>';
-
-								if ($field['name']!='id' && $field['name']!='image_path' && $field['type']!='int')
-								{ 
-									$options=$this->plugins->make_fip_plugins_options($field['type'],$plg_name);
-									if ($options)
-									{
-										$input.='<select name="FIP'.$field['name'].'">';
-										$input.=$options;
-										$input.='</select></td>';
-
-										/************************************
-										* here comes the plugin conf button *
-										************************************/
-										$input.='<td>
-										<input type="hidden" name="CFG_FIP'.$field['name'].'" value="'.$plg_conf.'">
-										<input type="button" onClick="parent.window.open(\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.FIP_config&FIP_orig='.$plg_name.'&FIP_name=\'+document.frm.FIP'.$field['name'].'.value+\'&hidden_name=CFG_FIP'.$field['name'].'&hidden_val='.$plg_conf).'\', \'pop'.$field['name'].'\', \'width=400,height=300,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')" value="'.lang('configure').'">
-										</td>';//die($setsfip[3]);
-									}
-								}
-								else
-								{
-									$input.='<td>&nbsp;</td>';
-								}
-
-								/***********************************************
-								* here comes the storage filter code per field *
-								***********************************************/
-								unset($plg_name);
-								unset($plg_name);
-								unset($sets);
-
+								unset($plg_conf);
 								if (is_array($plugin_settings))
 								{
 									foreach($plugin_settings as $setting)
 									{
 										$sets=explode(':',$setting);
-										if ($sets[0]==$field['name'] && $sets[2]=='sf')
+										if ($sets[0]==$field['name'])
 										{
 											$plg_name=$sets[1];
 											$plg_conf=$sets[3];
@@ -498,23 +401,24 @@
 
 									}
 								}
+								//var_dump($plugin_settings);
+								$input.='<tr><td>';
+								$input.=$field['name'] . '</td><td>';
 
-								$input.='<td>';
-
-								if ($field['name']!='id' && $field['name']!='image_path' && $field['type']!='int')
+								if ($field['name']!='id')
 								{ 
-									$options=$this->plugins->make_sfp_plugins_options($field['type'],$plg_name);
+									$options=$this->bo->plug->make_plugins_options($field['type'],$plg_name);
 									if ($options)
 									{
-										$input.='<select name="SFP'.$field['name'].'">';
+										$input.='<select name="PLG'.$field['name'].'">';
 										$input.=$options;
 										$input.='</select></td>';
-
 
 										/************************************
 										* here comes the plugin conf button *
 										************************************/
-										$input.='<td><input type="hidden" name="CFG_SFP'.$field['name'].'" value="'.$plg_conf.'"><input type="button" onClick="parent.window.open(\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.SFP_config&SFP_orig='.$plg_name.'&SFP_name=\'+document.frm.SFP'.$field['name'].'.value+\'&hidden_name=CFG_SFP'.$field['name'].'&hidden_val='.$plg_conf).'\', \'pop'.$field['name'].'\', \'width=400,height=300,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')" value="'.lang('configure').'"></td>';
+										$input.='<td>
+										<input type="hidden" name="CFG_PLG'.$field['name'].'" value="'.$plg_conf.'"><input type="button" onClick="parent.window.open(\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.plug_config&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&hidden_val='.$plg_conf).'\', \'pop'.$field['name'].'\', \'width=400,height=300,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')" value="'.lang('configure').'"></td>';
 									}
 								}
 								else
@@ -523,30 +427,23 @@
 								}
 
 
-								//								$input.='<td>';
-								//								$input.='<select><option>ENTER2BR</option></select>';
-								//								$input.='</td>';
-
-								/************************************
-								* here comes the plugin conf button *
-								************************************/
-								/*								$input.='<td><input type="button" value="'.lang('configure').'"></td>';*/
-
-
 								$input.='</tr>';
 							}
-
 							$input.='</table>';
 
 						}
-						else
-						{
-							$input.='come back in edit mode for changing plugins,<br>If you are in editmode check your database-settings for this site';
-						}
+						//else
+						//{
+						//}
+					}
+					else 
+					{
+						$input.=lang('come back in edit mode for configuring plugins');
 					}
 				}
 				else
 				{
+					die();
 					$value = ereg_replace ("(<br />|<br/>)","",$value);
 					$input='<textarea name="'.$input_name.'" cols="60" rows="15">'.$value.'</textarea>';
 				}
@@ -576,8 +473,23 @@
 				$this->bo->site_id.'"><input type=submit value="'.
 				lang('cancel').'"></form>';
 
-				$extra_buttons='<td><input type=button value="'.lang('test database access').'" onclick="alert(\'Not yet implemented\')"></td>
+				$extra_buttons='<td>
+				<script>
+				function testdbfield()
+				{
+					dbvals=document.frm.FLDsite_db_name.value+\':\'+document.frm.FLDsite_db_host.value+\':\'+document.frm.FLDsite_db_user.value+\':\'+document.frm.FLDsite_db_password.value+\':\'+document.frm.FLDsite_db_type.value;
+
+					sessionlink=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.test_db_access').'\';
+					link=sessionlink+\'&dbvals=\'+dbvals;
+					parent.window.open(link, \'width=400,height=300,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')
+				}
+				</script>
 				
+				<input type=hidden name=testdbvals>
+				<input type="button" onClick="testdbfield()" value="'.lang('test database access').'">
+							
+				</td>
+
 				<td><form method=post action="index.php?menuaction=jinn.uiadmin.export_site&where_condition=site_id='.
 				$values_object[0][site_id].'"><input type=submit value="'.
 				lang('export this site').'"></form></td>';

@@ -6,7 +6,6 @@
 		<td><input type="reset" value="{reset_form}"></td>
 		<td><input type="submit" name="delete" value="{delete}"></td>
 		<td>{cancel}</td>
-		{test_access}
 		{extra_buttons}
 	</tr>
 </table>

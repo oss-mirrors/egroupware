@@ -22,29 +22,15 @@
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 	*/
 
-	class uiuseraddedit
+
+	class uiuseraddedit extends uijinn
 	{
-		var $public_functions = Array
-		(
-			'index' => True,
-			'add_edit_object' => True,
-			'object_update' => True,
-			'object_insert' => True,
-			'del_object' => True,
-			'browse_objects' => True
-		);
 
-		var $app_title='jinn';
-		var $bo;
-		var $template;
-		var $plugins;
 		var $relations;
-		var $debug=False;
 
-		function uiuseraddedit()
+		function uiuseraddedit($bo)
 		{
-			$this->bo = CreateObject('jinn.bojinn');
-			$this->plugins = CreateObject('jinn.boplugins.inc.php');
+			$this->bo=$bo;
 			$this->relations = CreateObject('jinn.borelations.inc.php');
 			$this->template = $GLOBALS['phpgw']->template;
 		}
@@ -65,6 +51,8 @@
 			$where_condition=$GLOBALS[where_condition];
 			if ($where_condition)
 			{
+				
+				/* set vars for edit form */
 				$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uijinn.object_update');
 				$where_condition_form="<input type=\"hidden\" name=\"where_condition\" value=\"$where_condition\">";
 				$values_object= $this->bo->get_records($this->bo->site_object[table_name],$where_condition,'','','name');
@@ -73,6 +61,7 @@
 			}
 			else
 			{
+				/* vars for new record form */
 				$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uijinn.object_insert');
 				$add_edit_button='voeg toe';
 				$action=lang('add object');
@@ -84,110 +73,54 @@
 			$this->template->set_var('form_action',$form_action);
 			$this->template->set_var('where_condition_form',$where_condition_form);
 			$this->template->pparse('out','form_header');
+			
 
-			//make one with many relation_array
+			/* get one with many relations */
 			$relation1_array=$this->relations->get_fields_with_1_relation($this->bo->site_object[relations]);
 
 			if (count($relation1_array)>0)
 			{
 				foreach($relation1_array as $relation1)
 				{
-					//one with many relations
 					$fields_with_relation1[]=$relation1[field_org];
 				}
 
 			}
 
-
-			// lees alle veldennamen in een loop
+			/* get all fieldproperties (name, type, etc...) */
 			$fields = $this->bo->get_site_fieldproperties($this->bo->site_id,$this->bo->site_object[table_name]);
-			// here the main loop for creating the form can start
+
+			/* The main loop to create all rows with input fields start here */ 
 			foreach ( $fields as $fieldproperties )
 			{
 
-				$edit_value=$values_object[0][$fieldproperties[name]];
+				/* set the row colors */
+				if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on']) $row_color=$GLOBALS['phpgw_info']['theme']['row_off'];
+				else $row_color=$GLOBALS['phpgw_info']['theme']['row_on'];
 
-				if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on'])
-				{
-					$row_color=$GLOBALS['phpgw_info']['theme']['row_off'];
-				}
-				else
-				{
-					$row_color=$GLOBALS['phpgw_info']['theme']['row_on'];
-				}
+				$value=$values_object[0][$fieldproperties[name]];	/* get value */
+				$input_name='FLD'.$fieldproperties[name];	/* add FLD so we can identify the real input HTTP_POST_VARS */
+				$display_name = ucfirst(strtolower(ereg_replace("_", " ", $fieldproperties[name]))); /* replace _ for a space */
 
-				$input_name='FLD'.$fieldproperties[name];
-				$display_name = ucfirst(strtolower(ereg_replace("_", " ", $fieldproperties[name])));
+				/* set max length for inputfield */
 				$input_max_length=' maxlength="'. $fieldproperties[len].'"';
 				$input_length=$fieldproperties[len];
-				$value=$values_object[0][$fieldproperties[name]];
+				if ($input_length>40) $input_length=40;
 
-
-				if ($input_length>40)
-				{
-					$input_length=40;
-				}
-
-
-				/******************************
-				* identifier field            *
-				******************************/
+				/* ---------------------- start fields -------------------------------- */
+				
+				/* Its an identifier field */
 				if (eregi("auto_increment", $fieldproperties[flags]))
 				{
-					/*					if (!$value)
-					{
-						$display_value=lang('automatic');
-					}
-					else
-					{
-						$display_value=lang('automatic');
-					}
-					*/
 					$input='<input type="hidden" name="'.$input_name.'" value="'.$value.'">'.$display_value;
 					$record_identifier=$value;
 				}
-
 
 				// deze velden handelen plaatjes, hier moet meer mee gebeuren incl uploaden
 				// move to standard plugins
 				elseif ($fieldproperties[name]=='image_path'||$fieldproperties[name]=='img_path')
 				{
-					unset($input);
-					if($value)
-					{
-						$input='<input type="hidden" name="image_path_org" value="'.$value.'">';
-
-						$value=explode(';',$value);
-						if (is_array($value))
-						{
-
-							$i=0;
-							foreach($value as $img_path)
-							{
-								$i++;
-
-								if($this->bo->site_object[preview_image_in_form]!='0' && $this->bo->site_object[preview_image_in_form] && !$this->bo->site_object[thumb_width])
-								{
-									$input.=$i.'.<b>'.$img_path.'</b><input type="checkbox" value="'.$img_path
-									.'" name="IMGDEL'.$i.'"> '.lang('remove').'<br><img src="'
-									.$this->bo->site_object[image_dir_url].'/'.$img_path.'" border="1">&nbsp;&nbsp;<br><br>';
-								}
-								else
-								{
-									$input.=$i.'.<b> <a href="'.$this->bo->site_object[image_dir_url].'/'.$img_path.'" target="_blank">'.$img_path.'</a></b> <input type="checkbox" value="'.$img_path.'" name="IMGDEL'.$i.'"> '.lang('remove').'<br>';
-								}
-
-							}
-						}
-						else
-						{
-							$input=$img_path.'<input type="checkbox" value="'.$img_path.'" name="IMGDEL'.$img_path.'"> '.lang('remove').'<br>';
-						}
-
-
-
-					}
-					$input.=lang('add image').' <input type="file" name="'.$fieldproperties[name].'">';
+					$input=$this->bo->plug->get_plugin($input_name,$value,'text');
 
 				}
 				elseif ($fieldproperties[name]=='thumb_path')
@@ -262,40 +195,34 @@
 
 				elseif ($fieldproperties[type]=='string')
 				{
-					$input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" input_max_length" value="'.$value.'">';
+					$input=$this->bo->plug->get_plugin($input_name,$value,'string');
 				}
 
 				// int int int int int int int int int
-				// int int int int int int int int int
-				// int int int int int int int int int
 				elseif ($fieldproperties[type]=='int' || $fieldproperties[type]=='real')
 				{
-					//							die(var_dump($fieldproperties[name]));				// check wether their's a one with many relation so we can make options
+					/* If this integer has a relation get that options */
 					if (is_array($fields_with_relation1) && in_array($fieldproperties[name],$fields_with_relation1))
 					{
-
 						//get related field vals en displays
 						$related_fields=$this->relations->get_related_field($relation1_array[$fieldproperties[name]]);
-
 
 						$input= '<select name="'.$input_name.'">';
 						$input.= $this->bo->make_options($related_fields,$value);
 						$input.= '</select> ('.lang('real value').': '.$value.')';
 					}
 					else
-					{
-						$input='<input type="text" name="'.$input_name.'" size="10" value="'.$value.'">';
+					{	
+						$input=$this->bo->plug->get_plugin($input_name,$value,'int');						
 					}
 				}
 
-				// timestamp timestamp timestamp timestamp timestamp
-				// timestamp timestamp timestamp timestamp timestamp
 				// timestamp timestamp timestamp timestamp timestamp
 				elseif ($fieldproperties[type]=='timestamp')
 				{
 					if ($value)
 					{
-						$input=$this->bo->format_date($value);
+						$input=$this->bo->plug->get_plugin($input_name,$value,'timestamp');
 					}
 					else
 					{
@@ -305,14 +232,12 @@
 
 				elseif ($fieldproperties[type]=='blob' && ereg('binary',$fieldproperties[flags]))
 				{
-
 					$input = lang('binary');
 				}
 
 				elseif ($fieldproperties[type]=='blob') //then it is a textblob
 				{
-
-					$input=$this->plugins->get_fip_plugin($input_name,$value,'text');
+					$input=$this->bo->plug->get_plugin($input_name,$value,'text');
 				}
 
 				$this->template->set_var('row_color',$row_color);
@@ -339,7 +264,6 @@
 				{
 
 					$related_table=$relation2[display_table];
-					//					var_dump($related_table);
 					$rel_i++;
 
 					$display_name=lang($rel_i.'e relatie');

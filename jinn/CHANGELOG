@@ -3,6 +3,21 @@
                 CHANGELOG jinn for phpGroupWare
 
 ===================================================================================
+version 0.4.4pre5
+mo maa 04 01:12:34 UTC 2003
+===========================
+- remove the difference between fip and sfp plugins
+- improved the classes infrastructure
+- test database access function implemented (NOT FINISHED, Though it works)
+- removed some image fields from jinn_site_objects (This will be handled by a plugin)
+- removed some ugly code and unneccesary functions
+- input part of plugins, almost finished
+
+version 0.4.4pre4
+mo feb 24 16.21.21 UTC 2003
+===========================
+- finish import/export function!
+- introduce plugin configuration
 
 version 0.4.4pre4
 date still unknown

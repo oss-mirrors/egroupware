@@ -68,6 +68,33 @@
 			$this->site_db->disconnect;
 		}
 
+		function test_db_conn($data)
+		{
+				
+			$this->site_db = CreateObject('phpgwapi.db');
+			$this->site_db->Host		= $data['db_host'];
+			$this->site_db->Type		= $data['db_type'];
+			$this->site_db->Database	= $data['db_name'];
+			$this->site_db->User		= $data['db_user'];
+			$this->site_db->Password	= $data['db_password'];
+			
+			if($this->site_db->query("CREATE TABLE `JiNN_TEMP_TEST_TABLE` (`test` TINYINT NOT NULL)",__LINE__,__FILE__))
+			{
+				$x=1;
+
+			}
+
+			if($this->site_db->query("DROP TABLE `JiNN_TEMP_TEST_TABLE`",__LINE__,__FILE__)) 
+			{
+			$this->site_close_db_connection();
+
+			return true;
+	
+			}
+				$this->site_close_db_connection();
+	
+			return false;
+		}
 
 		/****************************************************************************\
 		* get sitevalues for site id                                                 *
@@ -82,8 +109,6 @@
 
 			$site_values=array(
 			        'site_name'=>$this->phpgw_db->f('site_name'),
-			        //'site_title'=>$this->phpgw_db->f('site_title'),
-			        //'site_description'=>$this->phpgw_db->f('site_description'),
 			        'site_db_name'=>$this->phpgw_db->f('site_db_name'),
 			        'site_db_host'=>$this->phpgw_db->f('site_db_host'),
 			        'site_db_user'=>$this->phpgw_db->f('site_db_user'),
@@ -116,19 +141,12 @@
 			        'parent_site_id'=>$this->phpgw_db->f('parent_site_id'),
 			        'name'=>$this->phpgw_db->f('name'),
 			        'table_name'=>$this->phpgw_db->f('table_name'),
-			        //'preview_url'=>$this->phpgw_db->f('preview_url'),
 			        'upload_path'=>$this->phpgw_db->f('upload_path'),
-			        'image_width'=>$this->phpgw_db->f('image_width'),
-			        'thumb_width'=>$this->phpgw_db->f('thumb_width'),
-			        'image_type'=>$this->phpgw_db->f('image_type'),
-                                'image_dir_url'=>$this->phpgw_db->f('image_dir_url'),
-				'preview_image_in_form'=>$this->phpgw_db->f('preview_image_in_form'),
-				'relations'=>$this->phpgw_db->f('relations'),
-				'plugins'=>$this->phpgw_db->f('plugins')
-
+                    'upload_url'=>$this->phpgw_db->f('image_dir_url'),
+					'relations'=>$this->phpgw_db->f('relations'),
+					'plugins'=>$this->phpgw_db->f('plugins')
 				);
 
-			//die(var_dump($object_values));
 			return $object_values;
 
 		}
@@ -141,7 +159,7 @@
 		/****************************************************************************\
 		* ADMIN insert site data in phpgw_jinn_sites                       *
 		\****************************************************************************/
-
+/*
 		function insert_site_data($data)
 		{
 
@@ -152,7 +170,7 @@
 			. "')",__LINE__,__FILE__);
 
 		}
-
+*/
 		/****************************************************************************\
 		* get all tablefield in array for table                                      *
 		\****************************************************************************/

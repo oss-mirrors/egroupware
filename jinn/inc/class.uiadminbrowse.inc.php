@@ -24,9 +24,9 @@
 
 
 
-	class uiadminbrowse
+	class uiadminbrowse extends uiadmin
 	{
-
+/*
 		var $public_functions = Array
 		(
 			'index' => True,
@@ -52,8 +52,8 @@
 		var $bo;
 		var $template;
 		var $debug=False;
-
-		function uiadminbrowse()
+*/
+		function uiadminbrowse($bo)
 		{
 
 			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
@@ -62,7 +62,7 @@
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 
-			$this->bo = CreateObject('jinn.bojinn');
+			$this->bo = $bo; //CreateObject('jinn.bojinn');
 			$this->template = $GLOBALS['phpgw']->template;
 
 		}
