@@ -78,6 +78,7 @@ no tickets found	tts	de	Keine Tickets gefunden
 no transitions found	tts	de	Keine Übergänge gefunden
 not assigned	tts	de	Nicht zugewiesen
 not completed	tts	de	NICHT ABGESCHLOSSEN
+notify changes to ticket assignee by e-mail	tts	de	Ticket Änderungen an den Zugewiesenen per Mail senden
 notify changes to ticket group by e-mail	tts	de	Ticket Änderungen an die Gruppe per Mail senden
 notify changes to ticket owner by e-mail	tts	de	Ticket Änderungen an die Besitzer per Mail senden
 old value	tts	de	Alter Wert
@@ -89,7 +90,6 @@ opened by	tts	de	Angelegt von
 original ticket details	tts	de	Ursprüngliche Details des Tickets
 perform irregular transition into the following state	tts	de	Regelwiedriger Übergang in den folgenden Status ausführen
 please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	de	Bitte geben Sie einen Betreff für dieses Ticket an, sonst kann dieses nicht gespeichert werden.
-prio	tts	de	Prio
 priority	tts	de	Priorität
 priority changed	tts	de	Priorität geändert
 put the preexistent ticket into the state %1.	tts	de	Bereits existierendes Ticket in den Status %1 bringen.

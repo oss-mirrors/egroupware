@@ -21,9 +21,7 @@ clear form	tts	en	Clear Form
 close the invalid ticket.	tts	en	Close the invalid ticket.
 closed	tts	en	Closed
 completed	tts	en	COMPLETED
-configure the states	tts	en	Configure the states
 configure the states	common	en	Configure the states
-configure the transitions	tts	en	Configure the transitions
 configure the transitions	common	en	Configure the transitions
 create new state	tts	en	Create new state
 create new ticket	tts	en	Create new ticket
@@ -41,6 +39,7 @@ detail	tts	en	Detail
 duplicate	tts	en	DUPLICATE
 edit the state	tts	en	Edit the state
 edit the transition	tts	en	Edit the transition
+error: the subject of the ticket is not specified.	tts	en	ERROR: The subject of the ticket is not specified.
 force	tts	en	Force
 global categories	tts	en	Global Categories
 group ownership changed	tts	en	Group ownership changed
@@ -70,6 +69,9 @@ no tickets found	tts	en	No tickets found.
 no transitions found	tts	en	No transitions found
 not assigned	tts	en	Not Assigned
 not completed	tts	en	NOT COMPLETED
+notify changes to ticket assignee by e-mail	tts	en	Notify changes to ticket assignee by e-mail
+notify changes to ticket group by e-mail	tts	en	Notify changes to ticket group by e-mail
+notify changes to ticket owner by e-mail	tts	en	Notify changes to ticket owner by e-mail
 old value	tts	en	Old Value
 open	tts	en	Open
 open / closed	tts	en	Open / Closed
@@ -78,7 +80,7 @@ opened	tts	en	Opened
 opened by	tts	en	Opened by
 original ticket details	tts	en	Original Ticket Details
 perform irregular transition into the following state	tts	en	Perform irregular transition into the following state
-prio	tts	en	Prio
+please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	en	Please enter the subject of the ticket, otherwise the ticket cannot be stored.
 priority	tts	en	Priority
 priority changed	tts	en	Priority changed
 put the preexistent ticket into the state %1.	tts	en	Put the preexistent ticket into the state %1.
@@ -146,15 +148,14 @@ tts preferences	tts	en	Trouble Ticket System - preferences
 undefined	tts	en	UNDEFINED
 update ticket state	tts	en	Update ticket state
 updates ticket	tts	en	Updates ticket
-notify changes to ticket owner by e-mail	tts	en	Notify changes to ticket owner by e-mail
-notify changes to ticket group by e-mail	tts	en	Notify changes to ticket group by e-mail
-notify changes to ticket assignee by e-mail	tts	en	Notify changes to ticket assignee by e-mail
 verified	tts	en	VERIFIED
 verify	tts	en	VERIFY
 verify the ticket to work on it.	tts	en	Verify the ticket to work on it.
 view all tickets	tts	en	View all tickets
 view job detail	tts	en	View Job Detail
+view only my open tickets	tts	en	View only my open tickets
 view only open tickets	tts	en	View only open tickets
 you can only close a ticket if it is assigned to you.	tts	en	You can only close a ticket if it is assigned to you.
+you want to delete the state %1 and associated transitions. are you sure?	tts	en	You want to delete the state %1 and associated transitions. Are you sure?
 you want to delete the state %1. are you sure?	tts	en	You want to delete the state %1. Are you sure?
 you want to delete the transition %1. are you sure?	tts	en	You want to delete the transition %1. Are you sure?

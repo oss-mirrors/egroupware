@@ -55,35 +55,25 @@
 	$GLOBALS['phpgw']->template->set_var('lang_category',lang('Category'));
 
 	// select what tickets to view
-	$filter = reg_var('filter','POST');
-	if (!$filter)
-	{
-	    $filter = reg_var('filter','GET');
-	}
-	$start  = reg_var('start','GET','numeric',0);
-	$sort   = reg_var('sort','GET');
-	$order  = reg_var('order','GET');
-	$searchfilter =	reg_var('searchfilter','POST','any');
+	$filter = get_var('filter',array('POST','GET'),'viewmyopen');
+	$start  = (int) get_var('start',array('POST','GET'));
+	$sort   = get_var('sort',array('POST','GET'),'DESC');
+	$order  = get_var('order',array('POST','GET'),'ticket_priority');
+	$searchfilter = reg_var('searchfilter','POST','any');
+
 	// Append the filter to the search URL, so that the mode carries forward on a search
 	$GLOBALS['phpgw']->template->set_var('tts_search_link',$GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort)));
 
-	if (!$filter)
+	if ($filter == 'viewmyopen')
 	{
-               $filter='viewmyopen';
-       }
-       if ($filter == 'viewmyopen')
-       {
-               $filtermethod = "where ticket_status='O' and ticket_assignedto='".$GLOBALS['phpgw_info']['user']['account_id']."'";
-
+		$filtermethod = "WHERE ticket_status='O' AND ticket_assignedto='".$GLOBALS['phpgw_info']['user']['account_id']."'";
 	}
 	if ($filter == 'viewopen') 
 	{
-		$filtermethod = "where ticket_status='O'";
-        }
-        if ($filter == 'viewopen' || $filter =='viewmyopen' )
-        {
-
-		$GLOBALS['phpgw']->preferences->read_repository();
+		$filtermethod = "WHERE ticket_status='O'";
+    }
+    if ($filter == 'viewopen' || $filter =='viewmyopen' )
+    {
 		if ($GLOBALS['phpgw_info']['user']['preferences']['tts']['refreshinterval'])
 		{
 			$GLOBALS['phpgw']->template->set_var('autorefresh','<META HTTP-EQUIV="Refresh" CONTENT="'.$GLOBALS['phpgw_info']['user']['preferences']['tts']['refreshinterval'].'; URL='.$GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort)).'">');
@@ -96,74 +86,58 @@
 	// set for a possible search filter, outside of the all/open only "state" filter above
 	if ($searchfilter) 
 	{
-		$filtermethod = "where ticket_details like '%".addslashes($searchfilter)."%'";
-		$GLOBALS['phpgw']->template->set_var('tts_searchfilter',addslashes($searchfilter));
+		$s_quoted = $GLOBALS['phpgw']->db->quote('%'.$searchfilter.'%');
+		$filtermethod = "WHERE ticket_details LIKE $s_quoted OR ticket_subject LIKE $s_quoted";
 	}
+	$GLOBALS['phpgw']->template->set_var('tts_searchfilter',addslashes($searchfilter));
 
-	if (!$sort)
+	if (!preg_match('/^[a-z_]+$/i',$order) || !preg_match('/^(asc|desc)$/i',$sort))
 	{
-		$sortmethod = 'order by ticket_priority desc';
-	}
-	elseif ($order)
-	{
-		$sortmethod = "order by $order $sort";
-	}
-
-	$GLOBALS['phpgw']->db->query("select count(*) from phpgw_tts_tickets",__LINE__,__FILE__);
-	$GLOBALS['phpgw']->db->next_record();
-	$numtotal = $GLOBALS['phpgw']->db->f('0') ;
-
-	$GLOBALS['phpgw']->db->query("select count(*) from phpgw_tts_tickets where ticket_status='O'",__LINE__,__FILE__);
-	$GLOBALS['phpgw']->db->next_record();
-	$numopen = $GLOBALS['phpgw']->db->f('0') ;
-
-	$GLOBALS['phpgw']->template->set_var('tts_numtotal',lang('Tickets total %1',$numtotal));
-	$GLOBALS['phpgw']->template->set_var('tts_numopen',lang('Tickets open %1',$numopen));
-
-
-	$db2 = $db = $GLOBALS['phpgw']->db;
-	$db->query("select * from phpgw_tts_tickets $filtermethod $sortmethod",__LINE__,__FILE__);
-	$numfound = $db->num_rows();
-
-	if ($searchfilter)
-	{
-		$GLOBALS['phpgw']->template->set_var('tts_numfound',lang('Tickets found %1',$numfound));
+		$sortmethod = 'ORDER BY ticket_priority DESC';
 	}
 	else
 	{
-		$GLOBALS['phpgw']->template->set_var('tts_searchfilter','');
-		$GLOBALS['phpgw']->template->set_var('tts_numfound','');
+		$sortmethod = "ORDER BY $order $sort";
 	}
-        $tag = '';
-        $GLOBALS['phpgw']->template->set_var('optionname', lang('View all tickets'));
-        $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewall');
-        if ($filter == 'viewall' )
+	$db2 = $db = $GLOBALS['phpgw']->db;
+	$db->query($sql="SELECT count(*) FROM phpgw_tts_tickets $filtermethod",__LINE__,__FILE__);
+	$total = $db->next_record() ? $db->f(0) : 0;
+
+	$db->limit_query("SELECT * FROM phpgw_tts_tickets $filtermethod $sortmethod",$start,__LINE__,__FILE__);
+
+	$GLOBALS['phpgw']->template->set_var('tts_numfound',$GLOBALS['phpgw']->nextmatchs->show_hits($total,$start));
+	$GLOBALS['phpgw']->template->set_var('left',$GLOBALS['phpgw']->nextmatchs->left('/tts/index.php',$start,$total));
+	$GLOBALS['phpgw']->template->set_var('right',$GLOBALS['phpgw']->nextmatchs->right('/tts/index.php',$start,$total));
+    
+	$tag = '';
+    $GLOBALS['phpgw']->template->set_var('optionname', lang('View all tickets'));
+    $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewall');
+    if ($filter == 'viewall' )
 	{
 		$tag = 'selected';
 	}
-        $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
-        $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
- 
-        $tag = '';
-        $GLOBALS['phpgw']->template->set_var('optionname', lang('View only open tickets'));
-        $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewopen');
-        if ($filter == 'viewopen' )
-        {
-                $tag = 'selected';
-        }
-        $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
-        $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
+    $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
+    $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
 
-        $tag = '';
-        $GLOBALS['phpgw']->template->set_var('optionname', lang('View only my open tickets'));
-        $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewmyopen');
-        if ($filter == 'viewmyopen' )
+    $tag = '';
+    $GLOBALS['phpgw']->template->set_var('optionname', lang('View only open tickets'));
+    $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewopen');
+    if ($filter == 'viewopen' )
+    {
+		$tag = 'selected';
+    }
+    $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
+    $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
+
+    $tag = '';
+    $GLOBALS['phpgw']->template->set_var('optionname', lang('View only my open tickets'));
+    $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewmyopen');
+    if ($filter == 'viewmyopen' )
 	{
 		$tag = 'selected';
 	}
-        $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
-        $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
-
+	$GLOBALS['phpgw']->template->set_var('optionselected', $tag);
+	$GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
 
 	$GLOBALS['phpgw']->template->set_var('tts_ticketstotal', lang('Tickets total %1',$numtotal));
 	$GLOBALS['phpgw']->template->set_var('tts_ticketsopen', lang('Tickets open %1',$numopen));
@@ -172,7 +146,7 @@
 	$GLOBALS['phpgw']->template->set_var('tts_head_bgcolor',$GLOBALS['phpgw_info']['theme']['th_bg'] );
 	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg'] );
 	$GLOBALS['phpgw']->template->set_var('tts_head_ticket', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_id',$order,'/tts/index.php',lang('Ticket').' #'));
-	$GLOBALS['phpgw']->template->set_var('tts_head_prio', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_priority',$order,'/tts/index.php',lang('Prio')));
+	$GLOBALS['phpgw']->template->set_var('tts_head_prio', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_priority',$order,'/tts/index.php',lang('Priority')));
 	$GLOBALS['phpgw']->template->set_var('tts_head_group',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_group',$order,'/tts/index.php',lang('Group')));
 	$GLOBALS['phpgw']->template->set_var('tts_head_category',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_category',$order,'/tts/index.php',lang('Category')));
 	$GLOBALS['phpgw']->template->set_var('tts_head_assignedto', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_assignedto',$order,'/tts/index.php',lang('Assigned to')));
@@ -199,6 +173,8 @@
 		{
 			$GLOBALS['phpgw']->template->set_var('tts_col_status','');
 			$priority = $db->f('ticket_priority');
+			$GLOBALS['phpgw']->template->set_var('tts_t_prio',$priority);
+
 			switch ($priority)
 			{
 				case 1:  $tr_color = $GLOBALS['phpgw_info']['theme']['bg01']; break;
@@ -246,14 +222,6 @@
 			{
 				$GLOBALS['phpgw']->template->set_var('row_status','&nbsp;');
 			}
-
-			$priostr = '';
-			while ($priority > 0)
-			{
-				$priostr = $priostr . "||";
-				$priority--;
-			}
-			$GLOBALS['phpgw']->template->set_var('tts_t_priostr',$priostr );
 
 			$cat_name   = $GLOBALS['phpgw']->categories->id2name($db->f('ticket_category'));
 			$GLOBALS['phpgw']->template->set_var('row_category',$cat_name);
