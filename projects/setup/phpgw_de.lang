@@ -21,6 +21,7 @@ address book	projects	de	Adressbuch
 administrator	projects	de	Administrator
 administrator list	projects	de	Administrator Liste
 alarm	projects	de	Alarm
+all delivery notes	projects	de	Alle Lieferscheine
 amount	projects	de	Betrag
 anonymous public	projects	de	Anonym &ouml;ffentlich
 archive	common	de	Archiv
@@ -43,7 +44,9 @@ billable	projects	de	Buchbar
 billable activities	projects	de	Abrechenbare Aktivit&auml;ten
 billed	projects	de	Bezahlt
 billed only	projects	de	nur bezahlte
+billing	projects	de	Rechnung
 bookable activities	projects	de	Buchbare Aktivit&auml;ten
+bookkeeper	projects	de	Buchhalter
 browse	projects	de	
 budget	projects	de	Budget
 budget available	projects	de	Verfügbares Budget
@@ -64,6 +67,7 @@ columns to show in the projects list	projects	de	Spalten zum anzeigen in der Pro
 comment	projects	de	Kommentar
 continue	projects	de	Fortsetzen
 coordinator	common	de	Koordinator
+create delivery	projects	de	Lieferung erstellen
 creator	projects	de	Ersteller
 customer	common	de	Kunde
 customer nr	projects	de	Kunden-Nr.
@@ -73,12 +77,19 @@ date due planned	projects	de	Geplantes Enddatum
 days	projects	de	Tage
 days before	projects	de	Tage vor
 definition per project	admin	de	Definition per Projekt
-delete activity	projects	de	
+delete activity	projects	de	Aktivität löschen
 delete factor	projects	de	Faktor löschen
 delete hours	projects	de	Stunden l&ouml;schen
 delete job	projects	de	Teilprojekt löschen
 delete project	projects	de	Projekt löschen
 delete work hours	projects	de	Arbeitsstunden löschen
+deliveries	projects	de	Lieferungen
+delivery	projects	de	Lieferung
+delivery date	projects	de	Lieferungs Datum
+delivery id	projects	de	Lieferungs Nr.
+delivery list	projects	de	Liste der Lieferungen
+delivery note	projects	de	Lieferschein 
+delivery note for project	projects	de	Lieferschein zum Projekt
 description can not exceed 250 characters in length	projects	de	Beschreibung darf 250 Zeichen nicht &uuml;berschreiten.
 description can not exceed 8000 characters in length	projects	de	Beschreibung darf 8000 Zeichen nicht &uuml;berschreiten.
 discount	projects	de	Rabatt
@@ -123,10 +134,11 @@ from	projects	de	Von
 from %1 to %2	projects	de	vom %1 bis %2
 gantt chart	projects	de	Gantt Chart
 gantt chart from %1 to %2	projects	de	Gantt Chart von %1 bis %2
-generate activity id	projects	de	Activit&auml;ts ID generieren ?
-generate activity id ?	projects	de	Activitäts ID generieren ?
-generate job id	projects	de	Job ID generieren ?
-generate project id	projects	de	Projekt ID generieren ?
+generate activity id	projects	de	Aktivit&auml;ts Nr. erstellen ?
+generate activity id ?	projects	de	Aktivitäts Nr. erstellen ?
+generate delivery id ?	projects	de	Lieferungs Nr. erstellen
+generate job id	projects	de	Teilprojekt Nr erstellen ?
+generate project id	projects	de	Projekt Nr. erstellen ?
 global categories	projects	de	Globalen Einstellungen
 has reached	projects	de	wurde erreicht
 hours	projects	de	Stunden
@@ -151,15 +163,16 @@ jobs	common	de	Teilprojekte
 large	projects	de	Gro&szlig;
 last update	projects	de	letzte Aktualisierung
 list activities	projects	de	T&auml;tigkeitenliste
-list budget	projects	de	Budgetliste
+list budget	projects	de	Budget Liste
+list deliveries	projects	de	Lieferscheinliste
 list jobs	common	de	Teilprojektliste
 list projects	common	de	Projektliste
 list work hours	projects	de	Arbeitsstundenliste
-main project	common	de	Hauptprojekt
+main project	projects	de	Hauptprojekt
 main project:	projects	de	Hauptprojekt:
 manager	projects	de	Projekt Manager
 manager list	projects	de	Liste der Projekt Manager
-managing committee	common	de	Projekt Management
+managing committee	admin	de	Projekt Management
 manuell entries	projects	de	Manuelle Eintr&auml;ge
 milestone	projects	de	Meilenstein
 milestone date due	projects	de	F&auml;lligkeit des Meilensteins
@@ -200,6 +213,7 @@ please choose the columns to list in the projects preferences section	projects	d
 please choose the discount type	projects	de	Bitte wählen Sie einen Rabatt aus.
 please enter a remark	projects	de	Bitte geben Sie einen Betreff an.
 please enter an id	projects	de	Bitte geben Sie eine ID an.
+please enter an id !	projects	de	Bitte geben Sie eine ID an.
 please enter the bill	projects	de	Bitte geben Sie den Preis pro Arbeitseinheit an.
 please enter the minutes per workunit	projects	de	Bitte geben Sie die Minuten pro Arbeitseinheit an.
 please select a project for time tracking	projects	de	Bitte wählen Sie ein Projekt für die Zeiterfassung aus.
@@ -207,18 +221,21 @@ please set the accounting factor for the project	projects	de	Bitte geben Sie den
 please set your preferences for this application !	projects	de	Bitte konfiguerieren Sie die Einstellungen dür diese Applikation !
 please specify the budget	projects	de	Bitte geben Sie das Budget an.
 please specify the currency in the global preferences section	common	de	Bitte geben Sie die W&auml;hrung in der globalen Sektion der Benutzereinstellungen an.
+position	projects	de	Position
 previous	projects	de	Vorprojekt
 previous project	projects	de	Vorprojekt
 previous projects end date has changed	projects	de	Das Enddatum des Vorprojektes wurde ge&auml;ndert
+print delivery	projects	de	Lieferschein drucken
 processor	projects	de	Bearbeiter
 project	projects	de	Projekt
 project %1 has been saved	projects	de	Projekt %1 wurde gespeichert.
 project %1 has been updated	projects	de	Projekt %1 wurde bearbeitet.
 project accounting	admin	de	Projektabrechnung
-project administrators	common	de	Projekt Administratoren
+project administrators	admin	de	Projekt Administratoren
 project data due	projects	de	Projektf&auml;lligkeit
 project dependencies	common	de	Projektabh&auml;ngigkeiten
 project id	common	de	Projekt-ID
+project list	projects	de	Projekt Liste
 project overview	projects	de	Projektübersicht
 project statistic	projects	de	Projekt Statistik
 project url	projects	de	Projekt URL
@@ -237,7 +254,7 @@ role %1 has been updated	projects	de	Rolle %1 wurde upgedated
 role has been deleted	projects	de	Rolle wurde hinzugefügt
 roles	projects	de	Rollen
 roles list	projects	de	Rollen anzeigen
-sales department	common	de	Vertrieb
+sales department	admin	de	Vertrieb
 save factor	projects	de	Faktor speichern
 save milestone	projects	de	Meilenstein gespeichert
 select factor	projects	de	Faktor ausw&auml;hlen
@@ -261,10 +278,14 @@ stop	projects	de	Stop
 sub project level %1	projects	de	Unterprojekt Level %1
 sum	projects	de	Summe
 sum budget	projects	de	Summe Budget
-sum jobs	projects	de	Summer Telprojekte
+sum hours	projects	de	Summe Stunden
+sum jobs	projects	de	Summer Teilprojekte
+sum workunits	projects	de	Summe Arbeitseinheiten
 test	projects	de	Test
 that id has been used already	projects	de	Diese ID ist bereits in Benutzung.
+that id has been used already !	projects	de	Diese ID ist bereits in Benutzung.
 the choosen previous project does not have an end date specified	projects	de	F&uuml;r das gew&auml;hlte Vorprojekt wurde kein Enddatum angegeben.
+the delivery note contains no items !	projects	de	Der Leiferschein enthält keine weiteren Angaben
 this is mostly caused by a not or wrongly configured smtp server. notify your administrator.	projects	de	
 till	projects	de	Bis
 time of journey	projects	de	Reisezeit
@@ -277,6 +298,7 @@ time used	projects	de	verbrauchte Zeit
 time used billable	projects	de	Gesamtzeit buchbar
 time used total	projects	de	Gesamtzeit
 title can not exceed 250 characters in length	projects	de	Titel darf 250 Zeichen nicht &uuml;berschreiten.
+update delivery	projects	de	
 use activities	admin	de	T&auml;tigkeiten benutzen
 used	projects	de	verbraucht
 used - jobs included	projects	de	verbraucht - inklusive Teilprojekte
@@ -297,10 +319,13 @@ work hours	common	de	Arbeitsstunden
 work time	projects	de	Arbeitszeit
 workunit	projects	de	Arbeitseinheit
 workunits	projects	de	Arbeitseinheiten
+you have entered an invalid date !	projects	de	Sie haben ein ungültiges Datum eingegeben!
 you have entered an invalid date due	projects	de	Sie haben ein ung&uuml;ltiges F&auml;lligkeitsdatum angegeben.
 you have entered an invalid end date	projects	de	Sie haben ein ung&uuml;ltiges F&auml;lligkeitsdatum angegeben.
 you have entered an invalid planned end date	projects	de	Sie haben ein ung&uuml;ltiges geplantes Enddatum angegeben.
 you have entered an invalid planned start date	projects	de	Sie haben ein ung&uuml;ltiges geplantes Startdatum angegeben.
 you have entered an invalid start date	projects	de	Sie haben ein ung&uuml;ltiges Startdatum angegeben.
+you have no customer selected !	projects	de	Sie haben keinen Kunden ausgewählt!
 you have no projects selected	projects	de	Sie haben kein Projekt ausgewählt
 you have selected an invalid activity	projects	de	Sie haben eine ung&uuml;ltige T&auml;tigkeit angegeben.
+you have to create a delivery or invoice first !	projects	de	Sie müssen zuerst einen Lieferschein oder eine Rechnung erstellen
