@@ -19,105 +19,108 @@
 </STYLE>
 </head>
 <body bgcolor="#FFFFFF">
-<table width=70% border=0 cellpadding=3 cellspacing=3>
-<tr>
-<td valign=bottom><font face="{font}">{ad_company}</font></td>
-<td><img src="doc/logo.jpg"></td>
-</tr>
-<tr>
-<td><font face="{font}">{ad_firstname}&nbsp;{ad_lastname}</font></td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td><font face="{font}">{ad_street}</font></td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td><font face="{font}">{ad_zip}&nbsp;{ad_city}</font></td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td><font face="{font}">{ad_state}</font></td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td><font face="{font}">{ad_country}<br><br><br></font></td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td><font face="{font}">{company}</font></td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td><font face="{font}">{firstname}&nbsp;{lastname}</font></td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td><font face="{font}">{street}</font></td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td><font face="{font}">{zip}&nbsp;{city}</font></td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td><font face="{font}">{state}</font></td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td><font face="{font}">{country}<br><br><br></font></td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td><font face="{font}">{lang_delivery}:&nbsp;{delivery_num}</font></td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td><font face="{font}">{lang_delivery_date}:&nbsp;{delivery_date}</font></td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td><font face="{font}">{lang_project}:&nbsp;{title}</font></td>
-<td>&nbsp;</td>
-</tr>
+<table width="70%" border="0" cellpadding="3" cellspacing="3">
+	<tr>
+		<td valign="bottom"><font face="{font}">{ad_company}</font></td>
+		<td><img src="doc/logo.jpg"></td>
+	</tr>
+	<tr>
+		<td><font face="{font}">{ad_firstname}&nbsp;{ad_lastname}</font></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td><font face="{font}">{ad_street}</font></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td><font face="{font}">{ad_zip}&nbsp;{ad_city}</font></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td><font face="{font}">{ad_state}</font></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td><font face="{font}">{ad_country}<br><br><br></font></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td><font face="{font}">{company}</font></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td><font face="{font}">{firstname}&nbsp;{lastname}</font></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td><font face="{font}">{street}</font></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td><font face="{font}">{zip}&nbsp;{city}</font></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td><font face="{font}">{state}</font></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td><font face="{font}">{country}<br><br><br></font></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td><font face="{font}">{lang_delivery}:&nbsp;{delivery_num}</font></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td><font face="{font}">{lang_delivery_date}:&nbsp;{delivery_date}</font></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td><font face="{font}">{lang_project}:&nbsp;{title}</font></td>
+		<td>&nbsp;</td>
+	</tr>
 </table><br><br><br>
-<table width=70% border=0 cellspacing=3 cellpadding=3>
-    <tr>
-      <td width="8%" align="right"><font face="{font}">{lang_pos}</font></td>
-      <td width="30%"><font face="{font}">{lang_descr}</font></td>
-      <td width="10%" align="center"><font face="{font}">{lang_hours_date}</font></td>
-      <td width="10%" align="right"><font face="{font}">{lang_workunits}</font></td>
-    </tr>
+<table width="70%" border="0" cellspacing="3" cellpadding="3">
+	<tr>
+		<td width="8%" align="right"><font face="{font}">{lang_pos}</font></td>
+		<td width="30%"><font face="{font}">{lang_descr}</font></td>
+		<td width="10%" align="center"><font face="{font}">{lang_hours_date}</font></td>
+		<td width="10%" align="right"><font face="{font}">{lang_workunits}</font></td>
+	</tr>
 
 <!-- BEGIN deliverypos_list -->
-      <tr>
-        <td align="right"><font face="{font}">{pos}</font></td>
-        <td><font face="{font}">{act_descr}</font></td>
-        <td align="center"><font face="{font}">{hours_date}</font></td>
-        <td align="right"><font face="{font}">{aes}</font></td>
-      </tr>
-      <tr>
-        <td>&nbsp;</td>
-        <td><font face="{font}">{hours_descr}</font></td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
+ 
+	<tr>
+		<td align="right"><font face="{font}">{pos}</font></td>
+		<td><font face="{font}">{act_descr}</font></td>
+		<td align="center"><font face="{font}">{hours_date}</font></td>
+		<td align="right"><font face="{font}">{aes}</font></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td><font face="{font}">{hours_descr}</font></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+
 <!-- END deliverypos_list -->
+
 </table><br><br>
-<table width=70% border=0 cellspacing=3 cellpadding=3>
-      <tr>
-        <td width="8%">&nbsp;</td>
-        <td width="30%"><font face="{font}" size="4"><b>{lang_sumaes}</b></font></td>
-        <td width="10%">&nbsp;</td>
-        <td width="10%" align="right"><font face="{font}" size="4"><b>{sumaes}</b></font></td>
-      </tr>
-      <tr>
-        <td>&nbsp;</td>
-        <td><font face="{font}">{error}</font></td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-  <hr noshade width="70%" align="left" size="1">
-    </table>
+<table width="70%" border="0" cellspacing="3" cellpadding="3">
+	<tr>
+		<td width="8%">&nbsp;</td>
+		<td width="30%"><font face="{font}" size="4"><b>{lang_sumaes}</b></font></td>
+		<td width="10%">&nbsp;</td>
+		<td width="10%" align="right"><font face="{font}" size="4"><b>{sumaes}</b></font></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td><font face="{font}">{error}</font></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<hr noshade width="70%" align="left" size="1">
+</table>
 </body>
 </html>
