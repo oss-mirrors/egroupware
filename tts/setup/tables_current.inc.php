@@ -83,8 +83,8 @@
 		'phpgw_tts_categories_groups' => array(
 			'fd' => array(
 				'cat_group_id' => array('type' => 'auto','nullable' => False),
-				'cat_id' => array('type' => 'int','precision' => '11','nullable' => False,'default' => '0'),
-				'account_id' => array('type' => 'int','precision' => '11','nullable' => False,'default' => '0')
+				'cat_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
+				'account_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
 			),
 			'pk' => array('cat_group_id'),
 			'fk' => array(),
