@@ -184,6 +184,7 @@
 	$t->set_var('sortbox_on_change','document.sortbox.submit()');
 	$t->set_var('sortbox_select_name','sort');
 	$t->set_var('sortbox_select_options',$sortbox_select_options);
+	$t->set_var('sortbox_sort_by_txt',lang("Sort By"));
 
 	// "switch to" folder switchbox
 	$t->set_var('switchbox_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php'));
@@ -309,6 +310,7 @@
 	$t->set_var('lang_size',lang('Size'));
 	$t->set_var('lang_size2',lang('Folder Size'));
 	$t->set_var('stats_first',$phpgw->msg->start + 1);
+	$t->set_var('stats_to_txt',lang('to'));
 	// "last" can not be know until the calculations below
 
 	//$t->set_var('stats_last',$GLOBALS['phpgw']->msg->start + $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']);

@@ -57,7 +57,7 @@ function check_all()
 	</form>
 	<form name="sortbox" action="{sortbox_action}" method="post">
 	<td bgcolor="{ctrl_bar_back1}" width="50%" align="left">
-		<font size="-1">&nbsp;&nbsp;Sort by:&nbsp;</font>
+		<font size="-1">&nbsp;&nbsp;{sortbox_sort_by_txt}:&nbsp;</font>
 		<select name="{sortbox_select_name}" onChange="{sortbox_on_change}">
 		{sortbox_select_options}
 		</select>
@@ -124,7 +124,7 @@ function check_all()
 	<!-- END B_get_size -->
 	<td bgcolor="{stats_backcolor}" align="center">
 		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
-			&nbsp;&nbsp;{stats_first}&nbsp;to&nbsp;{stats_last}
+			&nbsp;&nbsp;{stats_first}&nbsp;{stats_to_txt}&nbsp;{stats_last}
 		</font>
 	</td>
 </tr>

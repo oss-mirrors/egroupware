@@ -138,7 +138,7 @@
 
 	// Some of the methods were borrowed from
 	// Squirrelmail <Luke Ehresman> http://www.squirrelmail.org
-	if ($action == 'Delete')
+	if ($action == lang('Delete'))
 	{
 		for ($i=0; $i<count($delete); $i++)
 		{
@@ -148,7 +148,7 @@
 	}
 
 	//if ($action == 'Attach File')
-	if (($action == 'Attach File')
+	if (($action == lang('Attach File'))
 	&& ($file_tmp_name != '')
 	&& ($file_tmp_name != 'none'))
 	{
@@ -171,12 +171,13 @@
 		fputs($ftp,$file_type."\n".$file_name."\n");
 		fclose($ftp);
 	}
-	elseif (($action == 'Attach File')
+	elseif (($action == lang('Attach File'))
 	&& (($file_tmp_name == '') || ($file_tmp_name == 'none')))
 	{
-		$alert_msg = 'Input Error:'.'<br>'
-			.'Please submit a filename to attach'.'<br>'
-			.'You must click "Attach File" for the file to actually upload'.'<br>'
+		$langed_attach_file = lang("Attach File");
+		$alert_msg = lang('Input Error:').'<br>'
+			.lang('Please submit a filename to attach').'<br>'
+			.lang('You must click').' "'.lang("Attach File").'" '.lang('for the file to actually upload').'<br>'
 			.'<br>';
 	}
 
@@ -213,7 +214,7 @@
 		$t->set_var('V_attached_none','');
 		// fill the delete sublit form
 		$t->set_var('btn_delete_name','action');
-		$t->set_var('btn_delete_value','Delete');
+		$t->set_var('btn_delete_value',lang('Delete'));
 		$t->parse('V_delete_btn','B_delete_btn');
 	}
 
@@ -248,7 +249,7 @@
 
 	$charset = lang('charset');
 	$t->set_var('charset',$charset);
-	$t->set_var('page_title',$phpgw_flags['currentapp'] . ' - ' .'File attachment');
+	$t->set_var('page_title',$phpgw_flags['currentapp'] . ' - ' .lang('File attachment'));
 	$t->set_var('font_family',$phpgw_info["theme"]["font"]);
 	$t->set_var('body_tags',$body_tags);
 	if ($alert_msg != '')
@@ -262,14 +263,14 @@
 	}
 	$t->set_var('form_method','POST');
 	$t->set_var('form_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/attach_file.php'));
-	$t->set_var('text_attachfile','Attach file');
-	$t->set_var('text_currattached','Current attachments');
-	$t->set_var('txtbox_upload_desc','File');
+	$t->set_var('text_attachfile',lang('Attach file'));
+	$t->set_var('text_currattached',lang('Current attachments'));
+	$t->set_var('txtbox_upload_desc',lang('File'));
 	$t->set_var('txtbox_upload_name','uploadedfile');
 	$t->set_var('btn_attach_name','action');
-	$t->set_var('btn_attach_value','Attach File');
+	$t->set_var('btn_attach_value',lang('Attach File'));
 	$t->set_var('btn_done_name','done');
-	$t->set_var('btn_done_value','Done');
+	$t->set_var('btn_done_value',lang('Done'));
 	$t->set_var('btn_done_js','window.close()');
 
 
