@@ -1,34 +1,36 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - Bookmarks                                                 *
-  * http://www.phpgroupware.org                                              *
-  * Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
-  *                     http://www.renaghan.com/bookmarker                   *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare - Bookmarks                                                 *
+	* http://www.phpgroupware.org                                              *
+	* Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
+	*                     http://www.renaghan.com/bookmarker                   *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 
-  class bktemplate extends Template
-  {
-     var $classname = "bktemplate";
+	$grants = $phpgw->acl->get_grants('bookmarks');
+
+	class bktemplate extends Template
+	{
+		var $classname = "bktemplate";
   
-     /* if set, echo assignments */
-     /* 1 = debug set, 2 = debug get, 4 = debug internals */
-     var $debug     = false;
+		/* if set, echo assignments */
+		/* 1 = debug set, 2 = debug get, 4 = debug internals */
+		var $debug     = false;
      
-     /* "yes" => halt, "report" => report error, continue, 
-      * "no" => ignore error quietly 
-     */
-     var $halt_on_error  = "yes";
+		/* "yes" => halt, "report" => report error, continue, 
+		** "no" => ignore error quietly 
+		*/
+		var $halt_on_error  = "yes";
 
-     // override the finish function to better handle with javascript.
-     // we don't have whitespace in our var names, so no need to be
-     // so all encompassing with the remove.
+		// override the finish function to better handle with javascript.
+		// we don't have whitespace in our var names, so no need to be
+		// so all encompassing with the remove.
 
      function finish($str)
      {
@@ -48,16 +50,16 @@
      } 
   }
 
-  function date_information(&$tpl, $raw_string)
-  {
-     global $phpgw;
+	function date_information(&$tpl, $raw_string)
+	{
+		global $phpgw;
 
-     $ts = explode(",",$phpgw->db->f("bm_info"));
+		$ts = explode(',',$raw_string);
 
-     $tpl->set_var("added_value",$phpgw->common->show_date($ts[0]));
-     $tpl->set_var("visited_value",($ts[1]?$phpgw->common->show_date($ts[1]):lang("Never")));
-     $tpl->set_var("updated_value",($ts[2]?$phpgw->common->show_date($ts[2]):lang("Never")));
-  }
+		$tpl->set_var('added_value',$phpgw->common->show_date($ts[0]));
+		$tpl->set_var('visited_value',($ts[1]?$phpgw->common->show_date($ts[1]):lang('Never')));
+		$tpl->set_var('updated_value',($ts[2]?$phpgw->common->show_date($ts[2]):lang('Never')));
+	}
 
   function  set_standard($title, &$p_tpl) 
   {
@@ -117,26 +119,29 @@
      return $s;
   }
 
-  // function to determine what type of browser the user has.
-  // code idea from http://www.php.net/
-  function check_browser()
-  {
-    global $HTTP_USER_AGENT;
+	// function to determine what type of browser the user has.
+	// code idea from http://www.php.net/
+	function check_browser()
+	{
+		global $HTTP_USER_AGENT;
   
-    $browser= "UNKNOWN";
+		$browser= 'UNKNOWN';
   
-    if (ereg("MSIE",$HTTP_USER_AGENT)) {
-       $browser = "MSIE";
-    } elseif (ereg("Mozilla",$HTTP_USER_AGENT)) {
-       $browser = "NETSCAPE";
-    } else {
-       $browser = "UNKNOWN";
-    }
-  
-    return $browser;
-  }
+		if (ereg('MSIE',$HTTP_USER_AGENT))
+		{
+			$browser = 'MSIE';
+		}
+		elseif (ereg('Mozilla',$HTTP_USER_AGENT))
+		{
+			$browser = 'NETSCAPE';
+		}
+		else
+		{
+			$browser = 'UNKNOWN';
+		}
 
-
+		return $browser;
+	}
 
 
 	class bmark
@@ -162,79 +167,85 @@
 				return False;
 			}
 
-        // Does the bookmark already exist?
-        $query = sprintf("select count(*) from phpgw_bookmarks where bm_url='%s' and bm_owner='%s'",$url, $phpgw_info["user"]["account_id"]);
-        $db->query($query,__LINE__,__FILE__);
+			// Does the bookmark already exist?
+			$query = sprintf("select count(*) from phpgw_bookmarks where bm_url='%s' and bm_owner='%s'",$url, $phpgw_info["user"]["account_id"]);
+			$db->query($query,__LINE__,__FILE__);
 
-        if ($db->f(0)) {
-           $error_msg .= sprintf("<br>URL <B>%s</B> already exists!", $url);
-           return False;
-        }
+			if ($db->f(0))
+			{
+				$error_msg .= sprintf('<br>URL <B>%s</B> already exists!', $url);
+				return False;
+			}
 
-				if (ereg('^[0-9]+',$access))
-				{
-					$groups[] = $access;
-					$access   = 'group';
-				}
-				if ($access != "private" && $access != "public")
-				{
-					$access = $phpgw->common->array_to_string($access,$groups);
-				}
+			if (! $access)
+			{
+				$access = 'public';
+			}
 
-        // Insert the bookmark
-        $query = sprintf("insert into phpgw_bookmarks (bm_url, bm_name, bm_desc, bm_keywords, bm_category,"
+			// Insert the bookmark
+			$query = sprintf("insert into phpgw_bookmarks (bm_url, bm_name, bm_desc, bm_keywords, bm_category,"
                        . "bm_subcategory, bm_rating, bm_owner, bm_access, bm_info, bm_visits) "
                        . "values ('%s', '%s', '%s','%s',%s,%s,%s, '%s', '%s','%s,0,0',0)", 
                           $url, addslashes($name), addslashes($ldesc), addslashes($keywords), 
-                          $category, $subcategory, $rating, $phpgw_info["user"]["account_id"], $access,
+                          $category, $subcategory, $rating, $phpgw_info['user']['account_id'], $access,
                           time());
     
-        $db->query($query,__LINE__,__FILE__);
+			$db->query($query,__LINE__,__FILE__);
 
-  //    $maintain_url = "maintain.php?id=".$id;
-        $msg .= "Bookmark created sucessfully.";
+			//$maintain_url = "maintain.php?id=".$id;
+			$msg .= 'Bookmark created sucessfully.';
 
-        // Update the PHPLIB user variable that keeps track of how
-        // many bookmarks this user has.
-        // NOTE: I need to move this into appsessions
-        $this->update_user_total_bookmarks($phpgw_info["user"]["account_id"]);
-    
-        return true;
-    }
+			// Update the PHPLIB user variable that keeps track of how
+			// many bookmarks this user has.
+			// NOTE: I need to move this into appsessions
+			$this->update_user_total_bookmarks($phpgw_info['user']['account_id']);
 
-    function update($id, $url, $name, $ldesc, $keywords, $category, $subcategory, $rating, $public)
-    {
-       global $error_msg, $msg, $bookmarker, $validate, $phpgw_info, $added, $visted, $phpgw;
+			return true;
+	}
+
+	function update($id, $url, $name, $ldesc, $keywords, $category, $subcategory, $rating, $access)
+	{
+		global $error_msg, $msg, $bookmarker, $validate, $phpgw_info, $phpgw;
 
 /*       if (!$this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory,
                         &$rating, &$public, &$public_db)) {
           return False;
        } */
 
-       if ($visted == 1) {
-          $visted = 0;
-       }
+		if (! $access)
+		{
+			$access = 'public';
+		}
 
-       $timestamps = sprintf("%s,%s,%s",$added,$visted,time());
-   
-       // Update bookmark information.
-       $query = sprintf("update phpgw_bookmarks set bm_url='%s', bm_name='%s', bm_desc='%s', "
+		if ($visted == 1)
+		{
+			$visted = 0;
+		}
+
+		$phpgw->db->query("select bm_info from phpgw_bookmarks where bm_id='$id'",__LINE__,__FILE__);
+		$phpgw->db->next_record();
+		$ts = explode(',',$phpgw->db->f('bm_info'));
+
+		$timestamps = sprintf('%s,%s,%s',$ts[0],$ts[1],time());
+
+		// Update bookmark information.
+		$query = sprintf("update phpgw_bookmarks set bm_url='%s', bm_name='%s', bm_desc='%s', "
                       . "bm_keywords='%s', bm_category='%s', bm_subcategory='%s', bm_rating='%s',"
-                      . "bm_info='%s' where bm_id='%s' and bm_owner='%s'", 
+                      . "bm_info='%s', bm_access='%s' where bm_id='%s'", 
                          $url, addslashes($name), addslashes($ldesc), addslashes($keywords), 
-                         $category, $subcategory, $rating, $public_db, $timestamps, $id, $phpgw_info["user"]["account_id"]);
-   
-       $phpgw->db->query($query,__LINE__,__FILE__);
-   
-       $msg .= "Bookmark changed sucessfully.";
-    
-       // Update the PHPLIB user variable that keeps track of how
-       // many bookmarks this user has.
-       // NOTE: This needs to be moved into appsessions
-       $this->update_user_total_bookmarks($phpgw_info["user"]["acount_id"]);
-   
-       return true;
-    }
+                         $category, $subcategory, $rating, $timestamps, $access, $id);
+
+		$phpgw->db->query($query,__LINE__,__FILE__);
+
+		$msg .= lang('Bookmark changed sucessfully');
+
+		// Update the PHPLIB user variable that keeps track of how
+		// many bookmarks this user has.
+		// NOTE: This needs to be moved into appsessions
+		//$this->update_user_total_bookmarks($phpgw_info["user"]["acount_id"]);
+
+		return true;
+	}
 
     function delete($id)
     {

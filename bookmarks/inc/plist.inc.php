@@ -140,7 +140,7 @@
 //                               MAIL_THIS_LINK_URL => $phpgw->link("maillink.php","id=".$phpgw->db->f("id")),
                                BOOKMARK_USERNAME  => $phpgw->db->f("bm_owner"),
                                BOOKMARK_ID        => $phpgw->db->f("bm_id"),
-                               BOOKMARK_URL       => $phpgw->link("/bookmarks/redirect.php","url=" . urlencode($phpgw->db->f("bm_url")) ."&bm_id=" . $phpgw->db->f("bm_id")),
+                               BOOKMARK_URL       => $phpgw->link('/bookmarks/redirect.php','bm_id=' . $phpgw->db->f('bm_id')),
                                BOOKMARK_RATING    => htmlspecialchars(stripslashes($phpgw->db->f("bm_rating"))),
                                BOOKMARK_RATING_ID => $phpgw->db->f("bm_rating"),
                                BOOKMARK_NAME      => htmlspecialchars(stripslashes($phpgw->db->f("bm_name"))),

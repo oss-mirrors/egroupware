@@ -37,6 +37,9 @@
 	echo '<a href="' . $phpgw->link('/bookmarks/preferences.php')
 		. '">' . lang('Bookmark preferences') . '</a>';
 
+	echo '<br><a href="' . $phpgw->link('/preferences/acl_preferences.php','acl_app=bookmarks')
+		. '">' . lang('Grant Bookmark access') . '</a>';
+
 	echo '<br><a href="' . $phpgw->link('/bookmarks/categories.php','type=category')
 		. '">' . lang('Bookmark categorys') . '</a>';
 

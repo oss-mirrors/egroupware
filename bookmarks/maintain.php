@@ -49,9 +49,9 @@
      switch ($key) {
 
      ## Change bookmark
-     case "bk_edit":
+//     case "bk_edit":
      case "bk_edit_x":
-     if (!$bmark->update($id, $url, $name, $ldesc, $keywords, $bookmarks_category, $bookmarks_subcategory, $bookmarks_rating, $access, $groups)) break;
+     if (!$bmark->update($bm_id, $url, $name, $desc, $keyw, $bookmarks_category, $bookmarks_subcategory, $bookmarks_rating, $access)) break;
 
      return_to();
      break;
@@ -115,7 +115,7 @@
         
      $phpgw->template->parse("info","info");
       
-     $phpgw->template->set_var("form_action",$phpgw->link());
+     $phpgw->template->set_var("form_action",$phpgw->link('/bookmarks/maintain.php','bm_id=' . $bm_id));
      $phpgw->template->set_var("lang_url",lang("URL"));
      $phpgw->template->set_var("lang_name",lang("Name"));
      $phpgw->template->set_var("lang_desc",lang("Description"));
@@ -125,7 +125,9 @@
      $phpgw->template->set_var("lang_subcategory",lang("Sub Category"));
      $phpgw->template->set_var("lang_rating",lang("Rating"));
         
-     $phpgw->template->set_var("lang_access",lang("Access"));
+		$phpgw->template->set_var('lang_access',lang('Private'));
+		$phpgw->template->set_var('input_access','<input type="checkbox" name="access" value="private"' . ($bm_access=='private'?' checked':'') . '>');
+
      $phpgw->template->set_var("input_rating",$rating_select);
   
      $phpgw->template->set_var("input_category",'<select name="bookmarks_category">'

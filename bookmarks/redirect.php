@@ -19,8 +19,9 @@
 	);
 	include('../header.inc.php');
 
-	$phpgw->db->query("select bm_info from phpgw_bookmarks where bm_id='$bm_id'",__LINE__,__FILE__);
+	$phpgw->db->query("select bm_info, bm_url from phpgw_bookmarks where bm_id='$bm_id'",__LINE__,__FILE__);
 	$phpgw->db->next_record();
+	$url = $phpgw->db->f('bm_url');
 
 	$ts = explode(",",$phpgw->db->f("bm_info"));
 	$newtimestamp = sprintf("%s,%s,%s",$ts[0],time(),$ts[2]);

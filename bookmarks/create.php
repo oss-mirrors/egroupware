@@ -19,8 +19,6 @@
 		'enable_categories_class' => True
 	);
 	include('../header.inc.php');
-  
-	$phpgw->sbox = createobject('phpgwapi.sbox');
 
 	$phpgw->template->set_file(array(
 		'common'             => 'common.tpl',
@@ -114,7 +112,7 @@
 	$phpgw->template->set_var('lang_name',lang('Name'));
 	$phpgw->template->set_var('lang_desc',lang('Description'));
 	$phpgw->template->set_var('lang_keywords',lang('Keywords'));
-	$phpgw->template->set_var('lang_access',lang('Access'));
+	$phpgw->template->set_var('lang_access',lang('Private'));
 	$phpgw->template->set_var('lang_category',lang('Category'));
 	$phpgw->template->set_var('lang_subcategory',lang('Sub Category'));
 	$phpgw->template->set_var('lang_rating',lang('Rating'));
@@ -125,8 +123,23 @@
 	$phpgw->template->set_var('input_desc','<textarea name="desc" rows="3" cols="60" wrap="virtual">' . $desc . '</textarea>');
 	$phpgw->template->set_var('input_keywords','<input type="text" name="keyw" size="60" maxlength="255" value="' . $keyw . '">');
 
-	$phpgw->template->set_var('input_access',$phpgw->sbox->getAccessList('access') . "&nbsp;"
-                                         . $phpgw->sbox->getGroups($phpgw->accounts->memberships($phpgw_info['user']['account_id']),-1,'groups'));
+	if ($create)
+	{
+		if ($access)
+		{
+			$checked = ' checked';
+		}
+		else
+		{
+			$checked = '';
+		}
+	}
+	else
+	{
+		$checked = ' checked';
+	}
+
+	$phpgw->template->set_var('input_access','<input type="checkbox" name="access" value="private"' . $checked . '>');
 
 	$phpgw->template->set_var('delete_link','');
 	$phpgw->template->set_var('cancel_link','');
