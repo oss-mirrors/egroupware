@@ -45,6 +45,7 @@
 		function boprojecthours($session=False)
 		{
 			$this->soprojecthours	= CreateObject('projects.soprojecthours');
+			$this->boprojects		= CreateObject('projects.boprojects');
 
 			if ($session)
 			{
@@ -149,7 +150,7 @@
 				$error[] = lang('You have entered an ending invalid date !');
 			}
 
-			$activity = $this->boprojects->read_single_activity($values['activity']);
+			$activity = $this->boprojects->read_single_activity($values['activity_id']);
 
 			if (! is_array($activity))		
 			{

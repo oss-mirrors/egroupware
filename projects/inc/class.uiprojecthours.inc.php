@@ -36,7 +36,8 @@
 		var $public_functions = array
 		(
 			'list_hours'	=> True,
-			'add_hours'		=> True
+			'add_hours'		=> True,
+			'edit_hours'	=> True
 		);
 
 		function uiprojecthours()
@@ -248,7 +249,7 @@
 
 				$ampm = 'am';
 
-				$start_date = $hours[$i]['start_date'];
+				$start_date = $hours[$i]['sdate'];
 				if ($start_date == 0)
 				{
 					$start_dateout = '&nbsp;';
@@ -267,7 +268,7 @@
 					$start_timeout = $GLOBALS['phpgw']->common->formattime($shour,$smin);
 				}
 
-				$end_date = $hours[$i]['end_date'];
+				$end_date = $hours[$i]['edate'];
 				if ($end_date == 0) { $end_timeout = '&nbsp;'; }
 				else
 				{
@@ -303,8 +304,9 @@
 				{
 					if ($this->boprojects->check_perms($this->grants[$hours[$i]['employee']],PHPGW_ACL_EDIT) || $hours[$i]['employee'] == $this->account)
 					{
-						$this->t->set_var('edit',$GLOBALS['phpgw']->link('/projects/hours_edithour.php','id=' . $hours[$i]['id'] . '&pro_parent=' . $pro[0]['parent']
-													. '&filter=' . $filter . '&order=' . $order . '&query=' . $query . '&start=' . $start . '&sort=' . $sort));
+						$link_data['menuaction'] = 'projects.uiprojecthours.edit_hours';
+						$link_data['hours_id'] = $hours[$i]['hours_id'];
+						$this->t->set_var('edit',$GLOBALS['phpgw']->link('/index.php',$link_data));
 						$this->t->set_var('lang_edit',lang('Edit'));
 					}
 				}
@@ -372,6 +374,29 @@
 			return $employee_list;
 		}
 
+		function hdate_format($hdate = '')
+		{
+			if (!$hdate)
+			{
+				$dateval['month'] = date('m',time());
+				$dateval['day'] = date('d',time()); 
+				$dateval['year'] = date('Y',time());
+				$dateval['hour'] = date('H',time());
+				$dateval['min'] = date('i',time());
+			}
+			else
+			{
+				$dateval['month'] = date('m',$hdate);
+				$dateval['day'] = date('d',$hdate);
+				$dateval['year'] = date('Y',$hdate);
+				$dateval['hour'] = date('H',$hdate);
+				$dateval['min'] = date('i',$hdate);
+			}
+
+
+			return $dateval;
+		}
+
 		function add_hours()
 		{
 			global $project_id, $values, $submit;
@@ -384,6 +409,7 @@
 
 			if ($submit)
 			{
+				$values['project_id'] = $project_id;
 				$error = $this->boprojecthours->check_values($values);
 				if (is_array($error))
 				{
@@ -414,55 +440,43 @@
 				$currency = $this->boprojects->get_prefs();
 			}
 
-			$link_data['menuaction'] = 'projects.uiprojects.add_hours';
+			$link_data['menuaction'] = 'projects.uiprojecthours.add_hours';
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('lang_action',lang('Add project hours'));
 
-			$this->t->set_var('project_name',$this->boprojects->return_value($project_id));
+			$values['project_id'] = $project_id;
+			$this->t->set_var('project_name',$this->boprojects->return_value($values['project_id']));
 
-			$this->t->set_var('activity_list',$this->boprojects->select_hours_activities($project_id, $values['activity_id']));
+			$this->t->set_var('activity_list',$this->boprojects->select_hours_activities($values['project_id'], $values['activity_id']));
 
-			$values['amsel'] = ' checked'; $values['pmsel'] = '';
+			$sdate = $this->hdate_format($values['sdate']);
 
-			if (!$values['sdate'])
-			{
-				$values['smonth'] = date('m',time());
-				$values['sday'] = date('d',time()); 
-				$values['syear'] = date('Y',time());
-				$values['shour'] = date('H',time());
-				$values['smin'] = date('i',time());
-			}
-			else
-			{
-				$values['smonth'] = date('m',$values['sdate']);
-				$values['sday'] = date('d',$values['sdate']);
-				$values['syear'] = date('Y',$values['sdate']);
-				$values['shour'] = date('H',$values['sdate']);
-				$values['smin'] = date('i',$values['sdate']);
-			}
+			$this->t->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$sdate['year']),
+																			$this->sbox->getMonthText('values[smonth]',$sdate['month']),
+																			$this->sbox->getDays('values[sday]',$sdate['day'])));
 
-			$this->t->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$values['syear']),
-																							$this->sbox->getMonthText('values[smonth]',$valuessmonth),
-																							$this->sbox->getDays('values[sday]',$values['sday'])));
+			$amsel = ' checked';
+			$pmsel = '';
 
 			if ($GLOBALS['phpgw_info']['user']['preferences']['common']['timeformat'] == '12')
 			{
-				if ($values['shour'] >= 12)
+				if ($sdate['hour'] >= 12)
 				{
-					$values['amsel'] = ''; $values['pmsel'] = ' checked'; 
-					if ($values['shour'] > 12)
+					$amsel = '';
+					$pmsel = ' checked'; 
+					if ($sdate['hour'] > 12)
 					{
-						$values['shour'] = $values['shour'] - 12;
+						$sdate['hour'] = $sdate['hour'] - 12;
 					}
 				}
 
-				if ($values['shour'] == 0)
+				if ($sdate['hour'] == 0)
 				{
-					$values['shour'] = 12;
+					$sdate['hour'] = 12;
 				}
 
-				$sradio = '<input type="radio" name="sampm" value="am"' . $values['amsel'] . '>am';
-				$sradio .= '<input type="radio" name="sampm" value="pm"' . $values['pmsel'] . '>pm';
+				$sradio = '<input type="radio" name="values[sampm]" value="am"' . $amsel . '>am';
+				$sradio .= '<input type="radio" name="values[sampm]" value="pm"' . $pmsel . '>pm';
 				$this->t->set_var('sradio',$sradio);
 			}
 			else
@@ -470,49 +484,34 @@
 				$this->t->set_var('sradio','');
 			}
 
-			$this->t->set_var('shour',$values['shour']);
-			$this->t->set_var('smin',$values['smin']);
+			$this->t->set_var('shour',$sdate['hour']);
+			$this->t->set_var('smin',$sdate['min']);
 
-			if (!$values['edate'])
-			{
-				$values['emonth'] = date('m',time());
-				$values['eday'] = date('d',time());
-				$values['eyear'] = date('Y',time());
-				$values['ehour'] = date('H',time());
-				$values['emin'] = date('i',time());
-			}
-			else
-			{
-				$values['emonth'] = date('m',$values['edate']);
-				$values['eday'] = date('m',$values['edate']);
-				$values['eyear'] = date('Y',$values['edate']);
-				$values['ehour'] = date('H',$values['edate']);
-				$values['emin'] = date('i',$values['edate']);
-			}
+			$edate = $this->hdate_format($values['edate']);
 
-			$this->t->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$values['eyear']),
-																				$this->sbox->getMonthText('values[emonth]',$values['emonth']),
-																				$this->sbox->getDays('values[eday]',$values['eday'])));
+			$this->t->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$edate['year']),
+																		$this->sbox->getMonthText('values[emonth]',$edate['month']),
+																		$this->sbox->getDays('values[eday]',$edate['day'])));
 
 			if ($GLOBALS['phpgw_info']['user']['preferences']['common']['timeformat'] == '12')
 			{
-				if ($values['ehour'] >= 12)
+				if ($edate['hour'] >= 12)
 				{
-					$values['amsel'] = '';
-					$values['pmsel'] = ' checked';
+					$amsel = '';
+					$pmsel = ' checked';
 
-					if ($values['ehour'] > 12)
+					if ($edate['hour'] > 12)
 					{
-						$values['ehour'] = $values['ehour'] - 12;
+						$edate['hour'] = $edate['hour'] - 12;
 					}
 				}
-				if ($values['ehour'] == 0)
+				if ($edate['hour'] == 0)
 				{
-					$values['ehour'] = 12;
+					$edate['hour'] = 12;
 				}
 
-				$eradio = '<input type="radio" name="eampm" value="am"' . $values['amsel'] . '>am';
-				$eradio .= '<input type="radio" name="eampm" value="pm"' . $values['pmsel'] . '>pm';
+				$eradio = '<input type="radio" name="values[eampm]" value="am"' . $amsel . '>am';
+				$eradio .= '<input type="radio" name="values[eampm]" value="pm"' . $pmsel . '>pm';
 				$this->t->set_var('eradio',$eradio);
 			}
 			else
@@ -520,8 +519,8 @@
 				$this->t->set_var('eradio','');
 			}
 
-			$this->t->set_var('ehour',$values['ehour']);
-			$this->t->set_var('emin',$values['emin']);
+			$this->t->set_var('ehour',$edate['hour']);
+			$this->t->set_var('emin',$edate['min']);
 
 			$this->t->set_var('remark',$values['remark']);
 			$this->t->set_var('hours_descr',$values['hours_descr']);
@@ -543,6 +542,173 @@
 			$this->t->set_var('addhandle','');
 			$this->t->pfp('out','hours_add');
 			$this->t->pfp('addhandle','add');
+		}
+
+		function edit_hours()
+		{
+			global $project_id, $hours_id, $values, $submit, $referer;
+
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uiprojecthours.edit_hours',
+				'hours_id'		=> $hours_id,
+				'project_id'	=> $project_id,
+				'delivery_id'	=> $delivery_id,
+				'invoice_id'	=> $invoice_id
+			);
+
+			if (! $submit)
+			{
+				$referer = $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] ? $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] : $GLOBALS['HTTP_REFERER'];
+			}
+
+			if (!$hours_id)
+			{
+				Header('Location: ' . $referer);
+			}
+
+			if ($submit)
+			{
+				$values['hours_id']		= $hours_id;
+				$error = $this->boprojecthours->check_values($values);
+				if (is_array($error))
+				{
+					$this->t->set_var('message',$GLOBALS['phpgw']->common->error_list($error));
+				}
+				else
+				{
+					$this->boprojecthours->save_hours($values);
+					Header('Location: ' . $referer);
+				}
+			}
+
+			$this->display_app_header();
+
+			$this->t->set_file(array('hours_edit' => 'hours_formhours.tpl'));
+			$this->t->set_block('hours_edit','add','addhandle');
+			$this->t->set_block('hours_edit','edit','edithandle');
+
+			$this->t->set_var('doneurl',$referer);
+
+			$nopref = $this->boprojects->check_prefs();
+			if ($nopref)
+			{
+				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
+			}
+			else
+			{
+				$currency = $this->boprojects->get_prefs();
+			}
+
+			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->t->set_var('lang_action',lang('Edit project hours'));
+
+			$values = $this->boprojecthours->read_single_hours($hours_id);
+
+			$this->t->set_var('status_list',$this->status_format($values['status']));
+			$this->t->set_var('employee_list',$this->employee_format($values['employee']));
+
+			$sdate = $this->hdate_format($values['sdate']);
+
+			$this->t->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$sdate['year']),
+																			$this->sbox->getMonthText('values[smonth]',$sdate['month']),
+																			$this->sbox->getDays('values[sday]',$sdate['day'])));
+
+			$amsel = ' checked';
+			$pmsel = '';
+
+			if ($GLOBALS['phpgw_info']['user']['preferences']['common']['timeformat'] == '12')
+			{
+				if ($sdate['hour'] >= 12)
+				{
+					$amsel = '';
+					$pmsel = ' checked'; 
+					if ($sdate['hour'] > 12)
+					{
+						$sdate['hour'] = $sdate['hour'] - 12;
+					}
+				}
+
+				if ($sdate['hour'] == 0)
+				{
+					$sdate['hour'] = 12;
+				}
+
+				$sradio = '<input type="radio" name="values[sampm]" value="am"' . $amsel . '>am';
+				$sradio .= '<input type="radio" name="values[sampm]" value="pm"' . $pmsel . '>pm';
+				$this->t->set_var('sradio',$sradio);
+			}
+			else
+			{
+				$this->t->set_var('sradio','');
+			}
+
+			$this->t->set_var('shour',$sdate['hour']);
+			$this->t->set_var('smin',$sdate['min']);
+
+			$edate = $this->hdate_format($values['edate']);
+
+			$this->t->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$edate['year']),
+																		$this->sbox->getMonthText('values[emonth]',$edate['month']),
+																		$this->sbox->getDays('values[eday]',$edate['day'])));
+
+			if ($GLOBALS['phpgw_info']['user']['preferences']['common']['timeformat'] == '12')
+			{
+				if ($edate['hour'] >= 12)
+				{
+					$amsel = '';
+					$pmsel = ' checked';
+
+					if ($edate['hour'] > 12)
+					{
+						$edate['hour'] = $edate['hour'] - 12;
+					}
+				}
+				if ($edate['hour'] == 0)
+				{
+					$edate['hour'] = 12;
+				}
+
+				$eradio = '<input type="radio" name="values[eampm]" value="am"' . $amsel . '>am';
+				$eradio .= '<input type="radio" name="values[eampm]" value="pm"' . $pmsel . '>pm';
+				$this->t->set_var('eradio',$eradio);
+			}
+			else
+			{
+				$this->t->set_var('eradio','');
+			}
+
+			$this->t->set_var('ehour',$edate['hour']);
+			$this->t->set_var('emin',$edate['min']);
+
+
+			$this->t->set_var('remark',$GLOBALS['phpgw']->strip_html($values['remark']));
+			$this->t->set_var('hours_descr',$GLOBALS['phpgw']->strip_html($values['hours_descr']));
+
+			$this->t->set_var('hours',floor($values['ae_minutes']/60));
+			$this->t->set_var('minutes',($values['ae_minutes']-((floor($values['ae_minutes']/60)*60))));
+
+			$this->t->set_var('minperae',$values['minperae']);
+			$this->t->set_var('billperae',$values['billperae']);
+
+			$this->t->set_var('project_name',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value($values['project_id'])));
+
+			$this->t->set_var('activity_list',$this->boprojects->select_hours_activities($values['project_id'],$values['activity_id']));
+
+			if ($this->boprojects->check_perms($grants[$values['employee']],PHPGW_ACL_DELETE) || $values['employee'] == $this->account)
+			{
+				$this->t->set_var('delete','<form method="POST" action="' . $GLOBALS['phpgw']->link('/projects/hours_deletehour.php','id=' . $hours_id
+									. '&project_id=' . $project_id) . '"><input type="submit" value="' . lang('Delete') .'"></form>');
+			}
+			else
+			{
+				$this->t->set_var('delete','&nbsp;');
+			}
+
+			$this->t->set_var('edithandle','');
+			$this->t->set_var('addhandle','');
+			$this->t->pfp('out','hours_edit');
+			$this->t->pfp('edithandle','edit');
 		}
 	}
 ?>

@@ -31,16 +31,13 @@
 
 		function soprojecthours()
 		{
-			global $phpgw, $phpgw_info;
-
-			$this->db		= $phpgw->db;
+			$this->db		= $GLOBALS['phpgw']->db;
 			$this->db2		= $this->db;
-			$this->account	= $phpgw_info['user']['account_id'];
+			$this->account	= $GLOBALS['phpgw_info']['user']['account_id'];
 		}
 
 		function read_hours($start, $limit = True, $query = '', $filter, $sort = '', $order = '', $state, $project_id)
 		{
-			global $phpgw, $phpgw_info;
 
 /*			if ($phpgw_info['server']['db_type']=='pgsql')
 			{
@@ -87,12 +84,12 @@
 			$i = 0;
 			while ($this->db->next_record())
 			{
-				$hours[$i]['id']			= $this->db->f('id');
+				$hours[$i]['hours_id']			= $this->db->f('id');
 				$hours[$i]['project_id']	= $this->db->f('project_id');
 				$hours[$i]['hours_descr']	= $this->db->f('hours_descr');
 				$hours[$i]['status']		= $this->db->f('status');
-				$hours[$i]['start_date']	= $this->db->f('start_date');
-				$hours[$i]['end_date']		= $this->db->f('end_date');
+				$hours[$i]['sdate']			= $this->db->f('start_date');
+				$hours[$i]['edate']			= $this->db->f('end_date');
 				$hours[$i]['minutes']		= $this->db->f('minutes');
 				$hours[$i]['employee']		= $this->db->f('employee');
 				$i++;
@@ -100,27 +97,26 @@
 			return $hours;
 		}
 
-		function read_single_project($project_id)
+		function read_single_hours($hours_id)
 		{
-			$this->db->query("SELECT * from phpgw_p_projects WHERE id='$project_id'",__LINE__,__FILE__);
+			$this->db->query("SELECT * from phpgw_p_hours WHERE id='$hours_id'",__LINE__,__FILE__);
 	
 			while($this->db->next_record())
 			{
-				$project['project_id']	= $this->db->f('id');
-				$project['parent']		= $this->db->f('parent');
-				$project['number']		= $this->db->f('num');
-				$project['access']		= $this->db->f('access');
-				$project['cat']			= $this->db->f('category');
-				$project['sdate']		= $this->db->f('start_date');
-				$project['edate']		= $this->db->f('end_date');
-				$project['coordinator']	= $this->db->f('coordinator');
-				$project['customer']	= $this->db->f('customer');
-				$project['status']		= $this->db->f('status');
-				$project['descr']		= $this->db->f('descr');
-				$project['title']		= $this->db->f('title');
-				$project['budget']		= $this->db->f('budget');
+				$hours['hours_id']		= $this->db->f('id');
+				$hours['project_id']	= $this->db->f('project_id');
+				$hours['hours_descr']	= $this->db->f('hours_descr');
+				$hours['status']		= $this->db->f('status');
+				$hours['ae_minutes']	= $this->db->f('minutes');
+				$hours['sdate']			= $this->db->f('start_date');
+				$hours['edate']			= $this->db->f('end_date');
+				$hours['employee']		= $this->db->f('employee');
+				$hours['activity_id']	= $this->db->f('activity_id');
+				$hours['remark']		= $this->db->f('remark');
+				$hours['minperae']		= $this->db->f('minperae');
+				$hours['billperae']		= $this->db->f('billperae');
 			}
-			return $project;
+			return $hours;
 		}
 
 
@@ -139,48 +135,15 @@
 
 		function edit_hours($values)
 		{
-			global $phpgw;
+			$values['ae_minutes']	= $values['hours']*60+$values['minutes'];
+			$values['hours_descr']	= addslashes($values['hours_descr']);
+			$values['remark']		= addslashes($values['remark']);
 
-			if (!$values['budget'])
-			{
-				$values['budget'] = 0;
-			}
-
-			$values['descr'] = addslashes($values['descr']);
-			$values['title'] = addslashes($values['title']);
-			$values['number'] = addslashes($values['number']);
-
-			$this->db->query("update phpgw_p_projects set access='" . $values['access'] . "', category='" . $values['cat'] . "', entry_date='"
-							. time() . "', start_date='" . $values['sdate'] . "', end_date='" . $values['edate'] . "', coordinator='"
-							. $values['coordinator'] . "', customer='" . $values['customer'] . "', status='" . $values['status'] . "', descr='"
-							. $values['descr'] . "', title='" . $values['title'] . "', budget='" . $values['budget'] . "', num='"
-							. $values['number'] . "' where id='" . $values['project_id'] . "'",__LINE__,__FILE__);
-
-
-			if (count($book_activities) != 0)
-			{
-				$this->db2->query("delete from phpgw_p_projectactivities where project_id='" . $values['project_id']
-								. "' and billable='N'",__LINE__,__FILE__);
-
-				while($activ=each($book__activities))
-				{
-					$this->db->query("insert into phpgw_p_projectactivities (project_id, activity_id, billable) values ('" . $values['project_id']
-									. "','$activ[1]','N')",__LINE__,__FILE__);
-				}
-			}
-
-
-			if (count($bill_activities) != 0)
-			{
-				$this->db2->query("delete from phpgw_p_projectactivities where project_id='" . $values['project_id']
-								. "' and billable='Y'",__LINE__,__FILE__);
-
-				while($activ=each($bill_activities))
-				{
-					$phpgw->db->query("insert into phpgw_p_projectactivities (project_id, activity_id, billable) values ('" . $values['project_id']
-									. "','$activ[1]','Y')",__LINE__,__FILE__);
-				}
-			}
+			$this->db->query("UPDATE phpgw_p_hours SET activity_id='" . $values['activity_id'] . "',entry_date='" . time() . "',start_date='"
+							. $values['sdate'] . "',end_date='" . $values['edate'] . "',hours_descr='" . $values['hours_descr'] . "',remark='"
+							. $values['remark'] . "',minutes='" . $values['ae_minutes'] . "',status='" . $values['status'] . "',minperae='"
+							. $values['minperae'] . "',billperae='" . $values['billperae'] . "',employee='" . $values['employee']
+							. "' where id='" . $values['hours_id'] . "'",__LINE__,__FILE__);
 		}
 
 		function return_value($item)
