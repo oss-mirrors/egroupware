@@ -1,3 +1,4 @@
+actions	polls	pl	Akcje
 add answer to poll	polls	pl	Dodawanie odpowiedzi
 add answers	polls	pl	Dodaj odpowied¼
 add new poll question	polls	pl	Dodawanie nowych pyta
@@ -9,6 +10,7 @@ answer has been updated	polls	pl	Zaktualizowano odpowied¼
 answers	polls	pl	Odpowiedzi
 are you sure want to delete this answer ?	polls	pl	Na pewno usun±æ odpowied¼?
 are you sure want to delete this question ?	polls	pl	Na pewno usun±æ pytanie?
+current poll	polls	pl	Aktywne g³osowanie
 edit answer	polls	pl	Edycja odpowiedzi
 edit poll question	polls	pl	Edycja pytania
 enter poll question	polls	pl	Wpisz pytanie
@@ -24,6 +26,7 @@ show answers	polls	pl	Poka¿ odpowiedzi
 show questions	common	pl	Poka¿ pytania
 total votes	polls	pl	Wszystkich g³osów
 view poll	polls	pl	Wy¶wietl g³osowania
+view results	polls	pl	Zobacz rezultaty
 vote	polls	pl	G³osuj
 voting booth admin	admin	pl	G³osowania
 voting booth administration	polls	pl	Administracja g³osowaniami
