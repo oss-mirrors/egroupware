@@ -621,6 +621,12 @@
 						// as for 7-bit vs. 8-bit, we prefer to leave body chars as-is and send out as 8-bit mail
 						// Later Note: see RFCs 2045-2049 for what MTA's (note "T") can and can not handle
 						$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
+
+						// if we got a useful charset, convert
+						$charset = get_var('charset',array('GET'));
+						if ($charset != 'unknown') {
+							$body = $GLOBALS['phpgw']->translation->convert($body,$charset);
+						}
 					}
 				}
 				elseif ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'forward')

@@ -850,6 +850,16 @@ $msg_headers->udate = $new_time;
 				&& ($first_presentable == '')
 				&& ($this->part_nice[$i]['bytes'] > 5))
 				{
+					// get Charset of this part
+					$charset = 'unknown';
+					if(is_array($this->part_nice[$i]['params'])) {
+						foreach($this->part_nice[$i]['params'] as $param) {
+							if ($param['attribute'] == 'charset') {
+								$charset = $param['value'];
+								break;
+							}
+						}
+					}
 					$first_presentable = '&msgball[part_no]='.$this->part_nice[$i]['m_part_num_mime'];
 					// and if it is qprint then we must decode in the reply process
 					if (stristr($this->part_nice[$i]['m_keywords'], 'qprint'))
@@ -870,6 +880,7 @@ $msg_headers->udate = $new_time;
 						// then we must decode in the reply process
 						$first_presentable = $first_presentable .'&subtype=html';
 					}
+					$first_presentable = $first_presentable . '&charset=' . $charset;
 					break;
 				}
 			}
@@ -1240,6 +1251,18 @@ $msg_headers->udate = $new_time;
 				$this->part_nice[$i]['display_str'] = '';
 				$this->part_nice[$i]['message_body'] = '';
 				
+				// get Charset for this Part
+				$charset = 'unknown';
+				if(is_array($this->part_nice[$i]['params'])) {
+					foreach($this->part_nice[$i]['params'] as $param) {
+						if ($param['attribute'] == 'charset') {
+							$charset = $param['value'];
+							break;
+						}
+					}
+				}
+				if ($this->debug > 2) { $this->msg->dbug->out('email.bomessage.message_data('.__LINE__.'): d_loop: Charset for part ' . $i . ': ' . $charset . ' <br>'); }
+
 				// ----  DISPLAY ANALYSIS AND FILL LOOP  ----
 				// some lame servers do not give any mime data out
 				if ((count($this->part_nice) == 1) 
@@ -1292,6 +1315,9 @@ $msg_headers->udate = $new_time;
 					$this_msgball['part_no'] = $this->part_nice[$i]['m_part_num_mime'];
 					$dsp .= $GLOBALS['phpgw']->msg->phpgw_fetchbody($this_msgball);
 					
+					if ($charset != 'unknown') {
+						$dsp = $GLOBALS['phpgw']->translation->convert($dsp,$charset);
+					}
 					$this->part_nice[$i]['message_body'] = $dsp;
 					
 					
@@ -1579,6 +1605,9 @@ $msg_headers->udate = $new_time;
 					// add the warn level to the display_str
 					$this->part_nice[$i]['display_str'] .= ' '.$this->part_nice[$i]['d_threat_level'];
 					//$GLOBALS['phpgw']->template->set_var('message_body',"$dsp");
+					if ($charset != 'unknown') {
+						$dsp = $GLOBALS['phpgw']->translation->convert($dsp,$charset);
+					}
 					$this->part_nice[$i]['message_body'] = "$dsp";
 					//$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
 				}
@@ -1732,6 +1761,9 @@ $msg_headers->udate = $new_time;
 						// if it deserves to be filled, this code just above here will fill it
 						// but it should not be shown in this mesage seperator bar
 						$this->part_nice[$i]['display_str'] = $display_str;
+						if ($charset != 'unknown') {
+							$dsp = $GLOBALS['phpgw']->translation->convert($dsp,$charset);
+						}
 						$this->part_nice[$i]['message_body'] = $dsp;
 						
 						// add the warn level to the display_str

@@ -4712,7 +4712,8 @@
 				{
 					$decoded = urldecode(base64_decode($encoded_text));
 				}
-				return $preceding . $decoded . $this->decode_header_string($rest);
+				$converted = $GLOBALS['phpgw']->translation->convert($decoded,$charset);
+				return $preceding . $converted . $this->decode_header_string($rest);
 			} 
 			else
 			{
