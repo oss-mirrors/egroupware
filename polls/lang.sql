@@ -16,4 +16,9 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('poll question','p
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('allow users to vote more then once','polls','en','Allow users to vote more then once');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('select current poll','polls','en','Select current poll');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('view poll','polls','en','View poll');
-
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('voting booth administration','polls','en','Voting booth administration');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('show questions','polls','en','Show questions');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('show answers','polls','en','Show answers');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('add answers','polls','en','Add answers');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('add questions','polls','en','Add questions');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('poll settings','polls','en','Poll settings');
