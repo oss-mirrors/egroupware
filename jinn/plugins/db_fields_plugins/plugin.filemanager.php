@@ -211,7 +211,6 @@
 			$num_input=10;
 		 }
 
-
 			$field_string = "'".$field_name."'";
 
 			if (is_array($value) && count($value)>0)
@@ -219,6 +218,7 @@
 			   $i=0;
 
 			   $max_prev=$local_bo->read_preferences('max_prev');
+			   if($max_prev == '') $max_prev = -1; //default we want to see all preview images
 
 			   foreach($value as $img_path)
 			   {
@@ -257,22 +257,26 @@
 						   {
 							  if($thumblink)
 							  {
+									//show thumbnail if normal image is not available
 								 $input.='<a href="javascript:'.$popup.'"><img name="IMG_'.$field_name.$i.'" src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
 								 $input.='<span id="PATH_'.$field_name.$i.'"></span>';
 							  }
 							  else
 							  {
+									//show image
 								 $input.='<img name="IMG_'.$field_name.$i.'" src="'.$imglink.'" alt="preview" '.$img_style.' />';
 								 $input.='<span id="PATH_'.$field_name.$i.'"></span>';
 							  }
 						   }
 						   elseif($local_bo->read_preferences('prev_img')=='only_tn' && $thumblink)
 						   {
+									//show thumbnail
 							  $input.='<a href="javascript:'.$popup.'"><img name="IMG_'.$field_name.$i.'" src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
 							  $input.='<span id="PATH_'.$field_name.$i.'"></span>';
 						   }
 						   else
 						   {
+									//show path with link to image
 		   					  $input.='<img name="IMG_'.$field_name.$i.'" src="'.$spacer.'" '.$spacer_style.' />';
 							  $input.='<span id="PATH_'.$field_name.$i.'"><b><a href="javascript:'.$popup.'">'.$img_path.'</a></b></span>';
 						   }
@@ -281,11 +285,13 @@
 						{
 						   if($imglink)
 						   {
+									//show path with link to image
 		   					  $input.='<img name="IMG_'.$field_name.$i.'" src="'.$spacer.'" '.$spacer_style.' />';
-								 $input.='<span id="PATH_'.$field_name.$i.'"><b><a href="javascript:'.$popup.'">'.$img_path.'</a></b></span>';
+							  $input.='<span id="PATH_'.$field_name.$i.'"><b><a href="javascript:'.$popup.'">'.$img_path.'</a></b></span>';
 						   }
 						   else
 						   {
+									//show path only
 		   					  $input.='<img name="IMG_'.$field_name.$i.'" src="'.$spacer.'" '.$spacer_style.' />';
 							  $input.='<span id="PATH_'.$field_name.$i.'"><b>'.$img_path.'</b></span>';
 						   }
@@ -445,6 +451,7 @@
 			$i=0;
 
 			$max_prev=$local_bo->read_preferences('max_prev');
+			if($max_prev == '') $max_prev = -1; //default we want to see all preview images
 
 			foreach($value as $img_path)
 			{
