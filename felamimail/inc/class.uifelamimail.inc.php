@@ -1015,6 +1015,8 @@
 						array_pop($parentStack);
 					}
 					$parent = end($parentStack);
+					// and put the current counter on top
+					array_push($parentStack, $counter);
 				}
 
 				// some special handling for the root icon
