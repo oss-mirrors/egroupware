@@ -8,6 +8,18 @@
 <center>[&nbsp;<a href="{tts_newticket_link}">{tts_newticket}</a>&nbsp;|&nbsp;<a href="{tts_changeview_link}">{tts_changeview}</a>&nbsp;]<br></center>
 <!-- END tts_links -->
 
+<!-- BEGIN tts_search -->
+<center>
+<form action="{tts_search_link}" method="POST" name="search">
+<input type="hidden" name="filter" value="search">
+<input name="searchfilter" size="60" value="{tts_searchfilter}">
+<input type="submit" value="search">
+</form>
+<b>{tts_numfound}</b>
+<br />
+</center>
+<!-- END tts_search -->
+
 <!-- BEGIN tts_list -->
 <center>{tts_numtotal}<br />{tts_numopen}</center><p />
 <center>{tts_notickets}</center>

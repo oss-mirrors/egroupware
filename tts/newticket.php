@@ -49,50 +49,48 @@
 	
 	$p->set_unknowns('remove');
 	$p->set_var('tts_newticket_link', $phpgw->link("/tts/newticket.php"));
-        $p->set_var('tts_bgcolor',$theme["th_bg"] );
-        $p->set_var('tts_textcolor', $theme["th_text"] );
-        $p->set_var('tts_lang_addnewticket', lang("Add new ticket"));
-        $p->set_var('tts_lang_group', lang("Group"));
-        $p->set_var('tts_lang_subject', lang("Subject") );
-        $p->set_var('tts_lang_nosubject', lang("No subject"));
-        $p->set_var('tts_lang_details', lang("Detail"));
-        $p->set_var('tts_lang_priority', lang("Priority"));
-        $p->set_var('tts_lang_lowest', lang("Lowest"));
-        $p->set_var('tts_lang_medium', lang("Medium"));
-        $p->set_var('tts_lang_highest', lang("Highest"));
-        $p->set_var('tts_lang_addticket', lang("Add Ticket"));
-        $p->set_var('tts_lang_clearform', lang("Clear Form"));
+	$p->set_var('tts_bgcolor',$theme["th_bg"] );
+	$p->set_var('tts_textcolor', $theme["th_text"] );
+	$p->set_var('tts_lang_addnewticket', lang("Add new ticket"));
+	$p->set_var('tts_lang_group', lang("Group"));
+	$p->set_var('tts_lang_subject', lang("Subject") );
+	$p->set_var('tts_lang_nosubject', lang("No subject"));
+	$p->set_var('tts_lang_details', lang("Detail"));
+	$p->set_var('tts_lang_priority', lang("Priority"));
+	$p->set_var('tts_lang_lowest', lang("Lowest"));
+	$p->set_var('tts_lang_medium', lang("Medium"));
+	$p->set_var('tts_lang_highest', lang("Highest"));
+	$p->set_var('tts_lang_addticket', lang("Add Ticket"));
+	$p->set_var('tts_lang_clearform', lang("Clear Form"));
 
-		$groups = CreateObject('phpgwapi.accounts');
-		$group_list = $groups->get_list('groups');
-		while (list($key,$entry) = each($group_list))
-		{
-    		    $p->set_var('tts_account_lid', $entry['account_lid']);
-    		    $p->set_var('tts_account_name', $entry['account_lid']);
-		    $p->set_var('tts_categoryselected', $entry_selected[$entry['account_lid']]);
-		    $p->parse('tts_new_lstcategories','tts_new_lstcategory',true);
-		}
+	$groups = CreateObject('phpgwapi.accounts');
+	$group_list = $groups->get_list('groups');
+	while (list($key,$entry) = each($group_list))
+	{
+		$p->set_var('tts_account_lid', $entry['account_lid']);
+		$p->set_var('tts_account_name', $entry['account_lid']);
+		$p->set_var('tts_categoryselected', $entry_selected[$entry['account_lid']]);
+		$p->parse('tts_new_lstcategories','tts_new_lstcategory',true);
+	}
             
-        $p->set_var('tts_lang_assignto', lang("assign to"));
+	$p->set_var('tts_lang_assignto', lang("assign to"));
+	$accounts = CreateObject('phpgwapi.accounts',$group_id);
+	$account_list = $accounts->get_list('accounts');
 
-		$accounts = CreateObject('phpgwapi.accounts',$group_id);
-		$account_list = $accounts->get_list('accounts');
-
-		$p->set_var('tts_account_lid', "none" );
-		$p->set_var('tts_account_name', lang("none"));
-		$p->parse('tts_new_lstassigntos','tts_new_lstassignto',false);
+	$p->set_var('tts_account_lid', "none" );
+	$p->set_var('tts_account_name', lang("none"));
+	$p->parse('tts_new_lstassigntos','tts_new_lstassignto',false);
 		
-		while (list($key,$entry) = each($account_list))
+	while (list($key,$entry) = each($account_list))
+	{
+		if ($entry['account_lid'])
 		{
-			if ($entry['account_lid'])
-			{
     			$p->set_var('tts_account_lid', $entry['account_lid']);
     			$p->set_var('tts_account_name', $entry['account_lid']);
-		        $p->set_var('tts_assignedtoselected', $account_selected[$entry['account_lid']]);
-			}
-			$p->parse('tts_new_lstassigntos','tts_new_lstassignto',true);
+			$p->set_var('tts_assignedtoselected', $account_selected[$entry['account_lid']]);
 		}
-
+		$p->parse('tts_new_lstassigntos','tts_new_lstassignto',true);
+	}
 
 	// Choose the correct priority to display
 	// $prority_selected[$phpgw->db->f("t_priority")] = " selected";

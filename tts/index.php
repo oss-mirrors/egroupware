@@ -27,6 +27,7 @@
 	
 	$p->set_block('index',	'tts_title',  'tts_title');
 	$p->set_block('index', 'tts_links', 'tts_links');
+	$p->set_block('index', 'tts_search', 'tts_search');
 	$p->set_block('index', 'tts_list', 'tts_list');
 	$p->set_block('index', 'tts_row', 'tts_row');
 	$p->set_block('index', 'tts_col_ifviewall', 'tts_col_ifviewall');
@@ -36,6 +37,7 @@
 
 	$p->set_var('tts_appname', lang("Trouble Ticket System"));
 	$p->set_var('tts_newticket_link', $phpgw->link("/tts/newticket.php"));
+	$p->set_var('tts_search_link', $phpgw->link("/tts/index.php"));
 	$p->set_var('tts_newticket', lang("New ticket"));
 	$p->set_var('tts_head_status',"");
 	$p->set_var('tts_notickets',"");
@@ -48,7 +50,8 @@
 	}
 	if ($filter == "search") 
 	{
-//		$filtermethod = "where t_detail like '%".$searchfilter."%' or t_detail like '%".$searchfilter."%';
+		$filtermethod = "where t_detail like '%".addslashes($searchfilter)."%'";
+		$p->set_var('tts_searchfilter',addslashes($searchfilter));
 	}
 
 	if (!$sort)
@@ -64,16 +67,28 @@
 	$phpgw->db->next_record();
 	$numtotal = $phpgw->db->f('0') ;
 
-	$phpgw->db->query("SELECT t_id FROM ticket where t_timestamp_closed='0'");
-	$numopen = $phpgw->db->num_rows();
+	$phpgw->db->query("SELECT COUNT('t_id') FROM ticket where t_timestamp_closed='0'");
+	$phpgw->db->next_record();
+	$numopen = $phpgw->db->f('0') ;
 
 	$p->set_var('tts_numtotal',lang("Tickets total x",$numtotal));
 	$p->set_var('tts_numopen',lang("Tickets open x",$numopen));
 
 	$phpgw->db->query("select t_id,t_category,t_priority,t_assignedto,t_timestamp_opened,t_user,t_timestamp_closed,t_subject,t_watchers "
 		. "from ticket $filtermethod $sortmethod");
+	$numfound = $phpgw->db->num_rows();
 
-	if ($filter == "viewall")
+	if ($filter == "search") 
+	{
+		$filtermethod = "where t_detail like '%".addslashes($searchfilter)."%'";
+		$p->set_var('tts_searchfilter',addslashes($searchfilter));
+		$p->set_var('tts_numfound',lang("Tickets found x",$numfound));
+	} else {
+		$p->set_var('tts_searchfilter',"");
+		$p->set_var('tts_numfound',"");
+	}
+
+	if ($filter != "viewopen")
 	{
 	    $p->set_var('tts_changeview_link', $phpgw->link("/tts/index.php"));
 	    $p->set_var('tts_changeview', lang("View only open tickets"));
@@ -95,7 +110,7 @@
 	$p->set_var('tts_head_assignedto', $phpgw->nextmatchs->show_sort_order($sort,"t_assignedto",$order,"/tts/index.php",lang("Assigned to")));
 	$p->set_var('tts_head_openedby', $phpgw->nextmatchs->show_sort_order($sort,"t_user",$order,"/tts/index.php",lang("Opened by")));
 	$p->set_var('tts_head_dateopened', $phpgw->nextmatchs->show_sort_order($sort,"t_timestamp_opened",$order,"/tts/index.php",lang("Date opened")));
-        if ($filter == "viewall") {
+        if ($filter != "viewopen") {
     	  $p->set_var('tts_head_dateclosed', $phpgw->nextmatchs->show_sort_order($sort,"t_timestamp_closed",$order,"/tts/index.php",lang("Status/Date closed")));
 	  $p->parse('tts_head_status','tts_head_ifviewall',false);
 	}
@@ -125,7 +140,7 @@
 			default: $tr_color = $phpgw_info["theme"]["bg_color"];
 		}
 
-		if ($filter=="viewall" && $phpgw->db->f("t_timestamp_closed")) { $tr_color = $phpgw_info["theme"]["th_bg"]; /*"#CCCCCC";*/}
+		if ($filter!="viewopen" && $phpgw->db->f("t_timestamp_closed")) { $tr_color = $phpgw_info["theme"]["th_bg"]; /*"#CCCCCC";*/}
 		$t_watchers=explode(":",$phpgw->db->f("t_watchers"));
 		if (in_array( $phpgw_info["user"]["userid"], $t_watchers)) {$t_read=1;} else { $t_read=0;}
 				
@@ -157,7 +172,7 @@
 			$p->set_var('tts_t_timestampclosed', $timestampclosed);
 			$p->parse('tts_col_status','tts_col_ifviewall',false);
 		}
-		elseif ($filter == "viewall")
+		elseif ($filter != "viewopen")
 		{
 			if ( $phpgw->db->f("t_assignedto") == "none" )
 			{
