@@ -230,7 +230,7 @@
 				$this->template->set_var($pre_var);
 				$this->template->set_var('THREAD_IMG',$GLOBALS['phpgw']->common->image('forum','thread'));
 
-				while(list($key,$thread) = each($thread_listing))
+				while($thread_listing && list($key,$thread) = each($thread_listing))
 				{
 					$GLOBALS['tr_color'] = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($GLOBALS['tr_color']);
 					
@@ -273,7 +273,7 @@
 				$this->template->set_block('NORMAL','NormalThreads','NormalT');
 				$this->template->set_var($pre_var);
 
-				while(list($key,$thread) = each($thread_listing))
+				while($thread_listing && list($key,$thread) = each($thread_listing))
 				{
 					$GLOBALS['tr_color'] = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($GLOBALS['tr_color']);
 
