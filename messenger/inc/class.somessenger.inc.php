@@ -96,7 +96,7 @@
 
 			if(!ereg('^[0-9]+$',$message['to']))
 			{
-				$message['to'] = $GLOBALS['phpgw']->accounts->name2id($message['to'],'u');
+				$message['to'] = $GLOBALS['phpgw']->accounts->name2id($message['to'],'account_lid');
 			}
 
 			$this->db->query('INSERT INTO ' . $this->table . ' (message_owner, message_from, message_status, '
