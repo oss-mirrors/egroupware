@@ -54,10 +54,16 @@
 
 		function editServer($_serverid='', $_pagenumber='')
 		{
-			global $phpgw, $phpgw_info, $serverid, $pagenumber;
+			global $phpgw, $phpgw_info, $serverid, $pagenumber, $HTTP_GET_VARS;
 			
 			if(!empty($_serverid)) $serverid=$_serverid;
 			if(!empty($_pagenumber)) $pagenumber=$_pagenumber;
+			
+			if ($HTTP_GET_VARS['nocache'] == '1')
+			{
+				print "no cache<br>";
+				$ldapData = $this->boqmailldap->getLDAPData($serverid);
+			}
 
 			$menu = array
 			(
@@ -124,10 +130,40 @@
 			switch($pagenumber)
 			{
 				case "0":
-					$this->t->set_var('rcpt_selectbox',
-						"<b>".lang("We don't accept any email!")."</b>");
-					$this->t->set_var('locals_selectbox',
-						"<b>".lang("We don't deliver any email local!")."</b>");
+					if (count($ldapData['rcpthosts']) > 0)
+					{
+						$selectBox  = "<select size=\"10\">\n";
+						for ($i=0;$i < count($ldapData['rcpthosts']); $i++)
+						{
+							$selectBox .= "<option>".$ldapData['rcpthosts'][$i]."</option>\n";
+						}
+						$selectBox .= "</select>\n";
+						$this->t->set_var('rcpt_selectbox',$selectBox);
+					}
+					else
+					{
+						$this->t->set_var('rcpt_selectbox',
+							"<b>".lang("We don't accept any email!")."</b>");
+					}
+
+
+					if (count($ldapData['locals']) > 0)
+					{
+						$selectBox  = "<select size=\"10\">\n";
+						for ($i=0;$i < count($ldapData['locals']); $i++)
+						{
+							$selectBox .= "<option>".$ldapData['locals'][$i]."</option>\n";
+						}
+						$selectBox .= "</select>\n";
+						$this->t->set_var('locals_selectbox',$selectBox);
+					}
+					else
+					{
+						$this->t->set_var('locals_selectbox',
+							"<b>".lang("We don't deliver any email local!")."</b>");
+					}
+
+
 					break;
 					
 				case "99":
@@ -176,6 +212,7 @@
 					$linkData = array
 					(
 						'menuaction'	=> 'qmailldap.uiqmailldap.editServer',
+						'nocache'	=> '1',
 						'pagenumber'	=> '0',
 						'serverid'	=> $serverList[$i]['id']
 					);

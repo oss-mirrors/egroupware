@@ -44,6 +44,12 @@
 		{
 		}
 		
+		function getLDAPData($_serverid)
+		{
+			$data = $this->soqmailldap->getLDAPData($_serverid);
+			return $data;
+		}
+		
 		function getLDAPStorageData($_serverid)
 		{
 			$storageData = $this->soqmailldap->getLDAPStorageData($_serverid);

@@ -44,6 +44,47 @@
 			}
 		}
 		
+		function getLDAPData($_serverid)
+		{
+			global $phpgw;
+		
+			$storageData = $this->getLDAPStorageData($_serverid);
+			
+			$ldap = $phpgw->common->ldapConnect();
+			$filter = "cn=".$storageData['qmail_servername'];
+			
+			$sri = @ldap_read($ldap,$storageData['ldap_basedn'],$filter);
+			if ($sri)
+			{
+				$allValues = ldap_get_entries($ldap, $sri);
+				print "found data<br>";
+				
+				#return $data;
+			}
+			else
+			{
+				$data = array
+				(
+					'rcpthosts'	=> array
+							   (
+							   	'0' => 'vater-www.shacknet.nu',
+							   	'1' => 'phpgw.de',
+							   	'2' => 'linux-at-work.de'
+							   ),
+					'locals'	=> array
+							   (
+							   	'0' => 'vater-www.shacknet.nu',
+							   	'1' => 'phpgw.de',
+							   	'2' => 'linux-at-work.de'
+							   )
+				);
+				
+				return $data;
+				#return false;
+			}
+			
+		}
+		
 		function getServerList()
 		{
 			$query = "select id,qmail_servername,description from phpgw_qmailldap";
