@@ -18,11 +18,12 @@
 	{
 		var $so;
 		var $public_functions = array(
-			'send_message'        => True,
-			'send_global_message' => True,
-			'reply'               => True,
-			'forward'             => True,
-			'list_methods'        => True
+			'send_message'         => True,
+			'send_global_message'  => True,
+			'send_multiple_message'=> True,
+			'reply'                => True,
+			'forward'              => True,
+			'list_methods'         => True
 		);
 		var $soap_functions = array();
 		var $xmlrpc_methods = array();
@@ -123,6 +124,59 @@
 			else
 			{
 				return $this->so->send_message($message);
+			}
+		}
+
+		function send_multiple_message($message='')
+		{
+			if(!$GLOBALS['phpgw']->acl->check('run',PHPGW_ACL_READ,'messenger'))
+			{
+				return False;
+			}
+			 if(count($message['to']) == 0)
+			{
+			      $errors[] = lang('You must enter the username this message is for');
+			}
+			else
+			{   
+			      foreach($message['to'] as $to)
+			      {  
+			            $acctid = $GLOBALS['phpgw']->accounts->name2id($to);
+
+				    if(!$acctid)
+				    {
+				      if($to)
+				      { 
+					$errors[] = lang("I can't find the username %1 on the system",$to);
+				      }
+			            }
+
+				    $acct = CreateObject('phpgwapi.accounts',$GLOBALS['phpgw']->accounts->name2id($to));
+				    $acct->read_repository();
+				    if($acct->is_expired() && $GLOBALS['phpgw']->accounts->name2id($to,'account_lid'))
+				    {
+				      $errors[] = lang("Sorry, %1's account is not currently active",$to);
+				    }
+			      }
+			} 
+     
+			if(!$message['subject'])
+			{
+				$errors[] = lang('You must enter a subject');
+			}
+
+			if(!$message['content'])
+			{
+				$errors[] = lang("You didn't enter anything for the message");
+			}
+
+			if(is_array($errors))
+			{
+				return $errors;
+			}
+			else
+			{
+				return $this->so->send_multiple_message($message);
 			}
 		}
 

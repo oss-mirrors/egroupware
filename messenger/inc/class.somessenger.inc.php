@@ -107,6 +107,26 @@
 			return True;
 		}
 
+		function send_multiple_message($message, $global_message = False)
+		{
+			if($global_message)
+			{
+				$this->owner = -1;
+			}
+			foreach($message['to'] as $to)
+			{
+			   if(!ereg('^[0-9]+$',$to))
+			   {
+				$to = $GLOBALS['phpgw']->accounts->name2id($to,'account_lid');
+			   }
+			   $this->db->query('INSERT INTO ' . $this->table . ' (message_owner, message_from, message_status, '
+				. "message_date, message_subject, message_content) VALUES ('"
+				. $to . "','" . $this->owner . "','N','" . time() . "','"
+				. addslashes($message['subject']) . "','" . $this->db->db_addslashes($message['content'])
+				. "')",__LINE__,__FILE__);
+			}
+			return True;
+		}
 		function total_messages($extra_where_clause = '')
 		{
 			$this->db->query('SELECT COUNT(message_owner) FROM ' . $this->table . " WHERE message_owner='"

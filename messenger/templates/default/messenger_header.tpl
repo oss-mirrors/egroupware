@@ -6,11 +6,12 @@
  <tr>
   <td>
 
-   <table border="0" cellspacing="1" cellpadding="1">
+   <table border="0" cellspacing="5" cellpadding="1">
     <tr>
      <td>{lang_inbox}</td>
      <td>{lang_compose}</td>
-     <td align="center" width="100%">&nbsp;</td>
+     <td>{lang_compose_multiple}<td>	
+     <!--td align="center" width="20%">&nbsp;</td-->
      <td align="right">{nextmatchs_left}&nbsp;{nextmatchs_right}</td>
     </tr>
    </table>
