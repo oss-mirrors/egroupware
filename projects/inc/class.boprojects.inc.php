@@ -303,19 +303,20 @@
 		}
 
 		function add_perms($pro)
-		{
+		{	
 			if($this->status == 'archive')
 			{
 				return False;
 			}
+
 			switch($pro['action'])
 			{
 				case 'mains':
-					if ($this->cat_id && $this->cat_id != 0 && $this->cat_id != 'none')
+					if (intval($this->cat_id) > 0)
 					{
 						$cat = $this->cats->return_single($this->cat_id);
 
-						if ($cat[0]['app_name'] == 'phpgw' || $cat[0]['owner'] == '-1')
+						if ($cat[0]['app_name'] == 'phpgw' || $cat[0]['owner'] == -1)
 						{
 							return True;
 						}
@@ -323,6 +324,10 @@
 						{
 							return True;
 						}
+					}
+					else if(intval($this->cat_id) == 0)
+					{
+						return True;
 					}
 					else if($this->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account && !is_array($cat))
 					{
