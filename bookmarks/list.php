@@ -13,61 +13,35 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "bookmarks", "enable_nextmatchs_class" => True);
+  $phpgw_info["flags"] = array("currentapp" => "bookmarks", "enable_nextmatchs_class" => True, "enable_categories_class" => True);
 
   include("../header.inc.php");
   include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/plist.inc.php");
 
   $account_id = $phpgw_info["user"]["account_id"];	// only temp
 
-  $phpgw->db->query("select count(*) from bookmarks_category where username='$account_id'",__LINE__,__FILE__);
-  $phpgw->db->next_record();
-  if ($phpgw->db->f(0) == 0) {
-     $phpgw->db->query("insert into bookmarks_category (name,username) values ('--','$account_id')",__LINE__,__FILE__);
-     $phpgw->db->query("insert into bookmarks_category (name,username) values ('Linux','$account_id')",__LINE__,__FILE__);
-  }
-
-  $phpgw->db->query("select count(*) from bookmarks_subcategory where username='$account_id'",__LINE__,__FILE__);
-  $phpgw->db->next_record();
-  if ($phpgw->db->f(0) == 0) {
-     $phpgw->db->query("insert into bookmarks_subcategory (name,username) values ('--','$account_id')",__LINE__,__FILE__);
-     $phpgw->db->query("insert into bookmarks_subcategory (name,username) values ('development','$account_id')",__LINE__,__FILE__);
-  }
-
-  $phpgw->db->query("select count(*) from bookmarks where username='$account_id'",__LINE__,__FILE__);
-  $phpgw->db->next_record();
-  if ($phpgw->db->f(0) == 0) {
-     $phpgw->db->query("select id from bookmarks_category where username='"
-                     . "$account_id' and name='Linux'",__LINE__,__FILE__);
-     $phpgw->db->next_record();
-     $maincat_id = $phpgw->db->f("id");
-
-     $phpgw->db->query("select id from bookmarks_subcategory where username='"
-                     . "$account_id' and name='development'",__LINE__,__FILE__);
-     $phpgw->db->next_record();
-     $subcat_id = $phpgw->db->f("id");
-
-     $phpgw->db->query("select id from bookmarks_rating where username='$account_id' and name='"
-                     . "excellent'",__LINE__,__FILE__);
-     $phpgw->db->next_record();
-     $rating_id = $phpgw->db->f("id");
-
-     $phpgw->db->query("INSERT INTO bookmarks (url,name,ldesc,keywords,category_id,"
-                     . "subcategory_id,rating_id,username,public_f,bm_timestamps) VALUES ('"
-                     . "http://www.phpgroupware.org/','phpGroupWare','PHP','php','$maincat_id','"
-                     . $subcat_id . "','10','$account_id','N','" . time() . ",,')",__LINE__,__FILE__);
-     unset($subcat_id);
-     unset($rating_id);
-     unset($main_catid);
-  }
-
-  $phpgw->template->set_file(array(standard   => "common.standard.tpl",
-                                   body       => "list.body.tpl"
+  $phpgw->template->set_file(array("common" => "common.tpl",
+                                   "body"   => "list.body.tpl"
 //                                   first      => "list.first.tpl",
 //                                   prev       => "list.prev.tpl",
 //                                   next       => "list.next.tpl",
 //                                   last       => "list.last.tpl"
                             ));
+
+  app_header(&$phpgw->template);
+
+  $phpgw->template->set_var("filter_action",$phpgw->link("list.php"));
+  $phpgw->template->set_var("lang_filter_by",lang("Filter by"));
+  $phpgw->template->set_var("lang_none",lang("None"));
+  $phpgw->template->set_var("lang_date_added",lang("Date Added"));
+  $phpgw->template->set_var("lang_date_changed",lang("Date Changed"));
+  $phpgw->template->set_var("lang_date_last_visited",lang("Date Last visited"));
+  $phpgw->template->set_var("lang_url",lang("URL"));
+  $phpgw->template->set_var("lang_name",lang("Name"));
+
+  $phpgw->template->set_var("lang_asc",lang("Ascending"));
+  $phpgw->template->set_var("lang_desc",lang("Descending"));
+  $phpgw->template->set_var("lang_filter",lang("Filter"));
 
   // get/set the $user_last_page as a user variable.
   // we use this to keep the last page nbr that the user
@@ -106,11 +80,14 @@ $total_public = 0;
   // a PHPLIB user var.
   $user_last_page = $page;
 
-  print_list($where_clause,$start,sprintf("list.php----page=%s",$page),&$bookmark_list,&$error_msg);
+  // We need to send the $start var instead of the page number
+  // Use appsession() to remeber the return page,instead of always passing it ?
+  print_list($where_clause,$start,"list.php----start=$start",&$bookmark_list,&$error_msg);
 
   $phpgw->template->set_var(BOOKMARK_LIST, $bookmark_list);
 
-  set_standard("list ($page of $last_page)", &$phpgw->template);
+  // There needs to be a function in the nextmatchs class to handle this
+  //set_standard("list ($page of $last_page)", &$phpgw->template);
 
   $phpgw->common->phpgw_footer();
 ?>

@@ -15,22 +15,24 @@
 
   $phpgw_info["flags"]["currentapp"] = "bookmarks";
   $phpgw_info["flags"]["enable_nextmatchs_class"] = True;
+  $phpgw_info["flags"]["enable_categories_class"] = True;
   include("../header.inc.php");
 
-  $phpgw->template->set_file(array(standard   => "common.standard.tpl",
-                                   body       => "search.body.tpl",
-                                   results    => "search.results.tpl"
+  $phpgw->template->set_file(array("common"  => "common.tpl",
+                                   "body"    => "search.body.tpl",
+                                   "results" => "search.results.tpl"
                             ));
 
+  app_header(&$phpgw->template);
 
   // the following fields are selectable
-  $field = array("bookmarks.name"             => "Name",
-                 "bookmarks.keywords"         => "Keywords",
-                 "bookmarks.url"              => "URL",
-                 "bookmarks.ldesc"            => "Description",
-                 "bookmarks_category.name"    => "Category",
-                 "bookmarks_subcategory.name" => "Sub Category",
-                 "bookmarks.id"               => "ID");
+  $field = array("phpgw_bookmarks.bm_name"        => "Name",
+                 "phpgw_bookmarks.bm_keywords"    => "Keywords",
+                 "phpgw_bookmarks.bm_url"         => "URL",
+                 "phpgw_bookmarks.bm_desc"        => "Description"
+//               "phpgw_bookmarks.bm_category"    => "Category",
+//               "phpgw_bookmarks.bm_subcategory" => "Sub Category",
+                );
 
   // PHPLIB's sqlquery class loads this string when
   // no query has been specified.
@@ -252,7 +254,7 @@ if ($q->query == $noquery) {
   $phpgw->template->parse(QUERY_RESULTS, "results");
 }
 
-set_standard("search", &$phpgw->template);
+//set_standard("search", &$phpgw->template);
 
   $phpgw->common->phpgw_footer();
 ?>

@@ -12,18 +12,19 @@
   /* $Id$ */
   
   // NOTE: I will also make a preference for the frames part of things
+  //       Also, this file needs templates
 
   $phpgw_info["flags"]= array("currentapp" => "bookmarks", "nonavbar" => True, "noheader" => True);
   include("../header.inc.php");
 
-  $phpgw->db->query("select bm_timestamps from bookmarks where id='$bm_id'",__LINE__,__FILE__);
+  $phpgw->db->query("select bm_info from phpgw_bookmarks where bm_id='$bm_id'",__LINE__,__FILE__);
   $phpgw->db->next_record();
-  
-  $ts = explode(",",$phpgw->db->f("bm_timestamps"));
+
+  $ts = explode(",",$phpgw->db->f("bm_info"));
   $newtimestamp = sprintf("%s,%s,%s",$ts[0],time(),$ts[2]);
 
-  $phpgw->db->query("update bookmarks set bm_timestamps='$newtimestamp', bm_vists=bm_vists+1 "
-                  . "where username='" . $phpgw_info["user"]["account_id"] . "' and id='$bm_id'");
+  $phpgw->db->query("update phpgw_bookmarks set bm_info='$newtimestamp', bm_visits=bm_visits+1 "
+                  . "where bm_id='$bm_id'");
 
   if (isset($showheader)) {
      ?>
@@ -31,7 +32,7 @@
       <table border="0" width="100%" cellpadding="0" cellspacing="0">
       <tr>
        <td>
-        <img src="<?php echo $phpgw_info["server"]["webserver_url"]; ?>/phpGroupWare.jpg">
+        <img src="<?php echo $phpgw->common->get_image_path("phpgwapi"); ?>/logo.gif">
        </td>
        <td>
         <?php 

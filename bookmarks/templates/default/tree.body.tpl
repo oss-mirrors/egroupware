@@ -1,7 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-<title>bookmarker: tree</title>
 <!-- $Id$ -->
 <style>
 <!--
@@ -134,18 +130,18 @@ var db = new Array();
 {BOOKMARK_JS}
 // end Javascript -->
 </script>
-</head>
-<BODY bgcolor="#FFFFFF">
+
 
 <!-- header for tree page -->
-<table width=100% cellspacing=0 cellpadding=3 border=0 bgcolor=#CCCCCC class=hdr>
-<tr>
-  <td align=left width=50%>
-    <strong class=hdr>tree</strong>
-  </td>
-  <td align=right width=50% valign=top>
+<table width="100%" border="0">
+ <tr bgcolor={th_bg}>
+  <td>&nbsp;<b>{lang_tree_view}</td>
+ </tr>
+
+<!--  <td align=right width=50% valign=top>
     <small><a class=hdr href="javascript:reload_page()" class=std>reload</a></small>
     <a class=hdr href="javascript:contract();" title="minimize"><IMG SRC="{IMAGE_URL_PREFIX}minimize.{IMAGE_EXT}" WIDTH=16 HEIGHT=14 BORDER=0 ALT="Minimize"></a><a class=hdr href="javascript:explode();" title="maximize"><IMG SRC="{IMAGE_URL_PREFIX}maximize.{IMAGE_EXT}" WIDTH=16 HEIGHT=14 BORDER=0 ALT="Maximize"></a><a class=hdr href="javascript:tree_close();" title="close"><IMG SRC="{IMAGE_URL_PREFIX}x.{IMAGE_EXT}" WIDTH=16 HEIGHT=14 BORDER=0 ALT="Close"></a></td>
+
 </tr>
 <tr>
   <td colspan=2>
@@ -164,7 +160,7 @@ var db = new Array();
   </table>
   </form>
   </td>
-</tr>
+</tr> -->
 </table>
 {MESSAGES}
 
@@ -264,15 +260,6 @@ document.write(Outline)
 
    </font>
   </td>
-  </tr>
-</table>
-
-<!-- footer for tree page -->
-<table width=100% cellspacing=0 cellpadding=3 border=0>
-  <tr>
-   <td align=left  bgcolor=#5B68A6 width=100%>
-    <!-- <strong  class=std>bookmarker at renaghan.com</strong> -->
-   </td>
   </tr>
 </table>
 

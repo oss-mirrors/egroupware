@@ -15,16 +15,20 @@
 
   $phpgw_info["flags"]["currentapp"] = "bookmarks";
   $phpgw_info["flags"]["enable_nextmatchs_class"] = True;
+  $phpgw_info["flags"]["enable_categories_class"]  = True;
   include("../header.inc.php");
+  
+  $phpgw->sbox = createobject("phpgwapi.sbox");
 
-  $phpgw->template->set_file(array(standard            => "common.standard.tpl",
-                                   msie_js             => "common.msie_js.tpl",
-                                   body                => "create.body.tpl",
-                                   possible_dup        => "create.possible_dup.tpl",
-                                   possible_dup_lines  => "create.possible_dup.line.tpl"
+  $phpgw->template->set_file(array("common"             => "common.tpl",
+//                                 "standard"           => "common.standard.tpl",
+                                   "possible_dup"       => "create.possible_dup.tpl",
+                                   "possible_dup_lines" => "create.possible_dup.line.tpl",
+                                   "body"               => "form.tpl"
                             ));
+  app_header(&$phpgw->template);
 
-  set_standard("create", &$phpgw->template);
+//  set_standard("create", &$phpgw->template);
 
   // if browser is MSIE, then need to add this bit
   // of javascript to the page so that MSIE correctly
@@ -35,24 +39,18 @@
 
   // initialize variable that holds id of newly created bookmark
   $id = 0;
-
-### Submit Handler
-### Get a database connection
-//$db    = new bk_db;
-$bmark = new bmark;
-
+  $bmark = new bmark;
 
 ## Check if there was a submission
-while ( is_array($HTTP_POST_VARS)
-     && list($key, $val) = each($HTTP_POST_VARS)) {
+while (is_array($HTTP_POST_VARS) && list($key, $val) = each($HTTP_POST_VARS)) {
   switch ($key) {
 
   ## Create a new bookmark
   case "bk_create_x":
   case "bk_create":
 
-    if(!$bmark->add(&$id, $url, $name, $desc, $keyw, $bookmarks_category, $bookmarks_subcategory, 
-                    $bookmarks_rating, $public)) break;
+    if (!$bmark->add(&$id, $url, $name, $desc, $keyw, $bookmarks_category, $bookmarks_subcategory, 
+                     $bookmarks_rating, $access,$groups)) break;
     break;
 
   default:
@@ -143,10 +141,6 @@ if ($rating > 0) {
    }
 } */
 
-load_ddlb("bookmarks_category", $default_category, &$category_select, FALSE);
-load_ddlb("bookmarks_subcategory", $default_subcategory, &$subcategory_select, FALSE);
-//load_ddlb("bookmarks_rating", $default_rating, &$rating_select, FALSE);
-
 # only default the public checkbox the first time the
 # page is shown. after that, show the value that the
 # user chose.
@@ -160,34 +154,59 @@ load_ddlb("bookmarks_subcategory", $default_subcategory, &$subcategory_select, F
   }
 } */
 
-  $rating_select = '<select name="bookmarks_rating">'
-           . ' <option value="0">--</option>'
-           . ' <option value="1">1 - ' . lang("Lowest") . '</option>'
-           . ' <option value="2">2</option>'
-           . ' <option value="3">3</option>'
-           . ' <option value="4">4</option>'
-           . ' <option value="5">5</option>'
-           . ' <option value="6">6</option>'
-           . ' <option value="7">7</option>'
-           . ' <option value="8">8</option>'
-           . ' <option value="9">9</option>'
-           . ' <option value="10">10 - ' . lang("Highest") . '</option>'
-           . '</select>';
+  $phpgw->template->set_var("lang_header",lang("Create new bookmark"));
 
-  $phpgw->template->set_var(array(
-    FORM_ACTION            => $phpgw->link(),
-    DEFAULT_URL            => $default_url,
-    DEFAULT_NAME           => htmlspecialchars(stripslashes($default_name)),
-    DEFAULT_DESC           => htmlspecialchars(stripslashes($default_desc)),
-    DEFAULT_KEYW           => htmlspecialchars(stripslashes($default_keyw)),
-    DEFAULT_CATEGORY       => $default_category,
-    DEFAULT_SUBCATEGORY    => $default_subcategory,
-    DEFAULT_RATING         => $default_rating,
-    CATEGORY_SELECT        => $category_select,
-    SUBCATEGORY_SELECT     => $subcategory_select,
-    RATING_SELECT          => $rating_select,
-    DEFAULT_PUBLIC         => $default_public
-  ));
+  $phpgw->template->set_var("input_category",'<select name="bookmarks_category">'
+                                           . '<option value="0">--</option>'
+                                           . $phpgw->categories->formated_list("select","mains")
+                                           . '</select>');
+
+  $phpgw->template->set_var("input_subcategory",'<select name="bookmarks_subcategory">'
+                                              . '<option value="0">--</option>'
+                                              . $phpgw->categories->formated_list("select","subs")
+                                              . '</select>');
+
+  $phpgw->template->set_var("input_rating",'<select name="bookmarks_rating">'
+                                         . ' <option value="0">--</option>'
+                                         . ' <option value="1">1 - ' . lang("Lowest") . '</option>'
+                                         . ' <option value="2">2</option>'
+                                         . ' <option value="3">3</option>'
+                                         . ' <option value="4">4</option>'
+                                         . ' <option value="5">5</option>'
+                                         . ' <option value="6">6</option>'
+                                         . ' <option value="7">7</option>'
+                                         . ' <option value="8">8</option>'
+                                         . ' <option value="9">9</option>'
+                                         . ' <option value="10">10 - ' . lang("Highest") . '</option>'
+                                         . '</select>');
+
+  $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
+
+  $phpgw->template->set_var("form_action",$phpgw->link());
+  $phpgw->template->set_var("lang_url",lang("URL"));
+  $phpgw->template->set_var("lang_name",lang("Name"));
+  $phpgw->template->set_var("lang_desc",lang("Description"));
+  $phpgw->template->set_var("lang_keywords",lang("Keywords"));
+  $phpgw->template->set_var("lang_access",lang("Access"));
+  $phpgw->template->set_var("lang_category",lang("Category"));
+  $phpgw->template->set_var("lang_subcategory",lang("Sub Category"));
+  $phpgw->template->set_var("lang_rating",lang("Rating"));
+
+  $phpgw->template->set_var("form_info_","");
+
+  $phpgw->template->set_var("input_url",'<input name="url" size="60" maxlength="255" value="http://">');
+  $phpgw->template->set_var("input_name",'<input name="name" size="60" maxlength="255">');
+  $phpgw->template->set_var("input_desc",'<textarea name="desc" rows="3" cols="60" wrap="virtual"></textarea>');
+  $phpgw->template->set_var("input_keywords",'<input type="text" name="keyw" size="60" maxlength="255">');
+
+  $phpgw->template->set_var("input_access",$phpgw->sbox->getAccessList("access") . "&nbsp;"
+                                         . $phpgw->sbox->getGroups($phpgw->accounts->read_group_names($phpgw_info["user"]["userid"]),-1,"groups"));
+
+  $phpgw->template->set_var("delete_link","");
+  $phpgw->template->set_var("cancel_link","");
+  $phpgw->template->set_var("form_link",'<input type="image" name="bk_create" title="'
+                                      . lang("Create bookmark") . '" src="' . $phpgw_info["server"]["app_images"]
+                                      . '/save.gif" border="0" width="24" height="24">');
 
   $phpgw->common->phpgw_footer();
 ?>

@@ -13,58 +13,68 @@
 
   $phpgw_info["flags"]["currentapp"] = "bookmarks";
   $phpgw_info["flags"]["enable_nextmatchs_class"] = True;
+  $phpgw_info["flags"]["enable_categories_class"] = True;
   include("../header.inc.php");
-  
-  $phpgw->template->set_file(array("body"     => "maintain.body.tpl",
+
+  $phpgw->sbox = createobject("phpgwapi.sbox");
+
+  $phpgw->template->set_file(array("common"   => "common.tpl",
+                                   "body"     => "form.tpl",
+                                   "info"     => "form_info.tpl",
                                    "standard" => "common.standard.tpl"
                             ));
-  set_standard("create", &$phpgw->template);
-  
-  $phpgw->db->query("select bookmarks.*,bookmarks_category.name as category_name,"
-                  . "bookmarks_subcategory.name  as subcategory_name from "
-                  . "bookmarks,bookmarks_category,bookmarks_subcategory where bookmarks.username='"
-                  . $phpgw_info["user"]["account_id"] . "' and bookmarks_subcategory.id="
-                  . "bookmarks.subcategory_id and bookmarks_category.id=bookmarks.category_id",__LINE__,__FILE__);
+
+  app_header(&$phpgw->template);
+
+  $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
+
+  $phpgw->db->query("select * from phpgw_bookmarks where bm_owner='"
+                  . $phpgw_info["user"]["account_id"] . "' and bm_id='$bm_id'",__LINE__,__FILE__);
   $phpgw->db->next_record();
 
-  $ts = explode(",",$bm_timestamps_raw);
-  $f_ts[0] = $phpgw->common->show_date($ts[0]);
+  date_information(&$phpgw->template,$phpgw->db->f("bm_info"));
+  $phpgw->template->set_var("total_visits",$phpgw->db->f("bm_visits"));
 
-  if ($ts[1]) {
-     $f_ts[1] = $phpgw->common->show_date($ts[1]);
+  $phpgw->template->set_var("lang_added",lang("Date added"));
+  $phpgw->template->set_var("lang_updated",lang("Date last updated"));
+  $phpgw->template->set_var("lang_visited",lang("Date last visited"));
+  $phpgw->template->set_var("lang_visits",lang("Total visits"));
+
+  $phpgw->template->parse("info","info");
+
+  $phpgw->template->set_var("form_action",$phpgw->link());
+  $phpgw->template->set_var("lang_url",lang("URL"));
+  $phpgw->template->set_var("lang_name",lang("Name"));
+  $phpgw->template->set_var("lang_desc",lang("Description"));
+  $phpgw->template->set_var("lang_keywords",lang("Keywords"));
+
+  $phpgw->template->set_var("lang_category",lang("Category"));
+  $phpgw->template->set_var("lang_subcategory",lang("Sub Category"));
+  $phpgw->template->set_var("lang_rating",lang("Rating"));
+
+  $phpgw->template->set_var("lang_access",lang("Access"));
+  if ($phpgw->db->f("bm_access") == "private") {
+     $phpgw->template->set_var("input_access",lang("Private"));
+  } else if ($phpgw->db->f("bm_access") == "public") {
+     $phpgw->template->set_var("input_access",lang("Global public"));
   } else {
-     $f_ts[1] = lang("Never");
+     $phpgw->template->set_var("input_access",implode(",",$phpgw->accounts->read_group_names($phpgw->db->f("bm_access"))));
   }
 
-  if ($ts[2]) {
-     $f_ts[2] = $phpgw->common->show_date($ts[2]);
-  } else {
-     $f_ts[2] = lang("Never");
-  }  
+  $phpgw->template->set_var("lang_header",lang("View bookmark"));
 
- /*
-  $phpgw->template->set_var(array(DEFAULT_URL         => $default_url,
-                                  DEFAULT_NAME        => htmlspecialchars(stripslashes($default_name)),
-                                  DEFAULT_DESC        => htmlspecialchars(stripslashes($default_desc)),
-                                  DEFAULT_KEYW        => htmlspecialchars(stripslashes($default_keyw)),
-                                  DEFAULT_CATEGORY    => $default_category,
-                                  DEFAULT_SUBCATEGORY => $default_subcategory,
-                                  DEFAULT_RATING      => $default_rating,
-//                                  RATING_SELECT       => $phpgw->db->f("bm_rating"),
-//                                  CATEGORY_SELECT     => $phpgw->db->f("category_name"),
-                                  SUBCATEGORY_SELECT  => $phpgw->db->f("subcategory_name"),
-                                  DEFAULT_PUBLIC      => $default_public,
-                                  ADDED               => $f_ts[0],
-                                  VISTED              => $f_ts[1],
-                                  UPDATED             => $f_ts[2],
-                                  ADDED_VALUE         => $ts[0],
-                                  VISTED_VALUE        => $ts[1],
-                                  TOTAL_VISTS         => $phpgw->db->f("bm_vists")
-  ));
-*/
+  $phpgw->template->set_var("input_url",$phpgw->db->f("bm_url"));
+  $phpgw->template->set_var("input_name",$phpgw->db->f("bm_name"));
+  $phpgw->template->set_var("input_desc",$phpgw->db->f("bm_desc"));
+  $phpgw->template->set_var("input_keywords",$phpgw->db->f("bm_keywords"));
+  $phpgw->template->set_var("input_rating",'<img src="' . $phpgw->common->get_image_path("bookmarks") . '/bar-' . $phpgw->db->f("bm_rating") . '.jpg">');
+  $phpgw->template->set_var("input_category",$phpgw->categories->return_name($phpgw->db->f("bm_category")));
+  $phpgw->template->set_var("input_subcategory",$phpgw->categories->return_name($phpgw->db->f("bm_subcategory")));
 
-  $phpgw->template->set_var("CATEGORY_SELECT",$phpgw->db->f("category_name"));
-  $phpgw->template->set_var("RATING_SELECT",'<img src="images/bar-' . $phpgw->db->f("rating_id") . '.jpg">');
+
+  $phpgw->template->set_var("delete_link","");
+  $phpgw->template->set_var("cancel_link","");
+  $phpgw->template->set_var("edit_link","");
 
   $phpgw->common->phpgw_footer();
 ?>

@@ -2,6 +2,9 @@
 {POSSIBLE_DUP}
 <form method="post" action="{FORM_ACTION}">
  <table border=0 bgcolor="#EEEEEE" align="center">
+  <tr bgcolor="{th_bg}">
+   <td colspan="2">&nbsp;</td>
+  </tr>
  <tr>
   <td><a href="{URL}">URL</a></td>
   <td><input type="text" name="url"  size=60 maxlength=255 value="{DEFAULT_URL}"></td>
@@ -39,8 +42,11 @@
  </tr>
  <tr>
   <td colspan=2 align=right>
-    <input type="image" name="bk_create" title="Create Bookmark" 
-      src="images/save.gif" border=0 width=24 height=24>
+    {form_button}
+    &nbsp;&nbsp;&nbsp;
+    {cancel_button}
+<!--    <input type="image" name="bk_create" title="Create Bookmark" 
+      src="{IMAGE_URL_PREFIX}/save.gif" border=0 width=24 height=24> -->
   </td>
  </tr>
 </table>

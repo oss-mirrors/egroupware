@@ -13,7 +13,7 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
+//  $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
   $phpgw_info["flags"]["currentapp"] = "bookmarks";
   $phpgw_info["flags"]["enabled_nextmatchs_class"] = True;
   include("../header.inc.php");
@@ -47,7 +47,13 @@
   $phpgw->common->phpgw_exit();
 }
 
-  $phpgw->template->set_file(array(body => "tree.body.tpl"));
+  $phpgw->template->set_file(array("common" => "common.tpl",
+                                   "body"   => "tree.body.tpl"
+                            ));
+
+  app_header(&$phpgw->template);
+  $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
+  $phpgw->template->set_var("lang_tree_view",lang("Tree view"));
 
   # we keep a user variable that holds the last selection
   # the user made for the groupby option
@@ -206,13 +212,17 @@ if ($phpgw->db->Errno == 0) {
                            ));
 
 
+  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
+
   // standard error message, and message handler.
-  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/messages.inc.php");
+/*  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/messages.inc.php");
   if (isset ($bk_output_html)) {
      $phpgw->template->set_var(MESSAGES, $bk_output_html);
   }
 
   $phpgw->template->parse("BODY", "body");
-  $phpgw->template->p("BODY");
+<<<<<<< tree.php
+  $phpgw->template->p("BODY"); */
+
   $phpgw->common->phpgw_footer();
 ?>

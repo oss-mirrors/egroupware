@@ -1,9 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-<title>bookmarker: {TITLE}</title>
 <!-- $Id$ -->
-
 <style>
 <!--
  html,body { background-color: white;  
@@ -41,12 +36,12 @@
 
 <table width=95% border=0 cellspacing=0 class=hdr>
  <tr>
-  <td valign="top"    align="left"><strong><big class=hdr>{TITLE}</big></strong></td>
+  <td valign="top"    align="left"><strong>{TITLE}</strong></td>
   <td valign="bottom" align="right">
-   <a class=hdr href="javascript:pop_tree()"><img width=24 height=24 src="images/tree.gif" border=0 alt="Tree View"></a>
-   <a class=hdr href="{LIST_URL}"><img width=24 height=24 src="images/list.gif" border=0 alt="List View"></a>
-   <a class=hdr href="{CREATE_URL}"><img width=24 height=24 src="images/create.gif" border=0 alt="New"></a>
-   <a class=hdr href="{SEARCH_URL}"><img width=24 height=24 src="images/search.gif" border=0 alt="Search"></a>
+   <a class=hdr href="javascript:pop_tree()"><img width=24 height=24 src="{IMAGE_URL_PREFIX}/tree.gif" border=0 alt="Tree View"></a>
+   <a class=hdr href="{LIST_URL}"><img width=24 height=24 src="{IMAGE_URL_PREFIX}/list.gif" border=0 alt="List View"></a>
+   <a class=hdr href="{CREATE_URL}"><img width=24 height=24 src="{IMAGE_URL_PREFIX}/create.gif" border=0 alt="New"></a>
+   <a class=hdr href="{SEARCH_URL}"><img width=24 height=24 src="{IMAGE_URL_PREFIX}/search.gif" border=0 alt="Search"></a>
   </td>
  </tr>
 </table>

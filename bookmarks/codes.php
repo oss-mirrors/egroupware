@@ -15,6 +15,7 @@
 
   $phpgw_info["flags"]["currentapp"] = "bookmarks";
   $phpgw_info["flags"]["enable_nextmatchs_class"] = True;
+  $phpgw_info["flags"]["enable_categories_class"] = True;
   include("../header.inc.php");
 
   $phpgw->template->set_file(array(standard    => "common.standard.tpl",
@@ -25,7 +26,7 @@
                                    delete_form  => "codes.delete.tpl"
                             ));
 
-  set_standard("code tables", &$phpgw->template);
+  app_header(&$phpgw->template);
 
   $username = $phpgw_info["user"]["account_id"];
 
@@ -119,12 +120,8 @@
       $error_msg .= "<br>You need to enter a name";
       break;
     }
-        
-    // Does the code already exist?
-    $phpgw->db->query("select name from $codetable where name='" . addslashes($name)
-                    . "' and username='" . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
 
-    if ($phpgw->db->nf() > 0) {
+    if ($phpgw->categories->exists($name)) {
        $error_msg .= "<br>$name already exists.";
        break;
     }
@@ -203,14 +200,14 @@ if (!isset($mode) || $mode=="S") {
   $body_tpl_name = "create_form";
 
   // get the max used ID so that we can default for the new row
-  $phpgw->db->query("select max(id) as max_id from $codetable where username='"
+  /*  $phpgw->db->query("select max(id) as max_id from $codetable where username='"
                   . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
 
   $phpgw->db->next_record();
   $default_id = $phpgw->db->f("max_id") + 1;
   if (! $default_id) {
      $default_id = 0;
-  }
+  } */
 
   $phpgw->template->set_var(DEFAULT_ID, $default_id);
   $phpgw->template->set_var(th_bg, $phpgw_info["theme"]["th_bg"]);
