@@ -1,0 +1,66 @@
+%1 bookmarks have been deleted	bookmarks	zt	%1 書籤已被刪除。
+%1 bookmarks imported from %2 successfully.	bookmarks	zt	%1 書籤成功從 %2 導入。
+(comma separate multiple addresses)	bookmarks	zt	(逗號分隔多個地址)
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	zt	<b>注意:</b> 目前僅工作於netscape書籤
+all bookmarks	bookmarks	zt	所有書籤
+and	bookmarks	zt	及
+append this message to mailed bookmarks	bookmarks	zt	附加本消息到已郵件書籤
+ascending	bookmarks	zt	小到大
+book marks	common	zt	書籤
+bookmark changed sucessfully	bookmarks	zt	書籤成功修改
+bookmark created successfully.	bookmarks	zt	書籤成功生成
+bookmark not editable	bookmarks	zt	書籤不可編輯
+bookmark not readable	bookmarks	zt	書籤不可讀
+bookmarks	common	zt	書籤
+bookmarks settings	bookmarks	zt	書籤設置
+change bookmark	bookmarks	zt	修改書籤
+close this window to return	bookmarks	zt	關閉這個視窗並且返回
+create bookmark	bookmarks	zt	建立書籤
+create new bookmark	bookmarks	zt	建立新書籤
+date added	bookmarks	zt	新增日期
+date changed	bookmarks	zt	修改日期
+date last updated	bookmarks	zt	最近更新
+date last visited	bookmarks	zt	最近瀏覽
+descending	bookmarks	zt	大到小
+edit bookmark	bookmarks	zt	編輯書籤
+edit this bookmark	bookmarks	zt	編輯本書籤
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	zt	請在下面輸入你想要導入到書籤的Netscape書籤檔案名
+fewer	bookmarks	zt	更少
+filter by	bookmarks	zt	過濾
+found a link you might like	bookmarks	zt	找一個你喜歡的連結
+from	bookmarks	zt	從
+from category %1	bookmarks	zt	從類別 %1
+highest	bookmarks	zt	最高的
+i thought you would be interested in the following link(s):	bookmarks	zt	你會對以下連結感興趣
+import bookmarks	preferences	zt	匯入書籤
+like	bookmarks	zt	像
+list	bookmarks	zt	列表
+lowest	bookmarks	zt	最低的
+mail this bookmark	bookmarks	zt	轉寄此書籤
+mail-this-link message sent to %1.	bookmarks	zt	此連結資訊發送到 %1.
+mass update:	bookmarks	zt	大規模更新:
+message from	bookmarks	zt	消息來源
+more	bookmarks	zt	更多
+name	bookmarks	zt	名稱
+name is required	bookmarks	zt	缺少名稱
+netscape bookmark file	bookmarks	zt	Netscape書籤文件
+netscape bookmark filename is required!	bookmarks	zt	缺少Netscape書籤檔案名！
+new	bookmarks	zt	新的
+please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	zt	請填寫郵件位址名，主題，和內容!
+query condition	bookmarks	zt	查詢條件
+rating	bookmarks	zt	評分
+search for:	bookmarks	zt	搜尋:
+send bookmark	bookmarks	zt	發送書籤
+sub category	bookmarks	zt	子類別
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	zt	地址 %1 非法！ 地址格式必須? <strong>用戶名@功能變數名稱</strong> 且功能變數名稱畢填！
+to e-mail addresses	bookmarks	zt	郵件地址
+to which category should the imported folder hierarchy be attached	bookmarks	zt	導入的文件夾應放入哪個類別
+total visits	bookmarks	zt	總訪問數
+tree view	bookmarks	zt	樹狀瀏覽
+unable to open temp file %1 for import.	bookmarks	zt	不能打開匯入資料的暫存檔案 %1
+url is required.	bookmarks	zt	必須輸入網址。
+view bookmark	bookmarks	zt	瀏覽書籤
+view this bookmark	bookmarks	zt	瀏覽本書籤
+warning	bookmarks	zt	警告
+you are viewing this site outside of phpgroupware	bookmarks	zt	你正瀏覽 phpGroupWare 以外的網址
+you must select a category	bookmarks	zt	你必須選擇一個類別
