@@ -21,6 +21,8 @@ function mail_ticket($ticket_id) {
   global $phpgw;
   global $phpgw_info;
 
+  $toarray = Array();
+
   $phpgw->db->query("select t_id,t_category,t_detail,t_priority,t_user,t_assignedto,"
 	    . "t_timestamp_opened, t_timestamp_closed, t_subject from ticket where t_id='$ticket_id'");
   $phpgw->db->next_record();
@@ -52,15 +54,14 @@ function mail_ticket($ticket_id) {
   
   $rc = $phpgw->send->msg("email", $to, $subject, stripslashes($body), "", $cc, $bcc);
   if ($rc) {
-//    header("Location: " . $phpgw->link("index.php","cd=13&folder=" . urlencode($return)) );
-    header("Location: " . $phpgw->link("index.php"));
+    header("Location: " . $phpgw->link("index.php","cd=13"));
   } else {
     echo "Your message could <B>not</B> be sent!<BR>\n";
     echo "The mail server returned:<BR>".
          "err_code: '".$phpgw->send->err["code"]."';<BR>".
          "err_msg: '".htmlspecialchars($phpgw->send->err[msg])."';<BR>\n".
          "err_desc: '".$phpgw->err[desc]."'.<P>\n";
-    echo "To go back to the msg list, click <A HRef=\"".$phpgw->link("index.php","cd=13&folder=" . urlencode($return))."\">here</a>";
+    echo "To go back to the msg list, click <A HRef=\"".$phpgw->link("index.php","cd=13")."\">here</a>";
   }
 
 
