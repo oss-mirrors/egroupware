@@ -533,21 +533,17 @@
 			$data=$this->http_vars_pairs($_POST, $_FILES);
 
 			$status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
-
+			
 			if ($status[ret_code])
 			{
-			   $this->message[error]=lang('Record NOT succesfully saved');
-			   $this->message[error_code]=104;
+				$this->addtoErrorArr(lang('Record NOT succesfully saved'),104);
 			}
 			else 
 			{
 			   $this->message[info]='Record succesfully saved';
 			}
 			
-			if($this->debug_sql==true)
-			{
-			   $this->message['debug'][]='SQL: '.$status[sql];
-			}
+			$this->addtoDebugArr('SQL: '.$status[sql]);
 
 			$this->save_sessiondata();
 
@@ -561,6 +557,21 @@
 			}
 		 }
 
+		 function addtoErrorArr($msg,$error_code)
+		 {
+			$this->message[error][]=$msg;
+			$this->message[error_code]=$error_code;
+		 }
+
+		 
+		 function addtoDebugArr($msg)
+		 {
+			if($this->debug_sql==true)
+			{
+			   $this->message['debug'][]='SQL: '.$msg;
+			}
+		 }
+		 
 		 function o2o_update()
 		 {		 
 			$o2o_data=$this->http_vars_pairs_o2o($_POST, $_FILES);
@@ -618,12 +629,16 @@
 			if($autokey)
 			{
 			   $status=$this->so->copy_record($this->site_id,$this->site_object[table_name],$this->where_string,$autokey);
-			   if ($status[status]==1)	$this->message[info]=lang('Record succesfully copied');
+			   if ($status[ret_code])
+			   {
+				  $this->addtoErrorArr(lang('Record NOT succesfully copied'),102);
+			   }
 			   else
 			   {
-				  $this->message[error]=lang('Record NOT succesfully copied.');
-				  $this->message[error_code]=102;
+				  $this->message[info]=lang('Record succesfully copied');
 			   }
+			   $this->addtoDebugArr('SQL: '.$status[sql]);
+
 
 			   if($status[where_string])
 			   {
@@ -633,9 +648,8 @@
 			}
 			else
 			{
-			   // disable copy icon when its not possible
-			   $this->message[error]=lang('Cannot copy a record from this table.');
-			   $this->message[error_code]=103;
+			   // FIXME disable copy icon when its not possible
+			   $this->addtoErrorArr(lang('Cannot copy a record from this table.'),103);
 			}
 
 			$this->save_sessiondata();

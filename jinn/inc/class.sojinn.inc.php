@@ -1021,22 +1021,24 @@
 			if ($SQLvalues) $SQLvalues .= ',';
 
 			$SQLfields .= $s_bt.$key.$s_bt;
-			$SQLvalues .= "'".$this->strip_magic_quotes_gpc($val)."'"; // FIX THIS magic kut quotes
+			$SQLvalues .= "'".addslashes($this->strip_magic_quotes_gpc($val))."'"; // FIX THIS magic kut quotes
 
 		 }
 
 		 $SQL='INSERT INTO ' . $table . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
-//		 die($SQL);
 
 		 if ($this->site_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$value[status]=1;
+			$value[ret_code]=0;
 			$value[id]=$this->site_db->get_last_insert_id($table, $autokey);
 
 			if($autokey) $where_string= $autokey.'=\''.$value[id].'\'';
 
 			$value[where_string]=$where_string;
 		 }
+
+		 $value[sql]=$SQL;
 		 return $value;
 	  }
 	  

@@ -2,6 +2,13 @@
 CHANGELOG JiNN for eGroupWare
 =============================
 
+Sun Sep 26 16:15:31 CEST 2004
+Version 0.8.107f
+=============================
+- fixed copy record when there are quotes
+- more debugging places added
+
+
 Sat Sep 25 15:34:12 CEST 2004
 Version 0.8.107e
 =============================
