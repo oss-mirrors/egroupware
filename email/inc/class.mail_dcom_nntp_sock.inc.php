@@ -1,12 +1,12 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare API - NNTP                                                  *
+  * eGroupWare API - NNTP                                                    *
   * This file written by Mark Peters <skeeter@phpgroupware.org>              *
   * Handles specific operations in dealing with NNTP                         *
   * Copyright (C) 2001 Mark Peters                                           *
   * -------------------------------------------------------------------------*
-  * This library is part of the phpGroupWare API                             *
-  * http://www.phpgroupware.org/api                                          * 
+  * This library is part of the eGroupWare API                               *
+  * http://www.egroupware.org/                                               * 
   * ------------------------------------------------------------------------ *
   * This library is free software; you can redistribute it and/or modify it  *
   * under the terms of the GNU Lesser General Public License as published by *
