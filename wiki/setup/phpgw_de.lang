@@ -1,3 +1,4 @@
+(don't offer the possebility)	admin	de	(Möglichkeit dazu auch nicht anbieten)
 <em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	de	<em>Aber</em> mindestens so viele Einträge in Letzten Änderungen und anderen Listen anzeigen:
 add document to category	wiki	de	Dokument zu Kategroie zufügen
 added	wiki	de	Zugefügt
@@ -54,6 +55,7 @@ locked	wiki	de	Gesperrt
 name wiki home link	admin	de	Namen der Wiki Startseite
 newer	wiki	de	Neuer
 no never	admin	de	Nein niemals
+no only on request	admin	de	Nein nur auf Anforderung
 not set	wiki	de	nicht gesetzt
 older	wiki	de	Älter
 only if browser supports a richtext-editor	admin	de	Nur wenn der Webbrowser das Bearbeiten von formatiertem Text unterstütz

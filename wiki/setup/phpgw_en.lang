@@ -1,3 +1,4 @@
+(don't offer the possebility)	admin	en	(don't offer the possebility)
 <em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	en	<em>But</em> display at least this many entries in RecentChanges and other subscription lists:
 add document to category	wiki	en	Add document to category
 added	wiki	en	Added
@@ -54,6 +55,7 @@ locked	wiki	en	Locked
 name wiki home link	admin	en	name wiki home link
 newer	wiki	en	Newer
 no never	admin	en	No never
+no only on request	admin	en	No only on request
 not set	wiki	en	not set
 older	wiki	en	Older
 only if browser supports a richtext-editor	admin	en	Only if browser supports a richtext-editor

@@ -32,6 +32,7 @@
 			{
 				case 'always':
 				case 'never':
+				case 'onrequest':
 					$this->auto_convert = $this->AutoconvertPages == 'always';
 					break;
 				case 'auto':
@@ -160,7 +161,7 @@
 			);
 			$this->tpl->read('wiki.edit');
 
-			if ($content['is_html'])
+			if ($content['is_html'] || $this->AutoconvertPages == 'never' || !$this->tpl->html->htmlarea_availible())
 			{
 				$this->tpl->disable_cells('action[convert]');
 			}
