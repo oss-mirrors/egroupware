@@ -1037,19 +1037,11 @@ function toggle(image, catid)
 				if (!isset ($this->bo->error_msg))
 				{
 					$send     = createobject('phpgwapi.send');
-					// add additional headers to our email
-					$addl_headers = sprintf("%s: %s <%s>",lang('From'),stripslashes($from_name), $from);
 
-					//$addl_headers = sprintf('%s\n%s',$addl_headers,$GLOBALS['phpgw']->template->parse('_footer','footer'));
-					$reply_to = $GLOBALS['phpgw_info']['user']['fullname'] .
-						' <'.$GLOBALS['phpgw_info']['user']['preferences']['email']['address'].'>';
+					$from = $GLOBALS['phpgw_info']['user']['fullname'] . ' <'.$GLOBALS['phpgw_info']['user']['email'].'>';
 
-					if (empty($replay_to))
-					{
-						$reply_to = 'No reply <noreply@' . $GLOBALS['phpgw_info']['server']['mail_suffix'].'>';
-					}
 					// send the message
-					$send->msg('email',$to,$subject,$message ."\n". $this->bo->config['mail_footer'],'','','',$reply_to);
+					$send->msg('email',$to,$subject,$message ."\n". $this->bo->config['mail_footer'],'','','',$from);
 					$this->bo->msg .= '<br>'.lang('mail-this-link message sent to %1.',$to);
 				}
 			}
