@@ -24,21 +24,18 @@
 	);
 
 	include('../header.inc.php');
-	
-	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-	$t->set_file(
-		array(
-			'T_message_main' => 'message_main.tpl',
-			'T_message_echo_dump' => 'message_echo_dump.tpl'
-		)
-	);
-	$t->set_block('T_message_main','B_x-phpgw-type','V_x-phpgw-type');
-	$t->set_block('T_message_main','B_cc_data','V_cc_data');
-	$t->set_block('T_message_main','B_attach_list','V_attach_list');
-	$t->set_block('T_message_main','B_debug_parts','V_debug_parts');
-	$t->set_block('T_message_main','B_display_part','V_display_part');
-	$t->set_block('T_message_echo_dump','B_setup_echo_dump','V_setup_echo_dump');
-	$t->set_block('T_message_echo_dump','B_done_echo_dump','V_done_echo_dump');
+
+	$GLOBALS['phpgw']->template->set_file(array(
+		'T_message_main' => 'message_main.tpl',
+		'T_message_echo_dump' => 'message_echo_dump.tpl'
+	));
+	$GLOBALS['phpgw']->template->set_block('T_message_main','B_x-phpgw-type','V_x-phpgw-type');
+	$GLOBALS['phpgw']->template->set_block('T_message_main','B_cc_data','V_cc_data');
+	$GLOBALS['phpgw']->template->set_block('T_message_main','B_attach_list','V_attach_list');
+	$GLOBALS['phpgw']->template->set_block('T_message_main','B_debug_parts','V_debug_parts');
+	$GLOBALS['phpgw']->template->set_block('T_message_main','B_display_part','V_display_part');
+	$GLOBALS['phpgw']->template->set_block('T_message_echo_dump','B_setup_echo_dump','V_setup_echo_dump');
+	$GLOBALS['phpgw']->template->set_block('T_message_echo_dump','B_done_echo_dump','V_done_echo_dump');
 
 // ----  Fill Some Important Variables  -----
 	$svr_image_dir = PHPGW_IMAGES_DIR;
@@ -54,7 +51,6 @@
 	$folder_info = $GLOBALS['phpgw']->msg->folder_status_info();
 	$totalmessages = $folder_info['number_all'];
 
-
 	$subject = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'');
 	$message_date = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
 
@@ -69,12 +65,12 @@
 	{
 		$msg_type = explode(';',$msgtype);
 		$application = substr($msg_type[0],1,strlen($msg_type[0])-2);
-		$t->set_var('application',$application);
-		$t->parse('V_x-phpgw-type','B_x-phpgw-type');
+		$GLOBALS['phpgw']->template->set_var('application',$application);
+		$GLOBALS['phpgw']->template->parse('V_x-phpgw-type','B_x-phpgw-type');
 	}
 	else
 	{
-		$t->set_var('V_x-phpgw-type','');
+		$GLOBALS['phpgw']->template->set_var('V_x-phpgw-type','');
 	}
 
 // ----  What Folder To Return To  -----
@@ -158,19 +154,19 @@
 		$ilnk_next_msg = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/right-grey.gif',lang('No Next Message'),'','','0');
 	}
 
-	$t->set_var('ilnk_prev_msg',$ilnk_prev_msg);
-	$t->set_var('ilnk_next_msg',$ilnk_next_msg);
+	$GLOBALS['phpgw']->template->set_var('ilnk_prev_msg',$ilnk_prev_msg);
+	$GLOBALS['phpgw']->template->set_var('ilnk_next_msg',$ilnk_next_msg);
 
 // ----  Labels and Colors for From, To, CC, Files, and Subject  -----
-	$t->set_var('tofrom_labels_bkcolor', $GLOBALS['phpgw_info']['theme']['th_bg']);
-	$t->set_var('tofrom_data_bkcolor', $GLOBALS['phpgw_info']['theme']['row_on']);
+	$GLOBALS['phpgw']->template->set_var('tofrom_labels_bkcolor', $GLOBALS['phpgw_info']['theme']['th_bg']);
+	$GLOBALS['phpgw']->template->set_var('tofrom_data_bkcolor', $GLOBALS['phpgw_info']['theme']['row_on']);
 
-	$t->set_var('lang_from', lang('from'));
-	$t->set_var('lang_to', lang('to'));
-	$t->set_var('lang_cc', lang('cc'));
-	$t->set_var('lang_date', lang('date'));
-	$t->set_var('lang_files', lang('files'));
-	$t->set_var('lang_subject', lang('subject'));
+	$GLOBALS['phpgw']->template->set_var('lang_from', lang('from'));
+	$GLOBALS['phpgw']->template->set_var('lang_to', lang('to'));
+	$GLOBALS['phpgw']->template->set_var('lang_cc', lang('cc'));
+	$GLOBALS['phpgw']->template->set_var('lang_date', lang('date'));
+	$GLOBALS['phpgw']->template->set_var('lang_files', lang('files'));
+	$GLOBALS['phpgw']->template->set_var('lang_subject', lang('subject'));
 
 // ----  From: Message Data  -----
 	if (!$msg_headers->from)
@@ -225,7 +221,7 @@
 		$from_data_final = $from_and_compose_link .$from_extra_info .$from_addybook_add;
 	}
 
-	$t->set_var('from_data_final',$from_data_final);
+	$GLOBALS['phpgw']->template->set_var('from_data_final',$from_data_final);
 
 
 // ----  To:  Message Data  -----
@@ -276,8 +272,7 @@
 		$to_data_final = implode(', ',$to_data_array);
 	}
 
-	$t->set_var('to_data_final',$to_data_final);
-
+	$GLOBALS['phpgw']->template->set_var('to_data_final',$to_data_final);
 
 // ----  Cc:  Message Data  -----
 	if (isset($msg_headers->cc) && count($msg_headers->cc) > 0)
@@ -319,18 +314,18 @@
 		}
 		// throw a spacer comma in between addresses, if more than one
 		$cc_data_final = implode(', ',$cc_data_array);
-		$t->set_var('cc_data_final',$cc_data_final);
-		$t->parse('V_cc_data','B_cc_data');
+		$GLOBALS['phpgw']->template->set_var('cc_data_final',$cc_data_final);
+		$GLOBALS['phpgw']->template->parse('V_cc_data','B_cc_data');
 	}
 	else
 	{
-		$t->set_var('V_cc_data','');
+		$GLOBALS['phpgw']->template->set_var('V_cc_data','');
 	}
 
 // ---- Message Date  (set above)  -----
-	$t->set_var('message_date', $message_date);
+	$GLOBALS['phpgw']->template->set_var('message_date', $message_date);
 // ---- Message Subject  (set above)  -----
-	$t->set_var('message_subject',$subject);	
+	$GLOBALS['phpgw']->template->set_var('message_subject',$subject);
 	
 // ---- Generate phpgw CUSTOM FLATTENED FETCHSTRUCTURE ARRAY  -----
 	$part_nice = Array();
@@ -353,12 +348,12 @@
 	{
 		// get rid of the last ", "
 		$list_of_files = ereg_replace(",.$", "", $list_of_files);
-		$t->set_var('list_of_files',$list_of_files);
-		$t->parse('V_attach_list','B_attach_list');
+		$GLOBALS['phpgw']->template->set_var('list_of_files',$list_of_files);
+		$GLOBALS['phpgw']->template->parse('V_attach_list','B_attach_list');
 	}
 	else
 	{
-		$t->set_var('V_attach_list','');
+		$GLOBALS['phpgw']->template->set_var('V_attach_list','');
 	}
 
 // ----  Reply to First Presentable Part  (needed for Reply, ReplyAll, and Forward below)  -----
@@ -392,13 +387,13 @@
 	}
 	*/
 	$fwd_proc = 'encapsulate';
-	
+
 // ----  Images and Hrefs For Reply, ReplyAll, Forward, and Delete  -----
 	//$reply_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'19','26','0');
 	$reply_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'','','0');
 	$reply_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-				'action=reply&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-				.'&msgnum='.$GLOBALS['phpgw']->msg->msgnum .$first_presentable);
+		'action=reply&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+		.'&msgnum='.$GLOBALS['phpgw']->msg->msgnum .$first_presentable);
 	$ilnk_reply = $GLOBALS['phpgw']->msg->href_maketag($reply_url, $reply_img);
 
 	//$replyall_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),'19','26','0');
@@ -416,20 +411,19 @@
 	$delete_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/action.php','what=delete&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->msgnum);
 	$ilnk_delete = $GLOBALS['phpgw']->msg->href_maketag($delete_url, $delete_img);
 
-	$t->set_var('theme_font',$GLOBALS['phpgw_info']['theme']['font']);
-	$t->set_var('reply_btns_bkcolor',$GLOBALS['phpgw_info']['theme']['em_folder']);
-	$t->set_var('reply_btns_text',$GLOBALS['phpgw_info']['theme']['em_folder_text']);
-	$t->set_var('lnk_goback_folder',$lnk_goback_folder);
-	$t->set_var('ilnk_reply',$ilnk_reply);
-	$t->set_var('ilnk_replyall',$ilnk_replyall);
-	$t->set_var('ilnk_forward',$ilnk_forward);
-	$t->set_var('ilnk_delete',$ilnk_delete);
-
+	$GLOBALS['phpgw']->template->set_var('theme_font',$GLOBALS['phpgw_info']['theme']['font']);
+	$GLOBALS['phpgw']->template->set_var('reply_btns_bkcolor',$GLOBALS['phpgw_info']['theme']['em_folder']);
+	$GLOBALS['phpgw']->template->set_var('reply_btns_text',$GLOBALS['phpgw_info']['theme']['em_folder_text']);
+	$GLOBALS['phpgw']->template->set_var('lnk_goback_folder',$lnk_goback_folder);
+	$GLOBALS['phpgw']->template->set_var('ilnk_reply',$ilnk_reply);
+	$GLOBALS['phpgw']->template->set_var('ilnk_replyall',$ilnk_replyall);
+	$GLOBALS['phpgw']->template->set_var('ilnk_forward',$ilnk_forward);
+	$GLOBALS['phpgw']->template->set_var('ilnk_delete',$ilnk_delete);
 
 // ---- DEBUG: Show Information About Each Part  -----
 	$show_debug_parts = False;
 	//$show_debug_parts = True;
-	
+
 	if ($show_debug_parts)
 	{
 		// what's the count in the array?
@@ -442,13 +436,13 @@
 		//$msg_raw_headers = $GLOBALS['phpgw']->dcom->fetchheader($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
 		$msg_raw_headers = $GLOBALS['phpgw']->msg->phpgw_fetchheader('');
 		$msg_raw_headers = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($msg_raw_headers);
-		
+
 		$crlf = "\r\n";
 		$msg_body_info = '<pre>' .$crlf;
 		$msg_body_info .= 'Top Level Headers:' .$crlf;
 		$msg_body_info .= $msg_raw_headers .$crlf;
 		$msg_body_info .= $crlf;
-		
+
 		$msg_body_info .= 'This message has '.$max_parts.' part(s)' .$crlf;
 		$msg_body_info .= 'deepest_level: '.$deepest_level .$crlf;
 		$msg_body_info .= 'Array Keys: '.$GLOBALS['phpgw']->msg->array_keys_str($part_nice) .$crlf;
@@ -465,10 +459,10 @@
 			$msg_body_info .= 'ex_parent_flat_idx ['. $part_nice[$i]['ex_parent_flat_idx'] .']' .$crlf;
 			$msg_body_info .= 'm_description: '. $part_nice[$i]['m_description'] .$crlf;
 			$msg_body_info .= 'm_keywords: '. $part_nice[$i]['m_keywords'] .$crlf;
-			
+
 			//$keystr = $phpgw->msg->array_keys_str($part_nice[$i]);
 			//$msg_body_info .= 'Array Keys (len='.strlen($keystr).'): '.$keystr .$crlf;
-			
+
 			if ((isset($part_nice[$i]['m_level_total_parts']))
 			&& ($part_nice[$i]['m_level_total_parts'] != $not_set))
 			{
@@ -537,33 +531,33 @@
 		}
 
 		$msg_body_info .= '</pre>' .$crlf;
-		$t->set_var('msg_body_info',$msg_body_info);
-		$t->parse('V_debug_parts','B_debug_parts');
+		$GLOBALS['phpgw']->template->set_var('msg_body_info',$msg_body_info);
+		$GLOBALS['phpgw']->template->parse('V_debug_parts','B_debug_parts');
 	}
 	else
 	{
-		$t->set_var('V_debug_parts','');
+		$GLOBALS['phpgw']->template->set_var('V_debug_parts','');
 	}
 
 // -----  Message_Display Template Handles it from here  -------
-	$t->set_var('theme_font',$GLOBALS['phpgw_info']['theme']['font']);
-	$t->set_var('theme_th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-	$t->set_var('theme_row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
+	$GLOBALS['phpgw']->template->set_var('theme_font',$GLOBALS['phpgw_info']['theme']['font']);
+	$GLOBALS['phpgw']->template->set_var('theme_th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+	$GLOBALS['phpgw']->template->set_var('theme_row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
 	
 // ----  so called "TOOLBAR" between the msg header data and the message siaplay
 	// (1) "view formatted/unformatted" link being moved to the "toolbar"
 	// this tamplate var will be filled with something below if appropriate, else it stays empty
-	$t->set_var('view_option','&nbsp');
+	$GLOBALS['phpgw']->template->set_var('view_option','&nbsp');
 	// base URLs for the "view unformatted" or "view formatted" option
 	// if "vew_unformatted" if the url, then "&no_fmt=1" will be added below
 	// other wise, this URL will be used unchanged
 	$view_option_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
-				'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-				.'&msgnum='.$GLOBALS['phpgw']->msg->msgnum
-				.'&sort='.$GLOBALS['phpgw']->msg->sort
-				.'&order='.$GLOBALS['phpgw']->msg->order
-				.'&start='.$GLOBALS['phpgw']->msg->start
-		);
+		'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+		.'&msgnum='.$GLOBALS['phpgw']->msg->msgnum
+		.'&sort='.$GLOBALS['phpgw']->msg->sort
+		.'&order='.$GLOBALS['phpgw']->msg->order
+		.'&start='.$GLOBALS['phpgw']->msg->start
+	);
 
 	// (2) view headers option
 	$view_headers_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/get_attach.php',
@@ -574,7 +568,7 @@
 		);
 	//$view_headers_href = $GLOBALS['phpgw']->msg->href_maketag($view_headers_url, lang('view headers'));
 	$view_headers_href = '<a href="'.$view_headers_url.'" target="new">'.lang('view headers').'</a>';
-	$t->set_var('view_headers_href',$view_headers_href);
+	$GLOBALS['phpgw']->template->set_var('view_headers_href',$view_headers_href);
 
 	// Force Echo Out Unformatted Text for email with 1 part which is a large text messages (in bytes) , such as a system report from cron
 	// php (4.0.4pl1 last tested) and some imap servers (courier and uw-imap are confirmed) will time out retrieving this type of message
@@ -588,13 +582,13 @@
 		// TEMPORARY: some lame servers do not give any mime data out
 		if ((count($part_nice) == 1) 
 		&&  (($part_nice[$i]['m_description'] == 'container') 
-		    || ($part_nice[$i]['m_description'] == 'packagelist')) )
+		|| ($part_nice[$i]['m_description'] == 'packagelist')) )
 		{
 			// ====  MIME IGNORANT SERVER  ====
 			$title_text = '&nbsp;Mime-Ignorant Email Server: ';
-			$t->set_var('title_text',$title_text);
+			$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
 			$display_str = lang('keywords').': '.$part_nice[$i]['m_keywords'].' - '.$GLOBALS['phpgw']->msg->format_byte_size(strlen($dsp));
-			$t->set_var('display_str',$display_str);
+			$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
 
 			//$msg_raw_headers = $GLOBALS['phpgw']->dcom->fetchheader($mailbox, $GLOBALS['phpgw']->msg->msgnum);
 			//$msg_headers = $GLOBALS['phpgw']->dcom->header($mailbox, $GLOBALS['phpgw']->msg->msgnum); // returns a structure w/o boundry info
@@ -652,8 +646,8 @@
 				.'<br> === BODY ==== <br><br>';
 			$dsp = $dsp .$GLOBALS['phpgw']->msg->phpgw_fetchbody($part_nice[$i]['m_part_num_mime']);
 			
-			$t->set_var('message_body',$dsp);
-			$t->parse('V_display_part','B_display_part');
+			$GLOBALS['phpgw']->template->set_var('message_body',$dsp);
+			$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part');
 		}
 		// do we Force Echo Out Unformatted Text ?
 		elseif (($part_nice[$i]['m_description'] == 'presentable')
@@ -663,27 +657,27 @@
 		&& ((int)$part_nice[$i]['bytes'] > $force_echo_size))
 		{
 			// output a blank message body, we'll use an alternate method below
-			$t->set_var('V_display_part','');
+			$GLOBALS['phpgw']->template->set_var('V_display_part','');
 			// -----  Finished With Message_Mail Template, Output It
-			$t->pparse('out','T_message_main');
+			$GLOBALS['phpgw']->template->pparse('out','T_message_main');
 			
 			// -----  Prepare a Table for this Echo Dump
 			$title_text = '&nbsp;'.lang('message').': ';
-			$t->set_var('title_text',$title_text);
+			$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
 			$display_str = lang('keywords').': '.$part_nice[$i]['m_keywords'].' - '.$GLOBALS['phpgw']->msg->format_byte_size($part_nice[$i]['bytes'])
 				.'; meets force_echo ('.$GLOBALS['phpgw']->msg->format_byte_size($force_echo_size).') criteria';
-			$t->set_var('display_str',$display_str);
-			$t->parse('V_setup_echo_dump','B_setup_echo_dump');
-			$t->set_var('V_done_echo_dump','');
-			$t->pparse('out','T_message_echo_dump');
+			$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
+			$GLOBALS['phpgw']->template->parse('V_setup_echo_dump','B_setup_echo_dump');
+			$GLOBALS['phpgw']->template->set_var('V_done_echo_dump','');
+			$GLOBALS['phpgw']->template->pparse('out','T_message_echo_dump');
 			// -----  Echo This Data Directly to the Client
 			echo '<pre>';
 			echo $GLOBALS['phpgw']->msg->phpgw_fetchbody($part_nice[$i]['m_part_num_mime']);
 			echo '</pre>';
 			// -----  Close Table
-			$t->set_var('V_setup_echo_dump','');
-			$t->parse('V_done_echo_dump','B_done_echo_dump');
-			$t->pparse('out','T_message_echo_dump');
+			$GLOBALS['phpgw']->template->set_var('V_setup_echo_dump','');
+			$GLOBALS['phpgw']->template->parse('V_done_echo_dump','B_done_echo_dump');
+			$GLOBALS['phpgw']->template->pparse('out','T_message_echo_dump');
 
 			//  = = = =  = =======  CLEANUP AND EXIT PAGE ======= = = = = = =
 			$part_nice = '';
@@ -698,7 +692,7 @@
 			// get the body
 			$dsp = $GLOBALS['phpgw']->msg->phpgw_fetchbody($part_nice[$i]['m_part_num_mime']);
 			// is a blank part test necessary for html ???
-			
+
 			// ----  prepare the message part seperator(s)  ----
 			//if showing more than 1 part, then show the part number, else just say "message"
 			// NEEDS FIXING - is this simple test accurate enough?
@@ -710,12 +704,12 @@
 			{
 				$title_text = '&nbsp;'.lang('message').': ';
 			}
-			
+
 			//$display_str = $part_nice[$i]['type'].'/'.strtolower($part_nice[$i]['subtype']);
 			$display_str = lang('keywords').': '.$part_nice[$i]['m_keywords']
 				.' - '.$GLOBALS['phpgw']->msg->format_byte_size(strlen($dsp));
-			$t->set_var('title_text',$title_text);
-			$t->set_var('display_str',$display_str);
+			$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
+			$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
 
 			if (stristr($part_nice[$i]['m_keywords'], 'qprint'))
 			{
@@ -744,18 +738,18 @@
 						// prepare the replacement href, add the quotes that the html expects
 						$part_href = $part_nice[$rel]['ex_part_href'];
 						//$part_href = '"'.$part_nice[$rel]['ex_part_href'].'"';
-					
+
 						//echo '<br> **replace_id (pre-processing): ' .$replace_id .'<br>';
 						//echo 'part_href (processed): ' .$part_href .'<br>';
-					
+
 						// strip <  and  >  from this ID
 						$replace_id = ereg_replace( '^<','',$replace_id);
 						$replace_id = ereg_replace( '>$','',$replace_id);
 						// id references are typically preceeded with "cid:"
 						$replace_id = 'cid:' .$replace_id;
-					
+
 						//echo '**replace_id (post-processing): ' .$replace_id .'<br>';
-					
+
 						// Attempt the Search and Replace
 						$dsp = str_replace($replace_id, $part_href, $dsp);
 					}
@@ -799,8 +793,7 @@
 			//$dsp = ereg_replace( "\n","<br>",$dsp);
 			//$dsp = ereg_replace( "$","</p>", $dsp);
 
-
-			//$t->set_var('message_body',"<tt>$dsp</tt>");
+			//$GLOBALS['phpgw']->template->set_var('message_body',"<tt>$dsp</tt>");
 
 			/*
 			// if there are headers <!DOCTYPE or <STYLE> in the html body, then seeing is optional
@@ -810,7 +803,7 @@
 			|| (stristr($dsp, '</script>'))
 			|| (stristr($dsp, '</head>')))
 			*/
-			
+
 			// Viewing HTML part is Optional (NOT automatic) if:
 			// (1) if there are CSS Body formattings, or
 			// (2) any <script> in the html body
@@ -865,8 +858,8 @@
 				// it can't be that bad, just show it
 			}
 
-			$t->set_var('message_body',"$dsp");
-			$t->parse('V_display_part','B_display_part', True);
+			$GLOBALS['phpgw']->template->set_var('message_body',"$dsp");
+			$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
 
 			/*
 			// get the body
@@ -890,19 +883,19 @@
 			$title_text = lang('section').': '.$part_nice[$i]['m_part_num_mime'];
 			//$display_str = $part_nice[$i]['type'].'/'.strtolower($part_nice[$i]['subtype']);
 			$display_str = $part_nice[$i]['m_keywords'];
-			$t->set_var('title_text',$title_text);
-			$t->set_var('display_str',$display_str);
-			$t->parse('V_output_bound','B_output_bound');
-			$v_msg_body = $v_msg_body . $t->get_var('V_output_bound');
+			$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
+			$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
+			$GLOBALS['phpgw']->template->parse('V_output_bound','B_output_bound');
+			$v_msg_body = $v_msg_body . $GLOBALS['phpgw']->template->get_var('V_output_bound');
 
 			if (stristr($part_nice[$i]['m_keywords'], 'qprint'))
 			{
 				$dsp = '<tt>'.$dsp.'</tt>';
 			}
 
-			$t->set_var('message_body',$dsp);
-			$t->parse('V_message_part','B_message_part');
-			$v_msg_body = $v_msg_body . $t->get_var('V_message_part');
+			$GLOBALS['phpgw']->template->set_var('message_body',$dsp);
+			$GLOBALS['phpgw']->template->parse('V_message_part','B_message_part');
+			$v_msg_body = $v_msg_body . $GLOBALS['phpgw']->template->get_var('V_message_part');
 			*/
 		}
 		elseif ($part_nice[$i]['m_description'] == 'presentable')
@@ -937,7 +930,7 @@
 			if (strlen($dsp) < 3)
 			{
 				$skip_this_part = True;
-				$t->set_var('V_display_part','');
+				$GLOBALS['phpgw']->template->set_var('V_display_part','');
 			}
 			
 			// ===DEBUG===
@@ -1007,7 +1000,7 @@
 				*/
 				
 				// "view formatted/unformatted" link being moved to the "toolbar"
-				$t->set_var('view_option',$view_option);
+				$GLOBALS['phpgw']->template->set_var('view_option',$view_option);
 				
 				// ----  prepare the message part seperator(s)  ----
 				//if showing more than 1 part, then show the part number, else just say "message"
@@ -1020,7 +1013,7 @@
 				{
 					$title_text = '&nbsp;'.lang('message').': ';
 				}
-				$t->set_var('title_text',$title_text);
+				$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
 				$display_str = lang('keywords').': '.$part_nice[$i]['m_keywords']
 					.' - '.$GLOBALS['phpgw']->msg->format_byte_size(strlen($dsp));
 				// View formatted / unformatted moved to toolbar, do not show it here
@@ -1028,9 +1021,9 @@
 				// however, template var "display_str" was set to empty above
 				// if it deserves to be filled, this code just above here will fill it
 				// but it should not be shown in this mesage seperator bar
-				$t->set_var('display_str',$display_str);
-				$t->set_var('message_body',$dsp);
-				$t->parse('V_display_part','B_display_part', True);
+				$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
+				$GLOBALS['phpgw']->template->set_var('message_body',$dsp);
+				$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
 
 				/*
 				// ------- Previous Method
@@ -1059,20 +1052,20 @@
 			$display_str = $GLOBALS['phpgw']->msg->decode_header_string($part_nice[$i]['ex_part_name'])
 				.' - ' .$GLOBALS['phpgw']->msg->format_byte_size((int)$part_nice[$i]['bytes']) 
 				.' - '.lang('keywords').': ' .$part_nice[$i]['m_keywords'];
-			$t->set_var('title_text',$title_text);
-			$t->set_var('display_str',$display_str);
+			$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
+			$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
 			// we add an href that points to the exact msg_number/mime_part number that is the image
 			// view_image will then handle this request as the browser requests this "img src" for inline display
 			$img_inline = '<img src="'.$part_nice[$i]['ex_part_href'].'">';
-			$t->set_var('message_body',$img_inline);
-			$t->parse('V_display_part','B_display_part', True);
+			$GLOBALS['phpgw']->template->set_var('message_body',$img_inline);
+			$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
 		}
 		elseif ($part_nice[$i]['m_description'] == 'attachment')
 		{
 			$title_text = lang('section').': '.$part_nice[$i]['m_part_num_mime'];
 			$display_str = lang('keywords').': ' .$part_nice[$i]['m_keywords'];
-			$t->set_var('title_text',$title_text);
-			$t->set_var('display_str',$display_str);
+			$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
+			$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
 			
 			/*
 			if (($part_nice[$i]['encoding'] == 'base64')
@@ -1091,8 +1084,8 @@
 				.'&nbsp;&nbsp; '.lang('size').': '.$GLOBALS['phpgw']->msg->format_byte_size((int)$part_nice[$i]['bytes'])
 				.'<br><br>';
 			
-			$t->set_var('message_body',$msg_text);
-			$t->parse('V_display_part','B_display_part', True);
+			$GLOBALS['phpgw']->template->set_var('message_body',$msg_text);
+			$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
 		}
 		elseif (($part_nice[$i]['m_description'] != 'container')
 		&& ($part_nice[$i]['m_description'] != 'packagelist'))
@@ -1101,8 +1094,8 @@
 			$title_text = lang("section").': '.$part_nice[$i]['m_part_num_mime'];
 			$display_str = $GLOBALS['phpgw']->msg->decode_header_string($part_nice[$i]['ex_part_name'])
 				.' - '.lang('keywords').': ' .$part_nice[$i]['m_keywords'];
-			$t->set_var('title_text',$title_text);
-			$t->set_var('display_str',$display_str);
+			$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
+			$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
 			
 			$msg_text = '';
 			// UNKNOWN DATA
@@ -1114,8 +1107,8 @@
 					//$processed_msg_body = $processed_msg_body . base64_decode($dsp) .'<br>' ."\r\n";
 				$msg_text = $msg_text . 'actual part size: ' .strlen($dsp);
 			}
-			$t->set_var('message_body',$msg_text);
-			$t->parse('V_display_part','B_display_part', True);
+			$GLOBALS['phpgw']->template->set_var('message_body',$msg_text);
+			$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
 		}
 	}
 	set_time_limit(0);
@@ -1135,7 +1128,7 @@
 		}
 	} */
 
-	$t->pparse('out','T_message_main');
+	$GLOBALS['phpgw']->template->pparse('out','T_message_main');
 
 	$GLOBALS['phpgw']->msg->end_request();
 	$GLOBALS['phpgw']->common->phpgw_footer();
