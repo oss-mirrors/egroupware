@@ -257,6 +257,6 @@
  }
 }
 
-  $phpgw->template->set_var(array(FORM_ACTION => $phpgw->link()));
+  $phpgw->template->set_var('FORM_ACTION',$phpgw->link('/bookmarks/import.php'));
   $phpgw->common->phpgw_footer();
 ?>

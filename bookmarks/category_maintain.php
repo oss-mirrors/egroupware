@@ -41,7 +41,7 @@
         $message = urlencode(lang("x has been deleted",$type));
      }
      
-     Header("Location: " . $phpgw->link($phpgw_info["webserver_url"] . "/bookmarks/categories.php","type=$type&message=$message"));
+     Header("Location: " . $phpgw->link('/bookmarks/categories.php',"type=$type&message=$message"));
      $phpgw->common->phpgw_exit();
   }
 

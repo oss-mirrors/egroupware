@@ -182,7 +182,7 @@ if ($rating > 0) {
 
   $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
 
-  $phpgw->template->set_var("form_action",$phpgw->link());
+  $phpgw->template->set_var("form_action",$phpgw->link('/bookmarks/create.php'));
   $phpgw->template->set_var("lang_url",lang("URL"));
   $phpgw->template->set_var("lang_name",lang("Name"));
   $phpgw->template->set_var("lang_desc",lang("Description"));

@@ -40,13 +40,13 @@
   while ($cat = each($cats)) {
      $phpgw->nextmatchs->template_alternate_row_color(&$phpgw->template);
      $phpgw->template->set_var("cat_name",$cat[1]["name"]);
-     $phpgw->template->set_var("cat_edit",'<a href="' . $phpgw->link("category_maintain.php","bm_id=" . $cat[1]["id"] . "&type=$type&method=edit")
+     $phpgw->template->set_var("cat_edit",'<a href="' . $phpgw->link("/bookmarks/category_maintain.php","bm_id=" . $cat[1]["id"] . "&type=$type&method=edit")
                                         . '">' . lang("Edit") . '</a>');
-     $phpgw->template->set_var("cat_delete",'<a href="' . $phpgw->link("category_maintain.php","bm_id=" . $cat[1]["id"] . "&type=$type&method=delete")
+     $phpgw->template->set_var("cat_delete",'<a href="' . $phpgw->link("/bookmarks/category_maintain.php","bm_id=" . $cat[1]["id"] . "&type=$type&method=delete")
                                         . '">' . lang("Delete") . '</a>');
      $phpgw->template->parse("rows","row",True);
   }
-  $phpgw->template->set_var("add_link",'<a href="' . $phpgw->link("category_maintain.php","type=$type&method=add") . '">'
+  $phpgw->template->set_var("add_link",'<a href="' . $phpgw->link("/bookmarks/category_maintain.php","type=$type&method=add") . '">'
                                      . lang("Add") . '</a>');
 
   $phpgw->common->phpgw_footer();
