@@ -20,7 +20,9 @@
 	* along with this library; if not, write to the Free Software Foundation,  *
 	* Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            *
 	\**************************************************************************/
-
+	
+	/* $Id$ */
+	
 	/*!
 	@class mail_dcom extends mail_dcom_base FOR SOCKETS
 	@abstract implements IMAP module FOR SOCKETS, replaces php IMAP extension
@@ -50,6 +52,8 @@
 		// CLASS VARS
 		// bodystructure string goes here
 		var $bs_rawstr = '##NOTHING##';
+		// each imap command should have a different ID
+		var $last_cmd_num = 0;
 		
 		// next 2 are not important
 		// what debth level are we working on of bodystructure
@@ -73,6 +77,48 @@
 		*	data analysis specific to IMAP data communications
 		\**************************************************************************/
 
+		/*!
+		@function get_next_cmd_num
+		@abstract make imap command id number
+		@author Angles
+		@result string
+		@discussion  each IMAP command needs a different ID associated with it.
+		*/
+		function get_next_cmd_num()
+		{
+			// we want 8 digit number starting with 0 padded to always be 8 digits long
+			// forst increase the simple integer we use to keep track of this
+			$this->last_cmd_num++;
+			$cmd_id = (string)$this->last_cmd_num;
+			$cmd_id_length = strlen($cmd_id);
+			$new_id_final = '';
+			if ($cmd_id_length <= 7)
+			{
+				if (function_exists('str_pad') == False)
+				{
+					// we need to add some "0" digits preappended to this command id
+					$new_id_final = $cmd_id;
+					$add_digits = 8 - $cmd_id_length;
+					for ($i = 0; $i < $add_digits; $i++)
+					{
+						$new_id_final = '0'.$new_id_final;
+					}
+				}
+				else
+				{
+					// same thing using str_pad
+					$new_id_final = str_pad($cmd_id, 8, '0', STR_PAD_LEFT);
+				}
+			}
+			else
+			{
+				// almost impossible we have this many commands in 1 page view, but just in case
+				$new_id_final = $cmd_id;
+			}
+			// return the prepared IMAP command ID
+			return $new_id_final;
+		}
+		
 		/*!
 		@function str_begins_with
 		@abstract determine if string $haystack begins with string $needle
@@ -361,7 +407,8 @@
 			
 			// 1. initial command: 00000006 APPEND "INBOX.Sent Items" (\Seen) {526}
 			// flags already has spaces around it if it exists, else is empty
-			$cmd_tag = 'J001';
+			//$cmd_tag = 'J001';
+			$cmd_tag = $this->get_next_cmd_num();
 			$full_command = $cmd_tag.' APPEND '.$folder.$flags.' {'.$size.'}';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 
@@ -431,7 +478,8 @@
 			}
 			if ($this->debug_dcom > 1) { echo 'imap.createmailbox('.__LINE__.'): processed $folder: ['.htmlspecialchars($folder).'] <br>'; }
 			// assemble the server querey, looks like this:  00000004 Create INBOX.New1
-			$cmd_tag = 'm010';
+			//$cmd_tag = 'm010';
+			$cmd_tag = $this->get_next_cmd_num();
 			$full_command = $cmd_tag.' Create '.$folder;
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
@@ -479,7 +527,8 @@
 			}
 			if ($this->debug_dcom > 1) { echo 'imap.deletemailbox('.__LINE__.'): processed $folder: ['.htmlspecialchars($folder).'] <br>'; }
 			// assemble the server querey, looks like this:  00000004 Delete "INBOX.New Two"
-			$cmd_tag = 'm011';
+			//$cmd_tag = 'm011';
+			$cmd_tag = $this->get_next_cmd_num();
 			$full_command = $cmd_tag.' Delete '.$folder;
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
@@ -535,7 +584,8 @@
 			}
 			if ($this->debug_dcom > 1) { echo 'imap.renamemailbox('.__LINE__.'): processed $folder: ['.htmlspecialchars($folder).'] <br>'; }
 			// assemble the server querey, looks like this:  00000004 Rename INBOX.New1 "INBOX.New TWO"
-			$cmd_tag = 'm012';
+			//$cmd_tag = 'm012';
+			$cmd_tag = $this->get_next_cmd_num();
 			$full_command = $cmd_tag.' Rename '.$folder_old.' '.$folder_new;
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
@@ -597,7 +647,8 @@
 			}
 			if ($this->debug_dcom > 1) { echo 'imap_sock.setflag_full('.__LINE__.'): $flags ['.htmlspecialchars(serialize($flags)).'], $using_uid ['.htmlspecialchars(serialize($using_uid)).'] only SE_UID coded for, so continuing...<br>'; }
 			// assemble the server querey, looks like this:  00000007 UID STORE 20 +Flags (\Deleted)
-			$cmd_tag = 'n014';
+			//$cmd_tag = 'n014';
+			$cmd_tag = $this->get_next_cmd_num();
 			$full_command = $cmd_tag.' UID STORE '.$msg_list.' +Flags ('.$flags_str.')';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
@@ -658,7 +709,8 @@
 		{
 			if ($this->debug_dcom > 0) { echo 'imap_sock.expunge('.__LINE__.'): ENTERING <br>'; }
 			// assemble the server querey, looks like this:  00000007 EXPUNGE
-			$cmd_tag = 'n015';
+			//$cmd_tag = 'n015';
+			$cmd_tag = $this->get_next_cmd_num();
 			$full_command = $cmd_tag.' EXPUNGE';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
@@ -745,7 +797,8 @@
 			}
 			if ($this->debug_dcom > 1) { echo 'imap.mail_move('.__LINE__.'): processed $folder: ['.htmlspecialchars($folder).'] <br>'; }
 			// assemble the server querey, looks like this:  00000006 UID COPY 12:14 INBOX.Trash
-			$cmd_tag = 'n016';
+			//$cmd_tag = 'n016';
+			$cmd_tag = $this->get_next_cmd_num();
 			$full_command = $cmd_tag.' UID COPY '.$msg_list.' '.$folder;
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
@@ -795,7 +848,8 @@
 		{
 			if ($this->debug_dcom > 0) { echo 'imap_sock.noop_ping_test('.__LINE__.'): ENTERING <br>'; }
 			// assemble the server querey, looks like this:  00000007 NOOP
-			$cmd_tag = 'n016';
+			//$cmd_tag = 'n016';
+			$cmd_tag = $this->get_next_cmd_num();
 			$full_command = $cmd_tag.' NOOP';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
@@ -895,7 +949,8 @@
 			// assemble the server querey, looks like this:   
 			// 00000004 UID SEARCH ALL SEEN UNSEEN BEFORE 24-Mar-2004 SINCE 20-Nov-2003 FROM "Mailer App" TO mark SUBJECT tommy BODY "really drive"
 			
-			$cmd_tag = 'k009';
+			//$cmd_tag = 'k009';
+			$cmd_tag = $this->get_next_cmd_num();
 			$full_command = $cmd_tag.' UID SEARCH ALL '.$criteria;
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
@@ -1018,7 +1073,8 @@
 			if ($this->debug_dcom > 1) { echo 'imap: open: user and pass NO quotemeta: user ['. htmlspecialchars($user).'] pass ['.htmlspecialchars($pass).']<br>'; }
 			if ($this->debug_dcom > 1) { echo 'imap: open: user and pass WITH quotemeta: user ['. htmlspecialchars(quotemeta($user)).'] pass ['.htmlspecialchars(quotemeta($pass)).']<br>'; }
 			
-			$cmd_tag = 'L001';
+			//$cmd_tag = 'L001';
+			$cmd_tag = $this->get_next_cmd_num();
 			$full_command = $cmd_tag.' LOGIN "'.$user.'" "'.$pass.'"';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
@@ -1074,7 +1130,8 @@
 		{
 			if ($this->debug_dcom > 0) { echo 'imap: ENTERING Close<br>'; }
 			
-			$cmd_tag = 'c001';
+			//$cmd_tag = 'c001';
+			$cmd_tag = $this->get_next_cmd_num();
 			$full_command = $cmd_tag.' LOGOUT';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
@@ -1132,7 +1189,8 @@
 			$folder = $svr_data['folder'];
 			if ($this->debug_dcom > 0) { echo 'imap: reopen: folder value is: ['.$folder.']<br>'; }
 			
-			$cmd_tag = 'r001';
+			//$cmd_tag = 'r001';
+			$cmd_tag = $this->get_next_cmd_num();
 			$full_command = $cmd_tag.' SELECT "'.$folder.'"';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
@@ -1235,7 +1293,8 @@
 				$list_params = '"' .$pattern .'" ""';
 			}
 
-			$cmd_tag = 'X001';
+			//$cmd_tag = 'X001';
+			$cmd_tag = $this->get_next_cmd_num();
 			$full_command = $cmd_tag.' LIST '.$list_params;
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
@@ -1416,7 +1475,8 @@
 			}
 			$query_str = trim($query_str);
 			
-			$cmd_tag = 's001';
+			//$cmd_tag = 's001';
+			$cmd_tag = $this->get_next_cmd_num();
 			//$full_command = $cmd_tag.' STATUS '.$svr_data['folder'].' (MESSAGES RECENT UIDNEXT UIDVALIDITY UNSEEN)';
 			$full_command = $cmd_tag.' STATUS "'.$svr_data['folder'].'" ('.$query_str.')';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
@@ -1803,7 +1863,8 @@
 			
 			
 			// assemble the server querey, looks like this:  00000006 UID SORT (REVERSE ARRIVAL)  US-ASCII ALL
-			$cmd_tag = 's006';
+			//$cmd_tag = 's006';
+			$cmd_tag = $this->get_next_cmd_num();
 			$full_command = $cmd_tag.' UID SORT ('.$reverse_and_criteria.') '.$str_charset.' '.$str_search_key;
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
@@ -3188,7 +3249,8 @@
 			
 			// assemble the server querey, looks like this:  
 			// 00000008 UID FETCH 131 (FLAGS INTERNALDATE RFC822.SIZE ENVELOPE BODY)
-			$cmd_tag = 's007';
+			//$cmd_tag = 's007';
+			$cmd_tag = $this->get_next_cmd_num();
 			//$full_command = $cmd_tag.' UID FETCH '.$msg_num.' (FLAGS INTERNALDATE RFC822.SIZE ENVELOPE BODY)';
 			$full_command = $cmd_tag.' UID FETCH '.$msg_num.' (FLAGS INTERNALDATE RFC822.SIZE ENVELOPE BODYSTRUCTURE)';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
@@ -4550,7 +4612,8 @@
 			// 00000006 UID FETCH 131 BODY[1]
 			// OR if only peeking at the header
 			// 00000003 UID FETCH 6  BODY.PEEK[HEADER]
-			$cmd_tag = 's008';
+			//$cmd_tag = 's008';
+			$cmd_tag = $this->get_next_cmd_num();
 			if (($part_num == 'HEADER')
 			|| ($just_peek))
 			{

@@ -344,7 +344,7 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 			$totalmessages = $folder_info['number_all'];
 			
 			$subject = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'');
-
+			$probable_charset = $GLOBALS['phpgw']->msg->get_encoded_header_charset($msg_headers->Subject);
 			/*
 # begin GMT handling by "acros"
 #le quitamos el offset a los mensajes de correo electrnico.
@@ -885,7 +885,7 @@ $msg_headers->udate = $new_time;
 					// and do not forget about charset
 					if ($this->part_nice[$i]['charset'] != $not_set)
 					{
-						$first_presentable = $first_presentable . '&charset=' . $charset;
+						$first_presentable = $first_presentable . '&charset=' . $this->part_nice[$i]['charset'];
 					}
 					break;
 				}
@@ -1202,7 +1202,8 @@ $msg_headers->udate = $new_time;
 			// Force Echo Out Unformatted Text for email with 1 part which is a large text messages (in bytes) , such as a system report from cron
 			// php (4.0.4pl1 last tested) and some imap servers (courier and uw-imap are confirmed) will time out retrieving this type of message
 			//$force_echo_size = 20000;
-			$force_echo_size = 60000;
+			//$force_echo_size = 60000;
+			$force_echo_size = 90000;
 			
 			
 			
@@ -1415,16 +1416,19 @@ $msg_headers->udate = $new_time;
 					if (stristr($this->part_nice[$i]['m_keywords'], 'qprint'))
 					{
 						$dsp = $GLOBALS['phpgw']->msg->qprint($dsp);
-						// we can convert now that we have done qprint decoding
-						if ($this->part_nice[$i]['charset'] != $not_set) {
-							$dsp = $GLOBALS['phpgw']->translation->convert($dsp,$this->part_nice[$i]['charset']);
-						}
 					}
 					
 					if (stristr($this->part_nice[$i]['m_keywords'], 'base64'))
 					{
 						//$this->part_nice[$i]['d_threat_level'] .= 'warn_b64_encoded_displayable ';
 						$this->part_nice[$i]['d_threat_level'] .= $this->xi['lang_warn_b64_encoded_displayable'].' ';
+						// lets try to show it if possible
+						$dsp = $GLOBALS['phpgw']->msg->de_base64($dsp);
+					}
+					
+					// we can convert now that we have done qprint or base64 decoding
+					if ($this->part_nice[$i]['charset'] != $not_set) {
+						$dsp = $GLOBALS['phpgw']->translation->convert($dsp,$this->part_nice[$i]['charset']);
 					}
 					
 					// ---- HTML Related Parts Handling  ----
@@ -1609,9 +1613,10 @@ $msg_headers->udate = $new_time;
 					// add the warn level to the display_str
 					$this->part_nice[$i]['display_str'] .= ' '.$this->part_nice[$i]['d_threat_level'];
 					//$GLOBALS['phpgw']->template->set_var('message_body',"$dsp");
-					if ($this->part_nice[$i]['charset'] != $not_set) {
-						$dsp = $GLOBALS['phpgw']->translation->convert($dsp,$this->part_nice[$i]['charset']);
-					}
+					// we already did this
+					//if ($this->part_nice[$i]['charset'] != $not_set) {
+					//	$dsp = $GLOBALS['phpgw']->translation->convert($dsp,$this->part_nice[$i]['charset']);
+					//}
 					$this->part_nice[$i]['message_body'] = "$dsp";
 					//$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
 				}
@@ -1637,7 +1642,6 @@ $msg_headers->udate = $new_time;
 					$this_msgball = $msgball;
 					$this_msgball['part_no'] = $this->part_nice[$i]['m_part_num_mime'];
 					$dsp = $GLOBALS['phpgw']->msg->phpgw_fetchbody($this_msgball);
-					$dsp = trim($dsp);
 					
 					/*
 					$dsp = str_replace("{", " BLA ", $dsp);
@@ -1686,8 +1690,6 @@ $msg_headers->udate = $new_time;
 						if (stristr($this->part_nice[$i]['m_keywords'], 'qprint'))
 						{
 							$dsp = $GLOBALS['phpgw']->msg->qprint($dsp);
-							// this next line I think is OBSOLETED
-							$tag = 'tt';
 						}
 						elseif (stristr($this->part_nice[$i]['m_keywords'], 'base64'))
 						{
@@ -1696,7 +1698,11 @@ $msg_headers->udate = $new_time;
 							$this->part_nice[$i]['d_threat_level'] .= $this->xi['lang_warn_b64_encoded_displayable'].' ';
 							$dsp = $GLOBALS['phpgw']->msg->de_base64($dsp);
 						}
-						
+						// convert to local charset if necessary 
+						if ($this->part_nice[$i]['charset'] != $not_set) {
+							$dsp = $GLOBALS['phpgw']->translation->convert($dsp,$this->part_nice[$i]['charset']);
+						}
+						$dsp = trim($dsp);
 						//    normalize line breaks to rfc2822 CRLF
 						$dsp = $GLOBALS['phpgw']->msg->normalize_crlf($dsp);
 						
@@ -1765,9 +1771,6 @@ $msg_headers->udate = $new_time;
 						// if it deserves to be filled, this code just above here will fill it
 						// but it should not be shown in this mesage seperator bar
 						$this->part_nice[$i]['display_str'] = $display_str;
-						if ($this->part_nice[$i]['charset'] != $not_set) {
-							$dsp = $GLOBALS['phpgw']->translation->convert($dsp,$this->part_nice[$i]['charset']);
-						}
 						$this->part_nice[$i]['message_body'] = $dsp;
 						
 						// add the warn level to the display_str

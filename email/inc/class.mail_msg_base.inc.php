@@ -797,7 +797,13 @@
 				'ex_acctnum',
 				
 				// this is filled by javascript on the user browser and passed here during send as the TZ offset
-				'utz'
+				'utz',
+				
+				// ----  charset: string  ----
+				// USAGE: "utf-8" "us-ascii", etc...
+				// class.uicompose.compose: if replying to, we MIGHT preserve the charset of the original part we are replying to
+				// TESTING TESTING
+				'charset'
 				);
 			
 			$this->known_internal_args = array(
@@ -4597,6 +4603,7 @@
 		*/
 		function decode_header_string($string)
 		{
+			/*
 			if (function_exists('mb_decode_mimeheader'))
 			{
 				return $this->decode_header_string_mb($string);
@@ -4606,6 +4613,8 @@
 				//return $this->decode_rfc_header($string);
 				return $this->decode_header_string_orig($string);
 			}
+			*/
+			return $this->decode_header_string_orig($string);
 		}
 		
 		/*!
@@ -4614,9 +4623,52 @@
 		*/
 		function decode_header_string_mb($string)
 		{
-			// we have no way to check if this is needed or not 
-			// because right now mb_ereg is unstable, so just call it
-			return mb_decode_mimeheader($string);
+			if (trim($string))
+			{
+				$pos = strpos($string,"=?");
+				if(!is_int($pos))
+				{
+					if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_string_mb('.__LINE__.'): *  leave early, $pos is ['.serialize($pos).'], so no encodings here  <br>'); } 
+					return $string;
+				}
+				/* NOT NEEDED
+				// explode string into an array or words
+				$words = explode(' ', $string);
+				$loops = count($words);
+				$decoded = '';
+				for($i=0; $i<$loops; $i++)
+				{
+					$this_word = $words[$i];
+					$pos = strpos($this_word,"=?");
+					if(!is_int($pos))
+					{
+						$decoded = $decoded . $this_word;
+					}
+					else
+					{
+						$this_decoded = mb_decode_mimeheader($this_word);
+						$decoded = $decoded . $this_decoded;
+						if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_string_mb('.__LINE__.'): * iteration ['.$i.'] <br> $this_word ['.$this_word.'] <br> * $this_decoded ['.$this_decoded.']  <br>'); } 
+					}
+				}
+				*/
+				// HACK TEST
+				if (stristr($string, '=?x-unknown?'))
+				{
+					//$string = str_replace('=?x-unknown?', '=?utf-8?', $string);
+					$charset = $GLOBALS['phpgw']->translation->system_charset ? $GLOBALS['phpgw']->translation->system_charset : 'iso-8859-1';
+					$string = str_replace('=?x-unknown?', '=?'.$charset.'?', $string);
+				}
+				$decoded = mb_decode_mimeheader($string);
+				//if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_string_mb('.__LINE__.'): <br> _*_ $string ['.$string.'] <br> * $decoded ['.$decoded.']  <br>'); } 
+				if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_string_mb('.__LINE__.'): * orig $string ['.$string.'] * $decoded ['.$decoded.']  <br>'); } 
+				return $decoded;
+			} 
+			else
+			{
+				if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_string_mb('.__LINE__.'): * leave, there was no input, returning $string ['.$string.'] <br>'); }
+				return $string;
+			}
 		}
 		
 		/*!
@@ -4633,6 +4685,7 @@
 		=?charset?B?word?=
 		currently only qprint and base64 encoding is specified by RFCs, represented by the Q or B, 
 		which can be upper OR lower case.
+		UNDER DEVELOPMENT, FURURE USE.
 		*/
 		function decode_rfc_header($data)
 		{
@@ -4731,6 +4784,11 @@
 					$decoded = urldecode(base64_decode($encoded_text));
 					if ($this->debug_char_decodings > 1) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): $decoded ['.$decoded.'] <br>'); }
 				}
+				if ($charset == 'x-unknown')
+				{
+					if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): LEAVING early, $charset is ['.$charset.'], this sockets error means skip convert, simplyt return $decoded ['.$decoded.'] <br>'); }
+					return $decoded;
+				}
 				$converted = $GLOBALS['phpgw']->translation->convert($decoded,$charset);
 				if ($this->debug_char_decodings > 1) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): $converted ['.$converted.'], $charset ['.$charset.'], $rest ['.$rest.'] <br>'); }
 				// CONVERSION ERROR check
@@ -4763,9 +4821,6 @@
 		*/
 		function decode_header_glob($data)
 		{
-			//$debug_me = 0;
-			$debug_me = 3;
-			
 			if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_glob('.__LINE__.'): ENTERING <br>'); } 
 			if ($this->debug_char_decodings > 2) { $this->dbug->out('msg_base.decode_header_glob('.__LINE__.'): $data DUMP:', $data); } 
 			// multiline glob needs to be an array
@@ -4821,6 +4876,54 @@
 				if ($this->debug_char_decodings > 2) { $this->dbug->out('msg_base.decode_header_glob('.__LINE__.'): $my_glob DUMP:', $my_glob); } 
 				if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_glob('.__LINE__.'): LEAVING, $data_was_array was ['.serialize($data_was_array).'] <br>'); } 
 				return $my_glob;
+			}
+		}
+		
+		/*!
+		@function get_encoded_header_charset
+		@abstract similar to decode_header_* except all we want is the charset of the encoded data
+		@result string or empty string if no charset data
+		@author adapted from previous authors
+		@discussion We are looking for the charset string such as following
+		=?iso-8859-1?Q?encoded_word?=
+		=?iso-8859-1?B?encoded_word?=
+		it needs some tweaking to handle the different lengths of various modern encoding type descriptors, like 
+		=?UTF-8?Q?encoded_word?=
+		=?iso-8859-15?Q?encoded_word?=
+		=?GB2312?Q?encoded_word?=
+		=?big5?Q?encoded_word?=
+		*/
+		function get_encoded_header_charset($string)
+		{
+			if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.get_header_string_charset('.__LINE__.'): ENTERING, param $string ['.$string.']  <br>'); } 
+			$charset = '';
+			if($string)
+			{
+				$pos = strpos($string,"=?");
+				if(!is_int($pos))
+				{
+					if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.get_header_string_charset('.__LINE__.'): LEAVING early, $pos is ['.$pos.'], so no encodings here, return $charset ['.$charset.']  <br>'); } 
+					return $charset;
+				}
+				// save any preceding text
+				$preceding = substr($string,0,$pos);
+				$end = strlen($string);
+				// the mime header spec says this is the longest a single encoded word can be
+				$search = substr($string,$pos+2,$end - $pos - 2 );
+				$d1 = strpos($search,"?");
+				if(!is_int($d1))
+				{
+					if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.get_header_string_charset('.__LINE__.'): LEAVING early, $d1 ['.$d1.'], return $charset ['.$charset.'] <br>'); }
+					return $charset;
+				}
+				$charset = strtolower(substr($string,$pos+2,$d1));
+				if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.get_header_string_charset('.__LINE__.'): LEAVING $charset ['.$charset.'] <br>'); }
+				return $charset;
+			} 
+			else
+			{
+				if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.get_header_string_charset('.__LINE__.'): LEAVING, there was no input, returning $charset ['.$charset.'] <br>'); }
+				return $charset;
 			}
 		}
 		
@@ -4918,8 +5021,32 @@
 		This goes beyong the original scope of this function, this only tests for us-ascii chars that are 
 		"header unfriendly". Perhaps a new function is needed for language header encoding issues. 
 		*/
-		function encode_header($data)
+		function encode_header($data, $charset='')
 		{
+			// attempt to use MULTIBYTE function
+			if (function_exists('mb_encode_mimeheader'))
+			{
+				if (!$charset)
+				{
+					$charset = $GLOBALS['phpgw']->translation->system_charset ? $GLOBALS['phpgw']->translation->system_charset : 'iso-8859-1';
+				}
+				$converted = '';
+				$converted = $GLOBALS['phpgw']->translation->convert($data,$charset);
+				if ($this->debug_char_decodings > 1) { $this->dbug->out('msg_base.encode_header('.__LINE__.'): $data ['.$data.'], $converted ['.$converted.'] <br>'); }
+				// CONVERSION ERROR check
+				if (($data)
+				&& (!$converted))
+				{
+					if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.encode_header('.__LINE__.'): ** CONVERSION ERROR, empty $converted ['.$converted.'] using $charset ['.$charset.'], fill it with something, use $data ['.$data.'] <br>'); }
+					$converted = $data;
+				}
+				$encoded = '';
+				$encoded = mb_encode_mimeheader($converted, $charset, 'Q');
+				if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.encode_header('.__LINE__.'): using "mb_encode_mimeheader" $data ['.$data.'], $charset ['.$charset.'] <br> _*_ _ $converted ['.$converted.'] <br> * $encoded ['.$encoded.']  <br>'); } 
+				return $encoded;
+			}
+			// or else use the manual method
+			
 			// explode string into an array or words
 			$words = explode(' ', $data);
 			
@@ -5035,9 +5162,10 @@
 		repeat for the inline doc parser
 		&amp; , &quot; , &#039; , &lt; , &gt;
 		*/
-		function htmlspecialchars_encode($str)
+		function htmlspecialchars_encode($str, $charset='')
 		{
-			/*// replace  '  and  "  with htmlspecialchars */
+			/*
+			// replace  '  and  "  with htmlspecialchars
 			$str = ereg_replace('&', '&amp;', $str);
 			// any ampersand & that ia already in a "&amp;" should NOT be encoded
 			//$str = preg_replace("/&(?![:alnum:]*;)/", "&amp;", $str);
@@ -5045,6 +5173,13 @@
 			$str = ereg_replace('\'', '&#039;', $str);
 			$str = ereg_replace('<', '&lt;', $str);
 			$str = ereg_replace('>', '&gt;', $str);
+			*/
+			// NEW try using this more comprehensive function
+			if (!$charset)
+			{
+				$charset = $GLOBALS['phpgw']->translation->system_charset ? $GLOBALS['phpgw']->translation->system_charset : 'iso-8859-1';
+			}
+			$str = htmlentities($str, ENT_QUOTES, $charset);
 			// these {  and  }  must be html encoded or else they conflict with the template system
 			$str = str_replace("{", '&#123;', $str);
 			$str = str_replace("}", '&#125;', $str);
@@ -5062,17 +5197,38 @@
 		@syntax Currently the these chars will be decoded
 		&amp; , &quot; , &#039; , &lt; , &gt;
 		*/
-		function htmlspecialchars_decode($str)
+		function htmlspecialchars_decode($str, $charset='')
 		{
-			/*// reverse of htmlspecialchars */
+			// reverse of htmlspecialchars
+			/*
 			$str = str_replace('&#125;', "}", $str);
 			$str = str_replace('&#123;', "{", $str);
-			
 			$str = ereg_replace('&gt;', '>', $str);
 			$str = ereg_replace('&lt;', '<', $str);
 			$str = ereg_replace('&#039;', '\'', $str);
 			$str = ereg_replace('&quot;', '"', $str);
 			$str = ereg_replace('&amp;', '&', $str);
+			*/
+			// NEW try using this more comprehensive function
+			if (!$charset)
+			{
+				$charset = $GLOBALS['phpgw']->translation->system_charset ? $GLOBALS['phpgw']->translation->system_charset : 'iso-8859-1';
+			}
+			if (function_exists('html_entity_decode'))
+			{
+				$str = html_entity_decode($str, ENT_QUOTES, $charset);
+			}
+			else
+			{
+				$trans_tbl = get_html_translation_table(HTML_ENTITIES);
+				$trans_tbl = array_flip($trans_tbl);
+				$str = strtr($str, $trans_tbl);
+			}
+			// make sure these also get decoded
+			$str = ereg_replace('&#039;', '\'', $str);
+			$str = ereg_replace('&quot;', '"', $str);
+			$str = str_replace('&#125;', "}", $str);
+			$str = str_replace('&#123;', "{", $str);
 			return $str;
 		}
 	

@@ -1116,21 +1116,22 @@ class mail_msg extends mail_msg_wrappers
 	@abstract 
 	@author Angles and code from previous maintainer
 	*/
-	function get_subject($msg, $desired_prefix='Re: ')
+	//function get_subject($msg, $desired_prefix='Re: ')
+	function get_subject($msg_headers, $desired_prefix='', $do_htmlize='htmlize')
 	{
-		if ( (! $msg->Subject) || ($msg->Subject == '') )
+		$subject = '';
+		//if ( (! $msg_headers->Subject) || ($msg_headers->Subject == '') )
+		if ((!isset($msg_headers->Subject))
+		|| (!$msg_headers->Subject)
+		|| (trim($msg_headers->Subject) == ''))
 		{
 			$subject = lang('no subject');
 		}
 		else
 		{
-			$subject = $this->decode_header_string($msg->Subject);
-			// subject can me MULTI-LINE, so use glob function
-			//$subject = $this->decode_header_glob($msg->Subject);
+			$subject = $this->decode_header_string($msg_headers->Subject);
 		}
-		// non-us-ascii chars in headers MUST be specially encoded, so decode them (if any) now
-		// $personal = $this->qprint_rfc_header($personal);
-		$personal = $this->decode_header_string($personal);
+		
 		// do we add a prefix like Re: or Fw:
 		if ($desired_prefix != '')
 		{
@@ -1139,7 +1140,28 @@ class mail_msg extends mail_msg_wrappers
 				$subject = $desired_prefix . $subject;
 			}
 		}
-		$subject = $this->htmlspecialchars_encode($subject);
+		
+		// do we htmlencode the stuff
+		if ($do_htmlize)
+		{
+			$sub_charset = '';
+			if ($subject != lang('no subject'))
+			{
+				$sub_charset = $this->get_encoded_header_charset($msg_headers->Subject);
+			}
+			/*
+			if ($sub_charset)
+			{
+				$subject = htmlentities($subject, ENT_QUOTES, $sub_charset);
+			}
+			else
+			{
+				$subject = $this->htmlspecialchars_encode($subject);
+			}
+			*/
+			//$subject = $this->htmlspecialchars_encode($subject, $sub_charset);
+			$subject = $this->htmlspecialchars_encode($subject);
+		}
 		return $subject;
 	}
 
@@ -1175,9 +1197,10 @@ class mail_msg extends mail_msg_wrappers
 			$personal = trim($from->personal);
 			// non-us-ascii chars in headers MUST be specially encoded, so decode them (if any) now
 			$personal = $this->decode_header_string($personal);
-			////$personal = $this->qprint_rfc_header($personal);
 			// escape certain undesirable chars before HTML display
+			//$orig_charset = $this->get_encoded_header_charset($from->personal);
 			$personal =  $this->htmlspecialchars_encode($personal);
+			//$personal =  $this->htmlspecialchars_encode($personal, $orig_charset);
 			$personal = $personal .' ('.$from->mailbox.'@'.$from->host.')';
 		}
 		return $personal;

@@ -9,7 +9,7 @@
 	*  Free Software Foundation; either version 2 of the License, or (at your		*
 	*  option) any later version.								*
 	\**************************************************************************/
-
+	
 	/* $Id$ */
 	
 	/*!
@@ -312,6 +312,7 @@
 			$this->mail_out['from'] = array();
 			$this->mail_out['sender'] = '';
 			$this->mail_out['charset'] = '';
+			$this->mail_out['feed_charset'] = '';
 			$this->mail_out['msgtype'] = '';
 			
 			//  -------  Start Filling Array Structure For Outgoing Mail  -----------
@@ -351,7 +352,14 @@
 			to provide us with a charset value, we use the RFC specified default value of "US-ASCII"
 			*/
 			$this->mail_out['charset'] = $GLOBALS['phpgw']->translation->charset();
-
+			// if we sent a param chatset it goes here
+			$this->mail_out['feed_charset'] = '';
+			if (($GLOBALS['phpgw']->msg->get_isset_arg('charset'))
+			&& (trim($GLOBALS['phpgw']->msg->get_arg_value('charset') != '')))
+			{
+				$this->mail_out['feed_charset'] = $GLOBALS['phpgw']->msg->get_arg_value('charset');
+			}
+			
 			// -----  FROM  -----
 			/*!
 			@var from
@@ -549,8 +557,13 @@
 				// ===MAILSERVER_CALL===
 				$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msgball);
 				if ($this->debug_send > 2) { $GLOBALS['phpgw']->msg->dbug->out('class.bosend.send('.__LINE__.'): in-reply-to handling: $msg_headers DUMP:', $msg_headers);  }
-				if ($this->debug_send > 1) { $GLOBALS['phpgw']->msg->dbug->out('class.bosend.send('.__LINE__.'): in-reply-to handling: using value: '.htmlspecialchars($msg_headers->message_id) .'<br>'); }
-				$this->mail_out['in_reply_to'] = $msg_headers->message_id;
+				if ($this->debug_send > 1) { $GLOBALS['phpgw']->msg->dbug->out('class.bosend.send('.__LINE__.'): in-reply-to handling: $msg_headers->message_id is: '.htmlspecialchars($msg_headers->message_id) .'<br>'); }
+				$this->mail_out['in_reply_to'] = $this->not_set;
+				if (isset($msg_headers->message_id))
+				{
+					$this->mail_out['in_reply_to'] = $msg_headers->message_id;
+				}
+				if ($this->debug_send > 1) { $GLOBALS['phpgw']->msg->dbug->out('class.bosend.send('.__LINE__.'): in-reply-to handling: $this->mail_out[in_reply_to] is: '.htmlspecialchars($this->mail_out['in_reply_to']) .'<br>'); }
 			}
 			else
 			{
@@ -628,15 +641,23 @@
 			// since arg "body" *may* be huge (and is now in local var $body), lets clear it now
 			$GLOBALS['phpgw']->msg->set_arg_value('body', '');
 			
-			// ----  DE-code HTML SpecialChars in the body   -----
+			// ----  DE-code HTML SpecialChars in the body    and subject -----
 			// THIS NEEDS TO BE CHANGED WHEN MULTIPLE PART FORWARDS ARE ENABLED
 			// BECAUSE WE CAN ONLY ALTER THE 1ST PART, I.E. THE PART THE USER JUST TYPED IN
 			/*  email needs to be sent out as if it were PLAIN text (at least the part we are handling here)
 			i.e. with NO ENCODED HTML ENTITIES, so use > instead of $rt; and " instead of &quot; . etc...
 			it's up to the endusers MUA to handle any htmlspecialchars, whether to encode them or leave as it, the MUA should decide 
 			*/
+			//$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body, $this->mail_out['feed_charset']);
 			$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
 			
+			//echo '<br> ('.__LINE__.') $GLOBALS[phpgw]->msg DUMP<pre>'; print_r($GLOBALS['phpgw']->msg); echo '] </pre>'."\r\n";
+			//echo '<br> ('.__LINE__.') $GLOBALS[phpgw]->msg->get_arg_value(subject) ['.$GLOBALS['phpgw']->msg->get_arg_value('subject').'] <br>'."\r\n";
+			//echo '<br> ('.__LINE__.') pre $subject: ['.$subject.'] <br>'."\r\n";
+			$subject = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($subject);
+			//echo '<br> ('.__LINE__.') post $subject: ['.$subject.'] <br>'."\r\n";
+			//echo '<br> ('.__LINE__.') $body DUMP<pre>'; print_r($body); echo '] </pre>'."\r\n";
+
 			// ----  Add Email Sig to Body   -----
 			if (($GLOBALS['phpgw']->msg->get_isset_pref('email_sig'))
 			&& ($GLOBALS['phpgw']->msg->get_pref_value('email_sig') != '')
@@ -648,7 +669,7 @@
 			{
 				$user_sig = $GLOBALS['phpgw']->msg->get_pref_value('email_sig');
 				// html_quotes_decode may be obsoleted someday:  workaround for a preferences database issue (<=pgpgw ver 0.9.13)
-				$user_sig = $GLOBALS['phpgw']->msg->html_quotes_decode($user_sig);
+				$user_sig = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($user_sig, $this->mail_out['charset']);
 				$body = $body."\r\n"
 						."\r\n"
 						.'-- '."\r\n" 
@@ -826,8 +847,8 @@
 			//var_dump($cc);
 			echo '<br>';
 			
-			$GLOBALS['phpgw']->common->phpgw_footer();
-			exit;
+			$GLOBALS['phpgw']->common->phpgw_exit();
+			return;
 			// ===== DEBUG ===== 
 			*/
 			
@@ -859,8 +880,16 @@
 				$m_line++;
 				$this->mail_out['body'][0]['mime_headers'][$m_line] = '--' .$this->mail_out['boundary'];
 				$m_line++;
-				$this->mail_out['body'][0]['mime_headers'][$m_line] = 'Content-Type: text/plain; charset="'.$this->mail_out['charset'].'"';
-				$m_line++;
+				//if ($this->mail_out['feed_charset'] != '')
+				//{
+				//	$this->mail_out['body'][0]['mime_headers'][$m_line] = 'Content-Type: text/plain; charset="'.$this->mail_out['feed_charset'].'"';
+				//	$m_line++;
+				//}
+				//else
+				//{
+					$this->mail_out['body'][0]['mime_headers'][$m_line] = 'Content-Type: text/plain; charset="'.$this->mail_out['charset'].'"';
+					$m_line++;
+				//}
 				if ($this->mail_out['msgtype'] != '')
 				{
 					// "folded header" opens with a "whitespace"
@@ -892,6 +921,11 @@
 			// -----  MAIN BODY PART (1st Part)  ------
 			// Explode Body into Array of strings
 			$body = $GLOBALS['phpgw']->msg->normalize_crlf($body);
+			// test convert to feed_charset
+			//if ($this->mail_out['feed_charset'] != '')
+			//{
+			//	$body = $GLOBALS['phpgw']->translation->convert($body,$this->mail_out['feed_charset']);
+			//}
 			$this->mail_out['body'][$body_part_num]['mime_body'] = explode ("\r\n",$body);
 			//$this->mail_out['body'][$body_part_num]['mime_body'] = $GLOBALS['phpgw']->msg->explode_linebreaks(trim($body));
 			// for no real reason, I add a CRLF to the end of the body
@@ -943,7 +977,8 @@
 				//$this->mail_out['fwd_info']['date'] = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
 				// testing new hacked show_date2
 				$this->mail_out['fwd_info']['date'] = $GLOBALS['phpgw']->msg->show_date2($msg_headers->udate);
-				$this->mail_out['fwd_info']['subject'] = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'');
+				// the third empty param says no html encoding of return data
+				$this->mail_out['fwd_info']['subject'] = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'','');
 				
 				// normalize data to rfc2046 defaults, in the event data is not provided
 				if ($this->mail_out['fwd_info']['type'] == $not_set)
@@ -1266,6 +1301,8 @@
 				$this->mail_out['main_headers'][$hdr_line] = 	'In-Reply-To: '.$this->mail_out['in_reply_to'];
 				$hdr_line++;
 			}
+			// if feed_charset is empty then the called function knows what to do
+			//$this->mail_out['main_headers'][$hdr_line] = 		'Subject: '.$GLOBALS['phpgw']->msg->encode_header($subject, $this->mail_out['feed_charset']);
 			$this->mail_out['main_headers'][$hdr_line] = 		'Subject: '.$GLOBALS['phpgw']->msg->encode_header($subject);
 			$hdr_line++;
 			$this->mail_out['main_headers'][$hdr_line] = 		'Date: '.$this->mail_out['date'];
@@ -1306,8 +1343,16 @@
 				// headers = mime part 0 and  body = mime part 1
 				$this->mail_out['main_headers'][$hdr_line] =	'Content-Type: text/plain;';
 				$hdr_line++;
-				$this->mail_out['main_headers'][$hdr_line] =	$this->mail_out['whitespace'].'charset="'.$this->mail_out['charset'].'"';
-				$hdr_line++;
+				//if ($this->mail_out['feed_charset'] != '')
+				//{
+				//	$this->mail_out['main_headers'][$hdr_line] =	$this->mail_out['whitespace'].'charset="'.$this->mail_out['feed_charset'].'"';
+				//	$hdr_line++;
+				//}
+				//else
+				//{
+					$this->mail_out['main_headers'][$hdr_line] =	$this->mail_out['whitespace'].'charset="'.$this->mail_out['charset'].'"';
+					$hdr_line++;
+				//}
 				// RFC2045 - the next line is *assumed* as default 7bit if it is not included
 				// FUTURE: Content-Transfer-Encoding:  Needs To Match What is In the Body, i.e. may be qprint
 				//$this->mail_out['main_headers'][$hdr_line] =	'Content-Transfer-Encoding: 7bit';
@@ -1362,12 +1407,17 @@
 			
 			/*
 			// ===== DEBUG =====	
-			echo '<br>';
-			echo '<br>=== mail_out ===<br>';
-			$dubug_info = serialize($this->mail_out);
-			$dubug_info = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($dubug_info);
-			echo $dubug_info;
-			echo '<br>';
+			//echo '<br>';
+			//echo '<br>=== mail_out ===<br>';
+			//$dubug_info = serialize($this->mail_out);
+			//$dubug_info = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($dubug_info);
+			//echo $dubug_info;
+			//echo '<br>';
+			echo '<br> var dump mail_out <br><pre>';
+			var_dump($this->mail_out);
+			echo '</pre>';
+			$GLOBALS['phpgw']->common->phpgw_exit();
+			return;
 			// ===== DEBUG ===== 
 			*/
 			

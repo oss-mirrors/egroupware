@@ -124,6 +124,13 @@
 				//$menuaction_target = 'email.bosend.send';
 				$menuaction_target = 'email.bosend.sendorspell';
 			}
+			//$charset = get_var('charset',array('GET'));
+			//$charset_uri = '';
+			//if (($charset != 'unknown')
+			//&& (trim($charset) != ''))
+			//{
+			//	$charset_uri = '&charset='.$charset;
+			//}
 			
 			// what value does the "Send" button need
 			if ($GLOBALS['phpgw']->msg->get_isset_arg('msgball'))
@@ -143,6 +150,7 @@
 						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
 						// this is somewhat redundant in this particular case
 						.'&orig_action='.$GLOBALS['phpgw']->msg->recall_desired_action()
+						//.$charset_uri
 				);
 				if (($GLOBALS['phpgw']->msg->get_isset_arg('action'))
 				&& ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'forward')
@@ -333,7 +341,9 @@
 					// it's up to the endusers MUA to handle any htmlspecialchars
 					// as for 7-bit vs. 8-bit, we prefer to leave body chars as-is and send out as 8-bit mail
 					// Later Note: see RFCs 2045-2049 for what MTA's (note "T") can and can not handle
-					return $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
+					//return $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
+					
+					return $GLOBALS['phpgw']->msg->htmlspecialchars_encode($body);
 				}
 		}
 		
@@ -352,6 +362,13 @@
 			$this->msg_bootstrap->ensure_mail_msg_exists('email.bocompose.compose', $this->debug);
 			@$not_set = $GLOBALS['phpgw']->msg->not_set;
 			
+			// did we get a feed charset
+			$charset = get_var('charset',array('GET','POST'));
+			if (($charset == 'unknown')
+			|| (trim($charset) == ''))
+			{
+				$charset = '';
+			}
 			// ---- BEGIN BO COMPOSE
 			
 			// ----  Handle Request from Mail.Spell class  -----
@@ -362,6 +379,7 @@
 				$cc_box_value = $GLOBALS['phpgw']->msg->htmlspecialchars_encode(urldecode($GLOBALS['phpgw']->msg->get_arg_value('cc')));
 				$bcc_box_value = $GLOBALS['phpgw']->msg->htmlspecialchars_encode(urldecode($GLOBALS['phpgw']->msg->get_arg_value('bcc')));
 				$subject = $GLOBALS['phpgw']->msg->htmlspecialchars_encode(urldecode($GLOBALS['phpgw']->msg->get_arg_value('subject')));
+				//$subject = $GLOBALS['phpgw']->msg->htmlspecialchars_encode(urldecode($GLOBALS['phpgw']->msg->get_arg_value('subject')), $charset);
 				// and these are set according to arg values on return from the spell check page, (but according to pref values on first call of compose page)
 				// SET BELOW are "attach_sig" and "req_notify"
 				
@@ -500,7 +518,9 @@
 						$bodystring = '';
 						$body_array = array();
 						// all we have is the "who wrote" line and some "> ", so use that
+						// how would there be any specialchars here yet?
 						$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
+						$body = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($body);
 					}
 					else
 					{
@@ -540,6 +560,15 @@
 								// NEW: preferred encoding for Russian char set is base64 for the body, NOT qprint
 								$bodystring = $GLOBALS['phpgw']->msg->de_base64($bodystring);
 							}
+						}
+						
+						// convert to our own charset if necessary
+						$bodystring = $GLOBALS['phpgw']->translation->convert($bodystring,$charset);
+						
+						// are we replying to an htlp part?
+						if (($GLOBALS['phpgw']->msg->get_isset_arg('encoding'))
+						|| ($GLOBALS['phpgw']->msg->get_isset_arg('subtype')))
+						{
 							// after that idiot check, we need another now as well...
 							// *TOTALLY IDIOTIC* hotmail.com may send HTML ONLY mail
 							// without the rfc REQUIRED text only part, so we have to strip html
@@ -552,9 +581,11 @@
 								$bodystring = strip_tags($bodystring);
 							}
 						}
+						
 						// "normalize" all line breaks into CRLF pairs
 						$bodystring = $GLOBALS['phpgw']->msg->normalize_crlf($bodystring);
 						
+						/*
 						// ----- Remove Email "Personal Signature" from Quoted Body  -----
 						// RFC's unofficially suggest you remove the "personal signature" before quoting the body
 						// a standard sig begins with "-- CRFL", that's [dash][dash][space][CRLF]
@@ -566,6 +597,7 @@
 						// THIS ONE DOES IT - USE THIS ONE
 						$bodystring = preg_replace("/\r\n[-]{2}\s{0,1}\r\n\w.{0,}\r\n(.{1,}\r\n){0,4}/", "\r\n", $bodystring);
 						// sig = "CRLF dash dash space(0or1) CRLF anyWordChar anything CRLF (anything and CRLF) repeated 0 to 4 times"
+						*/
 						
 						//now is a good time to trim the retireved bodystring
 						trim($bodystring);
@@ -616,17 +648,21 @@
 						// cleanup
 						$body_array = array();
 						
+						// html encode this for display 
+						//$body = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($body, $charset);
+						$body = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($body);
+						
+						/* we got this from the server so we do not need to do this here
 						// email needs to be sent with NO ENCODED HTML ENTITIES
 						// it's up to the endusers MUA to handle any htmlspecialchars
 						// as for 7-bit vs. 8-bit, we prefer to leave body chars as-is and send out as 8-bit mail
 						// Later Note: see RFCs 2045-2049 for what MTA's (note "T") can and can not handle
-						$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
-
-						// if we got a useful charset, convert
-						$charset = get_var('charset',array('GET'));
-						if ($charset != 'unknown') {
+						$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body, $charset);
+						if ($charset)
+						{
 							$body = $GLOBALS['phpgw']->translation->convert($body,$charset);
 						}
+						*/
 					}
 				}
 				elseif ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'forward')
