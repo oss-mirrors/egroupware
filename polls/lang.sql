@@ -11,7 +11,6 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('enter poll questi
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('are you sure want to delete this answer ?','polls','en','Are you sure want to delete this answer ?');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('are you sure want to delete this question ?','polls','en','Are you sure want to delete this question ?');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('answer has been updated','polls','en','Answer has been updated');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('answer has been added to poll','polls','en','Answer has been added to poll');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('question has been updated','polls','en','Question has been updated');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('poll question','polls','en','Poll question');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('allow users to vote more then once','polls','en','Allow users to vote more then once');
