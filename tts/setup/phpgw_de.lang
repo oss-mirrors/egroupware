@@ -152,5 +152,6 @@ verify the ticket to work on it.	tts	de	Ticket überprüfen um daran zu arbeiten.
 view all tickets	tts	de	Alle Tickets anzeigen
 view job detail	tts	de	Detailansicht
 view only open tickets	tts	de	Nur offene Tickets anzeigen
+you can only close a ticket if it is assigned to you.	tts	de	Sie können nur Tickets schließen, die ihnen zugewiesen sind.
 you want to delete the state %1. are you sure?	tts	de	Sind sie sicher, dass sie den Status %1 löschen wollen?
 you want to delete the transition %1. are you sure?	tts	de	Sind sie sicher, dass sie den Übergang %1 löschen wollen?

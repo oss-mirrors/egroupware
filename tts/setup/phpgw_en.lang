@@ -149,5 +149,6 @@ verify the ticket to work on it.	tts	en	Verify the ticket to work on it.
 view all tickets	tts	en	View all tickets
 view job detail	tts	en	View Job Detail
 view only open tickets	tts	en	View only open tickets
+you can only close a ticket if it is assigned to you.	tts	en	You can only close a ticket if it is assigned to you.
 you want to delete the state %1. are you sure?	tts	en	You want to delete the state %1. Are you sure?
 you want to delete the transition %1. are you sure?	tts	en	You want to delete the transition %1. Are you sure?

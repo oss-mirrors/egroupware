@@ -79,6 +79,7 @@
 		$ticket['priority']       = $GLOBALS['phpgw']->db->f('ticket_priority');
 		$ticket['owner']          = $GLOBALS['phpgw']->db->f('ticket_owner');
 		$ticket['group']          = $GLOBALS['phpgw']->db->f('ticket_group');
+		$ticket['status']         = $GLOBALS['phpgw']->db->f('ticket_status');
 		$ticket['state']          = $GLOBALS['phpgw']->db->f('ticket_state');
 
 		$GLOBALS['phpgw']->template->set_file('viewticket','viewticket_details.tpl');
@@ -177,6 +178,7 @@
 		$GLOBALS['phpgw']->template->set_var('options_category',$GLOBALS['phpgw']->categories->formated_list('select','',$ticket['category'],$ticket['category'],True));
 
 		$ticket_status[$ticket['status']] = ' selected';
+
 		$s = '<option value="O"' . $ticket_status['O'] . '>' . lang('Open') . '</option>';
 		$s .= '<option value="X"' . $ticket_status['X'] . '>' . lang('Closed') . '</option>';
 
@@ -320,10 +322,6 @@
 		$GLOBALS['phpgw']->template->set_var('lang_assignedfrom', lang('Assigned from'));
 		$GLOBALS['phpgw']->template->set_var('value_owner',$GLOBALS['phpgw']->accounts->id2name($ticket['owner']));
 
-		$GLOBALS['phpgw']->template->set_var('row_off', $GLOBALS['phpgw_info']['theme']['row_off']);
-		$GLOBALS['phpgw']->template->set_var('row_on', $GLOBALS['phpgw_info']['theme']['row_on']);
-		$GLOBALS['phpgw']->template->set_var('th_bg', $GLOBALS['phpgw_info']['theme']['th_bg']);
-
 		$GLOBALS['phpgw']->template->set_var('lang_opendate', lang('Open Date'));
 		$GLOBALS['phpgw']->template->set_var('value_opendate',$ticket['opened']);
 
@@ -383,14 +381,15 @@
 		$GLOBALS['phpgw']->template->set_var('lang_keep_present_state',
 			lang('Keep the present state [%1].',id2field('phpgw_tts_states','state_name','state_id',$ticket['state'])));
 
-		$GLOBALS['phpgw']->db->query("select * from phpgw_tts_transitions where transition_source_state=".$ticket['state'],__LINE__,__FILE__);
-		
-		while($GLOBALS['phpgw']->db->next_record())
+		$db = $GLOBALS['phpgw']->db;
+		$db->query("select * from phpgw_tts_transitions where transition_source_state=".$ticket['state'],__LINE__,__FILE__);
+
+		while($db->next_record())
 		{
-			$GLOBALS['phpgw']->template->set_var('update_state_value',$GLOBALS['phpgw']->db->f('transition_target_state'));
+			$GLOBALS['phpgw']->template->set_var('update_state_value',$db->f('transition_target_state'));
 			$GLOBALS['phpgw']->template->set_var('update_state_text',
-				try_lang($GLOBALS['phpgw']->db->f('transition_description'),
-				id2field('phpgw_tts_states','state_name','state_id',$GLOBALS['phpgw']->db->f('transition_target_state'))));
+				try_lang($db->f('transition_description'),
+				id2field('phpgw_tts_states','state_name','state_id',$db->f('transition_target_state'))));
 			$GLOBALS['phpgw']->template->parse('update_state_group', 'update_state_items', True);
 		}
 
@@ -448,8 +447,8 @@
 			}
  			else
 			{
-				$messages .= '<br>You can only close a ticket if it is assigned to you.';
-				$GLOBALS['phpgw']->session->appsession('messages','tts',lang($messages));
+				$messages .= '<br>'.lang('You can only close a ticket if it is assigned to you.');
+				$GLOBALS['phpgw']->session->appsession('messages','tts',$messages);
 			}
 		}
 
