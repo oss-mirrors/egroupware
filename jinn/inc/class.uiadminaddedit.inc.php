@@ -49,8 +49,6 @@
 			if ($where_condition)
 			{
 	
-
-							
 				$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_$table");
 				$where_condition_form="<input type=\"hidden\" name=\"where_condition\" value=\"$where_condition\">";
 				$values_object= $this->bo->get_phpgw_records($table,$where_condition,'','','name');
@@ -134,15 +132,12 @@
 
 				elseif ($fieldproperties[name]=='table_name')
 				{
-
-					//set vars for further generation
 					$table_name=$value;
-					// on change submit
-					$input='<select name="'.$input_name.'">';
 					$tables=$this->bo->so->site_tables_names($parent_site_id);
 
 					foreach($tables as $table)
 					{
+						$tables_check_arr[]=$table[table_name];
 						$table_array[]=array
 						(
 							'name'=> $table[table_name],
@@ -150,6 +145,17 @@
 						);
 					}
 
+					if($where_condition && in_array($table_name,$tables_check_arr))
+					{							
+						$valid_table_name=true;
+						
+					}else
+					{
+						$error_msg='<font color=red>'.lang('Tablename <i>%1</i> is not correct. Probably the tablename has changed or or the table is deleted. Please select a new table or delete this object',$table_name).'</font><br>';
+					}
+									
+					$input=$error_msg.'<select name="'.$input_name.'">';
+					
 					$input.=$this->ui->select_options($table_array,$value,false);
 					$input.='</select>';
 				}
@@ -190,7 +196,7 @@
 				{
 
 					unset($input);
-					if ($where_condition)
+					if ($where_condition && $valid_table_name)
 					{
 						$i=1;
 						if ($value)
@@ -219,7 +225,7 @@
 						// ADD NEW ONE WITH MANY RELATION
 						//die($parent_site_id);	
 
-
+						
 						if($fields=$this->bo->so->site_table_metadata($parent_site_id,$table_name))
 						{
 
@@ -359,14 +365,19 @@
 						}
 
 					}
-					else
+					elseif(!$where_condition)
 					{
 						$input.='come back in edit-mode to add relations';
 					}
+					else
+					{
+						$input.='come back after new valid tablename is saved to add relations';
+					}
+
+
+					
 					// end relations
 				}
-
-
 
 				/*************************************************
 				* FORM PLUGIN SECTION                            *
@@ -374,7 +385,7 @@
 				elseif($fieldproperties[name]=='plugins')
 				{
 					unset($input);
-					if ($where_condition)
+					if ($where_condition && $valid_table_name)
 					{
 
 						if(!$value) $value='TRUE';
@@ -444,9 +455,13 @@
 
 						}
 					}
-					else 
+					elseif(!$where_condition) 
 					{
-						$input.=lang('come back in edit mode for configuring plugins');
+						$input.=lang('come back in edit mode to configure plugins');
+					}
+					else
+					{
+						$input.=lang('come back after new valid tablename is saved to configure plugins');
 					}
 				}
 				else
@@ -454,8 +469,6 @@
 					$value = ereg_replace ("(<br />|<br/>)","",$value);
 					$input='<textarea name="'.$input_name.'" cols="60" rows="15">'.$value.'</textarea>';
 				}
-
-
 
 				$this->template->set_var('row_color',$row_color);
 				$this->template->set_var('input',$input);
