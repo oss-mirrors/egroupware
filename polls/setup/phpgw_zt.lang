@@ -10,6 +10,7 @@ answer has been updated	polls	zt	答案項目已經更新
 answers	polls	zt	答案項目
 are you sure want to delete this answer ?	polls	zt	您確定要刪除這個答案項目？
 are you sure want to delete this question ?	polls	zt	您確定要刪除這個議題？
+current poll	polls	zt	目前投票
 edit answer	polls	zt	編輯答案項目
 edit poll question	polls	zt	編輯投票議題
 enter poll question	polls	zt	輸入投票議題
@@ -25,6 +26,7 @@ show answers	polls	zt	顯示答案項目
 show questions	common	zt	顯示議題
 total votes	polls	zt	總數
 view poll	polls	zt	瀏覽投票
+view results	polls	zt	瀏覽結果
 vote	polls	zt	投票
 voting booth admin	admin	zt	投票站
 voting booth administration	polls	zt	投票站管理
