@@ -190,7 +190,7 @@
 
          $newdir=""; $temp=$olddir; $olddir=$homedir; 
          $home_link= macro_get_Link("cwd","<img border=0 src=" .
-               "\"../icons/home.gif\">") . "\n";
+               "\"../images/home.gif\">") . "\n";
          $olddir=$temp;
 
          // set up all the global variables for the template
@@ -218,14 +218,14 @@
                if ($size == -1) {
                   $newdir=$file;
                   $cd_link=macro_get_Link("cwd",
-                     "<img border=0 src=\"../icons/ftp/directory.gif\" " .
+                     "<img border=0 src=\"images/directory.gif\" " .
                      "alt=\"" . lang_ftp("cd") . " $newdir\">");
                   if ($file!="..") {
                      $rename_link=macro_get_Link("rename",
-                        "<img border=0 src=\"../icons/ftp/rename.gif\" " .
+                        "<img border=0 src=\"images/rename.gif\" " .
                         "alt=\"" . lang_ftp("rename",$newdir) . "\">");
                      $del_link=macro_get_Link("rmdir",
-                        "<img border=0 src=\"../icons/ftp/trash.gif\" " .
+                        "<img border=0 src=\"images/trash.gif\" " .
                         "alt=\"" . lang_ftp("delete", $newdir) . " \">");
                   } else { $del_link=""; }
                   $directory=$file;
@@ -233,16 +233,16 @@
                } else {
                   $newdir="";
                   $save_link=macro_get_Link("get",
-                     "<img border=0 src=\"../icons/ftp/save.gif\" " .
+                     "<img border=0 src=\"images/save.gif\" " .
                      "alt=\"" . lang_ftp("save") . " $file\">");
                   $del_link=macro_get_Link("delete",
-                     "<img border=0 src=\"../icons/ftp/trash.gif\" " . 
+                     "<img border=0 src=\"images//ftp/trash.gif\" " . 
                      "alt=\"" . lang_ftp("delete") . " $file\">");
                   $rename_link=macro_get_Link("rename",
-                     "<img border=0 src=\"../icons/ftp/rename.gif\" " .
+                     "<img border=0 src=\"images/rename.gif\" " .
                      "alt=\"" . lang_ftp("rename") . " $file\">");
                   $view_link=macro_get_Link("view",
-                     "<img border=0 src=\"../icons/ftp/view.gif\" " . 
+                     "<img border=0 src=\"images/view.gif\" " . 
                      "alt=\"" . lang_ftp("view") . " $file\">");
                }
                $phpgw->Template->set_var(array(
