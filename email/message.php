@@ -50,7 +50,7 @@
 
   $message_date = $phpgw->common->show_date($msg->udate);
 
-  $personal = !$from->personal ? "$from->mailbox@$from->host" : $from->personal;
+  $personal = !isset($from->personal) || !$from->personal ? "$from->mailbox@$from->host" : $from->personal;
 
   if (! $folder)
      $folder = "INBOX";
