@@ -12,18 +12,18 @@
   /* $ Id $ */
 {
   echo "<p>\n";
-  $img = "/" . $appname . "/images/" . $appname .".gif";
-  if (file_exists($phpgw_info["server"]["server_root"].$img)) {
-    $img = $phpgw_info["server"]["webserver_url"].$img;
+  $imgfile = $phpgw->common->get_image_dir("email")."/" . $appname .".gif";
+  if (file_exists($imgfile)) {
+    $imgpath = $phpgw->common->get_image_path("email")."/" . $appname .".gif";
   } else {
-    $img = "/" . $appname . "/images/navbar.gif";
-    if (file_exists($phpgw_info["server"]["server_root"].$img)) {
-      $img=$phpgw_info["server"]["webserver_url"].$img;
+    $imgfile = $phpgw->common->get_image_dir("email")."/navbar.gif";
+    if (file_exists($imgfile)) {
+      $imgpath = $phpgw->common->get_image_path("email")."/navbar.gif";
     } else {
-    $img = "";
+      $imgpath = "";
     }
   }
-  section_start("E-Mail",$img);
+  section_start("E-Mail",$imgpath);
 
   $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]."/email/preferences.php");
   echo "<A href=".$pg.">" . lang("E-Mail preferences") . "</A>";
