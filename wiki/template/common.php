@@ -85,9 +85,9 @@ function template_common_prologue($args)
 	{ 
 		if(!$args['nosearch']) 
 		{ 
-			echo "<form method='get' action='$FindScript' name='thesearch'>
-				<input type='hidden' name='action' value='find'/>
-				<div class='form'>\n";
+			echo '<form method="POST" action="'.$FindScript.'" name="thesearch">
+				<input type="hidden" name="action" value="find"/>
+				<div class="form">'."\n";
 		}   
 		print html_toolbar_top();
 		
@@ -135,7 +135,7 @@ function template_common_epilogue($args)
 <hr align=left width=99% />
 <?php
   if(!$args['nosearch']) { ?>	
-    <form method="get" action="<?php print $FindScript; ?>" name="thesearch">
+    <form method="POST" action="<?php print $FindScript; ?>" name="thesearch">
       <div class="form">
         <input type="hidden" name="action" value="find" />
 <?php
