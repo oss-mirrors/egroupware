@@ -17,7 +17,7 @@
 
 	function http_fetch($url,$post,$port,$proxy)
 	{
-	 	return $GLOBALS['phpgw']->network->gethttpsocketfile($url);
+		return $GLOBALS['phpgw']->network->gethttpsocketfile($url);
 	}
 
 // Rename this is something better
@@ -28,7 +28,7 @@
 			. '<table cellspacing="1" cellpadding="2" border="0" bgcolor="white">'
 			. '<tr><td><b>' . lang('Name') . '</b></td><td><b>' . lang('Symbol') . '</b></td><td align="right"><b>' . lang('Price') . '</b></td><td align="right">'
 			. '<b>&nbsp;' . lang('Change') . '</b></td><td align="right"><b>' . lang('%') . '&nbsp;' . lang('Change') . '</b></td><td align="center"><b>' . lang('Date') . '</b></td><td align="center">'
-					. '<b>' . lang('Time') . '</b></td></tr>';
+			. '<b>' . lang('Time') . '</b></td></tr>';
 
 		for ($i=0;$i<count($quotes);$i++)
 		{
@@ -99,7 +99,7 @@
 
 				if (preg_match($regexp_stocks,$line))
 				{
-					$line = ereg_replace('"','',$line);
+					$line = str_replace('"','',$line);
 					list($symbol,$price0,$date,$time,$dchange,$price1,$price2) = split(',',$line);
 
 					if ($price1>0 && $dchange!=0)

@@ -10,59 +10,57 @@
 	\**************************************************************************/
 	/* $Id$ */
 
-	$GLOBALS['phpgw_info']['flags'] = array('noheader' => True, 
-		'nonavbar' => True,
-		'enable_nextmatchs_class' => True);
-
-	$GLOBALS['phpgw_info']['flags']['currentapp'] = 'stocks';
+	$GLOBALS['phpgw_info']['flags'] = array(
+		'currentapp' => 'stocks',
+		'noheader'   => True, 
+		'nonavbar'   => True,
+		'enable_nextmatchs_class' => True
+	);
 	include('../header.inc.php');
 
-	$action = $HTTP_GET_VARS['action'] ? $HTTP_GET_VARS['action'] : $HTTP_POST_VARS['action'];
-	$name   = $HTTP_POST_VARS['name'];
-	$symbol = $HTTP_POST_VARS['symbol'];
-	$mainscreen = $HTTP_GET_VARS['mainscreen'];
-	$sym    = $HTTP_GET_VARS['sym'];
-	$value  = $HTTP_GET_VARS['value'];
+	$action = get_var('action',array('GET','POST'));
+	$name   = $_POST['name'];
+	$symbol = $_POST['symbol'];
+	$mainscreen = $_GET['mainscreen'];
+	$sym    = $_GET['sym'];
+	$value  = $_GET['value'];
 
-	if ($action == 'add')
+	if($action == 'add')
 	{
 		$GLOBALS['phpgw']->preferences->read_repository();
 		$GLOBALS['phpgw']->preferences->change('stocks',urlencode(strtoupper($symbol)),urlencode($name));
 		$GLOBALS['phpgw']->preferences->save_repository(True);
 
-		// For some odd reason, if I forward it back to stocks/preferences.php after an add
-		// I get no data errors, so for now forward it to the main preferences section.
-
-		Header('Location: ' . $GLOBALS['phpgw']->link('/stocks/preferences.php'));
+		$GLOBALS['phpgw']->redirect_link('/stocks/preferences.php');
 		$GLOBALS['phpgw']->common->phpgw_exit();
 	}
-	elseif ($action == 'delete')
+	elseif($action == 'delete')
 	{
-	// This needs to be fixed
+		// This needs to be fixed
 		$GLOBALS['phpgw']->preferences->read_repository();
 		$GLOBALS['phpgw']->preferences->delete('stocks',urlencode(strtoupper($value)));
 		$GLOBALS['phpgw']->preferences->save_repository(True);
-		Header('Location: ' . $GLOBALS['phpgw']->link('/stocks/preferences.php'));
+		$GLOBALS['phpgw']->redirect_link('/stocks/preferences.php');
 		$GLOBALS['phpgw']->common->phpgw_exit();
 	}
 
-	if ($mainscreen)
+	if($mainscreen)
 	{
 		$GLOBALS['phpgw']->preferences->read_repository();
-		if ($mainscreen == 'enable')
+		if($mainscreen == 'enable')
 		{
 			$GLOBALS['phpgw']->preferences->delete('stocks','disabled','True');
 			$GLOBALS['phpgw']->preferences->add('stocks','enabled','True');
 		}
 
-		if ($mainscreen == 'disable')
+		if($mainscreen == 'disable')
 		{
 			$GLOBALS['phpgw']->preferences->delete('stocks','enabled','True');
 			$GLOBALS['phpgw']->preferences->add('stocks','disabled','True');
 		}
 
 		$GLOBALS['phpgw']->preferences->save_repository(True);
-		Header('Location: ' . $GLOBALS['phpgw']->link('/stocks/preferences.php'));
+		$GLOBALS['phpgw']->redirect_link('/stocks/preferences.php');
 		$GLOBALS['phpgw']->common->phpgw_exit();
 	}
 
@@ -71,7 +69,7 @@
 
 	// If they don't have any stocks in there, give them something to look at
 	$GLOBALS['phpgw']->preferences->read_repository();
-	if (count($GLOBALS['phpgw_info']['user']['preferences']['stocks']) == 1)
+	if(count($GLOBALS['phpgw_info']['user']['preferences']['stocks']) == 1)
 	{
 		$GLOBALS['phpgw']->preferences->change('stocks','LNUX','VA%20Linux');
 		$GLOBALS['phpgw']->preferences->change('stocks','RHAT','RedHat');
@@ -98,9 +96,9 @@
 	$GLOBALS['phpgw']->template->set_var('lang_symbol',lang('Symbol'));
 	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']["theme"][th_bg]);
 
-	while ($stock = @each($GLOBALS['phpgw_info']['user']['preferences']['stocks']))
+	while($stock = @each($GLOBALS['phpgw_info']['user']['preferences']['stocks']))
 	{
-		if (($stock[0] != 'enabled') && ($stock[0] != 'disabled'))
+		if(($stock[0] != 'enabled') && ($stock[0] != 'disabled'))
 		{
 			$dsymbol = urldecode($stock[0]);
 			$dname = urldecode($stock[1]);
@@ -122,7 +120,7 @@
 		}
 	}
 
-	if ($GLOBALS['phpgw_info']['user']['preferences']['stocks']['enabled'])
+	if($GLOBALS['phpgw_info']['user']['preferences']['stocks']['enabled'])
 	{
 		$GLOBALS['phpgw']->template->set_var('lang_display',lang('Display stocks on main screen is enabled'));
 		$newstatus = 'disable';
@@ -137,11 +135,13 @@
 	$GLOBALS['phpgw']->template->set_var('lang_newstatus',lang($newstatus));
 
 	$GLOBALS['phpgw']->template->set_var('add_action',$GLOBALS['phpgw']->link('/stocks/preferences.php','action=add&name=' . $name . '&symbol=' . $symbol));
+	$GLOBALS['phpgw']->template->set_var('done_action',$GLOBALS['phpgw']->link('/stocks/index.php'));
 	$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
 	$GLOBALS['phpgw']->template->set_var('tr_color1',$GLOBALS['phpgw_info']['theme']['row_on']);
 	$GLOBALS['phpgw']->template->set_var('tr_color2',$GLOBALS['phpgw_info']['theme']['row_off']);
 	$GLOBALS['phpgw']->template->set_var('lang_add_stock',lang('Add new stock'));
 	$GLOBALS['phpgw']->template->set_var('lang_add',lang('Add'));
+	$GLOBALS['phpgw']->template->set_var('lang_done',lang('Done'));
 
 	$GLOBALS['phpgw']->template->parse('out','stock_prefs_t',True);
 	$GLOBALS['phpgw']->template->p('out');

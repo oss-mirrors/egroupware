@@ -8,17 +8,15 @@
 	* Free Software Foundation; either version 2 of the License, or (at your   *
 	* option) any later version.                                               *
 	\**************************************************************************/
+
 	/* $Id$ */
 
-	$GLOBALS['phpgw_info']['flags'] = array(
-		'currentapp' => 'stocks', 
-		'enable_network_class' => True
+{
+// Only Modify the $file and $title variables.....
+	$title = 'Stock Quotes';
+	$file = Array(
+		'Preferences' => $GLOBALS['phpgw']->link('/stocks/preferences.php')
 	);
-	include('../header.inc.php');
-
-	$GLOBALS['phpgw']->template->set_file(array('quotes_list' => 'main.tpl'));
-	$GLOBALS['phpgw']->template->set_var('quotes',return_quotes($quotes));
-	$GLOBALS['phpgw']->template->pparse('out','quotes_list');
-
-	$GLOBALS['phpgw']->common->phpgw_footer();
+	display_sidebox($appname,$title,$file);
+}
 ?>

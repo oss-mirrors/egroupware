@@ -21,10 +21,11 @@
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['stocks']['hooks'][] = 'preferences';
 	$setup_info['stocks']['hooks'][] = 'home';
+	$setup_info['stocks']['hooks'][] = 'sidebox_menu';
 
 	/* Dependencies for this app to work */
 	$setup_info['stocks']['depends'][] = array(
-		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.10', '0.9.11' , '0.9.12', '0.9.13', '0.9.14')
+		'appname' => 'phpgwapi',
+		'versions' => Array('0.9.10', '0.9.11' , '0.9.12', '0.9.13', '0.9.14')
 	);
 ?>

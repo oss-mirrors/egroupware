@@ -11,26 +11,25 @@
 	/* $Id$ */
 
 	$GLOBALS['phpgw_info']['flags'] = array(
-		'noheader' => True,
-		'nonavbar' => True,
+		'currentapp' => 'stocks',
+		'noheader'   => True,
+		'nonavbar'   => True,
 		'enable_nextmatchs_class' => True
 	);
-
-	$GLOBALS['phpgw_info']['flags']['currentapp'] = 'stocks';
 	include('../header.inc.php');
 
-	$edit   = $HTTP_POST_VARS['edit'];
-	$sym    = $HTTP_GET_VARS['sym'] ? $HTTP_GET_VARS['sym'] : $HTTP_POST_VARS['sym'];
-	$name   = $HTTP_POST_VARS['name'];
-	$symbol = $HTTP_POST_VARS['symbol'];
+	$edit   = $_POST['edit'];
+	$sym    = get_var('sym',array('GET','POST'));
+	$name   = $_POST['name'];
+	$symbol = $_POST['symbol'];
 
-	if ($edit)
+	if($edit)
 	{
 		$GLOBALS['phpgw']->preferences->read_repository();
 		$GLOBALS['phpgw']->preferences->delete('stocks',urlencode(strtoupper($sym)));
 		$GLOBALS['phpgw']->preferences->change('stocks',urlencode(strtoupper($symbol)),urlencode($name));
 		$GLOBALS['phpgw']->preferences->save_repository(True);
-		Header('Location: ' . $GLOBALS['phpgw']->link('/stocks/preferences.php'));
+		$GLOBALS['phpgw']->redirect_link('/stocks/preferences.php');
 		$GLOBALS['phpgw']->common->phpgw_exit();
 	}
 
