@@ -73,7 +73,8 @@
 				{
 					//print "move messages<br>";
 					$this->bofelamimail->sessionData['mailbox'] 	= urldecode($GLOBALS['HTTP_POST_VARS']["oldMailbox"]);
-					$this->bofelamimail->sessionData['startMessage']= 1;
+
+//					$this->bofelamimail->sessionData['startMessage']= 1;
 					if (is_array($GLOBALS['HTTP_POST_VARS']["msg"]))
 					{
 						// we need to initialize the classes first
@@ -81,18 +82,19 @@
 					}
 				}
 			}
-			elseif(isset($GLOBALS['HTTP_POST_VARS']["mailbox"]) &&
-				$GLOBALS['HTTP_GET_VARS']["menuaction"] == "felamimail.uifelamimail.handleButtons" &&
-				!empty($GLOBALS['HTTP_POST_VARS']["mark_deleted"]))
-			{
+
+//			elseif(isset($GLOBALS['HTTP_POST_VARS']["mailbox"]) &&
+//				$GLOBALS['HTTP_GET_VARS']["menuaction"] == "felamimail.uifelamimail.handleButtons" &&
+//				!empty($GLOBALS['HTTP_POST_VARS']["mark_deleted"]))
+//			{
 				// delete messages
-				$this->bofelamimail->sessionData['startMessage']= 1;
-			}
-			elseif($GLOBALS['HTTP_GET_VARS']["menuaction"] == "felamimail.uifelamimail.deleteMessage")
-			{
+//				$this->bofelamimail->sessionData['startMessage']= 1;
+//			}
+//			elseif($GLOBALS['HTTP_GET_VARS']["menuaction"] == "felamimail.uifelamimail.deleteMessage")
+//			{
 				// delete 1 message from the mail reading window
-				$this->bofelamimail->sessionData['startMessage']= 1;
-			}
+//				$this->bofelamimail->sessionData['startMessage']= 1;
+//			}
 			elseif(isset($GLOBALS['HTTP_POST_VARS']["filter"]) || isset($GLOBALS['HTTP_GET_VARS']["filter"]))
 			{
 				// new search filter defined, lets start with message 1
@@ -721,10 +723,19 @@
 				$folders = $this->bofelamimail->getFolderList('true');
 
 				$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
-			
+
+ 				$headerCount = count($headers['header']);
+  				
+ 				// if there aren't any messages left (eg. after delete or move) 
+ 				// adjust $this->startMessage  
+ 				if ($headerCount==0 && $this->$startMessage > $maxMessages)
+ 				{
+ 					$this->startMessage = $this->startMessage - $maxMessages;
+					$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
+					$headerCount = count($headers['header']);
+				}
 				
-				$headerCount = count($headers['header']);
-				
+
 				if ($mailPreferences['sent_folder'] == $this->mailbox)
 				{
 					$this->t->set_var('lang_from',lang("to"));
