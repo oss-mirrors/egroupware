@@ -412,7 +412,6 @@
 						$new_temp_thumb=$graphic->Resize($config['Max_thumbnail_width'],
 						$config['Max_thumbnail_height'],$add_image['tmp_name'],$filetype);
 					}
-
 					
 					$target_image_name = time() . ereg_replace("[^a-zA-Z0-9_.]", '_', $add_image['name']);
 
@@ -426,7 +425,6 @@
 					{
 						$target_image_name='another_'.$target_image_name;
 					}
-
 
 					if (copy($new_temp_file, $upload_path."/normal_size/".$target_image_name))
 					{
