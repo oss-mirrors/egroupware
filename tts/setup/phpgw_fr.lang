@@ -1,1 +1,14 @@
-trouble ticket system	common	fr	Trouble Ticket System
+add new ticket	tts	fr	Ajouter un nouveau ticket
+add ticket	tts	fr	Ajouter un ticket
+admin options	admin	fr	Options d'admin
+assign to	tts	fr	Assigner à
+detail	tts	fr	Détail
+new ticket	tts	fr	Nouveau ticket
+no tickets found	tts	fr	Pas de ticket trouvé
+tickets open x	tts	fr	Tickets ouverts %1
+tickets total x	tts	fr	Tickets total %1
+trouble ticket system	common	fr	Système de tickets de problèmes
+tts	common	fr	Trouble Ticket System
+tts preferences	tts	fr	Trouble Ticket System - préférences
+view all tickets	tts	fr	Voir tous les tickets
+view only open tickets	tts	fr	Voir seulement les tickets ouverts
