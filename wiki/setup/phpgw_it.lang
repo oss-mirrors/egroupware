@@ -1,0 +1,51 @@
+add document to category	wiki	it	Aggiungi documento alla categoria
+added	wiki	it	Aggiunto
+administration features are disabled for this wiki.	wiki	it	Le opzioni di amministrazione sono disabilitate per questo Wiki
+admins	wiki	it	Amministratori
+allow anonymous access	admin	it	Permetti accesso anonimo
+anonymous password	admin	it	Password per anonimo
+anonymous session type	admin	it	Tipo sessione per anonimo
+anonymous username	admin	it	Username per anonimo
+automatically convert pages with wiki-syntax to richtext (if edited)?	admin	it	Convertire automaticamente le pagine con sintassi WIKI in RICHTEXT (se modificate)?
+block	wiki	it	Blocca
+block / unblock hosts	common	it	Blocca / Sblocca host
+blocked ip address ranges	wiki	it	Intervalli indirizzi IP bloccati
+cancel without saving	wiki	it	Annulla senza salvare
+changed	wiki	it	Cambiato
+changes by last author	wiki	it	Cambiamenti fatti dall'ultimo autore
+choose your current time here, so the server may figure out what time zone you are in.	wiki	it	Scegli la tua ora attuale qui, cosicché il server può capire in che fuso orario sei.
+columns	wiki	it	Colonne
+compute difference	wiki	it	Calcola la differenza
+converts the page to richtext	wiki	it	Converte la pagina in RICHTEXT
+current version	wiki	it	Versione Attuale
+deleted	wiki	it	Cancellato
+deletes this page	wiki	it	Cancella questa pagina
+difference between versions	wiki	it	Differenze tra le versioni
+differences in	wiki	it	Differenze in
+different languages can have different titles	wiki	it	Linquaggi diversi possono avere titoli diversi
+document last modified	wiki	it	Ultima modifica documento
+edit box	wiki	it	Modifica riquadro
+edit this <em>archive version</em> of this document	wiki	it	Modifica questa <em>VERSIONE ARCHIVIO</em> di questo documento
+edit this document	wiki	it	Modifica questo documento
+edit with preview	admin	it	Modifica con Anteprima
+editable	admin	it	modificabile
+editing	wiki	it	Modifica
+emailaddress administrator	admin	it	Indirizzo email Amministratore
+enable free links	admin	it	Abilita Link liberi
+enable wiki links	admin	it	Abilita link WIKI
+find	wiki	it	Trova
+history	wiki	it	Storia
+history lists	wiki	it	Elenco storico
+history of	wiki	it	Storia di
+invalid page name.	wiki	it	Nome pagina non valido
+load	wiki	it	Carica
+lock / unlock pages	common	it	Blocca / Sblocca Pagine
+locked	wiki	it	Bloccato
+name wiki home link	admin	it	Nome collegamento HOME del Wiki
+newer	wiki	it	Più recente
+no never	admin	it	No mai
+not set	wiki	it	Non impostato
+older	wiki	it	Più vecchio
+only if browser supports a richtext-editor	admin	it	Solo se il browser supporta un editor RICHTEXT
+please contact the %1administrator%2 for assistance.	wiki	it	Prego contatta l' %1Amministratore%2 per assistenza.
+preview	wiki	it	Anteprima
