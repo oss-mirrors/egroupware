@@ -1,65 +1,65 @@
-absolute path of the backup directory	backup	zt	備份目錄路徑
-absolute path of the directory to store the backup script	backup	zt	存儲備份腳本的目錄路徑
-archive type	backup	zt	歸檔類型
-backup	common	zt	備份
-backup administration	common	zt	備份管理
-bzip2	admin	zt	bzip2
-configuration backup	backup	zt	備份配置
-configuration localhost	backup	zt	本地主機配置
-configuration remote host	backup	zt	遠端主機配置
-create backups of your data ?	backup	zt	創建你的資料備份?
-daily	backup	zt	每日
-data	backup	zt	資料
-directory locations	admin	zt	目錄定位
-directory names	admin	zt	目錄名
-e-mail	backup	zt	電子郵件
-homedirs	admin	zt	主目錄
-interval	backup	zt	間隔
-ip or hostname	backup	zt	IP或主機名
-ldap	common	zt	LDAP
-ldap database	admin	zt	LDAP 資料庫
-maildir	admin	zt	郵件目錄
-monthly	backup	zt	每月
-mysql	admin	zt	MySQL
-nfs	backup	zt	NFS
-no backup archives available !	backup	zt	無備份歸檔可用！
-number of stored backup versions	backup	zt	存儲的備份版本數位
-operating system	backup	zt	作業系統
-password	backup	zt	密碼
-pgsql	admin	zt	PostgreSQL
-php cgi	admin	zt	php cgi
-please enter the path of the needed applications in *site configuration* !	backup	zt	請在站點配置中輸入所需應用程式的路徑！
-please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	zt	請輸入備份目錄路徑或顯示歸檔！
-please enter username and password for remote connection !	backup	zt	請為遠端連接輸入用戶名和密碼
-please select an application for transport to the remote host !	backup	zt	請為傳輸到遠端主機選擇應用程式！
-please set the path to a local dir to store the backup script !	backup	zt	請為存儲備份腳本設置本地目錄路徑！
-please set the path to the ldap database dir in *site configuration* !	backup	zt	請在站點配置中設置LDAP資料庫目錄路徑！
-please set the path to the mysql database dir in *site configuration* !	backup	zt	請在站點配置中設置MySQL資料庫目錄路徑！
-please set the path to the postgresql database dir in *site configuration* !	backup	zt	請在站點配置中設置PostgreSQL資料庫目錄路徑！
-please set the values in *site configuration* !	backup	zt	請在站點配置中設置值！
-please specify the ip of the remote host !	backup	zt	請指定遠端主機IP！
-please specify the name of the maildir in *site configuration* !	backup	zt	請在站點配置中指定電子郵件目錄名！
-please specify the path to the backup directory !	backup	zt	請指定備份目錄路徑！
-please specify the path to the user-homedirectories in *site configuration* !	backup	zt	請在站點配置中指定用戶主目錄！
-program locations	admin	zt	程式位置
-save backup locally ?	backup	zt	儲存本地備份？
-save backup to a remote host ?	backup	zt	在遠端主機儲存備份？
-select archive type	backup	zt	選擇歸檔類型
-select interval	backup	zt	選擇間隔
-select transport application	backup	zt	選擇傳輸應用程式
-settings	admin	zt	設定
-show backup archives in phpgroupware ?	backup	zt	在phpGroupWare中顯示備份歸檔？
-smbmount	backup	zt	SMBMOUNT
-sql	backup	zt	SQL
-tar	admin	zt	tar
-tar.bz2	backup	zt	tar.bz2
-tar.gz	backup	zt	tar.gz
-the backup application is not configured for showing the archives in phpgroupware yet !	backup	zt	備份程式還未配置用來顯示歸檔！
-the directory to store the backup script must be outside of the webservers *documentroot* !	backup	zt	存儲備份腳本的目錄必須在伺服器文檔根目錄之外！
-the ftp connection failed ! please check your configuration !	backup	zt	ftp連接失敗！請檢查您的配置！
-transport application	backup	zt	傳輸應用程式
-user	backup	zt	使用者
-versions can only be a number !	backup	zt	版本只能是數字！
-weekly	backup	zt	每週
-your sql database isnt supported by this application !	backup	zt	本應用程式不支援您的SQL資料庫！
-zip	common	zt	zip
+absolute path of the backup directory		zt	備份資料的絕對路徑
+absolute path of the directory to store the backup script		zt	儲存備份程式的絕對路徑
+archive type		zt	檔案格式
+backup		zt	備份
+backup administration		zt	備份管理
+bzip2		zt	bzip2
+configuration backup		zt	設定備份
+configuration localhost		zt	設定本地端
+configuration remote host		zt	設定遠端
+create backups of your data ?		zt	確定要建立資料備份？
+daily		zt	每日
+data		zt	資料
+directory locations		zt	資料夾位置
+directory names		zt	資料夾名稱
+e-mail		zt	E-MAIL
+homedirs		zt	根目錄
+interval		zt	間隔
+ip or hostname		zt	IP 或主機名稱
+ldap		zt	LDAP
+ldap database		zt	LDAP資料庫
+maildir		zt	郵件資料夾
+monthly		zt	每月
+mysql		zt	MySQL
+nfs		zt	NFS
+no backup archives available !		zt	無法備份資料！
+number of stored backup versions		zt	資料備份版本
+operating system		zt	作業系統
+password		zt	密碼
+pgsql		zt	PostgreSQL
+php cgi		zt	php cgi
+please enter the path of the needed applications in *site configuration* !		zt	請輸入在"網站設定"中的必要應用程式路徑
+please enter the path to the backup dir and/or enable showing archives in phpgroupware !		zt	請輸入備份資料夾路徑且/或啟用phpGroupWare中的顯示檔案！
+please enter username and password for remote connection !		zt	請輸入遠端連線的使用者名稱及密碼！
+please select an application for transport to the remote host !		zt	請選擇一個要傳輸到遠端主機的應用程式！
+please set the path to a local dir to store the backup script !		zt	請設定一個本地端的資料夾來儲存備份程式！
+please set the path to the ldap database dir in *site configuration* !		zt	請在"網站設定"中填上LDAP資料庫的路徑！
+please set the path to the mysql database dir in *site configuration* !		zt	請在"網站設定"中填上MySQL資料庫的路徑！
+please set the path to the postgresql database dir in *site configuration* !		zt	請在"網站設定"中填上PostgreSQL資料庫的路徑！
+please set the values in *site configuration* !		zt	請在"網站設定"中填上設定值！
+please specify the ip of the remote host !		zt	請指定遠端主機的IP！
+please specify the name of the maildir in *site configuration* !		zt	請在"網站設定"中填上郵件資料夾的名稱！
+please specify the path to the backup directory !		zt	請指定備份資料夾的路徑！
+please specify the path to the user-homedirectories in *site configuration* !		zt	請在"網站設定"中指定使用者家目錄的路徑！
+program locations		zt	程式位置
+save backup locally ?		zt	儲存本地備份？
+save backup to a remote host ?		zt	儲存備份到遠端機器？
+select archive type		zt	選擇檔案格式
+select interval		zt	選擇間隔
+select transport application		zt	選擇輸出的應用程式
+settings		zt	設定
+show backup archives in phpgroupware ?		zt	在phpGroupWare 顯示備份檔案？
+smbmount		zt	小計
+sql		zt	資料庫
+tar		zt	tar
+tar.bz2		zt	tar.bz2
+tar.gz		zt	tar.gz
+the backup application is not configured for showing the archives in phpgroupware yet !		zt	備份程式還沒設定能夠在phpGroupWare顯示檔案！
+the directory to store the backup script must be outside of the webservers *documentroot* !		zt	備份程式儲存的資料夾必須在網站伺服器的網頁根目錄以外！
+the ftp connection failed ! please check your configuration !		zt	FTP連線錯誤，請檢查您的設定！
+transport application		zt	輸出應用程式
+user		zt	使用者
+versions can only be a number !		zt	版本只能是數字！
+weekly		zt	每週
+your sql database isnt supported by this application !		zt	這個應用程式不支援您的SQL資料庫！
+zip		zt	zip
