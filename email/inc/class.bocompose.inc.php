@@ -494,7 +494,6 @@
 					//Check to see if they want us to quote the forwarded message's body and inlude it
 					//in the mail we are going to compose
 					$fwd_as_inline_pref=$GLOBALS['phpgw']->msg->get_pref_value('fwd_inline_text');
-					print "<br>$fwd_as_inline_pref<br>";
 					if($fwd_as_inline_pref)
 					{
 						$body=$this->quote_inline_message($body."\r\n",$msgball);
