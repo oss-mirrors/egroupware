@@ -19,7 +19,11 @@
 <td>&nbsp;</td>                                                                                                                                                                      
 </tr>                                                                                                                                                                                
 <tr>                                                                                                                                                                                 
-<td>{ad_zip}&nbsp;{ad_city}<br><br><br></td>                                                                                                                                         
+<td>{ad_zip}&nbsp;{ad_city}</td>                                                                                                                                         
+<td>&nbsp;</td>                                                                                                                                                                      
+</tr>
+<tr>                                                                                                                                                                                 
+<td>{ad_state}<br><br><br></td>                                                                                                                                         
 <td>&nbsp;</td>                                                                                                                                                                      
 </tr>
 <tr>
@@ -35,16 +39,24 @@
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{zip}&nbsp;{city}<br><br><br></td>
+<td>{zip}&nbsp;{city}</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>{state}<br><br><br></td>
+<td>&nbsp;</td>
 </tr>
 <tr>
 <td>{lang_delivery}:&nbsp;{delivery_num}</td>
+<td>&nbsp;</td>
 </tr>
 <tr>
 <td>{lang_date}:&nbsp;{delivery_day}.{delivery_month}.{delivery_year}</td>
+<td>&nbsp;</td>
 </tr>
 <tr>
 <td>{lang_project}:&nbsp;{title}</td>
+<td>&nbsp;</td>
 </tr>
 </table><br><br><br>  
 <table width=70% border=0 cellspacing=3 cellpadding=3>
@@ -68,9 +80,13 @@
         <td>&nbsp;</td>
         <td>{act_remark}</td>
       </tr>
-
 <!-- END deliverypos_list -->
-
+      <tr>                                                                                                                                                                                
+        <td>&nbsp;</td>                                                                                                                                                                   
+        <td>&nbsp;</td>                                                                                                                                                                   
+        <td>&nbsp;</td>    
+        <td>{error}</td>                                                                                                                                                             
+      </tr>
   <hr noshade width="70%" align="left" size="1">
     </table>
 </body>

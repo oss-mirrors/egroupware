@@ -23,6 +23,7 @@
 if ($submit) {
      $phpgw->common->preferences_delete("byapp",$phpgw_info["user"]["account_id"],"projects");
      $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"tax","projects");
+     $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"address","projects");
      
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/preferences/"));
     }
@@ -32,21 +33,51 @@ if ($submit) {
       }     
 
      $t = new Template($phpgw_info["server"]["app_tpl"]);
-     $t->set_file(array( "bill_prefs" => "preferences.tpl"));
+     $t->set_file(array( "prefs" => "preferences.tpl"));
      
      
      $t->set_var("actionurl",$phpgw->link("preferences.php"));
-     
-
+     $t->set_var("addresses_link",$phpgw->link("addresses.php","query="));
+    
      $t->set_var("lang_action",lang("Project preferences"));
      $t->set_var("lang_select_tax",lang("Select tax for work hours"));
      
      $tax = $phpgw_info["user"]["preferences"]["projects"]["tax"];
      $t->set_var("tax",$tax);
      
+     $t->set_var("lang_address",lang("Select your address"));                                                                                                                                         
+     
+     if (isset($phpgw_info["user"]["preferences"]["projects"]["address"])) {
+    if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                                                         
+    $phpgw->db->query("SELECT ab_id,ab_firstname,ab_lastname,ab_company_id,company_name FROM "                                                                                                       
+                     . "addressbook,customers where "                                                                                                                                          
+                     . "ab_company_id='" .$phpgw_info["user"]["preferences"]["projects"]["address"]."'");                                                                                                                       
+    if ($phpgw->db->next_record()) {                                                                                                                                                                 
+        $t->set_var("address_name",$phpgw->db->f("company_name")." [ ".$phpgw->db->f("ab_firstname")." ".$phpgw->db->f("ab_lastname")." ]");                                                                     
+      } else {                                                                                                                                                                                   
+        $t->set_var("address_name","");                                                                                                                                                        
+        }                                                                                                                                                                                          
+       }                                                                                                                                                                                          
+    else {                                                                                                                                                                                     
+    $phpgw->db->query("select ab_id,ab_lastname,ab_firstname,ab_company from addressbook where "                                                                                                     
+                        . "ab_id='" .$phpgw_info["user"]["preferences"]["projects"]["address"]."'");                                                                                                                            
+        if ($phpgw->db->next_record()) {                                                                                                                                                             
+        $t->set_var("address_name",$phpgw->db->f("ab_company")." [ ".$phpgw->db->f("ab_firstname")." ".$phpgw->db->f("ab_lastname")." ]");                                                                       
+        }                                                                                                                                                                                      
+        else {                                                                                                                                                                                 
+        $t->set_var("address_name","");                                                                                                                                                        
+        }                                                                                                                                                                                      
+      }
+     }
+     else {
+    $t->set_var("address_con","");
+    $t->set_var("address_name","");
+      }
+
+
      $t->set_var("lang_editsubmitb",lang("Edit"));
     
-     $t->pparse("out","bill_prefs");
+     $t->pparse("out","prefs");
     
      include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
     ?>

@@ -25,66 +25,66 @@
 //  $taxpercent = 0.16;
 //  $eurtodm = 1.95583;
 
-  if (isset($phpgw_info["user"]["preferences"]["projects"]["tax"]) && (isset($phpgw_info["user"]["preferences"]["common"]["currency"]))) {                                                                                
+  if (isset($phpgw_info["user"]["preferences"]["projects"]["tax"]) && (isset($phpgw_info["user"]["preferences"]["common"]["currency"]) && (isset($phpgw_info["user"]["preferences"]["projects"]["address"])))) {                                                                                
     $tax = $phpgw_info["user"]["preferences"]["projects"]["tax"];                                                                                 
     $tax = ((float)$tax);
     $taxpercent = ($tax/100);
     $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];
+    
+     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                                                         
+     $phpgw->db->query("SELECT ab_firstname,ab_lastname,ab_street,ab_zip,ab_city,ab_state,ab_company_id,company_name FROM "                                                                     
+                     . "addressbook,customers where "                                                                                                                                          
+                     . "ab_company_id='" .$phpgw_info["user"]["preferences"]["projects"]["address"]."'");                                                                                      
+      if ($phpgw->db->next_record()) {                                                                                                                                                         
+      $t->set_var("ad_company",$phpgw->db->f("company_name"));                                                                                                                                 
+      $t->set_var("ad_firstname",$phpgw->db->f("ab_firstname"));                                                                                                                               
+      $t->set_var("ad_lastname",$phpgw->db->f("ab_lastname"));                                                                                                                                 
+      $t->set_var("ad_street",$phpgw->db->f("ab_street"));                                                                                                                                     
+      $t->set_var("ad_zip",$phpgw->db->f("ab_zip"));                                                                                                                                           
+      $t->set_var("ad_city",$phpgw->db->f("ab_city"));                                                                                                                                         
+      $t->set_var("ad_state",$phpgw->db->f("ab_state"));                                                                                                                                       
+          }                                                                                                                                                                                    
+      else {                                                                                                                                                                                   
+      $t->set_var("ad_company","");                                                                                                                                                            
+      $t->set_var("ad_firstname","");                                                                                                                                                          
+      $t->set_var("ad_lastname","");                                                                                                                                                           
+      $t->set_var("ad_street","");                                                                                                                                                             
+      $t->set_var("ad_zip","");                                                                                                                                                                
+      $t->set_var("ad_city","");                                                                                                                                                               
+      $t->set_var("ad_state","");                                                                                                                                                              
+          }                                                                                                                                                                                    
+        }                                                                                                                                                                                      
+      else {                                                                                                                                                                                   
+    $phpgw->db->query("select ab_id,ab_lastname,ab_firstname,ab_street,ab_zip,ab_city,ab_state,ab_company from addressbook where "                                                             
+                        . "ab_id='" .$phpgw_info["user"]["preferences"]["projects"]["address"]."'");                                                                                           
+      if ($phpgw->db->next_record()) {                                                                                                                                                         
+      $t->set_var("ad_company",$phpgw->db->f("ab_company"));                                                                                                                                   
+      $t->set_var("ad_firstname",$phpgw->db->f("ab_firstname"));                                                                                                                               
+      $t->set_var("ad_lastname",$phpgw->db->f("ab_lastname"));                                                                                                                                 
+      $t->set_var("ad_street",$phpgw->db->f("ab_street"));                                                                                                                                     
+      $t->set_var("ad_zip",$phpgw->db->f("ab_zip"));                                                                                                                                           
+      $t->set_var("ad_city",$phpgw->db->f("ab_city"));                                                                                                                                         
+      $t->set_var("ad_state",$phpgw->db->f("ab_state"));                                                                                                                                       
+            }                                                                                                                                                                                  
+                                                                                                                                                                                               
+   else {                                                                                                                                                                                      
+      $t->set_var("ad_company","");                                                                                                                                                            
+      $t->set_var("ad_firstname","");                                                                                                                                                          
+      $t->set_var("ad_lastname","");                                                                                                                                                           
+      $t->set_var("ad_street","");                                                                                                                                                             
+      $t->set_var("ad_zip","");                                                                                                                                                                
+      $t->set_var("ad_city","");                                                                                                                                                               
+      $t->set_var("ad_state","");                                                                                                                                                              
+                                                                                                                                                                                               
+      }                                                                                                                                                                                        
+     }     
     $t->set_var("error","");     
      }
    else {                                                                                                                                                       
-    $t->set_var("error",lang("please select currency and tax in preferences"));
+    $t->set_var("error",lang("Please select currency,tax and your address in preferences!"));
     $taxpercent = ((int)0); 
     }
 
-    
-  if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                                                           
-      $phpgw->db->query("SELECT p_projects.address,p_invoice.project_id,ab_company_id,company_name,ab_firstname, "
-                 . "ab_lastname,ab_street,ab_zip, "                                                                                            
-                 . "ab_city FROM p_projects,p_invoice,addressbook,customers WHERE "                                                                                                                                     
-                 . "p_invoice.id=$invoice_id AND p_invoice.project_id=p_projects.id AND "     
-                 . "p_projects.address=customers.company_id AND customers.company_id=addressbook.ab_company_id");                                                                                                
-      if ($phpgw->db->next_record()) {                                                                                                                                                             
-      $t->set_var("ad_company",$phpgw->db->f("company_name"));                                                                                                                                     
-      $t->set_var("ad_firstname",$phpgw->db->f("ab_firstname"));                                                                                                                                   
-      $t->set_var("ad_lastname",$phpgw->db->f("ab_lastname"));                                                                                                                                     
-      $t->set_var("ad_street",$phpgw->db->f("ab_street"));                                                                                                                                         
-      $t->set_var("ad_zip",$phpgw->db->f("ab_zip"));                                                                                                                                               
-      $t->set_var("ad_city",$phpgw->db->f("ab_city"));                                                                                                                                             
-          }                                                                                                                                                                                        
-      else {     
-      $t->set_var("ad_company","");                                                                                                                                    
-      $t->set_var("ad_firstname","");                                                                                                                                  
-      $t->set_var("ad_lastname","");                                                                                                                                    
-      $t->set_var("ad_street","");                                                                                                                                        
-      $t->set_var("ad_zip","");                                                                                                                                              
-      $t->set_var("ad_city","");       
-         }                                                                                                                                                                                         
-        }
-      else {                                                                                                                                                                                     
-         $phpgw->db->query("SELECT p_projects.address,p_invoice.project_id,ab_id,ab_company,ab_firstname,ab_lastname,ab_street,ab_zip, "                                                                                                   
-                 . "ab_city FROM p_projects,addressbook,p_invoice WHERE "
-                 . "p_invoice.id=$invoice_id AND p_invoice.project_id=p_projects.id AND "                                                                                                         
-                 . "p_projects.address=addressbook.ab_id");                                                                                                                            
-      if ($phpgw->db->next_record()) {                                                                                                                                                             
-      $t->set_var("ad_company",$phpgw->db->f("ab_company"));                                                                                                                                       
-      $t->set_var("ad_firstname",$phpgw->db->f("ab_firstname"));                                                                                                                                   
-      $t->set_var("ad_lastname",$phpgw->db->f("ab_lastname"));                                                                                                                                     
-      $t->set_var("ad_street",$phpgw->db->f("ab_street"));                                                                                                                                         
-      $t->set_var("ad_zip",$phpgw->db->f("ab_zip"));                                                                                                                                               
-      $t->set_var("ad_city",$phpgw->db->f("ab_city"));                                                                                                                                             
-            }                                                                                                                                                                                      
-        
-   else {                                                                                                                                                                                         
-      $t->set_var("ad_company","");                                                                                                                                                               
-      $t->set_var("ad_firstname","");                                                                                                                                                             
-      $t->set_var("ad_lastname","");                                                                                                                                                              
-      $t->set_var("ad_street","");                                                                                                                                                                
-      $t->set_var("ad_zip","");                                                                                                                                                                   
-      $t->set_var("ad_city","");
-       }
-     }
-   
    $charset = $phpgw->translation->translate("charset");                                                                                                                                         
    $t->set_var("charset",$charset);   
    $t->set_var("site_title",$phpgw_info["site_title"]);
@@ -101,7 +101,7 @@
    if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
    $phpgw->db->query("SELECT p_invoice.customer,p_invoice.num,p_invoice.project_id,p_invoice.date,p_invoice.sum as sum_netto, "
                  . "round(sum*$taxpercent,2) as sum_tax,round(sum*(1+$taxpercent),2) as sum_sum,"                                                                                                    
-                 . "ab_company_id,company_name,ab_firstname,ab_lastname,ab_street,ab_zip, "
+                 . "ab_company_id,company_name,ab_firstname,ab_lastname,ab_street,ab_zip,ab_state, "
                  . "ab_city FROM addressbook,customers,p_invoice,p_projects WHERE "
                  . "p_invoice.id=$invoice_id AND p_invoice.project_id=p_projects.id AND "
                  . "p_invoice.customer=ab_company_id AND customers.company_id=addressbook.ab_company_id");
@@ -112,6 +112,7 @@
    $t->set_var("street",$phpgw->db->f("ab_street"));                                                                                                                                             
    $t->set_var("zip",$phpgw->db->f("ab_zip"));                                                                                                                                                   
    $t->set_var("city",$phpgw->db->f("ab_city"));
+   $t->set_var("state",$phpgw->db->f("ab_state"));
    $t->set_var("invoice_day",date("j",$phpgw->db->f("date")));                                                                                                                                       
    $t->set_var("invoice_month",date("n",$phpgw->db->f("date")));                                                                                                                                     
    $t->set_var("invoice_year",date("Y",$phpgw->db->f("date")));                                                                                                                                      
@@ -126,7 +127,7 @@
    else {    
    $phpgw->db->query("SELECT p_invoice.customer,p_invoice.num,p_invoice.project_id,p_invoice.date,p_invoice.sum as sum_netto, "
                  . "round(sum*$taxpercent,2) as sum_tax,round(sum*(1+$taxpercent),2) as sum_sum,"
-                 . "ab_id,ab_company,ab_firstname,ab_lastname,ab_street,ab_zip, "
+                 . "ab_id,ab_company,ab_firstname,ab_lastname,ab_street,ab_zip,ab_state, "
                  . "ab_city,p_projects.title FROM addressbook,p_invoice,p_projects WHERE "
                  . "p_invoice.id=$invoice_id AND p_invoice.customer=ab_id AND p_invoice.project_id=p_projects.id");
    if ($phpgw->db->next_record()) {
@@ -136,6 +137,7 @@
    $t->set_var("street",$phpgw->db->f("ab_street"));                                                                                                                                             
    $t->set_var("zip",$phpgw->db->f("ab_zip"));                                                                                                                                                   
    $t->set_var("city",$phpgw->db->f("ab_city"));
+   $t->set_var("state",$phpgw->db->f("ab_state"));
    $t->set_var("invoice_day",date("j",$phpgw->db->f("date")));                                                                                                                                  
    $t->set_var("invoice_month",date("n",$phpgw->db->f("date")));                                                                                                                                
    $t->set_var("invoice_year",date("Y",$phpgw->db->f("date")));                                                                                                                                 

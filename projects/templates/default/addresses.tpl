@@ -6,8 +6,8 @@
 <script LANGUAGE="JavaScript">
    function ExchangeAddress(thisform)
    {
-   opener.document.projects_form.address.value = thisform.elements[0].value;
-   opener.document.projects_form.addressname.value = thisform.elements[1].value;
+   opener.document.prefs_form.address.value = thisform.elements[0].value;
+   opener.document.prefs_form.addressname.value = thisform.elements[1].value;
    }
 </script>
 </head>

@@ -1,6 +1,10 @@
 # First we will delete all entries for projects, to prevent dups when updating.                                                           
 DELETE from lang WHERE app_name='projects';
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Projects','projects','de','Projekte');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Project preferences','projects','de','Projekt Einstellungen');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Project preferences','preferences','de','Projekt Einstellungen');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Please select currency,tax and your address in preferences!','projects','de','Bitte w&auml;hlen Sie W&auml;hrung, Steuer und Ihre Adresse in den Einstellungen!');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Please select your address in preferences!','projects','de','Bitte w&auml;hlen Sie Ihre Adresse in den Einstellungen!');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Projects','common','de','Projekte');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Return to projects','projects','de','Zur&uuml;ck zu Projekte');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Project billing','common','de','Projekt Abrechnung');

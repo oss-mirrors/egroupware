@@ -39,7 +39,6 @@
      	$t->set_block("projects_add", "edit_act", "acthandle");
   	
         $t->set_var("addressbook_link",$phpgw->link("addressbook.php","query="));
-        $t->set_var("addresses_link",$phpgw->link("addresses.php","query="));
 
   	$t->set_var("lang_action",lang("Add project"));
 	
@@ -135,10 +134,6 @@
         $t->set_var("customer_con","");
         $t->set_var("customer_name","");
 
-        $t->set_var("lang_address",lang("My address"));                                                                                                                                        
-        $t->set_var("address_con","");                                                                                                                                                       
-        $t->set_var("address_name","");        
-
 // activities bookable     
        $t->set_var("lang_bookable_activities",lang("Bookable activities"));
         $db2->query("SELECT p_activities.id as id,p_activities.descr "                                                                                                                      
@@ -230,9 +225,9 @@
     }
 
     $phpgw->db->query("insert into p_projects (owner,access,entry_date,date,end_date," 
-                . "coordinator,customer,address,status,descr,title,budget,num) "
+                . "coordinator,customer,status,descr,title,budget,num) "
                 . "values ('$owner','$access','" . time() ."','$date','$end_date',"
-                . "'$coordinator','$customer','$address','$status','" . addslashes($descr) . "',"
+                . "'$coordinator','$customer','$status','" . addslashes($descr) . "',"
                 . "'" . addslashes($title) . "','" . addslashes($budget) . "',"
 		. "'" . $num . "')");
            

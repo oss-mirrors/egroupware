@@ -11,7 +11,6 @@ insert into applications (app_name,app_title,app_enabled,app_tables,app_version)
         end_date        int,
 	coordinator	int,
 	customer	int,
-	address         int,
         status		text check(status in('active','nonactive','archiv','template')) DEFAULT 'nonactive' NOT NULL,
 	descr		text,
 	title		varchar(50),

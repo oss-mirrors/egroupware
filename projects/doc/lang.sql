@@ -2,7 +2,9 @@
 DELETE from lang WHERE app_name='projects';
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Projects','common','en','Projects');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Project preferences','projects','en','Project preferences');
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Please select currency and tax in preferences','projects','en','Please select currency and tax in preferences!');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Project preferences','preferences','en','Project preferences');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Please select currency,tax and your address in preferences!','projects','en','Please select currency,tax and your address in preferences!');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Please select your address in preferences!','projects','en','Please select your address in preferences!'); 
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Projects','admin','en','Projects');                                                                
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Projects','projects','en','Projects');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Project','projects','en','Project');
@@ -13,7 +15,6 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Active','project
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('New project','projects','en','New project');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Add hours','projects','en','Add hours');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Activities list','projects','en','Activities list');
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES('My address','projects','en','My address');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Address book','projects','en','Address book');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Add Activity','projects','en','Add activity');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Edit Activity','projects','en','Edit activity');
@@ -75,7 +76,8 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES('You have selecte
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('You have selected an invalid date','projects','en','You have selected an invalid date!');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('You have to enter a remark','projects','en','You have to enter a remark!');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Are you sure you want to delete this entry','projects','en','Are you sure you want to delete this entry?');
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Select tax for work hours','projects','en','Select tax for work hours');                                                                            
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Select tax for work hours','projects','en','Select tax for work hours'); 
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Select your address','projects','en','Select your address');                                                                            
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Return to projects','projects','en','Return to projects');                                                                              
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Invoice ID','projects','en','Invoice ID');                                                                                                    
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Workunits','projects','en','Workunits');                                                                                                

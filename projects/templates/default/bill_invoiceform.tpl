@@ -19,8 +19,11 @@
 <td>&nbsp;</td>                                                                                                                                                                                   
 </tr>                                                                                                                                                                                             
 <tr>                                                                                                                                                                                              
-<td>{ad_zip}&nbsp;{ad_city}<br><br><br></td>                                                                                                                                                            
+<td>{ad_zip}&nbsp;{ad_city}</td>                                                                                                                                                            
 <td>&nbsp;</td>                                                                                                                                                                                   
+</tr>
+<td>{ad_state}<br><br><br></td>                                                                                                                                                               
+<td>&nbsp;</td>                                                                                                                                                                                            
 </tr>
 <tr>
 <td>{company}</td>
@@ -35,7 +38,11 @@
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{zip}&nbsp;{city}<br><br><br></td>
+<td>{zip}&nbsp;{city}</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>{state}<br><br><br></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
