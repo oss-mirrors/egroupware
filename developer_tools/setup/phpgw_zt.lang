@@ -1,6 +1,7 @@
 !!! you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	zt	!!! 在進行下一步之前，如果在上面的資料有了任何異動，請記得先按"儲存" !!!
 add	developer_tools	zt	新增
 add change	developer_tools	zt	新增異動
+add more	developer_tools	zt	新增更多
 add new phrase	developer_tools	zt	新增句子
 add phrase	developer_tools	zt	新增句子
 allows you to add a single phrase	developer_tools	zt	您可以新增單一個詞彙
@@ -33,6 +34,7 @@ no file	developer_tools	zt	沒有檔案
 ok	developer_tools	zt	確定
 original	developer_tools	zt	原本的
 phrase in english	developer_tools	zt	英文句子
+phrase in english (or empty if identical)	developer_tools	zt	英文片語(空白時表示有相同的句子)
 preferences	developer_tools	zt	偏好設定
 preferences have been updated	developer_tools	zt	設定已經更新
 project	developer_tools	zt	計畫
@@ -57,6 +59,7 @@ target language	developer_tools	zt	目標語言
 title	developer_tools	zt	標題
 translate	developer_tools	zt	翻譯
 translation	developer_tools	zt	翻譯
+translation of phrase	developer_tools	zt	片語的翻譯
 update	developer_tools	zt	更新
 update database	developer_tools	zt	更新資料庫
 updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	zt	更新資料庫中的翻譯資料，接著您可以同時檢驗剛剛完成的工作
@@ -64,6 +67,7 @@ version	developer_tools	zt	版本
 write	developer_tools	zt	寫入
 write the lang-file to the apps setup-dir	developer_tools	zt	將翻譯的資料寫入應用程式的資料夾中
 write to lang table	developer_tools	zt	寫入語言表
+writing langfile for '%1' ...	developer_tools	zt	正在寫入語言檔案'%1' ...
 you must a version	developer_tools	zt	您必須是一個版本
 you must enter a change	developer_tools	zt	您必須輸入改變後的文字
 you must select a project	developer_tools	zt	您必須選擇一個專案

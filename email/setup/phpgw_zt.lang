@@ -1,58 +1,395 @@
+%1 messages have been deleted	email	zt	已刪除 %1 封信件
+(required)	email	zt	(必填)
 1 message has been deleted	email	zt	成功移除 1 封電子郵件
+1 message has been moved to	email	zt	訊息已經移到
+<b>*apply*</b> this filter	email	zt	<b>*啟用*</b> 這個郵件規則
+<b>apply all</b> filters	email	zt	<b>*啟用*</b> 所有郵件規則
+a scrips tag block of code, javascript or otherwise, is in an inline html message. not necessarily bad, but user may want to know. this is script ... code ... script blocks, not the "onmouseover"  stuff.	email	zt	郵件中包含html描述語言，像是javascript。
+account	email	zt	帳號
+account name	email	zt	帳號名稱
+account user name	email	zt	帳號使用者名稱
+accounts	common	zt	帳號
+accounts:	email	zt	帳號：
+add to address book	email	zt	加入通訊錄
 add to addressbook	email	zt	加入通訊錄
+address book	email	zt	通訊錄
+after	email	zt	後
+all messages	email	zt	所有訊息
+and	email	zt	且
+and stop filtering	email	zt	並且停用郵件規則
+answered	email	zt	已經回應
+apply	email	zt	同意
+apply filters report:	email	zt	啟用郵件規則報告：
+apr	email	zt	四月
+aqua fusion	email	zt	液化效果
+arrival date	email	zt	日期
+as	email	zt	當
+attach file	email	zt	附加檔案
+attach signature	email	zt	附加簽名
+attachment	email	zt	附加
+aug	email	zt	八月
+bcc	email	zt	密件副本
+bcc address	email	zt	密件副本位址
+before	email	zt	前
+big	email	zt	大
+bigger	email	zt	更大
+biggest	email	zt	最大
+body	email	zt	內容
+both	email	zt	皆
+button type	email	zt	按鈕種類
+cache server data whenever possible	email	zt	如果能夠就暫存伺服器資料
 cc	email	zt	附件
-compose	email	zt	寫信
+cc address	email	zt	附件位址
+change font size in your e-mail pages	email	zt	改變電子郵件頁面的字型大小
+check flags for type of mails	email	zt	檢查郵件格式的標示
+choose for rename	email	zt	改名
+choose to rename	email	zt	改名
+clear cache	email	zt	清除暫存資料
+click here for more info in a new window	email	zt	開啟新視窗顯示更多資訊
+click here to continue	email	zt	繼續
+click here to edit the settings for this email account.	email	zt	點這裡來編輯信箱帳號的設定
+click here to return to your home page.	email	zt	點這裡回到首頁
+company	email	zt	公司
+compose	common	zt	寫信
+compose message	email	zt	建立訊息
+compose new	common	zt	建立新郵件
+contains	email	zt	包含
+could not open this mailbox	email	zt	無法開啟這個郵件匣
+create (expert)	email	zt	建立
+create a folder	email	zt	建立資料夾
+current attachments (%1)	email	zt	目前的附加檔案(%1)
+custom e-mail preferences	email	zt	使用者電子郵件偏好
+custom e-mail settings	email	zt	使用者電子郵件設定
 custom email settings	email	zt	自訂電子郵件設定
+debugging page	email	zt	偵錯頁面
+dec	email	zt	十二月
 default sorting order	email	zt	預設排序方式
+default:	common	zt	預設：
+delete (expert)	email	zt	刪除
+delete a folder	email	zt	刪除資料夾
+delete account	common	zt	刪除帳號
+deleted	email	zt	刪除日期
+deleted messages (trash) folder	email	zt	清空垃圾桶
+deleted messages folder name	email	zt	刪除訊息資料夾名稱
+deleted messages go to trash	email	zt	刪除訊息移往垃圾桶
+deleted messages saved to folder:	email	zt	刪除訊息存到資料夾：
+discard	email	zt	丟棄
+does not contain	email	zt	不包含
+draft	email	zt	草稿
+e-mail clear cache	preferences	zt	清除E-Mail暫存資料
+e-mail extra account	email	zt	其他E-Mail帳號
+e-mail extra accounts	email	zt	其他E-Mail帳號
+e-mail extra accounts list	email	zt	其他E-Mail帳號清單
+e-mail filters	common	zt	郵件規則
+e-mail folders	common	zt	郵件資料夾
+e-mail inbox filters list	email	zt	郵件
+e-mail preferences	common	zt	電子郵件喜好設定
+each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account on the users summary home page.	email	zt	每個使用者會有一個摘要頁，藉此檢視各種資訊。這個選項將會在該頁顯示使用者的收件匣的簡單清單。
+each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account onthe users summary home page.	email	zt	每個使用者會有一個摘要頁，藉此檢視各種資訊。這個選項將會在該頁顯示使用者的收件匣的簡單清單。
+edit filters	email	zt	編輯規則
 email account name	email	zt	電子郵件帳號名稱
 email address	email	zt	電子郵件地址
+email date	email	zt	日期
+email filters	email	zt	郵件規則
 email password	email	zt	電子郵件信箱密碼
-e-mail preferences	common	zt	電子郵件喜好設定
+email preferences	email	zt	偏好
 email signature	email	zt	電子郵件簽名
 email type	common	zt	電子郵件類型
-enter your default mail domain ( From: user@domain )	admin	zt	輸入您預設的電子郵件網域（From: user@domain）
+enable this email account	common	zt	啟用
+enable utf-7 encoded folder names	email	zt	在資料夾名稱啟用 UTF-7 編碼
+enter the search string in the text boxes	email	zt	請輸入您要搜尋的文字
+enter your default mail domain ( from: user@domain )	admin	zt	輸入您預設的電子郵件網域（From: user@domain）
 enter your pop	admin	zt	輸入您的 POP
 enter your smtp server hostname or ip address	admin	zt	輸入您的 SMTP 主機名稱或網路位址
 enter your smtp server port	admin	zt	輸入您的 SMTP 主機連接埠
-folder	email	zt	資料夾
+error moving messages to	email	zt	移動訊息時發生錯誤
+error text not provided	email	zt	錯誤文字並未提供
+error: unknown message data	email	zt	錯誤：未知名的訊息資料
+evolution style	email	zt	發展風格
+extra accounts	email	zt	其他帳號
+extra e-mail account	common	zt	其他郵件帳號
+extra e-mail accounts	common	zt	其他郵件帳號
+extra e-mail preferences number %1	email	zt	其他郵件設定編號 %1
+feb	email	zt	二月
+fewer actions	email	zt	更少的動作
+fewer choices	email	zt	更少的選擇
+file	email	zt	檔案
+file attachment	email	zt	檔案附加
+file into	email	zt	檔案插入
+fill in as much as you can	email	zt	請盡量填寫
+filter [number] and name	email	zt	規則 [編號]與名稱
+filter inbox for accounts	email	zt	帳號的收件匣規則
+filter name	email	zt	規則名稱
+filter name:	email	zt	規則名稱：
+filter number	email	zt	規則數字
+filters	email	zt	規則
+filters list	email	zt	規則列表
+flag as important	email	zt	標示為重要信件
+flagged	email	zt	被標示
+folder	common	zt	資料夾
+folder maintenance	email	zt	資料夾維護
+folder name	email	zt	資料夾名稱
+folder size	email	zt	資料夾大小
+folders	email	zt	資料夾
+for the file to actually upload	email	zt	實際上傳檔案
+for these items, fill only what is different from you default e-mail preferences	common	zt	在這些項目中只要填寫與預設郵件設定不一樣的地方
 forward	email	zt	轉寄
 from	email	zt	來自
+from address	email	zt	來自
+get size	email	zt	取得大小
+go	email	zt	前往
+go back	email	zt	回上一頁
+go back to	email	zt	回到
+header field	email	zt	標頭
+hidden	email	zt	隱藏
+hide help	email	zt	關閉說明文字
+html messages with the iframe  tag may be klez or other worm emails.	email	zt	html中包含頁面框架，可能因此包含KLEZ或是其他電腦病毒
+icon size	email	zt	圖示大小
+icon theme	email	zt	圖示佈景
+idots crystal style	email	zt	iDots風格
+if &quot; deleted messages go to trash &quot; is checked, deleted message will be sent to the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;trash&quot;. this will be your &quot;trash&quot; folder, but it does not have to actually be called &quot;trash&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	zt	如果 &quot; 刪除訊息到垃圾桶 &quot; 被勾選，刪除的訊息將會送到您指定的資料夾。如果這個資料夾不存在，系統會自動建立這個資料夾。預設的名稱是 &quot;垃圾桶&quot;，您也可以自行決定它的名稱。在存取 IMAP 伺服器時，POP伺服器無法使用資料夾。
+if &quot; sent messages folder &quot; is checked, a copy of your sent mail will be stored in the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;sent&quot;. this will be your &quot;sent&quot; folder, but it does not have to actually be called &quot;sent&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	zt	
+if &quot;deleted messages go to trash&quot; is checked, deleted message will be sent to the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;trash&quot; this will be your &quot;trash&quot; folder, but it does not have to actually be called &quot;trash&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	zt	
+if &quot;sent messages folder&quot; is checked, a copy of your sent mail will be stored in the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;sent&quot; this will be your &quot;sent&quot; folder, but it does not have to actually be called &quot;sent&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	zt	
 if applicable	email	zt	如果可行
+if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder &quot;. only works with imap servers, pop servers do not have folders.	email	zt	
+if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder&quot; only works with imap servers, pop servers do not have folders.	email	zt	
+if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder&quot;. only works with imap servers, pop servers do not have folders.	email	zt	
+if checked, deleted message will be sent to the &quot;trash&quot; folder name which you specify in the box for &quot; deleted messages (trash) folder &quot;. only works with imap servers, pop servers do not have folders.	email	zt	
+if checked, deleted message will be sent to the &quot;trash&quot; folder name which you specify in the box for &quot;deleted messages (trash) folder&quot; only works with imap servers, pop servers do not have folders.	email	zt	
+if fileto then select destination folder	email	zt	
+if messages match	email	zt	
+if there is no obvious error, check your email account name and password first.	email	zt	
+if there is no obvious error, check your username and password first.	email	zt	
+if using an imap server, what kind is it, most often this option can safely be set to &quot;cyrus or courier&quot;. technically, this means the server uses a dot between the different parts of the folder names, such as &quot;inbox.sent&quot;. the other major kind of imap server is the university of washington &quot;uwash&quot; imap server. it uses slashes instead of the dots the other servers use, and although it has a folder called &quot;inbox&quot;, it is not considered the &quot;namespace&quot; for the other folder names. the &quot;uw-maildir&quot; is a rare combination of the two above types. this is the least used kind of imap server. if you are unsure, ask your it administrator. only applies to imap servers.	email	zt	
 image	email	zt	影像
 imap mail server hostname or ip address	admin	zt	IMAP 主機名稱或網路位址
-imap server type	email	zt	IMAP 主機類型
+imap server type	common	zt	IMAP 主機類型
+imap server type - if applicable	email	zt	IMAP 主機類型 - 如果能夠使用
+important	email	zt	重要的
+in the email index page, the page which lists all the mails in a folder, mail may be sorted by date, author, size, or subject, however all of these need to be ordered from first to last, this options controlls what is first and last. for example, if sorting by date, the newest to oldest displays the most recent emails first, in decending order down to the oldest emails last.	email	zt	
+inbox	email	zt	收件匣
+input error	email	zt	輸入錯誤
+input error:	email	zt	輸入錯誤：
+is not set so your administrator should set email site configuration for mail server hostname or ip address	email	zt	
+it is not rfc standard to base64 encode a part of a message that is not an attachment. note this check is currently done after the message is already being viewed, it should probably stop the message from being automatically displayed, i.e. give a "show this" button instead.	email	zt	
+jan	email	zt	一月
+javascript	email	zt	Javascript
+jul	email	zt	七月
+jun	email	zt	六月
+keep	email	zt	保留
+keyword	email	zt	關鍵字
+keywords	email	zt	關鍵字
+layout 1	common	zt	第一種版面
+layout 2	common	zt	第二種版面
+lines	email	zt	行
+list messages	email	zt	訊息列表
+long names	email	zt	完整名稱
 mail folder(uw-maildir)	email	zt	郵件資料夾型態（uw-maildir）
 mail server	email	zt	電子郵件主機
 mail server login type	admin	zt	電子郵件主機登入類型
 mail server type	email	zt	電子郵件主機類型
 mail settings	admin	zt	信件設定
+mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	zt	
+mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	zt	
+manage accounts	email	zt	管理帳號
+manage folders	email	zt	管理資料夾
+mar	email	zt	三月
+message has an attachment that is some kind of script or exe file that windows users should be warned not to click on it. these are filenames like attachments the end with the usual "bad stuff", such as bat, inf, pif, com, exe, reg, vbs, and scr	email	zt	
+message list layout	common	zt	訊息清單版面
 messages	email	zt	信件
+messages found in folder	email	zt	在資料匣發現的訊息
+messages have been moved to	email	zt	訊息被移到
+more actions	email	zt	更多動作
+more choices	email	zt	更多選擇
+most us and european users do not need to enable this. if this option is checked then your email server can handle folder names with non us-ascii charactors in them / default is disabled, not checked. only use if you are really sure you need it. only works with imap servers, pop servers do not have folders.	email	zt	
+most us and european users do not need to enable this. if this option is checked then your email server can handle folder names with non us-ascii charactors in them/ default is disabled, not checked. only use if you are really sure you need it. only works with imap servers, pop servers do not have folders.	email	zt	
+move down	email	zt	向下移
 move selected messages into	email	zt	移動選擇的信件到
+move this message into	email	zt	將這個訊息移到
+move up	email	zt	向上移
+mozilla modern style	email	zt	Mozilla摩登樣式
+name of the mail server you want to access. should be a name like &quot;mail.example.com&quot;. if you leave this box blank then the default value will be used.	email	zt	
+new	email	zt	新增
+new account	email	zt	新帳號
+new filter	email	zt	新規則
 new message	email	zt	新信件
+new messages	email	zt	新信件
+newest	common	zt	最新
+next message	email	zt	下一封郵件
+no change	email	zt	沒有改變
+no error returned from server	email	zt	伺服器沒有錯誤訊息
+no message found in folder '%1'	email	zt	資料夾 '%1' 沒有任何訊息
+no next message	email	zt	沒有下一個
+no previous message	email	zt	沒有上一個
+noia &#64; carlitus style	email	zt	Noia &#64; Carlitus 風格
 non-standard	email	zt	非標準
+not used	email	zt	未使用
+notify on delivery	email	zt	傳送時提醒
+nov	email	zt	十一月
+number	common	zt	數字
+number of matches:	email	zt	符合的項目：
+oct	email	zt	十月
+old	email	zt	舊的
+oldest	common	zt	最舊
+on	email	zt	在
+only needed with the university of washington &quot;uwash&quot; imap server. the default value is &quot;mail&quot; which means your mail folders, other then inbox, are located in a directory called &quot;mail&quot; directly under your &quot;home&quot; directory. this box may be left empty, which means your mail folders are located in your &quot;home&quot; directory, not a subdirectory. if your mail folders are located in a subdirectory of &quot;home&quot; then put the name of that subdirectory here. generally, it is not necessary to use any special slashes or tildes, &quot;home&quot; is always considered the base directory, and the slash bewteen &quot;home&quot; and the subdirectory will be added for you automatically, do not put the slash in this box.	email	zt	
+or	common	zt	或
+or enter text	email	zt	或是輸入文字
+or you can use custom settings for this email account	email	zt	或是您可以使用這個郵件帳號的個人設定
+organization	email	zt	組織
+persistent email server session	email	zt	持續連線郵件伺服器
+phone	email	zt	電話
+please fill in everything you need	email	zt	請填入您需要的各種資訊
+please select a folder to rename	email	zt	請選擇要修改名稱的資料匣
 please select a message first	email	zt	請先選擇一封信件
+please submit a filename to attach	email	zt	請上傳要附加的檔案
+please type a folder name in the text box	email	zt	請在文字輸入方塊輸入資料匣名稱
 previous	email	zt	前一個
-reply all	email	zt	全部回覆
+previous message	email	zt	上一封郵件
+printable	email	zt	友善列印
+raw message	email	zt	未讀信件
+read mail	email	zt	閱讀
+received headers	email	zt	收到的鏢頭
+recent	email	zt	最近
+recipient	email	zt	收件者
+redirect	email	zt	轉寄
+reject	email	zt	拒絕
+rename (expert)	email	zt	改名(專業)
+rename a folder	email	zt	修改資料匣名稱
 reply	email	zt	回覆
+reply all	email	zt	全部回覆
 replyto	email	zt	回覆給
+request delivery notification	email	zt	要求傳送提示
+requested filter action:	email	zt	要求郵件規則動作：
+required	email	zt	必填
+reset	email	zt	重設
+result	email	zt	結果
+return mails during this time period	email	zt	在這個期間退回信件
+save deleted messages in folder named below	email	zt	儲存被刪除的信件到這個資料匣
+save sent messages in folder named below	email	zt	儲存已寄出的信件到這個資料匣
+search for mails in these folders	email	zt	在這些資料匣中搜尋郵件
+search this folder	email	zt	搜尋這個資料匣
 section	email	zt	段落
+seen	email	zt	已讀
+select home email address	email	zt	選擇家用信箱
+select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message	email	zt	
+select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message.	email	zt	
+select work email address	email	zt	選擇工作用信箱
 select your mail server type	admin	zt	選擇您的郵件伺服器類型
-send deleted messages to the trash	email	zt	將刪除的信件一到回收桶
+select your screensize for proper showing of the javascript addressbook	email	zt	
+select your screensize for propper showing of the javascript addressbook	email	zt	
+select your style for the addressbook. the traditional, simple style. or the new javascript enabled complex addressbook	email	zt	
 send	email	zt	送出
+send deleted messages to the trash	email	zt	將刪除的信件一到回收桶
+send forwarded mail as quoted attachment	email	zt	以縮排方式轉寄信件
+sender	email	zt	傳送者
+sent	common	zt	已送出
+sent folder	email	zt	寄件備份
+sent messages folder	common	zt	寄件備份資料匣
+sent messages folder name	email	zt	寄件備份資料匣名稱
+sent messages saved in &quot;sent&quot; folder	common	zt	已寄出信件將存到&quot;寄件備份&quot;資料匣
+sent messages saved to folder:	email	zt	已寄出信件存到資料匣：
+sep	email	zt	九月
+settings	common	zt	設定
+short names	email	zt	簡易名稱
+show help	email	zt	顯示說明
+show long names	email	zt	顯示完整名稱
+show message	email	zt	顯示訊息
+show new messages in combobox	email	zt	在提示視窗中顯示新訊息
 show new messages on main screen	email	zt	在主畫面顯示新到達的信件
 show sender's email address with name	email	zt	顯示記見者的電子郵件地址及姓名
+show short names	email	zt	顯示簡易名稱
+show total folder size by default	email	zt	預設顯示完整資料匣大小
+simple	email	zt	單一
 size	email	zt	大小
-switch current folder to	email	zt	切換目前的文件夾到
+size larger than	email	zt	大小超過
+size smaller than	email	zt	大小未達
+small	email	zt	小
+small view	email	zt	縮小
+smaller	email	zt	更小
+smallest	email	zt	最小
+somebody	email	zt	匿名
+sort by	email	zt	排序
+source accounts	email	zt	收件帳號
+spell check	email	zt	拼字檢查
+standard e-mail preferences	email	zt	標準郵件設定
+stop if matched	email	zt	符合規則就停止
+switch accounts	email	zt	切換帳號
+switch current folder to	common	zt	切換目前的文件夾到
+test all filters	email	zt	測試所有規則
+test or apply all filters	email	zt	測試或是啟用所有規則
+test run this filter	email	zt	測試這個規則
+text	email	zt	文字
+the email application offers 2 different layouts for the index page, that is the page that lists the emails in a folder. this page may be the page the user looks at the most and so different layouts, or looks, are offered.	email	zt	
+the email application offers different button displays, these buttons can be text, images, or both.	email	zt	
+the email application offers different icon image themes, groups of images of a similar style which are used in this email application. currently the available themes are images based on evolution by ximian and the netscape6 / mozilla browser buttons. additional themes are anticipated and welcome.	email	zt	
+the email application offers different icon image themes, groups of images of a similar style which are used in this email application. currently the available themes are images based on evolution by ximian and the netscape7, mozilla browser buttons. additional themes are anticipated and welcome.	email	zt	
+the email application offers different icon image themes, these icons can be big or small.	email	zt	
+the login name to use when checking mail for this email account. this may be the same as your egroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you clear this box, then it goes back to the default value. if you only need some custom settings but want this one to be the default value, then leave this box blank, the default value will be used, and you will see that default value in this box the next time you come to this preferences page.	email	zt	
+the login name to use when checking mail for this email account. this may be the same as your egroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. exra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	zt	
+the password to use when checking mail for this email account. this may be the same as your egroupware password, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. extra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	zt	
+the type of mail server you want to access. imap mail servers have folders, such as the sent and trash folders. pop servers do not have folders. pop, pop-3, and pop3 are the same thing. you can have the server connection encrypted by using imaps or pops, only if the mailserver supports it and if your egroupware installation has a &quot;ssl&quot; capabable version of php.	email	zt	
+then check the	email	zt	接著檢查
+then do this	email	zt	接著做
+then take this actions	email	zt	接著執行這個動作
+there is no text or other part of the email to display to the user, all part(s) are attachments.	email	zt	
+there was an error trying to connect to your imap server.<br>please contact your admin to check the servername, username or password.	email	zt	
 there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	zt	無法正常連線到郵件伺服器主機，<br>請檢查您的登入帳號、密碼或和網路管理者聯繫。
+there was an error trying to connect to your pop3 server.<br>please contact your admin to check the servername, username or password.	email	zt	
+this confusing and often misunderstood option is left over from this email apps origins as aeromail by mark cushman. when viewing a list of emails in a folder, the from column may show you a) the senders name only, if a name was provided, b) the senders from email address, in addition to the senders name, or c) the senders reply to address if it is different from the senders from address, in addition to the senders name if it was provided. typically users set this to none, which will show only the senders name. if no name was supplied by the sender, then the senders from email address will be shown, whether a seperate reply to address is provided has no effect on this, the from address is always used if the senders name is not provided.	email	zt	
+this confusing and often misunderstood option is left over from this email apps origins as aeromail by mark cushman. when viewing a list of emails in a folder, the from column may show you<br>a) the senders name only, if a name was provided,<br>b) the senders from email address, in addition to the senders name, or<br>c) the senders reply to address if it is different from the senders<br>from address, in addition to the senders name if it was provided. typically users set this to none, which will show only the senders name. if no name was supplied by the sender, then the senders from email address will be shown, whether a seperate reply to address is provided has no effect on this, the from address is always used if the senders name is not provided.	email	zt	
+this data not supplied.	email	zt	不支援這個資料
 this folder is empty	email	zt	空的文件夾
+this is really a visual template conflict issue. the phpgw template already has it own css, and style sheets are cascading, subsequent css can be inherited by the page and totally b0rk the look of the template theme. or maybe not, only certain css tags are really capable of this such as the css body property, or the a (href) properties.	email	zt	
+this is the name that appears in the account combobox. if for leave this blank, your accounts will be given a standard name like account[1]: jane doe, where jane doe is the name you give below as "your full name". if you want to give an account a special name you can fill this in. no matter what, this is for your use, your emails will still use "your full name" as your from name for email messages. note that "your full name" for your email account 0 is the name you gave in the egroupware setup.	email	zt	
+this is the name that appears in the account combobox. if for leave this blank, your accounts will be given a standard name like account[1]: jane doe, where jane doe is the name you give below as your full name. if you want to give an account a special name you can fill this in. no matter what, this is for your use, your emails will still use your full name as your from name for email messages. note that your full name for your email account 0 is the name you gave in the egroupware setup.	email	zt	
+this is the name that appears in the users from address. the default mail account gets this value automatically from the phpgwapi. additional accounts are created with the phpgwapi supplied fullname you can specify a different fullname for each extra email account.	email	zt	
+this pref currently does nothing users may have more than one email account. in the future it is anticipated that automatic actions may be performed on these accounts, such as automatic new mail checks,auto filtering, etc... perhaps the user may want to disable an account so that these automatic actions do not occur for that account. this is one possible use. also, an admin may want to disable accounts from time to time.	email	zt	
+this pref currently does nothing<br>users may have more than one email account. in the future it is anticipated that automatic actions may be performedon these accounts, such as automatic new mail checks, auto filtering, etc... perhaps the user may want to disable an account so that these automatic actions do not occur for that account. this is one possible use.<br>also, an admin may want to disable accounts from time to time.	email	zt	
+this specifies whether or not to show the number of new message in the folders combo box on the index screen.	email	zt	
+this specifies whether or not to show the total size of folders by default. if this is not checked, you will be presented with a button allowing you to display folder size.	email	zt	
+this specifies whether or not to show the total size of folders by default. if this is not checked, you will be presented with a button allowing you to display folder size..	email	zt	
+this text will be appended to the bottom of the users emails for this email account. currently, html tags are not supported. also, forwarded email will not get this email sig appended to it for reasons such as it clutters the email, the forwarded part probably has its own email sig from the original author, which is really the information that matters the most.	email	zt	
 to	email	zt	收件者
-undisclosed recipients	email	zt	Undisclosed Recipients
-undisclosed sender	email	zt	Undisclosed Sender
+to address	email	zt	收件者
+total messages	email	zt	所有訊息
+trash	email	zt	垃圾
+trash folder	email	zt	垃圾桶
+u-wash mail folder	email	zt	
+u-wash mail folder - if applicable	email	zt	
+unable to get source folder name	email	zt	無法取得來源資料匣名稱
+unable to get target folder name	email	zt	無法取得目標資料匣名稱
+unanswered	email	zt	未回應
+undeleted	email	zt	復原
+undisclosed recipients	email	zt	隱藏收件者
+undisclosed sender	email	zt	隱藏寄件者
+unflagged	email	zt	取消標示
+unknown action	email	zt	未知名動作
+unknown error	email	zt	未知名錯誤
+unknown translation	email	zt	未知名翻譯
+unseen	email	zt	未讀
 use custom settings	email	zt	使用自訂的設定
-%1 messages have been deleted	email	zt	已刪除 %1 封信件
+view as html	email	zt	用HTML瀏覽
+view formatted	email	zt	瀏覽格式化結果
+view headers	email	zt	瀏覽標頭
+view unformatted	email	zt	瀏覽未格式化結果
+warn_attachment_name_dangerous	email	zt	
+warn_attachment_only_mail	email	zt	
+warn_b64_encoded_displayable	email	zt	
+warn_has_iframe_maybe_klez	email	zt	
+warn_script_tags	email	zt	
+warn_style_sheet	email	zt	
+we have recently added this new addressbook so that users can choose to have a more complex addressbook that features a) easy, point and click searching, b) best suited for organizations with large central addressbooks with many categories. you can choose here which addressbook do you prefer.	email	zt	
+we have recently added this new addressbook so that users can choose to have a more complex addressbook that features<br>a) easy, point and click searching,<br>b) best suited for organizations with large central addressbooks with many categories.<br>you can choose here which addressbook do you prefer.	email	zt	
+we have three sizes that tell us how to better render the addressbook for you: 800x600 (addressbook will popout in a 700 pixel wide box), 1024x768 (it will be a 800 box), 1200x1600 (will be a 900 box). the fonts for all html stuff will be, respectively set to xx-small, x-small and normal (no font setting).	email	zt	
+wrote	email	zt	寫
+you have %1 new messages!	common	zt	您有 %1 封新信件！
 you have 1 new message!	common	zt	您有 1 封新信件！
 you have messages!	common	zt	您有信件！
 you have no new messages	common	zt	您沒有新信件！
-you have %1 new messages!	common	zt	您有 %1 封新信件！
+you must click	email	zt	您必須點選
+you must click %1 for the file to actually upload	email	zt	您必須點選 %1 來上傳這個檔案
+your full name	common	zt	您的全名
 your message has been sent	common	zt	您的信件以送出！
-
+your server administrator will set the default values for the following options. you may never need to change any of them. if you do need to use settings that are different from the defaults for the options below here, then check this box. default is disabled, not checked. if you fill in some of the options, but later decide to go back to the default values, unchecking this box will erase your custom values and put back the default values. all of the following options start out with the default value, so you may see some settings below even if you have never filled them in. this checkbox only shows up for the default email account. if you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.	email	zt	
