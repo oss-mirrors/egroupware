@@ -31,6 +31,9 @@ $EnableFreeLinks = 1;
 // (in which case you should be careful to enable free links!).
 $EnableWikiLinks = 1;
 
+// Always have the Preview under the Edit
+$EditWithPreview = 1;
+
 // $ScriptBase determines the location of your wiki script.  It should indicate
 // the full URL of the main index.php script itself.
 # simply set the relative directory here for phpgw support

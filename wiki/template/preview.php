@@ -16,11 +16,13 @@ require_once(TemplateDir . '/common.php');
 
 function template_preview($args)
 {
-  global $EditRows, $EditCols, $categories, $UserName, $comment, $PrefsScript;
+  global $EditRows, $EditCols, $categories, $UserName, $comment, $PrefsScript, $EditWithPreview;
+  
+  $title = $EditWithPreview ? 'Editing' : 'Previewing';
 
   template_common_prologue(array('norobots' => 1,
-                                 'title'    => 'Previewing ' . $args['page'],
-                                 'heading'  => 'Previewing ',
+                                 'title'    => $title . ' ' . $args['page'],
+                                 'heading'  => $title . ' ',
                                  'headlink' => $args['page'],
                                  'headsufx' => '',
                                  'toolbar'  => 1));
@@ -64,7 +66,11 @@ user name<?php
     print $categories; ?>" />
 </div>
 </form>
-<h1>Preview</h1>
+<?php global $EditWithPreview;
+  if (!$EditWithPreview) {
+    echo "<h1>Preview</h1>\n";
+  }
+?>
 <hr align=left width=99% />
 <?php print $args['html']; ?>
 </div>
