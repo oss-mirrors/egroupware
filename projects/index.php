@@ -33,15 +33,13 @@
 
     $t->set_var('lang_action',lang('Projects list'));
     $t->set_var('addurl',$phpgw->link('/projects/add.php'));
-    $t->set_var('lang_activities',lang('Activities list'));
-    $t->set_var('activitiesurl',$phpgw->link('/projects/activities.php'));
     $t->set_var('searchurl',$phpgw->link('/projects/index.php'));
     $t->set_var('hidden_vars',$hidden_vars);
 
     if (! $start) { $start = 0; }
 
-    if($phpgw_info["user"]["preferences"]["common"]["maxmatchs"] && $phpgw_info["user"]["preferences"]["common"]["maxmatchs"] > 0) {
-                $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+    if($phpgw_info['user']['preferences']['common']['maxmatchs'] && $phpgw_info['user']['preferences']['common']['maxmatchs'] > 0) {
+                $limit = $phpgw_info['user']['preferences']['common']['maxmatchs'];
     }
     else { $limit = 15; }
 

@@ -15,6 +15,7 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select project','
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Statistics','projects','de','Statistiken');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Jobs','projects','de','Jobs');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Job list','projects','de','Jobliste');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('View job','projects','de','Job anzeigen');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project access','preferences','de','Berechtigungen f&uuml;r Projektzugriff');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project categories','preferences','de','Projekt Kategorien');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project preferences','projects','de','Projekt Einstellungen');
@@ -50,6 +51,7 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Add activity','pr
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Edit activity','projects','de','Kategorie bearbeiten');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Coordinator','projects','de','Koordinator');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project name','projects','de','Projektname');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects list','projects','de','Projektliste');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project ID','projects','de','Projekt ID');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Add project','projects','de','Projekt hinzuf&uuml;gen');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Update project','projects','de','Projekt aktualisieren');

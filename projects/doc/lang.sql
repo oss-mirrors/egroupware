@@ -15,9 +15,12 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Please select you
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects','admin','en','Projects');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project administration','admin','en','Project administration');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project administration','projects','en','Project administration');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Edit project administrator list','projects','en','Edit project administrator list');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select per button !','projects','en','Select per button !');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('You have entered an invalid invoice date !','projects','en','You have entered an invalid invoice date !');  
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select project','projects','en','Select project');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select users','projects','en','Select users');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select groups','projects','en','Select groups');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects','projects','en','Projects');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Username / Group','projects','en','Username / Group');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project access','preferences','en','Project access');
@@ -33,6 +36,7 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Delivery has been
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Activities','projects','en','Activities');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Job','projects','en','Job');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Jobs','projects','en','Jobs');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('View job','projects','en','View job');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Job date','projects','en','Job date');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Job description','projects','en','Job description');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project','projects','en','Project');

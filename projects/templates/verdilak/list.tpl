@@ -50,14 +50,11 @@
 
 <!-- END projects_list -->
 
-  </table>
-  <table border="0" cellpadding="2" cellspacing="2">
+    <tr valign="bottom">
+    <td height="50">
   <form method="POST" action="{addurl}">
   {hidden_vars}
-    <tr> 
-      <td><input type="submit" name="Add" value="{lang_add}"></form></td>
-  <form method="POST" action="{activitiesurl}">
-      <td><input type="submit" name="Add" value="{lang_activities}"></form></td>
+    <input type="submit" name="Add" value="{lang_add}"></form></td>
     </tr>
   </table>
 </center>
