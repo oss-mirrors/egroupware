@@ -6,6 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* Written by Lars Kneschke [lkneschke@linux-at-work.de]             *
+	* DB-Layer reworked by RalfBecker-AT-outdoor-training.de            *
 	* -----------------------------------------------                   *
 	* Copyright 2000 - 2004 Free Software Foundation, Inc               *
 	* Copyright 2004 Lars Kneschke                                      *
@@ -31,11 +32,15 @@
 	{
 		var $db;
 		var $grants;
+		var $ttracker_table = 'phpgw_p_ttracker';
+		var $hours_table = 'phpgw_p_hours';
+		var $activities_table = 'phpgw_p_projectactivities';
+		var $projects_table = 'phpgw_p_projects';
 
 		function soprojecthours()
 		{
 			$this->db		= $GLOBALS['phpgw']->db;
-			$this->db2		= $this->db;
+			$this->db->set_app('projects');
 			$this->account	= $GLOBALS['phpgw_info']['user']['account_id'];
 			$this->column_array = array();
 		}
@@ -48,33 +53,32 @@
 				if($column)
 				{
 					$hours[$i] = array();
-					for($k=0;$k<count($this->column_array);$k++)
+					foreach($this->column_array as $col)
 					{
-						$hours[$i][$this->column_array[$k]] = $this->db->f($this->column_array[$k]);
+						$hours[$i][$col] = $this->db->f($col);
 					}
 					$i++;
 				}
 				else
 				{
-				$hours[] = array
-				(
-					'hours_id'	=> $this->db->f('id'),
-					'project_id'	=> $this->db->f('project_id'),
-					'cost_id'	=> $this->db->f('cost_id'),
-					'pro_parent'	=> $this->db->f('pro_parent'),
-					'pro_main'	=> $this->db->f('pro_main'),
-					'hours_descr'	=> $this->db->f('hours_descr'),
-					'status'	=> $this->db->f('status'),
-					'minutes'	=> $this->db->f('minutes'),
-					'sdate'		=> $this->db->f('start_date'),
-					'edate'		=> $this->db->f('end_date'),
-					'employee'	=> $this->db->f('employee'),
-					'activity_id'	=> $this->db->f('activity_id'),
-					'remark'	=> $this->db->f('remark'),
-					'billable'	=> $this->db->f('billable'),
-					'km_distance'	=> $this->db->f('km_distance'),
-					't_journey'	=> $this->db->f('t_journey')
-				);
+					$hours[] = array(
+						'hours_id'		=> $this->db->f('id'),
+						'project_id'	=> $this->db->f('project_id'),
+						'cost_id'		=> $this->db->f('cost_id'),
+						'pro_parent'	=> $this->db->f('pro_parent'),
+						'pro_main'		=> $this->db->f('pro_main'),
+						'hours_descr'	=> $this->db->f('hours_descr'),
+						'status'		=> $this->db->f('status'),
+						'minutes'		=> $this->db->f('minutes'),
+						'sdate'			=> $this->db->f('start_date'),
+						'edate'			=> $this->db->f('end_date'),
+						'employee'		=> $this->db->f('employee'),
+						'activity_id'	=> $this->db->f('activity_id'),
+						'remark'		=> $this->db->f('remark'),
+						'billable'		=> $this->db->f('billable'),
+						'km_distance'	=> $this->db->f('km_distance'),
+						't_journey'		=> $this->db->f('t_journey')
+					);
 				}
 			}
 			return $hours;
@@ -83,59 +87,74 @@
 		function read_hours($values)
 		{
 			$start			= intval($values['start']);
-			$limit			= $values['limit']?$values['limit']:True;
-			$filter			= $values['filter']?$values['filter']:'none';
-			$sort			= $values['sort']?$values['sort']:'ASC';
-			$order			= $values['order']?$values['order']:'start_date';
-			$status			= $values['status']?$values['status']:'all';
+			$limit			= $values['limit'] ? $values['limit'] : True;
+			$filter			= $values['filter']?$values['filter'] : 'none';
+			$sort			= preg_match('/^(ASC|DESC){1}$/i',$values['sort']) ? $values['sort'] : 'ASC';
+			$order			= preg_match('/^[a-zA-Z0-9_]*$/',$values['order']) ? $values['order'] : 'start_date';
+			$status			= $values['status'] ? $values['status'] : 'all';
 			$project_id		= intval($values['project_id']);
-			$query			= $this->db->db_addslashes($values['query']);
-			$column			= (isset($values['column'])?$values['column']:False);
-			$parent_select	= isset($values['parent_select'])?True:False;
+			$query			= $values['query'];
+			$column			= isset($values['column']) ? $values['column'] : False;
+			$parent_select	= isset($values['parent_select']);
 
 			//_debug_array($values);
 
-			$ordermethod = " order by $order $sort";
+			$ordermethod = "ORDER BY $order $sort";
 
-			$filtermethod = ($parent_select?' pro_parent=' . $project_id:' project_id=' . $project_id);
+			if ($parent_select)
+			{
+				$where = array('pro_parent'=>$project_id);
+			}
+			else
+			{
+				$where = array('project_id'=>$project_id);
+			}
 
 			if ($status != 'all')
 			{
-				$filtermethod .= " AND status='$status'";
+				$where['status'] = $status;
 			}
 
 			if ($filter == 'yours')
 			{
-				$filtermethod .= ' AND employee=' . $this->account;
+				$where['employee'] = $this->account;
 			}
 
 			if ($query)
 			{
-				$querymethod = " AND (remark like '%$query%' OR minutes like '%$query%' OR hours_descr like '%$query%')";
+				$query = $this->db->quote("%$query%");
+				$columns_to_search = array('remark','minutes','hour_descr');
+
+				switch($this->db->Type)
+				{
+					case 'sapdb':
+					case 'maxdb':
+						$columns_to_search = array('minutes','hour_descr');	// no remark as it's text/LONG and cant be searched
+						break;
+				}
+				$where[] = '('.implode(" LIKE $query OR ",$columns_to_search)." LIKE $query)";
 			}
 
-			$column_select = ((is_string($column) && $column != '')?$column:'*');
+			$column_select = is_string($column) && $column != '' ? $column : '*';
 			$this->column_array = explode(',',$column);
-
-			$sql = "SELECT $column_select FROM phpgw_p_hours WHERE $filtermethod $querymethod";
 
 			if($limit)
 			{
-				$this->db2->query($sql,__LINE__,__FILE__);
-				$this->total_records = $this->db2->num_rows();
-				$this->db->limit_query($sql . $ordermethod,$start,__LINE__,__FILE__);
+				$this->db->select($this->hours_table,'count(*)',$where,__LINE__,__FILE__);
+				$this->db->next_record();
+				$this->total_records = $this->db->f(0);
+				$this->db->select($this->hours_table,$column_select,$where,__LINE__,__FILE__,$start,$ordermethod);
 			}
 			else
 			{
-				$this->db->query($sql . $ordermethod,__LINE__,__FILE__);
+				$this->db->select($this->hours_table,$column_select,$where,__LINE__,__FILE__,false,$ordermethod);
 			}
-			//echo $sql;
 			return $this->db2hours();
 		}
 
 		function read_single_hours($hours_id)
 		{
-			$this->db->query('SELECT * from phpgw_p_hours WHERE id=' . intval($hours_id),__LINE__,__FILE__);
+			$this->db->select($this->hours_table,'*',array('id'=>$hours_id),__LINE__,__FILE__);
 			list($hours) = $this->db2hours();
 
 			return $hours;
@@ -143,64 +162,70 @@
 
 		function add_hours($values)
 		{
-			$values['hours_descr']	= $this->db->db_addslashes($values['hours_descr']);
-			$values['remark']	= $this->db->db_addslashes($values['remark']);
-			$values['km_distance']	= $values['km_distance'] + 0.0;
-			$values['t_journey']	= $values['t_journey'] + 0.0;
-
-			$this->db->query('INSERT into phpgw_p_hours (project_id,activity_id,cost_id,entry_date,start_date,end_date,hours_descr,remark,billable,minutes,'
-							. 'status,employee,pro_parent,pro_main,km_distance,t_journey) VALUES (' . intval($values['project_id']) . ',' 
-							. intval($values['activity_id']) . ',' . (int)$values['cost_id'] . ','
-							. time() . ',' . intval($values['sdate']) . ',' . intval($values['edate']) . ",'" . $values['hours_descr'] . "','"
-							. $values['remark'] . "','" . (isset($values['billable'])?'N':'Y') . "'," . intval($values['w_minutes']) . ",'"
-							. $values['status'] . "'," . intval($values['employee']) . ',' . intval($values['pro_parent']) . ','
-							. intval($values['pro_main']) . ',' . $values['km_distance'] . ',' . $values['t_journey'] . ')',__LINE__,__FILE__); 
+			$this->db->insert($this->hours_table,array(
+					'project_id'	=> $values['project_id'],
+					'activity_id'	=> $values['activity_id'],
+					'cost_id'		=> $values['cost_id'],
+					'entry_date'	=> time(),
+					'start_date'	=> $values['sdate'],
+					'end_date'		=> $values['edate'],
+					'hours_descr'	=> $values['hours_descr'],
+					'remark'		=> $values['remark'],
+					'billable'		=> isset($values['billable']) ? 'N' : 'Y',
+					'minutes'		=> $values['w_minutes'],
+					'status'		=> $values['status'],
+					'employee'		=> $values['employee'],
+					'pro_parent'	=> $values['pro_parent'],
+					'pro_main'		=> $values['pro_main'],
+					'km_distance'	=> 0.0 + $values['km_distance'],
+					't_journey'		=> 0.0 + $values['t_journey'],
+				),false,__LINE__,__FILE__);
+				
+			return $this->db->get_last_insert_id($this->hours_table,'id');
 		}
 
 		function edit_hours($values)
 		{
-			$values['hours_descr']	= $this->db->db_addslashes($values['hours_descr']);
-			$values['remark']	= $this->db->db_addslashes($values['remark']);
-			$values['km_distance']	= $values['km_distance'] + 0.0;
-			$values['t_journey']	= $values['t_journey'] + 0.0;
-
-			$this->db->query('UPDATE phpgw_p_hours SET activity_id=' . intval($values['activity_id']) . ',cost_id=' .(int)$values['cost_id'] . ',entry_date=' . time() . ',start_date='
-							. intval($values['sdate']) . ',end_date=' . intval($values['edate']) . ",hours_descr='" . $values['hours_descr'] . "',remark='"
-							. $values['remark'] . "', billable='" . (isset($values['billable'])?'N':'Y') . "', minutes=" . intval($values['w_minutes'])
-							. ",status='" . $values['status'] . "',employee=" . intval($values['employee']) . ', km_distance=' . $values['km_distance']
-							. ', t_journey=' . $values['t_journey'] . ' where id=' . intval($values['hours_id']),__LINE__,__FILE__);
+			$this->db->update($this->hours_table,array(
+					'activity_id'	=> $values['activity_id'],
+					'cost_id'		=> $values['cost_id'],
+					'entry_date'	=> time(),
+					'start_date'	=> $values['sdate'],
+					'end_date'		=> $values['edate'],
+					'hours_descr'	=> $values['hours_descr'],
+					'remark'		=> $values['remark'],
+					'billable'		=> isset($values['billable']) ? 'N' : 'Y',
+					'minutes'		=> $values['w_minutes'],
+					'status'		=> $values['status'],
+					'employee'		=> $values['employee'],
+					'pro_parent'	=> $values['pro_parent'],
+					'pro_main'		=> $values['pro_main'],
+					'km_distance'	=> 0.0 + $values['km_distance'],
+					't_journey'		=> 0.0 + $values['t_journey'],
+				),array(
+					'id'			=> $values['hours_id'],
+				),__LINE__,__FILE__); 
 		}
 
 		function delete_hours($values)
 		{
 			switch($values['action'])
 			{
-				case 'track':	$h_table = 'phpgw_p_ttracker'; $column = 'track_id'; break;
-				default:		$h_table = 'phpgw_p_hours'; $column = 'id'; break;
+				case 'track':	$h_table = $this->ttracker_table; $column = 'track_id'; break;
+				default:		$h_table = $this->hours_table; $column = 'id'; break;
 			}
 
-			$this->db->query("Delete from $h_table where $column=" . intval($values['id']),__LINE__,__FILE__);
+			$this->db->delete($h_table,array($column=>$values['id']),__LINE__,__FILE__);
 		}
 
 		/*function update_hours_act($activity_id, $minperae)
 		{
-			$this->db->query('SELECT id,minperae from phpgw_p_hours where activity_id=' . intval($activity_id),__LINE__,__FILE__); 
-
-			while ($this->db->next_record())
-			{
-				if ($this->db->f('minperae') == 0)
-				{
-					$hours[] = $this->db->f('id');
-				}
-			}
-
-			if (is_array($hours))
-			{
-				for ($i=0;$i<=count($hours);$i++)
-				{
-					$this->db->query('UPDATE phpgw_p_hours set minperae=' . intval($minperae) . ' WHERE id=' . intval($hours[$i]),__LINE__,__FILE__);
-				}
-			}
+			$this->db->update($this->hours_table,array(
+					'minperae'		=> $minperae
+				),array(
+					'activity_id'	=> $activity_id,
+					'minperae'		=> 0,				
+				),__LINE__,__FILE__); 
 		}*/
 
 		function format_wh($minutes = 0)
@@ -232,23 +257,14 @@
 
 		function calculate_activity_budget($params = 0)
 		{
-			$project_id		= intval($params['project_id']);
-			$project_array	= $params['project_array'];
+			$where = array('project_id' => is_array($params['project_array']) ? $params['project_array'] : $params['project_id']);
+			
+			$this->db->select($this->activities_table,'id,activity_id,billable',$where,__LINE__,__FILE__);
 
-			if(is_array($project_array))
-			{
-				$select = ' project_id in(' . implode(',',$project_array) . ')';
-			}
-			else
-			{
-				$select = ' project_id=' . $project_id;
-			}
-
-			$this->db->query('SELECT id,activity_id,billable from phpgw_p_projectactivities where ' . $select,__LINE__,__FILE__);
-
+			$activities = array();
 			while($this->db->next_record())
 			{
-				$act[] = array
+				$activities[] = array
 				(
 					'activity_id'	=> $this->db->f('activity_id'),
 					'id'			=> $this->db->f('id'),
@@ -256,83 +272,56 @@
 				);
 			}
 
-			if(is_array($act))
+			$bbudget = $budget = 0;
+			foreach($activities as $activity)
 			{
-				$i = 0;
-				foreach($act as $a)
-				{
-					$this->db->query('SELECT minperae, billperae from phpgw_p_activities where id=' . $a['activity_id'],__LINE__,__FILE__);
-					$this->db->next_record();
-					$activity[$i] = array
-					(
-						'minperae'		=> $this->db->f('minperae'),
-						'billperae'		=> $this->db->f('billperae'),
-						'activity_id'	=> $a['activity_id'],
-						'id'			=> $a['id'],
-						'billable'		=> $a['billable']
-					);
+				$this->db->select($this->activities_table,'minperae,billperae',array(
+						'id' => $activity['activity_id']
+					),__LINE__,__FILE__);
+				$this->db->next_record();
+				$activity['minperae'] = $this->db->f('minperae');
+				$activity['billperae'] = $this->db->f('billperae');
+				
+				$where['activity_id'] = $activity['id'];
+				$this->db->select($this->hours_table,'SUM(minutes)',$where,__LINE__,__FILE__);
+				$this->db->next_record();
+				$activity['utime'] = $this->db->f(0);
 
-					$this->db->query('SELECT SUM(minutes) as utime from phpgw_p_hours where' . $select . ' AND activity_id=' . $a['id'],__LINE__,__FILE__);
-					$this->db->next_record();
-					$activity[$i]['utime'] = $this->db->f('utime');
-					$i++;
-				}
-
-				if(is_array($activity))
+				$factor_per_minute = $activity['billperae']/60;
+				if($activity['billable'] == 'Y')
 				{
-					$bbudget = $budget = 0;
-					foreach($activity as $activ)
-					{
-						$factor_per_minute = $activ['billperae']/60;
-						if($activ['billable'] == 'Y')
-						{
-							$bbudget += round($factor_per_minute*$activ['utime'],2);
-						}
-						$budget += round($factor_per_minute*$activ['utime'],2);
-					}
-					return array('bbuget' => $bbudget,'budget' => $budget);
+					$bbudget += round($factor_per_minute * $activity['utime'],2);
 				}
+				$budget += round($factor_per_minute * $activity['utime'],2);
 			}
+			return count($activities) ? array('bbuget' => $bbudget,'budget' => $budget) : false;
 		}
 
 		function get_activity_time_used($params = 0)
 		{
-			$project_id		= intval($params['project_id']);
-			$project_array	= $params['project_array'];
-			$no_billable	= isset($params['no_billable'])?$params['no_billable']:False;
-			$is_billable	= isset($params['is_billable'])?$params['is_billable']:False;
+			$where = array('project_id' => is_array($params['project_array']) ? $params['project_array'] : $params['project_id']);
 
-			$sql = 'SELECT SUM(minutes) as utime from phpgw_p_hours where';
+			if($params['no_billable'] || $params['is_billable'])
+			{
+				$this->db->select($this->activities_table,'activity_id',array_merge($where,array(
+						'billable' => $params['no_billable'] ? 'N' : 'Y'
+					)),__LINE__,__FILE__);
 
-			if(is_array($project_array))
-			{
-				$select = ' project_id in(' . implode(',',$project_array) . ')';
-			}
-			else
-			{
-				$select = ' project_id=' . $project_id;
-			}
-
-			if($no_billable || $is_billable)
-			{
-				$this->db->query('SELECT activity_id from phpgw_p_projectactivities where ' . $select . " AND billable='" . ($no_billable?'N':'Y') . "'",__LINE__,__FILE__);
-				$i = 0;
 				while($this->db->next_record())
 				{
-				 	$act[$i] = $this->db->f('activity_id');
-					$i++;
+				 	$act[] = $this->db->f('activity_id');
 				}
 
 				if(is_array($act))
 				{
-					$select .= ' AND activity_id in(' . implode(',',$act) . ')';
+					$where['activity_id'] = $act;
 				}
 			}
-			$this->db->query($sql . $select,__LINE__,__FILE__);
+			$this->db->select($this->hours_table,'SUM(minutes)',__LINE__,__FILE__);
 
 			if($this->db->next_record())
 			{
-				return $this->db->f('utime');
+				return $this->db->f(0);
 				//return $this->format_wh($hours);
 			}
 			return False;
@@ -340,46 +329,29 @@
 
 		function get_time_used($params = 0)
 		{
-			$project_id		= intval($params['project_id']);
-			$project_array	= $params['project_array'];
-			$hours			= isset($params['hours'])?$params['hours']:True;
-			$action			= $params['action']?$params['action']:'subs';
-			$no_billable	= isset($params['no_billable'])?$params['no_billable']:False;
-			$is_billable	= isset($params['is_billable'])?$params['is_billable']:False;
-
-			$sql = 'SELECT SUM(minutes) as utime from phpgw_p_hours where';
-
-			switch($action)
+			switch($params['action'])
 			{
 				case 'mains':
-					$select = ' pro_main=' . $project_id;
+					$where = array('pro_main' => $params['project_id']);
 					break;
 				default:
-					if(is_array($project_array))
-					{
-						$select = ' project_id in(' . implode(',',$project_array) . ')';
-					}
-					else
-					{
-						$select = ' project_id=' . $project_id;
-					}
+					$where = array('project_id' => is_array($params['project_array']) ? $params['project_array'] : $params['project_id']);
 					break;
 			}
 
-			if($no_billable)
+			if($params['no_billable'])
 			{
-				$select .= " AND billable='N'";
+				$where['billable'] = 'N';
 			}
-			else if($is_billable)
+			else if($params['is_billable'])
 			{
-				$select .= " AND billable='Y'";
+				$where['billable'] = 'Y';
 			}
-
-			$this->db->query($sql . $select,__LINE__,__FILE__);
+			$this->db->select($this->hours_table,'SUM(minutes)',$where,__LINE__,__FILE__);
 
 			if($this->db->next_record())
 			{
-				return $this->db->f('utime');
+				return $this->db->f(0);
 				//return $this->format_wh($hours);
 			}
 			return False;
@@ -387,82 +359,48 @@
 
 		function get_project_employees($params = 0)
 		{
-			$project_id		= intval($params['project_id']);
-			$project_array	= $params['project_array'];
-			$action			= $params['action']?$params['action']:'subs';
-
-			switch($action)
+			switch($params['action'])
 			{
 				case 'mains':
-					$select = ' pro_main=' . $project_id;
+					$where = array('pro_main' => $params['project_id']);
 					break;
 				default:
-			if(is_array($project_array))
-			{
-				$select = ' project_id in(' . implode(',',$project_array) . ')';
-			}
-			else
-			{
-				$select = ' project_id=' . $project_id;
-			}
+					$where = array('project_id' => is_array($params['project_array']) ? $params['project_array'] : $params['project_id']);
 					break;
 			}
 
-			$sql = 'SELECT employee from phpgw_p_hours where ' . $select;
-
-			$this->db->query($sql,__LINE__,__FILE__);
+			$this->db->select($this->hours_table,'DISTINCT employee',$where,__LINE__,__FILE__);
 
 			$emps = array();
-			$i = 0;
 			while($this->db->next_record())
 			{
-				if(!in_array($this->db->f('employee'),$emps))
-				{
-					$emps[$i] = $this->db->f('employee');
-					$i++;
-				}
+				$emps[] = $this->db->f('employee');
 			}
 			return $emps;
 		}
 
 		function get_employee_time_used($params = 0)
 		{
-			$project_id		= intval($params['project_id']);
-			$project_array	= $params['project_array'];
-			$no_billable	= isset($params['no_billable'])?$params['no_billable']:False;
-			$is_billable	= isset($params['is_billable'])?$params['is_billable']:False;
+			$where = array('project_id' => is_array($params['project_array']) ? $params['project_array'] : $params['project_id']);
 
-			$emps = $this->get_project_employees($params);
-
-			if(is_array($project_array))
+			if($params['no_billable'])
 			{
-				$select = ' and project_id in(' . implode(',',$project_array) . ')';
+				$where['billable'] = 'N';
 			}
-			else
+			else if($params['is_billable'])
 			{
-				$select = ' and project_id=' . $project_id;
+				$where['billable'] = 'Y';
 			}
-
-			if($no_billable)
+			foreach($this->get_project_employees($params) as $emp)
 			{
-				$select .= " AND billable='N'";
-			}
-			else if($is_billable)
-			{
-				$select .= " AND billable='Y'";
-			}
-
-			for($i=0;$i<count($emps);$i++)
-			{
-				$sql = 'SELECT SUM(minutes) as utime from phpgw_p_hours where employee=' . $emps[$i] . $select;
-				$this->db->query($sql,__LINE__,__FILE__);
+				$where['employee'] = $emp;
+				$this->db->select($this->hours_table,'SUM(minutes)',$where,__LINE__,__FILE__);
 				if($this->db->next_record())
 				{
-					//$minutes = $this->db->f('utime');
-					$bemp[] = array
-					(
-						'employee'	=> $emps[$i],
-						'utime'		=> $this->db->f('utime')
+					//$minutes = $this->db->f(0);
+					$bemp[] = array(
+						'employee'	=> $emp,
+						'utime'		=> $this->db->f(0)
 					);
 				}
 			}
@@ -471,23 +409,23 @@
 
 		function db2track()
 		{
+			$track = array();
 			while ($this->db->next_record())
 			{
-				$track[] = array
-				(
-					'track_id'	=> $this->db->f('track_id'),
+				$track[] = array(
+					'track_id'		=> $this->db->f('track_id'),
 					'project_id'	=> $this->db->f('project_id'),
-					'cost_id'	=> $this->db->f('cost_id'),
+					'cost_id'		=> $this->db->f('cost_id'),
 					'hours_descr'	=> $this->db->f('hours_descr'),
-					'status'	=> $this->db->f('status'),
-					'minutes'	=> $this->db->f('minutes'),
-					'sdate'		=> $this->db->f('start_date'),
-					'edate'		=> $this->db->f('end_date'),
-					'employee'	=> $this->db->f('employee'),
+					'status'		=> $this->db->f('status'),
+					'minutes'		=> $this->db->f('minutes'),
+					'sdate'			=> $this->db->f('start_date'),
+					'edate'			=> $this->db->f('end_date'),
+					'employee'		=> $this->db->f('employee'),
 					'activity_id'	=> $this->db->f('activity_id'),
-					'remark'	=> $this->db->f('remark'),
+					'remark'		=> $this->db->f('remark'),
 					'km_distance'	=> $this->db->f('km_distance'),
-					't_journey'	=> $this->db->f('t_journey') 
+					't_journey'		=> $this->db->f('t_journey') 
 				);
 			}
 			return $track;
@@ -496,17 +434,17 @@
 
 		function list_ttracker()
 		{
-			$ordermethod = ' order by project_id,start_date ASC';
-			$sql = 'SELECT * from phpgw_p_ttracker where employee=' . $this->account;
-
-			$this->db->query($sql . $ordermethod,__LINE__,__FILE__);
+			$this->db->select($this->ttracker_table,'*',array('employee'=>$this->account),__LINE__,__FILE__,false,'ORDER BY project_id,start_date ASC');
+			
 			return $this->db2track();
 		}
 
 		function read_single_track($track_id)
 		{
-			$this->db->query('SELECT * from phpgw_p_ttracker WHERE track_id=' . intval($track_id),__LINE__,__FILE__);
+			$this->db->select($this->ttracker_table,'*',array('track_id'=>$track_id),__LINE__,__FILE__);
+			
 			list($hours) = $this->db2track();
+			
 			return $hours;
 		}
 
@@ -525,42 +463,44 @@
 
 		function get_max_track($project_id = '',$status = False)
 		{
+			$where = array(
+				'project_id'	=> $project_id,
+				'employee'		=> $this->account,
+			);
 			if($status)
 			{
-				$status_select = " and status != 'apply'";
+				$where[] = "status != 'apply'";
 			}
 
-			$this->db->query('SELECT max(track_id) as max from phpgw_p_ttracker where project_id=' . intval($project_id) . ' and employee='
-							. $this->account . $status_select,__LINE__,__FILE__);
+			$this->db->select($this->ttracker_table,'max(track_id)',$where,__LINE__,__FILE__);
 			$this->db->next_record();
-			return $this->db->f('max');
+			return $this->db->f(0);
 		}
 
 		function check_ttracker($project_id = '',$status='active')
 		{
-			$track_id = $this->get_max_track($project_id);
+			$where = array('track_id' => $this->get_max_track($project_id));
 			//echo 'MAX: ' . $track_id;
 
 			switch($status)
 			{
-				case 'active':		$status_select = " and (status='start' or status='continue') and end_date = 0"; break;
-				case 'inactive':	$status_select = " and status='stop'"; break;
+				case 'active':		
+					$where[] = "(status='start' OR status='continue') AND end_date=0"; 
+					break;
+				case 'inactive':	
+					$where[] = "status='stop'"; 
+					break;
 			}
-			$this->db->query('SELECT minutes from phpgw_p_ttracker where track_id=' . intval($track_id) . $status_select,__LINE__,__FILE__);
-			if($this->db->next_record())
-			{
-				return True;
-			}
-			return False;
+			$this->db->select($this->ttracker_table,'minutes',$where,__LINE__,__FILE__);
+			
+			return $this->db->next_record();
 		}
 
 		function ttracker($values)
 		{
-			$values['hours_descr']	= $this->db->db_addslashes($values['hours_descr']);
-			$values['remark']	= $this->db->db_addslashes($values['remark']);
 			$values['km_distance']	= $values['km_distance'] + 0.0;
 			$values['t_journey']	= $values['t_journey'] + 0.0;
-			$project_id				= intval($values['project_id']);
+			$project_id				= (int) $values['project_id'];
 
 			#_debug_array($values);
 
@@ -568,67 +508,103 @@
 			{
 				case 'start':
 				case 'continue':
-					$this->db2->query('SELECT track_id,start_date,project_id from phpgw_p_ttracker where employee=' . $this->account . ' and project_id !=' . $project_id
-									. " and (status='start' or status='continue') and minutes=0",__LINE__,__FILE__);
-					while($this->db2->next_record())
+					$db2 = $this->db;
+					$this->db->select($this->ttracker_table,'track_id,start_date,project_id',array(
+							'employee'	=> $this->account,
+							'project_id != ' . $project_id,
+							"(status='start' OR status='continue') AND minutes=0"
+						),__LINE__,__FILE__);
+
+					while($this->db->next_record())
 					{
-						$wtime = $this->format_ttime(time() - $this->db2->f('start_date'));
-						$work_time = ($wtime['hrs']*60)+$wtime['mins'];
-						$this->db->query('UPDATE phpgw_p_ttracker set end_date=' . time() . ',minutes=' . $work_time . ' where track_id='
-										. $this->db2->f('track_id'),__LINE__,__FILE__);
+						$wtime = $this->format_ttime(time() - $this->db->f('start_date'));
+						$work_time = 60 * $wtime['hrs'] + $wtime['mins'];
+						$db2->update($this->ttracker_table,array(
+								'end_date'	=> time(),
+								'minutes'	=> $work_time,
+							),array(
+								'track_id'	=> $this->db->f('track_id')
+							),__LINE__,__FILE__);
 
-
-						$this->db->query('INSERT into phpgw_p_ttracker (project_id,activity_id,start_date,end_date,employee,status,hours_descr,remark) '
-										.' values(' . $this->db2->f('project_id') . ',0,' . time() . ',0,' . $this->account
-										. ",'pause','pause','')",__LINE__,__FILE__);
+						$db2->insert($this->ttracker_table,array(
+								'project_id'	=> $this->db2->f('project_id'),
+								'activity_id'	=> 0,
+								'start_date'	=> time(),
+								'end_date'		=> 0,
+								'employee'		=> $this->account,
+								'status'		=> 'pause',
+								'hours_descr'	=> 'pause',
+								'remark'		=> '',
+							),false,__LINE__,__FILE__);
 					};
-					break;
-			}
-
-			switch($values['action'])
-			{
-				case 'start':
+					// fall-through
 				case 'pause':
 				case 'stop':
-				case 'continue':
-					$max = intval($this->get_max_track($project_id));
-					$this->db->query('UPDATE phpgw_p_ttracker set end_date=' . time() . ' where track_id=' . $max,__LINE__,__FILE__);
-
-					$this->db->query('SELECT start_date,end_date from phpgw_p_ttracker where track_id=' . $max,__LINE__,__FILE__);
+					$max = (int) $this->get_max_track($project_id);
+					$this->db->select($this->ttracker_table,'start_date',array('track_id'=>$max),__LINE__,__FILE__);
 					$this->db->next_record();
-					$sdate = $this->db->f('start_date');
-					$edate = $this->db->f('end_date');
+					$sdate = $this->db->f(0);
+					$edate = time();
 					$wtime = $this->format_ttime($edate - $sdate);
-					$work_time = ($wtime['hrs']*60)+$wtime['mins'];
+					$work_time = 60 * $wtime['hrs'] + $wtime['mins'];
 
-					$this->db->query('UPDATE phpgw_p_ttracker set minutes=' . $work_time . ' where track_id=' . $max,__LINE__,__FILE__);
+					$this->db->update($this->ttracker_table,array(
+							'minutes'	=> $work_time,
+							'end_date'	=> $edate,
+						),array(
+							'track_id'	=> $max
+						),__LINE__,__FILE__);
 
-					$this->db->query('INSERT into phpgw_p_ttracker (project_id,activity_id,cost_id,start_date,end_date,employee,status,hours_descr,remark) '
-										.' values(' . $project_id . ',' . intval($values['activity_id']) . ',' . (int)$values['cost_id'] . ',' . time() . ',0,' . $this->account . ",'" . $values['action']
-										. "','" . ($values['hours_descr']?$values['hours_descr']:$values['action']) . "','" . $values['remark'] . "')",__LINE__,__FILE__);
+					$this->db->insert($this->ttracker_table,array(
+							'project_id'	=> $project_id,
+							'activity_id'	=> $values['activity_id'],
+							'cost_id'		=> $values['cost_id'],
+							'start_date'	=> time(),
+							'end_date'		=> 0,
+							'employee'		=> $this->account,
+							'status'		=> $values['action'],
+							'hours_descr'	=> $values['hours_descr'] ? $values['hours_descr'] : $values['action'],
+							'remark'		=> $values['remark'],
+						),false,__LINE__,__FILE__);
 
 					if($values['action'] == 'stop')
 					{
-						$this->db->query("UPDATE phpgw_p_ttracker set stopped='Y' where employee=" . $this->account . ' and project_id=' . $project_id,__LINE__,__FILE__);
+						$this->db->update($this->ttracker_table,array('stopped'=>'Y'),array(
+								'employee'	=> $this->account,
+								'project_id'=> $project_id
+							),__LINE__,__FILE__);
 					}
 					break;
-				case 'edit':
-					$this->db->query('UPDATE phpgw_p_ttracker set activity_id=' . intval($values['activity_id']) . ',start_date=' . intval($values['sdate']) . ',end_date='
-									. intval($values['edate']) . ',minutes=' . intval($values['w_minutes']) . ", hours_descr='" . $values['hours_descr'] . "',remark='"
-									. $values['remark'] . "' where track_id=" . intval($values['track_id']),__LINE__,__FILE__);
-					break;
-			}
 
-			switch($values['action'])
-			{
-				//case 'start':
+				case 'edit':
+					$this->db->update($this->ttracker_table,array(
+							'activity_id'	=> $values['activity_id'],
+							'start_date'	=> $values['sdate'],
+							'end_date'		=> $values['edate'],
+							'minutes'		=> $values['w_minutes'],
+							'hours_descr'	=> $values['hours_descr'],
+							'remark'		=> $values['remark'],
+						),array(
+							'track_id'		=> $values['track_id']
+						),__LINE__,__FILE__);
+					break;
+
 				case 'apply':
-					$this->db->query('INSERT into phpgw_p_ttracker (project_id,activity_id,cost_id,employee,start_date,end_date,minutes,hours_descr,status,'
-									. 'remark,t_journey,km_distance,stopped) values(' . $project_id . ',' . intval($values['activity_id'])
-									. ',' . (int)$values['cost_id']
-									. ',' . $this->account . ',' . intval($values['sdate']) . ',' . intval($values['sdate']) . ','
-									. intval($values['w_minutes']) . ",'" . $values['hours_descr'] . "','" . $values['action'] . "','" . $values['remark']
-									. "'," . $values['t_journey'] . ',' . $values['km_distance'] . ",'Y')",__LINE__,__FILE__);
+					$this->db->insert($this->ttracker_table,array(
+							'project_id'	=> $project_id,
+							'activity_id'	=> $values['activity_id'],
+							'cost_id'		=> $values['cost_id'],
+							'employee'		=> $this->account,
+							'start_date'	=> $values['sdate'],
+							'end_date'		=> $values['sdate'],	// RalfBecker: is that correct not $values['edate'] ?
+							'minutes'		=> $values['w_minutes'],
+							'hours_descr'	=> $values['hours_descr'],
+							'status'		=> $values['action'],
+							'remark'		=> $values['remark'],
+							't_journey'		=> 0.0 + $values['t_journey'],
+							'km_distance'	=> 0.0 + $values['km_distance'],
+							'stopped'		=> 'Y',
+						),false,__LINE__,__FILE__);
 
 					//return $this->db->get_last_insert_id('phpgw_p_ttracker','track_id');
 					break;
@@ -637,30 +613,43 @@
 
 		function save_ttracker()
 		{
-			$query = "SELECT * from phpgw_p_ttracker where status !='pause' and status != 'stop' and end_date > 0 and minutes > 0 and stopped='Y' and employee="
-							. $this->account;
-			$this->db->query($query,__LINE__,__FILE__);
+			$this->db->select($this->ttracker_table,'*',array(
+					"status !='pause' and status != 'stop' and end_date > 0 and minutes > 0 and stopped='Y'",
+					'employee'	=> $this->account,
+				),__LINE__,__FILE__);
+
 			$hours = $this->db2track();
 
-			while(is_array($hours) && list(,$hour) = each($hours))
+			foreach($hours as $hour)
 			{
-				$hour['hours_descr']	= $this->db->db_addslashes($hour['hours_descr']);
-				$hour['remark']		= $this->db->db_addslashes($hour['remark']);
 				$hour['pro_parent']	= $this->return_value('pro_parent',$hour['project_id']);
 				$hour['pro_main']	= $this->return_value('pro_main',$hour['project_id']);
-				$hour['km_distance']	= $hour['km_distance'] + 0.0;
-				$hour['t_journey']	= $hour['t_journey'] + 0.0;
 
-				$this->db->query('INSERT into phpgw_p_hours (project_id,activity_id,cost_id,entry_date,start_date,end_date,hours_descr,remark,minutes,'
-							. 'status,employee,pro_parent,pro_main,billable,t_journey,km_distance) VALUES (' . intval($hour['project_id']) . ','
-							. intval($hour['activity_id']) . ',' .(int)$hour['cost_id']. ','. time() . ',' . intval($hour['sdate']) . ',' . intval($hour['edate']) . ",'"
-							. $hour['hours_descr'] . "','" . $hour['remark'] . "'," . intval($hour['minutes']) . ",'done'," . intval($hour['employee'])
-							. ',' . intval($hour['pro_parent']) . ',' . intval($hour['pro_main']) . ",'Y'," . $hour['t_journey'] . ','
-							. $hour['km_distance'] . ')',__LINE__,__FILE__);
+				$this->db->insert($this->hours_table,array(
+						'project_id'	=> $hour['project_id'],
+						'activity_id'	=> $hour['activity_id'],
+						'cost_id'		=> $hour['cost_id'],
+						'entry_date'	=> time(),
+						'start_date'	=> $hour['sdate'],
+						'end_date'		=> $hour['edate'],
+						'hours_descr'	=> $hour['hours_descr'],
+						'remark'		=> $hour['remark'],
+						'minutes'		=> $hour['minutes'],
+						'status'		=> 'done',
+						'employee'		=> $hour['employee'],
+						'pro_parent'	=> $hour['pro_parent'],
+						'pro_main'		=> $hour['pro_main'],
+						'billable'		=> 'Y',
+						't_journey'		=> 0.0 + $hour['t_journey'],
+						'km_distance'	=> 0.0 + $hour['km_distance'],
+					),false,__LINE__,__FILE__);
 
-				$this->db->query('DELETE from phpgw_p_ttracker where track_id=' . intval($hour['track_id']),__LINE__,__FILE__);
+				$this->db->delete($this->ttracker_table,array('track_id'=>$hour['track_id']),__LINE__,__FILE__);
 			}
-			$this->db->query('DELETE from phpgw_p_ttracker where employee=' . $this->account . " and (status='pause' or status='stop') and stopped='Y'",__LINE__,__FILE__);
+			$this->db->delete($this->ttracker_table,array(
+					'employee'	=> $this->account,
+					"(status='pause' OR status='stop') AND stopped='Y'"
+				),__LINE__,__FILE__);
 		}
 
 		function return_value($action,$pro_id)
@@ -671,11 +660,9 @@
 				case 'pro_parent':	$column = 'parent'; break;
 			}
 
-			$this->db->query("SELECT $column from phpgw_p_projects where project_id=$pro_id",__LINE__,__FILE__);
-			if ($this->db->next_record())
-			{
-				return $GLOBALS['phpgw']->strip_html($this->db->f($column));
-			}
+			$this->db->select($this->projects_table,$column,array('project_id'=>$pro_id),__LINE__,__FILE__);
+
+			return $this->db->next_record() ? $this->db->f(0) : false;
 		}
 	}
 ?>
