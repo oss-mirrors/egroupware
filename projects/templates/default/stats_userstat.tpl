@@ -8,16 +8,8 @@
 <form method="POST" action="{actionurl}">
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
-		<td>{lang_lid}:</td>
-		<td>{lid}</td>
-	</tr>
-	<tr>
-		<td>{lang_firstname}:</td>
-		<td>{firstname}</td>
-	</tr>
-	<tr>
-		<td>{lang_lastname}:</td>
-		<td>{lastname}</td>
+		<td>{lang_employee}:</td>
+		<td>{employee}</td>
 	</tr>
 	<tr>
 		<td>{lang_start_date}</td>

@@ -50,6 +50,7 @@
 				$pro[] = array
 				(
 					'project_id'	=> $this->db->f('id'),
+					'num'			=> $this->db->f('num'),
 					'title'			=> $this->db->f('title')
 				);
 			}
@@ -58,16 +59,17 @@
 			return $pro;
 		}
 
-		function user_stat_hours($account_id, $project_id = '', $filter)
+		function stat_hours($type = 'account', $account_id = '', $project_id = '', $filter)
 		{
-			if ($project_id)
+			switch($type)
 			{
-				$project_filter = " AND project_id='" . $project_id . "'";
+				case 'account': $idfilter = "WHERE employee='" . $account_id . "'"; break;
+				case 'project': $idfilter = "WHERE project_id='" . $project_id . "'"; break;
+				case 'both':	$idfilter = "WHERE employee='" . $account_id . "' AND  project_id='" . $project_id . "'"; break;
 			}
 
-			$this->db->query("SELECT SUM(minutes) as min,descr FROM phpgw_p_hours,phpgw_p_activities WHERE employee='"
-							. $account_id .  "'" . $project_filter . " AND phpgw_p_hours.activity_id="
-							. "phpgw_p_activities.id " . $filter . " GROUP BY phpgw_p_activities.descr",__LINE__,__FILE__);
+			$this->db->query('SELECT SUM(minutes) as min,descr FROM phpgw_p_hours,phpgw_p_activities ' . $idfilter . ' AND phpgw_p_hours.activity_id='
+							. 'phpgw_p_activities.id ' . $filter . ' GROUP BY phpgw_p_activities.descr',__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{
@@ -80,11 +82,18 @@
 			return $hours;
 		}
 
-	/*	function user_stat_all($account_id, $filter)
+		function pro_stat_employees($project_id, $filter)
 		{
-			$this->db->query("SELECT SUM(minutes) as min,descr FROM phpgw_p_hours,phpgw_p_activities WHERE employee='"
-							. $account_id . "' AND phpgw_p_hours.activity_id=phpgw_p_activities.id " . $filter
-							. " GROUP BY phpgw_p_activities.descr",__LINE__,__FILE__);
-		} */
+			$this->db->query("SELECT employee from phpgw_p_hours WHERE project_id='$project_id' $filter",__LINE__,__FILE__);
+
+			while ($this->db->next_record())
+			{
+				$employees[] = array
+				(
+					'employee'	=> $this->db->f('employee')
+				);
+			}
+			return $employees;
+		}
 	}
 ?>

@@ -38,7 +38,8 @@
 		(
 			'list_projects'	=> True,
 			'list_users'	=> True,
-			'user_stat'		=> True
+			'user_stat'		=> True,
+			'project_stat'	=> True
 		);
 
 		function uistatistics()
@@ -103,7 +104,7 @@
 			$this->t->set_var('lang_done',lang('Done'));
 			$this->t->set_var('lang_firstname',lang('Firstname'));
 			$this->t->set_var('lang_lastname',lang('Lastname'));
-			$this->t->set_var('lang_lid',lang('Username'));
+			$this->t->set_var('lang_employee',lang('Employee'));
 			$this->t->set_var('lang_billedonly',lang('Billed only'));
 			$this->t->set_var('lang_hours',lang('Work hours'));
 			$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
@@ -308,8 +309,8 @@
 				));
 
 				$link_data['project_id'] = $pro[$i]['project_id'];
-
-				$this->t->set_var('stat',$GLOBALS['phpgw']->link('/projects/stats_projectstat.php','id=' . $pro[$i]['project_id']));
+				$link_data['menuaction'] = 'projects.uistatistics.project_stat';
+				$this->t->set_var('stat',$GLOBALS['phpgw']->link('/index.php',$link_data));
 				$this->t->set_var('lang_stat_entry',lang('Statistic'));
 
 				if ($action == 'mains')
@@ -372,6 +373,8 @@
 
 		function list_users()
 		{
+			global $action;
+
 			$this->display_app_header();
 
 			$this->t->set_file(array('user_list_t' => 'stats_userlist.tpl'));
@@ -468,10 +471,11 @@
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
 			$cached_data = $this->boprojects->cached_accounts($account_id);
+			$employee = $GLOBALS['phpgw']->strip_html($cached_data[$account_id]['account_firstname']
+                                        . ' ' . $cached_data[$account_id]['account_lastname'] . ' ['
+                                        . $cached_data[$account_id]['account_lid'] . ' ]');
 
-			$this->t->set_var('lid',$GLOBALS['phpgw']->strip_html($cached_data[$account_id]['account_lid']));
-			$this->t->set_var('firstname',$GLOBALS['phpgw']->strip_html($cached_data[$account_id]['account_firstname']));
-			$this->t->set_var('lastname',$GLOBALS['phpgw']->strip_html($cached_data[$account_id]['account_lastname']));
+			$this->t->set_var('employee',$employee);
 
 			$this->nextmatchs->alternate_row_color(&$this->t);
 
@@ -538,35 +542,39 @@
 
 			$pro = $this->bostatistics->get_userstat_pro($account_id, $filter);
 
-			while (list($null,$userpro) = each($pro))
+			if (is_array($pro))
 			{
-				$summin = 0;
-				$this->nextmatchs->template_alternate_row_color(&$this->t);
-				$this->t->set_var('e_project',$GLOBALS['phpgw']->strip_html($userpro['title']));
-				$this->t->set_var('e_activity','');
-				$this->t->set_var('e_hours','');
-				$this->t->fp('stat','user_stat',True);
-
-				$hours = $this->bostatistics->get_userstat_hours($account_id, $userpro['project_id'], $filter); 
-				for ($i=0;$i<=count($hours);$i++)
+				while (list($null,$userpro) = each($pro))
 				{
-//					$this->nextmatchs->template_alternate_row_color(&$this->t);
+					$summin = 0;
+					$this->nextmatchs->template_alternate_row_color(&$this->t);
+					$this->t->set_var('e_project',$GLOBALS['phpgw']->strip_html($userpro['title']) . ' ['
+											. $GLOBALS['phpgw']->strip_html($userpro['num']) . ']');
+					$this->t->set_var('e_activity','');
+					$this->t->set_var('e_hours','');
+					$this->t->fp('stat','user_stat',True);
+
+					$hours = $this->bostatistics->get_stat_hours('both', $account_id, $userpro['project_id'], $filter); 
+					for ($i=0;$i<=count($hours);$i++)
+					{
+//						$this->nextmatchs->template_alternate_row_color(&$this->t);
+						$this->t->set_var('e_project','');
+						$this->t->set_var('e_activity',$GLOBALS['phpgw']->strip_html($hours[$i]['descr']));
+						$summin += $hours[$i]['min'];
+						$hrs = floor($hours[$i]['min']/60) . ':' . sprintf ("%02d",(int)($hours[$i]['min']-floor($hours[$i]['min']/60)*60));
+						$this->t->set_var('e_hours',$hrs);
+						$this->t->fp('stat','user_stat',True);
+					}
+
 					$this->t->set_var('e_project','');
-					$this->t->set_var('e_activity',$GLOBALS['phpgw']->strip_html($hours[$i]['descr']));
-					$summin += $hours[$i]['min'];
-					$hrs = floor($hours[$i]['min']/60) . ':' . sprintf ("%02d",(int)($hours[$i]['min']-floor($hours[$i]['min']/60)*60));
+					$this->t->set_var('e_activity','');
+					$hrs = floor($summin/60) . ':' . sprintf ("%02d",(int)($summin-floor($summin/60)*60)); 
 					$this->t->set_var('e_hours',$hrs);
 					$this->t->fp('stat','user_stat',True);
 				}
-
-				$this->t->set_var('e_project','');
-				$this->t->set_var('e_activity','');
-				$hrs = floor($summin/60) . ':' . sprintf ("%02d",(int)($summin-floor($summin/60)*60)); 
-				$this->t->set_var('e_hours',$hrs);
-				$this->t->fp('stat','user_stat',True);
 			}
 
-			$allhours = $this->bostatistics->get_userstat_hours($account_id, $project_id ='', $filter);
+			$allhours = $this->bostatistics->get_stat_hours('account', $account_id, $project_id ='', $filter);
 
 			$summin=0;
 			$this->nextmatchs->template_alternate_row_color(&$this->t);
@@ -575,16 +583,19 @@
 			$this->t->set_var('e_hours','');
 			$this->t->fp('stat','user_stat',True);
 
-			while (list($null,$userall) = each($allhours))
+			if (is_array($allhours))
 			{
-				$this->t->set_var('e_project','');
-				$this->t->set_var('e_activity',$GLOBALS['phpgw']->strip_html($userall['descr']));
-				$summin += $userall['min'];
-				$hrs = floor($userall['min']/60) . ':' . sprintf ("%02d",(int)($userall['min']-floor($userall['min']/60)*60));
-				$this->t->set_var('e_hours',$hrs);
-				$this->t->fp('stat','user_stat',True);
+				while (list($null,$userall) = each($allhours))
+				{
+					$this->t->set_var('e_project','');
+					$this->t->set_var('e_activity',$GLOBALS['phpgw']->strip_html($userall['descr']));
+					$summin += $userall['min'];
+					$hrs = floor($userall['min']/60) . ':' . sprintf ("%02d",(int)($userall['min']-floor($userall['min']/60)*60));
+					$this->t->set_var('e_hours',$hrs);
+					$this->t->fp('stat','user_stat',True);
+				}
 			}
-
+			
 			$this->nextmatchs->template_alternate_row_color(&$this->t);
 			$this->t->set_var('e_project',lang('Sum'));
 			$this->t->set_var('e_activity','');
@@ -593,6 +604,206 @@
 			$this->t->fp('stat','user_stat',True);
 
 			$this->t->pfp('out','user_stat_t',True);
+		}
+
+		function project_stat()
+		{
+			global $submit, $billed, $project_id, $action;
+
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uistatistics.project_stat',
+				'action'		=> $action,
+				'project_id'	=> $project_id,
+				'billed'		=> $billed
+			);
+
+			if (! $project_id)
+			{
+				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains'));
+			}
+
+			$this->display_app_header();
+
+			$this->t->set_file(array('project_stat' => 'stats_projectstat.tpl'));
+			$this->t->set_block('project_stat','stat_list','list');
+
+			$pro = $this->boprojects->read_single_project($project_id);
+
+			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->t->set_var('lang_action',lang('Project statistic'));
+
+			$title = $GLOBALS['phpgw']->strip_html($pro['title']);
+			if (! $title) $title = '&nbsp;';
+			$this->t->set_var('project',$title . ' [' . $GLOBALS['phpgw']->strip_html($pro['number']) . ']');
+			$this->t->set_var('status',lang($pro['status']));
+			$this->t->set_var('budget',$pro['budget']);
+
+			$this->t->set_var('lang_account',lang('Account'));
+			$this->t->set_var('lang_activity',lang('Activity'));
+			$this->t->set_var('lang_hours',lang('Hours'));
+
+			if (!$submit)
+			{
+				$sdate = $pro['sdate'];
+				$edate = $pro['edate'];
+			}
+
+			if (!$sdate)
+			{
+				$smonth = 0;
+				$sday = 0; 
+				$syear = 0;
+			}
+			else
+			{
+				$smonth = date('m',$sdate);
+				$sday = date('d',$sdate);
+				$syear = date('Y',$sdate);
+			}
+
+			if (!$edate)
+			{
+				$emonth = 0;
+				$eday = 0;
+				$eyear = 0;
+			}
+			else
+			{
+				$emonth = date('m',$edate);
+				$eday = date('d',$edate);
+				$eyear = date('Y',$edate);
+			}
+
+			$this->t->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('syear',$syear),
+																							$this->sbox->getMonthText('smonth',$smonth),
+																							$this->sbox->getDays('sday',$sday)));
+			$this->t->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('eyear',$eyear),
+																							$this->sbox->getMonthText('emonth',$emonth),
+																							$this->sbox->getDays('eday',$eday)));
+
+			$cached_data = $this->boprojects->cached_accounts($pro['coordinator']);
+			$coordinatorout = $GLOBALS['phpgw']->strip_html($cached_data[$pro['coordinator']]['account_lid']
+                                        . ' [' . $cached_data[$pro['coordinator']]['firstname'] . ' '
+                                        . $cached_data[$pro['coordinator']]['lastname'] . ' ]');
+			$this->t->set_var('coordinator',$coordinatorout);
+
+			if ($pro['customer'] != 0) 
+			{
+				$customer = $this->boprojects->read_customer_data($pro[$i]['customer']);
+            	if ($customer[0]['org_name'] == '')
+				{
+					$this->t->set_var('customer',$customer[0]['n_given'] . ' ' . $customer[0]['n_family']);
+				}
+            	else
+				{
+					$this->t->set_var('customer',$customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]');
+				}
+			}
+			else
+			{
+				$this->t->set_var('customer','&nbsp;');
+			}
+
+			if($billed)
+			{
+				$t->set_var('billed','checked');
+			}
+
+// -------------------------------- calculate statistics -------------------------------------------                                                                                                                                         
+
+//    $filter= '';
+
+			if($billed)
+			{
+				$filter .= " AND phpgw_p_hours.status='billed' ";
+			}
+
+			if (checkdate($smonth,$sday,$syear))
+			{
+				$sdate = mktime(2,0,0,$smonth,$sday,$syear);
+				$filter .= " AND start_date >= '$sdate' ";
+			}
+
+			if (checkdate($emonth,$eday,$eyear))
+			{
+				$edate = mktime(2,0,0,$emonth,$eday,$eyear);
+				$filter .= " AND end_date <= '$edate' ";
+			}
+
+			$employees = $this->bostatistics->get_employees($project_id, $filter);
+
+			if (is_array($employees))
+			{
+				while (list($null,$employee) = each($employees))
+				{
+					$account_data = $this->boprojects->cached_accounts($employee['employee']);
+					$this->nextmatchs->template_alternate_row_color(&$this->t);
+
+					$account_id = $account_data[$employee['employee']]['account_id']; 
+
+					$summin = 0;
+					$this->t->set_var('e_account',$GLOBALS['phpgw']->strip_html($account_data[$employee['employee']]['firstname']) . ' '
+											. $GLOBALS['phpgw']->strip_html($account_data[$employee['employee']]['lastname']) . ' ['
+											. $GLOBALS['phpgw']->strip_html($account_data[$employee['employee']]['account_lid']) . ']');
+
+					$this->t->set_var('e_activity','');
+					$this->t->set_var('e_hours','');
+					$this->t->fp('list','stat_list',True);
+
+					$hours = $this->bostatistics->get_stat_hours('both', $account_id, $project_id, $filter);
+
+					for ($i=0;$i<=count($hours);$i++)
+					{
+//						$this->nextmatchs->template_alternate_row_color(&$this->t);
+						$this->t->set_var('e_account','');
+						$this->t->set_var('e_activity',$GLOBALS['phpgw']->strip_html($hours[$i]['descr']));
+						$summin += $hours[$i]['min'];
+						$hrs = floor($hours[$i]['min']/60). ':' . sprintf ("%02d",(int)($hours[$i]['min']-floor($hours[$i]['min']/60)*60));
+						$this->t->set_var('e_hours',$hrs);
+
+						$this->t->fp('list','stat_list',True);
+					}
+				}
+				$this->t->set_var('e_account','');
+				$this->t->set_var('e_activity','');
+				$hrs = floor($summin/60). ':' . sprintf ("%02d",(int)($summin-floor($summin/60)*60));
+				$this->t->set_var('e_hours',$hrs);
+
+				$this->t->fp('list','stat_list',True);
+			}
+
+			$prohours = $this->bostatistics->get_stat_hours('project', $account_id = '', $project_id, $filter); 
+
+			$summin=0;
+			$this->nextmatchs->template_alternate_row_color(&$this->t);
+			$this->t->set_var('e_account','<b>' . lang('Overall') . '</b>');
+			$this->t->set_var('e_activity','');
+			$this->t->set_var('e_hours','');
+
+			$this->t->fp('list','stat_list',True);
+
+			if (is_array($prohours))
+			{
+				while (list($null,$proall) = each($prohours))
+				{
+					$this->t->set_var('e_account','');
+					$this->t->set_var('e_activity',$GLOBALS['phpgw']->strip_html($proall['descr']));
+					$summin += $proall['min'];
+					$hrs = floor($proall['min']/60). ':' . sprintf ("%02d",(int)($proall['min']-floor($proall['min']/60)*60));
+					$this->t->set_var('e_hours',$hrs);
+
+					$this->t->fp('list','stat_list',True);
+				}
+			}
+			$this->nextmatchs->template_alternate_row_color(&$this->t);
+			$this->t->set_var('e_account',lang('sum'));
+			$this->t->set_var('e_activity','');
+			$hrs = floor($summin/60). ':' . sprintf ("%02d",(int)($summin-floor($summin/60)*60));
+			$this->t->set_var('e_hours',$hrs);
+
+			$this->t->fp('list','stat_list',True);
+			$this->t->pfp('out','project_stat');
 		}
 	}
 ?>

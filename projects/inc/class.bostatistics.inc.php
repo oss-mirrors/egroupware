@@ -34,10 +34,11 @@
 
 		var $public_functions = array
 		(
-			'get_userstat_pro'		=> True,
-			'get_userstat_hours'	=> True,
-			'get_userstat_all'		=> True,
-			'get_users'				=> True
+			'get_userstat_pro'	=> True,
+			'get_stat_hours'	=> True,
+			'get_userstat_all'	=> True,
+			'get_users'			=> True,
+			'get_employees'		=> True
 		);
 
 		function bostatistics()
@@ -58,10 +59,16 @@
 			return $pro;
 		}
 
-		function get_userstat_hours($account_id, $project_id, $filter)
+		function get_stat_hours($type, $account_id, $project_id, $filter)
 		{
-			$hours = $this->sostatistics->user_stat_hours($account_id, $project_id, $filter);
+			$hours = $this->sostatistics->stat_hours($type, $account_id, $project_id, $filter);
 			return $hours;
+		}
+
+		function get_employees($project_id, $filter)
+		{
+			$employees = $this->sostatistics->pro_stat_employees($project_id, $filter);
+			return $employees;
 		}
 	}
 ?>

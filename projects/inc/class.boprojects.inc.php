@@ -134,9 +134,10 @@
 
 			$this->accounts->read_repository();
 
-			$cached_data[$this->accounts->data['account_id']]['account_lid'] = $this->accounts->data['account_lid'];
-			$cached_data[$this->accounts->data['account_id']]['firstname']   = $this->accounts->data['firstname'];
-			$cached_data[$this->accounts->data['account_id']]['lastname']    = $this->accounts->data['lastname'];
+			$cached_data[$this->accounts->data['account_id']]['account_id']		= $this->accounts->data['account_id'];
+			$cached_data[$this->accounts->data['account_id']]['account_lid']	= $this->accounts->data['account_lid'];
+			$cached_data[$this->accounts->data['account_id']]['firstname']   	= $this->accounts->data['firstname'];
+			$cached_data[$this->accounts->data['account_id']]['lastname']    	= $this->accounts->data['lastname'];
 
 			return $cached_data;
 		}
