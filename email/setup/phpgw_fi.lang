@@ -16,7 +16,7 @@ compose new	common	fi	Uusi viesti
 contains	email	fi	Sis‰lt‰‰
 could not open this mailbox	email	fi	En voinut avata postilaatikkoa
 create (expert)	email	fi	uusi (expert)
-create a folder email	fi	uusi kansio
+create a folder	email	fi	uusi kansio
 custom email settings	email	fi	omat email asetukset
 default sorting order	email	fi	Esitysj‰rjestys
 default:	common	fi	oletus:
