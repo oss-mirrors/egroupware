@@ -14,20 +14,20 @@
 	$phpgw_baseline = array(
 		'phpgw_felamimail_cache' => array(
 			'fd' => array(
-				'accountid' 	=> array('type' => 'int', 'precision' => 4, 'nullable' => false),
-				'hostname' 	=> array('type' => 'varchar', 'precision' => 60, 'nullable' => false),
-				'accountname' 	=> array('type' => 'varchar', 'precision' => 200, 'nullable' => false),
-				'foldername' 	=> array('type' => 'varchar', 'precision' => 200, 'nullable' => false),
-				'uid' 		=> array('type' => 'int', 'precision' => 4, 'nullable' => false),
-				'subject'	=> array('type' => 'text'),
-				'striped_subject'=> array('type' => 'text'),
-				'sender_name'	=> array('type' => 'varchar', 'precision' => 120),
-				'sender_address'=> array('type' => 'varchar', 'precision' => 120),
-				'to_name'	=> array('type' => 'varchar', 'precision' => 120),
-				'to_address'	=> array('type' => 'varchar', 'precision' => 120),
-				'date'		=> array('type' => 'varchar', 'precision' => 120),
-				'size'		=> array('type' => 'int', 'precision' => 4),
-				'attachments'	=> array('type' => 'varchar', 'precision' =>120)
+				'accountid' => array('type' => 'int','precision' => '4','nullable' => False),
+				'hostname' => array('type' => 'varchar','precision' => '60','nullable' => False),
+				'accountname' => array('type' => 'varchar','precision' => '25','nullable' => False),
+				'foldername' => array('type' => 'varchar','precision' => '200','nullable' => False),
+				'uid' => array('type' => 'int','precision' => '4','nullable' => False),
+				'subject' => array('type' => 'text'),
+				'striped_subject' => array('type' => 'text'),
+				'sender_name' => array('type' => 'varchar','precision' => '120'),
+				'sender_address' => array('type' => 'varchar','precision' => '120'),
+				'to_name' => array('type' => 'varchar','precision' => '120'),
+				'to_address' => array('type' => 'varchar','precision' => '120'),
+				'date' => array('type' => 'int','precision' => '8'),
+				'size' => array('type' => 'int','precision' => '4'),
+				'attachments' => array('type' => 'varchar','precision' => '120')
 			),
 			'pk' => array('accountid','hostname','accountname','foldername','uid'),
 			'fk' => array(),
@@ -36,15 +36,15 @@
 		),
 		'phpgw_felamimail_folderstatus' => array(
 			'fd' => array(
-				'accountid' 	=> array('type' => 'int', 'precision' => 4, 'nullable' => false),
-				'hostname' 	=> array('type' => 'varchar', 'precision' => 60, 'nullable' => false),
-				'accountname' 	=> array('type' => 'varchar', 'precision' => 200, 'nullable' => false),
-				'foldername' 	=> array('type' => 'varchar', 'precision' => 200, 'nullable' => false),
-				'messages' 	=> array('type' => 'int', 'precision' => 4),
-				'recent'	=> array('type' => 'int', 'precision' => 4),
-				'unseen'	=> array('type' => 'int', 'precision' => 4),
-				'uidnext'	=> array('type' => 'int', 'precision' => 4),
-				'uidvalidity'	=> array('type' => 'int', 'precision' => 4)
+				'accountid' => array('type' => 'int','precision' => '4','nullable' => False),
+				'hostname' => array('type' => 'varchar','precision' => '60','nullable' => False),
+				'accountname' => array('type' => 'varchar','precision' => '200','nullable' => False),
+				'foldername' => array('type' => 'varchar','precision' => '200','nullable' => False),
+				'messages' => array('type' => 'int','precision' => '4'),
+				'recent' => array('type' => 'int','precision' => '4'),
+				'unseen' => array('type' => 'int','precision' => '4'),
+				'uidnext' => array('type' => 'int','precision' => '4'),
+				'uidvalidity' => array('type' => 'int','precision' => '4')
 			),
 			'pk' => array('accountid','hostname','accountname','foldername'),
 			'fk' => array(),
@@ -53,8 +53,8 @@
 		),
 		'phpgw_felamimail_displayfilter' => array(
 			'fd' => array(
-				'accountid' 	=> array('type' => 'int', 'precision' => 4, 'nullable' => false),
-				'filter' 	=> array('type' => 'text')
+				'accountid' => array('type' => 'int','precision' => '4','nullable' => False),
+				'filter' => array('type' => 'text')
 			),
 			'pk' => array('accountid'),
 			'fk' => array(),
