@@ -32,6 +32,7 @@
 		$struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
 		if ($action == 'reply')
 		{
+			// if "Reply-To" is specified, use it, or else use the "from" address as the address to reply to
 			if ($msg->reply_to[0])
 			{
 				$reply = $msg->reply_to[0];
@@ -47,34 +48,59 @@
 		{
 			if ($msg->to)
 			{
+				$from = $msg->from[0];
+				$from_plain = $from->mailbox.'@'.$from->host;
+				// if from and reply-to are the same plain email address, use from instead, it usually has "personal" info
+				if ($msg->reply_to[0])
+				{
+					$reply_to = $msg->reply_to[0];
+					$reply_to_plain = $reply_to->mailbox.'@'.$reply_to->host;
+					if ($reply_to_plain != $from_plain)
+					{
+						$my_reply = $reply_to;
+					}
+					else
+					{
+						// we don't need reply-to then
+						$my_reply = $from;
+					}
+				}
+				else
+				{
+					$my_reply = $from;
+				}
 				for ($i = 0; $i < count($msg->to); $i++)
 				{
 					$topeople = $msg->to[$i];
 					$tolist[$i] = $phpgw->msg->make_rfc2822_address($topeople);
 				}
-				if ($msg->reply_to[0])
-				{
-					$from = $msg->reply_to[0];
-				}
-				else
-				{
-					$from = $msg->from[0];
-				}
-				$from_or_reply_to = $phpgw->msg->make_rfc2822_address($from);
 				// these spaces after the comma will be taken out in send_message, they are only for user readability here
 				$to = implode(", ", $tolist);
-				// sometimes, the "To:" and the "Reply-To:" are the same, such as with mailing lists
-				//if (!stristr($from_or_reply_to, $to))
-				//if ((!stristr($from->mailbox.'@'.$from->host, $to))
-				//&& (!stristr('&lt;'.$from->mailbox.'@'.$from->host.'&gt;', $to)))
-				$no_dupes = $from->mailbox.'@'.$from->host;
-				if (!ereg(".*$no_dupes.*", $to))
+				// add $from_or_reply_to to the $to string
+				$my_reply_plain = $my_reply->mailbox.'@'.$my_reply->host;
+				
+				// sometimes, the "To:" and the "Reply-To: / From" are the same, such as with mailing lists
+				if (!ereg(".*$my_reply_plain.*", $to))
 				{
-					// it's ok to add from_or_reply_to, it is not a duplicate
-					$to = $from_or_reply_to.', '.$to;
+					// it's ok to add $from_or_reply_to, it is not a duplicate
+					$my_reply_addr_spec = $phpgw->msg->make_rfc2822_address($my_reply);
+					$to = $my_reply_addr_spec.', '.$to;
 				}
+				/*// RFC2822 leaves the following as an option:
+				// use the "from" addy in replyall even if "reply-to" was specified
+				if (($reply_to != '') && ($reply_to_plain != ''))
+				{
+					// this means reply-to is not the same as From
+					// sometimes, the "Reply-To:" may be duplicated in the To headers
+					if (!ereg(".*$reply_to_plain.*", $to))
+					{
+						// it's ok to add $reply_to, it is not a duplicate
+						$reply_to_addr_spec = $phpgw->msg->make_rfc2822_address($reply_to);
+						$to = $reply_to_addr_spec.', '.$to;
+					}
+				}
+				*/
 			}
-
 			if ($msg->cc)
 			{
 				for ($i = 0; $i < count($msg->cc); $i++)
