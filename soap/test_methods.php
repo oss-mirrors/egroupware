@@ -13,10 +13,10 @@
 /* $Id$ */
 
 	$phpgw_info['flags'] = array(
-		'disable_Template_class' => True,
 		'currentapp' => 'soap',
 		'noheader' => True,
-		'noappheader' => True
+		'noappheader' => True,
+		'nonavbar'  => True
 	);
 
 	include('../header.inc.php');
@@ -150,7 +150,7 @@ $servers["SOAPx4 - interop test suite"] = array(
 
 ?>
 
-<form action="<?php $phpgw->link('/soap/test_methods.php'); ?>" method='post'>
+<form action="<?php echo $phpgw->link('/soap/test_methods.php'); ?>" method='post'>
 <select name='nserver'>
 <option>Choose Server...
 	<?php
