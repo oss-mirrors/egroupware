@@ -1037,6 +1037,7 @@
 					}
 					$values['budget'] = $formatedBudget;
 				}
+				$values['parent'] = $pro_parent;
 
 				$error = $this->boprojects->check_values($action, $values);
 				if (is_array($error))
