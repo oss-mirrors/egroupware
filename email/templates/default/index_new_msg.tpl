@@ -1,1 +1,0 @@
-<font color="{mlist_newmsg_color}">{mlist_newmsg_char}</font>

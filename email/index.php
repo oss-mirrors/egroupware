@@ -24,32 +24,26 @@
 
 	include("../header.inc.php");
 
+	// time limit should be controlled elsewhere
 	@set_time_limit(0);
 
+// ----  Prepare Browser and Layout for Template File Name  -----
+	// Layout Template from Preferences (used below)
+	$my_layout = $phpgw_info['user']['preferences']['email']['layout'];
+	// Browser the client is using (used below)
+	$my_browser = $phpgw->msg->browser;
+	// example: if browser=0 (no CSS) and layout pref = 1 (default) then template used is:
+	// "index_main_b0_l1.tpl"
+
+// ----  Load Template Files And Specify Template Blocks  -----
 	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 	$t->set_file(array(		
-		'T_any_deleted' => 'index_any_deleted.tpl',
 		'T_form_delmov_init' => 'index_form_delmov_init.tpl',
-		'T_no_messages' => 'index_no_messages.tpl',
-		'T_attach_clip' => 'index_attach_clip.tpl',
-		'T_new_msg' => 'index_new_msg.tpl',
-		'T_msg_list' => 'index_msg_list.tpl',
-		'T_index_out' => 'index.tpl'
+		'T_index_main' => 'index_main_b'.$my_browser.'_l'.$my_layout. '.tpl'
 	));
-
-// ----  Fill Some Important Variables  -----
-	$svr_image_dir = PHPGW_IMAGES_DIR;
-	$image_dir = PHPGW_IMAGES;
-
-	// Abreviated Folder Name, NO namespace, NO delimiter
-	$folder_short = $phpgw->msg->get_folder_short($phpgw->msg->folder);
-
-// ---- Messages Sort Order  (AND ensure $phpgw->msg->sort and $phpgw->msg->order and $start have usable values) -----
-	//$phpgw->msg->fill_sort_order_start();
-	// MOVED to "begin_request" in msg class base
-
-// ---- lang var for checkbox javascript  -----
-	$t->set_var('select_msg',lang('Please select a message first'));
+	$t->set_block('T_index_main','B_action_report','V_action_report');
+	$t->set_block('T_index_main','B_no_messages','V_no_messages');
+	$t->set_block('T_index_main','B_msg_list','V_msg_list');
 
 // ---- report on number of messages Deleted or Moved (if any)  -----
 	if ($phpgw->msg->args['td'])
@@ -64,8 +58,8 @@
 			$num_deleted = lang("x messages have been deleted",$phpgw->msg->args['td']);
 		}
 		// template only outputs if msgs were deleted, otherwise skipped
-		$t->set_var('num_deleted',$num_deleted);
-		$t->parse('V_any_deleted','T_any_deleted',True);
+		$t->set_var('report_this',$num_deleted);
+		$t->parse('V_action_report','B_action_report');
 	}
 	elseif ($phpgw->msg->args['tm'])
 	{
@@ -91,14 +85,24 @@
 			$num_moved = $phpgw->msg->args['tm'].' '.lang("messages have been moved to").' '.$_tf;
 		}
 		// template only outputs if msgs were moved, otherwise skipped
-		$t->set_var('num_deleted',$num_moved);
-		$t->parse('V_any_deleted','T_any_deleted',True);
+		$t->set_var('report_this',$num_moved);
+		$t->parse('V_action_report','B_action_report');
 	}
 	else
 	{
 		// nothing deleted or moved, so template gets blank string
-		$t->set_var('V_any_deleted','');
+		$t->set_var('V_action_report','');
 	}
+
+// ----  Fill Some Important Variables  -----
+	$svr_image_dir = PHPGW_IMAGES_DIR;
+	$image_dir = PHPGW_IMAGES;
+
+	// Abreviated Folder Name, NO namespace, NO delimiter
+	$folder_short = $phpgw->msg->get_folder_short($phpgw->msg->folder);
+
+	// lang var for checkbox javascript  -----
+	$t->set_var('select_msg',lang('Please select a message first'));
 
 // ---- SwitchTo Folder Listbox   -----
 	if ($phpgw->msg->get_mailsvr_supports_folders())
@@ -296,24 +300,43 @@
 	$t->parse('V_form_delmov_init','T_form_delmov_init');
 	$mlist_delmov_init = $t->get_var('V_form_delmov_init');	
 
-// ----  New Message Indicator   -----
+// ----  Init Some Basic Vars Used In Messages List  -----
+	$t->set_var('mlist_font',$phpgw_info['theme']['font']);
+	$t->set_var('images_dir',$svr_image_dir);
+	
+// ----  New Message Indicator  -----
+	/*
 	$t->set_var('mlist_newmsg_char','*');
 	$t->set_var('mlist_newmsg_color','#ff0000');
 	$t->set_var('mlist_newmsg_txt',lang("New message"));
-
-// ----  Init Vars Used In Messages List  -----
-	$t->set_var('mlist_font',$phpgw_info['theme']['font']);
-	//$t->set_var('images_dir',$phpgw_info['server']['images_dir']);
-	$t->set_var('images_dir',$svr_image_dir);
-	
-	// prepare attachment paperclip image
-	$t->parse('V_attach_clip','T_attach_clip');
-	$mlist_attach = $t->get_var('V_attach_clip');
 	// prepare new message character
 	$t->parse('V_new_msg','T_new_msg');
 	$mlist_new_msg = $t->get_var('V_new_msg');
-	// initialize
-	$t->set_var('V_msg_list',' ');
+	*/
+	// to make things simpler, I made this a regular variable rather than a template file var
+	$mlist_newmsg_char = '<strong>*</strong>';
+	$mlist_newmsg_color = '#ff0000';
+	$mlist_newmsg_txt = lang("New message");
+	$mlist_new_msg = '<font color="'.$mlist_newmsg_color.'">'.$mlist_newmsg_char.'</font>';
+	// this is for the bottom of the page where we explain that the red astrisk means a new message
+	$t->set_var('mlist_newmsg_char',$mlist_newmsg_char);
+	$t->set_var('mlist_newmsg_color',$mlist_newmsg_color);
+	$t->set_var('mlist_newmsg_txt',$mlist_newmsg_txt);
+
+// ----  Attachment Indicator  -----
+	/*
+	// prepare attachment paperclip image
+	$t->parse('V_attach_clip','T_attach_clip');
+	$mlist_attach = $t->get_var('V_attach_clip');
+	*/
+	// to make things simpler, I made this a regular variable rather than a template file var
+	$mlist_attach_txt = lang("file");
+	$mlist_attach = '<div align="right">'
+				.'<img src="'.$svr_image_dir.'/attach.gif" alt="'.$mlist_attach_txt.'">'
+			.'</div>';
+
+// initialize (is this necessary?)
+	$t->set_var('V_msg_list','');
 
 // ----  Zero Messages To List  -----
 	if ($mailbox_status->messages == 0)
@@ -335,11 +358,17 @@
 		$t->set_var('mlist_delmov_init',$mlist_delmov_init);
 		$t->set_var('mlist_backcolor',$phpgw_info["theme"]["row_on"]);
 		// big Mr. Message List is just one row in this case
-		$t->parse('V_msg_list','T_no_messages');
+		// a simple message saying the folder is empty
+		$t->parse('V_no_messages','B_no_messages');
+		// set the real message list block to empty, it's not used in this case
+		$t->set_var('V_msg_list','');
 	}
 // ----  Fill The Messages List  -----
 	else
 	{
+		// we have messages, so set the "no messages" block to nothing, we don't show it in this case
+		$t->set_var('V_no_messages','');
+
 		if ($mailbox_status->messages < $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
 		{
 			$totaltodisplay = $mailbox_status->messages;
@@ -369,7 +398,6 @@
 			// SHOW ATTACHMENT CLIP ?
 			$show_attach = has_real_attachment($struct);
 
-			//$msg = $phpgw->dcom->header($mailbox, $msg_array[$i]);
 			$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $msg_array[$i]);
 			
 			// MESSAGE REFERENCE NUMBER
@@ -460,7 +488,12 @@
 			}
 			// this will be the href clickable text in the from column
 			$from_name = $phpgw->msg->decode_header_string($personal);
-			//echo "$display_address->from";
+			// if it's a long plain addresswith no spaces, then add a space to the TD can wrap the text
+			if ((!strstr($from_name, " "))
+			&& (strstr($from_name, "@")))
+			{
+				$from_name = str_replace('@',' @',$from_name);
+			}
 
 			// DATE
 			$msg_date = $phpgw->common->show_date($msg->udate);
@@ -476,11 +509,19 @@
 			}
 			if ($show_newmsg)
 			{
+				// this shows the red astrisk
 				$t->set_var('mlist_new_msg',$mlist_new_msg);
+				// for layout 2, this adds "strong" tags to bold the new message in this row
+				$t->set_var('open_newbold','<strong>');
+				$t->set_var('close_newbold','</strong>');
 			}
 			else
 			{
+				// show NO red astrisk
 				$t->set_var('mlist_new_msg','');
+				// include NO "strong" bold tags
+				$t->set_var('open_newbold','');
+				$t->set_var('close_newbold','');
 			}
 			if ($show_attach)
 			{
@@ -500,7 +541,7 @@
 			$t->set_var('mlist_date',$msg_date);
 			$t->set_var('mlist_size',$size);
 			// fill this template, "true" means it's cumulative
-			$t->parse('V_msg_list','T_msg_list',True);
+			$t->parse('V_msg_list','B_msg_list',True);
 			// end iterating through the messages to display
 		}
 	}
@@ -530,7 +571,7 @@
 	$t->set_var('delmov_listbox',$delmov_listbox);
 	
 // ----  Output the Template   -----
-	$t->pparse('out','T_index_out');
+	$t->pparse('out','T_index_main');
 
 	$phpgw->msg->end_request();
 

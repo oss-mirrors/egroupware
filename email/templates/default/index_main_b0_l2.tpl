@@ -34,34 +34,11 @@ function check_all()
 }
 </script>
 
- {V_any_deleted}
+<!-- BEGIN B_action_report -->
+<p><center>{report_this}</center></p>
+<!-- END B_action_report -->
 
 <table border="0" cellpadding="4" cellspacing="1" width="95%" align="center">
-<tr bgcolor="{arrows_backcolor}"> <!-- this color for the nav arrows -->
-	<td bgcolor="{ctrl_bar_back1}" align="center">
-		<font size="-1">A:</font>
-		<select name="account">
-		<option value="default">Default</option>
-		<option value="other_1">Other 1</option>
-		</select>
-	</td>
-	<form name="sortbox" action="{sortbox_action}" method="post">
-	<td bgcolor="{ctrl_bar_back1}" align="center">
-		<font size="-1">S:</font>
-		<select name="{sortbox_select_name}" onChange="{sortbox_on_change}">
-		{sortbox_select_options}
-		</select>
-	</td>
-	</form>
-	<form name="switchbox" action="{switchbox_action}" method="post">
-	<td bgcolor="{ctrl_bar_back1}" align="center">
-		<font size="-1">F:</font>
-		{switchbox_listbox}
-	</td>
-	</form>
-	{prev_arrows}
-	{next_arrows}
-</tr>
 <tr>
 	<td bgcolor="{ctrl_bar_back2}" align="center">
 		<a href="{accounts_link}">{accounts_txt}</a>
@@ -76,12 +53,33 @@ function check_all()
 		<a href="{routing_link}">{routing_txt}</a>
 	</td>
 </tr>
-<tr>
-	<td colspan="7" bgcolor="{hdr_backcolor}" align="center">
-		<!-- spacer -->
+<tr bgcolor="{arrows_backcolor}"> <!-- this color for the nav arrows -->
+	<form name="switchbox" action="{switchbox_action}" method="post">
+	<td bgcolor="{ctrl_bar_back1}" align="center">
+		<font size="-1">Folder:</font>
+		{switchbox_listbox}
 	</td>
+	</form>
+	<form name="sortbox" action="{sortbox_action}" method="post">
+	<td bgcolor="{ctrl_bar_back1}" align="center">
+		<font size="-1">Sort:</font>
+		<select name="{sortbox_select_name}" onChange="{sortbox_on_change}">
+		{sortbox_select_options}
+		</select>
+	</td>
+	</form>
+	<td bgcolor="{ctrl_bar_back1}" align="center">
+		<font size="-1">Account:</font>
+		<select name="account">
+		<option value="default">Default</option>
+		<option value="other_1">Other 1</option>
+		</select>
+	</td>
+	{prev_arrows}
+	{next_arrows}
 </tr>
 </table>
+<br>
 
 <table border="0" cellpadding="4" cellspacing="1" width="95%" align="center">
 <tr>
@@ -113,7 +111,7 @@ function check_all()
 </tr>
 </table>
 
-<table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
+<table border="0" cellpadding="2" cellspacing="1" width="95%" align="center">
 <tr>
 	<td bgcolor="{hdr_backcolor}" width="3%" align="center">
 		&nbsp;
@@ -122,30 +120,64 @@ function check_all()
 		&nbsp;
 	</td>
 	
-	<td bgcolor="{hdr_backcolor}" width="34%">
+	<td bgcolor="{hdr_backcolor}" width="21%">
 		<font size="2" face="{hdr_font}">
- 		<b>{hdr_subject}</b>
+		{hdr_from}
 		</font>
 	</td>
-	<td bgcolor="{hdr_backcolor}" width="23%">
+	<td bgcolor="{hdr_backcolor}" width="36%">
 		<font size="2" face="{hdr_font}">
-		<b>{hdr_from}</b>
+ 		{hdr_subject}
 		</font>
 	</td>
-	<td bgcolor="{hdr_backcolor}" width="12%">
-		<font size="2" face="{hdr_font}">
-		<b>{hdr_date}</b>
+	<td bgcolor="{hdr_backcolor}" width="12%" align="center">
+		<font size="1" face="{hdr_font}">
+		{hdr_date}
 		</font>
 	</td>
-	<td bgcolor="{hdr_backcolor}" width="4%">
-		<font size="2" face="{hdr_font}">
-		<b>{hdr_size}</b>
+	<td bgcolor="{hdr_backcolor}" width="4%" align="center">
+		<font size="1" face="{hdr_font}">
+		{hdr_size}
 		</font>
 	</td>
 </tr>
+<!-- BEGIN B_no_messages -->
+<tr>
+	<td bgcolor="{mlist_backcolor}" colspan="6" align="center">
+		<!-- form delmove init here is just a formality -->
+		{mlist_delmov_init}
+		<font size="2" face="{mlist_font}">{report_no_msgs}</font>
+	</td>
+</tr>
+<!-- END B_no_messages -->
 
-{V_msg_list}
+<!--- &nbsp; LAME BLOCK SEP &nbsp; -->
 
+<!-- BEGIN B_msg_list -->
+<tr>
+	<td bgcolor="{mlist_backcolor}" align="center">
+	<!-- INIT FORM ONCE -->{mlist_delmov_init}
+		<input type="checkbox" name="msglist[]" value="{mlist_msg_num}">
+	</td>
+	<td bgcolor="{mlist_backcolor}" width="1%" align="center">
+		{mlist_new_msg}
+		&nbsp;&nbsp;
+		{mlist_attach}
+	</td>
+	<td bgcolor="{mlist_backcolor}" align="left">
+		{open_newbold}<font size="2" face="{mlist_font}">{mlist_from} {mlist_from_extra}</font>{close_newbold}
+	</td>
+	<td bgcolor="{mlist_backcolor}" align="left">
+		{open_newbold}<font size="2" face="{mlist_font}"><a href="{mlist_subject_link}">{mlist_subject}</a></font>{close_newbold}
+	</td>
+	<td bgcolor="{mlist_backcolor}" align="center">
+		<font size="2" face="{mlist_font}">{mlist_date}</font>
+	</td>
+	<td bgcolor="{mlist_backcolor}" align="center">
+		<font size="1" face="{mlist_font}">{mlist_size}</font>
+	</td>
+</tr>
+<!-- END B_msg_list -->
 <tr>
 	<td bgcolor="{ftr_backcolor}" align="center">
 		<a href="javascript:check_all()">
@@ -172,7 +204,7 @@ function check_all()
 <table border="0" align="center" width="95%">
 <tr>
 	<td align="left">
-		<font color="{mlist_newmsg_color}">{mlist_newmsg_char}</font>&nbsp;{mlist_newmsg_txt}
+		<font color="{mlist_newmsg_color}">{mlist_newmsg_char}</font>&nbsp;=&nbsp;{mlist_newmsg_txt}
 	</td>
 </tr>
 </table>

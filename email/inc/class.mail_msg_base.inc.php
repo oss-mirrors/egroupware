@@ -46,6 +46,7 @@
 	var $order = '';
 	var $start = '';
 	var $msgnum = '';
+	var $browser = 0;
 
 	var $default_trash_folder = 'Trash';
 	var $default_sent_folder = 'Sent';
@@ -117,6 +118,11 @@
 		$args_array['newsmode'] = False;
 		$this->newsmode = False;
 	}
+
+	// Browser Detection =FUTURE=
+	// 0 = NO css ; 1 = CSS supported ; 2 = text only
+	// currently not implemented, use default 0 (NO CSS support in browser)
+	$this->browser = 0;
 
 	// store the GPC args in a class var
 	$this->args = $args_array;
@@ -362,6 +368,12 @@
 			unset($phpgw_info['user']['preferences']['email']['use_trash_folder']);
 		}
 	}
+
+	// Layout Template Preference =FUTURE=
+	// layout 1 = default ; others are prefs
+	//$phpgw_info['user']['preferences']['email']['layout'] = '1';
+	// currently working on layout2, so hard code it here
+	$phpgw_info['user']['preferences']['email']['layout'] = '2';
 
 	// DEBUG
 	//echo "<br>phpgw_info['user']['preferences']['email']: <br>"
