@@ -84,7 +84,7 @@
 				$this->t->set_var(array(
 					'filter_activity_selected'	=> ($activity['wf_activity_id'] == $this->filter_activity)? 'selected="selected"' : '',
 					'filter_activity_value'		=> $activity['wf_activity_id'],
-					'filter_activity_name'		=> $activity['wf_name'].' ('.$activity['wf_version'].')'
+					'filter_activity_name'		=> $activity['wf_name'].' ('.$activity['wf_procname']. ' '.$activity['wf_version'].')'
 				));
 				$this->t->parse('filter_activity', 'block_filter_activity', true);
 			}
