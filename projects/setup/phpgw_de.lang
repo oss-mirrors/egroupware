@@ -12,6 +12,7 @@ Add Activity	projects	de	Aktivit&auml;t hinzuf&uuml;gen
 Add hours	projects	de	Studen hinzuf&uuml;gen
 Add project	projects	de	Projekt hinzuf&uuml;gen
 Add project hours	projects	de	Projektstuden hinzuf&uuml;gen
+Administrator	projects	de	Administrator
 All invoices	projects	de	Alle Rechnungen
 All delivery notes	projects	de	Alle Lieferscheine
 archive	projects	de	Archiv
@@ -61,6 +62,7 @@ Job date	projects	de	Job Datum
 Job description	projects	de	Job Beschreibung
 Job has been added !	projects	de	Job wurde hinzugef&uuml;gt !
 Job has been updated !	projects	de	Job wurde &uuml;berarbeitet !
+Job ID	projects	de	Job ID
 Job list	projects	de	Job Liste
 Jobs	projects	de	Jobs
 List hours	projects	de	Stunden Liste
@@ -92,8 +94,6 @@ Project name	projects	de	Projekt Name
 Project preferences	projects	de	Projekt Einstellungen
 Project statistic	projects	de	Projekt Statistik
 project statistics	projects	de	Projekt Statistiken
-Project x x has been updated !	projects	de	Projekt %1 %2 wurde &uuml;berarbeitet !
-Project x x has been added !	projects	de	Projekt %1 %2 wurde hinzugef&uuml;gt !
 Remark	projects	de	Betreff
 Remark required	projects	de	Betreff notwendig
 select	projects	de	Ausw&auml;hlen
@@ -118,6 +118,7 @@ User statistics	projects	de	Benutzer Statistiken
 View job	projects	de	Job anzeigen
 View project	projects	de	Projekt anzeigen
 Work date	projects	de	Arbeitsdatum
+Work hours	projects	de Arbeitsstunden
 Work time	projects	de	Arbeitszeit
 Workunit	projects	de	Arbeitseinheit
 Workunits	projects	de	Arbeitseinheiten

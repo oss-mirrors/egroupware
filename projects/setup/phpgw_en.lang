@@ -12,6 +12,7 @@ Add Activity	projects	en	Add activity
 Add hours	projects	en	Add hours
 Add project	projects	en	Add project
 Add project hours	projects	en	Add project hours
+Administrator	projects	en	Administrator
 All invoices	projects	en	All invoices
 All	projects	en	All
 All delivery notes	projects	en	ALL delivery notes
@@ -62,6 +63,7 @@ Job date	projects	en	Job date
 Job description	projects	en	Job description
 Job has been added !	projects	en	Job has been added !
 Job has been updated !	projects	en	Job has been updated !
+Job ID	projects	en	Job ID
 Job list	projects	en	Job list
 Jobs	projects	en	Jobs
 List hours	projects	en	List hours
@@ -93,8 +95,6 @@ Project name	projects	en	Project name
 Project preferences	projects	en	Project preferences
 Project statistic	projects	en	Project statistic
 project statistics	projects	en	Project statistics
-Project x x has been updated !	projects	en	Project %1 %2 has been updated !
-Project x x has been added !	projects	en	Project %1 %2 has been added !
 Remark	projects	en	Remark
 Remark required	projects	en	Remark required
 select	projects	en	Select
@@ -119,6 +119,7 @@ user statistics	projects	en	User statistics
 View job	projects	en	View job
 View project	projects	en	View project
 Work date	projects	en	Work date
+Work hours	projects	en	Work hours
 Work time	projects	en	Work time
 Workunit	projects	en	Workunit
 Workunits	projects	en	Workunits

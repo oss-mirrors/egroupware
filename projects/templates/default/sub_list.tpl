@@ -1,29 +1,29 @@
 <!-- $Id$ -->
+
+{app_header}
+
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
 <hr noshade width="98%" align="center" size="1">
 <center>
 <table border="0" width="100%">
 	<tr>
-		<td width="33%" align="left">
-			<form action="{project_action}" name="form" method="POST">
-			<select name="pro_parent" onChange="this.form.submit();"><option value="">{lang_select_project}</option>{project_list}</select>
-			<noscript>&nbsp;<input type="submit" name="submit" value="{lang_submit}"></noscript></form></td>
-		<td width="33%" align="center">{lang_showing}</td>
-		<td width="33%" align="right">
-			<form method="POST" action="{search_url}">
-			<input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
-			</form></td>
-	</tr>
-	<tr>
-		<td colspan="9">
-			<table border="0" width="100%">
+		<td colspan="9" align="left">
+			<table boder="0" width="100%">
 				<tr>
 				{left}
-					<td>&nbsp;</td>
+					<td align="center">{lang_showing}</td>
 				{right}
 				</tr>
 			</table>
 		</td>
+	</tr>
+	<tr colspan="9">
+		<td width="33%" align="left">
+			<form action="{project_action}" name="form" method="POST">
+			<select name="pro_parent" onChange="this.form.submit();"><option value="">{lang_select_project}</option>{project_list}</select>
+			<noscript>&nbsp;<input type="submit" name="submit" value="{lang_submit}"></noscript></form></td>
+		<td width="33%" align="center"><form method="POST" name="filter" action="{filter_action}">{filter_list}</form></td>
+		<td width="33%" align="right"><form method="POST" name="query" action="{search_action}">{search_list}</form></td>
 	</tr>
 </table>
 <table border="0" width="100%" cellpadding="2" cellspacing="2">

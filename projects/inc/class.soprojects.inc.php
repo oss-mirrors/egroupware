@@ -161,7 +161,7 @@
 				$project['sdate']		= $this->db->f('start_date');
 				$project['edate']		= $this->db->f('end_date');
 				$project['coordinator']	= $this->db->f('coordinator');
-				$project['customer']		= $this->db->f('customer');
+				$project['customer']	= $this->db->f('customer');
 				$project['status']		= $this->db->f('status');
 				$project['descr']		= $this->db->f('descr');
 				$project['title']		= $this->db->f('title');
@@ -179,11 +179,18 @@
 			for ($i=0;$i<count($projects);$i++)
 			{
 				$pro_select .= '<option value="' . $projects[$i]['project_id'] . '"';
-				if ($projects[$i]['id'] == $selected)
+				if ($projects[$i]['project_id'] == $selected)
 				{
 					$pro_select .= ' selected';
 				}
-				$pro_select .= '>' . $phpgw->strip_html($projects[$i]['title']) . ' [ ' . $projects[$i]['number'] . ' ]';
+				if ($projects[$i]['title'])
+				{
+					$pro_select .= '>' . $phpgw->strip_html($projects[$i]['title']) . ' [ ' . $phpgw->strip_html($projects[$i]['number']) . ' ]';
+				}
+				else
+				{
+					$pro_select .= '>' . $phpgw->strip_html($projects[$i]['number']);
+				}
 				$pro_select .= '</option>';
 			}
 			return $pro_select;
@@ -479,6 +486,21 @@
 			$this->db->query("select max(num) from phpgw_p_projects where num like ('$prefix%')");
 			$this->db->next_record();
 			$max = $this->add_leading_zero(substr($this->db->f(0),7));
+
+			return $prefix . $max;
+		}
+
+		function create_jobid($pro_parent)
+		{
+			global $phpgw;
+
+			$this->db->query("select num from phpgw_p_projects where id='$pro_parent'");
+			$this->db->next_record();
+			$prefix = $this->db->f('num') . '/';
+
+			$this->db->query("select max(num) from phpgw_p_projects where num like ('$prefix%')");
+			$this->db->next_record();
+			$max = $this->add_leading_zero(substr($this->db->f(0),8));
 
 			return $prefix . $max;
 		}

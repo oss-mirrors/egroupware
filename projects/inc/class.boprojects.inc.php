@@ -156,9 +156,9 @@
 			}
 		}
 
-		function list_projects($start, $limit, $query, $filter, $sort, $order, $status, $cat_id, $type, $pro_parent = '')
+		function list_projects($start, $limit, $query, $filter, $sort, $order, $status, $cat_id, $type, $pro_parent)
 		{
-			$pro_list = $this->soprojects->read_projects($start, $limit, $query, $filter, $sort, $order, $status, $cat_id, $type, $pro_parent = '');
+			$pro_list = $this->soprojects->read_projects($start, $limit, $query, $filter, $sort, $order, $status, $cat_id, $type, $pro_parent);
 			$this->total_records = $this->soprojects->total_records;
 			return $pro_list;
 		}
@@ -280,9 +280,9 @@
 			}
 		}
 
-		function select_project_list($project_id)
+		function select_project_list($type,$project_id)
 		{
-			$list = $this->soprojects->select_project_list($project_id);
+			$list = $this->soprojects->select_project_list($type,$project_id);
 			return $list;
 		}
 	}
