@@ -14,7 +14,7 @@
  </tr>
  <tr>
   <td colspan=2 align=right>
-   <input type="submit" name="bk_import" value="Import Bookmarks">
+   <input type="submit" name="import" value="Import Bookmarks">
   </td>
  </tr>
  <tr>

@@ -18,6 +18,7 @@
 		'enabled_nextmatchs_class' => True
 	);
 	include('../header.inc.php');
+	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
 
 	$phpgw->template->set_file(array(
 		'common'     => 'common.tpl',

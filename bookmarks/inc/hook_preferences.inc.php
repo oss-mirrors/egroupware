@@ -34,8 +34,8 @@
 	section_start(ucfirst($appname),$imgpath);
 
 
-	echo '<a href="' . $phpgw->link('/bookmarks/preferences.php')
-		. '">' . lang('Bookmark preferences') . '</a>';
+	echo '<a href="' . $phpgw->link('/bookmarks/import.php')
+		. '">' . lang('Import bookmarks') . '</a>';
 
 	echo '<br><a href="' . $phpgw->link('/preferences/acl_preferences.php','acl_app=bookmarks')
 		. '">' . lang('Grant Bookmark access') . '</a>';
