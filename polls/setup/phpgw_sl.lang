@@ -4,7 +4,7 @@ add answers	polls	sl	Dodaj vprašanja
 add new poll question	polls	sl	Dodaj novo anketno vprašanje
 add questions	polls	sl	Dodaj vprašanja
 allow users to vote more then once	polls	sl	Dovoli uporabnikom večkratno glasovanje
-answer	polls	sl	Dogovor
+answer	polls	sl	odgovor
 answer has been added to poll	polls	sl	Odgovor je bil dodan k anketi
 answer has been updated	polls	sl	Odgovor je bil popravljen
 answers	polls	sl	Odgovori
@@ -14,7 +14,7 @@ current poll	polls	sl	Trenutna anketa
 edit answer	polls	sl	Uredi odgovor
 edit poll question	polls	sl	Uredi anketno vprašanje
 enter poll question	polls	sl	Vnesi anketno vprašanje
-new poll has been added.  you should now add some answers for this poll	polls	sl	Nova anketa je bila dodana. Sedaj je k anketi potrebno dodati odgovore.
+new poll has been added.  you should now add some answers for this poll	polls	sl	Novo anketno vprašanje dodano. Sedaj morate dodati še možne odgovore.
 poll question	polls	sl	Anketno vprašanje
 poll settings	common	sl	Nastavitve ankete
 polls	common	sl	Ankete
