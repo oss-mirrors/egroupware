@@ -49,7 +49,7 @@
 //		return ($db->f(0)?True:False);
 	}
 
-	function poll_viewResults($poll_id)
+	function poll_viewResults($poll_id,$website=False)
 	{
 		$GLOBALS['phpgw']->db->query("SELECT SUM(option_count) AS sum FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
@@ -58,8 +58,8 @@
 		$GLOBALS['phpgw']->db->query("select poll_title from phpgw_polls_desc where poll_id='$poll_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
 
-		echo '<p><table border="0" align="center" width="50%">';
-		echo ' <tr>' . "\n"
+		$out  = '<p><table border="0" align="center" width="50%">';
+		$out .= ' <tr>' . "\n"
 			. '  <td colspan="3" bgcolor="' . $GLOBALS['phpgw_info']['theme']['th_bg'] . '" align="center">'
 			. $GLOBALS['phpgw']->db->f('poll_title') . '</td>' . "\n"
 			. '</tr>' . "\n";
@@ -71,11 +71,11 @@
 			$poll_optionCount = $GLOBALS['phpgw']->db->f('option_count');
 
 			$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
-			echo ' <tr bgcolor="' . $tr_color . '">' . "\n";
+			$out .= ' <tr bgcolor="' . $tr_color . '">' . "\n";
 
 			if ($poll_optionText != '')
 			{
-				echo "  <td>$poll_optionText</td>\n";
+				$out .= "  <td>$poll_optionText</td>\n";
 
 				if ($poll_sum)
 				{
@@ -89,25 +89,34 @@
 				if ($poll_percent > 0)
 				{
 					$poll_percentScale = (int)($poll_percent * 1);
-					echo '  <td><img src="' . $GLOBALS['phpgw_info']['server']['webserver_url']
+					$out .= '  <td><img src="' . $GLOBALS['phpgw_info']['server']['webserver_url']
 						. '/polls/images/pollbar.gif" height="12" width="' . $poll_percentScale
 						. '"></td>' . "\n";
 				}
 				else
 				{
-					echo '  <td>&nbsp;</td>' . "\n";
+					$out .= '  <td>&nbsp;</td>' . "\n";
 				}
 
-				printf('  <td> %.2f %% (%d)</td>' . "\n" . ' </tr>' . "\n", $poll_percent, $poll_optionCount);
+				$out .= printf('  <td> %.2f %% (%d)</td>' . "\n" . ' </tr>' . "\n", $poll_percent, $poll_optionCount);
 
-				echo ' </tr>' . "\n";
+				$out .= ' </tr>' . "\n";
 			}
 		}
 
-		echo ' <tr bgcolor="' . $GLOBALS['phpgw_info']['theme']['bgcolor'] . '">' . "\n"
+		$out .= ' <tr bgcolor="' . $GLOBALS['phpgw_info']['theme']['bgcolor'] . '">' . "\n"
 			. '  <td>' . lang('Total votes') . ': ' . $poll_sum . '</td>' . "\n"
 			. ' </tr>' . "\n"
 			. '</table>' . "\n";
+
+		if($website)
+		{
+			return $out;
+		}
+		else
+		{
+			echo $out;
+		}
 	}
 
 	function poll_getResults($poll_id)
@@ -141,16 +150,16 @@
 		return $ret;
 	}
 
-	function poll_generateUI($poll_id = '')
+	function poll_generateUI($poll_id='',$website=False)
 	{
-		if (! $poll_id)
+		if(!$poll_id)
 		{
 			$GLOBALS['phpgw']->db->query("select max(poll_id) from phpgw_polls_desc",__LINE__,__FILE__);
 			$GLOBALS['phpgw']->db->next_record();
 			$poll_id = $GLOBALS['phpgw']->db->f(0);
 		}
 
-		if (! verify_uservote($poll_id))
+		if(!verify_uservote($poll_id))
 		{
 			return False;
 		}
@@ -158,28 +167,28 @@
 		$GLOBALS['phpgw']->db->query("select poll_title from phpgw_polls_desc where poll_id='$poll_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
 
-		echo "\n";
-		echo '<form action="' . $GLOBALS['phpgw']->link('/polls/vote.php') . '" method="post">' . "\n";
-		echo '<input type="hidden" name="poll_id" value="' . $poll_id . '">' . "\n";
-//		echo '<input type="hidden" name="poll_forwarder" value="' . $poll_forwarder . '">';
-		echo '<table border="0" align="center" width="50%">' . "\n"
+		$out  = "\n";
+		$out .= '<form action="' . $GLOBALS['phpgw']->link('/polls/vote.php') . '" method="post">' . "\n";
+		$out .= '<input type="hidden" name="poll_id" value="' . $poll_id . '">' . "\n";
+//		$out .= '<input type="hidden" name="poll_forwarder" value="' . $poll_forwarder . '">';
+		$out .= '<table border="0" align="center" width="50%">' . "\n"
 			. ' <tr>' . "\n"
 			. '  <td colspan="2" bgcolor="' . $GLOBALS['phpgw_info']['theme']['th_bg'] . '" align="center">&nbsp;'
 			. $GLOBALS['phpgw']->db->f('poll_title') . '&nbsp;</td>' . "\n"
 			. ' </tr>' . "\n";
 
 		$GLOBALS['phpgw']->db->query("SELECT * FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
-		while ($GLOBALS['phpgw']->db->next_record())
+		while($GLOBALS['phpgw']->db->next_record())
 		{
 			$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
-			echo ' <tr bgcolor="' . $tr_color . '">' . "\n"
+			$out .= ' <tr bgcolor="' . $tr_color . '">' . "\n"
 				. '  <td align="center"><input type="radio" name="poll_voteNr" value="'
 				. $GLOBALS['phpgw']->db->f('vote_id') . '"></td>' . "\n"
 				. '  <td>&nbsp;' . $GLOBALS['phpgw']->db->f('option_text') . '</td>' . "\n"
 				. ' </tr>' . "\n";
 		}
 
-		echo ' <tr bgcolor="' . $GLOBALS['phpgw_info']['theme']['bgcolor'] . '">' . "\n"
+		$out .= ' <tr bgcolor="' . $GLOBALS['phpgw_info']['theme']['bgcolor'] . '">' . "\n"
 			. '  <td colspan="2">&nbsp;</td>' . "\n"
 			. ' </tr>' . "\n"
 			. ' <tr bgcolor="' . $GLOBALS['phpgw_info']['theme']['bgcolor'] . '">' . "\n"
@@ -187,17 +196,26 @@
 			. '   <input name="submit" type="submit" value="' . lang('Vote') . '"></td>' . "\n"
 			. ' </tr>' . "\n"
 			. '</table>' . "\n" . '</form>' . "\n";
-	}
 
-	function display_poll()
-	{
-		if (! verify_uservote($GLOBALS['poll_settings']['currentpoll']))
+		if($website)
 		{
-			poll_viewResults($GLOBALS['poll_settings']['currentpoll']);
+			return $out;
 		}
 		else
 		{
-			poll_generateUI($GLOBALS['poll_settings']['currentpoll']);
+			echo $out;
+		}
+	}
+
+	function display_poll($website=False)
+	{
+		if(!verify_uservote($GLOBALS['poll_settings']['currentpoll']))
+		{
+			return poll_viewResults($GLOBALS['poll_settings']['currentpoll'],$website);
+		}
+		else
+		{
+			return poll_generateUI($GLOBALS['poll_settings']['currentpoll'],$website);
 		}
 	}
 ?>

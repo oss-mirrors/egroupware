@@ -26,7 +26,10 @@
 		'phpgw_polls_settings'
 	);
 
-	$setup_info['polls']['hooks'][]   = 'admin';
+	$setup_info['polls']['hooks'][] = 'admin';
+	$setup_info['polls']['hooks'][] = 'website_left';
+	$setup_info['polls']['hooks'][] = 'website_right';
+
 	/* Dependencies for this app to work */
 	$setup_info['polls']['depends'][] = array(
 		 'appname' => 'phpgwapi',
