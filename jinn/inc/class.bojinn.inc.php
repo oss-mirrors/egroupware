@@ -1000,9 +1000,11 @@
 		{
 			reset ($HTTP_POST_VARS);
 
-			while (list ($key, $val) = each ($HTTP_POST_VARS)) {
+			while (list ($key, $val) = each ($HTTP_POST_VARS)) 
+			{
 
-				if (substr($key,0,6)=='editor'){
+				if (substr($key,0,6)=='editor')
+				{
 					$editors[]=$val;
 
 				}
@@ -1020,9 +1022,11 @@
 		function filter_array_with_prefix($array,$prefix)
 		{
 
-			while (list ($key, $val) = each ($array)) {
+			while (list ($key, $val) = each ($array)) 
+			{
 
-				if (substr($key,0,strlen($prefix))==$prefix){
+				if (substr($key,0,strlen($prefix))==$prefix)
+				{
 					$return_array[]=$val;
 				}
 			}
@@ -1035,9 +1039,11 @@
 		* make array with pairs of keys and values from http_post_vars               *
 		\****************************************************************************/
 
-		function make_http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES) {
+		function make_http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES) 
+		{
 
-			while(list($key, $val) = each($HTTP_POST_VARS)) {
+			while(list($key, $val) = each($HTTP_POST_VARS)) 
+			{
 
 				if(substr($key,0,3)=='FLD')
 				{
@@ -1057,7 +1063,8 @@
 		* make array with pairs of keys and values from http_post_vars              *
 		****************************************************************************/
 
-		function make_http_vars_pairs_plugins($HTTP_POST_VARS) {
+		function make_http_vars_pairs_plugins($HTTP_POST_VARS) 
+		{
 
 			$data=$this->make_http_vars_pairs_fip($HTTP_POST_VARS);
 

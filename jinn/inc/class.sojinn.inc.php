@@ -813,7 +813,7 @@
 			//die ($SQL);
 			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 			{
-			        $status=1;
+			       $status=$this->phpgw_db->get_last_insert_id($table,'x');
 			}
 
 			return $status;
