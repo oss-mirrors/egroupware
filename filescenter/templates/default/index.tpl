@@ -29,11 +29,11 @@ function delete_items()
   switch (count)
   {
     case 0:
-      alert("Você não selecionou nenhum item. Clique no ícone próximo ao nome para selecionar um item.");
+      alert("{lang_no_items_selected}");
       break;
 
     case 1:
-      if (confirm("Tem certeza que deseja excluir '"+filename+"'?"))
+      if (confirm("{lang_delete_confirmation}"))
       {
         document.forms[0].ftask.value = 'delete';
 		document.forms[0].action = document.forms[0].action + "?menuaction=filescenter.ui_fm2.index";
@@ -42,7 +42,7 @@ function delete_items()
       break;
 
     default:
-      if (confirm("Tem certeza que deseja excluir Isto "+count+" Items?"))
+      if (confirm("{lang_delete_items_confirmation}"))
       {
         document.forms[0].ftask.value = 'delete';
 		document.forms[0].action = document.forms[0].action + "?menuaction=filescenter.ui_fm2.index";

@@ -458,6 +458,8 @@
 			$this->t->set_var('lang_path',lang('Location'));
 			$this->t->set_var('tree_path',$this->parsed_tree_path($this->bo->homedir));
 			$this->t->set_var('lang_no_items_selected',lang('You selected no items. Click in the checkbox near the file name to select an item.'));
+			$this->t->set_var('lang_delete_confirmation',lang('Are you sure you want to delete \'"+filename+"\'?'));
+			$this->t->set_var('lang_delete_items_confirmation',lang('Are you sure you want to delete all these "+count+" items?'));
 
 			/* Template parsing and printing */
 			
