@@ -143,13 +143,6 @@ function q($q)
 	return $GLOBALS['__FLPG__'];
 }
 
-function q($q)
-{
-	$GLOBALS['__FLPG__'] = pg_query(fud_sql_lnk, $q) or die (fud_sql_error_handler($q, pg_last_error(fud_sql_lnk), '', get_version()));
-	$GLOBALS['__DB_INC_INTERNALS__']['last_query'] = $q;
-	return $GLOBALS['__FLPG__'];
-}
-
 function db_count($r)
 {
 	$r = @pg_num_rows($r);
