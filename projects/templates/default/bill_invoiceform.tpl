@@ -103,7 +103,7 @@
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
-        <td>{currency}&nbsp;{lang_mwst}&nbsp;{tax_percent}:</td>
+        <td>{currency}&nbsp;{lang_mwst}&nbsp;%&nbsp;{tax_percent}:</td>
         <td align=right>{sum_tax}</td>
       </tr>
       <tr>
@@ -111,8 +111,8 @@
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
-        <td><font size=4><p><b>{currency}&nbsp;Sum:</b></font></td>
-        <td align=right><font size="4"><p><b>{sum_sum}</b></font></td>
+        <td><font size=4><b>{currency}&nbsp;Sum:</b></font></td>
+        <td align=right><font size="4"><b>{sum_sum}</b></font></td>
       </tr>
           <tr>                                                                                                                                                      
         <td>&nbsp;</td>                                                                                                                                         

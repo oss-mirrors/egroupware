@@ -110,3 +110,4 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'All deliverys',
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Delivery date','projects','de','Lieferungs Datum');                                                                            
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Create delivery','projects','de','Lieferung erstellen');                                                                        
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Print delivery','projects','de','Lieferung drucken');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'You have to CREATE a delivery or invoice first !','projects','de','Sie m&uuml;ssen erst eine Lieferung oder eine Rechnung erstellen !');

@@ -14,4 +14,5 @@
 12/01/2000: update activities listing in editproject
 12/02/2000: update lang -> Project ID, Activity ID, Invoice ID, Delivery ID
 12/03/2000: moved select own address to preferences
-12/09/2000: update invoice & activities to display currency 
+12/09/2000: update invoice & activities to display currency
+12/10/2000: create function to make sure if created invoice or delivery before printing them 

@@ -80,8 +80,8 @@
     $phpgw->db->next_record();
     $db2->query("UPDATE p_invoice SET sum='".$phpgw->db->f("sum")."' WHERE id=$invoice_id");
 
-  }
-} else {
+    }
+   } else {
     $t->set_var(invoice_hint,"");
 }
 
@@ -115,7 +115,13 @@
   $t->set_var(lang_createinvoice,lang("Create invoice"));
   $t->set_var(actionurl,$phpgw->link("bill_invoice.php"));
   $t->set_var(lang_print_invoice,lang("Print invoice"));
+  
+  if (!$invoice_id) {
+  $t->set_var(print_invoice,$phpgw->link("fail.php"));
+   }
+  else {
   $t->set_var(print_invoice,$phpgw->link("bill_invoiceshow.php","invoice_id=$invoice_id"));
+   }
 
 // ------------------------ end header declaration ------------------------------------
 

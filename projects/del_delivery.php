@@ -105,8 +105,14 @@
   $t->set_var(lang_createdelivery,lang("Create delivery"));
   $t->set_var(actionurl,$phpgw->link("del_delivery.php"));
   $t->set_var(lang_print_delivery,lang("Print delivery"));
-  $t->set_var(print_delivery,$phpgw->link("del_deliveryshow.php","delivery_id=$delivery_id"));
 
+  if (!$delivery_id) {                                                                                                                                                                     
+  $t->set_var(print_delivery,$phpgw->link("fail.php"));                                                                                                                                    
+   }                                                                                                                                                                                      
+  else {
+  $t->set_var(print_delivery,$phpgw->link("del_deliveryshow.php","delivery_id=$delivery_id"));
+  }
+  
   // -------------- end header declaration -----------------
 
 

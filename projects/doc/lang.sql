@@ -131,4 +131,5 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Delivery','proje
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('All deliverys','projects','en','All deliverys');                                                                               
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Delivery date','projects','en','Delivery date');                                                                               
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Create delivery','projects','en','Create delivery');                                                                            
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Print delivery','projects','en','Print delivery');                                                                                              
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Print delivery','projects','en','Print delivery'); 
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('You have to CREATE a delivery or invoice first !','projects','en','You have to CREATE a delivery or invoice first !');                                                                                              
