@@ -19,13 +19,11 @@
   Header("Pragma: no-cache");
   Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
   
-  if ($newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
+  if (isset($newsmode) && $newmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
 
   $phpgw_info["flags"] = array("currentapp" => "email", "enable_message_class" => True, "enable_nextmatchs_class" => True);
   include("../header.inc.php");
 
-  if ($newsmode == "on")
-    $phpgw->common->read_preferences($phpgw_info["user"]["account_id"],"nntp",True);
   set_time_limit(0);
 ?>
 
@@ -108,11 +106,11 @@ function check_all()
      }
 
      if (! $order) {
-        $order = "0";
+        $order = 0;
         if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old") {
-	   $sort = "1";
+	   $sort = 1;
         } else {
-           $sort = "0";
+           $sort = 0;
         }
      }/* else {
 
@@ -140,6 +138,7 @@ function check_all()
       $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["server"]["mail_port"] . "}$t_folder_s",SA_UNSEEN);
 
       if ($nummsg > 0) {
+	 $msg_array = array();
          $msg_array = $phpgw->msg->sort($mailbox, $order, $sort);
          $folder_info .= "<br>Saved messages: " . $nummsg;
          $folder_info .= "<br>New messages: " . $mailbox_status->unseen;
@@ -228,7 +227,7 @@ function check_all()
  </td>
  <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="4%">
   <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"6",$order,"index.php",lang("size"),"&folder=".urlencode($folder)); ?></b>
+   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"6",$order,"index.php",($newsmode=="on"?lang("lines"):lang("size")),"&folder=".urlencode($folder)); ?></b>
   </font>
  </td>
 </tr>
@@ -276,8 +275,12 @@ function check_all()
 
            $subject = !$msg->Subject ? "[".lang("no subject")."]" : $msg->Subject;
 
-           $ksize = round(10*($msg->Size/1024))/10;
-           $size = $msg->Size > 1024 ? "$ksize k" : $msg->Size;
+	   if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"]) {
+	     $size = $msg->Size;
+	   } else {
+             $ksize = round(10*($msg->Size/1024))/10;
+             $size = $msg->Size > 1024 ? "$ksize k" : $msg->Size;
+	  }
 
            // Whats up with this ??
            $bg = (($i + 1)/2 == floor(($i + 1)/2)) ? $phpgw_info["theme"]["row_off"] : $phpgw_info["theme"]["row_on"];
