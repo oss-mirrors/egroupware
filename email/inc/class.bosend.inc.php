@@ -1224,7 +1224,7 @@
 				$this->mail_out['main_headers'][$hdr_line] = 	'In-Reply-To: '.$this->mail_out['in_reply_to'];
 				$hdr_line++;
 			}
-			$this->mail_out['main_headers'][$hdr_line] = 		'Subject: '.$subject;
+			$this->mail_out['main_headers'][$hdr_line] = 		'Subject: '.$GLOBALS['phpgw']->msg->encode_header($subject);
 			$hdr_line++;
 			$this->mail_out['main_headers'][$hdr_line] = 		'Date: '.$this->mail_out['date'];
 			$hdr_line++;

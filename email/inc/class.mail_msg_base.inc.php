@@ -4722,7 +4722,7 @@
 		}
 		
 		/*!
-		@function encode_iso88591_word
+		@function encode_charset_word
 		@abstract Private utility function used by encode_header to encode non US-ASCII text in email headers
 		@param $string
 		@author Angles
@@ -4731,9 +4731,10 @@
 		function, perhaps this could be used to reduce the preg matching in function "encode_header" that calls this. 
 		@access private
 		*/
-		function encode_iso88591_word($string)
+		function encode_charset_word($string)
 		{
-			$qprint_prefix = '=?iso-8859-1?Q?';
+			$charset = $GLOBALS['phpgw']->translation->system_charset ? $GLOBALS['phpgw']->translation->system_charset : 'iso-8859-1';
+			$qprint_prefix = '=?' . $charset . '?Q?';
 			$qprint_suffix = '?=';
 			$new_str = '';
 			$did_encode = False;
@@ -4852,7 +4853,7 @@
 					
 					// qprint this word, and add rfc2047 header special words
 					//echo 'words['.$i.'] needs encode: '.$words[$i].'<br>';
-					$words[$i] = $this->encode_iso88591_word($words[$i]);
+					$words[$i] = $this->encode_charset_word($words[$i]);
 					//echo 'words['.$i.'] AFTER encode: '.$words[$i].'<br>';
 				}
 			}
