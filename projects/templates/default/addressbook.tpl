@@ -1,3 +1,4 @@
+<html>
 <head>
 <title>{title}</title>
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
@@ -17,7 +18,8 @@
 
  {total_matchs}
  {next_matchs}
-	
+ {common_hidden_vars}	
+  
   <table width=100% border=0 cellspacing=1 cellpadding=3>
     <tr bgcolor="{th_bg}">
       <td width="30%" bgcolor="{th_bg}" align=center>{sort_company}</td>
@@ -26,7 +28,6 @@
       <td width="10%" bgcolor="{th_bg}" align=center>{lang_customer}</td>
     </tr>
   </form>
-  
 <!-- BEGIN addressbook_list -->
       <tr bgcolor="{tr_color}">
         <td>{company}</td>

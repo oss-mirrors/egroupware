@@ -13,7 +13,8 @@
   $phpgw_info["flags"] = array("noheader" => True, 
                                "nonavbar" => True, 
                                "currentapp" => "projects", 
-                               "enable_nextmatchs_class" => True);
+                               "enable_nextmatchs_class" => True,
+                               "enable_addressbook_class" => True);
   include("../header.inc.php");
 
   $t = new Template($phpgw_info["server"]["app_tpl"]);
@@ -25,11 +26,11 @@
   $t->set_var(bg_color,$phpgw_info["theme"]["bg_color"]);
   $t->set_var(lang_addressbook_action,lang("Address book"));
   
-  if (! $start)
+   if (! $start) {
      $start = 0;
-
-//  $limit =$phpgw->nextmatchs->sql_limit($start);
-
+     $query = "";
+    }
+  
   if ($order)
      $ordermethod = "order by $order $sort";
   else
@@ -65,7 +66,7 @@
        . "from addressbook "
        . "WHERE $filtermethod AND (ab_lastname like '"
        . "%$query%' OR ab_firstname like '%$query%' OR ab_company like '%$query%')");
-     }
+      }
 
     $phpgw->db->next_record();
 
@@ -126,7 +127,7 @@
 <?php
  
   $limit = $phpgw->nextmatchs->sql_limit($start);  
-
+  
 
 if ($query) {
    if($phpgw_info["apps"]["timetrack"]["enabled"]){
@@ -134,7 +135,7 @@ if ($query) {
        . "c.company_name "
        . "from addressbook as a, customers as c where a.ab_company_id = c.company_id "
        . "AND $filtermethod AND (a.ab_lastname like '"
-       . "%$query%' OR a.ab_firstname like '%$query%' OR c.company_name like '%$query%') "
+      . "%$query%' OR a.ab_firstname like '%$query%' OR c.company_name like '%$query%') "
        . "$ordermethod limit $limit");
    } else {
      $phpgw->db->query("SELECT ab_id,ab_owner,ab_firstname,ab_lastname,ab_company "
@@ -143,7 +144,7 @@ if ($query) {
        . "%$query%' OR ab_firstname like '%$query%' OR ab_company like '%$query%') "
        . "$ordermethod limit $limit");
    }
-  } else {
+  } else { 
    if($phpgw_info["apps"]["timetrack"]["enabled"]){
      $phpgw->db->query("SELECT a.ab_id,a.ab_owner,a.ab_firstname,a.ab_lastname,a.ab_company_id,"
        . "c.company_name "
