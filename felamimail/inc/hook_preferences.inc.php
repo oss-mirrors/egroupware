@@ -14,17 +14,21 @@
 {
 // Only Modify the $file and $title variables.....
 	$title = $appname;
-	$sieveLinkData = array
-	(
-		'menuaction'	=> 'felamimail.uisieve.mainScreen',
-		'action'	=> 'updateFilter'
-	);
-                                        
 	$file = array(
-		'Preferences'       	  => $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=felamimail'),
-		'Manage Sieve'     	  => $GLOBALS['phpgw']->link('/index.php',$sieveLinkData),
-		'Manage Folders'	  => $GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')	
+		'Preferences'			=> $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=felamimail'),
+		'Manage Folders'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')	
 	);
+
+	$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
+	if($mailPreferences['imapEnableSieve'] == true)
+	{
+		$sieveLinkData = array
+		(
+			'menuaction'	=> 'felamimail.uisieve.listScripts',
+			'action'	=> 'updateFilter'
+		);
+		$file['Manage EMailfilter / Vacation']	= $GLOBALS['phpgw']->link('/index.php',$sieveLinkData);
+	}
 //Do not modify below this line
 	display_section($appname,$title,$file);
 }

@@ -22,9 +22,9 @@ function SubmitForm(a)
 	</tr>
 	<tr CLASS="sieveRowActive">
 		<td>
-			<input TYPE="checkbox" NAME="continue" VALUE="continue" {continue_checked}>Check message against next rule also
-			<input TYPE="checkbox" NAME="keep" VALUE="keep" {keep_checked}>Keep a copy of the message in your Inbox
-			<input TYPE="checkbox" NAME="regexp" VALUE="regexp" {regexp_checked}>Use regular expressions
+			<input TYPE="checkbox" NAME="continue" id="continue" VALUE="continue" {continue_checked}><label for="continue">Check message against next rule also</label><br>
+			<input TYPE="checkbox" NAME="keep" id="keep" VALUE="keep" {keep_checked}><label for="keep">Keep a copy of the message in your Inbox</label><br>
+			<input TYPE="checkbox" NAME="regexp" id="regexp" VALUE="regexp" {regexp_checked}><label for="regexp">Use regular expressions</label>
 		</td>
 	</tr>
 	<tr>
@@ -98,28 +98,28 @@ function SubmitForm(a)
 				</tr>
 				<tr CLASS="sieveRowActive">
 					<td>
-						<input TYPE="radio" NAME="action" VALUE="folder" {checked_action_folder}> File Into:
+						<input TYPE="radio" NAME="action" VALUE="folder" id="action_folder" {checked_action_folder}> File Into:
 					</td>
 					<td>
-						<select class="input_text" NAME="folder">
+						<select class="input_text" NAME="folder" onchange="document.getElementById('action_folder').checked = true;">
 							{folder_rows}
 						</select>
 					</td>
 				</tr>
 				<tr CLASS="sieveRowActive">
 					<td>
-						<input TYPE="radio" NAME="action" VALUE="address" {checked_action_address}> Forward to address:
+						<input TYPE="radio" NAME="action" VALUE="address" id="action_address" {checked_action_address}> Forward to address:
 					</td>
 					<td>
-						<input class="input_text" TYPE="text" NAME="address" SIZE="40" value="{value_address}">
+						<input class="input_text" TYPE="text" NAME="address" onchange="document.getElementById('action_address').checked = true;" SIZE="40" value="{value_address}">
 					</td>
 				</tr>
 				<tr CLASS="sieveRowActive">
 					<td>
-						<input TYPE="radio" NAME="action" VALUE="reject" {checked_action_reject}> Send a reject message:
+						<input TYPE="radio" NAME="action" VALUE="reject" id="action_reject" {checked_action_reject}> Send a reject message:
 					</td>
 					<td>
-						<textarea class="input_text" NAME="reject" ROWS="3" COLS="40" WRAP="hard" TABINDEX="14">{value_reject}</textarea>
+						<textarea class="input_text" NAME="reject" onchange="document.getElementById('action_reject').checked = true;" ROWS="3" COLS="40" WRAP="hard" TABINDEX="14">{value_reject}</textarea>
 					</td>
 				</tr>
 				<tr CLASS="sieveRowActive">

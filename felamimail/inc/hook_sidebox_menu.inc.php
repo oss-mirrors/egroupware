@@ -1,17 +1,17 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - Calendar's Sidebox-Menu for idots-template                *
-  * http://www.phpgroupware.org                                              *
-  * Written by Pim Snel <pim@lingewoud.nl>                                   *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
-
-  /* $Id$ */
 {
+	/**************************************************************************\
+	* phpGroupWare - Calendar's Sidebox-Menu for idots-template                *
+	* http://www.phpgroupware.org                                              *
+	* Written by Pim Snel <pim@lingewoud.nl>                                   *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
+	
+	/* $Id$ */
 
  /*
 	This hookfile is for generating an app-specific side menu used in the idots 
@@ -50,12 +50,6 @@
 		$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
 		#_debug_array($mailPreferences);
 		$menu_title = lang('Preferences');
-		$sieveLinkData = array
-		(
-			'menuaction'	=> 'felamimail.uisieve.mainScreen',
-			'action'	=> 'updateFilter'
-		);
-                                        
 		$file = array(
 			'Preferences'       	  => $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=felamimail'),
 			'Manage Folders'	  => $GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')	
@@ -63,7 +57,19 @@
 		
 		if($mailPreferences['imapEnableSieve'] == true)
 		{
-			$file['Manage Sieve'] = $GLOBALS['phpgw']->link('/index.php',$sieveLinkData);
+			$linkData = array
+			(
+				'menuaction'	=> 'felamimail.uisieve.editScript',
+				'editmode'	=> 'filter'
+			);
+			$file['EMailfilter']	= $GLOBALS['phpgw']->link('/index.php',$linkData);
+
+			$linkData = array
+			(
+				'menuaction'	=> 'felamimail.uisieve.editScript',
+				'editmode'	=> 'vacation'
+			);
+			$file['Vacation']	= $GLOBALS['phpgw']->link('/index.php',$linkData);
 		}
 		
 		display_sidebox($appname,$menu_title,$file);

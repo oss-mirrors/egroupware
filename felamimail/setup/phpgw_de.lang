@@ -390,3 +390,19 @@ you can only edit one address at the time	felamimail	de
 you must login first.	felamimail	de	Sie müssen sich zuerst anmelden
 you need a valid user and password to access this page!	felamimail	de	
 your search failed with the following error(s)	felamimail	de	
+vacation notice	felamimail	de	Abwesenheitsnotiz
+respond to mail sent to	felamimail	de	Anworte auf EMails die gesendet werden an
+every	felamimail	de	alle
+days	felamimail	de	Tage
+with message	felamimail	de	mit folgender Nachricht
+filter rules	felamimail	de	Filter Regeln
+open all	felamimail	de	Öffne alle
+close all	felamimail	de	Schließe alle
+EMailfilter	felamimail	de	EMailfilter
+Vacation	felamimail	de	Abwesenheitsnotiz
+edit vacation settings	felamimail	de	Abwesenheitsnotiz bearbeiten
+script name	felamimail	de	Skriptname
+script status	felamimail	de	Skriptstatus
+delete script	felamimail	de	Skript löschen
+Manage Folders	preferences	de	Ordner verwalten
+Manage EMailfilter / Vacation	preferences	de	Verwalten der EMailfilter und Abwesenheitsnotiz

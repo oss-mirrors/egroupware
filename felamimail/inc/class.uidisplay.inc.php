@@ -442,6 +442,7 @@
 			$this->kses->AddHTML("tt");
 			$this->kses->AddHTML("br");
 			$this->kses->AddHTML("b");
+			$this->kses->AddHTML("i");
 			$this->kses->AddHTML("strike");
 			$this->kses->AddHTML("center");
 			$this->kses->AddHTML(
@@ -451,6 +452,11 @@
 			);
 			$this->kses->AddHTML("div");
 			$this->kses->AddHTML("ul");
+			$this->kses->AddHTML(
+				"ol",array(
+					"type"	=> array('maxlen' => 20)
+				)
+			);
 			$this->kses->AddHTML("li");
 			$this->kses->AddHTML("h1");
 			$this->kses->AddHTML("h2");
@@ -471,6 +477,12 @@
 				"a", array(
 					"href" => array('maxlen' => 45, 'minlen' => 10),
 					"name" => array('minlen' => 2)
+				)
+			);
+
+			$this->kses->AddHTML(
+				"pre", array(
+					"wrap" => array('maxlen' => 10)
 				)
 			);
 			
@@ -538,9 +550,11 @@
 			);
 			$this->kses->AddHTML(
 				"blockquote",array(
-					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
-					"style"   => array("minlen" =>   1),
-					"dir"   => array("minlen" =>   1, 'maxlen' =>  10)
+					"class"	=> array("minlen" =>   1, 'maxlen' =>  20),
+					"style"	=> array("minlen" =>   1),
+					"cite"	=> array('maxlen' => 30),
+					"type"	=> array('maxlen' => 10),
+					"dir"	=> array("minlen" =>   1, 'maxlen' =>  10)
 				)
 			);
 
