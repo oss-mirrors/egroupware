@@ -3,23 +3,12 @@
 +              install instructions for projects                +
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+                 install the database tables                   +
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+The setup application will create the tables for projects and
+include the translations to the language table.
 
-files:
-create_tables.mysql 
-create_tables.pgsql 
-lang.sql and/or de_translation.sql
-[ can be found in projects-doc-directory ]
+the Administrator of phpgroupware has to choose project administrators
+at first.
+Administration -> Project administration 
 
-Import the projects tables into your phpgroupware database in the 
-command shell:
-mysql -uusername -ppassword dbname < create_tables.mysql
-mysql -uusername -ppassword dbname < lang.sql
-mysql -uusername -ppassword dbname < de_translation.sql
-
-Exchange 'username' for your db-user-name,
-'password' for your db-users-password and 'dbname' for the
-phpgroupware-db-name.
-
+The chosen project admins will be able to setup the activities,
+which must be created before you can create a project.
