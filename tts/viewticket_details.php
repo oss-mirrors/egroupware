@@ -49,14 +49,14 @@ $phpgw->db->query("select t_id,t_category,t_detail,t_priority,t_user,t_assignedt
 	    . "t_timestamp_opened, t_timestamp_closed, t_subject from ticket where t_id='$ticketid'");
 $phpgw->db->next_record();
 
-$lstAssignedto=$phpgw->db->f(5);
-$lstCategory=$phpgw->db->f(1);
+$lstAssignedto=$phpgw->db->f("t_assignedto");
+$lstCategory=$phpgw->db->f("t_category");
 
 // Print the table
 ?>
 <form method="POST" action="<?php echo $phpgw->link("viewticket_details.php"); ?>">
- <input type=hidden value="<?php echo $phpgw->db->f(0); ?>" name="t_id">
- <input type=hidden value="<?php echo $phpgw->db->f(4); ?>" name="lstAssignedfrom">
+ <input type=hidden value="<?php echo $phpgw->db->f("t_id"); ?>" name="t_id">
+ <input type=hidden value="<?php echo $phpgw->db->f("t_user"); ?>" name="lstAssignedfrom">
   <div align=center>
    <center>
     <table border=0 width="80%" bgcolor="<?php echo $phpgw_info["theme"][th_bg]; ?>" cellspacing=0>
@@ -73,17 +73,17 @@ $lstCategory=$phpgw->db->f(1);
      </tr>
      <tr>
        <td align=center>
-         <font size=3>ID: <b><?php echo $phpgw->db->f(0); ?></b>
+         <font size=3>ID: <b><?php echo $phpgw->db->f("t_id"); ?></b>
        </td>
        <td align=center>
-         <?php echo lang("Assigned from"); ?>: <br><b><?php echo $phpgw->db->f(4);?></b>
+         <?php echo lang("Assigned from"); ?>: <br><b><?php echo $phpgw->db->f("t_user");?></b>
        </td>
        <td align=center>
-         <?php echo lang("Open Date"); ?>: <br><b><?php echo $phpgw->common->show_date($phpgw->db->f(6)); ?></b>
+         <?php echo lang("Open Date"); ?>: <br><b><?php echo $phpgw->common->show_date($phpgw->db->f("t_timestamp_opened")); ?></b>
          <br>
          <?php echo lang("Close Date"); ?>: <br><b><?php
-                        if ($phpgw->db->f(7) > 0) {
-                          echo $phpgw->common->show_date($phpgw->db->f(7));
+                        if ($phpgw->db->f("t_timestamp_closed") > 0) {
+                          echo $phpgw->common->show_date($phpgw->db->f("t_timestamp_closed"));
                         } else {
                           echo lang("in progress");
                         }
@@ -128,7 +128,7 @@ $lstCategory=$phpgw->db->f(1);
        </td>
      </tr>
 <?php
-  $details_string = nl2br($phpgw->db->f(2));
+  $details_string = nl2br(stripslashes($phpgw->db->f("t_detail")));
   if (empty($details_string)) {
     echo "   <input type=hidden value=\"$details_string\" name=\"prevtxtdetail\">";
     echo "     <tr>\n";
@@ -137,7 +137,7 @@ $lstCategory=$phpgw->db->f(1);
     echo "       </td>\n";
   } else {  
     echo "   <input type=hidden value=\"$details_string\" name=\"prevtxtdetail\">";
-    echo "    <tr><td colspan=3 align=left><br><b>".lang("Subject").":</b> " . $phpgw->db->f(8) . "<br><br>";
+    echo "    <tr><td colspan=3 align=left><br><b>".lang("Subject").":</b> " . stripslashes($phpgw->db->f("t_subject")) . "<br><br>";
     echo "    <tr><td colspan=3 align=left><B>".lang("Details").":</B><BR> $details_string </td></tr>\n";
     echo "    <tr><td colspan=3 align=left><BR><BR>".lang("Additional notes").":<BR></td></tr>\n";
     echo "     <tr>\n";
@@ -224,7 +224,7 @@ $lstCategory=$phpgw->db->f(1);
          // I would like to add something like !*!<epoch>!*! then that could be replaced with the users date/time preferences
          $txtDetail .= "<br>" . $phpgw_info["user"]["loginid"] . date("m/d/Y h:m:s a") . " - " . addslashes(lang("Ticket assigned to x",$lstAssignedto));
       }
-      $phpgw->db->query("UPDATE ticket set t_category='$lstCategory',t_detail='$txtDetail',t_priority='$optPriority',t_user='$lstAssignedfrom',t_assignedto='$lstAssignedto' WHERE t_id=$t_id");
+      $phpgw->db->query("UPDATE ticket set t_category='$lstCategory',t_detail='".addslashes($txtDetail)."',t_priority='$optPriority',t_user='$lstAssignedfrom',t_assignedto='$lstAssignedto' WHERE t_id=$t_id");
 
       if ( $optUpdateclose == "close" ) {
         $phpgw->db->query("UPDATE ticket set t_timestamp_closed='" . time() . "' WHERE t_id=$t_id");
