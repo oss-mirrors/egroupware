@@ -49,7 +49,7 @@ translate	developer_tools	nl	Vertaal
 translation	developer_tools	nl	Vertaling
 update	developer_tools	nl	Bijwerken
 update database	developer_tools	nl	Database bijwerken
-updates the translations of both lang-files in your database, so you can verify your work imediatly	developer_tools	nl	Werkt de vertalingen van beide taalbestanden bij in de database zodat u uw werk direct kunt controleren
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	nl	Werkt de vertalingen van beide taalbestanden bij in de database zodat u uw werk direct kunt controleren
 version	developer_tools	nl	Versie
 write	developer_tools	nl	Naar bestand schrijven
 write the lang-file to the apps setup-dir	developer_tools	nl	Schrijf het taalbestand naar de setupdirectory van de toepassing

@@ -62,7 +62,7 @@ translation	developer_tools	es-es	Traducción
 translation of phrase	developer_tools	es-es	Traducción de la frase
 update	developer_tools	es-es	Actualizar
 update database	developer_tools	es-es	Actualizar base de datos
-updates the translations of both lang-files in your database, so you can verify your work imediatly	developer_tools	es-es	Actualiza las traducciones ambos ficheros de idiomas en la base de datos, para poder comprobar los resultados inmediatamente
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	es-es	Actualiza las traducciones ambos ficheros de idiomas en la base de datos, para poder comprobar los resultados inmediatamente
 version	developer_tools	es-es	Versión
 write	developer_tools	es-es	Escribir
 write the lang-file to the apps setup-dir	developer_tools	es-es	Escribir el fichero de idioma en el directorio de configuración de aplicaciones

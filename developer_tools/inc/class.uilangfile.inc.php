@@ -280,7 +280,7 @@
 			$this->template->set_var('revert_help',sprintf($help,lang('Clears the internal buffer, all changes made sofar are lost')));
 			$this->template->set_var('download_help',sprintf($help,lang('Download the lang-file to be saved in the apps setup-dir')));
 			$this->template->set_var('write_help',sprintf($help,lang('Write the lang-file to the apps setup-dir')));
-			$this->template->set_var('loaddb_help',sprintf($help,lang('Updates the translations of both lang-files in your database, so you can verify your work imediatly')));
+			$this->template->set_var('loaddb_help',sprintf($help,lang('Updates the translations of both lang-files in your database, so you can verify your work immediately')));
 
 			$languages = $this->bo->list_langs();
 

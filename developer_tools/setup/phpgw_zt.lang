@@ -59,7 +59,7 @@ translate	developer_tools	zt	翻譯
 translation	developer_tools	zt	翻譯
 update	developer_tools	zt	更新
 update database	developer_tools	zt	更新資料庫
-updates the translations of both lang-files in your database, so you can verify your work imediatly	developer_tools	zt	更新資料庫中的翻譯資料，接著您可以同時檢驗剛剛完成的工作
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	zt	更新資料庫中的翻譯資料，接著您可以同時檢驗剛剛完成的工作
 version	developer_tools	zt	版本
 write	developer_tools	zt	寫入
 write the lang-file to the apps setup-dir	developer_tools	zt	將翻譯的資料寫入應用程式的資料夾中

@@ -61,7 +61,7 @@ translation	developer_tools	en	Translation
 translation of phrase	developer_tools	en	Translation of phrase
 update	developer_tools	en	Update
 update database	developer_tools	en	Update Database
-updates the translations of both lang-files in your database, so you can verify your work imediatly	developer_tools	en	Updates the translations of both lang-files in your database, so you can verify your work imediatly
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	en	Updates the translations of both lang-files in your database, so you can verify your work immediately
 version	developer_tools	en	Version
 write	developer_tools	en	Write
 write the lang-file to the apps setup-dir	developer_tools	en	Write the lang-file to the apps setup-dir

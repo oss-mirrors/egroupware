@@ -60,7 +60,7 @@ translate	developer_tools	it	Traduci
 translation	developer_tools	it	Traduzione
 update	developer_tools	it	Aggiorna
 update database	developer_tools	it	Aggiorna database
-updates the translations of both lang-files in your database, so you can verify your work imediatly	developer_tools	it	Aggiorna le traduzioni di tutti e due i file .lang nel database, così è possibile verificare immediatamente il lavoro
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	it	Aggiorna le traduzioni di tutti e due i file .lang nel database, così è possibile verificare immediatamente il lavoro
 version	developer_tools	it	Versione
 write	developer_tools	it	Scrivi
 write the lang-file to the apps setup-dir	developer_tools	it	Scrive il file .lang nella directory setup dell'applicazione

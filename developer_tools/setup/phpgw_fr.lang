@@ -59,7 +59,7 @@ translate	developer_tools	fr	Traduire
 translation	developer_tools	fr	Traduction
 update	developer_tools	fr	Mettre à jour
 update database	developer_tools	fr	Mettre à jour la base de données
-updates the translations of both lang-files in your database, so you can verify your work imediatly	developer_tools	fr	Met à jour les traductions des deux fichiers de langue dans votre base de données, que vous puissiez vérifier votre travail immédiatement
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	fr	Met à jour les traductions des deux fichiers de langue dans votre base de données, que vous puissiez vérifier votre travail immédiatement
 version	developer_tools	fr	Version
 write	developer_tools	fr	Ecrire
 write the lang-file to the apps setup-dir	developer_tools	fr	Ecrit le fichier de langue dans le répertoire setup de l'application
