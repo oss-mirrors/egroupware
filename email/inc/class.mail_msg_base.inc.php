@@ -238,7 +238,7 @@
 		$tmp_prefs = array();
 		*/
 		// REFERENCE class var $this->prefs to $GLOBALS['phpgw_info']['user']['preferences']['email']
-		$this->prefs = &$GLOBALS['phpgw_info']['user']['preferences']['email'];
+		$this->prefs = $GLOBALS['phpgw_info']['user']['preferences']['email'];
 		
 		if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST create_email_preferences GLOBALS[phpgw_info][user][preferences][email] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']['email']) ; echo '</pre>';}
 		if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST create_email_preferences $this->prefs -reference- to GLOBALS[phpgw_info][user][preferences][email] dump:<pre>'; print_r($this->prefs) ; echo '</pre>';}
@@ -2768,8 +2768,12 @@
 	}
 	
 	// PHP3 and PHP<4.0.6 SAFE Version of "array_search"
-	function array_search_ex($needle='', $haystack=array(), $strict=False)
+	function array_search_ex($needle='', $haystack='', $strict=False)
 	{
+		if(!$haystack)
+		{
+			$haystack=array();
+		}
 		// error check
 		if ((trim($needle) == '')
 		|| (!$haystack)

@@ -16,7 +16,7 @@
 	class uipreferences
 	{
 		var $public_functions = array(
-			'preferences' => True,
+			'preferences' => True
 		);
 
 		var $bo;
@@ -57,9 +57,13 @@
 		@author	Angles
 		@access	Private
 		*/
-		function create_prefs_block($feed_prefs=array())
+		function create_prefs_block($feed_prefs='')
 		{
 			$return_block = '';
+			if(!$feed_prefs)
+			{
+				$feed_prefs = array();
+			}
 			if (count($feed_prefs) == 0)
 			{
 				return $return_block;

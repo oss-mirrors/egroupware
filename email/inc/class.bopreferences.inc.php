@@ -528,8 +528,12 @@
 		@author	Angles
 		@access	Private
 		*/
-		function process_submitted_prefs($prefs_set=array())
+		function process_submitted_prefs($prefs_set='')
 		{
+			if(!$prefs_set)
+			{
+				$prefs_set=array();
+			}
 			$c_prefs = count($prefs_set);
 			if ($c_prefs == 0)
 			{

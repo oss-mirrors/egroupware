@@ -51,8 +51,12 @@ class mail_msg extends mail_msg_wrappers
 	@discussion ?
 	@access : private
 	*/
-	function all_folders_listbox($feed_args=array())
+	function all_folders_listbox($feed_args='')
 	{
+		if(!$feed_args)
+		{
+			$feed_args=array();
+		}
 		//$debug_widget = True;
 		$debug_widget = False;
 		
@@ -1412,8 +1416,12 @@ class mail_msg extends mail_msg_wrappers
 	if it was not OK to obtain the data according to the speed skip test
 	@discussion  total size of all emails in this folder added up, if its OK to get that data
 	*/
-	function report_total_foldersize($report_args_array=array())
+	function report_total_foldersize($report_args_array='')
 	{
+		if(!$report_args_array)
+		{
+			$report_args_array=array();
+		}
 		// initialize return value
 		$return_folder_size = '';
 		// if it's ok to obtain size, and size IS obtained, $return_folder_size will be filled
@@ -1525,8 +1533,16 @@ class mail_msg extends mail_msg_wrappers
 	@discussion ?
 	@access : private
 	*/
-	function get_msg_list_display($folder_info=array(), $msg_nums_array=array())
-	{		
+	function get_msg_list_display($folder_info='', $msg_nums_array='')
+	{
+		if(!$folder_info)
+		{
+			$folder_info=array();
+		}
+		if(!$msg_nums_array)
+		{
+			$msg_nums_array = array();
+		}
 		// obtain required data that is not passed into this function
 		// if no $folder_info was passed as an arg, then $folder_info will be an array with 0 elements
 		if (count($folder_info) == 0)
