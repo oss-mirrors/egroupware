@@ -31,7 +31,7 @@
 		$sortmethod="order by t_priority desc";
 
 		$phpgw->db->query("select t_id,t_category,t_priority,t_assignedto,t_timestamp_opened,t_user,t_timestamp_closed,t_subject,t_watchers "
-		. "from ticket $filtermethod $sortmethod");
+		. "from phpgw_tts_tickets $filtermethod $sortmethod");
 		$phpgw->db->next_record();
 		$phpgw->db->f('0') ;
 

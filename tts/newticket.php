@@ -125,11 +125,11 @@
 		$txtDetail .= $txtAdditional . '<br><hr>';
 		$txtDetail = addslashes(nl2br($txtDetail));
 
-		$GLOBALS['phpgw']->db->query("INSERT INTO ticket (t_category,t_detail,t_priority,t_user,t_assignedto, "
+		$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_tts_tickets (t_category,t_detail,t_priority,t_user,t_assignedto, "
 			. " t_timestamp_opened,t_timestamp_closed,t_subject) VALUES ('$lstCategory','$txtDetail',"
 			. "'$optPriority','" . $GLOBALS['phpgw_info']["user"]["userid"] . "','$assignto','"
 			. time() . "',0,'$subject');");
-		$GLOBALS['phpgw']->db->query("SELECT t_id FROM ticket WHERE t_subject='$subject' AND t_user='".$GLOBALS['phpgw_info']['user']['userid']."'");
+		$GLOBALS['phpgw']->db->query("SELECT t_id FROM phpgw_tts_tickets WHERE t_subject='$subject' AND t_user='".$GLOBALS['phpgw_info']['user']['userid']."'");
 		$GLOBALS['phpgw']->db->next_record();
 		if($GLOBALS['phpgw_info']['server']['tts_mailticket'])
 		{

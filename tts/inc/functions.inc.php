@@ -38,7 +38,7 @@
 			$phpgw->send = CreateObject('phpgwapi.send');
 	
 			$phpgw->db->query("select t_id,t_category,t_detail,t_priority,t_user,t_assignedto,"
-				. "t_timestamp_opened, t_timestamp_closed, t_subject from ticket where t_id='$ticket_id'");
+				. "t_timestamp_opened, t_timestamp_closed, t_subject from phpgw_tts_tickets where t_id='$ticket_id'");
 			$phpgw->db->next_record();
     
 			$group = $phpgw->db->f("t_category");

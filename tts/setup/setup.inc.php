@@ -14,20 +14,20 @@
 	/* Basic information about this app */
 	$setup_info['tts']['name']      = 'tts';
 	$setup_info['tts']['title']     = 'Trouble Ticket System';
-	$setup_info['tts']['version']   = '0.0.1';
+	$setup_info['tts']['version']   = '0.8.1';
 	$setup_info['tts']['app_order'] = 99;
 	$setup_info['tts']['enable']    = 1;
 
 	/* The tables this app creates */
 	$setup_info['tts']['tables']    = array(
-		'ticket',
-		'category',
-		'department'
+		'phpgw_tts_tickets',
+		'phpgw_tts_categories',
+		'phpgw_tts_departments'
 	);
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['tts']['hooks'][] = 'preferences';
-	$setup_info['tts']['hooks'][] = 'admin';
+	$setup_info['tts']['hooks'][]   = 'preferences';
+	$setup_info['tts']['hooks'][]   = 'admin';
 
 	/* Dependencies for this app to work */
 	$setup_info['tts']['depends'][] = array(

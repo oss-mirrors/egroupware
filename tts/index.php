@@ -81,11 +81,11 @@
 		$sortmethod = "order by $order $sort";
 	}
 
-	$GLOBALS['phpgw']->db->query("SELECT COUNT('t_id') FROM ticket");
+	$GLOBALS['phpgw']->db->query("SELECT COUNT('t_id') FROM phpgw_tts_tickets");
 	$GLOBALS['phpgw']->db->next_record();
 	$numtotal = $GLOBALS['phpgw']->db->f('0') ;
 
-	$GLOBALS['phpgw']->db->query("SELECT COUNT('t_id') FROM ticket where t_timestamp_closed='0'");
+	$GLOBALS['phpgw']->db->query("SELECT COUNT('t_id') FROM phpgw_tts_tickets where t_timestamp_closed='0'");
 	$GLOBALS['phpgw']->db->next_record();
 	$numopen = $GLOBALS['phpgw']->db->f('0') ;
 
@@ -93,7 +93,7 @@
 	$GLOBALS['phpgw']->template->set_var('tts_numopen',lang('Tickets open x',$numopen));
 
 	$GLOBALS['phpgw']->db->query("select t_id,t_category,t_priority,t_assignedto,t_timestamp_opened,t_user,t_timestamp_closed,t_subject,t_watchers "
-		. "from ticket $filtermethod $sortmethod");
+		. "from phpgw_tts_tickets $filtermethod $sortmethod");
 	$numfound = $GLOBALS['phpgw']->db->num_rows();
 
 	if ($filter == 'search')

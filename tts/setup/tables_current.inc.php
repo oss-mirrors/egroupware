@@ -12,7 +12,7 @@
   /* $Id$ */
 
 	$phpgw_baseline = array(
-		'ticket' => array(
+		'phpgw_tts_tickets' => array(
 			'fd' => array(
 				't_id'                => array('type' => 'auto', 'nullable' => False),
 				't_category'          => array('type' => 'varchar', 'precision' => 40, 'nullable' => True),
@@ -31,7 +31,7 @@
 			'fk' => array(),
 			'uc' => array()
 		),
-		'category' => array(
+		'phpgw_tts_categories' => array(
 			'fd' => array(
 				'c_id'         => array('type' => 'auto', 'nullable' => False),
 				'c_department' => array('type' => 'varchar', 'precision' => 25, 'nullable' => True),
@@ -42,7 +42,7 @@
 			'fk' => array(),
 			'uc' => array()
 		),
-		'department' => array(
+		'phpgw_tts_departments' => array(
 			'fd' => array(
 				'd_name' => array('type' => 'varchar', 'precision' => 25, 'nullable' => True)
 			),

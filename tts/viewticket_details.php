@@ -26,7 +26,7 @@
 	{
 		// select the ticket that you selected
 		$GLOBALS['phpgw']->db->query("select t_id,t_category,t_detail,t_priority,t_user,t_assignedto,"
-			. "t_timestamp_opened, t_timestamp_closed, t_subject, t_watchers from ticket where t_id='$ticketid'");
+			. "t_timestamp_opened, t_timestamp_closed, t_subject, t_watchers from phpgw_tts_tickets where t_id='$ticketid'");
 		$GLOBALS['phpgw']->db->next_record();
 
 		$lstAssignedto = $GLOBALS['phpgw']->db->f("t_assignedto");
@@ -39,7 +39,7 @@
 			$temp_watchers[]=$GLOBALS['phpgw_info']['user']['userid'];
 			$t_watchers=implode(":",$temp_watchers);
 			// var_dump($t_watchers);
-			$GLOBALS['phpgw']->db->query("UPDATE ticket set t_watchers='".$t_watchers."' where t_id=$ticketid");
+			$GLOBALS['phpgw']->db->query("UPDATE phpgw_tts_tickets set t_watchers='".$t_watchers."' where t_id=$ticketid");
 		} 
 
 		// Print the table
@@ -157,7 +157,7 @@
 	else
 	{
 		// DB Content is fresher than http posted value.
-		$GLOBALS['phpgw']->db->query("select t_detail, t_assignedto, t_category, t_priority from ticket where t_id='".$t_id."'");
+		$GLOBALS['phpgw']->db->query("select t_detail, t_assignedto, t_category, t_priority from phpgw_tts_tickets where t_id='".$t_id."'");
 		$GLOBALS['phpgw']->db->next_record();
 		$txtDetail = $GLOBALS['phpgw']->db->f('t_detail');
 		$oldassigned = $GLOBALS['phpgw']->db->f('t_assignedto');
@@ -175,14 +175,14 @@
 			if ($optUpdateclose == 'reopen')
 			{
 				# reopen the ticket
-				$GLOBALS['phpgw']->db->query("UPDATE ticket set t_timestamp_closed='0' WHERE t_id=$t_id");
+				$GLOBALS['phpgw']->db->query("UPDATE phpgw_tts_tickets set t_timestamp_closed='0' WHERE t_id=$t_id");
 				$txtReopen = '<b>'.lang('Ticket reopened').'</b><br>';
 			}
 
 			if ( $optUpdateclose == 'close' )
 			{
 				$txtClose = '<br /><b>'.lang('Ticket closed').'</b>';
-				$GLOBALS['phpgw']->db->query("UPDATE ticket set t_timestamp_closed='" . time() . "' WHERE t_id=$t_id");
+				$GLOBALS['phpgw']->db->query("UPDATE phpgw_tts_tickets set t_timestamp_closed='" . time() . "' WHERE t_id=$t_id");
 			}
 
 			if ($oldassigned != $lstAssignedto)
@@ -212,7 +212,7 @@
 				$txtDetail .= '<hr>';
 
 				# update the database if ticket content changed
-				$GLOBALS['phpgw']->db->query("UPDATE ticket set t_category='$lstCategory',t_detail='".addslashes($txtDetail)."',t_priority='$optPriority',t_user='$lstAssignedfrom',t_assignedto='$lstAssignedto',t_watchers='".$GLOBALS['phpgw_info']["user"]["userid"]."' WHERE t_id=$t_id");
+				$GLOBALS['phpgw']->db->query("UPDATE phpgw_tts_tickets set t_category='$lstCategory',t_detail='".addslashes($txtDetail)."',t_priority='$optPriority',t_user='$lstAssignedfrom',t_assignedto='$lstAssignedto',t_watchers='".$GLOBALS['phpgw_info']["user"]["userid"]."' WHERE t_id=$t_id");
 
 				if ($GLOBALS['phpgw_info']['server']['tts_mailticket'])
 				{
