@@ -49,7 +49,9 @@
    $this->plugins['imagepath']['config']		= array
    (
 	  /* array('default value','input field type', 'extra html properties')*/
-	  'Max_files' => array('3','text','maxlength=2 size=2'), 
+	  'Max_files' => array('3','text','maxlength=2 size=2'),  
+	  'Allow_more_then_max_files'=> array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
+	  'Zip_file_box'=> array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
 	  'Max_image_width' => array('','text','maxlength=4 size=4'),
 	  'Max_image_height' => array('','text','maxlength=4 size=4'),
 	  'Image_filetype' => array(array('png','gif','jpg'),'select','maxlength=3 size=3'),
@@ -257,7 +259,18 @@
 				  $input.='</td></tr>';			
 		 }
 		 $input.='</table>';
+
+	  /* add extra images file container here */
+
 	  $input.='<input type="hidden" name="'.$field_name.'" value="">';
+
+	  if($config['Zip_file_box']=='True')
+	  {
+		 $input.= '<table>';
+			$input.='<tr><td>'.lang('Add your ZIP-file with images here').'<input type="file" name="IMG_ZIP'.$field_name.'" value=""></td></tr>';
+			$input.='</table>';
+	  }
+	  
 	  return $input;
    }
 

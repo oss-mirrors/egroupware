@@ -10,17 +10,17 @@
 <!-- END rows -->
 
 <!-- BEGIN plugins_header -->
-<tr><td bgcolor={prow_color} valign="top">{lang_field_configuration}</td><td bgcolor={prow_color}>
+<tr><td colspan="2" style="background-color:{row_color}"  valign="top"><strong>{lang_field_configuration}</strong>
 <div id="divPlugins">
-<table style="background-color:#ffffff;border:solid 1px #cccccc;">
+<table border="0" style="background-color:#ffffff;border:solid 1px #cccccc;">
 		<tr>
 			<td>{lang_fields}</td><td>			
-			{lang_field_plugin}</td><td>{lang_plugin_conf}</td><td>{lang_afc}</td><td>{lang_mandatory}</td>
+			{lang_field_plugin}</td><td>{lang_plugin_conf}</td><td>{lang_afc}</td><td>{lang_mandatory}</td><td>{lang_show_by_default_listview}</td>
 		</tr>
 <!-- END plugins_header -->
 
 <!-- BEGIN plugins_row -->
-<tr><td>{field_name}</td>
+<tr><td >{field_name}</td>
 	<td>
 {hidden_value}
 		<select name="PLG{field_name}">
@@ -35,7 +35,10 @@
 	<input type="button" onClick="{popup_onclick_name_and_help}" value="{lang_name_and_help}">
 	</td>
 	<td>
-	<input type="checkbox" onClick="alert('Not implemented')" style="color:red" value="{lang_mandatory}">
+	<input type="checkbox" onClick="alert('Not implemented')" name="MANDATORY{field_name}" style="color:red" value="{lang_mandatory}">
+	</td>
+	<td>
+	<input type="checkbox" onClick="alert('Not implemented')" name="SHOW_DEF{field_name}" style="color:red" value="{lang_show_by_default_listview}">
 	</td>
 	</tr>
 <!-- END plugins_row -->
@@ -47,7 +50,7 @@
 <!-- END plugins_footer -->
 
 <!-- BEGIN relations_header -->
-<tr><td bgcolor={rrow_color} valign="top">{lang_relations}</td><td bgcolor={rrow_color}>{hidden_value}
+<tr><td style="background-color:{row_color}" bgcolor={row_color} valign="top">{lang_relations}</td><td bgcolor={row_color}>{hidden_value}
 <!-- END relations_header -->
 
 <!-- BEGIN relation_defined1 -->

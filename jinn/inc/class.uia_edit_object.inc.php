@@ -25,6 +25,11 @@
    // FIXME do we need to extend?
    class uia_edit_object extends uiadmin
    {
+	  //FIXME move all pub functions from uiadmin to this file
+	  var $xxxpublic_functions = Array(
+		 'render_form'=>True
+	  ); 
+	  
 	  var $where_key;
 	  var $where_value;
 	  var $parent_site_id;
@@ -44,7 +49,8 @@
 		 $this->bo = $bo;
 		 $this->template = $GLOBALS['phpgw']->template;
 		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
-	  }
+   
+		  }
 
 	  function render_form($where_key, $where_value)
 	  {
@@ -290,7 +296,7 @@
 			else
 			{
 			   $value = ereg_replace ("(<br />|<br/>)","",$value);
-			   $input='<textarea name="'.$input_name.'" cols="60" rows="5">'.$value.'</textarea>';
+			   $input='<textarea name="'.$input_name.'" cols="60" rows="2">'.$value.'</textarea>';
 			}
 
 			if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on'])
@@ -387,13 +393,13 @@
 
 					 $this->template->set_var('plg_conf',$plg_conf);
 					 $this->template->set_var('lang_field_configuration',lang('Field configuration'));
-					 $this->template->set_var('lang_afc',lang('advanced configuration'));
+					 $this->template->set_var('lang_afc',lang('information'));
 					 $this->template->set_var('lang_plugin_conf',lang('configure field plugin'));
 					 $this->template->set_var('lang_name_and_help',lang('name and help info'));
 					 $this->template->set_var('lang_mandatory',lang('mandatory'));
+					 $this->template->set_var('lang_show_by_default_listview',lang('show by default_listview'));
 					 $this->template->set_var('popup_onclick_plug',$popup_onclick_plug);
 					 $this->template->set_var('popup_onclick_name_and_help',$popup_onclick_name_and_help);
-
 					 $this->template->parse('plugins_rows','plugins_row',true);
 				  }
 			   }
@@ -437,7 +443,7 @@
 			$row_color=$GLOBALS['phpgw_info']['theme']['row_on'];
 		 }
 		 $this->template->set_var('lang_relations',lang('relations'));
-		 $this->template->set_var('rrow_color',$row_color);
+		 $this->template->set_var('row_color',$row_color);
 		 $this->template->set_var('hidden_value',$hidden_value);
 		 $this->template->parse('out','relations_header');
 

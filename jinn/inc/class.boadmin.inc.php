@@ -234,6 +234,7 @@
 
 		 // check all pluginfield for values
 		 // put values in http_post_var
+		 // FIXME speed this loop up?
 
 		 $plug_data=$this->http_vars_pairs_plugins($HTTP_POST_VARS);
 		 if(is_array($plug_data))
@@ -244,6 +245,11 @@
 			   $status=$this->so->save_field_plugin_conf($where_value,$key,$conf_serialed_string);
 			}
 		 }
+
+		//FIXME TODO
+		// give all single field settings a default prefix_prefix
+		// and loop through them and save them add once as ig we were saving multiple records\
+		// ?? /egrate the above loop
 
 		 $data=$this->http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES);
 		 $status=$this->so->update_phpgw_data($table,$data, $where_key,$where_value);

@@ -110,8 +110,6 @@
 		 $dh		= $curheight *  $factor;
 		 
 		 //die('hallo');
-
-
 		 if ($ext == "JPEG") 
 		 { 
 			$src = ImageCreateFromJPEG($filename); 

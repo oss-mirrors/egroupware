@@ -53,6 +53,7 @@
 		 'test_db_access'=> True,
 		 'upgrade_plugins'=>True,
 		 'field_help_config'=>True
+
 	  );
 
 	  var $bo;
@@ -81,6 +82,7 @@
 		 $this->ui->app_title=$dev_title_string.	lang('Administrator Mode');
 	  }
 
+	 	  
 	  function index()
 	  {
 		 $this->ui->header(lang('index'));
