@@ -72,6 +72,7 @@
 		$find_user_data .= '{TEMPLATE: find_user_entry}';
 	}
 	if (!$find_user_data) {
+		$colspan = $adm ? 5 : 4;
 		$find_user_data = '{TEMPLATE: find_user_no_results}';
 	}
 
