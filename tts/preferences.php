@@ -100,7 +100,7 @@
 
 	$t = new Template(PHPGW_APP_TPL);
 	$t->set_file(array(
-		'preferences' => 'preferences.tpl',
+		'preferences' => 'preferences.tpl'
 	));
 	$t->set_block('preferences', 'tts_select_options','tts_select_options');
 

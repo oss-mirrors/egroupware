@@ -21,7 +21,7 @@
 	$p = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 	// echo PHPGW_APP_TPL;
 	$p->set_file(array(
-		'index'   => 'index.tpl',
+		'index'   => 'index.tpl'
     	));
 
 	$p->set_unknowns('remove');
