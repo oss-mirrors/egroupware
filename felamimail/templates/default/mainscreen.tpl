@@ -346,7 +346,7 @@ doLoad();
 			<input  style="width:10px; height:10px" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" 
 			onclick="toggleFolderRadio(this)" {row_selected}>
 		</td>
-		<td width="120px"><nobr>
+		<td  style="overflow:hidden; white-space:nowrap;" width="120px"><nobr>
 			<a class="{row_css_class}" href="{url_compose}" title="{full_address}">{sender_name}</a>
 	<!--		<a href="{url_add_to_addressbook}"><img src="{add_address}"  border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>  -->
 		</td>
