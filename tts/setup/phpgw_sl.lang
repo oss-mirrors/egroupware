@@ -15,6 +15,9 @@ billable hours changed	tts	sl	Sprememba obračunanih ur
 billable hours rate	tts	sl	Cena obračunane ure
 billable rate	tts	sl	Cena ure
 billable rate changed	tts	sl	Sprememba cene ure
+caller name	tts	sl	Ime klicatelja
+caller password	tts	sl	Geslo klicatelja
+caller ticket id	tts	sl	ID klicateljevega opravila
 category changed	tts	sl	Sprememba kategorije
 check here to generate the state's id automatically or enter a particular id below.	tts	sl	Označi za avtomatično generiranje IDja stanja ali spodaj vnesi določen ID.
 clear form	tts	sl	Izprazni formo
@@ -37,6 +40,7 @@ deleting the state	tts	sl	Brisanje stanja
 deleting the transition	tts	sl	Brisanje prehoda
 detail	tts	sl	Podrobnost
 duplicate	tts	sl	PODVOJENO
+duplicate ticket	tts	sl	Podvoji opravilo
 edit the state	tts	sl	Upravljanje stanja
 edit the transition	tts	sl	Upravljanej prehoda
 error: the subject of the ticket is not specified.	tts	sl	NAPAKA: Zadeva opravila ni podana.
