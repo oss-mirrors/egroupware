@@ -69,11 +69,7 @@ if (!function_exists('file_get_contents')) {
 		if (!($fp = @fopen($fname, 'rb'))) {
 			return false;
 		}
-		/* this handles urls */
-		if (!($size = @__ffilesize($fp))) {
-			$size = 2 * 1024 * 1024;
-		}
-		$data = fread($fp, $size);
+		$data = fread($fp, filesize($fname));
 		fclose($fp);
 		return $data;
 	}
