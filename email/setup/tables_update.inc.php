@@ -70,7 +70,25 @@
 	$test[] = '0.9.13.004';
 	function email_upgrade0_9_13_004()
 	{
-		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_anglemail','content',array('type' => 'blob','nullable' => False,'default' => ''));
+		if ($GLOBALS['phpgw_setup']->oProc->sType != 'pgsql')
+		{
+			$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_anglemail','content',array('type' => 'blob','nullable' => False,'default' => ''));
+		}
+		else	// postgres cant do that, as it cant cast from text to blob(bytea)
+		{
+			$GLOBALS['phpgw_setup']->oProc->DropTable('phpgw_anglemail');
+			$GLOBALS['phpgw_setup']->oProc->CreateTable('phpgw_anglemail',array(
+				'fd' => array(
+					'account_id' => array('type' => 'varchar', 'precision' => 20, 'nullable' => false),
+					'data_key' => array('type' => 'varchar', 'precision' => 255, 'nullable' => False, 'default' => ''),
+					'content' => array('type' => 'blob', 'nullable' => False, 'default' => ''),
+				),
+				'pk' => array('account_id', 'data_key'),
+				'fk' => array(),
+				'ix' => array(),
+				'uc' => array()
+			));
+		}			
 		$GLOBALS['setup_info']['email']['currentver'] = '0.9.13.005';
 		return $GLOBALS['setup_info']['email']['currentver'];
 	}
