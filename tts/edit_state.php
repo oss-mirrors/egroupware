@@ -83,7 +83,7 @@
 
     $GLOBALS['phpgw']->template->set_var('form_action',
       $GLOBALS['phpgw']->link('/tts/edit_state.php',
-      array(state_id => $state_id)));
+      array('state_id' => $state_id)));
 
     if (!$state_id)
     {
