@@ -96,7 +96,7 @@
 			$return_html = '<table cellspacing="1" cellpadding="0" border="0" bgcolor="black"><tr><td>'
 			. '<table cellspacing="1" cellpadding="2" border="0" bgcolor="white">'
 			. '<tr><td><b>' . lang('Name') . '</b></td><td><b>' . lang('Symbol') . '</b></td><td align="right"><b>' . lang('Price') . '</b></td><td align="right">'
-			. '<b>&nbsp;' . lang('Change') . '</b></td><td align="right"><b>%&nbsp;' . lang('Change') . '</b></td><td align="center"><b>' . lang('Date') . '</b></td><td align="center">'
+			. '<b>&nbsp;' . lang('Change') . '</b></td><td align="right"><b>&nbsp;%' . lang('Change') . '</b></td><td align="center"><b>' . lang('Date') . '</b></td><td align="center">'
 					. '<b>' . lang('Time') . '</b></td></tr>';
 
 			for ($i=0;$i<count($quotes);$i++)
@@ -279,7 +279,7 @@
 			{
 				$values['symbol']	= strtoupper($values['symbol']);
 				$values['access']	= 'public';
-				$this->bo->save_stock(array($values));
+				$this->bo->save_stock($values);
 				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.list_stocks'));
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}

@@ -129,6 +129,12 @@
 					if (preg_match($regexp_stocks,$line))
 					{
 						$line = ereg_replace('"','',$line);
+
+						if ($this->country == 'DE')
+						{
+							$line = str_replace(',','.',$line);
+						}
+
 						list($symbol,$price0,$date,$time,$dchange,$price1,$price2) = split($sep,$line);
 
 						if ($price1>0 && $dchange!=0)
