@@ -1,4 +1,18 @@
 <?php
+  /**************************************************************************\
+  * phpGroupWare - Polls                                                     *
+  * http://www.phpgroupware.org                                              *
+  *  The file is based on phpPolls                                           *
+  *  Copyright (c) 1999 Till Gerken (tig@skv.org)                            *
+  * --------------------------------------------                             *
+  *  This program is free software; you can redistribute it and/or modify it *
+  *  under the terms of the GNU General Public License as published by the   *
+  *  Free Software Foundation; either version 2 of the License, or (at your  *
+  *  option) any later version.                                              *
+  \**************************************************************************/
+
+  /* $Id$ */
+
   if ($submit) {
      $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
   }
@@ -8,7 +22,13 @@
   include("../header.inc.php");
 
   if ($submit) {
-     if (verify_uservote($poll_id)) {
+     if ($poll_settings["allow_multiable_vote"]) {
+        echo "<br>TEST: True";
+     } else {
+        echo "<br>TEST: False";
+     }
+  
+     if ($poll_settings["allow_multiable_vote"] || verify_uservote($poll_id)) {
 //        $phpgw->db->lock(array("phpgw_polls_data","phpgw_polls_user"));
         $phpgw->db->query("UPDATE phpgw_polls_data SET option_count=option_count+1 WHERE "
                         . "poll_id='$poll_id' AND vote_id='$poll_voteNr'",__LINE__,__FILE__);

@@ -7,3 +7,4 @@ drop table phpgw_polls_desc;
 drop sequence phpgw_polls_desc_poll_id_seq;
 
 drop table phpgw_polls_user;
+drop table phpgw_polls_settings;

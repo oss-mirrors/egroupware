@@ -18,6 +18,14 @@ CREATE TABLE phpgw_polls_user (
    vote_timestamp int
 );
 
+create table phpgw_polls_settings (
+   setting_name   varchar(255),
+   setting_value  varchar(255),
+);
+
+insert into phpgw_polls_settings values ('allow_multiable_votes','False');
+insert into phpgw_polls_settings values ('currentpoll','1');
+
 insert into phpgw_polls_desc (poll_title,poll_timestamp) values ('What came first ?',date_part('epoch',now()));
 insert into phpgw_polls_data (poll_id,option_text) values ('1','The chicken');
 insert into phpgw_polls_data (poll_id,option_text) values ('1','The egg');

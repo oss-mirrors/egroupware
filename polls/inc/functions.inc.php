@@ -13,6 +13,12 @@
 
   /* $Id$ */
   
+  $phpgw->db->query("select * from phpgw_polls_settings");
+  while ($phpgw->db->next_record()) {
+     //echo "<br>TEST: " . $phpgw->db->f("setting_name") . " - " . $phpgw->db->f("setting_value");
+     $poll_setings[$phpgw->db->f("setting_name")] = $phpgw->db->f("setting_value");
+  }
+
   function add_template_row(&$tpl,$label,$value)
   {
      global $phpgw;
@@ -42,7 +48,7 @@
   function poll_viewResults($poll_id)
   {
      global $phpgw, $phpgw_info;
-    
+
      $db = $phpgw->db;
 
      $db->query("SELECT SUM(option_count) AS sum FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
@@ -162,14 +168,14 @@
   
   function display_poll()
   {
-     global $phpgw;
-     
+     global $phpgw, $poll_settings;
+
      $phpgw->db->query("select max(poll_id) from phpgw_polls_data",__LINE__,__FILE__);
      $phpgw->db->next_record();
 
      $poll_id = $phpgw->db->f(0);
 
-     if (! verify_uservote($poll_id)) {
+     if (! verify_uservote($poll_id) && ! $poll_settings["allow_multiable_vote"]) {
         poll_viewResults($poll_id);
      } else {
         poll_generateUI($poll_id);
