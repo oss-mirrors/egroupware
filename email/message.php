@@ -978,7 +978,32 @@
 	// Force Echo Out Unformatted Text for email with 1 part which is a large text messages (in bytes) , such as a system replrt from cron
 	// php (4.0.4pl1 last tested) and some imap servers (courier and uw-imap are confirmed) will time out retrieving this type of message
 	$force_echo_size = 20000;
-	$too_many_crlf = 18;
+	//$too_many_crlf = 18;
+
+// -----  Unknown and/or Unrecognized MIME subtypes get flagged HERE  -------
+	// ### TEMP HACK FIX ###
+	// RFC1892 "The  Multipart/Report Content Type"  (1996)
+	//	requires a MIME sub-part "Message/delivery-status" which is INCONSISTANT
+	//	with later MIME docs rfc2045-2049 in its use of the type "Message" in this case
+	//	(this is my opinion - Angles)
+	// flag "multipart/report" as unsupported
+	
+	// initialize
+	$unsupported['finding'] = False;
+	$unsupported['user_info'] = '';
+
+	$support_test_struct = $phpgw->dcom->fetchstructure($mailbox, $msgnum);
+	$support_test_struct_nice = pgw_msg_struct($support_test_struct, $struct_not_set, '1', 1, 1, 1, urldecode($folder), $msgnum);
+
+	if (($support_test_struct_nice['type'] == 'multipart')
+	&& ($support_test_struct_nice['subtype'] == 'report'))
+	{
+		$unsupported['finding'] = True;
+		$unsupported['user_info'] = 'unsupported Content-Type "'
+			.$support_test_struct_nice['type'].'/'.$support_test_struct_nice['subtype']
+			.'" forced echo dump';
+	}
+	
 
 // -----  GET BODY AND SHOW MESSAGE  -------
 	set_time_limit(120);
@@ -1076,6 +1101,41 @@
 			// -----  Echo This Data Directly to the Client
 			echo '<pre>';
 			echo $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
+			echo '</pre>';
+			// -----  Close Table
+			$t->set_var('V_setup_echo_dump','');
+			$t->parse('V_done_echo_dump','B_done_echo_dump');
+			$t->pparse('out','T_message_echo_dump');
+
+			//  = = = =  = =======  CLEANUP AND EXIT PAGE ======= = = = = = =
+			unset($part_nice);
+			$phpgw->dcom->close($mailbox); 
+			$phpgw->common->phpgw_footer();
+			exit;
+		}
+		// TEMP HACK FOR  FOR NON-SUPPORTED MIME EMAILS
+		elseif ($unsupported['finding'] == True)
+		{
+			// output a blank message body, we'll use an alternate method below
+			$t->set_var('V_display_part','');
+			// -----  Finished With Message_Mail Template, Output It
+			$t->pparse('out','T_message_main');
+			
+			// -----  Prepare a Table for this Echo Dump
+			$title_text = '&nbsp;message: ';
+			$t->set_var('title_text',$title_text);
+			$display_str = $unsupported['user_info'];
+			$t->set_var('display_str',$display_str);
+			$t->parse('V_setup_echo_dump','B_setup_echo_dump');
+			$t->set_var('V_done_echo_dump','');
+			$t->pparse('out','T_message_echo_dump');
+			// -----  Echo This Data Directly to the Client
+			echo '<pre>';
+			echo $phpgw->msg->htmlspecialchars_encode(
+				$phpgw->msg->normalize_crlf(
+					trim($phpgw->dcom->get_body($mailbox, $msgnum))
+				)
+			    );
 			echo '</pre>';
 			// -----  Close Table
 			$t->set_var('V_setup_echo_dump','');
@@ -1308,7 +1368,7 @@
 			echo '<br>'.$part_nice[$i]['m_part_num_mime'].'<br>';
 			var_dump($dsp);
 			*/
-			
+
 			// ----- when to skip showing a part (i.e. blank part - no alpha chars)
 			$skip_this_part = False;
 			if (strlen($dsp) < 3)

@@ -32,6 +32,7 @@
 	//global $phpgw, $phpgw_info;
 
 	var $att_files_dir;
+	var $known_subtypes = array();
 
 	function mail_msg_init()
 	{
@@ -39,6 +40,20 @@
 
 		$this->att_files_dir = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'];
 		$this->create_email_preferences();
+
+		// ==== EXPERIMENTAL CODE ====
+		// assemble a list of MIME subtypes that are known to this code
+		// subytpes not in this list will be treated as rfc default specifies
+		$this->known_subtypes['text'] = Array();
+		$this->known_subtypes['message'] = Array();
+		$this->known_subtypes['multipart'] = Array();
+		// populate the array for MULTIPART - unknown subtypes default to MIXED
+		$this->known_subtypes['multipart'] = array(
+			0 => 'alternative', 
+			1 => 'digest',
+			2 => 'mixed',
+			3 => 'related'
+		);
 	}
 
 // ----  Various Functions Used To Support Email   -----
@@ -1066,6 +1081,7 @@
 		$data = ereg_replace("\r\n", "\n", $data);
 		$data = ereg_replace("\r", "\n", $data);
 		$data = ereg_replace("\n", "\r\n", $data);
+		
 		//$data = preg_replace("/(?<!\r)\n/m", "\r\n", $data);
 		//$data = preg_replace("/\r(?!\n)/m", "\r\n", $data);
 		return $data;

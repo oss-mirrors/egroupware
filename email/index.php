@@ -171,7 +171,8 @@
 	$t->set_var('next_arrows',$td_next_arrows);
 
 // ---- Message Folder Stats   -----
-	$mailbox_info = $phpgw->dcom->mailboxmsginfo($mailbox);
+	// mailbox_info moved into "speed_skip" test
+	//$mailbox_info = $phpgw->dcom->mailboxmsginfo($mailbox);
 	$mailbox_status = $phpgw->dcom->status($mailbox,"$server_str" ."$folder_long",SA_UNSEEN);
 
 	if ($nummsg == 0)
@@ -199,10 +200,24 @@
 			// put a comma between the thousands
 			$stats_new = number_format($stats_new);
 		}
-		// SIZE OF FOLDER
-		$stats_size = $mailbox_info->Size;
-		// size is in bytes, format for KB or MB
-		$stats_size = format_byte_size($stats_size);
+		// SIZE OF FOLDER - total size of all emails added up
+		// can take a long time if alot of mail is in the folder
+		// TEST: make it optional
+		//$stats_size_speed_skip = True;
+		$stats_size_speed_skip = False;
+		$stats_size_threshold = 1000;
+		if (($nummsg > $stats_size_threshold)
+		&& ($stats_size_speed_skip == True))
+		{
+			$stats_size = 'speed skip';
+		}
+		else
+		{
+			$mailbox_info = $phpgw->dcom->mailboxmsginfo($mailbox);
+			$stats_size = $mailbox_info->Size;
+			// size is in bytes, format for KB or MB
+			$stats_size = format_byte_size($stats_size);
+		}
 	}
 
 // ---- SwitchTo Folder Listbox   -----
