@@ -16,7 +16,7 @@
 	/* Basic information about this app */
 	$setup_info['bookmarks']['name']      = 'bookmarks';
 	$setup_info['bookmarks']['title']     = 'Bookmarks';
-	$setup_info['bookmarks']['version']   = '0.8.1';
+	$setup_info['bookmarks']['version']   = '0.8.2';
 	$setup_info['bookmarks']['app_order'] = '20';
 	$setup_info['bookmarks']['enable']    = 1;
 

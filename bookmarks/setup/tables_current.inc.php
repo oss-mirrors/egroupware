@@ -19,17 +19,17 @@
 		'phpgw_bookmarks' => array(
 			'fd' => array(
 				'bm_id' => array('type' => 'auto','nullable' => False),
-				'bm_owner' => array('type' => 'int', 'precision' => 8,'nullable' => True),
+				'bm_owner' => array('type' => 'int', 'precision' => 4,'nullable' => True),
 				'bm_access' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
 				'bm_url' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
 				'bm_name' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
 				'bm_desc' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
 				'bm_keywords' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
-				'bm_category' => array('type' => 'int', 'precision' => 8,'nullable' => True),
-				'bm_subcategory' => array('type' => 'int', 'precision' => 8,'nullable' => True),
-				'bm_rating' => array('type' => 'int', 'precision' => 8,'nullable' => True),
+				'bm_category' => array('type' => 'int', 'precision' => 4,'nullable' => True),
+				'bm_subcategory' => array('type' => 'int', 'precision' => 4,'nullable' => True),
+				'bm_rating' => array('type' => 'int', 'precision' => 4,'nullable' => True),
 				'bm_info' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
-				'bm_visits' => array('type' => 'int', 'precision' => 8,'nullable' => True)
+				'bm_visits' => array('type' => 'int', 'precision' => 4,'nullable' => True)
 			),
 			'pk' => array('bm_id'),
 			'fk' => array(),
