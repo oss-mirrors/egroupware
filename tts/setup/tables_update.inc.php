@@ -1,7 +1,7 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - Setup                                                     *
-  * http://www.phpgroupware.org                                              *
+  * eGroupWare - Setup                                                       *
+  * http://www.egroupware.org                                                *
   * Created by eTemplates DB-Tools written by ralfbecker@outdoor-training.de *
   * --------------------------------------------                             *
   *  This program is free software; you can redistribute it and/or modify it *
