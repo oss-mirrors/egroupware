@@ -32,12 +32,12 @@
     else { $num = addslashes($num); }
 
     $errorcount = 0;
-    $phpgw->db->query("select count(*) from phpgw_p_projects where num='$num'");
-    $phpgw->db->next_record();
-    if ($phpgw->db->f(0) != 0) { $error[$errorcount++] = lang('That Project ID has been used already !'); }
 
     if (!$num) { $error[$errorcount++] = lang('Please enter an ID for that Project !'); }
 
+    $phpgw->db->query("select count(*) from phpgw_p_projects where num='$num'");
+    $phpgw->db->next_record();
+    if ($phpgw->db->f(0) != 0) { $error[$errorcount++] = lang('That Project ID has been used already !'); }
 
     if (checkdate($smonth,$sday,$syear)) { $sdate = mktime(2,0,0,$smonth,$sday,$syear); } 
     else {
@@ -48,6 +48,8 @@
       else {
 	if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang("You have entered an invailed end date ! :") . " " . "$emonth - $eday - $eyear"; }                                                   
     }                                                                                                                                                                                
+
+    if ((!$ba_activities) && (!$bill_activities)) { $error[$errorcount++] = lang('Please choose an activity for that project first !'); }
 
     if (! $error) {
     $owner = $phpgw_info["user"]["account_id"];
@@ -157,8 +159,7 @@
 	while ($phpgw->db->next_record()) {
 	    $coordinator_list .= "<option value=\"" . $phpgw->db->f("account_id") . "\"";
 	    
-	    if($phpgw->db->f("account_id")==$phpgw_info["user"]["account_id"])
-		    $coordinator_list .= " selected";
+	    if($phpgw->db->f("account_id")==$phpgw_info["user"]["account_id"]) { $coordinator_list .= " selected"; }
 		    $coordinator_list .= ">"
 		    . $phpgw->common->display_fullname($phpgw->db->f("account_id"),
 		    $phpgw->db->f("account_firstname"),
@@ -177,6 +178,7 @@
     $db2->query("SELECT phpgw_p_activities.id as id,descr FROM phpgw_p_activities ORDER BY descr asc");
         while ($db2->next_record()) {
         $ba_activities_list .= "<option value=\"" . $db2->f("id") . "\"";
+	if ($db2->f("id")==$ba_activities) { $ba_activities_list .= " selected"; }
         $ba_activities_list .= ">"
                     . $phpgw->strip_html($db2->f("descr"))
                     . "</option>";
@@ -189,6 +191,7 @@
     $db2->query("SELECT phpgw_p_activities.id as id,descr,billperae FROM phpgw_p_activities ORDER BY descr asc");
      while ($db2->next_record()) {
         $bill_activities_list .= "<option value=\"" . $db2->f("id") . "\"";
+	if ($db2->f("id")==$bill_activities) { $bill_activities_list .= " selected"; }
         $bill_activities_list .= ">"
                     . $phpgw->strip_html($db2->f("descr")) . " " . $currency . " "
                     . $db2->f("billperae") . " " . lang("per workunit") . "</option>";

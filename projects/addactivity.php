@@ -26,11 +26,14 @@
     else { $num = addslashes($num); }
 
     $errorcount = 0;
+    if (!$num) { $error[$errorcount++] = lang('Please enter an ID for that Activity !'); }
+
     $phpgw->db->query("select count(*) from phpgw_p_activities where num='$num'");
     $phpgw->db->next_record();
     if ($phpgw->db->f(0) != 0) { $error[$errorcount++] = lang('That Activity ID has been used already !'); }
 
-    if (!$num) { $error[$errorcount++] = lang('Please enter an ID for that Activity !'); }
+    if (!$billperae) { $error[$errorcount++] = lang('Please enter the bill per workunit !'); }
+    if (!$minperae) { $error[$errorcount++] = lang('Please enter the minutes per workunit !'); }
 
     if (! $error) {
     $descr = addslashes($descr);

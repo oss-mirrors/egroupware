@@ -36,14 +36,16 @@
        if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang("You have entered an invailed end date ! :") . " " . "$emonth - $eday - $eyear"; }
     }
 
-    $phpgw->db->query("SELECT minperae,billperae,remarkreq FROM phpgw_p_activities WHERE id = '".$activity."'");
+    if (! $activity) { $error[$errorcount++] = lang('Please choose an activity for the project first !'); }
+
+    $phpgw->db->query("SELECT minperae,billperae,remarkreq FROM phpgw_p_activities WHERE id = '" . $activity . "'");
     $phpgw->db->next_record();
     if ($phpgw->db->f(0) == 0) { $error[$errorcount++] = lang('You have selected an invalid activity !'); }
-    else {
+    else { 
     $billperae = $phpgw->db->f("billperae");
     $minperae = $phpgw->db->f("minperae");
 
-    if (($phpgw->db->f("remarkreq")=="Y") and (!$remark)) { $error[$errorcount++] = lang('You have to enter a remark !'); }
+    if (($phpgw->db->f("remarkreq")=="Y") and (!$remark)) { $error[$errorcount++] = lang('Please enter a remark !'); }
     }
 
     if (! $error) {
