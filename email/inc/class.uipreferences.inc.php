@@ -21,14 +21,14 @@
 
 		var $bo;
 		var $nextmatchs;
-		var $template;
+		//var $template;
 		var $theme;
 		var $prefs;
 
 		function uipreferences()
 		{
 			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
-			$this->template = $GLOBALS['phpgw']->template;
+			//$this->template = $GLOBALS['phpgw']->template;
 			$this->theme = $GLOBALS['phpgw_info']['theme'];
 			// enabled BO object for additional prefs capabilities
 			$this->bo = CreateObject('email.bopreferences');
@@ -82,7 +82,7 @@
 					'pref_id'	=> $this_item['id'],
 					'extra_text'	=> ''
 				);
-				$this->template->set_var($var);
+				$GLOBALS['phpgw']->template->set_var($var);
 				
 				// DEBUG
 				// echo 'pref item loop ['.$i.']:  &nbsp; '; var_dump($this_item); echo '<br><br>';
@@ -97,8 +97,8 @@
 					// if the data is hidden (ex. a password), we do not show the value (obviously)
 					$this_item_value = '';
 					// tell user we are hiding the value (that's whay the box is empty)
-					$prev_lang_blurb = $this->template->get_var('lang_blurb');
-					$this->template->set_var('lang_blurb', $prev_lang_blurb.'&nbsp('.lang('hidden').')');
+					$prev_lang_blurb = $GLOBALS['phpgw']->template->get_var('lang_blurb');
+					$GLOBALS['phpgw']->template->set_var('lang_blurb', $prev_lang_blurb.'&nbsp('.lang('hidden').')');
 				}
 				
 				// ** possible widget are: **
@@ -110,23 +110,23 @@
 				if ($this_item['widget'] == 'textarea')
 				{
 					$this_item_value = $this->prefs[$this_item['id']];
-					$this->template->set_var('pref_value', $this_item_value);
-					$this->template->parse('V_tr_textarea','B_tr_textarea');
-					$done_widget = $this->template->get_var('V_tr_textarea');	
+					$GLOBALS['phpgw']->template->set_var('pref_value', $this_item_value);
+					$GLOBALS['phpgw']->template->parse('V_tr_textarea','B_tr_textarea');
+					$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_textarea');	
 				}
 				elseif ($this_item['widget'] == 'textbox')
 				{
-					$this->template->set_var('pref_value', $this_item_value);
-					$this->template->parse('V_tr_textbox','B_tr_textbox');
-					$done_widget = $this->template->get_var('V_tr_textbox');	
+					$GLOBALS['phpgw']->template->set_var('pref_value', $this_item_value);
+					$GLOBALS['phpgw']->template->parse('V_tr_textbox','B_tr_textbox');
+					$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_textbox');	
 				}
 				elseif ($this_item['widget'] == 'passwordbox')
 				{
 					// this_item_value should have been set to blank above
 					// if $this_item['other_props'] contains the word "hidden"
-					$this->template->set_var('pref_value', $this_item_value);
-					$this->template->parse('V_tr_passwordbox','B_tr_passwordbox');
-					$done_widget = $this->template->get_var('V_tr_passwordbox');	
+					$GLOBALS['phpgw']->template->set_var('pref_value', $this_item_value);
+					$GLOBALS['phpgw']->template->parse('V_tr_passwordbox','B_tr_passwordbox');
+					$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_passwordbox');	
 				}
 				elseif ($this_item['widget'] == 'combobox')
 				{
@@ -152,9 +152,9 @@
 						$x++;
 					}
 					$this_item_value = $combobox_html;
-					$this->template->set_var('pref_value', $this_item_value);
-					$this->template->parse('V_tr_combobox','B_tr_combobox');
-					$done_widget = $this->template->get_var('V_tr_combobox');	
+					$GLOBALS['phpgw']->template->set_var('pref_value', $this_item_value);
+					$GLOBALS['phpgw']->template->parse('V_tr_combobox','B_tr_combobox');
+					$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_combobox');	
 				}
 				elseif ($this_item['widget'] == 'checkbox')
 				{
@@ -166,17 +166,17 @@
 					{
 						$this_item_value = '';
 					}
-					$this->template->set_var('pref_value', $this_item_value);
-					$this->template->parse('V_tr_checkbox','B_tr_checkbox');
-					$done_widget = $this->template->get_var('V_tr_checkbox');	
+					$GLOBALS['phpgw']->template->set_var('pref_value', $this_item_value);
+					$GLOBALS['phpgw']->template->parse('V_tr_checkbox','B_tr_checkbox');
+					$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_checkbox');	
 				}
 				else
 				{
 					//$this->pref_errors .= 'call for unsupported widget:'.$this_item['widget'].'<br>';
-					$this->template->set_var('back_color', $back_color);
-					$this->template->set_var('section_title', 'call for unsupported widget:'.$this_item['widget']);
-					$this->template->parse('V_tr_sec_title','B_tr_sec_title');
-					$done_widget = $this->template->get_var('V_tr_sec_title');	
+					$GLOBALS['phpgw']->template->set_var('back_color', $back_color);
+					$GLOBALS['phpgw']->template->set_var('section_title', 'call for unsupported widget:'.$this_item['widget']);
+					$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
+					$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
 				}
 				// for each loop, add the finished widget row to the return_block variable
 				$return_block .= $done_widget;
@@ -198,19 +198,19 @@
 			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
 			$GLOBALS['phpgw']->common->phpgw_header();
 			
-			$this->template->set_file(
+			$GLOBALS['phpgw']->template->set_file(
 				Array(
 					'T_prefs_ui_out'	=> 'class_prefs_ui.tpl',
 					'T_pref_blocks'		=> 'class_prefs_blocks.tpl'
 				)
 			);
-			$this->template->set_block('T_pref_blocks','B_tr_blank','V_tr_blank');
-			$this->template->set_block('T_pref_blocks','B_tr_sec_title','V_tr_sec_title');
-			$this->template->set_block('T_pref_blocks','B_tr_textarea','V_tr_textarea');
-			$this->template->set_block('T_pref_blocks','B_tr_textbox','V_tr_textbox');
-			$this->template->set_block('T_pref_blocks','B_tr_passwordbox','V_tr_passwordbox');
-			$this->template->set_block('T_pref_blocks','B_tr_combobox','V_tr_combobox');
-			$this->template->set_block('T_pref_blocks','B_tr_checkbox','V_tr_checkbox');
+			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_blank','V_tr_blank');
+			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_sec_title','V_tr_sec_title');
+			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_textarea','V_tr_textarea');
+			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_textbox','V_tr_textbox');
+			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_passwordbox','V_tr_passwordbox');
+			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_combobox','V_tr_combobox');
+			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_checkbox','V_tr_checkbox');
 			
 			$var = Array(
 				'pref_errors'		=> '',
@@ -227,7 +227,7 @@
 				'btn_submit_name'	=> $this->bo->submit_token,
 				'btn_submit_value'	=> lang('submit')
 			);
-			$this->template->set_var($var);
+			$GLOBALS['phpgw']->template->set_var($var);
 			
 			// this will fill the $this->bo->std_prefs[] and cust_prefs[]  "schema" arrays
 			$this->bo->init_available_prefs();			
@@ -240,41 +240,42 @@
 			
 			// ---  Standars Prefs  ---
 			// section title for standars prefs
-			$this->template->set_var('section_title', lang('Standard').' '.lang('E-Mail preferences'));
+			$GLOBALS['phpgw']->template->set_var('section_title', lang('Standard').' '.lang('E-Mail preferences'));
 			// parse the block,
-			$this->template->parse('V_tr_sec_title','B_tr_sec_title');
+			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 			// get the parsed data and put into a local variable
-			$done_widget = $this->template->get_var('V_tr_sec_title');	
+			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
 			// add the finished widget row to the main block variable
 			$prefs_ui_rows .= $done_widget;
 			// generate Std Prefs HTML Block
 			$prefs_ui_rows .= $this->create_prefs_block($this->bo->std_prefs);
 			
 			// blank row
-			$this->template->set_var('back_color', $this->theme['bg_color']);
-			$this->template->parse('V_tr_blank','B_tr_blank');
-			$done_widget = $this->template->get_var('V_tr_blank');	
+			$GLOBALS['phpgw']->template->set_var('back_color', $this->theme['bg_color']);
+			$GLOBALS['phpgw']->template->parse('V_tr_blank','B_tr_blank');
+			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_blank');	
 			$prefs_ui_rows .= $done_widget;
 			
 			// ---  Custom Prefs  ---
-			$this->template->set_var('section_title', lang('Custom').' '.lang('E-Mail preferences'));
-			$this->template->parse('V_tr_sec_title','B_tr_sec_title');
-			$done_widget = $this->template->get_var('V_tr_sec_title');	
+			$GLOBALS['phpgw']->template->set_var('section_title', lang('Custom').' '.lang('E-Mail preferences'));
+			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
+			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
 			$prefs_ui_rows .= $done_widget;
 			// generate Custom Prefs HTML Block
 			$prefs_ui_rows .= $this->create_prefs_block($this->bo->cust_prefs);
 			
 			// blank row
-			$this->template->set_var('back_color', $this->theme['bg_color']);
-			$this->template->parse('V_tr_blank','B_tr_blank');
-			$done_widget = $this->template->get_var('V_tr_blank');	
+			$GLOBALS['phpgw']->template->set_var('back_color', $this->theme['bg_color']);
+			$GLOBALS['phpgw']->template->parse('V_tr_blank','B_tr_blank');
+			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_blank');	
 			$prefs_ui_rows .= $done_widget;
 			
 			// ---  Commit HTML Prefs rows to Main Template
 			// put all widget rows data into the template var
-			$this->template->set_var('prefs_ui_rows', $prefs_ui_rows);
+			$GLOBALS['phpgw']->template->set_var('prefs_ui_rows', $prefs_ui_rows);
 			// output the template
-			$this->template->pparse('out','T_prefs_ui_out');
+			//$GLOBALS['phpgw']->template->pparse('out','T_prefs_ui_out');
+			$GLOBALS['phpgw']->template->pfp('out','T_prefs_ui_out');
 		}
 	}
 ?>

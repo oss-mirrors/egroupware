@@ -1,34 +1,35 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - E-Mail Message Processing Functions                       *
-  * http://www.phpgroupware.org                                              *
+  * phpGroupWare - E-Mail Message Processing Functions			*
+  * http://www.phpgroupware.org							*
   */
   /**************************************************************************\
-  * phpGroupWare API - E-Mail Message Processing Functions                   *
+  * phpGroupWare API - E-Mail Message Processing Functions			*
   * This file written by Angelo Tony Puglisi (Angles) <angles@phpgroupware.org> *
-  * Handles specific operations in manipulating email messages               *
-  * Copyright (C) 2001 Angelo Tony Puglisi (Angles)                          *
-  * -------------------------------------------------------------------------*
-  * This library is part of the phpGroupWare API                             *
-  * http://www.phpgroupware.org/api                                          * 
-  * ------------------------------------------------------------------------ *
-  * This library is free software; you can redistribute it and/or modify it  *
-  * under the terms of the GNU Lesser General Public License as published by *
-  * the Free Software Foundation; either version 2.1 of the License,         *
-  * or any later version.                                                    *
-  * This library is distributed in the hope that it will be useful, but      *
-  * WITHOUT ANY WARRANTY; without even the implied warranty of               *
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                     *
-  * See the GNU Lesser General Public License for more details.              *
-  * You should have received a copy of the GNU Lesser General Public License *
-  * along with this library; if not, write to the Free Software Foundation,  *
-  * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            *
+  * Handles specific operations in manipulating email messages			*
+  * Copyright (C) 2001 Angelo Tony Puglisi (Angles)				*
+  * -------------------------------------------------------------------------			*
+  * This library is part of the phpGroupWare API					*
+  * http://www.phpgroupware.org/api						* 
+  * ------------------------------------------------------------------------ 			*
+  * This library is free software; you can redistribute it and/or modify it		*
+  * under the terms of the GNU Lesser General Public License as published by	*
+  * the Free Software Foundation; either version 2.1 of the License,		*
+  * or any later version.								*
+  * This library is distributed in the hope that it will be useful, but		*
+  * WITHOUT ANY WARRANTY; without even the implied warranty of		*
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	*
+  * See the GNU Lesser General Public License for more details.			*
+  * You should have received a copy of the GNU Lesser General Public License	*
+  * along with this library; if not, write to the Free Software Foundation,		*
+  * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA		*
   \**************************************************************************/
 
   /* $Id$ */
 
   class mail_msg_base
   {
+	var $dcom;
 	var $args = Array();
 	var $not_set = '-1';
 	var $att_files_dir;
@@ -39,6 +40,7 @@
 	// these are the supported menuaction strings
 	var $index_menuaction = 'menuaction=email.uiindex.index';
 	var $mlist_menuaction = 'menuaction=email.uiindex.mlist';
+	var $action_menuaction = 'menuaction=email.boaction.action';
 	// use this uri in any auto-refresh request - filled during "fill_sort_order_start_msgnum()"
 	var $index_refresh_uri ='';
 	// pointer to the primary mailbox stream (you may open others) returned by the first login 
@@ -239,6 +241,32 @@
 			$this->dcom->close($GLOBALS['phpgw']->msg->mailsvr_stream);
 			$GLOBALS['phpgw']->msg->mailsvr_stream = '';
 		}
+	}
+
+	function login_error($called_from='')
+	{
+		if ($called_from == '')
+		{
+			$called_from = lang('this data not supplied.');
+		}
+		
+		$imap_err = imap_last_error();
+		if ($imap_err == '')
+		{
+			$error_report = lang('No Error Returned From Server');
+		}
+		else
+		{
+			$error_report = $imap_err;
+		}
+		// this should be templated
+		echo "<p><center><b>"
+		  . lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")."<br> \r\n"
+		  ."source: email class.mail_msg_base.inc.php"."<br> \r\n"
+		  ."called from: ".$called_from."<br> \r\n"
+		  ."imap_last_error: ".$error_report."<br> \r\n"
+		  . "</b></center></p>";
+		$GLOBALS['phpgw']->common->phpgw_exit(True);
 	}
 
 

@@ -450,7 +450,7 @@ class mail_msg_wrappers extends mail_msg_base
 		// ----  tf: string  ----
 		// USAGE:
 		//	 td = total deleted ; tm = total moved, tm used with tf, folder messages were moved to
-		// (outgoing) action.php: when action on a message is taken, report info is passed in these
+		// (outgoing) class.boaction: when action on a message is taken, report info is passed in these
 		// (in) index.php: here the report is diaplayed above the message list, used to give user feedback
 		// generally these are in the URI (GET var, not a form POST var)
 		if (isset($GLOBALS['HTTP_POST_VARS']['td']))
@@ -489,7 +489,7 @@ class mail_msg_wrappers extends mail_msg_base
 		// (outgoing) index.php: "move", "delall"
 		//	used with msglist (see below) an array (1 or more) of message numbers to move or delete
 		// (outgoing) message.php: "delete" used with msgnum (see below) what individual message to delete
-		// (in) action.php: instruction on what action to preform on 1 or more message(s) (move or delete)
+		// (in) class.boaction: instruction on what action to preform on 1 or more message(s) (move or delete)
 		if (isset($GLOBALS['HTTP_POST_VARS']['what']))
 		{
 			$this->args['what'] = $GLOBALS['HTTP_POST_VARS']['what'];
@@ -544,7 +544,7 @@ class mail_msg_wrappers extends mail_msg_base
 		// === MESSAGE NUMBER AND MIME PART REFERENCES ===
 		// msgnum: integer 
 		// USAGE:
-		// (a) action.php, called from from message.php: used with "what=delete" to indicate a single message for deletion
+		// (a) class.boaction, called from from message.php: used with "what=delete" to indicate a single message for deletion
 		// (b) compose.php: indicates the referenced message for reply, replyto, and forward handling
 		// (c) get_attach.php: the msgnum of the email that contains the desired body part to get
 		if (isset($GLOBALS['HTTP_POST_VARS']['msgnum']))

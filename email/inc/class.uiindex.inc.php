@@ -14,14 +14,15 @@
 
 	class uiindex
 	{
-		var $template;
 		var $bo;		
 		var $debug = False;
-		var $modular_return_html = '';
+		var $is_modular = False;
 
 		var $public_functions = array(
 			'index' => True,
-			'mlist' => True
+			'mlist' => True,
+			'get_is_modular' => True,
+			'set_is_modular' => True
 		);
 
 		function uiindex()
@@ -29,12 +30,30 @@
 			
 		}
 
-		function index($is_modular=False)
+		function get_is_modular()
+		{
+			return $this->is_modular;
+		}
+		
+		function set_is_modular($feed_bool=False)
+		{
+			if ((bool)$feed_bool == False)
+			{
+				$this->is_modular = False;
+			}
+			else
+			{
+				$this->is_modular = True;
+			}
+			return $this->is_modular;
+		}
+		
+		function index()
 		{
 			$this->bo = CreateObject("email.boindex");
 			$this->bo->index_data();
 			
-			if ($is_modular == True)
+			if ($this->is_modular == True)
 			{
 				// we do NOT echo or print output any html, we are being used as a module by another app
 				// all we do in this case is pass the parsed html to the calling app
@@ -46,48 +65,54 @@
 				//	$GLOBALS['phpgw_info']['flags']['email_refresh_uri']
 				// which is needed to preserve folder and sort settings during the auto-refresh-ing
 				// currently (Dec 6, 2001) that logic is in phpgwapi/inc/templates/idsociety/head.inc.php
+				unset($GLOBALS['phpgw_info']['flags']['noheader']);
+				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+				$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+				$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
 				$GLOBALS['phpgw']->common->phpgw_header();
-				echo parse_navbar();
 				// NOTE: as of Dec 10, 2001 a call from menuaction defaults to NOT modular
 				// HOWEVER still this class must NOT invoke $GLOBALS['phpgw']->common->phpgw_header()
-				// even though we had to output the header and navbar, (go figure... :)
+				// even though we had to output the header (go figure... :)
 			}
 			
 			$this->bo->xi['my_layout'] = $GLOBALS['phpgw_info']['user']['preferences']['email']['layout'];
 			$this->bo->xi['my_browser'] = $GLOBALS['phpgw']->msg->browser;
 			
-			$this->template = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-			$this->template->set_file(array(		
+			//$GLOBALS['phpgw']->template = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			$GLOBALS['phpgw']->template->set_file(array(		
 				//'T_form_delmov_init' => 'index_form_delmov_init.tpl',
 				'T_index_blocks' => 'index_blocks.tpl',
 				'T_index_main' => 'index_main_b'.$this->bo->xi['my_browser'].'_l'.$this->bo->xi['my_layout']. '.tpl'
 			));
-			$this->template->set_block('T_index_main','B_action_report','V_action_report');
-			$this->template->set_block('T_index_main','B_show_size','V_show_size');
-			$this->template->set_block('T_index_main','B_get_size','V_get_size');
-			$this->template->set_block('T_index_main','B_no_messages','V_no_messages');
-			$this->template->set_block('T_index_main','B_msg_list','V_msg_list');
-			$this->template->set_block('T_index_blocks','B_mlist_form_init','V_mlist_form_init');
-			$this->template->set_block('T_index_blocks','B_arrows_form_table','V_arrows_form_table');
+			$GLOBALS['phpgw']->template->set_block('T_index_main','B_action_report','V_action_report');
+			$GLOBALS['phpgw']->template->set_block('T_index_main','B_show_size','V_show_size');
+			$GLOBALS['phpgw']->template->set_block('T_index_main','B_get_size','V_get_size');
+			$GLOBALS['phpgw']->template->set_block('T_index_main','B_no_messages','V_no_messages');
+			$GLOBALS['phpgw']->template->set_block('T_index_main','B_msg_list','V_msg_list');
+			$GLOBALS['phpgw']->template->set_block('T_index_blocks','B_mlist_form_init','V_mlist_form_init');
+			$GLOBALS['phpgw']->template->set_block('T_index_blocks','B_arrows_form_table','V_arrows_form_table');
 			
-			$this->template->set_var('frm_delmov_action',$this->bo->xi['frm_delmov_action']);
-			$this->template->set_var('frm_delmov_name',$this->bo->xi['frm_delmov_name']);
-			$this->template->parse('V_mlist_form_init','B_mlist_form_init');
-			$this->bo->xi['V_mlist_form_init'] = $this->template->get_var('V_mlist_form_init');	
+			$GLOBALS['phpgw']->template->set_var('frm_delmov_action',$this->bo->xi['frm_delmov_action']);
+			$GLOBALS['phpgw']->template->set_var('frm_delmov_name',$this->bo->xi['frm_delmov_name']);
+			$GLOBALS['phpgw']->template->parse('V_mlist_form_init','B_mlist_form_init');
+			$this->bo->xi['V_mlist_form_init'] = $GLOBALS['phpgw']->template->get_var('V_mlist_form_init');	
 
 			// font size options
+			$this->bo->xi['font_size_offset'] = 0;
+			// FIXME:  font_size_offset  needs to be put into the prefs db, bo, and ui
+			
 			$font_size = Array (
-				0 => '-5',
-				1 => '-4',
-				2 => '-3',
-				3 => '-2',
-				4 => '-1',
-				5 => '0',
-				6 => '1',
-				7 => '2',
-				8 => '3',
-				9 => '4',
-				10 => '5'
+				0 => (string)(-5 + $this->bo->xi['font_size_offset']),
+				1 => (string)(-4 + $this->bo->xi['font_size_offset']),
+				2 => (string)(-3 + $this->bo->xi['font_size_offset']),
+				3 => (string)(-2 + $this->bo->xi['font_size_offset']),
+				4 => (string)(-1 + $this->bo->xi['font_size_offset']),
+				5 => (string)(0 + $this->bo->xi['font_size_offset']),
+				6 => (string)(1 + $this->bo->xi['font_size_offset']),
+				7 => (string)(2 + $this->bo->xi['font_size_offset']),
+				8 => (string)(3 + $this->bo->xi['font_size_offset']),
+				9 => (string)(4 + $this->bo->xi['font_size_offset']),
+				10 => (string)(5 + $this->bo->xi['font_size_offset'])
 			);
 			// some fonts and font sizes, simply add to bo->xi[] array
 			$this->bo->xi['ctrl_bar_font'] = $GLOBALS['phpgw_info']['theme']['font'];
@@ -124,7 +149,7 @@
 				'mlist_newmsg_txt'	=> $this->bo->xi['mlist_newmsg_txt'],
 				'images_dir'		=> $this->bo->xi['svr_image_dir']
 			);
-			$this->template->set_var($tpl_vars);
+			$GLOBALS['phpgw']->template->set_var($tpl_vars);
 			
 			if ($this->bo->xi['folder_info']['number_all'] == 0)
 			{
@@ -134,45 +159,45 @@
 					'V_mlist_form_init'	=> $this->bo->xi['V_mlist_form_init'],
 					'mlist_backcolor'	=> $GLOBALS['phpgw_info']['theme']['row_on']
 				);
-				$this->template->set_var($tpl_vars);
-				$this->template->parse('V_no_messages','B_no_messages');
-				$this->template->set_var('V_msg_list','');
+				$GLOBALS['phpgw']->template->set_var($tpl_vars);
+				$GLOBALS['phpgw']->template->parse('V_no_messages','B_no_messages');
+				$GLOBALS['phpgw']->template->set_var('V_msg_list','');
 			}
 			else
 			{
-				$this->template->set_var('V_no_messages','');
+				$GLOBALS['phpgw']->template->set_var('V_no_messages','');
 				
-				$this->template->set_var('stats_last',$this->bo->xi['totaltodisplay']);
+				$GLOBALS['phpgw']->template->set_var('stats_last',$this->bo->xi['totaltodisplay']);
 				
 				for ($i=0; $i < count($this->bo->xi['msg_list_dsp']); $i++)
 				{
 					if ($this->bo->xi['msg_list_dsp'][$i]['first_item'])
 					{
-						$this->template->set_var('V_mlist_form_init',$this->bo->xi['V_mlist_form_init']);
+						$GLOBALS['phpgw']->template->set_var('V_mlist_form_init',$this->bo->xi['V_mlist_form_init']);
 					}
 					else
 					{
-						$this->template->set_var('V_mlist_form_init', '');
+						$GLOBALS['phpgw']->template->set_var('V_mlist_form_init', '');
 					}
 					if ($this->bo->xi['msg_list_dsp'][$i]['is_unseen'])
 					{
-						$this->template->set_var('mlist_new_msg',$this->bo->xi['mlist_new_msg']);
-						$this->template->set_var('open_newbold','<strong>');
-						$this->template->set_var('close_newbold','</strong>');
+						$GLOBALS['phpgw']->template->set_var('mlist_new_msg',$this->bo->xi['mlist_new_msg']);
+						$GLOBALS['phpgw']->template->set_var('open_newbold','<strong>');
+						$GLOBALS['phpgw']->template->set_var('close_newbold','</strong>');
 					}
 					else
 					{
-						$this->template->set_var('mlist_new_msg','&nbsp;');
-						$this->template->set_var('open_newbold','');
-						$this->template->set_var('close_newbold','');
+						$GLOBALS['phpgw']->template->set_var('mlist_new_msg','&nbsp;');
+						$GLOBALS['phpgw']->template->set_var('open_newbold','');
+						$GLOBALS['phpgw']->template->set_var('close_newbold','');
 					}
 					if ($this->bo->xi['msg_list_dsp'][$i]['has_attachment'])
 					{
-						$this->template->set_var('mlist_attach',$this->bo->xi['mlist_attach']);
+						$GLOBALS['phpgw']->template->set_var('mlist_attach',$this->bo->xi['mlist_attach']);
 					}
 					else
 					{
-						$this->template->set_var('mlist_attach','&nbsp;');
+						$GLOBALS['phpgw']->template->set_var('mlist_attach','&nbsp;');
 					}
 					$tpl_vars = Array(
 						'mlist_msg_num'		=> $this->bo->xi['msg_list_dsp'][$i]['msg_num'],
@@ -185,20 +210,20 @@
 						'mlist_date'		=> $this->bo->xi['msg_list_dsp'][$i]['msg_date'],
 						'mlist_size'		=> $this->bo->xi['msg_list_dsp'][$i]['size']
 					);
-					$this->template->set_var($tpl_vars);
-					$this->template->parse('V_msg_list','B_msg_list',True);
+					$GLOBALS['phpgw']->template->set_var($tpl_vars);
+					$GLOBALS['phpgw']->template->parse('V_msg_list','B_msg_list',True);
 				}
 			}
 
 
 			if ($this->bo->xi['report_this'] != '')
 			{
-				$this->template->set_var('report_this',$this->bo->xi['report_this']);
-				$this->template->parse('V_action_report','B_action_report');
+				$GLOBALS['phpgw']->template->set_var('report_this',$this->bo->xi['report_this']);
+				$GLOBALS['phpgw']->template->parse('V_action_report','B_action_report');
 			}
 			else
 			{
-				$this->template->set_var('V_action_report','');
+				$GLOBALS['phpgw']->template->set_var('V_action_report','');
 			}
 			$tpl_vars = Array(
 				'select_msg'	=> $this->bo->xi['select_msg'],
@@ -263,36 +288,34 @@
 				// this is only used in mlist displays
 				'mlist_hidden_vars'	=> ''
 			);
-			$this->template->set_var($tpl_vars);
+			$GLOBALS['phpgw']->template->set_var($tpl_vars);
 			// make the first prev next last arrows
-			$this->template->parse('V_arrows_form_table','B_arrows_form_table');			
+			$GLOBALS['phpgw']->template->parse('V_arrows_form_table','B_arrows_form_table');			
 			if ($this->bo->xi['stats_size'] != '')
 			{
-				$this->template->set_var('stats_size',$this->bo->xi['stats_size']);
-				$this->template->parse('V_show_size','B_show_size');
-				$this->template->set_var('V_get_size','');
+				$GLOBALS['phpgw']->template->set_var('stats_size',$this->bo->xi['stats_size']);
+				$GLOBALS['phpgw']->template->parse('V_show_size','B_show_size');
+				$GLOBALS['phpgw']->template->set_var('V_get_size','');
 			}
 			else
 			{
-				$this->template->set_var('get_size_link',$this->bo->xi['get_size_link']);
-				$this->template->set_var('frm_get_size_name',$this->bo->xi['frm_get_size_name']);
-				$this->template->set_var('frm_get_size_action',$this->bo->xi['frm_get_size_action']);
-				$this->template->set_var('get_size_flag',$this->bo->xi['force_showsize_flag']);
-				$this->template->set_var('lang_get_size',$this->bo->xi['lang_get_size']);
-				$this->template->parse('V_get_size','B_get_size');
-				$this->template->set_var('V_show_size','');
+				$GLOBALS['phpgw']->template->set_var('get_size_link',$this->bo->xi['get_size_link']);
+				$GLOBALS['phpgw']->template->set_var('frm_get_size_name',$this->bo->xi['frm_get_size_name']);
+				$GLOBALS['phpgw']->template->set_var('frm_get_size_action',$this->bo->xi['frm_get_size_action']);
+				$GLOBALS['phpgw']->template->set_var('get_size_flag',$this->bo->xi['force_showsize_flag']);
+				$GLOBALS['phpgw']->template->set_var('lang_get_size',$this->bo->xi['lang_get_size']);
+				$GLOBALS['phpgw']->template->parse('V_get_size','B_get_size');
+				$GLOBALS['phpgw']->template->set_var('V_show_size','');
 			}
 			
 			// if we are a module or not, it is still true we have finished out email proc duties
 			// so we end the email request in either case
 			$GLOBALS['phpgw']->msg->end_request();
 			
-			if ($is_modular == True)
+			if ($this->is_modular == True)
 			{
 				// we do NOT output any html, we are being used as a module in another app
 				// instead, we will pass the parsed html to the calling app
-				////$this->modular_return_html = $this->template->parse('out','T_index_main');
-				////return $this->modular_return_html;
 				
 				// Template->fp  means "Finish Parse", which does this
 				// 1) parses temnplate and replaces template tokens with vars we have set here
@@ -302,23 +325,23 @@
 				// "keep" them;  "remove"  then;  or  "comment" them
 				// Template->fp  defaults to "remove" unknowns, although you may set Template->unknowns as you wish
 				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
-				$this->template->set_unknowns("comment");
-				// production use, use this:	$this->template->set_unknowns("remove");
-				return $this->template->fp('out','T_index_main');
+				$GLOBALS['phpgw']->template->set_unknowns("comment");
+				// production use, use this:	$GLOBALS['phpgw']->template->set_unknowns("remove");
+				return $GLOBALS['phpgw']->template->fp('out','T_index_main');
 			}
 			else
 			{
 				// we are the BO and the UI, we take care of outputting the HTML to the client browser
 				// Template->pparse means "print parse" which parses the template and uses php print command
 				// to output the HTML, note "unknowns" are never handled ("finished") in that method.
-				//$this->template->pparse('out','T_index_main');
+				//$GLOBALS['phpgw']->template->pparse('out','T_index_main');
 				
 				// 
 				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
-				$this->template->set_unknowns("comment");
-				// production use, use this:	$this->template->set_unknowns("remove");
+				$GLOBALS['phpgw']->template->set_unknowns("comment");
+				// production use, use this:	$GLOBALS['phpgw']->template->set_unknowns("remove");
 				// Template->pfp will (1) parse and substitute, (2) "finish" - handle unknowns, (3) echo the output
-				$this->template->pfp('out','T_index_main');
+				$GLOBALS['phpgw']->template->pfp('out','T_index_main');
 				// note, for some reason, eventhough it seems we *should* call common->phpgw_footer(),
 				// if we do that, the client browser will get TWO page footers, so we do not call it here
 			}
@@ -326,7 +349,7 @@
 		
 		
 		// DISPLAY A PRE-DEFINED MESSAGE SET ARRAY
-		function mlist($is_modular=False)
+		function mlist()
 		{
 			//raw HTTP_POST_VARS dump
 			//echo 'HTTP_POST_VARS print_r dump:<b><pre>'."\r\n"; print_r($GLOBALS['HTTP_POST_VARS']); echo '</pre><br><br>'."\r\n";
@@ -334,7 +357,7 @@
 			$this->bo = CreateObject("email.boindex");
 			$this->bo->mlist_data();
 			
-			if ($is_modular == True)
+			if ($this->is_modular == True)
 			{
 				// we do NOT echo or print output any html, we are being used as a module by another app
 				// all we do in this case is pass the parsed html to the calling app
@@ -346,8 +369,11 @@
 				//	$GLOBALS['phpgw_info']['flags']['email_refresh_uri']
 				// which is needed to preserve folder and sort settings during the auto-refresh-ing
 				// currently (Dec 6, 2001) that logic is in phpgwapi/inc/templates/idsociety/head.inc.php
+				unset($GLOBALS['phpgw_info']['flags']['noheader']);
+				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+				$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+				$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
 				$GLOBALS['phpgw']->common->phpgw_header();
-				echo parse_navbar();
 				// NOTE: as of Dec 10, 2001 a call from menuaction defaults to NOT modular
 				// HOWEVER still this class must NOT invoke $GLOBALS['phpgw']->common->phpgw_header()
 				// even though we had to output the header and navbar, (go figure... :)
@@ -357,40 +383,42 @@
 			$this->bo->xi['my_layout'] = $GLOBALS['phpgw_info']['user']['preferences']['email']['layout'];
 			$this->bo->xi['my_browser'] = $GLOBALS['phpgw']->msg->browser;
 			
-			$this->template = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-			$this->template->set_file(array(		
+			//$GLOBALS['phpgw']->template = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			$GLOBALS['phpgw']->template->set_file(array(		
 				//'T_form_delmov_init' => 'index_form_delmov_init.tpl',
 				'T_index_blocks' => 'index_blocks.tpl',
 				'T_mlist_main' => 'index_mlist.tpl'
 			));
-			$this->template->set_block('T_mlist_main','B_action_report','V_action_report');
-			$this->template->set_block('T_mlist_main','B_show_size','V_show_size');
-			$this->template->set_block('T_mlist_main','B_get_size','V_get_size');
-			$this->template->set_block('T_mlist_main','B_no_messages','V_no_messages');
-			$this->template->set_block('T_mlist_main','B_msg_list','V_msg_list');
-			$this->template->set_block('T_index_blocks','B_mlist_form_init','V_mlist_form_init');
-			$this->template->set_block('T_index_blocks','B_arrows_form_table','V_arrows_form_table');
+			$GLOBALS['phpgw']->template->set_block('T_mlist_main','B_action_report','V_action_report');
+			$GLOBALS['phpgw']->template->set_block('T_mlist_main','B_show_size','V_show_size');
+			$GLOBALS['phpgw']->template->set_block('T_mlist_main','B_get_size','V_get_size');
+			$GLOBALS['phpgw']->template->set_block('T_mlist_main','B_no_messages','V_no_messages');
+			$GLOBALS['phpgw']->template->set_block('T_mlist_main','B_msg_list','V_msg_list');
+			$GLOBALS['phpgw']->template->set_block('T_index_blocks','B_mlist_form_init','V_mlist_form_init');
+			$GLOBALS['phpgw']->template->set_block('T_index_blocks','B_arrows_form_table','V_arrows_form_table');
 			
-			$this->template->set_var('frm_delmov_action',$this->bo->xi['frm_delmov_action']);
-			$this->template->set_var('frm_delmov_name',$this->bo->xi['frm_delmov_name']);
-			$this->template->parse('V_mlist_form_init','B_mlist_form_init');
-			$this->bo->xi['V_mlist_form_init'] = $this->template->get_var('V_mlist_form_init');
-
-			// some of the following may not be necessary
+			$GLOBALS['phpgw']->template->set_var('frm_delmov_action',$this->bo->xi['frm_delmov_action']);
+			$GLOBALS['phpgw']->template->set_var('frm_delmov_name',$this->bo->xi['frm_delmov_name']);
+			$GLOBALS['phpgw']->template->parse('V_mlist_form_init','B_mlist_form_init');
+			$this->bo->xi['V_mlist_form_init'] = $GLOBALS['phpgw']->template->get_var('V_mlist_form_init');
 			
 			// font size options
+			$this->bo->xi['font_size_offset'] = 0;
+			//$this->bo->xi['font_size_offset'] = 2;
+			// FIXME:  font_size_offset  needs to be put into the prefs db, bo, and ui
+			
 			$font_size = Array (
-				0 => '-5',
-				1 => '-4',
-				2 => '-3',
-				3 => '-2',
-				4 => '-1',
-				5 => '0',
-				6 => '1',
-				7 => '2',
-				8 => '3',
-				9 => '4',
-				10 => '5'
+				0 => (string)(-5 + $this->bo->xi['font_size_offset']),
+				1 => (string)(-4 + $this->bo->xi['font_size_offset']),
+				2 => (string)(-3 + $this->bo->xi['font_size_offset']),
+				3 => (string)(-2 + $this->bo->xi['font_size_offset']),
+				4 => (string)(-1 + $this->bo->xi['font_size_offset']),
+				5 => (string)(0 + $this->bo->xi['font_size_offset']),
+				6 => (string)(1 + $this->bo->xi['font_size_offset']),
+				7 => (string)(2 + $this->bo->xi['font_size_offset']),
+				8 => (string)(3 + $this->bo->xi['font_size_offset']),
+				9 => (string)(4 + $this->bo->xi['font_size_offset']),
+				10 => (string)(5 + $this->bo->xi['font_size_offset'])
 			);
 			// some fonts and font sizes
 			$this->bo->xi['ctrl_bar_font'] = $GLOBALS['phpgw_info']['theme']['font'];
@@ -426,7 +454,7 @@
 				'mlist_newmsg_txt'	=> $this->bo->xi['mlist_newmsg_txt'],
 				'images_dir'		=> $this->bo->xi['svr_image_dir']
 			);
-			$this->template->set_var($tpl_vars);
+			$GLOBALS['phpgw']->template->set_var($tpl_vars);
 			
 			if ($this->bo->xi['folder_info']['number_all'] == 0)
 			{
@@ -436,49 +464,49 @@
 					'V_mlist_form_init'	=> $this->bo->xi['V_mlist_form_init'],
 					'mlist_backcolor'	=> $GLOBALS['phpgw_info']['theme']['row_on']
 				);
-				$this->template->set_var($tpl_vars);
-				$this->template->parse('V_no_messages','B_no_messages');
-				$this->template->set_var('V_msg_list','');
+				$GLOBALS['phpgw']->template->set_var($tpl_vars);
+				$GLOBALS['phpgw']->template->parse('V_no_messages','B_no_messages');
+				$GLOBALS['phpgw']->template->set_var('V_msg_list','');
 			}
 			else
 			{
-				$this->template->set_var('V_no_messages','');
+				$GLOBALS['phpgw']->template->set_var('V_no_messages','');
 				
-				$this->template->set_var('stats_last',$this->bo->xi['totaltodisplay']);
+				$GLOBALS['phpgw']->template->set_var('stats_last',$this->bo->xi['totaltodisplay']);
 				
 				for ($i=0; $i < count($this->bo->xi['msg_list_dsp']); $i++)
 				{
 					// NOT SUPPORTED YET IN MLIST
-					$this->template->set_var('V_mlist_form_init', '');
+					$GLOBALS['phpgw']->template->set_var('V_mlist_form_init', '');
 					/*
 					if ($this->bo->xi['msg_list_dsp'][$i]['first_item'])
 					{
-						$this->template->set_var('V_mlist_form_init',$this->bo->xi['V_mlist_form_init']);
+						$GLOBALS['phpgw']->template->set_var('V_mlist_form_init',$this->bo->xi['V_mlist_form_init']);
 					}
 					else
 					{
-						$this->template->set_var('V_mlist_form_init', '');
+						$GLOBALS['phpgw']->template->set_var('V_mlist_form_init', '');
 					}
 					*/
 					if ($this->bo->xi['msg_list_dsp'][$i]['is_unseen'])
 					{
-						$this->template->set_var('mlist_new_msg',$this->bo->xi['mlist_new_msg']);
-						$this->template->set_var('open_newbold','<strong>');
-						$this->template->set_var('close_newbold','</strong>');
+						$GLOBALS['phpgw']->template->set_var('mlist_new_msg',$this->bo->xi['mlist_new_msg']);
+						$GLOBALS['phpgw']->template->set_var('open_newbold','<strong>');
+						$GLOBALS['phpgw']->template->set_var('close_newbold','</strong>');
 					}
 					else
 					{
-						$this->template->set_var('mlist_new_msg','&nbsp;');
-						$this->template->set_var('open_newbold','');
-						$this->template->set_var('close_newbold','');
+						$GLOBALS['phpgw']->template->set_var('mlist_new_msg','&nbsp;');
+						$GLOBALS['phpgw']->template->set_var('open_newbold','');
+						$GLOBALS['phpgw']->template->set_var('close_newbold','');
 					}
 					if ($this->bo->xi['msg_list_dsp'][$i]['has_attachment'])
 					{
-						$this->template->set_var('mlist_attach',$this->bo->xi['mlist_attach']);
+						$GLOBALS['phpgw']->template->set_var('mlist_attach',$this->bo->xi['mlist_attach']);
 					}
 					else
 					{
-						$this->template->set_var('mlist_attach','&nbsp;');
+						$GLOBALS['phpgw']->template->set_var('mlist_attach','&nbsp;');
 					}
 					$tpl_vars = Array(
 						'mlist_msg_num'		=> $this->bo->xi['msg_list_dsp'][$i]['msg_num'],
@@ -491,20 +519,20 @@
 						'mlist_date'		=> $this->bo->xi['msg_list_dsp'][$i]['msg_date'],
 						'mlist_size'		=> $this->bo->xi['msg_list_dsp'][$i]['size']
 					);
-					$this->template->set_var($tpl_vars);
-					$this->template->parse('V_msg_list','B_msg_list',True);
+					$GLOBALS['phpgw']->template->set_var($tpl_vars);
+					$GLOBALS['phpgw']->template->parse('V_msg_list','B_msg_list',True);
 				}
 			}
 
 
 			if ($this->bo->xi['report_this'] != '')
 			{
-				$this->template->set_var('report_this',$this->bo->xi['report_this']);
-				$this->template->parse('V_action_report','B_action_report');
+				$GLOBALS['phpgw']->template->set_var('report_this',$this->bo->xi['report_this']);
+				$GLOBALS['phpgw']->template->parse('V_action_report','B_action_report');
 			}
 			else
 			{
-				$this->template->set_var('V_action_report','');
+				$GLOBALS['phpgw']->template->set_var('V_action_report','');
 			}
 			$tpl_vars = Array(
 				'select_msg'	=> $this->bo->xi['select_msg'],
@@ -567,7 +595,7 @@
 				// "delmov_action" was filled above when we parsed that block
 				'delmov_listbox'	=> $this->bo->xi['delmov_listbox']
 			);
-			$this->template->set_var($tpl_vars);
+			$GLOBALS['phpgw']->template->set_var($tpl_vars);
 			
 			// make the voluminous MLIST hidden vars array
 			$loop_to = count($GLOBALS['phpgw']->msg->args['mlist_set']);
@@ -578,57 +606,55 @@
 				$mlist_hidden_vars .= '<input type="hidden" name="mlist_set['.(string)$i.']" value="'.$this_msg_num.'">'."\r\n";
 			}
 			// make the first prev next last arrows			
-			$this->template->set_var('mlist_hidden_vars',$mlist_hidden_vars);
-			$this->template->parse('V_arrows_form_table','B_arrows_form_table');			
+			$GLOBALS['phpgw']->template->set_var('mlist_hidden_vars',$mlist_hidden_vars);
+			$GLOBALS['phpgw']->template->parse('V_arrows_form_table','B_arrows_form_table');			
 			
 			// FOLDER SIZE N/A FOR MLIST SETS
-			$this->template->set_var('V_get_size',$this->bo->xi['stats_size']);
-			$this->template->set_var('V_show_size',$this->bo->xi['stats_size']);
+			$GLOBALS['phpgw']->template->set_var('V_get_size',$this->bo->xi['stats_size']);
+			$GLOBALS['phpgw']->template->set_var('V_show_size',$this->bo->xi['stats_size']);
 			/*
 			if ($this->bo->xi['stats_size'] != '')
 			{
-				$this->template->set_var('stats_size',$this->bo->xi['stats_size']);
-				$this->template->parse('V_show_size','B_show_size');
-				$this->template->set_var('V_get_size','');
+				$GLOBALS['phpgw']->template->set_var('stats_size',$this->bo->xi['stats_size']);
+				$GLOBALS['phpgw']->template->parse('V_show_size','B_show_size');
+				$GLOBALS['phpgw']->template->set_var('V_get_size','');
 			}
 			else
 			{
-				$this->template->set_var('get_size_link',$this->bo->xi['get_size_link']);
-				$this->template->set_var('frm_get_size_name',$this->bo->xi['frm_get_size_name']);
-				$this->template->set_var('frm_get_size_action',$this->bo->xi['frm_get_size_action']);
-				$this->template->set_var('get_size_flag',$this->bo->xi['force_showsize_flag']);
-				$this->template->set_var('lang_get_size',$this->bo->xi['lang_get_size']);
-				$this->template->parse('V_get_size','B_get_size');
-				$this->template->set_var('V_show_size','');
+				$GLOBALS['phpgw']->template->set_var('get_size_link',$this->bo->xi['get_size_link']);
+				$GLOBALS['phpgw']->template->set_var('frm_get_size_name',$this->bo->xi['frm_get_size_name']);
+				$GLOBALS['phpgw']->template->set_var('frm_get_size_action',$this->bo->xi['frm_get_size_action']);
+				$GLOBALS['phpgw']->template->set_var('get_size_flag',$this->bo->xi['force_showsize_flag']);
+				$GLOBALS['phpgw']->template->set_var('lang_get_size',$this->bo->xi['lang_get_size']);
+				$GLOBALS['phpgw']->template->parse('V_get_size','B_get_size');
+				$GLOBALS['phpgw']->template->set_var('V_show_size','');
 			}
 			*/
 			
 			$GLOBALS['phpgw']->msg->end_request();
 			
-			if ($is_modular == True)
+			if ($this->is_modular == True)
 			{
 				// we do NOT output any html, we are being used as a module in another app
 				// instead, we will pass the parsed html to the calling app
-				////$this->modular_return_html = $this->template->parse('out','T_index_main');
-				////return $this->modular_return_html;
 				
 				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
-				$this->template->set_unknowns("comment");
-				// production use, use this:	$this->template->set_unknowns("remove");
-				return $this->template->fp('out','T_mlist_main');
+				//$GLOBALS['phpgw']->template->set_unknowns("comment");
+				// production use, use this:	$GLOBALS['phpgw']->template->set_unknowns("remove");
+				return $GLOBALS['phpgw']->template->fp('out','T_mlist_main');
 			}
 			else
 			{
 				// we are the BO and the UI, we take care of outputting the HTML to the client browser
 				// Template->pparse means "print parse" which parses the template and uses php print command
 				// to output the HTML, note "unknowns" are never handled ("finished") in that method.
-				//$this->template->pparse('out','T_index_main');
+				//$GLOBALS['phpgw']->template->pparse('out','T_index_main');
 				
 				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
-				$this->template->set_unknowns("comment");
-				// production use, use this:	$this->template->set_unknowns("remove");
+				//$GLOBALS['phpgw']->template->set_unknowns("comment");
+				// production use, use this:	$GLOBALS['phpgw']->template->set_unknowns("remove");
 				// Template->pfp will (1) parse and substitute, (2) "finish" - handle unknowns, (3) echo the output
-				$this->template->pfp('out','T_mlist_main');
+				$GLOBALS['phpgw']->template->pfp('out','T_mlist_main');
 				// note, for some reason, eventhough it seems we *should* call common->phpgw_footer(),
 				// if we do that, the client browser will get TWO page footers, so we do not call it here
 			}

@@ -159,6 +159,22 @@
 				'default'	=> 'Sent',
 				'values'	=> array()
 			);
+			/*
+			$i++;
+			$this->std_prefs[$i] = Array(
+				'id' 		=> 'font_size_offset',
+				'type'		=> 'known_string',
+				'widget'	=> 'combobox',
+				'other_props'	=> '',
+				'lang_blurb'	=> lang('Change Font Size in your E-Mail Pages'),
+				'default'	=> '0',
+				'values'	=> array(
+					'-1' => lang('Smaller'),
+					'0' => lang('Normal'),
+					'1' => lang('Bigger')
+				)
+			);
+			*/
 			$i++;
 			$this->std_prefs[$i] = Array(
 				'id' 		=> 'enable_utf7',
@@ -253,6 +269,8 @@
 				'values'	=> array()
 			);
 		}
+		
+		
 		
 		function debug_dump_prefs()
 		{

@@ -127,26 +127,6 @@
 			}
 		}
 		
-		function login_error()
-		{
-			$imap_err = imap_last_error();
-			if ($imap_err == '')
-			{
-				$error_report = lang('No Error Returned From Server');
-			}
-			else
-			{
-				$error_report = $imap_err;
-			}
-			// this should be templated
-			echo "<p><center><b>"
-			  . lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
-			  ."<br>source: email class.boindes.inc.php"
-			  ."<br>imap_last_error: ".$error_report
-			  . "</b></center></p>";
-			$GLOBALS['phpgw']->common->phpgw_exit(True);
-		}
-		
 		function get_langed_labels()
 		{
 			// ----  Langs  ----
@@ -254,7 +234,7 @@
 			if (($args_array['do_login'] == True)
 			&& (!$GLOBALS['phpgw']->msg->mailsvr_stream))
 			{
-				$this->login_error();
+				$GLOBALS['phpgw']->msg->login_error($GLOBALS['PHP_SELF'].', index_data()');
 			}
 			// base http URI on which we will add other stuff down below
 			$this->index_base_link = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->index_menuaction);
@@ -516,7 +496,7 @@
 					$this->xi['stats_last'] = $this->xi['totaltodisplay'];
 			}
 			// user may select individual messages to move, make combobox to select destination folder
-			$this->xi['frm_delmov_action'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/action.php');
+			$this->xi['frm_delmov_action'] = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->action_menuaction);
 			$this->xi['frm_delmov_name'] = 'delmov';
 			if ($this->xi['mailsvr_supports_folders'])
 			{
@@ -564,7 +544,7 @@
 			if (($args_array['do_login'] == True)
 			&& (!$GLOBALS['phpgw']->msg->mailsvr_stream))
 			{
-				$this->login_error();
+				$GLOBALS['phpgw']->msg->login_error($GLOBALS['PHP_SELF'].', mlist_data()');
 			}
 			// base http URI on which we will add other stuff down below
 			$this->index_base_link = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->mlist_menuaction);
@@ -842,7 +822,7 @@
 			
 			// NOT YET IMPLEMENTED IN MLIST
 			// user may select individual messages to move, make combobox to select destination folder
-			$this->xi['frm_delmov_action'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/action.php');
+			$this->xi['frm_delmov_action'] = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->index_menuaction);
 			$this->xi['frm_delmov_name'] = 'delmov';
 			if ($this->xi['mailsvr_supports_folders'])
 			{

@@ -40,7 +40,8 @@
 		echo parse_navbar();
 		// retrieve the html data from class uiindex
 		$obj = CreateObject('email.uiindex');
-		$retured_html = $obj->index(True);
+		$obj->set_is_modular(True);
+		$retured_html = $obj->index();
 		// time for us to output the returned html data
 		echo $retured_html;
 		// now as the calling app, it's time to output the bottom of the page
