@@ -1,41 +1,51 @@
 <?
+	/**************************************************************************\
+	* phpGroupWare - Forums						     *
+	* http://www.phpgroupware.org						     *
+	* Written by Jani Hirvinen <jpkh@shadownet.com>			     *
+	* -------------------------------------------				     *
+	*  This program is free software; you	can redistribute it and/or modify it *
+	*  under the terms of	the GNU	General	Public License as published by the   *
+	*  Free Software Foundation; either version 2	of the License,	or (at your  *
+	*  option) any later version.						     *
+	\**************************************************************************/-
 
-if (! $sessionid)
-Header("Location: ../login.php");
+	if (! $sessionid) Header("Location: ../login.php");
 
-$phpgw_info["flags"] = array("currentapp" => "forum",
-			     "enable_nextmatchs_class" => True);
-include("../header.inc.php");
+	$phpgw_info["flags"] = array("currentapp" => "forum",
+	"enable_nextmatchs_class" => True);
+	include("../header.inc.php");
 
 
-$phpgw->template->set_file('INDEX' , 'index.body.tpl');
+	$phpgw->template->set_file('INDEX' , 'index.body.tpl');
 
-$phpgw->template->set_block('INDEX','CategoryForum','CatF');
+	$phpgw->template->set_block('INDEX','CategoryForum','CatF');
 
-$phpgw->db->query("select * from f_categories");
-$phpgw->template->set_var(array(
-	'BGROUND' 	=> $phpgw_info["theme"]["th_bg"],
-	'FORUM' 	=> lang("Forum")
+	$phpgw->db->query("select * from f_categories");
+	$phpgw->template->set_var(array(
+	'BGROUND'	=> $phpgw_info["theme"]["th_bg"],
+	'FORUM'		=> lang("Forum")
 	));
 
-while($phpgw->db->next_record()) {
-$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-$phpgw->template->set_var(array(
+	while($phpgw->db->next_record())
+	{
+		$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+		$phpgw->template->set_var(array(
 
-	COLOR 	=> $tr_color,
-	CAT 	=> $phpgw->db->f("name"),
-	DESC	=> $phpgw->db->f("descr"),
-	CAT_LINK	=> $phpgw->link("/forum/forums.php","cat=" .  $phpgw->db->f("id"))
-	
-	));
-$phpgw->template->parse('CatF','CategoryForum',true);
+		COLOR	=> $tr_color,
+		CAT	=> $phpgw->db->f("name"),
+		DESC	=> $phpgw->db->f("descr"),
+		CAT_LINK	=> $phpgw->link("/forum/forums.php","cat=" .  $phpgw->db->f("id"))
 
-}
+		));
+		$phpgw->template->parse('CatF','CategoryForum',true);
 
-$phpgw->template->parse('Out','INDEX');
-$phpgw->template->p('Out');
+	}
+
+	$phpgw->template->parse('Out','INDEX');
+	$phpgw->template->p('Out');
 
 
-$phpgw->common->phpgw_footer();
+	$phpgw->common->phpgw_footer();
 
 ?>
