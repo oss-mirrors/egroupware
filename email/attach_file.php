@@ -20,10 +20,9 @@
   // Some on the methods where borrowed from
   // Squirrelmail <Luke Ehresman> http://www.squirrelmail.org
 
-  $uploaddir = $phpgw_info["server"]["temp_dir"]
-	     . $phpgw_info["server"]["dir_separator"]
-	     . $phpgw->session->id
-	     . $phpgw_info["server"]["dir_separator"];
+  $sep = $phpgw->common->filesystem_sepeartor();
+
+  $uploaddir = $phpgw_info["server"]["temp_dir"] . $sep . $phpgw->session->id . $sep;
 
   if ($action == "Delete") {
      for ($i=0; $i<count($delete); $i++) {
@@ -46,12 +45,8 @@
      fclose($ftp);
   }
 
-  if (! file_exists($phpgw_info["server"]["temp_dir"]
-	     . $phpgw_info["server"]["dir_separator"]
-	     . $phpgw->session->id))
-     mkdir($phpgw_info["server"]["temp_dir"]
-	 . $phpgw_info["server"]["dir_separator"]
-	 . $phpgw->session->id,0700);
+  if (! file_exists($phpgw_info["server"]["temp_dir"] . $sep . $phpgw->session->id))
+     mkdir($phpgw_info["server"]["temp_dir"] . $sep . $phpgw->session->id,0700);
 
   ?>
     <form ENCTYPE="multipart/form-data" method="POST" action="attach_file.php">
@@ -61,9 +56,7 @@
       <tr> <td>Attach file:</td> </tr>
       <tr> <td>Current attachments:</td> </tr>
       <?php
-        $dh = opendir($phpgw_info["server"]["temp_dir"]
-		    . $phpgw_info["server"]["dir_separator"]
-	 	    . $phpgw->session->id);
+        $dh = opendir($phpgw_info["server"]["temp_dir"] . $sep . $phpgw->session->id);
         while ($file = readdir($dh)) {
           if ($file != "." && $file != ".." && ereg("\.info",$file)) {
              $file_info = file($uploaddir . $file);

@@ -23,29 +23,26 @@
      exit;
   }
 
-  if (file_exists($phpgw_info["server"]["temp_dir"] . $phpgw_info["server"]["dir_separator"] . $phpgw_info["user"]["sessionid"])) {
-     $dh = opendir($phpgw_info["server"]["temp_dir"] . $phpgw_info["server"]["dir_separator"] . $phpgw_info["user"]["sessionid"]);
+  $sep = $phpgw->common->filesystem_sepeartor();
+
+  if (file_exists($phpgw_info["server"]["temp_dir"].$sep.$phpgw_info["user"]["sessionid"])) {
+     $dh = opendir($phpgw_info["server"]["temp_dir"] . $sep . $phpgw_info["user"]["sessionid"]);
      while ($file = readdir($dh)) {
         if ($file != "." && $file != "..") {
            if (! ereg("\.info",$file)) {
               $total_files++;
-              $size = filesize($phpgw_info["server"]["temp_dir"]
-					 . $phpgw_info["server"]["dir_separator"]
-					 . $phpgw_info["user"]["sessionid"]
-					 . $phpgw_info["server"]["dir_separator"] . $file);
+              $size = filesize($phpgw_info["server"]["temp_dir"] . $sep
+					 . $phpgw_info["user"]["sessionid"] . $sep . $file);
 
-              $file_info = file($phpgw_info["server"]["temp_dir"]
-					  . $phpgw_info["server"]["dir_separator"]
-					  . $phpgw_info["user"]["sessionid"]
-					  . $phpgw_info["server"]["dir_separator"] . $file . ".info");
+              $file_info = file($phpgw_info["server"]["temp_dir"] . $sep
+					  . $phpgw_info["user"]["sessionid"] . $sep . $file . ".info");
 
               $file_info[0] = chop($file_info[0]);
               $file_info[1] = chop($file_info[1]);
 
-              $fh = fopen($phpgw_info["server"]["temp_dir"]
-				. $phpgw_info["server"]["dir_separator"]
+              $fh = fopen($phpgw_info["server"]["temp_dir"] . $sep
 				. $phpgw_info["user"]["sessionid"]
-				. $phpgw_info["server"]["dir_separator"] . $file,"r");
+				. $sep . $file,"r");
 
               $rawfile = fread($fh,$size);
               $encoded_attach = chunk_split(base64_encode($rawfile));
@@ -55,20 +52,15 @@
                          . "Content-Transfer-Encoding: BASE64\n"
                          . "Content-disposition: attachment; filename=\"$file_info[1]\"\n\n"
                          . $encoded_attach . "\n"; 
-              unlink($phpgw_info["server"]["temp_dir"]
-		   . $phpgw_info["server"]["dir_separator"]
-		   . $phpgw_info["user"]["sessionid"]
-	           . $phpgw_info["server"]["dir_separator"] . $file);
+              unlink($phpgw_info["server"]["temp_dir"] . $sep
+		   . $phpgw_info["user"]["sessionid"] . $sep . $file);
 
-              unlink($phpgw_info["server"]["temp_dir"]
-		   . $phpgw_info["server"]["dir_separator"]
-		   . $phpgw_info["user"]["sessionid"]
-	           . $phpgw_info["server"]["dir_separator"] . $file . ".info");
+              unlink($phpgw_info["server"]["temp_dir"] . $sep
+		   . $phpgw_info["user"]["sessionid"] . $sep . $file . ".info");
            }	// if ! .info
         }	// if ! . or ..
      } 		// while dirread
-     rmdir($phpgw_info["server"]["temp_dir"] . $phpgw_info["server"]["dir_separator"]
-	 . $phpgw_info["user"]["sessionid"]);
+     rmdir($phpgw_info["server"]["temp_dir"] . $sep . $phpgw_info["user"]["sessionid"]);
   }		// if dir
 
 //  }
