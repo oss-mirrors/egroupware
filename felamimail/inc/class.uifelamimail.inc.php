@@ -920,7 +920,7 @@
 
 			// careful! "d = new..." MUST be on a new line!!!
 			$folder_tree_new = "<script type='text/javascript'><!--	
-			d = new dTree('d');";
+			d = new dTree('d','".PHPGW_IMAGES_DIR."');";
 			
 			
 			while(list($key,$value) = @each($folders))
