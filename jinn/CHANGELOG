@@ -3,9 +3,19 @@
                 CHANGELOG jinn for phpGroupWare
 
 ===================================================================================
+version 0.4.4pre7
+wo maa 13 01:45:34 UTC 2003
+===========================
+- finally I have the imagepath-plugin working (not complete, but probably stable) 
+- made some new plugins
+- almost finished the plugin structure
 - fixed bug in display_func.js strValues undefined
+- introduce process plugin
+- wrote/port all the default plugins
+- add type of configvalue in plugins (like yes/no)
+- added a imagemagick class
 
-version 0.4.4pre5
+version 0.4.4pre6
 mo maa 04 01:12:34 UTC 2003
 ===========================
 - remove the difference between fip and sfp plugins
@@ -15,7 +25,7 @@ mo maa 04 01:12:34 UTC 2003
 - removed some ugly code and unneccesary functions
 - input part of plugins, almost finished
 
-version 0.4.4pre4
+version 0.4.4pre5
 mo feb 24 16.21.21 UTC 2003
 ===========================
 - finish import/export function!
@@ -27,7 +37,6 @@ date still unknown
 - finally learned how to use CVS and so now we're using it
   hope the rest of this log can be generated from cvs at
   the release date
-
 
 version 0.4.4pre3
 mo nov 19 00.05.45 UTC 2002

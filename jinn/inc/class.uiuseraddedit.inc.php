@@ -51,7 +51,7 @@
 			$where_condition=$GLOBALS[where_condition];
 			if ($where_condition)
 			{
-				
+
 				/* set vars for edit form */
 				$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uijinn.object_update');
 				$where_condition_form="<input type=\"hidden\" name=\"where_condition\" value=\"$where_condition\">";
@@ -73,7 +73,7 @@
 			$this->template->set_var('form_action',$form_action);
 			$this->template->set_var('where_condition_form',$where_condition_form);
 			$this->template->pparse('out','form_header');
-			
+
 
 			/* get one with many relations */
 			$relation1_array=$this->relations->get_fields_with_1_relation($this->bo->site_object[relations]);
@@ -94,9 +94,6 @@
 			foreach ( $fields as $fieldproperties )
 			{
 
-				/* set the row colors */
-				if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on']) $row_color=$GLOBALS['phpgw_info']['theme']['row_off'];
-				else $row_color=$GLOBALS['phpgw_info']['theme']['row_on'];
 
 				$value=$values_object[0][$fieldproperties[name]];	/* get value */
 				$input_name='FLD'.$fieldproperties[name];	/* add FLD so we can identify the real input HTTP_POST_VARS */
@@ -108,7 +105,7 @@
 				if ($input_length>40) $input_length=40;
 
 				/* ---------------------- start fields -------------------------------- */
-				
+
 				/* Its an identifier field */
 				if (eregi("auto_increment", $fieldproperties[flags]))
 				{
@@ -118,13 +115,13 @@
 
 				// deze velden handelen plaatjes, hier moet meer mee gebeuren incl uploaden
 				// move to standard plugins
-			/*	elseif ($fieldproperties[name]=='image_path'||$fieldproperties[name]=='img_path')
+				/*	elseif ($fieldproperties[name]=='image_path'||$fieldproperties[name]=='img_path')
 				{
 					$input=$this->bo->plug->get_plugin_fi($input_name,$value,'text');
 
 				}
-			*/
-/*				elseif ($fieldproperties[name]=='thumb_path')
+				*/
+				/*				elseif ($fieldproperties[name]=='thumb_path')
 				{
 					unset($input);
 					if($value)
@@ -151,11 +148,11 @@
 					$input.='<input type="hidden" name="'.$fieldproperties[name].'" value="True">'.lang('automatic');
 
 				}
-*/
+				*/
 				/*************************************
 				* start attachments
 				*************************************/
-/*
+				/*
 				elseif ($fieldproperties[name]=='attachment_path')
 				{
 					unset($input);
@@ -189,7 +186,7 @@
 					$input.=lang('add attachent').' <input type="file" name="'.$fieldproperties[name].'">';
 
 				}
-*/
+				*/
 				/*************************************
 				* end attachments
 				*************************************/
@@ -241,21 +238,22 @@
 					$input=$this->bo->plug->get_plugin_fi($input_name,$value,'blob');
 				}
 
-				
-				$this->template->set_var('row_color',$row_color);
-				$this->template->set_var('input',$input);
-				$this->template->set_var('fieldname',$display_name);
 
-				$this->template->pparse('out','object_field');
+				/* if there is something to render to this */
+				if($input!='hide')
+				{
+					/* set the row colors */
+					if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on']) $row_color=$GLOBALS['phpgw_info']['theme']['row_off'];
+					else $row_color=$GLOBALS['phpgw_info']['theme']['row_on'];
+
+					$this->template->set_var('row_color',$row_color);
+					$this->template->set_var('input',$input);
+					$this->template->set_var('fieldname',$display_name);
+
+					$this->template->pparse('out','object_field');
+				}
 			}
 
-
-
-
-
-
-
-			
 
 			/***********************************************
 			* MANY WITH MANY RELATION SECTION OF FORM      *

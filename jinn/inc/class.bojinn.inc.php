@@ -45,7 +45,7 @@ class bojinn
 	var $site_db; // REMOVEarray
 
 	var $plug;
-
+	var $magick;
 
 	function bojinn()
 	{
@@ -85,7 +85,7 @@ class bojinn
 		}
 
 		$this->plug = CreateObject('jinn.boplugins.inc.php', $this->site, $this->site_object);
-				
+		$this->magick = CreateObject('jinn.boimagemagick.inc.php');	
 
 	}
 
@@ -792,13 +792,17 @@ class bojinn
 
 		 */
 //die(var_dump($HTTP_POST_VARS));
+
 		while(list($key, $val) = each($HTTP_POST_VARS)) 
 		{
 
+			//var_dump($HTTP_POST_VARS);
 			if(substr($key,0,3)=='FLD')
 			{
+				//echo $key.'<br>';
 				if ($filtered_data=$this->plug->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES))
 				{
+					if ($filtered_data==-1) $filtered_data='';
 					$data[] = array
 					(
 						'name' => substr($key,3),
@@ -819,7 +823,7 @@ class bojinn
 				
 			}
 		}
-
+//die(var_dump($data));
 		return $data;
 	}
 

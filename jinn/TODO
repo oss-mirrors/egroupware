@@ -1,32 +1,28 @@
 ===================================================================================
 
-                CHANGELOG jinn for phpGroupWare
+                TODO JiNN for phpGroupWare
 
 ===================================================================================
 
-TODO - BUGS!!!
-===================================================================================
-- magic quotes_gpc must be set off in PHP.INI. Else jinn wont work. FIX THIS
-- als men in access_rights een userlijst krijgt en daar vervolgens in zoekt kan
-  hij de gevonden resultaten wel aan zetten maar niet uit
-        - deze fout zal ook optreden bij meer dan 15 users
-- phpgwadmin krijgt niet alle objecten te zien in accessrights
 
-TODO - 0.4.5
+TODO - 0.4.4
 ===================================================================================
 - plugins infrastructure completely finished
 - remove all showstoppers
-- finish plugins!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!25%
-- add type of configvalue in plugins (like yes/no)
-- introduce process plugin
-- write/port all the default plugins
+- finish plugins!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!75%
 - good upgrade functionality
 - FIX the magic-quotes bug or mention it in a FAQ
 - remove sessionless links
 - FIX/CHECK sessionsupport in table. Now only in cookies work
 
+TODO - BUGS!!!
+===================================================================================
+- als men in access_rights een userlijst krijgt en daar vervolgens in zoekt kan
+  hij de gevonden resultaten wel aan zetten maar niet uit CHECK THIS
+  - deze fout zal ook optreden bij meer dan 15 users CHECK THIS, don't know anymore
+- phpgwadmin krijgt niet alle objecten te zien in accessrights CHECK THIS
 
-TODO - First developer release APLHA (freshmeat/mailinglist)
+TODO - 0.4.5 and later Not branched
 ===================================================================================
 - finish configure-view-function!!!!!!!!!!!!!!!!!!!!!!!!!
 - site administration working for non-phpgw-administrators
@@ -44,34 +40,22 @@ TODO - First developer release APLHA (freshmeat/mailinglist)
         - remove a lot of unused functions and merge similar functions
 		- make a lot of new classes, e.g. class.form_plugins.php
 
-TODO - First public release BETA (freshmeat/mailinglist)
-===================================================================================
-
 - language
     + Dutch translation complete
 	+ check all statusmessages
 	+ give statusmessages colors
 
-
-TODO - Second public release BETA (freshmeat/mailinglist)
-===================================================================================
-
-
-TODO - Not branched
-===================================================================================
 - Form-plugins
 	- make it also an option in preferences
 	- plugin-uploader (from tarball)
 	- plugin-code validator
 	- Write plugin documentation
 	- plugin: colorpicker, hide_this_field, htmlArea, flashArea, datepicker, yes_no, attachment_upload, image_upload
-
 - Other session vars for admin so that the JiNN remembers the state of the user as the state fo the admin
 - Remember order by http_vars
 
 - Code
         - display_func.js opruimen
-
 - Admin
 	- grouppersmission administration (PRIORITY)
 	- validate-routine maken voor wijzgen records
@@ -119,10 +103,3 @@ TODO - Not branched
 	- veiligheid testen (PRIORITY)
 	- postgreSQL compatibiliteit
 
-- layout
-
-i-dots theme
-===================================================
-- i-dots template voor preferences
-- admin message links uitlijnen
-- css controleren
