@@ -17,14 +17,16 @@ billable rate	tts	de	abrechenbarer Satz
 billable rate changed	tts	de	abrechenbarer Satz geändert
 category changed	tts	de	Kategorie geändert
 check here to generate the state's id automatically or enter a particular id below.	tts	de	Hier abhacken um die Status ID automatisch zu generieren oder eine ID darunter manuell eingeben.
+check here to generate the state\'s id automatically or enter a particular id below.	tts	de	Hier abhacken um die Status ID automatisch zu generieren oder eine ID darunter manuell eingeben.
+check here to generate the state\\\'s id automatically or enter a particular id below.	tts	de	Hier abhacken um die Status ID automatisch zu generieren oder eine ID darunter manuell eingeben.
 clear form	tts	de	Formular löschen
 close	tts	de	Schließen
 close date	tts	de	Geschlossen am
 close the invalid ticket.	tts	de	Ungültiges Ticket schließen.
 closed	tts	de	Geschlossen
 completed	tts	de	ABGESCHLOSSEN
-configure the states	tts	de	Stati konfigurieren
-configure the transitions	tts	de	Übergänge konfigurieren
+configure the states	common	de	Stati konfigurieren
+configure the transitions	common	de	Übergänge konfigurieren
 create new state	tts	de	Neuen Status anlegen
 create new ticket	tts	de	Neues Ticket anlegen
 create new transition	tts	de	Neuen Übergang anlegen
@@ -42,6 +44,7 @@ details	tts	de	Details
 duplicate	tts	de	DOPPELT
 edit the state	tts	de	Status bearbeiten
 edit the transition	tts	de	Übergang bearbeiten
+error: the subject of the ticket is not specified.	tts	de	Fehler: Der Betreff des Tickets ist nicht spezifiziert
 force	tts	de	erzwungen
 global categories	tts	de	Globale Kategorien
 group ownership changed	tts	de	Gruppen-Eigentümer geändert
@@ -56,6 +59,10 @@ keep the present state [%1].	tts	de	Aktuellen Status beibehalten [%1].
 latest note added	tts	de	Letzte zugefügte Notiz
 list of available tickets' states.	tts	de	Liste der verfügbaren Ticket Stati.
 list of available tickets' transitions.	tts	de	Liste der verfügbaren Ticket Übergänge.
+list of available tickets\' states.	tts	de	Liste der verfügbaren Ticket Stati.
+list of available tickets\' transitions.	tts	de	Liste der verfügbaren Ticket Übergänge.
+list of available tickets\\\' states.	tts	de	Liste der verfügbaren Ticket Stati.
+list of available tickets\\\' transitions.	tts	de	Liste der verfügbaren Ticket Übergänge.
 missing description	tts	de	fehlende Beschreibung
 morework	tts	de	MEHRARBEIT
 needswork	tts	de	MEHRARBEIT
@@ -71,6 +78,8 @@ no tickets found	tts	de	Keine Tickets gefunden
 no transitions found	tts	de	Keine Übergänge gefunden
 not assigned	tts	de	Nicht zugewiesen
 not completed	tts	de	NICHT ABGESCHLOSSEN
+notify changes to ticket group by e-mail	tts	de	Ticket Änderungen an die Gruppe per Mail senden
+notify changes to ticket owner by e-mail	tts	de	Ticket Änderungen an die Besitzer per Mail senden
 old value	tts	de	Alter Wert
 open	tts	de	Offen
 open / closed	tts	de	Offen / Geschlossen
@@ -79,6 +88,7 @@ opened	tts	de	Angelegt
 opened by	tts	de	Angelegt von
 original ticket details	tts	de	Ursprüngliche Details des Tickets
 perform irregular transition into the following state	tts	de	Regelwiedriger Übergang in den folgenden Status ausführen
+please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	de	Bitte geben Sie einen Betreff für dieses Ticket an, sonst kann dieses nicht gespeichert werden.
 prio	tts	de	Prio
 priority	tts	de	Priorität
 priority changed	tts	de	Priorität geändert
@@ -153,7 +163,9 @@ verify	tts	de	ÜBERPRÜFEN
 verify the ticket to work on it.	tts	de	Ticket überprüfen um daran zu arbeiten.
 view all tickets	tts	de	Alle Tickets anzeigen
 view job detail	tts	de	Detailansicht
+view only my open tickets	tts	de	Nur meine offenen Tickets anzeigen
 view only open tickets	tts	de	Nur offene Tickets anzeigen
 you can only close a ticket if it is assigned to you.	tts	de	Sie können nur Tickets schließen, die ihnen zugewiesen sind.
+you want to delete the state %1 and associated transitions. are you sure?	tts	de	Sind sie sicher das Sie den Status %1 löschen möchten?
 you want to delete the state %1. are you sure?	tts	de	Sind sie sicher, dass sie den Status %1 löschen wollen?
 you want to delete the transition %1. are you sure?	tts	de	Sind sie sicher, dass sie den Übergang %1 löschen wollen?
