@@ -199,7 +199,7 @@ else
   // if filter is g + group id then search for open tickets by group
   if (substr($filter,0,1) == "g")
   {
-    $group_filter=substr($filter,1);
+    $group_filter=(int) substr($filter,1);
 
       if ($filtermethod == "")
         {
@@ -214,7 +214,7 @@ else
   // if filter is s + state id then search for open tickets by group
   if (substr($filter,0,1) == "u")
   {
-    $status_filter=substr($filter,1);
+    $status_filter=(int) substr($filter,1);
 
        if ($filtermethod == "")
         {
@@ -229,7 +229,7 @@ else
    // if filter is c + category id then search for open tickets by category
   if (substr($filter,0,1) == "c")
   {
-    $category_filter=substr($filter,1);
+    $category_filter=(int) substr($filter,1);
 
        if ($filtermethod == "")
         {
