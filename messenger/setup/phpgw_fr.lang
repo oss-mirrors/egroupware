@@ -1,0 +1,16 @@
+compose	messenger	fr	Composer
+compose global message	admin	fr	Composer un message global
+compose message	messenger	fr	Composer un message
+forward	messenger	fr	Faire suivre
+forward a message	messenger	fr	Faire suivre un message
+forwarded	messenger	fr	suivi
+global message	messenger	fr	Message global
+inbox	messenger	fr	inbox
+message from	messenger	fr	Message de
+messenger	common	fr	Messager
+read message	messenger	fr	Lire le message
+reply	messenger	fr	Répondre
+reply to a message	messenger	fr	Répondre à un message
+send	messenger	fr	Envoyer
+send message to	messenger	fr	Envoyer un message à
+you have %1 new messages	messenger	fr	Vous avez %1 nouveaux messages

@@ -1,108 +1,108 @@
-Add address	felamimail	fr	Ajouter adresse
-Additional info	felamimail	fr	Infos supplémentaires
-Address Book Search	felamimail	fr	Recherche dans le carnet d'adresses
-Address Book	felamimail	fr	Carnet d'adresses
+add address	felamimail	fr	Ajouter l'adresse
+additional info	felamimail	fr	Informations additionnelles
+address book search	felamimail	fr	Recherche dans le carnet d'adresses
+address book	felamimail	fr	Carnet d'adresses
 add	felamimail	fr	ajouter
-Add	felamimail	fr	Ajouter
-Add to address book	felamimail	fr	Ajouter au carnet d'adresses
-Add to %s	felamimail	fr	Ajouter à %s
-After message body	felamimail	fr	Après le corps du message
-All address books	felamimail	fr	Tous les carnets d'adresses
-All Folders	felamimail	fr	Tous les dossiers
-as a subfolder of	felamimail	fr	comme un sous-dossier de
-Attachments	felamimail	fr	Attachements
-Auto refresh folder list	felamimail	fr	Auto rafraîchir la liste des dossiers
-Bad reque	felamimail	fr	Mauvaise requête
-Based upon given criteria, incoming messages can have different background colors in the message list.  This helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	fr	En se basant sur les critères donés, les messages entrants peuvent avoir des couleurs de fond différentes dans la liste de messages. Ceci aide à distinguer aisément de qui viennent les messages, spécialement pour les listes de diffusion.
-Before headers	felamimail	fr	Avant les entêtes
-Between headers and message body	felamimail	fr	Entre les entêtes et le corps du message
+add	felamimail	fr	ajouter
+add to address book	felamimail	fr	Ajouter au carnet d'adresses
+add to %s	felamimail	fr	Ajouter à %s
+after message body	felamimail	fr	Après le corps du message
+all address books	felamimail	fr	Tous les carnets d'adresses
+all folders	felamimail	fr	Tous les dossiers
+as a subfolder of	felamimail	fr	Comme un sous-dossier de
+attachments	felamimail	fr	Attachements
+auto refresh folder list	felamimail	fr	Auto-rafraîchir la liste des dossiers
+bad reque	felamimail	fr	Mauvaise requête
+based upon given criteria, incoming messages can have different background colors in the message list.  This helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	fr	En se basant sur les critères donnés, les messages entrants peuvent avoir des couleurs de fond différentes dans la liste des messages. Ceci aide à distinguer aisément de qui sont les messages, spécialement pour les listes de diffusion.
+before headers	felamimail	fr	Avant les entêtes
+between headers and message body	felamimail	fr	Entre les entêtes et le corps du message
 cc	felamimail	fr	cc
-Checkbox	felamimail	fr	Boite de choix
-Click here to log back in.	felamimail	fr	Cliquez ici pour vous reconnecter.
-Click here to return to %s	felamimail	fr	Cliquez ici pour retourner à %s
-Close window	felamimail	fr	Fermer la fenêtre
-Color	felamimail	fr	Couleur
-Compose	felamimail	fr	Composer
-Created folder successfully!	felamimail	fr	Dossier crée avec succès!
-Create Folder	felamimail	fr	Créer dossier
-Create Sent	felamimail	fr	Créer envoyés (Sent)
-Create	felamimail	fr	Créer
-Create Trash	felamimail	fr	Créer poubelle (Trash)
-Dark Blue	felamimail	fr	Bleu profond
-Dark Cyan	felamimail	fr	Cyan profond
-Dark Gray	felamimail	fr	Gris profond
-Dark Green	felamimail	fr	Vert profond
-Dark Magenta	felamimail	fr	Magenta profond
-Dark Yellow	felamimail	fr	jaune profond
-date	felamimail	fr	date
+checkbox	felamimail	fr	Boite à cocher
+click here to log back in.	felamimail	fr	Cliquez ici pour vous reconnecter
+click here to return to %s	felamimail	fr	Cliquez ici pour retourner à %s
+close window	felamimail	fr	Fermer la fenêtre
+color	felamimail	fr	Couleur
+compose	felamimail	fr	Composer
+created folder successfully!	felamimail	fr	Dossier crée avec succès!
+create folder	felamimail	fr	Créer dossier
+create sent	felamimail	fr	Créer Sent (envoyés)
+create	felamimail	fr	Créer
+create trash	felamimail	fr	Créer Trash (poubelle)
+dark blue	felamimail	fr	Bleu foncé
+dark cyan	felamimail	fr	Cyan foncé
+dark gray	felamimail	fr	Gris foncé
+dark green	felamimail	fr	Vert foncé
+dark magenta	felamimail	fr	Magenta foncé
+dark yellow	felamimail	fr	Jaune foncé
+date	felamimail	fr	Date
 Date	felamimail	fr	Date
-Deleted folder successfully!	felamimail	fr	Dossier supprimé avec succès!
-Delete Folder	felamimail	fr	Supprimer dossier
-Delete selected	felamimail	fr	Supprimer choix
-Delete	felamimail	fr	Supprimer
-Display Preferences	felamimail	fr	Afficher les préférences
-Done	felamimail	fr	Fait
-Do not use Sent	felamimail	fr	Ne pas utiliser envoyés (Sent)
-Do not use Trash	felamimail	fr	Ne pas utiliser poubelle (Trash)
-Don't use Sent	felamimail	fr	N'utilise pas envoyés (Sent)
-Don't use Trash	felamimail	fr	N'utilise pas poubelle (Trash)
+deleted folder successfully!	felamimail	fr	Dossier effacé avec succès!
+delete folder	felamimail	fr	Effacer dossier
+delete selected	felamimail	fr	Effacer sélectionnés
+delete	felamimail	fr	Effacer
+display preferences	felamimail	fr	Afficher les préférences
+done	felamimail	fr	Fait
+do not use sent	felamimail	fr	Ne pas utiliser Sent (envoyés)
+do not use trash	felamimail	fr	Ne pas utiliser Trash (poubelle)
+don't use sent	felamimail	fr	N'utilise pas Sent (envoyés)
+don't use trash	felamimail	fr	N'utilise pas Trash (poubelle)
 download	felamimail	fr	Downloader
-Download this as a file	felamimail	fr	Downloader ceci comme un fichier
+download this as a file	felamimail	fr	Downloader ceci comme un fichier
 down	felamimail	fr	bas
-Edit selected	felamimail	fr	Modifier choix
-Edit	felamimail	fr	Modifier
-E-mail address	felamimail	fr	Adresse EMail
+edit selected	felamimail	fr	Modifier sélectionné
+edit	felamimail	fr	Modifier
+e-mail address	felamimail	fr	Adresse EMail
 E-Mail Address	felamimail	fr	Adresse EMail
-E-mail	felamimail	fr	EMail
+e-mail	felamimail	fr	EMail
 empty trash	felamimail	fr	Poubelle (Trash) vide
-Error connecting to IMAP serv	felamimail	fr	Erreur à la connexion au serveur IMAP
-Error opening 	felamimail	fr	Erreur à l'ouverture
-ERROR	felamimail	fr	ERREUR
-ERRO	felamimail	fr	ERR
-Expunge	felamimail	fr	Purger
+error connecting to IMAP serv	felamimail	fr	Erreur à la connexion au serveur IMAP
+error opening 	felamimail	fr	Erreur à l'ouverture
+error	felamimail	fr	ERREUR
+erro	felamimail	fr	ERR
+expunge	felamimail	fr	Purger
 files	felamimail	fr	Fichiers
-First name	felamimail	fr	Prénom
-Flags	felamimail	fr	Drapeaux
-Folder Path	felamimail	fr	Chemin du dossier
-Folder Preferences	felamimail	fr	Préférences du dossier
-Folders created successfully!	felamimail	fr	Dossiers crées avec succès!
-Folders	felamimail	fr	Dossiers
+first name	felamimail	fr	Prénom
+flags	felamimail	fr	Drapeaux
+folder path	felamimail	fr	Chemin du dossier
+folder preferences	felamimail	fr	Préférences du dossier
+folders created successfully!	felamimail	fr	Dossiers crées avec succès!
+folders	felamimail	fr	Dossiers
 follow	felamimail	fr	Suivre
-For mail to be send - not functional yet	felamimail	fr	Pour les mails à envoyer - pas encore fonctionnel
-For received mail	felamimail	fr	Pour les mails reçus
-Forward	felamimail	fr	Transmettre
-Found	felamimail	fr	Trouvé
+for mail to be send - not functional yet	felamimail	fr	Pour le mail à envoyer - pas encore fonctionnel
+for received mail	felamimail	fr	Pour le mail reçu
+forward	felamimail	fr	Transférer
+found	felamimail	fr	Trouvé
 from	felamimail	fr	De
 From	felamimail	fr	De
-Full Name	felamimail	fr	Nom complet
-Have a look at <a href="ht	felamimail	fr	Regardez <a href="ht
-Help	felamimail	fr	Aide
-HTML	felamimail	fr	HTML
-Identifying name	felamimail	fr	Identifie le nom
-Illegal folder name.  Please select a different name.	felamimail	fr	Nom de dossier illégal. SVP choisissez un nom différent.
-Index Order	felamimail	fr	Ordre d'index
-Info	felamimail	fr	Info
-In order for SquirrelMail to provide the full set of options you need to create the special folders listed below.  Just click the check box and hit the create button.	felamimail	fr	Afinq ue SquirrelMail puisse proposer l'ensemble des options vous devez créer les dossiers spéciaux listés ci-dessous.
+full name	felamimail	fr	Nom complet
+have a look at <a href="ht	felamimail	fr	Allez voir à <a href="ht
+help	felamimail	fr	Aide
+html	felamimail	fr	HTML
+identifying name	felamimail	fr	Identifie le nom
+illegal folder name.  please select a different name.	felamimail	fr	Nom de dossier illégal. SVP choisissez-en un autre.
+index order	felamimail	fr	Ordre d'index
+info	felamimail	fr	Info
+in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	fr	Afin que Felamimail puisse vous proposer l'ensemble des options vous devez créer les dossiers spéciaux listés ci-dessous. Cliquez simplement sur les boites de sélection et cliquez sur le bouton Créer.
 in	felamimail	fr	Dans
 in the center	felamimail	fr	Au centre
-Invaild user name or password	felamimail	fr	Nom d'utilisateur ou mot de passe invalide.
-JavaScript	felamimail	fr	JavaScript
-Language	felamimail	fr	Langue
-Last name	felamimail	fr	Nom de famille
-Left	felamimail	fr	Gauche
+invalid user name or password	felamimail	fr	Nom d'utilisateur ou mot de passe invalide
+javaScript	felamimail	fr	JavaScript
+language	felamimail	fr	Langue
+last name	felamimail	fr	Nom de famille
+left	felamimail	fr	Gauche
 less	felamimail	fr	Moins
-Let this folder contain subfolders	felamimail	fr	Laisser ce dossier contenir des sous-dossiers
-Light Blue	felamimail	fr	Bleu léger
-Light Cyan	felamimail	fr	Cyan léger
-Light Gray	felamimail	fr	Gris léger
-Light Green	felamimail	fr	Vert léger
-Light Magenta	felamimail	fr	Magenta léger
-Light Yellow	felamimail	fr	Jaune léger
-List all	felamimail	fr	Lister tous
-Location of buttons when composing	felamimail	fr	Emplacement de boutons lors de la composition
-Location of folder list	felamimail	fr	Emplacement de la liste des dossiers
-Mail Settings	felamimail	fr	Réglages Mail
-Manage Folders	felamimail	fr	Gérer les dossiers
+let this folder contain subfolders	felamimail	fr	Laisser ce dossier contenir des sous-dossiers
+light blue	felamimail	fr	Bleu léger
+light cyan	felamimail	fr	Cyan léger
+light gray	felamimail	fr	Gris léger
+light green	felamimail	fr	Vert léger
+light magenta	felamimail	fr	Magenta léger
+light yellow	felamimail	fr	jaune léger
+list all	felamimail	fr	Lister tous
+location of buttons when composing	felamimail	fr	Emplacement des boutons lors de la composition
+location of folder list	felamimail	fr	Emplacement de la liste des dossiers
+mail settings	felamimail	fr	Réglages EMail
+manage folders	felamimail	fr	Gérer les dossiers
 mark selected as flagged	felamimail	fr	Marquer le choix comme marqués
 mark selected as read	felamimail	fr	Marquer le choix comme lus
 mark selected as unflagged	felamimail	fr	Marquer le choix comme non-marqués
@@ -162,7 +162,7 @@ ReplyTo	felamimail	fr	RépondreA
 Return	felamimail	fr	Retourner
 Return to options page	felamimail	fr	Retourner à la page des options
 Right	felamimail	fr	Droit
-Running SquirrelMail version %s (c) 1999-2000.	felamimail	fr	Exécute SquirrelMail version %s (c) 1999-2000.
+Running SquirrelMail version %s (c) 1999-2000.	felamimail	fr	Exécute Felamimail version %s (c) 1999-2000.
 Same Window - not functional yet	felamimail	fr	Même fenêtre - pas encore fonctionnel
 save	felamimail	fr	Sauver
 Search for	felamimail	fr	Rechercher
@@ -178,7 +178,6 @@ Size	felamimail	fr	Taille
 Some or all of the help documents are not present!	felamimail	fr	Certains ou tous les documents d'aide ne sont pas présents!
 Source	felamimail	fr	Source
 Special Folder Options	felamimail	fr	Options spéciales de dossier
-	felamimail	fr	
 Squirrelmail	felamimail	fr	Squirrelmail
 subject	felamimail	fr	Sujet
 Subject	felamimail	fr	Sujet
@@ -233,7 +232,7 @@ Welcome to %s's WebMail system	felamimail	fr	Bienvenue dans le système WebMail d
 White	felamimail	fr	Blanc
 Width of folder list	felamimail	fr	Largeur de la liste des dossiers
 Wrap incoming text at	felamimail	fr	Couper le texte entrant à
-You can change the way that SquirrelMail looks and displays information to you, such as the colors, the language, and other settings.	felamimail	fr	Vous pouvez modifier le look de SquirrelMail et sa manière de vous afficher les informations, comme les couleurs, la langue, et d'autres réglages.
+You can change the way that SquirrelMail looks and displays information to you, such as the colors, the language, and other settings.	felamimail	fr	Vous pouvez modifier le look de Felamimail et sa manière de vous afficher les informations, comme les couleurs, la langue, et d'autres réglages.
 You can only edit one address at the time	felamimail	fr	Vous pouvez modifier une seule adresse à la fois
 You must login first.	felamimail	fr	Vous devez vous connecter d'abord.
 You need a valid user and password to access this page!	felamimail	fr	Vous avez besoin d'un utilisateur et d'un mot de passe valides pour accéder à cette page!

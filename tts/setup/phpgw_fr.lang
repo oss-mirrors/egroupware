@@ -1,3 +1,4 @@
+action	tts	fr	Action
 add new ticket	tts	fr	Ajouter un nouveau ticket
 add ticket	tts	fr	Ajouter un ticket
 additional notes	tts	fr	Notes additionelles
@@ -21,7 +22,12 @@ detail	tts	fr	Détail
 in progress	tts	fr	En progression
 new ticket	tts	fr	Nouveau ticket
 new value	tts	fr	Nouvelle valeur
+no additional notes	tts	fr	Pas de notes additionnelles
 no tickets found	tts	fr	Pas de ticket trouvé
+not assigned	tts	fr	Non assigné
+old value	tts	fr	Ancienne valeur
+open	tts	fr	Ouvrir
+opened	tts	fr	Ouvert
 open date	tts	fr	Date d'ouverture
 opened by	tts	fr	Ouvert par
 prio	tts	fr	Prio
@@ -33,6 +39,7 @@ ticket	tts	fr	Ticket
 ticket has been updated	tts	fr	Le ticket a été mis à jour
 tickets open x	tts	fr	Tickets ouverts %1
 tickets total x	tts	fr	Tickets total %1
+total billable	tts	fr	Total facturable
 trouble ticket system	common	fr	Système de tickets d'incidents
 tts	common	fr	Système de tickets d'incidents
 tts preferences	tts	fr	Système de tickets d'incidents - préférences

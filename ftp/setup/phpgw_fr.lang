@@ -4,26 +4,26 @@ delete	ftp	fr	Supprimer %1
 deleted	ftp	fr	%1 supprimé avec succès
 failed to delete	ftp	fr	Impossible de supprimer %1
 view	ftp	fr	Voir
-save	ftp	fr	Sauver
-save to filemanager	ftp	fr	Sauver vers le gestionnaire de fichiers
-upload	ftp	fr	Upload
-uploaded	ftp	fr	%1 uploadé avec succès
-failed to upload	ftp	fr	Impossible d'uploader %1
+save	ftp	fr	Sauvegarder
+save to filemanager	ftp	fr	Sauvegarder vers le gestionnaire de fichiers
+upload	ftp	fr	Uploader
+uploaded	ftp	fr	Uploadé %1 avec succès
+failed to upload	ftp	fr	Echec d'upload de %1
 create new directory	ftp	fr	Créer un nouveau répertoire
-failed to mkdir	ftp	fr	Impossible de créer le répertoire %1
-empty dirname	ftp	fr	Tentative de créer un répertoire sans nom
-module name	ftp	fr	Client Ftp
-home	ftp	fr	Home
-username	ftp	fr	Utilisateur
+failed to mkdir	ftp	fr	Echec de création du répertoire %1
+empty dirname	ftp	fr	Tentative de création d'un répertoire avec un nom vide
+module name	ftp	fr	Client FTP
+home	ftp	fr	Maison
+username	ftp	fr	Nom d'utilisateur
 password	ftp	fr	Mot de passe
-ftpserver	ftp	fr	Serveur Ftp
-connect	ftp	fr	Connecter
-bad connection	ftp	fr	Impossible de se connecter à %1 avec l'utilisateur %2 et le mot de passe %3
+ftpserver	ftp	fr	Serveur FTP
+connect	ftp	fr	Se connecter
+bad connection	ftp	fr	Echec de connexion à %1 avec l'utilisateur %2 et le mot de passe %3
 cancel	ftp	fr	Annuler
 rename	ftp	fr	Renommer %1
-renamed	ftp	fr	%1 renommé en %2
-created directory	ftp	fr	%1 créé avec succès
-failed to rename	ftp	fr	Impossible de renommer %1 en %2
+renamed	ftp	fr	Renommer %1 en %2
+created directory	ftp	fr	Répertoire %1 crée avec succès
+failed to rename	ftp	fr	Echec de renommage de %1 en %2
 rename from	ftp	fr	Renommer depuis
-rename to	ftp	fr	Renommer vers
-confirm delete	ftp	fr	Voulez-vous vraiment supprimer %1 ?
+rename to	ftp	fr	vers
+confirm delete	ftp	fr	Voulez-vous réellement effacer %1 ?
