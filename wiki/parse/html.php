@@ -114,8 +114,8 @@ function html_url($url, $text)
   if (preg_match('/^mailto:([^@]*)@(.*)$/i',$url,$matchs))	// spamsaver emailaddress
   {
      $url = "#";
-     $domains = "'".implode("'+'.'+'",explode('.',$matchs[2]))."'";
-     $onClick = " onClick=\"document.location='mailto:$matchs[1]'+unescape('%40')+$domains; return false;\"";
+     $domains = "'".implode("'+unescape('%2E')+'",explode('.',$matchs[2]))."'";
+     $onClick = " onClick=\"document.location='mai'+'lto:$matchs[1]'+unescape('%40')+$domains; return false;\"";
      $text = str_replace('@',' AT ',str_replace('mailto:','',str_replace('.',' DOT ',$text)));
   }
   return "<a href=\"$url\"$onClick>$text</a>";
