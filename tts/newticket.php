@@ -27,7 +27,7 @@
         <tr>
          <td width="100%" valign="center" align="center">
           <font color="<?php echo $theme["th_text"]; ?>">
-           <b><?php echo lang_tts("Add new ticket"); ?></b>
+           <b><?php echo lang("Add new ticket"); ?></b>
           </font>
          </td>
        </tr>
@@ -40,7 +40,7 @@
            </tr> 
 
            <tr>
-            <td width="15%" valign="middle" align="right"><b><?php echo lang_tts("Group"); ?>:</b> </td>
+            <td width="15%" valign="middle" align="right"><b><?php echo lang("Group"); ?>:</b> </td>
             <td width="75%" valign="middle">
               <select size="1" name="lstCategory">
 <?php
@@ -53,7 +53,7 @@
             </td>
            </tr>
 <tr>
-            <td width="15%" valign="middle" align="right"><b><?php echo lang_tts("assign to"); ?>:</b> </td>
+            <td width="15%" valign="middle" align="right"><b><?php echo lang("assign to"); ?>:</b> </td>
             <td width="75%" valign="middle">
               <select size="1" name="assignto">
 <?php
@@ -67,18 +67,18 @@
             </td>
            </tr>
            <tr>
-             <td width="15%" valign="middle" align="right"><b><?php echo lang_tts("Subject"); ?>:</b></td>
+             <td width="15%" valign="middle" align="right"><b><?php echo lang("Subject"); ?>:</b></td>
              <td width="75%" valign="middle">
                <input type=text size=50 maxlength=80 name="subject"
-                value="<?php echo lang_tts("No subject"); ?>">
+                value="<?php echo lang("No subject"); ?>">
              </td>
            </tr>
            <tr>
-            <td width="15%" valign="top" align="right"><b><?php echo lang_tts("Detail"); ?>:</b> </td>
+            <td width="15%" valign="top" align="right"><b><?php echo lang("Detail"); ?>:</b> </td>
             <td width="75%"><textarea rows="10" name="txtAdditional" cols="65" wrap="virtual"></textarea></td>
            </tr>
            <tr>
-            <td width="15%" valign="middle" align="right"><b><?php echo lang_tts("Priority"); ?>:</b> </td>
+            <td width="15%" valign="middle" align="right"><b><?php echo lang("Priority"); ?>:</b> </td>
             <td width="75%" valign="middle">
              <table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
@@ -101,8 +101,8 @@
             </td>
            </tr>
          </table>
-        <p align="center"><center><input type="submit" value="<?php echo lang_tts("Add Ticket"); ?>" name="submit">
-         <input type="reset" value="<?php echo lang_tts("Clear Form"); ?>"></center></td>
+        <p align="center"><center><input type="submit" value="<?php echo lang("Add Ticket"); ?>" name="submit">
+         <input type="reset" value="<?php echo lang("Clear Form"); ?>"></center></td>
        </tr>
       </table>
      </center>

@@ -66,7 +66,7 @@ $lstCategory=$phpgw->db->f(1);
        <td width=33%>&nbsp;</td>
      </tr>
      <tr>
-       <td colspan=3 align=center><font size=+2><?php echo lang_tts("View Job Detail"); ?></font></td>
+       <td colspan=3 align=center><font size=+2><?php echo lang("View Job Detail"); ?></font></td>
      </tr>
      <tr>
        <td colspan=3 align=center><hr noshade></td>
@@ -76,16 +76,16 @@ $lstCategory=$phpgw->db->f(1);
          <font size=3>ID: <b><?php echo $phpgw->db->f(0); ?></b>
        </td>
        <td align=center>
-         <?php echo lang_tts("Assigned from"); ?>: <br><b><?php echo $phpgw->db->f(4);?></b>
+         <?php echo lang("Assigned from"); ?>: <br><b><?php echo $phpgw->db->f(4);?></b>
        </td>
        <td align=center>
-         <?php echo lang_tts("Open Date"); ?>: <br><b><?php echo $phpgw->common->show_date($phpgw->db->f(6)); ?></b>
+         <?php echo lang("Open Date"); ?>: <br><b><?php echo $phpgw->common->show_date($phpgw->db->f(6)); ?></b>
          <br>
-         <?php echo lang_tts("Close Date"); ?>: <br><b><?php
+         <?php echo lang("Close Date"); ?>: <br><b><?php
                         if ($phpgw->db->f(7) > 0) {
                           echo $phpgw->common->show_date($phpgw->db->f(7));
                         } else {
-                          echo lang_tts("in progress");
+                          echo lang("in progress");
                         }
                       ?></b>
        </td>
@@ -99,7 +99,7 @@ $lstCategory=$phpgw->db->f(1);
          <?php // Choose the correct priority to display
            $prority_selected[$phpgw->db->f("t_priority")] = " selected";
          ?>
-         <b><?php echo lang_tts("Priority"); ?>:</b>
+         <b><?php echo lang("Priority"); ?>:</b>
          <select name="optPriority">
            <option value="1"<?php echo $prority_selected[1]; ?>>1 - Lowest</option>
            <option value="2"<?php echo $prority_selected[2]; ?>>2</option>
@@ -115,13 +115,13 @@ $lstCategory=$phpgw->db->f(1);
 
        </td>
        <td align=center>
-         <b><?php echo lang_tts("Group"); ?>:</b>
+         <b><?php echo lang("Group"); ?>:</b>
          <select size="1" name="lstCategory">
            <?php group_list($phpgw->db,$lstCategory); ?>
          </select>
        </td>
        <td align=center>
-         <b><?php echo lang_tts("Assigned to"); ?>:</b>
+         <b><?php echo lang("Assigned to"); ?>:</b>
          <select size="1" name="lstAssignedto">
            <?php groupusers_list($phpgw->db,$lstAssignedto); ?>
          </select>
@@ -137,9 +137,9 @@ $lstCategory=$phpgw->db->f(1);
     echo "       </td>\n";
   } else {  
     echo "   <input type=hidden value=\"$details_string\" name=\"prevtxtdetail\">";
-    echo "    <tr><td colspan=3 align=left><br><b>".lang_tts("Subject").":</b> " . $phpgw->db->f(8) . "<br><br>";
-    echo "    <tr><td colspan=3 align=left><B>".lang_tts("Details").":</B><BR> $details_string </td></tr>\n";
-    echo "    <tr><td colspan=3 align=left><BR><BR>".lang_tts("Additional notes").":<BR></td></tr>\n";
+    echo "    <tr><td colspan=3 align=left><br><b>".lang("Subject").":</b> " . $phpgw->db->f(8) . "<br><br>";
+    echo "    <tr><td colspan=3 align=left><B>".lang("Details").":</B><BR> $details_string </td></tr>\n";
+    echo "    <tr><td colspan=3 align=left><BR><BR>".lang("Additional notes").":<BR></td></tr>\n";
     echo "     <tr>\n";
     echo "         <td colspan=3 align=center>\n";
     echo "         <textarea rows=\"12\" name=\"txtAdditional\" cols=\"70\" wrap=physical></textarea>\n";
@@ -154,23 +154,23 @@ $lstCategory=$phpgw->db->f(1);
 <?php
   # change buttons from update/close to close/reopen if ticket is already closed
   if ($phpgw->db->f(7) > 0) {
-    echo "<input type=radio value='letclosed' name='optUpdateclose' checked>".lang_tts("Closed")."
+    echo "<input type=radio value='letclosed' name='optUpdateclose' checked>".lang("Closed")."
        </td>
        <td align=center>
-         <input type=submit value='".lang_tts("OK")."' name='submit'>
+         <input type=submit value='".lang("OK")."' name='submit'>
        </td>
        <td align=center>
-         <input type=radio value='reopen' name='optUpdateclose'>".lang_tts("ReOpen")."
+         <input type=radio value='reopen' name='optUpdateclose'>".lang("ReOpen")."
        </td>
     ";
   } else {
-    echo "<input type=radio value='update' name='optUpdateclose' checked>".lang_tts("Update")."
+    echo "<input type=radio value='update' name='optUpdateclose' checked>".lang("Update")."
        </td>
        <td align=center>
-         <input type=submit value='".lang_tts("OK")."' name='submit'>
+         <input type=submit value='".lang("OK")."' name='submit'>
        </td>
        <td align=center>
-         <input type=radio value='close' name='optUpdateclose'>".lang_tts("Close")."
+         <input type=radio value='close' name='optUpdateclose'>".lang("Close")."
        </td>
     ";
   }
@@ -200,13 +200,13 @@ $lstCategory=$phpgw->db->f(1);
       if ($optUpdateclose == "reopen") {
         # reopen the ticket
         $phpgw->db->query("UPDATE ticket set t_timestamp_closed=NULL WHERE t_id=$t_id");
-        $txtDetail .= "<b>".lang_tts("Ticket reopened")."</b><br>\n";
+        $txtDetail .= "<b>".lang("Ticket reopened")."</b><br>\n";
       }
 
       if (! empty($txtAdditional)) { $txtDetail .= $txtAdditional; }
 
       if ( $optUpdateclose == "close" ) {
-        $txtDetail .= "<br><b>".lang_tts("Ticket closed")."</b><br>\n";
+        $txtDetail .= "<br><b>".lang("Ticket closed")."</b><br>\n";
       }
      
       if (! empty($txtAdditional)) {
