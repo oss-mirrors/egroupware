@@ -55,6 +55,9 @@
 		) */
 		function chg_settings($row)
 		{
+			if ($row == 'changepassword' || !is_array($row)) {
+				return;
+			}
 			$name = addslashes($row['account_firstname'] . ' ' . $row['account_lastname']);
 			$email = addslashes($this->__get_email($row['account_id']));
 			$login = addslashes($row['account_lid']);
