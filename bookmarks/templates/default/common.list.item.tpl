@@ -4,19 +4,18 @@
    {checkbox}
   </td>
   <td width="15%" rowspan="2" align="right" valign="center">
-   <a href="{MAIL_THIS_LINK_URL}">
-    <img width=24 height=24 align="top" border="0" src="{IMAGE_URL_PREFIX}mail.{IMAGE_EXT}" alt="Mail this Bookmark"></a>
-    {MAINTAIN_LINK}
-    {VIEW_LINK}
-    <img src="{img_root}/bar-{RATING}.jpg">
+    {mail_link}
+    {maintain_link}
+    {view_link}
+    <br>{bookmark_rating}
   </td>
   <td bgcolor="#FFFF99" >
-   <a href="{BOOKMARK_URL}" target="_new">{BOOKMARK_NAME}</a>
+   <a href="{bookmark_url}" target="_new">{bookmark_name}</a>
   </td>
  </tr>
 
  <tr valign="top">
   <td>
-   {BOOKMARK_DESC} {KEYWORDS} &nbsp;
+   {bookmark_desc} {bookmark_keywords} &nbsp;
   </td>
  </tr>

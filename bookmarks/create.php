@@ -19,6 +19,7 @@
 		'enable_categories_class' => True
 	);
 	include('../header.inc.php');
+	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
 
 	$phpgw->template->set_file(array(
 		'common'             => 'common.tpl',
@@ -40,11 +41,10 @@
 
 	// initialize variable that holds id of newly created bookmark
 	$id = 0;
-	$bmark = new bmark;
 
 	if ($create)
 	{
-		$bmark->add(&$id,$url,$name,$desc,$keyw,$bookmarks_category,$bookmarks_subcategory,$bookmarks_rating, $access,$groups);
+		$phpgw->bookmarks->add(&$id,$url,$name,$desc,$keyw,$bookmarks_category,$bookmarks_subcategory,$bookmarks_rating, $access,$groups);
 	}
 
 	// Check to see if any existing bookmarks are a "close match".

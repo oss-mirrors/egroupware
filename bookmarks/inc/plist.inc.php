@@ -60,7 +60,7 @@
 
 	function print_list ($where_clause, $start, $returnto, &$content, &$error_msg)
 	{
-		global $bookmarker, $phpgw, $phpgw_info;
+		global $phpgw, $phpgw_info;
 
 		$list_tpl = $phpgw->template;
 
@@ -78,8 +78,10 @@
 		//     $public_sql = " or bookmark.public_f='Y' ";
 
 		$filtermethod = '( bm_owner=' . $phpgw_info['user']['account_id'];
-		if (is_array($grants))
+		if (is_array($phpgw->bookmarks->grants))
 		{
+			$grants = $phpgw->bookmarks->grants;
+			reset($grants);
 			while (list($user) = each($grants))
 			{
 				$public_user_list[] = $user;
@@ -131,56 +133,47 @@
 			if ($phpgw->db->f('bm_keywords'))
 			{
 				$list_tpl->set_var(BOOKMARK_KEYW, htmlspecialchars(stripslashes($phpgw->db->f('bm_keywords'))));
-				$list_tpl->parse(KEYWORDS,'item_keyw');
+				$list_tpl->parse('bookmark_keywords','item_keyw');
 			}
 			else
 			{
-				$list_tpl->set_var(KEYWORDS,'');
+				$list_tpl->set_var('bookmark_keywords','');
 			}
 
 			// Check owner
-			if ($phpgw->db->f('bm_owner') == $phpgw_info['user']['account_id'])
+			if (($this->grants[$phpgw->db->f('bm_owner')] & $required) || ($phpgw->db->f('bm_owner') == $phpgw_info['user']['account_id']))
 			{
 				$maintain_url  = $phpgw->link("/bookmarks/maintain.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
-				$maintain_link = sprintf("<a href=\"%s\"><img src=\"%s%s.%s\" align=top border=0 alt=\"Edit this Bookmark\"></a>", $maintain_url, $bookmarker->image_url_prefix, "edit", $bookmarker->image_ext);
+				$maintain_link = sprintf('<a href="%s"><img src="%s/edit.gif" align="top" border="0" alt="%s"></a>', $maintain_url,PHPGW_IMAGES,lang('Edit this bookmark'));
 
-				$view_url  = $phpgw->link("/bookmarks/view.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
-				$view_link     = sprintf("<a href=\"%s\"><img src=\"" . $phpgw_info["server"]["app_images"] . "/document.gif\" align=top border=0 alt=\"" . lang("View this Bookmark") . "\"></a>", $view_url);
+				$view_url      = $phpgw->link("/bookmarks/view.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
+				$view_link     = sprintf('<a href="%s"><img src="%s/document.gif" align="top" border="0" alt="%s"></a>', $view_url,PHPGW_IMAGES,lang('View this bookmark'));
 			}
 			else
 			{
-				$maintain_link = sprintf("<!-- owned by: %s -->&nbsp;", $phpgw->db->f("bm_owner"));
+				$maintain_link = '';
 			}
+			$list_tpl->set_var('maintain_link',$maintain_link);
+			$list_tpl->set_var('view_link',$view_link);
 
-		$list_tpl->set_var('checkbox','<input type="checkbox" name="item_cb[]" value="' . $phpgw->db->f('bm_id') . '">');
-      if ($phpgw->acl->check("anonymous",1,"bookmarks")) {
-         $list_tpl->set_var("MAIL_THIS_LINK_URL",$phpgw->link("/bookmarks/maillink.php","bm_id=".$phpgw->db->f("bm_id")));
-      } else {
-         $list_tpl->set_var("MAIL_THIS_LINK_URL","&nbsp;");
-      }
+			$mail_link = sprintf('<a href="%s"><img align="top" border="0" src="%s/mail.gif" alt="%s"></a>',
+							$phpgw->link('/bookmarks/maillink.php','bm_id='.$phpgw->db->f("bm_id")),PHPGW_IMAGES,lang('Mail this bookmark'));
+			$list_tpl->set_var('mail_link',$mail_link);
 
-      $list_tpl->set_var(array(MAINTAIN_LINK      => $maintain_link,
-                               "img_root"         => $phpgw_info["server"]["app_images"],
-                               VIEW_LINK          => $view_link,
-                               RATING             => $phpgw->db->f("bm_rating"),
-//                               MAIL_THIS_LINK_URL => $phpgw->link("maillink.php","id=".$phpgw->db->f("id")),
-                               BOOKMARK_USERNAME  => $phpgw->db->f("bm_owner"),
-                               BOOKMARK_ID        => $phpgw->db->f("bm_id"),
-                               BOOKMARK_URL       => $phpgw->link('/bookmarks/redirect.php','bm_id=' . $phpgw->db->f('bm_id')),
-                               BOOKMARK_RATING    => htmlspecialchars(stripslashes($phpgw->db->f("bm_rating"))),
-                               BOOKMARK_RATING_ID => $phpgw->db->f("bm_rating"),
-                               BOOKMARK_NAME      => htmlspecialchars(stripslashes($phpgw->db->f("bm_name"))),
-                               BOOKMARK_DESC      => nl2br(htmlspecialchars(stripslashes($phpgw->db->f("bm_desc")))),
-                               IMAGE_URL_PREFIX   => $bookmarker->image_url_prefix,
-                               IMAGE_EXT          => $bookmarker->image_ext
-                        ));
+			$list_tpl->set_var('checkbox','<input type="checkbox" name="item_cb[]" value="' . $phpgw->db->f('bm_id') . '">');
+			$list_tpl->set_var('img_root',PHPGW_IMAGES);
+			$list_tpl->set_var('bookmark_name',$phpgw->strip_html($phpgw->db->f('bm_name')));
+			$list_tpl->set_var('bookmark_desc',nl2br($phpgw->strip_html($phpgw->db->f('bm_desc'))));
+			$list_tpl->set_var('bookmark_rating',sprintf('<img src="%s/bar-%s.jpg">',PHPGW_IMAGES,$phpgw->db->f('bm_rating')));
 
-      $list_tpl->parse(LIST_ITEMS, "list_item", TRUE);
-   }
+			$list_tpl->parse(LIST_ITEMS,'list_item',True);
+		}
 
-   if ($rows_printed > 0) {
-      print_list_break(&$list_tpl, $prev_category, $prev_subcategory);
-      $content = $list_tpl->get("CONTENT");
-   }
- }
+		if ($rows_printed > 0)
+		{
+			print_list_break(&$list_tpl, $prev_category, $prev_subcategory);
+			$content = $list_tpl->get("CONTENT");
+		}
+
+	}
 ?>

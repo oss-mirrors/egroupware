@@ -17,6 +17,7 @@
 		'enable_categories_class'  => True
 	);
 	include('../header.inc.php');
+	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
 
 	$phpgw->template->set_file(array(
 		'common'   => 'common.tpl',
@@ -24,6 +25,11 @@
 		'info'     => 'form_info.tpl',
 		'standard' => 'common.standard.tpl'
 	));
+
+	if (! $phpgw->bookmarks->check_perms($bm_id,PHPGW_ACL_READ))
+	{
+		$phpgw->redirect($phpgw->link('/bookmarks/list.php'));
+	}
 
 	app_header(&$phpgw->template);
 

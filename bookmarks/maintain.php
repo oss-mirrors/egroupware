@@ -1,26 +1,27 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - Bookmarks                                                 *
-  * http://www.phpgroupware.org                                              *
-  * Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
-  *                     http://www.renaghan.com/bookmarker                   *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare - Bookmarks                                                 *
+	* http://www.phpgroupware.org                                              *
+	* Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
+	*                     http://www.renaghan.com/bookmarker                   *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
   
-//  $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
-  $phpgw_info["flags"]["currentapp"] = "bookmarks";
-  $phpgw_info["flags"]["enable_nextmatchs_class"] = True;
-  $phpgw_info["flags"]["enable_categories_class"] = True;
-  include("../header.inc.php");
+	$phpgw_info['flags'] = array(
+		'currentapp' => 'bookmarks',
+		'enable_nextmatchs_class' => True,
+		'enable_categories_class' => True
+	);
+	include('../header.inc.php');
+	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
 
-  $phpgw->sbox = createobject("phpgwapi.sbox");
-
+	// This is going to use appsession()
   function return_to()
   {
      global $returnto, $msg, $error_msg, $sess_msg, $sess_error_msg, $phpgw;
@@ -42,8 +43,6 @@
 
   app_header(&$phpgw->template);
 
-  $bmark = new bmark;
-
   ## Check if there was a submission
   while (is_array($HTTP_POST_VARS) && list($key, $val) = each($HTTP_POST_VARS)) {
      switch ($key) {
@@ -51,7 +50,7 @@
      ## Change bookmark
 //     case "bk_edit":
      case "bk_edit_x":
-     if (!$bmark->update($bm_id, $url, $name, $desc, $keyw, $bookmarks_category, $bookmarks_subcategory, $bookmarks_rating, $access)) break;
+     if (! $phpgw->bookmarks->update($bm_id, $url, $name, $desc, $keyw, $bookmarks_category, $bookmarks_subcategory, $bookmarks_rating, $access)) break;
 
      return_to();
      break;
@@ -59,7 +58,7 @@
      ## Delete the bookmark
      case "bk_delete":
      case "bk_delete_x":
-     if (!$bmark->delete($id))
+     if (! $phpgw->bookmarks->delete($id))
         break;
      return_to();
      break;

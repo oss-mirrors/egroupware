@@ -20,6 +20,7 @@
 	);
 
 	include('../header.inc.php');
+	$phpgw->bookmarks       = createobject('bookmarks.bookmarks');
 	include(PHPGW_APP_ROOT . '/inc/plist.inc.php');
 
 	$account_id = $phpgw_info['user']['account_id'];	// only temp
@@ -64,9 +65,8 @@ $total_public = 0;
     if ($phpgw->db->next_record()) $total_public = $phpgw->db->f("total_public");
   } */
 //}
-  $bmark = new bmark;
-  $bmark->update_user_total_bookmarks($phpgw_info["user"]["account_id"]);
-  $total_bookmarks = $total_public + $bmark->getUserTotalBookmarks();
+
+  $total_bookmarks = $total_public + $phpgw->bookmarks->getUserTotalBookmarks();
 
   $phpgw->template->set_var(array(TOTAL_BOOKMARKS  => $total_bookmarks,
                                   IMAGE_URL_PREFIX => $bookmarker->image_url_prefix,

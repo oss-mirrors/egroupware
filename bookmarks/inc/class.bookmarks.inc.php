@@ -13,8 +13,6 @@
 
 	/* $Id$ */
 
-	$grants = $phpgw->acl->get_grants('bookmarks');
-
 	class bktemplate extends Template
 	{
 		var $classname = "bktemplate";
@@ -144,16 +142,34 @@
 	}
 
 
-	class bmark
+	class bookmarks
 	{
-
 		var $db;
+		var $grants;
 
-		function bmark()
+		function bookmarks()
 		{
 			global $phpgw;
 
-			$this->db = $phpgw->db;
+			$this->db     = $phpgw->db;
+			$this->grants = $phpgw->acl->get_grants('bookmarks');
+		}
+
+		function check_perms($id, $required)
+		{
+			global $phpgw_info;
+
+			$this->db->query("select bm_owner from phpgw_bookmarks where bm_id='$id'",__LINE__,__FILE__);
+			$this->db->next_record();
+
+			if (($this->grants[$this->db->f('bm_owner')] & $required) || ($this->db->f('bm_owner') == $phpgw_info['user']['account_id']))
+			{
+				return True;
+			}
+			else
+			{
+				return False;
+			}
 		}
 
 		function add(&$id,$url,$name,$ldesc,$keywords,$category,$subcategory,$rating,$access,$groups)
