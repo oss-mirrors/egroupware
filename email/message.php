@@ -214,7 +214,7 @@ if ($msg->to) {
 
 echo "</td></tr>";
 
-if (isset($msg->cc) && $msg->cc) {
+if (isset($msg->cc) && count($msg->cc) > 0) {
 ?>
    <tr>
     <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" valign="top">
