@@ -6,7 +6,7 @@
 <?php
   $treefile = "mymenu.txt";
 
-  require "menutree.inc";
+  require "./menutree.inc";
 ?>
 </td>
 </table>
