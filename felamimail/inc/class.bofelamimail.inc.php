@@ -22,7 +22,7 @@
 		);
 
 		var $mbox;		// the mailbox identifier any function should use
-		
+
 		// define some constants
 		// message types
 		var $type = array("text", "multipart", "message", "application", "audio", "image", "video", "other");
@@ -32,15 +32,15 @@
 
 		function bofelamimail($_foldername)
 		{
-			$this->foldername	= $_foldername;
-			$this->accountid	= $GLOBALS['phpgw_info']['user']['account_id'];
-			
+			$this->foldername		= $_foldername;
+			$this->accountid		= $GLOBALS['phpgw_info']['user']['account_id'];
+
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
-			$this->sofelamimail	= CreateObject('felamimail.sofelamimail');
-			
+			$this->sofelamimail		= CreateObject('felamimail.sofelamimail');
+
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
-			$this->imapBaseDir	= '';
-			
+			$this->imapBaseDir		= '';
+
 			$mailboxString = sprintf("{%s:%s}%s",
 					$this->mailPreferences['imapServerAddress'],
 					$this->mailPreferences['imapPort'],
@@ -57,9 +57,10 @@
 
 		function compressFolder()
 		{
-			
-			$deleteOptions 	= $GLOBALS['phpgw_info']["user"]["preferences"]["felamimail"]["deleteOptions"];
-			$trashFolder	= $GLOBALS['phpgw_info']["user"]["preferences"]["felamimail"]["trashFolder"];
+			$prefs	= $this->bopreferences->getPreferences();
+
+			$deleteOptions	= $prefs['deleteOptions'];
+			$trashFolder	= $prefs['trash_folder'];
 			
 			if($this->foldername == $trashFolder && $deleteOptions == "move_to_trash")
 			{
@@ -119,14 +120,16 @@
 				$msglist .= $value;
 			}
 			
-			$deleteOptions 	= $GLOBALS['phpgw_info']["user"]["preferences"]["felamimail"]["deleteOptions"];
-			$trashFolder	= $GLOBALS['phpgw_info']["user"]["preferences"]["felamimail"]["trashFolder"];
-			
+			$prefs	= $this->bopreferences->getPreferences();
+
+			$deleteOptions	= $prefs['deleteOptions'];
+			$trashFolder	= $prefs['trash_folder'];
+
 			if($this->foldername == $trashFolder && $deleteOptions == "move_to_trash")
 			{
 				$deleteOptions = "remove_immediately";
 			}
-			
+
 			switch($deleteOptions)
 			{
 				case "move_to_trash":
@@ -147,11 +150,11 @@
 						}
 					}
 					break;
-					
+
 				case "mark_as_deleted":
 					imap_delete($this->mbox, $msglist, FT_UID);
 					break;
-					
+
 				case "remove_immediately":
 					imap_delete($this->mbox, $msglist, FT_UID);
 					imap_expunge ($this->mbox);

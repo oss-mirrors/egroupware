@@ -138,6 +138,7 @@
 		function deleteMessage()
 		{
 			$message[] = $GLOBALS['HTTP_GET_VARS']["message"];
+
 			$this->bofelamimail->deleteMessages($message);
 			$this->viewMainScreen();
 		}

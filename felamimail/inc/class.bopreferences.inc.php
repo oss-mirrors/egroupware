@@ -18,14 +18,14 @@
 		var $public_functions = array
 		(
 			'getPreferences'	=> True,
-			'none'	=> True
+			'none'				=> True
 		);
-		
+
 		function bopreferences()
 		{
 			#$this->bocompose	= CreateObject('felamimail.bocompose');
 		}
-		
+
 		function getPreferences()
 		{
 /*			while(list($key,$value) = each($GLOBALS['phpgw_info']['user']['preferences']) )
@@ -44,42 +44,66 @@
 			{
 				$data['imapServerAddress']	= $GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server'];
 
-				$data['key']			= $GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'];
-				$data['username']		= $GLOBALS['phpgw_info']['user']['preferences']['email']['userid'];
+				$data['key']				= $GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'];
+				$data['username']			= $GLOBALS['phpgw_info']['user']['preferences']['email']['userid'];
 				$data['emailAddress']		= $GLOBALS['phpgw_info']['user']['preferences']['email']['address'];
-				
+
 				$data['imap_server_type']	= strtolower($GLOBALS['phpgw_info']['user']['preferences']['email']['imap_server_type']);
 			}
 			else
 			{
 				$data['imapServerAddress']	= $GLOBALS['phpgw_info']['server']['mail_server'];
 
-				$data['key']			= $GLOBALS['phpgw_info']['user']['passwd'];
-				$data['username']		= $GLOBALS['phpgw_info']['user']['userid'];
+				$data['key']				= $GLOBALS['phpgw_info']['user']['passwd'];
+				$data['username']			= $GLOBALS['phpgw_info']['user']['userid'];
 				$data['emailAddress']		= $GLOBALS['phpgw_info']['user']['userid']."@".$GLOBALS['phpgw_info']['server']['mail_suffix'];
 
 				$data['imap_server_type']	= strtolower($GLOBALS['phpgw_info']["server"]["address"]);
 			}
-			
+
 			// global settings
-			$data['realname']		= $GLOBALS['phpgw_info']['user']['fullname'];
+			$data['realname']			= $GLOBALS['phpgw_info']['user']['fullname'];
 			$data['defaultDomainname']	= $GLOBALS['phpgw_info']["server"]["mail_suffix"];
 
 			$data['smtpServerAddress']	= $GLOBALS['phpgw_info']["server"]["smtp_server"];
-			$data['smtpPort']		= $GLOBALS['phpgw_info']["server"]["smtp_port"];
+			$data['smtpPort']			= $GLOBALS['phpgw_info']["server"]["smtp_port"];
 
-			$data['imapPort']		= 143;
-			
+			$data['imapPort']			= 143;
+
 			// preferences
-			$data['deleteOptions']		= $GLOBALS['phpgw_info']["user"]["preferences"]["felamimail"]["deleteOptions"];
-			$data['trash_folder']		= $GLOBALS['phpgw_info']['user']['preferences']['felamimail']['trashFolder'];
-			$data['sent_folder']		= $GLOBALS['phpgw_info']['user']['preferences']['felamimail']['sent_folder'];
-			if (!empty($data['trash_folder'])) 
-				$data['move_to_trash'] 	= "true";
-			if (!empty($data['sent_folder']))  
-				$data['move_to_sent'] 	= "true";
-			$data['signature']		= $GLOBALS['phpgw_info']['user']['preferences']['email']['email_sig'];
+			$data['deleteOptions']		= $GLOBALS['phpgw_info']['user']['preferences']['felamimail']['deleteOptions'];
+			if(empty($data['deleteOptions']))
+			{
+				$data['deleteOptions']	= 'remove_immediately';
+			}
 
+			$data['trash_folder']		= $GLOBALS['phpgw_info']['user']['preferences']['felamimail']['trashFolder'];
+
+			if(empty($data['trash_folder']))
+			{
+				$data['trash_folder']	= 'INBOX.Trash';
+			}
+
+			$data['sent_folder']		= $GLOBALS['phpgw_info']['user']['preferences']['felamimail']['sent_folder'];
+
+			if (empty($data['sent_folder']))
+			{
+				$data['sent_folder']	= 'INBOX.Sent'; 
+			}
+
+			if (!empty($data['trash_folder']))
+			{ 
+				$data['move_to_trash'] 	= True;
+			}
+
+			if (!empty($data['sent_folder'])) 
+			{
+				$data['move_to_sent'] 	= True;
+			}
+
+			$data['signature']			= $GLOBALS['phpgw_info']['user']['preferences']['email']['email_sig'];
+
+		//	_debug_array($data);
 			return $data;
 		}
-}
+	}
