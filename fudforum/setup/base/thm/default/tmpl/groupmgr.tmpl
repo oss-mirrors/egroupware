@@ -88,11 +88,11 @@
 {SECTION: END}
 
 {SECTION: perm_yes permissions set to YES indicator}
-<td nowrap title="{VAR: names[$k]}" align="center"><font size=-1 color="#FF0000">{MSG: groupmgr_yes}</font></td>
+<td title="{VAR: names[$k]}" class="permYES">{MSG: groupmgr_yes}</td>
 {SECTION: END}
 
 {SECTION: perm_no permissions set to NO indicator}
-<td nowrap title="{VAR: names[$k]}" align="center"><font size=-1 color="#0000FF">{MSG: groupmgr_no}</font></td>
+<td title="{VAR: names[$k]}" class="permNO">{MSG: groupmgr_no}</td>
 {SECTION: END}
 
 {SECTION: submit_button}
@@ -127,11 +127,11 @@
 {SECTION: END}
 
 {SECTION: group_mgr_anon}
-<font color="#00AA00">{MSG: group_mgr_anon}</font>
+<font class="anon">{MSG: group_mgr_anon}</font>
 {SECTION: END}
 
 {SECTION: group_mgr_reged}
-<font color="#00AA00">{MSG: group_mgr_reged}</font>
+<font class="reg">{MSG: group_mgr_reged}</font>
 {SECTION: END}
 
 {SECTION: p_VISIBLE}
@@ -220,19 +220,11 @@
 
 {SECTION: groups_perm_selection a dropdown that allows the group manager to select perms for users in the group}
 <td align="center">
-<select name="{VAR: k}" style="font-size: x-small">
+<select name="{VAR: k}" class="SmallText">
 	<option value="0">{MSG: groupmgr_no}</option>
 	<option value="{VAR: v[0]}"{VAR: selyes}>{MSG: groupmgr_yes}</option>
 </select>
 </td>
-{SECTION: END}
-
-{SECTION: groups_perm_yes}
-{VAR: nam}<font color="#FF0000"> <b>({MSG: groupmgr_yes})</b></font>
-{SECTION: END}
-
-{SECTION: groups_perm_no}
-{VAR: name}<font color="#0000FF"> <b>({MSG: groupmgr_no})</b></font>
 {SECTION: END}
 
 {SECTION: groups_header_entry}

@@ -21,11 +21,11 @@
 {REF: is_perms.tmpl}
 
 {SECTION: status_indicator_on indicates that the particular filter option is enabled}
-<font style="font-size: xx-small; font-weight: bold; text-decoration: none;">(<font color="red">{MSG: on}</font>)</font>
+<font class="selmsgInd">(<font class="GenTextRed">{MSG: on}</font>)</font>
 {SECTION: END}
 
 {SECTION: status_indicator_off indicates that the particular filter option is disabled}
-<font style="font-size: xx-small; font-weight: bold; text-decoration: none;">({MSG: off})</font>
+<font class="selmsgInd">({MSG: off})</font>
 {SECTION: END}
 
 {SECTION: todays_posts todays posts link}
@@ -53,11 +53,11 @@
 {SECTION: END}
 
 {SECTION: forum_row forum heading row}
-<tr><th colspan=2>{MSG: forum} <a class="thLnk" href="{TEMPLATE: forum_row_lnk}"><font style="font-size: 12px;">{VAR-HTML: r->name}</font></a></th></tr>
+<tr><th class="SelFS">{MSG: forum} <a class="thLnk" href="{TEMPLATE: forum_row_lnk}"><font class="lg">{VAR-HTML: r->name}</font></a></th></tr>
 {SECTION: END}
 
 {SECTION: thread_row thread heading row}
-<tr><th colspan=2>&nbsp;{MSG: thread} <a class="thLnk" href="{TEMPLATE: thread_row_lnk}">{VAR: r->thr_subject}</a></th></tr>
+<tr><th class="SelTS">&nbsp;{MSG: thread} <a class="thLnk" href="{TEMPLATE: thread_row_lnk}">{VAR: r->thr_subject}</a></th></tr>
 {SECTION: END}
 
 {SECTION: no_result}
@@ -68,9 +68,7 @@
 {TEMPLATE: header}
 {TEMPLATE-DATA: todays_posts}{TEMPLATE-DATA: unread_messages}{TEMPLATE-DATA: subscribed_frm}{TEMPLATE-DATA: subscribed_thr}{TEMPLATE-DATA: unanswered}
 <br /><img src="blank.gif" alt="" height=2 /><br />
-<table border="0" cellspacing="1" cellpadding="2" class="ContentTable">
-{TEMPLATE-DATA: message_data}
-</table>
+<table border="0" cellspacing="0" cellpadding="0" class="ContentTable">{TEMPLATE-DATA: message_data}</table>
 {TEMPLATE-DATA: pager}
 <p>
 {TEMPLATE-DATA: page_stats}

@@ -12,18 +12,6 @@
 
 	@set_time_limit(6000);
 
-$GLOBALS['CMP_FILE'] = array(
-				".'." => ".<?php echo ",
-				".''." => '.',
-				".'" => '; ?>',
-				"'." => '<?php echo '
-			);
-$GLOBALS['CPM_CLEAN'] = array(
-				" ''." => ' ',
-				".'';" => ';',
-				".''"  => ''
-			);
-
 function resolve_refs($file_name)
 {
 	if (isset($GLOBALS['file_cache'][$file_name])) {
@@ -284,7 +272,7 @@ function compile_file($source)
 		$ref = resolve_sections($ref);
 
 		if ($sec == 'PAGE') {
-			$ref = strtr($ref, $GLOBALS['CMP_FILE']);
+			$ref = str_replace(array(".'.", ".''.", ".'", "'."), array(".<?php echo ", '.', '; ?>', '<?php echo '), $ref);
 		}
 		$ret .= $ref;
 
@@ -339,10 +327,11 @@ function generate_file($php_file)
 				if (!isset($ins[$k])) {
 					$k = 0;
 				}
-				$ins[$k] .= strtr(trim(substr($v['compiled'], $s, (strrpos($v['compiled'], '?>') - $s))), $GLOBALS['CPM_CLEAN']);
+
+				$ins[$k] .= str_replace(array(" ''.", ".'';", ".''"), array(' ', ';', ''), trim(substr($v['compiled'], $s, (strrpos($v['compiled'], '?>') - $s))));
 			}
 
-			$file_data = str_replace('/*{PRE_HTML_PHP}*/', $ins[0], str_replace('/*{POST_HTML_PHP}*/', $ins['@'], str_replace('/*{POST_PAGE_PHP_CODE}*/', $ins['!'], $file_data)));
+			$file_data = str_replace(array('/*{PRE_HTML_PHP}*/', '/*{POST_HTML_PHP}*/', '/*{POST_PAGE_PHP_CODE}*/'), array($ins[0], $ins['@'], $ins['!']), $file_data);
 		}
 
 		$dir = $GLOBALS['WWW_ROOT_DISK'].'theme/'.$GLOBALS['__COMPILER__']['tname'].'/';
@@ -357,7 +346,7 @@ function generate_file($php_file)
 	}
 
 	$cmp =& $GLOBALS['__COMPILER__'];
-	$file_data = strtr($file_data, $GLOBALS['CMP_LOC']);
+	$file_data = str_replace($GLOBALS['CMP_LOC_S'], $GLOBALS['CMP_LOC_K'], $file_data);
 
 	if (!$dst) {
 		return;
@@ -409,7 +398,7 @@ function build_msg($file)
 
 	if (file_exists($file)) {
 		if (preg_match('!thm/([^/]+)/i18n!', $file, $m)) {
-			parse_sections(@file_get_contents($GLOBALS['DATA_DIR'] . 'thm/'.$m[1].'/tmpl/messages'), '');
+			parse_sections(@file_get_contents($GLOBALS['DATA_DIR'] . 'thm/'.$m[1].'/tmpl/messages'), '', 1);
 		}
 		parse_msgs($file);
 	}
@@ -452,9 +441,11 @@ function resolve_compile($file)
 	}
 	resolve_refs($file, $file);
 	resolve_inc_refs($file);
-	if (!empty($GLOBALS['file_cache'][$file]['src'])) {
-		$GLOBALS['file_cache'][$file]['compiled'] = compile_file($GLOBALS['file_cache'][$file]['src']);
+	if (empty($GLOBALS['file_cache'][$file]['src'])) {
+		exit('No source for '.$file);
 	}
+
+	$GLOBALS['file_cache'][$file]['compiled'] = compile_file($GLOBALS['file_cache'][$file]['src']);
 }
 
 function fud_mkdir($dir, $perms=0700)
@@ -506,13 +497,8 @@ function compile_all($tset='default', $lang='english', $tname='default')
 	fud_mkdir($GLOBALS['DATA_DIR'] . 'include/theme/' . $tname, $perms);
 	umask($u);
 
-	$GLOBALS['CMP_LOC'] = array(
-			'{ROOT}'		=> $cmpl['ROOT'],
-			'{THEME_ROOT}'		=> $cmpl['THEME_ROOT'],
-			'{THEME_ROOT_DISK}'	=> $cmpl['THEME_ROOT_DISK'],
-			".'';"			=> ';',
-			".''."			=> '.',
-	);
+	$GLOBALS['CMP_LOC_S'] = array('{ROOT}', '{THEME_ROOT}', '{THEME_ROOT_DISK}', ".'';", ".''.");
+	$GLOBALS['CMP_LOC_K'] = array($cmpl['ROOT'], $cmpl['THEME_ROOT'], $cmpl['THEME_ROOT_DISK'], ';', '.');
 
 	$charset = @is_file($file1) ? $file1 : $file2;
 

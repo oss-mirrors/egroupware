@@ -39,17 +39,14 @@
 		ob_start(array('ob_gzhandler', $PHP_COMPRESSION_LEVEL));
 	}
 
-	$GLOBALS['clean'] = array('[' => '&#91;', ']' => '&#93;');
-	$GLOBALS['email'] = array('.' => ' dot ', '@' => ' at ');
-
 function sp($data)
 {
-	return '<![CDATA[' . strtr($data, $GLOBALS['clean']) . ']]>';
+	return '<![CDATA[' . str_replace(array('[', ']'), array('&#91;', '&#93;'), $data) . ']]>';
 }
 
 function email_format($data)
 {
-	return strtr($data, $GLOBALS['email']);
+	return str_replace(array('.', '@'), array(' dot ', ' at '), $data);
 }
 
 /* build html encoding list */

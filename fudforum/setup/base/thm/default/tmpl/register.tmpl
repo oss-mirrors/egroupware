@@ -50,11 +50,11 @@
 {SECTION: END}
 
 {SECTION: del_built_in_avatar delete avatar link}
-[<a href="javascript: return false;" onClick="document.reg_avatar_img.src=\'blank.gif\'; alert(document.fud_register.reg_avatar.value);document.fud_register.reg_avatar.value=\'0\'; alert(document.fud_register.reg_avatar.value); " class="GenLink">{MSG: register_del_avatar}</a>]
+[<a href="javascript: return false;" onClick="document.reg_avatar_img.src=\'blank.gif\'; document.fud_register.reg_avatar.value=\'0\';" class="GenLink">{MSG: register_del_avatar}</a>]
 {SECTION: END}
 
 {SECTION: built_in_avatar}
-<tr valign="top"><td class="RowStyleA">{MSG: register_avatar}</td><td class="RowStyleA"><img src="{VAR: reg_avatar_img}" border=0 name="reg_avatar_img" alt="" />
+<tr valign="top"><td class="RowStyleA">{MSG: register_avatar}</td><td class="RowStyleA"><img src="{VAR: reg_avatar_img}" name="reg_avatar_img" alt="" />
 <input type="hidden" name="reg_avatar" value="{VAR: reg_avatar}">[<a class="GenLink" href="javascript: window_open(\'{TEMPLATE: built_in_avatar_lnk1}\', \'avtsel\', 400, 300);">{MSG: register_sel_avatar}</a>]
 {TEMPLATE-DATA: del_built_in_avatar}<br /></td></tr>
 {SECTION: END}
@@ -323,7 +323,7 @@ enctype="multipart/form-data"
 {SECTION: END}
 
 {SECTION: register_err_time_limit}
-<tr><td class="RowStyleA" colspan="2" align="center"><font color="red" size="+2">{MSG: register_err_time_limit}</font></td></tr>
+<tr><td class="RowStyleA" colspan="2" align="center"><font class="ErrorText">{MSG: register_err_time_limit}</font></td></tr>
 {SECTION: END}
 
 {SECTION: register_err_avatardimtobig}

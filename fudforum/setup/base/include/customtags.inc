@@ -17,6 +17,6 @@ function ctag_rebuild_cache($id)
 	while ($r = db_rowarr($c)) {
 		$ct .= $r[0] . '<br />';
 	}
-	q("UPDATE ".$GLOBALS['DBHOST_TBL_PREFIX']."users SET custom_status='".addslashes(substr($ct, 0, -6))."' WHERE id=".$id);
+	q("UPDATE ".$GLOBALS["DBHOST_TBL_PREFIX"]."users SET custom_status='".addslashes(substr($ct, 0, -6))."' WHERE id=".$id);
 }
 ?>

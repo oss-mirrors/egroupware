@@ -78,6 +78,8 @@
 
 	$frm = db_sab('SELECT id, forum_opt, message_threshold, (max_attach_size * 1024) AS max_attach_size, max_file_attachments FROM '.sql_p.'forum WHERE id='.$nntp_adm->forum_id);
 
+	$FUD_OPT_2 |= 128;
+
 	$lock = $nntp->get_lock();
 	$nntp->parse_msgs($frm, $nntp_adm, $nntp->read_start());
 	$nntp->release_lock($lock);

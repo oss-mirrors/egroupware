@@ -41,14 +41,18 @@ function std_error($type)
 		$_SERVER['HTTP_REFERER'] = 'unknown';
 	}
 
+	$ses_id = s;
+	$usr_d->email = $GLOBALS['usr']->email;
+
 	$err_array = array(
 'ERR_login'=>array('{TEMPLATE: ERR_login_ttl}', '{TEMPLATE: ERR_login_msg}'),
 'ERR_disabled'=>array('{TEMPLATE: ERR_disabled_ttl}', '{TEMPLATE: ERR_disabled_msg}'),
 'ERR_access'=>array('{TEMPLATE: ERR_access_ttl}', '{TEMPLATE: ERR_access_msg}'),
 'ERR_registration_disabled'=>array('{TEMPLATE: ERR_registration_disabled_ttl}', '{TEMPLATE: ERR_registration_disabled_msg}'),
-'ERR_user'=>array('{TEMPLATE: ERR_user_ttl}', '{TEMPLATE: ERR_user_msg}',),
-'ERR_perms'=>array('{TEMPLATE: permission_denied_title}', '{TEMPLATE: permission_denied_msg}',),
-'ERR_systemerr'=>array('{TEMPLATE: ERR_systemerr_ttl}', '{TEMPLATE: ERR_systemerr_msg}')
+'ERR_user'=>array('{TEMPLATE: ERR_user_ttl}', '{TEMPLATE: ERR_user_msg}'),
+'ERR_perms'=>array('{TEMPLATE: permission_denied_title}', '{TEMPLATE: permission_denied_msg}'),
+'ERR_systemerr'=>array('{TEMPLATE: ERR_systemerr_ttl}', '{TEMPLATE: ERR_systemerr_msg}'),
+'ERR_emailconf'=>array('{TEMPLATE: ERR_emailconf_ttl}', '{TEMPLATE: ERR_emailconf_msg}')
 );
 
 	$err = $err_array['ERR_'.$type];

@@ -372,8 +372,8 @@ function mlist_error_log($error, $msg_data, $level='WARNING')
 	}
 
 	$CREATE_NEW_USERS = $mlist->mlist_opt & 64;
-	$FUD_OPT_2 |= 1024|8388608;
-	$FUD_OPT_2 ^= 1024|8388608;
+	$FUD_OPT_2 |= $FUD_OPT_2 &~ (1024|8388608);
+	$FUD_OPT_2 |= 128;
 
 	$frm = db_sab('SELECT id, forum_opt, message_threshold, (max_attach_size * 1024) AS max_attach_size, max_file_attachments FROM '.sql_p.'forum WHERE id='.$mlist->forum_id);
 

@@ -10,10 +10,8 @@
 * (at your option) any later version.
 ***************************************************************************/
 
-$GLOBALS['__REVERSE_ARRAY__'] = array('&amp;'=>'&', '&quot;'=>'"', '&lt;'=>'<', '&gt;'=>'>');
-
 function reverse_fmt(&$data)
 {
-	$data = strtr($data, $GLOBALS['__REVERSE_ARRAY__']);
+	$data = str_replace(array('&amp;', '&quot;', '&lt;', '&gt;'), array('&', '"', '<', '>'), $data);
 }
 ?>

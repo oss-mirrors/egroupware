@@ -141,7 +141,7 @@
 {SECTION: END}
 
 {SECTION: pmsg_disk_usage indicator that shows how much of the allowed pmsg space the user uses}
-<table width="175" cellspacing="1" cellpadding="2" border="0" style="background-color: #FFFFFF; border: 1px #c2cdd6 solid;">
+<table cellspacing="1" cellpadding="2" border="0" class="pmDu">
 <tr>
 	<td colspan="3" width="100%" class="RowStyleA" nowrap><span class="SmallText">{MSG: pm_space_indct_msg}</span></td>
 </tr>
@@ -157,15 +157,15 @@
 {SECTION: END}
 
 {SECTION: normal_full_indicator normal indicator of space in PM}
-<td bgcolor="#FFFFFF"><img src="blank.gif" alt="" width={VAR: full_indicator} height="8" /></td>
+<td class="pmSn"><img src="blank.gif" alt="" width={VAR: full_indicator} height="8" /></td>
 {SECTION: END}
 
 {SECTION: alert_full_indicator alert indicator, when user approaches limit}
-<td bgcolor="#fffa00"><img src="blank.gif" alt="" width={VAR: full_indicator} height="8" /></td>
+<td class="pmSa"><img src="blank.gif" alt="" width={VAR: full_indicator} height="8" /></td>
 {SECTION: END}
 
 {SECTION: full_full_indicator full indicator, the user has reached or surpassed the limit}
-<td bgcolor="#FF0000"><img src="blank.gif" alt="" width={VAR: full_indicator} height="8" /></td>
+<td class="pmSf"><img src="blank.gif" alt="" width={VAR: full_indicator} height="8" /></td>
 {SECTION: END}
 
 {SECTION: pmsg_author}
