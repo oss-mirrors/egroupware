@@ -46,7 +46,7 @@ Public Function SimpleExec(methodName As String, xmlParms As XMLRPCStruct) As XM
         End If
     End If
 End Function
-'Put all the contacts' fullnames from a folder into the listbox
+'Put all the local contacts' fullnames from a folder into the listbox
 Public Function ListOutlookContacts(fldFolder As Outlook.MAPIFolder)
     Dim objItem As Object
     
@@ -71,7 +71,6 @@ Public Sub PrintXMLRPCValue(vItem As XMLRPCValue)
     
     'Define a printing process for each XMLRPC data type
     Select Case vItem.ValueType
-        
         'Arrays
         Case XMLRPC_ARRAY
             Debug.Print "--Array Start: "
@@ -79,28 +78,22 @@ Public Sub PrintXMLRPCValue(vItem As XMLRPCValue)
                 PrintXMLRPCValue linsValue
             Next
             Debug.Print "--Array End"
-        
         'Base 64
         Case XMLRPC_BASE64
             Debug.Print "Base 64: " & vItem.Base64Value
-        
         'Booleans
         Case XMLRPC_BOOLEAN
             Debug.Print "Boolean: " & vItem.BooleanValue
-        
         'Dates and times
         Case XMLRPC_DATETIME
             Debug.Print "Date/time: " & vItem.DateTimeValue
-        
         'Double numbers
         Case XMLRPC_DOUBLE
             Debug.Print "Double: " & vItem.DoubleValue
             'Debug.Print vItem.DoubleValue
-        
         'Integers
         Case XMLRPC_INT_I4
             Debug.Print "XMLRPC Integer: " & vItem.IntegerValue
-        
         'Nil values
         Case XMLRPC_NIL
             Debug.Print "Nil value"
@@ -108,7 +101,6 @@ Public Sub PrintXMLRPCValue(vItem As XMLRPCValue)
         'Strings
         Case XMLRPC_STRING
             Debug.Print "String: " & vItem.StringValue
-        
         'Structures
         Case XMLRPC_STRUCT
             Debug.Print "--Structure Start: "
@@ -116,7 +108,6 @@ Public Sub PrintXMLRPCValue(vItem As XMLRPCValue)
                 PrintXMLRPCValue linsMember.Value
             Next
             Debug.Print "--Structure End"
-        
         'If the value type is unrecognized
         Case Else
             Debug.Print "Attempt to print XMLRPCValue failed: ValueType not recognized."
@@ -168,8 +159,8 @@ Public Function RemoteGetFullInformation(vSelected As XMLRPCValue, aResponses() 
 NextSelection:
 End Function
 
-Public Function CreateOutlookContact(ByVal rContact As XMLRPCResponse) As Boolean
-    Dim objContact          As Outlook.ContactItem
+Public Function CreateOutlookContact(ByVal rContact As XMLRPCResponse) As ContactItem
+    Dim objContact          As ContactItem
     Dim EC                  As XMLRPCStruct
     Dim gnspNameSpace       As NameSpace
     Dim fldContacts         As Outlook.MAPIFolder
@@ -183,32 +174,32 @@ Public Function CreateOutlookContact(ByVal rContact As XMLRPCResponse) As Boolea
     'If a contact with the same full name doesn't exist, create the new contact.
     '   Perhaps there should be a more sophisticated method of finding similar contacts as well,
     '   but I'll leave that for the future.
-    Dim vFirstName As Variant
-    Dim vLastName As Variant
-    Set vFirstName = fldContacts.Items.Find("[FirstName] = " & EC.GetValueByName("n_given").StringValue)
-    Set vLastName = fldContacts.Items.Find("[LastName] = " & EC.GetValueByName("n_family").StringValue)
-    If Not (vFirstName Is Nothing) And Not (vLastName Is Nothing) Then
+    Dim ciFindContact As ContactItem
+    Set ciFindContact = fldContacts.Items.Find("[FirstName] = " & EC.GetValueByName("n_given").StringValue)
     
-        'Display a message box to confirm an overwrite.
-        Dim x As VbMsgBoxResult
-        x = MsgBox("Trying to import " & (Chr(10)) & (EC.GetValueByName("fn").StringValue) & (Chr(10)) & _
-                    "from the eGroupWare server, but a contact by that name already" & _
-                    " exists in the local directory." & (Chr(10)) & (Chr(10)) & _
-                    "Press okay to overwrite the local contact, cancel to skip", _
-                    vbOKCancel, "Confirm Overwrite of " & (EC.GetValueByName("fn").StringValue))
+    If Not (ciFindContact Is Nothing) Then
+        If ciFindContact.LastName = EC.GetValueByName("n_family").StringValue Then
+    
+            'Display a message box to confirm an overwrite.
+            Dim x As VbMsgBoxResult
+            x = MsgBox("Trying to import " & (Chr(10)) & (EC.GetValueByName("fn").StringValue) & (Chr(10)) & _
+                        "from the eGroupWare server, but a contact by that name already" & _
+                        " exists in the local directory." & (Chr(10)) & (Chr(10)) & _
+                        "Press okay to overwrite the local contact, cancel to skip", _
+                        vbOKCancel, "Confirm Overwrite of " & (EC.GetValueByName("fn").StringValue))
 
-        'If the user chose to overwrite then go ahead and do the writing over
-        If x = vbOK Then
-            'First delete the current copy to make space for the new one
-            vFirstName.Delete
-            'then go to where the writing is done.
-            GoTo WriteContact
-        'If the user chose to skip, exit this function
-        ElseIf x = vbCancel Then
-            CreateOutlookContact = False
-            Exit Function
+            'If the user chose to overwrite then go ahead and do the writing over
+            If x = vbOK Then
+                'First delete the current copy to make space for the new one
+                ciFindContact.Delete
+                'then go to where the writing is done.
+                GoTo WriteContact
+            'If the user chose to skip, exit this function
+            ElseIf x = vbCancel Then
+                Set CreateOutlookContact = Nothing
+                Exit Function
+            End If
         End If
-        
     'If there wasn't an identical contact already, or the user chose to overwrite
     Else
 WriteContact:
@@ -219,24 +210,24 @@ WriteContact:
         'objContact. = EC.GetValueByName("sound").StringValue 'Sound
         objContact.CompanyName = EC.GetValueByName("org_name").StringValue 'company name
         'objContact. = EC.GetValueByName("org_unit").StringValue 'department
-        objContact.Title = EC.GetValueByName("title").StringValue 'title
-        'objContact. = EC.GetValueByName("n_prefix").StringValue 'prefix
+        objContact.JobTitle = EC.GetValueByName("title").StringValue 'title
+        objContact.Title = EC.GetValueByName("n_prefix").StringValue 'prefix
         objContact.FirstName = EC.GetValueByName("n_given").StringValue 'first name
         objContact.MiddleName = EC.GetValueByName("n_middle").StringValue 'middle name
         objContact.LastName = EC.GetValueByName("n_family").StringValue 'last name
         objContact.Suffix = EC.GetValueByName("n_suffix").StringValue 'suffix
         objContact.Email1DisplayName = EC.GetValueByName("label").StringValue 'label
-        objContact.HomeAddress = EC.GetValueByName("adr_one_street").StringValue 'business street
-        objContact.HomeAddressCity = EC.GetValueByName("adr_one_locality").StringValue 'business city
-        objContact.HomeAddressState = EC.GetValueByName("adr_one_region").StringValue 'business state
-        objContact.HomeAddressPostalCode = EC.GetValueByName("adr_one_postalcode").StringValue 'business zip code
-        objContact.HomeAddressCountry = EC.GetValueByName("adr_one_countryname").StringValue 'business country
+        objContact.BusinessAddress = EC.GetValueByName("adr_one_street").StringValue 'business street
+        objContact.BusinessAddressCity = EC.GetValueByName("adr_one_locality").StringValue 'business city
+        objContact.BusinessAddressState = EC.GetValueByName("adr_one_region").StringValue 'business state
+        objContact.BusinessAddressPostalCode = EC.GetValueByName("adr_one_postalcode").StringValue 'business zip code
+        objContact.BusinessAddressCountry = EC.GetValueByName("adr_one_countryname").StringValue 'business country
         'objContact. = EC.GetValueByName("adr_one_type").StringValue 'business address type
-        objContact.BusinessAddress = EC.GetValueByName("adr_two_street").StringValue 'home street
-        objContact.BusinessAddressCity = EC.GetValueByName("adr_two_locality").StringValue 'home city
-        objContact.BusinessAddressState = EC.GetValueByName("adr_two_region").StringValue 'home state
-        objContact.BusinessAddressPostalCode = EC.GetValueByName("adr_two_postalcode").StringValue 'home zip code
-        objContact.BusinessAddressCountry = EC.GetValueByName("adr_two_countryname").StringValue 'home country
+        objContact.HomeAddress = EC.GetValueByName("adr_two_street").StringValue 'home street
+        objContact.HomeAddressCity = EC.GetValueByName("adr_two_locality").StringValue 'home city
+        objContact.HomeAddressState = EC.GetValueByName("adr_two_region").StringValue 'home state
+        objContact.HomeAddressPostalCode = EC.GetValueByName("adr_two_postalcode").StringValue 'home zip code
+        objContact.HomeAddressCountry = EC.GetValueByName("adr_two_countryname").StringValue 'home country
         'objContact. = EC.GetValueByName("adr_two_type").StringValue 'home address type
         'objContact. = EC.GetValueByName("tz").StringValue 'time zone
         'objContact. = EC.GetValueByName("geo").StringValue 'geo
@@ -266,7 +257,116 @@ WriteContact:
         'objContact. = EC.GetValueByName("note").StringValue 'notes
         
         'Finalize the changes.
+        Set CreateOutlookContact = objContact
         objContact.Close (olSave)
-        CreateOutlookContact = True
+
+    End If
+End Function
+
+Public Function CreateEGWContact(ByVal ciContact As ContactItem, aResponses() As XMLRPCValue) As XMLRPCResponse
+    Dim xmlParms        As New XMLRPCStruct
+    Dim xmlArray        As New XMLRPCArray
+    Dim xmlResponse     As New XMLRPCResponse
+    Dim varTemp         As Variant
+    Dim dblDuplicateID  As Double
+    
+    'initialize dblDuplicateID so we can later tell if there was a duplicate contact found
+    dblDuplicateID = 0
+    
+    'Look for the local contact in the downloaded list of remote contacts
+    For Each varTemp In aResponses
+        'If a contact that was downloaded from the server has the same first and last name
+        If ciContact.LastName = varTemp.StructValue.GetValueByName("n_family").StringValue And _
+            ciContact.FirstName = varTemp.StructValue.GetValueByName("n_given").StringValue Then
+            
+                'record the contact's id number
+                dblDuplicateID = Val(varTemp.StructValue.GetValueByName("id").StringValue)
+                'and exit the loop
+                Exit For
+        End If
+    Next varTemp
+
+    If dblDuplicateID <> 0 Then
+        Dim x As VbMsgBoxResult
+        x = MsgBox("Trying to export " & (Chr(10)) & (ciContact.FullName) & (Chr(10)) & _
+                        "to the eGroupWare server, but a contact by that name already" & _
+                        " exists in the remote directory." & (Chr(10)) & (Chr(10)) & _
+                        "Press okay to overwrite the remote contact, cancel to skip", _
+                        vbOKCancel, "Confirm Overwrite of " & (ciContact.FullName))
+        If x = vbOkay Then
+            GoTo WriteContact
+        ElseIf x = vbCancel Then
+            CreateEGWContact = 0
+            Exit Function
+        End If
+    Else
+WriteContact:
+        'Create a new entry
+        '   If there wasn't a duplicate found, dblDuplicateID will be 0, which indicates to eGW
+        '   that it should create a new contact. If a duplicate was found, it will be overwritten.
+        xmlParms.AddString "id", dblDuplicateID
+        
+       xmlParms.AddString "fn", ciContact.Title & " " & ciContact.FirstName & " " & ciContact.MiddleName & " " & ciContact.LastName & " " & ciContact.Suffix 'full name
+       'xmlParms.AddString "sound", ciContact 'Sound
+       xmlParms.AddString "org_name", ciContact.CompanyName 'company name
+       'xmlParms.AddString "org_unit", ciContact 'department
+       xmlParms.AddString "Title", ciContact.JobTitle 'title
+       'xmlParms.AddString "n_prefix", ciContact 'prefix
+       xmlParms.AddString "n_given", ciContact.FirstName 'first name
+       xmlParms.AddString "n_middle", ciContact.MiddleName 'middle name
+       xmlParms.AddString "n_family", ciContact.LastName 'last name
+       xmlParms.AddString "n_suffix", ciContact.Suffix 'suffix
+       xmlParms.AddString "label", ciContact.Email1DisplayName 'label
+       xmlParms.AddString "adr_one_street", ciContact.BusinessAddress 'business street
+       xmlParms.AddString "adr_one_locality", ciContact.BusinessAddressCity 'business city
+       xmlParms.AddString "adr_one_region", ciContact.BusinessAddressState 'business state
+       xmlParms.AddString "adr_one_postalcode", ciContact.BusinessAddressPostalCode 'business zip code
+       xmlParms.AddString "adr_one_countryname", ciContact.BusinessAddressCountry 'business country
+       'xmlParms.AddString "adr_one_type", ciContact 'business address type
+       xmlParms.AddString "adr_two_street", ciContact.HomeAddress 'home street
+       xmlParms.AddString "adr_two_locality", ciContact.HomeAddressCity 'home city
+       xmlParms.AddString "adr_two_region", ciContact.HomeAddressState 'home state
+       xmlParms.AddString "adr_two_postalcode", ciContact.HomeAddressPostalCode 'home zip code
+       xmlParms.AddString "adr_two_countryname", ciContact.HomeAddressCountry 'home country
+       'xmlParms.AddString "adr_two_type", ciContact 'home address type
+       'xmlParms.AddString "tz", ciContact 'time zone
+       'xmlParms.AddString "geo", ciContact 'geo
+       xmlParms.AddString "tel_work", ciContact.BusinessTelephoneNumber 'business phone
+       xmlParms.AddString "tel_home", ciContact.HomeTelephoneNumber 'home phone
+       'xmlParms.AddString "tel_voice", ciContact 'voice phone
+       'xmlParms.AddString "tel_msg", ciContact 'message phone
+       xmlParms.AddString "tel_fax", ciContact.BusinessFaxNumber 'fax
+       xmlParms.AddString "tel_pager", ciContact.PagerNumber 'pager
+       xmlParms.AddString "tel_cell", ciContact.MobileTelephoneNumber 'mobile phone
+       'xmlParms.AddString "tel_bbs", ciContact 'bbs phone
+       'xmlParms.AddString "tel_modem", ciContact 'modem phone
+       xmlParms.AddString "tel_isdn", ciContact.ISDNNumber 'isdn phone
+       xmlParms.AddString "tel_car", ciContact.CarTelephoneNumber 'car phone
+       'xmlParms.AddString "tel_video", ciContact 'video phone
+       xmlParms.AddString "tel_prefer", ciContact.PrimaryTelephoneNumber 'preferred phone
+       xmlParms.AddString "Email", ciContact.Email1Address 'business email
+       xmlParms.AddString "email_type", ciContact.Email1AddressType 'business email type
+       xmlParms.AddString "email_home", ciContact.Email2Address 'home email
+       xmlParms.AddString "email_home_type", ciContact.Email2AddressType 'home email type
+       'xmlParms.AddString "address2", ciContact 'address line 2
+       'xmlParms.AddString "address3", ciContact 'address line 3
+       'xmlParms.AddString "ophone", ciContact 'Other Phone
+       'xmlParms.AddString "bday", ciContact 'birthday
+       xmlParms.AddString "URL", ciContact.WebPage 'url"
+       'xmlParms.AddString "pubkey", ciContact 'public key
+       'xmlParms.AddString "note", ciContact 'notes
+
+        Set xmlResponse = SimpleExec("addressbook.boaddressbook.write", xmlParms)
+    
+        'If the write was succesfull, return the basic information on the contact
+        If xmlResponse.params(1).ValueType = XMLRPC_INT_I4 Then
+            xmlParms.AddInteger "id", xmlResponse.params(1).IntegerValue
+            xmlArray.AddString "n_given"
+            xmlArray.AddString "n_family"
+            xmlArray.AddString "fn"
+            xmlParms.AddArray "fields", xmlArray
+            Set CreateEGWContact = SimpleExec("addressbook.boaddressbook.read", xmlParms)
+        End If
+        
     End If
 End Function

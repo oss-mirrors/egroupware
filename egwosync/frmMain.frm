@@ -28,7 +28,7 @@ Private Sub cmdGet_Click()
     
     INT_START = 1
     INT_LIMIT = 50
-    QUERY = "w"
+    QUERY = ""
     ORDER = "fn"
     SORT = "ASC"
     
@@ -47,6 +47,8 @@ Private Sub cmdGet_Click()
         xmlParms.AddInteger "start", INT_START
         xmlParms.AddInteger "limit", INT_LIMIT
         xmlArray.AddString "fn"
+        xmlArray.AddString "n_given"
+        xmlArray.AddString "n_family"
         xmlParms.AddArray "fields", xmlArray
         xmlParms.AddString "query", QUERY
         xmlParms.AddString "order", ORDER
@@ -61,7 +63,7 @@ Private Sub cmdGet_Click()
         End If
         
         For Each tempValue In xmlResponse.params(1).ArrayValue
-            'Increment the size of the array, starts zero, so the first time around becomes 1
+            'Increment the size of the array, starts at zero, so the first time around becomes 1
             ResponseArraySize = ResponseArraySize + 1
             'Resize the response params array
             ReDim Preserve arrResponses(1 To ResponseArraySize)
@@ -73,6 +75,7 @@ Private Sub cmdGet_Click()
         Next tempValue
         
     Loop While xmlResponse.params(1).ArrayValue.Count = INT_LIMIT
+    
     Debug.Print "Got all contacts from the server."
     
     'List the contacts from the local Outlook folders
@@ -87,27 +90,77 @@ Private Sub cmdSynchronize_Click()
     Dim arrSelLocal         As New XMLRPCArray
     Dim arrSelRemote        As New XMLRPCArray
     Dim valListItem         As XMLRPCValue
+    Dim ciContact           As ContactItem
     Dim arrFullInformation() As XMLRPCResponse
     Dim intFullInfoSize     As Integer
     Dim tempResponse        As Variant
-    Dim bAdded              As Boolean
+    Dim gnspNameSpace       As NameSpace
+    Dim fldContacts         As Outlook.MAPIFolder
+    Dim xmlResponse         As New XMLRPCResponse
+    Dim tempValue           As XMLRPCValue
+    
+    Set gnspNameSpace = GetNamespace("MAPI")
+    Set fldContacts = gnspNameSpace.GetDefaultFolder(olFolderContacts)
     
     'Get the full names of the selected contacts from each listbox
     '   and put them in XMLRPC arrays
     Set arrSelLocal = modEGWUtilities.GetSelectedListItems(listLocal)
     Set arrSelRemote = modEGWUtilities.GetSelectedListItems(listRemote)
     
-    For Each valListItem In arrSelRemote
-        intFullInfoSize = intFullInfoSize + 1
-        ReDim Preserve arrFullInformation(1 To intFullInfoSize)
-        Set arrFullInformation(intFullInfoSize) = modEGWUtilities.RemoteGetFullInformation(valListItem, arrResponses)
-    Next valListItem
-    For Each tempResponse In arrFullInformation
-        Debug.Print "Got full info on contact: " & tempResponse.params(1).ArrayValue(1).StructValue.GetValueByName("fn").StringValue
-        bAdded = modEGWUtilities.CreateOutlookContact(tempResponse)
-        If bAdded Then Debug.Print "Added " & tempResponse.params(1).ArrayValue(1).StructValue.GetValueByName("fn").StringValue _
-        & " to the Outlook Contact List."
-    Next tempResponse
+    'If there are remote contacts selected
+    If arrSelRemote.Count > 0 Then
+        'reset ciContact
+        Set ciContact = Nothing
+        'Get full information on all the selected remote contacts
+        For Each valListItem In arrSelRemote
+            'Dynamically resize arrFullInformation
+            intFullInfoSize = intFullInfoSize + 1
+            ReDim Preserve arrFullInformation(1 To intFullInfoSize)
+            'Pass an XMLRPCValue that holds the fullname of the contact to get the full information on
+            '   that contact from the remote server.
+            Set arrFullInformation(intFullInfoSize) = modEGWUtilities.RemoteGetFullInformation(valListItem, arrResponses)
+        Next valListItem
+    
+        'Add the selected remote contacts to the local directory
+        For Each tempResponse In arrFullInformation
+            Set ciContact = modEGWUtilities.CreateOutlookContact(tempResponse)
+            If Not (ciContact Is Nothing) Then
+                Debug.Print "Successfully imported " & tempResponse.params(1).ArrayValue(1).StructValue.GetValueByName("fn").StringValue & _
+                                " to the Outlook Contact List."
+            Else
+                Debug.Print "Failed to import " & tempResponse.params(1).ArrayValue(1).StructValue.GetValueByName("fn").StringValue & _
+                                " to the Outlook Contact List."
+            End If
+            'Update the local list to show the new contact
+            frmMain.listLocal.AddItem (ciContact.FullName)
+        Next tempResponse
+    End If
+    
+    'If there are local contacts selected
+    If arrSelLocal.Count > 0 Then
+        Set ciContact = Nothing
+        Set tempResponse = Nothing
+        'Add the selected local contacts to the remote directory
+        For Each valListItem In arrSelLocal
+            Set ciContact = fldContacts.Items.Find("[FullName] = " & valListItem.StringValue)
+            Set tempResponse = modEGWUtilities.CreateEGWContact(ciContact, arrResponses)
+            If Not (tempResponse Is Nothing) Then
+                Debug.Print "Successfully exported " & ciContact.FullName & " to the eGroupWare server"
+                
+                'Now add the new contact to both the array of contacts and the lisbox
+                ResponseArraySize = ResponseArraySize + 1
+                'Resize the response params array
+                ReDim Preserve arrResponses(1 To ResponseArraySize)
+                'Add each contact to the response array
+                Set arrResponses(ResponseArraySize) = tempResponse.params(1).ArrayValue(1)
+            
+                'list the contacts in the listbox
+                listRemote.AddItem arrResponses(ResponseArraySize).StructValue.GetValueByName("fn").StringValue
+            Else
+                Debug.Print "Failed to export " & ciContact.FullName & " to the eGroupWare server"
+            End If
+        Next valListItem
+    End If
 End Sub
 
 'Saves all the settings from frmMain to the registry
