@@ -1608,7 +1608,7 @@
 
 		function view_project()
 		{
-			$action		= $_GET['action'];
+			$action		= $_GET['action'] ? $_GET['action'] : 'mains';
 			$pro_main	= $_GET['pro_main'];
 			$project_id	= $_GET['project_id'];
 			$public_view	= $_GET['public_view'];
