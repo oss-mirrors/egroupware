@@ -9,6 +9,7 @@
   *  Free Software Foundation; either version 2 of the License, or (at your  *
   *  option) any later version.                                              *
   \**************************************************************************/
+  /* $Id$ */
 
     $phpgw_info['flags'] = array('currentapp' => 'projects',
                                'enable_nextmatchs_class' => True,
@@ -69,7 +70,7 @@
     $t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
     $t->set_var('sort_lid',$phpgw->nextmatchs->show_sort_order($sort,'account_lid',$order,'/projects/admin.php',lang('Username')));
     $t->set_var('sort_lastname',$phpgw->nextmatchs->show_sort_order($sort,'account_lastname',$order,'/projects/admin.php',lang('Lastname')));
-    $t->set_var('sort_firstname',$phpgw->nextmatchs->show_sort_order($sort,'account_firstname',$order,'/projects/admin.php',lang('firstname')));
+    $t->set_var('sort_firstname',$phpgw->nextmatchs->show_sort_order($sort,'account_firstname',$order,'/projects/admin.php',lang('Firstname')));
     $t->set_var('lang_delete',lang('Delete'));
 
 // -------------------------- end header declaration --------------------------------------
