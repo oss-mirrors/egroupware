@@ -57,4 +57,5 @@
 		echo "\n" . '<!-- BEGIN Stock Quotes info -->' . "\n" . $portalbox->draw('<td>' . "\n" . $stocks->return_quotes() . "\n" . '</td>') . "\n"
 					. '<!-- END Stock Quotes info -->' . "\n";
 	}
+	flush();
 ?>
