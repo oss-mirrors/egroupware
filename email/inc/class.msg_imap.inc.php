@@ -27,235 +27,250 @@
   {
     function base64($text) 
     {
-      return imap_base64($text);
+	return imap_base64($text);
     }
-  
+
     function close($stream,$flags="") 
     {
-      return imap_close($stream,$flags);
+	return imap_close($stream,$flags);
     }
 
     function createmailbox($stream,$mailbox) 
     {
-      return imap_createmailbox($stream,$mailbox);
+	return imap_createmailbox($stream,$mailbox);
     }
-     
-    function deletemailbox($stream,$mailbox) {
-      return imap_deletemailbox($stream,$mailbox);
+
+    function deletemailbox($stream,$mailbox)
+    {
+	return imap_deletemailbox($stream,$mailbox);
     } 
-     
+
     function delete($stream,$msg_num,$flags="", $currentfolder="") 
     {
-      global $phpgw_info, $phpgw;
+	global $phpgw_info, $phpgw;
     
-      if ($currentfolder == "Trash"){
-         return imap_delete($stream,$msg_num);
-      } else {
-         if (isset($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]) &&
-	     $phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]) {
-            $filter = $phpgw->msg->construct_folder_str("");
+	if ($currentfolder == "Trash")
+	{
+		return imap_delete($stream,$msg_num);
+	}
+	else
+	{
+		if (isset($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]) &&
+		$phpgw_info["user"]["preferences"]["email"]["use_trash_folder"])
+		{
+			$filter = $phpgw->msg->construct_folder_str("");
+			if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
+			{
+				/* HvG20010502: Secure IMAP, extra parameters, other port: */
+				$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/ssl/novalidate-cert:993}";
+			}
+			elseif  ($phpgw_info['user']['preferences']['email']['mail_server_type']=='pop3s')
+			{
+				/* HvG20010502: Secure POP3S support: */
+				$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/pop3/ssl/novalidate-cert:995" . "}";
+			}
+			else
+			{
+				/* Normal imap, no special stuff: */
+				$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . "143" . "}";
+			}
 
-	    if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')		
-	    {
-		/* HvG20010502: Secure IMAP, extra parameters, other port: */
-                $imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/ssl/novalidate-cert:993}";
-	    }
-	    elseif  ($phpgw_info['user']['preferences']['email']['mail_server_type']=='pop3s')
-	    { 	/* HvG20010502: Secure POP3S support: */
-		$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/pop3/ssl/novalidate-cert:995" . "}";
-	    }
-	    else
-	    {	
-		/* Normal imap, no special stuff: */
-            	$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . "143" . "}";
+			$mailboxes = $phpgw->msg->listmailbox($stream, $imap_str, "$filter*");
 
-	    }
+			if (count($mailboxes) != 0)
+			{
+				$havetrashfolder = False;
+				while ($folder = each($mailboxes))
+				{
+					if ($folder[1] == "Trash")
+					{
+						$havetrashfolder = True;
+					}
+				}
+			}
 
-            $mailboxes = $phpgw->msg->listmailbox($stream, $imap_str, "$filter*");
-
-            if (count($mailboxes) != 0) {
-               $havetrashfolder = False;
-   		    while ($folder = each($mailboxes)) {
-		          if ($folder[1] == "Trash") {
-		             $havetrashfolder = True;
-   		       }
-		       }
-   		 }
-		 
-		    if (! $havetrashfolder) {
-		       $phpgw->msg->createmailbox($stream,$imap_str . $phpgw->msg->construct_folder_str("Trash"));
-   		 }
-   		 $tofolder =  $this->construct_folder_str("Trash");
-            return imap_mail_move($stream,$msg_num,$tofolder);
-         } else {
-            return imap_delete($stream,$msg_num);
-         }
-      }
+			if (! $havetrashfolder)
+			{
+				$phpgw->msg->createmailbox($stream,$imap_str . $phpgw->msg->construct_folder_str("Trash"));
+			}
+			$tofolder =  $this->construct_folder_str("Trash");
+			return imap_mail_move($stream,$msg_num,$tofolder);
+		}
+		else
+		{
+			return imap_delete($stream,$msg_num);
+		}
+	}
     }
-     
+
     function expunge($stream) 
     {
-      return imap_expunge($stream);
+	return imap_expunge($stream);
     } 
-     
+
     function fetchbody($stream,$msgnr,$partnr,$flags="") 
     {
-      return imap_fetchbody($stream,$msgnr,$partnr,$flags);
-    } 
-     
+	return imap_fetchbody($stream,$msgnr,$partnr,$flags);
+    }
+
     function header($stream,$msg_nr,$fromlength="",$tolength="",$defaulthost="")
     {
-      return imap_header($stream,$msg_nr,$fromlength,$tolength,$defaulthost);
+	return imap_header($stream,$msg_nr,$fromlength,$tolength,$defaulthost);
     } 
 
     function fetchheader($stream,$msg_num) 
     {
-      return $this->get_header($stream,$msg_num);
-    } 
-     
+	return $this->get_header($stream,$msg_num);
+    }
+
     function fetchstructure($stream,$msg_num,$flags="") 
     {
-      return imap_fetchstructure($stream,$msg_num);
-    } 
-     
+	return imap_fetchstructure($stream,$msg_num);
+    }
+
     function listmailbox($stream,$ref,$pattern)
     {
-      return imap_listmailbox($stream,$ref,$pattern);
-    } 
-     
+	return imap_listmailbox($stream,$ref,$pattern);
+    }
+
     function num_msg($stream) // returns number of messages in the mailbox
     { 
-      return imap_num_msg($stream);
-    } 
-     
+	return imap_num_msg($stream);
+    }
+
     function mailboxmsginfo($stream) 
     {
-      return imap_mailboxmsginfo($stream);
-    } 
-     
+	return imap_mailboxmsginfo($stream);
+    }
+
     function mailcopy($stream,$msg_list,$mailbox,$flags)
     {
-      return imap_mailcopy($stream,$msg_list,$mailbox,$flags);
-    } 
-     
+	return imap_mailcopy($stream,$msg_list,$mailbox,$flags);
+    }
+
     function mail_move($stream,$msg_list,$mailbox)
     {
-      return imap_mail_move($stream,$msg_list,$mailbox);
-    } 
-     
+	return imap_mail_move($stream,$msg_list,$mailbox);
+    }
+
     function open($mailbox,$username,$password,$flags="")
     {
-      return imap_open($mailbox,$username,$password,$flags);
-    } 
-     
+	return imap_open($mailbox,$username,$password,$flags);
+    }
+
     function qprint($message)
     {
-//      return quoted_printable_decode($message);
-      $str = quoted_printable_decode($message);
-      return str_replace("=\n","",$str);
-
+	//      return quoted_printable_decode($message);
+	$str = quoted_printable_decode($message);
+	return str_replace("=\n","",$str);
     } 
-     
+
     function reopen($stream,$mailbox,$flags = "")
     {
-      return imap_reopen($stream,$mailbox,$flags);
+	return imap_reopen($stream,$mailbox,$flags);
     }
-     
+
     function sort($stream,$criteria,$reverse="",$options="",$msg_info="")
     {
-      return imap_sort($stream,$criteria,$reverse,$options);
+	return imap_sort($stream,$criteria,$reverse,$options);
     }
-     
+
     function status($stream,$mailbox,$options)
     {
-      return imap_status($stream,$mailbox,$options);
+	return imap_status($stream,$mailbox,$options);
     }
 
-    function append($stream, $folder = "Sent", $header, $body, $flags = "") {
-      global $phpgw_info, $phpgw;
+    function append($stream, $folder = "Sent", $header, $body, $flags = "")
+    {
+	global $phpgw_info, $phpgw;
 
-      $filter = $phpgw->msg->construct_folder_str("");
-      
-      if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps' )
-      {
-	/* HvG20010502:	Use IMAPS (other port, other parameters): */
-      	$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/ssl/novalidate-cert:993}";
-      }
-      elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s' )
-      {
-	/* HvG20010502: Use POP3S: */
-	$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/pop3/ssl/novalidate-cert:995}";
-      }
-      else
-      {
-	/* Normal imap, nothing special: */
-        $imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . "143" . "}";
-      }
+	$filter = $phpgw->msg->construct_folder_str("");
 
-      $mailboxes = $phpgw->msg->listmailbox($stream, $imap_str, "$filter*");
-      if (count($mailboxes) != 0) {
-        $havefolder = False;
-   	while ($eachfolder = each($mailboxes)) {
-	   if ($eachfolder[1] == $folder) {
-	     $havefolder = True;
-   	   }
+	if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps' )
+	{
+		/* HvG20010502:	Use IMAPS (other port, other parameters): */
+		$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/ssl/novalidate-cert:993}";
 	}
-      }
-      if (! $havefolder) {
-        $phpgw->msg->createmailbox($stream,$imap_str . $phpgw->msg->construct_folder_str($folder));
-      }
+	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s' )
+	{
+		/* HvG20010502: Use POP3S: */
+		$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/pop3/ssl/novalidate-cert:995}";
+	}
+	else
+	{
+		/* Normal imap, nothing special: */
+		$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . "143" . "}";
+	}
 
-      $folder = $this->construct_folder_str($folder);
-      if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
-      {
-	/* IMAP over SSL: */	
-	return imap_append($stream, "{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]."/ssl/novalidate-cert:993}".$folder, $header ."\n". $body, $flags);
-      }
-      elseif ($phpgw_info['user']['preferences']['email']['mail_server_type']=='pop3s')
-      {
-	/* POP3 over SSL: */
-	/* HvG20010502: Actually POP3 doesn't support folders, so the following could
-	   actually not be done. */
-	return imap_append($stream, "{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]."/pop3/ssl/novalidate-cert:995}".$folder, $header ."\n". $body, $flags); 
-      }
-      else
-      {
-      	return imap_append($stream, "{".$phpgw_info["user"]["preferences"]["email"]["mail_server"].":143}".$folder, $header ."\n". $body, $flags);
-      }
+	$mailboxes = $phpgw->msg->listmailbox($stream, $imap_str, "$filter*");
+	if (count($mailboxes) != 0)
+	{
+		$havefolder = False;
+		while ($eachfolder = each($mailboxes))
+		{
+			if ($eachfolder[1] == $folder)
+			{
+				$havefolder = True;
+			}
+		}
+	}
+	if (! $havefolder)
+	{
+		$phpgw->msg->createmailbox($stream,$imap_str . $phpgw->msg->construct_folder_str($folder));
+	}
+
+	$folder = $this->construct_folder_str($folder);
+	if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
+	{
+		/* IMAP over SSL: */	
+		return imap_append($stream, "{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]."/ssl/novalidate-cert:993}".$folder, $header ."\n". $body, $flags);
+	}
+	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type']=='pop3s')
+	{
+		/* POP3 over SSL: */
+		/* HvG20010502: Actually POP3 doesn't support folders, so the following could
+		actually not be done. */
+		return imap_append($stream, "{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]."/pop3/ssl/novalidate-cert:995}".$folder, $header ."\n". $body, $flags); 
+	}
+	else
+	{
+		return imap_append($stream, "{".$phpgw_info["user"]["preferences"]["email"]["mail_server"].":143}".$folder, $header ."\n". $body, $flags);
+	}
     }
 
     function login( $folder = "INBOX")
     {
-      global $phpgw, $phpgw_info;
-      error_reporting(error_reporting() - 2);
-      if ($folder != "INBOX") {
-        $folder = $this->construct_folder_str($folder);
-      }
+	global $phpgw, $phpgw_info;
+	error_reporting(error_reporting() - 2);
+	if ($folder != "INBOX")
+	{
+		$folder = $this->construct_folder_str($folder);
+	}
 
-      $pass = $phpgw_info["user"]["preferences"]["email"]["passwd"];
-      $user = $phpgw_info["user"]["preferences"]["email"]["userid"];
-      if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
-      {
-	/* SSL enabled IMAP: */
-      	$mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"] ."/ssl/novalidate-cert:993}".$folder, 
-				$user , $pass);
-      }
-      elseif ($phpgw_info['user']['preferences']['email']['mail_server_type']=='pop3s')
-      {
-	/* SSL enabled POP3: */
-	$mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"] ."/pop3/ssl/novalidate-cert:995}".$folder,
-                                $user , $pass);
-      }
-      else
-      {
-	/* Normal IMAP, nothing special: */
-	$mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
+	$pass = $phpgw_info["user"]["preferences"]["email"]["passwd"];
+	$user = $phpgw_info["user"]["preferences"]["email"]["userid"];
+	if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
+	{
+		/* SSL enabled IMAP: */
+		$mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"] ."/ssl/novalidate-cert:993}".$folder, 
+			$user , $pass);
+	}
+	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type']=='pop3s')
+	{
+		/* SSL enabled POP3: */
+		$mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"] ."/pop3/ssl/novalidate-cert:995}".$folder,
+			$user , $pass);
+	}
+	else
+	{
+		/* Normal IMAP, nothing special: */
+		$mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
 			.":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]
 			."}".$folder, $user, $pass);
-      }
+	}
 
-      error_reporting(error_reporting() + 2);
-      return $mbox;
+	error_reporting(error_reporting() + 2);
+	return $mbox;
     }
 
     function construct_folder_str( $folder )
@@ -392,23 +407,29 @@
     }
 
 
-    function get_flag($stream,$msg_num,$flag) {
+    function get_flag($stream,$msg_num,$flag)
+    {
 	// Call my new rfc_get_flag() function.
 	// It should replace get_flag() as soon as it's 
 	// accepted into cvs phpGW
 	return $this->rfc_get_flag ($stream, $msg_num, $flag);
 
-      $header = imap_fetchheader($stream,$msg_num);
-      $header = explode("\n",$header);
-      $flag = strtolower($flag);
-      for ($i=0;$i<count($header);$i++) {
-        $pos = strpos($header[$i],":");
-        if (is_int($pos) && $pos) {
-          $keyword = trim(substr($header[$i],0,$pos));
-          $content = trim(substr($header[$i],$pos+1));
-          if (strtolower($keyword) == $flag) return $content;
-        }
-      }
-      return false;
+	$header = imap_fetchheader($stream,$msg_num);
+	$header = explode("\n",$header);
+	$flag = strtolower($flag);
+	for ($i=0;$i<count($header);$i++)
+	{
+		$pos = strpos($header[$i],":");
+		if (is_int($pos) && $pos)
+		{
+			$keyword = trim(substr($header[$i],0,$pos));
+			$content = trim(substr($header[$i],$pos+1));
+			if (strtolower($keyword) == $flag)
+			{
+				return $content;
+			}
+		}
+	}
+	return false;
     }
   }
