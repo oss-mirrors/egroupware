@@ -11,33 +11,11 @@
 	/* $Id$ */
 
 	{
-		echo "<p>\n";
-		$imgfile = $phpgw->common->get_image_dir('projects') . '/' . $appname . '.gif';
-		if (file_exists($imgfile)) 
-		{
-			$imgpath = $phpgw->common->get_image_path('projects') . '/' . $appname . '.gif';
-		}
-		else 
-		{
-			$imgfile = $phpgw->common->get_image_dir('projects') . '/navbar.gif';
-			if (file_exists($imgfile)) 
-			{
-				$imgpath = $phpgw->common->get_image_path('projects') . '/navbar.gif';
-			}
-			else 
-			{
-				$imgpath = '';
-			}
-		}
-
-		section_start('projects',$imgpath);
-
-		section_item($phpgw->link('/projects/preferences.php'),lang('Preferences'));
-
-		section_item($phpgw->link('/preferences/acl_preferences.php','acl_app=projects'),lang('Grant access'));
-
-		section_item($phpgw->link('/preferences/categories.php','cats_app=projects&cats_level=True&global_cats=True'),lang('Edit categories'));
-
-		section_end();
+		$title = $appname;
+		$file = Array(
+			'Grant Access' => $phpgw->link('/preferences/acl_preferences.php','acl_app=projects'),
+			'Edit categories' => $phpgw->link('/preferences/categories.php','cats_app=projects&cats_level=True&global_cats=True')
+		);
+		display_section($appname,$title,$file);
 	}
 ?>
