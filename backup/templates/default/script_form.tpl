@@ -73,7 +73,7 @@
 			case 'weekly':	$dd = $dd - ( 7 * $versions ); break;
 			case 'monthly':	$dm = $dm - $versions; break;
 		}
-		$rdate = mktime(0,0,0,$dm,$dd,date('Y'));
+		$rdate = mktime(1,0,0,$dm,$dd,date('Y'));
 		return $rdate;
 	}
 
@@ -99,7 +99,7 @@
 
 	$basedir	= '{basedir}';
 
-	check_datedue($basedir);
+//	check_datedue($basedir);
 
 	$bsql		= '{bsql}';
 	$bldap		= '{bldap}';
@@ -187,6 +187,8 @@
 <!-- END script_ba -->
 	}
 
+	check_datedue($basedir);
+
 // ----------------------- move to remote host --------------------------------
 
 	$lsave		= '{lsave}';
@@ -238,13 +240,14 @@
 			$nfsdir = '/mnt';
 			system("mount -t nfs $rip:$rpath $nfsdir 2>&1 > /dev/null");
 
-			check_datedue($nfsdir);
+		//	check_datedue($nfsdir);
 
 			for ($i=0;$i<count($output);$i++)
 			{
 				system("cp " . $output[$i] . ' ' . $nfsdir . '/ 2>&1 > /dev/null');
 				echo 'transfer of ' . $output[$i] . ' through nfs: success !' . "\n";
 			}
+			check_datedue($nfsdir);
 			system("umount " . $nfsdir);
 		}
 
@@ -258,13 +261,14 @@
 
 			system("mount.smbfs $rip$rpath $smbdir -o username=$ruser,password=$rpwd,rw 2>&1 > /dev/null");
 
-			check_datedue($smbdir);
+		//	check_datedue($smbdir);
 
 			for ($i=0;$i<count($output);$i++)
 			{
 				system("cp " . $output[$i] . ' ' . $smbdir . '/ 2>&1 > /dev/null');
 				echo 'transfer of ' . $output[$i] . ' through smbmount: success !' . "\n";
 			}
+			check_datedue($smbdir);
 			system("smbumount " . $smbdir);
 		}
 	}
@@ -282,12 +286,13 @@
 
 		if ($lpath != '')
 		{
-			check_datedue($lpath);
+		//	check_datedue($lpath);
 
 			for ($i=0;$i<count($output);$i++)
 			{
 				system("$command " . $output[$i] . ' ' . $lpath . '/ 2>&1 > /dev/null'); 
 			}
+			check_datedue($lpath);
 		}
 	}
 	else
