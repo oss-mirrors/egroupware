@@ -1,0 +1,63 @@
+absolute path of the backup directory	backup	da	Fuldstændig sti til backup biblioteket (f.eks.: /usr/local/www/egroupware/backup/archive)
+absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	da	Fuldstændig sti til backup biblioteket (f.eks.: /usr/local/www/egroupware/backup/archive)
+absolute path of the directory of egw backup application	backup	da	Fuldstændig sti til eGroupWare backup applikation biblioteket
+absolute path of the directory to store the backup script	backup	da	Fuldstændig sti til eGroupWare Backup applikationens bibliotek
+archive type	backup	da	Vælg arkiv type
+backup	common	da	Backup
+backup administration	common	da	Backup administration
+bzip2	admin	da	bzip2
+configuration backup	backup	da	Backup Konfiguration
+configuration localhost	backup	da	Localhost Konfiguration
+create backups of your data ?	backup	da	Vælg for at oprette backup af dine data:
+daily	backup	da	daglig
+data	backup	da	Data
+directory locations	admin	da	Bibliotek stier
+directory names	admin	da	Bibliotek navne
+e-mail	backup	da	Vælg for at modtage E-mail status:
+e-mail notification?	backup	da	Status pr. e-mail?
+homedirs	admin	da	Hjemme biblioteker
+interval	backup	da	Interval
+ip or hostname	backup	da	IP eller værtsnavn
+ldap	common	da	LDAP
+ldap database	admin	da	LDAP database
+list backup archives	backup	da	vis bavkup arkiver
+maildir	admin	da	E-mail status sendes til:
+monthly	backup	da	månedlig
+mysql	admin	da	MySQL
+nfs	backup	da	nfs
+no backup archives available !	backup	da	Ingen backup arkiv tilgængelig!
+number of stored backup versions	backup	da	Antal backup der skal gemmes før de ældste slettes:
+operating system	backup	da	Operativ system
+pgsql	admin	da	PostgreSQL
+php cgi	admin	da	Fuldstændig sti til den PHP program fil (f.eks. /usr/bin/php)
+please enter the path of the needed applications in *site configuration* !	backup	da	Indtast venligst stien til den behøvede applikation i *Site konfiguration*!
+please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	da	Indtast venligst stien til backup biblioteket og/eller aktiver visning af arkiver i eGroupWare!
+please enter username and password for remote connection !	backup	da	Indtast venligst brugernavn og adgangskode for fjernforbindelsen!
+please select an application for transport to the remote host !	backup	da	Vælg venligst en applikation til transport til den fjerne vært!
+please set the path to a local dir to store the backup script !	backup	da	Sæt venligst stien til et lokalt bibliotek for at gemme backup scriptet!
+please set the path to the ldap database dir in *site configuration* !	backup	da	Sæt venligst stien til LDAP database biblioteket i *Site konfiguration*!
+please set the path to the mysql database dir in *site configuration* !	backup	da	Sæt venligst stien til MySQL database biblioteket i *Site konfiguration*!
+please set the path to the postgresql database dir in *site configuration* !	backup	da	Sæt venligst stien til PostgreSQL database biblioteket i *Site konfiguration*!
+please set the values in *site configuration* !	backup	da	Sæt venligst værdierne i *Site Konfigurationen*!
+please specify the ip of the remote host !	backup	da	Indtast venligst IP'en for den fjerne vært
+please specify the name of the maildir in *site configuration* !	backup	da	Indtast venligst navnet på Maildir'en i *Site Konfiguration*!
+please specify the path to the backup directory !	backup	da	Indtast venligst stien til backup biblioteket!
+please specify the path to the user-homedirectories in *site configuration* !	backup	da	Indtast venligst stien til bruger-hjemmebiblioteker i *Site Konfigurationen*!
+please write down you e-mail for beeing notified	backup	da	Indtast venligst din e-mail som status skal sendes til
+program locations	admin	da	Program stier
+save backup locally ?	backup	da	Vælg for at gemme backuppen lokalt:
+select archive type	backup	da	Vælg arkiv type
+select interval	backup	da	Vælg interval
+settings	admin	da	indstillinger
+show backup archives in phpgroupware ?	backup	da	Vælg for at vise backup arkiver i eGroupWare:
+smbmount	backup	da	smbmount
+sql	backup	da	tar.gz
+tar	admin	da	tar
+tar.bz2	backup	da	tar.bz2
+tar.gz	backup	da	tar.gz
+the backup application is not configured for showing the archives in phpgroupware yet !	backup	da	Backup applikationen er ikke konfigureret til at vise arkiver i eGroupWare endnu!
+the directory to store the backup script must be outside of the webservers *documentroot* !	backup	da	Biblioteket hvor backup scriptet gemmes, skal være i webserverens *DocumentRoot*!
+versions can only be a number !	backup	da	Versioner kan kun være et nummer!
+weekly	backup	da	ugentligt
+your sql database isnt supported by this application !	backup	da	Din SQL database er ikke understøttet af denne applikation!
+zip	common	da	zip
