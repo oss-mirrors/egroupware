@@ -52,7 +52,9 @@
 			echo '	function CheckEmail()'."\n";
 			echo '	{'."\n";
 			echo '		window.opener.document.location.href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uifelamimail.viewMainScreen').'";'."\n";
-			echo '		window.opener.focus()'."\n";
+			echo '		window.opener.focus()'."\r\n";
+			#echo '          window.resizeTo(1,1);'."\r\n";
+			echo '          window.blur();'."\r\n";
 			echo '		location.reload()'."\n";
 			echo '	}'."\n";
 			echo '	//-->'."\n";
@@ -62,12 +64,15 @@
 			echo '<td width="20%" valign="middle" align="center">'."\r\n";
 			echo '<a href="JavaScript:CheckEmail();"><img src="'.$GLOBALS['phpgw']->common->image('felamimail','navbar').'" alt="email icon" border=0></a>'."\r\n";
 			echo "<td>\r\n";
-			
+
 			if($folderStatus[recent]>0)
 			{
 			 	echo '<a href="JavaScript:CheckEmail();"><b>'.lang('new').':</b> '.$folderStatus[recent].'</a><br>';
 			 	
-			 	if($oldUidNext != $folderStatus['uidnext']) $urgent = True;
+			 	if($oldUidNext != $folderStatus['uidnext'] || $folderStatus[recent]>0)
+				{
+					$urgent = True;
+				}
 			}
 			else
 			{
@@ -88,7 +93,8 @@
 			if($urgent == True)
 			{
 				echo '<script type="text/javascript" language="Javascript 1.3">'."\r\n";
-				echo 'document.bgcolor="#ff6666";'."\r\n";
+				echo 'document.bgcolor="#666666";'."\r\n";
+				#echo 'window.resizeTo(300,170);'."\r\n";
 				echo 'window.focus();'."\r\n";
 				echo '</script>'."\r\n";
 			}
