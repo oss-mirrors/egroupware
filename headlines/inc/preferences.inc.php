@@ -13,7 +13,7 @@
   }
   section_start("Headlines",$img);
 
-  $pg = $phpgw_info["server"]["webserver_url"]."/headlines/preferences.php";
+  $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]."/headlines/preferences.php");
   echo "<A href=".$pg.">Select headlines to display</A>";
 
   section_end(); 
