@@ -480,6 +480,12 @@
 		$phpgw->msg->begin_request($args_array);
 	}
 
+// ----  UN-INITIALIZE ARGS ARRAY HOLDER VARIABLE  -------
+	// it's no longer needed
+	$args_array = Array();
+	unset($args_array);
+
+
 	/*
 	// get rid of ALL the GPC variables - they are no longer needed
 	unset($folder);
