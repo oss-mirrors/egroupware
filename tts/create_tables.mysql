@@ -1,4 +1,4 @@
-create table ticket (
+create table t_ticket (
   t_id		int not null auto_increment,
   t_category	varchar(40) not null,
   t_detail	text,
@@ -12,14 +12,14 @@ create table ticket (
   primary key (t_id)
 );
 
-create table category (
+create table t_category (
   c_id		int not null auto_increment,
   c_department	varchar(25) not null,
   c_name	varchar(40) not null,
   primary key (c_id)
 );
 
-create table department (
+create table t_department (
   d_name		varchar(25) not null,
   primary key (d_name)
 );

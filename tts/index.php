@@ -35,7 +35,7 @@
      $sortmethod = "order by $order $sort";
 
   $phpgw->db->query("select t_id,t_category,t_priority,t_assignedto,t_timestamp_opened,t_user,t_timestamp_closed,t_subject "
-	      . "from ticket $filtermethod $sortmethod");
+	      . "from t_ticket $filtermethod $sortmethod");
 
   $zeilen = $phpgw->db->num_rows();
   if ($filter == "viewall") {
