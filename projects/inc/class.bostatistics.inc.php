@@ -2,7 +2,6 @@
 	/*******************************************************************\
 	* eGroupWare - Projects                                             *
 	* http://www.egroupware.org                                         *
-	* This program is part of the GNU project, see http://www.gnu.org/  *
 	*                                                                   *
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *

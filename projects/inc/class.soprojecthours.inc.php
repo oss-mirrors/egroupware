@@ -1,8 +1,7 @@
 <?php
 	/*******************************************************************\
-	* phpGroupWare - Projects                                           *
-	* http://www.phpgroupware.org                                       *
-	* This program is part of the GNU project, see http://www.gnu.org/  *
+	* eGroupWare - Projects                                             *
+	* http://www.egroupware.org                                         *
 	*                                                                   *
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
