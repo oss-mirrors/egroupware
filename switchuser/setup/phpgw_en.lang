@@ -1,0 +1,5 @@
+switch now	switchuser	en	Switch now
+switchuser	common	en	SwitchUser
+to which user you want to switch?	switchuser	en	to which user you want to switch?
+with this application you can login as other user without knowing or changing any passwords. only administrators can use this application	switchuser	en	With this application you can login as other user without knowing or changing any passwords. Only administrators can use this application
+you're not allowed to switch identity.	switchuser	en	You're not allowed to switch identity.

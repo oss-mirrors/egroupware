@@ -1,0 +1,5 @@
+switch now	switchuser	nl	Verander van identiteit
+switchuser	common	nl	Verander identiteit
+to which user you want to switch?	switchuser	nl	Welke gebruiker wilt u worden?
+with this application you can login as other user without knowing or changing any passwords. only administrators can use this application	switchuser	nl	Met dit programma kunt u inloggen als andere gebruiker, zonder een wachtwoord te hoeven weten of wijzigen. Uiteraard zijn alleen beheerders toegestaan dit programme te gebruiken.
+you're not allowed to switch identity.	switchuser	nl	U bent niet toegestaan van identiteit te veranderen.
