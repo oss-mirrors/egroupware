@@ -32,7 +32,7 @@
 			//$GLOBALS['phpgw']->db->lock(array("phpgw_polls_data","phpgw_polls_user"));
 			$GLOBALS['phpgw']->db->query("UPDATE phpgw_polls_data SET option_count=option_count+1 WHERE "
 				. "poll_id='" . $GLOBALS['HTTP_POST_VARS']['poll_id'] . "' AND vote_id='" . $GLOBALS['HTTP_POST_VARS']['poll_voteNr'] . "'",__LINE__,__FILE__);
-			$GLOBALS['phpgw']->db->query("insert into phpgw_polls_user values ('" . $GLOBALS['HTTP_POST_VARS']['poll_id'] . "','','"
+			$GLOBALS['phpgw']->db->query("insert into phpgw_polls_user values ('" . $GLOBALS['HTTP_POST_VARS']['poll_id'] . "','0','"
 				. $GLOBALS['phpgw_info']['user']['account_id'] . "','" . time() . "')",__LINE__,__FILE__);
 			//$GLOBALS['phpgw']->db->unlock();
 		}

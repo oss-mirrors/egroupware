@@ -32,7 +32,7 @@
 
 		$GLOBALS['phpgw']->db->query("select max(vote_id)+1 from phpgw_polls_data where poll_id='$poll_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
-		$vote_id = $GLOBALS['phpgw']->db->f(0);
+		$vote_id = intval($GLOBALS['phpgw']->db->f(0));
 
 		$GLOBALS['phpgw']->db->query("insert into phpgw_polls_data (poll_id,option_text,option_count,vote_id) values ('$poll_id','"
 			. addslashes($answer) . "',0,'$vote_id')",__LINE__,__FILE__);

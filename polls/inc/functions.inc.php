@@ -34,6 +34,7 @@
 			return True;
 		}
 
+		$poll_id = intval($poll_id);
 		$GLOBALS['phpgw']->db->query("select count(*) from phpgw_polls_user where user_id='" . $GLOBALS['phpgw_info']['user']['account_id']
 			. "' and poll_id='$poll_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
@@ -155,6 +156,7 @@
 			return False;
 		}
 
+		$poll_id = intval($poll_id);
 		$GLOBALS['phpgw']->db->query("select poll_title from phpgw_polls_desc where poll_id='$poll_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
 
