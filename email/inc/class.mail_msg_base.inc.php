@@ -29,8 +29,6 @@
 
   class mail_msg_base
   {
-	//global $phpgw, $phpgw_info;
-
 	var $args = Array();
 	var $not_set = '-1';
 	var $att_files_dir;

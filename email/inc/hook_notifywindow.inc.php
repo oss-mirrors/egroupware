@@ -11,27 +11,28 @@
 
 	/* $Id$ */
 
-	$d1 = strtolower(substr($phpgw_info['server']['app_inc'],0,3));
-	if($d1 == 'htt' || $d1 == 'ftp' ) 
+	$d1 = strtolower(substr(APP_INC,0,3));
+	if($d1 == 'htt' || $d1 == 'ftp' )
 	{
-		echo 'error:Failed attempt to break in via an old Security Hole!'.chr(13);
-		$phpgw->common->phpgw_exit();
+		echo "Failed attempt to break in via an old Security Hole!<br>\n";
+		$GLOBALS['phpgw']->common->phpgw_exit();
 	}
 	unset($d1);
 
-	$phpgw_info['server']['app_inc'] = PHPGW_SERVER_ROOT . SEP . 'email' . SEP . 'inc';
+	// is this still needed?
+	//$GLOBALS['phpgw_info']['server']['app_inc'] = PHPGW_SERVER_ROOT . SEP . 'email' . SEP . 'inc';
 
 	// NOTE: notify for email not available if the welcome screen show mail option if off
-	if (($phpgw_info['user']['preferences']['email']['mainscreen_showmail'])
-	&& (isset($phpgw_info['user']['apps']['email'])
-	&& $phpgw_info['user']['apps']['email']))
+	if (($GLOBALS['phpgw_info']['user']['preferences']['email']['mainscreen_showmail'])
+	&& (isset($GLOBALS['phpgw_info']['user']['apps']['email'])
+	&& $GLOBALS['phpgw_info']['user']['apps']['email']))
 	{
 		// ----  Create the base email Msg Class    -----
-		$phpgw->msg = CreateObject("email.mail_msg");
+		$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 		$args_array = Array();
 		$args_array['folder'] = 'INBOX';
 		$args_array['do_login'] = True;
-		$phpgw->msg->begin_request($args_array);
+		$GLOBALS['phpgw']->msg->begin_request($args_array);
 
 		/*  // this is the structure you will get
 		  $inbox_data['is_imap'] boolean - pop3 server do not know what is "new" or not
@@ -41,10 +42,10 @@
 		  $inbox_data['number_all'] integer - for IMAP and pop3 is total number messages in that inbox
 		*/
 		$inbox_data = Array();
-		$inbox_data = $phpgw->msg->new_message_check();
+		$inbox_data = $GLOBALS['phpgw']->msg->new_message_check();
 
 		// end the mailserver request object
-		$phpgw->msg->end_request();
+		$GLOBALS['phpgw']->msg->end_request();
 
 		if ($inbox_data['alert_string'] != '')
 		{
@@ -53,7 +54,7 @@
 			echo '<!-- Activate Cloaking Device'.chr(13).chr(10);
 			echo '	funtion CheckEmail()'.chr(13).chr(10);
 			echo '	{'.chr(13).chr(10);
-			echo '		window.opener.document.location.href="'.$phpgw->link("../email/").'";'.chr(13).chr(10);
+			echo '		window.opener.document.location.href="'.$GLOBALS['phpgw']->link("../email/").'";'.chr(13).chr(10);
 			echo '	}'.chr(13).chr(10);
 			echo '//-->'.chr(13).chr(10);
 			echo '</script>'.chr(13).chr(10); */
@@ -64,6 +65,7 @@
 			echo "\r\n".'<!-- Mailox info --></td></tr>'."\r\n";
 		}
 	}
-
-	$phpgw_info['server']['app_inc'] = $tmp_app_inc;
+	
+	// is this still needed?
+	//$GLOBALS['phpgw_info']['server']['app_inc'] = $tmp_app_inc;
 ?>

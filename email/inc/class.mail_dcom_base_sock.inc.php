@@ -77,6 +77,18 @@
 		'dec' => 12
 	);
 
+	/*
+	@class mailbox_status (sockets)
+	@abstract part of mail Data Communications class
+	@Discussion
+	see PHP function: IMAP_STATUS --  This function returns status information on a mailbox other than the current one
+	SA_MESSAGES - set status->messages to the number of messages in the mailbox
+	SA_RECENT - set status->recent to the number of recent messages in the mailbox
+	SA_UNSEEN - set status->unseen to the number of unseen (new) messages in the mailbox
+	SA_UIDNEXT - set status->uidnext to the next uid to be used in the mailbox
+	SA_UIDVALIDITY - set status->uidvalidity to a constant that changes when uids for the mailbox may no longer be valid
+	SA_ALL - set all of the above
+	*/
 	class mailbox_status
 	{
 		var $messages = '';
@@ -87,18 +99,22 @@
 		// quota and quota_all not in php builtin
 		var $quota = '';
 		var $quota_all = '';
-		/*
-		@Discussion
-		see PHP function: imap_status --  This function returns status information on a mailbox other than the current one
-		SA_MESSAGES - set status->messages to the number of messages in the mailbox
-		SA_RECENT - set status->recent to the number of recent messages in the mailbox
-		SA_UNSEEN - set status->unseen to the number of unseen (new) messages in the mailbox
-		SA_UIDNEXT - set status->uidnext to the next uid to be used in the mailbox
-		SA_UIDVALIDITY - set status->uidvalidity to a constant that changes when uids for the mailbox may no longer be valid
-		SA_ALL - set all of the above
-		*/
 	}
 	
+	/*
+	@class mailbox_msg_info (sockets)
+	@abstract part of mail Data Communications class
+	@Discussion
+	see PHP function: IMAP_MAILBOXMSGINFO -- Get information about the current mailbox
+	Date		date of last change
+	Driver		driver
+	Mailbox	name of the mailbox
+	Nmsgs	number of messages
+	Recent		number of recent messages
+	Unread	number of unread messages
+	Deleted	number of deleted messages
+	Size		mailbox size
+	*/
 	class mailbox_msg_info
 	{
 		var $Date = '';
@@ -108,27 +124,56 @@
 		var $Recent = '';
 		var $Unread = '';
 		var $Size = '';
-		/*
-		@Discussion
-		see PHP function: imap_mailboxmsginfo -- Get information about the current mailbox
-		Date		date of last change
-		Driver		driver
-		Mailbox		name of the mailbox
-		Nmsgs		number of messages
-		Recent		number of recent messages
-		Unread		number of unread messages
-		Deleted		number of deleted messages
-		Size		mailbox size
-		*/
 	}
 	
 	/*
-	@Discussion: imap_mailboxmsginfo  vs.  imap_status
-	note 1): 	IMAP uses imap_mailboxmsginfo for the folder it's currently logged into,
-		and IMAP uses imap_status for info on a folder it is NOT currently logged into
-	note 2)	imap_mailboxmsginfo returns size data, imap_status does NOT
+	@class mailbox_status (sockets) discussion VS. class mailbox_msg_info (sockets) 
+	@abstract compare these two similar classes and their functions
+	@Discussion: 
+	class mailbox_status is used by function IMAP_STATUS
+	class mailbox_msg_info is used by function IMAP_MAILBOXMSGINFO
+	These two functions / classes are similar, here are some notes on their usage:
+	Note 1):
+	IMAP_MAILBOXMSGINFO is only used for the folder that the client is currently logged into,
+	for pop3 this is always "INBOX", for imap this is the currently selected (opened) folder.
+	Therefor, with imap the target folder must already be selected (via IMAP_OPEN or IMAP_REOPEN)
+	Note 2):
+	IMAP_STATUS is can be used to obtain data on a folder that is NOT currently selected (opened)
+	by the client. For pop3 this difference means nothing, for imap this means the client
+	need NOT select (i.e. open) the target folder before requesting status data.
+	Still, IMAP_STATUS can be used on any folder wheter it is currently selected (opened) or not.
+	Note 3):
+	The main functional difference is that one function returns size data, and the other does not.
+	imap_mailboxmsginfo returns size data, imap_status does NOT.
+	This size data adds all the sizes of the messages in that folder together to get the total folder size.
+	Some IMAP servers can take alot of time and CPU cycles to get this total,
+	particularly with MAILDIR type imap servers such as Courier-imap, while other imap servers
+	seem to return this size data with little difficulty.
 	*/
 
+	/*
+	@class msg_structure (sockets)
+	@abstract part of mail Data Communications class
+	@Discussion
+	see PHP function: imap_fetchstructure --  Read the structure of a particular message
+	type			Primary body type
+	encoding		Body transfer encoding
+	ifsubtype		TRUE if there is a subtype string
+	subtype		MIME subtype
+	ifdescription		TRUE if there is a description string
+	description		Content description string
+	ifid			TRUE if there is an identification string
+	id			Identification string
+	lines			Number of lines
+	bytes			Number of bytes
+	ifdisposition		TRUE if there is a disposition string
+	disposition		Disposition string
+	ifdparameters		TRUE if the dparameters array exists
+	dparameters		Disposition parameter array
+	ifparameters		TRUE if the parameters array exists
+	parameters		MIME parameters array
+	parts			Array of objects describing each message part
+	*/
 	class msg_structure
 	{
 		var $type = '';
@@ -150,27 +195,6 @@
 		// custom phpgw data to aid in building this structure
 		var $custom = array();
 		var $parts = array();
-		/*
-		@Discussion
-		see PHP function: imap_fetchstructure --  Read the structure of a particular message
-		type		Primary body type
-		encoding		Body transfer encoding
-		ifsubtype		TRUE if there is a subtype string
-		subtype		MIME subtype
-		ifdescription	TRUE if there is a description string
-		description	Content description string
-		ifid		TRUE if there is an identification string
-		id		Identification string
-		lines		Number of lines
-		bytes		Number of bytes
-		ifdisposition	TRUE if there is a disposition string
-		disposition	Disposition string
-		ifdparameters	TRUE if the dparameters array exists
-		dparameters	Disposition parameter array
-		ifparameters	TRUE if the parameters array exists
-		parameters	MIME parameters array
-		parts		Array of objects describing each message part
-		*/
 	}
 	
 	// gonna have to decide on one of the next two
@@ -199,13 +223,15 @@
 		var $adl;
 	}
 	
+	/*
+	@class msg_overview (sockets)
+	@abstract part of mail Data Communications class
+	@Discussion see PHP function:  imap_fetch_overview -- Read an overview of the information in the 
+	headers of the given message
+	NOT CURRENTY IMPLEMENTED
+	*/
 	class msg_overview
 	{
-		/*
-		@Discussion see PHP function:  imap_fetch_overview -- Read an overview of the information in the 
-		headers of the given message
-		NOT CURRENTY IMPLEMENTED
-		*/
 		var $subject;	// the messages subject
 		var $from;	// who sent it
 		var $date;	// when was it sent
@@ -222,13 +248,15 @@
 		var $draft;	// this message is flagged as being a draft
 	}
 
+	/*
+	@class hdr_info_envelope (sockets)
+	@abstract part of mail Data Communications class
+	@Discussion
+	see PHP function:  imap_headerinfo -- Read the header of the message
+	see PHP function:   imap_header  which is simply an alias to imap_headerinfo
+	*/
 	class hdr_info_envelope
 	{
-		/*
-		@Discussion
-		see PHP function:  imap_headerinfo -- Read the header of the message
-		see PHP function:   imap_header  which is simply an alias to imap_headerinfo
-		*/
 		// --- Various Header Data ---
 		var $remail = '';
 		var $date = '';
@@ -933,7 +961,8 @@
 			$name = eregi_replace("^\"(.*)\"$", "\\1", $name);
 			$name = eregi_replace("^\((.*)\)$", "\\1", $name);
 		}
-	
+		
+		// OBSOLETED ?
 		function get_mime_type($de_part)
 		{
 			if (!isset($de_part->type))
@@ -962,7 +991,7 @@
 			}
 			return $type_str;
 		}
-
+		
 		function get_mime_encoding($de_part)
 		{
 			if (!isset($de_part->encoding))
@@ -996,6 +1025,7 @@
 			return $encoding_str;
 		}
 		
+		// OBSOLETED
 		function get_att_name($de_part)
 		{
 			$param = new parameter;

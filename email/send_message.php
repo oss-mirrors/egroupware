@@ -97,15 +97,16 @@
 	}
 	else
 	{
+		// RFC default charset, if none is specified, is US-ASCII
 		$mail_out['charset'] = 'US-ASCII';
 	}
 	// -----  SENDER  -----
 	// rfc2822 - sender is only used if some one NOT the author (ex. the author's secretary) is sending the authors email
 	if (isset($GLOBALS['phpgw']->msg->args['sender']) && ($GLOBALS['phpgw']->msg->args['sender'] != ''))
 	{
-		// clean data
+		// clean data of magic_quotes escaping (if any)
 		$GLOBALS['phpgw']->msg->args['sender'] = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->args['sender']);
-		// convert script sender arg into useful mail_out structure information
+		// convert general address string into structured data array of addresses, each has properties [plain] and [personal]
 		$sender_array = $GLOBALS['phpgw']->msg->make_rfc_addy_array($GLOBALS['phpgw']->msg->args['sender']);
 		// realistically sender array should have no more than one member (can there really be more than 1 sender?)
 		if (count($sender_array) > 0)
@@ -133,16 +134,16 @@
 	if ((isset($GLOBALS['phpgw']->msg->args['action']))
 	&& ($GLOBALS['phpgw']->msg->args['action'] == 'forward'))
 	{
-		// convert script GPC args into useful mail_out structure information
+		// fill mail_out[] structure information
 		$mail_out['is_forward'] = True;
-		// after this, ONLY USE $mail_out structure for this
+		// after this, ONLY USE $mail_out[] structure for this
 	}
 	if ((isset($GLOBALS['phpgw']->msg->args['fwd_proc']))
 	&& ($GLOBALS['phpgw']->msg->args['fwd_proc'] != ''))
 	{
-		// convert script GPC args into useful mail_out structure information
+		// convert script GPC args into useful mail_out[] structure information
 		$mail_out['fwd_proc'] = $GLOBALS['phpgw']->msg->args['fwd_proc'];
-		// after this, ONLY USE $mail_out structure for this
+		// after this, ONLY USE $mail_out[] structure for this
 	}
 
 // ----  Attachment Detection  -----
@@ -176,7 +177,7 @@
 	$cc = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->args['cc']);
 	$body = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($GLOBALS['phpgw']->msg->args['body']));
 	$subject = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->args['subject']);
-	// after this,  do NOT use the args for these anymore
+	// after this,  do NOT use ->msg->args[] for these anymore
 
 	// since arg "body" *may* be huge (and is now in local var $body), lets clear it now
 	$GLOBALS['phpgw']->msg->args['body'] = '';
@@ -327,12 +328,10 @@
 	if (($mail_out['is_forward'] == True)
 	&& ($mail_out['fwd_proc'] == 'pushdown'))
 	{
-		//$msg_headers = $GLOBALS['phpgw']->dcom->header($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
 		$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header('');
-		//$msg_struct = $GLOBALS['phpgw']->dcom->fetchstructure($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
 		$msg_struct = $GLOBALS['phpgw']->msg->phpgw_fetchstructure('');
 
-		$mail_out['fwd_info'] = pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1, $GLOBALS['phpgw']->msg->folder, $GLOBALS['phpgw']->msg->msgnum);
+		$mail_out['fwd_info'] = $GLOBALS['phpgw']->msg->pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1);
 		if (($mail_out['fwd_info']['type'] == 'multipart')
 		|| ($mail_out['fwd_info']['subtype'] == 'mixed'))
 		{
@@ -350,13 +349,11 @@
 		$mail_out['body'][$body_part_num]['mime_body'] = Array();
 
 		// ----  General Information about The Original Message  -----
-		//$msg_headers = $GLOBALS['phpgw']->dcom->header($phpgw->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
 		$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header('');
-		//$msg_struct = $GLOBALS['phpgw']->dcom->fetchstructure($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
 		$msg_struct = $GLOBALS['phpgw']->msg->phpgw_fetchstructure('');
 
 		// use the "pgw_msg_struct" function to get the orig message main header info
-		$mail_out['fwd_info'] = pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1, $GLOBALS['phpgw']->msg->folder, $GLOBALS['phpgw']->msg->msgnum);
+		$mail_out['fwd_info'] = $GLOBALS['phpgw']->msg->pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1);
 		// add some more info
 		$mail_out['fwd_info']['from'] = $GLOBALS['phpgw']->msg->make_rfc2822_address($msg_headers->from[0]);
 		$mail_out['fwd_info']['date'] = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
@@ -420,7 +417,6 @@
 		$m_line++;
 
 		// dump the original BODY (with out its headers) here
-		//$fwd_this = $GLOBALS['phpgw']->dcom->get_body($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
 		$fwd_this = $GLOBALS['phpgw']->msg->phpgw_body();
 		// Explode Body into Array of strings
 		$mail_out['body'][$body_part_num]['mime_body'] = $GLOBALS['phpgw']->msg->explode_linebreaks(trim($fwd_this));
@@ -441,7 +437,6 @@
 		$mail_out['body'][$body_part_num]['mime_headers'][2] = 'Content-Disposition: inline';
 
 		// DUMP the original message verbatim into this part's "body" - i.e. encapsulate the original mail
-		//$fwd_this['sub_header'] = trim($GLOBALS['phpgw']->dcom->fetchheader($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum));
 		$fwd_this['sub_header'] = trim($GLOBALS['phpgw']->msg->phpgw_fetchheader(''));
 		$fwd_this['sub_header'] = $GLOBALS['phpgw']->msg->normalize_crlf($fwd_this['sub_header']);
 
@@ -452,10 +447,8 @@
 		$fwd_this['sub_header'] = trim($fwd_this['sub_header']);
 
 		// get the body
-		//$fwd_this['sub_body'] = trim($GLOBALS['phpgw']->dcom->get_body($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum));
 		$fwd_this['sub_body'] = trim($GLOBALS['phpgw']->msg->phpgw_body());
 		//$fwd_this['sub_body'] = $GLOBALS['phpgw']->msg->normalize_crlf($fwd_this['sub_body']);
-
 
 		// Make Sure ALL INLINE BOUNDARY strings actually have CRLF CRLF preceeding them
 		// ---- not yet complete ----
@@ -596,8 +589,8 @@
 	{
 		// rfc2822 - sender is only used if some one NOT the author (ex. the author's secretary) is sending the authors email
 		// $mail_out['sender'] is initialized as an empty array in the begining of this file
-		// after that, it would be filled if the argument "sender" was passed to the script,
-		// then it would have been converted to the appropriate format and put in the $mail_out['sender'] array
+		// then, it will be filled if the ->msg->args['sender'] was passed to the script,
+		// where it would have been converted to the appropriate format and put in the $mail_out['sender'] array
 		$mail_out['main_headers'][$hdr_line] = 	'Sender: '.$mail_out['sender'];
 		$hdr_line++;
 	}
@@ -639,11 +632,38 @@
 		$mail_out['main_headers'][$hdr_line] =	$mail_out['whitespace'].'charset="'.$mail_out['charset'].'"';
 		$hdr_line++;
 		// RFC2045 - the next line is *assumed* as default 7bit if it is not included
-		// BUT 7bit requires qprinting the body, so let's use 8bit here
 		// FUTURE: Content-Transfer-Encoding:  Needs To Match What is In the Body, i.e. may be qprint
-		// for now send out as 8 bit and hope for the best (see notes above)
 		//$mail_out['main_headers'][$hdr_line] =	'Content-Transfer-Encoding: 7bit';
 		//$hdr_line++;
+		/*
+		@discussion: 7bit vs. 8bit encoding value in top level headers
+		top level 7bit requires qprinting the body if the body has 8bit chars in it
+		ISSUE 1: "it's unnecessary"
+		nowdays, most all MTAs and IMAP/POP servers can handle 8bit
+		by todays usage, 7bit is quite restrictive, when considering the variety of
+		things that may be attached to or carried in a message (and growing)
+		<begin digression>
+		However, stuffing RFC822 email thru a X500 (?) gateway requires 7bit body,
+		which we could do here, at the MUA level, and may possibly require other
+		alterations of the message that occur at the gateway, some of which may actually drop
+		portions of the message, indeed it's complicated, but rare in terms of total mail volume (?)
+		<end digression>
+		ISSUE 2: "risks violating RFCs and confusing MTAs"
+		setting top level encoding to 7bit when the body actually has 8bit chars is "TOTALLY BAD"
+		MTA's will be totally confused by that mis-match, and it violates RFCs
+		**More Importantly** this is a coding and functionality issue involved in forwarding:
+		in general, when you forward a message you should not alter that message
+		if that forwarded message has 8bit chars, I don't think that can be altered
+		even to quote-print that forwarded part (i.e. to convert it to 7bit) would be altering it
+		I suppose you could base64 encode it, on the theory that it decodes exactly back into
+		it's original form, but the practice of base64 encoding non-attachments (i.e. text parts)
+		is EXTREMELY rare in my experience (Angles) and still problematic in coding for this.
+		I suppose this assumes qprint is possible "lossy" in that the exact original may not be
+		exactly the same as said pre-encoded forwarded part, and, after all, it's still altering the part.
+		CONCLUSION: Set Top Level Header "Content-Transfer-Encoding" to "8bit"
+		because it's easier to code for and less likely to violate RFCs.
+		for now send out as 8bit and hope for the best.
+		*/
 		$mail_out['main_headers'][$hdr_line] =	'Content-Transfer-Encoding: 8bit';
 		$hdr_line++;
 	
@@ -660,7 +680,7 @@
 		$mail_out['main_headers'][$hdr_line] = 	'X-phpGW-Type: '.$mail_out['msgtype'];
 		$hdr_line++;
 	}
-	$mail_out['main_headers'][$hdr_line] = 	'X-Mailer: phpGroupWare (http://www.phpgroupware.org)';
+	$mail_out['main_headers'][$hdr_line] = 	'X-Mailer: phpGroupWare (http://www.phpgroupware.org) v '.$phpgw_info['server']['versions']['phpgwapi'];
 	$hdr_line++;
 
 	/*

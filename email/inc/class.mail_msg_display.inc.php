@@ -752,7 +752,7 @@ class mail_msg extends mail_msg_wrappers
 	}
 
 	function pgw_msg_struct($part, $parent_flat_idx, $feed_dumb_mime, $feed_i, $feed_loops, $feed_debth)
-	{	
+	{
 		if (isset($this->not_set))
 		{
 			$not_set = $this->not_set;

@@ -241,7 +241,7 @@ class mail_msg_wrappers extends mail_msg_base
 
 	function phpgw_renamemailbox($folder_old,$folder_new)
 	{
-		return $this->dcom->renamemailbox($GLOBALS['phpgw']->msg->mailsvr_stream, $folder_old, $folder_new);
+		return $this->dcom->renamemailbox($this->mailsvr_stream, $folder_old, $folder_new);
 	}
 
 	function phpgw_append($folder = "Sent", $message, $flags = "")
@@ -310,13 +310,13 @@ class mail_msg_wrappers extends mail_msg_base
 
 	function phpgw_expunge()
 	{
-		$this->dcom->expunge($GLOBALS['phpgw']->msg->mailsvr_stream);
+		$this->dcom->expunge($this->mailsvr_stream);
 	}
 
 
 	function phpgw_delete($msg_num,$flags="", $currentfolder="") 
 	{
-		//$this->dcom->delete($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->args['msglist'][$i],"",$GLOBALS['phpgw']->msg->folder);
+		//$this->dcom->delete($this->mailsvr_stream, $this->args['msglist'][$i],"",$this->folder);
 
 		if ((isset($GLOBALS['phpgw_info']['user']['preferences']['email']['use_trash_folder']))
 		&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['use_trash_folder']))
@@ -331,7 +331,7 @@ class mail_msg_wrappers extends mail_msg_base
 			if ($currentfolder_short == $trash_folder_short)
 			{
 				//return imap_delete($stream,$msg_num);
-				return $this->dcom->delete($GLOBALS['phpgw']->msg->mailsvr_stream, $msg_num);
+				return $this->dcom->delete($this->mailsvr_stream, $msg_num);
 			}
 			else
 			{
@@ -375,15 +375,624 @@ class mail_msg_wrappers extends mail_msg_base
 					// can't just leave the mail sitting there
 					// so just straight delete the message
 					//return imap_delete($stream,$msg_num);
-					return $this->dcom->delete($GLOBALS['phpgw']->msg->mailsvr_stream, $msg_num);
+					return $this->dcom->delete($this->mailsvr_stream, $msg_num);
 				}
 			}
 		}
 		else
 		{
 			//return imap_delete($stream,$msg_num);
-			return $this->dcom->delete($GLOBALS['phpgw']->msg->mailsvr_stream, $msg_num);
+			return $this->dcom->delete($this->mailsvr_stream, $msg_num);
 		}
 	}
+
+	/*!
+	@function grab_class_args_gpc
+	@abstract grab data from $GLOBALS['HTTP_POST_VARS'] and $GLOBALS['HTTP_GET_VARS']
+	as necessaey, and fill various class arg variables with the available data
+	@param none
+	@result none, this is an object call
+	@discussion to further seperate the mail functionality from php itself, this function will perform
+	the variable handling of the traditional php page view Get Post Cookie (no cookie data used here though)
+	The same data could be grabbed from any source, XML-RPC for example, insttead of php's GPC vars,
+	so this function could (should) have an equivalent XML-RPC "to handle filling these class variables
+	from an alternative source.
+	@author	Angles
+	@access	Public
+	*/
+	function grab_class_args_gpc()
+	{
+		// === SORT/ORDER/START === 
+		// if sort,order, and start are sometimes passed as GPC's, if not, default prefs are used
+		if (isset($GLOBALS['HTTP_POST_VARS']['sort']))
+		{
+			$this->args['sort'] = $GLOBALS['HTTP_POST_VARS']['sort'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['sort']))
+		{
+			$this->args['sort'] = $GLOBALS['HTTP_GET_VARS']['sort'];
+		}
+		
+		if (isset($GLOBALS['HTTP_POST_VARS']['order']))
+		{
+			$this->args['order'] = $GLOBALS['HTTP_POST_VARS']['order'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['order']))
+		{
+			$this->args['order'] = $GLOBALS['HTTP_GET_VARS']['order'];
+		}
+
+		if (isset($GLOBALS['HTTP_POST_VARS']['start']))
+		{
+			$this->args['start'] = $GLOBALS['HTTP_POST_VARS']['start'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['start']))
+		{
+			$this->args['start'] = $GLOBALS['HTTP_GET_VARS']['start'];
+		}
+
+		// this newsmode thing needs to be further worked out
+		if (isset($GLOBALS['HTTP_POST_VARS']['newsmode']))
+		{
+			$this->args['newsmode'] = $GLOBALS['HTTP_POST_VARS']['newsmode'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['newsmode']))
+		{
+			$this->args['newsmode'] = $GLOBALS['HTTP_GET_VARS']['newsmode'];
+		}
+
+		// === REPORT ON MOVES/DELETES ===
+		// ----  td, tm: integer  ----
+		// ----  tf: string  ----
+		// USAGE:
+		//	 td = total deleted ; tm = total moved, tm used with tf, folder messages were moved to
+		// (outgoing) action.php: when action on a message is taken, report info is passed in these
+		// (in) index.php: here the report is diaplayed above the message list, used to give user feedback
+		// generally these are in the URI (GET var, not a form POST var)
+		if (isset($GLOBALS['HTTP_POST_VARS']['td']))
+		{
+			$this->args['td'] = $GLOBALS['HTTP_POST_VARS']['td'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['td']))
+		{
+			$this->args['td'] = $GLOBALS['HTTP_GET_VARS']['td'];
+		}
+
+		if (isset($GLOBALS['HTTP_POST_VARS']['tm']))
+		{
+			$this->args['tm'] = $GLOBALS['HTTP_POST_VARS']['tm'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['tm']))
+		{
+			$this->args['tm'] = $GLOBALS['HTTP_GET_VARS']['tm'];
+		}
+		
+		if (isset($GLOBALS['HTTP_POST_VARS']['tf']))
+		{
+			$this->args['tf'] = $GLOBALS['HTTP_POST_VARS']['tf'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['tf']))
+		{
+			$this->args['tf'] = $GLOBALS['HTTP_GET_VARS']['tf'];
+		}
+
+		// === MOVE/DELETE MESSAGE INSTRUCTIONS ===
+		// ----  what: string ----
+		// USAGE: 
+		// (outgoing) index.php: "move", "delall"
+		//	used with msglist (see below) an array (1 or more) of message numbers to move or delete
+		// (outgoing) message.php: "delete" used with msgnum (see below) what individual message to delete
+		// (in) action.php: instruction on what action to preform on 1 or more message(s) (move or delete)
+		if (isset($GLOBALS['HTTP_POST_VARS']['what']))
+		{
+			$this->args['what'] = $GLOBALS['HTTP_POST_VARS']['what'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['what']))
+		{
+			$this->args['what'] = $GLOBALS['HTTP_GET_VARS']['what'];
+		}
+		
+		if (isset($GLOBALS['HTTP_POST_VARS']['tofolder']))
+		{
+			$this->args['tofolder'] = $GLOBALS['HTTP_POST_VARS']['tofolder'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['tofolder']))
+		{
+			$this->args['tofolder'] = $GLOBALS['HTTP_GET_VARS']['tofolder'];
+		}
+		
+		// (passed from index.php) this may be an array of numbers if many boxes checked and a move or delete is called
+		if (isset($GLOBALS['HTTP_POST_VARS']['msglist']))
+		{
+			$this->args['msglist'] = $GLOBALS['HTTP_POST_VARS']['msglist'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['msglist']))
+		{
+			$this->args['msglist'] = $GLOBALS['HTTP_GET_VARS']['msglist'];
+		}
+
+		// === INSTRUCTIONS FOR ACTION ON A MESSAGE OR FOLDER ===
+		// ----  action: string  ----
+		// USAGE:
+		// (a) (out and in) folder.php: used with "target_folder" and (for renaming) "source_folder"
+		//	instructions to add/delete/rename folders: create(_expert), delete(_expert), rename(_expert)
+		//	where "X_expert" indicates do not modify the target_folder, the user know about of namespaces and delimiters
+		// (b) compose.php: can be "reply" "replyall" "forward"
+		//	passed on to send_message.php
+		// (c) send_message.php: when set to "forward" and used with "fwd_proc" instructs on how to construct
+		//	the SMTP mail
+		if (isset($GLOBALS['HTTP_POST_VARS']['action']))
+		{
+			$this->args['action'] = $GLOBALS['HTTP_POST_VARS']['action'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['action']))
+		{
+			$this->args['action'] = $GLOBALS['HTTP_GET_VARS']['action'];
+		}
+
+		// === MESSAGE NUMBER AND MIME PART REFERENCES ===
+		// msgnum: integer 
+		// USAGE:
+		// (a) action.php, called from from message.php: used with "what=delete" to indicate a single message for deletion
+		// (b) compose.php: indicates the referenced message for reply, replyto, and forward handling
+		// (c) get_attach.php: the msgnum of the email that contains the desired body part to get
+		if (isset($GLOBALS['HTTP_POST_VARS']['msgnum']))
+		{
+			$this->args['msgnum'] = $GLOBALS['HTTP_POST_VARS']['msgnum'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['msgnum']))
+		{
+			$this->args['msgnum'] = $GLOBALS['HTTP_GET_VARS']['msgnum'];
+		}
+		
+		// ----  part_no: string  ----
+		// representing a specific MIME part number (example "2.1.2") within a multipart message
+		// (a) compose.php: used in combination with msgnum
+		// (b) get_attach.php: used in combination with msgnum
+		if (isset($GLOBALS['HTTP_POST_VARS']['part_no']))
+		{
+			$this->args['part_no'] = $GLOBALS['HTTP_POST_VARS']['part_no'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['part_no']))
+		{
+			$this->args['part_no'] = $GLOBALS['HTTP_GET_VARS']['part_no'];
+		}
+		
+		// ----  encoding: string  ----
+		// USAGE: "base64" "qprint"
+		// (a) compose.php: if replying to, we get the body part to reply to, it may need to be un-qprint'ed
+		// (b) get_attach.php: appropriate decoding of the part to feed to the browser 
+		if (isset($GLOBALS['HTTP_POST_VARS']['encoding']))
+		{
+			$this->args['encoding'] = $GLOBALS['HTTP_POST_VARS']['encoding'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['encoding']))
+		{
+			$this->args['encoding'] = $GLOBALS['HTTP_GET_VARS']['encoding'];
+		}
+		
+		// ----  fwd_proc: string  ----
+		// USAGE: "encapsulation", "pushdown (not yet supported 9/01)"
+		// (outgoing) message.php much detail is known about the messge, there the forward proc method is determined
+		// (a) compose.php: used with action = forward, (outgoing) passed on to send_message.php
+		// (b) send_message.php: used with action = forward, instructs on how the SMTP message should be structured
+		if (isset($GLOBALS['HTTP_POST_VARS']['fwd_proc']))
+		{
+			$this->args['fwd_proc'] = $GLOBALS['HTTP_POST_VARS']['fwd_proc'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['fwd_proc']))
+		{
+			$this->args['fwd_proc'] = $GLOBALS['HTTP_GET_VARS']['fwd_proc'];
+		}
+		
+		// ----  name, type, subtype: string  ----
+		// the name, mime type, mime subtype of the attachment
+		// this info is passed to the browser to help the browser know what to do with the part
+		// (outgoing) message.php: "name" is set in the link to the addressbook,  it's the actual "personal" name part of the email address
+		// get_attach.php: the name of the attachment
+		if (isset($GLOBALS['HTTP_POST_VARS']['name']))
+		{
+			$this->args['name'] = $GLOBALS['HTTP_POST_VARS']['name'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['name']))
+		{
+			$this->args['name'] = $GLOBALS['HTTP_GET_VARS']['name'];
+		}
+		
+		if (isset($GLOBALS['HTTP_POST_VARS']['type']))
+		{
+			$this->args['type'] = $GLOBALS['HTTP_POST_VARS']['type'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['type']))
+		{
+			$this->args['type'] = $GLOBALS['HTTP_GET_VARS']['type'];
+		}
+		
+		if (isset($GLOBALS['HTTP_POST_VARS']['subtype']))
+		{
+			$this->args['subtype'] = $GLOBALS['HTTP_POST_VARS']['subtype'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['subtype']))
+		{
+			$this->args['subtype'] = $GLOBALS['HTTP_GET_VARS']['subtype'];
+		}
+
+		// === FOLDER ADD/DELETE/RENAME & DISPLAY ===
+		// ----  "target_folder" , "source_folder" (source used in renaming only)  ----
+		// (outgoing) and (in) folder.php: used with "action" to add/delete/rename a mailbox folder
+		// 	where "action" can be: create, delete, rename, create_expert, delete_expert, rename_expert
+		if (isset($GLOBALS['HTTP_POST_VARS']['target_folder']))
+		{
+			$this->args['target_folder'] = $GLOBALS['HTTP_POST_VARS']['target_folder'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['target_folder']))
+		{
+			$this->args['target_folder'] = $GLOBALS['HTTP_GET_VARS']['target_folder'];
+		}
+		
+		if (isset($GLOBALS['HTTP_POST_VARS']['source_folder']))
+		{
+			$this->args['source_folder'] = $GLOBALS['HTTP_POST_VARS']['source_folder'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['source_folder']))
+		{
+			$this->args['source_folder'] = $GLOBALS['HTTP_GET_VARS']['source_folder'];
+		}
+		
+		// ----  show_long: unset / true  ----
+		// folder.php: set there and sent back to itself
+		// if set - indicates to show 'long' folder names with namespace and delimiter NOT stripped off
+		if (isset($GLOBALS['HTTP_POST_VARS']['show_long']))
+		{
+			$this->args['show_long'] = $GLOBALS['HTTP_POST_VARS']['show_long'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['show_long']))
+		{
+			$this->args['show_long'] = $GLOBALS['HTTP_GET_VARS']['show_long'];
+		}
+
+		// === COMPOSE VARS ===
+		// as most commonly NOT used with "mailto" then the following applies
+		//	(if used with "mailto", less common, then see "mailto" below)
+		// USAGE: 
+		// ----  to, cc, body, subject: string ----
+		// (outgoing) index.php, message.php: any click on a clickable email address in these pages
+		//	will call compose.php passing "to" (possibly in rfc long form address)
+		// (outgoing) message.php: when reading a message and you click reply, replyall, or forward
+		//	calls compose.php with EITHER
+		//		(1) a msgnum ref then compose gets all needed info, (more effecient than passing all those GPC args) OR
+		//		(2) to,cc,subject,body may be passed
+		// (outgoing) compose.php: ALL contents of input items to, cc, subject, body, etc...
+		//	are passed as GPC args to send_message.php
+		// (in) (a) compose.php: text that should go in to and cc (and maybe subject and body) text boxes
+		//	are passed as incoming GPC args
+		// (in) (b) send_message.php: (fill me in - I got lazy)
+		if (isset($GLOBALS['HTTP_POST_VARS']['to']))
+		{
+			$this->args['to'] = $GLOBALS['HTTP_POST_VARS']['to'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['to']))
+		{
+			$this->args['to'] = $GLOBALS['HTTP_GET_VARS']['to'];
+		}
+		
+		if (isset($GLOBALS['HTTP_POST_VARS']['cc']))
+		{
+			$this->args['cc'] = $GLOBALS['HTTP_POST_VARS']['cc'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['cc']))
+		{
+			$this->args['cc'] = $GLOBALS['HTTP_GET_VARS']['cc'];
+		}
+		
+		if (isset($GLOBALS['HTTP_POST_VARS']['body']))
+		{
+			$this->args['body'] = $GLOBALS['HTTP_POST_VARS']['body'];
+			//$body = '';
+		}
+		// also may be in the URI (EXTREMELY rare)
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['body']))
+		{
+			$this->args['body'] = $GLOBALS['HTTP_GET_VARS']['body'];
+			//$body = '';
+		}
+		
+		if (isset($GLOBALS['HTTP_POST_VARS']['subject']))
+		{
+			$this->args['subject'] = $GLOBALS['HTTP_POST_VARS']['subject'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['subject']))
+		{
+			$this->args['subject'] = $GLOBALS['HTTP_GET_VARS']['subject'];
+		}
+		
+		// Less Common Usage:
+		// ----  sender : string : set or unset
+		// RFC says use header "Sender" ONLY WHEN the sender of the email is NOT the author, this is somewhat rare
+		if (isset($GLOBALS['HTTP_POST_VARS']['sender']))
+		{
+			$this->args['sender'] = $GLOBALS['HTTP_POST_VARS']['sender'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['sender']))
+		{
+			$this->args['sender'] = $GLOBALS['HTTP_GET_VARS']['sender'];
+		}
+		
+		// ----  attach_sig: set-True/unset  ----
+		// USAGE:
+		// (outgoing) compose.php: if checkbox attach sig is checked, this is passed as GPC var to sent_message.php
+		// (in) send_message.php: indicate if message should have the user's "sig" added to the message
+		if (isset($GLOBALS['HTTP_POST_VARS']['attach_sig']))
+		{
+			$this->args['attach_sig'] = $GLOBALS['HTTP_POST_VARS']['attach_sig'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['attach_sig']))
+		{
+			$this->args['attach_sig'] = $GLOBALS['HTTP_GET_VARS']['attach_sig'];
+		}
+		
+		// ----  msgtype: string  ----
+		// USAGE:
+		// flag to tell phpgw to invoke "special" custom processing of the message
+		// 	extremely rare, may be obsolete (not sure), most implementation code is commented out
+		// (outgoing) currently NO page actually sets this var
+		// (a) send_message.php: will add the flag, if present, to the header of outgoing mail
+		// (b) message.php: identify the flag and call a custom proc
+		if (isset($GLOBALS['HTTP_POST_VARS']['msgtype']))
+		{
+			$this->args['msgtype'] = $GLOBALS['HTTP_POST_VARS']['msgtype'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['msgtype']))
+		{
+			$this->args['msgtype'] = $GLOBALS['HTTP_GET_VARS']['msgtype'];
+		}
+
+		// === MAILTO URI SUPPORT ===
+		// ----  mailto: unset / ?set?  ----
+		// USAGE:
+		// (in and out) compose.php: support for the standard mailto html document mail app call
+		// 	can be used with the typical compose vars (see above)
+		//	indicates that to, cc, and subject should be treated as simple MAILTO args
+		if (isset($GLOBALS['HTTP_POST_VARS']['mailto']))
+		{
+			$this->args['mailto'] = $GLOBALS['HTTP_POST_VARS']['mailto'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['mailto']))
+		{
+			$this->args['mailto'] = $GLOBALS['HTTP_GET_VARS']['mailto'];
+		}
+		
+		if (isset($GLOBALS['HTTP_POST_VARS']['personal']))
+		{
+			$this->args['personal'] = $GLOBALS['HTTP_POST_VARS']['personal'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['personal']))
+		{
+			$this->args['personal'] = $GLOBALS['HTTP_GET_VARS']['personal'];
+		}
+
+		// === MESSAGE VIEWING MODS ===
+		// ----  no_fmt: set-True/unset  ----
+		// USAGE:
+		// (in and outgoing) message.php: will display plain body parts without any html formatting added
+		if (isset($GLOBALS['HTTP_POST_VARS']['no_fmt']))
+		{
+			$this->args['no_fmt'] = $GLOBALS['HTTP_POST_VARS']['no_fmt'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['no_fmt']))
+		{
+			$this->args['no_fmt'] = $GLOBALS['HTTP_GET_VARS']['no_fmt'];
+		}
+
+
+		// === VIEW HTML INSTRUCTIONS ===
+		if (isset($GLOBALS['HTTP_POST_VARS']['html_part']))
+		{
+			$this->args['html_part'] = $GLOBALS['HTTP_POST_VARS']['html_part'];
+			//$html_part = '';
+		}
+		// usually ==NOT== in the URI
+		if (isset($GLOBALS['HTTP_POST_VARS']['html_reference']))
+		{
+			$this->args['html_reference'] = $GLOBALS['HTTP_POST_VARS']['html_reference'];
+		}
+
+		// === FOLDER STATISTICS - CALCULATE TOTAL FOLDER SIZE
+		// as a speed up measure, and to reduce load on the IMAP server
+		// there is an option to skip the calculating of the total folder size
+		// user may request an override of this for 1 page view
+		if (isset($GLOBALS['HTTP_POST_VARS']['force_showsize']))
+		{
+			$this->args['force_showsize'] = $GLOBALS['HTTP_POST_VARS']['force_showsize'];
+		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['force_showsize']))
+		{
+			$this->args['force_showsize'] = $GLOBALS['HTTP_GET_VARS']['force_showsize'];
+		}
+
+		// ----  UN-INITIALIZE HTTP_POST_VARS and HTTP_GET_VARS ARRAY  -------
+		// we've stored every *known / Expected* GPC HTTP_POST_VARS and/or HTTP_GET_VARS
+		// into $this->args[]
+		// therefor, there is NO MORE use for it
+		//$GLOBALS['HTTP_POST_VARS'] = Array();
+		//$GLOBALS['HTTP_GET_VARS'] = Array();
+		// Alternatively, clear vars that might be wasting space and are no longer needed
+		$GLOBALS['HTTP_POST_VARS']['body'] = '';
+		$GLOBALS['HTTP_POST_VARS']['html_part'] = '';
+	}
+
+	/*!
+	@function grab_class_args_xmlrpc
+	@abstract grab data an XML-RPC call and fill various class arg variables with the available data
+	@param none
+	@result none, this is an object call
+	@discussion functional relative to function "grab_class_args_gpc()", except this function grabs the
+	data from an alternative, non-php-GPC, source
+	NOT YET IMPLEMENTED
+	@author	Angles
+	@access	Public
+	*/
+	function grab_class_args_xmlrpc()
+	{
+		// STUB, for future use
+		echo 'call to un-implemented function grab_class_args_xmlrpc';
+	}
+
+
+	/*!
+	@function grab_set_prefs_args_gpc
+	@abstract only handles GPC vars that are involved in setting email preferences.
+	grabs data from $GLOBALS['HTTP_POST_VARS'] and $GLOBALS['HTTP_GET_VARS']
+	as necessaey, and fill various class arg variables with the available data
+	@param none
+	@result none, this is an object call
+	@discussion to further seperate the mail functionality from php itself, this function will perform
+	the variable handling of the traditional php page view Get Post Cookie (no cookie data used here though)
+	The same data could be grabbed from any source, XML-RPC for example, insttead of php's GPC vars,
+	so this function could (should) have an equivalent XML-RPC "to handle filling these class variables
+	from an alternative source. These class vars are only relevant to setting email prefs.
+	This function 
+	@author	Angles
+	@access	Public
+	*/
+	function grab_set_prefs_args_gpc()
+	{
+		// ----  HANDLE SETTING PREFERENCE GPC HTTP_POST_VARS ARGS  -------
+		// setting prefs does not require a login, in fact you may not be able to login until you set
+		// some basic prefs, however do not attaempt to grab data if the "submit_prefs" GPC
+		// variable is not present
+
+		if (isset($GLOBALS['HTTP_POST_VARS']['submit_prefs']))
+		{
+			$this->args['submit_prefs'] = $GLOBALS['HTTP_POST_VARS']['submit_prefs'];
+			if (isset($GLOBALS['HTTP_POST_VARS']['email_sig']))
+			{
+				$this->args['email_sig'] = $GLOBALS['HTTP_POST_VARS']['email_sig'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['default_sorting']))
+			{
+				$this->args['default_sorting'] = $GLOBALS['HTTP_POST_VARS']['default_sorting'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['layout']))
+			{
+				$this->args['layout'] = $GLOBALS['HTTP_POST_VARS']['layout'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['show_addresses']))
+			{
+				$this->args['show_addresses'] = $GLOBALS['HTTP_POST_VARS']['show_addresses'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['mainscreen_showmail']))
+			{
+				$this->args['mainscreen_showmail'] = $GLOBALS['HTTP_POST_VARS']['mainscreen_showmail'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['use_sent_folder']))
+			{
+				$this->args['use_sent_folder'] = $GLOBALS['HTTP_POST_VARS']['use_sent_folder'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['use_trash_folder']))
+			{
+				$this->args['use_trash_folder'] = $GLOBALS['HTTP_POST_VARS']['use_trash_folder'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['trash_folder_name']))
+			{
+				$this->args['trash_folder_name'] = $GLOBALS['HTTP_POST_VARS']['trash_folder_name'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['sent_folder_name']))
+			{
+				$this->args['sent_folder_name'] = $GLOBALS['HTTP_POST_VARS']['sent_folder_name'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['enable_utf7'])) {
+				$this->args['enable_utf7'] = $GLOBALS['HTTP_POST_VARS']['enable_utf7'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['use_custom_settings']))
+			{
+				$this->args['use_custom_settings'] = $GLOBALS['HTTP_POST_VARS']['use_custom_settings'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['userid']))
+			{
+				$this->args['userid'] = $GLOBALS['HTTP_POST_VARS']['userid'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['passwd']))
+			{
+				$this->args['passwd'] = $GLOBALS['HTTP_POST_VARS']['passwd'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['address']))
+			{
+				$this->args['address'] = $GLOBALS['HTTP_POST_VARS']['address'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['mail_server']))
+			{
+				$this->args['mail_server'] = $GLOBALS['HTTP_POST_VARS']['mail_server'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['mail_server_type']))
+			{
+				$this->args['mail_server_type'] = $GLOBALS['HTTP_POST_VARS']['mail_server_type'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['imap_server_type']))
+			{
+				$this->args['imap_server_type'] = $GLOBALS['HTTP_POST_VARS']['imap_server_type'];
+			}
+			if (isset($GLOBALS['HTTP_POST_VARS']['mail_folder']))
+			{
+				$this->args['mail_folder'] = $GLOBALS['HTTP_POST_VARS']['mail_folder'];
+			}
+			// now unset the GPC HTTP_POST_VARS
+			// undecided whether this is necessary, desirable, or maybe bug-inducing to do this
+			//$GLOBALS['HTTP_POST_VARS'] = Array();
+		}
+	}
+
+	/*
+	@function grab_set_prefs_args_xmlrpc
+	@abstract grab data an XML-RPC call and fill various class arg variables with the available data
+	relevant to setting email preferences.
+	@param none
+	@result none, this is an object call
+	@discussion functional relative to function "grab_set_prefs_args_gpc()", except this function grabs the
+	data from an alternative, non-php-GPC, source
+	NOT YET IMPLEMENTED
+	@author	Angles
+	@access	Public
+	*/
+	function grab_set_prefs_args_xmlrpc()
+	{
+		// STUB, for future use
+		echo 'call to un-implemented function grab_set_prefs_args_xmlrpc';
+	}
+
+
+
+
 }  // end class mail_msg_wrappers
 ?>

@@ -162,9 +162,7 @@
 
 		// DEPRECIATED - OBSOLETE - DO NOT CALL
 		function login( $folder='INBOX')
-		{
-			global $phpgw, $phpgw_info;
-	
+		{	
 			//$debug_logins = True;
 			$debug_logins = False;
 			if ($debug_logins)

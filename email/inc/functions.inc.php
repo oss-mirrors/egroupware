@@ -21,47 +21,55 @@
 	}
 	unset($d1);
 
-	if(floor(phpversion()) == 4)
-	{
-		global $phpgw, $phpgw_info, $PHP_SELF;  // This was a problem for me (author unknown).
-	}
-
-	// Changed by Milosch on 3-26-2001
-	// Its better then them using a ton of PHP errors.
-	// This check was not working, and the code progressed to giving stream pointer errors
-	// From the msg_imap class.  I tried to clean it up here so I could see what was happening.
-	// -- (obviously, PHP_SELF is the built-in php variable = "filename on the currently executing script") --
-	if (!$PHP_SELF)
-	{
-		// This was a problem for me (author unknown)
-		global $PHP_SELF;
-	}
+	
+	// (angles) I think this is unnecessary with the new GLOBALS construct
+	//if(floor(phpversion()) == 4)
+	//{
+	//	global $phpgw, $phpgw_info, $PHP_SELF;  // This was a problem for me (author unknown).
+	//}
 
 // ----  Turn Off Magic Quotes Runtime    -----
-	// magic_quotes_runtime (handles slashes when communicating with databases). PHP MANUAL:
-	/*  If magic_quotes_runtime is enabled, most functions that return data from any sort of 
-	  external source including databases and text files will have quotes escaped with a backslash. */
+	/*
+	@Discussion	Turn Off Magic Quotes Runtime
+	magic_quotes_runtime essentially handles slashes when communicating with databases.
+	PHP MANUAL says:
+		If magic_quotes_runtime is enabled, most functions that return data from any sort of 
+		external source including databases and text files will have quotes escaped with a backslash.
+	this is undesirable - turn it off.
+	@author	Angles
+	*/
 	set_magic_quotes_runtime(0);
 
-
-// ----  == IS IT OK TO LOGIN To Mailserver ==  -----
+// ----  Set Some Debug Flags ==  -----
 	//$debug_logins = True;
 	$debug_logins = False;
 	
+	//$debug_args_array = True;
+	$debug_args_array = False;
+	
+// ----  == IS IT OK TO LOGIN To Mailserver ==  -----
+	/*
+	@Discussion	Is It OK to Login To The Server?
+	Preferences page, Users home page, Addressbook page,
+	none require an actual connection to a server, in fact a connection may not even
+	be possible if preferences are not set or are set incorrectly
+	@author	Angles
+	*/
 	// OK TO LOGIN pre-conditions
 	// were we called from the main screen (user's home page)
 	if (strstr($GLOBALS['phpgw_info']['server']['versions']['phpgwapi'], '0.9.12'))
 	{
 		// user's welcome page was called "index.php" in ver 0.9.12
-		$in_mainscreen = eregi("^.*\/index\.php.*$",$PHP_SELF);
+		// perhaps still needed during the upgrade procedure - so keep this check
+		$in_mainscreen = eregi("^.*\/index\.php.*$",$GLOBALS['PHP_SELF']);
 	}
 	else
 	{
-		// in version 0.9.13 (current devel) users welcome page is "home.php"
-		$in_mainscreen = eregi("^.*\/home\.php.*$",$PHP_SELF);
+		// after version 0.9.13 users welcome page is "home.php"
+		$in_mainscreen = eregi("^.*\/home\.php.*$",$GLOBALS['PHP_SELF']);
 	}
 	// were we in a typical email session
-	$in_email = eregi("^.*\/email\/.*$",$PHP_SELF);
+	$in_email = eregi("^.*\/email\/.*$",$GLOBALS['PHP_SELF']);
 	
 	// DO NOT LOGIN for these conditions  --------
 	$login_allowed = True; // initialize
@@ -70,10 +78,11 @@
 	$no_login_check[0] = "preferences\.php";
 	$no_login_check[1] = "attach_file\.php";
 	$no_login_check[2] = "addressbook\.php";
+	$no_login_check[3] = "filters\.php";
 	for ($i=0; $i<count($no_login_check); $i++)
 	{
 		$match_this = $no_login_check[$i];
-		if (eregi("^.*\/email\/$match_this.*$",$PHP_SELF))
+		if (eregi("^.*\/email\/$match_this.*$",$GLOBALS['PHP_SELF']))
 		{
 			$login_allowed = False;
 			break;
@@ -83,28 +92,18 @@
 	// MORE Login Restrictions That Need Work - Disabled for now
 	// send_message needs to access the mailserver to get parts sometimes, can't limit this here
 	// AND ALSO  Do Not Login - if sent message will NOT be put in the "Sent" folder
-	//if ( (eregi("^.*\/email\/send_message\.php.*$",$PHP_SELF))
+	//if ( (eregi("^.*\/email\/send_message\.php.*$",$GLOBALS['PHP_SELF']))
 	//&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] != 'imap')
 	//&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] != 'imaps') )
 	//{
 	//	$login_allowed = False;
 	//}
 
-	/* // FINE TUNE THIS - TOO BROAD
-	// AND ALSO  Do Not Login - if composing message when server is not IMAP/IMAPS
-	if ( (eregi("^.*\/email\/compose\.php.*$",$PHP_SELF))
-	&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] != 'imap')
-	&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] != 'imaps') )
-	{
-		$login_allowed = False;
-	}
-	*/
-
 	/*
 	if ($debug_logins)
 	{
 		echo '<br>';
-		echo 'PHP_SELF='.$PHP_SELF.'<br>';
+		echo 'PHP_SELF='.$GLOBALS['PHP_SELF'].'<br>';
 		echo 'phpgw_info[server][webserver_url]='.$GLOBALS['phpgw_info']['server']['webserver_url'].'<br>';
 		echo 'in_mainscreen='.serialize($in_mainscreen).'<br>';
 		echo 'in_email='.serialize($in_email).'<br>';
@@ -115,517 +114,130 @@
 	}
 	*/
 
-/*
-// ----  INSTRUCTIONS:   -------
- 1: create an instance of the mail_msg class
- 2: (optional) if you want to pass some GPC type args to the class, put then in the $phpgw->msg->args[] array
- 3: create an array (example: $args_array[]) to be the sole argument to "begin_request()"
- 4: there is 1 needed and 2 optional params:
- 	"do_login" : boolean (necessary)
-	"folder" : string (defaults to 'INBOX' if not supplied)
-	"newsmode" : boolean (NOT YET IMPLEMENTED - DOES NOTHING)
- 5: call "begin_request" with that args array as such:
- 	$GLOBALS['phpgw']->msg->begin_request($args_array);
+	/*!
+	@action	begin mail request
+	@abstract	basic instructions for creating and initializing the mail_msg class
+	@param	$this->args[]	array	see below for available array elements
+	@param	$args_array	array	currently only 2 elements are available
+		$args_array['folder']  string  default: 'INBOX'
+			name of folder name to log into (i.e. open, select)
+		$args_array['do_login']  boolean  default: True
+			should the mail_msg class actually create a mail_dcom instance and then
+			attempt to establish a connection to a server. In some cases, such as when
+			setting preferences, this is not desirable (not possible before prefs are set, anyway)
+			avoids delays and/or error messages of an unneeded server connection
+	@result	none, this is an object
+	@discussion	The mail_msg class is intended to hide the complex details of email requests
+	from the developer, allowing almost anyone with little effort to include useful email functionality
+	in their application. For this reason, the initial arguments that mail_msg class will look for are
+	in two seperate structures. Param $args_array accepts only 2 elements, "folder" and "do_login"
+	and represents the minimum amount of information the calling application need supply to
+	the class to get something done. The other necessary data will be inferred of gathered from the
+	preferences class.
+	Alternatively, the $this->args[] array can hold quite a number of elements which can be used
+	by the mail_msg class to accomplish more specific and/or more complicated mail requests.
+	See below for the currently available array elements that mail_msg class will accept.
+	Here are some simplified instructions on initializing and using the mail_msg class.
+	
+	----  INSTRUCTIONS:   -------
+	1: create an instance of the mail_msg class
+		$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+	2: (optional) if you want to pass some GPC type args to the class, put then in the
+		$GLOBALS['phpgw']->msg->args[] array
+		example: putting $GLOBALS['HTTP_POST_VARS'] and/or HTTP_GET_VARS
+		data into said msg->args[] array is accomplished with this class function:
+		$GLOBALS['phpgw']->msg->grab_class_args_gpc();
+		Alternatively, if you are attempting to set email preferences, use this call:
+		$GLOBALS['phpgw']->msg->grab_set_prefs_args_gpc();
+		FUTURE USAGE:
+			Those two class functions will have equivalent calls for external data feeds, like:
+			$GLOBALS['phpgw']->msg->grab_class_args_xmlrpc();
+			$GLOBALS['phpgw']->msg->grab_set_prefs_args_xmlrpc();
+	3: create an array (example: $args_array[]) to be the sole argument to "begin_request()"
+	4: there is 1 needed and 1 optional params:
+		$args_array['do_login'] : boolean (necessary) : default: True
+		$args_array['folder'] : string (defaults to 'INBOX' if not supplied)
+	5: call "begin_request" with that args array as such:
+		$GLOBALS['phpgw']->msg->begin_request($args_array);
+	6: do something, like grab an email, list messages, check for new mail, etc...
+			$inbox_data = Array();
+			$inbox_data = $GLOBALS['phpgw']->msg->new_message_check();
+	7: when you are done, end the request with this command:
+		$GLOBALS['phpgw']->msg->end_request('');
+	
+	Simple Example:
+		$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+		$args_array = Array();
+		$args_array['folder'] = 'INBOX';
+		$args_array['do_login'] = True;
+		$GLOBALS['phpgw']->msg->begin_request($args_array);
+		$inbox_data = Array();
+		$inbox_data = $GLOBALS['phpgw']->msg->new_message_check();
+		echo 'mail check says: '.$inbox_data['alert_string'];
+		$GLOBALS['phpgw']->msg->end_request('');
+	*/
 
- Simple Example:
+	// ----  Create the mail_msg Class    -----
 	$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-	$args_array = Array();
-	$args_array['folder'] = $folder;
-	$args_array['do_login'] = True;
-	$GLOBALS['phpgw']->msg->begin_request($args_array);
 
- 6: when you are done, do this:
- 	$GLOBALS['phpgw']->msg->end_request('');
-*/
-
-// ----  Create the base email Msg Class    -----
-	$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-
-// ----  HANDLE SET PREFERENCE GPC ARGS  -------
+	// ----  HANDLE SETTING PREFERENCE GPC HTTP_POST_VARS ARGS  -------
 	// setting prefs does not require a login, in fact you may not be able to login until you set
 	// some basic prefs, so it makes sence to handle that here
-	if (isset($submit_prefs))
+	if (isset($GLOBALS['HTTP_POST_VARS']['submit_prefs']))
 	{
-		$GLOBALS['phpgw']->msg->args['submit_prefs'] = $submit_prefs;
-		if (isset($email_sig))
-		{
-			$GLOBALS['phpgw']->msg->args['email_sig'] = $email_sig;
-			$email_sig = '';
-			//unset($email_sig);
-		}
-		if (isset($default_sorting))
-		{
-			$GLOBALS['phpgw']->msg->args['default_sorting'] = $default_sorting;
-			$default_sorting = '';
-			//unset($default_sorting);
-		}
-		if (isset($layout))
-		{
-			$GLOBALS['phpgw']->msg->args['layout'] = $layout;
-			$layout = '';
-			//unset($layout);
-		}
-		if (isset($show_addresses))
-		{
-			$GLOBALS['phpgw']->msg->args['show_addresses'] = $show_addresses;
-			$show_addresses = '';
-			//unset($show_addresses);
-		}
-		if (isset($mainscreen_showmail))
-		{
-			$GLOBALS['phpgw']->msg->args['mainscreen_showmail'] = $mainscreen_showmail;
-			$mainscreen_showmail = '';
-			//unset($mainscreen_showmail);
-		}
-		if (isset($use_sent_folder))
-		{
-			$GLOBALS['phpgw']->msg->args['use_sent_folder'] = $use_sent_folder;
-			$use_sent_folder = '';
-			//unset($use_sent_folder);
-		}
-		if (isset($use_trash_folder))
-		{
-			$GLOBALS['phpgw']->msg->args['use_trash_folder'] = $use_trash_folder;
-			$use_trash_folder = '';
-			//unset($use_trash_folder);
-		}
-		if (isset($trash_folder_name))
-		{
-			$GLOBALS['phpgw']->msg->args['trash_folder_name'] = $trash_folder_name;
-			$trash_folder_name = '';
-			//unset($trash_folder_name);
-		}
-		if (isset($sent_folder_name))
-		{
-			$GLOBALS['phpgw']->msg->args['sent_folder_name'] = $sent_folder_name;
-			$sent_folder_name = '';
-			//unset($sent_folder_name);
-		}
-		if (isset($enable_utf7)) {
-			$GLOBALS['phpgw']->msg->args['enable_utf7'] = $enable_utf7;
-			$enable_utf7 = '';
-			//unset($enable_utf7);
-		}
-		if (isset($use_custom_settings))
-		{
-			$GLOBALS['phpgw']->msg->args['use_custom_settings'] = $use_custom_settings;
-			$use_custom_settings = '';
-			//unset($use_custom_settings);
-		}
-		if (isset($userid))
-		{
-			$GLOBALS['phpgw']->msg->args['userid'] = $userid;
-			$userid = '';
-			//unset($userid);
-		}
-		if (isset($passwd))
-		{
-			$GLOBALS['phpgw']->msg->args['passwd'] = $passwd;
-			$passwd = '';
-			//unset($passwd);
-		}
-		if (isset($address))
-		{
-			$GLOBALS['phpgw']->msg->args['address'] = $address;
-			$address = '';
-			//unset($address);
-		}
-		if (isset($mail_server))
-		{
-			$GLOBALS['phpgw']->msg->args['mail_server'] = $mail_server;
-			$mail_server = '';
-			//unset($mail_server);
-		}
-		if (isset($mail_server_type))
-		{
-			$GLOBALS['phpgw']->msg->args['mail_server_type'] = $mail_server_type;
-			$mail_server_type = '';
-			//unset($mail_server_type);
-		}
-		if (isset($imap_server_type))
-		{
-			$GLOBALS['phpgw']->msg->args['imap_server_type'] = $imap_server_type;
-			$imap_server_type = '';
-			//unset($imap_server_type);
-		}
-		if (isset($mail_folder))
-		{
-			$GLOBALS['phpgw']->msg->args['mail_folder'] = $mail_folder;
-			$mail_folder = '';
-			//unset($mail_folder);
-		}
-		// now unset the GPC var
-		$submit_prefs = '';
-		//unset($submit_prefs);
+		$GLOBALS['phpgw']->msg->grab_set_prefs_args_gpc();
 	}
-
-	// UNKNOWN if this is still used
-//	$args_array['totalerrors'] = $totalerrors;
-//	$args_array['errors'] = $errors;
+		
+	// UNKNOWN if $totalerrors and $errors are still used or not
+	// $args_array['totalerrors'] = $totalerrors;
+	// $args_array['errors'] = $errors;
 
 // ----  CONNECT TO MAILSERVER - IF IT'S OK  -------
 	if ((($in_email) || ($in_mainscreen))
 	&& ($login_allowed))
 	{
-		if ($debug_logins) {  echo 'CALL TO LOGIN IN FUNCTIONS.INC.PHP'.'<br>'.'userid='.$GLOBALS['phpgw_info']['user']['preferences']['email']['userid']; }
-
-
-		// ----  Create the base email Msg Class    -----
-		//$phpgw->msg = CreateObject("email.mail_msg");
-
-		// === SORT/ORDER/START === 
-		// if sort,order, and start are sometimes passed as GPC's, if not, default prefs are used
-		if (isset($sort))
-		{
-			$GLOBALS['phpgw']->msg->args['sort'] = $sort;
-			//$args_array['sort'] = $sort;
-			//unset($sort);
-		}
-		if (isset($order))
-		{
-			$GLOBALS['phpgw']->msg->args['order'] = $order;
-			//$args_array['order'] = $order;
-			//unset($order);
-		}
-		if (isset($start))
-		{
-			$GLOBALS['phpgw']->msg->args['start'] = $start;
-			//$args_array['start'] = $start;
-			//unset($start);
-		}
-
-		// this newsmode thing needs to be further worked out
-		if (isset($newsmode))
-		{
-			$GLOBALS['phpgw']->msg->args['newsmode'] = $newsmode;
-			//$args_array['newsmode'] = $newsmode;
-			//unset($newsmode);
-		}
-
-		// === REPORT ON MOVES/DELETES ===
-		// ----  td, tm: integer  ----
-		// ----  tf: string  ----
-		// USAGE:
-		//	 td = total deleted ; tm = total moved, tm used with tf, folder messages were moved to
-		// (outgoing) action.php: when action on a message is taken, report info is passed in these
-		// (in) index.php: here the report is diaplayed above the message list, used to give user feedback
-		if (isset($td))
-		{
-			$GLOBALS['phpgw']->msg->args['td'] = $td;
-			//$args_array['td'] = $td;
-			//unset($td);
-		}
-		if (isset($tm))
-		{
-			$GLOBALS['phpgw']->msg->args['tm'] = $tm;
-			//$args_array['tm'] = $tm;
-			//unset($tm);
-		}
-		if (isset($tf))
-		{
-			$GLOBALS['phpgw']->msg->args['tf'] = $tf;
-			//$args_array['tf'] = $tf;
-			//unset($tf);
-		}
-
-		// === MOVE/DELETE MESSAGE INSTRUCTIONS ===
-		// ----  what: string ----
-		// USAGE: 
-		// (outgoing) index.php: "move", "delall"
-		//	used with msglist (see below) an array (1 or more) of message numbers to move or delete
-		// (outgoing) message.php: "delete" used with msgnum (see below) what individual message to delete
-		// (in) action.php: instruction on what action to preform on 1 or more message(s) (move or delete)
-		if (isset($what))
-		{
-			$GLOBALS['phpgw']->msg->args['what'] = $what;
-			//$args_array['what'] = $what;
-			//unset($what);
-		}
-		if (isset($tofolder))
-		{
-			$GLOBALS['phpgw']->msg->args['tofolder'] = $tofolder;
-			//$args_array['tofolder'] = $tofolder;
-			//unset($tofolder);
-		}
-		// (passed from index.php) this may be an array of numbers if many boxes checked and a move or delete is called
-		if (isset($msglist))
-		{
-			$GLOBALS['phpgw']->msg->args['msglist'] = $msglist;
-			//$args_array['msglist'] = $msglist;
-			//unset($msglist);
-		}
-
-		// === INSTRUCTIONS FOR ACTION ON A MESSAGE OR FOLDER ===
-		// ----  action: string  ----
-		// USAGE:
-		// (a) (out and in) folder.php: used with "target_folder" and (for renaming) "source_folder"
-		//	instructions to add/delete/rename folders: create(_expert), delete(_expert), rename(_expert)
-		//	where "X_expert" indicates do not modify the target_folder, the user know about of namespaces and delimiters
-		// (b) compose.php: can be "reply" "replyall" "forward"
-		//	passed on to send_message.php
-		// (c) send_message.php: when set to "forward" and used with "fwd_proc" instructs on how to construct
-		//	the SMTP mail
-		if (isset($action))
-		{
-			$GLOBALS['phpgw']->msg->args['action'] = $action;
-			//$args_array['action'] = $action;
-			//unset($action);
-		}
-
-		// === MESSAGE NUMBER AND MIME PART REFERENCES ===
-		// msgnum: integer 
-		// USAGE:
-		// (a) action.php, called from from message.php: used with "what=delete" to indicate a single message for deletion
-		// (b) compose.php: indicates the referenced message for reply, replyto, and forward handling
-		// (c) get_attach.php: the msgnum of the email that contains the desired body part to get
-		if (isset($msgnum))
-		{
-			$GLOBALS['phpgw']->msg->args['msgnum'] = $msgnum;
-			//$args_array['msgnum'] = $msgnum;
-			//unset($msgnum);
-		}
-		// ----  part_no: string  ----
-		// representing a specific MIME part number (example "2.1.2") within a multipart message
-		// (a) compose.php: used in combination with msgnum
-		// (b) get_attach.php: used in combination with msgnum
-		if (isset($part_no))
-		{
-			$GLOBALS['phpgw']->msg->args['part_no'] = $part_no;
-			//$args_array['part_no'] = $part_no;
-			//unset($part_no);
-		}
-		// ----  encoding: string  ----
-		// USAGE: "base64" "qprint"
-		// (a) compose.php: if replying to, we get the body part to reply to, it may need to be un-qprint'ed
-		// (b) get_attach.php: appropriate decoding of the part to feed to the browser 
-		if (isset($encoding))
-		{
-			$GLOBALS['phpgw']->msg->args['encoding'] = $encoding;
-			//$args_array['encoding'] = $encoding;
-			//unset($encoding);
-		}
-		// ----  fwd_proc: string  ----
-		// USAGE: "encapsulation", "pushdown (not yet supported 9/01)"
-		// (outgoing) message.php much detail is known about the messge, there the forward proc method is determined
-		// (a) compose.php: used with action = forward, (outgoing) passed on to send_message.php
-		// (b) send_message.php: used with action = forward, instructs on how the SMTP message should be structured
-		if (isset($fwd_proc))
-		{
-			$GLOBALS['phpgw']->msg->args['fwd_proc'] = $fwd_proc;
-			//$args_array['fwd_proc'] = $fwd_proc;
-			//unset($fwd_proc);
-		}
-		// ----  name, type, subtype: string  ----
-		// the name, mime type, mime subtype of the attachment
-		// this info is passed to the browser to help the browser know what to do with the part
-		// (outgoing) message.php: "name" is set in the link to the addressbook,  it's the actual "personal" name part of the email address
-		// get_attach.php: the name of the attachment
-		if (isset($name))
-		{
-			$GLOBALS['phpgw']->msg->args['name'] = $name;
-			//$args_array['name'] = $name;
-			//unset($name);
-		}
-		if (isset($type))
-		{
-			$GLOBALS['phpgw']->msg->args['type'] = $type;
-			//$args_array['type'] = $type;
-			//unset($type);
-		}
-		if (isset($subtype))
-		{
-			$GLOBALS['phpgw']->msg->args['subtype'] = $subtype;
-			//$args_array['subtype'] = $subtype;
-			//unset($subtype);
-		}
-
-		// === FOLDER ADD/DELETE/RENAME & DISPLAY ===
-		// ----  "target_folder" , "source_folder" (source used in renaming only)  ----
-		// (outgoing) and (in) folder.php: used with "action" to add/delete/rename a mailbox folder
-		// 	where "action" can be: create, delete, rename, create_expert, delete_expert, rename_expert
-		if (isset($target_folder))
-		{
-			$GLOBALS['phpgw']->msg->args['target_folder'] = $target_folder;
-			//$args_array['target_folder'] = $target_folder;
-			//unset($target_folder);
-		}
-		if (isset($source_folder))
-		{
-			$GLOBALS['phpgw']->msg->args['source_folder'] = $source_folder;
-			//$args_array['source_folder'] = $source_folder;
-			//unset($source_folder);
-		}
-		// ----  show_long: unset / true  ----
-		// folder.php: set there and sent back to itself
-		// if set - indicates to show 'long' folder names with namespace and delimiter NOT stripped off
-		if (isset($show_long))
-		{
-			$GLOBALS['phpgw']->msg->args['show_long'] = $show_long;
-			//$args_array['show_long'] = $show_long;
-			//unset($show_long);
-		}
-
-		// === COMPOSE VARS ===
-		// as most commonly NOT used with "mailto" then the following applies
-		//	(if used with "mailto", less common, then see "mailto" below)
-		// USAGE: 
-		// ----  to, cc, body, subject: string ----
-		// (outgoing) index.php, message.php: any click on a clickable email address in these pages
-		//	will call compose.php passing "to" (possibly in rfc long form address)
-		// (outgoing) message.php: when reading a message and you click reply, replyall, or forward
-		//	calls compose.php with EITHER
-		//		(1) a msgnum ref then compose gets all needed info, (more effecient than passing all those GPC args) OR
-		//		(2) to,cc,subject,body may be passed
-		// (outgoing) compose.php: ALL contents of input items to, cc, subject, body, etc...
-		//	are passed as GPC args to send_message.php
-		// (in) (a) compose.php: text that should go in to and cc (and maybe subject and body) text boxes
-		//	are passed as incoming GPC args
-		// (in) (b) send_message.php: (fill me in - I got lazy)
-		if (isset($to))
-		{
-			$GLOBALS['phpgw']->msg->args['to'] = $to;
-			//$args_array['to'] = $to;
-			//unset($to);
-		}
-		if (isset($cc))
-		{
-			$GLOBALS['phpgw']->msg->args['cc'] = $cc;
-			//$args_array['cc'] = $cc;
-			//unset($cc);
-		}
-		if (isset($body))
-		{
-			$GLOBALS['phpgw']->msg->args['body'] = $body;
-			//$args_array['body'] = $body;
-			// body GPC var may be huge, so set it to empty for memory management purposes
-			$body = '';
-			//unset($body);
-		}
-		if (isset($subject))
-		{
-			$GLOBALS['phpgw']->msg->args['subject'] = $subject;
-			//$args_array['subject'] = $subject;
-			//unset($subject);
-		}
-		// Less Common Usage:
-		// ----  sender : string : set or unset
-		// RFC says use header "Sender" ONLY WHEN the sender of the email is NOT the author, this is somewhat rare
-		if (isset($sender))
-		{
-			$GLOBALS['phpgw']->msg->args['sender'] = $sender;
-			$sender = nil;
-			unset($sender);
-			//$args_array['sender'] = $sender;
-			//unset($sender);
-		}
-		// ----  attach_sig: set-True/unset  ----
-		// USAGE:
-		// (outgoing) compose.php: if checkbox attach sig is checked, this is passed as GPC var to sent_message.php
-		// (in) send_message.php: indicate if message should have the user's "sig" added to the message
-		if (isset($attach_sig))
-		{
-			$GLOBALS['phpgw']->msg->args['attach_sig'] = $attach_sig;
-			//$args_array['attach_sig'] = $attach_sig;
-			//unset($attach_sig);
-		}
-		// ----  msgtype: string  ----
-		// USAGE:
-		// flag to tell phpgw to invoke "special" custom processing of the message
-		// 	extremely rare, may be obsolete (not sure), most implementation code is commented out
-		// (outgoing) currently NO page actually sets this var
-		// (a) send_message.php: will add the flag, if present, to the header of outgoing mail
-		// (b) message.php: identify the flag and call a custom proc
-		if (isset($msgtype))
-		{
-			$GLOBALS['phpgw']->msg->args['msgtype'] = $msgtype;
-			//$args_array['msgtype'] = $msgtype;
-			//unset($msgtype);
-		}
-
-		// === MAILTO URI SUPPORT ===
-		// ----  mailto: unset / ?set?  ----
-		// USAGE:
-		// (in and out) compose.php: support for the standard mailto html document mail app call
-		// 	can be used with the typical compose vars (see above)
-		//	indicates that to, cc, and subject should be treated as simple MAILTO args
-		if (isset($mailto))
-		{
-			$GLOBALS['phpgw']->msg->args['mailto'] = $mailto;
-			//$args_array['mailto'] = $mailto;
-			//unset($mailto);
-		}
-		if (isset($personal))
-		{
-			$GLOBALS['phpgw']->msg->args['personal'] = $personal;
-			//$args_array['personal'] = $personal;
-			//unset($personal);
-		}
-
-		// === MESSAGE VIEWING MODS ===
-		// ----  no_fmt: set-True/unset  ----
-		// USAGE:
-		// (in and outgoing) message.php: will display plain body parts without any html formatting added
-		if (isset($no_fmt))
-		{
-			$GLOBALS['phpgw']->msg->args['no_fmt'] = $no_fmt;
-			//$args_array['no_fmt'] = $no_fmt;
-			//unset($no_fmt);
-		}
-
-
-		// === VIEW HTML INSTRUCTIONS ===
-		if (isset($html_part))
-		{
-			$GLOBALS['phpgw']->msg->args['html_part'] = $html_part;
-			//$args_array['html_part'] = $html_part;
-			// this is a pre-processed string passes from a posted form, may be really big
-			// so set to empty for memory management purposes now
-			$html_part = '';
-			//unset($html_part);
-		}
-		if (isset($html_reference))
-		{
-			$GLOBALS['phpgw']->msg->args['html_reference'] = $html_reference;
-			//$args_array['html_reference'] = $html_reference;
-			//unset($html_reference);
-		}
-
-		// === FOLDER STATISTICS - CALCULATE TOTAL FOLDER SIZE
-		// as a speed up measure, and to reduce load on the IMAP server
-		// there is an option to skip the calculating of the total folder size
-		// user may request an override of this for 1 page view
-		if (isset($force_showsize))
-		{
-			$GLOBALS['phpgw']->msg->args['force_showsize'] = $force_showsize;
-			//$args_array['force_showsize'] = $force_showsize;
-			//unset($force_showsize);
-		}
-
-		// ----  INITIALIZE ARGS ARRAY HOLDER VARIABLE  -------
+		// this will expose sensitive data, beter to comment it out when not debugging
+		//if ($debug_logins) {  echo 'CALL TO LOGIN IN FUNCTIONS.INC.PHP'.'<br>'.'userid='.$GLOBALS['phpgw_info']['user']['preferences']['email']['userid']; }
+		
+		// ----  GRAB CLASS VARIABLES FROM PHP POST OR GET GLOBALS  ------
+		$GLOBALS['phpgw']->msg->grab_class_args_gpc();
+		
+		// ----  INITIALIZE SIMPLE REQUEST ARGS ARRAY HOLDER VARIABLE  -------
 		// needed whether you intend to login or not
 		$args_array = Array();
 		// ====== 3 ARGUMENTS THAT "BEGIN_REQUEST() ARGS_ARRAY TAKES  =====
 		// there are 2 necessary args to pass, the 3rd (newsmode) is for FUTURE USE
 		// these next 2 are really all you need to use this class
+		// NOTE: you can supply the "folder" and "do_login" values from any data source, xml-rpc is planned
+
 		// (1) ----  folder: string  ----
-		// used in almost every file, IMAP can be logged into only one folder at a time
-		if (isset($folder))
+		// used in almost every procedure, IMAP can be logged into only one folder at a time
+		if (isset($GLOBALS['HTTP_POST_VARS']['folder']))
 		{
 			// folder is not meant to be in class args[] array
 			// instead, it should be fed as an agrument to begin_request, it will be processed there
-			//$GLOBALS['phpgw']->msg->args['folder'] = $folder;
-			$args_array['folder'] = $folder;
-			//unset($folder);
+			$args_array['folder'] = $GLOBALS['HTTP_POST_VARS']['folder'];
 		}
+		// also may be in the URI
+		elseif (isset($GLOBALS['HTTP_GET_VARS']['folder']))
+		{
+			$args_array['folder'] = $GLOBALS['HTTP_GET_VARS']['folder'];
+		}
+		
 		// (2) ----  do_login: true/false  ----
 		// if true: class dcom is created and a login is attaemted, and a reopen to the "foler" var is attempted
 		// if false: used for information only, such as to fill preferences for squirrelmail,
 		//	or for the preferences page, where info necessary for logino may not yet be filled in
 		$args_array['do_login'] = True;
-		// (3) lastly, the third applicatble arg to begin request is "newsmode" which is not yet developed
+		
+		// (3) ----  newsmode: true/false  ----  NOT IMPLEMENTED YET
+		// lastly, the third applicatble arg to begin request is "newsmode" which is not yet developed
 		$args_array['newsmode'] = False; // NOT IMPLEMENTED YET
-		// this will obtain the email preferences from the db (currently "phpgw_preferences")
+		
+		// "begin_request" will obtain the email preferences from the db (currently "phpgw_preferences")
 		// and prep the folder name, and login if desired, and set msg->mailsvr_stream
+		
+		// BEGIN the mail transaction REQUEST
 		$GLOBALS['phpgw']->msg->begin_request($args_array);
 
 		// ----  Error Msg And Exit If Mailbox Connection Not Established  -----
@@ -670,6 +282,7 @@
 	//var_dump($GLOBALS['phpgw_info']['user']);
 
 // ----  Various Functions Used To Support Email   -----
+	// note these are probably unused, because most (all ?) useful functions have migrated into mail_msg class
 
 	function get_mime_type($de_part)
 	{
@@ -892,35 +505,4 @@
 		return $newText;
 	}
 	*/
-
-
-	/* * * * * * * * * * *
-	  *  isValidUrl
-	  *  validates that a URL exists
-	  *  Discussion:
-	  *  compiled from user notes on: http://www.php.net/manual/en/function.parse-url.php
-	  *  comments there indicate this code does not leak descriptors, paraphrasing:
-	  *  "you don't need to store the file pointer into a variable if you just need to check that the file can be opened.
-	  *  Files which are opened with fopen() get automatically closed when their last reference is lost."
-	  * * * * * * *  * * * */
-	function isValidUrl($url)
-	{
-		// make sure $url is not a "file://" uri
-		// this function also works on files, but we are concerned only with URLs here
-		$parts = parse_url( $url );
-		if (isset($parts[scheme])
-		&& ($parts[scheme] == 'file'))
-		{
-			return false;
-		}
-		// try to open the URL
-		if (fopen($url, 'r'))
-		{
-			return true;
-		} else
-		{
-			return false;
-		}
-	}
-
 ?>

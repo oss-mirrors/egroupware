@@ -182,7 +182,7 @@
 			$debug_logins = False;
 			if ($debug_logins)
 			{
-				echo 'CALL TO LOGIN IN CLASS MSG IMAP'.'<br>'.'userid='.$phpgw_info['user']['preferences']['email']['userid'];
+				echo 'CALL TO LOGIN IN CLASS MSG IMAP'.'<br>'.'userid='.$GLOBALS['phpgw_info']['user']['preferences']['email']['userid'];
 			}
 	
 			error_reporting(error_reporting() - 2);

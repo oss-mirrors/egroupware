@@ -11,168 +11,166 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 
-  class mail_dcom_base
-  { 
-	var $msg_struct;
-	var $err = array("code","msg","desc");
-	var $msg_info = Array(Array());
-
-	var $tempfile;
-	var $folder_list_changed = False;
-	var $enable_utf7 = False;
-	var $imap_builtin = True;
-	//var $att_files_dir;
-	var $force_check;
-
-	var $boundary,
-	   $got_structure;
-
-	function mail_dcom_base()
+	class mail_dcom_base
 	{
-		global $phpgw_info;
+		var $msg_struct;
+		var $err = array("code","msg","desc");
+		var $msg_info = Array(Array());
 
-		$this->err["code"] = " ";
-		$this->err["msg"]  = " ";
-		$this->err["desc"] = " ";
-		$this->tempfile = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'].'.mhd';
-		$this->force_check = false;
-		$this->got_structure = false;
-	}
+		var $tempfile;
+		var $folder_list_changed = False;
+		var $enable_utf7 = False;
+		var $imap_builtin = True;
+		//var $att_files_dir;
+		var $force_check;
 
-	function utf7_encode($data)
-	{
-		// handle utf7 encoding of folder names, if necessary
-		if (($this->enable_utf7 == False)
-		|| (function_exists('imap_utf7_encode') == False)
-		|| (!isset($data)))
+		var $boundary,
+		   $got_structure;
+
+		function mail_dcom_base()
 		{
-			return $data;
+			$this->err["code"] = " ";
+			$this->err["msg"]  = " ";
+			$this->err["desc"] = " ";
+			$this->tempfile = $GLOBALS['phpgw_info']['server']['temp_dir'].SEP.$GLOBALS['phpgw_info']['user']['sessionid'].'.mhd';
+			$this->force_check = false;
+			$this->got_structure = false;
 		}
 
-		// data to and from the server can be either array or string
-		if (gettype($data) == 'array')
+		function utf7_encode($data)
 		{
-			// array data
-			$return_array = Array();
-			for ($i=0; $i<count($data);$i++)
+			// handle utf7 encoding of folder names, if necessary
+			if (($this->enable_utf7 == False)
+			|| (function_exists('imap_utf7_encode') == False)
+			|| (!isset($data)))
 			{
-				$return_array[$i] = $this->utf7_encode_string($data[$i]);
+				return $data;
 			}
-			return $return_array;
-		}
-		elseif (gettype($data) == 'string')
-		{
-			// string data
-			return $this->utf7_encode_string($data);
-		}
-		else
-		{
-			// ERROR
-			return $data;
-		}
-	}
 
-	function utf7_encode_string($data_str)
-	{
-		$name = Array();
-		$name['folder_before'] = '';
-		$name['folder_after'] = '';
-		$name['translated'] = '';
-		
-		// folder name at this stage is  {SERVER_NAME:PORT}FOLDERNAME
-		// get everything to the right of the bracket "}", INCLUDES the bracket itself
-		$name['folder_before'] = strstr($data_str,'}');
-		// get rid of that 'needle' "}"
-		$name['folder_before'] = substr($name['folder_before'], 1);
-		// translate
-		$name['folder_after'] = imap_utf7_encode($name['folder_before']);
-		// replace old folder name with new folder name
-		$name['translated'] = str_replace($name['folder_before'], $name['folder_after'], $data_str);
-		return $name['translated'];
-	}
-
-	function utf7_decode($data)
-	{
-		// handle utf7 decoding of folder names, if necessary
-		if (($this->enable_utf7 == False)
-		|| (function_exists('imap_utf7_decode') == False)
-		|| (!isset($data)))
-		{
-			return $data;
-		}
-
-		// data to and from the server can be either array or string
-		if (gettype($data) == 'array')
-		{
-			// array data
-			$return_array = Array();
-			for ($i=0; $i<count($data);$i++)
+			// data to and from the server can be either array or string
+			if (gettype($data) == 'array')
 			{
-				$return_array[$i] = $this->utf7_decode_string($data[$i]);
+				// array data
+				$return_array = Array();
+				for ($i=0; $i<count($data);$i++)
+				{
+					$return_array[$i] = $this->utf7_encode_string($data[$i]);
+				}
+				return $return_array;
 			}
-			return $return_array;
+			elseif (gettype($data) == 'string')
+			{
+				// string data
+				return $this->utf7_encode_string($data);
+			}
+			else
+			{
+				// ERROR
+				return $data;
+			}
 		}
-		elseif (gettype($data) == 'string')
-		{
-			// string data
-			return $this->utf7_decode_string($data);
-		}
-		else
-		{
-			// ERROR
-			return $data;
-		}
-	}
 
-	function utf7_decode_string($data_str)
-	{
-		$name = Array();
-		$name['folder_before'] = '';
-		$name['folder_after'] = '';
-		$name['translated'] = '';
-		
-		// folder name at this stage is  {SERVER_NAME:PORT}FOLDERNAME
-		// get everything to the right of the bracket "}", INCLUDES the bracket itself
-		$name['folder_before'] = strstr($data_str,'}');
-		// get rid of that 'needle' "}"
-		$name['folder_before'] = substr($name['folder_before'], 1);
-		// translate
-		$name['folder_after'] = imap_utf7_decode($name['folder_before']);
-		// "imap_utf7_decode" returns False if no translation occured
-		if ($name['folder_after'] == False)
+		function utf7_encode_string($data_str)
 		{
-			// no translation occured
-			return $data_str;
-		}
-		else
-		{
+			$name = Array();
+			$name['folder_before'] = '';
+			$name['folder_after'] = '';
+			$name['translated'] = '';
+			
+			// folder name at this stage is  {SERVER_NAME:PORT}FOLDERNAME
+			// get everything to the right of the bracket "}", INCLUDES the bracket itself
+			$name['folder_before'] = strstr($data_str,'}');
+			// get rid of that 'needle' "}"
+			$name['folder_before'] = substr($name['folder_before'], 1);
+			// translate
+			$name['folder_after'] = imap_utf7_encode($name['folder_before']);
 			// replace old folder name with new folder name
 			$name['translated'] = str_replace($name['folder_before'], $name['folder_after'], $data_str);
 			return $name['translated'];
 		}
-	}
 
-	function get_flag($stream,$msg_num,$flag)
-	{
-		$header = $this->fetchheader($stream,$msg_num);
-		$flag = strtolower($flag);
-		for ($i=0;$i<count($header);$i++)
+		function utf7_decode($data)
 		{
-			$pos = strpos($header[$i],":");
-			if (is_int($pos) && $pos)
+			// handle utf7 decoding of folder names, if necessary
+			if (($this->enable_utf7 == False)
+			|| (function_exists('imap_utf7_decode') == False)
+			|| (!isset($data)))
 			{
-				$keyword = trim(substr($header[$i],0,$pos));
-				$content = trim(substr($header[$i],$pos+1));
-				if (strtolower($keyword) == $flag)
+				return $data;
+			}
+
+			// data to and from the server can be either array or string
+			if (gettype($data) == 'array')
+			{
+				// array data
+				$return_array = Array();
+				for ($i=0; $i<count($data);$i++)
 				{
-					return $content;
+					$return_array[$i] = $this->utf7_decode_string($data[$i]);
 				}
+				return $return_array;
+			}
+			elseif (gettype($data) == 'string')
+			{
+				// string data
+				return $this->utf7_decode_string($data);
+			}
+			else
+			{
+				// ERROR
+				return $data;
 			}
 		}
-		return false;
-	}
 
-  } // end of class mail_dcom
+		function utf7_decode_string($data_str)
+		{
+			$name = Array();
+			$name['folder_before'] = '';
+			$name['folder_after'] = '';
+			$name['translated'] = '';
+			
+			// folder name at this stage is  {SERVER_NAME:PORT}FOLDERNAME
+			// get everything to the right of the bracket "}", INCLUDES the bracket itself
+			$name['folder_before'] = strstr($data_str,'}');
+			// get rid of that 'needle' "}"
+			$name['folder_before'] = substr($name['folder_before'], 1);
+			// translate
+			$name['folder_after'] = imap_utf7_decode($name['folder_before']);
+			// "imap_utf7_decode" returns False if no translation occured
+			if ($name['folder_after'] == False)
+			{
+				// no translation occured
+				return $data_str;
+			}
+			else
+			{
+				// replace old folder name with new folder name
+				$name['translated'] = str_replace($name['folder_before'], $name['folder_after'], $data_str);
+				return $name['translated'];
+			}
+		}
+
+		function get_flag($stream,$msg_num,$flag)
+		{
+			$header = $this->fetchheader($stream,$msg_num);
+			$flag = strtolower($flag);
+			for ($i=0;$i<count($header);$i++)
+			{
+				$pos = strpos($header[$i],":");
+				if (is_int($pos) && $pos)
+				{
+					$keyword = trim(substr($header[$i],0,$pos));
+					$content = trim(substr($header[$i],$pos+1));
+					if (strtolower($keyword) == $flag)
+					{
+						return $content;
+					}
+				}
+			}
+			return false;
+		}
+
+	} // end of class mail_dcom
 ?>
