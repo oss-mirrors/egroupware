@@ -134,6 +134,10 @@ function html_url($url, $text)
 	// vfs: urls are urls into the eGW VFS
 	if (substr($url,0,4) == 'vfs:')
 	{
+		if (!file_exists(PHPGW_SERVER_ROOT.'/wiki') || !$GLOBALS['phpgw_info']['user']['apps']['filemanager'])
+		{
+			return $url;
+		}
 		$parts = explode('/',substr($url,4));
 		$file = array_pop($parts);
 		$path = implode('/',$parts);
@@ -144,7 +148,7 @@ function html_url($url, $text)
 	}
 	if($is_image)
 	{
-		return "<img src=\"$url\" alt=\"" . basename($url) . "\" />";
+		return '<img src="'.$url.'" title="'.htmlspecialchars($text[0]=='[' ? substr($text,1,-1) : $text).'" />';
 	}
 	if (preg_match('/^mailto:([^@]*)@(.*)$/i',$url,$matchs))	// spamsaver emailaddress
 	{
