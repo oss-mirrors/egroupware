@@ -729,4 +729,91 @@
 	}
 	return $newText;
   }
+
+  /**************************************************************************\
+    * USEFUL  AND   SIMPLE  HTML  FUNCTIONS	*
+    \**************************************************************************/
+
+/* * * * * * * * * * *
+  *  href_maketag
+  *  will generate a typical A HREF html item
+  * * * * * * *  * * * */
+	function href_maketag($href_link='',$href_text='default text')
+	{
+		return '<a href="' .$href_link .'">' .$href_text .'</a>' ."\n";
+	}
+
+	function img_maketag($location='',$alt='',$height='',$width='',$border='')
+	{
+		$alt_default_txt = 'image';
+		$alt_unknown_txt = 'unknown';
+		if ($location == '')
+		{
+			return '<img src="" alt="['.$alt_unknown_txt.']">';
+		}
+		if ($alt != '')
+		{
+			$alt_tag = ' alt="['.$alt.']"';
+		}
+		else
+		{
+			$alt_tag = ' alt="['.$alt_default_txt.']"';
+		}
+		if ($height != '')
+		{
+			$height_tag = ' height="' .$height .'"';
+		}
+		else
+		{
+			$height_tag = '';
+		}
+		if ($width != '')
+		{
+			$width_tag = ' width="' .$width .'"';
+		}
+		else
+		{
+			$width_tag = '';
+		}
+		if ($border != '')
+		{
+			$border_tag = ' border="' .$border .'"';
+		}
+		else
+		{
+			$border_tag = '';
+		}
+		$image_html = '<img src="'.$location.'"' .$height_tag .$width_tag .$border_tag .$alt_tag .'>';
+		return $image_html;
+	}
+
+/* * * * * * * * * * *
+  *  isValidUrl
+  *  validates that a URL exists
+  *  Discussion:
+  *  compiled from user notes on: http://www.php.net/manual/en/function.parse-url.php
+  *  comments there indicate this code does not leak descriptors, paraphrasing:
+  *  "you don't need to store the file pointer into a variable if you just need to check that the file can be opened.
+  *  Files which are opened with fopen() get automatically closed when their last reference is lost."
+  * * * * * * *  * * * */
+	function isValidUrl($url)
+	{
+		// make sure $url is not a "file://" uri
+		// this function also works on files, but we are concerned only with URLs here
+		$parts = parse_url( $url );
+		if (isset($parts[scheme])
+		&& ($parts[scheme] == "file"))
+		{
+			return false;
+		}
+		// try to open the URL
+		if (fopen($url))
+		{
+			return true;
+		} else
+		{
+			return false;
+		}
+	}
+
 ?>
