@@ -27,9 +27,6 @@
 		global $phpgw;
 		global $phpgw_info;
 
-		$phpgw->config->read_repository();
-
-		if ($phpgw_info['user']['preferences']['tts']['useemailnotification']) {
 		
 			$phpgw->send = CreateObject('phpgwapi.send');
 	
@@ -91,6 +88,5 @@
 					. "To go back to the msg list, click <A HRef=\"".$phpgw->link("/tts/index.php","cd=13")."\">here</a>";
 				$phpgw->common->phpgw_exit();
 			}
-		}
 	}
 ?>
