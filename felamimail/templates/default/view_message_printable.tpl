@@ -1,5 +1,8 @@
 <!-- BEGIN message_main -->
 <html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset={charset}" />
+</head>
 <body onload="javascript:window.print()">
 <STYLE type="text/css">
         .subjectBold

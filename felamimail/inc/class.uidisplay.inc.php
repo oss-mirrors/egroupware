@@ -192,8 +192,9 @@
 			else
 			{
 				$this->t->set_file(array("displayMsg" => "view_message_printable.tpl"));
+				$this->t->set_var('charset',$GLOBALS['phpgw']->translation->charset());
 			}
-			
+
 			$this->t->set_block('displayMsg','message_main');
 			$this->t->set_block('displayMsg','message_header');
 			$this->t->set_block('displayMsg','message_raw_header');
