@@ -10,7 +10,8 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True, "currentapp" => "projects");
+  $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True, "currentapp" => "projects", 
+                                "enable_nextmatchs_class" => True);
   include("../header.inc.php");
 
   $t = new Template($phpgw_info["server"]["app_tpl"]);
