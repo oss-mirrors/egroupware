@@ -867,7 +867,7 @@
 					$extra = $events[$i]['event_extra']==0?100:$events[$i]['event_extra'] . '&nbsp;' . lang('% to');
 					$values['percent'] = $values['percent']?$values['percent']:$events[$i]['event_extra'];
 				}
-				$GLOBALS['phpgw']->template->set_var('event_name',$events[$i]['event_name']);
+				$GLOBALS['phpgw']->template->set_var('event_name',lang($events[$i]['event_name']));
 				$GLOBALS['phpgw']->template->set_var('event_extra',$extra);
 				$GLOBALS['phpgw']->template->fp('list','event_list',True);
 			}
