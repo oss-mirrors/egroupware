@@ -1,8 +1,8 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare                                                             *
-	* http://www.phpgroupware.org                                              *
-	* Written by Joseph Engo <jengo@phpgroupware.org>                          *
+	* eGroupWare                                                               *
+	* http://www.egroupware.org                                                *
+	* Written by Joseph Engo                                                   *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *

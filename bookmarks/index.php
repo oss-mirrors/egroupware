@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Bookmarks                                                 *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - Bookmarks                                                 *
+	* http://www.egroupware.org                                              *
 	* Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
 	*                     http://www.renaghan.com/bookmarker                   *
 	* --------------------------------------------                             *

@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Bookmarks                                                 *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - Bookmarks                                                   *
+	* http://www.egroupware.org                                              *
 	* Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
 	*                     http://www.renaghan.com/bookmarker                   *
 	* --------------------------------------------                             *
@@ -23,9 +23,9 @@
 	$setup_info['bookmarks']['author'] = 'Joseph Engo';
 	$setup_info['bookmarks']['license']  = 'GPL';
 	$setup_info['bookmarks']['description'] =
-		'Manage your bookmarks with phpGW.  Has Netscape plugin.';
-	$setup_info['bookmarks']['maintainer'] = 'Michael Totschnig';
-	$setup_info['bookmarks']['maintainer_email'] = 'michael@totschnig.org';
+		'Manage your bookmarks with eGW.  Has Netscape plugin.';
+	$setup_info['bookmarks']['maintainer'] = 'eGroupWare Developers';
+	$setup_info['bookmarks']['maintainer_email'] = 'ak703@users.sourceforge.net';
 
 	/* The tables this app creates */
 	$setup_info['bookmarks']['tables']	= Array(
