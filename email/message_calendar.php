@@ -15,7 +15,7 @@
 
 // This will eventually be written using templates.
 
-  $phpgw_flags["currentapp"] = "email";
+  $phpgw_info["flags"]["currentapp"] = "email";
   include("../header.inc.php");
 
   $msg = $phpgw->msg->header($mailbox, $msgnum);

@@ -13,8 +13,8 @@
 
   /* $Id$ */
 
-  $phpgw_flags = array("noheader" => True, "nonavbar" => True, "messageclass" => True);
-  $phpgw_flags["currentapp"] = "email";
+  $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True, "messageclass" => True);
+  $phpgw_info["flags"]["currentapp"] = "email";
   include("../header.inc.php");
 
   if ($phpgw_info["user"]["permissions"]["anonymous"]) {

@@ -10,7 +10,7 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  $phpgw_flags["currentapp"] = "forum";
+  $phpgw_info["flags"]["currentapp"] = "forum";
   include("../header.inc.php");
 
 ?>

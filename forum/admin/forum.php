@@ -10,9 +10,9 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  if($action) $phpgw_flags = array("noheader" => True, "nonavbar" => True);
+  if($action) $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
 
-  $phpgw_flags["currentapp"] = "forum";
+  $phpgw_info["flags"]["currentapp"] = "forum";
   include("../../header.inc.php");
 
   $actiontype = "addforum";

@@ -17,11 +17,11 @@
 
   if ($newsmode == "on"){
     echo "newsmode on";
-    $phpgw_flags["newsmode"] = True;
+    $phpgw_info["flags"]["newsmode"] = True;
   }
-//  if ($newsmode == "on"){$phpgw_flags["newsmode"] = True;}
+//  if ($newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
 
-  $phpgw_flags = array("noheader" => True, "currentapp" => "email");
+  $phpgw_info["flags"] = array("noheader" => True, "currentapp" => "email");
   include("../header.inc.php");
 
   $msgtype = $phpgw->msg->get_flag($mailbox,$msgnum,"X-phpGW-Type");
