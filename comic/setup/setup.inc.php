@@ -33,6 +33,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['comic']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.13', '0.9.14','0.9.15')
+		 'versions' => Array('0.9.13', '0.9.14', '0.9.15')
 	);
 ?>
