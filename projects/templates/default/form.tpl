@@ -79,7 +79,6 @@
          </table>
          </form>
          </center>
-         </html>
          
         <!-- END add -->
         
@@ -97,7 +96,7 @@
           </tr>
          </table>
 	</center>
-	</html>
+
         <!-- END edit -->
 
 

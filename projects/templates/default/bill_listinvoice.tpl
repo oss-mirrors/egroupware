@@ -5,14 +5,14 @@
  {common_hidden_vars}
  {total_matchs}
  {next_matchs}
-	
+ {error}	
   <table width=85% border=0 cellspacing=1 cellpadding=3>
     <tr bgcolor="{th_bg}">
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_num}</td>
       <td width="20%" bgcolor="{th_bg}" align=center>{sort_customer}</td>
       <td width="20%" bgcolor="{th_bg}" align=center>{sort_title}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_date}</td>
-      <td width="10%" align=center bgcolor="{th_bg}">{sort_sum}</td>
+      <td width="10%" align=right bgcolor="{th_bg}">{currency}&nbsp;{sort_sum}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{h_lang_invoice}</td>
     </tr>
   </form>

@@ -32,7 +32,7 @@
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_date}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_aes}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{currency}&nbsp;{sort_billperae}</td>
-      <td width="7%" bgcolor="{th_bg}" align=center>{currency}&nbsp;{sort_sum}</td>
+      <td width="7%" bgcolor="{th_bg}" align=right>{currency}&nbsp;{sort_sum}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{h_lang_edithour}</td>
     </tr>
 <!-- BEGIN projecthours_list -->

@@ -79,11 +79,11 @@
          </table>
          </form>
          </center>
-         </html>
          
         <!-- END add -->
         
         <!-- BEGIN edit -->
+
          <tr>
           <td>{lang_minperae}:</td>
           <td>
@@ -108,5 +108,5 @@
          </tr>
          </table>
 	</center>
-	</html>
+
         <!-- END edit -->
