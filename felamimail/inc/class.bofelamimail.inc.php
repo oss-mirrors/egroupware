@@ -1041,7 +1041,7 @@
 				// get the quota for this mailboxbox
 				if (function_exists('imap_get_quotaroot') && !$_adminConnection)
 				{
-					$quota = imap_get_quotaroot($this->mbox, $this->decodeFolderName($folderName));
+					$quota = @imap_get_quotaroot($this->mbox, $this->decodeFolderName($folderName));
 					if(is_array($quota['STORAGE'])) 
 					{
 						$storage = $this->storageQuota = $quota['STORAGE'];
