@@ -55,7 +55,7 @@
 		$list_tpl->set_var(array(
 			'CATEGORY'           => htmlspecialchars(stripslashes($category)),
 //			'CATEGORY_SEARCH'    => $cat_search,
-			'SUBCATEGORY'        => htmlspecialchars(stripslashes($subcategory)),
+			'SUBCATEGORY'        => htmlspecialchars(stripslashes($subcategory))
 //			'SUBCATEGORY_SEARCH' => $subcat_search
 		));
 
