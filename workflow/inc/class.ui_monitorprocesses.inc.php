@@ -16,11 +16,19 @@
 
 		function form()
 		{
+			$filter_process		= (int)get_var('filter_process', 'any', 0);
 			$filter_active		= get_var('filter_active', 'any', '');
 			$filter_valid		= get_var('filter_valid', 'any', '');
-			$this->sort_mode	= get_var('sort_mode', 'any', 'wf_last_modif__desc');
+			$this->order		= get_var('order', 'any', 'wf_last_modif');
+			$this->sort			= get_var('sort', 'any', 'desc');
+			$this->sort_mode	= $this->order . '__' . $this->sort;
 
-			$processes_list	= $this->process_monitor->monitor_list_processes($this->start, -1, $this->sort_mode, $this->search_str, '');
+			if ($filter_process) $this->wheres[] = "wf_p_id='" . $filter_process . "'";
+			if ($filter_active) $this->wheres[] = "wf_is_active='" . $filter_active . "'";
+			if ($filter_valid) $this->wheres[] = "wf_is_valid='" . $filter_valid . "'";
+			$this->wheres = implode(' and ', $this->wheres);
+
+			$processes_list	= $this->process_monitor->monitor_list_processes($this->start, -1, $this->sort_mode, $this->search_str, $this->wheres);
 			$stats			= $this->process_monitor->monitor_stats();
 
 			$this->show_filter_process();
@@ -54,9 +62,9 @@
 		function show_process_table($processes_list_data)
 		{
 			$this->t->set_var(array(
-				'header_name'		=> $this->nextmatchs->show_sort_order($this->sort, 'name', $this->order, '', lang('Name')),
-				'header_act'		=> $this->nextmatchs->show_sort_order($this->sort, 'isActive', $this->order, '', lang('Active')),
-				'header_val'		=> $this->nextmatchs->show_sort_order($this->sort, 'isValid', $this->order, '', lang('Valid')),
+				'header_name'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_name', $this->order, 'index.php', lang('Name')),
+				'header_act'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_is_active', $this->order, '', lang('Active')),
+				'header_val'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_is_valid', $this->order, '', lang('Valid')),
 			));
 
 			$this->t->set_block('monitor_processes', 'block_listing', 'listing');
@@ -83,6 +91,7 @@
 				));
 				$this->t->parse('listing', 'block_listing', true);
 			}
+			if (!count($processes_list_data)) $this->t->set_var('listing', '<tr><td colspan="5" align="center">'.lang('There are no processes').'</tr>');
 		}
 	}
 ?>
