@@ -682,7 +682,7 @@
 		// ----  Send It   -----
 		$returnccode = $phpgw->send_2822->smail_2822($mail_out);
 
-		/*
+		
 		//  -------  Put in "Sent" Folder, if Applicable  -------
 		if (($returnccode == True)
 		&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
@@ -696,26 +696,29 @@
 			{
 				$sent_folder_header .= $mail_out['main_headers'][$i]."\r\n";
 			}
-			// this CRLF terminates the header, signals the body will follow next
+			// this CRLF terminates the header, signals the body will follow next (ONE CRLF ONLY)
 			$sent_folder_header .= "\r\n";
-			// the body
+			// now we can go to deliver the body!
 			for ($part_num=0; $part_num<count($mail_out['body']); $part_num++)
-			{	
+			{
 				// mime headers for this mime part (if any)
 				if (($mail_out['is_multipart'] == True)
 				|| ($mail_out['is_forward'] == True))
 				{
 					for ($i=0; $i<count($mail_out['body'][$part_num]['mime_headers']); $i++)
 					{
-						$sent_folder_body .= $mail_out['body'][$part_num]['mime_headers'][$i]."\r\n";
+						$this_line = rtrim($this_line = $mail_out['body'][$part_num]['mime_headers'][$i])."\r\n";
+						$sent_folder_body .= $this_line;
 					}
 					// a space needs to seperate the mime part headers from the mime part content
 					$sent_folder_body .= "\r\n";
 				}
+				
+				
 				// the part itself
 				for ($i=0; $i<count($mail_out['body'][$part_num]['mime_body']); $i++)
 				{
-					$this_line = $mail_out['body'][$part_num]['mime_body'][$i]."\r\n";
+					$this_line = rtrim($mail_out['body'][$part_num]['mime_body'][$i])."\r\n";
 					if (trim($this_line) == ".")
 					{
 						// rfc2822 escape the "special" single dot line into a double dot line
@@ -726,17 +729,26 @@
 				// this space will seperate this part from any following parts that may be coming
 				$sent_folder_body .= "\r\n";
 			}
+			// at the end of a multipart email, we need to add the "final" boundary
 			if (($mail_out['is_multipart'] == True)
 			|| ($mail_out['is_forward'] == True))
 			{
-				$sent_folder_body .= $mail_out['body'][$body_part_num]['mime_body'][$m_line] = '--' .$mail_out['boundary'].'--'."\r\n";
+				// attachments / parts have their own boundary preceeding them in their mime headers
+				// this is: "--"boundary
+				// all boundary strings are have 2 dashes "--" added to their begining
+				// and the FINAL boundary string (after all other parts) ALSO has 
+				// 2 dashes "--" tacked on tho the end of it, very important !! 
+				//   the first or last \r\n is *probably* not necessary
+				$final_boundary = '--' .$mail_out['boundary'].'--'."\r\n";
+				$sent_folder_body .= $final_boundary;
+				// another blank line
+				$sent_folder_body .= "\r\n";
 			}
 			// --- Put This in the User's Sent Folder  -----
 			$stream = $phpgw->msg->login('Sent');
 			$phpgw->msg->append($stream, 'Sent', $sent_folder_header, $sent_folder_body, "\\Seen");
 			$phpgw->msg->close($stream);
 		}
-		*/
 		
 		// -----  Cleanup  -------
 		unset($mail_out);
