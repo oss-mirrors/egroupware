@@ -31,7 +31,7 @@
 				if ($admins[$i]['account_id'] == $phpgw_info['user']['account_id'])
 				return 1;
 			}
-			else 
+			elseif ($admins[$i]['type']=='ag') 
 			{
 				if (is_array($admin_groups))
 				{
@@ -42,7 +42,10 @@
 					}
 				}
 			}
-			return 0;
+			else
+			{
+				return 0;
+			}
 		}
 	}
 
