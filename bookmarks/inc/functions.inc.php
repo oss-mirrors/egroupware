@@ -426,7 +426,7 @@ class bookmarker_class  {
 # image URL - string added to the begining of an image file
 # (for example, I set this to "./images/" which makes bookmarker
 # build image URLs like <img src="./images/mailto.png"...)
-  var $image_url_prefix = "./images/";
+  var $image_url_prefix = $phpgw_info["server"]["app_images"] . "/";
 
 # URL format checking. bookmarker can check the format of
 # URLs entered on the create/maintain pages. This option

@@ -125,19 +125,20 @@
          $maintain_link = sprintf("<a href=\"%s\"><img src=\"%s%s.%s\" width=24 height=24 align=top border=0 alt=\"Edit this Bookmark\"></a>", $maintain_url, $bookmarker->image_url_prefix, "edit", $bookmarker->image_ext);
 
          $view_url  = $phpgw->link("view.php","id=" . $phpgw->db->f("id") . "&returnto=" . urlencode($returnto));
-         $view_link     = sprintf("<a href=\"%s\"><img src=\"images/document.gif\" width=17 height=16 align=top border=0 alt=\"" . lang("View this Bookmark") . "\"></a>", $view_url);
+         $view_link     = sprintf("<a href=\"%s\"><img src=\"" . $phpgw_info["server"]["app_images"] . "/document.gif\" width=17 height=16 align=top border=0 alt=\"" . lang("View this Bookmark") . "\"></a>", $view_url);
       } else {
          $maintain_link = sprintf("<!-- owned by: %s -->", $phpgw->db->f("username"));
 //         $delete_link = "&nbsp;";
       }
 
       $list_tpl->set_var(array(MAINTAIN_LINK      => $maintain_link,
+                               "img_root"         => $phpgw_info["server"]["app_images"],
                                VIEW_LINK          => $view_link,
                                RATING             => $phpgw->db->f("rating_id"),
                                MAIL_THIS_LINK_URL => $phpgw->link("maillink.php","id=".$phpgw->db->f("id")),
                                BOOKMARK_USERNAME  => $phpgw->db->f("username"),
                                BOOKMARK_ID        => $phpgw->db->f("id"),
-                               BOOKMARK_URL       => $phpgw->link("redirect.php?url=" . urlencode($phpgw->db->f("url")) ."&bm_id=" . $phpgw->db->f("id")),
+                               BOOKMARK_URL       => $phpgw->link("redirect.php","url=" . urlencode($phpgw->db->f("url")) ."&bm_id=" . $phpgw->db->f("id")),
                                BOOKMARK_RATING    => htmlspecialchars(stripslashes($phpgw->db->f("rating_name"))),
                                BOOKMARK_RATING_ID => $phpgw->db->f("rating_id"),
                                BOOKMARK_NAME      => htmlspecialchars(stripslashes($phpgw->db->f("bookmark_name"))),
