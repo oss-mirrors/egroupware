@@ -1,3 +1,4 @@
+(don't offer the possibility)	admin	zt	(不提供這個項目)
 <em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	zt	<em>但是</em>在最新異動中顯示至少這些資料與其他訂購清單：
 add document to category	wiki	zt	新增這個類別的文件
 added	wiki	zt	已經新增
@@ -54,6 +55,7 @@ locked	wiki	zt	已鎖定
 name wiki home link	admin	zt	wiki 首頁連結
 newer	wiki	zt	更新
 no never	admin	zt	從未
+no only on request	admin	zt	否,只有在發出請求時
 not set	wiki	zt	未設定
 older	wiki	zt	更舊
 only if browser supports a richtext-editor	admin	zt	請確認您的瀏覽器支援所見即所得編輯器
