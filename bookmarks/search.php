@@ -30,6 +30,7 @@
 	);
 	include('../header.inc.php');
 	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
+	$phpgw->plist     = createobject('bookmarks.plist');
 	$q = createobject('bookmarks.sqlquery');
 
 	$phpgw->template->set_file(array(
@@ -57,12 +58,6 @@
 	// if we don't have a query object for this session yet,
 	// then create one and save as a session variable.
 
-	include(PHPGW_SERVER_ROOT . '/bookmarks/inc/plist.inc.php');
-
-
-//  if (!isset($q)) {
-//     $sess->register("q");
-//  }
 
   # if a WHERE clause was specified in the URL, then use it
 //  if (isset($where)) {

@@ -14,9 +14,7 @@
 	/* $Id$ */
 
 	$phpgw_info['flags'] = array(
-		'currentapp'               => 'bookmarks',
-		'enable_nextmatchs_class' => True,
-		'enable_categories_class' => True
+		'currentapp'               => 'bookmarks'
 	);
 	include('../header.inc.php');
 
@@ -27,7 +25,7 @@
 
 	$phpgw->template->set_file(array(
 		'common_' => 'common.tpl',
-		'body'   => 'list.body_tree.tpl'
+		'body'    => 'list.body_tree.tpl'
 	));
 	app_header(&$phpgw->template);
 
@@ -89,19 +87,7 @@
 		$filtermethod = ' bm_owner=' . $phpgw_info['user']['account_id'] . ' ';
 	}
 
-	$categorys[] = array(
-		'id'      => 0,
-		'parent'  => 0,
-		'name'    => '--'
-	);
-
-	$_categorys = $phpgw->categories->return_array('appandmains',0,$phpgw->categories->total(),'','cat_name','');
-
-	while (is_array($_categorys) && $cat = each($_categorys))
-	{
-		$categorys[] = $cat[1];
-	}
-
+	$categorys = $phpgw->categories->return_array('mains',0,$phpgw->categories->total(),'','cat_name','',True);
 
 	$db2 = $phpgw->db;
 	while ($cat = each($categorys))
@@ -113,10 +99,10 @@
 		while ($phpgw->db->next_record())
 		{
 			$tree[] = '..' . '<a href="' . $phpgw->link('/bookmarks/list.php','bm_cat=' . $phpgw->db->f('bm_cat')) . '">' . $phpgw->db->f('cat_name') . '</a>' . '|';
-			$db2->query("select * from phpgw_bookmarks where bm_subcategory='" . $phpgw->db->f('cat_id') . "' order by bm_name, bm_url",__LINE__,__FILE__);
+			$db2->query("select * from phpgw_bookmarks where bm_category='" . $phpgw->db->f('cat_id') . "' order by bm_name, bm_url",__LINE__,__FILE__);
 			while ($db2->next_record())
 			{
-				$_tree = '...' . $db2->f('bm_name') . '| | | |'; // . '<input type="checkbox" name="item_cb[]" value="' . $db2->f('bm_id') . '">';
+				$_tree = '...' . $db2->f('bm_name') . '|'; // . '<input type="checkbox" name="item_cb[]" value="' . $db2->f('bm_id') . '">';
 				if (($phpgw->bookmarks->grants[$db2->f('bm_owner')] & PHPGW_ACL_EDIT) || ($db2->f('bm_owner') == $phpgw_info['user']['account_id']))
 				{
 					$maintain_url  = $phpgw->link('/bookmarks/maintain.php','bm_id=' . $db2->f('bm_id'));
@@ -131,19 +117,37 @@
 					$rating_link   = sprintf('<img src="%s/bar-%s.jpg">',PHPGW_IMAGES,$db2->f('bm_rating'));
 
 					$redirect_link = '<a href="' . $phpgw->link('/bookmarks/redirect.php','bm_id=' . $db2->f('bm_id')) . '" target="_new">' . $phpgw->strip_html($db2->f('bm_name')) . '</a>';
-					$_tree        .= '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $maintain_link . $view_link
-									. '</td><td>' . $redirect_link . '</td><td align="right"></td><td>'
-									. $db2->f('bm_desc') . '</td></tr></table>'; //$mail_link . $rating_link . $redirect_link;
+					$_tree        .= $view_link . '&nbsp; &nbsp;' . $redirect_link;// . '</td><td align="right"></td><td>'
+//									. $db2->f('bm_desc') . '</td></tr></table>'; //$mail_link . $rating_link . $redirect_link;
 				}
 
 				$tree[] = $_tree;
 
 			}
 		}
+
+		$db2->query("select * from phpgw_bookmarks where bm_category='" . $cat[1]['id'] . "' order by bm_name, bm_url",__LINE__,__FILE__);
+		while ($db2->next_record())
+		{
+			$_tree = '..' . $db2->f('bm_name') . '|';
+			if (($phpgw->bookmarks->grants[$db2->f('bm_owner')] & PHPGW_ACL_EDIT) || ($db2->f('bm_owner') == $phpgw_info['user']['account_id']))
+			{
+				$maintain_url  = $phpgw->link('/bookmarks/maintain.php','bm_id=' . $db2->f('bm_id'));
+				$maintain_link = sprintf('<a href="%s"><img src="%s/edit.gif" align="top" border="0" alt="%s"></a>', $maintain_url,PHPGW_IMAGES,lang('Edit this bookmark'));
+
+				$view_url      = $phpgw->link('/bookmarks/view.php','bm_id=' . $db2->f('bm_id'));
+				$view_link     = sprintf('<a href="%s"><img src="%s/document.gif" align="top" border="0" alt="%s"></a>', $view_url,PHPGW_IMAGES,lang('View this bookmark'));
+
+				$rating_link   = sprintf('<img src="%s/bar-%s.jpg">',PHPGW_IMAGES,$db2->f('bm_rating'));
+
+				$redirect_link = '<a href="' . $phpgw->link('/bookmarks/redirect.php','bm_id=' . $db2->f('bm_id')) . '" target="_new">' . $phpgw->strip_html($db2->f('bm_name')) . '</a>';
+				$_tree        .= $view_link . '&nbsp; &nbsp;' . $redirect_link;
+			}
+			$tree[] = $_tree;
+		}
 	}
 
 	$phpgw->template->set_var('BOOKMARK_LIST',$phpgw->treemenu->showmenu($tree,$p));
-//	$phpgw->template->set_var('BOOKMARK_LIST',$phpgw->treemenu->showtree($tree,$p));
 
 	$phpgw->common->phpgw_footer();
 ?>

@@ -170,8 +170,15 @@
 		{
 			global $phpgw;
 
-			$this->db     = $phpgw->db;
-			$this->grants = $phpgw->acl->get_grants('bookmarks');
+			$this->db          = $phpgw->db;
+			$this->grants      = $phpgw->acl->get_grants('bookmarks');
+			$phpgw->nextmatchs = createobject('phpgwapi.nextmatchs');
+			$phpgw->categories = createobject('phpgwapi.categories');
+
+			if (! $phpgw->categories->exists('appandmains','No category'))
+			{
+				$phpgw->categories->add('No category',0,'','','',0);
+			}
 		}
 
 		function check_perms($id, $required)
@@ -197,15 +204,7 @@
 		{
 			global $phpgw;
 
-			$mains[] = array(
-				'id'      => 0,
-				'parent'  => 0,
-				'name'    => '--'
-			);
-
 			$mains = $phpgw->categories->return_array('mains',0,True,'','cat_name','',True);
-
-			$s = '<option value="0|0">-- :: --</option>';
 
 			while (is_array($mains) && $main = each($mains))
 			{

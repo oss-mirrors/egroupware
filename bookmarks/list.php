@@ -14,14 +14,12 @@
 	/* $Id$ */
 
 	$phpgw_info['flags'] = array(
-		'currentapp'              => 'bookmarks',
-		'enable_nextmatchs_class' => True,
-		'enable_categories_class' => True
+		'currentapp' => 'bookmarks'
 	);
 
 	include('../header.inc.php');
-	include(PHPGW_APP_ROOT . '/inc/plist.inc.php');
-	$phpgw->bookmarks       = createobject('bookmarks.bookmarks');
+	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
+	$phpgw->plist     = createobject('bookmarks.plist');
 
 	$phpgw->template->set_file(array(
 		'common_' => 'common.tpl',
@@ -41,7 +39,7 @@
 		$phpgw->bookmarks->save_session_data($location_info);
 	}
 
-	if (! $start)
+	if (! $start && $start != 0)
 	{
 		$start = $location_info['start'];
 		if ($bm_cat)
@@ -79,12 +77,6 @@
 	$phpgw->template->set_var('lang_desc',lang('Descending'));
 	$phpgw->template->set_var('lang_filter',lang('Filter'));
 
-  // get/set the $user_last_page as a user variable.
-  // we use this to keep the last page nbr that the user
-  // was looking at so we can default in the future.
-  //if (isset($user))
-  //   $user->register("user_last_page");
-
 	$total_bookmarks = $phpgw->bookmarks->get_totalbookmarks();
 
 	$phpgw->template->set_var(array(
@@ -93,8 +85,8 @@
 		'IMAGE_EXT'        => $bookmarker->image_ext
 	));
 
-	$phpgw->template->set_var(next_matchs_left,  $phpgw->nextmatchs->left('/bookmarks/list.php',$start,$total_bookmarks));
-	$phpgw->template->set_var(next_matchs_right, $phpgw->nextmatchs->right('/bookmarks/list.php',$start,$total_bookmarks));
+	$phpgw->template->set_var(next_matchs_left,  $phpgw->nextmatchs->left('/bookmarks/list.php',$start,$total_bookmarks,'&bm_cat=' . $bm_cat));
+	$phpgw->template->set_var(next_matchs_right, $phpgw->nextmatchs->right('/bookmarks/list.php',$start,$total_bookmarks,'&bm_cat=' . $bm_cat));
 
 	if ($total_bookmarks > $phpgw_info['user']['preferences']['common']['maxmatchs'])
 	{

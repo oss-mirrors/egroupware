@@ -39,10 +39,12 @@
 		global $phpgw, $phpgw_info, $cat, $catNext;
 
 		$db = $phpgw->db;
+
+		_debug('<br>Testing for category: ' . $name);
      
 		if (! $name)
 		{
-			return 0;
+			$name = 'No category';
 		}
 
 		if ($cat[$name])
@@ -53,12 +55,14 @@
 		{
 			if ($phpgw->categories->exists('mains',$name))
 			{
-				$cat[$name] = $phpgw->categories->name2id($name);			
+				$cat[$name] = $phpgw->categories->name2id($name);
+				_debug('<br>' . $name . ' already exists - id: ' . $cat[$name]);
 			}
 			else
 			{
-				$phpgw->categories->add($name,'0');
+				$phpgw->categories->add($name,0,'','','',0);
 				$cat[$name] = $phpgw->categories->name2id($name);
+				_debug('<br>' . $name . ' does not exist - new id: ' . $cat[$name]);
 			}
 
 			return $cat[$name];
@@ -146,7 +150,7 @@
    
 						reset($folder_stack);
 						unset($error_msg);
-						$cid  = 0;
+						$cid  = $phpgw->categories->name2id('No Category');
 						$scid = 0;
 						$i    = 0;
 						$keyw = '';
