@@ -1,22 +1,23 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - email UI Class for Message Lists				*
-  * http://www.phpgroupware.org							*
-  * Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>		*
-  * --------------------------------------------						*
-  *  This program is free software; you can redistribute it and/or modify it 	*
-  *  under the terms of the GNU General Public License as published by the	*
-  *  Free Software Foundation; either version 2 of the License, or (at your  	*
-  *  option) any later version.								*
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare - email UI Class for Message Lists				*
+	* http://www.phpgroupware.org							*
+	* Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>		*
+	* --------------------------------------------						*
+	*  This program is free software; you can redistribute it and/or modify it 	*
+	*  under the terms of the GNU General Public License as published by the	*
+	*  Free Software Foundation; either version 2 of the License, or (at your  	*
+	*  option) any later version.								*
+	\**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 
 	class uiindex
 	{
 		var $template;
 		var $bo;		
 		var $debug = False;
+		var $modular_return_html = '';
 
 		var $public_functions = array(
 			'index' => True,
@@ -28,16 +29,29 @@
 			
 		}
 
-		function index()
+		function index($is_modular=False)
 		{
-			$this->bo = CreateObject("email.bomail");
+			$this->bo = CreateObject("email.boindex");
 			$this->bo->index_data();
-			// NOW we can out the header, because "index_data()" filled this global
-			//	$GLOBALS['phpgw_info']['flags']['email_refresh_uri']
-			// which is needed to preserve folder and sort settings during the auto-refresh-ing
-			// currently (Dec 6, 2001) that logic is in phpgwapi/inc/templates/idsociety/head.inc.php
-			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
+			
+			if ($is_modular == True)
+			{
+				// we do NOT echo or print output any html, we are being used as a module by another app
+				// all we do in this case is pass the parsed html to the calling app
+			}
+			else
+			{
+				// we are the BO and the UI, we take care of outputting the HTML to the client browser
+				// NOW we can out the header, because "index_data()" filled this global
+				//	$GLOBALS['phpgw_info']['flags']['email_refresh_uri']
+				// which is needed to preserve folder and sort settings during the auto-refresh-ing
+				// currently (Dec 6, 2001) that logic is in phpgwapi/inc/templates/idsociety/head.inc.php
+				$GLOBALS['phpgw']->common->phpgw_header();
+				echo parse_navbar();
+				// NOTE: as of Dec 10, 2001 a call from menuaction defaults to NOT modular
+				// HOWEVER still this class must NOT invoke $GLOBALS['phpgw']->common->phpgw_header()
+				// even though we had to output the header and navbar, (go figure... :)
+			}
 			
 			$this->bo->xi['my_layout'] = $GLOBALS['phpgw_info']['user']['preferences']['email']['layout'];
 			$this->bo->xi['my_browser'] = $GLOBALS['phpgw']->msg->browser;
@@ -268,9 +282,46 @@
 				$this->template->parse('V_get_size','B_get_size');
 				$this->template->set_var('V_show_size','');
 			}
-
-			$this->template->pparse('out','T_index_main');
+			
+			// if we are a module or not, it is still true we have finished out email proc duties
+			// so we end the email request in either case
 			$GLOBALS['phpgw']->msg->end_request();
+			
+			if ($is_modular == True)
+			{
+				// we do NOT output any html, we are being used as a module in another app
+				// instead, we will pass the parsed html to the calling app
+				////$this->modular_return_html = $this->template->parse('out','T_index_main');
+				////return $this->modular_return_html;
+				
+				// Template->fp  means "Finish Parse", which does this
+				// 1) parses temnplate and replaces template tokens with vars we have set here
+				// 2) "finish" is like clean up, takes care of what to do with "unknowns",
+				//	which are things in the template that look like {replace_me} tokens, but
+				//	for which a replacement value has not been set, finishes allows you to do this with them:
+				// "keep" them;  "remove"  then;  or  "comment" them
+				// Template->fp  defaults to "remove" unknowns, although you may set Template->unknowns as you wish
+				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
+				$this->template->set_unknowns("comment");
+				// production use, use this:	$this->template->set_unknowns("remove");
+				return $this->template->fp('out','T_index_main');
+			}
+			else
+			{
+				// we are the BO and the UI, we take care of outputting the HTML to the client browser
+				// Template->pparse means "print parse" which parses the template and uses php print command
+				// to output the HTML, note "unknowns" are never handled ("finished") in that method.
+				//$this->template->pparse('out','T_index_main');
+				
+				// 
+				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
+				$this->template->set_unknowns("comment");
+				// production use, use this:	$this->template->set_unknowns("remove");
+				// Template->pfp will (1) parse and substitute, (2) "finish" - handle unknowns, (3) echo the output
+				$this->template->pfp('out','T_index_main');
+				// note, for some reason, eventhough it seems we *should* call common->phpgw_footer(),
+				// if we do that, the client browser will get TWO page footers, so we do not call it here
+			}
 		}
 		
 		
@@ -280,19 +331,28 @@
 			//raw HTTP_POST_VARS dump
 			//echo 'HTTP_POST_VARS print_r dump:<b><pre>'."\r\n"; print_r($GLOBALS['HTTP_POST_VARS']); echo '</pre><br><br>'."\r\n";
 			
-			$this->bo = CreateObject("email.bomail");
+			$this->bo = CreateObject("email.boindex");
 			$this->bo->mlist_data();
-			// NOW we can out the header, because "index_data()" filled this global
-			//	$GLOBALS['phpgw_info']['flags']['email_refresh_uri']
-			// which is needed to preserve folder and sort settings during the auto-refresh-ing
-			// currently (Dec 6, 2001) that logic is in phpgwapi/inc/templates/idsociety/head.inc.php
 			
-			if ($is_modular == False)
+			if ($is_modular == True)
 			{
+				// we do NOT echo or print output any html, we are being used as a module by another app
+				// all we do in this case is pass the parsed html to the calling app
+			}
+			else
+			{
+				// we are the BO and the UI, we take care of outputting the HTML to the client browser
+				// NOW we can out the header, because "index_data()" filled this global
+				//	$GLOBALS['phpgw_info']['flags']['email_refresh_uri']
+				// which is needed to preserve folder and sort settings during the auto-refresh-ing
+				// currently (Dec 6, 2001) that logic is in phpgwapi/inc/templates/idsociety/head.inc.php
 				$GLOBALS['phpgw']->common->phpgw_header();
 				echo parse_navbar();
+				// NOTE: as of Dec 10, 2001 a call from menuaction defaults to NOT modular
+				// HOWEVER still this class must NOT invoke $GLOBALS['phpgw']->common->phpgw_header()
+				// even though we had to output the header and navbar, (go figure... :)
 			}
-			
+
 			// MUCH of this data may not be necessary nor used for mlists 
 			$this->bo->xi['my_layout'] = $GLOBALS['phpgw_info']['user']['preferences']['email']['layout'];
 			$this->bo->xi['my_browser'] = $GLOBALS['phpgw']->msg->browser;
@@ -542,8 +602,36 @@
 				$this->template->set_var('V_show_size','');
 			}
 			*/
-			$this->template->pparse('out','T_mlist_main');
+			
 			$GLOBALS['phpgw']->msg->end_request();
+			
+			if ($is_modular == True)
+			{
+				// we do NOT output any html, we are being used as a module in another app
+				// instead, we will pass the parsed html to the calling app
+				////$this->modular_return_html = $this->template->parse('out','T_index_main');
+				////return $this->modular_return_html;
+				
+				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
+				$this->template->set_unknowns("comment");
+				// production use, use this:	$this->template->set_unknowns("remove");
+				return $this->template->fp('out','T_mlist_main');
+			}
+			else
+			{
+				// we are the BO and the UI, we take care of outputting the HTML to the client browser
+				// Template->pparse means "print parse" which parses the template and uses php print command
+				// to output the HTML, note "unknowns" are never handled ("finished") in that method.
+				//$this->template->pparse('out','T_index_main');
+				
+				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
+				$this->template->set_unknowns("comment");
+				// production use, use this:	$this->template->set_unknowns("remove");
+				// Template->pfp will (1) parse and substitute, (2) "finish" - handle unknowns, (3) echo the output
+				$this->template->pfp('out','T_mlist_main');
+				// note, for some reason, eventhough it seems we *should* call common->phpgw_footer(),
+				// if we do that, the client browser will get TWO page footers, so we do not call it here
+			}
 		}
 		
 		

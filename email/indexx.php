@@ -397,7 +397,7 @@
 
 
 
-// bomail_page stops at this line, below should be UI index page
+// boindex_page stops at this line, below should be UI index page
 // ----  Form delmov Intialization  Setup  -----
 	// ----  place in first checkbox cell of the messages list table, ONE TIME ONLY   -----
 	$xi['tpl']->set_var('delmov_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/action.php'));
@@ -449,14 +449,14 @@
 		$xi['tpl']->set_var('V_no_messages','');
 		
 
-// bomail_page holds the next 4 lines
+// boindex_page holds the next 4 lines
 		// generate a list of details about all the messages we are going to show
 		$msg_list_dsp = Array();
 		$msg_list_dsp = $GLOBALS['phpgw']->msg->get_msg_list_display($xi['folder_info']);
 		$totaltodisplay = $GLOBALS['phpgw']->msg->start + count($msg_list_dsp);
 		// this info for the stats row above
 		$xi['stats_last'] = $totaltodisplay;
-// bomail_page 4 lines ends here, back to UI index page
+// boindex_page 4 lines ends here, back to UI index page
 
 
 		$xi['tpl']->set_var('stats_last',$totaltodisplay);
