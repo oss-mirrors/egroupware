@@ -39,7 +39,7 @@
 
   $zeilen = $phpgw->db->num_rows();
   if ($filter == "viewall") {
-     echo "<a href=\"" . $phpgw->link() . "\">" . lang("View only open tickets")."</a>";
+     echo "<a href=\"" . $phpgw->link("/tts/index.php") . "\">" . lang("View only open tickets")."</a>";
   } else {
      echo "<a href=\"" . $phpgw->link("/tts/index.php","filter=viewall") . "\">" . lang("View all tickets")."</a>";
   }
