@@ -1,6 +1,6 @@
 actions	polls	sl	aktivnost
 add answer to poll	polls	sl	Dodaj odgovor na anketo
-add answers	polls	sl	Dodaj vprašanja
+add answers	polls	sl	Dodaj odgovore
 add new poll question	polls	sl	Dodaj novo anketno vprašanje
 add questions	polls	sl	Dodaj vprašanja
 allow users to vote more then once	polls	sl	Dovoli uporabnikom večkratno glasovanje

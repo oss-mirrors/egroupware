@@ -12,30 +12,30 @@ collapsed	forum	sl	strnjeno
 create new category	forum	sl	Ustvari novo rubriko
 current categories and sub forums	forum	sl	Trenutne rubrike in podpomenki
 default view	forum	sl	Privzeti pogled
-edit forum	forum	sl	Uredi Pomenke
-email replies to this thread, to the address above	forum	sl	Pošlji odgovore na to temo po E-pošti na zgornji naslov
+edit forum	forum	sl	Uredi pomenke
+email replies to this thread, to the address above	forum	sl	Pošlji odgovore na to nit po E-pošti na zgornji naslov
 forum	common	sl	Pomenki
-forum administration	common	sl	Upravljanje Pomenkov
-forum description	forum	sl	Opis Pomenkov
-forum name	forum	sl	Naslov Pomenkov
+forum administration	common	sl	Upravljanje pomenkov
+forum description	forum	sl	Opis pomenkov
+forum name	forum	sl	Naslov pomenkov
 forums	common	sl	Pomenki
 latest reply	forum	sl	Zadnji odgovor
 new category	forum	sl	Nova rubrika
-new forum	forum	sl	Novi Pomenki
+new forum	forum	sl	Novi pomenki
 new topic	forum	sl	Nova tema
 no category	forum	sl	Ni rubrike
 post	forum	sl	Odgovor
-post a message to this thread	forum	sl	Odgovori na to temo
+post a message to this thread	forum	sl	Pošlji odgovor na to nit
 replies	forum	sl	Odgovori
-return to admin	forum	sl	Nazaj na Admin
-return to forums	forum	sl	Nazaj na Pomenke
+return to admin	forum	sl	Nazaj na upravljanje
+return to forums	forum	sl	Nazaj na pomenke
 sub category	forum	sl	Podrubrika
 there are no forums in this category	forum	sl	V tej rubriki ni nobenih pomenkov
-threaded	forum	sl	Kot niti pogovorov
+threaded	forum	sl	Niti pogovorov
 threads	forum	sl	Niti
 topic	forum	sl	Tema
-update category	forum	sl	Posodobi kategorijo
-update forum	forum	sl	Posodobi Pomenke
-view threads	forum	sl	Poglej teme
+update category	forum	sl	Posodobi  rubriko
+update forum	forum	sl	Posodobi pomenke
+view threads	forum	sl	Poglej niti
 your email	forum	sl	Vaš E-poštni naslov
 your name	forum	sl	Vaše ime
