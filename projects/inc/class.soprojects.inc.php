@@ -244,27 +244,27 @@
 
 			if ($action == 'mains')
 			{
-			if ($p_id && ($p_id != 0))
-			{
-				if (count($book_activities) != 0)
+				if ($p_id && ($p_id != 0))
 				{
-					while($activ=each($book_activities))
+					if (count($book_activities) != 0)
 					{
-						$this->db->query("insert into phpgw_p_projectactivities (project_id,activity_id,billable) values ('$p_id','"
+						while($activ=each($book_activities))
+						{
+							$this->db->query("insert into phpgw_p_projectactivities (project_id,activity_id,billable) values ('$p_id','"
 										. $activ[1] . "','N')",__LINE__,__FILE__);
+						}
 					}
-				}
 
-				if (count($bill_activities) != 0)
-				{
-					while($activ=each($bill_activities))
+					if (count($bill_activities) != 0)
 					{
-						$this->db->query("insert into phpgw_p_projectactivities (project_id,activity_id,billable) values ('$p_id','"
+						while($activ=each($bill_activities))
+						{
+							$this->db->query("insert into phpgw_p_projectactivities (project_id,activity_id,billable) values ('$p_id','"
 										. $activ[1] . "','Y')",__LINE__,__FILE__);
+						}
 					}
 				}
 			}
-		}
 		}
 
 		function edit_project($values, $book_activities, $bill_activities)
@@ -443,8 +443,6 @@
 
 			return strtoupper($return);
 		}
-
-
 
 		function create_projectid()
 		{

@@ -10,6 +10,7 @@ Activity x has been added !	projects	en	Activity %1 has been added !
 Activity x has been updated !	projects	en	Activity %1 has been updated !
 Add Activity	projects	en	Add activity
 Add hours	projects	en	Add hours
+Add job	projects	en	Add job
 Add project	projects	en	Add project
 Add project hours	projects	en	Add project hours
 Administrator	projects	en	Administrator
@@ -50,6 +51,7 @@ Generate Activity ID ?	projects	en	Generate Activity ID ?
 Generate Delivery ID ?	projects	en	Generate Delivery ID ?
 Generate Project ID ?	projects	en	Generate Project ID ?
 Generate Invoice ID ?	projects	en	Generate Invoice ID ?
+Generate Job ID ?	projects	en	Generate Job ID ?
 Hours	projects	en	Hours
 Invoice	projects	en	Invoice
 Invoice date	projects	en	Invoice date

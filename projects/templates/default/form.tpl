@@ -16,6 +16,10 @@
 {pref_message}<br>{message}
 <table width="85%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
+		<td>{lang_parent}</td>
+		<td>{pro_parent}</td>
+	</tr>
+	<tr>
 		<td>{lang_choose}</td>
 		<td>{choose}</td>
 	</tr>
@@ -33,12 +37,11 @@
 	</tr>
 	<tr>
 		<td>{lang_category}:</td>
-		<td><select name="new_cat"><option value="">{lang_none}</option>{cats_list}</select></font></td>
+		<td>{cat}</td>
 	</tr>
 	<tr>
-		<td><input type="button" value="{lang_customer}" onClick="abook();"></td>
 		<td><input type="hidden" name="abid" value="{abid}">
-			<input type="text" name="name" size="50" value="{name}" readonly>&nbsp;&nbsp;&nbsp;{lang_select}</td>
+			{customer}</td>
 	</tr>
 	<tr>
 		<td>{lang_coordinator}:</td>
@@ -62,11 +65,11 @@
 	</tr>
 	<tr>
 		<td>{lang_bookable_activities}:</td>
-		<td><select name="book_activities[]" multiple>{book_activities_list}</select></td>
+		<td>{book_activities_list}</td>
 	</tr>
 	<tr>
 		<td>{lang_billable_activities}:</td>
-		<td><select name="bill_activities[]" multiple>{bill_activities_list}</select></td>
+		<td>{bill_activities_list}</td>
 	</tr>
 	<tr>
 		<td>{lang_access}:</td>
