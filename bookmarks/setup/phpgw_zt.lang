@@ -26,7 +26,7 @@ descending	bookmarks	zt	大到小
 edit bookmark	bookmarks	zt	編輯書籤
 edit this bookmark	bookmarks	zt	編輯這個書籤
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	zt	請在下面輸入您希望匯入的Netscape書籤檔案名稱
-export bookmarks	bookmarks	zt	匯出書籤
+export bookmarksi	common	zt	匯出書籤
 fewer	bookmarks	zt	較少
 filter by	bookmarks	zt	排序
 found a link you might like	bookmarks	zt	找一個您或許喜歡的連結
@@ -34,7 +34,7 @@ from	bookmarks	zt	從
 from category %1	bookmarks	zt	從資料夾%1
 highest	bookmarks	zt	最高
 i thought you would be interested in the following link(s):	bookmarks	zt	我猜您或許會喜歡下面這個(些)連結：
-import bookmarks	bookmarks	zt	匯入書籤
+import bookmarks	common	zt	匯入書籤
 like	bookmarks	zt	如
 list	bookmarks	zt	列表
 lowest	bookmarks	zt	最低
