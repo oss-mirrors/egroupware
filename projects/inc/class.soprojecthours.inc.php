@@ -34,7 +34,7 @@
 		var $grants;
 		var $ttracker_table = 'phpgw_p_ttracker';
 		var $hours_table = 'phpgw_p_hours';
-		var $activities_table = 'phpgw_p_projectactivities';
+		var $activities_table = 'phpgw_p_activities';
 		var $projects_table = 'phpgw_p_projects';
 
 		function soprojecthours()
