@@ -11,65 +11,77 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True, "enable_send_class" => True, 
-                                "noheader" => True, "nonavbar" => True);
-  include("../header.inc.php");
+	$phpgw_flags = Array(
+		'currentapp'		=> 'email',
+		'enable_network_class'	=> True,
+		'enable_send_class'	=> True,
+		'noheader'		=> True,
+		'nonavbar'		=> True
+	);
+	
+	$phpgw_info['flags'] = $phpgw_flags;
+	include('../header.inc.php');
 
-  $sep = $phpgw->common->filesystem_separator();
+	$upload_dir = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'];
 
-  if (file_exists($phpgw_info["server"]["temp_dir"].$sep.$phpgw_info["user"]["sessionid"])) {
-     @set_time_limit(0);
-     $dh = opendir($phpgw_info["server"]["temp_dir"] . $sep . $phpgw_info["user"]["sessionid"]);
-     while ($file = readdir($dh)) {
-        if ($file != "." && $file != "..") {
-           if (! ereg("\.info",$file)) {
-              $total_files++;
-              $size = filesize($phpgw_info["server"]["temp_dir"] . $sep
-					 . $phpgw_info["user"]["sessionid"] . $sep . $file);
+	if (file_exists($upload_dir))
+	{
+		@set_time_limit(0);
+		$dh = opendir($upload_dir);
+		while ($file = readdir($dh))
+		{
+			if ($file != '.' && $file != '..')
+			{
+				if (! ereg("\.info",$file))
+				{
+					$total_files++;
+					$size = filesize($upload_dir.SEP.$file);
 
-              $file_info = file($phpgw_info["server"]["temp_dir"] . $sep
-					  . $phpgw_info["user"]["sessionid"] . $sep . $file . ".info");
+					$fd = fopen ($upload_dir.SEP.$file.'.info','rb');
+					while (!feof ($fd))
+					{
+						$file_info[] = chop(fgets($fd, 4096));
+					}
+					fclose ($fd);
 
-              $file_info[0] = chop($file_info[0]);
-              $file_info[1] = chop($file_info[1]);
+					set_magic_quotes_runtime(0); 
+					$fh = fopen($upload_dir.SEP.$file,'rb');
+//					$rawfile = fread($fh,$size);
+					$encoded_attach = chunk_split(base64_encode(fread($fh,$size)));
+					fclose($fh);
+					set_magic_quotes_runtime(get_magic_quotes_gpc());
 
-              $fh = fopen($phpgw_info["server"]["temp_dir"] . $sep
-				. $phpgw_info["user"]["sessionid"]
-				. $sep . $file,"r");
+					$body .= "\n\n".'--Message-Boundary'."\n"
+						. 'Content-type: '.$file_info[0].'; name="'.$file_info[1].'"'."\n"
+						. 'Content-Transfer-Encoding: BASE64'."\n"
+						. 'Content-disposition: attachment; filename="'.$file_info[1].'"'."\n\n"
+						. $encoded_attach.'--Message-Boundary--'."\n";
+					unlink($upload_dir.SEP.$file);
 
-              $rawfile = fread($fh,$size);
-              $encoded_attach = chunk_split(base64_encode($rawfile));
+					unlink($upload_dir.SEP.$file.'.info');
+				}	// if ! .info
+			}	// if ! . or ..
+		} 		// while dirread
+		rmdir($upload_dir);
+	}		// if dir
 
-              $body .= "\n\n--Message-Boundary\n"
-                         . "Content-type: $file_info[0]; name=\"$file_info[1]\"\n"
-                         . "Content-Transfer-Encoding: BASE64\n"
-                         . "Content-disposition: attachment; filename=\"$file_info[1]\"\n\n"
-                         . $encoded_attach . "\n"; 
-              unlink($phpgw_info["server"]["temp_dir"] . $sep
-		   . $phpgw_info["user"]["sessionid"] . $sep . $file);
-
-              unlink($phpgw_info["server"]["temp_dir"] . $sep
-		   . $phpgw_info["user"]["sessionid"] . $sep . $file . ".info");
-           }	// if ! .info
-        }	// if ! . or ..
-     } 		// while dirread
-     rmdir($phpgw_info["server"]["temp_dir"] . $sep . $phpgw_info["user"]["sessionid"]);
-  }		// if dir
-
-  $rc = $phpgw->send->msg("email", $to, $subject, stripslashes($body), "", $cc, $bcc);
-  if ($rc) {
-//    header("Location: " . $phpgw->link("index.php","cd=13&folder=" . urlencode($return)) );
-    $return = ereg_replace ("^\r\n", "", $return);
-    header("Location: " . $phpgw->link("/email/index.php","folder=" . urlencode($return)) );
-  } else {
-    echo "Your message could <B>not</B> be sent!<BR>\n";
-    echo "The mail server returned:<BR>".
-         "err_code: '".$phpgw->send->err["code"]."';<BR>".
-         "err_msg: '".htmlspecialchars($phpgw->send->err[msg])."';<BR>\n".
-         "err_desc: '".$phpgw->err[desc]."'.<P>\n";
-    echo "To go back to the msg list, click <A HRef=\"".$phpgw->link("/email/index.php","cd=13&folder=" . urlencode($return))."\">here</a>";
-  }
-  $phpgw->common->phpgw_footer();
+	$rc = $phpgw->send->msg('email', $to, $subject, stripslashes($body), '', $cc, $bcc);
+	if ($rc)
+	{
+//		header('Location: '.$phpgw->link('index.php','cd=13&folder='.urlencode($return)));
+		$return = ereg_replace ("^\r\n", '', $return);
+		header('Location: '.$phpgw->link('/email/index.php','folder='.urlencode($return)));
+	}
+	else
+	{
+		echo 'Your message could <B>not</B> be sent!<BR>'."\n"
+    		. 'The mail server returned:<BR>'
+			. "err_code: '".$phpgw->send->err['code']."';<BR>"
+			. "err_msg: '".htmlspecialchars($phpgw->send->err['msg'])."';<BR>\n"
+			. "err_desc: '".$phpgw->err['desc']."'.<P>\n"
+			. 'To go back to the msg list, click <a href="'.$phpgw->link('/email/index.php','cd=13&folder='.urlencode($return)).'">here</a>';
+	}
+	$phpgw->common->phpgw_footer();
 ?>

@@ -24,9 +24,20 @@
 
 	include('../header.inc.php');
 
+
+	if (!file_exists($phpgw_info['server']['temp_dir']))
+	{
+		mkdir($phpgw_info['server']['temp_dir'],0700);
+	}
+
+	if (!file_exists($phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid']))
+	{
+		mkdir($phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'],0700);
+	}
+
 	echo '<body bgcolor="' . $phpgw_info['theme']['bg_color'] . '">';
 
-	// Some on the methods where borrowed from
+	// Some on the methods were borrowed from
 	// Squirrelmail <Luke Ehresman> http://www.squirrelmail.org
 
 	$uploaddir = $phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'] . SEP;
@@ -57,14 +68,9 @@
 			copy($uploadedfile, $uploaddir . $newfilename);
 		}
 
-		$ftp = fopen($uploaddir . $newfilename . '.info','w');
+		$ftp = fopen($uploaddir . $newfilename . '.info','wb');
 		fputs($ftp,$uploadedfile_type."\n".$uploadedfile_name."\n");
 		fclose($ftp);
-	}
-
-	if (!file_exists($phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid']))
-	{
-		mkdir($phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'],0700);
 	}
 ?>
     <form ENCTYPE="multipart/form-data" method="POST" action="<?php echo $phpgw->link('/email/attach_file.php')?>">
