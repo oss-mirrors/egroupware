@@ -1001,8 +1001,8 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uiprojects.list_projects',
-				'pro_main'		=> $pro_main,
-				'action'		=> $action,
+				'pro_main'	=> $pro_main,
+				'action'	=> $action,
 				'project_id'	=> $project_id,
 				'pro_parent'	=> $pro_parent
 			);
@@ -1086,6 +1086,8 @@
 			$GLOBALS['phpgw']->template->set_file(array('edit_form' => 'form.tpl'));
 			$GLOBALS['phpgw']->template->set_block('edit_form','main','mainhandle');
 
+			$GLOBALS['phpgw']->template->set_block('edit_form','navbar','navbarhandle');
+
 			$GLOBALS['phpgw']->template->set_block('edit_form','clist','clisthandle');
 			$GLOBALS['phpgw']->template->set_block('edit_form','cfield','cfieldhandle');
 
@@ -1147,6 +1149,8 @@
 
 			if ($project_id)
 			{
+				$GLOBALS['phpgw']->template->set_var('navbarhandle','');
+				$GLOBALS['phpgw']->template->fp('navbarhandle','navbar',True);
 				$values = $this->boprojects->read_single_project($project_id);
 				//_debug_array($values);
 				$GLOBALS['phpgw']->template->set_var('old_status',$values['status']);
@@ -1478,8 +1482,8 @@
 					break;
 				default:
 					$GLOBALS['phpgw']->template->set_var('coordinator_list',$this->employee_format(array('selected' => ($values['coordinator']?$values['coordinator']:$this->boprojects->account))));
-						$GLOBALS['phpgw']->template->set_var('cfieldhandle','');
-						$GLOBALS['phpgw']->template->fp('clisthandle','clist',True);
+					$GLOBALS['phpgw']->template->set_var('cfieldhandle','');
+					$GLOBALS['phpgw']->template->fp('clisthandle','clist',True);
 
 					$GLOBALS['phpgw']->template->set_var
 					(	
@@ -1493,8 +1497,8 @@
 							)
 						)
 					);
-						$GLOBALS['phpgw']->template->set_var('efieldhandle','');
-						$GLOBALS['phpgw']->template->fp('elisthandle','elist',True);
+					$GLOBALS['phpgw']->template->set_var('efieldhandle','');
+					$GLOBALS['phpgw']->template->fp('elisthandle','elist',True);
 					break;
 			}
 
@@ -1523,58 +1527,61 @@
 
 
 // the milestones part
-			$pro = $this->boprojects->read_single_project($project_id);
-			$GLOBALS['phpgw']->template->set_var('title_pro',$pro['title']);
-			$GLOBALS['phpgw']->template->set_var('pro_url',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.view_project&action='
-														. ($pro['level']==0?'mains':'subs') . '&project_id=' . $project_id));
-			$GLOBALS['phpgw']->template->set_var('coordinator_pro',$pro['coordinatorout']);
-			$GLOBALS['phpgw']->template->set_var('number_pro',$pro['number']);
-			$GLOBALS['phpgw']->template->set_var('customer_pro',$pro['customerout']);
-			$GLOBALS['phpgw']->template->set_var('url_pro',$pro['url']);
-			$GLOBALS['phpgw']->template->parse('pro','project_data',True);
-
-			$GLOBALS['phpgw']->template->set_var('message',$message);
-			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
-
-			$mstones = $this->boprojects->get_mstones($project_id);
-
-			$link_data['menuaction'] = 'projects.uiprojects.editMilestone';
-			$GLOBALS['phpgw']->template->set_var('add_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
-
-			for($i=0;$i<count($mstones);$i++)
+			if ($project_id)
 			{
-				$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
+				$pro = $this->boprojects->read_single_project($project_id);
+				$GLOBALS['phpgw']->template->set_var('title_pro',$pro['title']);
+				$GLOBALS['phpgw']->template->set_var('pro_url',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.view_project&action='
+														. ($pro['level']==0?'mains':'subs') . '&project_id=' . $project_id));
+				$GLOBALS['phpgw']->template->set_var('coordinator_pro',$pro['coordinatorout']);
+				$GLOBALS['phpgw']->template->set_var('number_pro',$pro['number']);
+				$GLOBALS['phpgw']->template->set_var('customer_pro',$pro['customerout']);
+				$GLOBALS['phpgw']->template->set_var('url_pro',$pro['url']);
+				$GLOBALS['phpgw']->template->parse('pro','project_data',True);
 
-				$link_data['s_id']			= $mstones[$i]['s_id'];
-				$link_data['edit']			= True;
-				
-				if($mstones[$i]['description'])
-				{
-					$msTitle = '<b>'.$mstones[$i]['title'].'</b><br>'.$mstones[$i]['description'];
-				}
-				else
-				{
-					$msTitle = '<b>'.$mstones[$i]['title'].'</b>';
-				}
-				$GLOBALS['phpgw']->template->set_var(array
-				(
-					'datedue'	=> $this->boprojects->formatted_edate($mstones[$i]['edate']),
-					'edit_url'	=> $GLOBALS['phpgw']->link('/index.php',$link_data),
-					'title'		=> $msTitle
-				));
-				unset($link_data['edit']);
+				$GLOBALS['phpgw']->template->set_var('message',$message);
+				$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
-				if ($this->boprojects->edit_perms(array('action' => $action,'project_id' => $project_id,'mstone' => True,'type' => 'delete')))
-				{
-					$link_data['menuaction']	= 'projects.uiprojects.editMilestone';
-					$link_data['deleteMS']		= True;
+				$mstones = $this->boprojects->get_mstones($project_id);
 
-					$GLOBALS['phpgw']->template->set_var('delete_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
-					$GLOBALS['phpgw']->template->set_var('delete_img','<img src="' . $GLOBALS['phpgw']->common->image('phpgwapi','delete')
+				$link_data['menuaction'] = 'projects.uiprojects.editMilestone';
+				$GLOBALS['phpgw']->template->set_var('add_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
+
+				for($i=0;$i<count($mstones);$i++)
+				{
+					$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
+		
+					$link_data['s_id']			= $mstones[$i]['s_id'];
+					$link_data['edit']			= True;
+					
+					if($mstones[$i]['description'])
+					{
+						$msTitle = '<b>'.$mstones[$i]['title'].'</b><br>'.$mstones[$i]['description'];
+					}
+					else
+					{
+						$msTitle = '<b>'.$mstones[$i]['title'].'</b>';
+					}
+					$GLOBALS['phpgw']->template->set_var(array
+					(
+						'datedue'	=> $this->boprojects->formatted_edate($mstones[$i]['edate']),
+						'edit_url'	=> $GLOBALS['phpgw']->link('/index.php',$link_data),
+						'title'		=> $msTitle
+					));
+					unset($link_data['edit']);
+
+					if ($this->boprojects->edit_perms(array('action' => $action,'project_id' => $project_id,'mstone' => True,'type' => 'delete')))
+					{
+						$link_data['menuaction']	= 'projects.uiprojects.editMilestone';
+						$link_data['deleteMS']		= True;
+
+						$GLOBALS['phpgw']->template->set_var('delete_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
+						$GLOBALS['phpgw']->template->set_var('delete_img','<img src="' . $GLOBALS['phpgw']->common->image('phpgwapi','delete')
 																		. '" border="0" title="' . lang('delete') . '">');
-					unset($link_data['deleteMS']);
+						unset($link_data['deleteMS']);
+					}
+					$GLOBALS['phpgw']->template->parse('list','mstone_list',True);
 				}
-				$GLOBALS['phpgw']->template->parse('list','mstone_list',True);
 			}
 
 			$GLOBALS['phpgw']->template->set_var('old_edate',$values['edate']);
@@ -1603,30 +1610,32 @@
 			$bolink		= CreateObject('infolog.bolink');
 			
 			$headValues = array(lang('name'),lang('size'),'');
-			$attachedFiles = $bolink->get_links('projects',$project_id,'file');
-
-			if(is_array($attachedFiles))
+			if ($project_id)
 			{
-				foreach($attachedFiles as $fileData)
+				$attachedFiles = $bolink->get_links('projects',$project_id,'file');
+	
+				if(is_array($attachedFiles))
 				{
-					$fileLinkData = array
-					(
-						'menuaction'	=> 'infolog.bolink.get_file',
-						'app'		=> 'projects',
-						'id'		=> $project_id,
-						'filename'	=> $fileData['id']
-					);
-					$rowID = $uiwidgets->tableViewAddRow();
-					$uiwidgets->tableViewAddTextCell($rowID,'<a href="'.
-						$GLOBALS['phpgw']->link('/index.php',$fileLinkData).'">'.
-						$fileData['id'].'</a>');
-					$uiwidgets->tableViewAddTextCell($rowID,$fileData['size'],'center');
-					$uiwidgets->tableViewAddTextCell($rowID,'<input type="checkbox" name="selected_file['.$fileData['link_id'].']">','center');
+					foreach($attachedFiles as $fileData)
+					{
+						$fileLinkData = array
+						(
+							'menuaction'	=> 'infolog.bolink.get_file',
+							'app'		=> 'projects',
+							'id'		=> $project_id,
+							'filename'	=> $fileData['id']
+						);
+						$rowID = $uiwidgets->tableViewAddRow();
+						$uiwidgets->tableViewAddTextCell($rowID,'<a href="'.
+							$GLOBALS['phpgw']->link('/index.php',$fileLinkData).'">'.
+							$fileData['id'].'</a>');
+						$uiwidgets->tableViewAddTextCell($rowID,$fileData['size'],'center');
+						$uiwidgets->tableViewAddTextCell($rowID,'<input type="checkbox" name="selected_file['.$fileData['link_id'].']">','center');
+					}
 				}
+				$GLOBALS['phpgw']->template->set_var('files_table',$uiwidgets->tableView($headValues));
 			}
 			
-			$GLOBALS['phpgw']->template->set_var('files_table',$uiwidgets->tableView($headValues));
-
 			$link_data['menuaction'] = 'projects.uiprojects.handle_fileupload';
 			$GLOBALS['phpgw']->template->set_var('action_url_files',$GLOBALS['phpgw']->link('/index.php',$link_data));
 

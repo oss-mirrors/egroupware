@@ -31,6 +31,7 @@
 
 <center>
 <p>{message}</p>
+<!-- BEGIN navbar -->
 <table width="100%" border="0" cellspacing="0" cellpading="0" bgcolor="white">
 	<tr>
 		<th width="33%" id="tab1" class="activetab" onclick="javascript:tab.display(1);"><a href="#" tabindex="0" accesskey="1" onfocus="tab.display(1);" onclick="tab.display(1); return(false);" style="font-size:10px;">{lang_project_overview}</a></th>
@@ -38,6 +39,7 @@
 		<th width="33%" id="tab3" class="activetab" onclick="javascript:tab.display(3);"><a href="#" tabindex="0" accesskey="3" onfocus="tab.display(3);" onclick="tab.display(3); return(false);" style="font-size:10px;">{lang_files}</a></th>
 	</tr>
 </table>
+<!-- END navbar -->
 {message_main}
 {message_milestone}
 <br>
