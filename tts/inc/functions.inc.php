@@ -58,13 +58,13 @@ function mail_ticket($ticket_id) {
   }
 
   for($j=0;$j<=$i;$j++) {
-    $phpgw->db->query("SELECT preference_value FROM preferences WHERE preference_owner=".$account_id[$j]." AND preference_appname='email' AND preference_name='address'");
+/*    $phpgw->db->query("SELECT preference_value FROM preferences WHERE preference_owner=".$account_id[$j]." AND preference_appname='email' AND preference_name='address'");
     $phpgw->db->next_record();
     if($phpgw->db->f("preference_value")) {
       $toarray[$j] = $phpgw->db->f("preference_value");
-    } else {
+    } else {  */
       $toarray[$j] = $account_lid[$j]."@".$phpgw_info["server"]["mail_suffix"];
-    }
+//    }
   }
   if(count($toarray)) {
     $to = implode(",",$toarray);
