@@ -249,7 +249,7 @@
 
 				//  if directory show directory else show sections with all directories
 				// FIXME register globals off
-				if(!isset($GLOBALS[dir])
+				if(!isset($GLOBALS['dir']))
 				{
 
 					foreach($this->dir_arr as $dir)
