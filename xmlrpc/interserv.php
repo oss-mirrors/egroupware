@@ -178,8 +178,7 @@
 				'eyear'  => date('Y'),
 				'emonth' => date('m'),
 				'eday'   => date('d'),
-				'owner'  => -1,
-				'no_doubles' => True,
+				'xmlrpc' => 1
 			),
 			$is->server['server_url']
 		);
