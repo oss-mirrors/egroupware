@@ -33,6 +33,9 @@
 	(
 	   'string',
 	   'char',
+	   'int',
+	   'tinyint',
+	   'smallint',
 	   'varchar',
 		'text'
 	);
