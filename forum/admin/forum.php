@@ -19,29 +19,27 @@
 
   $actiontype = "addforum";
   $buttontext = lang("Add Forum");
-  $extrahidden = "";
 
   if($act == "edit") {
-   if(!$phpgw->db->query("select * from f_forums where id=$for_id")) {
-    print "Error in reading database<br>\n";
-     $phpgw->common->phpgw_exit();
-   } else {
-    $phpgw->db->next_record(); 
-    $forname = $phpgw->db->f("name");
-    $fordescr = $phpgw->db->f("descr");
-    $cat_id = $phpgw->db->f("cat_id");
-    if ($cat_id > 0) {
-      if(!$phpgw->db->query("select * from f_categories where id=$cat_id")) {
-       print "Error in readindg database<br>\n";
-       $phpgw->common->phpgw_exit();
-      } else $phpgw->db->next_record();
-      $catname = $phpgw->db->f("name");
-    } else $catname = lang("No Catagory");
-      $extraselect = "<option value=\"" . $cat_id . "\">" . $catname ."</option>";
+    if(!$phpgw->db->query("select * from f_forums where id=$for_id")) {
+      print "Error in reading database<br>\n";
+      $phpgw->common->phpgw_exit();
+    } else {
+      $phpgw->db->next_record(); 
+      $forname = $phpgw->db->f("name");
+      $fordescr = $phpgw->db->f("descr");
+      $cat_id = $phpgw->db->f("cat_id");
+      if ($cat_id > 0) {
+        if(!$phpgw->db->query("select * from f_categories where id=$cat_id")) {
+          print "Error in readindg database<br>\n";
+          $phpgw->common->phpgw_exit();
+        } else $phpgw->db->next_record();
+        $catname = $phpgw->db->f("name");
+      } else $catname = lang("No Category");
       $extrahidden = "<input type=\"hidden\" name=\"for_id\" value=\"$for_id\">";
       $buttontext = lang("Update Forum");
       $actiontype = "updforum";
-   }
+    }
   }
 
   
@@ -105,13 +103,13 @@ echo "<a href=\"" . $phpgw->link("/forum") . "\">" . lang("Return to Forums") ."
     <td>
      <select name="goestocat">
 <?
-    if($extraselect) echo $extraselect;
     $q = $phpgw->db->query("select * from f_categories");
-    $phpgw->db->next_record($q);
+
     while($phpgw->db->next_record($q)) {
-     $cat_id = $phpgw->db->f("id");
-     $cat_name = $phpgw->db->f("name");
-     echo "<option value=\"$cat_id\">$cat_name</option>\n";
+      $cat_id = $phpgw->db->f("id");
+      $cat_name = $phpgw->db->f("name");
+      if ($catname==$cat_name) { echo "<option value=\"$cat_id\" selected>$cat_name</option>\n"; }
+      else { echo "<option value=\"$cat_id\">$cat_name</option>\n"; }
     }
 ?>
     <option value=-1><? echo lang("No Category") ?></option>
