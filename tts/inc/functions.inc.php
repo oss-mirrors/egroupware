@@ -45,17 +45,28 @@ function mail_ticket($ticket_id) {
     $body .= "Date Closed: ".$phpgw->common->show_date($phpgw->db->f("t_timestamp_closed"))."\n\n";
   $body .= stripslashes(strip_tags($phpgw->db->f("t_detail")))."\n\n.";
 
-  $phpgw->db->query("SELECT group_id FROM groups WHERE group_name='$group'");
+  $phpgw->db->query("SELECT group_id FROM groups WHERE group_name='".$group."'");
   $phpgw->db->next_record();
   $group_id = $phpgw->db->f("group_id");
-  $phpgw->db->query("SELECT account_lid FROM accounts WHERE account_groups LIKE '%,".$group_id.":%'");
+  $phpgw->db->query("SELECT account_lid, account_id FROM accounts WHERE account_groups LIKE '%,".$group_id.":%'");
   $toarray = Array();
   $i = -1;
   while($phpgw->db->next_record()) {
     $i++;
-    $toarray[$i] = $phpgw->db->f("account_lid")."@".$phpgw_info["server"]["mail_suffix"];
+    $account_id[$i] = $phpgw->db->f("account_id");
+    $account_lid[$i] = $phpgw->db->f("account_lid");
   }
-  if($i) {
+
+  for($j=0;$j<=$i;$j++) {
+    $phpgw->db->query("SELECT preference_value FROM preferences WHERE preference_owner=".$account_id[$j]." AND preference_appname='email' AND preference_name='address'");
+    $phpgw->db->next_record();
+    if($phpgw->db->f("preference_value")) {
+      $toarray[$j] = $phpgw->db->f("preference_value");
+    } else {
+      $toarray[$j] = $account_lid[$j]."@".$phpgw_info["server"]["mail_suffix"];
+    }
+  }
+  if($count($toarray)) {
     $to = implode($toarray,",");
   } else {
     $to = $toarray[0];
