@@ -384,7 +384,7 @@
 
 			if ($check == 'par')
 			{
-				$this->db->query("select count(*) from phpgw_p_projects where pro_parent = '$pa_id'",__LINE__,__FILE__);
+				$this->db->query("select count(*) from phpgw_p_projects where parent = '$pa_id'",__LINE__,__FILE__);
 			}
 			$this->db->next_record();
 
