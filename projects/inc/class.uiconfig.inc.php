@@ -405,7 +405,7 @@
             $GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
             $GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(array('query' => $this->query)));
 
-			switch($prefs['activity_bill'])
+			switch($this->siteconfig['activity_bill'])
 			{
 				case 'wu':	$bill = lang('Bill per workunit'); break;
 				case 'h':	$bill = lang('Bill per hour'); break;
@@ -419,7 +419,7 @@
 			$GLOBALS['phpgw']->template->set_var('sort_descr',$this->nextmatchs->show_sort_order($this->sort,'descr',$this->order,'/index.php',lang('Description')));
 			$GLOBALS['phpgw']->template->set_var('sort_billperae',$this->nextmatchs->show_sort_order($this->sort,'billperae',$this->order,'/index.php',$bill));
 
-			if ($prefs['activity_bill'] == 'wu')
+			if ($this->siteconfig['activity_bill'] == 'wu')
 			{
 				$GLOBALS['phpgw']->template->set_var('sort_minperae','<td width="10%" align="right">' . $this->nextmatchs->show_sort_order($this->sort,'minperae',
 									$this->order,'/index.php',lang('Minutes per workunit') . '</td>'));
@@ -442,7 +442,7 @@
 										'descr' => $descr,
 									'billperae' => $act[$i]['billperae']));
 
-				if ($prefs['activity_bill'] == 'wu')
+				if ($this->siteconfig['activity_bill'] == 'wu')
 				{
 					$GLOBALS['phpgw']->template->set_var('minperae','<td align="right">' . $act[$i]['minperae'] . '</td>');
 				}
@@ -555,7 +555,7 @@
 
 			$GLOBALS['phpgw']->template->set_var('remarkreq_list',$remarkreq_list);
 
-			if ($prefs['activity_bill'] == 'wu')
+			if ($this->siteconfig['activity_bill'] == 'wu')
 			{
     			$GLOBALS['phpgw']->template->set_var('lang_billperae',lang('Bill per workunit'));
 				$GLOBALS['phpgw']->template->set_var('lang_minperae',lang('Minutes per workunit'));
