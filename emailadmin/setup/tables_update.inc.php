@@ -10,36 +10,27 @@
 	*  Free Software Foundation; either version 2 of the License, or (at your  *
 	*  option) any later version.                                              *
 	\**************************************************************************/
-
 	/* $Id$ */
-/*
-	$test[] = "0.9.4pre3";
-	function notes_upgrade0_9_4pre3()
-	{
-		global $setup_info;
-		$setup_info['notes']['currentver'] = '0.9.4pre4';
-		return $setup_info['notes']['currentver'];
-	}
 
-	$test[] = '0.9.13.001';
-	function notes_upgrade0_9_13_001()
-	{
-		global $setup_info,$phpgw_setup;
-
-		$phpgw_setup->oProc->AlterColumn('phpgw_notes','note_access', array('type' => 'varchar', 'precision' => 7));
-
-		$setup_info['notes']['currentver'] = '0.9.13.002';
-		return $setup_info['notes']['currentver'];
-	}
-*/
 	$test[] = '0.0.1';
 	function qmailldap_upgrade0_0_1()
 	{
 		global $setup_info,$phpgw_setup;
-		
+
 		$phpgw_setup->oProc->AddColumn('phpgw_qmailldap','description', array('type' => 'varchar', 'precision' => 200));		
 
 		$setup_info['qmailldap']['currentver'] = '0.0.2';
 		return $setup_info['qmailldap']['currentver'];
+	}
+
+	$test[] = '0.0.2';
+	function qmailldap_upgrade0_0_2()
+	{
+		$GLOBALS['phpgw_setup']->oProc->query("INSERT INTO phpgw_hooks (hook_appname,hook_location,hook_filename) VALUES ('qmailldap','add_def_pref','hook_add_def_pref.inc.php')");
+		$GLOBALS['phpgw_setup']->oProc->query("INSERT INTO phpgw_hooks (hook_appname,hook_location,hook_filename) VALUES ('qmailldap','manual','hook_manual.inc.php')");
+		$GLOBALS['phpgw_setup']->oProc->query("INSERT INTO phpgw_hooks (hook_appname,hook_location,hook_filename) VALUES ('qmailldap','about','hook_about.inc.php')");
+		$GLOBALS['phpgw_setup']->oProc->query("INSERT INTO phpgw_hooks (hook_appname,hook_location,hook_filename) VALUES ('qmailldap','edit_user','hook_edit_user.inc.php')");
+		$GLOBALS['setup_info']['qmailldap']['currentver'] = '0.0.3';
+		return $GLOBALS['setup_info']['qmailldap']['currentver'];
 	}
 ?>
