@@ -14,7 +14,7 @@
   $phpgw_info["flags"]["currentapp"] = "preferences";
   include("../header.inc.php");
   if (! $submit) {
-    $phpgw->common->header();
+    $phpgw->common->phpgw_header();
     $phpgw->common->navbar();
 ?>
     <form method="POST" action="<?php echo $phpgw->link($PHP_SELF); ?>">

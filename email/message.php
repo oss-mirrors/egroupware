@@ -26,7 +26,7 @@
     Header("Location: " . $phpgw->link("message_$msgtype.php","folder=". urlencode($folder)."&msgnum=".$msgnum));
     exit;
   } else {
-    $phpgw->common->header();
+    $phpgw->common->phpgw_header();
   }
 
   $msg = $phpgw->msg->header($mailbox, $msgnum);
