@@ -63,7 +63,13 @@
 		{
 			unset($GLOBALS['phpgw']->config->config_data['assignednotification']);
 		}
-
+		if( $GLOBALS['phpgw']->config->config_data['ownernotification'] ||
+			$GLOBALS['phpgw']->config->config_data['groupnotification'] ||
+			$GLOBALS['phpgw']->config->config_data['assignednotification']) {
+			$GLOBALS['phpgw']->config->config_data['mailnotification'] = True;
+		} else {
+			unset($GLOBALS['phpgw']->config->config_data['mailnotification']);
+		}
 		$GLOBALS['phpgw']->config->save_repository(True);
 		$GLOBALS['phpgw']->redirect_link('/tts/index.php');
 	}
