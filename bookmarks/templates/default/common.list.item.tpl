@@ -7,7 +7,7 @@
     {DELETE_LINK}
   </td>
   <td bgcolor="#FFFF99" >
-    <a href="{BOOKMARK_URL}">{BOOKMARK_NAME}</a>
+    <a href="{BOOKMARK_URL}" target="_new">{BOOKMARK_NAME}</a>
   </td>
 </tr>
 <tr valign="top">

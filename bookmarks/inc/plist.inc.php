@@ -70,17 +70,17 @@
    //     $public_sql = " or bookmark.public_f='Y' ";
 
    $query = sprintf("select bookmarks_category.name as category_name, bookmarks.category_id, 
-                    bookmarks_subcategory.name as subcategory_name, bookmarks.subcategory_id, bookmarks.id, 
-                    bookmarks.url, bookmarks.name as bookmarks_name, bookmarks.ldesc, bookmarks.keywords, 
-                    bookmarks_rating.name as rating_name, bookmarks.rating_id, bookmarks.username
-                    from bookmarks, bookmarks_category, bookmarks_subcategory, bookmarks_rating 
-                    where (bookmarks.category_id = bookmarks_category.id 
-                    and bookmarks_category.username = bookmarks.username 
-                    and bookmarks.subcategory_id = bookmarks_subcategory.id 
-                    and bookmarks_subcategory.username = bookmarks.username 
-                    and bookmarks.rating_id = bookmarks_rating.id 
-                    and bookmarks_rating.username = bookmarks.username)
-                    and (bookmarks.username = '%s')", $phpgw_info["user"]["account_id"]);
+                     bookmarks_subcategory.name as subcategory_name, bookmarks.subcategory_id, bookmarks.id, 
+                     bookmarks.url, bookmarks.name as bookmark_name, bookmarks.ldesc, bookmarks.keywords, 
+                     bookmarks_rating.name as rating_name, bookmarks.rating_id, bookmarks.username
+                     from bookmarks, bookmarks_category, bookmarks_subcategory, bookmarks_rating 
+                     where (bookmarks.category_id = bookmarks_category.id 
+                     and bookmarks_category.username = bookmarks.username 
+                     and bookmarks.subcategory_id = bookmarks_subcategory.id 
+                     and bookmarks_subcategory.username = bookmarks.username 
+                     and bookmarks.rating_id = bookmarks_rating.id 
+                     and bookmarks_rating.username = bookmarks.username)
+                     and (bookmarks.username = '%s')", $phpgw_info["user"]["account_id"]);
   
    if ($where_clause != "") {
       $where_clause_sql = " and " . $where_clause;
@@ -137,7 +137,7 @@
                                MAIL_THIS_LINK_URL => $phpgw->link("maillink.php","id=".$phpgw->db->f("id")),
                                BOOKMARK_USERNAME  => $phpgw->db->f("username"),
                                BOOKMARK_ID        => $phpgw->db->f("id"),
-                               BOOKMARK_URL       => $phpgw->db->f("url"),
+                               BOOKMARK_URL       => $phpgw->link("redirect.php?url=" . urlencode($phpgw->db->f("url"))),
                                BOOKMARK_RATING    => htmlspecialchars(stripslashes($phpgw->db->f("rating_name"))),
                                BOOKMARK_RATING_ID => $phpgw->db->f("rating_id"),
                                BOOKMARK_NAME      => htmlspecialchars(stripslashes($phpgw->db->f("bookmark_name"))),
