@@ -151,7 +151,7 @@
                   . "WHERE id='$project_id' AND p_projects.customer=ab_id");
   if($phpgw->db->next_record()) {
     
-    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                               
+    $title = stripslashes($phpgw->db->f("title"));                                                                                                                               
     if (! $title)  $title  = "&nbsp;";
 
     $t->set_var("project",$title);
@@ -178,7 +178,7 @@
     } else {     */
       $t->set_var(delivery_num,$delivery_num);
     else
-      $t->set_var(delivery_num,$phpgw->strip_html($delivery_num));
+      $t->set_var(delivery_num,stripslashes($delivery_num));
 
   if(!$Delivery) {
      $choose = "<input type=\"checkbox\" name=\"choose\" value=\"True\">";                                                                                                            
@@ -192,7 +192,8 @@
                   . "p_hours LEFT JOIN p_activities ON p_hours.activity_id=p_activities.id "
 		  . " LEFT JOIN p_deliverypos ON p_hours.id=p_deliverypos.hours_id "
 		  . " WHERE p_hours.project_id='$project_id' and p_deliverypos.id IS NULL $ordermethod");
-  } else {
+     } 
+    else {
     $phpgw->db->query("SELECT date FROM p_delivery WHERE id=$delivery_id");
     $phpgw->db->next_record();
     $date=$phpgw->db->f("date");    
@@ -207,12 +208,13 @@
     	$n_month[$phpgw->common->show_date($date,"n")] = " selected";
 	$n_day			 = $phpgw->common->show_date($date,"d");
 	$n_year			 = $phpgw->common->show_date($date,"Y");
-  } else {
+   } 
+   else {
         $n_month[date("n",time())]		 = " selected";
 	$n_day			 = date("j",time());
 	$n_year			 = date("Y",time());
-  }
-  $date_formatorder ="<select name=month>\n"
+   }
+   $date_formatorder ="<select name=month>\n"
                . "<option value=\"\"$n_month[0]> </option>\n"
                . "<option value=\"1\"$n_month[1]>" . lang("January") . "</option>\n" 
                . "<option value=\"2\"$n_month[2]>" . lang("February") . "</option>\n"
@@ -238,10 +240,10 @@
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\" checked>";
 
-    $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                               
+    $activity = stripslashes($phpgw->db->f("descr"));                                                                                                                               
     if (! $activity)  $activity  = "&nbsp;";    
     
-    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                               
+    $remark = stripslashes($phpgw->db->f("remark"));                                                                                                                               
     if (! $remark)  $remark  = "&nbsp;";
 
     $status = lang($phpgw->db->f("status"));
@@ -292,10 +294,10 @@
       $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
       $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\">";
 
-    $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                               
+    $activity = stripslashes($phpgw->db->f("descr"));                                                                                                                               
     if (! $activity)  $activity  = "&nbsp;";
 
-    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                               
+    $remark = stripslashes($phpgw->db->f("remark"));                                                                                                                               
     if (! $remark)  $remark  = "&nbsp;";
   
       $status = lang($phpgw->db->f("status"));

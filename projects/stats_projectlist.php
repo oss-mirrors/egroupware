@@ -118,23 +118,23 @@
   $db2 = $phpgw->db;
   
   if ($query) {
-     $phpgw->db->query("SELECT p_projects.*,accounts.account_firstname,accounts.account_lastname,accounts.account_lid FROM "
-                 . "p_projects,accounts WHERE $filtermethod AND accounts.account_id=p_projects.coordinator AND "
+     $phpgw->db->query("SELECT p_projects.*,account_id,account_firstname,account_lastname,account_lid FROM "
+                 . "p_projects,phpgw_accounts WHERE $filtermethod AND account_id=p_projects.coordinator AND "
                  . "(title like '%$query%' OR descr like '%$query%') $ordermethod limit $limit");
      } 
     else {
-     $phpgw->db->query("SELECT p_projects.*,accounts.account_firstname,accounts.account_lastname,accounts.account_lid FROM "
-                 . "p_projects,accounts WHERE accounts.account_id=p_projects.coordinator AND $filtermethod "
+     $phpgw->db->query("SELECT p_projects.*,account_id,account_firstname,account_lastname,account_lid FROM "
+                 . "p_projects,phpgw_accounts WHERE account_id=p_projects.coordinator AND $filtermethod "
                  . "$ordermethod limit $limit");
     }
 
   while ($phpgw->db->next_record()) {
     
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                   
+    $title = stripslashes($phpgw->db->f("title"));                                                                                                                                   
         if (! $title)  $title  = "&nbsp;";
 
-    $num = $phpgw->strip_html($phpgw->db->f("num"));
+    $num = stripslashes($phpgw->db->f("num"));
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
 

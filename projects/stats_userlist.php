@@ -45,14 +45,14 @@
   $filtermethod = "account_status='A'";
 
   if ($query) {
-     $phpgw->db->query("select count(*) from accounts where $filtermethod");
+     $phpgw->db->query("select count(*) from phpgw_accounts where $filtermethod");
      $phpgw->db->next_record();
      if ($phpgw->db->f(0) == 1)
         $t->set_var(total_matchs,lang("your search returned 1 match"));
      else
         $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
   } else {
-     $phpgw->db->query("select count(*) from accounts where $filtermethod");
+     $phpgw->db->query("select count(*) from phpgw_accounts where $filtermethod");
   }
 
   $phpgw->db->next_record();                                                                      
@@ -92,7 +92,7 @@
 //  $limit = $phpgw->db->limit($start);
 
      $phpgw->db->query("SELECT account_id,account_lid,accounts.account_firstname,accounts.account_lastname FROM "
-                 . "accounts WHERE $filtermethod $ordermethod limit $limit");
+                 . "phpgw_accounts WHERE $filtermethod $ordermethod limit $limit");
 
      while ($phpgw->db->next_record()) {
      $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);

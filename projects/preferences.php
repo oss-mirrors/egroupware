@@ -22,7 +22,7 @@
   if ($submit) {
      $phpgw->preferences->change("projects","tax");
      $phpgw->preferences->change("projects","address");
-     $phpgw->preferences->commit();     
+     $phpgw->preferences->commit(True);     
      
     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/preferences/"));
     $phpgw->common->phpgw_exit();     
@@ -89,6 +89,6 @@
     
      $t->pparse("out","prefs");
     
-$phpgw->common->phpgw_footer();
-    ?>
+     $phpgw->common->phpgw_footer();
+?>
 

@@ -32,7 +32,8 @@
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/activities.php",
 	    "cd=16&sort=$sort&order=$order&query=$query&start="
 	  . "$start&filter=$filter"));
-  } else {
+   } 
+   else {
 	$common_hidden_vars =
  	  "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
  	. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
@@ -67,6 +68,6 @@
      $t->set_var("yeslink",$yeslink);
      
      $t->pparse("out", "activity_delete");
-  }
-$phpgw->common->phpgw_footer();
+    }
+   $phpgw->common->phpgw_footer();
 ?>

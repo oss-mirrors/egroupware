@@ -51,11 +51,6 @@
 
      $t = new Template($phpgw_info["server"]["app_tpl"]);
      $t->set_file(array( "projects_edit" => "form.tpl"));
-     
-     // ====================================================================
-     // create two seperate blocks, addblock will be cut off from template
-     // editblock contains the buttons and forms for edit
-     // ====================================================================
      $t->set_block("projects_edit", "add", "addhandle");
      $t->set_block("projects_edit", "edit", "edithandle");
      
@@ -74,14 +69,14 @@
      $t->set_var("lang_action",lang("Edit project"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      $t->set_var("lang_num",lang("Project ID"));
-     $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
+     $t->set_var("num",stripslashes($phpgw->db->f("num")));
      $t->set_var("lang_choose","");                                                                                                                    
      $t->set_var("choose","");
      $t->set_var("lang_title",lang("Title"));
-     $title  = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                               
+     $title  = stripslashes($phpgw->db->f("title"));                                                                                                                               
      if (! $title)  $title  = "&nbsp;";                                                                                                                                                  
      $t->set_var("title",$title);
-     $descrval  = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                               
+     $descrval  = stripslashes($phpgw->db->f("descr"));                                                                                                                               
      if (! $descrval)  $descrval  = "&nbsp;";                                                                                                                                                  
      $t->set_var("descrval",$descrval);
 
@@ -162,7 +157,7 @@
 
      $t->set_var("lang_coordinator",lang("Coordinator"));
      
-     $db2->query("SELECT account_id,account_firstname,account_lastname FROM accounts where "
+     $db2->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
                      . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
      while ($db2->next_record()) {
         $coordinator_list .= "<option value=\"" . $db2->f("account_id") . "\"";
@@ -186,10 +181,11 @@
                      . "ab_company_id='" .$phpgw->db->f("customer")."'");
     if ($db2->next_record()) {
         $t->set_var("customer_name",$db2->f("company_name")." [ ".$db2->f("ab_firstname")." ".$db2->f("ab_lastname")." ]");
-    } else {
+      } 
+    else {
         $t->set_var("customer_name","");
-    }
-    }
+      }
+     }
     else {
     $db2->query("select ab_id,ab_lastname,ab_firstname,ab_company from addressbook where "
                         . "ab_id='" .$phpgw->db->f("customer")."'");
@@ -265,7 +261,7 @@
     $t->set_var("access_list",$access_list);
     $t->set_var("lang_which_groups",lang("Which groups"));
     
-    $user_groups = $phpgw->accounts->read_group_names();
+    $user_groups = $phpgw->common->sql_search();
 
 	       for ($i=0;$i<count($user_groups);$i++) {
                   $group_list .= "<option value=\"" . $user_groups[$i][0] . "\"";
@@ -377,6 +373,6 @@
     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/",
 	   "cd=15&sort=$sort&order=$order&query=$query&start="
 	 . "$start&filter=$filter"));
-  }
-$phpgw->common->phpgw_footer();
+   }
+   $phpgw->common->phpgw_footer();
 ?>

@@ -41,12 +41,6 @@
 
      $t = new Template($phpgw_info["server"]["app_tpl"]);
      $t->set_file(array( "activity_edit" => "formactivity.tpl"));
-     
-// ==========================================================================================
-//             create two seperate blocks, addblock will be cut off from template
-//             editblock contains the buttons and forms for edit
-// ==========================================================================================
-     
      $t->set_block("activity_edit", "add", "addhandle");
      $t->set_block("activity_edit", "edit", "edithandle");
      
@@ -64,9 +58,9 @@
      $t->set_var("lang_action",lang("Edit activity"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      $t->set_var("lang_num",lang("Activity ID"));
-     $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
+     $t->set_var("num",stripslashes($phpgw->db->f("num")));
      $t->set_var("lang_descr",lang("Description"));
-     $descr  = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                                
+     $descr  = stripslashes($phpgw->db->f("descr"));                                                                                                                                
      if (! $descr)  $descr  = "&nbsp;";
      $t->set_var("descr",$descr);
      $t->set_var("lang_remarkreq",lang("Remark required"));
@@ -92,8 +86,8 @@
     $t->set_var("addhandle","");
     $t->pparse("out","activity_edit");
     $t->pparse("edithandle","edit");
-
-  } else {
+    } 
+  else {
     // Create function to take care of this
 
     $phpgw->db->query("update p_activities set num='$num'," 
@@ -104,6 +98,6 @@
     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/activities.php",
 	   "cd=15&sort=$sort&order=$order&query=$query&start="
 	 . "$start&filter=$filter"));
-  }
-$phpgw->common->phpgw_footer();
+    }
+    $phpgw->common->phpgw_footer();
 ?>

@@ -90,11 +90,10 @@
                  . "$sort&query=$query","85%",$phpgw_info["theme"][th_bg]);
      $t->set_var(next_matchs,$next_matchs);
 
-  // ---------- end nextmatch template --------------------
+// ---------------------------- end nextmatch template ----------------------------------
 
-  // ===========================================
-  // list header variable template-declarations
-  // ===========================================
+// ------------------- list header variable template-declarations -----------------------
+
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
   $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"bill_index.php",lang("Project ID")));
   $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"bill_index.php",lang("Status")));
@@ -108,7 +107,7 @@
   $t->set_var(lang_all_invoicelist,lang("All invoices"));
   $t->set_var(all_invoicelist,$phpgw->link("bill_invoicelist.php","project_id="));
 
-  // -------------- end header declaration -----------------
+// ----------------------------- end header declaration ------------------------------------
 
     $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
 //    $limit = $phpgw->db->limit($start);  
@@ -116,23 +115,23 @@
     $db2 = $phpgw->db;
    
   if ($query) {                                                                                                                                           
-     $phpgw->db->query("SELECT p_projects.*,account_firstname,account_lastname FROM "                                                                     
-                 . "p_projects,accounts WHERE $filtermethod AND account_id=p_projects.coordinator AND status='active' "                                                   
+     $phpgw->db->query("SELECT p_projects.*,account_id,account_firstname,account_lastname FROM "                                                                     
+                 . "p_projects,phpgw_accounts WHERE $filtermethod AND account_id=p_projects.coordinator AND status='active' "                                                   
                  . "AND (title like '%$query%' OR descr like '%$query%') $ordermethod limit $limit");                                                         
      }                                                                                                                                                    
      else {
-    $phpgw->db->query("SELECT p_projects.*,account_firstname,account_lastname,account_lid FROM "
-                 . "p_projects,accounts WHERE $filtermethod AND account_id=p_projects.coordinator AND  status='active' "
+    $phpgw->db->query("SELECT p_projects.*,account_id,account_firstname,account_lastname,account_lid FROM "
+                 . "p_projects,phpgw_accounts WHERE $filtermethod AND account_id=p_projects.coordinator AND  status='active' "
                  . "$ordermethod limit $limit");
        }
     while ($phpgw->db->next_record()) {
   
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 
-    $title  = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                    
+    $title  = stripslashes($phpgw->db->f("title"));                                                                                                                                    
     if (! $title)  $title  = "&nbsp;";
 
-    $num  = $phpgw->strip_html($phpgw->db->f("num"));
+    $num  = stripslashes($phpgw->db->f("num"));
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
 
@@ -183,9 +182,7 @@
     $coordinatorout = $phpgw->db->f("account_lid") . " [" . $phpgw->db->f("account_firstname"). " " 
                                                . $phpgw->db->f("account_lastname"). " ]";
         
-    // ============================================
-    // template declaration for list records
-    // ============================================
+// ------------------ template declaration for list records --------------------------
 
     $t->set_var(array("num" => $num,
                       "customer" => $customerout,
@@ -199,7 +196,7 @@
                                                    . "\">". lang("Invoice list") . "</a>"));
        $t->parse("list", "projects_list", true);
 
-       // -------------- end record declaration ------------------------
+// ------------------------------ end record declaration -------------------------------
   }
 
        $t->parse("out", "projects_list_t", true);

@@ -99,7 +99,7 @@
      
      $db2 = $phpgw->db;
      
-     $db2->query("SELECT account_id,account_firstname,account_lastname,account_lid FROM accounts where "
+     $db2->query("SELECT account_id,account_firstname,account_lastname,account_lid FROM phpgw_accounts where "
                      . "account_status != 'L' ORDER BY account_lid,account_lastname,account_firstname asc");
           while ($db2->next_record()) {
             if($db2->f("account_id")==$phpgw->db->f("coordinator")){    
@@ -158,7 +158,7 @@
      $filter .= " AND date<='$end_date' ";                                                                                                                      
   }                                                                                                                                                             
   $phpgw->db->query("SELECT employee,account_firstname,account_lastname FROM p_hours"                                                                           
-                .",accounts WHERE project_id=$id AND p_hours.employee=account_id $filter GROUP BY employee");                                                  
+                .",phpgw_accounts WHERE project_id=$id AND p_hours.employee=account_id $filter GROUP BY employee");                                                  
                                                                                                                                                                 
   $t->set_var("hd_account",lang("Account"));                                                                                                                    
   $t->set_var("hd_activity",lang("Activity"));                                                                                                                 

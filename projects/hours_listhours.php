@@ -40,14 +40,13 @@
 
   $filtermethod = "employee='" . $phpgw_info["user"]["account_id"] . "' ";
 
-  if (!$filter) {
+  if (!$filter)
      $filter = "none";
-  }
-
+ 
   if ($project_id) {
      if ($filter=="none")
         $filter = "project_id=$project_id";
-  }
+     }
 
     if($filter != "private") {
       if($filter<>"none")     
@@ -64,31 +63,27 @@
         $t->set_var(total_matchs,lang("your search returned 1 match"));
      else
         $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
-  } else {
+       } 
+    else {
      $phpgw->db->query("select count(*) from p_hours where $filtermethod");
-  }
-
-  $phpgw->db->next_record();                                                                      
-
-  if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
+     $phpgw->db->next_record();                                                                      
+     if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
      $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
                            ($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),
                            $phpgw->db->f(0));
-  else
+     else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
+     $t->set_var(total_matchs,$total_matchs);                                                                                                               
+      }
 
-
-    // ===========================================
-    // nextmatch variable template-declarations
-    // ===========================================
+// ------------ nextmatch variable template-declarations ----------------------------
 
      $next_matchs = $phpgw->nextmatchs->show_tpl("hours_listhours.php",$start,$phpgw->db->f(0),
                    "&order=$order&filter=$filter&sort="
                  . "$sort&query=$query","85%",$phpgw_info["theme"][th_bg]);
      $t->set_var(next_matchs,$next_matchs);
-     $t->set_var(total_matchs,$total_matchs);
 
-  // ---------- end nextmatch template --------------------
+// ----------------------- end nextmatch template -------------------------------------
 
   // ===========================================
   // list header variable template-declarations

@@ -38,9 +38,8 @@
   else
      $ordermethod = "order by date asc";
 
-  if (! $filter) {
+  if (! $filter)
      $filter = "none";
-  }
 
   if ($project_id) {
      $phpgw->db->query("select count(*) from p_invoice where project_id=$project_id");
@@ -49,35 +48,29 @@
         $t->set_var(total_matchs,lang("your search returned 1 match"));
      else
         $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
-  } else {
+    } 
+    else {
      $phpgw->db->query("select count(*) from p_invoice");
-    $phpgw->db->next_record();
-  }
-
-  if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
+     $phpgw->db->next_record();
+     if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
      $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
                            ($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),
                            $phpgw->db->f(0));
-  else
+     else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
-     $phpgw->db->next_record();
+     $t->set_var(total_matchs,$total_matchs);
+     }
 
-
-    // ===========================================
-    // nextmatch variable template-declarations
-    // ===========================================
+// --------------------- nextmatch variable template-declarations -------------------------
 
      $next_matchs = $phpgw->nextmatchs->show_tpl("bill_invoicelist.php",$start,$phpgw->db->f(0),
                    "&order=$order&filter=$filter&sort="
                  . "$sort&query=$query","85%",$phpgw_info["theme"][th_bg]);
      $t->set_var(next_matchs,$next_matchs);
-     $t->set_var(total_matchs,$total_matchs);
 
-  // ---------- end nextmatch template --------------------
+// -------------------------- end nextmatch template --------------------------------------
 
-  // ===========================================
-  // list header variable template-declarations
-  // ===========================================
+// --------------------- list header variable template-declarations -----------------------
 
    if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {                                                                                                                        
    $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];                                                                                                                         
@@ -99,7 +92,6 @@
   // -------------- end header declaration -----------------
 
     $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
-//  $limit = $phpgw->db->limit($start);
   
   if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
   
@@ -139,7 +131,7 @@
   while ($phpgw->db->next_record()) {
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 
-    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                   
+    $title = stripslashes($phpgw->db->f("title"));                                                                                                                                   
     if (! $title)  $title  = "&nbsp;";
 
     $t->set_var(tr_color,$tr_color);
@@ -174,11 +166,9 @@
         }
     $sum = $phpgw->db->f("sum");
 
-    // ============================================
-    // template declaration for list records
-    // ============================================
+// ----------------- template declaration for list records -----------------------------
 
-    $t->set_var(array("num" => $phpgw->strip_html($phpgw->db->f("num")),
+    $t->set_var(array("num" => stripslashes($phpgw->db->f("num")),
                       "customer" => $customerout,
     		      "title" => $title,
       		      "date" => $dateout,
@@ -190,7 +180,7 @@
                                  . "\">". lang("Invoice") . "</a>"));
        $t->parse("list", "projects_list", true);
 
-       // -------------- end record declaration ------------------------
+// ------------------------------ end record declaration --------------------------------
   }
 
        $t->parse("out", "projects_list_t", true);

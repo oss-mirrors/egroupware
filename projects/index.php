@@ -93,7 +93,6 @@
                    "&order=$order&filter=$filter&sort="
                  . "$sort&query=$query","85%",$phpgw_info["theme"][th_bg]);
      $t->set_var(next_matchs,$next_matchs);
-//     $t->set_var(total_matchs,$total_matchs);
 
 // ------------------------------ end nextmatch template ------------------------------------
 
@@ -113,28 +112,27 @@
   // -------------- end header declaration -----------------
 
  $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
-//  $limit = $phpgw->db->limit($start);
   
   $db2 = $phpgw->db;
   
   if ($query) {
      $phpgw->db->query("SELECT p_projects.*,account_firstname,account_lastname FROM "
-                 . "p_projects,accounts WHERE $filtermethod AND account_id=p_projects.coordinator AND "
+                 . "p_projects,phpgw_accounts WHERE $filtermethod AND account_id=p_projects.coordinator AND "
                  . "(title like '%$query%' OR descr like '%$query%') $ordermethod limit $limit");
      } 
      else {
      $phpgw->db->query("SELECT p_projects.*,account_firstname,account_lastname,account_lid FROM "
-                 . "p_projects,accounts WHERE account_id=p_projects.coordinator AND $filtermethod "
+                 . "p_projects,phpgw_accounts WHERE account_id=p_projects.coordinator AND $filtermethod "
                  . "$ordermethod limit $limit");
      }
 
      while ($phpgw->db->next_record()) {
     
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                   
+    $title = stripslashes($phpgw->db->f("title"));                                                                                                                                   
     if (! $title)  $title  = "&nbsp;";
 
-    $num = $phpgw->strip_html($phpgw->db->f("num"));
+    $num = stripslashes($phpgw->db->f("num"));
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
 

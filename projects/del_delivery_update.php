@@ -148,7 +148,7 @@
                   . "WHERE id='$project_id' AND p_projects.customer=ab_id");
   if($phpgw->db->next_record()) {
     
-    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                               
+    $title = stripslashes($phpgw->db->f("title"));                                                                                                                               
     if (! $title)  $title  = "&nbsp;";
 
     $t->set_var("project",$title);
@@ -175,7 +175,7 @@
     } else {     */
       $t->set_var(delivery_num,$delivery_num);
     else
-      $t->set_var(delivery_num,$phpgw->strip_html($delivery_num));
+      $t->set_var(delivery_num,stripslashes($delivery_num));
 
      $t->set_var("lang_choose","");                                                                                                                    
      $t->set_var("choose","");
@@ -233,10 +233,10 @@
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\" checked>";
 
-    $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                               
+    $activity = stripslashes($phpgw->db->f("descr"));                                                                                                                               
     if (! $activity)  $activity  = "&nbsp;";    
     
-    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                               
+    $remark = stripslashes($phpgw->db->f("remark"));                                                                                                                               
     if (! $remark)  $remark  = "&nbsp;";
 
     $status = lang($phpgw->db->f("status"));
@@ -287,10 +287,10 @@
       $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
       $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\">";
 
-    $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                               
+    $activity = stripslashes($phpgw->db->f("descr"));                                                                                                                               
     if (! $activity)  $activity  = "&nbsp;";
 
-    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                               
+    $remark = stripslashes($phpgw->db->f("remark"));                                                                                                                               
     if (! $remark)  $remark  = "&nbsp;";
   
       $status = lang($phpgw->db->f("status"));

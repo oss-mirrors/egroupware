@@ -29,37 +29,26 @@
                      . "addressbook,customers where "                                                                                                                          
                      . "ab_company_id='" .$phpgw_info["user"]["preferences"]["projects"]["address"]."' and "
                      . "customers.company_id=addressbook.ab_company_id");                                                                      
-      if ($phpgw->db->next_record()) {                                                                                                                                         
-      $t->set_var("ad_company",$phpgw->db->f("company_name"));                                                                                                                 
-      $t->set_var("ad_firstname",$phpgw->db->f("ab_firstname"));                                                                                                               
-      $t->set_var("ad_lastname",$phpgw->db->f("ab_lastname"));                                                                                                                 
-      $t->set_var("ad_street",$phpgw->db->f("ab_street"));                                                                                                                     
-      $t->set_var("ad_zip",$phpgw->db->f("ab_zip"));                                                                                                                           
-      $t->set_var("ad_city",$phpgw->db->f("ab_city"));                                                                                                                         
-      $t->set_var("ad_state",$phpgw->db->f("ab_state"));                                                                                                                       
-          }                                                                                                                                                                    
-      else {                                                                                                                                                                   
-      $t->set_var("ad_company","");                                                                                                                                            
-      $t->set_var("ad_firstname","");                                                                                                                                          
-      $t->set_var("ad_lastname","");                                                                                                                                           
-      $t->set_var("ad_street","");                                                                                                                                             
-      $t->set_var("ad_zip","");                                                                                                                                                
-      $t->set_var("ad_city","");                                                                                                                                               
-      $t->set_var("ad_state","");                                                                                                                                              
-          }                                                                                                                                                                    
         }
       else {                                                                                                                                                                   
     $phpgw->db->query("select ab_id,ab_lastname,ab_firstname,ab_street,ab_zip,ab_city,ab_state,ab_company from addressbook where "                                             
                         . "ab_id='" .$phpgw_info["user"]["preferences"]["projects"]["address"]."'");                                                                           
+       }
       if ($phpgw->db->next_record()) {                                                                                                                                         
-      $t->set_var("ad_company",$phpgw->db->f("ab_company"));                                                                                                                   
+     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
+         $company = $phpgw->db->f("company_name");
+         }
+      else {
+         $company = $phpgw->db->f("ab_company");
+          }
+      $t->set_var("ad_company",$company);                                                                                                                   
       $t->set_var("ad_firstname",$phpgw->db->f("ab_firstname"));                                                                                                               
       $t->set_var("ad_lastname",$phpgw->db->f("ab_lastname"));                                                                                                                 
       $t->set_var("ad_street",$phpgw->db->f("ab_street"));                                                                                                                     
       $t->set_var("ad_zip",$phpgw->db->f("ab_zip"));                                                                                                                           
       $t->set_var("ad_city",$phpgw->db->f("ab_city"));                                                                                                                         
       $t->set_var("ad_state",$phpgw->db->f("ab_state"));                                                                                                                       
-            }                                                                                                                                                                  
+        }                                                                                                                                                                  
       else {                                                                                                                                                                      
       $t->set_var("ad_company","");                                                                                                                                            
       $t->set_var("ad_firstname","");                                                                                                                                          
@@ -68,9 +57,8 @@
       $t->set_var("ad_zip","");                                                                                                                                                
       $t->set_var("ad_city","");                                                                                                                                               
       $t->set_var("ad_state","");                                                                                                                                              
-      }                                                                                                                                                                        
-     }  
-   }
+       }                                                                                                                                                                        
+      }
    else {                                                                                                                                                                      
     $t->set_var("error",lang("Please select your address in preferences!"));                                                                                  
     }   
@@ -92,29 +80,21 @@
                  . "ab_city,p_projects.title FROM addressbook,customers,p_delivery,p_projects WHERE "
                  . "p_delivery.id=$delivery_id AND p_delivery.project_id=p_projects.id AND "
                  . "p_delivery.customer=ab_company_id AND customers.company_id=addressbook.ab_company_id");
-   if ($phpgw->db->next_record()) {  
-   $t->set_var("company",$phpgw->db->f("company_name"));
-   $t->set_var("firstname",$phpgw->db->f("ab_firstname"));                                                                                                                                       
-   $t->set_var("lastname",$phpgw->db->f("ab_lastname"));                                                                                                                                         
-   $t->set_var("street",$phpgw->db->f("ab_street"));                                                                                                                                             
-   $t->set_var("zip",$phpgw->db->f("ab_zip"));                                                                                                                                                   
-   $t->set_var("city",$phpgw->db->f("ab_city"));
-   $t->set_var("delivery_day",date("j",$phpgw->db->f("date")));                                                                                                                                       
-   $t->set_var("delivery_month",date("n",$phpgw->db->f("date")));                                                                                                                                     
-   $t->set_var("delivery_year",date("Y",$phpgw->db->f("date")));                                                                                                                                      
-   $t->set_var("delivery_num",$phpgw->strip_html($phpgw->db->f("num")));
-   $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                  
-    if (! $title)  $title  = "&nbsp;";                                                                                                                                                   
-   $t->set_var("title",$title);
-      }
-    }
-   else {    
-   $phpgw->db->query("SELECT p_delivery.customer,p_delivery.num,p_delivery.project_id,p_delivery.date, "
+           }
+        else {    
+    $phpgw->db->query("SELECT p_delivery.customer,p_delivery.num,p_delivery.project_id,p_delivery.date, "
                  . "ab_id,ab_company,ab_firstname,ab_lastname,ab_street,ab_zip, "
                  . "ab_city,p_projects.title FROM addressbook,p_delivery,p_projects WHERE "
                  . "p_delivery.id=$delivery_id AND p_delivery.customer=ab_id AND p_delivery.project_id=p_projects.id");
+          }
    if ($phpgw->db->next_record()) {
-   $t->set_var("company",$phpgw->db->f("ab_company"));                                                                                                                                           
+     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                     
+         $company = $phpgw->db->f("company_name");                                                                                                          
+         }                                                                                                                                                  
+      else {                                                                                                                                                
+         $company = $phpgw->db->f("ab_company");                                                                                                            
+          }
+   $t->set_var("company",$company);                                                                                                                                           
    $t->set_var("firstname",$phpgw->db->f("ab_firstname"));                                                                                                                                       
    $t->set_var("lastname",$phpgw->db->f("ab_lastname"));                                                                                                                                         
    $t->set_var("street",$phpgw->db->f("ab_street"));                                                                                                                                             
@@ -128,9 +108,8 @@
     if (! $title)  $title  = "&nbsp;";                                                                                                                                                           
    $t->set_var("title",$title);
      }
-   }
-                                                                                                                                                                                                 
-   $pos = 0;
+
+  $pos = 0;
 
   $phpgw->db->query("SELECT ceiling(p_hours.minutes/p_hours.minperae) as aes,p_hours.remark, "                                                                                                        
                 . "p_activities.descr,p_hours.date FROM p_hours,p_activities,p_deliverypos "                                                                                          
@@ -150,11 +129,11 @@
 		$t->set_var("year",date("Y",$phpgw->db->f("date")));
 	}
 	$t->set_var("aes",$phpgw->db->f("aes"));
-        $act_descr = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                         
+        $act_descr = stripslashes($phpgw->db->f("descr"));                                                                                                                         
         if (! $act_descr)  $act_descr  = "&nbsp;";                                                                                                                                       
         $t->set_var("act_descr",$act_descr);
 	$t->set_var("billperae",$phpgw->db->f("billperae"));
-        $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                           
+        $remark = stripslashes($phpgw->db->f("remark"));                                                                                                                           
         if (! $remark)  $remark  = "&nbsp;";                                                                                                                                             
         $t->set_var("remark",$remark);
         $t->parse("list", "deliverypos_list", true);
@@ -164,6 +143,4 @@
    $t->parse("out", "delivery_list_t", true);
    $t->p("out");
   
-       // -------------- end Add form declaration ------------------------
-
 ?>

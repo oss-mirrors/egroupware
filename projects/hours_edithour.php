@@ -47,11 +47,6 @@
 
      $t = new Template($phpgw_info["server"]["app_tpl"]);
      $t->set_file(array( "projects_edit" => "hours_formhours.tpl"));
-     
-     // ====================================================================
-     // create two seperate blocks, addblock will be cut off from template
-     // editblock contains the buttons and forms for edit
-     // ====================================================================
      $t->set_block("projects_edit", "add", "addhandle");
      $t->set_block("projects_edit", "edit", "edithandle");
      
@@ -166,7 +161,7 @@
      $t->set_var("minutes",($phpgw->db->f("minutes"))-((floor($phpgw->db->f("minutes")/60)*60)));
 
      $t->set_var("lang_employee",lang("Employee"));
-     $db2->query("SELECT account_id,account_firstname,account_lastname FROM accounts where "
+     $db2->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
                      . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
      while ($db2->next_record()) {
         $employee_list .= "<option value=\"" . $db2->f("account_id") . "\"";

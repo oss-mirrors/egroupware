@@ -29,12 +29,6 @@
   	
   	$t->set_var("actionurl",$phpgw->link("addactivity.php"));
   	$t->set_file(array( "activity_add" => "formactivity.tpl"));
-
-// =========================================================================================
-//           create two seperate blocks, editblock will be cut off from template
-//           addblock contains the buttons needed
-// =========================================================================================
-
      	$t->set_block("activity_add", "add", "addhandle");
      	$t->set_block("activity_add", "edit", "edithandle");
   	
@@ -86,7 +80,8 @@
     	$t->pparse("out","activity_add");
     	$t->pparse("addhandle","add");
 
-  } else {
+    } 
+    else {
 
     $phpgw->db->query("insert into p_activities (num,descr,remarkreq," 
                 . "billperae,minperae) "

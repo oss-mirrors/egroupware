@@ -25,11 +25,6 @@
         $t = new Template($phpgw_info["server"]["app_tpl"]);
   	$t->set_var("actionurl",$phpgw->link("hours_addhour.php"));
   	$t->set_file(array( "projects_add" => "hours_formhours.tpl"));
-  	
-  	// ====================================================================
-     	// create two seperate blocks, editblock will be cut off from template
-     	// addblock contains the buttons needed
-     	// ====================================================================
      	$t->set_block("projects_add", "add", "addhandle");
      	$t->set_block("projects_add", "edit", "edithandle");
      	$t->set_block("projects_add", "edit_act", "acthandle");
@@ -47,8 +42,8 @@
         $phpgw->db->query("SELECT num,title FROM p_projects "
                         . " WHERE id = '".$id."'");
         if ($phpgw->db->next_record()) {
-           $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
-           $title  = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                
+           $t->set_var("num",stripslashes($phpgw->db->f("num")));
+           $title  = stripslashes($phpgw->db->f("title"));                                                                                                                                
            if (! $title)  $title  = "&nbsp;";
            $t->set_var("title",$title);
         }
@@ -123,7 +118,7 @@
         $t->set_var("status_list",$status_list);
 
         $t->set_var("lang_employee",lang("Employee"));
-        $phpgw->db->query("SELECT account_id,account_firstname,account_lastname FROM accounts where "
+        $phpgw->db->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
                         . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
         while ($phpgw->db->next_record()) {
            $employee_list .= "<option value=\"" . $phpgw->db->f("account_id") . "\"";
@@ -150,9 +145,8 @@
     	$t->set_var("acthandle","");
     	$t->pparse("out","projects_add");
     	$t->pparse("addhandle","add");
-        
-
-  } else {
+    } 
+   else {
 
     if (checkdate($month,$day,$year)) {
        $date = mktime(2,0,0,$month,$day,$year);

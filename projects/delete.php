@@ -77,11 +77,8 @@
 
      $yeslink = "<a href=\"$yeslinkf\">" . lang("Yes") ."</a>";
      $yeslink = $yeslinkf;
-
      $t->set_var("yeslink",$yeslink);
-     
      $t->pparse("out", "projects_delete");
-     
-  }
-$phpgw->common->phpgw_footer();
+     }
+  $phpgw->common->phpgw_footer();
 ?>

@@ -38,10 +38,8 @@
      $ordermethod = "order by $order $sort";
   else
      $ordermethod = "order by date asc";
-
-  if (! $filter) {
+  if (! $filter) 
      $filter = "none";
-  }
 
   if ($project_id) {
      $phpgw->db->query("select count(*) from p_delivery where project_id=$project_id");
@@ -50,19 +48,19 @@
         $t->set_var(total_matchs,lang("your search returned 1 match"));
      else
         $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
-  } else {
+      }
+    else {
      $phpgw->db->query("select count(*) from p_delivery");
     $phpgw->db->next_record();
-  }
-
-  if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
+     if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
      $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
                            ($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),
                            $phpgw->db->f(0));
-  else
+     else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
-     $phpgw->db->next_record();
-
+//     $phpgw->db->next_record();
+     $t->set_var(total_matchs,$total_matchs);
+     }
 
 // --------------------- nextmatch variable template-declarations -----------------
 
@@ -70,7 +68,6 @@
                    "&order=$order&filter=$filter&sort="
                  . "$sort&query=$query","85%",$phpgw_info["theme"][th_bg]);
      $t->set_var(next_matchs,$next_matchs);
-     $t->set_var(total_matchs,$total_matchs);
 
 // --------------------------- end nextmatch template --------------------
 
@@ -88,7 +85,6 @@
 
 
     $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
-//  $limit = $phpgw->db->limit($start);
 
   if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
   if ($project_id) {
@@ -98,7 +94,8 @@
                  . "customers.company_id=addressbook.ab_company_id and "
                  . "p_delivery.customer=ab_company_id AND p_delivery.project_id=p_projects.id "
  		 . "AND p_delivery.project_id=$project_id $ordermethod limit $limit");
-  } else {
+    } 
+    else {
      $phpgw->db->query("SELECT p_delivery.id as id,p_delivery.num,ab_firstname,ab_lastname,ab_company_id,"
 		 . "company_name,title,p_delivery.date,p_delivery.project_id as pid,p_delivery.customer "
  		 . "FROM p_delivery,p_projects,addressbook,customers WHERE "
@@ -114,7 +111,8 @@
  		 . "FROM p_delivery,p_projects,addressbook WHERE "
                  . "p_delivery.customer=ab_id AND p_delivery.project_id=p_projects.id "
  		 . "AND p_delivery.project_id=$project_id $ordermethod limit $limit");
-    } else {
+     } 
+    else {
      $phpgw->db->query("SELECT p_delivery.id as id,p_delivery.num,ab_firstname,ab_lastname,ab_company "
 		 . ",title,p_delivery.date,p_delivery.project_id as pid,p_delivery.customer "
  		 . "FROM p_delivery,p_projects,addressbook WHERE "
@@ -125,7 +123,7 @@
   while ($phpgw->db->next_record()) {
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 
-    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                               
+    $title = stripslashes($phpgw->db->f("title"));                                                                                                                               
     if (! $title)  $title  = "&nbsp;";
     $t->set_var(tr_color,$tr_color);
 
@@ -160,7 +158,7 @@
 
 // ---------------- template declaration for list records ---------------------
 
-    $t->set_var(array("num" => $phpgw->strip_html($phpgw->db->f("num")),
+    $t->set_var(array("num" => stripslashes($phpgw->db->f("num")),
                       "customer" => $customerout,
     		      "title" => $title,
       		      "date" => $dateout,

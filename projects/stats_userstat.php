@@ -32,7 +32,7 @@
  . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
  . "<input type=\"hidden\" name=\"id\" value=\"$id\">\n";
 
-     $phpgw->db->query("select * from accounts where account_id = '$account_id'");
+     $phpgw->db->query("select * from phpgw_accounts where account_id = '$account_id'");
      $phpgw->db->next_record();
 
      $t = new Template($phpgw_info["server"]["app_tpl"]);

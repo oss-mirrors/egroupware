@@ -202,7 +202,7 @@
 
         $t->set_var("lang_coordinator",lang("Coordinator"));
    
-        $phpgw->db->query("SELECT account_id,account_firstname,account_lastname FROM accounts where "
+        $phpgw->db->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
                         . "account_status != 'L' ORDER BY account_lastname,account_firstname,account_id asc");
         while ($phpgw->db->next_record()) {
            $coordinator_list .= "<option value=\"" . $phpgw->db->f("account_id") . "\"";
