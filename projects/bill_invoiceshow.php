@@ -28,8 +28,7 @@
 
 	if (isset($phpgw_info['user']['preferences']['projects']['tax']) && (isset($phpgw_info['user']['preferences']['common']['currency']) && (isset($phpgw_info['user']['preferences']['projects']['abid']) && (isset($phpgw_info['user']['preferences']['common']['country'])))))
 	{
-		$tax = $phpgw_info['user']['preferences']['projects']['tax'];
-		$tax = format_tax($tax);
+		$tax = format_tax($phpgw_info['user']['preferences']['projects']['tax']);
 		$taxpercent = ($tax/100);
 		$currency = $phpgw_info['user']['preferences']['common']['currency'];
 		$t->set_var('error','');
@@ -51,7 +50,7 @@
 	{
 		$t->set_var('error',lang('Please set your preferences for this application'));
 		$t->set_var('myaddress','');
-		$taxpercent = ((int)0);
+		$taxpercent = 0;
 	}
 
 	$charset = $phpgw->translation->translate('charset');
@@ -77,6 +76,7 @@
 					. "phpgw_p_invoice.id='$invoice_id' AND phpgw_p_invoice.project_id=phpgw_p_projects.id");
 	$phpgw->db->next_record();
 
+	$sum = $phpgw->db->f('sum');
 	$custadr = $phpgw->db->f('customer');
 
 	$cols = array('n_given' => 'n_given',
@@ -113,13 +113,12 @@
 	$title = $phpgw->strip_html($phpgw->db->f('title'));
 	if (! $title) { $title  = '&nbsp;'; }
 	$t->set_var('title',$title);
-	$sum = $phpgw->db->f('sum');
-	$t->set_var('tax_percent',$taxpercent*100);
+	$t->set_var('tax_percent',$tax);
 
 	$pos = 0;
-	$sum = 0;
+	$sum_netto = 0;
 	$phpgw->db->query("SELECT phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.hours_descr,phpgw_p_hours.billperae,"
-					. "phpgw_p_hours.billperae,phpgw_p_activities.descr,phpgw_p_hours.start_date FROM phpgw_p_hours,phpgw_p_activities,phpgw_p_invoicepos "
+					. "phpgw_p_activities.descr,phpgw_p_hours.start_date FROM phpgw_p_hours,phpgw_p_activities,phpgw_p_invoicepos "
 					. "WHERE phpgw_p_invoicepos.hours_id=phpgw_p_hours.id AND phpgw_p_invoicepos.invoice_id='$invoice_id' "
 					. "AND phpgw_p_hours.activity_id=phpgw_p_activities.id");
 
@@ -141,6 +140,7 @@
 			$hours_date = $hours_date + (60*60) * $phpgw_info['user']['preferences']['common']['tz_offset'];
 			$hours_dateout = $phpgw->common->show_date($hours_date,$phpgw_info['user']['preferences']['common']['dateformat']);
 		}
+		$t->set_var('hours_date',$hours_dateout);
 
 		if ($phpgw->db->f('minperae') != 0)
 		{
@@ -148,10 +148,9 @@
 		}
 
 		$sumpos = $phpgw->db->f('billperae')*$aes;
-
-		$t->set_var('hours_date',$hours_dateout);
 		$t->set_var('aes',$aes);
-		$act_descr = $phpgw->strip_html($phpgw->db->f('descr'));                                                                                                                               
+
+		$act_descr = $phpgw->strip_html($phpgw->db->f('descr'));
 		if (! $act_descr)  $act_descr  = '&nbsp;';
 		$t->set_var('act_descr',$act_descr);
 		$t->set_var('billperae',$phpgw->db->f('billperae'));
@@ -165,14 +164,15 @@
 		$t->parse('list','invoicepos_list',True);
 	}
 
+/*	if ($sum == $sum_netto) { $t->set_var('error_hint',''); }
+	else { $t->set_var('error_hint',lang('Error in calculation sum does not match !')); } */
+	$t->set_var('error_hint','');
+
 	$sum_tax = round($sum_netto*$taxpercent,2);
 	$t->set_var('sum_netto',sprintf("%01.2f",$sum_netto));
 	$t->set_var('sum_tax',$sum_tax);
 	$sum_sum = $sum_tax + $sum_netto;
 	$t->set_var('sum_sum',sprintf("%01.2f",$sum_sum));
-
-	if($sum != $sum_netto) { $t->set_var('error_hint',''); }
-	else { $t->set_var('error_hint',lang('Error in calculation sum does not match')); } 
 
 	$t->parse('out','invoice_list_t',True);
 	$t->p('out');

@@ -109,9 +109,9 @@
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
+			<td>&nbsp;</td>
 			<td><font face="{font}">{error}</font></td>
 			<td><font face="{font}">{error_hint}</font></td>
-			<td>&nbsp;</td>
 		</tr>
 		<hr noshade width="90%" align="left" size="1"> 
 	</table>
