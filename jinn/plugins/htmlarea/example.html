@@ -1,0 +1,70 @@
+<html>
+<head>
+ <title>htmlArea</title>
+
+
+
+<!-- ---------------------------------------------------------------------- -->
+<!-- START : EDITOR HEADER - INCLUDE THIS IN ANY FILES USING EDITOR -->
+<script language="Javascript1.2" src="editor.js"></script>
+<script>
+// set this to the URL of editor direcory (with trailing forward slash)
+// NOTE: _editor_url MUST be on the same domain as this page or the popups
+// won't work (due to IE cross frame/cross window security restrictions).
+// example: http://www.hostname.com/editor/
+
+_editor_url = "";
+</script>
+<style type="text/css"><!--
+  .btn   { BORDER-WIDTH: 1; width: 26px; height: 24px; }
+  .btnDN { BORDER-WIDTH: 1; width: 26px; height: 24px; BORDER-STYLE: inset; BACKGROUND-COLOR: buttonhighlight; }
+  .btnNA { BORDER-WIDTH: 1; width: 26px; height: 24px; filter: alpha(opacity=25); }
+--></style>
+<!-- END : EDITOR HEADER -->
+<!-- ---------------------------------------------------------------------- -->
+
+
+
+<style type="text/css"><!--
+  body, td { font-family: arial; font-size: 12px; }
+  .headline { font-family: arial black, arial; font-size: 28px; letter-spacing: -2px; }
+  .subhead  { font-family: arial, verdana; font-size: 12px; let!ter-spacing: -1px; }
+--></style>
+
+</head>
+<body>
+<form id="myform" method="GET" action="">
+
+<div class="headline">htmlArea</div>
+<div class="subhead">Turn any &lt;textarea&gt; into a rich text wysiwyg editor.</div>
+<hr size=1>
+
+<p>Sample textarea follows:
+<p>
+
+<textarea name="box2" id="box2" style="width:100%; height:200">
+  <p>Here is some sample text: <b>bold</b>, <i>italic</i>, <u>underline</u>. </p>
+  <p align=center>Different fonts, sizes and colors (all in bold):</p>
+  <p><b>
+   <font face="arial"           size=7 color="#000066">arial</font>,
+   <font face="courier new"     size=6 color="#006600">courier new</font>,
+   <font face="georgia"         size=5 color="#006666">georgia</font>,
+   <font face="tahoma"          size=4 color="#660000">tahoma</font>,
+   <font face="times new roman" size=3 color="#660066">times new roman</font>,
+   <font face="verdana"         size=2 color="#666600">verdana</font>,
+   <font face="tahoma"          size=1 color="#666666">tahoma</font>
+  </b></p>
+  <p>Click on <a href="http://www.interactivetools.com/">this link</a> and then on the link button to the details ... OR ... select some text and click link to create a <b>new</b> link.</p>
+</textarea><br>
+
+<script language="javascript1.2">
+editor_generate('box2'); // field, width, height
+</script>
+
+
+<p><b>Example "InsertHTML" links: </b> &nbsp;
+<a href="javascript:editor_insertHTML('box2','<font style=\'background-color: yellow\'>','</font>');">Highlight selected text</a> -
+<a href="javascript:editor_insertHTML('box2',':)');">Insert Smiley</a>
+
+</form>
+</body></html>
