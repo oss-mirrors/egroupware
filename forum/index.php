@@ -20,6 +20,7 @@
 
 	$phpgw->db->query("select * from f_categories");
 	$phpgw->template->set_var(array(
+	IMG_URL_PREFIX          => PHPGW_IMAGES . "/",
 	'BGROUND'	=> $phpgw_info["theme"]["th_bg"],
 	'FORUM'		=> lang("Forum")
 	));

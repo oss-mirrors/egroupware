@@ -38,8 +38,6 @@ CREATE TABLE f_threads (
   n_replies int DEFAULT '0' NOT NULL
 );
 
-INSERT INTO phpgw_applications VALUES ('forum','Forum',1);
-
 
 INSERT INTO f_body (cat_id, for_id, message) VALUES ('1', '1','Here is an example message.');
 INSERT INTO f_body (cat_id, for_id, message) VALUES ('1', '1', 'Here is an example of a reply.');
@@ -58,3 +56,5 @@ INSERT INTO f_threads (postdate,main,parent,cat_id,for_id,author,subject,email,h
 INSERT INTO f_threads (postdate,main,parent,cat_id,for_id,author,subject,email,host,stat,thread,depth,pos,n_replies) VALUES ('2000-12-27 04:21:15', '3', '-1', '1', '2', 'Joseph Engo', 'Example message', 'jengo@phpgroupware.org', '', '0', '3', '0', '0', '0');
 INSERT INTO f_threads (postdate,main,parent,cat_id,for_id,author,subject,email,host,stat,thread,depth,pos,n_replies) VALUES ('2000-12-27 04:21:58', '4', '-1', '2', '3', 'Joseph Engo', '', 'jengo@phpgroupware.org', '', '0', '4', '0', '0', '0');
 
+
+INSERT INTO phpgw_applications VALUES ('forum','Forum',1);

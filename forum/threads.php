@@ -25,10 +25,9 @@
 	$forums	= $phpgw->db->f("name");
 
 	$catfor	= "cat=" . $cat	. "&for=" . $for;
-
 	$phpgw->template->set_var(array(
 	BGROUND			=> $phpgw_info["theme"]["th_bg"],
-	IMG_URL_PREFIX		=> $phpgw_info["server"]["app_images"]	 . "/",
+	IMG_URL_PREFIX		=> PHPGW_IMAGES . "/",
 	LANG_TOPIC		=> lang("Topic"),
 	LANG_AUTHOR		=> lang("Author"),
 	LANG_REPLIES		=> lang("Replies"),

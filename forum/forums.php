@@ -22,6 +22,7 @@ $phpgw->db->next_record();
 
 $phpgw->template->set_var(array(
 	BGROUND		 => $phpgw_info["theme"]["th_bg"],
+	IMG_URL_PREFIX          => PHPGW_IMAGES . "/",
 	CATEGORY	 => $phpgw->db->f("name"),
 	LANG_MAIN	 => lang("Forum"),
 	MAIN_LINK	 => $phpgw->link("/forum/index.php")

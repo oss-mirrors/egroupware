@@ -16,8 +16,8 @@ $title = 'forum';
 
         $title = $appname;
         $file = Array(
-                'Forum Administration'    => 
-$phpgw->link('/forum/admin/index.php','appname=' . 
+                'Forum Administration'    =>
+$phpgw->link('/forum/admin/index.php','appname=' .
 $appname)
         );
 //Do not modify below this line
@@ -25,3 +25,6 @@ $appname)
 }
 ?>
 
+
+
+?>
