@@ -115,7 +115,7 @@
 		$mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/ssl/novalidate-cert:993}$t_folder_s", SA_UNSEEN);
 	} else {
 		/* No SSL, normal connection */
-		$mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":". $phpgw_info["server"]["mail_port"] ."}$t_folder_s",SA_UNSEEN);
+		$mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":". $phpgw_info["user"]["preferences"]["email"]["mail_port"] ."}$t_folder_s",SA_UNSEEN);
 	}
 
 	if ($nummsg > 0) 
