@@ -51,6 +51,7 @@
 			$this->bofilter		= CreateObject('felamimail.bofilter');
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
 			$this->preferences	= $this->bopreferences->getPreferences();
+			$this->botranslation	= CreateObject('phpgwapi.translation');
 
 			if(isset($GLOBALS['HTTP_POST_VARS']["mailbox"]) && 
 				$GLOBALS['HTTP_GET_VARS']["menuaction"] == "felamimail.uifelamimail.handleButtons" &&
@@ -797,8 +798,10 @@
 							$image = '<img src="'.$GLOBALS['phpgw']->common->image('felamimail','attach').'" border="0">';
 							$headers['header'][$i]['subject'] = "$image&nbsp;".$headers['header'][$i]['subject'];
 						}
-						$this->t->set_var('header_subject', ExecMethod('phpgwapi.translation.convert',$headers['header'][$i]['subject']));
-						$this->t->set_var('full_subject', ExecMethod('phpgwapi.translation.convert',htmlspecialchars($fullSubject,ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset'])));
+						$this->t->set_var('header_subject', $headers['header'][$i]['subject']);
+						$this->t->set_var('full_subject',htmlspecialchars($fullSubject,
+							ENT_QUOTES,
+							$GLOBALS['phpgw_info']['server']['system_charset']));
 					}
 					else
 					{
@@ -845,7 +848,9 @@
 					{
 						$sender_name = substr($sender_name,0,$maxAddressLength)."...";
 					}
-					$this->t->set_var('sender_name',ExecMethod('phpgwapi.translation.convert',$sender_name));
+					$this->t->set_var('sender_name',htmlentities($sender_name,
+											 ENT_QUOTES,
+											 $GLOBALS['phpgw_info']['server']['system_charset']));
 					$this->t->set_var('full_address',$full_address);
 				
 					if($GLOBALS['HTTP_GET_VARS']["select_all"] == "select_all")
