@@ -113,8 +113,7 @@
 
 <?php
  
-  $limit = $phpgw->nextmatchs->sql_limit($start);  
-
+    $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
 
 if ($query) {
      $phpgw->db->query("SELECT ab_id,ab_owner,ab_firstname,ab_lastname,ab_email "
