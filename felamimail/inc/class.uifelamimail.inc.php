@@ -208,7 +208,9 @@
 
 			if($preferences['messageNewWindow'])
 			{
-				print "<script type=\"text/javascript\">window.close();</script>";
+				print "<script type=\"text/javascript\">
+				opener.location.reload();
+				window.close();</script>";
 			}
 			else
 			{

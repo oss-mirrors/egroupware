@@ -1,7 +1,5 @@
 <!-- BEGIN message_main -->
 {print_navbar}
-<STYLE type="text/css">
-</STYLE>
 <table border="0" width="100%" cellspacing="0" bgcolor="white">
 <tr>
 	<td>
