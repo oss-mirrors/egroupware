@@ -50,7 +50,7 @@
 	$this->plugins['def_string']['db_field_hooks']	= array
 	(
 		'string',
-		'varchar'
+		'varchar',
 		'char'
 	);
 
