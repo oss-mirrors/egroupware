@@ -189,7 +189,10 @@
     $t->set_var('billperae',$phpgw->db->f('billperae'));
 
     $t->set_var('lang_done',lang('Done'));
-    $t->set_var('doneurl',$phpgw->link($HTTPREFERRER . '&project_id=' . $phpgw->db->f("id") . "&delivery_id=$delivery_id&invoice_id=$invoice_id&sort=$sort&order=$order&"
+
+    print "Referrer".$HTTP_REFERER."<br>";
+
+    $t->set_var('doneurl',$phpgw->link($HTTP_REFERER . '&project_id=' . $phpgw->db->f("id") . "&delivery_id=$delivery_id&invoice_id=$invoice_id&sort=$sort&order=$order&"
                                         . "query=$query&start=$start&filter=$filter&status=$status"));
 
     $t->set_var('lang_edit',lang('Edit'));
@@ -199,6 +202,8 @@
     $t->set_var('addhandle','');
     $t->pparse('out','hours_edit');
     $t->pparse('edithandle','edit');
+
+    #print phpinfo();
 
     $phpgw->common->phpgw_footer();
 ?>
