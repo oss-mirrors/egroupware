@@ -57,7 +57,7 @@
 			$this->site_db 				= CreateObject('phpgwapi.db');
 
 			// if servertype is develment use dev site settings else use normal settings
-			if($this->config["server_type"]=='dev')
+			if($this->config["server_type"]=='dev' && $this->phpgw_db->f('dev_site_db_name'))
 			{
 				//$this->site_db->Host		= $this->phpgw_db->f('site_db_host');
 				// FIXME if db_host is set it gives error messages, but why???
@@ -152,6 +152,7 @@
 		function site_tables_names($site_id)
 		{
 			$this->site_db_connection($site_id);
+		
 			$tables=$this->site_db->table_names();
 			return $tables;
 		}
@@ -221,6 +222,7 @@
 		}
 
 
+		// FIXME arg has to be site object_id in stead site_id and tablename
 		function site_table_metadata($site_id,$table)
 		{
 			$this->site_db_connection($site_id);

@@ -290,15 +290,25 @@
 
 			unset($this->bo->message);
 
+			#FIXME does this belong here?
+			if (!is_object($GLOBALS['phpgw']->js))
+			{
+				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+			}
+			if (!strstr($GLOBALS['phpgw_info']['flags']['java_script'],'jinn'))
+			{
+				$GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
+			}
+		
 			// FIXME say add new record in blokken or say edit record in blokken
 			$this->ui->header('add or edit objects');
 			$this->ui->msg_box($this->bo->message);
+
 			$this->main_menu();	
 			
 			$this->template->pparse('out','form_header');
 			$this->template->pparse('out','js');
 			$this->template->pparse('out','row');
-//			$this->template->pparse('out','rows');
 			$this->template->pparse('out','form_footer');
 			$this->bo->save_sessiondata();
 		}

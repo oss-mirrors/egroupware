@@ -9,8 +9,7 @@
 
 	JiNN is free software; you can redistribute it and/or modify it under
 	the terms of the GNU General Public License as published by the Free
-	Software Foundation; either version 2 of the License, or (at your 
-	option) any later version.
+	Software Foundation; Version 2 of the License.
 
 	JiNN is distributed in the hope that it will be useful,but WITHOUT ANY
 	WARRANTY; without even the implied warranty of MERCHANTABILITY or 
@@ -274,6 +273,10 @@
 								'value'=>$new_name
 							);
 							$this->bo->so->update_phpgw_data('phpgw_jinn_sites',$datanew,'site_id',$new_site_id);
+						}
+						else
+						{
+							$new_name=$new_site_name;
 						}
 						$proceed=true;
 						$msg= lang('Import was succesfull'). '<br/>' .lang('The name of the new site is <strong>%1</strong>.',$new_name);
