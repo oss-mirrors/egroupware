@@ -1157,7 +1157,7 @@ $msg_headers->udate = $new_time;
 			$this->xi['view_raw_message_ilnk'] = $view_raw_message_ilnk;
 			
 			// (4) view printer friendly version
-			$view_printable_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email','view_printable-'.$this->icon_size,'_on'),$this->xi['lang_view_printable'],'','','0');
+			$view_printable_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/view_printable-'.$this->icon_size,'_on'),$this->xi['lang_view_printable'],'','','0');
 			$view_printable_url = $GLOBALS['phpgw']->link(
 				'/index.php',
 				 'menuaction=email.uimessage.printable'

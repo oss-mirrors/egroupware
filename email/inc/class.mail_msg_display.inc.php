@@ -3113,8 +3113,8 @@ $hdr_envelope->udate = $new_time;
 	*/
 	function _image_on($appname,$image,$extension='_on',$navbar=False)
 	{
-		$prefer_ext = '.gif';
-		//$prefer_ext = '.png';
+		//$prefer_ext = '.gif';
+		$prefer_ext = '.png';
 		return $GLOBALS['phpgw_info']['server']['webserver_url'].'/'.$appname.'/templates/default/images'.'/'.$image.$prefer_ext;
 	}
 
