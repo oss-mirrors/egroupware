@@ -336,13 +336,16 @@
 	echo '</td></tr>';
 	if($application)
 	{
-		$msg_type = explode(';',$msgtype);
-		$id_array = explode('=',$msg_type[2]);
-		$calendar_id = intval(substr($id_array[1],1,strlen($id_array[1])-2));
+		if(strstr($msgtype,'"; Id="'))
+		{
+			$msg_type = explode(';',$msgtype);
+			$id_array = explode('=',$msg_type[2]);
+			$calendar_id = intval(substr($id_array[1],1,strlen($id_array[1])-2));
 
-		echo '<tr><td align="center">';
-		$phpgw->common->hook_single('email',$application);
-		echo '</td></tr>';
+			echo '<tr><td align="center">';
+			$phpgw->common->hook_single('email',$application);
+			echo '</td></tr>';
+		}
 	}
 ?>
 </table>
