@@ -1,4 +1,3 @@
-!!! you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	es-es	¡¡Tiene que [Grabar] todos los cambios realizados en los campos de arriba, antes de ir al siguiente paso!!
 add	developer_tools	es-es	añadir
 add change	developer_tools	es-es	Añadir cambio
 add more	developer_tools	es-es	Añadir más
@@ -68,6 +67,7 @@ write	developer_tools	es-es	Escribir
 write the lang-file to the apps setup-dir	developer_tools	es-es	Escribir el fichero de idioma en el directorio de configuración de aplicaciones
 write to lang table	developer_tools	es-es	Escribir en la tabla de idioma
 writing langfile for '%1' ...	developer_tools	es-es	Escribiendo fichero de idioma para "%1"
+you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	es-es	¡¡Tiene que [Grabar] todos los cambios realizados en los campos de arriba, antes de ir al siguiente paso!!
 you must a version	developer_tools	es-es	Debe introducir una versión
 you must enter a change	developer_tools	es-es	Debe introducir un cambio
 you must select a project	developer_tools	es-es	Debe seleccionar un proyecto

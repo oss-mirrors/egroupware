@@ -497,7 +497,7 @@
 					$this->template->set_var('tgtwrite','');
 				}
 				
-				$this->template->set_var('helpmsg',lang('!!! You have to [Save] every manual change in the above fields, before you can go to the next step !!!'));
+				$this->template->set_var('helpmsg',lang('you have to [Save] every manual change in the above fields, before you can go to the next step !!!'));
 				$this->template->pfp('out','footer');
 			}
 			/* _debug_array($this->bo->loaded_apps); */

@@ -1,5 +1,5 @@
-!!! you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	de	!!! Sie müssen nach jeder manuellen Änderung in den obigen Feldern [Speichern], bevor sie zum nächsten Schritt weitergehen !!!
-!!! you have to [save] your changes before you can [update database], [download] or [write] the lang-file !!!	developer_tools	de	!!! Unbedingt zuerst Änderungen [Speichern], danach [Datenbank aktualisieren] und [Download] oder [Schreiben] der Sprachdatei !!!
+you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	de	!!! Sie müssen nach jeder manuellen Änderung in den obigen Feldern [Speichern], bevor sie zum nächsten Schritt weitergehen !!!
+you have to [save] your changes before you can [update database], [download] or [write] the lang-file !!!	developer_tools	de	!!! Unbedingt zuerst Änderungen [Speichern], danach [Datenbank aktualisieren] und [Download] oder [Schreiben] der Sprachdatei !!!
 add	developer_tools	de	Zufügen
 add change	developer_tools	de	Änderung zufügen
 add more	developer_tools	de	Weitere zufügen
