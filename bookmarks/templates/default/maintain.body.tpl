@@ -30,7 +30,7 @@
  </tr>
  <tr>
   <td><a href="{RATINGS_URL}">Rating</a></td>
-  <td>{RATING}</td>
+  <td>{RATING_SELECT}</td>
  </tr>
  <tr>
   <td>Public<br>

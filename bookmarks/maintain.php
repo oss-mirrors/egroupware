@@ -113,25 +113,29 @@ if (empty($error_msg)) {
 
         load_ddlb("bookmarks_category", $category, &$category_select, FALSE);
         load_ddlb("bookmarks_subcategory", $subcategory, &$subcategory_select, FALSE);
-        $ratings = '<select name="bookmarks_rating">'
-                 . ' <option value="0">--</option>'
-                 . ' <option value="1">1 - ' . lang("Lowest") . '</option>'
-                 . ' <option value="2">2</option>'
-                 . ' <option value="3">3</option>'
-                 . ' <option value="4">4</option>'
-                 . ' <option value="5">5</option>'
-                 . ' <option value="6">6</option>'
-                 . ' <option value="7">7</option>'
-                 . ' <option value="8">8</option>'
-                 . ' <option value="9">9</option>'
-                 . ' <option value="10">10 - ' . lang("Highest") . '</option>'
-                 . '</select>';
+
+        $rs[$rating] = " selected";
+        $rating_select = '<select name="bookmarks_rating">'
+                       . ' <option value="0">--</option>'
+                       . ' <option value="1"' . $rs[1] . '>1 - ' . lang("Lowest") . '</option>'
+                       . ' <option value="2"' . $rs[2] . '>2</option>'
+                       . ' <option value="3"' . $rs[3] . '>3</option>'
+                       . ' <option value="4"' . $rs[4] . '>4</option>'
+                       . ' <option value="5"' . $rs[5] . '>5</option>'
+                       . ' <option value="6"' . $rs[6] . '>6</option>'
+                       . ' <option value="7"' . $rs[7] . '>7</option>'
+                       . ' <option value="8"' . $rs[8] . '>8</option>'
+                       . ' <option value="9"' . $rs[9] . '>9</option>'
+                       . ' <option value="10"' . $rs[10] . '>10 - ' . lang("Highest") . '</option>'
+                       . '</select>';
 
         //load_ddlb("bookmarks_rating", $rating, &$rating_select, FALSE);
 
         if (!empty($returnto)) {
            $cancel_button = sprintf("<input type=\"image\" name=\"bk_cancel\" title=\"Cancel Maintain\" src=\"%scancel.%s\" border=0 width=24 height=24>", $bookmarker->image_url_prefix, $bookmarker->image_ext);
         }
+
+        $phpgw->template->set_var("RATING_SELECT",$rating_select);
 
         $phpgw->template->set_var(array(FORM_ACTION        => $phpgw->link("","id=$id&returnto=" . urlencode($returnto)),
                                         MAIL_THIS_LINK_URL => $phpgw->link("maillink.php","id=".$id),
@@ -142,8 +146,6 @@ if (empty($error_msg)) {
                                         KEYWORDS           => htmlspecialchars(stripslashes($keywords)),
                                         CATEGORY           => $category_select,
                                         SUBCATEGORY        => $subcategory_select,
-                                        RATING             => $rating_select,
-                                        RATING_SELECT      => $ratings,
                                         ADDED              => $f_ts[0],
                                         VISTED             => $f_ts[1],
                                         UPDATED            => $f_ts[2],
