@@ -101,6 +101,6 @@
 	$setup_info['projects']['depends'][] = array
 	(
 		 'appname' => 'felamimail',
-		 'versions' => Array('0.9.4')
+		 'versions' => Array('0.9.4','0.9.5')
 	);
 ?>
