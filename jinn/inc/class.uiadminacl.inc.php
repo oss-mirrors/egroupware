@@ -26,16 +26,18 @@
 
 	class uiadminacl extends uiadmin
 	{
+
 		function uiadminacl($bo)
 		{
 
 			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
 			{
-				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.index'));
+				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.index'));
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 
 			$this->bo=$bo;
+			$this->ui = CreateObject('jinn.uicommon');
 			$this->nextmatchs=CreateObject('phpgwapi.nextmatchs');
 			$this->template = $GLOBALS['phpgw']->template;
 		}
@@ -50,14 +52,14 @@
 				'access_rights_main' => 'access_rights.tpl'
 			));
 			// get all sites
-			$sites=$this->bo->get_sites($this->bo->uid);
+			$sites=$this->bo->common->get_sites_allowed($GLOBALS['phpgw_info']['user']['account_id']);
 			if (count($sites)>0)
 			{
 				foreach($sites as $site_id)
 				{
 					unset($object_rows);
 
-					$objects=$this->bo->get_objects($site_id,$this->bo->uid);
+					$objects=$this->bo->common->get_objects_allowed($site_id,$GLOBALS['phpgw_info']['user']['account_id']);
 					if (count($objects)>0)
 					{
 						foreach($objects as $object_id)
@@ -129,7 +131,7 @@
 				'lang_lastname'      => $this->nextmatchs->show_sort_order($sort,'account_lastname',$order,$url,lang('last name')),
 				'lang_firstname'     => $this->nextmatchs->show_sort_order($sort,'account_firstname',$order,$url,lang('first name')),
 				'lang_edit'    => lang('edit'),
-				'actionurl'    => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.save_access_rights_object'),
+				'actionurl'    => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_access_rights_object'),
 				'accounts_url' => $url,
 				'lang_search'  => lang('search'),
 				'site_id'  => $site_id,
@@ -246,7 +248,7 @@
 				'lang_lastname'      => $this->nextmatchs->show_sort_order($sort,'account_lastname',$order,$url,lang('last name')),
 				'lang_firstname'     => $this->nextmatchs->show_sort_order($sort,'account_firstname',$order,$url,lang('first name')),
 				'lang_edit'    => lang('edit'),
-				'actionurl'    => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.save_access_rights_site'),
+				'actionurl'    => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_access_rights_site'),
 				'accounts_url' => $url,
 				'lang_search'  => lang('search'),
 				'site_id'  => $site_id,

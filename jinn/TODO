@@ -10,6 +10,7 @@ TODO - BUGS!!!
   hij de gevonden resultaten wel aan zetten maar niet uit CHECK THIS
   - deze fout zal ook optreden bij meer dan 15 users CHECK THIS, don't know anymore
 - phpgwadmin krijgt niet alle objecten te zien in accessrights CHECK THIS
+- browser navigator completly wrong
 
 TODO - 0.5.1
 ===================================================================================
@@ -25,14 +26,9 @@ Not branched
 ===================================================================================
 - translate this file completly to English 
 - some documentation, users/adminisators
-- remove ugly code/functions
+1/2 - remove ugly code/functions 
 - optimize default template
 - make official navbar icon
-- classes/functions
-        - alle niet universele make_option requests verwijderen/extra argument aan 
-		  functie maken voor listboxes zonder empty
-        - remove a lot of unused functions and merge similar functions
-		- make a lot of new classes, e.g. class.form_plugins.php
 
 - language
 	- english translation complete (always a point)
@@ -47,12 +43,12 @@ Not branched
 	- Write plugin documentation
 	- plugin: colorpicker, hide_this_field, htmlArea, flashArea, datepicker, yes_no, attachment_upload, image_upload
 - Other session vars for admin so that the JiNN remembers the state of the user as the state fo the admin
-- Remember order by http_vars
+- Remember order by http_vars!!!!
 
 - Code
         - display_func.js opruimen
 - Admin
-	- grouppersmission administration (PRIORITY)
+	- group permission administration 
 	- validate-routine maken voor wijzgen records
 
 - menu
@@ -97,4 +93,3 @@ Not branched
     - normale gebruikers goed testen
 	- veiligheid testen (PRIORITY)
 	- postgreSQL compatibiliteit
-

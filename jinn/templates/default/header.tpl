@@ -4,9 +4,8 @@
 
 <!-- app title -->
 <table width="80%" cellspacing="0" cellpadding="0" align="center">
-<tr><td align="center"><b>{title} - {action}</b></td></tr>
+<tr><td align="center"><b>{app_title} :: {screen_title}</b></td></tr>
 <tr><td><b>&nbsp;</b></td></tr>
 </table>
-{msg_box}
 
 <!-- end app title -->

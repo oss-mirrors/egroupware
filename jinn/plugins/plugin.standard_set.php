@@ -85,12 +85,14 @@ $this->plugins['hidefield']['enable']			= 1;
 $this->plugins['hidefield']['description']		= 'This just hides the input field for users';
 $this->plugins['hidefield']['db_field_hooks']	= array
 (
+ 'text',	
  'string',	
  'int',	
  'blob',	
  'date',
  'timestamp'	
 );
+
 
 function plg_fi_hidefield($field_name,$value, $config)
 {
@@ -121,7 +123,6 @@ $this->plugins['boolian']['config']		= array
 
 function plg_fi_boolian($field_name,$value, $config)
 {
-
   if($config['ON_output_value_If_not_the_same_as_input_value']) $val_on=$config['ON_output_value_If_not_the_same_as_input_value'];
   else $val_on=$config['ON_input_display_value'];
 

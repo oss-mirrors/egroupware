@@ -91,7 +91,7 @@
 	{
 
 		global $local_bo;
-		$input=$local_bo->format_date($value);
+		$input=$local_bo->common->format_date($value);
 
 		return $input;
 	}

@@ -24,7 +24,7 @@
 
 
 
-	class uiconfig extends uijinn
+	class uiconfig extends uiuser
 	{
 		function uiconfig($bo)
 		{
@@ -80,12 +80,12 @@
 					}
 				}
 
-				$form_action=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uijinn.save_object_config');
+				$form_action=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.save_object_config');
 
 				$button_save='<td><input type="submit" name="action" value="'.lang('save').'"></td>';
 
 				$button_cancel='<td><input type="button" onClick="location=\''.
-				$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uijinn.browse_objects') .
+				$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.browse_objects') .
 				'\'" name="action" value="'.lang('cancel').'"></td>';
 
 				$this->template->set_var('form_action',$form_action);

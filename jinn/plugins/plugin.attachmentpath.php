@@ -53,8 +53,8 @@
 		global $local_bo;
 		$field_name=substr($field_name,3);	
 
-		if ($local_bo->bo->site_object['upload_url']) $upload_url=$local_bo->bo->site_object['upload_url'].'/';
-		elseif($local_bo->bo->site['upload_url']) $upload_url=$local_bo->bo->site['upload_url'].'/';
+		if ($local_bo->site_object['upload_url']) $upload_url=$local_bo->site_object['upload_url'].'/';
+		elseif($local_bo->site['upload_url']) $upload_url=$local_bo->site['upload_url'].'/';
 		else $upload_url=false;
 		
 		/* if value is set, show existing images */	
@@ -121,11 +121,11 @@
 	{
 		global $local_bo;
 
-		if ($local_bo->bo->site_object['upload_path']) $upload_path=$local_bo->bo->site_object['upload_path'].'/';
-		elseif($local_bo->bo->site['upload_path']) $upload_path=$local_bo->bo->site['upload_path'].'/';
+		if ($local_bo->site_object['upload_path']) $upload_path=$local_bo->site_object['upload_path'].'/';
+		elseif($local_bo->site['upload_path']) $upload_path=$local_bo->site['upload_path'].'/';
 		else $upload_path=false;
 
-		$atts_to_delete=$local_bo->filter_array_with_prefix($HTTP_POST_VARS,'ATT_DEL');
+		$atts_to_delete=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'ATT_DEL');
 
 		if (count($atts_to_delete)>0){
 
@@ -157,7 +157,7 @@
 		unset($atts_path_new);
 
 		/* finally adding new attachments */
-		$atts_to_add=$local_bo->filter_array_with_prefix($HTTP_POST_FILES,'ATT_SRC');
+		$atts_to_add=$local_bo->common->filter_array_with_prefix($HTTP_POST_FILES,'ATT_SRC');
 
 		// quick check for new attchments
 		if(is_array($atts_to_add))

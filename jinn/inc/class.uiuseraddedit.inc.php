@@ -22,16 +22,13 @@
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 	*/
 
-	class uiuseraddedit extends uijinn
+	class uiuseraddedit extends uiuser
 	{
-
-		var $relations;
-
 		function uiuseraddedit($bo)
 		{
 			$this->bo=$bo;
-			//$this->relations = CreateObject('jinn.borelations.inc.php');
 			$this->template = $GLOBALS['phpgw']->template;
+			$this->ui = CreateObject('jinn.uicommon');
 		}
 
 		/****************************************************************************\
@@ -51,7 +48,7 @@
 			if ($where_condition)
 			{
 				/* set vars for edit form */
-				$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uijinn.object_update');
+				$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.object_update');
 				$where_condition_form="<input type=\"hidden\" name=\"where_condition\" value=\"$where_condition\">";
 				$values_object= $this->bo->get_records($this->bo->site_object[table_name],$where_condition,'','','name');
 				$add_edit_button=lang('edit');
@@ -59,7 +56,7 @@
 			else
 			{
 				/* vars for new record form */
-				$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uijinn.object_insert');
+				$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.object_insert');
 				$add_edit_button='voeg toe';
 				$action=lang('add object');
 			}
@@ -73,7 +70,7 @@
 
 
 			/* get one with many relations */
-			$relation1_array=$this->bo->get_fields_with_1_relation($this->bo->site_object[relations]);
+			$relation1_array=$this->bo->extract_1w1_relations($this->bo->site_object[relations]);
 
 			if (count($relation1_array)>0)
 			{
@@ -85,7 +82,7 @@
 			}
 
 			/* get all fieldproperties (name, type, etc...) */
-			$fields = $this->bo->get_site_fieldproperties($this->bo->site_id,$this->bo->site_object[table_name]);
+			$fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
 
 			/* The main loop to create all rows with input fields start here */ 
 			foreach ( $fields as $fieldproperties )
@@ -112,7 +109,7 @@
 
 				elseif ($fieldproperties[type]=='string')
 				{
-					$input=$this->bo->plug->get_plugin_fi($input_name,$value,'string');
+					$input=$this->bo->get_plugin_fi($input_name,$value,'string');
 				}
 
 				elseif ($fieldproperties[type]=='int' || $fieldproperties[type]=='real')
@@ -124,12 +121,12 @@
 						$related_fields=$this->bo->get_related_field($relation1_array[$fieldproperties[name]]);
 
 						$input= '<select name="'.$input_name.'">';
-						$input.= $this->bo->make_options($related_fields,$value);
+						$input.= $this->ui->select_options($related_fields,$value);
 						$input.= '</select> ('.lang('real value').': '.$value.')';
 					}
 					else
 					{	
-						$input=$this->bo->plug->get_plugin_fi($input_name,$value,'int');						
+						$input=$this->bo->get_plugin_fi($input_name,$value,'int');						
 					}
 				}
 
@@ -137,7 +134,7 @@
 				{
 					if ($value)
 					{
-						$input=$this->bo->plug->get_plugin_fi($input_name,$value,'timestamp');
+						$input=$this->bo->get_plugin_fi($input_name,$value,'timestamp');
 					}
 					else
 					{
@@ -152,7 +149,7 @@
 
 				elseif ($fieldproperties[type]=='blob') //then it is a textblob
 				{
-					$input=$this->bo->plug->get_plugin_fi($input_name,$value,'blob');
+					$input=$this->bo->get_plugin_fi($input_name,$value,'blob');
 				}
 
 
@@ -179,7 +176,7 @@
 			/*	check for many with many relations. 
 			if so make double selectionbox		*/
 
-			$relation2_array=$this->bo->get_fields_with_2_relation($this->bo->site_object[relations]);
+			$relation2_array=$this->bo->extract_1wX_relations($this->bo->site_object[relations]);
 			if (count($relation2_array)>0)
 			{
 
@@ -198,8 +195,10 @@
 					$input.= '<select onDblClick=SelectPlace(\'M2M'.$rel_i.'\',\'all_related'.$rel_i.'\') multiple size=5 name="all_related'.$rel_i.'">';
 
 					// make all possible options
-					$options=$this->bo->get_m2m_options($relation2,"all",'');
-					$input.= $this->bo->make_options_non_empty($options,'');
+//					$options=$this->bo->get_1wX_options($relation2,"all",'');
+					$options_arr= $this->bo->so->get_1wX_record_values($this->bo->site_id,'',$relation2,'all');
+					
+					$input.= $this->ui->select_options($options_arr,'',false);
 
 					$input.= '</select>';
 					$input.= '</td>';
@@ -210,12 +209,13 @@
 					$input.= '</td>';
 					$input.= '<td valign=top>'.lang('related').' '.$related_table.'<br>';
 					$input.= '<select onDblClick="DeSelectPlace(\'M2M'.$rel_i.'\')"  multiple size=5 name="M2M'.$rel_i.'"><br>';
-
 					$submit_javascript.='saveOptions(\'M2M'.$rel_i.'\',\'MANY_OPT_STR_'.$rel_i.'\');';
 
 					if($where_condition) $record_id=$record_identifier;
-					$options=$this->bo->get_m2m_options($relation2,"stored",$record_id);
-					$input.= $this->bo->make_options_non_empty($options,'');
+					
+					$options_arr= $this->bo->so->get_1wX_record_values($this->bo->site_id,$record_id,$relation2,'stored');
+					
+					$input.= $this->ui->select_options($options_arr,'',false);
 					$input.= '</select>';
 					$input.= '<input type=hidden name=MANY_REL_STR_'.$rel_i.' value='.$relation2[via_primary_key].'|'.$relation2[via_foreign_key].'>';
 					$input.= '<input type=hidden name=MANY_OPT_STR_'.$rel_i.'>';
@@ -234,7 +234,7 @@
 
 			}
 
-			$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uijinn.browse_objects').'\'" value="'.lang('cancel').'">';
+			$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.browse_objects').'\'" value="'.lang('cancel').'">';
 
 			$this->template->set_var('submit_script',$submit_javascript);
 			$this->template->pparse('out','javascript');

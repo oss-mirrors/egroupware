@@ -24,7 +24,7 @@
 
 
 
-	class boimagemagick extends bojinn
+	class boimagemagick extends bouser
 	{
 		var $targetdir      = '';
 		var $imagemagickdir = '/usr/local/bin';
@@ -39,7 +39,8 @@
 
 		function boimagemagick() 
 		{
-			$this->get_config();
+			$this->common = CreateObject('jinn.bocommon');
+			$this->current_config=$this->common->get_config();
 			$this->imagemagickdir=$this->current_config['imagemagickdir'];
 		}
 
@@ -57,7 +58,6 @@
 		function Resize($x_size, $y_size, $src_temp_file, $filetype, $how='keep_aspect') 
 		{
 
-			//die('hallo?');
 			$target_temp_file = tempnam ("jinn/temp", "convert_");
 			unlink($target_temp_file);
 			$target_temp_file.='.'.$filetype;

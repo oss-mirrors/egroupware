@@ -35,7 +35,7 @@
 
 	include('../header.inc.php');
 
-	Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.index'));
+	Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.index'));
 	$GLOBALS['phpgw']->common->phpgw_exit();
 
 

@@ -29,6 +29,8 @@
 		{
 			$this->bo = $bo; 
 			$this->template = $GLOBALS['phpgw']->template;
+
+			$this->ui = CreateObject('jinn.uicommon');
 		}
 
 		function render_form($table)
@@ -46,7 +48,7 @@
 
 			if ($where_condition)
 			{
-				$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.uiadmin.update_$table");
+				$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_$table");
 				$where_condition_form="<input type=\"hidden\" name=\"where_condition\" value=\"$where_condition\">";
 				$values_object= $this->bo->get_phpgw_records($table,$where_condition,'','','name');
 				$add_edit_button=lang('edit');
@@ -54,7 +56,7 @@
 			}
 			else
 			{
-				$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.uiadmin.insert_$table");
+				$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.insert_$table");
 				$add_edit_button=lang('add');
 				$action=lang('add '. $table );
 				$parent_site_id=$GLOBALS['HTTP_POST_VARS']['parent_site_id'];
@@ -65,11 +67,10 @@
 			$this->template->set_var('where_condition_form',$where_condition_form);
 			$this->template->pparse('out','form_header');
 
-			$fields = $this->bo->get_phpgw_fieldproperties($table);
 
-//die(var_dump($GLOBALS['HTTP_POST_VARS']));
+			$fields=$this->bo->so->phpgw_table_metadata($table);
 
-			foreach ( $fields as $fieldproperties )
+			foreach ($fields as $fieldproperties)
 			{
 
 				$edit_value=$values_object[0][$fieldproperties[name]];
@@ -136,7 +137,7 @@
 					$table_name=$value;
 					// on change submit
 					$input='<select name="'.$input_name.'">';
-					$tables=$this->bo->get_site_tables($parent_site_id);
+					$tables=$this->bo->so->site_tables_names($parent_site_id);
 
 					foreach($tables as $table)
 					{
@@ -147,7 +148,7 @@
 						);
 					}
 
-					$input.=$this->bo->make_options($table_array,$value);
+					$input.=$this->ui->select_options($table_array,$value,false);
 					$input.='</select>';
 				}
 				elseif ($fieldproperties[name]=='upload_path')
@@ -211,8 +212,10 @@
 							}
 						}
 						// ADD NEW ONE WITH MANY RELATION
-					//die($parent_site_id);	
-						if($fields=$this->bo->get_site_fieldproperties($parent_site_id,$table_name))
+						//die($parent_site_id);	
+
+
+						if($fields=$this->bo->so->site_table_metadata($parent_site_id,$table_name))
 						{
 
 							$input.='<b>'.lang('Add new ONE WITH MANY').'</b> relation<b><br><table><tr><td colspan=2>field:<br>';
@@ -228,7 +231,7 @@
 								);
 							}
 
-							$input.=$this->bo->make_options($fields_array,$value);
+							$input.=$this->ui->select_options($fields_array,$value,true);
 							$input.='</select></td></tr>';
 
 							// related table and field
@@ -236,7 +239,7 @@
 							$input.='<select name="1_relation_table_field">';
 							foreach($table_array as $table)
 							{
-								$fields=$this->bo->get_site_fieldproperties($parent_site_id,$table[name]);
+								$fields=$this->bo->so->site_table_metadata($parent_site_id,$table[name]);
 								foreach($fields as $field)
 								{
 									$related_fields_array[]=array
@@ -246,7 +249,7 @@
 									);
 								}
 							}
-							$input.=$this->bo->make_options($related_fields_array,'');
+							$input.=$this->ui->select_options($related_fields_array,'',true);
 							$input.='</select></td></tr>';
 
 							// displaying
@@ -254,7 +257,7 @@
 							$input.='<select name="1_display_field">';
 							foreach($table_array as $table)
 							{
-								$fields=$this->bo->get_site_fieldproperties($parent_site_id,$table[name]);
+								$fields=$this->bo->so->site_table_metadata($parent_site_id,$table[name]);
 								foreach($fields as $field)
 								{
 									$display_fields_array[]=array
@@ -264,7 +267,7 @@
 									);
 								}
 							}
-							$input.=$this->bo->make_options($display_fields_array,'');
+							$input.=$this->ui->select_options($display_fields_array,'',true);
 							$input.='</select></td></tr></table><br>';
 						}
 
@@ -278,7 +281,7 @@
 
 							foreach($table_array as $table)
 							{
-								$fields=$this->bo->get_site_fieldproperties($parent_site_id,$table[name]);
+								$fields=$this->bo->so->site_table_metadata($parent_site_id,$table[name]);
 								foreach($fields as $field)
 								{
 									$fields_array[]=array
@@ -288,7 +291,7 @@
 									);
 								}
 							}
-							$input.=$this->bo->make_options($fields_array,$value);
+							$input.=$this->ui->select_options($fields_array,$value,true);
 							$input.='</select></td></tr>';
 
 							// related table and field
@@ -296,7 +299,7 @@
 							$input.='<select name="2_relation_foreign_key">';
 							foreach($table_array as $table)
 							{
-								$fields=$this->bo->get_site_fieldproperties($parent_site_id,$table[name]);
+								$fields=$this->bo->so->site_table_metadata($parent_site_id,$table[name]);
 								foreach($fields as $field)
 								{
 									$related_fields_array[]=array
@@ -306,7 +309,7 @@
 									);
 								}
 							}
-							$input.=$this->bo->make_options($related_fields_array,'');
+							$input.=$this->ui->select_options($related_fields_array,'',true);
 							$input.='</select></td></tr>';
 
 							// represented by ....
@@ -314,7 +317,7 @@
 							$input.='<select name="2_relation-via-foreign-key">';
 							foreach($table_array as $table)
 							{
-								$fields=$this->bo->get_site_fieldproperties($parent_site_id,$table[name]);
+								$fields=$this->bo->so->site_table_metadata($parent_site_id,$table[name]);
 								foreach($fields as $field)
 								{
 									$display_fields_array[]=array
@@ -324,7 +327,7 @@
 									);
 								}
 							}
-							$input.=$this->bo->make_options($display_fields_array,'');
+							$input.=$this->ui->select_options($display_fields_array,'',true);
 							$input.='</select></td></tr>';
 
 							// related table and field
@@ -332,7 +335,7 @@
 							$input.='<select name="2_display_field">';
 							foreach($table_array as $table)
 							{
-								$fields=$this->bo->get_site_fieldproperties($parent_site_id,$table[name]);
+								$fields=$this->bo->so->site_table_metadata($parent_site_id,$table[name]);
 								foreach($fields as $field)
 								{
 									$related_fields_array[]=array
@@ -342,7 +345,7 @@
 									);
 								}
 							}
-							$input.=$this->bo->make_options($related_fields_array,'');
+							$input.=$this->ui->select_options($related_fields_array,'',true);
 							$input.='</select></td></tr>';
 
 							// end table
@@ -373,7 +376,7 @@
 
 						$input.='<input type="hidden" name="FLDplugins" value="'.$value.'">';
 
-						if ($fields=$this->bo->get_site_fieldproperties($parent_site_id,$table_name))
+						if ($fields=$this->bo->so->site_table_metadata($parent_site_id,$table_name))
 						{
 
 							$input.='<table border=1><tr><td>'.lang('fields').'</td>';
@@ -405,7 +408,12 @@
 
 								if ($field['name']!='id')
 								{ 
-									$options=$this->bo->plug->make_plugins_options($field['type'],$plg_name);
+									
+									// remove
+									$plugin_hooks=$this->bo->plugin_hooks($field['type']);
+									$options=$this->ui->select_options($plugin_hooks,$plg_name,true);
+
+									
 									if ($options)
 									{
 										$input.='<select name="PLG'.$field['name'].'">';
@@ -460,7 +468,7 @@
 			}
 			elseif($phpgw_table=='phpgw_jinn_sites')
 			{
-					$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.browse_phpgw_jinn_sites&where_condition=site_id='.$this->bo->site_id).'\'" value="'.lang('cancel').'">';
+				$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.browse_phpgw_jinn_sites&where_condition=site_id='.$this->bo->site_id).'\'" value="'.lang('cancel').'">';
 
 				$extra_buttons='<td>
 				<script>
@@ -473,10 +481,10 @@
 					parent.window.open(link, \'width=400,height=300,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')
 				}
 				</script>
-				
+
 				<input type=hidden name=testdbvals>
 				<input type="button" onClick="testdbfield()" value="'.lang('test database access').'">
-							
+
 				</td>
 
 				<td><input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.export_site&where_condition=site_id='.$values_object[0][site_id]).'\'" value="'.lang('export this site').'"></td>';
@@ -495,4 +503,4 @@
 	}
 
 
-?>
+	?>

@@ -108,7 +108,13 @@
 			return $site_values;
 		}
 
-		function get_table_names($site_id)
+		/**
+		* return table names for a site by site site_id
+		*
+		* @return array table names
+		* @param int JiNN Site id
+		*/
+		function site_tables_names($site_id)
 		{
 			$this->site_db_connection($site_id);
 			$tables=$this->site_db->table_names();
@@ -167,23 +173,22 @@
 			return $num_rows;
 		}
 
-
-		function get_phpgw_fieldproperties($table)
+		
+		function phpgw_table_metadata($table)
 		{
-
-			$fieldproperties = $this->phpgw_db->metadata($table);
-
-			return $fieldproperties;
+			return $this->phpgw_db->metadata($table);
 		}
 
-		function get_site_fieldproperties($site_id,$table)
-		{
 
+		function site_table_metadata($site_id,$table)
+		{
 			$this->site_db_connection($site_id);
-			$fieldproperties = $this->site_db->metadata($table);
+
+			$metadata = $this->site_db->metadata($table);
 
 			$this->site_close_db_connection();
-			return $fieldproperties;
+
+			return $metadata;
 		}
 
 
@@ -316,6 +321,34 @@
 			}
 
 			return $site_objects;
+		}
+		
+		/**
+		* test if table from site_objecte exists in site database
+		*
+		* @param array $JSO_arr standard JiNN Site Object properties array
+		*
+		*/
+		
+
+		function test_JSO_table($JSO_arr)
+		{
+			
+			$this->site_db_connection($JSO_arr['parent_site_id']);
+			$this->site_db->Halt_On_Error='no';
+
+			if(@$this->site_db->query("SELECT * FROM ".$JSO_arr['table_name'],__LINE__,__FILE__))
+			{
+				$test=true;
+			}
+			else
+			{
+				$test=false;
+			}
+			
+			$this->site_close_db_connection();
+			return $test;
+
 		}
 
 		/****************************************************************************\
@@ -455,7 +488,7 @@
 				$WHERE = ' WHERE '.$this->strip_magic_quotes_gpc($where_condition);
 			}
 
-			$fieldproperties = $this->get_phpgw_fieldproperties($table);
+			$fieldproperties = $this->phpgw_table_metadata($table);
 
 			$SQL='SELECT * FROM '. $table . $WHERE;
 			if (!$limit) $limit=1000000;
@@ -485,7 +518,7 @@
 		}
 
 
-		function get_m2m_record_values($site_id,$object_id,$m2m_relation,$all_or_stored)
+		function get_1wX_record_values($site_id,$object_id,$m2m_relation,$all_or_stored)
 		{
 
 			$this->site_db_connection($site_id);
@@ -540,7 +573,7 @@
 				$WHERE = ' WHERE '.$this->strip_magic_quotes_gpc($where_condition);
 			}
 
-			$fieldproperties = $this->get_site_fieldproperties($site_id,$table);
+			$fieldproperties = $this->site_table_metadata($site_id,$table);
 
 			$SQL='SELECT * FROM '. $table . $WHERE;
 			if (!$limit) $limit=1000000;
@@ -594,7 +627,7 @@
 				$ORDER_BY = ' ORDER BY '.$order_by;
 			}
 
-			$fieldproperties = $this->get_site_fieldproperties($site_id,$table);
+			$fieldproperties = $this->site_table_metadata($site_id,$table);
 
 			$SQL='SELECT * FROM '. $table . $WHERE . $ORDER_BY;
 			if (!$limit) $limit=1000000;
@@ -654,7 +687,7 @@
 
 			$this->site_db_connection($site_id);
 
-			$record=$this->get_site_fieldproperties($site_id,$table);
+			$record=$this->site_table_metadata($site_id,$table);
 			$values=$this->get_record_values_2($site_id,$table,$this->strip_magic_quotes_gpc($where_condition),'0','1','name','');
 
 			foreach($record as $field)
@@ -665,7 +698,7 @@
 					if ($SQLvalues) $SQLvalues .= ',';
 
 					$SQLfields .= $field[name];
-					$SQLvalues .= "'".$values[0][$field['name']]."'";
+					$SQLvalues .= "'".addslashes($values[0][$field['name']])."'";
 				}
 			}
 

@@ -22,8 +22,6 @@
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 	*/
 
-
-
 	class uiadminbrowse extends uiadmin
 	{
 		function uiadminbrowse($bo)
@@ -31,7 +29,7 @@
 
 			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
 			{
-				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.index'));
+				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.index'));
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 
@@ -68,7 +66,7 @@
 			else $search_string=$GLOBALS['search'];
 
 
-			$fieldnames = $this->bo->get_phpgw_fieldnames($table);
+			$fieldnames = $this->bo->so->get_phpgw_fieldnames($table);//get_phpgw_fieldnames($table);
 
 			// which/how many column to show, all, the prefered, or the default thirst 4
 			if ($show_all_cols)
@@ -117,10 +115,10 @@
 					"<td bgcolor=$bgclr align=\"left\">
 					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.add_edit_$table&where_condition=$where_condition")."\">".lang('edit')."</a></td>
 					<td bgcolor=$bgclr align=\"left\">
-					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.del_$table&where_condition=$where_condition")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('delete')."</a></td>
+					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_$table&where_condition=$where_condition")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('delete')."</a></td>
 					<td bgcolor=$bgclr align=\"left\">
 
-					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.copy_$table&where_condition=$where_condition")."\"  onClick=\"return window.confirm('".lang('Are you sure?')."');\"   >".lang('copy')."</a></td>
+					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.copy_$table&where_condition=$where_condition")."\"  onClick=\"return window.confirm('".lang('Are you sure?')."');\"   >".lang('copy')."</a></td>
 					";
 
 					if(count($recordvalues)>0)
@@ -166,8 +164,6 @@
 				$button_add='<td><form method=post action="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_phpgw_jinn_site_objects').'"><input type=submit value="'.lang('add site-object').'"><input type=hidden name=parent_site_id value='.substr($GLOBALS[where_condition],8).'></form></td>';
 				$table_title=lang('Site-objects');
 
-
-
 			}
 			elseif($table=='phpgw_jinn_sites')
 			{
@@ -182,8 +178,6 @@
 				$table_title=lang('Sites');
 
 			}
-
-
 
 			$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 			$this->template->set_var('fieldnames',$column_header);

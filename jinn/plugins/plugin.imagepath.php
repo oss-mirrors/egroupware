@@ -61,8 +61,8 @@
 		global $local_bo;
 		$field_name=substr($field_name,3);	
 
-		if ($local_bo->bo->site_object['upload_url']) $upload_url=$local_bo->bo->site_object['upload_url'].'/';
-		elseif($local_bo->bo->site['upload_url']) $upload_url=$local_bo->bo->site['upload_url'].'/';
+		if ($local_bo->site_object['upload_url']) $upload_url=$local_bo->site_object['upload_url'].'/';
+		elseif($local_bo->site['upload_url']) $upload_url=$local_bo->site['upload_url'].'/';
 		else $upload_url=false;
 
 		/* if value is set, show existing images */	
@@ -132,12 +132,13 @@
 		global $local_bo;
 		$magick=CreateObject('jinn.boimagemagick');
 
-		if ($local_bo->bo->site_object['upload_path']) $upload_path=$local_bo->bo->site_object['upload_path'].'/';
-		elseif($local_bo->bo->site['upload_path']) $upload_path=$local_bo->bo->site['upload_path'].'/';
+		//die(var_dump($local_bo));
+		if ($local_bo->site_object['upload_path']) $upload_path=$local_bo->site_object['upload_path'].'/';
+		elseif($local_bo->site['upload_path']) $upload_path=$local_bo->site['upload_path'].'/';
 		else $upload_path=false;
 
 
-		$images_to_delete=$local_bo->filter_array_with_prefix($HTTP_POST_VARS,'IMG_DEL');
+		$images_to_delete=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_DEL');
 
 		if (count($images_to_delete)>0){
 
@@ -171,7 +172,7 @@
 		unset($image_path_new);
 
 		/* finally adding new image and if neccesary a new thumb */
-		$images_to_add=$local_bo->filter_array_with_prefix($HTTP_POST_FILES,'IMG_SRC'.substr($field_name,3));
+		$images_to_add=$local_bo->common->filter_array_with_prefix($HTTP_POST_FILES,'IMG_SRC'.substr($field_name,3));
 		// quick check for new images
 		if(is_array($images_to_add))
 		foreach($images_to_add as $imagecheck)
@@ -248,6 +249,7 @@
 					}
 
 					/* get original type */
+					//$magick->verbose=true;
 					$filetype=$magick->Get_Imagetype($add_image['tmp_name']);	
 					if(!$filetype)
 					{

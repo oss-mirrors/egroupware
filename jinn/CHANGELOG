@@ -4,6 +4,19 @@
 
 ===================================================================================
 
+version 0.5.1/0.5.2pre1
+we apr 9  23:14:32 UTC 2003
+===========================
+- completly reorganized all classes
+- removed a lot of ugly code and unneccesary functions
+- lot of performance optimalisation
+- standard message box for info and errors
+- standard header
+- standard redirection
+- added a lot of error messages
+- better (but not ideal) session handleling
+- remember moderator state
+
 version 0.5.0
 th maa 14 23:34:46 UTC 2003
 ===========================
@@ -22,7 +35,7 @@ version 0.4.4
 
 ===================================================================================
 version 0.4.4pre7
-wo maa 13 01:45:34 UTC 2003
+we maa 13 01:45:34 UTC 2003
 ===========================
 - finally I have the imagepath-plugin working (not complete, but probably stable) 
 - made some new plugins
