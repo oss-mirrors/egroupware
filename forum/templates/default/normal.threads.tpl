@@ -14,21 +14,21 @@
 <p>&nbsp;</p>
 <table width="90%" border="0" cellspacing="2" cellpadding="1" align="center">
   <tr bgcolor="#{BGROUND}"> 
-    <td> 
+    <td width="51%"> 
       <div align="center">{LANG_TOPIC}</div>
     </td>
-    <td width="22%"> 
+    <td width="24%"> 
       <div align="center">{LANG_AUTHOR}</div>
     </td>
-    <td width="20%"> 
+    <td width="25%"> 
       <div align="center">{LANG_LATREP}</div>
     </td>
   </tr>
   <!-- BEGIN NormalThreads --> 
   <tr bgcolor=#{COLOR}> 
-    <td align=left width="53%">{DEPTH}<a href="{READ_LINK}">{TOPIC}</a></td>
-    <td align=center width="22%">{AUTHOR}</td>
-    <td align=center width="20%">{LATESTREPLY}</td>
+    <td align=left width="51%">{DEPTH}<a href="{READ_LINK}">{TOPIC}</a></td>
+    <td align=center width="24%">{AUTHOR}</td>
+    <td align=center width="25%">{LATESTREPLY}</td>
   </tr>
   <!-- END NormalThreads --> 
 </table>

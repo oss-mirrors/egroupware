@@ -17,7 +17,7 @@
 
   // table array for forum
 	$phpgw_baseline = array(
-		'phpgw_forum_body' => array(
+		'f_body' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
 				'cat_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
@@ -29,7 +29,7 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'phpgw_forum_categories' => array(
+		'f_categories' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
 				'name' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
@@ -40,7 +40,7 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'phpgw_forum_forums' => array(
+		'f_forums' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
 				'name' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
@@ -54,7 +54,7 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'phpgw_forum_threads' => array(
+		'f_threads' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
 				'postdate' => array('type' => 'char','precision' => 19, 'nullable' => False,'default' => '0000-00-00 00:00:00'),

@@ -30,12 +30,12 @@
   <!-- BEGIN CollapseThreads --> 
   <tr bgcolor=#{COLOR}> 
     <td align=left width="3%"><img src="{IMG_URL_PREFIX}thread.gif" width="13" height="13" alt="{LANG_SUBCAT}"></td>
-    <td align=left width="30%"> 
+    <td valign="middle" width="30%"> 
       <div align="center"><a href="{READ_LINK}">{TOPIC}</a></div>
     </td>
-    <td align=center width="22%">{AUTHOR}</td>
-    <td align=center width="21%">{REPLIES}</td>
-    <td align=center width="24%">{LATESTREPLY}</td>
+    <td align=center width="22%" valign="middle">{AUTHOR}</td>
+    <td align=center width="21%" valign="middle">{REPLIES}</td>
+    <td align=center width="24%" valign="middle">{LATESTREPLY}</td>
   </tr>
   <!-- END CollapseThreads --> 
 </table>

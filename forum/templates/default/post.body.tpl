@@ -53,9 +53,7 @@
                   <textarea rows=20 cols=50 name=message value="{MESSAGE}"></textarea>
                 </center>
             <tr> 
-              <td colspan=2> 
-                <input type=checkbox name=repmail>
-                {LANG_REPLY} </td>
+              <td colspan=2>&nbsp; </td>
 
               <td align=right width="55%"> 
                 <input type=submit value={LANG_SUBMIT} name="submit">

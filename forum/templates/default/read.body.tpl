@@ -18,7 +18,8 @@
           <input type="hidden" name="msg" value="{MSG}">
           <input type="hidden" name="cat" value="{CAT}">
             <input type="hidden" name="for" value="{FORU}">
-            <input type="hidden" name="type" value="{TYPE}">
+            
+          <input type="hidden" name="col" value="{COL}">
             <input type="hidden" name="action" value="{ACTION}">
             
           <input type="hidden" name="thread" value="{THREAD}">
@@ -74,9 +75,7 @@
                   <textarea rows=20 cols=50 name=message value="{MESSAGE}"></textarea>
                 </center>
             <tr> 
-              <td colspan=2> 
-                <input type=checkbox name=repmail>
-                {LANG_REPLY} </td>
+              <td colspan=2>&nbsp; </td>
 
               <td align=right width="55%"> 
                 <input type=submit value={LANG_SUBMIT} name="submit">

@@ -19,25 +19,25 @@
   </tr>
 </table>
 <p>&nbsp;</p>
-<table width="80%" border="0" cellspacing="1" cellpadding="2" align="center">
+<table width="90%" border="0" cellspacing="1" cellpadding="2" align="center">
   <tr bgcolor="#{BGROUND}"> 
-    <td width="33%"> 
+    <td width="39%"> 
       <div align="center">{LTOPIC}</div>
     </td>
-    <td width="21%"> 
+    <td width="29%"> 
       <div align="center">{LAUTHOR}</div>
     </td>
     
-    <td width="29%"> 
+    <td width="32%"> 
       <div align="center">{LLATREP}</div>
     </td>
 
   </tr>
 <!-- BEGIN NormalThreads -->
 <tr bgcolor=#{COLOR}>
-    <td align=left width="16%">{DEPTH}<a href="{READL}">{TOPIC}</a></td>
-    <td align=center width="20%">{AUTHOR}</td>
-    <td align=center width="26%">{LATESTREPLY}</td>
+    <td align=left width="39%">{DEPTH}<a href="{READL}">{TOPIC}</a></td>
+    <td align=center width="29%">{AUTHOR}</td>
+    <td align=center width="32%">{LATESTREPLY}</td>
 </tr>
 <!-- END NormalThreads -->
 </table>
