@@ -108,6 +108,9 @@
 					<td align="center">
 						<b>{imap_server}</b>
 					</td>
+					<td>
+						&nbsp;
+					</td>
 				</tr>
 				<tr>
 					<td width="150"align="left">
@@ -115,6 +118,9 @@
 					</td>
 					<td align="center">
 						<b>{folderName}</b>
+					</td>
+					<td>
+						&nbsp;
 					</td>
 				</tr>
 				<tr>
@@ -127,6 +133,8 @@
 						<label for="subscribed">{lang_subscribed}</label> 
 						<input type="radio" name="folderStatus" value="unsubscribe" onchange="document.subscribeList.submit()" id="unsubscribed" {unsubscribed_checked}>
 						<label for="unsubscribed">{lang_unsubscribed}</label> 
+					</td>
+					<td>
 						<noscript><input type="submit" value="{lang_update}" name="un_subscribe"></noscript>&nbsp;
 						</form>
 					</td>
@@ -138,7 +146,9 @@
 					<td align="center">
 						<form action="{form_action}" method="post" name="renameMailbox">
 						<input type="text" size="30" name="newMailboxName" value="{mailboxNameShort}" onchange="document.renameMailbox.submit()">
-						<noscript><input type="submit" value="{lang_rename}" name="renameMailbox"></noscript>&nbsp;
+					</td>
+					<td align="center">
+						<input type="submit" value="{lang_rename}" name="renameMailbox">
 						</form>
 					</td>
 				</tr>
@@ -149,7 +159,9 @@
 					<td align="center">
 						<form action="{form_action}" method="post" name="createSubFolder">
 						<input type="text" size="30" name="newSubFolder" onchange="document.createSubFolder.submit()">
-						<noscript><input type="submit" value="{lang_create}" name="createSubFolder"></noscript>&nbsp;
+					</td>
+					<td align="center">
+						<input type="submit" value="{lang_create}" name="createSubFolder">&nbsp;
 						</form>
 					</td>
 				</tr>
@@ -157,13 +169,16 @@
 					<td width="150"align="left">
 						&nbsp;
 					</td>
-					<td align="center">
+					<td align="center" colspan="2">
 						&nbsp;
 					</td>
 				</tr>
 				<tr>
 					<td width="150"align="left">
 						{lang_delete_folder}
+					</td>
+					<td>
+						&nbsp;
 					</td>
 					<td align="center">
 						<form action="{form_action}" method="post" name="deleteFolder">

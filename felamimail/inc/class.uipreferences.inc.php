@@ -258,6 +258,8 @@
 			$this->t->set_var("lang_writing",lang('writing'));
 			$this->t->set_var("lang_posting",lang('posting'));
 			$this->t->set_var("lang_none",lang('none'));
+			$this->t->set_var("lang_rename",lang('rename'));
+			$this->t->set_var("lang_create",lang('create'));
 			
 			$this->t->set_var("th_bg",$GLOBALS['phpgw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['phpgw_info']["theme"]["bg01"]);
