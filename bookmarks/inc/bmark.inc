@@ -17,7 +17,7 @@ class bmark  {
 
   function add(&$id, $url, $name, $ldesc, $keywords, $category, $subcategory, 
                   $rating, $public) {
-    global $phpgw_info,$sess, $auth, $perm, $error_msg, $msg, $bookmarker, $validate, $db, $bk_db_callout, $phpgw;
+    global $phpgw_info,$error_msg, $msg, $bookmarker, $phpgw;
 
     $db = $phpgw->db;
 
@@ -25,7 +25,7 @@ class bmark  {
                          &$rating, &$public, &$public_db)) return false;
 
     ## Does the bookmark already exist?
-    $query = sprintf("select id from bookmark where url='%s' and username = '%s'",$url, $phpgw_info["user"]["account_id"]);
+    $query = sprintf("select id from bookmarks where url='%s' and username = '%s'",$url, $phpgw_info["user"]["account_id"]);
     $db->query($query,__LINE__,__FILE__);
     if ($db->Errno != 0) return false;
 
@@ -39,7 +39,7 @@ class bmark  {
 //    if ($db->Errno != 0) return false;
 
     ## Insert the bookmark
-    $query = sprintf("insert into bookmark (url, name, ldesc, keywords, category_id, 
+    $query = sprintf("insert into bookmarks (url, name, ldesc, keywords, category_id, 
                       subcategory_id, rating_id, username, public_f, added) 
                       values('%s', '%s', '%s','%s',%s,%s,%s, '%s', '%s', %s)", 
                       $url, addslashes($name), addslashes($ldesc), addslashes($keywords), 
@@ -71,7 +71,7 @@ class bmark  {
                         &$rating, &$public, &$public_db)) return false;
 
     ## Update bookmark information.
-    $query = sprintf("update bookmark set url='%s', name='%s', ldesc='%s' , keywords='%s', 
+    $query = sprintf("update bookmarks set url='%s', name='%s', ldesc='%s' , keywords='%s', 
                       category_id='%s', subcategory_id='%s', rating_id='%s', public_f='%s' 
                       where id='%s' and username='%s'", 
                       $url, addslashes($name), addslashes($ldesc), addslashes($keywords), 
@@ -101,7 +101,7 @@ class bmark  {
     } */
     
     ## Delete that bookmark.
-    $query = sprintf("delete from bookmark where id='%s' and username='%s'", $id, $phpgw_info["user"]["account_id"]);
+    $query = sprintf("delete from bookmarks where id='%s' and username='%s'", $id, $phpgw_info["user"]["account_id"]);
     $db->query($query,__LINE__,__FILE__);
     if ($db->Errno != 0) return false;
     
@@ -201,7 +201,7 @@ class bmark  {
        $user_total_bookmarks = 0;
        $db = $phpgw->db;
 
-       $db->query("select count(id) as total_bookmarks from bookmark where username = '"
+       $db->query("select count(id) as total_bookmarks from bookmarks where username = '"
                 . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
        if ($db->Errno == 0) {
           if ($db->next_record()) 

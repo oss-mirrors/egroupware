@@ -51,8 +51,8 @@ while ( is_array($HTTP_POST_VARS)
   case "bk_create_x":
   case "bk_create":
 
-    if(!$bmark->add(&$id, $url, $name, $desc, $keyw, $category, $subcategory, 
-                         $rating, $public)) break;
+    if(!$bmark->add(&$id, $url, $name, $desc, $keyw, $bookmarks_category, $bookmarks_subcategory, 
+                    $bookmarks_rating, $public)) break;
     break;
 
   default:

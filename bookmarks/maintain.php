@@ -74,7 +74,7 @@
 
 if (empty($error_msg)) {
 ## get record to update
-  $query = sprintf("select * from bookmark where id ='%s' and username='%s'", $id, $phpgw_info["user"]["account_id"]);
+  $query = sprintf("select * from bookmarks where id ='%s' and username='%s'", $id, $phpgw_info["user"]["account_id"]);
   $db->query($query,__LINE__,__FILE__);
 
   if ($db->Errno == 0) {
@@ -94,9 +94,9 @@ if (empty($error_msg)) {
            $public_selected = "CHECKED";
         }
 
-        load_ddlb("category", $category, &$category_select, FALSE);
-        load_ddlb("subcategory", $subcategory, &$subcategory_select, FALSE);  
-        load_ddlb("rating", $rating, &$rating_select, FALSE);
+        load_ddlb("bookmarks_category", $category, &$category_select, FALSE);
+        load_ddlb("bookmarks_subcategory", $subcategory, &$subcategory_select, FALSE);  
+        load_ddlb("bookmarks_rating", $rating, &$rating_select, FALSE);
 
         if (!empty($returnto)) {
            $cancel_button = sprintf("<input type=\"image\" name=\"bk_cancel\" title=\"Cancel Maintain\" src=\"%scancel.%s\" border=0 width=24 height=24>", $bookmarker->image_url_prefix, $bookmarker->image_ext);
