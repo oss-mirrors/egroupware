@@ -73,7 +73,7 @@
 	}
       } elseif ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "Cyrus") {
 	  $filter = "INBOX";
-	  $stdoffset = 2;
+	  $stdoffset = 1;
       } else {
 	$filter = "mail/";
         $stdoffset = 1;
