@@ -1148,7 +1148,7 @@
 			if ($project_id)
 			{
 				$values = $this->boprojects->read_single_project($project_id);
-//				_debug_array($values);
+				//_debug_array($values);
 				$GLOBALS['phpgw']->template->set_var('old_status',$values['status']);
 				$GLOBALS['phpgw']->template->set_var('old_parent',$values['parent']);
 				$GLOBALS['phpgw']->template->set_var('old_edate',$values['edate']);
@@ -1278,24 +1278,23 @@
 						break;
 				}
 			}
-/*
-			$GLOBALS['phpgw']->template->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$values['syear']),
-																							$this->sbox->getMonthText('values[smonth]',$values['smonth']),
-																							$this->sbox->getDays('values[sday]',$values['sday'])));
 
-			$GLOBALS['phpgw']->template->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$values['eyear']),
-																							$this->sbox->getMonthText('values[emonth]',$values['emonth']),
-																							$this->sbox->getDays('values[eday]',$values['eday'])));
-
-			$GLOBALS['phpgw']->template->set_var('pstart_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[psyear]',$values['psyear']),
-																							$this->sbox->getMonthText('values[psmonth]',$values['psmonth']),
-																							$this->sbox->getDays('values[psday]',$values['psday'])));
-
-			$GLOBALS['phpgw']->template->set_var('pend_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[peyear]',$values['peyear']),
-																							$this->sbox->getMonthText('values[pemonth]',$values['pemonth']),
-																							$this->sbox->getDays('values[peday]',$values['peday'])));
-*/
-
+#			$GLOBALS['phpgw']->template->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$values['syear']),
+#																							$this->sbox->getMonthText('values[smonth]',$values['smonth']),
+#																							$this->sbox->getDays('values[sday]',$values['sday'])));
+#
+#			$GLOBALS['phpgw']->template->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$values['eyear']),
+#																							$this->sbox->getMonthText('values[emonth]',$values['emonth']),
+#																							$this->sbox->getDays('values[eday]',$values['eday'])));
+#
+#			$GLOBALS['phpgw']->template->set_var('pstart_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[psyear]',$values['psyear']),
+#																							$this->sbox->getMonthText('values[psmonth]',$values['psmonth']),
+#																							$this->sbox->getDays('values[psday]',$values['psday'])));
+#
+#			$GLOBALS['phpgw']->template->set_var('pend_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[peyear]',$values['peyear']),
+#																							$this->sbox->getMonthText('values[pemonth]',$values['pemonth']),
+#																							$this->sbox->getDays('values[peday]',$values['peday'])));
+#
 //ndee 130504 new date selectors
 
 			$GLOBALS['phpgw']->template->set_var('start_date_select',$this->jscal->input('values[startdate]',$values['sdate']?$values['sdate']:time()+(60*60*24*7)));
@@ -1588,20 +1587,14 @@
 
 			if (!$values['edate'])
 			{
-				$values['emonth']	= $values['emonth']?$values['emonth']:date('m',time());
-				$values['eday']		= $values['eday']?$values['eday']:date('d',time());
-				$values['eyear']	= $values['eyear']?$values['eyear']:date('Y',time());
-			}
-			else
-			{
-				$values['eday'] = date('d',$values['edate']);
-				$values['emonth'] = date('m',$values['edate']);
-				$values['eyear'] = date('Y',$values['edate']);
+				$values['edate']	= time();
 			}
 
-			$GLOBALS['phpgw']->template->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$values['eyear']),
-				$this->sbox->getMonthText('values[emonth]',$values['emonth']),
-				$this->sbox->getDays('values[eday]',$values['eday'])));
+#			$GLOBALS['phpgw']->template->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$values['eyear']),
+#				$this->sbox->getMonthText('values[emonth]',$values['emonth']),
+#				$this->sbox->getDays('values[eday]',$values['eday'])));
+			$GLOBALS['phpgw']->template->set_var('end_date_select',
+				$this->jscal->input('values[enddate]',$values['edate']?$values['edate']:''));
 
 			unset($uiwidgets);
 

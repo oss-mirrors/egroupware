@@ -47,8 +47,8 @@
 			<td>{lang_manuell_entries}:</td>
 			<td colspan="2">{start_date_select}</td>
 			<td>
-				<input type="text" size="2" name="values[hours]" maxlenght="2" value="{hours}">.
-				<input type="text" size="2" name="values[minutes] "maxlenght="2" value="{minutes}">&nbsp;[hh.mm]
+				<input type="text" size="2" name="values[hours]" maxlenght="2" value="{hours}">:
+				<input type="text" size="2" name="values[minutes] "maxlenght="2" value="{minutes}">&nbsp;[hh:mm]
 			</td>
 			<td colspan="2"><input type="submit" name="values[apply]" value="{lang_apply}"></td>
 		</tr>
@@ -57,7 +57,7 @@
 			<td>{lang_distance}:</td>
 			<td><input type="text" name="values[km_distance]" value="{km_distance}" size="6"></td>
 			<td>{lang_time_of_journey}:</td>
-			<td colspan="2"><input type="text" name="values[t_journey]" value="{t_journey}" size="6">&nbsp;[hh.mm]</td>
+			<td colspan="2"><input type="text" name="values[t_journey]" value="{t_journey}" size="6">&nbsp;[hh:mm]</td>
 		</tr>
 		<tr height="15">
 			<td>&nbsp;</td>
