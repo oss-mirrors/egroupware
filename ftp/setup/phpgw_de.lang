@@ -11,17 +11,23 @@ failed to delete %1	ftp	de	Konnte %1 nicht l&ouml;schen
 failed to rename %1 to %2	ftp	de	Konnte %1 nicht in %2 umbenennen
 failed to upload %1	ftp	de	%1 konnte nicht hochgeladen werden
 ftp client	ftp	de	Ftp Client
+ftp hostname	ftp	de	FTP Server Name
 ftp server	ftp	de	Ftp Server
 home	ftp	de	Home
+log into ftp server	ftp	de	Anmelden am FTP Server
 logout/relogin	ftp	de	LogOut/ReLogin
 password	ftp	de	Password
+permissions	ftp	de	Rechte
 rename	ftp	de	%1 umbenennen
+rename file	ftp	de	Datei umbenennen
 rename from	ftp	de	Umbenennen von
 rename to	ftp	de	in
 renamed %1 to %2	ftp	de	%1 umbenannt in %2
 save	ftp	de	Speichern
 save to filemanager	ftp	de	In den FileManager speichern
+size	ftp	de	Größe
 succesfully created directory %1	ftp	de	%1 erfolgreich erstellt
+successfully created directory %1	ftp	de	Verzeichnis erfolgreich erstellt %1
 successfully deleted %1	ftp	de	%1 erfolgreich gel&ouml;scht
 successfully uploaded %1	ftp	de	%1 erfolgreich hochgeladen
 upload	ftp	de	Upload
