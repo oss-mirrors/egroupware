@@ -60,8 +60,9 @@
 		$sortmethod = "order by $order $sort";
 	}
 
-	$phpgw->db->query("SELECT COUNT(*) FROM ticket");
-	$numtotal = $phpgw->db->num_rows();
+	$phpgw->db->query("SELECT COUNT('t_id') FROM ticket");
+	$phpgw->db->next_record();
+	$numtotal = $phpgw->db->f('0') ;
 
 	$phpgw->db->query("SELECT t_id FROM ticket where t_timestamp_closed='0'");
 	$numopen = $phpgw->db->num_rows();
