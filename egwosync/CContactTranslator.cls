@@ -28,10 +28,10 @@ Attribute VB_Exposed = False
 '***********************************************************************************************
 Public Sub Outlook2eGW(oContact As ContactItem, egwContact As XMLRPCStruct)
     Dim dTemp As Variant
-    Dim Command As String
 
     For Each dTemp In Descriptions
-        If DefaultFields(dTemp)("eGWName") <> "" Then
+        If DefaultFields(dTemp)("eGWName") <> "" And _
+            DefaultFields(dTemp)("oName") <> "" Then
             egwContact.AddString DefaultFields(dTemp)("eGWName"), _
                                 CallByName(oContact, DefaultFields(dTemp)("oName"), VbGet)
         End If
@@ -44,10 +44,10 @@ End Sub
 '***********************************************************************************************
 Public Sub eGW2Outlook(egwContact As XMLRPCStruct, oContact As ContactItem)
     Dim dTemp As Variant
-    Dim Command As String
     
     For Each dTemp In Descriptions
-        If DefaultFields(dTemp)("oName") <> "" Then
+        If DefaultFields(dTemp)("egwName") <> "" And _
+            DefaultFields(dTemp)("oName") <> "" Then
             CallByName oContact, DefaultFields(dTemp)("oName"), VbLet, _
                     egwContact.GetValueByName(DefaultFields(dTemp)("eGWName")).StringValue
         End If

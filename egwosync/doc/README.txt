@@ -1,107 +1,83 @@
 ###############################################################################
-# This is the official readme for eGWOSync, a module for synchronizing
-# eGroupWare with Microsoft Outlook.
+# This is the readme for eGWOSync, a plugin for synchronizing eGroupWare with 
+# Microsoft Outlook.
 #
-# This readme created on July 17th, 2004 by Ian Smith-Heisters
+# This readme created on August 5th, 2004 by Ian Smith-Heisters
+# Unless otherwise noted all the included files are distributed under the GPL.
 ###############################################################################
 
-The current eGWOSync version is just functional and not by any means meant to
-be complete or bug free. Email the egroupware-developers list if you are having
-trouble using it, have found a bug, want a new feature, want to help develop
-it, or just have a question. Or email me: heisters[at]0x09.com
+eGWOSync is a plugin that allows users to access eGroupWare from within 
+Outlook. At this point it is only tested under Windows with Outlook 2000 and 
+later, though it may be possible to compile the source for a Mac version.
 
-All files in the eGWOSync module are distributed under the GPL unless 
-otherwise stated.
+Please send feedback to someone on the contact list below.
 
-INSTALLATION:
+Features:
+	- Download and upload contacts to/from the eGW server
+	- Filter and search contacts
+	- Automatically add contacts to eGW on creation
+	- Overwrite Protection avoids duplicates and accidental overwrites
 
-1. Obtain vbXML.dll and vbXMLRPC.dll which are available from 
-   http://www.enappsys.com/backend.jsp or should be included on the CVS where
-   eGWOSync is available. Refer to the installation instruction provided with
-   them.
+TODO:
+	- Test
+	- Fix bugs
+	- Repeat 1 & 2 until its perfect
+	- Figure out some sort of digital signature for security
+	- Improve automatic uploading / downloading
+	- Add an interface more like Exchange, where all contacts are kept
+	  on the server
+	- Calendar Synchronization
+	- Note, todo, and email sharing synchronization
 
-2. Enable Macros in Outlook. Launch Outlook and go to Tools->Macro->Security
-   and set it to Medium or Low. This requires you to restart Outlook to take
-   effect, even though Outlook doesn't say this.
+Requirements:
+	- A post August 2nd, 2004 version of eGroupWare
+	- Outlook 2000 or later
 
-3. Launch the Outlook VBA Editor. In Outlook go to Tools->Macro->VB Editor
-   or just press Alt+F11.
+Installation:
+	At this point eGWOSync does not have a digital signature certificate,
+	so you must set Outlook's Macro security to "Low" or "Medium". Do this
+	in Outlook under Tools->Macro->Security. Then restart Outlook.
+	
+	eGWOSync should be pretty easy to install, just double click the 
+	installer .exe, select a target directory, and click next. Then 
+	startup Outlook and go to town.
 
-4. Register the vbXML(RPC).dlls for the Outlook VBA project. In the Outlook
-   Visual Basic Editor go to Tools->References, find vbXML and vbXMLRPC and 
-   enable them by checking the box next to their names.
+Settings:
+	Username: your eGroupWare login
+	Password: your eGroupWare password
+	Port: almost always port 80.
+	Host: the server that hosts eGroupWare. If you were connecting to 
+	      the egroupware.org server, where you access the egroupware login
+	      at "http://www.egroupware.org/egroupware" the host would be
+	      "egroupware.org". Note: NO "http" or "www" or "/egroupware".
+	URI: almost always egroupware/xmlrpc.php. This is the path to 
+	     eGroupWare's xmlrpc.php on the server, relative to the htdocs root
 
-5. Import the project files. In the Outlook VBA Editor go to File->Import File
-   and import the project files. These will need to be done one at a time. For
-   the current release these files are:
-       BasDebugUtils.bas
-       BasEGWOSync.bas
-       BasUtilities.bas
-       CAutoExporter.bas
-       CContactTranslator.cls
-       CeGW.cls
-       CeGWContacts.cls
-       CFormHelper
-       COutlookContacts.cls
-       COverwriteManager.cls
-       FrmMain.frm
-       FrmOverwrite.frm
-       FrmRename.frm
-       ThisOutlookSession.cls
-   NOTE: You may need to copy the contents of ThisOutlookSession.cls into the
-   ThisOutlookSession class automatically created by Outlook, rather than
-   importing it.
+Usage:
+	Click on the "eGroupWare Sync Main" button on your Standard Menu Bar.
 
-6. Save the project.
+	Press "Get Contacts" in Import and Export to list all the local and 
+	remote contacts. Select the contacts you want to upload and download
+	with your mouse. Use Shift and Control to select multiple contacts.
+	Click "Synchronize Selected Contacts" to upload the selected local
+	contacts and download the selected remote contacts.
+	
+	When you add a new contact in Outlook, it should automatically ask
+	you whether you also want to add it to the eGW server.
 
-7. There is a conflict with the date format that needs to be fixed, but the
-   current fix may break other XMLRPC clients trying to access your eGW
-   server. The way I'm doing it at the moment is to copy 
-	   egwosync/auxillary/class.xmlrpc_server.inc.php
-	   egwosync/auxillary/class.xmlrpc_server.php.inc.php
-   to egroupware/phpgwapi/inc/. Be sure to back up the originals in 
-   phpgwapi/inc/ first. This will make the KDE pim client unable to access
-   the XMLRPC server, and possibly other clients as well, but will make
-   Outlook able. There will be a more satisfactory fix soon.
+Developers:
+	Ian Smith-Heisters
+	Esben Laursen
+	Chris Carter
 
-8. Restart Outlook.
+Contacts:
+	egroupware-users[at]lists.sourceforge.net
+	egroupware-developers[at]lists.sourceforge.net
+	Ian Smith-Heisters heisters[at]0x09.com
+	Esben Laursen hyber[at]hyber.dk
 
-9. Click "Enable Macro" if Outlook gives any cautionary messages about allowing
-   macros.
-
-10. Go back to Outlook and go to Tools->Macro->Macros, select eGWSynchronize,
-    and click run.
-
-11. To use the automatic exporter, just add a contact to your default contacts
-    directory in Outlook. If Outlook warns you that a macro is trying to access
-    your contacts allow the macro to do so for at least a minute.
-
-USING EGWOSYNC:
-
-1. Fill in fields as follows:
-	Username:    your eGW username
-	Password:    the password for the eGW account specified by the username
-	Port:	     the port eGW listens on. Usually port 80.
-	Hostname:    ONLY the hostname of your eGW server. For example:
-			  If you access eGW via the web at 
-			  http://www.egroupware.org/egroupware
-			  the hostname would be ONLY "egroupware.org".
-			  If you access eGW via the web at
-			  http://192.168.0.101/egroupware the hostname would be
-			  ONLY "192.168.0.101".
-	URI:	     The location of egroupware's XML-RPC server (xmlrpc.php)
-		     on the remote server, realative to the htdoc root. This 
-		     will usually be "/egroupware/xmlrpc.php".
-
-2. Press "Get Contacts" to retrieve the remote contacts from the server and
-   list the local contacts. Note that contacts from the eGW server will only be
-   listed if the account you logged in with has read access to those contacts.
-   Local Outlook contacts are currently listed from the default Contact
-   directory and all its subdirectories.
-
-3. Select the contacts you want to import and export using Control and Shift to
-   select multiple contacts. Press "Synchronize Selected Contacts" to upload
-   the selected local contacts and download the selected remote contacts. If a
-   contact by the same name already exists in the target repository you will be
-   prompted to either overwrite the existing contact or skip the contact.
-
+Thanks:
+	Ralf Becker, Chris Carter, Reiner Jung, Lars Kneschke, Carsten Wolff 
+	and the rest of	the eGroupWare development team. Cunningham Dance 
+	Foundation and Marlboro College for sponsoring the intitial 
+	developement.

@@ -1,0 +1,43 @@
+[Project Name]
+eGWOSync
+
+[Install To]
+C:\Program Files\eGWOSync
+
+[Final Install]
+C:\Documents and Settings\Ian Smith-Heisters\My Documents\Projects\merce\egwosync\Installer\Setup_eGWOSync.exe
+
+[Install Bitmap]
+C:\Documents and Settings\Ian Smith-Heisters\My Documents\Projects\merce\egwosync\Installer\banner.bmp
+
+[Install License]
+C:\Documents and Settings\Ian Smith-Heisters\My Documents\Projects\merce\egwosync\Installer\gpl.txt
+
+[CopyFile]
+ToSet
+C:\Program Files\eGWOSync\eGWOSync.dll
+
+[CopyFile]
+ToSet
+C:\Program Files\eGWOSync\README.txt
+
+[CopyFile]
+ToSet
+C:\WINDOWS\system32\vbXMLRPC.dll
+
+[CopyFile]
+ToSet
+C:\WINDOWS\system32\vbXML.dll
+
+[Registry]
+HKCU
+\Software\Microsoft\Office\Outlook\Addins\eGWOSync
+STRING
+LoadBehavior
+0x03
+
+[RunFile]
+C:\Program Files\eGWOSync\README.txt
+
+Optional - View the Readme
+

@@ -1,9 +1,9 @@
-Connect = 0, 0, 607, 457, C, 211, 10, 1039, 703, C
-basDebugUtils = 0, 0, 0, 0, C
+Connect = 0, 0, 607, 457, C, -19, 7, 809, 700, C
+basDebugUtils = 126, 126, 719, 583, C
 BasGlobals = 21, 21, 628, 478, C
-BasUtilities = 60, 150, 667, 607, Z
+BasUtilities = 60, 150, 667, 607, 
 CAutoExporter = 0, 0, 0, 0, C
-CContactTranslator = 147, 147, 780, 604, C
+CContactTranslator = 147, 147, 780, 604, Z
 CeGW = 147, 147, 754, 604, C
 CeGWContacts = 105, 105, 738, 562, 
 CeGWOSyncMaster = 105, 105, 712, 562, C

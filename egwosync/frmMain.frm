@@ -116,7 +116,7 @@ Private Sub UserForm_Initialize()
     'Populate the Filter comboboxes with available fields
     For Each Control In FilterFrame.Controls
         If TypeOf Control Is MsForms.ComboBox Then
-            For Each FieldName In Translator.eGWFields
+            For Each FieldName In Translator.Descriptions
                 Control.AddItem FieldName
             Next FieldName
             Control.AddItem ""
