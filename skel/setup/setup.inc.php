@@ -28,7 +28,7 @@
 		'add_def_prefs'
 	);
 
-	/* Dependacies for this app to work */
+	/* Dependencies for this app to work */
 	$setup_info['skel']['depends'][] = array(
 			 'appname' => 'phpgwapi',
 			 'versions' => Array('0.9.13', '0.9.14','0.9.15')

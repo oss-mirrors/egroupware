@@ -40,7 +40,7 @@
 		'deleteaccount'
 	);
 
-/* Dependacies for this app to work */
+/* Dependencies for this app to work */
 
 	$setup_info['projects']['depends'][] = array(
 		 'appname' => 'phpgwapi',
