@@ -1646,6 +1646,8 @@
 			$recipients[] = $coordinator_email; # coordinator included by default
 			$body = "";
 			
+			$recipient_ids = array();
+
 			if ($action == 'new')
 			{
 				$subject = "New project created: " . $p_number . " " . $title;
