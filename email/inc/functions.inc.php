@@ -41,9 +41,11 @@
     // UWash style: ./aeromail/Junque
 
     if ($phpgw_info["flags"]["newsmode"]) {
-      $phpgw->db->query("SELECT newsgroups.name, users_newsgroups.owner FROM newsgroups, users_newsgroups WHERE newsgroups.con = users_newsgroups.newsgroup AND users_newsgroups.owner = ".$phpgw_info["user"]["con"]);
-      while($phpgw->db->next_record()) {
-	echo "<option>".$phpgw->db->f("name");
+      while($pref = each($phpgw_info["user"]["preferences"]["nntp"])) {
+	$phpgw->db->query("SELECT name FROM newsgroups WHERE con=".$pref[0]);
+	while($phpgw->db->next_record()) {
+	  echo "<option>".$phpgw->db->f("name");
+        }
       }
     } else {
       if ($phpgw_info["server"]["imap_server_type"] == "Cyrus") {
