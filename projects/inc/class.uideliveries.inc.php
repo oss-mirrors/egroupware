@@ -491,7 +491,7 @@
 																				$this->sbox->getMonthText('values[month]',$values['month']),
 																				$this->sbox->getDays('values[day]',$values['day'])));
 
-			if ($prefs['bill'] == 'wu')
+			if ($prefs['activity_bill'] == 'wu')
 			{
 				$GLOBALS['phpgw']->template->set_var('lang_sumaes',lang('Sum workunits'));
 				$GLOBALS['phpgw']->template->set_var('lang_workunits',lang('Workunits'));
@@ -525,7 +525,7 @@
 						$start_dateout = $GLOBALS['phpgw']->common->show_date($start_date,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
 					}
 
-					if ($prefs['bill'] == 'wu')
+					if ($prefs['activity_bill'] == 'wu')
 					{
 						if ($note['minperae'] != 0)
 						{
@@ -594,7 +594,7 @@
 							$start_dateout = $GLOBALS['phpgw']->common->show_date($start_date,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
 						}
 
-					if ($prefs['bill'] == 'wu')
+					if ($prefs['activity_bill'] == 'wu')
 					{
 						if ($note['minperae'] != 0)
 						{
@@ -810,7 +810,7 @@
 			if (! $title) { $title  = '&nbsp;'; }
 			$GLOBALS['phpgw']->template->set_var('title',$title);
 
-			if ($prefs['bill'] == 'wu')
+			if ($prefs['activity_bill'] == 'wu')
 			{
 				$GLOBALS['phpgw']->template->set_var('lang_sumaes',lang('Sum workunits'));
 				$GLOBALS['phpgw']->template->set_var('lang_workunits',lang('Workunits'));
@@ -843,7 +843,7 @@
 
 					$GLOBALS['phpgw']->template->set_var('hours_date',$hours_dateout);
 
-					if ($prefs['bill'] == 'wu')
+					if ($prefs['activity_bill'] == 'wu')
 					{
 						if ($note['minperae'] != 0)
 						{
