@@ -99,9 +99,8 @@
 
 <table border=0 cellpadding="1" cellspacing="1" width="95%" align="center">
 
-<form enctype="multipart/form-data" name="doit" action="send_message.php" method=POST>
+<form enctype="multipart/form-data" name="doit" action="<?php echo $phpgw->link("send_message.php")?>" method=POST>
   <input type="hidden" name="return" value="<?php echo $folder ?>">
-  <?php echo $phpgw->session->hidden_var(); ?>
 
   <tr>
    <td colspan=2 bgcolor="<?php echo $phpgw_info["theme"]["em_folder"]; ?>">

@@ -24,8 +24,7 @@
 ?>
 
 <table border=0 cellpadding="1" cellspacing="1" width="95%" align="center">
-<form action="folder.php">
- <?php echo $phpgw->session->hidden_var(); ?>
+<form action="<?php echo $phpgw->link("folder.php")?>">
 <tr><td colspan=2 bgcolor="<?php echo $phpgw_info["theme"]["em_folder"]; ?>">
 
 	<table border=0 cellpadding=0 cellspacing=1 width=100%>

@@ -49,9 +49,7 @@
      mkdir($phpgw_info["server"]["temp_dir"] . $sep . $phpgw->session->id,0700);
 
   ?>
-    <form ENCTYPE="multipart/form-data" method="POST" action="attach_file.php">
-      <?php echo $phpgw->session->hidden_var(); ?>
-
+    <form ENCTYPE="multipart/form-data" method="POST" action="<?php echo $phpgw->link("attach_file.php")?>">
       <table border=0>
       <tr> <td>Attach file:</td> </tr>
       <tr> <td>Current attachments:</td> </tr>
