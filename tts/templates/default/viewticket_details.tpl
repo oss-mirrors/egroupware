@@ -142,8 +142,11 @@
 
 	<tr bgcolor="{row_off}">
 		<td>&nbsp;</td>
-		<td align="center"><input type="submit" value="{lang_ok}" name="submit"></td>
-		<td colspan="2">&nbsp;</td>
+		<td align="left"><input type="submit" value="{lang_ok}" name="submit"></td>
+        </form>
+        <form method="post" action="{done_url}">
+		<td align="left"><input type="submit" value="{lang_done}" name="cancel"></td>
+		<td>&nbsp;</td>
 	</tr>
 
 		<tr>

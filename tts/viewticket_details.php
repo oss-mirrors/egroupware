@@ -306,6 +306,8 @@
 
 		$GLOBALS['phpgw']->template->set_var('lang_additional_notes',lang('Additional notes'));
 		$GLOBALS['phpgw']->template->set_var('lang_ok', lang('OK'));
+		$GLOBALS['phpgw']->template->set_var('done_url',$GLOBALS['phpgw']->link('/tts/index.php'));
+		$GLOBALS['phpgw']->template->set_var('lang_done', lang('done'));
 
 		$GLOBALS['phpgw']->template->set_var('lang_category',lang('Category'));
 		$GLOBALS['phpgw']->template->set_var('value_category',$GLOBALS['phpgw']->categories->id2name($ticket['category']));
