@@ -39,7 +39,7 @@
 		'T_attach_clip' => 'index_attach_clip.tpl',
 		'T_new_msg' => 'index_new_msg.tpl',
 		'T_msg_list' => 'index_msg_list.tpl',
-		'T_index_out' => 'index.tpl',
+		'T_index_out' => 'index.tpl'
 	));
 
 // ----  Are We In Newsmode Or Not  -----
@@ -389,15 +389,15 @@
 			}
 			if ($phpgw_info['user']['preferences']['email']['show_addresses'] == 'from' && ($personal != "$from->mailbox@$from->host"))
 			{
-				$display_address->from = "($from->mailbox@$from->host)";
+				$display_address_from = "($from->mailbox@$from->host)";
 			}
 			elseif ($phpgw_info["user"]["preferences"]["email"]["show_addresses"] == "replyto" && ($personal != $replyto))
 			{
-				$display_address->from = "($replyto)";
+				$display_address_from = "($replyto)";
 			}
 			else
 			{
-				$display_address->from = "";
+				$display_address_from = "";
 			}
 
 			$from_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='
