@@ -1,23 +1,34 @@
 <!-- BEGIN main -->
-<table width="100%" border="0">
+<table width="100%" border="0" cellpadding="0" cellspacing="1">
 	<tr>
-		<td width="1%" rowspan="2">
-			<form action="{form_action}" method="post" name="folderList">
-			<table border="1" width="100%" cellpadding=2 cellspacing=0>
-				<caption>{lang_folder_list}</caption>
-				<tr>
-					<td align="center">
-						<select size="30" name="foldername" onchange="document.folderList.submit()">
-							{select_rows}
-						</select>
-					</td>
-					<noscript>
-					<td align="right">
-						<input type="submit" value="{lang_select}" name="selectFolder">
-					</td>
-					</noscript>
-				</tr>
-			</table>
+		<th width="210px" class="th">
+			{lang_folder_list}
+		</th>
+		<th class="th">
+			{lang_folder_settings}
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<form name="folderList" method="post" action="{form_action}">
+			<div id="divFolderTree" style="overflow:auto; width:210px; height:474px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;">
+				<table width=100% BORDER="0" style="table-layout:fixed;padding-left:2;">
+					<tr>
+						<td width="100%" valign="top" nowrap style="font-size:10px">
+							{folder_tree}
+						</td>
+					</tr>
+					<tr>
+						<td width="100%" valign="bottom" nowrap style="font-size:10px">
+							<br>
+							<p align="center">
+							<small><a href="javascript: d.openAll();">{lang_open_all}</a> | <a href="javascript: d.closeAll();">{lang_close_all}</a></small>
+							</p>
+						</td>
+					</tr>
+				</table>
+				<input type="hidden" name="mailboxName">
+			</div>
 			</form>
 		</td>
 		<td valign="top">
@@ -85,42 +96,11 @@
 
 <!-- END main -->
 
-<!-- BEGIN select_row -->
-				<option value="{folder_value}" {selected}>({subscribed}) {folder_name}</option>
-<!-- END select_row -->
-
 <!-- BEGIN folder_settings -->
-			<table width="100%" cellpadding=2 cellspacing=0>
-				<tr>
-					<td width="50%" align="center">
-						{lang_folder_settings}
-					</td>
-					<td width="50%" align="center">
-						<!--<a href="{acl_url}">{lang_folder_acl}</a>-->
-					</td>
-				</tr>
-			</table>
-			<table border="1" width="100%" cellpadding=2 cellspacing=0>
-				<tr>
-					<td width="150" align="left">
-						{lang_imap_server}
-					</td>
-					<td align="center">
-						<b>{imap_server}</b>
-					</td>
-					<td>
-						&nbsp;
-					</td>
-				</tr>
-				<tr>
-					<td width="150"align="left">
-						{lang_folder_name}
-					</td>
-					<td align="center">
-						<b>{folderName}</b>
-					</td>
-					<td>
-						&nbsp;
+			<table border="0" width="100%" cellpadding=2 cellspacing=0>
+				<tr class="th">
+					<td colspan="3">
+						<b>Host: {imap_server} Foldername: {folderName}</b>
 					</td>
 				</tr>
 				<tr>
@@ -188,6 +168,29 @@
 				</tr>
 			</table>
 <!-- END folder_settings -->
+
+<!-- BEGIN mainFolder_settings -->
+			<table border="0" width="100%" cellpadding=2 cellspacing=0>
+				<tr class="th">
+					<td colspan="3">
+						<b>Host: {imap_server}</b>
+					</td>
+				</tr>
+				<tr>
+					<td width="150"align="left">
+						{lang_create_subfolder}
+					</td>
+					<td align="center">
+						<form action="{form_action}" method="post" name="createSubFolder">
+						<input type="text" size="30" name="newSubFolder" onchange="document.createSubFolder.submit()">
+					</td>
+					<td align="center">
+						<input type="submit" value="{lang_create}" name="createSubFolder">&nbsp;
+						</form>
+					</td>
+				</tr>
+			</table>
+<!-- END mainFolder_settings -->
 
 <!-- BEGIN folder_acl -->
 			<table width="100%" cellpadding=2 cellspacing=0>

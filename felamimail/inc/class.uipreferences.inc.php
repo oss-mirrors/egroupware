@@ -26,8 +26,9 @@
 		function uipreferences()
 		{
 			$this->t = $GLOBALS['phpgw']->template;
-			$this->t->egroupware_hack = False;
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail');
+			#$this->t->egroupware_hack = False;
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw']->translation->charset());
+			$this->uiwidgets	= CreateObject('felamimail.uiwidgets');
 			$this->bofelamimail->openConnection('',OP_HALFOPEN);
 			
 			
@@ -38,30 +39,17 @@
 		
 		function display_app_header()
 		{
+			if(!@is_object($GLOBALS['phpgw']->js))
+			{
+				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+			}
+			$GLOBALS['phpgw']->js->validate_file('foldertree','foldertree');
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 		}
 		
 		function listFolder()
 		{
-			// check user input BEGIN
-		
-			// the name of the new current folder
-			if(isset($GLOBALS['HTTP_POST_VARS']['foldername']))
-			{
-				$this->bofelamimail->sessionData['preferences']['mailbox']
-					= $GLOBALS['HTTP_POST_VARS']['foldername'];
-				$this->bofelamimail->saveSessionData();
-			}
-
-			$this->selectedFolder	= $this->bofelamimail->sessionData['preferences']['mailbox'];
-			
-			// (un)subscribe to a folder??
-			if(isset($GLOBALS['HTTP_POST_VARS']['folderStatus']))
-			{
-				$this->bofelamimail->subscribe($this->selectedFolder,$GLOBALS['HTTP_POST_VARS']['folderStatus']);
-			}
-			
 			// rename a mailbox
 			if(isset($GLOBALS['HTTP_POST_VARS']['newMailboxName']))
 			{
@@ -84,15 +72,6 @@
 				}
 			}
 			
-			// create a new Mailbox
-			if(isset($GLOBALS['HTTP_POST_VARS']['newSubFolder']))
-			{
-				$oldMailboxName = $this->bofelamimail->sessionData['preferences']['mailbox'];
-				$newMailboxName = $oldMailboxName.".".$GLOBALS['HTTP_POST_VARS']['newSubFolder'];
-				
-				$this->bofelamimail->imap_createmailbox($newMailboxName,True);
-			}
-			
 			// delete a Folder
 			if(isset($GLOBALS['HTTP_POST_VARS']['deleteFolder']) && $this->bofelamimail->sessionData['preferences']['mailbox'] != 'INBOX')
 			{
@@ -104,22 +83,55 @@
 				}
 			}
 
+			// create a new Mailbox
+			if(isset($GLOBALS['HTTP_POST_VARS']['newSubFolder']))
+			{
+				$oldMailboxName = $this->bofelamimail->sessionData['preferences']['mailbox'].'.';
+				$oldMailboxName	= ($oldMailboxName == '--topfolderselected--.') ? '' : $oldMailboxName;
+				$newMailboxName = $oldMailboxName.$GLOBALS['HTTP_POST_VARS']['newSubFolder'];
+
+				$this->bofelamimail->imap_createmailbox($newMailboxName,True);
+			}
+			
+			$folderList	= $this->bofelamimail->getFolderList();
+
+			// check user input BEGIN
+		
+			// the name of the new current folder
+			if(get_var('mailboxName',array('POST')) && 
+			(in_array(get_var('mailboxName',array('POST')),array_flip($folderList)) ||
+			get_var('mailboxName',array('POST')) == '--topfolderselected--'))
+			{
+				$this->bofelamimail->sessionData['preferences']['mailbox']
+					= get_var('mailboxName',array('POST'));
+				$this->bofelamimail->saveSessionData();
+			}
+
+			$this->selectedFolder	= $this->bofelamimail->sessionData['preferences']['mailbox'];
+			
+			// (un)subscribe to a folder??
+			if(isset($GLOBALS['HTTP_POST_VARS']['folderStatus']))
+			{
+				$this->bofelamimail->subscribe($this->selectedFolder,$GLOBALS['HTTP_POST_VARS']['folderStatus']);
+			}
+			
+
 			$this->selectedFolder	= $this->bofelamimail->sessionData['preferences']['mailbox'];
 
 			// check user input END
 			
 			
-			$folderList	= $this->bofelamimail->getFolderList();
-			$folderStatus	= $this->bofelamimail->getFolderStatus($this->selectedFolder);
-			#$quota		= $this->bofelamimail->imap_get_quotaroot($this->selectedFolder);
+			if($this->selectedFolder != '--topfolderselected--')
+				$folderStatus	= $this->bofelamimail->getFolderStatus($this->selectedFolder);
 			$mailPrefs	= $this->bofelamimail->getMailPreferences();
 			
 			$this->display_app_header();
 
 			$this->t->set_file(array("body" => "preferences_manage_folder.tpl"));
 			$this->t->set_block('body','main');
-			$this->t->set_block('body','select_row');
+			#$this->t->set_block('body','select_row');
 			$this->t->set_block('body','folder_settings');
+			$this->t->set_block('body','mainFolder_settings');
 			$this->t->set_block('body','folder_acl');
 
 			$this->translate();
@@ -133,46 +145,55 @@
 			$this->t->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
 			
 			// create the link to show folder settings
-			$linkData = array
-			(
-				'menuaction'    => 'felamimail.uipreferences.listFolder',
-				'display'	=> 'settings'
-			);
-			$this->t->set_var('settings_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			#$linkData = array
+			#(
+			#	'menuaction'    => 'felamimail.uipreferences.listFolder',
+			#	'display'	=> 'settings'
+			#);
+			#$this->t->set_var('settings_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
 			
 			// create the link to show folder acl
-			$linkData = array
-			(
-				'menuaction'    => 'felamimail.uipreferences.listFolder',
-				'display'	=> 'acl'
-			);
-			$this->t->set_var('acl_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			#$linkData = array
+			#(
+			#	'menuaction'    => 'felamimail.uipreferences.listFolder',
+			#	'display'	=> 'acl'
+			#);
+			#$this->t->set_var('acl_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
 			
 			// folder select box
-			while(list($key,$value) = @each($folderList))
-			{
-				$currentFolderStatus = $this->bofelamimail->getFolderStatus($key);
-				$this->t->set_var('folder_name',$value);
-				$this->t->set_var('folder_value',$key);
-				if($this->selectedFolder == $key)
-				{
-					$this->t->set_var('selected','selected');
-				}
-				else
-				{
-					$this->t->set_var('selected','');
-				}
-				if($currentFolderStatus['subscribed'])
-				{
-					$this->t->set_var('subscribed','S');
-				}
-				else
-				{
-					$this->t->set_var('subscribed','U');
-				}
-				$this->t->parse('select_rows','select_row',True);
-			}
-			
+			#while(list($key,$value) = @each($folderList))
+			#{
+			#	$currentFolderStatus = $this->bofelamimail->getFolderStatus($key);
+			#	$this->t->set_var('folder_name',$value);
+			#	$this->t->set_var('folder_value',$key);
+			#	if($this->selectedFolder == $key)
+			#	{
+			#		$this->t->set_var('selected','selected');
+			#	}
+			#	else
+			#	{
+			#		$this->t->set_var('selected','');
+			#	}
+			#	if($currentFolderStatus['subscribed'])
+			#	{
+			#		$this->t->set_var('subscribed','S');
+			#	}
+			#	else
+			#	{
+			#		$this->t->set_var('subscribed','U');
+			#	}
+			#	$this->t->parse('select_rows','select_row',True);
+			#}
+			$folderTree = $this->uiwidgets->createHTMLFolder
+			(
+				$folderList, 
+				$this->selectedFolder, 
+				'folderList',
+				'mailboxName',
+				'IMAP Server', 
+				$mailPrefs['username'].'@'.$mailPrefs['imapServerAddress']
+			);
+			$this->t->set_var('folder_tree',$folderTree);
 			
 			switch($_GET['display'])
 			{
@@ -211,7 +232,14 @@
 						$this->t->set_var('message_limit',lang('unknown'));
 					}
 			
-					$this->t->parse('settings_view','folder_settings',True);
+					if($this->selectedFolder != '--topfolderselected--')
+					{
+						$this->t->parse('settings_view','folder_settings',True);
+					}
+					else
+					{
+						$this->t->parse('settings_view','mainFolder_settings',True);
+					}
 					
 					break;
 			}
@@ -260,6 +288,8 @@
 			$this->t->set_var("lang_none",lang('none'));
 			$this->t->set_var("lang_rename",lang('rename'));
 			$this->t->set_var("lang_create",lang('create'));
+			$this->t->set_var('lang_open_all',lang("open all"));
+			$this->t->set_var('lang_close_all',lang("close all"));
 			
 			$this->t->set_var("th_bg",$GLOBALS['phpgw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['phpgw_info']["theme"]["bg01"]);

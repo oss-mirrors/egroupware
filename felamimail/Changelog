@@ -1,3 +1,10 @@
+Version xxx
+
+- improved folder management. You can create now subfolders in the top
+level.
+- fixed charset bug in folder management pages
+- added support for javascript based folder tree
+
 Version 0.9.5
 
 - ported Smartsieve to FeLaMiMail
