@@ -24,7 +24,7 @@
 				'diary_date' => array('type' => 'int', 'precision' => 8,'nullable' => True),
 				'diary_access' => array('type' => 'varchar', 'precision' => 4,'nullable' => True),
 				'diary_summary' => array('type' => 'varchar', 'precision' => 8,'nullable' => True),
-				'diary_details' => array('type' => 'text','nullable' => True),
+				'diary_details' => array('type' => 'text','nullable' => True)
 			),
 			'pk' => array('diary_id'),
 			'fk' => array(),
@@ -56,7 +56,6 @@
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
-		),
-
+		)
 	);
 ?>
