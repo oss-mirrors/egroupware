@@ -45,16 +45,12 @@
 	</td> 
 	<td bgcolor="{tofrom_data_bkcolor}" width="570">
 		<font size="2" face="{theme_font}">
-		<!-- BEGIN B_to_list -->
-		{to_real_name}
-		{to_raw_addy}
-		{to_addybook_add}
-		{to_comma_sep}
-		<!-- END B_to_list -->
+		{to_data_final}
 		</font>
 	</td>
 </tr>
-<!-- BEGIN B_cc_labels -->
+
+<!-- BEGIN B_cc_data -->
 <tr>
 	<td bgcolor="{tofrom_labels_bkcolor}" valign="top">
 		<font size="2" face="{theme_font}">
@@ -62,24 +58,11 @@
 	</td> 
 	<td bgcolor="{tofrom_data_bkcolor}" width="570">
 		<font size="2" face="{theme_font}">
-<!-- END B_cc_labels -->
-
-<!-- &nbsp --- block sep --- $nbsp -->
-
-		<!-- BEGIN B_cc_list -->
-		{cc_real_name}
-		{cc_raw_addy}
-		{cc_addybook_add}
-		{cc_comma_sep}
-		<!-- END B_cc_list -->
-
-<!-- &nbsp --- block sep --- $nbsp -->
-
-<!-- BEGIN B_cc_closer -->
+		{cc_data_final}
 		</font>
 	</td>
 </tr>
-<!-- END B_cc_closer -->
+<!-- END B_cc_data -->
 
 <tr>
 	<td bgcolor="{tofrom_labels_bkcolor}" valign="top">

@@ -29,10 +29,7 @@
 	$t->set_file(array(		
 		'T_message_main' => 'message_main.tpl'
 	));
-	$t->set_block('T_message_main','B_to_list','V_to_list');
-	$t->set_block('T_message_main','B_cc_labels','V_cc_labels');
-	$t->set_block('T_message_main','B_cc_list','V_cc_list');
-	$t->set_block('T_message_main','B_cc_closer','V_cc_closer');
+	$t->set_block('T_message_main','B_cc_data','V_cc_data');
 	$t->set_block('T_message_main','B_attach_list','V_attach_list');
 
 
@@ -49,7 +46,10 @@
 
 // ----  Fill Some Important Variables  -----
 	$image_dir = $phpgw->common->get_image_path($phpgw_info['flags']['currentapp']);
-
+	$svr_image_dir = $phpgw_info['server']['images_dir'];
+	$sm_envelope_img = img_maketag($image_dir.'/sm_envelope.gif',"Add to address book","8","10","0");
+	$session_folder = 'folder='.urlencode($folder).'&msgnum=';
+	$default_sorting = $phpgw_info['user']['preferences']['email']['default_sorting'];
 
 // ----  Special X-phpGW-Type Message Flag  -----
 	// is this still a planned feature?
@@ -71,31 +71,11 @@
 	$totalmessages = $phpgw->msg->num_msg($mailbox);
 
 	$subject = $phpgw->msg->get_subject($msg,'');
-	$from = $msg->from[0];
-
 	$message_date = $phpgw->common->show_date($msg->udate);
-
-	// ----  Display "From" According To User Preferences -----
-	$personal = !isset($from->personal) || !$from->personal ? $from->mailbox.'@'.$from->host : $from->personal;
-
-	if ($phpgw_info['user']['preferences']['email']['show_addresses'] != 'no' && ($personal != $from->mailbox.'@'.$from->host))
-	{
-		$display_address->from = '('.$from->mailbox.'@'.$from->host.')';
-	}
 
 	if (!$folder)
 	{
 		$folder = 'INBOX';
-	}
-
-	// this "if" statement may soon be obsoleted
-	if ($phpgw_info['user']['preferences']['common']['template_set'] == 'idsociety')
-	{
-		$img_border_tag = ' border="0"';
-	}
-	else
-	{
-		$img_border_tag = '';
 	}
 
 // ----  What Folder To Return To  -----
@@ -127,12 +107,6 @@
 	$t->set_var('ilnk_forward',$ilnk_forward);
 	$t->set_var('ilnk_delete',$ilnk_delete);
 
-
-	// Move this up top.
-	$session_folder = 'folder='.urlencode($folder).'&msgnum=';
-
-	$default_sorting = $phpgw_info['user']['preferences']['email']['default_sorting'];
-
 // ----  Go To Previous Message Handling  -----
 	if ($msgnum != 1 || ($default_sorting == 'new_old' && $msgnum != $totalmeesages))
 	{
@@ -147,18 +121,18 @@
 
 		if ($default_sorting == 'new_old' && ($msgnum == $totalmessages && $msgnum != 1 || $totalmessages == 1))
 		{
-			$ilnk_prev_msg = img_maketag($phpgw_info['server']['images_dir'].'/left-grey.gif',"No Previous Message",'','','0');
+			$ilnk_prev_msg = img_maketag($svr_image_dir.'/left-grey.gif',"No Previous Message",'','','0');
 		}
 		else
 		{
 			$prev_msg_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php',$session_folder.$pm);
-			$prev_msg_img = img_maketag($phpgw_info['server']['images_dir'].'/left.gif',"Previous Message",'','','0');
+			$prev_msg_img = img_maketag($svr_image_dir.'/left.gif',"Previous Message",'','','0');
 			$ilnk_prev_msg = href_maketag($prev_msg_link,$prev_msg_img);
 		}
 	}
 	else
 	{
-		$ilnk_prev_msg = img_maketag($phpgw_info['server']['images_dir'].'/left-grey.gif',"No Previous Message",'','','0');
+		$ilnk_prev_msg = img_maketag($svr_image_dir.'/left-grey.gif',"No Previous Message",'','','0');
 	}
 
 // ----  Go To Next Message Handling  -----
@@ -175,18 +149,18 @@
 
 		if ($default_sorting == 'new_old' && $msgnum == 1 && $totalmessages != $msgnum)
 		{
-			$ilnk_next_msg = img_maketag($phpgw_info['server']['images_dir'].'/right-grey.gif',"No Next Message",'','','0');
+			$ilnk_next_msg = img_maketag($svr_image_dir.'/right-grey.gif',"No Next Message",'','','0');
 		}
 		else
 		{
 			$next_msg_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php',$session_folder.$nm);
-			$next_msg_img = img_maketag($phpgw_info['server']['images_dir'].'/right.gif',"Next Message",'','','0');
+			$next_msg_img = img_maketag($svr_image_dir.'/right.gif',"Next Message",'','','0');
 			$ilnk_next_msg = href_maketag($next_msg_link,$next_msg_img);
 		}
 	}
 	else
 	{
-		$ilnk_next_msg = img_maketag($phpgw_info['server']['images_dir'].'/right-grey.gif',"No Next Message",'','','0');
+		$ilnk_next_msg = img_maketag($svr_image_dir.'/right-grey.gif',"No Next Message",'','','0');
 	}
 
 	$t->set_var('ilnk_prev_msg',$ilnk_prev_msg);
@@ -203,8 +177,15 @@
 	$t->set_var('lang_files', lang('files'));
 	$t->set_var('lang_subject', lang('subject'));
 
-
-// ----  From Message Data  -----
+// ----  From: Message Data  -----
+	// format "From" according to user preferences  ?
+	// WHAT IS THIS PREF SUPPOSED TO DO ???
+	$from = $msg->from[0];
+	$personal = !isset($from->personal) || !$from->personal ? $from->mailbox.'@'.$from->host : $from->personal;
+	if ($phpgw_info['user']['preferences']['email']['show_addresses'] != 'no' && ($personal != $from->mailbox.'@'.$from->host))
+	{
+		$display_address->from = '('.$from->mailbox.'@'.$from->host.')';
+	}
 	if ($msg->from)
 	{
 
@@ -212,9 +193,10 @@
 			decode_header_string($personal) );
 		$from_raw_addy = trim($display_address->from);
 
-		$from_addybook_link = $phpgw->link('/addressbook/add.php','add_email='.urlencode($from->mailbox.'@'.$from->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING));
-		$from_addybook_img = img_maketag($phpgw_info['server']['app_images'].'/sm_envelope.gif',"Add to address book","8","10","0");
-		$from_addybook_add = href_maketag($from_addybook_link, $from_addybook_img);
+		$from_addybook_add = href_maketag(
+			$phpgw->link('/addressbook/add.php','add_email='.urlencode($from->mailbox.'@'.$from->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
+			$sm_envelope_img
+		);
 	}
 	else
 	{
@@ -228,7 +210,7 @@
 	$t->set_var('from_addybook_add',$from_addybook_add);
 
 
-// ----  To  Message Data  -----
+// ----  To:  Message Data  -----
 	if ($msg->to)
 	{
 		for ($i = 0; $i < count($msg->to); $i++)
@@ -241,91 +223,60 @@
 				$display_address->to = '('.$topeople->mailbox.'@'.$topeople->host.')';
 			}
 
-			$to_real_name = href_maketag($phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder).'&to='.$topeople->mailbox.'@'.$topeople->host), $personal);
+			$to_real_name = href_maketag(
+				$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder).'&to='.$topeople->mailbox.'@'.$topeople->host),
+				$personal
+			);
 			$to_raw_addy = trim($display_address->to);
 
-			$to_addybook_link = $phpgw->link('/addressbook/add.php','add_email='.urlencode($topeople->mailbox.'@'.$topeople->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING));
-			$to_addybook_img = img_maketag($phpgw_info['server']['app_images'].'/sm_envelope.gif',"Add to address book","8","10","0");
-			$to_addybook_add = href_maketag($to_addybook_link, $to_addybook_img);
-
-			if($i + 1 < count($msg->to))
-			{
-				$to_comma_sep = ', '; // throw a spacer comma in between addresses.
-			}
-			else
-			{
-				$to_comma_sep = '';
-			}
-
-			$t->set_var('to_real_name',$to_real_name);
-			$t->set_var('to_raw_addy',$to_raw_addy);
-			$t->set_var('to_addybook_add',$to_addybook_add);
-			$t->set_var('to_comma_sep',$to_comma_sep);
-			$t->parse('V_to_list','B_to_list',True);
+			$to_addybook_add = href_maketag(
+				$phpgw->link('/addressbook/add.php','add_email='.urlencode($topeople->mailbox.'@'.$topeople->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
+				$sm_envelope_img
+			);
+			// assemble the string and store for later use
+			$to_data_array[$i] = $to_real_name.' '.$to_raw_addy.' '.$to_addybook_add;
 		}
+		// throw a spacer comma in between addresses, if more than one
+		$to_data_final = implode(', ',$to_data_array);
 	}
 	else
 	{
-		$to_real_name = '';
-		$to_raw_addy = lang('Undisclosed Recipients');
-		$to_addybook_add = '';
-		$to_comma_sep = '';
-
-		$t->set_var('to_real_name',$to_real_name);
-		$t->set_var('to_raw_addy',$to_raw_addy);
-		$t->set_var('to_addybook_add',$to_addybook_add);
-		$t->set_var('to_comma_sep',$to_comma_sep);
-		$t->parse('V_to_list','B_to_list');
+		$to_data_final = lang('Undisclosed Recipients');
 	}
+	$t->set_var('to_data_final',$to_data_final);
 
 
-// ----  Cc  Message Data  -----
+// ----  Cc:  Message Data  -----
 	if (isset($msg->cc) && count($msg->cc) > 0)
 	{
-		$t->parse('V_cc_labels','B_cc_labels');
-
 		for ($i = 0; $i < count($msg->cc); $i++)
 		{
 			$ccpeople = $msg->cc[$i];
 			$personal = !$ccpeople->personal ? $ccpeople->mailbox.'@'.$ccpeople->host : $ccpeople->personal;
 			$personal = decode_header_string($personal);
 
-
 			$cc_real_name = href_maketag($phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder)
-					.'&to='.urlencode($ccpeople->mailbox.'@'.$ccpeople->host))
-					,$personal
+				.'&to='.urlencode($ccpeople->mailbox.'@'.$ccpeople->host)),
+				$personal
 			);
-			
-			// we never desplay cc_raw_addy
+			// we never show cc's raw address
 			$cc_raw_addy = '';
 
-			$cc_addybook_link = $phpgw->link('/addressbook/add.php','add_email='.urlencode($topeople->mailbox.'@'.$topeople->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING));
-			$cc_addybook_img = img_maketag($phpgw_info['server']['app_images'].'/sm_envelope.gif',"Add to address book","8","10","0");
-			$cc_addybook_add = href_maketag($cc_addybook_link, $cc_addybook_img);
-
-			if($i + 1 < count($msg->cc))
-			{
-				$cc_comma_sep = ', '; // throw a spacer comma in between addresses.
-			}
-			else
-			{
-				$cc_comma_sep = '';
-			}
-
-			$t->set_var('cc_real_name',$cc_real_name);
-			$t->set_var('cc_raw_addy',$cc_raw_addy);
-			$t->set_var('cc_addybook_add',$cc_addybook_add);
-			$t->set_var('cc_comma_sep',$cc_comma_sep);
-			$t->parse('V_cc_list','B_cc_list',True);
+			$cc_addybook_add = href_maketag(
+				$phpgw->link('/addressbook/add.php','add_email='.urlencode($topeople->mailbox.'@'.$topeople->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
+				$sm_envelope_img
+			);
+			// assemble the string and store for later use
+			$cc_data_array[$i] = $cc_real_name.' '.$cc_raw_addy.' '.$cc_addybook_add;
 		}
-
-		$t->parse('V_cc_closer','B_cc_closer');
+		// throw a spacer comma in between addresses, if more than one
+		$cc_data_final = implode(', ',$cc_data_array);
+		$t->set_var('cc_data_final',$cc_data_final);
+		$t->parse('V_cc_data','B_cc_data');
 	}
 	else
 	{
-		$t->set_var('V_cc_labels','');
-		$t->set_var('V_cc_list','');
-		$t->set_var('V_cc_closer','');
+		$t->set_var('V_cc_data','');
 	}
 
 // ---- Message Date  (set above)  -----
@@ -363,7 +314,7 @@
 
 	$t->pparse('out','T_message_main');
 	
-// ---- STOPPED HERE - PHASE 1  -----
+// ---- STOPPED HERE - PHASE 2  -----
 
 
 // ---- Message Content  -----
