@@ -44,8 +44,6 @@
 		 $this->phpgw_db->Debug	= False;
 
 		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
-
-	  
 	  }
 
 	  /****************************************************************************\
@@ -54,7 +52,6 @@
 
 	  function site_db_connection($site_id)
 	  {
-
 		 if($site_id=='') $site_id=-1;//pgsql hack
 		 
 		 $SQL="SELECT * FROM egw_jinn_sites WHERE site_id='$site_id'";
@@ -73,7 +70,6 @@
 			$this->site_db->Database	= $this->phpgw_db->f('dev_site_db_name');
 			$this->site_db->User		= $this->phpgw_db->f('dev_site_db_user');
 			$this->site_db->Password	= $this->phpgw_db->f('dev_site_db_password');
-
 		 }
 		 else
 		 {
@@ -112,21 +108,15 @@
 			$this->test_db->User		= $data['db_user'];
 			$this->test_db->Password	= $data['db_password'];
 		 }
-		 
-		 
 
-		 //		die(); 
-		 //if(@$this->site_db->query("CREATE TABLE `JiNN_TEMP_TEST_TABLE` (`test` TINYINT NOT NULL)",__LINE__,__FILE__))
 		 if($test=@$this->test_db->table_names())
 		 {
-			//			$this->site_db->query("DROP TABLE `JiNN_TEMP_TEST_TABLE`",__LINE__,__FILE__);
 			$this->test_db->disconnect;
 			return true;
 		 }
 		 else
 		 {
 			$this->test_db->disconnect;
-			//$this->site_close_db_connection();
 			return false;
 		 }
 	  }
@@ -180,17 +170,27 @@
 		 return $tables;
 	  }
 
-	  /****************************************************************************\
-	  * get objectvalues for object id                                             *
-	  \****************************************************************************/
-
-	  function get_object_values($object_id)
+	  /**
+	  @function get_object_values
+	  @abstract get objectvalues by object id or serialnumber
+	  @param $object_id int default behaviour to look by object_id
+	  @param $serialnumber int optional
+	  */
+	  function get_object_values($object_id,$serialnumber=false)
 	  {
+		 if($serialnumber)
+		 {
+			$sql="SELECT * FROM egw_jinn_objects WHERE serialnumber=$serialnumber";
+		 }
+		 else
+		 {
+			$sql="SELECT * FROM egw_jinn_objects WHERE object_id=$object_id";
+		 }
+		 
 		 $object_metadata=$this->phpgw_db->metadata('egw_jinn_objects');
 		 $this->phpgw_db->free();	
 
-		 $this->phpgw_db->query("SELECT * FROM egw_jinn_objects
-		 WHERE object_id='$object_id'",__LINE__,__FILE__);
+		 $this->phpgw_db->query("$sql",__LINE__,__FILE__);
 
 		 $this->phpgw_db->next_record();
 		 foreach($object_metadata as $fieldmeta)
@@ -345,10 +345,12 @@
 	  }
 
 
-	  /****************************************************************************\
-	  * get all sites_id's which user has access to in array                       *
-	  \****************************************************************************/
-
+	  /**
+	  @function get_sites_for_user
+	  @abstract get all sites_id's which user has access and return array      
+	  @param $uid int
+	  @param $gid int
+	  */
 	  function get_sites_for_user($uid,$gid)
 	  {
 
@@ -389,11 +391,8 @@
 			/* get sites from site_objects of which user is owner */
 			$objects = $this->get_site_objects_for_user($uid,$gid);
 				
-			//_debug_array($objects);
-			
 			if (count($objects)>0)
 			{
-//			   $SUB_SQL='WHERE ';
 			   foreach ($objects as $object)
 			   {
 				  if ($SUB_SQL)$SUB_SQL.=' OR ';
@@ -411,7 +410,7 @@
 
 
 			}
-
+	
 
 
 		 }
@@ -496,8 +495,8 @@
 
 	  function get_site_name($site_id)
 	  {
-		 $this->phpgw_db->query("SELECT site_name FROM egw_jinn_sites
-		 WHERE site_id='$site_id'",__LINE__,__FILE__);
+		 $sql="SELECT site_name FROM egw_jinn_sites WHERE site_id='$site_id'";
+		 $this->phpgw_db->query($sql,__LINE__,__FILE__);
 
 		 $this->phpgw_db->next_record();
 		 $site_name=$this->strip_magic_quotes_gpc($this->phpgw_db->f('site_name'));
@@ -564,8 +563,39 @@
 		 return $objects;
 	  }
 
+	  /**
+	  @function backtick
+	  @abstract returns a backtick if we're dealing with a mysql database. This function is used by every sql statement
+	  @discission why does mysql has backticks and psql not
+	  */
+	  function backtick($db='')
+	  {
+
+		 if($db=='egw' | $db=='phpgw')
+		 {
+			if($this->phpgw_db->Type=='mysql') $backtick='`';
+
+		 }
+		 else
+		 {
+			if($this->site_db->Type=='mysql') $backtick='`';
+
+		 }
+		 return $backtick;
+	  }
+	  
+	  /**
+	  @function get_objects
+	  @astract gets all objects of current site_object depending on ACL or ADMIN-perms
+	  @return array array objects-ids
+	  @param $site_id int
+	  @param $uid int
+	  @param @gid int
+	  @todo better naming
+	  */
 	  function get_objects($site_id,$uid,$gid)
 	  {
+		 $egw_bt=$this->backtick('egw');
 
 		 if (count($gid>0) )
 		 {
@@ -597,7 +627,8 @@
 		 /* yes it's an admin so we can get all objects for this site */
 		 if ($admin)
 		 {
-			$SQL="SELECT object_id FROM egw_jinn_objects WHERE `parent_site_id` = '$site_id' and `hide_from_menu` != 1 ORDER BY name";
+			$SQL="SELECT object_id FROM egw_jinn_objects WHERE {$egw_bt}parent_site_id{$egw_bt} = '$site_id' AND ({$egw_bt}hide_from_menu{$egw_bt} != '1' OR {$egw_bt}hide_from_menu{$egw_bt}=NULL) ORDER BY name";
+//			$SQL="SELECT object_id FROM egw_jinn_objects WHERE {$egw_bt}parent_site_id{$egw_bt} = '$site_id' ORDER BY name";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			while ($this->phpgw_db->next_record())
@@ -608,7 +639,7 @@
 		 // he's no admin so get all the objects which are assigned to the user
 		 else
 		 {
-			$SQL="SELECT object_id FROM egw_jinn_objects WHERE parent_site_id = '$site_id'  and `hide_from_menu` != 1 ORDER BY name";
+			$SQL="SELECT object_id FROM egw_jinn_objects WHERE parent_site_id = '$site_id'  AND ({$egw_bt}hide_from_menu{$egw_bt} != '1' OR {$egw_bt}hide_from_menu{$egw_bt}=NULL) ORDER BY name";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			while ($this->phpgw_db->next_record())
@@ -735,6 +766,7 @@
 		 //		die();	
 		 */			
 		 $this->site_db_connection($site_id);
+		 $s_bt=$this->backtick();
 
 		 if ($where_key && $where_value)
 		 {
@@ -771,7 +803,7 @@
 			   $order_by_new=$order_by;
 			}
 
-			$ORDER_BY = ' ORDER BY `'.$table.'`.`'.$order_by_new.'` '.$order_direction;
+			$ORDER_BY = ' ORDER BY '.$s_bt.$table.$s_bt.'.'.$s_bt.$order_by_new.$s_bt.' '.$order_direction;
 		 }
 
 
@@ -865,6 +897,7 @@
 
 	  function copy_record($site_id,$table,$where_string,$autokey)
 	  {
+		 $s_bt=$this->backtick();
 		 $values_record = $this->get_record_values($site_id,$table,'','','','','name','','*',$where_string);
 
 		 while(list($key, $val) = each($values_record[0])) 
@@ -874,7 +907,7 @@
 			if ($SQLfields) $SQLfields .= ',';
 			if ($SQLvalues) $SQLvalues .= ',';
 
-			$SQLfields .= '`'.$key.'`';
+			$SQLfields .= $s_bt.$key.$s_bt;
 			$SQLvalues .= "'".$this->strip_magic_quotes_gpc($val)."'"; // FIX THIS magic kut quotes
 
 		 }
@@ -894,12 +927,17 @@
 		 return $value;
 	  }
 	  
+	  /**
+	  @function insert_object_data
+	  @abstract insert data info site database
+	  @fixme better naming
+	  */
 	  function insert_object_data($site_id,$site_object,$data)
 	  {
-	
+		 $s_bt=$this->backtick();
+		 
 		 $this->site_db_connection($site_id);
 		 $metadata=$this->site_table_metadata($site_id,$site_object,true);
-
 		 
 		 foreach($data as $field)
 		 {
@@ -914,14 +952,10 @@
 			   continue;
 			}
 
-
-
-			
-//			if(!$thirstfield) $thirstfield=$field[name];
 			if ($SQLfields) $SQLfields .= ',';
 			if ($SQLvalues) $SQLvalues .= ',';
 
-			$SQLfields .= '`'.$field[name].'`';
+			$SQLfields .= $s_bt.$field[name].$s_bt;
 			$SQLvalues .= "'".$this->strip_magic_quotes_gpc($field[value])."'"; // FIX THIS magic kut quotes
 
 
@@ -1000,10 +1034,13 @@
 	  @param where_key which field to use as id-key (depreciated?)
 	  @param where_value which value to use as value for id-key (depreciated?)
 	  @param where_string complete string which comes after "... WHERE " in the sql-string
-	  @note FIXME for all fieldtype a default_value mechanisme must be implemented, atm int is finished
+	  @fixme for all fieldtype a default_value mechanisme must be implemented, atm int is finished
+	  @fixme better naming
 	  */
 	  function update_object_record($site_id,$site_object,$data,$where_key,$where_value,$curr_where_string='')
 	  {
+		 $s_bt=$this->backtick;
+		 
 		 $this->site_db_connection($site_id);
 		 $metadata=$this->site_table_metadata($site_id,$site_object,true);
 		 
@@ -1044,7 +1081,7 @@
 			$aval[$field[name]]=substr($field[value],0,$metadata[$field[name]][len]);
 
 			if ($SQL_SUB) $SQL_SUB .= ', ';
-			$SQL_SUB .= "`$field[name]`='".$this->strip_magic_quotes_gpc($field[value])."'";
+			$SQL_SUB .= "{$s_bt}$field[name]{$s_bt}='".$this->strip_magic_quotes_gpc($field[value])."'";
 		 }
 
 		 if(!is_array($pkey_arr))

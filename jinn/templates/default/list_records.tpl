@@ -192,8 +192,18 @@ parent.window.open("{popuplink}&path="+img+"&attr="+attr, "pop", options);
 <!-- END row -->
 
 <!-- BEGIN empty_row -->
-<tr><td colspan="{colspan}">{lang_no_records}</td></tr>		   
+<tr><td colspan="{colspan}">&nbsp;{lang_no_records}</td></tr>		   
 <!-- END empty_row -->
+
+<!-- BEGIN emptyfooter --> 
+<tr><td colspan="">&nbsp;</td></tr>		   
+</table>
+<table width="100%" cellspacing="1" cellpadding="0">
+<tr valign="top" bgcolor="{colhead_bg_color}"><td >&nbsp;</td></tr>
+</table>
+</form>
+</div>
+<!-- END emptyfooter -->
 
 <!-- BEGIN footer --> 
 </table>

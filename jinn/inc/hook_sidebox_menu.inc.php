@@ -13,30 +13,51 @@
   /* $Id$ */
 {
 	
-	$menu_title = lang('JiNN Editors Menu');
-	$file = Array(
-			'Browse current object' => array(
-				'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.browse_objects'),
-				'icon'=>'browse',
-				'text'=>'Browse current object'
-				),
-			'Add new entry' => array(
-				'text'=>'Add new entry',
-				'icon'=>'new',
-				'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.display_form')
-			 ),
-			 
-			 'Add multiple records' => array(
-				'text'=>'Add multiple records',
-				'icon'=>'new',
-				'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.multiple_entries')
-			 )
-		  );
+   
+   $menu_title = lang('JiNN Editors Menu');
+   
+   $file = Array(
+	  'JiNN Main' => array(
+		 'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.index'),
+		 'icon'=>'mini_navbar',
+		 'text'=>'JiNN Main'
+	  ),
+   );
 
+   if ($GLOBALS[local_bo]->site[site_id] && $GLOBALS[local_bo]->site_object[object_id])
+   {
+	  $object = Array(
+		 'Browse current object' => array(
+			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.browse_objects'),
+			'icon'=>'browse',
+			'text'=>'List record(s) in current object'
+		 ),
+	  );
+	  $file=array_merge($file,$object);
+   }
 
-	if($GLOBALS[uiuser]->bo->site[website_url])
+   if ($GLOBALS[local_bo]->site[site_id] && $GLOBALS[local_bo]->site_object[object_id] && $GLOBALS[local_bo]->site_object[max_records]!=1)
+   {
+	  $object = Array(
+		 'Add multiple records' => array(
+			'text'=>'Add multiple records',
+			'icon'=>'new',
+			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.multiple_entries')
+		 ),
+		 'Add new entry' => array(
+			'text'=>'Add new entry',
+			'icon'=>'new',
+			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.display_form')
+		 )
+	  );
+	  $file=array_merge($file,$object);
+   }
+
+   $file['_NewLine_']='_NewLine_'; // give a newline
+
+   
+   if($GLOBALS[uiuser]->bo->site[website_url])
 	{
-		$file['_NewLine_']='_NewLine_'; // give a newline
 		$file['Preview Website']=array(
 				'link'=>$GLOBALS[uiuser]->bo->site[website_url],
 				'text'=>'Preview Website',
@@ -65,16 +86,21 @@
 		'icon'=>'configure',
 		'text'=>'General Preferences'
 		),
-		'Configure this Object List View'=> array(
-		'link'=>$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.config_objects'),
-		'text'=>'Configure this Object List View',
-		'icon'=>'configure_toolbars'
-		)
 	);
 
+	if ($GLOBALS[local_bo]->site_object[object_id])
+	{
+	   $conf = Array(
+		  'Configure this Object List View'=> array(
+			 'link'=>$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.config_objects'),
+			 'text'=>'Configure this Object List View',
+			 'icon'=>'configure_toolbars'
+		  )
+	   );
+	   $file=array_merge($file,$conf);
+	}
+
 	display_sidebox($appname,$menu_title,$file);
-
-
 
 	if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
 	{
@@ -84,6 +110,11 @@
 			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
 			'text'=>'Global Configuration',
 			'icon'=>'configure'
+			),
+			'Access Rights' => array(
+			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.access_rights'),
+			'text'=>'Access Rights',
+			'icon'=>'groupevent'
 			),
 			'Add Site' => array(
 			'link' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_site'),
@@ -95,29 +126,52 @@
 			'text'=>'Browse through sites',
 			'icon'=>'browse'
 			),
-			'Import JiNN Site' => array(
+			'Load site conf from file' => array(
 			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.import_egw_jinn_site'),
-			'text'=>'Import JiNN Site',
+			'text'=>'Load site conf from file',
 			'icon'=>'fileopen'
 			),
-			'Access Rights' => array(
-			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.access_rights'),
-			'text'=>'Access Rights',
-			'icon'=>'groupevent'
-			),
-			'_NewLine_', // give a newline
-			'Edit this Site' => array(
-			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_this_jinn_site'),
-			'text'=>'Edit this Site',
-			'icon'=>'edit'
-			),
-			'Edit this Site Object' => array(
-			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_this_jinn_site_object'),
-			'text'=>'Edit this Site Object',
-			'icon'=>'edit'
-			)
 		 );
 
+		 if ($GLOBALS[local_bo]->site[site_id])
+		 {
+			$site = Array(
+			   'Save site conf to file' => array(
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.export_site&where_key=site_id&where_value='.$GLOBALS[uiuser]->bo->site[site_id]),
+				  'text'=>'Save site conf to file',
+				  'icon'=>'filesave'
+			   )
+
+			);
+			   $file=array_merge($file,$site);
+		 }
+
+		 if ($GLOBALS[local_bo]->site[site_id])
+		 {
+			$site = Array(
+			   '_NewLine_', // give a newline
+			   'Edit this Site' => array(
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_this_jinn_site'),
+				  'text'=>'Edit this Site',
+				  'icon'=>'edit'
+			   ),
+			);
+			   $file=array_merge($file,$site);
+		 }
+			  
+		 if ($GLOBALS[local_bo]->site_object[object_id])
+		 {
+			$object = Array(
+			   'Edit this Site Object' => array(
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_this_jinn_site_object'),
+				  'text'=>'Edit this Site Object',
+				  'icon'=>'edit'
+			   )
+				  
+			);
+			   $file=array_merge($file,$object);
+		 }
+		 
 		 if($GLOBALS[local_bo]->last_where_string)
 		 {
 			$last_record=Array(
@@ -126,10 +180,10 @@
 				  'text'=>'Last edited record',
 				  'icon'=>'edit'
 			   ));
+
+			   $file=array_merge($file,$last_record);
 		
-			$file=array_merge($file,$last_record);
 		 }
-		 
 		display_sidebox($appname,$menu_title,$file);
 
 		if($GLOBALS[local_bo]->common->prefs['experimental']=='yes')

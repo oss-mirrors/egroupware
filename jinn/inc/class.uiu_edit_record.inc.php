@@ -102,7 +102,7 @@
 		 $this->render_many_to_many_input();
 		 $this->render_footer();
 
-		 unset($this->bo->message);
+//		 unset($this->bo->message);
 
 		 #FIXME does this belong here?
 		 if (!is_object($GLOBALS['phpgw']->js))
@@ -124,7 +124,7 @@
 		 }
 
 		 $this->ui->msg_box($this->bo->message);
-unset($this->bo->message);
+		 unset($this->bo->message);
 
 		 $this->main_menu();	
 

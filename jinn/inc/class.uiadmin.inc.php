@@ -542,7 +542,6 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 		 {
 			if (is_array($GLOBALS[HTTP_POST_FILES][importfile]))
 			{
-			   unset($this->bo->message);
 			   $num_objects=0;
 			   $import=$GLOBALS[HTTP_POST_FILES][importfile];
 
@@ -567,7 +566,6 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 				  {
 					 $new_site_id=$thissitename[0];
 					 $this->bo->so->upAndValidate_phpgw_data('egw_jinn_sites',$data,'site_id',$new_site_id);
-					 //						$this->bo->so->update_phpgw_data('egw_jinn_sites',$data,'site_id',$new_site_id);
 
 					 // remove all existing objects
 					 $this->bo->so->delete_phpgw_data('egw_jinn_objects',parent_site_id,$new_site_id);
@@ -601,6 +599,7 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 
 				  }
 
+				  /* site import has succeeded, go on with objects */
 				  if($proceed)
 				  {
 					 if (is_array($import_site_objects))
@@ -626,11 +625,54 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 						}
 
 					 }
+						
+					 /* objects are imported , go on with obj-fields */
+					 if(is_array($import_obj_fields))
+					 {
+						foreach($import_obj_fields as $obj_field)
+						{
+						   $tmp_object_arr=$this->bo->so->get_object_values('',$obj_field[obj_serial]);
+						   /*							echo $obj_field[obj_serial];
+						   _debug_array($tmp_object_arr);
+						   die();
+						   */
+						   if(!$tmp_object_arr[object_id]) 
+						   {
+							  continue;
+						   }
+							   
+						   $obj_field[field_parent_object]=$tmp_object_arr[object_id];
+						   
+						   unset($data_fields);
+						   while(list($key2, $val2) = each($obj_field)) 
+						   {
+							  if ($key2=='obj_serial') 
+							  {
+								 continue;  
+							  }
 
+							  $data_fields[] = array
+							  (
+								 'name' => $key2,
+								 'value' => addslashes($val2) 
+							  );
+
+						   }
+						   if ($field_id[]=$this->bo->so->validateAndInsert_phpgw_data('egw_jinn_obj_fields',$data_fields))
+						   {
+							  $num_fields=count($field_id);
+						   } 
+						}
+
+
+
+					 }
+
+					 
 					 $this->bo->message[info].='<br/>'.lang('%1 Site Objects have been imported.',$num_objects);
+					 $this->bo->message[info].='<br/>'.lang('%1 Site Obj-fields have been imported.',$num_fields);
 					 $this->bo->save_sessiondata();
 					 $this->bo->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
-
 				  }
 				  else
 				  {
@@ -742,11 +784,20 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 			{
 			   foreach($site_object_data as $object)
 			   {
+				  /* set serial to be backwards compitable */
+//				  if(!$object[serialnumber])
+//				  {
+					 $object[serialnumber]=time()+$i++;
+//				  }
+			   
+				  
 				  $out.= '$import_site_objects[]=array('."\n";
 
 				  while (list ($key, $val) = each ($object)) 
 				  { 
-					 if ($key != 'object_id') 
+					 $field[value]=$serial;
+	   
+					 if ($key != 'object_id')
 					 {
 						$out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
 					 }

@@ -73,9 +73,6 @@
 
 		 $this->so = CreateObject('jinn.sojinn');
 
-		 
-//		 $this->include_plugins();
-
 		 $this->magick = CreateObject('jinn.boimagemagick.inc.php');	
 
 		 $this->read_sessiondata();
@@ -99,7 +96,11 @@
 			$this->last_where_string = $this->where_string_encoded;
 		 }
 
-		 if (($_form=='main_menu')|| !empty($site_id)) $this->site_id  = $_site_id;
+		 if (($_form=='main_menu')) 
+		 {
+			$this->site_id  = $_site_id;
+		 }
+		 
 		 if (($_form=='main_menu') || !empty($site_object_id)) $this->site_object_id  = $_site_object_id;
 
 		 if ($this->site_id) $this->site = $this->so->get_site_values($this->site_id);
@@ -107,7 +108,9 @@
 		 $this->plug = CreateObject('jinn.plugins');
 		 $this->plug->local_bo = $this;
 
-
+		 /* this is for the sidebox */
+		 global $local_bo;
+		 $local_bo=$this;
 	  }
 
 	  
@@ -126,11 +129,16 @@
 		 $GLOBALS['phpgw']->session->appsession('session_data','jinn',$data);
 	  }
 
+	  /* 
+	  @function read_sessiondata
+	  @abstract read sessiondata from and fill class vars
+	  @note test menu
+	  */
 	  function read_sessiondata()
 	  {
+		 $data = $GLOBALS['phpgw']->session->appsession('session_data','jinn');
 		 if ($GLOBALS['HTTP_POST_VARS']['form']!='main_menu')
 		 {
-			$data = $GLOBALS['phpgw']->session->appsession('session_data','jinn');
 			$this->message 		= $data['message'];
 			$this->site_id 		= $data['site_id'];
 			$this->site_object_id	= $data['site_object_id'];
@@ -138,6 +146,15 @@
 			$this->mult_where_array	= $data['mult_where_array'];
 			$this->mult_records_amount = $data['mult_records_amount'];
 			$this->last_where_string = $data['last_where_string'];
+		 }
+		 if($GLOBALS['HTTP_POST_VARS']['form']=='main_menu')
+		 {
+			if($data['site_id'] && $_POST['site_id']!=$data['site_id'])
+			{
+			   unset($_POST[site_object_id]);
+			   unset($data[site_object_id]);
+			   unset($this->site_object_id);
+			}
 		 }
 	  }
 

@@ -117,6 +117,8 @@
 		 $this->plugins = $this->plug->plugins;
 		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
 
+		 global $local_bo;
+		 $local_bo=$this;
 	  }
 
 	  function save_sessiondata()

@@ -62,17 +62,17 @@
 	  function index()
 	  {
 
-		 if ($this->bo->site_object_id && $this->bo->site_object['parent_site_id']==$this->bo->site_id )
+//		_debug_array($this->bo);
+		 if (($this->bo->site_id==0 || $this->bo->site_id) && $this->bo->site_object_id && $this->bo->site_object['parent_site_id']==$this->bo->site_id )
 		 {
 			$this->bo->save_sessiondata();
 			$this->bo->common->exit_and_open_screen('jinn.uiuser.browse_objects');
 		 }
 		 else
 		 {
-
 			if (!$this->bo->site_id)
 			{
-			   $this->bo->message['info']=lang('Select site to moderate');
+				   $this->bo->message['info']=lang('Select site to moderate');
 			}
 			else 
 			{
@@ -109,15 +109,18 @@
 			{
 			   foreach($sites as $site_id)
 			   {
-				  $site_arr[]=array(
-					 'value'=>$site_id,
-					 'name'=>$this->bo->so->get_site_name($site_id)
-				  );
+				  if($this->bo->so->get_site_name($site_id))
+				  {
+					 $site_arr[]=array(
+						'value'=>$site_id,
+						'name'=>$this->bo->so->get_site_name($site_id)
+					 );
+				  }
 			   }
 			}
 			else
 			{
-			   $this->bo->message[error]=lang('There is not site you have access to. Ask your administrator to give you access to your site of site-objects or check if any site exist');
+			   $this->bo->message[error]=lang('"You don\'t have access to any sites. Ask your administrator to give you access to your site of site-objects or check if any site exist');
 
 			   if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
 			   {
@@ -129,7 +132,7 @@
 				  $this->bo->message[info]='';
 			   }
 			   $this->ui->msg_box($this->bo->message);
-			unset($this->bo->message);
+			   unset($this->bo->message);
 
 
 			}
@@ -236,10 +239,11 @@
 
 				  $this->bo->common->exit_and_open_screen('jinn.uiu_edit_record.view_record&where_string='.$where_string);
 			   }
-
 			   else
 			   {
-				  $this->list_records();
+				  $this->bo->message['info']=lang('There are no records found for this object. You can now at a new record.');
+				  $this->bo->save_sessiondata();
+				  $this->bo->common->exit_and_open_screen('jinn.uiu_edit_record.display_form');
 			   }
 			}
 			else
@@ -285,6 +289,7 @@
 			$this->template->set_block('list_records','column_field','column_field');
 			$this->template->set_block('list_records','row','row');
 			$this->template->set_block('list_records','empty_row','empty_row');
+			$this->template->set_block('list_records','emptyfooter','emptyfooter');
 			$this->template->set_block('list_records','footer','footer');
 
 			$pref_columns_str=$this->bo->read_preferences('show_fields'); 
@@ -517,7 +522,9 @@
 
 			$records=$this->bo->get_records($this->bo->site_object[table_name],'','',$limit[start],$limit[stop],'name',$orderby,'*',$where_condition);
 
-			if(count($records)>0)
+			$record_count = count($records);
+			
+			if($record_count>0)
 			{
 			   foreach($records as $recordvalues)
 			   {
@@ -633,12 +640,20 @@
 			$this->template->set_var('colfield_lang_delete_sel',lang('delete all selected records'));
 			$this->template->set_var('colfield_delete_link_sel','');
 
-			$this->template->parse('out','footer');
-			$this->template->pparse('out','footer');
+			if($record_count>0)
+			{
+			   $this->template->parse('out','footer');
+			   $this->template->pparse('out','footer');
+			}
+			else 
+			{
+			   $this->template->parse('out','emptyfooter');
+			   $this->template->pparse('out','emptyfooter');
+			}
 
-			unset($this->message);
+//			unset($this->message);
 
-			unset($this->bo->message);
+//			unset($this->bo->message);
 			$this->bo->save_sessiondata();
 		 }
 

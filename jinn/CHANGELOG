@@ -4,10 +4,21 @@ $id$
 CHANGELOG JiNN for eGroupWare
 =============================
 
-version 0.8.103a
+version 0.8.105
 Thu Sep  9 11:53:57 CEST 2004
 =============================
 - impletemented field help info or in others tooltips completely!!
+- competely checked and fix sidebox on programflow errors
+- better order in sidebox
+- add JiNN Main in Sidebox
+- fixed lay-out when listing and there are no records
+- automaticly insert new record when there is none and max-record is to to one
+- fixed strange menu behaviour 
+- make sure object_site_id is empty when the site_id has changed
+- fixed a navigation problem for PSQL
+- fixed a ugly SQL-bug in user side for PSQL
+- not showing bogus sites which doesn't exist anymore for users
+- finally fixed the import and export including field configurations
 
 version 0.8.103
 Wed Sep  8 16:15:42 CEST 2004

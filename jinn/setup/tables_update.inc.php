@@ -505,4 +505,32 @@
 		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.103';
 		return $GLOBALS['setup_info']['jinn']['currentver'];
 	}
+
+
+	$test[] = '0.8.103';
+	function jinn_upgrade0_8_103()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('egw_jinn_objects','hide_from_menu',array(
+			'type' => 'int',
+			'precision' => '4',
+			'nullable' => False,
+			'default' => '0'
+		));
+
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.104';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	}
+
+
+	$test[] = '0.8.104';
+	function jinn_upgrade0_8_104()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('egw_jinn_objects','hide_from_menu',array(
+			'type' => 'char',
+			'precision' => '1'
+		));
+
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.105';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	}
 ?>
