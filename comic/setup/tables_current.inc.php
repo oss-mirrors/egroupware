@@ -20,14 +20,14 @@
 		'phpgw_comic' => array(
 			'fd' => array(
 				'comic_id' => array('type' => 'auto','nullable' => False),
-				'comic_owner' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
-				'comic_list' => array('type' => 'blob','nullable' => False),
-				'comic_scale' => array('type' => 'int', 'precision' => 2,'nullable' => False),
-				'comic_perpage' => array('type' => 'int', 'precision' => 2,'nullable' => False,'default' => '4'),
-				'comic_frontpage' => array('type' => 'int', 'precision' => 4,'nullable' => False),
-				'comic_fpscale' => array('type' => 'int', 'precision' => 2,'nullable' => False),
-				'comic_censorlvl' => array('type' => 'int', 'precision' => 2,'nullable' => False),
-				'comic_template' => array('type' => 'int', 'precision' => 2,'nullable' => False)
+				'comic_owner' => array('type' => 'varchar', 'default'=> '', 'precision' => 32,'nullable' => False),
+				'comic_list' => array('type' => 'blob','default'=> '', 'nullable' => False,'default' => 0),
+				'comic_scale' => array('type' => 'int', 'precision' => 2,'nullable' => False,'default' => 0),
+				'comic_perpage' => array('type' => 'int', 'precision' => 2,'nullable' => False,'default' => 4),
+				'comic_frontpage' => array('type' => 'int', 'precision' => 4,'nullable' => False,'default' => 0),
+				'comic_fpscale' => array('type' => 'int', 'precision' => 2,'nullable' => False,'default' => 0),
+				'comic_censorlvl' => array('type' => 'int', 'precision' => 2,'nullable' => False,'default' => 0),
+				'comic_template' => array('type' => 'int', 'precision' => 2,'nullable' => False,'default' => 0)
 			),
 			'pk' => array('comic_id'),
 			'fk' => array(),
@@ -36,10 +36,10 @@
 		),
 		'phpgw_comic_admin' => array(
 			'fd' => array(
-				'admin_imgsrc' => array('type' => 'int', 'precision' => 2,'nullable' => False),
-				'admin_rmtenabled' => array('type' => 'int', 'precision' => 2,'nullable' => False),
-				'admin_censorlvl' => array('type' => 'int', 'precision' => 2,'nullable' => False),
-				'admin_coverride' => array('type' => 'int', 'precision' => 2,'nullable' => False),
+				'admin_imgsrc' => array('type' => 'int', 'precision' => 2,'nullable' => False,'default' => 0),
+				'admin_rmtenabled' => array('type' => 'int', 'precision' => 2,'nullable' => False,'default' => 0),
+				'admin_censorlvl' => array('type' => 'int', 'precision' => 2,'nullable' => False,'default' => 0),
+				'admin_coverride' => array('type' => 'int', 'precision' => 2,'nullable' => False,'default' => 0),
 				'admin_filesize' => array('type' => 'int', 'precision' => 4,'nullable' => False,'default' => '120000')
 			),
 			'pk' => array('admin_imgsrc'),
