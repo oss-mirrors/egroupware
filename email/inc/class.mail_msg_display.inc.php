@@ -272,7 +272,13 @@ class mail_msg extends mail_msg_wrappers
 		$show_me = True;
 		// RESTRICTIONS
 		$acctnum = $this->get_acctnum();
-		if ((stristr($my_menuaction, 'email.uipreferences'))
+		if (stristr($my_menuaction, 'email.uipreferences.ex_accounts_list'))
+		{
+			// this email accounts page looses the current acctnum
+			// so compose, for example, may send you to acctnum 0 even if you clicked to here from acctnum 2
+			$show_me = False;
+		}
+		elseif ((stristr($my_menuaction, 'email.uipreferences'))
 		&& (get_var('ex_acctnum',array('GET','POST'), '') == 'add_new'))
 		{
 			// we are right now creating a new account, we can not even show the basic sidemenu

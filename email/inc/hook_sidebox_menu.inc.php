@@ -24,11 +24,18 @@
  */
 
 
+$allow_sidebox = True;
+//$allow_sidebox = False;
 
-
-// get current mail account used
-$sidebox_mailacct = $GLOBALS['phpgw']->msg->get_acctnum();
-
+if ($allow_sidebox == True)
+{
+	// create a msg object just to have access to some basic functions
+	$my_msg_bootstrap = '';
+	$my_msg_bootstrap = CreateObject('email.msg_bootstrap');
+	// NO LOGIN wanted at this moment, because preferences may not be set yet. Login will occur later if needed automatically
+	$my_msg_bootstrap->set_do_login(BS_LOGIN_NEVER);
+	$my_msg_bootstrap->ensure_mail_msg_exists('email.hook_sidebox_menu', 0);
+}
 
 
 function CreateSidebox_MenuLink($mailacct,$mailfolder='INBOX',$mailpage='email.uiindex.index')
@@ -36,7 +43,7 @@ function CreateSidebox_MenuLink($mailacct,$mailfolder='INBOX',$mailpage='email.u
     $return_link = $GLOBALS['phpgw']->link('/index.php',array(
                         'menuaction' => $mailpage,
                         'fldball[folder]' => $GLOBALS['phpgw']->msg->prep_folder_out($mailfolder),
-                        'fldball[acctnum]' => $acctnum));
+                        'fldball[acctnum]' => $mailacct));
     return $return_link;
 }
 
@@ -60,7 +67,7 @@ function CreateSidebox_EmailMenu($mailacct)
 	$folders_link = CreateSidebox_MenuLink($mailacct,'INBOX','email.uifolder.folder');
 	$search_link = CreateSidebox_MenuLink($mailacct,'','email.uisearch.form');
 	$filters_link = CreateSidebox_MenuLink($mailacct,'','email.uifilters.filters_list');
-	$accounts_link = $GLOBALS['phpgw']->link('/index.php','menuaction=email.uipreferences.ex_accounts_list');
+	$accounts_link = $GLOBALS['phpgw']->link('/index.php',array('menuaction' => 'email.uipreferences.ex_accounts_list'));
 	$email_prefs_link = $GLOBALS['phpgw']->link('/index.php',array(
 						'menuaction' => 'email.uipreferences.preferences',
 						'ex_acctnum' => $mailacct));					
@@ -82,7 +89,7 @@ function CreateSidebox_EmailMenu($mailacct)
 	    $file[$search_title] = $search_link;
     }
 	$file[$filters_title] = $filters_link;
-	$file[$accounts_title] = $account_link;
+	$file[$accounts_title] = $accounts_link;
     $file[$email_prefs_title] = $email_prefs_link;
 	//	$file[] = '_NewLine_'; // give a newline
     return $file;
@@ -90,8 +97,11 @@ function CreateSidebox_EmailMenu($mailacct)
 // ****** end of function CreateSidebox_EmailMenu
 
 
-	if ($GLOBALS['phpgw']->msg->ok_toshow_sidemenu('basic') == True)
+	if (($allow_sidebox == True)
+	&& ($GLOBALS['phpgw']->msg->ok_toshow_sidemenu('basic') == True))
 	{
+		// get current mail account used
+		$sidebox_mailacct = $GLOBALS['phpgw']->msg->get_acctnum();
 		$menu_title = $GLOBALS['phpgw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
 		display_sidebox($appname,$menu_title,CreateSidebox_EmailMenu($sidebox_mailacct));
 	}
@@ -103,7 +113,7 @@ function CreateSidebox_EmailMenu($mailacct)
 function CreateSidebox_FolderMenu($mailacct)
 {
 	$folder_list = $GLOBALS['phpgw']->msg->get_arg_value('folder_list', $mailacct);
-    $delimiter = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_delimiter', $acctnum);
+    $delimiter = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_delimiter', $mailacct);
 
     // note: what format should these folder name options (sent and trash) be held in
     // i.e. long or short name form, in the prefs database
@@ -144,12 +154,12 @@ function CreateSidebox_FolderMenu($mailacct)
 
     // Construct the Menu Contents in array $file
     $file = array();
-    $file[$inbox_title] = CreateSidebox_MenuLink($acctnum);
+    $file[$inbox_title] = CreateSidebox_MenuLink($mailacct);
     if($trash_folder_long != '') {
-        $file[$trash_title] = CreateSidebox_MenuLink($acctnum,$trash_folder_long);
+        $file[$trash_title] = CreateSidebox_MenuLink($mailacct,$trash_folder_long);
     }
     if($send_folder_long != '') {
-        $file[$send_title] = CreateSidebox_MenuLink($acctnum,$send_folder_long);
+        $file[$send_title] = CreateSidebox_MenuLink($mailacct,$send_folder_long);
     }
 
     // Generate Full folder list as menu items in sidebar.
@@ -184,7 +194,7 @@ function CreateSidebox_FolderMenu($mailacct)
                 if($folder_title != '') {                 
                     $folder_title = substr($folder_title,0,16).$folder_suffix;
                     $folder_long = $folder_list[$i]['folder_long'];
-                    $file[$folder_title] = CreateSidebox_MenuLink($acctnum,$folder_long,$folder_page);
+                    $file[$folder_title] = CreateSidebox_MenuLink($mailacct,$folder_long,$folder_page);
                 }
             }
         }
@@ -194,8 +204,11 @@ function CreateSidebox_FolderMenu($mailacct)
 // ****** end of function CreateSidebox_FolderMenu
 
 
-	if ($GLOBALS['phpgw']->msg->ok_toshow_sidemenu('folderlist') == True)
+	if (($allow_sidebox == True)
+	&& ($GLOBALS['phpgw']->msg->ok_toshow_sidemenu('folderlist') == True))
 	{
+		// get current mail account used
+		$sidebox_mailacct = $GLOBALS['phpgw']->msg->get_acctnum();
 		$menu_title = $GLOBALS['phpgw_info']['apps'][$appname]['title'] . ' '. lang('Folders');
 		display_sidebox($appname,$menu_title,CreateSidebox_FolderMenu($sidebox_mailacct));
 	}

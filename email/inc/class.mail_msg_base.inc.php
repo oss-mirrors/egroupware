@@ -2107,9 +2107,11 @@
 		@abstract  reports some details about a login failure, uses imap_last_error
 		@author Angles
 		@param $called_from (string) name of the function that you called this from, used to aid in debugging.
+		@param $acctnum (optional) will be used in the help link to goto correct mail preferences page
+		@param $always_try_recover (boolean) Default TRUE, whether to try the RH7.3+ add "notls" retry fix
 		@discussion ?
 		*/
-		function login_error($called_from='', $acctnum='')
+		function login_error($called_from='', $acctnum='', $always_try_recover=True)
 		{
 			if ($this->debug_logins > 0) { $this->dbug->out('mail_msg: login_error('.__LINE__.'): ENTERING, $called_from ['.$called_from.'], $acctnum: ['.$acctnum.']<br>'); }
 			// usually acctnum is only supplied by "ensure_stream_and_folder" 
@@ -2148,7 +2150,8 @@
 			if ($this->debug_logins > 0) { $this->dbug->out('mail_msg: login_error('.__LINE__.'): $error_report ['.$error_report.']<br>'); }
 			
 			// ATTEMPT TO RECOVER FROM KNOWS PHP BUG even if "Certificate failure" is not obvious
-			$always_try_recover = True;
+			// this is now a parameter
+			//$always_try_recover = True;
 			
 			if ($this->get_isset_arg('beenthere_loginerr_tryagain_buggy_cert', $acctnum))
 			{
@@ -2205,7 +2208,8 @@
 			  ."tried RH bug recovery?: [".$this->get_isset_arg('beenthere_loginerr_tryagain_buggy_cert', $acctnum)."] <br> \r\n"
 			  ."<br> \r\n"
 			  ."<br> \r\n"
-			  .lang('if there is no obvious error, check your username and password first.')."<br> \r\n";
+			  .lang('if there is no obvious error, check your username and password first.')."<br> \r\n"
+			  .lang('then check the').' '.lang('Email Account Name').', '.lang('Mail Server').', and '.lang('Mail Server Type')."<br> \r\n";
 			// HOW we were called determines HOW we display the error 
 			if (stristr($this->ref_SERVER['REQUEST_URI'] ,'index.php?menuaction=email'))
 			{
@@ -2235,7 +2239,7 @@
 				if ($this->debug_logins > 0) { $this->dbug->out('mail_msg: login_error('.__LINE__.'): LEAVING, called from within the email app, so use out own error page and exit.<br>'); }
 				// by putting anything (or TRUE) in the param of this function, it will shutdown the script for us.
 				$widgets->display_error_report_page('do_exit');
-				// we should not get here if the error widget exits for us
+				// we should not get here if THE ERROR WIDGET EXITS FOR US
 				//$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 			else
@@ -2247,6 +2251,7 @@
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 			// we should not get here
+			if ($this->debug_logins > 0) { $this->dbug->out('mail_msg: login_error('.__LINE__.'): LEAVING BUT we are NEVER supposed to get to this line<br>'); }
 			$GLOBALS['phpgw']->common->phpgw_exit(False);
 		}
 		
@@ -2599,6 +2604,15 @@
 			
 			// what's the name or IP of the mail server
 			$mail_server = $this->get_pref_value('mail_server', $acctnum);
+			if ((!isset($mail_server))
+			|| (trim($mail_server) == ''))
+			{
+				// WE NEVER GET HERE
+				if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_mailsvr_callstr('.__LINE__.'): LEAVING ON ERROR "mail_server" not set in prefs <br>'); }
+				// FIXME: CAN NOT RAISE ERROR HERE because the pref class returns valid default values so no empty return string
+				$this->login_error('mail_msg: get_mailsvr_callstr('.__LINE__.')', '', False); // if this works, false says do not retry, exit now
+				return '';
+			}
 			
 			// what's the port we should use
 			// mail port is not yet *really* a user settable pref, SO WE WILL PUT LOGIC HERE TO FIGURE OUT WHAT IT SHOULD BE
@@ -2639,17 +2653,17 @@
 			elseif ($mail_server_type == 'pop3')
 			{
 				// POP3 normal connection, No SSL
-				//$callstr_extra = '/pop3';
+				$callstr_extra = '/pop3';
 				// this is not really smart but users demand it, this ensures there will be no redhat 7.3+ tls problem
-				$callstr_extra = '/pop3/notls';
+				//$callstr_extra = '/pop3/notls';
 				$mail_port = 110;
 			}
 			elseif ($mail_server_type == 'imap')
 			{
 				// IMAP normal connection, No SSL
-				//$callstr_extra = '';
+				$callstr_extra = '';
 				// this is not really smart but users demand it, this ensures there will be no redhat 7.3+ tls problem
-				$callstr_extra = '/imap/notls';
+				//$callstr_extra = '/imap/notls';
 				$mail_port = 143;
 			}
 			elseif ($mail_server_type == 'nntp')
@@ -2667,11 +2681,17 @@
 				// probably should raise some kind of error here
 				$callstr_extra = '';
 				$mail_port = 143;
+				// it is extremely rare to get here
+				if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_mailsvr_callstr('.__LINE__.'): LEAVING ON ERROR "mail_server_type" not set in prefs <br>'); }
+				// FIXME: CAN NOT RAISE ERROR HERE because the pref class returns valid default values so no empty return string
+				// if this ever gets called, False says exit on error now, do not retry with "notls"
+				$this->login_error('mail_msg: get_mailsvr_callstr('.__LINE__.') says:["mail_server_type" not set in prefs]', $acctnum, False);
+				return '';
 			}
 			
 			$mail_port = (string)$mail_port;
 			$mailsvr_callstr = '{'.$mail_server.':'.$mail_port.$callstr_extra .'}';
-				
+			
 			// cache the result in "level one cache" class var holder
 			if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_mailsvr_callstr('.__LINE__.'): set "level 1 cache, class var" arg $this->set_arg_value(mailsvr_callstr, '.htmlspecialchars($mailsvr_callstr).', '.$acctnum.']) <br>'); }
 			$this->set_arg_value('mailsvr_callstr', $mailsvr_callstr, $acctnum);

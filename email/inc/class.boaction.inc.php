@@ -1254,6 +1254,8 @@
 		{
 			// make sure we have msg object and a server stream
 			$this->msg_bootstrap = CreateObject("email.msg_bootstrap");
+			// NO LOGIN wanted at this moment, because preferences may not be set yet. Login will occur later if needed automatically
+			$this->msg_bootstrap->set_do_login(BS_LOGIN_NEVER);
 			$this->msg_bootstrap->ensure_mail_msg_exists('email.boaction.clearcache', 0);
 			if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('ENTERING email.boaction.clearcache line('.__LINE__.')'.'<br>'); }
 			

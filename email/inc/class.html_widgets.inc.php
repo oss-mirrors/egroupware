@@ -1792,11 +1792,11 @@
 		*/
 		function display_error_report_page($do_exit='')
 		{
-			unset($GLOBALS['phpgw_info']['flags']['noheader']);
-			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-			$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
-			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
-			$GLOBALS['phpgw']->common->phpgw_header();
+			//unset($GLOBALS['phpgw_info']['flags']['noheader']);
+			//unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+			//$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+			//$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
+			//$GLOBALS['phpgw']->common->phpgw_header();
 			
 			$GLOBALS['phpgw']->template->set_file(array(
 				'T_error_report' => 'error_report.tpl'
@@ -1806,6 +1806,7 @@
 			$GLOBALS['phpgw']->template->set_var('go_home_link', $this->F_go_home_link);
 			$GLOBALS['phpgw']->template->pfp('out','T_error_report');
 			// do we exit the script here?
+			// if we do not exit, it may loop on this error message over and over
 			if ($do_exit)
 			{
 				// kill this script, we re outa here...
