@@ -26,7 +26,7 @@
 
   if (! $filter) { $filter="viewopen"; }
   if ($filter == "viewopen") 
-     $filtermethod = "where t_timestamp_closed=NULL";
+     $filtermethod = "where t_timestamp_closed='0'";
 
   if (! $sort)
      $sortmethod = "order by t_priority desc";
