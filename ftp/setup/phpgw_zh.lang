@@ -26,7 +26,6 @@ renamed %1 to %2	ftp	zh	已将%1重命名为%2
 save	ftp	zh	保存
 save to filemanager	ftp	zh	保存至文件管理
 size	ftp	zh	大小
-succesfully created directory %1	ftp	zh	已成功创建目录%1
 successfully created directory %1	ftp	zh	已成功创建目录%1
 successfully deleted %1	ftp	zh	已成功删除%1
 successfully uploaded %1	ftp	zh	已成功上传%1

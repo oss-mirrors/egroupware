@@ -1,5 +1,6 @@
 absolute path of the backup directory	backup	zh	档案目录的完整路径 (例如: /usr/local/www/egroupware/backup/archive)
-Absolute path of the directory of EGW Backup application	admin	zh	eGroupWare备份程序的完整路径
+absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	zt	備份資料夾的絕對路徑，例如： /usr/local/www/egroupware/backup/archive
+absolute path of the directory of egw backup application	backup	zt	EGW備份程式的絕對路徑
 absolute path of the directory to store the backup script	backup	zh	eGroupWare备份程序的完整路径
 archive type	backup	zh	请选择档案类型
 backup	common	zh	备份
@@ -13,14 +14,17 @@ data	backup	zh	数据
 directory locations	admin	zh	目录位置
 directory names	admin	zh	目录名
 e-mail	backup	zh	选中此处以接收E-Mail通告:
+e-mail notification?	backup	zt	透過E-MAIL提醒？
 homedirs	admin	zh	主目录
 interval	backup	zh	时间间隔
 ip or hostname	backup	zh	IP地址或主机名
 ldap	common	zh	LDAP
 ldap database	admin	zh	LDAP数据库
+list backup archives	backup	zt	列出備份的檔案
 maildir	admin	zh	向该EMail地址发送通告:
 monthly	backup	zh	每月
 mysql	admin	zh	MySQL
+nfs	backup	zt	網路檔案系統
 no backup archives available !	backup	zh	无档案可用!!
 number of stored backup versions	backup	zh	删除前保存的旧档案数:
 operating system	backup	zh	操作系统
@@ -39,6 +43,7 @@ please specify the ip of the remote host !	backup	zh	请设定远程主机IP地�
 please specify the name of the maildir in *site configuration* !	backup	zh	请在「全局配置」中设定邮件目录名!!
 please specify the path to the backup directory !	backup	zh	请设定档案目录的路径!
 please specify the path to the user-homedirectories in *site configuration* !	backup	zh	请在「全局配置」中指定用户主目录!!
+please write down you e-mail for beeing notified	backup	zt	請填入您的e-mail來收取系統的通知
 program locations	admin	zh	程序位置
 save backup locally ?	backup	zh	选中此处将在本地保存备份档案:
 select archive type	backup	zh	选择档案类型

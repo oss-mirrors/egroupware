@@ -13,6 +13,7 @@ bookmark not editable	bookmarks	zh	书签不可编辑
 bookmark not readable	bookmarks	zh	书签不可读
 bookmarks	common	zh	书签
 bookmarks settings	admin	zh	书签配置
+category	bookmarks	zt	類別
 change bookmark	bookmarks	zh	更改书签
 close this window to return	bookmarks	zh	关闭窗口并返回
 create bookmark	bookmarks	zh	创建书签
@@ -50,9 +51,11 @@ netscape bookmark filename is required!	bookmarks	zh	缺少Netscape书签文件�
 new	bookmarks	zh	新建
 or	bookmarks	zh	或
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	zh	请填写<b>EMail地址</b>, <b><标题</b>和<b>信件内容</b>!
+please select the categories to export	bookmarks	zt	請選擇要匯出的類別
 query condition	bookmarks	zh	查询条件
 rating	bookmarks	zh	等级
 search for:	bookmarks	zh	查找:
+select the format you would like to export to	bookmarks	zt	請選擇您希望匯出的格式
 send bookmark	bookmarks	zh	发送书签
 sub category	bookmarks	zh	子类别
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	zh	地址%1无效。正确格式是 <strong>用户名@域名</strong> ，域名必须存在!

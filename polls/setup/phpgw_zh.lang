@@ -7,7 +7,7 @@ allow users to vote more then once	polls	zh	允许用户多次投票
 answer	polls	zh	候选项
 answer has been added to poll	polls	zh	候选项已加入表决
 answer has been updated	polls	zh	候选项已更新
-Answers	polls	zh	候选项
+answers	polls	zt	答案項目
 are you sure want to delete this answer ?	polls	zh	确定要删除该候选项吗？
 are you sure want to delete this question ?	polls	zh	确定要删除该表决吗？
 edit answer	polls	zh	编辑候选项
@@ -26,7 +26,7 @@ show answers	polls	zh	显示表决的候选项
 show questions	polls	zh	浏览表决
 show questions	common	zh	浏览表决
 total votes	polls	zh	总票数
-View poll	polls	zh	查看表决
+view poll	polls	zt	瀏覽投票
 vote	polls	zh	投票
 voting booth admin	admin	zh	投票室管理
 voting booth administration	polls	zh	投票室管理

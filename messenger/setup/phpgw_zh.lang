@@ -27,6 +27,7 @@ send a message to a single recipient.	messenger	zh	发送
 send message to	messenger	zh	发送至
 sorry, %1's account is not currently active	messenger	zh	用户%1已禁用
 update a message status	messenger	zh	更新短信状态
+use select box for user list in compose	common	zt	使用下拉式選單來列出使用者
 you didn't enter anything for the message	messenger	zh	You didn't enter anything for the message
 you have %1 new message	common	zh	您有%1条未读短信
 you have %1 new messages	common	zh	您有%1条未读短信
