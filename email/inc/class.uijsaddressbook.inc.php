@@ -154,7 +154,7 @@
 		//say global directory. My personal way to doing the global directory trick
 		//was to make a user called addressmaster, who exports his ontacts to all
 		//this valueshould be the addressmaster's uid for your deployment
-		var $globaladduid=9;
+		var $globaladduid='';
 		//@param field_trans
 		//This array converts field names of the contact backend (or the bo class for that matter)
 		//to english so they can be passed through a lang called to be shown to the user
@@ -223,6 +223,9 @@
 						
 			$this->template=CreateObject('phpgwapi.Template');
 			//We set its root (we need to be called from other apps as well)
+			//$this->template->set_root(PHPGW_SERVER_ROOT."/email/templates/".$GLOBALS['phpgw_info']['user']['preferences']['common']['template_set']);
+			// (angles) fix suggested by Dave Hall allows email app compose page to be used with any template, 
+			// fixes bug where email app compose page needed an (empty) template named dir in the email dir tree to use said named template 
 			$this->template->set_root($GLOBALS['phpgw']->common->get_tpl_dir('email'));
 			$this->template->set_file(array(
 						'mainframe_t' => 'addressbook-js-frameset.tpl'
@@ -315,7 +318,10 @@
 		{
 			$this->template->parse('out','mainframe_t',True);
 			$this->template->p('out');
-			$GLOBALS['phpgw']->common->phpgw_exit();
+			//$GLOBALS['phpgw']->common->phpgw_exit();
+			// (angles) param False tells it now to try parse_navber_end in phpgwapi functions.inc.php, eliminates this php error:
+			// PHP Fatal error:  Call to undefined function:  parse_navbar_end() in /phpgwapi/inc/footer.inc.php on line 62
+			$GLOBALS['phpgw']->common->phpgw_exit(False);
 		}
 		//@function setup_main_frame
 		//@abstract This function is very large. Its the code that prebuilds all static data for the mainframe

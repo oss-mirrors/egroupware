@@ -41,6 +41,9 @@
 		var $icon_theme='moz';
 		
 		//no icon size option here, this page always uses the same size icons
+		// EXCEPT for the view option image, this will be filled this in with users preference
+		//var $icon_size='16';
+		var $icon_size='24';
 		
 		var $xi;
 		var $msg_bootstrap;
@@ -84,12 +87,15 @@
 			$this->xi['lang_view_as_html'] = lang('View as HTML');
 			$this->xi['lang_view_formatted'] = lang('view formatted');
 			$this->xi['lang_view_unformatted'] = lang('view unformatted');
+			$this->xi['lang_view_printable'] = lang('printable');
 			$this->xi['lang_charset'] = lang('charset');
 			$this->xi['lang_attachment'] = lang('Attachment');
 			$this->xi['lang_size'] = lang('size');
 			$this->xi['lang_error_unknown_message_data'] = lang('ERROR: Unknown Message Data');
 			$this->xi['accounts_label'] = lang('Switch Accounts');
 			$this->xi['lang_move_this_message_into'] = lang('Move This Message into');
+			$this->xi['lang_go_back_to'] = lang('Go Back To');
+			$this->xi['lang_inbox'] = lang('INBOX');
 			
 			// THREAT LEVEL LANGS: 
 			/*!
@@ -176,9 +182,11 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 			// ----  Fill Some Important Variables  -----
 			$svr_image_dir = PHPGW_IMAGES_DIR;
 			$image_dir = PHPGW_IMAGES;
+			//$icon_theme = $GLOBALS['phpgw']->msg->get_pref_value('icon_theme',$acctnum);
+			//$icon_size = $GLOBALS['phpgw']->msg->get_pref_value('icon_size',$acctnum);
+			// we do not really have to specify an acct num, the "current acctnum" will be used if we do not specify one here
 			$this->icon_theme = $GLOBALS['phpgw']->msg->get_pref_value('icon_theme');
-			//echo "icon theme is ".$this->icon_theme."<br>\r\n";
-
+			$this->icon_size = $GLOBALS['phpgw']->msg->get_pref_value('icon_size');
 			
 			// ---- account switchbox  ----
 			// make a HTML comobox used to switch accounts
@@ -198,7 +206,7 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 				$this->xi['accounts_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',
 								 'menuaction=email.uipreferences.ex_accounts_list');
-				$this->xi['accounts_img'] = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/'.$this->icon_theme.'-accounts-24.gif',$this->xi['folders_txt1'],'','','0');
+				$this->xi['accounts_img'] = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on($this->icon_theme.'/accounts-24','_on'),$this->xi['folders_txt1'],'','','0');
 				$this->xi['ilnk_accounts'] = $GLOBALS['phpgw']->msg->href_maketag($this->xi['accounts_link'],$this->xi['accounts_img']);
 			}
 			else
@@ -261,8 +269,8 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 			
 			
 			// ----  Fill Some Important Variables  -----
-			//$sm_envelope_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_envelope.gif',$this->xi['lang_add_to_address_book'],'8','10','0');
-			$sm_envelope_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/'.$this->icon_theme.'-address-conduit-16.gif',$this->xi['lang_add_to_address_book'],'','','0');
+			$sm_envelope_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/address-conduit-16','_on'),$this->xi['land_add_to_address_book'],'','','0');
+
 			$not_set = $GLOBALS['phpgw']->msg->not_set;
 			
 			// ----  General Information about The Message  -----
@@ -327,6 +335,21 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 				$this->xi['application'] = '';
 			}
 			
+			// if we are on INBOX translate it
+			if ($GLOBALS['phpgw']->msg->get_folder_short($msgball['folder']) == 'INBOX')
+			{
+				//$nice_folder_name = lang('INBOX');
+				// try this for common folder related lang strings
+				//$common_langs = $GLOBALS['phpgw']->msg->get_common_langs();
+				//$nice_folder_name = $common_langs['lang_inbox'];
+				// or try this shortcut, it works too
+				$nice_folder_name = $GLOBALS['phpgw']->msg->get_common_langs('lang_inbox');
+			}
+			else
+			{
+				$nice_folder_name = $GLOBALS['phpgw']->msg->get_folder_short($msgball['folder']);
+			}
+			
 			// ----  What Folder To Return To  -----
 			$lnk_goback_folder = $GLOBALS['phpgw']->msg->href_maketag(
 				$GLOBALS['phpgw']->link(
@@ -337,7 +360,8 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')),
-				$GLOBALS['phpgw']->msg->get_folder_short($msgball['folder']));
+				//$GLOBALS['phpgw']->msg->get_folder_short($msgball['folder']));
+				$nice_folder_name);
 			
 			// NOTE: msgnum int 0 is NOT to be confused with "empty" nor "boolean False"
 			
@@ -358,12 +382,14 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
 					.$this->no_fmt);
-				$prev_msg_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/'.$this->icon_theme.'-arrow-left-24.gif',$this->xi['lang_previous_message'],'','','0');
+				$prev_msg_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/arrow-left-24','_on'),$this->xi['lang_previous_message'],'','','0');
+
 				$ilnk_prev_msg = $GLOBALS['phpgw']->msg->href_maketag($prev_msg_link,$prev_msg_img);
 			}
 			else
 			{
-				$ilnk_prev_msg = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/'.$this->icon_theme.'-arrow-left-no-24.gif',$this->xi['lang_no_previous_message'],'','','0');
+				$ilnk_prev_msg = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/arrow-left-no-24','_on'),$this->xi['lang_no_previous_message'],'','','0');
+
 			}
 			
 			//if ($this->debug > 0) { echo 'messages.php step3 $nav_data[] $ilnk_prev_msg: '.$ilnk_prev_msg.'<br>'; }
@@ -380,12 +406,12 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
 					.$this->no_fmt);
-				$next_msg_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/'.$this->icon_theme.'-arrow-right-24.gif',$this->xi['lang_next_message'],'','','0');
+				$next_msg_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/arrow-right-24','_on'),$this->xi['lang_next_message'],'','','0');
 				$ilnk_next_msg = $GLOBALS['phpgw']->msg->href_maketag($next_msg_link,$next_msg_img);
 			}
 			else
 			{
-				$ilnk_next_msg = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/'.$this->icon_theme.'-arrow-right-no-24.gif',$this->xi['lang_no_next_message'],'','','0');
+				$ilnk_next_msg = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/arrow-right-no-24','_on'),$this->xi['lang__no_next_message'],'','','0');
 			}
 			
 			//if ($this->debug > 0) { echo 'messages.php step4 $nav_data[] $ilnk_next_msg: '.$ilnk_next_msg.'<br>'; }
@@ -419,12 +445,18 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
-						.$this->no_fmt);
+						// This "no_fmt" does not apply of we are going back to the index page, it only applies to viewing messages.
+						//.$this->no_fmt
+						);
 			}
 			
 			// ----  Labels and Colors for From, To, CC, Files, and Subject  -----
 			$this->xi['tofrom_labels_bkcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
+			$this->xi['tofrom_labels_class'] = 'th';
+			//$this->xi['tofrom_labels_bkcolor'] = $GLOBALS['phpgw_info']['theme']['row_off'];
+			//$this->xi['tofrom_labels_class'] = 'row_off';
 			$this->xi['tofrom_data_bkcolor'] = $GLOBALS['phpgw_info']['theme']['row_on'];
+			$this->xi['tofrom_data_class'] = 'row_on';
 			
 			// ----  From: Message Data  -----
 			if (!$msg_headers->from)
@@ -718,7 +750,7 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 			$fwd_proc = 'encapsulate';
 			
 			// ----  Images and Hrefs For Reply, ReplyAll, Forward, and Delete  -----
-			$reply_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/'.$this->icon_theme.'-reply.gif',$this->xi['lang_reply'],'','','0');
+			$reply_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/reply','_on'),$this->xi['lang_reply'],'','','0');
 			$reply_url = $GLOBALS['phpgw']->link(
 					'/index.php',
 					 'menuaction=email.uicompose.compose'
@@ -731,8 +763,7 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 			$ilnk_reply = $GLOBALS['phpgw']->msg->href_maketag($reply_url, $reply_img);
 			
-			
-			$replyall_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/'.$this->icon_theme.'-reply-all.gif',$this->xi['lang_reply_all'],'','','0');
+			$replyall_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/reply-all','_on'),$this->xi['lang_reply_all'],'','','0');
 			$replyall_url = $GLOBALS['phpgw']->link(
 					'/index.php',
 					 'menuaction=email.uicompose.compose'
@@ -745,8 +776,7 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 			$ilnk_replyall = $GLOBALS['phpgw']->msg->href_maketag($replyall_url, $replyall_img);
 			
-			
-			$forward_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/'.$this->icon_theme.'-forward.gif',$this->xi['lang_forward'],'','','0');
+			$forward_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/forward','_on'),$this->xi['lang_forward'],'','','0');
 			$forward_url =  $GLOBALS['phpgw']->link(
 					'/index.php',
 					 'menuaction=email.uicompose.compose'
@@ -760,8 +790,7 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 			$ilnk_forward = $GLOBALS['phpgw']->msg->href_maketag($forward_url, $forward_img);
 			
-			
-			$delete_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/'.$this->icon_theme.'-delete-message.gif',$this->xi['lang_delete'],'','','0');
+			$delete_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/delete-message','_on'),$this->xi['lang_delete'],'','','0');
 			$delete_url = $GLOBALS['phpgw']->link(
 					 '/index.php',
 					'menuaction=email.boaction.delmov'
@@ -770,13 +799,15 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 					// preserve these things for when we return to the message list after the send
 					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+					.$this->no_fmt);
 			$ilnk_delete = $GLOBALS['phpgw']->msg->href_maketag($delete_url, $delete_img);
 			
 			$this->xi['theme_font'] = $GLOBALS['phpgw_info']['theme']['font'];
 			$this->xi['reply_btns_bkcolor'] = $GLOBALS['phpgw_info']['theme']['em_folder'];
 			$this->xi['reply_btns_text'] = $GLOBALS['phpgw_info']['theme']['em_folder_text'];
 			$this->xi['lnk_goback_folder'] = $lnk_goback_folder;
+			$this->xi['go_back_to'] = $this->xi['lang_go_back_to'];
 			$this->xi['ilnk_reply'] = $ilnk_reply;
 			$this->xi['ilnk_replyall'] = $ilnk_replyall;
 			$this->xi['ilnk_forward'] = $ilnk_forward;
@@ -917,6 +948,8 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 			// ----  so called "little toolbar (not the real toolbar) between the msg header data and the message siaplay
 			// (1) "view formatted/unformatted" link goes there, (MAYBE CALL IT "PLAIN TEXT" INSTEAD?)
 			// this template var will be filled with something below if appropriate, else it stays empty
+			$view_unformatted_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email','view_nofmt-'.$this->icon_size,'_on'),$this->xi['lang_view_unformatted'],'','','0');
+			$view_formatted_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email','view_formatted-'.$this->icon_size,'_on'),$this->xi['lang_view_formatted'],'','','0');
 			$this->xi['view_option'] = '&nbsp';
 			// base URLs for the "view unformatted" or "view formatted" option
 			// if "vew_unformatted" if the url, then "&no_fmt=1" will be added below
@@ -932,6 +965,7 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 			);
 			
 			// (2) view headers option
+			$view_headers_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email','view_headers-'.$this->icon_size,'_on'),$this->xi['lang_view_headers'],'','','0');
 			$this_msgball = $msgball;
 			$this_msgball['part_no'] = 0;
 			$view_headers_url = $GLOBALS['phpgw']->link(
@@ -943,11 +977,13 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 				.'&name=headers.txt'
 				.'&encoding=7bit'
 				);
-			
 			$view_headers_href = '<a href="'.$view_headers_url.'" target="new">'.$this->xi['lang_view_headers'].'</a>';
 			$this->xi['view_headers_href'] = $view_headers_href;
+			$view_headers_ilnk = '<a href="'.$view_headers_url.'" target="new">'.$view_headers_img.'</a>';
+			$this->xi['view_headers_ilnk'] = $view_headers_ilnk;
 			
 			// (3) view or download the raw message, including headers
+			$view_raw_message_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email','view_raw-'.$this->icon_size,'_on'),$this->xi['lang_view_raw_message'],'','','0');
 			$this_msgball = $msgball;
 			$this_msgball['part_no'] = 'raw_message';
 			$view_raw_message_url = $GLOBALS['phpgw']->link(
@@ -961,6 +997,21 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 				);
 			$view_raw_message_href = '<a href="'.$view_raw_message_url.'" target="new">'.$this->xi['lang_view_raw_message'].'</a>';
 			$this->xi['view_raw_message_href'] = $view_raw_message_href;
+			$view_raw_message_ilnk = '<a href="'.$view_raw_message_url.'" target="new">'.$view_raw_message_img.'</a>';
+			$this->xi['view_raw_message_ilnk'] = $view_raw_message_ilnk;
+			
+			// (4) view printer friendly version
+			$view_printable_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email','view_printable-'.$this->icon_size,'_on'),$this->xi['lang_view_printable'],'','','0');
+			$view_printable_url = $GLOBALS['phpgw']->link(
+				'/index.php',
+				 'menuaction=email.uimessage.printable'
+				.'&'.$msgball['uri']
+				);
+			$view_printable_href = '<a href="'.$view_printable_url.'" target="new">'.$this->xi['lang_view_printable'].'</a>';
+			$this->xi['view_printable_href'] = $view_printable_href;
+			$view_printable_ilnk = '<a href="'.$view_printable_url.'" target="new">'.$view_printable_img.'</a>';
+			$this->xi['view_printable_ilnk'] = $view_printable_ilnk;
+			
 			
 			// Force Echo Out Unformatted Text for email with 1 part which is a large text messages (in bytes) , such as a system report from cron
 			// php (4.0.4pl1 last tested) and some imap servers (courier and uw-imap are confirmed) will time out retrieving this type of message
@@ -1440,6 +1491,8 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 							$dsp = '<pre>'.$dsp.'</pre>';
 							// alternate (toggle) to view formatted
 							$view_option = $GLOBALS['phpgw']->msg->href_maketag($view_option_url, $this->xi['lang_view_formatted']);
+							$view_option_ilnk = $GLOBALS['phpgw']->msg->href_maketag($view_option_url, $view_formatted_img);
+							$this->xi['view_option_ilnk'] = $view_option_ilnk;
 						}
 						else
 						{
@@ -1463,6 +1516,8 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 							$dsp = $dsp .'<br><br>';
 							// alternate (toggle) to view unformatted, for this we add "&no_fmt=1" to the URL
 							$view_option = $GLOBALS['phpgw']->msg->href_maketag($view_option_url.'&no_fmt=1', $this->xi['lang_view_unformatted']);
+							$view_option_ilnk = $GLOBALS['phpgw']->msg->href_maketag($view_option_url.'&no_fmt=1', $view_unformatted_img);
+							$this->xi['view_option_ilnk'] = $view_option_ilnk;
 						}
 						
 						// "view formatted/unformatted" link being moved to the "toolbar"

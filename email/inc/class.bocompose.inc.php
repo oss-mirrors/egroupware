@@ -267,6 +267,9 @@
 				$cc_box_value = $GLOBALS['phpgw']->msg->htmlspecialchars_encode(urldecode($GLOBALS['phpgw']->msg->get_arg_value('cc')));
 				$bcc_box_value = $GLOBALS['phpgw']->msg->htmlspecialchars_encode(urldecode($GLOBALS['phpgw']->msg->get_arg_value('bcc')));
 				$subject = $GLOBALS['phpgw']->msg->htmlspecialchars_encode(urldecode($GLOBALS['phpgw']->msg->get_arg_value('subject')));
+				// and these are set according to arg values on return from the spell check page, (but according to pref values on first call of compose page)
+				// SET BELOW are "attach_sig" and "req_notify"
+				
 				// body is a little more tricky, ...
 				$body = $GLOBALS['phpgw']->msg->get_arg_value('body');
 				// first we decode any html special chars that may be in the message, there may be a mix of unencoded and encoded, so standardize unencoded.
@@ -494,6 +497,7 @@
 					//Check to see if they want us to quote the forwarded message's body and inlude it
 					//in the mail we are going to compose
 					$fwd_as_inline_pref=$GLOBALS['phpgw']->msg->get_pref_value('fwd_inline_text');
+					//print "<br>$fwd_as_inline_pref<br>";
 					if($fwd_as_inline_pref)
 					{
 						$body=$this->quote_inline_message($body."\r\n",$msgball);
@@ -640,8 +644,8 @@
 			$this->xi['jsaddybook_height']=$addywidth*3/4;
 			// Set Image Directory and icon size and theme
 			$this->xi['image_dir'] = PHPGW_IMAGES;
-			$this->icon_theme = $GLOBALS['phpgw']->msg->get_pref_value('icon_theme',$acctnum);
-			$this->icon_size = $GLOBALS['phpgw']->msg->get_pref_value('icon_size',$acctnum);
+			$icon_theme = $GLOBALS['phpgw']->msg->get_pref_value('icon_theme',$acctnum);
+			$icon_size = $GLOBALS['phpgw']->msg->get_pref_value('icon_size',$acctnum);
 			$this->xi['toolbar_font'] = 'Arial, Helvetica, san-serif';
 			$this->xi['send_btn_action'] = $send_btn_action;
 			$this->xi['to_box_value'] = $to_box_value;
@@ -652,32 +656,41 @@
 			$this->xi['form1_name'] = 'doit';
 			$this->xi['form1_method'] = 'POST';
 			$this->xi['buttons_bgcolor'] = $GLOBALS['phpgw_info']['theme']['em_folder'];
+			$this->xi['buttons_bgcolor_class'] = 'email_folder';
+			$this->mail_spell = CreateObject("email.spell");
+			// Set Variables for AddressBook button
 			$addressbook_text = lang('Address Book');
-			$addressbook_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-address-conduit-'.$this->icon_size.'.gif',$this->xi['addressbook_text'],'','','0');
+			$addressbook_image = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/address-conduit-'.$icon_size,'_on'),$addressbook_text,'','','0');
+			//$addressbook_image = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->common->image_on('email',$icon_theme.'-address-conduit-'.$icon_size,'_on'),$addressbook_text,'','','0');
 			$addressbook_onclick = 'addybook()';
+			// Set Variables for Send button			
 			$send_text = lang('Send');
-			$send_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-send-'.$this->icon_size.'.gif',$this->xi['send_text'],'','','0');
+			$send_image = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/send-'.$icon_size,'_on'),$send_text,'','','0');
+			//$send_image = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->common->image_on('email',$icon_theme.'-send-'.$icon_size,'_on'),$send_text,'','','0');
 			$send_onclick = 'send()';
+			// Set Variables for Spellcheck button
 			$spellcheck_text = lang('Spell Check');
-			$spellcheck_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-spellcheck-'.$this->icon_size.'.gif',$this->xi['spellcheck_text'],'','','0');
+			$spellcheck_image = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/spellcheck-'.$icon_size,'_on'),$spellcheck_text,'','','0');
+			//$spellcheck_image = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->common->image_on('email',$icon_theme.'-spellcheck-'.$icon_size,'_on'),$spellcheck_text,'','','0');
 			$spellcheck_onclick = 'spellcheck()';
 			// Create Spell Object so we can check and see if we need a spell check button
-			$this->mail_spell = CreateObject("email.spell");
+			// Set Variables for Attachment button
 			$this->attachfile_js_link = 
 				$GLOBALS['phpgw']->link('/index.php',
 					array(
 						'menuaction' => 'email.uiattach_file.attach'
 					)
 			);
-			$attachfile_js_onclick = 'attach_window(\''.$this->attachfile_js_link.'\')';
+			$this->xi['attachfile_js_onclick'] = 'attach_window(\''.$this->attachfile_js_link.'\')';
 			$attachfile_js_text = lang('Attach file');
-			$attachfile_js_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-add-attachment-'.$this->icon_size.'.gif',$this->xi['attachfile_js_txt'],'','','0');
-			// This code creates the buttons
-			switch ($GLOBALS['phpgw']->msg->get_pref_value('button_type')){
+			$attachfile_js_image = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/add-attachment-'.$icon_size,'_on'),$attachfile_js_text,'','','0');
+			//$attachfile_js_image = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->common->image_on('email',$icon_theme.'-add-attachment-'.$icon_size,'_on'),$attachfile_js_text,'','','0');
+			// This code looksup the users preference for the type of button and create the buttons to send to the UI
+			switch ($GLOBALS['phpgw']->msg->get_pref_value('button_type',$acctnum)){
 				case 'text':
 					$this->xi['addressbook_button'] = '<a href="javascript:'.$addressbook_onclick.'">'.$addressbook_text.'</a>';
 					$this->xi['send_button'] = '<a href="javascript:'.$send_onclick.'">'.$send_text.'</a>';
-					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$attachfile_js_onclick.'">'.$attachfile_js_text.'</a>';
+					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$this->xi['attachfile_js_onclick'].'">'.$attachfile_js_text.'</a>';
 					if ($this->mail_spell->get_can_spell())
 					{
 						$this->xi['spellcheck_button'] = '<a href="javascript:'.$spellcheck_onclick.'">'.$spellcheck_text.'</a><input type=hidden name="btn_spellcheck">';
@@ -687,7 +700,7 @@
 				case 'image':
 					$this->xi['send_button'] = '<a href="javascript:'.$send_onclick.'">'.$send_image.'</a>';
 					$this->xi['addressbook_button'] = '<a href="javascript:'.$addressbook_onclick.'">'.$addressbook_image.'</a>';
-					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$attachfile_js_onclick.'">'.$attachfile_js_image.'</a>';
+					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$this->xi['attachfile_js_onclick'].'">'.$attachfile_js_image.'</a>';
 					if ($this->mail_spell->get_can_spell())
 					{
 						$this->xi['spellcheck_button'] = '<a href="javascript:'.$spellcheck_onclick.'">'.$spellcheck_image.'</a><input type=hidden name="btn_spellcheck">';
@@ -696,7 +709,7 @@
 				case 'both':
 					$this->xi['send_button'] = '<a href="javascript:'.$send_onclick.'">'.$send_image.'&nbsp;'.$send_text.'</a>';
 					$this->xi['addressbook_button'] = '<a href="javascript:'.$addressbook_onclick.'">'.$addressbook_image.'&nbsp;'.$addressbook_text.'</a>';
-					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$attachfile_js_onclick.'">'.$attachfile_js_image.'&nbsp;'.$attachfile_js_text.'</a>';
+					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$this->xi['attachfile_js_onclick'].'">'.$attachfile_js_image.'&nbsp;'.$attachfile_js_text.'</a>';
 					if ($this->mail_spell->get_can_spell())
 					{
 						$this->xi['spellcheck_button'] = '<a href="javascript:'.$spellcheck_onclick.'">'.$spellcheck_image.'&nbsp;'.$spellcheck_text.'</a><input type=hidden name="btn_spellcheck">';
@@ -705,6 +718,7 @@
 			}
 			
 			$this->xi['to_boxs_bgcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
+			$this->xi['to_boxs_bgcolor_class'] = 'th';
 			$this->xi['to_boxs_font'] = $GLOBALS['phpgw_info']['theme']['font'];
 			if($this->addybook_choice == 'lex')
 			{
@@ -739,14 +753,29 @@
 			//Step One Addition for the request read notification checkbox
 			$this->xi['checkbox_req_notify_desc']= lang('Notify on delivery');
 			//$this->xi['checkbox_req_notify_desc']= lang('Request delivery notification');
-			$this->xi['checkbox_req_notify_name']= "req_notify";
-			$this->xi['checkbox_req_notify_value']= "true";
+			$this->xi['checkbox_req_notify_name']= 'req_notify';
+			$this->xi['checkbox_req_notify_value']= 'true';
 			
 			
 			//$this->xi['attachfile_js_link'] = $GLOBALS['phpgw']->link(
 			//	'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/attach_file.php');
 			$this->xi['body_box_name'] = 'body';
 			
+			// ----  Handle Request from Mail.Spell class  for checkboxes "attach_sig" and "req_notify" -----
+			/*!
+			@capability Preserve Checkboxs After Spell
+			@abstract "attach_sig" and "req_notify" checkbox values must be preserved thru the spellcheck stuff
+			@discussion These are DIFFERENT items because "attach_sig" has a preference value but 
+			"req_notify" does NOT have a preference value. This means on the first display of the compose page, 
+			the decision to check or not the "attach_sig" is taken from the users preference, BUT the box 
+			for "req_notify" is NEVER checked on the first display of compose page because it is always a 
+			manual option, no preference is stored for it. ON RETURN from the spell check page, the handling 
+			is different. Whatever the values for the checkboxes were when the user clicked spell check must 
+			be preserved and restored on return from the spell check page. Preferencde values do not matter 
+			in this return case. DO NOT FORGET that is the user has no sig text in their prefs the we 
+			can NOT even display the "email_sig" checkbox because there is NO sig to attach to the message.
+			*/
+			// we can not even show the sig checkbox at all if the user has no sig text set in their prefs
 			if ($GLOBALS['phpgw']->msg->get_isset_pref('email_sig')
 			&& ($GLOBALS['phpgw']->msg->get_pref_value('email_sig') != ''))
 			{
@@ -755,6 +784,42 @@
 			else
 			{
 				$this->xi['do_checkbox_sig'] = False;
+			}
+			if ($special_instructions == 'mail_spell_special_handling')
+			{
+				// restore the state preserved thru the spell check stuff
+				// ---- email_sig ----
+				if (($this->xi['do_checkbox_sig'] == True)
+				&& ($GLOBALS['phpgw']->msg->get_isset_arg('attach_sig'))
+				&& ($GLOBALS['phpgw']->msg->get_arg_value('attach_sig') != ''))
+				{
+					$this->xi['ischecked_checkbox_sig'] = True;
+				}
+				else
+				{
+					$this->xi['ischecked_checkbox_sig'] = False;
+				}
+				// ---- req_notify ----
+				if ($GLOBALS['phpgw']->msg->get_isset_arg('req_notify')
+				&& ($GLOBALS['phpgw']->msg->get_arg_value('req_notify') != ''))
+				{
+					$this->xi['ischecked_checkbox_req_notify'] = True;
+				}
+				else
+				{
+					$this->xi['ischecked_checkbox_req_notify'] = False;
+				}
+			}
+			else
+			{
+				// initial showing of compose page
+				// ---- email_sig ----
+				// initial showing of compose page only needs to care about the users pref for the signature
+				// if we are going to show it then at this point we WILL check it because pref value has text
+				$this->xi['ischecked_checkbox_sig'] = $this->xi['do_checkbox_sig'];
+				// ---- req_notify ----
+				// note that "req_notify" has no pref value, initial state is always unchecked
+				$this->xi['ischecked_checkbox_req_notify'] = False;
 			}
 			
 		}

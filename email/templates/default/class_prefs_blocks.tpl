@@ -13,8 +13,8 @@
 &nbsp; <!-- == block sep == --> &nbsp;
 
 <!-- BEGIN B_tr_sec_title -->
-<tr>
-	<td colspan="2" bgcolor="{th_bg}" valign="middle">
+<tr bgcolor="{th_bg}" class="th">
+	<td colspan="2" valign="middle">
 		<strong>{section_title}</strong>
 		&nbsp; &nbsp; &nbsp; {show_help_lnk}
 	</td>
@@ -24,8 +24,8 @@
 &nbsp; <!-- == block sep == --> &nbsp;
 
 <!-- BEGIN B_tr_long_desc -->
-<tr>
-	<td colspan="2" bgcolor="{back_color}" align="center" valign="middle">
+<tr bgcolor="{back_color}" class="{back_color_class}">
+	<td colspan="2" align="center" valign="middle">
 		<strong>{lang_blurb}</strong>: <p>{long_desc}</p>&nbsp;<br>
 	</td>
 </tr>
@@ -34,11 +34,11 @@
 &nbsp; <!-- == block sep == --> &nbsp; 
 
 <!-- BEGIN B_tr_textarea -->
-<tr>
-	<td align="left" width="{left_col_width}" bgcolor="{back_color}">
+<tr bgcolor="{back_color}" class="{back_color_class}">
+	<td align="left" width="{left_col_width}">
 		{lang_blurb}
 	</td>
-	<td align="center" valign="middle" width="{right_col_width}" bgcolor="{back_color}">
+	<td align="center" valign="middle" width="{right_col_width}">
 		<textarea name="{pref_id}" rows="6" cols="50">{pref_value}</textarea>
 	</td>
 </tr>
@@ -47,11 +47,11 @@
 &nbsp; <!-- == block sep == --> &nbsp; 
 
 <!-- BEGIN B_tr_textbox -->
-<tr>
-	<td align="left" width="{left_col_width}" bgcolor="{back_color}">
+<tr bgcolor="{back_color}" class="{back_color_class}">
+	<td align="left" width="{left_col_width}">
 		{lang_blurb}
 	</td>
-	<td align="center" valign="middle" width="{right_col_width}" bgcolor="{back_color}">
+	<td align="center" valign="middle" width="{right_col_width}">
 		<input type="text" name="{pref_id}" value="{pref_value}">
 	</td>
 </tr>
@@ -60,11 +60,11 @@
 &nbsp; <!-- == block sep == --> &nbsp; 
 
 <!-- BEGIN B_tr_passwordbox -->
-<tr>
-	<td align="left" width="{left_col_width}" bgcolor="{back_color}">
+<tr bgcolor="{back_color}" class="{back_color_class}">
+	<td align="left" width="{left_col_width}">
 		{lang_blurb}
 	</td>
-	<td align="center" valign="middle" width="{right_col_width}" bgcolor="{back_color}">
+	<td align="center" valign="middle" width="{right_col_width}">
 		<input type="password" name="{pref_id}" value="{pref_value}">
 	</td>
 </tr>
@@ -73,11 +73,11 @@
 &nbsp; <!-- == block sep == --> &nbsp; 
 
 <!-- BEGIN B_tr_combobox -->
-<tr>
-	<td align="left" width="{left_col_width}" bgcolor="{back_color}">
+<tr bgcolor="{back_color}" class="{back_color_class}">
+	<td align="left" width="{left_col_width}">
 		{lang_blurb}
 	</td>
-	<td align="center" valign="middle" width="{right_col_width}" bgcolor="{back_color}">
+	<td align="center" valign="middle" width="{right_col_width}">
 		<select name="{pref_id}">
 			{pref_value}
 		</select>
@@ -88,10 +88,10 @@
 &nbsp; <!-- == block sep == --> &nbsp; 
 
 <!-- BEGIN B_tr_checkbox -->
-	<td align="left" width="{left_col_width}" bgcolor="{back_color}">
+	<td align="left" width="{left_col_width}" bgcolor="{back_color}" class="{back_color_class}">
 		{lang_blurb}
 	</td>
-	<td align="center" valign="middle" width="{right_col_width}" bgcolor="{back_color}">
+	<td align="center" valign="middle" width="{right_col_width}" bgcolor="{back_color}" class="{back_color_class}">
 		<input type="checkbox" name="{pref_id}" value="{checked_flag}" {pref_value}>
 	</td>
 </tr>

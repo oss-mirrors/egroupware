@@ -1,5 +1,5 @@
 <!-- begin index_mail_b0_l2.tpl -->
-<script type="text/javascript">
+<script language="javascript" type="text/javascript">
 function do_action(act)
 {
 	flag = 0;
@@ -42,8 +42,8 @@ function check_all()
 
 {stats_data_display}
 
-<table border="0" cellpadding="4" cellspacing="1" width="95%" align="center">
-<tr bgcolor="{hdr_backcolor}">
+<table border="0" cellpadding="4" cellspacing="0" width="100%" align="center">
+<tr bgcolor="{hdr_backcolor}" class="{hdr_backcolor_class}">
 	<td width="3%" align="center">
 		&nbsp;
 	</td>
@@ -72,7 +72,7 @@ function check_all()
 	</td>
 </tr>
 <!-- BEGIN B_no_messages -->
-<tr bgcolor="{mlist_backcolor}">
+<tr bgcolor="{mlist_backcolor}" class="row_on">
 	<td colspan="6" align="center">
 		<!-- form delmove init here is just a formality, need an opening form tag but form does noting -->
 		{V_mlist_form_init}
@@ -84,19 +84,20 @@ function check_all()
 <!--- &nbsp; LAME BLOCK SEP &nbsp; -->
 
 <!-- BEGIN B_msg_list -->
-<tr bgcolor="{mlist_backcolor}">
+<tr bgcolor="{mlist_backcolor}" class="{mlist_backcolor_class}">
 	<td align="center">
 	<!-- INIT FORM ONCE -->{V_mlist_form_init}
 		<input type="checkbox" name="{mlist_checkbox_name}" value="{mlist_embedded_uri}">
 	</td>
 	<td align="center">
-		{mlist_attach}
+		<div align="right">{mlist_attach}</div>
+		{all_flags_images}
 	</td>
 	<td align="left">
-		{open_newbold}<font size="{mlist_font_size}" face="{mlist_font}">{mlist_from} {mlist_from_extra}</font>{close_newbold}
+		{open_strikethru}{open_newbold}<font size="{mlist_font_size}" face="{mlist_font}">{mlist_from} {mlist_from_extra}</font>{close_newbold}{close_strikethru}
 	</td>
 	<td align="left">
-		{open_newbold}<font size="{mlist_font_size}" face="{mlist_font}"><a href="{mlist_subject_link}">{mlist_subject}</a></font>{close_newbold}
+		{open_strikethru}{open_newbold}<font size="{mlist_font_size}" face="{mlist_font}"><a href="{mlist_subject_link}">{mlist_subject}</a></font>{close_newbold}{close_strikethru}
 	</td>
 	<td align="center">
 		<font size="{mlist_font_size}" face="{mlist_font}">{mlist_date}</font>
@@ -106,9 +107,9 @@ function check_all()
 	</td>
 </tr>
 <!-- END B_msg_list -->
-<tr bgcolor="{ftr_backcolor}">
+<tr bgcolor="{ftr_backcolor}" class="{ftr_backcolor_class}">
 	<td>
-		<a href="javascript:check_all()"><img src="{app_images}/check.gif" border="0" height="16" width="21"></a>
+		<a href="javascript:check_all()"><img src="{check_image}" border="0" height="16" width="21"></a>
 	</td>
 	<td colspan="2" align="left">
 		&nbsp;
@@ -120,6 +121,6 @@ function check_all()
 	</form>
 </tr>
 </table>
-
+{debugdata}
 <br> 
 <!-- end ndex_mail_b0_l2.tpl -->

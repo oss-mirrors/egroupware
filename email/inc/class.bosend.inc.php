@@ -228,6 +228,18 @@
 			$this->mail_spell->set_subject($GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('subject')));
 			$this->mail_spell->set_body_orig($GLOBALS['phpgw']->msg->stripslashes_gpc(trim($GLOBALS['phpgw']->msg->get_arg_value('body'))));
 			
+			// oops, do not forget about these, "attach_sig" and "req_notify"
+			if (($GLOBALS['phpgw']->msg->get_isset_arg('attach_sig'))
+			&& ($GLOBALS['phpgw']->msg->get_arg_value('attach_sig') != ''))
+			{
+				$this->mail_spell->set_preserve_var('attach_sig', $GLOBALS['phpgw']->msg->get_arg_value('attach_sig'));
+			}
+			if (($GLOBALS['phpgw']->msg->get_isset_arg('req_notify'))
+			&& ($GLOBALS['phpgw']->msg->get_arg_value('req_notify') != ''))
+			{
+				$this->mail_spell->set_preserve_var('req_notify', $GLOBALS['phpgw']->msg->get_arg_value('req_notify'));
+			}
+			
 			//$this->mail_spell->basic_spcheck();
 			$this->mail_spell->spell_review();
 			
@@ -511,7 +523,8 @@
 			}
 			// Step One Addition
 			// ---- Request Delivery Notification in Headers ----
-			if($GLOBALS['phpgw']->msg->get_arg_value('req_notify'))
+			if (($GLOBALS['phpgw']->msg->get_isset_arg('req_notify'))
+			&& ($GLOBALS['phpgw']->msg->get_arg_value('req_notify') != ''))
 			//cant imagine another check here, feel free to add something
 			{
 			//cant imagine another place to flag this....its a yes/no thing

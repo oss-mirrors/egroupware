@@ -39,7 +39,8 @@
 		// that much activity is going to be slower no matter what, might as well get fresh data on next page view
 		//var $big_move_threshold = 95;
 		// reduce this until is is proven that a larger number actually makes something faster
-		var $big_move_threshold = 10;
+		// MOVED TO MSG CLASS
+		//var $big_move_threshold = 10;
 		var $browser;
 		var $redirect_to = '';
 		var $redirect_if_error = '';
@@ -166,48 +167,48 @@
 				
 				$delmov_list = $GLOBALS['phpgw']->msg->get_arg_value('delmov_list');
 				$to_fldball = $GLOBALS['phpgw']->msg->get_arg_value('to_fldball');
-				$to_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_in($to_fldball['folder']);
+				// WHY URLDECODE SO SOON?
+				//$to_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_in($to_fldball['folder']);
 				$to_fldball['acctnum'] = (int)$to_fldball['acctnum'];
-
-
-
-
 				
 				// tm = "Total Moved" indicator
 				$tm = count($delmov_list);
 				// is this a "big move" as far as the "smart caching" is concerned?
-				if (count($delmov_list) > $this->big_move_threshold)
-				{
-					if ($this->debug > 0) { echo 'email.boaction.delmov: LINE '.__LINE__.' $this->big_move_threshold ['.$this->big_move_threshold.'] exceeded, call "->msg->event_begin_big_move" to notice event of impending big batch moves or deletes<br>'; }
-					$initial_session_cache_extreme = $GLOBALS['phpgw']->msg->event_begin_big_move(array(), 'email.boaction.delmov: LINE '.__LINE__);
-				}
-				else
-				{
-					// this "-1" tells us no big move was done
-					$initial_session_cache_extreme = '-1';
-				}
+				// MOVED TO MSG CLASS
+				//if (count($delmov_list) > $this->big_move_threshold)
+				//{
+				//	if ($this->debug > 0) { echo 'email.boaction.delmov: LINE '.__LINE__.' $this->big_move_threshold ['.$this->big_move_threshold.'] exceeded, call "->msg->event_begin_big_move" to notice event of impending big batch moves or deletes<br>'; }
+				//	$initial_session_cache_extreme = $GLOBALS['phpgw']->msg->event_begin_big_move(array(), 'email.boaction.delmov: LINE '.__LINE__);
+				//}
+				//else
+				//{
+				//	// this "-1" tells us no big move was done
+				//	$initial_session_cache_extreme = '-1';
+				//}
 				
 				for ($i = 0; $i < count($delmov_list); $i++)
 				{
 					if ($this->debug > 2) { echo 'email.boaction.delmov: in mail move loop ['.(string)($i+1).'] of ['.$tm.']<br>'; }
 					$mov_msgball = $delmov_list[$i];
-					$mov_msgball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_in($mov_msgball['folder']);
+					// WHY URLDECODE SO SOON?
+					//$mov_msgball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_in($mov_msgball['folder']);
 					$mov_msgball['acctnum'] = (int)$mov_msgball['acctnum'];
 					$did_move = False;
 					//if ($this->debug > 2) { echo 'email.boaction.delmov: calling  $GLOBALS[phpgw]->msg->interacct_mail_move('.serialize($mov_msgball).', '.serialize($to_fldball).'<br>'; }
 					//$did_move = $GLOBALS['phpgw']->msg->interacct_mail_move($mov_msgball, $to_fldball);
 					if ($this->debug > 2) { echo 'email.boaction.delmov: calling  $GLOBALS[phpgw]->msg->industrial_interacct_mail_move('.serialize($mov_msgball).', '.serialize($to_fldball).'<br>'; }
 					// single move, NO NEED to use the move grouping stuff, NOTE $tm was filled above as count($delmov_list)
-					if ($tm == 1)
-					{
-						if ($this->debug > 1) { echo 'email.boaction.delmov: (single move $tm: ['.$tm.']) calling  $GLOBALS[phpgw]->msg->single_interacct_mail_move('.serialize($mov_msgball).', '.serialize($to_fldball).'<br>'; }
-						$did_move = $GLOBALS['phpgw']->msg->single_interacct_mail_move($mov_msgball, $to_fldball);
-					}
-					else
-					{
+					// MOVED TO FLUSH MOVES LOGIG
+					//if ($tm == 1)
+					//{
+					//	if ($this->debug > 1) { echo 'email.boaction.delmov: (single move $tm: ['.$tm.']) calling  $GLOBALS[phpgw]->msg->single_interacct_mail_move('.serialize($mov_msgball).', '.serialize($to_fldball).'<br>'; }
+					//	$did_move = $GLOBALS['phpgw']->msg->single_interacct_mail_move($mov_msgball, $to_fldball);
+					//}
+					//else
+					//{
 						if ($this->debug > 2) { echo 'email.boaction.delmov: calling  $GLOBALS[phpgw]->msg->industrial_interacct_mail_move('.serialize($mov_msgball).', '.serialize($to_fldball).'<br>'; }
 						$did_move = $GLOBALS['phpgw']->msg->industrial_interacct_mail_move($mov_msgball, $to_fldball);
-					}
+					//}
 					if ($did_move == False)
 					{
 						// error
@@ -466,9 +467,12 @@
 					// ok, now do the delete
 					if ($this->debug > 1) { echo 'emai.boaction.delmov: delete_single_msg: ('.__LINE__.') : (single delete) calling $GLOBALS[phpgw]->msg->phpgw_delete('.$msgball['msgnum'].', " ",'.$msgball['folder'].', '.$msgball['acctnum'].', True) '; } 
 					// True = just a single delete call, don't use the buffer commands
-					$GLOBALS['phpgw']->msg->phpgw_delete($msgball['msgnum'],'',$msgball['folder'], (int)$msgball['acctnum'], True);
+					// " just a single delete call" logic MOVED TO BUFFERED COMMANDS function
+					//$GLOBALS['phpgw']->msg->phpgw_delete($msgball['msgnum'],'',$msgball['folder'], (int)$msgball['acctnum'], True);
+					$GLOBALS['phpgw']->msg->phpgw_delete($msgball['msgnum'],'',$msgball['folder'], (int)$msgball['acctnum']);
 					// now do the expunge, both IMAP and POP3 require this, or the message is not really deleted
 					//if ($this->debug > 1) { echo 'emai.boaction.delmov: delete_single_msg: ('.__LINE__.') : calling $GLOBALS[phpgw]->msg->phpgw_expunge('.$msgball['acctnum'].', $msgball) '; } 
+					// MOVED to "expunge_expungable_folders"
 					//$GLOBALS['phpgw']->msg->phpgw_expunge((int)$msgball['acctnum'], $msgball);
 					
 					// ok, done deleting, now expunge

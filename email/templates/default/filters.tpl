@@ -3,10 +3,10 @@
 <form action="{form_edit_filter_action}" method="post">
 	<input type="hidden" name="filter_num" value="{filter_num}">
 	
-	<h3><center>{lang_email_filters} - <em>Semi-Dumb UI</em></center></h3>
+	<h3><center>{lang_email_filters}</center></h3>
 	
 	<table width="90%" border="0" cellpadding="3" cellspacing="2" align="center">
-	<tr bgcolor="{row_off}">
+	<tr bgcolor="{row_off}" class="row_off">
 		<td colspan="4" align="left">
 			<font size="-1">{lang_filter_number}:&nbsp;<strong>[{filter_num}]</strong>
 			&nbsp;&nbsp;
@@ -19,14 +19,14 @@
 		<td colspan="4"><font size="-1">&nbsp;</font></td>
 	</tr>
 	
-	<tr bgcolor="{row_on}">
+	<tr bgcolor="{row_on}" class="row_on">
 		<td colspan="4">
 			<strong>{lang_if_messages_match}</strong>
 		</td>
 	</tr>
 	
 	<!-- BEGIN B_matches_row -->
-	<tr bgcolor="{row_off}">
+	<tr bgcolor="{row_off}" class="row_off">
 		<td align="center">
 			<font size="-1">{V_match_left_td}</font>
 		</td>
@@ -69,13 +69,13 @@
 	<br>
 	
 	<table width="90%" border="0" cellpadding="3" cellspacing="2" align="center">
-	<tr bgcolor="{row_on}">
+	<tr bgcolor="{row_on}" class="row_on">
 		<td colspan="4">
 			<strong>{lang_take_actions}</strong>
 		</td>
 	</tr>
 	<!-- BEGIN B_actions_row -->
-	<tr bgcolor="{row_off}">
+	<tr bgcolor="{row_off}" class="row_off">
 		<td width="20%" align="center">
 			<font size="-1">
 			{V_action_widget}
@@ -144,5 +144,5 @@
 	</table>
 	
 	<p>&nbsp;</p>
-
+{debugdata}
 <!-- END Sieve Mail Filters -->

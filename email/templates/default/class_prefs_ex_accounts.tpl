@@ -4,8 +4,8 @@
   <b>{page_title}</b>
   <hr>
 </p>
-<table border="0" cellspacing="2" cellpadding="2" width="95%" align="center">
-<tr bgcolor="{tr_titles_color}">
+<table border="0" cellspacing="2" cellpadding="2" width="100%" align="center">
+<tr bgcolor="{tr_titles_color}" class="{tr_titles_class}">
 	<td width="60%" align="left">
 		<font face="{font}">{account_name_header}</font>
 	</td>
@@ -23,7 +23,7 @@
 	</td>
 </tr>
 <!-- BEGIN B_accts_list -->
-<tr bgcolor="{tr_color}">
+<tr bgcolor="{tr_color}" class="{tr_color_class}">
 	<td width="60%" align="left">
 		<font face="{font}">{indentity}</font>
 	</td>
@@ -55,4 +55,5 @@
 <p>
 	&nbsp;
 </p>
+{debugdata}
 <!-- end class_prefs_ex_accounts.tpl -->

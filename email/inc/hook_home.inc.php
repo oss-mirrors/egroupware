@@ -23,11 +23,23 @@
 	// does this array item actually exist before we create the mail_msg, where is it created?
 	//if ($GLOBALS['phpgw_info']['user']['preferences']['email']['mainscreen_showmail'] == True)
 	
+	$debug_hook_home = 0;
+	//$debug_hook_home = 3;
+	
+	$prev_currentapp = $GLOBALS['phpgw_info']['flags']['currentapp'];
+	$GLOBALS['phpgw_info']['flags']['currentapp'] = 'email';
+	
 	// create a msg object just to have access to the prefs
 	$my_msg_bootstrap = '';
-	$my_msg_bootstrap = CreateObject("email.msg_bootstrap");
-	$my_msg_bootstrap->set_do_login(False);
-	$my_msg_bootstrap->ensure_mail_msg_exists('email.hook_home', 0);
+	$my_msg_bootstrap = CreateObject('email.msg_bootstrap');
+	// NO LOGIN if we are only checking preferences
+	//$my_msg_bootstrap->set_do_login(False);
+	//$my_msg_bootstrap->set_do_login(BS_LOGIN_ONLY_IF_NEEDED);
+	$my_msg_bootstrap->set_do_login(BS_LOGIN_NEVER);
+	// never *should* still allow a later login after we determine we need to show messages here
+	$my_msg_bootstrap->ensure_mail_msg_exists('email.hook_home', $debug_hook_home);
+	// DO NOT FORGET TO END_REQUEST since we created the msg object, it needs that even if we did not login, 
+	// because the backwards compat code for sessions_db does its bulk save to the DB in the "end_request" function.
 	
 	// does account 0 (default, main account) have this pref set
 	// this pref is either set for "ON", of not set which represents a "no"
@@ -35,11 +47,7 @@
 	// (2) by doing a loop testing for accounts other then just account 0
 	if ($GLOBALS['phpgw']->msg->get_isset_pref('mainscreen_showmail', 0))
 	{
-		// NO LONGER needed, from here on, msg objects opens streams on demand if requied
-		//$my_msg_bootstrap = '';
-		//$my_msg_bootstrap = CreateObject("email.msg_bootstrap");
-		//$my_msg_bootstrap->ensure_mail_msg_exists('email.hook_home', 0);
-		
+		// from here on, msg objects opens streams on demand if requied
 		$data = Array();
 		
 		/*  class mail_msg "new_message_check()"
@@ -52,6 +60,7 @@
 		*/
 		$inbox_data = Array();
 		$inbox_data = $GLOBALS['phpgw']->msg->new_message_check();
+		//if ($debug_hook_home > 2) { echo 'hook_home('.__LINE__.'): $inbox_data dump:<pre>'; print_r($inbox_data); echo '</pre>'; } 
 
 		$title = '<font color="#FFFFFF">'.lang('EMail').' '.$inbox_data['alert_string'].'</font>';
 
@@ -63,15 +72,17 @@
 		{
 			$check_msgs = $inbox_data['number_all'];
 		}
-
 		if ($inbox_data['number_all'] > 0)
 		{
 			$msgball_list = array();
 			$msgball_list = $GLOBALS['phpgw']->msg->get_msgball_list();
 		}
+		//if ($debug_hook_home > 2) { echo 'hook_home('.__LINE__.'): call to "get_msgball_list" returns $msgball_list dump:<pre>'; print_r($msgball_list); echo '</pre>'; } 
 		for($i=0; $i<$check_msgs; $i++)
 		{
-			$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msgball_list[$i]);
+			$this_loop_msgball = $GLOBALS['phpgw']->msg->ball_data_parse_str($msgball_list[$i]);
+			//if ($debug_hook_home > 1) { echo ' * hook_home('.__LINE__.'): $msgball_list['.$i.'] ['.$msgball_list[$i].']; $this_loop_msgball: ['.serialize($this_loop_msgball).']<br>'; } 
+			$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($this_loop_msgball);
 			$subject = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'');
 			if(strlen($subject) > 65)
 			{
@@ -82,7 +93,7 @@
 				'link' => $GLOBALS['phpgw']->link(
 						'/index.php',
 						'menuaction=email.uimessage.message'
-						.'&'.$msgball_list[$i]['uri']
+						.'&'.$this_loop_msgball['uri']
 				)
 			);
 		}
@@ -109,6 +120,7 @@
 		{
 			// build the $feed_args array for the all_folders_listbox function
 			// anything not specified will be replace with a default value if the function has one for that param
+			/*
 			$feed_args = Array(
 				'mailsvr_stream'    => '',
 				'pre_select_folder' => '',
@@ -134,8 +146,33 @@
 				.'&nbsp; &nbsp;'.$compose_href."\r\n"
 				.'</td>'."\r\n"
 				.'</form>'."\r\n";
+			*/
+			// REPLACE all the above with some high levels calls to the widget class
+			// WHY does not lang inbox work here? It is called in the base class and works fine except from "home" page.
+			$my_widgets = CreateObject('email.html_widgets');
+			$my_widgets->new_form();
+			$my_widgets->set_form_name('switchbox');
+			$my_widgets->set_form_action($GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'));
+			$my_widgets->set_form_method('post');
+			$form_folder_switch_opentag = $my_widgets->get_form();
+			$folder_switch_combobox = $my_widgets->all_folders_combobox('switchbox');
+			$form_folder_switch_closetag = $my_widgets->form_closetag();
+			$extra_data = 
+				$form_folder_switch_opentag
+				.'<td align="left">'."\r\n"
+				.'&nbsp;<strong>'.lang('E-Mail Folders').':</strong>&nbsp;'
+				.$folder_switch_combobox
+				.'&nbsp; &nbsp;'.$compose_href
+				.'</td>'."\r\n"
+				.$form_folder_switch_closetag;
 		}
-		$GLOBALS['phpgw']->msg->end_request();
+		
+		if ((isset($prev_currentapp))
+		&& ($prev_currentapp)
+		&& ($GLOBALS['phpgw_info']['flags']['currentapp'] != $prev_currentapp))
+		{
+			$GLOBALS['phpgw_info']['flags']['currentapp'] = $prev_currentapp;
+		}
 		
 		$portalbox = CreateObject('phpgwapi.listbox',
 			Array(
@@ -168,4 +205,8 @@
 		// output the portalbox and below it (1) the folders listbox (if applicable) and (2) Compose New mail link
 		echo "\n".'<!-- BEGIN Mailbox info -->'."\n".$portalbox->draw($extra_data).'<!-- END Mailbox info -->'."\n";
 	}
+	// we create the msg object initially so we can have access to the multi-account preferences, 
+	// so even if we did not output any data here, we still must call this "end_request" function, it is kind of like a destructor
+	$GLOBALS['phpgw']->msg->end_request();
+
 ?>

@@ -2,16 +2,16 @@
 <html>
   <head>
   <meta http-equiv="Content-Type" content="text/html"; charset="{charset}">
-  <meta name="AUTHOR" content="phpGroupWare http://www.phpgroupware.org">
-  <meta name="description" content="phpGroupWare">
-  <meta name="keywords" content="phpGroupWare">
+  <meta name="author" content="AngleMail for phpGroupWare http://www.anglemail.org">
+  <meta name="description" content="AngleMail for phpGroupWare http://www.phpgroupware.org">
+  <meta name="keywords" content="AngleMail for phpGroupWare">
   <style type="text/css">
    <!--
    A:link {text-decoration:none;}
    A:visted {text-decoration:none;}
    A:active {text-decoration:none;}
    body { font-family: "{font_family}"; }
-   center {text-decoration:none;}
+   center { text-decoration:none; }
    -->
   </style>
 <script type="text/javascript">

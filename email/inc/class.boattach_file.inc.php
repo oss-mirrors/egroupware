@@ -285,13 +285,15 @@
 		
 			// ensure existance of PHPGROUPWARE temp dir
 			// note: this is different from apache temp dir, and different from any other temp file location set in php.ini
-			if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir']))
+			//if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir']))
+			if (!is_dir($GLOBALS['phpgw_info']['server']['temp_dir']))
 			{
 				mkdir($GLOBALS['phpgw_info']['server']['temp_dir'],0700);
 			}
 		
 			// if we were NOT able to create this temp directory, then make an ERROR report
-			if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir']))
+			//if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir']))
+			if (!is_dir($GLOBALS['phpgw_info']['server']['temp_dir']))
 			{
 				$alert_msg .= 'Error:'.'<br>'
 					. 'Server is unable to access phpgw tmp directory'.'<br>'
@@ -300,16 +302,22 @@
 					. '<br>';
 			}
 		
-			if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir'] . SEP . $GLOBALS['phpgw_info']['user']['sessionid']))
-			{
-				mkdir($GLOBALS['phpgw_info']['server']['temp_dir'] . SEP . $GLOBALS['phpgw_info']['user']['sessionid'],0700);
-			}
+			//if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir'] . SEP . $GLOBALS['phpgw_info']['user']['sessionid']))
+			//if (!is_dir($GLOBALS['phpgw_info']['server']['temp_dir'] . SEP . $GLOBALS['phpgw_info']['user']['sessionid']))
+			//{
+			//	mkdir($GLOBALS['phpgw_info']['server']['temp_dir'] . SEP . $GLOBALS['phpgw_info']['user']['sessionid'],0700);
+			//}
 		
 			//$this->uploaddir = $GLOBALS['phpgw_info']['server']['temp_dir'] . SEP . $GLOBALS['phpgw_info']['user']['sessionid'] . SEP;
 			$this->uploaddir = $GLOBALS['phpgw']->msg->att_files_dir;
+			if (!is_dir($this->uploaddir))
+			{
+				mkdir($this->uploaddir,0700);
+			}
 			
 			// if we were NOT able to create this temp directory, then make an ERROR report
-			if (!file_exists($this->uploaddir))
+			//if (!file_exists($this->uploaddir))
+			if (!is_dir($this->uploaddir))
 			{
 				$alert_msg .= 'Error:'.'<br>'
 					. 'Server is unable to access phpgw email tmp directory'.'<br>'
@@ -317,7 +325,7 @@
 					. 'Please check your configuration'.'<br>'
 					. '<br>';
 			}
-
+			
 			// grab externally provided information
 			$this->fill_control_data_gpc();
 			$this->fill_file_data_gpc();
@@ -325,10 +333,11 @@
 			// Some server side attachment upload handling code is borrowed from
 			// Squirrelmail <Luke Ehresman> http://www.squirrelmail.org
 			// particularly the moving, temporary naming, and the ".info" file code.
-			if ($this->control_data['action'] == lang('Delete') ||
-			    $this->control_data['action'] == htmlentities(lang('Delete')))
+			
+			if ($this->control_data['action'] == lang('Delete')
+			|| $this->control_data['action'] == htmlentities(lang('Delete')))
 			{
-				if ($this->debug > 1) { echo 'boattach_file.attach ('.__LINE__.'): <b>REQUEST TO DELETE</b> detected $this->control_data[action] ('.$this->control_data['action'].') == lang(Delete) ('.lang('Delete').'): <br>'; }
+				if ($this->debug > 1) { echo 'boattach_file.attach ('.__LINE__.'): <b>REQUEST TO DELETE</b> detected $this->control_data[action] ('.$this->control_data['action'].') == lang(Delete) ('.lang('Delete').'): <br>'; } 
 				// sometimes $this->control_data[delete][] seems to have multiple entries for the same filename
 				for ($i=0; $i<count($this->control_data['delete']); $i++)
 				{
@@ -356,8 +365,8 @@
 				}
 			}
 			
-			if (($this->control_data['action'] == lang('Attach File') ||
-			     $this->control_data['action'] == htmlentities(lang('Attach File')))
+			if (($this->control_data['action'] == lang('Attach File')
+				|| $this->control_data['action'] == htmlentities(lang('Attach File')))
 			&& ($this->file_data['file_tmp_name'] != '')
 			&& ($this->file_data['file_tmp_name'] != 'none'))
 			{
@@ -384,9 +393,9 @@
 				(($this->file_data['file_tmp_name'] == '') || ($this->file_data['file_tmp_name'] == 'none')))
 			{
 				$langed_attach_file = lang("Attach File");
-				$alert_msg = lang('Input Error').':<br>'
-					. lang('Please submit a filename to attach').'.<br>'
-					. lang('You must click %1 for the file to actually upload','"'.lang('Attach File').'"').'.<br>'
+				$alert_msg = lang('Input Error:').'<br>'
+					. lang('Please submit a filename to attach').'<br>'
+					. lang('You must click').' "'.lang('Attach File').'" '.lang('for the file to actually upload').'<br>'
 					. '<br>';
 			}
 		

@@ -73,6 +73,13 @@
 		/*!
 		@function bofilters
 		@abstract constructor
+		@discussion Several important data structures are initialized here, including this 
+		constructor calls the member function "read_filter_data_from_prefs" passing param to 
+		$also_undo_defang as True only if the string "uifilters" is NOT in the menuaction. The UI 
+		forms need the defanging to remain intact, BUT if "uifilters" is not in the menuaction, 
+		then we assume we are going to apply or otherwise use the filters requiring the actual 
+		unencoded chars, in which case function "read_filter_data_from_prefs" is passed param 
+		also_undo_defang as True. 
 		@author Angles
 		*/
 		function bofilters()
@@ -119,9 +126,35 @@
 			$this->msg_bootstrap->ensure_mail_msg_exists('email.bofilters *constructor*', $this->debug);
 			
 			$this->not_set = $GLOBALS['phpgw']->msg->not_set;
+			// when we get filter data from database, we undo the DB defang ONLY is we are going to USE the filters
+			// because if only displaying the filter data in a form, the data needs to remain html encoded
+			if (isset($GLOBALS['phpgw']->msg->ref_GET['menuaction']))
+			{
+				$my_menuaction = $GLOBALS['phpgw']->msg->ref_GET['menuaction'];
+			}
+			elseif (isset($GLOBALS['phpgw']->msg->ref_POST['menuaction']))
+			{
+				$my_menuaction = $GLOBALS['phpgw']->msg->ref_POST['menuaction'];
+			}
+			else
+			{
+				$my_menuaction = 'error: none found';
+			}
+			if ($this->debug > 0) { echo 'email.bofilters. *constructor*('.__LINE__.'): $my_menuaction ['.$my_menuaction.']<br>'; }
 			
-			if ($this->debug > 0) { echo 'email.bofilters. *constructor*: calling $this->read_filter_data_from_prefs<br>'; }
-			$this->read_filter_data_from_prefs();
+			if (stristr($my_menuaction, 'email.uifilter'))
+			{
+				if ($this->debug > 0) { echo 'email.bofilters. *constructor*('.__LINE__.'): GPC menuaction indicates this is a UI call, NOT applying filters, so do NOT html decode pref filter data<br>'; }
+				$also_undo_defang = False;
+			}
+			else
+			{
+				if ($this->debug > 0) { echo 'email.bofilters. *constructor*('.__LINE__.'): GPC menuaction indicates this is NOT simply a UI call, so DO html decode (defang) pref filter data<br>'; } 
+				$also_undo_defang = True;
+			}
+			
+			if ($this->debug > 0) { echo 'email.bofilters. *constructor*: calling $this->read_filter_data_from_prefs('.serialize($also_undo_defang).')<br>'; } 
+			$this->read_filter_data_from_prefs($also_undo_defang);
 			if ($this->debug > 0) { echo 'email.bofilters. *constructor*: LEAVING<br>'; }
 			//return;
 		}
@@ -129,16 +162,22 @@
 		/*!
 		@function read_filter_data_from_prefs
 		@abstract MISNAMED because ->msg actually reads the prefs, and we get them from ->msg->raw_filters
+		@param $also_undo_defang (boolean) also undo the html encoding of offending chars needed during pref table storage. 
+		Default is empty or False, meaining to leave the encoded chars as encoded, useful for displaying the data. To 
+		actually apply the filters, you MUST pass True here, so the chars are decoded to their actual char value. 
 		@discussion Use to obtain the raw, unprocessed filters array as extracted from the prefs database. In this case 
 		we simple get the array from GLOBALS[phpgw]->msg->raw_filters becauase the ->msg object actually 
 		gets the prefs from the database and the constructor for this class has a msg bootstrap call so we know we 
 		have a msg object to use, hopefully. Also, there is a fallback location to find the data, 
 		GLOBALS[phpgw]->preferences->data[email][filters] but this is NOT the best way to do it since that is 
-		potentially "private" data of the preferences object, but since php as of now has no "private" data enviornment, I am guessing.
+		potentially "private" data of the preferences object, but since php as of now has no "private" data enviornment, I am guessing. 
+		NOTE that prefs data is stored in database friendly "defanged" mode where certain offending chars are html encoded, 
+		during this function that encoding is UNDONE, the chars are returned to their actual state as slashes or quotes, etc. 
 		@author Angles
 		*/
-		function read_filter_data_from_prefs()
+		function read_filter_data_from_prefs($also_undo_defang='')
 		{
+			if ($this->debug > 0) { echo 'bofilters.read_filter_data_from_prefs('.__LINE__.'): ENTERING, param $also_undo_defang ['.serialize($also_undo_defang).']<br>'."\r\n"; } 
 			/*
 			$this->all_filters = array();
 			// read sublevel data from prefs
@@ -167,12 +206,25 @@
 				// METHOD2 (works but requires "access" to a maybe private object of prefernces object, so 2nd choice for data)
 				$this->all_filters = $GLOBALS['phpgw']->preferences->data['email']['filters'];
 			}
+			// UNDO the DATABASE DEFANG if instructions specified this
+			if ($also_undo_defang)
+			{
+				if ($this->debug > 1) { echo 'bofilters.read_filter_data_from_prefs('.__LINE__.'): about to call $this->all_filters_bulk_undo_defang because param $also_undo_defang is ['.serialize($also_undo_defang).']<br>'."\r\n"; }
+				$this->all_filters_bulk_undo_defang();
+			}
+			else
+			{
+				if ($this->debug > 1) { echo 'bofilters.read_filter_data_from_prefs('.__LINE__.'): leaving html encoded chars AS-IS because param $also_undo_defang is ['.serialize($also_undo_defang).']<br>'."\r\n"; } 
+			}
+			if ($this->debug > 2) { echo 'bofilters.read_filter_data_from_prefs('.__LINE__.'): obtained $this->all_filters DUMP:<pre>'; print_r($this->all_filters); echo '</pre>'."\r\n"; } 
+			if ($this->debug > 0) { echo 'bofilters.read_filter_data_from_prefs('.__LINE__.'): LEAVING <br>'."\r\n"; }
 			return $this->all_filters;
 		}
 		
 		/*!
 		@function obtain_filer_num
 		@abstract ?
+		@param $get_next_avail_if_none (boolean) default True 
 		@author Angles
 		*/
 		function obtain_filer_num($get_next_avail_if_none=True)
@@ -305,7 +357,7 @@
 			$take_me_to_url = $GLOBALS['phpgw']->link(
 										'/index.php',
 										'menuaction=email.uifilters.filters_list');
-			if ($this->debug_set_prefs > 0) { echo 'bofilters.move_up: LEAVING with redirect to: <br>'.$take_me_to_url.'<br>'; }
+			if ($this->debug > 0 || $this->debug_set_prefs > 0 ) { echo 'bofilters.move_up: LEAVING with redirect to: <br>'.$take_me_to_url.'<br>'; }
 			Header('Location: ' . $take_me_to_url);
 		}
 		
@@ -352,14 +404,164 @@
 		}
 		
 		/*!
+		@function all_filters_bulk_undo_defang
+		@abstract Used on the filter data as a whole, every filter is examined for html encoded DB-Friendly chars, and they are DECODED to their actual char state. 
+		@result boolean, True is we actually decoded something, False is no data required decoding. 
+		@discussion This is an OOP object call, operates directly on this->all_filters[].  
+		Use this function when you are going to actually APPLY the filters, in that case the data 
+		MUST be NON-ENCODED in order to match up against the message strings. However, this should NOT be done 
+		when simply displaying the pref data, because the html form actually needs these chars to be html encoded. 
+		For example, a trailing quote char will actually look like the end of the value quote to the browser, so will 
+		not actually be seen, because it was mis-interpreted by the html code. In fact it will disappear since the 
+		browser thinks it is part of the markup, so you must leave it html encoded. 
+		@author Angles
+		*/
+		function all_filters_bulk_undo_defang()
+		{
+			if ($this->debug > 0) { echo 'bofilters.all_filters_bulk_undo_defang('.__LINE__.'): ENTERING<br>'."\r\n"; } 
+			$did_decode = False;
+			if (!$this->all_filters)
+			{
+				if ($this->debug > 0) { echo 'bofilters.all_filters_bulk_undo_defang('.__LINE__.'): LEAVING early, nothing to process, $this->all_filters is empty, returning $did_decode ['.serialize($did_decode).']<br>'."\r\n"; } 
+				return $did_decode;
+			}
+			// UNDO the DATABASE DEFANG, 
+			if ($this->debug > 1) { echo 'bofilters.all_filters_bulk_undo_defang('.__LINE__.'): about to UNDO the pref friendly defanged chars, so the the html encoding of certain offending chars prefs is UNDONE here<br>'."\r\n"; }
+			$did_decode = False;
+			for ($filter_idx=0; $filter_idx < count($this->all_filters); $filter_idx++)
+			{
+				// currently only 2 elements get the defang, undefang treatment
+				// 1. filtername
+				$refanged_filtername = $this->string_undo_defang($this->all_filters[$filter_idx]['filtername']);
+				if ($this->debug > 1) { echo 'bofilters.all_filters_bulk_undo_defang('.__LINE__.'): still defanged $this->all_filters['.$filter_idx.'][filtername] is ['.serialize($this->all_filters[$filter_idx]['filtername']).'], RE-fanged $refanged_filtername ['.serialize($refanged_filtername).']<br>'."\r\n"; } 
+				if ($refanged_filtername != $this->all_filters[$filter_idx]['filtername'])
+				{
+					$did_decode = True;
+				}
+				$this->all_filters[$filter_idx]['filtername'] = $refanged_filtername;
+				// 2. each [matches][x][matchthis]
+				for ($matches_idx=0; $matches_idx < count($this->all_filters[$filter_idx]['matches']); $matches_idx++)
+				{
+					$refanged_matchthis = $this->string_undo_defang($this->all_filters[$filter_idx]['matches'][$matches_idx]['matchthis']);
+					if ($this->debug > 1) { echo 'bofilters.all_filters_bulk_undo_defang('.__LINE__.'): still defanged $this->all_filters['.$filter_idx.'][matches]['.$matches_idx.'][matchthis] is ['.serialize($this->all_filters[$filter_idx]['matches'][$matches_idx]['matchthis']).'], RE-fanged $refanged_matchthis ['.serialize($refanged_matchthis).']<br>'."\r\n"; }
+					if ($refanged_matchthis != $this->all_filters[$filter_idx]['matches'][$matches_idx]['matchthis'])
+					{
+						$did_decode = True;
+					}
+					$this->all_filters[$filter_idx]['matches'][$matches_idx]['matchthis'] = $refanged_matchthis;
+				}
+			}
+			if ($this->debug > 2) { echo 'bofilters.all_filters_bulk_undo_defang('.__LINE__.'): defanged $this->all_filters DUMP:<pre>'; print_r($this->all_filters); echo '</pre>'."\r\n"; } 
+			if ($this->debug > 0) { echo 'bofilters.all_filters_bulk_undo_defang('.__LINE__.'): LEAVING, returning $did_decode ['.serialize($did_decode).']<br>'."\r\n"; } 
+			return $did_decode;
+		}
+		
+		/*!
+		@function string_undo_defang
+		@abstract a REVERSE of the prefs database defang treatment.  Opposite of "string_strip_and_defang". 
+		@author Angles
+		*/
+		function string_undo_defang($pref_string='')
+		{
+			if ($this->debug_set_prefs > 0) { echo 'bofilters.string_undo_defang('.__LINE__.'): ENTERING, param $pref_string ['.serialize($pref_string).']<br>'."\r\n"; } 
+			if (!$pref_string)
+			{
+				return '';
+			}
+			// undo the _LAME_ way to make the value "database friendly"
+			// return slashes and quotes to their actual form as slashes and quotes
+			$un_defanged_string = $GLOBALS['phpgw']->msg->html_quotes_decode($pref_string);
+			if ($this->debug_set_prefs > 0) { echo 'bofilters.string_undo_defang('.__LINE__.'): LEAVING returning $un_defanged_string ['.serialize($un_defanged_string).']<br>'."\r\n"; } 
+			return $un_defanged_string;
+		}
+		
+		/*!
+		@function string_strip_and_defang
+		@abstract POST data that is user supplied string needs stripslash and database defang treatment. 
+		@param $user_string (string) data from a POST form
+		@result string that was stripslashed and database defanged for storage in the prefs table. 
+		@discussion Same problem as for the preferences in general, the preferences database is subject to curruption 
+		if certain "database unfriendly" chars are saved to it. Cars like the single quote, certain slashes. See 
+		the function "html_quotes_encode" for more info, and also file class.bopreferences too.  
+		  Opposite of "string_undo_defang". 
+		@author Angles
+		*/
+		function string_strip_and_defang($user_string='')
+		{
+			if ($this->debug_set_prefs > 0) { echo 'bofilters.string_strip_and_defang: ENTERING, para, $user_string ['.serialize($user_string).']<br>'."\r\n"; } 
+			if (!$user_string)
+			{
+				return '';
+			}
+			// typical "user_string" needs to strip any slashes 
+			// that PHP "magic_quotes_gpc"may have added
+			$prepared_string = $GLOBALS['phpgw']->msg->stripslashes_gpc($user_string);
+			// and this is a _LAME_ way to make the value "database friendly"
+			// because slashes and quotes will FRY the whole preferences repository
+			$prepared_string = $GLOBALS['phpgw']->msg->html_quotes_encode($prepared_string);
+			if ($this->debug_set_prefs > 0) { echo 'bofilters.string_strip_and_defang: LEAVING returning $prepared_string ['.serialize($prepared_string).']<br>'."\r\n"; } 
+			return $prepared_string;
+		}
+		
+		/*!
+		@function check_duplicate_submit_elements
+		@abstract Apache2 on RH8 will submit duplicate data when the data is numbered array data. 
+		@param $key (string) the name of the key in the POST key,value data to inspect, 
+		default to "source_accounts" which means POST["source_accounts"][] will be inspected. 
+		@discussion For example, with the "source accounts" array submitted from the create or edit 
+		filter form, this is the type if numbered array submit data that is subject to this POST duplication 
+		bug. Check for and fix if necessary. 
+		@author Angles
+		*/
+		function check_duplicate_submit_elements($key='source_accounts')
+		{
+			if ($this->debug_set_prefs > 0) { echo 'bofilters.check_duplicate_submit_elements('.__LINE__.'): ENTERING, param $key is ['.$key.'] <br>'."\r\n"; } 
+			if ($this->debug_set_prefs > 1) { echo 'bofilters.check_duplicate_submit_elements('.__LINE__.'): this checks for buggy apache2 duplicated source account POSTED form numbered array data<br>'."\r\n"; } 
+			$did_alter = False;
+			
+			//source_accounts
+			$seen_list_items=array();
+			$loops = count($GLOBALS['phpgw']->msg->ref_POST[$key]);
+			for($i=0;$i < $loops;$i++)
+			{
+				// buggy apache2: do duplicate test on the supplied $key array items
+				if (in_array($GLOBALS['phpgw']->msg->ref_POST[$key][$i], $seen_list_items) == True)
+				{
+					$did_alter = True;
+					if ($this->debug_set_prefs > 1) { echo 'bofilters: check_duplicate_submit_elements('.__LINE__.'): <u>unsetting</u> and *skipping* duplicate (buggy apache2) POST ['.$key.']['.$i.'] array item ['.$GLOBALS['phpgw']->msg->ref_POST[$key][$i].'] <br>'; }
+					$GLOBALS['phpgw']->msg->ref_POST[$key][$i] = '';
+					// can I UNSET this and have the next $i index item actually be the next one
+					// YES, a) array count calculated before loop, and b) does not squash array to unset an item
+					unset($GLOBALS['phpgw']->msg->ref_POST[$key][$i]);
+					//array_splice($GLOBALS['phpgw']->msg->ref_POST[$key], $i, 1);
+					// NOTE USE OF CONTINUE COMMAND HERE!
+					// we do not increase $i because the next array item just fell into the current slot
+					// UPDAE we are not splicing so we DO increase $i by calling continue
+					continue;
+				}
+				else
+				{
+					// track seen items for duplicate test
+					if ($this->debug_set_prefs > 1) { echo 'bofilters: check_duplicate_submit_elements('.__LINE__.'): good (not duplicate, not buggy apache2) POST ['.$key.']['.$i.'] array item ['.$GLOBALS['phpgw']->msg->ref_POST[$key][$i].'] <br>'; }
+					$tmp_next_idx = count($seen_list_items);
+					$seen_list_items[$tmp_next_idx] = $GLOBALS['phpgw']->msg->ref_POST[$key][$i];
+				}
+			}
+			
+			if ($this->debug_set_prefs > 0) { echo 'bofilters.check_duplicate_submit_elements('.__LINE__.'): LEAVING, returning $did_alter ['.serialize($did_alter).']<br>'."\r\n"; } 
+		}
+		
+		/*!
 		@function process_submitted_data
-		@abstract ?
+		@abstract Handles POST data from the make or edit filter page. 
 		@author Angles
 		*/
 		function process_submitted_data()
 		{
-			if ($this->debug_set_prefs > 0) { echo 'bofilters.process_submitted_data: ENTERING<br>'."\r\n"; }
-			if ($this->debug_set_prefs > 2) { echo 'bofilters.process_submitted_data: HTTP_POST_VARS dump:<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST); echo '</pre>'."\r\n"; }
+			if ($this->debug_set_prefs > 0) { echo 'bofilters.process_submitted_data('.__LINE__.'): ENTERING<br>'."\r\n"; }
+			if ($this->debug_set_prefs > 2) { echo 'bofilters.process_submitted_data('.__LINE__.'): (pre-buggy apache2 check) ref_POST dump:<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST); echo '</pre>'."\r\n"; }
+			$this->check_duplicate_submit_elements('source_accounts');
+			
 			//if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: caling $this->distill_filter_args<br>'."\r\n"; }
 			//$this->distill_filter_args();
 			// we must have data because the form action made this code run
@@ -372,23 +574,25 @@
 			$found_filter_num = $this->obtain_filer_num();
 			if ((string)$found_filter_num == $this->not_set)
 			{
-				echo 'bofilters.process_submitted_data: LEAVING with ERROR, unable to obtain POST filter_num';
+				echo 'bofilters.process_submitted_data('.__LINE__.'): LEAVING with ERROR, unable to obtain POST filter_num';
 				return;
 			}
-			if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: $this_filter[filter_num]: ['.$found_filter_num.']<br>'; }
+			if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data('.__LINE__.'): $this_filter[filter_num]: ['.$found_filter_num.']<br>'; }
 			
 			// FILTER NAME
 			if ((isset($GLOBALS['phpgw']->msg->ref_POST['filtername']))
 			&& ((string)$GLOBALS['phpgw']->msg->ref_POST['filtername'] != ''))
 			{
 				$this_filter['filtername'] = $GLOBALS['phpgw']->msg->ref_POST['filtername'];
+				// DEFANG on "filtername" (will need to reverse that on read)
+				$this_filter['filtername'] = $this->string_strip_and_defang($this_filter['filtername']);
 			}
 			else
 			{
 				//$this_filter['filtername'] = 'Filter '.$found_filter_num;
 				$this_filter['filtername'] = 'My Mail Filter';
 			}
-			if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: $this_filter[filtername]: ['.$this_filter['filtername'].']<br>'; }
+			if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data('.__LINE__.'): $this_filter[filtername]: ['.$this_filter['filtername'].']<br>'; }
 			
 			// ---- The Rest of the data is submitted in  Array Form ----
 			
@@ -413,7 +617,7 @@
 					$this_filter['source_accounts'][0]['folder'] = 'INBOX';
 					$this_filter['source_accounts'][0]['acctnum'] = 0;
 			}
-			if ($this->debug_set_prefs > 2) { echo '.process_submitted_data: $this_filter[source_accounts] dump:<pre>'; print_r($this_filter['source_accounts']); echo '</pre>'."\r\n"; }
+			if ($this->debug_set_prefs > 2) { echo '.process_submitted_data('.__LINE__.'): $this_filter[source_accounts] dump:<pre>'; print_r($this_filter['source_accounts']); echo '</pre>'."\r\n"; }
 			
 			// --- "deep" array form data ---
 			@reset($GLOBALS['phpgw']->msg->ref_POST);
@@ -428,48 +632,52 @@
 				|| ($key == 'filtername')
 				|| ($key == 'source_accounts'))
 				{
-					if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: $GLOBALS[HTTP_POST_VARS] key,value walk thru: $key: ['.$key.'] is data we already processed, skip to next loop<br>'; }
+					if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data('.__LINE__.'): $GLOBALS[HTTP_POST_VARS] key,value walk thru: $key: ['.$key.'] is data we already processed, skip to next loop<br>'; }
 					continue;
 				}
-				if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: $GLOBALS[HTTP_POST_VARS] key,value walk thru: $key: ['.$key.'] ; $value DUMP:<pre>'; print_r($value); echo "</pre>\r\n"; }
+				if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data('.__LINE__.'): $GLOBALS[HTTP_POST_VARS] key,value walk thru: $key: ['.$key.'] ; $value DUMP:<pre>'; print_r($value); echo "</pre>\r\n"; }
 				// extract match and action data from this filter_X data array
 				if (strstr($key, 'match_'))
 				{
 					// now we grab the index value from the key string
 					$match_this_idx = (int)$key[6];
-					if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: match_this_idx grabbed value: ['.$match_this_idx.']<br>'; }
+					if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data('.__LINE__.'): match_this_idx grabbed value: ['.$match_this_idx.']<br>'; }
 					$match_data = $GLOBALS['phpgw']->msg->ref_POST[$key];
 					// is this row even being used?
 					if ((isset($match_data['andor']))
 					&& ($match_data['andor'] == 'ignore_me'))
 					{
-						if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: SKIP this row, $match_data[andor]: ['.$match_data['andor'].']<br>'; }
+						if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data('.__LINE__.'): SKIP this row, $match_data[andor]: ['.$match_data['andor'].']<br>'; }
 					}
 					else
 					{
+						if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data('.__LINE__.'): $match_data[matchthis] PRE-defang ['.serialize($match_data['matchthis']).']<br>'; } 
+						// DEFANG on $match_data["matchthis"] (will need to reverse that on read) 
+						$match_data['matchthis'] = $this->string_strip_and_defang($match_data['matchthis']);
+						if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data('.__LINE__.'): $match_data[matchthis] POST-defang ['.serialize($match_data['matchthis']).']<br>'; } 
 						$this_filter['matches'][$match_this_idx] = $match_data;
-						if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: $this_filter[matches]['.$match_this_idx.'] = ['.serialize($this_filter['matches'][$match_this_idx]).']<br>'; }
+						if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data('.__LINE__.'): $this_filter[matches]['.$match_this_idx.'] = ['.serialize($this_filter['matches'][$match_this_idx]).']<br>'; }
 					}
 				}
 				elseif (strstr($key, 'action_'))
 				{
 					// now we grab the index value from the key string
 					$action_this_idx = (int)$key[7];
-					if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: action_this_idx grabbed value: ['.$action_this_idx.']<br>'; }
+					if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data('.__LINE__.'): action_this_idx grabbed value: ['.$action_this_idx.']<br>'; }
 					$action_data = $GLOBALS['phpgw']->msg->ref_POST[$key];
 					if ((isset($action_data['judgement']))
 					&& ($action_data['judgement'] == 'ignore_me'))
 					{
-						if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: SKIP this row, $action_data[judgement]: ['.$match_data['andor'].']<br>'; }
+						if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data('.__LINE__.'): SKIP this row, $action_data[judgement]: ['.$match_data['andor'].']<br>'; }
 					}
 					else
 					{
 						$this_filter['actions'][$action_this_idx] = $action_data;
-						if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: $this_filter[actions][$action_this_idx]: ['.serialize($this_filter['actions'][$action_this_idx]).']<br>'; }
+						if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data('.__LINE__.'): $this_filter[actions][$action_this_idx]: ['.serialize($this_filter['actions'][$action_this_idx]).']<br>'; }
 					}
 				}
 			}
-			if ($this->debug_set_prefs > 2) { echo 'bofilters.process_submitted_data: $this_filter[] dump <strong><pre>'; print_r($this_filter); echo "</pre></strong>\r\n"; }
+			if ($this->debug_set_prefs > 2) { echo 'bofilters.process_submitted_data('.__LINE__.'): $this_filter[] dump <strong><pre>'; print_r($this_filter); echo "</pre></strong>\r\n"; }
 			$this->all_filters[$found_filter_num] = array();
 			$this->all_filters[$found_filter_num] = $this_filter;
 			$this->save_all_filters_to_repository();
@@ -685,8 +893,8 @@
 				return False;
 			}
 			
-			if ($this->debug > 0) { echo 'bofilters.do_filter: LINE '.__LINE__.' call "->msg->event_begin_big_move" to notice event of impending big batch moves or deletes<br>'; }
-			$GLOBALS['phpgw']->msg->event_begin_big_move(array(), 'bofilters.do_filter: LINE '.__LINE__);
+			//if ($this->debug > 0) { echo 'bofilters.do_filter: LINE '.__LINE__.' call "->msg->event_begin_big_move" to notice event of impending big batch moves or deletes<br>'; }
+			//$GLOBALS['phpgw']->msg->event_begin_big_move(array(), 'bofilters.do_filter: LINE '.__LINE__);
 			
 			// "False" means  return $this->not_set  if no filter number was found anywhere
 			$found_filter_num = $this->obtain_filer_num(False);
@@ -819,7 +1027,9 @@
 				{
 					// get FULL msgball list for this INBOX (we always filter INBOXs only)
 					if ($this->debug > 1) { echo 'bofilters.run_single_filter: get_msgball_list for later XOR ing for <code>['.serialize($fake_fldball).']</code><br>'; }
-					$this->inbox_full_msgball_list[$src_acct_loop_num] = $GLOBALS['phpgw']->msg->get_msgball_list($fake_fldball['acctnum'], $fake_fldball['folder']);
+					//$this->inbox_full_msgball_list[$src_acct_loop_num] = $GLOBALS['phpgw']->msg->get_msgball_list($fake_fldball['acctnum'], $fake_fldball['folder']);
+					// FIXME: FOR BACKWARDS COMPAT WE GET AN OLD STYLE MSGBALL LIST
+					$this->inbox_full_msgball_list[$src_acct_loop_num] = $GLOBALS['phpgw']->msg->get_msgball_list_oldschool($fake_fldball['acctnum'], $fake_fldball['folder']);
 					//if ($this->debug > 2) { echo 'bofilters.run_single_filter: $this->inbox_full_msgball_list['.$src_acct_loop_num.'] DUMP:<pre>'; print_r($this->inbox_full_msgball_list[$src_acct_loop_num]); echo "</pre>\r\n"; }
 				}
 				
@@ -837,6 +1047,7 @@
 						continue;
 					}
 					// we need to get the headers
+					// NOTE THIS REQUIRES OLDSCHOOL msgball list, fix this in transition to uri only msgball info
 					$msgball_this_iteration = $this->inbox_full_msgball_list[$src_acct_loop_num][$msg_iteration];
 					$headers_text = $GLOBALS['phpgw']->msg->phpgw_fetchheader($msgball_this_iteration);
 					
@@ -1212,7 +1423,21 @@
 					if ($this_filter['actions'][0]['judgement'] == 'fileinto')
 					{
 						$mov_msgball = $this->inbox_full_msgball_list[$src_acct_loop_num][$msg_iteration];
+						// clean the msgball of stuff we added to it during the filtering logic, it is no longer needed
+						if (isset($mov_msgball['headers_text']))
+						{
+							$mov_msgball['headers_text'] = '';
+							unset($mov_msgball['headers_text']);
+						}
+						if (isset($mov_msgball['match_keeper']))
+						{
+							$mov_msgball['match_keeper'] = '';
+							unset($mov_msgball['match_keeper']);
+						}
+						// get a folder value to use as the target folder and make this into a target_fldball
 						parse_str($this_filter['actions'][0]['folder'], $target_folder);
+						// parse_str will add escape slashes to folder names with quotes in them
+						$target_folder['folder'] = stripslashes($target_folder['folder']);
 						$target_folder['folder'] = urlencode($target_folder['folder']);
 						//if ($this->debug > 2) { echo 'bofilters.filter_action_sequence: $target_folder DUMP:<pre>'; print_r($target_folder); echo "</pre>\r\n"; }
 						$to_fldball = array();
@@ -1271,9 +1496,21 @@
 				$fake_folder_info['alert_string'] = 'you have search results';
 				$fake_folder_info['number_new'] = count($this->each_filter_mball_list[$filter_num]);
 				$fake_folder_info['number_all'] = count($this->each_filter_mball_list[$filter_num]);
+				$new_style_msgball_list = array();
+				// make OLDSCHOOL style msgball_list intoi new URI only msgball_list
+				for ($mx=0; $mx < count($this->each_filter_mball_list[$filter_num]); $mx++)
+				{
+					// make this a URI type msgball_list
+					$uri_data = 
+						  'msgball[msgnum]='.$this->each_filter_mball_list[$filter_num][$mx]['msgnum']
+						.'&msgball[folder]='.$this->each_filter_mball_list[$filter_num][$mx]['folder']
+						.'&msgball[acctnum]='.$this->each_filter_mball_list[$filter_num][$mx]['acctnum'];
+					$new_style_msgball_list[$mx] = $uri_data;
+				}
 				if ($this->debug > 2) { echo 'bofilters.run_single_filter:  $this->each_filter_mball_list['.$filter_num.'] DUMP:<pre>'; print_r($this->each_filter_mball_list[$filter_num]); echo "</pre>\r\n"; }
 				// retrieve user displayable data for each message in the result set
-				$this->result_set_mlist = $GLOBALS['phpgw']->msg->get_msg_list_display($fake_folder_info,$this->each_filter_mball_list[$filter_num]);
+				//$this->result_set_mlist = $GLOBALS['phpgw']->msg->get_msg_list_display($fake_folder_info,$this->each_filter_mball_list[$filter_num]);
+				$this->result_set_mlist = $GLOBALS['phpgw']->msg->get_msg_list_display($fake_folder_info,$new_style_msgball_list);
 				// save this report data for later use, add it to any other previous report
 				parse_str($this_filter['actions'][0]['folder'], $target_folder);
 				$this->html_matches_table .= 

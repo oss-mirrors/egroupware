@@ -135,7 +135,9 @@
 				3 => 'to',
 				4 => 'cc',
 				5 => 'bcc',
-				6 => 'msgtype'
+				6 => 'msgtype',
+				7 => 'attach_sig',
+				8 => 'req_notify'
 			);
 			$this->preserve_vars['action'] = '';
 			$this->preserve_vars['from'] = '';
@@ -144,6 +146,8 @@
 			$this->preserve_vars['cc'] = '';
 			$this->preserve_vars['bcc'] = '';
 			$this->preserve_vars['msgtype'] = '';
+			$this->preserve_vars['attach_sig'] = '';
+			$this->preserve_vars['req_notify'] = '';
 			
 			$this->subject = '';
 			$this->body_orig = '';

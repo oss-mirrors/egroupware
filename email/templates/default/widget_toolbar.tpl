@@ -3,8 +3,8 @@
 <!-- ==== LAME  &nbsp; SEP == == == == -->
 
 <!-- BEGIN B_toolbar_row_one -->
-<table border="0" cellpadding="2" cellspacing="0" width="95%" align="center">
-<tr bgcolor="{toolbar_row1_bgcolor}">
+<table border="0" cellpadding="2" cellspacing="0" width="100%" align="center">
+<tr bgcolor="{toolbar_row1_bgcolor}" class="{row1_rowcolor_key}">
 	<td width="20%" valign="middle" align="center">
 		<font face="{toolbar_font}">
 		{compose_img_link}
@@ -42,8 +42,8 @@
 <!-- ==== LAME  &nbsp; SEP == == == == -->
 
 <!-- BEGIN B_toolbar_row_two -->
-<table border="0" cellpadding="3" cellspacing="0" width="95%" align="center">
-<tr bgcolor="{toolbar_row2_bgcolor}">
+<table border="0" cellpadding="3" cellspacing="0" width="100%" align="center">
+<tr bgcolor="{toolbar_row2_bgcolor}" class="{row2_rowcolor_key}">
 	{form_folders_cbox_opentag}
 	<td width="50%" valign="middle" align="left">
 		<font face="{toolbar_font}">

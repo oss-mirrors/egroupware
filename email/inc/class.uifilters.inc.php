@@ -15,7 +15,15 @@
 
 	/*!
 	@class uifilters
-	@abstract ?
+	@abstract UI code for display of filter list and creating or editing individual filters. 
+	NOTE that class bofilters will leave the pref filter data with any html encoding AS-IS if 
+	it sees "uifilters" in the menuaction. So the UI functions should call functions in this 
+	class because "ui" is in the menuaction. HOWEVER any real action or use or submission 
+	of the filter data MUST actually call a function in class "bofilters" so that the lack of 
+	"uifilters" in the menuaction triggers the database defanging (html decoding) of the 
+	pref filter data. So actually showing the filters requires leaving the html encoding intact. 
+	This encoding is referring to the pref table "database defanging" of certain offensive chars, 
+	like slashes and quote chars. 
 	@author Angles
 	*/
 	class uifilters
@@ -25,6 +33,7 @@
 			'filters_edit' => True
 		);
 		var $bo;
+		var $tpl;
 		var $theme;
 		var $nextmatchs;
 		var $widgets;
@@ -33,6 +42,9 @@
 		/*!
 		@function uifilters
 		@abstract constructor 
+		@discussion This actually creates the bofilters object, in which the bo constructor reads 
+		the filter data from prefs, leaving the html encoding in tact if the string "uifilters" is in the 
+		menuaction. 
 		@author Angles
 		*/
 		function uifilters()
@@ -41,87 +53,117 @@
 			$this->theme = $GLOBALS['phpgw_info']['theme'];
 			// make the filters object
 			$this->bo = CreateObject("email.bofilters");
-			return;
+			//return;
 		}
 		
 		/*!
 		@function filters_edit
-		@abstract ?
+		@abstract Display an html form with an individual filter for the user to see or edit, 
+		also called when makign a new filter. 
 		@author Angles
 		*/
 		function filters_edit()
 		{			
-			unset($GLOBALS['phpgw_info']['flags']['noheader']);
-			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-			$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
-			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
-			$GLOBALS['phpgw']->common->phpgw_header();
+			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			{
+				// we point to the global template for this version of phpgw templatings
+				$this->tpl =& $GLOBALS['phpgw']->template;
+				//$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			}
+			else
+			{
+				// we use a PRIVATE template object for 0.9.14 conpat and during xslt porting
+				$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			}
 			
+			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			{
+				unset($GLOBALS['phpgw_info']['flags']['noheader']);
+				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+				$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+				$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
+				$GLOBALS['phpgw']->common->phpgw_header();
+			}
+			else
+			{
+				$GLOBALS['phpgw']->xslttpl->add_file(array('app_data',
+											$GLOBALS['phpgw']->common->get_tpl_dir('phpgwapi','default') . SEP . 'app_header')
+											);
+			}
 			
-			$GLOBALS['phpgw']->template->set_file(
+			$this->tpl->set_file(
 				Array(
 					'T_filters_out' => 'filters.tpl',
 					'T_filters_blocks' => 'filters_blocks.tpl'
 				)
 			);
-			$GLOBALS['phpgw']->template->set_block('T_filters_blocks','B_match_account_box','V_match_account_box');
-			$GLOBALS['phpgw']->template->set_block('T_filters_blocks','B_match_and_or_ignore','V_match_and_or_ignore');
-			$GLOBALS['phpgw']->template->set_block('T_filters_blocks','B_action_no_ignore','V_action_no_ignore');
-			$GLOBALS['phpgw']->template->set_block('T_filters_blocks','B_action_with_ignore_me','V_action_with_ignore_me');
-			$GLOBALS['phpgw']->template->set_block('T_filters_out','B_matches_row','V_matches_row');
-			$GLOBALS['phpgw']->template->set_block('T_filters_out','B_actions_row','V_actions_row');
+			$this->tpl->set_block('T_filters_blocks','B_match_account_box','V_match_account_box');
+			$this->tpl->set_block('T_filters_blocks','B_match_and_or_ignore','V_match_and_or_ignore');
+			$this->tpl->set_block('T_filters_blocks','B_action_no_ignore','V_action_no_ignore');
+			$this->tpl->set_block('T_filters_blocks','B_action_with_ignore_me','V_action_with_ignore_me');
+			$this->tpl->set_block('T_filters_out','B_matches_row','V_matches_row');
+			$this->tpl->set_block('T_filters_out','B_actions_row','V_actions_row');
 			
 			//  ---- LANGS  ----
-			$GLOBALS['phpgw']->template->set_var('lang_email_filters',lang('EMail Filters'));
-			$GLOBALS['phpgw']->template->set_var('lang_filter_name',lang('Filter Name'));
-			$GLOBALS['phpgw']->template->set_var('lang_filter_number',lang('Filter Number'));			
-			$GLOBALS['phpgw']->template->set_var('lang_if_messages_match',lang('If Messages Match'));
-			$GLOBALS['phpgw']->template->set_var('lang_inbox_for_account',lang('Filter INBOX for accounts'));
+			$this->tpl->set_var('lang_email_filters',lang('EMail Filters'));
+			$this->tpl->set_var('lang_filter_name',lang('Filter Name'));
+			$this->tpl->set_var('lang_filter_number',lang('Filter Number'));			
+			$this->tpl->set_var('lang_if_messages_match',lang('If Messages Match'));
+			$this->tpl->set_var('lang_inbox_for_account',lang('Filter INBOX for accounts'));
 			$not_available_yet = ' &#040;NA&#041;';
-			//$GLOBALS['phpgw']->template->set_var('lang_from',lang('From Address'));
-			//$GLOBALS['phpgw']->template->set_var('lang_to',lang('To Address'));
-			//$GLOBALS['phpgw']->template->set_var('lang_cc',lang('CC Address'));
-			//$GLOBALS['phpgw']->template->set_var('lang_bcc',lang('Bcc Address'));
-			$GLOBALS['phpgw']->template->set_var('lang_from',lang('From'));
-			$GLOBALS['phpgw']->template->set_var('lang_to',lang('To'));
-			$GLOBALS['phpgw']->template->set_var('lang_cc',lang('CC'));
-			$GLOBALS['phpgw']->template->set_var('lang_bcc',lang('Bcc'));
-			$GLOBALS['phpgw']->template->set_var('lang_recipient',lang('Recipient').' &#040;to,cc,bcc&#041;');
-			$GLOBALS['phpgw']->template->set_var('lang_sender',lang('Sender'));
-			$GLOBALS['phpgw']->template->set_var('lang_subject',lang('Subject'));
-			$GLOBALS['phpgw']->template->set_var('lang_received_headers',lang('Received Headers'));
-			$GLOBALS['phpgw']->template->set_var('lang_header',lang('Header Field').$not_available_yet);
-			$GLOBALS['phpgw']->template->set_var('lang_size_larger',lang('Size Larger Than'.$not_available_yet));
-			$GLOBALS['phpgw']->template->set_var('lang_size_smaller',lang('Size Smaller Than'.$not_available_yet));
-			$GLOBALS['phpgw']->template->set_var('lang_allmessages',lang('All Messages'.$not_available_yet));
-			$GLOBALS['phpgw']->template->set_var('lang_body',lang('Body'));
-			$GLOBALS['phpgw']->template->set_var('lang_contains',lang('Contains'));
-			$GLOBALS['phpgw']->template->set_var('lang_notcontains',lang('Does Not Contain'));
-			$GLOBALS['phpgw']->template->set_var('lang_take_actions',lang('Then do this'));
-			$GLOBALS['phpgw']->template->set_var('lang_or_enter_text',lang('or enter text'));	
-			$GLOBALS['phpgw']->template->set_var('lang_stop_if_matched',lang('and stop filtering'));
-			$GLOBALS['phpgw']->template->set_var('lang_ignore_me2',lang('not used'));
-			$GLOBALS['phpgw']->template->set_var('lang_keep',lang('Keep'));
-			$GLOBALS['phpgw']->template->set_var('lang_discard',lang('Discard'));
-			$GLOBALS['phpgw']->template->set_var('lang_reject',lang('Reject'));
-			$GLOBALS['phpgw']->template->set_var('lang_redirect',lang('Redirect'));
-			$GLOBALS['phpgw']->template->set_var('lang_fileinto',lang('File into'));
-			$GLOBALS['phpgw']->template->set_var('lang_flag',lang('Flag as important'));
-			$GLOBALS['phpgw']->template->set_var('lang_ignore_me1',lang('not used'));
-			$GLOBALS['phpgw']->template->set_var('lang_and',lang('And'));
-			$GLOBALS['phpgw']->template->set_var('lang_or',lang('Or'));
-			$GLOBALS['phpgw']->template->set_var('lang_submit',lang('Submit'));
-			$GLOBALS['phpgw']->template->set_var('lang_clear',lang('Clear'));
-			$GLOBALS['phpgw']->template->set_var('lang_cancel',lang('Cancel'));
+			//$this->tpl->set_var('lang_from',lang('From Address'));
+			//$this->tpl->set_var('lang_to',lang('To Address'));
+			//$this->tpl->set_var('lang_cc',lang('CC Address'));
+			//$this->tpl->set_var('lang_bcc',lang('Bcc Address'));
+			$this->tpl->set_var('lang_from',lang('From'));
+			$this->tpl->set_var('lang_to',lang('To'));
+			$this->tpl->set_var('lang_cc',lang('CC'));
+			$this->tpl->set_var('lang_bcc',lang('Bcc'));
+			$this->tpl->set_var('lang_recipient',lang('Recipient').' &#040;to,cc,bcc&#041;');
+			$this->tpl->set_var('lang_sender',lang('Sender'));
+			$this->tpl->set_var('lang_subject',lang('Subject'));
+			$this->tpl->set_var('lang_received_headers',lang('Received Headers'));
+			$this->tpl->set_var('lang_header',lang('Header Field').$not_available_yet);
+			$this->tpl->set_var('lang_size_larger',lang('Size Larger Than'.$not_available_yet));
+			$this->tpl->set_var('lang_size_smaller',lang('Size Smaller Than'.$not_available_yet));
+			$this->tpl->set_var('lang_allmessages',lang('All Messages'.$not_available_yet));
+			$this->tpl->set_var('lang_body',lang('Body'));
+			$this->tpl->set_var('lang_contains',lang('Contains'));
+			$this->tpl->set_var('lang_notcontains',lang('Does Not Contain'));
+			$this->tpl->set_var('lang_take_actions',lang('Then do this'));
+			$this->tpl->set_var('lang_or_enter_text',lang('or enter text'));	
+			$this->tpl->set_var('lang_stop_if_matched',lang('and stop filtering'));
+			$this->tpl->set_var('lang_ignore_me2',lang('not used'));
+			$this->tpl->set_var('lang_keep',lang('Keep'));
+			$this->tpl->set_var('lang_discard',lang('Discard'));
+			$this->tpl->set_var('lang_reject',lang('Reject'));
+			$this->tpl->set_var('lang_redirect',lang('Redirect'));
+			$this->tpl->set_var('lang_fileinto',lang('File into'));
+			$this->tpl->set_var('lang_flag',lang('Flag as important'));
+			$this->tpl->set_var('lang_ignore_me1',lang('not used'));
+			$this->tpl->set_var('lang_and',lang('And'));
+			$this->tpl->set_var('lang_or',lang('Or'));
+			$this->tpl->set_var('lang_submit',lang('Submit'));
+			$this->tpl->set_var('lang_clear',lang('Clear'));
+			$this->tpl->set_var('lang_cancel',lang('Cancel'));
 			
+			
+			//= = = = TESTING NEW LISTBOX WIDGET = = = 
+			if (!(isset($this->widgets))
+			|| (!is_object($this->widgets)))
+			{
+				$this->widgets = CreateObject('email.html_widgets');
+			}
 			
 			// get all filters
-			$this->bo->read_filter_data_from_prefs();
+			// THIS IS DONE AUTOMATICALLY in boaction constructor
+			// AND the if the constructor sees "uifilters" in the menuaction, it LEAVES the pref data html encoded for use in the form
+			//$this->bo->read_filter_data_from_prefs();
 			
 			// ---- Filter Number  ----
 			// what filter are we supposed to edit
 			$filter_num = $this->bo->obtain_filer_num();
-			$GLOBALS['phpgw']->template->set_var('filter_num',$filter_num);
+			$this->tpl->set_var('filter_num',$filter_num);
 			
 			if ($this->debug > 2) { echo 'uifilters.filters: $this->bo->obtain_filer_num(): ['.$this->bo->obtain_filer_num().'] ; $this->bo->all_filters DUMP<pre>'; print_r($this->bo->all_filters); echo '</pre>'."\r\n"; }
 			
@@ -146,8 +188,8 @@
 			$test_this_filter_url = $apply_this_filter_url.'&filter_test=1';
 			$test_this_filter_href = '<a href="'.$test_this_filter_url.'">Test Run This Filter</a>';
 			
-			$GLOBALS['phpgw']->template->set_var('apply_this_filter_href',$apply_this_filter_href);
-			$GLOBALS['phpgw']->template->set_var('test_this_filter_href',$test_this_filter_href);
+			$this->tpl->set_var('apply_this_filter_href',$apply_this_filter_href);
+			$this->tpl->set_var('test_this_filter_href',$test_this_filter_href);
 			
 			
 			// does the data exist or is this a new filter
@@ -176,8 +218,8 @@
 				$filter_name_box_value = 'My Mail Filter';
 			}
 			
-			$GLOBALS['phpgw']->template->set_var('filter_name_box_name',$filter_name_box_name);
-			$GLOBALS['phpgw']->template->set_var('filter_name_box_value',$filter_name_box_value);
+			$this->tpl->set_var('filter_name_box_name',$filter_name_box_name);
+			$this->tpl->set_var('filter_name_box_value',$filter_name_box_value);
 			
 			// ----  source_account_listbox_name Selected logic ----
 			if ($filter_exists)
@@ -233,8 +275,8 @@
 					);
 					// get you custom built HTML combobox (a.k.a. selectbox) widget
 					$account_multi_box = $GLOBALS['phpgw']->msg->all_ex_accounts_listbox($feed_args);
-					$GLOBALS['phpgw']->template->set_var('account_multi_box', $account_multi_box);
-					$V_match_left_td = $GLOBALS['phpgw']->template->parse('V_match_account_box','B_match_account_box');	
+					$this->tpl->set_var('account_multi_box', $account_multi_box);
+					$V_match_left_td = $this->tpl->parse('V_match_account_box','B_match_account_box');	
 				}
 				else
 				{
@@ -261,11 +303,11 @@
 					{
 						$ignore_me_selected = ' selected';
 					}
-					$GLOBALS['phpgw']->template->set_var('andor_select_name',$andor_select_name);
-					$GLOBALS['phpgw']->template->set_var('or_selected',$or_selected);
-					$GLOBALS['phpgw']->template->set_var('and_selected',$and_selected);
-					$GLOBALS['phpgw']->template->set_var('ignore_me_selected',$ignore_me_selected);
-					$V_match_left_td = $GLOBALS['phpgw']->template->parse('V_match_and_or_ignore','B_match_and_or_ignore');	
+					$this->tpl->set_var('andor_select_name',$andor_select_name);
+					$this->tpl->set_var('or_selected',$or_selected);
+					$this->tpl->set_var('and_selected',$and_selected);
+					$this->tpl->set_var('ignore_me_selected',$ignore_me_selected);
+					$V_match_left_td = $this->tpl->parse('V_match_and_or_ignore','B_match_and_or_ignore');	
 				}
 				// things both rows have
 				$examine_selectbox_name = 'match_'.(string)$i.'[examine]';
@@ -316,15 +358,15 @@
 				{
 					$from_selected = ' selected';
 				}
-				$GLOBALS['phpgw']->template->set_var('examine_selectbox_name',$examine_selectbox_name);
-				$GLOBALS['phpgw']->template->set_var('from_selected',$from_selected);
-				$GLOBALS['phpgw']->template->set_var('to_selected',$to_selected);
-				$GLOBALS['phpgw']->template->set_var('cc_selected',$cc_selected);
-				$GLOBALS['phpgw']->template->set_var('bcc_selected',$bcc_selected);
-				$GLOBALS['phpgw']->template->set_var('recipient_selected',$recipient_selected);
-				$GLOBALS['phpgw']->template->set_var('sender_selected',$sender_selected);
-				$GLOBALS['phpgw']->template->set_var('subject_selected',$subject_selected);
-				$GLOBALS['phpgw']->template->set_var('received_selected',$received_selected);
+				$this->tpl->set_var('examine_selectbox_name',$examine_selectbox_name);
+				$this->tpl->set_var('from_selected',$from_selected);
+				$this->tpl->set_var('to_selected',$to_selected);
+				$this->tpl->set_var('cc_selected',$cc_selected);
+				$this->tpl->set_var('bcc_selected',$bcc_selected);
+				$this->tpl->set_var('recipient_selected',$recipient_selected);
+				$this->tpl->set_var('sender_selected',$sender_selected);
+				$this->tpl->set_var('subject_selected',$subject_selected);
+				$this->tpl->set_var('received_selected',$received_selected);
 				// COMPARATOR
 				$comparator_selectbox_name = 'match_'.(string)$i.'[comparator]';
 				$contains_selected = '';
@@ -342,9 +384,9 @@
 				{
 					$contains_selected = ' selected';
 				}
-				$GLOBALS['phpgw']->template->set_var('comparator_selectbox_name',$comparator_selectbox_name);
-				$GLOBALS['phpgw']->template->set_var('contains_selected',$contains_selected);
-				$GLOBALS['phpgw']->template->set_var('notcontains_selected',$notcontains_selected);
+				$this->tpl->set_var('comparator_selectbox_name',$comparator_selectbox_name);
+				$this->tpl->set_var('contains_selected',$contains_selected);
+				$this->tpl->set_var('notcontains_selected',$notcontains_selected);
 				// MATCHTHIS
 				$matchthis_textbox_name = 'match_'.(string)$i.'[matchthis]';
 				$match_textbox_txt = '';
@@ -352,12 +394,22 @@
 				{
 					$match_textbox_txt = $this->bo->all_filters[$filter_num]['matches'][$i]['matchthis'];
 				}
-				$GLOBALS['phpgw']->template->set_var('matchthis_textbox_name',$matchthis_textbox_name);
-				$GLOBALS['phpgw']->template->set_var('match_textbox_txt',$match_textbox_txt);
-				$GLOBALS['phpgw']->template->set_var('V_match_left_td',$V_match_left_td);
-				$GLOBALS['phpgw']->template->parse('V_matches_row','B_matches_row',True);	
+				$this->tpl->set_var('matchthis_textbox_name',$matchthis_textbox_name);
+				$this->tpl->set_var('match_textbox_txt',$match_textbox_txt);
+				$this->tpl->set_var('V_match_left_td',$V_match_left_td);
+				if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+				{
+					$this->tpl->parse('V_matches_row','B_matches_row',True);
+				}
+				else
+				{
+					$V_matches_row = $V_matches_row . $this->tpl->parse('V_matches_row','B_matches_row');
+				}
 			}
-			
+			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless == False)
+			{
+				$this->tpl->set_var('V_matches_row',$V_matches_row);
+			}
 			// ----  Action Row(s)  ----
 			// Mulberry;s Sieve filters provide 2 action rows
 			// I'm not sure how the first action still allows for a second action
@@ -370,15 +422,15 @@
 			{
 				$action_rownum = (string)$i;
 				$actionbox_judgement_name = 'action_'.$action_rownum.'[judgement]';
-				$GLOBALS['phpgw']->template->set_var('actionbox_judgement_name',$actionbox_judgement_name);
+				$this->tpl->set_var('actionbox_judgement_name',$actionbox_judgement_name);
 				// 1st row does NOT have the IGNORE_ME option in the actionbox
 				if ($i == 0)
 				{
-					$V_action_widget = $GLOBALS['phpgw']->template->parse('V_action_no_ignore','B_action_no_ignore');
+					$V_action_widget = $this->tpl->parse('V_action_no_ignore','B_action_no_ignore');
 				}
 				else
 				{
-					$V_action_widget = $GLOBALS['phpgw']->template->parse('V_action_with_ignore_me','B_action_with_ignore_me');
+					$V_action_widget = $this->tpl->parse('V_action_with_ignore_me','B_action_with_ignore_me');
 				}
 				
 				// --- Folders Listbox  ---
@@ -390,6 +442,7 @@
 				{
 					$pre_select_folder = '';
 					$pre_select_folder_acctnum = '';
+					$pre_select_fldball = '';
 				}
 				else
 				{
@@ -397,8 +450,20 @@
 					// note also that parse_str will urldecode the uri folder data
 					$pre_select_folder = $parsed_folder['folder'];
 					$pre_select_folder_acctnum = $parsed_folder['acctnum'];
+					$pre_select_fldball = array();
+					$pre_select_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out($parsed_folder['folder']);
+					$pre_select_fldball['acctnum'] = (int)$parsed_folder['acctnum'];
 					//echo '$pre_select_folder: ['.$pre_select_folder.'] ; pre_select_folder_acctnum ['.$pre_select_folder_acctnum.']';
 				}
+				
+				// TESTING new all folders listbox widget
+				$this->widgets->new_all_folders_megalist();
+				$this->widgets->prop_megalist_widget_name($folder_listbox_name);
+				$this->widgets->prop_megalist_preselected_fldball($pre_select_fldball);
+				$this->widgets->prop_megalist_first_item_text(lang('if fileto then select destination folder'));
+				$folder_listbox = $this->widgets->all_folders_megalist();
+				
+				/*
 				$feed_args = Array(
 					'mailsvr_stream'	=> '',
 					'pre_select_folder'	=> $pre_select_folder,
@@ -412,6 +477,7 @@
 					'first_line_txt'	=> lang('if fileto then select destination folder')
 				);
 				$folder_listbox = $GLOBALS['phpgw']->msg->folders_mega_listbox($feed_args);
+				*/
 				// ACTIONTEXT
 				$action_textbox_name = 'action_'.$action_rownum.'[actiontext]';	
 				if ((!isset($this->bo->all_filters[$filter_num]['actions'][$i]['actiontext']))
@@ -435,22 +501,23 @@
 					$stop_filtering_checkbox_checked = 'checked';
 				}
 				
-				$GLOBALS['phpgw']->template->set_var('V_action_widget',$V_action_widget);
-				$GLOBALS['phpgw']->template->set_var('folder_listbox', $folder_listbox);
-				$GLOBALS['phpgw']->template->set_var('action_textbox_name',$action_textbox_name);
-				$GLOBALS['phpgw']->template->set_var('action_textbox_txt',$action_textbox_txt);
-				$GLOBALS['phpgw']->template->set_var('stop_filtering_checkbox_name',$stop_filtering_checkbox_name);
-				$GLOBALS['phpgw']->template->set_var('stop_filtering_checkbox_checked',$stop_filtering_checkbox_checked);
-				$GLOBALS['phpgw']->template->parse('V_actions_row','B_actions_row',True);	
+				$this->tpl->set_var('V_action_widget',$V_action_widget);
+				$this->tpl->set_var('folder_listbox', $folder_listbox);
+				$this->tpl->set_var('action_textbox_name',$action_textbox_name);
+				$this->tpl->set_var('action_textbox_txt',$action_textbox_txt);
+				$this->tpl->set_var('stop_filtering_checkbox_name',$stop_filtering_checkbox_name);
+				$this->tpl->set_var('stop_filtering_checkbox_checked',$stop_filtering_checkbox_checked);
+				//$this->tpl->parse('V_actions_row','B_actions_row',True);	
+				$this->tpl->parse('V_actions_row','B_actions_row');	
 			}
 			
-			$GLOBALS['phpgw']->template->set_var('form_edit_filter_action',$form_edit_filter_action);
-			$GLOBALS['phpgw']->template->set_var('form_cancel_action',$form_cancel_action);
+			$this->tpl->set_var('form_edit_filter_action',$form_edit_filter_action);
+			$this->tpl->set_var('form_cancel_action',$form_cancel_action);
 			
-			$GLOBALS['phpgw']->template->set_var('body_bg_color',$this->theme['bg_color']);
-			$GLOBALS['phpgw']->template->set_var('row_on',$this->theme['row_on']);
-			$GLOBALS['phpgw']->template->set_var('row_off',$this->theme['row_off']);
-			$GLOBALS['phpgw']->template->set_var('row_text',$this->theme['row_text']);
+			$this->tpl->set_var('body_bg_color',$this->theme['bg_color']);
+			$this->tpl->set_var('row_on',$this->theme['row_on']);
+			$this->tpl->set_var('row_off',$this->theme['row_off']);
+			$this->tpl->set_var('row_text',$this->theme['row_text']);
 			
 			
 			
@@ -461,7 +528,8 @@
 				
 				if ($this->debug > 1) { echo 'uifilters.filters_edit: count($this->bo->filters): ['.count($this->bo->filters).'] ; <br>'."\r\n"; }
 				//$this->bo->sieve_to_imap_string();
-//				$this->bo->do_imap_search();
+				// WHAT THE F*** IS THIS - this is OLD left over code
+				//$this->bo->do_imap_search();
 				//if ($this->debug > 0) { echo 'message list print_r dump:<b><pre>'."\r\n"; print_r($this->bo->result_set_mlist); echo '</pre><br><br>'."\r\n"; }
 				$this->bo->make_mlist_box();
 				$mlist_html = 
@@ -473,16 +541,56 @@
 					.'<p>&nbsp;</p>'."\r\n";
 			
 			}
-			$GLOBALS['phpgw']->template->set_var('V_mlist_html',$mlist_html);
+			$this->tpl->set_var('V_mlist_html',$mlist_html);
 			
-			$GLOBALS['phpgw']->template->pparse('out','T_filters_out');
+			// new way to handle debug data, if there is debug data, this will put it in the template source data vars
+			$this->tpl->set_var('debugdata', $GLOBALS['phpgw']->msg->dbug->notice_pagedone());
+			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			{
+				//$this->tpl->set_var('debugdata', $GLOBALS['phpgw']->msg->dbug->notice_pagedone());
+				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
+				$this->tpl->set_unknowns('comment');
+				//$this->tpl->pparse('out','T_filters_out');
+				$this->tpl->pfp('out','T_filters_out');
+			}
+			else
+			{
+				$this->tpl->set_unknowns('comment');
+				//$this->tpl->set_unknowns('remove');
+				$data = array();
+				$data['appname'] = lang('E-Mail');
+				$data['function_msg'] = lang('Edit Filters');
+				$data['email_page'] = $this->tpl->parse('out','T_filters_out');
+				// new way to handle debug data, if this array has anything, put it in the template source data vars
+				//if ($GLOBALS['phpgw']->msg->dbug->debugdata)
+				//{
+				//	$data['debugdata'] = $GLOBALS['phpgw']->msg->dbug->get_debugdata_stack();
+				//}
+				//$data['debugdata'] = $GLOBALS['phpgw']->msg->dbug->notice_pagedone();
+				//$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('uimessage' => $data));
+				$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('generic_out' => $data));
+			}
 			
+			// tell the msg object we are done with it
 			$GLOBALS['phpgw']->msg->end_request();
-			
+		}
+
+		/*!
+		@function useless_function_echo_constants
+		@abstract Echos out certain constants associated with php email usage. Info can be obtained 
+		in other ways, but I leave this here in case using the sockets classes (which must define this 
+		constants in the absence of the php imap extension) is perhaps more easily debugged with 
+		this function. However, until that is proven I leave this as a useless function.  
+		Also note the things output here may not be all the constants anyway. 
+		@author Angles
+		*/
+		function useless_function_echo_constants()
+		{			
+
 			// GENERAL INFO
 			//echo 'get_loaded_extensions returns:<br><pre>'; print_r(get_loaded_extensions()); echo '</pre>';
 			//echo 'phpinfo returns:<br><pre>'; print_r(phpinfo()); echo '</pre>';
-			/*
+			
 			echo 'SA_MESSAGES: ['.(string)SA_MESSAGES.']<br>'."\r\n";
 			echo 'SA_RECENT: ['.(string)SA_RECENT.']<br>'."\r\n";
 			echo 'SA_UNSEEN: ['.(string)SA_UNSEEN.']<br>'."\r\n";
@@ -525,50 +633,79 @@
 			echo 'SE_UID: ['.(string)SE_UID.']<br>'."\r\n";
 			echo 'SE_FREE: ['.(string)SE_FREE.']<br>'."\r\n";
 			echo 'SE_NOPREFETCH: ['.(string)SE_NOPREFETCH.']<br>'."\r\n";
-			*/
+			
 		}
 		
 		
 		/*!
 		@function filters_list
-		@abstract ?
+		@abstract Display the list of all filters stored in the users pref table. 
+		@discussion From here the user can choose to create or edit an individual filter, or to test or apply 
+		ALL filters, or rearrange the sequence in which the filters are applied. 
+		Note this may change before this doc text is updated, so see the actual page for its exact current content. 
 		@author Angles
 		*/
 		function filters_list()
 		{
-			unset($GLOBALS['phpgw_info']['flags']['noheader']);
-			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-			$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
-			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
-			$GLOBALS['phpgw']->common->phpgw_header();
+			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			{
+				// we point to the global template for this version of phpgw templatings
+				$this->tpl =& $GLOBALS['phpgw']->template;
+				//$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			}
+			else
+			{
+				// we use a PRIVATE template object for 0.9.14 conpat and during xslt porting
+				$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			}
 			
-			$GLOBALS['phpgw']->template->set_file(
+			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			{
+				unset($GLOBALS['phpgw_info']['flags']['noheader']);
+				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+				$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+				$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
+				$GLOBALS['phpgw']->common->phpgw_header();
+			}
+			else
+			{
+				$GLOBALS['phpgw']->xslttpl->add_file(array('app_data',
+											$GLOBALS['phpgw']->common->get_tpl_dir('phpgwapi','default') . SEP . 'app_header')
+											);
+			}
+			
+			$this->tpl->set_file(
 				Array(
 					'T_filters_list'	=> 'filters_list.tpl'
 				)
 			);
-			$GLOBALS['phpgw']->template->set_block('T_filters_list','B_filter_list_row','V_filter_list_row');
+			$this->tpl->set_block('T_filters_list','B_filter_list_row','V_filter_list_row');
 			
 			//= = = = TESTING NEW TOOLBAR WIDGET = = = 
 			$this->widgets = CreateObject('email.html_widgets');
-			$GLOBALS['phpgw']->template->set_var('widget_toolbar',$this->widgets->get_toolbar());
+			$this->tpl->set_var('widget_toolbar',$this->widgets->get_toolbar());
 			
 			$var = Array(
 				'pref_errors'		=> '',
 				'font'				=> $this->theme['font'],
 				'tr_titles_color'	=> $this->theme['th_bg'],
+				'tr_titles_class'	=> 'th',
 				'page_title'		=> lang('E-Mail INBOX Filters List'),
 				'filter_name_header' => lang('Filter [number] and Name'),
 				'lang_move_up'		=> lang('Move Up'),
-				'lang_move_down'		=> lang('Move Down'),
+				'lang_move_down'	=> lang('Move Down'),
 				'lang_edit'			=> lang('Edit'),
-				'lang_delete'		=> lang('Delete')
+				'lang_delete'		=> lang('Delete'),
+				'lang_test_or_apply' => lang('test or apply ALL filters')
 			);
-			$GLOBALS['phpgw']->template->set_var($var);
+			$this->tpl->set_var($var);
 			
 			$filters_list = array();
 			// get all filters
-			$filters_list = $this->bo->read_filter_data_from_prefs();
+			// THIS IS DONE AUTOMATICALLY in boaction constructor
+			// AND the if the constructor sees "uifilters" in the menuaction, it LEAVES the pref data html encoded for use in the form
+			//$filters_list = $this->bo->read_filter_data_from_prefs();
+			$filters_list = $this->bo->all_filters;
 			
 			
 			if ($this->debug > 2) { echo 'email.uifilters.filters_list: $filters_list dump<pre>'; print_r($filters_list); echo '</pre>'; }
@@ -578,14 +715,19 @@
 			if ($loops == 0)
 			{
 				$nothing = '&nbsp;';
-				$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
-				$GLOBALS['phpgw']->template->set_var('tr_color',$tr_color);
-				$GLOBALS['phpgw']->template->set_var('filter_identity',$nothing);
-				$GLOBALS['phpgw']->template->set_var('move_up_href',$nothing);
-				$GLOBALS['phpgw']->template->set_var('move_down_href',$nothing);
-				$GLOBALS['phpgw']->template->set_var('edit_href',$nothing);
-				$GLOBALS['phpgw']->template->set_var('delete_href',$nothing);
-				$GLOBALS['phpgw']->template->parse('V_filter_list_row','B_filter_list_row');
+				// ROW BACK COLOR
+				//$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
+				$tr_color = $GLOBALS['phpgw_info']['theme']['row_on'];
+				$tr_color_class = 'row_on';
+				
+				$this->tpl->set_var('tr_color',$tr_color);
+				$this->tpl->set_var('tr_color_class',$tr_color_class);
+				$this->tpl->set_var('filter_identity',$nothing);
+				$this->tpl->set_var('move_up_href',$nothing);
+				$this->tpl->set_var('move_down_href',$nothing);
+				$this->tpl->set_var('edit_href',$nothing);
+				$this->tpl->set_var('delete_href',$nothing);
+				$this->tpl->parse('V_filter_list_row','B_filter_list_row');
 			}
 			else
 			{
@@ -593,7 +735,10 @@
 				{
 					// add extra display and handling data
 					$filters_list[$i]['display_string'] = '['.$i.'] '.$filters_list[$i]['filtername'];
-					$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
+					// ROW BACK COLOR
+					//$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
+					$tr_color = (($i + 1)/2 == floor(($i + 1)/2)) ? $GLOBALS['phpgw_info']['theme']['row_off'] : $GLOBALS['phpgw_info']['theme']['row_on'];
+					$tr_color_class = (($i + 1)/2 == floor(($i + 1)/2)) ? 'row_off' : 'row_on';
 					
 					$filters_list[$i]['move_up_url'] = $GLOBALS['phpgw']->link(
 									'/index.php',
@@ -619,40 +764,72 @@
 									.'&filter_num='.$i);
 					$filters_list[$i]['delete_href'] = '<a href="'.$filters_list[$i]['delete_url'].'">'.lang('Delete').'</a>';
 					
-					$GLOBALS['phpgw']->template->set_var('tr_color',$tr_color);
-					$GLOBALS['phpgw']->template->set_var('filter_identity',$filters_list[$i]['display_string']);
-					$GLOBALS['phpgw']->template->set_var('move_up_href',$filters_list[$i]['move_up_href']);
-					$GLOBALS['phpgw']->template->set_var('move_down_href',$filters_list[$i]['move_down_href']);
-					$GLOBALS['phpgw']->template->set_var('edit_href',$filters_list[$i]['edit_href']);
-					$GLOBALS['phpgw']->template->set_var('delete_href',$filters_list[$i]['delete_href']);
-					$GLOBALS['phpgw']->template->parse('V_filter_list_row','B_filter_list_row', True);
+					$this->tpl->set_var('tr_color',$tr_color);
+					$this->tpl->set_var('tr_color_class',$tr_color_class);
+					$this->tpl->set_var('filter_identity',$filters_list[$i]['display_string']);
+					$this->tpl->set_var('move_up_href',$filters_list[$i]['move_up_href']);
+					$this->tpl->set_var('move_down_href',$filters_list[$i]['move_down_href']);
+					$this->tpl->set_var('edit_href',$filters_list[$i]['edit_href']);
+					$this->tpl->set_var('delete_href',$filters_list[$i]['delete_href']);
+					if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+					{
+						$this->tpl->parse('V_filter_list_row','B_filter_list_row', True);
+					}
+					else
+					{
+						$V_filter_list_row = $V_filter_list_row . $this->tpl->parse('V_filter_list_row','B_filter_list_row');
+					}
 				}
 			}
+			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless == False)
+			{
+					$this->tpl->set_var('V_filter_list_row',$V_filter_list_row);
+			}
+
 			$add_new_filter_url = $GLOBALS['phpgw']->link(
 									'/index.php',
 									 'menuaction=email.uifilters.filters_edit'
 									.'&filter_num='.$this->bo->add_new_filter_token);
 			$add_new_filter_href = '<a href="'.$add_new_filter_url.'">'.lang('New Filter').'</a>';
-			$GLOBALS['phpgw']->template->set_var('add_new_filter_href',$add_new_filter_href);
+			$this->tpl->set_var('add_new_filter_href',$add_new_filter_href);
 			
 			$done_url = $GLOBALS['phpgw']->link(
 									'/preferences/index.php');
 			$done_href = '<a href="'.$done_url.'">'.lang('Done').'</a>';
-			$GLOBALS['phpgw']->template->set_var('done_href',$done_href);
+			$this->tpl->set_var('done_href',$done_href);
 			
 			// TEST AND APPLY LINKS
 			$run_all_filters_url = $GLOBALS['phpgw']->link(
 									'/index.php',
 									 'menuaction=email.bofilters.do_filter');
 			$run_all_filters_href = '<a href="'.$run_all_filters_url.'">'.lang('<b>APPLY ALL</b> Filters').'</a>';
-			$GLOBALS['phpgw']->template->set_var('run_all_filters_href',$run_all_filters_href);
+			$this->tpl->set_var('run_all_filters_href',$run_all_filters_href);
 			
 			$test_all_filters_url = $run_all_filters_url.'&filter_test=1';
 			$test_all_filters_href = '<a href="'.$test_all_filters_url.'">Test All Filters</a>';
-			$GLOBALS['phpgw']->template->set_var('test_all_filters_href',$test_all_filters_href);
+			$this->tpl->set_var('test_all_filters_href',$test_all_filters_href);
 			
-			// output the template
-			$GLOBALS['phpgw']->template->pfp('out','T_filters_list');
+			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			{
+				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
+				$this->tpl->set_unknowns("comment");
+				// output the template
+				$this->tpl->pfp('out','T_filters_list');
+			}
+			else
+			{
+				$this->tpl->set_unknowns('comment');
+				//$this->tpl->set_unknowns('remove');
+				$data = array();
+				$data['appname'] = lang('E-Mail');
+				$data['function_msg'] = lang('Filters List');
+				$data['email_page'] = $this->tpl->parse('out','T_filters_list');
+				//$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('uimessage' => $data));
+				$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('generic_out' => $data));
+			}
+				
+			// tell the msg object we are done with it
+			$GLOBALS['phpgw']->msg->end_request();
 		}
 		
 		

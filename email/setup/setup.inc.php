@@ -1,5 +1,7 @@
 <?php
 	/**************************************************************************\
+	* Anglemail - setup files for phpGroupWare 				*
+	* http://www.anglemail.org							*
 	* phpGroupWare - Email                                                     *
 	* http://www.phpgroupware.org                                              *
 	* --------------------------------------------                             *
@@ -8,45 +10,50 @@
 	*  Free Software Foundation; either version 2 of the License, or (at your  *
 	*  option) any later version.                                              *
 	\**************************************************************************/
+
 	/* $Id$ */
 
 	$setup_info['email']['name']      = 'email';
-	$setup_info['email']['version']   = '0.9.13.002';
+	$setup_info['email']['title']     = 'Email';
+	//$setup_info['email']['version']   = '0.9.13.110805';
+	$setup_info['email']['version']   = '0.9.13.003';
 	$setup_info['email']['app_order'] = '2';
 	$setup_info['email']['enable']    = 1;
-	$setup_info['email']['tables']    = '';
+	$setup_info['email']['tables']    = array('phpgw_anglemail');
 
-	$setup_info['email']['author'] =
-	$setup_info['email']['maintainer'] = array(
-		'name'  => 'Angelo Tony Puglisi',
-		'email' => 'devel@aminvestments.com'
-	);
+	$setup_info['email']['author'] = '&quot;Angles&quot; Angelo Tony Puglisi';
 	$setup_info['email']['license']  = 'GPL';
 	$setup_info['email']['description'] =
-		'Email reader with multiple accounts and mailbox filtering.';
+		'AngleMail for phpGroupWare at www.anglemail.org is an Email reader with multiple accounts and mailbox filtering.';
+	$setup_info['email']['maintainer'] = '&quot;Angles&quot; Angelo Tony Puglisi';
+	$setup_info['email']['maintainer_email'] = 'angles@aminvestments.com';
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['email']['hooks'] = array
-	(
-		'admin',
-		'home',
-		'help',
-		'notifywindow',
-		'notifywindow_simple',
-		'add_def_pref',
-		'preferences'
-	);
+	$setup_info['email']['hooks'][] = 'admin';
+	$setup_info['email']['hooks'][] = 'email_add_def_prefs';
+	$setup_info['email']['hooks'][] = 'home';
+	$setup_info['email']['hooks'][] = 'manual';
+	$setup_info['email']['hooks'][] = 'notifywindow';
+	$setup_info['email']['hooks'][] = 'notifywindow_simple';
+	$setup_info['email']['hooks'][] = 'add_def_prefs';
+	$setup_info['email']['hooks'][] = 'preferences';
 
 	/* Dependacies for this app to work */
-	$setup_info['email']['depends'][] = array
-	(
+	$setup_info['email']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.15')
+		 'versions' => Array('0.9.13','0.9.14','0.9.15')
 	);
 
-	$setup_info['email']['depends'][] = array
-	(
-		 'appname' => 'addressbook',
-		 'versions' => Array('0.9.13')
+	/*
+	$setup_info['email']['depends'][] = array(
+		 'appname' => 'admin',
+		 'versions' => Array('0.9.13','0.9.14','0.9.15')
 	);
+
+	$setup_info['email']['depends'][] = array(
+		 'appname' => 'preferences',
+		 'versions' => Array('0.9.13','0.9.14','0.9.15')
+	);
+	*/
+	
 ?>

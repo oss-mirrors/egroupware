@@ -2,447 +2,1372 @@
 # tag: automatic-ChangeLog--angles@aminvestments.com--2002/anglemail--codehere--1.1
 #
 
-2002-10-24 GMT	Angles Puglisi <angles@aminvestments.com>	patch-65
+2003-01-03 GMT	Angles Puglisi <angles@aminvestments.com>	patch-92
 
     Summary:
-      spead tweaks for large moves, including using refernces 
+      more fix for the last fix for cache saving stuff
     Revision:
-      anglemail--codehere--1.1--patch-65
+      anglemail--codehere--1.1--patch-92
 
-    Spead tweaks for large moves, including using refernces to arg values. 
-    Also made a simage move a param for pgpgw_delete in cases where we 
-    are certain there is only one message to proces through the move command.
+    More fix for the last fix for cache saving stuff. See the 
+    comments for the last commit, this is a continuation of the 
+    fix for the dedicated anglemail caching needed to keep 
+    a few things that were not strictly "cache" items. This 
+    should finally have that working. Needed to actually 
+    pull the items first and put them in a var for later 
+    re insertion into the database, that latter part 
+    was in last commit.
     
 
     modified files:
-     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
-     ChangeLog.ryan--1.1 inc/class.boaction.inc.php
-     inc/class.bofolder.inc.php inc/class.bopreferences.inc.php
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2003-01-02 GMT	Angles Puglisi <angles@aminvestments.com>	patch-91
+
+    Summary:
+      table wipe cache needed to keep 3 things, added some comments
+    Revision:
+      anglemail--codehere--1.1--patch-91
+
+    Anglemail table wipe cache needed to keep some stuff. The 
+    dedicated table caching follows generally the sessions_db 
+    SQL usage, but with some different low level functions. The 
+    function that wipes cache has a higher level function that 
+    is supposed to retain three items that are not strictly 
+    "cache" items, the mailsvr_callstr, mailsvr_namespace, 
+    and the folder_list data. There was a sloppy copy and paste 
+    error in function "expire_db_session_bulk_data"
+    that prevented this data from being retained for the 
+    anglemail dedicated table. This is fixed now. 
+    The session_db part correctly preserved that data.
+    
+    Those items are cleared only for a reason such as 
+    when there is a change in preferences of the folders 
+    collection is edited (folder added, renamed, etc).
+    
+    The mailsvr_callstr, for example, may be 
+    the "fixed" string with the added "notls" 
+    needed for the RH7.3+ buggy cert fix. If this 
+    is wiped for no reason, then we have to again go through 
+    that fix function, which causes a php error string about 
+    "could not open stream", which is when the RH fix is 
+    attempted. This error may be output to the screen if 
+    the server does not log php stuff to another location, 
+    which can be confusing to the user.
+    
+    Also added some inline doc comments in a few places.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2003-01-02 GMT	Angles Puglisi <angles@aminvestments.com>	patch-90
+
+    Summary:
+      fix login error msg "go_somewhere_url" for acct 0, and add show_help to the URL
+    Revision:
+      anglemail--codehere--1.1--patch-90
+
+    Fix login error msg "go_somewhere_url" for acct 0, and add show_help to the URL. 
+    The mail_msg_base file has a function "login_error", which first tries
+    the RH 7.3+ error recovery, then failing that makes the login error message. 
+    This function uses an html widget called "display_error_report_page" which has 
+    a property called "prop_go_somewhere_link" which should be a URL that is 
+    helpful to the user given the error that just occurred.
+    
+    In this case we link to the settings page, a.k.a preferences page, for the 
+    email account that had the error. The bug was that the preferences page 
+    for the users default email account 0 uses a different 
+    URI than the other extra accounts. This is fixed now.
+    
+    Also, added the URI param "show_help=1" to that link so the email help text 
+    is shown on that preferences page the user goes to.
+    
+    As an aside, after this message is displayed, we call common_exit and 
+    bail from the entire phpgw page view script. This is because email 
+    does streams on demand, meaning it could later try again to login to the 
+    same account that just had the login error. To avoid this we bail. 
+    However note that if the calling all was NOT email, i.e. the home page 
+    portal, then this causes the rest of the portals after email not to display, 
+    it will stop with this error message. Perhaps there may be a way around 
+    this, but if an email account is not working this situation is severe 
+    enough that the user should attempt to fix it right away, anyway.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.mail_msg_base.inc.php
+
+
+2002-12-30 GMT	Angles Puglisi <angles@aminvestments.com>	patch-89
+
+    Summary:
+      fix folder size issue, never get it unless user click "get size" button.
+    Revision:
+      anglemail--codehere--1.1--patch-89
+
+    Fix folder size issue, never get it unless user click "get size" button. Getting 
+    that data has 2 problems, 1. it is slow and server taxing, and 2. it required 
+    actually opening (switching to) the folder you want size data on, unlike the 
+    other stats which can be obtained without changing folders. 
+    
+    To do this function "report_total_foldersize" was rewritten and renamed to 
+    "report_total_foldersize_conditional", and folder "get_folder_size" was 
+    also rewritten. See these functions to see how this is done.
+    
+    In general, the user submits some GPC data with "force_showsize=1" and this 
+    triggers actually getting the size of the folder. The function 
+    "report_total_foldersize_conditional" wrapps function "get_folder_size" with 
+    some logic to decide whether to call it or not.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.boindex.inc.php inc/class.mail_msg_display.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2002-12-29 GMT	Angles Puglisi <angles@aminvestments.com>	patch-88
+
+    Summary:
+      simplify "get_common_lang" function, make use of "common_folder_is" function
+    Revision:
+      anglemail--codehere--1.1--patch-88
+
+    Simplify "get_common_lang" function. This was previously named "generic_langs", it is 
+    renamed to "get_common_langs" and is easier to use now.
+    
+    Also actually make good use of "common_folder_is" function, in file boindex, 
+    during the check to see if we are in the "Sent" folder or not. Notice that 
+    the user may have a "Sent" folder that is no longer used because the user 
+    disabled the Sent Folder preference. In that case we do not recognize it 
+    as the Sent folder because there is no current sent folder pref set.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.boindex.inc.php inc/class.bomessage.inc.php
      inc/class.html_widgets.inc.php inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_display.inc.php
+
+
+2002-12-26 GMT	Angles Puglisi <angles@aminvestments.com>	patch-87
+
+    Summary:
+      lang file patches from Sam Przyswa, code patch was previous commit
+    Revision:
+      anglemail--codehere--1.1--patch-87
+
+    Lang file patches from Sam Przyswa, code patch was previous commit. This 
+    patches the en and fr lang files as per Sam Przyswa patch set. This is 
+    a companion patch set with the previous commit of the non-lang file 
+    code changes of Sams patch.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     setup/phpgw_en.lang setup/phpgw_fr.lang
+
+
+2002-12-26 GMT	Angles Puglisi <angles@aminvestments.com>	patch-86
+
+    Summary:
+      apply code patch from Sam Przyswa with some changes, lang files later
+    Revision:
+      anglemail--codehere--1.1--patch-86
+
+    Apply code patch from Sam Przyswa with some changes. The lang files 
+    are NOT in this commit. The lang file patches from Sam will be the next 
+    commit, I wanted to seperate them as individual change sets.
+    
+    Sam Przyswa samp _spam me not_ arial-concept.com made a patch set primarily 
+    designed to lang the word INBOX. Eventhough the server will always have the 
+    INBOX folder as per RFC, the name we show the user can be langed, as Sam 
+    has shown. This includes some of the various folder comboboxes too.
+    
+    I made very minor additions simply to use some of the new functions I 
+    added last commit, nothing substantial, Sam's patch worked without 
+    any changes anyway, and some of the stuff I did is still experimental.
+    
+    Sam also adds some much needed clarity to the message page link to go back to 
+    the message list page, the words "go back to" in bold, langed of course.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.boindex.inc.php inc/class.bomessage.inc.php
+     inc/class.html_widgets.inc.php inc/class.uimessage.inc.php
+     templates/default/message_main.tpl
+
+
+2002-12-26 GMT	Angles Puglisi <angles@aminvestments.com>	patch-85
+
+    Summary:
+      add 3 new functions, and minor improvements to inline docs
+    Revision:
+      anglemail--codehere--1.1--patch-85
+
+    Add 3 new functions to the msg class, 
+    "generic_langs", "common_folder_is", and "is_ball_data". 
+    These funtions are going to work with the integration of a patch 
+    by Sam Przyswa, the patchs are not yet applied but the concept 
+    therein will be supported by these functions. 
+    
+    For example, Sam Przyswa wants the INBOX to be called that 
+    as langed inbox. So the user sees INBOX as translated, 
+    eventhough on the IMAP or POP3 server it will actually 
+    ALWAYS be called INBOX as per RFC. So this is more ii8n friendly. 
+    
+    Additionally, I decided it was time to genrealize the test to 
+    see if a folder name is the Trash or Sent folder, or INBOX folder, 
+    because if any of those are true some special handling may occur. 
+    INBOX could be langed, Sent folder requires TO data insead of 
+    FROM data, and Trash folder may require an "Empty Trash" button. 
+    
+    So, to support Sam's patch and these other ideas, these 3 new 
+    functions are added.
+    
+    Also made minor improvements to some of the inline docs.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.mail_msg_base.inc.php
      inc/class.mail_msg_display.inc.php
      inc/class.mail_msg_wrappers.inc.php
 
 
-2002-10-24 GMT	Angles Puglisi <angles@aminvestments.com>	patch-64
+2002-12-25 GMT	Angles Puglisi <angles@aminvestments.com>	patch-84
 
     Summary:
-      MASSIVE change to buffer similar moves and issue a single flush 
+      star-merge brubaker into codehere, add images, printable, and some fixes
     Revision:
-      anglemail--codehere--1.1--patch-64
+      anglemail--codehere--1.1--patch-84
 
-    MASSIVE change to buffer similar moves and issue a single flush.
+    star-merge brubaker into codehere, add images, printable, and some fixes, etc. 
     
-    Function "industrial_interacct_mail_move" is not a shell that just 
-    recordes the desired move in an arg that each account has called 
-    "buffered_move_commands". Only in boaction where total moved it known 
-    to be 1 message, then that directly calls "single_interacct_mail_move" 
-    which is substantially the same as the OLD "industrial_interacct_mail_move" 
-    and is useful for a single move AND FOR moves between different accounts 
-    which must happen one at a time. 
+    Rather than summarize all this, here are excerps from this series of commits 
+    that occurred in the brubaker branch:
     
-    Then, when the calling process calls "expunge_expungable_folders", as it 
-    would have done before anyway, now that function first calls to 
-    "flush_buffered_move_commands" which is a similar function to the 
-    expunge code, it looks at one account at a time, for its "buffered_move_commands" 
-    list. That list is constructed or URI type strings designed to group 
-    moves as much as possible simply by calling sort. Then each move is 
-    grouped with each similar move, until no more grouping is possible, 
-    then the entire move is issued in a single command to the mailserver. 
-    Note that extreme caching is ALWAYS flushed and turned off for the duration 
-    of the flush move function.
+    ####
+    # anglemail--brubaker--1.1--patch-32
+      no_fmt fix for view unformatted image URI, the text link URI correctly added 
+      the "no_fmt=1" when necessary, the image link needed to do the same.
+      no_fmt fix preserve thru single delete. The message view page delete 
+      message image link passes all params via GET uri to the boaction class. 
+      This URI needed to add the "no_fmt=1" string when necessary to preserve the 
+      view unformated arg thru the delete single message procedure. 
     
-    If moves do not match us for account and folder, then they are issues right 
-    away and the loop continues looking for more similar moves to group, since 
-    this is done by account we know immediately that the from account is 
-    always the same right there. In such cases as moves between different 
-    accounts this must be handed off to "single_interacct_mail_move" which 
-    moves happenn one at a time. 
+    ####
+    # anglemail--brubaker--1.1--patch-31
+      Fix attach-file png images, they needed tweaking to look OK 
+      on IE, both 24 and 16 px versions.
+      Add gifs for all view option images, they already were there in PNG 
+      form, simply added GIF versions of those images (view headers, 
+      printable, etc...).
+        
+    ####
+    # anglemail--brubaker--1.1--patch-30
+      Message view option now has small png option, and the larger png images have been 
+      redone to work on MSIE. The smaller images are tied user preference for theme 
+      icon size.
+      Also fixed evo settings png images, to look better on MSIE.
     
-    Note that if using the trash folder, deleting mail that should be moved to 
-    the trash folder will be grouped thru this same process, however 
-    actuall deletes still occur one at a time.
+    ####
+    # anglemail--brubaker--1.1--patch-29
+      Fix filters database unfriendly chars b0rking prefs table. Just 
+      like the email, or any, preference data in general in phpGW, the 
+      data can not have certain offensive chars, like slashes or quotes, 
+      saved to the prefs DB table or the users prefs will get currupted. 
+      This is not new but the filters data never had the same database 
+      defang applied to it as the rest of the email prefs. This is fixed 
+      now.
+      Also note this html encoding used for the database defanging 
+      is left intact if we are just showing the filter data in an html 
+      page, especially in the edit form. If not encoded, they could be 
+      mistaken for HTML markup. However, to actually use or apply the 
+      filter data, it must be restored to its database unfriendly 
+      state of having actual offensive chars be themselves and not 
+      html entities.
     
-    Code is not yet tested with filters althought the design for 
-    non-limited moves and groupings should allow for filters to 
-    work with this.
+    ####
+    # anglemail--brubaker--1.1--patch-28
+      Fix qprint decoding. Use imap_qprint is it exists, it requires the 
+      php imap module, or else use the php function quoted_printable_decode 
+      EXCEPT you need to string replace the line folding =CRLF with blank 
+      string before feeding the string to the non-imap module function.
+    
+    ####
+    # anglemail--brubaker--1.1--patch-27
+      Merge anglemail-1.1-pre8-08-rcb2, Ryan comments:
+      anglemail-1.1-pre8-08-rcb2.tar.gz
+        * Fixed JS addressbook so that system is a hidden option and the 
+        new default is global. System was an option that was built just for 
+        lex's own use, never should have been shown.
+      anglemail-1.1-pre8-08-rcb1.tar.gz
+        * Fixed attachfile textbox. When you clicked on it it was opening 
+        a blank page instead of the attach windows.
+    
+    ####    
+    # anglemail--brubaker--1.1--patch-26
+      Add images to message view links, add a printable message view.
+      The new images go on the message view page with the links 
+      for "view unformatted" and headers and raw message, and 
+      the new view just added this commit, the printable view.
+    
+     # # # # #
+    
+    This merge used this command
+    > larch star-merge --in-place ./anglemail-codehere anglemail--codehere--1.1 anglemail--brubaker--1.1
+    
+    What follows is the output of larch log-for-merge:
+    
+    Patches applied:
+    
+      * angles@aminvestments.com--2002/anglemail--beta1final--1.0--base-0
+         import AngleMail beta1 final into new ARCH setup
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-32
+         no_fmt fix for view unformatted image URI and preserve thru single delete
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-31
+         fix attach-file png images, add gifs for all view option images
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-30
+         message view option has small png option, fix evo settings png images
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-29
+         fix filters database unfriendly chars b0rking prefs table
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-28
+         fix qprint decoding
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-27
+         merge anglemail-1.1-pre8-08-rcb2, fix attach js
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-26
+         add images to message view links, add a printable message view
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-25
+         get rid of stupid "tags" file added by accident
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-24
+         make sync brubaker tree to codehere patch-83
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-23
+         sync tree make brubaker same as codehere patch-81
+    
+
+    new files:
+     templates/default/images/view_formatted-16.gif
+     templates/default/images/view_formatted-16.png
+     templates/default/images/view_formatted-24.gif
+     templates/default/images/view_formatted-24.png
+     templates/default/images/view_headers-16.gif
+     templates/default/images/view_headers-16.png
+     templates/default/images/view_headers-24.gif
+     templates/default/images/view_headers-24.png
+     templates/default/images/view_nofmt-16.gif
+     templates/default/images/view_nofmt-16.png
+     templates/default/images/view_nofmt-24.gif
+     templates/default/images/view_nofmt-24.png
+     templates/default/images/view_printable-16.gif
+     templates/default/images/view_printable-16.png
+     templates/default/images/view_printable-24.gif
+     templates/default/images/view_printable-24.png
+     templates/default/images/view_raw-16.gif
+     templates/default/images/view_raw-16.png
+     templates/default/images/view_raw-24.gif
+     templates/default/images/view_raw-24.png
+     templates/default/message_printable.tpl
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-23
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-24
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-25
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-26
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-27
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-28
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-29
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-30
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-31
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-32
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.bocompose.inc.php inc/class.bofilters.inc.php
+     inc/class.bomessage.inc.php inc/class.html_widgets.inc.php
+     inc/class.mail_msg_base.inc.php
+     inc/class.uiattach_file.inc.php inc/class.uicompose.inc.php
+     inc/class.uifilters.inc.php inc/class.uijsaddressbook.inc.php
+     inc/class.uimessage.inc.php templates/default/attach_file.tpl
+     templates/default/compose.tpl
+     templates/default/images/evo-add-attachment-16.png
+     templates/default/images/evo-add-attachment-24.png
+     templates/default/images/evo-customize-16.png
+     templates/default/images/evo-customize-24.png
+     templates/default/index_blocks.tpl
+     templates/default/message_main.tpl
+
+    new patches:
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-23
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-24
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-25
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-26
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-27
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-28
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-29
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-30
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-31
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-32
+
+
+2002-12-14 GMT	Angles Puglisi <angles@aminvestments.com>	patch-83
+
+    Summary:
+      made an error report widget, login errors now show entire template
+    Revision:
+      anglemail--codehere--1.1--patch-83
+
+    Made an error report widget, login errors now show entire template. Previously 
+    the login error message was just text on a blank background. The versitile error 
+    report widget displays the whole template as usual with the error report and 
+    an optional helpful HREF as the page content. Mostly templated.
+    
+    If the error occurs when the msg object was called from another all, like the 
+    home page portal, then the old style error message is echod out, because the 
+    other app will output the templaye anyway.
+    
+    Also added ref_SERVER and also changed php pre ver 4.1 files reference 
+    to GLOBALS[HTTP_POST_FILES] instead of just bare HTTP_POST_FILES.
+    
+
+    new files:
+     templates/default/error_report.tpl
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.html_widgets.inc.php inc/class.mail_msg_base.inc.php
+     inc/class.ui_mail_debug.inc.php
+     templates/default/index_blocks.tpl
+
+
+2002-12-14 GMT	Angles Puglisi <angles@aminvestments.com>	patch-82
+
+    Summary:
+      attach_sig and req_notify checked state is preserved thru the spellcheck 
+    Revision:
+      anglemail--codehere--1.1--patch-82
+
+    Compose page checkboxes attach_sig and req_notify checked state is preserved thru the spellcheck.
+    
+    On initial showing of compose page, we only show the email sig checkbox is the user has 
+    set some sig text in their prefs. The req_notify checkbox is always NOT checked on 
+    initial showing of the compose page because it does not have a pref value, it always 
+    requires the user to manually check this box if wanted.
+    
+    On returning from the spellcheck page, whatever state, checked or unchecked, those 
+    checkboxes had before the spellcheck is preserved and restored on return to the compose page. 
+    Obviously if the user has no sig text in their preferences, then that checkbox will not even 
+    be displayed, so its state is irrelevant in that case.
     
 
     modified files:
-     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
-     ChangeLog.ryan--1.1 inc/class.boaction.inc.php
-     inc/class.mail_msg_wrappers.inc.php
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.bocompose.inc.php inc/class.bosend.inc.php
+     inc/class.html_widgets.inc.php inc/class.spell.inc.php
+     inc/class.uicompose.inc.php templates/default/compose.tpl
 
 
-2002-10-24 GMT	Angles Puglisi <angles@aminvestments.com>	patch-63
+2002-12-12 GMT	Angles Puglisi <angles@aminvestments.com>	patch-81
 
     Summary:
-      fix submit prefs not expiring all cached args
+      fix login error message not being displayed
     Revision:
-      anglemail--codehere--1.1--patch-63
+      anglemail--codehere--1.1--patch-81
 
-    Fix submit prefs not expiring all cached args. There 
-    was a bug where if you changed your pref setting for 
-    "U-Wash Mail Folder", the setting would not take effect 
-    until you logged out of phpgw then logged back in. This is 
-    because the cached arg mailsvr_delimiter was not being expired 
-    on the submitting of new prefs. Fixed now.
+    Fix login error message not being displayed. The RH buggy 
+    cert recovery function was accidently skipping the old 
+    login error message text display. This has been fixed.
+    
+    Also, a possible looping of login recovery attempts has 
+    been avoided by setting a flag to indicate that such a 
+    recovery attempt has already been tried.
     
 
     modified files:
-     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
-     ChangeLog.ryan--1.1 inc/class.bopreferences.inc.php
-
-
-2002-10-23 GMT	Angles Puglisi <angles@aminvestments.com>	patch-62
-
-    Summary:
-      login immediately if not caching, reduce "big move" to 10
-    Revision:
-      anglemail--codehere--1.1--patch-62
-
-    If not extreme caching, attempt login immediately. Fact is that 
-    if you are not caching you are going to need to log in to the 
-    mailserver, in all cases except for login NEVER such as is set 
-    by the bopreferences page in its constructor, as an example for 
-    this never login functionality.
-    
-    Reduce "big move" to 10, in file boaction, until it is proven that the 
-    larger number, was 95, in fact makes things faster. This means that moving 
-    or deleting 10 messages or more at once will clear the cache and reset 
-    all that stuff, instead of manually adjusting the cache to reflect 
-    the changes as they take place.
-    
-
-    modified files:
-     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
-     ChangeLog.ryan--1.1 inc/class.boaction.inc.php
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
      inc/class.mail_msg_base.inc.php
 
 
-2002-10-23 GMT	Angles Puglisi <angles@aminvestments.com>	patch-61
+2002-12-12 GMT	Angles Puglisi <angles@aminvestments.com>	patch-80
 
     Summary:
-      extend rh bug recovery to on-demand streams, start a 3 way login instruction logic
+      star merge brubaker into codehere, DB table and png stuff
     Revision:
-      anglemail--codehere--1.1--patch-61
+      anglemail--codehere--1.1--patch-80
 
-    Extend rh bug recovery to on-demand streams. The recovery code actually uses a function 
-    called "ensure_stream_and_folder" to do on-the-fly recovery. However, opening streams 
-    "on demand" (as required) also uses that same function, so it had to be tweaked to 
-    allow for the recursive calling from the recovery function, then a check by the first 
-    process to see if the recursive call succeeded in recovering from the RH bug.
+    Star merge brubaker into codehere, DB table and png stuff. 
+    Not bug free but this is a good point to merge these changes into 
+    mainline version.
     
-    This now extends the RH recovery fix to all attempts to open streams, not just the 
-    initial login during the "begin_request" function. This now allows for the 
-    filters edit page to work correctly, for example, since those streams, if needed, 
-    are open on demand, and the RH recovery now works during that process.
+    This group of changes included major work by Ryan on the UI where 
+    each image now has png version and different image handling code is 
+    aware of this.
     
-    Start a 3 way login instruction logic. In cases of caching the simple boolean 
-    do_login yes or no may be too simple. This requires the testing of 3 possibilities, 
-    to NEVER login no matter what, such as with prefernces pages, to login in only 
-    on demand, or to definatey login.
+    Also the Database now has a table called "phpgw_anglemail" and this 
+    is included in the setup app.
     
-    Additionally, if it is decided to skip the the "begin_request" login sequence, there 
-    are still 2 or 3 important vars that must be gathered before exiting the function, this 
-    now happens in all cases when this initial login is skipped.
+    These are Ryan's comments on this series:
     
-    Found an unwrapped call to "imap_last_error" in file mail_msg_base in the 
-    RH recovery code. Trouble is, since there was an error there is no dcom object 
-    available so no wrapped call is existing, so the bare php-imap extension call must 
-    be used there if you do indeed want the server error string (which may not be necessary 
-    anymore anyway) but that is now wrapped in a "function_exists" test for 
-    installs without IMAP module compiled in.
+      anglemail-1.1-pre8-03-rcb5.tar.gz
+      * Fixed bomessage so it respected extra accounts button theme
+      * Added support for image-on() to bomessage so images get the extensions automatically.
+      
+      anglemail-1.1-pre8-03-rcb4.tar.gz
+      o Fixed bocompose class so button type and size respected extra accounts
+      o Fixed a couple more local variable defs.
+      o Added support for image-on() to bocompose so images get teh extensions automatically.
+      o Added support for image-on() to html_widgets so images get the extensions automatically.
+      o Added support for image-on() to boindex so images get the extensions automatically.
+      o Fixed html_widgets so button type and size respected extra accounts
+      o Fixed boindex so button type and size respected extra accounts
     
-    Now this commit works with caching enabled. After this needs to be tested with 
-    caching turned off.
+      anglemail-1.1-pre8-03-rcb3.tar.gz
+      o Icon Theme and Icon Size now respect multiple accounts.
+      o New preference to set if we should skip displaying the folder size not.
+      
+      anglemail-1.1-pre8-03-rcb2.tar.gz
+      o When forwarding a message it was printing either true or false in header. There 
+      was a check for status of forward_as_inline that needed to be commented out.
+      
+      anglemail-1.1-pre8-03-rcb1.tar.gz
+      o This release has a fix in mail.wrapper class to fix a bug when deleting mail if you
+      don't have a trash folder specified or if you are using a pop mail server.
+      o class.bocompose had some local variables redefined.
+      o class.bocompose and bopreferences have been modified so addressbook type and 
+      size is respected for extra accounts.
+      o All the moz and evo .gif images now have .png images also.
+          
+      anglemail-1.1-pre7-06-rcb1.tar.gz
+      o This release has a fix in mail.wrapper class to fix a bug when deleting mail 
+      if you don't specify a trash folder.
+      o class.bocompose had some variables redefined.
+      o All the moz and evo .gif images now have .png images also.
     
+     = = = = = 
+    
+    Here are some selected comments I made in the brubaker branch:
+    
+    Bru Patch-22    anglemail--brubaker--1.1--patch-22
+      boattach_file dir checks use is_dir instead of file_exists.
+      these were using the funtion file_exists, which is OK but technically 
+      this is not strictly for directories.
+    
+    Bru Patch-21    anglemail--brubaker--1.1--patch-21
+      Apply ralfbecker patches dated 021124 from savannah cvs.
+      Changes include fixes for the attach file button lang text issue, 
+      and also reimplements the X-phpgw-type hook, and some lang files.
+        
+    Bru Patch-20    anglemail--brubaker--1.1--patch-20
+      DB table phpgw_anglemail now in the phpgw setup app. New installs 
+      will get the table, existing email installs will now have an 
+      upgrade otion in the setup app's "Manage Applications" page 
+      which will create the table.
+      Currently, anglemail will work without its own table, it will use 
+      whatever session storage phpgw is using, either session_db or 
+      php4 sessions, BUT this is not optimal. Using the phpgw sessions 
+      it is much less capable than the actual phpgw_anglemail table.
+      The table code itself has been in for a week or so, only change 
+      this commit is adding it to the setup app.
+    
+     = = = = =
+    
+    Output of log-for-merge command:
+    
+    Patches applied:
+    
+      * angles@aminvestments.com--2002/anglemail--beta1final--1.0--base-0
+         import AngleMail beta1 final into new ARCH setup
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-22
+         boattach_file dir checks use is_dir instead of file_exists
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-21
+         apply ralfbecker patches dated 021124 from savannah cvs
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-20
+         DB table phpgw_anglemail now in the phpgw setup app
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-19
+         major merge, merge ryan pre8-03-rcb5 branch into brubaker, resolved a conflict
+    
+      * angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-15
+         commit to ryan branch anglemail-1.1-pre8-03-rcb5
+    
+      * angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-14
+         commit or ryan pre8-03-rcb3 dated 021204 
+    
+      * angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-13
+         sync ryan branch to codehere patch 78, prep for import of new ryan code
+    
+
+    new files:
+     setup/tables_current.inc.php setup/tables_update.inc.php
+     templates/default/images/evo-accounts-16.png
+     templates/default/images/evo-accounts-24.png
+     templates/default/images/evo-add-attachment-16.png
+     templates/default/images/evo-add-attachment-24.png
+     templates/default/images/evo-add-attachment.png
+     templates/default/images/evo-address-conduit-16.png
+     templates/default/images/evo-address-conduit-24.png
+     templates/default/images/evo-arrow-2left-16.png
+     templates/default/images/evo-arrow-2left-24.png
+     templates/default/images/evo-arrow-2left-no-16.png
+     templates/default/images/evo-arrow-2left-no-24.png
+     templates/default/images/evo-arrow-2right-16.png
+     templates/default/images/evo-arrow-2right-24.png
+     templates/default/images/evo-arrow-2right-no-16.png
+     templates/default/images/evo-arrow-2right-no-24.png
+     templates/default/images/evo-arrow-left-16.png
+     templates/default/images/evo-arrow-left-24.png
+     templates/default/images/evo-arrow-left-no-16.png
+     templates/default/images/evo-arrow-left-no-24.png
+     templates/default/images/evo-arrow-right-16.png
+     templates/default/images/evo-arrow-right-24.png
+     templates/default/images/evo-arrow-right-no-16.png
+     templates/default/images/evo-arrow-right-no-24.png
+     templates/default/images/evo-compose-message-16.png
+     templates/default/images/evo-compose-message-24.png
+     templates/default/images/evo-customize-16.png
+     templates/default/images/evo-customize-24.png
+     templates/default/images/evo-customize3-24.png
+     templates/default/images/evo-customize4-24.png
+     templates/default/images/evo-delete-message.png
+     templates/default/images/evo-envelope.png
+     templates/default/images/evo-filters-16.png
+     templates/default/images/evo-filters-24.png
+     templates/default/images/evo-filters-config-24.png
+     templates/default/images/evo-folder-16.png
+     templates/default/images/evo-folder-24.png
+     templates/default/images/evo-folder-config-16.png
+     templates/default/images/evo-folder-config-24.png
+     templates/default/images/evo-folder-config2-24.png
+     templates/default/images/evo-forward.png
+     templates/default/images/evo-move-message.png
+     templates/default/images/evo-next-message.png
+     templates/default/images/evo-previous-message.png
+     templates/default/images/evo-reply-all.png
+     templates/default/images/evo-reply-all2.png
+     templates/default/images/evo-reply-to-all.png
+     templates/default/images/evo-reply.png
+     templates/default/images/evo-send-16.png
+     templates/default/images/evo-send-24.png
+     templates/default/images/evo-spellcheck-16.png
+     templates/default/images/evo-spellcheck-24.png
+     templates/default/images/evo-trash-16.png
+     templates/default/images/evo-trash-24.png
+     templates/default/images/moz-accounts-16.png
+     templates/default/images/moz-accounts-24.png
+     templates/default/images/moz-add-attachment-16.png
+     templates/default/images/moz-add-attachment-24.png
+     templates/default/images/moz-address-conduit-16.png
+     templates/default/images/moz-address-conduit-24.png
+     templates/default/images/moz-arrow-2left-16.png
+     templates/default/images/moz-arrow-2left-24.png
+     templates/default/images/moz-arrow-2left-no-16.png
+     templates/default/images/moz-arrow-2left-no-24.png
+     templates/default/images/moz-arrow-2right-16.png
+     templates/default/images/moz-arrow-2right-24.png
+     templates/default/images/moz-arrow-2right-no-16.png
+     templates/default/images/moz-arrow-2right-no-24.png
+     templates/default/images/moz-arrow-left-16.png
+     templates/default/images/moz-arrow-left-24.png
+     templates/default/images/moz-arrow-left-no-16.png
+     templates/default/images/moz-arrow-left-no-24.png
+     templates/default/images/moz-arrow-right-16.png
+     templates/default/images/moz-arrow-right-24.png
+     templates/default/images/moz-arrow-right-no-16.png
+     templates/default/images/moz-arrow-right-no-24.png
+     templates/default/images/moz-compose-message-16.png
+     templates/default/images/moz-compose-message-24.png
+     templates/default/images/moz-customize-16.png
+     templates/default/images/moz-customize-24.png
+     templates/default/images/moz-delete-message.png
+     templates/default/images/moz-filters-16.png
+     templates/default/images/moz-filters-24.png
+     templates/default/images/moz-folder-16.png
+     templates/default/images/moz-folder-24.png
+     templates/default/images/moz-forward.png
+     templates/default/images/moz-reply-all.png
+     templates/default/images/moz-reply.png
+     templates/default/images/moz-send-16.png
+     templates/default/images/moz-send-24.png
+     templates/default/images/moz-spellcheck-16.png
+     templates/default/images/moz-spellcheck-24.png
+     templates/default/images/moz-trash-16.png
+     templates/default/images/moz-trash-24.png
+     templates/idsociety/images/evo-accounts-16.png
+     templates/idsociety/images/evo-accounts-24.png
+     templates/idsociety/images/evo-add-attachment-16.png
+     templates/idsociety/images/evo-add-attachment-24.png
+     templates/idsociety/images/evo-add-attachment.png
+     templates/idsociety/images/evo-address-conduit-16.png
+     templates/idsociety/images/evo-address-conduit-24.png
+     templates/idsociety/images/evo-arrow-2left-16.png
+     templates/idsociety/images/evo-arrow-2left-24.png
+     templates/idsociety/images/evo-arrow-2left-no-16.png
+     templates/idsociety/images/evo-arrow-2left-no-24.png
+     templates/idsociety/images/evo-arrow-2right-16.png
+     templates/idsociety/images/evo-arrow-2right-24.png
+     templates/idsociety/images/evo-arrow-2right-no-16.png
+     templates/idsociety/images/evo-arrow-2right-no-24.png
+     templates/idsociety/images/evo-arrow-left-16.png
+     templates/idsociety/images/evo-arrow-left-24.png
+     templates/idsociety/images/evo-arrow-left-no-16.png
+     templates/idsociety/images/evo-arrow-left-no-24.png
+     templates/idsociety/images/evo-arrow-right-16.png
+     templates/idsociety/images/evo-arrow-right-24.png
+     templates/idsociety/images/evo-arrow-right-no-16.png
+     templates/idsociety/images/evo-arrow-right-no-24.png
+     templates/idsociety/images/evo-compose-message-16.png
+     templates/idsociety/images/evo-compose-message-24.png
+     templates/idsociety/images/evo-customize-16.png
+     templates/idsociety/images/evo-customize-24.png
+     templates/idsociety/images/evo-customize3-24.png
+     templates/idsociety/images/evo-customize4-24.png
+     templates/idsociety/images/evo-delete-message.png
+     templates/idsociety/images/evo-envelope.png
+     templates/idsociety/images/evo-filters-16.png
+     templates/idsociety/images/evo-filters-24.png
+     templates/idsociety/images/evo-filters-config-24.png
+     templates/idsociety/images/evo-folder-16.png
+     templates/idsociety/images/evo-folder-24.png
+     templates/idsociety/images/evo-folder-config-16.png
+     templates/idsociety/images/evo-folder-config-24.png
+     templates/idsociety/images/evo-folder-config2-24.png
+     templates/idsociety/images/evo-forward.png
+     templates/idsociety/images/evo-move-message.png
+     templates/idsociety/images/evo-next-message.png
+     templates/idsociety/images/evo-previous-message.png
+     templates/idsociety/images/evo-reply-all.png
+     templates/idsociety/images/evo-reply-all2.png
+     templates/idsociety/images/evo-reply-to-all.png
+     templates/idsociety/images/evo-reply.png
+     templates/idsociety/images/evo-send-16.png
+     templates/idsociety/images/evo-send-24.png
+     templates/idsociety/images/evo-spellcheck-16.png
+     templates/idsociety/images/evo-spellcheck-24.png
+     templates/idsociety/images/evo-trash-16.png
+     templates/idsociety/images/evo-trash-24.png
+     templates/idsociety/images/moz-accounts-16.png
+     templates/idsociety/images/moz-accounts-24.png
+     templates/idsociety/images/moz-add-attachment-16.png
+     templates/idsociety/images/moz-add-attachment-24.png
+     templates/idsociety/images/moz-address-conduit-16.png
+     templates/idsociety/images/moz-address-conduit-24.png
+     templates/idsociety/images/moz-arrow-2left-16.png
+     templates/idsociety/images/moz-arrow-2left-24.png
+     templates/idsociety/images/moz-arrow-2left-no-16.png
+     templates/idsociety/images/moz-arrow-2left-no-24.png
+     templates/idsociety/images/moz-arrow-2right-16.png
+     templates/idsociety/images/moz-arrow-2right-24.png
+     templates/idsociety/images/moz-arrow-2right-no-16.png
+     templates/idsociety/images/moz-arrow-2right-no-24.png
+     templates/idsociety/images/moz-arrow-left-16.png
+     templates/idsociety/images/moz-arrow-left-24.png
+     templates/idsociety/images/moz-arrow-left-no-16.png
+     templates/idsociety/images/moz-arrow-left-no-24.png
+     templates/idsociety/images/moz-arrow-right-16.png
+     templates/idsociety/images/moz-arrow-right-24.png
+     templates/idsociety/images/moz-arrow-right-no-16.png
+     templates/idsociety/images/moz-arrow-right-no-24.png
+     templates/idsociety/images/moz-compose-message-16.png
+     templates/idsociety/images/moz-compose-message-24.png
+     templates/idsociety/images/moz-customize-16.png
+     templates/idsociety/images/moz-customize-24.png
+     templates/idsociety/images/moz-delete-message.png
+     templates/idsociety/images/moz-filters-16.png
+     templates/idsociety/images/moz-filters-24.png
+     templates/idsociety/images/moz-folder-16.png
+     templates/idsociety/images/moz-folder-24.png
+     templates/idsociety/images/moz-forward.png
+     templates/idsociety/images/moz-reply-all.png
+     templates/idsociety/images/moz-reply.png
+     templates/idsociety/images/moz-send-16.png
+     templates/idsociety/images/moz-send-24.png
+     templates/idsociety/images/moz-spellcheck-16.png
+     templates/idsociety/images/moz-spellcheck-24.png
+     templates/idsociety/images/moz-trash-16.png
+     templates/idsociety/images/moz-trash-24.png
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-19
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-20
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-21
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-22
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-13
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-14
+     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-15
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.boattach_file.inc.php inc/class.bocompose.inc.php
+     inc/class.boindex.inc.php inc/class.bomessage.inc.php
+     inc/class.bopreferences.inc.php inc/class.html_widgets.inc.php
+     inc/class.mail_dcom_base.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+     inc/class.ui_mail_debug.inc.php inc/class.uimessage.inc.php
+     setup/phpgw_de.lang setup/phpgw_en.lang setup/phpgw_ja.lang
+     setup/setup.inc.php templates/default/images/check.png
+     templates/default/images/navbar.png
+     templates/default/images/refresh.png
+     templates/default/images/sm_delete.png
+     templates/default/images/sm_envelope.png
+     templates/default/images/sm_forward.png
+     templates/default/images/sm_reply.png
+     templates/default/images/sm_reply_all.png
+     templates/default/images/tree_collapse.png
+     templates/default/images/tree_end.png
+     templates/default/images/tree_expand.png
+     templates/default/images/tree_leaf.png
+     templates/default/images/tree_space.png
+     templates/default/images/tree_split.png
+     templates/default/images/tree_vertline.png
+
+    new patches:
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-19
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-20
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-21
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-22
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-13
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-14
+     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-15
+
+
+2002-12-07 GMT	Angles Puglisi <angles@aminvestments.com>	patch-79
+
+    Summary:
+      star merge brubaker into codehere, fixes to trash, deleting, and made folder megalist widget
+    Revision:
+      anglemail--codehere--1.1--patch-79
+
+    Star merge brubaker into codehere, fixes to trash, deleting, and made megalist widget.
+    > larch star-merge --in-place ./anglemail-codehere anglemail--codehere--1.1 anglemail--brubaker--1.1
+    
+    These are the 2 changelogs for this change from the brubaker branch:
+    
+    > anglemail--brubaker--1.1--patch-18
+    Modified-files:
+      inc/class.mail_msg_base.inc.php
+      inc/class.mail_msg_wrappers.inc.php
+      templates/default/index_blocks.tpl
+    
+    More fix for deleting and trash, tested with pop3, no trash pref on imap,
+    autocreate as per trash pref on imap, and delete from trash folder on imap.
+    
+    Apache2 spurious what=delall string fix, this is the 2nd apache2 RH8 bug related
+    to the POST of the index page with checked boxes for mail deleting or moving.
+    There was an extra unnecessary string "what=delall" tacked on to the end of
+    one element of the delmov_all POST array, which should not be there because
+    it is a POST var all to itself, which it is properly except for the extra 
+    that extra duplicate string put out of place. This would mess up deletes or
+    moces by introducing alpha chars into a place in the array where there should be
+    only int data. This would mess up the grouping of moves and deletes.
+    
+    - - - - - 
+    > anglemail--brubaker--1.1--patch-17
+    Modified-files:
+      inc/class.html_widgets.inc.php
+      inc/class.mail_msg_display.inc.php
+      inc/class.uifilters.inc.php
+    
+    Made widget all_folders_megalist and use it on filters page now. This replaces
+    the the function  in the mail_msg_display file with an easier to use, OOP style 
+    listbox function that is quite versitile.
+    
+    Note it uses Delphi style "Properties" instead of the 2 seperate Get Set functions,
+    and it also builds on other components in the html widgets class.
+    
+    - - - - 
+    
+    Output from log-for-merge:
+    
+    Patches applied:
+    
+      * angles@aminvestments.com--2002/anglemail--beta1final--1.0--base-0
+         import AngleMail beta1 final into new ARCH setup
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-18
+         more fix for deleting and trash, apache2 spurious what=delall string fix
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-17
+         made widget all_folders_megalist and use it on filters page now
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-16
+         sync brubaker to codehere patch 78 prep for filter and search work
+    
+
+    new files:
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-16
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-17
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-18
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.html_widgets.inc.php inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_display.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+     inc/class.uifilters.inc.php templates/default/index_blocks.tpl
+
+    new patches:
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-16
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-17
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-18
+
+
+2002-12-04 GMT	Angles Puglisi <angles@aminvestments.com>	patch-78
+
+    Summary:
+      fix auto creation of trash folder 
+    Revision:
+      anglemail--codehere--1.1--patch-78
+
+    Fix auto creation of trash folder. Also created a function 
+    called "create_mailbox_ex" which is the way this function should 
+    work, code will be migrated to this. It takes a normal fldball 
+    as its arg, it respects all the current standards of the fldball, 
+    such as the folder value is typically urlencoded, and does 
+    not contain a mailsvr_callstr. These are 2 things the the older 
+    function is not really designed for.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2002-12-03 GMT	Angles Puglisi <angles@aminvestments.com>	patch-77
+
+    Summary:
+      more fix for keeping the correct folder arg value, fix move prepping folder in boaction
+    Revision:
+      anglemail--codehere--1.1--patch-77
+
+    More fix for keeping the correct folder arg value. Function "ensure_stream_and_folder" will 
+    open a stream, if necessary, and switch to a folder, if necessary. When using streams 
+    on demand, it is possible to set a folder arg before a stream is actually opened, because 
+    all the required data in the script run was already in cache, up to the point when 
+    a function may needs to actually contact the mailserver for something not in the cache.
+    
+    Then if a function like get_folder_status_info is the first call the actually 
+    needs to open the stream, and that function never requires switching folders, 
+    because folder stats can be obtained on a folder without actually selecting it, 
+    HOWEVER the first time a stream is opened it will select the INBOX by default, 
+    and even if the calling fuction does not care about switching folders, 
+    the stream MUST STILL switch to the folder arg that pre-existed before actually 
+    opening the stream, unless the calling function actually does want to switch 
+    the folder and that folder is not currently selected. This has been fixed.
+    
+    Fix move prepping folder in boaction. In general we KEEP THE FOLDER NAME URLENCODED 
+    up until the very last moment that we (a) set the folder arg, which for some reason is 
+    in urldecoded form, or (b) make a call to the dcom class, which needs the urldecoded 
+    folder name. However the move procedure in class.boaction was calling "prep_folder_in" 
+    on the folder name, which is should not do because that urldecodes the folder name 
+    too soon in the script run. This has been fixed. This was especially noticable 
+    when moving to or from folders with the ampersand in their name.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.boaction.inc.php inc/class.html_widgets.inc.php
+     inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2002-12-03 GMT	Angles Puglisi <angles@aminvestments.com>	patch-76
+
+    Summary:
+      fix switch folder bug, add code for anglemail private DB table
+    Revision:
+      anglemail--codehere--1.1--patch-76
+
+    
+    Fix switch folder bug. The function "ensure_stream_and_folder" was 
+    switching the "folder" arg value to "INBOX" when it should not 
+    have been doing that, causing problems switching folders.
+    
+    Add code for anglemail private DB table, it is build on the code for 
+    the session_db caching, so it is a hybrid in-memory array, and 
+    a database that fills that array ONLY with info requested from the 
+    DB table. Right now table creation is on the debug page.
+    
+    In this transition period, if the table "phpgw_anglemail" exists, 
+    it is used as the cache data store, otherwise the session setting 
+    of phpgw is used, eith php4 or db.
+    
+
+    new files:
+     inc/new_nav.js
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_wrappers.inc.php
+     inc/class.ui_mail_debug.inc.php templates/default/debug.tpl
+
+
+2002-11-19 GMT	Angles Puglisi <angles@aminvestments.com>	patch-75
+
+    Summary:
+      appsession timestamp check on folder_status_info only 1 time per script run
+    Revision:
+      anglemail--codehere--1.1--patch-75
+
+    Appsession timestamp check on folder_status_info only 1 time per script run. Now 
+    after a successful timestamp passing test on appsession cached "folder_status_info" 
+    data, a flag is set in the args array to indicate a successful timestamp check has 
+    already happened during this script run, so it is NOT NECESSARY to do another 
+    timestamp checks on this particular data for the rest of this particular page 
+    view (script run) because it has already passed that test and a page view 
+    does not last long enough (generally) to have enough time pass to make 
+    the test results significantly change.
+    
+    Yet a timestamp check that is, for example, 1 second below the threshold 
+    ago limit, will still be VALID for the rest of the page view where before 
+    it may have been erronously expired one second later if another check occurred.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.mail_msg_wrappers.inc.php
+
+
+2002-11-18 GMT	Angles Puglisi <angles@aminvestments.com>	patch-74
+
+    Summary:
+      index page svc_nextmatches now can show text only nav links
+    Revision:
+      anglemail--codehere--1.1--patch-74
+
+    svc_nextmatches now can show text only nav links. To make the 
+    index page more like the tool bar, if the pref for theme images 
+    is set to text only, then the nav links now have no image, just 
+    text. 
+    
+    NOTE this applies only to the message list page, the index page, 
+    the other page with nav links is the view message page, which 
+    is not effected by this. Those links are generated in the 
+    bomessage file itself, which was not changed, so the 
+    message page nav links still always show the image.
+    
+
+    modified files:
+     ChangeLog.brubaker--1.1 ChangeLog.codehere--1.1
+     ChangeLog.core--1.1 ChangeLog.lex--1.1 ChangeLog.ryan--1.1
+     inc/class.svc_nextmatches.inc.php
+
+
+2002-11-17 GMT	Angles Puglisi <angles@aminvestments.com>	patch-73
+
+    Summary:
+      merge MAJOR changes from brubaker branch into mainline codehere branch
+    Revision:
+      anglemail--codehere--1.1--patch-73
+
+    Merge MAJOR changes from brubaker branch into mainline codehere branch.
+    
+    Brubaker branch patches anglemail--brubaker--1.1--patch-8 to anglemail--brubaker--1.1--patch-15 
+    is a MAJOR change to appsession caching, both php4 sessions and session_db, and msgball_list 
+    handling, so much I'll paste the log commit notes here:
+    
+    > > anglemail--brubaker--1.1--patch-15
+    
+    Folders page uses cache aware function. Folder list page now uses function
+    "get_folder_status_info" which is capable of caching the folder stats 
+    if session_cache_extreme is True. This is also part of the 240 second 
+    assumed fresh timestamp, where the folder stats are timestamped and 
+    considered "fresh" for 240 seconds (currently), used with session 
+    cache extreme.
+    
+    Fix template bug in jsaddybook, fix suggested by Dave Hall 
+    fixes the compose page not working with all phpGW templates. 
+    
+    Another jsaddybook minor fix adds the param "False" to common->phpgw_exit(), 
+    changed to ->common->phpgw_exit(False), which eliminates the 
+    following type of error in the log file:
+    > PHP Fatal error:  Call to undefined function:  parse_navbar_end() 
+    > in /phpgwapi/inc/footer.inc.php on line 62
+    
+    Also adjusted some debug output and added some misc code comments.
+    
+    
+    > > anglemail--brubaker--1.1--patch-14
+    
+    Show unseen in combo box required 2 fixes.
+    Fix unseen in combobox. the code that obtains the folder status 
+    was changed to function "get_folder_status_info" which caches 
+    that information in extreme caching mode.
+    
+    Fix status accidently switches folders. 
+    that function "get_folder_status_info" had a bug 
+    that relates to special situations where a function calling 
+    "ensure_stream_and_folder" SHOULD NOT pass a folder value in the 
+    fldball param. This SPECIAL SITUATION is for when the command you are 
+    going to issue, such as imap_status, DOES NOT REQUIRE THE FOLDER 
+    TO BE SELECTED in order to get that status info.
+    
+    Function "ensure_stream_and_folder" already understands this situation 
+    when a blank folder value is passed in the fldball param, however the 
+    function "get_folder_status_info" was incorrectly passing a foldername 
+    value in the fldball instead of heeding this SPECIAL SITUATION concerning 
+    the status command that does not require a selected folder.
+    
+    Additionally, this fixed the index page stats bar from showing data for 
+    the wrong folder just after the combo box had been filled with status 
+    info obtained from the server, because that UNNEEDED foldername value 
+    as mentioned above was causing conflicts about exactly what was 
+    the desired curently selected folder.
+    
+    
+    > > anglemail--brubaker--1.1--patch-13
+    
+    New style php4 caching now works backwards compat with sessions_db. If the 
+    server session tracking is "db" then some extra work is done to make the 
+    newer, slimmer, php4 style caching code work with the older style phpGW 
+    sessions_db where a table in the phpGW database is used to store the 
+    appsession cache, instead of the easier to use array based php4 style.
+    
+    The result of this is a hybrid system where the array data is still 
+    available, it is simply sourced from the DB session if it is determined 
+    to be set to "db".
+    
+    NOTE however that using the sessions_db method will limit your ability 
+    to cache the msgball_list, this has always been the case, and results from 
+    the table defionition of VARCHAR[255] for the row containing the 
+    appsession data. Therefor it is recommeded to use php4 session tracking 
+    when ever possible with the installation of phpGW + AngleMail.
+    
+    
+    > > anglemail--brubaker--1.1--patch-12
+    
+    msgball_list backward compat fix for filter test report. 
+    If you clicked on "test all filters", in file bofilters the report 
+    gets generated by feeding a msgball_list to function "get_msg_list_display" 
+    in file mail_msg_display, that msgball_list is expected to be new style 
+    uri type data, but filters class is still "oldschool" and was feeding a 
+    full subarray old style msgball list instead. Fixed now.
+    
+    
+    > > anglemail--brubaker--1.1--patch-11
+    
+    msgball_list elements are now in URI string form instead of full sub array. The new 
+    function "ball_data_parse_str" is used to convert a URI string fldball or msgball 
+    into an associative array. That function also takes care to stripslashes any escape 
+    slashes that php command parse_str will add to folder names with quotes in them.
+    
+    This means a msgball_list is now a simpler thing, just a numbered array 
+    of strings, which allows us to find individual msgball elements by 
+    using the array_search command searching for simple strings. This was 
+    not possible when the msgball_list was an array of things which were 
+    themselves arrays, searching in that structure required looping and 
+    comparing.
+    
+    Hopefully this saves enough memory, as in RAM while the list is in memory, and 
+    cache space while the list is in appsession cache data, so that msgball_list 
+    data may soon be kept for any visited folder. Right now only 1 msgball_list per 
+    account is cached, that of the last visited folder. It is possible that caching 
+    msgball_list for any visited folder could reduce communication with the mailserver 
+    whicg could speed things up and perhaps help scalibility. This remains to be 
+    seen but the change in this commit can allow for those things later.
+    
+    
+    > > anglemail--brubaker--1.1--patch-10
+    
+    Functions needing a msgball_list now tries to use reference instead of 
+    a copy if possible, for functions in the mail_msg object itself (i.e. 
+    not yet doing this outside of the mail_msg_* files right now).
+    
+    Since the msgball_list can contain thousands of items, it makes sense 
+    so try to get a refernce to such a large array instead of a copy, if possible. 
+    Now the mail_msg_display had a few calls to get_msgball_list, it still does, 
+    but it treats that call like a primer for the cache, then tries to obtain a 
+    reference directly into that cached array.
+    
+    Same thing for the event moved or deleted messages, which will try to pop 
+    out individual msgball items from the array as they are moved or deleted from 
+    the folder (assuming this is not a "big move"), there too we try to obtain 
+    a reference directly to the session cache data instead of manipulating a copy 
+    then trying to save that copy back to the appsession.
+    
+    Hopefully this is faster and saves memory.
+    
+    
+    > > anglemail--brubaker--1.1--patch-9
+    
+    appsession cache directly manipulates SESSION atructure
+    
+    Instead of going thru the phpgw api "session->appsession" function 
+    all the time, the appsesion cache functions in anglemail directly 
+    access the data located in msg->ref_SESSION which points to the data 
+    in php4.1 + or - safe manner, data is here:
+    > [HTTP_SESSION_VARS][phpgw_session][phpgw_app_sessions][email]
+    > [_SESSION][phpgw_session][phpgw_app_sessions][email]
+    and this is also accessable thru this
+    > GLOBALS[phpgw_session][phpgw_app_sessions][email]
+    
+    I put the cached stuff in something called "dat" like this:
+    > [_SESSION][phpgw_session][phpgw_app_sessions][email][dat]
+    so at some later point I can serialize "dat" and store the cache somewhere else, 
+    in any case it is more array oriented now.
+    
+    
+    > > anglemail--brubaker--1.1--patch-8
+    
+    Entire rewrite of appsession caching and extreme mode cache events. That's right, 
+    almost entirely new code for caching and the extreme caching events. That's 
+    a lot of work.
+    
+    
+    > > OK, back to the current commit.
+    
+    What follows is the output of larch log-for-merge:
+    
+    Patches applied:
+    
+      * angles@aminvestments.com--2002/anglemail--beta1final--1.0--base-0
+         import AngleMail beta1 final into new ARCH setup
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-15
+         folders page uses cachable status info, fix template bug in jsaddybook
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-14
+         fix status accidently switches folders, fix unseen in combobox
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-13
+         new style php4 caching now works backwards compat with sessions_db
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-12
+         msgball_list backward compat fix for filter test report
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-11
+         msgball_list elements are now in URI string form instead of full sub array
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-10
+         msgball_list now tries to use reference instead of copy in msg object
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-9
+         appsession cache directly manipulates SESSION atructure
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-8
+         entire rewrite of appsession caching and extreme mode cache events
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-7
+         make brubaker same as codehere--1.1--patch-72
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-6
+         sync brubaker to be same as codehere on 021020
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-5
+         make-sync-tree so brubaker is same as codehere
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-4
+         star merge from lex
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-3
+         star merge ryan changes into brubaker on 021015
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-2
+         use reverse update trick to get brubaker same as lex on 021015
+    
+      * angles@aminvestments.com--2002/anglemail--brubaker--1.1--base-0
+         start a "brubaker" branch for anglemail wild stuff
+    
+
+    new files:
+     ChangeLog.brubaker--1.1
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/base-0
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-10
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-11
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-12
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-13
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-14
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-15
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-2
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-3
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-4
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-5
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-6
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-7
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-8
+     {arch}/anglemail/anglemail--brubaker/anglemail--brubaker--1.1/angles@aminvestments.com--2002/patch-log/patch-9
 
     modified files:
      ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
      ChangeLog.ryan--1.1 inc/class.bofilters.inc.php
-     inc/class.bopreferences.inc.php
+     inc/class.bofolder.inc.php inc/class.html_widgets.inc.php
      inc/class.mail_msg_base.inc.php
-     inc/class.msg_bootstrap.inc.php inc/hook_home.inc.php
-
-
-2002-10-22 GMT	Angles Puglisi <angles@aminvestments.com>	patch-60
-
-    Summary:
-      fix qprint decoding, add some additional but minor utf7 capability
-    Revision:
-      anglemail--codehere--1.1--patch-60
-
-    fix qprint decoding, for some reason the "qprint" function was doing 2 extra 
-    things before using the php "quoted_printable_decode" command.  First, it would 
-    change any underscores "_" to a space, and second, it would change the 
-    sequence "=CRLF" to nothing, in other words erasing that. Now the function 
-    simply returns the result of the php "quoted_printable_decode" like an alias 
-    function, no modification to the input string takes place now.
-    
-    Add utf7 stuff that make have some corner case fixes. Added capability in the utf7_decode_string 
-    function to handle foldernames coming from the server that are not fully qualified with 
-    brackets and server name. It is possible that with sub folders this may happen, but generally 
-    the mailserver only spits out folder names that are fully qualified. But just in case, this 
-    handling has been added.
-    
-    Added 2 functions that are not used yet and may never be used, just testing the idea, called 
-    "needs_utf7_encoding" and "needs_utf7_decoding" just to check for the need for even 
-    calling the utf7 functions, however some degree of guessing is required for the decode test 
-    so the only way to know for sure is to actually try to decode it. The "needs encoding" function 
-    simply looks for char 37 (the ampersand) and any chars greater than or equal to 127, which 
-    is the char range where utf7 encoding is required. According to RFC2060 the ampersand is 
-    also required to be encoded because the modified utf7 scheme described there uses the 
-    ampersand as a special token.
-    
-
-    modified files:
-     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
-     ChangeLog.ryan--1.1 inc/class.mail_dcom_base.inc.php
-     inc/class.mail_msg_base.inc.php
-
-
-2002-10-21 GMT	Angles Puglisi <angles@aminvestments.com>	patch-59
-
-    Summary:
-      fix utf7 encoding for mail_move, now skips duplicate delmov_list elements
-    Revision:
-      anglemail--codehere--1.1--patch-59
-
-    Fix utf7 encoding for mail_move. Most commands issued to the mailserver require 
-    a fully qualified BRACKET_MAILSERVER_BRACKER_NAMESPACE_DELIMITED_FOLDERNAME 
-    syntax, so the utf7 encoding code had been tuned for this. However, the 
-    command to move mail to different folders within the same account does not 
-    have the BRACKET_SERVER_BRACKET part in the folder name string. Now the 
-    utf7 encoding function can handle this syntax too. Thus moving or deleting 
-    mail to or from folders having names requiring utf7 modifications not 
-    work as expected.
-    
-    Now skips duplicate delmov_list elements. Apache2 on a test install on RH8.0 
-    was submitting duplicate items in the delmov_list that gets submitted from 
-    the index page. It seemed like a good thing to check for duplicates anyway, 
-    so that part of the GPC arg collection routine checks for duplicate items in 
-    the submitted delmov_list array.
-
-    modified files:
-     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
-     ChangeLog.ryan--1.1 inc/class.mail_dcom_base.inc.php
-     inc/class.mail_dcom_imap.inc.php
-     inc/class.mail_msg_base.inc.php
+     inc/class.mail_msg_display.inc.php
      inc/class.mail_msg_wrappers.inc.php
+     inc/class.ui_mail_debug.inc.php
+     inc/class.uijsaddressbook.inc.php inc/hook_home.inc.php
+
+    new patches:
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--base-0
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-10
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-11
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-12
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-13
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-14
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-15
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-2
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-3
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-4
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-5
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-6
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-7
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-8
+     angles@aminvestments.com--2002/anglemail--brubaker--1.1--patch-9
 
 
-2002-10-21 GMT	Angles Puglisi <angles@aminvestments.com>	patch-58
-
-    Summary:
-      trash folder now handled by arg "veified_trash_folder_long", fix dup "javascript" string in boindex
-    Revision:
-      anglemail--codehere--1.1--patch-58
-
-    Trash folder now handled by arg "veified_trash_folder_long". Code to obtain verified 
-    long name for trash folder, or to create it if necessary, moved to function called 
-    "get_verified_trash_folder_long" which is a "special handler" that is used when you 
-    call ->get_arg_value("verified_trash_folder_long"). The result is cached in L1 class 
-    var cache (not appsession cache, [not yet at least]), which is a good thing because the 
-    delete function may be called many times in a row, now the trash folder stuff happens 
-    only once.
-    
-    It checks for preference to use the trash folder also, because if user pref to 
-    use trash folder is false we can not, in that case, obtain a "verified" name for 
-    it then. NOTE THIS REPLACES your need to call get_pref_value("trash_folder_name"), 
-    this new capability to use get_arg_value("verified_trash_folder_long") handles 
-    for you all the logic of obtaining the trash folder name in official long name form, 
-    or even will try to attempt to create it if it does not already exist (and if user 
-    pref is in fact to use the trash folder).
-    
-    Fix duplicate "javascript" string in boindex, resulting in delete button with string 
-    "javascript:javascript:do_something(delall)" as an href. I actually noticed no 
-    functional difference for the browser when this was fixed, maybe js checks for 
-    that anyway.
-    
-
-    modified files:
-     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
-     ChangeLog.ryan--1.1 inc/class.boindex.inc.php
-     inc/class.mail_msg_base.inc.php
-     inc/class.mail_msg_wrappers.inc.php
-
-
-2002-10-20 GMT	Angles Puglisi <angles@aminvestments.com>	patch-57
+2002-11-01 GMT	Angles Puglisi <angles@aminvestments.com>	patch-72
 
     Summary:
-      fix disallow logins if do_login is false, and add link to login err msg
+      cleanup and add comments to cache code, thought about caching prefs
     Revision:
-      anglemail--codehere--1.1--patch-57
+      anglemail--codehere--1.1--patch-72
 
-    Fix disallow logins if do_login is false. The caching was 
-    still testing the cache even if do_login was false, which is 
-    bad because testing the cache may require a login itself. So 
-    not do_login set to False disallows any attempt to login, 
-    which is needed for preferences pages or other places where 
-    we do not want a login, may not have enough info for a login, 
-    or simply have no need for a login anyway.
+    Cleanup and add comments to cache code. No functional changes, just 
+    commenting stuff that is confusing, small cleanup to code no big deal.
     
-    Also added a link to the login error message to return to 
-    the users "home" page.
+    Thought about caching prefs, added some code to begin_request BUT then 
+    I realized this was just as complicated as doing it for real every time 
+    so I stopped coding it. There may be a simpler way but I don't think 
+    at this point that caching prefs actually increases speed.
     
 
     modified files:
      ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
      ChangeLog.ryan--1.1 inc/class.mail_msg_base.inc.php
-
-
-2002-10-20 GMT	Angles Puglisi <angles@aminvestments.com>	patch-56
-
-    Summary:
-      better memory handling of prefs, fixes for prefs handling for new acctname
-    Revision:
-      anglemail--codehere--1.1--patch-56
-
-    Better memory handling of prefs, previously there were several copies of prefs 
-    data in memory at the same time, this has been eliminated.
-    
-    Msg object now has a var "raw_filters" which is the unprocessed filter 
-    data from the prefs as collected by the msg object during initialization.
-    
-    Fixes for prefs handling for new acctname, default value is NO value, previously 
-    was a one char empty string. The no value will cause (hopefully) the value to be 
-    picked up from the more generic name handling from before, if the new 
-    acctname pref is not specified.
-    
-
-    modified files:
-     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
-     ChangeLog.ryan--1.1 inc/class.boaction.inc.php
-     inc/class.bofilters.inc.php inc/class.bopreferences.inc.php
-     inc/class.mail_msg_base.inc.php
-     inc/class.ui_mail_debug.inc.php templates/default/debug.tpl
-
-
-2002-10-18 GMT	Angles Puglisi <angles@aminvestments.com>	patch-55
-
-    Summary:
-      fix prefs handling of addybook, js of old addybook, remove VFS strings
-    Revision:
-      anglemail--codehere--1.1--patch-55
-
-    fix prefs handling of addybook, it needed to use the OOP prefs access 
-    functions.
-    
-    js of old addybook was broken since the link has no GET args, this 
-    cause the js in the compose page to fail if "extraparam" was not 
-    filled, so I added a bogus arg to the URI just to make that happy.
-    
-    remove "VFS" string that was a reminder for me, just a placeholder.
-    
-
-    modified files:
-     ChangeLog.codehere--1.1 ChangeLog.core--1.1 ChangeLog.lex--1.1
-     ChangeLog.ryan--1.1 inc/class.bocompose.inc.php
-     inc/class.bomessage.inc.php
-
-
-2002-10-18 GMT	Angles Puglisi <angles@aminvestments.com>	patch-54
-
-    Summary:
-      reverse update trick syncing codehere to ryan on 021017
-    Revision:
-      anglemail--codehere--1.1--patch-54
-
-    reverse update trick syncing codehere to ryan on 021017
-    
-    These 2 commands failed:
-    > larch star-merge ./anglemail-codehere anglemail--codehere--1.1 anglemail--ryan--1.1 ./anglemail-codestar
-    > larch star-merge anglemail--codehere--1.1 ./anglemail-codehere anglemail--ryan--1.1 ./anglemail-codestar
-    because branch codehere had no patchlog for branch ryan.
-    
-    Solution, reverse update trick:
-    > larch update --force ./anglemail-ryan ./anglemail-ryanupdated anglemail--codehere--1.1
-    Update codehere INTO ryan into a new dir, copy differences from that temp dir  
-    to codehere, trick is done. Also note any file removals, but do not remove any other 
-    than those files removed via development, i.e. different trees will have certain arch 
-    control files different no matter what.
-    
-    Note that all of ryan's changelogs, and some others, were copied to codehere in the process, 
-    thus increasing codehere's patchlog awareness, assuming this trick preserves merge integriry 
-    down the road. 
-    
-
-    new files:
-     ChangeLog.core--1.1 ChangeLog.ryan--1.1 {arch}/=tagging-method
-     {arch}/anglemail/anglemail--core/anglemail--core--1.1/angles@aminvestments.com--2002/patch-log/patch-1
-     {arch}/anglemail/anglemail--core/anglemail--core--1.1/angles@aminvestments.com--2002/patch-log/patch-2
-     {arch}/anglemail/anglemail--core/anglemail--core--1.1/angles@aminvestments.com--2002/patch-log/patch-3
-     {arch}/anglemail/anglemail--lex/anglemail--lex--1.1/angles@aminvestments.com--2002/patch-log/patch-18
-     {arch}/anglemail/anglemail--lex/anglemail--lex--1.1/angles@aminvestments.com--2002/patch-log/patch-19
-     {arch}/anglemail/anglemail--lex/anglemail--lex--1.1/angles@aminvestments.com--2002/patch-log/patch-20
-     {arch}/anglemail/anglemail--lex/anglemail--lex--1.1/angles@aminvestments.com--2002/patch-log/patch-21
-     {arch}/anglemail/anglemail--lex/anglemail--lex--1.1/angles@aminvestments.com--2002/patch-log/patch-22
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/base-0
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-1
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-10
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-11
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-12
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-2
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-3
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-4
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-5
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-6
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-7
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-8
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log/patch-9
-
-    removed files:
-     brother1.html brother2.html data1.html frameset.html
-
-    modified files:
-     ChangeLog.codehere--1.1 ChangeLog.lex--1.1
-     addressbook-js.changelog.txt inc/class.bocompose.inc.php
-     inc/class.boindex.inc.php inc/class.bojsaddressbook.inc.php
-     inc/class.bopreferences.inc.php inc/class.html_widgets.inc.php
-     inc/class.mail_msg_base.inc.php
-     inc/class.mail_msg_display.inc.php
-     inc/class.mail_msg_wrappers.inc.php inc/class.spell.inc.php
-     inc/class.ui_mail_debug.inc.php inc/class.uicompose.inc.php
-     inc/class.uiindex.inc.php inc/class.uijsaddressbook.inc.php
-     inc/class.uipreferences.inc.php inc/hook_home.inc.php
-     inc/selectboxes.js templates/default/addressbook-js-bits.tpl
-     templates/default/addressbook-js-frameset.tpl
-     templates/default/addressbook-js.tpl
-     templates/default/addressbook-real-plain.tpl-UNUSED
-     templates/default/addressbook.tpl
-     templates/default/addressbook.tpl-BAD
-     templates/default/addressbook.tpl-ORIG
-     templates/default/compose.tpl
-     templates/default/index_main_b0_l2.tpl
-
-    new directories:
-     {arch}/anglemail/anglemail--ryan
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002
-     {arch}/anglemail/anglemail--ryan/anglemail--ryan--1.1/angles@aminvestments.com--2002/patch-log
-
-    new patches:
-     angles@aminvestments.com--2002/anglemail--core--1.1--patch-1
-     angles@aminvestments.com--2002/anglemail--core--1.1--patch-2
-     angles@aminvestments.com--2002/anglemail--core--1.1--patch-3
-     angles@aminvestments.com--2002/anglemail--lex--1.1--patch-18
-     angles@aminvestments.com--2002/anglemail--lex--1.1--patch-19
-     angles@aminvestments.com--2002/anglemail--lex--1.1--patch-20
-     angles@aminvestments.com--2002/anglemail--lex--1.1--patch-21
-     angles@aminvestments.com--2002/anglemail--lex--1.1--patch-22
-     angles@aminvestments.com--2002/anglemail--ryan--1.1--base-0
-     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-1
-     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-10
-     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-11
-     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-12
-     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-2
-     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-3
-     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-4
-     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-5
-     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-6
-     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-7
-     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-8
-     angles@aminvestments.com--2002/anglemail--ryan--1.1--patch-9
+     inc/class.mail_msg_wrappers.inc.php
 
 
 2002-11-01 GMT	Angles Puglisi <angles@aminvestments.com>	patch-71

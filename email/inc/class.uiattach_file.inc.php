@@ -21,6 +21,7 @@
 			'attach'	=> True
 			//'show_ui'	=> True
 		);
+		var $tpl;
 		var $bo;
 		
 		var $debug = 0;
@@ -29,7 +30,7 @@
 		
 		function uiattach_file()
 		{
-			return;
+			//return;
 		}
 		
 		function attach()
@@ -83,9 +84,8 @@
 			}
 			
 			// shut down this transaction
+			if ($this->debug > 0) { echo 'LEAVING emai.uiattach_file.attach with call to phpgw_exit'.'<br>'; }
 			$GLOBALS['phpgw']->common->phpgw_exit(False);
-			
-			if ($this->debug > 0) { echo 'LEAVING emai.uiattach_file.attach'.'<br>'; }
 		}
 	
 	

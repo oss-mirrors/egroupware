@@ -274,7 +274,8 @@
 				'init_default'	=> 'string,evo',
 				'values'	=> array(
 					'evo' => lang('Evolution Style'),
-					'moz' => lang('Mozilla Modern Style')
+					'moz' => lang('Mozilla Modern Style'),
+					'noia' => lang('Noia &#64; Carlitus Style')
 				),
 				'long_desc' => 
 					'The email application offers different icon image themes, groups of 
@@ -563,6 +564,19 @@
 				'long_desc' => 
 					'This specifies whether or not to show the number of new message in the folders combo box on the index screen.'
 			);
+			$i++;
+                        $this->std_prefs[$i] = Array(
+                                'id'            => 'show_foldersize',
+                                'type'          => 'exists',
+                                'widget'        => 'checkbox',
+                                'accts_usage'   => 'default, extra_accounts',
+                                'write_props'   => '',
+                                'lang_blurb'    => lang('Show total folder size by default'),
+                                'init_default'  => 'set_or_not,not_set',
+                                'values'        => array(),
+                                'long_desc' =>
+                                        'This specifies whether or not to show the total size of folders by default. If this is not checked, you will be presented with a button allowing you to display folder size..'
+                        );
 			// Custom Settings
 			$this->cust_prefs = Array();
 			$i = 0;

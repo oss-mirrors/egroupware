@@ -17,6 +17,7 @@
 		var $bo;		
 		var $debug = False;
 		var $widgets;
+		var $tpl;
 
 		var $public_functions = array(
 			'index' => True,
@@ -25,31 +26,44 @@
 
 		function uiindex()
 		{
-			return;
+			//return;
 		}
 		
 		/*!
 		@function index
 		@abstract assembles data used for the index page, the list of messages in a folder
-		@param $reuse_feed_args (array) DEPRECIATED
 		@author Angles
-		@description ?
+		@description Uses the BO to do the work, then this hands off the disply handling 
+		to either the old phplib template handling or the new xslt handler index_ function. 
 		*/
-		function index($reuse_feed_args='')
+		function index()
 		{
+			$GLOBALS['phpgw_info']['flags']['currentapp'] = 'email';			
 			print_debug('relevant phpgw_info data', $GLOBALS['phpgw_info']['user']['preferences']['email']);
-			
-			//$debug_extreme= True;
-			$debug_extreme= False;
-			if ($debug_extreme)
-			{
-				echo 'UIINDEX_INDEX PHPHW DUMP<br><pre>';
-				print_r($GLOBALS['phpgw']);
-				echo '</pre>';
-			}
 			
 			$this->bo = CreateObject('email.boindex');
 			$this->bo->index_data();
+			
+			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			{
+				$this->index_old_tpl();
+			}
+			else
+			{
+				$this->index_xslt_tpl();
+			}
+		}
+		
+		/*!
+		@function index_old_tpl
+		@abstract assembles data used for the index page, the list of messages in a folder
+		@author Angles
+		@description ?
+		*/
+		function index_old_tpl()
+		{			
+			// we point to the global template for this version of phpgw templatings
+			$this->tpl =& $GLOBALS['phpgw']->template;
 			
 			// NOW we can out the header, because "index_data()" filled this global
 			//	$GLOBALS['phpgw_info']['flags']['email_refresh_uri']
@@ -67,41 +81,26 @@
 			$this->bo->xi['my_layout'] = $GLOBALS['phpgw']->msg->get_pref_value('layout');
 			$this->bo->xi['my_browser'] = $GLOBALS['phpgw']->msg->browser;
 			
-			$GLOBALS['phpgw']->template->set_file(array(		
+			$this->tpl->set_file(array(		
 				//'T_form_delmov_init' => 'index_form_delmov_init.tpl',
 				'T_index_blocks' => 'index_blocks.tpl',
 				'T_index_main' => 'index_main_b'.$this->bo->xi['my_browser'].'_l'.$this->bo->xi['my_layout']. '.tpl'
 			));
-			$GLOBALS['phpgw']->template->set_block('T_index_main','B_action_report','V_action_report');
-			//$GLOBALS['phpgw']->template->set_block('T_index_main','B_show_size','V_show_size');
-			//$GLOBALS['phpgw']->template->set_block('T_index_main','B_get_size','V_get_size');
-			//$GLOBALS['phpgw']->template->set_block('T_index_blocks','B_stats_layout2','V_stats_layout2');
-			$GLOBALS['phpgw']->template->set_block('T_index_main','B_no_messages','V_no_messages');
-			$GLOBALS['phpgw']->template->set_block('T_index_main','B_msg_list','V_msg_list');
-			$GLOBALS['phpgw']->template->set_block('T_index_blocks','B_mlist_form_init','V_mlist_form_init');
-			$GLOBALS['phpgw']->template->set_block('T_index_blocks','B_arrows_form_table','V_arrows_form_table');
+			$this->tpl->set_block('T_index_main','B_action_report','V_action_report');
+			//$this->tpl->set_block('T_index_main','B_show_size','V_show_size');
+			//$this->tpl->set_block('T_index_main','B_get_size','V_get_size');
+			//$this->tpl->set_block('T_index_blocks','B_stats_layout2','V_stats_layout2');
+			$this->tpl->set_block('T_index_main','B_no_messages','V_no_messages');
+			$this->tpl->set_block('T_index_main','B_msg_list','V_msg_list');
+			$this->tpl->set_block('T_index_blocks','B_mlist_form_init','V_mlist_form_init');
+			$this->tpl->set_block('T_index_blocks','B_arrows_form_table','V_arrows_form_table');
 			
-			$GLOBALS['phpgw']->template->set_var('frm_delmov_action',$this->bo->xi['frm_delmov_action']);
-			$GLOBALS['phpgw']->template->set_var('frm_delmov_name',$this->bo->xi['frm_delmov_name']);
-			$GLOBALS['phpgw']->template->parse('V_mlist_form_init','B_mlist_form_init');
-			$this->bo->xi['V_mlist_form_init'] = $GLOBALS['phpgw']->template->get_var('V_mlist_form_init');	
-
+			$this->tpl->set_var('frm_delmov_action',$this->bo->xi['frm_delmov_action']);
+			$this->tpl->set_var('frm_delmov_name',$this->bo->xi['frm_delmov_name']);
+			$this->tpl->parse('V_mlist_form_init','B_mlist_form_init');
+			$this->bo->xi['V_mlist_form_init'] = $this->tpl->get_var('V_mlist_form_init');	
 			
-			// some fonts and font sizes, simply add to bo->xi[] array
-			//$this->bo->xi['ctrl_bar_font'] = $GLOBALS['phpgw_info']['theme']['font'];
-			//$this->bo->xi['ctrl_bar_font_size'] = '-1';
-			$this->bo->xi['stats_font'] = $GLOBALS['phpgw_info']['theme']['font'];
-			$this->bo->xi['stats_font_size'] = '2';
-			$this->bo->xi['stats_foldername_size'] = '3';
-			$this->bo->xi['mlist_font'] = $GLOBALS['phpgw_info']['theme']['font'];
-			$this->bo->xi['mlist_font_size'] = '2';
-			$this->bo->xi['mlist_font_size_sm'] = '1';
-			$this->bo->xi['hdr_font'] = $GLOBALS['phpgw_info']['theme']['font'];
-			$this->bo->xi['hdr_font_size'] = '2';
-			$this->bo->xi['hdr_font_size_sm'] = '1';
-			$this->bo->xi['ftr_font'] = $GLOBALS['phpgw_info']['theme']['font'];
-			$this->bo->xi['compose_text'] = lang('Compose');
-
+			
 			$tpl_vars = Array(
 				// fonts and font sizes
 			//	'ctrl_bar_font'		=> $this->bo->xi['ctrl_bar_font'],
@@ -122,21 +121,25 @@
 				'mlist_newmsg_txt'	=> $this->bo->xi['mlist_newmsg_txt'],
 				'mlist_checkbox_name'	=> $this->bo->xi['mlist_checkbox_name'],
 				'images_dir'		=> $this->bo->xi['svr_image_dir'],
+				'attach_img' 		=> $this->bo->xi['attach_img'],
+				'check_image' 		=> $this->bo->xi['check_image'],
+				'delmov_image' 		=> $this->bo->xi['delmov_image'],
 				'compose_text'		=> $this->bo->xi['compose_text'],
 				'compose_link'		=> $this->bo->xi['compose_link'],
 				'compose_img'		=> $this->bo->xi['compose_img'],
+				'compose_clickme'		=> $this->bo->xi['compose_clickme'],
 				'auto_refresh_widget'	=> $this->bo->xi['auto_refresh_widget']
 				
 			);
-			$GLOBALS['phpgw']->template->set_var($tpl_vars);
+			$this->tpl->set_var($tpl_vars);
 			
 			//= = = = TESTING NEW TOOLBAR WIDGET = = = 
 			$this->widgets = CreateObject('email.html_widgets');
 			// this will have a msg to the user if messages were moved or deleted
 			$this->widgets->set_toolbar_msg($GLOBALS['phpgw']->msg->report_moved_or_deleted());
-			$GLOBALS['phpgw']->template->set_var('widget_toolbar',$this->widgets->get_toolbar());
+			$this->tpl->set_var('widget_toolbar',$this->widgets->get_toolbar());
 			// stats row, generated in a single function call
-			$GLOBALS['phpgw']->template->set_var('stats_data_display', $this->bo->get_index_stats_block((string)$GLOBALS['phpgw']->msg->get_pref_value('layout')));
+			$this->tpl->set_var('stats_data_display', $this->bo->get_index_stats_block((string)$GLOBALS['phpgw']->msg->get_pref_value('layout')));
 			
 			if ($this->bo->xi['folder_info']['number_all'] == 0)
 			{
@@ -146,46 +149,80 @@
 					'V_mlist_form_init'	=> $this->bo->xi['V_mlist_form_init'],
 					'mlist_backcolor'	=> $GLOBALS['phpgw_info']['theme']['row_on']
 				);
-				$GLOBALS['phpgw']->template->set_var($tpl_vars);
-				$GLOBALS['phpgw']->template->parse('V_no_messages','B_no_messages');
-				$GLOBALS['phpgw']->template->set_var('V_msg_list','');
+				$this->tpl->set_var($tpl_vars);
+				$this->tpl->parse('V_no_messages','B_no_messages');
+				$this->tpl->set_var('V_msg_list','');
 			}
 			else
 			{
-				$GLOBALS['phpgw']->template->set_var('V_no_messages','');
+				$this->tpl->set_var('V_no_messages','');
 				
-				$GLOBALS['phpgw']->template->set_var('stats_last',$this->bo->xi['totaltodisplay']);
+				$this->tpl->set_var('stats_last',$this->bo->xi['totaltodisplay']);
 				
 				for ($i=0; $i < count($this->bo->xi['msg_list_dsp']); $i++)
 				{
 					if ($this->bo->xi['msg_list_dsp'][$i]['first_item'])
 					{
-						$GLOBALS['phpgw']->template->set_var('V_mlist_form_init',$this->bo->xi['V_mlist_form_init']);
+						$this->tpl->set_var('V_mlist_form_init',$this->bo->xi['V_mlist_form_init']);
 					}
 					else
 					{
-						$GLOBALS['phpgw']->template->set_var('V_mlist_form_init', '');
+						$this->tpl->set_var('V_mlist_form_init', '');
 					}
+					// new, unseen 
 					if ($this->bo->xi['msg_list_dsp'][$i]['is_unseen'])
 					{
-						$GLOBALS['phpgw']->template->set_var('mlist_new_msg',$this->bo->xi['mlist_new_msg']);
-						$GLOBALS['phpgw']->template->set_var('open_newbold','<strong>');
-						$GLOBALS['phpgw']->template->set_var('close_newbold','</strong>');
+						$this->tpl->set_var('mlist_new_msg',$this->bo->xi['mlist_new_msg']);
+						$this->tpl->set_var('open_newbold','<strong>');
+						$this->tpl->set_var('close_newbold','</strong>');
 					}
 					else
 					{
-						$GLOBALS['phpgw']->template->set_var('mlist_new_msg','&nbsp;');
-						$GLOBALS['phpgw']->template->set_var('open_newbold','');
-						$GLOBALS['phpgw']->template->set_var('close_newbold','');
+						$this->tpl->set_var('mlist_new_msg','&nbsp;');
+						$this->tpl->set_var('open_newbold','');
+						$this->tpl->set_var('close_newbold','');
 					}
+					// strikethru text if the IMAP flag "Deleted" is set for this message
+					if ($this->bo->xi['msg_list_dsp'][$i]['is_deleted'])
+					{
+						$this->tpl->set_var('open_strikethru','<em><strike>');
+						$this->tpl->set_var('close_strikethru','</strike></em>');
+					}
+					else
+					{
+						$this->tpl->set_var('open_strikethru','');
+						$this->tpl->set_var('close_strikethru','');
+					}
+					// paperclip image for attachment
 					if ($this->bo->xi['msg_list_dsp'][$i]['has_attachment'])
 					{
-						$GLOBALS['phpgw']->template->set_var('mlist_attach',$this->bo->xi['mlist_attach']);
+						$this->tpl->set_var('mlist_attach',$this->bo->xi['mlist_attach']);
 					}
 					else
 					{
-						$GLOBALS['phpgw']->template->set_var('mlist_attach','&nbsp;');
+						$this->tpl->set_var('mlist_attach','&nbsp;');
 					}
+					// Flags Images
+					$all_flags_images = '';
+					if ($this->bo->xi['msg_list_dsp'][$i]['is_flagged'])
+					{
+						$all_flags_images .= $this->bo->xi['flagged_img'];
+					}
+					if ($this->bo->xi['msg_list_dsp'][$i]['is_answered'])
+					{
+						$all_flags_images .= $this->bo->xi['answered_img'];
+					}
+					if ($this->bo->xi['msg_list_dsp'][$i]['is_draft'])
+					{
+						$all_flags_images .= $this->bo->xi['draft_img'];
+					}
+					// right now we use both strike thru text AND this "deleted" image to indicate "marked as deleted" flag
+					if ($this->bo->xi['msg_list_dsp'][$i]['is_deleted'])
+					{
+						$all_flags_images .= $this->bo->xi['deleted_img'];
+					}
+					$this->tpl->set_var('all_flags_images',$all_flags_images);
+					
 					// are we IN THE SENT folder or not
 					if (	$GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->get_arg_value('folder'))
 					 != $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->get_pref_value('sent_folder_name')))
@@ -195,6 +232,7 @@
 							// new checkbox value, new fake_uri method of embedding coumpound data in a single HTML element
 							'mlist_embedded_uri' => $this->bo->xi['msg_list_dsp'][$i]['uri'],
 							'mlist_backcolor'	=> $this->bo->xi['msg_list_dsp'][$i]['back_color'],
+							'mlist_backcolor_class'	=> $this->bo->xi['msg_list_dsp'][$i]['back_color_class'],
 							'mlist_subject'		=> $this->bo->xi['msg_list_dsp'][$i]['subject'],
 							'mlist_subject_link'	=> $this->bo->xi['msg_list_dsp'][$i]['subject_link'],
 							'mlist_from'		=> $this->bo->xi['msg_list_dsp'][$i]['from_name'],
@@ -217,6 +255,7 @@
 							// new checkbox value, new fake_uri method of embedding coumpound data in a single HTML element
 							'mlist_embedded_uri' => $this->bo->xi['msg_list_dsp'][$i]['uri'],
 							'mlist_backcolor'	=> $this->bo->xi['msg_list_dsp'][$i]['back_color'],
+							'mlist_backcolor_class'	=> $this->bo->xi['msg_list_dsp'][$i]['back_color_class'],
 							'mlist_subject'		=> $this->bo->xi['msg_list_dsp'][$i]['subject'],
 							'mlist_subject_link'	=> $this->bo->xi['msg_list_dsp'][$i]['subject_link'],
 							'mlist_from'		=> $to_data_final,
@@ -226,20 +265,20 @@
 							'mlist_size'		=> $this->bo->xi['msg_list_dsp'][$i]['size']
 						);
 					}
-					$GLOBALS['phpgw']->template->set_var($tpl_vars);
-					$GLOBALS['phpgw']->template->parse('V_msg_list','B_msg_list',True);
+					$this->tpl->set_var($tpl_vars);
+					$this->tpl->parse('V_msg_list','B_msg_list',True);
 				}
 			}
 
 
 			//if ($this->bo->xi['report_this'] != '')
 			//{
-			//	$GLOBALS['phpgw']->template->set_var('report_this',$this->bo->xi['report_this']);
-			//	$GLOBALS['phpgw']->template->parse('V_action_report','B_action_report');
+			//	$this->tpl->set_var('report_this',$this->bo->xi['report_this']);
+			//	$this->tpl->parse('V_action_report','B_action_report');
 			//}
 			//else
 			//{
-				$GLOBALS['phpgw']->template->set_var('V_action_report','');
+				$this->tpl->set_var('V_action_report','');
 			//}
 			$tpl_vars = Array(
 				'select_msg'	=> $this->bo->xi['select_msg'],
@@ -287,6 +326,7 @@
 				'prev_arrows'		=> $this->bo->xi['td_prev_arrows'],
 				'next_arrows'		=> $this->bo->xi['td_next_arrows'],
 				'arrows_backcolor'	=> $this->bo->xi['arrows_backcolor'],
+				'arrows_backcolor_class'	=> $this->bo->xi['arrows_backcolor_class'],
 				'arrows_td_backcolor'	=> $this->bo->xi['arrows_td_backcolor'],
 				// part of new first prev next last arrows data block for "layout 2"
 				'arrows_form_action'	=> $this->bo->xi['arrows_form_action'],
@@ -309,45 +349,50 @@
 				'stats_to_txt'	=> $this->bo->xi['stats_to_txt'],
 				'stats_first'	=> $this->bo->xi['stats_first'],
 				'hdr_backcolor'	=> $this->bo->xi['hdr_backcolor'],
+				'hdr_backcolor_class'	=> $this->bo->xi['hdr_backcolor_class'],
 				'hdr_subject'	=> $this->bo->xi['hdr_subject'],
 				'hdr_from'	=> $this->bo->xi['hdr_from'],
 				'hdr_date'	=> $this->bo->xi['hdr_date'],
 				'hdr_size'	=> $this->bo->xi['hdr_size'],
 				'app_images'		=> $this->bo->xi['image_dir'],
 				'ftr_backcolor'		=> $this->bo->xi['ftr_backcolor'],
+				'ftr_backcolor_class'		=> $this->bo->xi['ftr_backcolor_class'],
 				'delmov_button'	=> $this->bo->xi['lang_delete'],
 				'delmov_button'		=> $this->bo->xi['delmov_button'],
 				'delmov_listbox'	=> $this->bo->xi['delmov_listbox'],
 				// this is only used in mlist displays
 				'mlist_hidden_vars'	=> ''
 			);
-			$GLOBALS['phpgw']->template->set_var($tpl_vars);
+			$this->tpl->set_var($tpl_vars);
 			// make the first prev next last arrows
-			$GLOBALS['phpgw']->template->parse('V_arrows_form_table','B_arrows_form_table');
+			$this->tpl->parse('V_arrows_form_table','B_arrows_form_table');
 			/*
 			if ($this->bo->xi['stats_size'] != '')
 			{
-				$GLOBALS['phpgw']->template->set_var('stats_size',$this->bo->xi['stats_size']);
-				$GLOBALS['phpgw']->template->parse('V_show_size','B_show_size');
-				$GLOBALS['phpgw']->template->set_var('V_get_size','');
+				$this->tpl->set_var('stats_size',$this->bo->xi['stats_size']);
+				$this->tpl->parse('V_show_size','B_show_size');
+				$this->tpl->set_var('V_get_size','');
 			}
 			else
 			{
-				$GLOBALS['phpgw']->template->set_var('get_size_link',$this->bo->xi['get_size_link']);
-				$GLOBALS['phpgw']->template->set_var('frm_get_size_name',$this->bo->xi['frm_get_size_name']);
-				$GLOBALS['phpgw']->template->set_var('frm_get_size_action',$this->bo->xi['frm_get_size_action']);
-				$GLOBALS['phpgw']->template->set_var('get_size_flag',$this->bo->xi['force_showsize_flag']);
-				$GLOBALS['phpgw']->template->set_var('lang_get_size',$this->bo->xi['lang_get_size']);
-				$GLOBALS['phpgw']->template->parse('V_get_size','B_get_size');
-				$GLOBALS['phpgw']->template->set_var('V_show_size','');
+				$this->tpl->set_var('get_size_link',$this->bo->xi['get_size_link']);
+				$this->tpl->set_var('frm_get_size_name',$this->bo->xi['frm_get_size_name']);
+				$this->tpl->set_var('frm_get_size_action',$this->bo->xi['frm_get_size_action']);
+				$this->tpl->set_var('get_size_flag',$this->bo->xi['force_showsize_flag']);
+				$this->tpl->set_var('lang_get_size',$this->bo->xi['lang_get_size']);
+				$this->tpl->parse('V_get_size','B_get_size');
+				$this->tpl->set_var('V_show_size','');
 			}
 			*/
 			
+			// new way to handle debug data, if this array has anything, put it in the template source data vars
+			$this->tpl->set_var('debugdata',$GLOBALS['phpgw']->msg->dbug->notice_pagedone());
+			
 			// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
-			$GLOBALS['phpgw']->template->set_unknowns("comment");
-			// production use, use this:	$GLOBALS['phpgw']->template->set_unknowns("remove");
+			$this->tpl->set_unknowns('comment');
+			// production use, use this:	$this->tpl->set_unknowns("remove");
 			// Template->pfp will (1) parse and substitute, (2) "finish" - handle unknowns, (3) echo the output
-			$GLOBALS['phpgw']->template->pfp('out','T_index_main');
+			$this->tpl->pfp('out','T_index_main');
 			// note, for some reason, eventhough it seems we *should* call common->phpgw_footer(),
 			// if we do that, the client browser will get TWO page footers, so we do not call it here
 			
@@ -356,6 +401,131 @@
 			// destroy the object
 			$GLOBALS['phpgw']->msg = '';
 			unset($GLOBALS['phpgw']->msg);
+		}
+
+		/*!
+		@function index_xslt_tpl
+		@abstract assembles data used for the index page, the list of messages in a folder
+		@author Angles
+		@description ?
+		*/
+		function index_xslt_tpl()
+		{
+			$GLOBALS['phpgw']->xslttpl->add_file(array('app_data',
+										$GLOBALS['phpgw']->common->get_tpl_dir('phpgwapi','default') . SEP . 'app_header')
+										);
+			
+			$this->bo->xi['my_layout'] = $GLOBALS['phpgw']->msg->get_pref_value('layout');
+			$this->bo->xi['my_browser'] = $GLOBALS['phpgw']->msg->browser;
+			
+			//$this->bo->xi['compose_text'] = lang('Compose');
+			
+			//= = = =  TOOLBAR WIDGET = = = 
+			$this->widgets = CreateObject('email.html_widgets');
+			// this will have a msg to the user if messages were moved or deleted
+			$this->widgets->set_toolbar_msg($GLOBALS['phpgw']->msg->report_moved_or_deleted());
+			$widget_toolbar = $this->widgets->get_toolbar();
+			
+			$data = array(
+				'appname' => lang('E-Mail'),
+				'function_msg' => lang('list messages'),
+				'index_js' => $this->index_xslt_javascript(),
+				'widget_toolbar' => $widget_toolbar,
+				'stats_data_display' => $this->bo->get_index_stats_block((string)$GLOBALS['phpgw']->msg->get_pref_value('layout')),
+				'arrows_backcolor_class' => $this->bo->xi['arrows_backcolor_class'],
+				'first_page' => $this->bo->xi['first_page'],
+				'prev_page' => $this->bo->xi['prev_page'],
+				'next_page' => $this->bo->xi['next_page'],
+				'last_page' => $this->bo->xi['last_page'],
+				'attach_img' => $this->bo->xi['attach_img'],
+				'attach_img_alttxt' => $this->bo->xi['mlist_attach_txt'],
+				// these next 4 "flagged" images are full html tag images, not just the image uri
+				'flagged_img' => $this->bo->xi['flagged_img'],
+				'answered_img' => $this->bo->xi['answered_img'],
+				'draft_img' => $this->bo->xi['draft_img'],
+				'deleted_img' => $this->bo->xi['deleted_img'],
+				'mlist_checkbox_name' => $this->bo->xi['mlist_checkbox_name'],
+				'msg_list_dsp' => $this->bo->xi['msg_list_dsp'],
+				'ftr_backcolor_class' => $this->bo->xi['ftr_backcolor_class'],
+				'check_image' => $this->bo->xi['check_image'],
+				'delmov_image' 		=> $this->bo->xi['delmov_image'],
+				'delmov_button' => $this->bo->xi['delmov_button'],
+				'delmov_listbox' => $this->bo->xi['delmov_listbox'],
+				'hdr_from' => $this->bo->xi['hdr_from'],
+				'hdr_subject' => $this->bo->xi['hdr_subject'],
+				'hdr_date' => $this->bo->xi['hdr_date'],
+				'hdr_size' => $this->bo->xi['hdr_size'],
+				'frm_delmov_name' => $this->bo->xi['frm_delmov_name'],
+				'frm_delmov_action' => $this->bo->xi['frm_delmov_action'],
+				'current_sort' => $this->bo->xi['current_sort'],
+				'current_order' => $this->bo->xi['current_order'],
+				'current_start' => $this->bo->xi['current_start'],
+				'report_no_msgs' => $this->bo->xi['report_no_msgs'],
+				'folder_info' => $this->bo->xi['folder_info'],
+				'auto_refresh_widget' => $this->bo->xi['auto_refresh_widget']
+			);
+			// new way to handle debug data, if this array has anything, put it in the template source data vars
+			//if ($GLOBALS['phpgw']->msg->dbug->debugdata)
+			//{
+			//	$data['debugdata'] = $GLOBALS['phpgw']->msg->dbug->get_debugdata_stack();
+			//}
+			$data['debugdata'] = $GLOBALS['phpgw']->msg->dbug->notice_pagedone();
+			
+			$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('index' => $data));
+			
+			// close down ALL mailserver streams
+			$GLOBALS['phpgw']->msg->end_request();
+			// destroy the object
+			$GLOBALS['phpgw']->msg = '';
+			unset($GLOBALS['phpgw']->msg);
+		}
+
+		/*!
+		@function index_xslt_javascript
+		@abstract xsl file does not seem to like this stuff in it, so put it here. 
+		@author Angles
+		@description ?
+		*/
+		function index_xslt_javascript()
+		{
+			// I think indenting screws this up 
+$index_js = <<<EOD
+
+<script type="text/javascript">
+function do_action(act)
+{
+	flag = 0;
+	for (i=0; i<document.delmov.elements.length; i++) {
+		//alert(document.delmov.elements[i].type);
+		if (document.delmov.elements[i].type == "checkbox") {
+			if (document.delmov.elements[i].checked) {
+				flag = 1;
+			}
+		}
+	}
+	if (flag != 0) {
+		document.delmov.what.value = act;
+		document.delmov.submit();
+	} else {
+		alert("{select_msg}");
+		document.delmov.tofolder.selectedIndex = 0;
+	}
+}
+function check_all()
+{
+	for (i=0; i<document.delmov.elements.length; i++) {
+		if (document.delmov.elements[i].type == "checkbox") {
+			if (document.delmov.elements[i].checked) {
+				document.delmov.elements[i].checked = false;
+			} else {
+				document.delmov.elements[i].checked = true;
+			}
+		} 
+	}
+}
+</script>
+EOD;
+			return $index_js;
 		}
 		
 		
@@ -510,6 +680,7 @@
 					$tpl_vars = Array(
 						'mlist_msg_num'		=> $this->bo->xi['msg_list_dsp'][$i]['msg_num'],
 						'mlist_backcolor'	=> $this->bo->xi['msg_list_dsp'][$i]['back_color'],
+						'mlist_backcolor_class'	=> $this->bo->xi['msg_list_dsp'][$i]['back_color_class'],
 						'mlist_subject'		=> $this->bo->xi['msg_list_dsp'][$i]['subject'],
 						'mlist_subject_link'	=> $this->bo->xi['msg_list_dsp'][$i]['subject_link'],
 						'mlist_from'		=> $this->bo->xi['msg_list_dsp'][$i]['from_name'],
@@ -542,6 +713,7 @@
 				'ctrl_bar_back2'	=> $this->bo->xi['ctrl_bar_back2'],
 				'compose_txt'	=> $this->bo->xi['compose_txt'],
 				'compose_link'	=> $this->bo->xi['compose_link'],
+				'compose_clickme'	=> $this->bo->xi['compose_clickme'],
 				'folders_href'	=> $this->bo->xi['folders_href'],
 				'folders_btn'	=> $this->bo->xi['folders_btn'],
 				'email_prefs_txt'	=> $this->bo->xi['email_prefs_txt'],
@@ -562,6 +734,7 @@
 				'prev_arrows'		=> $this->bo->xi['td_prev_arrows'],
 				'next_arrows'		=> $this->bo->xi['td_next_arrows'],
 				'arrows_backcolor'	=> $this->bo->xi['arrows_backcolor'],
+				'arrows_backcolor_class'	=> $this->bo->xi['arrows_backcolor_class'],
 				'arrows_td_backcolor'	=> $this->bo->xi['arrows_td_backcolor'],
 				// part of new first prev next last arrows data block for "layout 2"
 				'arrows_form_action'	=> $this->bo->xi['arrows_form_action'],
@@ -584,12 +757,14 @@
 				'stats_to_txt'	=> $this->bo->xi['stats_to_txt'],
 				'stats_first'	=> $this->bo->xi['stats_first'],
 				'hdr_backcolor'	=> $this->bo->xi['hdr_backcolor'],
+				'hdr_backcolor_class'	=> $this->bo->xi['hdr_backcolor_class'],
 				'hdr_subject'	=> $this->bo->xi['hdr_subject'],
 				'hdr_from'	=> $this->bo->xi['hdr_from'],
 				'hdr_date'	=> $this->bo->xi['hdr_date'],
 				'hdr_size'	=> $this->bo->xi['hdr_size'],
 				'app_images'		=> $this->bo->xi['image_dir'],
 				'ftr_backcolor'		=> $this->bo->xi['ftr_backcolor'],
+				'ftr_backcolor_class'		=> $this->bo->xi['ftr_backcolor_class'],
 				'delmov_button'		=> $this->bo->xi['lang_delete'],
 				// "delmov_action" was filled above when we parsed that block
 				'delmov_listbox'	=> $this->bo->xi['delmov_listbox']

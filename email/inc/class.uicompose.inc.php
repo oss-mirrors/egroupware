@@ -16,6 +16,7 @@
 	{
 		var $bo;		
 		var $debug = 0;
+		var $tpl;
 		var $widgets;
 
 		var $public_functions = array(
@@ -24,7 +25,7 @@
 
 		function uicompose()
 		{
-			return;
+			//return;
 		}
 		
 		/*!
@@ -35,7 +36,7 @@
 		@access public
 		*/
 		function compose($reuse_feed_args='')
-		{
+		{			
 			if ((is_string($reuse_feed_args))
 			&& ($reuse_feed_args == ''))
 			{
@@ -51,25 +52,46 @@
 			// pass "special_instructions" back to bocompose, so leave this here
 			$this->bo->compose($reuse_feed_args);
 			
-			// we are the BO and the UI, we take care of outputting the HTML to the client browser
-			unset($GLOBALS['phpgw_info']['flags']['noheader']);
-			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-			$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
-			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
-			$GLOBALS['phpgw']->common->phpgw_header();
+			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			{
+				// we point to the global template for this version of phpgw templatings
+				$this->tpl =& $GLOBALS['phpgw']->template;
+				//$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			}
+			else
+			{
+				// we use a PRIVATE template object for 0.9.14 conpat and during xslt porting
+				$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			}
 			
-			$GLOBALS['phpgw']->template->set_file(
+			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			{
+				// we are the BO and the UI, we take care of outputting the HTML to the client browser
+				unset($GLOBALS['phpgw_info']['flags']['noheader']);
+				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+				$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+				$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
+				$GLOBALS['phpgw']->common->phpgw_header();
+			}
+			else
+			{
+				$GLOBALS['phpgw']->xslttpl->add_file(array('app_data',
+											$GLOBALS['phpgw']->common->get_tpl_dir('phpgwapi','default') . SEP . 'app_header')
+											);
+			}
+			
+			$this->tpl->set_file(
 				Array(
 					'T_compose_out' => 'compose.tpl'
 				)
 			);
-			$GLOBALS['phpgw']->template->set_block('T_compose_out','B_checkbox_sig','V_checkbox_sig');
+			$this->tpl->set_block('T_compose_out','B_checkbox_sig','V_checkbox_sig');
 			
 			if ($this->debug > 2) { echo 'GLOBALS[phpgw_info] dump:<pre>'; print_r($GLOBALS['phpgw_info']) ; echo '</pre>'; }
 			
-			//= = = = TESTING NEW TOOLBAR WIDGET = = = 
+			//= = = = TOOLBAR WIDGET = = = 
 			$this->widgets = CreateObject('email.html_widgets');
-			$GLOBALS['phpgw']->template->set_var('widget_toolbar',$this->widgets->get_toolbar());
+			$this->tpl->set_var('widget_toolbar',$this->widgets->get_toolbar());
 			
 			// fill template vars
 			$tpl_vars = Array(
@@ -87,7 +109,9 @@
 				'form1_method'		=> $this->bo->xi['form1_method'],
 				'js_addylink'		=> $this->bo->xi['js_addylink'],
 				'buttons_bgcolor'	=> $this->bo->xi['buttons_bgcolor'],
+				'buttons_bgcolor_class'	=> $this->bo->xi['buttons_bgcolor_class'],
 				'to_boxs_bgcolor'	=> $this->bo->xi['to_boxs_bgcolor'],
+				'to_boxs_bgcolor_class'	=> $this->bo->xi['to_boxs_bgcolor_class'],
 				'to_boxs_font'		=> $this->bo->xi['to_boxs_font'],
 				'to_box_desc'		=> $this->bo->xi['to_box_desc'],
 				'to_box_name'		=> $this->bo->xi['to_box_name'],
@@ -110,22 +134,59 @@
 				'send_button'			=> $this->bo->xi['send_button'],
 				'spellcheck_button'		=> $this->bo->xi['spellcheck_button'],
 				'attachfile_js_button'		=> $this->bo->xi['attachfile_js_button'], 
+				'attachfile_js_onclick'          => $this->bo->xi['attachfile_js_onclick'],
 				'body_box_name'		=> $this->bo->xi['body_box_name']
 			);
-			$GLOBALS['phpgw']->template->set_var($tpl_vars);
-			if ($this->bo->xi['do_checkbox_sig'])
+			$this->tpl->set_var($tpl_vars);
+			if ($this->bo->xi['ischecked_checkbox_sig'])
 			{
-				$GLOBALS['phpgw']->template->parse('V_checkbox_sig','B_checkbox_sig');
+				$this->tpl->set_var('ischecked_checkbox_sig','checked');
 			}
 			else
 			{
-				$GLOBALS['phpgw']->template->set_var('V_checkbox_sig','');
+				$this->tpl->set_var('ischecked_checkbox_sig','');
+			}
+			// remember, we show the checkbox for the sig only if the user has some sig test in the prefs
+			if ($this->bo->xi['do_checkbox_sig'])
+			{
+				$this->tpl->parse('V_checkbox_sig','B_checkbox_sig');
+			}
+			else
+			{
+				$this->tpl->set_var('V_checkbox_sig','');
+			}
+			if ($this->bo->xi['ischecked_checkbox_req_notify'])
+			{
+				$this->tpl->set_var('ischecked_checkbox_req_notify','checked');
+			}
+			else
+			{
+				$this->tpl->set_var('ischecked_checkbox_req_notify','');
+			}
+			
+			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
+			{
+				// we are the BO and the UI, we take care of outputting the HTML to the client browser
+				$this->tpl->pfp('out','T_compose_out');
+			}
+			else
+			{
+				$this->tpl->set_unknowns('comment');
+				//$this->tpl->set_unknowns('remove');
+				$data = array();
+				$data['appname'] = lang('E-Mail');
+				$data['function_msg'] = lang('compose message');
+				$data['email_page'] = $this->tpl->parse('out','T_compose_out');
+				// new way to handle debug data, if this array has anything, put it in the template source data vars
+				if ($GLOBALS['phpgw']->msg->debugdata)
+				{
+					$data['debugdata'] = $GLOBALS['phpgw']->msg->dbug->get_debugdata_stack();
+				}
+				//$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('uimessage' => $data));
+				$GLOBALS['phpgw']->xslttpl->set_var('phpgw',array('generic_out' => $data));
 			}
 			
 			$GLOBALS['phpgw']->msg->end_request();
-			
-			// we are the BO and the UI, we take care of outputting the HTML to the client browser
-			$GLOBALS['phpgw']->template->pfp('out','T_compose_out');
 		}
 	}
 ?>

@@ -50,6 +50,9 @@
 			<li> = = Other Stuff = =</li>
 			<li>{func_O1}</li>
 			<li>{func_O2}</li>
+			<li>{func_O3}</li>
+			<li>{func_O4}</li>
+			<li>{func_O5}</li>
 		</ul>
 		<br>
 		This seta up an echo dump:

@@ -4,8 +4,8 @@
   <b>{page_title}</b>
   <hr>
 </p>
-<table border="0" cellspacing="2" cellpadding="2" width="95%" align="center">
-<tr bgcolor="{tr_titles_color}">
+<table border="0" cellspacing="2" cellpadding="2" width="100%" align="center">
+<tr bgcolor="{tr_titles_color}" class="{tr_titles_class}">
 	<td width="60%" align="left">
 		<font face="{font}">{filter_name_header}</font>
 	</td>
@@ -23,7 +23,7 @@
 	</td>
 </tr>
 <!-- BEGIN B_filter_list_row -->
-<tr bgcolor="{tr_color}">
+<tr bgcolor="{tr_color}" class="{tr_color_class}">
 	<td width="60%" align="left">
 		<font face="{font}">{filter_identity}</font>
 	</td>
@@ -60,8 +60,7 @@
 <table width="90%" border="0" cellPadding="4" cellSpacing="4" align="center">
 <tr> 
 	<td colspan="2" align="center">
-		<em>Under Development</em>
-		<br>test or apply ALL filters.
+		<br>{lang_test_or_apply}
 	</td>
 </tr>
 <tr> 
@@ -75,4 +74,5 @@
 </table>
 
 <p>&nbsp;</p>
+{debugdata}
 <!-- end filter_list.tpl -->

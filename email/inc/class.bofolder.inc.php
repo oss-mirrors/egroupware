@@ -1,9 +1,9 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - email BO Class	for Folder Actions and List Display		*
-	* http://www.phpgroupware.org							*
-	* Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>		*
-	* xml-rpc and soap code template by Milosch and others				*
+	* AngleMail - email BO Class	for Folder Actions and List Display		*
+	* http://www.anglemail.org							*
+	* Written by Angelo (Angles) Puglisi <angles@aminvestments.com>		*
+	* Copyright 2001, 2002 Angelo (Angles) Puglisi				*
 	* --------------------------------------------							*
 	*  This program is free software; you can redistribute it and/or modify it		*
 	*  under the terms of the GNU General Public License as published by the	*
@@ -22,20 +22,21 @@
 		);
 		var $nextmatchs;
 		var $msg_bootstrap;
-		var $index_base_link='';
-		//var $debug = True;
-		var $debug = False;
+		// use the cachable function or the non-cachable status function
+		var $use_cachable_status = True;
+		//var $use_cachable_status = False;
+		var $debug = 0;
 		var $xi;
 		
 		function bofolder()
 		{
-			return;
+			//return;
 		}
 		
 		
 		function folder()
 		{
-			if ($this->debug) { echo 'ENTERING: email.bofolder.folder'.'<br>'; }
+			if ($this->debug > 0) { echo 'ENTERING: email.bofolder.folder('.__LINE__.')'.'<br>'; }
 			// create class objects
 			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
 			
@@ -45,21 +46,25 @@
 			
 			// ----  Create or Delete or Rename a Folder ?  ----
 			// "folder_action()" handles checking if any action should be taken
+			if ($this->debug > 1) { echo 'email.bofolder.folder('.__LINE__.') calling $this->folder_action()'.'<br>'; }
 			$this->folder_action();
 			
 			
 			// ----  Get a List Of All Folders  AND Display them ----
+			if ($this->debug > 1) { echo 'email.bofolder.folder('.__LINE__.') calling $this->folder_data()'.'<br>'; }
 			$this->folder_data();
 			
 			// end the email transaction
 			//$GLOBALS['phpgw']->msg->end_request();
 			// NO we may not be really done yet
+			if ($this->debug > 0) { echo 'LEAVING: email.bofolder.folder('.__LINE__.')'.'<br>'; }
 		}
 		
 		
 		
 		function folder_action()
 		{
+			if ($this->debug > 0) { echo 'ENTERING: email.bofolder.folder_action('.__LINE__.')'.'<br>'; }
 			// ----  Create or Delete or Rename a Folder ?  ----
 			if (($GLOBALS['phpgw']->msg->get_arg_value('action') == 'create')
 			|| ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'delete')
@@ -138,6 +143,11 @@
 					// add server string to target folder
 					$target_fldball['folder'] = $server_str.$target_fldball['folder'];
 					
+					// NOTE the dcom class will set a flag indicating a folder list change, ->dcom->folder_list_changed=True
+					// function ->msg->get_folder_list()  checks for this flag to know when to expire cached folder list and get a new one
+					// since we call this folder change function before the folder display funcion, the folder display will 
+					// immediately get this flag if it has been set, and will get fresh folder list from the mailserver
+					
 					// =====  NOTE:  maybe some "are you sure" code ????  =====
 					if (($GLOBALS['phpgw']->msg->get_arg_value('action') == 'create')
 					|| ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'create_expert'))
@@ -207,12 +217,14 @@
 			// we may have been  called externally, return this action report
 			//return $action_report;
 			// we may have been  called externally, return if we succeeded or not
+			if ($this->debug > 0) { echo 'LEAVING: email.bofolder.folder_action('.__LINE__.'), returning $success ['.serialize($success).'], only matters if folder action was attempted'.'<br>'; }
 			return $success;
 		}
 		
 		
 		function folder_data()
 		{
+			if ($this->debug > 0) { echo 'ENTERING: email.bofolder.folder_data('.__LINE__.')'.'<br>'; } 
 			//  ----  Establish Email Server Connectivity Conventions  ----
 			$server_str = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_callstr');
 			$name_space = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_namespace');
@@ -223,7 +235,8 @@
 			$folder_list = $GLOBALS['phpgw']->msg->get_arg_value('folder_list');
 			//$folder_list =& $GLOBALS['phpgw']->msg->get_arg_value_ref('folder_list');
 			
-			if ($this->debug) { echo 'email.bofolder.folder_data: $folder_list[] dump:<pre>'; print_r($folder_list); echo '</pre>'; }
+			if ($this->debug > 2) { echo 'email.bofolder.folder_data('.__LINE__.'): $folder_list[] dump:<pre>'; print_r($folder_list); echo '</pre>'; }
+			if ($this->debug > 1) { echo 'email.bofolder.folder_data('.__LINE__.') USE CACHABLE? $this->use_cachable_status is ['.serialize($this->use_cachable_status).']'.'<br>'; } 
 			
 			$this->xi['folder_list_display'] = array();
 			for ($i=0; $i<count($folder_list);$i++)
@@ -231,11 +244,20 @@
 				$folder_long = $folder_list[$i]['folder_long'];
 				$folder_short = $folder_list[$i]['folder_short'];
 				
-				// SA_ALL gets the stats for the number of:  messages, recent, unseen, uidnext, uidvalidity
-				//$mailbox_status = $GLOBALS['phpgw']->msg->dcom->status($GLOBALS['phpgw']->msg->get_mailsvr_stream(),"$server_str"."$folder_long",SA_ALL);
-				$mailbox_status = $GLOBALS['phpgw']->msg->phpgw_status("$folder_long");
-				//$folder_info = array();
-				//$folder_info = $GLOBALS['phpgw']->msg->get_folder_status_info();
+				if ($this->use_cachable_status == True)
+				{
+					$feed_fldball = array();
+					$feed_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out($folder_long);
+					$feed_fldball['acctnum'] = $GLOBALS['phpgw']->msg->get_acctnum();
+					$folder_status_info = array();
+					$folder_status_info = $GLOBALS['phpgw']->msg->get_folder_status_info($feed_fldball);
+				}
+				else
+				{
+					// SA_ALL gets the stats for the number of:  messages, recent, unseen, uidnext, uidvalidity
+					// THIS DOES NOT USE THE CACHEABLE FUNCTION
+					$mailbox_status = $GLOBALS['phpgw']->msg->phpgw_status("$folder_long");
+				}
 				
 				//debug
 				//$real_long_name = $GLOBALS['phpgw']->msg->folder_lookup('',$folder_list[$i]['folder_short']);
@@ -244,15 +266,18 @@
 				//	echo 'folder exists, official long name: '.$real_long_name.'<br>';
 				//}
 				
-				$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
+				// ROW BACK COLOR
+				//$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
+				$tr_color = (($i + 1)/2 == floor(($i + 1)/2)) ? $GLOBALS['phpgw_info']['theme']['row_off'] : $GLOBALS['phpgw_info']['theme']['row_on'];
+				$tr_color_class = (($i + 1)/2 == floor(($i + 1)/2)) ? 'row_off' : 'row_on';
 				$this->xi['folder_list_display'][$i]['list_backcolor'] = $tr_color;
+				$this->xi['folder_list_display'][$i]['list_backcolor_class'] = $tr_color_class;
 				$this->xi['folder_list_display'][$i]['folder_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',
 								'menuaction=email.uiindex.index'
 								.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out($folder_long)
 								.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
 				
-				//if ((isset($GLOBALS['phpgw']->msg->get_arg_value('show_long')))
 				if (($GLOBALS['phpgw']->msg->get_isset_arg('show_long') == True)
 				&& ($GLOBALS['phpgw']->msg->get_arg_value('show_long') != ''))
 				{
@@ -262,16 +287,22 @@
 				{
 					$this->xi['folder_list_display'][$i]['folder_name'] = $folder_short;
 				}
-				//$this->xi['folder_list_display'][$i]['folder_name'] = $folder_list[$i]['folder_long']);
-				//$this->xi['folder_list_display'][$i]['folder_name'] = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($folder_long));
+				// make sure unusual entities are encoded for html display
+				$this->xi['folder_list_display'][$i]['folder_name'] = 
+					$GLOBALS['phpgw']->msg->htmlspecialchars_encode($this->xi['folder_list_display'][$i]['folder_name']);
 				
-				$this->xi['folder_list_display'][$i]['msgs_unseen'] = number_format($mailbox_status->unseen);
-				//$this->xi['folder_list_display'][$i]['msgs_unseen'] = number_format($folder_info['number_new']));
-				//$this->xi['folder_list_display'][$i]['msgs_total'] = $total_msgs);
-				$this->xi['folder_list_display'][$i]['msgs_total'] = number_format($mailbox_status->messages);
-				//$this->xi['folder_list_display'][$i]['msgs_total'] = number_format($folder_info['number_all']));
+				if ($this->use_cachable_status == True)
+				{
+					$this->xi['folder_list_display'][$i]['msgs_unseen'] = number_format($folder_status_info['number_new']);
+					$this->xi['folder_list_display'][$i]['msgs_total'] = number_format($folder_status_info['number_all']);
+				}
+				else
+				{
+					$this->xi['folder_list_display'][$i]['msgs_unseen'] = number_format($mailbox_status->unseen);
+					$this->xi['folder_list_display'][$i]['msgs_total'] = number_format($mailbox_status->messages);
+				}
 			}
-			if ($this->debug) { echo 'email.bofolder.folder_data: $this->xi[folder_list_display] dump:<pre>'; print_r($this->xi['folder_list_display']); echo '</pre>'; }
+			if ($this->debug > 2) { echo 'email.bofolder.folder_data('.__LINE__.'): $this->xi[folder_list_display] dump:<pre>'; print_r($this->xi['folder_list_display']); echo '</pre>'; }
 			
 			// information for target folder for create and delete, where no "source_fldball" is present
 			// because you are NOT manipulating an *existing* folder
@@ -355,6 +386,7 @@
 			$this->xi['the_font'] = $GLOBALS['phpgw_info']['theme']['font'];
 			$this->xi['th_backcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
 			
+			if ($this->debug > 0) { echo 'LEAVING: email.bofolder.folder_data('.__LINE__.')'.'<br>'; } 
 		}	
 	
 	}

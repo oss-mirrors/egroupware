@@ -35,7 +35,7 @@ function check_all()
 </script>
 
 <!-- BEGIN B_action_report -->
-<table border="0" cellpadding="0" cellspacing="0" width="95%" align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
 <tr>
 	<td colspan="7" align="center">
 		<font face="{stats_font}" size="{stats_font_size}">{report_this}</font>
@@ -44,8 +44,8 @@ function check_all()
 </table>
 <!-- END B_action_report -->
 
-<table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
-<tr bgcolor="{arrows_backcolor}" align="center">
+<table border="0" cellpadding="1" cellspacing="0" width="100%" align="center">
+<tr bgcolor="{arrows_backcolor}" class="{arrows_backcolor_class}" align="center">
 	<td>&nbsp;</td>
 	{prev_arrows}
 	<td>&nbsp;</td>
@@ -56,39 +56,39 @@ function check_all()
 
 {stats_data_display}
 
-<table border="0" cellpadding="3" cellspacing="1" width="95%" align="center">
-<tr>
-	<td bgcolor="{hdr_backcolor}" width="3%" align="center">
+<table border="0" cellpadding="3" cellspacing="0" width="100%" align="center">
+<tr bgcolor="{hdr_backcolor}" class="{hdr_backcolor_class}">
+	<td width="3%" align="center">
 		&nbsp;
 	</td>
-	<td bgcolor="{hdr_backcolor}" width="2%">
+	<td width="2%">
 		&nbsp;
 	</td>
 	
-	<td bgcolor="{hdr_backcolor}" width="34%">
+	<td width="34%">
 		<font size="{hdr_font_size}" face="{hdr_font}">
  		<b>{hdr_subject}</b>
 		</font>
 	</td>
-	<td bgcolor="{hdr_backcolor}" width="23%">
+	<td width="23%">
 		<font size="{hdr_font_size}" face="{hdr_font}">
 		<b>{hdr_from}</b>
 		</font>
 	</td>
-	<td bgcolor="{hdr_backcolor}" width="12%">
+	<td width="12%">
 		<font size="{hdr_font_size}" face="{hdr_font}">
 		<b>{hdr_date}</b>
 		</font>
 	</td>
-	<td bgcolor="{hdr_backcolor}" width="4%">
+	<td width="4%">
 		<font size="{hdr_font_size}" face="{hdr_font}">
 		<b>{hdr_size}</b>
 		</font>
 	</td>
 </tr>
 <!-- BEGIN B_no_messages -->
-<tr>
-	<td bgcolor="{mlist_backcolor}" colspan="6" align="center">
+<tr bgcolor="{mlist_backcolor}" class="{mlist_backcolor_class}">
+	<td colspan="6" align="center">
 		<!-- form delmove init here is just a formality, need an opening form tag but form does noting -->
 		{V_mlist_form_init}
 		<font size="2" face="{mlist_font}">{report_no_msgs}</font>
@@ -99,46 +99,51 @@ function check_all()
 <!--- &nbsp; LAME BLOCK SEP &nbsp; -->
 
 <!-- BEGIN B_msg_list -->
-<tr>
-	<td bgcolor="{mlist_backcolor}" align="center">
+<tr bgcolor="{mlist_backcolor}" class="{mlist_backcolor_class}">
+	<td align="center">
 	<!-- INIT FORM ONCE -->{V_mlist_form_init}
 		<input type="checkbox" name="delmov_list[]" value="{mlist_embedded_uri}">
 	</td>
-	<td bgcolor="{mlist_backcolor}" align="center">
-		<font size="{mlist_font_size}" face="{mlist_font}">{mlist_new_msg}{mlist_attach}</font>
+	<td align="center">
+		<div align="right">
+			<font size="{mlist_font_size}" face="{mlist_font}">{mlist_new_msg}</font>
+			{mlist_attach}
+		</div>
+		{all_flags_images}
 	</td>
-	<td bgcolor="{mlist_backcolor}">
-		<font size="{mlist_font_size}" face="{mlist_font}"><a href="{mlist_subject_link}">{mlist_subject}</a></font>
+	<td>
+		{open_strikethru}<font size="{mlist_font_size}" face="{mlist_font}"><a href="{mlist_subject_link}">{mlist_subject}</a></font>{close_strikethru}
 	</td>
-	<td bgcolor="{mlist_backcolor}">
-		<font size="{mlist_font_size}" face="{mlist_font}"><a href="{mlist_reply_link}">{mlist_from}</a> {mlist_from_extra}</font>
+	<td>
+		{open_strikethru}<font size="{mlist_font_size}" face="{mlist_font}"><a href="{mlist_reply_link}">{mlist_from}</a> {mlist_from_extra}</font>{close_strikethru}
 	</td>
-	<td bgcolor="{mlist_backcolor}" align="center">
+	<td align="center">
 		<font size="{mlist_font_size}" face="{mlist_font}">{mlist_date}</font>
 	</td>
-	<td bgcolor="{mlist_backcolor}" align="center">
+	<td align="center">
 		<font size="{mlist_font_size_sm}" face="{mlist_font}">{mlist_size}</font>
 	</td>
 </tr>
 <!-- END B_msg_list -->
-<tr>
-	<td bgcolor="{ftr_backcolor}" align="center">
+<tr bgcolor="{ftr_backcolor}" class="{ftr_backcolor_class}">
+	<td align="center">
 		<a href="javascript:check_all()">
-		<img src="{app_images}/check.gif" border="0" height="16" width="21"></a>
+		<img src="{check_image}" border="0"></a>
 	</td>
-	<td bgcolor="{ftr_backcolor}" colspan="5">
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
-		<tr>
-			<td>
+	<td colspan="5">
+		<table width="100%" border="0" cellpadding="1" cellspacing="1">
+		<tr bgcolor="{ftr_backcolor}" class="{ftr_backcolor_class}">
+			<td width="10%" align="left">
 				<font face="{stats_font}" size="{stats_font_size}">
-					{delmov_button} &nbsp;
-					&nbsp;&nbsp;<a href="{compose_link}">{compose_img}&nbsp;{compose_text}</a>
-					<!-- BEGIN B_get_size -->
-					&nbsp;&nbsp;&nbsp;<a href="{get_size_link}">{lang_get_size}</a>
-					<!-- END B_get_size -->
+					&nbsp;{delmov_button}
 				</font>
 			</td>
-			<td align="right">
+			<td width="10%" align="left">
+				<font face="{stats_font}" size="{stats_font_size}">
+					&nbsp;&nbsp;{compose_clickme}
+				</font>
+			</td>
+			<td width="80%" align="right">
 				{delmov_listbox}
 			</td>
 			</form>
@@ -150,12 +155,13 @@ function check_all()
 
 <br> 
 
-<table border="0" align="center" width="95%">
+<table border="0" align="center" width="100%">
 <tr>
 	<td align="left">
 		<font color="{mlist_newmsg_color}">{mlist_newmsg_char}</font>&nbsp;{mlist_newmsg_txt}
 	</td>
 </tr>
 </table>
+{debugdata}
 <!-- end index_main_b0_l1.tpl -->
 

@@ -83,6 +83,8 @@
 		//var $debug = 3;
 		var $debug_init = 0;
 		
+		// if calling from home page it is optional to force currentapp as a constructor param
+		var $my_currentapp='';
 		// bootstraper for the msg class
 		var $msg_bootstrap;
 		// private template to var names do not collide
@@ -113,8 +115,21 @@
 		var $toolbar_row_two='';
 		var $toolbar='';
 		
+		// ALL FOLDERS ALL ACCOUNTS MEGA LISTBOX
+		var $F_megalist_form_reference='';
+		var $F_megalist_widget_name='';
+		var $F_megalist_preselected_fldball='';
+		var $F_megalist_skip_fldball='';
+		var $F_megalist_first_item_text = '';
+		
 		// RELOAD WIDGET
 		var $refresh_js='';
+		
+		// GENERIC ERROR REPORT
+		var $F_mindless_default_txt = 'error text not provided';
+		var $F_error_report_text='';
+		var $F_go_somewhere_link='';
+		var $F_go_home_link='';
 		
 		
 		/**************************************************************************\
@@ -122,8 +137,7 @@
 		\**************************************************************************/
 		function html_widgets()
 		{
-			if ($this->debug_init > 0) { echo 'ENTER,EXIT: email.html_widgets.CONSTRUCTOR'.'<br>'."\r\n"; }
-			
+			if ($this->debug_init > 0) { echo 'ENTER: email.html_widgets.CONSTRUCTOR'.'<br>'."\r\n"; }
 			/*!
 			@class requires including spell_struct header file
 			@discussion  class html_widgets needs the special C-Style Include .h like file, 
@@ -131,7 +145,13 @@
 			with the mail.spell  spellchecking class.
 			*/
 			$required_class = 'spell_struct';
-			require_once(PHPGW_INCLUDE_ROOT.'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/inc/class.'.$required_class.'.inc.php');
+			
+			// if calling this class from the home page, then the currentapp will be 
+			//set to "home" instead of "email", which messes up the include statement below, 
+			// so set a local var to "email" to force considering the currentapp to be "email".
+			$this->my_currentapp = 'email';
+			//require_once(PHPGW_INCLUDE_ROOT.'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/inc/class.'.$required_class.'.inc.php');
+			require_once(PHPGW_INCLUDE_ROOT.'/'.$this->my_currentapp.'/inc/class.'.$required_class.'.inc.php');
 			
 			if ($this->debug_init > 0) { echo 'EXIT: email.html_widgets.CONSTRUCTOR'.'<br>'."\r\n"; }
 			return;
@@ -532,7 +552,9 @@
 		@discussion this function does not clear its properties, so if for some reason you want THE SAME 
 		comboboxes more then one time, calling "get_combobox" will return the same combobox until you 
 		clear it by calling "new_combobox", which you should ALWAYS do when starting a new combobox 
-		widget.
+		widget. VALUES ARE NOT URLENCODED, except that the special spellcheck item stuff 
+		does it, but before this function, and this does not happen for the normal set cbox item. It IS 
+		html specialchars encoded here.
 		@access public
 		*/
 		function get_combobox()
@@ -562,7 +584,8 @@
 					$this->combobox .= 
 						'<option value="'.$this->cbox_items[$i]->value.'"'.$selected_tag.'>'
 						.htmlspecialchars($this->cbox_items[$i]->text)
-						.'</option>';			
+						.'</option>';
+					$this->combobox .= "\r\n";
 				}
 			}
 			$this->combobox .= '</select>';
@@ -747,6 +770,8 @@
 						 '<input type="hidden" '
 						.'name="'.$this->form_hiddenvars[$i]->name.'" '
 						.'value="'.$this->form_hiddenvars[$i]->value.'">';
+					// just to be safe, send a line break after every one of these
+					$this->form .= "\r\n";
 				}
 			}
 			return $this->form;
@@ -888,16 +913,20 @@
 			
 			// We use these over and over, so figure them out now
 			// some fonts and font sizes
-			$this->tpl->set_var('toolbar_row1_bgcolor',$GLOBALS['phpgw_info']['theme']['row_off']);
-			$this->tpl->set_var('toolbar_row2_bgcolor',$GLOBALS['phpgw_info']['theme']['row_on']);
+			$row1_rowcolor_key = 'row_off';
+			$row2_rowcolor_key = 'row_on';
+			$this->tpl->set_var('row1_rowcolor_key',$row1_rowcolor_key);
+			$this->tpl->set_var('row2_rowcolor_key',$row2_rowcolor_key);
+			$this->tpl->set_var('toolbar_row1_bgcolor',$GLOBALS['phpgw_info']['theme'][$row1_rowcolor_key]);
+			$this->tpl->set_var('toolbar_row2_bgcolor',$GLOBALS['phpgw_info']['theme'][$row2_rowcolor_key]);
 			$this->tpl->set_var('toolbar_font',$GLOBALS['phpgw_info']['theme']['font']);
 			$this->tpl->set_var('toolbar_font_size','2');
 			$this->tpl->set_var('report_this_font_size','1');
 			
 			$this->tpl->set_var('report_this', $GLOBALS['phpgw']->msg->report_moved_or_deleted());
 			
-			$icon_theme = $GLOBALS['phpgw']->msg->get_pref_value('icon_theme');
-			$icon_size = $GLOBALS['phpgw']->msg->get_pref_value('icon_size');
+			$icon_theme = $GLOBALS['phpgw']->msg->get_pref_value('icon_theme',$acctnum);
+			$icon_size = $GLOBALS['phpgw']->msg->get_pref_value('icon_size',$acctnum);
 			$svr_image_dir = PHPGW_IMAGES_DIR;
 			$image_dir = PHPGW_IMAGES;
 			
@@ -972,22 +1001,22 @@
 				case 'image':
 					//Create Compose Button
 					$this->set_href_link($compose_link);
-					$this->set_href_clickme($this->img_maketag($image_dir.'/'.$icon_theme.'-compose-message-'.$icon_size.'.gif',lang('Compose'),'','','0'));
+					$this->set_href_clickme($this->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/compose-message-'.$icon_size,'_on'),lang('Compose'),'','','0'));
 					$this->tpl->set_var('compose_img_link', $this->get_href());
 					$this->tpl->set_var('compose_txt_link', '&nbsp;');			
 					//Create Filter Button
 					$this->set_href_link($filters_link);
-					$this->set_href_clickme($this->img_maketag($image_dir.'/'.$icon_theme.'-filters-'.$icon_size.'.gif',lang('Filters'),'','','0'));
+					$this->set_href_clickme($this->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/filters-'.$icon_size,'_on'),lang('Filters'),'','','0'));
 					$this->tpl->set_var('filters_img_link', $this->get_href());
 					$this->tpl->set_var('filters_txt_link', '&nbsp;');
 					//Create Accounts Button
 					$this->set_href_link($accounts_link);
-					$this->set_href_clickme($this->img_maketag($image_dir.'/'.$icon_theme.'-accounts-'.$icon_size.'.gif',lang('Accounts'),'','','0'));
+					$this->set_href_clickme($this->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/accounts-'.$icon_size,'_on'),lang('Accounts'),'','','0'));
 					$this->tpl->set_var('accounts_img_link', $this->get_href());
 					$this->tpl->set_var('accounts_txt_link', '&nbsp;');
 					//Create Settings Button
 					$this->set_href_link($email_prefs_link);
-					$this->set_href_clickme($this->img_maketag($image_dir.'/'.$icon_theme.'-customize-'.$icon_size.'.gif',lang('Settings'),'','','0'));
+					$this->set_href_clickme($this->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/customize-'.$icon_size,'_on'),lang('Settings'),'','','0'));
 					$this->tpl->set_var('settings_img_link', $this->get_href());
 					$this->tpl->set_var('settings_txt_link', '&nbsp;');
 					//Check for folder support and create Folder Button
@@ -995,7 +1024,7 @@
 					{
 						//Create Folder Image Link
 						$this->set_href_link($folders_link);
-						$this->set_href_clickme($this->img_maketag($image_dir.'/'.$icon_theme.'-folder-'.$icon_size.'.gif',lang('Folders'),'','','0'));
+						$this->set_href_clickme($this->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/folder-'.$icon_size,'_on'),lang('Folders'),'','','0'));
 						$this->tpl->set_var('folders_img_link', $this->get_href());
 						$this->tpl->set_var('folders_txt_link', '&nbsp;');
 						
@@ -1009,28 +1038,28 @@
 				case 'both':
 					//Create Compose Button
 					$this->set_href_link($compose_link);
-					$this->set_href_clickme($this->img_maketag($image_dir.'/'.$icon_theme.'-compose-message-'.$icon_size.'.gif',lang('Compose'),'','','0'));
+					$this->set_href_clickme($this->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/compose-message-'.$icon_size,'_on'),lang('Compose'),'','','0'));
 					$this->tpl->set_var('compose_img_link', $this->get_href());
 					$this->set_href_link($compose_link);
 					$this->set_href_clickme(lang('Compose'));
 					$this->tpl->set_var('compose_txt_link', $this->get_href());			
 					//Create Filter Button
 					$this->set_href_link($filters_link);
-					$this->set_href_clickme($this->img_maketag($image_dir.'/'.$icon_theme.'-filters-'.$icon_size.'.gif',lang('Filters'),'','','0'));
+					$this->set_href_clickme($this->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/filters-'.$icon_size,'_on'),lang('Filters'),'','','0'));
 					$this->tpl->set_var('filters_img_link', $this->get_href());
 					$this->set_href_link($filters_link);
 					$this->set_href_clickme(lang('Filters'));
 					$this->tpl->set_var('filters_txt_link', $this->get_href());
 					//Create Accounts Button
 					$this->set_href_link($accounts_link);
-					$this->set_href_clickme($this->img_maketag($image_dir.'/'.$icon_theme.'-accounts-'.$icon_size.'.gif',lang('Accounts'),'','','0'));
+					$this->set_href_clickme($this->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/accounts-'.$icon_size,'_on'),lang('Accounts'),'','','0'));
 					$this->tpl->set_var('accounts_img_link', $this->get_href());
 					$this->set_href_link($accounts_link);
 					$this->set_href_clickme(lang('Accounts'));
 					$this->tpl->set_var('accounts_txt_link', $this->get_href());
 					//Create Settings Button
 					$this->set_href_link($email_prefs_link);
-					$this->set_href_clickme($this->img_maketag($image_dir.'/'.$icon_theme.'-customize-'.$icon_size.'.gif',lang('Settings'),'','','0'));
+					$this->set_href_clickme($this->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/customize-'.$icon_size,'_on'),lang('Settings'),'','','0'));
 					$this->tpl->set_var('settings_img_link', $this->get_href());
 					$this->set_href_link($email_prefs_link);
 					$this->set_href_clickme(lang('Settings'));
@@ -1040,7 +1069,7 @@
 					{
 						//Create Folder Image Link
 						$this->set_href_link($folders_link);
-						$this->set_href_clickme($this->img_maketag($image_dir.'/'.$icon_theme.'-folder-'.$icon_size.'.gif',lang('Folders'),'','','0'));
+						$this->set_href_clickme($this->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/folder-'.$icon_size,'_on'),lang('Folders'),'','','0'));
 						$this->tpl->set_var('folders_img_link', $this->get_href());
 						//Create Folder Text Link
 						$this->set_href_link($folders_link);
@@ -1136,45 +1165,295 @@
 			$this->set_cbox_onChange('document.'.$form_reference.'.submit()');
 			// set_cbox_item(value, text, selected(optional, boolean, default false)
 			$this->set_cbox_item('', lang('switch current folder to'));
-			// Save Origional Folder Name. $folder_status in the for statment below causes us to lose it.
-			$origional_folder = $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->prep_folder_out());
 			
 			// get the actual list of folders we are going to put into the combobox
 			//$folder_list = $GLOBALS['phpgw']->msg->get_folder_list();
-			$folder_list = $GLOBALS['phpgw']->msg->get_arg_value('folder_list');
+			$folder_list = $GLOBALS['phpgw']->msg->get_arg_value('folder_list', $acctnum);
 			//$folder_list =& $GLOBALS['phpgw']->msg->get_arg_value_ref('folder_list');
 			
-			//if ($GLOBALS['phpgw_info']['user']['preferences']['email']['newmsg_combobox'] == True) {
-			if ($GLOBALS['phpgw']->msg->get_isset_pref('newmsg_combobox', $acctnum)) {
-				$listbox_show_unseen = True;
-			} else {
-				$listbox_show_unseen = False;
-			}
+			$listbox_show_unseen = $GLOBALS['phpgw']->msg->get_isset_pref('newmsg_combobox', $acctnum);
+			
 			for ($i=0; $i<count($folder_list);$i++)
 			{
 				// folder long needs urlencoding ONCE, string can NOT be plain and can NOT be urlencoded more once.
 				$folder_long = $GLOBALS['phpgw']->msg->ensure_one_urlencoding($folder_list[$i]['folder_long']);
-				$folder_short = $folder_list[$i]['folder_short'];
+				// for display to the user, if this is the INBOX, then translate that using lang INBOX
+				if ($folder_list[$i]['folder_short'] == 'INBOX')
+				{
+				    //$folder_short = lang('INBOX');
+					// try this for common folder related lang strings
+					//$common_langs = $GLOBALS['phpgw']->msg->get_common_langs();
+					//$folder_short = $common_langs['lang_inbox'];
+					// or try this shortcut, it works too
+					$folder_short = $GLOBALS['phpgw']->msg->get_common_langs('lang_inbox');
+				}
+				else
+				{
+					// not inINBOX, so use actual folder name, no translation for the user is done
+					$folder_short = $folder_list[$i]['folder_short'];
+				}
 				$folder_acctnum = $folder_list[$i]['acctnum'];
-
-				if ($listbox_show_unseen == True) {
-				$folder_status = $GLOBALS['phpgw']->msg->phpgw_status("$folder_long");
-				$folder_unseen = number_format($folder_status->unseen);
+				
+				if ($listbox_show_unseen == True)
+				{
+					$tmp_fldball = array();
+					$tmp_fldball['folder'] = $folder_long;
+					$tmp_fldball['acctnum'] = $folder_acctnum;
+					$folder_status = $GLOBALS['phpgw']->msg->get_folder_status_info($tmp_fldball);
+					$folder_unseen = number_format($folder_status['number_new']);
+					$tmp_fldball = array();
 				}
 				
 				// set_cbox_item(value, text, selected(optional, boolean, default false)
-				if ($listbox_show_unseen == True) {
+				if ($listbox_show_unseen == True)
+				{
 					$this->set_cbox_item('&folder='.$folder_long.'&acctnum='.$folder_acctnum, $folder_short . ' (' . $folder_unseen . ')');
-				} else {
+				}
+				else
+				{
 					$this->set_cbox_item('&folder='.$folder_long.'&acctnum='.$folder_acctnum, $folder_short);
 				}
-			}
-			if ($listbox_show_unseen == True) {
-				$folder_status = $GLOBALS['phpgw']->msg->phpgw_status("$origional_folder");
 			}
 			return $this->get_combobox();
 			
 		}
+		
+		
+		/*!
+		@function all_folders_mega_combobox
+		@abstract high level function, uses functions in mail_msg and this class html_widgets to make a listbox for 
+		all folders in all accounts.  DEPRECIATED. 
+		@param $form_reference (string) this combobox sets an "onChange" event, which will submit the form you put here. 
+		Default value is "document.folders_cbox.submit()" where "" is the default value for the $form_reference param. 
+		DEPRECIATED in favor of all_folders_megalist.
+		@result string representing an HTML listbox widget 
+		@author Angles
+		@discussion ?
+		@access private, maybe made public
+		*/
+		function all_folders_mega_combobox_OLD($form_reference='')
+		{
+				$feed_args = Array(
+					'mailsvr_stream'	=> '',
+					'pre_select_folder'	=> $pre_select_folder,
+					'pre_select_folder_acctnum' => $pre_select_folder_acctnum,
+					'skip_folder'		=> '',
+					'show_num_new'		=> $listbox_show_unseen,
+					'widget_name'		=> $folder_listbox_name,
+					'folder_key_name'	=> 'folder',
+					'acctnum_key_name'	=> 'acctnum',
+					'on_change'			=> '',
+					'first_line_txt'	=> lang('if fileto then select destination folder')
+				);
+				$folder_listbox = $GLOBALS['phpgw']->msg->folders_mega_listbox($feed_args);
+		}
+		
+		/*!
+		@function new_all_folders_megalist
+		@abstract Resets all Properties all_folders_megalist
+		@discussion Delphi style OOP property GetSet functions are used, this resets them all.
+		@author Angles
+		*/
+		function new_all_folders_megalist()
+		{
+				$this->F_megalist_form_reference = '';
+				// this is the only think that actually needs a value
+				$this->F_megalist_widget_name = 'not_provided';
+				$this->F_megalist_preselected_fldball = '';
+				$this->F_megalist_skip_fldball = '';
+				// the first item can be used to display instructional text to the user
+				$this->F_megalist_first_item_text = '';
+		}
+		
+		/*!
+		@function prop_megalist_form_reference
+		@abstract Property function form_reference for folders_mega_listbox, form_reference is used in onChange JS.
+		@discussion Delphi style OOP property GetSet function. 
+		@author Angles
+		*/
+		function prop_megalist_form_reference($form_reference='')
+		{
+			if ($form_reference)
+			{
+				$this->F_megalist_form_reference = $form_reference;
+			}
+			return $this->F_megalist_form_reference;
+		}
+		
+		/*!
+		@function prop__megalist_widget_name
+		@abstract Property function widget name for folders_mega_listbox
+		@discussion Delphi style OOP property GetSet function. 
+		@author Angles
+		*/
+		function prop_megalist_widget_name($widget_name='')
+		{
+			if ($widget_name)
+			{
+				$this->F_megalist_widget_name = $widget_name;
+			}
+			return $this->F_megalist_widget_name;
+		}
+		
+		/*!
+		@function prop_megalist_preselected_fldball
+		@abstract Property function preselected folder (in fldball form) for folders_mega_listbox
+		@discussion Delphi style OOP property GetSet function. 
+		@author Angles
+		*/
+		function prop_megalist_preselected_fldball($fldball='')
+		{
+			if ((isset($fldball))
+			&& ($fldball['folder'] != '')
+			&& ((string)$fldball['acctnum'] != ''))
+			{
+				$this->F_megalist_preselected_fldball = $fldball;
+			}
+			return $this->F_megalist_preselected_fldball;
+		}
+		
+		/*!
+		@function prop_megalist_skip_fldball
+		@abstract Property function folder (in fldball form) to NOT show in the folders_mega_listbox
+		@discussion Delphi style OOP property GetSet function. 
+		@author Angles
+		*/
+		function prop_megalist_skip_fldball($fldball='')
+		{
+			if ((isset($fldball))
+			&& ($fldball['folder'] != '')
+			&& ((string)$fldball['acctnum'] != ''))
+			{
+				$this->F_megalist_skip_fldball = $fldball;
+			}
+			return $this->F_megalist_skip_fldball;
+		}
+		
+		/*!
+		@function prop__megalist_widget_name
+		@abstract Property function for folders_mega_listbox, the first item can be used to display instructional text to the user
+		@discussion Delphi style OOP property GetSet function. 
+		@author Angles
+		*/
+		function prop_megalist_first_item_text($first_item_text='')
+		{
+			if ($first_item_text)
+			{
+				$this->F_megalist_first_item_text = $first_item_text;
+			}
+			return $this->F_megalist_first_item_text;
+		}
+		
+		/*!
+		@function all_folders_megalist
+		@abstract All accounts All Folders in a html listbox
+		@discussion UNDER DEVELOPMENT, right now the leading candidate to be THE folder list 
+		function, but now sure yet. 
+		@author Angles
+		*/
+		function all_folders_megalist()
+		{
+			$debug_mega_listbox = 0;
+			//$debug_mega_listbox = 3;
+			
+			if ($debug_mega_listbox > 0) { echo 'folders_mega_listbox('.__LINE__.'): ENTERING<br>'; }
+			
+			$this->new_combobox();
+			$this->set_cbox_name($this->F_megalist_widget_name);
+			
+			// there is NO ON change right now, this is currently used on the filters page, we do not need action onChange there
+			// default is "document.mega_folders_cbox.submit()"
+			//$this->set_cbox_onChange('document.'.$form_reference.'.submit()');
+			
+			// set_cbox_item(value, text, selected(optional, boolean, default false)
+			if ($this->F_megalist_first_item_text)
+			{
+				$this->set_cbox_item('', $this->F_megalist_first_item_text);
+			}
+			
+			// we need the loop to include the default account AS WELL AS the extra accounts
+			for ($x=0; $x < count($GLOBALS['phpgw']->msg->extra_and_default_acounts); $x++)
+			{
+				$this_acctnum = $GLOBALS['phpgw']->msg->extra_and_default_acounts[$x]['acctnum'];
+				$this_status = $GLOBALS['phpgw']->msg->extra_and_default_acounts[$x]['status'];
+				// do not enable this yet, maybe later
+				//$listbox_show_unseen = $GLOBALS['phpgw']->msg->get_isset_pref('newmsg_combobox', $acctnum);
+				$listbox_show_unseen = False;
+				if ($this_status != 'enabled')
+				{
+					// Do Nothing, This account is not in use
+					if ($debug_mega_listbox > 1) { echo 'folders_mega_listbox('.__LINE__.'): $this_acctnum ['.$this_acctnum.'] is not in use, so skip folderlist<br>'; }
+				}
+				else
+				{
+					$folder_list = $GLOBALS['phpgw']->msg->get_arg_value('folder_list', $this_acctnum);
+					if ($debug_mega_listbox > 1) { echo 'folders_mega_listbox('.__LINE__.'): $this_acctnum ['.$this_acctnum.'] IS enabled, got folder list<br>'; }
+					if ($debug_mega_listbox > 2) { echo 'folders_mega_listbox('.__LINE__.'): $folder_list for $this_acctnum ['.$this_acctnum.'] DUMP<pre>'; print_r($folder_list); echo '</pre>'; }
+					
+					// iterate thru the folder list for this acctnum
+					for ($i=0; $i<count($folder_list);$i++)
+					{
+						$folder_long = $folder_list[$i]['folder_long'];
+						$folder_long_preped_out = $GLOBALS['phpgw']->msg->prep_folder_out($folder_long);
+						$folder_short = $folder_list[$i]['folder_short'];
+						// yes we need $folder_acctnum to help make the "folder ball", yes I know it *should* be the same as $this_acctnum
+						$folder_acctnum = $folder_list[$i]['acctnum'];
+						
+						// this logic determines we should not include a certain folder in the combobox list
+						if (($this->F_megalist_skip_fldball)
+						&& ($folder_long_preped_out == $this->F_megalist_skip_fldball['folder'])
+						&& ($folder_acctnum == $this->F_megalist_skip_fldball['acctnum']))
+						{
+							// Do Nothing, this folder should not be included
+							if ($debug_mega_listbox > 1) { echo 'folders_mega_listbox('.__LINE__.'): skipping $this->F_megalist_skip_fldball ['.htmlspecialchars(serialize($this->F_megalist_skip_fldball)).'] has been matched<br>'; } 
+						}
+						else
+						{
+							// this logic determines if the combobox should be initialized with certain folder already selected
+							// we use "folder short" as the comparator because that way at least we know we are comparing syntatic-ally similar items
+							if (($this->F_megalist_preselected_fldball)
+							&& ($folder_long_preped_out == $this->F_megalist_preselected_fldball['folder'])
+							&& ($folder_acctnum == $this->F_megalist_preselected_fldball['acctnum']))
+							{
+								$preselected = True;
+							}
+							else
+							{
+								$preselected = False;
+							}
+							
+							if ($listbox_show_unseen == True)
+							{
+								$tmp_fldball = array();
+								$tmp_fldball['folder'] = $folder_long;
+								$tmp_fldball['acctnum'] = $folder_acctnum;
+								$folder_status = $GLOBALS['phpgw']->msg->get_folder_status_info($tmp_fldball);
+								$folder_unseen = number_format($folder_status['number_new']);
+								// complete the text here so we do not need another if ... then below
+								$folder_unseen = ' ('. $folder_unseen.')';
+								$tmp_fldball = array();
+							}
+							else
+							{
+								$folder_unseen = '';
+							}
+							
+							$option_value = '&folder='.$folder_long_preped_out.'&acctnum='.$folder_acctnum;
+							//$option_value =	'&folder='.$folder_long.'&acctnum='.$folder_acctnum;
+							// if $folder_unseen has anything it gets added to the string here
+							$text_blurb = '['.$folder_acctnum.'] '.$folder_short.$folder_unseen;
+							
+							// set_cbox_item(value, text, selected(optional, boolean, default false)
+							$this->set_cbox_item($option_value, $text_blurb, $preselected);
+						}
+					}
+				}
+			}
+			if ($debug_mega_listbox > 0) { echo 'folders_mega_listbox('.__LINE__.'): LEAVING<br>'; }
+			return $this->get_combobox();
+		}
+		
+
 		
 		/*!
 		@function all_accounts_combobox
@@ -1245,13 +1524,13 @@
 		/*!
 		@function auto_refresh
 		@example I know of 3 ways to get a page to reload, 2 of those ways are pretty much the same
-		(1) the http header 
+		1. the http header 
 			Refresh: 5;
-		(2) the META http-equiv 
-			<META HTTP-EQUIV="Refresh" CONTENT="5">
+		2. the META http-equiv 
+			&lt;META HTTP-EQUIV="Refresh" CONTENT="60"&gt>
 		both 1 and 2 have the same effect as hitting the "reload" button, which in *many* browsers will
 		force a re-download of all the images on the page, i.e. the browser will NOT use the cached images
-		(3) java script combo of "window.setTimeout" with "window.location"
+		3. java script combo of "window.setTimeout" with "window.location"
 			window.setTimeout('window.location="http://example.com/phpgw/email/index.php"; ',1800000);
 		method 3 is the only one I know of that will use the images from the cache.
 		also, 3 takes a reload value in miliseconds, so a value of 180000 is really 3 minutes
@@ -1344,6 +1623,130 @@
 			}
 			// returning  $reload_js which may be '' if we did not have enough info
 			return $reload_js;
+		}
+		
+		/**************************************************************************\
+		*	GENERIC ERROR REPORT
+		\**************************************************************************/	
+		
+		/*!
+		@capability GENERIC ERROR REPORT
+		@discussion This is not really a widget, but this is a good place to put this. In cases such 
+		as a login error, it is not user friendly to output a text only page with an echod out error. 
+		At the very least we should output the template as usual, and insert the error text where 
+		the page content would go. This way the user has all the links and buttons to click on 
+		to get out of the error page.
+		@author Angles
+		*/
+		
+		/*!
+		@function init_error_report_values
+		@abstract Initialize error report with default text, please call this first.
+		@discussion Simple function to initialize the error report with some default text. 
+		I can not imagine how you could use this twice since the actual error report is a full 
+		template page output, BUT still this is how the initial default values are filled. Please 
+		call this first.
+		@author Angles
+		*/
+		function init_error_report_values()
+		{
+			$this->F_error_report_text = lang('error text not provided');
+			$this->F_go_somewhere_link = '';
+			$go_home_url = $GLOBALS['phpgw']->link('/home.php');
+			$go_home_text = lang('click here to return to your home page.');
+			$this->F_go_home_link = '<a href="'.$go_home_url.'">'.$go_home_text.'</a>';
+		}
+		
+		/*!
+		@function prop_error_report_text
+		@abstract Set or Get the error report text.
+		@param $error_report_text (string) the error to show the user.
+		@param $append (boolean) if true, then add to the error text. If false, replace error text.
+		@discussion It initialized with a generic "not provided" string, 
+		which you change to the real error report text with this function. 
+		It checks for the default generic text, and always replaces it even if append it true. 
+		So this way you can specify append but still never accidently keep the mindless 
+		default error text. 
+		@author Angles
+		*/
+		function prop_error_report_text($error_report_text='', $append=False)
+		{
+			if ($error_report_text)
+			{
+				// ALWAYS make sure to clear the mindless default text before you append
+				if (($this->F_error_report_text == lang($this->F_mindless_default_txt))
+				|| ($append == False))
+				{
+					$this->F_error_report_text = $error_report_text;
+				}
+				else
+				{
+					$this->F_error_report_text .= $error_report_text;
+				}
+			}
+			return $this->F_error_report_text;
+		}
+		
+		/*!
+		@function prop_go_somewhere_link
+		@abstract Set or Get the go somewhere link.
+		@param $go_somewhere_url (string in url form) a helpful link to show the user. 
+		@param $go_somewhere_text (string in url form) the text for the HREF for this helpful link to show the user. 
+		@discussion This is optional, in any case the "go home link" will be displayed, 
+		But with this function you can additionally show a link to something useful given 
+		the error the user just encountered, perhaps to the preferences page, for example. 
+		The two params are required for this function to make the HREF.
+		@author Angles
+		*/
+		function prop_go_somewhere_link($go_somewhere_url='', $go_somewhere_text='')
+		{
+			if (($go_somewhere_url) 
+			&& ($go_somewhere_text))
+			{
+				$this->set_href_link($go_somewhere_url);
+				$this->set_href_clickme($go_somewhere_text);
+				$this->F_go_somewhere_link = $this->get_href();
+			}
+			return $this->F_go_somewhere_link;
+		}
+		
+		/*!
+		@function display_error_report_page
+		@abstract A complete output of the template with your error report in the content section. 
+		@param $do_exit (boolean) if empty or false, then this function will NOT call common exit, 
+		if filled or True, it will call msg end_request and common EXIT.
+		@discussion Handles all necessary template parsing, you should set the error text and helpful 
+		href, call this function. Param $do_exit is useful if you are calling this report from within 
+		the msg object itself, then this function will call msg end_request and then the common phpgw exit.
+		@author Angles
+		*/
+		function display_error_report_page($do_exit='')
+		{
+			unset($GLOBALS['phpgw_info']['flags']['noheader']);
+			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+			$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
+			$GLOBALS['phpgw']->common->phpgw_header();
+			
+			$GLOBALS['phpgw']->template->set_file(array(
+				'T_error_report' => 'error_report.tpl'
+			));
+			$GLOBALS['phpgw']->template->set_var('error_report_text', $this->prop_error_report_text());
+			$GLOBALS['phpgw']->template->set_var('go_somewhere_link', $this->prop_go_somewhere_link());
+			$GLOBALS['phpgw']->template->set_var('go_home_link', $this->F_go_home_link);
+			$GLOBALS['phpgw']->template->pfp('out','T_error_report');
+			// do we exit the script here?
+			if ($do_exit)
+			{
+				// kill this script, we re outa here...
+				if (is_object($GLOBALS['phpgw']->msg))
+				{
+					$GLOBALS['phpgw']->msg->end_request();
+					$GLOBALS['phpgw']->msg = '';
+					unset($GLOBALS['phpgw']->msg);
+				}
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
 		}
 		
 	}

@@ -30,9 +30,191 @@
 	// then (3) include mail_msg which extends mail_msg_wrappers and, by inheritance, mail_msg_base
 class mail_msg extends mail_msg_wrappers
 {
+
+	/*!
+	@function get_common_langs
+	@abstract Certain strings commonly used with folder names have langs available here. Example lang for INBOX. 
+	@param (string) OPTIONAL if no param is given, an array of available langs is returned, 
+	or pass a param like "lang_inbox" and if we have the lang, we return the langed string, if your param is 
+	not in the langs handled here, an error string is returned. 
+	@result (string or array) no param returns an associative array in key, value style, a param returns a string 
+	of the lang you requested or an error string if we have no lang for the param. 
+	@discussion Certain strings are used so often in an email app that we should put them here 
+	to make translations easier by centralizing some common lang calls. This function concentrates 
+	on langs associated with folder names, such as the lang for "INBOX", or for "Sent", or for "Folder". 
+	On first call this finction fills an $this->common_langs array, and only filles it with a small 
+	group of the selected langs handled in this function. If no param provided this returns the whole array of 
+	langs handled here. Or pass a string param and this return its lang if it is handled here, otherwise 
+	an error string is returned. Most langes are not needed in the core object, so they are not provided in this function. 
+	Check this function to see what langs are contained here. 
+	@author Angles
+	*/
+	function get_common_langs($this_word='##NOTHING##')
+	{
+		// fill array if needed
+		if ((!$this->common_langs)
+		|| (count($this->common_langs) == 0))
+		{
+			$this->common_langs = array();
+			$this->common_langs = array(
+				'lang_unknown_translation'	=> lang('unknown translation'),
+				'lang_error'				=> lang('error'),
+				'lang_folder'				=> lang('folder'),
+				'lang_inbox'				=> lang('INBOX'),
+				'lang_sent'					=> lang('sent'),
+				'lang_sent_folder'			=> lang('sent folder'),
+				'lang_sent_messages_folder'	=> lang('sent messages folder'),
+				'lang_trash'				=> lang('trash'),
+				'lang_trash_folder'			=> lang('trash folder')
+			);
+		}
+		// what do we return
+		if ($this_word == $this->nothing)
+		{
+			// no param provided, return the whole array
+			return $this->common_langs;
+		}
+		elseif ((isset($this->common_langs[$this_word]))
+		&& ($this->common_langs[$this_word]))
+		{
+			// param requested a specific lang that we do have, return it
+			return $this->common_langs[$this_word];
+		}
+		else
+		{
+			// error, our param was specified, but we do not have a lang for it
+			return $this->common_langs['lang_unknown_translation'];
+		}
+	}
+
+	/*!
+	@function common_folder_is
+	@abstract Quick, limited match for folder name matching certain common IMAP folders, such as Sent, INBOX, or Trash. 
+	@param $query_fldball (array of type fldball) A fldball with the name of folder you are wondering about. 
+	@param $match_fld_name (known string) can be INBOX, Sent, or Trash. 
+	@result Boolean True if param $query_fld_name is a match to $match_fld_name, False otherwise. 
+	@discussion Certain folder may exist on any IMAP server, such as Sent, INBOX, and Trash. 
+	This function is limited to these common folder names only, it is not a generic lookup function. 
+	This is a quick way to check if the given folder is in fact one of these common IMAP folders, 
+	because these folders often require different handling for their message list display. For example the 
+	Sent folder displays who a message is TO, not who the message is FROM, as with all other folders. 
+	Also, names such as Sent and Trash depend on user preference values that are not required to be in 
+	known "folder long" form, so the string to match to also requires special handling to eventually 
+	compare correctly. This function processes each param for accurate matching. 
+	@author Angles
+	*/
+	function common_folder_is($query_fldball='##NOTHING##', $match_fld_name='##NOTHING##')
+	{
+		if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg(_display)('.__LINE__.'): common_folder_is: ENTERING <br>'); } 
+		if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg(_display)('.__LINE__.'): common_folder_is: param $query_fldball ['.htmlspecialchars(serialize($query_fldball)).'] param $match_fld_name ['.htmlspecialchars($match_fld_name).']<br>'); } 
+		
+		//return 'FIX ME: stub function not completed. mail_msg_display.common_folder_is LINE '.__LINE__;
+		$acctnum = $query_fldball['acctnum'];
+		
+		/*
+		if (	$this->get_folder_short($this->get_arg_value('folder'))
+		 != $this->get_folder_short($this->get_pref_value('sent_folder_name')))
+		{
+			// blaaaa
+		}
+		*/
+		if (($query_fldball == $this->nothing)
+		|| ($match_fld_name == $this->nothing))
+		{
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg(_display)('.__LINE__.'): common_folder_is: LEAVING with Error, not enough param data supplied, so returning False<br>'); } 
+			return False;
+		}
+		elseif (($match_fld_name != 'INBOX')
+		&& (strtolower($match_fld_name) != 'trash')
+		&& (strtolower($match_fld_name) != 'sent'))
+		{
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg(_display)('.__LINE__.'): common_folder_is: LEAVING with Error, param $match_fld_name ['.htmlspecialchars($match_fld_name).'] is not INBOX nor Trash, nor Sent, this function can not test for anything else, so returning False<br>'); } 
+			return False;
+		}
+		elseif ($this->is_ball_data($query_fldball, 'any') == False)
+		{
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg(_display)('.__LINE__.'): common_folder_is: LEAVING with Error, input data fails $this->is_ball_data('.htmlspecialchars(serialize($query_fldball)).', "any"), so returning False<br>'); } 
+			return False;
+		}
+		// First, handle the easiest test - INBOX
+		if (($match_fld_name == 'INBOX')
+		&& ($query_fldball['folder'] == 'INBOX'))
+		{
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg(_display)('.__LINE__.'): common_folder_is: LEAVING, returning True, tested for and found INBOX<br>'); } 
+			return True;
+		}
+		// continue ...
+		// does the mailserver have folders, if not then there is NO trash folder no matter what
+		if ($this->get_mailsvr_supports_folders($acctnum) == False)
+		{
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg(_display)('.__LINE__.'): common_folder_is: LEAVING, mailserver does NOT support folders, and not testing for INBOX, so returning False<br>'); } 
+			return False;
+		}
+		// continue ...
+		
+		// handle looking for Trash match
+		if (strtolower($match_fld_name) == 'trash')
+		{
+			$needle = 'trash';
+		}
+		elseif (strtolower($match_fld_name) == 'sent')
+		{
+			$needle = 'sent';
+		}
+		else
+		{
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): common_folder_is: LEAVING, with ERROR, we should not ever get here because param sanity test is above, param $match_fld_name ['.htmlspecialchars($match_fld_name).'] needs to be either "Trash" or "Sent" at this point in the code, but it is not<br>'); } 
+			return False;
+		}
+		// use that $needle to use the same code to handle both Trash and Sent matchings
+		if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg(_display)('.__LINE__.'): common_folder_is: now testing if input data is "'.$needle.'" folder ...<br>'); } 
+		// are we even supposed to use a trash or sent folder
+		if ( (!$this->get_isset_pref('use_'.$needle.'_folder', $acctnum))
+		|| (!$this->get_pref_value('use_'.$needle.'_folder', $acctnum)) )
+		{
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg(_display)('.__LINE__.'): common_folder_is: [test: '.$needle.'] LEAVING, returning False, testing for '.$needle.' folder but user preferences do NOT even want a '.$needle.' folder<br>'); } 
+			return False;
+		}
+		
+		// does the trash folder actually exist ?
+		if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): common_folder_is: [test: '.$needle.'] humm... does the "'.$needle.'" folder actually exist :: this->get_pref_value("'.$needle.'_folder_name", '.$acctnum.') = ['.htmlspecialchars($this->get_pref_value($needle.'_folder_name', $acctnum)).']<br>'); } 
+		$found_needle_folder_long = $this->folder_lookup('', $this->get_pref_value($needle.'_folder_name', $acctnum));
+		if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): common_folder_is: [test: '.$needle.'] did lookup on pref value for "'.$needle.'" folder, got $found_needle_folder_long ['.htmlspecialchars($found_needle_folder_long).']<br>'); } 
+		if ((isset($found_needle_folder_long))
+		&& ($found_needle_folder_long != ''))
+		{
+			$havefolder = True;
+		}
+		else
+		{
+			$havefolder = False;
+		}
+		// do we even need to continue
+		if ($havefolder == False)
+		{
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg(_display)('.__LINE__.'): common_folder_is: [test: '.$needle.'] LEAVING, returning False, testing for '.$needle.' folder, user preferences DO want a '.$needle.' folder, but that folder does NOT exist, so param certainly can not be a real '.$needle.' folder. <br>'); } 
+			return False;
+		}
+		// so the trash folder exists, does it match the param to test against
+		if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): common_folder_is: [test: '.$needle.'] "'.$needle.'" folder exist, does it match a prepped param fldball, get prepped fldball folder string top use for the comparing<br>'); } 
+		$query_folder_long = $this->prep_folder_in($query_fldball['folder'], $acctnum);
+		if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): common_folder_is: [test: '.$needle.'] now we have folder long names to compare, does $query_folder_long ['.htmlspecialchars($query_folder_long).'] equal $found_needle_folder_long ['.htmlspecialchars($found_needle_folder_long).'] <br>'); } 
+		if ($query_folder_long == $found_needle_folder_long)
+		{
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): common_folder_is: LEAVING, return True, match '.$needle.', and found '.$needle.' folder exists and matched the input ball data <br>'); } 
+			return True;
+		}
+		else
+		{
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): common_folder_is: LEAVING, return False, match '.$needle.', and found '.$needle.' folder exists BUT input ball data does not match it. <br>'); } 
+			return False;
+		}
+	}
+	
 	/*!
 	@function all_folders_listbox
-	@abstract gets a list of all folders available to the user, and makes an HTML listbox widget with that data
+	@abstract gets a list of all folders available to the user, and makes an HTML listbox widget with that data. 
+	BEING PHASED OUT, REPLACED BY HTML WIDGET CLASS, soon to be DEPRECIATED. 
 	@param $feed_args[] array or args that you will "feed" into the function, contains the following members 
 		['mailsvr_stream'] : integer : the stream where the data communications with the mailserver takes place
 		['pre_select_folder'] : string : if you want a particular folder already selected in the listbox, put that foldername
@@ -52,7 +234,8 @@ class mail_msg extends mail_msg_wrappers
 		'[first_line_txt'] : string : the text that initially is displayed in the select widget, used for information only,
 			like a descriptive label, it does not have any important data usage. Default: "lang('switch current folder to')"
 	@result string representing an HTML listbox widget 
-	@discussion ?
+	@discussion BEING PHASED OUT, REPLACED BY HTML WIDGET CLASS, altough this function *may* 
+	be retaied just to generate the raw data, but not the actual html.
 	@access   private
 	*/
 	function all_folders_listbox($feed_args='')
@@ -79,10 +262,10 @@ class mail_msg extends mail_msg_wrappers
 			'first_line_txt'	=> lang('switch current folder to')
 		);		
 		// loop thru $local_args[], replacing defaults with any args specified in $feed_args[]
-		if ($debug_widget) { echo 'all_folders_listbox $feed_args data dump<pre>'; print_r($feed_args); echo '</pre>'; }
+		if ($debug_widget) { $this->dbug->out('all_folders_listbox $feed_args data DUMP:', $feed_args); }
 		if (count($feed_args) == 0)
 		{
-			if ($debug_widget) { echo 'all_folders_listbox $feed_args is EMPTY<br>'.serialize($feed_args).'<br>'; }
+			if ($debug_widget) { $this->dbug->out('all_folders_listbox $feed_args is EMPTY<br>'.serialize($feed_args).'<br>'); }
 		}
 		else
 		{
@@ -92,8 +275,8 @@ class mail_msg extends mail_msg_wrappers
 			while(list($key,$value) = each($local_args))
 			{
 				// DEBUG
-				if ($debug_widget) { echo 'a: local_args: key=['.$key.'] value=['.(string)$value.']<br>'; }
-				if ($debug_widget) { echo 'b: feed_args: key=['.$key.'] value=['.(string)$feed_args[$key].']<br>'; }
+				if ($debug_widget) { $this->dbug->out('a: local_args: key=['.$key.'] value=['.(string)$value.']<br>'); }
+				if ($debug_widget) { $this->dbug->out('b: feed_args: key=['.$key.'] value=['.(string)$feed_args[$key].']<br>'); }
 				if ((isset($feed_args[$key]))
 				&& ($feed_args[$key] != $value))
 				{
@@ -101,12 +284,12 @@ class mail_msg extends mail_msg_wrappers
 					&& ($feed_args[$key] == ''))
 					{
 						// do nothing, keep the default value, can not over write a good default stream with an empty value
-						if ($debug_widget) { echo '* keeping default [mailsvr_stream] value, can not override with a blank string<br>'; }
+						if ($debug_widget) { $this->dbug->out('* keeping default [mailsvr_stream] value, can not override with a blank string<br>'); }
 					}
 					else
 					{
 						// we have a specified arg that should replace the default value
-						if ($debug_widget) { echo '*** override default value of ['.$local_args[$key] .'] with feed_args['.$key.'] of ['.(string)$feed_args[$key].']<br>'; }
+						if ($debug_widget) { $this->dbug->out('*** override default value of ['.$local_args[$key] .'] with feed_args['.$key.'] of ['.(string)$feed_args[$key].']<br>'); }
 						$local_args[$key] = $feed_args[$key];
 					}
 				}
@@ -115,7 +298,7 @@ class mail_msg extends mail_msg_wrappers
 			@reset($feed_args);
 		}
 		// at this point, local_args[] has anything that was passed in the feed_args[]
-		if ($debug_widget) { echo 'FINAL Listbox Local Args:<br>'.serialize($local_args).'<br>'; }
+		if ($debug_widget) { $this->dbug->out('FINAL Listbox Local Args:<br>'.serialize($local_args).'<br>'); }
 		
 		// init some important variables
 		$item_tags = '';
@@ -150,7 +333,8 @@ class mail_msg extends mail_msg_wrappers
 			
 			//echo '$folder_list DUMP<pre>'; print_r($folder_list); echo '</pre>';
 			// Save Origional Folder Name. $folder_status in the for statment below causes us to lose it.
-			$origional_folder = $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->prep_folder_out());
+			// FIXED (angles)
+			//$origional_folder = $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->prep_folder_out());
 			
 			// iterate thru the folder list, building the HTML tags using that data
 			for ($i=0; $i<count($folder_list);$i++)
@@ -160,8 +344,15 @@ class mail_msg extends mail_msg_wrappers
 				$folder_short = $folder_list[$i]['folder_short'];
 				$folder_acctnum = $folder_list[$i]['acctnum'];
 				if ($local_args['show_num_new'] == True) {
-					$folder_status = $GLOBALS['phpgw']->msg->phpgw_status("$folder_long");
-					$folder_unseen = number_format($folder_status->unseen);
+					//$folder_status = $GLOBALS['phpgw']->msg->phpgw_status("$folder_long");
+					//$folder_unseen = number_format($folder_status->unseen);
+					// this function caches its data
+					$tmp_fldball = array();
+					$tmp_fldball['folder'] = $folder_long;
+					$tmp_fldball['acctnum'] = $acctnum;
+					$folder_status = $GLOBALS['phpgw']->msg->get_folder_status_info($tmp_fldball);
+					$folder_unseen = number_format($folder_status['number_new']);
+					$tmp_fldball = array();
 				} 
 				
 				
@@ -204,9 +395,10 @@ class mail_msg extends mail_msg_wrappers
 					$item_tags = $item_tags . "</option>\r\n";
 				}
 			}
-			if ($local_args['show_num_new'] == True) {
-				$folder_status = $GLOBALS['phpgw']->msg->phpgw_status("$origional_folder");
-			}
+			// this workaroubd no longer needed
+			//if ($local_args['show_num_new'] == True) {
+			//	$folder_status = $GLOBALS['phpgw']->msg->phpgw_status("$origional_folder");
+			//}
 		}
 		// now $item_tags contains the internal folder list
 		// ----  add the HTML tags that surround this internal list data  ----
@@ -232,20 +424,24 @@ class mail_msg extends mail_msg_wrappers
 
 	/*!
 	@function folders_mega_listbox
-	@abstract like "all_folders_listbox" except it really shows ALL folder from EVERY account
+	@abstract like "all_folders_listbox" except it really shows ALL folder from EVERY account. 
+	BEING PHASED OUT, REPLACED BY HTML WIDGET CLASS, soon to be DEPRECIATED. 
 	@param $feed_args[] array or args that you will "feed" into the function ??
 	@result string representing an HTML listbox widget 
-	@discussion ?
-	@access   private
+	@discussion BEING PHASED OUT, REPLACED BY HTML WIDGET CLASS, soon to be DEPRECIATED. 
+	@author Angles 
+	@access private
 	*/
 	function folders_mega_listbox($feed_args='')
 	{
+		$debug_mega_listbox = 0;
+		//$debug_mega_listbox = 3;
+		if ($debug_mega_listbox > 0) { $this->dbug->out('folders_mega_listbox('.__LINE__.'): ENTERING<br>'); }
+		
 		if(!$feed_args)
 		{
 			$feed_args=array();
 		}
-		//$debug_widget = True;
-		$debug_widget = False;
 		
 		$acctnum = $this->get_acctnum();
 		// establish fallback default args
@@ -263,10 +459,10 @@ class mail_msg extends mail_msg_wrappers
 			'first_line_txt'	=> lang('switch current folder to')
 		);		
 		// loop thru $local_args[], replacing defaults with any args specified in $feed_args[]
-		if ($debug_widget) { echo 'folders_mega_listbox $feed_args data dump<pre>'; print_r($feed_args); echo '</pre>'; }
+		if ($debug_mega_listbox > 1) { $this->dbug->out('folders_mega_listbox('.__LINE__.'): $feed_args data DUMP:', $feed_args); }
 		if (count($feed_args) == 0)
 		{
-			if ($debug_widget) { echo 'folders_mega_listbox $feed_args is EMPTY<br>'.serialize($feed_args).'<br>'; }
+			if ($debug_mega_listbox > 1) { $this->dbug->out('folders_mega_listbox('.__LINE__.'): $feed_args is EMPTY<br>'.serialize($feed_args).'<br>'); }
 		}
 		else
 		{
@@ -276,8 +472,8 @@ class mail_msg extends mail_msg_wrappers
 			while(list($key,$value) = each($local_args))
 			{
 				// DEBUG
-				if ($debug_widget) { echo 'a: local_args: key=['.$key.'] value=['.(string)$value.']<br>'; }
-				if ($debug_widget) { echo 'b: feed_args: key=['.$key.'] value=['.(string)$feed_args[$key].']<br>'; }
+				if ($debug_mega_listbox > 1) { $this->dbug->out('folders_mega_listbox('.__LINE__.'): a: local_args: key=['.$key.'] value=['.(string)$value.']<br>'); }
+				if ($debug_mega_listbox > 1) { $this->dbug->out('folders_mega_listbox('.__LINE__.'): b: feed_args: key=['.$key.'] value=['.(string)$feed_args[$key].']<br>'); }
 				if ((isset($feed_args[$key]))
 				&& ($feed_args[$key] != $value))
 				{
@@ -285,12 +481,12 @@ class mail_msg extends mail_msg_wrappers
 					&& ($feed_args[$key] == ''))
 					{
 						// do nothing, keep the default value, can not over write a good default stream with an empty value
-						if ($debug_widget) { echo '* keeping default [mailsvr_stream] value, can not override with a blank string<br>'; }
+						if ($debug_mega_listbox > 1) { $this->dbug->out('folders_mega_listbox('.__LINE__.'): * keeping default [mailsvr_stream] value, can not override with a blank string<br>'); }
 					}
 					else
 					{
 						// we have a specified arg that should replace the default value
-						if ($debug_widget) { echo '*** override default value of ['.$local_args[$key] .'] with feed_args['.$key.'] of ['.(string)$feed_args[$key].']<br>'; }
+						if ($debug_mega_listbox > 1) { $this->dbug->out('folders_mega_listbox('.__LINE__.'): *** override default value of ['.$local_args[$key] .'] with feed_args['.$key.'] of ['.(string)$feed_args[$key].']<br>'); }
 						$local_args[$key] = $feed_args[$key];
 					}
 				}
@@ -299,7 +495,7 @@ class mail_msg extends mail_msg_wrappers
 			@reset($feed_args);
 		}
 		// at this point, local_args[] has anything that was passed in the feed_args[]
-		if ($debug_widget) { echo 'FINAL Listbox Local Args:<br>'.serialize($local_args).'<br>'; }
+		if ($debug_mega_listbox > 1) { $this->dbug->out('folders_mega_listbox('.__LINE__.'):FINAL Listbox Local Args:<br>'.serialize($local_args).'<br>'); }
 		
 		$item_tags = '';
 		
@@ -311,13 +507,15 @@ class mail_msg extends mail_msg_wrappers
 			if ($this_status != 'enabled')
 			{
 				// Do Nothing, This account is not in use
+				if ($debug_mega_listbox > 1) { $this->dbug->out('folders_mega_listbox('.__LINE__.'): $this_acctnum ['.$this_acctnum.'] is not in use, so skip folderlist<br>'); }
 			}
 			else
 			{
 				// get the actual list of folders we are going to put into the combobox
 				//$folder_list = $this->get_folder_list($this_acctnum);
-				$folder_list = $this->get_arg_value('folder_list');
-				if ($debug_widget) { echo 'folders_mega_listbox $folder_list for $this_acctnum ['.$this_acctnum.'] DUMP<pre>'; print_r($folder_list); echo '</pre>'; }
+				$folder_list = $this->get_arg_value('folder_list', $this_acctnum);
+				if ($debug_mega_listbox > 1) { $this->dbug->out('folders_mega_listbox('.__LINE__.'): $this_acctnum ['.$this_acctnum.'] IS enabled, got folder list<br>'); }
+				if ($debug_mega_listbox > 2) { $this->dbug->out('folders_mega_listbox('.__LINE__.'): $folder_list for $this_acctnum ['.$this_acctnum.'] DUMP:', $folder_list); }
 				// NNTP = BORKED CODE!!!  (ignore for now) ...
 				if ($this->get_arg_value('newsmode', $this_acctnum))
 				{
@@ -389,6 +587,7 @@ class mail_msg extends mail_msg_wrappers
 				. $item_tags
 			.'</select>';
 		// return a pre-built HTML listbox (selectbox) widget
+		if ($debug_mega_listbox > 0) { $this->dbug->out('folders_mega_listbox('.__LINE__.'): LEAVING<br>'); }
 		return $listbox_widget;
 	}
 	
@@ -509,9 +708,9 @@ class mail_msg extends mail_msg_wrappers
 		
 		if ($debug_sort)
 		{
-			echo 'sort: ['.$this->get_arg_value('sort').']<br>';
-			echo 'order: ['.$this->get_arg_value('order').']<br>';
-			echo 'start: ['.$this->get_arg_value('start').']<br>';
+			$this->dbug->out('sort: ['.$this->get_arg_value('sort').']<br>');
+			$this->dbug->out('order: ['.$this->get_arg_value('order').']<br>');
+			$this->dbug->out('start: ['.$this->get_arg_value('start').']<br>');
 		}
 	}
 	
@@ -519,29 +718,55 @@ class mail_msg extends mail_msg_wrappers
 	// NOTE: msgnum int 0 is NOT to be confused with "empty" nor "boolean False"
 	/*!
 	@function prev_next_navigation
-	@abstract 
+	@abstract ?
 	@author Angles
 	*/
 	function prev_next_navigation($old_method_totalmessages=0)
 	{
 		//$debug_nav = True;
-		$debug_nav = False;
+		//$debug_nav = False;
+		$debug_nav = $this->debug_index_page_display;
+		if ($debug_nav > 0) { $this->dbug->out('mail_msg_display: prev_next_navigation('.__LINE__.'): ENTERING, (try debug_index_page_display = 3 to see data dumps)<br>'); }
 		
+		// this gets a verified non stale msgball_list and puts it in cache, or uses the one in cache if it passes verified and not stale test
+		$this->get_msgball_list();
+		// but we do not want a COPY of this data it can be thousands of items, so we try to get a reference
 		$nav_data = array();
-		$nav_data['msgball_list'] = $this->get_msgball_list();
+		$nav_data['msgball_list'] = array();
+		$ex_acctnum = $this->get_acctnum();
+		if (($this->session_cache_enabled == True)
+		&& (isset($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'])))
+		//&& (isset($GLOBALS['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'])))
+		{
+			$nav_data['msgball_list'] =& $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'];
+			//$nav_data['msgball_list'] =& $GLOBALS['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'];
+		}
+		else
+		{
+			// ok we could not obtain a reference for some reason, get a COPY then
+			$nav_data['msgball_list'] = $this->get_msgball_list();
+		}
 		//$nav_data['msgnum_idx'] = $this->array_search_ex($this->get_arg_value('["msgball"]["msgnum"]'), $nav_data['msgball_list']);
 		
+		
 		// what is the array index number where the message in question is located in the $nav_data['msgball_list'] array
-		$nav_data['msgnum_idx'] = False;
-		$needle = $this->get_arg_value('["msgball"]["msgnum"]');
-		for($i=0;$i<$nav_data['msgball_list'];$i++)
+		// easiest way is to search for the uri in the msgball_list
+		$this_pageview_msgball = $this->get_arg_value('msgball');
+		if ((isset($this_pageview_msgball['uri']))
+		&& ($this_pageview_msgball['uri']))
 		{
-			if ((string)$nav_data['msgball_list'][$i]['msgnum'] == (string)$needle)
-			{
-				$nav_data['msgnum_idx'] = $i;
-				break;
-			}
-		}		
+			// do nothing we have the URI data we need
+		}
+		else
+		{
+			$this_pageview_msgball['uri'] = 
+				 'msgball[msgnum]='.$this_pageview_msgball['msgnum']
+				.'&msgball[folder]='.$this_pageview_msgball['folder']
+				.'&msgball[acctnum]='.$this_pageview_msgball['acctnum'];
+		}
+		// get the pos in the msgball_list that is the array idx for this current pageview msgball
+		$nav_data['msgnum_idx'] = False;
+		$nav_data['msgnum_idx'] = array_search($this_pageview_msgball['uri'],$nav_data['msgball_list']);
 		
 		// NOTE: msgnum_idx int 0 is NOT to be confused with "empty" nor "boolean False"
 		if ((isset($nav_data['msgnum_idx']))
@@ -554,7 +779,7 @@ class mail_msg extends mail_msg_wrappers
 			$prev_msg_idx = (int)($nav_data['msgnum_idx'] - 1);
 			if (isset($nav_data['msgball_list'][$prev_msg_idx]))
 			{
-				$nav_data['prev_msg']['msgball']['uri'] = $nav_data['msgball_list'][$prev_msg_idx]['uri'];
+				$nav_data['prev_msg']['msgball']['uri'] = $nav_data['msgball_list'][$prev_msg_idx];
 			}
 			else
 			{
@@ -564,7 +789,7 @@ class mail_msg extends mail_msg_wrappers
 			$next_msg_idx = (int)($nav_data['msgnum_idx'] + 1);
 			if (isset($nav_data['msgball_list'][$next_msg_idx]))
 			{
-				$nav_data['next_msg']['msgball']['uri'] = $nav_data['msgball_list'][$next_msg_idx]['uri'];
+				$nav_data['next_msg']['msgball']['uri'] = $nav_data['msgball_list'][$next_msg_idx];
 			}
 			else
 			{
@@ -583,7 +808,7 @@ class mail_msg extends mail_msg_wrappers
 			$nav_data['method'] = 'old_broken';
 		}
 		
-		if ($debug_nav) { echo 'messages.php step1 $nav_data[] dump <pre>'; print_r($nav_data); echo '</pre>'; }
+		if ($debug_nav > 2) { $this->dbug->out('mail_msg_display: prev_next_navigation('.__LINE__.'): step1 $nav_data[] DUMP:', $nav_data); }
 		
 		// if it's not possible to have a prev message, then make "prev_msg" False
 		if ($nav_data['active_msgnum_idx'] <= $nav_data['lowest_left'])
@@ -597,13 +822,17 @@ class mail_msg extends mail_msg_wrappers
 			// we are at the final message in this direction, there is no next message
 			$nav_data['next_msg'] = $this->not_set;
 		}
-		if ($debug_nav) { echo 'messages.php step2 $nav_data[] dump <pre>'; print_r($nav_data); echo '</pre>'; }
+		if ($debug_nav > 2) { $this->dbug->out('mail_msg_display: prev_next_navigation('.__LINE__.'): step2 $nav_data[] DUMP:', $nav_data); }
+		if ($debug_nav > 0) { $this->dbug->out('mail_msg_display: prev_next_navigation('.__LINE__.'): LEAVING<br>'); }
 		return $nav_data;
 	}
-
+	
 	/*!
 	@function all_ex_accounts_listbox
-	@abstract 
+	@abstract Creates a listbox with all email accounts.
+	@discussion  Used in the switch account combobox, and the filers page too, I think. The listbox 
+	is sort of an HTML widget. For the raw data, see the function, it is easy to get the data without the 
+	HTML if you want that. 
 	@author Angles
 	*/
 	function all_ex_accounts_listbox($feed_args)
@@ -632,10 +861,10 @@ class mail_msg extends mail_msg_wrappers
 			'pre_select_multi'	=> (string)$acctnum
 		);		
 		// loop thru $local_args[], replacing defaults with any args specified in $feed_args[]
-		if ($debug_widget) { echo 'all_ex_accounts_listbox $feed_args data dump<pre>'; print_r($feed_args); echo '</pre>'; }
+		if ($debug_widget) { $this->dbug->out('all_ex_accounts_listbox $feed_args data DUMP:', $feed_args); }
 		if (count($feed_args) == 0)
 		{
-			if ($debug_widget) { echo 'all_ex_accounts_listbox $feed_args is EMPTY<br>'.serialize($feed_args).'<br>'; }
+			if ($debug_widget) { $this->dbug->out('all_ex_accounts_listbox $feed_args is EMPTY<br>'.serialize($feed_args).'<br>'); }
 		}
 		else
 		{
@@ -645,14 +874,14 @@ class mail_msg extends mail_msg_wrappers
 			while(list($key,$value) = each($local_args))
 			{
 				// DEBUG
-				if ($debug_widget) { echo '* a: local_args: key=['.$key.'] value=['.(string)$value.']<br>'; }
-				if ($debug_widget) { echo '* b: feed_args: key=['.$key.'] value=['.(string)$feed_args[$key].']<br>'; }
+				if ($debug_widget) { $this->dbug->out('* a: local_args: key=['.$key.'] value=['.(string)$value.']<br>'); }
+				if ($debug_widget) { $this->dbug->out('* b: feed_args: key=['.$key.'] value=['.(string)$feed_args[$key].']<br>'); }
 				if ((isset($feed_args[$key]))
 				//&& ($feed_args[$key] != $value))
 				&& ((string)$feed_args[$key] != (string)$value))
 				{
 					// we have a specified arg that should replace the default value
-					if ($debug_widget) { echo '*** override default value of ['.$local_args[$key] .'] with feed_args['.$key.'] of ['.(string)$feed_args[$key].']<br>'; }
+					if ($debug_widget) { $this->dbug->out('*** override default value of ['.$local_args[$key] .'] with feed_args['.$key.'] of ['.(string)$feed_args[$key].']<br>'); }
 					$local_args[$key] = $feed_args[$key];
 				}
 			}
@@ -660,7 +889,7 @@ class mail_msg extends mail_msg_wrappers
 			@reset($feed_args);
 		}
 		// at this point, local_args[] has anything that was passed in the feed_args[]
-		if ($debug_widget) { echo 'all_ex_accounts_listbox: FINAL Listbox Local Args:<br>'.serialize($local_args).'<br>'; }
+		if ($debug_widget) { $this->dbug->out('all_ex_accounts_listbox: FINAL Listbox Local Args:<br>'.serialize($local_args).'<br>'); }
 		
 		$item_tags = '';
 		
@@ -811,7 +1040,7 @@ class mail_msg extends mail_msg_wrappers
 
 	// ----  High-Level Function To Get The "so-and-so" wrote String   -----
 	/*!
-	@function prev_next_navigation
+	@function get_who_wrote
 	@abstract 
 	@author Angles and code from previous maintainer
 	*/
@@ -849,11 +1078,14 @@ class mail_msg extends mail_msg_wrappers
 
 	/*!
 	@function has_real_attachment
-	@abstract a quick test to see if a message has an attachment, (NOT 100% accurate, but fast and mostly accurate)
-	@param $struct PHP structure obtained from the "fetchstructure" command
-	@result boolean
+	@abstract a quick test to see if a message has an attachment, NOT 100 percent accurate, but fast and mostly accurate. 
+	@param $struct PHP structure obtained from the "fetchstructure" command, use that data as the param. 
+	@result boolean True if it appears the message has one or more attachments, False otherwise. 
+	@discussion For use when displaying a list of messages, a quick way to determine if visual 
+	information (paperclip) is necessary. Quick because the php "fetchstructure" structure is serialized 
+	and string searched for cartain string patterns that indicate the message probably has one or more 
+	attachments. 
 	@author Angles
-	@discussion for use when displaying a list of messages, a quick way to determine if visual information (paperclip) is necessary
 	*/
 	function has_real_attachment($struct)
 	{
@@ -899,7 +1131,8 @@ class mail_msg extends mail_msg_wrappers
 	/*!
 	@function get_flat_pgw_struct
 	@abstract Message Structure Analysis, make multilevel php message struct into a flat array
-	@param $struct (php structure from ?)
+	@param $struct (php structure from ?) 
+	@discussion This is the meat of the home grown MIME analysis this app uses. 
 	@author Angles
 	*/
 	function get_flat_pgw_struct($struct)
@@ -1388,6 +1621,15 @@ class mail_msg extends mail_msg_wrappers
 	/*!
 	@function pgw_msg_struct
 	@abstract Mime analysis, make multilevel php message structure into a flat array with human understandable information. 
+	@param $part 
+	@param $parent_flat_idx 
+	@param $feed_dumb_mime 
+	@param $feed_i 
+	@param $feed_loops 
+	@param $feed_debth 
+	@discussion Part of the home grown MIME analysis in this app. This function is used by the 
+	big loop stuff in function "get_flat_pgw_struct", I can not remember what all these params do 
+	at this moment. 
 	@author Angles
 	*/
 	function pgw_msg_struct($part, $parent_flat_idx, $feed_dumb_mime, $feed_i, $feed_loops, $feed_debth)
@@ -1593,7 +1835,19 @@ class mail_msg extends mail_msg_wrappers
 
 	/*!
 	@function mime_number_smart
-	@abstract Make a "dumb" mime part number (based only on array position) into a "Smart" mime number that a server understands. 
+	@abstract Make a "dumb" mime part number (based only on array position) into a "Smart" mime 
+	number that a server understands as per the RFC for IMAP. 
+	@param $part_nice 
+	@param $flat_idx 
+	@param $new_mime_dumb 
+	@discussion Part of the home grown MIME analysis in this app. So called "dumb" mime number is 
+	based only on the zero based array location of the part. The array is like a tree, the numbers like 
+	branches, all in numerical sequence. However, to get a MIME part from a server the "dumb" number 
+	must be changed into the kind of part numbering as per the RFC for IMAP. As an aside, note that in 
+	certain places where I know I am using the sockets class, not the PHP imap extension, I take a shortcut 
+	and pass the "dumb" number to the sockets dcom class because it is easier to do straing array number location. 
+	However, for any situation interacting with a real IMAP server requires the "smart" conversion done 
+	in this function. 
 	@author Angles
 	*/
 	function mime_number_smart($part_nice, $flat_idx, $new_mime_dumb)
@@ -1609,9 +1863,9 @@ class mail_msg extends mail_msg_wrappers
 		//	$debug = True;
 		//}
 		
-		if ($debug) { echo 'ENTER mime_number_smart<br>'; }
-		if ($debug) { echo 'fed var flat_idx: '. $flat_idx.'<br>'; }
-		if ($debug) { echo 'fed var new_mime_dumb: '. $new_mime_dumb.'<br>'; }
+		if ($debug) { $this->dbug->out('ENTER mime_number_smart<br>'); }
+		if ($debug) { $this->dbug->out('fed var flat_idx: '. $flat_idx.'<br>'); }
+		if ($debug) { $this->dbug->out('fed var new_mime_dumb: '. $new_mime_dumb.'<br>'); }
 		//error check
 		if ($new_mime_dumb == $not_set)
 		{
@@ -1623,12 +1877,12 @@ class mail_msg extends mail_msg_wrappers
 		$exploded_mime_dumb = Array();
 		if (strlen($new_mime_dumb) == 1)
 		{
-			if ($debug) { echo 'strlen(new_mime_dumb) = 1 :: TRUE ; FIRST debth level<br>'; }
+			if ($debug) { $this->dbug->out('strlen(new_mime_dumb) = 1 :: TRUE ; FIRST debth level<br>'); }
 			$exploded_mime_dumb[0] = (int)$new_mime_dumb;
 		}
 		else
 		{
-			if ($debug) { echo 'strlen(new_mime_dumb) = 1 :: FALSE<br>'; }
+			if ($debug) { $this->dbug->out('strlen(new_mime_dumb) = 1 :: FALSE<br>'); }
 			$exploded_mime_dumb = explode('.', $new_mime_dumb);
 		}
 		
@@ -1637,30 +1891,30 @@ class mail_msg extends mail_msg_wrappers
 		{
 			$exploded_mime_dumb[$i] = (int)$exploded_mime_dumb[$i];
 		}
-		if ($debug) { echo 'exploded_mime_dumb '.serialize($exploded_mime_dumb).'<br>'; }
+		if ($debug) { $this->dbug->out('exploded_mime_dumb '.serialize($exploded_mime_dumb).'<br>'); }
 		
 		// make an array of all parts of this family tree,  from the current part (the outermost) to innermost (closest to debth level 1)
 		$dumbs_part_nice = Array();
 		//loop BACKWARDS
 		for ($i = count($exploded_mime_dumb) - 1; $i > -1; $i--)
 		{
-			if ($debug) { echo 'exploded_mime_dumb reverse loop i=['.$i.']<br>'; }
+			if ($debug) { $this->dbug->out('exploded_mime_dumb reverse loop i=['.$i.']<br>'); }
 			// is this the outermost (current) part ?
 			if ($i == (count($exploded_mime_dumb) - 1))
 			{
 				$dumbs_part_nice[$i] = $part_nice[$flat_idx];
-				if ($debug) { echo '(outermost/current part) dumbs_part_nice[i('.$i.')] = part_nice[flat_idx('.$flat_idx.')]<br>'; }
-				//if ($debug) { echo ' - prev_parent_flat_idx: '.$prev_parent_flat_idx.'<br>'; }
+				if ($debug) { $this->dbug->out('(outermost/current part) dumbs_part_nice[i('.$i.')] = part_nice[flat_idx('.$flat_idx.')]<br>'); }
+				//if ($debug) { $this->dbug->out(' - prev_parent_flat_idx: '.$prev_parent_flat_idx.'<br>'); }
 			}
 			else
 			{
 				$this_dumbs_idx = $dumbs_part_nice[$i+1]['ex_parent_flat_idx'];
 				$dumbs_part_nice[$i] = $part_nice[$this_dumbs_idx];
-				if ($debug) { echo 'dumbs_part_nice[i('.$i.')] = part_nice[this_dumbs_idx('.$this_dumbs_idx.')]<br>'; }
+				if ($debug) { $this->dbug->out('dumbs_part_nice[i('.$i.')] = part_nice[this_dumbs_idx('.$this_dumbs_idx.')]<br>'); }
 			}
 		}
-		//if ($debug) { echo 'dumbs_part_nice serialized: '.serialize($dumbs_part_nice) .'<br>'; }
-		//if ($debug) { echo 'serialize exploded_mime_dumb: '.serialize($exploded_mime_dumb).'<br>'; }
+		//if ($debug) { $this->dbug->out('dumbs_part_nice serialized: '.serialize($dumbs_part_nice) .'<br>'); }
+		//if ($debug) { $this->dbug->out('serialize exploded_mime_dumb: '.serialize($exploded_mime_dumb).'<br>'); }
 		
 		// NOTE:  Packagelist -> Container EXCEPTION Conversions
 		// a.k.a "Exceptions for Less-Standart Subtypes"
@@ -1741,13 +1995,15 @@ class mail_msg extends mail_msg_wrappers
 				}
 			}
 		}
-		if ($debug) { echo 'FINAL smart_mime_number: '.$smart_mime_number.'<br><br>'; }
+		if ($debug) { $this->dbug->out('FINAL smart_mime_number: '.$smart_mime_number.'<br><br>'); }
 		return $smart_mime_number;
 	}
 
 	/*!
 	@function make_part_clickable
-	@abstract message text which could be an href or mail to can be made clickable.
+	@abstract message text which could be an href or mail to can be made clickable. 
+	@param $part_nice 
+	@param $msgball 
 	@author Inherited from previous maintainer, Angles refined only
 	*/
 	function make_part_clickable($part_nice, $msgball)
@@ -1843,6 +2099,8 @@ class mail_msg extends mail_msg_wrappers
 	/*!
 	@function has_this_param
 	@abstract does a MIME param array contain a certain attribute.
+	@param $param_array 
+	@param $needle 
 	@author Angles
 	@discussion can take as input either a php structure or an anglemail flat part array. 
 	For example, an attribute could be "filename" and its value could be "image.png", this 
@@ -1890,6 +2148,7 @@ class mail_msg extends mail_msg_wrappers
 	/*!
 	@function array_keys_str
 	@abstract debug function, report all "keys" in an associative array of "key - value"
+	@param $my_array 
 	@author Angles
 	*/
 	function array_keys_str($my_array)
@@ -1903,9 +2162,10 @@ class mail_msg extends mail_msg_wrappers
 	@function report_moved_or_deleted
 	@abstract if mail was moved or deleted, we should report to the user what happened
 	@param none, it uses the class args described below in "discussion"
-	@result string which has either (a) a langed report to show the user about the move/delete that just occured
+	@result string which has either (a) a langed report to show the user about the move or delete that just occured
 	or (b) an empty string indicating no move or delete actions were taken, so none need to report anything
-	@discussion uses the following class args 
+	@discussion See the example for the discussion. 
+	@example This is really the discussion. This function uses the following class args 
 	  ['args']['td']	"td" means "Total Deleted", if it's filled it contains the number of messages that were deleted
 	  ['args']['tm']	"tm" means "Total Moved", if it's filled it contains the number of messages that were moved
 	  ['args']['tf']	"tf" means "To Folder", if it's filled it contains the name of the folder that messages were moved to
@@ -1974,80 +2234,73 @@ class mail_msg extends mail_msg_wrappers
 		}
 		return $report_this;
 	}
-
+	
 	/*!
 	@function report_total_foldersize
-	@abstract get the total of all messges sizes in a folder added up to "folder size"
-	@param array, the single argument $report_args_array is an array with these 3 members
-	$report_args_array['allow_stats_size_speed_skip']  boolean
-		getting folder size *can* take long time if alot of mail is in the folder, and put unneeded load on the IMAP server
-		set to True to skip getting the folder size if there are more messages in the folder than specified 
-		by "stats_size_threshold". 
-		Default: False
-	$report_args_array['stats_size_threshold']  integer
-		test to skip getting the folder size if there are more messages in the folder than this number
-		Default: 100   (i.e. 100 messages is the test threshold)
-	$report_args_array['number_all']  integer  total number of messages in the folder
-		if you know the total number of messages in the folder before calling this function, then fill this
-		otherwise this function will obtain the data by itself if it needs it
-		Default: not applicable
+	@abstract ALIAS to report_total_foldersize_conditional
+	@param See the real function 
+	@discussion This function is being rewritten, so it not points to the new replacement function 
+	only for backward compat until all old function names are replaced. 
+	@author Angles
+	*/
+	function report_total_foldersize($force_showsize='')
+	{
+		// the OLD version of this function took an array as the param, the NEW function does not
+		// old function calls are adapted to the new function by fropping the old arg array.
+		if (is_array($force_showsize))
+		{
+			// drop this param value, it is for the OLD funtion that is replaced. 
+			$force_showsize = '';
+		}
+		return $this->report_total_foldersize_conditional($force_showsize);
+	}
+	
+	/*!
+	@function report_total_foldersize_conditional
+	@abstract MAYBE get the total of all messges sizes in a folder added up to "folder size" ONLY IF SPECIFIED. 
+	@param $force_showsize (boolean) OPTIONAL, if not provided the arg value "force_showsize" is used, if available, 
+	which is usually submitted via GPC by the user. However, if this param IS provided, it is used instead 
+	of the arg value (overriding the arg value). In which case, if True, then we really so get the size, if False this function 
+	does NOT get the size. If neither the arg value not this param are specified, the default is False, do not 
+	get size data. 
 	@result string, either (a) folder size nicely formatted for human readability, or (b) an empty string
 	if it was not OK to obtain the data according to the speed skip test
-	@discussion  total size of all emails in this folder added up, if its OK to get that data
+	@discussion  total size of all emails in this folder added up, if its OK to get that data. 
+	Getting folder size *can* take long time if alot of mail is in the folder, which put unneeded load on the IMAP server, 
+	Additionally, there are 2 ways to get folder stats about a folder, one way ALWAYS requests the size from
+	the mailserver, the other way does NOT request the size from the mailserver. For speed reasons, 
+	we only use the way that does NOT ask for the size, and additionally we may cache that data too. 
+	However, if the user specifically requests the folder size, only then do we actually use the IMAP function 
+	that will return the size. If various logic determines we are specifically to get the size data, then we 
+	get the data and return it in human formatted format. Otherwise we do NOT get the size, and return 
+	an empty string. 
+	@author Angles 
 	*/
-	function report_total_foldersize($report_args_array='')
+	function report_total_foldersize_conditional($force_showsize='##NOTHING##')
 	{
-		if(!$report_args_array)
-		{
-			$report_args_array=array();
-		}
-		// initialize return value
-		$return_folder_size = '';
-		// if it's ok to obtain size, and size IS obtained, $return_folder_size will be filled
-		
-		// ----  set defaults for the args array  ----
-		// can take a long time if alot of mail is in the folder, and put unneeded load on the IMAP server
-		// should we do this or not?
-		if (!isset($report_args_array['allow_stats_size_speed_skip']))
-		{
-			$report_args_array['allow_stats_size_speed_skip'] = False;
-		}
-		// if "allow_stats_size_speed_skip" is True
-		// then if the number of messages in the folder exceeds this number, then we skip getting the folder size
-		if (!isset($report_args_array['stats_size_threshold']))
-		{
-			$report_args_array['stats_size_threshold'] = 100;
-		}
-		// to test whether to skip or not, we'll need to know the total number og messages in the folder
-		if (($report_args_array['allow_stats_size_speed_skip'] == True)
-		&& (!isset($report_args_array['number_all'])))
-		{
-			// get the data using a "high level" function call for this purpose
-			$folder_info = array();
-			$folder_info = $this->get_folder_status_info();
-			$report_args_array['number_all'] = $folder_info['number_all'];
-		}
-		
+		// fallback value
+		$do_show_size = False;
 		// ----  Is It OK To Get The Folder Size?  ----
-		// determine if we should show the folder size
-		if (($this->get_isset_arg('force_showsize'))
+		if (($force_showsize != $this->nothing)
+		&& ($force_showsize))
+		{
+			// a param not "##NOTHING## means USE THE PARAM as the determining value
+			// we use the value of the param, it superceeds the GPC arg value.
+			$do_show_size = True;
+			// it is also possible that param was passed as false, in which case $do_show_size never gets set to true in this logic block
+		}
+		elseif (($force_showsize == $this->nothing)
+		&& ($this->get_isset_arg('force_showsize'))
 		&& ($this->get_arg_value('force_showsize') != ''))
 		{
-			// user has requested override of this speed skip option
+			// no param was specified, so we use the arg value "force_showsize", its an external CPG aquired arg
+			// in this case, user has requested override of this speed skip option
 			$do_show_size = True;
 		}
-		elseif (($report_args_array['allow_stats_size_speed_skip'] == True)
-		&& ($report_args_array['number_all'] > $report_args_array['stats_size_threshold']))
-		{
-			// spped skip option is enabled and number messages exceeds skip threshold
-			$do_show_size = False;
-		}
-		else
-		{
-			// if either of those are not met, just show the size of the folder
-			$do_show_size = True;
-
-		}
+		// if we get to here and $do_show_size  has not specifically been set to True, then False is the fallback default
+		
+		// if it's ok to obtain size, and size IS obtained, this $return_folder_size will be filled
+		$return_folder_size = '';
 		
 		// ----  Get The Folder Size if it's OK  ----
 		if ($do_show_size)
@@ -2058,63 +2311,68 @@ class mail_msg extends mail_msg_wrappers
 		}
 		return $return_folder_size;
 	}
-
+	
 	/*!
 	@function get_msg_list_display
 	@abstract make an array containing all necessary data to display an "index.php" type list of mesasages
-	@param $folder_info   array   (OPTIONAL) array elements as defined in return from function 
-	  $this->get_folder_status_info() . This is primarily a time saver, if you already have the data, then pass it, 
-	  else this function will obtain the data for itself.
-	@param $folder_info   array of integers (OPTIONAL) integers representing a list of message numbers we 
-	  should display, pass this data if you have search results to show, for example. If this is not present,
-	  then this function get a numbered array list of all message numbers in that folder, sorted and ordered
-	  according to preferences and/or user submitted page view args.
-	@result array 
-		first_item	boolean, flag indicating this is the first item in the array, the first message
-				to display, states the obvious, but the index tpl uses it to show a form tag only once
-		back_color	used in html UI's to alternate the color or each row of data
-		has_attachment	attachment dection code has determined that this message has attachment(s)
-				which tells the UI to show the user something, like a paperclip image.
-		$msgnum	the number the mail server has assigned this message, used for fetching 
-		subject		message subject text suitable for display, text only
-		subject_link	URL that will request this message from the server, use with "subject" to make an HREF
-		size		message size suitable for display
-		is_unseen	this message has NOT yet been viewed by the client
-		from_name	Part 1 of 2 of the From String to show the user. This part 1 is the "personal"
-				data of the From person if it's available, if not we have no choice but to show
-				the plain address of the from person.
-		display_address_from	Part 2 of 2 of the From String to show the user. This part 2 contains
-				any additional info the user prefers to see in the From String, which can be either
-				(a) the plain address of the From person, or
-				(b) the plain address of the ReplyTo header address
-				According to user's preferences and considering what data is available
-				to fulfill those user prefs
-		who_to		Target address to send messages to when trying to "reply" to the author.
-				Standard way to handle this is:
-				(1) if ReplyTo is specified in the email header, then use it as the reply target
-				(2) if no ReplyTo is specified, then we use the email address of the From person
-				as the reply target. A seperate ReplyTo header address is optional when authoring
-				a message, but it clearly states the intent of the "From person" that replying to the
-				mail should NOT result in mail being sent to that "From person"'s address, so that
-				intent SHOULD be honored.
-				Another example: Quite often mailing lists use this header to make the
-				"From" the person who sent the message to the list, and when you click "reply"
-				the "ReplyTo" header indicates the mail should be sent to the list, NOT the
-				person in the "From" header.
-				Used to make the From String into a clickable HREF,
-				which will produce a blank Compose Mail page with the To address filled targeted
-				to this "who_to" value. This is different from a "reply to button" because no part
-				of the original mail is included in the resulting Compose Mail page.
-		from_link	URL that will produce an empty Compose New Mail page with the To address
-				already filled in, which address is the determination made in the "who_to" logic
-		msg_date	If the message arrived more than 1 day ago, this will be a date only.
-				If the message arrived within one day, this will be the time of arrival with NO date.
-	@discussion ?
-	@access   private
+	@param $folder_info (array) OPTIONAL. Array elements as defined in return from 
+	function "get_folder_status_info". This is primarily a time saver, if you already have the data, 
+	then pass it, else this function will obtain the data for itself. 
+	@param $folder_info (array of integers) OPTIONAL. integers representing a list of message numbers we 
+	should display, pass this data if you have search results to show, for example. If this is not present, 
+	then this function get a numbered array list of all message numbers in that folder, sorted and ordered 
+	according to preferences and/or user submitted page view args. 
+	@result array See Example for an explanation of what is in the returned array. 
+	@discussion Kind of a "black box" function to generate all data needed to make a message 
+	list page. This function returns an associative array of data only, no markup (I think). 
+	See the Example for more information. 
+	@example This is the structure of the associative array returned by this function. 
+	"first_item" boolean, flag indicating this is the first item in the array, the first message
+		to display, states the obvious, but the index tpl uses it to show a form tag only once
+	"back_color" used in html UI's to alternate the color or each row of data
+	"has_attachment" attachment dection code has determined that this message has attachment(s)
+		which tells the UI to show the user something, like a paperclip image.
+	"msgnum" the number the mail server has assigned this message, used for fetching. 
+	"subject" message subject text suitable for display, text only. 
+	"subject_link" URL that will request this message from the server, use with "subject" to make an HREF
+	"size" message size suitable for display
+	"is_unseen" this message has NOT yet been viewed by the client. 
+	"from_name" Part 1 of 2 of the From String to show the user. This part 1 is the "personal" 
+		data of the From person if it's available, if not we have no choice but to show 
+		the plain address of the from person. 
+	"display_address_from" Part 2 of 2 of the From String to show the user. This part 2 contains
+		any additional info the user prefers to see in the From String, which can be either
+		(a) the plain address of the From person, or
+		(b) the plain address of the ReplyTo header address
+		According to user's preferences and considering what data is available
+		to fulfill those user prefs
+	"who_to" Target address to send messages to when trying to "reply" to the author.
+		Standard way to handle this is:
+		(1) if ReplyTo is specified in the email header, then use it as the reply target
+		(2) if no ReplyTo is specified, then we use the email address of the From person
+		as the reply target. A seperate ReplyTo header address is optional when authoring
+		a message, but it clearly states the intent of the "From person" that replying to the
+		mail should NOT result in mail being sent to that "From person"'s address, so that
+		intent SHOULD be honored.
+		Another example: Quite often mailing lists use this header to make the
+		"From" the person who sent the message to the list, and when you click "reply"
+		the "ReplyTo" header indicates the mail should be sent to the list, NOT the
+		person in the "From" header.
+		Used to make the From String into a clickable HREF,
+		which will produce a blank Compose Mail page with the To address filled targeted
+		to this "who_to" value. This is different from a "reply to button" because no part
+		of the original mail is included in the resulting Compose Mail page.
+	"from_link" URL that will produce an empty Compose New Mail page with the To address
+		already filled in, which address is the determination made in the "who_to" logic
+	"msg_date" If the message arrived more than 1 day ago, this will be a date only.
+		If the message arrived within one day, this will be the time of arrival with NO date.
+	@access private
 	*/
 	function get_msg_list_display($folder_info='', $msgball_list='')
 	{
-		$debug_msg_list_display	= 0;
+		//$debug_msg_list_display = 3;
+		$debug_msg_list_display = $this->debug_index_page_display;
+		if ($debug_msg_list_display > 0) { $this->dbug->out('mail_msg_display: get_msg_list_display('.__LINE__.'): ENTERING<br>'); }
 		
 		if(!$folder_info)
 		{
@@ -2127,17 +2385,24 @@ class mail_msg extends mail_msg_wrappers
 		// obtain required data that is not passed into this function
 		// if no $folder_info was passed as an arg, then $folder_info will be an array with 0 elements
 		if (count($folder_info) == 0)
+		if (!$folder_info)
 		{
 			// use API-like high level function for this:
 			$folder_info = array();
 			$folder_info = $this->get_folder_status_info();
-			/* returns this array:
-			folder_info['is_imap'] boolean - pop3 server do not know what is "new" or not, IMAP servers do
-			folder_info['folder_checked'] string - the folder checked, as processed by the msg class, which may have done a lookup on the folder name
-			folder_info['alert_string'] string - lang'd string to show the user about status of new messages in this folder
-			folder_info['number_new'] integer - for IMAP: the number "recent" and/or "unseen"messages; for POP3: the total number of messages
-			folder_info['number_all'] integer - for IMAP and POP3: the total number messages in the folder
-			and some validity data used for caching.
+			/*!
+			@capability get_folder_status_info info used in the get_msg_list_display function. 
+			@discussion Duhhh, why is this document info here, it belongs with the 
+			"get_folder_status_info" itself. Anyway, here goes. 
+			Recall that the "get_folder_status_info" function returns this array. 
+			UPDATE ME this has changed some. 
+			@example UPDATE ME this should be moved to the "get_folder_status_info" doc string itself. 
+			folder_info["is_imap"] boolean - pop3 server do not know what is "new" or not, IMAP servers do
+			folder_info["folder_checked"] string - the folder checked, as processed by the msg class, which may have done a lookup on the folder name
+			folder_info["alert_string"] string - langd string to show the user about status of new messages in this folder
+			folder_info["number_new"] integer - for IMAP the number "recent" and/or "unseen"messages, for POP3 the total number of messages
+			folder_info["number_all"] integer - for IMAP and POP3 the total number messages in the folder
+			and some validity data used for caching. 
 			*/
 		}
 		
@@ -2152,9 +2417,26 @@ class mail_msg extends mail_msg_wrappers
 		// we have messages to list, continue...
 		// if we were passed an array of message numbers to show, use that, if not then
 		// get a numbered array list of all message numbers in that folder, sorted and ordered
-		if (count($msgball_list) == 0)
+		if (!$msgball_list)
 		{
-			$msgball_list = $this->get_msgball_list();
+			// msgball_list may be thousands of items, try to fill the cache and get a reference
+			//GLOBALS[phpgw_session][phpgw_app_sessions][email]
+			$this->get_msgball_list();
+			$ex_acctnum = $this->get_acctnum();
+			if (($this->session_cache_enabled == True)
+			&& (isset($this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'])))
+			//&& (isset($GLOBALS['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'])))
+			{
+				$msgball_list =& $this->ref_SESSION['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'];
+				//$msgball_list =& $GLOBALS['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'];
+				//{ echo 'mail_msg_display: get_msg_list_display('.__LINE__.'): $msgball_list *REFERENCE* DUMP:<pre>'; print_r($msgball_list); echo '</pre>'; } 
+				//$msgball_list = $GLOBALS['phpgw_session']['phpgw_app_sessions']['email']['dat'][$ex_acctnum]['msgball_list']['msgball_list'];
+			}
+			else
+			{
+				// ok we could not obtain a reference for some reason, get a COPY then
+				$msgball_list = $this->get_msgball_list();
+			}
 		}
 
 		if ($folder_info['number_all'] < $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
@@ -2182,19 +2464,35 @@ class mail_msg extends mail_msg_wrappers
 		$x = -1;
 		for ($i=$start; $i < $totaltodisplay; $i++)
 		{
-			if ($debug_msg_list_display > 2) { echo 'mail_msg: get_msg_list_display: $msgball_list['.$i.'] dump:<pre>'; print_r($msgball_list[$i]); echo '</pre>'; }
+			$this_loop_msgball = $this->ball_data_parse_str($msgball_list[$i]);
+			if ($debug_msg_list_display > 2) { $this->dbug->out('mail_msg_display: get_msg_list_display: $msgball_list['.$i.'] ['.$msgball_list[$i].'] $this_loop_msgball data DUMP:', $this_loop_msgball); } 
 			// we use $x to sequentially fill the $msg_list_display array
-			$x++;
+			//$x++;
+			$x = $x + 1;
+			$msg_list_display[$x] = array();
 			// place the delmov form header tags ONLY ONCE, blank string all subsequent loops
-			$msg_list_display[$x]['first_item'] = ($i == $this->get_arg_value('start'));
+			//$msg_list_display[$x]['first_item'] = ($i == $this->get_arg_value('start'));
+			// place the delmov form header tags ONLY ONCE, blank string all subsequent loops
+			if (($x-1) < 0)
+			{
+				$msg_list_display[$x]['first_item'] = True;
+			}
+			else
+			{
+				$msg_list_display[$x]['first_item'] = False;
+			}
 
 			// ROW BACK COLOR
 			$msg_list_display[$x]['back_color'] = (($i + 1)/2 == floor(($i + 1)/2)) ? $GLOBALS['phpgw_info']['theme']['row_off'] : $GLOBALS['phpgw_info']['theme']['row_on'];
-			//$msg_list_display[$x]['back_color'] = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($msg_list_display[$x-1]['back_color']);
+			$msg_list_display[$x]['back_color_class'] = (($i + 1)/2 == floor(($i + 1)/2)) ? 'row_off' : 'row_on';
+			////$msg_list_display[$x]['back_color'] = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($msg_list_display[$x-1]['back_color']);
 
-			// SHOW ATTACHMENT CLIP ?
-			// SKIP this for POP3 - fetchstructure for POP3 requires download the WHOLE msg
-			// so PHP can build the fetchstructure data (IMAP server does this internally)
+			/*!
+			@capability Inside "get_msg_list_display", SHOW ATTACHMENT CLIP issue. 
+			@discussion SKIP this for POP3 - fetchstructure for POP3 requires download the WHOLE msg
+			so PHP can build the fetchstructure data (IMAP server does this internally). This 
+			applies to builtin IMAP extension and the sockets POP3 class. 
+			*/
 			
 			//	THIS skips attachmant check only for POP3 socket (not build in) situations
 			//if ((isset($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin))
@@ -2211,19 +2509,19 @@ class mail_msg extends mail_msg_wrappers
 			else
 			{
 				// need Message Information: STRUCTURAL for this
-				$msg_structure = $this->phpgw_fetchstructure($msgball_list[$i]);
+				$msg_structure = $this->phpgw_fetchstructure($this_loop_msgball);
 				// now examine that msg_struct for signs of an attachment
 				$msg_list_display[$x]['has_attachment'] = $this->has_real_attachment($msg_structure);
 			}
 			
 			// Message Information: THE MESSAGE'S HEADERS ENVELOPE DATA
-			$hdr_envelope = $this->phpgw_header($msgball_list[$i]);
+			$hdr_envelope = $this->phpgw_header($this_loop_msgball);
 			
 			// MESSAGE REFERENCE (a) NUMBER (b) FOLDER (c) ACCTNUM and (d) FAKE_URL EMBEDDED MULTI DATA
-			$msg_list_display[$x]['msgnum'] = $msgball_list[$i]['msgnum'];
-			$msg_list_display[$x]['folder'] = $msgball_list[$i]['folder'];
-			$msg_list_display[$x]['acctnum'] = $msgball_list[$i]['acctnum'];
-			$msg_list_display[$x]['uri'] = $msgball_list[$i]['uri'];
+			$msg_list_display[$x]['msgnum'] = $this_loop_msgball['msgnum'];
+			$msg_list_display[$x]['folder'] = $this_loop_msgball['folder'];
+			$msg_list_display[$x]['acctnum'] = $this_loop_msgball['acctnum'];
+			$msg_list_display[$x]['uri'] = $this_loop_msgball['uri'];
 			
 			// SUBJECT
 			// NOTE: the acctnum MUST be matched to this individual message and folder
@@ -2231,7 +2529,7 @@ class mail_msg extends mail_msg_wrappers
 			$msg_list_display[$x]['subject_link'] = $GLOBALS['phpgw']->link(
 							'/index.php',
 							 'menuaction=email.uimessage.message'
-							.'&'.$msgball_list[$i]['uri']
+							.'&'.$this_loop_msgball['uri']
 							.'&sort='.$this->get_arg_value('sort')
 							.'&order='.$this->get_arg_value('order')
 							.'&start='.$this->get_arg_value('start'));
@@ -2247,19 +2545,37 @@ class mail_msg extends mail_msg_wrappers
 			{
 				$msg_list_display[$x]['size'] = $this->format_byte_size($hdr_envelope->Size);
 			}
-
+			
+			// FLAG HANDLING - initialize some vars
+			$msg_list_display[$x]['is_unseen'] = False;
+			$msg_list_display[$x]['is_answered'] = False;
+			$msg_list_display[$x]['is_flagged'] = False;
+			$msg_list_display[$x]['is_deleted'] = False;
+			$msg_list_display[$x]['is_draft'] = False;
+			// FLAG HANDLING - first get a string with all IMAP flags applicable to this message
+			$msg_list_display[$x]['flags'] = $this->make_flags_str($hdr_envelope);
 			// SEEN OR UNSEEN/NEW
-			if (($hdr_envelope->Unseen == 'U') || ($hdr_envelope->Recent == 'N'))
+			//if (($hdr_envelope->Unseen == 'U') || ($hdr_envelope->Recent == 'N'))
+			if (stristr($msg_list_display[$x]['flags'], 'Seen') == False)
 			{
 				$msg_list_display[$x]['is_unseen'] = True;
-			}
-			else
+			}			
+			if (stristr($msg_list_display[$x]['flags'], 'Answered'))
 			{
-				$msg_list_display[$x]['is_unseen'] = False;
-			}
-			
-			// FLAGS array with all IMAP flags, for utility purposes, such as appending and preserving these flags
-			$msg_list_display[$x]['flags'] = $this->make_flags_str($hdr_envelope);
+				$msg_list_display[$x]['is_answered'] = True;
+			}			
+			if (stristr($msg_list_display[$x]['flags'], 'Flagged'))
+			{
+				$msg_list_display[$x]['is_flagged'] = True;
+			}			
+			if (stristr($msg_list_display[$x]['flags'], 'Deleted'))
+			{
+				$msg_list_display[$x]['is_deleted'] = True;
+			}			
+			if (stristr($msg_list_display[$x]['flags'], 'Draft'))
+			{
+				$msg_list_display[$x]['is_draft'] = True;
+			}			
 
 			// FROM and REPLY TO  HANDLING
 			
@@ -2289,10 +2605,11 @@ class mail_msg extends mail_msg_wrappers
 			@abstract  display the "from" data according to user preferences
 			@result   string which is actually part 2 of 2 of the From String, 
 			with "from_name" being part 1 of 2.
-			@discussion  first some background on the terms used here 
+			@discussion See the Example for some background on the terms used here. 
+			@example First some background on the terms used here 
 			* "plain address" means the "user@domain.com" part
 			* "personal" means the name string that may be associated with that address
-				in the headers that would look like this if present: "Joe Dough" <user@domain.com>
+				in the headers that would look like this if present: "Joe Dough" &lt;user@domain.com&gt;
 				where "Joe Dough is the "personal" part of the address, but it's not always available
 			ISSUE 1: Assume the user always wants "personal" string shown, if it's available
 			If personal not available, we have no choice but to use the "plain address" as the displayed From string
@@ -2300,7 +2617,7 @@ class mail_msg extends mail_msg_wrappers
 			of course, if the personal data is not available, then we show the plain anyway
 			ISSUE 3: and if that plain address should be the "from" or "reply to (if any)" as the plain address part
 			of the display string. There IS actually an option to display the plain address of the specified
-			"ReplyTo" header in the From String the user wants to see,
+			"ReplyTo" header in the From String the user wants to see. 
 			*/
 			$from = $hdr_envelope->from[0];
 			if (!$from->personal)
@@ -2374,7 +2691,7 @@ class mail_msg extends mail_msg_wrappers
 			// said button is in the "show the message contents" page, email/message.php
 			$msg_list_display[$x]['from_link'] = $GLOBALS['phpgw']->link(
 								'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-								 $msgball_list[$i]['uri']
+								 $this_loop_msgball['uri']
 								.'&sort='.$this->get_arg_value('sort')
 								.'&order='.$this->get_arg_value('order')
 								.'&start='.$this->get_arg_value('start')
@@ -2438,8 +2755,30 @@ class mail_msg extends mail_msg_wrappers
 			$msg_list_display[$x]['to_data_final'] = $to_data_final;
 			
 		}
-		if ($debug_msg_list_display > 2) { echo 'mail_msg: get_msg_list_display: exiting $msg_list_display[] dump:<pre>'; print_r($msg_list_display); echo '</pre>'; }
+		if ($debug_msg_list_display > 2) { $this->dbug->out('mail_msg_display: get_msg_list_display: exiting $msg_list_display[] DUMP', $msg_list_display); }
+		if ($debug_msg_list_display > 0) { $this->dbug->out('mail_msg_display: get_msg_list_display('.__LINE__.'): LEAVING<br>'); }
 		return $msg_list_display;
+	}
+	
+	/*!
+	@function _image_on
+	@abstract temp replacement for phpgwapi  image_on until it supports images in different dirs.
+	@discussion Email themes have a group of similar looking images grouped into a directory with 
+	somewhat standard names that AngleMail understands as a themed image set. phpgwapi does not 
+	currently support subdirectories under the template images directory. Params are only to match the 
+	phpgw api function, we do not really use them. As of this writting, Feb 2003, images used for all themes, 
+	i.e. are not in a theme subdir but are used, are check and attach on the index page, they are not even 
+	sized, and, these are sized but not themed, on the message view page, are view_nofmt, view_formatted, 
+	view_headers, view_raw, and view_printable. Remember if these are themed they must be moved 
+	into the subdirs, all of them, even if they are copies, and removed from the main images dir, so it is 
+	obvious if they are group themed or not. 
+	@author Angles
+	*/
+	function _image_on($appname,$image,$extension='_on',$navbar=False)
+	{
+		//$prefer_ext = '.gif';
+		$prefer_ext = '.png';
+		return $GLOBALS['phpgw_info']['server']['webserver_url'].'/'.$appname.'/templates/default/images'.'/'.$image.$prefer_ext;
 	}
 
 } // end class mail_msg

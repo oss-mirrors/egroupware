@@ -49,9 +49,11 @@
 		var $debug=0;
 		//var $debug=1;
 		
-		/**************************************************************************\
-		*	CONSTRUCTOR
-		\**************************************************************************/
+		
+		/*!
+		@function ui_mail_debug
+		@abstract CONSTRUCTOR
+		*/
 		function ui_mail_debug()
 		{
 			if ($this->debug > 0) { echo 'ENTERING: email.ui_mail_debug.CONSTRUCTOR'.'<br>'."\r\n"; }
@@ -162,8 +164,11 @@
 			$this->widgets->set_href_clickme('dump the entire globals[phpgw_info] structure');
 			$GLOBALS['phpgw']->template->set_var('func_D3', $this->widgets->get_href());
 			
-			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=globals_phpgw_session_dump'));
-			$this->widgets->set_href_clickme('dump the entire globals[phpgw_session] structure');
+			//$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=globals_phpgw_session_dump'));
+			//$this->widgets->set_href_clickme('dump the entire globals[phpgw_session] structure');
+			//$GLOBALS['phpgw']->template->set_var('func_D4', $this->widgets->get_href());
+			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=ref_session_dump'));
+			$this->widgets->set_href_clickme('dump the entire msg->ref_SESSION structure');
 			$GLOBALS['phpgw']->template->set_var('func_D4', $this->widgets->get_href());
 			
 			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=msg_object_dump'));
@@ -215,6 +220,18 @@
 			$this->widgets->set_href_clickme('utility for testing env code parts');
 			$GLOBALS['phpgw']->template->set_var('func_O2', $this->widgets->get_href());
 			
+			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=make_table'));
+			$this->widgets->set_href_clickme('Create the email DB table');
+			$GLOBALS['phpgw']->template->set_var('func_O3', $this->widgets->get_href());
+			
+			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=rm_table'));
+			$this->widgets->set_href_clickme('Delete the email DB table');
+			$GLOBALS['phpgw']->template->set_var('func_O4', $this->widgets->get_href());
+			
+			$this->widgets->set_href_link($GLOBALS['phpgw']->link('/index.php','menuaction=email.ui_mail_debug.index&dfunc=so_am_table_exists'));
+			$this->widgets->set_href_clickme('Check if email DB table exists');
+			$GLOBALS['phpgw']->template->set_var('func_O5', $this->widgets->get_href());
+			
 			$GLOBALS['phpgw']->template->parse('V_before_echo','B_before_echo');
 			$GLOBALS['phpgw']->template->pfp('out','T_debug_main');
 			
@@ -234,6 +251,9 @@
 		{
 			// DAMN, we need a ->msg just to do the ref_GET stuff
 			$this->invoke_bootatrap();
+			
+			echo 'REQUEST_URI: '.$GLOBALS['phpgw']->msg->ref_SERVER['REQUEST_URI'].'<br>';
+			echo 'QUERY_STRING: '.$GLOBALS['phpgw']->msg->ref_SERVER['QUERY_STRING'].'<br>';
 			
 			if ((isset($GLOBALS['phpgw']->msg->ref_GET['dfunc']))
 			&& ($GLOBALS['phpgw']->msg->ref_GET['dfunc'] != ''))
@@ -294,6 +314,13 @@
 				print_r($GLOBALS['phpgw_session']) ;
 				echo '</pre>';
 			}
+			elseif ($desired_function == 'ref_session_dump')
+			{
+				// this function echos out its data
+				echo 'msg->ref_SESSION dump:<pre>';
+				print_r($GLOBALS['phpgw']->msg->ref_SESSION) ;
+				echo '</pre>';
+			}
 			elseif ($desired_function == 'msg_object_dump')
 			{
 				// this function echos out its data
@@ -308,6 +335,18 @@
 			elseif ($desired_function == 'env_test')
 			{
 				$this->env_test();
+			}
+			elseif ($desired_function == 'make_table')
+			{
+				$this->make_table();
+			}
+			elseif ($desired_function == 'rm_table')
+			{
+				$this->rm_table();
+			}
+			elseif ($desired_function == 'so_am_table_exists')
+			{
+				$this->so_am_table_exists();
 			}
 			else
 			{
@@ -427,6 +466,140 @@
 			
 			$GLOBALS['phpgw']->msg->end_request();
 		}
-	
+		
+		function make_table()
+		{
+			// this function makes a table for email in the phpgw DB
+			//$account_id = get_account_id($accountid,$GLOBALS['phpgw']->session->account_id);
+			$sTableName = 'phpgw_anglemail';
+			$query = "CREATE TABLE $sTableName ( "
+					. "account_id varchar(20) NOT NULL, "
+					. "data_key varchar(255) DEFAULT '' NOT NULL, "
+					. "content text DEFAULT '' NOT NULL, "
+					. "PRIMARY KEY (account_id,data_key) )";
+			$GLOBALS['phpgw']->db->query($query,__LINE__,__FILE__);
+			
+			$table_names = $GLOBALS['phpgw']->db->table_names();
+			echo '$table_names dump:<pre>';
+			print_r($table_names) ;
+			echo '</pre>';
+			/*
+			'phpgw_anglemail' => array(
+				'fd' => array(
+					'account_id' => array('type' => 'varchar', 'precision' => 20, 'nullable' => false),
+					'data_key' => array('type' => 'varchar', 'precision' => 255, 'nullable' => False, 'default' => ''),
+					'content' => array('type' => 'text', 'nullable' => False, 'default' => ''),
+				),
+				'pk' => array('account_id', 'data_key'),
+				'fk' => array(),
+				'ix' => array(),
+				'uc' => array()
+			*/
+		}
+		
+		function rm_table()
+		{
+			// this function drops the table for email in the phpgw DB
+			$sTableName = 'phpgw_anglemail';
+			$query = "DROP TABLE " . $sTableName;
+			$GLOBALS['phpgw']->db->query($query,__LINE__,__FILE__);
+			
+			$table_names = $GLOBALS['phpgw']->db->table_names();
+			echo '$table_names dump:<pre>';
+			print_r($table_names) ;
+			echo '</pre>';
+		}
+		
+		function so_admin_clear_entire_table()
+		{
+			// If you issue a DELETE with no WHERE clause, all rows are deleted.
+			// THIS WIPES THE TABLE CLEAN OF ALL DATA
+			$GLOBALS['phpgw']->db->query("DELETE FROM phpgw_anglemail",__LINE__,__FILE__);
+		}
+		
+		function so_am_table_exists()
+		{
+			$look_for_me = 'phpgw_anglemail';
+			$table_names = $GLOBALS['phpgw']->db->table_names();
+			$table_names_serialized = serialize($table_names);
+			if (strstr($table_names_serialized, $look_for_me))
+			{
+				echo 'so_am_table_exists: result: table ['.$look_for_me.'] DOES exist<br>';
+				// return True;
+			}
+			else
+			{
+				echo 'so_am_table_exists: result: table ['.$look_for_me.'] does NOT exist<br>';
+				// return False;
+			}
+			echo '$table_names dump:<pre>';
+			print_r($table_names) ;
+			echo '</pre>';
+		}
+		
+		// these bext functions will go inti the future SO class
+		function so_set_data($data_key, $content)
+		{
+			$account_id = get_account_id($accountid,$GLOBALS['phpgw']->session->account_id);
+			$data_key = $GLOBALS['phpgw']->db->db_addslashes($data_key);
+			$content = serialize($content);
+			$content = $GLOBALS['phpgw']->db->db_addslashes($content);
+			
+			$GLOBALS['phpgw']->db->query("SELECT content FROM phpgw_anglemail WHERE "
+				. "account_id = '".$account_id."' AND data_key = '".$data_key."'",__LINE__,__FILE__);
+			
+			if ($GLOBALS['phpgw']->db->num_rows()==0)
+			{
+				$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_anglemail (account_id,data_key,content) "
+					. "VALUES ('" . $account_id . "','" . $data_key . "','" . $content . "')",__LINE__,__FILE__);
+			}
+			else
+			{
+				$GLOBALS['phpgw']->db->query("UPDATE phpgw_anglemail set content='" . $content 
+					. "' WHERE account_id='" . $account_id . "' AND data_key='" . $data_key . "'",__LINE__,__FILE__);
+			}
+		}
+		
+		function so_get_data($data_key)
+		{
+			$account_id = get_account_id($accountid,$GLOBALS['phpgw']->session->account_id);
+			$data_key = $GLOBALS['phpgw']->db->db_addslashes($data_key);
+			
+			$GLOBALS['phpgw']->db->query("SELECT content FROM phpgw_anglemail WHERE "
+				. "account_id = '".$account_id."' AND data_key = '".$data_key."'",__LINE__,__FILE__);
+			
+			if ($GLOBALS['phpgw']->db->num_rows()==0)
+			{
+				return False;
+			}
+			else
+			{
+				$GLOBALS['phpgw']->db->next_record();
+				//return unserialize($GLOBALS['phpgw']->db->f('content', 'stripslashes'));
+				$my_content = $GLOBALS['phpgw']->db->f('content', 'stripslashes');
+				if (!$my_content)
+				{
+					return False;
+				}
+				$my_content = unserialize($my_content);
+				return $my_content;
+			}
+		}
+		
+		function so_delete_data($data_key)
+		{
+			$account_id = get_account_id($accountid,$GLOBALS['phpgw']->session->account_id);
+			$data_key = $GLOBALS['phpgw']->db->db_addslashes($data_key);
+			$GLOBALS['phpgw']->db->query("DELETE FROM phpgw_anglemail "
+				. " WHERE account_id='" . $account_id . "' AND data_key='" . $data_key . "'",__LINE__,__FILE__);
+		}
+		
+		function so_clear_all_data_this_user()
+		{
+			$account_id = get_account_id($accountid,$GLOBALS['phpgw']->session->account_id);
+			$GLOBALS['phpgw']->db->query("DELETE FROM phpgw_anglemail "
+				. " WHERE account_id='" . $account_id . "'",__LINE__,__FILE__);
+		}
+		
 	}
 ?>

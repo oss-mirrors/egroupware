@@ -36,7 +36,7 @@ does not contain	email	en	Does Not Contain
 e-mail extra accounts list	email	en	E-Mail Extra Accounts List
 e-mail filters	common	en	E-Mail Filters
 e-mail folders	common	en	E-mail Folders
-e-mail inbox filters List	email	en	E-Mail INBOX Filters List
+e-mail inbox filters list	email	en	E-Mail INBOX Filters List
 e-mail preferences	common	en	E-Mail preferences
 email account name	email	en	Email Account Name
 email address	email	en	E-Mail address
@@ -48,7 +48,7 @@ email signature	email	en	E-Mail signature
 email type	common	en	E-Mail Type
 enable this email account	common	en	Enable this email account
 enable utf-7 encoded folder names	email	en	Enable utf-7 encoded folder names
-enter your default mail domain ( From: user@domain )	admin	en	Enter your default mail domain ( From: user@domain )
+enter your default mail domain ( from: user@domain )	admin	en	Enter your default mail domain ( From: user@domain )
 enter your pop	admin	en	Enter your POP
 enter your smtp server hostname or ip address	admin	en	Enter your SMTP server hostname or IP address
 enter your smtp server port	admin	en	Enter your SMTP server port
@@ -61,6 +61,7 @@ fewer choices	email	en	Fewer Choices
 file	email	en	File
 file attachment	email	en	File attachment
 file into	email	en	File Into
+filter [number	email	en	Filter [number] and Name
 filter [number] and name	email	en	Filter [number] and Name
 filters	email	en	Filters
 folder	email	en	Folder
@@ -72,6 +73,7 @@ for these items, fill only what is different from you default e-mail preferences
 forward	email	en	Forward
 from	email	en	From
 get size	email	en	get size
+go back to	email	en	Go Back To
 hidden	email	en	hidden
 if applicable	email	en	If Applicable
 if fileto then select destination folder	email	en	if fileto then select destination folder
@@ -79,6 +81,7 @@ if messages match	email	en	If messages match
 image	email	en	Image
 imap mail server hostname or ip address	admin	en	IMAP mail server hostname or IP address
 imap server type	common	en	IMAP Server Type
+inbox	email	en	Inbox
 input error	email	en	Input Error
 keep	email	en	Keep
 keywords	email	en	Keywords
@@ -142,6 +145,7 @@ select your mail server type	admin	en	Select your mail server type
 send	email	en	Send
 send deleted messages to the trash	email	en	Send deleted messages to the trash
 sent messages folder	common	en	Sent messages folder
+sent messages saved in "sent" folder	common	en	Sent messages saved in &quot;sent&quot; folder
 sent messages saved in &quot;sent&quot; folder	common	en	Sent messages saved in &quot;sent&quot; folder
 settings	email	en	Settings
 short names	email	en	short names

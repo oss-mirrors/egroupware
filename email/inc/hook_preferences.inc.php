@@ -18,6 +18,33 @@
 		'Extra E-Mail Accounts'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=email.uipreferences.ex_accounts_list'),
 		'E-Mail Filters'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=email.uifilters.filters_list')
 	);
-	display_section($appname,$title,$file);
+	$this_ver = $GLOBALS['phpgw_info']['server']['versions']['phpgwapi'];
+	$pre_xslt_ver = '0.9.14.0.1.1';
+	if (function_exists(amorethanb))
+	{
+		if (($this_ver)
+		&& (amorethanb($this_ver, $pre_xslt_ver)))
+		{
+			// this is the xslt template era
+			display_section($appname,$file);
+		}
+		else
+		{
+			display_section($appname,$title,$file);
+		}
+	}
+	else
+	{
+		if (($this_ver)
+		&& ($GLOBALS['phpgw']->common->cmp_version_long($this_ver, $pre_xslt_ver)))
+		{
+			// this is the xslt template era
+			display_section($appname,$file);
+		}
+		else
+		{
+			display_section($appname,$title,$file);
+		}
+	}
 }
 ?>

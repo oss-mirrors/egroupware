@@ -14,4 +14,5 @@
 
 </table>
 </form>
+{debugdata}
 <!-- end class_prefs_ui.tpl -->
