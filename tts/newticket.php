@@ -10,13 +10,7 @@
   \**************************************************************************/
 
 
-  /* $Id $ */
-	$account_selected = array();
-	$entry_selected = array();
-	$priority_selected = array();
-	$priority_comment = array();
-  
-
+  /* $Id$ */
 
 	if ($submit)
 	{
@@ -28,6 +22,13 @@
 	$phpgw_info["flags"]["enable_config_class"]       = True;
 	
 	include("../header.inc.php");
+
+	$account_selected = array();
+	$entry_selected = array();
+	$priority_selected = array();
+	$priority_comment = array();
+
+
 	if (! $submit)
 	{
 

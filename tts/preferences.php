@@ -9,7 +9,7 @@
 *  option) any later version.                                              *
 \**************************************************************************/
 
-/* $Id$ */
+  /* $Id$ */
 
 	$phpgw_info['flags'] = array(
 		'currentapp'              => 'tts', 

@@ -1,5 +1,4 @@
-<!-- $Id $  -->
-
+<!-- $Id$ -->
 <!-- BEGIN index.tpl -->
 <!-- BEGIN tts_title -->
 <center>{tts_appname}</center><p />
