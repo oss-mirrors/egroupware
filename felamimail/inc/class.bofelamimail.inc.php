@@ -391,6 +391,7 @@
 		function getFolderStatus($_folderName)
 		{
 			// now we have the keys as values
+			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
 			$subscribedFolders = $this->getFolderList(true);
 			#print_r($subscribedFolders);
 			#print $subscribedFolders[$_folderName]." - $_folderName<br>";
@@ -402,6 +403,12 @@
 			{
 				$retValue['subscribed'] = false;
 			}
+			
+			// get the current IMAP counters
+			$folderStatus = imap_status($this->mbox,$mailboxString,SA_ALL);
+			
+			// merge a array and object to a array
+			$retValue = array_merge($retValue,$folderStatus);
 			
 			return $retValue;
 		}
@@ -668,6 +675,7 @@
 
 			if(is_array($retValue['header']))
 			{
+				#_debug_array($retValue['header']);
 				$retValue['info']['total']	= $caching->getMessageCounter($filter);
 				$retValue['info']['first']	= $_startMessage;
 				$retValue['info']['last']	= $_startMessage + $count - 1 ;
