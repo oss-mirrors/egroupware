@@ -62,25 +62,26 @@
 			// run the shared code (just in case because each activity is supposed to include it)
 			include_once($shared);
 
-			// run the activity
+			// run the activity			
+			$appl_root = $this->t->root;
 			if (!$auto && $activity->isInteractive())
 			{
 				$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Running Activity');
 				$GLOBALS['phpgw']->common->phpgw_header();
 				echo parse_navbar();
-
-				//echo "<br>template: " . GALAXIA_PROCESSES.SEP.$this->process->getNormalizedName().SEP.'code'.SEP.'templates'.SEP.$activity->getNormalizedName().'.tpl';
-				$GLOBALS['phpgw']->template->set_root(GALAXIA_PROCESSES.SEP);
-				$GLOBALS['phpgw']->template->set_file('template', $this->process->getNormalizedName().SEP.'code'.SEP.'templates'.SEP.$activity->getNormalizedName().'.tpl');
+				
+				$this->t->set_root(GALAXIA_PROCESSES.SEP);
+				$this->t->set_file('template', $this->process->getNormalizedName().SEP.'code'.SEP.'templates'.SEP.$activity->getNormalizedName().'.tpl');
 			}
 			//echo "<br><br><br><br><br>Including $source <br>In request: <pre>";print_r($_REQUEST);echo "</pre>";
 			include_once ($source);
-
+			
 			// TODO: process instance comments
 
 			// if activity is interactive and completed, display completed template
 			if (!$auto && $GLOBALS['__activity_completed'] && $activity->isInteractive())
 			{
+				$this->t->set_root($appl_root);
 				$this->t->set_file('activity_completed', 'activity_completed.tpl');
 
 				$this->t->set_var(array(
@@ -93,10 +94,10 @@
 				$this->t->pparse('output', 'activity_completed');
 				$GLOBALS['phpgw']->common->phpgw_footer();
 			}
-			// but if it hasn't been completed, show the activitie's template
+			// but if it hasn't been completed, show the activities' template
 			elseif (!$auto && !$GLOBALS['__activity_completed'] && $activity->isInteractive())
 			{
-				$GLOBALS['phpgw']->template->pparse('output', 'template');
+				$this->t->pparse('output', 'template');
 				$GLOBALS['phpgw']->common->phpgw_footer();
 			}
 
