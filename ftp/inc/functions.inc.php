@@ -298,7 +298,10 @@
 		$dirlist = ftp_rawlist($ftp,'');
 		for ($i=$start; $i<($start+$phpgw_info['user']['preferences']['common']['maxmatchs']); $i++)
 		{
-			$dirinfo[] = analysedir($dirlist[$i]);
+			if ($i < count($dirlist))
+			{
+				$dirinfo[] = analysedir($dirlist[$i]);
+			}
 		}
 		return $dirinfo;
    }
