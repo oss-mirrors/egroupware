@@ -27,9 +27,21 @@
 		
 		}
 
-		function add()
+		function add($fields)
 		{
-		
+			$this->db->query("insert into phpgw_devtools_changelogs (changelog_cat,changelog_version,"
+					. "changelog_content,changelog_timestamp) values ('" . $fields['project'] . "','"
+					. $fields['version'] . "','" . $fields['change'] . "','" . time() . "')",__LINE__,__FILE__);
+		}
+
+		function search()
+		{
+
+		}
+
+		function create_sgml()
+		{
+
 		}
 
 	}

@@ -14,6 +14,7 @@
 	class bochangelogs
 	{
 		var $so;
+		var $ui;
 		var $public_functions = array(
 				'list_changelogs' => True,
 				'add'             => True,
@@ -33,7 +34,48 @@
 
 		function add()
 		{
-		
+			global $fields;
+
+			$this->ui = createobject('developer_tools.uichangelogs');
+			if (! $fields['project'])
+			{
+				$errors[] = lang('You must select a project');
+			}
+
+			if (! $fields['change'])
+			{
+				$errors[] = lang('You must enter a change');
+			}
+
+			if (! $fields['version'])
+			{
+				$errors[] = lang('You must a version');
+			}
+
+			if (is_array($errors))
+			{
+				$this->ui->add($errors,$fields);
+			}
+			else
+			{
+				$this->so->add($fields);
+
+				// This is if they are adding multiable entrys to a project and version
+				$_fields['version'] = $fields['version'];
+				$_fields['project'] = $fields['project'];
+				$this->ui->add(lang('Changelog entry has been added'),$_fields);
+			}
+
+		}
+
+		function search()
+		{
+
+		}
+
+		function create_sgml()
+		{
+
 		}
 
 
