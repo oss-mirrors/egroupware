@@ -154,12 +154,16 @@
     $t->set_var('addressbook_link',$phpgw->link('/projects/addressbook.php','query='));
     $t->set_var('lang_action',lang('Add project'));
 
-    if (isset($phpgw_info['user']['preferences']['common']['currency'])) {
+    if (isset($phpgw_info['user']['preferences']['common']['currency']))
+    {
 	$currency = $phpgw_info['user']['preferences']['common']['currency'];
 	$t->set_var('error','');
 	$t->set_var('currency',$currency);
     }
-    else { $t->set_var('error',lang('Please select your currency in preferences !')); }
+    else
+    {
+	$t->set_var('error',lang('Please select your currency in preferences !'));
+    }
     
     $hidden_vars = "<input type=\"hidden\" name=\"id\" value=\"$id\">"
 		 . "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
@@ -193,9 +197,18 @@
     $t->set_var('category_list',$phpgw->categories->formated_list('select','all',$cat_id,'True'));
 
     $t->set_var('lang_status',lang('Status'));
-    $status_list = '<option value="active" selected>' . lang('Active') . '</option>' . "\n"
-		. '<option value="nonactive">' . lang('Nonactive') . '</option>' . "\n"
-		. '<option value="archive">' . lang('Archive') . '</option>' . "\n";
+
+    if ($status == 'active'):
+	$stat_sel[0]=' selected';
+    elseif ($status == 'nonactive'):
+	$stat_sel[1]=' selected';
+    elseif ($status == 'archive'):
+	$stat_sel[2]=' selected';
+    endif;
+
+    $status_list = '<option value="active"' . $stat_sel[0] . '>' . lang('Active') . '</option>' . "\n"
+		. '<option value="nonactive"' . $stat_sel[1] . '>' . lang('Nonactive') . '</option>' . "\n"
+		. '<option value="archive"' . $stat_sel[2] . '>' . lang('Archive') . '</option>' . "\n";
 
     $t->set_var('status_list',$status_list);
     $t->set_var('lang_budget',lang('Budget'));
@@ -252,12 +265,42 @@
     $t->set_var('lang_select',lang('Select per button !'));
     $t->set_var('lang_customer',lang('Customer'));
     $t->set_var('abid',$abid);
-    $t->set_var('name',$name);
+
+    if (! $submit)
+    {
+        $t->set_var('name',$name);
+    }
+    else
+    {
+        $d = CreateObject('phpgwapi.contacts');
+        $cols = array('n_given' => 'n_given',
+                 'n_family' => 'n_family',
+                 'org_name' => 'org_name');
+
+        $customer = $d->read_single_entry($abid,$cols);
+
+        if ($customer[0]['org_name'] == '')
+        {
+            $t->set_var('name',$customer[0]['n_given'] . ' ' . $customer[0]['n_family']);
+        }
+        else
+        {
+            $t->set_var('name',$customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]');
+        }
+    }
+
     $t->set_var('lang_bookable_activities',lang('Bookable activities'));
     $t->set_var('lang_billable_activities',lang('Billable activities'));
     $t->set_var('lang_access',lang('Private'));
-    if ($access) { $t->set_var('access', '<input type="checkbox" name="access" value="True" checked>'); }
-    else { $t->set_var('access', '<input type="checkbox" name="access" value="True"'); }
+
+    if ($access)
+    {
+	$t->set_var('access','<input type="checkbox" name="access" value="True" checked>');
+    }
+    else
+    {
+	$t->set_var('access','<input type="checkbox" name="access" value="True">');
+    }
 
     if (!$submit)
     {

@@ -56,12 +56,16 @@
     {
 	global $id_type;
 
-	if ($id_type == "hex") {
+	if ($id_type == "hex")
+	{
     	    $num = hexdec($num);
     	    $num++;
     	    $num = dechex($num);
 	}
-	else { $num++; }
+	else
+	{
+	    $num++;
+	}
 
 	if (strlen($num) == 4)
     	    $return = $num;
@@ -83,47 +87,47 @@
     {
 	global $phpgw, $year;
 
-	$prefix = 'P-$year-';
+	$prefix = 'P-' . $year . '-';
 	$phpgw->db->query("select max(num) from phpgw_p_projects where num like ('$prefix%')");
 	$phpgw->db->next_record();
 	$max = add_leading_zero(substr($phpgw->db->f(0),7));
 
-	return $prefix.$max;
+	return $prefix . $max;
     }
 
     function create_activityid($year)
     {
 	global $phpgw, $year;
 
-	$prefix = 'A-$year-';
+	$prefix = 'A-' . $year . '-';
 	$phpgw->db->query("select max(num) from phpgw_p_activities where num like ('$prefix%')");
 	$phpgw->db->next_record();
 	$max = add_leading_zero(substr($phpgw->db->f(0),7));
 
-	return $prefix.$max;
+	return $prefix . $max;
     }
 
     function create_invoiceid($year)
     {
 	global $phpgw, $year;
 
-	$prefix = 'I-$year-';
+	$prefix = 'I-' . $year . '-';
 	$phpgw->db->query("select max(num) from phpgw_p_invoice where num like ('$prefix%')");
 	$phpgw->db->next_record();
 	$max = add_leading_zero(substr($phpgw->db->f(0),7));
 
-	return $prefix.$max;
+	return $prefix . $max;
     }
 
     function create_deliveryid($year)
     {
 	global $phpgw, $year;
 
-	$prefix = 'D-$year-';
+	$prefix = 'D-' . $year . '-';
 	$phpgw->db->query("select max(num) from phpgw_p_delivery where num like ('$prefix%')");
 	$phpgw->db->next_record();
 	$max = add_leading_zero(substr($phpgw->db->f(0),7));
 
-	return $prefix.$max;
+	return $prefix . $max;
     }
 ?>
