@@ -237,7 +237,7 @@
 					$var = Array(
 						'COLOR'	=> $GLOBALS['tr_color'],
 						'TOPIC'	=> ($thread['subject']?$thread['subject']:'[No subject]'),
-						'AUTHOR'	=> $GLOBALS['phpgw']->common->grab_owner_name($thread['author']),
+						'AUTHOR'	=> ($thread['author']?$GLOBALS['phpgw']->common->grab_owner_name($thread['author']):lang('Unknown')),
 						'REPLIES'	=> $thread['replies'],
 						'READ_LINK'	=> $GLOBALS['phpgw']->link('/index.php',
 								Array(
@@ -288,7 +288,7 @@
 					$var = Array(
 						'COLOR'	=> $GLOBALS['tr_color'],
 						'TOPIC'	=> ($thread['subject']?$thread['subject']:'[No subject]'),
-						'AUTHOR'	=> $GLOBALS['phpgw']->common->grab_owner_name($thread['author']),
+						'AUTHOR'	=> ($thread['author']?$GLOBALS['phpgw']->common->grab_owner_name($thread['author']):lang('Unknown')),
 						'REPLIES'	=> $thread['replies'],
 						'READ_LINK'	=> $GLOBALS['phpgw']->link('/index.php',
 								Array(
