@@ -267,7 +267,7 @@
 			$to_addybook_add = $GLOBALS['phpgw']->msg->href_maketag(
 				$GLOBALS['phpgw']->link('/index.php',
 					'menuaction=addressbook.uiaddressbook.add_email&add_email='.urlencode($to_plain).'&name='.urlencode($to_personal)
-					.'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
+					. '&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
 				$sm_envelope_img);
 			// assemble the string and store for later use (note to_extra_info also handles the spacing)
 			$to_data_array[$i] = $to_real_name .$to_extra_info .$to_addybook_add;
@@ -309,8 +309,9 @@
 				$cc_personal);
 
 			$cc_addybook_add = $GLOBALS['phpgw']->msg->href_maketag(
-				$GLOBALS['phpgw']->link('/addressbook/add.php',
-					'add_email='.urlencode($cc_plain).'&name='.urlencode($cc_personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
+				$GLOBALS['phpgw']->link('/index.php',
+					'menuaction=addressbook.uiaddressbook.add_email&add_email='.urlencode($cc_plain).'&name='.urlencode($cc_personal)
+					. '&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
 				$sm_envelope_img);
 
 			// assemble the string and store for later use
