@@ -54,7 +54,7 @@
      if (opener.document.doit.to.value=='') {
         opener.document.doit.to.value=thisform.elements[0].value;
      } else {
-        opener.document.doit.to.value+=", "+thisform.elements[0].value;
+        opener.document.doit.to.value+=","+thisform.elements[0].value;
      }
    } 
 
@@ -63,7 +63,7 @@
      if (opener.document.doit.cc.value=='') {
         opener.document.doit.cc.value=thisform.elements[0].value;
      } else {
-        opener.document.doit.cc.value+=", "+thisform.elements[0].value;
+        opener.document.doit.cc.value+=","+thisform.elements[0].value;
      } 
    }
 
