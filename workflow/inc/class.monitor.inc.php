@@ -68,6 +68,28 @@
 			}
 		}
 
+
+		function show_filter_unique_activities($where = '')
+		{
+			//echo "where: <pre>";print_r($where);echo "</pre>";
+			
+		    $unique_activities = $this->process_monitor->monitor_list_activities(0, -1, 'wf_name__desc', '', $where);
+				
+			//echo "unique_activities: <pre>";print_r($unique_activities);echo "</pre>";
+			
+			$this->t->set_var('filter_activity_selected_all', (!$this->filter_activity)? 'selected="selected"' : '');
+			$this->t->set_block($this->template_name, 'block_filter_activity', 'filter_activity');
+			foreach ($unique_activities['data'] as $activity)
+			{
+				$this->t->set_var(array(
+					'filter_activity_selected'	=> ($activity['wf_activity_id'] == $this->filter_activity)? 'selected="selected"' : '',
+					'filter_activity_value'		=> $activity['wf_activity_id'],
+					'filter_activity_name'		=> $activity['wf_name'].' ('.$activity['wf_version'].')'
+				));
+				$this->t->parse('filter_activity', 'block_filter_activity', true);
+			}
+		}
+				
 		function fill_general_variables()
 		{
 			$class_name = explode('_', $this->template_name);
