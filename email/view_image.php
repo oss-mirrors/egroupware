@@ -13,6 +13,7 @@
 
   /* $Id$ */
 
+  if ($newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
   $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True, "messageclass" => True);
 
   $phpgw_info["flags"]["currentapp"] = "email";
@@ -22,4 +23,4 @@
   $data = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no);
 
   echo $phpgw->msg->base64($data);
-
+?>

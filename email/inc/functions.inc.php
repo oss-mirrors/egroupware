@@ -202,12 +202,13 @@
 
   function image_display($folder, $msgnum, $de_part, $part_no, $att_name)  {
     global $phpgw;
+    global $phpgw_info;
 
     output_bound(lang("image").":" , $att_name);
-    echo "\n<img src=\"".$phpgw->link("view_image.php",
-				 "folder=".urlencode($folder)."&msgnum=$msgnum"
-				."&part_no=$part_no&type=".$de_part->subtype
-				."&name=$att_name")."\">\n<p>\n";
+    $extra_parms = "folder=".urlencode($folder)."&msgnum=$msgnum"
+		 . "&part_no=$part_no&type=".$de_part->subtype."&name=$att_name";
+    if ($phpgw_info["flags"]["newsmode"]) $extra_parms .= "&newsmode=on";
+    echo "\n<img src=\"".$phpgw->link("view_image.php",$extra_parms)."\">\n<p>\n";
   }
 
   // function make_clickable ripped off from PHPWizard.net
