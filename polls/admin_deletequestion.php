@@ -22,6 +22,11 @@
 	if ($confirm)
 	{
 		$phpgw->db->query("delete from phpgw_polls_desc where poll_id='$poll_id'");
+		$phpgw->db->query("delete from phpgw_polls_data where poll_id='$poll_id'");
+		$phpgw->db->query("delete from phpgw_polls_user where poll_id='$poll_id'");
+		$phpgw->db->query("select MAX(poll_id) from phpgw_polls_desc");
+		$max = $phpgw->db->f("1");
+		$phpgw->db->query("update phpgw_polls_settings set setting_value='$max_poll' where setting_name='currentpoll'");
 	}
 	else
 	{
