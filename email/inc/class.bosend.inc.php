@@ -1354,6 +1354,10 @@
 					$success = $this->copy_to_sent_folder();
 			}
 			
+			// use for DEBUGGING prevents page redirect
+			//$returnccode = False;
+			//$success = False;
+			
 			// ----  Redirect on Success, else show Error Report   -----
 			// what folder to go back to (the one we came from)
 			// Personally, I think people should go back to the INBOX after sending an email

@@ -109,6 +109,29 @@
 		}
 		
 		/*!
+		@function folder_list_did_change
+		@abstract if folder is created, deleted, or renamed this this function handles cleanup of stale data in main msg object. 
+		@author Angles
+		@discussion THIS IS THE EXACT SAME FUNCTION AS IN DCOM_BASE non-sockets class.
+		*/
+		function folder_list_did_change()
+		{
+			// NOTE THIS FLAG "folder_list_changed" IS NOW OBSOLETED SINCE THIS 
+			// CALLBACK FUNCTION IS PROVEN TO WORK
+			$this->folder_list_changed = True;
+			if (is_object($GLOBALS['phpgw']->msg))
+			{
+				// call that classes "callback" function designed to handle cleaning stale folder_list there
+				$sucess = $GLOBALS['phpgw']->msg->folder_list_change_callback();
+				// if it was handled correctly, then reset the "folder_list_changed" because we did our job
+				if ($sucess)
+				{
+					$this->folder_list_changed = False;
+				}
+			}
+		}
+		
+		/*!
 		@function get_flag
 		@abstract REDUNDANT FUNCTION FROM NON-SOCK CLASS
 		*/

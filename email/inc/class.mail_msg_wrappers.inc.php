@@ -1636,7 +1636,8 @@
 				$this->ensure_stream_and_folder($target_fldball, 'phpgw_append'.' LINE '.__LINE__);
 				$mailsvr_stream = $this->get_arg_value('mailsvr_stream');
 				// do the append
-				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): phpgw_append: $GLOBALS["phpgw_dcom_'.$target_fldball['acctnum'].']->dcom->append('.$mailsvr_stream.', '."$server_str"."$official_folder_long".', $message, '.$flags.') '); } 
+				if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): phpgw_append: strlen($message) = ['.strlen($message).'] <br>'); } 
+				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): phpgw_append: $GLOBALS["phpgw_dcom_'.$target_fldball['acctnum'].']->dcom->append('.$mailsvr_stream.', '."$server_str"."$official_folder_long".', $message, '.serialize($flags).') <br>'); } 
 				//$acctnum: ['.$acctnum.'] $mailsvr_stream: ['.$mailsvr_stream.'] $msgnum: ['.$msgnum.'] $mailbox: ['.htmlspecialchars($mailbox).']<br>'; } 
 				$retval = $GLOBALS['phpgw_dcom_'.$target_fldball['acctnum']]->dcom->append($mailsvr_stream, "$server_str"."$official_folder_long", $message, $flags);
 				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): phpgw_append ('.__LINE__.'): LEAVING, returning $retval ['.serialize($retval).']<br>'); } 
@@ -2587,7 +2588,7 @@ Array
 			
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			$note_folder = $this->get_arg_value('folder', $acctnum);
-			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): dcom_call: phpgw_expunge: $acctnum: '.serialize($acctnum).' NOTE current "folder" arg set for that acct is ['.$note_folder.']<br>'); } 
+			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): dcom_call: phpgw_expunge: $acctnum: '.serialize($acctnum).', expunge only takes a stream arg BUT it operates only on the currently selected folder, NOTE current "folder" arg set for that acct is ['.$note_folder.']<br>'); } 
 			
 			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): dcom_call: phpgw_expunge: $acctnum: '.serialize($acctnum).' $mailsvr_stream: '.$mailsvr_stream.'<br>'); } 
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->expunge($mailsvr_stream);

@@ -167,6 +167,9 @@
 			// so clear it of any left over value from a previous request
 			$this->server_last_ok_response = '';
 			
+			// should we reset this here or leave it filled?
+			//$this->server_last_error_str = '';
+			
 			// we return an array of strings, so initialize an empty array
 			$return_me = Array();
 			// is we do not know what to look for as an end tag, then abort
@@ -296,56 +299,272 @@
 		
 		
 		/**************************************************************************\
-		*	Functions NOT YET IMPLEMENTED
+		*	Some of the following are Functions NOT YET IMPLEMENTED
 		\**************************************************************************/
 		/*!
 		@function append
-		@abstract not yet implemented in IMAP sockets module
+		@abstract implements php-imap function IMAP_APPEND
+		@param $stream_notused we do not use this in sockets but it is given anyway
+		@param $fq_folder (string) Fully Qualified Folder Name 
+		@param &message (string) the message to append to a folder
+		@param $flags_str (string) OPTIONAL these are message flags, not command options, thus is a string like "\\Seen" 
+		@author Angles
 		@discussion implements imap_append
+		@syntax The param $fq_folder is expected to be like this 
+		{ServerName:Port/options}NAMESPACE_DELIMITER_FOLDERNAME
+		repeat for inline doc parser
+		&#123;ServerName:Port/options&#125;NAMESPACE_DELIMITER_FOLDERNAME
+		An example of this is this
+		{mail.example.net:143/imap/notls}INBOX.Sent Items
+		example again for docs 
+		&#123;mail.example.net:143/imap&#125;INBOX.Sent Items
+		Where INBOX is the namespace and the dot is the delimiter, which will always preceed any subfolder.
 		*/
-		function append($stream, $folder, $message, $flags=0)
+		function append($stream_notused, $fq_folder, $message, $flags_str='')
 		{
-			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: append<br>'; }
-			return true;
+			//if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: append<br>'; }
+			//return true;
+			if ($this->debug_dcom > 0) { echo 'imap.append('.__LINE__.'): ENTERING append<br>'; }
+
+			// fq_folder is a "fully qualified folder", seperate the parts:
+			$svr_data = array();
+			$svr_data = $this->distill_fq_folder($fq_folder);
+			$folder = $svr_data['folder'];
+			// if folder has a space we need to enclose it in quotes
+			if (strpos($folder, ' ') > 1)
+			{
+				$folder = '"'.$folder.'"';
+			}
+			if ($this->debug_dcom > 1) { echo 'imap.append('.__LINE__.'): processed $folder: ['.htmlspecialchars($folder).'] <br>'; }
+			
+			// FLAGS
+			// FUTURE: maybe NEED SANITY CHECK ON THE FLAGS STRING
+			if (trim($flags_str))
+			{
+				// put parens around it and surrounding spaces for drop in placement in the full command
+				$flags = ' ('.trim($flags_str).')';
+			}
+			else
+			{
+				$flags = '';
+			}
+			
+			// SIZE
+			$size = strlen($message);
+			if ($this->debug_dcom > 1) { echo 'imap.append('.__LINE__.'): using : $flags ['.htmlspecialchars($flags).'], $size ['.$size.'] <br>'; }
+			
+			// COMMAND SEQUENCE: this command is in 5 parts
+			// 1. initial commnand including tells server the size of binary data to follow
+			// 2. wait for continuation "+ "
+			// 3. feed the $message
+			// 4. wait for standard finishing resoponse from server
+			
+			// 1. initial command: 00000006 APPEND "INBOX.Sent Items" (\Seen) {526}
+			// flags already has spaces around it if it exists, else is empty
+			$cmd_tag = 'J001';
+			$full_command = $cmd_tag.' APPEND '.$folder.$flags.' {'.$size.'}';
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
+
+			if ($this->debug_dcom > 1) { echo 'imap.append('.__LINE__.'): write_port: $full_command is ['.htmlspecialchars($full_command).'] <br>'; }
+			if(!$this->write_port($full_command))
+			{
+				if ($this->debug_dcom > 0) { echo 'imap.append('.__LINE__.'): LEAVING with error: could not write_port($full_command)<br>'; }
+				$this->error();
+				// does $this->error() ever continue onto next line?
+				return False;
+			}
+			// 2. wait for the continuation signal from the server
+			$line = $this->read_port();
+			if ($this->debug_dcom > 1) { echo 'imap.append('.__LINE__.'): this should be continuation signal line starting with "+ " : [' .htmlspecialchars($this->show_crlf($line)) .'] <br>'; }
+			if ($this->str_begins_with($line, '+ ') == False)
+			{
+					// error analysis, we have a useful error response from the server
+					// put that error string into $this->server_last_error_str
+					$this->server_last_error_str = $line;
+					if ($this->debug_dcom > 0) { echo 'imap.append('.__LINE__.'): LEAVING with error, did not get continuation resoponse "+ ", $line is [' .htmlspecialchars($this->show_crlf($line)) .']<br>'; }
+					return False;
+			}
+			// 3. feed the $message
+			if(!$this->write_port($message))
+			{
+				if ($this->debug_dcom > 0) { echo 'imap.append('.__LINE__.'): LEAVING with error: could not write_port($message)<br>'; }
+				$this->error();
+				// does $this->error() ever continue onto next line?
+				return False;
+			}
+			// 4. standard stuff read the server data, hope for OK
+			$response_array = $this->imap_read_port($expecting);
+			if ($this->debug_dcom > 1) { echo 'imap.append('.__LINE__.'): here is what the server have us after all that: <br>'; }
+			if ($this->debug_dcom > 1) { $this->report_svr_data($response_array, 'reopen', True); }
+			// imap_read_port returns empty array is an error occurs, if no error we get an array filled with something
+			if ($response_array)
+			{
+				$return_bool = True;
+			}
+			else
+			{
+				$return_bool = False;
+			}
+			if ($this->debug_dcom > 0) { echo 'imap.append('.__LINE__.'): LEAVING returning ['.serialize($return_bool).'] <br>'; }
+			return $return_bool;
 		}
+		
 		// base64  is DEPRECIATED - NOT USED
 		// SEE BELOW for:  close *=DONE=*
+		
 		/*!
 		@function createmailbox
-		@abstract not yet implemented in IMAP sockets module
+		@abstract implements IMAP_CREATEMAILBOX
+		@author Angles
 		*/
-		function createmailbox($stream,$mailbox) 
+		function createmailbox($stream_notused,$fq_folder) 
 		{
-			// not yet implemented
-			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: createmailbox<br>'; }
-			// eventually this will use this function to call for expiration of stale cached data, if any
-			//$this->folder_list_did_change();
-			return true;
+			if ($this->debug_dcom > 0) { echo 'imap.createmailbox('.__LINE__.'): ENTERING <br>'; }
+			// fq_folder is a "fully qualified folder", seperate the parts:
+			$svr_data = array();
+			$svr_data = $this->distill_fq_folder($fq_folder);
+			$folder = $svr_data['folder'];
+			// if folder has a space we need to enclose it in quotes
+			if (strpos($folder, ' ') > 1)
+			{
+				$folder = '"'.$folder.'"';
+			}
+			if ($this->debug_dcom > 1) { echo 'imap.createmailbox('.__LINE__.'): processed $folder: ['.htmlspecialchars($folder).'] <br>'; }
+			// assemble the server querey, looks like this:  00000004 Create INBOX.New1
+			$cmd_tag = 'm010';
+			$full_command = $cmd_tag.' Create '.$folder;
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
+			
+			if ($this->debug_dcom > 1) { echo 'imap_sock.createmailbox('.__LINE__.'): write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap_sock.createmailbox('.__LINE__.'): expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			// issue callback to clean cache
+			$this->folder_list_did_change();
+			// proceed
+			if(!$this->write_port($full_command))
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.createmailbox('.__LINE__.'): LEAVING with error: could not write_port<br>'; }
+				$this->error();
+				return False;				
+			}
+			// read the server data
+			$response = $this->imap_read_port($expecting);
+			if ($response == False)
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.createmailbox('.__LINE__.'): LEAVING on ERROR: returning False, $this->server_last_error_str ['. htmlspecialchars($this->server_last_error_str) .']<br>'; }
+				return False;
+			}
+			else
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.createmailbox('.__LINE__.'): LEAVING with success: returning True <br>'; }
+				return True;
+			}
 		}
+		
 		/*!
 		@function deletemailbox
-		@abstract not yet implemented in IMAP sockets module
+		@abstract implements IMAP_DELETEMAILBOX
+		@author Angles
 		*/
-		function deletemailbox($stream,$mailbox)
+		function deletemailbox($stream_notused,$fq_folder) 
 		{
-			// not yet implemented
-			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: deletemailbox<br>'; }
-			// eventually this will use this function to call for expiration of stale cached data, if any
-			//$this->folder_list_did_change();
-			return true;
+			if ($this->debug_dcom > 0) { echo 'imap.deletemailbox('.__LINE__.'): ENTERING <br>'; }
+			// fq_folder is a "fully qualified folder", seperate the parts:
+			$svr_data = array();
+			$svr_data = $this->distill_fq_folder($fq_folder);
+			$folder = $svr_data['folder'];
+			// if folder has a space we need to enclose it in quotes
+			if (strpos($folder, ' ') > 1)
+			{
+				$folder = '"'.$folder.'"';
+			}
+			if ($this->debug_dcom > 1) { echo 'imap.deletemailbox('.__LINE__.'): processed $folder: ['.htmlspecialchars($folder).'] <br>'; }
+			// assemble the server querey, looks like this:  00000004 Delete "INBOX.New Two"
+			$cmd_tag = 'm011';
+			$full_command = $cmd_tag.' Delete '.$folder;
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
+			
+			if ($this->debug_dcom > 1) { echo 'imap_sock.deletemailbox('.__LINE__.'): write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap_sock.deletemailbox('.__LINE__.'): expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			// issue callback to clean cache
+			$this->folder_list_did_change();
+			// proceed
+			if(!$this->write_port($full_command))
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.deletemailbox('.__LINE__.'): LEAVING with error: could not write_port<br>'; }
+				$this->error();
+				return False;				
+			}
+			// read the server data
+			$response = $this->imap_read_port($expecting);
+			if ($response == False)
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.deletemailbox('.__LINE__.'): LEAVING on ERROR: returning False, $this->server_last_error_str ['. htmlspecialchars($this->server_last_error_str) .']<br>'; }
+				return False;
+			}
+			else
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.deletemailbox('.__LINE__.'): LEAVING with success: returning True <br>'; }
+				return True;
+			}
 		}
+		
 		/*!
 		@function renamemailbox
-		@abstract not yet implemented in IMAP sockets module
+		@abstract implements IMAP_RENAMEMAILBOX
+		@author Angles
 		*/
-		function renamemailbox($stream,$mailbox_old,$mailbox_new)
+		function renamemailbox($stream_notused,$fq_folder_old,$fq_folder_new)
 		{
-			// not yet implemented
-			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: renamemailbox<br>'; }
-			// eventually this will use this function to call for expiration of stale cached data, if any
-			//$this->folder_list_did_change();
-			return true;
+			if ($this->debug_dcom > 0) { echo 'imap.renamemailbox('.__LINE__.'): ENTERING <br>'; }
+			// fq_folder is a "fully qualified folder", seperate the parts:
+			$svr_data = array();
+			$svr_data = $this->distill_fq_folder($fq_folder_old);
+			$folder_old = $svr_data['folder'];
+			// if folder has a space we need to enclose it in quotes
+			if (strpos($folder_old, ' ') > 1)
+			{
+				$folder_old = '"'.$folder_old.'"';
+			}
+			$svr_data = array();
+			$svr_data = $this->distill_fq_folder($fq_folder_new);
+			$folder_new = $svr_data['folder'];
+			// if folder has a space we need to enclose it in quotes
+			if (strpos($folder_new, ' ') > 1)
+			{
+				$folder_new = '"'.$folder_new.'"';
+			}
+			if ($this->debug_dcom > 1) { echo 'imap.renamemailbox('.__LINE__.'): processed $folder: ['.htmlspecialchars($folder).'] <br>'; }
+			// assemble the server querey, looks like this:  00000004 Rename INBOX.New1 "INBOX.New TWO"
+			
+			$cmd_tag = 'm012';
+			$full_command = $cmd_tag.' Rename '.$folder_old.' '.$folder_new;
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
+			
+			if ($this->debug_dcom > 1) { echo 'imap_sock.renamemailbox('.__LINE__.'): write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap_sock.renamemailbox('.__LINE__.'): expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			// issue callback to clean cache
+			$this->folder_list_did_change();
+			// proceed
+			if(!$this->write_port($full_command))
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.renamemailbox('.__LINE__.'): LEAVING with error: could not write_port<br>'; }
+				$this->error();
+				return False;				
+			}
+			// read the server data
+			$response = $this->imap_read_port($expecting);
+			if ($response == False)
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.renamemailbox('.__LINE__.'): LEAVING on ERROR: returning False, $this->server_last_error_str ['. htmlspecialchars($this->server_last_error_str) .']<br>'; }
+				return False;
+			}
+			else
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.renamemailbox('.__LINE__.'): LEAVING with success: returning True <br>'; }
+				return True;
+			}
 		}
+		
 		/**************************************************************************\
 		*	DELETE a Message From the Server
 		\**************************************************************************/
@@ -456,11 +675,92 @@
 		*/
 		function i_search($stream_notused,$criteria,$flags=0)
 		{
-			$empty_return=array();
+			//$empty_return=array();
 			// not yet implemented
-			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: i_search<br>'; }
-			return $empty_return;
+			//if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: i_search<br>'; }
+			//return $empty_return;
+			if ($this->debug_dcom > 0) { echo 'imap.i_search('.__LINE__.'): ENTERING i_search<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap.i_search('.__LINE__.'): param $criteria is ['.htmlspecialchars($criteria).']<br>'; }
+			
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & SE_UID)) )
+			{
+				$flags |= SE_UID;
+			}
+			// flags blank or  SE_UID
+			// only SE_UID is supported right now, no flag is not supported because we only use the "UID" command right now
+			if ($this->debug_dcom > 1) { echo 'imap_sock.i_search('.__LINE__.'): param $flags ['.htmlspecialchars(serialize($flags)).'], ($flags & SE_UID) is ['.htmlspecialchars(serialize(($flags & SE_UID))).'] <br>'; }
+			if ($flags & SE_UID)
+			{
+				$using_uid = True;
+			}
+			else
+			{
+				echo 'imap_sock.i_search('.__LINE__.'): LEAVING on ERROR, flag SE_UID is not present, nothing else coded for yet <br>';
+				if ($this->debug_dcom > 0) { echo 'imap_sock.i_search('.__LINE__.'): LEAVING on ERROR, flag SE_UID is not present, nothing else coded for yet <br>'; }
+				return False;
+			}
+			if ($this->debug_dcom > 1) { echo 'imap_sock.i_search('.__LINE__.'): $flags ['.htmlspecialchars(serialize($flags)).'], $using_uid ['.htmlspecialchars(serialize($using_uid)).'] only SE_UID coded for, so continuing...<br>'; }
+			
+			// assemble the server querey, looks like this:   
+			// 00000004 UID SEARCH ALL SEEN UNSEEN BEFORE 24-Mar-2004 SINCE 20-Nov-2003 FROM "Mailer App" TO mark SUBJECT tommy BODY "really drive"
+			
+			$cmd_tag = 'k009';
+			$full_command = $cmd_tag.' UID SEARCH ALL '.$criteria;
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
+			
+			if ($this->debug_dcom > 1) { echo 'imap_sock.i_search('.__LINE__.'): write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap_sock.i_search('.__LINE__.'): expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			
+			if(!$this->write_port($full_command))
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.i_search('.__LINE__.'): LEAVING with error: could not write_port<br>'; }
+				$this->error();
+				return False;				
+			}
+			
+			// read the server data
+			$raw_response = array();
+			$prepped_response = '';
+			$response_array = array();
+			// for some reason I get back an array with a single element, item $raw_response[0] which is the string I want to work with
+			$raw_response = $this->imap_read_port($expecting);
+			if ($this->debug_dcom > 2) { echo 'imap_sock.i_search('.__LINE__.'): $raw_response DUMP: <pre>'; print_r($raw_response); echo '</pre>';  }
+			if (!$raw_response)
+			{
+				//$response_array = array();
+				if ($this->debug_dcom > 1) { echo 'imap_sock.i_search('.__LINE__.'): ERROR: returning False, $this->server_last_error_str ['. htmlspecialchars($this->server_last_error_str) .']<br>'; }
+				$response_array = False;
+			}
+			elseif ((count($raw_response) == 1)
+			&& (trim($raw_response[0]) == '* SEARCH'))
+			{
+				if ($this->debug_dcom > 1) { echo 'imap_sock.i_search('.__LINE__.'): no matches, will retuen False<br>'; }
+				$response_array = False;
+			}
+			else
+			{
+				// it is probably only 1 element, but just to be sure, do this
+				$loops = count($raw_response);
+				for($i=0;$i<=$loops;$i++)
+				{
+					// combine and also get rid of any CRLF at the end of the elements
+					$prepped_response .= rtrim($raw_response[$i]);
+				}
+				// get rid or string "* SORT " at beginning of response, then make an array
+				//$raw_response[0] = str_replace('* SORT ', '', $raw_response[0]);
+				$prepped_response= str_replace('* SEARCH ', '', $prepped_response);
+				//$raw_response[0] = rtrim($raw_response[0]);
+				// MAKE THE ARRAY
+				$response_array = explode(' ', $prepped_response);
+			}
+			
+			if ($this->debug_dcom > 2) { echo 'imap_sock.i_search('.__LINE__.'): about to return $response_array DUMP: <pre>'; print_r($response_array); echo '</pre>';  }
+			if ($this->debug_dcom > 0) { echo 'imap_sock.i_search('.__LINE__.'): LEAVING returning $response_array<br>'; }
+			return $response_array;
 		}
+		
 		// SEE BELOW for:  sort
 		// SEE BELOW for:  status  *=DONE=*
 		// construct_folder_str  is DEPRECIATED - NOT USED
