@@ -15,13 +15,13 @@
   include("../header.inc.php");
 
   if ($submit) {
-     $phpgw->common->preferences_delete("byapp",$phpgw_info["user"]["userid"],"email");
+     $phpgw->common->preferences_delete("byapp",$phpgw_info["user"]["account_id"],"email");
   
      if ($mainscreen_showmail) {
-        $phpgw->common->preferences_add($phpgw_info["user"]["userid"],"mainscreen_showmail","email");
+        $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"mainscreen_showmail","email");
      }
-     $phpgw->common->preferences_add($phpgw_info["user"]["userid"],"default_sorting","email");
-     $phpgw->common->preferences_add($phpgw_info["user"]["userid"],"email_sig","email"); 
+     $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"default_sorting","email");
+     $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"email_sig","email"); 
 
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/preferences/index.php"));
   }
