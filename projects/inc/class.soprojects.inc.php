@@ -180,7 +180,7 @@
 			$db = $this->db;
 			
 			$query = "select budget,month,year from phpgw_p_budget where project_id='$_projectID' order by year,month";
-			
+
 			$db->query($query, __LINE__, __FILE__);
 			
 			$budget		= array
@@ -392,9 +392,9 @@
 		function read_single_project($project_id)
 		{
 			$this->db->query('SELECT * from phpgw_p_projects WHERE project_id=' . intval($project_id),__LINE__,__FILE__);
-	
+
 			list($project) = $this->db2projects();
-			$this->getBudget($project);
+
 			return $project;
 		}
 
