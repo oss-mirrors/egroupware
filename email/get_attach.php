@@ -21,9 +21,9 @@
   header("Content-Disposition: attachment; filename=$name");
 
   if ($encoding == "base64") {
-     echo imap_base64( imap_fetchbody($mailbox, $msgnum, $part_no) );
+     echo $phpgw->msg->base64( $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no) );
   } else {
-     echo imap_fetchbody($mailbox, $msgnum, $part_no);
+     echo $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no);
   }
 
 ?>
