@@ -10,19 +10,17 @@
   \**************************************************************************/
 
 	/* $Id$ */
-	
+
 	$phpgw_flags = Array(
 		'currentapp'	=> 'manual'
 	);
 	$phpgw_info['flags'] = $phpgw_flags;
 	include('../../header.inc.php');
-	$appname = 'calendar';
+	$appname = 'email';
 	include(PHPGW_SERVER_ROOT.'/'.$appname.'/version.inc.php');
 ?>
 <img src="<?php echo $phpgw->common->image($appname,'navbar.gif'); ?>" border="0"><p/>
 <font face="<?php echo $phpgw_info['theme']['font']; ?>" size="2">
-Version: <b><?php echo $phpgw_info['server']['versions'][$appname]; ?></b><p/>
-This app was based on <a href="http://webcalendar.sourceforge.net" target="_new">WebCalendar</a><br/><p/>
-Transformed by <a href="<?php echo $phpgw->link('/email/compose.php','to=skeeter@phpgroupware.org'); ?>" target="_new">Mark A Peters (Skeeter)</a><br/>
+Version: <b><?php echo $phpgw_info['server']['versions'][$appname]; ?></b>
 </font>
 <?php $phpgw->common->phpgw_footer(); ?>
