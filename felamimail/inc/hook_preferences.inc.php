@@ -12,35 +12,17 @@
 
   /* $Id$ */
 {
-	echo "<p>\n";
-	$imgfile = $GLOBALS['phpgw']->common->get_image_dir($appname) . '/' . $appname . '.gif';
-	if (file_exists($imgfile))
-	{
-		$imgpath = $GLOBALS['phpgw']->common->get_image_path($appname) . '/' . $appname . '.gif';
-	}
-	else
-	{
-		$imgfile = $GLOBALS['phpgw']->common->get_image_dir($appname) . '/navbar.gif';
-		if (file_exists($imgfile))
-		{
-			$imgpath = $GLOBALS['phpgw']->common->get_image_path($appname) . '/navbar.gif';
-		}
-		else
-		{
-			$imgpath = '';
-		}
-	}
-
-	section_start(ucfirst($appname),$imgpath);
-
-	section_item($GLOBALS['phpgw']->link('/felamimail/preferences_email.php'),lang('Mail Settings'));
-	section_item($GLOBALS['phpgw']->link('/felamimail/preferences_highlight.php'),lang('Message Highlighting'));
-	section_item($GLOBALS['phpgw']->link('/felamimail/preferences_index_order.php'),lang('Index Order'));
-	section_item($GLOBALS['phpgw']->link('/felamimail/preferences_translate.php'),lang('Translation Preferences'));
-	section_item($GLOBALS['phpgw']->link('/felamimail/preferences_display.php'),lang('Display Preferences'));
-	section_item($GLOBALS['phpgw']->link('/felamimail/preferences_folder.php'),lang('Folder Preferences'));
-	section_item($GLOBALS['phpgw']->link('/felamimail/folders.php'),lang('Manage Folders'));
-
-	section_end(); 
+	$title = $appname;
+	$file = array(
+		'Mail Settings' => $GLOBALS['phpgw']->link('/'.$appname.'/preferences_email.php'),
+		'Message Highlighting' => $GLOBALS['phpgw']->link('/'.$appname.'/preferences_highlight.php'),
+		'Index Order' => $GLOBALS['phpgw']->link('/'.$appname.'/preferences_index_order.php'),
+		'Translation Preferences' => $GLOBALS['phpgw']->link('/'.$appname.'/preferences_translate.php'),
+		'Display Preferences' => $GLOBALS['phpgw']->link('/'.$appname.'/preferences_display.php'),
+		'Folder Preferences' => $GLOBALS['phpgw']->link('/'.$appname.'/preferences_folder.php'),
+		'Manage Folders' => $GLOBALS['phpgw']->link('/'.$appname.'/folders.php')
+	);
+//Do not modify below this line
+	display_section($appname,$title,$file);
 }
 ?>
