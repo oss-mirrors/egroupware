@@ -12,18 +12,23 @@
 
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'login',
 		'disable_Template_class' => True
 	);
 
 	include('../header.inc.php');
 
+	$server_id  = $HTTP_POST_VARS['server_id'];
+	$xsessionid = $HTTP_POST_VARS['xsessionid'];
+	$xkp3       = $HTTP_POST_VARS['xkp3'];
+
 	$is = CreateObject('phpgwapi.interserver',intval($server_id));
 
-//	_debug_array($is->server);
-	if($login)
+	/* _debug_array($is->server); */
+	if($HTTP_POST_VARS['login'])
 	{
+		/* You may need to adjust $HTTP_HOST manually here */
 		$is->send(
 			'system.login', array(
 				'server_name' => $HTTP_HOST,
@@ -33,14 +38,10 @@
 			$is->server['server_url']
 		);
 		/* _debug_array($is->result); */
-		list($x,$xsessionid,$y,$xkp3) = $is->result;
-		if($x && !$y)
-		{
-			$xkp3 = $xsessionid;
-			$xsessionid = $x;
-		}
+		$xsessionid = $is->result['sessionid'];
+		$xkp3       = $is->result['kp3'];
 	}
-	elseif($logout)
+	elseif($HTTP_POST_VARS['logout'])
 	{
 		$is->send(
 			'system.logout', array(
@@ -50,37 +51,28 @@
 			$is->server['server_url']
 		);
 	}
-	elseif($methods)
+	elseif($HTTP_POST_VARS['methods'])
 	{
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
-		$is->send(
-			'system.listMethods',
-			array(''),
-			$is->server['server_url']
-		);
+
+		$is->send('system.listMethods','',$is->server['server_url']);
 	}
-	elseif($apps)
+	elseif($HTTP_POST_VARS['apps'])
 	{
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
-		$is->send(
-			'system.listApps',
-			array(''),
-			$is->server['server_url']
-		);
+
+		$is->send('system.listApps','',$is->server['server_url']);
 	}
-	elseif($users)
+	elseif($HTTP_POST_VARS['users'])
 	{
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
-		$is->send(
-			'system.listUsers',
-			array(''),
-			$is->server['server_url']
-		);
+
+		$is->send('system.listUsers','',$is->server['server_url']);
 	}
-	elseif($addressbook)
+	elseif($HTTP_POST_VARS['addressbook'])
 	{
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
@@ -100,7 +92,7 @@
 	}
 
 	echo '<table><tr><td>';
-	echo '<form action="' . $phpgw->link('/xmlrpc/interserv.php') . '">' . "\n";
+	echo '<form method="POST" action="' . $GLOBALS['phpgw']->link('/xmlrpc/interserv.php') . '">' . "\n";
 	echo $is->formatted_list($server_id) . "\n";
 	echo '<input type="submit" name="login" value="Login">' . "\n";
 	echo '<input type="submit" name="logout" value="Logout">' . "\n";
