@@ -13,6 +13,10 @@ email password	email	ja	電子メールパスワード
 email signature	email	ja	署名
 e-mail preferences	common	ja	電子メールユーザ設定
 email type	common	ja	電子メールタイプ
+enter your default mail domain ( from: user@domain )	admin	ja	メールドメイン名 ( 書式 user@domain の domain部分 )
+enter your pop	admin	ja	POP
+enter your smtp server hostname or ip address	admin	ja	SMTP サーバ名または IP アドレス
+enter your smtp server port	admin	ja	SMTP ポート番号
 files	email	ja	ファイル
 firstname	email	ja	姓
 folder	email	ja	フォルダ
@@ -20,10 +24,13 @@ folder maintenance	email	ja	フォルダメンテナンス
 if applicable	email	ja	適用時
 image	email	ja	Image
 imap server type	email	ja	IMAP サーバタイプ
+imap mail server hostname or ip address	admin	ja	IMAP サーバ名または IP アドレス
 lastname	email	ja	名
 mail folder(uw-maildir)	email	ja	メールフォルダ（UW-MailDir）
 mail server	email	ja	メールサーバ
+mail server login type	admin	ja	メールサーバログインタイプ
 mail server type	email	ja	メールサーバタイプ
+mail settings	admin	ja	電子メール設定
 messages	email	ja	メッセージ
 move selected messages into	email	ja	選択メッセージを移動
 newest -> oldest	email	ja	新から旧
@@ -35,6 +42,7 @@ please select a message first	email	ja	メッセージを選択してください。
 section	email	ja	Section
 select email address	email	ja	電子メールアドレス
 select home email address	email	ja	電子メール（個人）
+select your mail server type	admin	ja	メールサーバタイプ
 select work email address	email	ja	電子メール（仕事）
 send deleted messages to the trash	email	ja	削除メッセージをゴミ箱へ
 show new messages on main screen	email	ja	新着メッセージをメイン画面に表示
