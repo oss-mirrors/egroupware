@@ -553,7 +553,10 @@
 							}
 							$output.='</select>';
 							break;
-							default      :
+                       	case 'none'  :
+                            unset($output);
+							break;
+						default      :
 							$output.= '<input name="'.$cfg_key.'" type=text value="'.$val[0].'">';
 						}
 
