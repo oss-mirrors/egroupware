@@ -63,21 +63,10 @@
      rmdir($phpgw_info["server"]["temp_dir"] . $sep . $phpgw_info["user"]["sessionid"]);
   }		// if dir
 
-//  }
-//  if (strlen($cc)>1) $to .= ",".$cc;
-/*
-  if (!empty($cc) && empty($bcc)) {
-    $to = "$to\n";
-    $to .= "Cc: $cc";
-  } elseif (!empty($cc) && !empty($bcc)) {
-    $to = "$to\n";
-    $to .= "Cc: $cc\n";
-    $to .= "Bcc: $bcc";
-  }
-*/
   $rc = $phpgw->send->msg("email", $to, $subject, stripslashes($body), "", $cc, $bcc);
   if ($rc) {
-    header("Location: " . $phpgw->link("index.php","cd=13&folder=" . urlencode($return)) );
+//    header("Location: " . $phpgw->link("index.php","cd=13&folder=" . urlencode($return)) );
+    header("Location: " . $phpgw->link("index.php","folder=" . urlencode($return)) );
   } else {
     echo "Your message could <B>not</B> be sent!<BR>\n";
     echo "The mail server returned:<BR>".
@@ -86,3 +75,4 @@
          "err_desc: '".$phpgw->err[desc]."'.<P>\n";
     echo "To go back to the msg list, click <A HRef=\"".$phpgw->link("index.php","cd=13&folder=" . urlencode($return))."\">here</a>";
   }
+?>

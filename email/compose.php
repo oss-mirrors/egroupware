@@ -100,6 +100,7 @@
 <table border=0 cellpadding="1" cellspacing="1" width="95%" align="center">
 
 <form enctype="multipart/form-data" name="doit" action="<?php echo $phpgw->link("send_message.php")?>" method=POST>
+<?php echo $phpgw->hidden_var(); ?>
   <input type="hidden" name="return" value="<?php echo $folder ?>">
 
   <tr>
