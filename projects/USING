@@ -1,0 +1,29 @@
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
++                             quick instruction                              +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+This file provided that you have successfully installed the projects
+applications under phpgroupware and can access the "Projects" menu
+page including p*hours-, p*statistics-, p*delivery- and p*billing-links.  
+
+The main page contains a ADD button to create projects and a
+ACTIVITY LIST button. 
+First you have to create your activities. Activities meens global categories
+of your work into you have to sort your jobs. They regulate the hours 
+per workunit and the bill per workunit for each job.  
+
+than you can create your projects and assign activities to them.   
+You can choose the type of activity: bookable(no invoice) or billable.
+The projecthours app manages your daily jobs. You can only submit a job to a
+project, if there are activities avaiable.  
+
+If you want to create invoices or deliveries you have to select a customer
+before. 
+Change the logo.gif in p*billing dir with yours or remove it if you don't
+want a logo in your invoices or deliveries.
+
+You have to create a group 'projectAdmin'. Each member of this group is
+able to modify or delete all projects data.
+The project - coordinator is the chosen primary employee and authorized 
+to modify his project.   
+
+grtx
