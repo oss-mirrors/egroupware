@@ -1,18 +1,26 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - E-Mail                                                    *
-  * http://www.phpgroupware.org                                              *
-  * Based on Aeromail by Mark Cushman <mark@cushman.net>                     *
-  *          http://the.cushman.net/                                         *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/***********************************************************************\
+	* phpGroupWare - E-Mail	Preferences Handlers					*
+	* http://www.phpgroupware.org									*
+	* --------------------------------------------							*
+	*  This program is free software; you can redistribute it and/or modify it		*
+	*  under the terms of the GNU General Public License as published by the	*
+	*  Free Software Foundation; either version 2 of the License, or (at your		*
+	*  option) any later version.										*
+	\***********************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 
+	/*!
+	@class bopreferences
+	@abstract Much logic of email preference handling is here, especially submitting and 
+	multiple account preference handling.
+	@author Angles, and skeeter helped on function "preferences"
+	@discussion NOTE: if prefs are submitted that alter anything relative to a cached 
+	data item, the that cached item MUST BE EXPIRED, for example 
+	GLOBALS[phpgw]->msg->expire_session_cache_item("mailserver_callstr") 
+	@access public
+	*/
 	class bopreferences
 	{
 		var $public_functions = array(
@@ -23,6 +31,7 @@
 			'ex_accounts_list' => True,
 			'ex_accounts_delete' => True
 		);
+		var $msg_bootstrap;
 		var $not_set='-1';
 		var $std_prefs=array();
 		var $cust_prefs=array();
@@ -42,68 +51,52 @@
 		var $debug_set_prefs = 0;
 		//var $debug_set_prefs = 3;
 		
+		
 		function bopreferences()
 		{
-			/*
-			@capability: initialize class mail_msg object but do not login
-			@discussion: we need mail_msg fully initialized to set prefs, but we
-			do not need class_dcom, nor do we need to login, this is how to do it:
-			1) create the mail_msg object
-			2) initialize simple "begin_request" args array holder variable
-			setting prefs does not require a login, in fact you may not yet be able to login
-			"do_login" = False is the only "request_args_array" element we need to set
-			3) begin the class mail_msg transaction request with "begin_request"
-			even though we are not logging in, the will initialize the class
-			*/
 			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences *constructor*: ENTERING <br>'; }
-			if (is_object($GLOBALS['phpgw']->msg))
-			{
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences *constructor*: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
-			}
-			else
-			{
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences *constructor*: is_object: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
-				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-			}
+			/*!
+			@capability initialize class mail_msg object but do not login
+			@abstract we need functions in class mail_msg but we not want a login 
+			@author Angles
+			@discussion we need mail_msg fully initialized to set prefs, but we
+			do not need class_dcom, nor do we need to login, this is how to do it:
+			@example $GLOBALS["phpgw"]->msg_bootstrap = CreateObject("email.msg_bootstrap");
+			$GLOBALS["phpgw"]->msg_bootstrap->set_do_login(False);
+			$GLOBALS["phpgw"]->msg_bootstrap->ensure_mail_msg_exists("name of this calling function", $this->debug_set_prefs);
+			*/
+			$this->msg_bootstrap = CreateObject("email.msg_bootstrap");
+			//$this->msg_bootstrap->set_do_login(False);
+			// USE NEW login instructions, defined in bootstrap class
+			$this->msg_bootstrap->set_do_login(BS_LOGIN_NEVER);
+			if ($this->debug_set_prefs > 1) { echo 'email.bopreferences. *constructor*: call this->msg_bootstrap->ensure_mail_msg_exists, msg_bootstrap->get_do_login(): '.serialize($this->msg_bootstrap->get_do_login()).'<br>'; }
+			$this->msg_bootstrap->ensure_mail_msg_exists('email.bopreferences. *constructor*', $this->debug_set_prefs);
 			
-			if ($GLOBALS['phpgw']->msg->get_isset_arg('already_grab_class_args_gpc'))
-			{
-				if ($this->debug_set_prefs > 0) { echo 'email.bopreferences *constructor*: LEAVING , msg object already initialized<br>'; }
-				return True;
-			}
-				
-			if ($this->debug_set_prefs > 1) { echo 'email.bopreferences *constructor*: msg object NOT yet initialized<br>'; }
-			$args_array = Array();
-			// should we log in or not
-			$args_array['do_login'] = False;
-			if ($this->debug_set_prefs > 1) { echo 'email.bopreferences. *constructor*: call msg->begin_request with args array:'.serialize($args_array).'<br>'; }
-			$GLOBALS['phpgw']->msg->begin_request($args_array);
-			$already_initialized = True;
 			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences. *constructor*: LEAVING<br>'; }
+			return;
 		}
 		
 		/*!
-		 @function init_available_prefs
-		 @abstract Defines all available preferences for the email app and put in $this->std_prefs[] and $this->cust_prefs[]
-		 @return none, this is function directly manipulates the class vars ->std_prefs[] and ->cust_prefs[]
-		 @discussion  This function serves as a single place to establish and maintain all preferences
-		 available to the email class <br>
-		 $this->std_prefs[] class array holds all Standard Preferences available for email, and <br>
-		 $this->cust_prefs[] class array holds all Custom Preferences available for email<br> 
-		 Since the preferenced are stored in a dynamic database, the database schema is not present
-		 at the database level, so we define it here. <br>
-		 Also, $this->std_prefs[] and $this->cust_prefs[] arrays can be used to build a UI for managing and 
-		 showing these prefs, and <br>
-		 those arrays can be looped through for the setting and storing of these preferences.
-		[init_default] comma seperated, first word is an instructional token
+		@function init_available_prefs
+		@abstract Defines all available preferences for the email app and put in $this->std_prefs[] and $this->cust_prefs[]
+		@result none, this is function directly manipulates the class vars ->std_prefs[] and ->cust_prefs[]
+		@param $this->std_prefs[] class array holds all Standard Preferences available for email, 
+		@param $this->cust_prefs[] class array holds all Custom Preferences available for email
+		@author Angles
+		@discussion  This function serves as a single place to establish and maintain all preferences available to the email class. 
+		Since the preferenced are stored in a dynamic database, the database schema is not present
+		at the database level, so we define it here. 
+		Also, $this->std_prefs[] and $this->cust_prefs[] arrays can be used to build a UI for managing and 
+		showing these prefs, and those arrays can be looped through for the setting and storing of these preferences. 
+		@access public
+		@example ## sample usages of the "init_default" property 
+			[init_default] comma seperated, first word is an instructional token
 			--possible tokens are--
 			string		[any_string]  ex. 'string,new_old'
 			set_or_not	[set|not_set]  ex.  'set_or_not,not_set'
 			function	[string_will_be_eval'd] ex. 'function,$this->sub_default_userid($accountid)'
 			init_no_fill	we will not fill this item during initialization (ex. a password)
 			varEVAL	[string_to_eval] ex. "$GLOBALS['phpgw_info']['server']['mail_server']"
-		@author	Angles
-		@access	Public
 		*/
 		function init_available_prefs()
 		{
@@ -119,7 +112,37 @@
 				'write_props'	=> '',
 				'lang_blurb'	=> lang('enable this email account'),
 				'init_default'	=> 'set_or_not,not_set',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'THIS PREF CURRENTLY DOES NOTHING
+					Users may have more than one email account. In the future 
+					it is anticipated that automatic actions may be performed 
+					on these accounts, such as automatic new mail checks, 
+					auto filtering, etc... Perhaps the user may want to disable 
+					an account so that these automatic actions do not occur for 
+					that account. This is one possible use.
+					Also, an admin may want to disable accounts from time to time.'
+			);
+			$i++;
+			$this->std_prefs[$i] = Array(
+				'id' 		=> 'account_name',
+				'type'		=> 'user_string',
+				'widget'	=> 'textbox',
+				'accts_usage'	=> 'default,extra_accounts',
+				'write_props'	=> '',
+				'lang_blurb'	=> lang('Account Name'),
+				// note that after the comma there is NO space, this means default is no value
+				'init_default'	=> 'string,',
+				'values'	=> array(),
+				'long_desc' => 
+					'This is the name that appears in the account combobox. If for 
+					leave this blank, your accounts will be given a standard name like 
+					Account[1]: Jane Doe, where Jane Doe is the name you give below as 
+					'.lang('Your full name').'. If you want to give an account a special name 
+					you can fill this in. No matter what, this is for your use, 
+					your emails will still use '.lang('Your full name').' as 
+					your FROM name for email messages. Note that '.lang('Your full name').' for your 
+					email account 0 is the name you gave in the phpgroupware setup.'
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -130,7 +153,13 @@
 				'write_props'	=> '',
 				'lang_blurb'	=> lang('Your full name'),
 				'init_default'	=> 'varEVAL,$GLOBALS["phpgw_info"]["user"]["fullname"];',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'This is the name that appears in the users FROM address. 
+					The default mail account gets this value automatically from 
+					the phpgwapi. Additional accounts are created with the phpgwapi 
+					supplied fullname you can specify a different fullname for each 
+					extra email account.'
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -141,7 +170,14 @@
 				'write_props'	=> 'empty_string_ok',
 				'lang_blurb'	=> lang('email signature'),
 				'init_default'	=> 'string, ',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'This text will be appended to the bottom of the users emails for 
+					this email account. Currently, html tags are not supported. Also, 
+					forwarded email will NOT get this email sig appended to it for reasons 
+					such as it clutters the email, the forwarded part probably has its own 
+					email sig from the original author, which is really the information 
+					that matters the most.'
 			);
 			$lang_oldest = lang('oldest');
 			$lang_newest = lang('newest');
@@ -157,7 +193,14 @@
 				'values'	=> array(
 					'old_new' => $lang_oldest.' -> '.$lang_newest,
 					'new_old' => $lang_newest.' -> '.$lang_oldest
-				)
+				),
+				'long_desc' => 
+					'In the email index page, the page which lists all the mails in a 
+					folder, mail may be sorted by date, author, size, or subject, 
+					HOWEVER all of these need to be ordered from first to last, this 
+					options controlls what is first and last. For example, 
+					if sorting by date, the newest to oldest displays the most recent 
+					emails first, in decending order down to the oldest emails last. '
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -171,7 +214,109 @@
 				'values'	=> array(
 					'1' => lang('Layout 1'),
 					'2' => lang('Layout 2')
-				)
+				),
+				'long_desc' => 
+					'The email application offers 2 different layouts for the index page, 
+					that is the page that lists the emails in a folder. This page may be 
+					the page the user looks at the most and so different layouts, or looks, 
+					are offered.'
+			);
+			$i++;
+			
+			/*!
+			@capability Adding a preference option, HOWTO example.
+			@abstract this example will help you understand how the email preferences work.
+			@author Angles
+			@discussion email preferences, like many other phpGW preference items, do not have a 
+			Database table devoted only to email preferences. If there were such a Database table, its fields 
+			would describe a schema similar to the one we are about to study. Email prefs are stored in the phpGW 
+			preferences table, which is shared by many apps and has the charactoristics of a dynamic data store, i.e. 
+			we can add, remove, or change email preference details without having to alter the Database table itself. 
+			This can make programming easier, but it also can present a chalange if your app has many preferences, 
+			which may have a complicted tree-like hierarchy.
+			Low level preference functiond are handled by the pgpGW api. The data itself is stored in the database as 
+			a serialized array using the php functions serialize and unserialize.
+			We can gain the flexibility of a rich preference data handling system by doing some work up front. The 
+			work in question here is an array based schema hard coded in this function, yet similar schema definitions 
+			could exist in an XML file, as the concept is very similar.
+			We use an associaltive array (i,e. not a simple numbered array) to hold our schema data,
+			@example This is a how-to  example for adding an email preference item, saving it to the prefs DB table, 
+			retieving the pref, and using it in code. This DocSubTopic deals with adding an email preference item, 
+			using pref item "icon theme" as an example. A Step-by-Step example is provided with explanation,
+			(1) copy an  existing preference item to use as a template for your new preference item.
+			(2) replace in the schema with your information, as such:
+			*id*		The "Unique ID" of this pref item. The pref DB uses this like a UID. 
+			*type*	[ exists| user_string | known_string ]
+			*widget*	[ checkbox | textbox | textarea | combobox | passwordbox ]
+			*accts_usage*	[ default, extra_accounts ]
+			*write_props*	[ empty_string_ok | password, hidden, encrypted, empty_no_delete | no_db_defang ]
+			*lang_blurb*	description displayed to the user on the preferences page.
+			*init_default*	--possible tokens are--
+						string		[any_string]  ex. 'string,new_old'
+						set_or_not	[set|not_set]  ex.  'set_or_not,not_set'
+						function		[string_will_be_eval'd] ex. "function,$this->sub_default_userid($accountid)"
+						init_no_fill	we will not fill this item during initialization (ex. a password)
+						varEVAL		[string_to_eval] ex. "$GLOBALS['phpgw_info']['server']['mail_server']"
+			*values*		Array of values available to the user, "key" => "value" , used with combobox widgets.
+			*long_desc*	Long help, detained description of the option displayed to the user as "long help".
+			(3) Your are done. The preference is now part of email preferences. It will bedisplayed on the preferences 
+			page, saved and read from the preferences DB, it will have the default value you specified unless the user 
+			chooses otherwise. All this happens automatically, without the developer having to write any more code.
+			*/
+			
+			$this->std_prefs[$i] = Array(
+				'id' 		=> 'icon_theme',
+				'type'		=> 'known_string',
+				'widget'	=> 'combobox',
+				'accts_usage'	=> 'default, extra_accounts',
+				'write_props'	=> '',
+				'lang_blurb'	=> lang('Icon Theme'),
+				'init_default'	=> 'string,evo',
+				'values'	=> array(
+					'evo' => lang('Evolution Style'),
+					'moz' => lang('Mozilla Modern Style')
+				),
+				'long_desc' => 
+					'The email application offers different icon image themes, groups of 
+					images of a similar style which are used in this email application. 
+					Currently the available themes are images based on Evolution by Ximian 
+					and the Netscape6 / Mozilla browser buttons. Additional themes are 
+					anticipated and welcome.'
+			);
+			$i++;
+			$this->std_prefs[$i] = Array(
+				'id' 		=> 'icon_size',
+				'type'		=> 'known_string',
+				'widget'	=> 'combobox',
+				'accts_usage'	=> 'default, extra_accounts',
+				'write_props'	=> '',
+				'lang_blurb'	=> lang('Icon Size'),
+				'init_default'	=> 'string,24',
+				'values'	=> array(
+					'16' => lang('Small'),
+					'24' => lang('Big')
+				),
+				'long_desc' => 
+					'The email application offers different icon image themes, these 
+					icons can be big or small.'
+			);
+			$i++;
+			$this->std_prefs[$i] = Array(
+				'id' 		=> 'button_type',
+				'type'		=> 'known_string',
+				'widget'	=> 'combobox',
+				'accts_usage'	=> 'default, extra_accounts',
+				'write_props'	=> '',
+				'lang_blurb'	=> lang('Button Type'),
+				'init_default'	=> 'string,both',
+				'values'	=> array(
+					'text' => lang('Text'),
+					'image' => lang('Image'),
+					'both' => lang('Both')
+				),
+				'long_desc' => 
+					'The email application offers different button displays, these 
+					buttons can be text, images, or both.'
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -186,19 +331,36 @@
 					'none' => lang('none'),
 					'From' => lang('From'),
 					'ReplyTo' => lang('ReplyTo')
-				)
+				),
+				'long_desc' => 
+					'This confusing and often misunderstood option is left over from 
+					this email apps origins as Aeromail by Mark Cushman. When viewing 
+					a list of emails in a folder, the FROM column may show you 
+					a) the senders name only, if a name was provided, 
+					b) the senders From email address, in addition to the senders name, or 
+					c) the senders reply to address if it is different from the senders 
+					from address, in addition to the senders name if it was provided. 
+					Typically users set this to none, which will show only the senders 
+					name. If no name was supplied by the sender, then the senders FROM 
+					email address will be shown, whether a seperate reply to address is 
+					provided has no effect on this, the FROM address is always used if the 
+					senders name is not provided.'
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
 				'id' 		=> 'mainscreen_showmail',
 				'type'		=> 'exists',
-				'accts_usage'	=> 'default',
 				'widget'	=> 'checkbox',
 				'accts_usage'	=> 'default',
 				'write_props'	=> '',
 				'lang_blurb'	=> lang('show new messages on main screen'),
 				'init_default'	=> 'set_or_not,not_set',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'Each user has a summary page which can display a variety 
+					of information. This option will show a small list of email 
+					messages in the INBOX of the users default email account on 
+					the users summary home page.'
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -211,7 +373,12 @@
 				//'lang_blurb'	=> lang('save Deleted messages in folder named below'),
 				'lang_blurb'	=> lang('Deleted messages go to Trash'),
 				'init_default'	=> 'set_or_not,not_set',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'If checked, Deleted message will be sent to the &quot;Trash&quot; 
+					folder name which you specify in the box for &quot;'
+					.lang('Deleted messages (Trash) folder').'&quot;. 
+					Only works with IMAP servers, POP servers do not have folders.'
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -223,7 +390,15 @@
 				//'lang_blurb'	=> lang('Deleted messages folder name'),
 				'lang_blurb'	=> lang('Deleted messages (Trash) folder'),
 				'init_default'	=> 'string,Trash',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'If &quot;'.lang('Deleted messages go to Trash').'&quot; is checked, 
+					Deleted message will be sent to the folder name you type in 
+					this box. If this folder does not exist, it will be created 
+					for you automatically. Default name is &quot;Trash&quot;. 
+					This will be your &quot;Trash&quot; folder, but it does not have to 
+					actually be called &quot;Trash&quot;, you can name it anything. 
+					Only works with IMAP servers, POP servers do not have folders.'
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -236,7 +411,12 @@
 				//'lang_blurb'	=> lang('save Sent messages in folder named below'),
 				'lang_blurb'	=> lang('Sent messages saved in &quot;Sent&quot; folder'),
 				'init_default'	=> 'set_or_not,not_set',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'If checked, a copy of your sent mail will be stored in 
+					the &quot;Sent&quot; folder name which you specify in the box 
+					for &quot;'.lang('Sent messages folder').'&quot;. 
+					Only works with IMAP servers, POP servers do not have folders.'
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -248,7 +428,15 @@
 				//'lang_blurb'	=> lang('Sent messages folder name'),
 				'lang_blurb'	=> lang('Sent messages folder'),
 				'init_default'	=> 'string,Sent',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'If &quot;'.lang('Sent messages folder').'&quot; is checked, 
+					a copy of your sent mail will be stored in the folder 
+					name you type in this box. If this folder does not exist, 
+					it will be created for you automatically. Default name is &quot;Sent&quot;. 
+					This will be your &quot;Sent&quot; folder, but it does not have to 
+					actually be called &quot;Sent&quot;, you can name it anything. 
+					Only works with IMAP servers, POP servers do not have folders.'
 			);
 			/*
 			$i++;
@@ -265,7 +453,9 @@
 					'0' => lang('Normal'),
 					'1' => lang('Bigger'),
 					'2' => lang('Biggest')
-				)
+				),
+				'long_desc' => 
+					''
 			);
 			*/
 			/*
@@ -277,7 +467,9 @@
 				'write_props'	=> '',
 				'lang_blurb'	=> lang('persistent email server session'),
 				'init_default'	=> 'set_or_not,not_set',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					''
 			);
 			*/
 			// this item has been phased out, not used at the moment
@@ -290,7 +482,9 @@
 				'write_props'	=> '',
 				'lang_blurb'	=> lang('cache server data whenever possible'),
 				'init_default'	=> 'set_or_not,not_set',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'This option is DEPRECIATED. Not used anymore.'
 			);
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -301,9 +495,74 @@
 				'write_props'	=> '',
 				'lang_blurb'	=> lang('enable UTF-7 encoded folder names'),
 				'init_default'	=> 'set_or_not,not_set',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'Most US and European users do not need to enable this.
+					If this option is checked then your email server can handle 
+					folder names with non US-ASCII charactors in them/ Default 
+					is disabled, not checked. Only use if you are really sure 
+					you need it. 
+					Only works with IMAP servers, POP servers do not have folders.'
 			);
-			
+			$i++;
+			$this->std_prefs[$i] = Array(
+				'id' 		=> 'fwd_inline_text',
+				'type'		=> 'exists',
+				'widget'	=> 'checkbox',
+				'accts_usage'	=> 'default,extra_accounts',
+				// NOTE: write_props value of "group_master" is DEPRECIATED, not used anywhere 
+				'lang_blurb'	=> lang('Send forwarded mail as quoted attachment'),
+				'init_default'	=> 'set_or_not,not_set',
+				'values'	=> array(),
+				'long_desc' => 
+					'Select this box if you want the text body of the message you are forwarding to appear
+					inline in the body of your sent message
+					'
+			);
+			$i++;
+			$this->std_prefs[$i] = Array(
+				'id' 		=> 'addressbook_choice',
+				'type'		=> 'known_string',
+				'widget'	=> 'combobox',
+				'accts_usage'	=> 'default',
+				'lang_blurb'	=> lang('Select your style for the addressbook. The traditional, simple style. Or the new javascript enabled complex addressbook'),
+				'init_default'	=> 'string,simple',
+				'values'	=> array('orig'=>'Simple',
+							'lex' => 'Javascript'),
+				'long_desc' => 
+					'We have recently added this new addressbook so that users can choose to have a more complex addressbook that features a) Easy, point and click searching, b) Best suited for organizations with large central addressbooks with many categories. You can choose here which addressbook do you prefer.
+					'
+			);
+			$i++;
+			$this->std_prefs[$i] = Array(
+				'id' 		=> 'js_addressbook_screensize',
+				'type'		=> 'known_string',
+				'widget'	=> 'combobox',
+				'accts_usage'	=> 'default',
+				'lang_blurb'	=> lang('Select your screensize for propper showing of the Javascript addressbook'),
+				'init_default'	=> 'string,700',
+				'values'	=> array('900'=>'1200x1600',
+							'800' => '1024x768',
+							'700' => '800x600'),
+				'long_desc' => 
+					'We have three sizes that tell us how to better render the addressbook for you: 800x600 (addressbook
+					will popout in a 700 pixel wide box), 1024x768 (it will be a 800 box), 1200x1600 (will be a 900 box).
+					The fonts for all html stuff will be, respectively set to xx-small, x-small and normal (no font setting).
+					'
+			);
+			$i++;
+			$this->std_prefs[$i] = Array(
+				'id' 		=> 'newmsg_combobox',
+				'type'		=> 'exists',
+				'widget'	=> 'checkbox',
+				'accts_usage'	=> 'default, extra_accounts',
+				'write_props'	=> '',
+				'lang_blurb'	=> lang('Show New Messages in ComboBox'),
+				'init_default'	=> 'set_or_not,not_set',
+				'values'	=> array(),
+				'long_desc' => 
+					'This specifies whether or not to show the number of new message in the folders combo box on the index screen.'
+			);
 			// Custom Settings
 			$this->cust_prefs = Array();
 			$i = 0;
@@ -313,10 +572,27 @@
 				'widget'	=> 'checkbox',
 				//'accts_usage'	=> 'default, extra_accounts',
 				'accts_usage'	=> 'default',
+				// NOTE: write_props value of "group_master" is DEPRECIATED, not used anywhere 
 				'write_props'	=> 'group_master',
 				'lang_blurb'	=> lang('Use custom settings'),
 				'init_default'	=> 'set_or_not,not_set',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'Your server administrator will set the default values for the 
+					following options. You may never need to change any of them. 
+					If you do need to use settings that are different from 
+					the defaults for the options below here, then check this 
+					box. Default is disabled, not checked. If you fill in some 
+					of the options, but later decide to go back to the default 
+					values, unchecking this box will erase your custom values 
+					and put back the default values. All of the following options 
+					start out with the default value, so you may see some 
+					settings below even if you have never filled them in. 
+					This checkbox only shows up for the default email account. 
+					If you are setting up additional email accounts, you will 
+					be required to fill in the following options and this 
+					checkbox will not be displayed, it will be checked for 
+					all extra email accounts.'
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -328,7 +604,19 @@
 				'write_props'	=> '',
 				'lang_blurb'	=> lang('Email Account Name'),
 				'init_default'	=> 'function,sub_default_userid',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'The login name to use when checking mail for this email 
+					account. This may be the same as your phpGroupWare login 
+					name, or the server administrator may have set it for you. 
+					If your have multiple email accounts set up, you will need 
+					to fill this in. If you have only one email account set 
+					up, then you can probably leave this alone. If you clear this 
+					box, then it goes back to the default value. If you only need 
+					some custom settings but want this one to be the default value, 
+					then leave this box blank, the default value will be used, and 
+					you will see that default value in this box the next time you 
+					come to this preferences page.'
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -340,7 +628,21 @@
 				'write_props'	=> 'password, hidden, encrypted, empty_no_delete',
 				'lang_blurb'	=> lang('Email Password'),
 				'init_default'	=> 'init_no_fill',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'The login name to use when checking mail for this email 
+					account. This may be the same as your phpGroupWare login 
+					name, or the server administrator may have set it for you. 
+					If your have multiple email accounts set up, you will need 
+					to fill this in. If you have only one email account set 
+					up, then you can probably leave this alone. If you do set 
+					a custom password, this box will be blank the next time you 
+					come to this settings page. This is a security feature because 
+					your custom email password is not sent to your browser after 
+					you set it. To change your custom password, simply enter a new 
+					password in the box. Exra email accounts require you to set this. 
+					For your default email account, you can clear your custom password 
+					by unchecking the &quot;Use Custom Settings&quot; option.'
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -353,7 +655,14 @@
 				'lang_blurb'	=> lang('Email address'),
 			//	'init_default'	=> 'function,$this->sub_default_address($account_id);',
 				'init_default'	=> 'function,sub_default_address',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'Mail you send will use this address as the &quot;From&quot; address. 
+					This may be the same as your phpGroupWare login name, 
+					or the server administrator may have set it for you. 
+					When the recipient clicks reply, this address will 
+					be used. You can leave this box blank and the default value 
+					will be used.'
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -365,7 +674,11 @@
 				'write_props'	=> '',
 				'lang_blurb'	=> lang('Mail Server'),
 				'init_default'	=> 'varEVAL,$GLOBALS["phpgw_info"]["server"]["mail_server"];',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'Name of the mail server you want to access. Should be a 
+					name like &quot;mail.example.com&quot;. If you leave this box 
+					blank then the default value will be used.'
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -381,7 +694,14 @@
 					'pop3'		=> 'POP-3',
 					'imaps'		=> 'IMAPS',
 					'pop3s'		=> 'POP-3S'
-				)
+				),
+				'long_desc' => 
+					'The type of mail server you want to access. IMAP mail 
+					servers have folders, such as the Sent and Trash folders. 
+					POP servers do not have folders. POP, POP-3, and POP3 are the same thing. 
+					You can have the server connection encrypted by using IMAPS or POPS, 
+					only if the mailserver supports it and if your phpGroupWare installation 
+					has a &quot;SSL&quot; capabable version of PHP.'
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -396,7 +716,20 @@
 					'Cyrus'		=> 'Cyrus '.lang('or').' Courier',
 					'UWash'		=> 'UWash',
 					'UW-Maildir'	=> 'UW-Maildir'
-				)
+				),
+				'long_desc' => 
+					'If using an IMAP server, what kind is it, most often 
+					this option can safely be set to 
+					&quot;Cyrus '.lang('or').' Courier&quot;. Technically, this 
+					means the server uses a dot between the different parts of the 
+					folder names, such as &quot;INBOX.Sent&quot;. The other major kind 
+					of IMAP server is the University of Washington &quot;UWash&quot; IMAP server. 
+					It uses slashes instead of the dots the other servers use, and 
+					although it has a folder called &quot;INBOX&quot;, it is not 
+					considered the &quot;Namespace&quot; for the other folder names. 
+					The &quot;UW-Maildir&quot; is a rare combination of the two above 
+					types. This is the least used kind of IMAP server. If you are unsure, 
+					ask your IT administrator. Only applies to IMAP servers.'
 			);
 			$i++;
 			$this->cust_prefs[$i] = Array(
@@ -408,7 +741,19 @@
 				'write_props'	=> 'empty_string_ok',
 				'lang_blurb'	=> lang('U-Wash Mail Folder').' - ' .lang('If Applicable'),
 				'init_default'	=> 'varEVAL,$GLOBALS["phpgw_info"]["server"]["mail_folder"];',
-				'values'	=> array()
+				'values'	=> array(),
+				'long_desc' => 
+					'Only needed with the University of Washington &quot;UWash&quot; IMAP server. 
+					The default value is &quot;mail&quot; which means your mail folders, other 
+					then INBOX, are located in a directory called &quot;mail&quot; directly 
+					under your &quot;HOME&quot; directory. This box may be left empty, which 
+					means your mail folders are located in your &quot;HOME&quot; directory, not 
+					a subdirectory. If your mail folders are located in a subdirectory of 
+					&quot;HOME&quot; then put the name of that subdirectory here. Generally, 
+					it is not necessary to use any special slashes or tildes, &quot;HOME&quot; 
+					is always considered the base directory, and the slash bewteen &quot;HOME&quot; 
+					and the subdirectory will be added for you automatically, do not put the slash 
+					in this box.'
 			);
 			if ($this->debug_set_prefs > 3) { echo 'email.bopreferences.init_available_prefs: data dump: calling debug_dump_prefs<pre>';  $this->debug_dump_prefs(); }
 			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.init_available_prefs: LEAVING<br>'; }
@@ -428,14 +773,36 @@
 		}
 		
 		/*!
+		@function expire_related_cached_items
+		@abstract change in any preferences may require Expiring Cached Data for several things
+		@param (int) acctnum 
+		@discussion EXPIRE ANY CACHED ITEM THAT WAS DERIVED FROM A CHANGED PREF ITEM. 
+		We should be precise and only expire if necessary, but for now just expire any cached item that could 
+		be effected by a change in preferences. NOTE: we locate this after we have obtained a reliable 
+		acctnum which these prefs apply to. 
+		@author Angles
+		*/
+		function expire_related_cached_items($acctnum='')
+		{
+			if ((!isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $this->acctnum;
+			}
+
+			$GLOBALS['phpgw']->msg->expire_session_cache_item('mailsvr_callstr', $acctnum);
+			$GLOBALS['phpgw']->msg->expire_session_cache_item('mailsvr_namespace', $acctnum);
+			$GLOBALS['phpgw']->msg->expire_session_cache_item('mailsvr_delimiter', $acctnum);
+		}
+		
+		/*!
 		@function grab_set_prefs_args
 		@abstract calls either (a) grab_set_prefs_args_gpc or (b) grab_set_prefs_args_xmlrpc depending
 		on if this class was called from within phogw or via external XMP-RPC. If neither,
 		we should produce an error.
-		@param : none : However, function uses class var ->caller (string) with expected values being 
-		"phpgw" and "xmlrpc".
-		@author	Angles
-		@access	Public
+		@param (none) However, function uses class var ->caller (string) with expected values being "phpgw" and "xmlrpc".
+		@author Angles
+		@access Public
 		*/
 		function grab_set_prefs()
 		{
@@ -461,21 +828,21 @@
 		/*!
 		@function grab_set_prefs_args_gpc
 		@abstract Called By "grab_set_prefs", only handles GPC vars that are involved in setting email 
-		preferences. Grabs data from $GLOBALS['HTTP_POST_VARS'] and $GLOBALS['HTTP_GET_VARS']
+		preferences. Grabs data from $GLOBALS['phpgw']->msg->ref_POST and $GLOBALS['phpgw']->msg->ref_GET
 		as necessaey, and fills various class arg variables with the available data. HOWEVER, does 
 		not attempt to grab data if the "submit_prefs" GPC submit_token variable is not present.
 		@param none
 		@result none, this is an object call
 		@discussion  For abstraction from phpgw UI and from PHP's GPC data, put the submitted GPC data
 		into a class var $this->args[] array. This array is then used to represent the submitted data, 
-		instead of $GLOBALS['HTTP_POST_VARS'].  <br>
+		instead of $GLOBALS['phpgw']->msg->ref_POST.  
 		This serves to further seperate the mail functionality from php itself, this function will perform
 		the variable handling of the traditional php page view Get Post Cookie (no cookie data used here though)
 		The same data could be grabbed from any source, XML-RPC for example, insttead of php's GPC vars,
 		so this function could (should) have an equivalent XML-RPC "to handle filling these class variables
 		from an alternative source. These class vars are only relevant to setting email prefs.
-		@author	Angles
-		@access	Private
+		@author Angles
+		@access Private
 		*/
 		function grab_set_prefs_args_gpc()
 		{
@@ -483,16 +850,19 @@
 			// ----  HANDLE GRABBING PREFERENCE GPC HTTP_POST_VARS ARGS  -------
 			// for abstraction from phpgw UI and from PHP's GPC data, put the submitted GPC data
 			// into a class var $this->args[] array. This array is then used to represent the submitted
-			// data, instead of $GLOBALS['HTTP_POST_VARS']. 
+			// data, instead of $GLOBALS['phpgw']->msg->ref_POST. 
 			// HOWEVER, do not attempt to grab data if the "submit_prefs" GPC submit_token variable is not present
 			
 			// ----  DEFAULT EMAIL ACCOUNT  ----
-			if (isset($GLOBALS['HTTP_POST_VARS'][$this->submit_token]))
+			if (isset($GLOBALS['phpgw']->msg->ref_POST[$this->submit_token]))
 			{
 				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences: INSIDE grab_set_prefs_args_gpc for Default Email Account data<br>'; }
 				
-				//$this->args['submit_prefs'] = $GLOBALS['HTTP_POST_VARS']['submit_prefs'];
-				$this->args[$this->submit_token] = $GLOBALS['HTTP_POST_VARS'][$this->submit_token];
+				// EXPIRE stuff that may get stale by changing prefs
+				$this->expire_related_cached_items(0);
+				
+				//$this->args['submit_prefs'] = $GLOBALS['phpgw']->msg->ref_POST['submit_prefs'];
+				$this->args[$this->submit_token] = $GLOBALS['phpgw']->msg->ref_POST[$this->submit_token];
 				// standard prefs
 				$loops = count($this->std_prefs);				
 				for($i=0;$i<$loops;$i++)
@@ -509,10 +879,10 @@
 						// ok, we have a pref item that applies to the default email account
 						$this_pref_name = $this->std_prefs[$i]['id'];
 						if ($this->debug_set_prefs > 1) { echo ' * * (std pref) $this_pref_name: '.$this_pref_name.'<br>'; }
-						if ($this->debug_set_prefs > 1) { echo ' * * (std pref) $GLOBALS[HTTP_POST_VARS][$this_pref_name]: '.$GLOBALS['HTTP_POST_VARS'][$this_pref_name].'<br>'; }
-						if (isset($GLOBALS['HTTP_POST_VARS'][$this_pref_name]))
+						if ($this->debug_set_prefs > 1) { echo ' * * (std pref) $GLOBALS[HTTP_POST_VARS][$this_pref_name]: '.$GLOBALS['phpgw']->msg->ref_POST[$this_pref_name].'<br>'; }
+						if (isset($GLOBALS['phpgw']->msg->ref_POST[$this_pref_name]))
 						{
-							$this->args[$this_pref_name] = $GLOBALS['HTTP_POST_VARS'][$this_pref_name];
+							$this->args[$this_pref_name] = $GLOBALS['phpgw']->msg->ref_POST[$this_pref_name];
 						}
 					}
 				}
@@ -532,21 +902,21 @@
 						// ok, we have a pref item that applies to the default email account
 						$this_pref_name = $this->cust_prefs[$i]['id'];
 						if ($this->debug_set_prefs > 1) { echo ' * * (cust pref) $this_pref_name: '.$this_pref_name.'<br>'; }
-						if ($this->debug_set_prefs > 1) { echo ' * * (cust pref) $GLOBALS[HTTP_POST_VARS][$this_pref_name]: '.$GLOBALS['HTTP_POST_VARS'][$this_pref_name].'<br>'; }
-						if (isset($GLOBALS['HTTP_POST_VARS'][$this_pref_name]))
+						if ($this->debug_set_prefs > 1) { echo ' * * (cust pref) $GLOBALS[HTTP_POST_VARS][$this_pref_name]: '.$GLOBALS['phpgw']->msg->ref_POST[$this_pref_name].'<br>'; }
+						if (isset($GLOBALS['phpgw']->msg->ref_POST[$this_pref_name]))
 						{
-							$this->args[$this_pref_name] = $GLOBALS['HTTP_POST_VARS'][$this_pref_name];
+							$this->args[$this_pref_name] = $GLOBALS['phpgw']->msg->ref_POST[$this_pref_name];
 						}
 					}
 				}
 			}
 			// ----  EXTRA EMAIL ACCOUNTS  ----
-			elseif (isset($GLOBALS['HTTP_POST_VARS'][$this->submit_token_extra_accounts]))
+			elseif (isset($GLOBALS['phpgw']->msg->ref_POST[$this->submit_token_extra_accounts]))
 			{
 				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences: INSIDE grab_set_prefs_args_gpc for EXTRA EMAIL ACCOUNTS data<br>'; }
 				
-				//$this->args['submit_prefs'] = $GLOBALS['HTTP_POST_VARS']['submit_prefs'];
-				$this->args[$this->submit_token_extra_accounts] = $GLOBALS['HTTP_POST_VARS'][$this->submit_token_extra_accounts];
+				//$this->args['submit_prefs'] = $GLOBALS['phpgw']->msg->ref_POST['submit_prefs'];
+				$this->args[$this->submit_token_extra_accounts] = $GLOBALS['phpgw']->msg->ref_POST[$this->submit_token_extra_accounts];
 				
 				// ==== ACCTNUM ====
 				if ((!isset($this->acctnum))
@@ -554,6 +924,9 @@
 				{
 					$this->acctnum = $this->obtain_ex_acctnum();
 				}
+				
+				// EXPIRE stuff that may get stale by changing prefs
+				$this->expire_related_cached_items($this->acctnum);
 				
 				// standard prefs
 				$loops = count($this->std_prefs);				
@@ -572,10 +945,10 @@
 						// ok, we have a pref item that applies to the default email account
 						$this_pref_name = $this->std_prefs[$i]['id'];
 						if ($this->debug_set_prefs > 1) { echo ' * * (std pref) $this_pref_name: '.$this_pref_name.'<br>'; }
-						if ($this->debug_set_prefs > 1) { echo ' * * (std pref) $GLOBALS[HTTP_POST_VARS][$this->acctnum('.$this->acctnum.')][$this_pref_name('.$this_pref_name.')]: ['.$GLOBALS['HTTP_POST_VARS'][$this->acctnum][$this_pref_name].']<br>'; }
-						if (isset($GLOBALS['HTTP_POST_VARS'][$this->acctnum][$this_pref_name]))
+						if ($this->debug_set_prefs > 1) { echo ' * * (std pref) $GLOBALS[HTTP_POST_VARS][$this->acctnum('.$this->acctnum.')][$this_pref_name('.$this_pref_name.')]: ['.$GLOBALS['phpgw']->msg->ref_POST[$this->acctnum][$this_pref_name].']<br>'; }
+						if (isset($GLOBALS['phpgw']->msg->ref_POST[$this->acctnum][$this_pref_name]))
 						{
-							$this->args[$this->acctnum][$this_pref_name] = $GLOBALS['HTTP_POST_VARS'][$this->acctnum][$this_pref_name];
+							$this->args[$this->acctnum][$this_pref_name] = $GLOBALS['phpgw']->msg->ref_POST[$this->acctnum][$this_pref_name];
 						}
 					}
 				}
@@ -596,17 +969,17 @@
 						// ok, we have a pref item that applies to extra email accounts
 						$this_pref_name = $this->cust_prefs[$i]['id'];
 						if ($this->debug_set_prefs > 1) { echo ' * * (cust pref) $this_pref_name: '.$this_pref_name.'<br>'; }
-						if ($this->debug_set_prefs > 1) { echo ' * * (cust pref) $GLOBALS[HTTP_POST_VARS][$this->acctnum('.$this->acctnum.')][$this_pref_name('.$this_pref_name.')]: ['.$GLOBALS['HTTP_POST_VARS'][$this->acctnum][$this_pref_name].']<br>'; }
-						if (isset($GLOBALS['HTTP_POST_VARS'][$this->acctnum][$this_pref_name]))
+						if ($this->debug_set_prefs > 1) { echo ' * * (cust pref) $GLOBALS[HTTP_POST_VARS][$this->acctnum('.$this->acctnum.')][$this_pref_name('.$this_pref_name.')]: ['.$GLOBALS['phpgw']->msg->ref_POST[$this->acctnum][$this_pref_name].']<br>'; }
+						if (isset($GLOBALS['phpgw']->msg->ref_POST[$this->acctnum][$this_pref_name]))
 						{
-							$this->args[$this->acctnum][$this_pref_name] = $GLOBALS['HTTP_POST_VARS'][$this->acctnum][$this_pref_name];
+							$this->args[$this->acctnum][$this_pref_name] = $GLOBALS['phpgw']->msg->ref_POST[$this->acctnum][$this_pref_name];
 						}
 					}
 				}
 			}
 		}
 			
-		/*
+		/*!
 		@function grab_set_prefs_args_xmlrpc
 		@abstract Called By "grab_set_prefs", Grabs data an XML-RPC call and fills various class arg variables 
 		with the available data relevant to setting email preferences.
@@ -615,8 +988,8 @@
 		@discussion functional relative to function "grab_set_prefs_args_gpc()", except this function grabs the
 		data from an alternative, non-php-GPC, source
 		NOT YET IMPLEMENTED
-		@author	Angles
-		@access	Private
+		@author Angles
+		@access Private
 		*/
 		function grab_set_prefs_args_xmlrpc()
 		{
@@ -624,16 +997,16 @@
 			echo 'email boprefs: call to un-implemented function grab_set_prefs_args_xmlrpc';
 		}
 		
-		/*
+		/*!
 		@function process_submitted_prefs
 		@abstract Process incoming submitted prefs, process the data, and save to repository 
 		if needed. Currently used for processing email preferences, both standard and custom
-		@param $pref_set : array : structured pref data as defined and supplied in "this->init_available_prefs()"
+		@param $pref_set (array) structured pref data as defined and supplied in "this->init_available_prefs()"
 		@result boolean False if no $pref_set was supplied, True otherwise
 		@discussion Reusable function, any preference data structured as in "this->init_available_prefs()" can 
 		use this code to automate preference submissions.
-		@author	Angles
-		@access	Private
+		@author Angles
+		@access Private
 		*/
 		function process_submitted_prefs($prefs_set='')
 		{
@@ -774,12 +1147,12 @@
 			return True;
 		}
 		
-		/*
+		/*!
 		@function preferences
 		@abstract Call this function to process submitted prefs. It makes use of other class functions
 		some of which should not be called directly.
-		@author	skeeter, Angles
-		@access	Public
+		@author skeeter, Angles
+		@access Public
 		*/
 		function preferences()
 		{
@@ -1011,8 +1384,8 @@
 		/*!
 		@function process_ex_account_submitted_prefs
 		@abstract Extra Email Accounts Process incoming submitted prefs, process the data, and save to repository 
-		@author	Angles
-		@access	Private
+		@author Angles
+		@access Private
 		*/
 		function process_ex_accounts_submitted_prefs($prefs_set='')
 		{
@@ -1159,11 +1532,19 @@
 			return True;
 		}
 		
+		/*!
+		@function ex_accounts_delete
+		@abstract delete an extra email account
+		@param $acctnum(int) the account number of the account to delete
+		@author Angles
+		@discussion ?
+		@access private
+		*/
 		function ex_accounts_delete($acctnum='')
 		{
 			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_delete ENTERING feed acctnum: ['.serialize($acctnum).']<br>'; }
-			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.ex_accounts_delete: $GLOBALS[HTTP_POST_VARS] dump<pre>'; print_r($GLOBALS['HTTP_POST_VARS']); echo '</pre>'; }
-			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.ex_accounts_delete: $GLOBALS[HTTP_GET_VARS] dump<pre>'; print_r($GLOBALS['HTTP_GET_VARS']); echo '</pre>'; }
+			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.ex_accounts_delete: $GLOBALS[HTTP_POST_VARS] dump<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST); echo '</pre>'; }
+			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.ex_accounts_delete: $GLOBALS[HTTP_GET_VARS] dump<pre>'; print_r($GLOBALS['phpgw']->msg->ref_GET); echo '</pre>'; }
 			
 			$this->account_group = 'extra_accounts';
 			
@@ -1235,18 +1616,18 @@
 			}
 		}
 		
-		/*
+		/*!
 		@function ex_accounts_edit
 		@abstract Extra Email Account Data process submitted prefs. It makes use of other class functions
 		some of which should not be called directly, call this function in menuaction.
-		@author	Angles
-		@access	Public
+		@author Angles
+		@access Public
 		*/
 		function ex_accounts_edit($acctnum='')
 		{
 			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_edit ENTERING <br>'; }
-			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.ex_accounts_edit: $GLOBALS[HTTP_POST_VARS] dump<pre>'; print_r($GLOBALS['HTTP_POST_VARS']); echo '</pre>'; }
-			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.ex_accounts_edit: $GLOBALS[HTTP_GET_VARS] dump<pre>'; print_r($GLOBALS['HTTP_GET_VARS']); echo '</pre>'; }
+			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.ex_accounts_edit: $GLOBALS[HTTP_POST_VARS] dump<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST); echo '</pre>'; }
+			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.ex_accounts_edit: $GLOBALS[HTTP_GET_VARS] dump<pre>'; print_r($GLOBALS['phpgw']->msg->ref_GET); echo '</pre>'; }
 			
 			// ==== ACCTNUM ====
 			// this tells people that we are dealing with the extra email accounts
@@ -1368,11 +1749,11 @@
 			}
 		}
 
-		/*
+		/*!
 		@function ex_accounts_list
 		@abstract list Extra Email Accounts with links to edit and or delete them.
-		@author	Angles
-		@access	Public
+		@author Angles
+		@access Public
 		*/
 		function ex_accounts_list()
 		{
@@ -1385,6 +1766,7 @@
 			{
 				$this_acctnum = $GLOBALS['phpgw']->msg->extra_accounts[$i]['acctnum'];
 				$this_status = $GLOBALS['phpgw']->msg->extra_accounts[$i]['status'];
+				
 				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: $GLOBALS[phpgw]->msg->extra_accounts['.$i.'][acctnum]=['.$this_acctnum.'] ;  [status]=['.$this->extra_accounts[$i]['status'].'] <br>'; }
 				if ($this_status == 'empty')
 				{
@@ -1397,18 +1779,61 @@
 					//$next_pos = $this_acctnum - 1;
 					$return_list[$next_pos]['acctnum'] = $this_acctnum;
 					$return_list[$next_pos]['status'] = $this_status;
+					
+					// FIRST get a usable "accountname" string to show the user and make "go_there_url" and "go_there_href"
+					/*!
+					@capability boprefs ex_accounts_list what is the string name of this account
+					@abstract HOW TO IDENTIFY THIS ACCOUNT to the user
+					@discussion We recently added a pref for "account_name" which is seperate from 
+					"fullname". At this moment 021019 this "account_name" is not guarantee to be filled. 
+					So we fallback here to the "fullname" if necessary. Disabled accounts, at this moment 
+					that really is not coded at all, but disabled accounts may not have their pref data 
+					available via msg->get_pref_value. 
+					*/
 					if ($this_status == 'disabled')
 					{
 						// "disabled" accounts will not return a fullname because they were not initialized during "begin_request"
 						// try to directly obtain it from RAW prefs data
-						$fullname = '(disabled) '.$GLOBALS['phpgw']->msg->unprocessed_prefs['email']['ex_accounts'][$this_acctnum]['fullname'];
-						// we can not read mail of a disabled account
+						//$fullname = '(disabled) '.$GLOBALS['phpgw']->msg->unprocessed_prefs['email']['ex_accounts'][$this_acctnum]['fullname'];
+						$accountname = $GLOBALS['phpgw']->msg->unprocessed_prefs['email']['ex_accounts'][$this_acctnum]['account_name'];
+						if ( (isset($accountname) == False)
+						|| (trim($accountname) == '') )
+						{
+							$accountname = $GLOBALS['phpgw']->msg->unprocessed_prefs['email']['ex_accounts'][$this_acctnum]['fullname'];
+						}
+						// test again
+						if ((isset($accountname) == False)
+						|| (trim($accountname) == ''))
+						{
+							$accountname = $GLOBALS['phpgw']->msg->get_pref_value('account_name', $this_acctnum);
+						}
+						// FIX ME test again, take care of this in the prefs reading like it should be, not here
+						if ((isset($accountname) == False)
+						|| (trim($accountname) == ''))
+						{
+							$accountname = 'unknown accountname on ('.__LINE__.')';
+						}
+						$accountname = '(disabled) '.$accountname;
+						
+						// we can click "go" to not read mail of a disabled account
 						$return_list[$next_pos]['go_there_url'] = '';
 						$return_list[$next_pos]['go_there_href'] = '&nbsp;';
 					}
 					else
 					{
-						$fullname = $GLOBALS['phpgw']->msg->get_pref_value('fullname', $this_acctnum);
+						$accountname = $GLOBALS['phpgw']->msg->get_pref_value('account_name', $this_acctnum);
+						if ( (isset($accountname) == False)
+						|| (trim($accountname) == '') )
+						{
+							$accountname = $GLOBALS['phpgw']->msg->get_pref_value('fullname', $this_acctnum);
+						}
+						// FIX ME test again, should we take care of this in the prefs reading, not here?
+						if ((isset($accountname) == False)
+						|| (trim($accountname) == ''))
+						{
+							$accountname = 'unknown accountname on ('.__LINE__.')';
+						}
+						
 						$return_list[$next_pos]['go_there_url'] = $GLOBALS['phpgw']->link(
 														'/index.php',
 														 'menuaction=email.uiindex.index'
@@ -1416,17 +1841,18 @@
 														.'&fldball[acctnum]='.$this_acctnum);
 						$return_list[$next_pos]['go_there_href'] = '<a href="'.$return_list[$next_pos]['go_there_url'].'">'.lang('go').'</a>';
 					}
+					// NEXT: html encode the acctname string
 					// html encode entities on the fullname so it's safe to display in the browser, and prefix with the acctnum
-					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: fullname raw: <code>'.serialize($fullname).'</code><br>'; }
-					$fullname = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($fullname);
-					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: fullname B: <code>'.serialize($fullname).'</code><br>'; }
-					$fullname = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($fullname);
-					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: fullname C: <code>'.serialize($fullname).'</code><br>'; }
-					//$return_list[$next_pos]['display_string'] = '['.$this_acctnum.'] '.$GLOBALS['phpgw']->msg->htmlspecialchars_encode($fullname);
-					$return_list[$next_pos]['display_string'] = '['.$this_acctnum.'] '.$fullname;
-					// control action links
-					$return_list[$next_pos]['edit_url'] = $GLOBALS['phpgw']->link(
-														'/index.php',
+					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: fullname raw: <code>'.serialize($accountname).'</code><br>'; }
+					$accountname = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($accountname);
+					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: fullname B: <code>'.serialize($accountname).'</code><br>'; }
+					$accountname = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($accountname);
+					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: fullname C: <code>'.serialize($accountname).'</code><br>'; }
+					// FINALLY we have a string we are going to display to the user that is the name of the account
+					$return_list[$next_pos]['display_string'] = '['.$this_acctnum.'] '.$accountname;
+					
+					// NEXT: control action links
+					$return_list[$next_pos]['edit_url'] = $GLOBALS['phpgw']->link(														'/index.php',
 														 'menuaction=email.uipreferences.ex_accounts_edit'
 														.'&ex_acctnum='.$this_acctnum);
 					$return_list[$next_pos]['edit_href'] = '<a href="'.$return_list[$next_pos]['edit_url'].'">'.lang('Edit').'</a>';
@@ -1443,11 +1869,11 @@
 			return $return_list;
 		}
 		
-		/*
+		/*!
 		@function get_first_empty_ex_acctnum
 		@abstract Used in adding a new extra account, obtains a free acctnum
-		@author	Angles
-		@access	Public
+		@author Angles
+		@access Public
 		*/
 		function get_first_empty_ex_acctnum()
 		{
@@ -1496,28 +1922,28 @@
 			return $first_empty_ex_acctnum;
 		}
 		
-		/*
+		/*!
 		@function obtain_ex_acctnum
 		@abstract Preferences handlers pass around the acctnum as POST or GET var "ex_acctnum".
-		@author	Angles
-		@access	Public
+		@author Angles
+		@access Public
 		*/
 		function obtain_ex_acctnum()
 		{
 			if ($this->debug_set_prefs > 0) { echo 'email: bopreferences.obtain_ex_acctnum: ENTERING<br>'; }
-			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.obtain_ex_acctnum: $GLOBALS[HTTP_POST_VARS] dump<pre>'; print_r($GLOBALS['HTTP_POST_VARS']); echo '</pre>'; }
-			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.obtain_ex_acctnum: $GLOBALS[HTTP_GET_VARS] dump<pre>'; print_r($GLOBALS['HTTP_GET_VARS']); echo '</pre>'; }
+			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.obtain_ex_acctnum: $GLOBALS[HTTP_POST_VARS] dump<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST); echo '</pre>'; }
+			if ($this->debug_set_prefs > 2) { echo 'email: bopreferences.obtain_ex_acctnum: $GLOBALS[HTTP_GET_VARS] dump<pre>'; print_r($GLOBALS['phpgw']->msg->ref_GET); echo '</pre>'; }
 			// get fromPOST or GET
 			$prelim_acctnum = '##NOTHING##';
-			if ((isset($GLOBALS['HTTP_POST_VARS']['ex_acctnum'])
-			&& ((string)$GLOBALS['HTTP_POST_VARS']['ex_acctnum'] != '')))
+			if ((isset($GLOBALS['phpgw']->msg->ref_POST['ex_acctnum'])
+			&& ((string)$GLOBALS['phpgw']->msg->ref_POST['ex_acctnum'] != '')))
 			{
-				$prelim_acctnum = (int)$GLOBALS['HTTP_POST_VARS']['ex_acctnum'];
+				$prelim_acctnum = (int)$GLOBALS['phpgw']->msg->ref_POST['ex_acctnum'];
 			}
-			elseif ((isset($GLOBALS['HTTP_GET_VARS']['ex_acctnum'])
-			&& ((string)$GLOBALS['HTTP_GET_VARS']['ex_acctnum'] != '')))
+			elseif ((isset($GLOBALS['phpgw']->msg->ref_GET['ex_acctnum'])
+			&& ((string)$GLOBALS['phpgw']->msg->ref_GET['ex_acctnum'] != '')))
 			{
-				$prelim_acctnum = (int)$GLOBALS['HTTP_GET_VARS']['ex_acctnum'];
+				$prelim_acctnum = (int)$GLOBALS['phpgw']->msg->ref_GET['ex_acctnum'];
 			}
 			// in all these cases we don't have a valid acct num (or we are asked to make a new one)
 			// so any of these requires a new, blank acctnum

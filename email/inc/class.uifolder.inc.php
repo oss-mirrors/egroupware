@@ -14,87 +14,45 @@
 
 	class uifolder
 	{
-		var $bo;		
+		var $bo;
+		var $widgets;
 		var $debug = False;
-		var $is_modular = False;
 
 		var $public_functions = array(
-			'folder' => True,
-			'get_is_modular' => True,
-			'set_is_modular' => True
+			'folder' => True
 		);
 
 		function uifolder()
 		{
-			
-		}
-
-		function get_is_modular()
-		{
-			return $this->is_modular;
+			return;
 		}
 		
-		function set_is_modular($feed_bool=False)
+		function folder()
 		{
-			// is_bool() is in the php3 compat library
-			if ((isset($feed_bool))
-			&& (is_bool($feed_bool)))
-			{
-				// only change this if the arg is boolean
-				$this->is_modular = $feed_bool;
-			}
-			return $this->is_modular;
-		}
-		
-		function folder($reuse_feed_args='')
-		{
-			if (empty($reuse_feed_args))
-			{
-				$reuse_feed_args = array();
-			}
+			$this->bo = CreateObject('email.bofolder');
+			$this->bo->folder();
 			
-			$this->bo = CreateObject("email.bofolder");
-			$this->bo->folder($reuse_feed_args);
-			
-			if ($this->is_modular == True)
-			{
-				// we do NOT echo or print output any html, we are being used as a module by another app
-				// all we do in this case is pass the parsed html to the calling app
-			}
-			else
-			{
-				// we are the BO and the UI, we take care of outputting the HTML to the client browser
-				unset($GLOBALS['phpgw_info']['flags']['noheader']);
-				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-				$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
-				$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
-				$GLOBALS['phpgw']->common->phpgw_header();
-				// NOTE: as of Dec 10, 2001 a call from menuaction defaults to NOT modular
-				// HOWEVER still this class must NOT invoke $GLOBALS['phpgw']->common->phpgw_header()
-				// even though we had to output the header (go figure... :)
-			}
+			unset($GLOBALS['phpgw_info']['flags']['noheader']);
+			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+			$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
+			$GLOBALS['phpgw']->common->phpgw_header();
+			// HOWEVER still this class must NOT invoke $GLOBALS['phpgw']->common->phpgw_header()
+			// even though we had to output the header (go figure... :)
 			$GLOBALS['phpgw']->template->set_file(
 				Array(
 					'T_folder_out' => 'folder.tpl'
 				)
 			);
-			$GLOBALS['phpgw']->template->set_block('T_folder_out','B_folder_list','V_folder_list');
-			$GLOBALS['phpgw']->template->set_block('T_folder_out','B_action_report','V_action_report');
+			$GLOBALS['phpgw']->template->set_block('T_folder_out','B_folder_list','V_folder_list');			
 			
-
-
-
-			if ($this->bo->xi['action_report'] != '')
-			{
-				$GLOBALS['phpgw']->template->set_var('action_report',$this->bo->xi['action_report']);
-				$GLOBALS['phpgw']->template->parse('V_action_report','B_action_report');
-			}
-			else
-			{
-				$GLOBALS['phpgw']->template->set_var('V_action_report','');
-			}
-
-
+			//= = = = TESTING NEW TOOLBAR WIDGET = = = 
+			$this->widgets = CreateObject('email.html_widgets');
+			// this will have a msg to the user if folder was renamed, created, or deleted
+			$this->widgets->set_toolbar_msg($this->bo->xi['action_report']);
+			$GLOBALS['phpgw']->template->set_var('widget_toolbar',$this->widgets->get_toolbar());
+			
+			
 			for ($i=0; $i<count($this->bo->xi['folder_list_display']);$i++)
 			{
 				$GLOBALS['phpgw']->template->set_var('list_backcolor',$this->bo->xi['folder_list_display'][$i]['list_backcolor']);
@@ -135,47 +93,30 @@
 			$GLOBALS['phpgw']->template->set_var('label_new_text',$this->bo->xi['label_new_text']);
 			$GLOBALS['phpgw']->template->set_var('label_total_text',$this->bo->xi['label_total_text']);
 			
-			$GLOBALS['phpgw']->template->set_var('view_long_txt',$this->bo->xi['view_long_txt']);
-			$GLOBALS['phpgw']->template->set_var('view_long_lnk',$this->bo->xi['view_long_lnk']);
-			$GLOBALS['phpgw']->template->set_var('view_short_txt',$this->bo->xi['view_short_txt']);
-			$GLOBALS['phpgw']->template->set_var('view_short_lnk',$this->bo->xi['view_short_lnk']);
+			$GLOBALS['phpgw']->template->set_var('view_txt',$this->bo->xi['view_txt']);
+			$GLOBALS['phpgw']->template->set_var('view_lnk',$this->bo->xi['view_lnk']);
+			
+			//$GLOBALS['phpgw']->template->set_var('view_long_txt',$this->bo->xi['view_long_txt']);
+			//$GLOBALS['phpgw']->template->set_var('view_long_lnk',$this->bo->xi['view_long_lnk']);
+			//$GLOBALS['phpgw']->template->set_var('view_short_txt',$this->bo->xi['view_short_txt']);
+			//$GLOBALS['phpgw']->template->set_var('view_short_lnk',$this->bo->xi['view_short_lnk']);
 			
 			$GLOBALS['phpgw']->template->set_var('the_font',$this->bo->xi['the_font']);
 			$GLOBALS['phpgw']->template->set_var('th_backcolor',$this->bo->xi['th_backcolor']);
 			
-
-			if ($this->is_modular == True)
-			{
-				// we do NOT output any html, we are being used as a module in another app
-				// instead, we will pass the parsed html to the calling app
-				
-				// Template->fp  means "Finish Parse", which does this
-				// 1) parses temnplate and replaces template tokens with vars we have set here
-				// 2) "finish" is like clean up, takes care of what to do with "unknowns",
-				//	which are things in the template that look like {replace_me} tokens, but
-				//	for which a replacement value has not been set, finishes allows you to do this with them:
-				// "keep" them;  "remove"  then;  or  "comment" them
-				// Template->fp  defaults to "remove" unknowns, although you may set Template->unknowns as you wish
-				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
-				//$GLOBALS['phpgw']->template->set_unknowns("comment");
-				// production use, use this:	$GLOBALS['phpgw']->template->set_unknowns("remove");
-				return $GLOBALS['phpgw']->template->fp('out','T_folder_out');
-			}
-			else
-			{
-				// we are the BO and the UI, we take care of outputting the HTML to the client browser
-				// Template->pparse means "print parse" which parses the template and uses php print command
-				// to output the HTML, note "unknowns" are never handled ("finished") in that method.
-				//$GLOBALS['phpgw']->template->pparse('out','T_folder_out');
-				
-				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
-				//$GLOBALS['phpgw']->template->set_unknowns("comment");
-				// production use, use this:	$GLOBALS['phpgw']->template->set_unknowns("remove");
-				// Template->pfp will (1) parse and substitute, (2) "finish" - handle unknowns, (3) echo the output
-				$GLOBALS['phpgw']->template->pfp('out','T_folder_out');
-				// note, for some reason, eventhough it seems we *should* call common->phpgw_footer(),
-				// if we do that, the client browser will get TWO page footers, so we do not call it here
-			}
+			// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
+			$GLOBALS['phpgw']->template->set_unknowns("comment");
+			// production use, use this:	$GLOBALS['phpgw']->template->set_unknowns("remove");
+			// Template->pfp will (1) parse and substitute, (2) "finish" - handle unknowns, (3) echo the output
+			$GLOBALS['phpgw']->template->pfp('out','T_folder_out');
+			// note, for some reason, eventhough it seems we *should* call common->phpgw_footer(),
+			// if we do that, the client browser will get TWO page footers, so we do not call it here
+			
+			// close down ALL mailserver streams
+			$GLOBALS['phpgw']->msg->end_request();
+			// destroy the object
+			$GLOBALS['phpgw']->msg = '';
+			unset($GLOBALS['phpgw']->msg);
 		}
 	}
 ?>

@@ -1,10 +1,12 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare API - MAIL                                                  *
-  * This file written by Mark Peters <skeeter@phpgroupware.org>              *
-  * Handles general functionality for mail/mail structures                   *
-  * Copyright (C) 2001 Mark Peters                                           *
-  * -------------------------------------------------------------------------*
+  * phpGroupWare API - MAIL										*
+  * This file written by Mark Peters <skeeter@phpgroupware.org>			*
+  * and Angelo "Angles" Puglisi <angles@aminvestments.com>				*
+  * Handles general functionality for mail/mail structures					*
+  * Copyright (C) 2001 Mark Peters									*
+  * Copyright (C) 2001, 2002 Angelo "Angles" Puglisi						*
+  * -------------------------------------------------------------------------			*
   * This library is part of the phpGroupWare API                             *
   * http://www.phpgroupware.org/api                                          * 
   * ------------------------------------------------------------------------ *
@@ -83,11 +85,10 @@
 		'dec' => 12
 	);
 
-	/*
+	/*!
 	@class mailbox_status (sockets)
 	@abstract part of mail Data Communications class
-	@Discussion
-	see PHP function: IMAP_STATUS --  This function returns status information on a mailbox other than the current one
+	@discussion see PHP function: IMAP_STATUS --  This function returns status information on a mailbox other than the current one
 	SA_MESSAGES - set status->messages to the number of messages in the mailbox
 	SA_RECENT - set status->recent to the number of recent messages in the mailbox
 	SA_UNSEEN - set status->unseen to the number of unseen (new) messages in the mailbox
@@ -107,11 +108,11 @@
 		var $quota_all = '';
 	}
 	
-	/*
+	/*!
 	@class mailbox_msg_info (sockets)
 	@abstract part of mail Data Communications class
-	@Discussion
-	see PHP function: IMAP_MAILBOXMSGINFO -- Get information about the current mailbox
+	@discussion see PHP function: IMAP_MAILBOXMSGINFO -- Get information about the current mailbox
+	@syntax structure returns this data
 	Date		date of last change
 	Driver		driver
 	Mailbox	name of the mailbox
@@ -132,23 +133,22 @@
 		var $Size = '';
 	}
 	
-	/*
+	/*!
 	@class mailbox_status (sockets) discussion VS. class mailbox_msg_info (sockets) 
 	@abstract compare these two similar classes and their functions
-	@Discussion: 
-	class mailbox_status is used by function IMAP_STATUS
+	@discussion class mailbox_status is used by function IMAP_STATUS
 	class mailbox_msg_info is used by function IMAP_MAILBOXMSGINFO
-	These two functions / classes are similar, here are some notes on their usage:
-	Note 1):
+	These two functions / classes are similar,  some notes on their usage is the example below
+	@example Note 1)
 	IMAP_MAILBOXMSGINFO is only used for the folder that the client is currently logged into,
 	for pop3 this is always "INBOX", for imap this is the currently selected (opened) folder.
 	Therefor, with imap the target folder must already be selected (via IMAP_OPEN or IMAP_REOPEN)
-	Note 2):
+	Note 2)
 	IMAP_STATUS is can be used to obtain data on a folder that is NOT currently selected (opened)
 	by the client. For pop3 this difference means nothing, for imap this means the client
 	need NOT select (i.e. open) the target folder before requesting status data.
 	Still, IMAP_STATUS can be used on any folder wheter it is currently selected (opened) or not.
-	Note 3):
+	Note 3)
 	The main functional difference is that one function returns size data, and the other does not.
 	imap_mailboxmsginfo returns size data, imap_status does NOT.
 	This size data adds all the sizes of the messages in that folder together to get the total folder size.
@@ -157,11 +157,11 @@
 	seem to return this size data with little difficulty.
 	*/
 
-	/*
+	/*!
 	@class msg_structure (sockets)
 	@abstract part of mail Data Communications class
-	@Discussion
-	see PHP function: imap_fetchstructure --  Read the structure of a particular message
+	@discussion see PHP function: imap_fetchstructure --  Read the structure of a particular message
+	@syntax structure of return data is this
 	type			Primary body type
 	encoding		Body transfer encoding
 	ifsubtype		TRUE if there is a subtype string
@@ -229,12 +229,11 @@
 		var $adl;
 	}
 	
-	/*
+	/*!
 	@class msg_overview (sockets)
 	@abstract part of mail Data Communications class
-	@Discussion see PHP function:  imap_fetch_overview -- Read an overview of the information in the 
-	headers of the given message
-	NOT CURRENTY IMPLEMENTED
+	@discussion see PHP function:  imap_fetch_overview -- Read an overview of the information in the 
+	headers of the given message. NOT CURRENTY IMPLEMENTED
 	*/
 	class msg_overview
 	{
@@ -254,11 +253,10 @@
 		var $draft;	// this message is flagged as being a draft
 	}
 
-	/*
+	/*!
 	@class hdr_info_envelope (sockets)
 	@abstract part of mail Data Communications class
-	@Discussion
-	see PHP function:  imap_headerinfo -- Read the header of the message
+	@discussion see PHP function:  imap_headerinfo -- Read the header of the message
 	see PHP function:   imap_header  which is simply an alias to imap_headerinfo
 	*/
 	class hdr_info_envelope
@@ -316,7 +314,7 @@
 	@author Angles, Skeeter, Itzchak Rehberg, Joseph Engo
 	@copyright LGPL
 	@package email (to be moved to phpgwapi when mature)
-	@access	public
+	@access public
 	*/
 	class mail_dcom_base extends network
 	{
@@ -332,7 +330,11 @@
 		var $body_array_msgnum = '';	
 		// structural information from our processing functions
 		//var $mailbox_msg_info = '';  // caching this with POP3 is OK but will cause HAVOC with IMAP or NNTP
-		//var $mailbox_status;
+		
+		// USED in IMAP SOCKETS class to cache an internally needed item, the total number messages in a folder NEEDED by sort
+		// so sort does not have to call status again for data already recieved.
+		var $mailbox_status='';
+		
 		var $msg_structure = '';
 		var $msg_structure_msgnum = '';
 		var $hdr_info_envelope;
@@ -374,15 +376,22 @@
 			}
 		}
 		
+		/*!
+		@function error
+		@abstract none
+		*/
 		function error()
 		{
 			echo 'Error: '.$this->error['code'].' : '.$this->error['msg'].' - '.$this->error['desc']."<br>\r\n";
 			$this->close();
-			$GLOBALS['phpgw_info']['flags']['nodisplay'] = True;
-			exit;
+			echo('<A HREF="'.$GLOBALS['phpgw']->link('/home.php').'">'.lang('Click here to continue').'...</A>'); //cbsman
+			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
 		
-		// REDUNDANT FUNCTION FROM NON-SOCK CLASS
+		/*!
+		@function get_flag
+		@abstract REDUNDANT FUNCTION FROM NON-SOCK CLASS
+		*/
 		function get_flag($stream,$msg_num,$flag)
 		{
 			$header = $this->fetchheader($stream,$msg_num);
@@ -407,7 +416,8 @@
 		@function distill_fq_folder
 		@abstract break down a php fully qualified folder name into its seperate barts
 		@param $fq_folder : string : {SERVER_NAME:PORT/OPTIONS}FOLDERNAME
-		@result  array structure like this:
+		@result array structure as shown in the syntax
+		@syntax this is the array return struture
 		result['folder'] : string is the folder (a.k.a. mailbox) name WITHOUT the bracketed {server:port/options}
 		result['svr_and_port'] string : for Internal Use
 		result['server'] : string is the IP or NAME of the server
@@ -420,9 +430,8 @@
 		{SERVER_NAME:PORT/imap/ssl/novalidate-cert}FOLDERNAME
 		this is how php passes around this data in its builtin IMAP extensions
 		this function breaks down that string into it's parts
-		@syntax ?
 		@author Angles
-		@access	private
+		@access private
 		*/
 		function distill_fq_folder($fq_folder)
 		{
@@ -498,14 +507,13 @@
 		/*!
 		@function read_port_glob
 		@abstract used with POP3, reads data from port until we encounted param $end
-		@param $end : string is the flag to look for that tells us when to stop reading the port's data
-		@result  string raw string of data (glob) as received from the server
+		@param $end (string) is the flag to look for that tells us when to stop reading the port's data
+		@result raw string of data (glob) as received from the server
 		@discussion POP3 servers data typically ends with special charactor(s),
 		usually an empty line, i.e. a lone CRLF pair, or line that is a period "." followed br a CRLF pair
 		thus we can direct this function to read the server's data until such special end flag is reached
-		@syntax ?
 		@author Angles, skeeter
-		@access	private
+		@access private
 		*/
 		function read_port_glob($end='.')
 		{
@@ -525,14 +533,13 @@
 		/*!
 		@function glob_to_array
 		@abstract used with POP3, converts raw string server data into an array
-		@param $data : string
-		@param $keep_blank_lines : boolean
-		@param $cut_from_here : string
-		@param $keep_received_lines : boolean
-		@param $idx_offset : integer : where to start the returned array at (if not zero)
+		@param $data string
+		@param $keep_blank_lines boolean
+		@param $cut_from_here string
+		@param $keep_received_lines  boolean
+		@param $idx_offset (integer) where to start the returned array at (if not zero)
 		@result  array
 		@discussion ?
-		@syntax ?
 		@author Angles
 		@access	private
 		*/
@@ -578,18 +585,23 @@
 		/*!
 		@function show_crlf
 		@abstract replace actual CRLF sequence with the string "CRLF"
-		@param $data : string
+		@param $data  (string)
 		@result returns string "\r\n" CRFL pairs replaced with the string "CRLF"
 		@discussion useful for debugging, CRLF pairs are CarrageReturn + LineFeed
 		which is the standard way email client and servers end any line while communicating
 		@author Angles
-		@access	public or private
+		@access public or private
 		*/
 		function show_crlf($data='')
 		{
 			return str_replace("\r\n", 'CRLF', $data);
 		}
 		
+		/*!
+		@function create_header
+		@abstract ?
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		*/
 		function create_header($line,$header,$line2='')
 		{
 			$thead = explode(':',$line);
@@ -629,6 +641,11 @@
 			//echo 'Header[$key] = '.$header[$key].'<br>'."\n";
 		}
 	
+		/*!
+		@function build_address_structure
+		@abstract ?
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		*/
 		function build_address_structure($key)
 		{
 			$address = array(new address);
@@ -649,6 +666,11 @@
 			}
 		}
 		
+		/*!
+		@function convert_date_array
+		@abstract ?
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		*/
 		function convert_date_array($field_list)
 		{
 			$new_list = Array();
@@ -662,6 +684,11 @@
 			return $new_list;
 		}
 		
+		/*!
+		@function convert_date
+		@abstract ?
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		*/
 		function convert_date($msg_date)
 		{
 			$dta = array();
@@ -700,6 +727,11 @@
 			return $new_time;
 		}
 		
+		/*!
+		@function make_udate
+		@abstract ?
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		*/
 		function make_udate($msg_date)
 		{
 			$pos = strpos($msg_date,',');
@@ -736,6 +768,11 @@
 			return $utime;
 		}
 		
+		/*!
+		@function ssort_prep
+		@abstract ?
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		*/
 		function ssort_prep($a)
 		{
 			$a = strtoupper($a);
@@ -764,6 +801,11 @@
 			return $a_mod;
 		}
 		
+		/*!
+		@function ssort_ascending
+		@abstract ?
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		*/
 		function ssort_ascending($a,$b)
 		{
 			$a_mod = $this->ssort_prep($a);
@@ -775,6 +817,10 @@
 			return ($a_mod < $b_mod) ? -1 : 1;
 		}
 		
+		/*!
+		@function ssort_decending
+		@abstract 
+		*/
 		function ssort_decending($a,$b)
 		{
 			$a_mod = $this->ssort_prep($a);
@@ -786,6 +832,11 @@
 			return ($a_mod > $b_mod) ? -1 : 1;
 		}
 		
+		/*!
+		@function mail_header
+		@abstract ?
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		*/
 		function mail_header($msgnum)
 		{
 			$this->msg = new msg;
@@ -869,11 +920,21 @@
 			$this->msg->lines = $this->header['Lines'];
 		}
 	
+		/*!
+		@function mail_headerinfo
+		@abstract ?
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		*/
 		function mail_headerinfo($msgnum)
 		{
 			$this->mail_header($msgnum);
 		}
 
+		/*!
+		@function read_and_load
+		@abstract ?
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		*/
 		function read_and_load($end)
 		{
 			$this->header = Array();
@@ -886,9 +947,14 @@
 			return 1;
 		}
 
-		/*
-		 * PHP `quoted_printable_decode` function does not work properly:
-		 * it should convert '_' characters into ' '.
+		/*!
+		@function phpGW_quoted_printable_decode
+		@abstract NOT USED
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		@param $string string
+		@discussion Not currently used. Unknown why this additional processing was required.
+		Author noted this - PHP "quoted_printable_decode" function does not work properly, 
+		it should convert "_" characters into " ".
 		*/
 		function phpGW_quoted_printable_decode($string)
 		{
@@ -896,8 +962,12 @@
 			return quoted_printable_decode($string);
 		}
 		
-		/*
-		 * Remove '=' at the end of the lines. `quoted_printable_decode` doesn't do it.
+		/*!
+		@function phpGW_quoted_printable_decode2
+		@abstract NOT USED Remove "=" at the end of the lines. "quoted_printable_decode" doesn't do it.
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		@param $string (string)
+		@discussion Not currently used. Unknown why this additional processing was required.
 		*/
 		function phpGW_quoted_printable_decode2($string)
 		{
@@ -905,6 +975,16 @@
 			return preg_replace("/\=\n/", '', $string);
 		}
 		
+		/*!
+		@function decode_base64
+		@abstract NOT USED base64 decoding with additional string manipulations.
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		@param $string (string)
+		@discussion Not currently used. Unknown why this additional processing was required. 
+		Uses ereg_replace and preg_replace in addition to php function base64_decode. 
+		It is possible the preg_replace is used to pull only the base64 encoded text from a larger 
+		message.
+		*/
 		function decode_base64($string)
 		{
 			$string = ereg_replace("'", "\'", $string);
@@ -912,6 +992,13 @@
 			return $string;
 		}
 		
+		/*!
+		@function decode_qp
+		@abstract NOT USED
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		@param $string (string)
+		@discussion Calls other unused functions in this file. 
+		*/
 		function decode_qp($string)
 		{
 			$string = ereg_replace("'", "\'", $string);
@@ -919,6 +1006,13 @@
 			return $string;
 		}
 		
+		/*!
+		@function decode_header
+		@abstract ?
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		@param $string (string)
+		@discussion Calls other unused functions in this file. 
+		*/
 		function decode_header($string)
 		{
 			/* Decode from qp or base64 form */
@@ -933,6 +1027,12 @@
 			return $string;
 		}
 
+		/*!
+		@function decode_author
+		@abstract ?
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		@discussion Calls other plossibly unused functions in this file. 
+		*/
 		function decode_author($author,&$email,&$name)
 		{
 			/* Decode from qp or base64 form */
@@ -971,6 +1071,12 @@
 		}
 		
 		// OBSOLETED ?
+		/*!
+		@function get_mime_type
+		@abstract ?
+		@author Angles and unknown, maybe Skeeter ? Rehberg ? Engo ?
+		@discussion useable but depreciated
+		*/
 		function get_mime_type($de_part)
 		{
 			if (!isset($de_part->type))
@@ -983,6 +1089,11 @@
 			}
 		}
 	
+		/*!
+		@function type_int_to_str
+		@abstract ?
+		@author Angles and unknown, maybe Skeeter ? Rehberg ? Engo ?
+		*/
 		function type_int_to_str($type_int)
 		{
 			switch ($type_int)
@@ -1000,6 +1111,11 @@
 			return $type_str;
 		}
 		
+		/*!
+		@function get_mime_encoding
+		@abstract ?
+		@author Angles and unknown, maybe Skeeter ? Rehberg ? Engo ?
+		*/
 		function get_mime_encoding($de_part)
 		{
 			if (!isset($de_part->encoding))
@@ -1017,6 +1133,11 @@
 			}
 		}
 		
+		/*!
+		@function encoding_int_to_str
+		@abstract ?
+		@author Angles and unknown, maybe Skeeter ? Rehberg ? Engo ?
+		*/
 		function encoding_int_to_str($encoding_int)
 		{
 			switch ($encoding_int)
@@ -1034,6 +1155,12 @@
 		}
 		
 		// OBSOLETED
+		/*!
+		@function get_att_name
+		@abstract ?
+		@author Angles and unknown, maybe Skeeter ? Rehberg ? Engo ?
+		@discussion usable but depreciated
+		*/
 		function get_att_name($de_part)
 		{
 			$param = new parameter;
@@ -1058,6 +1185,11 @@
 			return $att_name;
 		}
 			
+		/*!
+		@function uudecode
+		@abstract NOT USED appears to implement UUDECODE without any special php functions.
+		@author unknown, maybe Skeeter ? Rehberg ? Engo ?
+		*/
 		function uudecode($str)
 		{
 			$file='';
@@ -1065,8 +1197,7 @@
 			{
 				if ($i==count($str)-1 && $str[$i] == "`")
 				{
-					$GLOBALS['phpgw_info']['flags']['nodisplay'] = True;
-					exit;
+					$GLOBALS['phpgw']->common->phpgw_exit();
 				}
 				$pos=1;
 				$d=0;

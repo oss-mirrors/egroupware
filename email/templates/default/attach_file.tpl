@@ -14,11 +14,37 @@
    center {text-decoration:none;}
    -->
   </style>
+<script type="text/javascript">
+	function copyback()
+	{
+	
+		for(i=0;i<document.attach_form.elements.length;i++)
+		{
+		
+			if(document.attach_form.elements[i].type == "hidden" )
+			{
+				if(window.opener.document.{form1_name}.attached_filenames.value)
+				{
+					comma=",";
+				}
+				else
+				{
+					comma="";
+				}
+				window.opener.document.{form1_name}.attached_filenames.value=window.opener.document.{form1_name}.attached_filenames.value+comma+document.attach_form.elements[i].value;
+			}
+		}
+		
+		window.close();
+		 
+	}
+</script>
+
   <title>{page_title}</title>
 </head>
 <body {body_tags}>
 
-<form enctype="multipart/form-data" method="{form_method}" action="{form_action}">
+<form  enctype="multipart/form-data"  name="attach_form"  method="{form_method}" action="{form_action}">
 <table border="0">
 {V_alert_msg}
 <tr>

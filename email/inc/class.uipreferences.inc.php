@@ -17,6 +17,7 @@
 	{
 		var $public_functions = array(
 			'preferences' => True,
+			'preferences_default_acct_zero' => True,
 			'ex_accounts_edit' => True,
 			'ex_accounts_list' => True
 		);
@@ -264,6 +265,13 @@
 					$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 					$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
 				}
+				// add long help if requested
+				if ((isset($GLOBALS['phpgw']->msg->ref_GET['show_help']))
+				&& ($GLOBALS['phpgw']->msg->ref_GET['show_help']))
+				{
+					$GLOBALS['phpgw']->template->set_var('long_desc', $this_item['long_desc']);
+					$done_widget .= $GLOBALS['phpgw']->template->parse('V_tr_long_desc','B_tr_long_desc');
+				}
 				// for each loop, add the finished widget row to the return_block variable
 				$return_block .= $done_widget;
 			}
@@ -274,10 +282,44 @@
 		/*!
 		@function preferences
 		@abstract call this function to display the typical UI html page for email preferences
-		@author	Angles, skeeter
+		@discussion  should obtain the desired account number the user wants to see prefs for, if possible
+		@author	Angles
 		@access	Public
 		*/
 		function preferences()
+		{
+			// If we ar given an acct number, then display prefs for that account, else show prefs for default account zero
+			if
+			(
+				((isset($GLOBALS['phpgw']->msg->ref_POST['ex_acctnum']))
+				&& ((string)$GLOBALS['phpgw']->msg->ref_POST['ex_acctnum'] != '')
+				&& ((string)$GLOBALS['phpgw']->msg->ref_POST['ex_acctnum'] != '0'))
+			||
+				((isset($GLOBALS['phpgw']->msg->ref_GET['ex_acctnum']))
+				&& ((string)$GLOBALS['phpgw']->msg->ref_GET['ex_acctnum'] != '')
+				&& ((string)$GLOBALS['phpgw']->msg->ref_GET['ex_acctnum'] != '0'))
+			)
+			{
+				// we are dealing with a non-default account here
+				$this->ex_accounts_edit();
+			}
+			else
+			{
+				// we are dealing with the default account, account number 0, this is default fallback behavior
+				$this->preferences_default_acct_zero();
+			}
+		}
+		
+		/*!
+		@function preferences_default_acct_zero
+		@abstract call this function to display the UI html page for email preferences for the Default Account
+		@discussion  This is ONLY FOR THE DEFAULT ACCOUNT for 2 reasons
+		1) the defaut account has slightly different prefs then the extra account, and
+		2) author too lazy to combine this function with ex_accounts_edit() like it should be
+		@author	Angles, skeeter
+		@access	Public
+		*/
+		function preferences_default_acct_zero()
 		{
 			// this tells "create_prefs_block" that we are dealing with the default email account
 			if ($this->debug > 0) { echo 'email.uipreferences.preferences: ENTERING, this function *should* only be called for the default email account prefs submission<br>'; }
@@ -299,12 +341,14 @@
 			);
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_blank','V_tr_blank');
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_sec_title','V_tr_sec_title');
+			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_long_desc','V_tr_long_desc');
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_textarea','V_tr_textarea');
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_textbox','V_tr_textbox');
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_passwordbox','V_tr_passwordbox');
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_combobox','V_tr_combobox');
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_checkbox','V_tr_checkbox');
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_submit_btn_only','V_submit_btn_only');
+			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_submit_and_cancel_btns','V_submit_and_cancel_btns');
 			
 			$var = Array(
 				'pref_errors'		=> '',
@@ -319,7 +363,11 @@
 				'right_col_width'	=> '50%',
 				'checked_flag'		=> 'True',
 				'btn_submit_name'	=> $this->bo->submit_token,
-				'btn_submit_value'	=> lang('submit')
+				'btn_submit_value'	=> lang('submit'),
+				// added a cancel button
+				'btn_cancel_name'	=> 'cancel',
+				'btn_cancel_value'	=> lang('cancel'),
+				'btn_cancel_url'	=> $GLOBALS['phpgw']->link('/preferences/index.php',array())
 			);
 			$GLOBALS['phpgw']->template->set_var($var);
 			
@@ -335,10 +383,29 @@
 			// ---  Standars Prefs  ---
 			// section title for standars prefs
 			$GLOBALS['phpgw']->template->set_var('section_title', lang('Standard E-Mail preferences'));
-			// parse the block,
-			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
-			// get the parsed data and put into a local variable
-			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
+			//This checks if we are all ready displaying the help and gives us the option of hiding it.
+			if ((isset($GLOBALS['phpgw']->msg->ref_GET['show_help']))
+				&& ($GLOBALS['phpgw']->msg->ref_GET['show_help']))
+			{
+			// link to display verbose help text
+			$show_help_lnk = $GLOBALS['phpgw']->msg->href_maketag(
+					$GLOBALS['phpgw']->link('/index.php',
+						Array('menuaction'	=> 'email.uipreferences.preferences',
+							)
+					),
+					lang('Hide Help'));
+			} else {
+			// link to hide verbose help text
+			$show_help_lnk = $GLOBALS['phpgw']->msg->href_maketag(
+					$GLOBALS['phpgw']->link('/index.php',
+						Array('menuaction'	=> 'email.uipreferences.preferences',
+							'show_help'		=> '1')
+					),
+					lang('Show Help'));
+			}
+			$GLOBALS['phpgw']->template->set_var('show_help_lnk', $show_help_lnk);
+			// parse the block, and put into a local variable
+			$done_widget = $GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 			// add the finished widget row to the main block variable
 			$prefs_ui_rows .= $done_widget;
 			// generate Std Prefs HTML Block
@@ -347,14 +414,12 @@
 			
 			// blank row
 			$GLOBALS['phpgw']->template->set_var('back_color', $this->theme['bg_color']);
-			$GLOBALS['phpgw']->template->parse('V_tr_blank','B_tr_blank');
-			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_blank');	
+			$done_widget = $GLOBALS['phpgw']->template->parse('V_tr_blank','B_tr_blank');
 			$prefs_ui_rows .= $done_widget;
 			
 			// ---  Custom Prefs  ---
 			$GLOBALS['phpgw']->template->set_var('section_title', lang('Custom E-Mail preferences'));
-			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
-			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
+			$done_widget = $GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 			$prefs_ui_rows .= $done_widget;
 			// generate Custom Prefs HTML Block
 			if ($this->debug > 1) { echo 'email.uipreferences.preferences: about to generate the html for custom email prefs block<br>'; }
@@ -362,8 +427,7 @@
 			
 			// blank row
 			$GLOBALS['phpgw']->template->set_var('back_color', $this->theme['bg_color']);
-			$GLOBALS['phpgw']->template->parse('V_tr_blank','B_tr_blank');
-			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_blank');	
+			$done_widget = $GLOBALS['phpgw']->template->parse('V_tr_blank','B_tr_blank');
 			$prefs_ui_rows .= $done_widget;
 			
 			// ---  Commit HTML Prefs rows to Main Template
@@ -371,8 +435,10 @@
 			$GLOBALS['phpgw']->template->set_var('prefs_ui_rows', $prefs_ui_rows);
 			
 			// Submit Button only
-			$GLOBALS['phpgw']->template->parse('V_submit_btn_only','B_submit_btn_only');
-			$submit_btn_row = $GLOBALS['phpgw']->template->get_var('V_submit_btn_only');	
+			//$submit_btn_row = $GLOBALS['phpgw']->template->parse('V_submit_btn_only','B_submit_btn_only');
+			//$GLOBALS['phpgw']->template->set_var('submit_btn_row', $submit_btn_row);
+			// Submit Button and Cancel button
+			$submit_btn_row = $GLOBALS['phpgw']->template->parse('V_submit_and_cancel_btns','B_submit_and_cancel_btns');
 			$GLOBALS['phpgw']->template->set_var('submit_btn_row', $submit_btn_row);
 			
 			// output the template
@@ -414,6 +480,7 @@
 			);
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_blank','V_tr_blank');
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_sec_title','V_tr_sec_title');
+			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_long_desc','V_tr_long_desc');
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_textarea','V_tr_textarea');
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_textbox','V_tr_textbox');
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_passwordbox','V_tr_passwordbox');
@@ -461,20 +528,40 @@
 			// ---  Extra Account Pref Items  ---
 			// section title
 			$GLOBALS['phpgw']->template->set_var('section_title', '*** '.lang('E-Mail Extra Account').' *** '.lang('Number').' '.$this->bo->acctnum);
-			// parse the block,
-			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
-			// get the parsed data and put into a local variable
-			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
+			//This checks if we are all ready displaying the help and gives us the option of hiding it.
+			// https://brick.earthlink.net/mail/index.php?menuaction=email.uipreferences.ex_accounts_edit&ex_acctnum=2
+			if ((isset($GLOBALS['phpgw']->msg->ref_GET['show_help']))
+				&& ($GLOBALS['phpgw']->msg->ref_GET['show_help']))
+			{
+				// link to display verbose help text
+				$show_help_lnk = $GLOBALS['phpgw']->msg->href_maketag(
+					$GLOBALS['phpgw']->link('/index.php',
+						Array('menuaction'	=> 'email.uipreferences.preferences',
+							'ex_acctnum'	=> $this->bo->acctnum)
+					),
+					lang('Hide Help'));
+			} else {
+				// link to hide verbose help text
+				$show_help_lnk = $GLOBALS['phpgw']->msg->href_maketag(
+					$GLOBALS['phpgw']->link('/index.php',
+						Array('menuaction'	=> 'email.uipreferences.preferences',
+							'ex_acctnum'	=> $this->bo->acctnum,
+							'show_help'		=> '1')
+					),
+					lang('Show Help'));
+			}
+			$GLOBALS['phpgw']->template->set_var('show_help_lnk', $show_help_lnk);
+			// parse the block, and put into a local variable
+			$done_widget = $GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 			// add the finished widget row to the main block variable
 			$prefs_ui_rows .= $done_widget;
 			
 			// instructions: fill in everything you need
 			$GLOBALS['phpgw']->template->set_var('section_title', lang('Please fill in everything you need'));
 			// parse the block,
-			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
+			$done_widget = $GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 			// get the parsed data and put into a local variable
 			if ($this->debug > 1) { echo 'email.uipreferences.ex_accounts_edit: about to generate the html for standard email prefs block<br>'; }
-			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
 			// add the finished widget row to the main block variable
 			$prefs_ui_rows .= $done_widget;
 			
@@ -483,13 +570,11 @@
 			
 			// ---  Custom Prefs  ---
 			$GLOBALS['phpgw']->template->set_var('section_title', lang('Custom E-Mail Settings').' &#040;'.lang('required').'&#041;');
-			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
-			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
+			$done_widget = $GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 			$prefs_ui_rows .= $done_widget;
 			// ---  Custom Prefs INSTRUCTIONS ---
 			$GLOBALS['phpgw']->template->set_var('section_title', lang('fill in as much as you can'));
-			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
-			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
+			$done_widget = $GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 			$prefs_ui_rows .= $done_widget;
 			// generate Custom Prefs HTML Block
 			if ($this->debug > 1) { echo 'email.uipreferences.ex_accounts_edit: about to generate the html for custom email prefs block<br>'; }
@@ -497,17 +582,15 @@
 			
 			// blank row
 			$GLOBALS['phpgw']->template->set_var('back_color', $this->theme['bg_color']);
-			$GLOBALS['phpgw']->template->parse('V_tr_blank','B_tr_blank');
-			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_blank');	
+			$done_widget = $GLOBALS['phpgw']->template->parse('V_tr_blank','B_tr_blank');
 			$prefs_ui_rows .= $done_widget;
 			
 			// ---  Commit HTML Prefs rows to Main Template
 			// put all widget rows data into the template var
 			$GLOBALS['phpgw']->template->set_var('prefs_ui_rows', $prefs_ui_rows);
 			
-			// Submit Button with Delete Account Data button
-			$GLOBALS['phpgw']->template->parse('V_submit_and_cancel_btns','B_submit_and_cancel_btns');
-			$submit_btn_row = $GLOBALS['phpgw']->template->get_var('V_submit_and_cancel_btns');	
+			// Submit Button and Cancel button
+			$submit_btn_row = $GLOBALS['phpgw']->template->parse('V_submit_and_cancel_btns','B_submit_and_cancel_btns');
 			$GLOBALS['phpgw']->template->set_var('submit_btn_row', $submit_btn_row);
 			
 			// output the template
@@ -536,7 +619,7 @@
 				'font'				=> $this->theme['font'],
 				'tr_titles_color'	=> $this->theme['th_bg'],
 				'page_title'		=> lang('E-Mail Extra Accounts List'),
-				'account_name_header' => lang('Account User Name'),
+				'account_name_header' => lang('Account Name'),
 				'lang_status'		=> lang('Status'),
 				'lang_go_there'		=> lang('Read Mail'),
 				'lang_edit'			=> lang('Edit'),

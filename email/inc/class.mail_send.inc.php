@@ -3,13 +3,13 @@
 	* phpGroupWare API - smtp mailer							*
 	* This file written by Itzchak Rehberg <izzysoft@qumran.org>			*
 	* and Joseph Engo <jengo@phpgroupware.org>					*
-	* and Angelo Tony Puglisi (angles)  <angles@phpgroupware.org>			*
+	* and Angelo "Angles" Puglisi <angles@aminvestments.com>			*
 	* This module should replace php's mail() function. It is fully syntax		*
 	* compatible. In addition, when an error occures, a detailed error info		*
 	* is stored in the array $send->err (see ../inc/email/global.inc.php for		*
 	* details on this variable).								*
 	* Copyright (C) 2000, 2001 Itzchak Rehberg, and					*
-	* Copyright (C) 2001 Angelo Puglisi (Angles)					*
+	* Copyright (C) 2001, 2002 Angelo Puglisi (Angles)					*
 	* -------------------------------------------------------------------------			*
 	* This library is part of the phpGroupWare API					*
 	* http://www.phpgroupware.org/api							* 
@@ -31,14 +31,13 @@
 	
 	/*!
 	@class mail_send
-	@abstract	sockets based SMTP class, will communicate with an MTA to send mail
-	@result	returns True on success (mail was sent), returns False on error (no mail sent)
-	@discussion	class provides for complex SMTP transactions, bypassing need for php's
+	@abstract sockets based SMTP class, will communicate with an MTA to send mail
+	@result returns True on success (mail was sent), returns False on error (no mail sent)
+	@discussion class provides for complex SMTP transactions, bypassing need for php's
 	builtin mail sending functions. Currently part of the email class group, when mature will
 	be moved to standard phpgroupware api.
-	@author
-	Itzchak Rehberg - initial implementation, SMTP communication and control flow, excellent work!
-	Angelo Puglisi (Angles) - convert to multi-dimentional array driven architecture, expanded debugging,
+	@author (a) Itzchak Rehberg - initial implementation, SMTP communication and control flow, excellent work! 
+	and (b) Angelo Puglisi (Angles) - convert to multi-dimentional array driven architecture, expanded debugging,
 	RFC2822 and 2821 compliance, retain a copy for archiving option, fake send debug, handshake retention, other stuff...
 	*/
 	class mail_send
@@ -92,6 +91,7 @@
 			$this->err["msg"] = '';
 			do
 			{
+				//$rmsg = fgets($socket,255);
 				$rmsg = fgets($socket,1024);
 				$this->err['server_chat'] .= htmlspecialchars('s->c: '.$rmsg);
 				if ($this->trace_flag > 0) { $this->log_trace('socket2msg: rmsg', $rmsg); }
@@ -314,6 +314,13 @@
 					if (!$this->msg2socket($socket,$this_line))
 					{
 						return false;
+					}
+					// TESTING memory saving feature, clear already sent lines IF saving them in assembled_copy
+					if (($this->retain_copy)
+					&& (!$this->retain_copy_ignore))
+					{
+						// we no longer need the array item, clear it from memory
+						$mail_out['body'][$part_num]['mime_body'][$i] = '';
 					}
 				}
 				// this space will seperate this part from any following parts that may be coming

@@ -1,17 +1,42 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - E-Mail Filters							*
-	* Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>		*
-	* Copyright (C) 2001 Angelo Puglisi (Angles)					*
+	* AngleMail - E-Mail Filters									*
+	* http://www.anglemail.org									*
+	* Written by Angelo (Angles) Puglisi <angles@aminvestments.com>		*
+	* Copyright (C) 2001, 2002 Angelo Puglisi (Angles)					*
 	* -----------------------------------------------                         				*
 	*  This program is free software; you can redistribute it and/or modify it		*
 	*  under the terms of the GNU General Public License as published by the	*
 	*  Free Software Foundation; either version 2 of the License, or (at your		*
-	*  option) any later version.								*
+	*  option) any later version.										*
 	\**************************************************************************/
 	
 	/* $Id$ */
 	
+	/*!
+	@class bofilters
+	@abstract BO functions for email filters
+	@author Angles
+	@param $not_set (string) always a string that it "-1"
+	@param $all_filters (array) 
+	@param $filter_num (int)
+	@param $add_new_filter_token (string)  "add_new"
+	@param $template (object) 
+	@param $finished_mlist ?
+	@param $submit_mlist_to_class_form ?
+	@param $debug (int) 0 to 3
+	@param $debug_set_prefs (int) 0 to 3
+	@param $examine_imap_search_keys_map (array) 
+	@param $match_keeper_row_values (array) 
+	@param $result_set (array) 
+	@param $result_set_mlist (array) 
+	@param $fake_folder_info (array) 
+	@param $do_filter_apply_all (boolean) 
+	@param $inbox_full_msgball_list (array) 
+	@param $each_filter_mball_list  (array) 
+	@param $html_matches_table (string) 
+	@access pubic
+	*/
 	class bofilters
 	{
 		var $public_functions = array(
@@ -45,14 +70,20 @@
 		var $each_filter_mball_list = array();
 		var $html_matches_table = '';
 		
+		/*!
+		@function bofilters
+		@abstract constructor
+		@author Angles
+		*/
 		function bofilters()
 		{
+			if ($this->debug > 0) { echo 'email.bofilters *constructor*: ENTERING <br>'; }
+			
 			define('F_ROW_0_MATCH',1);
 			define('F_ROW_1_MATCH',2);
 			define('F_ROW_2_MATCH',4);
 			define('F_ROW_3_MATCH',8);
 			
-			if ($this->debug > 0) { echo 'email.bofilters *constructor*: ENTERING <br>'; }
 			$this->examine_imap_search_keys_map = Array(
 				'from'		=> 'FROM',
 				'to'		=> 'TO',
@@ -76,36 +107,36 @@
 				3	=>	F_ROW_3_MATCH
 			);
 			
-			if (is_object($GLOBALS['phpgw']->msg))
-			{
-				if ($this->debug > 1) { echo 'email.bofilters *constructor*: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
-			}
-			else
-			{
-				if ($this->debug > 1) { echo 'email.bofilters *constructor*: is_object: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
-				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-			}
-			$this->not_set = $GLOBALS['phpgw']->msg->not_set;
-			if ($GLOBALS['phpgw']->msg->get_isset_arg('already_grab_class_args_gpc'))
-			{
-				if ($this->debug > 0) { echo 'email.bofilters *constructor*: LEAVING , msg object already initialized<br>'; }
-				return True;
-			}
-				
-			if ($this->debug > 1) { echo 'email.bofilters *constructor*: msg object NOT yet initialized<br>'; }
-			$args_array = Array();
+			
+			// make sure we have msg object
+			$this->msg_bootstrap = CreateObject("email.msg_bootstrap");
 			// should we log in or not, no, we only need prefs initialized
 			// if any data is needed mail_msg will open stream for us
-			$args_array['do_login'] = False;
-			//$args_array['do_login'] = True;
-			if ($this->debug > 1) { echo 'email.bofilters. *constructor*: call msg->begin_request with args array:'.serialize($args_array).'<br>'; }
-			$GLOBALS['phpgw']->msg->begin_request($args_array);
+			// UPDATE: extreme caching takes care of the login / no login issue
+			//$this->msg_bootstrap->set_do_login(False);
+			// USE NEW login instructions, defined in bootstrap class
+			$this->msg_bootstrap->set_do_login(BS_LOGIN_ONLY_IF_NEEDED);
+			$this->msg_bootstrap->ensure_mail_msg_exists('email.bofilters *constructor*', $this->debug);
+			
+			$this->not_set = $GLOBALS['phpgw']->msg->not_set;
 			
 			if ($this->debug > 0) { echo 'email.bofilters. *constructor*: calling $this->read_filter_data_from_prefs<br>'; }
 			$this->read_filter_data_from_prefs();
 			if ($this->debug > 0) { echo 'email.bofilters. *constructor*: LEAVING<br>'; }
+			//return;
 		}
 		
+		/*!
+		@function read_filter_data_from_prefs
+		@abstract MISNAMED because ->msg actually reads the prefs, and we get them from ->msg->raw_filters
+		@discussion Use to obtain the raw, unprocessed filters array as extracted from the prefs database. In this case 
+		we simple get the array from GLOBALS[phpgw]->msg->raw_filters becauase the ->msg object actually 
+		gets the prefs from the database and the constructor for this class has a msg bootstrap call so we know we 
+		have a msg object to use, hopefully. Also, there is a fallback location to find the data, 
+		GLOBALS[phpgw]->preferences->data[email][filters] but this is NOT the best way to do it since that is 
+		potentially "private" data of the preferences object, but since php as of now has no "private" data enviornment, I am guessing.
+		@author Angles
+		*/
 		function read_filter_data_from_prefs()
 		{
 			/*
@@ -121,39 +152,53 @@
 			}
 			return $this->all_filters;
 			*/
+			
+			// METHOD1 - uses email msg objects "raw_filters" array
 			$this->all_filters = array();
-			if ((isset($GLOBALS['phpgw']->preferences->data['email']['filters']))
+			if ((isset($GLOBALS['phpgw']->msg->raw_filters))
+			&& (is_array($GLOBALS['phpgw']->msg->raw_filters)))
+			{
+				$this->all_filters = $GLOBALS['phpgw']->msg->raw_filters;
+			}
+			// fallback location to try also
+			elseif ((isset($GLOBALS['phpgw']->preferences->data['email']['filters']))
 			&& (is_array($GLOBALS['phpgw']->preferences->data['email']['filters'])))
 			{
+				// METHOD2 (works but requires "access" to a maybe private object of prefernces object, so 2nd choice for data)
 				$this->all_filters = $GLOBALS['phpgw']->preferences->data['email']['filters'];
 			}
 			return $this->all_filters;
 		}
 		
+		/*!
+		@function obtain_filer_num
+		@abstract ?
+		@author Angles
+		*/
 		function obtain_filer_num($get_next_avail_if_none=True)
 		{
 			if ($this->debug > 0) { echo 'bofilters.obtain_filer_num: ENTERING ; $get_next_avail_if_none : [<code>'.serialize($get_next_avail_if_none).'</code>]<br>'."\r\n"; }
-			if (isset($GLOBALS['HTTP_POST_VARS']['filter_num']))
+			if (isset($GLOBALS['phpgw']->msg->ref_POST['filter_num']))
 			{
-				if ($GLOBALS['HTTP_POST_VARS']['filter_num'] == $this->add_new_filter_token)
+				if ($GLOBALS['phpgw']->msg->ref_POST['filter_num'] == $this->add_new_filter_token)
 				{
 					$filter_num = $this->get_next_avail_num();
 				}
 				else
 				{
-					$filter_num = $GLOBALS['HTTP_POST_VARS']['filter_num'];
+					$filter_num = $GLOBALS['phpgw']->msg->ref_POST['filter_num'];
 					$filter_num = (int)$filter_num;
 				}
 			}
-			elseif (isset($GLOBALS['HTTP_GET_VARS']['filter_num']))
+			elseif (isset($GLOBALS['phpgw']->msg->ref_GET['filter_num']))
 			{
-				if ($GLOBALS['HTTP_GET_VARS']['filter_num'] == $this->add_new_filter_token)
+				if ($GLOBALS['phpgw']->msg->ref_GET['filter_num'] == $this->add_new_filter_token)
 				{
 					$filter_num = $this->get_next_avail_num();
 				}
 				else
 				{
-					$filter_num = $GLOBALS['HTTP_GET_VARS']['filter_num'];
+					$filter_num = $GLOBALS['phpgw']->msg->ref_GET['filter_num'];
 					$filter_num = (int)$filter_num;
 				}
 			}
@@ -169,20 +214,30 @@
 			return $filter_num;
 		}
 		
+		/*!
+		@function get_next_avail_num
+		@abstract ?
+		@author Angles
+		*/
 		function get_next_avail_num()
 		{
 			return count($this->all_filters);
 		}
 		
+		/*!
+		@function just_testing
+		@abstract ?
+		@author Angles
+		*/
 		function just_testing()
 		{
-			if ((isset($GLOBALS['HTTP_POST_VARS']['filter_test']))
-			&& ((string)$GLOBALS['HTTP_POST_VARS']['filter_test'] != ''))
+			if ((isset($GLOBALS['phpgw']->msg->ref_POST['filter_test']))
+			&& ((string)$GLOBALS['phpgw']->msg->ref_POST['filter_test'] != ''))
 			{
 				$just_testing = True;
 			}
-			elseif ((isset($GLOBALS['HTTP_GET_VARS']['filter_test']))
-			&& ((string)$GLOBALS['HTTP_GET_VARS']['filter_test'] != ''))
+			elseif ((isset($GLOBALS['phpgw']->msg->ref_GET['filter_test']))
+			&& ((string)$GLOBALS['phpgw']->msg->ref_GET['filter_test'] != ''))
 			{
 				$just_testing = True;
 			}
@@ -193,6 +248,11 @@
 			return $just_testing;
 		}
 		
+		/*!
+		@function filter_exists
+		@abstract ?
+		@author Angles
+		*/
 		function filter_exists($feed_filter_num)
 		{
 			$feed_filter_num = (int)$feed_filter_num;
@@ -207,6 +267,11 @@
 			}
 		}
 		
+		/*!
+		@function move_up
+		@abstract ?
+		@author Angles
+		*/
 		function move_up()
 		{
 			// "False" means  return $this->not_set  if no filter number was found anywhere
@@ -244,6 +309,11 @@
 			Header('Location: ' . $take_me_to_url);
 		}
 		
+		/*!
+		@function move_down
+		@abstract ?
+		@author Angles
+		*/
 		function move_down()
 		{
 			// "False" means  return $this->not_set  if no filter number was found anywhere
@@ -281,10 +351,15 @@
 			Header('Location: ' . $take_me_to_url);
 		}
 		
+		/*!
+		@function process_submitted_data
+		@abstract ?
+		@author Angles
+		*/
 		function process_submitted_data()
 		{
 			if ($this->debug_set_prefs > 0) { echo 'bofilters.process_submitted_data: ENTERING<br>'."\r\n"; }
-			if ($this->debug_set_prefs > 2) { echo 'bofilters.process_submitted_data: HTTP_POST_VARS dump:<pre>'; print_r($GLOBALS['HTTP_POST_VARS']); echo '</pre>'."\r\n"; }
+			if ($this->debug_set_prefs > 2) { echo 'bofilters.process_submitted_data: HTTP_POST_VARS dump:<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST); echo '</pre>'."\r\n"; }
 			//if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: caling $this->distill_filter_args<br>'."\r\n"; }
 			//$this->distill_filter_args();
 			// we must have data because the form action made this code run
@@ -303,10 +378,10 @@
 			if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: $this_filter[filter_num]: ['.$found_filter_num.']<br>'; }
 			
 			// FILTER NAME
-			if ((isset($GLOBALS['HTTP_POST_VARS']['filtername']))
-			&& ((string)$GLOBALS['HTTP_POST_VARS']['filtername'] != ''))
+			if ((isset($GLOBALS['phpgw']->msg->ref_POST['filtername']))
+			&& ((string)$GLOBALS['phpgw']->msg->ref_POST['filtername'] != ''))
 			{
-				$this_filter['filtername'] = $GLOBALS['HTTP_POST_VARS']['filtername'];
+				$this_filter['filtername'] = $GLOBALS['phpgw']->msg->ref_POST['filtername'];
 			}
 			else
 			{
@@ -318,14 +393,14 @@
 			// ---- The Rest of the data is submitted in  Array Form ----
 			
 			// SOURCE ACCOUNTS
-			if ((isset($GLOBALS['HTTP_POST_VARS']['source_accounts']))
-			&& ((string)$GLOBALS['HTTP_POST_VARS']['source_accounts'] != ''))
+			if ((isset($GLOBALS['phpgw']->msg->ref_POST['source_accounts']))
+			&& ((string)$GLOBALS['phpgw']->msg->ref_POST['source_accounts'] != ''))
 			{
 				// extract the "fake uri" data with parse_str
 				// and fill our filter struct
-				for ($i=0; $i < count($GLOBALS['HTTP_POST_VARS']['source_accounts']); $i++)
+				for ($i=0; $i < count($GLOBALS['phpgw']->msg->ref_POST['source_accounts']); $i++)
 				{
-					parse_str($GLOBALS['HTTP_POST_VARS']['source_accounts'][$i], $this_filter['source_accounts'][$i]);
+					parse_str($GLOBALS['phpgw']->msg->ref_POST['source_accounts'][$i], $this_filter['source_accounts'][$i]);
 					// re-urlencode the foldername, because we generally keep the fldball urlencoded
 					$this_filter['source_accounts'][$i]['folder'] = urlencode($this_filter['source_accounts'][$i]['folder']);
 					// make sure acctnum is an int
@@ -341,12 +416,12 @@
 			if ($this->debug_set_prefs > 2) { echo '.process_submitted_data: $this_filter[source_accounts] dump:<pre>'; print_r($this_filter['source_accounts']); echo '</pre>'."\r\n"; }
 			
 			// --- "deep" array form data ---
-			@reset($GLOBALS['HTTP_POST_VARS']);
+			@reset($GLOBALS['phpgw']->msg->ref_POST);
 			// init sub arrays
 			$this_filter['matches'] = Array();
 			$this_filter['actions'] = Array();
 			// look for top level "match_X[]" and "action_X[]" items
-			while(list($key,$value) = each($GLOBALS['HTTP_POST_VARS']))
+			while(list($key,$value) = each($GLOBALS['phpgw']->msg->ref_POST))
 			{
 				// do not walk thru data we already obtained
 				if (($key == 'filter_num')
@@ -363,7 +438,7 @@
 					// now we grab the index value from the key string
 					$match_this_idx = (int)$key[6];
 					if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: match_this_idx grabbed value: ['.$match_this_idx.']<br>'; }
-					$match_data = $GLOBALS['HTTP_POST_VARS'][$key];
+					$match_data = $GLOBALS['phpgw']->msg->ref_POST[$key];
 					// is this row even being used?
 					if ((isset($match_data['andor']))
 					&& ($match_data['andor'] == 'ignore_me'))
@@ -381,7 +456,7 @@
 					// now we grab the index value from the key string
 					$action_this_idx = (int)$key[7];
 					if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: action_this_idx grabbed value: ['.$action_this_idx.']<br>'; }
-					$action_data = $GLOBALS['HTTP_POST_VARS'][$key];
+					$action_data = $GLOBALS['phpgw']->msg->ref_POST[$key];
 					if ((isset($action_data['judgement']))
 					&& ($action_data['judgement'] == 'ignore_me'))
 					{
@@ -400,6 +475,11 @@
 			$this->save_all_filters_to_repository();
 		}
 		
+		/*!
+		@function squash_and_sort_all_filters
+		@abstract ?
+		@author Angles
+		*/
 		function squash_and_sort_all_filters()
 		{
 			// KEY SORT so the filters are numbered in acending array index order
@@ -419,6 +499,11 @@
 			
 		}
 		
+		/*!
+		@function save_all_filters_to_repository
+		@abstract ?
+		@author Angles
+		*/
 		function save_all_filters_to_repository()
 		{
 			// KEY SORT so the filters are numbered in acending array index order
@@ -561,6 +646,11 @@
 			}
 		}
 		
+		/*!
+		@function delete_filter
+		@abstract ?
+		@author Angles
+		*/
 		function delete_filter()
 		{
 			if ($this->debug_set_prefs > 0) { echo 'bofilters.delete_filter: ENTERING<br>'; }
@@ -581,13 +671,23 @@
 		}
 		
 		
+		/*!
+		@function do_filter
+		@abstract this appears to be the mail access point to apply filter, single or all, test or apply, this is the function
+		@author Angles
+		*/
 		function do_filter()
 		{
 			if ($this->debug > 0) { echo 'bofilters.do_filter: ENTERING<br>'; }
 			if (count($this->all_filters) == 0)
 			{
-				if ($this->debug > 0) { echo 'bofilters.do_filter: LEAVING with ERROR, no filters exist<br>'; }
+				if ($this->debug > 0) { echo 'bofilters.do_filter: LEAVING with ERROR, no filters exist<br>'; } 
+				return False;
 			}
+			
+			if ($this->debug > 0) { echo 'bofilters.do_filter: LINE '.__LINE__.' call "->msg->event_begin_big_move" to notice event of impending big batch moves or deletes<br>'; }
+			$GLOBALS['phpgw']->msg->event_begin_big_move(array(), 'bofilters.do_filter: LINE '.__LINE__);
+			
 			// "False" means  return $this->not_set  if no filter number was found anywhere
 			$found_filter_num = $this->obtain_filer_num(False);
 			if ($this->debug > 1) { echo 'bofilters.obtain_filer_num: $found_filter_num : [<code>'.serialize($found_filter_num).'</code>]<br>'."\r\n"; }
@@ -619,6 +719,12 @@
 					$this->make_filter_match_report((int)$found_filter_num);
 				}
 			}
+			
+			// ok, filters have run, EXPUNGE now
+			if ($this->debug > 1) { echo 'bofilters.do_filter ('.__LINE__.'): done filtering, now call $GLOBALS[phpgw]->msg->expunge_expungable_folders<br>'; }
+			$did_expunge = False;
+			$did_expunge = $GLOBALS['phpgw']->msg->expunge_expungable_folders('bofilters.do_filter LINE '.__LINE__);
+			if ($this->debug > 1) { echo 'bofilters.do_filter ('.__LINE__.'): $GLOBALS[phpgw]->msg->expunge_expungable_folders() returns ['.serialize($did_expunge).']<br>'; }
 			
 			// ok, filters have run, do we have a report to show?
 			if ($this->just_testing())
@@ -670,6 +776,12 @@
 		}
 		
 		// PRIVATE
+		/*!
+		@function run_single_filter
+		@abstract ?
+		@author Angles
+		@access private
+		*/
 		function run_single_filter($filter_num='')
 		{
 			if ($this->debug > 0) { echo 'bofilters.run_single_filter: ENTERING, feed  $filter_num : [<code>'.serialize($filter_num).'</code>]<br>'; }
@@ -727,6 +839,26 @@
 					// we need to get the headers
 					$msgball_this_iteration = $this->inbox_full_msgball_list[$src_acct_loop_num][$msg_iteration];
 					$headers_text = $GLOBALS['phpgw']->msg->phpgw_fetchheader($msgball_this_iteration);
+					
+					// NOTE BUG: there is a bug here when the recieved headers are not contiguous, 
+					//   when an erronious other header intupts the recieved headers block
+					// EXAMPLE:
+					// 	Received: (qmail 5000 invoked by uid 38); 27 May 2002 13:48:21 -0000
+					// 	X-Envelope-Sender: provinsd@telusplanet.net
+					// 	Received: (qmail 4886 invoked from network); 27 May 2002 13:48:20 -0000
+					// EXAMPLE:
+					// 	Received: (qmail 12812 invoked by uid 38); 24 May 2002 12:12:27 -0000
+					// 	X-Envelope-Sender: lgcdutra@terra.com.br
+					// 	Received: (qmail 12705 invoked from network); 24 May 2002 12:12:26 -0000					
+					
+					// BRUTE FORCE HACK TO TEMP FIX THIS - rewrite better later
+					// turn offending "X-Envelope-Sender" into a fake recieved header
+					//$headers_text = str_replace('X-Envelope-Sender:', 'Received: X-Envelope-Sender', $headers_text);
+					// UPDATE: better fix for this:
+					
+					
+					// continue...
+					
 					// UNFOLD headers 
 					// CRLF WHITESPACE as TAB
 					$headers_text = str_replace("\r\n".chr(9), ' ', $headers_text);
@@ -734,7 +866,8 @@
 					$headers_text = str_replace("\r\n".chr(32), ' ', $headers_text);
 					$headers_text = trim($headers_text);
 					// decode encoded headers (if any)
-					$headers_text = $GLOBALS['phpgw']->msg->decode_rfc_header($headers_text);
+					//$headers_text = $GLOBALS['phpgw']->msg->decode_rfc_header($headers_text);
+					$headers_text = $GLOBALS['phpgw']->msg->decode_rfc_header_glob($headers_text);
 					// make all Received headers stripped of their preceeding CRLF,  preg option i = case insensitive; m = multi line
 					$headers_text = preg_replace('/'."\r\n".'received: /mi', 'CRLF Received: ', $headers_text);
 					// split the string based on the FIRST CRLF and make only the first Received header have a preceeding "\r\n"
@@ -896,42 +1029,42 @@
 		}
 		
 		/*!
-		@class filter_action_sequence
-		@abstract  private helper for filter matching function, will apply AND and OR logic and do an action
-		@discussion  This is how we apply the logic of the "AND" and "OR" that relate the match criteria rows
+		@function filter_action_sequence
+		@abstract private helper for filter matching function, will apply AND and OR logic and do an action
+		@discussion This example is designed to illustrate the a mail from "boss" about getting a "raise" may be more important 
+		to you than a mail from "your brother" with the same subject, because it is possible your brother does not 
+		control your compensation and he is just making a joke.
+		You manage this logic by remembering that if you use 3 rows of match criteria, rows one and two have a 
+		parentheses around them. 
+		Why do it this way? 
+		The Sieve concept is to make filters EASY TO UNDERSTAND, studies show people actually use them in such cases 
+		therefor the simple rule that ANDs and ORs are paired together in the first and second row, is consistent and hopefully 
+		easy enough for "Jane / Joe User" to understand.
+		@author Angles
+		@example This is how we apply the logic of the "AND" and "OR" that relate the match criteria rows
 		SIMPLE LOGIC: each "and" "or" is compared with the item before it
-		* example:
+		* example
 		ROW-0:   		subject contains "you got a raise"
 		ROW-1:   AND	sender contains "boss"
 		ROW-2:  OR	sender contains "your brother"
 		* translates to:
-		//	(ROW-0 "AND" ROW-1) "OR" ROW-2
+			(ROW-0 "AND" ROW-1) "OR" ROW-2
 		if both row 0 and row 1 are not satified, then this particular "logic chain" ends, BUT with row 2, 
 		the possible match would be if sender contains "your brother", and this match ALONE triggers the filter action.
 		REMEMBER THIS: *ROW-2 itself can cause a match* because with "(X1 and X2) or X3", X3 alone causes a match.
 		thus satisfying that particular filtes's match criteria and triggering action
 		note: this means this we do *not* have this:
-		//	ROW-0 "AND" (ROW-1 "OR" ROW-2)
+			ROW-0 "AND" (ROW-1 "OR" ROW-2)
 		if the above is really what you want:
 		I suggest putting the "OR"s first, which puts the openening and closing Parentheses around the "OR" statement
-		* example:
+		* example
 		ROW-0:   		sender contains "boss"
 		ROW-1:  OR	sender contains "your brother"
 		ROW-0:  AND 	subject contains "you got a raise"
-		* translates to:
-		//	(sender contains "boss" -OR- sender contains "your brother") -AND- subject contains "you got a raise"
+		* translates to
+			(sender contains "boss" -OR- sender contains "your brother") -AND- subject contains "you got a raise"
 		this is how you get the results you want.
-		This example is designed to illustrate the a mail from "boss" about getting a "raise" may be more important 
-		to you than a mail from "your brother" with the same subject, because it is possible your brother does not 
-		control your compensation and he is just making a joke.
-		You manage this logic by remembering that if you use 3 rows of match criteria, rows one and two have a 
-		parentheses around them.
-		Why do it this way?
-		The Sieve concept is to make filters EASY TO UNDERSTAND, studies show people actually use them in such cases
-		therefor the simple rule that ANDs and ORs are paired together in the first and second row, is consistent and hopefully
-		easy enough for "Jane / Joe User" to understand
-		@author	Angles
-		@access	Private
+		@access private
 		*/
 		function filter_action_sequence($filter_num='', $src_acct_loop_num='', $msg_iteration='', $this_filter='')
 		{
@@ -1119,6 +1252,11 @@
 			return True;
 		}
 		
+		/*!
+		@function make_filter_match_report
+		@abstract ?
+		@author Angles
+		*/
 		function make_filter_match_report($filter_num='')
 		{
 			$this_filter = $this->all_filters[$filter_num];
@@ -1364,6 +1502,58 @@
 		*/
 		
 		// DEPRECIATED
+		/*!
+		@function make_imap_search_str
+		@abstract DEPRECIATED
+		@author Angles
+		@syntax RFC2060 says:
+		search  =  "SEARCH" [SP "CHARSET" SP astring] 1*(SP search-key)
+		search-key = 
+			"ALL" / "ANSWERED" / "BCC" SP astring /
+			"BEFORE" SP date / "BODY" SP astring /
+			"CC" SP astring / "DELETED" / "FLAGGED" /
+			"FROM" SP astring / "KEYWORD" SP flag-keyword / "NEW" /
+			"OLD" / "ON" SP date / "RECENT" / "SEEN" /
+			"SINCE" SP date / "SUBJECT" SP astring /
+			"TEXT" SP astring / "TO" SP astring /
+			"UNANSWERED" / "UNDELETED" / "UNFLAGGED" /
+			"UNKEYWORD" SP flag-keyword / "UNSEEN" /
+		; Above this line were in [IMAP2]
+			"DRAFT" / "HEADER" SP header-fld-name SP astring /
+			"LARGER" SP number / "NOT" SP search-key /
+			"OR" SP search-key SP search-key /
+			"SENTBEFORE" SP date / "SENTON" SP date /
+			"SENTSINCE" SP date / "SMALLER" SP number /
+			"UID" SP set / "UNDRAFT" / set /
+			"(" search-key *(SP search-key) ")"
+		@example Examples of how to construct IMAP4rev1 search strings
+		"PERFECT WORLD EXAMPLES" meaning the following
+		examples apply ONLY to servers implementing IMAP4rev1 Search functionality
+		As of Jan 25, 2002, this is somewhat rare.
+		From a google search in a "turnpike" newsgroup:
+		
+		IMAP's [AND] OR and NOT are all prefix operators, i.e. there is no 
+		precedence or hierarchy (I put the [AND] in brackets as it is implied, 
+		there is no AND keyword).
+		
+		[AND] and OR operate on the next two search-keys.
+		NOT operates on the next search-key.
+		
+		Parentheses can be used to group an expression of search-keys into a 
+		single search-key.
+		
+		Some examples translated into infix notation with "not" "and" "or" as 
+		infix operators, k1, k2 .. are search-keys.  These infix operators are 
+		purely for explanation, they are not part of IMAP.			
+		
+		k1 k2 k3                means (k1 and k2) and k3
+		OR k1 k2 k3             means (k1 or k2) and k3
+		OR (OR k1 k2) k3        means (k1 or k2) or k3
+		NOT k1 k2               means (not k1) and k2
+		NOT OR k1 k2            means not (k1 or k2)
+		OR NOT k1 k2            means (not k1) or k2
+		NOT k1 NOT k2           means (not k1) and (not k2)
+		*/
 		function make_imap_search_str($feed_filter)
 		{
 			if ($this->debug > 0) { echo 'bofilters.make_imap_search_str: ENTERING<br>'; }
@@ -1492,6 +1682,11 @@
 		}
 
 
+		/*!
+		@function make_mlist_box
+		@abstract ?
+		@author Angles
+		*/
 		function make_mlist_box()
 		{
 			$this->template = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
@@ -1569,6 +1764,11 @@
 			
 		}
 		
+		/*!
+		@function do_imap_search
+		@abstract DEPRECIATED - commented out
+		@author Angles
+		*/
 		/* // DEPRECIATED
 		function do_imap_search()
 		{

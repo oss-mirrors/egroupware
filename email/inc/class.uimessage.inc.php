@@ -12,71 +12,45 @@
 
 	/* $Id$ */
 
+	/*!
+	@class uimessage
+	@abstract ?
+	*/
 	class uimessage
 	{
-		var $bo;		
+		var $bo;
+		var $widgets;
 		var $debug = 0;
-		var $is_modular = False;
 
 		var $public_functions = array(
-			'message' => True,
-			'get_is_modular' => True,
-			'set_is_modular' => True
+			'message' => True
 		);
 
 		function uimessage()
 		{
-			
+			return;
 		}
 
-		function get_is_modular()
+		/*!
+		@function message
+		@abstract ?
+		*/
+		function message()
 		{
-			return $this->is_modular;
-		}
-		
-		function set_is_modular($feed_bool=False)
-		{
-			// is_bool() is in the php3 compat library
-			if ((isset($feed_bool))
-			&& (is_bool($feed_bool)))
-			{
-				// only change this if the arg is boolean
-				$this->is_modular = $feed_bool;
-			}
-			return $this->is_modular;
-		}
-		
-		function message($reuse_feed_args='')
-		{
-			if (empty($reuse_feed_args))
-			{
-				$reuse_feed_args = array();
-			}
-			
 			$this->bo = CreateObject("email.bomessage");
-			$this->bo->message_data($reuse_feed_args);
+			$this->bo->message_data();
 			
-			if ($this->is_modular == True)
-			{
-				// we do NOT echo or print output any html, we are being used as a module by another app
-				// all we do in this case is pass the parsed html to the calling app
-			}
-			else
-			{
-				// we are the BO and the UI, we take care of outputting the HTML to the client browser
-				// NOW we can out the header, because "index_data()" filled this global
-				//	$GLOBALS['phpgw_info']['flags']['email_refresh_uri']
-				// which is needed to preserve folder and sort settings during the auto-refresh-ing
-				// currently (Dec 6, 2001) that logic is in phpgwapi/inc/templates/idsociety/head.inc.php
-				unset($GLOBALS['phpgw_info']['flags']['noheader']);
-				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-				$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
-				$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
-				$GLOBALS['phpgw']->common->phpgw_header();
-				// NOTE: as of Dec 10, 2001 a call from menuaction defaults to NOT modular
-				// HOWEVER still this class must NOT invoke $GLOBALS['phpgw']->common->phpgw_header()
-				// even though we had to output the header (go figure... :)
-			}
+			// NOW we can out the header, because "index_data()" filled this global
+			//	$GLOBALS['phpgw_info']['flags']['email_refresh_uri']
+			// which is needed to preserve folder and sort settings during the auto-refresh-ing
+			// currently (Dec 6, 2001) that logic is in phpgwapi/inc/templates/idsociety/head.inc.php
+			unset($GLOBALS['phpgw_info']['flags']['noheader']);
+			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+			$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
+			$GLOBALS['phpgw']->common->phpgw_header();
+			// HOWEVER still this class must NOT invoke $GLOBALS['phpgw']->common->phpgw_header()
+			// even though we had to output the header (go figure... :)
 			
 			// ---- BEGIN UIMESSAGE
 			$GLOBALS['phpgw']->template->set_file(array(
@@ -91,6 +65,10 @@
 			$GLOBALS['phpgw']->template->set_block('T_message_echo_dump','B_setup_echo_dump','V_setup_echo_dump');
 			$GLOBALS['phpgw']->template->set_block('T_message_echo_dump','B_done_echo_dump','V_done_echo_dump');
 			
+			//= = = = TOOLBAR WIDGET = = = 
+			$this->widgets = CreateObject('email.html_widgets');
+			$GLOBALS['phpgw']->template->set_var('widget_toolbar',$this->widgets->get_toolbar());
+			
 			if (!empty($this->xi['msgtype']))
 			{
 				$GLOBALS['phpgw']->template->set_var('application',$this->bo->xi['application']);
@@ -102,66 +80,54 @@
 			}
 			
 			//  ----  TOOL BAR / MENU BAR ----
-			$GLOBALS['phpgw']->template->set_var('accounts_label',$this->bo->xi['accounts_label']);
-			$GLOBALS['phpgw']->template->set_var('ctrl_bar_font',$this->bo->xi['ctrl_bar_font']);
-			$GLOBALS['phpgw']->template->set_var('ctrl_bar_font_size',$this->bo->xi['ctrl_bar_font_size']);
-			$GLOBALS['phpgw']->template->set_var('ctrl_bar_back1',$this->bo->xi['ctrl_bar_back1']);
-			// ---- account switchbox  ----
-			$GLOBALS['phpgw']->template->set_var('acctbox_listbox',$this->bo->xi['acctbox_listbox']);
-			$GLOBALS['phpgw']->template->set_var('acctbox_frm_name',$this->bo->xi['acctbox_frm_name']);
-			$GLOBALS['phpgw']->template->set_var('acctbox_action',$this->bo->xi['acctbox_action']);
-			// ---- Move Message Box  ----
-			$GLOBALS['phpgw']->template->set_var('move_current_sort',$this->bo->xi['move_current_sort']);
-			$GLOBALS['phpgw']->template->set_var('move_current_order',$this->bo->xi['move_current_order']);
-			$GLOBALS['phpgw']->template->set_var('move_current_start',$this->bo->xi['move_current_start']);
-			$GLOBALS['phpgw']->template->set_var('mlist_checkbox_name',$this->bo->xi['mlist_checkbox_name']);
-			$GLOBALS['phpgw']->template->set_var('mlist_embedded_uri',$this->bo->xi['mlist_embedded_uri']);
-			$GLOBALS['phpgw']->template->set_var('frm_delmov_action',$this->bo->xi['frm_delmov_action']);
-			$GLOBALS['phpgw']->template->set_var('frm_delmov_name',$this->bo->xi['frm_delmov_name']);
-			$GLOBALS['phpgw']->template->set_var('delmov_listbox',$this->bo->xi['delmov_listbox']);
-			$GLOBALS['phpgw']->template->set_var('move_postmove_goto_name',$this->bo->xi['move_postmove_goto_name']);
-			$GLOBALS['phpgw']->template->set_var('move_postmove_goto_value',$this->bo->xi['move_postmove_goto_value']);
-		
-		/*
-		ok	acctbox_frm_name
-		ok	acctbox_action
-		ok	ctrl_bar_back1
-		ok	acctbox_listbox
-		ok	ctrl_bar_font
-		ok	ctrl_bar_font_size
-		ok	accounts_label
-			
-		ok	frm_delmov_name
-		ok	frm_delmov_action
-		ok	current_sort
-		ok	current_order
-		ok	current_start
-		ok	mlist_checkbox_name
-		ok	mlist_embedded_uri
-		ok	delmov_listbox
-		*/	
-			
-			
-			
-			$GLOBALS['phpgw']->template->set_var('ilnk_prev_msg',$this->bo->xi['ilnk_prev_msg']);
-			$GLOBALS['phpgw']->template->set_var('ilnk_next_msg',$this->bo->xi['ilnk_next_msg']);
-			
-			// ----  Labels and Colors for From, To, CC, Files, and Subject  -----
-			$GLOBALS['phpgw']->template->set_var('tofrom_labels_bkcolor',$this->bo->xi['tofrom_labels_bkcolor']);
-			$GLOBALS['phpgw']->template->set_var('tofrom_data_bkcolor',$this->bo->xi['tofrom_data_bkcolor']);
-			
-			$GLOBALS['phpgw']->template->set_var('lang_from',$this->bo->xi['lang_from']);
-			$GLOBALS['phpgw']->template->set_var('lang_to',$this->bo->xi['lang_to']);
-			$GLOBALS['phpgw']->template->set_var('lang_cc',$this->bo->xi['lang_cc']);
-			$GLOBALS['phpgw']->template->set_var('lang_date',$this->bo->xi['lang_date']);
-			$GLOBALS['phpgw']->template->set_var('lang_files',$this->bo->xi['lang_files']);
-			$GLOBALS['phpgw']->template->set_var('lang_subject',$this->bo->xi['lang_subject']);
-			
-			// ----  From:  Message Data  -----
-			$GLOBALS['phpgw']->template->set_var('from_data_final',$this->bo->xi['from_data_final']);
-			
-			// ----  To:  Message Data  -----
-			$GLOBALS['phpgw']->template->set_var('to_data_final',$this->bo->xi['to_data_final']);
+			$tpl_vars = Array(
+				//'accounts_label'		=> $this->bo->xi['accounts_label'],
+				//'ctrl_bar_font'			=> $this->bo->xi['ctrl_bar_font'],
+				//'ctrl_bar_font_size'	=> $this->bo->xi['ctrl_bar_font_size'],
+				//'ctrl_bar_back1'		=> $this->bo->xi['ctrl_bar_back1'],
+				
+				'bar_back1'		=> '',
+				//'bar_back1'		=> $GLOBALS['phpgw_info']['theme']['table_bg'],
+				//'bar_back1'		=> $GLOBALS['phpgw_info']['theme']['bg08'],
+				
+				// ---- account switchbox  ----
+				//'acctbox_listbox'		=> $this->bo->xi['acctbox_listbox'],
+				//'ilnk_accounts'			=> $this->bo->xi['ilnk_accounts'],
+				//'acctbox_frm_name'		=> $this->bo->xi['acctbox_frm_name'],
+				//'acctbox_action'		=> $this->bo->xi['acctbox_action'],
+				// ---- Move Message Box  ----
+				'move_current_sort'		=> $this->bo->xi['move_current_sort'],
+				'move_current_order'	=> $this->bo->xi['move_current_order'],
+				'move_current_start'	=> $this->bo->xi['move_current_start'],
+				'mlist_checkbox_name'	=> $this->bo->xi['mlist_checkbox_name'],
+						
+				'mlist_embedded_uri'	=> $this->bo->xi['mlist_embedded_uri'],
+				'frm_delmov_action'		=> $this->bo->xi['frm_delmov_action'],
+				'frm_delmov_name'		=> $this->bo->xi['frm_delmov_name'],
+				'delmov_listbox'		=> $this->bo->xi['delmov_listbox'],
+				'move_postmove_goto_name'	=> $this->bo->xi['move_postmove_goto_name'],
+				'move_postmove_goto_value'	=> $this->bo->xi['move_postmove_goto_value'],
+				
+				'ilnk_prev_msg'			=> $this->bo->xi['ilnk_prev_msg'],
+				'ilnk_next_msg'			=> $this->bo->xi['ilnk_next_msg'],
+				
+				// ----  Labels and Colors for From, To, CC, Files, and Subject  -----
+				'tofrom_labels_bkcolor'	=> $this->bo->xi['tofrom_labels_bkcolor'],
+				'tofrom_data_bkcolor'	=> $this->bo->xi['tofrom_data_bkcolor'],
+				
+				'lang_from'		=> $this->bo->xi['lang_from'],
+				'lang_to'		=> $this->bo->xi['lang_to'],
+				'lang_cc'		=> $this->bo->xi['lang_cc'],
+				'lang_date'		=> $this->bo->xi['lang_date'],
+				'lang_files'	=> $this->bo->xi['lang_files'],
+				'lang_subject'	=> $this->bo->xi['lang_subject'],
+				
+				// ----  From:  Message Data  -----
+				'from_data_final'		=> $this->bo->xi['from_data_final'],
+				// ----  To:  Message Data  -----
+				'to_data_final'			=> $this->bo->xi['to_data_final']
+			);
+			$GLOBALS['phpgw']->template->set_var($tpl_vars);
 			
 			// ----  Cc:  Message Data  -----
 			//if (isset($msg_headers->cc) && count($msg_headers->cc) > 0)
@@ -194,20 +160,25 @@
 			}
 			
 			
-			// ----  Images and Hrefs For Reply, ReplyAll, Forward, and Delete  -----
-			$GLOBALS['phpgw']->template->set_var('theme_font',$this->bo->xi['theme_font']);
-			$GLOBALS['phpgw']->template->set_var('theme_th_bg',$this->bo->xi['theme_th_bg']);
-			$GLOBALS['phpgw']->template->set_var('theme_row_on',$this->bo->xi['theme_row_on']);
-			$GLOBALS['phpgw']->template->set_var('reply_btns_bkcolor',$this->bo->xi['reply_btns_bkcolor']);
-			$GLOBALS['phpgw']->template->set_var('reply_btns_text',$this->bo->xi['reply_btns_text']);
-			$GLOBALS['phpgw']->template->set_var('lnk_goback_folder',$this->bo->xi['lnk_goback_folder']);
-			$GLOBALS['phpgw']->template->set_var('ilnk_reply',$this->bo->xi['ilnk_reply']);
-			$GLOBALS['phpgw']->template->set_var('ilnk_replyall',$this->bo->xi['ilnk_replyall']);
-			$GLOBALS['phpgw']->template->set_var('ilnk_forward',$this->bo->xi['ilnk_forward']);
-			$GLOBALS['phpgw']->template->set_var('ilnk_delete',$this->bo->xi['ilnk_delete']);
+			$tpl_vars = Array(
+				// ----  Images and Hrefs For Reply, ReplyAll, Forward, and Delete  -----
+				'theme_font'		=> $this->bo->xi['theme_font'],
+				'theme_th_bg'		=> $this->bo->xi['theme_th_bg'],
+				'theme_row_on'		=> $this->bo->xi['theme_row_on'],
+				'reply_btns_bkcolor' => $this->bo->xi['reply_btns_bkcolor'],
+				'reply_btns_text'	=> $this->bo->xi['reply_btns_text'],
+				
+				'lnk_goback_folder'	=> $this->bo->xi['lnk_goback_folder'],
+				'ilnk_reply'		=> $this->bo->xi['ilnk_reply'],
+				'ilnk_replyall'		=> $this->bo->xi['ilnk_replyall'],
+				'ilnk_forward'		=> $this->bo->xi['ilnk_forward'],
+				'ilnk_delete'		=> $this->bo->xi['ilnk_delete']
+			);
+			$GLOBALS['phpgw']->template->set_var($tpl_vars);
 			
 			
 			// ---- DEBUG: Show Information About Each Part  -----
+			//  the debug output needs updating
 			if ($this->bo->debug > 0)
 			{
 				$GLOBALS['phpgw']->template->set_var('msg_body_info',$this->bo->xi['msg_body_info']);
@@ -229,7 +200,7 @@
 			$GLOBALS['phpgw']->template->set_var('view_raw_message_href',$this->bo->xi['view_raw_message_href']);
 			
 			// -----  SHOW MESSAGE  -------
-			@set_time_limit(120);
+			//@set_time_limit(120);
 			$count_part_nice = count($this->bo->part_nice);
 			for ($i = 0; $i < $count_part_nice; $i++)
 			{
@@ -259,6 +230,7 @@
 					$msgball['part_no'] = $this->bo->part_nice[$i]['m_part_num_mime'];
 					
 					// -----  Echo This Data Directly to the Client
+					// since the php version of this of b0rked for large msgs, perhaps use sockets code?
 					echo '<pre>';
 					echo $GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball);
 					echo '</pre>';
@@ -272,9 +244,7 @@
 					break;
 				}
 			}
-			@set_time_limit(0);
-			// by now it should be OK to close the stream
-			$GLOBALS['phpgw']->msg->end_request();
+			//@set_time_limit(0);
 			
 			if ((isset($did_echo_dump))
 			&& ($did_echo_dump == True))
@@ -285,7 +255,16 @@
 			else
 			{
 				$GLOBALS['phpgw']->template->pfp('out','T_message_main');
+				//$GLOBALS['phpgw']->common->phpgw_footer();
 			}
+			// tell apache to release emeory back to the system on script end
+			//apache_child_terminate();
+
+			// close down ALL mailserver streams
+			$GLOBALS['phpgw']->msg->end_request();
+			// destroy the object
+			$GLOBALS['phpgw']->msg = '';
+			unset($GLOBALS['phpgw']->msg);
 		}
 	}
 ?>

@@ -1,5 +1,5 @@
 <!-- begin filter_list.tpl -->
-{pref_errors}
+{widget_toolbar}
 <p>
   <b>{page_title}</b>
   <hr>

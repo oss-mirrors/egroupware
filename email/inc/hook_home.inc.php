@@ -15,138 +15,137 @@
 	if($d1 == 'htt' || $d1 == 'ftp' )
 	{
 		echo "Failed attempt to break in via an old Security Hole!<br>\n";
-		$GLOBALS['phpgw_info']['flags']['nodisplay'] = True;
-		exit;
+		$GLOBALS['phpgw']->common->phpgw_exit();
 	}
 	unset($d1);
-
+	
+	
 	// does this array item actually exist before we create the mail_msg, where is it created?
-	if ($GLOBALS['phpgw_info']['user']['preferences']['email']['mainscreen_showmail'] == True)
+	//if ($GLOBALS['phpgw_info']['user']['preferences']['email']['mainscreen_showmail'] == True)
+	
+	// create a msg object just to have access to the prefs
+	$my_msg_bootstrap = '';
+	$my_msg_bootstrap = CreateObject("email.msg_bootstrap");
+	$my_msg_bootstrap->set_do_login(False);
+	$my_msg_bootstrap->ensure_mail_msg_exists('email.hook_home', 0);
+	
+	// does account 0 (default, main account) have this pref set
+	// this pref is either set for "ON", of not set which represents a "no"
+	// other accounts can be shown by (1) giving the extra accounts access to this pref item, and 
+	// (2) by doing a loop testing for accounts other then just account 0
+	if ($GLOBALS['phpgw']->msg->get_isset_pref('mainscreen_showmail', 0))
 	{
-		// ----  Create the base email Msg Class    -----
-		if(!is_object(@$GLOBALS['phpgw']->msg))
-		{
-			$GLOBALS['phpgw']->msg = CreateObject('email.mail_msg');
-		}
-
+		// NO LONGER needed, from here on, msg objects opens streams on demand if requied
+		//$my_msg_bootstrap = '';
+		//$my_msg_bootstrap = CreateObject("email.msg_bootstrap");
+		//$my_msg_bootstrap->ensure_mail_msg_exists('email.hook_home', 0);
+		
 		$data = Array();
+		
+		/*  class mail_msg "new_message_check()"
+		  // this is the structure you will get
+		  $inbox_data['is_imap'] boolean - pop3 server do not know what is "new" or not
+		  $inbox_data['folder_checked'] string - the folder checked, as processed by the msg class
+		  $inbox_data['alert_string'] string - what to show the user about this inbox check
+		  $inbox_data['number_new'] integer - for IMAP is number "unseen"; for pop3 is number messages
+		  $inbox_data['number_all'] integer - for IMAP and pop3 is total number messages in that inbox
+		*/
+		$inbox_data = Array();
+		$inbox_data = $GLOBALS['phpgw']->msg->new_message_check();
 
-		$args_array = Array();
-		$args_array['folder'] = 'INBOX';
-		$args_array['do_login'] = True;
-		$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
-		if(!$some_stream)
+		$title = '<font color="#FFFFFF">'.lang('EMail').' '.$inbox_data['alert_string'].'</font>';
+
+		if($inbox_data['number_all'] >= 5)
 		{
-			$title = '<font color="#FFFFFF">'.lang('EMail').'</font>';
-			$extra_data = '<b>Mail error:</b> Can not open connection to mail server';
+			$check_msgs = 5;
 		}
 		else
 		{
-			/*  class mail_msg "new_message_check()"
-			  // this is the structure you will get
-			  $inbox_data['is_imap'] boolean - pop3 server do not know what is "new" or not
-			  $inbox_data['folder_checked'] string - the folder checked, as processed by the msg class
-			  $inbox_data['alert_string'] string - what to show the user about this inbox check
-			  $inbox_data['number_new'] integer - for IMAP is number "unseen"; for pop3 is number messages
-			  $inbox_data['number_all'] integer - for IMAP and pop3 is total number messages in that inbox
-			*/
-			$inbox_data = Array();
-			$inbox_data = $GLOBALS['phpgw']->msg->new_message_check();
-
-			$title = '<font color="#FFFFFF">'.lang('EMail').' '.$inbox_data['alert_string'].'</font>';
-
-			if($inbox_data['number_all'] >= 5)
-			{
-				$check_msgs = 5;
-			}
-			else
-			{
-				$check_msgs = $inbox_data['number_all'];
-			}
-
-			if ($inbox_data['number_all'] > 0)
-			{
-				$msgball_list = array();
-				$msgball_list = $GLOBALS['phpgw']->msg->get_msgball_list();
-			}
-			for($i=0; $i<$check_msgs; $i++)
-			{
-				$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msgball_list[$i]);
-				$subject = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'');
-				if(strlen($subject) > 65)
-				{
-					$subject = substr($subject,0,65).' ...';
-				}
-				$data[] = array(
-					'text' => $subject,
-					'link' => $GLOBALS['phpgw']->link(
-							'/index.php',
-							'menuaction=email.uimessage.message'
-							.'&'.$msgball_list[$i]['uri']
-					)
-				);
-			}
-
-			// COMPOSE NEW email link
-			$compose_link = $GLOBALS['phpgw']->link(
-						'/index.php',
-						'menuaction=email.uicompose.compose'
-						// this data tells us where to return to after sending a message
-						// since we started from home page, send can not (at this time) take us back there
-						// so instead take user to INBOX for the default account (acctnum 0) after clicking the send button
-						.'&fldball[folder]=INBOX'
-						.'&fldball[acctnum]=0'
-			);
-			$compose_href = '<a href="'.$compose_link.'">'.lang('Compose New').'</a>'."\r\n";
-
-			// ADD FOLDER LISTBOX TO HOME PAGE (Needs to be TEMPLATED)
-			// Does This Mailbox Support Folders (i.e. more than just INBOX)?
-			if($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders() == False)
-			{
-				$extra_data = '&nbsp; &nbsp;'.$compose_href;
-			}
-			else
-			{
-				// FUTURE: this will pick up the user option to show num unseen msgs in dropdown list
-				//$listbox_show_unseen = True;
-				$listbox_show_unseen = False;
-				// build the $feed_args array for the all_folders_listbox function
-				// anything not specified will be replace with a default value if the function has one for that param
-				$feed_args = Array(
-					'mailsvr_stream'    => '',
-					'pre_select_folder' => '',
-					'skip_folder'       => '',
-					'show_num_new'      => $listbox_show_unseen,
-					'widget_name'       => 'fldball_fake_uri',
-					'folder_key_name'   => 'folder',
-					'acctnum_key_name'  => 'acctnum',
-					'on_change'         => 'document.switchbox.submit()',
-					'first_line_txt'    => lang('switch current folder to')
-				);
-				// get you custom built HTML listbox (a.k.a. selectbox) widget
-				$switchbox_listbox = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);
-				// make it another TR we can insert into the home page portal object
-				// and surround it in FORM tags so the submit will work
-				$switchbox_action = $GLOBALS['phpgw']->link(
-							'/index.php',
-							'menuaction=email.uiindex.index'
-				);
-				$extra_data = '<form name="switchbox" action="'.$switchbox_action.'" method="post">'."\r\n"
-					.'<td align="left">'."\r\n"
-					.'&nbsp;<strong>'.lang('E-Mail Folders').':</strong>&nbsp;'.$switchbox_listbox."\r\n"
-					.'&nbsp; &nbsp;'.$compose_href."\r\n"
-					.'</td>'."\r\n"
-					.'</form>'."\r\n";
-			}
-			$GLOBALS['phpgw']->msg->end_request();
+			$check_msgs = $inbox_data['number_all'];
 		}
 
+		if ($inbox_data['number_all'] > 0)
+		{
+			$msgball_list = array();
+			$msgball_list = $GLOBALS['phpgw']->msg->get_msgball_list();
+		}
+		for($i=0; $i<$check_msgs; $i++)
+		{
+			$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msgball_list[$i]);
+			$subject = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'');
+			if(strlen($subject) > 65)
+			{
+				$subject = substr($subject,0,65).' ...';
+			}
+			$data[] = array(
+				'text' => $subject,
+				'link' => $GLOBALS['phpgw']->link(
+						'/index.php',
+						'menuaction=email.uimessage.message'
+						.'&'.$msgball_list[$i]['uri']
+				)
+			);
+		}
+
+		// COMPOSE NEW email link
+		$compose_link = $GLOBALS['phpgw']->link(
+					'/index.php',
+					'menuaction=email.uicompose.compose'
+					// this data tells us where to return to after sending a message
+					// since we started from home page, send can not (at this time) take us back there
+					// so instead take user to INBOX for the default account (acctnum 0) after clicking the send button
+					.'&fldball[folder]=INBOX'
+					.'&fldball[acctnum]=0'
+		);
+		$compose_href = '<a href="'.$compose_link.'">'.lang('Compose New').'</a>'."\r\n";
+
+		// ADD FOLDER LISTBOX TO HOME PAGE (Needs to be TEMPLATED)
+		// Does This Mailbox Support Folders (i.e. more than just INBOX)?
+		if($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders() == False)
+		{
+			$extra_data = '&nbsp; &nbsp;'.$compose_href;
+		}
+		else
+		{
+			// build the $feed_args array for the all_folders_listbox function
+			// anything not specified will be replace with a default value if the function has one for that param
+			$feed_args = Array(
+				'mailsvr_stream'    => '',
+				'pre_select_folder' => '',
+				'skip_folder'       => '',
+				'show_num_new'      => $GLOBALS['phpgw_info']['user']['preferences']['email']['newmsg_combobox'],
+				'widget_name'       => 'fldball_fake_uri',
+				'folder_key_name'   => 'folder',
+				'acctnum_key_name'  => 'acctnum',
+				'on_change'         => 'document.switchbox.submit()',
+				'first_line_txt'    => lang('switch current folder to')
+			);
+			// get you custom built HTML listbox (a.k.a. selectbox) widget
+			$switchbox_listbox = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);
+			// make it another TR we can insert into the home page portal object
+			// and surround it in FORM tags so the submit will work
+			$switchbox_action = $GLOBALS['phpgw']->link(
+						'/index.php',
+						'menuaction=email.uiindex.index'
+			);
+			$extra_data = '<form name="switchbox" action="'.$switchbox_action.'" method="post">'."\r\n"
+				.'<td align="left">'."\r\n"
+				.'&nbsp;<strong>'.lang('E-Mail Folders').':</strong>&nbsp;'.$switchbox_listbox."\r\n"
+				.'&nbsp; &nbsp;'.$compose_href."\r\n"
+				.'</td>'."\r\n"
+				.'</form>'."\r\n";
+		}
+		$GLOBALS['phpgw']->msg->end_request();
+		
 		$portalbox = CreateObject('phpgwapi.listbox',
 			Array(
 				'title'     => $title,
+				'primary'   => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'secondary' => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'tertiary'  => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
 				'width'     => '100%',
 				'outerborderwidth' => '0',
-				'header_background_image' => $GLOBALS['phpgw']->common->image('phpgwapi/templates/default','bg_filler')
+				'header_background_image' => $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler')
 			)
 		);
 		$app_id = $GLOBALS['phpgw']->applications->name2id('email');

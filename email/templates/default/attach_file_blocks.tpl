@@ -21,6 +21,7 @@
 <!-- BEGIN B_attached_list -->
 <tr>
 	<td>
+		<input type="hidden" name="{hidden_delete_name}" value="{hidden_delete_filename}">
 		<input type="checkbox" name="{ckbox_delete_name}" value="{ckbox_delete_value}">{ckbox_delete_filename}
 	</td>
 </tr>

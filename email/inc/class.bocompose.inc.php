@@ -1,87 +1,282 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - email BO Class	for Folder Actions and List Display		*
-	* http://www.phpgroupware.org							*
-	* Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>		*
+	* Anglemail - email BO Class Compose and SpellCheck			*
+	* http://www.anglemail.org								*
+	* Written by Angelo (Angles) Puglisi <angles@aminvestments.com>		*
+	* Copyright 2001, 2002 Angelo "Angles" Puglisi 
 	* --------------------------------------------							*
 	*  This program is free software; you can redistribute it and/or modify it		*
 	*  under the terms of the GNU General Public License as published by the	*
 	*  Free Software Foundation; either version 2 of the License, or (at your		*
-	*  option) any later version.								*
+	*  option) any later version.										*
 	\**************************************************************************/
 	
 	/* $Id$ */
 	
+	/*!
+	@class bocompose
+	@abstract guts of compose logic is in here
+	@ discussion ?
+	*/
 	class bocompose
 	{
 		var $public_functions = array(
-			'get_langed_labels'	=> True,
 			'compose'		=> True
 		);
-		//var $debug = 3;
-		var $debug = 0;
 		var $xi;
-		var $xml_functions = array();
 		var $my_validator;
+		var $msg_bootstrap;
 		
-		var $soap_functions = array(
-			'get_langed_labels' => array(
-				'in'  => array('int'),
-				'out' => array('array')
-			),
-			'compose' => array(
-				'in'  => array('array'),
-				'out' => array('int')
-			)
-		);
+		// CHOOSE YOUR ADDRESSBOOK
+		var $addybook_choice;
+		
+		var $debug = 0;
+		//var $debug = 3;
 		
 		function bocompose()
 		{
-			
+			/*!
+			@class requires msg_bootstrap object
+			@discussion bocompose needs GLOBALS[phpgw]->msg_bootstrap which has function "ensure_mail_msg_exists". 
+			Its safe to repeatedly use create_object on it because the api is smart enough not to re-create it if it already exists. 
+			And that function "ensure_mail_msg_exists". will not re-create or re-login, so this is "safe".
+			LEX:
+			Also, initializes the addressbook choice as per user set preferences
+			*/
+			// can not do this here because the msg object may not be available yet
+			//$this->addybook_choice = $GLOBALS['phpgw_info']['user']['preferences']['email']['addressbook_choice'];
+			$this->msg_bootstrap = CreateObject("email.msg_bootstrap");
+			//return;
 		}
 		
-		function compose()
+		/*!
+		@function get_compose_form_action_url
+		@abstract ?
+		@param $menuaction_target (string)
+		@author Angles
+		@discussion Used by this class and also exposes some usefull functionality, mail.spell uses this function, for example.
+		@access public
+		*/
+		function get_compose_form_action_url($menuaction_target='')
 		{
-			$not_set = $GLOBALS['phpgw']->msg->not_set;
-			
-			// attempt (or not) to reuse an existing mail_msg object, i.e. if one ALREADY exists before entering
-			//$attempt_reuse = True;
-			$attempt_reuse = False;
-			
-			if ($this->debug) { echo 'ENTERING: email.bocompose.compose'.'<br>'; }
-			if ($this->debug) { echo 'email.bocompose.compose: local var attempt_reuse=['.serialize($attempt_reuse).'] ; reuse_feed_args[] dump<pre>'; print_r($reuse_feed_args); echo '</pre>'; }
-			// create class objects
-			//$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
-			
-			if (is_object($GLOBALS['phpgw']->msg))
+			if ($menuaction_target != '')
 			{
-				if ($this->debug) { echo 'email.bocompose.compose: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
+				// ok, we'll  use this menuaction_target
 			}
 			else
 			{
-				if ($this->debug) { echo 'email.bocompose.compose: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
-				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+				// default value for this form 
+				//$menuaction_target = 'email.bosend.send';
+				$menuaction_target = 'email.bosend.sendorspell';
 			}
 			
-			$args_array = Array();
-			// should we log in or not
-			$args_array['do_login'] = True;
-			
-			// "start your engines"
-			if ($this->debug > 1) { echo 'email.bocompose.compose: call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
-			$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
-			// error if login failed
-			if (($args_array['do_login'] == True)
-			&& (!$some_stream))
+			// what value does the "Send" button need
+			if ($GLOBALS['phpgw']->msg->get_isset_arg('msgball'))
 			{
-				$GLOBALS['phpgw']->msg->login_error($GLOBALS['PHP_SELF'].', compose()');
+				$msgball = $GLOBALS['phpgw']->msg->get_arg_value('msgball');
+				// generally, msgball arg exists when reply,replyall, or forward is being done
+				// if it exists, preserve (carry forward) its "folder" "action" and "acctnum" values
+				$send_btn_action = $GLOBALS['phpgw']->link(
+						'/index.php',
+						'menuaction='.$menuaction_target
+						//.'&action=forward'
+						.'&action='.$GLOBALS['phpgw']->msg->get_arg_value('action')
+						.'&'.$msgball['uri']
+						// this is used to preserve these values when we return to folder list after the send
+						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+				);
+				if (($GLOBALS['phpgw']->msg->get_isset_arg('action'))
+				&& ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'forward')
+				&& ($GLOBALS['phpgw']->msg->get_isset_arg('fwd_proc')))
+				{
+					$send_btn_action = $send_btn_action
+						.'&fwd_proc='.$GLOBALS['phpgw']->msg->get_arg_value('fwd_proc');
+				}
 			}
+			elseif ($GLOBALS['phpgw']->msg->get_isset_arg('fldball'))
+			{
+				// if fldball it exists, preserve (carry forward) its "folder" and "acctnum" values
+				// generally, fldball arg exists only when NOT doing reply,replyall, or forward
+				// because a msgball would be supplied in those cases.
+				// when simply composing a message, the code that calls this compose page 
+				// *should* generate and pass into here a fldball to hold the relevent 
+				// fldball["acctnum"] value, and also the fldball["folder"] value will be used
+				// to help us decide which page to display to the user after the Send button is clicked,
+				// that is, what folder to return to in the uiindex page we goto after the send.
+				// since we are not dealing with a specific message here, we will pass the data
+				// on in the form of a fldball structure, which is more generic in nature in that
+				// it never holds a "msgnum" value.
+				$fldball = $GLOBALS['phpgw']->msg->get_arg_value('fldball');
+				$send_btn_action = $GLOBALS['phpgw']->link(
+						'/index.php',
+						'menuaction='.$menuaction_target
+						// this is used to preserve these values when we return to folder list after the send
+						.'&fldball[folder]='.$fldball['folder']
+						.'&fldball[acctnum]='.$fldball['acctnum']
+						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+				);
+			}
+			else
+			{
+				// no msgball, no fldball, so not doing a reply/replyall/forward , 
+				// and probably the code forget to supply and pass into here the "acctnum"
+				// and "folder" data, so we will use currently prevailing values, but this
+				// is depreciated, fallback procedure that does not necessarily preserve and
+				// pass on precise acctnum and folder value data
+				$send_btn_action = $GLOBALS['phpgw']->link(
+						'/index.php',
+						'menuaction='.$menuaction_target
+						// this is used to preserve these values when we return to folder list after the send
+						.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
+						.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum()
+						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+				);
+			}
+			return $send_btn_action;
+		}
+		/*!
+		@function quote_inline_message
+		@abstract Handle quoting, cleaning up of replied or inline forwarded messages
+		@discussion I didnt want to copy all that chunk of stuff in the reply/reply all body building section
+		so i though "hey, its time for a function" ... there... I know this is probably not the way to do it
+		@access private
+		*/
+		function quote_inline_message($body,$msgball)
+		{
+			
+					// ----  Quoted Bodystring of Re:,Fwd: Message is the "First Presentable" part  -----
+					// as determimed in class.bomessage and passed in the uri as "msgball[part_no]=X.X"
+					// most emails have many MIME parts, some may actually be blank, we do not want to
+					// reply to a blank part, that would look dumb and is not correct behavior. Instead, we want
+					// to quote the first body port that has some text, which could be anywhere.
+					// NOTE: we should ALWAYS get a "First Presentable" value from class.bomessage
+					// if not (a rare and screwed up situation) then assume msgball[part_no]=1
+					// Also, if the first presentable part is encoded as qprint or base64, or is subtype html
+					// class.bomessage should pass that info along as well
+					if ((!isset($msgball['part_no']))
+					|| ($msgball['part_no'] == ''))
+					{
+						// this *should* never happen, we should always get a good "First Presentable"
+						// value in $msgball['part_no'] , but we can assume the first part if not specified
+						$msgball['part_no'] = '1';
+					}
+					
+					$bodystring = $GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball);
+					// see if we have to un-do qprint (or other) encoding of the part we are about to quote
+					if (($GLOBALS['phpgw']->msg->get_isset_arg('encoding'))
+					|| ($GLOBALS['phpgw']->msg->get_isset_arg('subtype')))
+					{
+						// see if we have to un-do qprint encoding (fairly common)
+						if ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'qprint')
+						{
+							$bodystring = $GLOBALS['phpgw']->msg->qprint($bodystring);
+						}
+						// *rare, maybe never seen* see if we have to un-do base64 encoding
+						elseif ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'base64')
+						{
+							// a human readable body part (non-attachment) should NOT be base64 encoded
+							// but you can never account for idiots
+							$bodystring = $GLOBALS['phpgw']->msg->de_base64($bodystring);
+						}
+						// after that idiot check, we need another now as well...
+						// *TOTALLY IDIOTIC* hotmail.com may send HTML ONLY mail
+						// without the rfc REQUIRED text only part, so we have to strip html
+						if ($GLOBALS['phpgw']->msg->get_arg_value('subtype') == 'html')
+						{
+							// class validator has the required function
+							$this->my_validator = CreateObject("phpgwapi.validator");
+							// you can never account for idiots, there should be a plain version of this IN THE MAIL
+							$bodystring = $this->my_validator->strip_html($bodystring);
+						}
+					}
+					// "normalize" all line breaks into CRLF pairs
+					$bodystring = $GLOBALS['phpgw']->msg->normalize_crlf($bodystring);
+					
+					// ----- Remove Email "Personal Signature" from Quoted Body  -----
+					// RFC's unofficially suggest you remove the "personal signature" before quoting the body
+					// a standard sig begins with "-- CRFL", that's [dash][dash][space][CRLF]
+					// and *should* be no more than 4 lines in length, followed by a CFLF
+					//$bodystring = preg_replace("/--\s{0,1}\r\n.{1,}\r\n\r\n/smx", "BLAA", $bodystring);
+					//$bodystring = preg_replace("/--\s{0,1}\r\n(.{1,}\r\n){1,5}/smx", "", $bodystring);
+					// sig = "dash dash space CRLF (anything and CRLF) repeated 1 to 5 times"
+					//$bodystring = preg_replace("/--\s{0,1}\r\n.(?!>)(.{1,}\r\n){1,5}/smx", "", $bodystring);
+					$bodystring = preg_replace("/\r\n[-]{2}\s{0,1}\r\n\w.{0,}\r\n(.{1,}\r\n){0,4}/", "\r\n", $bodystring);
+					// sig = "CRLF dash dash space(0or1) CRLF anyWordChar anything CRLF (anything and CRLF) repeated 0 to 4 times"
+					
+					//now is a good time to trim the body
+					trim($bodystring);
+					
+					// ----- Quote The Body You Are Replying To With ">"  ------
+					$body_array = array();
+					// we need *some* line breaks in the body so we know where to add the ">" quoting char(s)
+					// some relatively short emails may not have any CRLF pairs, but may have a few real long lines
+					//so, add linebreaks to the body if none are already existing
+					if (!ereg("\r\n", $bodystring))
+					{
+						// aim for a 74-80 char line length
+						$bodystring = $GLOBALS['phpgw']->msg->body_hard_wrap($bodystring, 74);
+					}
+					// explode into an array
+					$body_array = explode("\r\n", $bodystring);
+					// add the ">" quoting char to the beginning of each line
+					// note, this *will* loop at least once assuming the body has one line at least
+					// therefor the var "body" *will* get filled
+					for ($bodyidx = 0; $bodyidx < count($body_array); ++$bodyidx)
+					{
+						// add the ">" so called "quoting" char to the original body text
+						// NOTE: do NOT trim the LEFT part of the string, use RTRIM instead
+						$this_line = '>' . rtrim($body_array[$bodyidx]) ."\r\n";
+						$body .= $this_line;
+					}
+					
+					// email needs to be sent with NO ENCODED HTML ENTITIES
+					// it's up to the endusers MUA to handle any htmlspecialchars
+					// as for 7-bit vs. 8-bit, we prefer to leave body chars as-is and send out as 8-bit mail
+					// Later Note: see RFCs 2045-2049 for what MTA's (note "T") can and can not handle
+					return $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
+		}
+		
+		/*!
+		@function compose
+		@abstract The guts of the compose page logic is here.
+		@author Angles
+		@discussion ?
+		@access public
+		*/
+		function compose($special_instructions='')
+		{
+			if ($this->debug) { echo 'ENTERING: email.bocompose.compose :: $special_instructions: '.$special_instructions.'<br>'; }
+			
+			// this function is in class.msg_bootstrap.inc.php, we created in the constructor for this class.
+			$this->msg_bootstrap->ensure_mail_msg_exists('email.bocompose.compose', $this->debug);
+			@$not_set = $GLOBALS['phpgw']->msg->not_set;
 			
 			// ---- BEGIN BO COMPOSE
 			
+			// ----  Handle Request from Mail.Spell class  -----
+			if ($special_instructions == 'mail_spell_special_handling')
+			{
+				// just act stupid and output the form using whatever vars mail.spell set for us
+				$to_box_value = $GLOBALS['phpgw']->msg->htmlspecialchars_encode(urldecode($GLOBALS['phpgw']->msg->get_arg_value('to')));
+				$cc_box_value = $GLOBALS['phpgw']->msg->htmlspecialchars_encode(urldecode($GLOBALS['phpgw']->msg->get_arg_value('cc')));
+				$bcc_box_value = $GLOBALS['phpgw']->msg->htmlspecialchars_encode(urldecode($GLOBALS['phpgw']->msg->get_arg_value('bcc')));
+				$subject = $GLOBALS['phpgw']->msg->htmlspecialchars_encode(urldecode($GLOBALS['phpgw']->msg->get_arg_value('subject')));
+				// body is a little more tricky, ...
+				$body = $GLOBALS['phpgw']->msg->get_arg_value('body');
+				// first we decode any html special chars that may be in the message, there may be a mix of unencoded and encoded, so standardize unencoded.
+				$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
+				// now we know all (all ?) html specialchars are decoded, so we will not get that erronious encoding of the ampersand that is actually itself part of an html specialchar
+				$body = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($body);
 			
 			// ----  Handle Replying and Forwarding  -----
-			if ($GLOBALS['phpgw']->msg->get_isset_arg('["msgball"]["msgnum"]'))
+			}
+			elseif ($GLOBALS['phpgw']->msg->get_isset_arg('["msgball"]["msgnum"]'))
 			{
 				if ($this->debug > 1) { echo 'email.bocompose.compose: get_isset_arg ["msgball"]["msgnum"] is TRUE <br>'; }
 				if ($this->debug > 1) { echo 'email.bocompose.compose: $GLOBALS[phpgw]->msg->get_arg_value(action) : ['.$GLOBALS['phpgw']->msg->get_arg_value('action').'] <br>'; }
@@ -296,8 +491,14 @@
 						.'  From ' .$fwd_info_from ."\r\n"
 						.'  Date ' .$fwd_info_date ."\r\n"
 						.'  Subject ' .$fwd_info_subject ."\r\n";
-					
-					
+					//Check to see if they want us to quote the forwarded message's body and inlude it
+					//in the mail we are going to compose
+					$fwd_as_inline_pref=$GLOBALS['phpgw']->msg->get_pref_value('fwd_inline_text');
+					print "<br>$fwd_as_inline_pref<br>";
+					if($fwd_as_inline_pref)
+					{
+						$body=$this->quote_inline_message($body."\r\n",$msgball);
+					}
 					/*
 					$part_nice = pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1, $GLOBALS['phpgw']->msg->get_arg_value('folder'), $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
 					// see if one of the params if the boundry
@@ -388,112 +589,166 @@
 			}
 			
 			// what value does the "Send" button need
-			if ($GLOBALS['phpgw']->msg->get_isset_arg('msgball'))
+			$send_btn_action = $this->get_compose_form_action_url();
+			
+			
+			
+			// ADDRESSBOOK
+			// there are 2 possibilities
+			// (1) the original addressbook "orig"
+			// NOTE: "bogusarg" is needed to fill the "extraparam" arg in the javascript
+			// or else this will fail if there is nothing to give as an "extraparam"
+			$addylink_orig = $GLOBALS['phpgw']->link(
+				'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',
+					array(
+						"bogusarg" => "0"
+					)
+			);
+			//echo '$addylink_orig: '.$addylink_orig .'<br>';
+
+			// (2) the new addressbook "lex"
+			$addylink_lex = $GLOBALS['phpgw']->link(
+				"/index.php",
+					array(
+						"menuaction"=>"email.uijsaddressbook.show",
+						"viewmore" => "1",
+						"cat_id" => "-1"
+					)
+			);
+			//echo '$addylink_lex: '.$addylink_lex.'<br>';
+			
+			// grab your value from the prefs
+			// $this->addybook_choice (string) [ "orig" | "lex" ]
+			// FIX ME: this pref only respects account 0, should each acct have a different choice?
+			$this->addybook_choice = $GLOBALS['phpgw']->msg->get_pref_value('addressbook_choice',0);
+			
+			// that is the flag indicating what address book should pop up
+			if ($this->addybook_choice == 'lex')
 			{
-				// generally, msgball arg exists when reply,replyall, or forward is being done
-				// if it exists, preserve (carry forward) its "folder" "action" and "acctnum" values
-				$send_btn_action = $GLOBALS['phpgw']->link(
-						'/index.php',
-						'menuaction=email.bosend.send'
-						//.'&action=forward'
-						.'&action='.$GLOBALS['phpgw']->msg->get_arg_value('action')
-						.'&'.$msgball['uri']
-						// this is used to preserve these values when we return to folder list after the send
-						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
-						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
-				);
-				if (($GLOBALS['phpgw']->msg->get_isset_arg('action'))
-				&& ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'forward')
-				&& ($GLOBALS['phpgw']->msg->get_isset_arg('fwd_proc')))
-				{
-					$send_btn_action = $send_btn_action
-						.'&fwd_proc='.$GLOBALS['phpgw']->msg->get_arg_value('fwd_proc');
-				}
-			}
-			elseif ($GLOBALS['phpgw']->msg->get_isset_arg('fldball'))
-			{
-				// if fldball it exists, preserve (carry forward) its "folder" and "acctnum" values
-				// generally, fldball arg exists only when NOT doing reply,replyall, or forward
-				// because a msgball would be supplied in those cases.
-				// when simply composing a message, the code that calls this compose page 
-				// *should* generate and pass into here a fldball to hold the relevent 
-				// fldball["acctnum"] value, and also the fldball["folder"] value will be used
-				// to help us decide which page to display to the user after the Send button is clicked,
-				// that is, what folder to return to in the uiindex page we goto after the send.
-				// since we are not dealing with a specific message here, we will pass the data
-				// on in the form of a fldball structure, which is more generic in nature in that
-				// it never holds a "msgnum" value.
-				$fldball = $GLOBALS['phpgw']->msg->get_arg_value('fldball');
-				$send_btn_action = $GLOBALS['phpgw']->link(
-						'/index.php',
-						'menuaction=email.bosend.send'
-						// this is used to preserve these values when we return to folder list after the send
-						.'&fldball[folder]='.$fldball['folder']
-						.'&fldball[acctnum]='.$fldball['acctnum']
-						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
-						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
-				);
+				$js_addylink = $addylink_lex;
 			}
 			else
 			{
-				// no msgball, no fldball, so not doing a reply/replyall/forward , 
-				// and probably the code forget to supply and pass into here the "acctnum"
-				// and "folder" data, so we will use currently prevailing values, but this
-				// is depreciated, fallback procedure that does not necessarily preserve and
-				// pass on precise acctnum and folder value data
-				$send_btn_action = $GLOBALS['phpgw']->link(
-						'/index.php',
-						'menuaction=email.bosend.send'
-						// this is used to preserve these values when we return to folder list after the send
-						.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
-						.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum()
-						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
-						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
-				);
+				$js_addylink = $addylink_orig;
 			}
 			
 			
+			$this->xi['js_addylink'] = $js_addylink;
+			//we need to set the width of the addybook window according to user prefs
+			//$addywidth=$GLOBALS['phpgw_info']['user']['preferences']['email']['js_addressbook_screensize'];
+			// FIX ME: this pref only respects account 0, should each acct have a different choice?
+			$addywidth = $GLOBALS['phpgw']->msg->get_pref_value('js_addressbook_screensize',0);
+						
+			$this->xi['jsaddybook_width']=$addywidth;
+			//this is to determine the addybook's height
+			$this->xi['jsaddybook_height']=$addywidth*3/4;
+			// Set Image Directory and icon size and theme
+			$this->xi['image_dir'] = PHPGW_IMAGES;
+			$this->icon_theme = $GLOBALS['phpgw']->msg->get_pref_value('icon_theme');
+			$this->icon_size = $GLOBALS['phpgw']->msg->get_pref_value('icon_size');
+			$this->xi['toolbar_font'] = 'Arial, Helvetica, san-serif';
 			$this->xi['send_btn_action'] = $send_btn_action;
 			$this->xi['to_box_value'] = $to_box_value;
 			$this->xi['cc_box_value'] = $cc_box_value;
-			// FUTURE: when we do spell check or message GPG encoding, we may need to submit whatever is in 
-			// the bcc box (along with the other filled in data) simply so we can re-display this same page with 
-			// spell checked or encoded message text
-			$bcc_box_value = '';
 			$this->xi['bcc_box_value'] = $bcc_box_value;
 			$this->xi['subject'] = $subject;
 			$this->xi['body'] = $body;
-			
-			$this->xi['js_addylink'] = $GLOBALS['phpgw']->link(
-				'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php');
 			$this->xi['form1_name'] = 'doit';
 			$this->xi['form1_method'] = 'POST';
 			$this->xi['buttons_bgcolor'] = $GLOBALS['phpgw_info']['theme']['em_folder'];
-			$this->xi['btn_addybook_type'] = 'button';
-			$this->xi['btn_addybook_value'] = lang('addressbook');
-			$this->xi['btn_addybook_onclick'] = 'addybook();';
-			$this->xi['btn_send_type'] = 'submit';
-			$this->xi['btn_send_value'] = lang('send');
+			$this->addressbook_text = lang('Address Book');
+			$this->addressbook_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-address-conduit-'.$this->icon_size.'.gif',$this->xi['addressbook_text'],'','','0');
+			$this->addressbook_onclick = 'addybook()';
+			$this->send_text = lang('Send');
+			$this->send_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-send-'.$this->icon_size.'.gif',$this->xi['send_text'],'','','0');
+			$this->send_onclick = 'send()';
+			$this->spellcheck_text = lang('Spell Check');
+			$this->spellcheck_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-spellcheck-'.$this->icon_size.'.gif',$this->xi['spellcheck_text'],'','','0');
+			$this->spellcheck_onclick = 'spellcheck()';
+			// Create Spell Object so we can check and see if we need a spell check button
+			$this->mail_spell = CreateObject("email.spell");
+			$this->attachfile_js_link = 
+				$GLOBALS['phpgw']->link('/index.php',
+					array(
+						'menuaction' => 'email.uiattach_file.attach'
+					)
+			);
+			$this->attachfile_js_onclick = 'attach_window(\''.$this->attachfile_js_link.'\')';
+			$this->attachfile_js_text = lang('Attach file');
+			$this->attachfile_js_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-add-attachment-'.$this->icon_size.'.gif',$this->xi['attachfile_js_txt'],'','','0');
+			// This code creates the buttons
+			switch ($GLOBALS['phpgw']->msg->get_pref_value('button_type')){
+				case 'text':
+					$this->xi['addressbook_button'] = '<a href="javascript:'.$this->addressbook_onclick.'">'.$this->addressbook_text.'</a>';
+					$this->xi['send_button'] = '<a href="javascript:'.$this->send_onclick.'">'.$this->send_text.'</a>';
+					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$this->attachfile_js_onclick.'">'.$this->attachfile_js_text.'</a>';
+					if ($this->mail_spell->get_can_spell())
+					{
+						$this->xi['spellcheck_button'] = '<a href="javascript:'.$this->spellcheck_onclick.'">'.$this->spellcheck_text.'</a><input type=hidden name="btn_spellcheck">';
+					}
+					
+					break;
+				case 'image':
+					$this->xi['send_button'] = '<a href="javascript:'.$this->send_onclick.'">'.$this->send_image.'</a>';
+					$this->xi['addressbook_button'] = '<a href="javascript:'.$this->addressbook_onclick.'">'.$this->addressbook_image.'</a>';
+					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$this->attachfile_js_onclick.'">'.$this->attachfile_js_image.'</a>';
+					if ($this->mail_spell->get_can_spell())
+					{
+						$this->xi['spellcheck_button'] = '<a href="javascript:'.$this->spellcheck_onclick.'">'.$this->spellcheck_image.'</a><input type=hidden name="btn_spellcheck">';
+					}
+					break;
+				case 'both':
+					$this->xi['send_button'] = '<a href="javascript:'.$this->send_onclick.'">'.$this->send_image.'&nbsp;'.$this->send_text.'</a>';
+					$this->xi['addressbook_button'] = '<a href="javascript:'.$this->addressbook_onclick.'">'.$this->addressbook_image.'&nbsp;'.$this->addressbook_text.'</a>';
+					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$this->attachfile_js_onclick.'">'.$this->attachfile_js_image.'&nbsp;'.$this->attachfile_js_text.'</a>';
+					if ($this->mail_spell->get_can_spell())
+					{
+						$this->xi['spellcheck_button'] = '<a href="javascript:'.$this->spellcheck_onclick.'">'.$this->spellcheck_image.'&nbsp;'.$this->spellcheck_text.'</a><input type=hidden name="btn_spellcheck">';
+					}
+					break;
+			}
+			
 			$this->xi['to_boxs_bgcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
 			$this->xi['to_boxs_font'] = $GLOBALS['phpgw_info']['theme']['font'];
-			$this->xi['to_box_desc'] = lang('to');
+			if($this->addybook_choice == 'lex')
+			{
+				//Okay, i dont know why the html class is nowhere instantiated here
+				//instead of creating one et all...im gonna play bad and build my
+				//uris here... ring if u dont like it....ill change it asap ..LEX
+				$toval= "<a href=\"javascript:addybook('&hidecc=1&hidebcc=1')\">".lang("to")."</a>";
+				$ccval= "<a href=\"javascript:addybook('&hideto=1&hidebcc=1')\">".lang("cc")."</a>"; 
+				$bccval="<a href=\"javascript:addybook('&hideto=1&hidecc=1')\">".lang("bcc")."</a>";
+				//another thing to do is this: if we hit a compose page this is a new mesage
+				//the little addressbook should forget all its cache
+				$jsaddybookui=CreateObject('email.uijsaddressbook');
+				$jsaddybookui->forget_all(1);
+			}
+			else
+			{
+				$toval=lang("to");
+				$ccval=lang("cc");
+				$bccval=lang("bcc");
+			}
+			$this->xi['to_box_desc'] = $toval;
 			$this->xi['to_box_name'] = 'to';
-			$this->xi['cc_box_desc'] = lang('cc');
+			$this->xi['cc_box_desc'] = $ccval;
 			$this->xi['cc_box_name'] = 'cc';
-			$this->xi['bcc_box_desc'] = lang('bcc');
+			$this->xi['bcc_box_desc'] = $bccval;
 			$this->xi['bcc_box_name'] = 'bcc';
 			$this->xi['subj_box_desc'] = lang('subject');
 			$this->xi['subj_box_name'] = 'subject';
 			$this->xi['checkbox_sig_desc'] = lang('Attach signature');
 			$this->xi['checkbox_sig_name'] = 'attach_sig';
 			$this->xi['checkbox_sig_value'] = 'true';
+			//Step One Addition for the request read notification checkbox
+			$this->xi['checkbox_req_notify_desc']= lang('Notify on delivery');
+			//$this->xi['checkbox_req_notify_desc']= lang('Request delivery notification');
+			$this->xi['checkbox_req_notify_name']= "req_notify";
+			$this->xi['checkbox_req_notify_value']= "true";
 			
-			$this->xi['attachfile_js_link'] = $GLOBALS['phpgw']->link(
-				'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/attach_file.php');
-			$this->xi['attachfile_js_text'] = lang('Attach file');
+			
+			//$this->xi['attachfile_js_link'] = $GLOBALS['phpgw']->link(
+			//	'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/attach_file.php');
 			$this->xi['body_box_name'] = 'body';
 			
 			if ($GLOBALS['phpgw']->msg->get_isset_pref('email_sig')
@@ -507,5 +762,7 @@
 			}
 			
 		}
+
+
 	}
 ?>

@@ -1,25 +1,26 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare API - POP3                                                  *
-  * This file written by Mark Peters <skeeter@phpgroupware.org>              *
-  * Handles specific operations in dealing with POP3                       *
-  * Copyright (C) 2001 Mark Peters and Angelo "Angles" Puglisi                       *
-  * -------------------------------------------------------------------------*
-  * This library is part of the phpGroupWare API                             *
-  * http://www.phpgroupware.org/api                                          * 
-  * ------------------------------------------------------------------------ *
-  * This library is free software; you can redistribute it and/or modify it  *
-  * under the terms of the GNU Lesser General Public License as published by *
-  * the Free Software Foundation; either version 2.1 of the License,         *
-  * or any later version.                                                    *
-  * This library is distributed in the hope that it will be useful, but      *
-  * WITHOUT ANY WARRANTY; without even the implied warranty of               *
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                     *
-  * See the GNU Lesser General Public License for more details.              *
-  * You should have received a copy of the GNU Lesser General Public License *
-  * along with this library; if not, write to the Free Software Foundation,  *
-  * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            *
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare API - POP3                                                  *
+	* This file written by Angelo "Angles" Puglisi <angles@aminvestments.com  *
+	* and Mark Peters <skeeter@phpgroupware.org>              *
+	* Handles specific operations in dealing with POP3                       *
+	* Copyright (C) 2001, 2002 Mark Peters and Angelo "Angles" Puglisi                       *
+	* -------------------------------------------------------------------------*
+	* This library is part of the phpGroupWare API                             *
+	* http://www.phpgroupware.org/api                                          * 
+	* ------------------------------------------------------------------------ *
+	* This library is free software; you can redistribute it and/or modify it  *
+	* under the terms of the GNU Lesser General Public License as published by *
+	* the Free Software Foundation; either version 2.1 of the License,         *
+	* or any later version.                                                    *
+	* This library is distributed in the hope that it will be useful, but      *
+	* WITHOUT ANY WARRANTY; without even the implied warranty of               *
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                     *
+	* See the GNU Lesser General Public License for more details.              *
+	* You should have received a copy of the GNU Lesser General Public License *
+	* along with this library; if not, write to the Free Software Foundation,  *
+	* Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            *
+	\**************************************************************************/
 
 	/*!
 	@class mail_dcom (sockets)
@@ -30,55 +31,87 @@
 	@author Angles, Skeeter, Itzchak Rehberg, Joseph Engo
 	@copyright LGPL
 	@package email (to be moved to phpgwapi when mature)
-	@access	public
+	@access public
 	*/
 	class mail_dcom extends mail_dcom_base
 	{
 		/**************************************************************************\
 		*	Functions that DO NOTHING in POP3  
 		\**************************************************************************/
+		/*!
+		@function createmailbox
+		@abstract unused function in pop3
+		*/
 		function createmailbox($stream,$mailbox) 
 		{
 			// N/A for pop3
 			if ($this->debug_dcom >= 1) { echo 'pop3: call to unused function in POP3: createmailbox<br>'; }
 			return true;
 		}
+		/*!
+		@function deletemailbox
+		@abstract unused function in pop3
+		*/
 		function deletemailbox($stream,$mailbox)
 		{
 			// N/A for pop3
 			if ($this->debug_dcom >= 1) { echo 'pop3: call to unused function in POP3: deletemailbox<br>'; }
 			return true;
 		}
+		/*!
+		@function expunge
+		@abstract unused function in pop3
+		*/
 		function expunge($stream)
 		{
 			// N/A for pop3
 			if ($this->debug_dcom >= 1) { echo 'pop3: call to unused function in POP3: expunge<br>'; }
 			return true;
 		}
+		/*!
+		@function listmailbox
+		@abstract unused function in pop3
+		*/
 		function listmailbox($stream,$ref,$pattern)
 		{
 			// N/A for pop3
 			if ($this->debug_dcom >= 1) { echo 'pop3: call to unused function in POP3: listmailbox (probable namespace discovery attempt)<br>'; }
 			return False;
 		}
+		/*!
+		@function mailcopy
+		@abstract unused function in pop3
+		*/
 		function mailcopy($stream,$msg_list,$mailbox,$flags)
 		{
 			// N/A for pop3
 			if ($this->debug_dcom >= 1) { echo 'pop3: call to unused function in POP3: mailcopy<br>'; }
 			return False;
 		}
+		/*!
+		@function mail_move
+		@abstract unused function in pop3
+		*/
 		function mail_move($stream,$msg_list,$mailbox)
 		{
 			// N/A for pop3
 			if ($this->debug_dcom >= 1) { echo 'pop3: call to unused function in POP3: mail_move<br>'; }
 			return False;
 		}
+		/*!
+		@function reopen
+		@abstract unused function in pop3
+		*/
 		function reopen($stream,$mailbox,$flags = "")
 		{
 			// N/A for pop3
 			if ($this->debug_dcom >= 1) { echo 'pop3: call to unused function in POP3: reopen<br>'; }
 			return False;
 		}
+		/*!
+		@function append
+		@abstract unused function in pop3
+		*/
 		function append($stream, $folder = "Sent", $header, $body, $flags = "")
 		{
 			// N/A for pop3
@@ -88,18 +121,30 @@
 		/**************************************************************************\
 		*	Functions Not Yet Implemented  in POP3
 		\**************************************************************************/
+		/*!
+		@function fetch_overview
+		@abstract function NOT YET IMPLEMENTED in pop3 sockets
+		*/
 		function fetch_overview($stream,$sequence,$flags)
 		{
 			// not yet implemented
 			if ($this->debug_dcom >= 1) { echo 'pop3: call to not-yet-implemented function in POP3: fetch_overview<br>'; }
 			return False;
 		}
+		/*!
+		@function noop_ping_test
+		@abstract function NOT YET IMPLEMENTED in pop3 sockets
+		*/
 		function noop_ping_test($stream)
 		{
 			// not yet implemented
 			if ($this->debug_dcom >= 1) { echo 'pop3: call to unimplemented socket function: noop_ping_test<br>'; }
 			return False;
 		}
+		/*!
+		@function server_last_error
+		@abstract function NOT YET IMPLEMENTED in pop3 sockets
+		*/
 		function server_last_error()
 		{
 			// not yet implemented
@@ -113,15 +158,14 @@
 		/*!
 		@function open
 		@abstract implements php function IMAP_OPEN
-		@param $fq_folder : string : {SERVER_NAME:PORT/OPTIONS}FOLDERNAME
-		@param $user :  string : account name to log into on the server
-		@param $pass :  string : password for this account on the mail server
-		@param $flags :  NOT YET IMPLEMENTED
-		@discussion implements the functionality of php function IMAP_OPEN
-		note that php's IMAP_OPEN applies to IMAP, POP3 and NNTP servers
-		@syntax ?
+		@param $fq_folder (string)   {SERVER_NAME:PORT/OPTIONS}FOLDERNAME (htmlized) &#123;SERVER_NAME&#058;PORT&#047;OPTIONS&#125;FOLDERNAME
+		@param $user (string) account name to log into on the server
+		@param $pass  (string) password for this account on the mail server
+		@param $flags (defined int) NOT YET IMPLEMENTED
+		@discussion implements the functionality of php function IMAP_OPEN 
+		note that php IMAP_OPEN applies to IMAP, POP3 and NNTP servers
 		@author Angles, skeeter
-		@access	public
+		@access public
 		*/
 		function open ($fq_folder, $user, $pass, $flags='')
 		{
@@ -139,8 +183,8 @@
 			if (!$this->open_port($server,$port,15))
 			{
 				echo '<p><center><b>' . lang('There was an error trying to connect to your POP3 server.<br>Please contact your admin to check the servername, username or password.').'</b></center>';
-				$GLOBALS['phpgw_info']['flags']['nodisplay'] = True;
-				exit;
+				echo('<CENTER><A HREF="'.$GLOBALS['phpgw']->link('/home.php').'">'.lang('Click here to continue').'...</A></CENTER>'); //cbsman			
+				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 			$this->read_port();
 			if(!$this->msg2socket('USER '.$user,"^\+ok",&$response) || !$this->msg2socket('PASS '.$pass,"^\+ok",&$response))
@@ -158,6 +202,16 @@
 			}
 		}
 		
+		/*!
+		@function close
+		@abstract implements php function IMAP_CLOSE
+		@param $flags (defined int) NOT YET IMPLEMENTED
+		@discussion implements the functionality of php function IMAP_CLOSE, 
+		note that with POP3, messages are marked &quot;Deleted&quot; and then automatically 
+		expunged on QUIT, aka IMAP_CLOSE.
+		@author Angles, skeeter
+		@access public
+		*/
 		function close($flags='')
 		{
 			if (!$this->msg2socket('QUIT',"^\+ok",&$response))
@@ -177,6 +231,14 @@
 		*	Mailbox Status and Information
 		\**************************************************************************/
 		
+		/*!
+		@function mailboxmsginfo
+		@abstract implements php function IMAP_MAILBOXMSGINFO
+		@param $stream_notused Not Used because api network class handles the stream
+		@discussion implements php function IMAP_MAILBOXMSGINFO
+		@author Angles, skeeter
+		@access public
+		*/
 		function mailboxmsginfo($stream_notused='')
 		{
 			if ($this->debug_dcom >= 1) { echo 'pop3: Entering mailboxmsginfo<br>'; }
@@ -230,6 +292,16 @@
 			}
 		}
 		
+		/*!
+		@function status
+		@abstract returns mailbox_status structure
+		@param $stream_notused Not Used because api network class handles the stream
+		@param $fq_folder Same server and folder string that the php function expects
+		@param $options defaults to SA_ALL, may not be completely implemented
+		@discussion needed
+		@author Angles, skeeter
+		@access public
+		*/
 		function status($stream_notused='', $fq_folder='',$options=SA_ALL)
 		{
 			if ($this->debug_dcom >= 1) { echo 'pop3: Entering status<br>'; }
@@ -258,7 +330,14 @@
 			return $info;
 		}
 		
-		// returns number of messages in the mailbox
+		/*!
+		@function num_msg
+		@abstract returns number of messages in the mailbox
+		@param $stream_notused Not Used because api network class handles the stream
+		@discussion actually usrs the function ->mailboxmsginfo to obtain the return data
+		@author Angles, skeeter
+		@access public
+		*/
 		function num_msg($stream_notused='')
 		{
 			if ($this->debug_dcom >= 1) { echo 'pop3: Entering num_msg<br>'; }
@@ -278,23 +357,24 @@
 		/*!
 		@function sort
 		@abstract implements IMAP_SORT
-		@param $stream_notused : socket class handles stream reference internally
-		@param $criteria :  integer : HOW to sort the messages, we prefer SORTARRIVAL, or "1" as default
-			SORTDATE:  0:  This is the Date that the senders email client stamps the message with
-			SORTARRIVAL: 1:  This is the date the email arrives at your email server (MTA)
-			SORTFROM:  2
-			SORTSUBJECT: 3
-			SORTSIZE:  6
-		@param $reverse : boolean : the ordering if the messages , low to high, or high to low
-			FALSE: 0:  lowest to highest  (default for php's builtin imap)
-			TRUE: 1:  highest to lowest, a.k.a. "Reverse Sorting"
-		@param $options : not implemented
+		@param $stream_notused socket class handles stream reference internally
+		@param $criteria (integer) HOW to sort the messages, we prefer SORTARRIVAL, or &quot;1&quot; as default
+		@param $reverse (boolean) the ordering if the messages , low to high, or high to low, where 
+			FALSE 0 lowest to highest  (default for php's builtin imap)
+			TRUE 1 highest to lowest, a.k.a. Reverse Sorting
+		@param $options not implemented
 		@result returns an array of integers which are messages numbers for the
 		messages sorted as requested.
-		@discussion: using SORTDATE can cause some messages to be displayed in the wrong
+		@discussion using SORTDATE can cause some messages to be displayed in the wrong
 		cronologicall order, because the sender's MUA can be innaccurate in date stamping
 		@author Angles, Skeeter, Itzchak Rehberg, Joseph Engo
-		@access	public
+		@access public
+		@syntax param criteria is used like this
+		SORTDATE 0 This is the Date that the senders email client stamps the message with
+		SORTARRIVAL 1  This is the date the email arrives at your email server (MTA)
+		SORTFROM  2
+		SORTSUBJECT 3
+		SORTSIZE  6
 		*/
 		function sort($stream_notused='',$criteria=SORTARRIVAL,$reverse=False,$options='')
 		{
@@ -386,6 +466,10 @@
 			return $return_array;
 		}
 		
+		/*!
+		@function fetch_header_element
+		@abstract ?
+		*/
 		function fetch_header_element($start,$stop,$element)
 		{
 			if ($this->debug_dcom >= 1) { echo 'pop3: Entering fetch_header_element<br>'; }
@@ -424,13 +508,13 @@
 		/*!
 		@function fetchstructure
 		@abstract implements IMAP_FETCHSTRUCTURE
-		@param $stream_notused : socket class handles stream reference internally
-		@param $msg_num :  integer
-		@param $flags : integer - FT_UID (not implimented)
+		@param $stream_notused  socket class handles stream reference internally
+		@param $msg_num (integer)
+		@param $flags (integer) - FT_UID (not implimented)
 		@result returns an instance of Class "msg_structure" is sucessful, False if error
-		@discussion  basiclly a replacement for PHP's c-client logic which is missing if IMAP is not builtin
-		@author Angles, (some sub-parts by Skeeter, Itzchak Rehberg, Joseph Engo)
-		@access	public
+		@discussion  basiclly a replacement for PHPs c-client logic which is missing if IMAP is not builtin
+		@author Angles, calls functions with authors  Skeeter, Itzchak Rehberg, Joseph Engo
+		@access public
 		*/
 		function fetchstructure($stream_notused,$msg_num,$flags="")
 		{
@@ -504,37 +588,40 @@
 					$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]);
 					
 					// go deeper
-					if (isset($this->msg_structure->parts[$lev_1]->parts))
+					$tmp_lev_1 = $this->msg_structure->parts[$lev_1];
+					if (isset($tmp_lev_1->parts))
 					{
-						for ($lev_2=0; $lev_2 < count($this->msg_structure->parts[$lev_1]->parts) ;$lev_2++)
+						for ($lev_2=0; $lev_2 < count($tmp_lev_1->parts) ;$lev_2++)
 						{
 							// grap 2nd level embedded data (if any)
-							if ($this->debug_dcom >= 2) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting this->msg_structure->parts['.$lev_1.']->parts['.$lev_2.'] of ['.(string)(count($this->msg_structure->parts[$lev_1]->parts)-1).'] embedded parts discovery * * * * *<br>'; }
+							if ($this->debug_dcom >= 2) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting this->msg_structure->parts['.$lev_1.']->parts['.$lev_2.'] of ['.(string)(count($tmp_lev_1->parts)-1).'] embedded parts discovery * * * * *<br>'; }
 							// Create Sub-Parts FetchStructure Data  (if necessary)  ---
 							// NOTE: param to  create_embeded_fetchstructure  is a REFERENCE
-							$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]->parts[$lev_2]);
+							$this->create_embeded_fetchstructure(&$tmp_lev_1->parts[$lev_2]);
 							
 							// go deeper
-							if (isset($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts))
+							$tmp_lev_2 = $tmp_lev_1->parts[$lev_2];
+							if (isset($tmp_lev_2->parts))
 							{
-								for ($lev_3=0; $lev_3 < count($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts) ;$lev_3++)
+								for ($lev_3=0; $lev_3 < count($tmp_lev_2->parts) ;$lev_3++)
 								{
 									// grap 3rd level embedded data (if any)
-									if ($this->debug_dcom >= 2) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting this->msg_structure->parts['.$lev_1.']->parts['.$lev_2.']->parts['.$lev_3.'] of ['.(string)(count($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts)-1).'] embedded parts discovery * * * * *<br>'; }
+									if ($this->debug_dcom >= 2) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting this->msg_structure->parts['.$lev_1.']->parts['.$lev_2.']->parts['.$lev_3.'] of ['.(string)(count($tmp_lev_2->parts)-1).'] embedded parts discovery * * * * *<br>'; }
 									// Create 3rd Level Sub-Parts FetchStructure Data  (if necessary)  ---
 									// NOTE: param to  create_embeded_fetchstructure  is a REFERENCE
-									$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts[$lev_3]);
+									$this->create_embeded_fetchstructure(&$tmp_lev_2->parts[$lev_3]);
 									
 									// go deeper
-									if (isset($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts[$lev_3]->parts))
+									$tmp_lev_3 = $tmp_lev_2->parts[$lev_3];
+									if (isset($tmp_lev_3->parts))
 									{
-										for ($lev_4=0; $lev_4 < count($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts[$lev_3]->parts) ;$lev_4++)
+										for ($lev_4=0; $lev_4 < count($tmp_lev_3->parts) ;$lev_4++)
 										{
 											// grap 3rd level embedded data (if any)
-											if ($this->debug_dcom >= 2) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting this->msg_structure->parts['.$lev_1.']->parts['.$lev_2.']->parts['.$lev_3.']->parts['.$lev_4.'] of ['.(string)(count($this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts[$lev_3]->parts)-1).'] embedded parts discovery * * * * *<br>'; }
+											if ($this->debug_dcom >= 2) { echo '<br>***<br>* * * * * * * * *<br>pop3: fetchstructure: attempting this->msg_structure->parts['.$lev_1.']->parts['.$lev_2.']->parts['.$lev_3.']->parts['.$lev_4.'] of ['.(string)(count($tmp_lev_3->parts)-1).'] embedded parts discovery * * * * *<br>'; }
 											// Create Sub-Parts FetchStructure Data  (if necessary)  ---
 											// NOTE: param to  create_embeded_fetchstructure  is a REFERENCE
-											$this->create_embeded_fetchstructure(&$this->msg_structure->parts[$lev_1]->parts[$lev_2]->parts[$lev_3]->parts[$lev_4]);
+											$this->create_embeded_fetchstructure(&$tmp_lev_3->parts[$lev_4]);
 										}
 									}
 									else
@@ -576,13 +663,13 @@
 		/*!
 		@function fill_toplevel_fetchstructure
 		@abstract HELPER  function for fetchstructure / IMAP_FETCHSTRUCTURE
-		@param $stream_notused : socket class handles stream reference internally
-		@param $msg_num :  integer
-		@param $flags : integer - FT_UID (not implimented)
+		@param $stream_notused socket class handles stream reference internally
+		@param $msg_num integer
+		@param $flags integer - FT_UID (not implimented)
 		@result returns an instance of Class "msg_structure" is sucessful, False if error
-		@discussion  basiclly a replacement for PHP's c-client logic which is missing if IMAP is not builtin
-		@author Angles, (some sub-parts by Skeeter, Itzchak Rehberg, Joseph Engo)
-		@access	private
+		@discussion basiclly a replacement for PHP's c-client logic which is missing if IMAP is not builtin
+		@author Angles, calls functions with authors Skeeter, Itzchak Rehberg, Joseph Engo
+		@access private
 		*/
 		function fill_toplevel_fetchstructure($stream_notused,$msg_num,$flags="")
 		{
@@ -695,11 +782,11 @@
 		/*!
 		@function create_embeded_fetchstructure
 		@abstract HELPER  function for fetchstructure / IMAP_FETCHSTRUCTURE
-		@param $info : **REFERENCE** to a class "msg_structure" object
-		@result NONE : this function DIRECTLY manipulates the referenced object
-		@discussion  as implemented, reference is to some part of class var $this->msg_structure
+		@param $info **REFERENCE** to a class "msg_structure" object
+		@result NONE this function DIRECTLY manipulates the referenced object
+		@discussion as implemented, reference is to some part of class var $this->msg_structure
 		@author Angles
-		@access	private
+		@access private
 		*/
 		function create_embeded_fetchstructure($info)
 		{
@@ -746,38 +833,48 @@
 						// BEGINNING of a new part is ALSO the ENDING of a prevoius part
 						// if we were in the state of "IN" on that prevoius part (if any previous part exists)
 						$cur_part_idx = count($info->parts) - 1;
-						if ((isset($info->parts[$cur_part_idx]))
-						&& ($info->parts[$cur_part_idx]->custom['detect_state'] == 'in'))
+						
+						if (isset($info->parts[$cur_part_idx]))
+						{
+							$tmp_cur_part_idx = $info->parts[$cur_part_idx];
+						}
+
+						if ((isset($tmp_cur_part_idx))
+						&& ($tmp_cur_part_idx->custom['detect_state'] == 'in'))
 						{
 							// we were already "in" so we found ENDING data
 							// for the previous part, (as well as BEGINING data for the next part)
 							// --Bytes-- we have a running total of byte size, but in testing against UWash, I was over by 2 bytes, so fix that
-							$info->parts[$cur_part_idx]->bytes = $info->parts[$cur_part_idx]->bytes - 2;
-							$info->parts[$cur_part_idx]->custom['part_end'] = $x-1;
+							$tmp_cur_part_idx->bytes = $tmp_cur_part_idx->bytes - 2;
+							$tmp_cur_part_idx->custom['part_end'] = $x-1;
 							// --Lines-- we know beginning line and ending line, so calculate # lines for this part
-							$info->parts[$cur_part_idx]->lines = (int)$info->parts[$cur_part_idx]->custom['part_end'] - (int)$info->parts[$cur_part_idx]->custom['part_start'];
-							if ($this->debug_dcom >= 2) { echo 'pop3: create_embeded_fetchstructure: mime loop: current part end at ['.(string)($x-1).'] byte cumula: ['.$info->parts[$cur_part_idx]->bytes.'] lines: ['.$info->parts[$cur_part_idx]->lines.']<br>'; }
+							$tmp_cur_part_idx->lines = (int)$tmp_cur_part_idx->custom['part_end'] - (int)$tmp_cur_part_idx->custom['part_start'];
+							if ($this->debug_dcom >= 2) { echo 'pop3: create_embeded_fetchstructure: mime loop: current part end at ['.(string)($x-1).'] byte cumula: ['.$tmp_cur_part_idx->bytes.'] lines: ['.$tmp_cur_part_idx->lines.']<br>'; }
 							// this individual part has completed discovery, it os now "OUT"
-							$info->parts[$cur_part_idx]->custom['detect_state'] = 'out';
+							$tmp_cur_part_idx->custom['detect_state'] = 'out';
 							// we are DONE with this part for now 
 							// unset any unfilled elements
 							// NOTE: param to  unset_unfilled_fetchstructure  is a REFERENCE
-							$this->unset_unfilled_fetchstructure(&$info->parts[$cur_part_idx]);
+							$this->unset_unfilled_fetchstructure(&$tmp_cur_part_idx);
+							$info->parts[$cur_part_idx] = $tmp_cur_part_idx;
+							unset($tmp_cur_part_idx);
 						}
 						// so now deal with this NEW part we just discovered
 						if ($this->debug_dcom >= 2) { echo 'pop3: create_embeded_fetchstructure: mime loop: begin part discovery<br>'; }
 						// Create New Sub Part Object
 						$new_part_idx = count($info->parts);
 						$info->parts[$new_part_idx] = new msg_structure;
-						$info->parts[$new_part_idx]->bytes = 0;
-						$info->parts[$new_part_idx]->custom['top_level'] = False;
-						$info->parts[$new_part_idx]->custom['parent_cookie'] = $info->custom['my_cookie'];
+
+						$tmp_new_part_idx = $info->parts[$new_part_idx];
+						$tmp_new_part_idx->bytes = 0;
+						$tmp_new_part_idx->custom['top_level'] = False;
+						$tmp_new_part_idx->custom['parent_cookie'] = $info->custom['my_cookie'];
 						// state info: we are now "IN" doing multi part detection on this part
-						$info->parts[$new_part_idx]->custom['detect_state'] = 'in';
+						$tmp_new_part_idx->custom['detect_state'] = 'in';
 						// get this part's headers
 						// start 1 line after the cookie, and end with the first blank line
 						// part header starts next line after the boundary/cookie
-						$info->parts[$new_part_idx]->custom['header_start'] = $x+1;
+						$tmp_new_part_idx->custom['header_start'] = $x+1;
 						$part_header_blob = '';
 						for ($y=$x+1; $y < count($this->body_array) ;$y++)
 						{
@@ -791,7 +888,7 @@
 							{
 								// reached end of this part's headers
 								// headers actually ended 1 line above this blank line
-								$info->parts[$new_part_idx]->custom['header_end'] = (int)($y-1);
+								$tmp_new_part_idx->custom['header_end'] = (int)($y-1);
 								// break out of this sub loop
 								break;
 							}
@@ -809,10 +906,13 @@
 						if ($this->debug_dcom >= 2) { echo 'pop3: create_embeded_fetchstructure: mime loop: part_header_array:'.serialize($part_header_array).'<br>'; }
 						// since we just passed the headers, and this is NOT a final boundary
 						// this MUST be a start point for the next part
-						$info->parts[$new_part_idx]->custom['part_start'] = (int)($y+1);
+						$tmp_new_part_idx->custom['part_start'] = (int)($y+1);
 						// fill the conventional info on this fetchstructure sub-part
 						// NOTE: first param to sub_get_structure is a REFERENCE
-						$this->sub_get_structure(&$info->parts[$new_part_idx],$part_header_array);
+						$this->sub_get_structure(&$tmp_new_part_idx,$part_header_array);
+						$info->parts[$new_part_idx] = $tmp_new_part_idx;
+						unset($tmp_new_part_idx);
+						
 						// ADVANCE INDEX $x TO AFTER WHAT WE'VE ALREADY LOOKED AT
 						if ($this->debug_dcom >= 2) { echo 'pop3: create_embeded_fetchstructure: mime loop: advance x from ['.$x.'] to ['.$y.']<br>'; }
 						$x = $y;
@@ -822,30 +922,40 @@
 					{
 						// we found the CLOSING BOUNDARY
 						$cur_part_idx = count($info->parts) - 1;
-						$info->parts[$cur_part_idx]->custom['part_end'] = $x-1;
+						$tmp_cur_part_idx = $info->parts[$cur_part_idx];
+						
+						$tmp_cur_part_idx->custom['part_end'] = $x-1;
 						// --Bytes-- we have a running total of byte size, but in testing against UWash, I was over by 2 bytes, so fix that
-						$info->parts[$cur_part_idx]->bytes = $info->parts[$cur_part_idx]->bytes - 2;
+						$tmp_cur_part_idx->bytes = $tmp_cur_part_idx->bytes - 2;
 						// --Lines-- we know beginning line and ending line, so calculate # lines for this part
-						$info->parts[$cur_part_idx]->lines = $info->parts[$cur_part_idx]->custom['part_end'] - $info->parts[$cur_part_idx]->custom['part_start'];
-						$info->parts[$cur_part_idx]->custom['detect_state'] = 'out';
+						$tmp_cur_part_idx->lines = $tmp_cur_part_idx->custom['part_end'] - $tmp_cur_part_idx->custom['part_start'];
+						$tmp_cur_part_idx->custom['detect_state'] = 'out';
 						// we are DONE with this part for now 
-						if ($this->debug_dcom >= 2) { echo 'pop3: create_embeded_fetchstructure: mime loop: final boundary at ['.(string)($x-1).'] byte cumula: ['.$info->parts[$cur_part_idx]->bytes.'] lines: ['.$info->parts[$cur_part_idx]->lines.']<br>'; }
+						if ($this->debug_dcom >= 2) { echo 'pop3: create_embeded_fetchstructure: mime loop: final boundary at ['.(string)($x-1).'] byte cumula: ['.$tmp_cur_part_idx->bytes.'] lines: ['.$tmp_cur_part_idx->lines.']<br>'; }
 						// unset any unfilled elements
 						// NOTE: param to  unset_unfilled_fetchstructure  is a REFERENCE
-						$this->unset_unfilled_fetchstructure(&$info->parts[$cur_part_idx]);
+						$this->unset_unfilled_fetchstructure(&$tmp_cur_part_idx);
+						$info->parts[$cur_part_idx] = $tmp_cur_part_idx;
+						unset($tmp_cur_part_idx);
 					}
 					else
 					{
 						// running byte size of this part (if any)
 						$cur_part_idx = count($info->parts) - 1;
-						if ((isset($info->parts[$cur_part_idx]))
-						&& ($info->parts[$cur_part_idx]->custom['detect_state'] == 'in'))
+						if (isset($info->parts[$cur_part_idx]))
+						{
+							$tmp_cur_part_idx = $info->parts[$cur_part_idx];
+						}
+						if ((isset($tmp_cur_part_idx))
+						&& ($tmp_cur_part_idx->custom['detect_state'] == 'in'))
 						{
 							// previous count
-							$prev_bytes = $info->parts[$cur_part_idx]->bytes;
+							$prev_bytes = $tmp_cur_part_idx->bytes;
 							// add new count, +2 for the \r\n that will end the line when we feed it to the client
 							$add_bytes = strlen($body_line) + 2;
-							$info->parts[$cur_part_idx]->bytes = $prev_bytes + $add_bytes;
+							$tmp_cur_part_idx->bytes = $prev_bytes + $add_bytes;
+							$info->parts[$cur_part_idx] = $tmp_cur_part_idx;
+							unset($tmp_cur_part_idx);
 						}
 					}
 				}
@@ -877,14 +987,17 @@
 				// 1) Create New Sub Part Object
 				$enc_part_idx = count($info->parts);
 				$info->parts[$enc_part_idx] = new msg_structure;
-				$info->parts[$enc_part_idx]->bytes = 0;
-				$info->parts[$enc_part_idx]->custom['top_level'] = False;
+
+				$tmp_enc_part_idx = $info->parts[$enc_part_idx];
+
+				$tmp_enc_part_idx->bytes = 0;
+				$tmp_enc_part_idx->custom['top_level'] = False;
 				// ??? encapsulated part's parent does not have a boundary ???
-				$info->parts[$enc_part_idx]->custom['parent_cookie'] = '';
+				$tmp_enc_part_idx->custom['parent_cookie'] = '';
 				
 				// 2) Get This Part's Headers
 				// encapsulated headers begin immediately in the encapsulated part
-				$info->parts[$enc_part_idx]->custom['header_start'] = $range_start;
+				$tmp_enc_part_idx->custom['header_start'] = $range_start;
 				// encapsulated headers end with the 1st blank line
 				$part_header_blob = '';
 				for ($y=$range_start; $y < $range_end+1 ;$y++)
@@ -899,7 +1012,7 @@
 					{
 						// reached end of this part's headers
 						// headers actually ended 1 line above this blank line
-						$info->parts[$enc_part_idx]->custom['header_end'] = (int)($y-1);
+						$tmp_enc_part_idx->custom['header_end'] = (int)($y-1);
 						// break out of this sub loop
 						break;
 					}
@@ -919,7 +1032,7 @@
 				// 2) Feed these Headers thru "sub_get_structure"
 				// fill the conventional info on this fetchstructure sub-part
 				// NOTE: first param to sub_get_structure is a REFERENCE
-				$this->sub_get_structure(&$info->parts[$enc_part_idx],$part_header_array);
+				$this->sub_get_structure(&$tmp_enc_part_idx,$part_header_array);
 				
 				// ==  CONTROVESTIAL DEFAULT UWASH VALUE ASSIGNMENTS  ==
 				// close study of UWash IMAP indicates the an immediate child message part of a RFC822 package will:
@@ -928,44 +1041,47 @@
 				// I assume if a type was specified then UWash would not do this
 				// in fact UWash *may* fill a default subtype if a type IS specified (it's in the UWash code)
 				// so I will imitate UWash IMAP and assign a subtype of "plain" when NO type is specified
-				if ((!isset($info->parts[$enc_part_idx]->subtype))
-				|| ((string)$info->parts[$enc_part_idx]->subtype == ''))
+				if ((!isset($tmp_enc_part_idx->subtype))
+				|| ((string)$tmp_enc_part_idx->subtype == ''))
 				{
 					if ($this->debug_dcom >= 2) { echo 'pop3: create_embeded_fetchstructure: enc mime loop: CONTROVERSIAL uwash imitation: adding subtype "plain" to immediate RFC822 child part, none was specified<br>'; }
-					$info->parts[$enc_part_idx]->ifsubtype = True;
-					$info->parts[$enc_part_idx]->subtype = 'plain';
+					$tmp_enc_part_idx->ifsubtype = True;
+					$tmp_enc_part_idx->subtype = 'plain';
 				}
 				// (B) PARAM "charset=US-ASCII" 
 				// gets added if no charset is specified for this immediate RFC822 child
 				// I know it hurts, but I'm just copying UWash !!!
 				$found_charset = False;
-				for ($ux=0; $ux < count($info->parts[$enc_part_idx]->parameters) ;$ux++)
+				for ($ux=0; $ux < count($tmp_enc_part_idx->parameters) ;$ux++)
 				{
-					if (stristr($info->parts[$enc_part_idx]->parameters[$new_idx]->attribute,'charset'))
+					
+					$tmp_enc_params = $tmp_enc_part_idx->parameters[$new_idx];
+					if (stristr($tmp_enc_params->attribute,'charset'))
 					{
 						$found_charset = True;
 						break;
 					}
+					unset($tmp_enc_params);
 				}
 				// do that crappy adding of charset param if necessary
 				if ($found_charset == False)
 				{
 					if ($this->debug_dcom >= 2) { echo 'pop3: create_embeded_fetchstructure: enc mime loop: CONTROVERSIAL uwash imitation: adding param "charset=US-ASCII" to immediate RFC822 child part, none was specified<br>'; }
-					$new_idx = count($info->parts[$enc_part_idx]->parameters);
-					$info->parts[$enc_part_idx]->parameters[$new_idx] = new msg_params('charset','US-ASCII');
-					$info->parts[$enc_part_idx]->ifparameters = true;
+					$new_idx = count($tmp_enc_part_idx->parameters);
+					$tmp_enc_part_idx->parameters[$new_idx] = new msg_params('charset','US-ASCII');
+					$tmp_enc_part_idx->ifparameters = true;
 				}
 				// ends CONTROVESTIAL uwash inmitation code
 				
 				// 3) fill Part Start and Part End
 				// encapsulated body STARTS at the first line after the blank line header sep above
-				$info->parts[$enc_part_idx]->custom['part_start'] = (int)($y+1);
+				$tmp_enc_part_idx->custom['part_start'] = (int)($y+1);
 				// encapsulated body ENDS at the end of the partnts range
-				$info->parts[$enc_part_idx]->custom['part_end'] = $range_end;
+				$tmp_enc_part_idx->custom['part_end'] = $range_end;
 
 				// 4) calculate byte size and # of lines of the content within this parts start and end
-				$my_start = $info->parts[$enc_part_idx]->custom['part_start'];
-				$my_end = $info->parts[$enc_part_idx]->custom['part_end'];
+				$my_start = $tmp_enc_part_idx->custom['part_start'];
+				$my_end = $tmp_enc_part_idx->custom['part_end'];
 				if ($this->debug_dcom >= 2) { echo 'pop3: create_embeded_fetchstructure: enc mime loop: this body range ['.$my_start.'] to ['.$my_end.']<br>'; }
 				for ($x=$my_start; $x < $my_end+1 ;$x++)
 				{
@@ -973,17 +1089,20 @@
 					$body_line = $this->body_array[$x];
 					if ($this->debug_dcom >= 2) { echo 'pop3: encap mime size loop ['.$x.']: '.htmlspecialchars($body_line).'<br>'; }
 					// prevoius count
-					$prev_bytes = $info->parts[$enc_part_idx]->bytes;
+					$prev_bytes = $tmp_enc_part_idx->bytes;
 					// add new count, +2 for the \r\n that will end the line when we feed it to the client
 					$add_bytes = strlen($body_line) + 2;
-					$info->parts[$enc_part_idx]->bytes = $prev_bytes + $add_bytes;
+					$tmp_enc_part_idx->bytes = $prev_bytes + $add_bytes;
 				}
 				// --Bytes-- we made a running total of byte size, but in testing against UWash, I was over by 2 bytes, so fix that
-				$info->parts[$enc_part_idx]->bytes = $info->parts[$enc_part_idx]->bytes - 2;
+				$tmp_enc_part_idx->bytes = $tmp_enc_part_idx->bytes - 2;
 				// --Lines-- we know beginning line and ending line, so calculate # lines for this part
-				$info->parts[$enc_part_idx]->lines = $my_end - $my_start;
+				$tmp_enc_part_idx->lines = $my_end - $my_start;
+				
 				// we're done with the loop so the bytes have been calculated in that loop
-				if ($this->debug_dcom >= 2) { echo 'pop3: create_embeded_fetchstructure: this part range byte size ['.$info->parts[$enc_part_idx]->bytes.'] lines: ['.$info->parts[$enc_part_idx]->lines.']<br>'; }
+				if ($this->debug_dcom >= 2) { echo 'pop3: create_embeded_fetchstructure: this part range byte size ['.$tmp_enc_part_idx->bytes.'] lines: ['.$tmp_enc_part_idx->lines.']<br>'; }
+				$info->parts[$enc_part_idx] = $tmp_enc_part_idx;
+				unset($tmp_enc_part_idx);
 			}
 			// no embedded parts, why not?
 			elseif ( (isset($info->type))
@@ -1032,12 +1151,12 @@
 		/*!
 		@function sub_get_structure
 		@abstract HELPER  function for fetchstructure / IMAP_FETCHSTRUCTURE
-		@param $info : **REFERENCE** to a class "msg_structure" object
-		@param $header_array : array of headers to process
-		@result NONE : this function DIRECTLY manipulates the referenced object
-		@discussion  as implemented, reference is to some part of class var $this->msg_structure
+		@param $info **REFERENCE** to a class "msg_structure" object
+		@param $header_array array of headers to process
+		@result NONE this function DIRECTLY manipulates the referenced object
+		@discussion as implemented, reference is to some part of class var $this->msg_structure
 		@author Angles, Itzchak Rehberg, Joseph Engo
-		@access	private
+		@access private
 		*/
 		function sub_get_structure($info,$header_array)
 		{
@@ -1172,13 +1291,13 @@
 		/*!
 		@function unset_unfilled_fetchstructure
 		@abstract HELPER  function for fetchstructure / IMAP_FETCHSTRUCTURE
-		@param $info : **REFERENCE** to a class "msg_structure" object
-		@result NONE : this function DIRECTLY manipulates the referenced object
-		@discussion  as implemented, reference is to some part of class var $this->msg_structure
+		@param $info **REFERENCE** to a class "msg_structure" object
+		@result NONE this function DIRECTLY manipulates the referenced object
+		@discussion as implemented, reference is to some part of class var $this->msg_structure
 		unsets any unfilled elements of the referenced part in the fetchstructure object 
-		to mimic PHP's return structure
+		to mimic PHPs return structure
 		@author Angles
-		@access	private
+		@access private
 		*/
 		function unset_unfilled_fetchstructure($info)
 		{
@@ -1248,13 +1367,13 @@
 		/*!
 		@function parse_type_subtype
 		@abstract HELPER  function for sub_get_structure / IMAP_FETCHSTRUCTURE
-		@param $info : **REFERENCE** to a class "msg_structure" object
-		@param $content : the text associated with the "content-type:" header
-		@result NONE : this function DIRECTLY manipulates the referenced object
-		@discussion  as implemented, reference is to some part of class var $this->msg_structure
+		@param $info **REFERENCE** to a class "msg_structure" object
+		@param $content the text associated with the "content-type:" header
+		@result NONE this function DIRECTLY manipulates the referenced object
+		@discussion as implemented, reference is to some part of class var $this->msg_structure
 		parses "content-type:" header into fetchstructure data ->type and ->subtype
 		@author Angles, Itzchak Rehberg, Joseph Engo
-		@access	private
+		@access private
 		*/
 		function parse_type_subtype($info,$content)
 		{
@@ -1298,16 +1417,16 @@
 		/*!
 		@function parse_msg_params
 		@abstract HELPER  function for sub_get_structure / IMAP_FETCHSTRUCTURE
-		@param $info : **REFERENCE** to a class "msg_structure" object
-		@param $content : string from the "content-type:" or "content-disposition:" header
-		@param $is_disposition_param : boolean : true if parsing "content-disposition:" header string
+		@param $info **REFERENCE** to a class "msg_structure" object
+		@param $content  string from the "content-type:" or "content-disposition:" header
+		@param $is_disposition_param (boolean) true if parsing "content-disposition:" header string
 		tells this function to fill info->dparameters instead of the more common info->parameters
-		@result NONE : this function DIRECTLY manipulates the referenced object
-		@discussion  as implemented, reference is to some part of class var $this->msg_structure
+		@result NONE this function DIRECTLY manipulates the referenced object
+		@discussion as implemented, reference is to some part of class var $this->msg_structure
 		parses "content-type:" header string into fetchstructure data info->parameters
 		 or "content-disposition:" header string into fetchstructure data info->dparameters
 		@author Angles, Itzchak Rehberg, Joseph Engo
-		@access	private
+		@access private
 		*/
 		function parse_msg_params($info,$content,$is_disposition_param=False)
 		{
@@ -1369,6 +1488,10 @@
 			}
 		}
 
+		/*!
+		@function type_str_to_int
+		@abstract ?
+		*/
 		function type_str_to_int($type_str)
 		{
 			// fallback value
@@ -1388,6 +1511,10 @@
 			return $type_int;
 		}
 
+		/*!
+		@function default_type
+		@abstract ?
+		*/
 		function default_type($probably_text=True)
 		{
 			if ($probably_text)
@@ -1400,6 +1527,10 @@
 			}
 		}
 	
+		/*!
+		@function default_subtype
+		@abstract ?
+		*/
 		function default_subtype($type_int=TYPEAPPLICATION)
 		{
 			// APPLICATION/OCTET-STREAM is the default when NO info is available
@@ -1414,12 +1545,20 @@
 			}
 		}
 	
+		/*!
+		@function default_encoding
+		@abstract ?
+		*/
 		function default_encoding()
 		{
 			return ENC7BIT;
 		}
 	
 		// MAY BE OBSOLETED
+		/*!
+		@function more_info
+		@abstract may be obsoleted
+		*/
 		function more_info($header,$i,$info,$infokey)
 		{
 			// used by pop_fetchstructure only
@@ -1436,6 +1575,10 @@
 			return $i;
 		}
 	
+		/*!
+		@function encoding_str_to_int
+		@abstract ?
+		*/
 		function encoding_str_to_int($encoding_str)
 		{
 			switch (strtolower($encoding_str))
@@ -1452,6 +1595,10 @@
 			return $encoding_int;
 		}
 	
+		/*!
+		@function size_msg
+		@abstract ?
+		*/
 		function size_msg($stream_notused,$msg_num)
 		{
 			if ($this->debug_dcom >= 1) { echo 'pop3: Entering size_msg<br>'; }
@@ -1473,17 +1620,16 @@
 		\**************************************************************************/
 		/*!
 		@function header
-		@abstract implements IMAP_HEADER	(alias to IMAP_HEADERINFO)
-		@abstract implements IMAP_HEADERINFO
-		@param $stream_notused : socket class handles stream reference internally
-		@param $msg_num : intefer
+		@abstract implements IMAP_HEADER (alias to IMAP_HEADERINFO)
+		@param $stream_notused socket class handles stream reference internally
+		@param $msg_num intefer
 		@param $fromlength ?
 		@param $tolength ?
 		@param $defaulthost ?
 		@result returns an instance of Class "hdr_info_envelope", or returns False on error
-		@discussion  ?
+		@discussion none
 		@author Angles, Skeeter, Itzchak Rehberg, Joseph Engo
-		@access	public
+		@access public
 		*/
 		function header($stream_notused,$msg_num,$fromlength='',$tolength='',$defaulthost='')
 		{
@@ -1592,12 +1738,11 @@
 		/*!
 		@function get_addr_details
 		@abstract HELPER function to header / IMAP_HEADER
-		@param ?
-		@param ?
-		@param ?
-		@param ?
-		@result ?
-		@discussion ?
+		@param $people
+		@param $address
+		@param $header
+		@param $count
+		@discussion none
 		@author Itzchak Rehberg, Joseph Engo
 		@access	private
 		*/
@@ -1716,15 +1861,15 @@
 		/*!
 		@function delete
 		@abstract implements IMAP_DELETE
-		@param $stream_notused : socket class handles stream reference internally
-		@param $msg_num : either an integer OR a comma seperated string of integers and/or ranges (21:23, 26, 69)
-		@param $flags : integer - FT_UID (not implimented)
+		@param $stream_notused socket class handles stream reference internally
+		@param $msg_num either an integer OR a comma seperated string of integers and/or ranges (21:23, 26, 69)
+		@param $flags (integer) - FT_UID (not implimented)
 		@result returns True if able to mark a message for deletion, False if not
-		@discussion  Similar to an IMAP server, POP3 must be expunged to actually delete marked messages
+		@discussion Similar to an IMAP server, POP3 must be expunged to actually delete marked messages
 		This is done (1) by immediately closing the connection after your done marking, this will cause POP3 to expunge
-		or (2) by issuing PHP's buildin IMAP_EXPUNGE command which we DO NOT emulate here
+		or (2) by issuing PHPs buildin IMAP_EXPUNGE command which we DO NOT emulate here
 		@author Angles
-		@access	public
+		@access public
 		*/
 		function delete($stream_notused,$msg_num,$flags="")
 		{
@@ -1805,14 +1950,14 @@
 		/*!
 		@function fetchheader
 		@abstract implements IMAP_FETCHHEADER
-		@param $stream_notused : socket class handles stream reference internally
-		@param $msg_num : integer
-		@param $flags : integer - FT_UID; FT_INTERNAL; FT_PREFETCHTEXT
+		@param $stream_notused socket class handles stream reference internally
+		@param $msg_num integer
+		@param $flags integer - FT_UID; FT_INTERNAL; FT_PREFETCHTEXT
 		@result returns string which is complete, unfiltered RFC2822  format header of the specified message
-		@discussion  This function implements the  FT_PREFETCHTEXT text option
+		@discussion This function implements the  FT_PREFETCHTEXT text option
 		This function uses the helper function "get_header_raw"
 		@author Angles
-		@access	public
+		@access public
 		*/
 		function fetchheader($stream_notused,$msg_num,$flags='')
 		{
@@ -1837,14 +1982,14 @@
 		/*!
 		@function get_header_array
 		@abstract Custom Function - Similar to IMAP_FETCHHEADER - EXCEPT returns a string list array
-		@param $stream_notused : socket class handles stream reference internally
-		@param $msg_num : integer
-		@param $flags : integer - FT_UID; (FT_INTERNAL; FT_PREFETCHTEXT) none implemented
+		@param $stream_notused socket class handles stream reference internally
+		@param $msg_num integer
+		@param $flags integer - FT_UID; (FT_INTERNAL; FT_PREFETCHTEXT) none implemented
 		@result returns headers exploded into a string list array, one array element per Un-Folded header line 
-		@discussion  This function UN-FOLDS the headers as per RFC2822 "folding, so each element is 
+		@discussion This function UN-FOLDS the headers as per RFC2822 "folding, so each element is 
 		in fact the intended complete header line, eliminates partial "folded" lines
 		@author Angles
-		@access	public (custom function, also used privately)
+		@access public (custom function, also used privately)
 		*/
 		function get_header_array($stream_notused,$msg_num,$flags='')
 		{
@@ -1876,14 +2021,14 @@
 		/*!
 		@function get_header_raw
 		@abstract HELPER function for "fetchheader" / IMAP_FETCHHEADER
-		@param $stream_notused : socket class handles stream reference internally
-		@param $msg_num : integer
-		@param $flags : Not Used in helper function
+		@param $stream_notused socket class handles stream reference internally
+		@param $msg_num integer
+		@param $flags Not Used in helper function
 		@result returns returns unprocessed glob header string of the specified message
-		@discussion  This function causes a fetch of the complete, unfiltered RFC2822  format 
+		@discussion This function causes a fetch of the complete, unfiltered RFC2822  format 
 		header of the specified message as a text string and returns that text string (i.e. glob)
 		@author Angles
-		@access	private
+		@access private
 		*/
 		function get_header_raw($stream_notused,$msg_num,$flags='')
 		{
@@ -1924,11 +2069,11 @@
 		/*!
 		@function fetchbody
 		@abstract implements IMAP_FETCHBODY
-		@param $stream_notused : socket class handles stream reference internally
-		@param $msg_num : integer
-		@param $part_num : integer or a string of integers seperated by dots  "2.4.1"
+		@param $stream_notused socket class handles stream reference internally
+		@param $msg_num integer
+		@param $part_num integer or a string of integers seperated by dots  "2.4.1"
 		references the MIME part number, or section, inside of the message
-		@param $flags : Not Used in helper function
+		@param $flags Not Used in helper function
 		@result returns string which is the desired message / part
 		@discussion  NOTE: as of Oct 17, 2001, the $part_num used here is not always
 		the same as the part number used for official imap servers. But because this same 
@@ -1942,7 +2087,7 @@
 		number, which mail_msg class refers to as "mime number smart", which 
 		is used to access mime parts when using PHP's builtin IMAP module.
 		@author Angles
-		@access	public
+		@access public
 		*/
 		function fetchbody($stream_notused,$msg_num,$part_num='',$flags='')
 		{
@@ -1972,8 +2117,11 @@
 				$the_part = $the_part - 1;
 				// return part one
 				if ($this->debug_dcom >= 1) { echo 'pop3: fetchbody: returning part '.$part_num.', internally ['.$the_part.']<br>'; }
-				if ((!isset($this->msg_structure->parts[$the_part]->custom['part_start']))
-				|| (!isset($this->msg_structure->parts[$the_part]->custom['part_start'])))
+
+				$tmp_msg_structure_parts = $this->msg_structure->parts[$the_part];
+
+				if ((!@isset($tmp_msg_structure_parts->custom['part_start']))
+				|| (!isset($tmp_msg_structure_parts->custom['part_start'])))
 				{
 					if ($this->debug_dcom >= 1) { echo 'pop3: fetchbody: ERROR: required part data not present for '.$part_num.', internally ['.$the_part.']<br>'; }
 					// screw it, just return the whole thing
@@ -1983,8 +2131,8 @@
 				else
 				{
 					// attempt to make the part
-					$part_start = (int)$this->msg_structure->parts[$the_part]->custom['part_start'];
-					$part_end = (int)$this->msg_structure->parts[$the_part]->custom['part_end'];
+					$part_start = (int)$tmp_msg_structure_parts->custom['part_start'];
+					$part_end = (int)$tmp_msg_structure_parts->custom['part_end'];
 					if ($this->debug_dcom >= 1) { echo 'pop3: fetchbody: returning part '.$part_num.' starts ['.$part_start.'] ends ['.$part_end.']<br>'; }
 					// assemble the body [art part
 					$body_blob = '';
@@ -1993,6 +2141,8 @@
 						$body_blob .= $this->body_array[$i]."\r\n";
 					}
 				}
+//				$this->msg_structure->parts[$the_part] = $tmp_msg_structure_parts;
+//				unset($tmp_msg_structure_parts);
 			}
 			// handle multiple parts
 			elseif (strlen((string)$part_num) > 2)
@@ -2008,11 +2158,11 @@
 				}
 				// build the recursive parts structure to obtain this parts data
 				// use REFERENCES to do this
-				$temp_part = &$this->msg_structure;
+				$temp_part = $this->msg_structure;
 				for($i=0;$i < count($the_part_array);$i++)
 				{
 					$target_part = $temp_part->parts[$the_part_array[$i]];
-					$temp_part = &$target_part;
+					$temp_part = $target_part;
 				}
 				// verify part data exists
 				if ($this->debug_dcom >= 1) { echo 'pop3: fetchbody: returning part '.$part_num.', internally ['.serialize($the_part_array).']<br>'; }
@@ -2053,15 +2203,16 @@
 		/*!
 		@function get_body
 		@abstract implements IMAP_BODY
-		@param $stream_notused : socket class handles stream reference internally
-		@param $msg_num : integer
-		@param $flags : integer - FT_UID; FT_INTERNAL; FT_PEEK; FT_NOT
-		@param$phpgw_include_header : boolean (for custom use - not a PHP option)
+		@param $stream_notused socket class handles stream reference internally
+		@param $msg_num integer
+		@param $flags integer - FT_UID; FT_INTERNAL; FT_PEEK; FT_NOT
+		@param$phpgw_include_header boolean (for custom use - not a PHP option)
 		@result returns string which is a verbatim copy of the message body (i.e. glob)
-		@discussion  This function implements the  IMAP_BODY and also includes a custom
+		@discussion This function implements the  IMAP_BODY and also includes a custom
 		boolean param "phpgw_include_header" which also includes unfiltered headers in the return string
+		NEEDED: code for flags: FT_UID; maybe FT_INTERNAL; FT_NOT; flag FT_PEEK has no effect on POP3
 		@author Angles
-		@access	public
+		@access public
 		*/
 		function get_body($stream_notused,$msg_num,$flags='',$phpgw_include_header=True)
 		{

@@ -16,38 +16,22 @@
 	class bofolder
 	{
 		var $public_functions = array(
-			'get_langed_labels'	=> True,
 			'folder'		=> True,
 			'folder_action'		=> True,
 			'folder_data'		=> True
 		);
 		var $nextmatchs;
+		var $msg_bootstrap;
 		var $index_base_link='';
 		//var $debug = True;
 		var $debug = False;
 		var $xi;
-		var $xml_functions = array();
-		
-		var $soap_functions = array(
-			'get_langed_labels' => array(
-				'in'  => array('int'),
-				'out' => array('array')
-			),
-			'folder' => array(
-				'in'  => array('int'),
-				'out' => array('array')
-			)
-		);
 		
 		function bofolder()
 		{
-			
+			return;
 		}
 		
-		function get_langed_labels()
-		{
-			// ----  Langs  ----			
-		}
 		
 		function folder()
 		{
@@ -55,27 +39,9 @@
 			// create class objects
 			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
 			
-			if (is_object($GLOBALS['phpgw']->msg))
-			{
-				if ($this->debug) { echo 'email.bofolder.folder: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
-			}
-			else
-			{
-				if ($this->debug) { echo 'email.bofolder.folder: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
-				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-			}
-			
-			$args_array = Array();
-			$args_array['do_login'] = True;
-			if ($this->debug == True) { echo 'email.bofolder.folder: call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
-			$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
-			// error if login failed
-			if (($args_array['do_login'] == True)
-			&& (!$some_stream))
-			{
-				$GLOBALS['phpgw']->msg->login_error($GLOBALS['PHP_SELF'].', folder()');
-			}
-			
+			// make sure we have msg object and a server stream
+			$this->msg_bootstrap = CreateObject("email.msg_bootstrap");
+			$this->msg_bootstrap->ensure_mail_msg_exists('email.bofolder.folder', $this->debug);
 			
 			// ----  Create or Delete or Rename a Folder ?  ----
 			// "folder_action()" handles checking if any action should be taken
@@ -86,7 +52,8 @@
 			$this->folder_data();
 			
 			// end the email transaction
-			$GLOBALS['phpgw']->msg->end_request();
+			//$GLOBALS['phpgw']->msg->end_request();
+			// NO we may not be really done yet
 		}
 		
 		
@@ -199,13 +166,13 @@
 					|| ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'rename_expert'))
 					{
 						$action_report =
-							$GLOBALS['phpgw']->msg->get_arg_value('action') .' '.lang('folder').' '.$GLOBALS['phpgw']->msg->get_arg_value('source_folder')
-							.' '.lang('to').' '.$GLOBALS['phpgw']->msg->get_arg_value('target_folder') .' <br>'
+							$GLOBALS['phpgw']->msg->get_arg_value('action') .' '.lang('folder').' &quot;'.htmlspecialchars($source_fldball['folder']).'&quot; '
+							.lang('to').' &quot;'.htmlspecialchars($target_fldball['folder']) .'&quot; '
 							.lang('result').' : ';
 					}
 					else
 					{
-						$action_report = $GLOBALS['phpgw']->msg->get_arg_value('action').' '.lang('folder').' '.$GLOBALS['phpgw']->msg->get_arg_value('target_folder').' <br>'
+						$action_report = $GLOBALS['phpgw']->msg->get_arg_value('action').' '.lang('folder').' &quot;'.htmlspecialchars($target_fldball['folder']).'&quot; '
 						.lang('result').' : ';
 					}
 					// did it work or not
@@ -252,7 +219,10 @@
 			$dot_or_slash = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_delimiter');
 			
 			// ----  Get a List Of All Folders  AND Display them ----
-			$folder_list = $GLOBALS['phpgw']->msg->get_folder_list();
+			//$folder_list = $GLOBALS['phpgw']->msg->get_folder_list();
+			$folder_list = $GLOBALS['phpgw']->msg->get_arg_value('folder_list');
+			//$folder_list =& $GLOBALS['phpgw']->msg->get_arg_value_ref('folder_list');
+			
 			if ($this->debug) { echo 'email.bofolder.folder_data: $folder_list[] dump:<pre>'; print_r($folder_list); echo '</pre>'; }
 			
 			$this->xi['folder_list_display'] = array();
@@ -352,24 +322,36 @@
 			//$this->xi['label_messages_text'] = lang('Messages');
 			$this->xi['label_new_text'] = lang('New');
 			$this->xi['label_total_text'] = lang('Total');
-			
-			$this->xi['view_long_txt'] = lang('long names');
+			// Check if we are supposed to show long or short folder names and create opposite link
+        if (($GLOBALS['phpgw']->msg->get_isset_arg('show_long') == true) && ($GLOBALS['phpgw']->msg->get_arg_value('show_long') != '')) {
+            $this->xi['view_txt'] = lang('Show short names'); 
+            // $this->xi['view_short_lnk'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php');
+            $this->xi['view_lnk'] = $GLOBALS['phpgw']->link('/index.php',
+                'menuaction=email.uifolder.folder' . '&fldball[folder]=' . $GLOBALS['phpgw']->msg->prep_folder_out() . '&fldball[acctnum]=' . $GLOBALS['phpgw']->msg->get_acctnum());
+        } else {
+            $this->xi['view_txt'] = lang('Show long names'); 
+            // $this->xi['view_long_lnk'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php?show_long=1');
+            $this->xi['view_lnk'] = $GLOBALS['phpgw']->link('/index.php',
+                'menuaction=email.uifolder.folder' . '&fldball[folder]=' . $GLOBALS['phpgw']->msg->prep_folder_out() . '&fldball[acctnum]=' . $GLOBALS['phpgw']->msg->get_acctnum() . '&show_long=1');
+        } 
+		// Depreciated 
+		//	$this->xi['view_long_txt'] = lang('long names');
 			//$this->xi['view_long_lnk'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php?show_long=1');
-			$this->xi['view_long_lnk'] = $GLOBALS['phpgw']->link(
-							'/index.php',
-							'menuaction=email.uifolder.folder'
-							.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
-							.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum()
-							.'&show_long=1');
+		//	$this->xi['view_long_lnk'] = $GLOBALS['phpgw']->link(
+		//					'/index.php',
+		//					'menuaction=email.uifolder.folder'
+		//					.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
+		//					.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum()
+		//					.'&show_long=1');
 							
-			$this->xi['view_short_txt'] = lang('short names');
+		//	$this->xi['view_short_txt'] = lang('short names');
 			//$this->xi['view_short_lnk'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php');
-			$this->xi['view_short_lnk'] = $GLOBALS['phpgw']->link(
-							'/index.php',
-							'menuaction=email.uifolder.folder'
-							.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
-							.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
-			
+		//	$this->xi['view_short_lnk'] = $GLOBALS['phpgw']->link(
+		//					'/index.php',
+		//					'menuaction=email.uifolder.folder'
+		//					.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
+		//					.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
+		//	
 			$this->xi['the_font'] = $GLOBALS['phpgw_info']['theme']['font'];
 			$this->xi['th_backcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
 			

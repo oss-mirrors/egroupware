@@ -5,6 +5,7 @@
 	* and Angelo Tony Puglisi (Angles) <angles@phpgroupware.org>		*
 	* Handles initializing the appropriate class dcom object				*
 	* Copyright (C) 2001 Mark Peters							*
+	* Copyright (C) 2001, 2002 Angelo "Angles" Puglisi 				*
 	* -------------------------------------------------------------------------			*
 	* This library is part of the phpGroupWare API					*
 	* http://www.phpgroupware.org/api						* 
@@ -25,30 +26,47 @@
 	//$debug_dcom = True;
 	$debug_dcom = False;
 
-// -----  any constructor params? ----
+	
+	/*!
+	@class MAIL_DCOM
+	@abstract implements communication with the mail server. (not related to anything else called "dcom")
+	@discussion php may or may not have IMAP extension built in. This class will AUTO-DETECT that and 
+	load either (a) a class which mostly wraps the available builtin functions, or (b) a TOTAL REPLACEMENT 
+	to PHPs builtin imap extension. Currently, the POP3 socket class is fully implemented, basically a re-write 
+	of the UWash c-client, because all the logic contained in an imap server had to be emulated locally here, 
+	since a pop server provides only the most basic information, the rest must be deduced.
+	NOTE: the imap socket class is NOT COMPLETE!
+	@author Angles and others, each function has an authors list
+	@access private, only mail_msg access this directly
+	*/
+	/* -----  any constructor params? ---- */
 	if (isset($p1)
 	&& ($p1)
-	&& ( (stristr($p1, 'imap') || stristr($p1, 'pop') || stristr($p1, 'nntp')) )
+	&& ( (stristr($p1, 'imap') || stristr($p1, 'pop3') || stristr($p1, 'nntp')) )
 	)
 	{
-		//echo 'class dcom constructor, $mail_server_type being set to param $p1: ['.$p1.']'.'<br>';
 		$mail_server_type = $p1;
 	}
 	else
 	{
 		$mail_server_type = $GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'];
 	}
-	//if ($debug_dcom)
-	//{
-	//	echo 'class dcom constructor, param $p1: ['.$p1.']'.'<br>';
-	//	echo 'class dcom constructor, $mail_server_type='.$mail_server_type.'<br>';
-	//}
 
-
-// -----  is IMAP compiled into PHP
-	//if (extension_loaded("imap"))
-	//if (defined("TYPEVIDEO"))
-	if (extension_loaded('imap') || function_exists('imap_open'))
+	/* -----  is IMAP compiled into PHP */
+	//if (($debug_dcom == True)
+	//&& ((stristr($mail_server_type, 'pop'))
+	//	|| (stristr($mail_server_type, 'imap')))
+	//)
+	if (($debug_dcom == True)
+	&& ((strtolower($mail_server_type) == 'pop3')
+		|| (strtolower($mail_server_type) == 'imap'))
+	)
+	{
+		$imap_builtin = False;
+		$sock_fname = '_sock';
+		if ($debug_dcom) { echo 'DCOM DEBUG: force socket class for $mail_server_type ['.$mail_server_type.']<br>'; }
+	}
+	elseif (extension_loaded('imap') && function_exists('imap_open'))
 	{
 		$imap_builtin = True;
 		$sock_fname = '';
@@ -61,19 +79,7 @@
 		if ($debug_dcom) { echo 'imap builtin extension NOT available, using socket class<br>'; }
 	}
 
-	// debug
-	if ($debug_dcom)
-	{
-		$imap_builtin = False;
-		$sock_fname = '_sock';
-		if ($debug_dcom) { echo 'FORCE: imap builtin extension NOT available, using socket class<br>'; }
-	}
-	
-	// SILENT DEBUG
-	//$imap_builtin = False;
-	//$sock_fname = '_sock';
-
-// -----  include SOCKET or PHP-BUILTIN classes as necessary
+	/* -----  include SOCKET or PHP-BUILTIN classes as necessary */
 	if ($imap_builtin == False)
 	{
 		CreateObject('phpgwapi.network');
@@ -104,13 +110,13 @@
 	elseif ((isset($mail_server_type))
 	&& ($mail_server_type != ''))
 	{
-		// educated guess based on info being available:
+		/* educated guess based on info being available: */
 		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_'.$GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'].$sock_fname.'.inc.php');
 		if ($debug_dcom) { echo 'Educated Guess: including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_'.$GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'].$sock_fname.'.inc.php<br>'; }
   	}
 	else
 	{
-		// DEFAULT FALL BACK:
+		/* DEFAULT FALL BACK: */
 		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_imap.inc.php');
 		if ($debug_dcom) { echo 'NO INFO DEFAULT: including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_imap.inc.php<br>'; }
 	}

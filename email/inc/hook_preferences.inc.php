@@ -12,14 +12,12 @@
 
   /* $Id$ */
 {
-// Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = Array(
-		'E-Mail Preferences'    => $GLOBALS['phpgw']->link('/index.php','menuaction=email.uipreferences.preferences'),
-		'Extra E-Mail Accounts' => $GLOBALS['phpgw']->link('/index.php','menuaction=email.uipreferences.ex_accounts_list'),
-		'E-Mail Filters'        => $GLOBALS['phpgw']->link('/index.php','menuaction=email.uifilters.filters_list')
+		'E-Mail Preferences'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=email.uipreferences.preferences'),
+		'Extra E-Mail Accounts'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=email.uipreferences.ex_accounts_list'),
+		'E-Mail Filters'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=email.uifilters.filters_list')
 	);
-//Do not modify below this line
 	display_section($appname,$title,$file);
 }
 ?>

@@ -1,4 +1,4 @@
-<!-- begin email_index.tpl -->
+<!-- begin index_main_b0_l1.tpl -->
 <script type="text/javascript">
 function do_action(act)
 {
@@ -34,14 +34,17 @@ function check_all()
 }
 </script>
 
-<table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
 <!-- BEGIN B_action_report -->
+<table border="0" cellpadding="0" cellspacing="0" width="95%" align="center">
 <tr>
 	<td colspan="7" align="center">
 		<font face="{stats_font}" size="{stats_font_size}">{report_this}</font>
 	</td>
 </tr>
+</table>
 <!-- END B_action_report -->
+
+<table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
 <tr bgcolor="{arrows_backcolor}" align="center">
 	<td>&nbsp;</td>
 	{prev_arrows}
@@ -51,48 +54,7 @@ function check_all()
 </tr>
 </table>
 
-
-<table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
-<tr>
-	<td colspan="6" bgcolor="{stats_backcolor}">
-		<table border="0" cellpadding="0" cellspacing="1" width="100%">
-		<tr>
-			<td>
-				<font face="{stats_font}" size="{stats_foldername_size}" color="{stats_color}">
-					&nbsp;<strong>{stats_folder}</strong>
-				</font>
-				<br>
-				<font face="{stats_font}" size="{stats_font_size}" color="{stats_color}">
-					&nbsp;&nbsp;&nbsp;{stats_new}&nbsp;&nbsp;:&nbsp;&nbsp;{lang_new2}<br>
-					&nbsp;&nbsp;&nbsp;{stats_saved}&nbsp;&nbsp;:&nbsp;&nbsp;{lang_total2}
-					<!-- BEGIN B_show_size -->
-					<br>&nbsp;&nbsp;&nbsp;{stats_size}&nbsp;&nbsp;:&nbsp;&nbsp;{lang_size2}
-					<!-- END B_show_size -->
-				</font>
-			</td>
-			<td align="right">
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-				<form name="{switchbox_frm_name}" action="{switchbox_action}" method="post">
-					<td>
-						<font face="{stats_font}" size="{stats_font_size}">
-						{switchbox_listbox}
-						</font>
-					</td>
-					<td>
-						<font face="{stats_font}" size="{stats_font_size}">
-						&nbsp;&nbsp;{folders_btn}
-						</font>
-					</td>
-				</form>
-				</tr>
-				</table>
-			</td>
-		</tr>
-		</table>
-	</td>
-</tr>
-</table>
+{stats_data_display}
 
 <table border="0" cellpadding="3" cellspacing="1" width="95%" align="center">
 <tr>
@@ -168,9 +130,10 @@ function check_all()
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td>
-				<input type="button" value="{delmov_button}" onClick="do_action('delall')">
+				<a href="{delmov_onclick}">{delmov_image}&nbsp;{delmov_text}</a>
+				<!-- <input type="button" value="{delmov_button}" onClick="do_action('delall')"> -->
 				<font face="{stats_font}" size="{stats_font_size}">
-					&nbsp;&nbsp;<a href="{compose_link}">{compose_txt}</a>
+					&nbsp;&nbsp;<a href="{compose_link}">{compose_img}&nbsp;{compose_text}</a>
 					<!-- BEGIN B_get_size -->
 					&nbsp;&nbsp;&nbsp;<a href="{get_size_link}">{lang_get_size}</a>
 					<!-- END B_get_size -->
@@ -195,5 +158,5 @@ function check_all()
 	</td>
 </tr>
 </table>
-<!-- end email_index.tpl -->
+<!-- end index_main_b0_l1.tpl -->
 

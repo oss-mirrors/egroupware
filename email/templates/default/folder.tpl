@@ -1,9 +1,8 @@
 <!-- begin folder.tpl -->
-<form action="{form_action}" method="post">
 
-<!-- BEGIN B_action_report -->
-<center><p>{action_report}</p></center>
-<!-- END B_action_report -->
+{widget_toolbar}
+
+<form action="{form_action}" method="post">
 
 <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
 <tr>
@@ -15,8 +14,8 @@
 <tr>
 	<td bgcolor="{th_backcolor}">
 		<font size="2" face="{the_font}"><strong>{label_name_text}</strong></font>
-		&nbsp;&nbsp;&nbsp;<a href="{view_long_lnk}">({view_long_txt})</a>
-		&nbsp;&nbsp;&nbsp;<a href="{view_short_lnk}">({view_short_txt})</a>
+		&nbsp;&nbsp;&nbsp;<a href="{view_lnk}">({view_txt})</a>
+		
 	</td>
 	<td bgcolor="{th_backcolor}" width="7%" align="right">
 		<font size="2" face="{the_font}">{label_new_text}</font>

@@ -23,10 +23,10 @@
     <td>{lang_Select_your_mail_server_type}:</td>
     <td>
      <select name="newsettings[mail_server_type]">
-      <option value="imap"{selected_mail_server_type_imap}>IMAP</option>
-      <option value="pop3"{selected_mail_server_type_pop3}>POP-3</option>
-      <option value="imaps"{selected_mail_server_type_imaps}>IMAPS</option>
-      <option value="pop3s"{selected_mail_server_type_pop3s}>POP-3S</option>
+      <option value="imap" {selected_mail_server_type_imap}>IMAP</option>
+      <option value="pop3" {selected_mail_server_type_pop3}>POP-3</option>
+      <option value="imaps" {selected_mail_server_type_imaps}>IMAPS</option>
+      <option value="pop3s" {selected_mail_server_type_pop3s}>POP-3S</option>
      </select>
     </td>
    </tr>
@@ -35,9 +35,9 @@
     <td>{lang_IMAP_server_type}:</td>
     <td>
      <select name="newsettings[imap_server_type]">
-      <option value="Cyrus"{selected_imap_server_type_Cyrus}>Cyrus or Courier</option>
-      <option value="UWash"{selected_imap_server_type_UWash}>UWash</option>
-      <option value="UW-Maildir"{selected_imap_server_type_UW-Maildir}>UW-Maildir</option>
+      <option value="Cyrus" {selected_imap_server_type_Cyrus}>Cyrus or Courier</option>
+      <option value="UWash" {selected_imap_server_type_UWash}>UWash</option>
+      <option value="UW-Maildir" {selected_imap_server_type_UW-Maildir}>UW-Maildir</option>
      </select>
     </td>
    </tr>
@@ -51,8 +51,8 @@
     <td>{lang_Mail_server_login_type}:</td>
     <td>
      <select name="newsettings[mail_login_type]">
-      <option value="standard"{selected_mail_login_type_standard}>standard</option>
-      <option value="vmailmgr"{selected_mail_login_type_vmailmgr}>vmailmgr</option>
+      <option value="standard" {selected_mail_login_type_standard}>standard</option>
+      <option value="vmailmgr" {selected_mail_login_type_vmailmgr}>vmailmgr</option>
      </select>
     </td>
    </tr>

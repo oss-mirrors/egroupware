@@ -16,9 +16,20 @@
 <tr>
 	<td colspan="2" bgcolor="{th_bg}" valign="middle">
 		<strong>{section_title}</strong>
+		&nbsp; &nbsp; &nbsp; {show_help_lnk}
 	</td>
 </tr>
 <!-- END B_tr_sec_title -->
+
+&nbsp; <!-- == block sep == --> &nbsp;
+
+<!-- BEGIN B_tr_long_desc -->
+<tr>
+	<td colspan="2" bgcolor="{back_color}" align="center" valign="middle">
+		<strong>{lang_blurb}</strong>: <p>{long_desc}</p>&nbsp;<br>
+	</td>
+</tr>
+<!-- END B_tr_long_desc -->
 
 &nbsp; <!-- == block sep == --> &nbsp; 
 

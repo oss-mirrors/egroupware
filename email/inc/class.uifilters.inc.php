@@ -1,17 +1,23 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Sieve Email Filters and Search Mode				*
-	* http://www.phpgroupware.org							*
-	* Written by Angelo (Angles) Puglisi						*
+	* AngleMail - Sieve Email Filters and Search Mode					*
+	* http://www.anglemail.org									*
+	* Written by Angelo (Angles) Puglisi <angles@aminvestments.com>		*
+	* Copyright (C) 2001, 2002 Angelo Puglisi (Angles)					*
 	* --------------------------------------------							*
 	*  This program is free software; you can redistribute it and/or modify it		*
 	*  under the terms of the GNU General Public License as published by the	*
 	*  Free Software Foundation; either version 2 of the License, or (at your		*
-	*  option) any later version.								*
+	*  option) any later version.										*
 	\**************************************************************************/
 
 	/* $Id$ */
 
+	/*!
+	@class uifilters
+	@abstract ?
+	@author Angles
+	*/
 	class uifilters
 	{
 		var $public_functions = array(
@@ -21,16 +27,28 @@
 		var $bo;
 		var $theme;
 		var $nextmatchs;
+		var $widgets;
 		var $debug = 0;
 
+		/*!
+		@function uifilters
+		@abstract constructor 
+		@author Angles
+		*/
 		function uifilters()
 		{
 			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
 			$this->theme = $GLOBALS['phpgw_info']['theme'];
 			// make the filters object
 			$this->bo = CreateObject("email.bofilters");
+			return;
 		}
 		
+		/*!
+		@function filters_edit
+		@abstract ?
+		@author Angles
+		*/
 		function filters_edit()
 		{			
 			unset($GLOBALS['phpgw_info']['flags']['noheader']);
@@ -443,7 +461,7 @@
 				
 				if ($this->debug > 1) { echo 'uifilters.filters_edit: count($this->bo->filters): ['.count($this->bo->filters).'] ; <br>'."\r\n"; }
 				//$this->bo->sieve_to_imap_string();
-				$this->bo->do_imap_search();
+//				$this->bo->do_imap_search();
 				//if ($this->debug > 0) { echo 'message list print_r dump:<b><pre>'."\r\n"; print_r($this->bo->result_set_mlist); echo '</pre><br><br>'."\r\n"; }
 				$this->bo->make_mlist_box();
 				$mlist_html = 
@@ -511,6 +529,11 @@
 		}
 		
 		
+		/*!
+		@function filters_list
+		@abstract ?
+		@author Angles
+		*/
 		function filters_list()
 		{
 			unset($GLOBALS['phpgw_info']['flags']['noheader']);
@@ -525,6 +548,10 @@
 				)
 			);
 			$GLOBALS['phpgw']->template->set_block('T_filters_list','B_filter_list_row','V_filter_list_row');
+			
+			//= = = = TESTING NEW TOOLBAR WIDGET = = = 
+			$this->widgets = CreateObject('email.html_widgets');
+			$GLOBALS['phpgw']->template->set_var('widget_toolbar',$this->widgets->get_toolbar());
 			
 			$var = Array(
 				'pref_errors'		=> '',

@@ -1,26 +1,40 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare API - NNTP                                                  *
-  * This file written by Mark Peters <skeeter@phpgroupware.org>              *
-  * Handles specific operations in dealing with NNTP                         *
-  * Copyright (C) 2001 Mark Peters                                           *
-  * -------------------------------------------------------------------------*
-  * This library is part of the phpGroupWare API                             *
-  * http://www.phpgroupware.org/api                                          * 
-  * ------------------------------------------------------------------------ *
-  * This library is free software; you can redistribute it and/or modify it  *
-  * under the terms of the GNU Lesser General Public License as published by *
-  * the Free Software Foundation; either version 2.1 of the License,         *
-  * or any later version.                                                    *
-  * This library is distributed in the hope that it will be useful, but      *
-  * WITHOUT ANY WARRANTY; without even the implied warranty of               *
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                     *
-  * See the GNU Lesser General Public License for more details.              *
-  * You should have received a copy of the GNU Lesser General Public License *
-  * along with this library; if not, write to the Free Software Foundation,  *
-  * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            *
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare API - IMAP                                                  *
+	* This file written by Mark Peters <skeeter@phpgroupware.org>              *
+	* and Angelo "Angles" Puglisi <angles@aminvestments.com>		*
+	* Handles specific operations in dealing with IMAP via Sockets                         *
+	* Copyright (C) 2001 Mark Peters                                           *
+	* Copyright (C) 2001, 2002 Anglo "Angles" Puglisi *
+	* -------------------------------------------------------------------------*
+	* This library is part of the phpGroupWare API                             *
+	* http://www.phpgroupware.org/api                                          * 
+	* ------------------------------------------------------------------------ *
+	* This library is free software; you can redistribute it and/or modify it  *
+	* under the terms of the GNU Lesser General Public License as published by *
+	* the Free Software Foundation; either version 2.1 of the License,         *
+	* or any later version.                                                    *
+	* This library is distributed in the hope that it will be useful, but      *
+	* WITHOUT ANY WARRANTY; without even the implied warranty of               *
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                     *
+	* See the GNU Lesser General Public License for more details.              *
+	* You should have received a copy of the GNU Lesser General Public License *
+	* along with this library; if not, write to the Free Software Foundation,  *
+	* Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            *
+	\**************************************************************************/
 
+	/*!
+	@class mail_dcom extends mail_dcom_base FOR SOCKETS
+	@abstract implements IMAP module FOR SOCKETS, replaces php IMAP extension
+	@author Angles, Mark Peters (skeeter)
+	@discussion In around summer 2001, Mark Peeters "skeeter" emailed me "Angles" some 
+	files which were the skeleton of a sockets replacement for the php IMAP extensions. I 
+	believe skeeter wrote the base "network" class in the phpgwapi, and these files extended 
+	that class, an excellent approach. Skeeter covered the low level network functionality 
+	and also had some higher level sockets functionality that appeared to be for NNTP. 
+	To the extent any function in this class uses any of skeeters code, even when that code 
+	may be just one line, skeeter is listed as an author for that function.
+	*/
 	class mail_dcom extends mail_dcom_base
 	{		
 		/**************************************************************************\
@@ -30,15 +44,14 @@
 		/*!
 		@function str_begins_with
 		@abstract determine if string $haystack begins with string $needle
-		@param $haystack : string : data to examine to determine if it starts with $needle
-		@param $needle : string : $needle should or should not start at position 0 (zero) of $haystack
-		@result  Boolean, True or False
+		@param $haystack (string) data to examine to determine if it starts with $needle
+		@param $needle (string) $needle should or should not start at position 0 (zero) of $haystack
+		@author Angles
+		@result (Boolean) True or False
 		@discussion this is a NON-REGEX way to to so this, and is NOT case sensitive
 		this *should* be faster then Regular expressions and *should* not be confused by
 		regex special chars such as the period "." or the slashes "/" and "\" , etc...
-		@syntax ?
-		@author Angles
-		@access	public or private
+		@access public or private
 		*/
 		function str_begins_with($haystack,$needle='')
 		{
@@ -94,24 +107,23 @@
 		/*!
 		@function imap_read_port
 		@abstract reads data from an IMAP server until the line that begins with the specified param "cmd_tag"
-		@param $cmd_tag : string is the special string that indicates a server is done sending data
+		@param $cmd_tag (string) the special string that indicates a server is done sending data
 		this is generally the same "tag" identifier that the client sent when initiate the command, ex. "A001"
-		@result  array where each line of the server data exploded at every CRLF pair into an array
+		@author Angles, skeeter
+		@result array where each line of the server data exploded at every CRLF pair into an array
 		@discussion IMAP servers send out data that is fairly well "typed", meaning RFC2060
 		is pretty strict about what the server may send out, allowing the client (us) to more easily
-		interpet this data. The important indicator is the string at the beginning of each line of data
-		from the server, it can be:
+		interpet this data. See syntax for a description.
+		@syntax The important indicator is the string at the beginning of each line of data from the server, it can be
 		"*" (astrisk) = "untagged" =  means "this line contains server data and more data will follow"
 		"+" (plus sign) means "you, the client, must now finish sending your data to the server"
 		"tagged" is the command tag that the client used to initiate this command, such as "A001"
 		IMAP server's final line of data for that command will contain that command's tag as sent from the client
-		This tagged "command completion" signal is followed by either:
+		The tagged "command completion" signal is followed by either 
 		"OK" = successful command completion
 		"NO" = failure of some kind
 		"BAD" = protocol error such as unrecognized command or syntax error, client should abort this command processing
-		@syntax ?
-		@author Angles, skeeter
-		@access	private
+		@access private
 		*/
 		function imap_read_port($cmd_tag='')
 		{
@@ -214,9 +226,13 @@
 		/*!
 		@function report_svr_data
 		@abstract reports server data array for debugging purposes
-		@result  echos multiline data
+		@param $data_array (array) server response data as returned by function "imap_read_port" as an array
+		@param $calling_func_name (string) for debugging info, the name of the calling function
+		@param $show_ok_msg (boolean) default TRUE, the last line of server data is not really data, just an 
+		indication that the server has finished sending its data. Set this to TRUE to include that line in the output.
 		@author Angles
-		@access	private
+		@result  none, this function DIRECTLY echos multiline data, nothing is returned from this function
+		@access private
 		*/
 		function report_svr_data($data_array, $calling_func_name='', $show_ok_msg=True)
 		{
@@ -235,11 +251,10 @@
 		/*!
 		@function server_last_error
 		@abstract implements IMAP_LAST_ERROR
-		@result  string
-		@discussion ?
-		@syntax ?
+		@result string
 		@author Angles
-		@access	public
+		@discussion UNDER CONSTRUCTION
+		@access public
 		*/
 		function server_last_error()
 		{
@@ -251,101 +266,128 @@
 		/**************************************************************************\
 		*	Functions NOT YET IMPLEMENTED
 		\**************************************************************************/
+		/*!
+		@function createmailbox
+		@abstract not yet implemented in IMAP sockets module
+		*/
 		function createmailbox($stream,$mailbox) 
 		{
 			// not yet implemented
 			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: createmailbox<br>'; }
 			return true;
 		}
+		/*!
+		@function deletemailbox
+		@abstract not yet implemented in IMAP sockets module
+		*/
 		function deletemailbox($stream,$mailbox)
 		{
 			// not yet implemented
 			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: deletemailbox<br>'; }
 			return true;
 		}
+		/*!
+		@function expunge
+		@abstract not yet implemented in IMAP sockets module
+		*/
 		function expunge($stream)
 		{
 			// not yet implemented
 			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: expunge<br>'; }
 			return true;
 		}
+		/*!
+		@function mailcopy
+		@abstract not yet implemented in IMAP sockets module
+		*/
 		function mailcopy($stream,$msg_list,$mailbox,$flags)
 		{
 			// not yet implemented
 			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: mailcopy<br>'; }
 			return False;
 		}
+		/*!
+		@function mail_move
+		@abstract not yet implemented in IMAP sockets module
+		*/
 		function mail_move($stream,$msg_list,$mailbox)
 		{
 			// not yet implemented
 			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: mail_move<br>'; }
 			return False;
 		}
+		/*!
+		@function noop_ping_test
+		@abstract not yet implemented in IMAP sockets module
+		*/
 		function noop_ping_test($stream)
 		{
 			// not yet implemented
 			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: noop_ping_test<br>'; }
 			return False;
 		}
-		function reopen($stream,$mailbox,$flags = "")
-		{
-			// not yet implemented
-			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: reopen<br>'; }
-			return False;
-		}
+		/*!
+		@function append
+		@abstract not yet implemented in IMAP sockets module
+		*/
 		function append($stream, $folder = "Sent", $header, $body, $flags = "")
 		{
 			// not yet implemented
-			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: append<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: append NOT YET IMPLEMENTED imap sockets function<br>'; }
 			return False;
 		}
-		function fetch_overview($stream,$criteria,$flags)
+		/*!
+		@function fetch_overview
+		@abstract not yet implemented in IMAP sockets module
+		*/
+		function fetch_overview($stream_notused,$criteria,$flags)
 		{
 			// not yet implemented
-			if ($this->debug_dcom >= 1) { echo 'imap: call to not-yet-implemented socket function: fetch_overview<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: fetch_overview NOT YET IMPLEMENTED imap sockets function<br>'; }
 			return False;
 		}
 		/*
 		@function search
 		@abstract  implements IMAP_SEARCH, search the mailbox currently opened for param $criteria args
-		@param $stream : notused in socket class
-		@param  $criteria : string, delimited by spaces, in which the following keywords are allowed.
-		Any multi-word arguments (eg. FROM "joey smith") must be quoted.
-			ALL - return all messages matching the rest of the criteria
-			ANSWERED - match messages with the \\ANSWERED flag set
-			BCC "string" - match messages with "string" in the Bcc: field
-			BEFORE "date" - match messages with Date: before "date"
-			BODY "string" - match messages with "string" in the body of the message
-			CC "string" - match messages with "string" in the Cc: field
-			DELETED - match deleted messages
-			FLAGGED - match messages with the \\FLAGGED (sometimes referred to as Important or Urgent) flag set
-			FROM "string" - match messages with "string" in the From: field
-			KEYWORD "string" - match messages with "string" as a keyword
-			NEW - match new messages
-			OLD - match old messages
-			ON "date" - match messages with Date: matching "date"
-			RECENT - match messages with the \\RECENT flag set
-			SEEN - match messages that have been read (the \\SEEN flag is set)
-			SINCE "date" - match messages with Date: after "date"
-			SUBJECT "string" - match messages with "string" in the Subject:
-			TEXT "string" - match messages with text "string"
-			TO "string" - match messages with "string" in the To:
-			UNANSWERED - match messages that have not been answered
-			UNDELETED - match messages that are not deleted
-			UNFLAGGED - match messages that are not flagged
-			UNKEYWORD "string" - match messages that do not have the keyword "string"
-			UNSEEN - match messages which have not been read yet
+		@param $stream_notused Stream is automatically handled by the underlying code in this socket class. 
+		@param $criteria is a string, delimited by spaces, in which the following keywords are allowed. 
+		(See syntax for the keywords). Any multi-word arguments (eg. FROM "joey smith") must be quoted.
 		@param  flags  Valid values for flags are SE_UID, which causes the returned array to contain UIDs 
 		instead of messages sequence numbers.
-		@result  array
+		@result array
 		@discussion: To match all unanswered messages sent by Mom, you'd use: "UNANSWERED FROM mom".
 		Searches appear to be case insensitive.
+		@syntax Search Keywords can be 
+		ALL - return all messages matching the rest of the criteria
+		ANSWERED - match messages with the \\ANSWERED flag set
+		BCC "string" - match messages with "string" in the Bcc: field
+		BEFORE "date" - match messages with Date: before "date"
+		BODY "string" - match messages with "string" in the body of the message
+		CC "string" - match messages with "string" in the Cc: field
+		DELETED - match deleted messages
+		FLAGGED - match messages with the \\FLAGGED (sometimes referred to as Important or Urgent) flag set
+		FROM "string" - match messages with "string" in the From: field
+		KEYWORD "string" - match messages with "string" as a keyword
+		NEW - match new messages
+		OLD - match old messages
+		ON "date" - match messages with Date: matching "date"
+		RECENT - match messages with the \\RECENT flag set
+		SEEN - match messages that have been read (the \\SEEN flag is set)
+		SINCE "date" - match messages with Date: after "date"
+		SUBJECT "string" - match messages with "string" in the Subject:
+		TEXT "string" - match messages with text "string"
+		TO "string" - match messages with "string" in the To:
+		UNANSWERED - match messages that have not been answered
+		UNDELETED - match messages that are not deleted
+		UNFLAGGED - match messages that are not flagged
+		UNKEYWORD "string" - match messages that do not have the keyword "string"
+		UNSEEN - match messages which have not been read yet
 		*/
-		function search($stream,$sequence,$flags)
+		function search($stream_notused,$sequence,$flags)
 		{
 			$empty_return=array();
 			// not yet implemented
-			if ($this->debug_dcom >= 1) { echo 'imap: call to not-yet-implemented socket function: search<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: search NOT YET IMPLEMENTED imap sockets function<br>'; }
 			return $empty_return;
 		}
 	
@@ -356,19 +398,26 @@
 		/*!
 		@function open
 		@abstract implements php function IMAP_OPEN
-		@param $fq_folder : string : {SERVER_NAME:PORT/OPTIONS}FOLDERNAME
-		@param $user :  string : account name to log into on the server
-		@param $pass :  string : password for this account on the mail server
-		@param $flags :  NOT YET IMPLEMENTED
-		@discussion implements the functionality of php function IMAP_OPEN
-		note that php's IMAP_OPEN applies to IMAP, POP3 and NNTP servers
-		@syntax ?
+		@param $fq_folder (string) 
+		@param $user (string) account name to log into on the server
+		@param $pass (string) password for this account on the mail server
+		@param $flags (defined int) NOT YET IMPLEMENTED
 		@author Angles, skeeter
-		@access	public
+		@result False on error, SocketPtr on success
+		@discussion implements the functionality of php function IMAP_OPEN
+		note that php IMAP_OPEN applies to IMAP, POP3 and NNTP servers
+		@syntax The param $fq_folder is expected to be like this
+		{ServerName:Port/options}NAMESPACE_DELIMITER_FOLDERNAME
+		repeat for inline doc parser
+		&#123;ServerName:Port/options&#125;NAMESPACE_DELIMITER_FOLDERNAME
+		An example of this is this
+		&#123;mail.example.net:143/imap&#125;INBOX.Sent
+		Where INBOX is the namespace and the dot is the delimiter, which will always preceed any subfolder.
+		@access public
 		*/
 		function open ($fq_folder, $user, $pass, $flags='')
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: Entering open<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: ENTERING open<br>'; }
 			
 			// fq_folder is a "fully qualified folder", seperate the parts:
 			$svr_data = array();
@@ -381,8 +430,8 @@
 			if (!$this->open_port($server,$port,15))
 			{
 				echo '<p><center><b>' .lang('There was an error trying to connect to your IMAP server.<br>Please contact your admin to check the servername, username or password.') .'</b></center>';
-				$GLOBALS['phpgw_info']['flags']['nodisplay'] = True;
-				exit;
+				echo('<CENTER><A HREF="'.$GLOBALS['phpgw']->link('/home.php').'">'.lang('Click here to continue').'...</A></CENTER>'); //cbsman
+				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 			else
 			{
@@ -391,8 +440,11 @@
 			}
 
 
+			if ($this->debug_dcom >= 2) { echo 'imap: open: user and pass NO quotemeta: user ['. htmlspecialchars($user).'] pass ['.htmlspecialchars($pass).']<br>'; }
+			if ($this->debug_dcom >= 2) { echo 'imap: open: user and pass WITH quotemeta: user ['. htmlspecialchars(quotemeta($user)).'] pass ['.htmlspecialchars(quotemeta($pass)).']<br>'; }
+			
 			$cmd_tag = 'L001';
-			$full_command = $cmd_tag.' LOGIN "'.quotemeta($user).'" "'.quotemeta($pass).'"';
+			$full_command = $cmd_tag.' LOGIN "'.$user.'" "'.$pass.'"';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
 			if ($this->debug_dcom >= 2) { echo 'imap: open: write_port: '. htmlspecialchars($full_command) .'<br>'; }
@@ -400,7 +452,7 @@
 			
 			if(!$this->write_port($full_command))
 			{
-				if ($this->debug_dcom >= 1) { echo 'imap: open: could not write_port<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: open: LEAVING with error: could not write_port<br>'; }
 				$this->error();
 				// does $this->error() ever continue onto next line?
 				return False;
@@ -418,7 +470,7 @@
 					echo 'imap: open: last recorded error:<br>';
 					echo  $this->server_last_error().'<br>';
 				}
-				if ($this->debug_dcom >= 1) { echo 'imap: Leaving Open with error<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: LEAVING Open with error<br>'; }
 				return False;
 			}
 			else
@@ -434,13 +486,18 @@
 			{
 				$this->reopen('',$fq_folder);
 			}
-			if ($this->debug_dcom >= 1) { echo 'imap: Leaving open<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: LEAVING open<br>'; }
 			return $this->socket;
 		}
 
+		/*!
+		@function close
+		@abstract implements LOGOUT
+		@author Angles, skeeter
+		*/
 		function close($flags="")
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: Entering Close<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: ENTERING Close<br>'; }
 			
 			$cmd_tag = 'c001';
 			$full_command = $cmd_tag.' LOGOUT';
@@ -451,7 +508,7 @@
 			
 			if(!$this->write_port($full_command))
 			{
-				if ($this->debug_dcom >= 1) { echo 'imap: close: could not write_port<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: close: LEAVING with error: could not write_port<br>'; }
 				$this->error();
 			}
 			
@@ -474,7 +531,7 @@
 			else
 			{
 				if ($this->debug_dcom >= 2) { $this->report_svr_data($response_array, 'close', True); }
-				if ($this->debug_dcom >= 1) { echo 'imap: Leaving Close<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: LEAVING Close<br>'; }
 				return True;
 			}
 		}
@@ -482,17 +539,17 @@
 		/*!
 		@function reopen
 		@abstract implements last part of IMAP_OPEN and all of IMAP_REOPEN
-		@param $stream_notused : socket class handles stream reference internally
-		@param $fq_folder : string : "fully qualified folder" {SERVER_NAME:PORT/OPTIONS}FOLDERNAME
-		@param $flags : Not Used in helper function
+		@param $stream_notused Socket class handles stream reference internally
+		@param $fq_folder (string) "fully qualified folder" {SERVER_NAME:PORT/OPTIONS}FOLDERNAME 
+		repeat for inline docs &#123;SERVER_NAME:PORT/OPTIONS&#125;NAMESPACE_DELIMITER_FOLDERNAME
+		@param $flags (defined int) Not Yet Implemented
 		@result boolean True on success or False on error
-		@discussion  ?
 		@author Angles
-		@access	public
+		@access public
 		*/
 		function reopen($stream_notused, $fq_folder, $flags='')
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: Entering reopen<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: ENTERING reopen<br>'; }
 			
 			// fq_folder is a "fully qualified folder", seperate the parts:
 			$svr_data = array();
@@ -525,13 +582,13 @@
 					echo 'imap: reopen: last recorded error:<br>';
 					echo  $this->server_last_error().'<br>';
 				}
-				if ($this->debug_dcom >= 1) { echo 'imap: Leaving reopen with error<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: LEAVING reopen with error<br>'; }
 				return False;				
 			}
 			else
 			{
 				if ($this->debug_dcom >= 2) { $this->report_svr_data($response_array, 'reopen', True); }
-				if ($this->debug_dcom >= 1) { echo 'imap: Leaving reopen<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: LEAVING reopen<br>'; }
 				return True;
 			}
 		}
@@ -539,11 +596,12 @@
 		/*!
 		@function listmailbox
 		@abstract implements IMAP_LISTMAILBOX
-		@param $stream_notused : socket class handles stream reference internally
-		@param $server_str : string : {SERVER_NAME:PORT/OPTIONS}
-		@param $pattern : string : can be a namespace, or a mailbox name, or a namespace_delimiter, 
+		@param $stream_notused Socket class handles stream reference internally
+		@param $server_str (string) {SERVER_NAME:PORT/OPTIONS} 
+		repeat for inline docs &#123;SERVER_NAME:PORT/OPTIONS&#125;
+		@param $pattern (string) can be a namespace, or a mailbox name, or a namespace_delimiter, 
 		or a namespace_delimiter_mailboxname, AND/OR including either "%" or "*" (see discussion below)
-		@result an array containing the names of the mailboxes
+		@result an array containing the names of the mailboxes. 
 		@discussion: if param $pattern includes some form of mailbox reference, that tells the server where in the
 		mailbox hierarchy to start searching. If neither wildcard "%" nor "*" follows said mailbox reference, then the
 		server returns the delimiter and the namespace for said mailbox reference. More typically, either one of the
@@ -563,11 +621,11 @@
 		manual states "ref should normally be just the server specification as described in imap_open()" which apparently
 		means the server string {serverName:port/options} with no namespace, no delimiter, nor any mailbox name.
 		@author Angles, skeeter
-		@access	public
+		@access public
 		*/
 		function listmailbox($stream_notused,$server_str,$pattern)
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: Entering listmailbox<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: ENTERING listmailbox<br>'; }
 			$mailboxes_array = Array();
 			
 			// prepare params, seperate wildcards "*" or "%" from param $pattern
@@ -667,46 +725,23 @@
 			}
 			
 			if ($this->debug_dcom >= 2) { $this->report_svr_data($mailboxes_array, 'listmailbox INTERNAL_mailboxes_array', False); }
-			if ($this->debug_dcom >= 1) { echo 'imap: Leaving listmailbox<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: LEAVING listmailbox<br>'; }
 			//return '';
 			return $mailboxes_array;
 		}
 		
-		// OBSOLETED
-		function fix_folder($folder)
-		{
-			switch($GLOBALS['phpgw_info']['user']['preferences']['email']['imap_server_type'])
-			{
-				case 'UW-Maildir':
-					if (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_folder']))
-					{
-						if (empty($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_folder']))
-						{
-							$folder = $folder;
-						}
-						else
-						{
-							$folder = $GLOBALS['phpgw_info']['user']['preferences']['email']['mail_folder'].$folder;
-						}
-					}
-					break;
-				case 'Cyrus':
-					$folder = 'INBOX.'.$folder;
-					break;
-				default:
-					$folder = 'mail/'.$folder;
-					break;
-			}
-			return $folder;
-		}
 		
 		/**************************************************************************\
 		*	Mailbox Status and Information
 		\**************************************************************************/
 		
+		/*!
+		@function mailboxmsginfo
+		@abstract not yet implemented in IMAP sockets module
+		*/
 		function mailboxmsginfo($stream_notused='')
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: mailboxmsginfo<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: mailboxmsginfo NOT YET IMPLEMENTED imap sockets function<br>'; }
 			return False;
 		}
 		
@@ -749,23 +784,34 @@
 		/*!
 		@function status
 		@abstract implements php function IMAP_STATUS
-		@param $stream_notused : socket class handles stream reference internally
-		@param $fq_folder : string : {SERVER_NAME:PORT/OPTIONS}FOLDERNAME
-		@param $flags :  available options are:
+		@param $stream_notused  socket class handles stream reference internally
+		@param $fq_folder (string) &#123;SERVER_NAME:PORT/OPTIONS&#125;FOLDERNAME
+		@param $flags (defined int) see syntax for available flags
+		@author Angles, skeeter
+		@discussion implements the functionality of php function IMAP_STATUS. Mailserver 
+		*should* return a single line of data, (data does not include the tag completion line) 
+		But, in certain cases buggy servers in non-error situations may return 2 lines of data, instead on 1 line, 
+		see example for an example.
+		This quote from the IMAP RFC summarizes the STATUS command  
+		" The STATUS command provides an alternative to opening a second IMAP4rev1 connection 
+		and doing an EXAMINE command on a mailbox to query that mailbox's status without 
+		deselecting the current mailbox in the first IMAP4rev1 connection".
+		@syntax The param flags gives instructions on what info to get, default is SA_ALL, flags are
 		SA_MESSAGES - set status->messages to the number of messages in the mailbox
 		SA_RECENT - set status->recent to the number of recent messages in the mailbox
 		SA_UNSEEN - set status->unseen to the number of unseen (new) messages in the mailbox
 		SA_UIDNEXT - set status->uidnext to the next uid to be used in the mailbox
 		SA_UIDVALIDITY - set status->uidvalidity to a constant that changes when uids for the mailbox may no longer be valid
 		SA_ALL - set all of the above
-		@discussion implements the functionality of php function IMAP_STATUS
-		@syntax ?
-		@author Angles, skeeter
-		@access	public
+		@example This is an examle of a buggy imap server returning 2 lines instead of 1 line, in a STATUS reply
+		-- ArrayPos[0] data: * NO CLIENT BUG DETECTED: STATUS on selected mailbox: INBOX
+		-- ArrayPos[1] data: * STATUS INBOX (MESSAGES 724 RECENT 0 UNSEEN 436 UIDNEXT 843 UIDVALIDITY 1005967489)
+		Normally only the line with the actual data would be returned by the server
+		@access public
 		*/
 		function status($stream_notused='', $fq_folder='',$options=SA_ALL)
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: Entering status<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: ENTERING status<br>'; }
 			
 			// fq_folder is a "fully qualified folder", seperate the parts:
 			$svr_data = array();
@@ -800,13 +846,14 @@
 			
 			if(!$this->write_port($full_command))
 			{
-				if ($this->debug_dcom >= 1) { echo 'imap: status: could not write_port<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: status: LEAVING with error: could not write_port<br>'; }
 				$this->error();
 				return False;				
 			}
 			
 			// read the server data
 			$response_array = $this->imap_read_port($expecting);
+			
 			
 			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
 			if (count($response_array) == 0)
@@ -817,24 +864,28 @@
 					echo 'imap: status: last recorded error:<br>';
 					echo  $this->server_last_error().'<br>';
 				}
-				if ($this->debug_dcom >= 1) { echo 'imap: Leaving status with error<br>'; }
-				return False;				
-			}
-			// STATUS should only return 1 line of data
-			if (count($response_array) > 1)
-			{
-				if ($this->debug_dcom >= 2)
-				{
-					echo 'imap: status: error in status, more than one line server response, not normal<br>';
-					echo 'imap: status: last recorded error:<br>';
-					echo  $this->server_last_error().'<br>';
-				}
-				if ($this->debug_dcom >= 1) { echo 'imap: Leaving status with error<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: LEAVING status with error<br>'; }
 				return False;				
 			}
 			
+			// STATUS should only return 1 line of data
+			//if (count($response_array) > 1)
+			// BUGGY UWASH IMAP SERVERS RETURN 2 LINES HERE, so increase to > 2
+			//if (count($response_array) > 2)
+			//{
+			//	if ($this->debug_dcom >= 2)
+			//	{
+			//		echo 'imap: status: error in status, more than (one) TWO lines (for buggy uwash servers) line server response, not normal<br>';
+			//		echo 'imap: status: last recorded error:<br>';
+			//		echo  $this->server_last_error().'<br>';
+			//	}
+			//	if ($this->debug_dcom >= 1) { echo 'imap: Leaving status with error<br>'; }
+			//	return False;				
+			//}
+			
 			// if we get here we have valid server data
 			if ($this->debug_dcom >= 2) { $this->report_svr_data($response_array, 'status', True); }
+			
 			
 			// initialize structure
 			$info = new mailbox_status;
@@ -844,11 +895,34 @@
 			$info->uidnext = '';
 			$info->uidvalidity = '';
 			
+			// for buggy servers that return 2 lines, the last line has the data
+			// for compliant 1 line responses, that single line can also be defined as the "last" line of data
+			// so to account for buggy servers, we'll take the LAST array element\
+			$last_line = (count($response_array) - 1);
+			$response_line_of_data = $response_array[$last_line];
+			
+			// ERROR CHECK
+			if (stristr($response_line_of_data, '* STATUS') == False)
+			{
+				if ($this->debug_dcom >= 2)
+				{
+					echo 'imap: status: error in status, $response_line_of_data does not have "* STATUS" so it is not valid data<br>';
+					echo 'imap: status: last recorded error:<br>';
+					echo  $this->server_last_error().'<br>';
+				}
+				if ($this->debug_dcom >= 1) { echo 'imap: LEAVING status with error at '.__LINE__.'<br>'; }
+				return False;				
+			}
+			
+			
+			// ok... 
 			//typical server data:
 			// * STATUS INBOX (MESSAGES 15 RECENT 1 UNSEEN 2 UIDNEXT 17 UIDVALIDITY 1005967489)
 			// data starts after the mailbox name, which could actually have similar strings as the status querey
 			// get data the includes and follows the opening paren
-			$status_data_raw = strstr($response_array[0], '(');
+			// $status_data_raw = strstr($response_array[0], '(');
+			$status_data_raw = strstr($response_array[$last_line], '(');
+			
 			
 			// snarf any of the 5 possible pieces of data if they are present
 			$status_data['messages'] = $this->snarf_status_data($status_data_raw, 'MESSAGES');
@@ -898,11 +972,20 @@
 			{
 				unset($info->uidvalidity);
 			}
-			
-			if ($this->debug_dcom >= 1) { echo 'imap: Leaving status<br>'; }
+			// function "sort" needs to know "->messages" the total num msgs in (hopefully) this folder
+			// so L1 class var cache it so "sort" does not have to call this function if it has ALREADY been run
+			$this->mailbox_status = $info;
+			if ($this->debug_dcom >= 2) { echo 'imap: status: L1 class var caching: $this->mailbox_status DUMP:<pre>'; print_r($this->mailbox_status); echo '</pre>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: LEAVING status<br>'; }
 			return $info;
 		}
 		
+		/*!
+		@function snarf_status_data
+		@abstract Utility function used by STATUS function
+		@author Angles
+		@access private
+		*/
 		function snarf_status_data($status_raw_str='',$snarf_this='')
 		{
 			// bogus data detection
@@ -949,6 +1032,10 @@
 			return $return_data;
 		}
 		
+		/*!
+		@function num_msg
+		@abstract OBSOLETED
+		*/
 		// OBSOLETED
 		function num_msg($folder='')
 		{
@@ -959,6 +1046,10 @@
 			return $this->status_query($folder,'MESSAGES');
 		}
 		
+		/*!
+		@function total
+		@abstract OBSOLETED
+		*/
 		// OBSOLETED
 		function total($field)
 		{
@@ -974,50 +1065,67 @@
 		/**************************************************************************\
 		*	Message Sorting
 		\**************************************************************************/
+		/*!
+		@function sort
+		@abstract not yet implemented in IMAP sockets module
+		*/
 		// options/flags are:
 			//SE_UID	Return UIDs instead of sequence numbers
 			//SE_NOPREFETCH	Don't prefetch searched messages.
 		function sort($stream_notused='',$criteria=SORTARRIVAL,$reverse=False,$options='')
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: sort<br>'; }
-			return False;
-		}
+			//if ($this->debug_dcom >= 1) { echo 'imap: sort NOT YET IMPLEMENTED imap sockets function<br>'; }
+			//return False;
+		//}
 		
-		/*
-		function sort($folder='',$criteria=SORTDATE,$reverse=False,$options='')
-		{
-			if($folder == '' || $folder == $this->mailbox)
+		//function sort($folder='',$criteria=SORTDATE,$reverse=False,$options='')
+		//{
+			if ($this->debug_dcom >= 1) { echo 'imap: ENTERING sort<br>'; }
+			
+			// we need total num message in this folder, is it cached?
+			if ($this->mailbox_status != '')
 			{
-				$folder = $this->mailbox;
-			$num_msgs = $this->num_msgs;
+				$num_msgs = $this->mailbox_status->messages;
+				if ($this->debug_dcom >= 2) { echo 'imap: sort: using L1 class var cached $this->mailbox_status->messages ['.$this->mailbox_status->messages.']<br>'; }
 			}
 			else
 			{
-				// WHAT ???
+				// we need an "fq_folder" to call this function
+				$fq_folder =	 $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_callstr')
+							.$GLOBALS['phpgw']->msg->get_arg_value('folder');
+				if ($this->debug_dcom >= 2) { echo 'imap: sort: NO L1 class var cached num msgs data, calling this->status with $fq_folder ['.htmlspecialchars($fq_folder).']<br>'; }
+				$status_data = $this->status($stream_notused, $fq_folder,SA_ALL);
+				$num_msgs = $status_data->messages;
 			}
+			
+			
+			// DEBUG
+			//if ($this->debug_dcom >= 1) { echo 'imap: debug QUICK EXIT sort<br>'; }
+			//return False;
+			
 			
 			switch($criteria)
 			{
 				case SORTDATE:
-					$old_list = $this->fetch_header(1,$this->num_msgs,'Date:');
+					$old_list = $this->fetch_header(1,$num_msgs,'Date:');
 					$field_list = $this->convert_date_array($old_list);
 					break;
 				case SORTARRIVAL:
 					break;
 				case SORTFROM:
-					$field_list = $this->fetch_header(1,$this->num_msgs,'From:');
+					$field_list = $this->fetch_header(1,$num_msgs,'From:');
 					break;
 				case SORTSUBJECT:
-					$field_list = $this->fetch_header(1,$this->num_msgs,'Subject:');
+					$field_list = $this->fetch_header(1,$num_msgs,'Subject:');
 					break;
 				case SORTTO:
-					$field_list = $this->fetch_header(1,$this->num_msgs,'To:');
+					$field_list = $this->fetch_header(1,$num_msgs,'To:');
 					break;
 				case SORTCC:
-					$field_list = $this->fetch_header(1,$this->num_msgs,'cc:');
+					$field_list = $this->fetch_header(1,$num_msgs,'cc:');
 					break;
 				case SORTSIZE:
-					$field_list = $this->fetch_field(1,$this->num_msgs,'RFC822.SIZE');
+					$field_list = $this->fetch_field(1,$num_msgs,'RFC822.SIZE');
 					break;
 			}
 			@reset($field_list);
@@ -1030,7 +1138,7 @@
 				else
 				{
 					uasort($field_list,array($this,"ssort_decending"));
-				}			
+				}
 			}
 			elseif(!$reverse)
 			{
@@ -1046,22 +1154,99 @@
 			while(list($key,$value) = each($field_list))
 			{
 				$return_array[] = $key;
-				//echo '('.$i++.') Field: <b>'.$value."</b>\t\tMsg Num: <b>".$key."</b><br>\n";
+				if ($this->debug_dcom >= 2) { echo 'imap: sort: ('.$i++.') Field: <b>'.$value."</b>\t\tMsg Num: <b>".$key."</b><br>\r\n"; } 
 			}
 			@reset($return_array);
+			if ($this->debug_dcom >= 1) { echo 'imap: LEAVING sort<br>'; }
 			return $return_array;
 		}
+		
+		
+		/*!
+		@function fetch_header
+		@abstract Under Construction - Used by sort
 		*/
+		function fetch_header($start,$stop,$element)
+		{
+			if ($this->debug_dcom >= 1) { echo 'imap: ENTERING fetch_header<br>'; }
+			
+			if(!$this->write_port('a001 FETCH '.$start.':'.$stop.' RFC822.HEADER'))
+			{
+				$this->error();
+			}
+			$field_element = array();
+			
+			for($i=$start;$i<=$stop;$i++)
+			{
+				$response = $this->read_port();
+				//while(!ereg('FETCH completed',$response))
+				while(chop($response)!='')
+				{
+					if ($this->debug_dcom >= 2) { echo 'imap: fetch_header: Response = '.$response."<br>\r\n"; } 
+					if(ereg('^\*',$response))
+					{
+						$field = explode(' ',$response);
+						$msg_num = $field[1];
+					}
+					if(ereg('^'.$element,$response))
+					{
+						$field_element[$msg_num] = $this->phpGW_quoted_printable_decode2(substr($response,strlen($element)+1));
+						if ($this->debug_dcom >= 2) { echo 'imap: fetch_header: <b>Field:</b> '.$field_element[$msg_num]."\t = <b>Msg Num</b> ".$msg_num."<br>\r\n"; } 
+					}
+					elseif(ereg('^'.strtoupper($element),$response))
+					{
+						$field_element[$msg_num] = $this->phpGW_quoted_printable_decode2(substr($response,strlen(strtoupper($element))+1));
+						if ($this->debug_dcom >= 2) { echo 'imap: fetch_header: <b>Field:</b> '.$field_element[$msg_num]."\t = <b>Msg Num</b> ".$msg_num."<br>\r\n"; } 
+					}
+					$response = $this->read_port();
+				}
+				$response = $this->read_port();
+			}
+			$response = $this->read_port();
+			if ($this->debug_dcom >= 2) { echo 'imap: fetch_header: returning $field_element ['.$field_element.'] <br>'; } 
+			if ($this->debug_dcom >= 1) { echo 'imap: LEAVING fetch_header<br>'; }
+			return $field_element;
+		}
+		
+		
+		/*!
+		@function fetch_field
+		@abstract Under Construction
+		*/
+		function fetch_field($start,$stop,$element)
+		{
+			if(!$this->write_port('a001 FETCH '.$start.':'.$stop.' '.$element))
+			{
+				$this->error();
+			}
+			$response = $this->read_port();
+			while(!ereg('FETCH completed',$response))
+			{
+				//echo 'Response = '.$response."<br>\n";
+				$field = explode(' ',$response);
+				$msg_num = intval($field[1]);
+				$field_element[$msg_num] = substr($field[4],0,strpos($field[4],')'));
+				//echo '<b>Field:</b> '.substr($field[4],0,strpos($field[4],')'))."\t = <b>Msg Num</b> ".$field_element[substr($field[4],0,strpos($field[4],')'))]."<br>\n";
+				$response = $this->read_port();
+			}
+			return $field_element;
+		}		
+		
 		
 		/**************************************************************************\
 		*
 		*	Message Structural Information
 		*
 		\**************************************************************************/
+		
+		/*!
+		@function fetchstructure
+		@abstract not yet implemented in IMAP sockets module
+		*/
 		function fetchstructure($stream_notused,$msg_num,$flags="")
 		{
 			// outer control structure for the multi-pass functions
-			if ($this->debug_dcom >= 1) { echo 'imap: fetchstructure<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: fetchstructure NOT YET IMPLEMENTED imap sockets function<br>'; }
 			return False;
 		}
 		
@@ -1104,9 +1289,13 @@
 		/**************************************************************************\
 		*	Message Envelope (Header Info) Data
 		\**************************************************************************/
+		/*!
+		@function header
+		@abstract not yet implemented in IMAP sockets module
+		*/
 		function header($stream_notused,$msg_num,$fromlength="",$tolength="",$defaulthost="")
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: header<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: header NOT YET IMPLEMENTED imap sockets function<br>'; }
 			return False;
 		}
 		
@@ -1118,9 +1307,13 @@
 		/**************************************************************************\
 		*	DELETE a Message From the Server
 		\**************************************************************************/
+		/*!
+		@function delete
+		@abstract not yet implemented in IMAP sockets module
+		*/
 		function delete($stream_notused,$msg_num,$flags="")
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: delete<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: delete NOT YET IMPLEMENTED imap sockets function<br>'; }
 			return False;
 		}
 		
@@ -1128,76 +1321,28 @@
 		/**************************************************************************\
 		*	Get Message Headers From Server
 		\**************************************************************************/
+		/*!
+		@function fetchheader
+		@abstract not yet implemented in IMAP sockets module
+		*/
 		function fetchheader($stream_notused,$msg_num,$flags='')
 		{
 			// NEEDED: code for flags: FT_UID; FT_INTERNAL; FT_PREFETCHTEXT
-			if ($this->debug_dcom >= 1) { echo 'imap: fetchheader<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: fetchheader NOT YET IMPLEMENTED imap sockets function<br>'; }
 			return False;
 		}
-		
-		function fetch_header($start,$stop,$element)
-		{
-			if(!$this->write_port('a001 FETCH '.$start.':'.$stop.' RFC822.HEADER'))
-			{
-				$this->error();
-			}
-			for($i=$start;$i<=$stop;$i++)
-			{
-				$response = $this->read_port();
-				//while(!ereg('FETCH completed',$response))
-				while(chop($response)!='')
-				{
-					//echo 'Response = '.$response."<br>\n";
-					if(ereg('^\*',$response))
-					{
-						$field = explode(' ',$response);
-						$msg_num = $field[1];
-					}
-					if(ereg('^'.$element,$response))
-					{
-						$field_element[$msg_num] = $this->phpGW_quoted_printable_decode2(substr($response,strlen($element)+1));
-						//echo '<b>Field:</b> '.$field_element[$msg_num]."\t = <b>Msg Num</b> ".$msg_num."<br>\n";
-					}
-					elseif(ereg('^'.strtoupper($element),$response))
-					{
-						$field_element[$msg_num] = $this->phpGW_quoted_printable_decode2(substr($response,strlen(strtoupper($element))+1));
-						//echo '<b>Field:</b> '.$field_element[$msg_num]."\t = <b>Msg Num</b> ".$msg_num."<br>\n";
-					}
-					$response = $this->read_port();
-				}
-				$response = $this->read_port();
-			}
-			$response = $this->read_port();
-			return $field_element;
-		}
-		
-		
-		function fetch_field($start,$stop,$element)
-		{
-			if(!$this->write_port('a001 FETCH '.$start.':'.$stop.' '.$element))
-			{
-				$this->error();
-			}
-			$response = $this->read_port();
-			while(!ereg('FETCH completed',$response))
-			{
-				//echo 'Response = '.$response."<br>\n";
-				$field = explode(' ',$response);
-				$msg_num = intval($field[1]);
-				$field_element[$msg_num] = substr($field[4],0,strpos($field[4],')'));
-				//echo '<b>Field:</b> '.substr($field[4],0,strpos($field[4],')'))."\t = <b>Msg Num</b> ".$field_element[substr($field[4],0,strpos($field[4],')'))]."<br>\n";
-				$response = $this->read_port();
-			}
-			return $field_element;
-		}		
 		
 		
 		/**************************************************************************\
 		*	Get Message Body (Parts) From Server
 		\**************************************************************************/
+		/*!
+		@function fetchbody
+		@abstract not yet implemented in IMAP sockets module
+		*/
 		function fetchbody($stream_notused,$msg_num,$part_num="",$flags="")
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: fetchbody<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: fetchbody  NOT YET IMPLEMENTED imap sockets function<br>'; }
 			return False;
 		}
 		
@@ -1208,7 +1353,7 @@
 		function get_body($stream_notused,$msg_num,$flags='',$phpgw_include_header=True)
 		{
 			// NEEDED: code for flags: FT_UID; maybe FT_INTERNAL; FT_NOT; flag FT_PEEK has no effect on POP3
-			if ($this->debug_dcom >= 1) { echo 'imap: get_body<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: get_body  NOT YET IMPLEMENTED imap sockets function<br>'; }
 			return False;
 		}
 		

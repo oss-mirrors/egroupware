@@ -74,6 +74,7 @@ image	email	en	Image
 imap mail server hostname or ip address	admin	en	IMAP mail server hostname or IP address
 imap server type	common	en	IMAP Server Type
 keep	email	en	Keep
+keywords	email	en	Keywords
 layout 1	common	en	Layout 1
 layout 2	common	en	Layout 2
 lines	email	en	Lines
@@ -115,6 +116,7 @@ previous	email	en	Previous
 raw message	email	en	raw message
 read mail	email	en	Read Mail
 redirect	email	en	Redirect
+reject	email	en	Reject
 rename a folder	email	en	Rename a Folder
 rename (expert)	email	en	Rename (expert)
 reply all	email	en	Reply All
@@ -126,6 +128,7 @@ section	email	en	Section
 search this folder	email	en	search this folder
 select your mail server type	admin	en	Select your mail server type
 send deleted messages to the trash	email	en	Send deleted messages to the trash
+send	email	en	Send
 sent messages folder	common	en	Sent messages folder
 sent messages saved in &quot;sent&quot; folder	common	en	Sent messages saved in &quot;sent&quot; folder
 short names	email	en	short names

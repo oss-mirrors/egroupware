@@ -1,9 +1,9 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - email BO Class	for Message Lists				*
-	* http://www.phpgroupware.org							*
-	* Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>		*
-	* xml-rpc and soap code template by Milosch and others				*
+	* Anglemail - email BO Class for Message Lists				*
+	* http://www.anglemail.org							*
+	* Written by Angelo (Angles) Puglisi <angles@aminvestments.com>		*
+	* Copyright 2001, 2002 Angelo "Angles" Puglisi 
 	* --------------------------------------------							*
 	*  This program is free software; you can redistribute it and/or modify it		*
 	*  under the terms of the GNU General Public License as published by the	*
@@ -21,119 +21,43 @@
 			'mlist_data'		=> True
 		);
 		var $nextmatchs;
-		//var $debug_index_data = True;
-		var $debug_index_data = False;
-		var $xi;
-		var $xml_functions = array();
+		var $svc_nextmatches;
+		var $msg_bootstrap;
 		
-		var $soap_functions = array(
-			'get_langed_labels' => array(
-				'in'  => array('int'),
-				'out' => array('array')
-			),
-			'index_data' => array(
-				'in'  => array('int'),
-				'out' => array('array')
-			),
-			'mlist_data' => array(
-				'in'  => array('struct'),
-				'out' => array('struct')
-			)
-		);
+		//var $debug_index_data = True;
+		//var $debug_index_data = 2;
+		var $debug_index_data = False;
+		
+		//var $icon_size='16';
+		var $icon_size='24';
+		
+		//var $icon_theme='evo';
+		var $icon_theme='moz';
+		
+		var $xi;
 		
 		function boindex()
 		{
-			
+			return;
 		}
 		
-		// not used yet
-		function add_vcard()
-		{
-			if($uploadedfile == 'none' || $uploadedfile == '')
-			{
-				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=addressbook.uivcard.in&action=GetFile'));
-			}
-			else
-			{
-				$uploaddir = $GLOBALS['phpgw_info']['server']['temp_dir'] . SEP;
-				
-				srand((double)microtime()*1000000);
-				$random_number = rand(100000000,999999999);
-				$newfilename = md5("$uploadedfile, $uploadedfile_name, "
-					. time() . getenv("REMOTE_ADDR") . $random_number );
-				
-				copy($uploadedfile, $uploaddir . $newfilename);
-				$ftp = fopen($uploaddir . $newfilename . '.info','w');
-				fputs($ftp,"$uploadedfile_type\n$uploadedfile_name\n");
-				fclose($ftp);
-				
-				$filename = $uploaddir . $newfilename;
-				
-				$vcard = CreateObject('phpgwapi.vcard');
-				$entry = $vcard->in_file($filename);
-				/* _debug_array($entry);exit; */
-				$entry['owner'] = $GLOBALS['phpgw_info']['user']['account_id'];
-				$entry['access'] = 'private';
-				$entry['tid'] = 'n';
-				/* _debug_array($entry);exit; */
-				$this->so->add_entry($entry);
-				$ab_id = $this->get_lastid();
-				
-				/* Delete the temp file. */
-				unlink($filename);
-				unlink($filename . '.info');
-				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=addressbook.uiaddressbook.view&ab_id=' . $ab_id));
-			}
-		}
 		
 		function get_langed_labels()
 		{
 			// ----  Langs  ----
 			// lang var for checkbox javascript  -----
-			/*
-			$this->xi['select_msg'] = lang('Please select a message first');
-			$this->xi['first_line_txt'] = lang('switch current folder to');
-			$this->xi['compose_txt'] = lang('Compose New');
-			$this->xi['folders_txt1'] = lang('Folders');
-			$this->xi['folders_txt2'] = lang('Manage Folders');
-			$this->xi['email_prefs_txt'] = lang('Email Preferences');
-			$this->xi['filters_txt'] = lang('EMail Filters');
-			$this->xi['accounts_txt'] = lang('Manage Accounts');
-			// some langs for the sort by box
-			$this->xi['lang_sort_by'] = lang('Sort By');
-			$this->xi['lang_email_date'] = lang('Email Date');
-			$this->xi['lang_arrival_date'] = lang('Arrival Date');
-			$this->xi['lang_from'] = lang('From');
-			$this->xi['lang_subject'] = lang('Subject');
-			$this->xi['lang_size'] = lang('Size');
-			// folder stats Information bar
-			$this->xi['lang_new'] = lang('New');
-			$this->xi['lang_new2'] = lang('New Messages');
-			$this->xi['lang_total'] = lang('Total');
-			$this->xi['lang_total2'] = lang('Total Messages');
-			//$this->xi['lang_size'] = lang('Size');
-			$this->xi['lang_size2'] = lang('Folder Size');
-			$this->xi['stats_to_txt'] = lang('to');
-			$this->xi['lang_get_size'] = lang('get size');
-			// initialize the lang'd header names
-			//$this->xi['lang_from'] = lang('from');
-			$this->xi['lang_date'] = lang('date');
-			$this->xi['lang_lines'] = lang('lines');
-			$this->xi['lang_counld_not_open'] = lang('Could not open this mailbox');
-			$this->xi['lang_empty_folder'] = lang('this folder is empty');
-			$this->xi['lang_delete'] = lang('delete');
-			$this->xi['mlist_attach_txt'] = lang('file');
-			*/
 			
 			$lang_strings = array(
 				'select_msg'		=> lang('Please select a message first'),
 				'first_line_txt'	=> lang('switch current folder to'),
-				'compose_txt'		=> lang('Compose New'),
+				'compose_txt'		=> lang('Compose'),
 				'folders_txt1'		=> lang('Folders'),
 				'folders_txt2'		=> lang('Manage Folders'),
-				'email_prefs_txt'	=> lang('Email Preferences'),
-				'filters_txt'		=> lang('EMail Filters'),
-				'accounts_txt'		=> lang('Extra Accounts'),
+				//'email_prefs_txt'	=> lang('Email Preferences'),
+				'email_prefs_txt'	=> lang('Settings'),
+				'filters_txt'		=> lang('Filters'),
+				//'accounts_txt'		=> lang('Extra Accounts'),
+				'accounts_txt'		=> lang('Accounts'),
 				//'accounts_label'	=> lang('Accounts:'),
 				'accounts_label'	=> lang('Account'),
 				// some langs for the sort by box
@@ -141,7 +65,6 @@
 				'lang_email_date'	=> lang('Email Date'),
 				'lang_arrival_date'	=> lang('Arrival Date'),
 				'lang_from'			=> lang('From'),
-				'lang_to'			=> lang('To'),
 				'lang_subject'		=> lang('Subject'),
 				'lang_size'			=> lang('Size'),
 				// folder stats Information bar
@@ -151,6 +74,7 @@
 				'lang_total2'		=> lang('Total Messages'),
 				'lang_size2'		=> lang('Folder Size'),
 				'stats_to_txt'		=> lang('to'),
+				'lang_to'			=> lang('to'),
 				'lang_get_size'		=> lang('get size'),
 				'lang_date'			=> lang('date'),
 				'lang_lines'		=> lang('lines'),
@@ -158,6 +82,7 @@
 				'lang_empty_folder'	=> lang('this folder is empty'),
 				'lang_delete'		=> lang('delete'),
 				'mlist_attach_txt'	=> lang('file')
+				
 			);
 			// put these into $this->xi[] array
 			while(list($key,$value) = each($lang_strings))
@@ -168,96 +93,236 @@
 			return $lang_strings;
 		}
 
-
-		function index_data($reuse_feed_args = '##NOTHING##')
+		/*!
+		@function get_index_stats_block
+		@abstract produce a ready to show folder stats data for use in a template, either email layout 1 or 2
+		@param $layout (int passed as string) either "1" or "2" for email layout 1 and 2, respectively
+		@author Angles, design of layout 1 has roots in Aeromail.
+		@discussion Different Layouts appear different but use mostly the same source data. Pass param $layout 
+		to specify a layout 1or layout 2 style stats appearance, default is "2" which means email layout 2 appearance.
+		@access private, may be used publically if needed.
+		*/
+		function get_index_stats_block($layout)
 		{
-			if ($reuse_feed_args == '##NOTHING##')
-			{
-				$reuse_feed_args = array();
-			}
-			// attempt (or not) to reuse an existing mail_msg object, i.e. if one ALREADY exists before entering
-			// this function. As of Dec 14, 2001 only class.boaction can pass a useful, existing object for us to use here
-			$attempt_reuse = True;
-			//$attempt_reuse = False;
+			/*	LAYOUT 2 STATS VARS NEEDED
+			BACK COLOR:
+				{stats_backcolor}
+			FONT:
+				{stats_font}
+				{stats_font_size}
+				{stats_foldername_size}
+				{stats_color}
+			TEXT DATA
+				{stats_folder}
+				{stats_new}
+				{lang_new}			L1: {lang_new2}
+				{stats_saved}
+				{lang_total}			L1: {lang_total2}
+			{stats_first}
+				{stats_to_txt}  (a lang label)
+				{stats_last}
+			ALT1: SIZE as TEXT
+				{stats_size_or_button}
+				{lang_size}			L1: {lang_size2}
+			ALT2: SIZE AS BUTTON:
+			-FORM TAG
+				{form_get_size_opentag}
+				{form_get_size_closetag}
+			*/
+			/*
+			LAYOUT 1 SPECIFIC VARS
+			FOLDER ITEMS
+			-FORM TAG
+				{switchbox_frm_name}
+				{switchbox_action}
 			
-			if ($this->debug_index_data == True) { echo 'ENTERING: email.boindex: index_data'.'<br>'; }
-			if ($this->debug_index_data == True) { echo 'email.boindex.index_data: local var attempt_reuse=['.serialize($attempt_reuse).'] ; reuse_feed_args[] dump<pre>'; print_r($reuse_feed_args); echo '</pre>'; }
+			-WIDGETS
+				{switchbox_listbox}
+				{folders_btn}			
+			*/
+			if (((string)$layout != '1') && ((string)$layout != '2'))
+			{
+				$layout = '2';
+			}
+			// the stats template and the mail email template *may* collide var names during this cleanup, so seperate templates
+			$tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			$tpl->set_file(array('T_index_blocks' => 'index_blocks.tpl'));
+
+			$tpl->set_block('T_index_blocks','B_stats_layout'.$layout,'V_stats_layout'.$layout);
+			
+			// create widgets class, $GLOBALS['phpgw']->widgets produce errors, so make a local one
+			$my_widgets = CreateObject('email.html_widgets');
+			
+			$langs = array();
+			$langs = $this->get_langed_labels();
+			
+			$tpl_vars = Array(
+				'stats_backcolor' => $GLOBALS['phpgw_info']['theme']['em_folder'],
+				'stats_font' => $GLOBALS['phpgw_info']['theme']['font'],
+				'stats_font_size' => '2',
+				'stats_foldername_size' => '3',
+				'stats_color' => $GLOBALS['phpgw_info']['theme']['em_folder_text'],
+				'stats_folder' => $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->get_arg_value('folder')),
+				'lang_new' => $langs['lang_new'],
+				'lang_new2' => $langs['lang_new2'],
+				'lang_total' => $langs['lang_total'],
+				'lang_total2' => $langs['lang_total2'],
+				'stats_to_txt' => $langs['stats_to_txt']
+			);
+			$tpl->set_var($tpl_vars);
+			
+			$folder_info = array();
+			$folder_info = $GLOBALS['phpgw']->msg->get_folder_status_info();
+			if ($folder_info['number_all'] == 0)
+			{
+				$tpl->set_var('stats_saved','-');
+				$tpl->set_var('stats_new','-');
+				$tpl->set_var('stats_size_or_button','-');
+			}
+			else
+			{
+				$tpl->set_var('stats_saved',number_format($folder_info['number_all']));
+				if ($folder_info['number_new'] == 0)
+				{
+					$tpl->set_var('stats_new','0');
+				}
+				else
+				{
+					$tpl->set_var('stats_new',number_format($folder_info['number_new']));
+				}
+				// if there are messages, there is a folder size, do we show it or not ...
+				$size_report_args['allow_stats_size_speed_skip'] = True;
+				$size_report_args['stats_size_threshold'] = 100;
+				$size_report_args['number_all'] = $folder_info['number_all'];
+				$stats_size = $GLOBALS['phpgw']->msg->report_total_foldersize($size_report_args);		
+				// toggle the "get folder size" button or link, if getting that size was skipped as a time-saving measure
+				if ($stats_size != '')
+				{
+					$tpl->set_var('stats_size_or_button', $stats_size);
+					$tpl->set_var('lang_size', $langs['lang_size']);
+					$tpl->set_var('lang_size2', $langs['lang_size2']);
+					$tpl->set_var('form_get_size_opentag', '');
+					$tpl->set_var('form_get_size_closetag', '');
+				}
+				else
+				{
+					$tpl->set_var('lang_size', '');
+					$tpl->set_var('lang_size2', '');
+					$get_size_link = $GLOBALS['phpgw']->link('/index.php',array(
+								'menuaction' => 'email.uiindex.index',
+								'fldball[folder]' => $GLOBALS['phpgw']->msg->prep_folder_out(),
+								'fldball[acctnum]' => $GLOBALS['phpgw']->msg->get_acctnum(),
+								'sort' => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
+								'order' => $GLOBALS['phpgw']->msg->get_arg_value('order'),
+								'start' => $GLOBALS['phpgw']->msg->get_arg_value('start'),
+								'force_showsize' => '1'));
+					$my_widgets->new_form();
+					$my_widgets->set_form_name('form_get_size');
+					$my_widgets->set_form_action($get_size_link);
+					$tpl->set_var('form_get_size_opentag',$my_widgets->get_form());
+					
+					$tpl->set_var('stats_size_or_button', 
+									$my_widgets->make_button('submit', 'get_size_btn',$langs['lang_get_size']));
+									
+					$tpl->set_var('form_get_size_closetag',$my_widgets->form_closetag());
+				}
+			}
+			
+			$stats_first = $GLOBALS['phpgw']->msg->get_arg_value('start') + 1;
+			$tpl->set_var('stats_first', $stats_first);
+			if ($folder_info['number_all'] == 0)
+			{
+				$tpl->set_var('stats_last', '0');
+			}
+			else
+			{
+				$svc_nextmatches = CreateObject('email.svc_nextmatches');
+				//$this->xi['totaltodisplay'] = $GLOBALS['phpgw']->msg->get_arg_value('start') + count($this->xi['msg_list_dsp']);
+				//$this->xi['stats_last'] = $this->xi['totaltodisplay'];
+				// NOTE this may not ba accurate unless we obtain the message list and coun t how many we are actually showing
+				$tpl->set_var('stats_last', $stats_first + $svc_nextmatches->maxmatches);
+			}
+			
+			// LAYOUT 1 ONLY ITEMS
+			if (((string)$layout == '1')
+			&& ($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders() == True))
+			{
+				//{form_folder_switch_opentag}
+				//{folder_switch_combobox}
+				//{form_folder_switch_closetag}
+				$my_widgets->new_form();
+				$my_widgets->set_form_name('folder_switch');
+				$my_widgets->set_form_action($GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'));
+				$my_widgets->set_form_method('post');
+				$tpl->set_var('form_folder_switch_opentag', $my_widgets->get_form());
+				$tpl->set_var('folder_switch_combobox', $my_widgets->all_folders_combobox('folder_switch'));
+				$tpl->set_var('form_folder_switch_closetag', $my_widgets->form_closetag());
+				//{folders_btn}
+				$folders_link = $GLOBALS['phpgw']->link('/index.php',array(
+								'menuaction' => 'email.uifolder.folder',
+								// going to the folder list page, we only need log into the INBOX folder
+								'fldball[folder]' => 'INBOX',
+								'fldball[acctnum]' => $GLOBALS['phpgw']->msg->get_acctnum()));
+				$folders_btn_js = 'window.location=\''.$folders_link.'\'';
+				$tpl->set_var('folders_btn', $my_widgets->make_button('button', 'folder_link_btn',$langs['folders_txt1'],$folders_btn_js));
+				
+			
+			}
+			elseif ((string)$layout == '1')
+			{
+				// layout 1 BUT no folders, a POP mail server
+				$tpl->set_var('form_folder_switch_opentag', '');
+				$tpl->set_var('folder_switch_combobox', '');
+				$tpl->set_var('form_folder_switch_closetag', '');
+				$tpl->set_var('folders_btn', '');
+			}
+			
+			return $tpl->parse('V_stats_layout'.$layout,'B_stats_layout'.$layout);
+		}
+
+		/*!
+		@function index_data
+		@abstract Depreciated foor in-house use, this could be used via XML-RPC to return all data necessary for an email "index" page.
+		@author Angles
+		@result associative array that holds all data necessary for an email "index" page.
+		@discussion Not used anymore, if a remote clients wants processed email message list data, 
+		this would be the function to use. If necessary it can be updated to produce new data as required.
+		but layout 1 is kinda lame looking, may be replaced.
+		*/
+		function index_data()
+		{			
+			if ($this->debug_index_data == True) { echo 'ENTERING: email.boindex.index_data'.'<br>'; }
 			// create class objects
 			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
+			// this svc_nextmatches handles email only stuff
+			$this->svc_nextmatches = CreateObject('email.svc_nextmatches');
 			
-			if (is_object($GLOBALS['phpgw']->msg))
-			{
-				if ($this->debug_index_data) { echo 'email.boindex.index_data: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
-			}
-			else
-			{
-				if ($this->debug_index_data) { echo 'email.boindex.index_data: is_object: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
-				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-			}
-			
-			// do we attempt to reuse the existing msg object?
-			if ((is_object($GLOBALS['phpgw']->msg))
-			&& ($attempt_reuse == True))
-			{
-				// no not create, we will reuse existing
-				if ($this->debug_index_data == True) { echo 'email.boindex.index_data: reusing existing mail_msg object'.'<br>'; }
-				// we need to feed the existing object some params begin_request uses to re-fill the msg->args[] data
-				$args_array = Array();
-				// any args passed in $args_array will override or replace any pre-existing arg value
-				$args_array = $reuse_feed_args;
-				// add this to keep the error checking code (below) happy
-				$args_array['do_login'] = True;
-			}
-			else
-			{
-				if ($this->debug_index_data == True) { echo 'email.boindex.index_data: cannot or not trying to reusing existing'.'<br>'; }
-				$args_array = Array();
-				// should we log in or not
-				$args_array['do_login'] = True;
-			}
-			
-			// "start your engines"
-			if ($this->debug_index_data == True) { echo 'email.boindex.index_data: call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
-			$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
-			// error if login failed
-			if (($args_array['do_login'] == True)
-			&& (!$some_stream))
-			{
-				$GLOBALS['phpgw']->msg->login_error($GLOBALS['PHP_SELF'].', index_data()');
-			}
+			// make sure we have msg object and a server stream
+			$this->msg_bootstrap = CreateObject("email.msg_bootstrap");
+			$this->msg_bootstrap->ensure_mail_msg_exists('email.boindex.index_data LINE '.__LINE__.' ', $this->debug_index_data);
 			
 			// if auto-refresh is in use, it will need to know what to refresh, use with ->link to get full http string
 			$GLOBALS['phpgw_info']['flags']['email_refresh_uri'] = $GLOBALS['phpgw']->msg->get_arg_value('index_refresh_uri');
 			// any app may use these lang'd labels in their email UI
 			$this->get_langed_labels();
+			
+			
 			// ---  this->xi ("eXternal Interface") is an array that will hold ALL data necessary for an index page
 			// if we just moved or deleted messages, make a report string
 			$this->xi['report_this'] = $GLOBALS['phpgw']->msg->report_moved_or_deleted();
-			// font size options
-			$font_size = Array (
-				0 => '-5',
-				1 => '-4',
-				2 => '-3',
-				3 => '-2',
-				4 => '-1',
-				5 => '0',
-				6 => '1',
-				7 => '2',
-				8 => '3',
-				9 => '4',
-				10 => '5'
-			);
+			
 			// some fonts and font sizes
 			$this->xi['ctrl_bar_font'] = $GLOBALS['phpgw_info']['theme']['font'];
-			$this->xi['ctrl_bar_font_size'] = $font_size[4];
+			$this->xi['ctrl_bar_font_size'] = '2';
 			$this->xi['stats_font'] = $GLOBALS['phpgw_info']['theme']['font'];
-			$this->xi['stats_font_size'] = $font_size[7];
+			$this->xi['stats_font_size'] = '2';
+			$this->xi['stats_foldername_size'] = '3';
 			$this->xi['mlist_font'] = $GLOBALS['phpgw_info']['theme']['font'];
-			$this->xi['mlist_font_size'] = $font_size[7];
-			$this->xi['mlist_font_size_sm'] = $font_size[6];
+			$this->xi['mlist_font_size'] = '2';
+			$this->xi['mlist_font_size_sm'] = '1';
 			$this->xi['hdr_font'] = $GLOBALS['phpgw_info']['theme']['font'];
-			$this->xi['hdr_font_size'] = $font_size[7];
-			$this->xi['hdr_font_size_sm'] = $font_size[6];
+			$this->xi['hdr_font_size'] = '2';
+			$this->xi['hdr_font_size_sm'] = '1';
 			$this->xi['ftr_font']	= $GLOBALS['phpgw_info']['theme']['font'];
 			
 			
@@ -271,6 +336,9 @@
 			$this->xi['current_fldball_fake_uri'] =	 '&folder='.$GLOBALS['phpgw']->msg->prep_folder_out()
 								.'&acctnum='.$GLOBALS['phpgw']->msg->get_acctnum();
 			$this->xi['show_num_new'] = False;
+			$this->icon_theme = $GLOBALS['phpgw']->msg->get_pref_value('icon_theme');
+			$this->icon_size = $GLOBALS['phpgw']->msg->get_pref_value('icon_size');
+			//echo "icon size is ".$this->icon_size."<br>\r\n";
 			
 			// ---- account switchbox  ----
 			// make a HTML comobox used to switch accounts
@@ -355,12 +423,13 @@
 				'total'		=> $this->xi['folder_info']['number_all']
 			);
 			$arrows_links = array();
-			$arrows_links = $this->nextmatchs->nav_left_right_imap($nav_args);
+			$arrows_links = $this->svc_nextmatches->nav_left_right_mail($nav_args);
 			$this->xi['first_page'] = $arrows_links['first_page'];
 			$this->xi['prev_page'] = $arrows_links['prev_page'];
 			$this->xi['next_page'] = $arrows_links['next_page'];
 			$this->xi['last_page'] = $arrows_links['last_page'];
 			
+			// Depreciated, only for template 1
 			$this->xi['td_prev_arrows'] = $this->nextmatchs->left(
 								'/index.php',
 								$GLOBALS['phpgw']->msg->get_arg_value('start'),
@@ -371,6 +440,7 @@
 								.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 								.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order'));
 			
+			// depreciated, only for template 1
 			$this->xi['td_next_arrows'] = $this->nextmatchs->right(
 								'/index.php',
 								$GLOBALS['phpgw']->msg->get_arg_value('start'),
@@ -392,6 +462,9 @@
 								.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 								.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
 			
+			$this->xi['compose_img'] = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-compose-message-'.$this->icon_size.'.gif',$this->xi['compose_txt'],'','','0');
+			$this->xi['ilnk_compose'] = $GLOBALS['phpgw']->msg->href_maketag($this->xi['compose_link'],$this->xi['compose_img']);
+			
 			if ($this->xi['mailsvr_supports_folders'])
 			{
 				$this->xi['folders_link'] = $GLOBALS['phpgw']->link(
@@ -401,7 +474,10 @@
 								.'&fldball[folder]='.'INBOX'
 								.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
 				
-				$this->xi['folders_href'] = '<a href="'.$this->xi['folders_link'].'">'.$this->xi['folders_txt2'].'</a>';
+				$this->xi['folders_img'] = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-folder-'.$this->icon_size.'.gif',$this->xi['folders_txt1'],'','','0');
+				$this->xi['ilnk_folders'] = $GLOBALS['phpgw']->msg->href_maketag($this->xi['folders_link'],$this->xi['folders_img']);
+				
+				$this->xi['folders_href'] = '<a href="'.$this->xi['folders_link'].'">'.$this->xi['folders_txt1'].'</a>';
 				
 				$folders_btn_js = 'window.location=\''.$this->xi['folders_link'].'\'';
 				$this->xi['folders_btn'] = '<input type="button" name="folder_link_btn" value="'.$this->xi['folders_txt1'].'" onClick="'.$folders_btn_js.'">';
@@ -411,18 +487,26 @@
 				$this->xi['folders_href'] = '&nbsp;';
 				$this->xi['folders_btn'] = '&nbsp;';
 			}
-			// FIXME
-			$this->xi['email_prefs_link'] = $GLOBALS['phpgw']->link(
-								'/index.php',
-								 'menuaction=email.uipreferences.preferences');
 			
 			$this->xi['filters_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',
 								 'menuaction=email.uifilters.filters_list');
 			
+			$this->xi['filters_img'] = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-filters-'.$this->icon_size.'.gif',$this->xi['folders_txt1'],'','','0');
+			$this->xi['ilnk_filters'] = $GLOBALS['phpgw']->msg->href_maketag($this->xi['filters_link'],$this->xi['filters_img']);
+			
 			$this->xi['filters_href'] = '<a href="'.$this->xi['filters_link'].'">'.$this->xi['filters_txt'].'</a>';
+			
 			// FIXME
-			// multiple account maintenance - not yet implemented
+			$this->xi['email_prefs_link'] = $GLOBALS['phpgw']->link(
+								'/index.php',
+								 'menuaction=email.uipreferences.preferences'
+								.'&ex_acctnum='.$GLOBALS['phpgw']->msg->get_acctnum());
+			
+			$this->xi['email_prefs_img'] = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-customize-'.$this->icon_size.'.gif',$this->xi['folders_txt1'],'','','0');
+			$this->xi['ilnk_email_prefs'] = $GLOBALS['phpgw']->msg->href_maketag($this->xi['email_prefs_link'],$this->xi['email_prefs_img']);
+			
+			// FIXME
 			//$this->xi['accounts_link'] = $GLOBALS['phpgw']->link(
 			//					'/index.php',
 			//					 'menuaction=email.uipreferences.ex_accounts'
@@ -430,7 +514,11 @@
 			$this->xi['accounts_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',
 								 'menuaction=email.uipreferences.ex_accounts_list');
+			$this->xi['accounts_img'] = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-accounts-'.$this->icon_size.'.gif',$this->xi['folders_txt1'],'','','0');
+			$this->xi['ilnk_accounts'] = $GLOBALS['phpgw']->msg->href_maketag($this->xi['accounts_link'],$this->xi['accounts_img']);
+			
 			$this->xi['accounts_href'] = '<a href="'.$this->xi['accounts_link'].'">'.$this->xi['accounts_txt'].'</a>';
+			
 			
 			// by now we have an acctnum!
 			if ((string)$GLOBALS['phpgw']->msg->get_acctnum() == '0')
@@ -481,7 +569,6 @@
 				.'<option value="1"' .$sort_selected[1] .'>'.$this->xi['lang_arrival_date'].'</option>' ."\r\n"
 				.'<option value="2"' .$sort_selected[2] .'>'.$this->xi['lang_from'].'</option>' ."\r\n"
 				.'<option value="3"' .$sort_selected[3] .'>'.$this->xi['lang_subject'].'</option>' ."\r\n"
-				.'<option value="4"' .$sort_selected[4] .'>'.$this->xi['lang_to'].'</option>' ."\r\n"
 				.'<option value="6"' .$sort_selected[6] .'>'.$this->xi['lang_size'].'</option>' ."\r\n";
 			
 			$this->xi['sortbox_action'] = $GLOBALS['phpgw']->link(
@@ -559,47 +646,44 @@
 				$this->xi['default_order'] = 0;
 			}
 			// make these column labels into clickable HREF's for their 
-			if (($GLOBALS['phpgw']->msg->get_isset_arg('newsmode') == True)
-			&& ($GLOBALS['phpgw']->msg->get_arg_value('newsmode') == True))
+			$this->xi['hdr_subject'] = 
+				$this->svc_nextmatches->show_sort_order_mail
+				(
+					$GLOBALS['phpgw']->msg->get_arg_value('sort'),
+					'3',
+					$this->xi['default_order'],
+					$GLOBALS['phpgw']->msg->get_arg_value('order'),
+					'/index.php?menuaction=email.uiindex.index',
+					$this->xi['lang_subject'],
+					'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
+					.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum()
+				);
+			$this->xi['hdr_date'] = 
+				$this->svc_nextmatches->show_sort_order_mail
+				($GLOBALS['phpgw']->msg->get_arg_value('sort'),'1',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php?menuaction=email.uiindex.index',$this->xi['lang_date'],
+					'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
+					.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
+			$this->xi['hdr_size'] = $this->svc_nextmatches->show_sort_order_mail($GLOBALS['phpgw']->msg->get_arg_value('sort'),'6',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php?menuaction=email.uiindex.index',$this->xi['lang_size'],
+					'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
+					.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
+			
+			// are we IN THE SENT folder or not
+			if (	$GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->get_arg_value('folder'))
+			 != $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->get_pref_value('sent_folder_name')))
 			{
-				$this->xi['hdr_subject'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'3',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_subject'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				if ($GLOBALS['phpgw']->msg->get_isset_pref ('use_sent_folder')
-				&& ($GLOBALS['phpgw']->msg->prep_folder_out() == $GLOBALS['phpgw']->msg->folder_lookup ('', $GLOBALS['phpgw']->msg->get_pref_value ('sent_folder_name'))))
-				{
-					$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'4',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_to'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				}
-				else
-				{
-					$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'2',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_from'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				}
-				$this->xi['hdr_date'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'1',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_date'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				$this->xi['hdr_size'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'6',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_lines'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				// for every folder EXCEPT the sent folder, we display FROM data in this column
+				$this->xi['hdr_from'] = $this->svc_nextmatches->show_sort_order_mail($GLOBALS['phpgw']->msg->get_arg_value('sort'),'2',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php?menuaction=email.uiindex.index',$this->xi['lang_from'],
+						'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
+						.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
 			}
 			else
 			{
-				$this->xi['hdr_subject'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'3',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_subject'],
-						'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
-						.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
-				if ($GLOBALS['phpgw']->msg->get_isset_pref ('use_sent_folder')
-				&& ($GLOBALS['phpgw']->msg->prep_folder_out() == $GLOBALS['phpgw']->msg->folder_lookup ('', $GLOBALS['phpgw']->msg->get_pref_value ('sent_folder_name'))))
-				{
-					$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'4',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_to'],
-						'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
-						.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
-				}
-				else
-				{
-					$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'2',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_from'],
-						'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
-						.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
-				}
-				$this->xi['hdr_date'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'1',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_date'],
-						'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
-						.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
-				$this->xi['hdr_size'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'6',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_size'],
+				// this is for SENT FOLDER use only, where we display "To" data instead of "From" as with all the other folders, SORTTO = 4
+				$this->xi['hdr_from'] = $this->svc_nextmatches->show_sort_order_mail($GLOBALS['phpgw']->msg->get_arg_value('sort'),'4',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php?menuaction=email.uiindex.index',$this->xi['lang_to'],
 						'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
 						.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
 			}
+			
 			$this->xi['hdr_backcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
 			$this->xi['mlist_newmsg_char'] = '<strong>*</strong>';
 			$this->xi['mlist_newmsg_color'] = '#ff0000';
@@ -617,6 +701,19 @@
 				$this->xi['msg_list_dsp'] = Array();
 				$this->xi['stats_last'] = 0;
 				$some_stream = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream');
+				// zero messages and no stream is OK ONLY IF Extreme Caching is IN EFFECT
+				if ((!isset($some_stream))
+				|| ($some_stream == ''))
+				{
+					// if extreme caching is in use, then no stream != error
+					// Extreme Caching tries never to login unless absolutely necessary
+					if (($GLOBALS['phpgw']->msg->session_cache_enabled == True)
+					&& ($GLOBALS['phpgw']->msg->session_cache_extreme == True))
+					{
+						// in this case no stream is NOT AN ERROR
+						$some_stream = 'session_cache_extreme_OK';
+					}
+				}
 				if ((!isset($some_stream))
 				|| ($some_stream == ''))
 				{
@@ -634,6 +731,7 @@
 					$this->xi['msg_list_dsp'] = $GLOBALS['phpgw']->msg->get_msg_list_display($this->xi['folder_info']);
 					// after we know how many messages we will display, we make the "showing from X to X" string
 					$this->xi['totaltodisplay'] = $GLOBALS['phpgw']->msg->get_arg_value('start') + count($this->xi['msg_list_dsp']);
+									
 					$this->xi['stats_last'] = $this->xi['totaltodisplay'];
 			}
 			// user may select individual messages to move, make combobox to select destination folder
@@ -661,7 +759,21 @@
 			{
 				$this->xi['delmov_listbox'] = '&nbsp;';
 			}
-			
+			$this->delmov_text = lang('Delete');
+			$this->delmov_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-trash-'.$this->icon_size.'.gif',$this->xi['delmov_text'],'','','0');
+			$this->delmov_onclick = "javascript:do_action('delall')";
+			switch ($GLOBALS['phpgw']->msg->get_pref_value('button_type')){
+				case 'text':
+					$this->xi['delmov_button'] = '<a href="'.$this->delmov_onclick.'">'.$this->delmov_text.'</a>';
+					break;
+				case 'image':
+					$this->xi['delmov_button'] = '<a href="'.$this->delmov_onclick.'">'.$this->delmov_image.'</a>';
+					break;
+				case 'both':
+					$this->xi['delmov_button'] = '<a href="'.$this->delmov_onclick.'">'.$this->delmov_image.'&nbsp;'.$this->delmov_text.'</a>';
+					break;
+			}
+					
 			$this->xi['ftr_backcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
 		}
 		
@@ -671,8 +783,10 @@
 		
 		
 		
-		
-		
+		/*!
+		@function mlist_data
+		@abstract DEPRECIATED - was used to display search results, NEEDS UPDATING
+		*/
 		function mlist_data()
 		{
 			// DISPLAY SEARCH RESULTS
@@ -846,7 +960,6 @@
 				.'<option value="1"' .$sort_selected[1] .'>'.$this->xi['lang_arrival_date'].'</option>' ."\r\n"
 				.'<option value="2"' .$sort_selected[2] .'>'.$this->xi['lang_from'].'</option>' ."\r\n"
 				.'<option value="3"' .$sort_selected[3] .'>'.$this->xi['lang_subject'].'</option>' ."\r\n"
-				.'<option value="4"' .$sort_selected[4] .'>'.$this->xi['lang_to'].'</option>' ."\r\n"
 				.'<option value="6"' .$sort_selected[6] .'>'.$this->xi['lang_size'].'</option>' ."\r\n";
 			
 			$this->xi['sortbox_action'] = $this->index_base_link.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('');
@@ -1016,7 +1129,6 @@
 			{
 				$this->xi['delmov_listbox'] = '&nbsp;';
 			}
-			
 			$this->xi['ftr_backcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
 			if ($this->debug_index_data == True) { echo 'LEAVING: email.boindex: mlist_data'.'<br>'; }
 		}

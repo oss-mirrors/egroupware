@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - email BO Class	for Folder Actions and List Display		*
-	* http://www.phpgroupware.org							*
+	* phpGroupWare - email send non-SMTP functions					*
+	* http://www.phpgroupware.org									*
 	* Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>		*
 	* --------------------------------------------							*
 	*  This program is free software; you can redistribute it and/or modify it		*
@@ -11,53 +11,44 @@
 	\**************************************************************************/
 
 	/* $Id$ */
-
+	
+	/*!
+	@class bosend
+	@abstract bo class for assembling messages for sending via class send
+	@author Angles, server side attachment storage technique borrowed from Squirrelmail,
+	
+	*/
 	class bosend
 	{
 		var $public_functions = array(
-			'send'		=> True
+			'sendorspell'	=> True,
+			'spellcheck'	=> True,
+			'send'	=> True
 		);
+		var $mail_spell;
+		var $msg_bootstrap;
 		var $nextmatchs;
 		var $not_set='-1';
 		var $mail_out = array();
-		var $debug = 0;
 		var $xi;
+		
+		// debug level between 0 to 3
+		var $debug_constructor = 0;
+		var $debug_sendorspell = 0;
+		var $debug_spellcheck = 0;
+		var $debug_send = 0;
+		var $debug_struct = 0;
+		//var $debug_struct = 3;
 		
 		function bosend()
 		{
-			if ($this->debug > 0) { echo 'email.bosend *constructor*: ENTERING<br>'; }
-			if (is_object($GLOBALS['phpgw']->msg))
-			{
-				if ($this->debug > 1) { echo 'email.bosend *constructor*: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
-			}
-			else
-			{
-				if ($this->debug > 1) { echo 'email.bosend *constructor*: is_object: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
-				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-			}
+			if ($this->debug_constructor > 0) { echo 'email.bosend *constructor*: ENTERING<br>'; }
+			
+			$this->msg_bootstrap = CreateObject("email.msg_bootstrap");
+			$this->msg_bootstrap->ensure_mail_msg_exists('email.bosend.constructor', $this->debug_send);
+			
 			$this->not_set = $GLOBALS['phpgw']->msg->not_set;
-			if ($GLOBALS['phpgw']->msg->get_isset_arg('already_grab_class_args_gpc'))
-			{
-				if ($this->debug > 0) { echo 'email.bosend *constructor*: LEAVING , msg object already initialized<br>'; }
-				return True;
-			}
-				
-			if ($this->debug > 1) { echo 'email.bosend *constructor*: msg object NOT yet initialized<br>'; }
-			$args_array = Array();
-			// should we log in or not, no, we only need prefs initialized
-			// if any data is needed mail_msg will open stream for us
-			$args_array['do_login'] = True;
-			if ($this->debug > 1) { echo 'email.bosend *constructor*: call msg->begin_request with args array:'.serialize($args_array).'<br>'; }
-			$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
-			// error if login failed
-			if (($args_array['do_login'] == True)
-			&& (!$some_stream))
-			{
-				$GLOBALS['phpgw']->msg->login_error($GLOBALS['PHP_SELF'].', constructor()');
-				// is this needed?
-				return False;
-			}
-			if ($this->debug > 0) { echo 'email.bosend *constructor*: LEAVING<br>'; }
+			if ($this->debug_constructor > 0) { echo 'email.bosend *constructor*: LEAVING<br>'; }
 		}
 		
 		/*!
@@ -89,6 +80,74 @@
 		
 		
 		
+		/*!
+		@function copy_to_sent_folder
+		@abstract Put a message in "Sent" Folder, if Applicable. This MUST be a message that has been sent already!
+		@result Boolean
+		@author Angles
+		@discussion If a message has already been sent, and IF the user has set the pref enabling the use of the sent folder, 
+		only then should this function be used. If a message has not actually been sent, it should NOT be copied to the "Sent" 
+		folder because that misrepresents to the user the history of the message. Mostly this is an issue with automated 
+		messages sent from other apps. My .02 cents is that if a user did not send a message by pressing the "Send" button, 
+		then the message does not belong in the Sent messages folder. Other people may have a different opinion, so 
+		this function will not zap your keyboard if you think differently. Nonetheless, if the user has not enabled 
+		the preference "Sent mail copied to Sent Folder", then noting gets copied there no matter what. Note that we 
+		obtain these preference settings as shown in the example for this function. If the folder does not already exist, 
+		class mail_msg has code to make every reasonable attempt to create the folder automatically. Some servers 
+		just do things differently enough (unusual namespaces, sub folder trees) that the auto create may not work, 
+		but it is nost likly that it can be created, and even more likely that it already exists. NOTE: this particular class 
+		should be made availabllle to public use without the brain damage that is the current learning curve for this 
+		code. BUT for now, this is a private function unless you really know what you are doing. Even then, code 
+		in this class is subject to change.
+		@access private - NEEDS TO BE MADE AVAILABLE FOR PUBLIC USE
+		*/
+		function copy_to_sent_folder()
+		{
+			/*!
+			@capability (FUTURE CODE) append to sent folder without a pre-existing mailsvr_stream.
+			@discussion FUTURE CODE what follows is untested but should work to accomplish that. 
+			While we do need to login to the mail server, we can just select the INBOX because the IMAP 
+			APPEND command does not require you have "selected" the folder that is the target of the append.
+			We should be able to simply bootstrap the msg objext and call login, because during initialization 
+			the msg object gathers all the data it can find on what account number we are dealing with here, 
+			it handles that for us automatically. We do not want to append to the sent folder of the wrong account. 
+			@example ## this should work if a stream does not already exist (UNTESTED)
+			$this->msg_bootstrap = CreateObject("email.msg_bootstrap");
+			$this->msg_bootstrap->ensure_mail_msg_exists('email.bosend.copy_to_sent_folder', $this->debug_send);
+			## now run the rest of the function as usual.
+			*/ 
+			
+			if ($GLOBALS['phpgw']->msg->get_isset_pref('use_sent_folder') == False)
+			{
+				// ERROR, THIS ACCT DOES NOT WANT SENT FOLDER USED
+				return False;
+			}
+			
+			
+			// note: what format should these folder name options (sent and trash) be held in
+			// i.e. long or short name form, in the prefs database
+			$sent_folder_name = $GLOBALS['phpgw']->msg->get_pref_value('sent_folder_name');
+			
+			// NOTE: append will open the stream automatically IF it is not open
+			//if ((($GLOBALS['phpgw']->msg->get_isset_arg('mailsvr_stream')))
+			//&& ($GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream') != ''))
+			//{
+				// note: "append" will CHECK  to make sure this folder exists, and try to create it if it does not
+				// also note, make sure there is a \r\n CRLF empty last line sequence so Cyrus will be happy
+				$success = $GLOBALS['phpgw']->msg->phpgw_append($sent_folder_name,
+								$GLOBALS['phpgw']->mail_send->assembled_copy."\r\n",
+								"\\Seen");
+				//if ($success) { echo 'append to sent OK<br>'; } else { echo 'append to sent FAILED<br>'; echo 'imap_last_error: '.imap_last_error().'<br>'; }
+			//}
+			//else
+			//{
+				//echo 'NO STREAM available for sent folder append<br>';
+			//	return False;
+			//}
+			
+			return $success;
+		}
+		
 		//  -------  This will be called just before leaving this page, to clear / unset variables / objects -----------
 		function send_message_cleanup()
 		{
@@ -101,56 +160,100 @@
 			unset($GLOBALS['phpgw']->mail_send);
 		}
 		
+		/*!
+		@function sendorspell
+		@abstract detects whether the compose page was submitted as a send or spellcheck, and acts accordingly
+		@params none, uses GET and POST vars
+		@author Angles
+		@discussion Compose form submit action target is bosend, naturally, however the spell check button submit is identical 
+		EXCEPT "btn_spellcheck" POST var will be set, which requires we handoff the handling to the spell class.
+		*/
+		function sendorspell()
+		{
+			if ($this->debug_sendorspell > 0) { echo 'ENTERING: email.bosend.sendorspell'.'<br>'; }
+			
+			if ($this->debug_sendorspell > 2) { 	echo 'email.bosend.sendorspell: data dump: $GLOBALS[HTTP_POST_VARS]<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST); echo '</pre>'."\r\n";
+									echo 'email.bosend.sendorspell: data dump: $GLOBALS[HTTP_GET_VARS]<pre>'; print_r($GLOBALS['phpgw']->msg->ref_GET); echo '</pre>'."\r\n"; }
+			
+			if ((isset($GLOBALS['phpgw']->msg->ref_POST['btn_spellcheck']))
+			&& ($GLOBALS['phpgw']->msg->ref_POST['btn_spellcheck'] != ''))
+			{
+				if ($this->debug_sendorspell > 1) { echo 'email.bosend.sendorspell: "btn_spellcheck" is set; calling $this->spellcheck()'.'<br>'; }
+				$this->spellcheck();
+			}
+			elseif ((isset($GLOBALS['phpgw']->msg->ref_POST['btn_send']))
+			&& ($GLOBALS['phpgw']->msg->ref_POST['btn_send'] != ''))
+			{
+				if ($this->debug_sendorspell > 1) { echo 'email.bosend.sendorspell: "btn_send" is set; calling $this->send()'.'<br>'; }
+				$this->send();
+			}
+			else
+			{
+				if ($this->debug_sendorspell > 1) { echo ': email.bosend.sendorspell: ERROR: neither "btn_spellcheck" not "btn_send" is set; fallback action $this->send()'.'<br>'; }
+				$this->send();
+			}
+			
+			if ($this->debug_sendorspell > 0) { echo 'LEAVING: email.bosend.sendorspell'.'<br>'; }
+		}
+		
+		
+		/*!
+		@function spellcheck
+		@abstract if the compose page was submitted as a pellcheck, this function is called, it then calls the emai.spell class
+		@params none, uses GET and POST vars
+		@discussion If needed, put the body through stripslashes_gpc() before handing it off to the mail_spell object.
+		This function simply gathers the required information and hands it off to the mail_spell class,
+		*/
+		function spellcheck()
+		{
+			if ($this->debug_spellcheck > 0) { echo 'ENTERING: email.bosend.spellcheck'.'<br>'; }
+			
+			if ($this->debug_spellcheck > 2) { 	echo 'email.bosend.spellcheck: data dump: $GLOBALS[HTTP_POST_VARS]<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST); echo '</pre>'."\r\n";
+									echo 'email.bosend.spellcheck: data dump: $GLOBALS[HTTP_GET_VARS]<pre>'; print_r($GLOBALS['phpgw']->msg->ref_GET); echo '</pre>'."\r\n"; }
+			
+			// we may strip slashes, but that is all we should do before handing the body to the spell class
+			//$my_body = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($GLOBALS['phpgw']->msg->get_arg_value('body')));
+			//$this->mail_spell->set_body_orig($my_body);
+			
+			$this->mail_spell = CreateObject("email.spell");
+			// preserve these vars
+			$this->mail_spell->set_preserve_var('action', $GLOBALS['phpgw']->msg->get_arg_value('action'));
+			$this->mail_spell->set_preserve_var('from', $GLOBALS['phpgw']->msg->get_arg_value('from'));
+			$this->mail_spell->set_preserve_var('sender', $GLOBALS['phpgw']->msg->get_arg_value('sender'));
+			$this->mail_spell->set_preserve_var('to', $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('to')));
+			$this->mail_spell->set_preserve_var('cc', $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('cc')));
+			$this->mail_spell->set_preserve_var('bcc', $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('bcc')));
+			$this->mail_spell->set_preserve_var('msgtype', $GLOBALS['phpgw']->msg->get_arg_value('msgtype'));
+			
+			$this->mail_spell->set_subject($GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('subject')));
+			$this->mail_spell->set_body_orig($GLOBALS['phpgw']->msg->stripslashes_gpc(trim($GLOBALS['phpgw']->msg->get_arg_value('body'))));
+			
+			//$this->mail_spell->basic_spcheck();
+			$this->mail_spell->spell_review();
+			
+			
+			
+			if ($this->debug_spellcheck > 0) { echo 'LEAVING: email.bosend.spellcheck'.'<br>'; }
+		}
+		
+		/*!
+		@function send
+		@abstract if the compose page was submitted as a pellcheck, this function is called
+		@params none, uses GET and POST vars, however this will be OOPd for API use
+		@discussion advanced function to send mail with all the complexities of modern MIME usage.
+		Currently handles forwarding as an "encapsulated" MIME part, thus prewserving the original 
+		messages structure, including any attachments the original message had.
+		Of course the user can attach files, this includes attaching additional files to a forwarded message which 
+		itself alsready has attachments.
+		*/
 		function send()
 		{
-			if ($this->debug) { echo 'ENTERING: email.bosend.send'.'<br>'; }
-			/*
-			// attempt (or not) to reuse an existing mail_msg object, i.e. if one ALREADY exists before entering
-			//$attempt_reuse = True;
-			$attempt_reuse = False;
+			if ($this->debug_send> 0) { echo 'ENTERING: email.bosend.send'.'<br>'; }
 			
-			if ($this->debug) { echo 'email.bosend.send: local var attempt_reuse=['.serialize($attempt_reuse).'] ; reuse_feed_args[] dump<pre>'; print_r($reuse_feed_args); echo '</pre>'; }
-			// create class objects
-			//$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
-			
-			if (is_object($GLOBALS['phpgw']->msg))
-			{
-				if ($this->debug) { echo 'email.bosend.send: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
-			}
-			else
-			{
-				if ($this->debug) { echo 'email.bosend.send: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
-				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-			}
-			// do we attempt to reuse the existing msg object?
-			if ($attempt_reuse)
-			{
-				// no not create, we will reuse existing
-				if ($this->debug) { echo 'email.bosend.send: reusing existing mail_msg login'.'<br>'; }
-				// we need to feed the existing object some params begin_request uses to re-fill the msg->args[] data
-				$args_array = Array();
-				// any args passed in $args_array will override or replace any pre-existing arg value
-				$args_array = $reuse_feed_args;
-				// add this to keep the error checking code (below) happy
-				$args_array['do_login'] = True;
-			}
-			else
-			{
-				if ($this->debug) { echo 'email.bosend.send: cannot or not trying to reusing existing'.'<br>'; }
-				$args_array = Array();
-				// should we log in or not
-				$args_array['do_login'] = True;
-			}
-			// "start your engines"
-			if ($this->debug == True) { echo 'email.bosend.send: call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
-			$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
-			// error if login failed
-			if (($args_array['do_login'] == True)
-			&& (!$some_stream))
-			{
-				$GLOBALS['phpgw']->msg->login_error($GLOBALS['PHP_SELF'].', send()');
-			}
-			*/
+			if ($this->debug_send> 2) { 	echo 'email.bosend.send: data dump: $GLOBALS[HTTP_POST_VARS]<pre>'; print_r($GLOBALS['phpgw']->msg->ref_POST); echo '</pre>'."\r\n";
+									echo 'email.bosend.send: data dump: $GLOBALS[HTTP_GET_VARS]<pre>'; print_r($GLOBALS['phpgw']->msg->ref_GET); echo '</pre>'."\r\n";
+									return; }
+
 			
 			// ---- BEGIN BO SEND LOGIC
 			
@@ -187,7 +290,7 @@
 			/*!
 			@var msgtype
 			@abstract obsoleted way phpgw apps used to inter-operate
-			@discussion NOTE: this is a vestigal way for phpgw apps to inter-operate, 
+			@discussion NOTE  this is a vestigal way for phpgw apps to inter-operate, 
 			I *think* this is being obsoleted via n-tiering and xml-rpc / soap methods.
 			RARELY USED, maybe NEVER used, most email code for this is now commented out
 			"back in the day..." the "x-phpgw" header was specified by a phpgw app *other* than the email app
@@ -349,7 +452,8 @@
 			$upload_dir = $GLOBALS['phpgw']->msg->att_files_dir;
 			if (file_exists($upload_dir))
 			{
-				@set_time_limit(0);
+				// DO WE REALLY need to set_time_limit here?
+				//@set_time_limit(0);
 				// how many attachments do we need to process?
 				$dh = opendir($upload_dir);
 				$num_expected = 0;
@@ -403,9 +507,16 @@
 				$user_sig = $GLOBALS['phpgw']->msg->get_pref_value('email_sig');
 				// html_quotes_decode may be obsoleted someday:  workaround for a preferences database issue (<=pgpgw ver 0.9.13)
 				$user_sig = $GLOBALS['phpgw']->msg->html_quotes_decode($user_sig);
-				$body = $body ."\r\n" .'-- '."\r\n" .$user_sig ."\r\n";
+				$body = $body ."\r\n"."\r\n".'-- '."\r\n" .$user_sig ."\r\n";
 			}
-			
+			// Step One Addition
+			// ---- Request Delivery Notification in Headers ----
+			if($GLOBALS['phpgw']->msg->get_arg_value('req_notify'))
+			//cant imagine another check here, feel free to add something
+			{
+			//cant imagine another place to flag this....its a yes/no thing
+				$notify=true;
+			}
 			// ----  Ensure To: and CC:  and BCC: are properly formatted   -----
 			if ($to)
 			{
@@ -458,6 +569,7 @@
 			//var_dump($cc);
 			echo '<br>';
 			
+			$GLOBALS['phpgw']->common->phpgw_footer();
 			exit;
 			// ===== DEBUG ===== 
 			*/
@@ -718,6 +830,7 @@
 			echo $dubug_info;
 			echo '<br>';
 				
+			$GLOBALS['phpgw']->common->phpgw_footer();
 			exit;
 			// ===== DEBUG ===== 
 			*/
@@ -726,7 +839,8 @@
 			// ---  ATTACHMENTS -- Add each of them as an additional mime part ---
 			if ($this->mail_out['num_attachments'] > 0)
 			{
-				@set_time_limit(0);
+				// DO WE REALLY need to set_time_limit here?
+				//@set_time_limit(0);
 				// process (encode) attachments and add to the email body
 				$total_files = 0;
 				$dh = opendir($upload_dir);
@@ -742,6 +856,7 @@
 							
 							$info_file = $upload_dir.SEP.$file.'.info';
 							$file_info = file($info_file);
+							if ($this->debug_struct > 2) { echo 'FILE INFO: '.htmlspecialchars(serialize($file_info)).'<br>'; } 
 							$content_type = trim($file_info[0]);
 							$content_name = trim($file_info[1]);
 
@@ -758,6 +873,8 @@
 							$m_line++;
 							$this->mail_out['body'][$body_part_num]['mime_headers'][$m_line] = 'Content-Disposition: attachment; filename="'.$content_name.'"';
 							
+							/*
+							// BASE64 ENCODE method 1 - entire file loaded into memory
 							// get the file and base 64 encode it
 							$fh = fopen($upload_dir.SEP.$file,'rb');
 							// $rawfile = fread($fh,$size);
@@ -765,6 +882,27 @@
 							$this->mail_out['body'][$body_part_num]['mime_body'] = explode("\r\n", $b64_part);
 							$b64_part = '';
 							fclose($fh);
+							*/
+							
+							// BASE64 ENCODE method 2 - small chunks of file limit memory usage during encoding
+							// base64 encoded data should be split into lines of 76 chars for the outgoing message (not including the CRLF)
+							// reading 3 bytes from the file makes 4 bytes of encoded data
+							// 76 encoded chars = (19 x 4 byte groups) per line
+							// data must be fed in [bytes div 3] chunks (i.e. 30 bytes is divisible by 3 so is good) to avoid string padding
+							// reading 19 x 3 bytes (57 chars) from source file produces the 76 char encoded single line of data
+							// 57 is, of course, divisible by 3, so the resulting encoded line will not be padded with "=" chars (good)
+							// for initial testing, it may be inefficient but do the file reading in 57 byte chunks
+							$fh = fopen($upload_dir.SEP.$file,'rb');
+							$next_pos = 0;
+							while ($datachunk = fread($fh, 57))
+							{
+								if ($this->debug_struct > 2) { echo '$next_pos ['.$next_pos.'] :: string ['.$datachunk.'] :: b64 version ['.base64_encode($datachunk).']<br>'."\r\n"; } 
+								$this->mail_out['body'][$body_part_num]['mime_body'][$next_pos] = base64_encode($datachunk);
+								$next_pos++;
+							}
+							$b64_part = '';
+							fclose($fh);
+							
 							
 							/*
 							/ /  * * * * MOVE THIS INTO MAIL SEND 2822 PROC * * * * *
@@ -824,6 +962,20 @@
 			$hdr_line++;
 			$this->mail_out['main_headers'][$hdr_line] = 		'Message-ID: '.$this->mail_out['message_id'];
 			$hdr_line++;
+			//Step One Addition
+			//There is no other way to put this headers for request notify, so here we go
+			//Qmail servers use Notice-Requested-Upon-Delivery-To: so thats what we are going to use now
+			//its the correct and nice way to support it
+			//AFAIK, sendmail servers use Return-Receipt-To: which suck but are widly supported so....here goes as weelll
+			if($notify)
+			{
+				$this->mail_out['main_headers'][$hdr_line] = 'Notice-Requested-Upon-Delivery-To: '.$GLOBALS['phpgw']->msg->addy_array_to_str($this->mail_out['to']);
+				$hdr_line++;
+				$this->mail_out['main_headers'][$hdr_line] = 'Return-Receipt-To: '.$this->mail_out['sender'];
+				$hdr_line++;
+				
+			}
+			
 			// RFC2045 REQUIRES this header in even if no embedded mime parts are in the body
 			// MTA's, MUA's *should* assume the following as default (RFC2045) if not included
 			$this->mail_out['main_headers'][$hdr_line] = 		'MIME-Version: 1.0';
@@ -850,19 +1002,19 @@
 				// FUTURE: Content-Transfer-Encoding:  Needs To Match What is In the Body, i.e. may be qprint
 				//$this->mail_out['main_headers'][$hdr_line] =	'Content-Transfer-Encoding: 7bit';
 				//$hdr_line++;
-				/*
-				@discussion: 7bit vs. 8bit encoding value in top level headers
-				top level 7bit requires qprinting the body if the body has 8bit chars in it
+				/*!
+				@concept 7bit vs. 8bit encoding value in top level headers
+				@discussion top level 7bit requires qprinting the body if the body has 8bit chars in it
 				ISSUE 1: "it's unnecessary"
 				nowdays, most all MTAs and IMAP/POP servers can handle 8bit
 				by todays usage, 7bit is quite restrictive, when considering the variety of
 				things that may be attached to or carried in a message (and growing)
-				<begin digression>
+				[begin digression]
 				However, stuffing RFC822 email thru a X500 (?) gateway requires 7bit body,
 				which we could do here, at the MUA level, and may possibly require other
 				alterations of the message that occur at the gateway, some of which may actually drop
 				portions of the message, indeed it's complicated, but rare in terms of total mail volume (?)
-				<end digression>
+				[end digression]
 				ISSUE 2: "risks violating RFCs and confusing MTAs"
 				setting top level encoding to 7bit when the body actually has 8bit chars is "TOTALLY BAD"
 				MTA's will be totally confused by that mis-match, and it violates RFCs
@@ -895,7 +1047,7 @@
 				$this->mail_out['main_headers'][$hdr_line] = 	'X-phpGW-Type: '.$this->mail_out['msgtype'];
 				$hdr_line++;
 			}
-			$this->mail_out['main_headers'][$hdr_line] = 	'X-Mailer: phpGroupWare (http://www.phpgroupware.org) v '.$GLOBALS['phpgw_info']['server']['versions']['phpgwapi'];
+			$this->mail_out['main_headers'][$hdr_line] = 	'X-Mailer: AngleMail for phpGroupWare (http://www.phpgroupware.org) v '.$GLOBALS['phpgw_info']['server']['versions']['phpgwapi'];
 			$hdr_line++;
 			
 			/*
@@ -931,55 +1083,7 @@
 			&& ($returnccode)
 			&& ($GLOBALS['phpgw']->msg->get_isset_pref('use_sent_folder')))
 			{
-				//echo 'ENTERING SENT FOLDER CODE';
-				
-				// note: what format should these folder name options (sent and trash) be held in
-				// i.e. long or short name form, in the prefs database
-				//$sent_folder_name = $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->get_pref_value('sent_folder_name'));
-				$sent_folder_name = $GLOBALS['phpgw']->msg->get_pref_value('sent_folder_name');
-				
-				// NOTE: should we use the existing mailbox stream or initiate a new one just for the append?
-				// using a NEW stream *seems* faster, but not sure ???
-				/*
-				if ((!($GLOBALS['phpgw']->msg->get_isset_arg('mailsvr_stream')))
-				|| ($GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream') == ''))
-				{
-					$stream = $GLOBALS['phpgw']->dcom->login('INBOX');
-					// note: "append" will CHECK  to make sure this folder exists, and try to create it if it does not
-					// also note, make sure there is a \r\n CRLF empty last line sequence so Cyrus will be happy
-					$GLOBALS['phpgw']->dcom->append($stream, $sent_folder_name, $GLOBALS['phpgw']->mail_send->assembled_copy."\r\n", "\\Seen");
-					$GLOBALS['phpgw']->dcom->close($stream);
-				}
-				else
-				{
-					// note: "append" will CHECK  to make sure this folder exists, and try to create it if it does not
-					// also note, make sure there is a \r\n CRLF empty last line sequence so Cyrus will be happy
-					//$GLOBALS['phpgw']->dcom->append($GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream'),
-					$GLOBALS['phpgw']->msg->phpgw_append($sent_folder_name,
-								$GLOBALS['phpgw']->mail_send->assembled_copy."\r\n",
-								"\\Seen");
-					//echo 'used existing stream for trash folder';
-				//}
-				*/
-				
-				if ((($GLOBALS['phpgw']->msg->get_isset_arg('mailsvr_stream')))
-				&& ($GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream') != ''))
-				{
-					// note: "append" will CHECK  to make sure this folder exists, and try to create it if it does not
-					// also note, make sure there is a \r\n CRLF empty last line sequence so Cyrus will be happy
-					//$GLOBALS['phpgw']->dcom->append($GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream'),
-					//echo 'using existing stream for sent folder append<br>';
-					$success = $GLOBALS['phpgw']->msg->phpgw_append($sent_folder_name,
-									$GLOBALS['phpgw']->mail_send->assembled_copy."\r\n",
-									"\\Seen");
-					//if ($success) { echo 'append to sent OK<br>'; }
-					//else { echo 'append to sent FAILED<br>'; echo 'imap_last_error: '.imap_last_error().'<br>'; }
-				}
-				else
-				{
-					//echo 'NO STREAM available for sent folder append<br>';
-				}
-			
+					$success = $this->copy_to_sent_folder();
 			}
 			
 			// ----  Redirect on Success, else show Error Report   -----
@@ -1040,7 +1144,19 @@
 					// unset some vars (is this necessary?)
 					$this->send_message_cleanup();
 					// redirect the browser to the index page for the appropriate folder
-					header('Location: '.$return_to_folder_href);
+					//header('Location: '.$return_to_folder_href);
+					$GLOBALS['phpgw']->redirect($return_to_folder_href);
+					// kill the rest of this script
+					if (is_object($GLOBALS['phpgw']->msg))
+					{
+						// close down ALL mailserver streams
+						$GLOBALS['phpgw']->msg->end_request();
+						// destroy the object
+						$GLOBALS['phpgw']->msg = '';
+						unset($GLOBALS['phpgw']->msg);
+					}
+					// shut down this transaction
+					$GLOBALS['phpgw']->common->phpgw_exit(False);
 				}
 			}
 			else

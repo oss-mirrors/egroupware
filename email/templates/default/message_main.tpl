@@ -12,14 +12,19 @@ function do_action(act)
 In the future, this will process a specially formated email msg.<hr>
 </center>
 <!-- END B_x-phpgw-type -->
-<table border="0" cellpadding="2" cellspacing="1" width="95%" align="center">
+{widget_toolbar}
+<table border="0" cellpadding="0" cellspacing="0" width="95%" align="center">
 <tr>
-	<form name="{acctbox_frm_name}" action="{acctbox_action}" method="post">
-	<td bgcolor="{ctrl_bar_back1}" width="50%" align="left">
-			&nbsp;&nbsp;&nbsp;{acctbox_listbox}
-			<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">&nbsp;&nbsp;{accounts_label}</font>
+	<td align="center" width="23%">
+		<font size="2" face="{theme_font}">{view_option}</font>
 	</td>
-	</form>
+	<td align="center" width="24%">
+		<font size="2" face="{theme_font}">{view_headers_href}</font>
+	</td>
+	<td align="center" width="23%">
+		<font size="2" face="{theme_font}">{view_raw_message_href}</font>
+	</td>
+
 	<form name="{frm_delmov_name}" action="{frm_delmov_action}" method="post">
 	<input type="hidden" name="what" value="delete">
 	<input type="hidden" name="sort" value="{move_current_sort}">
@@ -27,7 +32,7 @@ In the future, this will process a specially formated email msg.<hr>
 	<input type="hidden" name="start" value="{move_current_start}">
 	<input type="hidden" name="{move_postmove_goto_name}" value="{move_postmove_goto_value}">
 	<input type="hidden" name="{mlist_checkbox_name}" value="{mlist_embedded_uri}">
-	<td bgcolor="{ctrl_bar_back1}" width="50%" align="right">
+	<td width="30%" align="right">
 		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">{delmov_listbox}&nbsp;</font>
 	</td>
 	</form>
@@ -44,12 +49,12 @@ In the future, this will process a specially formated email msg.<hr>
 				{lnk_goback_folder}
 				</font>
 			</td>
-			<td align="right">
+			<td align="right" valign="middle">
 				<font size="3" face="{theme_font}" color="{reply_btns_text}">
 				{ilnk_reply}&nbsp;{ilnk_replyall}&nbsp;{ilnk_forward}&nbsp;{ilnk_delete}&nbsp;
  				</font>
 			</td>
-			<td align="right">
+			<td align="right" valign="middle">
 				{ilnk_prev_msg}
 				{ilnk_next_msg}
 			</td>
@@ -132,6 +137,7 @@ In the future, this will process a specially formated email msg.<hr>
 	</td>
 </tr>
 
+ <!-- 
 <tr>
 	<td valign="top" colspan="2" width="100%">
 		<table border="0" cellpadding="1" cellspacing="1" width="100%" align="center">
@@ -149,6 +155,7 @@ In the future, this will process a specially formated email msg.<hr>
 		</table>	
 	</td> 
 </tr>
+  -->
 </table>
 
 <!-- start message display -->

@@ -14,23 +14,25 @@
   /* $Id$ */
 
 	$GLOBALS['phpgw_info']['flags'] = array(
-			'currentapp' => 'email',
-			'enable_network_class' => True, 
-			'noheader' => True,
-			'nonavbar' => True
+		'currentapp' => 'email',
+		'enable_network_class' => True, 
+		'noheader' => True,
+		'nonavbar' => True
 	);
 	include('../header.inc.php');
+	/*
+	if (isset($GLOBALS['phpgw_info']['flags']['newsmode']) && $GLOBALS['phpgw_info']['flags']['newsmode'])
+	{
+		$GLOBALS['phpgw']->common->read_preferences('nntp');
+	}
+	@set_time_limit(0);
 
-	//  if (isset($GLOBALS['phpgw_info']['flags']['newsmode']) && $GLOBALS['phpgw_info']['flags']['newsmode'])
-	//    $GLOBALS['phpgw']->common->read_preferences('nntp');
-	//  @set_time_limit(0);
-
-	// //  echo 'Mailbox = '.$mailbox.'<br>'."\n";
-	//  echo 'Mailbox = '.$GLOBALS['phpgw']->msg->mailsvr_stream.'<br>'."\n";
-	//  echo 'Msgnum = '.$m.'<br>'."\n";
-	//  echo 'Part Number = '.$p.'<br>'."\n";
-	//  echo 'Subtype = '.$s.'<br>'."\n";
-
+	echo 'Mailbox = '.$mailbox.'<br>'."\n";
+	echo 'Mailbox = '.$GLOBALS['phpgw']->msg->mailsvr_stream.'<br>'."\n";
+	echo 'Msgnum = '.$m.'<br>'."\n";
+	echo 'Part Number = '.$p.'<br>'."\n";
+	echo 'Subtype = '.$s.'<br>'."\n";
+	*/
 	//$data = $GLOBALS['phpgw']->dcom->fetchbody($GLOBALS['phpgw']->msg->mailsvr_stream, $m, $p);
 	$data = $GLOBALS['phpgw']->msg->phpgw_fetchbody($p);
 	//$picture = $GLOBALS['phpgw']->dcom->base64($data);
@@ -45,5 +47,24 @@
 	echo $picture;
 	flush();
 
-	$GLOBALS['phpgw']->msg->end_request();
+	// IS THIS FILE EVER USED ANYMORE?
+	if (is_object($GLOBALS['phpgw']->msg))
+	{
+		$terminate = True;
+	}
+	else
+	{
+		$terminate = False;
+	}
+	
+	if ($terminate == True)
+	{
+		// close down ALL mailserver streams
+		$GLOBALS['phpgw']->msg->end_request();
+		// destroy the object
+		$GLOBALS['phpgw']->msg = '';
+		unset($GLOBALS['phpgw']->msg);
+	}
+	// shut down this transaction
+	$GLOBALS['phpgw']->common->phpgw_exit(False);
 ?>

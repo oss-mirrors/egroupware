@@ -58,6 +58,7 @@
 				$flags |= FT_UID;
 			}
 			$retval = imap_delete($stream,$msg_num,$flags);
+			// some lame pop3 servers need this extra call to expunge, but RFC says not necessary
 			imap_expunge($stream);
 			return $retval;
 		}
@@ -233,49 +234,6 @@
 			return imap_status($stream,$mailbox,$options);
 		}
 
-		/*
-		// DEPRECIATED - OBSOLETE - DO NOT CALL
-		function login( $folder='INBOX')
-		{	
-			//$debug_logins = True;
-			$debug_logins = False;
-			if ($debug_logins)
-			{
-				echo 'CALL TO LOGIN IN CLASS MSG POP3'.'<br>'.'userid='.$GLOBALS['phpgw_info']['user']['preferences']['email']['userid'];
-			}
-	
-			error_reporting(error_reporting() - 2);
-			if ($folder != "INBOX")
-			{
-				// pop3 has only 1 "folder" - inbox
-				$folder = 'INBOX';
-			}
-
-			// WORKAROUND FOR BUG IN EMAIL CUSTOM PASSWORDS (PHASED OUT 7/2/01)
-			// $pass = $this->get_email_passwd();
-			// === ISSET CHECK ==
-			if ( (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['userid']))
-				&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['userid'] != '')
-				&& (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd']))
-				&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'] != '') )
-			{
-				$user = $GLOBALS['phpgw_info']['user']['preferences']['email']['userid'];
-				$pass = $GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'];
-			}
-			else
-			{
-				// problem - invalid or nonexistant info for userid and/or passwd
-				return False;
-			}
-
-			$server_str = $GLOBALS['phpgw']->msg->get_mailsvr_callstr();
-			$mbox = $this->open($server_str.$folder, $user, $pass);
-
-			error_reporting(error_reporting() + 2);
-			return $mbox;
-		}
-		*/
-		
 		function construct_folder_str($folder)
 		{
 			// pop3 has only 1 "folder" - inbox

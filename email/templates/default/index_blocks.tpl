@@ -56,6 +56,88 @@
 
 &nbsp;	<!-- &nbsp; Lame Seperator &nbsp; --> &nbsp;
 
+<!-- BEGIN B_stats_layout2 -->
+<table border="0" cellpadding="5" cellspacing="1" width="95%" align="center">
+<tr bgcolor="{stats_backcolor}">
+	<td align="center">
+		<font face="{stats_font}" size="{stats_foldername_size}" color="{stats_color}">
+			<strong>{stats_folder}</strong>
+		</font>
+	</td>
+	<td align="center">
+		<font face="{stats_font}" size="{stats_font_size}" color="{stats_color}">
+			&nbsp;&nbsp;{stats_new}&nbsp;&nbsp;{lang_new}
+		</font>
+	</td>
+	<td align="center">
+		<font face="{stats_font}" size="{stats_font_size}" color="{stats_color}">
+			&nbsp;&nbsp;{stats_saved}&nbsp;&nbsp;{lang_total}
+		</font>
+	</td>
+	{form_get_size_opentag}
+	<td align="center">
+		<font face="{stats_font}" size="{stats_font_size}" color="{stats_color}">
+			&nbsp;&nbsp;{stats_size_or_button}&nbsp; {lang_size}
+		</font>
+	</td>
+	{form_get_size_closetag}
+	<td align="center">
+		<font face="{stats_font}" size="{stats_font_size}" color="{stats_color}">
+			&nbsp;&nbsp;{stats_first}&nbsp;{stats_to_txt}&nbsp;{stats_last}
+		</font>
+	</td>
+</tr>
+</table>
+<!-- END B_stats_layout2 -->
+
+&nbsp;	<!-- &nbsp; Lame Seperator &nbsp; --> &nbsp;
+
+<!-- BEGIN B_stats_layout1 -->
+<table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
+<tr>
+	<td bgcolor="{stats_backcolor}">
+		<table border="0" cellpadding="0" cellspacing="1" width="100%">
+		<tr>
+			{form_get_size_opentag}
+			<td>
+				<font face="{stats_font}" size="{stats_foldername_size}" color="{stats_color}">
+					&nbsp;<strong>{stats_folder}</strong>
+				</font>
+				<br>
+				<font face="{stats_font}" size="{stats_font_size}" color="{stats_color}">
+					&nbsp;&nbsp;&nbsp;{stats_new}&nbsp;&nbsp;:&nbsp;&nbsp;{lang_new2}<br>
+					&nbsp;&nbsp;&nbsp;{stats_saved}&nbsp;&nbsp;:&nbsp;&nbsp;{lang_total2}<br>
+					&nbsp;&nbsp;&nbsp;{stats_size_or_button}&nbsp;&nbsp;:&nbsp;&nbsp;{lang_size2}
+				</font>
+			</td>
+			{form_get_size_closetag}
+			<td align="right">
+				<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+				{form_folder_switch_opentag}
+					<td>
+						<font face="{stats_font}" size="{stats_font_size}">
+						{folder_switch_combobox}
+						</font>
+					</td>
+					<td>
+						<font face="{stats_font}" size="{stats_font_size}">
+						&nbsp;&nbsp;{folders_btn}
+						</font>
+					</td>
+				{form_folder_switch_closetag}
+				</tr>
+				</table>
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
+<!-- END B_stats_layout1 -->
+
+&nbsp;	<!-- &nbsp; Lame Seperator &nbsp; --> &nbsp;
+
 <!-- BEGIN B_mlist_block -->
 <tr>
 	<td bgcolor="{mlist_backcolor}" align="center">

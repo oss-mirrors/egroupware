@@ -1,17 +1,15 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - E-Mail Message Processing Functions				*
-	* http://www.phpgroupware.org							*
+	* AngleMail	http://www.anglemail.org								*
 	*/
 	/**************************************************************************\
-	* phpGroupWare API - E-Mail Message Processing Functions			*
-	* This file written by Angelo Tony Puglisi (Angles) <angles@phpgroupware.org> *
-	* Handles specific operations in manipulating email messages			*
-	* Copyright (C) 2001 Angelo Tony Puglisi (Angles)					*
+	* AngleMail - E-Mail Message Processing Functions for MIME and Display	*
+	* This file written by Angelo "Angles" Puglisi <angles@aminvestments.com>	*
+	* Copyright (C) 2001-2002 Angelo "Angles" Puglisi						*
 	* -------------------------------------------------------------------------			*
-	* This library is part of the phpGroupWare API					*
-	* http://www.phpgroupware.org/api							* 
-	* ------------------------------------------------------------------------ 			*
+	* This file designed to work as part of a drop in module for phpGroupWare		*
+	* http://www.phpgroupware.org							*
+	* -------------------------------------------------------------------------			*
 	* This library is free software; you can redistribute it and/or modify it		*
 	* under the terms of the GNU Lesser General Public License as published by	*
 	* the Free Software Foundation; either version 2.1 of the License,			*
@@ -24,7 +22,7 @@
 	* along with this library; if not, write to the Free Software Foundation,		*
 	* Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA			*
 	\**************************************************************************/
-	
+
 	/* $Id$ */
 	
 	// include this last, it extends mail_msg_wrappers which extends mail_msg_base
@@ -35,7 +33,7 @@ class mail_msg extends mail_msg_wrappers
 	/*!
 	@function all_folders_listbox
 	@abstract gets a list of all folders available to the user, and makes an HTML listbox widget with that data
-	@param $feed_args[] array or args that you will "feed" into the function, contains the following members:
+	@param $feed_args[] array or args that you will "feed" into the function, contains the following members 
 		['mailsvr_stream'] : integer : the stream where the data communications with the mailserver takes place
 		['pre_select_folder'] : string : if you want a particular folder already selected in the listbox, put that foldername
 			here. Note you must know the name of the folder as it will aooear in the kistbox for this to work.
@@ -55,7 +53,7 @@ class mail_msg extends mail_msg_wrappers
 			like a descriptive label, it does not have any important data usage. Default: "lang('switch current folder to')"
 	@result string representing an HTML listbox widget 
 	@discussion ?
-	@access : private
+	@access   private
 	*/
 	function all_folders_listbox($feed_args='')
 	{
@@ -73,7 +71,7 @@ class mail_msg extends mail_msg_wrappers
 			'mailsvr_stream'	=> $this->get_arg_value('mailsvr_stream', $acctnum),
 			'pre_select_folder'	=> '',
 			'skip_folder'		=> '',
-			'show_num_new'		=> False,
+			'show_num_new'		=> $GLOBALS['phpgw_info']['user']['preferences']['email']['newmsg_combobox'],
 			'widget_name'		=> 'folder_fake_uri',
 			'folder_key_name'	=> 'folder',
 			'acctnum_key_name'	=> 'acctnum',
@@ -90,7 +88,7 @@ class mail_msg extends mail_msg_wrappers
 		{
 			reset($local_args);
 			// the feed args may not be an array, the @ will supress warnings
-			@reset($feed_args);		
+			@reset($feed_args);
 			while(list($key,$value) = each($local_args))
 			{
 				// DEBUG
@@ -146,14 +144,27 @@ class mail_msg extends mail_msg_wrappers
 		else
 		{
 			// get the actual list of folders we are going to put into the combobox
-			$folder_list = $this->get_folder_list();
+			//$folder_list = $this->get_folder_list();
+			$folder_list = $this->get_arg_value('folder_list');
+			//$folder_list =& $this->get_arg_value_ref('folder_list');
+			
+			//echo '$folder_list DUMP<pre>'; print_r($folder_list); echo '</pre>';
+			// Save Origional Folder Name. $folder_status in the for statment below causes us to lose it.
+			$origional_folder = $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->prep_folder_out());
 			
 			// iterate thru the folder list, building the HTML tags using that data
 			for ($i=0; $i<count($folder_list);$i++)
 			{
 				$folder_long = $folder_list[$i]['folder_long'];
+				//$folder_long = $this->ensure_one_urlencoding($folder_list[$i]['folder_long']);
 				$folder_short = $folder_list[$i]['folder_short'];
 				$folder_acctnum = $folder_list[$i]['acctnum'];
+				if ($local_args['show_num_new'] == True) {
+					$folder_status = $GLOBALS['phpgw']->msg->phpgw_status("$folder_long");
+					$folder_unseen = number_format($folder_status->unseen);
+				} 
+				
+				
 				// this logic determines if the combobox should be initialized with certain folder already selected
 				if ($folder_short == $this->get_folder_short($local_args['pre_select_folder']))
 				{
@@ -172,8 +183,12 @@ class mail_msg extends mail_msg_wrappers
 					
 					$option_value =  '&'.$local_args['folder_key_name'].'='.$this->prep_folder_out($folder_long)
 							.'&'.$local_args['acctnum_key_name'].'='.$folder_acctnum;
-					
+					if ($local_args['show_num_new'] == True) {
+					 $item_tags = $item_tags .'<option value="'.$option_value.'"'.$sel.'>' .$folder_short.' ('.$folder_unseen.')';   
+					} else {
 					$item_tags = $item_tags .'<option value="'.$option_value.'"'.$sel.'>' .$folder_short;
+					}
+					
 					
 					// "show_num_new" is currently BROKEN
 					// do we show the number of new (unseen) messages for this folder
@@ -189,9 +204,11 @@ class mail_msg extends mail_msg_wrappers
 					$item_tags = $item_tags . "</option>\r\n";
 				}
 			}
+			if ($local_args['show_num_new'] == True) {
+				$folder_status = $GLOBALS['phpgw']->msg->phpgw_status("$origional_folder");
+			}
 		}
 		// now $item_tags contains the internal folder list
-		
 		// ----  add the HTML tags that surround this internal list data  ----
 		if ((isset($local_args['on_change']))
 		&& ($local_args['on_change'] != ''))
@@ -219,7 +236,7 @@ class mail_msg extends mail_msg_wrappers
 	@param $feed_args[] array or args that you will "feed" into the function ??
 	@result string representing an HTML listbox widget 
 	@discussion ?
-	@access : private
+	@access   private
 	*/
 	function folders_mega_listbox($feed_args='')
 	{
@@ -255,7 +272,7 @@ class mail_msg extends mail_msg_wrappers
 		{
 			reset($local_args);
 			// the feed args may not be an array, the @ will supress warnings
-			@reset($feed_args);		
+			@reset($feed_args);
 			while(list($key,$value) = each($local_args))
 			{
 				// DEBUG
@@ -298,7 +315,8 @@ class mail_msg extends mail_msg_wrappers
 			else
 			{
 				// get the actual list of folders we are going to put into the combobox
-				$folder_list = $this->get_folder_list($this_acctnum);
+				//$folder_list = $this->get_folder_list($this_acctnum);
+				$folder_list = $this->get_arg_value('folder_list');
 				if ($debug_widget) { echo 'folders_mega_listbox $folder_list for $this_acctnum ['.$this_acctnum.'] DUMP<pre>'; print_r($folder_list); echo '</pre>'; }
 				// NNTP = BORKED CODE!!!  (ignore for now) ...
 				if ($this->get_arg_value('newsmode', $this_acctnum))
@@ -376,7 +394,36 @@ class mail_msg extends mail_msg_wrappers
 	
 	
 	// ---- Messages Sort Order Start and Msgnum  -----
+	/*!
+	@function fill_sort_order_start_msgnum
+	@abstract alias to "fill_sort_order_start" because msgnum is NO LONGER handled here, function was renamed.
+	@author Angles
+	@discussion alias function for backward compatibility only, useful only until the rest of the code calls the 
+	real function "fill_sort_order_start"
+	*/
 	function fill_sort_order_start_msgnum()
+	{
+		$this->fill_sort_order_start();
+	}
+	
+	/*!
+	@function fill_sort_order_start
+	@abstract handles determining what values sort, order, and start should have.
+	@author Angles
+	@discussion if sort, order, and start are available in the GPC vars and are valid (values work, not out of range) then 
+	those GPC vars are used as source data. If not, then data is generated accourding to the users prefs for sort and order, 
+	abd start is assumed 0 if not otherwise provided in the GPC vars. NOTE: MSGNUM IS NO LONGER HANDLED 
+	IN THIS FUNCTION so it was renamed from "fill_sort_order_start_msgnum" to "fill_sort_order_start".
+	@syntax These are the PHP Sorting definitions and what they do and what their int value is.
+	SORTDATE:  0	//This is the Date that the senders email client stanp the message with
+	SORTARRIVAL: 1	 //This is the date your email server's MTA stamps the message with
+			// using SORTDATE cause some messages to be displayed in the wrong cronologicall order
+	SORTFROM:  2
+	SORTSUBJECT: 3
+	SORTTO:  4  // only used in the "Send" folder
+	SORTSIZE:  6
+	*/
+	function fill_sort_order_start()
 	{
 		//$debug_sort = True;
 		$debug_sort = False;
@@ -389,7 +436,7 @@ class mail_msg extends mail_msg_wrappers
 				// using SORTDATE cause some messages to be displayed in the wrong cronologicall order
 		SORTFROM:  2
 		SORTSUBJECT: 3
-		SORTTO: 4
+		SORTTO:  4  // only used in the "Send" folder
 		SORTSIZE:  6
 
 		// imap_sort(STREAM,  CRITERIA,  REVERSE,  OPTIONS)
@@ -459,27 +506,22 @@ class mail_msg extends mail_msg_wrappers
 			// start at the beginning (relative to your "sort" and "order" of course)
 			$this->set_arg_value('start', 0);
 		}
-
-		// == MSGNUM ==
-		// the current message number for the message we are concerned with here
-		if (($this->get_isset_arg('msgnum'))
-		&& ($this->get_arg_value('["msgball"]["msgnum"]') != ''))
-		{
-			// we got a good value fed into the script externally
-		}
-		// else it stays at default of empty string ('')
-
+		
 		if ($debug_sort)
 		{
 			echo 'sort: ['.$this->get_arg_value('sort').']<br>';
 			echo 'order: ['.$this->get_arg_value('order').']<br>';
 			echo 'start: ['.$this->get_arg_value('start').']<br>';
-			echo 'msgnum: ['.$this->get_arg_value('["msgball"]["msgnum"]').']<br>';
 		}
 	}
 	
 	// ---- Go To Previous / Next Message Logic Handling  -----
 	// NOTE: msgnum int 0 is NOT to be confused with "empty" nor "boolean False"
+	/*!
+	@function prev_next_navigation
+	@abstract 
+	@author Angles
+	*/
 	function prev_next_navigation($old_method_totalmessages=0)
 	{
 		//$debug_nav = True;
@@ -559,6 +601,11 @@ class mail_msg extends mail_msg_wrappers
 		return $nav_data;
 	}
 
+	/*!
+	@function all_ex_accounts_listbox
+	@abstract 
+	@author Angles
+	*/
 	function all_ex_accounts_listbox($feed_args)
 	{
 		// $this->ex_accounts_count
@@ -594,7 +641,7 @@ class mail_msg extends mail_msg_wrappers
 		{
 			reset($local_args);
 			// the feed args may not be an array, the @ will supress warnings
-			@reset($feed_args);		
+			@reset($feed_args); 
 			while(list($key,$value) = each($local_args))
 			{
 				// DEBUG
@@ -702,6 +749,11 @@ class mail_msg extends mail_msg_wrappers
 		return $listbox_widget;
 	}
 	
+	/*!
+	@function format_byte_size
+	@abstract 
+	@author mostly inherited from previous maintainer
+	*/
 	function format_byte_size($feed_size)
 	{
 		if ($feed_size < 999999)
@@ -727,6 +779,11 @@ class mail_msg extends mail_msg_wrappers
 	}
 
 	// ----  High-Level Function To Get The Subject String  -----
+	/*!
+	@function get_subject
+	@abstract 
+	@author Angles and code from previous maintainer
+	*/
 	function get_subject($msg, $desired_prefix='Re: ')
 	{
 		if ( (! $msg->Subject) || ($msg->Subject == '') )
@@ -753,6 +810,11 @@ class mail_msg extends mail_msg_wrappers
 	}
 
 	// ----  High-Level Function To Get The "so-and-so" wrote String   -----
+	/*!
+	@function prev_next_navigation
+	@abstract 
+	@author Angles and code from previous maintainer
+	*/
 	function get_who_wrote($msg)
 	{
 		if ( (!isset($msg->from)) && (!isset($msg->reply_to)) )
@@ -787,9 +849,10 @@ class mail_msg extends mail_msg_wrappers
 
 	/*!
 	@function has_real_attachment
-	@abstract s quick test to see if a message has an attachment, (NOT 100% accurate, but fast and mostly accurate)
-	@param $struct : PHP structure obtained from the "fetchstructure" command
+	@abstract a quick test to see if a message has an attachment, (NOT 100% accurate, but fast and mostly accurate)
+	@param $struct PHP structure obtained from the "fetchstructure" command
 	@result boolean
+	@author Angles
 	@discussion for use when displaying a list of messages, a quick way to determine if visual information (paperclip) is necessary
 	*/
 	function has_real_attachment($struct)
@@ -833,6 +896,12 @@ class mail_msg extends mail_msg_wrappers
 	  *
 	  * * * * * * *  * * * */
 	// ---- Message Structure Analysis   -----
+	/*!
+	@function get_flat_pgw_struct
+	@abstract Message Structure Analysis, make multilevel php message struct into a flat array
+	@param $struct (php structure from ?)
+	@author Angles
+	*/
 	function get_flat_pgw_struct($struct)
 	{
 		if (isset($this->not_set))
@@ -1045,14 +1114,21 @@ class mail_msg extends mail_msg_wrappers
 		// ANALYSIS LOOP Part 1
 		for ($i = 0; $i < count($part_nice); $i++)
 		{
-			// ------  ATTACHMENT DETECTION  -------
 			
-			// NOTE: initially I wanted to treat base64 attachments with more "respect", but many other attachments are NOT
-			// base64 encoded and are still attachments - if param_value NAME has a value, pretend it's an attachment
-			// however, a base64 part IS an attachment even if it has no name, just make one up
-			// also, if "disposition" header = "attachment", same thing, it's an attachment, and if no name is in the params, make one up
-			// note: we do not use "elseif" during this because an attachment may be detected in *any* of the following code blocks
-			// in no particular, nor predictable, order
+			/*!
+			@concept ATTACHMENT DETECTION in get_flat_pgw_struct
+			@discussion NOTE: initially I wanted to treat base64 attachments with more "respect", 
+			but many other attachments are NOT base64 encoded and are still attachments. 
+			If param_value NAME has a value, pretend it's an attachment, 
+			however, a base64 part IS an attachment even if it has no name, just make one up. 
+			BEGIN UPDATE: an exception to this is that some insane MUAs base64 encode the BODY, meaning a 
+			one part email body can be base64 encoded, BUT this is mostly spammers or malicious mail 
+			TRYING TO HIDE SOMETHING, such as the old IFRAME trick, or perhaps a more complicated 
+			message wrapped as one part, which may contain BAD files ending in bat, exe, or inf. END UPDATE. 
+			Also, if "disposition" header = "attachment", same thing, it is an attachment, and if no name 
+			is in the params, make one up. NOTE: we do not use "elseif" in the following logic 
+			because an attachment may be detected in *any* of the following code blocks in no particular, nor predictable, order.
+			*/
 			
 			// Fallback / Default: assume No Attachment here
 			//$part_nice['ex_part_name'] = 'unknown.html';
@@ -1060,13 +1136,20 @@ class mail_msg extends mail_msg_wrappers
 			$part_nice[$i]['ex_attachment'] = False;
 			
 			// Attachment Detection PART1-A = if a part has a NAME=FOO in the param pairs, then treat as an attachment
+			// notw: "name" is confirmed in PARAMS as the primary attribute used to specify a filename for an attachment
+			// UPDATE: "filename" is NOT confirmed used in PARAMS (is confirmed for dparams)
 			if (($part_nice[$i]['ex_num_param_pairs'] > 0)
 			&& ($part_nice[$i]['ex_attachment'] == False))
 			{
 				for ($p = 0; $p < $part_nice[$i]['ex_num_param_pairs']; $p++)
 				{
-					if (($part_nice[$i]['params'][$p]['attribute'] == 'name') 
-					  && ($part_nice[$i]['params'][$p]['value'] != $not_set))
+					if 
+					(
+						(($part_nice[$i]['params'][$p]['attribute'] == 'name') 
+						|| ($part_nice[$i]['params'][$p]['attribute'] == 'filename'))
+						
+						&& ($part_nice[$i]['params'][$p]['value'] != $not_set)
+					)
 					{
 						$part_nice[$i]['ex_part_name'] = $part_nice[$i]['params'][$p]['value'];
 						$part_nice[$i]['ex_attachment'] = True;
@@ -1075,13 +1158,19 @@ class mail_msg extends mail_msg_wrappers
 				}
 			}
 			// Attachment Detection PART1-B = if a part has a NAME=FOO in the dparam pairs, then treat as an attachment
+			// UPDATE: "filename" is confirmed used in dparams, I think "name" is too in dparams but I am not sure
 			if (($part_nice[$i]['ex_num_dparam_pairs'] > 0)
 			&& ($part_nice[$i]['ex_attachment'] == False))
 			{
 				for ($p = 0; $p < $part_nice[$i]['ex_num_dparam_pairs']; $p++)
 				{
-					if (($part_nice[$i]['dparams'][$p]['attribute'] == 'name') 
-					  && ($part_nice[$i]['dparams'][$p]['value'] != $not_set))
+					if 
+					(
+						(($part_nice[$i]['dparams'][$p]['attribute'] == 'name') 
+						|| ($part_nice[$i]['dparams'][$p]['attribute'] == 'filename'))
+						
+						&& ($part_nice[$i]['dparams'][$p]['value'] != $not_set)
+					)
 					{
 						$part_nice[$i]['ex_part_name'] = $part_nice[$i]['dparams'][$p]['value'];
 						$part_nice[$i]['ex_attachment'] = True;
@@ -1151,19 +1240,21 @@ class mail_msg extends mail_msg_wrappers
 				//$part_nice['ex_part_name'] = 'no_name.att';
 			}
 			
-			// ------  MIME PART CATAGORIZATION  -------
 			
-			// POSSIBLE VALUES FOR ['m_description'] ARE:
-			//	container
-			//	packagelist
-			//	presentable/image
-			//	attachment
-			//	presentable
-		
-			// RULES:
-			// a) if no subpart(s) then we have either "presentable" or "attachment"
-			// b) if subpart(s) and a boundary param, then we have a "packagelist" (HeadersOnly)
-			// c) else we have a container
+			/*!
+			@concept MIME PART CATAGORIZATION in get_flat_pgw_struct
+			@abstract Anglemail uses an custom flat mime analysis which gives human understandable names to MIME parts. 
+			@example POSSIBLE VALUES FOR [ " m_description " ] ARE 
+			container
+			packagelist
+			presentable/image
+			attachment
+			presentable
+			@syntax RULES for determining m_description are 
+			a) if no subpart(s) then we have either "presentable" or "attachment"
+			b) if subpart(s) and a boundary param, then we have a "packagelist" (HeadersOnly)
+			c) else we have a container
+			*/
 			if ((int)$part_nice[$i]['ex_num_subparts'] < 1)
 			{
 				// a) if no subparts then we have either "presentable" or "attachment"
@@ -1294,6 +1385,11 @@ class mail_msg extends mail_msg_wrappers
 		return $part_nice;
 	}
 
+	/*!
+	@function pgw_msg_struct
+	@abstract Mime analysis, make multilevel php message structure into a flat array with human understandable information. 
+	@author Angles
+	*/
 	function pgw_msg_struct($part, $parent_flat_idx, $feed_dumb_mime, $feed_i, $feed_loops, $feed_debth)
 	{
 		if (isset($this->not_set))
@@ -1495,6 +1591,11 @@ class mail_msg extends mail_msg_wrappers
 	}
 
 
+	/*!
+	@function mime_number_smart
+	@abstract Make a "dumb" mime part number (based only on array position) into a "Smart" mime number that a server understands. 
+	@author Angles
+	*/
 	function mime_number_smart($part_nice, $flat_idx, $new_mime_dumb)
 	{
 		$not_set = $this->not_set;
@@ -1644,6 +1745,11 @@ class mail_msg extends mail_msg_wrappers
 		return $smart_mime_number;
 	}
 
+	/*!
+	@function make_part_clickable
+	@abstract message text which could be an href or mail to can be made clickable.
+	@author Inherited from previous maintainer, Angles refined only
+	*/
 	function make_part_clickable($part_nice, $msgball)
 	{
 		$not_set = $this->not_set;
@@ -1700,9 +1806,15 @@ class mail_msg extends mail_msg_wrappers
 		return $click_info;
 	}
 
-	// function make_clickable taken from text_to_links() in the SourceForge Snipplet Library
-	// http://sourceforge.net/snippet/detail.php?type=snippet&id=100004
-	// modified to make mailto: addresses compose in phpGW
+	/*!
+	@function make_clickable
+	@abstract message text which could be an href or mail to can be made clickable.
+	@author See Discussion
+	@discussion This code inherited from previous maintainer, who said this - 
+	function make_clickable taken from text_to_links() in the SourceForge Snipplet Library
+	http://sourceforge.net/snippet/detail.php?type=snippet&id=100004
+	modified to make mailto: addresses compose in phpGW (not by Angles) 
+	*/
 	function make_clickable($data, $folder)
 	{
 		if(empty($data))
@@ -1728,6 +1840,15 @@ class mail_msg extends mail_msg_wrappers
 		return $newText;
 	}
 
+	/*!
+	@function has_this_param
+	@abstract does a MIME param array contain a certain attribute.
+	@author Angles
+	@discussion can take as input either a php structure or an anglemail flat part array. 
+	For example, an attribute could be "filename" and its value could be "image.png", this 
+	function looks for the attribute, if it exists or not. If it does exist, you may be interested in its 
+	associated value, but that another issue.
+	*/
 	function has_this_param($param_array, $needle='')
 	{
 		if ((!isset($param_array))
@@ -1766,6 +1887,11 @@ class mail_msg extends mail_msg_wrappers
 		}
 	}
 
+	/*!
+	@function array_keys_str
+	@abstract debug function, report all "keys" in an associative array of "key - value"
+	@author Angles
+	*/
 	function array_keys_str($my_array)
 	{
 		$all_keys = Array();
@@ -1779,7 +1905,7 @@ class mail_msg extends mail_msg_wrappers
 	@param none, it uses the class args described below in "discussion"
 	@result string which has either (a) a langed report to show the user about the move/delete that just occured
 	or (b) an empty string indicating no move or delete actions were taken, so none need to report anything
-	@discussion uses the following class args:
+	@discussion uses the following class args 
 	  ['args']['td']	"td" means "Total Deleted", if it's filled it contains the number of messages that were deleted
 	  ['args']['tm']	"tm" means "Total Moved", if it's filled it contains the number of messages that were moved
 	  ['args']['tf']	"tf" means "To Folder", if it's filled it contains the name of the folder that messages were moved to
@@ -1936,10 +2062,10 @@ class mail_msg extends mail_msg_wrappers
 	/*!
 	@function get_msg_list_display
 	@abstract make an array containing all necessary data to display an "index.php" type list of mesasages
-	@param $folder_info : array : (OPTIONAL) array elements as defined in return from function 
+	@param $folder_info   array   (OPTIONAL) array elements as defined in return from function 
 	  $this->get_folder_status_info() . This is primarily a time saver, if you already have the data, then pass it, 
 	  else this function will obtain the data for itself.
-	@param $folder_info : array of integers (OPTIONAL) integers representing a list of message numbers we 
+	@param $folder_info   array of integers (OPTIONAL) integers representing a list of message numbers we 
 	  should display, pass this data if you have search results to show, for example. If this is not present,
 	  then this function get a numbered array list of all message numbers in that folder, sorted and ordered
 	  according to preferences and/or user submitted page view args.
@@ -1984,7 +2110,7 @@ class mail_msg extends mail_msg_wrappers
 		msg_date	If the message arrived more than 1 day ago, this will be a date only.
 				If the message arrived within one day, this will be the time of arrival with NO date.
 	@discussion ?
-	@access : private
+	@access   private
 	*/
 	function get_msg_list_display($folder_info='', $msgball_list='')
 	{
@@ -2070,9 +2196,14 @@ class mail_msg extends mail_msg_wrappers
 			// SKIP this for POP3 - fetchstructure for POP3 requires download the WHOLE msg
 			// so PHP can build the fetchstructure data (IMAP server does this internally)
 			
-			if ((isset($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin))
-			&& ($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin == False)
-			&& (stristr($this->get_pref_value('mail_server_type'), 'pop3')))
+			//	THIS skips attachmant check only for POP3 socket (not build in) situations
+			//if ((isset($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin))
+			//&& ($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin == False)
+			//&& (stristr($this->get_pref_value('mail_server_type'), 'pop3')))
+			// ... but ...
+			// 	THIS skips attachment check for ALL POP3 situations 
+			// 	it is WAY SLOW to check for attachments like this with POP3
+			if (stristr($this->get_pref_value('mail_server_type'), 'pop3'))
 			{
 				// do Nothing - socket class pop3 not ready for this stress yet
 				$msg_list_display[$x]['has_attachment'] = False;
@@ -2153,12 +2284,12 @@ class mail_msg extends mail_msg_wrappers
 			//$replyto = $this->make_rfc2822_address($reply);
 			$replyto = $reply->mailbox.'@'.$reply->host;
 			
-			/*
+			/*!
 			@capability FROM DISPLAYABLE String
-			@abstract: display the "from" data according to user preferences
-			@result : string which is actually part 2 of 2 of the From String, 
+			@abstract  display the "from" data according to user preferences
+			@result   string which is actually part 2 of 2 of the From String, 
 			with "from_name" being part 1 of 2.
-			@discussion: first some background on the terms used here:
+			@discussion  first some background on the terms used here 
 			* "plain address" means the "user@domain.com" part
 			* "personal" means the name string that may be associated with that address
 				in the headers that would look like this if present: "Joe Dough" <user@domain.com>
@@ -2189,9 +2320,9 @@ class mail_msg extends mail_msg_wrappers
 			if (($this->get_pref_value('show_addresses') == 'from')
 			&& ($personal != $from->mailbox.'@'.$from->host))
 			{
-				/*
-				@capabability	"From String" is Personal data AND the "plain address" of the From person
-				@discussion:	according to preferences, for the displayed "From" string the user wants to
+				/*!
+				@capabability "From String" is Personal data AND the "plain address" of the From person
+				@discussion  according to preferences, for the displayed "From" string the user wants to
 				see the "personal" data AND the "plain address" data of the person who the message is from
 				as the "From String" that is displated to the user.
 				Additionally, we checked and made sure both those pieces of data are available.
@@ -2202,9 +2333,9 @@ class mail_msg extends mail_msg_wrappers
 			elseif (($this->get_pref_value('show_addresses') == 'replyto')
 			&& ($personal != $from->mailbox.'@'.$from->host))
 			{
-				/*
-				@capabability	From String includes ReplyTo plain address
-				@discussion:	according to preferences, for the displayed "From" string the user wants to
+				/*!
+				@capabability From String includes ReplyTo plain address
+				@discussion  according to preferences, for the displayed "From" string the user wants to
 				see the "personal" data AND the plain address of the "ReplyTo" header, if available.
 				To visually indicate this is reply to address, we surround in in < > 
 				instead of ( ) which we use to surround the "from" plain address, as used above.
@@ -2217,9 +2348,9 @@ class mail_msg extends mail_msg_wrappers
 			}
 			else
 			{
-				/*
-				@capabability	user sees ONLY the "plain address" of the From person
-				@discussion:	The displayed "From String" the user will see is 
+				/*!
+				@capabability user sees ONLY the "plain address" of the From person
+				@discussion  The displayed "From String" the user will see is 
 				the "plain address" of the From person ONLY, no "personal" data is ahown.
 				This happens as a fallback option when the user's assumed desire to see the
 				"personal" data is unable to be fulfilled because that "personal" data for the
@@ -2233,21 +2364,6 @@ class mail_msg extends mail_msg_wrappers
 			// Part 1 of 2 of the From string (see above)
 			// NOTE: wasn't this decode_header_string proc already done above?
 			$msg_list_display[$x]['from_name'] = $this->decode_header_string($personal);
-
-			if ($this->get_isset_pref ('use_sent_folder')
-			&& ($msg_list_display[$x]['folder'] == $this->folder_lookup ('', $this->get_pref_value ('sent_folder_name'))))
-			{
-				$to = $hdr_envelope->to[0];
-				if ($to->personal)
-				{
-					$topersonal = $this->decode_header_string ($to->personal);
-				}
-				else
-				{
-					$topersonal = $to->mailbox.'@'.$to->host;
-				}
-				$msg_list_display[$x]['from_name'] = $topersonal;
-			}
 
 			// ----  From Link  ----
 			// this is a URL that can be used to turn the "From String" into a clickable link
@@ -2292,6 +2408,35 @@ class mail_msg extends mail_msg_wrappers
 			// *raw* date for utility purposes, such as appending and specifying a date
 			// php built in append does not let you specify the data during an append
 			//$msg_list_display[$x]['msg_date_raw'] = $hdr_envelope->udate;
+			
+			// TO info for the "Sent" folder
+			// ----  To:  Message Data  -----
+			$to_data_array = array();
+			if (!$hdr_envelope->to)
+			{
+				$to_data_final = lang('undisclosed_recipients');
+			}
+			else
+			{
+				for ($z = 0; $z < count($hdr_envelope->to); $z++)
+				{
+					$topeople = $hdr_envelope->to[$z];
+					$to_plain = $topeople->mailbox.'@'.$topeople->host;
+					if ((!isset($topeople->personal)) || (!$topeople->personal))
+					{
+						$to_person = $to_plain;
+					}
+					else
+					{
+						$to_person = $GLOBALS['phpgw']->msg->decode_header_string($topeople->personal);
+					}
+					$to_data_array[$z] = $to_person;
+				}
+				// throw a spacer comma in between addresses, if more than one
+				$to_data_final = implode(', ',$to_data_array);
+			}
+			$msg_list_display[$x]['to_data_final'] = $to_data_final;
+			
 		}
 		if ($debug_msg_list_display > 2) { echo 'mail_msg: get_msg_list_display: exiting $msg_list_display[] dump:<pre>'; print_r($msg_list_display); echo '</pre>'; }
 		return $msg_list_display;

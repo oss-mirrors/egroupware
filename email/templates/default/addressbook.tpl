@@ -73,8 +73,27 @@
 		</td>
 		<td width="33%" align="right">
 <form method="POST" action="{search_action}">
+		<table>
+		<tr>
+			<td>
 			<input type="text" name="query">&nbsp;
-			<input type="submit" name="search" value="{lang_search}">
+			</td>
+			<td>
+			<select name="filter" onChange="this.form.submit();">
+				{filter_list}
+				<option value="" >Select Filter</option>
+				<option value="private">Private</option>
+				<option value="none">All</option>
+				<option value="user_only">Only yours </option></td>
+		</tr>
+		<tr>
+			
+			<td colspan="3">
+			<center><input type="submit" name="search" value="{lang_search}"></center>
+			</td>
+		</tr>
+		</table>
+		
 </form>
 		</td>
 	</tr>
@@ -94,11 +113,14 @@
 	</table>
 	<table border="0" width="100%" cellpadding="2" cellspacing="2">
 	<tr bgcolor="{th_bg}">
-		<td width="15%" bgcolor="{th_bg}" align="center">
+		<td width="25%" bgcolor="{th_bg}" align="center">
 			<font face="{font}">{sort_firstname}</font>
 		</td>
 		<td width="15%" bgcolor="{th_bg}" align="center">
 			<font face="{font}">{sort_lastname}</font>
+		</td>
+		<td width="15%" bgcolor="{th_bg}" align="center">
+			<font face="{font}">{sort_company}</font>
 		</td>
 		<td width="25%" bgcolor="{th_bg}" align="center">
 			<font face="{font}">{lang_email}</font>
@@ -116,10 +138,13 @@
 		<td>
 			<font face="{font}">{lastname}</font>
 		</td>
+		<td>
+			<font face="{font}">{company}</font>
+		</td>
 <form>
-		<td align="center">
+		<td width="20%" align="center">
 			<font face="{font}" size="1">
-			<input type="text" size="25" name="email" value="{email}">
+			<input type="text" size="20" name="email" value="{email}">
 			<br>
 			<input type="button" size="25" name="button" value="To" onClick="ExchangeTo(this.form);">
 			<input type="button" size="25" name="button" value="Cc" onClick="ExchangeCc(this.form);">
