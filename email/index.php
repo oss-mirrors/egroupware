@@ -16,10 +16,12 @@
   Header("Cache-Control: no-cache");
   Header("Pragma: no-cache");
   Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
+  
+  if ($newsmode == "on"){$phpgw_flags["newsmode"] = True;}
 
   $phpgw_flags["currentapp"] = "email";
   include("../header.inc.php");
-
+  
 ?>
 
 <script>

@@ -13,6 +13,8 @@
 
   /* $Id$ */
 
+  if ($newsmode == "on"){$phpgw_flags["newsmode"] = True;}
+
   $phpgw_flags["currentapp"] = "email";
   include("../header.inc.php");
 

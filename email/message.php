@@ -15,6 +15,12 @@
 
 // This will eventually be written using templates.
 
+  if ($newsmode == "on"){
+    echo "newsmode on";
+    $phpgw_flags["newsmode"] = True;
+  }
+//  if ($newsmode == "on"){$phpgw_flags["newsmode"] = True;}
+
   $phpgw_flags = array("noheader" => True, "currentapp" => "email");
   include("../header.inc.php");
 
