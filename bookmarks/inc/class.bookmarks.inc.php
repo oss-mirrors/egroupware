@@ -27,7 +27,7 @@
 		var $halt_on_error  = 'yes';
 
 		// override the finish function to better handle with javascript.
-		// we don't have whitespace in our var names, so no need to be
+		// we dont have whitespace in our var names, so no need to be
 		// so all encompassing with the remove.
 
 		function finish($str)
@@ -207,10 +207,11 @@
 
 			while (is_array($mains) && $main = each($mains))
 			{
+				$id = $main[1]['id'] . '|0';
 				if ($main[1]['parent'] == 0)
 				{
 					$s .= '<option value="' . $main[1]['id'] . '|0"';
-					if ($main[1]['id'] == $selected)
+					if ($id == $selected)
 					{
 						$s .= ' selected';
 					}
