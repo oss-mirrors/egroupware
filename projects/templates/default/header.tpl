@@ -1,8 +1,11 @@
 <!-- $Id$ -->
+
+<!-- BEGIN projects_header -->
+
 <p>
 <table border="0" width=100%>
 	<tr>
-		<td align="left" bgcolor="{bg_color}"><b>{admin_info}</b></td>
+		<td align="left" bgcolor="{th_bg}"><b>{lang_projects}&nbsp;&nbsp;&nbsp;{admin_info}</b></td>
 	</tr>
 	<tr>
 		<td>
@@ -24,3 +27,5 @@
 		</td>
 	</tr>
 </table>
+
+<!-- END projects_header -->

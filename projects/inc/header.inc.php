@@ -15,9 +15,9 @@
 	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 	$t->set_file(array('projects_header' => 'header.tpl'));
 
-	$admin_info = lang('Projects');
+	$admin_info = lang('Administrator');
 	$t->set_var('admin_info',$admin_info);
-	$t->set_var('bg_color',$phpgw_info['theme']['th_bg']);
+	$t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
 
 	$isadmin = isprojectadmin();
 
