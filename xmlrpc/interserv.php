@@ -137,7 +137,7 @@
 		$is->kp3 = $xkp3;
 		/* TODO - Adjust the values below as desired */
 		$is->send(
-			'addressbook.boaddressbook.read_entries',array(
+			'service.contacts.read_list',array(
 				'start' => 1,
 				'limit' => 5,
 				'fields' => array(
