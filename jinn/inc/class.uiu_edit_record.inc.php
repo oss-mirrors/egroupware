@@ -407,14 +407,16 @@ unset($this->bo->message);
 			   $display_name = ucfirst(strtolower(ereg_replace("_", " ", $fprops[name]))); 
 			}
 
-	/*		unset($tipmouseover);
+
+			
+			unset($tipmouseover);
 			if(trim($field_conf_arr[field_help_info]))
 			{
-			   $tipmouseover='&nbsp;<a onMouseOver="tip(\''.$fprops[name].'\')" onMouseOut="untip()">?</a>'; 
-			   $this->jstips.="maketip('{$fprops[name]}','$display_name','{$field_conf_arr[field_help_info]}');\n";
+			   $tooltip=str_replace("'", "\'", $field_conf_arr[field_help_info]);
+			   $tipmouseover='<img onMouseover="tooltip(\''.$tooltip.'\')" onMouseout="hidetooltip()" src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="'.lang('info').'"/>'; 
 			}
 
-	*/		
+			
 
 			
 			/* ---------------------- start fields -------------------------------- */
@@ -565,6 +567,7 @@ unset($this->bo->message);
 
 					 $this->template->set_var('row_color',$row_color);
 
+					 $this->template->set_var('tipmouseover',$tipmouseover);
 					 $this->template->set_var('input',$input);
 					 $this->template->set_var('fieldname',$display_name);
 
@@ -709,6 +712,7 @@ unset($this->bo->message);
 			   $this->template->set_var('sel1_all_from',$sel1_all_from);
 			   $this->template->set_var('on_dbl_click1',$on_dbl_click1);
 			   $this->template->set_var('on_dbl_click2',$on_dbl_click2);
+			   $this->template->set_var('tipmouseover',$tipmouseover);
 			   $this->template->set_var('sel1_name',$sel1_name);
 			   $this->template->set_var('sel2_name',$sel2_name);
 			   $this->template->set_var('lang_add_remove',$lang_add_remove);
@@ -770,6 +774,14 @@ unset($this->bo->message);
 			else
 			{
 			   $display_name = ucfirst(strtolower(ereg_replace("_", " ", $fprops[name]))); 
+			}
+
+
+			unset($tipmouseover);
+			if(trim($field_conf_arr[field_help_info]))
+			{
+			   $tooltip=str_replace("'", "\'", $field_conf_arr[field_help_info]);
+			   $tipmouseover='<img onMouseover="tooltip(\''.$tooltip.'\')" onMouseout="hidetooltip()" src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="'.lang('info').'"/>'; 
 			}
 
 			// auto
@@ -840,6 +852,7 @@ unset($this->bo->message);
 			   else $row_color=$GLOBALS['phpgw_info']['theme']['row_on'];
 
 			   $this->template->set_var('row_color',$row_color);
+			   $this->template->set_var('tipmouseover',$tipmouseover);
 			   $this->template->set_var('input',$input);
 			   $this->template->set_var('fieldname',$display_name);
 

@@ -21,6 +21,8 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
    */
 
+   /* $id$ */
+
    class uiuser 
    {
 	  var $public_functions = Array
@@ -445,6 +447,14 @@
 
 			   $field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$col[name]);
 			   $display_colname=($field_conf_arr[field_alt_name]?$field_conf_arr[field_alt_name]:$col[name]);
+
+			   unset($tipmouseover);
+			   if(trim($field_conf_arr[field_help_info]))
+			   {
+				  $tooltip=str_replace("'", "\'", $field_conf_arr[field_help_info]);
+				  $tipmouseover='<img onMouseover="tooltip(\''.$tooltip.'\')" onMouseout="hidetooltip()" src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="'.lang('info').'"/>'; 
+			   }
+
 			   
 			   //--- this is a special hack for the hide-this-field-plugin ----//
 			   if($this->bo->site_object[plugins])
@@ -489,6 +499,7 @@
 			   $this->template->set_var('colhead_order_link',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiuser.browse_objects&orderby=$orderby_link&search=$search&limit_start=$limit_start&limit_stop=$limit_stop&show_all_cols=$show_all_cols"));
 			   $this->template->set_var('colhead_name',str_replace('_','&nbsp;',$display_colname));
 			   $this->template->set_var('colhead_order_by_img',$orderby_image);
+			   $this->template->set_var('tipmouseover',$tipmouseover);
 
 			   $this->template->parse('colnames','column_name',true);
 			}
