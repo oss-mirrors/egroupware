@@ -39,7 +39,7 @@
 
 		function send_global_message($message='')
 		{
-			if(!$GLOBALS['phpgw']->acl->check('run',PHPGW_ACL,'admin') || $cancel)
+			if(!$GLOBALS['phpgw']->acl->check('run',PHPGW_ACL_READ,'admin') || $cancel)
 			{
 				return False;
 			}
