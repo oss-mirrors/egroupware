@@ -114,16 +114,31 @@
 	$t->set_var('lang_customer',lang('Customer'));
 	$d = CreateObject('phpgwapi.contacts');
 	$ab_customer = $phpgw->db->f('customer');
-	$cols = array('n_given' => 'n_given',
-					'n_family' => 'n_family',
-					'org_name' => 'org_name');
-	$customer = $d->read_single_entry($ab_customer,$cols);
-	$customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]';
-
-	$t->set_var('customer',$customerout);
+	if (!$ab_customer)
+	{
+		$t->set_var('customer','');
+	}
+	else
+	{
+		$cols = array('n_given' => 'n_given',
+						'n_family' => 'n_family',
+						'org_name' => 'org_name');
+		$customer = $d->read_single_entry($ab_customer,$cols);
+		if ($customer[0]['org_name']=='')
+		{
+			$t->set_var('customer',$customer[0]['n_given'] . ' ' . $customer[0]['n_family']);
+		}
+		else
+		{
+			$t->set_var('customer',$customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]');
+		}
+	}
 
 	if($billed)
+	{
 		$t->set_var('billed','checked');                                 
+	}
+
 	$t->set_var('billedonly',lang('Billed only'));
 
 	$t->set_var('lang_calcb',lang('Calculate'));

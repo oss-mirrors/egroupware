@@ -26,7 +26,7 @@
 				. '<input type="hidden" name="filter" value="' . $filter . '">' . "\n"
 				. '<input type="hidden" name="referer" value="' . $referer . '">' . "\n"
 				. '<input type="hidden" name="id" value="' . $id . '">' . "\n"
-				. '<input type="hidden" name="delivery_id" value="' . $delivery_id '">' . "\n"
+				. '<input type="hidden" name="delivery_id" value="' . $delivery_id . '">' . "\n"
 				. '<input type="hidden" name="invoice_id" value="' . $invoice_id . '">' . "\n";
 
 	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);

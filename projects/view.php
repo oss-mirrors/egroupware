@@ -54,7 +54,8 @@
 		$t->set_var('error',lang('Please select your currency in preferences !'));
 	}
 
-	$t->set_var('done_action',$phpgw->link('/projects/index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+	$t->set_var('done_action',$phpgw->link('/projects/index.php','sort=' . $sort . '&order=' . $order . '&query=' . $query
+											. '&start=' . $start . '&filter=' . $filter));
 	$t->set_var('lang_done',lang('Done'));
 	$t->set_var('lang_action',lang('View project'));
 	$t->set_var('hidden_vars',$hidden_vars);
@@ -142,7 +143,7 @@
 		{
 			$t->set_var('name',$customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]');
 		}
-
+	}
 // ------------------ activites bookable ----------------------------------
 
 	$t->set_var('lang_bookable_activities',lang('Bookable activities'));
