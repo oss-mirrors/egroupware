@@ -1,0 +1,63 @@
+absolute path of the backup directory	backup	ko	백업 디렉토리의 절대경로 (예: /usr/local/www/egroupware/backup/archive)
+absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	ko	백업 디렉토리의 절대경로 (예: /usr/local/www/egroupware/backup/archive)
+absolute path of the directory of egw backup application	backup	ko	EGW 백업 응용프로그램의 절대 경로 디렉토리
+absolute path of the directory to store the backup script	backup	ko	EGW 백업 응용프로그램 디렉토리의 절대 경로
+archive type	backup	ko	아카이브 타입을 정하세요
+backup	common	ko	백업
+backup administration	common	ko	백업 관리자
+bzip2	admin	ko	bzip2
+configuration backup	backup	ko	백업 설정
+configuration localhost	backup	ko	로컬호스트 설정
+create backups of your data ?	backup	ko	데이터를 백업할지 확인
+daily	backup	ko	매일
+data	backup	ko	데이터
+directory locations	admin	ko	디렉토리 위치
+directory names	admin	ko	디렉토리 이름
+e-mail	backup	ko	이-메일로 "알림"을 받을것인지 확인
+e-mail notification?	backup	ko	이-메일 "알림"을 받겠습니까?
+homedirs	admin	ko	홈 디렉토리
+interval	backup	ko	간격
+ip or hostname	backup	ko	IP 나 호스트이름
+ldap	common	ko	LDAP
+ldap database	admin	ko	LDAP 데이터베이스
+list backup archives	backup	ko	백업 아카이브 목록
+maildir	admin	ko	"알림"이 보내질 이-메일:
+monthly	backup	ko	매월
+mysql	admin	ko	MySQL
+nfs	backup	ko	nfs
+no backup archives available !	backup	ko	가능한 백업 아카이브가 없습니다!
+number of stored backup versions	backup	ko	Number of stored backups to keep beefore deleting old ones:
+operating system	backup	ko	운영체제
+pgsql	admin	ko	PostgreSQL
+php cgi	admin	ko	PHP 실행파일의 경로 (예 /usr/bin/php)
+please enter the path of the needed applications in *site configuration* !	backup	ko	*사이트 설정*에 필요한 응용프로그램의 경로를 입력 해주세요!
+please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	ko	백업 디렉토리의 경로를 입력하거나 phpGroupWare 에서 보여질 아카이브를 활성화 하세요!
+please enter username and password for remote connection !	backup	ko	원격 연결할 사용자이름과 암호를 입력하세요!
+please select an application for transport to the remote host !	backup	ko	원격 호스트로 전송할 응용프로그램을 선택하세요!
+please set the path to a local dir to store the backup script !	backup	ko	백업 스크립트를 저장할 로컬 디렉토리의 경로를 정하세요!
+please set the path to the ldap database dir in *site configuration* !	backup	ko	*사이트 설정*에 LDAP 데이터베이스 디렉토리의 경로를 정하세요!
+please set the path to the mysql database dir in *site configuration* !	backup	ko	*사이트 설정*에 MySQL 데이터베이스 디렉토리의 경로를 정하세요!
+please set the path to the postgresql database dir in *site configuration* !	backup	ko	*사이트 설정*에 PostgreSQL 데이터베이스 디렉토리의 경로를 정하세요!
+please set the values in *site configuration* !	backup	ko	*사이트 설정*에 값들을 설정하세요!
+please specify the ip of the remote host !	backup	ko	원격 호스트의 ip를 지정하세요!
+please specify the name of the maildir in *site configuration* !	backup	ko	*사이트 설정*에 Maildir의 이름을 지정하세요!
+please specify the path to the backup directory !	backup	ko	백업 디렉토리를 지정하세요!
+please specify the path to the user-homedirectories in *site configuration* !	backup	ko	*사이트 설정*에 유저-홈디렉토리 경로를 정하세요!
+please write down you e-mail for beeing notified	backup	ko	"알림"을 수신할 이-메일 주소를 쓰세요.
+program locations	admin	ko	프로그램 위치
+save backup locally ?	backup	ko	로컬에 백업 저장 확인:
+select archive type	backup	ko	저장 타입을 선택하세요.
+select interval	backup	ko	간격을 선택하세요.
+settings	admin	ko	설정
+show backup archives in phpgroupware ?	backup	ko	그룹웨어에서 보여줄 백업 아카이브 확인:
+smbmount	backup	ko	smbmount
+sql	backup	ko	SQL
+tar	admin	ko	tar
+tar.bz2	backup	ko	tar.bz2
+tar.gz	backup	ko	tar.gz
+the backup application is not configured for showing the archives in phpgroupware yet !	backup	ko	백업 응용프로그램이 phpGroupWare에서 아카이브를 보이도록 아직 설정되지 않았습니다!
+the directory to store the backup script must be outside of the webservers *documentroot* !	backup	ko	백업 스크립트는 반드시 웹서버의 *Document Root*의 내부에 있어야 합니다!
+versions can only be a number !	backup	ko	버전은 숫자만 가능합니다.
+weekly	backup	ko	주 단위
+your sql database isnt supported by this application !	backup	ko	귀하의 SQL 데이터베이스는 이 응용프로그램을 지원하지 않습니다!
+zip	common	ko	zip
