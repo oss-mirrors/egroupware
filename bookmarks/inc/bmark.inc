@@ -1,14 +1,18 @@
 <?php
-# ---------------------------------------------------------------
-# bookmarker
-# A WWW based bookmark management, retrieval, and search tool.
-# Copyright (C) 1998  Padraic Renaghan
-# Licensed under terms of GNU General Public License
-# (see http://www.renaghan.com/bookmarker/source/LICENSE)
-# ---------------------------------------------------------------
-# $Id$
-# ---------------------------------------------------------------
-# the following class represents a single bookmark
+  /**************************************************************************\
+  * phpGroupWare - Bookmarks                                                 *
+  * http://www.phpgroupware.org                                              *
+  * Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
+  *                     http://www.renaghan.com/bookmarker                   *
+  * --------------------------------------------                             *
+  *  This program is free software; you can redistribute it and/or modify it *
+  *  under the terms of the GNU General Public License as published by the   *
+  *  Free Software Foundation; either version 2 of the License, or (at your  *
+  *  option) any later version.                                              *
+  \**************************************************************************/
+
+  /* $Id$ */
+  
 class bmark  {
 
   function add(&$id, $url, $name, $ldesc, $keywords, $category, $subcategory, 
@@ -210,7 +214,7 @@ class bmark  {
        // need to find out how many public bookmarks exist from
        // this user so other users can correctly calculate pages
        // on the list page.
-       $total_public = 0;
+/*       $total_public = 0;
        //$db = $phpgw->db;
        $query = sprintf("select count(id) as total_public from bookmark where username = '%s' and public_f='Y'",$uname);
        $db->query($query,__LINE__,__FILE__);
@@ -227,7 +231,7 @@ class bmark  {
              return False;
           }
           return true;
-      }
+      } */
   }
 
       # get the total nbr of bookmarks for this user.

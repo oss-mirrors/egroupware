@@ -81,11 +81,11 @@ $total_public = 0;
   # need to find out how many public bookmarks exist from
   # users other than this user. need this to get an accurate
   # total of bookmarks being displayed by this page.
-  $phpgw->db->query("select sum(total_public_bookmarks) as total_public from auth_user where "
+/*  $phpgw->db->query("select sum(total_public_bookmarks) as total_public from auth_user where "
                   . "username != '" . $phpgw_info["user"]["account_id"] . "'");
   if ($phpgw->db->Errno == 0) {
     if ($phpgw->db->next_record()) $total_public = $phpgw->db->f("total_public");
-  }
+  } */
 //}
 $bmark = new bmark;
 $total_bookmarks = $total_public + $bmark->getUserTotalBookmarks();
@@ -147,7 +147,7 @@ $phpgw->template->set_var(TOTAL_PAGES, $last_page);
 
 # calculate the row offset (what row number do
 # we start printing for this page)
-$offset = ( ($page - 1) * $limit ) + $bk_db_callout->db_first_row_offset;
+//$offset = ( ($page - 1) * $limit ) + $bk_db_callout->db_first_row_offset;
 
 # if we are on the last page, set the limit to
 # the max so that we can be sure we get everything

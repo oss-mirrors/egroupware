@@ -14,19 +14,6 @@ CREATE TABLE bookmark (
   KEY username (username)
 );
 
-#
-# sample data for table 'bookmark'
-#
-INSERT INTO bookmark (id, url, name, ldesc, keywords, category_id, subcategory_id, rating_id, username, public_f) VALUES (1,'http://www.php.net/','PHP','PHP: Hypertext Preprocessor','php',1,1,3,'1', 'Y');
-INSERT INTO bookmark (id, url, name, ldesc, keywords, category_id, subcategory_id, rating_id, username, public_f) VALUES (2,'http://phplib.netuse.de/','PHPLIB','PHPLIB: Class Library for PHP','php library',1,1,3,'1', 'Y');
-INSERT INTO bookmark (id, url, name, ldesc, keywords, category_id, subcategory_id, rating_id, username, public_f) VALUES (3,'http://www.mysql.net/','MySQL','MySQL Relational Database','db sql php',1,1,3,'1', 'Y');
-INSERT INTO bookmark (id, url, name, ldesc, category_id, subcategory_id, rating_id, username, public_f) VALUES (4,'http://www.apache.org/','Apache','Apache Web Server',1,1,3,'1', 'Y');
-INSERT INTO bookmark (id, url, name, ldesc, category_id, subcategory_id, rating_id, username, public_f) VALUES (5,'http://renaghan.com/bookmarker/','bookmarker','bookmarker Web based bookmark mangement tool',1,1,3,'1', 'Y');
-INSERT INTO bookmark (id, url, name, ldesc, category_id, subcategory_id, rating_id, username, public_f) VALUES (6,'http://www.postgresql.org/','PostgreSQL','PostgreSQL Relational Database',1,1,3,'1', 'Y');
-
-#
-# Table structure for table 'category'
-#
 CREATE TABLE category (
   id       int unsigned DEFAULT '0' NOT NULL auto_increment,
   name     varchar(30) DEFAULT '' NOT NULL,
@@ -34,16 +21,6 @@ CREATE TABLE category (
   PRIMARY KEY (id,username)
 );
 
-#
-# sample data for table 'category'
-#
-
-INSERT INTO category (id, name, username) VALUES (0,'--','bk');
-INSERT INTO category (id, name, username) VALUES (1,'linux','bk');
-
-#
-# Table structure for table 'rating'
-#
 CREATE TABLE rating (
   id       int unsigned DEFAULT '0' NOT NULL auto_increment,
   name     varchar(30) DEFAULT '' NOT NULL,
@@ -52,17 +29,6 @@ CREATE TABLE rating (
   PRIMARY KEY (id,username)
 );
 
-#
-# sample data for table 'rating'
-#
-INSERT INTO rating (id, name, username, list_tag) VALUES (0,'--','1','');
-INSERT INTO rating (id, name, username, list_tag) VALUES (1,'weak','1',NULL);
-INSERT INTO rating (id, name, username, list_tag) VALUES (2,'good','1',NULL);
-INSERT INTO rating (id, name, username, list_tag) VALUES (3,'excellent','1',NULL);
-
-#
-# Table structure for table 'subcategory'
-#
 CREATE TABLE subcategory (
   id int unsigned DEFAULT '0' NOT NULL auto_increment,
   name varchar(30) DEFAULT '' NOT NULL,
@@ -70,15 +36,6 @@ CREATE TABLE subcategory (
   PRIMARY KEY (id,username)
 );
 
-#
-# sample data for table 'subcategory'
-#
-INSERT INTO subcategory (id, name, username) VALUES (0,'--','1');
-INSERT INTO subcategory (id, name, username) VALUES (1,'development','1');
-
-#
-# Table structure for table 'search'
-#
 CREATE TABLE search (
   id int(10) unsigned NOT NULL,
   name varchar(30) DEFAULT '' NOT NULL,
@@ -87,13 +44,3 @@ CREATE TABLE search (
   PRIMARY KEY (id,username)
 );
 
-#
-# Table structure for table 'db_sequence'
-#
-CREATE TABLE db_sequence (
-  seq_name varchar(30)    DEFAULT '' NOT NULL,
-  nextid int(10) unsigned DEFAULT '0' NOT NULL,
-  PRIMARY KEY (seq_name)
-);
-INSERT INTO db_sequence (seq_name, nextid) VALUES ('bookmark', 7);
-INSERT INTO db_sequence (seq_name, nextid) VALUES ('search'  , 0);
