@@ -46,14 +46,20 @@
    function plg_fi_vorder($field_name,$value,$config,$attr_arr)
    {	
 
-	  return $value. ' <input type="hidden" name="'.$field_name.'">';
+	  return $value. ' <input type="text" value="'.$value.'" name="'.$field_name.'">';
    }
 
 	function plg_sf_vorder($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 	{
+	   /* we don't have to do something when there's allready a value */
+	   if($HTTP_POST_VARS[$field_name])
+	   {
+		  return $HTTP_POST_VARS[$field_name];
+	   }
+
 	   global $local_bo;
 	   $local_bo->so->site_db_connection($local_bo->site_id);
-
+	   
 	   $table = $local_bo->site_object[table_name];
 
 	   $stripped_name= substr($field_name,6);
