@@ -18,38 +18,43 @@
   include("../header.inc.php");
 
   if ($submit) {
+     $phpgw->preferences->read_repository();
+     
+     $phpgw->preferences->delete("email","mainscreen_showmail");
      if ($mainscreen_showmail) {
-        $phpgw->preferences->change("email","mainscreen_showmail");
+        $phpgw->preferences->add("email","mainscreen_showmail");
      }
+     
+     $phpgw->preferences->delete("email","use_trash_folder");
      if ($use_trash_folder) {
-        $phpgw->preferences->change("email","use_trash_folder");
+        $phpgw->preferences->add("email","use_trash_folder");
      }
-     $phpgw->preferences->change("email","default_sorting");
-     $phpgw->preferences->change("email","email_sig"); 
+     $phpgw->preferences->add("email","default_sorting");
+     $phpgw->preferences->add("email","email_sig"); 
 
+     $phpgw->preferences->delete("email","use_custom_settings");
+     $phpgw->preferences->delete("email","userid");
+     $phpgw->preferences->delete("email","passwd");
+     $phpgw->preferences->delete("email","address");
+     $phpgw->preferences->delete("email","mail_server");
+     $phpgw->preferences->delete("email","mail_folder");
+     $phpgw->preferences->delete("email","mail_server_type");
+     $phpgw->preferences->delete("email","imap_server_type");
+     
      if ($use_custom_settings) {
-       $phpgw->preferences->change("email","use_custom_settings");
-       if ($userid) {$phpgw->preferences->change("email","userid");}
+       $phpgw->preferences->add("email","use_custom_settings");
+       if ($userid) {$phpgw->preferences->add("email","userid");}
        if ($passwd) {
           $encrypted_passwd = $phpgw->common->encrypt($passwd);
-          $phpgw->preferences->change("email","passwd",$encrypted_passwd);
+          $phpgw->preferences->add("email","passwd",$encrypted_passwd);
        }
-       if ($address) {$phpgw->preferences->change("email","address");}
-       if ($mail_server) {$phpgw->preferences->change("email","mail_server");}
-       if ($mail_folder) {$phpgw->preferences->change("email","mail_folder");}
-       if ($mail_server_type) {$phpgw->preferences->change("email","mail_server_type");}
-       if ($imap_server_type) {$phpgw->preferences->change("email","imap_server_type");}
-     }else{
-       $phpgw->preferences->delete("email","use_custom_settings");
-       $phpgw->preferences->delete("email","userid");
-       $phpgw->preferences->delete("email","passwd");
-       $phpgw->preferences->delete("email","address");
-       $phpgw->preferences->delete("email","mail_server");
-       $phpgw->preferences->delete("email","mail_folder");
-       $phpgw->preferences->delete("email","mail_server_type");
-       $phpgw->preferences->delete("email","imap_server_type");
+       if ($address) {$phpgw->preferences->add("email","address");}
+       if ($mail_server) {$phpgw->preferences->add("email","mail_server");}
+       if ($mail_folder) {$phpgw->preferences->add("email","mail_folder");}
+       if ($mail_server_type) {$phpgw->preferences->add("email","mail_server_type");}
+       if ($imap_server_type) {$phpgw->preferences->add("email","imap_server_type");}
      }
-     $phpgw->preferences->commit();
+     $phpgw->preferences->save_repository();
 
      Header("Location: " . $phpgw->link("/preferences/index.php"));
   }
