@@ -26,7 +26,7 @@ status/date closed	tts	nl	Status/Datum sluiting
 subject	tts	nl	Onderwerp
 ticket	tts	nl	Melding
 Ticket assigned to x	tts	nl	Melding toegewezen aan %1
-trouble ticket system	tts	nl	Probleem Registratie Systeem
+trouble ticket system	common	nl	Probleem Registratie Systeem
 update	tts	nl	bijwerken
 view all tickets	tts	nl	Alle meldingen bekijken
 view job detail	tts	nl	werkdetail bekijken
