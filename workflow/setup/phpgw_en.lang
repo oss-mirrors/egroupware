@@ -17,7 +17,7 @@ Activity completed	workflow	en	Activity completed
 Activity name already exists	workflow	en	Activity name already exists
 Activity role removed	workflow	en	Activity role removed
 Activity saved	workflow	en	Activity saved
-Act. Status	workflow	en	Act. Status
+Activity  Status	workflow	en	Activity Status
 Add a transition	workflow	en	Add a transition
 add new	workflow	en	add new
 Add or edit a process	workflow	en	Add or edit a process
@@ -38,8 +38,8 @@ Auto routed	workflow	en	Auto routed
 Automatic	workflow	en	Automatic
 Base directory does not exist, please ask adminstrator to check the global configuration	workflow	en	Base directory does not exist, please ask adminstrator to check the global configuration
 being run	workflow	en	being run
-Cannot add transition only split activities can have more than one outbound transition	workflow	en	Cannot add transition only split activities can have more than one outbound transition
-Circular reference found some activity has a transition leading to itself	workflow	en	Circular reference found some activity has a transition leading to itself
+Cannot add transition. Only split activities can have more than one outbound transition	workflow	en	Cannot add transition. Only split activities can have more than one outbound transition
+Circular reference found. Some activity has a transition leading to itself	workflow	en	Circular reference found. Some activity has a transition leading to itself
 code	workflow	en	code
 completed	workflow	en	completed
 Couldn't add transition	workflow	en	Couldn't add transition
@@ -93,7 +93,7 @@ Monitor Processes	workflow	en	Monitor Processes
 Monitor Work Items	workflow	en	Monitor Work Items
 Name	workflow	en	Name
 New mapping added	workflow	en	New mapping added
-New mayor	workflow	en	New mayor
+New major	workflow	en	New major
 New minor	workflow	en	New minor
 New transition added	workflow	en	New transition added
 No activity indicated	workflow	en	No activity indicated
@@ -109,7 +109,7 @@ Process	workflow	en	Process
 Processes	workflow	en	Processes
 Process activities	workflow	en	Process activities
 Process %d has been activated	workflow	en	Process %d has been activated
-process %d has been deactivated	workflow	en	Process %d has been activated
+process %d has been deactivated	workflow	en	Process %d has been deactivated
 Process does not have a start activity	workflow	en	Process does not have a start activity
 Process does not have exactly one end activity	workflow	en	Process does not have exactly one end activity
 Process name already exists	workflow	en	Process name already exists
@@ -174,7 +174,7 @@ Valid	workflow	en	Valid
 Valid Process	workflow	en	Valid Process
 Value	workflow	en	Value
 Version	workflow	en	Version
-/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	en	/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration
+The /workflow directory does not exist and could not be created. Please ask your administrator to check the global configuration	workflow	en	The /workflow directory does not exist and could not be created. Please ask your administrator to check the global configuration
 workflow	common	en	Work-Flow
 Workitem information	workflow	en	Workitem information
 Workitems	workflow	en	Workitems
