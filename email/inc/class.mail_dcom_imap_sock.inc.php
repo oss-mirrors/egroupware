@@ -248,12 +248,6 @@
 			if ($this->debug_dcom) { echo 'imap: call to unimplemented socket function: expunge<br>'; }
 			return true;
 		}
-		function listmailbox($stream,$ref,$pattern)
-		{
-			// not yet implemented
-			if ($this->debug_dcom) { echo 'imap: call to unimplemented socket function: listmailbox (could also namespace discovery attempt)<br>'; }
-			return False;
-		}
 		function mailcopy($stream,$msg_list,$mailbox,$flags)
 		{
 			// not yet implemented
@@ -452,8 +446,7 @@
 			$svr_data = $this->distill_fq_folder($fq_folder);
 			$folder = $svr_data['folder'];
 			if ($this->debug_dcom) { echo 'imap: reopen: folder value is: ['.$folder.']<br>'; }
-
-
+			
 			$cmd_tag = 'r001';
 			$full_command = $cmd_tag.' SELECT "'.$folder.'"';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
@@ -498,7 +491,120 @@
 				return True;
 			}
 		}
-		
+
+		/*!
+		@function listmailbox
+		@abstract implements IMAP_LISTMAILBOX
+		@param $stream_notused : socket class handles stream reference internally
+		@param $server_str : string : {SERVER_NAME:PORT/OPTIONS}
+		@param $pattern : string : can be a namespace, or a mailbox name, or a namespace_delimiter, 
+		or a namespace_delimiter_mailboxname, AND/OR including either "%" or "*" (see discussion below)
+		@result an array containing the names of the mailboxes
+		@discussion: if param $pattern includes some form of mailbox reference, that tells the server where in the
+		mailbox hierarchy to start searching. If neither wildcard "%" nor "*" follows said mailbox reference, then the
+		server returns the delimiter and the namespace for said mailbox reference. More typically, either one of the
+		wildcards "*" or "%" follows said mailbox reference, in which case the server behaves as such:
+		_begin_PHP_MANUAL_quote: There are two special characters you can pass as part of the pattern: '*' and '%'.
+		'*' means to return all mailboxes. If you pass pattern as '*', you will get a list of the entire mailbox hierarchy. 
+		'%' means to return the current level only. '%' as the pattern parameter will return only the top level mailboxes; 
+		'~/mail/%' on UW_IMAPD will return every mailbox in the ~/mail directory, but none in subfolders of that directory.
+		_end_quote_
+		See RFC 2060 Section 6.3.8 (client specific) and Section 7.2.2 (server specific) for more details.
+		The imap LIST command takes 2 params , the first is either blank or a mailbox reference, the second is either blank
+		or one of the wildcard tokens "*" or "%". PHP's param $pattern is a combination of the imap LIST command's
+		2 params, the difference between the imap and the php param(s) is that the php param $pattern will contain
+		both mailbox reference AND/OR one of the wildcaed tokens in the same string, whereas the imap command
+		seperates the wildcard token from the mailbox reference. I refer to IMAP_LISTMAILBOX's 2nd param as
+		$server_str here while the php manual calls that same param "$ref", which is somewhat misnamed because the php
+		manual states "ref should normally be just the server specification as described in imap_open()" which apparently
+		means the server string {serverName:port/options} with no namespace, no delimiter, nor any mailbox name.
+		@author Angles, skeeter
+		@access	public
+		*/
+		function listmailbox($stream_notused,$server_str,$pattern)
+		{
+			if ($this->debug_dcom) { echo 'imap: Entering listmailbox<br>'; }
+			$mailboxes_array = Array();
+			
+			// prepare params, seperate wildcards "*" or "%" from param $pattern
+			// LIST param 1 is empty or is a mailbox reference string withOUT any wildcard
+			// LIST param 2 is empty or is the wildcard either "%" or "*"
+			if ((strstr($pattern, '*'))
+			|| (strstr($pattern, '%')))
+			{
+				if (($pattern == '*')
+				|| ($pattern == '%'))
+				{
+					// no mailbox reference string, so LIST param 1 is empty
+					$list_params = '"" "' .$pattern .'"';
+				}
+				else
+				{
+					// just assume the * or % is at the end of the string
+					// seperate it from the rest of the pattern
+					$boxref = substr($pattern, 0, -1);
+					$wildcard = substr($pattern, -1);
+					$list_params = '"' .$boxref .'" "' .$wildcard .'"';
+				}
+			}
+			elseif (strlen($pattern) == 0)
+			{
+				// empty $pattern equates to both LIST params being empty, which IS Valid
+				$list_params = '"" ""';
+			}
+			else
+			{
+				// we have a string with no wildcard, so LIST param 2 is empty
+				$list_params = '"' .$pattern .'" ""';
+			}
+
+			$cmd_tag = 'X001';
+			$full_command = $cmd_tag.' LIST '.$list_params;
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
+			
+			if ($this->debug_dcom_extra) { echo 'imap: listmailbox: write_port: ['. htmlspecialchars($full_command) .']<br>'; }
+			if ($this->debug_dcom_extra) { echo 'imap: listmailbox: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			
+			if(!$this->write_port($full_command))
+			{
+				if ($this->debug_dcom) { echo 'imap: listmailbox: could not write_port<br>'; }
+				$this->error();
+			}
+			
+			// read the server data
+			$response_array = $this->imap_read_port($expecting);
+			
+			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
+			if (count($response_array) == 0)
+			{
+				if ($this->debug_dcom_extra)
+				{
+					echo 'imap: listmailbox: error in listmailbox<br>';
+					echo 'imap: listmailbox: last recorded error:<br>';
+					echo  $this->server_last_error().'<br>';
+				}
+				if ($this->debug_dcom) { echo 'imap: Leaving listmailbox with error<br>'; }
+				return False;				
+			}
+			else
+			{
+				if ($this->debug_dcom_extra)
+				{
+					echo 'imap: listmailbox: response_array line by line:<br>';
+					for ($i=0; $i<count($response_array); $i++)
+					{
+						echo '-ArrayPos['.$i.'] data: ' .htmlspecialchars($response_array[$i]) .'<br>';
+					}
+					echo 'imap: listmailbox: =ENDS= response_array line by line:<br>';
+					echo 'imap: listmailbox: last server completion line: "'.htmlspecialchars($this->server_last_ok_response).'"<br>';
+				}
+			}
+			
+			if ($this->debug_dcom) { echo 'imap: Leaving listmailbox<br>'; }
+			return $mailboxes_array;
+		}
+
+
 		function status_query($folder,$field)
 		{
 			if(!$this->write_port('a001 STATUS '.$folder.' ('.$field.')'))
@@ -523,7 +629,7 @@
 			return False;
 		}
 		
-		
+		// OBSOLETED
 		function fix_folder($folder)
 		{
 			switch($GLOBALS['phpgw_info']['user']['preferences']['email']['imap_server_type'])

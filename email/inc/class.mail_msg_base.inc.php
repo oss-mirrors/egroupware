@@ -299,18 +299,7 @@
 
 		// what's the name or IP of the mail server
 		$mail_server = $GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server'];
-		
-		/*
-		// EXPERIMENTAL WORKOUND for the "localhost" php bug
-		// php does not like "localhost" used as serever name, may cause folders to appear empty
-		// so TRY FIXING by changing localhost to 127.0.0.1
-		if ((stristr($mail_server, 'localhost'))
-		&& (strlen($mail_server) == strlen('localhost')))
-		{
-			$mail_server = '127.0.0.1';
-		}
-		*/
-		
+				
 		// determine the Mail Server Call String
 		// construct the email server call string from the opening bracket "{"  to the closing bracket  "}"
 		switch($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'])
@@ -373,7 +362,7 @@
 			else
 			{
 				// in this case, the namespace is blank, indicating the user's $HOME is where the MBOX files are
-				// or in the case uo UW-Maildir, where the maildir files are
+				// or in the case of UW-Maildir, where the maildir files are
 				// thus we can not have <blank><slash> preceeding a folder name
 				// note that we *may* have <tilde><slash> preceeding a folder name, SO:
 				// default value for this UWash server, $HOME = tilde (~)
@@ -413,9 +402,11 @@
 			{
 				// if the server returns an array of namespaces, the first one is usually the users personal namespace
 				// tyically "INBOX", there can be any number of other, unpredictable, namespaces also
-				// used for the shared folders and/or nntp access, but we want the users "personal"
+				// used for the shared folders and/or nntp access (like #ftp), but we want the users "personal"
 				// namespace used for their mailbox folders here
-				// note: do not use is_array() because php3 does not have it
+				// most likely that the first element of the array is the users primary personal namespace
+				// I'm not sure but I think it's possible to have more than one personal (i.e. not public) namespace
+				// note: do not use php function "is_array()" because php3 does not have it
 				$name_space = $this->ensure_no_brackets($name_space[0]);
 			}
 			elseif (is_string($name_space))
@@ -437,7 +428,7 @@
 			// imap servers usually use INBOX as their namespace
 			// this is supposed to be discoverablewith the NAMESPACE command
 			// see http://www.rfc-editor.org/rfc/rfc2342.txt
-			// however as of PHP 4.0 this is not implemented
+			// however as of PHP 4.0 this is not implemented, and some IMAP servers do not cooperate with it anyway
 			$name_space = 'INBOX';
 		}
 
@@ -512,10 +503,15 @@
 
 	/* * * * * * * * * * *
 	  *  get_folder_long
-	  *  will generate the long name of an imap folder name, works for
-	  *  imap: UW-Maildir, Cyrus, Courier
+	  *  will generate the long name of an imap folder name, contains NAMESPACE_DELIMITER_FOLDER string
+	  *  but NOT the {serverName:port} part.
+	  *  note that syntax "{serverName:port}NAMESPACE_DELIMITER_FOLDER" is called a "fully qualified" folder name here
+	  *  the param $feed_folder will be compared to the folder list supplied by the server to insure an accurate folder name is returned
+	  *  because a param $feed_folder LACKING a namespace or delimiter MUST have them added in order to become a "long" folder name
+	  *  and just guessing is not good enough to ensure accuracy
+	  *  imap: UW-Maildir, Cyrus, Courier, UWash
 	  *  Example (Cyrus or Courier):  INBOX.Templates
-	  *  Example (Cyrus only):  INBOX.drafts.rfc
+	  *  Example (if subfolders a.k.a. "inferior folders" are enabled):  INBOX.drafts.rfc
 	  *  ????   Example (UW-Maildir only): /home/James.Drafts   ????
 	  * * * * * * *  * * * */
 	function get_folder_long($feed_folder='INBOX')
@@ -554,7 +550,7 @@
 	/* * * * * * * * * * *
 	  *  get_folder_short
 	  *  will generate the SHORT name of an imap folder name, works for
-	  * simply, this is the folder name without the NAMESPACE nor the DELIMITER preceeding it
+	  * simply, this is the folder name without the {serverName:port} nor the NAMESPACE nor the DELIMITER preceeding it
 	  *  imap: UWash, UW-Maildir, Cyrus, Courier
 	  *  Example (Cyrus or Courier):  Templates
 	  *  Example (Cyrus only):  drafts.rfc
@@ -652,11 +648,15 @@
 			{
 				// uwash is file system based, so it requires a filesystem slash after the namespace
 				// note with uwash the delimiter is in fact the file system slash
-				// example: "mail/*"( which will NOT list the INBOX with the folder list, however)
-				// however, we have no choice since w/o the delimiter "email*" we get NOTHING
+				// example: requesting list for "mail/*"
+				// (NOTE  this <slash><star> request will NOT yield a list the INBOX folder included in the returned folder list)
+				// however, we have no choice since without the <slash> filesystem delimiter, requesting "email*" returns NOTHING
 				// example querey: "~/"
 				// OR if the user specifies specific mbox folder,
 				// then: "~/emails/*"  OR  "emails/*" give the same result, much like a unix "ls" command
+				// At this time we use "unqualified" a.k.a. "relative" directory names if the user provides a namespace
+				// UWash will consider it relative to the mailuser's $HOME property as with "emails/*" (DOES THIS WORK ON ALL PLATFORMS??)
+				// BUT we use <tilde><slash> "~/" if no namespace is given
 				$mailboxes = $this->dcom->listmailbox($mailbox, $server_str, "$name_space" ."$delimiter" ."*");
 				// UWASH IMAP returns information in this format:
 				// {SERVER_NAME:PORT}FOLDERNAME
@@ -666,12 +666,14 @@
 			}
 			else
 			{
-				// the last arg is typically "INBOX*" which will include the inbox in the list of folders
-				// wheres adding the delimiter "INBOX.*" will NOT include the INBOX in the list of folders
+				// handle non-UWash IMAP servers, i.e. not using filesystem slash as the "delimiter"
+				// the last arg is typically "INBOX*" (no dot) which DOES include the inbox in the list of folders
+				// wheres adding the delimiter "INBOX.*" (has dot) will NOT include the INBOX in the list of folders
 				// so - it's safe to include the delimiter here, but the INBOX will not be included in the list
 				// this is typically the ONLY TIME you would ever *not* use the delimiter between the namespace and what comes after it
 				//$mailboxes = $this->dcom->listmailbox($mailbox, $server_str, "$name_space" ."*");
-				// problem: Cyrus does not like anything but a "*" as the pattern IF you want shared folders returned.
+				// UPDATED information of this issue: to get shared folders included in the return, better NOT include the "." delimiter
+				// example: Cyrus does not like anything but a "*" as the pattern IF you want shared folders returned.
 				$mailboxes = $this->dcom->listmailbox($mailbox, $server_str, "*");
 				// returns information in this format:
 				// {SERVER_NAME:PORT} NAMESPACE DELIMITER FOLDERNAME
@@ -711,7 +713,7 @@
 			// ADD INBOX if necessary
 			if ($has_inbox == False)
 			{
-				// use the same format as "listmailbox" returns
+				// use the same "fully qualified" folder name format that "listmailbox" returns, includes the {serverName:port}
 				$add_inbox = $server_str.'INBOX';
 				$next_available = count($mailboxes);
 				// add it to the $mailboxes array
@@ -735,10 +737,12 @@
 				if ($this->is_imap_folder($mailboxes[$i]))
 				{
 					//$this->folder_list[$i]['folder_long'] = $this->get_folder_long($mailboxes[$i]);
-					// a TRUE folder long is the raw data returned from the server
-					// with ONLY the bracketed server string removed
-					$this->folder_list[$i]['folder_long'] = $this->ensure_no_brackets($mailboxes[$i]);
-					$this->folder_list[$i]['folder_short'] = $this->get_folder_short($mailboxes[$i]);
+					// what we (well, me, Angles) calls a "folder long" is the raw data returned from the server (fully qualified name)
+					// MINUS the bracketed server, so we are calling "folder long" a NAMESPACE_DELIMITER_FOLDER string
+					// WITHOUT the {serverName:port} part, if that part is included we (Angles) call this "fully qualified"
+					$next_idx = count($this->folder_list);
+					$this->folder_list[$next_idx]['folder_long'] = $this->ensure_no_brackets($mailboxes[$i]);
+					$this->folder_list[$next_idx]['folder_short'] = $this->get_folder_short($mailboxes[$i]);
 				}
 			}
 
@@ -844,8 +848,11 @@
 
 		$folder_long = $this->get_folder_long($folder);	
 
-		// INBOX ia ALWAYS a valid folder, and is ALWAYS called INBOX because it's a special reserved word
-		if ($folder_long == 'INBOX')
+		// INBOX is ALWAYS a valid folder, and is ALWAYS called INBOX because it's a special reserved word
+		// although it is NOT case sensitive 
+		//if ($folder_long == 'INBOX')
+		if ((stristr($folder_long, 'INBOX'))
+		&& (strlen($folder_long) == strlen('INBOX')))
 		{
 			//echo 'is_imap_folder TRUE 2<br>';
 			return True;
@@ -883,6 +890,7 @@
 		if (($home_type_namespace)
 		&& ($num_slashes >= 4))
 		{
+			// this folder name indicates we are too deeply recursed, we don't care beyond here
 			//echo 'is_imap_folder FALSE 4<br>';
 			return False;
 		}
@@ -897,7 +905,9 @@
 	{
 		$folder = $this->get_folder_short($folder);
 		// we ALWAYS care about new messages in the INBOX
-		if ($folder == 'INBOX')
+		//if ($folder == 'INBOX')
+		if ((stristr($folder_long, 'INBOX'))
+		&& (strlen($folder_long) == strlen('INBOX')))
 		{
 			return True;
 		}
