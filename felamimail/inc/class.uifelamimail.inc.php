@@ -693,7 +693,7 @@
 						#{
 						#	$headers['header'][$i]['subject'] = substr($headers['header'][$i]['subject'],0,$maxSubjectLength)."...";
 						#}
-						$headers['header'][$i]['subject'] = htmlspecialchars($headers['header'][$i]['subject'],ENT_QUOTES,$this->displayCharset);
+						$headers['header'][$i]['subject'] = @htmlspecialchars($headers['header'][$i]['subject'],ENT_QUOTES,$this->displayCharset);
 						if($headers['header'][$i]['attachments'] == "true")
 						{
 							$image = '<img src="'.$GLOBALS['phpgw']->common->image('felamimail','attach').'" border="0">';
@@ -705,11 +705,11 @@
 						$this->t->set_var('header_subject', $headers['header'][$i]['subject']);
 // added
 						$this->t->set_var('attachments', $headers['header'][$i]['attachment']);
-						$this->t->set_var('full_subject',htmlspecialchars($fullSubject,ENT_QUOTES,$this->displayCharset));
+						$this->t->set_var('full_subject',@htmlspecialchars($fullSubject,ENT_QUOTES,$this->displayCharset));
 					}
 					else
 					{
-						$this->t->set_var('header_subject',htmlentities("(".lang('no subject').")",ENT_QUOTES,$this->displayCharset));
+						$this->t->set_var('header_subject',@htmlentities("(".lang('no subject').")",ENT_QUOTES,$this->displayCharset));
 					}
 				
 					if ($mailPreferences['sent_folder'] == $this->mailbox)
@@ -735,7 +735,7 @@
 						if (!empty($headers['header'][$i]['sender_name']))
 						{
 							$sender_name	= $headers['header'][$i]['sender_name'];
-							$full_address	= htmlentities(
+							$full_address	= @htmlentities(
 								$headers['header'][$i]['sender_name'].
 								" <".
 								$headers['header'][$i]['sender_address'].
@@ -752,7 +752,7 @@
 					#{
 					#	$sender_name = substr($sender_name,0,$maxAddressLength)."...";
 					#}
-					$this->t->set_var('sender_name',htmlentities($sender_name,
+					$this->t->set_var('sender_name',@htmlentities($sender_name,
 											 ENT_QUOTES,$this->displayCharset));
 					$this->t->set_var('full_address',$full_address);
 				

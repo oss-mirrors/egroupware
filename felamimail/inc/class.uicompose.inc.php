@@ -191,13 +191,13 @@
 			}
 			
 			// header
-			$displayFrom = htmlentities($preferences['emailAddress'][0][name].' <'.$preferences['emailAddress'][0][address].'>',ENT_QUOTES,$this->displayCharset);
+			$displayFrom = @htmlentities($preferences['emailAddress'][0][name].' <'.$preferences['emailAddress'][0][address].'>',ENT_QUOTES,$this->displayCharset);
 			$this->t->set_var("from",$displayFrom);
-			$this->t->set_var("to",htmlentities($sessionData['to'],ENT_QUOTES,$this->displayCharset));
-			$this->t->set_var("cc",htmlentities($sessionData['cc'],ENT_QUOTES,$this->displayCharset));
-			$this->t->set_var("bcc",htmlentities($sessionData['bcc'],ENT_QUOTES,$this->displayCharset));
-			$this->t->set_var("reply_to",htmlentities($sessionData['reply_to'],ENT_QUOTES,$this->displayCharset));
-			$this->t->set_var("subject",htmlentities($sessionData['subject'],ENT_QUOTES,$this->displayCharset));
+			$this->t->set_var("to",@htmlentities($sessionData['to'],ENT_QUOTES,$this->displayCharset));
+			$this->t->set_var("cc",@htmlentities($sessionData['cc'],ENT_QUOTES,$this->displayCharset));
+			$this->t->set_var("bcc",@htmlentities($sessionData['bcc'],ENT_QUOTES,$this->displayCharset));
+			$this->t->set_var("reply_to",@htmlentities($sessionData['reply_to'],ENT_QUOTES,$this->displayCharset));
+			$this->t->set_var("subject",@htmlentities($sessionData['subject'],ENT_QUOTES,$this->displayCharset));
 			$this->t->set_var('addressbookImage',$GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','users'));
 			$this->t->pparse("out","header");
 
@@ -263,7 +263,7 @@
 				// this fill the session data with the values from the original email
 				$this->bocompose->getReplyData('single', $replyID, $partID);
 			}
-			$this->compose(htmlentities('body'));
+			$this->compose(@htmlentities('body'));
 		}
 		
 		function replyAll()

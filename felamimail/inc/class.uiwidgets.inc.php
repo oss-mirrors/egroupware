@@ -79,7 +79,7 @@
 			{
 				foreach($_selectedValues as $key => $value)
 				{
-					$options .= "<option value=\"$key\" selected=\"selected\">".htmlspecialchars($value,ENT_QUOTES)."</option>";
+					$options .= "<option value=\"$key\" selected=\"selected\">".@htmlspecialchars($value,ENT_QUOTES)."</option>";
 				}
 				$this->template->set_var('multiSelectBox_selected_options',$options);
 			}
@@ -90,7 +90,7 @@
 				foreach($_predefinedValues as $key => $value)
 				{
 					if($key != $_selectedValues["$key"])
-					$options .= "<option value=\"$key\">".htmlspecialchars($value,ENT_QUOTES)."</option>";
+					$options .= "<option value=\"$key\">".@htmlspecialchars($value,ENT_QUOTES)."</option>";
 				}
 				$this->template->set_var('multiSelectBox_predefinded_options',$options);
 			}

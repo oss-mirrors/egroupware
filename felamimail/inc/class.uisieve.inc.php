@@ -162,7 +162,7 @@
 			$vacation_str = '';
 			if (!is_array($_vacation))
 			{ 
-				return htmlspecialchars($vacation_str); 
+				return @htmlspecialchars($vacation_str); 
 			}
 			
 			$vacation_str .= lang('Respond');
@@ -182,7 +182,7 @@
 				$vacation_str .= ' ' . lang("every %1 days",$_vacation['days']);
 			}
 			$vacation_str .= ' ' . lang('with message "%1"',$_vacation['text']);
-			return htmlspecialchars($vacation_str);
+			return @htmlspecialchars($vacation_str);
 		}
 		
 		function checkRule($_vacation)
