@@ -1102,15 +1102,7 @@
 			$GLOBALS['phpgw']->template->set_block('hours_view','main','mainhandle');
 			$GLOBALS['phpgw']->template->set_var('doneurl',$referer . '&project_id=' . $project_id);
 
-			$nopref = $this->boprojects->check_prefs();
-			if ($nopref)
-			{
-				$GLOBALS['phpgw']->template->set_var('pref_message',lang('Please set your preferences for this application !'));
-			}
-			else
-			{
-				$prefs = $this->boprojects->get_prefs();
-			}
+			$prefs = $this->boprojects->get_prefs();
 
 			$values = $this->bohours->read_single_hours($hours_id);
 

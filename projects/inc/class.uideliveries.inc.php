@@ -376,15 +376,7 @@
 				Header('Location: ' . $referer);
 			}
 
-			$nopref = $this->boprojects->check_prefs();
-			if (is_array($nopref))
-			{
-				$GLOBALS['phpgw']->template->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
-			}
-			else
-			{
-				$prefs = $this->boprojects->get_prefs();
-			}
+			$prefs = $this->boprojects->get_prefs();
 
 			if ($Delivery)
 			{
@@ -772,17 +764,9 @@
 			$GLOBALS['phpgw']->template->set_file(array('del_list_t' => 'del_deliveryform.tpl'));
 			$GLOBALS['phpgw']->template->set_block('del_list_t','del_list','list');
 
-			$error = $this->boprojects->check_prefs();
-			if (is_array($error))
-			{
-				$GLOBALS['phpgw']->template->set_var('message',$GLOBALS['phpgw']->common->error_list($error));
-			}
-			else
-			{
-				$prefs = $this->boprojects->read_prefs();
-				$GLOBALS['phpgw']->template->set_var('myaddress',$this->bodeliveries->get_address_data('line',$prefs['abid'],$prefs['ifont'],$prefs['mysize']));
-				$GLOBALS['phpgw']->template->set_var('fulladdress',$this->bodeliveries->get_address_data('full',$prefs['abid'],$prefs['ifont'],$prefs['mysize']));
-			}
+			$prefs = $this->boprojects->read_prefs();
+			$GLOBALS['phpgw']->template->set_var('myaddress',$this->bodeliveries->get_address_data('line',$prefs['abid'],$prefs['ifont'],$prefs['mysize']));
+			$GLOBALS['phpgw']->template->set_var('fulladdress',$this->bodeliveries->get_address_data('full',$prefs['abid'],$prefs['ifont'],$prefs['mysize']));
 
 			$GLOBALS['phpgw']->template->set_var('site_title',$GLOBALS['phpgw_info']['site_title']);
 			$charset = $GLOBALS['phpgw']->translation->translate('charset');
