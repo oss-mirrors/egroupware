@@ -1,0 +1,30 @@
+relogin	ftp	en	logout/relogin
+cd	ftp	en	cd
+delete	ftp	en	delete %1
+deleted	ftp	en	Succsessfully deleted %1
+failed to delete	ftp	en	Failed to delete %1
+view	ftp	en	view
+save	ftp	en	save
+save to filemanager	ftp	en	save to filemanager
+upload	ftp	en	upload
+uploaded	ftp	en	Successfully uploaded %1
+failed to upload	ftp	en	Failed to upload %1
+create new directory	ftp	en	Create new dir
+failed to mkdir	ftp	en	Failed to created direcotory %1
+empty dirname	ftp	en	Attempt to create a directory with empty name
+module name	ftp	en	Ftp Client
+home	ftp	en	Home
+username	ftp	en	Username
+password	ftp	en	Password
+ftpserver	ftp	en	Ftp Server
+connect	ftp	en	Connect
+bad connection	ftp	en	Failed to connect to %1 with user %2 and password %3
+cancel	ftp	en	cancel
+rename	ftp	en	rename %1
+renamed	ftp	en	Renamed %1 to %2
+created directory	ftp	en	Successfully created %1
+failed to rename	ftp	en	Failed to rename %1 to %2
+rename from	ftp	en	Rename from
+rename to	ftp	en	to
+confirm delete	ftp	en	Do you really want to delete %1 ?
+	ftp	en	

@@ -1,0 +1,30 @@
+relogin	ftp	sp	logout/relogin
+cd	ftp	sp	cd
+delete	ftp	sp	borrar %1
+deleted	ftp	sp	Exitosamente borrado %1
+failed to delete	ftp	sp	Fallo al borrar %1
+view	ftp	sp	ver
+save	ftp	sp	grabar
+save to filemanager	ftp	sp	grabar al manejador de archivo
+upload	ftp	sp	subir
+uploaded	ftp	sp	Exitosamente subido %1
+failed to upload	ftp	sp	Fallo al subir %1
+create new directory	ftp	sp	Crear nuevo directorio
+failed to mkdir	ftp	sp	Fallo al crear directorio %1
+empty dirname	ftp	sp	Intento de crear un directorio sin nombre
+module name	ftp	sp	Cliente Ftp
+home	ftp	sp	Home
+username	ftp	sp	Usuario
+password	ftp	sp	Contraseña
+ftpserver	ftp	sp	Servidor Ftp
+connect	ftp	sp	Conectar
+bad connection	ftp	sp	Fallo al conectar a %1 con el usuario %2 y contraseña %3
+cancel	ftp	sp	cancelar
+rename	ftp	sp	renombrar %1
+renamed	ftp	sp	Renombrar %1 a %2
+created directory	ftp	sp	Exitosamente creado %1
+failed to rename	ftp	sp	Fallo al renombrar %1 a %2
+rename from	ftp	sp	Renombrar desde
+rename to	ftp	sp	a
+confirm delete	ftp	sp	Realmente desea borrar %1 ?
+	ftp	sp	

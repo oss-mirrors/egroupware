@@ -1,0 +1,16 @@
+relogin	ftp	cs	odhlásit/pøihlásit
+cd	ftp	cs	cd
+delete	ftp	cs	vymazat %1
+deleted	ftp	cs	Úspì¹nì vymazáno %1
+failed to delete	ftp	cs	Nepodaøilo se vymazat %1
+view	ftp	cs	ukázat
+save	ftp	cs	ulo¾it
+save to filemanager	ftp	cs	ulo¾it do správce souborù
+upload	ftp	cs	nahrát na server
+uploaded	ftp	cs	·Uspì¹nì nahráno %1
+failed to upload	ftp	cs	Nepodaøilo se nahrát 
+create new directory	ftp	cs	Vytvoøit nový adresáø
+failed to mkdir	ftp	cs	Nepodaøilo se vytvoøit adresáø 
+empty dirname	ftp	cs	Pokus o vytvoøení adresáøe bez jména
+module name	ftp	cs	Ftp Klient
+home	ftp	cs	Domù
