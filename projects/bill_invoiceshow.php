@@ -22,7 +22,7 @@
 						'invoicepos_list' => 'bill_invoiceform.tpl'));
     $t->set_block('invoice_list_t','invoicepos_list','list');
 
-	$s = CreateObject('phpgwapi.sbox');
+	$d = CreateObject('phpgwapi.contacts');
 //  $taxpercent = 0.16;
 //  $eurtodm = 1.95583;
 
@@ -45,7 +45,7 @@
 				'adr_one_region' => 'adr_one_region',
 			'adr_one_countryname' => 'adr_one_countryname');
 
-		$t->set_var('myaddress',$s->formatted_address($id,$cols,True));
+		$t->set_var('myaddress',$d->formatted_address($id,$cols,True));
 	}
 	else
 	{
@@ -92,7 +92,7 @@
 
 	if (isset($phpgw_info['user']['preferences']['common']['country']))
 	{
-		$t->set_var('customer',$s->formatted_address($custadr,$cols,True));
+		$t->set_var('customer',$d->formatted_address($custadr,$cols,True));
 	}
 	else
 	{
