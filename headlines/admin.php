@@ -64,6 +64,8 @@
 	$GLOBALS['phpgw']->template->set_var('add_url',$GLOBALS['phpgw']->link('/headlines/newheadline.php'));
 	$GLOBALS['phpgw']->template->set_var('grab_more_url',$GLOBALS['phpgw']->link('/headlines/grabnewssites.php'));
 	$GLOBALS['phpgw']->template->set_var('lang_grab_more',lang('Grab New News Sites'));
+	$GLOBALS['phpgw']->template->set_var('reload_url',$GLOBALS['phpgw']->link('/headlines/grabnewssites.php','dropall=True'));
+	$GLOBALS['phpgw']->template->set_var('lang_reload',lang('Reload news sites'));
 
 	$GLOBALS['phpgw']->template->pfp('out','list');
 

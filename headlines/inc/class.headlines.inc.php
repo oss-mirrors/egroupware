@@ -166,7 +166,7 @@
 		}
 
 		// get a list of the sites
-		function getList()
+		function getList($dropall=False)
 		{
 			@set_time_limit(0);
 
@@ -221,6 +221,11 @@
 			}
 
 			$GLOBALS['phpgw']->db->transaction_begin();
+			if($dropall)
+			{
+				$GLOBALS['phpgw']->db->query("DELETE FROM phpgw_headlines_sites",__LINE__,__FILE__);
+			}
+
 			for($i=0;$i<count($title);$i++)
 			{
 				$server = str_replace('http://','',$links[$i]);

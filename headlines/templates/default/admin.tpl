@@ -15,9 +15,10 @@
   <td colspan="5"><input type="submit" value="{lang_add}"></td>
  </tr>
  </form>
+ <tr>
+  <td colspan="5"><a href="{grab_more_url}">{lang_grab_more}</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{reload_url}">{lang_reload}</a></td>
+ </tr>
 </table>
-
-<a href="{grab_more_url}">{lang_grab_more}</a>
 <!-- END list -->
 
 <!-- BEGIN row -->

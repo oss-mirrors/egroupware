@@ -21,8 +21,10 @@
 	);
 	include('../header.inc.php');
 
+	$dropall = $HTTP_GET_VARS['dropall'] ? $HTTP_GET_VARS['dropall'] : '';
+
 	$headlines = CreateObject('headlines.headlines');
-	$headlines->getList();
+	$headlines->getList($dropall);
 
 	header('Location: ' . $GLOBALS['phpgw']->link('/headlines/admin.php'));
 ?>

@@ -1,9 +1,11 @@
 are you sure you want to delete this news site ?	admin	en	Are you sure you want to delete this news site ?
 base url	admin	en	Base URL
-grab new news sites	common	en Grab new news sites
+create new headline	headlines	de	Create New Headline
+grab new news sites	common	en	Grab new news sites
 headlines	common	en	Headlines
 headline preferences	common	en	Headline preferences
-headline sites	admin	en	Headline Sites
+headline site management	admin	en	Headline Site Management
+headline sites	common	en	Headline Sites
 listings displayed	admin	en	Listings Displayed
 minutes between reloads	admin	en	Minutes between Reloads
 monitor	common	en	Monitor
@@ -12,6 +14,7 @@ news from x	common	en	News from %1
 news headlines	common	en	News headlines
 news type	admin	en	News Type
 other preferences	preferences	en	Other Preferences
+reload news sites	headlines	en	Reload news sites
 select headline news sites	common	en	Select Headline News sites
 that site has already been entered	admin	en	That site has already been entered
 you must enter a base url	admin	en	You must enter a base url
