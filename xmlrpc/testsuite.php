@@ -157,6 +157,17 @@ And turned it into nylon";
 			$s=$v->structmem('sessionID');
 			$this->assertEquals('S300510007I', $s->scalarval());
 		}
+
+		function whiteSpace()
+		{
+			$m=CreateObject('phpgwapi.xmlrpcmsg','dummy');
+			$fp=fopen($this->root."/bug_whitespace.xml", "r");
+			$r=$m->parseResponseFile($fp);
+			$v=$r->value();
+			fclose($fp);
+			$s=$v->structmem('content');
+			$this->assertEquals("hello world. 2 newlines follow\n\n\nand there they were.", $s->scalarval());
+		}
 	}
 
 	class TestInvalidHost extends TestCase
@@ -189,7 +200,8 @@ And turned it into nylon";
 	$suite->addTest(new TestLocalhost("booleanTest"));
 	$suite->addTest(new TestLocalhost("base64Test"));
 	$suite->addTest(new TestInvalidHost("test404"));
-//	$suite->addTest(new TestFileCases("stringBug"));
+	$suite->addTest(new TestFileCases("stringBug"));
+	$suite->addTest(new TestFileCases("whiteSpace"));
 	$title = 'XML-RPC Unit Tests';
 ?>
 <p>Note, tests beginning with 'f_' <i>should</i> fail.</p>
