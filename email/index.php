@@ -47,7 +47,6 @@
 	{
 		// pretend we are a calling app outputting some HTML, including the header and navbar
 		$GLOBALS['phpgw']->common->phpgw_header();
-		echo parse_navbar();
 		// retrieve the html data from class uiindex
 		$obj = CreateObject('email.uiindex');
 		$obj->set_is_modular(True);
