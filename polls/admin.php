@@ -61,15 +61,15 @@
      } else {
         $phpgw->template->set_var("row_answer",$phpgw->db->f("option_text"));
         $phpgw->template->set_var("row_title",$phpgw->db->f("poll_title"));
-        $phpgw->template->set_var("row_edit",'<a href="' . $phpgw->link("admin_editanswer.php","poll_id=" . $phpgw->db->f("poll_id")) . '">' . lang("Edit") . '</a>');
-        $phpgw->template->set_var("row_delete",'<a href="' . $phpgw->link("admin_deleteanswer.php","poll_id=" . $phpgw->db->f("poll_id")) . '">' . lang("Delete") . '</a>');
-        $phpgw->template->set_var("row_view",'<a href="' . $phpgw->link("admin_viewanswer.php","poll_id=" . $phpgw->db->f("poll_id")) . '">' . lang("View") . '</a>');     
+        $phpgw->template->set_var("row_edit",'<a href="' . $phpgw->link("admin_editanswer.php","vote_id=" . $phpgw->db->f("vote_id")) . '">' . lang("Edit") . '</a>');
+        $phpgw->template->set_var("row_delete",'<a href="' . $phpgw->link("admin_deleteanswer.php","vote_id=" . $phpgw->db->f("vote_id")) . '">' . lang("Delete") . '</a>');
+        $phpgw->template->set_var("row_view",'<a href="' . $phpgw->link("admin_viewanswer.php","vote_id=" . $phpgw->db->f("vote_id")) . '">' . lang("View") . '</a>');     
      }
 
      $phpgw->template->parse("rows","row",True);
   }
 
-  $phpgw->template->set_var("add_action",$phpgw->link("admin_add.php"));
+  $phpgw->template->set_var("add_action",$phpgw->link("admin_add" . substr($show,0,(strlen($show)-1)) . ".php"));
   $phpgw->template->set_var("lang_add",lang("add"));
 
   $phpgw->template->pparse("out","form");
