@@ -61,7 +61,7 @@ budget used total	projects	de	Budget verbraucht gesamt
 calculate	projects	de	Berechnen
 changed start date and end date	projects	de	Start- und Enddatum wurden geändert.
 changed start date and end date of projects bellow	projects	de	Start- und Enddatum der im Folgenden aufgelisteten Projekte wurden geändert.
-changes of project data	projects	de	&Auml;nderungen von Projektdaten
+changes of project data	projects	de	Änderungen von Projektdaten
 click %1here%2 to return to projects.	projects	de	Klicken Sie %1hier%2 um zu Projekte zurückzukehren.
 closed	projects	de	Abgeschlossen
 color legend	projects	de	Farblegende
@@ -331,7 +331,7 @@ view work hours	projects	de	Arbeitsstunden anzeigen
 work date	common	de	Arbeitsdatum
 work hours	common	de	Arbeitsstunden
 work time	projects	de	Arbeitszeit
-workload warning for project	projects	de	Auslastungwarnung für Projekt
+workload warning for project	common	de	Auslastungwarnung für Projekt
 workunit	projects	de	Arbeitseinheit
 workunits	projects	de	Arbeitseinheiten
 you have entered an invalid date !	projects	de	Sie haben ein ungültiges Datum eingegeben!
