@@ -1084,7 +1084,7 @@
 		 $SQL="SELECT $field_list FROM $table $WHERE $ORDER_BY";
 		 //die ($SQL);
 		 if (!$limit) $limit=1000000;
-
+//_debug_array($SQL);
 		 $this->site_db->limit_query($SQL, $offset,__LINE__,__FILE__,$limit); 
 
 		 while ($this->site_db->next_record())

@@ -322,9 +322,6 @@
 		 {
 			$quick_filter = trim( $this->bo->browse_settings['quick_filter'] );
 		 }
-		 
-		 //		 $adv_filter_str=$this->bo->browse_settings[adv_filter_str];
-
 
 		 $this->bo->browse_settings = array
 		 (
@@ -332,7 +329,6 @@
 			'quick_filter'=>$quick_filter,
 			'filter_arr'=>$filter_arr,
 			'current_page'=>$current_page,
-		//	'adv_filter_str'=>$adv_filter_str
 		 );
 
 		 /* get one with many relations */
@@ -372,7 +368,6 @@
 		 $fields_show_default = array();
 		 foreach($columns as $onecol)
 		 {
-
 			$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$onecol[name]);
 			if($field_conf_arr[field_show_default])
 			{
@@ -391,8 +386,6 @@
 			{
 			   $akey_arr[]=$onecol[name];
 			}
-
-
 
 			/* format quick_filter condition 
 			fixme make general function in so
@@ -431,22 +424,6 @@
 			}
 		 }
 
-
-
-
-		 //fixme start of advanced filters
-		 if($adv_filter_str)
-		 {
-			if ($where_condition) 
-			{
-			   $where_condition.= " AND ($adv_filter_str)"; 	
-			}
-			else
-			{
-			   $where_condition= " ($adv_filter_str)"; 	
-			}
-		 }
-
 		 //start of new filtersystem
 		 if($filter_where != '')
 		 {
@@ -459,7 +436,7 @@
 			   $where_condition= " ($filter_where)"; 	
 			}
 		 }
-
+		 
 		 /* which/how many column to show: all, the preferred, the default fields set by the site admin, the default first X, or the default first 4 */
 		 if ($show_all_cols=='True' || $default_col_num=='-1')
 		 {
@@ -503,7 +480,6 @@
 			   $tipmouseover='<img onMouseover="tooltip(\''.$tooltip.'\')" onMouseout="hidetooltip()" src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="" />'; 
 			}
 
-
 			if(!$this->bo->field_is_enabled($this->bo->site_object[object_id], $col[name]))
 			{
 			   continue ;
@@ -532,50 +508,7 @@
 			{
 			   $orderby_link = $col[name].' ASC';
 			}
-
-			$records = $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','',$offset,$rec_per_page,'name',$orderby,'*',$where_condition);
-
-			$record_count = count($records);
-
-			$num_rows=$this->bo->so->num_rows_table($this->bo->site_id,$this->bo->site_object['table_name'],$where_condition);
-
-			$lang_total_records= lang('%1 records',$num_rows);
-			$lang_rec_per_page= lang('%1 records per page', $rec_per_page);
-
-			// get pager code
-			$pager=$this->pager($current_page,$num_rows,$rec_per_page);
-
-			$this->template->set_var('list_form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.bouser.multiple_actions'));
-			$this->template->set_var('colfield_lang_confirm_delete_multiple',lang('Are you sure you want to delete these multiple records?'));
-			$this->template->set_var('colfield_lang_confirm_edit_multiple',lang('Are you sure your want to edit these records?'));
-			$this->template->set_var('orderby',$orderby);
-			$this->template->set_var('menu_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
-			$this->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
-			$this->template->set_var('start_at',lang('start at record'));
-			$this->template->set_var('stop_at',lang('stop at record'));
-			$this->template->set_var('search_for',lang('search for string'));
-			$this->template->set_var('show',lang('show'));
-			$this->template->set_var('search',lang('search'));
-			$this->template->set_var('action_config_table',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.config_table'));
-			$this->template->set_var('lang_config_this_tableview',lang('Configure this tableview'));
-			$this->template->set_var('lang_select_checkboxes',lang('You must select one or more records for this function.'));
-			$this->template->set_var('search_string',$quick_filter);
-			$this->template->set_var('total_records',$lang_total_records);
-			$this->template->set_var('rec_per_page',$lang_rec_per_page);
-			$this->template->set_var('pager',$pager);
-			$this->template->set_var('lang_Actions',lang('Actions'));
-			$this->template->set_var('edit',lang('edit'));
-			$this->template->set_var('delete',lang('delete'));
-			$this->template->set_var('copy',lang('copy and edit the new record'));
-			$this->template->set_var('show_all_cols',$show_all_cols);
-
-			$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-			$this->template->set_var('table_title',$this->bo->site_object[name]);
-
-			$popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
-
-			$this->template->set_var('popuplink',$popuplink);
-
+			
 			$this->template->set_var('colhead_bg_color',$GLOBALS['phpgw_info']['theme']['th_bg']);
 			$this->template->set_var('colhead_order_link',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiu_list_records.display&orderby=$orderby_link"));
 			$this->template->set_var('colhead_name',str_replace('_','&nbsp;',$display_colname));
@@ -583,14 +516,56 @@
 			$this->template->set_var('tipmouseover',$tipmouseover);
 
 			$this->template->parse('colnames','column_name',true);
-		 }
+		}
+		
+		$records = $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','',$offset,$rec_per_page,'name',$orderby,'*',$where_condition);
+
+		$record_count = count($records);
+
+		$num_rows=$this->bo->so->num_rows_table($this->bo->site_id,$this->bo->site_object['table_name'],$where_condition);
+
+		$lang_total_records= lang('%1 records',$num_rows);
+		$lang_rec_per_page= lang('%1 records per page', $rec_per_page);
+
+		// get pager code
+		$pager=$this->pager($current_page,$num_rows,$rec_per_page);
+
+		$this->template->set_var('list_form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.bouser.multiple_actions'));
+		$this->template->set_var('colfield_lang_confirm_delete_multiple',lang('Are you sure you want to delete these multiple records?'));
+		$this->template->set_var('colfield_lang_confirm_edit_multiple',lang('Are you sure your want to edit these records?'));
+		$this->template->set_var('orderby',$orderby);
+		$this->template->set_var('menu_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
+		$this->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
+		$this->template->set_var('start_at',lang('start at record'));
+		$this->template->set_var('stop_at',lang('stop at record'));
+		$this->template->set_var('search_for',lang('search for string'));
+		$this->template->set_var('show',lang('show'));
+		$this->template->set_var('search',lang('search'));
+		$this->template->set_var('action_config_table',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.config_table'));
+		$this->template->set_var('lang_config_this_tableview',lang('Configure this tableview'));
+		$this->template->set_var('lang_select_checkboxes',lang('You must select one or more records for this function.'));
+		$this->template->set_var('search_string',$quick_filter);
+		$this->template->set_var('total_records',$lang_total_records);
+		$this->template->set_var('rec_per_page',$lang_rec_per_page);
+		$this->template->set_var('pager',$pager);
+		$this->template->set_var('lang_Actions',lang('Actions'));
+		$this->template->set_var('edit',lang('edit'));
+		$this->template->set_var('delete',lang('delete'));
+		$this->template->set_var('copy',lang('copy and edit the new record'));
+		$this->template->set_var('show_all_cols',$show_all_cols);
+
+		$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+		$this->template->set_var('table_title',$this->bo->site_object[name]);
+
+		$popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
+
+		$this->template->set_var('popuplink',$popuplink);
 
 		 if(!is_array($pkey_arr))
 		 {
 			$pkey_arr=$akey_arr;
 			unset($akey_arr);
 		 }
-
 
 		 $this->template->parse('out','header');
 		 $this->template->pparse('out','header');
