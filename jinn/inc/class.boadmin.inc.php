@@ -24,6 +24,7 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
    */
 
+   /* $Id$ */
    class boadmin 
    {
 	  var $public_functions = Array(
@@ -41,8 +42,6 @@
 	  var $so;
 	  var $session;
 	  var $sessionmanager;
-
-	  var $message; 		//depreciated
 
 	  var $site_object_id;	//depreciated
 	  var $site_object; 
@@ -70,9 +69,9 @@
 		 $this->common = CreateObject('jinn.bocommon');
 		 $this->session 		= &$this->common->session->sessionarray;	//shortcut to session array
 		 $this->sessionmanager	= &$this->common->session;					//shortcut to session manager object
- 		 $this->message 		= $this->session['message'];//depreciated
 		 $this->site_id 		= $this->session['site_id'];//depreciated
 		 $this->site_object_id	= $this->session['site_object_id'];//depreciated
+		 
 		 $this->current_config=$this->common->get_config();		
 
 		 $this->so = CreateObject('jinn.sojinn');
@@ -122,7 +121,6 @@
 
 	  function save_sessiondata()
 	  {
- 		$this->session['message'] = $this->message;//depreciated
 		$this->session['site_id'] = $this->site_id;//depreciated
 	 	$this->session['site_object_id'] = $this->site_object_id;//depreciated
 	  
@@ -165,12 +163,12 @@
 
 		 if($status[ret_code])
 		 {
-			$this->message[error]=lang('An unknown error has occured (error code 110)');
-			$this->message[error_code]=110;
+			$this->session['message'][error]=lang('An unknown error has occured (error code 110)');
+			$this->session['message'][error_code]=110;
 		 }
 		 else
 		 {
-			$this->message[info]=lang('Field info configuration successfully saved');
+			$this->session['message'][info]=lang('Field info configuration successfully saved');
 		 }
 		 $this->save_sessiondata();
 
@@ -255,19 +253,19 @@
 			   $status=$this->so->save_object_events_plugin_conf($_GET[object_id],$conf_serialed_string);
 			   if($status[ret_code])
 			   {
-				  $this->message[error]=lang('An unknown error has occured (error code 109)');
-				  $this->message[error_code]=-1;
+				  $this->session['message'][error]=lang('An unknown error has occured (error code 109)');
+				  $this->session['message'][error_code]=-1;
 				  _debug_array(lang('An unknown error has occured (error code 109)'));
 			   }
 			   else
 			   {
-				  $this->message[info]=lang('Plugin configuration successfully saved');
+				  $this->session['message'][info]=lang('Plugin configuration successfully saved');
 				  _debug_array(lang('Plugin configuration successfully saved'));
 			   }
 			}
 			else
 			{
-			   $this->message[error]=lang('nothing to save. Please select a plugin to delete or configure a new plugin');
+			   $this->session['message'][error]=lang('nothing to save. Please select a plugin to delete or configure a new plugin');
 			   _debug_array(lang('nothing to save. Please select a plugin to delete or configure a new plugin'));
 			}
 		 }
@@ -308,12 +306,12 @@
 
 		 if($status[ret_code])
 		 {
-			$this->message[error]=lang('An unknown error has occured (error code 109)');
-			$this->message[error_code]=109;
+			$this->session['message'][error]=lang('An unknown error has occured (error code 109)');
+			$this->session['message'][error_code]=109;
 		 }
 		 else
 		 {
-			$this->message[info]=lang('Plugin configuration successfully saved');
+			$this->session['message'][info]=lang('Plugin configuration successfully saved');
 		 }
 		 $this->save_sessiondata();
 
@@ -332,11 +330,11 @@
 
 		 if ($status>0)	
 		 {
-			$this->message[info]=lang('Site succesfully added');
+			$this->session['message'][info]=lang('Site succesfully added');
 		 }
 		 else 
 		 {
-			$this->message[error]=lang('Site NOT succesfully added, unknown error');
+			$this->session['message'][error]=lang('Site NOT succesfully added, unknown error');
 		 }
 
 		 $this->save_sessiondata();
@@ -359,8 +357,8 @@
 		 $data=$this->http_vars_pairs($_POST,$_FILES);
 		 $status=$this->so->insert_phpgw_data('egw_jinn_objects',$data);
 
-		 if ($status>0)	$this->message[info]=lang('Site Object succesfully added');
-		 else $this->message[error]=lang('Site Object NOT succesfully added, unknown error');
+		 if ($status>0)	$this->session['message'][info]=lang('Site Object succesfully added');
+		 else $this->session['message'][error]=lang('Site Object NOT succesfully added, unknown error');
 
 		 $this->save_sessiondata();
 		 if($_POST['continue'])
@@ -385,8 +383,8 @@
 		 $status=$this->so->update_phpgw_data($table,$data, $this->where_key,$this->where_value);
 
 
-		 if ($status[ret_code]==0)	$this->message[info]=lang('Site succesfully saved');
-		 else $this->message[error]=lang('Site NOT succesfully saved, unknown error');
+		 if ($status[ret_code]==0)	$this->session['message'][info]=lang('Site succesfully saved');
+		 else $this->session['message'][error]=lang('Site NOT succesfully saved, unknown error');
 
 		 $this->save_sessiondata();
 		 if($_POST['continue'])
@@ -519,8 +517,8 @@
 		 $status=$this->so->update_phpgw_data($table,$data, $this->where_key,$this->where_value);
 
 
-		 if ($status[ret_code]==0)	$this->message[info]=lang('Site Object succesfully saved');
-		 else $this->message[error]=lang('Site Object NOT succesfully saved, unknown error');
+		 if ($status[ret_code]==0)	$this->session['message'][info]=lang('Site Object succesfully saved');
+		 else $this->session['message'][error]=lang('Site Object NOT succesfully saved, unknown error');
 
 		 $this->save_sessiondata();
 		 if($_POST['continue'])
@@ -541,8 +539,8 @@
 	  {
 		 $status=$this->so->delete_phpgw_data('egw_jinn_sites',$this->where_key,$this->where_value);
 
-		 if ($status==1)	$this->message[info]=lang('site succesfully deleted');
-		 else $this->message[error]=lang('Site NOT succesfully deleted, Unknown error');
+		 if ($status==1)	$this->session['message'][info]=lang('site succesfully deleted');
+		 else $this->session['message'][error]=lang('Site NOT succesfully deleted, Unknown error');
 
 		 $this->save_sessiondata();
 		 $this->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
@@ -558,8 +556,8 @@
 
 		 $status=$this->so->delete_phpgw_data('egw_jinn_objects',$this->where_key,$this->where_value);
 
-		 if ($status==1)	$this->message[info]=lang('Site Object succesfully deleted');
-		 else $this->message[error]=lang('Site Object NOT succesfully deleted, Unknown error');
+		 if ($status==1)	$this->session['message'][info]=lang('Site Object succesfully deleted');
+		 else $this->session['message'][error]=lang('Site Object NOT succesfully deleted, Unknown error');
 
 		 $this->save_sessiondata();
 

@@ -266,8 +266,8 @@
 		  
 		 $this->ui->header('edit filter');
 		  
-		 $this->ui->msg_box($this->bo->message);
-		 unset($this->bo->message);
+		 $this->ui->msg_box($this->bo->session['message']);
+		 unset($this->bo->session['message']);
 
 		 
 		 /////////////////////////

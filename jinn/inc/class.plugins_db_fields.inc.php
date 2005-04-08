@@ -197,14 +197,14 @@
 
 		 if ($succes)
 		 {
-			$this->message[info]=lang('Action was succesful.');
+			$this->session['message'][info]=lang('Action was succesful.');
 
 			$this->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiuser.index');
 		 }
 		 else
 		 {
-			$this->message[error]=lang('Action was not succesful. Unknown error');
+			$this->session['message'][error]=lang('Action was not succesful. Unknown error');
 
 			$this->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiuser.index');

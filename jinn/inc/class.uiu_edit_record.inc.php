@@ -127,7 +127,7 @@
 		 if(!$this->bo->so->test_JSO_table($this->bo->site_object))
 		 {
 			unset($this->bo->site_object_id);
-			$this->bo->message['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
+			$this->bo->session['message']['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
 
 			$this->bo->save_sessiondata();
 			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
@@ -152,7 +152,7 @@
 		 $this->render_buttons();
 		 $this->render_footer();
 
-		 //		 unset($this->bo->message);
+		 //		 unset($this->bo->session['message']);
 
 		 #FIXME does this belong here?
 		 if (!is_object($GLOBALS['phpgw']->js))
@@ -175,8 +175,8 @@
 
 		 $this->incl_js_validation_script();
 		 
-		 $this->ui->msg_box($this->bo->message);
-		 unset($this->bo->message);
+		 $this->ui->msg_box($this->bo->session['message']);
+		 unset($this->bo->session['message']);
 
 		 $this->ui->main_menu();	
 
@@ -231,7 +231,7 @@
 			}
 			elseif(intval($this->mult_records)>99)
 			{
-			   $this->message[error]=lang('Can\'t edit more then 99 record at once (error code 108)');
+			   $this->bo->session['message'][error]=lang('Can\'t edit more then 99 record at once (error code 108)');
 			   $this->mult_records=3;// FIXME get from user
 			}
 			else
@@ -243,7 +243,7 @@
 		 if(!$this->bo->so->test_JSO_table($this->bo->site_object))
 		 {
 			unset($this->bo->site_object_id);
-			$this->bo->message['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
+			$this->bo->session['message']['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
 
 			$this->bo->save_sessiondata();
 			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
@@ -269,7 +269,7 @@
 		 $this->render_header();
 		 $this->render_buttons();
 
-		 $this->ui->msg_box($this->bo->message);
+		 $this->ui->msg_box($this->bo->session['message']);
 
 		 $this->ui->main_menu();	
 
@@ -287,7 +287,7 @@
 		 $this->template->pparse('out','form_header');
 		 $this->template->pparse('out','form_buttons');
 
-		 unset($this->bo->message);
+		 unset($this->bo->session['message']);
 
 
 		 if($mult_where_array)
@@ -853,7 +853,7 @@
   	  function view_multiple_records()
 	{
 		 $this->ui->header('View multiple records');
-		 $this->ui->msg_box($this->bo->message);
+		 $this->ui->msg_box($this->bo->session['message']);
 
 		 $this->ui->main_menu();	
 
@@ -1006,7 +1006,7 @@
 	  function view_record()
 	  {
 		 $this->ui->header('View record');
-		 $this->ui->msg_box($this->bo->message);
+		 $this->ui->msg_box($this->bo->session['message']);
 
 		 $this->ui->main_menu();	
 

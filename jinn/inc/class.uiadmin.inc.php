@@ -77,8 +77,8 @@
 	  {
 		 $this->ui->header(lang('index'));
 
-		 $this->ui->msg_box($this->bo->message);
-		 unset($this->bo->message);
+		 $this->ui->msg_box($this->bo->session['message']);
+		 unset($this->bo->session['message']);
 
 
 		 $this->bo->save_sessiondata();
@@ -109,24 +109,24 @@
 		 {
 			$this->ui->header(lang('Edit Object'));
 
-			$this->bo->message[help]=lang('Edit Object Configuration: <li>select a Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>');
+			$this->bo->session['message'][help]=lang('Edit Object Configuration: <li>select a Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>');
 		 }
 		 else
 		 {
 			$this->ui->header(lang('Add Object'));
 
-			$this->bo->message[help]=lang('Object Configuration: <li>select a Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li>');
+			$this->bo->session['message'][help]=lang('Object Configuration: <li>select a Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li>');
 
 		 }
 
-		 $this->ui->msg_box($this->bo->message);
-		 unset($this->bo->message);
+		 $this->ui->msg_box($this->bo->session['message']);
+		 unset($this->bo->session['message']);
 
 		 $add_edit = CreateObject('jinn.uia_edit_object',$this->bo);
 
 		 $add_edit->render_form($where_key,$where_value);
 
-		 unset($this->bo->message[help]);
+		 unset($this->bo->session['message'][help]);
 
 		 $this->bo->save_sessiondata();
 	  }
@@ -140,8 +140,8 @@
 
 		 if($GLOBALS[HTTP_GET_VARS][cancel]=='true')
 		 {
-			unset($this->bo->message[info]);
-			unset($this->bo->message[error]);
+			unset($this->bo->session['message'][info]);
+			unset($this->bo->session['message'][error]);
 		 }
 
 		 if ($where_key && $where_value)
@@ -152,11 +152,11 @@
 		 {
 			$this->ui->header(lang('Add Site'));
 			$helptext='Insert new Site configuration:<ol><li>Insert a Site Name for display</li><li>insert correct Database settings</li><li>insert a correct absolute upload path</li><li>insert a corresponding preview URL for uploaded elements</li></ol>';
-			$this->bo->message[help]=lang($helptext);
+			$this->bo->session['message'][help]=lang($helptext);
 		 }
 
-		 $this->ui->msg_box($this->bo->message);
-		 unset($this->bo->message);
+		 $this->ui->msg_box($this->bo->session['message']);
+		 unset($this->bo->session['message']);
 
 		 $add_edit = CreateObject('jinn.uia_edit_site',$this->bo);
 		 $add_edit->render_form($where_key,$where_value);
@@ -170,7 +170,7 @@
 			$list_objects->render_list($new_where_key, $where_value);
 		 }
 
-		 unset($this->bo->message[help]);
+		 unset($this->bo->session['message'][help]);
 
 		 $this->bo->save_sessiondata();
 	  }
@@ -315,8 +315,8 @@
 	  function browse_egw_jinn_sites()
 	  {
 		 $this->ui->header(lang('List Sites'));
-		 $this->ui->msg_box($this->bo->message);
-		 unset($this->bo->message);
+		 $this->ui->msg_box($this->bo->session['message']);
+		 unset($this->bo->session['message']);
 
 		 $browse = CreateObject('jinn.uia_list_sites',$this->bo);
 		 $browse->render_list();
@@ -386,8 +386,8 @@
 
 		 $this->template->pparse('out','head');
 
-		 $this->ui->msg_box($this->bo->message,$true);
-		 unset($this->bo->message);
+		 $this->ui->msg_box($this->bo->session['message'],$true);
+		 unset($this->bo->session['message']);
 
 		 $this->template->pparse('out','bodyhead');
 
@@ -779,8 +779,8 @@
 
 		 $this->template->pparse('out','head');
 
-		 $this->ui->msg_box($this->bo->message,$true);
-		 unset($this->bo->message);
+		 $this->ui->msg_box($this->bo->session['message'],$true);
+		 unset($this->bo->session['message']);
 
 		 $this->template->pparse('out','bodyhead');
 
@@ -913,7 +913,7 @@
 						$new_name=$new_object_name;
 					 }
 					 $proceed=true;
-					 $this->bo->message[info].= lang('Import was succesfull'). '<br/>' .lang('The name of the new object is <strong>%1</strong>.',$new_name);
+					 $this->bo->session['message'][info].= lang('Import was succesfull'). '<br/>' .lang('The name of the new object is <strong>%1</strong>.',$new_name);
 
 				  }
 
@@ -949,12 +949,12 @@
 						}
 					 }
 
-					 $this->bo->message[info].='<br/>'.lang('%1 Site Objects have been imported.',1);
-					 $this->bo->message[info].='<br/>'.lang('%1 Site Obj-fields have been imported.',$num_fields);
+					 $this->bo->session['message'][info].='<br/>'.lang('%1 Site Objects have been imported.',1);
+					 $this->bo->session['message'][info].='<br/>'.lang('%1 Site Obj-fields have been imported.',$num_fields);
 				  }
 				  else
 				  {
-					 $this->bo->message[error].= lang('Import failed');
+					 $this->bo->session['message'][error].= lang('Import failed');
 				  }
 				  
 				  $this->bo->save_sessiondata();
@@ -969,8 +969,8 @@
 			   ));
 
 			   $this->ui->header(lang('Import JiNN-Object'.$table));
-			   $this->ui->msg_box($this->bo->message);
-			   unset($this->bo->message);
+			   $this->ui->msg_box($this->bo->session['message']);
+			   unset($this->bo->session['message']);
 
 			   $this->template->set_var('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.import_object'));
 			   $this->template->set_var('lang_Select_JiNN_site_file',lang('Select JiNN object file (*.jobj'));
@@ -1021,7 +1021,7 @@
 					 $this->bo->so->delete_phpgw_data('egw_jinn_objects',parent_site_id,$new_site_id);
 
 
-					 $this->bo->message[info].= lang('Import was succesfull').'<br/>'.lang('Replaced existing site named <strong>%1</strong>.',$new_site_name);
+					 $this->bo->session['message'][info].= lang('Import was succesfull').'<br/>'.lang('Replaced existing site named <strong>%1</strong>.',$new_site_name);
 
 					 $proceed=true;
 				  }
@@ -1045,7 +1045,7 @@
 						$new_name=$new_site_name;
 					 }
 					 $proceed=true;
-					 $this->bo->message[info].= lang('Import was succesfull'). '<br/>' .lang('The name of the new site is <strong>%1</strong>.',$new_name);
+					 $this->bo->session['message'][info].= lang('Import was succesfull'). '<br/>' .lang('The name of the new site is <strong>%1</strong>.',$new_name);
 
 				  }
 
@@ -1116,14 +1116,14 @@
 					 }
 
 
-					 $this->bo->message[info].='<br/>'.lang('%1 Site Objects have been imported.',$num_objects);
-					 $this->bo->message[info].='<br/>'.lang('%1 Site Obj-fields have been imported.',$num_fields);
+					 $this->bo->session['message'][info].='<br/>'.lang('%1 Site Objects have been imported.',$num_objects);
+					 $this->bo->session['message'][info].='<br/>'.lang('%1 Site Obj-fields have been imported.',$num_fields);
 					 $this->bo->save_sessiondata();
 					 $this->bo->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
 				  }
 				  else
 				  {
-					 $this->bo->message[error].= lang('Import failed');
+					 $this->bo->session['message'][error].= lang('Import failed');
 					 $this->bo->save_sessiondata();
 					 $this->bo->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
 				  }
@@ -1137,8 +1137,8 @@
 			   ));
 
 			   $this->ui->header(lang('Import JiNN-Site'.$table));
-			   $this->ui->msg_box($this->bo->message);
-			   unset($this->bo->message);
+			   $this->ui->msg_box($this->bo->session['message']);
+			   unset($this->bo->session['message']);
 
 			   $this->template->set_var('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.import_egw_jinn_site'));
 			   $this->template->set_var('lang_Select_JiNN_site_file',lang('Select JiNN site file'));

@@ -46,8 +46,8 @@
 		 /* check if user is egw-admin or siteadmin of at least one site else redirect */
 		 if(!$GLOBALS['phpgw_info']['user']['apps']['admin'] && count($this->bo->so->get_sites_for_user2($GLOBALS['phpgw_info']['user']['account_id']))==0)
 		 {
-			$this->bo->message[error]=lang('You don\'t have access to this page.');
-			$this->bo->message[error_code]=112;
+			$this->bo->session['message'][error]=lang('You don\'t have access to this page.');
+			$this->bo->session['message'][error_code]=112;
 
 			$this->bo->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiuser.index');
@@ -61,9 +61,9 @@
 	  function main_screen()
 	  {
 		 $this->ui->header(lang('Set Access Rights'));
-		 $this->ui->msg_box($this->bo->message);
+		 $this->ui->msg_box($this->bo->session['message']);
 
-		 unset($this->bo->message);
+		 unset($this->bo->session['message']);
 		 $this->bo->save_sessiondata();
 
 		 $this->template->set_file(array(
@@ -121,16 +121,16 @@
 
 		 if(!$GLOBALS['phpgw_info']['user']['apps']['admin'] && !$this->bo->user_is_site_admin($_GET[site_id]))
 		 {
-			$this->bo->message[error]=lang('You don\'t have access to this page.');
-			$this->bo->message[error_code]=112;
+			$this->bo->session['message'][error]=lang('You don\'t have access to this page.');
+			$this->bo->session['message'][error_code]=112;
 
 			$this->bo->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiacl.main_screen');
 		 }
 		 
 		 $this->ui->header(lang('Set Access Right for Site Objects'));
-		 $this->ui->msg_box($this->bo->message);
-		 unset($this->bo->message);
+		 $this->ui->msg_box($this->bo->session['message']);
+		 unset($this->bo->session['message']);
 
 		 $this->bo->save_sessiondata();
 	
@@ -254,16 +254,16 @@
 	  {
 		 if(!$GLOBALS['phpgw_info']['user']['apps']['admin'] && !$this->bo->user_is_site_admin($_GET[site_id]))
 		 {
-			$this->bo->message[error]=lang('You don\'t have access to this page.');
-			$this->bo->message[error_code]=112;
+			$this->bo->session['message'][error]=lang('You don\'t have access to this page.');
+			$this->bo->session['message'][error_code]=112;
 
 			$this->bo->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiacl.main_screen');
 		 }
 		 
 		 $this->ui->header(lang('Set Access Rights for Sites'));
-		 $this->ui->msg_box($this->bo->message);
-		 unset($this->bo->message);
+		 $this->ui->msg_box($this->bo->session['message']);
+		 unset($this->bo->session['message']);
 
 		 $this->bo->save_sessiondata();
 

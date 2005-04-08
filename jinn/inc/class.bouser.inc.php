@@ -48,8 +48,6 @@
 	  var $session;
 	  var $sessionmanager;
 
-	  var $message;//depreciated
-
 	  var $site_object_id; //depreciated
 	  var $site_object; 
 	  var $site_id; //depreciated
@@ -92,7 +90,6 @@
 		 $this->common = CreateObject('jinn.bocommon');
 		 $this->session 		= &$this->common->session->sessionarray;	//shortcut to session array
 		 $this->sessionmanager	= &$this->common->session;					//shortcut to session manager object
- 		 $this->message 			= $this->session['message'];//depreciated
 		 $this->site_id 			= $this->session['site_id'];//depreciated
 		 $this->site_object_id		= $this->session['site_object_id'];//depreciated
 		 $this->browse_settings		= $this->session['browse_settings'];//depreciated
@@ -146,12 +143,12 @@
 
 			if($this->read_preferences('debug_site_arr')=='yes') 
 			{
-			   $this->message['debug'][]='SITE_ARRAY: '._debug_array($this->site,false);
+			   $this->session['message']['debug'][]='SITE_ARRAY: '._debug_array($this->site,false);
 			}
 		
 			if($this->read_preferences('debug_object_arr')=='yes')
 			{
-			   $this->message['debug'][]='OBJECT_ARRAY: '._debug_array($this->site_object,false);
+			   $this->session['message']['debug'][]='OBJECT_ARRAY: '._debug_array($this->site_object,false);
 			}
 		 }
 
@@ -236,7 +233,6 @@
 		
 	  function save_sessiondata()
 	  {
- 		$this->session['message'] = $this->message;							//depreciated
 		$this->session['site_id'] = $this->site_id;							//depreciated
 	 	$this->session['site_object_id'] = $this->site_object_id;			//depreciated
 		$this->session['browse_settings'] = $this->browse_settings;			//depreciated
@@ -318,17 +314,17 @@
 
 		 if ($status[ret_code])	
 		 {
-			$this->message['error']=lang('Record NOT succesfully saved. Unknown error');
-			$this->message['error_code']=111;
+			$this->session['message']['error']=lang('Record NOT succesfully saved. Unknown error');
+			$this->session['message']['error_code']=111;
 		 }
 		 else
 		 {
-		 $this->message['info'][]='Record successfully added';
+		 $this->session['message']['info'][]='Record successfully added';
 		 }
 
 		 if($this->debug_sql==true)
 		 {
-			$this->message['debug'][]='SQL: '.$status[sql];
+			$this->session['message']['debug'][]='SQL: '.$status[sql];
 		 }
 
 		 $this->save_sessiondata();
@@ -423,8 +419,8 @@
 			$this->common->exit_and_open_screen('jinn.uiu_export.export');
 			break;
 			default:
-			$this->message[error]=lang('Operation on multiple records failed.');
-			$this->message[error_code]=100;
+			$this->session['message'][error]=lang('Operation on multiple records failed.');
+			$this->session['message'][error_code]=100;
 			$this->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiuser.index');
 		 }
@@ -457,7 +453,7 @@
 			   $status=$this->so->insert_object_data($this->site_id,$this->site_object[table_name],$data);
 			   if($this->debug_sql==true)
 			   {
-				  $this->message['debug'][]='SQL: '.$status[sql];
+				  $this->session['message']['debug'][]='SQL: '.$status[sql];
 			   }
 
 			   $this->mult_where_array[]=$status[where_string];
@@ -469,12 +465,12 @@
 
 		 if ($status[ret_code]==0)
 		 {
-			$this->message['info']='Records successfully added';
+			$this->session['message']['info']='Records successfully added';
 		 }
 		 else 
 		 {
-			$this->message[error]=lang('One or more records NOT succesfully added.');
-			$this->message[error_code]=107;
+			$this->session['message'][error]=lang('One or more records NOT succesfully added.');
+			$this->session['message'][error_code]=107;
 		 }
 
 
@@ -551,13 +547,13 @@
 
 		 if ($status[status]==1)	
 		 {
-			$this->message['info']='Records successfully saved';
-			if($eventstatus) $this->message[info].=', but error in event plugin';
+			$this->session['message']['info']='Records successfully saved';
+			if($eventstatus) $this->session['message'][info].=', but error in event plugin';
 		 }
 		 else 
 		 {
-			$this->message[error]=lang('One or more records NOT succesfully saved.');
-			$this->message[error_code]=106;
+			$this->session['message'][error]=lang('One or more records NOT succesfully saved.');
+			$this->session['message'][error_code]=106;
 		 }
 
 		 $this->save_sessiondata();
@@ -591,11 +587,11 @@
 			if($stat!=1) $status=0;
 		 }
 
-		 if ($status==1) $this->message[info]=lang('Records succesfully deleted');
+		 if ($status==1) $this->session['message'][info]=lang('Records succesfully deleted');
 		 else 
 		 {
-			$this->message[error]=lang('Records NOT succesfully deleted.');
-			$this->message[error_code]=101;
+			$this->session['message'][error]=lang('Records NOT succesfully deleted.');
+			$this->session['message'][error_code]=101;
 		 }
 
 		 $this->save_sessiondata();
@@ -655,9 +651,9 @@
 		 }
 		 else 
 		 {
-			$this->message[info]='Record succesfully saved';
+			$this->session['message'][info]='Record succesfully saved';
 			$eventstatus = $this->run_event_plugins('on_update', $_POST);
-			if($eventstatus) $this->message[info].=', but error in On Update event plugin';
+			if($eventstatus) $this->session['message'][info].=', but error in On Update event plugin';
 		 }
 
 		 $this->addtoDebugArr('SQL: '.$status[sql]);
@@ -681,8 +677,8 @@
 		/* fixme move to common */
 	  function addtoErrorArr($msg,$error_code)
 	  {
-		 $this->message[error][]=$msg;
-		 $this->message[error_code][]=$error_code;
+		 $this->session['message'][error][]=$msg;
+		 $this->session['message'][error_code][]=$error_code;
 	  }
 
 
@@ -691,7 +687,7 @@
 	  {
 		 if($this->debug_sql==true)
 		 {
-			$this->message['debug'][]='SQL: '.$msg;
+			$this->session['message']['debug'][]='SQL: '.$msg;
 		 }
 	  }
 
@@ -733,11 +729,11 @@
 
 		 $status=$this->so->delete_object_data($this->site_id, $table, $where_key,$where_value,$where_string);
 
-		 if ($status==1)	$this->message[info]=lang('Record succesfully deleted');
+		 if ($status==1)	$this->session['message'][info]=lang('Record succesfully deleted');
 		 else 			
 		 {
-			$this->message[error]=lang('Record NOT succesfully deleted.');
-			$this->message[error_code]=105;
+			$this->session['message'][error]=lang('Record NOT succesfully deleted.');
+			$this->session['message'][error_code]=105;
 		 }
 
 		 $this->save_sessiondata();
@@ -758,7 +754,7 @@
 			}
 			else
 			{
-			   $this->message[info]=lang('Record succesfully copied');
+			   $this->session['message'][info]=lang('Record succesfully copied');
 			}
 			$this->addtoDebugArr('SQL: '.$status[sql]);
 
@@ -1332,7 +1328,7 @@
 
 		 if(!$plugin_string)
 		 {
-			$this->message['error'] = 'Warning: get_plugin_fi called with old behaviour';
+			$this->session['message']['error'] = 'Warning: get_plugin_fi called with old behaviour';
 			$plugin_string = $this->site_object['plugins'];
 		 }
 
@@ -1427,14 +1423,14 @@
 
 		 if ($succes)
 		 {
-			$this->message[info]=lang('Action was succesful.');
+			$this->session['message'][info]=lang('Action was succesful.');
 
 			$this->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiuser.index');
 		 }
 		 else
 		 {
-			$this->message[error]=lang('Action was not succesful. Unknown error');
+			$this->session['message'][error]=lang('Action was not succesful. Unknown error');
 
 			$this->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiuser.index');
@@ -1501,19 +1497,19 @@
 			$endl = "<br>";
 			if(count($status) > 0)
 			{
-				$this->message[info]=lang('%1 new objects where successfully created%2', count($status), $endl);
+				$this->session['message'][info]=lang('%1 new objects where successfully created%2', count($status), $endl);
 				foreach($status as $new)
 				{
 					if($new[ret_code] != 0)
 					{
-						$this->message[error]=lang('Error creating one or more new Objects%1', $endl);
-						$this->message[info]=lang('%1 new objects where successfully created%2', count($status), $endl);
+						$this->session['message'][error]=lang('Error creating one or more new Objects%1', $endl);
+						$this->session['message'][info]=lang('%1 new objects where successfully created%2', count($status), $endl);
 					}
 				}
 			}
 			else
 			{
-				$this->message[info]=lang('no new objects created%1', $endl);
+				$this->session['message'][info]=lang('no new objects created%1', $endl);
 			}
 			$this->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiuser.index');

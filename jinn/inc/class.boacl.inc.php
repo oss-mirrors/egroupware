@@ -32,8 +32,6 @@
 	  var $session;
 	  var $sessionmanager;
 
-	  var $message;//depreciated
-
 	  var $site_object_id; //depreciated
 	  var $site_object; 
 	  var $site_id; //depreciated
@@ -61,9 +59,7 @@
 		 $this->common = CreateObject('jinn.bocommon');
 		 $this->session 		= &$this->common->session->sessionarray;	//shortcut to session array
 		 $this->sessionmanager	= &$this->common->session;					//shortcut to session manager object
- 		 $this->message 		= $this->session['message'];//depreciated
 		 $this->site_id 		= $this->session['site_id'];//depreciated
-		 
 		 $this->site_object_id	= $this->session['site_object_id'];//depreciated
 
 		 /* this is for the sidebox */
@@ -76,18 +72,17 @@
 			if($this->read_preferences('debug_sql')=='yes') $this->debug_sql=true;
 			if($this->read_preferences('debug_site_arr')=='yes') 
 			{
-			   $this->message['debug'][]='SITE_ARRAY: '._debug_array($this->site,false);
+			   $this->session['message']['debug'][]='SITE_ARRAY: '._debug_array($this->site,false);
 			}
 			if($this->read_preferences('debug_object_arr')=='yes')
 			{
-			   $this->message['debug'][]='OBJECT_ARRAY: '._debug_array($this->site_object,false);
+			   $this->session['message']['debug'][]='OBJECT_ARRAY: '._debug_array($this->site_object,false);
 			}
 		 }
 	  }
 
 	  function save_sessiondata()
 	  {
- 		$this->session['message'] 			= $this->message;			//depreciated
 		$this->session['site_id'] 			= $this->site_id;			//depreciated
 	 	$this->session['site_object_id'] 	= $this->site_object_id;	//depreciated
 		
@@ -122,17 +117,17 @@
 
 		 if ($status[ret_code])
 		 {
-			$this->message[error]=lang('Access rights for Site NOT succesfully saved');
-			$this->message[error_code]=113;
+			$this->session['message'][error]=lang('Access rights for Site NOT succesfully saved');
+			$this->session['message'][error_code]=113;
 		 }
 		 else
 		 {
-			$this->message[info]=lang('Access rights for Site succesfully saved');
+			$this->session['message'][info]=lang('Access rights for Site succesfully saved');
 		 }
 
 		 if($this->debug_sql==true)
 		 {
-			$this->message['debug'][]='SQL: '.$status[sql];
+			$this->session['message']['debug'][]='SQL: '.$status[sql];
 		 }
 
 		 $this->save_sessiondata();
@@ -157,17 +152,17 @@
 
 		 if ($status[ret_code])
 		 {
-			$this->message[error]=lang('Access rights for site-object NOT succesfully saved');
-			$this->message[error_code]=114;
+			$this->session['message'][error]=lang('Access rights for site-object NOT succesfully saved');
+			$this->session['message'][error_code]=114;
 		 }
 		 else
 		 {
-			$this->message[info]=lang('Access rights for site-object succesfully saved');
+			$this->session['message'][info]=lang('Access rights for site-object succesfully saved');
 		 }
 		 
 		 if($this->debug_sql==true)
 		 {
-			$this->message['debug'][]='SQL: '.$status[sql];
+			$this->session['message']['debug'][]='SQL: '.$status[sql];
 		 }
 
 		 $this->save_sessiondata();

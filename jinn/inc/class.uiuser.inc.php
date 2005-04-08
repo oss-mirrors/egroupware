@@ -69,11 +69,11 @@
 		 {
 			if (!$this->bo->site_id)
 			{
-			   $this->bo->message['info'].=lang('Select site to moderate');
+			   $this->bo->session['message']['info'].=lang('Select site to moderate');
 			}
 			else 
 			{
-			   $this->bo->message['info'].=lang('Select site-object to moderate');
+			   $this->bo->session['message']['info'].=lang('Select site-object to moderate');
 			}
 
 			unset($GLOBALS['phpgw_info']['flags']['noheader']);
@@ -82,8 +82,8 @@
 			unset($GLOBALS['phpgw_info']['flags']['noappfooter']);
 
 			$this->ui->header('Index');
-			$this->ui->msg_box($this->bo->message);
-			unset($this->bo->message);
+			$this->ui->msg_box($this->bo->session['message']);
+			unset($this->bo->session['message']);
 
 			$this->ui->main_menu();
 			$this->bo->save_sessiondata();
@@ -101,17 +101,17 @@
 
 		 if(!$this->bo->site_object_id)
 		 {
-			$this->bo->message['error']=lang('No object selected. No able to configure this view');
-			$this->ui->msg_box($this->bo->message);
-			unset($this->bo->message);
+			$this->bo->session['message']['error']=lang('No object selected. No able to configure this view');
+			$this->ui->msg_box($this->bo->session['message']);
+			unset($this->bo->session['message']);
 
 			$this->ui->main_menu();	
 
 		 }
 		 else
 		 {
-			$this->ui->msg_box($this->bo->message);
-			unset($this->bo->message);
+			$this->ui->msg_box($this->bo->session['message']);
+			unset($this->bo->session['message']);
 			$this->ui->main_menu();	
 			$main = CreateObject('jinn.uiconfig',$this->bo);
 			$main->show_fields();
@@ -125,8 +125,8 @@
 		 /* check current site  and object*/
 		 if(!$this->bo->site_id || !$this->bo->site_object_id)
 		 {
-			$this->bo->message[error]=lang('You have no access to this file.');
-			$this->bo->message[error_code]=118;
+			$this->bo->session['message'][error]=lang('You have no access to this file.');
+			$this->bo->session['message'][error_code]=118;
 
 			$this->bo->save_sessiondata();
 			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
@@ -159,8 +159,8 @@
 
 		 if(!$allowed_action)
 		 {
-			$this->bo->message[error]=lang('You have no access to this file.');
-			$this->bo->message[error_code]=118;
+			$this->bo->session['message'][error]=lang('You have no access to this file.');
+			$this->bo->session['message'][error_code]=118;
 
 			$this->bo->save_sessiondata();
 			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
