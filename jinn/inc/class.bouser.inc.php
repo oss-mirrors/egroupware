@@ -46,6 +46,7 @@
 
 	  var $so;
 	  var $session;
+	  var $sessionmanager;
 
 	  var $message;//depreciated
 
@@ -89,16 +90,18 @@
 //_debug_array('bouser constructor start : ');
 //_debug_array('   1');
 		 $this->common = CreateObject('jinn.bocommon');
-		 $this->session = &$this->common->session;	//shortcut to session object
+		 $this->session 		= &$this->common->session->sessionarray;	//shortcut to session array
+		 $this->sessionmanager	= &$this->common->session;					//shortcut to session manager object
+ 		 $this->message 			= $this->session['message'];//depreciated
+		 $this->site_id 			= $this->session['site_id'];//depreciated
+		 $this->site_object_id		= $this->session['site_object_id'];//depreciated
+		 $this->browse_settings		= $this->session['browse_settings'];//depreciated
+		 $this->filter_settings		= $this->session['filter_settings'];//depreciated
+		 $this->mult_where_array	= $this->session['mult_where_array'];//depreciated
+		 $this->mult_records_amount = $this->session['mult_records_amount'];//depreciated
+		 $this->last_where_string	= $this->session['last_where_string'];//depreciated
+
 		 $this->current_config=$this->common->get_config();		
- 		 $this->message 			= $this->session->get('message');//depreciated
-		 $this->site_id 			= $this->session->get('site_id');//depreciated
-		 $this->site_object_id		= $this->session->get('site_object_id');//depreciated
-		 $this->browse_settings		= $this->session->get('browse_settings');//depreciated
-		 $this->filter_settings		= $this->session->get('filter_settings');//depreciated
-		 $this->mult_where_array	= $this->session->get('mult_where_array');//depreciated
-		 $this->mult_records_amount = $this->session->get('mult_records_amount');//depreciated
-		 $this->last_where_string	= $this->session->get('last_where_string');//depreciated
 
 		 $this->so = CreateObject('jinn.sojinn');
 
@@ -233,16 +236,16 @@
 		
 	  function save_sessiondata()
 	  {
- 		$this->session->set('message', $this->message);							//depreciated
-		$this->session->set('site_id', $this->site_id);							//depreciated
-	 	$this->session->set('site_object_id', $this->site_object_id);			//depreciated
-		$this->session->set('browse_settings', $this->browse_settings);			//depreciated
-		$this->session->set('filter_settings', $this->filter_settings);			//depreciated
-		$this->session->set('mult_where_array', $this->mult_where_array);		//depreciated
-		$this->session->set('mult_records_amount', $this->mult_records_amount);	//depreciated
-		$this->session->set('last_where_string', $this->last_where_string);		//depreciated
+ 		$this->session['message'] = $this->message;							//depreciated
+		$this->session['site_id'] = $this->site_id;							//depreciated
+	 	$this->session['site_object_id'] = $this->site_object_id;			//depreciated
+		$this->session['browse_settings'] = $this->browse_settings;			//depreciated
+		$this->session['filter_settings'] = $this->filter_settings;			//depreciated
+		$this->session['mult_where_array'] = $this->mult_where_array;		//depreciated
+		$this->session['mult_records_amount'] = $this->mult_records_amount;	//depreciated
+		$this->session['last_where_string'] = $this->last_where_string;		//depreciated
 		
-		$this->session->save();
+		$this->sessionmanager->save();
 	  }
 
 	  /**

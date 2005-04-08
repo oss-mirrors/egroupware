@@ -30,6 +30,7 @@
    {
 
 	  var $session;
+	  var $sessionmanager;
 
 	  var $message;//depreciated
 
@@ -58,10 +59,12 @@
 	  {
 		 $this->so = CreateObject('jinn.sojinn');
 		 $this->common = CreateObject('jinn.bocommon');
-		 $this->session = &$this->common->session;	//shortcut to session object
- 		 $this->message 			= $this->session->get('message');//depreciated
-		 $this->site_id 			= $this->session->get('site_id');//depreciated
-		 $this->site_object_id		= $this->session->get('site_object_id');//depreciated
+		 $this->session 		= &$this->common->session->sessionarray;	//shortcut to session array
+		 $this->sessionmanager	= &$this->common->session;					//shortcut to session manager object
+ 		 $this->message 		= $this->session['message'];//depreciated
+		 $this->site_id 		= $this->session['site_id'];//depreciated
+		 
+		 $this->site_object_id	= $this->session['site_object_id'];//depreciated
 
 		 /* this is for the sidebox */
 		 global $local_bo;
@@ -84,11 +87,11 @@
 
 	  function save_sessiondata()
 	  {
- 		$this->session->set('message', $this->message);							//depreciated
-		$this->session->set('site_id', $this->site_id);							//depreciated
-	 	$this->session->set('site_object_id', $this->site_object_id);			//depreciated
-
-		$this->session->save();
+ 		$this->session['message'] 			= $this->message;			//depreciated
+		$this->session['site_id'] 			= $this->site_id;			//depreciated
+	 	$this->session['site_object_id'] 	= $this->site_object_id;	//depreciated
+		
+		$this->sessionmanager->save();
 	  }
 
 	  function read_preferences($key)

@@ -34,43 +34,34 @@
 		//constructor
 		function sojinnsession()
 		{
-//_debug_array('SoJiNNsession constructor called');
-			$this->read_sessiondata();
+			$this->load();
 		}
 		
-		function read_sessiondata()
+		function load()
 		{
 			$this->sessionarray = $GLOBALS['phpgw']->session->appsession('session_data','jinn');
 
 			//override session variables with POST/GET data
-			$_form = $_POST['form'] ? $_POST['form']   : $_GET['form'];
-			$_site_id = $_POST['site_id'] ? $_POST['site_id']   : $_GET['site_id'];
-			$_site_object_id = $_POST['site_object_id'] ? $_POST['site_object_id']    : $_GET['site_object_id'];
+			$_form 				= $_POST['form'] 			? $_POST['form']   			: $_GET['form'];
+			$_site_id 			= $_POST['site_id'] 		? $_POST['site_id']   		: $_GET['site_id'];
+			$_site_object_id 	= $_POST['site_object_id'] 	? $_POST['site_object_id']	: $_GET['site_object_id'];
 			
 			if (($_form == 'main_menu') || (!empty($_site_id))) //fixme: moet dit geen && zijn i.p.v. || ?
 			{
-				if($_site_id != $this->get('site_id'))
+				if($_site_id != $this->sessionarray['site_id'])
 				{
-					$this->set('site_id', $_site_id);
-					$this->set('site_object_id', '');
+					$this->sessionarray['site_id'] = $_site_id;
+					$this->sessionarray['site_object_id'] =  '';
 					unset($_POST[site_object_id]);
 				}
 			}
 			
 			if (($_form == 'main_menu') || (!empty($_site_object_id)))
 			{
-				$this->set('site_object_id', $_site_object_id);
+				$this->sessionarray['site_object_id'] = $_site_object_id;
 			}
 		}
 		
-		function get($var)
-		{
-			return $this->sessionarray[$var];
-		}
-		function set($var, $value)
-		{
-			$this->sessionarray[$var] = $value;
-		}
 		function save()
 		{
 			$GLOBALS['phpgw']->session->appsession('session_data','jinn',$this->sessionarray);

@@ -7,6 +7,11 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.213f
+===========================
+Fri Apr 08 16:45:00 CET 2005
+- refactored legacy session code to utilize new session management class
+
 Version 0.8.213e
 ===========================
 Fri Apr 08 15:30:00 CET 2005
