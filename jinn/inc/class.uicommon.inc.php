@@ -225,12 +225,12 @@
 				  }
 			   }
 
-			   $object_options=$this->select_options($objects_arr,$this->bo->site_object_id,true);
+			   $object_options=$this->select_options($objects_arr,$this->bo->session['site_object_id'],true);
 
 			}
 			else
 			{
-			   unset($this->bo->site_object_id);
+			   unset($this->bo->session['site_object_id']);
 			}
 
 			$this->template->set_var('jinn_main_menu',lang('JiNN Main Menu'));

@@ -22,6 +22,7 @@
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 	*/
 
+	/* $Id$ */
 	
 	/*
 	This class handles all session logic. It gets its information from the eGroupWare session, GET vars or POST vars.

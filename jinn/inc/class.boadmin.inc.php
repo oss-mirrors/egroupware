@@ -43,7 +43,6 @@
 	  var $session;
 	  var $sessionmanager;
 
-	  var $site_object_id;	//depreciated
 	  var $site_object; 
 	  var $site; 
 	  var $local_bo;
@@ -68,7 +67,6 @@
 		 $this->common = CreateObject('jinn.bocommon');
 		 $this->session 		= &$this->common->session->sessionarray;	//shortcut to session array
 		 $this->sessionmanager	= &$this->common->session;					//shortcut to session manager object
-		 $this->site_object_id	= $this->session['site_object_id'];//depreciated
 		 
 		 $this->current_config=$this->common->get_config();		
 
@@ -97,9 +95,9 @@
 		 // get array of site and object
 		 $this->site = $this->so->get_site_values($this->session['site_id']);
 
-		 if ($this->site_object_id)
+		 if ($this->session['site_object_id'])
 		 {
-			$this->site_object = $this->so->get_object_values($this->site_object_id);
+			$this->site_object = $this->so->get_object_values($this->session['site_object_id']);
 		 }
 
 		 $this->plug = CreateObject('jinn.plugins_db_fields'); //$this->include_plugins();
@@ -119,8 +117,6 @@
 
 	  function save_sessiondata()
 	  {
-	 	$this->session['site_object_id'] = $this->site_object_id;//depreciated
-	  
 		$this->sessionmanager->save();
 	  }
 

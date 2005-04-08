@@ -126,7 +126,7 @@
 	  {
 		 if(!$this->bo->so->test_JSO_table($this->bo->site_object))
 		 {
-			unset($this->bo->site_object_id);
+			unset($this->bo->session['site_object_id']);
 			$this->bo->session['message']['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
 
 			$this->bo->save_sessiondata();
@@ -242,7 +242,7 @@
 
 		 if(!$this->bo->so->test_JSO_table($this->bo->site_object))
 		 {
-			unset($this->bo->site_object_id);
+			unset($this->bo->session['site_object_id']);
 			$this->bo->session['message']['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
 
 			$this->bo->save_sessiondata();

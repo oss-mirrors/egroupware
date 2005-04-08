@@ -48,7 +48,6 @@
 	  var $session;
 	  var $sessionmanager;
 
-	  var $site_object_id; //depreciated
 	  var $site_object; 
 	  var $site; 
 	  var $local_bo;
@@ -89,7 +88,6 @@
 		 $this->common = CreateObject('jinn.bocommon');
 		 $this->session 		= &$this->common->session->sessionarray;	//shortcut to session array
 		 $this->sessionmanager	= &$this->common->session;					//shortcut to session manager object
-		 $this->site_object_id		= $this->session['site_object_id'];//depreciated
 		 $this->browse_settings		= $this->session['browse_settings'];//depreciated
 		 $this->filter_settings		= $this->session['filter_settings'];//depreciated
 		 $this->mult_where_array	= $this->session['mult_where_array'];//depreciated
@@ -122,7 +120,7 @@
 		 }
 
 		 if ($this->session['site_id']) $this->site = $this->so->get_site_values($this->session['site_id']);
-		 if ($this->site_object_id) $this->site_object = $this->so->get_object_values($this->site_object_id);
+		 if ($this->session['site_object_id']) $this->site_object = $this->so->get_object_values($this->session['site_object_id']);
 		 
 		 $this->plug = CreateObject('jinn.plugins_db_fields');
 		 $this->plug->local_bo = $this;
@@ -151,9 +149,9 @@
 		 }
 
 			//backwards compatibility: check if unique id field is filled. If not: fill it now.
-		 if($this->site_object_id && $this->site_object[unique_id] == '')
+		 if($this->session['site_object_id'] && $this->site_object[unique_id] == '')
 		 {
-			$status = $this->so->set_unique_id($this->site_object_id);
+			$status = $this->so->set_unique_id($this->session['site_object_id']);
 			$this->site_object[unique_id] = $status[uid];
 		 }
 		 
@@ -231,7 +229,6 @@
 		
 	  function save_sessiondata()
 	  {
-	 	$this->session['site_object_id'] = $this->site_object_id;			//depreciated
 		$this->session['browse_settings'] = $this->browse_settings;			//depreciated
 		$this->session['filter_settings'] = $this->filter_settings;			//depreciated
 		$this->session['mult_where_array'] = $this->mult_where_array;		//depreciated

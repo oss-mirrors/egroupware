@@ -61,7 +61,7 @@
 					foreach($prefs_show_hide as $pref_s_h)
 					{
 						$pref_array=explode(',',$pref_s_h);
-						if($pref_array[0]==$this->bo->site_object_id)
+						if($pref_array[0]==$this->bo->session['site_object_id'])
 						{
 							$pref_columns=array_slice($pref_array,1);
 						}

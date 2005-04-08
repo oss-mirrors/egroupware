@@ -6,6 +6,10 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.213i
+===========================
+Fri Apr 08 17:45:00 CET 2005
+- refactored legacy session code ('site_object_id') to utilize new session management class
 
 Version 0.8.213h
 ===========================

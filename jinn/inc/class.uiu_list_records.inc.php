@@ -252,7 +252,7 @@
 		 // check if table exists
 		 if(!$this->bo->so->test_JSO_table($this->bo->site_object))
 		 {
-			unset($this->bo->site_object_id);
+			unset($this->bo->session['site_object_id']);
 			$this->bo->session['message']['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
 			$this->bo->session['message']['error_code']=117;
 
@@ -261,9 +261,9 @@
 		 }				
 
 		 // check if there's permission to this object
-		 if(!$this->bo->acl->has_object_access($this->bo->site_object_id))
+		 if(!$this->bo->acl->has_object_access($this->bo->session['site_object_id']))
 		 {
-			unset($this->bo->site_object_id);
+			unset($this->bo->session['site_object_id']);
 			$this->bo->session['message']['error']=lang('You have no access to this object');
 			$this->bo->session['message']['error_code']=116;
 
@@ -349,7 +349,7 @@
 			foreach($all_prefs_show_hide as $pref_show_hide)
 			{
 			   $pref_show_hide_arr=explode(',',$pref_show_hide);
-			   if($pref_show_hide_arr[0]==$this->bo->site_object_id)
+			   if($pref_show_hide_arr[0]==$this->bo->session['site_object_id'])
 			   {
 				  $pref_columns=array_slice($pref_show_hide_arr,1);
 

@@ -95,7 +95,7 @@
 	  function edit_this_jinn_site_object()
 	  {
 		 $this->bo->where_key='object_id';
-		 $this->bo->where_value=$this->bo->site_object_id;
+		 $this->bo->where_value=$this->bo->session['site_object_id'];
 
 		 $this->add_edit_object();
 	  }
