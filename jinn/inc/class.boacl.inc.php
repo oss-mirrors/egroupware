@@ -1,7 +1,9 @@
 <?php
    /*
-   JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare
-   Copyright (C)2002, 2004 Pim Snel <pim@lingewoud.nl>
+   JiNN - Jinn is Not Nuke, a multi-user, multi-site CMS for eGroupWare
+   Authors: Pim Snel <pim@lingewoud.nl>, 
+			Lex Vogelaar <lex_vogelaar@users.sourceforge.net>
+   Copyright (C)2002, 2003, 2004, 2005 Pim Snel <pim@lingewoud.nl>
 
    eGroupWare - http://www.egroupware.org
 
@@ -29,11 +31,11 @@
 
 	  var $session;
 
-	  var $message;
+	  var $message;//depreciated
 
-	  var $site_object_id; 
+	  var $site_object_id; //depreciated
 	  var $site_object; 
-	  var $site_id; 
+	  var $site_id; //depreciated
 	  var $site; 
 	  var $local_bo;
 	  var $so;
@@ -50,14 +52,17 @@
 	  );
 
 	  /*!
-	  @function boacl contructor
+	  @function boacl constructor
 	  */
 	  function boacl()
 	  {
 		 $this->so = CreateObject('jinn.sojinn');
 		 $this->common = CreateObject('jinn.bocommon');
+		 $this->session = &$this->common->session;	//shortcut to session object
+ 		 $this->message 			= $this->session->get('message');//depreciated
+		 $this->site_id 			= $this->session->get('site_id');//depreciated
+		 $this->site_object_id		= $this->session->get('site_object_id');//depreciated
 
-		 $this->read_sessiondata();
 		 /* this is for the sidebox */
 		 global $local_bo;
 		 $local_bo=$this;
@@ -79,46 +84,11 @@
 
 	  function save_sessiondata()
 	  {
-		 $data = array(
-			'message' => $this->message, 
-			'site_id' => $this->site_id,
-			'site_object_id' => $this->site_object_id,
-			'browse_settings'=>	$this->browse_settings,
-			'mult_where_array'=> $this->mult_where_array,
-			'mult_records_amount'=>$this->mult_records_amount,
-			'last_where_string'=>$this->last_where_string
-		 );
+ 		$this->session->set('message', $this->message);							//depreciated
+		$this->session->set('site_id', $this->site_id);							//depreciated
+	 	$this->session->set('site_object_id', $this->site_object_id);			//depreciated
 
-		 $GLOBALS['phpgw']->session->appsession('session_data','jinn',$data);
-	  }
-
-	  /* 
-	  @function read_sessiondata
-	  @abstract read sessiondata from and fill class vars
-	  @note test menu
-	  */
-	  function read_sessiondata()
-	  {
-		 $data = $GLOBALS['phpgw']->session->appsession('session_data','jinn');
-		 if ($GLOBALS['HTTP_POST_VARS']['form']!='main_menu')
-		 {
-			$this->message 		= $data['message'];
-			$this->site_id 		= $data['site_id'];
-			$this->site_object_id	= $data['site_object_id'];
-			$this->browse_settings	= $data['browse_settings'];
-			$this->mult_where_array	= $data['mult_where_array'];
-			$this->mult_records_amount = $data['mult_records_amount'];
-			$this->last_where_string = $data['last_where_string'];
-		 }
-		 if($GLOBALS['HTTP_POST_VARS']['form']=='main_menu')
-		 {
-			if($data['site_id'] && $_POST['site_id']!=$data['site_id'])
-			{
-			   unset($_POST[site_object_id]);
-			   unset($data[site_object_id]);
-			   unset($this->site_object_id);
-			}
-		 }
+		$this->session->save();
 	  }
 
 	  function read_preferences($key)

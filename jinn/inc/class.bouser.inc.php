@@ -1,7 +1,9 @@
 <?php
    /*
-   JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare
-   Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
+   JiNN - Jinn is Not Nuke, a multi-user, multi-site CMS for eGroupWare
+   Authors: Pim Snel <pim@lingewoud.nl>, 
+			Lex Vogelaar <lex_vogelaar@users.sourceforge.net>
+   Copyright (C)2002, 2003, 2004, 2005 Pim Snel <pim@lingewoud.nl>
 
    eGroupWare - http://www.egroupware.org
 
@@ -45,11 +47,11 @@
 	  var $so;
 	  var $session;
 
-	  var $message;
+	  var $message;//depreciated
 
-	  var $site_object_id; 
+	  var $site_object_id; //depreciated
 	  var $site_object; 
-	  var $site_id; 
+	  var $site_id; //depreciated
 	  var $site; 
 	  var $local_bo;
 	  var $magick;
@@ -84,22 +86,27 @@
 
 	  function bouser()
 	  {
-		
-		
+//_debug_array('bouser constructor start : ');
+//_debug_array('   1');
 		 $this->common = CreateObject('jinn.bocommon');
+		 $this->session = &$this->common->session;	//shortcut to session object
 		 $this->current_config=$this->common->get_config();		
+ 		 $this->message 			= $this->session->get('message');//depreciated
+		 $this->site_id 			= $this->session->get('site_id');//depreciated
+		 $this->site_object_id		= $this->session->get('site_object_id');//depreciated
+		 $this->browse_settings		= $this->session->get('browse_settings');//depreciated
+		 $this->filter_settings		= $this->session->get('filter_settings');//depreciated
+		 $this->mult_where_array	= $this->session->get('mult_where_array');//depreciated
+		 $this->mult_records_amount = $this->session->get('mult_records_amount');//depreciated
+		 $this->last_where_string	= $this->session->get('last_where_string');//depreciated
 
 		 $this->so = CreateObject('jinn.sojinn');
 
+//_debug_array('   2');
 		 $this->acl = CreateObject('jinn.boacl');
 
+//_debug_array('   3');
 		 $this->magick = CreateObject('jinn.boimagemagick.inc.php');	
-
-		 $this->read_sessiondata();
-
-		 $_form = $_POST['form'];
-		 $_site_id = $_POST['site_id'];
-		 $_site_object_id = $_POST['site_object_id'];
 
 		 list($_where_string,$_where_key,$_where_value,$_repeat_input)=$this->common->get_global_vars(array('where_string','where_key','where_value','repeat_input'));
 
@@ -115,13 +122,6 @@
 			$this->where_string_encoded  = $_where_string;
 			$this->last_where_string = $this->where_string_encoded;
 		 }
-
-		 if (($_form=='main_menu')) 
-		 {
-			$this->site_id  = $_site_id;
-		 }
-
-		 if (($_form=='main_menu') || !empty($site_object_id)) $this->site_object_id  = $_site_object_id;
 
 		 if ($this->site_id) $this->site = $this->so->get_site_values($this->site_id);
 		 if ($this->site_object_id) $this->site_object = $this->so->get_object_values($this->site_object_id);
@@ -164,6 +164,8 @@
 		 {
 			$this->scan_new_objects_silent();
 		 }
+// _debug_array('bouser constructor end');
+//_debug_array($this->mult_where_array);
 	  }
 
 	  
@@ -231,47 +233,16 @@
 		
 	  function save_sessiondata()
 	  {
-		 $data = array(
-			'message' => $this->message, 
-			'site_id' => $this->site_id,
-			'site_object_id' => $this->site_object_id,
-			'browse_settings'=>	$this->browse_settings,
-			'filter_settings'=>	$this->filter_settings,
-			'mult_where_array'=> $this->mult_where_array,
-			'mult_records_amount'=>$this->mult_records_amount,
-			'last_where_string'=>$this->last_where_string
-		 );
-		 $GLOBALS['phpgw']->session->appsession('session_data','jinn',$data);
-	  }
-
-	  /* 
-	  @function read_sessiondata
-	  @abstract read sessiondata from and fill class vars
-	  @note test menu
-	  */
-	  function read_sessiondata()
-	  {
-		 $data = $GLOBALS['phpgw']->session->appsession('session_data','jinn');
-		 if ($GLOBALS['HTTP_POST_VARS']['form']!='main_menu')
-		 {
-			$this->message 		= $data['message'];
-			$this->site_id 		= $data['site_id'];
-			$this->site_object_id	= $data['site_object_id'];
-			$this->browse_settings	= $data['browse_settings'];
-			$this->filter_settings	= $data['filter_settings'];
-			$this->mult_where_array	= $data['mult_where_array'];
-			$this->mult_records_amount = $data['mult_records_amount'];
-			$this->last_where_string = $data['last_where_string'];
-		 }
-		 if($GLOBALS['HTTP_POST_VARS']['form']=='main_menu')
-		 {
-			if($data['site_id'] && $_POST['site_id']!=$data['site_id'])
-			{
-			   unset($_POST[site_object_id]);
-			   unset($data[site_object_id]);
-			   unset($this->site_object_id);
-			}
-		 }
+ 		$this->session->set('message', $this->message);							//depreciated
+		$this->session->set('site_id', $this->site_id);							//depreciated
+	 	$this->session->set('site_object_id', $this->site_object_id);			//depreciated
+		$this->session->set('browse_settings', $this->browse_settings);			//depreciated
+		$this->session->set('filter_settings', $this->filter_settings);			//depreciated
+		$this->session->set('mult_where_array', $this->mult_where_array);		//depreciated
+		$this->session->set('mult_records_amount', $this->mult_records_amount);	//depreciated
+		$this->session->set('last_where_string', $this->last_where_string);		//depreciated
+		
+		$this->session->save();
 	  }
 
 	  /**
@@ -832,7 +803,6 @@
 				$columns_arr[] = $relation;
 			}
 		}
-		
 		return $this->so->get_data($site_id, $table_name, $columns_arr, $filter_where);
 
 	  }

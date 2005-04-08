@@ -64,6 +64,7 @@
 	  function uiu_edit_record()
 	  {
 		 $this->bo = CreateObject('jinn.bouser');
+//_debug_array($this->bo->mult_where_array);		 
 		 $this->template = $GLOBALS['phpgw']->template;
 		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
 		 if($this->bo->so->config[server_type]=='dev')
@@ -871,7 +872,6 @@
 		 $this->template->set_block('view_record','footer','footer');
 
 		 $this->template->pparse('out','header');
-		 
 		 
 		 if (is_array($this->bo->mult_where_array))
 		 {

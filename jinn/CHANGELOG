@@ -7,23 +7,28 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
-Version 0.8.217
+Version 0.8.213e
+===========================
+Fri Apr 08 15:30:00 CET 2005
+- refactoring: all session saving/loading now has own class
+
+Version 0.8.213d
 ===========================
 Thu Apr 07 17:00:00 CET 2005
-- fixed bug in List Records where records where retrieved within the column formatting loop
+- fixed bug in List Records where records were retrieved within the column formatting loop
 
-Version 0.8.216
+Version 0.8.213c
 ===========================
 Tue Mar 29 12:30:00 CET 2005
 - fixed bug where redirection to new record edit page failed after creating new record
 
-Version 0.8.215
+Version 0.8.213b
 ===========================
 Wed Mar 23 14:00:00 CET 2005
 - filemanager plugin: added micro thumbnails (20x30 px) to list records view
 - filemanager plugin: regular thumbs now used in (multiple) record view
 
-Version 0.8.214
+Version 0.8.213a
 ===========================
 Wed Mar 23 13:00:00 CET 2005
 - new filemanager plugin now also works in multiple records edit view
@@ -33,6 +38,8 @@ Version 0.8.213
 ===========================
 Tue Mar 10 17:30:00 CET 2005
 - sites can now be configured to automatically (or manually) create objects from non-wrapped tables
+
+
 
 Version 0.8.212c
 ===========================
@@ -61,10 +68,14 @@ Wed Mar 02 16:15:00 CET 2005
 - now uses unique_id field to save preferences
 - fixed bug where sortorder change in list configuration seemed to have no effect
 
+
+
 Version 0.8.211
 ===========================
 Tue Mar 01 13:30:00 CET 2005
 - faulty database change only. no cvs commit done
+
+
 
 Version 0.8.210j
 ===========================
@@ -138,6 +149,8 @@ Thu Feb 11 CET 2005
 ============================
 - implemented column filters in List Records
 - started object event plugin system
+
+
 Version 0.8.209
 Thu Feb 04 10:34:32 CET 2005
 ============================
@@ -151,6 +164,8 @@ Thu Feb 04 10:34:32 CET 2005
 - refactored mandatory field code
 - refactoring: replaced '_HIDE_' with '_DISABLED_' in plugin system
 - depreciated 'hide this field plugin'. Is now 'disable field' plugin.
+
+
 Version 0.8.208
 Thu Jan 20 21:18:32 CET 2005
 ============================
@@ -159,6 +174,8 @@ Thu Jan 20 21:18:32 CET 2005
 - start of field position implementation
 - start of default columnview implementation
 - reactivate gifs
+
+
 
 Version 0.8.207b
 Fri Jan 14 21:18:32 CET 2005
@@ -171,6 +188,8 @@ Thu Jan 13 00:06:02 CET 2005
 - introduced JiNN's own css file in default
 - started with implementation of 'default field diplay in listview'
 
+
+
 Version 0.8.206
 Thu Jan  6 17:15:14 CET 2005
 =============================
@@ -180,6 +199,8 @@ Thu Jan  6 17:15:14 CET 2005
 - Add extra where sql field to objects table
 - Implement extra object filter on record_list
 - ORDER objects in edit_site default by name
+
+
 
 Version 0.8.205c
 Thu Dec 30 22:24:12 CET 2004
@@ -212,6 +233,8 @@ Wed Dec 22 16:42:47 CET 2004
 - moved main_menu to uicommon
 - fixed wrong saving of list configurations
 - added a link to this changelog in About JiNN
+
+
 
 Version 0.8.204a
 Mon Oct 25 18:59:25 CEST 2004

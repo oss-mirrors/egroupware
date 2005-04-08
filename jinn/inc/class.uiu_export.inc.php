@@ -159,6 +159,7 @@
 	  
 	  function do_csv()
 	  {
+//_debug_array($this->bo->mult_where_array);
 		switch($_POST[source])
 		{
 			case 'filtered':
@@ -207,9 +208,11 @@
 		}
 
 //_debug_array($columns_arr);
+//_debug_array($filter_where);
 		
 			//get data
 		$data = $this->bo->get_data($columns_arr, $filter_where);
+//_debug_array($data);
 
 		header("Content-type: text");
 		$filename=ereg_replace(' ','_',$this->bo->site_object['name']).'.csv';

@@ -1,7 +1,9 @@
 <?php
    /*
    JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare
-   Copyright (C)2002, 2005 Pim Snel <pim@lingewoud.nl>
+   Authors: Pim Snel <pim@lingewoud.nl>, 
+			Lex Vogelaar <lex_vogelaar@users.sourceforge.net>
+   Copyright (C)2002, 2003, 2004, 2005 Pim Snel <pim@lingewoud.nl>
 
    eGroupWare - http://www.egroupware.org
 
@@ -39,11 +41,11 @@
 	  var $so;
 	  var $session;
 
-	  var $message;
+	  var $message; 		//depreciated
 
-	  var $site_object_id; 
+	  var $site_object_id;	//depreciated
 	  var $site_object; 
-	  var $site_id; 
+	  var $site_id; 		//depreciated
 	  var $site; 
 	  var $local_bo;
 	  var $magick;
@@ -52,9 +54,6 @@
 	  var $action;
 	  var $common;
 
-	  var $filter_settings;
-	  var $browse_settings;
-	  
 	  var $where_key;
 	  var $where_value;
 
@@ -68,45 +67,33 @@
 	  function boadmin()
 	  {
 		 $this->common = CreateObject('jinn.bocommon');
+		 $this->session = &$this->common->session;	//shortcut to session object
+		 $this->current_config=$this->common->get_config();		
+ 		 $this->message 		= $this->session->get('message');//depreciated
+		 $this->site_id 		= $this->session->get('site_id');//depreciated
+		 $this->site_object_id	= $this->session->get('site_object_id');//depreciated
 
 		 $this->so = CreateObject('jinn.sojinn');
-		 $this->current_config=$this->common->get_config();		
 
-		 $this->read_sessiondata();
-		 $this->use_session = True;
-
-		 $_form = $_POST['form'] ? $_POST['form']   : $_GET['form'];
-		 $_action = $_POST['action'] ? $_POST['action']   : $_GET['action'];
-		 $_site_id = $_POST['site_id'] ? $_POST['site_id']   : $_GET['site_id'];
-		 $_site_object_id = $_POST['site_object_id'] ? $_POST['site_object_id']    : $_GET['site_object_id'];
-
-		 $_where_key = $_POST['where_key'] ? $_POST['where_key']    : $_GET['where_key'];
-
-		 $_where_value = $_POST['where_value'] ? $_POST['where_value']    : $_GET['where_value'];
-
-		 if(!empty($_where_key))
-		 {
+		 $this->use_session = True; //fixme: what does this do?
+		
+		$_where_key = $_POST['where_key'] ? $_POST['where_key']    : $_GET['where_key'];
+		if(!empty($_where_key))
+		{
 			$this->where_key  = $_where_key;
-		 }
-
-		 if(!empty($_where_value))
-		 {
+		}
+		
+		$_where_value = $_POST['where_value'] ? $_POST['where_value']    : $_GET['where_value'];
+		if(!empty($_where_value))
+		{
 			$this->where_value  = $_where_value;
-		 }
-
-		 if((!empty($_action) && empty($this->action)) || !empty($_action))
-		 {
+		}
+		
+		$_action = $_POST['action'] ? $_POST['action']   : $_GET['action'];
+		if((!empty($_action) && empty($this->action)) || !empty($_action))
+		{
 			$this->action  = $_action;
-		 }
-		 if (($_form=='main_menu')|| (!empty($site_id)))
-		 {
-			$this->site_id  = $_site_id;
-		 }
-
-		 if (($_form=='main_menu')|| (!empty($site_object_id)))
-		 {
-			$this->site_object_id  = $_site_object_id;
-		 }
+		}
 
 		 // get array of site and object
 		 $this->site = $this->so->get_site_values($this->site_id);
@@ -133,30 +120,11 @@
 
 	  function save_sessiondata()
 	  {
-		 $data = array(
-			'message' => $this->message, # this must be recplaced with new message
-			'site_id' => $this->site_id,
-			'site_object_id' => $this->site_object_id,
-			'last_where_string'=>$this->last_where_string,
-			'filter_settings'=>$this->filter_settings,
-			'browse_settings'=>$this->browse_settings
-		 );
-
-		 $GLOBALS['phpgw']->session->appsession('session_data','jinn',$data);
-	  }
-
-	  function read_sessiondata()
-	  {
-		 if ($_POST['form']!='main_menu')
-		 {
-			$data = $GLOBALS['phpgw']->session->appsession('session_data','jinn');
-			$this->message 		= $data['message'];
-			$this->site_id 		= $data['site_id'];
-			$this->site_object_id	= $data['site_object_id'];
-			$this->last_where_string = $data['last_where_string'];
-			$this->filter_settings = $data['filter_settings'];
-			$this->browse_settings = $data['browse_settings'];
-		 }
+ 		$this->session->set('message', $this->message);//depreciated
+		$this->session->set('site_id', $this->site_id);//depreciated
+	 	$this->session->set('site_object_id', $this->site_object_id);//depreciated
+	  
+		$this->session->save();
 	  }
 
 	  function get_field_array($HTTP_POST_VARS)

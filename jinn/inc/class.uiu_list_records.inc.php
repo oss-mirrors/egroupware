@@ -39,6 +39,7 @@
 
 	  function uiu_list_records()
 	  {
+//_debug_array('uiu_list_records constructor called');
 		 $this->bo = CreateObject('jinn.bouser');
 
 		 $this->template = $GLOBALS['phpgw']->template;

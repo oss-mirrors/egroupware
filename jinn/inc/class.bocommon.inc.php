@@ -25,10 +25,13 @@
 	{
 	   var $so;
 	   var $prefs;
+	   var $session;
 
 		function bocommon()
 		{
+//_debug_array('bocommon constructor called');
 			$this->so = CreateObject('jinn.sojinn');
+			$this->session = CreateObject('jinn.sojinnsession');
 			$this->prefs = $this->read_preferences_all();
 		}
   

@@ -58,7 +58,6 @@
 		 // get all available filters from preferences and session
 		 $this->filterstore = $this->bo->read_preferences('filterstore'.$this->bo->site_object[unique_id]); 
 		 $this->sessionfilter = $this->bo->read_session_filter($this->bo->site_object[unique_id]);
-
 		 if($this->bo->so->config[server_type]=='dev')
 		 {
 			$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
