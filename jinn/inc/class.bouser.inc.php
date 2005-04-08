@@ -61,17 +61,11 @@
 	  var $current_config;
 	  var $action;
 	  var $common;
-	  var $browse_settings;
-	  var $filter_settings;
 	  
 	  var $repeat_input;
 	  var $where_key;
 	  var $where_value;
 	  var $where_string;
-	  var $last_where_string;
-
-	  var $mult_where_array;
-	  var $mult_records_amount;
 
 	  /* debugging vars set them in preferences */
 	  var $debug_sql = false;
@@ -86,13 +80,8 @@
 //_debug_array('bouser constructor start : ');
 //_debug_array('   1');
 		 $this->common = CreateObject('jinn.bocommon');
-		 $this->session 		= &$this->common->session->sessionarray;	//shortcut to session array
-		 $this->sessionmanager	= &$this->common->session;					//shortcut to session manager object
-		 $this->browse_settings		= $this->session['browse_settings'];//depreciated
-		 $this->filter_settings		= $this->session['filter_settings'];//depreciated
-		 $this->mult_where_array	= $this->session['mult_where_array'];//depreciated
-		 $this->mult_records_amount = $this->session['mult_records_amount'];//depreciated
-		 $this->last_where_string	= $this->session['last_where_string'];//depreciated
+		 $this->session 		= &$this->common->session->sessionarray;	//reference to session array
+		 $this->sessionmanager	= &$this->common->session;					//reference to session manager object
 
 		 $this->current_config=$this->common->get_config();		
 
@@ -116,7 +105,7 @@
 		 {
 			$this->where_string  = base64_decode($_where_string);
 			$this->where_string_encoded  = $_where_string;
-			$this->last_where_string = $this->where_string_encoded;
+			$this->session['last_where_string'] = $this->where_string_encoded; //fixme: is this used at all??
 		 }
 
 		 if ($this->session['site_id']) $this->site = $this->so->get_site_values($this->session['site_id']);
@@ -161,7 +150,7 @@
 			$this->scan_new_objects_silent();
 		 }
 // _debug_array('bouser constructor end');
-//_debug_array($this->mult_where_array);
+//_debug_array($this->session['mult_where_array']);
 	  }
 
 	  
@@ -218,23 +207,17 @@
 	  
 		function read_session_filter($obj_id)
 		{
-			return $this->filter_settings[$obj_id];
+			return $this->session['filter_settings'][$obj_id];
 		}
 
 		function save_session_filter($obj_id, $data)
 		{
-			$this->filter_settings[$obj_id] = $data;
+			$this->session['filter_settings'][$obj_id] = $data;
 		}
 
 		
 	  function save_sessiondata()
 	  {
-		$this->session['browse_settings'] = $this->browse_settings;			//depreciated
-		$this->session['filter_settings'] = $this->filter_settings;			//depreciated
-		$this->session['mult_where_array'] = $this->mult_where_array;		//depreciated
-		$this->session['mult_records_amount'] = $this->mult_records_amount;	//depreciated
-		$this->session['last_where_string'] = $this->last_where_string;		//depreciated
-		
 		$this->sessionmanager->save();
 	  }
 
@@ -277,7 +260,7 @@
 
 	  function mult_change_num_records()
 	  {
-		 if(is_numeric)	$this->mult_records_amount=intval($_POST['num_records']);
+		 if(is_numeric)	$this->session['mult_records_amount']=intval($_POST['num_records']);
 
 		 $this->save_sessiondata();
 
@@ -398,17 +381,17 @@
 			$this->multiple_records_delete($where_arr);
 			break;
 			case 'edit':
-			$this->mult_where_array=$this->set_multiple_where();
+			$this->session['mult_where_array']=$this->set_multiple_where();
 			$this->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries');
 			break;
 			case 'view':
-			$this->mult_where_array=$this->set_multiple_where();
+			$this->session['mult_where_array']=$this->set_multiple_where();
 			$this->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.view_multiple_records');
 			break;
 			case 'export':
-			$this->mult_where_array=$this->set_multiple_where();
+			$this->session['mult_where_array']=$this->set_multiple_where();
 			$this->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiu_export.export');
 			break;
@@ -435,7 +418,7 @@
 
 	  function multiple_records_insert()
 	  {
-		 unset($this->mult_where_array);
+		 unset($this->session['mult_where_array']);
 		 if(is_numeric($_POST[MLTNUM]) and intval($_POST[MLTNUM])>0)
 		 {
 			for($i=0;$i<$_POST[MLTNUM];$i++)
@@ -450,7 +433,7 @@
 				  $this->session['message']['debug'][]='SQL: '.$status[sql];
 			   }
 
-			   $this->mult_where_array[]=$status[where_string];
+			   $this->session['mult_where_array'][]=$status[where_string];
 			   $m2m_data=$this->http_vars_pairs_m2m($post_arr);
 			   $m2m_data['FLDXXX'.$status['idfield']]=$status['id'];
 			   $status_relations=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
@@ -470,14 +453,14 @@
 
 		 $this->save_sessiondata();
 
-		 if($_POST['continue'] && is_array($this->mult_where_array) )
+		 if($_POST['continue'] && is_array($this->session['mult_where_array']) )
 		 {
 
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries'); //mult_where_string
 		 }
 		 elseif($_POST['add_new'])
 		 {
-			unset($this->mult_where_array);
+			unset($this->session['mult_where_array']);
 			$this->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries');
 		 }
@@ -512,9 +495,9 @@
 		 /* exit and go to del function */
 		 if($_POST['delete'])
 		 {
-			$this->multiple_records_delete($this->mult_where_array);
+			$this->multiple_records_delete($this->session['mult_where_array']);
 		 }
-		 unset($this->mult_where_array);
+		 unset($this->session['mult_where_array']);
 
 		 if(is_numeric($_POST[MLTNUM]) and intval($_POST[MLTNUM])>0)
 		 {
@@ -525,7 +508,7 @@
 			   $data = $this->remove_helper_fields($this->http_vars_pairs($post_arr,$files_arr));
 			   
 			   $where_string=base64_decode($_POST['MLTWHR'.sprintf("%02d",$i)]);
-			   $this->mult_where_array[]=$where_string;
+			   $this->session['mult_where_array'][]=$where_string;
 
 			   $table=$this->site_object[table_name];
 
@@ -552,14 +535,14 @@
 
 		 $this->save_sessiondata();
 
-		 if($_POST['continue'] && is_array($this->mult_where_array) )
+		 if($_POST['continue'] && is_array($this->session['mult_where_array']) )
 		 {
 
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries'); //mult_where_string
 		 }
 		 elseif($_POST['add_new'])
 		 {
-			unset($this->mult_where_array);
+			unset($this->session['mult_where_array']);
 			$this->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries');
 		 }
@@ -1175,7 +1158,7 @@
 		 $this->save_preferences('show_fields'.$this->site_object[unique_id],$prefs_show_hide_new);
 		 $this->save_preferences('default_order'.$this->site_object[unique_id],$prefs_order_new);
 			//the browse settings overrule the preferences, so kill them. Otherwise we will not see any results until we chamge the Object and return
-		 unset($this->browse_settings['orderby']);
+		 unset($this->session['browse_settings']['orderby']);
 		 $this->save_sessiondata();
 
 		 $this->common->exit_and_open_screen('jinn.uiu_list_records.display');
@@ -1433,7 +1416,7 @@
 
 		function set_adv_filter()
 		{
-		   $this->browse_settings[adv_filter_str]=$_POST[adv_filter];  
+		   $this->session['browse_settings'][adv_filter_str]=$_POST[adv_filter];  
 		   $this->save_sessiondata();
 		   $this->common->exit_and_open_screen('jinn.uiu_list_records.display');
 		}

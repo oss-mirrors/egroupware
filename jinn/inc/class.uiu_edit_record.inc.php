@@ -64,7 +64,7 @@
 	  function uiu_edit_record()
 	  {
 		 $this->bo = CreateObject('jinn.bouser');
-//_debug_array($this->bo->mult_where_array);		 
+//_debug_array($this->bo->session['mult_where_array']);		 
 		 $this->template = $GLOBALS['phpgw']->template;
 		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
 		 if($this->bo->so->config[server_type]=='dev')
@@ -215,17 +215,17 @@
 		 }
 
 
-		 if (!$_GET['insert'] && is_array($this->bo->mult_where_array))
+		 if (!$_GET['insert'] && is_array($this->bo->session['mult_where_array']))
 		 {
 			$this->ui->header('edit records');
-			$mult_where_array=$this->bo->mult_where_array; // get local en unset bo
+			$mult_where_array=$this->bo->session['mult_where_array']; // get local en unset bo
 			$this->bo->where_string=true;
 			$this->mult_records=count($mult_where_array);
 		 }
 		 else
 		 {
 			$this->ui->header('add new records');
-			if(!$this->bo->mult_records_amount || !is_numeric($this->bo->mult_records_amount))
+			if(!$this->bo->session['mult_records_amount'] || !is_numeric($this->bo->session['mult_records_amount']))
 			{
 			   $this->mult_records=3;// FIXME get from user
 			}
@@ -236,7 +236,7 @@
 			}
 			else
 			{
-			   $this->mult_records=$this->bo->mult_records_amount;// FIXME get from user
+			   $this->mult_records=$this->bo->session['mult_records_amount'];// FIXME get from user
 			}
 		 }
 
@@ -705,7 +705,7 @@
 		 $O2O_arr=$this->bo->extract_O2O_relations($this->bo->site_object[relations]);
 		 if (count($O2O_arr)>0)
 		 {
-			if(!$this->bo->where_string && !$this->bo->mult_where_array)
+			if(!$this->bo->where_string && !$this->bo->session['mult_where_array'])
 			{
 			   $this->template->set_var('input',lang('Come back in edit mode to enter one-to-one fields for this record.'));
 			   $this->template->set_var('row_color','');
@@ -873,9 +873,9 @@
 
 		 $this->template->pparse('out','header');
 		 
-		 if (is_array($this->bo->mult_where_array))
+		 if (is_array($this->bo->session['mult_where_array']))
 		 {
-			$mult_where_array=$this->bo->mult_where_array; // get local en unset bo
+			$mult_where_array=$this->bo->session['mult_where_array']; // get local en unset bo
 			$this->bo->where_string=true;
 			$this->mult_records=count($mult_where_array);
 			//$i=0;

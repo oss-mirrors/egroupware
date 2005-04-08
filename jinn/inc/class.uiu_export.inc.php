@@ -159,7 +159,7 @@
 	  
 	  function do_csv()
 	  {
-//_debug_array($this->bo->mult_where_array);
+//_debug_array($this->bo->session['mult_where_array']);
 		switch($_POST[source])
 		{
 			case 'filtered':
@@ -169,10 +169,10 @@
 				$filter_where = 'all';
 				break;
 			case 'selected':
-				if(is_array($this->bo->mult_where_array))
+				if(is_array($this->bo->session['mult_where_array']))
 				{
 					$filter_where = '(';
-					foreach($this->bo->mult_where_array as $filter)
+					foreach($this->bo->session['mult_where_array'] as $filter)
 					{
 						if($filter_where!='(') $filter_where .= ' OR ';
 						$filter_where .= "$filter";
@@ -322,7 +322,7 @@
 		 if($_POST[source] == '')
 		 {
 			$_POST[columns] = 'all';
-			if(is_array($this->bo->mult_where_array))
+			if(is_array($this->bo->session['mult_where_array']))
 			{
 				$_POST[source] = 'selected';
 			}
@@ -352,7 +352,7 @@
 		 
 		 $this->template->set_var('source_1_disabled','');
 		 $this->template->set_var('source_2_disabled','');
-		 if(is_array($this->bo->mult_where_array))
+		 if(is_array($this->bo->session['mult_where_array']))
 		 {
 			$this->template->set_var('source_3_disabled','');
 		 }

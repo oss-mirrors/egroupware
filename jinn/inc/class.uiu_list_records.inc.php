@@ -63,7 +63,7 @@
 	  */
 	  function display()
 	  {
-		 unset($this->bo->mult_where_array);
+		 unset($this->bo->session['mult_where_array']);
 
 		 if($this->bo->site_object[max_records]==1)
 		 {
@@ -247,7 +247,7 @@
 	  */
 	  function list_records()
 	  {
-		 unset($this->bo->mult_where_array);
+		 unset($this->bo->session['mult_where_array']);
 
 		 // check if table exists
 		 if(!$this->bo->so->test_JSO_table($this->bo->site_object))
@@ -294,15 +294,15 @@
 		 $default_col_num=$this->bo->read_preferences('default_col_num');
 
 		 $current_page = 
-		 ($_GET[current_page]?$_GET[current_page]:$this->bo->browse_settings['current_page']);
+		 ($_GET[current_page]?$_GET[current_page]:$this->bo->session['browse_settings']['current_page']);
 
 		 $rec_per_page = $this->bo->records_per_page();
 
 		 $offset = $this->bo->get_offset($current_page,$rec_per_page);
 
-		 $filter = ($_GET[filter]?$_GET[filter]:$this->bo->browse_settings['filter']);
+		 $filter = ($_GET[filter]?$_GET[filter]:$this->bo->session['browse_settings']['filter']);
 
-		 $orderby = ($_GET[orderby]?$_GET[orderby]:$this->bo->browse_settings['orderby']);
+		 $orderby = ($_GET[orderby]?$_GET[orderby]:$this->bo->session['browse_settings']['orderby']);
 		 if(!$orderby && $default_order) $orderby=$default_order;
 
 			//the filter class takes care of detecting the current filter, compiling a where statement and compiling the filter options for the listbox
@@ -321,10 +321,10 @@
 		 }
 		 else
 		 {
-			$quick_filter = trim( $this->bo->browse_settings['quick_filter'] );
+			$quick_filter = trim( $this->bo->session['browse_settings']['quick_filter'] );
 		 }
 
-		 $this->bo->browse_settings = array
+		 $this->bo->session['browse_settings'] = array
 		 (
 			'orderby'=>$orderby,
 			'quick_filter'=>$quick_filter,
