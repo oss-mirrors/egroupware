@@ -73,7 +73,7 @@
 	  function save_sessionfilter()
 	  {
 		 $this->bo->save_session_filter($this->bo->site_object[unique_id], $this->sessionfilter);
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 	  }
 	  
 	  /**
@@ -168,7 +168,7 @@
 		}
 		
 			//redirect to list
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 		 $this->bo->common->exit_and_open_screen('jinn.uiu_list_records.display');
 
 	  }
@@ -344,7 +344,7 @@
 		 $this->template->parse('post','post_block');	//parses the right argument block into the left argument variable ('fetch')
 		 $this->template->pparse('out','post'); 		//prints the right argument into the left argument buffer ('parse')
 
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 	  }
 
 	function getFieldOptions($fields_arr, $selected)

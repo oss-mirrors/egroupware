@@ -110,7 +110,7 @@
 			else
 			{
 			   $this->bo->session['message']['info']=lang('There are no records found for this object. You can now at a new record.');
-			   $this->bo->save_sessiondata();
+			   $this->bo->sessionmanager->save();
 			   $this->bo->common->exit_and_open_screen('jinn.uiu_edit_record.display_form');
 			}
 		 }
@@ -256,7 +256,7 @@
 			$this->bo->session['message']['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
 			$this->bo->session['message']['error_code']=117;
 
-			$this->bo->save_sessiondata();
+			$this->bo->sessionmanager->save();
 			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
 		 }				
 
@@ -267,7 +267,7 @@
 			$this->bo->session['message']['error']=lang('You have no access to this object');
 			$this->bo->session['message']['error_code']=116;
 
-			$this->bo->save_sessiondata();
+			$this->bo->sessionmanager->save();
 			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
 		 }
 
@@ -698,7 +698,7 @@
 			$this->template->pparse('out','emptyfooter');
 		 }
 
-		$this->bo->save_sessiondata();
+		$this->bo->sessionmanager->save();
 	  }
 
 

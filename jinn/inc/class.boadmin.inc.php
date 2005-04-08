@@ -115,11 +115,6 @@
 		 $local_bo=$this;
 	  }
 
-	  function save_sessiondata()
-	  {
-		$this->sessionmanager->save();
-	  }
-
 	  function get_field_array($HTTP_POST_VARS)
 	  {
 		 while(list($key, $val) = each($HTTP_POST_VARS)) 
@@ -163,7 +158,7 @@
 		 {
 			$this->session['message'][info]=lang('Field info configuration successfully saved');
 		 }
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 
 		 $this->common->exit_and_open_screen('jinn.uiadmin.field_help_config&field_name='.$_GET[field_name].'&object_id='.$_GET[object_id]);
 	  }
@@ -263,7 +258,7 @@
 			}
 		 }
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 
 		 //fixme: this gives a strange error:
 		 //$this->common->exit_and_open_screen('menuaction=jinn.uiadmin.object_events_config&close_me=true&object_id='.$_GET[object_id]);
@@ -306,7 +301,7 @@
 		 {
 			$this->session['message'][info]=lang('Plugin configuration successfully saved');
 		 }
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 
 		 $this->common->exit_and_open_screen('jinn.uiadmin.plug_config&plug_orig='.$_GET[plug_name].'&close_me=true&plug_name='.$_GET[plug_name].'&hidden_name=CFG_PLG'.$_GET[plug_name].'&=&field_name='.$_GET[plug_name].'&object_id='.$_GET[object_id].'&hidden_val=');
 	  }
@@ -330,7 +325,7 @@
 			$this->session['message'][error]=lang('Site NOT succesfully added, unknown error');
 		 }
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 		 if($_POST['continue'])
 		 {
 			$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$status[where_value].'&serial='.$status[serial]);
@@ -353,7 +348,7 @@
 		 if ($status>0)	$this->session['message'][info]=lang('Site Object succesfully added');
 		 else $this->session['message'][error]=lang('Site Object NOT succesfully added, unknown error');
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 		 if($_POST['continue'])
 		 {
 			$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_object&where_key=object_id&where_value='.$status[where_value].'&serial='.$status[serial]);
@@ -379,7 +374,7 @@
 		 if ($status[ret_code]==0)	$this->session['message'][info]=lang('Site succesfully saved');
 		 else $this->session['message'][error]=lang('Site NOT succesfully saved, unknown error');
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 		 if($_POST['continue'])
 		 {
 			//FIXME 
@@ -513,7 +508,7 @@
 		 if ($status[ret_code]==0)	$this->session['message'][info]=lang('Site Object succesfully saved');
 		 else $this->session['message'][error]=lang('Site Object NOT succesfully saved, unknown error');
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 		 if($_POST['continue'])
 		 {
 			$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_object&where_key='.$this->where_key.'&where_value='.$this->where_value);
@@ -535,7 +530,7 @@
 		 if ($status==1)	$this->session['message'][info]=lang('site succesfully deleted');
 		 else $this->session['message'][error]=lang('Site NOT succesfully deleted, Unknown error');
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 		 $this->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
 	  }
 
@@ -552,7 +547,7 @@
 		 if ($status==1)	$this->session['message'][info]=lang('Site Object succesfully deleted');
 		 else $this->session['message'][error]=lang('Site Object NOT succesfully deleted, Unknown error');
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 
 		 $this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$records['0']["parent_site_id"]);
 

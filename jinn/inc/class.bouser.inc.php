@@ -215,12 +215,6 @@
 			$this->session['filter_settings'][$obj_id] = $data;
 		}
 
-		
-	  function save_sessiondata()
-	  {
-		$this->sessionmanager->save();
-	  }
-
 	  /**
 	  @function records_per_page
 	  @abstract get number of records per page from user preferences
@@ -262,7 +256,7 @@
 	  {
 		 if(is_numeric)	$this->session['mult_records_amount']=intval($_POST['num_records']);
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 
 		 $this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries&insert=yes');
 	  }
@@ -304,7 +298,7 @@
 			$this->session['message']['debug'][]='SQL: '.$status[sql];
 		 }
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 
 		 if($_POST['reopen'] && $status[where_string])
 		 {
@@ -382,23 +376,23 @@
 			break;
 			case 'edit':
 			$this->session['mult_where_array']=$this->set_multiple_where();
-			$this->save_sessiondata();
+			$this->sessionmanager->save();
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries');
 			break;
 			case 'view':
 			$this->session['mult_where_array']=$this->set_multiple_where();
-			$this->save_sessiondata();
+			$this->sessionmanager->save();
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.view_multiple_records');
 			break;
 			case 'export':
 			$this->session['mult_where_array']=$this->set_multiple_where();
-			$this->save_sessiondata();
+			$this->sessionmanager->save();
 			$this->common->exit_and_open_screen('jinn.uiu_export.export');
 			break;
 			default:
 			$this->session['message'][error]=lang('Operation on multiple records failed.');
 			$this->session['message'][error_code]=100;
-			$this->save_sessiondata();
+			$this->sessionmanager->save();
 			$this->common->exit_and_open_screen('jinn.uiuser.index');
 		 }
 	  }
@@ -451,7 +445,7 @@
 		 }
 
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 
 		 if($_POST['continue'] && is_array($this->session['mult_where_array']) )
 		 {
@@ -461,7 +455,7 @@
 		 elseif($_POST['add_new'])
 		 {
 			unset($this->session['mult_where_array']);
-			$this->save_sessiondata();
+			$this->sessionmanager->save();
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries');
 		 }
 		 else
@@ -533,7 +527,7 @@
 			$this->session['message'][error_code]=106;
 		 }
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 
 		 if($_POST['continue'] && is_array($this->session['mult_where_array']) )
 		 {
@@ -543,7 +537,7 @@
 		 elseif($_POST['add_new'])
 		 {
 			unset($this->session['mult_where_array']);
-			$this->save_sessiondata();
+			$this->sessionmanager->save();
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries');
 		 }
 		 else
@@ -571,7 +565,7 @@
 			$this->session['message'][error_code]=101;
 		 }
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 		 $this->common->exit_and_open_screen('jinn.uiuser.index');
 	  }
 
@@ -635,7 +629,7 @@
 
 		 $this->addtoDebugArr('SQL: '.$status[sql]);
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 
 		 if($_POST['continue'] || $_POST['reopen'])
 		 {
@@ -713,7 +707,7 @@
 			$this->session['message'][error_code]=105;
 		 }
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 		 $this->common->exit_and_open_screen('jinn.uiuser.index');
 	  }
 
@@ -738,7 +732,7 @@
 
 			if($status[where_string])
 			{
-			   $this->save_sessiondata();
+			   $this->sessionmanager->save();
 			   $this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&where_string='.base64_encode($status[where_string]));
 			}
 		 }
@@ -748,7 +742,7 @@
 			$this->addtoErrorArr(lang('Cannot copy a record from this table.'),103);
 		 }
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 		 $this->common->exit_and_open_screen('jinn.uiuser.index');
 	  }
 
@@ -1159,7 +1153,7 @@
 		 $this->save_preferences('default_order'.$this->site_object[unique_id],$prefs_order_new);
 			//the browse settings overrule the preferences, so kill them. Otherwise we will not see any results until we chamge the Object and return
 		 unset($this->session['browse_settings']['orderby']);
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 
 		 $this->common->exit_and_open_screen('jinn.uiu_list_records.display');
 	  }
@@ -1402,14 +1396,14 @@
 		 {
 			$this->session['message'][info]=lang('Action was succesful.');
 
-			$this->save_sessiondata();
+			$this->sessionmanager->save();
 			$this->common->exit_and_open_screen('jinn.uiuser.index');
 		 }
 		 else
 		 {
 			$this->session['message'][error]=lang('Action was not succesful. Unknown error');
 
-			$this->save_sessiondata();
+			$this->sessionmanager->save();
 			$this->common->exit_and_open_screen('jinn.uiuser.index');
 		 }
 	  }
@@ -1417,7 +1411,7 @@
 		function set_adv_filter()
 		{
 		   $this->session['browse_settings'][adv_filter_str]=$_POST[adv_filter];  
-		   $this->save_sessiondata();
+		   $this->sessionmanager->save();
 		   $this->common->exit_and_open_screen('jinn.uiu_list_records.display');
 		}
 
@@ -1488,7 +1482,7 @@
 			{
 				$this->session['message'][info]=lang('no new objects created%1', $endl);
 			}
-			$this->save_sessiondata();
+			$this->sessionmanager->save();
 			$this->common->exit_and_open_screen('jinn.uiuser.index');
 		}
 		

@@ -459,7 +459,7 @@
 
 
 		 
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 		 
 	  }
 	  

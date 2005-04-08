@@ -81,7 +81,7 @@
 		 unset($this->bo->session['message']);
 
 
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 	  }	
 
 	  function edit_this_jinn_site()
@@ -128,7 +128,7 @@
 
 		 unset($this->bo->session['message'][help]);
 
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 	  }
 
 	  function add_edit_site()
@@ -172,7 +172,7 @@
 
 		 unset($this->bo->session['message'][help]);
 
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 	  }
 
 	  function test_db_access() //fixme: rename to more appropriate name, like 'test_db_and_paths'
@@ -321,7 +321,7 @@
 		 $browse = CreateObject('jinn.uia_list_sites',$this->bo);
 		 $browse->render_list();
 
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 
 	  }
 
@@ -398,7 +398,7 @@
 		 $this->template->set_var('cancel',lang('cancel'));
 		 $this->template->pparse('out','footer');
 
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 	  }
 
 	  
@@ -672,7 +672,7 @@
 		 $this->template->set_var('back', lang('back'));		 
 		 $this->template->pparse('out','post_block');
 
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 	  }
 
 	  /**
@@ -856,7 +856,7 @@
 			$this->template->set_var('cancel',lang('cancel'));
 			$this->template->pparse('out','footer');
 
-			$this->bo->save_sessiondata();
+			$this->bo->sessionmanager->save();
 		 }
 
 		 /**
@@ -957,7 +957,7 @@
 					 $this->bo->session['message'][error].= lang('Import failed');
 				  }
 				  
-				  $this->bo->save_sessiondata();
+				  $this->bo->sessionmanager->save();
 				  $this->bo->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$_POST[parent_site_id]);
 		 }
 
@@ -980,7 +980,7 @@
 			   $this->template->pparse('out','import_form');
 			}
 
-			$this->bo->save_sessiondata();
+			$this->bo->sessionmanager->save();
 
 		 }
 
@@ -1118,13 +1118,13 @@
 
 					 $this->bo->session['message'][info].='<br/>'.lang('%1 Site Objects have been imported.',$num_objects);
 					 $this->bo->session['message'][info].='<br/>'.lang('%1 Site Obj-fields have been imported.',$num_fields);
-					 $this->bo->save_sessiondata();
+					 $this->bo->sessionmanager->save();
 					 $this->bo->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
 				  }
 				  else
 				  {
 					 $this->bo->session['message'][error].= lang('Import failed');
-					 $this->bo->save_sessiondata();
+					 $this->bo->sessionmanager->save();
 					 $this->bo->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
 				  }
 			   }
@@ -1147,7 +1147,7 @@
 			   $this->template->pparse('out','import_form');
 			}
 
-			$this->bo->save_sessiondata();
+			$this->bo->sessionmanager->save();
 
 		 }
 

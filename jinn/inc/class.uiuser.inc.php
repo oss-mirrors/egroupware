@@ -61,7 +61,7 @@
 	  {
 		 if (($this->bo->session['site_id']==0 || $this->bo->session['site_id']) && $this->bo->session['site_object_id'] && $this->bo->site_object['parent_site_id']==$this->bo->session['site_id'] )
 		 {
-			$this->bo->save_sessiondata();
+			$this->bo->sessionmanager->save();
 			//			$this->bo->common->exit_and_open_screen('jinn.uiu_list_records.display');
 			$this->bo->common->exit_and_open_screen('jinn.uiu_list_records.display');
 		 }
@@ -86,7 +86,7 @@
 			unset($this->bo->session['message']);
 
 			$this->ui->main_menu();
-			$this->bo->save_sessiondata();
+			$this->bo->sessionmanager->save();
 		 }
 	  }
 
@@ -117,7 +117,7 @@
 			$main->show_fields();
 		 }
 
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 	  }
 
 	  function file_download()
@@ -128,7 +128,7 @@
 			$this->bo->session['message'][error]=lang('You have no access to this file.');
 			$this->bo->session['message'][error_code]=118;
 
-			$this->bo->save_sessiondata();
+			$this->bo->sessionmanager->save();
 			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
 		 }
 
@@ -162,7 +162,7 @@
 			$this->bo->session['message'][error]=lang('You have no access to this file.');
 			$this->bo->session['message'][error_code]=118;
 
-			$this->bo->save_sessiondata();
+			$this->bo->sessionmanager->save();
 			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
 
 		 }

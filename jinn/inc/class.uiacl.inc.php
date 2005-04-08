@@ -49,7 +49,7 @@
 			$this->bo->session['message'][error]=lang('You don\'t have access to this page.');
 			$this->bo->session['message'][error_code]=112;
 
-			$this->bo->save_sessiondata();
+			$this->bo->sessionmanager->save();
 			$this->common->exit_and_open_screen('jinn.uiuser.index');
 		 }
 	  }
@@ -64,7 +64,7 @@
 		 $this->ui->msg_box($this->bo->session['message']);
 
 		 unset($this->bo->session['message']);
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 
 		 $this->template->set_file(array(
 			'access_rights_main' => 'access_rights.tpl'
@@ -124,7 +124,7 @@
 			$this->bo->session['message'][error]=lang('You don\'t have access to this page.');
 			$this->bo->session['message'][error_code]=112;
 
-			$this->bo->save_sessiondata();
+			$this->bo->sessionmanager->save();
 			$this->common->exit_and_open_screen('jinn.uiacl.main_screen');
 		 }
 		 
@@ -132,7 +132,7 @@
 		 $this->ui->msg_box($this->bo->session['message']);
 		 unset($this->bo->session['message']);
 
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 	
 		 $this->template->set_file(array(
 			'accounts' => 'accounts.tpl'
@@ -257,7 +257,7 @@
 			$this->bo->session['message'][error]=lang('You don\'t have access to this page.');
 			$this->bo->session['message'][error_code]=112;
 
-			$this->bo->save_sessiondata();
+			$this->bo->sessionmanager->save();
 			$this->common->exit_and_open_screen('jinn.uiacl.main_screen');
 		 }
 		 
@@ -265,7 +265,7 @@
 		 $this->ui->msg_box($this->bo->session['message']);
 		 unset($this->bo->session['message']);
 
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 
 		 list($site_id,$total,$start,$sort,$order,$query)=$this->common->get_global_vars(array('site_id','total','start','sort','order','query'));
 

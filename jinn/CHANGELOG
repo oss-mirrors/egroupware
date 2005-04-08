@@ -6,6 +6,11 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.213k
+===========================
+Fri Apr 08 18:30:00 CET 2005
+- refactored legacy session code: removed old session saving functions and let the new class take care of this directly
+
 Version 0.8.213j
 ===========================
 Fri Apr 08 18:15:00 CET 2005

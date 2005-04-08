@@ -129,7 +129,7 @@
 			unset($this->bo->session['site_object_id']);
 			$this->bo->session['message']['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
 
-			$this->bo->save_sessiondata();
+			$this->bo->sessionmanager->save();
 			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
 		 }				
 
@@ -196,7 +196,7 @@
 	     $this->template->set_var('hiddenfields',$this->hiddenfields);
 	     $this->template->set_var('jsmandatory',$this->jsmandatory);
 		 $this->template->pparse('out','form_footer');
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 
 	  }
 
@@ -245,7 +245,7 @@
 			unset($this->bo->session['site_object_id']);
 			$this->bo->session['message']['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
 
-			$this->bo->save_sessiondata();
+			$this->bo->sessionmanager->save();
 			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
 		 }				
 
@@ -338,7 +338,7 @@
 	     $this->template->set_var('jsmandatory',$this->jsmandatory);
 		 $this->template->pparse('out','form_footer');
 
-		 $this->bo->save_sessiondata();
+		 $this->bo->sessionmanager->save();
 
 	  }
 

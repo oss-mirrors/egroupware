@@ -77,11 +77,6 @@
 		 }
 	  }
 
-	  function save_sessiondata()
-	  {
-		$this->sessionmanager->save();
-	  }
-
 	  function read_preferences($key)
 	  {
 		 $GLOBALS['phpgw']->preferences->read_repository();
@@ -123,7 +118,7 @@
 			$this->session['message']['debug'][]='SQL: '.$status[sql];
 		 }
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 		 $this->common->exit_and_open_screen('jinn.uiacl.main_screen');
 	  }
 
@@ -158,7 +153,7 @@
 			$this->session['message']['debug'][]='SQL: '.$status[sql];
 		 }
 
-		 $this->save_sessiondata();
+		 $this->sessionmanager->save();
 
 		 $this->common->exit_and_open_screen('jinn.uiacl.main_screen');
 	  }
