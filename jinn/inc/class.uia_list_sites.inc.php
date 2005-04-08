@@ -169,7 +169,7 @@
 			}
 
 			$button_browse='<td><form method=post action="index.php?menuaction=jinn.uiadmin.browse_egw_jinn_sites&where_key=site_id&where_val='.
-			$this->bo->site_id.'"><input type=submit value="'.
+			$this->bo->session['site_id'].'"><input type=submit value="'.
 			lang('browse').'"></form></td>';
 
 

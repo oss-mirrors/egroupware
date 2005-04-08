@@ -195,7 +195,7 @@
 				$columns_arr = $this->bo->common->filter_array_with_prefix($_POST,'col_');
 				break;
 			default:
-				 $columns = $this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
+				 $columns = $this->bo->so->site_table_metadata($this->bo->session['site_id'], $this->bo->site_object['table_name']);
 				 if(is_array($columns))
 				 {
 					$columns_arr = array();
@@ -422,7 +422,7 @@
 		 //process the columns
 		 /////////////////////////
 
-		 $fields_arr=$this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
+		 $fields_arr=$this->bo->so->site_table_metadata($this->bo->session['site_id'], $this->bo->site_object['table_name']);
 		 foreach($fields_arr as $field)
 		 {
 			if($this->bo->field_is_enabled($this->bo->site_object[object_id], $field[name]))

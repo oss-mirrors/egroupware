@@ -67,7 +67,7 @@
 
 		 if($this->bo->site_object[max_records]==1)
 		 {
-			$columns=$this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
+			$columns=$this->bo->so->site_table_metadata($this->bo->session['site_id'], $this->bo->site_object['table_name']);
 			if(!is_array($columns)) $columns=array();
 
 			// walk through all table columns and fill different array 
@@ -363,7 +363,7 @@
 			}
 		 }
 
-		 $columns=$this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
+		 $columns=$this->bo->so->site_table_metadata($this->bo->session['site_id'], $this->bo->site_object['table_name']);
 		 if(!is_array($columns)) $columns=array();
 		 /* walk through all table columns and fill different array */
 		 $fields_show_default = array();
@@ -519,11 +519,11 @@
 			$this->template->parse('colnames','column_name',true);
 		}
 		
-		$records = $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','',$offset,$rec_per_page,'name',$orderby,'*',$where_condition);
+		$records = $this->bo->so->get_record_values($this->bo->session['site_id'],$this->bo->site_object[table_name],'','',$offset,$rec_per_page,'name',$orderby,'*',$where_condition);
 
 		$record_count = count($records);
 
-		$num_rows=$this->bo->so->num_rows_table($this->bo->site_id,$this->bo->site_object['table_name'],$where_condition);
+		$num_rows=$this->bo->so->num_rows_table($this->bo->session['site_id'],$this->bo->site_object['table_name'],$where_condition);
 
 		$lang_total_records= lang('%1 records',$num_rows);
 		$lang_rec_per_page= lang('%1 records per page', $rec_per_page);

@@ -36,7 +36,7 @@
 				'config' => 'config_browse_view.tpl'
 			));
 
-			$columns_data=$this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
+			$columns_data=$this->bo->so->site_table_metadata($this->bo->session['site_id'], $this->bo->site_object['table_name']);
 
 			if(is_array($columns_data));
 			{

@@ -87,7 +87,7 @@
 	  function edit_this_jinn_site()
 	  {
 		 $this->bo->where_key='site_id';
-		 $this->bo->where_value=$this->bo->site_id;
+		 $this->bo->where_value=$this->bo->session['site_id'];
 
 		 $this->add_edit_site();
 	  }

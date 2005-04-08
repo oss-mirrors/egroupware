@@ -287,7 +287,7 @@
 		 /////////////////////////
 
 			//get the columns info
-		 $fields_arr=$this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
+		 $fields_arr=$this->bo->so->site_table_metadata($this->bo->session['site_id'], $this->bo->site_object['table_name']);
 		 
 			//get the filter data
 		 if(is_array($this->filterdata))

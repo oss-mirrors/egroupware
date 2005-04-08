@@ -429,11 +429,11 @@
 
 		 if($this->bo->where_string && !$alt_object_arr)
 		 {
-			$this->values_object= $this->bo->so->get_record_values($this->bo->site_id,$object_arr[table_name],'','','','','name','','*',$this->bo->where_string);
+			$this->values_object= $this->bo->so->get_record_values($this->bo->session['site_id'],$object_arr[table_name],'','','','','name','','*',$this->bo->where_string);
 		 }
 		 
 		 /* get all fieldproperties (name, type, etc...) */
-		 $fields = $this->bo->so->site_table_metadata($this->bo->site_id,$object_arr[table_name]);
+		 $fields = $this->bo->so->site_table_metadata($this->bo->session['site_id'],$object_arr[table_name]);
 
 		 /* The main loop to create all rows with input fields start here */ 
 		 foreach ( $fields as $fprops )
@@ -668,7 +668,7 @@
 			   if($this->record_id_val)
 			   {
 				  $record_id=$this->record_id_val;
-				  $options_arr= $this->bo->so->get_1wX_record_values($this->bo->site_id,$record_id,$relation2,'stored');
+				  $options_arr= $this->bo->so->get_1wX_record_values($this->bo->session['site_id'],$record_id,$relation2,'stored');
 
 				  if(@count($options_arr))
 				  {
@@ -736,7 +736,7 @@
 			   $O2O_object_arr[plugins].=$O2O_related_key.':hidefield::';
 			   */			   
 
-			   $O2O_values_object = $this->bo->so->get_record_values($this->bo->site_id,$O2O_object_arr[table_name],'','','','','name','','*',$O2O_where_string);
+			   $O2O_values_object = $this->bo->so->get_record_values($this->bo->session['site_id'],$O2O_object_arr[table_name],'','','','','name','','*',$O2O_where_string);
 
 			   $this->o2o_index=sprintf("%02d",$i);
 
@@ -806,7 +806,7 @@
 
 			   $lang_add_remove=lang('add or remove');
 
-			   $options_arr= $this->bo->so->get_1wX_record_values($this->bo->site_id,'',$relation2,'all');
+			   $options_arr= $this->bo->so->get_1wX_record_values($this->bo->session['site_id'],'',$relation2,'all');
 			   $sel1_options = $this->ui->select_options($options_arr,'',false);
 			   $lang_related=lang('related').' '.$related_table;
 
@@ -815,7 +815,7 @@
 			   if($this->record_id_val)
 			   {
 				  $record_id=$this->record_id_val;
-				  $options_arr= $this->bo->so->get_1wX_record_values($this->bo->site_id,$record_id,$relation2,'stored');
+				  $options_arr= $this->bo->so->get_1wX_record_values($this->bo->session['site_id'],$record_id,$relation2,'stored');
 				  $sel2_options= $this->ui->select_options($options_arr,'',false);
 			   }
 			   elseif(!$this->record_id_key)
@@ -884,8 +884,8 @@
 			{
 				 $this->template->parse('record','recordheader',true);
 
-				 $this->values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','','','','name','','*',$where_string);
-				 $fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
+				 $this->values_object= $this->bo->so->get_record_values($this->bo->session['site_id'],$this->bo->site_object[table_name],'','','','','name','','*',$where_string);
+				 $fields = $this->bo->so->site_table_metadata($this->bo->session['site_id'],$this->bo->site_object[table_name]);
 		
 				 /* The main loop to create all rows with input fields start here */ 
 				 foreach ( $fields as $fprops )
@@ -1024,8 +1024,8 @@
 
 		 $where_string=$this->bo->where_string;
 
-		 $this->values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','','','','name','','*',$where_string);
-		 $fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
+		 $this->values_object= $this->bo->so->get_record_values($this->bo->session['site_id'],$this->bo->site_object[table_name],'','','','','name','','*',$where_string);
+		 $fields = $this->bo->so->site_table_metadata($this->bo->session['site_id'],$this->bo->site_object[table_name]);
 
 		 /* The main loop to create all rows with input fields start here */ 
 		 foreach ( $fields as $fprops )

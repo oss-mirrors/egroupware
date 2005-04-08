@@ -34,7 +34,6 @@
 
 	  var $site_object_id; //depreciated
 	  var $site_object; 
-	  var $site_id; //depreciated
 	  var $site; 
 	  var $local_bo;
 	  var $so;
@@ -59,7 +58,6 @@
 		 $this->common = CreateObject('jinn.bocommon');
 		 $this->session 		= &$this->common->session->sessionarray;	//shortcut to session array
 		 $this->sessionmanager	= &$this->common->session;					//shortcut to session manager object
-		 $this->site_id 		= $this->session['site_id'];//depreciated
 		 $this->site_object_id	= $this->session['site_object_id'];//depreciated
 
 		 /* this is for the sidebox */
@@ -83,7 +81,6 @@
 
 	  function save_sessiondata()
 	  {
-		$this->session['site_id'] 			= $this->site_id;			//depreciated
 	 	$this->session['site_object_id'] 	= $this->site_object_id;	//depreciated
 		
 		$this->sessionmanager->save();

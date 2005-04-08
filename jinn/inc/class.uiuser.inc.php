@@ -59,7 +59,7 @@
 	  */
 	  function index()
 	  {
-		 if (($this->bo->site_id==0 || $this->bo->site_id) && $this->bo->site_object_id && $this->bo->site_object['parent_site_id']==$this->bo->site_id )
+		 if (($this->bo->session['site_id']==0 || $this->bo->session['site_id']) && $this->bo->site_object_id && $this->bo->site_object['parent_site_id']==$this->bo->session['site_id'] )
 		 {
 			$this->bo->save_sessiondata();
 			//			$this->bo->common->exit_and_open_screen('jinn.uiu_list_records.display');
@@ -67,7 +67,7 @@
 		 }
 		 else
 		 {
-			if (!$this->bo->site_id)
+			if (!$this->bo->session['site_id'])
 			{
 			   $this->bo->session['message']['info'].=lang('Select site to moderate');
 			}
@@ -123,7 +123,7 @@
 	  function file_download()
 	  {
 		 /* check current site  and object*/
-		 if(!$this->bo->site_id || !$this->bo->site_object_id)
+		 if(!$this->bo->session['site_id'] || !$this->bo->site_object_id)
 		 {
 			$this->bo->session['message'][error]=lang('You have no access to this file.');
 			$this->bo->session['message'][error_code]=118;

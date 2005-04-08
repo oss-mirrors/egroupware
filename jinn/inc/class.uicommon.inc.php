@@ -207,12 +207,12 @@
 			   }
 			}
 
-			$site_options=$this->select_options($site_arr,$this->bo->site_id,true);
+			$site_options=$this->select_options($site_arr,$this->bo->session['site_id'],true);
 
 
-			if ($this->bo->site_id)
+			if ($this->bo->session['site_id'])
 			{
-			   $objects=$this->bo->common->get_objects_allowed($this->bo->site_id, $GLOBALS['phpgw_info']['user']['account_id']);
+			   $objects=$this->bo->common->get_objects_allowed($this->bo->session['site_id'], $GLOBALS['phpgw_info']['user']['account_id']);
 
 			   if (is_array($objects))
 			   {
@@ -246,7 +246,7 @@
 
 			/* set admin shortcuts */
 			// if site if site admin
-			if($this->bo->site_id && $userisadmin)
+			if($this->bo->session['site_id'] && $userisadmin)
 			{
 			   $admin_site_link='<br><a href="'.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadminaddedit.').'">'.
 				  lang('admin:: edit site').'</a>';

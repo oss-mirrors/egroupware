@@ -50,7 +50,6 @@
 
 	  var $site_object_id; //depreciated
 	  var $site_object; 
-	  var $site_id; //depreciated
 	  var $site; 
 	  var $local_bo;
 	  var $magick;
@@ -90,7 +89,6 @@
 		 $this->common = CreateObject('jinn.bocommon');
 		 $this->session 		= &$this->common->session->sessionarray;	//shortcut to session array
 		 $this->sessionmanager	= &$this->common->session;					//shortcut to session manager object
-		 $this->site_id 			= $this->session['site_id'];//depreciated
 		 $this->site_object_id		= $this->session['site_object_id'];//depreciated
 		 $this->browse_settings		= $this->session['browse_settings'];//depreciated
 		 $this->filter_settings		= $this->session['filter_settings'];//depreciated
@@ -123,7 +121,7 @@
 			$this->last_where_string = $this->where_string_encoded;
 		 }
 
-		 if ($this->site_id) $this->site = $this->so->get_site_values($this->site_id);
+		 if ($this->session['site_id']) $this->site = $this->so->get_site_values($this->session['site_id']);
 		 if ($this->site_object_id) $this->site_object = $this->so->get_object_values($this->site_object_id);
 		 
 		 $this->plug = CreateObject('jinn.plugins_db_fields');
@@ -233,7 +231,6 @@
 		
 	  function save_sessiondata()
 	  {
-		$this->session['site_id'] = $this->site_id;							//depreciated
 	 	$this->session['site_object_id'] = $this->site_object_id;			//depreciated
 		$this->session['browse_settings'] = $this->browse_settings;			//depreciated
 		$this->session['filter_settings'] = $this->filter_settings;			//depreciated
@@ -298,7 +295,7 @@
 			$value_reference='num';
 		 }
 
-		 $records = $this->so->get_record_values($this->site_id,$table,$where_key,$where_value,$offset,$range,$value_reference,$order_by,$field_list,$where_condition);
+		 $records = $this->so->get_record_values($this->session['site_id'],$table,$where_key,$where_value,$offset,$range,$value_reference,$order_by,$field_list,$where_condition);
 
 
 		 return $records;
@@ -307,10 +304,10 @@
 	  function record_insert()
 	  {
 		 $data = $this->remove_helper_fields($this->http_vars_pairs($_POST, $_FILES));
-		 $status=$this->so->insert_object_data($this->site_id,$this->site_object[table_name],$data);
+		 $status=$this->so->insert_object_data($this->session['site_id'],$this->site_object[table_name],$data);
 		 $m2m_data=$this->http_vars_pairs_m2m($_POST);
 		 $m2m_data['FLDXXX'.$status['idfield']]=$status['id'];
-		 $status_relations=$this->so->update_object_many_data($this->site_id, $m2m_data);
+		 $status_relations=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
 
 		 if ($status[ret_code])	
 		 {
@@ -450,7 +447,7 @@
 			   $files_arr=$this->mult_to_fld($i,'_FILES');
 
 			   $data=$this->remove_helper_fields($this->http_vars_pairs($post_arr,$files_arr));
-			   $status=$this->so->insert_object_data($this->site_id,$this->site_object[table_name],$data);
+			   $status=$this->so->insert_object_data($this->session['site_id'],$this->site_object[table_name],$data);
 			   if($this->debug_sql==true)
 			   {
 				  $this->session['message']['debug'][]='SQL: '.$status[sql];
@@ -459,7 +456,7 @@
 			   $this->mult_where_array[]=$status[where_string];
 			   $m2m_data=$this->http_vars_pairs_m2m($post_arr);
 			   $m2m_data['FLDXXX'.$status['idfield']]=$status['id'];
-			   $status_relations=$this->so->update_object_many_data($this->site_id, $m2m_data);
+			   $status_relations=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
 			}
 		 }
 
@@ -537,9 +534,9 @@
 
 			   $m2m_data=$this->http_vars_pairs_m2m($post_arr);
 
-			   $status=$this->so->update_object_many_data($this->site_id, $m2m_data);
+			   $status=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
 
-			   $status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
+			   $status=$this->so->update_object_data($this->session['site_id'], $table, $data, $where_key,$where_value,$where_string);
 			   $eventstatus = $this->run_event_plugins('on_update', $post_arr);
 
 			}
@@ -583,7 +580,7 @@
 		 {
 			$where_string =stripslashes($where_string);
 
-			$stat=$this->so->delete_object_data($this->site_id, $this->site_object['table_name'], false, false,$where_string);
+			$stat=$this->so->delete_object_data($this->session['site_id'], $this->site_object['table_name'], false, false,$where_string);
 			if($stat!=1) $status=0;
 		 }
 
@@ -639,11 +636,11 @@
 		 $m2m_data=$this->http_vars_pairs_m2m($_POST);
 		 $status[o2o]=$this->o2o_update();
 
-		 $status=$this->so->update_object_many_data($this->site_id, $m2m_data);
+		 $status=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
 //		 $data=$this->http_vars_pairs($_POST, $_FILES);
 		 $data = $this->remove_helper_fields($this->http_vars_pairs($_POST, $_FILES));
 
-		 $status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
+		 $status=$this->so->update_object_data($this->session['site_id'], $table, $data, $where_key,$where_value,$where_string);
 
 		 if ($status[ret_code])
 		 {
@@ -706,12 +703,12 @@
 				  //_debug_array($o2o_data);
 				  //die();
 				  // update
-				  $status=$this->so->update_object_data($this->site_id, $o2o_entry[meta][O2OT], $o2o_entry[data], '','',$this->so->strip_magic_quotes_gpc($o2o_entry[meta][O2OW]));	   
+				  $status=$this->so->update_object_data($this->session['site_id'], $o2o_entry[meta][O2OT], $o2o_entry[data], '','',$this->so->strip_magic_quotes_gpc($o2o_entry[meta][O2OW]));	   
 			   }
 			   else
 			   {
 				  // insert
-				  $status=$this->so->insert_object_data($this->site_id,$o2o_entry[meta][O2OT],$o2o_entry[data]);
+				  $status=$this->so->insert_object_data($this->session['site_id'],$o2o_entry[meta][O2OT],$o2o_entry[data]);
 			   }			   
 			}
 		 }
@@ -727,7 +724,7 @@
 		 $where_value=stripslashes($this->where_value);
 		 $where_string=stripslashes($this->where_string);
 
-		 $status=$this->so->delete_object_data($this->site_id, $table, $where_key,$where_value,$where_string);
+		 $status=$this->so->delete_object_data($this->session['site_id'], $table, $where_key,$where_value,$where_string);
 
 		 if ($status==1)	$this->session['message'][info]=lang('Record succesfully deleted');
 		 else 			
@@ -744,10 +741,10 @@
 	  function copy_record()
 	  {
 		 // check if id is autoincrementing
-		 $autokey= $this->so->check_auto_incr($this->site_id,$this->site_object['table_name']);
+		 $autokey= $this->so->check_auto_incr($this->session['site_id'],$this->site_object['table_name']);
 		 if($autokey)
 		 {
-			$status=$this->so->copy_record($this->site_id,$this->site_object[table_name],$this->where_string,$autokey);
+			$status=$this->so->copy_record($this->session['site_id'],$this->site_object[table_name],$this->where_string,$autokey);
 			if ($status[ret_code])
 			{
 			   $this->addtoErrorArr(lang('Record NOT succesfully copied'),102);
@@ -780,7 +777,7 @@
 			//new function for fast and generic retrieval of object data, including 1-1, 1-many and many-many relations
 			//partly implemented in bouser, partly in sojinn
 			
-		$site_id = $this->site_id;
+		$site_id = $this->session['site_id'];
 		$table_name = $this->site_object['table_name'];
 
 			//get 1-many relations and replace straight columns with relation definitions
@@ -1456,19 +1453,19 @@
 				$prefix_arr = explode(',', $this->site[object_scan_prefix]);
 				if(is_array($prefix_arr))
 				{
-					$tables = $this->so->site_tables_names($this->site_id);
+					$tables = $this->so->site_tables_names($this->session['site_id']);
 					$status = array();
 					foreach($tables as $table)
 					{
 						//is this table wrapped by an object?
-						$objects = $this->so->get_objects_by_table($table[table_name], $this->site_id);
+						$objects = $this->so->get_objects_by_table($table[table_name], $this->session['site_id']);
 						if(count($objects) == 0)
 						{
 							//if no, do we want ALL tables wrapped by an object?
 							if($prefix_arr[0] == '*')
 							{
 								//if yes, create an object from this table
-								$status[] = $this->save_scanned_object($this->site_id, $table[table_name]);
+								$status[] = $this->save_scanned_object($this->session['site_id'], $table[table_name]);
 							}
 							//or does the table name start with one of the prefixes?
 							else
@@ -1477,7 +1474,7 @@
 								{
 									if(substr($table[table_name], 0, strlen($prefix)) == $prefix)
 									{
-										$status[] = $this->save_scanned_object($this->site_id, $table[table_name]);
+										$status[] = $this->save_scanned_object($this->session['site_id'], $table[table_name]);
 									}
 								}
 							}
