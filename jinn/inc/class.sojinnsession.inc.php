@@ -42,12 +42,11 @@
 		{
 			$this->sessionarray = $GLOBALS['phpgw']->session->appsession('session_data','jinn');
 
-			//override session variables with POST/GET data
 			$_form 				= $_POST['form'] 			? $_POST['form']   			: $_GET['form'];
 			$_site_id 			= $_POST['site_id'] 		? $_POST['site_id']   		: $_GET['site_id'];
 			$_site_object_id 	= $_POST['site_object_id'] 	? $_POST['site_object_id']	: $_GET['site_object_id'];
 			
-			if (($_form == 'main_menu') || (!empty($_site_id))) //fixme: moet dit geen && zijn i.p.v. || ?
+			if (!empty($_site_id))
 			{
 				if($_site_id != $this->sessionarray['site_id'])
 				{
@@ -56,16 +55,21 @@
 					unset($_POST[site_object_id]);
 				}
 			}
-			
-			if (($_form == 'main_menu') || (!empty($_site_object_id)))
+			if (!empty($_site_object_id))
 			{
-				$this->sessionarray['site_object_id'] = $_site_object_id;
+				if($_site_object_id != $this->sessionarray['site_object_id'])
+				{
+					$this->sessionarray['site_object_id'] = $_site_object_id;
+				}
 			}
 		}
 		
 		function save()
 		{
-			$GLOBALS['phpgw']->session->appsession('session_data','jinn',$this->sessionarray);
+			if(count($this->sessionarray) > 0) //this catches the bug in the phpgwapi crypto class..
+			{
+				$GLOBALS['phpgw']->session->appsession('session_data','jinn',$this->sessionarray);
+			}
 		}
 	}
 ?>

@@ -62,7 +62,6 @@
 		 if (($this->bo->session['site_id']==0 || $this->bo->session['site_id']) && $this->bo->session['site_object_id'] && $this->bo->site_object['parent_site_id']==$this->bo->session['site_id'] )
 		 {
 			$this->bo->sessionmanager->save();
-			//			$this->bo->common->exit_and_open_screen('jinn.uiu_list_records.display');
 			$this->bo->common->exit_and_open_screen('jinn.uiu_list_records.display');
 		 }
 		 else

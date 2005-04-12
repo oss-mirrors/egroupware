@@ -77,7 +77,6 @@
 
 	  function bouser()
 	  {
-//_debug_array('bouser constructor start : ');
 //_debug_array('   1');
 		 $this->common = CreateObject('jinn.bocommon');
 		 $this->session 		= &$this->common->session->sessionarray;	//reference to session array

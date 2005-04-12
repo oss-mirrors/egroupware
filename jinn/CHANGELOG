@@ -6,6 +6,11 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.213l
+===========================
+Tue Apr 12 14:30:00 CET 2005
+- bugfix: refactored session code exposed a bug in phpgwapi crypto class. patch was provided. In the mean time in the session class a workaround is added to prevent the bug from happening.
+
 Version 0.8.213k
 ===========================
 Fri Apr 08 18:30:00 CET 2005
