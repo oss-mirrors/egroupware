@@ -30,6 +30,9 @@
    {
 	  var $local_bo;
 	  var $test;
+	  var $configurations;
+	  var $_plugins;	//fixme: rename this to $plugins when OLD STYLE plugins have been removed entirely.
+	  
 	  /*!
 	  @function plugins
 	  @abstract standard contructure that includes all plugins
@@ -73,14 +76,14 @@
 		 // last boobytrap, look for valid field-prefixes (MLTX##, FLDXXX, O2OX##)
 		 if ( substr($input_name,0,4)=='MLTX' || substr($input_name,0,6)=='FLDXXX' || substr($input_name,0,4)=='O2OX' )
 		 {
-			$input=@call_user_func('plg_fi_'.$plug_conf_arr[name],$input_name,$value,$plug_conf_arr[conf],$attr_arr);
+			$input = $this->call_plugin($plug_conf_arr[name], 'fi', $value, $plug_conf_arr[conf], '', $input_name, $attr_arr,'','');
 		 }
 
 		 if (!$input) $input=call_user_func('plg_fi_def_'.$type,$input_name,$value,'',$attr_arr);
 
 		 return $input;
 	  }
-
+		
 	  /*!
 	  @function call_plugin_bv
 	  @abstract call list view (browse view) function from plugin
@@ -98,13 +101,11 @@
 		 if($field_values[field_plugins] && $field_name==$field_values[field_name])
 		 {
 			$plug_conf_arr=unserialize(base64_decode($field_values[field_plugins]));
-
 			if(is_array($plug_conf_arr))
 			{
-			   $new_value=@call_user_func('plg_bv_'.$plug_conf_arr[name],$value,$plug_conf_arr[conf],$where_val_encoded,$field_name);
 			   if($plug_conf_arr[name])
 			   {
-				  return $new_value;
+					return $this->call_plugin($plug_conf_arr[name], 'bv', $value, $plug_conf_arr[conf], $where_val_encoded, $field_name,'','','');
 			   }
 			}
 		 }
@@ -140,8 +141,8 @@
 
 			if(is_array($plug_conf_arr))
 			{
-				//echo('plg_sf_'.$plug_conf_arr[name]);	
-			   $data=@call_user_func('plg_sf_'.$plug_conf_arr[name],$form_field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$plug_conf_arr[conf]);
+			   //$data=@call_user_func('plg_sf_'.$plug_conf_arr[name],$form_field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$plug_conf_arr[conf]);
+			   $data = $this->call_plugin($plug_conf_arr[name],'sf','',$plug_conf_arr[conf],'',$form_field_name,'',$HTTP_POST_VARS,$HTTP_POST_FILES);
 			}
 		 }
 		
@@ -165,7 +166,8 @@
 		 if(is_array($plug_arr))
 		 {
 
-			$new_value=@call_user_func('plg_ro_'.$plug_arr[name],$value,$plug_arr[conf]);
+			//$new_value=@call_user_func('plg_ro_'.$plug_arr[name],$value,$plug_arr[conf]);
+			$new_value = $this->call_plugin($plug_arr[name], 'ro', $value, $plug_arr[conf], '', '', '', '', '');
 		 }
 
 		 if (!$new_value)
@@ -193,9 +195,10 @@
 
 		 $action_plugin_name=$plug_arr[name];
 
-		 $success=@call_user_func('plg_afa_'.$action_plugin_name,$_GET[where],$_GET[attributes],$plug_arr[conf]);
+		 //$success=@call_user_func('plg_afa_'.$action_plugin_name,$_GET[where],$_GET[attributes],$plug_arr[conf]);
+		 $success = $this->call_plugin($action_plugin_name, 'afa', '', $plug_arr[conf], $_GET[where], '', $_GET[attributes], '', '');
 
-		 if ($succes)
+		 if ($success)
 		 {
 			$this->session['message'][info]=lang('Action was succesful.');
 
@@ -210,6 +213,51 @@
 			$this->common->exit_and_open_screen('jinn.uiuser.index');
 		 }
 	  }
+	  
+  		function call_plugin($name, $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES)
+		{
+			if($this->loaded($name))
+			{
+				//NEW STYLE PLUGIN CLASSES
+				if(method_exists($this->_plugins[$name], $function)) //plugins are not required to implement all functions
+				{
+					switch($function)
+					{
+					case 'bv':
+						return $this->_plugins[$name]->bv($value, $config, $where_val_encoded, $field_name);
+					case 'fi':
+						return $this->_plugins[$name]->fi($field_name, $value, $config, $attr_arr);
+					case 'sf':
+						return $this->_plugins[$name]->sf($field_name, $HTTP_POST_VARS, $HTTP_POST_FILES, $config);
+					case 'ro':
+						return $this->_plugins[$name]->ro($value, $config);
+					case 'afa':
+						return $this->_plugins[$name]->afa($where_val_encoded, $attr_arr, $config);
+					}
+				}
+				else
+				{
+					return;
+				}
+			}
+			else
+			{
+				//OLD STYLE PLUGINS
+				switch($function)
+				{
+				case 'bv':
+					return @call_user_func('plg_bv_'.$name, $value, $config, $where_val_encoded, $field_name);
+				case 'fi':
+					return @call_user_func('plg_fi_'.$name, $field_name, $value, $config, $attr_arr);
+				case 'sf':
+					return @call_user_func('plg_sf_'.$name, $field_name, $HTTP_POST_VARS, $HTTP_POST_FILES, $config);
+				case 'ro':
+					return @call_user_func('plg_ro_'.$name, $value, $config);
+				case 'afa':
+					return @call_user_func('plg_afa_'.$name, $where_val_encoded, $attr_arr, $config);
+				}
+			}
+		}
 
 	  /**
 	  @function include_plugins
@@ -223,13 +271,18 @@
 		 if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/')) {
 
 			/* This is the correct way to loop over the directory. */
-
 			while (false !== ($file = readdir($handle))) 
 			{ 
+				// OLD STYLE plugins
 			   if (substr($file,0,7)=='plugin.')
 			   {
-
 				  include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/'.$file);
+			   }
+				// NEW STYLE plugins (classes)
+			   if ($file == 'class.configurations.php')
+			   {
+					include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/'.$file);
+					$this->configurations = new db_fields_configurations();
 			   }
 			}
 			closedir($handle); 
@@ -244,8 +297,9 @@
 	  */
 	  function plugin_hooks($fieldtype)
 	  {
-//		 if ($fieldtype=='blob') $fieldtype='text';
+		$plugin_hooks = array();
 
+		// OLD STYLE plugins
 		 if (count($this->plugins>0))
 		 {	
 			foreach($this->plugins as $plugin)
@@ -260,10 +314,28 @@
 					 );
 				  }
 			   }
-
 			}
-			return $plugin_hooks;
 		 }
+
+		// NEW STYLE plugins (classes)
+		 if (count($this->configurations->plugins>0))
+		 {	
+			foreach($this->configurations->plugins as $plugin)
+			{
+			   foreach($plugin['db_field_hooks'] as $hook)
+			   {
+				  if ($hook==$fieldtype) 
+				  {
+					 $plugin_hooks[]=array(
+						'value'=>$plugin['name'],
+						'name'=>$plugin['title']
+					 );
+				  }
+			   }
+			}
+		 }
+		 
+		 if(count($plugin_hooks) > 0) return $plugin_hooks;
 	  }
 
 
@@ -277,12 +349,11 @@
 	  */
 	  function get_default_plugin($fieldtype)
 	  {
-//		 if ($fieldtype=='blob') $fieldtype='text';
-
+		 $plugin_hooks = array();
 		 $i=1;
+		 // OLD STYLE plugins
 		 if (count($this->plugins>0))
 		 {	
-
 			foreach($this->plugins as $plugin)
 			{
 			   foreach($plugin['db_field_hooks'] as $hook)
@@ -298,12 +369,58 @@
 					 }
 				  }
 			   }
-
 			}
-			return $plugin_hooks;
 		 }
+		 // NEW STYLE plugins (classes)
+		 if (count($this->configurations->plugins>0))
+		 {	
+			foreach($this->configurations->plugins as $plugin)
+			{
+			   foreach($plugin['db_field_hooks'] as $hook)
+			   {
+				  if ($hook==$fieldtype) 
+				  {
+					if ($plugin['default']==1)
+					 {
+						$plugin_hooks[]=array(
+						   'value'=>$plugin['name'],
+						   'name'=>$plugin['title']
+						);
+					 }
+				  }
+			   }
+			}
+		 }
+		 if(count($plugin_hooks) > 0) return $plugin_hooks;
 	  }
 
+		function loaded($pluginname)
+		{
+			if($this->configurations->plugins[$pluginname]) //is this a NEW STYLE class type plugin?
+			{
+				if(is_object($this->_plugins[$pluginname])) //is it already loaded?
+				{
+					return true;
+				}
+				else
+				{
+					include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/class.plugin.'.$pluginname.'.php');
+					if(class_exists('db_fields_plugin_'.$pluginname))
+					{
+						eval('$this->_plugins['.$pluginname.'] = new db_fields_plugin_'.$pluginname.'();');	
+						return true;
+					}
+					else
+					{
+						return false; // this should never happen
+					}
+				}
+			}
+			else
+			{
+				return false; // this could happen as long as there are still OLD STYLE (non class) plugins
+			}
+		}
    }
 
 ?>

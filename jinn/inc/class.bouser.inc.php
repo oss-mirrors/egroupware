@@ -610,9 +610,7 @@
 		 $status[o2o]=$this->o2o_update();
 
 		 $status=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
-//		 $data=$this->http_vars_pairs($_POST, $_FILES);
 		 $data = $this->remove_helper_fields($this->http_vars_pairs($_POST, $_FILES));
-
 		 $status=$this->so->update_object_data($this->session['site_id'], $table, $data, $where_key,$where_value,$where_string);
 
 		 if ($status[ret_code])

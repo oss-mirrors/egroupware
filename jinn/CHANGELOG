@@ -6,6 +6,11 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.213m
+===========================
+Tue Apr 13 17:00:00 CET 2005
+- added new classbased plugin mechanism. First plugin to use it is Boolean plugin.
+
 Version 0.8.213l
 ===========================
 Tue Apr 12 14:30:00 CET 2005

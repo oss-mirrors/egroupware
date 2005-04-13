@@ -440,8 +440,8 @@
 	  }
 	  
   	  /**
-	  @function plug_config
-	  @abstract make form to set field plugin configuration
+	  @function object_events_config
+	  @abstract make form to set event plugin configuration
 	  @fixme parse config options and help info through lang()
 	  */
 	  function object_events_config()
@@ -735,17 +735,24 @@
 
 		 if($_GET[close_me]=='true') $body_tags = 'onLoad="self.close()"';
 
+		
+		 $plugin = $this->bo->plugins[$plugin_name]; //OLD STYLE plugins
+		 if($plugin == '')
+		 {
+			$plugin = $this->bo->plug->configurations->plugins[$plugin_name]; //NEW STYLE plugins (classes)
+		 }
+		 
 		 $this->template->set_var('action',$action);
 		 $this->template->set_var('body_tags',$body_tags);
 		 $this->template->set_var('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
-		 $this->template->set_var('plug_name',$this->bo->plugins[$plugin_name]['title']);
+		 $this->template->set_var('plug_name',$plugin['title']);
 		 $this->template->set_var('lang_plugin_name',lang('Plugin name'));
 		 $this->template->set_var('lang_fieldname',lang('Fieldname'));
 		 $this->template->set_var('fieldname',$_GET[field_name]);
 		 $this->template->set_var('lang_version',lang('Version'));
 		 $this->template->set_var('lang_plugin_configuration',lang('Plugin Configuration'));
-		 $this->template->set_var('plug_version',$this->bo->plugins[$plugin_name]['version']);
-		 $this->template->set_var('plug_descr',$this->bo->plugins[$plugin_name]['description']);
+		 $this->template->set_var('plug_version',$plugin['version']);
+		 $this->template->set_var('plug_descr',$plugin['description']);
 
 		 $screenshot_file=$GLOBALS['phpgw']->common->get_app_dir('jinn').'/plugins/plugin_images/'.$plugin_name.'.png';
 		 if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" src="jinn/plugins/plugin_images/'.$plugin_name.'.png" alt="'.lang('screenshot').'"  />';
@@ -764,8 +771,8 @@
 
 		 // get config fields for this plugin
 		 // if hidden value is empty get defaults vals for this plugin
-		 $cfg=$this->bo->plugins[$plugin_name]['config'];
-		 $cfg_help=$this->bo->plugins[$plugin_name]['config_help'];
+		 $cfg=$plugin['config'];
+		 $cfg_help=$plugin['config_help'];
 
 		 if(is_array($cfg))
 		 {
