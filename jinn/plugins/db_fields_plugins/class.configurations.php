@@ -28,9 +28,12 @@
 	class db_fields_configurations
 	{
 		var $plugins;
+		var $aliases;
 		
 		function db_fields_configurations()
 		{
+			$this->aliases['boolian'] 					= 'boolean';	//REPLACEMENT Alias
+
 			$this->plugins['boolean']['name'] 			= 'boolean';
 			$this->plugins['boolean']['title']			= 'Boolean';
 			$this->plugins['boolean']['author']			= 'Pim Snel, Lex Vogelaar';

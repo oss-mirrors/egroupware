@@ -76,7 +76,7 @@
 		 // last boobytrap, look for valid field-prefixes (MLTX##, FLDXXX, O2OX##)
 		 if ( substr($input_name,0,4)=='MLTX' || substr($input_name,0,6)=='FLDXXX' || substr($input_name,0,4)=='O2OX' )
 		 {
-			$input = $this->call_plugin($plug_conf_arr[name], 'fi', $value, $plug_conf_arr[conf], '', $input_name, $attr_arr,'','');
+			$input = $this->call_plugin($plug_conf_arr[name], 'fi', $value, $plug_conf_arr[conf], '', $input_name, $attr_arr,'','',$field_values);
 		 }
 
 		 if (!$input) $input=call_user_func('plg_fi_def_'.$type,$input_name,$value,'',$attr_arr);
@@ -105,7 +105,7 @@
 			{
 			   if($plug_conf_arr[name])
 			   {
-					return $this->call_plugin($plug_conf_arr[name], 'bv', $value, $plug_conf_arr[conf], $where_val_encoded, $field_name,'','','');
+					return $this->call_plugin($plug_conf_arr[name], 'bv', $value, $plug_conf_arr[conf], $where_val_encoded, $field_name,'','','',$field_values);
 			   }
 			}
 		 }
@@ -142,7 +142,7 @@
 			if(is_array($plug_conf_arr))
 			{
 			   //$data=@call_user_func('plg_sf_'.$plug_conf_arr[name],$form_field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$plug_conf_arr[conf]);
-			   $data = $this->call_plugin($plug_conf_arr[name],'sf','',$plug_conf_arr[conf],'',$form_field_name,'',$HTTP_POST_VARS,$HTTP_POST_FILES);
+			   $data = $this->call_plugin($plug_conf_arr[name],'sf','',$plug_conf_arr[conf],'',$form_field_name,'',$HTTP_POST_VARS,$HTTP_POST_FILES,$field_values);
 			}
 		 }
 		
@@ -167,7 +167,7 @@
 		 {
 
 			//$new_value=@call_user_func('plg_ro_'.$plug_arr[name],$value,$plug_arr[conf]);
-			$new_value = $this->call_plugin($plug_arr[name], 'ro', $value, $plug_arr[conf], '', '', '', '', '');
+			$new_value = $this->call_plugin($plug_arr[name], 'ro', $value, $plug_arr[conf], '', '', '', '', '',$field_values);
 		 }
 
 		 if (!$new_value)
@@ -196,7 +196,7 @@
 		 $action_plugin_name=$plug_arr[name];
 
 		 //$success=@call_user_func('plg_afa_'.$action_plugin_name,$_GET[where],$_GET[attributes],$plug_arr[conf]);
-		 $success = $this->call_plugin($action_plugin_name, 'afa', '', $plug_arr[conf], $_GET[where], '', $_GET[attributes], '', '');
+		 $success = $this->call_plugin($action_plugin_name, 'afa', '', $plug_arr[conf], $_GET[where], '', $_GET[attributes], '', '',$field_values);
 
 		 if ($success)
 		 {
@@ -214,11 +214,11 @@
 		 }
 	  }
 	  
-  		function call_plugin($name, $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES)
+  		function call_plugin($name, $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values)
 		{
-			if($this->loaded($name))
+ 			if($this->loaded($name))
+			//NEW STYLE PLUGIN CLASSES
 			{
-				//NEW STYLE PLUGIN CLASSES
 				if(method_exists($this->_plugins[$name], $function)) //plugins are not required to implement all functions
 				{
 					switch($function)
@@ -240,9 +240,9 @@
 					return;
 				}
 			}
-			else
+			elseif($this->plugins[$name])
+			//OLD STYLE PLUGINS
 			{
-				//OLD STYLE PLUGINS
 				switch($function)
 				{
 				case 'bv':
@@ -255,6 +255,30 @@
 					return @call_user_func('plg_ro_'.$name, $value, $config);
 				case 'afa':
 					return @call_user_func('plg_afa_'.$name, $where_val_encoded, $attr_arr, $config);
+				}
+			}
+			elseif($replacement = $this->configurations->aliases[$name])
+			//find explicit replacement
+			{
+				if($this->loaded($replacement) || $this->plugins[$replacement]) 											// make SURE the replacing plugin exists, else we will die in a recursive loop
+				{
+					return $this->call_plugin($replacement, $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values);
+				}
+			}
+			elseif($replacement = $this->get_default_plugin($field_values[field_type]))
+			//find default for this fieldtype
+			{
+				if($this->loaded($replacement[0]['value']) || $this->plugins[$replacement[0]['value']]) 					// make SURE the replacing plugin exists, else we will die in a recursive loop
+				{
+					return $this->call_plugin($replacement[0]['value'], $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values);
+				}
+			}
+			else
+			//we give up. use the default string plugin as final fallback
+			{
+				if($this->loaded('def_string') || $this->plugins['def_string']) 								// make SURE the replacing plugin exists, else we will die in a recursive loop
+				{
+					return $this->call_plugin('def_string', $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values);
 				}
 			}
 		}

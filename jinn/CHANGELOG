@@ -6,6 +6,11 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.213n
+===========================
+Tue Apr 13 19:00:00 CET 2005
+- added Alias mechanism to field plugins. Removed old Boolian plugin, and added Alias record for backwards compatibility
+
 Version 0.8.213m
 ===========================
 Tue Apr 13 17:00:00 CET 2005
