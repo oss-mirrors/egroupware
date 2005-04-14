@@ -6,6 +6,11 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.213p
+===========================
+Tue Apr 14 16:00:00 CET 2005
+- fixed bugs: no doubles in plugin select box anymore, while Aliases now do appear in that select box
+
 Version 0.8.213o
 ===========================
 Tue Apr 14 14:15:00 CET 2005

@@ -410,6 +410,34 @@
 				  $plugin_hooks=$this->bo->plug->plugin_hooks($jinn_fieldtype);
 
 				  $plugin_hooks=array_merge($plugin_default,$plugin_hooks);
+					$doublecheck = array();
+					foreach($plugin_hooks as $key => $plugin_hook)
+					{
+						if(array_key_exists($plugin_hook[value], $doublecheck))
+						{
+							unset($plugin_hooks[$key]);
+						}
+						else
+						{
+							$doublecheck[$plugin_hook[value]] = $key;
+						}
+					}
+					$plugin_hooks = array_values($plugin_hooks); //reorder the array
+					if(!array_key_exists($plg_name, $doublecheck))
+					{
+						if(array_key_exists($plg_name, $this->bo->plug->registry->aliases))
+						{
+							$alias = $this->bo->plug->registry->aliases[$plg_name];
+							$aliasname = $this->bo->plug->registry->plugins[$alias]['title'];
+							$plugin_hooks[] = array('value' => $plg_name, 'name' => $plg_name.' (alias:'.$aliasname.')');
+						}
+						else
+						{
+							$plugin_hooks[] = array('value' => $plg_name, 'name' => $plg_name.' (unknown)');
+						}
+						
+					}
+					
 				  $options=$this->ui->select_options($plugin_hooks,$plg_name,false);
 
 				  if ($options) 
