@@ -41,6 +41,6 @@
 		'OFF_input_display_value'=>array('no','text','maxlength=20'), 
 		'ON_output_value_If_not_the_same_as_input_value'=>array('','text','maxlength=20'),
 		'OFF_output_value_If_not_the_same_as_input_value'=>array('','text','maxlength=20'),
-		'Default_value'=>array(array('ON','OFF','NOTHING'),'select',''),
+		'Default_value'=>array(array('ON','OFF'),'select',''),
 	);
 ?>

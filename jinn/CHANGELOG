@@ -6,9 +6,15 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+
+Version 0.8.213r
+===========================
+Tue Apr 14 17:30:00 CET 2005
+- improved behaviour of Boolean plugin (no more empty option, -value is the same as display- now actually works, corrupt field values are now enclosed in ? characters
+
 Version 0.8.213q
 ===========================
-Tue Apr 14 16:00:00 CET 2005
+Tue Apr 14 16:30:00 CET 2005
 - configurations of old removed plugins now get automatically upgraded when an Alias has been defined, AND the site admin opens and saves the field config dialog.
 
 Version 0.8.213p

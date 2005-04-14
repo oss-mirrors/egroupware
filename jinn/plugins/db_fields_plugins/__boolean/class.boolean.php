@@ -29,7 +29,6 @@
 	-------------------------------------------------------------------*/
 //_debug_array('including boolean plugin class file');
 
-		//when creating new plugins, make sure to add entries for it in the configurations class
 	class db_fields_plugin_boolean
 	{
 	
@@ -40,23 +39,31 @@
 		
 		function formview_edit($field_name,$value, $config,$attr_arr)
 		{
-			if(!is_null($config['ON_output_value_If_not_the_same_as_input_value'])) $val_on=$config['ON_output_value_If_not_the_same_as_input_value'];
-			else $val_on=$config['ON_input_display_value'];
-	
-			// FIXME
-			if($config['OFF_output_value_If_not_the_same_as_input_value']=='0') $val_off=$config['OFF_output_value_If_not_the_same_as_input_value'];
-			elseif($config['OFF_output_value_If_not_the_same_as_input_value']) $val_off=$config['OFF_output_value_If_not_the_same_as_input_value'];
-			else $val_off=$config['OFF_input_display_value'];
-	
+//_debug_array($field_name);
+//_debug_array($config);
+			if($config['OFF_output_value_If_not_the_same_as_input_value'] == '')
+			{
+				$val_off=$config['OFF_input_display_value'];
+//_debug_array('out = in');
+			}
+			else $val_off=$config['OFF_output_value_If_not_the_same_as_input_value'];
+			
+			if($config['ON_output_value_If_not_the_same_as_input_value'] == '')
+			{
+				$val_on=$config['ON_input_display_value'];
+//_debug_array('out = in');
+			}
+			else $val_on=$config['ON_output_value_If_not_the_same_as_input_value'];
+			
 			if($value==$val_on) $on_select='SELECTED';
 			elseif($value==$val_off) $off_select='SELECTED';
-			elseif($value || $config['Default_value']=='NOTHING') $empty_option='<option value=""></option>';
-			elseif(!$value && $config['Default_value']=='ON') $on_select='SELECTED'; 
-			elseif(!$value && $config['Default_value']=='OFF') $off_select='SELECTED'; 
+			//elseif($value || $config['Default_value']=='NOTHING') $empty_option='<option value=""></option>';
+			elseif($config['Default_value']=='ON') $on_select='SELECTED'; 
+			elseif($config['Default_value']=='OFF') $off_select='SELECTED'; 
 	
 	
 			$input='<select name="'.$field_name.'">';
-			$input.=$empty_option;
+			//$input.=$empty_option;
 			$input.='<option '.$on_select.' value="'.$val_on.'">'.$config['ON_input_display_value'].'</option>';
 			$input.='<option '.$off_select.' value="'.$val_off.'">'.$config['OFF_input_display_value'].'</option>';
 			$input.='</select>';
@@ -71,21 +78,36 @@
 		
 		function listview_read($value,$config,$where_val_enc)
 		{
-	
-			if(!is_null($config['ON_output_value_If_not_the_same_as_input_value'])) $val_on=$config['ON_output_value_If_not_the_same_as_input_value'];
-			else $val_on=$config['ON_input_display_value'];
-	
-			// FIXME
-			if($config['OFF_output_value_If_not_the_same_as_input_value']=='0') $val_off=$config['OFF_output_value_If_not_the_same_as_input_value'];
-			elseif($config['OFF_output_value_If_not_the_same_as_input_value']) $val_off=$config['OFF_output_value_If_not_the_same_as_input_value'];
-			else $val_off=$config['OFF_input_display_value'];
-	
+			if($config['OFF_output_value_If_not_the_same_as_input_value'] == '')
+			{
+				$val_off=$config['OFF_input_display_value'];
+			}
+			else $val_off=$config['OFF_output_value_If_not_the_same_as_input_value'];
+			
+			if($config['ON_output_value_If_not_the_same_as_input_value'] == '')
+			{
+				$val_on=$config['ON_input_display_value'];
+			}
+			else $val_on=$config['ON_output_value_If_not_the_same_as_input_value'];
+	/*
 			if($value)
 			{
 			   if($value==$val_on) $display=$config['ON_input_display_value'];
 			   elseif($value==$val_off) $display=$config['OFF_input_display_value'];
 			}
 			else $display=$config['OFF_input_display_value'];
+		*/
+		    if($value == $val_on)
+			{
+				$display = $config['ON_input_display_value'];
+			}
+		    elseif($value == $val_off)
+			{
+//_debug_array('OFF');
+			$display = $config['OFF_input_display_value'];
+//_debug_array($display);
+			}
+			else $display = '?'.$value.'?'; //this should not happen, except after changing the plugin maybe .. in that case, this value is a good visual error indicator
 			return $display;
 		}
 	}
