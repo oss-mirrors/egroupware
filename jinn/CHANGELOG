@@ -6,6 +6,11 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.213q
+===========================
+Tue Apr 14 16:00:00 CET 2005
+- configurations of old removed plugins now get automatically upgraded when an Alias has been defined, AND the site admin opens and saves the field config dialog.
+
 Version 0.8.213p
 ===========================
 Tue Apr 14 16:00:00 CET 2005

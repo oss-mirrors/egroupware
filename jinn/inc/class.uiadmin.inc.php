@@ -730,17 +730,21 @@
 
 		 $plugin_name=$_GET['plug_name'];
 
-		 $action=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_field_plugin_conf&object_id='.$_GET[object_id].'&field_name='.$_GET[field_name].'&plug_name='.$_GET[plug_name]);
-
-
-		 if($_GET[close_me]=='true') $body_tags = 'onLoad="self.close()"';
-
-		
 		 $plugin = $this->bo->plugins[$plugin_name]; //OLD STYLE plugins
 		 if($plugin == '')
 		 {
-			$plugin = $this->bo->plug->configurations->plugins[$plugin_name]; //NEW STYLE plugins (classes)
+			$plugin = $this->bo->plug->registry->plugins[$plugin_name]; //NEW STYLE plugins (classes)
 		 }
+		 if($plugin == '')
+		 {
+			$alias = $this->bo->plug->registry->aliases[$plugin_name]; //This plugin may be Depreciated. Try if an Alias has been defined
+			$plugin = $this->bo->plug->registry->plugins[$alias];
+			$plugin_name = $alias;
+		 }
+
+		 $action=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_field_plugin_conf&object_id='.$_GET[object_id].'&field_name='.$_GET[field_name].'&plug_name='.$plugin_name);
+
+		 if($_GET[close_me]=='true') $body_tags = 'onLoad="self.close()"';
 		 
 		 $this->template->set_var('action',$action);
 		 $this->template->set_var('body_tags',$body_tags);
