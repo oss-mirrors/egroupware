@@ -6,6 +6,11 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.213o
+===========================
+Tue Apr 14 14:15:00 CET 2005
+- Field Plugins can now be provided by third parties. Boolean plugin has been implemented in its own directory.
+
 Version 0.8.213n
 ===========================
 Tue Apr 13 19:00:00 CET 2005

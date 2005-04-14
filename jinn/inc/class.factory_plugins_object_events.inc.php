@@ -1,6 +1,7 @@
 <?php
    /**************************************************************************\
-   JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for phpGroupWare
+   JiNN - Jinn is Not Nuke, a multi-user, multi-site CMS for phpGroupWare
+   Authors:	Pim Snel, Lex Vogelaar for Lingewoud
    Copyright (C)2002, 2004 Pim Snel <pim@lingewoud.nl>
 
    eGroupWare - http://www.egroupware.org
@@ -23,10 +24,10 @@
    \**************************************************************************/
 
    /*!
-   @class plgins
+   @class plugins
    @abstract JiNN object events plugin class
    */
-   class plugins_object_events
+   class factory_plugins_object_events
    {
 	  var $local_bo;
 	  var $test;
@@ -35,7 +36,7 @@
 	  @function plugins
 	  @abstract standard contructure that includes all plugins
 	  */
-	  function plugins_object_events()
+	  function factory_plugins_object_events()
 	  {
 		 $this->include_plugins();
 	  }

@@ -25,34 +25,14 @@
 	---------------------------------------------------------------------
 */
 		//this class was created to avoid all plugin classes loading in memory only to retrieve their names and configurations
-	class db_fields_configurations
+	class db_fields_registry
 	{
-		var $plugins;
-		var $aliases;
+		var $plugins = array();
+		var $aliases = array();
 		
-		function db_fields_configurations()
+		function db_fields_registry()
 		{
 			$this->aliases['boolian'] 					= 'boolean';	//REPLACEMENT Alias
-
-			$this->plugins['boolean']['name'] 			= 'boolean';
-			$this->plugins['boolean']['title']			= 'Boolean';
-			$this->plugins['boolean']['author']			= 'Pim Snel, Lex Vogelaar';
-			$this->plugins['boolean']['version']		= '1.2';
-			$this->plugins['boolean']['enable']			= 1;
-			$this->plugins['boolean']['description']	= 'Input for on/off, yes/no, true/false etc....';
-			$this->plugins['boolean']['db_field_hooks']	= array
-			(
-				'string',	
-				'int',
-			);
-			$this->plugins['boolean']['config']		= array
-			(
-				'ON_input_display_value'=>array('yes','text','maxlength=20'),
-				'OFF_input_display_value'=>array('no','text','maxlength=20'), 
-				'ON_output_value_If_not_the_same_as_input_value'=>array('','text','maxlength=20'),
-				'OFF_output_value_If_not_the_same_as_input_value'=>array('','text','maxlength=20'),
-				'Default_value'=>array(array('ON','OFF','NOTHING'),'select',''),
-			);
 		}
 	}
 ?>

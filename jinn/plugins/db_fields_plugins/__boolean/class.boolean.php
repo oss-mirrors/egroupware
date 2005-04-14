@@ -25,7 +25,7 @@
 	---------------------------------------------------------------------
 
    	/*-------------------------------------------------------------------
-	Boolian PLUGIN
+	Boolean PLUGIN
 	-------------------------------------------------------------------*/
 //_debug_array('including boolean plugin class file');
 
@@ -38,7 +38,7 @@
 //_debug_array('db_fields_plugin_boolean constructor called');
 		}
 		
-		function fi($field_name,$value, $config,$attr_arr)
+		function formview_edit($field_name,$value, $config,$attr_arr)
 		{
 			if(!is_null($config['ON_output_value_If_not_the_same_as_input_value'])) $val_on=$config['ON_output_value_If_not_the_same_as_input_value'];
 			else $val_on=$config['ON_input_display_value'];
@@ -64,12 +64,12 @@
 			return $input;
 		}
 	
-		function ro($value,$config)
+		function formview_read($value,$config)
 		{
-		   return $this->bv($value,$config,'');	
+		   return $this->listview_read($value,$config,'');	
 		}
 		
-		function bv($value,$config,$where_val_enc)
+		function listview_read($value,$config,$where_val_enc)
 		{
 	
 			if(!is_null($config['ON_output_value_If_not_the_same_as_input_value'])) $val_on=$config['ON_output_value_If_not_the_same_as_input_value'];

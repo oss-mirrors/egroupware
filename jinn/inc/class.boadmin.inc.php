@@ -99,13 +99,13 @@
 		 {
 			$this->site_object = $this->so->get_object_values($this->session['site_object_id']);
 		 }
-
-		 $this->plug = CreateObject('jinn.plugins_db_fields'); //$this->include_plugins();
+		 
+		 $this->plug = CreateObject('jinn.factory_plugins_db_fields'); 
 		 $this->plug->local_bo = $this;
-		 $this->plugins = $this->plug->plugins;
+		 $this->plugins = $this->plug->plugins; //fixme: THIS WILL BREAK WHEN WE GET RID OF THE OLD STYLE PLUGINS
 
 
-		 $this->object_events_plugin_manager = CreateObject('jinn.plugins_object_events'); //$this->include_plugins();
+		 $this->object_events_plugin_manager = CreateObject('jinn.factory_plugins_object_events'); 
 		 $this->object_events_plugin_manager->local_bo = $this;
 		 $this->object_events_plugins = $this->object_events_plugin_manager->object_events_plugins;
 
