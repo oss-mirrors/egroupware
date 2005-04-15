@@ -614,6 +614,12 @@
 			$upload_dir = $GLOBALS['phpgw']->msg->att_files_dir;
 			if (file_exists($upload_dir))
 			{
+				// Ralf Becker 2005-04-15:
+				// We need to additionaly check if the files are named in $_POST['attached_filenames']!!!
+				// Otherwise previously attached file of not send mails, will be send unintensional!!!
+				// 
+				$attached_filenames = $_POST['attached_filenames'] ? explode(',',$_POST['attached_filenames']) : array();
+
 				// DO WE REALLY need to set_time_limit here?
 				//@set_time_limit(0);
 				// how many attachments do we need to process?
@@ -625,6 +631,18 @@
 					&& ($file != '..')
 					&& (ereg("\.info",$file)))
 					{
+						// Ralf Becker 2005-04-15:
+						// We remove files NOT named in $_POST['attached_filenames'] !!!
+						// Otherwise previously attached file of not send mails, will be send unintensional!!!
+						// 
+						list($content_type,$content_name) = file($upload_dir.SEP.$file);
+						if (!in_array(trim($content_name),$attached_filenames))
+						{
+							//echo "<p>removed not attached file '$content_name' ($content_type) in file $file</p>\n"; exit;
+							unlink($upload_dir.SEP.$file);
+							unlink($upload_dir.SET.basename($file,'.info'));
+							continue;
+						}
 						$num_expected++;
 					}
 				}
@@ -1186,7 +1204,7 @@
 							if ($this->debug_struct > 2) { echo 'FILE INFO: '.htmlspecialchars(serialize($file_info)).'<br>'; }
 							$content_type = trim($file_info[0]);
 							$content_name = trim($file_info[1]);
-
+							
 							// testing i18n handling of filenames
 							$max_ord = 0;
 							$needs_rfc_encode = False;
