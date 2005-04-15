@@ -11,16 +11,21 @@ failed to delete %1	ftp	fi	Kohteen %1 poistaminen epäonnistui
 failed to rename %1 to %2	ftp	fi	Kohteen %1 nimen vaihto %2:ksi epäonnistui
 failed to upload %1	ftp	fi	Kohteen %1 siirtäminen epäonnistui
 ftp client	ftp	fi	Ftp -asiakas
+ftp hostname	ftp	fi	FTP verkkoaseman tunnus
 ftp server	ftp	fi	Ftp -palvelin
 home	ftp	fi	Koti
+log into ftp server	ftp	fi	Kirjaudutaan FTP palvelimelle
 logout/relogin	ftp	fi	poistu/kirjaudu uudelleen
 password	ftp	fi	Salasana
+permissions	ftp	fi	Luvat
 rename	ftp	fi	nimeä uudelleen %1
+rename file	ftp	fi	uudelleen nimeä tiedosto
 rename from	ftp	fi	Vanha nimi
 rename to	ftp	fi	uusi nimi
 renamed %1 to %2	ftp	fi	Kohde %1 on nyt %2
 save	ftp	fi	tallenna
 save to filemanager	ftp	fi	tallenna tiedostonhallintaan
+size	ftp	fi	Koko
 successfully created directory %1	ftp	fi	Luotiin kohde %1
 successfully deleted %1	ftp	fi	Kohde %1 poistettu
 successfully uploaded %1	ftp	fi	Kohde %1 siirretty
