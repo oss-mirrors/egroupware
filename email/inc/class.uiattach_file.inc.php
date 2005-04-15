@@ -71,6 +71,7 @@
 			// ... the boattach_file class all the work ...
 			
 			// output the HTML
+			$GLOBALS['phpgw']->common->phpgw_header();
 			$GLOBALS['phpgw']->template->pfp('out','T_attach_file');
 			
 			//$GLOBALS['phpgw']->common->phpgw_exit();
