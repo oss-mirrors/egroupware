@@ -308,7 +308,7 @@ function parse_code($text)
 
   if($in_code)
   {
-    if($text == "&lt;/code>\n")
+    if(preg_match("|^\s*&lt;/code>\s*|", $text))
     {
       $Entity[count($Entity)] = array('code', $buffer);
       $buffer  = '';
@@ -321,7 +321,7 @@ function parse_code($text)
   }
   else
   {
-    if($text == "&lt;code>\n")
+    if(preg_match("|^\s*&lt;code>\s*|", $text))
     {
       $in_code = 1;
       return '';
