@@ -6,6 +6,11 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.213u
+===========================
+Mon Apr 18 13:00:00 CET 2005
+- upgraded Filemanager plugin to new classbased plugin style
+
 Version 0.8.213t
 ===========================
 Mon Apr 18 13:00:00 CET 2005
