@@ -431,11 +431,10 @@
 							$aliasname = $this->bo->plug->registry->plugins[$alias]['title'];
 							$plugin_hooks[] = array('value' => $plg_name, 'name' => $plg_name.' (alias:'.$aliasname.')');
 						}
-						else
+						elseif($plg_name != '')
 						{
 							$plugin_hooks[] = array('value' => $plg_name, 'name' => $plg_name.' (unknown)');
 						}
-						
 					}
 					
 				  $options=$this->ui->select_options($plugin_hooks,$plg_name,false);

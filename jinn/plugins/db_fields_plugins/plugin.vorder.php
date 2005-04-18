@@ -58,7 +58,7 @@
 	   }
 
 	   global $local_bo;
-	   $local_bo->so->site_db_connection($local_bo->site_id);
+	   $local_bo->so->site_db_connection($local_bo->session[site_id]);
 	   
 	   $table = $local_bo->site_object[table_name];
 
@@ -122,7 +122,6 @@
    // debut of the AUTONOME FORM ACTION PLUGIN !!! WHOOPIE
    function plg_afa_vorder($where_val_enc,$attributes,$conf_arr)
    {
-
 	  global $local_bo;
 	  $debug=1;
 
@@ -131,7 +130,7 @@
 	  $where=base64_decode($where_val_enc);
 	  $where_not=str_replace('=','!=',$where);
 
-	  $local_bo->so->site_db_connection($local_bo->site_id);
+	  $local_bo->so->site_db_connection($local_bo->session[site_id]);
 	  $SQL1="SELECT * FROM $table WHERE `{$attr[myname]}`=0 OR `{$attr[myname]}`=NULL";
 
 	  if($local_bo->so->site_db->query($SQL1,__LINE__,__FILE__))
@@ -151,7 +150,6 @@
 			   $SQL2="UPDATE $table SET `{$attr[myname]}`=`{$attr[myname]}`+$totalnulls+2 WHERE ((`{$attr[myname]}`!=0) OR (`{$attr[myname]}`!=NULL))";	
 			   $attr[myval]=$attr[myval]+$totalnulls+1;
 			   $local_bo->so->site_db->query($SQL2,__LINE__,__FILE__);
-
 			}
 		 }
 	  }
@@ -229,8 +227,8 @@
 		 $local_bo->message[error]=lang('An error occured.');
 	  }
 
-	  $local_bo->save_sessiondata();
-	  $local_bo->common->exit_and_open_screen('jinn.uiuser.browse_objects&orderby='.$attr[myname].' ASC');
+	  $local_bo->sessionmanager->save();
+	  $local_bo->common->exit_and_open_screen('jinn.uiu_list_records.display&orderby='.$attr[myname].' ASC');
    }
 
 ?>

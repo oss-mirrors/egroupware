@@ -6,6 +6,10 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.213s
+===========================
+Mon Apr 18 12:30:00 CET 2005
+- fixed bugs: Unconfigured fields did not automatically get attached to default plugin. Visual Ordering plugin was broken.
 
 Version 0.8.213r
 ===========================
