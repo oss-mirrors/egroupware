@@ -467,7 +467,7 @@
 	  function remove_helper_fields($data)
 	  {
 			//removes helper form fields created by plugins
-		foreach($this->plug->plugins as $plugin)
+		foreach($this->plug->registry->plugins as $plugin)
 		{
 			foreach($data as $key => $field)
 			{

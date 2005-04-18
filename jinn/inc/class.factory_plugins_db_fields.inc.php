@@ -143,7 +143,7 @@
 			{
 			   //$data=@call_user_func('plg_sf_'.$plug_conf_arr[name],$form_field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$plug_conf_arr[conf]);
 			   $data = $this->call_plugin($plug_conf_arr[name],'on_save_filter','',$plug_conf_arr[conf],'',$form_field_name,'',$HTTP_POST_VARS,$HTTP_POST_FILES,$field_values);
-			}
+		   }
 		 }
 		
 		 return $data;
@@ -292,7 +292,7 @@
 	  function include_plugins()
 	  {
 		 global $local_bo;
-		 $local_bo = $this;
+		 $local_bo = $this;	//?? fixme..this can't be right..
 		 
  		 include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/class.registry.php');
 		 $this->registry = new db_fields_registry();

@@ -41,7 +41,7 @@
 	  'blob'
    );
 
-	$this->registry->plugins['filemanager']['helper_fields_substring'] = '_FM_';
+	$this->registry->plugins['filemanager']['helper_fields_substring'] = '_FM_'; //this cannot be a class var because bouser needs it even when the class is not loaded
 
    /* ATTENTION: spaces and special character are not allowed in config array 
    use underscores for spaces */

@@ -79,7 +79,7 @@
 				{
 					//the popup will be aware of this window by the opener property
 					//when a server image is chosen, the popup will call the onSave function, passing the chosen image path
-					childWindow=open("jinn/plugins/db_fields_plugins/UploadImage/popups/insert_image.php?field='.$stripped_name.'","console","resizable=no,width=580,height=440");
+					childWindow=open("jinn/plugins/db_fields_plugins/__filemanager/popups/insert_image.php?field='.$stripped_name.'","console","resizable=no,width=580,height=440");
 					if (childWindow.opener == null)	childWindow.opener = self;
 					document.frm.CURRENT_RECORD.value=record;
 					document.frm.CURRENT_FIELD.value=field;
@@ -258,7 +258,7 @@
 							   }
 							}
 	
-							$input.='</td><td '.$cell_style.' valign="top"><img onClick="onDelete('.$prefix_string.', '.$field_string.', '.$i.');" src="jinn/plugins/db_fields_plugins/UploadImage/popups/ImageManager/edit_trash.gif">';
+							$input.='</td><td '.$cell_style.' valign="top"><img onClick="onDelete('.$prefix_string.', '.$field_string.', '.$i.');" src="jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/edit_trash.gif">';
 							$input.='<input onClick="onBrowseServer('.$prefix_string.', '.$field_string.', '.$i.');" type="button" value="'.lang('replace').'" name="'.$prefix.'_IMG_EDIT_BUTTON_'.$stripped_name.$i.'">';
 							$input.='<input type="hidden" value="" name="'.$prefix.'_IMG_EDIT_'.$stripped_name.$i.'">';
 							$input.='</td></tr>';
@@ -273,7 +273,7 @@
 						$input.='<tr><td '.$cell_style.' valign="top">'.($i+1).'.</td><td '.$cell_style.'>';
 						$input.='<img name="'.$prefix.'_IMG_'.$stripped_name.($i+1).'" src="'.$spacer.'" '.$spacer_style.' />';
 						$input.='<span id="'.$prefix.'_PATH_'.$stripped_name.($i+1).'"></span>';
-						$input.='</td><td '.$cell_style.' valign="top"><img onClick="onDelete('.$prefix_string.', '.$field_string.', '.($i+1).');" src="jinn/plugins/db_fields_plugins/UploadImage/popups/ImageManager/edit_trash.gif">';
+						$input.='</td><td '.$cell_style.' valign="top"><img onClick="onDelete('.$prefix_string.', '.$field_string.', '.($i+1).');" src="jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/edit_trash.gif">';
 						$input.='<input onClick="onBrowseServer('.$prefix_string.', '.$field_string.', '.($i+1).');" type="button" value="'.lang('add').'" name="'.$prefix.'_IMG_EDIT_BUTTON_'.$stripped_name.($i+1).'">';
 						$input.='<input type="hidden" value="" name="'.$prefix.'_IMG_EDIT_'.$stripped_name.($i+1).'">';
 						$input.='</td></tr>';
@@ -360,6 +360,7 @@
 			 }
 			 foreach ($images_array as $image_string)
 			 {
+				$image_string = str_replace('//','/',$image_string); //fixme: this fixes a bug in the popup. Better solve that..
 				if($image_path_new) $image_path_new .= ';';
 				$image_path_new.=$image_string;
 			 }						
