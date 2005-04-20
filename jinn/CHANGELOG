@@ -6,6 +6,11 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.213w
+===========================
+Mon Apr 20 15:00:00 CET 2005
+- fixed JiNN setup bug that sent errors through eGroupWare's setup
+
 Version 0.8.213v
 ===========================
 Mon Apr 18 17:00:00 CET 2005
@@ -13,7 +18,7 @@ Mon Apr 18 17:00:00 CET 2005
 
 Version 0.8.213u
 ===========================
-Mon Apr 18 13:00:00 CET 2005
+Mon Apr 18 15:00:00 CET 2005
 - upgraded Filemanager plugin to new classbased plugin style
 
 Version 0.8.213t

@@ -1,6 +1,6 @@
 <?php
    /*
-   JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare
+   JiNN - Jinn is Not Nuke, a multi-user, multi-site CMS for eGroupWare
    Copyright (C)2002 - 2005 Pim Snel <pim@lingewoud.nl>
 
    eGroupWare - http://www.egroupware.org
@@ -31,15 +31,15 @@
 
    $setup_info['jinn']['description'] = 'JiNN-DESCRIPTION';
 
-   $plg = CreateObject('jinn.plugins_db_fields');
-   $plg_obj_ev = CreateObject('jinn.plugins_object_events');
+   $plg = CreateObject('jinn.factory_plugins_db_fields');
+   $plg_obj_ev = CreateObject('jinn.factory_plugins_object_events');
 
-   if(@count($plg->plugins))
+   if(@count($plg->registry->plugins))
    {
 	  $setup_info['jinn']['extra_untranslated'].= '<table border="0" style="width:550px" cellspacing="2"><tr><td valign="top" colspan="5" style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold;font-size:14px;">'.lang('Registered field plugins').'</td></tr>';
 		 $setup_info['jinn']['extra_untranslated'].= '<tr><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Name').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Version').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Author').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Descrition').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Available for field types').'</td></tr>';
 
-		 foreach($plg->plugins as $plugin)
+		 foreach($plg->registry->plugins as $plugin)
 		 {
 			if(@count($plugin[db_field_hooks])) $fieldtypes=implode('<br/>',$plugin[db_field_hooks]);
 
