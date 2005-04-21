@@ -393,6 +393,15 @@ function toggleConstrains(constrains)
 										  </tr>
 										  <tr>
 											 <td><table style="width:100%" border="0" align="center" cellpadding="2" cellspacing="2">
+													<!--tr>
+														<td colspan="6">
+															<select name = "type" id="f_type">
+																<?php
+																	_debug_array($config);
+																?>
+															</select>
+														</td>
+													</tr-->
 													<tr>
 														<td>&nbsp;</td>
 														<td>&nbsp;</td>

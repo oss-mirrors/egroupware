@@ -226,7 +226,6 @@
 		 {
 			$field_values[$fieldmeta['name']]=$this->strip_magic_quotes_gpc($this->phpgw_db->f($fieldmeta['name']));
 		 }
-
 		 return $field_values;
 	  }
 

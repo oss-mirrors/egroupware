@@ -147,7 +147,6 @@
 	  {
 		 global $local_bo;
 		 $local_bo=$this->local_bo;
-
 		 $plug_arr=unserialize(base64_decode($field_values[field_plugins]));
 
 		 //if(is_array($plug_arr))

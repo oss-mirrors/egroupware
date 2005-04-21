@@ -33,7 +33,7 @@
 
    $this->registry->plugins['filemanager']['description']		= '
    plugin for uploading/editing files and storing their paths in
-   to database, using default uploadpath for site or object';
+   to the database, using the default uploadpath for site or object';
 
    $this->registry->plugins['filemanager']['db_field_hooks']	= array
    (
@@ -53,7 +53,7 @@
 	  'Zip_file_box'=> array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
 	  'Max_image_width' => array('','text','maxlength=4 size=4'),
 	  'Max_image_height' => array('','text','maxlength=4 size=4'),
-	  'Image_filetype' => array(array('png','gif','jpg'),'select','maxlength=3 size=3'),
+	  'Filetype' => array(array('png','gif','jpg', 'all'),'select','maxlength=3 size=3'),
 	  'Generate_thumbnail' => array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
 	  'Max_thumbnail_width' => array('100','text','maxlength=3 size=3'),
 	  'Max_thumbnail_height'=> array('100','text','maxlength=3 size=3'),

@@ -41,8 +41,9 @@
 
    $bo = CreateObject('jinn.bouser');
 
-   $field_config = $bo->so->get_field_values($bo->site_object_id,$_GET[field]);
+   $field_config = $bo->so->get_field_values($bo->session['site_object_id'],$_GET[field]);
    $config = unserialize(base64_decode($field_config[field_plugins]));
+//_debug_array($config);
    $config = $config[conf];
 //_debug_array($config);
 

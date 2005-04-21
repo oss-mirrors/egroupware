@@ -8,6 +8,11 @@ Minor updates only get a new alphabet character.
 
 
 
+Version 0.8.214a
+===========================
+Mon Apr 21 17:00:00 CET 2005
+- fixed bug where Filemanager did not get maximum image sizes
+
 Version 0.8.214
 ===========================
 Mon Apr 21 15:00:00 CET 2005

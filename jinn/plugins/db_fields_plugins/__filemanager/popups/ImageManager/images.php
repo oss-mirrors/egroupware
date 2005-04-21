@@ -347,6 +347,8 @@
 
 	  $filesize = parse_size($size);
 
+//_debug_array($file);
+//_debug_array($config[Filetype]);
    ?>
    <td>
 	  <table width="102" border="0" cellpadding="0" cellspacing="2">
