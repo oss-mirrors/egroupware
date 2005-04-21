@@ -86,7 +86,7 @@
 			'fd' => array(
 				'field_id' => array('type' => 'auto'),
 				'field_parent_object' => array('type' => 'int','precision' => '4'),
-				'field_name' => array('type' => 'varchar','precision' => '50'),
+				'field_name' => array('type' => 'text'),
 				'field_type' => array('type' => 'varchar','precision' => '20'),
 				'field_alt_name' => array('type' => 'varchar','precision' => '50'),
 				'field_help_info' => array('type' => 'text'),

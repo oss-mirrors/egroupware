@@ -6,6 +6,15 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+
+
+Version 0.8.214
+===========================
+Mon Apr 21 15:00:00 CET 2005
+- JiNN can now handle fieldnames of any length. Alternative names are still restricted to 50 chars.
+
+
+
 Version 0.8.213x
 ===========================
 Mon Apr 21 14:30:00 CET 2005

@@ -679,8 +679,11 @@
 	$test[] = '0.8.213';
 	function jinn_upgrade0_8_213()
 	{
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('egw_jinn_obj_fields','field_name',array(
+			'type' => 'text'
+		));
 
-		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.213';
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.214';
 		return $GLOBALS['setup_info']['jinn']['currentver'];
 	}
 ?>
