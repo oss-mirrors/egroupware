@@ -27,6 +27,8 @@
    plugins for JiNN. 
    */
 
+   //DEPRECIATED..add this functionality to the filemanager plugin. add an ALIAS for backwards compatibility.
+   
    $this->plugins['attachpath']['name']				= 'attachpath';
    $this->plugins['attachpath']['title']			= 'AttachmentPath plugin';
    $this->plugins['attachpath']['version']			= '0.8.8';

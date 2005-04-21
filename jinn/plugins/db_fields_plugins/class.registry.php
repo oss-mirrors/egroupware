@@ -32,7 +32,20 @@
 		
 		function db_fields_registry()
 		{
-			$this->aliases['boolian'] 					= 'boolean';	//REPLACEMENT Alias
+			$this->aliases['boolian'] 					= 'boolean';			//REPLACEMENT Alias
+			$this->aliases['def_auto'] 					= 'default_auto';		//REPLACEMENT Alias
+			$this->aliases['def_binary'] 				= 'default_binary';		//REPLACEMENT Alias
+			$this->aliases['def_blob'] 					= 'default_blob';		//REPLACEMENT Alias
+			$this->aliases['def_date'] 					= 'default_date';		//REPLACEMENT Alias
+			$this->aliases['def_float'] 				= 'default_float';		//REPLACEMENT Alias
+			$this->aliases['def_int'] 					= 'default_int';		//REPLACEMENT Alias
+			$this->aliases['def_string'] 				= 'default_string';		//REPLACEMENT Alias
+			$this->aliases['def_timestamp'] 			= 'default_timestamp';	//REPLACEMENT Alias
+			$this->aliases['hidefield'] 				= 'disable';			//REPLACEMENT Alias
+			$this->aliases['disable_field'] 			= 'disable';			//REPLACEMENT Alias
+			$this->aliases['pre_string'] 				= 'preset_string';		//REPLACEMENT Alias
+			$this->aliases['imagepath'] 				= 'filemanager';		//REPLACEMENT Alias
+			
 		}
 	}
 ?>

@@ -59,27 +59,12 @@
 
 		 $local_bo=$this->local_bo;
 
-		 /* first boobytrap */
-		 if(!$field_values[field_plugins] || substr($input_name,6)!=$field_values[field_name])
-		 {
-			return call_user_func('plg_fi_def_'.$type,$input_name,$value,'',$attr_arr);
-		 }
-
 		 $plug_conf_arr=unserialize(base64_decode($field_values[field_plugins]));
-
-		 /* second boobytrap */
-		 if(!is_array($plug_conf_arr))
-		 {
-			return call_user_func('plg_fi_def_'.$type,$input_name,$value,'',$attr_arr);
-		 }
-
-		 // last boobytrap, look for valid field-prefixes (MLTX##, FLDXXX, O2OX##)
+		 
 		 if ( substr($input_name,0,4)=='MLTX' || substr($input_name,0,6)=='FLDXXX' || substr($input_name,0,4)=='O2OX' )
 		 {
 			$input = $this->call_plugin($plug_conf_arr[name], 'formview_edit', $value, $plug_conf_arr[conf], '', $input_name, $attr_arr,'','',$field_values);
 		 }
-
-		 if (!$input) $input=call_user_func('plg_fi_def_'.$type,$input_name,$value,'',$attr_arr);
 
 		 return $input;
 	  }
@@ -95,21 +80,22 @@
 	  */
 	  function call_plugin_bv($field_name,$value,$where_val_encoded,$field_values)
 	  {
+//	_debug_array('default_');
 		 global $local_bo;
 		 $local_bo=$this->local_bo;
 
-		 if($field_values[field_plugins] && $field_name==$field_values[field_name])
-		 {
+		 //if($field_values[field_plugins] && $field_name==$field_values[field_name])
+		 //{
 			$plug_conf_arr=unserialize(base64_decode($field_values[field_plugins]));
-			if(is_array($plug_conf_arr))
-			{
-			   if($plug_conf_arr[name])
-			   {
+			//if(is_array($plug_conf_arr))
+			//{
+			   //if($plug_conf_arr[name])
+			   //{
 					return $this->call_plugin($plug_conf_arr[name], 'listview_read', $value, $plug_conf_arr[conf], $where_val_encoded, $field_name,'','','',$field_values);
-			   }
-			}
-		 }
-
+			   //}
+			//}
+		 //}
+/*
 		 $new_value=$value;
 		 if(strlen($new_value)>20)
 		 {
@@ -119,6 +105,7 @@
 		 }
 
 		 return $new_value;
+		 */
 	  }
 
 	  /*!
@@ -135,16 +122,16 @@
 		 global $local_bo;
 		 $local_bo=$this->local_bo;
 
-		 if($field_values[field_plugins] && substr($form_field_name,6)==$field_values[field_name])
-		 {
+		 //if($field_values[field_plugins] && substr($form_field_name,6)==$field_values[field_name])
+		 //{
 			$plug_conf_arr=unserialize(base64_decode($field_values[field_plugins]));
 
-			if(is_array($plug_conf_arr))
-			{
+			//if(is_array($plug_conf_arr))
+			//{
 			   //$data=@call_user_func('plg_sf_'.$plug_conf_arr[name],$form_field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$plug_conf_arr[conf]);
 			   $data = $this->call_plugin($plug_conf_arr[name],'on_save_filter','',$plug_conf_arr[conf],'',$form_field_name,'',$HTTP_POST_VARS,$HTTP_POST_FILES,$field_values);
-		   }
-		 }
+		   //}
+		 //}
 		
 		 return $data;
 	  }
@@ -163,18 +150,18 @@
 
 		 $plug_arr=unserialize(base64_decode($field_values[field_plugins]));
 
-		 if(is_array($plug_arr))
-		 {
+		 //if(is_array($plug_arr))
+		 //{
 
 			//$new_value=@call_user_func('plg_ro_'.$plug_arr[name],$value,$plug_arr[conf]);
 			$new_value = $this->call_plugin($plug_arr[name], 'formview_read', $value, $plug_arr[conf], '', '', '', '', '',$field_values);
-		 }
-
+		 //}
+/*
 		 if (!$new_value)
 		 {
 			return $value;
 		 }
-
+*/
 		 return $new_value;
 	  }
 
@@ -239,7 +226,7 @@
 				}
 				else
 				{
-					return;
+					return $value;
 				}
 			}
 			elseif($this->plugins[$name])
@@ -276,11 +263,11 @@
 				}
 			}
 			else
-			//we give up. use the default string plugin as final fallback
+			//we give up. use the default plugin as final fallback
 			{
-				if($this->loaded('def_string') || $this->plugins['def_string']) 								// make SURE the replacing plugin exists, else we will die in a recursive loop
+				if($this->loaded('default_') || $this->plugins['default_'])
 				{
-					return $this->call_plugin('def_string', $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values);
+					return $this->call_plugin('default_', $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values);
 				}
 			}
 		}
@@ -349,16 +336,19 @@
 		 {	
 			foreach($this->registry->plugins as $plugin)
 			{
-			   foreach($plugin['db_field_hooks'] as $hook)
+			   if(is_array($plugin['db_field_hooks']))
 			   {
-				  if ($hook==$fieldtype) 
-				  {
-					 $plugin_hooks[]=array(
-						'value'=>$plugin['name'],
-						'name'=>$plugin['title']
-					 );
-				  }
-			   }
+				   foreach($plugin['db_field_hooks'] as $hook)
+				   {
+					  if ($hook==$fieldtype) 
+					  {
+						 $plugin_hooks[]=array(
+							'value'=>$plugin['name'],
+							'name'=>$plugin['title']
+						 );
+					  }
+				   }
+				}
 			}
 		 }
 		 
@@ -403,19 +393,22 @@
 		 {	
 			foreach($this->registry->plugins as $plugin)
 			{
-			   foreach($plugin['db_field_hooks'] as $hook)
+			   if(is_array($plugin['db_field_hooks']))
 			   {
-				  if ($hook==$fieldtype) 
-				  {
-					if ($plugin['default']==1)
-					 {
-						$plugin_hooks[]=array(
-						   'value'=>$plugin['name'],
-						   'name'=>$plugin['title']
-						);
-					 }
-				  }
-			   }
+				   foreach($plugin['db_field_hooks'] as $hook)
+				   {
+					  if ($hook==$fieldtype) 
+					  {
+						if ($plugin['default']==1)
+						 {
+							$plugin_hooks[]=array(
+							   'value'=>$plugin['name'],
+							   'name'=>$plugin['title']
+							);
+						 }
+					  }
+				   }
+				}
 			}
 		 }
 		 if(count($plugin_hooks) > 0) return $plugin_hooks;

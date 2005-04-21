@@ -221,6 +221,7 @@
 		 $this->phpgw_db->query($sql,__LINE__,__FILE__);
 
 		 $this->phpgw_db->next_record();
+
 		 foreach($field_metadata as $fieldmeta)
 		 {
 			$field_values[$fieldmeta['name']]=$this->strip_magic_quotes_gpc($this->phpgw_db->f($fieldmeta['name']));
@@ -229,7 +230,6 @@
 		 return $field_values;
 	  }
 
-	  
 	  /****************************************************************************\
 	  * get all tablefield in array for table                                      *
 	  \****************************************************************************/

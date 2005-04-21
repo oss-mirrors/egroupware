@@ -359,7 +359,6 @@
 
 			   foreach($fields as $field)
 			   {
-
 				  unset($sets);
 				  unset($plg_name);
 				  unset($plg_conf);
@@ -380,7 +379,6 @@
 				  else
 				  {
 					 $plugin_conf_arr=$this->bo->so->get_field_values($this->object_values[object_id],$field['name']);
-					 
 					 if($plugin_conf_arr[field_plugins])
 					 {
 						$plugin_settings=unserialize(base64_decode($plugin_conf_arr[field_plugins]));
