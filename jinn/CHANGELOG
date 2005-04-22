@@ -7,6 +7,10 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.214e
+===========================
+Mon Apr 22 16:30:00 CET 2005
+- fixed backwards compatibility bug in Filemanager plugin
 
 Version 0.8.214d
 ===========================

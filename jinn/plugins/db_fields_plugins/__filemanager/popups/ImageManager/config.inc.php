@@ -46,6 +46,10 @@
 //_debug_array($config);
    $config = $config[conf];
 //_debug_array($config);
+	if($config[Image_filetype] != '')
+	{
+		$config[Filetype] = $config[Image_filetype];
+	}
 
    $BASE_DIR = $sessdata[UploadImageBaseDir];
    if($BASE_DIR == '') $BASE_DIR = $bo->cur_upload_path();
