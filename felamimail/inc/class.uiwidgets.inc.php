@@ -68,65 +68,83 @@
 		* @param _selected string containing the selected folder
 		* @param _topFolderName string containing the top folder name
 		* @param _topFolderDescription string containing the description for the top folder
+		* @param _formName string name of the sorounding form
+		* @param _hiddenVar string hidden form value, transports the selected folder
 		*
 		* @returns the html code, to be added into the template
 		*/
-		function createHTMLFolder($_folders, $_selected, $_formName, $_valueName, $_topFolderName, $_topFolderDescription)
+		function createHTMLFolder($_folders, $_selected, $_topFolderName, $_topFolderDescription, $_formName, $_hiddenVar)
 		{
+			// create a list of all folders, also the ones which are not subscribed
+ 			foreach($_folders as $key => $obj)
+			{
+				$folderParts = explode($obj->delimiter,$key);
+				if(is_array($folderParts))
+				{
+					$partCount = count($folderParts);
+					$string = '';
+					for($i = 0; $i < $partCount-1; $i++)
+					{
+						if(!empty($string)) $string .= $obj->delimiter;
+						$string .= $folderParts[$i];
+						if(!$allFolders[$string])
+						{	
+							$allFolders[$string] = $obj;
+							unset($allFolders[$string]->name);
+							unset($allFolders[$string]->attributes);
+							unset($allFolders[$string]->counter);
+						}
+					}
+				}
+				$allFolders[$key] = $obj;
+			}
+
 			$folderImageDir = substr($GLOBALS['phpgw']->common->image('phpgwapi','foldertree_line.gif'),0,-19);
 			
 			// careful! "d = new..." MUST be on a new line!!!
 			$folder_tree_new = "<script type='text/javascript'>d = new dTree('d','".$folderImageDir."');d.config.inOrder=true;d.config.closeSameLevel=true;";
 			
-			$allFolders = array();
-
-			// create a list of all folders, also the ones which are not subscribed
- 			foreach($_folders as $key => $value)
-			{
-				$folderParts = explode('.',$key);
-				$partCount = count($folderParts);
-				$string = '';
-				for($i = 0; $i < $partCount; $i++)
-				{
-					if(!empty($string)) $string .= '.';
-					$string .= $folderParts[$i];
-					$allFolders[$string] = $folderParts[$i];
-				}
-			}
+			#$allFolders = array();
 
 			// keep track of the last parent id
 			$parentStack	= array();
 			$counter	= 0;
 			$folder_name	= $_topFolderName;
 			$folder_title	= $_topFolderDescription;
-			$folder_icon = $folderImageDir."foldertree_base.gif";
+			$folder_icon 	= $folderImageDir."foldertree_base.gif";
 			// and put the current counter on top
 			array_push($parentStack, 0);
 			$parent = -1;
-			#$folder_tree_new .= "d.add(0,-1,'$folder_name','javascript:void(0);','','','$folder_title');";
-			if($_selected == '--topfolderselected--')
-			{
-				$folder_name = "<font style=\"background-color: #dddddd\">$folder_name</font>";
-			}
-			$folder_tree_new .= "d.add(0,-1,'$folder_name','#','document.$_formName.$_valueName.value=\'--topfolderselected--\'; document.$_formName.submit();','','$folder_title');\n";
-
+			$folder_tree_new .= "d.add(0,-1,'$folder_name','javascript:void(0);','','','$folder_title');";
 			$counter++;
 			
-			foreach($allFolders as $key => $value)
-			{
-				$countedDots = substr_count($key,".");
-				#print "$value => $counted_dots<br>";
-				
+			#foreach($_folders as $key => $obj)
+			foreach($allFolders as $key => $obj)
+			{	
+				$folderParts = explode($obj->delimiter, $key);
+				//get rightmost folderpart
+				$value = array_pop($folderParts);
+				//count remaining folderparts
+				$countedDots = count($folderParts);
+
+ 				if( @$obj->counter->unseen > 0 )
+				{
+ 					$messageCount = "&nbsp;(".$obj->counter->unseen.")";
+				}
+ 				else
+ 				{
+					$messageCount = "";
+				}
 
 				// hihglight currently selected mailbox
 				if ($_selected == $key)
 				{
-					$folder_name = "<font style=\"background-color: #dddddd\">$value</font>";
+					$folder_name = "<font style=\"background-color: #dddddd\">$value$messageCount</font>";
 					$openTo = $counter;
 				}
 				else
 				{
-					$folder_name = $value;
+					$folder_name = $value.$messageCount;
 				}
 
 				$folder_title = $value;
@@ -141,7 +159,7 @@
 					$folderOpen_icon = '';
 				}
 
-				// we are on the same level
+				// we are on the same level								
 				if($countedDots == count($parentStack) -1)
 				{
 					// remove the last entry
@@ -177,7 +195,7 @@
 					$parent = 0;
 				
 				// Node(id, pid, name, url, urlClick, urlOut, title, target, icon, iconOpen, open) {
-				$folder_tree_new .= "d.add($counter,$parent,'$folder_name','#','document.$_formName.$_valueName.value=\'$key\'; document.$_formName.submit();','','$key','','$folder_icon','$folderOpen_icon');\n";
+				$folder_tree_new .= "d.add($counter,$parent,'$folder_name','#','document.$_formName.$_hiddenVar.value=\'$key\'; document.$_formName.submit();','','$key','','$folder_icon','$folderOpen_icon');\n";
 				$counter++;
 			}
 

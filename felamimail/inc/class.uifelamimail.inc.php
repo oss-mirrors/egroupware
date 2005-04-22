@@ -220,73 +220,78 @@
 			$this->viewMainScreen();
 		}
 
-//NDEE		function createHTMLFolder($_folders, $_selected, $_topFolderName, $_topFolderDescription)
-		function createHTMLFolder($_folders, $_selected, $_topFolderName, $_topFolderDescription, $_folderStatus)
+		function createHTMLFolderNew($_folders, $_selected, $_topFolderName, $_topFolderDescription)
 		{
+			// create a list of all folders, also the ones which are not subscribed
+ 			foreach($_folders as $key => $obj)
+			{
+				$folderParts = explode($obj->delimiter,$key);
+				if(is_array($folderParts))
+				{
+					$partCount = count($folderParts);
+					$string = '';
+					for($i = 0; $i < $partCount-1; $i++)
+					{
+						if(!empty($string)) $string .= $obj->delimiter;
+						$string .= $folderParts[$i];
+						if(!$allFolders[$string])
+						{	
+							$allFolders[$string] = $obj;
+							unset($allFolders[$string]->name);
+							unset($allFolders[$string]->attributes);
+							unset($allFolders[$string]->counter);
+						}
+					}
+				}
+				$allFolders[$key] = $obj;
+			}
+
 			$folderImageDir = substr($GLOBALS['phpgw']->common->image('phpgwapi','foldertree_line.gif'),0,-19);
 			
 			// careful! "d = new..." MUST be on a new line!!!
 			$folder_tree_new = "<script type='text/javascript'>d = new dTree('d','".$folderImageDir."');d.config.inOrder=true;d.config.closeSameLevel=true;";
 			
-			$allFolders = array();
-
-			// create a list of all folders, also the ones which are not subscribed
- 			foreach($_folders as $key => $value)
-			{
-				$folderParts = explode('.',$key);
-				$partCount = count($folderParts);
-				$string = '';
-				for($i = 0; $i < $partCount; $i++)
-				{
-					if(!empty($string)) $string .= '.';
-					$string .= $folderParts[$i];
-					$allFolders[$string] = $folderParts[$i];
-				}
-			}
+			#$allFolders = array();
 
 			// keep track of the last parent id
 			$parentStack	= array();
 			$counter	= 0;
 			$folder_name	= $_topFolderName;
 			$folder_title	= $_topFolderDescription;
-			$folder_icon = $folderImageDir."foldertree_base.gif";
+			$folder_icon 	= $folderImageDir."foldertree_base.gif";
 			// and put the current counter on top
 			array_push($parentStack, 0);
 			$parent = -1;
 			$folder_tree_new .= "d.add(0,-1,'$folder_name','javascript:void(0);','','','$folder_title');";
 			$counter++;
 			
-			foreach($allFolders as $key => $value)
-			{
+			#foreach($_folders as $key => $obj)
+			foreach($allFolders as $key => $obj)
+			{	
+				$folderParts = explode($obj->delimiter, $key);
+				//get rightmost folderpart
+				$value = array_pop($folderParts);
+				//count remaining folderparts
+				$countedDots = count($folderParts);
 
- 				/* message count */
- 				/* added by GAH 06-Nov-2004 */
- 				$totalMessages  = $_folderStatus[$key]['messages'];
- 				$unseenMessages = $_folderStatus[$key]['unseen'];
- //				$messageCount = " (" . $totalMessages . " / " . $unseenMessages . ")";
- 				if( $unseenMessages > 0 )
+ 				if( @$obj->counter->unseen > 0 )
 				{
- 					$messageCount = " <b>($unseenMessages)</b>";
+ 					$messageCount = "&nbsp;(".$obj->counter->unseen.")";
 				}
  				else
  				{
 					$messageCount = "";
 				}
 
-				$countedDots = substr_count($key,".");
-				#print "$value => $counted_dots<br>";
-				
-
 				// hihglight currently selected mailbox
 				if ($_selected == $key)
 				{
-// NDEE					$folder_name = "<font style=\"background-color: #dddddd\">$value</font>";
-					$folder_name = "<font style=\"background-color: #dddddd\">$value $messageCount</font>";
+					$folder_name = "<font style=\"background-color: #dddddd\">$value$messageCount</font>";
 					$openTo = $counter;
 				}
 				else
 				{
-					$folder_name = $value." ".$messageCount;
+					$folder_name = $value.$messageCount;
 				}
 
 				$folder_title = $value;
@@ -301,7 +306,7 @@
 					$folderOpen_icon = '';
 				}
 
-				// we are on the same level
+				// we are on the same level								
 				if($countedDots == count($parentStack) -1)
 				{
 					// remove the last entry
@@ -347,7 +352,6 @@
 			
 			return $folder_tree_new;
 		}
-
 
 		function deleteMessage()
 		{
@@ -737,7 +741,7 @@
 			}
 			else
 			{
-				$folders = $this->bofelamimail->getFolderList('true');
+				#$folders = $this->bofelamimail->getFolderList('true');
 
 				$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
 
@@ -837,13 +841,10 @@
 						if($headers['header'][$i]['attachments'] == "true")
 						{
 							$image = '<img src="'.$GLOBALS['phpgw']->common->image('felamimail','attach').'" border="0">';
-//modified NDEE 29-12-03 for 
-//separate attachment icon
-							//$headers['header'][$i]['subject'] = "$image&nbsp;".$headers['header'][$i]['subject'];
+
 							$headers['header'][$i]['attachment'] = $image;
 						}
 						$this->t->set_var('header_subject', $headers['header'][$i]['subject']);
-// added
 						$this->t->set_var('attachments', $headers['header'][$i]['attachment']);
 						$this->t->set_var('full_subject',@htmlspecialchars($fullSubject,ENT_QUOTES,$this->displayCharset));
 					}
@@ -1074,32 +1075,17 @@
 			}
 			$this->t->parse('status_row','status_row_tpl',True);
 			
-			@reset($folders);
-			
-
-			// Start of the new folder tree system
-			// 29-12-2003 NDEE
-			// ToDo
-			// check how many mails in folder - DONE thx to GAH
-			// different style of parsing folders into file
-			// open to active folder on reload
-			
- 			/* find how many messages are in each folder */
- 			/* added by GAH 06-Nov-2004 */
- 			$folderList = $this->bofelamimail->getFolderList('true');
- 			$folderStatus = array();
- 			foreach( $folderList as $key => $value )
- 			{
- 				$folderStatus[$key] = $this->bofelamimail->getFolderStatus($key);
- 			}
- 
- 			$folder_tree_new = $this->createHTMLFolder($folders, $this->mailbox, 'IMAP Server', $mailPreferences['username'].'@'.$mailPreferences['imapServerAddress'], $folderStatus);
-//			$folder_tree_new = $this->createHTMLFolder($folders, $this->mailbox, lang('IMAP Server'), $mailPreferences['username'].'@'.$mailPreferences['imapServerAddress']);
+			$folderObjects = $this->bofelamimail->getFolderObjects(true, false);
+			$folder_tree_new = $this->createHTMLFolderNew
+			(
+				$folderObjects, 
+				$this->mailbox, 
+				'IMAP Server', 
+				$mailPreferences['username'].'@'.$mailPreferences['imapServerAddress']
+			);
 
 			$this->t->set_var('current_mailbox',$current_mailbox);
 			$this->t->set_var('folder_tree',$folder_tree_new);
-			#$this->t->set_var('foldertree_image_path',PHPGW_IMAGES_DIR.'/foldertree/');
-			
 
 			$this->t->set_var('options_folder',$options_folder);
 			

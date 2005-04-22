@@ -147,18 +147,6 @@
 			}
 		}
 		
-		// creates the mailbox string needed for the various imap functions
-/*		function createMailboxString($_folderName='')
-		{
-			$mailboxString = sprintf("{%s:%s%s/notls}%s",
-				$this->mailPreferences['imapServerAddress'],
-				$this->mailPreferences['imapPort'],
-				$this->mailPreferences['imapOptions'],
-				$_folderName);
-
-			return $this->encodeFolderName($mailboxString);
-		}*/
-		
 		function compressFolder()
 		{
 			$prefs	= $this->bopreferences->getPreferences();
@@ -418,7 +406,7 @@
 		{
 			// now we have the keys as values
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
-			$subscribedFolders = $this->getFolderList(true);
+			$subscribedFolders = $this->getFolderObjects(true);
 			#print_r($subscribedFolders);
 			#print $subscribedFolders[$_folderName]." - $_folderName<br>";
 			if(isset($subscribedFolders[$_folderName]))
@@ -439,73 +427,82 @@
 			return $retValue;
 		}
 		
-		function getFolderList($_subscribedOnly=false)
+		/**
+		* get IMAP folder objects
+		*
+		* returns an array of IMAP folder objects. Put INBOX folder in first
+		* position. Preserves the folder seperator for later use. The returned
+		* array is indexed using the foldername.
+		*
+		* @param _subscribedOnly boolean get subscribed or all folders
+		* @param _getCounters    boolean get get messages counters
+		*
+		* @returns array with folder objects. eg.: INBOX => {inbox object}
+		*/		
+		function getFolderObjects($_subscribedOnly=false, $_getCounters=false) 
 		{
-			$folders = array();
-			if(!is_resource($this->mbox))
+			$folders = array(); 
+			if (!is_resource($this->mbox))
 			{ 
 				return $folders;
-			}
-
+			} 
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$this->imapBaseDir,3,$this->profileID);
-				
-		
-			if($_subscribedOnly == 'true')
+
+
+			if($_subscribedOnly == true) 
 			{
-				$list = imap_getsubscribed($this->mbox,$mailboxString,"*");
-			}
+				$list = imap_getsubscribed($this->mbox,$mailboxString,"*"); 
+			} 
 			else
-			{
-				$list = imap_getmailboxes($this->mbox,$mailboxString,"*");
-			}
+			{ 
+				$list = imap_getmailboxes($this->mbox,$mailboxString,"*"); 				
+			} 
 
 			if(is_array($list))
-			{
-				#_debug_array($list);
-				reset($list);
-				$folders = array();
+			{	
+				reset($list); 
+				$inboxFolders = array();
+				$otherFolders = array();
 				while (list($key, $val) = each($list))
-				{
-					// remove the {host:port/imap/...} part
+				{ 
 					$folderNameIMAP = $this->decodeFolderName(preg_replace("/{.*}/",'',$val->name));
-					$folderParts = explode(".",$folderNameIMAP);
-					reset($folderParts);
-					$displayName = "";
-					#print_r($folderParts);print"<br>";
-					for($i=0; $i<count($folderParts); $i++)
+					if($_getCounters == true)
 					{
-						if($i+1 == count($folderParts))
-						{
-							$displayName .= $folderParts[$i];
-						}
-						else
-						{
-							$displayName .= ". . ";
-						}
+						$val->counter = imap_status($this->mbox,$val->name,SA_ALL);
 					}
-					$folders["$folderNameIMAP"] = $displayName;
+					$inboxPos = strpos($folderNameIMAP,'INBOX'); 
+					if ($inboxPos !== false AND $inboxPos == 0) 
+					{ 
+						$inboxFolders["$folderNameIMAP"] = $val;
+					} 
+					else
+					{ 
+						$otherFolders["$folderNameIMAP"] = $val;
+					} 
 				}
-				#exit;
-				ksort($folders,SORT_STRING);
-				// return always the inbox
-				$folders = array_merge(array('INBOX' => 'INBOX'),$folders);
-				reset($folders);
-				return $folders;
+				ksort($inboxFolders,SORT_STRING); 
+				ksort($otherFolders,SORT_STRING); 
+				$folders = $inboxFolders + $otherFolders;
+
+				return $folders; 
 			}
 			else
 			{
-				if($_subscribedOnly == 'true' && 
-					is_array(imap_list($this->mbox,$mailboxString,'INBOX')))
-				{
-					$folders['INBOX'] = 'INBOX';
-				}
-				return $folders;
+                                if($_subscribedOnly == 'true' &&
+                                        is_array($inboxName = imap_list($this->mbox,$mailboxString,'INBOX')))
+                                {
+					$inboxData = imap_getmailboxes($this->mbox,$mailboxString,'INBOX');
+					$folders['INBOX'] = $inboxData[0];
+					
+					return $folders;
+                                }
 			}
 		}
 		
 		function reopen($_foldername)
-		{// (regis) seems to be necessary/usefull to reopen in the good folder
-		//echo "<hr>reopening imap mailbox in:".$_foldername;
+		{
+			// (regis) seems to be necessary/usefull to reopen in the good folder
+			//echo "<hr>reopening imap mailbox in:".$_foldername;
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_foldername,3,$this->bofelamimail->profileID);
 			imap_reopen ($this->mbox, $mailboxString);
 		}

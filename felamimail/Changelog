@@ -1,7 +1,9 @@
 Version xxx
 
+- patch from Regis Regis Leroy to display counters on folders and improve
+  folder handling
 - improved folder management. You can create now subfolders in the top
-level. This should also improve support for UW IMAP
+  level. This should also improve support for UW IMAP
 - fixed charset bug in folder management pages
 - added support for javascript based folder tree
 

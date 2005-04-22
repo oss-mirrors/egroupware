@@ -11,10 +11,18 @@
 
 	/* $Id$ */
 
-	$this->bofelamimail = CreateObject('felamimail.bofelamimail');
+	$this->bofelamimail = CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw']->translation->charset());
 	$this->bofelamimail->openConnection('',OP_HALFOPEN);
-	$folderList = $this->bofelamimail->getFolderList();
-	reset($folderList);
+	$folderObjects = $this->bofelamimail->getFolderObjects();
+	foreach($folderObjects as $folderName => $folderInfo)
+	{
+		#_debug_array($folderData);
+		#$folderParts = explode($folderInfo->delimiter,$folderName);
+		#if(count($folderParts) > 1)
+		#{
+		#}
+		$folderList[$folderName] = $folderName;
+	}
 	
 	$this->bofelamimail->closeConnection();
 	

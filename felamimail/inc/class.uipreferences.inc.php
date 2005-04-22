@@ -91,14 +91,12 @@
 				$this->bofelamimail->imap_createmailbox($newMailboxName,True);
 			}
 			
-			$folderList	= $this->bofelamimail->getFolderList();
+			$folderList	= $this->bofelamimail->getFolderObjects();
 
 			// check user input BEGIN
-		
 			// the name of the new current folder
-			if(get_var('mailboxName',array('POST')) && 
-			(in_array(get_var('mailboxName',array('POST')),array_flip($folderList)) ||
-			get_var('mailboxName',array('POST')) == '--topfolderselected--'))
+			if(get_var('mailboxName',array('POST')) && $folderList[get_var('mailboxName',array('POST'))] ||
+			get_var('mailboxName',array('POST')) == '--topfolderselected--')
 			{
 				$this->bofelamimail->sessionData['preferences']['mailbox']
 					= get_var('mailboxName',array('POST'));
@@ -159,37 +157,14 @@
 			#$this->t->set_var('acl_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
 			
 			// folder select box
-			#while(list($key,$value) = @each($folderList))
-			#{
-			#	$currentFolderStatus = $this->bofelamimail->getFolderStatus($key);
-			#	$this->t->set_var('folder_name',$value);
-			#	$this->t->set_var('folder_value',$key);
-			#	if($this->selectedFolder == $key)
-			#	{
-			#		$this->t->set_var('selected','selected');
-			#	}
-			#	else
-			#	{
-			#		$this->t->set_var('selected','');
-			#	}
-			#	if($currentFolderStatus['subscribed'])
-			#	{
-			#		$this->t->set_var('subscribed','S');
-			#	}
-			#	else
-			#	{
-			#		$this->t->set_var('subscribed','U');
-			#	}
-			#	$this->t->parse('select_rows','select_row',True);
-			#}
 			$folderTree = $this->uiwidgets->createHTMLFolder
 			(
 				$folderList, 
 				$this->selectedFolder, 
-				'folderList',
-				'mailboxName',
 				lang('IMAP Server'), 
-				$mailPrefs['username'].'@'.$mailPrefs['imapServerAddress']
+				$mailPrefs['username'].'@'.$mailPrefs['imapServerAddress'],
+				'folderList',
+				'mailboxName'
 			);
 			$this->t->set_var('folder_tree',$folderTree);
 			
