@@ -30,15 +30,18 @@
 	class db_fields_plugin_filemanager
 	{
 
+		var $javascript_inserted = false;
+		var $spacer = 'jinn/plugins/db_fields_plugins/plugin_images/spacer.png';
+		var $spacer_style = '';
+		
+		
+		
 	   function formview_edit($field_name,$value,$config,$attr_arr)
 	   {	
 		  global $local_bo;
 		  
 		  $upload_path=$local_bo->cur_upload_path();
 		  $helper_id = $local_bo->plug->registry->plugins['filemanager']['helper_fields_substring'];
-		  $stripped_name=substr($field_name,6);	//the real field name
-		  $prefix = substr($field_name,0,6); 	//the prefix used to identify records in a multi record view
-		  $prefix .= $helper_id;				//the helper id will help identifying which post vars to ignore when saving the record(s)
 		  
 			// Check if everything is set to upload files
 		  if(!$upload_path)
@@ -52,98 +55,19 @@
 			 return $input;
 		  }
 	
-		  $table_style='';
-		  $cell_style='style="border-width:1px;border-style:solid;border-color:grey"';
-		  $img_style='style="border-style:solid;border-width:1px;border-color:#000000"';
-		  $spacer = "jinn/plugins/db_fields_plugins/plugin_images/spacer.png";
-		  $spacer_style='';
-	
-		  global $js_once;	//this global is used because the following hidden params and javascript only need to be added once (in case of edit multiple records)
-			if(!$js_once)
-			{
-				 /**************************************************
-				 *  javascript and hidden param for server browser *
-				 **************************************************/
-				$input.='<input type="hidden" value="" name="CURRENT_RECORD">';
-				$input.='<input type="hidden" value="" name="CURRENT_FIELD">';
-				$input.='<input type="hidden" value="" name="CURRENT_SLOT">';
-				$input.='	<script language="JavaScript">
-				<!--  
-				function getLabel(type)
-				{
-					if(type=="add") return "'.lang('add').'";
-					if(type=="replace") return "'.lang('replace').'";
-				}
-				
-				function onBrowseServer(record, field, slot) 
-				{
-					//the popup will be aware of this window by the opener property
-					//when a server image is chosen, the popup will call the onSave function, passing the chosen image path
-					childWindow=open("jinn/plugins/db_fields_plugins/__filemanager/popups/insert_image.php?field='.$stripped_name.'","console","resizable=no,width=580,height=440");
-					if (childWindow.opener == null)	childWindow.opener = self;
-					document.frm.CURRENT_RECORD.value=record;
-					document.frm.CURRENT_FIELD.value=field;
-					document.frm.CURRENT_SLOT.value=slot;
-				}
-				
-				function setSlot(record, field, slot, val1, val2, val3)
-				{
-					//alert("set Slot: " + record + ", "+ field + ", "+ slot);
-					
-					//set the img src property for preview purposes
-					//fill a hidden form input to enable processing and saving of the chosen image path on submitting the form
-					
-					//todo: set img style?
-					//todo: remove width/height text?
-					//todo: remove delete checkbox?
-					
-					var cmd;
-					
-					cmd = "document.frm." + record + "_IMG_EDIT_" + field + slot + ".value = \"" + val1 + "\";";
-					eval(cmd);
-					
-					if(val1 == "delete")
-					{
-						cmd = "document." + record + "_IMG_" + field + slot + ".src = \"" + val2 + "\";";
-					}
-					else
-					{
-							//we need to put a dot in front of the filename to display the thumbnail
-							//fixme: can this be done easier with RegEx?
-						var val2_arr = val2.split("/");
-						var idx = val2_arr.length - 1;
-						val2_arr[idx] = "." + val2_arr[idx];
-						var thumb = val2_arr.join("/");
+			$stripped_name=substr($field_name,6);	//the real field name
+			$prefix = substr($field_name,0,6); 	//the prefix used to identify records in a multi record view
+			$prefix .= $helper_id;				//the helper id will help identifying which post vars to ignore when saving the record(s)
 			
-						cmd = "document." + record + "_IMG_" + field + slot + ".src = \"" + thumb + "\";";
-					}
-					eval(cmd);
-		
-					cmd = "document.frm." + record + "_IMG_EDIT_BUTTON_" + field + slot + ".value = \"" + val3 + "\";";
-					eval(cmd);
-		
-					cmd = "document.getElementById(\"" + record + "_PATH_" + field + slot + "\").style.display = \"none\";";
-					eval(cmd);
-				}
-				
-				function onSave(val)
-				{
-					//access the CURRENT_... hidden fields to find out which image slot to use
-					setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, val, val, getLabel("replace"));
-				}
-				
-				function onDelete(record, field, slot)
-				{
-					setSlot(record, field, slot, "delete", "'.$spacer.'", getLabel("add"));
-				}
-				-->
-				</script>';
+			if(!$this->javascript_inserted)
+			{
+				$input .= $this->add_javascript($stripped_name);
 			}
-			$js_once = true;
 	
+		    $table_style='';
 			$input.='<table '.$table_style.' cellpadding="3" width="100%">';
-	
-			 /****************************************
+
+			/****************************************
 			 * if value is set, show existing images *
 			 ****************************************/	
 			 if(trim($value))
@@ -169,126 +93,40 @@
 				$num_input=10;
 			 }
 	
+	
+				$cell_style='style="border-width:1px;border-style:solid;border-color:grey"';
 				$field_string  = "'".$stripped_name."'";
 				$prefix_string = "'".$prefix."'";
-	
+				
 				if (is_array($value) && count($value)>0)
 				{
 				   $i=0;
-	
-				   $max_prev=$local_bo->read_preferences('max_prev');
-				   if($max_prev == '') $max_prev = -1; //default we want to see all preview images
-	
 				   foreach($value as $img_path)
 				   {
 					  $i++;
+						//the slot number
 					  $input.='<tr><td '.$cell_style.' valign="top">'.$i.'.</td><td '.$cell_style.'>';
-					  unset($imglink); 
-					  unset($thumblink); 
-					  unset($popup); 
-	
-					  //check if file exists
-					  if(is_file($upload_path . SEP . $img_path))
-					  {
-						$image_info = getimagesize($upload_path . SEP. $img_path);
-						if(is_array($image_info))
-						{
-							// create previewlink
-							$imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$img_path);
-								// FIXME move code to class
-							$image_size=getimagesize($upload_path . SEP. $img_path);
-							$pop_width = ($image_size[0]+50);
-							$pop_height = ($image_size[1]+50);
-		
-							$popup = "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
-		
-							$path_array = explode('/', $img_path);
-							$path_array[count($path_array)-1] = '.'.$path_array[count($path_array)-1];
-							$thumb_path = implode('/', $path_array);
-							  
-							// check for thumb and create previewlink
-							if(is_file($upload_path . SEP . $thumb_path))
-							{
-								$thumblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path . SEP . $thumb_path);
-							}
-	
-	
-								// if URL exists show link or if set show image in form
-							if($local_bo->read_preferences('prev_img')!='no' &&  ($max_prev>=$i || $max_prev==-1) && $imglink) 
-							{	
-							   if($local_bo->read_preferences('prev_img')=='yes')
-							   {
-								  if($thumblink)
-								  {
-										//show thumbnail if normal image is not available
-									 $input.='<a href="javascript:'.$popup.'"><img name="'.$prefix.'_IMG_'.$stripped_name.$i.'" src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
-									 $input.='<span id="'.$prefix.'_PATH_'.$stripped_name.$i.'"></span>';
-								  }
-								  else
-								  {
-										//show image
-									 $input.='<img name="'.$prefix.'_IMG_'.$stripped_name.$i.'" src="'.$imglink.'" alt="preview" '.$img_style.' />';
-									 $input.='<span id="'.$prefix.'_PATH_'.$stripped_name.$i.'"></span>';
-								  }
-							   }
-							   elseif($local_bo->read_preferences('prev_img')=='only_tn' && $thumblink)
-							   {
-										//show thumbnail
-								  $input.='<a href="javascript:'.$popup.'"><img name="'.$prefix.'_IMG_'.$stripped_name.$i.'" src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
-								  $input.='<span id="'.$prefix.'_PATH_'.$stripped_name.$i.'"></span>';
-							   }
-							   else
-							   {
-										//show path with link to image
-								  $input.='<img name="'.$prefix.'_IMG_'.$stripped_name.$i.'" src="'.$spacer.'" '.$spacer_style.' />';
-								  $input.='<span id="'.$prefix.'_PATH_'.$stripped_name.$i.'"><b><a href="javascript:'.$popup.'">'.$img_path.'</a></b></span>';
-							   }
-							}
-							else  
-							{
-							   if($imglink)
-							   {
-										//show path with link to image
-								  $input.='<img name="'.$prefix.'_IMG_'.$stripped_name.$i.'" src="'.$spacer.'" '.$spacer_style.' />';
-								  $input.='<span id="'.$prefix.'_PATH_'.$stripped_name.$i.'"><b><a href="javascript:'.$popup.'">'.$img_path.'</a></b></span>';
-							   }
-							   else
-							   {
-										//show path only
-								  $input.='<img name="'.$prefix.'_IMG_'.$stripped_name.$i.'" src="'.$spacer.'" '.$spacer_style.' />';
-								  $input.='<span id="'.$prefix.'_PATH_'.$stripped_name.$i.'"><b>'.$img_path.'</b></span>';
-							   }
-							}
-						}
-						else
-						{
-							//process as unknown filetype
-						  $input.='<img name="'.$prefix.'_IMG_'.$stripped_name.$i.'" src="'.$spacer.'" '.$spacer_style.' />';
-						  $input.='<span id="'.$prefix.'_PATH_'.$stripped_name.$i.'"><b>'.$img_path.'</b></span>';
-						}
-					  }
-					  else
-					  {
-							//file does not exist
-						$input.='<img name="'.$prefix.'_IMG_'.$stripped_name.$i.'" src="'.$spacer.'" '.$spacer_style.' />';
-						$input.='<span id="'.$prefix.'_PATH_'.$stripped_name.$i.'"><b>error: file does not exist on server ('.$img_path.')</b></span>';
-					  }
-						//generate the delete/replace/add buttons
+						//the file
+					  $input .= $this->show_file($img_path, true, $field_name, $i);
+					  	//the delete/replace/add buttons
 					  $input.='</td><td '.$cell_style.' valign="top"><img onClick="onDelete('.$prefix_string.', '.$field_string.', '.$i.');" src="jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/edit_trash.gif">';
 					  $input.='<input onClick="onBrowseServer('.$prefix_string.', '.$field_string.', '.$i.');" type="button" value="'.lang('replace').'" name="'.$prefix.'_IMG_EDIT_BUTTON_'.$stripped_name.$i.'">';
 					  $input.='<input type="hidden" value="" name="'.$prefix.'_IMG_EDIT_'.$stripped_name.$i.'">';
 					  $input.='</td></tr>';
 				   }
 				}
-				
-					//generate empty slots for the browse server plugin to activate
+					//empty slots for the plugin to put filepaths in
 				if(count($value) < $num_input)
 				{
 					for($i = count($value); $i < $num_input; $i++)
 					{
+						//the slot number
 						$input.='<tr><td '.$cell_style.' valign="top">'.($i+1).'.</td><td '.$cell_style.'>';
-						$input.='<img name="'.$prefix.'_IMG_'.$stripped_name.($i+1).'" src="'.$spacer.'" '.$spacer_style.' />';
-						$input.='<span id="'.$prefix.'_PATH_'.$stripped_name.($i+1).'"></span>';
+						//the file (empty)
+						$name = $prefix.'_IMG_'.$stripped_name.($i+1);
+						$span_id = $prefix.'_PATH_'.$stripped_name.($i+1);
+						$input .= $this->show_slot(true, 'path', $name, $this->spacer, $this->spacer_style, $span_id, '');
+					  	 //the delete/replace/add buttons
 						$input.='</td><td '.$cell_style.' valign="top"><img onClick="onDelete('.$prefix_string.', '.$field_string.', '.($i+1).');" src="jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/edit_trash.gif">';
 						$input.='<input onClick="onBrowseServer('.$prefix_string.', '.$field_string.', '.($i+1).');" type="button" value="'.lang('add').'" name="'.$prefix.'_IMG_EDIT_BUTTON_'.$stripped_name.($i+1).'">';
 						$input.='<input type="hidden" value="" name="'.$prefix.'_IMG_EDIT_'.$stripped_name.($i+1).'">';
@@ -296,17 +134,21 @@
 					}
 				}
 	
-					//generate 'add more images' slot if appropriate
+					//'add more files' slot if appropriate
 				if($config['Allow_more_then_max_files']=='True')
 				{
+						//add a hidden slot which can be unhidden by clicking on the "add slot" button
 					if(count($value) > $num_input) $num_input = count($value);
 					$js="document.getElementById('".$prefix.$stripped_name."extra').style.display='table-row'; document.getElementById('".$prefix.$stripped_name."add').style.display='none'";
 					$input.='<tr id="'.$prefix.$stripped_name.'add"><td colspan="3" '.$cell_style.' valign="top"><input onClick="'.$js.'" type="button" name="'.$prefix.'_IMG_ADD_SLOT_'.$stripped_name.'" value="'.lang('add slot').'"></td></tr>';
 	
-						//add a hidden slot which can be unhidden by clicking on the "add slot" button
+						//the slot number
 					$input.='<tr id="'.$prefix.$stripped_name.'extra" style="display:none;"><td '.$cell_style.' valign="top">'.($num_input+1).'.</td><td '.$cell_style.'>';
-					$input.='<img name="'.$prefix.'_IMG_'.$stripped_name.($num_input+1).'" src="'.$spacer.'" '.$spacer_style.' />';
-					$input.='<span id="'.$prefix.'_PATH_'.$stripped_name.($num_input+1).'"></span>';
+						//the file (empty)
+					$name = $prefix.'_IMG_'.$stripped_name.($num_input+1);
+					$span_id = $prefix.'_PATH_'.$stripped_name.($num_input+1);
+					$input .= $this->show_slot(true, 'path', $name, $this->spacer, $this->spacer_style, $span_id, '');
+					  	 //the delete/replace/add buttons
 					$input.='</td><td '.$cell_style.' valign="top">';
 					$input.='<input onClick="onBrowseServer('.$prefix_string.', '.$field_string.', '.($num_input+1).');" type="button" value="'.lang('add').'" name="'.$prefix.'_IMG_EDIT_BUTTON_'.$stripped_name.($num_input+1).'">';
 					$input.='<input type="hidden" value="" name="'.$prefix.'_IMG_EDIT_'.$stripped_name.($num_input+1).'">';
@@ -397,124 +239,30 @@
 	
 	   function formview_read($value,$config)
 	   {
-	
 		  global $local_bo;
-		  $stripped_name=substr($field_name,6);	
-	
-		  
-		  $upload_path=$local_bo->cur_upload_path();
-	
 		  $table_style='';
 		  $cell_style='style="border-width:1px;border-style:solid;border-color:grey"';
-		  $img_style='style="border-style:solid;border-width:1px;border-color:#000000"';
-	
+
 		  $input.='<table '.$table_style.' cellpadding="3" width="100%">';
 		  if(trim($value))// FIXME or rather TESTME
 		  {
-			 $input.='<input type="hidden" name="IMG_ORG'.$field_name.'" value="'.$value.'">';
-	
+			 //$input.='<input type="hidden" name="IMG_ORG'.$field_name.'" value="'.$value.'">';
 			 $value=explode(';',$value);
-	
 			 if (is_array($value) && count($value)>0)
 			 {
 				$i=0;
-	
-				$max_prev=$local_bo->read_preferences('max_prev');
-				if($max_prev == '') $max_prev = -1; //default we want to see all preview images
-	
 				foreach($value as $img_path)
 				{
-				   $i++;
-			       $input.='<tr><td '.$cell_style.' valign="top">'.$i.'.</td><td '.$cell_style.'>';
-				   unset($imglink); 
-				   unset($thumblink); 
-				   unset($popup); 
-	
-					//check if file exists
-					if(is_file($upload_path . SEP . $img_path))
-					{
-						$image_info = getimagesize($upload_path . SEP. $img_path);
-						if(is_array($image_info))
-						{
-							//process as image
-
-								// create previewlink
-							  $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$img_path);
-								// FIXME move code to class
-							  $image_size=getimagesize($upload_path . SEP. $img_path);
-							  $pop_width = ($image_size[0]+50);
-							  $pop_height = ($image_size[1]+50);
-			
-							  $popup = "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
-
-	
-							  $path_array = explode('/', $img_path);
-							  $path_array[count($path_array)-1] = '.'.$path_array[count($path_array)-1];
-							  $thumb_path = implode('/', $path_array);
-							  
-								/* check for thumb and create previewlink */
-							  if(is_file($upload_path . SEP . $thumb_path))
-							  {
-								 $thumblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path . SEP . $thumb_path);
-							  }
-			
-								 // if URL exists show link or if set show image in form
-								 if($local_bo->read_preferences('prev_img')!='no' &&  ($max_prev>=$i || $max_prev==-1) && $imglink) 
-								 {	
-									if($local_bo->read_preferences('prev_img')=='yes')
-									{
-									   if($thumblink)
-									   {
-										  $input.='<a href="javascript:'.$popup.'"><img src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
-									   }
-									   else
-									   {
-										  $input.='<img src="'.$imglink.'" alt="preview" '.$img_style.' />';
-									   }
-									}
-									elseif($local_bo->read_preferences('prev_img')=='only_tn' && $thumblink)
-									{
-									   $input.='<a href="javascript:'.$popup.'"><img src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
-									}
-									else
-									{
-									   $input.='<b><a href="javascript:'.$popup.'">'.$img_path.'</a></b>';
-									}
-								 }
-								 else  
-								 {
-									if($imglink)
-									{
-									   $input.='<b><a href="javascript:'.$popup.'">'.$img_path.'</a></b>';
-									}
-									else
-									{
-									   $input.='<b>'.$img_path.'</b>';
-									}
-								 }
-			
-						}
-						else
-						{
-							//process as unknown filetype
-							$input.='<b>'.$img_path.'</b>';
-						}
-					}
-					else
-					{
-						//fix me: file does not exist on server
-						$input.='<b>error: file does not exist on server ('.$img_path.')</b>';
-					}
-					$input.='</td></tr>';							  
+					$i++;
+					$input .= '<tr><td '.$cell_style.' valign="top">'.$i.'.</td><td '.$cell_style.'>';
+					$input .= $this->show_file($img_path);
+					$input .= '</td></tr>';							  
 				}
 			 }
 		  }
-	
 		  $input.='</table>';
-	
-		return $input;
-	
-	
+
+		  return $input;
 	   }
 	
 	   
@@ -583,8 +331,243 @@
 		  }
 	
 		  return $display;
-	
-	
 	   }
+	   
+		function show_file($img_path, $edit=false, $field_name='', $i='')
+		{
+			global $local_bo;
+			
+			$upload_path	= $local_bo->cur_upload_path();
+			$max_prev		= $local_bo->read_preferences('max_prev');
+			$helper_id		= $local_bo->plug->registry->plugins['filemanager']['helper_fields_substring'];
+
+			if($max_prev == '') $max_prev = -1; //default we want to see all preview images
+			$stripped_name = substr($field_name,6);	//the real field name
+			$prefix = substr($field_name,0,6); 	//the prefix used to identify records in a multi record view
+			$prefix .= $helper_id;				//the helper id will help identifying which post vars to ignore when saving the record(s)
+			//$spacer = "jinn/plugins/db_fields_plugins/plugin_images/spacer.png";
+			//$spacer_style = '';
+			$unknown = "jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/unknown.gif";
+			$unknown_style = '';
+			$img_style = 'style="border-style:solid;border-width:1px;border-color:#000000"';
+		    $name    = $prefix.'_IMG_'.$stripped_name.$i;
+		    $span_id = $prefix.'_PATH_'.$stripped_name.$i;
+			
+			$input='';
+					//check if file exists
+					if(is_file($upload_path . SEP . $img_path))
+					{
+						$image_info = getimagesize($upload_path . SEP. $img_path);
+						$text = '<b>'.$img_path.'</b>';
+						if(is_array($image_info))
+						{
+							//process as image
+
+								// create previewlink
+							  $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$img_path);
+								// FIXME move code to class
+							  $image_size=getimagesize($upload_path . SEP. $img_path);
+							  $pop_width = ($image_size[0]+50);
+							  $pop_height = ($image_size[1]+50);
+							  $popup   = "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
+
+	
+							  $path_array = explode('/', $img_path);
+							  $path_array[count($path_array)-1] = '.'.$path_array[count($path_array)-1];
+							  $thumb_path = implode('/', $path_array);
+							  
+								/* check for thumb and create previewlink */
+							  if(is_file($upload_path . SEP . $thumb_path))
+							  {
+								 $thumblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path . SEP . $thumb_path);
+							  }
+			
+								 // if URL exists show link or if set show image in form
+								 if($local_bo->read_preferences('prev_img')!='no' &&  ($max_prev>=$i || $max_prev==-1) && $imglink) 
+								 {	
+									if($local_bo->read_preferences('prev_img')=='yes')
+									{
+									   if($thumblink)
+									   {
+											$input .= $this->show_slot($edit, 'thumblink', $name, $thumblink, $img_style, $span_id, $text, $popup);
+									   }
+									   else
+									   {
+											$input .= $this->show_slot($edit, 'image', $name, $imglink, $img_style, $span_id, $text, $popup);
+									   }
+									}
+									elseif($local_bo->read_preferences('prev_img')=='only_tn' && $thumblink)
+									{
+										$input .= $this->show_slot($edit, 'thumblink', $name, $thumblink, $img_style, $span_id, $text, $popup);
+									}
+									else
+									{
+										$input .= $this->show_slot($edit, 'pathlink', $name, $this->spacer, $this->spacer_style, $span_id, $text, $popup);
+									}
+								 }
+								 else  
+								 {
+									if($imglink)
+									{
+										$input .= $this->show_slot($edit, 'pathlink', $name, $this->spacer, $this->spacer_style, $span_id, $text, $popup);
+									}
+									else
+									{
+										$input .= $this->show_slot($edit, 'path', $name, $this->spacer, $this->spacer_style, $span_id, $text);
+									}
+								 }
+						}
+						else
+						{
+							//process as unknown filetype
+							$input .= $this->show_slot($edit, 'unknown', $name, $unknown, $unknown_style, $span_id, $text);
+						}
+					}
+					else
+					{
+						$text = '<b>error: file does not exist on server ('.$img_path.')</b>';
+						$input .= $this->show_slot($edit, 'path', $name, $this->spacer, $this->spacer_style, $span_id, $text);
+					}
+			return $input;
+	    }
+		
+		function show_slot($edit, $type, $name, $src, $style, $span_id, $text, $link='')
+		{
+			$input = '';
+			if($edit)
+			{
+				switch($type)
+				{
+					case 'path':
+						$input .= '<img name="'.$name.'" src="'.$src.'" '.$style.' />';
+						$input .= '<span id="'.$span_id.'">'.$text.'</span>';
+						break;
+					case 'pathlink':
+						$input .= '<img name="'.$name.'" src="'.$src.'" '.$style.' />';
+						$input .= '<span id="'.$span_id.'"><a href="javascript:'.$link.'">'.$text.'</a></span>';
+						break;
+					case 'thumblink':
+						$input .= '<a href="javascript:'.$link.'"><img name="'.$name.'" src="'.$src.'" alt="preview" '.$style.' /></a>';
+						$input .= '<span id="'.$span_id.'"></span>';
+						break;
+					case 'image':
+						$input .= '<img name="'.$name.'" src="'.$src.'" alt="preview" '.$style.' />';
+						$input .= '<span id="'.$span_id.'"></span>';
+						break;
+					case 'unknown':
+						$input .= '<img name="'.$name.'" src="'.$src.'" alt="file of unknown type" '.$style.' />';
+						$input .= '<span id="'.$span_id.'">'.$text.'</span>';
+						break;
+				}
+			}
+			else
+			{
+				switch($type)
+				{
+					case 'path':
+						$input .= $text;
+						break;
+					case 'pathlink':
+						$input .= '<a href="javascript:'.$link.'">'.$text.'</a>';
+						break;
+					case 'thumblink':
+						$input .= '<a href="javascript:'.$link.'"><img src="'.$src.'" alt="preview" '.$style.' /></a>';
+						break;
+					case 'image':
+						$input .= '<img src="'.$src.'" alt="preview" '.$style.' />';
+						break;
+					case 'unknown':
+						$input .= '<img src="'.$src.'" alt="file of unknown type" '.$style.' />'.$text;
+						break;
+				}
+			}
+			return $input;
+		}
+		
+		function add_javascript($stripped_name)
+		{
+			$this->javascript_inserted = true;
+			$input = '';
+			
+			 /**************************************************
+			 *  javascript and hidden param for server browser *
+			 **************************************************/
+			$input.='<input type="hidden" value="" name="CURRENT_RECORD">';
+			$input.='<input type="hidden" value="" name="CURRENT_FIELD">';
+			$input.='<input type="hidden" value="" name="CURRENT_SLOT">';
+			$input.='	<script language="JavaScript">
+			<!--  
+			function getLabel(type)
+			{
+				if(type=="add") return "'.lang('add').'";
+				if(type=="replace") return "'.lang('replace').'";
+			}
+			
+			function onBrowseServer(record, field, slot) 
+			{
+				//the popup will be aware of this window by the opener property
+				//when a server image is chosen, the popup will call the onSave function, passing the chosen image path
+				childWindow=open("jinn/plugins/db_fields_plugins/__filemanager/popups/insert_image.php?field='.$stripped_name.'","console","resizable=no,width=580,height=440");
+				if (childWindow.opener == null)	childWindow.opener = self;
+				document.frm.CURRENT_RECORD.value=record;
+				document.frm.CURRENT_FIELD.value=field;
+				document.frm.CURRENT_SLOT.value=slot;
+			}
+			
+			function setSlot(record, field, slot, val1, val2, val3)
+			{
+				//alert("set Slot: " + record + ", "+ field + ", "+ slot);
+				
+				//set the img src property for preview purposes
+				//fill a hidden form input to enable processing and saving of the chosen image path on submitting the form
+				
+				//todo: set img style?
+				//todo: remove width/height text?
+				//todo: remove delete checkbox?
+				
+				var cmd;
+				
+				cmd = "document.frm." + record + "_IMG_EDIT_" + field + slot + ".value = \"" + val1 + "\";";
+				eval(cmd);
+				
+				if(val1 == "delete")
+				{
+					cmd = "document." + record + "_IMG_" + field + slot + ".src = \"" + val2 + "\";";
+				}
+				else
+				{
+						//we need to put a dot in front of the filename to display the thumbnail
+						//fixme: can this be done easier with RegEx?
+					var val2_arr = val2.split("/");
+					var idx = val2_arr.length - 1;
+					val2_arr[idx] = "." + val2_arr[idx];
+					var thumb = val2_arr.join("/");
+		
+					cmd = "document." + record + "_IMG_" + field + slot + ".src = \"" + thumb + "\";";
+				}
+				eval(cmd);
+	
+				cmd = "document.frm." + record + "_IMG_EDIT_BUTTON_" + field + slot + ".value = \"" + val3 + "\";";
+				eval(cmd);
+	
+				cmd = "document.getElementById(\"" + record + "_PATH_" + field + slot + "\").style.display = \"none\";";
+				eval(cmd);
+			}
+			
+			function onSave(val)
+			{
+				//access the CURRENT_... hidden fields to find out which image slot to use
+				setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, val, val, getLabel("replace"));
+			}
+			
+			function onDelete(record, field, slot)
+			{
+				setSlot(record, field, slot, "delete", "'.$this->spacer.'", getLabel("add"));
+			}
+			-->
+			</script>';
+
+			return $input;
+		}
 	}
 ?>
