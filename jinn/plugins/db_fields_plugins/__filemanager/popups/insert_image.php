@@ -55,7 +55,7 @@
 ?>
 <html style="width: 580; height: 440;">
    <head>
-	  <title>Browse Image</title>
+	  <title>JiNN File Manager</title>
 	  <script type="text/javascript" src="popup.js"></script>
 	  <!--script type="text/javascript" src="dialog.js"></script-->
 	  <script type="text/javascript">
@@ -343,7 +343,7 @@ function toggleConstrains(constrains)
 									   </script>
 									</head>
 									<body onload="Init(); P7_Snap('dirPath','loading',120,70);">
-									   <div class="title">Browse Image</div>
+									   <div class="title">managing <font size="+1"><?php echo($config[Filetype]); ?></font> files</div>
 									   <form action="ImageManager/images.php" name="form1" method="post" target="imgManager" enctype="multipart/form-data">
 										  <div id="loading" style="position:absolute; left:200px; top:130px; width:184px; height:48px; z-index:1" class="statusLayer">
 											 <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
@@ -355,7 +355,7 @@ function toggleConstrains(constrains)
 										  <table width="100%" border="0" align="center" cellspacing="2" cellpadding="2">
 											 <tr>
 												<td align="center">	  <fieldset>
-													  <legend>Image Manager</legend>
+													  <legend>Files</legend>
 													  <table width="99%" align="center" border="0" cellspacing="2" cellpadding="2">
 														 <tr>
 															<td><table border="0" cellspacing="1" cellpadding="3">
@@ -384,7 +384,7 @@ function toggleConstrains(constrains)
 													  </tr>
 													  <tr>
 														 <td align="center" bgcolor="white"><div name="manager" class="manager">
-															   <iframe src="ImageManager/images.php" name="imgManager" id="imgManager" width="520" height="150" marginwidth="0" marginheight="0" align="top" scrolling="auto" frameborder="0" hspace="0" vspace="0" background="white"></iframe>
+															   <iframe src="ImageManager/images.php?field=<?php echo($_GET[field]); ?>" name="imgManager" id="imgManager" width="520" height="150" marginwidth="0" marginheight="0" align="top" scrolling="auto" frameborder="0" hspace="0" vspace="0" background="white"></iframe>
 															</div>
 														 </td>
 													  </tr>
@@ -421,7 +421,7 @@ function toggleConstrains(constrains)
 													  <td><input name="height" id="f_height" type="text" size="5" style="width:4em" onChange="javascript:checkConstrains('height');"></td>
 												   </tr>
 												   <tr> 
-													  <td nowrap><div align="right">Image File </div></td>
+													  <td nowrap><div align="right">File </div></td>
 													  <td colspan="4"><input name="url" id="f_url" type="text" style="width:100%" size="30"></td>
 													  <!--td rowspan="3">&nbsp;</td>
 													  <td><div align="right">V Space</div></td>

@@ -182,34 +182,36 @@
 				   foreach($value as $img_path)
 				   {
 					  $i++;
-	
+					  $input.='<tr><td '.$cell_style.' valign="top">'.$i.'.</td><td '.$cell_style.'>';
 					  unset($imglink); 
 					  unset($thumblink); 
 					  unset($popup); 
 	
-						/* check for image and create previewlink */
+					  //check if file exists
 					  if(is_file($upload_path . SEP . $img_path))
 					  {
-						 $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$img_path);
-							// FIXME move code to class
-						 $image_size=getimagesize($upload_path . SEP. $img_path);
-						 $pop_width = ($image_size[0]+50);
-						 $pop_height = ($image_size[1]+50);
+						$image_info = getimagesize($upload_path . SEP. $img_path);
+						if(is_array($image_info))
+						{
+							// create previewlink
+							$imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$img_path);
+								// FIXME move code to class
+							$image_size=getimagesize($upload_path . SEP. $img_path);
+							$pop_width = ($image_size[0]+50);
+							$pop_height = ($image_size[1]+50);
+		
+							$popup = "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
+		
+							$path_array = explode('/', $img_path);
+							$path_array[count($path_array)-1] = '.'.$path_array[count($path_array)-1];
+							$thumb_path = implode('/', $path_array);
+							  
+							// check for thumb and create previewlink
+							if(is_file($upload_path . SEP . $thumb_path))
+							{
+								$thumblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path . SEP . $thumb_path);
+							}
 	
-						 $popup = "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
-					  }
-	
-					  $path_array = explode('/', $img_path);
-					  $path_array[count($path_array)-1] = '.'.$path_array[count($path_array)-1];
-					  $thumb_path = implode('/', $path_array);
-					  
-						/* check for thumb and create previewlink */
-					  if(is_file($upload_path . SEP . $thumb_path))
-					  {
-						 $thumblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path . SEP . $thumb_path);
-					  }
-	
-					  $input.='<tr><td '.$cell_style.' valign="top">'.$i.'.</td><td '.$cell_style.'>';
 	
 								// if URL exists show link or if set show image in form
 							if($local_bo->read_preferences('prev_img')!='no' &&  ($max_prev>=$i || $max_prev==-1) && $imglink) 
@@ -257,11 +259,25 @@
 								  $input.='<span id="'.$prefix.'_PATH_'.$stripped_name.$i.'"><b>'.$img_path.'</b></span>';
 							   }
 							}
-	
-							$input.='</td><td '.$cell_style.' valign="top"><img onClick="onDelete('.$prefix_string.', '.$field_string.', '.$i.');" src="jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/edit_trash.gif">';
-							$input.='<input onClick="onBrowseServer('.$prefix_string.', '.$field_string.', '.$i.');" type="button" value="'.lang('replace').'" name="'.$prefix.'_IMG_EDIT_BUTTON_'.$stripped_name.$i.'">';
-							$input.='<input type="hidden" value="" name="'.$prefix.'_IMG_EDIT_'.$stripped_name.$i.'">';
-							$input.='</td></tr>';
+						}
+						else
+						{
+							//process as unknown filetype
+						  $input.='<img name="'.$prefix.'_IMG_'.$stripped_name.$i.'" src="'.$spacer.'" '.$spacer_style.' />';
+						  $input.='<span id="'.$prefix.'_PATH_'.$stripped_name.$i.'"><b>'.$img_path.'</b></span>';
+						}
+					  }
+					  else
+					  {
+							//file does not exist
+						$input.='<img name="'.$prefix.'_IMG_'.$stripped_name.$i.'" src="'.$spacer.'" '.$spacer_style.' />';
+						$input.='<span id="'.$prefix.'_PATH_'.$stripped_name.$i.'"><b>error: file does not exist on server ('.$img_path.')</b></span>';
+					  }
+						//generate the delete/replace/add buttons
+					  $input.='</td><td '.$cell_style.' valign="top"><img onClick="onDelete('.$prefix_string.', '.$field_string.', '.$i.');" src="jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/edit_trash.gif">';
+					  $input.='<input onClick="onBrowseServer('.$prefix_string.', '.$field_string.', '.$i.');" type="button" value="'.lang('replace').'" name="'.$prefix.'_IMG_EDIT_BUTTON_'.$stripped_name.$i.'">';
+					  $input.='<input type="hidden" value="" name="'.$prefix.'_IMG_EDIT_'.$stripped_name.$i.'">';
+					  $input.='</td></tr>';
 				   }
 				}
 				
@@ -409,78 +425,92 @@
 				foreach($value as $img_path)
 				{
 				   $i++;
-	
+			       $input.='<tr><td '.$cell_style.' valign="top">'.$i.'.</td><td '.$cell_style.'>';
 				   unset($imglink); 
 				   unset($thumblink); 
 				   unset($popup); 
 	
-				   /* check for image and create previewlink */
-				   if(is_file($upload_path . SEP . $img_path))
-				   {
-					  $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$img_path);
-					  // FIXME move code to class
-					  $image_size=getimagesize($upload_path . SEP. $img_path);
-					  $pop_width = ($image_size[0]+50);
-					  $pop_height = ($image_size[1]+50);
+					//check if file exists
+					if(is_file($upload_path . SEP . $img_path))
+					{
+						$image_info = getimagesize($upload_path . SEP. $img_path);
+						if(is_array($image_info))
+						{
+							//process as image
+
+								// create previewlink
+							  $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$img_path);
+								// FIXME move code to class
+							  $image_size=getimagesize($upload_path . SEP. $img_path);
+							  $pop_width = ($image_size[0]+50);
+							  $pop_height = ($image_size[1]+50);
+			
+							  $popup = "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
+
 	
-					  $popup = "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
-	
-				   }
-	
-					  $path_array = explode('/', $img_path);
-					  $path_array[count($path_array)-1] = '.'.$path_array[count($path_array)-1];
-					  $thumb_path = implode('/', $path_array);
-					  
-						/* check for thumb and create previewlink */
-					  if(is_file($upload_path . SEP . $thumb_path))
-					  {
-						 $thumblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path . SEP . $thumb_path);
-					  }
-				   
-	
-				   $input.='<tr><td '.$cell_style.' valign="top">'.$i.'.</td><td '.$cell_style.'>';
-	
-						 // if URL exists show link or if set show image in form
-						 if($local_bo->read_preferences('prev_img')!='no' &&  ($max_prev>=$i || $max_prev==-1) && $imglink) 
-						 {	
-							if($local_bo->read_preferences('prev_img')=='yes')
-							{
-							   if($thumblink)
-							   {
-								  $input.='<a href="javascript:'.$popup.'"><img src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
-							   }
-							   else
-							   {
-								  $input.='<img src="'.$imglink.'" alt="preview" '.$img_style.' />';
-							   }
-							}
-							elseif($local_bo->read_preferences('prev_img')=='only_tn' && $thumblink)
-							{
-							   $input.='<a href="javascript:'.$popup.'"><img src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
-							}
-							else
-							{
-							   $input.='<b><a href="javascript:'.$popup.'">'.$img_path.'</a></b>';
-							}
-						 }
-						 else  
-						 {
-							if($imglink)
-							{
-							   $input.='<b><a href="javascript:'.$popup.'">'.$img_path.'</a></b>';
-							}
-							else
-							{
-							   $input.='<b>'.$img_path.'</b>';
-							}
-						 }
-	
-						 $input.='</td></tr>';
+							  $path_array = explode('/', $img_path);
+							  $path_array[count($path_array)-1] = '.'.$path_array[count($path_array)-1];
+							  $thumb_path = implode('/', $path_array);
+							  
+								/* check for thumb and create previewlink */
+							  if(is_file($upload_path . SEP . $thumb_path))
+							  {
+								 $thumblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path . SEP . $thumb_path);
+							  }
+			
+								 // if URL exists show link or if set show image in form
+								 if($local_bo->read_preferences('prev_img')!='no' &&  ($max_prev>=$i || $max_prev==-1) && $imglink) 
+								 {	
+									if($local_bo->read_preferences('prev_img')=='yes')
+									{
+									   if($thumblink)
+									   {
+										  $input.='<a href="javascript:'.$popup.'"><img src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
+									   }
+									   else
+									   {
+										  $input.='<img src="'.$imglink.'" alt="preview" '.$img_style.' />';
+									   }
+									}
+									elseif($local_bo->read_preferences('prev_img')=='only_tn' && $thumblink)
+									{
+									   $input.='<a href="javascript:'.$popup.'"><img src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
+									}
+									else
+									{
+									   $input.='<b><a href="javascript:'.$popup.'">'.$img_path.'</a></b>';
+									}
+								 }
+								 else  
+								 {
+									if($imglink)
+									{
+									   $input.='<b><a href="javascript:'.$popup.'">'.$img_path.'</a></b>';
+									}
+									else
+									{
+									   $input.='<b>'.$img_path.'</b>';
+									}
+								 }
+			
+						}
+						else
+						{
+							//process as unknown filetype
+							$input.='<b>'.$img_path.'</b>';
+						}
+					}
+					else
+					{
+						//fix me: file does not exist on server
+						$input.='<b>error: file does not exist on server ('.$img_path.')</b>';
+					}
+					$input.='</td></tr>';							  
 				}
 			 }
 		  }
 	
-			 $input.='</table>';
+		  $input.='</table>';
 	
 		return $input;
 	

@@ -30,6 +30,24 @@
    require_once 'std_functions.inc.php';
    require_once '../ImageEditor/Transform.php';
 
+   $extensions= array();
+   switch($config['Filetype'])
+   {
+	case 'all':
+		$extensions['*'] = 1;
+		break;
+	case 'png':
+		$extensions['png'] = 1;
+		break;
+	case 'jpg':
+		$extensions['jpg']  = 1;
+		$extensions['jpeg'] = 1;
+		break;
+	case 'gif':
+		$extensions['gif'] = 1;
+		break;
+   }
+   
 //_debug_array($IMG_ROOT);
    if(isset($_GET['dir'])) {
 	  $dirParam = $_GET['dir'];
@@ -336,19 +354,17 @@
 
    function show_image($img, $file, $info, $size) 
    {
-	  global $BASE_DIR, $BASE_URL, $newPath;
+	  global $BASE_DIR, $BASE_URL, $newPath, $extensions;
 
 	  $img_path = dir_name($img);
 	  $img_file = basename($img);
-
 	  $thumb_image = 'thumbs.php?img='.urlencode($img);
-
 	  $img_url = $BASE_URL.$img_path.'/'.$img_file;
-
 	  $filesize = parse_size($size);
-
-//_debug_array($file);
-//_debug_array($config[Filetype]);
+	  $file_arr = explode('.', $file);
+	  $file_ext = $file_arr[count($file_arr)-1];
+	if($extensions[$file_ext] || $extensions['*'])
+	{
    ?>
    <td>
 	  <table width="102" border="0" cellpadding="0" cellspacing="2">
@@ -362,14 +378,49 @@
 					 <td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
 						<a href="javascript:;" onClick="javascript:preview('<? echo $img_url; ?>', '<? echo $file; ?>', ' <? echo $filesize; ?>',<? echo $info[0].','.$info[1]; ?>);"><img src="edit_pencil.gif" width="15" height="15" border="0"></a></td>
 					 <td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-						<a href="images.php?delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
-					 <td width="98%" class="imgCaption"><? echo $info[0].'x'.$info[1]; ?></td>
+						<a href="images.php?field=<?php echo($_GET['field']); ?>&delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
+					 <td width="98%" class="imgCaption"><? echo $info[0].'x'.$info[1]; ?> <? //echo $file_ext; ?></td>
 				  </tr>
 			</table></td>
 		 </tr>
 	  </table>
    </td>
    <?php
+   }
+}
+function show_unknown($img, $file, $info, $size) 
+   {
+	  global $BASE_DIR, $BASE_URL, $newPath, $extensions;
+
+	  $img_path = dir_name($img);
+	  $img_url = $BASE_URL.$img_path.'/'.$file;
+	  $thumb_image = 'unknown.gif';
+	  $file_arr = explode('.', $file);
+	  $file_ext = $file_arr[count($file_arr)-1];
+	if($extensions[$file_ext] || $extensions['*'])
+	{
+   ?>
+   <td>
+	  <table width="102" border="0" cellpadding="0" cellspacing="2">
+		 <tr> 
+			<td align="center" class="imgBorder" onMouseOver="pviiClassNew(this,'imgBorderHover')" onMouseOut="pviiClassNew(this,'imgBorder')">
+			   <a href="javascript:;" onClick="javascript:unknownSelected('<? echo $img_url; ?>');"><img src="<? echo $thumb_image; ?>" alt="<? echo $file; ?> - <? echo $filesize; ?>" border="0"></a></td>
+		 </tr>
+		 <tr> 
+			<td><table width="100%" border="0" cellspacing="0" cellpadding="2">
+				  <tr> 
+					 <!--td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
+						<a href="javascript:;" onClick="javascript:preview('<? echo $img_url; ?>', '<? echo $file; ?>', ' <? echo $filesize; ?>',<? echo $info[0].','.$info[1]; ?>);"><img src="edit_pencil.gif" width="15" height="15" border="0"></a></td-->
+					 <td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
+						<a href="images.php?field=<?php echo($_GET['field']); ?>&delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
+					 <td width="98%" class="imgCaption"><? echo $file; ?> <? //echo $file_ext; ?></td>
+				  </tr>
+			</table></td>
+		 </tr>
+	  </table>
+   </td>
+   <?php
+   }
 }
 
 function show_dir($path, $dir) 
@@ -382,7 +433,7 @@ function show_dir($path, $dir)
    <table width="102" border="0" cellpadding="0" cellspacing="2">
 	  <tr> 
 		 <td align="center" class="imgBorder" onMouseOver="pviiClassNew(this,'imgBorderHover')" onMouseOut="pviiClassNew(this,'imgBorder')">
-			<a href="images.php?dir=<? echo $path; ?>" onClick="changeLoadingStatus('load')">
+			<a href="images.php?field=<?php echo($_GET['field']); ?>&dir=<? echo $path; ?>" onClick="changeLoadingStatus('load')">
 			   <img src="folder.gif" width="80" height="80" border=0 alt="<? echo $dir; ?>">
 			</a>
 		 </td>
@@ -391,7 +442,7 @@ function show_dir($path, $dir)
 		 <td><table width="100%" border="0" cellspacing="1" cellpadding="2">
 			   <tr> 
 				  <td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-					 <a href="images.php?delFolder=<? echo $path; ?>&dir=<? echo $newPath; ?>" onClick="return deleteFolder('<? echo $dir; ?>', <? echo $num_files; ?>);"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
+					 <a href="images.php?field=<?php echo($_GET['field']); ?>&delFolder=<? echo $path; ?>&dir=<? echo $newPath; ?>" onClick="return deleteFolder('<? echo $dir; ?>', <? echo $num_files; ?>);"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
 				  <td width="99%" class="imgCaption"><? echo $dir; ?></td>
 			   </tr>
 		 </table></td>
@@ -514,18 +565,18 @@ function draw_table_header()
 
 	  function goUp() 
 	  {
-			location.href = "ImageManager/images.php?dir=<? echo $upDirPath; ?>";
+			location.href = "ImageManager/images.php?field=<?php echo($_GET['field']); ?>&dir=<? echo $upDirPath; ?>";
 	  }
 
 	  function changeDir(newDir) 
 	  {
-			location.href = "ImageManager/images.php?dir="+newDir;
+			location.href = "ImageManager/images.php?field=<?php echo($_GET['field']); ?>&dir="+newDir;
 	  }
 
 	  function newFolder(oldDir, newFolder) 
 	  {
 			//location.href = "ImageManager/images.php?dir="+oldDir+'&create=folder&foldername='+newFolder;
-			location.href = "images.php?dir="+oldDir+'&create=folder&foldername='+newFolder;
+			location.href = "images.php?field=<?php echo($_GET['field']); ?>&dir="+oldDir+'&create=folder&foldername='+newFolder;
 	  }
 
 	  function updateDir() 
@@ -603,6 +654,11 @@ function refreshDirs()
 										  //topDoc.orginal_width.value = width;
 										  //topDoc.orginal_height.value = height;
 
+									}
+									function unknownSelected(filename) 
+									{
+										  var topDoc = window.top.document.forms[0];
+										  topDoc.f_url.value = filename;
 									}
 
 									function preview(file, image, size, width, height) 
@@ -708,6 +764,7 @@ function refreshDirs()
 							  //var_dump($d);
 							  $images = array();
 							  $folders = array();
+							  $unknown = array();
 							  while (false !== ($entry = $d->read())) 
 							  {
 								 $img_file = $IMG_ROOT.$entry; 
@@ -723,8 +780,12 @@ function refreshDirs()
 									   $images[$entry] = $file_details;
 									   //show_image($img_file, $entry, $image_info);
 									}
+									 else
+									 {
+										$unknown[$entry] = $img_file;
+									 }
 								 }
-								 else if(is_dir($BASE_DIR.$img_file) && substr($entry,0,1) != '.') 
+								 elseif(is_dir($BASE_DIR.$img_file) && substr($entry,0,1) != '.') 
 								 {
 									$folders[$entry] = $img_file;
 									//show_dir($img_file, $entry);	
@@ -751,6 +812,12 @@ function refreshDirs()
 									$image_name = key($images);
 									show_image($images[$image_name]['file'], $image_name, $images[$image_name]['img_info'], $images[$image_name]['size']);
 									next($images);
+								 }
+								 for($i=0; $i<count($unknown); $i++) 
+								 {
+									$name = key($unknown);
+									show_unknown($unknown[$name]['file'], $name, $unknown[$name]['img_info'], $unknown[$name]['size']);
+									next($unknown);
 								 }
 								 draw_table_footer();
 							  }
