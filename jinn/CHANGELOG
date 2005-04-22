@@ -8,6 +8,11 @@ Minor updates only get a new alphabet character.
 
 
 
+Version 0.8.214d
+===========================
+Mon Apr 22 16:00:00 CET 2005
+- refactoring: Class.factory_plugins_db_fields now gets a reference to a BO object and also passes a reference to that object to all plugins it instanciates
+
 Version 0.8.214c
 ===========================
 Mon Apr 22 15:30:00 CET 2005

@@ -29,19 +29,15 @@
 
 	class db_fields_plugin_filemanager
 	{
-
 		var $javascript_inserted = false;
 		var $spacer = 'jinn/plugins/db_fields_plugins/plugin_images/spacer.png';
 		var $spacer_style = '';
-		
-		
+		var $local_bo;	//this is a reference to a bo class and needs to be set by the instanciating factory class
 		
 	   function formview_edit($field_name,$value,$config,$attr_arr)
 	   {	
-		  global $local_bo;
-		  
-		  $upload_path=$local_bo->cur_upload_path();
-		  $helper_id = $local_bo->plug->registry->plugins['filemanager']['helper_fields_substring'];
+		  $upload_path = $this->local_bo->cur_upload_path();
+		  $helper_id   = $this->local_bo->plug->registry->plugins['filemanager']['helper_fields_substring'];
 		  
 			// Check if everything is set to upload files
 		  if(!$upload_path)
@@ -176,18 +172,16 @@
 	   * main image data function                                                   *
 	   \****************************************************************************/
 	   {
-		  global $local_bo;
-	
 		  $stripped_name=substr($field_name,6);	//the real field name
 		  $prefix = substr($field_name,0,6); 	//the prefix used to identify records in a multi record view
-		  $helper_id = $local_bo->plug->registry->plugins['filemanager']['helper_fields_substring'];
+		  $helper_id = $this->local_bo->plug->registry->plugins['filemanager']['helper_fields_substring'];
 		  $prefix .= $helper_id;				//the helper id will help identifying which post vars to ignore when saving the record(s)
 	
-		  $upload_path=$local_bo->cur_upload_path();
-		  $upload_url =$local_bo->cur_upload_url ();
+		  $upload_path=$this->local_bo->cur_upload_path();
+		  $upload_url =$this->local_bo->cur_upload_url ();
 	
 		  $images_array=explode(';',$HTTP_POST_VARS[$prefix.'_IMG_ORG_'.$stripped_name]);
-		  $images_edited=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS, $prefix.'_IMG_EDIT_'.$stripped_name);
+		  $images_edited=$this->local_bo->common->filter_array_with_prefix($HTTP_POST_VARS, $prefix.'_IMG_EDIT_'.$stripped_name);
 	
 		  if(is_array($images_edited))
 		  {
@@ -239,7 +233,6 @@
 	
 	   function formview_read($value,$config)
 	   {
-		  global $local_bo;
 		  $table_style='';
 		  $cell_style='style="border-width:1px;border-style:solid;border-color:grey"';
 
@@ -268,13 +261,10 @@
 	   
 	   function listview_read($value,$config,$where_val_enc)
 	   {
-	
-		  global $local_bo;
 		  $stripped_name=substr($field_name,6);	
 	
-	
-		  $upload_path=$local_bo->cur_upload_path();
-		  $upload_url =$local_bo->cur_upload_url ();
+		  $upload_path=$this->local_bo->cur_upload_path();
+		  $upload_url =$this->local_bo->cur_upload_url ();
 	
 		  /* if value is set, show existing images */	
 		  if($value)
@@ -335,11 +325,9 @@
 	   
 		function show_file($img_path, $edit=false, $field_name='', $i='')
 		{
-			global $local_bo;
-			
-			$upload_path	= $local_bo->cur_upload_path();
-			$max_prev		= $local_bo->read_preferences('max_prev');
-			$helper_id		= $local_bo->plug->registry->plugins['filemanager']['helper_fields_substring'];
+			$upload_path	= $this->local_bo->cur_upload_path();
+			$max_prev		= $this->local_bo->read_preferences('max_prev');
+			$helper_id		= $this->local_bo->plug->registry->plugins['filemanager']['helper_fields_substring'];
 
 			if($max_prev == '') $max_prev = -1; //default we want to see all preview images
 			$stripped_name = substr($field_name,6);	//the real field name
@@ -383,9 +371,9 @@
 							  }
 			
 								 // if URL exists show link or if set show image in form
-								 if($local_bo->read_preferences('prev_img')!='no' &&  ($max_prev>=$i || $max_prev==-1) && $imglink) 
+								 if($this->local_bo->read_preferences('prev_img')!='no' &&  ($max_prev>=$i || $max_prev==-1) && $imglink) 
 								 {	
-									if($local_bo->read_preferences('prev_img')=='yes')
+									if($this->local_bo->read_preferences('prev_img')=='yes')
 									{
 									   if($thumblink)
 									   {
@@ -396,7 +384,7 @@
 											$input .= $this->show_slot($edit, 'image', $name, $imglink, $img_style, $span_id, $text, $popup);
 									   }
 									}
-									elseif($local_bo->read_preferences('prev_img')=='only_tn' && $thumblink)
+									elseif($this->local_bo->read_preferences('prev_img')=='only_tn' && $thumblink)
 									{
 										$input .= $this->show_slot($edit, 'thumblink', $name, $thumblink, $img_style, $span_id, $text, $popup);
 									}
