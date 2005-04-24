@@ -298,7 +298,7 @@
 			{
 				if($user['account_id'] != (int)$myownid)
 				{
-					$str .= '    <option value="' .$user['account_lid']. '"'.(in_array($user['account_id'],$sndid) ?' selected':'').'>'.$user['account_firstname'].' '.$user['account_lastname'].'</option>'."\n";
+					$str .= '    <option value="' .$user['account_lid']. '"'.(in_array($user['account_id'],$sndid) ?' selected':'').'>'.$GLOBALS['phpgw']->common->display_fullname($user['accoount_id'],$user['account_firstname'],$user['account_lastname']).'</option>'."\n";
 				}
 			}
 
