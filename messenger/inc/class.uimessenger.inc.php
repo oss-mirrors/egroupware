@@ -193,71 +193,8 @@
 			$GLOBALS['phpgw']->template->pfp('out','form');
 		}
 
+
 		function compose()
-		{
-			$message = $_POST['message'];
-
-			if($_POST['cancel'])
-			{
-				$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
-			}
-			if($_POST['send'])
-			{
-				$errors = $this->bo->send_message($message);
-				if(@is_array($errors))
-				{
-					$GLOBALS['phpgw']->template->set_var('errors',$GLOBALS['phpgw']->common->error_list($errors));
-				}
-				else
-				{
-					$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
-				}
-			}
-			// recipient dropdown field stuff added by tobi (gabele@uni-sql.de)
-			$tobox = '<input name="message[to]" value="' . $message['to'] . '" size="30">';
-			$sndid = 0;
-			if($message['to'] != '')
-			{
-				$sndid=$GLOBALS['phpgw']->accounts->name2id($message['to']);
-			}
-			$myownid=$GLOBALS['phpgw_info']['user']['account_id'];
-			if(@isset($GLOBALS['phpgw_info']['server']['messenger']['use_selectbox']))
-			{
-				$users = $this->bo->get_messenger_users();
-
-				$str = '<option value="" selected>'.lang('Select User').'</option>'."\n";
-
-				foreach($users as $user)
-				{
-					if($user['account_id'] != (int)$myownid)
-					{
-						$str .= '    <option value="' .$user['account_lid']. '"'.($sndid==$user['account_id'] ?' selected':'').'>'.$user['account_firstname'].' '.$user['account_lastname'].'</option>'."\n";
-					}
-				}
-
-				$tobox = "\n".'   <select name="message[to]" size="1">'."\n".$str.'   </select>';
-			}
-
-			$this->display_headers();
-			$this->set_compose_read_blocks();
-
-			$this->set_common_langs();
-			$GLOBALS['phpgw']->template->set_var('header_message',lang('Compose message'));
-
-			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose'));
-			$GLOBALS['phpgw']->template->set_var('value_to',$tobox);
-			$GLOBALS['phpgw']->template->set_var('value_subject','<input name="message[subject]" value="' . $message['subject'] . '" size="30">');
-			$GLOBALS['phpgw']->template->set_var('value_content','<textarea name="message[content]" rows="20" wrap="hard" cols="76">' . $message['content'] . '</textarea>');
-
-			$GLOBALS['phpgw']->template->set_var('button_send','<input type="submit" name="send" value="' . lang('Send') . '">');
-			$GLOBALS['phpgw']->template->set_var('button_cancel','<input type="submit" name="cancel" value="' . lang('Cancel') . '">');
-
-			$GLOBALS['phpgw']->template->fp('to','form_to');
-			$GLOBALS['phpgw']->template->fp('buttons','form_buttons');
-			$GLOBALS['phpgw']->template->pfp('out','form');
-		}
-
-		function compose_multiple()
 		{
 			$message = $_POST['message'];
 
@@ -277,39 +214,21 @@
 					$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
 				}
 			}
-
-			// recipient dropdown field stuff added by tobi (gabele@uni-sql.de)
-			$sndid = array();
 			
-			if(count($message['to']) != 0)
-			{  
-			   foreach($message['to'] as $to)
-			   {
-			        $sndid[] = $GLOBALS['phpgw']->accounts->name2id($to);
-			   } 
-			}   
-			
-
-			$myownid=$GLOBALS['phpgw_info']['user']['account_id'];
-			
-			$users = $this->bo->get_messenger_users();
-			$str = '';
-			foreach($users as $user)
-			{
-				if($user['account_id'] != (int)$myownid)
-				{
-					$str .= '    <option value="' .$user['account_lid']. '"'.(in_array($user['account_id'],$sndid) ?' selected':'').'>'.$GLOBALS['phpgw']->common->display_fullname($user['accoount_id'],$user['account_firstname'],$user['account_lastname']).'</option>'."\n";
-				}
-			}
-
-				$tobox = "\n".'   <select name="message[to][]" multiple="1" size="7">'."\n".$str.'   </select>';
-	
+			$uiaccountsel=CreateObject('phpgwapi.uiaccountsel');
+			$tobox = $uiaccountsel->selection(
+				"message[recipient][]",    // name of the element used in form to repersent selected users
+				"uimessage_userselection", // id of this element, makes little sense
+				array(),     //no pre-selected user/group
+				'messenger', //only show users who have 'run' permission in messenger app
+				5,                                           // 5 lines high
+				$GLOBALS['phpgw_info']['user']['account_id'] // do not send message to myself
+				); 
 			$this->display_headers();
 			$this->set_compose_read_blocks();
 
 			$this->set_common_langs();
 			$GLOBALS['phpgw']->template->set_var('header_message',lang('Compose message'));
-
 			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose_multiple'));
 			$GLOBALS['phpgw']->template->set_var('value_to',$tobox);
 			$GLOBALS['phpgw']->template->set_var('value_subject','<input name="message[subject]" value="' . $message['subject'] . '" size="30">');

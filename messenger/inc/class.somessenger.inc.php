@@ -115,13 +115,9 @@
 			}
 			foreach($message['to'] as $to)
 			{
-			   if(!ereg('^[0-9]+$',$to))
-			   {
-				$to = $GLOBALS['phpgw']->accounts->name2id($to,'account_lid');
-			   }
 			   $this->db->query('INSERT INTO ' . $this->table . ' (message_owner, message_from, message_status, '
 				. "message_date, message_subject, message_content) VALUES ('"
-				. $to . "','" . $this->owner . "','N','" . time() . "','"
+				. (int)$to . "','" . $this->owner . "','N','" . time() . "','"
 				. addslashes($message['subject']) . "','" . $this->db->db_addslashes($message['content'])
 				. "')",__LINE__,__FILE__);
 			}

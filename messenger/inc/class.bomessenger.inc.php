@@ -75,40 +75,6 @@
 			}
 		}
 
-		function check_for_missing_fields($message)
-		{
-			$acctid = $GLOBALS['phpgw']->accounts->name2id($message['to']);
-
-			if(!$acctid)
-			{
-				if($message['to'])
-				{
-					$errors[] = lang("I can't find the username %1 on the system",$message['to']);
-				}
-				else
-				{
-					$errors[] = lang('You must enter the username this message is for');
-				}
-			}
-
-			$acct = CreateObject('phpgwapi.accounts',$GLOBALS['phpgw']->accounts->name2id($message['to']));
-			$acct->read_repository();
-			if($acct->is_expired() && $GLOBALS['phpgw']->accounts->name2id($message['to'],'account_lid'))
-			{
-				$errors[] = lang("Sorry, %1's account is not currently active",$message['to']);
-			}
-
-			if(!$message['subject'])
-			{
-				$errors[] = lang('You must enter a subject');
-			}
-
-			if(!$message['content'])
-			{
-				$errors[] = lang("You didn't enter anything for the message");
-			}
-			return $errors;
-		}
 
 		function send_message($message='')
 		{
@@ -134,32 +100,23 @@
 			{
 				return False;
 			}
-			 if(count($message['to']) == 0)
-			{
-			      $errors[] = lang('You must enter the username this message is for');
+			
+			if ($message['recipient']) {
+				foreach($message['recipient'] as $recipient_id)
+				{
+					$recipient = CreateObject('phpgwapi.accounts', $recipient_id);
+					$recipient->read_repository();
+					if ($recipient->is_expired())
+					{
+						$errors[] = lang("Sorry, %1's account is not currently active", 
+							$GLOBALS['phpgw']->accounts->id2name($recipient_id));
+					}					
+				} 
 			}
-			else
-			{   
-			      foreach($message['to'] as $to)
-			      {  
-			            $acctid = $GLOBALS['phpgw']->accounts->name2id($to);
-
-				    if(!$acctid)
-				    {
-				      if($to)
-				      { 
-					$errors[] = lang("I can't find the username %1 on the system",$to);
-				      }
-			            }
-
-				    $acct = CreateObject('phpgwapi.accounts',$GLOBALS['phpgw']->accounts->name2id($to));
-				    $acct->read_repository();
-				    if($acct->is_expired() && $GLOBALS['phpgw']->accounts->name2id($to,'account_lid'))
-				    {
-				      $errors[] = lang("Sorry, %1's account is not currently active",$to);
-				    }
-			      }
-			} 
+			else 
+			{
+				$errors[] = lang('You must enter the username this message is for');
+			}
      
 			if(!$message['subject'])
 			{
@@ -508,25 +465,4 @@
 					break;
 			}
 		}
-
-		function get_messenger_users()
-		{
-			$users = array();
-			$accounts = $GLOBALS['phpgw']->accounts->get_list('accounts');
-			foreach ($accounts as $account)
-			{
-				$GLOBALS['phpgw']->acl->account_id = $account['account_id'];
-				$user_acl = $GLOBALS['phpgw']->acl->read_repository();
-				foreach ($user_acl as $user_app)
-				{
-					if ($user_app['appname'] == 'messenger' && $user_app['location'] == 'run' && $user_app['rights'] == 1)
-					{
-						$users[] = $account;
-						continue 2;
-					}
-				}
-			}
-
-			return $users;
-		}
-	}
+}
