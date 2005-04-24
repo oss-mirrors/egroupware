@@ -2,6 +2,7 @@ $ change	common	sv	Förändring
 %	stocks	sv	%
 % change	common	sv	Förändring %
 add new stock	stocks	sv	Lägg till ny symbol
+company name	stocks	sv	Företagets namn
 disable	stocks	sv	inaktivera
 display stocks on main screen is disabled	stocks	sv	Aktiekurser på visas inte huvudsidan
 display stocks on main screen is enabled	stocks	sv	Aktikurser visas på huvudsidan

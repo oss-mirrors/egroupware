@@ -6,8 +6,8 @@ a project has been updated	projects	sv	Ett projekt har uppdaterats den:
 account	projects	sv	Redovisning
 accountancy	common	sv	Bokföring
 accounting	common	sv	Bokföring
-accounting factor	projects	sv	Revisor
-accounting factor for project	projects	sv	Projektrevisor
+accounting factor	projects	sv	Bokföringsfaktor
+accounting factor for project	projects	sv	Debitering för projektet
 accounting system	projects	sv	Bokföringssystem
 active	projects	sv	Aktiv
 activities	projects	sv	Aktiviteter
@@ -154,6 +154,11 @@ export as	projects	sv	Exportera som
 external reference	projects	sv	Extern referens
 extra budget	projects	sv	Extra budget
 extra budget sum of all sub projects is bigger than the extra budget of the main project	projects	sv	Extra budgeterad summa för underprojekt kan inte vara större änn extra budgeten för huvudprojektet
+factor employee	projects	sv	Debitera per anställd
+factor has been deleted	projects	sv	Debitering har raderats
+factor has been saved	projects	sv	Debitering har sparats
+factor has been updated	projects	sv	Debitering har ändrats
+factor project	projects	sv	Debitera per projekt
 failed sending message to '%1' #%2 subject='%3', sender='%4' !!!	projects	sv	Kunde inte skicka meddelande till '%1' #%2 ämne='%3', avsändare='%4'
 from	projects	sv	Från
 from %1 to %2	projects	sv	Från %1 till %2
@@ -242,7 +247,7 @@ new project	projects	sv	Nytt projekt
 new project created	projects	sv	Nytt Projekt skapat:
 new start date	projects	sv	Nytt startdatum
 nonactive	common	sv	Inaktiv
-not billable	projects	sv	Inte fakturerbar
+not billable	projects	sv	Ej Fakturerbar
 notification settings	admin	sv	Notifieringsinställningar
 notifications	projects	sv	noteringar
 notify management committee	admin	sv	Notifiera styrgrupp
