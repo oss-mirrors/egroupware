@@ -60,11 +60,11 @@ function __dlg_init()
 };
 
 // closes the dialog and passes the return info to the parent window.
-function __dlg_close(val) 
+function __dlg_close(fileurl, filetype) 
 {
-	if (val != null)
+	if (fileurl != null)
 	{
-		opener.onSave(val);
+		opener.onSave(fileurl, filetype);
 		//	debug();
 	}
 	self.close();

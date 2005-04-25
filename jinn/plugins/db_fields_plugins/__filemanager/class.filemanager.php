@@ -32,7 +32,17 @@
 		var $javascript_inserted = false;
 		var $spacer = 'jinn/plugins/db_fields_plugins/plugin_images/spacer.png';
 		var $spacer_style = '';
+		var	$unknown = "jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/unknown.gif";
+		var	$unknown_style = '';
 		var $local_bo;	//this is a reference to a bo class and needs to be set by the instanciating factory class
+		var $filetypes;
+		
+			//constructor
+		function db_fields_plugin_filemanager()
+		{
+			require_once 'class.filetypes.php';
+			$this->filetypes = new filetypes();
+		}
 		
 	   function formview_edit($field_name,$value,$config,$attr_arr)
 	   {	
@@ -50,35 +60,12 @@
 			 $input=lang('The path to upload images is not correct, please contact your JiNN administrator.');
 			 return $input;
 		  }
-	
-			$stripped_name=substr($field_name,6);	//the real field name
-			$prefix = substr($field_name,0,6); 	//the prefix used to identify records in a multi record view
-			$prefix .= $helper_id;				//the helper id will help identifying which post vars to ignore when saving the record(s)
 			
 			if(!$this->javascript_inserted)
 			{
-				$input .= $this->add_javascript($stripped_name);
+				$input .= $this->add_javascript();
 			}
-	
-		    $table_style='';
-			$input.='<table '.$table_style.' cellpadding="3" width="100%">';
 
-			/****************************************
-			 * if value is set, show existing images *
-			 ****************************************/	
-			 if(trim($value))
-			 {
-				$input.='<input type="hidden" name="'.$prefix.'_IMG_ORG_'.$stripped_name.'" value="'.$value.'">';
-				$value=explode(';',$value);
-			 }
-			 else
-			 {
-				$value = array();
-			 }
-	
-			/***************************************
-			 * get max images, set max 10 filefields *
-			 ***************************************/
 			 if (is_numeric($config[Max_files])) 
 			 {
 				if ($config[Max_files]>30) $num_input=30;
@@ -88,7 +75,24 @@
 			 {
 				$num_input=10;
 			 }
-	
+			
+		    $table_style='';
+			$input.='<table '.$table_style.' cellpadding="3" width="100%">';
+
+			$stripped_name=substr($field_name,6);	//the real field name
+			$prefix = substr($field_name,0,6); 	//the prefix used to identify records in a multi record view
+			$prefix .= $helper_id;				//the helper id will help identifying which post vars to ignore when saving the record(s)
+			
+			 if(trim($value))
+			 {
+					//add the original field value to the form
+				$input.='<input type="hidden" name="'.$prefix.'_IMG_ORG_'.$stripped_name.'" value="'.$value.'">';
+				$value=explode(';',$value);
+			 }
+			 else
+			 {
+				$value = array();
+			 }
 	
 				$cell_style='style="border-width:1px;border-style:solid;border-color:grey"';
 				$field_string  = "'".$stripped_name."'";
@@ -335,8 +339,8 @@
 			$prefix .= $helper_id;				//the helper id will help identifying which post vars to ignore when saving the record(s)
 			//$spacer = "jinn/plugins/db_fields_plugins/plugin_images/spacer.png";
 			//$spacer_style = '';
-			$unknown = "jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/unknown.gif";
-			$unknown_style = '';
+			//$unknown = "jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/unknown.gif";
+			//$unknown_style = '';
 			$img_style = 'style="border-style:solid;border-width:1px;border-color:#000000"';
 		    $name    = $prefix.'_IMG_'.$stripped_name.$i;
 		    $span_id = $prefix.'_PATH_'.$stripped_name.$i;
@@ -408,7 +412,7 @@
 						else
 						{
 							//process as unknown filetype
-							$input .= $this->show_slot($edit, 'unknown', $name, $unknown, $unknown_style, $span_id, $text);
+							$input .= $this->show_slot($edit, 'unknown', $name, $this->unknown, $this->unknown_style, $span_id, $text);
 						}
 					}
 					else
@@ -472,7 +476,7 @@
 			return $input;
 		}
 		
-		function add_javascript($stripped_name)
+		function add_javascript()
 		{
 			$this->javascript_inserted = true;
 			$input = '';
@@ -495,14 +499,14 @@
 			{
 				//the popup will be aware of this window by the opener property
 				//when a server image is chosen, the popup will call the onSave function, passing the chosen image path
-				childWindow=open("jinn/plugins/db_fields_plugins/__filemanager/popups/insert_image.php?field='.$stripped_name.'","console","resizable=no,width=580,height=440");
+				childWindow=open("jinn/plugins/db_fields_plugins/__filemanager/popups/insert_image.php?field=" + field,"console","resizable=no,width=580,height=440");
 				if (childWindow.opener == null)	childWindow.opener = self;
 				document.frm.CURRENT_RECORD.value=record;
 				document.frm.CURRENT_FIELD.value=field;
 				document.frm.CURRENT_SLOT.value=slot;
 			}
 			
-			function setSlot(record, field, slot, val1, val2, val3)
+			function setSlot(record, field, slot, fileurl, thumbnail, buttontext)
 			{
 				//alert("set Slot: " + record + ", "+ field + ", "+ slot);
 				
@@ -515,37 +519,41 @@
 				
 				var cmd;
 				
-				cmd = "document.frm." + record + "_IMG_EDIT_" + field + slot + ".value = \"" + val1 + "\";";
+				cmd = "document.frm." + record + "_IMG_EDIT_" + field + slot + ".value = \"" + fileurl + "\";";
 				eval(cmd);
 				
-				if(val1 == "delete")
-				{
-					cmd = "document." + record + "_IMG_" + field + slot + ".src = \"" + val2 + "\";";
-				}
-				else
-				{
-						//we need to put a dot in front of the filename to display the thumbnail
-						//fixme: can this be done easier with RegEx?
-					var val2_arr = val2.split("/");
-					var idx = val2_arr.length - 1;
-					val2_arr[idx] = "." + val2_arr[idx];
-					var thumb = val2_arr.join("/");
-		
-					cmd = "document." + record + "_IMG_" + field + slot + ".src = \"" + thumb + "\";";
-				}
+				cmd = "document." + record + "_IMG_" + field + slot + ".src = \"" + thumbnail + "\";";
 				eval(cmd);
 	
-				cmd = "document.frm." + record + "_IMG_EDIT_BUTTON_" + field + slot + ".value = \"" + val3 + "\";";
+				cmd = "document.frm." + record + "_IMG_EDIT_BUTTON_" + field + slot + ".value = \"" + buttontext + "\";";
 				eval(cmd);
 	
+					//fixme: pass this style to this function to change style if slot gets erased
 				cmd = "document.getElementById(\"" + record + "_PATH_" + field + slot + "\").style.display = \"none\";";
 				eval(cmd);
 			}
 			
-			function onSave(val)
+			function onSave(fileurl, filetype)
 			{
-				//access the CURRENT_... hidden fields to find out which image slot to use
-				setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, val, val, getLabel("replace"));
+				//access the CURRENT_... hidden fields to find out which slot to use
+				if(filetype == "'.$this->filetypes->type_id_image.'")
+				{
+						//we need to put a dot in front of the filename to display the thumbnail
+						//fixme: can this be done easier with RegEx?
+					var val2_arr = fileurl.split("/");
+					var idx = val2_arr.length - 1;
+					val2_arr[idx] = "." + val2_arr[idx];
+					var thumb = val2_arr.join("/");
+					setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, fileurl, thumb, getLabel("replace"));
+				}
+				else if(filetype == "'.$this->filetypes->type_id_other.'")
+				{
+					setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, fileurl, "'.$this->unknown.'", getLabel("replace"));
+				}
+				else
+				{
+					setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, fileurl, "'.$this->unknown.'", getLabel("replace"));
+				}
 			}
 			
 			function onDelete(record, field, slot)

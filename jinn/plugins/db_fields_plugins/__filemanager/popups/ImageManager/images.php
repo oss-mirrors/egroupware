@@ -29,24 +29,10 @@
    include 'config.inc.php';
    require_once 'std_functions.inc.php';
    require_once '../ImageEditor/Transform.php';
+   require_once '../../class.filetypes.php';
 
-   $extensions= array();
-   switch($config['Filetype'])
-   {
-	case 'all':
-		$extensions['*'] = 1;
-		break;
-	case 'png':
-		$extensions['png'] = 1;
-		break;
-	case 'jpg':
-		$extensions['jpg']  = 1;
-		$extensions['jpeg'] = 1;
-		break;
-	case 'gif':
-		$extensions['gif'] = 1;
-		break;
-   }
+   $filetypes = new filetypes();
+   $extensions = $filetypes->get_extensions($config['Filetype']);
    
 //_debug_array($IMG_ROOT);
    if(isset($_GET['dir'])) {
@@ -648,6 +634,7 @@ function refreshDirs()
 									{
 										  var topDoc = window.top.document.forms[0];
 										  topDoc.f_url.value = filename;
+										  topDoc.f_type.value = '<?php echo $filetypes->type_id_image; ?>';
 										  //topDoc.f_width.value= width;
 										  //topDoc.f_height.value = height;
 										  //topDoc.f_alt.value = alt;
@@ -659,6 +646,7 @@ function refreshDirs()
 									{
 										  var topDoc = window.top.document.forms[0];
 										  topDoc.f_url.value = filename;
+										  topDoc.f_type.value = '<?php echo $filetypes->type_id_other; ?>';
 									}
 
 									function preview(file, image, size, width, height) 

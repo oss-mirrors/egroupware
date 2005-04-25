@@ -71,8 +71,12 @@
 			   }
 			   
 			   var field = opener.document.frm.CURRENT_FIELD.value;
+			   
 			   document.getElementById("f_width").value="<?php echo($config[Max_image_width]); ?>";
 			   document.getElementById("f_height").value="<?php echo($config[Max_image_height]); ?>";
+			   
+				document.getElementById("f_type").readOnly=true;
+			   
 			   <?php if($config['Allow_other_images_sizes']=="False") : ?>
 					document.getElementById("f_width").readOnly=true;
 					document.getElementById("f_height").readOnly=true;
@@ -105,7 +109,8 @@
 			   }
 				
 			   var path = document.form1.f_url.value;
-			   __dlg_close(path);
+			   var filetype = document.form1.f_type.value;
+			   __dlg_close(path, filetype);
 			   return false;
 		 };
 
@@ -113,7 +118,7 @@
 			   if (preview_window) {
 					 preview_window.close();
 			   }
-			   __dlg_close(null);
+			   __dlg_close(null, null);
 			   return false;
 		 };
 
@@ -423,6 +428,13 @@ function toggleConstrains(constrains)
 												   <tr> 
 													  <td nowrap><div align="right">File </div></td>
 													  <td colspan="4"><input name="url" id="f_url" type="text" style="width:100%" size="30"></td>
+													  <!--td rowspan="3">&nbsp;</td>
+													  <td><div align="right">V Space</div></td>
+													  <td><input name="vert" id="f_vert" type="text" size="5" style="width:4em"></td-->
+												   </tr>
+												   <tr> 
+													  <td nowrap><div align="right">Type </div></td>
+													  <td colspan="4"><input name="type" id="f_type" type="text" size="10"></td>
 													  <!--td rowspan="3">&nbsp;</td>
 													  <td><div align="right">V Space</div></td>
 													  <td><input name="vert" id="f_vert" type="text" size="5" style="width:4em"></td-->

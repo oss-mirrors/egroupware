@@ -7,46 +7,51 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.214f
+===========================
+Mon Apr 25 14:30:00 CET 2005
+- fixed bug in Filemanager plugin where selected files of unknown types didn't get an icon. refactoring: filetypes now has its own class within filemanager
+
 Version 0.8.214e
 ===========================
-Mon Apr 22 16:30:00 CET 2005
+Fri Apr 22 16:30:00 CET 2005
 - fixed backwards compatibility bug in Filemanager plugin
 
 Version 0.8.214d
 ===========================
-Mon Apr 22 16:00:00 CET 2005
+Fri Apr 22 16:00:00 CET 2005
 - refactoring: Class.factory_plugins_db_fields now gets a reference to a BO object and also passes a reference to that object to all plugins it instanciates
 
 Version 0.8.214c
 ===========================
-Mon Apr 22 15:30:00 CET 2005
+Fri Apr 22 15:30:00 CET 2005
 - Filemanager refactoring and small bugfixes
 
 Version 0.8.214b
 ===========================
-Mon Apr 22 11:00:00 CET 2005
+Fri Apr 22 11:00:00 CET 2005
 - Filemanager can now handle any filetype (in configuration: select 'all')
 
 Version 0.8.214a
 ===========================
-Mon Apr 21 17:00:00 CET 2005
+Thu Apr 21 17:00:00 CET 2005
 - fixed bug where Filemanager did not get maximum image sizes
 
 Version 0.8.214
 ===========================
-Mon Apr 21 15:00:00 CET 2005
+Thu Apr 21 15:00:00 CET 2005
 - JiNN can now handle fieldnames of any length. Alternative names are still restricted to 50 chars.
 
 
 
 Version 0.8.213x
 ===========================
-Mon Apr 21 14:30:00 CET 2005
+Thu Apr 21 14:30:00 CET 2005
 - upgraded all other plugins to new classbased plugin style
 
 Version 0.8.213w
 ===========================
-Mon Apr 20 15:00:00 CET 2005
+Wed Apr 20 15:00:00 CET 2005
 - fixed JiNN setup bug that sent errors through eGroupWare's setup
 
 Version 0.8.213v
