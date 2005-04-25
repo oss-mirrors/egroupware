@@ -22,7 +22,6 @@
 			'inbox'          => True,
 			'compose'        => True,
 			'compose_global' => True,
-			'compose_multiple'=> True,
 			'compose_group'  => True,
 			'read_message'   => True,
 			'reply'          => True,
@@ -41,8 +40,7 @@
 			$GLOBALS['phpgw']->template->set_file('_header','messenger_header.tpl');
 			$GLOBALS['phpgw']->template->set_block('_header','global_header');
 			$GLOBALS['phpgw']->template->set_var('lang_inbox','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.inbox') . '">' . lang('Inbox') . '</a>');
-			$GLOBALS['phpgw']->template->set_var('lang_compose','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose') . '">' . lang('Compose to single-user') . '</a>');
-			$GLOBALS['phpgw']->template->set_var('lang_compose_multiple','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose_multiple') . '">' . lang('Compose to multi-users') . '</a>');
+			$GLOBALS['phpgw']->template->set_var('lang_compose','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose') . '">' . lang('compose message') . '</a>');
 			$GLOBALS['phpgw']->template->set_var('lang_compose_group','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose_group') . '">' . lang('Compose to group-users') . '</a>');
 			if($extras['nextmatchs_left'])
 			{
@@ -204,7 +202,7 @@
 			}
 			if($_POST['send'])
 			{
-				$errors = $this->bo->send_multiple_message($message);
+				$errors = $this->bo->send_message($message);
 				if(@is_array($errors))
 				{
 					$GLOBALS['phpgw']->template->set_var('errors',$GLOBALS['phpgw']->common->error_list($errors));
@@ -229,7 +227,7 @@
 
 			$this->set_common_langs();
 			$GLOBALS['phpgw']->template->set_var('header_message',lang('Compose message'));
-			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose_multiple'));
+			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose'));
 			$GLOBALS['phpgw']->template->set_var('value_to',$tobox);
 			$GLOBALS['phpgw']->template->set_var('value_subject','<input name="message[subject]" value="' . $message['subject'] . '" size="30">');
 			$GLOBALS['phpgw']->template->set_var('value_content','<textarea name="message[content]" rows="20" wrap="hard" cols="76">' . $message['content'] . '</textarea>');

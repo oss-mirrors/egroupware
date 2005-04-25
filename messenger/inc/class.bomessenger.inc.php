@@ -20,7 +20,6 @@
 		var $public_functions = array(
 			'send_message'         => True,
 			'send_global_message'  => True,
-			'send_multiple_message'=> True,
 			'send_group_message'  => True,
 			'reply'                => True,
 			'forward'              => True,
@@ -82,24 +81,6 @@
 			{
 				return False;
 			}
-			$errors = $this->check_for_missing_fields($message);
-
-			if(is_array($errors))
-			{
-				return $errors;
-			}
-			else
-			{
-				return $this->so->send_message($message);
-			}
-		}
-
-		function send_multiple_message($message='')
-		{
-			if(!$GLOBALS['phpgw']->acl->check('run',PHPGW_ACL_READ,'messenger'))
-			{
-				return False;
-			}
 			
 			if ($message['recipient']) {
 				foreach($message['recipient'] as $recipient_id)
@@ -126,7 +107,7 @@
 			if(!$message['content'])
 			{
 				$errors[] = lang("You didn't enter anything for the message");
-			}
+			}			
 
 			if(is_array($errors))
 			{
@@ -134,11 +115,11 @@
 			}
 			else
 			{
-				return $this->so->send_multiple_message($message);
+				return $this->so->send_message($message);
 			}
 		}
 	  
-	        		function send_group_message($message='')
+		function send_group_message($message='')
 		{
 		    
 		    if(!$GLOBALS['phpgw']->acl->check('run',PHPGW_ACL_READ,'messenger'))
@@ -215,7 +196,7 @@
 		    {
 			return $this->so->send_multiple_message($message);
 		    }
-                }
+		}
 
 
 		function read_inbox($values)

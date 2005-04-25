@@ -34,6 +34,3 @@ you have %1 new messages	common	de	Sie haben %1 neue Mitteilungen
 you have no messages	messenger	de	Sie haben keine neuen Nachrichten
 you must enter a subject	messenger	de	Sie müssen einen Betreff angeben
 you must enter the username this message is for	messenger	de	Sie müssen einen Benutzer angeben an welchen Sie diese Nachricht senden möchten
-Compose to single-user	messenger	de	Message an Einzelperson
-Compose to multi-users	messenger	de	Message an mehrere Personen
-Compose to group-users	messenger	de	Message an Gruppen

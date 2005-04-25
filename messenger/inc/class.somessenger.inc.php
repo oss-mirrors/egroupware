@@ -93,31 +93,11 @@
 			{
 				$this->owner = -1;
 			}
-
-			if(!ereg('^[0-9]+$',$message['to']))
-			{
-				$message['to'] = $GLOBALS['phpgw']->accounts->name2id($message['to'],'account_lid');
-			}
-
-			$this->db->query('INSERT INTO ' . $this->table . ' (message_owner, message_from, message_status, '
-				. "message_date, message_subject, message_content) VALUES ('"
-				. $message['to'] . "','" . $this->owner . "','N','" . time() . "','"
-				. addslashes($message['subject']) . "','" . $this->db->db_addslashes($message['content'])
-				. "')",__LINE__,__FILE__);
-			return True;
-		}
-
-		function send_multiple_message($message, $global_message = False)
-		{
-			if($global_message)
-			{
-				$this->owner = -1;
-			}
-			foreach($message['to'] as $to)
+			foreach($message['recipient'] as $recipient)
 			{
 			   $this->db->query('INSERT INTO ' . $this->table . ' (message_owner, message_from, message_status, '
 				. "message_date, message_subject, message_content) VALUES ('"
-				. (int)$to . "','" . $this->owner . "','N','" . time() . "','"
+				. (int)$recipient . "','" . $this->owner . "','N','" . time() . "','"
 				. addslashes($message['subject']) . "','" . $this->db->db_addslashes($message['content'])
 				. "')",__LINE__,__FILE__);
 			}

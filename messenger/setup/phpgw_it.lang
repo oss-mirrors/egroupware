@@ -1,8 +1,6 @@
 compose	messenger	it	Componi
 compose global message	common	it	Componi messaggio globale
 compose message	messenger	it	Componi messaggio
-compose to multi-users	messenger	it	Componi per multi-utenti
-compose to single-user	messenger	it	Componi per singolo utente
 delete a message.	messenger	it	Elimina un messaggio
 delete selected	messenger	it	Elimina selezione
 forward	messenger	it	Inoltra

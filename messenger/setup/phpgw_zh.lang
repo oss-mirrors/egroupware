@@ -34,6 +34,3 @@ you have %1 new messages	common	zh	您有%1条未读短信
 you have no messages	messenger	zh	目前没有短信
 you must enter a subject	messenger	zh	必须输入短信的主题
 you must enter the username this message is for	messenger	zh	必须指定收信人
-Compose to single-user	messenger	zh	给单个用户发送短消息
-Compose to multi-users	messenger	zh	给多个用户发送短消息
-Compose to group-users	messenger	zh	给组用户发送短消息

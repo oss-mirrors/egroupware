@@ -1,8 +1,6 @@
 compose	messenger	fr	Composer
 compose global message	common	fr	Composer un message global
 compose message	messenger	fr	Composer un message
-compose to multi-users	messenger	fr	Composer un message pour plusieurs destinataires
-compose to single-user	messenger	fr	Composer un message pour un seul destinataire
 delete a message.	messenger	fr	Effacer un message.
 delete selected	messenger	fr	Effacer la sélection
 forward	messenger	fr	Faire suivre

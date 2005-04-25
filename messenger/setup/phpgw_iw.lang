@@ -1,8 +1,6 @@
 compose	messenger	iw	חדש
 compose global message	common	iw	הודעה גלובלית חדשה
 compose message	messenger	iw	הודעה חדשה
-compose to multi-users	messenger	iw	חדשה למספר משתמשים
-compose to single-user	messenger	iw	חדשה למשתמש יחיד
 delete a message.	messenger	iw	מחק הודעה
 delete selected	messenger	iw	מחק נבחרים
 forward	messenger	iw	העבר

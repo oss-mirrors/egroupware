@@ -1,9 +1,6 @@
 compose	messenger	sv	Skapa
 compose global message	common	sv	Skapa globalt meddelande
 compose message	messenger	sv	Skapa meddelande
-compose to group-users	messenger	sv	Skapa till gruppmedlemmar
-compose to multi-users	messenger	sv	Skapa till multipla användare
-compose to single-user	messenger	sv	Skapa till en användare
 delete a message.	messenger	sv	Ta bort ett meddelande
 delete selected	messenger	sv	Ta bort valda
 forward	messenger	sv	Skicka vidare
