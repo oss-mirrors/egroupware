@@ -58,24 +58,29 @@
 		  }
 		  
 	
-		  if($config[enable_font_options]=='Yes') $bar_font = '"fontname", "space" , "fontsize", "space" ,';
-		  if($config[enable_image_button]=='Yes') $bar_image = '"insertimage",';
-		  if($config[enable_tables_button]=='Yes') $bar_table = '"inserttable",';
-		  if($config[enable_fullscreen_editor_button]=='Yes') $bar_fullscreen = '"popupeditor",';
-	
+		  if($config[enable_font_options] && $config[enable_font_options] != 'No') $bar_font 				= '"fontname", "space" , "fontsize", "space" ,'; //depreciated: this is only kept here for backwards compatibility
+		  if($bar_font == '' && $config[enable_font_selection_options]		!='No') $bar_font_selection 	= '"fontname", "space", ';
+		  if($bar_font == '' && $config[enable_font_size_options]			!='No') $bar_font_size 			= '"fontsize", "space", ';
+		  if($config[enable_block_formatting_options]	!='No') $bar_block_format 		= '"formatblock", "space", ';
+		  if($config[enable_font_mode]					!='No') $bar_font_mode 			= '"bold", "italic", "underline", "separator", ';
+		  if($config[enable_font_special]				!='No') $bar_font_special 		= '"strikethrough", "subscript", "superscript", "separator", ';
+		  if($config[enable_copy_paste]					!='No') $bar_copy_paste 		= '"copy", "cut", "paste", "space", ';
+		  if($config[enable_undo_redo]					!='No') $bar_undo_redo 			= '"undo", "redo"';
+		  if($config[enable_justify]					!='No') $bar_justify	 		= '"justifyleft", "justifycenter", "justifyright", "justifyfull", ';
+		  if($config[enable_lists]						!='No') $bar_lists	 			= '"orderedlist", "unorderedlist", ';
+		  if($config[enable_indent]						!='No') $bar_indent 			= '"outdent", "indent", "separator", ';
+		  if($config[enable_colors]						!='No') $bar_colors 			= '"forecolor", "hilitecolor", ';
+		  if($config[enable_hr]							!='No') $bar_hr 				= '"inserthorizontalrule", ';
+		  if($config[enable_link]						!='No') $bar_link 				= '"createlink", ';
+		  if($config[enable_image_button]				!='No') $bar_image 				= '"insertimage", ';
+		  if($config[enable_tables_button]				!='No') $bar_table 				= '"inserttable", ';
+		  if($config[enable_html_mode]					!='No') $bar_html_mode 			= '"htmlmode", ';
+		  if($config[enable_fullscreen_editor_button]	!='No') $bar_fullscreen 		= '"popupeditor", ';
+		  
 		  /* toolbar configuration */
 		  $custom_toolbar = '[
-		  [ '.$bar_font.'
-		  "formatblock", "space",
-		  "bold", "italic", "underline", "separator",
-		  "strikethrough", "subscript", "superscript", "separator",
-		  "copy", "cut", "paste", "space", "undo", "redo" ],
-	
-		  [ "justifyleft", "justifycenter", "justifyright", "justifyfull", "separator",
-		  "orderedlist", "unorderedlist", "outdent", "indent", "separator",
-		  "forecolor", "hilitecolor", "textindicator", "separator",
-		  "inserthorizontalrule", "createlink", '.$bar_image.' '.$bar_table.' "htmlmode", "separator",
-		  '.$bar_fullscreen.' "separator", "showhelp", "about" ]
+		  [ '.$bar_font.$bar_font_selection.$bar_font_size.$bar_block_format.$bar_font_mode.$bar_font_special.$bar_copy_paste.$bar_undo_redo.'],
+		  [ '.$bar_justify.$bar_lists.$bar_indent.$bar_colors.'"textindicator", "separator", '.$bar_hr.$bar_link.$bar_image.$bar_table.$bar_html_mode.'"separator", '.$bar_fullscreen.'"separator", "showhelp", "about" ]
 		  ];';
 		  
 		  
@@ -99,13 +104,13 @@
 		  }
 			
 		  /* Do stuff to activate ContextMenu Plugin in htmlArea */
-		  if($config[enable_image_upload_button]=='Yes')
+		  if($config[enable_context_menu] == 'Yes')
 		  {
 			 if($plugins) $plugins.=',';
 			 $plugins.='ContextMenu ';
 		  }
 		  /* Do stuff to activate uploadImage Plugin in htmlArea */
-		  if($config[enable_image_upload_button]=='Yes')
+		  if($config[enable_image_upload_button] == 'Yes')
 		  {
 			 $sessdata = array(
 				'UploadImageBaseDir' =>   $upload_path, 

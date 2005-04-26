@@ -7,6 +7,11 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.214h
+===========================
+Tue Apr 26 18:00:00 CET 2005
+- htmlArea plugin can now be configured almost per individual menu item
+
 Version 0.8.214g
 ===========================
 Tue Apr 26 14:00:00 CET 2005

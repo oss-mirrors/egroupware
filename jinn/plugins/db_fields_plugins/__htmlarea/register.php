@@ -39,10 +39,23 @@
 
    $this->registry->plugins['htmlarea']['config']		= array
    (
-	  'enable_font_options'=>array(array('Yes','No'),'select',''),
-	  'enable_tables_button'=>array(array('Yes','No'),'select',''),
-	  'enable_fullscreen_editor_button'=>array(array('Yes','No'),'select',''),
+	  'enable_font_selection_options'=>array(array('Yes','No'),'select',''),
+	  'enable_font_size_options'=>array(array('Yes','No'),'select',''),
+	  'enable_block_formatting_options'=>array(array('Yes','No'),'select',''),
+	  'enable_font_mode'=>array(array('Yes','No'),'select',''),
+	  'enable_font_special'=>array(array('Yes','No'),'select',''),
+	  'enable_copy_paste'=>array(array('Yes','No'),'select',''),
+	  'enable_undo_redo'=>array(array('Yes','No'),'select',''),
+  	  'enable_justify'=>array(array('Yes','No'),'select',''),
+	  'enable_lists'=>array(array('Yes','No'),'select',''),
+	  'enable_indent'=>array(array('Yes','No'),'select',''),
+	  'enable_colors'=>array(array('Yes','No'),'select',''),
+	  'enable_hr'=>array(array('Yes','No'),'select',''),
+	  'enable_link'=>array(array('Yes','No'),'select',''),
 	  'enable_image_button'=>array(array('Yes','No'),'select',''),
+	  'enable_tables_button'=>array(array('Yes','No'),'select',''),
+  	  'enable_html_mode'=>array(array('Yes','No'),'select',''),
+	  'enable_fullscreen_editor_button'=>array(array('Yes','No'),'select',''),
 	  'enable_context_menu'=>array(array('Yes','No'),'select',''),
 	  'enable_image_upload_button'=>array(array('Yes','No'),'select',''),
 	  'image_upload_max_height' => array('','text','maxlength="4" size="4"'),
@@ -53,8 +66,25 @@
 
    $this->registry->plugins['htmlarea']['config_help'] = array
    (
+	  'enable_font_selection_options'=>'Select font face.',
+	  'enable_font_size_options'=>'Select font size.',
+	  'enable_block_formatting_options'=>'Select paragraph formatting.',
+	  'enable_font_mode'=>'Bold, Italic, Underline.',
+	  'enable_font_special'=>'Strikethrough, Subscript, Superscript.',
+	  'enable_copy_paste'=>'Cut, Copy, Paste.',
+	  'enable_undo_redo'=>'Undo, Redo.',
+	  'enable_justify'=>'Justify Left, Center, Right, Full.',
+	  'enable_lists'=>'Ordered and Unordered lists.',
+	  'enable_indent'=>'Indent and Outdent.',
+	  'enable_colors'=>'Set Fore- and Background colors.',
+	  'enable_hr'=>'Insert horizontal rule.',
+	  'enable_link'=>'Create Link.',
+	  'enable_image_button'=>'Insert image.',
+	  'enable_tables_button'=>'Insert table.',
+	  'enable_html_mode'=>'Switch to HTML mode.',
+	  'enable_fullscreen_editor_button'=>'Popup fullscreen editor.',
 	  'enable_image_upload_button'=>'This is still experimental.',
-	  'size_if_area'=>'This set the size of the htmlarea window. You can overrule this by using custom_css',
+	  'size_of_area'=>'This set the size of the htmlarea window. You can overrule this by using custom_css',
 	  'custom_css'=> 'Put valid CSS-code here that will replace the default css used by htmlArea'
    );
 
