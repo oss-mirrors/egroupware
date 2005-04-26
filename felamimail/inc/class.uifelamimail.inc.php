@@ -222,6 +222,8 @@
 
 		function createHTMLFolderNew($_folders, $_selected, $_topFolderName, $_topFolderDescription)
 		{
+			$allFolders = array();
+			
 			// create a list of all folders, also the ones which are not subscribed
  			foreach($_folders as $key => $obj)
 			{
@@ -251,7 +253,6 @@
 			// careful! "d = new..." MUST be on a new line!!!
 			$folder_tree_new = "<script type='text/javascript'>d = new dTree('d','".$folderImageDir."');d.config.inOrder=true;d.config.closeSameLevel=true;";
 			
-			#$allFolders = array();
 
 			// keep track of the last parent id
 			$parentStack	= array();
