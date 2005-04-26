@@ -7,6 +7,11 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.214g
+===========================
+Tue Apr 26 14:00:00 CET 2005
+- fixed bug: htmlArea plugin was broken, added alias for backwards compatibility
+
 Version 0.8.214f
 ===========================
 Mon Apr 25 14:30:00 CET 2005

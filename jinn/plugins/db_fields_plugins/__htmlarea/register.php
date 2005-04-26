@@ -25,19 +25,19 @@
 	---------------------------------------------------------------------
 */
 
-   $this->registry->plugins['htmlArea']['name']				= 'htmlArea';
-   $this->registry->plugins['htmlArea']['title']			= 'htmlArea';
-   $this->registry->plugins['htmlArea']['version']			= '0.9.0.3';
-   $this->registry->plugins['htmlArea']['enable']			= 1;
-   $this->registry->plugins['htmlArea']['author']			= 'Pim Snel';
-   $this->registry->plugins['htmlArea']['description']		= 'The htmlArea plugin is based on htmlArea 3.0rc from interactivetools.com licenced under the BSD licence.<p/>   HtmlArea is a rich-textarea replacement for the textarea formwidget.';
-   $this->registry->plugins['htmlArea']['db_field_hooks']	= array
+   $this->registry->plugins['htmlarea']['name']				= 'htmlarea';
+   $this->registry->plugins['htmlarea']['title']			= 'htmlArea';
+   $this->registry->plugins['htmlarea']['version']			= '0.9.0.3';
+   $this->registry->plugins['htmlarea']['enable']			= 1;
+   $this->registry->plugins['htmlarea']['author']			= 'Pim Snel';
+   $this->registry->plugins['htmlarea']['description']		= 'The htmlArea plugin is based on htmlArea 3.0rc from interactivetools.com licenced under the BSD licence.<p/>   HtmlArea is a rich-textarea replacement for the textarea formwidget.';
+   $this->registry->plugins['htmlarea']['db_field_hooks']	= array
    (
 	  'blob',
 	  'string'
    );
 
-   $this->registry->plugins['htmlArea']['config']		= array
+   $this->registry->plugins['htmlarea']['config']		= array
    (
 	  'enable_font_options'=>array(array('Yes','No'),'select',''),
 	  'enable_tables_button'=>array(array('Yes','No'),'select',''),
@@ -51,11 +51,11 @@
 	  'custom_css'=>array('','area','')
    );
 
-   $this->registry->plugins['htmlArea']['config_help'] = array
+   $this->registry->plugins['htmlarea']['config_help'] = array
    (
 	  'enable_image_upload_button'=>'This is still experimental.',
 	  'size_if_area'=>'This set the size of the htmlarea window. You can overrule this by using custom_css',
-	  'custom_css'=> 'Put valid CSS-code here that will replcae the default css used by htmlArea'
+	  'custom_css'=> 'Put valid CSS-code here that will replace the default css used by htmlArea'
    );
 
 ?>
