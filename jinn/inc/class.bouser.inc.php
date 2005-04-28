@@ -148,7 +148,7 @@
 		 {
 			$this->scan_new_objects_silent();
 		 }
-// _debug_array('bouser constructor end');
+//_debug_array('bouser constructor end');
 //_debug_array($this->session['mult_where_array']);
 	  }
 
@@ -320,9 +320,9 @@
 	  to single records so the records can be processed normally.
 	  @note  If a plugin developer wants to use a prefix it must be exactly charachter long
 	  */
-	  function mult_to_fld($i,$type='_POST')
+	  function mult_to_fld($i,$type = '_POST')
 	  {
-		 if($type=='_POST')
+		 if($type == '_POST')
 		 {
 			reset($_POST);
 			while (list($key, $val) = each($_POST))
@@ -332,18 +332,25 @@
 			   {
 				  $post_arr['FLDXXX'.substr($key,6)]=$val;
 			   }
-			   /* special plugin fields */
-			   /* If a plugin user wants to use a prefix it must be exactly charachter long  */ 
+			   // special plugin fields
+			   // If a plugin user wants to use a prefix it must be exactly charachter long
 			   elseif (substr($key,7,4)=='MLTX' && intval(substr($key,11,2)) == $i) 
 			   {
 				  $post_arr[substr($key,0,7).'FLDXXX'.substr($key,13)]=$val;
+			   }
+			   // this is for the switchboard plugin. fixme: is the above case meant for the switchboard as well? in that case it was buggy and should be removed.
+			   elseif (substr($key,6,4)=='MLTX' && intval(substr($key,10,2)) == $i) 
+			   {
+				  $post_arr[substr($key,0,6).'FLDXXX'.substr($key,12)]=$val;
 			   }
 			   // m2m relation fields
 			   elseif(substr($key,0,3)=='M2M' && intval(substr($key,4,2)) == $i)
 			   {
 				  $post_arr['M2M'.substr($key,3,1).'XX'.substr($key,6)]=$val;
 			   }
-
+			   else
+			   {
+			   }
 			}
 		 }
 		 else
@@ -499,19 +506,13 @@
 			   $post_arr=$this->mult_to_fld($i,'_POST');
 			   $files_arr=$this->mult_to_fld($i,'_FILES');
 			   $data = $this->remove_helper_fields($this->http_vars_pairs($post_arr,$files_arr));
-			   
 			   $where_string=base64_decode($_POST['MLTWHR'.sprintf("%02d",$i)]);
 			   $this->session['mult_where_array'][]=$where_string;
-
 			   $table=$this->site_object[table_name];
-
 			   $m2m_data=$this->http_vars_pairs_m2m($post_arr);
-
 			   $status=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
-
 			   $status=$this->so->update_object_data($this->session['site_id'], $table, $data, $where_key,$where_value,$where_string);
 			   $eventstatus = $this->run_event_plugins('on_update', $post_arr);
-
 			}
 		 }
 
@@ -595,7 +596,6 @@
 
 	  function record_update()
 	  {
-
 		 if($_POST['delete'])
 		 {
 			$this->del_record();
