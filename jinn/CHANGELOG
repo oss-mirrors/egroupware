@@ -7,6 +7,11 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.214l
+===========================
+Thu Apr 28 16:00:00 CET 2005
+- replaced buggy tooltip system with built in egw tooltips (by Walter Zorn)
+
 Version 0.8.214k
 ===========================
 Thu Apr 28 14:30:00 CET 2005

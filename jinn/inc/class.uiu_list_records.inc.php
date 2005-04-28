@@ -477,8 +477,15 @@
 			unset($tipmouseover);
 			if(trim($field_conf_arr[field_help_info]))
 			{
-			   $tooltip=str_replace("'", "\'", $field_conf_arr[field_help_info]);
-			   $tipmouseover='<img onMouseover="tooltip(\''.$tooltip.'\')" onMouseout="hidetooltip()" src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="" />'; 
+			   //$tooltip=str_replace("'", "\'", $field_conf_arr[field_help_info]);
+			   $tooltip=$field_conf_arr[field_help_info];
+			   //$tipmouseover='<img onMouseover="tooltip(\''.$tooltip.'\')" onMouseout="hidetooltip()" src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="" />'; 
+			  if (!is_object($GLOBALS['phpgw']->html))
+			  {
+				 $GLOBALS['phpgw']->html = CreateObject('phpgwapi.html');
+			  }
+			  $options = array('width' => 'auto');
+			   $tipmouseover='<img '.$GLOBALS[phpgw]->html->tooltip($tooltip, True, $options).' src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="" />'; 
 			}
 
 			if(!$this->bo->field_is_enabled($this->bo->site_object[object_id], $col[name]))
