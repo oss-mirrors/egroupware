@@ -110,11 +110,11 @@ define('SEARCH',4);
 		{
 			if ($this->bo->error_msg)
 			{
-				$bk_output_html = '<center style="color:red">' . lang('Error') . ': ' . $this->bo->error_msg . '</center>';
+				$bk_output_html = lang('Error') . ': ' . $this->bo->error_msg ;
 			}
 			if ($this->bo->msg)
 			{
-				$bk_output_html .= '<center>' . $this->bo->msg . '</center>';
+				$bk_output_html .= $this->bo->msg;
 			}
 
 			if ($bk_output_html)
