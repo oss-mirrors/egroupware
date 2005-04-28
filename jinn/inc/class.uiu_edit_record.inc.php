@@ -171,6 +171,7 @@
 		 else
 		 {
 			$this->ui->header('add new record');
+			$this->template->set_var('btn_delete','hidden'); // do not show the delete button when adding a new record
 		 }
 
 		 $this->incl_js_validation_script();
@@ -184,6 +185,7 @@
 
 		 $this->template->set_var('popuplink',$popuplink);
 
+		 
 		 $this->template->pparse('out','form_header');
 		 $this->template->pparse('out','form_buttons');
 		 $this->template->pparse('out','table_header');

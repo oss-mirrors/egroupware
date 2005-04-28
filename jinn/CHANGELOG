@@ -7,6 +7,11 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.214k
+===========================
+Thu Apr 28 14:30:00 CET 2005
+- the 'delete' button is not shown anymore when adding a new record
+
 Version 0.8.214j
 ===========================
 Thu Apr 28 14:00:00 CET 2005

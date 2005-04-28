@@ -146,7 +146,7 @@ document.onmousemove=positiontip
 		<td><input type="submit" name="reopen" value="{save_button}"></td>
 <td><input type="{save_and_add_new_button_submit}" {save_and_add_new_button_onclick} name="add_new" value="{save_and_add_new_button}"></td>
 		<td><input type="submit" name="save" value="{save_and_return_button}"></td>
-		<td><input type="hidden" name="delete"> <input type="submit"  name="delete" value="{delete}"></td>
+		<td style="visibility:{btn_delete}"><input type="hidden" name="delete"> <input type="submit"  name="delete" value="{delete}"></td>
 		<td>{cancel}</td>
 		</tr>
 	</table>
