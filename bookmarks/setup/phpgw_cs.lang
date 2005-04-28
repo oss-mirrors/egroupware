@@ -35,7 +35,7 @@ highest	bookmarks	cs	Nejvy¹¹í
 i thought you would be interested in the following link(s):	bookmarks	cs	Myslím ¾e Vás mohou zajímat následující odkazy:
 import bookmarks	common	cs	Importovat zálo¾ky
 like	bookmarks	cs	jako
-list	bookmarks	cs	Seznam
+list view	bookmarks	cs	Seznam
 lowest	bookmarks	cs	Nejni¹¹í
 mail this bookmark	bookmarks	cs	Poslat tuto zálo¾ku
 mail-this-link message sent to %1.	bookmarks	cs	Odkazy pro %1 odeslány.
@@ -46,7 +46,7 @@ name	bookmarks	cs	Jméno
 name is required	bookmarks	cs	Jméno je povinné
 netscape bookmark file	bookmarks	cs	Soubor se zálo¾kami
 netscape bookmark filename is required!	bookmarks	cs	Jméno souboru je povinné!
-new	bookmarks	cs	Nová
+new	bookmark	cs	Nová
 or	bookmarks	cs	nebo
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	cs	Prosím vyplòte <b>Adresu</b>, <b>Jméno</b> a <b>Popis</b>!
 please select the categories to export	bookmarks	cs	Prosím vyberte kategorie k exportování

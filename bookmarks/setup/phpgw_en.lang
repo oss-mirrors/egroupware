@@ -36,7 +36,7 @@ highest	bookmarks	en	Highest
 i thought you would be interested in the following link(s):	bookmarks	en	I thought you would be interested in the following link(s):
 import bookmarks	common	en	Import bookmarks
 like	bookmarks	en	like
-list	bookmarks	en	List
+list view	bookmarks	en	list view
 lowest	bookmarks	en	Lowest
 mail this bookmark	bookmarks	en	Mail this bookmark
 mail-this-link message sent to %1.	bookmarks	en	mail-this-link message sent to %1.
@@ -47,7 +47,7 @@ name	bookmarks	en	Name
 name is required	bookmarks	en	Name is required
 netscape bookmark file	bookmarks	en	Netscape Bookmark File
 netscape bookmark filename is required!	bookmarks	en	Netscape bookmark filename is required!
-new	bookmarks	en	New
+new	bookmark	en	New
 or	bookmarks	en	or
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	en	Please fill out <B>To E-Mail Address</B>, <B>Subject</B>, and <B>Message</B>!
 please select the categories to export	bookmarks	en	Please select the categories to export

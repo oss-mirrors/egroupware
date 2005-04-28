@@ -35,7 +35,7 @@ highest	bookmarks	hr	Highest
 i thought you would be interested in the following link(s):	bookmarks	hr	I thought you would be interested in the following link(s):
 import bookmarks	common	hr	Import bookmarks
 like	bookmarks	hr	like
-list	bookmarks	hr	List
+list view	bookmarks	hr	list view
 lowest	bookmarks	hr	Lowest
 mail this bookmark	bookmarks	hr	Mail this bookmark
 mail-this-link message sent to %1.	bookmarks	hr	mail-this-link message sent to %1.
@@ -46,7 +46,7 @@ name	bookmarks	hr	Name
 name is required	bookmarks	hr	Name is required
 netscape bookmark file	bookmarks	hr	Netscape Bookmark File
 netscape bookmark filename is required!	bookmarks	hr	Netscape bookmark filename is required!
-new	bookmarks	hr	New
+new	bookmark	hr	New
 or	bookmarks	hr	or
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	hr	Please fill out <B>To E-Mail Address</B>, <B>Subject</B>, and <B>Message</B>!
 please select the categories to export	bookmarks	hr	Please select the categories to export

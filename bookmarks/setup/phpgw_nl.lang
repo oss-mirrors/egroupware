@@ -34,7 +34,7 @@ from category %1	bookmarks	nl	uit categorie %1
 highest	bookmarks	nl	Hoogste
 i thought you would be interested in the following link(s):	bookmarks	nl	I dacht dat u geïntereseerd zou zijn in de volgende link(s):
 import bookmarks	bookmarks	nl	Importeer favorieten
-list	bookmarks	nl	Lijst
+list view	bookmarks	nl	Lijst
 lowest	bookmarks	nl	Laagste
 mail this bookmark	bookmarks	nl	Email deze favoriet
 mail-this-link message sent to %1.	bookmarks	nl	favoriet-emailbericht gestuurd naar %1.
@@ -45,7 +45,7 @@ name	bookmarks	nl	Naam
 name is required	bookmarks	nl	Naam is noodzakelijk
 netscape bookmark file	bookmarks	nl	Netscape-favorietenbestand
 netscape bookmark filename is required!	bookmarks	nl	Netscape-favorietenbestand is noodzakelijk!
-new	bookmarks	nl	Nieuw
+new	bookmark	nl	Nieuw
 or	bookmarks	nl	of
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	nl	Geef a.u.b. het <B>Aan E-Mailadres</B>, <B>Onderwerp</B>, en <B>Bericht</B>!
 please select the categories to export	bookmarks	nl	Selecteer a.u.b. de categoriën

@@ -38,7 +38,7 @@ highest	bookmarks	es-ca	La més alta
 i thought you would be interested in the following link(s):	bookmarks	es-ca	Hem trobat que potser són interessants els següents enllaços:
 import bookmarks	common	es-ca	Importar Adreces d'Interès
 like	bookmarks	es-ca	com
-list	bookmarks	es-ca	Llista
+list view	bookmarks	es-ca	Llista
 lowest	bookmarks	es-ca	La més baixa
 mail this bookmark	bookmarks	es-ca	Enviar aquesta adreça d'interès
 mail-this-link message sent to %1.	bookmarks	es-ca	Missatge enviar-aquest-enllaç enviat a %1
@@ -49,7 +49,7 @@ name	bookmarks	es-ca	Nom
 name is required	bookmarks	es-ca	El nom és obligatori
 netscape bookmark file	bookmarks	es-ca	Arxiu d'Adreces d'Interès de Netscape
 netscape bookmark filename is required!	bookmarks	es-ca	El nom de l'arxiu d'Adreces d'Interès de Netscape és obligatori
-new	bookmarks	es-ca	Nou
+new	bookmark	es-ca	Nou
 or	bookmarks	es-ca	o
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	es-ca	Ompliu <b>Adreça de correu destí</b>, <b>Assumpte</b> i <b>Missatge</b>
 please select the categories to export	bookmarks	es-ca	Si us plau, seleccioneu les categories a exportar

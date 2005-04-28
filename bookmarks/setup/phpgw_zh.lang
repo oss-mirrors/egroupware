@@ -16,8 +16,6 @@ bookmarks settings	admin	zh	书签配置
 category	bookmarks	zt	類別
 change bookmark	bookmarks	zh	更改书签
 close this window to return	bookmarks	zh	关闭窗口并返回
-create bookmark	bookmarks	zh	创建书签
-create new bookmark	bookmarks	zh	新建书签
 date added	bookmarks	zh	日期已添加
 date changed	bookmarks	zh	日期已更改
 date last updated	bookmarks	zh	最近更新日期
@@ -37,7 +35,7 @@ i thought you would be interested in the following link(s):	bookmarks	zh	您也�
 import bookmarks	bookmarks	zh	导入书签
 import bookmarks	preferences	zh	导入书签
 like	bookmarks	zh	像
-list	bookmarks	zh	按列表方式查看
+list view	bookmarks	zh	按列表方式查看
 lowest	bookmarks	zh	最低
 mail this bookmark	bookmarks	zh	邮寄该书签
 mail-this-link message sent to %1.	bookmarks	zh	已将该链接信息发送至%1.
@@ -48,7 +46,7 @@ name	bookmarks	zh	名称
 name is required	bookmarks	zh	缺少名称
 netscape bookmark file	bookmarks	zh	Netscape书签文件
 netscape bookmark filename is required!	bookmarks	zh	缺少Netscape书签文件名!
-new	bookmarks	zh	新建
+new	bookmark	zh	新建书签
 or	bookmarks	zh	或
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	zh	请填写<b>EMail地址</b>, <b><标题</b>和<b>信件内容</b>!
 please select the categories to export	bookmarks	zt	請選擇要匯出的類別

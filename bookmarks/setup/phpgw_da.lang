@@ -35,7 +35,7 @@ highest	bookmarks	da	Højest
 i thought you would be interested in the following link(s):	bookmarks	da	Jeg tæte du måe var interesseret i føde hyperlink(s):
 import bookmarks	bookmarks	da	Importer bogmærker
 like	bookmarks	da	som
-list	bookmarks	da	Vis
+list view	bookmarks	da	Vis
 lowest	bookmarks	da	Laveste
 mail this bookmark	bookmarks	da	E-mail dette bogmærke
 mail-this-link message sent to %1.	bookmarks	da	E-mail-dette-link besked er sendt til %1.
@@ -46,7 +46,7 @@ name	bookmarks	da	Navn
 name is required	bookmarks	da	Navn er krævet
 netscape bookmark file	bookmarks	da	Netscape bogmærke fil
 netscape bookmark filename is required!	bookmarks	da	Netscape bogmærke fil er krævet!
-new	bookmarks	da	Ny
+new	bookmark	da	Ny
 or	bookmarks	da	eller
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	da	Indtast venligst <b>Modtager E-mail adresse</b>, <b>Emne</b>, og <b>Besked</b>!
 please select the categories to export	bookmarks	da	Vælg venligst kategorierne du vil eksportere

@@ -36,7 +36,7 @@ highest	bookmarks	es-es	La más alta
 i thought you would be interested in the following link(s):	bookmarks	es-es	Pensé que le interesarían los siguientes enlaces:
 import bookmarks	common	es-es	Importar marcadores
 like	bookmarks	es-es	como
-list	bookmarks	es-es	Lista
+list view	bookmarks	es-es	list viewa
 lowest	bookmarks	es-es	La más baja
 mail this bookmark	bookmarks	es-es	Añadir este marcador
 mail-this-link message sent to %1.	bookmarks	es-es	Mensaje de enviar este enlace enviado a %1
@@ -47,7 +47,7 @@ name	bookmarks	es-es	Nombre
 name is required	bookmarks	es-es	El nombre es obligatorio
 netscape bookmark file	bookmarks	es-es	Fichero de marcadores de Netscape
 netscape bookmark filename is required!	bookmarks	es-es	El nombe del fichero de marcadores de Netscape es obligatorio
-new	bookmarks	es-es	Nuevo
+new	bookmark	es-es	Nuevo
 or	bookmarks	es-es	o
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	es-es	Por favor, rellene <b>Dirección destino</b>, <b>Asunto</b> y <b>Mensaje</b>
 please select the categories to export	bookmarks	es-es	Por favor, seleccione las categorías a exportar

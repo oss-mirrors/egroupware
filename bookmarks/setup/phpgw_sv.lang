@@ -38,7 +38,7 @@ highest	bookmarks	sv	Högsta
 i thought you would be interested in the following link(s):	bookmarks	sv	Jag tänkte att du vore intrsserad av följande länk(ar):
 import bookmarks	common	sv	Importera bokmärken
 like	bookmarks	sv	Liknande
-list	bookmarks	sv	Lista
+list view	bookmarks	sv	list viewa
 lowest	bookmarks	sv	Lägsta
 mail this bookmark	bookmarks	sv	E-posta bokmärket
 mail-this-link message sent to %1.	bookmarks	sv	"E-posta länken" meddelande skickat till %1.
@@ -49,7 +49,7 @@ name	bookmarks	sv	Namn
 name is required	bookmarks	sv	Namn krävs
 netscape bookmark file	bookmarks	sv	Netscape kompatibel bokmärkes fil
 netscape bookmark filename is required!	bookmarks	sv	Netscape bokmärkes filnamn krävs
-new	bookmarks	sv	Nytt
+new	bookmark	sv	Nytt
 or	bookmarks	sv	Eller
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	sv	Skriv i <B>Till e-post</B>, <B>Ämne</B> och <B>Meddelande</B>
 please select the categories to export	bookmarks	sv	Välj kategori att exportera

@@ -210,7 +210,7 @@ define('SEARCH',4);
 
 			$this->t->set_var(array(
 				'form_info' => '',
-				'lang_header' => lang('Create new bookmark'),
+				'lang_header' => lang('new bookmark'),
 				'input_category' => $this->bo->categories_list($bookmark['category']),
 				'input_rating' => ('<select name="bookmark[rating]">'
 					. ' <option value="0"' . $selected[0] . '>--</option>'

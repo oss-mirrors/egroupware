@@ -35,7 +35,7 @@ highest	bookmarks	bg	Най-висока
 i thought you would be interested in the following link(s):	bookmarks	bg	Реших, че следните препратки може да са ти интересни:
 import bookmarks	common	bg	Внасяне на отметки
 like	bookmarks	bg	подобно на
-list	bookmarks	bg	Списък
+list view	bookmarks	bg	Списък
 lowest	bookmarks	bg	Най-ниска
 mail this bookmark	bookmarks	bg	Изпращане та отметката по пощата
 mail-this-link message sent to %1.	bookmarks	bg	съобщение "изпращане на отметката" изпратено на %1.
@@ -46,7 +46,7 @@ name	bookmarks	bg	Име
 name is required	bookmarks	bg	Името е задължително
 netscape bookmark file	bookmarks	bg	Файл с отметки на Netscape
 netscape bookmark filename is required!	bookmarks	bg	Нужно е името на файл с отметки на Netscape!
-new	bookmarks	bg	Нова
+new	bookmark	bg	Нова
 or	bookmarks	bg	или
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	bg	Моля, попълнете <B>адрес на получателя</B>, <B>относно</B>, и <B>съдържанието на писмото</B>!
 please select the categories to export	bookmarks	bg	Моля изберете категориите за експортиране

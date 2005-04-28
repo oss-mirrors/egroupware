@@ -37,7 +37,7 @@ highest	bookmarks	zt	最高
 i thought you would be interested in the following link(s):	bookmarks	zt	我猜您或許會喜歡下面這個(些)連結：
 import bookmarks	common	zt	匯入書籤
 like	bookmarks	zt	如
-list	bookmarks	zt	列表
+list view	bookmarks	zt	列表
 lowest	bookmarks	zt	最低
 mail this bookmark	bookmarks	zt	轉寄此書籤
 mail-this-link message sent to %1.	bookmarks	zt	郵寄這個連結的訊息給 %1。
@@ -48,7 +48,7 @@ name	bookmarks	zt	姓名
 name is required	bookmarks	zt	姓名是必填欄位
 netscape bookmark file	bookmarks	zt	Netscape 書籤檔案
 netscape bookmark filename is required!	bookmarks	zt	必須填寫Netscape 書籤檔案名稱！
-new	bookmarks	zt	新增
+new	bookmark	zt	新增
 or	bookmarks	zt	或
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	zt	請填入<B>收件人 E-Mail </B>, <B>主題</B>與<B>訊息內容</B>！
 please select the categories to export	bookmarks	zt	請選擇要匯出的類別

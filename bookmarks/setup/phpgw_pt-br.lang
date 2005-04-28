@@ -49,7 +49,7 @@ highest	bookmarks	pt-br	Maior
 i thought you would be interested in the following link(s):	bookmarks	pt-br	Achei que você poderia se interessar pelos seguinte(s) endereço(s):
 import bookmarks	bookmarks	pt-br	Importar Favoritos
 like	bookmarks	pt-br	como
-list	bookmarks	pt-br	Listar
+list view	bookmarks	pt-br	list viewar
 lowest	bookmarks	pt-br	Menor
 mail this bookmark	bookmarks	pt-br	Enviar por e-mail esse endereço
 mail-this-link message sent to %1.	bookmarks	pt-br	mensagem de envio de favorito enviada para %1
@@ -60,7 +60,7 @@ name	bookmarks	pt-br	Nome
 name is required	bookmarks	pt-br	O campo nome é requerido
 netscape bookmark file	bookmarks	pt-br	Arquivo de Favoritos do Netscape
 netscape bookmark filename is required!	bookmarks	pt-br	Arquivo de Favoritos do Netscape é requerido!
-new	bookmarks	pt-br	Novo
+new	bookmark	pt-br	Novo
 new poll has been added.  you should now add some answers for this poll	polls	pt-br	Nova enquete foi adicionada.  Você deveria agora adicionar algumas respostas para esta enquete
 or	bookmarks	pt-br	ou
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	pt-br	Favor preencher <B> Destinatário da mensagem</B>, <B>Assunto</B>, e <B>Mensagem</B>!

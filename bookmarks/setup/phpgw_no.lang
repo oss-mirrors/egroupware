@@ -35,7 +35,7 @@ highest	bookmarks	no	Høyeste
 i thought you would be interested in the following link(s):	bookmarks	no	Jeg tror du ville være interessert i denne linken(e):
 import bookmarks	common	no	Importer favoritter
 like	bookmarks	no	lignende
-list	bookmarks	no	Liste
+list view	bookmarks	no	list viewe
 lowest	bookmarks	no	Laveste
 mail this bookmark	bookmarks	no	Send denne favoritten som e-post
 mail-this-link message sent to %1.	bookmarks	no	send denne linken som e-post melding sendt til %1.
@@ -46,7 +46,7 @@ name	bookmarks	no	Navn
 name is required	bookmarks	no	Navn er påkrevd
 netscape bookmark file	bookmarks	no	Netscape Favoritt Fil
 netscape bookmark filename is required!	bookmarks	no	Netscape favoritt filnavn er påkrevd!
-new	bookmarks	no	Ny
+new	bookmark	no	Ny
 or	bookmarks	no	eller
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	no	Vennligst fyll inn <B>Til epost adresse</B>, <B>Emne</B>, og <B>Melding</B>!
 please select the categories to export	bookmarks	no	Vennligst velg kategorier å eksportere

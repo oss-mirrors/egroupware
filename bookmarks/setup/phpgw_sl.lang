@@ -38,7 +38,7 @@ highest	bookmarks	sl	Najvišja
 i thought you would be interested in the following link(s):	bookmarks	sl	Menim, da bi vas zanimale naslednje povezave:
 import bookmarks	common	sl	Uvozi zaznamke
 like	bookmarks	sl	podobno
-list	bookmarks	sl	Seznam
+list view	bookmarks	sl	Seznam
 lowest	bookmarks	sl	Najnižja
 mail this bookmark	bookmarks	sl	Pošlji ta zaznamek po E-pošti
 mail-this-link message sent to %1.	bookmarks	sl	Sporočilo "pošlji-to-povezavo" poslano na %1
@@ -49,7 +49,7 @@ name	bookmarks	sl	Ime
 name is required	bookmarks	sl	Ime je obvezno
 netscape bookmark file	bookmarks	sl	Netscape datoteka z zaznamki
 netscape bookmark filename is required!	bookmarks	sl	Zahtevana datoteka z zaznamki mora biti v Netscape formatu!
-new	bookmarks	sl	Nova
+new	bookmark	sl	Nova
 or	bookmarks	sl	ali
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	sl	Izpolnite <B>E-poštni naslov</B>, <B>Predmet</B>, in <B>Sporočilo</B>
 please select the categories to export	bookmarks	sl	Izberite kategorije za izvoz

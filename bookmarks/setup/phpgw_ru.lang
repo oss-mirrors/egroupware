@@ -22,7 +22,7 @@ from	bookmarks	ru	От
 import bookmarks	common	ru	Импортировать закладки
 mail this bookmark	bookmarks	ru	Отправить закладку по почте
 name	bookmarks	ru	Имя
-new	bookmarks	ru	Новая
+new	bookmark	ru	Новая
 please select the categories to export	bookmarks	ru	Выбирите категории для экспорта
 rating	bookmarks	ru	Рейтинг
 search for:	bookmarks	ru	Искать:

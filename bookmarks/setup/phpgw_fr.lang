@@ -35,7 +35,7 @@ highest	bookmarks	fr	Le plus haut
 i thought you would be interested in the following link(s):	bookmarks	fr	J'ai pensé que vous pourriez être intéressé par le(s) lien(s) suivant(s):
 import bookmarks	common	fr	Importer les signets
 like	bookmarks	fr	comme
-list	bookmarks	fr	Liste
+list view	bookmarks	fr	list viewe
 lowest	bookmarks	fr	Le plus bas
 mail this bookmark	bookmarks	fr	Envoyer ce signet par EMail
 mail-this-link message sent to %1.	bookmarks	fr	Message envoyer-ce-lien-par-mail envoyé à %1.
@@ -46,7 +46,7 @@ name	bookmarks	fr	Nom
 name is required	bookmarks	fr	Le nom est requis
 netscape bookmark file	bookmarks	fr	Fichier de favoris Netscape
 netscape bookmark filename is required!	bookmarks	fr	Le nom du fichier de favoris Netscape est requis!
-new	bookmarks	fr	Nouveau
+new	bookmark	fr	Nouveau
 or	bookmarks	fr	ou
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	fr	SVP remplissez <B>l'adresse EMail destinataire</B>, <B>le sujet</B>, et <B>le message</B>!
 please select the categories to export	bookmarks	fr	Merci de sélectionner les catégories à exporter

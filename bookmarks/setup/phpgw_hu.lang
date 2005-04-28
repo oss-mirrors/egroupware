@@ -35,7 +35,7 @@ highest	bookmarks	hu	Magasabb
 i thought you would be interested in the following link(s):	bookmarks	hu	Gondolom hogy Téged érdekel(nek) a kövelkezö hivatkozás(ok):
 import bookmarks	bookmarks	hu	Könyvjelzök importálása
 like	bookmarks	hu	mint
-list	bookmarks	hu	Lista
+list view	bookmarks	hu	list viewa
 lowest	bookmarks	hu	Alacsonyabb
 mail this bookmark	bookmarks	hu	Levélben elküldöm ezt a könyvjelzöt
 mail-this-link message sent to %1.	bookmarks	hu	Levélben küldöm ezt %1-nek.
@@ -46,7 +46,7 @@ name	bookmarks	hu	Neve
 name is required	bookmarks	hu	Név szükséges
 netscape bookmark file	bookmarks	hu	Netscape könyvjelzö állomány
 netscape bookmark filename is required!	bookmarks	hu	Netscape könyvjelzö állomány név szükséges!
-new	bookmarks	hu	Új
+new	bookmark	hu	Új
 or	bookmarks	hu	vagy
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	hu	Kérlek töltsd ki a <B>Címzett E-Mail Címe</B>, <B>Tárgy</B>, és <B>Üzenet</B> mezöket!
 please select the categories to export	bookmarks	hu	Kérlek válassz egy kategóriát az exportáláshoz
