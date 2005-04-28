@@ -34,6 +34,7 @@
 
 	  function render_form($where_key,$where_value)
 	  {
+//_debug_array('was here');	  
 		 $this->template->set_file(array
 		 (
 			'form_site' => 'frm_edit_site.tpl',
@@ -145,11 +146,16 @@
 				  <option value="pgsql" '.$pgsql_sel.'>PostgreSQL</option>
 			   </select>';
 			}
-		elseif ($fieldproperties[name]=='serialnumber')
+			elseif ($fieldproperties[name]=='serialnumber')
 			{
 			   $input='<input type="hidden" name="'.$input_name.'" value="'.time().'">'.$value;
 			}
-
+			
+			elseif ($fieldproperties[name]=='jinn_version')
+			{
+			   $input = $value;
+			}
+			
 			elseif ($fieldproperties[name]=='upload_path')
 			{
 			   $input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" $input_max_length" value="'.$value.'">';

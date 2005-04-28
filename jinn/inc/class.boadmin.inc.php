@@ -314,6 +314,11 @@
 	  function insert_egw_jinn_site()
 	  {
 		 $data=$this->http_vars_pairs($_POST,$_FILES);
+
+		 include_once (PHPGW_INCLUDE_ROOT . "/jinn/setup/setup.inc.php");
+		 $info = $setup_info['jinn'];
+		 $data[] = array('name' => 'jinn_version', 'value' => $info['version']);
+
 		 $status=$this->so->insert_phpgw_data('egw_jinn_sites',$data);
 
 		 if ($status>0)	
@@ -365,9 +370,14 @@
 	  */
 	  function update_egw_jinn_site()
 	  {
-		 $table='egw_jinn_sites';
+		$table='egw_jinn_sites';
 
 		 $data=$this->http_vars_pairs($_POST,$_FILES);
+
+		 include_once (PHPGW_INCLUDE_ROOT . "/jinn/setup/setup.inc.php");
+		 $info = $setup_info['jinn'];
+		 $data[] = array('name' => 'jinn_version', 'value' => $info['version']);
+		 
 		 $status=$this->so->update_phpgw_data($table,$data, $this->where_key,$this->where_value);
 
 
