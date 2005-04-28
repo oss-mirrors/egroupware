@@ -191,20 +191,23 @@
 		
 		switch($_POST[columns])
 		{
-			case 'select':
-				$columns_arr = $this->bo->common->filter_array_with_prefix($_POST,'col_');
-				break;
-			default:
-				 $columns = $this->bo->so->site_table_metadata($this->bo->session['site_id'], $this->bo->site_object['table_name']);
-				 if(is_array($columns))
-				 {
-					$columns_arr = array();
-					foreach($columns as $column)
+		case 'select':
+			$columns_arr = $this->bo->common->filter_array_with_prefix($_POST,'col_');
+			break;
+		default:
+			 $columns = $this->bo->so->site_table_metadata($this->bo->session['site_id'], $this->bo->site_object['table_name']);
+			 if(is_array($columns))
+			 {
+				$columns_arr = array();
+				foreach($columns as $column)
+				{
+					if($this->bo->field_is_enabled($this->bo->site_object[object_id], $column[name]))
 					{
 						$columns_arr[] = $column[name];
 					}
-				 }
-				break;
+				}
+			 }
+			break;
 		}
 
 //_debug_array($columns_arr);
