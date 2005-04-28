@@ -22,7 +22,7 @@
          
 		$file = Array(
 			'tree view'        => $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.tree'),
-			'list view'        => $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.list'),
+			'list view'        => $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui._list'),
 			'new bookmark'     => $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.create'),
 			'Search'           => $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.search'),
 			'Import Bookmarks' => $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.import'),
