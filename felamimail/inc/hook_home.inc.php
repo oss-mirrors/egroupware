@@ -76,7 +76,7 @@
 		else
 		{
 			$folderStatus	= $this->bofelamimail->getFolderStatus('INBOX');
-			$folderList	= $this->bofelamimail->getFolderList(true);
+			$folderList	= $this->bofelamimail->getFolderObjects(true);
 			#_debug_array($folderList);
 			#_debug_array($folderStatus);
 			$extra_data = '<table border="0" cellspacing="0" cellpading="0" width="100%">
@@ -115,7 +115,7 @@
 				);
 				$folderLink = $GLOBALS['phpgw']->link('/index.php',$linkData);
 				
-				$extra_data .= "<tr><td><a href='$folderLink'>$value</a></td><td>$messages</td><td>$newMessages</td></tr>";
+				$extra_data .= "<tr><td><a href='$folderLink'>$key</a></td><td>$messages</td><td>$newMessages</td></tr>";
 			}
 			$extra_data .= '</table>';
 		}    
