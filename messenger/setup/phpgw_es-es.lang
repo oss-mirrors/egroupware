@@ -1,6 +1,7 @@
 compose	messenger	es-es	Redactar
 compose global message	common	es-es	Redactar mensaje global
 compose message	messenger	es-es	Redactar mensaje
+compose to group-users	messenger	es-es	Redactar para grupo-usuarios
 delete	messenger	es-es	Borrar
 delete a message.	messenger	es-es	Eliminar mensaje.
 delete selected	messenger	es-es	Eliminar seleccionados
