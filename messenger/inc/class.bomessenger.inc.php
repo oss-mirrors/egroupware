@@ -82,15 +82,36 @@
 				return False;
 			}
 			
-			if ($message['recipient']) {
-				foreach($message['recipient'] as $recipient_id)
+			/* from here, $message['recipient'] is an array of group ids and user
+			   account ids. we convert it to an array of user ids */
+			foreach ($message['recipient'] as $recipient_id)
+			{
+				if ($GLOBALS['phpgw']->accounts->get_type($recipient_id) == 'a') 
+				{
+					$recipients[$recipient_id] = 
+					$GLOBALS['egw']->accounts->id2name[$recipient_id];
+				}
+				else
+				{
+					foreach ($GLOBALS['egw']->accounts->member($recipient_id) as $account)
+					{
+						$recipients[$account['account_id']]=$account['account_name'];
+					}
+				}
+			}
+			$message['recipient']=array_keys($recipients);
+			/* here $message['recipient'] only contain user ids */
+			
+			if ($recipients)
+			{
+				foreach($recipients as $recipient_id -> $recipient_name)
 				{
 					$recipient = CreateObject('phpgwapi.accounts', $recipient_id);
 					$recipient->read_repository();
 					if ($recipient->is_expired())
 					{
-						$errors[] = lang("Sorry, %1's account is not currently active", 
-							$GLOBALS['phpgw']->accounts->id2name($recipient_id));
+						$errors[] = 
+						lang("Sorry, %1's account is not currently active", $recipient_name);
 					}					
 				} 
 			}

@@ -22,7 +22,6 @@
 			'inbox'          => True,
 			'compose'        => True,
 			'compose_global' => True,
-			'compose_group'  => True,
 			'read_message'   => True,
 			'reply'          => True,
 			'forward'        => True,
@@ -218,7 +217,7 @@
 				"message[recipient][]",    // name of the element used in form to repersent selected users
 				"uimessage_userselection", // id of this element, makes little sense
 				array(),     //no pre-selected user/group
-				'messenger', //only show users who have 'run' permission in messenger app
+				'messenger+', //only show users who have 'run' permission in messenger app
 				5,                                           // 5 lines high
 				$GLOBALS['phpgw_info']['user']['account_id'] // do not send message to myself
 				); 
@@ -240,69 +239,6 @@
 			$GLOBALS['phpgw']->template->pfp('out','form');
 		}
 	  
-	        function compose_group()
-		{
-       			$message = $_POST['message'];
-			if($_POST['cancel'])
-			{
-			    $GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
-			}
-			
-			if($_POST['send'])
-		        {
-			    $errors = $this->bo->send_group_message($message);
-			    if(@is_array($errors))
-			    {
-				$GLOBALS['phpgw']->template->set_var('errors',$GLOBALS['phpgw']->common->error_list($errors));
-			    }
-			    else
-			    {
-				$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
-			    }
-			}
-			// recipient dropdown field stuff added by tobi (gabele@uni-sql.de)
-                        $sndid = array();
-
-                        if(count($message['to']) != 0)
-			  {
-			    foreach($message['to'] as $to)
-			      {
-                                $sndid[] = $GLOBALS['phpgw']->accounts->name2id($to);
-			      }
-			  }
-
-
-                        $groups = $GLOBALS['phpgw']->accounts->get_list('groups','','ASC','account_lid');
-		    
-                        $str = '';
-
-                        foreach($groups as $group)
-			{
-			   $str .= '<option value="' .$group['account_id']. '"'.(in_array($group['account_id'],$sndid) ?' selected':'').'>'.$group['account_lid'].'</option>'."\n";
-			}
-
-                        $tobox = "\n".'<select name="message[to][]" multiple="1" size="7">'."\n".$str.'</select>';
-			$this->display_headers();
-                        $this->set_compose_read_blocks();
-
-                        $this->set_common_langs();
-			
-			$GLOBALS['phpgw']->template->set_var('header_message',lang('Compose message'));
-
-                        $GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose_group'));
-                        $GLOBALS['phpgw']->template->set_var('value_to',$tobox);
-                        $GLOBALS['phpgw']->template->set_var('value_subject','<input name="message[subject]" value="'. $message['subject'] . '" size="30">');
-                        $GLOBALS['phpgw']->template->set_var('value_content','<textarea name="message[content]" rows="20" 
-wrap="hard" cols="76">' . $message['content'] . '</textarea>');
-
-                        $GLOBALS['phpgw']->template->set_var('button_send','<input type="submit" name="send" value="'.lang('Send') . '">');
-                        $GLOBALS['phpgw']->template->set_var('button_cancel','<input type="submit" name="cancel" value="'.lang('Cancel') . '">');
-
-                        $GLOBALS['phpgw']->template->fp('to','form_to');
-                        $GLOBALS['phpgw']->template->fp('buttons','form_buttons');
-                        $GLOBALS['phpgw']->template->pfp('out','form');
-		}  
-
 
 		function read_message()
 		{

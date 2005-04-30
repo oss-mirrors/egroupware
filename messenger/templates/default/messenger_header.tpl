@@ -8,11 +8,10 @@
 
    <table border="0" cellspacing="5" cellpadding="1">
     <tr>
+     {nextmatchs_left}
      <td>{lang_inbox}</td>
      <td>{lang_compose}</td>
-     <td>{lang_compose_group}</td>		
-     <!--td align="center" width="20%">&nbsp;</td-->
-     <td align="right">{nextmatchs_left}&nbsp;{nextmatchs_right}</td>
+     {nextmatchs_right}
     </tr>
    </table>
 
