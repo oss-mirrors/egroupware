@@ -1069,7 +1069,7 @@
 
 					include_once (PHPGW_INCLUDE_ROOT . "/jinn/setup/setup.inc.php");
 					$info = $setup_info['jinn'];
-					if(($import_site['jinn_version'] > $info['version']) && $check_versions)
+					if(($import_site['jinn_version'] != $info['version']) && $check_versions)
 					{
 						//admin must click OK to continue
 						 $this->bo->session['message'][info].='<br/>'.lang('This siteconfiguration, saved using JiNN version %1, may be incompatible with this JiNN version %2', $import_site['jinn_version'], $info['version']);
@@ -1086,10 +1086,13 @@
 				
 				  $fielderrors = '';
 				  $validfields = $this->bo->so->phpgw_table_fields('egw_jinn_sites');
+				  unset($validfields[site_id]);
+				  unset($imported);
 				  while(list($key, $val) = each($import_site)) 
 				  {
 					 if(array_key_exists($key, $validfields))
 					 {
+						 $imported[$key] = true;
 						 $data[] = array
 						 (
 							'name' => $key,
@@ -1098,10 +1101,19 @@
 					 }
 					 else
 					 {
-						 $fielderrors .= '<br/>'.lang('incompatibility result: field <b>%1</b> with value <b>\'%2\'</b> was not imported', $key, $val).'<br/>';
+						 $fielderrors .= '<br/>'.lang('incompatibility result: Site <b>\'%3\'</b>, property <b>\'%1\'</b> with value <b>\'%2\'</b> could not be imported because it does not exist in this JiNN version', $key, $val, $import_site['site_name']).'<br/>';
 					 }
 				  }
 
+				   foreach($validfields as $fieldname => $yes)
+				   {
+						if(!array_key_exists($fieldname, $imported))
+						{
+							$fielderrors .= '<br/>'.lang('incompatibility result: Site <b>\'%2\'</b>, property <b>\'%1\'</b> was not present in the file', $fieldname, $import_site['site_name']).'<br/>';
+						}
+				   }
+//_debug_array($fielderrors);								   
+//_debug_array($imported);								   
 				  $new_site_name=$data[0][value];	
 				  $thissitename=$this->bo->so->get_sites_by_name($new_site_name);
 
@@ -1109,13 +1121,9 @@
 				  {
 					 $new_site_id=$thissitename[0];
 					 $this->bo->so->upAndValidate_phpgw_data('egw_jinn_sites',$data,'site_id',$new_site_id);
-
 					 // remove all existing objects
 					 $this->bo->so->delete_phpgw_data('egw_jinn_objects',parent_site_id,$new_site_id);
-
-
 					 $this->bo->session['message'][info].= '<br/>'.lang('Import was succesfull').'<br/>'.lang('Replaced existing site named <strong>%1</strong>.',$new_site_name);
-
 					 $proceed=true;
 				  }
 				  /* insert as new site */
@@ -1126,7 +1134,6 @@
 					 if(count($thissitename)>=1)
 					 {
 						$new_name=$new_site_name.' ('.lang('another').')';
-
 						$datanew[]=array(
 						   'name'=>'site_name',
 						   'value'=>$new_name
@@ -1139,42 +1146,67 @@
 					 }
 					 $proceed=true;
 					 $this->bo->session['message'][info].= lang('Import was succesfull'). '<br/>' .lang('The name of the new site is <strong>%1</strong>.',$new_name);
-
 				  }
-				  if($fielderrors) $this->bo->session['message'][info] .= '<br/>'.$fielderrors;
 
 				  /* site import has succeeded, go on with objects */
 				  if($proceed)
 				  {
 					 if (is_array($import_site_objects))
 					 {
+						$validfields = $this->bo->so->phpgw_table_fields('egw_jinn_objects');
+						unset($validfields[object_id]);
+//_debug_array($validfields);				
+//_debug_array($import_site_objects);					 
 						foreach($import_site_objects as $object)
 						{
 						   unset($data_objects);
+						   unset($imported);
 						   while(list($key2, $val2) = each($object)) 
 						   {
-							  if ($key2 == 'parent_site_id') $val2=$new_site_id;
-
-							  $data_objects[] = array
-							  (
-								 'name' => $key2,
-								 'value' => addslashes($val2) 
-							  );
-
+								 if(array_key_exists($key2, $validfields))
+								 {
+									$imported[$key2] = true;
+									if ($key2 == 'parent_site_id') $val2=$new_site_id;
+		
+									$data_objects[] = array
+									(
+										'name' => $key2,
+										'value' => addslashes($val2) 
+									);
+								 }
+								 else
+								 {
+									 $fielderrors .= '<br/>'.lang('incompatibility result: Object <b>\'%3\'</b>, property <b>\'%1\'</b> with value <b>\'%2\'</b> could not be imported because it does not exist in this JiNN version', $key2, $val2, $object['name']).'<br/>';
+								 }
 						   }
+						   foreach($validfields as $fieldname => $yes)
+						   {
+								if(!array_key_exists($fieldname, $imported))
+								{
+									$fielderrors .= '<br/>'.lang('incompatibility result: Object <b>\'%2\'</b>, property <b>\'%1\'</b> was not present in the file', $fieldname, $object['name']).'<br/>';
+								}
+						   }
+//_debug_array($fielderrors);								   
+//_debug_array($imported);								   
 						   if ($new_id = $this->bo->so->validateAndInsert_phpgw_data('egw_jinn_objects',$data_objects))
 						   {
 							  $object_id[] = $new_id;
 							  $num_objects=count($object_id);
-   							  $all_object_arr[$object[serialnumber]] = $new_id;
-
+   							  $all_object_arr[$object[serialnumber]]['id'] = $new_id;
+   							  $all_object_arr[$object[serialnumber]]['name'] = $object['name'];
 						   } 
 						}
 					 }
 
-					 /* objects are imported , go on with obj-fields */
+					 /* objects are imported, go on with obj-fields */
 					 if(is_array($import_obj_fields))
 					 {
+						$validfields = $this->bo->so->phpgw_table_fields('egw_jinn_obj_fields');
+						unset($validfields[field_id]);
+						//unset($validfields[field_parent_object]);
+//_debug_array($validfields);				
+//_debug_array($import_obj_fields);			
+//_debug_array($all_object_arr);					 
 						foreach($import_obj_fields as $obj_field)
 						{
 							/* old and faulty: gets first object with serial number from database. This fails if there are more objects with the same serial number (i.e. after a site copy)
@@ -1187,7 +1219,7 @@
 						   */
 						   
 						   //new: get object from previously inserted objects
-						   $obj_id = $all_object_arr[$obj_field[obj_serial]];
+						   $obj_id = $all_object_arr[$obj_field[obj_serial]]['id'];
 						   if(!$obj_id) 
 						   {
 							  continue;
@@ -1195,26 +1227,45 @@
 						   $obj_field[field_parent_object] = $obj_id;
 
 						   unset($data_fields);
+						   unset($imported);
 						   while(list($key2, $val2) = each($obj_field)) 
 						   {
-							  if ($key2 == 'obj_serial') 
-							  {
-								 continue;  
-							  }
-
-							  $data_fields[] = array
-							  (
-								 'name' => $key2,
-								 'value' => addslashes($val2) 
-							  );
-
+								if ($key2 == 'obj_serial') 
+								{
+									continue;  
+								}
+								
+								if(array_key_exists($key2, $validfields))
+								{
+									$imported[$key2] = true;
+									$data_fields[] = array
+									(
+										'name' => $key2,
+										'value' => addslashes($val2) 
+									);
+								}
+								else
+								{
+									$fielderrors .= '<br/>'.lang('incompatibility result: Object <b>\'%3\'</b>, field <b>\'%1\'</b>, property <b>\'%2\'</b> could not be imported because it does not exist in this JiNN version', $obj_field['field_name'], $key2, $all_object_arr[$obj_field[obj_serial]]['name']).'<br/>';
+								}
 						   }
+						   foreach($validfields as $fieldname => $yes)
+						   {
+								if(!array_key_exists($fieldname, $imported))
+								{
+									$fielderrors .= '<br/>'.lang('incompatibility result: Object <b>\'%2\'</b>, field <b>\'%1\'</b>, property <b>\'%3\'</b> was not present in the file', $obj_field['field_name'], $all_object_arr[$obj_field[obj_serial]]['name'], $fieldname).'<br/>';
+								}
+						   }
+//_debug_array($fielderrors);								   
+//_debug_array($imported);
+//die;							   
 						   if ($field_id[]=$this->bo->so->validateAndInsert_phpgw_data('egw_jinn_obj_fields',$data_fields))
 						   {
 							  $num_fields=count($field_id);
 						   } 
 						}
 					 }
+					 if($fielderrors) $this->bo->session['message'][info] .= '<br/>'.$fielderrors;
 					 $this->bo->session['message'][info].='<br/>'.lang('%1 Site Objects have been imported.',$num_objects);
 					 $this->bo->session['message'][info].='<br/>'.lang('%1 Site Obj-fields have been imported.',$num_fields);
 					 $this->bo->sessionmanager->save();
@@ -1222,6 +1273,7 @@
 				  }
 				  else
 				  {
+					 if($fielderrors) $this->bo->session['message'][info] .= '<br/>'.$fielderrors;
 					 $this->bo->session['message'][error].= lang('Import failed');
 					 $this->bo->sessionmanager->save();
 					 $this->bo->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');

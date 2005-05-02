@@ -7,6 +7,11 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.215b
+===========================
+Mon May 28 14:30:00 CET 2005
+- Site import now checks object/field tables for incompatibilities. It now also checks for missing properties.
+
 Version 0.8.215a
 ===========================
 Mon May 28 11:00:00 CET 2005
