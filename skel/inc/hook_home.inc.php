@@ -11,11 +11,10 @@
 
 	/* $Id$ */
 
-	$hp_display = (int)$GLOBALS['phpgw_info']['user']['preferences']['skel']['homepage_display'];
+	$hp_display = (int)$GLOBALS['egw_info']['user']['preferences']['skel']['homepage_display'];
 	if($hp_display > 0)
 	{
 		$obj = CreateObject('skel.ui');
 		$obj->show_data_on_homepage();
 	}
-
 ?>

@@ -15,17 +15,16 @@
 	{
 		var $db;
 
-		var $debug = false;
+		var $debug = False;
 
 		function so($args)
 		{
-			$this->db = $GLOBALS['phpgw']->db;
+			$this->db = clone($GLOBALS['egw']->db);
 		}
 
 		function somestoragefunc()
 		{
 			// do some data manipulation here
 		}
-
 	}
 ?>

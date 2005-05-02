@@ -9,10 +9,12 @@
     *  option) any later version.                                              *
     \**************************************************************************/
 
+	/* $Id$ */
+
 {
 	// Only Modify the $file and $title variables.....
 	$file = array(
-		'Preferences'     => $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'skel.ui.preferences')),
+		'Preferences' => $GLOBALS['egw']->link('/index.php',array('menuaction'=>'skel.ui.preferences')),
 	);
 
 	// Do not modify below this line

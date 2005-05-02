@@ -18,43 +18,42 @@
 		var $debug = false;
 
 		var $public_functions = array(
-			'somebusinessfunc'	=> true,
+			'somebusinessfunc' => true,
 		);
 
 		function bo($session = false)
 		{
-			$this->so = createobject('skel.so');
+			$this->so = CreateObject('skel.so');
 
-            if($session)
-            {
-                $this->read_sessiondata();
-                $this->use_session = true;
-            }
+			if($session)
+			{
+				$this->read_sessiondata();
+				$this->use_session = true;
+			}
 		}
 
-        function save_sessiondata($data = '')
-        {
-            if ($this->use_session)
-            {
+		function save_sessiondata($data = '')
+		{
+			if($this->use_session)
+			{
 				if(empty($data) || !is_array($data))
 				{
 					$data = array();
 				}
-                if($this->debug) { echo '<br>Save:'; _debug_array($data); }
-                $GLOBALS['phpgw']->session->appsession('session_data','skel_info',$data);
-            }
-        }
+				if($this->debug) { echo '<br>Save:'; _debug_array($data); }
+				$GLOBALS['egw']->session->appsession('session_data','skel_info',$data);
+			}
+		}
 
-        function read_sessiondata()
-        {
-            $data = $GLOBALS['phpgw']->session->appsession('session_data','skel_info');
-            if($this->debug) { echo '<br>Read:'; _debug_array($data); }
-        }
+		function read_sessiondata()
+		{
+			$data = $GLOBALS['egw']->session->appsession('session_data','skel_info');
+			if($this->debug) { echo '<br>Read:'; _debug_array($data); }
+		}
 
 		function somebusinessfunc()
 		{
 			// get some data through $so, then apply some business logic to it
 		}
-
 	}
 ?>

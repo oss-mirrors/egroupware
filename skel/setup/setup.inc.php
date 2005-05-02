@@ -17,7 +17,7 @@
 	$setup_info['skel']['version']   = '0.0.1.001';
 	$setup_info['skel']['app_order'] = 62;
 	$setup_info['skel']['enable']    = 1;
-	
+
 	/* some info's for about.php and apps.egroupware.org */
 	$setup_info['skel']['author']    = 'Your Name';
 	$setup_info['skel']['license']   = 'GPL';
@@ -27,7 +27,7 @@
 		'Some more text shown below the description in italics.';
 	$setup_info['skel']['maintainer'] = 'eGroupWare developers';
 	$setup_info['skel']['maintainer_email'] = 'shrykedude at users.sourceforge.net';
-	
+
 	/* The tables this app creates */
 	$setup_info['skel']['tables']    = array('phpgw_skel');
 
@@ -40,11 +40,11 @@
 
 	/* Dependacies for this app to work */
 	$setup_info['skel']['depends'][] = array(
-			 'appname' => 'phpgwapi',
-			 'versions' => array('0.9.14','1.0.0','1.0.1')
-		);
+		'appname' => 'phpgwapi',
+		'versions' => array('0.9.14','1.0.0','1.0.1')
+	);
 	$setup_info['skel']['depends'][] = array(
-			 'appname' => 'email',
-			 'versions' => array('0.9.13', '0.9.14','1.0.0')
-		);
+		'appname' => 'email',
+		'versions' => array('0.9.13', '0.9.14','1.0.0')
+	);
 ?>

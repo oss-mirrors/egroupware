@@ -29,12 +29,10 @@
 		display_sidebox($appname,$menu_title,$file);
 	*/
 
-	if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
+	if($GLOBALS['egw_info']['user']['apps']['admin'])
 	{
-        $menu_title = 'Administration';
-        $file = Array(
-
-        );
+		$menu_title = 'Administration';
+		$file = array();
 
 		display_sidebox($appname,$menu_title,$file);
 	}

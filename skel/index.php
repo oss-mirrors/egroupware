@@ -11,9 +11,8 @@
 
 	/* $Id$ */
 
-	$GLOBALS['phpgw_info'] = array();
-
-	$GLOBALS['phpgw_info']['flags'] = array(
+	$GLOBALS['egw_info'] = array();
+	$GLOBALS['egw_info']['flags'] = array(
 		'currentapp'              => 'skel',
 		'noheader'                => True,
 		'nonavbar'                => True,
@@ -23,5 +22,5 @@
 
 	ExecMethod('skel.ui.index');
 
-	$GLOBALS['phpgw']->common->phpgw_footer();
+	$GLOBALS['egw']->common->phpgw_footer();
 ?>
