@@ -823,7 +823,7 @@
 
 
 		 $fieldproperties = $this->phpgw_table_metadata($table);
-
+		 
 		 $SQL="SELECT * FROM  $table $WHERE $order_by";
 		 if (!$limit) $limit=1000000;
 
@@ -1685,12 +1685,21 @@
 	  }
 
 
+	  function phpgw_table_fields($table)
+	  {
+		 $fields = $this->phpgw_table_metadata($table);
+		 $out = array();
+		 foreach($fields as $field)
+		 {
+			$out[$field['name']] = true;
+		 }
+		 return $out;
+	  }
 
 	  // fixme remove this when the function is replaces everywhere in the code
 	  // now use it as a wrapper
 	  function insert_phpgw_data($table,$data)
 	  {
-
 		 if($table=='egw_jinn_sites') 
 		 {
 			return $this->insert_new_site($data);
@@ -1728,9 +1737,9 @@
 	  }
 
 	  
+
 	  function upAndValidate_phpgw_data($table,$data,$where_key,$where_value)
 	  {
-
 		 foreach($data as $field)
 		 {
 			if ($SQL_SUB) $SQL_SUB .= ', ';

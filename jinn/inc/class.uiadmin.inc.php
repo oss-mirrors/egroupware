@@ -30,6 +30,7 @@
 	  var $public_functions = Array(
 		 'index' => True,
 		 'import_egw_jinn_site' => True,
+		 'import_incompatible_egw_jinn_site' => True,
 		 'import_object' => True,
 		 'add_edit_site' => True,
 		 'add_edit_object' => True,
@@ -102,6 +103,10 @@
 
 	  function add_edit_object()
 	  {
+//_debug_array($this->bo->where_key);	  
+//_debug_array($this->bo->where_value);	  
+//die;
+
 		 $where_key=stripslashes($this->bo->where_key);
 		 $where_value=stripslashes($this->bo->where_value);
 
@@ -995,29 +1000,106 @@
 
 		 }
 
+		 function import_incompatible_egw_jinn_site()
+		 {
+			$this->template->set_file(array(
+			  'import_form' => 'import_incompatible.tpl',
+			));
+			
+			$this->ui->header(lang('Import JiNN-Site'.$table));
+			$this->ui->msg_box($this->bo->session['message']);
+			unset($this->bo->session['message']);
+			
+			$this->template->set_var('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.import_egw_jinn_site'));
+			$this->template->set_var('lang_Select_JiNN_site_file',lang('Loaded JiNN site file'));
+			$this->template->set_var('loaded_file',$this->bo->session['tmp']['file']);
+			if($this->bo->session['tmp']['replace'])
+			{
+				$this->template->set_var('checked', 'checked');
+			}
+
+			$this->template->set_var('lang_Replace_existing_Site_with_the_same_name',lang('Replace existing site with the same name?'));
+			$this->template->set_var('lang_submit_and_import',lang('import anyway'));
+			$this->template->set_var('lang_cancel',lang('cancel'));
+			$this->template->set_var('cancel_redirect', $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.browse_egw_jinn_sites'));
+			
+			
+			$this->template->pparse('out','import_form');
+			
+			$this->bo->sessionmanager->save();
+		 }
+
+		 
 		 /**
 		 @function load_site_from_file
 		 @abstract create a new site or replace an existing from a JiNN file
 		 */
 		 function load_site_from_file()
 		 {
-			if (is_array($GLOBALS[HTTP_POST_FILES][importfile]))
+			if($_POST['incompatibility_ok'] == '') //check if the admin has specifically ok-ed this import. If not, unload the loaded file
+			{
+				unset($this->bo->session['tmp']);
+				$this->bo->sessionmanager->save();
+			}
+		 
+			if (is_array($GLOBALS[HTTP_POST_FILES][importfile]) || is_array($this->bo->session['tmp']))
 			{
 			   $num_objects=0;
 			   $import=$GLOBALS[HTTP_POST_FILES][importfile];
-
+			   
 			   @include($import[tmp_name]);
+			   
+			   $check_versions = true;
+			   if (!($import_site && $checkbit))
+			   {	
+					if($this->bo->session['tmp']['import_site'] && $this->bo->session['tmp']['checkbit'])
+					{
+						$import_site 			= $this->bo->session['tmp']['import_site'];
+						$import_site_objects 	= $this->bo->session['tmp']['import_site_objects'];
+						$import_obj_fields 		= $this->bo->session['tmp']['import_obj_fields'];
+						$checkbit    			= $this->bo->session['tmp']['checkbit'];
+						$check_versions = false;
+						unset($this->bo->session['tmp']);
+						$this->bo->sessionmanager->save();
+					}
+			   }
+			   
 			   if ($import_site && $checkbit)
 			   {
 
+					include_once (PHPGW_INCLUDE_ROOT . "/jinn/setup/setup.inc.php");
+					$info = $setup_info['jinn'];
+					if(($import_site['jinn_version'] > $info['version']) && $check_versions)
+					{
+						//admin must click OK to continue
+						 $this->bo->session['message'][info].='<br/>'.lang('This siteconfiguration, saved using JiNN version %1, may be incompatible with this JiNN version %2', $import_site['jinn_version'], $info['version']);
+						 $this->bo->session['tmp']['file'] 					= $import[name]; 
+						 $this->bo->session['tmp']['replace']				= $GLOBALS[HTTP_POST_VARS][replace_existing];
+						 $this->bo->session['tmp']['import_site'] 			= $import_site; 
+						 $this->bo->session['tmp']['import_site_objects'] 	= $import_site_objects; 
+						 $this->bo->session['tmp']['import_obj_fields'] 	= $import_obj_fields; 
+						 $this->bo->session['tmp']['checkbit'] 				= $checkbit; 
+						 $this->bo->sessionmanager->save();
+						 $this->bo->common->exit_and_open_screen('jinn.uiadmin.import_incompatible_egw_jinn_site');
+					}
+
+				
+				  $fielderrors = '';
+				  $validfields = $this->bo->so->phpgw_table_fields('egw_jinn_sites');
 				  while(list($key, $val) = each($import_site)) 
 				  {
-					 $data[] = array
-					 (
-						'name' => $key,
-						'value' => addslashes($val) 
-					 );
-
+					 if(array_key_exists($key, $validfields))
+					 {
+						 $data[] = array
+						 (
+							'name' => $key,
+							'value' => addslashes($val) 
+						 );
+					 }
+					 else
+					 {
+						 $fielderrors .= '<br/>'.lang('incompatibility result: field <b>%1</b> with value <b>\'%2\'</b> was not imported', $key, $val).'<br/>';
+					 }
 				  }
 
 				  $new_site_name=$data[0][value];	
@@ -1032,7 +1114,7 @@
 					 $this->bo->so->delete_phpgw_data('egw_jinn_objects',parent_site_id,$new_site_id);
 
 
-					 $this->bo->session['message'][info].= lang('Import was succesfull').'<br/>'.lang('Replaced existing site named <strong>%1</strong>.',$new_site_name);
+					 $this->bo->session['message'][info].= '<br/>'.lang('Import was succesfull').'<br/>'.lang('Replaced existing site named <strong>%1</strong>.',$new_site_name);
 
 					 $proceed=true;
 				  }
@@ -1059,6 +1141,7 @@
 					 $this->bo->session['message'][info].= lang('Import was succesfull'). '<br/>' .lang('The name of the new site is <strong>%1</strong>.',$new_name);
 
 				  }
+				  if($fielderrors) $this->bo->session['message'][info] .= '<br/>'.$fielderrors;
 
 				  /* site import has succeeded, go on with objects */
 				  if($proceed)
@@ -1070,7 +1153,7 @@
 						   unset($data_objects);
 						   while(list($key2, $val2) = each($object)) 
 						   {
-							  if ($key2=='parent_site_id') $val2=$new_site_id;
+							  if ($key2 == 'parent_site_id') $val2=$new_site_id;
 
 							  $data_objects[] = array
 							  (
@@ -1079,12 +1162,14 @@
 							  );
 
 						   }
-						   if ($object_id[]=$this->bo->so->validateAndInsert_phpgw_data('egw_jinn_objects',$data_objects))
+						   if ($new_id = $this->bo->so->validateAndInsert_phpgw_data('egw_jinn_objects',$data_objects))
 						   {
+							  $object_id[] = $new_id;
 							  $num_objects=count($object_id);
+   							  $all_object_arr[$object[serialnumber]] = $new_id;
+
 						   } 
 						}
-
 					 }
 
 					 /* objects are imported , go on with obj-fields */
@@ -1092,19 +1177,27 @@
 					 {
 						foreach($import_obj_fields as $obj_field)
 						{
+							/* old and faulty: gets first object with serial number from database. This fails if there are more objects with the same serial number (i.e. after a site copy)
 						   $tmp_object_arr=$this->bo->so->get_object_values('',$obj_field[obj_serial]);
-						   
 						   if(!$tmp_object_arr[object_id]) 
 						   {
 							  continue;
 						   }
-
 						   $obj_field[field_parent_object]=$tmp_object_arr[object_id];
+						   */
+						   
+						   //new: get object from previously inserted objects
+						   $obj_id = $all_object_arr[$obj_field[obj_serial]];
+						   if(!$obj_id) 
+						   {
+							  continue;
+						   }
+						   $obj_field[field_parent_object] = $obj_id;
 
 						   unset($data_fields);
 						   while(list($key2, $val2) = each($obj_field)) 
 						   {
-							  if ($key2=='obj_serial') 
+							  if ($key2 == 'obj_serial') 
 							  {
 								 continue;  
 							  }
@@ -1121,12 +1214,7 @@
 							  $num_fields=count($field_id);
 						   } 
 						}
-
-
-
 					 }
-
-
 					 $this->bo->session['message'][info].='<br/>'.lang('%1 Site Objects have been imported.',$num_objects);
 					 $this->bo->session['message'][info].='<br/>'.lang('%1 Site Obj-fields have been imported.',$num_fields);
 					 $this->bo->sessionmanager->save();
@@ -1139,7 +1227,6 @@
 					 $this->bo->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
 				  }
 			   }
-
 			}
 			else
 			{
@@ -1320,7 +1407,6 @@
 			$GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
 			$site_data=$this->bo->so->get_phpgw_record_values('egw_jinn_sites',$this->bo->where_key,$this->bo->where_value,'','','name');
-
 			$filename=ereg_replace(' ','_',$site_data[0][site_name]).'.JiNN';
 			$date=date("d-m-Y",time());
 
@@ -1365,10 +1451,9 @@
 
 			while (list ($key, $val) = each($site_data[0])) 
 			{
-			   if($key!='site_id') $out.= "	'$key '=> '$val',\n";
+			   if($key!='site_id') $out.= "	'$key' => '$val',\n";
 			}
 			$out.=");\n\n";
-
 
 			$site_object_data=$this->bo->so->get_phpgw_record_values('egw_jinn_objects','parent_site_id', $this->bo->where_value ,'','','name');
 

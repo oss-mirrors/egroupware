@@ -7,12 +7,15 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.215a
+===========================
+Mon May 28 11:00:00 CET 2005
+- added incompatibility warnings to site import. fixed a bug where field configurations could get lost after site import.
+
 Version 0.8.215
 ===========================
 Thu Apr 28 17:00:00 CET 2005
 - added JiNN version number to site configuration
-
-
 
 
 
@@ -424,6 +427,7 @@ Version 0.8.203
 - security fix to avoid abritairy download of files
 
 
+
 Wed Oct 13 13:54:07 CEST 2004
 Version 0.8.202
 =============================
@@ -431,10 +435,14 @@ Version 0.8.202
 - Attpath now checks if file exists and else changes filename. Removed the standard timestamp-prefix
 - FIXED timestamp plugin is broken
 
+
+
 Wed Oct  6 15:38:33 CEST 2004
 Version 0.8.201
 =============================
 - add seperate import and export functionality for site objects
+
+
 
 Tue Oct  5 22:21:04 CEST 2004
 Version 0.8.200
@@ -444,6 +452,8 @@ Version 0.8.200
 - updated translations
 - again fix date plugin
 - set version to 0.8.200
+
+
 
 Mon Sep 27 17:54:40 CEST 2004
 Version 0.8.107g
@@ -512,9 +522,13 @@ Mon Sep 20 14:33:10 CEST 2004
 - fixed some return codes
 - add upload-url columns in site and object table (lets keep them this time :)
 
+
+
 Version 0.8.106
 =============================
 not commited to CVS no Changes
+
+
 
 version 0.8.105c
 Thu Sep 16 22:11:18 CEST 2004
@@ -546,6 +560,8 @@ Thu Sep  9 11:53:57 CEST 2004
 - not showing bogus sites which doesn't exist anymore for users
 - finally fixed the import and export including field configurations
 
+
+
 version 0.8.103
 Wed Sep  8 16:15:42 CEST 2004
 =============================
@@ -562,6 +578,8 @@ Wed Sep  8 16:15:42 CEST 2004
 - replaced ugly old code in uiu_edit_record
 - finally implemented alternative fieldname (yes!)
 
+
+
 version 0.8.102
 =============================
 - Importfunction fixed
@@ -575,6 +593,8 @@ version 0.8.102
 - default plugins are now pre-selected when editing an object
 - feature: default column number in listview is changable
 - feature: implemented db field type class for better handling different databases
+
+
 
 version 0.8.100
 =============================
@@ -608,8 +628,10 @@ version 0.8.100
    - fixed bug in some bv-plugins
    - add new translations for English and Dutch
 
-   version 0.8.000
-   =============================
+   
+   
+version 0.8.000
+=============================
 - Add feature mulitple selection edit operations (This one is great!!!)
    - Add feature multiple selection delete operations
    - Add feature Copy record for records with one identifier field
