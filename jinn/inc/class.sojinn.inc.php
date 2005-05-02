@@ -1523,20 +1523,90 @@
 		 return $status;
 	  }
 
+	  
 	  /*!
 	  @function delete_phpgw_data
-	  @fixme create dedicatet function and delete garbage! DELETE site &> objects &> obj_fields
+	  @fixme create dedicated function
+
+
+		run these sql statements (in this specific order!) to clean up orphans in the jinn tables that may have been left by old versions of delete_phpgw_data:
+		
+		DELETE
+		FROM	egw_jinn_objects
+		WHERE	parent_site_id NOT IN
+				(
+					SELECT	site_id FROM egw_jinn_sites
+				)
+		
+		DELETE
+		FROM	egw_jinn_obj_fields
+		WHERE	field_parent_object NOT IN
+				(
+					SELECT object_id FROM egw_jinn_objects
+				)
 	  */
 	  function delete_phpgw_data($table,$where_key,$where_value)
 	  {
-		 $SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."=".$this->strip_magic_quotes_gpc($where_value);
-
-		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
-		 {
-			$status=1;
-		 }
-
-		 return $status;
+		if($table == 'egw_jinn_sites')
+		{
+			$SQL = 'SELECT * FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."=".$this->strip_magic_quotes_gpc($where_value);
+			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
+			{
+				$cascade = array();
+				while ($this->phpgw_db->next_record())
+				{
+					$cascade[] = $this->phpgw_db->Record['site_id'];
+				}
+				foreach($cascade as $child)
+				{
+					if($this->delete_phpgw_data('egw_jinn_objects', 'parent_site_id' , $child))
+					{
+						$status = 1;
+					}
+					else
+					{
+						$status = 0;
+					}
+				}
+			}
+		}
+		elseif($table == 'egw_jinn_objects')
+		{
+			$SQL = 'SELECT * FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."=".$this->strip_magic_quotes_gpc($where_value);
+			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
+			{
+				$cascade = array();
+				while ($this->phpgw_db->next_record())
+				{
+					$cascade[] = $this->phpgw_db->Record['object_id'];
+				}
+				foreach($cascade as $child)
+				{
+					if($this->delete_phpgw_data('egw_jinn_obj_fields', 'field_parent_object' , $child))
+					{
+						$status = 1;
+					}
+					else
+					{
+						$status = 0;
+					}
+				}
+			}
+		}
+		else
+		{
+			$status = 1;
+		}
+	  
+		if($status == 1)
+		{
+			 $SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."=".$this->strip_magic_quotes_gpc($where_value);
+			 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
+			 {
+				$status = 1;
+			 }
+		}
+		return $status;
 	  }
 
 

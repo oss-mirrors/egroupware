@@ -7,6 +7,11 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.215c
+===========================
+Mon May 28 17:00:00 CET 2005
+- fixed bug where deletion of sites caused Orphan records in the database.
+
 Version 0.8.215b
 ===========================
 Mon May 28 14:30:00 CET 2005

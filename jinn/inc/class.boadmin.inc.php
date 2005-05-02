@@ -536,7 +536,6 @@
 	  function del_egw_jinn_site()
 	  {
 		 $status=$this->so->delete_phpgw_data('egw_jinn_sites',$this->where_key,$this->where_value);
-
 		 if ($status==1)	$this->session['message'][info]=lang('site succesfully deleted');
 		 else $this->session['message'][error]=lang('Site NOT succesfully deleted, Unknown error');
 
