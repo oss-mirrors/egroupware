@@ -941,7 +941,7 @@
 					 {
 						foreach($import_obj_fields as $obj_field)
 						{
-						   $obj_field[field_parent_object]=$new_object_id;
+						   $obj_field[field_parent_object] = $new_object_id;
 
 						   unset($data_fields);
 						   while(list($key2, $val2) = each($obj_field)) 
@@ -1192,8 +1192,8 @@
 						   {
 							  $object_id[] = $new_id;
 							  $num_objects=count($object_id);
-   							  $all_object_arr[$object[serialnumber]]['id'] = $new_id;
-   							  $all_object_arr[$object[serialnumber]]['name'] = $object['name'];
+   							  $all_object_arr[$object['unique_id']]['id'] = $new_id;
+   							  $all_object_arr[$object['unique_id']]['name'] = $object['name'];
 						   } 
 						}
 					 }
@@ -1219,7 +1219,7 @@
 						   */
 						   
 						   //new: get object from previously inserted objects
-						   $obj_id = $all_object_arr[$obj_field[obj_serial]]['id'];
+						   $obj_id = $all_object_arr[$obj_field['unique_id']]['id'];
 						   if(!$obj_id) 
 						   {
 							  continue;
@@ -1230,7 +1230,7 @@
 						   unset($imported);
 						   while(list($key2, $val2) = each($obj_field)) 
 						   {
-								if ($key2 == 'obj_serial') 
+								if ($key2 == 'unique_id') 
 								{
 									continue;  
 								}
@@ -1353,7 +1353,7 @@
 			$out.="	** JiNN Version       : ".$version.$spaces3;
 			$out.='	** ---------------------------------------------------------------------- **'."\n";
 			$out.='	**                                                                        **'."\n";
-			$out.='	** JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare   **'."\n";
+			$out.='	** JiNN - Jinn is Not Nuke, a multi-user, multi-site CMS for eGroupWare   **'."\n";
 			$out.='	** Copyright (C)2002, 2004 Pim Snel <pim.jinn@lingewoud.nl>               **'."\n";
 			$out.='	**                                                                        **'."\n";
 			$out.='	** JiNN - http://linuxstart.nl/jinn                                       **'."\n";
@@ -1395,7 +1395,7 @@
 			{
 			   foreach($object_data as $object)
 			   {
-				  $object[serialnumber]=time()+$i++;
+				  //$object[serialnumber]=time()+$i++;
 
 
 				  $out.= '$import_object=array('."\n";
@@ -1413,7 +1413,8 @@
 
 				  /*
 				  get array whith fielddata
-				  store them as array with serialnumber as parent_object_id
+					//depreciated: store them as array with serialnumber as parent_object_id
+				  store them as array with unique_id as parent_object_id
 				  */
 				  $object_field_data=$this->bo->so->get_phpgw_record_values('egw_jinn_obj_fields','field_parent_object', $object['object_id'],'','','name');
 				  if(is_array($object_field_data))
@@ -1429,7 +1430,8 @@
 							  $out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
 						   }
 						}
-						$out .= "	'obj_serial' => '".$object[serialnumber]."',\n"; 
+						//$out .= "	'obj_serial' => '".$object[serialnumber]."',\n"; 
+						$out .= "	'unique_id' => '".$object['unique_id']."',\n"; 
 
 						$out.=");\n\n";
 
@@ -1474,7 +1476,7 @@
 			$out.="	** JiNN Version     : ".$GLOBALS[phpgw_info][apps][jinn][version]."\n";
 			$out.='	** ---------------------------------------------------------------------- **'."\n";
 			$out.='	**                                                                        **'."\n";
-			$out.='	** JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare   **'."\n";
+			$out.='	** JiNN - Jinn is Not Nuke, a multi-user, multi-site CMS for eGroupWare   **'."\n";
 			$out.='	** Copyright (C)2002, 2004 Pim Snel <pim.jinn@lingewoud.nl>               **'."\n";
 			$out.='	**                                                                        **'."\n";
 			$out.='	** JiNN - http://linuxstart.nl/jinn                                       **'."\n";
@@ -1518,7 +1520,7 @@
 				  /* set serial to be backwards compitable */
 				  //				  if(!$object[serialnumber])
 				  //				  {
-					 $object[serialnumber]=time()+$i++;
+					 //$object[serialnumber]=time()+$i++;
 					 //				  }
 
 
@@ -1553,8 +1555,8 @@
 								 $out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
 							  }
 						   }
-						   $out .= "	'obj_serial' => '".$object[serialnumber]."',\n"; 
-
+						   //$out .= "	'obj_serial' => '".$object[serialnumber]."',\n"; 
+						   $out .= "	'unique_id' => '".$object['unique_id']."',\n"; 
 						   $out.=");\n\n";
 
 						}

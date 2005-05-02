@@ -7,19 +7,24 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.215d
+===========================
+Mon May 02 18:00:00 CET 2005
+- refactored export/import of sites/objects. Now uses the object's unique_id field to identify fields with objects on importing.
+
 Version 0.8.215c
 ===========================
-Mon May 28 17:00:00 CET 2005
+Mon May 02 17:00:00 CET 2005
 - fixed bug where deletion of sites caused Orphan records in the database.
 
 Version 0.8.215b
 ===========================
-Mon May 28 14:30:00 CET 2005
+Mon May 02 14:30:00 CET 2005
 - Site import now checks object/field tables for incompatibilities. It now also checks for missing properties.
 
 Version 0.8.215a
 ===========================
-Mon May 28 11:00:00 CET 2005
+Mon May 02 11:00:00 CET 2005
 - added incompatibility warnings to site import. fixed a bug where field configurations could get lost after site import.
 
 Version 0.8.215
