@@ -7,6 +7,11 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.215j
+===========================
+Tue May 03 16:30:00 CET 2005
+- refactoring: Colorlab flash plugin moved to __colorlab directory. Note: flash file needs to be updated!!
+
 Version 0.8.215i
 ===========================
 Tue May 03 16:00:00 CET 2005

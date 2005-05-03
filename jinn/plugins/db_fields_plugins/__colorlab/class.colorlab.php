@@ -79,21 +79,21 @@
 			 if(hasRightVersion) {';
 			 if($config['Available_colors']=='Unlimited'){
 				$input.='document.write(\'<OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" WIDTH="515" HEIGHT="120" id="colorlab_v0.02" ALIGN="">\'+
-				   \'<PARAM NAME=movie VALUE="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/colorlab/colorlab_v0.02.swf?fld='.$field_name.'&val='.$value.'">\'+
+				   \'<PARAM NAME=movie VALUE="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__colorlab/colorlab/colorlab_v0.02.swf?fld='.$field_name.'&val='.$value.'">\'+
 				   \'<PARAM NAME=menu VALUE=false>\'+
 				   \'<PARAM NAME=quality VALUE=high>\'+
 				   \'<PARAM NAME=wmode VALUE=transparent>\'+
 				   \'<PARAM NAME=devicefont VALUE=true>\'+
-				   \'<EMBED src="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/colorlab/colorlab_v0.02.swf?fld='.$field_name.'&val='.$value.'" menu=false quality=high wmode=transparent devicefont=true WIDTH="515" HEIGHT="120" NAME="colorlab_v0.02" ALIGN="" TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer"></EMBED>\'+
+				   \'<EMBED src="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__colorlab/colorlab/colorlab_v0.02.swf?fld='.$field_name.'&val='.$value.'" menu=false quality=high wmode=transparent devicefont=true WIDTH="515" HEIGHT="120" NAME="colorlab_v0.02" ALIGN="" TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer"></EMBED>\'+
 				   \'</OBJECT>\');';
 			 }else{
 				$input.='document.write(\'<OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" WIDTH="515" HEIGHT="120" id="colorlab_v0.02" ALIGN="">\'+
-				   \'<PARAM NAME=movie VALUE="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/colorlab/colorlab_v0.02p.swf?fld='.$field_name.'&val='.$value.$flaStr.'">\'+
+				   \'<PARAM NAME=movie VALUE="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__colorlab/colorlab/colorlab_v0.02p.swf?fld='.$field_name.'&val='.$value.$flaStr.'">\'+
 				   \'<PARAM NAME=menu VALUE=false>\'+
 				   \'<PARAM NAME=quality VALUE=high>\'+
 				   \'<PARAM NAME=wmode VALUE=transparent>\'+
 				   \'<PARAM NAME=devicefont VALUE=true>\'+
-				   \'<EMBED src="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/colorlab/colorlab_v0.02p.swf?fld='.$field_name.'&val='.$value.$flaStr.'" menu=false quality=high wmode=transparent devicefont=true WIDTH="515" HEIGHT="120" NAME="colorlab_v0.02" ALIGN="" TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer"></EMBED>\'+
+				   \'<EMBED src="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__colorlab/colorlab/colorlab_v0.02p.swf?fld='.$field_name.'&val='.$value.$flaStr.'" menu=false quality=high wmode=transparent devicefont=true WIDTH="515" HEIGHT="120" NAME="colorlab_v0.02" ALIGN="" TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer"></EMBED>\'+
 				   \'</OBJECT>\');';
 			 }
 			 $input.='} else {
