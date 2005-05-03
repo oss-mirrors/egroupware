@@ -27,43 +27,37 @@
    	/*-------------------------------------------------------------------
 	Boolean PLUGIN
 	-------------------------------------------------------------------*/
-//_debug_array('including boolean plugin class file');
 
 	class db_fields_plugin_boolean
 	{
 	
 		function db_fields_plugin_boolean()
 		{
-//_debug_array('db_fields_plugin_boolean constructor called');
 		}
 		
 		function formview_edit($field_name,$value, $config,$attr_arr)
 		{
-//_debug_array($field_name);
-//_debug_array($config);
 			if($config['OFF_output_value_If_not_the_same_as_input_value'] == '')
 			{
 				$val_off=$config['OFF_input_display_value'];
-//_debug_array('out = in');
 			}
 			else $val_off=$config['OFF_output_value_If_not_the_same_as_input_value'];
 			
 			if($config['ON_output_value_If_not_the_same_as_input_value'] == '')
 			{
 				$val_on=$config['ON_input_display_value'];
-//_debug_array('out = in');
 			}
 			else $val_on=$config['ON_output_value_If_not_the_same_as_input_value'];
 			
 			if($value==$val_on) $on_select='SELECTED';
 			elseif($value==$val_off) $off_select='SELECTED';
-			//elseif($value || $config['Default_value']=='NOTHING') $empty_option='<option value=""></option>';
+			elseif($value != '') $unknownvalue = true;
 			elseif($config['Default_value']=='ON') $on_select='SELECTED'; 
 			elseif($config['Default_value']=='OFF') $off_select='SELECTED'; 
 	
 	
 			$input='<select name="'.$field_name.'">';
-			//$input.=$empty_option;
+			if($unknownvalue) $input.='<option value="'.$value.'">?'.$value.'?</option>';
 			$input.='<option '.$on_select.' value="'.$val_on.'">'.$config['ON_input_display_value'].'</option>';
 			$input.='<option '.$off_select.' value="'.$val_off.'">'.$config['OFF_input_display_value'].'</option>';
 			$input.='</select>';
@@ -89,23 +83,14 @@
 				$val_on=$config['ON_input_display_value'];
 			}
 			else $val_on=$config['ON_output_value_If_not_the_same_as_input_value'];
-	/*
-			if($value)
-			{
-			   if($value==$val_on) $display=$config['ON_input_display_value'];
-			   elseif($value==$val_off) $display=$config['OFF_input_display_value'];
-			}
-			else $display=$config['OFF_input_display_value'];
-		*/
+			
 		    if($value == $val_on)
 			{
 				$display = $config['ON_input_display_value'];
 			}
 		    elseif($value == $val_off)
 			{
-//_debug_array('OFF');
 			$display = $config['OFF_input_display_value'];
-//_debug_array($display);
 			}
 			else $display = '?'.$value.'?'; //this should not happen, except after changing the plugin maybe .. in that case, this value is a good visual error indicator
 			return $display;

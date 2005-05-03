@@ -34,8 +34,8 @@
 
 	   function formview_edit($field_name,$value, $config,$attr_arr)
 	   {
+		  $value_in_list = false;
 		  $pos_values=explode(',',$config['Value_seperated_by_commas']);
-	
 		  if(is_array($pos_values))
 		  {
 	
@@ -54,17 +54,6 @@
 				$keys=$pos_values;
 			 }
 	
-	/*		 if($config[Activate_hidden_fields])
-			 $script="<script type=\"text/javascript\">
-				function fillrouter(obj) {
-					  if(obj.options[obj.selectedIndex].value == 'DSL') 
-							document.getElementById(\"dslarea\").style.display='';
-							   else 
-									 document.getElementById(\"dslarea\").style.display='none';  
-								  }"
-								  */
-	
-			 
 			 $input='<select name="'.$field_name.'">';
 				if($config['Empty_option_available']=='yes') $input.='<option>';
 				$i=0;
@@ -96,16 +85,18 @@
 				   if(strval(empty($value)) && strval($pos_val)==strval($config['Default_value'])) 
 				   {
 					  $selected='SELECTED';	
+					  $value_in_list = true;
 				   }
 				   elseif(strval($value)==strval($pos_val))
 				   {
-		//				  die($value .' '. $pos_val);
 					  $selected='SELECTED';	
+					  $value_in_list = true;
 				   }
 	
 				   $input.='<option '.$selected.' value="'.trim($pos_val).'">'.trim($keys[$i]).'</option>';
 				   $i++;
 				}
+			    if(!$value_in_list) $input.='<option SELECTED value="'.$value.'">?'.$value.'?</option>';
 				$input.='</select>';
 		  }	
 		  else
@@ -123,9 +114,8 @@
 	
 	   function listview_read($value, $config,$where_val_enc)
 	   {
-	
+		  $value_in_list = false;
 		  $pos_values=explode(',',$config['Value_seperated_by_commas']);
-	
 		  if(is_array($pos_values))
 		  {
 	
@@ -136,7 +126,6 @@
 				{
 				   $keys=$pos_keys;
 				}
-	
 			 }
 	
 			 if(!$keys)	
@@ -144,19 +133,18 @@
 				$keys=$pos_values;
 			 }
 	
-	
 			 $i=0;
-				
 			 foreach($pos_values as $pos_val) 
 			 {
-				
 				if($value==$pos_val) 
 				{
 				  $display = trim($keys[$i]);	
+				  $value_in_list = true;
 				}
 				$i++;
 			 }
-		  }	
+		  }
+		  if(!$value_in_list) $display = '?'.$value.'?';
 		  return $display;
 	   }
 	}

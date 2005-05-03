@@ -7,6 +7,11 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.215i
+===========================
+Tue May 03 16:00:00 CET 2005
+- in Edit Record mode, Boolean/Selectbox plugins unknown values are now included in the listbox, wrapped in '?' characters
+
 Version 0.8.215h
 ===========================
 Tue May 03 15:30:00 CET 2005
