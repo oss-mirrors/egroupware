@@ -180,12 +180,11 @@
 		 {
 			$site = Array(
 			   'Save site conf to file' => array(
-				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.export_site&where_key=site_id&where_value='.$GLOBALS[uiuser]->bo->site[site_id]),
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.export_site&where_key=site_id&where_value='.$GLOBALS[local_bo]->site[site_id]),
 				  'text'=>'Save site conf to file',
 				  'icon'=>'filesave'
 			   )
 			);
-			   
 			$file=array_merge($file,$site);
 		 }
 

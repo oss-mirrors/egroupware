@@ -1504,20 +1504,12 @@
 			$out.=");\n\n";
 
 			$site_object_data=$this->bo->so->get_phpgw_record_values('egw_jinn_objects','parent_site_id', $this->bo->where_value ,'','','name');
-
 			$out.= "\n/* SITE_OBJECT ARRAY */\n";
 
 			if(is_array($site_object_data))
 			{
 			   foreach($site_object_data as $object)
 			   {
-				  /* set serial to be backwards compitable */
-				  //				  if(!$object[serialnumber])
-				  //				  {
-					 //$object[serialnumber]=time()+$i++;
-					 //				  }
-
-
 					 $out.= '$import_site_objects[]=array('."\n";
 
 					 while (list ($key, $val) = each ($object)) 
@@ -1533,7 +1525,7 @@
 
 					 /*
 					 get array whith fielddata
-					 store them as array with serialnumber as parent_object_id
+					 store them as array with unique_id as parent object identifier
 					 */
 					 $object_field_data=$this->bo->so->get_phpgw_record_values('egw_jinn_obj_fields','field_parent_object', $object['object_id'],'','','name');
 					 if(is_array($object_field_data))
@@ -1549,7 +1541,6 @@
 								 $out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
 							  }
 						   }
-						   //$out .= "	'obj_serial' => '".$object[serialnumber]."',\n"; 
 						   $out .= "	'unique_id' => '".$object['unique_id']."',\n"; 
 						   $out.=");\n\n";
 

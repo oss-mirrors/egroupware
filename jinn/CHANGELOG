@@ -7,6 +7,11 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.215g
+===========================
+Tue May 03 13:30:00 CET 2005
+- fixed bug in sidebox menu where, in Admin mode,  SiteID was not passed with Save Site Configuration function
+
 Version 0.8.215f
 ===========================
 Tue May 03 12:30:00 CET 2005
