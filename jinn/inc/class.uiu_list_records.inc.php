@@ -660,10 +660,9 @@
 						}
 					 }
 
-					 if (empty($recordvalue))
+					 if ($recordvalue == '')
 					 {
 						$recordvalue="&nbsp;";
-
 					 }
 
 					 $this->template->set_var('colfield_bg_color',$bgclr);

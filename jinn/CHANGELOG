@@ -7,6 +7,11 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.215h
+===========================
+Tue May 03 15:30:00 CET 2005
+- fixed bug in List View where fields containing '0' were not displayed
+
 Version 0.8.215g
 ===========================
 Tue May 03 13:30:00 CET 2005
