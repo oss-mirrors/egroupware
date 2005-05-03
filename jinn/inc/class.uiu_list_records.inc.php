@@ -36,6 +36,7 @@
 	  var $ui;
 	  var $template;
 	  var $filtermanager;
+	  var $db_ftypes;
 
 	  function uiu_list_records()
 	  {
@@ -54,6 +55,7 @@
 			$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
 		 }
 		 $this->ui->app_title=$dev_title_string;
+ 		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
 	  }
 
 	  /**
@@ -364,11 +366,16 @@
 		 }
 
 		 $columns=$this->bo->so->site_table_metadata($this->bo->session['site_id'], $this->bo->site_object['table_name']);
+		 $column_types = array();
 		 if(!is_array($columns)) $columns=array();
 		 /* walk through all table columns and fill different array */
 		 $fields_show_default = array();
 		 foreach($columns as $onecol)
 		 {
+			$ftype=$this->db_ftypes->complete_resolve($onecol);
+			if(!$ftype) $ftype='string';
+			$column_types[$onecol['name']] = $ftype;
+			
 			$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$onecol[name]);
 			if($field_conf_arr[field_show_default])
 			{
@@ -649,7 +656,7 @@
 						}
 						else
 						{
-						   $recordvalue=$this->bo->plug->call_plugin_bv($onecolname,$recordvalue,$where_string,$field_conf_arr);
+						   $recordvalue=$this->bo->plug->call_plugin_bv($onecolname, $recordvalue, $where_string, $field_conf_arr, $column_types[$onecolname]);
 						}
 					 }
 
@@ -704,11 +711,8 @@
 			$this->template->parse('out','emptyfooter');
 			$this->template->pparse('out','emptyfooter');
 		 }
-
 		$this->bo->sessionmanager->save();
 	  }
-
-
    }
 
 

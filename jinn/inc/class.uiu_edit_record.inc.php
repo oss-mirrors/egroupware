@@ -533,11 +533,11 @@
 
 			   if(!$object_arr[plugins])
 			   {
-				  $input = $this->bo->plug->call_plugin_fi($input_name,$value,$ftype,$field_conf_arr, $attr_arr);
+				  $input = $this->bo->plug->call_plugin_fi($input_name, $value, $ftype, $field_conf_arr, $attr_arr);
 			   }
 			   else
 			   {
-				  $input = $this->bo->get_plugin_fi($input_name,$value,$ftype, $attr_arr,$object_arr[plugins]);
+				  $input = $this->bo->get_plugin_fi($input_name, $value, $ftype, $attr_arr, $object_arr[plugins]);
 			   }
 			   
 			   //some plugins return an array containing extra info to be considered:
@@ -945,7 +945,7 @@
 		
 					   if(!$this->bo->site_object[plugins])
 					   {
-						  $input=$this->bo->plug->call_plugin_ro($value,$field_conf_arr);
+						  $input=$this->bo->plug->call_plugin_ro($value, $field_conf_arr, $ftype);
 					   }
 					   else
 					   {
@@ -1092,7 +1092,7 @@
 
 			   if(!$this->bo->site_object[plugins])
 			   {
-				  $input=$this->bo->plug->call_plugin_ro($value,$field_conf_arr);
+				  $input=$this->bo->plug->call_plugin_ro($value, $field_conf_arr, $ftype);
 			   }
 			   else
 			   {

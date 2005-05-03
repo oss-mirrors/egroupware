@@ -52,10 +52,14 @@
 	  @param $attr_arr extra $attributes like length of field which can change the behaviour of the plugin
 	  @returns a part of the form as html       
 	  */
-	  function call_plugin_fi($input_name,$value,$type,$field_values,$attr_arr)
+	  function call_plugin_fi($input_name, $value, $type, $field_values, $attr_arr)
 	  {
 		 $plug_conf_arr=unserialize(base64_decode($field_values[field_plugins]));
-		 
+		 if($field_values[field_type] == '' && $type != '')
+		 {
+			$field_values[field_type] = $type;
+		 }
+
 		 if ( substr($input_name,0,4)=='MLTX' || substr($input_name,0,6)=='FLDXXX' || substr($input_name,0,4)=='O2OX' )
 		 {
 			$input = $this->call_plugin($plug_conf_arr[name], 'formview_edit', $value, $plug_conf_arr[conf], '', $input_name, $attr_arr,'','',$field_values);
@@ -73,9 +77,13 @@
 	  @param $field_values $field configuration array
 	  @returns one cell of the list in formatted html
 	  */
-	  function call_plugin_bv($field_name,$value,$where_val_encoded,$field_values)
+	  function call_plugin_bv($field_name,$value,$where_val_encoded,$field_values, $type='')
 	  {
 		$plug_conf_arr=unserialize(base64_decode($field_values[field_plugins]));
+		 if($field_values[field_type] == '' && $type != '')
+		 {
+			$field_values[field_type] = $type;
+		 }
 		return $this->call_plugin($plug_conf_arr[name], 'listview_read', $value, $plug_conf_arr[conf], $where_val_encoded, $field_name,'','','',$field_values);
 	  }
 
@@ -101,9 +109,13 @@
 	  @param $value value of the field
 	  @param $field_values $field configuration array
 	  */
-	  function call_plugin_ro($value,$field_values)
+	  function call_plugin_ro($value, $field_values, $type='')
 	  {
 		 $plug_arr=unserialize(base64_decode($field_values[field_plugins]));
+		 if($field_values[field_type] == '' && $type != '')
+		 {
+			$field_values[field_type] = $type;
+		 }
 		 return $this->call_plugin($plug_arr[name], 'formview_read', $value, $plug_arr[conf], '', '', '', '', '',$field_values);
 	  }
 
