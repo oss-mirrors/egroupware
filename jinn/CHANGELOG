@@ -7,6 +7,11 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.215f
+===========================
+Tue May 03 12:30:00 CET 2005
+- import of objects from file made more failsafe. It now checks for incompatibilities like in importing sites
+
 Version 0.8.215e
 ===========================
 Tue May 03 11:30:00 CET 2005

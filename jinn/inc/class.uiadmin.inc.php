@@ -886,6 +886,7 @@
 
 		 function import_object()
 		 {
+			$fielderrors = '';
 			if (is_array($GLOBALS[HTTP_POST_FILES][importfile]))
 			{
 			   $num_objects=0;
@@ -894,16 +895,34 @@
 			   @include($import[tmp_name]);
 			   if ($import_object && $checkbit)
 			   {
+				  $validfields = $this->bo->so->phpgw_table_fields('egw_jinn_objects');
+				  unset($validfields[object_id]);
+				  $imported = array();
+
 				  while(list($key, $val) = each($import_object)) 
 				  {
-					 if ($key=='parent_site_id') $val=$_POST[parent_site_id];
-					 $data[] = array
-					 (
-						'name' => $key,
-						'value' => addslashes($val) 
-					 );
-
+					 if(array_key_exists($key, $validfields))
+					 {
+						 $imported[$key] = true;
+						 if ($key=='parent_site_id') $val=$_POST[parent_site_id];
+						 $data[] = array
+						 (
+							'name' => $key,
+							'value' => addslashes($val) 
+						 );
+					 }
+					 else
+					 {
+						 $fielderrors .= '<br/>'.lang('incompatibility result: Object <b>\'%3\'</b>, property <b>\'%1\'</b> with value <b>\'%2\'</b> could not be imported because it does not exist in this JiNN version', $key, $val, $import_object['name']).'<br/>';
+					 }
 				  }
+				   foreach($validfields as $fieldname => $yes)
+				   {
+						if(!array_key_exists($fieldname, $imported))
+						{
+							$fielderrors .= '<br/>'.lang('incompatibility result: Object <b>\'%2\'</b>, property <b>\'%1\'</b> was not present in the file', $fieldname, $import_object['name']).'<br/>';
+						}
+				   }
 
 				  $new_object_name=$data[1][value];	
 				  $thisobjectname=$this->bo->so->get_objects_by_name($new_object_name,$_POST[parent_site_id]);
@@ -917,7 +936,6 @@
 					 {
 						$new_name=$new_object_name.' ('.lang('another').')';
 
-				
 						$datanew[]=array(
 						   'name'=>'name',
 						   'value'=>$new_name
@@ -930,46 +948,67 @@
 					 }
 					 $proceed=true;
 					 $this->bo->session['message'][info].= lang('Import was succesfull'). '<br/>' .lang('The name of the new object is <strong>%1</strong>.',$new_name);
-
 				  }
 
-				  /* site import has succeeded, go on with objects */
 				  if($proceed)
 				  {
 					 /* objects are imported , go on with obj-fields */
 					 if(is_array($import_obj_fields))
 					 {
+						$validfields = $this->bo->so->phpgw_table_fields('egw_jinn_obj_fields');
+						unset($validfields[field_id]);
 						foreach($import_obj_fields as $obj_field)
 						{
-						   $obj_field[field_parent_object] = $new_object_id;
+						   $obj_field[field_parent_object] = $new_object_id; // no matching by unique_id is required here (like in load_site_from_file()), because only one object is imported
 
 						   unset($data_fields);
+						   unset($imported);
 						   while(list($key2, $val2) = each($obj_field)) 
 						   {
-							  if ($key2=='obj_serial') 
+							  if ($key2 == 'obj_serial') 
+							  {
+								 continue;  
+							  }
+							  if ($key2 == 'unique_id') 
 							  {
 								 continue;  
 							  }
 
-							  $data_fields[] = array
-							  (
-								 'name' => $key2,
-								 'value' => addslashes($val2) 
-							  );
-
+								if(array_key_exists($key2, $validfields))
+								{
+									$imported[$key2] = true;
+									  $data_fields[] = array
+									  (
+										 'name' => $key2,
+										 'value' => addslashes($val2) 
+									  );
+								}
+								else
+								{
+									$fielderrors .= '<br/>'.lang('incompatibility result: Object <b>\'%3\'</b>, field <b>\'%1\'</b>, property <b>\'%2\'</b> could not be imported because it does not exist in this JiNN version', $obj_field['field_name'], $key2, $import_object['name']).'<br/>';
+								}
 						   }
+						   foreach($validfields as $fieldname => $yes)
+						   {
+								if(!array_key_exists($fieldname, $imported))
+								{
+									$fielderrors .= '<br/>'.lang('incompatibility result: Object <b>\'%2\'</b>, field <b>\'%1\'</b>, property <b>\'%3\'</b> was not present in the file', $obj_field['field_name'], $import_object['name'], $fieldname).'<br/>';
+								}
+						   }
+						   
 						   if ($field_id[]=$this->bo->so->validateAndInsert_phpgw_data('egw_jinn_obj_fields',$data_fields))
 						   {
 							  $num_fields=count($field_id);
 						   } 
 						}
 					 }
-
+					 if($fielderrors) $this->bo->session['message'][info] .= '<br/>'.$fielderrors;
 					 $this->bo->session['message'][info].='<br/>'.lang('%1 Site Objects have been imported.',1);
 					 $this->bo->session['message'][info].='<br/>'.lang('%1 Site Obj-fields have been imported.',$num_fields);
 				  }
 				  else
 				  {
+				     if($fielderrors) $this->bo->session['message'][info] .= '<br/>'.$fielderrors;
 					 $this->bo->session['message'][error].= lang('Import failed');
 				  }
 				  
@@ -1112,8 +1151,6 @@
 							$fielderrors .= '<br/>'.lang('incompatibility result: Site <b>\'%2\'</b>, property <b>\'%1\'</b> was not present in the file', $fieldname, $import_site['site_name']).'<br/>';
 						}
 				   }
-//_debug_array($fielderrors);								   
-//_debug_array($imported);								   
 				  $new_site_name=$data[0][value];	
 				  $thissitename=$this->bo->so->get_sites_by_name($new_site_name);
 
@@ -1155,8 +1192,6 @@
 					 {
 						$validfields = $this->bo->so->phpgw_table_fields('egw_jinn_objects');
 						unset($validfields[object_id]);
-//_debug_array($validfields);				
-//_debug_array($import_site_objects);					 
 						foreach($import_site_objects as $object)
 						{
 						   unset($data_objects);
@@ -1186,8 +1221,6 @@
 									$fielderrors .= '<br/>'.lang('incompatibility result: Object <b>\'%2\'</b>, property <b>\'%1\'</b> was not present in the file', $fieldname, $object['name']).'<br/>';
 								}
 						   }
-//_debug_array($fielderrors);								   
-//_debug_array($imported);								   
 						   if ($new_id = $this->bo->so->validateAndInsert_phpgw_data('egw_jinn_objects',$data_objects))
 						   {
 							  $object_id[] = $new_id;
@@ -1203,21 +1236,8 @@
 					 {
 						$validfields = $this->bo->so->phpgw_table_fields('egw_jinn_obj_fields');
 						unset($validfields[field_id]);
-						//unset($validfields[field_parent_object]);
-//_debug_array($validfields);				
-//_debug_array($import_obj_fields);			
-//_debug_array($all_object_arr);					 
 						foreach($import_obj_fields as $obj_field)
 						{
-							/* old and faulty: gets first object with serial number from database. This fails if there are more objects with the same serial number (i.e. after a site copy)
-						   $tmp_object_arr=$this->bo->so->get_object_values('',$obj_field[obj_serial]);
-						   if(!$tmp_object_arr[object_id]) 
-						   {
-							  continue;
-						   }
-						   $obj_field[field_parent_object]=$tmp_object_arr[object_id];
-						   */
-						   
 						   //new: get object from previously inserted objects
 						   $obj_id = $all_object_arr[$obj_field['unique_id']]['id'];
 						   if(!$obj_id) 
@@ -1256,9 +1276,6 @@
 									$fielderrors .= '<br/>'.lang('incompatibility result: Object <b>\'%2\'</b>, field <b>\'%1\'</b>, property <b>\'%3\'</b> was not present in the file', $obj_field['field_name'], $all_object_arr[$obj_field[obj_serial]]['name'], $fieldname).'<br/>';
 								}
 						   }
-//_debug_array($fielderrors);								   
-//_debug_array($imported);
-//die;							   
 						   if ($field_id[]=$this->bo->so->validateAndInsert_phpgw_data('egw_jinn_obj_fields',$data_fields))
 						   {
 							  $num_fields=count($field_id);
@@ -1376,28 +1393,12 @@
 			$out.='	***************************************************************************/'."\n";
 			$out.="\n";
 
-			//			$out.= "/* OBJECT ARRAY */\n";
-			/*
-			$out.= '$import_object=array('."\n";
-
-			while (list ($key, $val) = each($site_data[0])) 
-			{
-			   if($key!='site_id') $out.= "	'$key '=> '$val',\n";
-			}
-			$out.=");\n\n";
-			*/
-
-			//			$site_object_data=$this->bo->so->get_phpgw_record_values('egw_jinn_objects','parent_site_id', $this->bo->where_value ,'','','name');
-
 			$out.= "\n/* OBJECT ARRAY */\n";
 
 			if(is_array($object_data))
 			{
 			   foreach($object_data as $object)
 			   {
-				  //$object[serialnumber]=time()+$i++;
-
-
 				  $out.= '$import_object=array('."\n";
 
 				  while (list ($key, $val) = each ($object)) 
@@ -1413,8 +1414,7 @@
 
 				  /*
 				  get array whith fielddata
-					//depreciated: store them as array with serialnumber as parent_object_id
-				  store them as array with unique_id as parent_object_id
+				  store them as array
 				  */
 				  $object_field_data=$this->bo->so->get_phpgw_record_values('egw_jinn_obj_fields','field_parent_object', $object['object_id'],'','','name');
 				  if(is_array($object_field_data))
@@ -1430,21 +1430,15 @@
 							  $out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
 						   }
 						}
-						//$out .= "	'obj_serial' => '".$object[serialnumber]."',\n"; 
-						$out .= "	'unique_id' => '".$object['unique_id']."',\n"; 
-
 						$out.=");\n\n";
-
 					 }
 				  }
-
 			   }
 			}
 
 			$out.='$checkbit=true;'."\n";
 			$out.='?>';
 			echo $out;
-
 
 		 }
 
