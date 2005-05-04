@@ -505,7 +505,7 @@
 				document.frm.CURRENT_SLOT.value=slot;
 			}
 			
-			function setSlot(record, field, slot, fileurl, thumbnail, buttontext)
+			function setSlot(record, field, slot, fileurl, thumbnail, buttontext, showfilename)
 			{
 				//alert("set Slot: " + record + ", "+ field + ", "+ slot);
 				
@@ -527,9 +527,21 @@
 				cmd = "document.frm." + record + "_IMG_EDIT_BUTTON_" + field + slot + ".value = \"" + buttontext + "\";";
 				eval(cmd);
 	
-					//fixme: pass this style to this function to change style if slot gets erased
-				cmd = "document.getElementById(\"" + record + "_PATH_" + field + slot + "\").style.display = \"none\";";
-				eval(cmd);
+				if(showfilename)
+				{
+						//get the filename without the path
+					var val2_arr = fileurl.split("/");
+					var idx = val2_arr.length - 1;
+					cmd = "document.getElementById(\"" + record + "_PATH_" + field + slot + "\").innerHTML = \"<b>"+ val2_arr[idx] + "</b>\";";
+					eval(cmd);
+					cmd = "document.getElementById(\"" + record + "_PATH_" + field + slot + "\").style.display = \"inline\";";
+					eval(cmd);
+				}
+				else
+				{
+					cmd = "document.getElementById(\"" + record + "_PATH_" + field + slot + "\").style.display = \"none\";";
+					eval(cmd);
+				}
 			}
 			
 			function onSave(fileurl, filetype)
@@ -543,21 +555,21 @@
 					var idx = val2_arr.length - 1;
 					val2_arr[idx] = "." + val2_arr[idx];
 					var thumb = val2_arr.join("/");
-					setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, fileurl, thumb, getLabel("replace"));
+					setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, fileurl, thumb, getLabel("replace"), false);
 				}
 				else if(filetype == "'.$this->filetypes->type_id_other.'")
 				{
-					setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, fileurl, "'.$this->unknown.'", getLabel("replace"));
+					setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, fileurl, "'.$this->unknown.'", getLabel("replace"), true);
 				}
 				else
 				{
-					setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, fileurl, "'.$this->unknown.'", getLabel("replace"));
+					setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, fileurl, "'.$this->unknown.'", getLabel("replace"), true);
 				}
 			}
 			
 			function onDelete(record, field, slot)
 			{
-				setSlot(record, field, slot, "delete", "'.$this->spacer.'", getLabel("add"));
+				setSlot(record, field, slot, "delete", "'.$this->spacer.'", getLabel("add"), false);
 			}
 			-->
 			</script>';

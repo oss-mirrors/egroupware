@@ -765,7 +765,7 @@ function refreshDirs()
 							  //var_dump($d);
 							  $images = array();
 							  $folders = array();
-							  $unknown = array();
+							  $other = array();
 							  while (false !== ($entry = $d->read())) 
 							  {
 								 $img_file = $IMG_ROOT.$entry; 
@@ -799,6 +799,7 @@ function refreshDirs()
 								 //now sort the folders and images by name.
 								 ksort($images);
 								 ksort($folders);
+								 ksort($other);
 
 								 draw_table_header();
 
@@ -817,7 +818,7 @@ function refreshDirs()
 								 for($i=0; $i<count($other); $i++) 
 								 {
 									$name = key($other);
-									show_other($other[$name]['file'], $name, $other[$name]['img_info'], $other[$name]['size']);
+									show_other($other[$name], $name, $other[$name]['img_info'], $other[$name]['size']);
 									next($other);
 								 }
 								 draw_table_footer();
