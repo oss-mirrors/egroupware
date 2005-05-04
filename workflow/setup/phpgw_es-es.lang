@@ -35,6 +35,7 @@ admin process activities	workflow	es-es	Actividades del proceso administrativo
 admin process roles	workflow	es-es	Papeles del proceso administrativo
 admin processes	workflow	es-es	Procesos administrativos
 admin processes sources	workflow	es-es	Orígenes de los procesos administrativos
+administer processes	workflow	es-es	administrar procesos
 all	workflow	es-es	Todos
 auto routed	workflow	es-es	Autoenrutado
 automatic	workflow	es-es	Automático
@@ -45,11 +46,13 @@ cannot add transition. only split activities can have more than one outbound tra
 circular reference found some activity has a transition leading to itself	workflow	es-es	La referencia circular encontró alguna actividad que tiene una transición que vuelve a ella misma
 circular reference found. some activity has a transition leading to itself	workflow	es-es	Se encontró una referencia circular. Alguna actividad tiene una transición apuntando a sí misma
 code	workflow	es-es	código
+complete	workflow	es-es	Completo
 completed	workflow	es-es	completado
 couldn't add transition	workflow	es-es	No se pudo añadir la transición
 create	workflow	es-es	crear
 created	workflow	es-es	Creada
 delete selected	workflow	es-es	Borrar lo seleccionado
+deletion successful	workflow	es-es	Borrado correcto
 delition successful	workflow	es-es	Borrado correcto
 description	workflow	es-es	Descripción
 don't move	workflow	es-es	No mover
@@ -65,7 +68,10 @@ fatal error: setting next activity to an unexisting activity	workflow	es-es	Erro
 fatal error: trying to send an instance to an activity but no transition found	workflow	es-es	Error fatal: intentando enviar una instanacia a una actividad, pero no se encontró transición
 filter	workflow	es-es	Filtro
 from	workflow	es-es	De
+get property	workflow	es-es	Obtener propiedad
 grab instance	workflow	es-es	coger instancia
+grant access to the administration of workflow elements	workflow	es-es	Conceder acceso a la administración de los elementos del flujo del tabajo
+grant access to the monitoring of workflow elements	workflow	es-es	Conceder acceso a la monitorización de elementos del flujo del trabajo
 graph	workflow	es-es	Gráfico
 group	workflow	es-es	Grupo
 id	workflow	es-es	Id
@@ -91,10 +97,12 @@ list of workitems	workflow	es-es	Lista de elementos de trabajo
 manual	workflow	es-es	Manual
 map	workflow	es-es	mapa
 map users/groups to roles	workflow	es-es	Mapear usuarios/grupos a papeles
+mappings deleted	workflow	es-es	Mapeos borrados
 monitor activities	workflow	es-es	Monitorizar actividades
 monitor instances	workflow	es-es	Monitorizar instancias
 monitor processes	workflow	es-es	Monitorizar procesos
 monitor work items	workflow	es-es	Monitorizar elementos de trabajo
+monitoring	workflow	es-es	monitorizando
 name	workflow	es-es	Nombre
 new major	workflow	es-es	Nuevo mayor
 new mapping added	workflow	es-es	Se ha añadido un nuevo mapeo
@@ -120,6 +128,7 @@ process %s removed	workflow	es-es	El proceso %s ha sido eliminado
 process activities	workflow	es-es	Procesar actividades
 process does not have a start activity	workflow	es-es	El proceso no tiene una actividad de inicio
 process does not have exactly one end activity	workflow	es-es	El proceso no tiene exactamente una actividad de fin
+process form	workflow	es-es	Procesar formulario
 process name already exists	workflow	es-es	El nombre del proceso ya existe
 process roles	workflow	es-es	Procesar papeles
 process transitions	workflow	es-es	Procesar transiciones
@@ -142,6 +151,9 @@ running activity	workflow	es-es	Ejecutando actividad
 select source	workflow	es-es	seleccionar origen
 send all to	workflow	es-es	Enviar a todos
 send instance	workflow	es-es	enviar instancia
+set next act	workflow	es-es	Establecer acto siguiente
+set next user	workflow	es-es	Establecer usuario siguiente
+set property	workflow	es-es	Establecer propiedad
 shared code	workflow	es-es	Código compartido
 show code	workflow	es-es	mostrar código
 show template	workflow	es-es	mostrar plantilla
@@ -153,12 +165,15 @@ started	workflow	es-es	Iniciado
 status	workflow	es-es	Estado
 stop	workflow	es-es	parar
 switch	workflow	es-es	interruptor
+switch construct	workflow	es-es	Intercambiar constructor
 template	workflow	es-es	plantilla
 the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	es-es	El directorio /workflow no existe y no se pudo crear. Por favor, pida a su administrador que compruebe la configuración global
 the following items must be corrected to be able to activate this process	workflow	es-es	Deben corregirse los siguientes elementos para poder activar este proceso
 there are no activities available	workflow	es-es	No hay actividades disponibles
 there are no instances available	workflow	es-es	No hay instancias disponibles
 there are no mappings defined for this process	workflow	es-es	No hay mapeos definidos para este proceso
+there are no processes	workflow	es-es	No hay procesos
+there are no processes available	workflow	es-es	No hay procesos disponibles
 there are no processes defined	workflow	es-es	No hay procesos definidos
 there are no properties available	workflow	es-es	No hay propiedades disponibles
 there are no roles defined for this process	workflow	es-es	No hay papeles definidos para este proceso

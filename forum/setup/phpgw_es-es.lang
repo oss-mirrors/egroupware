@@ -15,7 +15,7 @@ default view	forum	es-es	Vista predeterminada
 edit forum	forum	es-es	Editar foro
 email replies to this thread, to the address above	forum	es-es	Respuestas a este asunto por e-mail, a la dirección mostrada arriba
 forum	common	es-es	Foros
-forum administration	admin	es-es	Administración de foros
+forum administration	common	es-es	Administración de foros
 forum description	forum	es-es	Descripción del foro
 forum name	forum	es-es	Nombre del foro
 forums	common	es-es	Foros
@@ -32,6 +32,7 @@ return to forums	forum	es-es	Volver a los foros
 sub category	forum	es-es	Subcategoría
 there are no forums in this category	forum	es-es	No existen foros en esta categoría
 threaded	forum	es-es	Contestado
+threads	forum	es-es	Conversaciones
 topic	forum	es-es	Asunto
 update category	forum	es-es	Actualizar categoría
 update forum	forum	es-es	Actualizar foro

@@ -1,0 +1,9 @@
+displayname	sambaadmin	es-es	Nombre en la red
+homedrive	sambaadmin	es-es	Unidad del usuario
+homepath	sambaadmin	es-es	Homeland listing
+logonscript	sambaadmin	es-es	Script de inicio
+path to mkntpwd	admin	es-es	Ruta al fichero de contraseñas
+profilepath	sambaadmin	es-es	Ruta al perfil
+samba config	sambaadmin	es-es	Configuración de samba
+samba settings	common	es-es	Cuenta del servidor de ficheros
+samba sid	admin	es-es	SID de Samba

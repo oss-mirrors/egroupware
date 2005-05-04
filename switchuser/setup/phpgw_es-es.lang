@@ -1,0 +1,5 @@
+switch now	switchuser	es-es	Cambiar ahora
+switchuser	common	es-es	Cambiar de usuario
+to which user you want to switch?	switchuser	es-es	¿A qué usuario desea cambiar?
+with this application you can login as other user without knowing or changing any passwords. only administrators can use this application	switchuser	es-es	Con esta aplicación, se puede iniciar una sesión como otro usuario sin saber o modificar ninguna contraseña. Sólo los administradores pueden usar esta aplicación.
+you're not allowed to switch identity.	switchuser	es-es	No tiene permiso para cambiar de identidad

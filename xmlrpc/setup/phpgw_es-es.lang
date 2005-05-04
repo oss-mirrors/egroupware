@@ -1,0 +1,23 @@
+(optional: set domain for user/client login, required: set this servername for server login)	xmlrpc	es-es	(opcional: establecer dominio para la sesión del usuario/cliente; requerido: establecer este nombre de servidor para la sesión del servidor)
+addressbook test	xmlrpc	es-es	Prueba de la libreta de direcciones
+app	xmlrpc	es-es	Aplicación
+apps	xmlrpc	es-es	Aplicaciones
+assigned kp3	xmlrpc	es-es	kp3 asignado
+assigned sessionid	xmlrpc	es-es	sessionid asignado
+bogus request	xmlrpc	es-es	Solicitud errónea
+calendar test	xmlrpc	es-es	Prueba de calendario
+client / server test	xmlrpc	es-es	Prueba cliente/servidor
+configure using admin - peer servers	xmlrpc	es-es	Configurar usando servidores admin-proveedor
+egroupware xml-rpc/soap client<->server and server<->server test (soap pending...)	xmlrpc	es-es	Prueba cliente eGroupWare XML-RPC/SOAP<->Servidor y prueba Servidor<->Servidor
+introspection	xmlrpc	es-es	Introspección
+meerkat browser	xmlrpc	es-es	Navegador
+methods	xmlrpc	es-es	Métodos
+note: listapps and listusers are disabled by default in xml_functions.php	xmlrpc	es-es	NOTA: listapps y listusers están desactivados por defecto en xml_functions.php
+select target server	xmlrpc	es-es	Seleccionar servidor de destino
+server test	xmlrpc	es-es	Prueba de servidor
+server<->server	xmlrpc	es-es	Servidor<->Servidor
+servername/domain	xmlrpc	es-es	Nombre de servidor/Dominio
+simple client	xmlrpc	es-es	Cliente simple
+system	xmlrpc	es-es	Sistema
+test suite	xmlrpc	es-es	Suite de pruebas
+xmlrpc test	common	es-es	Prueba XMLRPX

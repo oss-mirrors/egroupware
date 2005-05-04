@@ -1,5 +1,8 @@
 % to	projects	es-es	% para
 + jobs	projects	es-es	+ Trabajos
+a new project has been created	projects	es-es	Se ha creado un nuevo proyecto en:
+a project has been deleted	projects	es-es	Se ha borrado un proyecto en:
+a project has been updated	projects	es-es	Se ha actualizado un proyecto en:
 account	projects	es-es	Cuenta
 accountancy	common	es-es	Contabilidad
 accounting	common	es-es	Contabilidad
@@ -92,6 +95,7 @@ date due planned	projects	es-es	Fecha de entrega prevista
 days	projects	es-es	días
 days before	projects	es-es	días antes
 definition per project	admin	es-es	Definición por proyecto
+delete	admin	es-es	Borrar
 delete activity	projects	es-es	borrar actividad
 delete factor	projects	es-es	borrar factor
 delete hours	projects	es-es	Eliminar horas
@@ -189,6 +193,7 @@ id can not exceed 19 characters in length	projects	es-es	El ID no puede exceder 
 id can not exceed 20 characters in length	projects	es-es	El id no puede superar los 20 caracteres de longitud
 id can not exceed 25 characters in length	projects	es-es	El ID no puede exceder de 25 caracteres
 id can not exceed 250 characters in length	projects	es-es	El ID no puede sobrepasar los 250 caracteres de longitud
+id is already taken, choose an other one	projects	es-es	el id ya está tomado. Por favor, elija otro
 if using activities	admin	es-es	Si se usan actividades
 if you are an administrator, please edit the site configuration for projects in the admin section	projects	es-es	Si usted es un admnistrador, por favor, edite la configuración del sitio
 if you are an administrator, please set the preferences for this application	projects	es-es	Si es un administrador, por favor, configure las preferencias para esta aplicación.
@@ -245,16 +250,25 @@ month	projects	es-es	Mes
 move start date if pervious projects end date changes	admin	es-es	Mover la fecha de inicio si la fecha de finalización de proyectos anteriores cambia
 name not exceed 250 characters in length	projects	es-es	el nombre no puede superar los 250 caracteres de longitud
 net	projects	es-es	neto
+new	admin	es-es	Nuevo
 new date due of milestone %1: %2	projects	es-es	Nueva fecha prevista de destino %1: %2.
 new end date	projects	es-es	Nueva fecha de fin
 new milestone	projects	es-es	Nueva previsión
 new project	projects	es-es	Nuevo proyecto
+new project created	projects	es-es	Nuevo proyecto creado:
 new start date	projects	es-es	Nueva fecha de inicio
 nonactive	common	es-es	Inactivo
 not billable	projects	es-es	no facturable
+notification settings	admin	es-es	Configuración de la notificación
+notify management committee	admin	es-es	Notificar al Comité de gestión
+notify project administrators	admin	es-es	Notificar a los administradores del proyecto
+notify sales department	admin	es-es	Notificar al departamento de ventas
 number	projects	es-es	Número
 old end date	projects	es-es	Fecha de fin anterior
 old start date	projects	es-es	Fecha de inicio anterior
+onadd	admin	es-es	Al añadir
+ondelete	admin	es-es	Al borrar
+onstatuschange	admin	es-es	Al cambiar de estado
 open	projects	es-es	Abierto
 open popup	projects	es-es	abrir ventana
 open popup window	projects	es-es	abrir ventana emergente
@@ -314,6 +328,7 @@ project archive	projects	es-es	Archivo de proyectos
 project billing	projects	es-es	Facturación de proyectos
 project data due	projects	es-es	Fecha de expiración del proyecto
 project date due	projects	es-es	Fecha de expiración del proyecto
+project deleted	projects	es-es	Proyecto borrado
 project delivery	projects	es-es	Envío de proyectos
 project dependencies	common	es-es	Dependencias del proyecto
 project id	common	es-es	ID del proyecto
@@ -323,11 +338,13 @@ project overview	projects	es-es	descripción del proyecto
 project preferences	projects	es-es	Preferencias del proyecto
 project statistic	projects	es-es	Estadistica del proyecto
 project statistics	projects	es-es	Estadisticas del proyecto
+project updated	projects	es-es	Proyecto actualizado
 project url	projects	es-es	URL del proyecto
 projects	common	es-es	Proyectos
 projects preferences	preferences	es-es	Preferencias de los proyectos
 projects, which are assigned as sequencing	projects	es-es	Proyectos, que están asignados como secuenciales
 quality check	projects	es-es	Comprobación de calidad
+read a list / search for entries.	projects	es-es	Leer una lista / buscar entradas
 reference	projects	es-es	Referencia
 remark	projects	es-es	Comentario
 remark can not exceed 8000 characters in length	projects	es-es	El comentario no puede exceder la longitud de 8000 caracteres
@@ -375,6 +392,7 @@ start date can not be before parent projects start date	projects	es-es	La fecha 
 start date planned	projects	es-es	Fecha de inicio planificada
 statistic	projects	es-es	Estadistica
 statistics	projects	es-es	Estadisticas
+status change	admin	es-es	Cambio de estado
 stop	projects	es-es	Parar
 sub project level %1	projects	es-es	Nivel del subproyecto %1
 subproject	projects	es-es	subproyecto
