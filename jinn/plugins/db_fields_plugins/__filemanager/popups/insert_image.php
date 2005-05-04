@@ -349,7 +349,7 @@ function toggleConstrains(constrains)
 									</head>
 									<body onload="Init(); P7_Snap('dirPath','loading',120,70);">
 									   <div class="title">managing <font size="+1"><?php echo($config[Filetype]); ?></font> files</div>
-									   <form action="ImageManager/images.php" name="form1" method="post" target="imgManager" enctype="multipart/form-data">
+									   <form action="ImageManager/images.php?field=<?php echo($_GET[field]); ?>" name="form1" method="post" target="imgManager" enctype="multipart/form-data">
 										  <div id="loading" style="position:absolute; left:200px; top:130px; width:184px; height:48px; z-index:1" class="statusLayer">
 											 <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
 												<tr>

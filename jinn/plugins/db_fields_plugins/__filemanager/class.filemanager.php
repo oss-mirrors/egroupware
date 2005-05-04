@@ -289,7 +289,6 @@
 				   /* check for image and create previewlink */
 				   if(is_file($upload_path . SEP . $img_path))
 				   {
-					  
 					  $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$img_path);
 	
 					  // FIXME move code to class

@@ -40,18 +40,9 @@
    $sessdata =	  $GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi');
 
    $bo = CreateObject('jinn.bouser');
-//_debug_array($_GET[field]);
    $field_config = $bo->so->get_field_values($bo->session['site_object_id'],$_GET[field]);
    $config = unserialize(base64_decode($field_config[field_plugins]));
-//_debug_array($config);
    $config = $config[conf];
-//_debug_array($config);
-
-		//for backwards compatibility:
-	if($config[Image_filetype] != '')
-	{
-		$config[Filetype] = $config[Image_filetype];
-	}
 
    $BASE_DIR = $sessdata[UploadImageBaseDir];
    if($BASE_DIR == '') $BASE_DIR = $bo->cur_upload_path();

@@ -50,7 +50,8 @@
 
    $refresh_dirs = false;
    $clearUploads = false;
-   $select_after_upload = '';
+   $select_image_after_upload = '';
+   $select_other_after_upload = '';
    
    if(strrpos($IMG_ROOT, '/')!= strlen($IMG_ROOT)-1) 
    $IMG_ROOT .= '/';
@@ -73,7 +74,6 @@
    if(isset($_FILES['upload']) && is_array($_FILES['upload']) && isset($_POST['dirPath'])) 
    {
 
-//_debug_array($IMG_ROOT);
 	  $dirPathPost = $_POST['dirPath'];
 
 	  if(strlen($dirPathPost) > 0) 
@@ -83,58 +83,69 @@
 		 else
 		 $IMG_ROOT .= $dirPathPost;			
 	  }
-//_debug_array($IMG_ROOT);
 
 	  if(strrpos($IMG_ROOT, '/')!= strlen($IMG_ROOT)-1) 
 	  $IMG_ROOT .= '/';
 
-	  //	do_upload($_FILES['upload'], $BASE_DIR.$BASE_ROOT.$dirPathPost.'/');
 	  do_upload($_FILES['upload'], $BASE_DIR.$dirPathPost.'/');
-//_debug_array($BASE_URL.$dirPathPost.'/'.$_FILES['upload']['name']);
-	  $select_after_upload = $BASE_URL.$dirPathPost.'/'.$_FILES['upload']['name'];
-
    }
 
    function do_upload($file, $dest_dir) 
    {
-	  global $clearUploads;
+	  global $clearUploads, $config, $select_image_after_upload, $select_other_after_upload, $dirPathPost, $BASE_URL;
+	  
 	  if(is_file($file['tmp_name'])) 
 	  {
 		 $img_info = getimagesize($file['tmp_name']);
 
-		 if(is_array($img_info))
+		 if(is_array($img_info)) //this is a valid image
 		 {
+			global $filetypes;
+			$type = $filetypes->GD_type($config['Image_filetype']);
+			
 			$w = $img_info[0]; 
 			$h = $img_info[1];
 
-			adapt_size($file['tmp_name'],$dest_dir.'..'.$file['name'], 30, 20);
+			$dest_file = match_extension($dest_dir.'..'.$file['name'], $type);
+			process_and_save_image($file['tmp_name'], $dest_file, 30, 20, $type); //JiNN list view mini thumbnails
 			
 			if($_POST[thumb]=='true')
 			{
 				if(!$_POST[thumbwidth]) $_POST[thumbwidth] = 10000;
 				if(!$_POST[thumbheight]) $_POST[thumbheight] = 10000;
 				$prefix='.thumb_01_';
-				adapt_size($file['tmp_name'],$dest_dir.$prefix.$file['name'], $_POST[thumbwidth], $_POST[thumbheight]);
+				$dest_file = match_extension($dest_dir.$prefix.$file['name'], $type);
+				process_and_save_image($file['tmp_name'], $dest_file, $_POST[thumbwidth], $_POST[thumbheight], $type);
 			}
 			
 			if(!$_POST[width]) $_POST[width] = 10000;
 			if(!$_POST[height]) $_POST[height] = 10000;
 			if( $w > $_POST[width] || $h > $_POST[height] )
 			{
-				adapt_size($file['tmp_name'],$dest_dir.$file['name'], $_POST[width], $_POST[height]);
+				$dest_file = match_extension($dest_dir.$file['name'], $type);
+				process_and_save_image($file['tmp_name'], $dest_file, $_POST[width], $_POST[height], $type);
+				$select_image_after_upload = match_extension($BASE_URL.$dirPathPost.'/'.$file['name'], $type);
 			}
 			else
 			{
-			   move_uploaded_file($file['tmp_name'], $dest_dir.$file['name']);	
+				$dest_file = match_extension($dest_dir.$file['name'], $type);
+				process_and_save_image($file['tmp_name'], $dest_file, $w, $h, $type);
+				$select_image_after_upload = match_extension($BASE_URL.$dirPathPost.'/'.$file['name'], $type);
 			}
+		 }
+		 //elseif: insert other filetypes here
+		 else //unknown filetype
+		 {
+			move_uploaded_file($file['tmp_name'], $dest_dir.$file['name']);	
 			chmod($dest_dir.$file['name'], 0666);
+			$select_other_after_upload = $BASE_URL.$dirPathPost.'/'.$file['name'];
 		 }
 	  }
 	  $clearUploads = true;
    }
 
    
-   function adapt_size($img,$dest_file, $nw, $nh) 
+   function process_and_save_image($img,$dest_file, $nw, $nh, $type) 
    {
 	  global $BASE_DIR, $BASE_URL;
 
@@ -148,7 +159,6 @@
 	  $img_resize = Image_Transform::factory(IMAGE_CLASS);
 	  $img_resize->load($path.$img_file);
 
-		//start new code
 	  $pw = (real)percent($nw, $w);
 	  $ph = (real)percent($nh, $h);
 
@@ -162,24 +172,24 @@
 		  $nh = round(unpercent($ph, $h));          
 		  $nw = round(unpercent($ph, $w)); 
 	  }
-	   // end new code
 	   
-	  /* replaced old faulty code
-	  if ($w > $h) 
-	  $nh = unpercent(percent($nw, $w), $h);          
-	  else if ($h > $w) 
-	  $nw = unpercent(percent($nh, $h), $w); 
-		*/
-		
-	  $img_resize->resize($nw, $nh);
-
-	  $img_resize->save($dest_file);
+	  if($w != $nw || $h != $nh)
+	  {
+		$img_resize->resize($nw, $nh);
+	  }
+	  $img_resize->save($dest_file, $type);
 	  $img_resize->free();
 
 	  chmod($dest_file, 0666);
    }
 
-   
+   function match_extension($filename, $type)
+   {
+		//change the file extension so it matches the filetype
+		$exploded = explode('.', $filename);
+		$exploded[count($exploded)-1] = $type;
+		return (implode('.', $exploded));
+   }
    
    function delete_folder($folder) 
    {
@@ -374,7 +384,7 @@
    <?php
    }
 }
-function show_unknown($img, $file, $info, $size) 
+function show_other($img, $file, $info, $size) 
    {
 	  global $BASE_DIR, $BASE_URL, $newPath, $extensions;
 
@@ -390,7 +400,7 @@ function show_unknown($img, $file, $info, $size)
 	  <table width="102" border="0" cellpadding="0" cellspacing="2">
 		 <tr> 
 			<td align="center" class="imgBorder" onMouseOver="pviiClassNew(this,'imgBorderHover')" onMouseOut="pviiClassNew(this,'imgBorder')">
-			   <a href="javascript:;" onClick="javascript:unknownSelected('<? echo $img_url; ?>');"><img src="<? echo $thumb_image; ?>" alt="<? echo $file; ?> - <? echo $filesize; ?>" border="0"></a></td>
+			   <a href="javascript:;" onClick="javascript:otherSelected('<? echo $img_url; ?>');"><img src="<? echo $thumb_image; ?>" alt="<? echo $file; ?> - <? echo $filesize; ?>" border="0"></a></td>
 		 </tr>
 		 <tr> 
 			<td><table width="100%" border="0" cellspacing="0" cellpadding="2">
@@ -568,8 +578,11 @@ function draw_table_header()
 	  function updateDir() 
 	  {
 		
-		<?php if($select_after_upload!='') : ?>
-			imageSelected("<?php echo $select_after_upload; ?>",0,0,0);
+		<?php if($select_image_after_upload!='') : ?>
+			imageSelected("<?php echo $select_image_after_upload; ?>",0,0,0);
+		<?php endif ?>
+		<?php if($select_other_after_upload!='') : ?>
+			otherSelected("<?php echo $select_other_after_upload; ?>");
 		<?php endif ?>
 		
 		var newPath = "<?php echo $newPath; ?>";
@@ -642,7 +655,7 @@ function refreshDirs()
 										  //topDoc.orginal_height.value = height;
 
 									}
-									function unknownSelected(filename) 
+									function otherSelected(filename) 
 									{
 										  var topDoc = window.top.document.forms[0];
 										  topDoc.f_url.value = filename;
@@ -770,7 +783,7 @@ function refreshDirs()
 									}
 									 else
 									 {
-										$unknown[$entry] = $img_file;
+										$other[$entry] = $img_file;
 									 }
 								 }
 								 elseif(is_dir($BASE_DIR.$img_file) && substr($entry,0,1) != '.') 
@@ -801,11 +814,11 @@ function refreshDirs()
 									show_image($images[$image_name]['file'], $image_name, $images[$image_name]['img_info'], $images[$image_name]['size']);
 									next($images);
 								 }
-								 for($i=0; $i<count($unknown); $i++) 
+								 for($i=0; $i<count($other); $i++) 
 								 {
-									$name = key($unknown);
-									show_unknown($unknown[$name]['file'], $name, $unknown[$name]['img_info'], $unknown[$name]['size']);
-									next($unknown);
+									$name = key($other);
+									show_other($other[$name]['file'], $name, $other[$name]['img_info'], $other[$name]['size']);
+									next($other);
 								 }
 								 draw_table_footer();
 							  }

@@ -7,6 +7,11 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.215k
+===========================
+Wed May 04 14:30:00 CET 2005
+- Filemanager plugin now converts images to the configured image_filetype. Fixed some small bugs.
+
 Version 0.8.215j
 ===========================
 Tue May 03 16:30:00 CET 2005

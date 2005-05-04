@@ -16,20 +16,30 @@
 			switch($filetype)
 			{
 			case 'all':
+			default:
 				$extensions['*'] = 1;
 				break;
-			case 'png':
+			case 'image':
 				$extensions['png'] = 1;
-				break;
-			case 'jpg':
 				$extensions['jpg']  = 1;
 				$extensions['jpeg'] = 1;
-				break;
-			case 'gif':
 				$extensions['gif'] = 1;
 				break;
 			}
 			return $extensions;
+		}
+		
+		function GD_type($type) //returns a filetype string that is compatible with the GD lib.
+		{
+		switch($type)
+			{
+			case 'jpg':
+				return 'jpeg';
+				break;
+			default:
+				return $type;
+				break;
+			}
 		}
 	}
 ?>
