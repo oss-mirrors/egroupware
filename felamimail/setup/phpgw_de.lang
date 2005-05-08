@@ -407,3 +407,15 @@ delete script	felamimail	de	Skript löschen
 Manage Folders	preferences	de	Ordner verwalten
 Manage EMailfilter / Vacation	preferences	de	Verwalten der EMailfilter und Abwesenheitsnotiz
 Header Lines	felamimail	de	Kopfzeilen
+if from contains	felamimail	de	wenn Von enthält
+if to contains	felamimail	de	wenn An enthält
+if subject contains	felamimail	de	wenn Betreff enthält
+if mail header	felamimail	de	wenn EMail Header enthält
+forward to address	felamimail	de	weiterleiten an Adresse
+send a reject message	felamimail	de	Ablehnungsemail senden
+discard message	felamimail	de	Nachricht verwerfen
+select folder	felamimail	de	Ordner auswählen
+if message size	felamimail	de	wenn Nachrichtengröße
+less than	felamimail	de	kleiner als
+greater than	felamimail	de	größer als
+kilobytes	felamimail	de	Kilobytes

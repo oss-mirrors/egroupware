@@ -29,7 +29,8 @@
 			'listScripts'		=> True,
 			'updateRules'		=> True,
 			'updateVacation'	=> True,
-			'saveVacation'		=> True
+			'saveVacation'		=> True,
+			'selectFolder'		=> True,
 		);
 
 		function uisieve()
@@ -277,32 +278,25 @@
 
 		function display_app_header()
 		{
-			if(!@is_object($GLOBALS['phpgw']->js))
-			{
-				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
-			}
 			if(preg_match('/^(vacation|filter)$/',get_var('editmode',array('GET'))))
 				$editMode	= get_var('editmode',array('GET'));
 			else
 				$editMode	= 'filter';
 
+			if(!@is_object($GLOBALS['phpgw']->js))
+			{
+				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+			}
 			$GLOBALS['phpgw']->js->validate_file('tabs','tabs');
-#			switch($_GET['menuaction'])
-#			{
-#				case 'felamimail.uisieve.editScript':
-#				case 'felamimail.uisieve.editRule':
-#				case 'felamimail.uisieve.updateRules':
-					$GLOBALS['phpgw']->js->validate_file('jscode','editProfile','felamimail');
-					$GLOBALS['phpgw']->js->set_onload("javascript:initAll('$editMode');");
-#					
-#					break;
-#			}
+			$GLOBALS['phpgw']->js->validate_file('jscode','editProfile','felamimail');
+			$GLOBALS['phpgw']->js->set_onload("javascript:initAll('$editMode');");
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 		}
 		
 		function displayRule($_scriptName, $_ruleID, $_ruleData)
 		{
+			#_debug_array($_ruleData);
 			// display the header
 			$this->display_app_header();
 
@@ -325,43 +319,50 @@
 			);
 			$this->t->set_var('url_back',$GLOBALS['phpgw']->link('/index.php',$linkData));
 
+			$linkData = array
+			(
+				'menuaction'	=> 'felamimail.uisieve.selectFolder',
+				'scriptname'	=> $_scriptName
+			);
+			$this->t->set_var('folder_select_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+
 			
 			if(is_array($_ruleData))
 			{
-			if($_ruleData['continue']) 
-				$this->t->set_var('continue_checked','checked');
-			if($_ruleData['keep']) 
-				$this->t->set_var('keep_checked','checked');
-			if($_ruleData['regexp']) 
-				$this->t->set_var('regexp_checked','checked');
-			$this->t->set_var('anyof_selected'.intval($_ruleData['anyof']),'selected');
-			$this->t->set_var('value_from',$_ruleData['from']);
-			$this->t->set_var('value_to',$_ruleData['to']);
-			$this->t->set_var('value_subject',$_ruleData['subject']);
-			$this->t->set_var('gthan_selected'.intval($_ruleData['gthan']),'selected');
-			$this->t->set_var('value_size',$_ruleData['size']);
-			$this->t->set_var('value_field',$_ruleData['field']);
-			$this->t->set_var('value_field_val',$_ruleData['field_val']);
-			$this->t->set_var('checked_action_'.$_ruleData['action'],'checked');
-			$this->t->set_var('value_'.$_ruleData['action'],$_ruleData['action_arg']);
+				if($_ruleData['continue']) 
+					$this->t->set_var('continue_checked','checked');
+				if($_ruleData['keep']) 
+					$this->t->set_var('keep_checked','checked');
+				if($_ruleData['regexp']) 
+					$this->t->set_var('regexp_checked','checked');
+				$this->t->set_var('anyof_selected'.intval($_ruleData['anyof']),'selected');
+				$this->t->set_var('value_from',$_ruleData['from']);
+				$this->t->set_var('value_to',$_ruleData['to']);
+				$this->t->set_var('value_subject',$_ruleData['subject']);
+				$this->t->set_var('gthan_selected'.intval($_ruleData['gthan']),'selected');
+				$this->t->set_var('value_size',$_ruleData['size']);
+				$this->t->set_var('value_field',$_ruleData['field']);
+				$this->t->set_var('value_field_val',$_ruleData['field_val']);
+				$this->t->set_var('checked_action_'.$_ruleData['action'],'checked');
+				$this->t->set_var('value_'.$_ruleData['action'],$_ruleData['action_arg']);
+				if($_ruleData['action'] == 'folder')
+				{
+					$this->t->set_var('folderName',$_ruleData['action_arg']);
+				}
 			}
 			$this->t->set_var('value_ruleID',$_ruleID);
 			
-			$bofelamimail		= CreateObject('felamimail.bofelamimail',$this->displayCharset);
-			$connectionStatus	= $bofelamimail->openConnection();
-			$folders = $bofelamimail->getFolderList(false);
-			#if($connectionStatus == 'True')
-			#{
-			#	$this->bofelamimail->closeConnection();
-			#}
+			#$bofelamimail		= CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			#$uiwidgets		= CreateObject('felamimail.uiwidgets');
+			#$connectionStatus	= $bofelamimail->openConnection();
+			#$folders = $bofelamimail->getFolderObjects(false);
 			
-			#_debug_array($folders);
-			foreach($folders as $folderName => $folderDisplayName)
-			{
-				$this->t->set_var('folderName',$folderName);
-				$this->t->set_var('folderDisplayName',$folderDisplayName);
-				$this->t->parse("folder_rows", 'folder', true); 
-			}
+			#foreach($folders as $folderName => $folderDisplayName)
+			#{
+			#	$this->t->set_var('folderName',$folderName);
+			#	$this->t->set_var('folderDisplayName',$folderDisplayName);
+			#	$this->t->parse("folder_rows", 'folder', true); 
+			#}
 			
 			// translate most of the parts
 			$this->translate();
@@ -419,7 +420,7 @@
 						$newRule[action]	= 'discard';
 						break;
 				}
-				
+
 				if($newRule[action])
 				{
 					$this->rules[$ruleID] = $newRule;
@@ -542,7 +543,7 @@
 						$this->t->set_var('ruleCSS','sieveRowInActive');
 					}
 					
-					$this->t->set_var('filter_text',$this->buildRule($rule));
+					$this->t->set_var('filter_text',htmlspecialchars($this->buildRule($rule),ENT_QUOTES,$GLOBALS['phpgw']->translation->charset()));
 					$this->t->set_var('ruleID',$ruleID);
 
 					$linkData = array
@@ -754,158 +755,6 @@
 			$this->sieve->close();
 		}
 		
-/*		function mainScreen()
-		{
-			// display the header
-			$this->display_app_header();
-			
-			// initialize the template
-			$this->t->set_file(array("filterForm" => "sieveForm.tpl"));
-			$this->t->set_block('filterForm','header');
-			$this->t->set_block('filterForm','scriptrow');
-			$this->t->set_block('filterForm','filterrow');
-			
-			// translate most of the parts
-			$this->translate();
-			
-			$linkData = array
-			(
-				'menuaction'	=> 'felamimail.uisieve.addScript'
-			);
-			$this->t->set_var('action_add_script',$GLOBALS['phpgw']->link('/index.php',$linkData));
-
-			if($this->sieve->listscripts())
-			{
-				foreach($this->sieve->scriptlist as $scriptID => $scriptName)
-				{
-					$this->t->set_var("scriptnumber",$scriptID);
-					$this->t->set_var("scriptname",$scriptName);
-
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uisieve.deleteScript',
-						'scriptname'	=> $scriptName
-					);
-					$this->t->set_var('link_deleteScript',$GLOBALS['phpgw']->link('/index.php',$linkData));
-					
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uisieve.editScript',
-						'scriptname'	=> $scriptName
-					);
-					$this->t->set_var('link_editScript',$GLOBALS['phpgw']->link('/index.php',$linkData));
-					
-					if($this->sieve->activescript == $scriptName)
-					{
-						$linkData = array
-						(
-							'menuaction'	=> 'felamimail.uisieve.deactivateScript',
-							'scriptname'	=> $scriptName
-						);
-						$this->t->set_var('lang_activate',lang('deactivate script'));
-					}
-					else
-					{
-						$linkData = array
-						(
-							'menuaction'	=> 'felamimail.uisieve.activateScript',
-							'scriptname'	=> $scriptName
-						);
-						$this->t->set_var('lang_activate',lang('activate script'));
-					}
-					$this->t->set_var('link_activateScript',$GLOBALS['phpgw']->link('/index.php',$linkData));
-
-					$this->t->parse('scriptrows','scriptrow',true);
-				}
-			}
-			else
-			{
-				$this->t->set_var("scriptrows",'');
-			}
-			if(!empty($this->scriptToEdit))
-			{
-				#$this->t->set_var("editScriptName",$this->scriptToEdit);
-				#$this->t->set_var("scriptContent",$this->scriptContent);
-				$listOfImages = array(
-					'up',
-					'down'
-				);
-				foreach ($listOfImages as $image)
-				{
-					$this->t->set_var('url_'.$image,$GLOBALS['phpgw']->common->image('felamimail',$image));
-				}
-				$linkData = array
-				(
-					'menuaction'	=> 'felamimail.uisieve.editRule'
-				);
-				$this->t->set_var('url_add_rule',$GLOBALS['phpgw']->link('/index.php',$linkData));
-
-				foreach ($this->rules as $ruleID => $rule)
-				{
-					$this->t->set_var('filter_status',lang($rule[status]));
-					if($rule[status] == 'ENABLED')
-					{
-						$this->t->set_var('ruleCSS','sieveRowActive');
-					}
-					else
-					{
-						$this->t->set_var('ruleCSS','sieveRowInActive');
-					}
-					
-					$this->t->set_var('filter_text',$this->buildRule($rule));
-					$this->t->set_var('ruleID',$ruleID);
-
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uisieve.editRule',
-						'ruleID'	=> $ruleID
-					);
-					$this->t->set_var('url_edit_rule',$GLOBALS['phpgw']->link('/index.php',$linkData));
-
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uisieve.increaseFilter',
-						'ruleID'	=> $ruleID
-					);
-					$this->t->set_var('url_increase',$GLOBALS['phpgw']->link('/index.php',$linkData));
-
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uisieve.decreaseFilter',
-						'ruleID'	=> $ruleID
-					);
-					$this->t->set_var('url_decrease',$GLOBALS['phpgw']->link('/index.php',$linkData));
-					
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uisieve.updateRules'
-					);
-					$this->t->set_var('action_rulelist',$GLOBALS['phpgw']->link('/index.php',$linkData));
-
-					$this->t->parse('filterrows','filterrow',true);
-				}
-			}
-			else
-			{
-				$this->t->set_var("editScriptName",'');
-				$this->t->set_var("scriptContent",'');
-			}
-	                $linkData = array
-	                (
-	                        'menuaction'    => 'felamimail.uisieve.saveScript'
-	                );
-			$this->t->set_var('formAction',$GLOBALS['phpgw']->link('/index.php',$linkData));
-	                $linkData = array
-	                (
-	                        'menuaction'    => 'felamimail.uisieve.mainScreen'
-	                );
-			$this->t->set_var('link_newScript',$GLOBALS['phpgw']->link('/index.php',$linkData));
-			
-			$this->t->pfp("out","header");
-			
-			$this->sieve->close();
-		}
-*/		
 		function restoreSessionData()
 		{
 			$sessionData = $GLOBALS['phpgw']->session->appsession('sieve_session_data');
@@ -914,6 +763,32 @@
 			$this->scriptToEdit	= $sessionData['sieve_scriptToEdit'];
 		}
 		
+		function selectFolder()
+		{
+			if(!@is_object($GLOBALS['phpgw']->js))
+			{
+				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+			}
+			$GLOBALS['phpgw']->js->validate_file('foldertree','foldertree');
+			$GLOBALS['phpgw']->js->validate_file('jscode','editSieveRule','felamimail');
+			$GLOBALS['phpgw']->common->phpgw_header();
+
+			$bofelamimail		= CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$uiwidgets		= CreateObject('felamimail.uiwidgets');
+			$connectionStatus	= $bofelamimail->openConnection();
+
+			$folderObjects = $bofelamimail->getFolderObjects(false);
+			$folderTree = $uiwidgets->createHTMLFolderJS
+			(
+				$folderObjects,
+				$this->mailbox,
+				lang('IMAP Server'),
+				$mailPreferences['username'].'@'.$mailPreferences['imapServerAddress'],
+				'setMoveToFolderName'
+                        );
+			print $folderTree;
+		}
+
 		function setMatchType (&$matchstr, $regex = false)
 		{
 			$match = lang('contains');
@@ -1007,6 +882,25 @@
 			$this->t->set_var("lang_script_name",lang('script name'));
 			$this->t->set_var("lang_script_status",lang('script status'));
 			$this->t->set_var("lang_delete_script",lang('delete script'));
+			$this->t->set_var("lang_check_message_against_next_rule_also",lang('check message against next rule also'));
+			$this->t->set_var("lang_keep_a_copy_of_the_message_in_your_inbox",lang('keep a copy of the message in your inbox'));
+			$this->t->set_var("lang_use_regular_expressions",lang('use regular expressions'));
+			$this->t->set_var("lang_match",lang('match'));
+			$this->t->set_var("lang_all_of",lang('all of'));
+			$this->t->set_var("lang_any_of",lang('any of'));
+			$this->t->set_var("lang_if_from_contains",lang('if from contains'));
+			$this->t->set_var("lang_if_to_contains",lang('if to contains'));
+			$this->t->set_var("lang_if_subject_contains",lang('if subject contains'));
+			$this->t->set_var("lang_if_message_size",lang('if message size'));
+			$this->t->set_var("lang_less_than",lang('less than'));
+			$this->t->set_var("lang_greater_than",lang('greater than'));
+			$this->t->set_var("lang_kilobytes",lang('kilobytes'));
+			$this->t->set_var("lang_if_mail_header",lang('if mail header'));
+			$this->t->set_var("lang_file_into",lang('file into'));
+			$this->t->set_var("lang_forward_to_address",lang('forward to address'));
+			$this->t->set_var("lang_send_reject_message",lang('send a reject message'));
+			$this->t->set_var("lang_discard_message",lang('discard message'));
+			$this->t->set_var("lang_select_folder",lang('select folder'));
 
 			$this->t->set_var("bg01",$GLOBALS['phpgw_info']["theme"]["bg01"]);
 			$this->t->set_var("bg02",$GLOBALS['phpgw_info']["theme"]["bg02"]);

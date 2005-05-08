@@ -154,3 +154,23 @@
 <!-- BEGIN tableViewHead -->
 <td>{tableHeadContent}</td>
 <!-- END tableViewHead -->
+
+<!-- BEGIN folderSelectTree -->
+<div id="divFolderTree" style="overflow:auto; width:380px; height:474px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;">
+	<table width=100% BORDER="0" style="table-layout:fixed;padding-left:2;">
+		<tr>
+			<td width="100%" valign="top" nowrap style="font-size:10px">
+				{folderTree}
+			</td>
+		</tr>
+		<tr>
+			<td width="100%" valign="bottom" nowrap style="font-size:10px">
+				<br>
+				<p align="center">
+				<small><a href="javascript: d.openAll();">÷ffne alle</a> | <a href="javascript: d.closeAll();">Schlieﬂe alle</a></small>
+				</p>
+			</td>
+		</tr>
+	</table>
+</div>
+<!-- END folderSelectTree -->

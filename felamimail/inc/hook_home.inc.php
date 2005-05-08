@@ -75,10 +75,8 @@
 		}	                    
 		else
 		{
-			$folderStatus	= $this->bofelamimail->getFolderStatus('INBOX');
-			$folderList	= $this->bofelamimail->getFolderObjects(true);
+			$folderList	= $this->bofelamimail->getFolderObjects(true, true);
 			#_debug_array($folderList);
-			#_debug_array($folderStatus);
 			$extra_data = '<table border="0" cellspacing="0" cellpading="0" width="100%">
 					<tr class="th">
 						<td>
@@ -93,11 +91,14 @@
 					<tr>';
 			foreach($folderList as $key => $value)
 			{
-				$folderStatus = $this->bofelamimail->getFolderStatus($key);
-				$messages	= $folderStatus[messages];
+				if(is_object($value->counter))
+				{
+					$messages	= $value->counter->messages;
+					$unseen		= $value->counter->unseen;
+					$recent		= $value->counter->recent;
+				}
 				if($messages == 0) $messages = '&nbsp;';
-				$unseen		= $folderStatus[unseen];
-				$recent		= $folderStatus[recent];
+
 				if($recent > 0)
 				{
 					$newMessages = "$unseen($recent)";
@@ -107,6 +108,7 @@
 					if($unseen == 0) $unseen = '&nbsp;';
 					$newMessages = "$unseen";
 				}
+				
 				
 				$linkData = array
 				(

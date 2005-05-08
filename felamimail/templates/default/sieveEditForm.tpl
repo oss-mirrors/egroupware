@@ -22,9 +22,9 @@ function SubmitForm(a)
 	</tr>
 	<tr CLASS="sieveRowActive">
 		<td>
-			<input TYPE="checkbox" NAME="continue" id="continue" VALUE="continue" {continue_checked}><label for="continue">Check message against next rule also</label><br>
-			<input TYPE="checkbox" NAME="keep" id="keep" VALUE="keep" {keep_checked}><label for="keep">Keep a copy of the message in your Inbox</label><br>
-			<input TYPE="checkbox" NAME="regexp" id="regexp" VALUE="regexp" {regexp_checked}><label for="regexp">Use regular expressions</label>
+			<input TYPE="checkbox" NAME="continue" id="continue" VALUE="continue" {continue_checked}><label for="continue">{lang_check_message_against_next_rule_also}</label><br>
+			<input TYPE="checkbox" NAME="keep" id="keep" VALUE="keep" {keep_checked}><label for="keep">{lang_keep_a_copy_of_the_message_in_your_inbox}</label><br>
+			<input TYPE="checkbox" NAME="regexp" id="regexp" VALUE="regexp" {regexp_checked}><label for="regexp">{lang_use_regular_expressions}</label>
 		</td>
 	</tr>
 	<tr>
@@ -36,47 +36,60 @@ function SubmitForm(a)
 		<td>
 			<table WIDTH="100%" CELLPADDING="2" CELLSPACING="1" style="border: 1px solid silver;">
 				<tr CLASS="th">
-					<td colspan="2">
+					<td style="width:30%;">
 						CONDITIONS:
 					</td>
-				</tr>
-				<tr CLASS="sieveRowActive">
-					<td NOWRAP="nowrap" rowspan="5">
-						Match
+					<td style="width:70%; text-align:left;">
+						{lang_match}
 						<select class="input_text" NAME="anyof">
-							<option VALUE="0" {anyof_selected0}> all of
-							<option VALUE="1" {anyof_selected4}> any of
+							<option VALUE="0" {anyof_selected0}> {lang_all_of}
+							<option VALUE="1" {anyof_selected4}> {lang_any_of}
 						</select>
 					</td>
+				</tr>
+				<tr CLASS="sieveRowActive">
 					<td NOWRAP="nowrap">
-						If message 'From:' contains: <input class="input_text" TYPE="text" NAME="from" SIZE="50" value="{value_from}">
+						{lang_if_from_contains}: 
+					</td>
+					<td>
+						<input class="input_text" TYPE="text" NAME="from" SIZE="50" value="{value_from}">
 					</td>
 				</tr>
 				<tr CLASS="sieveRowActive">
 					<td>
-						If message 'To:' contains: <input class="input_text" TYPE="text" NAME="to" SIZE="50" value="{value_to}">
+						{lang_if_to_contains}: 
+					</td>
+					<td>
+						<input class="input_text" TYPE="text" NAME="to" SIZE="50" value="{value_to}">
 					</td>
 				</tr>
 				<tr CLASS="sieveRowActive">
 					<td>
-						If message 'Subject:' contains: <input class="input_text" TYPE="text" NAME="subject" SIZE="50" value="{value_subject}">
+						{lang_if_subject_contains}: 
+					</td>
+					<td>
+						<input class="input_text" TYPE="text" NAME="subject" SIZE="50" value="{value_subject}">
 					</td>
 				</tr>
 				<tr CLASS="sieveRowActive">
 					<td>
-						If message size is
+						{lang_if_message_size}
+					</td>
+					<td>
 						<select class="input_text" NAME="gthan">
-							<option VALUE="0" {gthan_selected0}> less than
-							<option VALUE="1" {gthan_selected2}> greater than
+							<option VALUE="0" {gthan_selected0}> {lang_less_than}
+							<option VALUE="1" {gthan_selected2}> {lang_greater_than}
 						</select>
-						<input class="input_text" TYPE="text" NAME="size" SIZE="5" value="{value_size}"> KiloBytes
+						<input class="input_text" TYPE="text" NAME="size" SIZE="5" value="{value_size}"> {lang_kilobytes}
 					</td>
 				</tr>
 				<tr CLASS="sieveRowActive">
 					<td>
-						If mail header: 
+						{lang_if_mail_header}:
+					</td>
+					<td>
 						<input class="input_text" TYPE="text" NAME="field" SIZE="20" value="{value_field}"> 
-						contains: 
+						{lang_contains}:
 						<input class="input_text" TYPE="text" NAME="field_val" SIZE="30" value="{value_field_val}">
 					</td>
 				</tr>
@@ -97,34 +110,33 @@ function SubmitForm(a)
 					</td>
 				</tr>
 				<tr CLASS="sieveRowActive">
-					<td>
-						<input TYPE="radio" NAME="action" VALUE="folder" id="action_folder" {checked_action_folder}> File Into:
+					<td style="width:30%;">
+						<input TYPE="radio" NAME="action" VALUE="folder" id="action_folder" {checked_action_folder}> <label for="action_folder">{lang_file_into}:</label>
 					</td>
-					<td>
-						<select class="input_text" NAME="folder" onchange="document.getElementById('action_folder').checked = true;">
-							{folder_rows}
-						</select>
-					</td>
-				</tr>
-				<tr CLASS="sieveRowActive">
-					<td>
-						<input TYPE="radio" NAME="action" VALUE="address" id="action_address" {checked_action_address}> Forward to address:
-					</td>
-					<td>
-						<input class="input_text" TYPE="text" NAME="address" onchange="document.getElementById('action_address').checked = true;" SIZE="40" value="{value_address}">
+					<td style="width:70%;">
+						<input type="text" value="{folderName}" id="folderName" name="folder" style="width:250px;" onchange="document.getElementById('action_folder').checked = true;">
+						<a href="#" onclick="javascript:window.open('{folder_select_url}', 'windowName', 'width=400,height=500,toolbar=no,resizable=yes'); return false;">{lang_select_folder}...</a>
 					</td>
 				</tr>
 				<tr CLASS="sieveRowActive">
 					<td>
-						<input TYPE="radio" NAME="action" VALUE="reject" id="action_reject" {checked_action_reject}> Send a reject message:
+						<input TYPE="radio" NAME="action" VALUE="address" id="action_address" {checked_action_address}> <label for="action_address">{lang_forward_to_address}:</label>
 					</td>
 					<td>
-						<textarea class="input_text" NAME="reject" onchange="document.getElementById('action_reject').checked = true;" ROWS="3" COLS="40" WRAP="hard" TABINDEX="14">{value_reject}</textarea>
+						<input class="input_text" TYPE="text" NAME="address" style="width:250px;" onchange="document.getElementById('action_address').checked = true;" SIZE="40" value="{value_address}">
 					</td>
 				</tr>
 				<tr CLASS="sieveRowActive">
 					<td>
-						<input TYPE="radio" NAME="action" VALUE="discard" {checked_action_discard}> Discard the message.
+						<input TYPE="radio" NAME="action" VALUE="reject" id="action_reject" {checked_action_reject}> <label for="action_reject">{lang_send_reject_message}:</label>
+					</td>
+					<td>
+						<textarea class="input_text" NAME="reject" style="width:400px;" onchange="document.getElementById('action_reject').checked = true;" ROWS="3" COLS="40" WRAP="hard" TABINDEX="14">{value_reject}</textarea>
+					</td>
+				</tr>
+				<tr CLASS="sieveRowActive">
+					<td>
+						<input TYPE="radio" NAME="action" VALUE="discard" id="action_discard" {checked_action_discard}> <label for="action_discard">{lang_discard_message}</label>
 					</td>
 					<td>&nbsp;</td>
 				</tr>
@@ -144,7 +156,7 @@ function SubmitForm(a)
 						<a href="{url_back}">{lang_back}</a>
 					</td>
 					<td CLASS="options" style="text-align : right;">
-						<a CLASS="option" HREF="javascript:SubmitForm('save');" onmouseover="window.status='Save Changes';" onmouseout="window.status='';">Save Changes</a>
+						<a CLASS="option" HREF="javascript:SubmitForm('save');" onmouseover="window.status='Save Changes';" onmouseout="window.status='';">{lang_save}</a>
 					</td>
 				</tr>
 			</table>

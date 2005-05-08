@@ -220,139 +220,6 @@
 			$this->viewMainScreen();
 		}
 
-		function createHTMLFolderNew($_folders, $_selected, $_topFolderName, $_topFolderDescription)
-		{
-			$allFolders = array();
-			
-			// create a list of all folders, also the ones which are not subscribed
- 			foreach($_folders as $key => $obj)
-			{
-				$folderParts = explode($obj->delimiter,$key);
-				if(is_array($folderParts))
-				{
-					$partCount = count($folderParts);
-					$string = '';
-					for($i = 0; $i < $partCount-1; $i++)
-					{
-						if(!empty($string)) $string .= $obj->delimiter;
-						$string .= $folderParts[$i];
-						if(!$allFolders[$string])
-						{	
-							$allFolders[$string] = $obj;
-							unset($allFolders[$string]->name);
-							unset($allFolders[$string]->attributes);
-							unset($allFolders[$string]->counter);
-						}
-					}
-				}
-				$allFolders[$key] = $obj;
-			}
-
-			$folderImageDir = substr($GLOBALS['phpgw']->common->image('phpgwapi','foldertree_line.gif'),0,-19);
-			
-			// careful! "d = new..." MUST be on a new line!!!
-			$folder_tree_new = "<script type='text/javascript'>d = new dTree('d','".$folderImageDir."');d.config.inOrder=true;d.config.closeSameLevel=true;";
-			
-
-			// keep track of the last parent id
-			$parentStack	= array();
-			$counter	= 0;
-			$folder_name	= $_topFolderName;
-			$folder_title	= $_topFolderDescription;
-			$folder_icon 	= $folderImageDir."foldertree_base.gif";
-			// and put the current counter on top
-			array_push($parentStack, 0);
-			$parent = -1;
-			$folder_tree_new .= "d.add(0,-1,'$folder_name','javascript:void(0);','','','$folder_title');";
-			$counter++;
-			
-			#foreach($_folders as $key => $obj)
-			foreach($allFolders as $key => $obj)
-			{	
-				$folderParts = explode($obj->delimiter, $key);
-				//get rightmost folderpart
-				$value = array_pop($folderParts);
-				//count remaining folderparts
-				$countedDots = count($folderParts);
-
- 				if( @$obj->counter->unseen > 0 )
-				{
- 					$messageCount = "&nbsp;(".$obj->counter->unseen.")";
-				}
- 				else
- 				{
-					$messageCount = "";
-				}
-
-				// hihglight currently selected mailbox
-				if ($_selected == $key)
-				{
-					$folder_name = "<font style=\"background-color: #dddddd\">$value$messageCount</font>";
-					$openTo = $counter;
-				}
-				else
-				{
-					$folder_name = $value.$messageCount;
-				}
-
-				$folder_title = $value;
-				if ($key == 'INBOX')
-				{
-					$folder_icon = $folderImageDir."foldertree_felamimail_sm.png";
-					$folderOpen_icon = $folderImageDir."foldertree_felamimail_sm.png";
-				}
-				else
-				{
-					$folder_icon = $folderImageDir."foldertree_folder.gif";
-					$folderOpen_icon = '';
-				}
-
-				// we are on the same level								
-				if($countedDots == count($parentStack) -1)
-				{
-					// remove the last entry
-					array_pop($parentStack);
-					// get the parent
-					$parent = end($parentStack);
-					// and put the current counter on top
-					array_push($parentStack, $counter);
-				}
-				// we go one level deeper
-				elseif($countedDots > count($parentStack) -1)
-				{
-					// get the parent
-					$parent = end($parentStack);
-					array_push($parentStack, $counter);
-				}
-				// we go some levels up
-				elseif($countedDots < count($parentStack))
-				{
-					$stackCounter = count($parentStack);
-					while(count($parentStack) > $countedDots)
-					{
-						array_pop($parentStack);
-					}
-					$parent = end($parentStack);
-					// and put the current counter on top
-					array_push($parentStack, $counter);
-				}
-
-				// some special handling for the root icon
-				// the first icon requires $parent to be -1
-				if($parent == '')
-					$parent = 0;
-				
-				// Node(id, pid, name, url, urlClick, urlOut, title, target, icon, iconOpen, open) {
-				$folder_tree_new .= "d.add($counter,$parent,'$folder_name','#','document.messageList.mailbox.value=\'$key\'; document.messageList.submit();','','$key','','$folder_icon','$folderOpen_icon');\n";
-				$counter++;
-			}
-
-			$folder_tree_new.= "document.write(d);
-			d.openTo('$openTo','true');
-			</script>";
-			
-			return $folder_tree_new;
-		}
 
 		function deleteMessage()
 		{
@@ -514,6 +381,7 @@
 			$preferences		= $bopreferences->getPreferences();
 			$bofilter		= CreateObject('felamimail.bofilter');
 			$mailPreferences	= $bopreferences->getPreferences();
+			$uiwidgets		= CreateObject('felamimail.uiwidgets');
 
 			$urlMailbox = urlencode($this->mailbox);
 			
@@ -1077,16 +945,18 @@
 			$this->t->parse('status_row','status_row_tpl',True);
 			
 			$folderObjects = $this->bofelamimail->getFolderObjects(true, false);
-			$folder_tree_new = $this->createHTMLFolderNew
+			$folderTree = $uiwidgets->createHTMLFolder
 			(
 				$folderObjects, 
 				$this->mailbox, 
-				'IMAP Server', 
-				$mailPreferences['username'].'@'.$mailPreferences['imapServerAddress']
+				lang('IMAP Server'), 
+				$mailPreferences['username'].'@'.$mailPreferences['imapServerAddress'],
+				'messageList',
+				'mailbox'
 			);
 
 			$this->t->set_var('current_mailbox',$current_mailbox);
-			$this->t->set_var('folder_tree',$folder_tree_new);
+			$this->t->set_var('folder_tree',$folderTree);
 
 			$this->t->set_var('options_folder',$options_folder);
 			
@@ -1136,28 +1006,38 @@
 			
 		}
 
-function array_merge_replace( $array, $newValues ) {
-   foreach ( $newValues as $key => $value ) {
-       if ( is_array( $value ) ) {
-               if ( !isset( $array[ $key ] ) ) {
-               $array[ $key ] = array();
-           }
-           $array[ $key ] = $this->array_merge_replace( $array[ $key ], $value );
-       } else {
-           if ( isset( $array[ $key ] ) && is_array( $array[ $key ] ) ) {
-               $array[ $key ][ 0 ] = $value;
-           } else {
-               if ( isset( $array ) && !is_array( $array ) ) {
-                   $temp = $array;
-                   $array = array();
-                   $array[0] = $temp;
-               }
-               $array[ $key ] = $value;
-           }
-       }
-   }
-   return $array;
-}
+		function array_merge_replace( $array, $newValues ) 
+		{
+			foreach ( $newValues as $key => $value ) 
+			{
+				if ( is_array( $value ) ) 
+				{
+					if ( !isset( $array[ $key ] ) ) 
+					{
+						$array[ $key ] = array();
+					}
+					$array[ $key ] = $this->array_merge_replace( $array[ $key ], $value );
+				} 
+				else 
+				{
+					if ( isset( $array[ $key ] ) && is_array( $array[ $key ] ) ) 
+					{
+						$array[ $key ][ 0 ] = $value;
+					} 
+					else 
+					{
+						if ( isset( $array ) && !is_array( $array ) ) 
+						{
+							$temp = $array;
+							$array = array();
+							$array[0] = $temp;
+						}
+						$array[ $key ] = $value;
+					}
+				}
+			}
+			return $array;
+		}
 
 		/* Returns a string showing the size of the message/attachment */
 		function show_readable_size($bytes, $_mode='short')

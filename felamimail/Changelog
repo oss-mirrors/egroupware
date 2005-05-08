@@ -1,5 +1,7 @@
 Version xxx
 
+- new folder select window for Sieve filter
+- displaying of subfolders with hyphen was broken Bug #1195101
 - patch from Regis Regis Leroy to display counters on folders and improve
   folder handling
 - improved folder management. You can create now subfolders in the top
