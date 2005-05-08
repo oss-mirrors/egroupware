@@ -1,5 +1,7 @@
 Version xxx
 
+- patch from Regis Regis Leroy to display counters on folders and 
+  improved folder handling
 - new folder select window for Sieve filter
 - displaying of subfolders with hyphen was broken Bug #1195101
 - patch from Regis Regis Leroy to display counters on folders and improve
