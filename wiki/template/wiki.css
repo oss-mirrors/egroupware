@@ -6,7 +6,13 @@ body
     margin-right:     3%;
     margin-left:      3%; 
   }
-a.wiki {
+
+  div,td
+  {
+	  font-size:12px;
+  }
+  
+  a.wiki {
 	background: transparent;
 	text-decoration: underline;
 }
