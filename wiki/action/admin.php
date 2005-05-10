@@ -106,10 +106,15 @@ if($locking)                            // Locking/unlocking pages.
 }
 else if($blocking)                      // Blocking/unblocking IP addrs.
 {
-  if(empty($Block) && empty($Unblock))  // Not saving results; display form.
+  if($Block || $Unblock)                // Block/unblock an address group.
   {
-    $GLOBALS['phpgw']->common->phpgw_header();
-	
+    if(!empty($Block))
+      { $pagestore->rateBlockAdd($address); }
+    else if(!empty($Unblock))
+      { $pagestore->rateBlockRemove($address); }
+  }
+  // display form.
+  {
 	$html = '';
     if($RatePeriod == 0)
     {
@@ -125,15 +130,6 @@ else if($blocking)                      // Blocking/unblocking IP addrs.
     $html = $html . html_rate_end();
 
     template_admin(array('html' => $html));
-  }
-  else                                  // Block/unblock an address group.
-  {
-    if(!empty($Block))
-      { $pagestore->rateBlockAdd($address); }
-    else if(!empty($Unblock))
-      { $pagestore->rateBlockRemove($address); }
-
-    header('Location: ' . $AdminScript);
   }
 }
 else                                    // Display main menu for admin.
