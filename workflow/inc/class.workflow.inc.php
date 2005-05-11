@@ -39,7 +39,7 @@
 				die("Please upgrade this application to be able to use it");
 			}
 
-			$this->t			= $GLOBALS['phpgw']->template;
+			$this->t		= $GLOBALS['phpgw']->template;
 			$this->wf_p_id		= (int)get_var('p_id', 'any', 0);
 			$this->start		= (int)get_var('start', 'GET', 0);
 			$this->search_str	= get_var('find', 'any', '');
@@ -76,30 +76,32 @@
 				$start_stop = '';
 			}
 			$this->t->set_var(array(
-				'proc_name'				=> $proc_info['wf_name'],
-				'version'				=> $proc_info['wf_version'],
+				'proc_name'			=> $proc_info['wf_name'],
+				'version'			=> $proc_info['wf_version'],
 				'img_validity'			=> $GLOBALS['phpgw']->common->image('workflow', $dot_color.'_dot'),
 				'alt_validity'			=> $alt_validity,
 				'start_stop'			=> $start_stop,
 				'link_admin_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $proc_info['wf_p_id']),
 				'img_activity'			=> $GLOBALS['phpgw']->common->image('workflow', 'Activity'),
-				'link_admin_processes'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&p_id='. $proc_info['wf_p_id']),
+				'link_admin_processes'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&p_id='. $proc_info['wf_p_id']),
 				'img_change'			=> $GLOBALS['phpgw']->common->image('workflow', 'change'),
 				'link_admin_shared_source'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $proc_info['wf_p_id']),
-				'img_code'				=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
+				'img_code'			=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
 				'link_admin_export'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.workflow.export&p_id='. $proc_info['wf_p_id']),
 				'link_admin_roles'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form&p_id='. $proc_info['wf_p_id']),
-				'img_roles'				=> $GLOBALS['phpgw']->common->image('workflow', 'roles'),
+				'img_roles'			=> $GLOBALS['phpgw']->common->image('workflow', 'roles'),
 				'link_graph'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.show_graph&p_id=' . $proc_info['wf_p_id']),
 				'img_process'			=> $GLOBALS['phpgw']->common->image('workflow', 'Process'),
 				'link_save_process'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.save_process&id='. $proc_info['wf_p_id']),
-				'img_save'				=> $GLOBALS['phpgw']->common->image('workflow', 'save'),
-				'link_monitor_process'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorprocesses.form&filter_process='. $proc_info['wf_p_id']),
-				'img_process'			=> $GLOBALS['phpgw']->common->image('workflow', 'Process'),
+				'img_save'			=> $GLOBALS['phpgw']->common->image('workflow', 'save'),
+				'link_monitor_process'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorprocesses.form&filter_process='. $proc_info['wf_p_id']),
+				'img_monitor_process'		=> $GLOBALS['phpgw']->common->image('workflow', 'monitorprocess'),
 				'link_monitor_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitoractivities.form&filter_process='. $proc_info['wf_p_id']),
-				'img_activity'			=> $GLOBALS['phpgw']->common->image('workflow', 'Activity'),
-				'link_monitor_instances'=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $proc_info['wf_p_id']),
-				'img_instance'			=> $GLOBALS['phpgw']->common->image('workflow', 'Instance'),
+				'img_monitor_activity'		=> $GLOBALS['phpgw']->common->image('workflow', 'monitoractivity'),
+				'link_monitor_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $proc_info['wf_p_id']),
+				'img_monitor_instance'		=> $GLOBALS['phpgw']->common->image('workflow', 'monitorinstance'),
+				'link_monitor_workitems'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $proc_info['wf_p_id']),
+				'img_monitor_workitems'		=> $GLOBALS['phpgw']->common->image('workflow', 'monitor')
 
 			));
 
@@ -107,30 +109,30 @@
 			return $this->t->parse('proc_bar', 'proc_bar_tpl');
 		}
 
-		function act_icon($type)
+		function act_icon($type, $interactive)
 		{
 			switch($type)
 			{
 				case 'activity':
-					$ic = "mini_rectangle.gif";
+					$ic = "mini_".(($interactive == 'y')? 'blue_':'')."rectangle.gif";
 					break;
 				case 'switch':
-					$ic = "mini_diamond.gif";
+					$ic = "mini_".(($interactive == 'y')? 'blue_':'')."diamond.gif";
 					break;
 				case 'start':
-					$ic="mini_circle.gif";
+					$ic="mini_".(($interactive == 'y')? 'blue_':'')."circle.gif";
 					break;
 				case 'end':
-					$ic='mini_dbl_circle.gif';
+					$ic="mini_".(($interactive == 'y')? 'blue_':'')."dbl_circle.gif";
 					break;
 				case 'split':
-					$ic='mini_triangle.gif';
+					$ic="mini_".(($interactive == 'y')? 'blue_':'')."triangle.gif";
 					break;
 				case 'join':
-					$ic='mini_inv_triangle.gif';
+					$ic="mini_".(($interactive == 'y')? 'blue_':'')."inv_triangle.gif";
 					break;
 				case 'standalone':
-					$ic='mini_hexagon.gif';
+					$ic="mini_".(($interactive == 'y')? 'blue_':'')."hexagon.gif";
 					break;
 			}
 			return '<img src="'. $GLOBALS['phpgw']->common->image('workflow', $ic) .'" alt="'. lang($type) .'" title="'. lang($type) .'" />';
@@ -210,7 +212,7 @@
 					break;
 			}
 			$complete_path = GALAXIA_PROCESSES . SEP . $proc_name . SEP . 'code' . SEP . $path;
-			if (!$file_size = filesize($complete_path)) return '';
+                        if (!$file_size = filesize($complete_path)) return '';
 			$fp = fopen($complete_path, 'r');
 			$data = fread($fp, $file_size);
 			fclose($fp);
@@ -219,8 +221,8 @@
 
 		function save_source($proc_name, $act_name, $type, $source)
 		{
-			// in case code was filtered
-			if (!$source) $source = @$GLOBALS['egw_unset_vars']['_POST[source]'];
+                       // in case code was filtered
+                       if (!$source) $source = @$GLOBALS['egw_unset_vars']['_POST[source]'];
 
 			switch($type)
 			{

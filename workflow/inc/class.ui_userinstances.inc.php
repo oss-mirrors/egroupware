@@ -221,7 +221,7 @@
 					'status'			=> $instance['wf_status'],
 					'wf_procname'			=> $instance['wf_procname'],
 					'version'			=> $instance['wf_version'],
-					'act_icon'			=> $this->act_icon($instance['wf_type']),
+					'act_icon'			=> $this->act_icon($instance['wf_type'],$instance['wf_is_interactive']),
 					'name'				=> $instance['wf_name'],
 					'user'				=> $fname_user . ' ' . $lname_user,
 					'act_status'		=> $instance['wf_act_status'],

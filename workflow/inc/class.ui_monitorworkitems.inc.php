@@ -97,7 +97,7 @@
 					'wi_id'				=> $workitem['wf_item_id'],
 					'wi_wf_procname'	=> $workitem['wf_procname'],
 					'wi_version'		=> $workitem['wf_version'],
-					'act_icon'			=> $this->act_icon($workitem['wf_type']),
+					'act_icon'			=> $this->act_icon($workitem['wf_type'],$workitem['wf_is_interactive']),
 					'wi_actname'		=> $workitem['wf_act_name'],
 					'wi_adm_inst_href'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $workitem['wf_instance_id']),
 					'wi_inst_id'		=> $workitem['wf_instance_id'],

@@ -110,7 +110,7 @@
 					$this->t->set_var(array(
 						'act_process'				=> $activity['wf_procname'],
 						'act_process_version'		=> $activity['wf_version'],
-						'act_icon'					=> $this->act_icon($activity['wf_type']),
+						'act_icon'					=> $this->act_icon($activity['wf_type'],$activity['wf_is_interactive']),
 						'act_href'					=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $activity['wf_p_id'] .'&activity_id='. $activity['wf_activity_id']),
 						'act_name'					=> $activity['wf_name'],
 						'act_type'					=> $activity['wf_type'],

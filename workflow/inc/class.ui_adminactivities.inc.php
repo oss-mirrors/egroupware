@@ -33,10 +33,11 @@
 			$this->process_manager	= CreateObject('phpgwapi.workflow_processmanager');
 			$this->activity_manager	= CreateObject('phpgwapi.workflow_activitymanager');
 			$this->role_manager		= CreateObject('phpgwapi.workflow_rolemanager');
+
 		}
 
 		function form()
-		{
+		{		 
 			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Admin Process Activities');
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
@@ -308,7 +309,7 @@
 					'act_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&p_id='. $this->wf_p_id .'&find='. $find .'&where='. $where .'&sort_mode='. $this->sort_mode .'&activity_id='. $activity['wf_activity_id']),
 					'act_name'			=> $activity['wf_name'],
 					'no_roles'			=> ($activity['wf_roles'] < 1)? '<small>('.lang('no roles').')</small>' : '',
-					'act_icon'			=> $this->act_icon($activity['wf_type']),
+					'act_icon'			=> $this->act_icon($activity['wf_type'],$activity['wf_is_interactive']),
 					'act_inter_checked'	=> ($activity['wf_is_interactive'] == 'y')? 'checked="checked"' : '',
 					'act_route_checked'	=> ($activity['wf_is_autorouted'] == 'y')? 'checked="checked"' : '',
 					'act_href_code'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $this->wf_p_id .'&activity_id='. $activity['wf_activity_id']),

@@ -29,7 +29,7 @@
 				'wi_orderId'	=> $wi['orderId'],
 				'wi_wf_procname'	=> $wi['wf_procname'],
 				'wi_version'	=> $wi['version'],
-				'act_icon'		=> $this->act_icon($wi['type']),
+				'act_icon'		=> $this->act_icon($wi['type'],$wi['wf_is_interactive']),
 				'wi_name'		=> $wi['name'],
 				'wi_user'		=> $fname . ' ' . $lname,
 				'wi_started'	=> $GLOBALS['phpgw']->common->show_date($wi['started']),

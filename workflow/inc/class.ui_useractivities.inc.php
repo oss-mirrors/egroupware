@@ -87,7 +87,7 @@
 				$this->t->set_var(array(
 					'act_wf_procname'		=> $activity['wf_procname'],
 					'act_proc_version'	=> $activity['wf_version'],
-					'act_icon'			=> $this->act_icon($activity['wf_type']),
+					'act_icon'			=> $this->act_icon($activity['wf_type'],$activity['wf_is_interactive']),
 					'act_name'			=> $act_name,
 					'run_act'			=> $arrow,
 					'act_instances'		=> $activity['wf_instances'],
