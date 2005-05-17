@@ -1,0 +1,137 @@
+*** Must include these ***
+
+- 1. Automatic assignment of unique registration ID every time a new document is uploaded/created
+
+- 2. Ability to add other fields associated with that ID
+  (Authors/Description/Project/etc) (Probably in a new table that also contains
+  the sequence ID)
+
+- 3. Related to the first two, it would be useful to have the flexibility of
+  having a document ID that was not only numerical.
+
+- 4. Ability to view those fields in the document list (the document id and the
+  fields from #2)
+
+- 5. Ability to replace a document without changing the registration information
+  (for maintaining multiple versions of binary documents
+  (word/excel/powerpoint/etc).
+
+
+
+
+
+
+*** Basic Filemanager functionalities ***
+
+- Create/Delete folders
+
+- Copy/Move/Create(touch)/Delete files
+
+- Upload/Download Files
+
+- Clipboard functions (Cut,Copy,Paste)
+
+- Compression/Decompression (zip)
+
+- File sharing between users and groups
+
+- Trash bin/Lixeira
+
+
+- Personal Preferences
+	- Show/Hide file extensions
+
+- Search files/folders
+	- can search only in a field, in a list of fields or in all fields
+	- search in root or in subfolders only
+	- fields: file name, file id, comments.
+
+- Quota for users and for groups
+	- A quota given for a user have precedence for a quota given for the groups
+		of the user. If the user is in many groups, the biggest quota will be used.
+	- Old files in version system can or cannot count on the quota, depending on
+		a flag set in the management panel.
+
+
+- Files information:
+	- type (MIME Type)
+	- size
+	- modification time
+	- Owner
+	- Creator and Modificators history (the history will be part of the Version
+		System)
+	
+- Aditional files information
+	- Comments
+	- Proper single ID (numeric/non-numeric ID), automatically or manually
+		attributed to files / folders when they are created. This ID is set by the
+		filemanager's administrators.
+	- Non-numeric id example given:
+			S-TTX-0001
+		  S-TTX-0002
+		  S-TTX-0003
+			S-XYY-0001
+			S-XYY-0002
+			R-TTX-0001
+
+			(must define here the pattern for automatic creation of ids (will be
+			based on file type? size?). The manager shall be able to change the id
+			pattern using a string or something alike (example:
+			"S-{FILETYPE3}-{NUMERICINC4}"))
+			
+
+	- Custom fields, created by filemanager's administrator in the management
+		section, value set by owner of the file. This can have textual,numeric,date
+		formats. These fields can be valid to all files or instead associated with
+		the file type.
+	
+
+- Folders information:
+	- size (how much space it takes)
+	- how much items it haves (files / subfolders, in the current level and all
+		sublevels)
+
+- Version system
+	- Preference field: version limit (int). If vlimit==0 the Version System will
+		be disabled (as well as the modificators history of files).
+	- Every time someone save a file with the same name in same directory, we
+		will automatically take the original one rename it as something-VRSX and
+		hide it. Where X will be a number from 1 to that version limit. 
+	- Restore old versions functions, display "history" functions
+
+- Interface requirements
+	- Small icons with details style
+	- Ordering files by one field
+	- Display fields: administrator can set default displayed fields.
+	                  user can change the fields he wants to see
+										These changes are global for the user; no local 
+										                                          (folder) changes.
+
+
+
+*** Previewed extensions (will not be implemented, but the system shall be
+                                              prepared to be extended to it) ***
+
+- WEBDAV Compatibility
+
+- Symbolic link compatibility
+	- Implemented using internal egroupware database. Will not use UNIX symbolic
+		links
+	- Any change on the linked file (rename,change ownership,change directory)
+		will NOT break the link.
+
+- Compression/Decompression (other formats than zip)
+
+*** Ideas for the future - (just ideas, not to be implemented) ***
+
+- Image Thumbnails
+
+- Extended File Properties (for instance, id tag info on mp3 files, etc)
+
+- Keyboard shortcuts
+
+- More than one visualization method (dynamically made, dhtml), like Windows
+	Explorer. For instance, large icons, small icons or detailed list
+
+- User can "bookmark" files/folders, and links to these files/folders will
+	appear in the "My Files" or "Important Files" folder.
