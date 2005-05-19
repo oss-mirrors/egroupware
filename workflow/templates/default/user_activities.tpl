@@ -5,7 +5,7 @@
 <table style="border: 1px solid black;width:100%;">
 	<tr class="th">
 		<td colspan="3" style="font-size: 120%; font-weight:bold">
-			{lang_List_of_processes}
+			{lang_List_of_activities}
 		</td>
 	</tr>
 	<tr class="th" style="font-weight:bold">
