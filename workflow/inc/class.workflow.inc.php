@@ -32,7 +32,7 @@
 		function workflow()
 		{
 			// check version
-			if ($GLOBALS['phpgw_info']['apps']['workflow']['version'] != '1.0.1')
+			if ($GLOBALS['phpgw_info']['apps']['workflow']['version'] != '1.1.00.000')
 			{
 				$GLOBALS['phpgw']->common->phpgw_header();
 				echo parse_navbar();
@@ -142,17 +142,17 @@
 		{
 			$this->t->set_file('monitor_stats_tpl', 'monitor_stats.tpl');
 			$this->t->set_var(array(
-				'processes'				=> $stats['processes'],
+				'processes'			=> $stats['processes'],
 				'active_processes'		=> $stats['active_processes'],
 				'running_processes'		=> $stats['running_processes'],
-				'href_active_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=active'),
+				'href_active_instances'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=active'),
 				'active_instances'		=> $stats['active_instances'],
 				'href_completed_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=completed'),
-				'completed_instances'	=> $stats['completed_instances'],
+				'completed_instances'		=> $stats['completed_instances'],
 				'href_aborted_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=aborted'),
 				'aborted_instances'		=> $stats['aborted_instances'],
 				'href_exception_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=exception'),
-				'exception_instances'	=> $stats['exception_instances'],
+				'exception_instances'		=> $stats['exception_instances'],
 			));
 			$this->translate_template('monitor_stats_tpl');
 			return $this->t->parse('monitor_stats', 'monitor_stats_tpl');
@@ -246,11 +246,10 @@
 
 		function export()
 		{
-			$this->process_manager	= CreateObject('phpgwapi.workflow_processmanager');
+			$this->process_manager	= CreateObject('workflow.workflow_processmanager');
 
 			// retrieve process info
 			$proc_info = $this->process_manager->get_process($this->wf_p_id);
-
 			$filename = $proc_info['wf_normalized_name'].'.xml';
 			$out = $this->process_manager->serialize_process($this->wf_p_id);
 			$mimetype = 'application/xml';

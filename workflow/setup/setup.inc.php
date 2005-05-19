@@ -9,22 +9,30 @@
 	*  option) any later version.                                              *
 	\**************************************************************************/
 
-	/* $Id$ */
-
 	/* Basic information about this app */
-	$setup_info['workflow']['name']      = 'workflow';
-	$setup_info['workflow']['title']     = 'Workflow management';
-	$setup_info['workflow']['version']   = '1.0.1';
-	$setup_info['workflow']['app_order'] = 10;
-	$setup_info['workflow']['enable']    = 1;
-
-	$setup_info['workflow']['author'] = 'Ported from tikiwiki';
-	$setup_info['workflow']['note']   = 'Workflow engine';
-	$setup_info['workflow']['license']  = 'GPL';
-	$setup_info['workflow']['description'] = 'Workflow management';
-	$setup_info['workflow']['maintainer'] = 'Alejandro Pedraza';
-	$setup_info['workflow']['maintainer_email'] = 'alpeb AT users.sourceforge DOT net';
-	$setup_info['workflow']['tables'] = array('egw_wf_activities', 'egw_wf_activity_roles', 'egw_wf_instance_activities', 'egw_wf_instance_comments', 'egw_wf_instances', 'egw_wf_processes', 'egw_wf_roles', 'egw_wf_transitions', 'egw_wf_user_roles', 'egw_wf_workitems');
+	$setup_info['workflow']['name']			= 'workflow';
+	$setup_info['workflow']['title']		= 'Workflow management';
+	$setup_info['workflow']['version']		= '1.1.00.000';
+	$setup_info['workflow']['app_order']		= 10;
+	$setup_info['workflow']['enable']		= 1;
+	$setup_info['workflow']['author']		= 'Ported from tikiwiki';
+	$setup_info['workflow']['note']			= 'Workflow engine';
+	$setup_info['workflow']['license']		= 'GPL';
+	$setup_info['workflow']['description']		= 'Workflow management';
+	$setup_info['workflow']['maintainer']		= 'Regis Leroy';
+	$setup_info['workflow']['maintainer_email']	= 'regis.leroy AT glconseil DOT com';
+	$setup_info['workflow']['tables']		= array(
+								'egw_wf_activities', 
+								'egw_wf_activity_roles', 
+								'egw_wf_instance_activities', 
+								'egw_wf_instances', 
+								'egw_wf_processes', 
+								'egw_wf_roles', 
+								'egw_wf_instance_supplements', 
+								'egw_wf_transitions', 
+								'egw_wf_user_roles', 
+								'egw_wf_workitems'
+							);
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['workflow']['hooks'][] = 'about';
@@ -37,9 +45,10 @@
 	$setup_info['workflow']['hooks'][] = 'sidebox_menu';
 	$setup_info['workflow']['hooks'][] = 'acl_manager';
 
-	/* Dependencies for this app to work */
+	/* Dependencies for this app to work */ 
 	$setup_info['workflow']['depends'][] = array(
 		'appname' => 'phpgwapi',
 		'versions' => Array('1.0.1')
 	);
+	
 ?>
