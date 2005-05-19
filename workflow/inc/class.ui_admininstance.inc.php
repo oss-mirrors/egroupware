@@ -31,9 +31,9 @@
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 
-			$this->instance_manager	= CreateObject('phpgwapi.workflow_instancemanager');
-			$this->process_manager	= CreateObject('phpgwapi.workflow_processmanager');
-			$this->activity_manager	= CreateObject('phpgwapi.workflow_activitymanager');
+			$this->instance_manager	= CreateObject('workflow.workflow_instancemanager');
+			$this->process_manager	= CreateObject('workflow.workflow_processmanager');
+			$this->activity_manager	= CreateObject('workflow.workflow_activitymanager');
 		}
 
 		function form()

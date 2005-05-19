@@ -13,7 +13,7 @@
 		function ui_userinstances()
 		{
 			parent::workflow();
-			$this->GUI	= CreateObject('phpgwapi.workflow_gui');
+			$this->GUI	= CreateObject('workflow.workflow_gui');
 		}
 
 		function form()

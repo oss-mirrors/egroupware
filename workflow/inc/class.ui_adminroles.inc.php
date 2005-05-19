@@ -27,9 +27,9 @@
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 
-			$this->process_manager	= CreateObject('phpgwapi.workflow_processmanager');
-			$this->activity_manager	= CreateObject('phpgwapi.workflow_activitymanager');
-			$this->role_manager		= CreateObject('phpgwapi.workflow_rolemanager');
+			$this->process_manager	= CreateObject('workflow.workflow_processmanager');
+			$this->activity_manager	= CreateObject('workflow.workflow_activitymanager');
+			$this->role_manager	= CreateObject('workflow.workflow_rolemanager');
 			
 		}
 

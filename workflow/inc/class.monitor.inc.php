@@ -32,7 +32,7 @@
 				}
 			}
 
-			$this->process_monitor	= CreateObject('phpgwapi.workflow_processmonitor');
+			$this->process_monitor	= CreateObject('workflow.workflow_processmonitor');
 			$this->all_processes	= $this->process_monitor->monitor_list_processes(0, -1, 'wf_name__desc', '', '');
 			$this->all_activities	= $this->process_monitor->monitor_list_activities(0, -1, 'wf_name__desc', '', '');
 			$this->filter_process	= get_var('filter_process', 'any', '');

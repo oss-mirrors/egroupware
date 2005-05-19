@@ -15,8 +15,8 @@
 		function run_activity()
 		{
 			parent::workflow();
-			$this->base_activity	= CreateObject('phpgwapi.workflow_baseactivity');
-			$this->process			= CreateObject('phpgwapi.workflow_process');
+			$this->base_activity	= CreateObject('workflow.workflow_baseactivity');
+			$this->process		= CreateObject('workflow.workflow_process');
 		}
 
 		function go($activity_id=0, $iid=0, $auto=0)
@@ -39,7 +39,7 @@
 			// instantiate instance class, but before set some global variables needed by it
 			$GLOBALS['__activity_completed'] = false;
 			$GLOBALS['user'] = $GLOBALS['phpgw_info']['user']['account_id'];
-			$instance = CreateObject('phpgwapi.workflow_instance');
+			$instance = CreateObject('workflow.workflow_instance');
 
 			// load roles
 			$act_roles = $activity->getRoles();
