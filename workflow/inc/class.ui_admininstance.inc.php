@@ -113,7 +113,7 @@
 			foreach ($users as $user)
 			{
 				$this->t->set_var(array(
-					'select_owner_selected'	=> ($user['account_id'] == $instance['owner'])? 'selected="selected"' : '',
+					'select_owner_selected'	=> ($user['account_id'] == $instance['wf_owner'])? 'selected="selected"' : '',
 					'select_owner_value'	=> $user['account_id'],
 					'select_owner_name'		=> $user['account_firstname'] . ' ' . $user['account_lastname'],
 				));
