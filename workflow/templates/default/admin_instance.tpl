@@ -66,7 +66,7 @@
 				<td>{inst_act_status}</td>
 				<td>
 					<select name="acts[{inst_act_id}]">
-					<option value="*" value="*" {inst_act_star_selected}>*</option>
+					<option value="*" {inst_act_star_selected}>*</option>
 					<!-- BEGIN block_instance_acts_table_users -->
 					<option value="{inst_act_usr_value}" {inst_act_usr_selected}>{inst_act_usr_name}</option>
 					<!-- END block_instance_acts_table_users -->
