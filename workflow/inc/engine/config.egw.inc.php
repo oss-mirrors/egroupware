@@ -92,6 +92,29 @@ if (!function_exists('galaxia_show_error')) {
     }
 }
 
+  // Specify how to retrieve an array containing all groups id the actual user is member of
+  if (!function_exists('galaxia_retrieve_user_groups')) 
+  {
+    function galaxia_retrieve_user_groups($user=0) 
+    {
+      if (!($user == $GLOBALS['phpgw_info']['user']['account_id'])) 
+      {
+        galaxia_show_error(lang("the user indicated in the retrieve_user_groups function is not the actual user"));
+        die;
+      }
+      // group management
+      // in egroupware we retrieve the already loaded in memory group list.
+      $memberships = $GLOBALS['phpgw']->accounts->memberships;
+      $user_groups=Array();
+      foreach((array)$memberships as $key => $value)
+      {
+        $user_groups[]=($value['account_id']);
+      }
+      return $user_groups;
+    }
+  }
+   
+
 // Specify how to execute a non-interactive activity (for use in src/API/Instance.php)
 if (!function_exists('galaxia_execute_activity')) {
     function galaxia_execute_activity($activityId = 0, $iid = 0, $auto = 1)
@@ -99,8 +122,6 @@ if (!function_exists('galaxia_execute_activity')) {
       // This way we create a new run_activity instance for the next activity
       $run_activity = CreateObject('workflow.run_activity.go');
       $data = $run_activity->go($activityId, $iid, $auto);
-      // REGIS: DEBUG
-      _debug_array($data);
     }
 }
 
