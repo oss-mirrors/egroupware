@@ -102,6 +102,7 @@ if (!function_exists('galaxia_show_error')) {
         galaxia_show_error(lang("the user indicated in the retrieve_user_groups function is not the actual user"));
         die;
       }
+
       // group management
       // in egroupware we retrieve the already loaded in memory group list.
       $memberships = $GLOBALS['phpgw']->accounts->memberships;
@@ -120,9 +121,46 @@ if (!function_exists('galaxia_execute_activity')) {
     function galaxia_execute_activity($activityId = 0, $iid = 0, $auto = 1)
     {
       // This way we create a new run_activity instance for the next activity
-      $run_activity = CreateObject('workflow.run_activity.go');
+      $run_activity =& CreateObject('workflow.run_activity.go');
       $data = $run_activity->go($activityId, $iid, $auto);
     }
+}
+
+/*
+  Specify how to obtain stored config values
+  Parameter: an array containing pairs of (variables_names => default values)
+  For an unknown variable name it will return default_value and this
+  default value will be the NEW STORED value. If no default value is
+  given we assume it's a false.
+  WARNING: you should cast your result if you bet its' an integer
+  as it is maybe stored as a string
+*/
+if (!function_exists('galaxia_get_config_values')) 
+{
+  function galaxia_get_config_values($parameters=array())
+  {
+      $config =& CreateObject('phpgwapi.config');
+      $config->read_repository();
+      //_debug_array($config->config_data);
+      $result_array = array();
+      foreach ($parameters as $config_var => $default_value)
+      {
+        $config_value = $config->config_data[$config_var];
+        if(isset($config_value))
+        { 
+          $result_array[$config_var] = $config_value;
+        }
+        else
+        {
+          //we had no value stored yet, so we store it now
+          $config->value($config_var,$default_value);
+          $config->save_repository();
+          $result_array[$config_var] = $default_value;
+        }
+      }
+      unset($config);
+      return $result_array;
+  }
 }
 
 ?>
