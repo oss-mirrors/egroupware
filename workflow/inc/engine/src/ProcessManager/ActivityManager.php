@@ -195,25 +195,54 @@ class ActivityManager extends BaseManager {
     $name = $pm->_get_normalized_name($pId);
     $graph->set_pid($name);
     
+    //Get the config of the workflow where we'll have some tips for the graph
+    //TODO: something to permit processes to update the default values
+    $configs = galaxia_get_config_values(array('draw_roles' => true, 'font_size' => 25));
+
     // Nodes are process activities so get
     // the activities and add nodes as needed
     $nodes = $this->get_process_activities($pId);
     
     foreach($nodes as $node)
     {
-      if($node['wf_is_interactive']=='y') {
-        $color='blue';
-      } else {
+      if($node['wf_is_interactive']=='y') 
+      {
         $color='black';
+        $fillcolor='0.6,0.6,0.9'; //TLS values
+      } 
+      else 
+      {
+        $color='blue';
+        $fillcolor='0.25,1,0.8';
+      }
+      // get the fontsize, defined in the process
+      $fontsize = $configs['font_size'];
+      // if asked add roles on the graph
+      if ($configs['draw_roles']) 
+      {
+        $activity_roles = $this->get_activity_roles($node['wf_activity_id']);
+      }
+      // fill activity roles
+      $act_role= '';
+      if (isset($activity_roles))
+      {
+        foreach ($activity_roles as $role)
+        {
+          // the / is escaped and space seems to be necessary,
+          //issues with some special characters if no spaces between this char and the /
+          $act_role = $act_role." \\n[".$role['wf_name']."]";
+        }
       }
       $auto[$node['wf_name']] = $node['wf_is_autorouted'];
       $graph->addNode($node['wf_name'],array('URL'=>"foourl?wf_activity_id=".$node['wf_activity_id'],
-                                      'label'=>$node['wf_name'],
+                                      'label'=>$node['wf_name'].$act_role,
                                       'shape' => $this->_get_activity_shape($node['wf_type']),
-                                      'color' => $color
-
+                                      'color' => $color,
+                                      'fillcolor'=> $fillcolor,
+                                      'style' => 'filled',
+                                      'fontsize' => $fontsize
                                       )
-                     );    
+                     );
     }
     
     // Now add edges, edges are transitions,
