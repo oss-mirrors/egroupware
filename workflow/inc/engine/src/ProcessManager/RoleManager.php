@@ -57,12 +57,13 @@ class RoleManager extends BaseManager {
   /*!
     Maps a user to a role
   */
-  function map_user_to_role($pId,$user,$roleId)
+  function map_user_to_role($pId,$user,$roleId,$account_type='u')
   {
-  $query = "delete from `".GALAXIA_TABLE_PREFIX."user_roles` where `wf_role_id`=? and `wf_user`=?";
-  $this->query($query,array($roleId, $user));
-  $query = "insert into `".GALAXIA_TABLE_PREFIX."user_roles`(`wf_p_id`, `wf_user`, `wf_role_id`) values(?,?,?)";
-  $this->query($query,array($pId,$user,$roleId));
+  $query = "delete from `".GALAXIA_TABLE_PREFIX."user_roles` where wf_p_id=? AND wf_account_type=? and `wf_role_id`=? and `wf_user`=?";
+  $this->query($query,array($pId, $account_type,$roleId, $user));
+  $query = "insert into ".GALAXIA_TABLE_PREFIX."user_roles (wf_p_id, wf_user, wf_role_id ,wf_account_type[D) 
+  values(?,?,?,?)";
+  $this->query($query,array($pId,$user,$roleId,$account_type));
   }
   
   /*!

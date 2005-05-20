@@ -372,7 +372,7 @@ class ProcessManager extends BaseManager {
         if (empty($newrid[$res['wf_role_id']])) {
           continue;
         }
-        $rm->map_user_to_role($pid,$res['wf_user'],$newrid[$res['wf_role_id']]);
+        $rm->map_user_to_role($pid,$res['wf_user'],$newrid[$res['wf_role_id']], $res['wf_account_type']);
       }
     }
     // add roles to activities

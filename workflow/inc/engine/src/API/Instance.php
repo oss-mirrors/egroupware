@@ -551,17 +551,29 @@ class Instance extends Base {
     if($this->nextUser) {
       $putuser = $this->nextUser;
     } else {
+      // If no nextUser is set, then see if only
+      // one user is in the role for this activity
+      // and assign ownership to them if this is the case
       $candidates = Array();
       $query = "select `wf_role_id` from `".GALAXIA_TABLE_PREFIX."activity_roles` where `wf_activity_id`=?";
       $result = $this->query($query,array((int)$activityId)); 
       while ($res = $result->fetchRow()) {
         $roleId = $res['wf_role_id'];
-        $query2 = "select `wf_user` from `".GALAXIA_TABLE_PREFIX."user_roles` where `wf_role_id`=?";
+        //regis: group role mapping as an impact here, we need to count real user corresponding to this role
+        // and we obtain users 'u' and groups 'g' in user_roles
+        // we consider number of members on each group is subject to too much changes and so we do not even try 
+        // to look in members of the group to find is there is a unique real user canditate for this role
+        // you could try it if you want but it's quite complex for something not really usefull
+        $user_groups = galaxia_retrieve_user_groups($GLOBALS['phpgw_info']['user']['account_id'] );
+        $query2 = "select distinct wf_user, wf_account_type from ".GALAXIA_TABLE_PREFIX."user_roles 
+            where wf_role_id=? and  wf_account_type='u'";
         $result2 = $this->query($query2,array((int)$roleId)); 
-        while ($res2 = $result2->fetchRow()) {
-          $candidates[] = $res2['wf_user'];
+        while ($res2 = $result2->fetchRow()) 
+        {
+            $candidates[] = $res2['wf_user'];
         }
       }
+      // here if we have only 1 REAL egw USER (not group) coming for next activity the user is setted
       if(count($candidates) == 1) {
         $putuser = $candidates[0];
       } else {

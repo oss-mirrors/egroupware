@@ -94,10 +94,20 @@ class BaseActivity extends Base {
   
   /*! Returns an Array of roleIds for the given user */
   function getUserRoles($user) {
-    $query = "select `wf_role_id` from `".GALAXIA_TABLE_PREFIX."user_roles` where `wf_user`=?";
+    
+    // retrieve user_groups information in an array conatining all groups for this user
+    $user_groups = galaxia_retrieve_user_groups($GLOBALS['phpgw_info']['user']['account_id'] );
+    // and append it to query                      
+    $query = "select `wf_role_id` from `".GALAXIA_TABLE_PREFIX."user_roles` 
+          where (
+            (wf_user=? and wf_account_type='u')
+            or (wf_user in (".implode(",",$user_groups).") and wf_account_type='g')
+          )";
+
     $result=$this->query($query,array($user));
     $ret = Array();
-    while($res = $result->fetchRow()) {
+    while($res = $result->fetchRow()) 
+    {
       $ret[] = $res['wf_role_id'];
     }
     return $ret;
