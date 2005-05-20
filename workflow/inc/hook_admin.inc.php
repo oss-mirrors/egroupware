@@ -14,6 +14,7 @@
 // Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = Array(	
+		'Site Configuration' 	=> $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
 		'Admin Processes'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_adminprocesses.form'),
 		'Monitor Processes'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitorprocesses.form'),
 		'Monitor Activities'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitoractivities.form'),
