@@ -61,7 +61,7 @@ class RoleManager extends BaseManager {
   {
   $query = "delete from `".GALAXIA_TABLE_PREFIX."user_roles` where wf_p_id=? AND wf_account_type=? and `wf_role_id`=? and `wf_user`=?";
   $this->query($query,array($pId, $account_type,$roleId, $user));
-  $query = "insert into ".GALAXIA_TABLE_PREFIX."user_roles (wf_p_id, wf_user, wf_role_id ,wf_account_type[D) 
+  $query = "insert into ".GALAXIA_TABLE_PREFIX."user_roles (wf_p_id, wf_user, wf_role_id ,wf_account_type) 
   values(?,?,?,?)";
   $this->query($query,array($pId,$user,$roleId,$account_type));
   }
