@@ -118,7 +118,7 @@
 			}
 			else
 			{
-				$activity_info = $this->activity_manager->get_activity($this->wf_p_id, $activity_id);
+				$activity_info = $this->activity_manager->get_activity($activity_id);
 				//echo "activity_info: <pre>";print_r($activity_info);echo "</pre>";
 				$activity_roles = $this->activity_manager->get_activity_roles($activity_id);
 			}

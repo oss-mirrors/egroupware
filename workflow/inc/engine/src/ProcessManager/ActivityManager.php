@@ -82,8 +82,8 @@ class ActivityManager extends BaseManager {
     
     // Rule: if act is not spl-x or spl-a it can't have more than
     // 1 outbound transition.
-    $a1 = $this->get_activity($pId, $actFromId);
-    $a2 = $this->get_activity($pId, $actToId);
+    $a1 = $this->get_activity($actFromId);
+    $a2 = $this->get_activity($actToId);
     if(!$a1 || !$a2) {
 		$this->error = tra('No activites');
 		return false;
@@ -468,10 +468,12 @@ class ActivityManager extends BaseManager {
   
   /*!
     Gets a activity fields are returned as an asociative array
+    Warning: get_activity requires no more processId, an activity is far enough to return
+    informations about an activity.
   */
-  function get_activity($pId, $activityId)
+  function get_activity($activityId)
   {
-      $query = "select * from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=$pId and wf_activity_id=$activityId";
+    $query = "select * from ".GALAXIA_TABLE_PREFIX."activities where wf_activity_id=$activityId";
     $result = $this->query($query);
     $res = $result->fetchRow();
     return $res;
@@ -678,7 +680,7 @@ class ActivityManager extends BaseManager {
   */
   function compile_activity($pId, $activityId)
   {
-    $act_info = $this->get_activity($pId,$activityId);
+    $act_info = $this->get_activity($activityId);
        $actname = $act_info['wf_normalized_name'];
     $pm = new ProcessManager($this->db);
     $proc_info = $pm->get_process($pId);

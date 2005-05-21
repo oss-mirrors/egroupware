@@ -61,7 +61,7 @@
 			// fetch activity info
 			if ($activity_id)
 			{
-				$activity_info = $this->activity_manager->get_activity($this->wf_p_id, $activity_id);
+				$activity_info = $this->activity_manager->get_activity($activity_id);
 			}
 			else
 			{
