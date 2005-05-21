@@ -16,6 +16,7 @@ class Instance extends Base {
   var $nextActivity;
   var $nextUser;
   var $ended;
+  var $name='';
   /// Array of asocs(activityId,status,started,user)
   var $activities = Array();
   var $pId;
@@ -47,6 +48,7 @@ class Instance extends Base {
     $this->ended = $res['wf_ended'];
     $this->nextActivity = $res['wf_next_activity'];
     $this->nextUser = $res['wf_next_user'];
+    $this->name = $res['wf_name'];
     // Get the activities where the instance is (ids only is ok)
     $query = "select * from `".GALAXIA_TABLE_PREFIX."instance_activities` where  `wf_instance_id`=?";
     $result = $this->query($query,array((int)$instanceId));    
@@ -103,8 +105,10 @@ class Instance extends Base {
     $this->started=$now;
     $this->owner = $user;
     $props=serialize($this->properties);
-    $query = "insert into `".GALAXIA_TABLE_PREFIX."instances`(`wf_started`,`wf_ended`,`wf_status`,`wf_p_id`,`wf_owner`,`wf_properties`) values(?,?,?,?,?,?)";
-    $this->query($query,array($now,0,'active',$pid,$user,$props));
+    $query = "insert into `".GALAXIA_TABLE_PREFIX."instances`
+      (`wf_started`,`wf_ended`,`wf_status`,`wf_p_id`,`wf_owner`,`wf_properties`,`wf_name`) 
+      values(?,?,?,?,?,?,?)";
+    $this->query($query,array($now,0,'active',$pid,$user,$props,$this->name));
     $this->instanceId = $this->getOne("select max(`wf_instance_id`) from `".GALAXIA_TABLE_PREFIX."instances` where `wf_started`=? and `wf_owner`=?",array((int)$now,$user));
     $iid=$this->instanceId;
     
@@ -118,6 +122,23 @@ class Instance extends Base {
     $query = "insert into `".GALAXIA_TABLE_PREFIX."instance_activities`(`wf_instance_id`,`wf_activity_id`,`wf_user`,`wf_started`,`wf_status`) values(?,?,?,?,?)";
     $this->query($query,array((int)$iid,(int)$activityId,$user,(int)$now,'running'));
   }
+  
+  /*!
+  Sets the name of this instance.
+  */
+  function setName($value) {
+    $this->name = $value;
+    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_name=? where wf_instance_id=?";
+    $this->query($query,array($value,(int)$this->instanceId));
+  }
+
+  /*!
+  Get the name of this instance.
+  */
+  function getName() {
+    return $this->name;
+  }
+  
   
   /*! 
   Sets a property in this instance. This method is used in activities to
@@ -203,6 +224,8 @@ class Instance extends Base {
   Sets the user that must execute the activity indicated by the activityId.
   Note that the instance MUST be present in the activity to set the user,
   you can't program who will execute an activity.
+  If the user is empty then the activity user is setted to *, allowing any
+  authorised user to take the tokenb later
   
   egw: if the user we set is not * verification is done before the update
   that the instance has no user setted (or the same one)

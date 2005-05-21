@@ -17,6 +17,10 @@
 		<td><a href="{wi_href}">{wi_wi}</a></td>
 	</tr>
 	<tr class="row_on">
+               <td>{lang_Name}</td>
+               <td><input type="text" name="instance_name" value="{instance_name}"></td>
+       </tr>
+       <tr class="row_off">
 		<td>{lang_Status}</td>
 		<td>
 		<select name="status">
@@ -27,7 +31,7 @@
 		</select>
 		</td>
 	</tr>
-	<tr class="row_off">
+	<tr class="row_on">
 		<td>{lang_Owner}</td>
 		<td>
 			<select name="owner">
@@ -37,7 +41,7 @@
 			</select>
 		</td>
 	</tr>
-	<tr class="row_on">
+	<tr class="row_off">
 		<td>{lang_Send_all_to}</td>
 		<td>
 			<select name="sendto">
@@ -48,7 +52,7 @@
 			</select>
 		</td>
 	</tr>
-	<tr class="row_off">
+	<tr class="row_on">
 		<td>{lang_Activities}</td>
 		<td>
 		<!-- BEGIN block_instance_acts -->
@@ -100,7 +104,7 @@
 	<!-- BEGIN block_properties -->
 	<tr bgcolor="{color_line}">
 		<td>
-		 <a href="{prop_href}"><img border="0" src='{img_trash}' alt='{lang_delete}' title='{lang_delete}' /></a>
+		 <a href="{prop_href}"><img border="0" src="{img_trash}" alt="{lang_delete}" title="{lang_delete}" /></a>
 		 <b>{prop_key}</b>
 		 </td>
 		<td>

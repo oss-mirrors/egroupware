@@ -54,6 +54,12 @@ class InstanceManager extends BaseManager {
     $this->query($query);
   }
   
+  function set_instance_name($iid,$name)
+  {
+    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_name='$name' where wf_instance_id=$iid";
+    $this->query($query);
+  }
+
   function set_instance_owner($iid,$owner)
   {
     $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_owner='$owner' where wf_instance_id=$iid";

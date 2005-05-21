@@ -31,13 +31,14 @@
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 
-			$this->instance_manager	= CreateObject('workflow.workflow_instancemanager');
-			$this->process_manager	= CreateObject('workflow.workflow_processmanager');
-			$this->activity_manager	= CreateObject('workflow.workflow_activitymanager');
+			$this->instance_manager	=& CreateObject('workflow.workflow_instancemanager');
+			$this->process_manager	=& CreateObject('workflow.workflow_processmanager');
+			$this->activity_manager	=& CreateObject('workflow.workflow_activitymanager');
 		}
 
 		function form()
 		{
+			// FIXME: owner and active user should be done in a per activity level, not per instance
 			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Admin Instance');
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
@@ -46,6 +47,7 @@
 
 			$iid				= (int)get_var('iid', 'any', 0);
 			$instance_status	= get_var('status', 'POST', '');
+			$instance_name          = get_var('instance_name', 'POST', '');
 			$instance_owner		= (int)get_var('owner', 'POST', 0);
 
 			// save changes
@@ -53,6 +55,7 @@
 			{
 				$this->instance_manager->set_instance_status($iid, $instance_status);
 				$this->instance_manager->set_instance_owner($iid, $instance_owner);
+				$this->instance_manager->set_instance_name($iid, $instance_name);
 
 				// user reasignment
 				if(count($_POST['acts']) != 0)
@@ -91,6 +94,7 @@
 				'inst_started'		=> $GLOBALS['phpgw']->common->show_date($instance['wf_started']),
 				'wi_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorworkitems.form&filter_instance='. $instance['wf_instance_id']),
 				'wi_wi'				=> $instance['wf_workitems'],
+				'instance_name'         => $instance['wf_name'],
 				'status_active'		=> ($instance['wf_status'] == 'active')? 'selected="selected"' : '',
 				'status_exception'	=> ($instance['wf_status'] == 'exception')? 'selected="selected"' : '',
 				'status_completed'	=> ($instance['wf_status'] == 'completed')? 'selected="selected"' : '',
