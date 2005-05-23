@@ -99,18 +99,23 @@ if (!function_exists('galaxia_show_error')) {
     {
       if (!($user == $GLOBALS['phpgw_info']['user']['account_id'])) 
       {
-        galaxia_show_error(lang("the user indicated in the retrieve_user_groups function is not the actual user"));
-        die;
+        //we are asking groups membership for another user than the actually loaded in memory.
+        $other_account =& CreateObject('phpgwapi.accounts',$user,'u');
+        $memberships = $other_account->membership($user);
+        unset($account);
       }
-
-      // group management
-      // in egroupware we retrieve the already loaded in memory group list.
-      $memberships = $GLOBALS['phpgw']->accounts->memberships;
-      $user_groups=Array();
+      else
+      {
+        // we are asking groups membership for the actual user
+        // in egroupware we retrieve the already loaded in memory group list.
+        $memberships = $GLOBALS['phpgw']->accounts->memberships;
+        $user_groups=Array();
+      }
       foreach((array)$memberships as $key => $value)
       {
         $user_groups[]=($value['account_id']);
       }
+      
       return $user_groups;
     }
   }
