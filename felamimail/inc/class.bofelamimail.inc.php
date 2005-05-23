@@ -422,7 +422,7 @@
 			$folderStatus = imap_status($this->mbox,$mailboxString,SA_ALL);
 			
 			// merge a array and object to a array
-			$retValue = array_merge($retValue,$folderStatus);
+			$retValue = array_merge($retValue,(array)$folderStatus);
 			
 			return $retValue;
 		}
@@ -1143,22 +1143,25 @@
 					$mime_type = "text";
 					$data['encoding']	= $_structure->encoding;
 					$data['size']		= $_structure->bytes;
-					$data['partID']	= $_currentPartID;
+					$data['partID']		= $_currentPartID;
 					$data["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
 					$data["name"]		= lang("unknown");
-					for ($lcv = 0; $lcv < count($_structure->parameters); $lcv++)
+					if(is_array($_structure->parameters))
 					{
-						$param = $_structure->parameters[$lcv];
-						switch(strtolower($param->attribute))
+						for ($lcv = 0; $lcv < count($_structure->parameters); $lcv++)
 						{
-							case 'name':
-								$data["name"] = $param->value;
-								break;
-							case 'charset':
-								$data["charset"] = $param->value;
-								break;
+							#_debug_array($_structure);
+							$param = $_structure->parameters[$lcv];
+							switch(strtolower($param->attribute))
+							{
+								case 'name':
+									$data["name"] = $param->value;
+									break;
+								case 'charset':
+									$data["charset"] = $param->value;
+									break;
+							}
 						}
-						
 					}
 					
 					// set this to zero, when we have a plaintext message
@@ -1293,14 +1296,17 @@
 						}
 					}
 					
-					for ($lcv = 0; $lcv < count($_structure->parameters); $lcv++)
+					if(is_array($_structure->parameters))
 					{
-						$param = $_structure->parameters[$lcv];
-						switch(strtolower($param->attribute))
+						for ($lcv = 0; $lcv < count($_structure->parameters); $lcv++)
 						{
-							case 'name':
-								$_sections[$_currentPartID]["name"] = $param->value;
-								break;
+							$param = $_structure->parameters[$lcv];
+							switch(strtolower($param->attribute))
+							{
+								case 'name':
+									$_sections[$_currentPartID]["name"] = $param->value;
+									break;
+							}
 						}
 					}
 					
