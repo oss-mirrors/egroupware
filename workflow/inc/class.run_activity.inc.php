@@ -15,13 +15,15 @@
 		function run_activity()
 		{
 			parent::workflow();
-			$this->base_activity	= CreateObject('workflow.workflow_baseactivity');
-			$this->process		= CreateObject('workflow.workflow_process');
+			$this->base_activity	=& CreateObject('workflow.workflow_baseactivity');
+			$this->process		=& CreateObject('workflow.workflow_process');
 		}
 
 		function go($activity_id=0, $iid=0, $auto=0)
 		{
 			if ($iid) $_REQUEST['iid'] = $iid;
+			
+
 
 			if (!$activity_id)
 			{
@@ -39,21 +41,21 @@
 			// instantiate instance class, but before set some global variables needed by it
 			$GLOBALS['__activity_completed'] = false;
 			$GLOBALS['user'] = $GLOBALS['phpgw_info']['user']['account_id'];
-			$instance = CreateObject('workflow.workflow_instance');
+			$instance =& CreateObject('workflow.workflow_instance');
 
-			// load roles
-			$act_roles = $activity->getRoles();
-			//echo "activity roles: <pre>";print_r($act_roles);echo "</pre>";
-			$user_roles = $activity->getUserRoles($GLOBALS['user']);
-			//echo "current user roles: <pre>";print_r($user_roles);echo "</pre>";
-
+			//tests for access rights-----------------------------------------
+			
 			// Only check roles if this is an interactive activity
-			if ($activity->isInteractive() == 'y' && !count(array_intersect($act_roles, $user_roles)))
+			if ($activity->isInteractive() == 'y' 
+				// then verify roles, ownership and all defined access rules
+				&& !($activity->checkUserAccess($GLOBALS['phpgw_info']['user']['account_id'] ))
+			)
 			{
 				die(lang('You have not permission to execute this activity'));
 			}
 
-			$act_role_names = $activity->getActivityRoleNames($GLOBALS['user']);
+			// FIXME: not used anywhere?
+			//$act_role_names = $activity->getActivityRoleNames($GLOBALS['phpgw_info']['user']['account_id'] );
 
 			// load code sources
 			$source = GALAXIA_PROCESSES . SEP . $this->process->getNormalizedName(). SEP . 'compiled' . SEP . $activity->getNormalizedName(). '.php';

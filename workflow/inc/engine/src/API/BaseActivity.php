@@ -21,14 +21,14 @@ class BaseActivity extends Base {
   var $activityId;
   var $type;
   
-  function setDb($db)
+  function setDb(&$db)
   {
-    $this->db=$db;
+    $this->db =& $db;
   }
   
-  function BaseActivity($db)
+  function BaseActivity(&$db)
   {
-    $this->db=$db;
+    $this->db =& $db;
     $this->type='base';
   }
   
@@ -95,7 +95,7 @@ class BaseActivity extends Base {
   /*! Returns an Array of roleIds for the given user */
   function getUserRoles($user) {
     
-    // retrieve user_groups information in an array conatining all groups for this user
+    // retrieve user_groups information in an array containing all groups for this user
     $user_groups = galaxia_retrieve_user_groups($GLOBALS['phpgw_info']['user']['account_id'] );
     // and append it to query                      
     $query = "select `wf_role_id` from `".GALAXIA_TABLE_PREFIX."user_roles` 
@@ -216,12 +216,68 @@ class BaseActivity extends Base {
   function setRoles($roles) {
     $this->roles = $roles;
   }
-  
+
   /*! Checks if a user has a certain role (by name) for this activity,
       e.g. $isadmin = $activity->checkUserRole($user,'admin'); */
-  function checkUserRole($user,$rolename) {
+  function checkUserRole($user,$rolename) 
+  {
     $aid = $this->activityId;
-    return $this->getOne("select count(*) from `".GALAXIA_TABLE_PREFIX."activity_roles` gar, `".GALAXIA_TABLE_PREFIX."user_roles` gur, `".GALAXIA_TABLE_PREFIX."roles` gr where gar.`wf_role_id`=gr.`roleId` and gur.`wf_role_id`=gr.`roleId` and gar.`wf_activity_id`=? and gur.`wf_user`=? and gr.`wf_name`=?",array($aid, $user, $rolename));
+    // add group mapping, warning groups and user can have the same id
+    $groups = galaxia_retrieve_user_groups($user);
+        
+    $result= $this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."activity_roles gar, 
+        ".GALAXIA_TABLE_PREFIX."user_roles gur, 
+        ".GALAXIA_TABLE_PREFIX."roles gr 
+        where gar.wf_role_id=gr.wf_role_id 
+        and gur.wf_role_id=gr.wf_role_id
+        and gar.wf_activity_id=? 
+        and ( (gur.wf_user=? and gur.wf_account_type='u') 
+              or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g') 
+            )
+        and gr.wf_name=?"
+        ,array($aid, $user, $rolename));
+    if ($result >= 1)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  /*! Checks if a user has a access to this activity,
+  to do so it checks if the user is in the users having the roles associated with the activity
+  or if he is in the groups having roles associated with the activity
+  TODO: add ownerships behaviour
+  */
+  function checkUserAccess($user) 
+  {
+    $aid = $this->activityId;
+    
+    // add group mapping, warning groups and user can have the same id
+    $groups = galaxia_retrieve_user_groups($user);
+        
+    $result= $this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."activity_roles gar, 
+        ".GALAXIA_TABLE_PREFIX."user_roles gur, 
+        ".GALAXIA_TABLE_PREFIX."roles gr 
+        where gar.wf_role_id=gr.wf_role_id 
+        and gur.wf_role_id=gr.wf_role_id
+        and gar.wf_activity_id=? 
+        and ( (gur.wf_user=? and gur.wf_account_type='u') 
+              or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g') 
+            )"
+        ,array($aid, $user));
+    if ($result >= 1)
+    {
+      //echo "<br>Access granted for ".$user;
+      return true;
+    }
+    else
+    {
+      //echo "<br>Access denied for ".$user;
+      return false;
+    }
   }
 
 }
