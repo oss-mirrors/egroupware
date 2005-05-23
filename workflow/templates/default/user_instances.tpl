@@ -68,7 +68,7 @@
 <table style="border: 1px solid black;width:100%;">
 	<tr class="th" style="font-weight:bold">
 		{left}
-	<td colspan="5">{lang_showing}</td>
+	<td colspan="6">{lang_showing}</td>
 		{right}
 	</tr>
 
@@ -134,7 +134,8 @@
 		<td>{header_wf_act_status}</td>
 		<td>{header_wf_owner}</td>
 		<td>{header_wf_user}</td>
-		<td>{lang_Action}</td>
+		{header_view}
+		{lang_Action}</td>
 	</tr>
 	<!-- BEGIN block_list_instances -->
 	<tr bgcolor="{color_line}">
@@ -162,7 +163,8 @@
 		<td>
 		  {user}
 		</td>
-		<td>
+		{column_view}
+		
 	  		 {run} {send} {grab_or_release} {exception} {resume} {abort} {monitor}
 		</td>
 	</tr>

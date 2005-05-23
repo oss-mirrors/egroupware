@@ -26,8 +26,12 @@
 		function form()
 		{
 		//TODO: break it into small pieces
+			// enable nextmatchs
 			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('User Instances');
 			$GLOBALS['phpgw_info']['flags']['enable_nextmatchs_class'] = True;
+			//enable preferences
+			$GLOBALS['phpgw']->preferences->read_repository();
+			$myPrefs = $GLOBALS['phpgw_info']['user']['preferences'];
 			// number of rows allowed
 		        if ($GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'] > 0) {
 				$offset = $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
@@ -52,7 +56,13 @@
 			$this->search_str		= get_var('search_str', 'any', '');
 			//echo "<br>search_str::".$this->search_str;
 			$advanced_search  	= get_var('advanced_search', 'any', false);
+			if (!$advanced_search)
+			{
+				// check the Preferences of the workflow where the user can ask for the advanced mode
+				$advanced_search = $myPrefs['workflow']['wf_instances_show_advanced_mode'];
+			}
 			//echo "<br>advanced::".$advanced_search;
+			
 			if ($advanced_search){
 				$add_exception_instances	= get_var('add_exception_instances', 'any', false); 
 				//echo "<br>add exception instances::".$add_exception_instances;
@@ -66,6 +76,11 @@
 				//echo "filter_act_status: ".$filter_act_status;
 				$show_advanced_actions		= get_var('show_advanced_actions', 'any', false); 
 				//echo "<br>show advanced actions::".$show_advanced_actions;
+				if (!$show_advanced_actions)
+				{
+					// check the Preferences of the workflow where the user can ask for theses actions
+					$show_advanced_actions= $myPrefs['workflow']['wf_instances_show_advanced_actions'];
+				}
 			} else {
 				$add_exception_instances 	= false; 
 				$add_completed_instances 	= false; 
@@ -101,6 +116,9 @@
 			//echo "<br>exception::".$askException;
 			$askResume=get_var('resume','any',0);
 			//echo "<br>resume::".$askResume;
+			// check preferences where the user can disable the view column
+			$show_view_column= $myPrefs['workflow']['wf_instances_show_view_column'];
+			//echo "<br>show_view_column::".$show_view_column;
 			
 			// this is not a POST or GET var, is defined in global prefs
 			$this->offset		= $offset;
@@ -318,7 +336,7 @@
 		    $this->show_select_process($all_processes['data'], $filter_process);
 		    $this->show_select_activity($all_activities['data'], $filter_activity_name);
 		    // to keep informed of the 4 select values the second form (actions in the list)
-		    // need additional vars
+		    // need additional vars4
 		    $this->t->set_var('filter_user_id_set',$filter_user);
 		    $this->t->set_var('filter_process_id_set',$filter_process);
 		    $this->t->set_var('filter_activity_name_set',$filter_activity_name);
@@ -349,9 +367,11 @@
 		    }
 		    //some lang text in javascript
 		    $this->t->set_var('lang_Confirm_delete',lang('Confirm Delete'));
+		    // and the view column defined in preferences
+		    $this->t->set_var('header_view',($show_view_column)? '<td>'.lang('View').'</td><td>':'<td colspan="2">');
 
 		    // Fill the final list of the instances we choosed in the template
-		    $this->show_list_instances($instances['data'], $show_advanced_actions);
+		    $this->show_list_instances($instances['data'], $show_advanced_actions,$show_view_column);
 
 
 		    // fill the general variables of the template
@@ -368,7 +388,7 @@
 
 
 
-		function show_list_instances($instances_data, $show_advanced_actions = false)
+		function show_list_instances($instances_data, $show_advanced_actions = false, $show_view_column=true)
 		{
 
 			//------------------------------------------- nextmatch --------------------------------------------
@@ -580,6 +600,19 @@
 					'act_status'		=> $instance['wf_act_status'],
 					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color)
 				));
+
+				// and the view column defined in preferences
+				if ($show_view_column)
+				{
+					$mylink=$GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_userviewinstance.form&iid='.$instance['wf_instance_id']);
+					$this->t->set_var('column_view','<td align="center"><a href="'.$mylink.'">'.lang('View').'</a></td><td>');
+				}
+				else
+				{
+					$this->t->set_var('column_view','<td colspan="2">');
+				}
+
+				// finally parse this list
 				$this->t->parse('list_instances', 'block_list_instances', true);
 			}
 				
