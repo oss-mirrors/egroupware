@@ -46,6 +46,7 @@
 			$this->t->set_block('admin_activities', 'block_select_type', 'select_type');
 			$this->t->set_block('admin_activities', 'block_activity_roles', 'activity_roles');
 			$this->t->set_block('admin_activities', 'block_process_roles', 'process_roles');
+			$this->t->set_block('admin_activities', 'block_select_default_user', 'select_default_user');
 			
 			$activity_id		= (int)get_var('activity_id', 'any', 0);
 			$name				= get_var('name', 'any', '');
@@ -53,6 +54,7 @@
 			$type				= get_var('type', 'any', '');
 			$is_interactive		= get_var('is_interactive', 'any', '');
 			$is_autorouted		= get_var('is_autorouted', 'any', '');
+			$default_user           = get_var('default_user', 'any', '');
 			$userole			= get_var('userole', 'POST', '');
 			$where				= get_var('where', array('GET', 'POST'), '');
 			$where2				= get_var('where2', 'any', '');
@@ -85,7 +87,7 @@
 			// save activity
 			if (isset($_POST['save_act']))
 			{
-				$activity_id = $this->save_activity($activity_id, $name, $description, $type, $is_interactive, $is_autorouted, $userole, $rolename);
+				$activity_id = $this->save_activity($activity_id, $name, $description, $type,  $default_user, $is_interactive, $is_autorouted, $userole, $rolename);
 				$this->message[] = lang('Activity saved');
 			}
 
@@ -107,12 +109,13 @@
 			if (!$activity_id || isset($_POST['new_activity']))
 			{
 				$activity_info = array(
-					'wf_name'			=> '',
+					'wf_name'		=> '',
 					'wf_description'	=> '',
 					'wf_activity_id'	=> 0,
 					'wf_is_interactive'	=> 'y',
 					'wf_is_autorouted'	=> 'n',
-					'wf_type'			=> 'activity'
+					'wf_default_user'       => '*',
+					'wf_type'		=> 'activity'
 				);
 				$activity_roles = array();
 			}
@@ -157,7 +160,7 @@
 			// fill proc_bar
 			$this->t->set_var('proc_bar', $this->fill_proc_bar($proc_info));
 
-			// fill the general varibles of the template
+			// fill the general variables of the template
 			$this->t->set_var(array(
 				'message'				=> implode('<br>', $this->message),
 				'errors'				=> $error_str,
@@ -214,6 +217,31 @@
 				}
 			}
 
+			// fill user list for the Default user menu
+			$users = $GLOBALS['phpgw']->accounts->get_list('accounts');
+				// if we have no default user
+			$this->t->set_var(array(
+				'default_user_selected_none'	=> ($activity_info['wf_default_user'] == '*')? 'selected="selected"' : '',
+			));
+				// now parse users
+			foreach($users as $user)
+			{
+				if ($user['account_lid'] != '')
+				{
+					$username = $user['account_lastname'].' '. $user['account_firstname'].' ('.$user['account_lid'].')';
+				}
+				else
+				{
+					$username = $user['account_fullname'];
+				}
+				$this->t->set_var(array(
+					'default_user_value'	=> $user['account_id'],
+					'default_user_name'	=> $username,
+					'default_user_selected'	=> ($activity_info['wf_default_user'] == $user['account_id'])? 'selected="selected"' : ''
+				));
+				$this->t->parse('select_default_user', 'block_select_default_user', True);
+			}
+			 	
 			// fill process roles
 			foreach ($process_roles['data'] as $role)
 			{
@@ -298,11 +326,21 @@
 				'header_type'		=> $this->nextmatchs->show_sort_order($this->sort, 'type', $this->order, 'index.php', lang('type'), array('p_id'=>$this->wf_p_id)),
 				'header_interactive'	=> $this->nextmatchs->show_sort_order($this->sort, 'is_interactive', $this->order, 'index.php', lang('Interactive'),  array('p_id'=>$this->wf_p_id)),
 				'header_route'		=> $this->nextmatchs->show_sort_order($this->sort, 'is_autorouted', $this->order, 'index.php', lang('Auto routed'),  array('p_id'=>$this->wf_p_id)),
+				'header_default_user'	=> lang('Default User')
 			));
 			$this->translate_template('block_process_activities');
 
 			foreach ($process_activities_data as $activity)
 			{
+				if($activity['wf_default_user'] == '*' )
+				{
+					$act_default_user = lang('All');
+				}
+				else if($activity['wf_default_user'] != '*')
+				{
+					$act_default_user = $GLOBALS['phpgw']->accounts->id2name($activity['wf_default_user']);
+				}
+				
 				$this->t->set_var(array(
 					'act_activity_id'	=> $activity['wf_activity_id'],
 					'act_flowNum'		=> $activity['wf_flow_num'],
@@ -312,9 +350,10 @@
 					'act_icon'			=> $this->act_icon($activity['wf_type'],$activity['wf_is_interactive']),
 					'act_inter_checked'	=> ($activity['wf_is_interactive'] == 'y')? 'checked="checked"' : '',
 					'act_route_checked'	=> ($activity['wf_is_autorouted'] == 'y')? 'checked="checked"' : '',
-					'act_href_code'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $this->wf_p_id .'&activity_id='. $activity['wf_activity_id']),
+					'act_default_user'      => $act_default_user,
+					'act_href_edit'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $this->wf_p_id .'&activity_id='. $activity['wf_activity_id']),
 					'act_template'		=> ($activity['wf_is_interactive'] == 'y')? '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $this->wf_p_id .'&activity_id='. $activity['wf_activity_id'] .'&template=1') .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'template') .'" alt="' .lang('template') .'" title="' . lang('template') .'" /></a>' : '',
-					'img_code'			=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
+					'img_code'		=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
 					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
 
 				));
@@ -366,7 +405,7 @@
 			return $select_str;
 		}
 
-		function save_activity($activity_id, $name, $description, $type, $is_interactive, $is_autorouted, $userole)
+		function save_activity($activity_id, $name, $description, $type, $default_user, $is_interactive, $is_autorouted, $userole)
 		{
 			$is_interactive = ($is_interactive == 'on') ? 'y' : 'n';
 			$is_autorouted = ($is_autorouted == 'on') ? 'y' : 'n';
@@ -376,6 +415,7 @@
 				'wf_activity_id' => $activity_id,
 				'wf_is_interactive' => $is_interactive,
 				'wf_is_autorouted' => $is_autorouted,
+				'wf_default_user' => $default_user,
 				'wf_type' => $type,
 			);
 			if ($this->activity_manager->activity_name_exists($this->wf_p_id, $name) && $activity_id == 0)

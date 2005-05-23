@@ -20,6 +20,7 @@ class BaseActivity extends Base {
   var $pId;
   var $activityId;
   var $type;
+  var $defaultUser;
   
   function setDb(&$db)
   {
@@ -217,6 +218,23 @@ class BaseActivity extends Base {
     $this->roles = $roles;
   }
 
+  /*! Gets default user id associated with this activity as he's recorded
+  there's no check about valifity of this user.
+  */
+  function getDefaultUser() {
+    return $this->defaultUser;
+  }
+
+  /*! Sets the default user for an activity */
+  function setDefaultUser($default_user)
+  {
+    if ((!isset($default_user)) || ($default_user=='') || ($default_user==false))
+    {
+      $default_user='*';
+    }
+    $this->defaultUser = $default_user;
+  }
+  
   /*! Checks if a user has a certain role (by name) for this activity,
       e.g. $isadmin = $activity->checkUserRole($user,'admin'); */
   function checkUserRole($user,$rolename) 

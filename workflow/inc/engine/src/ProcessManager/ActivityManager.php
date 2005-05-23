@@ -467,7 +467,7 @@ class ActivityManager extends BaseManager {
   
   
   /*!
-    Gets a activity fields are returned as an asociative array
+    Gets activity infos. fields are returned as an asociative array
     Warning: get_activity requires no more processId, an activity is far enough to return
     informations about an activity.
   */
@@ -674,6 +674,50 @@ class ActivityManager extends BaseManager {
     $this->query($query);
   }
 
+  /*!
+    Sets the default user for an activity
+  */
+  function set_default_user($activityId, $default_user)
+  {
+    if ($default_user=='')
+    {
+      $default_user='*';
+    }
+    $query  = "update ".GALAXIA_TABLE_PREFIX."activities set wf_default_user=? where wf_activity_id=?";
+    $this->query($query, array($default_user, $activityId));
+  }
+
+  /*!
+    Gets the default user for an activity
+    if performAccessCheck is true then this function will check if this user as really access granted
+    to the given activity.
+    If wrong or no default user or the user has no access grant and performAccessCheck was asked, '*' is returned
+  */
+  function get_default_user($activityId, $performAccessCheck=true)
+  {
+    $query  = "Select wf_default_user from ".GALAXIA_TABLE_PREFIX."activities where wf_activity_id=?";
+    $result = $this->getOne($query,array($activityId));
+    if (!(isset($result)) || ($result=='') || ($result==false))
+    {
+      $result='*';
+    }
+    //if we had a user and if asked we'll try to see if he has really access granted
+    elseif ( (!($result=='*')) && $performAccessCheck)
+    {
+      // load activity
+      $base_activity =& CreateObject('workflow.workflow_baseactivity');
+      $activity =& $base_activity->getActivity($activityId);
+      // perform the check
+      if (!($activity->checkUserAccess($result)))
+      {
+        // bad check, we ignore this default_user
+        $result='*';
+      }
+      unset ($activity);
+      unset ($base_activity);
+    }
+    return $result;
+  }
   
   /*!
   Compiles activity

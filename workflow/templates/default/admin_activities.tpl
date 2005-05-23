@@ -7,7 +7,7 @@
 		{errors}
 	</div>
 </div>
-
+<br />
 <form action="{form_details_action}" method="post">
 <input type="hidden" name="p_id" value="{p_id}" />
 <input type="hidden" name="activity_id" value="{activity_id}" />
@@ -19,10 +19,8 @@
 <table style="border: 1px solid black;width:100%; margin-bottom:10px">
 	<tr class="th">
 		<td colspan="2" style="font-size: 120%; font-weight:bold">
-				{lang_Add_or_edit_an_activity} <input type="submit" name="new_activity" value="{lang_new}">
+				{lang_Add_or_edit_an_activity}
 		</td>
-	</tr>
-	<tr>
 	</tr>
 	<tr class="row_on">
 	  <td width="20%">{lang_Name}</td>
@@ -40,12 +38,29 @@
 		<option value="{type_value}" {type_selected}>{type_name}</option>
 	  <!-- END block_select_type -->
 	  </select>
-	  {lang_Interactive}:<input type="checkbox" name="is_interactive" {checked_interactive} />
-	  {lang_auto_routed}:<input type="checkbox" name="is_autorouted" {checked_autorouted} />
 	  </td>
 	</tr>
-
 	<tr class="row_off">
+         <td>{lang_Properties}</td>
+         <td>
+               <table cellpading="1" cellspacing="1">
+			<tr class="row_off">
+				<td colspan="3">{lang_users_can_act_on_activity_before_its_execution_with_form_and_after_by_sending_it_to_the_next_activity}</td>
+			</tr>
+			<tr class="row_on">
+                               	<td>{lang_Interactive}</td>
+                               	<td><input type="checkbox" name="is_interactive" {checked_interactive} /></td>
+				<td>{lang_interactive_activities_show_form_before_being_executed}</td>
+			</tr>
+                       	<tr class="row_on">
+                               	<td>{lang_auto_routed}</td>
+                               	<td><input type="checkbox" name="is_autorouted" {checked_autorouted} /></td>
+				<td>{lang_autorouted_activities_does_not_need_to_be_sent_by_any_user_after_their_execution}</td>
+                       	</tr>
+               </table>
+         </td>
+       </tr>
+       <tr class="row_on">
 	  <td>{lang_Add_transitions}</td>
 	  <td>
 		<table border="0" width="70%">
@@ -63,7 +78,7 @@
 	  </td>
 	</tr>
 
-	<tr class="row_on">
+	<tr class="row_off">
 	  <td>{lang_Roles_assigned_to_this_activity}</td>
 	  <td>
 	  <!-- BEGIN block_activity_roles -->
@@ -71,7 +86,7 @@
 	  <!-- END block_activity_roles -->
 	  </td>
 	</tr>
-	<tr class="row_off">
+	<tr class="row_on">
 	  <td>{lang_Add_role}</td>
 	  <td>
 	  <select name="userole">
@@ -80,12 +95,34 @@
 	  <option value="{proc_roleId}">{proc_roleName}</option>
 	  <!-- END block_process_roles -->
 	  </select>
-	  <input type="text" name="rolename" /><input type="submit" name="addrole" value="{lang_Add_role_to_process}" />
+	  <input type="text" name="rolename" /><input type="submit" name="addrole" value="{lang_Add_new_role}" />
 	  </td>
 	</tr>
+       <tr class="row_off">
+         <td>{lang_Default_User}</td>
+         <td>
+               <select name="default_user">
+			<option value="*" {default_user_selected_none}>{lang_None}</option>		
+	      		<!-- BEGIN block_select_default_user -->
+			<option value="{default_user_value}" {default_user_selected}>{default_user_name}</option>
+			<!-- END block_select_default_user -->
+		</select>
+		<br />
+		{lang_the_default_user_will_only_be_set_if_he_is_mapped_to_a_role_on_the_activity}<br />
+		{lang_setNextUser_directives_can_override_it}
+         </td>
+       </tr>
+
 	<tr class="th">
-	  <td>&nbsp;</td>
-	  <td><input type="submit" name="save_act" value="{lang_save}" /> </td>
+	        <td colspan="2">
+			<table width="100%" cellpadding="0" cellspacing="0">
+			<tr><td style="font-size: 120%; font-weight:bold">
+				<input type="submit" name="save_act" value="{lang_save}" />
+			</td><td style="text-align: right;font-size: 120%; font-weight:bold">
+				<input type="submit" name="new_activity" value="{lang_new}" />
+			</td></tr>
+			</table>
+		</td>
 	</tr>
 
 </table>
@@ -144,16 +181,17 @@
 <div style="position:relative">
 <table border="0" width="100%">
 <tr class="th" style="font-weight:bold">
-	<td align="center">#</td>
-	<td>{header_name}</a></td>
+	<td style="width: 20px;" align="center">#</td>
+	<td style="width: 40%;">{header_name}</a></td>
 	<td align="center">{header_type}</a></td>
 	<td align="center">{header_interactive}</a></td>
 	<td align="center">{header_route}</a></td>
+	<td align="center">{header_default_user}</a></td>
 	<td width="70px">{lang_Action}</td>
 </tr>
 <!-- BEGIN block_process_activities -->
 <tr bgcolor="{color_line}">
-	<td style="text-align:right;">
+	<td style="text-align:center;">
 	  {act_flowNum}
 	</td>
 	<td>
@@ -166,11 +204,14 @@
 	<td style="text-align:center;">
 	  <input type="checkbox" name="activity_inter[{act_activity_id}]" {act_inter_checked} />
 	</td>
-    <td style="text-align:center;">
+    	<td style="text-align:center;">
 	  <input type="checkbox" name="activity_route[{act_activity_id}]" {act_route_checked} />
 	</td>
+        <td style="text-align:center;">
+          {act_default_user}
+        </td>
 	<td>
-		<a href="{act_href_code}"><img src="{img_code}" alt="{lang_code}" title="{lang_code}" /></a>
+		<a href="{act_href_edit}"><img src="{img_code}" alt="{lang_edit}" title="{lang_edit}" /></a>
 		{act_template}
 		<input style="position:absolute; right:5px" type="checkbox" name="activities[{act_activity_id}]" />
 	</td>
@@ -224,7 +265,7 @@
 				</tr>
 				<!-- END block_transitions_table -->
 				<tr class="th">
-					<td colspan="2" style="text-align:right"><input type="submit" name="delete_tran" value="{lang_Delete_selected}" /></td>
+					<td colspan="2" style="text-align:right;"><input type="submit" name="delete_tran" value="{lang_Delete_selected}" /></td>
 				</tr>
 				</table>
 			</form>		
@@ -238,7 +279,7 @@
 			<input type="hidden" name="sort_mode" value="{sort_mode}" />
 			<input type="hidden" name="where2" value="{where2}" />
 			<input type="hidden" name="sort_mode2" value="{sort_mode2}" />
-			<table class="normal">
+			<table class="normal" width="100%">
 			<tr class="th" style="font-weight:bold">
 				<td colspan="2">
 					{lang_Add_a_transition}
@@ -248,7 +289,7 @@
 			  <td>
 			  {lang_From}:
 			  </td>
-			  <td>
+			  <td width="90%">
 				{add_a_trans_from}
 			  </td>
 			</tr>
@@ -263,7 +304,7 @@
 			<tr class="th">
 			  <td>&nbsp;</td>
 			  <td>
-				<input type="submit" name="add_trans" value="{lang_add}" />
+				<input type="submit" name="add_trans" value="{lang_Add_Transition}" />
 			  </td>
 			</tr>
 			</table>	
