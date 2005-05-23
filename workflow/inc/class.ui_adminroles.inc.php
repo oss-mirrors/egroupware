@@ -126,8 +126,15 @@
 				'wf_name'			=> $name,
 				'wf_description'	=> $description,
 			);
-			$this->role_manager->replace_role($this->wf_p_id, $role_id, $vars);
-			$this->message[] = lang('Role saved');
+			if ($this->role_manager->replace_role($this->wf_p_id, $role_id, $vars))
+			{
+				$this->message[] = lang('Role saved');
+			}
+			else
+			{
+				$this->message[] = lang('Role not saved (maybe a name collision)');
+			}
+			
 		}
 
 		function delete_roles($roles_ids)
@@ -178,9 +185,11 @@
 		{
 			foreach ($users as $user)
 			{
+				$account_type   = $user{0};
+				$user           = substr($user, 1);
 				foreach ($roles as $role)
 				{
-					$this->role_manager->map_user_to_role($this->wf_p_id, $user, $role);
+					$this->role_manager->map_user_to_role($this->wf_p_id, $user, $role, $account_type);
 				}
 			}
 		}
@@ -195,7 +204,7 @@
 			foreach ($users as $user)
 			{
 				$this->t->set_var(array(
-					'account_id'	=> $user['account_id'],
+					'account_id'	=> 'u'.$user['account_id'],
 					'account_name'	=> $user['account_firstname'] . ' ' . $user['account_lastname'],
 				));
 				$this->t->parse('select_users', 'block_select_users', true);
@@ -203,7 +212,7 @@
 			foreach ($groups as $group)
 			{
 				$this->t->set_var(array(
-					'account_id'	=> $group['account_id'],
+					'account_id'	=> 'g'.$group['account_id'],
 					'account_name'	=> $group['account_firstname'] . ' ' . lang('Group'),
 				));
 				$this->t->parse('select_users', 'block_select_users', true);

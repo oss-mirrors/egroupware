@@ -18,7 +18,7 @@
 <table style="border: 1px solid black;width:100%; margin-bottom:10px">
 	<tr class="th">
 		<td colspan="2" style="font-size: 120%; font-weight:bold">
-			{lang_Add_or_edit_a_role} <input type="submit" name="new_role" value="{lang_New}" />
+			{lang_Add_or_edit_a_role}
 		</td>
 	</tr>
 	<tr class="row_on">
@@ -30,8 +30,14 @@
 	  <td><textarea name="description" rows="4" cols="60">{role_info_description}</textarea></td>
 	</tr>
 	<tr class="th">
-	  <td>&nbsp;</td>
-	  <td><input type="submit" name="save" value="{lang_save}" /> </td>
+          <td colspan="2">
+	  <table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+		  <td style="text-align: left; font-weight:bold;"><input type="submit" name="save" value="{lang_save}" /> </td>
+		  <td style="text-align: right; font-weight:bold;"> <input type="submit" name="new_role" value="{lang_New}" /></td>
+		</tr>
+	  </table>
+          </td>
 	</tr>
 </table>
 </form>
