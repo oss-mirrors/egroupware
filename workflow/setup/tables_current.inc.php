@@ -85,7 +85,7 @@
 				'wf_status'		=> array('type' => 'varchar', 'precision' => '25', 'nullable' => True),
 				'wf_priority'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
 				'wf_properties'		=> array('type' => 'blob', 'nullable' => True),
-				'wf_name'		=> array('type' => 'varchar', 'precision'=>'120', 'nullable' = > True),
+				'wf_name'		=> array('type' => 'varchar', 'precision'=>'120', 'nullable' => True),
 			),
 			'pk' => array('wf_instance_id'),
 			'fk' => array(),
