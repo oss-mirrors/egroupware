@@ -13,12 +13,12 @@
 
    <tr>
     <td colspan="2" align="center">
-	  <table border="0" align="center">
-		<tr>
-		  {buttons}
-		</tr>
-	  </table>
-	</td>
+    <table border="0" align="center">
+    <tr>
+      {buttons}
+    </tr>
+    </table>
+  </td>
    </tr>
   </table>
  </form>
@@ -69,4 +69,3 @@
    <td width="50">{answer_actions}</td>
   </tr>
 <!-- END answer_row -->
-

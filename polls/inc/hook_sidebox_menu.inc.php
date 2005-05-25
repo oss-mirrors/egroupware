@@ -27,9 +27,9 @@
 	$menu_title = 'Polls Menu';
 	$file = Array(
 		'Current Poll'
-			=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.index')),
+			=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.ui.index')),
 		'View Results' 
-			=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.vote','show_results'=>$GLOBALS['poll_settings']['currentpoll']))
+			=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.ui.vote','show_results'=>$GLOBALS['poll_settings']['currentpoll']))
 	);
 	display_sidebox($appname,$menu_title,$file);
 
@@ -41,20 +41,19 @@
 	display_sidebox($appname,$menu_title,$file);
 */
 
-	if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
+	if($GLOBALS['egw_info']['user']['apps']['admin'])
 	{
-        $menu_title = 'Administration';
-        $file = Array(
-				'Poll Settings'
-					=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'settings')),
-                'Show Questions'
-					=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'show','type'=>'question')),
-                'Add Questions'
-					=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'add','type'=>'question')),
-                'Add Answers'
-					=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'add','type'=>'answer')),
-
-        );
+		$menu_title = 'Administration';
+		$file = Array(
+			'Poll Settings'
+				=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'settings')),
+			'Show Questions'
+				=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'show','type'=>'question')),
+			'Add Questions'
+				=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'add','type'=>'question')),
+			'Add Answers'
+				=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'add','type'=>'answer')),
+		);
 
 		display_sidebox($appname,$menu_title,$file);
 	}

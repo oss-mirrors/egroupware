@@ -1,4 +1,4 @@
-<!-- BEGIN form -->
+<!-- BEGIN form_top -->
 <form action="{form_action}" method="post">
 <input type="hidden" name="poll_id" value="{poll_id}">
 
@@ -8,7 +8,9 @@
  </tr>
 
  {entries}
+<!-- END form_top -->
 
+<!-- BEGIN form_end -->
  <tr bgcolor="{bgcolor}">
   <td colspan="2">&nbsp;</td>
  </tr>
@@ -20,7 +22,7 @@
 </table>
 
 </form>
-<!-- END form -->
+<!-- END form_end -->
 
 <!-- BEGIN entry -->
  <tr bgcolor="{tr_color}">

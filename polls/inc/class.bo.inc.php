@@ -18,22 +18,22 @@
 		var $so;
 		var $debug = false;
 
-        var $start  = 0;
-        var $query  = '';
-        var $sort   = '';
-        var $order  = '';
-        var $filter = 0;
-        var $limit  = 0;
-        var $total  = 0;
+		var $start  = 0;
+		var $query  = '';
+		var $sort   = '';
+		var $order  = '';
+		var $filter = 0;
+		var $limit  = 0;
+		var $total  = 0;
 
 		var $public_functions = array(
-				'user_can_vote'		=> True,
-				'view_results'		=> True,
-				'generate_ui'		=> True,
-				'get_list'			=> True,
-				'add_vote'			=> True,
-				'get_poll_data'		=> True,
-				'somebusinessfunc'	=> True,
+			'user_can_vote' => True,
+			'view_results'  => True,
+			'generate_ui'   => True,
+			'get_list'      => True,
+			'add_vote'      => True,
+			'get_poll_data' => True,
+			'somebusinessfunc' => True,
 		);
 
 		function bo($session=False)
@@ -41,65 +41,64 @@
 			$this->so = createobject('polls.so');
 			$this->load_settings();
 
-            if($session)
-            {
-                $this->read_sessiondata();
-                $this->use_session = True;
-            }
-
-            $_start   = get_var('start',array('POST','GET'));
-            $_query   = get_var('query',array('POST','GET'));
-            $_sort    = get_var('sort',array('POST','GET'));
-            $_order   = get_var('order',array('POST','GET'));
-            $_limit   = get_var('limit',array('POST','GET'));
-            $_filter  = get_var('filter',array('POST','GET'));
-
-
-            if(isset($_start))
-            {
-                if($this->debug) { echo '<br>overriding $start: "' . $this->start . '" now "' . $_start . '"'; }
-                $this->start = $_start;
-            }
-
-            if($_limit)
-            {
-                $this->limit  = $_limit;
-            }
-			else
+			if($session)
 			{
-				 $this->limit = $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
+				$this->read_sessiondata();
+				$this->use_session = True;
 			}
 
-            if((empty($_query) && !empty($this->query)) || !empty($_query))
-            {
-                $this->query  = $_query;
-            }
+			$_start  = get_var('start',array('POST','GET'));
+			$_query  = get_var('query',array('POST','GET'));
+			$_sort   = get_var('sort',array('POST','GET'));
+			$_order  = get_var('order',array('POST','GET'));
+			$_limit  = get_var('limit',array('POST','GET'));
+			$_filter = get_var('filter',array('POST','GET'));
+
+			if(isset($_start))
+			{
+				if($this->debug) { echo '<br>overriding $start: "' . $this->start . '" now "' . $_start . '"'; }
+				$this->start = $_start;
+			}
+
+			if($_limit)
+			{
+				$this->limit = $_limit;
+			}
+			else
+			{
+				$this->limit = $GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'];
+			}
+
+			if((empty($_query) && !empty($this->query)) || !empty($_query))
+			{
+				$this->query = $_query;
+			}
 
 			if(!empty($_sort))
-            {
-                if($this->debug) { echo '<br>overriding $sort: "' . $this->sort . '" now "' . $_sort . '"'; }
-                $this->sort   = $_sort;
-            }
+			{
+				if($this->debug) { echo '<br>overriding $sort: "' . $this->sort . '" now "' . $_sort . '"'; }
+				$this->sort   = $_sort;
+			}
 			else
 			{
 				$this->sort = 'ASC';
 			}
 
-            if(!empty($_order))
-            {
-                if($this->debug) { echo '<br>overriding $order: "' . $this->order . '" now "' . $_order . '"'; }
-                $this->order  = $_order;
-            }
+			if(!empty($_order))
+			{
+				if($this->debug) { echo '<br>overriding $order: "' . $this->order . '" now "' . $_order . '"'; }
+				$this->order = $_order;
+			}
 			else
 			{
 				$this->order = 'poll_title';
 			}
 
-            if(!empty($_filter))
-            {
-                if($this->debug) { echo '<br>overriding $filter: "' . $this->filter . '" now "' . $_filter . '"'; }
-                $this->filter = $_filter;
-            }
+			if(!empty($_filter))
+			{
+				if($this->debug) { echo '<br>overriding $filter: "' . $this->filter . '" now "' . $_filter . '"'; }
+				$this->filter = $_filter;
+			}
 
 		}
 
@@ -116,39 +115,39 @@
 			}
 		}
 
-        function save_sessiondata($data = '')
-        {
-            if ($this->use_session)
-            {
+		function save_sessiondata($data = '')
+		{
+			if($this->use_session)
+			{
 				if(empty($data) || !is_array($data))
 				{
 					$data = array();
 				}
 				$data += array(
-					'start'   => $this->start,
-					'order'   => $this->order,
-					'limit'   => $this->limit,
-					'query'   => $this->query,
-					'sort'    => $this->sort,
-					'filter'  => $this->filter
+					'start'  => $this->start,
+					'order'  => $this->order,
+					'limit'  => $this->limit,
+					'query'  => $this->query,
+					'sort'   => $this->sort,
+					'filter' => $this->filter
 				);
-                if($this->debug) { echo '<br>Save:'; _debug_array($data); }
-                $GLOBALS['phpgw']->session->appsession('session_data','polls_list',$data);
-            }
-        }
+				if($this->debug) { echo '<br>Save:'; _debug_array($data); }
+				$GLOBALS['egw']->session->appsession('session_data','polls_list',$data);
+			}
+		}
 
-        function read_sessiondata()
-        {
-            $data = $GLOBALS['phpgw']->session->appsession('session_data','polls_list');
-            if($this->debug) { echo '<br>Read:'; _debug_array($data); }
+		function read_sessiondata()
+		{
+			$data = $GLOBALS['egw']->session->appsession('session_data','polls_list');
+			if($this->debug) { echo '<br>Read:'; _debug_array($data); }
 
-            $this->start   = $data['start'];
-            $this->limit   = $data['limit'];
-            $this->query   = $data['query'];
-            $this->sort    = $data['sort'];
-            $this->order   = $data['order'];
-            $this->filter  = $data['filter'];
-        }
+			$this->start  = $data['start'];
+			$this->limit  = $data['limit'];
+			$this->query  = $data['query'];
+			$this->sort   = $data['sort'];
+			$this->order  = $data['order'];
+			$this->filter = $data['filter'];
+		}
 
 		function somebusinessfunc()
 		{
@@ -157,8 +156,8 @@
 
 		function add_vote($poll_id,$vote_id,$user_id)
 		{
-			if(isset($poll_id) && isset($vote_id)
-			   && (int)$poll_id >= 0 && (int)$vote_id >= 0)
+			if(isset($poll_id) && isset($vote_id) &&
+				(int)$poll_id >= 0 && (int)$vote_id >= 0)
 			{
 				$this->so->add_vote($poll_id,$vote_id,$user_id);
 			}
@@ -219,12 +218,12 @@
 		function makelink($action,$args)
 		{
 			$menuaction = 'polls.uiadmin.'.$action;
-			return $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>$menuaction,$args));
+			return $GLOBALS['egw']->link('/index.php',array('menuaction'=>$menuaction,$args));
 		}
 
 		function user_can_vote($poll_id)
 		{
-			if ($GLOBALS['poll_settings']['allow_multiple_votes'])
+			if($GLOBALS['poll_settings']['allow_multiple_votes'])
 			{
 				return True;
 			}
@@ -255,10 +254,10 @@
 		{
 			$ret = '';
 			$options = array(
-				'start'  => $this->start,
-				'query'  => $this->query,
-				'sort'   => $this->sort,
-				'order'  => $this->order
+				'start' => $this->start,
+				'query' => $this->query,
+				'sort'  => $this->sort,
+				'order' => $this->order
 			);
 			if(!$returnall)
 			{
@@ -275,6 +274,5 @@
 			$this->total = $this->so->total;
 			return $ret;
 		}
-
 	}
 ?>

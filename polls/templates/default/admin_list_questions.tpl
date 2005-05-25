@@ -4,11 +4,11 @@
    <td colspan="2">
     <table width="100%" border="0">
      <tr>
-		{match_left}
-		<td align="center">{lang_showing}</td>
-		{match_right}
+    {match_left}
+      <td align="center">{lang_showing}</td>
+    {match_right}
      </tr>
-	</table>
+  </table>
    </td>
   </tr>
   <tr bgcolor="{th_bg}">

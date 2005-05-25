@@ -22,13 +22,12 @@
 
 		var $debug = False;
 
-		var $public_functions = array
-			(
-				'index' => True,
-				'admin' => True,
-				'vote'  => True,
-				'view'  => True,
-			);
+		var $public_functions = array(
+			'index' => True,
+			'admin' => True,
+			'vote'  => True,
+			'view'  => True,
+		);
 
 		function ui()
 		{
@@ -39,7 +38,7 @@
 
 		function index()
 		{
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->common->phpgw_header();
 			echo parse_navbar();
 
 			$currentpoll = $GLOBALS['poll_settings']['currentpoll'];
@@ -67,11 +66,15 @@
 				$vote_id = (int)$_POST['poll_voteNr'];
 				if($this->bo->user_can_vote($poll_id))
 				{
-					$this->bo->add_vote($poll_id,$vote_id,$GLOBALS['phpgw_info']['user']['account_id']);
+					$this->bo->add_vote($poll_id,$vote_id,$GLOBALS['egw_info']['user']['account_id']);
 				}
-				$GLOBALS['phpgw']->redirect_link(
-							'/index.php',array('menuaction'=>'polls.ui.vote','show_results'=>$poll_id));
-				$GLOBALS['phpgw']->common->phpgw_exit();
+				$GLOBALS['egw']->redirect_link(
+					'/index.php',array(
+						'menuaction' => 'polls.ui.vote',
+						'show_results' => $poll_id
+					)
+				);
+				$GLOBALS['egw']->common->phpgw_exit();
 				return 0;
 			}
 			$showpoll = $_GET['show_results'];
@@ -79,20 +82,20 @@
 			{
 				$showpoll = $GLOBALS['poll_settings']['currentpoll'];
 			}
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->common->phpgw_header();
 			echo parse_navbar();
 			$this->view_results($showpoll);
-			$GLOBALS['phpgw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->phpgw_footer();
 		}
 
 		function admin()
 		{
-			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
+			if(!$GLOBALS['egw_info']['user']['apps']['admin'])
 			{
-				$GLOBALS['phpgw']->redirect_link('/index.php');
+				$GLOBALS['egw']->redirect_link('/index.php');
 			}
 			$action = get_var('action',array('GET','POST'));
-			$type 	= get_var('type',array('GET','POST'));
+			$type   = get_var('type',array('GET','POST'));
 			if($_POST['cancel'])
 			{
 				if(!empty($type))
@@ -101,9 +104,9 @@
 				}
 				else
 				{
-					$GLOBALS['phpgw']->redirect_link('/index.php',array('menuaction'=>'polls.ui.vote'));
+					$GLOBALS['egw']->redirect_link('/index.php',array('menuaction'=>'polls.ui.vote'));
 				}
-				$GLOBALS['phpgw']->common->phpgw_exit();
+				$GLOBALS['egw']->common->phpgw_exit();
 				return 0;
 			}
 			if(isset($_POST['delete']) && $action == 'edit')
@@ -140,7 +143,7 @@
 			$button = '';
 
 			$img = '<img src="'
-				. $GLOBALS['phpgw']->common->image('addressbook',$action)
+				. $GLOBALS['egw']->common->image('addressbook',$action)
 				. '" border="0" title="'.lang($action).'">';
 			if(empty($options) || !is_array($options))
 			{
@@ -150,7 +153,7 @@
 			{
 				$options['action'] = $action;
 			}
-			$button = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$options).'">'.$img.'</a>';
+			$button = '<a href="'.$GLOBALS['egw']->link('/index.php',$options).'">'.$img.'</a>';
 
 			return $button;
 		}
@@ -170,13 +173,13 @@
 			{
 				$options += $extra;
 			}
-			return $GLOBALS['phpgw']->link('/index.php',$options);
+			return $GLOBALS['egw']->link('/index.php',$options);
 		}
 
 		function addanswer()
 		{
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Add Answer to poll');
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Add Answer to poll');
+			$GLOBALS['egw']->common->phpgw_header();
 			echo parse_navbar();
 
 			$this->t->set_file(array('admin' => 'admin_form.tpl'));
@@ -197,12 +200,12 @@
 
 			$this->t->set_var('header_message',lang('Add answer to poll'));
 			$this->t->set_var('td_message','&nbsp;');
-			$this->t->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+			$this->t->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
 			$this->t->set_var('form_action',$this->adminlink('add','answer'));
 			$this->button_bar(array(
-					'submit' => lang('Add'),
-					'cancel' => lang('Cancel')
-				));
+				'submit' => lang('Add'),
+				'cancel' => lang('Cancel')
+			));
 
 			$poll_select = $this->select_poll($poll_id);
 
@@ -216,7 +219,7 @@
 
 		function select_poll($preselected_poll, $show_select_tag=true)
 		{
-			if ($show_select_tag)
+			if($show_select_tag)
 			{
 				$poll_select = '<select name="poll_id">';
 			}
@@ -240,7 +243,7 @@
 				}
 				$poll_select .= '>'.trim(stripslashes($_poll_title)).'</option>';
 			}
-			if ($show_select_tag)
+			if($show_select_tag)
 			{
 				$poll_select .= '</select>';
 			}
@@ -250,8 +253,8 @@
 
 		function addquestion()
 		{
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Add new poll question');
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Add new poll question');
+			$GLOBALS['egw']->common->phpgw_header();
 			echo parse_navbar();
 
 			$this->t->set_file(array('admin' => 'admin_form.tpl'));
@@ -261,7 +264,7 @@
 			$this->t->set_block('admin','input','input');
 			$this->t->set_var('hidden','');
 
-			if ($_POST['submit'])
+			if($_POST['submit'])
 			{
 				$newid = $this->bo->add_question();
 				$newlink = $this->adminlink('add','answer',array('poll_id'=>$newid));
@@ -274,12 +277,12 @@
 
 			$this->t->set_var('header_message',lang('Add new poll question'));
 			$this->t->set_var('td_message',"&nbsp;");
-			$this->t->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+			$this->t->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
 			$this->t->set_var('form_action', $this->adminlink('add','question'));
 			$this->button_bar(array(
-					'submit' => lang('Add'),
-					'cancel' => lang('Cancel')
-				));
+				'submit' => lang('Add'),
+				'cancel' => lang('Cancel')
+			));
 
 			$this->t->set_var('input_name','question');
 			$this->t->set_var('input_value','');
@@ -293,15 +296,15 @@
 			$poll_id = (int)get_var('poll_id',array('GET','POST'));
 			$vote_id = (int)get_var('vote_id',array('GET','POST'));
 			$confirm = get_var('confirm',array('GET','POST'));
-			if (!empty($confirm))
+			if(!empty($confirm))
 			{
 				$this->bo->delete_answer($poll_id,$vote_id);
 				header('Location: ' . $this->adminlink('show','answer'));
 			}
 			else
 			{
-				$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.lang('delete') . ' ' . lang('answer');
-				$GLOBALS['phpgw']->common->phpgw_header();
+				$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('delete') . ' ' . lang('answer');
+				$GLOBALS['egw']->common->phpgw_header();
 				echo parse_navbar();
 
 				$poll_data = $this->bo->get_poll_data($poll_id,$vote_id);
@@ -316,14 +319,14 @@
 				$this->t->set_var('hidden','<input type="hidden" name="vote_id" value="'.$vote_id.'">');
 				$this->t->set_var('poll_id',$poll_id);
 				$this->t->set_var('vote_id',$vote_id);
-				$this->t->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+				$this->t->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
 				$this->t->set_var('message',lang('Are you sure want to delete this answer ?'));
 				$this->t->set_var('td_message', $this->bo->get_poll_title($poll_id) . ': ' . $poll_info);
 				$this->t->set_var('form_action',$this->adminlink('delete','answer'));
 				$this->button_bar(array(
-						'cancel' => lang('No'),
-						'confirm' => lang('Yes')
-					));
+					'cancel' => lang('No'),
+					'confirm' => lang('Yes')
+				));
 
 				$this->t->pparse('out','form');
 			}
@@ -333,15 +336,15 @@
 		{
 			$poll_id = (int)get_var('poll_id',array('GET','POST'));
 			$confirm = get_var('confirm',array('GET','POST'));
-			if (!empty($confirm))
+			if(!empty($confirm))
 			{
 				$this->bo->delete_question($poll_id);
 				header('Location: ' . $this->adminlink('show','question'));
 			}
 			else
 			{
-				$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.lang('delete') . ' ' . lang('Poll Question');
-				$GLOBALS['phpgw']->common->phpgw_header();
+				$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('delete') . ' ' . lang('Poll Question');
+				$GLOBALS['egw']->common->phpgw_header();
 				echo parse_navbar();
 
 				$this->t->set_file(array('admin' => 'admin_form.tpl'));
@@ -353,14 +356,14 @@
 
 				$this->t->set_var('poll_id',$poll_id);
 
-				$this->t->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+				$this->t->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
 				$this->t->set_var('message',lang('Are you sure want to delete this question ?'));
 				$this->t->set_var('td_message', $this->bo->get_poll_title($poll_id));
 				$this->t->set_var('form_action',$this->adminlink('delete','question'));
 				$this->button_bar(array(
-						'cancel' => lang('No'),
-						'confirm' => lang('Yes')
-					));
+					'cancel' => lang('No'),
+					'confirm' => lang('Yes')
+				));
 
 				$this->t->pparse('out','form');
 			}
@@ -368,8 +371,8 @@
 
 		function editanswer()
 		{
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Edit answer');
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Edit answer');
+			$GLOBALS['egw']->common->phpgw_header();
 			echo parse_navbar();
 
 			$this->t->set_file(array('admin' => 'admin_form.tpl'));
@@ -382,7 +385,7 @@
 			$vote_id = (int)(get_var('vote_id',array('POST','GET')));
 			$this->t->set_var('poll_id',$poll_id);
 
-			if ($_POST['submit'])
+			if($_POST['submit'])
 			{
 				$this->bo->update_answer($poll_id,$vote_id,$_POST['answer']);
 				$this->t->set_var('message',lang('Answer has been updated'));
@@ -394,16 +397,16 @@
 
 			$poll_data = $this->bo->get_poll_data($poll_id,$vote_id);
 			$answer_value = trim($poll_data[0]['text']);
-			//$poll_id = $GLOBALS['phpgw']->db->f('poll_id');
+			//$poll_id = $GLOBALS['egw']->db->f('poll_id');
 
 			$this->t->set_var('header_message',lang('Edit answer'));
 			$this->t->set_var('td_message','&nbsp;');
-			$this->t->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+			$this->t->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
 			$this->t->set_var('form_action',$this->adminlink('edit','answer',array('vote_id'=>$vote_id)));
 			$this->button_bar(array(
-					'submit' => lang('Edit'),
-					'cancel' => lang('Cancel')
-				));
+				'submit' => lang('Edit'),
+				'cancel' => lang('Cancel')
+			));
 
 			$poll_select = $this->select_poll($poll_id);
 
@@ -411,13 +414,13 @@
 			$this->add_template_row(lang('Answer'),'<input name="answer" value="' . $answer_value . '">');
 
 			$this->t->pparse('out','form');
-			$GLOBALS['phpgw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->phpgw_footer();
 		}
 
 		function editquestion()
 		{
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Edit poll question');
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Edit poll question');
+			$GLOBALS['egw']->common->phpgw_header();
 			echo parse_navbar();
 
 			$this->t->set_file(array('admin' => 'admin_form.tpl'));
@@ -434,7 +437,7 @@
 			$poll_id = get_var('poll_id',array('GET','POST'));
 			$this->t->set_var('poll_id',$poll_id);
 
-			if ($_POST['edit'])
+			if($_POST['edit'])
 			{
 				$this->bo->update_question($poll_id,$_POST['question']);
 				$this->t->set_var('message',lang('Question has been updated'));
@@ -449,14 +452,14 @@
 
 			$this->t->set_var('header_message',lang('Edit poll question'));
 			$this->t->set_var('td_message','&nbsp;');
-			$this->t->set_var('tr_color',$GLOBALS['phpgw_info']['theme']['bgcolor']);
-			$this->t->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+			$this->t->set_var('tr_color',$GLOBALS['egw_info']['theme']['bgcolor']);
+			$this->t->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
 			$this->t->set_var('poll_id',$poll_id);
 			$this->t->set_var('form_action',$this->adminlink('edit','question',array('poll_id'=>$poll_id)));
 			$this->button_bar(array(
-					'edit' => lang('Edit'),
-					'cancel' => lang('Cancel')
-				));
+				'edit' => lang('Edit'),
+				'cancel' => lang('Cancel')
+			));
 
 			$this->t->set_var('td_1',lang('Poll question'));
 			$this->t->set_var('input_name','question');
@@ -477,10 +480,10 @@
 
 				$actions = '';
 				$_options = array(
-						'menuaction' => 'polls.ui.admin',
-						'type'	 	 => 'answer',
-						'poll_id'    => $poll_id,
-						'vote_id'    => $vote_id
+					'menuaction' => 'polls.ui.admin',
+					'type'       => 'answer',
+					'poll_id'    => $poll_id,
+					'vote_id'    => $vote_id
 				);
 				foreach(array('edit','delete') as $_action)
 				{
@@ -501,8 +504,8 @@
 
 		function settings()
 		{
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Settings');
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Settings');
+			$GLOBALS['egw']->common->phpgw_header();
 			echo parse_navbar();
 
 			$this->t->set_file(array('admin' => 'admin_settings.tpl'));
@@ -518,7 +521,7 @@
 			$settings = $this->bo->load_settings();
 
 			$var = array(
-				'form_action'	=> $this->adminlink('settings',''),
+				'form_action' => $this->adminlink('settings',''),
 				'lang_allowmultiple' => lang('Allow users to vote more then once'),
 				'check_allow_multiple_votes' => $GLOBALS['poll_settings']['allow_multiple_votes']?' checked':'',
 				'lang_selectpoll' => lang('Select current poll'),
@@ -537,8 +540,8 @@
 		{
 			$poll_id = (int)$_GET['poll_id'];
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.lang('View poll');
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('View poll');
+			$GLOBALS['egw']->common->phpgw_header();
 			echo parse_navbar();
 
 			$this->t->set_file(array('admin' => 'admin_form.tpl'));
@@ -551,19 +554,19 @@
 
 			$this->t->set_var('message','');
 			$this->t->set_var('header_message',lang('View poll'));
-			$this->t->set_var('td_message',$GLOBALS['phpgw']->strip_html($poll_title));
-			$this->t->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+			$this->t->set_var('td_message',$GLOBALS['egw']->strip_html($poll_title));
+			$this->t->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
 			$this->t->set_var('form_action',$this->adminlink('edit','question'));
 			$this->t->set_var('poll_id',$poll_id);
 
 			$this->button_bar(array(
-					'submit' => lang('Edit'),
-					'delete' => lang('Delete'),
-					'cancel' => lang('Cancel')
-				));
+				'submit' => lang('Edit'),
+				'delete' => lang('Delete'),
+				'cancel' => lang('Cancel')
+			));
 
 			$this->t->set_var('rows', '<tr><td colspan="2" width="100%">'
-					. $this->view_results($poll_id,false,true,true) . '</td></tr>');
+				. $this->view_results($poll_id,false,true,true) . '</td></tr>');
 
 			$this->t->pparse('out','form');
 		}
@@ -585,13 +588,13 @@
 			}
 			else
 			{
-				$GLOBALS['phpgw']->redirect_link('/polls/index.php');
-				$GLOBALS['phpgw']->common->phpgw_exit(True);
+				$GLOBALS['egw']->redirect_link('/polls/index.php');
+				$GLOBALS['egw']->common->phpgw_exit(True);
 				return 0;
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.$pagetitle;
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.$pagetitle;
+			$GLOBALS['egw']->common->phpgw_header();
 			echo parse_navbar();
 
 			$this->bo->sort  = $_GET['sort'] ? $_GET['sort'] : 'ASC';
@@ -609,7 +612,7 @@
 
 			$thelist = $this->bo->get_list($type);
 
-			$this->t->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+			$this->t->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
 			$this->t->set_var('sort_title',$this->nextmatchs->show_sort_order($this->bo->sort,'poll_title',$this->bo->order,'index.php',lang('Title'),'&menuaction=polls.ui.admin&action=show&type='.$type));
 			if($type == 'answer')
 			{
@@ -642,9 +645,9 @@
 
 				$actions = '';
 				$_options = array(
-						'menuaction' => 'polls.ui.admin',
-						'type'	 	 => $type,
-						'poll_id'    => $poll_id
+					'menuaction' => 'polls.ui.admin',
+					'type'       => $type,
+					'poll_id'    => $poll_id
 				);
 				foreach($allowed_actions as $_action)
 				{
@@ -665,14 +668,26 @@
 				{
 					$this->t->set_var('row_answer',stripslashes($option_text));
 					$this->t->set_var('row_title',stripslashes($poll_title));
-					$this->t->set_var('row_edit','<a href="' . $this->adminlink('edit','answer',
-									array ('vote_id' => $vote_id,
-									       'poll_id' => $poll_id
-									  ) ) .'">' . lang('Edit') . '</a>');
-					$this->t->set_var('row_delete','<a href="' . $this->adminlink('delete','answer',
-									array ('vote_id' => $vote_id,
-									       'poll_id' => $poll_id
-									  ) ) .'">' . lang('Delete') . '</a>');
+					$this->t->set_var(
+						'row_edit',
+						'<a href="' . $this->adminlink(
+							'edit',
+							'answer',array(
+								'vote_id' => $vote_id,
+								'poll_id' => $poll_id
+							)
+						) .'">' . lang('Edit') . '</a>'
+					);
+					$this->t->set_var(
+						'row_delete',
+						'<a href="' . $this->adminlink(
+							'delete',
+							'answer',array(
+								'vote_id' => $vote_id,
+								'poll_id' => $poll_id
+							)
+						) .'">' . lang('Delete') . '</a>'
+					);
 				}
 				$this->t->parse('rows','row',True);
 			}
@@ -682,7 +697,7 @@
 
 			$this->t->pparse('out','form');
 
-			$GLOBALS['phpgw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->phpgw_footer();
 		}
 
 		function view_results($poll_id,$showtitle=true,$showtotal=true,$returnstring=false)
@@ -704,12 +719,12 @@
 			if($showtitle)
 			{
 				$this->t->set_var('poll_title', $title);
-				$this->t->set_var('td_color', $GLOBALS['phpgw_info']['theme']['th_bg']);
+				$this->t->set_var('td_color', $GLOBALS['egw_info']['theme']['th_bg']);
 				$this->t->parse('titlebar','title');
 			}
 
 			$this->t->set_var('votes', '');
-			$this->t->set_var('server_url',$GLOBALS['phpgw_info']['server']['webserver_url']);
+			$this->t->set_var('server_url',$GLOBALS['egw_info']['server']['webserver_url']);
 			foreach($results as $result)
 			{
 				$option_text  = $result['text'];
@@ -718,9 +733,9 @@
 				$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
 				$this->t->set_var('vote_color', $tr_color);
 
-				if ($option_text != '')
+				if($option_text != '')
 				{
-					if ($sum)
+					if($sum)
 					{
 						$poll_percent = 100 * $option_count / $sum;
 					}
@@ -731,7 +746,7 @@
 					$poll_percent = sprintf("%.2f",$poll_percent);
 
 					$this->t->set_var('poll_bar','');
-					if ($poll_percent > 0)
+					if($poll_percent > 0)
 					{
 						$poll_percentScale = (int)($poll_percent * 1);
 						$this->t->set_var('scale',$poll_percentScale);
@@ -755,7 +770,7 @@
 			{
 				$this->t->set_var('sum',$sum);
 				$this->t->set_var('lang_total',lang('Total votes'));
-				$this->t->set_var('tr_color', $GLOBALS['phpgw_info']['theme']['th_bg'] /*bgcolor*/);
+				$this->t->set_var('tr_color', $GLOBALS['egw_info']['theme']['th_bg'] /*bgcolor*/);
 				$this->t->parse('show_total','total');
 			}
 
@@ -773,6 +788,11 @@
 			{
 				$poll_id = $this->bo->get_latest_poll();
 			}
+			if(!$poll_id)
+			{
+				return False;
+			}
+
 			$poll_id = (int)$poll_id;
 
 			if(!$this->bo->user_can_vote($poll_id))
@@ -785,15 +805,18 @@
 			$results = $this->bo->get_poll_data($poll_id);
 
 			$this->t->set_file(array('ballot' => 'ballot.tpl'));
-			$this->t->set_block('ballot','form','form');
+			$this->t->set_block('ballot','form_top','form_top');
+			$this->t->set_block('ballot','form_end','form_end');
 			$this->t->set_block('ballot','entry','entry');
 
+
 			$this->t->set_var('form_action',
-							$GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'polls.ui.vote')));
+				$GLOBALS['egw']->link('/index.php',array('menuaction'=>'polls.ui.vote'))
+			);
 			$this->t->set_var('poll_id',$poll_id);
 			$this->t->set_var('poll_title',$poll_title);
-			$this->t->set_var('title_bgcolor', $GLOBALS['phpgw_info']['theme']['th_bg']);
-			$this->t->set_var('bgcolor', $GLOBALS['phpgw_info']['theme']['bgcolor']);
+			$this->t->set_var('title_bgcolor', $GLOBALS['egw_info']['theme']['th_bg']);
+			$this->t->set_var('bgcolor', $GLOBALS['egw_info']['theme']['bgcolor']);
 
 			$this->t->set_var('entries', '');
 			foreach($results as $result)
@@ -812,8 +835,8 @@
 
 			$this->t->set_var('lang_vote', lang('Vote'));
 
-			$this->t->pparse('out','form');
+			$this->t->pparse('out','form_top');
+			$this->t->pparse('out','form_end');
 		}
-
 	}
 ?>

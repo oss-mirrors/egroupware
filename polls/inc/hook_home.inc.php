@@ -13,11 +13,10 @@
 
   /* $Id$ */
 
-	$hp_display = (int)$GLOBALS['phpgw_info']['user']['preferences']['polls']['homepage_display'];
+	$hp_display = (int)$GLOBALS['egw_info']['user']['preferences']['polls']['homepage_display'];
 	if($hp_display > 0)
 	{
 		$obj = CreateObject('polls.ui');
 		$obj->view();
 	}
-
 ?>
