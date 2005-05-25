@@ -198,4 +198,5 @@ version	workflow	es-es	Versión
 workflow	common	es-es	Flujo de trabajo
 workitem information	workflow	es-es	Información del elemento de trabajo
 workitems	workflow	es-es	Elementos de trabajo
+you do not have the right to run this activity anymore, maybe a concurrent access problem, refresh your datas.	workflow	es-es	Ya no tiene permiso para volver a ejecutar esta actividad. Quizás sea un problema de acceso concurrente, refresque sus datos.
 you have not permission to execute this activity	workflow	es-es	No tiene permiso para ejecutar esta actividad
