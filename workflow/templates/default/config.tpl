@@ -32,7 +32,7 @@
 		</td>
 		<td width="20%" class="td_right">
 			<select name="newsettings[draw_roles]">
-                                <option value="" {selected_draw_roles_False}>{lang_No}</option>
+                                <option value="False" {selected_draw_roles_False}>{lang_No}</option>
                                 <option value="True" {selected_draw_roles_True}>{lang_Yes}</option>
                         </select>
 		</td>
@@ -48,6 +48,54 @@
 			<input type="text" size="3" name="newsettings[font_size]" value="{value_font_size}">
 		</td>
 	</tr>
+
+	<tr class="th">
+		<td>&nbsp;<b>{lang_Running_activities_options}</b></font></td>
+		<td colspan="2" class="row_off">&nbsp;</td>
+	</tr>
+	<tr class="row_off">
+		<td width="60%" class="td_left">
+			{lang_if_automatic_parsing_is_disabled_next_options_will_be_useless}
+		</td>
+		<td width="20%" class="td_right">
+			{lang_use_automatic_parsing}:
+		</td>
+		<td width="20%" class="td_right">
+			<select name="newsettings[use_automatic_parsing]">
+                               	<option value="False" {selected_use_automatic_parsing_False}>{lang_No}</option>
+                                <option value="True" {selected_use_automatic_parsing_True}>{lang_Yes}</option>
+       	                </select>
+		</td>
+	</tr>
+	<tr class="row_on">
+		<td width="60%" class="td_left">
+			{lang_the_instance_title_is_shown_on_top_of_the_form}
+		</td>
+		<td width="20%" class="td_right">
+			{lang_show_title}:
+		</td>
+		<td width="20%" class="td_right">
+			<select name="newsettings[run_act_show_title]">
+                               	<option value="False" {selected_run_act_show_title_False}>{lang_No}</option>
+                                <option value="True" {selected_run_act_show_title_True}>{lang_Yes}</option>
+       	                </select>
+		</td>
+	</tr>
+	<tr class="row_off">
+		<td width="60%" class="td_left">
+			{lang_when_multiple_submit_options_are_avaible_we_draw_a_select_box_with_only_one_submit_instead_of_multiple_buttons}
+		</td>
+		<td width="20%" class="td_right">
+			{lang_show_multiple_submit_as_select}:
+		</td>
+		<td width="20%" class="td_right">
+			<select name="newsettings[multiple_submit_select]">
+                               	<option value="False" {selected_multiple_submit_select_False}>{lang_No}</option>
+                                <option value="True" {selected_multiple_submit_select_True}>{lang_Yes}</option>
+       	                </select>
+		</td>
+	</tr>
+
 	<tr class="th">
 		<td>&nbsp;<b>{lang_Workflow_engine_options}</b></font></td>
 		<td colspan="2" class="row_off">&nbsp;</td>
@@ -61,7 +109,7 @@
 		</td>
 		<td width="20%" class="td_right">
 			<select name="newsettings[ownership_give_rights]">
-                               	<option value="" {selected_ownership_give_rights_False}>{lang_No}</option>
+                               	<option value="False" {selected_ownership_give_rights_False}>{lang_No}</option>
                                 <option value="True" {selected_ownership_give_rights_True}>{lang_Yes}</option>
        	                </select>
 		</td>

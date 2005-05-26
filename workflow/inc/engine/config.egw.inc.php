@@ -138,7 +138,8 @@ if (!function_exists('galaxia_execute_activity')) {
   default value will be the NEW STORED value. If no default value is
   given we assume it's a false.
   WARNING: you should cast your result if you bet its' an integer
-  as it is maybe stored as a string
+  as it is maybe stored as a string. But 1 and 0 special values are
+  handled correctly as ints (bools).
 */
 if (!function_exists('galaxia_get_config_values')) 
 {
@@ -146,20 +147,44 @@ if (!function_exists('galaxia_get_config_values'))
   {
       $config =& CreateObject('phpgwapi.config');
       $config->read_repository();
-      //_debug_array($config->config_data);
+
       $result_array = array();
       foreach ($parameters as $config_var => $default_value)
       {
         $config_value = $config->config_data[$config_var];
         if(isset($config_value))
-        { 
-          $result_array[$config_var] = $config_value;
+        { //we add something in the config store, we take it
+          if ($config_value=='False')
+          {
+            $result_array[$config_var]=0;
+          }
+          elseif ($config_value=='True')
+          {
+            $result_array[$config_var]=1;
+          }
+          else
+          {
+            $result_array[$config_var] = $config_value;
+          }
         }
         else
         {
           //we had no value stored yet, so we store it now
-          $config->value($config_var,$default_value);
+	  //boolean warning: egw'config class is not storing false values if it is 0
+          //we have to map theses int...
+          $stored_value= (string)$default_value;
+          if ($stored_value=='1')
+          {
+            $stored_value='True';
+          }
+          elseif ($stored_value=='0')
+          {
+            $stored_value='False';
+          }
+
+          $config->value($config_var,$stored_value);
           $config->save_repository();
+          // take the not casted variable
           $result_array[$config_var] = $default_value;
         }
       }
