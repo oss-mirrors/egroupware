@@ -72,6 +72,9 @@ class InstanceManager extends BaseManager {
     $this->query($query); 
   }
   
+  /*!
+  remove all previous activities on this instance and create a new activity on the activity given
+  */
   function set_instance_destination($iid,$activityId)
   {
     $query = "delete from ".GALAXIA_TABLE_PREFIX."instance_activities where wf_instance_id=$iid";
@@ -80,11 +83,14 @@ class InstanceManager extends BaseManager {
     values($iid,$activityId,'*','running')";
     $this->query($query);
   }
-  
+ 
+  /*!
+  set $user as the new user of activity $activityId
+  */
   function set_instance_user($iid,$activityId,$user)
   {
-    $query = "update ".GALAXIA_TABLE_PREFIX."instance_activities set wf_user='$user', wf_status='running' where wf_instance_id=$iid and wf_activity_id=$activityId";
-    $this->query($query);  
+    $query = "update ".GALAXIA_TABLE_PREFIX."instance_activities set wf_user=? where wf_instance_id=$iid and wf_activity_id=$activityId";
+    $this->query($query, array($user));  
   }
 
 }    
