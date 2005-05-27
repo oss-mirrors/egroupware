@@ -158,7 +158,7 @@
 		The poweruser can decide to handle theses buttons in his own way in the config section
 		He'll then have to draw it himself in his activity template
 		*/
-		function parse_submit(&$submit_array)
+		function parse_submit()
 		{
 			//inside the select box for submits
 			$this->t->set_block('run_activity', 'block_submit_options', 'submit_options');
