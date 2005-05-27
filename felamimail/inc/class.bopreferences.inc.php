@@ -23,28 +23,28 @@
 		
 		function bopreferences()
 		{
-			$this->config = CreateObject('phpgwapi.config','felamimail');
+			$this->config =& CreateObject('phpgwapi.config','felamimail');
 			$this->config->read_repository();
 			$this->profileID = $this->config->config_data['profileID'];
 			
-			$this->boemailadmin = CreateObject('emailadmin.bo');
+			$this->boemailadmin =& CreateObject('emailadmin.bo');
 		}
 		
 		function getPreferences()
 		{
 			$data['emailConfigValid'] = true;
 
-			if($this->profileID < 0 || $this->profileID == '')
+			$imapServerTypes	= $this->boemailadmin->getIMAPServerTypes();
+			$profileData		= $this->boemailadmin->getProfile($this->profileID);
+			if(!is_array($profileData) || $imapServerTypes[$profileData['imapType']]['protocol'] != 'imap')
 			{
 				$data['emailConfigValid'] = false;
 				return $data;
 			}
-			
-			$imapServerTypes	= $this->boemailadmin->getIMAPServerTypes();
-			$profileData		= $this->boemailadmin->getProfile($this->profileID);
-			if($imapServerTypes[$profileData['imapType']]['protocol'] != 'imap')
+			elseif ($this->profileID != $profileData['profileID'])
 			{
-				$data['emailConfigValid'] = false;
+				$this->profileID = $this->config->config_data['profileID'] = $profileData['profileID'];
+				$this->config->save_repository();
 			}
 			
 			#$usersEMailAddresses	= $this->boemailadmin->getAccountEmailAddress($GLOBALS['phpgw_info']['user']['userid'], $this->profileID);

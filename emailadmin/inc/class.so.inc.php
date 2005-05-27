@@ -24,7 +24,7 @@
 		
 		function updateProfile($_globalSettings, $_smtpSettings, $_imapSettings)
 		{
-			$profileID = intval($_globalSettings['profileID']);
+			$profileID = (int) $_globalSettings['profileID'];
 			$fields = $values = $query = '';
 
 			foreach($_smtpSettings+$_globalSettings+$_imapSettings as $key => $value)
@@ -60,13 +60,15 @@
 				$query = "insert into phpgw_emailadmin ($fields) values ($values)";
 			}
 			$this->db->query($query,__LINE__,__FILE__);
+			
+			return $profileID ? $profileID : $this->db->get_last_insert_id('phpgw_emailadmin','profileID');
 		}
 
 		function addProfile($_globalSettings, $_smtpSettings, $_imapSettings)
 		{
 			unset($_globalSettings['profileID']);	// just in case
 
-			$this->updateProfile($_globalSettings, $_smtpSettings, $_imapSettings);
+			return $this->updateProfile($_globalSettings, $_smtpSettings, $_imapSettings);
 		}
 
 		function deleteProfile($_profileID)

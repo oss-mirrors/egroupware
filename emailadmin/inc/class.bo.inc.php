@@ -66,7 +66,7 @@
 			);
 
 			$this->IMAPServerType = array(
-				'1' 	=> array(
+/*				'1' 	=> array(
 					'fieldNames'	=> array(
 						'imapServer',
 						'imapPort',
@@ -79,7 +79,7 @@
 					'description'	=> lang('standard POP3 server'),
 					'protocol'	=> 'pop3',
 					'classname'	=> 'defaultpop'
-				),
+				),*/
 				'2' 	=> array(
 					'fieldNames'	=> array(
 						'imapServer',
@@ -255,8 +255,57 @@
 		function getProfile($_profileID)
 		{
 			$profileData = $this->soemailadmin->getProfileList($_profileID);
-			$fieldNames = $this->SMTPServerType[$profileData[0]['smtpType']]['fieldNames'];
-			$fieldNames = array_merge($fieldNames, $this->IMAPServerType[$profileData[0]['imapType']]['fieldNames']);
+			$found = false;
+			if (is_array($profileData) && count($profileData))
+			{
+				foreach($profileData as $n => $data)
+				{
+					if ($data['ProfileID'] == $_profileID)
+					{
+						$found = $n;
+						break;
+					}
+				}
+			}
+			if ($found === false)		// no existing profile selected
+			{
+				if (is_array($profileData) && count($profileData))	// if we have a profile use that
+				{
+					reset($profileData);
+					list($found,$data) = each($profileData);
+					$this->profileID = $_profileID = $data['profileID'];
+				}
+				elseif ($GLOBALS['phpgw_info']['server']['smtp_server'])	// create a default profile, from the data in the api config
+				{
+					$this->profileID = $_profileID = $this->soemailadmin->addProfile(array(
+						'description' => $GLOBALS['phpgw_info']['server']['smtp_server'],
+						'defaultDomain' => $GLOBALS['phpgw_info']['server']['mail_suffix'],
+						'organisationName' => '',
+						'userDefinedAccounts' => '',
+					),array(
+						'smtpServer' => $GLOBALS['phpgw_info']['server']['smtp_server'],
+						'smtpPort' => $GLOBALS['phpgw_info']['server']['smtp_port'],
+						'smtpAuth' => '',
+						'smtpType' => '1',
+					),array(
+						'imapServer' => $GLOBALS['phpgw_info']['server']['mail_server'] ? 
+							$GLOBALS['phpgw_info']['server']['mail_server'] : $GLOBALS['phpgw_info']['server']['smtp_server'],
+						'imapPort' => '143',
+						'imapType' => '2',	// imap
+						'imapLoginType' => $GLOBALS['phpgw_info']['server']['mail_login_type'] ? 
+							$GLOBALS['phpgw_info']['server']['mail_login_type'] : 'standard',
+						'imapTLSEncryption' => '',
+						'imapTLSAuthentication' => '',
+						'imapoldcclient' => '',						
+					));
+					$profileData[$found = 0] = array(
+						'smtpType' => '1',
+						'imapType' => '2',
+					);
+				}
+			}
+			$fieldNames = array_merge($this->SMTPServerType[$profileData[$found]['smtpType']]['fieldNames'],
+				$this->IMAPServerType[$profileData[$found]['imapType']]['fieldNames']);
 			$fieldNames[] = 'description';
 			$fieldNames[] = 'defaultDomain';
 			$fieldNames[] = 'profileID';
