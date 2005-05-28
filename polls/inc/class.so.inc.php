@@ -49,20 +49,20 @@
 
 		function get_user_votecount($poll_id)
 		{
-			return (int)$this->get_value_("SELECT COUNT(*) FROM phpgw_polls_user WHERE user_id="
+			return (int)$this->get_value_('SELECT COUNT(*) FROM phpgw_polls_user WHERE user_id='
 				. (int)($GLOBALS['egw_info']['user']['account_id'])
 				. ' AND poll_id=' . (int)$poll_id,0);
 		}
 
 		function get_poll_title($poll_id)
 		{
-			return stripslashes($this->get_value_("SELECT poll_title FROM phpgw_polls_desc WHERE poll_id=" . (int)$poll_id,0));
+			return stripslashes($this->get_value_('SELECT poll_title FROM phpgw_polls_desc WHERE poll_id=' . (int)$poll_id,0));
 		}
 
 		function get_poll_total($poll_id)
 		{
-			return (int)$this->get_value_("SELECT SUM(option_count) AS sum FROM phpgw_polls_data "
-				. "WHERE poll_id=" . (int)$poll_id,0);
+			return (int)$this->get_value_('SELECT SUM(option_count) AS sum FROM phpgw_polls_data'
+				. ' WHERE poll_id=' . (int)$poll_id,0);
 		}
 
 		function get_poll_data($poll_id,$vote_id=-1)
@@ -89,16 +89,16 @@
 
 		function get_latest_poll()
 		{
-			return $this->get_value_("SELECT MAX(poll_id) FROM phpgw_polls_desc", 0);
+			return $this->get_value_('SELECT MAX(poll_id) FROM phpgw_polls_desc', 0);
 		}
 
 		function add_answer($poll_id,$answer)
 		{
-			$vote_id = (int)$this->get_value_("SELECT MAX(vote_id)+1 FROM phpgw_polls_data "
-				. 'WHERE poll_id=' . (int)$poll_id,0);
+			$vote_id = (int)$this->get_value_('SELECT MAX(vote_id)+1 FROM phpgw_polls_data'
+				. ' WHERE poll_id=' . (int)$poll_id,0);
 			$answer = addslashes($answer);
-			$result = $this->db->query('INSERT INTO phpgw_polls_data (poll_id,option_text,option_count,vote_id) '
-				. 'VALUES (' . (int)$poll_id . ",'" . $answer . "',0," . (int)$vote_id . ')',__LINE__,__FILE__);
+			$result = $this->db->query('INSERT INTO phpgw_polls_data (poll_id,option_text,option_count,vote_id)'
+				. ' VALUES (' . (int)$poll_id . ",'" . $answer . "',0," . (int)$vote_id . ')',__LINE__,__FILE__);
 			if($result)
 			{
 				return $this->db->get_last_insert_id('phpgw_polls_desc','poll_id');
@@ -135,23 +135,23 @@
 			$this->db->query('DELETE FROM phpgw_polls_user WHERE poll_id=' . (int)$poll_id);
 			if($GLOBALS['currentpoll'] == $poll_id)
 			{
-				$this->db->query("SELECT MAX(poll_id) AS max FROM phpgw_polls_desc");
+				$this->db->query('SELECT MAX(poll_id) AS max FROM phpgw_polls_desc');
 				$max = $this->db->f(0);
-				$this->db->query("UPDATE phpgw_polls_settings SET setting_value='$max' "
-					." WHERE setting_name='currentpoll'");
+				$this->db->query("UPDATE phpgw_polls_settings SET setting_value='$max'"
+					. " WHERE setting_name='currentpoll'");
 			}
 		}
 
 		function add_vote($poll_id,$vote_id,$user_id)
 		{
 			// verify that we're adding a valid vote before update
-			$this->db->query("SELECT option_count FROM phpgw_polls_data"
+			$this->db->query('SELECT option_count FROM phpgw_polls_data'
 				. ' WHERE poll_id=' . (int) $poll_id . ' AND vote_id=' . (int)$vote_id);
 			$count = $this->db->f(0);
 			if($count >= 0)
 			{
-				$this->db->query("UPDATE phpgw_polls_data SET option_count=option_count+1 WHERE "
-					. "poll_id='" . $poll_id . "' AND vote_id=" . (int)$vote_id,__LINE__,__FILE__);
+				$this->db->query('UPDATE phpgw_polls_data SET option_count=option_count+1 WHERE'
+					. ' poll_id=' . (int)$poll_id . ' AND vote_id=' . (int)$vote_id,__LINE__,__FILE__);
 				$this->db->query('INSERT INTO phpgw_polls_user VALUES (' . (int)$poll_id . ',0,'
 					. $GLOBALS['egw_info']['user']['account_id'] . ',' . time() . ')',__LINE__,__FILE__);
 			}
