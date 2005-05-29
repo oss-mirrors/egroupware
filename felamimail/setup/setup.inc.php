@@ -13,7 +13,7 @@
 
 	$setup_info['felamimail']['name']      		= 'felamimail';
 	$setup_info['felamimail']['title']     		= 'FeLaMiMail';
-	$setup_info['felamimail']['version']     	= '1.0.0.003';
+	$setup_info['felamimail']['version']     	= '1.0.0.004';
 	$setup_info['felamimail']['app_order'] 		= 2;
 	$setup_info['felamimail']['enable']    		= 1;
 
@@ -21,9 +21,6 @@
 	$setup_info['felamimail']['license']		= 'GPL';
 	$setup_info['felamimail']['description']	=
 		'IMAP emailclient for EGroupware';
-	#$setup_info['felamimail']['based_on']		=
-	#	'This port is based on Squirrelmail, which is a standalone IMAP client.';
-	#$setup_info['felamimail']['based_on_url']	= 'http://www.squirrelmail.org';
 	$setup_info['felamimail']['maintainer'] 	= 'Lars Kneschke';
 	$setup_info['felamimail']['maintainer_email'] 	= 'lkneschke@linux-at-work.de';
 

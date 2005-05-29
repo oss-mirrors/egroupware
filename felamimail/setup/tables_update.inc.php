@@ -188,4 +188,14 @@
 		$GLOBALS['setup_info']['felamimail']['currentver'] = '1.0.0.003';
 		return $GLOBALS['setup_info']['felamimail']['currentver'];
 	}
+
+	$test[] = '1.0.0.003';
+	function felamimail_upgrade1_0_0_003()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_felamimail_cache', 'fmail_accountname', array('type' => 'varchar','precision' => '200','nullable' => False));
+
+		$GLOBALS['setup_info']['felamimail']['currentver'] = '1.0.0.004';
+		return $GLOBALS['setup_info']['felamimail']['currentver'];
+	}
+
 ?>

@@ -16,7 +16,7 @@
 			'fd' => array(
 				'fmail_accountid' => array('type' => 'int','precision' => '4','nullable' => False),
 				'fmail_hostname' => array('type' => 'varchar','precision' => '60','nullable' => False),
-				'fmail_accountname' => array('type' => 'varchar','precision' => '25','nullable' => False),
+				'fmail_accountname' => array('type' => 'varchar','precision' => '200','nullable' => False),
 				'fmail_foldername' => array('type' => 'varchar','precision' => '200','nullable' => False),
 				'fmail_uid' => array('type' => 'int','precision' => '4','nullable' => False),
 				'fmail_subject' => array('type' => 'text'),

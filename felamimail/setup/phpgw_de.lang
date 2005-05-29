@@ -419,3 +419,9 @@ if message size	felamimail	de	wenn Nachrichtengröße
 less than	felamimail	de	kleiner als
 greater than	felamimail	de	größer als
 kilobytes	felamimail	de	Kilobytes
+check message against next rule also	felamimail	de	Nachricht auch gegen nächste Regel prüfen
+keep a copy of the message in your inbox	felamimail	de	eine Kopie der Nachricht in der INBOX behalten
+use regular expressions	felamimail	de	reguläre Ausdrücke verwenden
+match	felamimail	de	Übereinstimmung
+all of	felamimail	de	mit allen
+any of	felamimail	de	mit einem

@@ -288,6 +288,8 @@
 			</script>";
 			
 			$this->template->set_var('folderTree',$folder_tree_new);
+			$this->template->set_var('lang_open_all',lang("open all"));
+			$this->template->set_var('lang_close_all',lang("close all"));
 			
 			return $this->template->fp('out','folderSelectTree');;
 		}

@@ -422,7 +422,7 @@
 			$folderStatus = imap_status($this->mbox,$mailboxString,SA_ALL);
 			
 			// merge a array and object to a array
-			$retValue = array_merge($retValue,(array)$folderStatus);
+			$retValue = array_merge($retValue,$folderStatus);
 			
 			return $retValue;
 		}
@@ -521,6 +521,7 @@
 
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$this->sessionData['mailbox'],3,$this->profileID);
 			$status = imap_status ($this->mbox, $mailboxString, SA_ALL);
+			#_debug_array($status);
 			$cachedStatus = $caching->getImapStatus();
 
 			// no data cached already?
@@ -744,7 +745,7 @@
 			{
 				foreach($sections as $key => $value)
 				{
-					if($value['type'] == 'attachment')
+					if($value['type'] == 'attachment' && $sections[substr($key,0,-2)]['mimeType'] != "multipart/alternative")
 					{
 						$arrayData[] = $value;
 					}
@@ -766,14 +767,15 @@
 				$this->htmlOptions = $_htmlOptions; 
 
 			$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
-			#_debug_array($structure);
+			#_debug_array($structure);exit;
 			$sections = array();
 			$this->parseMessage($sections, $structure, $_partID);
 			#_debug_array($sections);
 			
 			foreach($sections as $key => $value)
 			{
-				if($value['type'] == 'body')
+				#print 'parent is: '.$sections[substr($key,0,-2)]['mimeType'].'<br>';
+				if($value['type'] == 'body' || $sections[substr($key,0,-2)]['mimeType'] == "multipart/alternative")
 				{
 					#_debug_array($value);
 					// no mime message, only body available
@@ -807,6 +809,7 @@
 					{
 						// select which part(text or html) to display from multipart/alternative
 						#_debug_array($sections);
+						#print $sections['']['mimeType']."<br>";
 						if($sections[substr($key,0,-2)]['mimeType'] == "multipart/alternative")
 						{
 							switch($this->htmlOptions)
@@ -1096,7 +1099,7 @@
 			}
 			
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
-
+			#print "<br>aa<br>bb<br><br>aa<br>bb<br>cc<br>$mailboxString, $username, $password<br>";
 			if(!$this->mbox = @imap_open ($mailboxString, $username, $password, $options))
 			{
 				return imap_last_error();
@@ -1143,25 +1146,22 @@
 					$mime_type = "text";
 					$data['encoding']	= $_structure->encoding;
 					$data['size']		= $_structure->bytes;
-					$data['partID']		= $_currentPartID;
+					$data['partID']	= $_currentPartID;
 					$data["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
 					$data["name"]		= lang("unknown");
-					if(is_array($_structure->parameters))
+					for ($lcv = 0; $lcv < count($_structure->parameters); $lcv++)
 					{
-						for ($lcv = 0; $lcv < count($_structure->parameters); $lcv++)
+						$param = $_structure->parameters[$lcv];
+						switch(strtolower($param->attribute))
 						{
-							#_debug_array($_structure);
-							$param = $_structure->parameters[$lcv];
-							switch(strtolower($param->attribute))
-							{
-								case 'name':
-									$data["name"] = $param->value;
-									break;
-								case 'charset':
-									$data["charset"] = $param->value;
-									break;
-							}
+							case 'name':
+								$data["name"] = $param->value;
+								break;
+							case 'charset':
+								$data["charset"] = $param->value;
+								break;
 						}
+						
 					}
 					
 					// set this to zero, when we have a plaintext message
@@ -1296,17 +1296,14 @@
 						}
 					}
 					
-					if(is_array($_structure->parameters))
+					for ($lcv = 0; $lcv < count($_structure->parameters); $lcv++)
 					{
-						for ($lcv = 0; $lcv < count($_structure->parameters); $lcv++)
+						$param = $_structure->parameters[$lcv];
+						switch(strtolower($param->attribute))
 						{
-							$param = $_structure->parameters[$lcv];
-							switch(strtolower($param->attribute))
-							{
-								case 'name':
-									$_sections[$_currentPartID]["name"] = $param->value;
-									break;
-							}
+							case 'name':
+								$_sections[$_currentPartID]["name"] = $param->value;
+								break;
 						}
 					}
 					
