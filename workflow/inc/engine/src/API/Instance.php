@@ -104,11 +104,12 @@ class Instance extends Base {
     $now = date("U");
     $this->started=$now;
     $this->owner = $user;
+    $name = $this->getName();
     $props=serialize($this->properties);
     $query = "insert into `".GALAXIA_TABLE_PREFIX."instances`
       (`wf_started`,`wf_ended`,`wf_status`,`wf_p_id`,`wf_owner`,`wf_properties`,`wf_name`) 
       values(?,?,?,?,?,?,?)";
-    $this->query($query,array($now,0,'active',$pid,$user,$props,$this->name));
+    $this->query($query,array($now,0,'active',$pid,$user,$props,$name));
     $this->instanceId = $this->getOne("select max(`wf_instance_id`) from `".GALAXIA_TABLE_PREFIX."instances` where `wf_started`=? and `wf_owner`=?",array((int)$now,$user));
     $iid=$this->instanceId;
     
@@ -242,7 +243,7 @@ class Instance extends Base {
         $query = "update `".GALAXIA_TABLE_PREFIX."instance_activities` set `wf_user`=? where `wf_activity_id`=? and `wf_instance_id`=?";
         $bindvars = array($theuser,(int)$activityId,(int)$this->instanceId);
         if(!($theuser=='*')) {
-          $query.= "and (`wf_user`=? or `wf_user`=?)";
+          $query.= " and (`wf_user`=? or `wf_user`=?)";
           $bindvars[]= $theuser;
           $bindvars[]= '*';
         }
@@ -580,29 +581,42 @@ class Instance extends Base {
       $candidates = Array();
       $query = "select `wf_role_id` from `".GALAXIA_TABLE_PREFIX."activity_roles` where `wf_activity_id`=?";
       $result = $this->query($query,array((int)$activityId)); 
-      while ($res = $result->fetchRow()) {
+      while ($res = $result->fetchRow()) 
+      {
         $roleId = $res['wf_role_id'];
         //regis: group role mapping as an impact here, we need to count real user corresponding to this role
         // and we obtain users 'u' and groups 'g' in user_roles
         // we consider number of members on each group is subject to too much changes and so we do not even try 
         // to look in members of the group to find is there is a unique real user candidate for this role
         // you could try it if you want but it's quite complex for something not really usefull
-        //$user_groups = galaxia_retrieve_user_groups($GLOBALS['phpgw_info']['user']['account_id'] );
-        $query2 = "select distinct wf_user, wf_account_type from ".GALAXIA_TABLE_PREFIX."user_roles 
-            where wf_role_id=? and  wf_account_type='u'";
-        $result2 = $this->query($query2,array((int)$roleId)); 
-        while ($res2 = $result2->fetchRow()) 
-        {
-            $candidates[] = $res2['wf_user'];
-            //optimisation, we do not need the complete list
-            if (count($candidates) > 1) break;
+        // if there's at least one group in the roles we then won't even try to get this unique user
+        $query_group = "select count(*) from ".GALAXIA_TABLE_PREFIX."user_roles 
+            where wf_role_id=? and wf_account_type='g'";
+        if (!$this->getOne($query_group,array((int)$roleId)))
+        {//if count<>0 then !getOne==true, we have at least one group
+         //we can break the while, we wont search the candidate
+          unset($candidates);
+          break;
+        }
+        else
+        {// if count==0 then !getOne==false, we have no groups
+          $query2 = "select distinct wf_user, wf_account_type from ".GALAXIA_TABLE_PREFIX."user_roles 
+              where wf_role_id=?";
+          $result2 = $this->query($query2,array((int)$roleId)); 
+          while ($res2 = $result2->fetchRow()) 
+          {
+              $candidates[] = $res2['wf_user'];
+          }
         }
       }
-      // here if we have only 1 REAL egw USER (not group) coming for next activity the user is setted
-      if(count($candidates) == 1) {
+      // here if we have only 1 REAL egw USER (no groups) coming for next activity the user is setted
+      if(isset($candidates) && (count($candidates) == 1)) 
+      {
         $putuser = $candidates[0];
-      } else {
-        // If there is more than one user for this activity
+      } 
+      else 
+      {
+        // If there is more than one user or groups for this activity
         // then check to see if there is a default user
         $activity_manager =& CreateObject('workflow.workflow_activitymanager');
         //get_default_user will give us '*' if there is no default_user or if the default user has no role
