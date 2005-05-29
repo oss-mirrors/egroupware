@@ -569,6 +569,9 @@ class Instance extends Base {
     if(!$this->getOne("select count(*) from `".GALAXIA_TABLE_PREFIX."transitions` where `wf_act_from_id`=? and `wf_act_to_id`=?",array($from,(int)$activityId))) {
       trigger_error(tra('Fatal error: trying to send an instance to an activity but no transition found'),E_USER_WARNING);
     }
+
+    //init
+    $putuser=0;
     
     //try to determine the user or *
     //Use the nextUser
@@ -578,7 +581,6 @@ class Instance extends Base {
       // If no nextUser is set, then see if only
       // one user is in the role for this activity
       // and assign ownership to him if this is the case
-      $candidates = Array();
       $query = "select `wf_role_id` from `".GALAXIA_TABLE_PREFIX."activity_roles` where `wf_activity_id`=?";
       $result = $this->query($query,array((int)$activityId)); 
       while ($res = $result->fetchRow()) 
@@ -592,31 +594,37 @@ class Instance extends Base {
         // if there's at least one group in the roles we then won't even try to get this unique user
         $query_group = "select count(*) from ".GALAXIA_TABLE_PREFIX."user_roles 
             where wf_role_id=? and wf_account_type='g'";
-        if (!$this->getOne($query_group,array((int)$roleId)))
-        {//if count<>0 then !getOne==true, we have at least one group
-         //we can break the while, we wont search the candidate
-          unset($candidates);
+        if ($this->getOne($query_group,array((int)$roleId)) > 0 )
+        { //we have groups
+          //we can break the while, we wont search the candidate
+          $putuser=0;
           break;
         }
         else
-        {// if count==0 then !getOne==false, we have no groups
+        {// we have no groups
           $query2 = "select distinct wf_user, wf_account_type from ".GALAXIA_TABLE_PREFIX."user_roles 
               where wf_role_id=?";
           $result2 = $this->query($query2,array((int)$roleId)); 
           while ($res2 = $result2->fetchRow()) 
           {
-              $candidates[] = $res2['wf_user'];
+            if (!($putuser==0))
+            { // we already have one candidate
+              // we have another one in $res2['wf_user'] but it means we don't have only one
+              // we can unset our job and break the wile
+              $putuser=0;
+              break;
+            }
+            else
+            {
+              // set the first candidate
+              $putuser = $res2['wf_user'];
+            }
           }
         }
       }
-      // here if we have only 1 REAL egw USER (no groups) coming for next activity the user is setted
-      if(isset($candidates) && (count($candidates) == 1)) 
+      
+      if ($putuser==0) // no decisions yet
       {
-        $putuser = $candidates[0];
-      } 
-      else 
-      {
-        // If there is more than one user or groups for this activity
         // then check to see if there is a default user
         $activity_manager =& CreateObject('workflow.workflow_activitymanager');
         //get_default_user will give us '*' if there is no default_user or if the default user has no role
