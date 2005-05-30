@@ -226,7 +226,7 @@ class Instance extends Base {
   Note that the instance MUST be present in the activity to set the user,
   you can't program who will execute an activity.
   If the user is empty then the activity user is setted to *, allowing any
-  authorised user to take the tokenb later
+  authorised user to take the token later
   
   egw: if the user we set is not * verification is done before the update
   that the instance has no user setted (or the same one)
@@ -239,19 +239,40 @@ class Instance extends Base {
     $found = false;
     for($i=0;$i<count($this->activities);$i++) {
       if($this->activities[$i]['wf_activity_id']==$activityId) {
+        // here we are in the good activity
         $found = true;
-        $query = "update `".GALAXIA_TABLE_PREFIX."instance_activities` set `wf_user`=? where `wf_activity_id`=? and `wf_instance_id`=?";
-        $bindvars = array($theuser,(int)$activityId,(int)$this->instanceId);
-        if(!($theuser=='*')) {
-          $query.= " and (`wf_user`=? or `wf_user`=?)";
+
+        // prepare queries
+        $where = " where `wf_activity_id`=? and `wf_instance_id`=?";
+        $bindvars = array((int)$activityId,(int)$this->instanceId);
+        if(!($theuser=='*')) 
+        {
+          $where .= " and (`wf_user`=? or `wf_user`=?)";
           $bindvars[]= $theuser;
           $bindvars[]= '*';
         }
-        $this->query($query,$bindvars);
-        if(!$this->db->Affected_Rows()) return false;
-        $this->activities[$i]['wf_user']=$theuser;
+        
+        // update the user
+        $query = "update `".GALAXIA_TABLE_PREFIX."instance_activities` set `wf_user`=?";
+        $query .= $where;
+        $bindvars_update = array_merge(array($theuser),$bindvars);
+        $this->query($query,$bindvars_update);
+        // we must verify the update had something to update and make it well
+        // if two concurrent user launch this code the same time, only one will be ok.
+        $verif_query = "select count(*) from `".GALAXIA_TABLE_PREFIX."instance_activities` ".$where;
+        if ($this->getOne($verif_query,$bindvars)==0)
+        {
+          //there're no corresponding rows
+          return false;
+        }
+        else
+        {
+          $this->activities[$i]['wf_user']=$theuser;
+          return true;
+        }
       }
     }
+    // if we didn't find the activity it will be false
     return $found;
   }
 
@@ -622,7 +643,7 @@ class Instance extends Base {
           }
         }
       }
-      
+
       if ($putuser==0) // no decisions yet
       {
         // then check to see if there is a default user
