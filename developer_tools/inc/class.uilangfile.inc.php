@@ -231,7 +231,6 @@
 			{
 				$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=developer_tools.uilangfile.index');
 			}
-
 			$app_name   = get_var('app_name',array('POST','GET'));
 			$sourcelang = get_var('sourcelang',array('POST','GET'));
 			$targetlang = get_var('targetlang',array('POST','GET'));
@@ -511,7 +510,9 @@
 
 		function recode_id($id)
 		{
-			if (get_magic_quotes_gpc())
+			// PHP4 only quotes array-keys (NOT values) if magic_quotes_gpc is on, PHP5 does it always
+			// maybe anyone knows why ;-)
+			if (get_magic_quotes_gpc() || (int) PHP_VERSION >= 5)
 			{
 				$id = stripslashes($id);
 			}
