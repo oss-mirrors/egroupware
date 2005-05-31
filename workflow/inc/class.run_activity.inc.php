@@ -35,7 +35,6 @@
 			}
 
 			if (!$activity_id) die(lang('No activity indicated'));
-
 			// load activity
 			$activity = $this->base_activity->getActivity($activity_id);
 
@@ -72,7 +71,7 @@
 			// run the shared code (just in case because each activity is supposed to include it)
 			include_once($shared);
 
-			// run the activity			
+			// run the activity
 			if (!$auto && $activity->isInteractive())
 			{
 				$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Running Activity');
@@ -89,51 +88,67 @@
 			
 			// TODO: process instance comments
 
-			// if activity is interactive and completed, display completed template
-			if (!$auto && $GLOBALS['__activity_completed'] && $activity->isInteractive())
+			// for interactive activities in non-auto mode:
+			if (!$auto && $activity->isInteractive())
 			{
-				$this->t->set_file('activity_completed', 'activity_completed.tpl');
 
-				$this->t->set_var(array(
-					'wf_procname'		=> $this->process->getName(),
-					'procversion'	=> $this->process->getVersion(),
-					'actname'		=> $activity->getName(),
-				));
+				if ($GLOBALS['__activity_completed'])
+				{
+					// activity is interactive and completed, 
+					// we have to continue the workflow
+					// and send any autorouted activity which could be after this one
+					// this is not done in the $instance->complete() to let
+					// xxx_pos.php code be executed before sending the instance
+					$instance->sendAutorouted($activity_id);
+					// and display completed template
+					$this->t->set_file('activity_completed', 'activity_completed.tpl');
 
-				$this->translate_template('activity_completed');
-				$this->t->pparse('output', 'activity_completed');
-				$GLOBALS['phpgw']->common->phpgw_footer();
-			}
-			// but if it hasn't been completed, show the activities' template
-			elseif (!$auto && !$GLOBALS['__activity_completed'] && $activity->isInteractive())
-			{
-				//get configuration options with default values if no init was done before
-				$this->conf = galaxia_get_config_values(array(
-					'use_automatic_parsing' => 1,
-					'run_act_show_title' => 1,
-					'multiple_submit_select' => 0,
-				));
+					$this->t->set_var(array(
+						'wf_procname'	=> $this->process->getName(),
+						'procversion'	=> $this->process->getVersion(),
+						'actname'	=> $activity->getName(),
+					));
 
-				//set a global template for interactive activities
-				$this->t->set_file('run_activity','run_activity.tpl');
+					$this->translate_template('activity_completed');
+					$this->t->pparse('output', 'activity_completed');
+					$GLOBALS['phpgw']->common->phpgw_footer();
+				}
+				// it hasn't been completed
+				else
+				{ 
+					//the activity is not completed
+					// we loop on the form
 					
-				// draw the activity's title zone
-				$this->parse_title($activity->getName());
+					//get configuration options with default values if no init was done before
+					$this->conf = galaxia_get_config_values(array(
+						'use_automatic_parsing' 	=> 1,
+						'run_act_show_title' 		=> 1,
+						'multiple_submit_select' 	=> 0,
+					));
 					
-				// draw the activity central user form
-				$this->t->set_var(array('activity_template' => $template->parse('output', 'template')));
+					//set a global template for interactive activities
+					$this->t->set_file('run_activity','run_activity.tpl');
 					
-				$this->parse_submit();
+					// draw the activity's title zone
+					$this->parse_title($activity->getName());
+					
+					// draw the activity central user form
+					$this->t->set_var(array('activity_template' => $template->parse('output', 'template')));
 				
-				$this->t->pparse('output', 'run_activity');
-				$GLOBALS['phpgw']->common->phpgw_footer();
+					//draw the activity submit buttons	
+					$this->parse_submit();
+					
+					$this->t->pparse('output', 'run_activity');
+					$GLOBALS['phpgw']->common->phpgw_footer();
+				}
 			}
 		}
 
+		//!Parse the title in the activity form, the user can decide if he want this title to be shown or not
 		/*!
-		Parse the title in the activity form, the user can decide if he want this title to be shown or not
+		You can give a title as a parameter. 
 		*/
-		function parse_title($title)
+		function parse_title($title='')
 		{
 			$this->t->set_block('run_activity', 'block_title_zone', 'title_zone');
 			
@@ -148,6 +163,7 @@
 			}
 		}
 		
+		//! Used to draw the submit(s) buton(s)and/ or select box
 		/*!
 		In this function we'll draw the command buttons asked for this activity.
 		else we'll check $GLOBALS['workflow']['submit_array'] which should be defined
@@ -203,7 +219,7 @@
 					if ( ($this->conf['multiple_submit_select']) && (count($submit_array) > 1) )
 					{
 						//multiple submits in a select box
-						//handling the select box
+						//handling the select box 
 						foreach ($submit_array as $submit_button_name => $submit_button_value)
 						{
 							$this->t->set_var(array(

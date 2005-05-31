@@ -427,9 +427,11 @@ class GUI extends Base {
     else 
     {
       include_once(GALAXIA_LIBRARY.'/src/API/Instance.php');
-      $instance = new Instance($this->db);
+      $instance =& new Instance($this->db);
       $instance->getInstance($instanceId);
-      $instance->complete($activityId,true,false);
+      $instance->complete($activityId,false);
+      // we force the continuation of the flow
+      $instance->sendAutorouted($activityId,true);
       unset($instance);
       return true;
     }
@@ -491,3 +493,4 @@ class GUI extends Base {
   }
 }
 ?>
+

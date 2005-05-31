@@ -388,23 +388,19 @@ class Instance extends Base {
     return $this->ended;
   }
   
+  //! Completes an activity, normally from any activity you should call this function without arguments.
   /*!
-  Completes an activity, normally from any activity you should call this
-  function without arguments.
   The arguments are explained just in case.
   $activityId is the activity that is being completed, when this is not
   passed the engine takes it from the $_REQUEST array,all activities
   are executed passing the activityId in the URI.
-  $force indicates that the instance must be routed no matter if the
-  activity is auto-routing or not. This is used when "sending" an
-  instance from a non-auto-routed activity to the next activity.
   $addworkitem indicates if a workitem should be added for the completed
   activity.
   YOU MUST NOT CALL complete() for non-interactive activities since
   the engine does automatically complete automatic activities after
   executing them.
   */
-  function complete($activityId=0,$force=false,$addworkitem=true) {
+  function complete($activityId=0,$addworkitem=true) {
     global $user;
     global $__activity_completed;
     
@@ -460,37 +456,73 @@ class Instance extends Base {
       return;
     }
     
-    //If the activity ending is autorouted then send to the
-    //activity
-    if ($type != 'end') {
-      if (($force) || ($this->getOne("select `wf_is_autorouted` from `".GALAXIA_TABLE_PREFIX."activities` where `wf_activity_id`=?",array($activityId)) == 'y'))   {
+  }
+  //! Send autorouted activities to the next one(s). Private engine function
+  /*
+  The arguments are explained just in case.
+  $activityId is the activity that is being completed, when this is not
+  passed the engine takes it from the $_REQUEST array,all activities
+  are executed passing the activityId in the URI.
+  $force indicates that the instance must be routed no matter if the
+  activity is auto-routing or not. This is used when "sending" an
+  instance from a non-auto-routed activity to the next activity.
+  YOU MUST NOT CALL sendAutorouted() for non-interactive activities since
+  the engine does automatically complete and send automatic activities after
+  executing them.
+  This function is in fact a Private function runned by the engine. You should
+  never use it without knowing very very well what you're doing.
+  */
+  function sendAutorouted($activityId,$force=false)
+  {
+    $type = $this->getOne("select `wf_type` from `".GALAXIA_TABLE_PREFIX."activities` where `wf_activity_id`=?",array((int)$activityId));    
+    //If the activity ending is autorouted then send to the activity
+    if ($type != 'end') 
+    {
+      if (($force) || ($this->getOne("select `wf_is_autorouted` from `".GALAXIA_TABLE_PREFIX."activities` where `wf_activity_id`=?",array($activityId)) == 'y'))
+      {
         // Now determine where to send the instance
         $query = "select `wf_act_to_id` from `".GALAXIA_TABLE_PREFIX."transitions` where `wf_act_from_id`=?";
         $result = $this->query($query,array((int)$activityId));
         $candidates = Array();
-        while ($res = $result->fetchRow()) {
+        while ($res = $result->fetchRow()) 
+        {
           $candidates[] = $res['wf_act_to_id'];
         }  
-        if($type == 'split') {
+        if($type == 'split') 
+        {
           $erase_from = false;
-		  $num_candidates = count($candidates);
-		  $i = 1;
-          foreach ($candidates as $cand) {
+          $num_candidates = count($candidates);
+          $i = 1;
+          foreach ($candidates as $cand) 
+          {
 			// only erase split activity in instance when all the activities comming from the split have been set up
-			if ($i == $num_candidates) $erase_from = true;
-            $this->sendTo($activityId,$cand,$erase_from);
+			if ($i == $num_candidates)
+                        { 
+                          $erase_from = true;
+                        }
+                        $this->sendTo($activityId,$cand,$erase_from);
 			$i++;
           }
-        } elseif($type == 'switch') {
-          if (in_array($this->nextActivity,$candidates)) {
+        } 
+        elseif($type == 'switch') 
+        {
+          if (in_array($this->nextActivity,$candidates))
+          {
             $this->sendTo((int)$activityId,(int)$this->nextActivity);
-          } else {
+          } 
+          else 
+          {
             trigger_error(tra('Fatal error: nextActivity does not match any candidate in autorouting switch activity'),E_USER_WARNING);
           }
-        } else {
-          if (count($candidates)>1) {
+        } 
+        else 
+        {
+          if (count($candidates)>1) 
+          {
             trigger_error(tra('Fatal error: non-deterministic decision for autorouting activity'),E_USER_WARNING);
-          } else {
+          }
+          else 
+          {
             $this->sendTo((int)$activityId,(int)$candidates[0]);
           }
         }
@@ -693,12 +725,13 @@ class Instance extends Base {
     $isInteractive = $this->getOne("select `wf_is_interactive` from `".GALAXIA_TABLE_PREFIX."activities` where `wf_activity_id`=?",array((int)$activityId));
     if ($isInteractive=='n') {
 
-      // Now execute the code for the activity (function defined in lib/Galaxia/config.php)
+      // Now execute the code for the activity (function defined in galaxia's config.php)
       galaxia_execute_activity($activityId, $iid , 1);
 
       // Reload in case the activity did some change
       $this->getInstance($this->instanceId);
       $this->complete($activityId);
+      $this->sendAutorouted($activityId);
     }
   }
   
