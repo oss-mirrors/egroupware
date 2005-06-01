@@ -95,13 +95,10 @@ WHERE dir_links_catagories.catagory_id = $cid
 
 
 
-
-
 source_key =    8
 foreign_key =
 display =       projecten.naam
 type =          2(many to many)
-
 
 
 
@@ -113,9 +110,6 @@ SELECT art_nr,count(art_nr) as aantal FROM product GROUP BY art_nr HAVING count(
 
 SELECT art_nr,kleurnaam,maat,catagorie,count(art_nr) as aantal FROM product GROUP BY art_nr, kleurnaam,maat,prijs_euro HAVING count(art_nr)>1
 SELECT art_nr,count(art_nr) as aantal FROM product GROUP BY art_nr, catagorie HAVING count(art_nr)>1
-
-
-
 
 
 
