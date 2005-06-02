@@ -13,20 +13,28 @@
 		<td>{inst_started}</td>
 	</tr>
 	<tr class="row_off">
+		<td>{lang_Ended_or_modified}</td>
+		<td>{inst_ended}</td>
+	</tr>
+	<tr class="row_on">
 		<td>{lang_Workitems}</td>
 		<td><a href="{wi_href}">{wi_wi}</a></td>
 	</tr>
-	<tr class="row_on">
-               <td>{lang_Name}</td>
-               <td><input type="text" name="instance_name" value="{instance_name}"></td>
-       </tr>
 	<tr class="row_off">
+               <td>{lang_Name}</td>
+               <td>
+			<input type="text" name="instance_name" value="{instance_name}">
+			<input type="hidden" name="instance_previous_name" value="{instance_name}">
+	       </td>
+       </tr>
+	<tr class="row_on">
                <td>{lang_Priority}</td>
                <td>
 			<input type="text" name="instance_priority" value="{instance_priority}">
+			<input type="hidden" name="instance_previous_priority" value="{instance_priority}">
 	       </td>
        </tr>
-       <tr class="row_on">
+       <tr class="row_off">
 		<td>{lang_Status}</td>
 		<td>
 		<select name="status">
@@ -35,9 +43,10 @@
 			<option value="completed" {status_completed}>{lang_completed}</option>
 			<option value="aborted" {status_aborted}>{lang_aborted}</option>
 		</select>
+		<input type="hidden" name="instance_previous_status" value="{status}">
 		</td>
 	</tr>
-	<tr class="row_off">
+	<tr class="row_on">
 		<td>{lang_Owner}</td>
 		<td>
 			<select name="owner">
@@ -45,10 +54,11 @@
 			<option value="{select_owner_value}" {select_owner_selected}>{select_owner_name}</option>
 			<!-- END block_select_owner -->
 			</select>
+		<input type="hidden" name="instance_previous_owner" value="{owner}">
 		</td>
 	</tr>
-	<tr class="row_on">
-		<td>{lang_Send_all_to}</td>
+	<tr class="row_off">
+		<td>{lang_Send_all_activities_to_(experimental)}</td>
 		<td>
 			<select name="sendto">
 			  <option value="">{lang_Don't_move}</option>
@@ -58,23 +68,24 @@
 			</select>
 		</td>
 	</tr>
-	<tr class="row_off">
+	<tr class="row_on">
 		<td>{lang_Activities}</td>
 		<td>
 		<!-- BEGIN block_instance_acts -->
 			<table>
-			<tr class="row_off">
+			<tr class="row_on">
 				<td style="text-align:center">{lang_Activity}</td>
 				<td style="text-align:center">{lang_Act_status}</td>
 				<td style="text-align:center">{lang_User}</td>
 			</tr>
 			<!-- BEGIN block_instance_acts_table -->
-			<tr class="row_on">
+			<tr class="row_off">
 				<td>
 					{inst_act_name} {inst_act_run}
 				</td>
 				<td>{inst_act_status}</td>
 				<td>
+					<input type="hidden" name="previous_acts[{inst_act_id}]" value="{activity_user}">
 					<select name="acts[{inst_act_id}]">
 					<option value="*" {inst_act_star_selected}>*</option>
 					<!-- BEGIN block_instance_acts_table_users -->
@@ -89,7 +100,7 @@
 		</td>
 	</tr>	
 	<tr class="th">
-		<td>&nbsp;</td>
+		<td><input type="submit" name="refresh" value="{lang_refresh}" /></td>
 		<td><input type="submit" name="save" value="{lang_update}" /></td>
 	</tr>
 </table>

@@ -54,18 +54,43 @@
 			// save changes
 			if (isset($_POST['save']))
 			{
-				$this->instance_manager->set_instance_status($iid, $instance_status);
-				$this->instance_manager->set_instance_owner($iid, $instance_owner);
-				$this->instance_manager->set_instance_name($iid, $instance_name);
-				$this->instance_manager->set_instance_priority($iid, $instance_priority);
+				//save changes only if the field really changed
+				$old_instance_status = get_var('instance_previous_status', 'POST', '');
+				$old_instance_name = get_var('instance_previous_name', 'POST', '');
+				$old_instance_owner	= (int)get_var('instance_previous_owner', 'POST', 0);
+				$old_instance_priority = (int)get_var('instance_previous_priority', 'POST', 0);
+				
+				if (!($instance_status == $old_instance_status))
+				{
+					$this->instance_manager->set_instance_status($iid, $instance_status);
+				}
+				if (!($instance_owner == $old_instance_owner))
+				{
+					$this->instance_manager->set_instance_owner($iid, $instance_owner);
+				}
+				if (!($instance_name == $old_instance_name))
+				{
+					$this->instance_manager->set_instance_name($iid, $instance_name);
+				}
+				if (!($instance_priority == $old_instance_priority))
+				{
+					$this->instance_manager->set_instance_priority($iid, $instance_priority);
+				}
 
 				// user reasignment
 				if(count($_POST['acts']) != 0)
 				{
-				  foreach (array_keys($_POST['acts']) as $act)
-				  {
-					$this->instance_manager->set_instance_user($iid, $act , $_POST['acts'][$act]);
-				  }
+				 	$activityusers = get_var('acts', 'POST', array());
+				 	$oldactivityusers = get_var('previous_acts', 'POST', array());
+				 	foreach (array_keys($activityusers) as $act)
+				 	{
+				 		$new_user = $activityusers[$act];
+					  	$previous_user =$oldactivityusers[$act];
+					  	if (!($new_user==$previous_user))
+					  	{
+					  		$this->instance_manager->set_instance_user($iid, $act , $new_user);
+						}
+					}
 				}  
 
 				if ($_POST['sendto'])
@@ -74,11 +99,11 @@
 				}
 			}
 			
-			$instance			= $this->instance_manager->get_instance($iid);
-			$process			= $this->process_manager->get_process($instance['wf_p_id']);
+			$instance		= $this->instance_manager->get_instance($iid);
+			$process		= $this->process_manager->get_process($instance['wf_p_id']);
 			$proc_activities	= $this->activity_manager->list_activities($instance['wf_p_id'], 0, -1, 'wf_flow_num__asc', '', '');
 			$instance_acts		= $this->instance_manager->get_instance_activities($iid);
-			$properties			= $this->instance_manager->get_instance_properties($iid);
+			$properties		= $this->instance_manager->get_instance_properties($iid);
 
 			if (!$iid) die(lang('No instance indicated'));
 
@@ -87,17 +112,20 @@
 			$this->show_instance_acts($iid, $instance_acts);
 			$this->show_properties($iid, $properties);
 
-			// fill the general varibles of the template
+			// fill the general variables of the template
 			$this->t->set_var(array(
-				'message'			=> implode('<br>', $this->message),
-				'iid'				=> $iid,
+				'message'		=> implode('<br>', $this->message),
+				'iid'			=> $iid,
 				'form_action'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form'),
 				'instance_process'	=> lang('Instance: %1 (Process: %2)', $instance['wf_instance_id'], $process['wf_name'] . ' ' . $process['wf_version']),
 				'inst_started'		=> $GLOBALS['phpgw']->common->show_date($instance['wf_started']),
-				'wi_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorworkitems.form&filter_instance='. $instance['wf_instance_id']),
-				'wi_wi'				=> $instance['wf_workitems'],
-				'instance_name'         => $instance['wf_name'],
-				'instance_priority'     => $instance['wf_priority'],
+				'inst_ended' 		=> $GLOBALS['phpgw']->common->show_date($instance['wf_ended']),
+				'wi_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorworkitems.form&filter_instance='. $instance['wf_instance_id']),
+				'wi_wi'			=> $instance['wf_workitems'],
+				'instance_name'		=> $instance['wf_name'],
+				'status'		=> $instance['wf_status'],
+				'owner'			=> $instance['wf_owner'],
+				'instance_priority'	=> $instance['wf_priority'],
 				'status_active'		=> ($instance['wf_status'] == 'active')? 'selected="selected"' : '',
 				'status_exception'	=> ($instance['wf_status'] == 'exception')? 'selected="selected"' : '',
 				'status_completed'	=> ($instance['wf_status'] == 'completed')? 'selected="selected"' : '',
@@ -157,14 +185,14 @@
 				                $this->t->set_var(array(
 							'inst_act_usr_value'	=> $user['account_id'],
 							'inst_act_usr_selected'	=> ($user['account_id'] == $activity['wf_user'])? 'selected="selected"' : '',
-							'inst_act_usr_name'		=> $user['account_firstname'] . ' ' . $user['account_lastname'],
+							'inst_act_usr_name'	=> $user['account_firstname'] . ' ' . $user['account_lastname'],
 						 ));
 						$this->t->parse('instance_acts_table_users', 'block_instance_acts_table_users', true);
 					}
 
 					if ($activity['wf_is_interactive'] == 'y')
 					{
-						$this->t->set_var('inst_act_run', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.run_activity.go&activity_id='. $activity['wf_activity_id']) .'&iid='. $iid. '"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'next') .'" alt="'. lang('run') .'" title="'. lang('run') .'" /></a>');
+						$this->t->set_var('inst_act_run', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.run_activity.go&activity_id='. $activity['wf_activity_id']).'&iid='. $iid. '"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'next') .'" alt="'. lang('run') .'" title="'. lang('run') .'" /></a>');
 					}
 					else
 					{
@@ -172,9 +200,10 @@
 					}
 
 					$this->t->set_var(array(
-						'inst_act_name'				=> $activity['wf_name'],
-						'inst_act_status'			=> $activity['wf_act_status'],
-						'inst_act_id'				=> $activity['wf_activity_id'],
+						'activity_user'			=> $activity['wf_user'],
+						'inst_act_name'			=> $activity['wf_name'],
+						'inst_act_status'		=> $activity['wf_act_status'],
+						'inst_act_id'			=> $activity['wf_activity_id'],
 						'inst_act_star_selected'	=> ($activity['wf_user'] == '*')? 'selected="selected"' : '',
 					));
 
