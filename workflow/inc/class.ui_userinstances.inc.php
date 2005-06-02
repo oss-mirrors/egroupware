@@ -185,8 +185,7 @@
 			// abort instance
 			if ($askAbort)
 			{
-			        $system_comments = lang('aborted by %1 %2',$user_fname, $user_lname);
-				if (!$this->GUI->gui_abort_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id, $system_comments)) 
+				if (!$this->GUI->gui_abort_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
 					$wf_message=lang("You don't have the rights necessary to abort this instance");
 				}
