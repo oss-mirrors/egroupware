@@ -115,7 +115,7 @@
 				}
 				// it hasn't been completed
 				else
-				{ 
+				{
 					//the activity is not completed
 					// we loop on the form
 					
@@ -125,7 +125,7 @@
 						'run_act_show_title' 		=> 1,
 						'multiple_submit_select' 	=> 0,
 					));
-					
+				
 					//set a global template for interactive activities
 					$this->t->set_file('run_activity','run_activity.tpl');
 					
@@ -135,9 +135,15 @@
 					// draw the activity central user form
 					$this->t->set_var(array('activity_template' => $template->parse('output', 'template')));
 				
+					//draw the select priority box
+					// init priority to the requested one or the stored priority
+					// the requested one handle the looping in activity form
+					$priority = get_var('wf_priority','post',$instance->getPriority());
+					$this->parse_priority($priority);
+				
 					//draw the activity submit buttons	
 					$this->parse_submit();
-					
+				
 					$this->t->pparse('output', 'run_activity');
 					$GLOBALS['phpgw']->common->phpgw_footer();
 				}
@@ -163,7 +169,50 @@
 			}
 		}
 		
-		//! Used to draw the submit(s) buton(s)and/ or select box
+		//! Draw the priority select box in the activity form
+		/*!
+		Parse the priority select box in the activity form. The user can decide if he want this select box to be shown or not
+		by setting $GLOBALS['workflow']['priority_array'].
+		For example like that $GLOBALS['workflow']['priority_array']= array(1 => '1-Low',2 =>'2', 3 => '3-High');
+		If the array is not set or the conf values says the user does not want automatic parsing no select box will be shown
+		you should give actual priority as a parameter, else priority 1 will be selected.
+		*/
+		function parse_priority($actual_priority=1)
+		{
+			$this->t->set_block('run_activity', 'block_priority_options', 'priority_options');
+			$this->t->set_block('run_activity', 'block_priority_zone', 'priority_zone');
+			
+			if ((!$this->conf['use_automatic_parsing']) || (!isset($GLOBALS['workflow']['priority_array'])))
+			{
+				//hide the priority zone
+				$this->t->set_var(array( 'priority_zone' => ''));
+			}
+			else
+			{
+				$priority_array=$GLOBALS['workflow']['priority_array'];
+				if (!is_array($priority_array))
+				{
+					$priority_array= explode(" ",$priority_array);
+				}
+				//handling the select box 
+				foreach ($priority_array as $priority_level => $priority_label)
+				{
+					$this->t->set_var(array(
+						'priority_option_name'		=> $priority_level,
+ 						'priority_option_value'		=> $priority_label,
+ 						'selected_priority_options'	=> ($priority_level == $actual_priority)? 'selected="selected"' :'',
+					));
+					//show the select box
+					$this->t->parse('priority_options','block_priority_options',true);
+				}
+				// a little label before the select box
+				$this->t->set_var(array('Priority_text' => lang('Priority level:')));
+				//show the priority zone
+				$this->t->parse('priority_zone', 'block_priority_zone', true);
+			}
+		}
+		
+		//! Draw the submit buttons on the activity form
 		/*!
 		In this function we'll draw the command buttons asked for this activity.
 		else we'll check $GLOBALS['workflow']['submit_array'] which should be defined

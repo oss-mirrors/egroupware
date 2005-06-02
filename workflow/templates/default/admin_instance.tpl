@@ -20,7 +20,13 @@
                <td>{lang_Name}</td>
                <td><input type="text" name="instance_name" value="{instance_name}"></td>
        </tr>
-       <tr class="row_off">
+	<tr class="row_off">
+               <td>{lang_Priority}</td>
+               <td>
+			<input type="text" name="instance_priority" value="{instance_priority}">
+	       </td>
+       </tr>
+       <tr class="row_on">
 		<td>{lang_Status}</td>
 		<td>
 		<select name="status">
@@ -31,7 +37,7 @@
 		</select>
 		</td>
 	</tr>
-	<tr class="row_on">
+	<tr class="row_off">
 		<td>{lang_Owner}</td>
 		<td>
 			<select name="owner">
@@ -41,7 +47,7 @@
 			</select>
 		</td>
 	</tr>
-	<tr class="row_off">
+	<tr class="row_on">
 		<td>{lang_Send_all_to}</td>
 		<td>
 			<select name="sendto">
@@ -52,18 +58,18 @@
 			</select>
 		</td>
 	</tr>
-	<tr class="row_on">
+	<tr class="row_off">
 		<td>{lang_Activities}</td>
 		<td>
 		<!-- BEGIN block_instance_acts -->
 			<table>
-			<tr>
+			<tr class="row_off">
 				<td style="text-align:center">{lang_Activity}</td>
 				<td style="text-align:center">{lang_Act_status}</td>
 				<td style="text-align:center">{lang_User}</td>
 			</tr>
 			<!-- BEGIN block_instance_acts_table -->
-			<tr>
+			<tr class="row_on">
 				<td>
 					{inst_act_name} {inst_act_run}
 				</td>

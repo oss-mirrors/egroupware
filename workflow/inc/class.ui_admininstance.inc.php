@@ -38,17 +38,18 @@
 
 		function form()
 		{
-			// FIXME: owner and active user should be done in a per activity level, not per instance
+			// FIXME: active user should be done in a per activity level, not per instance
 			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Admin Instance');
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 
 			$this->t->set_file('admin_instance', 'admin_instance.tpl');
 
-			$iid				= (int)get_var('iid', 'any', 0);
+			$iid			= (int)get_var('iid', 'any', 0);
 			$instance_status	= get_var('status', 'POST', '');
 			$instance_name          = get_var('instance_name', 'POST', '');
 			$instance_owner		= (int)get_var('owner', 'POST', 0);
+			$instance_priority      = (int)get_var('instance_priority', 'POST', 0);
 
 			// save changes
 			if (isset($_POST['save']))
@@ -56,6 +57,7 @@
 				$this->instance_manager->set_instance_status($iid, $instance_status);
 				$this->instance_manager->set_instance_owner($iid, $instance_owner);
 				$this->instance_manager->set_instance_name($iid, $instance_name);
+				$this->instance_manager->set_instance_priority($iid, $instance_priority);
 
 				// user reasignment
 				if(count($_POST['acts']) != 0)
@@ -95,6 +97,7 @@
 				'wi_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorworkitems.form&filter_instance='. $instance['wf_instance_id']),
 				'wi_wi'				=> $instance['wf_workitems'],
 				'instance_name'         => $instance['wf_name'],
+				'instance_priority'     => $instance['wf_priority'],
 				'status_active'		=> ($instance['wf_status'] == 'active')? 'selected="selected"' : '',
 				'status_exception'	=> ($instance['wf_status'] == 'exception')? 'selected="selected"' : '',
 				'status_completed'	=> ($instance['wf_status'] == 'completed')? 'selected="selected"' : '',
@@ -124,7 +127,7 @@
 				$this->t->parse('select_owner', 'block_select_owner', true);
 			}
 		}
-
+		
 		function show_select_sendto($proc_activities_data)
 		{
 			$this->t->set_block('admin_instance', 'block_select_sendto', 'select_sendto');

@@ -21,6 +21,7 @@ class Instance extends Base {
   var $activities = Array();
   var $pId;
   var $instanceId = 0;
+  var $priority = 1;
   /// An array of workitem ids
   var $workitems = Array(); 
   
@@ -43,6 +44,7 @@ class Instance extends Base {
     $this->status = $res['wf_status'];
     $this->pId = $res['wf_p_id'];
     $this->instanceId = $res['wf_instance_id'];
+    $this->priority = $res['wf_priority'];
     $this->owner = $res['wf_owner'];
     $this->started = $res['wf_started'];
     $this->ended = $res['wf_ended'];
@@ -107,9 +109,9 @@ class Instance extends Base {
     $name = $this->getName();
     $props=serialize($this->properties);
     $query = "insert into `".GALAXIA_TABLE_PREFIX."instances`
-      (`wf_started`,`wf_ended`,`wf_status`,`wf_p_id`,`wf_owner`,`wf_properties`,`wf_name`) 
-      values(?,?,?,?,?,?,?)";
-    $this->query($query,array($now,0,'active',$pid,$user,$props,$name));
+      (`wf_started`,`wf_ended`,`wf_status`,`wf_p_id`,`wf_owner`,`wf_properties`,`wf_name`,`wf_priority`) 
+      values(?,?,?,?,?,?,?,?)";
+    $this->query($query,array($now,0,'active',$pid,$user,$props,$name,$this->priority));
     $this->instanceId = $this->getOne("select max(`wf_instance_id`) from `".GALAXIA_TABLE_PREFIX."instances` where `wf_started`=? and `wf_owner`=?",array((int)$now,$user));
     $iid=$this->instanceId;
     
@@ -190,6 +192,27 @@ class Instance extends Base {
     $this->query($query,array($status,(int)$this->instanceId));  
   }
   
+  /*!
+  Gets the instance priority, it's an integer
+  */
+  function getPriority()
+  {
+    return $this->priority;
+  } 
+
+  /*!
+  Sets the instance priority , the value should be an integer
+  */
+  function setPriority($priority)
+  {
+    $mypriority = (int)$priority;
+    $this->priority = $mypriority;
+            
+    // and update the database
+    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_priority=? where wf_instance_id=?";
+    $this->query($query,array($this->priority,(int)$this->instanceId));  
+  }
+   
   /*!
   Returns the instanceId
   */
@@ -597,7 +620,7 @@ class Instance extends Base {
   function terminate($status = 'completed') {
     //Set the status of the instance to completed
     $now = date("U");
-    $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_status`=?, `wf_ended`=? where `wf_instance_id`=?";
+    $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_status`=?, `wf_ended`=?, `wf_priority`=0 where `wf_instance_id`=?";
     $this->query($query,array($status,(int)$now,(int)$this->instanceId));
     $query = "delete from `".GALAXIA_TABLE_PREFIX."instance_activities` where `wf_instance_id`=?";
     $this->query($query,array((int)$this->instanceId));

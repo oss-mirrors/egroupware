@@ -5,22 +5,37 @@
 			<table style="border: 1px solid black;width:100%;margin-bottom:10px">
 				<!-- BEGIN block_title_zone -->
 				<tr class="th">
-					<td>
-						<table width="100%" cellpadding="0" cellspacing="0">
-							<tr>
-								<td style="font-size: 120%; font-weight:bold">
-								{activity_title}
-								</td>
-							</tr>
-						</table>
+					<td style="font-size: 120%; font-weight:bold">
+						{activity_title}
 					</td>
 				</tr>
 				<!-- END block_title_zone -->
+
 				<tr class="row_off">
 					<td>
 						{activity_template}
 					</td>
 				</tr>
+				<!-- BEGIN block_priority_zone -->
+				<tr class="row_off">
+					<td>
+						<table width="100%" cellpadding="0" cellspacing="0">
+							<tr class="th">
+								<td style="text-align: right;" width="10%">
+								{Priority_text}&nbsp;
+								</td>
+								<td align="left">
+									<select name="wf_priority">
+									<!-- BEGIN block_priority_options -->
+									<option  {selected_priority_options} value="{priority_option_name}">{priority_option_value}</option>
+									<!-- END block_priority_options -->
+									</select>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<!-- END block_priority_zone -->
 				<!-- BEGIN block_submit_zone -->
 				<tr class="row_on"> 
 					<td style="text-align: right;">

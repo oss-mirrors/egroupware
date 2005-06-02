@@ -43,7 +43,6 @@
 			echo parse_navbar();
 
 			$this->t->set_file('user_instances', 'user_instances.tpl');
-
 			$filter_process		= get_var('filter_process', 'any', '');
 			//echo "<br>filter_process::".$filter_process;
 				// we can filter activity by id (the list of activity call us with it) or by name
@@ -93,14 +92,8 @@
 			//echo "<br>activity id::".$activity_id;
 			$instance_id		= get_var('iid', 'any', 0);
 			//echo "<br>instance id::".$instance_id;
-			$this->sort		= get_var('sort', 'any', 'asc');
-			//echo "<br>sort::".$this->sort;
-			$this->order		= get_var('order', 'any', 'wf_instance_id');
-			//echo "<br>order::".$this->order;
 			$this->start		= get_var('start', 'any', 0);
 			//echo "<br>start::".$this->start;
-			$this->sort_mode	= $this->order . '__' . $this->sort;	
-			//echo "<br>sort_mode::".$this->sort_mode;
 			$exception_comment	= get_var('exception_comment', 'any', '');
 			//echo "<br>comment exception::".$exception_comment;
 			// get user actions on the form
@@ -116,10 +109,21 @@
 			//echo "<br>exception::".$askException;
 			$askResume=get_var('resume','any',0);
 			//echo "<br>resume::".$askResume;
-			// check preferences where the user can disable the view column
+			
+			// check preferences where the user can disable the view ot the priority column
 			$show_view_column= $myPrefs['workflow']['wf_instances_show_view_column'];
 			//echo "<br>show_view_column::".$show_view_column;
+			$show_priority_column= $myPrefs['workflow']['wf_instances_show_priority_column'];
+			//echo "<br>show_priority_column::".$show_priority_column;
 			
+			// get sort mode data, done after preference to handle priority yes/no
+			$this->order		= get_var('order', 'any', ($show_priority_column)? 'wf_priority' : 'wf_instance_id');
+			//echo "<br>order::".$this->order;
+			$this->sort		= get_var('sort', 'any', ($show_priority_column)? 'desc' : 'asc');
+			//echo "<br>sort::".$this->sort;
+			$this->sort_mode	= $this->order . '__' . $this->sort;	
+			//echo "<br>sort_mode::".$this->sort_mode;
+
 			// this is not a POST or GET var, is defined in global prefs
 			$this->offset		= $offset;
 			//echo "<br>GLOBAL offset::".$this->offset;
@@ -347,6 +351,8 @@
 		    $this->t->set_var('add_aborted_instances_set', $add_aborted_instances);
 		    $this->t->set_var('remove_active_instances_set', $remove_active_instances);
 		    $this->t->set_var('show_advanced_actions_set', $show_advanced_actions);
+		    // a LINK css for showing priority levels
+		    $this->t->set_var('priority_css', ($show_priority_column)? '<LINK href="'.$GLOBALS['phpgw']->link('/workflow/templates/default/css/priority.css').'"  type="text/css" rel="StyleSheet">':'');
 		    // back to the first form, the advanced zone
 		    if ($advanced_search) 
 		    {
@@ -370,7 +376,7 @@
 		    $this->t->set_var('header_view',($show_view_column)? '<td>'.lang('View').'</td><td>':'<td colspan="2">');
 
 		    // Fill the final list of the instances we choosed in the template
-		    $this->show_list_instances($instances['data'], $show_advanced_actions,$show_view_column);
+		    $this->show_list_instances($instances['data'], $show_advanced_actions,$show_view_column, $show_priority_column);
 
 
 		    // fill the general variables of the template
@@ -387,7 +393,7 @@
 
 
 
-		function show_list_instances($instances_data, $show_advanced_actions = false, $show_view_column=true)
+		function show_list_instances($instances_data, $show_advanced_actions = false, $show_view_column=true, $show_priority_column=true)
 		{
 
 			//------------------------------------------- nextmatch --------------------------------------------
@@ -399,7 +405,7 @@
 			//show table headers with sort
 			//warning header names are header_[name or alias of the column in the query without a dot]
 			//this is necessary for sorting
-			foreach(array(
+			$header_array = array(
 				'wf_instance_id'=> lang('id'),
 				'wf_owner'	=> lang('Owner'),
 				'insname'	=> lang('Name'),
@@ -408,7 +414,16 @@
 				'wf_name'	=> lang('Activity'),
 				'wf_user'	=> lang('User'),
 				'wf_act_status'	=> lang('Act. Status')
-			       ) as $col => $translation) 
+			       );
+			if ($show_priority_column)
+			{
+				$header_array['wf_priority'] = lang('Pr.');
+			}
+			else
+			{
+				$this->t->set_var('header_wf_priority','');
+			}
+			foreach($header_array as $col => $translation) 
 			{
 				$this->t->set_var('header_'.$col,$this->nextmatchs->show_sort_order(
 					$this->sort,$col,$this->order,'/index.php',$translation,$this->link_data));
@@ -600,6 +615,8 @@
 					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color)
 				));
 
+				// the priority column defined in preferences
+				$this->showPriority($instance['wf_priority'],$show_priority_column);
 				// and the view column defined in preferences
 				if ($show_view_column)
 				{
@@ -616,6 +633,21 @@
 			}
 				
 			if (!count($instances_data)) $this->t->set_var('list_instances', '<tr><td colspan="8" align="center">'. lang('There are no instances available') .'</td></tr>');
+		}
+
+		function showPriority($priority, $show_priority_column=true)
+		{
+			if ($show_priority_column)
+			{
+				$this->t->set_var(array('priority' 		=> $priority));
+				$this->t->set_var(array('class_priority' 	=> 'class="priority_'.$priority.'"'));
+			}
+			else
+			{
+				$this->t->set_var(array('priority' 		=> ''));
+				$this->t->set_var(array('class_priority' 	=> ''));
+			}
+			
 		}
 
 		function show_select_process($all_processes_data, $filter_process)

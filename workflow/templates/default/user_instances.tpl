@@ -1,3 +1,4 @@
+{priority_css}
 <div style="color:red; text-align:center">{message}</div>
 
 <form name="userInstancesForm" action="{form_action}" method="post">
@@ -70,6 +71,7 @@
 		{left}
 	<td colspan="6">{lang_showing}</td>
 		{right}
+	<td>&nbsp;</td>
 	</tr>
 
 <form name="userInstancesForm2" action="{form_action}" method="post">
@@ -123,11 +125,10 @@
 		document.userInstancesForm2.submit();
 	}
 </script>
-
-
 	<tr class="th" style="font-weight:bold">
 		<td>{header_wf_instance_id}</td>
 		<td>{header_wf_status}</td>
+		<td>{header_wf_priority}</td>
 		<td>{header_insname}</td>
 		<td>{header_wf_procname}</td>
 		<td>{header_wf_name}</td>
@@ -144,6 +145,9 @@
 		</td>
 		<td>
 		  {status}
+		</td>
+		<td {class_priority}>
+		  {priority}
 		</td>
 		<td>
 		  {insname}

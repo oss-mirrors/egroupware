@@ -105,7 +105,6 @@ class GUI extends Base {
 
   /*
     $user is the real user id
-    $group is an array containing all group the user is member of
   */
   function gui_list_user_activities($user,$offset,$maxRecords,$sort_mode,$find,$where='')
   {
@@ -279,7 +278,8 @@ class GUI extends Base {
                      ga.wf_activity_id,
                      gp.wf_version as wf_version,
                      gp.wf_p_id,
-                     gi.wf_name as insname
+                     gi.wf_name as insname,
+                     gi.wf_priority
               from ".GALAXIA_TABLE_PREFIX."instances gi 
                 LEFT JOIN ".GALAXIA_TABLE_PREFIX."instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
                 LEFT JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gia.wf_activity_id = ga.wf_activity_id
@@ -323,17 +323,19 @@ class GUI extends Base {
     return $retval;
   }
   
+  //!Abort an instance - this terminates the instance with status 'aborted', and removes all running activities
   /*!
-  Abort an instance - this terminates the instance with status 'aborted', and removes all running activities
+  Users can only abort instances they're currently running, or instances that they're the owner of
   */
   function gui_abort_instance($user,$activityId,$instanceId)
   {
-    // Users can only abort instances they're currently running, or instances that they're the owner of
-    //TODO group mapping
     if(!$this->getOne("select count(*)
                        from ".GALAXIA_TABLE_PREFIX."instance_activities gia, ".GALAXIA_TABLE_PREFIX."instances gi
-                       where gia.wf_instance_id=gi.wf_instance_id and wf_activity_id=? and gia.wf_instance_id=? and ((wf_user = ?) or (wf_owner = ?))",
-                       array($activityId,$instanceId, $user, $user))){
+                       where gia.wf_instance_id=gi.wf_instance_id 
+                       and wf_activity_id=? and gia.wf_instance_id=? 
+                       and ((wf_user = ?) or (wf_owner = ?))",
+                       array($activityId,$instanceId, $user, $user)))
+    {
       return false;
     } 
     else 
@@ -341,7 +343,8 @@ class GUI extends Base {
       include_once(GALAXIA_LIBRARY.'/src/API/Instance.php');
       $instance = new Instance($this->db);
       $instance->getInstance($instanceId);
-      if (!empty($instance->instanceId)) {
+      if (!empty($instance->instanceId)) 
+      {
           $instance->abort($activityId,$user);
       }
       unset($instance);
@@ -349,14 +352,13 @@ class GUI extends Base {
     }
   }
   
+  //!Exception handling for an instance - this sets the instance status to 'exception', but keeps all running activities.
   /*!
-  Exception handling for an instance - this sets the instance status to 'exception', but keeps all running activities.
   The instance can be resumed afterwards via gui_resume_instance().
+  Users can only do exception handling for instances they're currently running, or instances that they're the owner of
   */
   function gui_exception_instance($user,$activityId,$instanceId)
   {
-    // Users can only do exception handling for instances they're currently running, or instances that they're the owner of
-    //TODO group mapping
     
     if(!$this->getOne("select count(*)
                        from ".GALAXIA_TABLE_PREFIX."instance_activities gia, ".GALAXIA_TABLE_PREFIX."instances gi

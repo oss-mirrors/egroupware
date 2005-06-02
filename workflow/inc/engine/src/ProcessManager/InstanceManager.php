@@ -60,6 +60,12 @@ class InstanceManager extends BaseManager {
     $this->query($query);
   }
 
+  function set_instance_priority($iid,$priority)
+  {
+    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_priority=? where wf_instance_id=?";
+    $this->query($query, array((int)$priority, (int)$iid));
+  }
+
   function set_instance_owner($iid,$owner)
   {
     $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_owner='$owner' where wf_instance_id=$iid";
