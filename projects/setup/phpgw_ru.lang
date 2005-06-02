@@ -1,20 +1,122 @@
+% to	projects	ru	% до
++ jobs	projects	ru	+ Работы
+accounting system	projects	ru	Система учета
+add file	projects	ru	Добавить файл
 add job	projects	ru	Добавить Работу
 add project	projects	ru	Добавить проект
 address book	projects	ru	Адресная книга
 administrator	projects	ru	Администратор
+administrator list	projects	ru	Список администраторов
+alarm	projects	ru	предупреждение
+archive	common	ru	Архив
+are you sure you want to delete this job	projects	ru	вы уверены, что хотите удалить данную работу
+are you sure you want to delete this project	projects	ru	Вы уверены, что хотите удалить данный роект?
+available	projects	ru	Осталось
+before	projects	ru	до
+continue	projects	ru	Продолжить
 coordinator	common	ru	Руководитель
+costtype	projects	ru	Тип оплаты
 customer	common	ru	Заказчик
 customer nr	projects	ru	&#8470; Заказчика
+date due planned	projects	ru	Планируемая дата окончания
+days	projects	ru	дней
+days before	projects	ru	дней до
+delete job	projects	ru	удалить работу
+delete project	projects	ru	удалить проект
+delete selected files	projects	ru	удалить выбранный файл
+distance	projects	ru	Расстояние
+do you also want to delete all sub projects	projects	ru	Хотите ли Вы так же удалить все под-проекты?
+do you also want to delete all sub projects ?	projects	ru	Хотите ли Вы так же удалить все под-проекты?
+edit administrator list	projects	ru	Редактирование списка администраторов
+edit events	projects	ru	редактировать события
+edit job	projects	ru	Редактировать работы
+edit manager list	projects	ru	Редактировать список менеджеров
+edit project	projects	ru	Редактировать проект
+edit work hours	projects	ru	Редактировать рабочие часы
+employee	projects	ru	Работник
+employees	projects	ru	Работники
+end date has changed	projects	ru	Дата окончания изменена
+ending date can not be after projects date due	projects	ru	Дата окончания не может быть позднее даты планированного окончания проекта.
+ending date can not be before start date	projects	ru	Дата окончания не может быть раньше даты начала.
+entry	projects	ru	Запись
+event	projects	ru	Событие
+event %1 has been saved	projects	ru	событие %1 было созранено
+events	projects	ru	События
 export as	projects	ru	экспортировать как
+from	projects	ru	с
+generate project id	projects	ru	Генерировать ID проекта?
+global categories	projects	ru	Общие Категории
+hours	projects	ru	Часы
+hours limit	projects	ru	Окончание времени
+job	projects	ru	Работа
+job has been added	projects	ru	Работа была добавлена
+job has been updated	projects	ru	Работа была обновлена
+job id	projects	ru	ID Работы
+job list	projects	ru	Список Работ
+job manager	projects	ru	Менеджер работы
+jobs	common	ru	Работы
+last update	projects	ru	Последнее обновление
 list jobs	common	ru	Список работ
 list projects	common	ru	Список проектов
 main project	projects	ru	Основной проект
 main project:	projects	ru	Основной проект:
+manager	projects	ru	Менеджер
+manager list	projects	ru	Список менеджеров
+month	projects	ru	Месяц
+new end date	projects	ru	Новая дата окончания
+new project	projects	ru	Новый проект
+new start date	projects	ru	Новая дата начала
+nonactive	common	ru	Неактивно
+old end date	projects	ru	Старая дата окончания
+old start date	projects	ru	Старая дата начала
+pause	projects	ru	Пауза
+per day	projects	ru	в день
+per hour	projects	ru	в час
+planned	projects	ru	Запланированно
+please choose a project coordinator	projects	ru	Пожалуйста, выбирите координатора проекта.
+please choose the accounting system for the project	projects	ru	Пожалуйста, выбирите систему учета для проекта.
+please enter an id	projects	ru	Пожалуйста введите ID.
+please enter an id !	projects	ru	Пожалуйста введите ID !
+previous	projects	ru	Предшествующий проект
+previous project	projects	ru	Предшествующий проект
+previous projects end date has changed	projects	ru	Предшествующий проект и дата были изменены
 project	projects	ru	Проект
 project %1 has been saved	projects	ru	Проект %1 успешно сохранен.
 project %1 has been updated	projects	ru	Проект %1 успешно обновлен.
+project administrators	common	ru	Администраторы проекта
 project id	common	ru	ID Проекта
+project overview	projects	ru	Обзор Проекта
+project statistic	projects	ru	Статистика Проекта
 project url	projects	ru	URL Проекта
 projects	common	ru	Проекты
+quality check	projects	ru	Проверка качества
 result	projects	ru	Результат
+select groups	projects	ru	Выбирите группы
+select users	projects	ru	Выбирите пользователей
+start	projects	ru	Старт
+start date planned	projects	ru	Планируемая дата начала
 statistics	projects	ru	Статистика
+stop	projects	ru	Стоп
+test	projects	ru	Тест
+till	projects	ru	до
+time of journey	projects	ru	Время поездки
+time planned	projects	ru	Планируемое время
+time tracker	projects	ru	Учет Времени
+time tracking for this project has been stopped already	projects	ru	учет времени для данного проекта уже был остановлен
+used total	projects	ru	Всего использовано
+user statistic	projects	ru	Статистика пользователя
+user statistics	projects	ru	Статистика пользователя
+view employees	projects	ru	Просмотр Работников
+view job	projects	ru	Просмотр Работы
+view project	projects	ru	Просмотр Проекта
+view users	projects	ru	Просмотр пользователей
+view work hours	projects	ru	Просмотр Рабочего времени
+work date	common	ru	Рабочая дата
+work hours	common	ru	Рабочее время
+work time	projects	ru	Время работ
+you have entered an invalid date !	projects	ru	Вы ввели неправильную дату !
+you have entered an invalid end date	projects	ru	Вы ввели неправильную дату окончания.
+you have entered an invalid planned end date	projects	ru	Вы ввели неправильную планируемую дату окончания.
+you have entered an invalid planned start date	projects	ru	Вы ввели неправильную планируемую дату начала.
+you have entered an invalid start date	projects	ru	Вы ввели неправильную дату начала.
+you have no projects selected	projects	ru	Вы не выбрали проект

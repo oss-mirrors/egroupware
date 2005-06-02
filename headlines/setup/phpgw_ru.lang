@@ -1,0 +1,26 @@
+are you sure you want to delete this news site ?	headlines	ru	Вы уверены, что хотите удалить этот новостной сайт?
+base url	headlines	ru	Базовый URL
+basic	headlines	ru	Обычный
+choose layout	headlines	ru	Выбирите расположение
+color	headlines	ru	Цветной
+create new headline	headlines	ru	Создать новый заголовок
+current headlines in cache	headlines	ru	Заголовки находящиеся в кэше:
+display	headlines	ru	Название
+grab new news sites	common	ru	Получить новые новостные сайты
+gray	headlines	ru	Серый
+headline preferences	common	ru	Настройки Заголовков
+headline site management	common	ru	Управление Заголовками сайтов
+headline sites	headlines	ru	Заголовки Сайтов
+headlines	common	ru	Заголовки
+minutes between refresh	headlines	ru	Минут между обновлениями
+news file	headlines	ru	Новостной файл
+news type	headlines	ru	Тип Новостей
+sample	headlines	ru	Пример
+select headline news sites	headlines	ru	Выбирите Заголовки новостных сайтов
+select headlines to display	common	ru	Выбирите Заголовки для отображения
+select layout	common	ru	Выбирите расположение
+show headlines on homepage	headlines	ru	Отображать заголовки на Главной странице
+site	headlines	ru	Сайт
+unable to retrieve links	headlines	ru	Невозможно получить ссылки
+update headline	headlines	ru	Обновить заголовки
+view headline	headlines	ru	Просмотр заголовков

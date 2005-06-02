@@ -1,4 +1,5 @@
 all bookmarks	bookmarks	ru	Все закладки
+and	bookmarks	ru	и
 book marks	common	ru	Закладки
 bookmark changed sucessfully	bookmarks	ru	Закладка удачно изменена
 bookmark created successfully.	bookmarks	ru	Закладка удачно создана
@@ -16,19 +17,28 @@ date changed	bookmarks	ru	Дата Изменена
 date last updated	bookmarks	ru	Дата последнего обновления
 date last visited	bookmarks	ru	Дата последнего просмотра
 edit bookmark	bookmarks	ru	Редактировать закладку
+edit this bookmark	bookmarks	ru	Редактировать данную закладку
 export bookmarks	common	ru	Экспортировать закладки
+fewer	bookmarks	ru	Убрать
 filter by	bookmarks	ru	Сортировать по
+found a link you might like	bookmarks	ru	Найдена ссылка которая может Вам понравиться
 from	bookmarks	ru	От
 import bookmarks	common	ru	Импортировать закладки
 mail this bookmark	bookmarks	ru	Отправить закладку по почте
+message from	bookmarks	ru	Сообщение От
+more	bookmarks	ru	Еще
 name	bookmarks	ru	Имя
-new	bookmark	ru	Новая
+new	bookmarks	ru	Новая
+or	bookmarks	ru	или
 please select the categories to export	bookmarks	ru	Выбирите категории для экспорта
+query condition	bookmarks	ru	Условия запроса
 rating	bookmarks	ru	Рейтинг
 search for:	bookmarks	ru	Искать:
 select the format you would like to export to	bookmarks	ru	Выбирите формат в который вы хотите экспортировать
 send bookmark	bookmarks	ru	Отправить закладку
 sub category	bookmarks	ru	Под-категория
+to e-mail addresses	bookmarks	ru	Отправить на E-Mail
 total visits	bookmarks	ru	всего посещений
 tree view	bookmarks	ru	Дерево закладок
+view bookmark	bookmarks	ru	Просмотр закладки
 you must select a category	bookmarks	ru	Вы должны выбрать категорию
