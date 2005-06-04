@@ -413,20 +413,19 @@
 
 		function list_projects($_action=false, $_pro_main=false)
 		{
-			$action		= get_var('action',array('POST','GET'));
-			$pro_main	= get_var('pro_main',array('POST','GET'),
-				$GLOBALS['phpgw']->session->appsession('pro_main','projects'));
-
+			if (!($action = get_var('action',array('POST','GET'))))
+			{
+				$action = 'mains';
+			}
+			if ($action != 'mains')
+			{
+				$pro_main	= get_var('pro_main',array('POST','GET'),
+					$GLOBALS['phpgw']->session->appsession('pro_main','projects'));
+			}
 			if ($_GET['cat_id'])
 			{
 				$this->cat_id = $_GET['cat_id'];
 			}
-
-			if (!$action)
-			{
-				$action = 'mains';
-			}
-
 			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main ? lang('list jobs') : lang('list projects'));
 
 			$this->display_app_header();
@@ -968,7 +967,7 @@
 			$project_id		= get_var('project_id',array('GET','POST'));
 			$name			= get_var('name',array('POST'));
 			$values			= get_var('values',array('POST'));
-
+			
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uiprojects.list_projects',
@@ -977,7 +976,25 @@
 				'project_id'	=> $project_id,
 				'pro_parent'	=> $pro_parent
 			);
+			if($_POST['cancel'])
+			{
+				$GLOBALS['phpgw']->redirect_link('/index.php',$link_data);
+			}
+			// check if we have edit-rights for a project, if not redirect to project-list
+			if($project_id)
+			{
+				$values = $this->boprojects->read_single_project($project_id);
 
+				if (!$this->boprojects->edit_perms(array(
+					'action'      => 'edit',
+					'coordinator' => $values['coordinator'],
+					'main'        => $values['main'],
+					'parent'      => $values['parent'],
+				)))
+				{
+					$GLOBALS['phpgw']->redirect_link('/index.php',$link_data);
+				}
+			}
 			if ($_POST['save'] || $_POST['apply'])
 			{
 				//echo 'POST: SAVE';
@@ -1047,11 +1064,6 @@
 						$GLOBALS['phpgw']->template->set_var('message',lang('project %1 has been saved',$values['title']));
 					}
 				}
-			}
-
-			if($_POST['cancel'])
-			{
-				$GLOBALS['phpgw']->redirect_link('/index.php',$link_data);
 			}
 
 			if($_POST['delete'])
@@ -1747,6 +1759,18 @@
 				'action'		=> $action
 			);
 
+			// check if we have edit-rights for a project, if not redirect to project-list
+			$values = $this->boprojects->read_single_project($pa_id);
+
+			if (!$this->boprojects->edit_perms(array(
+				'action'      => 'delete',
+				'coordinator' => $values['coordinator'],
+				'main'        => $values['main'],
+				'parent'      => $values['parent'],
+			)))
+			{
+				$GLOBALS['phpgw']->redirect_link('/index.php',$link_data);
+			}
 			if ($_POST['yes'])
 			{
 				$this->boprojects->delete_project($pa_id,(isset($_POST['subs'])?True:False));
