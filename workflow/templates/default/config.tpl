@@ -72,10 +72,10 @@
 			{lang_the_instance_title_is_shown_on_top_of_the_form}
 		</td>
 		<td width="20%" class="td_right">
-			{lang_show_title}:
+			{lang_show_activity_title}:
 		</td>
 		<td width="20%" class="td_right">
-			<select name="newsettings[run_act_show_title]">
+			<select name="newsettings[show_activity_title]">
                                	<option value="False" {selected_run_act_show_title_False}>{lang_No}</option>
                                 <option value="True" {selected_run_act_show_title_True}>{lang_Yes}</option>
        	                </select>
@@ -89,7 +89,7 @@
 			{lang_show_multiple_submit_as_select}:
 		</td>
 		<td width="20%" class="td_right">
-			<select name="newsettings[multiple_submit_select]">
+			<select name="newsettings[show_multiple_submit_as_select]">
                                	<option value="False" {selected_multiple_submit_select_False}>{lang_No}</option>
                                 <option value="True" {selected_multiple_submit_select_True}>{lang_Yes}</option>
        	                </select>
@@ -108,7 +108,7 @@
 			{lang_ownership_give_all_rights}:
 		</td>
 		<td width="20%" class="td_right">
-			<select name="newsettings[ownership_give_rights]">
+			<select name="newsettings[ownership_give_all_rights]">
                                	<option value="False" {selected_ownership_give_rights_False}>{lang_No}</option>
                                 <option value="True" {selected_ownership_give_rights_True}>{lang_Yes}</option>
        	                </select>
