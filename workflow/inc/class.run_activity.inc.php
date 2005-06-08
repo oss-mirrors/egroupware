@@ -120,11 +120,12 @@
 					// we loop on the form
 					
 					//get configuration options with default values if no init was done before
-					$this->conf = galaxia_get_config_values(array(
-						'use_automatic_parsing' 	=> 1,
-						'run_act_show_title' 		=> 1,
-						'multiple_submit_select' 	=> 0,
-					));
+					$myconf = array(
+						'use_automatic_parsing' 		=> 1,
+						'show_activity_title' 			=> 1,
+						'show_multiple_submit_as_select' 	=> 0,
+					);
+					$this->conf =& $this->process->getConfigValues($myconf);
 				
 					//set a global template for interactive activities
 					$this->t->set_file('run_activity','run_activity.tpl');
@@ -158,7 +159,7 @@
 		{
 			$this->t->set_block('run_activity', 'block_title_zone', 'title_zone');
 			
-			if (($this->conf['use_automatic_parsing']) && ($this->conf['run_act_show_title']))
+			if (($this->conf['use_automatic_parsing']) && ($this->conf['show_activity_title']))
 			{
 				$this->t->set_var(array('activity_title'=> $title));
 				$this->t->parse('title_zone', 'block_title_zone', true);
@@ -265,7 +266,7 @@
 					$submit_array = $GLOBALS['workflow']['submit_array'];
 					//now we have another user choice. he can choose multiple submit buttons
 					//or a select with only one submit
-					if ( ($this->conf['multiple_submit_select']) && (count($submit_array) > 1) )
+					if ( ($this->conf['show_multiple_submit_as_select']) && (count($submit_array) > 1) )
 					{
 						//multiple submits in a select box
 						//handling the select box 
