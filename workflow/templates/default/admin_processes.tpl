@@ -35,6 +35,59 @@
 		<td>{lang_is_active}?</td>
 		<td><input type="checkbox" name="isActive" {is_active} /></td>
 	</tr>
+	<tr class="row_off">
+		<td>{lang_Config_values}</td>
+		<td>
+		<table width="100%">
+	<!-- BEGIN block_config_table -->
+			<!-- BEGIN block_config_table_empty -->
+			<tr bgcolor="{color_line}">
+				<td colspan="2">
+					{config_empty}
+				</td>
+			</tr>
+			<!-- END block_config_table_empty -->
+			<!-- BEGIN block_config_table_title -->
+			<tr bgcolor="{color_line}">
+				<td colspan="2">
+					{config_name_trad}
+				</td>
+			</tr>
+			<!-- END block_config_table_title -->
+			<!-- BEGIN block_config_table_yesno -->
+			<tr bgcolor="{color_line}">
+				<td>
+					{config_name_trad}
+				</td>
+				<td>
+					<select name="config_yesno[{config_name}]">
+                                        <option value="default" {config_default_selected}>{lang_Use_default}</option>
+                                        <option value="yes" {config_yes_selected}>{lang_yes}</option>
+					<option value="no" {config_no_selected}>{lang_no}</option>
+                                        </select>					
+				</td>
+			</tr>
+			<!-- END block_config_table_yesno -->
+			<!-- BEGIN block_config_table_text -->
+			<tr bgcolor="{color_line}">
+				<td>
+					{config_name_trad}
+				</td>
+				<td>
+				<table>
+				<tr><td>
+					<input type="text" maxlength="80" name="config_value[{config_name}]" value="{config_value}" />
+				</td><td>
+					<input type="checkbox" name="config_use_default[{config_name}]" {config_use_default_checked} />{lang_Use_Default}
+				</td></tr>
+				</table>
+				</td>
+			</tr>
+			<!-- END block_config_table_text -->
+	<!-- END block_config_table -->
+		</table>
+		</td>
+	</tr>
 	<tr class="th">
 		<td>&nbsp;</td>
 		<td><input type="submit" name="save" value="{btn_update_create}" /></td>
