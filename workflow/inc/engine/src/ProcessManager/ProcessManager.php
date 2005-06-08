@@ -5,23 +5,25 @@ include_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'BaseManager.php
 /*!
   This class is used to add,remove,modify and list
   processes.
+  Most of the methods acts directly in database level, bypassing Project object methods.
 */
 class ProcessManager extends BaseManager {
   var $parser;
   var $tree;
   var $current;
   var $buffer;
+  var $Process;
   
   /*!
     Constructor takes a PEAR::Db object to be used
     to manipulate roles in the database.
   */
-  function ProcessManager($db) 
+  function ProcessManager(&$db) 
   {
     if(!$db) {
       die("Invalid db object passed to ProcessManager constructor");  
     }
-    $this->db = $db;  
+    $this->db =& $db;  
   }
  
   /*!
@@ -61,6 +63,8 @@ class ProcessManager extends BaseManager {
     $out.= '  <isActive>'.htmlspecialchars($proc_info['wf_is_active']).'</isActive>'."\n";
     $out.='   <description>'.htmlspecialchars($proc_info['wf_description']).'</description>'."\n";
     $out.= '  <lastModif>'.date("d/m/Y [h:i:s]",$proc_info['wf_last_modif']).'</lastModif>'."\n";
+
+    //Shared code
     $out.= '  <sharedCode><![CDATA[';
     $fp=fopen(GALAXIA_PROCESSES.SEP."$wf_procname".SEP."code".SEP."shared.php","r");
     while(!feof($fp)) {
@@ -69,6 +73,23 @@ class ProcessManager extends BaseManager {
     }
     fclose($fp);
     $out.= '  ]]></sharedCode>'."\n";
+
+    //Loop on config values
+    $query = "select * from ".GALAXIA_TABLE_PREFIX."process_config where wf_p_id=$pId";
+    $result = $this->query($query);
+    $out.='  <configs>'."\n";
+    while($res = $result->fetchRow()) {      
+      $name = $res['wf_config_name'];
+      $value_int = $res['wf_config_value_int'];
+      $value = $res['wf_config_value'];
+      $out.='    <config>'."\n";
+      $out.='      <name>'.htmlspecialchars($name).'</name>'."\n";
+      $out.='      <value>'.htmlspecialchars($value).'</value>'."\n";
+      $out.='      <value_int>'.htmlspecialchars($value_int).'</value_int>'."\n";
+      $out.='    </config>'."\n";
+    }
+    $out.='  </configs>'."\n";
+
     // Now loop over activities
     $query = "select * from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=$pId";
     $result = $this->query($query);
@@ -165,7 +186,25 @@ class ProcessManager extends BaseManager {
       // Process attributes
       $z=$this->tree[1]['children'][$i];
       $name = trim($this->tree[$z]['name']);
-      if($name=='activities') {
+      
+      //config values
+      if ($name=='configs') {
+        for($j=0;$j<count($this->tree[$z]['children']);$j++) {
+          $z2 = $this->tree[$z]['children'][$j];
+          // this is a config $name = $this->tree[$z2]['name'];
+          if($this->tree[$z2]['name']=='config') {
+            for($k=0;$k<count($this->tree[$z2]['children']);$k++) {
+              $z3 = $this->tree[$z2]['children'][$k];
+              $name = trim($this->tree[$z3]['name']);
+              $value= trim($this->tree[$z3]['data']);
+              $aux[$name]=$value;
+            }
+            $configs[]=$aux;
+          }
+        }      
+      }
+      //activities
+      elseif($name=='activities') {
         for($j=0;$j<count($this->tree[$z]['children']);$j++) {
           $z2 = $this->tree[$z]['children'][$j];
           // this is an activity $name = $this->tree[$z2]['name'];
@@ -213,6 +252,7 @@ class ProcessManager extends BaseManager {
         $process[$name]=$value;
       }
     }
+    $process['configs']=$configs;
     $process['activities']=$activities;
     $process['transitions']=$transitions;
     return $process;
@@ -245,6 +285,21 @@ class ProcessManager extends BaseManager {
     fwrite($fp,$data['sharedCode']);
     fclose($fp);
     $actids = Array();
+    // Store config values
+    // rebuild a config_array with type of config and value
+    $config_array = array();
+    foreach($data['configs'] as $config) {
+      if (isset($config['value_int']))
+      {
+        $config_array[$config['name']] = array('int' => $config['value_int']);
+      }
+      else
+      {
+        $config_array[$config['name']] = array('text' => $config['value']);
+      }
+    }
+    $this->setConfigValues($pid, $config_array);
+    
     // Foreach activity create activities
     foreach($data['activities'] as $activity) {
       $vars = Array(
@@ -719,6 +774,46 @@ class ProcessManager extends BaseManager {
   function _data_handler($parser,$data)
   {
     $this->buffer.=$data;
+  }
+
+  //! return an associative array with all config items for the given processId
+  /*!
+  This getConfigValues differs from the Process->getConfigValues because the parameter here
+  id just the processId. All config items are returned as a function result. This function
+  get the items defined in process_config table for this process. In fact this admin function bypass
+  the process behaviour and is just showing you the basic content of the table.
+  */
+  function getConfigValues($pId)
+  {
+    $query = "select * from ".GALAXIA_TABLE_PREFIX."process_config where wf_p_id=?";
+    $result = $this->query($query, array($pId));
+    $result_array=array();
+    while($res = $result->fetchRow())
+    {
+      if ($res['wf_config_value_int']==null)
+      {
+        $result_array[$res['wf_config_name']] = $res['wf_config_value'];
+      }
+      else
+      {
+        $result_array[$res['wf_config_name']] = $res['wf_config_value_int'];
+      }
+    }
+    return $result_array;
+  }
+  
+  //! call a process object to save his new config values
+  /*!
+  This setConfigValues takes a process Id as first argument and simply call this process's setConfigValues
+  function. We let the process define the better way to store the data given as second arg.
+  */
+  function setConfigValues($pId, &$config_array)
+  {
+    //Warning: this means you have to include the Process.php from the API
+    $this->Process =& new Process($this->db);
+    $this->Process->getProcess($pId);
+    $this->Process->setConfigValues($config_array);
+    unset ($this->Process);
   }
 
 }
