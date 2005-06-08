@@ -71,4 +71,30 @@
 		return $GLOBALS['setup_info']['workflow']['currentver'];
 	}
 
+	$test[] = '1.1.00.000';
+	function workflow_upgrade1_1_00_000()
+	{	
+		# add a process_config table
+		$GLOBALS['phpgw_setup']->oProc->createTable('egw_wf_process_config', 
+			array(
+				'fd' => array(
+					'wf_p_id'               => array('type' => 'int', 'precision' => '4', 'nullable' => False),
+					'wf_config_name' 	=> array('type' => 'varchar', 'precision' => '255', 'nullable' => False),
+					'wf_config_value'	=> array('type' => 'text', 'nullable' => True),
+					'wf_config_value_int'	=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
+				),
+				'pk' => array('wf_p_id','wf_config_name'),
+				'fk' => array(),
+				'ix' => array(),
+				'uc' => array()
+			)
+		);
+		
+		//change de default value for priority
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('egw_wf_instances','wf_priority',array('type' => 'int', 'precision' => '4', 'nullable' => True, 'default'= 0));
+
+		#updating the current version
+		$GLOBALS['setup_info']['workflow']['currentver'] = '1.1.01.000';
+		return $GLOBALS['setup_info']['workflow']['currentver'];
+	}
 ?>

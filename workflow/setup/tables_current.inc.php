@@ -83,7 +83,7 @@
 				'wf_next_user'		=> array('type' => 'varchar', 'precision' => '200', 'nullable' => True),
 				'wf_ended'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
 				'wf_status'		=> array('type' => 'varchar', 'precision' => '25', 'nullable' => True),
-				'wf_priority'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
+				'wf_priority'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True, 'default'= 0),
 				'wf_properties'		=> array('type' => 'blob', 'nullable' => True),
 				'wf_name'		=> array('type' => 'varchar', 'precision'=>'120', 'nullable' => True),
 			),
@@ -162,4 +162,17 @@
 			'ix' => array(),
 			'uc' => array()
 		)
+		'egw_wf_process_config' => array( 
+			'fd' => array(
+				'wf_p_id'               => array('type' => 'int', 'precision' => '4', 'nullable' => False),
+				'wf_config_name' 	=> array('type' => 'varchar', 'precision' => '255', 'nullable' => False),
+				'wf_config_value'	=> array('type' => 'text', 'nullable' => True),
+				'wf_config_value_int'	=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
+			),
+			'pk' => array('wf_p_id','wf_config_name'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		)
+
 	);

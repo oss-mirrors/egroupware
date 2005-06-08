@@ -32,7 +32,7 @@
 		function workflow()
 		{
 			// check version
-			if (substr($GLOBALS['phpgw_info']['apps']['workflow']['version'],0,6) != '1.1.00')
+			if (substr($GLOBALS['phpgw_info']['apps']['workflow']['version'],0,6) != '1.1.01')
 			{
 				$GLOBALS['phpgw']->common->phpgw_header();
 				echo parse_navbar();
@@ -43,7 +43,7 @@
 			$this->wf_p_id		= (int)get_var('p_id', 'any', 0);
 			$this->start		= (int)get_var('start', 'GET', 0);
 			$this->search_str	= get_var('find', 'any', '');
-			$this->nextmatchs	= CreateObject('phpgwapi.nextmatchs');
+			$this->nextmatchs	=& CreateObject('phpgwapi.nextmatchs');
 		}
 
 		function fill_proc_bar($proc_info)
@@ -134,6 +134,8 @@
 				case 'standalone':
 					$ic="mini_".(($interactive == 'y')? 'blue_':'')."hexagon.gif";
 					break;
+				default:
+					$ic="no-activity.gif";
 			}
 			return '<img src="'. $GLOBALS['phpgw']->common->image('workflow', $ic) .'" alt="'. lang($type) .'" title="'. lang($type) .'" />';
 		}
