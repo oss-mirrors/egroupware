@@ -197,7 +197,11 @@ class ActivityManager extends BaseManager {
     
     //Get the config of the workflow where we'll have some tips for the graph
     //TODO: something to permit processes to update the default values
-    $configs = galaxia_get_config_values(array('draw_roles' => true, 'font_size' => 25));
+    $myconfneeds = array(
+      'draw_roles' => true, 
+      'font_size' => 12,
+      );
+    $configs = $pm->getConfigValues($pId,true,true,$myconfneeds);
 
     // Nodes are process activities so get
     // the activities and add nodes as needed
@@ -208,12 +212,12 @@ class ActivityManager extends BaseManager {
       if($node['wf_is_interactive']=='y') 
       {
         $color='black';
-        $fillcolor='0.6,0.6,0.9'; //TLS values
+        $fillcolor='0.6,0.6,0.9'; //blue TLS values
       } 
       else 
       {
-        $color='blue';
-        $fillcolor='0.25,1,0.8';
+        $color='black';
+        $fillcolor='0.25,1,0.8';//green in TLS values
       }
       // get the fontsize, defined in the process
       $fontsize = $configs['font_size'];
@@ -250,12 +254,14 @@ class ActivityManager extends BaseManager {
     $edges = $this->get_process_transitions($pId);
     foreach($edges as $edge)
     {
-      if($auto[$edge['wf_actwf_from_name']] == 'y') {
-        $color = 'red';
+      if($auto[$edge['wf_act_from_name']] == 'y') {
+        $color = '0.25,1,0.28'; #dark green in TLS values
+        $arrowsize = 1;
       } else {
-        $color = 'black';
+        $color = '0.6,0.6,0.9'; #blue in TLS values
+        $arrowsize= 2;
       }
-        $graph->addEdge(array($edge['wf_act_from_name'] => $edge['wf_act_to_name']), array('color'=>$color));    
+        $graph->addEdge(array($edge['wf_act_from_name'] => $edge['wf_act_to_name']), array('color'=>$color,arrowsize=>$arrowsize));    
     }
     
     
@@ -542,7 +548,7 @@ class ActivityManager extends BaseManager {
   }
   
   /*!
-    Updates or inserts a new activity in the database, $vars is an asociative
+    Updates or inserts a new activity in the database, $vars is an associative
     array containing the fields to update or to insert as needed.
     $pId is the processId
     $activityId is the activityId  
