@@ -827,32 +827,47 @@ class ProcessManager extends BaseManager {
   1 =>('wf_config_name' => 'toto')
     =>('wf_config_value'=>'')
     =>('wf_config_vale_int'=>15)
-  if set to false (default) the result array will be:
-  'foo'=>'bar'
-  'toto'=>15
+  if set to false (default) the result array will be (note that this is the default result if having just the $pId):
+    'foo'=>'bar'
+    'toto'=>15
+  If the askProcessObject is set to true (false by default) then the ProcessManager will load a process
+  object to run directly Process->getConfigValues($config_ask_array) this let you use this ProcessManager
+  getConfigValues the same way you would use $process->getConfigValues, with initialisation of default values.
+  you should then call this function this way: $conf_result=$pm->getConfigValues($pId,true,true,$my_conf_array)
   */
-  function getConfigValues($pId, $distinct_types=false)
+  function getConfigValues($pId, $distinct_types=false, $askProcessObject=false, $config_array=array())
   {
-    $query = "select * from ".GALAXIA_TABLE_PREFIX."process_config where wf_p_id=?";
-    $result = $this->query($query, array($pId));
-    $result_array=array();
-    while($res = $result->fetchRow())
+    if (!$askProcessObject)
     {
-      if ( (!$distinct_types) )
-      {// we want a simple array
-        if ($res['wf_config_value_int']==null)
-        {
-          $result_array[$res['wf_config_name']] = $res['wf_config_value'];
+      $query = "select * from ".GALAXIA_TABLE_PREFIX."process_config where wf_p_id=?";
+      $result = $this->query($query, array($pId));
+      $result_array=array();
+      while($res = $result->fetchRow())
+      {
+        if ( (!$distinct_types) )
+        {// we want a simple array
+          if ($res['wf_config_value_int']==null)
+          {
+            $result_array[$res['wf_config_name']] = $res['wf_config_value'];
+            }
+          else
+          {
+            $result_array[$res['wf_config_name']] = $res['wf_config_value_int'];
+          }
         }
         else
-        {
-          $result_array[$res['wf_config_name']] = $res['wf_config_value_int'];
+        {// build a more complex result array, which is just the table rows
+          $result_array[] = $res;
         }
       }
-      else
-      {// build a more complex result array, which is just the table rows
-        $result_array[] = $res;
-      }
+    }
+    else //we'll load a Process object and let him work for us
+    {
+      //Warning: this means you have to include the Process.php from the API
+      $this->Process =& new Process($this->db);
+      $this->Process->getProcess($pId);
+      $result_array = $this->Process->getConfigValues($config_array);
+      unset ($this->Process);
     }
     return $result_array;
   }
