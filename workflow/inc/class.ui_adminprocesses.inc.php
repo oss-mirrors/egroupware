@@ -342,7 +342,7 @@
 					'img_activities'	=> $GLOBALS['phpgw']->common->image('workflow', 'Activity'),
 					'href_item_code'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $item['wf_p_id']),
 					'img_code'			=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
-					'href_item_save'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.save_process&p_id='. $item['wf_p_id']),
+					'href_item_save'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.workflow.export&p_id='. $item['wf_p_id']),
 					'img_save'			=> $GLOBALS['phpgw']->common->image('workflow', 'save'),
 					'href_item_roles'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form&p_id='. $item['wf_p_id']),
 					'img_roles'			=> $GLOBALS['phpgw']->common->image('workflow', 'roles'),
