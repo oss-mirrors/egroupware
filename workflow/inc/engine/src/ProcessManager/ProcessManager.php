@@ -55,7 +55,8 @@ class ProcessManager extends BaseManager {
   {
     // <process>
     $out = '<process>'."\n";
-    $proc_info = $this->get_process($pId);
+    //we retrieve config values with the others process data
+    $proc_info = $this->get_process($pId, true);
     $wf_procname = $proc_info['wf_normalized_name'];
     $out.= '  <name>'.htmlspecialchars($proc_info['wf_name']).'</name>'."\n";
     $out.= '  <isValid>'.htmlspecialchars($proc_info['wf_is_valid']).'</isValid>'."\n";
@@ -75,17 +76,15 @@ class ProcessManager extends BaseManager {
     $out.= '  ]]></sharedCode>'."\n";
 
     //Loop on config values
-    $query = "select * from ".GALAXIA_TABLE_PREFIX."process_config where wf_p_id=$pId";
-    $result = $this->query($query);
     $out.='  <configs>'."\n";
-    while($res = $result->fetchRow()) {      
+    foreach($proc_info['config'] as $res) {      
       $name = $res['wf_config_name'];
       $value_int = $res['wf_config_value_int'];
       $value = $res['wf_config_value'];
       $out.='    <config>'."\n";
-      $out.='      <name>'.htmlspecialchars($name).'</name>'."\n";
-      $out.='      <value>'.htmlspecialchars($value).'</value>'."\n";
-      $out.='      <value_int>'.htmlspecialchars($value_int).'</value_int>'."\n";
+      $out.='      <wf_config_name>'.htmlspecialchars($name).'</wf_config_name>'."\n";
+      $out.='      <wf_config_value>'.htmlspecialchars($value).'</wf_config_value>'."\n";
+      $out.='      <wf_config_value_int>'.htmlspecialchars($value_int).'</wf_config_value_int>'."\n";
       $out.='    </config>'."\n";
     }
     $out.='  </configs>'."\n";
@@ -275,8 +274,10 @@ class ProcessManager extends BaseManager {
       'description' => $data['description'],
       'lastModif' => $data['lastModif'],
       'isActive' => $data['isActive'],
-      'isValid' => $data['isValid']
+      'isValid' => $data['isValid'],
+      'config' => $data['configs'],
     );
+
     $pid = $this->replace_process(0,$vars,false);
     //Put the shared code 
     $proc_info = $this->get_process($pid);
@@ -285,20 +286,6 @@ class ProcessManager extends BaseManager {
     fwrite($fp,$data['sharedCode']);
     fclose($fp);
     $actids = Array();
-    // Store config values
-    // rebuild a config_array with type of config and value
-    $config_array = array();
-    foreach($data['configs'] as $config) {
-      if (isset($config['value_int']))
-      {
-        $config_array[$config['name']] = array('int' => $config['value_int']);
-      }
-      else
-      {
-        $config_array[$config['name']] = array('text' => $config['value']);
-      }
-    }
-    $this->setConfigValues($pid, $config_array);
     
     // Foreach activity create activities
     foreach($data['activities'] as $activity) {
@@ -362,11 +349,12 @@ class ProcessManager extends BaseManager {
    is created as an unactive process and the version is
    by default a minor version of the process.
    */
-  ///\todo copy process activities and so     
+  //TODO: copy process activities and so     
   function new_process_version($pId, $minor=true)
   {
     $oldpid = $pId;
-    $proc_info = $this->get_process($pId);
+    //retrieve process info with config rows
+    $proc_info = $this->get_process($pId, true);
     $name = $proc_info['wf_name'];
     if(!$proc_info) return false;
 
@@ -394,6 +382,7 @@ class ProcessManager extends BaseManager {
     $newaid = array();
     while($res = $result->fetchRow()) {    
       $oldaid = $res['wf_activity_id'];
+      // the false tell the am not to create activities source files
       $newaid[$oldaid] = $am->replace_activity($pid,0,$res, false);
     }
     // create transitions
@@ -461,14 +450,21 @@ class ProcessManager extends BaseManager {
   
   
   /*!
-    Gets a process by pId. Fields are returned as an asociative array
+    Gets a process by pId. Fields are returned as an associative array. 
+    If withConfig is set (false by default), the configuration options are returned as well
+    the ['config'] key is then an array containing the config data with type distinction
   */
-  function get_process($pId)
+  function get_process($pId, $withConfig=false)
   {
     $query = "select * from ".GALAXIA_TABLE_PREFIX."processes where wf_p_id=$pId";
     $result = $this->query($query);
     if(!$result->numRows()) return false;
     $res = $result->fetchRow();
+    if ($withConfig)
+    {
+      // by setting true we force this function to keep type distinction on config values
+      $res['config'] = $this->getConfigValues($res['wf_p_id'], true);
+    }
     return $res;
   }
   
@@ -548,6 +544,11 @@ class ProcessManager extends BaseManager {
     if (GALAXIA_TEMPLATES && !empty($name) && is_dir(GALAXIA_TEMPLATES.SEP."$name")) {
       $this->_remove_directory(GALAXIA_TEMPLATES.SEP."$name",true);
     }
+    
+    // Remove configuration data
+    $query = "delete from ".GALAXIA_TABLE_PREFIX."process_config where wf_p_id=?";
+    $this->query($query, array($pId));
+    
     // And finally remove the proc
     $query = "delete from ".GALAXIA_TABLE_PREFIX."processes where wf_p_id=$pId";
     $this->query($query);
@@ -558,8 +559,10 @@ class ProcessManager extends BaseManager {
   }
   
   /*!
-    Updates or inserts a new process in the database, $vars is an asociative
+    Updates or inserts a new process in the database, $vars is an associative
     array containing the fields to update or to insert as needed.
+    Configuration options should be in an array associated with the 'config' key
+    this array should contain 'wf_config_name', 'wf_config_value' and 'wf_config_value_int' keys.
     $pId is the processId
   */
   function replace_process($pId, $vars, $create = true)
@@ -568,9 +571,34 @@ class ProcessManager extends BaseManager {
     $now = date("U");
     $vars['wf_last_modif']=$now;
     $vars['wf_normalized_name'] = $this->_normalize_name($vars['wf_name'],$vars['wf_version']);        
+    $config_array = array();
     foreach($vars as $key=>$value)
     {
-      $vars[$key]=addslashes($value);
+      if ($key=='config')
+      {
+        $config_array_init =& $value; 
+        // rebuild a nice config_array with type of config and value
+        foreach($config_array_init as $config) 
+        {
+          if (isset($config['wf_config_value_int'])) 
+          {
+            $config_array[$config['wf_config_name']] = array('int' => $config['wf_config_value_int']);
+          }
+          else
+          {
+            if (isset($config['wf_config_value'])) 
+            {
+              $config_array[$config['wf_config_name']] = array('text' => $config['wf_config_value']);
+            }
+          }
+        }
+        //no need to keep it in the vars array, this array is used in queries
+        unset($vars['config']);
+      }
+      else // not config, it's just process's fields values
+      {
+        $vars[$key]=addslashes($value);
+      }
     }
   
     if($pId) {
@@ -586,6 +614,10 @@ class ProcessManager extends BaseManager {
       }
       $query .= " where wf_p_id=$pId ";
       $this->query($query);
+      
+      //set config values
+      $this->setConfigValues($pId,$config_array);
+      
       // Note that if the name is being changed then
       // the directory has to be renamed!
       $oldname = $old_proc['wf_normalized_name'];
@@ -617,7 +649,13 @@ class ProcessManager extends BaseManager {
       } 
       $query .=")";
       $this->query($query);
+      //FIXME: this query seems to be quite sure to get a result, I would prefer something
+      // more sure to get the right result everytime
       $pId = $this->getOne("select max(wf_p_id) from $TABLE_NAME where wf_last_modif=$now"); 
+      
+      //set config values
+      $this->setConfigValues($pId,$config_array);
+      
       // Now automatically add a start and end activity 
       // unless importing ($create = false)
       if($create) {
@@ -782,21 +820,38 @@ class ProcessManager extends BaseManager {
   id just the processId. All config items are returned as a function result. This function
   get the items defined in process_config table for this process. In fact this admin function bypass
   the process behaviour and is just showing you the basic content of the table.
+  If the distinct_type is set the returned array will be:
+  0 =>('wf_config_name'=> 'foo')
+    =>('wf_config_value'=>'bar')
+    =>('wf_config_vale_int'=>null)
+  1 =>('wf_config_name' => 'toto')
+    =>('wf_config_value'=>'')
+    =>('wf_config_vale_int'=>15)
+  if set to false (default) the result array will be:
+  'foo'=>'bar'
+  'toto'=>15
   */
-  function getConfigValues($pId)
+  function getConfigValues($pId, $distinct_types=false)
   {
     $query = "select * from ".GALAXIA_TABLE_PREFIX."process_config where wf_p_id=?";
     $result = $this->query($query, array($pId));
     $result_array=array();
     while($res = $result->fetchRow())
     {
-      if ($res['wf_config_value_int']==null)
-      {
-        $result_array[$res['wf_config_name']] = $res['wf_config_value'];
+      if ( (!$distinct_types) )
+      {// we want a simple array
+        if ($res['wf_config_value_int']==null)
+        {
+          $result_array[$res['wf_config_name']] = $res['wf_config_value'];
+        }
+        else
+        {
+          $result_array[$res['wf_config_name']] = $res['wf_config_value_int'];
+        }
       }
       else
-      {
-        $result_array[$res['wf_config_name']] = $res['wf_config_value_int'];
+      {// build a more complex result array, which is just the table rows
+        $result_array[] = $res;
       }
     }
     return $result_array;
