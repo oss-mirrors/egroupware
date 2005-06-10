@@ -31,7 +31,8 @@
 								'egw_wf_instance_supplements', 
 								'egw_wf_transitions', 
 								'egw_wf_user_roles', 
-								'egw_wf_workitems'
+								'egw_wf_workitems',
+								'egw_wf_process_config'
 							);
 
 	/* The hooks this app includes, needed for hooks registration */
