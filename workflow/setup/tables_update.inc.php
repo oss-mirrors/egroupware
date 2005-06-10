@@ -91,7 +91,7 @@
 		);
 		
 		//change de default value for priority
-		$GLOBALS['phpgw_setup']->oProc->AlterColumn('egw_wf_instances','wf_priority',array('type' => 'int', 'precision' => '4', 'nullable' => True, 'default'= 0));
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('egw_wf_instances','wf_priority',array('type' => 'int', 'precision' => '4', 'nullable' => True, 'default'=> 0));
 
 		#updating the current version
 		$GLOBALS['setup_info']['workflow']['currentver'] = '1.1.01.000';
