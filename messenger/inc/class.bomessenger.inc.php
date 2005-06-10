@@ -17,14 +17,6 @@
 	class bomessenger
 	{
 		var $so;
-		var $public_functions = array(
-			'send_message'         => True,
-			'send_global_message'  => True,
-			'send_group_message'  => True,
-			'reply'                => True,
-			'forward'              => True,
-			'list_methods'         => True
-		);
 		var $soap_functions = array();
 		var $xmlrpc_methods = array();
 
@@ -63,13 +55,13 @@
 			{
 				$account_info = $GLOBALS['phpgw']->accounts->get_list('accounts');
 
-				$this->so->db->transaction_begin();
+			//	$this->so->db->transaction_begin();
 				while(list(,$account) = @each($account_info))
 				{
 					$message['to'] = $account['account_lid'];
 					$this->so->send_message($message,True);
 				}
-				$this->so->db->transaction_commit();
+			//	$this->so->db->transaction_commit();
 				return True;
 			}
 		}
@@ -86,20 +78,20 @@
 			   account ids. we convert it to an array of user ids */
 			foreach ($message['recipient'] as $recipient_id)
 			{
-				if ($GLOBALS['phpgw']->accounts->get_type($recipient_id) == 'a') 
+				if ($GLOBALS['phpgw']->accounts->get_type($recipient_id) == 'u') 
 				{
 					$recipients[$recipient_id] = 
-					$GLOBALS['egw']->accounts->id2name[$recipient_id];
+					$GLOBALS['phpgw']->accounts->id2name[$recipient_id];
 				}
 				else
 				{
-					foreach ($GLOBALS['egw']->accounts->member($recipient_id) as $account)
+					foreach ($GLOBALS['phpgw']->accounts->member($recipient_id) as $account)
 					{
 						$recipients[$account['account_id']]=$account['account_name'];
 					}
 				}
 			}
-			$message['recipient']=array_keys($recipients);
+			$message['recipient']=@array_keys($recipients);
 			/* here $message['recipient'] only contain user ids */
 			
 			if ($recipients)
@@ -342,12 +334,12 @@
 				return False;
 			}
 
-			$this->so->db->transaction_begin();
+		//	$this->so->db->transaction_begin();
 			while(list(,$message_id) = each($messages))
 			{
 				$this->so->delete_message($message_id);
 			}
-			$this->so->db->transaction_commit();
+		//	$this->so->db->transaction_commit();
 
 			return True;
 		}

@@ -356,17 +356,27 @@
 					$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
 				}
 			}
-			// recipient dropdown field stuff added by tobi (gabele@uni-sql.de)
-			$tobox = '<input name="n_message[to]" value="' . $message['from'] . '" size="30">';
 			$sndid = 0;
 			if($message['from'] != '')
 			{
 				$sndid=$GLOBALS['phpgw']->accounts->name2id($message['from']);
 			}
+			// recipient dropdown field stuff added by tobi (gabele@uni-sql.de)
+			$tobox = '<input name="n_message[recipient][]" value="' . $sndid . '" size="30">';
 			$myownid=$GLOBALS['phpgw_info']['user']['account_id'];
 			if(@isset($GLOBALS['phpgw_info']['server']['messenger']['use_selectbox']))
 			{
-				$users = $this->bo->get_messenger_users();
+				//modified by wbshang @ 2005.6.6
+				$uiaccountsel=CreateObject('phpgwapi.uiaccountsel');
+				$tobox = $uiaccountsel->selection(
+					"message[recipient][]",    // name of the element used in form to repersent selected users
+					"uimessage_userselection", // id of this element, makes little sense
+					$sndid,     //pre-selected user/group
+					'messenger+', //only show users who have 'run' permission in messenger app
+					5,                                           // 5 lines high
+					$GLOBALS['phpgw_info']['user']['account_id'] // do not send message to myself
+				); 
+		/*	//	$users = $this->bo->get_messenger_users();
 				$str = '';
 				foreach($users as $user)
 				{
@@ -380,8 +390,8 @@
 				if(count($users) <= 1)
 				{
 					$tobox = '<input name="n_message[to]" value="' . $message['from'] . '" size="30">';
-				}
-			}
+				} */
+			} 
 
 			// end dropdown
 
@@ -436,7 +446,17 @@
 			$myownid = $GLOBALS['phpgw_info']['user']['account_id'];
 			if(@isset($GLOBALS['phpgw_info']['server']['messenger']['use_selectbox']))
 			{
-				$users = $this->bo->get_messenger_users();
+				//modified by wbshang @ 2005.6.3
+				$uiaccountsel=CreateObject('phpgwapi.uiaccountsel');
+				$tobox = $uiaccountsel->selection(
+					"message[recipient][]",    // name of the element used in form to repersent selected users
+					"uimessage_userselection", // id of this element, makes little sense
+					array(),     //no pre-selected user/group
+					'messenger+', //only show users who have 'run' permission in messenger app
+					5,                                           // 5 lines high
+					$GLOBALS['phpgw_info']['user']['account_id'] // do not send message to myself
+				); 
+			/*	$users = $this->bo->get_messenger_users();
 				$str = '';
 				foreach($users as $user)
 				{
@@ -450,7 +470,7 @@
 				if(count($users) <= 1)
 				{
 					$tobox = '<input name="n_message[to]" value="' . $message['from'] . '" size="30">';
-				}
+				} */
 			}
 			// end dropdown
 
