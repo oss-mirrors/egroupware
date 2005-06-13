@@ -36,13 +36,15 @@
 
 			if (!$activity_id) die(lang('No activity indicated'));
 			// load activity
-			$activity = $this->base_activity->getActivity($activity_id);
+			$activity =& $this->base_activity->getActivity($activity_id);
 
 			// load process
 			$this->process->getProcess($activity->getProcessId());
 
 			// instantiate instance class, but before set some global variables needed by it
+			//TODO: move this global var in ['workflow']
 			$GLOBALS['__activity_completed'] = false;
+			$GLOBALS['workflow']['__leave_activity']=false;
 			$GLOBALS['user'] = $GLOBALS['phpgw_info']['user']['account_id'];
 			$instance =& CreateObject('workflow.workflow_instance');
 
@@ -67,9 +69,16 @@
 			// Activities' code will have at their disposition the $db object to handle database interactions
 			// TODO: open a new connection to the database under a different username to allow privilege handling on tables
 			$db = $GLOBALS['phpgw']->ADOdb;
-		
+			$GLOBALS['workflow']['db']	 		=& $db;
+			//set some other usefull vars (note that $instance is empty at this time)
+			$GLOBALS['workflow']['wf_process_id'] 		= $activity->getProcessId();
+			$GLOBALS['workflow']['wf_activity_id'] 		= $activity_id;
+			$GLOBALS['workflow']['wf_process_name']		= $this->process->getName();
+			$GLOBALS['workflow']['wf_process_version']	= $this->process->getVersion();
+			$GLOBALS['workflow']['wf_activity_name']	= $activity->getName();
+			//FIXME: useless, we remove it
 			// run the shared code (just in case because each activity is supposed to include it)
-			include_once($shared);
+			//include_once($shared);
 
 			// run the activity
 			if (!$auto && $activity->isInteractive())
@@ -84,14 +93,20 @@
 				$GLOBALS['phpgw']->template =& $template;
 			}
 			//echo "<br><br><br><br><br>Including $source <br>In request: <pre>";print_r($_REQUEST);echo "</pre>";
+			//[__leave_activity] is setted if needed in the xxx_pre code or by the user in his code
+			//[__activity_completed] will be setted if $instance->complete() is runned
 			include_once ($source);
+			
+			//Now that the instance is ready we can catch some usefull vars
+			$GLOBALS['workflow']['wf_instance_id'] 		= $instance->getInstanceId();
+			$GLOBALS['workflow']['wf_instance_name']	= $instance->getName();
+
 			
 			// TODO: process instance comments
 
 			// for interactive activities in non-auto mode:
 			if (!$auto && $activity->isInteractive())
 			{
-
 				if ($GLOBALS['__activity_completed'])
 				{
 					// activity is interactive and completed, 
@@ -104,9 +119,9 @@
 					$this->t->set_file('activity_completed', 'activity_completed.tpl');
 
 					$this->t->set_var(array(
-						'wf_procname'	=> $this->process->getName(),
-						'procversion'	=> $this->process->getVersion(),
-						'actname'	=> $activity->getName(),
+						'wf_procname'	=> $GLOBALS['workflow']['wf_process_name'],
+						'procversion'	=> $GLOBALS['workflow']['wf_process_version'],
+						'actname'	=> $GLOBALS['workflow']['wf_activity_name'],
 					));
 
 					$this->translate_template('activity_completed');
@@ -116,37 +131,71 @@
 				// it hasn't been completed
 				else
 				{
-					//the activity is not completed
-					// we loop on the form
+					if ($GLOBALS['workflow']['__leave_activity'])
+					{
+						// activity is interactive and the activity source set the 
+						// $GLOBALS[workflow][__leave_activity] it's a 'cancel' mode.
+						// we redirect the user to the leave activity page
+						$this->t->set_file('leaving_activity', 'leaving_activity.tpl');
+						$releasetxt = lang('release activity for this instance');
+						//prepare a release command on the user_instance form
+						$link_array = array(
+							'menuaction'		=> 'workflow.ui_userinstances.form',
+							'filter_process'	=> $GLOBALS['workflow']['wf_process_id'],
+							'filter_instance'	=> $GLOBALS['workflow']['wf_instance_id'],
+							'iid'			=> $GLOBALS['workflow']['wf_instance_id'],
+							'aid'			=> $GLOBALS['workflow']['wf_activity_id'],
+							'release'		=> 1,
+							);
+						$this->t->set_var(array(
+							'wf_procname'	=> $GLOBALS['workflow']['wf_process_name'],
+							'procversion'	=> $GLOBALS['workflow']['wf_process_version'],
+							'actname'	=> $GLOBALS['workflow']['wf_activity_name'],
+							'release_text'	=> lang('This activity for this instance is actually assigned to you.'),
+							'release_button'=> '<a href="'.$GLOBALS['phpgw']->link('/index.php',$link_array)
+								.'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'fix')
+								.'" alt="'.$releasetxt.'" title="'.$releasetxt.'" width="16" >'
+								.$releasetxt.'</a>',
+						));
+
+						$this->translate_template('leaving_activity');
+						$this->t->pparse('output', 'leaving_activity');
+						$GLOBALS['phpgw']->common->phpgw_footer();
+					}
+					else
+					{ 
+						//the activity is not completed and the user doesn't want to leave
+						// we loop on the form
 					
-					//get configuration options with default values if no init was done before
-					$myconf = array(
-						'use_automatic_parsing' 		=> 1,
-						'show_activity_title' 			=> 1,
-						'show_multiple_submit_as_select' 	=> 0,
-					);
-					$this->conf =& $this->process->getConfigValues($myconf);
+						//get configuration options with default values if no init was done before
+						$myconf = array(
+							'use_automatic_parsing' 		=> 1,
+							'show_activity_title' 			=> 1,
+							'show_multiple_submit_as_select' 	=> 0,
+						);
+						$this->conf =& $this->process->getConfigValues($myconf);
 				
-					//set a global template for interactive activities
-					$this->t->set_file('run_activity','run_activity.tpl');
+						//set a global template for interactive activities
+						$this->t->set_file('run_activity','run_activity.tpl');
 					
-					// draw the activity's title zone
-					$this->parse_title($activity->getName());
+						// draw the activity's title zone
+						$this->parse_title($activity->getName());
 					
-					// draw the activity central user form
-					$this->t->set_var(array('activity_template' => $template->parse('output', 'template')));
+						// draw the activity central user form
+						$this->t->set_var(array('activity_template' => $template->parse('output', 'template')));
 				
-					//draw the select priority box
-					// init priority to the requested one or the stored priority
-					// the requested one handle the looping in activity form
-					$priority = get_var('wf_priority','post',$instance->getPriority());
-					$this->parse_priority($priority);
+						//draw the select priority box
+						// init priority to the requested one or the stored priority
+						// the requested one handle the looping in activity form
+						$priority = get_var('wf_priority','post',$instance->getPriority());
+						$this->parse_priority($priority);
 				
-					//draw the activity submit buttons	
-					$this->parse_submit();
+						//draw the activity submit buttons	
+						$this->parse_submit();
 				
-					$this->t->pparse('output', 'run_activity');
-					$GLOBALS['phpgw']->common->phpgw_footer();
+						$this->t->pparse('output', 'run_activity');
+						$GLOBALS['phpgw']->common->phpgw_footer();
+					}
 				}
 			}
 		}

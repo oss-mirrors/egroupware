@@ -12,11 +12,25 @@ if(empty($instance->instanceId)) {
     die;  
   }
 }
-// Set the current user for this activity
-if(isset($GLOBALS['user']) && ($activity->isInteractive()) && !empty($instance->instanceId) && !empty($activity_id)) {
-  if (!$instance->setActivityUser($activity_id,$GLOBALS['user'])){
-     galaxia_show_error(lang("You do not have the right to run this activity anymore, maybe a concurrent access problem, refresh your datas."));
-     die;
+
+if (!($GLOBALS['workflow']['__leave_activity']))
+{
+  // Set the current user for this activity
+  if(isset($GLOBALS['user']) && !empty($instance->instanceId) && !empty($activity_id)) 
+  {
+    if ($activity->isInteractive())
+    {// activity is interactive and we want the form, we'll try to grab the ticket on this instance-activity
+      if (!$instance->setActivityUser($activity_id,$GLOBALS['user']))
+      {
+         galaxia_show_error(lang("You do not have the right to run this activity anymore, maybe a concurrent access problem, refresh your datas."));
+         die;
+      }
+    }// if activity is not interactive there's no need to grab the token
+  }
+  else
+  {
+    galaxia_show_error(lang("We cannot run this activity, maybe this instance or this activity do not exists anymore."));
+    die;
   }
 }
 
