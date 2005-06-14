@@ -8,17 +8,25 @@
 			'go'	=> true,
 		);
 
+		// Activity engine object. This is the object we'll be running
 		var $base_activity;
-		
-		var $conf = array();
-
+		//Process engine object. Used to retrieve at least paths and configuration values
 		var $process;
+		// GUI engine object. Act carefully with it.
+		var $GUI;
+		// local process configuration cache
+		var $conf = array();
+		// local activity template
+		var $wf_template;
+
+		
 
 		function run_activity()
 		{
 			parent::workflow();
 			$this->base_activity	=& CreateObject('workflow.workflow_baseactivity');
 			$this->process		=& CreateObject('workflow.workflow_process');
+			$this->GUI		=& CreateObject('workflow.workflow_gui');
 		}
 
 		function go($activity_id=0, $iid=0, $auto=0)
@@ -88,9 +96,10 @@
 				echo parse_navbar();
 			
 				// activities' code will have at their disposition the $template object to handle the corresponding activity template, but $GLOBALS['phpgw']->template will also be available, in case global scope for this is needed
-				$template = CreateObject('phpgwapi.Template', GALAXIA_PROCESSES.SEP);
+				$template =& CreateObject('phpgwapi.Template', GALAXIA_PROCESSES.SEP);
 				$template->set_file('template', $this->process->getNormalizedName().SEP.'code'.SEP.'templates'.SEP.$activity->getNormalizedName().'.tpl');
 				$GLOBALS['phpgw']->template =& $template;
+				$this->wf_template =& $template;
 			}
 			//echo "<br><br><br><br><br>Including $source <br>In request: <pre>";print_r($_REQUEST);echo "</pre>";
 			//[__leave_activity] is setted if needed in the xxx_pre code or by the user in his code
