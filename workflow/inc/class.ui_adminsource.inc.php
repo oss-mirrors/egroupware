@@ -112,7 +112,6 @@
 				'form_editsource_action'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form'),
 				'p_id'					=> $this->wf_p_id,
 				'selected_sharedcode'	=> ($activity_id == 0)? 'selected="selected"' : '',
-				'data'					=> Htmlspecialchars($data),
 				'source_type'			=> $source_type,
 			));
 
@@ -145,6 +144,11 @@
 			$this->show_side_commands($source_type, $activity_info);
 
 			$this->translate_template('admin_source');
+			
+			//only now we can insert data, to prevent templating vars used in the source
+			$this->t->set_block('admin_source', 'block_datas', 'datas');
+			$this->t->set_var(array('data'	=> Htmlspecialchars($data),));
+			$this->t->parse('datas', 'block_datas', true);
 			$this->t->pparse('output', 'admin_source');
 		}
 

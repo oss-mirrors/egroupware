@@ -29,7 +29,9 @@
     <table>
 		<tr>
 		<td>
+		<!-- BEGIN block_datas -->
 		<textarea id='src' name="source" rows="20" cols="80">{data}</textarea>
+		<!-- END block_datas -->
 		</td>
 		<td valign="top">
 			{side_commands}
