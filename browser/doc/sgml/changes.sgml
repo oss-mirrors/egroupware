@@ -1,0 +1,43 @@
+<!DOCTYPE Article PUBLIC "-//Davenport//DTD DocBook V3.0//EN">
+
+<Article>
+<ArtHeader>
+<Title>Skeleton App Change History</Title>
+<AUTHOR>
+<FirstName>Dan Kuykendall &lt;dan@kuykendall.org&gt;</FirstName>
+</AUTHOR>
+<PubDate>v1.0, 19 May 2001</PubDate>
+
+<Abstract>
+<Para>
+  History/Changes for skel app
+</Para>
+</Abstract>
+
+</ArtHeader>
+
+<Sect1>
+<Title>Revision History</Title>
+
+<Para>
+<VariableList>
+
+<VarListEntry>
+<Term>Version 0.0.0.001</Term>
+<ListItem>
+<Para>
+Basic start of code
+</Para>
+</VarListEntry>
+<VarListEntry>
+<Term>Version 0.0.1.000</Term>
+<ListItem>
+<Para>
+First public release
+</Para>
+</VarListEntry>
+</VariableList>
+</Para>
+</Sect1>
+
+</Article>

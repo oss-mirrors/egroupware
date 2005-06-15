@@ -1,0 +1,31 @@
+<!DOCTYPE Article PUBLIC "-//Davenport//DTD DocBook V3.0//EN">
+
+<Article>
+<ArtHeader>
+<Title>Packaging tips</Title>
+<AUTHOR>
+<FirstName>Dan Kuykendall &lt;dan@kuykendall.org&gt;</FirstName>
+</AUTHOR>
+<PubDate>v1.0, 19 May 2001</PubDate>
+
+<Abstract>
+<Para>
+  How to build RPM and DEB packages...
+</Para>
+</Abstract>
+
+</ArtHeader>
+
+<Sect1>
+<Title>RPM</Title>
+	<Para>
+		Run these two commands: 
+  </Para>
+	<Para>
+		tar c skel | bzip2 > skel-0.0.1.00.tar.bz2 
+	</Para>
+	<Para>
+		rpm -tb skel-0.0.1.000.tar.bz2
+	</Para>
+</Sect1>
+</Article>

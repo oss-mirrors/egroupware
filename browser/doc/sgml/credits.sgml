@@ -1,0 +1,31 @@
+<!DOCTYPE Article PUBLIC "-//Davenport//DTD DocBook V3.0//EN">
+
+<Article>
+<ArtHeader>
+<Title>Credits</Title>
+<AUTHOR>
+<FirstName>Dan Kuykendall &lt;dan@kuykendall.org&gt;</FirstName>
+</AUTHOR>
+<PubDate>v1.0, 19 May 2001</PubDate>
+
+<Abstract>
+<Para>
+  Credits for skel app
+</Para>
+</Abstract>
+
+</ArtHeader>
+
+<Sect1>
+<Title>Credits</Title>
+	<Para>
+		<ulink url="mailto:dan@kuykendall.org">Dan Kuykendall</ulink>
+    Created this app
+  </Para>
+
+	<Para>
+		Many thanks to the whole phpGroupWare team!
+	</Para>
+</Sect1>
+</Article>
+
