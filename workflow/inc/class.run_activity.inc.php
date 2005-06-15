@@ -18,15 +18,31 @@
 		var $conf = array();
 		// local activity template
 		var $wf_template;
-
+		// The instance object we will manipulate
+		var $instance;
+		// then we retain all usefull vars as members, to make them avaible in user's source code
+		// theses are data which can be set before the user code and which are not likely to change because of the user code
+		var $db;
+		var $process_id;
+		var $activity_id;
+		var $process_name;
+		var $process_version;
+		var $activity_name;
+		// theses 2 vars aren't avaible for the user code, they're set only after this user code was executed
+		var $instance_id=0;
+		var $instance_name='';
+		// array used by automatic parsing:
+		var $priority_array = Array();
+		var $submit_array = Array();
 		
-
 		function run_activity()
 		{
 			parent::workflow();
 			$this->base_activity	=& CreateObject('workflow.workflow_baseactivity');
 			$this->process		=& CreateObject('workflow.workflow_process');
 			$this->GUI		=& CreateObject('workflow.workflow_gui');
+			// TODO: open a new connection to the database under a different username to allow privilege handling on tables
+			$this->db 		=& $GLOBALS['phpgw']->ADOdb;
 		}
 
 		function go($activity_id=0, $iid=0, $auto=0)
@@ -54,7 +70,9 @@
 			$GLOBALS['__activity_completed'] = false;
 			$GLOBALS['workflow']['__leave_activity']=false;
 			$GLOBALS['user'] = $GLOBALS['phpgw_info']['user']['account_id'];
+			// the instance is avaible with $instance or $this->instance
 			$instance =& CreateObject('workflow.workflow_instance');
+			$this->instance =& $instance;
 
 			//tests for access rights-----------------------------------------
 			
@@ -75,15 +93,22 @@
 			$shared = GALAXIA_PROCESSES . SEP . $this->process->getNormalizedName(). SEP . 'code' . SEP . 'shared.php';
 
 			// Activities' code will have at their disposition the $db object to handle database interactions
-			// TODO: open a new connection to the database under a different username to allow privilege handling on tables
-			$db = $GLOBALS['phpgw']->ADOdb;
-			$GLOBALS['workflow']['db']	 		=& $db;
+			// they can access it in 3 ways: $db $this->db or $GLOBALS['workflow']['db'] 
+			$db 				=& $this->db;
+			$GLOBALS['workflow']['db']	=& $this->db;
 			//set some other usefull vars (note that $instance is empty at this time)
-			$GLOBALS['workflow']['wf_process_id'] 		= $activity->getProcessId();
-			$GLOBALS['workflow']['wf_activity_id'] 		= $activity_id;
-			$GLOBALS['workflow']['wf_process_name']		= $this->process->getName();
-			$GLOBALS['workflow']['wf_process_version']	= $this->process->getVersion();
-			$GLOBALS['workflow']['wf_activity_name']	= $activity->getName();
+			$this->process_id 	= $activity->getProcessId();
+			$this->activity_id 	= $activity_id;
+			$this->process_name	= $this->process->getName();
+			$this->process_version	= $this->process->getVersion();
+			$this->activity_name	= $activity->getName();
+			//we set them in $GLOBALS['workflow'] as well
+			$GLOBALS['workflow']['wf_process_id'] 		=& $this->process_id;
+			$GLOBALS['workflow']['wf_activity_id'] 		=& $this->activity_id;
+			$GLOBALS['workflow']['wf_process_name']		=& $this->process_name;
+			$GLOBALS['workflow']['wf_process_version']	=& $this->process_version;
+			$GLOBALS['workflow']['wf_activity_name']	=& $this->activity_name;
+			
 			//FIXME: useless, we remove it
 			// run the shared code (just in case because each activity is supposed to include it)
 			//include_once($shared);
@@ -95,20 +120,28 @@
 				$GLOBALS['phpgw']->common->phpgw_header();
 				echo parse_navbar();
 			
-				// activities' code will have at their disposition the $template object to handle the corresponding activity template, but $GLOBALS['phpgw']->template will also be available, in case global scope for this is needed
+				// activities' code will have at their disposition the $template object to handle the corresponding activity template, 
+				// but $GLOBALS['phpgw']->template will also be available, in case global scope for this is needed
+				// and we have as well the $this->wf_template for the same template
 				$template =& CreateObject('phpgwapi.Template', GALAXIA_PROCESSES.SEP);
 				$template->set_file('template', $this->process->getNormalizedName().SEP.'code'.SEP.'templates'.SEP.$activity->getNormalizedName().'.tpl');
 				$GLOBALS['phpgw']->template =& $template;
 				$this->wf_template =& $template;
+				
+				// They will also have at their disposition theses array, used for automatic parsing
+				$GLOBALS['workflow']['priority_array']	=& $this->priority_array;
+				$GLOBALS['workflow']['submit_array']	=& $this->submit_array;
 			}
 			//echo "<br><br><br><br><br>Including $source <br>In request: <pre>";print_r($_REQUEST);echo "</pre>";
 			//[__leave_activity] is setted if needed in the xxx_pre code or by the user in his code
 			//[__activity_completed] will be setted if $instance->complete() is runned
 			include_once ($source);
 			
-			//Now that the instance is ready we can catch some usefull vars
-			$GLOBALS['workflow']['wf_instance_id'] 		= $instance->getInstanceId();
-			$GLOBALS['workflow']['wf_instance_name']	= $instance->getName();
+			//Now that the instance is ready we can catch some others usefull vars
+			$this->instance_id	= $instance->getInstanceId();
+			$this->instance_name	= $instance->getName();
+			$GLOBALS['workflow']['wf_instance_id'] 	=& $this->instance_id;
+			$GLOBALS['workflow']['wf_instance_name']=& $this->instance_name;
 
 			
 			// TODO: process instance comments
@@ -124,18 +157,12 @@
 					// this is not done in the $instance->complete() to let
 					// xxx_pos.php code be executed before sending the instance
 					$instance->sendAutorouted($activity_id);
+					// re-retrieve instance data which could have been modified by an automatic activity
+					$this->instance_id	= $instance->getInstanceId();
+					$this->instance_name	= $instance->getName();
+
 					// and display completed template
-					$this->t->set_file('activity_completed', 'activity_completed.tpl');
-
-					$this->t->set_var(array(
-						'wf_procname'	=> $GLOBALS['workflow']['wf_process_name'],
-						'procversion'	=> $GLOBALS['workflow']['wf_process_version'],
-						'actname'	=> $GLOBALS['workflow']['wf_activity_name'],
-					));
-
-					$this->translate_template('activity_completed');
-					$this->t->pparse('output', 'activity_completed');
-					$GLOBALS['phpgw']->common->phpgw_footer();
+					$this->show_completed_page();
 				}
 				// it hasn't been completed
 				else
@@ -145,70 +172,113 @@
 						// activity is interactive and the activity source set the 
 						// $GLOBALS[workflow][__leave_activity] it's a 'cancel' mode.
 						// we redirect the user to the leave activity page
-						$this->t->set_file('leaving_activity', 'leaving_activity.tpl');
-						$releasetxt = lang('release activity for this instance');
-						//prepare a release command on the user_instance form
-						$link_array = array(
-							'menuaction'		=> 'workflow.ui_userinstances.form',
-							'filter_process'	=> $GLOBALS['workflow']['wf_process_id'],
-							'filter_instance'	=> $GLOBALS['workflow']['wf_instance_id'],
-							'iid'			=> $GLOBALS['workflow']['wf_instance_id'],
-							'aid'			=> $GLOBALS['workflow']['wf_activity_id'],
-							'release'		=> 1,
-							);
-						$this->t->set_var(array(
-							'wf_procname'	=> $GLOBALS['workflow']['wf_process_name'],
-							'procversion'	=> $GLOBALS['workflow']['wf_process_version'],
-							'actname'	=> $GLOBALS['workflow']['wf_activity_name'],
-							'release_text'	=> lang('This activity for this instance is actually assigned to you.'),
-							'release_button'=> '<a href="'.$GLOBALS['phpgw']->link('/index.php',$link_array)
-								.'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'fix')
-								.'" alt="'.$releasetxt.'" title="'.$releasetxt.'" width="16" >'
-								.$releasetxt.'</a>',
-						));
-
-						$this->translate_template('leaving_activity');
-						$this->t->pparse('output', 'leaving_activity');
-						$GLOBALS['phpgw']->common->phpgw_footer();
+						$this->show_leaving_page();
 					}
 					else
 					{ 
 						//the activity is not completed and the user doesn't want to leave
 						// we loop on the form
-					
-						//get configuration options with default values if no init was done before
-						$myconf = array(
-							'use_automatic_parsing' 		=> 1,
-							'show_activity_title' 			=> 1,
-							'show_multiple_submit_as_select' 	=> 0,
-						);
-						$this->conf =& $this->process->getConfigValues($myconf);
-				
-						//set a global template for interactive activities
-						$this->t->set_file('run_activity','run_activity.tpl');
-					
-						// draw the activity's title zone
-						$this->parse_title($activity->getName());
-					
-						// draw the activity central user form
-						$this->t->set_var(array('activity_template' => $template->parse('output', 'template')));
-				
-						//draw the select priority box
-						// init priority to the requested one or the stored priority
-						// the requested one handle the looping in activity form
-						$priority = get_var('wf_priority','post',$instance->getPriority());
-						$this->parse_priority($priority);
-				
-						//draw the activity submit buttons	
-						$this->parse_submit();
-				
-						$this->t->pparse('output', 'run_activity');
-						$GLOBALS['phpgw']->common->phpgw_footer();
+						$this->show_form();
+
 					}
 				}
 			}
 		}
+		
+		//! show the page avaible when completing an activity
+		function show_completed_page()
+		{
+			$this->t->set_file('activity_completed', 'activity_completed.tpl');
 
+			$this->t->set_var(array(
+				'wf_procname'	=> $this->process_name,
+				'procversion'	=> $this->process_version,
+				'actname'	=> $this->activity_name,
+			));
+
+			$this->translate_template('activity_completed');
+			$this->t->pparse('output', 'activity_completed');
+			$GLOBALS['phpgw']->common->phpgw_footer();
+		}
+		
+		//! show the page avaible when leaving an activity (with a Cancel or Quit button)
+		function show_leaving_page()
+		{
+			$this->t->set_file('leaving_activity', 'leaving_activity.tpl');
+			$this->t->set_var(array(
+				'wf_procname'	=> $this->process_name,
+				'procversion'	=> $this->process_version,
+				'actname'	=> $this->activity_name,
+			));
+			
+			//check real avaible actions on this instance
+			$actions = $this->GUI->getUserActions($GLOBALS['user'],$this->instance_id,$this->activity_id);
+			if (isset($actions['release']))
+			{
+				//prepare a release command on the user_instance form
+				$link_array = array(
+					'menuaction'		=> 'workflow.ui_userinstances.form',
+					'filter_process'	=> $this->process_id,
+					'filter_instance'	=> $this->instance_id,
+					'iid'			=> $this->instance_id,
+					'aid'			=> $this->activity_id,
+					'release'		=> 1,
+				);
+				$releasetxt = lang('release activity for this instance');
+				$this->t->set_var(array(
+					'release_text'	=> lang('This activity for this instance is actually assigned to you.'),
+					'release_button'=> '<a href="'.$GLOBALS['phpgw']->link('/index.php',$link_array)
+						.'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'fix')
+						.'" alt="'.$releasetxt.'" title="'.$releasetxt.'" width="16" >'
+						.$releasetxt.'</a>',
+				));
+			}
+			else
+			{
+				$this->t->set_var(array(
+					'release_text'	=> lang('It seems this activity for this instance is not avaible for you anymore.'),
+					'release_button'=> '',
+				));
+
+			}
+			$this->translate_template('leaving_activity');
+			$this->t->pparse('output', 'leaving_activity');
+			$GLOBALS['phpgw']->common->phpgw_footer();
+		}
+		
+		//! show the activity form with automated parts if needed
+		function show_form()
+		{
+			//get configuration options with default values if no init was done before
+			$myconf = array(
+				'use_automatic_parsing' 		=> 1,
+				'show_activity_title' 			=> 1,
+				'show_multiple_submit_as_select' 	=> 0,
+			);
+			$this->conf =& $this->process->getConfigValues($myconf);
+			
+			//set a global template for interactive activities
+			$this->t->set_file('run_activity','run_activity.tpl');
+			
+			// draw the activity's title zone
+			$this->parse_title($this->activity_name);
+			
+			// draw the activity central user form
+			$this->t->set_var(array('activity_template' => $this->wf_template->parse('output', 'template')));
+			
+			//draw the select priority box
+			// init priority to the requested one or the stored priority
+			// the requested one handle the looping in activity form
+			$priority = get_var('wf_priority','post',$this->instance->getPriority());
+			$this->parse_priority($priority);
+			
+			//draw the activity submit buttons	
+			$this->parse_submit();
+			
+			$this->t->pparse('output', 'run_activity');
+			$GLOBALS['phpgw']->common->phpgw_footer();
+		}
+		
 		//!Parse the title in the activity form, the user can decide if he want this title to be shown or not
 		/*!
 		You can give a title as a parameter. 
@@ -231,30 +301,28 @@
 		//! Draw the priority select box in the activity form
 		/*!
 		Parse the priority select box in the activity form. The user can decide if he want this select box to be shown or not
-		by setting $GLOBALS['workflow']['priority_array'].
-		For example like that $GLOBALS['workflow']['priority_array']= array(1 => '1-Low',2 =>'2', 3 => '3-High');
-		If the array is not set or the conf values says the user does not want automatic parsing no select box will be shown
+		by completing $this->priority_array.
+		For example like that : $this->priority_array = array(1 => '1-Low',2 =>'2', 3 => '3-High');
+		If the array is empty or the conf values says the user does not want automatic parsing no select box will be shown
 		you should give actual priority as a parameter, else priority 1 will be selected.
 		*/
 		function parse_priority($actual_priority=1)
 		{
 			$this->t->set_block('run_activity', 'block_priority_options', 'priority_options');
 			$this->t->set_block('run_activity', 'block_priority_zone', 'priority_zone');
-			
-			if ((!$this->conf['use_automatic_parsing']) || (!isset($GLOBALS['workflow']['priority_array'])))
+			if ((!$this->conf['use_automatic_parsing']) || (count($this->priority_array)==0))
 			{
 				//hide the priority zone
 				$this->t->set_var(array( 'priority_zone' => ''));
 			}
 			else
 			{
-				$priority_array=$GLOBALS['workflow']['priority_array'];
-				if (!is_array($priority_array))
+				if (!is_array($this->priority_array))
 				{
-					$priority_array= explode(" ",$priority_array);
+					$this->priority_array = explode(" ",$this->priority_array);
 				}
 				//handling the select box 
-				foreach ($priority_array as $priority_level => $priority_label)
+				foreach ($this->priority_array as $priority_level => $priority_label)
 				{
 					$this->t->set_var(array(
 						'priority_option_name'		=> $priority_level,
@@ -274,13 +342,14 @@
 		//! Draw the submit buttons on the activity form
 		/*!
 		In this function we'll draw the command buttons asked for this activity.
-		else we'll check $GLOBALS['workflow']['submit_array'] which should be defined
-		in the activity sources and should be an array with the names of the submit options 
-		corresponding to the value like this: 
-		$GLOBALS['workflow']['submit_array']['the_value_you_want']=lang('going to next stage');
-		if this array is not existing we'll draw a simple submit button.
+		else we'll check $this->submit_array which should be completed in the activity source
+		and is an array with the names of the submit options corresponding to the value like this: 
+		$this->submit_array['the_value_you_want']=lang('the label you want');
+		if this array is empty we'll draw a simple submit button.
 		The poweruser can decide to handle theses buttons in his own way in the config section
-		He'll then have to draw it himself in his activity template
+		He'll then have to draw it himself in his activity template.
+		Note that the special value '__Cancel' is automatically handled and set the ['__leaving_activity']
+		var to true.
 		*/
 		function parse_submit()
 		{
@@ -302,7 +371,7 @@
 			else
 			{
 				$buttons = '';
-				if (!(isset($GLOBALS['workflow']['submit_array'])))
+				if (count($this->submit_array)==0)
 				{
 					//the user didn't give us any instruction
 					// we draw a simple submit button
@@ -320,15 +389,13 @@
 				}
 				else
 				{
-					//retrieve infos set by the user in the activity source
-					$submit_array = $GLOBALS['workflow']['submit_array'];
 					//now we have another user choice. he can choose multiple submit buttons
 					//or a select with only one submit
-					if ( ($this->conf['show_multiple_submit_as_select']) && (count($submit_array) > 1) )
+					if ( ($this->conf['show_multiple_submit_as_select']) && (count($this->submit_array) > 1) )
 					{
 						//multiple submits in a select box
 						//handling the select box 
-						foreach ($submit_array as $submit_button_name => $submit_button_value)
+						foreach ($this->submit_array as $submit_button_name => $submit_button_value)
 						{
 							$this->t->set_var(array(
 								'submit_option_value'	=> $submit_button_value,
@@ -352,7 +419,7 @@
 					{
 						//multiple buttons with no select box or just one
 						//draw input button for each entry
-						foreach ($submit_array as $submit_button_name => $submit_button_value)
+						foreach ($this->submit_array as $submit_button_name => $submit_button_value)
 						{
 						 	$buttons .= '<td style="font-weight:bold; text-align=right;">';
 							$buttons .= '<input name="'.$submit_button_name.'" type="submit" value="'.$submit_button_value.'"/>';
