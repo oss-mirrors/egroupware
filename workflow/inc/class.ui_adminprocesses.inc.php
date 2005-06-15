@@ -85,6 +85,13 @@
 						'Graphic options'			=> 'title',
 						'draw_roles'				=> 'yesno',
 						'font_size'				=> 'text',
+						'Actions Right Options '		=> 'title',
+						'ownership_give_abort_right'            => 'yesno',
+						'ownership_give_exception_right'        => 'yesno',
+						'ownership_give_release_right'          => 'yesno',
+						'role_give_abort_right'                 => 'yesno',
+						'role_give_release_right'               => 'yesno',
+						'role_give_exception_right'             => 'yesno',
 			);
 
 			// delete processes
@@ -202,6 +209,12 @@
 		*/
 		function show_process_config(&$known_config_items)
 		{
+			$siteconfiglink = '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=workflow')
+				.'">'.lang('Workflow Site Configuration').'</a>';
+			$this->t->set_var(array(
+				'txt_consult_site_config_with_link' => lang ('Consult site configuration to get the default values:').$siteconfiglink,
+			));
+			
 		 	$this->t->set_block('admin_processes', 'block_config_table_empty', 'config_table_empty');
 		 	$this->t->set_block('admin_processes', 'block_config_table_title', 'config_table_title');
 			$this->t->set_block('admin_processes', 'block_config_table_yesno', 'config_table_yesno');

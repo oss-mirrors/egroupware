@@ -97,20 +97,90 @@
 	</tr>
 
 	<tr class="th">
-		<td>&nbsp;<b>{lang_Workflow_engine_options}</b></font></td>
+		<td>&nbsp;<b>{lang_Actions_Right_Options}</b></font></td>
 		<td colspan="2" class="row_off">&nbsp;</td>
 	</tr>
 	<tr class="row_on">
 		<td width="60%" class="td_left">
-			{lang_this_as_actually_no_effect}
+			{lang_owner_of_the_instance_will_have_the_right_to_abort_the_instance_at_any_time}
 		</td>
 		<td width="20%" class="td_right">
-			{lang_ownership_give_all_rights}:
+			{lang_ownership_give_abort_right}:
 		</td>
 		<td width="20%" class="td_right">
-			<select name="newsettings[ownership_give_all_rights]">
-                               	<option value="False" {selected_ownership_give_rights_False}>{lang_No}</option>
-                                <option value="True" {selected_ownership_give_rights_True}>{lang_Yes}</option>
+			<select name="newsettings[ownership_give_abort_right]">
+                               	<option value="False" {selected_ownership_give_abort_right_False}>{lang_No}</option>
+                                <option value="True" {selected_ownership_give_abort_right_True}>{lang_Yes}</option>
+       	                </select>
+		</td>
+	</tr>
+	<tr class="row_off">
+		<td width="60%" class="td_left">
+			{lang_owner_of_the_instance_will_have_the_right_to_exception_or_resume_the_instance_at_any_time}
+		</td>
+		<td width="20%" class="td_right">
+			{lang_ownership_give_exception_right}:
+		</td>
+		<td width="20%" class="td_right">
+			<select name="newsettings[ownership_give_exception_right]">
+                               	<option value="False" {selected_ownership_give_exception_right_False}>{lang_No}</option>
+                                <option value="True" {selected_ownership_give_exception_right_True}>{lang_Yes}</option>
+       	                </select>
+		</td>
+	</tr>
+	<tr class="row_on">
+		<td width="60%" class="td_left">
+			{lang_owner_of_the_instance_will_have_the_right_to_release_(un-assign)_an_activity_assigned_to_an_user}
+		</td>
+		<td width="20%" class="td_right">
+			{lang_ownership_give_release_right}:
+		</td>
+		<td width="20%" class="td_right">
+			<select name="newsettings[ownership_give_release_right]">
+                               	<option value="False" {selected_ownership_give_release_right_False}>{lang_No}</option>
+                                <option value="True" {selected_ownership_give_release_right_True}>{lang_Yes}</option>
+       	                </select>
+		</td>
+	</tr>
+	<tr class="row_off">
+		<td width="60%" class="td_left">
+			{lang_if_user_is_in_a_role_for_an_activity_he_will_have_the_right_to_abort_the_related_instance}
+		</td>
+		<td width="20%" class="td_right">
+			{lang_role_give_abort_right}:
+		</td>
+		<td width="20%" class="td_right">
+			<select name="newsettings[role_give_abort_right]">
+                               	<option value="False" {selected_role_give_abort_right_False}>{lang_No}</option>
+                                <option value="True" {selected_role_give_abort_right_True}>{lang_Yes}</option>
+       	                </select>
+		</td>
+	</tr>
+	<tr class="row_on">
+		<td width="60%" class="td_left">
+			{lang_if_user_is_in_a_role_for_an_activity_he_will_have_the_right_to_exception_or_resume_the_related_instance}
+		</td>
+		<td width="20%" class="td_right">
+			{lang_role_give_exception_right}:
+		</td>
+		<td width="20%" class="td_right">
+			<select name="newsettings[role_give_exception_right]">
+                               	<option value="False" {selected_role_give_exception_right_False}>{lang_No}</option>
+                                <option value="True" {selected_role_give_exception_right_True}>{lang_Yes}</option>
+       	                </select>
+		</td>
+	</tr>
+	<tr class="row_off">
+		<td width="60%" class="td_left">
+			{lang_if_user_is_in_a_role_for_an_activity_he_will_have_the_right_to_release_(un-assign)_the_related_instance}
+		</td>
+		<td width="20%" class="td_right">
+			{lang_role_give_release_right}:
+		</td>
+		<td width="20%" class="td_right">
+			<select name="newsettings[role_give_release_right]">
+                               	<option value="False" {selected_role_give_release_right_False}>{lang_No}</option>
+                                <option value="True" {selected_role_give_release_right_True}>{lang_Yes}</option>
        	                </select>
 		</td>
 	</tr>
