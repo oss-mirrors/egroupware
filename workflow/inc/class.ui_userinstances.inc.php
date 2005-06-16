@@ -240,7 +240,7 @@
 		    $wheres = array();
 		    if (!($advanced_search)) 
 		    {
-			    if(isset($_REQUEST['filter_process']) && $_REQUEST['filter_process']) 
+			    if(!($filter_process=='')) 
 			    {
 			    	$wheres[] = "gp.wf_p_id=" .$filter_process. "";
 			    }
@@ -259,16 +259,16 @@
 		    $where = '';
 		    $wheres = array();
 		    $or_wheres = array();
-		    if(isset($_REQUEST['filter_process']) && $_REQUEST['filter_process'])
+		    if(!($filter_process==''))
 		    {  
 		        // warning, need to filter process on instance table, not activity
 		    	$wheres[] = "gi.wf_p_id=" .$filter_process. "";
 		    }
-		    if(isset($_REQUEST['filter_activity_name']) && $_REQUEST['filter_activity_name'])
+		    if(!($filter_activity_name==''))
 		    {  
 			$wheres[] = "ga.wf_name='" .$filter_activity_name. "'";
 		    }
-		    if(isset($_REQUEST['filter_user']) && $_REQUEST['filter_user'])
+		    if(!($filter_user==''))
 		    {
 			$wheres[] = "gia.wf_user='".$filter_user."'";
 		    }  
