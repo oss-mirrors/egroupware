@@ -2,7 +2,8 @@
 
 <form action="{form_action}" method="post">
 <input type="hidden" name="start" value="{start}" />
-<input type="hidden" name="sort_mode" value="{sort_mode}" />
+<input type="hidden" name="order" value="{order}" />
+<input type="hidden" name="sort" value="{sort}" />
 <table style="border: 1px solid black;width:70%;margin:0 auto" cellspacing="0">
 	<tr class="th">
 		<td colspan="5" style="font-size: 120%; font-weight:bold; border-bottom:3px solid white;">
@@ -50,7 +51,7 @@
 			</select>
 		</td>
 		<td align="center">
-			<input size="18" type="text" name="search_str" />
+			<input size="18" type="text" name="search_str" value="{search_str}" />
 		</td>
 		<td align="center">	
 			<input type="submit" name="filter" value="{lang_filter}" />
@@ -61,15 +62,27 @@
 
 <form action="{form_action}" method="post">
 <input type="hidden" name="start" value="{start}" />
-<input type="hidden" name="search_str" value="{find}" />
-<input type="hidden" name="where" value="{where}" />
-<input type="hidden" name="sort_mode" value="{sort_mode}" />
+<input type="hidden" name="search_str" value="{search_str}" />
+<input type="hidden" name="sort" value="{sort}" />
+<input type="hidden" name="order" value="{order}" />
+<input type="hidden" name="filter_process" value="{filter_process_up}" />
+<input type="hidden" name="filter_active" value="{filter_active_up}" />
+<input type="hidden" name="filter_valid" value="{filter_valid_up}" />
 <table style="border: 1px solid black;width:70%;margin:0 auto">
+	<tr><td colspan="5">
+        <table style="border: 0px;width:100%; margin:0 auto">
+		<tr class="th" style="font-weight:bold">
+                	{left}
+	        	<td><div align="center">{lang_showing}</div></td>
+	                {right}
+        	</tr>
+	</table>
+	</td></tr>
 	<tr class="th">
-		<td>{header_name}</td>
+		<td>{header_wf_name}</td>
 		<td align="center">{lang_Activities}</td>
-		<td align="center" style="width:50px">{header_act}</td>
-		<td align="center" style="width:50px">{header_val}</td>
+		<td align="center" style="width:50px">{header_wf_is_active}</td>
+		<td align="center" style="width:50px">{header_wf_is_valid}</td>
 		<td align="center">{lang_Instances}</td>
 	</tr>
 	<!-- BEGIN block_listing -->

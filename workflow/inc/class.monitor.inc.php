@@ -13,6 +13,14 @@
 		var $all_activities;
 
 		var $filter_process;
+		
+		//link to the curent form
+		var $form_action;
+		var $link_data;
+		
+		//used for nextmatchs
+		var $offset;
+		var $total_records;
 
 		function monitor($template_name)
 		{
@@ -31,13 +39,33 @@
 					$GLOBALS['phpgw']->common->phpgw_exit();
 				}
 			}
+			
+			// number of rows allowed
+                        if ($GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'] > 0) 
+                        {
+                        	$this->offset = $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
+			}
+			else
+			{
+				$this->offset = 15;
+			}
 
 			$this->process_monitor	= CreateObject('workflow.workflow_processmonitor');
 			$this->all_processes	= $this->process_monitor->monitor_list_processes(0, -1, 'wf_name__desc', '', '');
 			$this->all_activities	= $this->process_monitor->monitor_list_activities(0, -1, 'wf_name__desc', '', '');
 			$this->filter_process	= get_var('filter_process', 'any', '');
 			$this->filter_activity	= get_var('filter_activity', 'any', '');
+			//nextmatchs
+			$this->order			= get_var('order', 'any', 'wf_last_modif');
+			$this->start			= get_var('start', 'any', 0);
+			$this->sort			= get_var('sort', 'any', 'desc');
+			$this->sort_mode		= $this->order . '__' . $this->sort;
+			$this->search_str		= get_var('search_str', 'any','');
+
 			$this->template_name = $template_name;
+			$class_name = explode('_', $this->template_name);
+			$class_name = implode('', $class_name);
+			$this->form_action = $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_'. $class_name .'.form');
 
 			$title = explode('_', $this->template_name);
 			$title[0] = ucfirst($title[0]);
@@ -52,6 +80,9 @@
 
 		function show_filter_process()
 		{
+			//for other forms wanting the actual filter:
+			$this->t->set_var('filter_process_up', $this->filter_process);
+			// now show the filter process select
 			$this->t->set_var('filter_process_selected_all', (!$this->filter_process)? 'selected="selected"' : '');
 			$this->t->set_block($this->template_name, 'block_filter_process', 'filter_process');
 			foreach ($this->all_processes['data'] as $process)
@@ -104,21 +135,31 @@
 				$this->t->parse('filter_activity', 'block_filter_activity', true);
 			}
 		}
-				
+		
+		//!fill general datas of monitor forms 
+		/*!
+		theses datas are:
+			$message	:
+			$search_str	: search string for research
+			$start		: nextmatch: number of the first row
+			$sort		: nextmatch: current sort header
+			$order		: nextmatch: asc or desc
+			$form_action	: link to the monitor subclass
+			$monitor_stats	: stats about the current monitor
+		*/
 		function fill_general_variables()
 		{
-			$class_name = explode('_', $this->template_name);
-			$class_name = implode('', $class_name);
 			$this->t->set_var(array(
-				'message'				=> implode('<br>', $this->message),
-				'start'					=> $this->start,
+				'message'			=> implode('<br>', $this->message),
+				'start'				=> $this->start,
 				'search_str'			=> $this->search_str,
-				'sort'					=> $this->sort,
-				'order'					=> $this->order,
-				'form_action'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_'. $class_name .'.form'),
+				'sort'				=> $this->sort,
+				'order'				=> $this->order,
+				'form_action'			=> $this->form_action,
 				'monitor_stats'			=> $this->fill_monitor_stats($this->stats),
 			));
 		}
+
 
 		function finish()
 		{
