@@ -171,7 +171,7 @@
 			        // to the instance activity history
 				if (!$this->GUI->gui_exception_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
-					$wf_message=lang("You don't have the rights necessary to exception this instance");
+					$wf_message=lang("You don't have the rights necessary to exception instance %1",$instance_id);
 				}
 			}
 
@@ -182,7 +182,7 @@
 			        // to the instance activity history  
 				if (!$this->GUI->gui_resume_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id,system_comments)) 
 				{
-					$wf_message=lang("You don't have the rights necessary to resume this instance");
+					$wf_message=lang("You are not allowed to resume instance %1",$instance_id);
 				}
 			}
 
@@ -191,7 +191,7 @@
 			{
 				if (!$this->GUI->gui_abort_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
-					$wf_message=lang("You don't have the rights necessary to abort this instance");
+					$wf_message=lang("You are not allowed to abort instance %1",$instance_id);
 				}
 			}
 
@@ -200,15 +200,16 @@
 			{
 				if (!$this->GUI->gui_release_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
-					$wf_message=lang("You don't have the rights necessary to release this instance");
+					$wf_message=lang("You are not allowed to release instance %1",$instance_id);
 				}
 			}
 
 			// grab instance
 			if ($askGrab)
 			{
-				if (!$this->GUI->gui_grab_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) {
-					$wf_message=lang("You don't have the rights necessary to grab this instance");
+				if (!$this->GUI->gui_grab_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
+				{
+					$wf_message=lang("You are not allowed to grab instance %1",$instance_id);
 				}
 			}
 
@@ -217,7 +218,7 @@
 			{
 				if (!$this->GUI->gui_send_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
-					$wf_message=lang("You don't have the rights necessary to send this instance");
+					$wf_message=lang("You are not allowed to send instance %1",$instance_id);
 				}
 			}
 
