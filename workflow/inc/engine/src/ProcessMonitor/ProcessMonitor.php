@@ -7,6 +7,19 @@ This class provides methods for use in typical monitoring scripts
 */
 class ProcessMonitor extends Base {
 
+  //! return statistics about all processes handled by the engine.
+  /*!
+  result is an array of this form:
+  array(
+    [active_processes] => number
+    [processes] => number (total number of processes)
+    [running_processes] => number
+    [active_instances] => number
+    [completed_instances] => number
+    [exception_instances] => number
+    [aborted_instances] => number
+  )
+  */
   function monitor_stats() {
     $res = Array();
     $res['active_processes'] = $this->getOne("select count(*) from `".GALAXIA_TABLE_PREFIX."processes` where `wf_is_active`=?",array('y'));
@@ -18,7 +31,7 @@ class ProcessMonitor extends Base {
     $result = $this->query($query);
     $status = array();
     while($info = $result->fetchRow()) {
-      $status[$info['wf_status']] = $info['wf_num_instances'];
+      $status[$info['wf_status']] = $info['num_instances'];
     }
     $res['active_instances'] = isset($status['active']) ? $status['active'] : 0;
     $res['completed_instances'] = isset($status['completed']) ? $status['completed'] : 0;
