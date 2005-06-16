@@ -173,5 +173,16 @@
 		</td>
 	</tr>
 	<!-- END block_list_instances -->
+	<!-- BEGIN block_filter_instances -->
+	<tr>
+			<td colspan="2" class="th"><div style='text-align:right;'>
+				<input size="5" type="text" name="filter_instance" value="{filter_instance_id}"/>
+			</div></td>
+			<td colspan="9" class="th"><div style='text-align:left;'>
+				<input type="submit" name="filter" value="{lang_filter_instance_by_id}" />
+				<span class="filter_instance_comment">{lang_warning_this_filter_override_all_others_filters}</span>
+			</div></td>
+	</tr>
+	<!-- END block_filter_instances -->
 </table>
 </form>

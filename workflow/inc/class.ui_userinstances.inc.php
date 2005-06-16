@@ -41,53 +41,89 @@
 			}
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
-
-			$this->t->set_file('user_instances', 'user_instances.tpl');
-			$filter_process		= get_var('filter_process', 'any', '');
-			//echo "<br>filter_process::".$filter_process;
-				// we can filter activity by id (the list of activity call us with it) or by name
-			$filter_activity	= get_var('filter_activity', 'any', 0);
-			//echo "<br>filter_activity::".$filter_activity;
-			$filter_activity_name	= get_var('filter_activity_name', 'any', '');
-			//echo "<br>filter_activity_name::".$filter_activity_name;
-			$filter_user		= get_var('filter_user', 'any', '');
-			//echo "<br>filter_user::".$filter_user;
-			$this->search_str		= get_var('search_str', 'any', '');
-			//echo "<br>search_str::".$this->search_str;
-			$advanced_search  	= get_var('advanced_search', 'any', false);
-			if (!$advanced_search)
-			{
-				// check the Preferences of the workflow where the user can ask for the advanced mode
-				$advanced_search = $myPrefs['workflow']['wf_instances_show_advanced_mode'];
-			}
-			//echo "<br>advanced::".$advanced_search;
 			
-			if ($advanced_search){
-				$add_exception_instances	= get_var('add_exception_instances', 'any', false); 
-				//echo "<br>add exception instances::".$add_exception_instances;
-				$add_completed_instances	= get_var('add_completed_instances', 'any', false); 
-				//echo "<br>add completed instances::".$add_completed_instances;
-				$add_aborted_instances		= get_var('add_aborted_instances', 'any', false); 
-				//echo "<br>add aborted instances::".$add_aborted_instances;
-				$remove_active_instances	= get_var('remove_active_instances', 'any', false); 
-				//echo "<br>remove_active instances::".$remove_active_instances;
-				$filter_act_status		= get_var('filter_act_status', 'any', ''); 
-				//echo "filter_act_status: ".$filter_act_status;
-				$show_advanced_actions		= get_var('show_advanced_actions', 'any', false); 
+			//template
+			$this->t->set_file('user_instances', 'user_instances.tpl');
+			
+			//Retrieve form args
+			// FILTER INSTANCE
+			//this filter make all other filters unavaible
+			$filter_instance	= get_var('filter_instance','any','');
+			//echo "<br>filter_instance::".$filter_instance;
+			if ((int)$filter_instance > 0)
+			{
+				$filter_process 	= '';
+				$filter_activity 	= 0;
+				$filter_activity_name 	= '';
+				$filter_user		= '';
+				$this->search_str	= '';
+				$advanced_search  	= true;
+				$show_advanced_actions	= get_var('show_advanced_actions', 'any', false); 
 				//echo "<br>show advanced actions::".$show_advanced_actions;
 				if (!$show_advanced_actions)
 				{
 					// check the Preferences of the workflow where the user can ask for theses actions
 					$show_advanced_actions= $myPrefs['workflow']['wf_instances_show_advanced_actions'];
 				}
-			} else {
-				$add_exception_instances 	= false; 
-				$add_completed_instances 	= false; 
-				$add_aborted_instances 		= false; 
+				$add_exception_instances 	= true; 
+				$add_completed_instances 	= true; 
+				$add_aborted_instances 		= true; 
 				$remove_active_instances 	= false; 
 				$filter_act_status		= false;
-				$show_advanced_actions		= false; 
 			}
+			else //we have no filter_instance, we check the real form args
+			{
+				$filter_process		= get_var('filter_process', 'any', '');
+				//echo "<br>filter_process::".$filter_process;
+					// we can filter activity by id (the list of activity call us with it) or by name
+				$filter_activity	= get_var('filter_activity', 'any', 0);
+				//echo "<br>filter_activity::".$filter_activity;
+				$filter_activity_name	= get_var('filter_activity_name', 'any', '');
+				//echo "<br>filter_activity_name::".$filter_activity_name;
+				$filter_user		= get_var('filter_user', 'any', '');
+				//echo "<br>filter_user::".$filter_user;
+				$this->search_str		= get_var('search_str', 'any', '');
+				//echo "<br>search_str::".$this->search_str;
+				$advanced_search  	= get_var('advanced_search', 'any', false);
+				if (!$advanced_search)
+				{
+					// check the Preferences of the workflow where the user can ask for the advanced mode
+					$advanced_search = $myPrefs['workflow']['wf_instances_show_advanced_mode'];
+				}
+				//echo "<br>advanced::".$advanced_search;
+			
+				if ($advanced_search)
+				{
+					$add_exception_instances	= get_var('add_exception_instances', 'any', false); 
+					//echo "<br>add exception instances::".$add_exception_instances;
+					$add_completed_instances	= get_var('add_completed_instances', 'any', false); 
+					//echo "<br>add completed instances::".$add_completed_instances;
+					$add_aborted_instances		= get_var('add_aborted_instances', 'any', false); 
+					//echo "<br>add aborted instances::".$add_aborted_instances;
+					$remove_active_instances	= get_var('remove_active_instances', 'any', false); 
+					//echo "<br>remove_active instances::".$remove_active_instances;
+					$filter_act_status		= get_var('filter_act_status', 'any', ''); 
+					//echo "filter_act_status: ".$filter_act_status;
+					$show_advanced_actions		= get_var('show_advanced_actions', 'any', false); 
+					//echo "<br>show advanced actions::".$show_advanced_actions;
+					if (!$show_advanced_actions)
+					{
+						// check the Preferences of the workflow where the user can ask for theses actions
+						$show_advanced_actions= $myPrefs['workflow']['wf_instances_show_advanced_actions'];
+					}
+				} 
+				else 
+				{
+					$add_exception_instances 	= false; 
+					$add_completed_instances 	= false; 
+					$add_aborted_instances 		= false; 
+					$remove_active_instances 	= false; 
+					$filter_act_status		= false;
+					$show_advanced_actions		= false; 
+				}
+			}
+			
+			//2nd form vars
 			$activity_id		= get_var('aid', 'any', 0);
 			//echo "<br>activity id::".$activity_id;
 			$instance_id		= get_var('iid', 'any', 0);
@@ -207,8 +243,7 @@
 			// grab instance
 			if ($askGrab)
 			{
-				if (!$this->GUI->gui_grab_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
-				{
+				if (!$this->GUI->gui_grab_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) {
 					$wf_message=lang("You are not allowed to grab instance %1",$instance_id);
 				}
 			}
@@ -277,12 +312,20 @@
 		    // now adding special advanced search options or default values--------------------
 		    
 		    // TODO this should maybe go elsewhere, in a bo_ something or the engine
+		    
+		    //if we want only one instance
+		    if ($filter_instance)
+		    {
+		    	$wheres[] = "(gi.wf_instance_id='".$filter_instance."')";
+		    }
+
 		    //instance selection :: instances can be active|exception|aborted|completed
 		    if ($remove_active_instances) 
 		    {
 		    	// no active instances, it's an AND
 			$wheres[] = "(gi.wf_status<>'active')";
-		    } else 
+		    } 
+		    else 
 		    {
 			// default: we need active instances it's an OR with further instance selection	
 			$or_wheres[]= "(gi.wf_status='active')";
@@ -339,6 +382,9 @@
 		    $this->show_select_user($filter_user);	
 		    $this->show_select_process($all_processes['data'], $filter_process);
 		    $this->show_select_activity($all_activities['data'], $filter_activity_name);
+		    // the filter on instance_id, depends on preferences
+		    $this->show_filter_instance($filter_instance, $myPrefs['workflow']['wf_instances_show_instance_search']);
+		    $this->t->set_var('filter_instance_id',$filter_instance);
 		    // to keep informed of the 4 select values the second form (actions in the list)
 		    // need additional vars4
 		    $this->t->set_var('filter_user_id_set',$filter_user);
@@ -450,31 +496,42 @@
 			// all theses actions (most of them --monitor and run are GET links--) are handled by a javascript function 
 			// 'submitAnInstanceLine' on the template which permit to send the activity and instance Ids 
 			// (as we could do with a link) AND kepping all the others data filled in the form (using submit()) 
+			
+				// ask the engine what actions are avaible for each line
+				$actions = $this->GUI->getUserActions(
+						$GLOBALS['phpgw_info']['user']['account_id'],
+						$instance['wf_instance_id'],
+				 		$instance['wf_activity_id'],
+						$instance['wf_p_id'],
+						$instance['wf_type'],
+						$instance['wf_is_interactive'],
+						$instance['wf_is_autorouted'],
+						$instance['wf_act_status'],
+						$instance['wf_owner'],
+						$instance['wf_status'],
+						$instance['wf_user']); 
 
 			  // Run instance
 				// run the instance, the grab stuff is done in the run function
-				if (   ($instance['wf_is_interactive'] == 'y') 
-				    && ($instance['wf_status'] == 'active') 
-				    && ( ($instance['wf_user'] == "*") || ($instance['wf_user'] == $GLOBALS['phpgw_info']['user']['account_id']) )
-				   )
+				if (isset($actions['run']))
 				{
 				        $this->t->set_var('run',
 				                          '<a href="'. $GLOBALS['phpgw']->link('/index.php', 
 				                              'menuaction=workflow.run_activity.go&iid='.$instance['wf_instance_id'] 
 				                              .'&activity_id='.$instance['wf_activity_id']).'"><img src="'
-				                              .$GLOBALS['phpgw']->common->image('workflow', 'runform').'" alt="'.lang('run instance form') 
-				                              .'" title="'.lang('run instance form').'"></a>');
+				                              .$GLOBALS['phpgw']->common->image('workflow', 'runform').'" alt="'.$actions['run'] 
+				                              .'" title="'.$actions['run'].'"></a>');
 				}
 				else
 				{
 					$this->t->set_var('run', '');
 				}
 			// Send instance (no automatic routage)
-				if ($instance['wf_is_autorouted'] == 'n' && $instance['wf_act_status'] == 'completed')
+				if (isset($actions['send']))
 				{
 					$this->t->set_var('send', 
 						'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'linkto') 
-						.'" name="send_instance" alt="'. lang('send instance') .'" title="'. lang('send instance') 
+						.'" name="send_instance" alt="'.$actions['send'].'" title="'.$actions['send'] 
 						.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','. $instance['wf_activity_id'].',\'send\')">');
 				}
 				else
@@ -484,31 +541,22 @@
 
 				if ($show_advanced_actions) {
 				// Resume exception instance
-					if ($instance['wf_status'] == 'exception')
+					if (isset($actions['resume']))
 					{
-					// for instances in exception state the owner or user can resume this instance 
-						if (($instance['wf_owner'] == $GLOBALS['phpgw_info']['user']['account_id']) || ($instance['wf_user'] == $GLOBALS['phpgw_info']['user']['account_id'])) {
-					        $this->t->set_var('resume', 
-					        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'resume') 
-					        	.'" name="resume_instance" alt="'. lang('resume instance') .'" title="'. lang('resume instance') 
-					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','. $instance['wf_activity_id'].',\'resume\')">');
-						} else {
-					        	$this->t->set_var('resume', '');
-						}
-					}
-					else
-					{
-						$this->t->set_var('resume', '');
+				        $this->t->set_var('resume', 
+				        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'resume') 
+				        	.'" name="resume_instance" alt="'.$actions['resume'].'" title="'.$actions['resume'] 
+				        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','. $instance['wf_activity_id'].',\'resume\')">');
+					} else {
+				        	$this->t->set_var('resume', '');
 					}
 					
 				// Exception instance
-					// you can exception an instance which is not already exception, not aborted and if
-					// you're the owner or user
-					if ($instance['wf_status'] != 'aborted' && $instance['wf_status'] != 'exception' && (($instance['wf_owner'] == $GLOBALS['phpgw_info']['user']['account_id']) || ($instance['wf_user'] == $GLOBALS['phpgw_info']['user']['account_id'])))
+					if (isset($actions['exception']))
 					{
 					        $this->t->set_var('exception', 
 					        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'tostop') 
-					        	.'" name="exception_instance" alt="'. lang('exception this instance') .'" title="'. lang('exception this instance') 
+					        	.'" name="exception_instance" alt="'.$actions['exception'].'" title="'.$actions['exception'] 
 					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','. $instance['wf_activity_id'].',\'exception\')">');
 					}
 					else
@@ -519,11 +567,11 @@
 				
 				// Abort instance
 					// aborting an instance is avaible for the owner or the user of an instance
-					if ($instance['wf_status'] != 'aborted' && (($instance['wf_owner'] == $GLOBALS['phpgw_info']['user']['account_id']) || ($instance['wf_user'] == $GLOBALS['phpgw_info']['user']['account_id'])))
+					if (isset($actions['abort']))
 					{
 					        $this->t->set_var('abort', 
 					        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'totrash') 
-					        	.'" name="abort_instance" alt="'. lang('abort instance') .'" title="'. lang('abort instance') 
+					        	.'" name="abort_instance" alt="'.$actions['abort'].'" title="'.$actions['abort'] 
 					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','. $instance['wf_activity_id'].',\'abort\')">');
 					}
 					else
@@ -532,24 +580,22 @@
 					}
 					
 				// Grabb or Release instance
-					if ($instance['wf_user'] == '*' && $instance['wf_status'] == 'active')
+					if (isset($actions['grab']))
 					{//the instance is not yet grabbed by anyone and we have rights to grabb it (if we don't we wont be able to do it)
 					        //(regis) seems better for me to show a float status when you want to grab, cause this is the actual state
 					        // and the user understand better this way the metaphore
 					        $this->t->set_var('grab_or_release', 
 					        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'float') 
-					        	.'" name="grab_instance" alt="'. lang('grab instance') .'" title="'. lang('grab instance') 
+					        	.'" name="grab_instance" alt="'.$actions['grab'].'" title="'.$actions['grab'] 
 					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','. $instance['wf_activity_id'].',\'grab\')">');
-						//$this->t->set_var('grab_or_release', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&grab=1&iid='. $instance['wf_instance_id'] .'&aid='. $instance['wf_activity_id']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'float') .'" alt="'. lang('grab instance') .'" title="'. lang('grab instance') .'" /></a>');
 					}
-					elseif ($instance['wf_status'] == 'active')
+					elseif (isset($actions['release']))
 					{
 					        //(regis) seems better for me to show a fix status when you want to release, cause this is the actual state
 					        $this->t->set_var('grab_or_release', 
 					        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'fix') 
-					        	.'" name="release_instance" alt="'. lang('release instance') .'" title="'. lang('release instance') 
+					        	.'" name="release_instance" alt="'.$actions['release'].'" title="'.$actions['release']
 					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','. $instance['wf_activity_id'].',\'release\')">');
-						//$this->t->set_var('grab_or_release', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&release=1&iid='. $instance['wf_instance_id'] .'&aid='. $instance['wf_activity_id']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'fix') .'" alt="'. lang('release instance') .'" title="'. lang('release instance') .'" /></a>');
 					}
 					else
 					{
@@ -559,7 +605,6 @@
 					// Monitor instances : we always show it in advanced mode, the user action will be bloacked
 					// by acl if he has no rights on it.
 					$this->t->set_var('monitor', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $instance['wf_instance_id']).'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'monitorinstance') .'" alt="'. lang('monitor instance') .'" title="'. lang('monitor instance') .'" /></a>');
-					
 				} else //not in advanced_actions mode
 				{
 					$this->t->set_var('grab_or_release', '');
@@ -704,6 +749,23 @@
 				'filter_act_status_completed'	=> ($filter_act_status == 'completed')? 'selected="selected"' : '',
 				'filter_act_status_empty'	=> ($filter_act_status == 'empty')? 'selected="selected"' : '',
 			));
+		}
+
+		//! show the 'filter instances by id' button in the last row of the list of instances		
+		function show_filter_instance($filter_instance, $show_it=false)
+		{
+			$this->t->set_block('user_instances', 'block_filter_instances', 'filter_instance_zone');
+
+			if ($show_it)
+			{
+				$this->t->set_var('filter_instance_id',$filter_instance);
+				$this->translate_template('block_filter_instances');
+				$this->t->parse('filter_instance_zone', 'block_filter_instances', true);
+			}
+			else
+			{
+				$this->t->set_var(array( 'filter_instance_zone' => ''));
+			}
 		}
 	}
 ?>
