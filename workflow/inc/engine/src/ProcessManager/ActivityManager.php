@@ -464,11 +464,15 @@ class ActivityManager extends BaseManager {
   
   /*! 
    Indicates if an activity with the same name exists
+   If you gives an activityId this activity won't be checked (if the activity already exists give this activity id)
   */
-  function activity_name_exists($pId,$name)
+  function activity_name_exists($pId,$name, $activityId=0)
   {
     $name = addslashes($this->_normalize_name($name));
-    return $this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=$pId and wf_normalized_name='$name'");
+    $array_args = array($pId, $name, $activityId);
+    $number = $this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."activities 
+            where wf_p_id=? and wf_normalized_name=? and not(wf_activity_id=?)", $array_args);
+    return !($number==0);
   }
   
   
