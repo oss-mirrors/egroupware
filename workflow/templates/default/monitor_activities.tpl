@@ -1,7 +1,7 @@
 <div style="color:red; text-align:center">{message}</div>
 
 <form id="filterf" action="{form_action}" method="post">
-<input type="hidden" name="start" value="{start}" />
+<input type="hidden" name="start" value="0" />
 <input type="hidden" name="sort" value="{sort}" />
 <input type="hidden" name="order" value="{order}" />
 <table style="border: 1px solid black;width:100%;" cellspacing="0">
@@ -85,17 +85,27 @@
 <form action="{form_action}" method="post">
 <input type="hidden" name="start" value="{start}" />
 <input type="hidden" name="search_str" value="{search_str}" />
-<input type="hidden" name="where" value="{where}" />
 <input type="hidden" name="sort" value="{sort}" />
 <input type="hidden" name="order" value="{order}" />
 <table style="border: 1px solid black;width:100%;">
+	<tr>
+		<td colspan="7">
+		        <table style="border: 0px;width:100%; margin:0 auto">
+				<tr class="th" style="font-weight:bold">
+		                	{left}
+			        	<td><div align="center">{lang_showing}</div></td>
+			                {right}
+		        	</tr>
+			</table>
+		</td>
+	</tr>
 	<tr class="th" style="font-weight:bold">
-		<td>{header_process}</td>
-		<td>{header_name}</td>
+		<td>{header_wf_procname}</td>
+		<td>{header_wf_name}</td>
 		<td>&nbsp;</td>
-		<td>{header_type}</td>
-		<td align="center">{header_int}</td>
-		<td align="center">{header_routing}</td>
+		<td>{header_wf_type}</td>
+		<td align="center">{header_wf_is_interactive}</td>
+		<td align="center">{header_wf_is_autorouted}</td>
 		<td align="center">{lang_Instances}</td>
 	</tr>
 	<!-- BEGIN block_act_table -->
