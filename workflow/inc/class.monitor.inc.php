@@ -50,9 +50,11 @@
 				$this->offset = 15;
 			}
 
-			$this->process_monitor	= CreateObject('workflow.workflow_processmonitor');
-			$this->all_processes	= $this->process_monitor->monitor_list_processes(0, -1, 'wf_name__desc', '', '');
-			$this->all_activities	= $this->process_monitor->monitor_list_activities(0, -1, 'wf_name__desc', '', '');
+			//retrieving common filters and stats common for all monitor forms
+			$this->process_monitor	=& CreateObject('workflow.workflow_processmonitor');
+			$this->all_processes	=& $this->process_monitor->monitor_list_processes(0, -1, 'wf_name__desc', '', '');
+			$this->all_activities	=& $this->process_monitor->monitor_list_activities(0, -1, 'wf_name__desc', '', '');
+			$this->stats 		=& $this->process_monitor->monitor_stats();
 			$this->filter_process	= get_var('filter_process', 'any', '');
 			$this->filter_activity	= get_var('filter_activity', 'any', '');
 			//nextmatchs

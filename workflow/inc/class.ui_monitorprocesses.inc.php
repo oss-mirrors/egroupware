@@ -23,7 +23,9 @@
 			//$filter_process		= (int)get_var('filter_process', 'any', 0);
 			$this->filter_active		= get_var('filter_active', 'any', '');
 			$this->filter_valid		= get_var('filter_valid', 'any', '');
+			//override default monitor settings
 			$this->order			= get_var('order', 'any', 'wf_last_modif');
+			$this->sort_mode                = $this->order . '__' . $this->sort;
 
 			if ($this->filter_process) $this->wheres[] = "wf_p_id='" . $this->filter_process . "'";
 			if ($this->filter_active) $this->wheres[] = "wf_is_active='" . $this->filter_active . "'";
@@ -39,7 +41,6 @@
 				'start'			=> $this->start,
 			);
 			$processes_list	=& $this->process_monitor->monitor_list_processes($this->start, $this->offset, $this->sort_mode, $this->search_str, $this->wheres);
-			$this->stats	=& $this->process_monitor->monitor_stats();
 
 			$this->show_filter_process();
 			$this->show_filter_active($this->filter_active);
