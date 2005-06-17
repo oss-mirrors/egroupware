@@ -9,6 +9,11 @@
 			'form'	=> true,
 		);
 		
+		//new filters forthis monitor child
+		var $filter_status;
+		var $filter_act_status;
+		var $filter_user;
+		
 		var $extra;
 		var $extra_params;
 
@@ -19,87 +24,115 @@
 
 		function form()
 		{
-			$this->order			= get_var('order', 'any', 'wf_name');
-			$this->sort				= get_var('sort', 'any', 'asc');
-			$this->sort_mode		= $this->order . '__'. $this->sort;
-	        $this->search_str 		= get_var('search_str','any','');
+			//override default value from monitor
+			$this->order			= get_var('order', 'any', 'wf_instance_id');
+			$this->sort_mode                = $this->order . '__' . $this->sort;
 			
-			$filter_status			= get_var('filter_status', 'any', '');
-			$filter_process 		= (int)get_var('filter_process', 'any', 0);			
-			$filter_activity		= (int)get_var('filter_activity', 'any', 0);
-			$filter_act_status		= get_var('filter_act_status', 'any', '');
-			$filter_user			= get_var('filter_user', 'any', '');
-
-			$this->stats			= $this->process_monitor->monitor_stats();
+			$this->filter_status		= get_var('filter_status', 'any', '');
+			$this->filter_act_status	= get_var('filter_act_status', 'any', '');
+			$this->filter_user		= get_var('filter_user', 'any', '');
 
 			//echo "order: <pre>";print_r($this->order);echo "</pre>";
 
-			$this->extra = array();
-			if ($filter_status) 
+			$this->link_data['search_str'] = $this->search_str;
+			if ($this->filter_status) 
 			{
-				$this->wheres[] = "gi.`wf_status`='" . $filter_status . "'"; 
-				$this->extra['filter_status'] = $filter_status;
+				$this->wheres[] = "gi.`wf_status`='" . $this->filter_status . "'"; 
+				$this->link_data['filter_status'] = $this->filter_status;
 			}
-			if ($filter_process) {
-				$this->wheres[] = "gp.wf_p_id='" .$filter_process. "'"; 
-				$this->extra['filter_process'] = $filter_process;
+			if ($this->filter_process) {
+				$this->wheres[] = "gp.wf_p_id='" .$this->filter_process. "'"; 
+				$this->link_data['filter_process'] = $this->filter_process;
 			}		
-			if ($filter_activity) {
-				$this->wheres[] = "ga.wf_activity_id='" .$filter_activity. "'"; 
-				$this->extra['filter_activity'] = $filter_activity;
+			if ($this->filter_activity) {
+				$this->wheres[] = "ga.wf_activity_id='" .$this->filter_activity. "'"; 
+				$this->link_data['filter_activity'] = $this->filter_activity;
 			}
-			if ($filter_act_status)
+			if ($this->filter_act_status)
 			{
-				$this->wheres[] = "gia.`wf_status`='" . $filter_act_status . "'"; 
-				$this->extra['filter_act_status'] = $filter_act_status;
+				$this->wheres[] = "gia.`wf_status`='" . $this->filter_act_status . "'"; 
+				$this->link_data['filter_act_status'] = $this->filter_act_status;
 			}
 
-			if( count($this->wheres) > 0 ) {
-		        $this->where = implode(' and ', $this->wheres);
+			if( count($this->wheres) > 0 ) 
+			{
+		        	$this->where = implode(' and ', $this->wheres);
 			}
-			else {
+			else 
+			{
 				$this->where = '';
 			}
 
-			if( count($this->extra) == 0 ) {
-				$this->extra = '';
+			if( count($this->link_data) == 0 ) 
+			{
+				$this->link_data = '';
 			}
 
 			//echo "where: <pre>";print_r($this->where);echo "</pre>";
-			//echo "extra: <pre>";print_r($this->extra_params);echo "</pre>";
+			//echo "link_data: <pre>";print_r($this->link_data_params);echo "</pre>";
 
 			$all_statuses	= array('aborted', 'active', 'completed', 'exception');
-			$users			= $this->process_monitor->monitor_list_users();
-			$instances		= $this->process_monitor->monitor_list_instances($this->start, -1, $this->sort_mode, $this->search_str, $this->where);
+			$users		=& $this->process_monitor->monitor_list_users();
+			$instances	=& $this->process_monitor->monitor_list_instances($this->start, $this->offset, $this->sort_mode, $this->search_str, $this->where);
 
 			$this->show_filter_process();
-			if ($filter_process) {  
-				$this->show_filter_unique_activities("ga.wf_p_id=".$filter_process);
-		    }
+			if ($this->filter_process) 
+			{  
+				$this->show_filter_unique_activities("ga.wf_p_id=".$this->filter_process);
+			}
 			else {
 				$this->show_filter_unique_activities();
 			}
-			$this->show_filter_status($all_statuses, $filter_status);
-			$this->show_filter_act_status($filter_act_status);
-			$this->show_filter_user($users, $filter_user);
-			$this->show_instances_table($instances['data']);
+			$this->show_filter_status($all_statuses, $this->filter_status);
+			$this->show_filter_act_status($this->filter_act_status);
+			$this->show_filter_user($users, $this->filter_user);
+			$this->show_instances_table($instances['data'], $instances['cant']);
 
 			$this->fill_general_variables();
 			$this->finish();
 		}
 
-		function show_instances_table($instances_data)
+		function show_instances_table(&$instances_data, $total_number)
 		{
-			//_debug_array($instances_data);
-			$this->t->set_var(array(
-				'header_id'			=> $this->nextmatchs->show_sort_order($this->sort, 'wf_instance_id', $this->order, '', lang('Id'), $this->extra),
-				'header_process'	=> $this->nextmatchs->show_sort_order($this->sort, 'wf_p_id', $this->order, '', lang('Process'), $this->extra),
-				'header_activity'	=> $this->nextmatchs->show_sort_order($this->sort, 'wf_name', $this->order, '', lang('Activity'), $this->extra),
-				'header_status'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_status', $this->order, '', lang('Status'), $this->extra),
-				//'header_act_status'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_act_status', $this->order, '', lang('Act. Status')),
-				'header_act_status'		=> lang('Act. Status'),
-				'header_user'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_user', $this->order, '', lang('User'), $this->extra),
-			));
+			//------------------------------------------- nextmatch --------------------------------------------
+			$this->total_records = $total_number;
+			// left and right nextmatchs arrows
+			$this->t->set_var('left',$this->nextmatchs->left(
+				$this->form_action,$this->start,$this->total_records,$this->link_data));
+			$this->t->set_var('right',$this->nextmatchs->right(
+				$this->form_action,$this->start,$this->total_records,$this->link_data));
+			//show table headers with sort
+			//warning header names are header_[name or alias of the column in the query without a dot]
+			//this is necessary for sorting
+			$header_array = array(
+				'wf_instance_id'	=> lang('Id'),
+				'wf_instance_name'	=> lang('Name'),
+				'wf_procname'		=> lang('Process'),
+				'wf_activity_name'	=> lang('Activity'),
+				'wf_status'		=> lang('Inst. Status'),
+				'wf_act_status'		=> lang('Act. Status'),
+				'wf_owner'		=> lang('Owner'),
+				'wf_user'		=> lang('User'),
+			       );
+			foreach($header_array as $col => $translation) 
+			{
+				$this->t->set_var('header_'.$col,$this->nextmatchs->show_sort_order(
+					$this->sort,$col,$this->order,'/index.php',$translation,$this->link_data));
+			}
+			
+			// info about number of rows
+			if (($this->total_records) > $this->offset)	
+			{
+				$this->t->set_var('lang_showing',lang('showing %1 - %2 of %3',
+					1+$this->start,
+					(($this->start+$this->offset) > ($this->total_records))? $this->total_records : $this->start+$this->offset,
+					$this->total_records));
+			}
+			else 
+			{
+				$this->t->set_var('lang_showing', lang('showing %1',$this->total_records));
+			}
+			// --------------------------------------- end nextmatch ------------------------------------------
 
 			$this->t->set_block('monitor_instances', 'block_inst_table', 'inst_table');
 
@@ -110,15 +143,16 @@
 				foreach ($instances_data as $instance)
 				{
 					$this->t->set_var(array(
-						'inst_id_href'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $instance['wf_instance_id']),
+						'inst_id_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $instance['wf_instance_id']),
 						'inst_id'		=> $instance['wf_instance_id'],
-						'inst_name'		=> $instance['wf_name'],
-						'inst_status'	=> $instance['wf_status'],
-						//'inst_user'		=> $instance['wf_user'],
+						'instance_name'		=> $instance['wf_instance_name'],
+						'activity_name'		=> $instance['wf_activity_name'],
+						'inst_status'		=> $instance['wf_status'],
+						'inst_owner'		=> $GLOBALS['phpgw']->common->grab_owner_name($instance['wf_owner']), 
 						'inst_user'		=> $GLOBALS['phpgw']->common->grab_owner_name($instance['wf_user']), 
-						'inst_procname'	=> $instance['wf_procname'],
-						'inst_version'	=> $instance['wf_version'],
-						'color_line'	=> $this->nextmatchs->alternate_row_color($tr_color),
+						'inst_procname'		=> $instance['wf_procname'],
+						'inst_version'		=> $instance['wf_version'],
+						'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
 						'inst_act_status'	=>$instance['wf_act_status']
 					));
 					$this->t->parse('inst_table', 'block_inst_table', true);

@@ -1,7 +1,7 @@
 <div style="color:red; text-align:center">{message}</div>
 
 <form action="{form_action}" method="post">
-<input type="hidden" name="start" value="{start}" />
+<input type="hidden" name="start" value="0" />
 <input type="hidden" name="sort" value="{sort}" />
 <input type="hidden" name="order" value="{order}" />
 <table style="border: 1px solid black;width:100%;" cellspacing="0">
@@ -86,17 +86,30 @@
 <form action="{form_action}" method="post">
 <input type="hidden" name="start" value="{start}" />
 <input type="hidden" name="search_str" value="{search_str}" />
-<input type="hidden" name="where" value="{where}" />
 <input type="hidden" name="sort" value="{sort}" />
 <input type="hidden" name="order" value="{order}" />
+<input type="hidden" name="filter_process" value="{filter_process_up}" />
 <table style="border: 1px solid black;width:100%;">
+	<tr>
+		<td colspan="8">
+		        <table style="border: 0px;width:100%; margin:0 auto">
+				<tr class="th" style="font-weight:bold">
+		                	{left}
+			        	<td><div align="center">{lang_showing}</div></td>
+			                {right}
+		        	</tr>
+			</table>
+		</td>
+	</tr>
 	<tr class="th" style="font-weight:bold">
-		<td>{header_id}</td>
-		<td>{header_process}</td>
-		<td>{header_activity}</td>
-		<td>{header_status}</td>
-		<td>{header_act_status}</td>
-		<td>{header_user}</td>
+		<td>{header_wf_instance_id}</td>
+		<td>{header_wf_instance_name}</td>
+		<td>{header_wf_procname}</td>
+		<td>{header_wf_activity_name}</td>
+		<td>{header_wf_status}</td>
+		<td>{header_wf_act_status}</td>
+		<td>{header_wf_owner}</td>
+		<td>{header_wf_user}</td>
 	</tr>
 	<!-- BEGIN block_inst_table -->
 	<tr bgcolor="{color_line}">
@@ -104,17 +117,22 @@
 		  <a href="{inst_id_href}">{inst_id}</a>
 		</td>
 		<td style="text-align:center;">
+			{instance_name}
+		</td>
+		<td style="text-align:center;">
 			{inst_procname}&nbsp;{inst_version}
 		</td>
 		<td style="text-align:center;">
-			{inst_name}
+			{activity_name}
 		</td>
-		
 		<td style="text-align:center;">
 			{inst_status}
 		</td>
 		<td style="text-align:center;">
 			{inst_act_status}
+		</td>
+		<td style="text-align:center;">
+			{inst_owner}
 		</td>
 		<td style="text-align:center;">
 			{inst_user}
