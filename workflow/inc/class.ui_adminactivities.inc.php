@@ -50,6 +50,7 @@
 			
 			$activity_id		= (int)get_var('activity_id', 'any', 0);
 			$name				= get_var('name', 'any', '');
+			
 			$description		= get_var('description', 'any', '');
 			$type				= get_var('type', 'any', '');
 			$is_interactive		= get_var('is_interactive', 'any', '');
@@ -88,7 +89,10 @@
 			if (isset($_POST['save_act']))
 			{
 				$activity_id = $this->save_activity($activity_id, $name, $description, $type,  $default_user, $is_interactive, $is_autorouted, $userole, $rolename);
-				$this->message[] = lang('Activity saved');
+				if( $activity_id ) 
+				{
+					$this->message[] = lang('Activity saved');
+				}
 			}
 
 			// delete activity
@@ -418,9 +422,17 @@
 				'wf_default_user' => $default_user,
 				'wf_type' => $type,
 			);
-			if ($this->activity_manager->activity_name_exists($this->wf_p_id, $name) && $activity_id == 0)
+			if( strlen($name) > 0 )
 			{
-				die(lang('Activity name already exists'));
+				if ($this->activity_manager->activity_name_exists($this->wf_p_id, $name) && $activity_id == 0)
+				{
+					die($name . ': '. lang('activity name already exists'));
+				}
+			}
+			else
+			{
+				$this->message[] = lang('Enter an activity name');
+				return false;
 			}
 
 			$activity_id = $this->activity_manager->replace_activity($this->wf_p_id, $activity_id, $vars);
