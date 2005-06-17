@@ -881,7 +881,7 @@ class ActivityManager extends BaseManager {
   function _normalize_name($name)
   {
     $name = str_replace(" ","_",$name);
-    $name = preg_replace("/[^A-Za-z_]/",'',$name);
+    $name = preg_replace("/[^A-Za-z_0-9]/",'',$name);
     return $name;
   }
   
