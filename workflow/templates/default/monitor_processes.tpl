@@ -1,7 +1,7 @@
 <div style="color:red; text-align:center">{message}</div>
 
 <form action="{form_action}" method="post">
-<input type="hidden" name="start" value="{start}" />
+<input type="hidden" name="start" value="0" />
 <input type="hidden" name="order" value="{order}" />
 <input type="hidden" name="sort" value="{sort}" />
 <table style="border: 1px solid black;width:70%;margin:0 auto" cellspacing="0">
