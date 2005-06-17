@@ -45,14 +45,16 @@
          <td>
                <table cellpading="1" cellspacing="1">
 			<tr class="row_off">
-				<td colspan="3">{lang_users_can_act_on_activity_before_its_execution_with_form_and_after_by_sending_it_to_the_next_activity}</td>
+				<td colspan="4">{lang_users_can_act_on_activity_before_its_execution_with_form_and_after_by_sending_it_to_the_next_activity}</td>
 			</tr>
 			<tr class="row_on">
+				<td>{img_interactive}</td>
                                	<td>{lang_Interactive}</td>
                                	<td><input type="checkbox" name="is_interactive" {checked_interactive} /></td>
 				<td>{lang_interactive_activities_show_form_before_being_executed}</td>
 			</tr>
                        	<tr class="row_on">
+				<td>{img_transition_auto}</td>
                                	<td>{lang_auto_routed}</td>
                                	<td><input type="checkbox" name="is_autorouted" {checked_autorouted} /></td>
 				<td>{lang_autorouted_activities_does_not_need_to_be_sent_by_any_user_after_their_execution}</td>
@@ -231,7 +233,7 @@
 <table border="0" width="100%" style="border: 1px solid black;">
 	<tr class="th">
 		<td colspan="2" style="font-size: 120%; font-weight:bold">
-			{lang_Process_transitions}
+			{img_transition}{lang_Process_transitions}
 		</td>
 	</tr>
 	<tr>
@@ -265,7 +267,10 @@
 				</tr>
 				<!-- END block_transitions_table -->
 				<tr class="th">
-					<td colspan="2" style="text-align:right;"><input type="submit" name="delete_tran" value="{lang_Delete_selected}" /></td>
+					<td align="right">
+						{img_transition_delete}
+					</td>
+					<td style="text-align:right;"><input type="submit" name="delete_tran" value="{lang_Delete_selected}" /></td>
 				</tr>
 				</table>
 			</form>		
@@ -302,7 +307,9 @@
 			  </td>
 			</tr>
 			<tr class="th">
-			  <td>&nbsp;</td>
+			  <td align="right">
+			  	{img_transition_add}
+			  </td>
 			  <td>
 				<input type="submit" name="add_trans" value="{lang_Add_Transition}" />
 			  </td>

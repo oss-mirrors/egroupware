@@ -182,6 +182,11 @@
 				'description'			=> $activity_info['wf_description'],
 				'checked_interactive'	=> ($activity_info['wf_is_interactive'] == 'y')? 'checked="checked"' : '',
 				'checked_autorouted'	=> ($activity_info['wf_is_autorouted'] == 'y')? 'checked="checked"' : '',
+				'img_transition_auto'           => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition_interactive.gif') .'" alt="'. lang('transition mode') .'" />',
+				'img_interactive'               => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'mini_interactive.gif') .'" alt="'. lang('interactivity') .'" />',
+				'img_transition'                => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition.gif') .'" alt="'. lang('transitions') .'" />',
+				'img_transition_add'            => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition_add.gif') .'" alt="'. lang('add transition') .'" />',
+				'img_transition_delete'         => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition_remove.gif') .'" alt="'. lang('delete transition') .'" />',
 				'add_trans_from'		=> $this->build_select_transition('add_tran_from[]', $process_activities['data'], true, false, 'from'),
 				'add_trans_to'			=> $this->build_select_transition('add_tran_to[]', $process_activities['data'], true, false, 'to'),
 				'filter_trans_from'		=> $this->build_select_transition('filter_tran_name', $process_activities['data'], false, true),
@@ -409,6 +414,7 @@
 			return $select_str;
 		}
 
+		//! save the edited activity. Return the activity_id or false in case of error, $this->message is set in case of error
 		function save_activity($activity_id, $name, $description, $type, $default_user, $is_interactive, $is_autorouted, $userole)
 		{
 			$is_interactive = ($is_interactive == 'on') ? 'y' : 'n';
@@ -422,11 +428,13 @@
 				'wf_default_user' => $default_user,
 				'wf_type' => $type,
 			);
+
 			if( strlen($name) > 0 )
 			{
-				if ($this->activity_manager->activity_name_exists($this->wf_p_id, $name) && $activity_id == 0)
+				if ($this->activity_manager->activity_name_exists($this->wf_p_id, $name, $activity_id))
 				{
-					die($name . ': '. lang('activity name already exists'));
+					$this->message[] = ($name . ': '. lang('activity name already exists'));
+					return false;
 				}
 			}
 			else
