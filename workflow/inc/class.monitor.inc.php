@@ -13,6 +13,7 @@
 		var $all_activities;
 
 		var $filter_process;
+		var $filter_activity;
 		
 		//link to the curent form
 		var $form_action;
