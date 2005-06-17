@@ -87,7 +87,7 @@ class ProcessMonitor extends Base {
     $this->query($query,array($pId));
   }
 
-  
+  //! list all process
   function monitor_list_processes($offset,$maxRecords,$sort_mode,$find,$where='') {
     $sort_mode = $this->convert_sortmode($sort_mode);
     if($find) {
@@ -177,6 +177,7 @@ class ProcessMonitor extends Base {
     return $retval;
   }
 
+  //!list all activities
   function monitor_list_activities($offset,$maxRecords,$sort_mode,$find,$where='') {
     $sort_mode = $this->convert_sortmode($sort_mode);
     if($find) {
@@ -242,10 +243,12 @@ class ProcessMonitor extends Base {
     return $retval;
   }
 
+  //! list all instances
   function monitor_list_instances($offset,$maxRecords,$sort_mode,$find,$where='',$wherevars='') {
     if($find) {
       $findesc = $this->qstr('%'.$find.'%');
-      $mid=" where (`wf_properties` like $findesc)";
+      $mid=" where ((`wf_properties` like $findesc) or (gi.`wf_name` like $findesc) 
+        or (ga.`wf_name` like $findesc) or (gp.`wf_name` like $findesc))";
     } else {
       $mid="";
     }
@@ -258,7 +261,7 @@ class ProcessMonitor extends Base {
     }
 
     $query = "select gp.`wf_p_id`, ga.`wf_is_interactive`, gi.`wf_owner`, gp.`wf_name` as `wf_procname`, gp.`wf_version`, ga.`wf_type`,";
-    $query.= " ga.`wf_activity_id`, ga.`wf_name`, gi.`wf_instance_id`, gi.`wf_status`, gia.`wf_activity_id`, gia.`wf_user`, gi.`wf_started`, gi.`wf_ended`, gia.`wf_status` as wf_act_status ";
+    $query.= " ga.`wf_activity_id`, ga.`wf_name` as `wf_activity_name`, gi.`wf_instance_id`, gi.`wf_name` as `wf_instance_name`, gi.`wf_status`, gia.`wf_activity_id`, gia.`wf_user`, gi.`wf_started`, gi.`wf_ended`, gia.`wf_status` as wf_act_status ";
     $query.=" from `".GALAXIA_TABLE_PREFIX."instances` gi LEFT JOIN `".GALAXIA_TABLE_PREFIX."instance_activities` gia ON gi.`wf_instance_id`=gia.`wf_instance_id` ";
     $query.= "LEFT JOIN `".GALAXIA_TABLE_PREFIX."activities` ga ON gia.`wf_activity_id` = ga.`wf_activity_id` ";
     $query.= "LEFT JOIN `".GALAXIA_TABLE_PREFIX."processes` gp ON gp.`wf_p_id`=gi.`wf_p_id` $mid order by ".$this->convert_sortmode($sort_mode);   
@@ -279,7 +282,7 @@ class ProcessMonitor extends Base {
     return $retval;
   }
 
-
+  //! list all processes
   function monitor_list_all_processes($sort_mode = 'wf_name_asc', $where = '') {
     if (!empty($where)) {
       $where = " where ($where) ";
