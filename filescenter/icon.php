@@ -16,7 +16,7 @@ option) any later version.
 #require("../Group-Office.php");
 
 	$phpgw_info = array();
-	$GLOBALS['phpgw_info']['flags'] = array(
+	$GLOBALS['egw_info']['flags'] = array(
 		'disable_Template_class' => True,
 		'currentapp' => 'filescenter',
 		'noheader'   => True,
@@ -26,11 +26,11 @@ option) any later version.
 
 
 	//load files management class
-	$vfs = CreateObject('phpgwapi.vfs');
+	$vfs =& CreateObject('phpgwapi.vfs');
 
 	//load filetypes management class
 	#require($GO_CONFIG->class_path."filetypes.class.inc");
-	$filetypes = new vfs_mimetypes($vfs);
+	$filetypes =& new vfs_mimetypes($vfs);
 	$mime = isset($_REQUEST['mime']) ? $_REQUEST['mime'] : '';
 	if(!$filetype = $filetypes->get_type(array(
 		'extension' => $_REQUEST['extension']), true))

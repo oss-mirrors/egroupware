@@ -47,11 +47,13 @@
 <!--/form-->
 <script language="javascript">
 <!-- 
+
 	var fcFolderView;
 	dynapi.onLoad(function(){
 		fcFolderView = new fcFolderViewPlugin();
 		fcFolderView.refresh();
 	});
+
 //-->
 </script>
 </div>
@@ -62,7 +64,7 @@
 <!-- END header_menu -->
 
 <!-- BEGIN files_header_tbl_field -->
-<th class="th" nowrap="nowrap" {tdhoptions}><span class="lk2">{lang_fieldname}</span></th>
+<th class="th" nowrap="nowrap" {tdhoptions} style="font-size: 11px;">{lang_fieldname}</th>
 <!-- END files_header_tbl_field -->
 
 <!-- BEGIN dirs_tbl_field -->

@@ -1,20 +1,20 @@
 <?php
-  /***************************************************************************\
-  * eGroupWare - File manager 2                                               *
-  * http://www.egroupware.org                                                 *
-  * Written by:                                                               *
-  *  - Vinicius Cubas Brand <viniciuscb@think-e.com.br>                       *
-  *  sponsored by Think-e - http://www.think-e.com.br                         *
-  * ------------------------------------------------------------------------- *
-  * Image data files extracted from Intermesh Group-Office,                   *
-  * all rights reserved.                                                      *
-  * http://www.group-office.com/                                              *
-  * ------------------------------------------------------------------------- *
-  *  This program is free software; you can redistribute it and/or modify it  *
-  *  under the terms of the GNU General Public License as published by the    *
-  *  Free Software Foundation; either version 2 of the License, or (at your   *
-  *  option) any later version.                                               *
-  \***************************************************************************/
+	/***************************************************************************\
+	* eGroupWare - File manager 2                                               *
+	* http://www.egroupware.org                                                 *
+	* Written by:                                                               *
+	*  - Vinicius Cubas Brand <viniciuscb@think-e.com.br>                       *
+	*  sponsored by Think-e - http://www.think-e.com.br                         *
+	* ------------------------------------------------------------------------- *
+	* Image data files extracted from Intermesh Group-Office,                   *
+	* all rights reserved.                                                      *
+	* http://www.group-office.com/                                              *
+	* ------------------------------------------------------------------------- *
+	*  This program is free software; you can redistribute it and/or modify it  *
+	*  under the terms of the GNU General Public License as published by the    *
+	*  Free Software Foundation; either version 2 of the License, or (at your   *
+	*  option) any later version.                                               *
+	\***************************************************************************/
 
 
 
@@ -169,6 +169,6 @@
 
 	
 	$oProc->query("INSERT INTO phpgw_vfs2_files (mime_id,owner_id,createdby_id,size,directory,name)
-				   SELECT mime_id,0,0,4096,'/','' FROM phpgw_vfs2_mimetypes WHERE mime='Directory'");
+					 SELECT mime_id,0,0,4096,'/','' FROM phpgw_vfs2_mimetypes WHERE mime='Directory'");
 
 ?>

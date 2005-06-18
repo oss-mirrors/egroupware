@@ -5,8 +5,10 @@
 <input type="hidden" name="return_to_path" value="{return_to_path}" />
 <input type="hidden" name="path" value="{path}" />
 
-
-<br>
+<div style="display: none;">
+{file_prefix0}
+{file_type0}
+</div>
 
 <div id="divMain">
 
@@ -15,51 +17,20 @@
 		<td class="th" align="center"><b>{lang_upload}</b></td>
 	</tr>
 	<tr>
-		<td colspan="4" valign="top">
+		<td colspan="4" valign="top" align="right">
 <!-- BEGIN OF MAIN CONTENT -->
 				<table width="100%" align="center" class="row_on" border="0">
-					<tr class="row_on">
-						<td colspan="4" class="td_left">
-							<b>{path_information}</b><br>
-							({lang_upload_max_filesize})
-						</td>
-					</tr>
-					<tr class="th">
-						<td width="50%" align="center">
-							<b>{lang_filename}<b>
-						</td>
-						<!--{opt_col} -->
-						
-						<td width="20%" align="center">
-							<b>{lang_prefix}<b>
-						</td>
-						<td width="20%" align="center">
-							<b>{lang_type}<b>
-						</td> 
-						<td width="10%" align="center">
-							&nbsp;
-						</td>
-					</tr>
-					<tr class="row_on" id="attach">
-						<td class="td_left">
-							<input name="file0" type=file style="width: 150px;">
-						</td>
-						<!-- {opt_data_col} -->
-
-						<td align="center">
-							{file_prefix0}
-						</td>
-						
-						<td align="center">
-							{file_type0}
-						</td>
-						
-						<td align="center">
-							<input type="button" onclick="removeUpload(0)" value="{lang_strremove}">
-						</td>
-					</tr>
+					<tbody id="attach">
+						<tr class="row_on">
+							<td colspan="4" class="td_left">
+								<b>{path_information}</b><br>
+								({lang_upload_max_filesize})
+							</td>
+						</tr>
+						{row_title}
+					</tbody>
 				</table>
-				<span onclick="addNewUpload('{lang_strremove}')" class="lk">{lang_upload_anotherfile}</span>
+				<input type="button" onclick="addNewUpload({upload_options0})" value="{lang_upload_anotherfile}">
 
 <!-- END OF MAIN CONTENT -->
 		</td>
@@ -67,46 +38,15 @@
 
 	<tr>
 <!-- BEGIN browse_fc -->
-		<td colspan="4">
+		<td colspan="4" align="right">
 <!-- BEGIN OF MAIN CONTENT -->
 			<div>
 				<table width="100%" align="center" class="row_on" border="0">
-					<tr class="th">
-						<td width="50%" align="center">
-							<b>{lang_filename}<b>
-						</td>
-						<!--{opt_col} -->
-						
-						<td width="20%" align="center">
-							<b>{lang_prefix}<b>
-						</td>
-						<td width="20%" align="center">
-							<b>{lang_type}<b>
-						</td> 
-						<td width="10%" align="center">
-							&nbsp;
-						</td>
-					</tr>
-					<tr class="row_on" id="attachFC">
-						<td class="td_left">
-							<nobr><input name="fcfile0" type="text" id="fcfile0" style="width: 150px;"><input type="button" value="{lang_strfromfilescenter}" onClick="fromFilescenter('fcfile0')"></nobr>
-						</td>
-						<!-- {opt_data_col} -->
-
-						<td align="center">
-							{file_fcprefix0}
-						</td>
-						
-						<td align="center">
-							{file_fctype0}
-						</td>
-						
-						<td align="center">
-							<input type="button" onclick="removeFCUpload(0)" value="{lang_strremove}">
-						</td>
-					</tr>
+					<tbody id="attachFC">
+						{row_title}
+					</tbody>
 				</table>
-				<span onclick="addNewFCUpload('{lang_strremove}','{lang_strfromfilescenter}')" class="lk">{lang_upload_anotherfile}</span>
+				<input type="button" onclick="addNewUpload({upload_options1})" value="{lang_upload_anotherfile}">
 			</div>
 
 <!-- END OF MAIN CONTENT -->
@@ -140,5 +80,24 @@
 <script>
 	document.body.style.padding = 0;
 	document.body.style.margin = 0;
+	{extra_javascript}
 </script>
 <!-- END main -->
+
+<!-- BEGIN row_title_block -->
+<tr class="th">
+	<td width="50%" align="center">
+		<b>{lang_filename}<b>
+	</td>
+	{extra_cols}
+	<td width="10%" align="center">
+		&nbsp;
+	</td>
+</tr>
+<!-- END row_title_block -->
+
+<!-- BEGIN col_title_block -->
+	<td width="20%" align="center">
+		<b>{lang_caption}<b>
+	</td> 
+<!-- END col_title_block -->

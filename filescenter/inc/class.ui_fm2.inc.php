@@ -1,28 +1,30 @@
 <?php
-  /***************************************************************************\
-  * eGroupWare - Files Center                                                 *
-  * http://www.egroupware.org                                                 *
-  * Written by:                                                               *
-  *  - Vinicius Cubas Brand <vinicius@think-e.com.br>                         *
-  *  sponsored by Think.e - http://www.think-e.com.br                         *
-  * ------------------------------------------------------------------------- *
-  * Description: UI Class for file center                                     *
-  * ------------------------------------------------------------------------- *
-  *  This program is free software; you can redistribute it and/or modify it  *
-  *  under the terms of the GNU General Public License as published by the    *
-  *  Free Software Foundation; either version 2 of the License, or (at your   *
-  *  option) any later version.                                               *
-  \***************************************************************************/
+	/***************************************************************************\
+	* eGroupWare - Files Center                                                 *
+	* http://www.egroupware.org                                                 *
+	* Written by:                                                               *
+	*  - Vinicius Cubas Brand <vinicius@think-e.com.br>                         *
+	*  sponsored by Think.e - http://www.think-e.com.br                         *
+	* ------------------------------------------------------------------------- *
+	* Description: UI Class for file center                                     *
+	* ------------------------------------------------------------------------- *
+	*  This program is free software; you can redistribute it and/or modify it  *
+	*  under the terms of the GNU General Public License as published by the    *
+	*  Free Software Foundation; either version 2 of the License, or (at your   *
+	*  option) any later version.                                               *
+	\***************************************************************************/
 
-  # viniciuscb: This file is very based in the file manager UI class, but I've
-  # made a lot of modifications, due to the following reasons:
-  # - template system is not fully used (here we should have no html)
-  # - access to the vfs from here (this should be at least in BO class
-  # - functions with hundreds of lines
-  # 
-  # Another intent was to port the Intermedia GroupOffice filemanager design to
-  # here. As they don't use templates, I just got their html
-  # page and templarizated it.
+	# viniciuscb: This file is very based in the file manager UI class, but I've
+	# made a lot of modifications, due to the following reasons:
+	# - template system is not fully used (here we should have no html)
+	# - access to the vfs from here (this should be at least in BO class
+	# - functions with hundreds of lines
+	# 
+	# Another intent was to port the Intermedia GroupOffice filemanager design to
+	# here. As they don't use templates, I just got their html
+	# page and templarizated it.
+	#
+	# Future modifications: integration with tyapi and bo/so layer
 
 #error_reporting(E_ALL & !E_NOTICE);
 #error_reporting(E_ALL);
@@ -145,7 +147,7 @@
 		#this have the information for custom field attributes
 		var $customfields_attributes; 
 			
-		# $GLOBALS['phpgw_info']['user'] (itself, not a copy)
+		# $GLOBALS['egw_info']['user'] (itself, not a copy)
 		var $user_info;
 
 		var $location;
@@ -158,21 +160,25 @@
 		 */
 		var $base_dir_available = false;
 	
-		/*!
-		 @function ui_fm2
-		 @abstract Constructor: sets object properties
-		 @author   Vinicius Cubas Brand
-		*/
+		/**
+		  * Constructor: sets object properties
+		  *
+		  * @author   Vinicius Cubas Brand
+		 */
 		function ui_fm2 ()
 		{
-			$this->user_info =& $GLOBALS['phpgw_info']['user'];
+			//viniciuscb: this is only present in egroupware, not in concisus...
+			$GLOBALS['egw_info']['flags']['include_jsbackend'] = true;
+			$GLOBALS['egw_info']['flags']['nojsapi'] = false;
+		
+			$this->user_info =& $GLOBALS['egw_info']['user'];
 
 			$this->bo =& CreateObject('filescenter.bo_fm2');
 
 			//$this->appname =& $this->bo->appname;
 			$this->appname = 'filescenter';
 
-			$this->t =& $GLOBALS['phpgw']->template;
+			$this->t =& $GLOBALS['egw']->template;
 
 			$this->cutted = $this->bo->get_cutted();
 			
@@ -180,14 +186,14 @@
 
 			//workaround to allow a ExecMethod call some method of this class, being the
 			//caller another application, without interfering with caller's global flags
-/*			if ($GLOBALS['phpgw_info']['flags']['currentapp'])
+/*			if ($GLOBALS['egw_info']['flags']['currentapp'])
 			{
-				$GLOBALS['phpgw_info']['flags']['currentapp'] = 'filescenter';
-				$GLOBALS['phpgw_info']['flags']['noheader'] = False;
-				$GLOBALS['phpgw_info']['flags']['nonavbar'] = False;
-				$GLOBALS['phpgw_info']['flags']['nofooter'] = False;
-				$GLOBALS['phpgw_info']['flags']['noappheader'] = False;
-				$GLOBALS['phpgw_info']['flags']['enable_browser_class'] = True;
+				$GLOBALS['egw_info']['flags']['currentapp'] = 'filescenter';
+				$GLOBALS['egw_info']['flags']['noheader'] = False;
+				$GLOBALS['egw_info']['flags']['nonavbar'] = False;
+				$GLOBALS['egw_info']['flags']['nofooter'] = False;
+				$GLOBALS['egw_info']['flags']['noappheader'] = False;
+				$GLOBALS['egw_info']['flags']['enable_browser_class'] = True;
 			}
 */
 			#turns get/post vars into object properties (normal/encoded)
@@ -228,10 +234,10 @@
 
 			#set $this->path to the correct path, based in the path received
 			#in get/post
-            if (!$GLOBALS['phpgw_info']['user']['apps']['admin'] && ($this->path == '/' || $this->path == $this->bo->fakebase || !$this->bo->allowed_access($this->path)))
-            {
-                $this->path = $this->bo->homedir;
-            }
+						if (!$GLOBALS['egw_info']['user']['apps']['admin'] && ($this->path == '/' || $this->path == $this->bo->fakebase || !$this->bo->allowed_access($this->path)))
+						{
+								$this->path = $this->bo->homedir;
+						}
 			elseif ($this->ftask == 'images')
 			{
 				$this->path = $this->bo->create_images_dir();
@@ -242,19 +248,19 @@
 
 			$this->menu_buttons = array(
 				'uplevel' => array (
-					'icon_link'          => $GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->lesspath)),
+					'icon_link'          => $GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->lesspath)),
 					'icon_other'         => '',
 					'icon_imgsrc'        => 'uplvl.png',
 					'lang_icon_imgalias' => lang('Level Up')
 				),
 				'gohome' => array (
-					'icon_link'          => $GLOBALS['phpgw']->link('/index.php','menuaction='.$this->appname.'.ui_fm2.index&'.$this->eprintf('path='.$this->bo->homedir)),
+					'icon_link'          => $GLOBALS['egw']->link('/index.php','menuaction='.$this->appname.'.ui_fm2.index&'.$this->eprintf('path='.$this->bo->homedir)),
 					'icon_other'         => '',
 					'icon_imgsrc'        => 'home.png',
 					'lang_icon_imgalias' => lang('Home')
 				),
 				'refresh' => array (
-					'icon_link'          => 'javascript:fcFolderView.refresh();',//$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->appname.'.ui_fm2.index&'.$this->eprintf('path='.$this->path)),
+					'icon_link'          => 'javascript:fcFolderView.refresh();',
 					'icon_other'         => '',
 					'icon_imgsrc'        => 'fsrefresh.png',
 					'lang_icon_imgalias' => lang('Refresh')
@@ -272,13 +278,13 @@
 					'lang_icon_imgalias' => lang('New folder')
 				),
 				'upload' => array (
-					'icon_link'          => 'javascript:fcFolderView.open_upload_window()',//'$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->appname.'.ui_fm2.upload&'.$this->eprintf('path='.$this->path)),
+					'icon_link'          => 'javascript:fcFolderView.open_upload_window()',
 					'icon_other'         => '',
 					'icon_imgsrc'        => 'upload.png',
 					'lang_icon_imgalias' => lang('Upload')
 				),
 				'delete' => array (
-					'icon_link'          => 'javascript:fcFolderView.delete_items()',//delete_items()',
+					'icon_link'          => 'javascript:fcFolderView.delete_items()',
 					'icon_other'         => '',
 					'icon_imgsrc'        => 'delete.png',
 					'lang_icon_imgalias' => lang('Delete')
@@ -308,17 +314,30 @@
 					'lang_icon_imgalias' => lang('E-mail')
 				), */
 				'share' => array (
-					'icon_link'          => $GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.sharing'),
+					'icon_link'          => $GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.sharing'),
 					'icon_other'         => '',
 					'icon_imgsrc'        => 'sharing.png',
 					'lang_icon_imgalias' => lang('Sharing')
 				),
 				'search' => array (
-					'icon_link'          => $GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.search'),
+					'icon_link'          => $GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.search'),
 					'icon_other'         => '',
 					'icon_imgsrc'        => 'search.png',
 					'lang_icon_imgalias' => lang('Search')
 				),
+				/** Uncomment this when the so_db_highlevel be migrated to egroupware
+				'subscribe' => array (
+					'icon_link'          => 'javascript:fcFolderView.subscribe()',
+					'icon_other'         => '',
+					'icon_imgsrc'        => 'subs.png',
+					'lang_icon_imgalias' => lang('Subscribe')
+				),
+				'unsubscribe' => array (
+					'icon_link'          => 'javascript:fcFolderView.subscribe(\'unsubscribe\')',
+					'icon_other'         => '',
+					'icon_imgsrc'        => 'unsubs.png',
+					'lang_icon_imgalias' => lang('Unsubscribe')
+				),*/
 				'compress' => array (
 					'icon_link'          => 'javascript:fcFolderView.compress()',
 					'icon_other'         => '',
@@ -335,9 +354,9 @@
 
 
 
-			$this->appl_rel_root = $GLOBALS['phpgw_info']['server']['webserver_url'].'/'.$this->appname;
+			$this->appl_rel_root = $GLOBALS['egw_info']['server']['webserver_url'].'/'.$this->appname;
 
-			$this->tpl_root = str_replace('/images','',PHPGW_IMAGES);
+			$this->tpl_root = str_replace('/images','',EGW_IMAGES);
 
 			#I've just copied all this stuff from old filemanager. 
 
@@ -345,7 +364,7 @@
 			$pref =& CreateObject('phpgwapi.preferences', $this->bo->userinfo['username']);
 
 			$pref->read_repository();
-			//			$GLOBALS['phpgw']->hooks->single('add_def_pref', $GLOBALS['appname']);
+			//			$GLOBALS['egw']->hooks->single('add_def_pref', $GLOBALS['appname']);
 			$pref->save_repository(True);
 			$pref_array = $pref->read_repository();
 			$this->prefs = $pref_array['filescenter']; //FIXME check appname var in _debug_array
@@ -367,7 +386,7 @@
 				}
 			}
 
-	/*		if ($GLOBALS['phpgw_info']['flags']['currentapp'] != 'filescenter')
+	/*		if ($GLOBALS['egw_info']['flags']['currentapp'] != 'filescenter')
 			{
 				$this->disp_file_attributes = array('name','size','version');
 			}*/
@@ -393,7 +412,7 @@
 			); 
 
 
-			$js_arr =& $GLOBALS['phpgw_info']['flags']['java_script_globals']['messages']['filescenter'];
+			$js_arr =& $GLOBALS['egw_info']['flags']['java_script_globals']['messages']['filescenter'];
 		
 			$js_arr['newFolder'] = lang('New folder name');
 			$js_arr['noItemsSelected'] = lang('You selected no items. Click in the checkbox near the file name to select an item.');
@@ -406,9 +425,9 @@
 		function list_methods($_type='xmlrpc')
 		{
 			/*
-			  This handles introspection or discovery by the logged in client,
-			  in which case the input might be an array.  The server always calls
-			  this function to fill the server dispatch map using a string.
+				This handles introspection or discovery by the logged in client,
+				in which case the input might be an array.  The server always calls
+				this function to fill the server dispatch map using a string.
 			*/
 			if (is_array($_type))
 			{
@@ -468,9 +487,11 @@
 							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
 							'docstring' => lang('Extract the contents of an archive in a folder')
 						),
-
-
-
+						'subscribe' => array(
+							'function' => 'rpc_subscribe',
+							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
+							'docstring' => lang('Subscribe some files')
+						),
 					);
 					return $xml_functions;
 					break;
@@ -483,57 +504,62 @@
 			}
 		}
 
-		/*!
-		 @function delete
-		 @abstract This function deletes files and reload the page.
-		           posts
-		 @author   Vinicius Cubas Brand
-		*/
+		/**
+		  * This function deletes files and reload the page.
+		  *
+							  * posts
+		  * @author   Vinicius Cubas Brand
+		 */
 		function delete()
 		{
 			$this->bo->delete($this->files);
 			header('Location: '.$this->return_to_path);
-			$GLOBALS['phpgw']->common->phpgw_exit();
+			$GLOBALS['egw']->common->egw_exit();
 		}
 
-		/*!
-		 @function index
-		 @abstract This function builds the main template and handles most form
-		           posts
-		 @author   Vinicius Cubas Brand
-		*/
+		/**
+		  * This function builds the main template and handles most form
+		  *
+							  * posts
+		  * @author   Vinicius Cubas Brand
+		 */
 		function index ()
 		{
-			$GLOBALS['phpgw_info']['flags']['currentapp'] = 'filescenter';
+			$GLOBALS['egw_info']['flags']['currentapp'] = 'filescenter';
 
 			$clean = get_var('clean',array('GET','POST'));
 
-			if (!$clean)
+			$GLOBALS['egw_info']['flags']['noheader'] = False;
+			$GLOBALS['egw_info']['flags']['nonavbar'] = False;
+			$GLOBALS['egw_info']['flags']['nofooter'] = False;
+			$GLOBALS['egw_info']['flags']['noappheader'] = False;
+			$GLOBALS['egw_info']['flags']['enable_browser_class'] = True;
+			
+			if ($clean)
 			{
-				$GLOBALS['phpgw_info']['flags']['noheader'] = False;
-				$GLOBALS['phpgw_info']['flags']['nonavbar'] = False;
-				$GLOBALS['phpgw_info']['flags']['nofooter'] = False;
-				$GLOBALS['phpgw_info']['flags']['noappheader'] = False;
-				$GLOBALS['phpgw_info']['flags']['enable_browser_class'] = True;
-			}
-			else
-			{
-				$GLOBALS['phpgw_info']['extra_get_vars']['clean'] = '1';
+				$GLOBALS['egw_info']['flags']['noappiconbar'] = true;
+				$GLOBALS['egw_info']['flags']['nostatusbar'] = true;
+				$GLOBALS['egw_info']['flags']['nosidebox'] = true;
+				$GLOBALS['egw_info']['flags']['nologo'] = true;
+
+				$GLOBALS['egw_info']['extra_get_vars']['clean'] = '1';
 			}
 
 			if ($ret_name = get_var('ret_name',array('GET')))
 			{
-				$GLOBALS['phpgw_info']['extra_get_vars']['ret_name'] = $ret_name;
+				$GLOBALS['egw_info']['extra_get_vars']['ret_name'] = $ret_name;
 			}
 
 			if (!$this->base_dir_available)
 			{
 				echo lang("There was a problem while trying to access/create the base infrastructure of FilesCenter directories.<br>".
-				          "Please, consult admin or check configuration");
+									"Please, consult admin or check configuration");
 				return;
 			}
 
-			$this->disppath = $this->bo->get_disppath($this->path);
+			$disppath = $this->bo->get_disppath($this->path);
+			$this->disppath = $disppath['caption'];
+			$this->linkpath = $disppath['link'];
 
 			switch ($this->ftask)
 			{
@@ -542,6 +568,14 @@
 					break;
 				case "delete":
 					$this->bo->delete($this->files);
+					break;
+				case "attach_picture":
+					$GLOBALS['egw_info']['extra_get_vars']['ftask'] = 'attach_picture';
+					$GLOBALS['egw']->common->egw_header();
+					echo $this->get_files_table($this->path,'filescenter',array());
+					echo '<br><div style="text-align:center;"><input type="button" onclick="fcFolderView.select_picture();" value="'.lang('Use this file').'"></div>';
+					$GLOBALS['egw']->common->egw_footer();
+					$GLOBALS['egw']->common->egw_exit();
 					break;
 				//These methods are not used anymore.
 /*				case "cut":
@@ -561,29 +595,41 @@
 					break;*/ 
 			}
 
+
 			/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= *
-             * Template Variable assigning and parsing                     *
+						 * Template Variable assigning and parsing                     *
 			 * =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
 			
 
 			# Get the groups for the current user
-			# $groups = $GLOBALS['phpgw']->accounts->membership();
+			# $groups = $GLOBALS['egw']->accounts->membership();
 
 
 			$this->t->set_file(array('index' => 'index.tpl'));
 			$this->t->set_block('index','dhtml_externals','dhtml_externals');
-			$this->t->set_var('img_dir',PHPGW_IMAGES);
+			$this->t->set_var('img_dir',EGW_IMAGES);
 			$this->t->set_var('css_dir',$this->tpl_root.'/css');
 
 			$this->t->set_var('path',($this->location)?$this->location:$this->path);
-			$this->t->set_var('disppath',$this->disppath);
-			$this->t->set_var('lang_path',lang('Location'));
-            
-            /* <trees> */
-            $bo_all_tree =& $this->bo->get_all_trees();
+			
+			if ($this->linkpath)
+			{
+				$disppath = '<a href="'.$this->linkpath.'">'.$this->disppath.'</a>';
+			}
+			else
+			{
+				$disppath = $this->disppath;
+			}
+
+			$this->t->set_var('disppath',$disppath);
+			$this->t->set_var('lang_path',lang('Path'));
+						
+						/* <trees> */
+						$bo_all_tree =& $this->bo->get_all_trees();
 			//_debug_array($bo_all_tree);
-            $this->t->set_var('tree_path',$this->parsed_tree_path($bo_all_tree,'filescenter'));
-            /* </trees> */
+					$this->t->set_var('tree_path',$this->parsed_tree_path($bo_all_tree,'filescenter'));
+						/* </trees> */
+
 
 			// Button under the page for extra action
 	
@@ -598,10 +644,9 @@
 
 
 			/* Template parsing and printing */
-	
 			$this->display_app_header();
-			
-			$this->t->set_var('folder_contents',$this->get_files_table($this->path));
+		
+			$this->t->set_var('folder_contents',$this->get_files_table($this->path,'filescenter',array(),$options));
 
 			$this->t->pparse('out','index');
 
@@ -610,13 +655,13 @@
 
 		}
 
-		/*!
-		 @function get_files_table
-		 @abstract (public) gets all the ui view of a folder. 
-		           (with options, etc, from the templates)
-		 @author   Vinicius Cubas Brand
-		*/
-		function get_files_table($id,$app='filescenter',$hide_buttons=array())
+		/**
+		  * (public) gets all the ui view of a folder. 
+		  *
+							  * (with options, etc, from the templates)
+		  * @author   Vinicius Cubas Brand
+		 */
+		function get_files_table($id,$app='filescenter',$hide_buttons=array(),$extra_options=array())
 		{
 			if (!$this->base_dir_available)
 			{
@@ -675,13 +720,13 @@
 			
 			$this->client_app = $app;
 
-			#gets the correct path for application
+			#gets the correct path for applications
 			$path = $this->bo->get_app_path($id,$app);
 			$this->path = $path;
 
 			# Check available permissions for $this->path, so we can disable
 			# unusable operations in user interface
-			if ($this->bo->allowed_access($this->path,PHPGW_ACL_ADD))
+			if ($this->bo->allowed_access($this->path,EGW_ACL_ADD))
 			{
 				$this->can_add = True;
 			}
@@ -705,7 +750,7 @@
 				'options' => array(
 					'upload_other_opts' => ($app=='filescenter') ? '':'external=1'
 					),
-				'urlCompress' => $GLOBALS['phpgw']->link('/index.php','menuaction='.$this->appname.'.ui_fm2.compress&'.$this->eprintf('path='.$path))
+				'urlCompress' => $GLOBALS['egw']->link('/index.php','menuaction='.$this->appname.'.ui_fm2.compress&'.$this->eprintf('path='.$path))
 				);
 			
 			$jscode .= '<script language="javascript">';
@@ -716,7 +761,7 @@
 
 			$tmpl->set_file(array('folder_contents' => 'folder_contents.tpl'));
 			$tmpl->set_block('folder_contents','main','main');
-			$tmpl->set_var('css_dir',$GLOBALS['phpgw_info']['server']['webserver_url'].'/filescenter/templates/default/css');
+			$tmpl->set_var('css_dir',$GLOBALS['egw_info']['server']['webserver_url'].'/filescenter/templates/default/css');
 			$tmpl->set_var('javascripts',$jscode);
 
 			if ($app == 'filescenter')
@@ -736,12 +781,12 @@
 			$tmpl->set_var('this_url',$_SERVER["REQUEST_URI"]);
 
 			$tmpl->set_var('path',$path);//($this->location)?$this->location:$this->disppath);
-			$tmpl->set_var('form_action',$GLOBALS['phpgw']->link('/index.php'));
+			$tmpl->set_var('form_action',$GLOBALS['egw']->link('/index.php'));
 
 
 			
 			/* Parse main toolbar */
-            $iconssize = ($app=='filescenter')?'22':'16';
+						$iconssize = ($app=='filescenter')?'22':'16';
 			$this->toolbar($path,$tmpl,$buttons,$iconssize);
 
 			/* Parse directory content */
@@ -762,20 +807,20 @@
 			{
 				$id = $this->path;
 			}
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo $this->get_files_table($id,$app,$hide_buttons);
 			echo '<br><div style="text-align:center;"><input type="button" onclick="fcFolderView.select_picture();" value="'.lang('Use this file').'"></div>';
-			$GLOBALS['phpgw']->common->phpgw_footer();
-			$GLOBALS['phpgw']->common->phpgw_exit();
+			$GLOBALS['egw']->common->egw_footer();
+			$GLOBALS['egw']->common->egw_exit();
 		}
 		
 
-		/*!
-		 @function toolbar
-		 @abstract (private) Analyzes situation, then builds the file menu
-		           (with options, etc, from the templates)
-		 @author   Vinicius Cubas Brand
-		*/
+		/**
+		  * (private) Analyzes situation, then builds the file menu
+		  *
+							  * (with options, etc, from the templates)
+		  * @author   Vinicius Cubas Brand
+		 */
 		function toolbar($path,&$tmpl,&$buttons,$toolbar_img_size)
 		{
 			if (!$this->base_dir_available)
@@ -783,13 +828,13 @@
 				return '';
 			}
 			
-            $image_root = $GLOBALS['phpgw_info']['server']['webserver_url'].'/filescenter/templates/default/images';
+						$image_root = $GLOBALS['egw_info']['server']['webserver_url'].'/filescenter/templates/default/images';
 
-			$navbar_format = $GLOBALS['phpgw_info']['user']['preferences']['common']['navbar_format'];
+			$navbar_format = $GLOBALS['egw_info']['user']['preferences']['common']['navbar_format'];
 
 			# button uplevel 
-            # When user is not admin, he cannot dive into root or fakebase
-			if ($path == '/' || (!$GLOBALS['phpgw_info']['user']['apps']['admin'] &&($path == $this->bo->fakebase || $path == $this->bo->homedir || !$this->bo->allowed_access(dirname($path))) ))
+						# When user is not admin, he cannot dive into root or fakebase
+			if ($path == '/' || (!$GLOBALS['egw_info']['user']['apps']['admin'] &&($path == $this->bo->fakebase || $path == $this->bo->homedir || !$this->bo->allowed_access(dirname($path))) ))
 			{
 				unset($buttons['uplevel']);
 			}
@@ -840,11 +885,26 @@
 
 			}
 
+			//gets extra get vars in a string
+			foreach ($GLOBALS['egw_info']['extra_get_vars'] as $key => $val)
+			{
+				$ev[] = "$key=$val";
+			}
+			$ev = implode('&',$ev);
+
+
 			$tmpl->set_var('td_width',$toolbar_img_size+4);
 
 			$tmpl->set_block('folder_contents','header_menu','header_menu');
 			foreach($buttons as $icon_name=>$icon_prop)
 			{
+				$link = $icon_prop['icon_link'];
+
+				if (!ereg('javascript',$icon_prop['icon_link']))
+				{
+					$icon_prop['icon_link'] .= "&".$ev;
+				}
+
 				$icon_prop['icon_imgsrc'] = $image_root.'/'.$toolbar_img_size.'x'.$toolbar_img_size.'/'.$icon_prop['icon_imgsrc'];
 				$tmpl->set_var($icon_prop);
 				$tmpl->parse('header_menu_contents','header_menu',true);
@@ -864,11 +924,11 @@
 
 		}
 
-		/*!
-		 @function parse_directory_content
-		 @abstract Shows files in dir $dir
-		 @author   Vinicius Cubas Brand
-		*/
+		/**
+		  * Shows files in dir $dir
+		  *
+		  * @author   Vinicius Cubas Brand
+		 */
 		function parse_directory_content($path='',&$tmpl)
 		{
 
@@ -1016,11 +1076,11 @@
 
 		}
 
-		/*!
-		 @function get_dir_info
-		 @abstract returns the information about the files in some directory
-		 @author Vinicius Cubas Brand
-		*/
+		/**
+		  * returns the information about the files in some directory
+		  *
+		  * @author Vinicius Cubas Brand
+		 */
 		function get_dir_info($params)
 		{
 			if (!$this->base_dir_available)
@@ -1031,7 +1091,7 @@
 			//TODO rethink this, and put this code in a generic and transparent place...
 			if ($params['extra_get_vars'])
 			{
-				$GLOBALS['phpgw_info']['extra_get_vars'] = $params['extra_get_vars'];
+				$GLOBALS['egw_info']['extra_get_vars'] = $params['extra_get_vars'];
 			}
 			
 //			print_r($params);
@@ -1086,7 +1146,7 @@
 
 			$tdotheropts = '';
 
-	//		echo $GLOBALS['phpgw_info']['flags']['currentapp'] ;
+	//		echo $GLOBALS['egw_info']['flags']['currentapp'] ;
 			#begin folders processing
 			foreach($folders as $key => $file)
 			{
@@ -1100,9 +1160,9 @@
 						case 'name':
 							
 							$extension = array_pop(explode('.',$field['name']));
-							$link = $GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$file['directory'].'/'.$file['name']));
-							//echo "GL:".print_r($GLOBALS['phpgw_info']['extra_get_vars'],true);
-							$link_icon = $GLOBALS['phpgw']->link('/filescenter/icons/folder.gif');
+							$link = $GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$file['directory'].'/'.$file['name']));
+							//echo "GL:".print_r($GLOBALS['egw_info']['extra_get_vars'],true);
+							$link_icon = $GLOBALS['egw']->link('/filescenter/icons/folder.gif');
 
 							$ret_folders[$field]['content'] = '<a href="'.$link.'" alt="'.$file['name'].'" title="'.$file['name'].'"><img width="16" height="16" border="0" src="'.$link_icon.'" align="absmiddle" /> '.$file['name'].'</a>';
 							//echo "GL:<xmp>".$ret_folders[$field]['content']."</xmp><br>\n";
@@ -1112,16 +1172,37 @@
 							$ret_folders[$field]['tdoptions']['align'] = 'right';
 							break;
 						case 'modified':
-							if (empty($file['modified']))
+						case 'created':
+							if ($file[$field])
 							{
-								$ret_folders[$field]['content'] = $file['created'];
+								$ret_folders[$field]['content'] = $GLOBALS['egw']->common->show_date($file[$field]);
 							}
 							else
 							{
-								$ret_folders[$field]['content'] = $file['modified'];
+								$ret_folders[$field]['content'] = '';
 							}
 							break;
+						case 'modifiedby_id':
+						case 'createdby_id':
+							if ($file[$field])
+							{
+								$GLOBALS['egw']->accounts->get_account_name($file[$field],$lid,$fname,$lname);
+								$ret_folders[$field]['content'] = $fname.' '.$lname;
 
+								/* Uncomment this when appears the so_db_highlevel 
+								unset($acc);
+								$acc =& $GLOBALS['egw']->db_hl->get_entity(array(
+									'entity_type' => 'account',
+									'info_data_id' => $file[$field]
+									));
+								$ret_folders[$field]['content'] = $acc->get('name');
+								*/
+							}
+							else
+							{
+								$ret_folders[$field]['content'] = '';
+							}
+							break;
 						case 'version':
 							$ret_folders[$field]['content']   = '-&nbsp;&nbsp;';
 							$ret_folders[$field]['tdoptions']['align'] = 'right';
@@ -1162,9 +1243,9 @@
 
 							$extension = array_pop(explode('.',$file['name']));
 
-							$link_icon = $GLOBALS['phpgw']->link('/filescenter/icon.php','extension='.$extension);
+							$link_icon = $GLOBALS['egw']->link('/filescenter/icon.php','extension='.$extension);
 
-							$link = $GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.view&'.$this->eprintf('path='.$file['directory'].'/'.$file['name']));
+							$link = $GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.view&'.$this->eprintf('path='.$file['directory'].'/'.$file['name']));
 							$ret_files[$field]['content'] = '<a href="'.$link.'"><img width="16" height="16" border="0" src="'.$link_icon.'" align="absmiddle" />'.$file['name'].'</a>';
 							break;
 						case 'size':
@@ -1186,18 +1267,39 @@
 							}
 							break;
 						case 'modified':
-							if (empty($file['modified']))
+						case 'created':
+							if ($file[$field])
 							{
-								$ret_files[$field]['content'] = $file['created'];
+								$ret_files[$field]['content'] = $GLOBALS['egw']->common->show_date($file[$field]);
 							}
 							else
 							{
-								$ret_files[$field]['content'] = $file['modified'];
+								$ret_files[$field]['content'] = '';
+							}
+							break;
+						case 'modifiedby_id':
+						case 'createdby_id':
+							if ($file[$field])
+							{
+								$GLOBALS['egw']->accounts->get_account_name($file[$field],$lid,$fname,$lname);
+								$ret_files[$field]['content'] = $fname.' '.$lname;
+
+								/* Uncomment this when appear the so_db_highlevel
+								unset($acc);
+								$acc =& $GLOBALS['egw']->db_hl->get_entity(array(
+									'entity_type' => 'account',
+									'info_data_id' => $file[$field]
+									));
+								$ret_files[$field]['content'] = $acc->get('name');*/
+							}
+							else
+							{
+								$ret_files[$field]['content'] = '';
 							}
 							break;
 						case 'version':
 							$ret_files[$field]['tdoptions']['align'] = 'right';
-							$link = $GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.history&'.$this->eprintf('path='.$file['directory'].'/'.$file['name']));
+							$link = $GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.history&'.$this->eprintf('path='.$file['directory'].'/'.$file['name']));
 							$ret_files[$field]['content'] = '<A HREF="'.$link.'">'.$file['version'].'</A>&nbsp;&nbsp;';
 							break;
 						default:
@@ -1226,7 +1328,9 @@
 
 			if (!$this->disppath)
 			{
-				$this->disppath = $this->bo->get_disppath($path);
+				$disppath = $this->bo->get_disppath($path);
+				$this->disppath = $disppath['caption'];
+				$this->linkpath = $disppath['link'];
 			}
 			
 			$ret_array['display_location'] = ($params['appname'] == 'filescenter')?'':$this->disppath;
@@ -1234,11 +1338,11 @@
 			return $ret_array;
 		}
 
-		/*!
-		 @function handle_get_post_vars
-		 @abstract Set the object roperties with values received by get/post
-		 @author Vinicius Cubas Brand
-		*/
+		/**
+		  * Set the object roperties with values received by get/post
+		  *
+		  * @author Vinicius Cubas Brand
+		 */
 		function handle_get_post_vars()
 		{	
 
@@ -1272,10 +1376,10 @@
 		}
 
 
-		/*!
-		 @function set_current_path
-		 @abstract Analyzes situation and changes current path if necessary
-		*/
+		/**
+		  * Analyzes situation and changes current path if necessary
+		  *
+		 */
 		function set_current_path()
 		{
 			if ($this->menuaction == 'filescenter.ui_fm2.index')
@@ -1301,15 +1405,15 @@
 			}
 		}
 		
-		/*!
-		 @function eprintf
-		 @abstract Encodes $var if necessary
-		 @param array $var   array ('varname' => 'varval') returns array w/
-                             correct vals encoded
-		   OR
-		 @param string $var  a string with the form 'varname=varval'
-                             returns a string with the form 'varname=encvarval'
-		*/
+		/**
+		  * Encodes $var if necessary
+		  *
+		  * @param array $var   array ('varname' => 'varval') returns array w/
+														  * correct vals encoded
+			  * OR
+		  * @param string $var  a string with the form 'varname=varval'
+														  * returns a string with the form 'varname=encvarval'
+		 */
 		function eprintf($var)
 		{
 		
@@ -1354,55 +1458,56 @@
 		
 		function display_app_header()
 		{
-			if(!@is_object($GLOBALS['phpgw']->js))
+			if(!@is_object($GLOBALS['egw']->js))
 			{
-				$GLOBALS['phpgw']->js =& CreateObject('phpgwapi.javascript');
+				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
 			}
 
 
 			switch($this->menuaction)
 			{
 				case 'filescenter.ui_fm2.index':
-					$GLOBALS['phpgw']->js->validate_file('foldertree','foldertree');
+					$GLOBALS['egw']->js->validate_file('foldertree','foldertree');
 					break;
 				
 				case 'filescenter.ui_fm2.upload':
 
-					$GLOBALS['phpgw']->js->validate_file('tabs','tabs');
-					$GLOBALS['phpgw']->js->validate_file('jscode','upload','filescenter');
+					$GLOBALS['egw']->js->validate_file('tabs','tabs');
+					$GLOBALS['egw']->js->validate_file('jscode','upload','filescenter');
 
-					$GLOBALS['phpgw']->js->set_onload('javascript:initAll();');
+					$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 					break;
 
 				case 'filescenter.ui_fm2.properties':
 				case 'filescenter.ui_fm2.prop_commit':
 					
-					$GLOBALS['phpgw']->js->validate_file('tabs','tabs');
-					$GLOBALS['phpgw']->js->validate_file('jscode','properties','filescenter');
-					$GLOBALS['phpgw']->js->set_onload('javascript:initAll();');
+					$GLOBALS['egw']->js->validate_file('tabs','tabs');
+					$GLOBALS['egw']->js->validate_file('jscode','properties','filescenter');
+					$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 					break;
 
 			}
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 		}
 
 
-		/*!
-		 @function display_app_footer
-		 @abstract Treats the footer section
-		 @author Vinicius Cubas Brand
-		*/
+		/**
+		  * Treats the footer section
+		  *
+		  * @author Vinicius Cubas Brand
+		 */
 		function display_app_footer()
 		{
-			$GLOBALS['phpgw']->common->phpgw_footer();
-			$GLOBALS['phpgw']->common->phpgw_exit();
+			$GLOBALS['egw']->common->egw_footer();
+			$GLOBALS['egw']->common->egw_exit();
 		}
 
-		/*!
-		 @unction upload
-		 @abstract creates the upload screen, asking for file uploads from user
-		 @author Vinicius Cubas Brand
-		*/
+		/**
+		  * upload
+		  * creates the upload screen, asking for file uploads from user
+		  *
+		  * @author Vinicius Cubas Brand
+		 */
 		function upload()
 		{
 			if (!$this->base_dir_available)
@@ -1421,41 +1526,81 @@
 				'nofooter'      =>      True
 			);
 
-			$GLOBALS['phpgw_info']['flags'] = $phpgw_flags;
+			$GLOBALS['egw_info']['flags'] = array_merge($GLOBALS['egw_info']['flags'],$phpgw_flags);
 
 			$this->get_prefix_selects($select_prefix0,$select_type0);
-			
+
+			$js_arr =& $GLOBALS['egw_info']['flags']['java_script_globals']['messages']['filescenter'];
 		
+			$js_arr['remove'] = lang('remove');
+			$js_arr['from_fc'] = lang('from FilesCenter...');
+
+			//must know if the prefix and type will or not be showed
+			$options['enable_prefix'] = (int) $this->prefs['upl_prefix'];
+			$options['enable_type'] = (int) $this->prefs['upl_type'];
+
 			$this->display_app_header();
 
 			$this->t->set_file(array('upload' => 'upload.tpl'));
+			$this->t->set_unknowns('remove');
 			$this->t->set_block('upload','main');
+			$this->t->set_block('upload','row_title_block');
+			$this->t->set_block('upload','col_title_block');
+
+
+			if ($options['enable_prefix'])
+			{
+				$this->t->set_var('lang_caption',lang('Prefix'));
+				$this->t->parse('extra_cols','col_title_block',true);
+				$added = true;
+			}
+			if ($options['enable_type'])
+			{
+				$this->t->set_var('lang_caption',lang('Type'));
+				$this->t->parse('extra_cols','col_title_block',true);
+				$added = true;
+			}
+			if (!$added)
+			{
+				$this->t->set_var('extra_cols','');
+			}
+			$this->t->set_var('lang_filename',lang('Files to Upload'));
+
+			$this->t->parse('row_title','row_title_block');
 
 			$this->t->set_var('path',$this->path);
 
 			$this->t->set_var('lang_upload_files',lang('File(s) to upload:'));
 			$this->t->set_var('lang_upload_max_filesize',lang('Maximum filesize upload: %1',ini_get('upload_max_filesize')));
-			$this->t->set_var('lang_filename',lang('Files to Upload'));
-			$this->t->set_var('lang_prefix',lang('Prefix'));
-			$this->t->set_var('lang_type',lang('Type'));
 			$this->t->set_var('lang_upload_anotherfile',lang('New').'...');
-			$this->t->set_var('lang_strremove',lang('remove'));
 			$this->t->set_var('lang_upload',lang('Upload'));
 			$this->t->set_var('lang_uploadb',lang('Save'));
 			$this->t->set_var('lang_cancelb',lang('Cancel'));
-			$this->t->set_var('path_information',lang('Upload files in folder').': '.$this->path);
-			$this->t->set_var('lang_strfromfilescenter',lang('from FilesCenter...'));
+			$this->t->set_var('upload_options0',$this->arr2js($options));
+			$this->t->set_var('upload_options1',$this->arr2js(array_merge($options,array('type'=>'from_fc'))));
 
-			$this->t->set_var('action_url',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.upl_commit'));
-			$this->t->set_var('return_to_path',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path)));
-			$this->t->set_var('fc_progress_path',$GLOBALS['phpgw']->common->find_image('filescenter','progress'));
+			$disppath = $this->bo->get_disppath($this->path);
+			$this->t->set_var('path_information',lang('Upload files in folder').': '.$disppath['caption']);
+
+			$this->t->set_var('action_url',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.upl_commit'));
+			$this->t->set_var('return_to_path',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path)));
+			$this->t->set_var('fc_progress_path',$GLOBALS['egw']->common->find_image('filescenter','progress'));
 			$this->t->set_var('file_prefix0',$select_prefix0);
 			$this->t->set_var('file_type0',$select_type0);
+				
+			$usual_javascript = 'addNewUpload('.$this->arr2js($options).');';
+			$fc_javascript = 'addNewUpload('.$this->arr2js(array_merge($options,array('type'=>'from_fc'))).');';
 
+		
 			if (!$external)
 			{
+				$this->t->set_var('extra_javascript',$usual_javascript);
 				$this->t->set_block('main','browse_fc','browse_fc_stored');
 				$this->t->set_var('browse_fc_stored','');
+			}
+			else
+			{
+				$this->t->set_var('extra_javascript',$usual_javascript.' '.$fc_javascript);
 			}
 
 
@@ -1469,11 +1614,11 @@
 			$this->display_app_footer();
 		}
 
-		/*!
-		 @function get_prefix_selects
-		 @abstract creates the selects for file id prefix and file id type
-		 @author Vinicius Cubas Brand
-		*/
+		/**
+		  * creates the selects for file id prefix and file id type
+		  *
+		  * @author Vinicius Cubas Brand
+		 */
 		function get_prefix_selects(&$sel_prefixes,&$sel_ptypes,$pprefix='')
 		{
 			if (!$this->base_dir_available)
@@ -1486,7 +1631,7 @@
 			$prefixes = $vfs_prefixes->get_prefixes();
 
 			
-			$sel_prefixes = '<select name="'.$pprefix.'prefix0" style="width: 120px;">';
+			$sel_prefixes = '<select name="'.$pprefix.'prefix0" style="width: 120px;" id="base_prefix">';
 
 			$sel_prefixes .= '<option value="'.$this->user_info['account_lid'].'">'.$this->user_info['account_lid']."</option>\n";
 
@@ -1513,7 +1658,7 @@
 
 			$ptypes = $vfs_prefixes->get_prefixes('view',false,'t');
 			
-			$sel_ptypes = '<select name="'.$pprefix.'type0" style="width: 120px;">';
+			$sel_ptypes = '<select name="'.$pprefix.'type0" style="width: 120px;" id="base_type">';
 
 			$sel_ptypes .= '<option value="">('.lang('None').")</option>\n";
 
@@ -1529,11 +1674,11 @@
 		}
 
 
-		/*!
-		 @function properties
-		 @abstract creates the file properties screen
-		 @author Vinicius Cubas Brand
-		*/
+		/**
+		  * creates the file properties screen
+		  *
+		  * @author Vinicius Cubas Brand
+		 */
 		function properties()
 		{
 			if (!$this->base_dir_available)
@@ -1550,7 +1695,7 @@
 				'nofooter'      =>      True
 			);
 
-			$GLOBALS['phpgw_info']['flags'] = $phpgw_flags;
+			$GLOBALS['egw_info']['flags'] = array_merge($GLOBALS['egw_info']['flags'],$phpgw_flags);
 
 			//number of properties to do the colspan in template
 			$numofcols = 4;
@@ -1692,13 +1837,13 @@
 			}
 
 			//Account_name:
-			$GLOBALS['phpgw']->accounts->get_account_name($this->path_content[0]['owner_id'],$owner_lid,$owner_fname,$owner_lname);
+			$GLOBALS['egw']->accounts->get_account_name($this->path_content[0]['owner_id'],$owner_lid,$owner_fname,$owner_lname);
 			
 
 			$last = count($file_history) - 1;
 
-			$this->t->set_var('action_url',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.prop_commit&'.$this->eprintf('path='.$this->path)));
-			$this->t->set_var('return_to_path',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path_content[0]['directory'])));
+			$this->t->set_var('action_url',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.prop_commit&'.$this->eprintf('path='.$this->path)));
+			$this->t->set_var('return_to_path',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path_content[0]['directory'])));
 			$this->t->set_var('full_filename',$this->path);
 
 			if ($this->bo->is_application_dir($this->path_content[0]['directory'].'/'.$this->path_content[0]['name']))
@@ -1722,7 +1867,7 @@
 
 			$this->t->set_var('value_datetime_created',$this->path_content[0]['created']);
 			$this->t->set_var('value_datetime_modified',$file_history[$last]['modified']);
-			$this->t->set_var('value_filehistory',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.history&'.$this->eprintf('path='.$this->path)));
+			$this->t->set_var('value_filehistory',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.history&'.$this->eprintf('path='.$this->path)));
 			$this->t->set_var('file_id',$this->path_content[0]['file_id']);
 
 			$this->t->set_var('numofcols',$numofcols);
@@ -1747,13 +1892,13 @@
 			$this->display_app_footer();
 		}
 
-		/*!
-		 @function prop_draw_perms_select
-		 @abstract  Creates the html selects for permissions in file properties
-                    Intimately bound to the $this->properties method
-		 @param $select_type string can be one of the {ur,uw,gr,gw}
-		 @author Vinicius Cubas Brand
-		*/
+		/**
+		  *  Creates the html selects for permissions in file properties
+		  *
+										Intimately bound to the $this->properties method
+		  * @param $select_type string can be one of the {ur,uw,gr,gw}
+		  * @author Vinicius Cubas Brand
+		 */
 		function prop_draw_perms_select($select_type)
 		{
 			if (!$this->base_dir_available)
@@ -1771,11 +1916,11 @@
 			if (!$passed)
 			{
 				//all groups in the system
-				$groups = $GLOBALS['phpgw']->accounts->get_list('groups');
+				$groups = $GLOBALS['egw']->accounts->get_list('groups');
 
-				$users = $GLOBALS['phpgw']->accounts->get_list('accounts');
+				$users = $GLOBALS['egw']->accounts->get_list('accounts');
 				//the groups which I am member
-				$my_groups = $GLOBALS['phpgw']->accounts->membership($this->user_info['account_id']);
+				$my_groups = $GLOBALS['egw']->accounts->membership($this->user_info['account_id']);
 			
 				#fixme do not talk directly with vfs_sharing. Instead would be
 				# more correct to this talk with bo, that talk with vfs that 
@@ -1800,11 +1945,11 @@
 
 			if ($select_type == 'ur' || $select_type == 'gr')
 			{
-				$source_mask = PHPGW_ACL_READ;
+				$source_mask = EGW_ACL_READ;
 			}
 			elseif ($select_type == 'uw' || $select_type == 'gw')
 			{
-				$source_mask = PHPGW_ACL_ADD | PHPGW_ACL_EDIT;
+				$source_mask = EGW_ACL_ADD | EGW_ACL_EDIT;
 			}
 
 			$select = "<SELECT name=\"formvar[select_$select_type][]\" SIZE=6 WIDTH=\"60\" id=\"$select_type\" {disabled} MULTIPLE>\n";
@@ -1832,12 +1977,12 @@
 		
 		}
 
-		/*!
-		 @function prop_commit
-		 @abstract  Treats the Properties form commit
-                    Intimately bound to the $this->properties method
-		 @author Vinicius Cubas Brand
-		*/
+		/**
+		  *  Treats the Properties form commit
+		  *
+										Intimately bound to the $this->properties method
+		  * @author Vinicius Cubas Brand
+		 */
 		function prop_commit()
 		{
 			$oldpath = $this->formvar['full_filename'];
@@ -1851,7 +1996,7 @@
 			}
 
 //            echo "oldpath=$oldpath ";
-  //          echo "newpath=$newpath ";
+	//          echo "newpath=$newpath ";
 
 			#changing custom properties
 			if ($this->formvar['custom'])
@@ -1865,11 +2010,11 @@
 			{
 				if ($perms_operation == 'gr' || $perms_operation == 'ur')
 				{
-					$mask = PHPGW_ACL_READ;
+					$mask = EGW_ACL_READ;
 				}
 				else
 				{
-					$mask = PHPGW_ACL_ADD | PHPGW_ACL_EDIT;
+					$mask = EGW_ACL_ADD | EGW_ACL_EDIT;
 				}
 			
 				if (array_key_exists('select_'.$perms_operation,$this->formvar))
@@ -1917,9 +2062,9 @@
 				}
 				elseif($this->ok)
 				{
-			        echo '<html><body onLoad="window.opener.location.reload();window.close();"></body></html>';
+							echo '<html><body onLoad="window.opener.location.reload();window.close();"></body></html>';
 //					header('Location: '.$this->return_to_path);
-					$GLOBALS['phpgw']->common->phpgw_exit();
+					$GLOBALS['egw']->common->egw_exit();
 				}
 			}
 			else
@@ -1928,18 +2073,18 @@
 			}
 		}
 
-		/*!
-		 @function upl_commit
-		 @abstract  Treats the Upload form commit
-                    Intimately bound to the $this->upload method
-		 @author Vinicius Cubas Brand
-		*/
+		/**
+		  *  Treats the Upload form commit
+		  *
+										Intimately bound to the $this->upload method
+		  * @author Vinicius Cubas Brand
+		 */
 		function upl_commit()
 		{
 			$this->bo->fileUpload($this->path,$GLOBALS['_FILES'],$GLOBALS['_POST']);
 			echo '<html><body onLoad="window.opener.fcFolderView.refresh({ \'window\':window});">'.lang('Wait. Uploading...').'</body></html>';
 //			header('Location: '.$this->return_to_path);
-			$GLOBALS['phpgw']->common->phpgw_exit();
+			$GLOBALS['egw']->common->egw_exit();
 
 		}
 
@@ -1953,11 +2098,11 @@
 			$this->bo->view($this->path);
 		}
 
-		/*!
-		 @function parsed_tree_path
-		 @abstract  Parses the path tree, returning it
-		 @author Vinicius Cubas Brand
-		*/
+		/**
+		  *  Parses the path tree, returning it
+		  *
+		  * @author Vinicius Cubas Brand
+		 */
 		function parsed_tree_path($bo_tree,$tree_name='d')
 		{
 			if (!$this->base_dir_available)
@@ -1967,20 +2112,20 @@
 			
 			/* Catalogue Tree */
 
-			$mainFolderImageDir = substr($GLOBALS['phpgw']->common->image('phpgwapi','foldertree_line.gif'),0,-19);
-			$parsed_tree = '<script type="text/javascript">'."\n".$tree_name.' = new dTree(\''.$tree_name.'\',\''.$mainFolderImageDir.'\');'."\n".$tree_name.'.config.inOrder=true;'."\n".$tree_name.'.config.closeSameLevel=false;'."\n";
-			$parsed_tree .= $this->convert_tree($bo_tree, $mainFolderImageDir, $tree_name);
+			$mainFolderImageDir = substr($GLOBALS['egw']->common->image('phpgwapi','foldertree_line.gif'),0,-19);
+			$parsed_tree = '<script type="text/javascript">'."\n".$tree_name.' = new dTree(\''.$tree_name.'\',\''.$mainFolderImageDir.'\');'."\n".$tree_name.'.config.inOrder=true;'."\n".$tree_name.'.config.closeSameLevel=true; '."\n".$tree_name.'.config.useCookies=false;  '."\n";
+			$parsed_tree .= $this->convert_tree($bo_tree, $mainFolderImageDir, $tree_name,'0',$tree_state);
 			$parsed_tree .= 'document.write('.$tree_name.');'."\n".$tree_name.'.openTo(\'0\',\'true\');'."\n".'</script>';
-			
+
 			return $parsed_tree;
 		}
 
-		/*!
-		 @function  convert_tree
-		 @abstract  Recursive Helper for parsed_tree_path
-		 @author    Raphael Derosso Pereira
-		*/
-		function convert_tree($tree, &$iconDir, $tree_name, $parent='0')
+		/**
+		  *  Recursive Helper for parsed_tree_path
+		  *
+		  *    Raphael Derosso Pereira, Vinicius Cubas Brand
+		 */
+		function convert_tree($tree, &$iconDir, $tree_name, $parent='0',&$tree_state)
 		{
 
 			#javascript syntax:
@@ -2000,19 +2145,19 @@
 					$iconOpen = "'".$tree['root']->icon."'";
 				}					
 
-				$link = ($tree['root']->path) ? "'".$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$tree['root']->path))."'" : 'null';
+				$link = ($tree['root']->path) ? "'".$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$tree['root']->path))."'" : 'null';
 				$new .= $tree_name.'.add(\''.$parent.'\',\'-1\',\''.$tree['root']->name.'\','.$link.',null,null,null,null,'.$icon.','.$iconOpen.');'."\n";
-                $tree =& $tree['root']->contents;
+								$tree =& $tree['root']->contents;
 			}
 			
 			foreach ($tree as $id => $value)
 			{
-                $path = $value->path;
+								$path = $value->path;
 
 				if ($path)
 				{
 					$location = ($value->location)?'&location='.$value->location:'';
-					$link = "'".$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$path)).$location."'";
+					$link = "'".$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$path)).$location."'";
 				}
 				else
 				{
@@ -2028,20 +2173,32 @@
 					$iconOpen = "'".$value->icon."'";
 				}					
 
+				$open_node_string = $tree_name.'.add(\''.$parent.'_'.$id.'\',\''.$parent.'\',\''.str_replace('\'','\\\'',$value->name).'\','.$link.',null,null,null,null,'.$icon.','.$iconOpen.',true);'."\n";
+				$closed_node_string = $tree_name.'.add(\''.$parent.'_'.$id.'\',\''.$parent.'\',\''.str_replace('\'','\\\'',$value->name).'\','.$link.',null,null,null,null,'.$icon.','.$iconOpen.');'."\n";
+
 				if (strpos($this->path,$path) === 0 || ($value->act_as && (strpos($this->path,$value->act_as) === 0))) //force opened
 				{
-					$node_string = $tree_name.'.add(\''.$parent.'_'.$id.'\',\''.$parent.'\',\''.$value->name.'\','.$link.',null,null,null,null,'.$icon.','.$iconOpen.',true);'."\n";
+					$node_string = $open_node_string;
+					$tree_state=true;
 				}
 				else
 				{
-					$node_string = $tree_name.'.add(\''.$parent.'_'.$id.'\',\''.$parent.'\',\''.$value->name.'\','.$link.',null,null,null,null,'.$icon.','.$iconOpen.');'."\n";
+					$node_string = $closed_node_string;
 				}
 
 				if (is_array($value->contents))
 				{
-
-					$new .= $node_string;
-					$new .= $this->convert_tree($value->contents,$iconDir,$tree_name,$parent.'_'.$id);
+					$r_open = false;
+					$ret = $this->convert_tree($value->contents,$iconDir,$tree_name,$parent.'_'.$id,$r_open);
+					if ($r_open)
+					{
+						$tree_state = true;
+						$new .= $open_node_string . $ret;
+					}
+					else
+					{
+						$new .= $node_string . $ret;
+					}
 					continue;
 				}
 				
@@ -2053,12 +2210,12 @@
 
 		function history()
 		{
-			$GLOBALS['phpgw_info']['flags']['currentapp'] = 'filescenter';
-			$GLOBALS['phpgw_info']['flags']['noheader'] = False;
-			$GLOBALS['phpgw_info']['flags']['nonavbar'] = False;
-			$GLOBALS['phpgw_info']['flags']['nofooter'] = False;
-			$GLOBALS['phpgw_info']['flags']['noappheader'] = False;
-			$GLOBALS['phpgw_info']['flags']['enable_browser_class'] = True;
+			$GLOBALS['egw_info']['flags']['currentapp'] = 'filescenter';
+			$GLOBALS['egw_info']['flags']['noheader'] = False;
+			$GLOBALS['egw_info']['flags']['nonavbar'] = False;
+			$GLOBALS['egw_info']['flags']['nofooter'] = False;
+			$GLOBALS['egw_info']['flags']['noappheader'] = False;
+			$GLOBALS['egw_info']['flags']['enable_browser_class'] = True;
 
 			$fields = array(
 				'operation'      => lang('Operation'),
@@ -2127,13 +2284,13 @@
 							}
 							break;
 						case 'modifiedby_id':
-							$GLOBALS['phpgw']->accounts->get_account_name($journal[$key],$lid,$fname,$lname);
+							$GLOBALS['egw']->accounts->get_account_name($journal[$key],$lid,$fname,$lname);
 							$display = $fname." ".$lname;
 							break;
 						case 'backup_file_id':
 							if (is_numeric($journal[$key]) && $journal[$key] != 0)
 							{
-								$link = $GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.view&'.$this->eprintf('path='.$this->bo->vfs->get_path_from_id($journal[$key])));
+								$link = $GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.view&'.$this->eprintf('path='.$this->bo->vfs->get_path_from_id($journal[$key])));
 								$display = "<A HREF=\"$link\">Download</A>";
 							}
 							else $display = '';
@@ -2169,7 +2326,7 @@
 			$this->t->set_var('lang_file_history',lang('File History'));
 
 			$this->t->set_var('lang_backb',lang('Back'));
-			$this->t->set_var('link_back',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$currdir)));
+			$this->t->set_var('link_back',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$currdir)));
 
 			$this->t->parse('main','main');
 
@@ -2182,12 +2339,12 @@
 
 		}
 
-		/*!
-		 @function  sharing
-		 @abstract  Creates the file sharing screen
-		 @author    Vinicius Cubas Brand 
-         #FIXME redo this function to transfer vfs_sharing access to bo
-		 */
+		/**
+		  *  Creates the file sharing screen
+		  *
+		  * @author    Vinicius Cubas Brand 
+				  * #FIXME redo this function to transfer vfs_sharing access to bo
+		  */
 		function sharing()
 		{
 			if (!$this->base_dir_available)
@@ -2195,12 +2352,12 @@
 				return '';
 			}
 			
-			$GLOBALS['phpgw_info']['flags']['currentapp'] = 'filescenter';
-			$GLOBALS['phpgw_info']['flags']['noheader'] = False;
-			$GLOBALS['phpgw_info']['flags']['nonavbar'] = False;
-			$GLOBALS['phpgw_info']['flags']['nofooter'] = False;
-			$GLOBALS['phpgw_info']['flags']['noappheader'] = False;
-			$GLOBALS['phpgw_info']['flags']['enable_browser_class'] = True;
+			$GLOBALS['egw_info']['flags']['currentapp'] = 'filescenter';
+			$GLOBALS['egw_info']['flags']['noheader'] = False;
+			$GLOBALS['egw_info']['flags']['nonavbar'] = False;
+			$GLOBALS['egw_info']['flags']['nofooter'] = False;
+			$GLOBALS['egw_info']['flags']['noappheader'] = False;
+			$GLOBALS['egw_info']['flags']['enable_browser_class'] = True;
 
 			$this->t->set_file(array('sharing' => 'sharing.tpl'));
 			$this->t->set_block('sharing','shared_folder','shared_folder');
@@ -2215,7 +2372,7 @@
 			{
 				foreach ($my_shares as $share)
 				{
-					$this->t->set_var('foldername','<A HREF="'.$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$share['directory'].'/'.$share['name'])).'">'.$share['directory'].'/'.$share['name'].'</A>');
+					$this->t->set_var('foldername','<A HREF="'.$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$share['directory'].'/'.$share['name'])).'">'.$share['directory'].'/'.$share['name'].'</A>');
 
 					$this->t->parse('tmp_sharing','shared_folder',true);
 				}
@@ -2233,7 +2390,7 @@
 			{
 				foreach ($other_shares as $share)
 				{
-					$this->t->set_var('foldername2','<A HREF="'.$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$share['directory'].'/'.$share['name'])).'">'.$share['directory'].'/'.$share['name'].'</A>');
+					$this->t->set_var('foldername2','<A HREF="'.$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$share['directory'].'/'.$share['name'])).'">'.$share['directory'].'/'.$share['name'].'</A>');
 
 					$this->t->parse('tmp_sharing2','other_shared_folder',true);
 				}
@@ -2258,11 +2415,11 @@
 			
 		}
 
-		/*!
-		 @function  search
-		 @abstract  Creates the file search screen
-		 @author    Vinicius Cubas Brand 
-		 */
+		/**
+		  *  Creates the file search screen
+		  *
+		  * @author    Vinicius Cubas Brand 
+		  */
 		function search()
 		{
 			if (!$this->base_dir_available)
@@ -2270,12 +2427,12 @@
 				return '';
 			}
 			
-			$GLOBALS['phpgw_info']['flags']['currentapp'] = 'filescenter';
-			$GLOBALS['phpgw_info']['flags']['noheader'] = False;
-			$GLOBALS['phpgw_info']['flags']['nonavbar'] = False;
-			$GLOBALS['phpgw_info']['flags']['nofooter'] = False;
-			$GLOBALS['phpgw_info']['flags']['noappheader'] = False;
-			$GLOBALS['phpgw_info']['flags']['enable_browser_class'] = True;
+			$GLOBALS['egw_info']['flags']['currentapp'] = 'filescenter';
+			$GLOBALS['egw_info']['flags']['noheader'] = False;
+			$GLOBALS['egw_info']['flags']['nonavbar'] = False;
+			$GLOBALS['egw_info']['flags']['nofooter'] = False;
+			$GLOBALS['egw_info']['flags']['noappheader'] = False;
+			$GLOBALS['egw_info']['flags']['enable_browser_class'] = True;
 
 			$this->t->set_file(array('search' => 'search.tpl'));
 			$this->t->set_block('search','search_results','search_results');
@@ -2286,7 +2443,7 @@
 				$files = $this->bo->search($this->keyword,$this->user_info['account_id']);
 				foreach ($files as $file_id => $file)
 				{
-					$this->t->set_var('filename','<A HREF="'.$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.view&'.$this->eprintf('path='.$file['directory'].'/'.$file['name'])).'">'.$file['directory'].'/'.$file['name'].'</A>');
+					$this->t->set_var('filename','<A HREF="'.$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.view&'.$this->eprintf('path='.$file['directory'].'/'.$file['name'])).'">'.$file['directory'].'/'.$file['name'].'</A>');
 					$this->t->parse('tmp_fname','file',true);
 				}
 				$this->t->set_var('file',$this->t->get_var('tmp_fname'));
@@ -2296,8 +2453,8 @@
 				$this->t->set_var('search_results','');
 			}
 
-			$this->t->set_var('location_cancel',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index'));
-			$this->t->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.search'));
+			$this->t->set_var('location_cancel',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index'));
+			$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.search'));
 			$this->t->set_var('lang_submit',lang('Search'));
 			$this->t->set_var('lang_search',lang('Search'));
 			$this->t->set_var('lang_search_results',lang('Search Results'));
@@ -2311,11 +2468,11 @@
 			$this->display_app_footer();
 		}
 
-		/*!
-		 @function  compress
-		 @abstract  Creates the compress screen
-		 @author    Vinicius Cubas Brand 
-		 */
+		/**
+		  *  Creates the compress screen
+		  *
+		  * @author    Vinicius Cubas Brand 
+		  */
 		function compress()
 		{
 
@@ -2333,7 +2490,7 @@
 				'nofooter'      =>      True
 			);
 
-			$GLOBALS['phpgw_info']['flags'] = $phpgw_flags;
+			$GLOBALS['egw_info']['flags'] = array_merge($GLOBALS['egw_info']['flags'],$phpgw_flags);
 
 			$files = get_var('files',array('GET','POST'));
 
@@ -2341,8 +2498,8 @@
 	
 			if (!count($files))
 			{
-				header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path)));
-				$GLOBALS['phpgw']->common->phpgw_exit();
+				header('Location: '.$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path)));
+				$GLOBALS['egw']->common->egw_exit();
 			}
 		
 			
@@ -2362,8 +2519,8 @@
 			$this->t->set_var('lang_okb',lang('Compress'));
 			$this->t->set_var('lang_cancelb',lang('Cancel'));
 
-			$this->t->set_var('action_url',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.comp_commit'));
-			$this->t->set_var('return_to_path',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path)));
+			$this->t->set_var('action_url',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.comp_commit'));
+			$this->t->set_var('return_to_path',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path)));
 			$this->t->set_var('files_list',urlencode(serialize($files)));
 			$this->t->set_var('select_prefix',$select_prefix0);
 			$this->t->set_var('select_ptype',$select_ptype0);
@@ -2375,11 +2532,11 @@
 
 		}
 
-		/*!
-		 @function  comp_commit
-		 @abstract  Receives the compress screen results, placing result in BO
-		 @author    Vinicius Cubas Brand 
-		 */
+		/**
+		  *  Receives the compress screen results, placing result in BO
+		  *
+		  * @author    Vinicius Cubas Brand 
+		  */
 		function comp_commit()
 		{
 			$files = unserialize(urldecode($this->formvar['files_list']));
@@ -2391,17 +2548,17 @@
 			$this->bo->fileCompress($files,$archname,$compression_type,$this->path,$prefix,$type);
 			ECHO '<HTML><BODY onLoad="window.opener.location.reload();window.close();"></body></html>';
 //			header('Location: '.$this->return_to_path);
-			$GLOBALS['phpgw']->common->phpgw_exit();
+			$GLOBALS['egw']->common->egw_exit();
 		}
 
-		/*!
-		 @function  decompress
-		 @abstract  Decompresses a file in current dir
-		 @author    Vinicius Cubas Brand 
+		/**
+		  *  Decompresses a file in current dir
+		  *
+		  * @author    Vinicius Cubas Brand 
 
-		 @note will show file contents. User can check/uncheck file contents,
-		       and assign prefixes to them.
-		 */
+		  * will show file contents. User can check/uncheck file contents,
+					  * and assign prefixes to them.
+		  */
 		function decompress()
 		{
 			if (!$this->base_dir_available)
@@ -2413,35 +2570,42 @@
 			$dest_path = $this->path;
 
 			$this->bo->fileDecompress($source_filename,$dest_path);
-			header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path)));
-			$GLOBALS['phpgw']->common->phpgw_exit();
-//			echo 'Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path));
+			header('Location: '.$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path)));
+			$GLOBALS['egw']->common->egw_exit();
+//			echo 'Location: '.$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path));
 		}
 
 
-		/*!
-		 @function  custom_manager
-		 @abstract  Manager for the custom fields
-		 @author    Vinicius Cubas Brand
+		/**
+		  *  Manager for the custom fields
+		  *
+		  * @author    Vinicius Cubas Brand
 
-		 @description This function is in the wrong place. As I don't have yet
-					  a parent UI class with the features of this, I cannot
-					  create (yet) in little time a ui_custom with these
-					  features. You are encouraged to FIXME, if I(vcb) am not
-					  doing it right now.
-		*/
+		  * This function is in the wrong place. As I don't have yet
+						a parent UI class with the features of this, I cannot
+						create (yet) in little time a ui_custom with these
+						features. You are encouraged to FIXME, if I(vcb) am not
+						doing it right now.
+		 */
 		function custom_manager()
 		{
+			$GLOBALS['egw_info']['flags']['noheader'] = False;
+			$GLOBALS['egw_info']['flags']['nonavbar'] = False;
+			$GLOBALS['egw_info']['flags']['nofooter'] = False;
+			$GLOBALS['egw_info']['flags']['noappheader'] = False;
+			$GLOBALS['egw_info']['flags']['enable_browser_class'] = True;
+
+
 			if (!$this->base_dir_available)
 			{
 				return '';
 			}
 			
 			//just administrator can have access to this
-            if (!$GLOBALS['phpgw_info']['user']['apps']['admin'])
-            {
-                $GLOBALS['phpgw']->common->phpgw_exit();
-            }
+						if (!$GLOBALS['egw_info']['user']['apps']['admin'])
+						{
+								$GLOBALS['egw']->common->egw_exit();
+						}
 
 			//displayed fields
 			$fields = array(
@@ -2526,9 +2690,9 @@
 							$display = ($custom_info[$key]=='Y')?'Yes':'No';
 							break;
 						case 'operations':
-							$link_edit= $GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.custom_edit&custom_id='.$custom_info['customfield_id']);
+							$link_edit= $GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.custom_edit&custom_id='.$custom_info['customfield_id']);
 
-							$link_delete = $GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.custom_manager&'.$this->eprintf('delete='.$custom_info['customfield_id']));
+							$link_delete = $GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.custom_manager&'.$this->eprintf('delete='.$custom_info['customfield_id']));
 
 							$display = '<span class="lk3" onClick="location=\''.$link_edit.'\'">Edit</span></td>';
 							$display .= '<td '.$tdopts.'><span class="lk3" onClick="custom_delete(\''.$link_delete.'\',\''.$custom_info['customfield_name'].'\')">Delete</span>';
@@ -2585,7 +2749,7 @@
 			$this->t->set_var('lang_page_description',lang('Here is the management of custom file properties.'));
 
 
-			$this->t->set_var('custom_add_link',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.custom_add'));
+			$this->t->set_var('custom_add_link',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.custom_add'));
 			$this->t->set_var('lang_custom_add_text','Add new custom file property');
 			$this->t->set_var('javascript_code',$javascript_code);
 
@@ -2600,13 +2764,13 @@
 
 		}
 
-		/*!
-		 @function  custom_edit
-		 @abstract  Handler of the operation edit of custom fields
-		 @author    Vinicius Cubas Brand
+		/**
+		  *  Handler of the operation edit of custom fields
+		  *
+		  * @author    Vinicius Cubas Brand
 
-		 @description In the wrong place too...
-		*/
+		  * In the wrong place too...
+		 */
 		function custom_edit()
 		{
 			if (!$this->base_dir_available)
@@ -2615,10 +2779,10 @@
 			}
 			
 			//just administrator can have access to this
-            if (!$GLOBALS['phpgw_info']['user']['apps']['admin'])
-            {
-                $GLOBALS['phpgw']->common->phpgw_exit();
-            }
+						if (!$GLOBALS['egw_info']['user']['apps']['admin'])
+						{
+								$GLOBALS['egw']->common->egw_exit();
+						}
 
 
 			$custom =& CreateObject('phpgwapi.vfs_customfields');
@@ -2685,8 +2849,8 @@
 			
 			//other vars
 			$form_name = 'form_edit';
-			$commit_action = "document.$form_name.action='".$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.custom_manager')."';document.$form_name.submit();";
-			$cancel_action = "location='".$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.custom_manager')."'";
+			$commit_action = "document.$form_name.action='".$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.custom_manager')."';document.$form_name.submit();";
+			$cancel_action = "location='".$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.custom_manager')."'";
 			
 			
 			$this->t->set_var('lang_custom_fields',lang('Edit Custom File Property'));
@@ -2715,25 +2879,31 @@
 		
 		}
 
-		/*!
-		 @function  custom_add
-		 @abstract  Handler of the operation add of custom fields
-		 @author    Vinicius Cubas Brand
+		/**
+		  *  Handler of the operation add of custom fields
+		  *
+		  * @author    Vinicius Cubas Brand
 
-		 @description In the wrong place too...
-		*/
+		  * In the wrong place too...
+		 */
 		function custom_add()
 		{
+			$GLOBALS['egw_info']['flags']['noheader'] = False;
+			$GLOBALS['egw_info']['flags']['nonavbar'] = False;
+			$GLOBALS['egw_info']['flags']['nofooter'] = False;
+			$GLOBALS['egw_info']['flags']['noappheader'] = False;
+			$GLOBALS['egw_info']['flags']['enable_browser_class'] = True;
+
 			if (!$this->base_dir_available)
 			{
 				return '';
 			}
 			
 			//just administrator can have access to this
-            if (!$GLOBALS['phpgw_info']['user']['apps']['admin'])
-            {
-                $GLOBALS['phpgw']->common->phpgw_exit();
-            }
+						if (!$GLOBALS['egw_info']['user']['apps']['admin'])
+						{
+								$GLOBALS['egw']->common->egw_exit();
+						}
 
 
 			$custom =& CreateObject('phpgwapi.vfs_customfields');
@@ -2817,8 +2987,8 @@
 			
 			//other vars
 			$form_name = 'form_add';
-			$commit_action = "document.$form_name.action='".$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.custom_manager')."';document.$form_name.submit();";
-			$cancel_action = "location='".$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.custom_manager')."'";
+			$commit_action = "document.$form_name.action='".$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.custom_manager')."';document.$form_name.submit();";
+			$cancel_action = "location='".$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.custom_manager')."'";
 			
 			
 			$this->t->set_var('lang_custom_fields',lang('Add Custom File Property'));
@@ -2845,13 +3015,19 @@
 			$this->display_app_footer();
 		}
 
-		/*!
-		 @function mime_manager
-		 @abstract Creates the mime management screen
-		 @author   Vinicius Cubas Brand
-		*/
+		/**
+		  * Creates the mime management screen
+		  *
+		  * @author   Vinicius Cubas Brand
+		 */
 		function mime_manager()
 		{
+			$GLOBALS['egw_info']['flags']['noheader'] = False;
+			$GLOBALS['egw_info']['flags']['nonavbar'] = False;
+			$GLOBALS['egw_info']['flags']['nofooter'] = False;
+			$GLOBALS['egw_info']['flags']['noappheader'] = False;
+			$GLOBALS['egw_info']['flags']['enable_browser_class'] = True;
+
 
 			$fieldnames = array(
 				'mime_id'    => lang('ID'),
@@ -2924,7 +3100,7 @@
 			$this->t->parse('tablerows','mime_row','true');
 
 
-			$link_onclick = $GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.mime_edit');
+			$link_onclick = $GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.mime_edit');
 			
 			$i=0;
 			foreach ($types as $type)
@@ -2942,7 +3118,7 @@
 					switch($fieldname)
 					{
 						case 'image':
-							$this->t->set_var('tdcontent','<img src="'.$GLOBALS['phpgw']->link('/filescenter/icon.php','extension='.$type['extension']).'">');
+							$this->t->set_var('tdcontent','<img src="'.$GLOBALS['egw']->link('/filescenter/icon.php','extension='.$type['extension']).'">');
 							break;
 						default:
 							$this->t->set_var('tdcontent',$type[$fieldname]);
@@ -2963,7 +3139,7 @@
 			$this->t->set_var('lang_add_instructions',lang('Add a new file type'));
 			$this->t->set_var('lang_value_addb',lang('Add a new file type'));
 
-			$this->t->set_var('link_add_file_type',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.mime_edit'));
+			$this->t->set_var('link_add_file_type',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.mime_edit'));
 			$this->t->set_var('hidden_fields','');
 			
 
@@ -2978,6 +3154,12 @@
 
 		function mime_edit()
 		{
+			$GLOBALS['egw_info']['flags']['noheader'] = False;
+			$GLOBALS['egw_info']['flags']['nonavbar'] = False;
+			$GLOBALS['egw_info']['flags']['nofooter'] = False;
+			$GLOBALS['egw_info']['flags']['noappheader'] = False;
+			$GLOBALS['egw_info']['flags']['enable_browser_class'] = True;
+
 			$fieldnames = array(
 				'mime_id'    => lang('ID'),
 				'extension'  => lang('Extension'),
@@ -3022,7 +3204,7 @@
 			else //Operation Edit
 			{
 				$this->t->set_var('lang_page_instructions',lang('Edit file type:'));
-				$this->t->set_var('button_delete','<input type="button" value="'.lang('Delete this file type').'" onclick="window.location=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.mime_manager&'.urlencode('formvar[action]').'=delete&'.urlencode('formvar[type]').'='.$type['mime_id']).'\'">');
+				$this->t->set_var('button_delete','<input type="button" value="'.lang('Delete this file type').'" onclick="window.location=\''.$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.mime_manager&'.urlencode('formvar[action]').'=delete&'.urlencode('formvar[type]').'='.$type['mime_id']).'\'">');
 			}
 
 			$i=0;
@@ -3043,7 +3225,7 @@
 				switch($fieldname)
 				{
 					case 'image':
-						$this->t->set_var('tdcontent','<img src="'.$GLOBALS['phpgw']->link('/filescenter/icon.php','extension='.$type['extension']).'"><br>Change:<input type="file" name="formvar[image]">');
+						$this->t->set_var('tdcontent','<img src="'.$GLOBALS['egw']->link('/filescenter/icon.php','extension='.$type['extension']).'"><br>Change:<input type="file" name="formvar[image]">');
 						break;
 					case 'mime_id':
 						$this->t->set_var('tdcontent',$type[$fieldname]);
@@ -3064,9 +3246,9 @@
 			$this->t->set_var('lang_but_cancel',lang('Cancel'));
 			$this->t->set_var('lang_but_submit',lang('Save'));
 
-			$this->t->set_var('cancel_url',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.mime_manager'));
+			$this->t->set_var('cancel_url',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.mime_manager'));
 			$this->t->set_var('hidden_fields','<input type="hidden" name="formvar[mime_id]" value="'.$type['mime_id'].'">');
-			$this->t->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.mime_manager'));
+			$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.mime_manager'));
 
 
 			$this->display_app_header();
@@ -3079,6 +3261,12 @@
 
 		function prefix_manager()
 		{
+			$GLOBALS['egw_info']['flags']['noheader'] = False;
+			$GLOBALS['egw_info']['flags']['nonavbar'] = False;
+			$GLOBALS['egw_info']['flags']['nofooter'] = False;
+			$GLOBALS['egw_info']['flags']['noappheader'] = False;
+			$GLOBALS['egw_info']['flags']['enable_browser_class'] = True;
+
 			if (!$this->base_dir_available)
 			{
 				return '';
@@ -3156,9 +3344,9 @@
 
 				$prefix_permissions = $vfs_prefixes->get_permissions(array('prefix_id'=>$prefix['prefix_id']));
 
-				$groups = $GLOBALS['phpgw']->accounts->get_list('groups');
+				$groups = $GLOBALS['egw']->accounts->get_list('groups');
 
-				$users = $GLOBALS['phpgw']->accounts->get_list('accounts');
+				$users = $GLOBALS['egw']->accounts->get_list('accounts');
 
 
 				$this->t->set_var('tdopts','align="right" width="40%"');
@@ -3204,9 +3392,9 @@
 					$this->t->set_var('hidden_fields','<input type="hidden" name="formvar[prefix_type]" value="'.$this->formvar['type'].'">');
 				}
 
-				$link_a = $GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.prefix_manager&ftask=manage');
+				$link_a = $GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.prefix_manager&ftask=manage');
 
-				$this->t->set_var('cancel_url',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.prefix_manager'));
+				$this->t->set_var('cancel_url',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.prefix_manager'));
 
 				$this->t->set_var('form_action',$link_a);
 
@@ -3300,7 +3488,7 @@
 			$this->t->parse('tablerows','gen_row','true');
 
 
-			$link_onclick = $GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.prefix_manager&ftask=edit');
+			$link_onclick = $GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.prefix_manager&ftask=edit');
 			
 			$i=0;
 			foreach ($prefixes as $pref)
@@ -3324,7 +3512,7 @@
 			}
 
 			$this->t->set_var('tableopts','width="90%"');
-			$this->t->set_var('link_add_file_type',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.prefix_manager&ftask=create'));
+			$this->t->set_var('link_add_file_type',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.prefix_manager&ftask=create'));
 			$this->t->set_var('lang_add_instructions',lang('Add a new prefix'));
 
 			$this->t->parse('tbl_section','table_section',false);
@@ -3354,7 +3542,7 @@
 			$this->t->parse('tablerows','gen_row','true');
 
 
-			$link_onclick = $GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.prefix_manager&ftask=edit');
+			$link_onclick = $GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.prefix_manager&ftask=edit');
 			
 			$i=0;
 			foreach ($ftypes as $pref)
@@ -3379,7 +3567,7 @@
 			}
 
 			$this->t->set_var('tableopts','width="90%"');
-			$this->t->set_var('link_add_file_type',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.prefix_manager&ftask=create&'.urlencode('formvar[type]').'=t'));
+			$this->t->set_var('link_add_file_type',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.prefix_manager&ftask=create&'.urlencode('formvar[type]').'=t'));
 			$this->t->set_var('lang_add_instructions',lang('Add a new type descriptor for File IDs'));
 
 			$this->t->parse('tbl_section','table_section',true);
@@ -3410,13 +3598,13 @@
 
 		}
 
-		/*!
-		 @function prefix_perms_select
-		 @abstract  Creates the html selects for permissions in prefixes
-                    Intimately bound to the $this->properties method
-		 @param $select_type string can be one of the {u,g}
-		 @author Vinicius Cubas Brand
-		*/
+		/**
+		  *  Creates the html selects for permissions in prefixes
+		  *
+										Intimately bound to the $this->properties method
+		  * @param $select_type string can be one of the {u,g}
+		  * @author Vinicius Cubas Brand
+		 */
 		function prefix_perms_select($select_type,$user_list)
 		{
 			if (!$this->base_dir_available)
@@ -3432,9 +3620,9 @@
 			if (!$passed)
 			{
 				//all groups in the system
-				$groups = $GLOBALS['phpgw']->accounts->get_list('groups');
+				$groups = $GLOBALS['egw']->accounts->get_list('groups');
 
-				$users = $GLOBALS['phpgw']->accounts->get_list('accounts');
+				$users = $GLOBALS['egw']->accounts->get_list('accounts');
 			
 				$passed = true;
 			}
@@ -3505,6 +3693,8 @@
 			{
 				color:#000000;
 				background-color:#B8C0FF;
+				cursor: pointer;
+				cursor: hand;
 			}
 			
 			.td_left { } 
@@ -3512,19 +3702,19 @@
 			
 			div.activetab{ 
 				border: 0px solid rgb(153, 153, 153);
-                left: 0px; 
-                top: 25px; 
-                width: 100%; 
+								left: 0px; 
+								top: 25px; 
+								width: 100%; 
 
 				display:inline; 
-            }
+						}
 			
-            div.inactivetab{ 
+						div.inactivetab{ 
 
 				border: 0px solid rgb(153, 153, 153);
-                left: 0px; 
-                top: 25px; 
-                width: 100%; 
+								left: 0px; 
+								top: 25px; 
+								width: 100%; 
 
 				display:none; 
 			}
@@ -3555,8 +3745,8 @@
 			}
 
 			.lk2:hover {
-			    text-decoration: none;
-			    font-size: 11px;
+					text-decoration: none;
+					font-size: 11px;
 				color: #000000;
 			}
 	
@@ -3575,7 +3765,7 @@
 			}
 
 			.lk3:hover {
-			    text-decoration: underline;
+					text-decoration: underline;
 			}
 	
 ';
@@ -3589,11 +3779,11 @@
 		}
 
 
-		/*!
-		@function check_set_default_prefs
-		@abstract sets the default prefs, if they are not already set (on a per pref. basis)
-		@note It sets a flag in the app-session-data to be called only once per session
-		*/
+		/**
+		 * sets the default prefs, if they are not already set (on a per pref. basis)
+		 *
+		 * It sets a flag in the app-session-data to be called only once per session
+		 */
 		function check_set_default_prefs()
 		{
 			if (!$this->base_dir_available)
@@ -3601,13 +3791,13 @@
 				return '';
 			}
 			
-			if (($set = $GLOBALS['phpgw']->session->appsession('default_prefs_set2','filescenter')))
+			if (($set = $GLOBALS['egw']->session->appsession('default_prefs_set2','filescenter')))
 			{
 				return;
 			}
-			$GLOBALS['phpgw']->session->appsession('default_prefs_set2','filescenter','set');
+			$GLOBALS['egw']->session->appsession('default_prefs_set2','filescenter','set');
 
-			$default_prefs = $GLOBALS['phpgw']->preferences->default['filescenter'];
+			$default_prefs = $GLOBALS['egw']->preferences->default['filescenter'];
 
 			$defaults = array(
 				'vfs_backups'     => 5,
@@ -3623,7 +3813,7 @@
 				'app'             => false,
 				'comment'         => false,
 				'version'         => true,
-				'proper_id'       => true,
+				'proper_id'       => false,
 				'upl_prefix'      => false,
 				'upl_type'        => false
 			);
@@ -3631,21 +3821,21 @@
 			{
 				if (!isset($default_prefs[$var]) || $default_prefs[$var] == '')
 				{
-					$GLOBALS['phpgw']->preferences->add('filescenter',$var,$default,'default');
+					$GLOBALS['egw']->preferences->add('filescenter',$var,$default,'default');
 					$need_save = True;
 				}
 			}
 			if ($need_save)
 			{
-				$prefs = $GLOBALS['phpgw']->preferences->save_repository(False,'default');
+				$prefs = $GLOBALS['egw']->preferences->save_repository(False,'default');
 				$this->prefs['filescenter'] = $prefs['filescenter'];
 			}
 			if ($this->prefs['filescenter']['send_updates'] && !isset($this->prefs['filescenter']['receive_updates']))
 			{
 				$this->prefs['filescenter']['receive_updates'] = $this->prefs['filescenter']['send_updates'];
-				$GLOBALS['phpgw']->preferences->add('filescenter','receive_updates',$this->prefs['filescenter']['send_updates']);
-				$GLOBALS['phpgw']->preferences->delete('filescenter','send_updates');
-				$prefs = $GLOBALS['phpgw']->preferences->save_repository();
+				$GLOBALS['egw']->preferences->add('filescenter','receive_updates',$this->prefs['filescenter']['send_updates']);
+				$GLOBALS['egw']->preferences->delete('filescenter','send_updates');
+				$prefs = $GLOBALS['egw']->preferences->save_repository();
 			}
 		}
 
@@ -3663,7 +3853,7 @@
 		#Checks if using vfs2.
 		function check_if_using_vfs2()
 		{
-			if ($GLOBALS['phpgw_info']['server']['file_repository'] != 'sql2')
+			if ($GLOBALS['egw_info']['server']['file_repository'] != 'sql2')
 			{
 				$this->display_app_header();
 				
@@ -3687,7 +3877,7 @@
 				}
 				else
 				{
-					if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
+					if ($GLOBALS['egw_info']['user']['apps']['admin'])
 					{
 						#Asks administrator if he wants to change from fm to fm2
 						$this->display_app_header();
@@ -3706,7 +3896,7 @@
 
 						$this->t->set_var('lang_import_no',lang('I do not want to do this import procedure now.'));
 
-						$this->t->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index'));
+						$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index'));
 						$this->t->set_var('value_button_submit',lang('Proceed'));
 						$this->t->pparse('out','wizard');
 
@@ -3728,7 +3918,7 @@
 		
 		function import_vfs2()
 		{
-			if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
+			if ($GLOBALS['egw_info']['user']['apps']['admin'])
 			{
 				$this->bo->import_vfs2();
 			}
@@ -3748,16 +3938,39 @@
 			return $this->get_files_table($id,$app);
 		}
 
+		//---------- Auxiliar functions --------------//
+		function arr2js($options)
+		{
+			$first = true;
+			foreach ($options as $key => $val)
+			{
+				if (!$first)
+				{
+					$options_str .= ',';
+				}
+				if (is_numeric($val))
+				{
+					$options_str .= "'$key': $val";
+				}
+				else
+				{
+					$options_str .= "'$key': '$val'";
+				}
+				$first = false;
+			}
+			return "{ $options_str }";
+		}
+
 		# -------------------------- RPC Functions -------------------------- #
 
 		function rpc_new_folder($params)
 		{
 			if ($params['path'])
 			{
-                $params['path'] = ereg_replace('\/*$','',$params['path']);
-                $exp_path = explode('/',$params['path']);
-                $filename = array_pop($exp_path);
-                $dirname = implode('/',$exp_path);
+								$params['path'] = ereg_replace('\/*$','',$params['path']);
+								$exp_path = explode('/',$params['path']);
+								$filename = array_pop($exp_path);
+								$dirname = implode('/',$exp_path);
 
 				if (($resp = $this->bo->createdir($dirname,urldecode($filename))) === true)
 				{
@@ -3911,11 +4124,34 @@
 					);
 			}
 			
-//			header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path)));
-//			$GLOBALS['phpgw']->common->phpgw_exit();
-//			echo 'Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path));
+//			header('Location: '.$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path)));
+//			$GLOBALS['egw']->common->egw_exit();
+//			echo 'Location: '.$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path));
 		}
 
+		function rpc_subscribe($params)
+		{
+			$default_values = array(
+				'files' => array(),
+				'operation' => 'subscribe'
+				);
+			$params = array_merge($default_values,$params);
+
+			if ($this->bo->subscribe($params))
+			{
+				return array(
+					'status' => 'ok',
+					'msg' => ($params['operation'] == 'subscribe') ? lang('Subscribed successfully') :  lang('Unsubscribed successfully')
+					);
+			}
+			else
+			{
+				return array(
+					'status' => 'fail',
+					'msg' => lang('Could not '.$params['operation'].' to files')
+					);
+			}
+		}
 	}
 
 

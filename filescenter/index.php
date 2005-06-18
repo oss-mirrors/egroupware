@@ -1,9 +1,10 @@
 <?php
 	
-	// FIXME add copyright header
 	/*
 	eGroupWare - http://www.egroupware.org
 	written by Pim Snel <pim@lingewoud.nl>
+	modified by Vinicius Cubas Brand <viniciuscb@users.sourceforge.net>
+	License: LGPL v2
 	*/
 
 
@@ -16,10 +17,10 @@
 		'nofooter'      =>      True
 	);
 
-	$GLOBALS['phpgw_info']['flags'] = $phpgw_flags;
+	$GLOBALS['egw_info']['flags'] = $phpgw_flags;
 
 	include('../header.inc.php');
 
-	Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index'));
-	$GLOBALS['phpgw']->common->phpgw_exit();
+	Header('Location: '.$GLOBALS['egw']->link('/index.php','menuaction=filescenter.ui_fm2.index'));
+	$GLOBALS['egw']->common->egw_exit();
 ?>

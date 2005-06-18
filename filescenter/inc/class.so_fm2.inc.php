@@ -1,17 +1,17 @@
 <?php
-  /***************************************************************************\
-  * eGroupWare - File Manager                                                 *
-  * http://www.egroupware.org                                                 *
-  * Written by:                                                               *
-  *  sponsored by Think.e - http://www.think-e.com.br                         *
-  * ------------------------------------------------------------------------- *
-  * Description: SO Class for file manager                                    *
-  * ------------------------------------------------------------------------- *
-  *  This program is free software; you can redistribute it and/or modify it  *
-  *  under the terms of the GNU General Public License as published by the    *
-  *  Free Software Foundation; either version 2 of the License, or (at your   *
-  *  option) any later version.                                               *
-  \***************************************************************************/
+	/***************************************************************************\
+	* eGroupWare - File Manager                                                 *
+	* http://www.egroupware.org                                                 *
+	* Written by:                                                               *
+	*  sponsored by Think.e - http://www.think-e.com.br                         *
+	* ------------------------------------------------------------------------- *
+	* Description: SO Class for file manager                                    *
+	* ------------------------------------------------------------------------- *
+	*  This program is free software; you can redistribute it and/or modify it  *
+	*  under the terms of the GNU General Public License as published by the    *
+	*  Free Software Foundation; either version 2 of the License, or (at your   *
+	*  option) any later version.                                               *
+	\***************************************************************************/
 
 
 	class so_fm2

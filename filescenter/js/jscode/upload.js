@@ -1,135 +1,101 @@
-var attcount=1;
-var att; //pointer to parent of tr's
-var selectprefix; //clone of select field for prefix
-var typeprefix; //clone of type field for prefixa
 
-var attcount2=1;
-var att2;
-var fcselectprefix;
-var fctypeprefix;
-
-function removeUpload(number)
+/**
+ * Function: addNewUpload
+ *
+ *	Adds a new upload line	
+ *
+ *	Parameters:
+ *
+ *	enable_prefix - 1, to have prefix enabled. Defaults to disabled.
+ *	enable_type - 1, to have type enabled. Defaults to disabled.
+ *	type - 'normal' (default), 'from_fc'
+ */
+function addNewUpload(options)
 {
-	if (att == null)
+	if (!options['type'])
 	{
-		att = document.getElementById("attach").parentNode;
-	}
-	if (selectprefix == null)
-	{
-		selectprefix = document.form1["prefix0"].cloneNode(true);
-		typeprefix = document.form1["type0"].cloneNode(true);
+		options['type'] = 'normal';
 	}
 
-	var div = document.form1["file"+number].parentNode.parentNode;
-	div.parentNode.removeChild(div);
-
-}
-
-function removeFCUpload(number)
-{
-	if (att2 == null)
+	if (options['type'] == 'normal')
 	{
-		att2 = document.getElementById("attachFC").parentNode;
+		var att = Element('attach');
 	}
-	if (fcselectprefix == null)
+	else if (options['type'] == 'from_fc')
 	{
-		fcselectprefix = document.form1["fcprefix0"].cloneNode(true);
-		fctypeprefix = document.form1["fctype0"].cloneNode(true);
+		var att = Element('attachFC');
 	}
 
-	var div = document.form1["fcfile"+number].parentNode.parentNode.parentNode;
-	div.parentNode.removeChild(div);
-
-}
-
-function addNewUpload(strremove)
-{
-	if (att == null)
-	{
-		att = document.getElementById("attach").parentNode;
-	}
-	if (selectprefix == null)
-	{
-		selectprefix = document.form1["prefix0"].cloneNode(true);
-		typeprefix = document.form1["type0"].cloneNode(true);
-	}
- 
+	var attcount = att.childNodes.length;
+	var fieldname;
+	
 	var tr  = document.createElement("tr");
 	var td1 = document.createElement("td");
-	var td2 = document.createElement("td");
-	var td3 = document.createElement("td");
 	var td4 = document.createElement("td");
 
-	var locSelectfield = selectprefix.cloneNode(true);
-	var locTypefield = typeprefix.cloneNode(true);
+	tr.appendChild(td1);
 
-	locSelectfield.name = 'prefix' + attcount;
-	locTypefield.name = 'type' + attcount;
-	
+	if (options['enable_prefix'])
+	{
+		var selectprefix = Element("base_prefix").cloneNode(true);
+		var locSelectfield = selectprefix.cloneNode(true);
+		var td2 = document.createElement("td");
+		
+		if (options['type'] == 'normal')
+		{
+			fieldname = 'prefix';
+		}
+		else if (options['type'] == 'from_fc')
+		{
+			fieldname = 'fcprefix';
+		}
+
+		locSelectfield.name = fieldname + attcount;
+		
+		td2.style.textAlign = 'center';
+		tr.appendChild(td2);
+		td2.appendChild(locSelectfield);
+	}
+
+	if (options['enable_type'])
+	{
+		var typeprefix = Element("base_type").cloneNode(true);
+		var locTypefield = typeprefix.cloneNode(true);
+		var td3 = document.createElement("td");
+
+		if (options['type'] == 'normal')
+		{
+			fieldname = 'type';
+		}
+		else if (options['type'] == 'from_fc')
+		{
+			fieldname = 'fctype';
+		}
+
+		locTypefield.name = fieldname + attcount;
+		td3.style.textAlign = 'center';
+		tr.appendChild(td3);
+		td3.appendChild(locTypefield);
+	}
 
 	td1.className = 'td_left';
-	td2.style.textAlign = 'center';
-	td3.style.textAlign = 'center';
 	td4.style.textAlign = 'center';
-	tr.className = (att.childNodes.length%2) ? 'row_on' : 'row_off';
+	tr.className = (attcount % 2) ? 'row_on' : 'row_off';
 
-	tr.appendChild(td1);
-	tr.appendChild(td2);
-	tr.appendChild(td3);
 	tr.appendChild(td4);
+
+	if (options['type'] == 'normal')
+	{
+		td1.innerHTML = '<input name="file'+ attcount +'" type="file" style="width:150px;"/>';
+	}
+	else if (options['type'] == 'from_fc')
+	{
+		td1.innerHTML = '<nobr><input id="fcfile'+ attcount +'" name="fcfile'+ attcount +'" type="text" style="width: 150px;"/><input type="button" value="'+GLOBALS['messages']['filescenter']['from_fc']+'" onClick="fromFilescenter(\'fcfile'+ attcount +'\')"></nobr>';
+	}
+
+	td4.innerHTML = '<input type="button" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);" value="'+GLOBALS['messages']['filescenter']['remove']+'">';
 
 	att.appendChild(tr);
-
-	td1.innerHTML = '<input name="file'+ attcount +'" type="file" style="width:150px;"/>';
-	td2.appendChild(locSelectfield);
-	td3.appendChild(locTypefield);
-	td4.innerHTML = '<input type="button" onclick="removeUpload('+ (attcount++) +')" value="'+strremove+'">';
-
-}
-
-function addNewFCUpload(strremove,str_add_from_filescenter)
-{
-	if (att2 == null)
-	{
-		att2 = document.getElementById("attachFC").parentNode;
-	}
-	if (fcselectprefix == null)
-	{
-		fcselectprefix = document.form1["fcprefix0"].cloneNode(true);
-		fctypeprefix = document.form1["fctype0"].cloneNode(true);
-	}
- 
-	var tr  = document.createElement("tr");
-	var td1 = document.createElement("td");
-	var td2 = document.createElement("td");
-	var td3 = document.createElement("td");
-	var td4 = document.createElement("td");
-
-	var locSelectfield = fcselectprefix.cloneNode(true);
-	var locTypefield = fctypeprefix.cloneNode(true);
-
-	locSelectfield.name = 'fcprefix' + attcount2;
-	locTypefield.name = 'fctype' + attcount2;
-	
-
-	td1.className = 'td_left';
-	td2.style.textAlign = 'center';
-	td3.style.textAlign = 'center';
-	td4.style.textAlign = 'center';
-	tr.className = (att2.childNodes.length%2) ? 'row_on' : 'row_off';
-
-	tr.appendChild(td1);
-	tr.appendChild(td2);
-	tr.appendChild(td3);
-	tr.appendChild(td4);
-
-	att2.appendChild(tr);
-
-	td1.innerHTML = '<nobr><input id="fcfile'+ attcount2 +'" name="fcfile'+ attcount2 +'" type="text" style="width: 150px;"/><input type="button" value="'+str_add_from_filescenter+'" onClick="fromFilescenter(\'fcfile'+ attcount2 +'\')"></nobr>';
-	td2.appendChild(locSelectfield);
-	td3.appendChild(locTypefield);
-	td4.innerHTML = '<input type="button" onclick="removeFCUpload('+ (attcount2++) +')" value="'+strremove+'"><br>';
-
 }
 
 function fromFilescenter(ret_name)

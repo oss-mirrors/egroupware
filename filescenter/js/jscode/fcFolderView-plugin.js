@@ -409,6 +409,47 @@ fcFolderViewPlugin.prototype.compress = function()
 
 
 /**
+ * Method: subscribe
+ */
+fcFolderViewPlugin.prototype.subscribe = function (p_operation)
+{
+    var checked_elms = this._get_checked_elements();
+    var count = checked_elms.length;
+
+	if (p_operation != 'subscribe' && p_operation != 'unsubscribe')
+	{
+		p_operation = 'subscribe';
+	}
+
+	if (count > 0)
+	{
+		data = { 
+			files : checked_elms,
+			operation : p_operation
+			};
+
+		xml_request_msg = js2xmlrpc('filescenter.ui_fm2.subscribe',data)
+
+		var handler = function(responseText)
+		{
+			var response = xmlrpc2js(responseText);
+
+			if (response.msg)
+			{
+				alert(response.msg);
+			}
+		}
+
+		Connector.newRequest('FilesCenterWidget.subscribe',this.postURL,'POST',handler,xml_request_msg);
+	}
+	else
+	{
+		alert(GLOBALS['messages']['filescenter']['noItemsSelected']);
+	}
+}
+
+
+/**
  * Method: extract
  *
  *
@@ -474,6 +515,24 @@ fcFolderViewPlugin.prototype.invert_selection = function()
 		}
 		//TODO change this to a method inside the current object
 		item_click(this.checkboxes[i]);
+	}
+}
+
+fcFolderViewPlugin.prototype.select_picture = function()
+{
+	var checked_elms = this._get_checked_elements();
+	if (checked_elms.length < 1)
+	{
+		alert(GLOBALS['messages']['filescenter']['noItemsSelected']);
+	}
+	else if (checked_elms.length > 1)
+	{
+		alert(GLOBALS['messages']['filescenter']['justOneItem']);
+	}
+	else
+	{
+		window.opener.SetUrl(GLOBALS['serverRoot'] + 'index.php?menuaction=filescenter.ui_fm2.view&path=' + checked_elms[0]);
+		window.close();
 	}
 }
 
