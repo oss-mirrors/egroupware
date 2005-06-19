@@ -8,6 +8,8 @@
 		var $public_functions = array(
 			'form'	=> true,
 		);
+		var $filter_user;
+		var $filter_instance;
 
 		function ui_monitorworkitems()
 		{
@@ -16,77 +18,108 @@
 
 		function form()
 		{
-			$this->order			= get_var('order', 'any', 'wf_order_id');
-			$this->sort				= get_var('sort', 'any', 'asc');
+			//overrite monitor default sort values
+			$this->order			= get_var('order', 'any', 'wf_item_id');
 			$this->sort_mode		= $this->order . '__'. $this->sort;
-	        $this->search_str 		= get_var('search_str','any','');
-		    	
-			$filter_process 		= (int)get_var('filter_process', 'any', 0);
-			$filter_activity		= (int)get_var('filter_activity', 'any', 0);
-			$filter_user			= (int)get_var('filter_user', 'any', 0);
-			$filter_instance		= (int)get_var('filter_instance', 'any', 0);
 			
-				//echo "order: <pre>";print_r($this->order);echo "</pre>";
-				//echo "where: <pre>";print_r($where);echo "</pre>";
+			//get our own filters
+			$this->filter_user		= (int)get_var('filter_user', 'any', 0);
+			$this->filter_instance		= (int)get_var('filter_instance', 'any', 0);
+			
+			//echo "order: <pre>";print_r($this->order);echo "</pre>";
+			//echo "sort_mode: <pre>";print_r($this->sort_mode);echo "</pre>";
+			
 				
-			$this->extra = array();
-			if( $filter_process ) {  
-		        $this->wheres[] = "ga.`wf_p_id`=" .$filter_process;
-				$this->extra['filter_process'] = $filter_process;
-		    }
-			if( $filter_activity ) {  
-		        $this->wheres[] = "ga.`wf_activity_id`=" .$filter_activity;
-				$this->extra['filter_activity'] = $filter_activity;
-		    }
-			if( $filter_user ) {  
-		        $this->wheres[] = "wf_user =" .$filter_user;
-				$this->extra['filter_user'] = $filter_user;
-		    }
-			if( $filter_instance != 0 ) {  
-		        $this->wheres[] = "wf_instance_id =" .$filter_instance;
-				//$this->extra['filter_instance'] = $filter_instance;
-		    }
-			else {
-				$filter_instance = '';
+			$this->link_data['search_str'] = $this->search_str;
+			if ($this->filter_process) 
+			{
+		        	$this->wheres[] = "gp.wf_p_id=".$this->filter_process;
+				$this->link_data['filter_process'] = $this->filter_process;
 			}
-			if( count($this->wheres) > 0 ) {
-		        $this->where = implode(' and ', $this->wheres);
+			if ($this->filter_activity) 
+			{  
+		        	$this->wheres[] = "ga.wf_activity_id=" .$this->filter_activity;
+				$this->link_data['filter_activity'] = $this->filter_activity;
 			}
-			else {
+			if ($this->filter_user)
+			{
+			        $this->wheres[] = "wf_user =" .$this->filter_user;
+				$this->link_data['filter_user'] = $this->filter_user;
+			}
+			if ($this->filter_instance != 0)
+			{
+		        	$this->wheres[] = "wf_instance_id =" .$this->filter_instance;
+				$this->link_data['filter_instance'] = $this->filter_instance;
+			}
+			else 
+			{
+				$this->filter_instance = '';
+			}
+			if (count($this->wheres) > 0)
+			{
+			        $this->where = implode(' and ', $this->wheres);
+			}
+			else 
+			{
 				$this->where = '';
 			}
-			if( count($this->extra) == 0 ) {
-				$this->extra = '';
-			}
-
-			$wi_users	= $this->process_monitor->monitor_list_wi_users();
-			$workitems	= $this->process_monitor->monitor_list_workitems($this->start, -1, $this->sort_mode, $this->search_str, $this->where);
-		    $this->stats= $this->process_monitor->monitor_stats();
+			
+			$wi_users	=& $this->process_monitor->monitor_list_wi_users();
+			$workitems	=& $this->process_monitor->monitor_list_workitems($this->start, $this->offset, $this->sort_mode, $this->search_str, $this->where);
 
 			$this->show_filter_process();
 			$this->show_filter_unique_activities();
 
-			$this->show_filter_user($wi_users, $filter_user);
-			$this->show_workitems_table($workitems['data']);
+			$this->show_filter_user($wi_users, $this->filter_user);
+			$this->show_workitems_table($workitems['data'], $workitems['cant']);
 
-			$this->t->set_var('filter_instance', $filter_instance);
+			$this->t->set_var('filter_instance', $this->filter_instance);
 			$this->fill_general_variables();
 			$this->finish();
 		}
 
-		function show_workitems_table($workitems_data)
+		function show_workitems_table(&$workitems_data, $total_number)
 		{
 			//_debug_array($workitems_data);
-			$this->t->set_var(array(
-				'header_id'			=> $this->nextmatchs->show_sort_order($this->sort, 'wf_item_id', $this->order, '', lang('Id')),
-				'header_process'	=> $this->nextmatchs->show_sort_order($this->sort, 'wf_procname', $this->order, '', lang('Process')),
-				'header_activity'	=> $this->nextmatchs->show_sort_order($this->sort, 'wf_act_name', $this->order, '', lang('Activity')),
-				'header_ins'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_instance_id', $this->order, '', lang('Instance')),
-				'header_num'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_order_id', $this->order, '', '#'),
-				'header_start'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_started', $this->order, '', lang('Start')),
-				'header_duration'	=> $this->nextmatchs->show_sort_order($this->sort, 'wf_duration', $this->order, '', lang('Duration')),
-				'header_user'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_user', $this->order, '', lang('User')),
-			));
+			//------------------------------------------- nextmatch --------------------------------------------
+			$this->total_records = $total_number;
+			// left and right nextmatchs arrows
+			$this->t->set_var('left',$this->nextmatchs->left(
+				$this->form_action,$this->start,$this->total_records,$this->link_data));
+			$this->t->set_var('right',$this->nextmatchs->right(
+				$this->form_action,$this->start,$this->total_records,$this->link_data));
+			//show table headers with sort
+			//warning header names are header_[name or alias of the column in the query without a dot]
+			//this is necessary for sorting
+			$header_array = array(
+				'wf_item_id'		=> lang('Id'),
+				'wf_procname'		=> lang('Process'),
+				'wf_act_name'		=> lang('Activity'),
+				'wf_instance_id'	=> lang('Inst.'),
+				'wf_order_id'		=> lang('#'),
+				'wf_started'		=> lang('Started'),
+				'wf_duration'		=> lang('Duration'),
+				'wf_user'		=> lang('User'),
+			       );
+			foreach($header_array as $col => $translation) 
+			{
+				$this->t->set_var('header_'.$col,$this->nextmatchs->show_sort_order(
+					$this->sort,$col,$this->order,'/index.php',$translation,$this->link_data));
+			}
+			
+			// info about number of rows
+			if (($this->total_records) > $this->offset)	
+			{
+				$this->t->set_var('lang_showing',lang('showing %1 - %2 of %3',
+					1+$this->start,
+					(($this->start+$this->offset) > ($this->total_records))? $this->total_records : $this->start+$this->offset,
+					$this->total_records));
+			}
+			else 
+			{
+				$this->t->set_var('lang_showing', lang('showing %1',$this->total_records));
+			}
+			// --------------------------------------- end nextmatch ------------------------------------------
 
 			$this->t->set_block('monitor_workitems', 'block_workitems_table', 'workitems_table');
 
@@ -121,7 +154,7 @@
 			if (!count($workitems_data)) $this->t->set_var('workitems_table', '<tr><td colspan="8" align="center">'. lang('There are no workitems available') .'</td></tr>');
 		}
 
-		function show_filter_user($wi_users, $filter_user)
+		function show_filter_user(&$wi_users, $filter_user)
 		{
 			$this->t->set_var('filter_user_select_all', (!$filter_user)? 'selected="selected"' : '');
 			$this->t->set_block('monitor_workitems', 'block_filter_user', 'filter_user');

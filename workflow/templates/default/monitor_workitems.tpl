@@ -1,7 +1,7 @@
 <div style="color:red; text-align:center">{message}</div>
 
 <form action="{form_action}" method="post">
-<input type="hidden" name="start" value="{start}" />
+<input type="hidden" name="start" value="0" />
 <input type="hidden" name="sort" value="{sort}" />
 <input type="hidden" name="order" value="{order}" />
 <table style="border: 1px solid black;width:100%;" cellspacing="0">
@@ -71,19 +71,29 @@
 <form action="{form_action}" method="post">
 <input type="hidden" name="start" value="{start}" />
 <input type="hidden" name="search_str" value="{search_str}" />
-<input type="hidden" name="where" value="{where}" />
 <input type="hidden" name="sort" value="{sort}" />
 <input type="hidden" name="order" value="{order}" />
 <table style="border: 1px solid black;width:100%;">
+	<tr>
+		<td colspan="8">
+		        <table style="border: 0px;width:100%; margin:0 auto">
+				<tr class="th" style="font-weight:bold">
+		                	{left}
+			        	<td><div align="center">{lang_showing}</div></td>
+			                {right}
+		        	</tr>
+			</table>
+		</td>
+	</tr>
 	<tr class="th" style="font-weight:bold">
-		<td>{header_id}</td>
-		<td>{header_process}</td>
-		<td>{header_activity}</td>
-		<td>{header_ins}</td>
-		<td>{header_num}</td>
-		<td>{header_start}</td>
-		<td>{header_duration}</td>
-		<td>{header_user}</td>
+		<td>{header_wf_item_id}</td>
+		<td>{header_wf_procname}</td>
+		<td>{header_wf_act_name}</td>
+		<td>{header_wf_instance_id}</td>
+		<td>{header_wf_order_id}</td>
+		<td>{header_wf_started}</td>
+		<td>{header_wf_duration}</td>
+		<td>{header_wf_user}</td>
 	</tr>
 	<!-- BEGIN block_workitems_table -->
 	<tr bgcolor="{color_line}">
