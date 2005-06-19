@@ -143,18 +143,19 @@
 		function fill_monitor_stats($stats)
 		{
 			$this->t->set_file('monitor_stats_tpl', 'monitor_stats.tpl');
+			$numprocs = $stats['processes'];
+			$actprocs = $stats['active_processes'];
+			$runprocs = $stats['running_processes'];
 			$this->t->set_var(array(
-				'processes'			=> $stats['processes'],
-				'active_processes'		=> $stats['active_processes'],
-				'running_processes'		=> $stats['running_processes'],
+				'stats_processes_info'		=> lang('%1 processes (%2 active) (%3 being_run)',$numprocs, $actprocs, $runprocs),
 				'href_active_instances'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=active'),
-				'active_instances'		=> $stats['active_instances'],
+				'stats_active_instances'	=> lang('%1 active', $stats['active_instances']),
 				'href_completed_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=completed'),
-				'completed_instances'		=> $stats['completed_instances'],
+				'stats_completed_instances'	=> lang('%1 completed',$stats['completed_instances']),
 				'href_aborted_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=aborted'),
-				'aborted_instances'		=> $stats['aborted_instances'],
+				'stats_aborted_instances'	=> lang('%1 aborted',$stats['aborted_instances']),
 				'href_exception_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=exception'),
-				'exception_instances'		=> $stats['exception_instances'],
+				'stats_exception_instances'	=> lang('%1 exception',$stats['exception_instances']),
 			));
 			$this->translate_template('monitor_stats_tpl');
 			return $this->t->parse('monitor_stats', 'monitor_stats_tpl');
