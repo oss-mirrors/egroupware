@@ -381,12 +381,13 @@ class ProcessMonitor extends Base {
     }
     if($find) {
       $findesc = $this->qstr('%'.$find.'%');
-      $mid.=" and (`wf_properties` like $findesc)";
+      $mid.=" and ((`wf_properties` like $findesc) or (gp.wf_name like $findesc) or (ga.wf_name like $findesc))";
     }
 // TODO: retrieve instance status as well
-    $query = "select `wf_item_id`,`wf_ended`-`wf_started` as wf_duration,ga.`wf_is_interactive`, ga.`wf_type`,gp.`wf_name` as wf_procname,gp.`wf_version`,ga.`wf_name` as wf_act_name,";
-    $query.= "ga.`wf_activity_id`,`wf_instance_id`,`wf_order_id`,`wf_properties`,`wf_started`,`wf_ended`,`wf_user` from `".GALAXIA_TABLE_PREFIX."workitems` gw,`".GALAXIA_TABLE_PREFIX."activities` ga,`".GALAXIA_TABLE_PREFIX."processes` gp ";
-    $query.= "where gw.`wf_activity_id`=ga.`wf_activity_id` and ga.`wf_p_id`=gp.`wf_p_id` $mid order by gp.`wf_p_id` desc,".$this->convert_sortmode($sort_mode);
+    $query = 'select wf_item_id,wf_ended-wf_started as wf_duration,ga.wf_is_interactive, ga.wf_type,gp.wf_name as wf_procname,gp.wf_version,ga.wf_name as wf_act_name,';
+    $query.= 'ga.wf_activity_id,wf_instance_id,wf_order_id,wf_properties,wf_started,wf_ended,wf_user';
+    $query.= ' from '.GALAXIA_TABLE_PREFIX.'workitems gw,'.GALAXIA_TABLE_PREFIX.'activities ga,'.GALAXIA_TABLE_PREFIX.'processes gp';
+    $query.= ' where gw.wf_activity_id=ga.wf_activity_id and ga.wf_p_id=gp.wf_p_id '.$mid.' order by '.$this->convert_sortmode($sort_mode);
     $query_cant = "select count(*) from `".GALAXIA_TABLE_PREFIX."workitems` gw,`".GALAXIA_TABLE_PREFIX."activities` ga,`".GALAXIA_TABLE_PREFIX."processes` gp where gw.`wf_activity_id`=ga.`wf_activity_id` and ga.`wf_p_id`=gp.`wf_p_id` $mid";
     $result = $this->query($query,$wherevars,$maxRecords,$offset);
     $cant = $this->getOne($query_cant,$wherevars);
