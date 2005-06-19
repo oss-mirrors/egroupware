@@ -64,7 +64,7 @@
 		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
 		 $this->phpgw_db->next_record();
 
-		 $this->site_db 				= CreateObject('phpgwapi.db');
+		 $this->site_db =& new egw_db();
 
 		 // if servertype is develment use dev site settings else use normal settings
 		 if($this->config["server_type"]=='dev' && $this->phpgw_db->f('dev_site_db_name'))
@@ -92,7 +92,7 @@
 
 	  function test_db_conn($data)
 	  {
-		 $this->test_db = CreateObject('phpgwapi.db');
+		 $this->test_db =& new egw_db();
 
 		 // if servertype is develment use dev site settings else use normal settings
 		 if($this->config["server_type"]=='dev' && $data[dev_site_db_name])
