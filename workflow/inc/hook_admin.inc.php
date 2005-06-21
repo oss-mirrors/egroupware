@@ -16,10 +16,7 @@
 	$file = Array(	
 		'Site Configuration' 	=> $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
 		'Admin Processes'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_adminprocesses.form'),
-		'Monitor Processes'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitorprocesses.form'),
-		'Monitor Activities'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitoractivities.form'),
-		'Monitor Instances'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitorinstances.form'),
-		'Monitor Work Items'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitorworkitems.form')		  
+		'Monitoring'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitors.form'),
 	);
 //Do not modify below this line
 	display_section($appname,$title,$file);
