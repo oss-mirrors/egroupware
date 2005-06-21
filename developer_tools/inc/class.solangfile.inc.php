@@ -99,40 +99,6 @@
 					break;
 			}
 			$GLOBALS['file'] = array();
-			if (!function_exists('display_sidebox'))
-			{
-				function display_sidebox($appname,$menu_title,$file)	// hook_sidebox_menu
-				{
-					if (!is_array($file)) return;
-
-					unset($file['_NewLine_']);
-					if (is_array($GLOBALS['file']))
-					{
-						$GLOBALS['file'] = $file;
-					}
-					else
-					{
-						$GLOBALS['file'] += $file;
-					}
-				}
-				function display_section($appname,$file,$file2='')		// hook_preferences, hook_admin
-				{
-					if (is_array($file2))
-					{
-						$file = $file2;
-					}
-					if (!is_array($file)) return;
-
-					if (is_array($GLOBALS['file']))
-					{
-						$GLOBALS['file'] = $file;
-					}
-					else
-					{
-						$GLOBALS['file'] += $file;
-					}
-				}
-			}
 			unset($GLOBALS['acl_manager']);
 
 			ob_start();		// suppress all output
@@ -419,6 +385,44 @@
 			$GLOBALS['phpgw']->translation->install_langs($userlangs,'addmissing',$app_name);
 
 			return lang('done');
+		}
+	}
+
+	/*
+	 * Helper functions for searching new phrases in sidebox, preferences or admin menus
+	 */
+	if (!function_exists('display_sidebox') && $_GET['menuaction'] == 'developer_tools.uilangfile.missingphrase')
+	{
+		function display_sidebox($appname,$menu_title,$file)	// hook_sidebox_menu
+		{
+			if (!is_array($file)) return;
+
+			unset($file['_NewLine_']);
+			if (is_array($GLOBALS['file']))
+			{
+				$GLOBALS['file'] = $file;
+			}
+			else
+			{
+				$GLOBALS['file'] += $file;
+			}
+		}
+		function display_section($appname,$file,$file2='')		// hook_preferences, hook_admin
+		{
+			if (is_array($file2))
+			{
+				$file = $file2;
+			}
+			if (!is_array($file)) return;
+
+			if (is_array($GLOBALS['file']))
+			{
+				$GLOBALS['file'] = $file;
+			}
+			else
+			{
+				$GLOBALS['file'] += $file;
+			}
 		}
 	}
 ?>
