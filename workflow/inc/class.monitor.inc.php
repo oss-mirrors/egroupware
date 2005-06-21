@@ -1,12 +1,10 @@
 <?php
 
-	include(dirname(__FILE__) . SEP . 'class.workflow.inc.php');
+	include(dirname(__FILE__) . SEP . 'class.bo_workflow_forms.inc.php');
 
-	class monitor extends workflow
+	class monitor extends bo_workflow_forms
 	{
 		var $process_monitor;
-
-		var $template_name;
 
 		var $all_processes;
 
@@ -15,17 +13,9 @@
 		var $filter_process;
 		var $filter_activity;
 		
-		//link to the curent form
-		var $form_action;
-		var $link_data;
-		
-		//used for nextmatchs
-		var $offset;
-		var $total_records;
-
 		function monitor($template_name)
 		{
-			parent::workflow();
+			parent::bo_workflow_forms($template_name);
 			
 		        //regis: acl check
 			if(!$GLOBALS['phpgw']->acl->check('run',1,'admin'))
@@ -41,16 +31,6 @@
 				}
 			}
 			
-			// number of rows allowed
-                        if ($GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'] > 0) 
-                        {
-                        	$this->offset = $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
-			}
-			else
-			{
-				$this->offset = 15;
-			}
-
 			//retrieving common filters and stats common for all monitor forms
 			$this->process_monitor	=& CreateObject('workflow.workflow_processmonitor');
 			$this->all_processes	=& $this->process_monitor->monitor_list_processes(0, -1, 'wf_name__desc', '', '');
@@ -58,27 +38,6 @@
 			$this->stats 		=& $this->process_monitor->monitor_stats();
 			$this->filter_process	= get_var('filter_process', 'any', '');
 			$this->filter_activity	= get_var('filter_activity', 'any', '');
-			//nextmatchs
-			$this->order			= get_var('order', 'any', 'wf_last_modif');
-			$this->start			= get_var('start', 'any', 0);
-			$this->sort			= get_var('sort', 'any', 'desc');
-			$this->sort_mode		= $this->order . '__' . $this->sort;
-			$this->search_str		= get_var('search_str', 'any','');
-
-			$this->template_name = $template_name;
-			$class_name = explode('_', $this->template_name);
-			$class_name = implode('', $class_name);
-			$this->form_action = $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_'. $class_name .'.form');
-
-			$title = explode('_', $this->template_name);
-			$title[0] = ucfirst($title[0]);
-			$title[1] = ucfirst($title[1]);
-			$title = implode(' ', $title);
-			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang($title);
-			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
-
-			$this->t->set_file($this->template_name, $this->template_name . '.tpl');
 		}
 
 		function show_filter_process()
@@ -142,34 +101,37 @@
 		//!fill general datas of monitor forms 
 		/*!
 		theses datas are:
-			$message	:
-			$search_str	: search string for research
-			$start		: nextmatch: number of the first row
-			$sort		: nextmatch: current sort header
-			$order		: nextmatch: asc or desc
-			$form_action	: link to the monitor subclass
 			$monitor_stats	: stats about the current monitor
+			others: all datas defined in bo_workflow_form->fill_form_variables
 		*/
 		function fill_general_variables()
 		{
+			$this->fill_form_variables();
 			$this->t->set_var(array(
-				'message'			=> implode('<br>', $this->message),
-				'start'				=> $this->start,
-				'search_str'			=> $this->search_str,
-				'sort'				=> $this->sort,
-				'order'				=> $this->order,
-				'form_action'			=> $this->form_action,
 				'monitor_stats'			=> $this->fill_monitor_stats($this->stats),
 			));
 		}
 
 
-		function finish()
+		function fill_monitor_stats($stats)
 		{
-			$this->translate_template($this->template_name);
-			$this->t->pparse('output', $this->template_name);
-			$GLOBALS['phpgw']->common->phpgw_footer();
+			$this->t->set_file('monitor_stats_tpl', 'monitor_stats.tpl');
+			$numprocs = $stats['processes'];
+			$actprocs = $stats['active_processes'];
+			$runprocs = $stats['running_processes'];
+			$this->t->set_var(array(
+				'stats_processes_info'		=> lang('%1 processes (%2 active) (%3 being_run)',$numprocs, $actprocs, $runprocs),
+				'href_active_instances'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=active'),
+				'stats_active_instances'	=> lang('%1 active', $stats['active_instances']),
+				'href_completed_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=completed'),
+				'stats_completed_instances'	=> lang('%1 completed',$stats['completed_instances']),
+				'href_aborted_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=aborted'),
+				'stats_aborted_instances'	=> lang('%1 aborted',$stats['aborted_instances']),
+				'href_exception_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=exception'),
+				'stats_exception_instances'	=> lang('%1 exception',$stats['exception_instances']),
+			));
+			$this->translate_template('monitor_stats_tpl');
+			return $this->t->parse('monitor_stats', 'monitor_stats_tpl');
 		}
-
 	}
 ?>

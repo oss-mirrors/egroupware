@@ -5,25 +5,23 @@
 		var $public_functions = array(
 			'export'	=> true,
 		);
+		//the template
 		var $t;
 
 		var $wf_p_id;
 
 		var $message = array();
 
+		//TODO: when migration to bo_workflow_forms will be closed erase theses vars--------------
+		//nextmatchs (max number of rows per page) and associated vars
 		var $nextmatchs;
-
-		var $start;
-
-		var $total;
-
-		var $order;
-
-		var $sort;
-
+		var $start; //actual starting row number
+		var $total_records; //total number of rows
+		var $order; //column used for order
+		var $sort; //ASC or DESC
+		var $sort_mode; //combination of order and sort
 		var $search_str;
-
-		var $sort_mode;
+		//------------------------------------------------------------------------------------------
 
 		var $stats;
 
@@ -41,7 +39,7 @@
 
 			$this->t		= $GLOBALS['phpgw']->template;
 			$this->wf_p_id		= (int)get_var('p_id', 'any', 0);
-			$this->start		= (int)get_var('start', 'GET', 0);
+			$this->start		= (int)get_var('start', 'any', 0);
 			$this->search_str	= get_var('find', 'any', '');
 			$this->nextmatchs	=& CreateObject('phpgwapi.nextmatchs');
 		}
@@ -138,27 +136,6 @@
 					$ic="no-activity.gif";
 			}
 			return '<img src="'. $GLOBALS['phpgw']->common->image('workflow', $ic) .'" alt="'. lang($type) .'" title="'. lang($type) .'" />';
-		}
-
-		function fill_monitor_stats($stats)
-		{
-			$this->t->set_file('monitor_stats_tpl', 'monitor_stats.tpl');
-			$numprocs = $stats['processes'];
-			$actprocs = $stats['active_processes'];
-			$runprocs = $stats['running_processes'];
-			$this->t->set_var(array(
-				'stats_processes_info'		=> lang('%1 processes (%2 active) (%3 being_run)',$numprocs, $actprocs, $runprocs),
-				'href_active_instances'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=active'),
-				'stats_active_instances'	=> lang('%1 active', $stats['active_instances']),
-				'href_completed_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=completed'),
-				'stats_completed_instances'	=> lang('%1 completed',$stats['completed_instances']),
-				'href_aborted_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=aborted'),
-				'stats_aborted_instances'	=> lang('%1 aborted',$stats['aborted_instances']),
-				'href_exception_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=exception'),
-				'stats_exception_instances'	=> lang('%1 exception',$stats['exception_instances']),
-			));
-			$this->translate_template('monitor_stats_tpl');
-			return $this->t->parse('monitor_stats', 'monitor_stats_tpl');
 		}
 
 		function translate_template($template_name)
