@@ -81,14 +81,7 @@
 		function show_activities_table(&$activities_data, $total_number)
 		{
 			//_debug_array($activities_data);
-			//------------------------------------------- nextmatch --------------------------------------------
-			$this->total_records = $total_number;
-			// left and right nextmatchs arrows
-			$this->t->set_var('left',$this->nextmatchs->left(
-				$this->form_action,$this->start,$this->total_records,$this->link_data));
-			$this->t->set_var('right',$this->nextmatchs->right(
-				$this->form_action,$this->start,$this->total_records,$this->link_data));
-			//show table headers with sort
+			
 			//warning header names are header_[name or alias of the column in the query without a dot]
 			//this is necessary for sorting
 			$header_array = array(
@@ -97,26 +90,9 @@
 				'wf_type'		=> lang('Type'),
 				'wf_is_interactive'	=> lang('Int.'),
 				'wf_is_autorouted'	=> lang('Routing'),
-			       );
-			foreach($header_array as $col => $translation) 
-			{
-				$this->t->set_var('header_'.$col,$this->nextmatchs->show_sort_order(
-					$this->sort,$col,$this->order,'/index.php',$translation,$this->link_data));
-			}
+			);
 			
-			// info about number of rows
-			if (($this->total_records) > $this->offset)	
-			{
-				$this->t->set_var('lang_showing',lang('showing %1 - %2 of %3',
-					1+$this->start,
-					(($this->start+$this->offset) > ($this->total_records))? $this->total_records : $this->start+$this->offset,
-					$this->total_records));
-			}
-			else 
-			{
-				$this->t->set_var('lang_showing', lang('showing %1',$this->total_records));
-			}
-			// --------------------------------------- end nextmatch ------------------------------------------
+			$this->fill_nextmatchs($header_array,$total_number);
 
 			$this->t->set_block('monitor_activities', 'block_act_table', 'act_table');
 			if (!$activities_data) {
