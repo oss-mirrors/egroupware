@@ -11,28 +11,42 @@
 
 	/* $Id$ */
 {
-	$menu_title = $GLOBALS['phpgw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
+	$apptitle = $GLOBALS['phpgw_info']['apps'][$appname]['title'];
+	// Configuration
 	$file = Array();
-
+	$menu_title = lang('%1 Configuration', $apptitle);
 	// checking for workflow admin acl
 	if ( ($GLOBALS['phpgw']->acl->check('admin_workflow',1,'workflow')) || ($GLOBALS['phpgw']->acl->check('run',1,'admin')) )
 	{
 		$file['Admin Processes']	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_adminprocesses.form');
+		$file['Default config values']	= $GLOBALS['phpgw']->link('/index.php',array(
+			'menuaction'	=>	'admin.uiconfig.index',
+			'appname' 	=>	$appname,
+		));
 	}
+	$file['Workflow Preferences'] = $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=workflow');
+	display_sidebox($appname,$menu_title,$file);
 
+	//Monitoring
 	//checking for workflow monitoring acl
 	if ( ($GLOBALS['phpgw']->acl->check('monitor_workflow',1,'workflow')) || ($GLOBALS['phpgw']->acl->check('run',1,'admin')) )
 	{
-		$file['Monitor Processes']	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitorprocesses.form');
-		$file['Monitor Activities']	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitoractivities.form');
-		$file['Monitor Instances']	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitorinstances.form');
-		$file['Monitor Work Items']	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitorworkitems.form');		  
+		$file = Array();
+		$menu_title		= lang('%1 Monitoring', $apptitle);
+		$file['Monitors']	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitors.form');
+		display_sidebox($appname,$menu_title,$file);
 	}
 	
 	// no acl
-	$file['User Processes'] 	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_userprocesses.form');
-	$file['User Activities']	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_useractivities.form');
-	$file['User Instances']		= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_userinstances.form');
+	$file = Array();
+	$menu_title = lang('%1 Menu', $apptitle);
+	$file['New Instance']         	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_useropeninstance.form');
+	//$file['Global activities']     	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_useropenticket.form')
+	$file['My Instances']		= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_userinstances.form');
+	//$file['All Instances']		= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_userinstances.form');
+	$file['My Activities']	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_useractivities.form');
+	$file['My Processes'] 	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_userprocesses.form');
+
 	display_sidebox($appname,$menu_title,$file);
 }
 ?>
