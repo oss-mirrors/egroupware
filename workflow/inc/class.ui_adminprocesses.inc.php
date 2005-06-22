@@ -94,6 +94,32 @@
 						'role_give_exception_right'             => 'yesno',
 			);
 
+			if( isset($_POST['upload']))
+			{
+				if ($_FILES['userfile1']['size'] == 0)
+				{ 
+					die("Bad upload!"); 
+				}
+				
+				echo $_FILES['userfile1']['type'];
+				if ($_FILES['userfile1']['type'] != "text/xml") { die("Invalid file format!"); } 				
+				//if ($_FILES['userfile1']['type'] != "text/xml" && $_FILES['file']['type'] != "image/jpeg" && $_FILES['file']['type'] != "image/pjpeg") { die("Invalid file format!"); } 				
+				$fh = fopen ($_FILES['userfile1']['tmp_name'], "r") or die("Could not open file");
+
+				// read file
+				$date = '';
+				while (!feof($fh))
+				{
+				   $data .= fgets($fh);
+				   //echo $data;
+				}
+				// close file
+				fclose ($fh); 
+
+				$process_data = $this->process_manager->unserialize_process($data);
+				//_debug_array($process_data);
+				$this->process_manager->import_process($process_data);
+			}
 			// delete processes
 			if (isset($_POST['delete']))
 			{
