@@ -151,7 +151,7 @@ class ProcessManager extends BaseManager {
     Creates  a process PHP data structure from its XML 
     representation
   */
-  function unserialize_process($xml) 
+  function unserialize_process(&$xml) 
   {
     // Create SAX parser assign this object as base for handlers
     // handlers are private methods defined below.
@@ -194,6 +194,7 @@ class ProcessManager extends BaseManager {
         for($j=0;$j<count($this->tree[$z]['children']);$j++) {
           $z2 = $this->tree[$z]['children'][$j];
           // this is a config $name = $this->tree[$z2]['name'];
+          $aux = Array();
           if($this->tree[$z2]['name']=='config') {
             for($k=0;$k<count($this->tree[$z2]['children']);$k++) {
               $z3 = $this->tree[$z2]['children'][$k];
@@ -210,6 +211,7 @@ class ProcessManager extends BaseManager {
         for($j=0;$j<count($this->tree[$z]['children']);$j++) {
           $z2 = $this->tree[$z]['children'][$j];
           // this is an activity $name = $this->tree[$z2]['name'];
+          $aux = Array();
           if($this->tree[$z2]['name']=='activity') {
             for($k=0;$k<count($this->tree[$z2]['children']);$k++) {
               $z3 = $this->tree[$z2]['children'][$k];
@@ -236,6 +238,7 @@ class ProcessManager extends BaseManager {
         for($j=0;$j<count($this->tree[$z]['children']);$j++) {
           $z2 = $this->tree[$z]['children'][$j];
           // this is an activity $name = $this->tree[$z2]['name'];
+          $aux=Array();
           if($this->tree[$z2]['name']=='transition') {
             for($k=0;$k<count($this->tree[$z2]['children']);$k++) {
               $z3 = $this->tree[$z2]['children'][$k];
@@ -264,8 +267,9 @@ class ProcessManager extends BaseManager {
    Creates a process from the process data structure, if you want to 
    convert an XML to a process then use first unserialize_process
    and then this method.
+   return true if everything seems ok
   */
-  function import_process($data)
+  function import_process(&$data)
   {
     //Now the show begins
     $am = new ActivityManager($this->db);
@@ -281,6 +285,12 @@ class ProcessManager extends BaseManager {
       'config' => $data['configs'],
     );
 
+    if ($this->process_name_exists($vars['wf_name'], $vars['wf_version']))
+    {
+      $msg = sprintf(tra('Process %s %s already exists, the import process was aborted'),$vars['wf_name'],$vars['wf_version']);
+      $this->notify_all(2,$msg);
+      return false;
+    }
     $pid = $this->replace_process(0,$vars,false);
     //Put the shared code 
     $proc_info = $this->get_process($pid);
@@ -293,7 +303,6 @@ class ProcessManager extends BaseManager {
     // Foreach activity create activities
     foreach($data['activities'] as $activity) {
 		
-		_debug_array($activity);
       $vars = Array(
         'wf_name' => $activity['name'],
         'wf_description' => $activity['description'],
@@ -355,6 +364,7 @@ class ProcessManager extends BaseManager {
     unset($rm);
     $msg = sprintf(tra('Process %s %s imported'),$proc_info['wf_name'],$proc_info['wf_version']);
     $this->notify_all(2,$msg);
+    return true;
   }
 
   /*!
@@ -576,10 +586,11 @@ class ProcessManager extends BaseManager {
     Updates or inserts a new process in the database, $vars is an associative
     array containing the fields to update or to insert as needed.
     Configuration options should be in an array associated with the 'config' key
-    this array should contain 'wf_config_name', 'wf_config_value' and 'wf_config_value_int' keys.
-    $pId is the processId
+    this config array should contain 'wf_config_name', 'wf_config_value' and 'wf_config_value_int' keys.
+    $pId is the processI. If $pId is 0 then we create a new process, else we are in edit mode.
+    if $create is true start and end activities will be created (when importing use $create=false).
   */
-  function replace_process($pId, $vars, $create = true)
+  function replace_process($pId, &$vars, $create = true)
   {
     $TABLE_NAME = GALAXIA_TABLE_PREFIX."processes";
     $now = date("U");
@@ -594,11 +605,10 @@ class ProcessManager extends BaseManager {
         $config_array_init =& $value; 
         // rebuild a nice config_array with type of config and value
         if( is_array($config_array_init) && count($config_array_init) > 0 )
-		{
-			// TODO: may need to find if there are default values that we need here.
+	{
 	        foreach($config_array_init as $config) 
 	        {
-	          if (isset($config['wf_config_value_int'])) 
+	          if (isset($config['wf_config_value_int']) && (!($config['wf_config_value_int']==''))) 
 	          {
 	            $config_array[$config['wf_config_name']] = array('int' => $config['wf_config_value_int']);
 	          }
@@ -610,9 +620,9 @@ class ProcessManager extends BaseManager {
 	            }
 	          }
 	        }
-	        //no need to keep it in the vars array, this array is used in queries
-	        unset($vars['config']);
         }
+	//no need to keep it in the vars array, this array is used in queries
+	unset($vars['config']);
       }
       else // not config, it's just process's fields values
       {
