@@ -158,6 +158,7 @@ class ProcessManager extends BaseManager {
     // keep contexts and parse
     $this->parser = xml_parser_create(); 
     xml_parser_set_option($this->parser,XML_OPTION_CASE_FOLDING,0);
+    //xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE, 1);
     xml_set_object($this->parser, $this);
     xml_set_element_handler($this->parser, "_start_element_handler", "_end_element_handler");
     xml_set_character_data_handler($this->parser, "_data_handler"); 
@@ -169,6 +170,8 @@ class ProcessManager extends BaseManager {
     );
     $this->tree[0]=$aux;
     $this->current=0;
+	
+	
     if (!xml_parse($this->parser, $xml, true)) {
        $error = sprintf("XML error: %s at line %d",
                     xml_error_string(xml_get_error_code($this->parser)),
@@ -177,7 +180,7 @@ class ProcessManager extends BaseManager {
     }
     xml_parser_free($this->parser);   
     // Now that we have the tree we can do interesting things
-    //print_r($this->tree);
+    
     $process=Array();
     $activities=Array();
     $transitions=Array();
@@ -269,12 +272,12 @@ class ProcessManager extends BaseManager {
     $rm = new RoleManager($this->db);
     // First create the process
     $vars = Array(
-      'name' => $data['name'],
-      'version' => $data['version'],
-      'description' => $data['description'],
-      'lastModif' => $data['lastModif'],
-      'isActive' => $data['isActive'],
-      'isValid' => $data['isValid'],
+      'wf_name' => $data['name'],
+      'wf_version' => $data['version'],
+      'wf_description' => $data['description'],
+      'wf_last_modif' => $data['lastModif'],
+      'wf_is_active' => $data['isActive'],
+      'wf_is_valid' => $data['isValid'],
       'config' => $data['configs'],
     );
 
@@ -283,50 +286,61 @@ class ProcessManager extends BaseManager {
     $proc_info = $this->get_process($pid);
     $wf_procname = $proc_info['wf_normalized_name'];
     $fp = fopen(GALAXIA_PROCESSES.SEP."$wf_procname".SEP."code".SEP."shared.php","w");
-    fwrite($fp,$data['sharedCode']);
+	fwrite($fp, $data['sharedCode']);
     fclose($fp);
     $actids = Array();
     
     // Foreach activity create activities
     foreach($data['activities'] as $activity) {
+		
+		_debug_array($activity);
       $vars = Array(
-        'name' => $activity['wf_name'],
-        'description' => $activity['wf_description'],
-        'type' => $activity['wf_type'],
-        'lastModif' => $activity['wf_lastModif'],
-        'isInteractive' => $activity['wf_is_interactive'],
-        'isAutoRouted' => $activity['wf_is_autorouted']
+        'wf_name' => $activity['name'],
+        'wf_description' => $activity['description'],
+        'wf_type' => $activity['type'],
+        'wf_last_modif' => $activity['lastModif'],
+        'wf_is_interactive' => $activity['isInteractive'],
+        'wf_is_autorouted' => $activity['isAutoRouted']
       );    
-      $actname=$am->_normalize_name($activity['wf_name']);
+      $actname=$am->_normalize_name($activity['name']);
       
       $actid = $am->replace_activity($pid,0,$vars);
-      $fp = fopen(GALAXIA_PROCESSES.SEP."$wf_procname".SEP."code".SEP."activities".SEP."$actname".'.php',"w");
-      fwrite($fp,$activity['code']);
+	  
+	  $filename = GALAXIA_PROCESSES.SEP."$wf_procname".SEP."code".SEP."activities".SEP."$actname".'.php';
+	  //echo "filename = $filename";
+      $fp = fopen($filename,"w");
+      //$fp = fopen(GALAXIA_PROCESSES.SEP."$wf_procname".SEP."code".SEP."activities".SEP."$actname".'.php',"w");
+	  
+	  //echo "code = ++++".$activity['code']."++++";
+      fwrite($fp, $activity['code']);
       fclose($fp);
       if($activity['isInteractive']=='y') {
         $fp = fopen(GALAXIA_PROCESSES.SEP."$wf_procname".SEP."code".SEP."templates".SEP."$actname".'.tpl',"w");
         fwrite($fp,$activity['template']);
         fclose($fp);
       }
-      $actids[$activity['name']] = $am->_get_activity_id_by_name($pid,$activity['wf_name']);
-      $actname = $am->_normalize_name($activity['wf_name']);
+      $actids[$activity['name']] = $am->_get_activity_id_by_name($pid, $activity['name']);
+      $actname = $am->_normalize_name($activity['name']);
       $now = date("U");
 
-      foreach($activity['wf_roles'] as $role) {
-        $vars = Array(
-          'name' => $role,
-          'description' => $role,
-          'lastModif' => $now,
-        );
-        if(!$rm->role_name_exists($pid,$role)) {
-          $rid=$rm->replace_role($pid,0,$vars);
-        } else {
-          $rid = $rm->get_role_id($pid,$role);
-        }
-        if($actid && $rid) {
-          $am->add_activity_role($actid,$rid);
-        }
-      }
+	  if( is_array($activity['roles']) && count($activity['roles']) > 0 )
+	  {
+	      foreach($activity['roles'] as $role) {
+	        $vars = Array(
+	          'wf_name' => $role,
+	          'wf_description' => $role,
+	          'wf_last_modif' => $now,
+	        );
+	        if(!$rm->role_name_exists($pid,$role)) {
+	          $rid=$rm->replace_role($pid,0,$vars);
+	        } else {
+	          $rid = $rm->get_role_id($pid,$role);
+	        }
+	        if($actid && $rid) {
+	          $am->add_activity_role($actid,$rid);
+	        }
+	      }
+	  }
     }
     foreach($data['transitions'] as $tran) {
       $am->add_transition($pid,$actids[$tran['from']],$actids[$tran['to']]);  
@@ -572,28 +586,33 @@ class ProcessManager extends BaseManager {
     $vars['wf_last_modif']=$now;
     $vars['wf_normalized_name'] = $this->_normalize_name($vars['wf_name'],$vars['wf_version']);        
     $config_array = array();
+	
     foreach($vars as $key=>$value)
     {
       if ($key=='config')
       {
         $config_array_init =& $value; 
         // rebuild a nice config_array with type of config and value
-        foreach($config_array_init as $config) 
-        {
-          if (isset($config['wf_config_value_int'])) 
-          {
-            $config_array[$config['wf_config_name']] = array('int' => $config['wf_config_value_int']);
-          }
-          else
-          {
-            if (isset($config['wf_config_value'])) 
-            {
-              $config_array[$config['wf_config_name']] = array('text' => $config['wf_config_value']);
-            }
-          }
+        if( is_array($config_array_init) && count($config_array_init) > 0 )
+		{
+			// TODO: may need to find if there are default values that we need here.
+	        foreach($config_array_init as $config) 
+	        {
+	          if (isset($config['wf_config_value_int'])) 
+	          {
+	            $config_array[$config['wf_config_name']] = array('int' => $config['wf_config_value_int']);
+	          }
+	          else
+	          {
+	            if (isset($config['wf_config_value'])) 
+	            {
+	              $config_array[$config['wf_config_name']] = array('text' => $config['wf_config_value']);
+	            }
+	          }
+	        }
+	        //no need to keep it in the vars array, this array is used in queries
+	        unset($vars['config']);
         }
-        //no need to keep it in the vars array, this array is used in queries
-        unset($vars['config']);
       }
       else // not config, it's just process's fields values
       {
@@ -786,12 +805,13 @@ class ProcessManager extends BaseManager {
     closedir($h);   
   }
 
-  function _start_element_handler($parser,$element,$attribs)
+  function _start_element_handler($parser, $element, $attribs)
   {
     $aux=Array('name'=>$element,
                'data'=>'',
                'parent' => $this->current,
                'children'=>Array());
+			   
     $i = count($this->tree);           
     $this->tree[$i] = $aux;
 
@@ -800,7 +820,7 @@ class ProcessManager extends BaseManager {
   }
 
 
-  function _end_element_handler($parser,$element)
+  function _end_element_handler($parser, $element)
   {
     //when a tag ends put text
     $this->tree[$this->current]['data']=$this->buffer;           
@@ -809,9 +829,9 @@ class ProcessManager extends BaseManager {
   }
 
 
-  function _data_handler($parser,$data)
+  function _data_handler($parser, $data)
   {
-    $this->buffer.=$data;
+	  $this->buffer .= $data;
   }
 
   //! return an associative array with all config items for the given processId
