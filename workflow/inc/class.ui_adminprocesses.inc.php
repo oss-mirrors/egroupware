@@ -101,7 +101,6 @@
 					die("Bad upload!"); 
 				}
 				
-				echo $_FILES['userfile1']['type'];
 				if ($_FILES['userfile1']['type'] != "text/xml") { die("Invalid file format!"); } 				
 				//if ($_FILES['userfile1']['type'] != "text/xml" && $_FILES['file']['type'] != "image/jpeg" && $_FILES['file']['type'] != "image/pjpeg") { die("Invalid file format!"); } 				
 				$fh = fopen ($_FILES['userfile1']['tmp_name'], "r") or die("Could not open file");
@@ -118,7 +117,14 @@
 
 				$process_data = $this->process_manager->unserialize_process($data);
 				//_debug_array($process_data);
-				$this->process_manager->import_process($process_data);
+				if ($this->process_manager->import_process($process_data))
+				{
+					$this->message[] = lang('Import successfull');
+				}
+				else
+				{
+					$this->message[] = lang('Import aborted');
+				}
 			}
 			// delete processes
 			if (isset($_POST['delete']))
