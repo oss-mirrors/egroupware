@@ -17,12 +17,11 @@
 
 		function form()
 		{
- 			//overwrite default sort mode
- 			$this->order		= get_var('order', 'GET', 'procname');
-			$this->sort		= get_var('sort', 'GET', 'ASC');
-			$this->sort_mode	= $this->order . '__'. $this->sort;
+			$activities =& $this->GUI->gui_list_user_start_activities($GLOBALS['phpgw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str, '');
 			
-			$activities =& $this->GUI->gui_list_user_start_activities($GLOBALS['phpgw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, '', '');
+			$this->link_data = array(
+				'find'	=> $this->search_str,
+			);
 			
 			$this->fill_table($activities['data'], $activities['cant']);
 			$this->fill_form_variables();
@@ -36,7 +35,7 @@
 			//warning header names are header_[name or alias of the column in the query without a dot]
 			//this is necessary for sorting
 			$header_array = array(
-				'procname'		=> lang('Process'),
+				'wf_procname'		=> lang('Process'),
 				'wf_name'		=> lang('Start activity'),
 			);
 			$this->fill_nextmatchs($header_array,$total_number);
@@ -53,7 +52,7 @@
 				$runlink = $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.run_activity.go&activity_id=' . $activity_data['wf_activity_id']);
 				$this->t->set_var(array(
 					'link_starting'	=> $runlink,
-					'procname'	=> $activity_data['procname'].':'.$activity_data['wf_version'],
+					'wf_procname'	=> $activity_data['wf_procname'].':'.$activity_data['wf_version'],
 					'actname'	=> $activity_data['wf_name'],
 					'arrow'		=> '<a href="'.$runlink.'">'.$arrowimg.'</a>',
 					'color_line'	=> $this->nextmatchs->alternate_row_color($tr_color)
