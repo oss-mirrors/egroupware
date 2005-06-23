@@ -156,7 +156,7 @@
 	</td>
 	<td style="width:150px">
 	  <a href="{href_item_minor}"><img src="{img_new}" alt="{lang_New_minor}" title="{lang_New_minor}"/></a>
-	  <a href="{href_item_mayor}"><img src="{img_new}" alt="{lang_New_mayor}" title="{lang_New_mayor}"/></a>
+	  <a href="{href_item_major}"><img src="{img_new}" alt="{lang_New_major}" title="{lang_New_major}"/></a>
 	  <a href="{href_item_activities}"><img src="{img_activities}" alt="{lang_Activities}" title="{lang_Activities}"/></a>
 	  <a href="{href_item_code}"><img src="{img_code}" alt="{lang_Code}" title="{lang_Code}"/></a>
 	  <a href="{href_item_save}"><img src="{img_save}" alt="{lang_Save}" title="{lang_Save}"/></a>

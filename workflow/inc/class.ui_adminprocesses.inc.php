@@ -157,7 +157,7 @@
 				$this->process_manager->new_process_version($newminor);
 			}
 
-			// new mayor
+			// new major
 			if ($newmajor)
 			{
 				$this->process_manager->new_process_version($newmajor, false);
@@ -382,7 +382,7 @@
 					'img_valid'			=> '<img src="'. $GLOBALS['phpgw']->common->image('workflow', $dot.'_dot') .'" alt="'. $alt .'" title="'. $alt .'" />',
 					'href_item_minor'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&find='. $find .'&where='. $where .'&start='. $this->start .'&sort_mode='. $this->sort_mode .'&newminor='. $item['wf_p_id']),
 					'img_new'		=> $GLOBALS['phpgw']->common->image('workflow', 'new'),
-					'href_item_mayor'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&find='. $find .'&where='. $where .'&start='. $this->start .'&sort_mode='. $this->sort_mode .'&newmajor='. $item['wf_p_id']),
+					'href_item_major'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&find='. $find .'&where='. $where .'&start='. $this->start .'&sort_mode='. $this->sort_mode .'&newmajor='. $item['wf_p_id']),
 					'href_item_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $item['wf_p_id']),
 					'img_activities'	=> $GLOBALS['phpgw']->common->image('workflow', 'Activity'),
 					'href_item_code'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $item['wf_p_id']),
