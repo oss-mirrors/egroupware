@@ -1,11 +1,40 @@
-<table style="border: 1px solid black;width:100%;">
+<div style="color:red; text-align:center">{message}</div>
+
+<table style="border: 0;width:100%;">
 	<tr class="th">
 		<td colspan="3" style="font-size: 120%; font-weight:bold">
 			{lang_List_of_processes}
 		</td>
 	</tr>
-	<tr class="th">
-		<td>{lang_Process}</td>
+	<tr class="row_off">
+                <td colspan="3" align="left">
+			<form action="{form_action}" method="post">
+			<input type="hidden" name="start" value="0" />
+			<input type="hidden" name="order" value="{order}" />
+			<input type="hidden" name="sort" value="{sort}" />
+                        <input size="18" type="text" name="find" value="{search_str}" />
+	                <input type="submit" name="search" value="{lang_search}" />
+			</form>
+                </td>
+	</tr>
+	<tr>
+		<td colspan="3">
+		        <table style="border: 0px;width:100%; margin:0 auto">
+		                <tr class="row_off">
+		                        {left}
+		                        <td><div align="center">{lang_showing}</div></td>
+		                        {right}
+		                </tr>
+		        </table>
+	        </td>
+	</tr>
+	<form action="{form_action}" method="post">
+	<input type="hidden" name="start" value="{start}" />
+	<input type="hidden" name="find" value="{search_str}" />
+	<input type="hidden" name="sort" value="{sort}" />
+	<input type="hidden" name="order" value="{order}" />
+        <tr class="th">
+		<td>{header_wf_procname}</td>
 		<td>{lang_Activities}</td>
 		<td>{lang_Instances}</td>
 	</tr>
@@ -22,4 +51,5 @@
 		</td>
 	</tr>
 	<!-- END block_table -->
+	</form>
 </table>

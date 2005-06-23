@@ -1,8 +1,7 @@
 <?php
+	include(dirname(__FILE__) . SEP . 'class.bo_workflow_forms.inc.php');
 
-	include(dirname(__FILE__) . SEP . 'class.workflow.inc.php');
-
-	class ui_useractivities extends workflow
+	class ui_useractivities extends bo_workflow_forms
 	{
 		var $public_functions = array(
 			'form'	=> true
@@ -11,94 +10,105 @@
 		var $GUI;
 
 		var $filter_process;
-
+		
+		var $filter_activity;
+		
 		function ui_useractivities()
 		{
-			parent::workflow();
-			$this->GUI	= CreateObject('workflow.workflow_gui');
+			parent::bo_workflow_forms('user_activities');
+			$this->GUI =& CreateObject('workflow.workflow_gui');
 		}
 
 		function form()
 		{
-			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('User Activities');
-			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
 
-			$this->t->set_file('user_activities', 'user_activities.tpl');
-
-			$this->order			= get_var('order', 'any', 'wf_procname');
-			$this->sort				= get_var('sort', 'any', 'asc');
-			$this->sort_mode		= $this->order . '__' . $this->sort;
-			$this->filter_process	= (int)get_var('filter_process', 'any', 0);
-
+			$this->filter_process   = get_var('filter_process', 'any', '');
+			//echo '<br>filter_process:'.$this->filter_process;
+			$this->filter_activity  = get_var('filter_activity', 'any', '');
+			//echo '<br>filter_activity:'.$this->filter_activity;
+			
 			if ($this->filter_process) $this->wheres[] = 'gp.wf_p_id=' . $this->filter_process;
+			if ($this->filter_activity) $this->wheres[] = "ga.wf_name='" . $this->filter_activity."'";
 			$this->wheres = implode(' and ', $this->wheres);
-
-			$all_processes = $this->GUI->gui_list_user_processes($GLOBALS['phpgw_info']['user']['account_id'], $this->start, -1, 'wf_procname__asc', '', '');
-			$activities = $this->GUI->gui_list_user_activities($GLOBALS['phpgw_info']['user']['account_id'], $this->start, -1, $this->sort_mode, '', $this->wheres);
+			//echo "<br>wheres:".$this->wheres;
+			$this->link_data = array(
+				'find'			=> $this->search_str,
+				'filter_process'	=> $this->filter_process,
+				'filter_activity'	=> $this->filter_activity,
+			);
+			
+			$all_processes =& $this->GUI->gui_list_user_processes($GLOBALS['phpgw_info']['user']['account_id'], 0, -1, 'wf_procname__asc', '', '');
+			$all_activities =&  $this->GUI->gui_list_user_activities_by_unique_name($GLOBALS['phpgw_info']['user']['account_id'], 0, -1, 'ga.wf_name__asc', '', '');
+			$activities =& $this->GUI->gui_list_user_activities($GLOBALS['phpgw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str, $this->wheres);
 
 			// show process select box
 			$this->show_process_select_box($all_processes['data']);
+			//show activities select box
+			$this->show_select_activities($all_activities['data']);
 
 			// show activities list
-			$this->show_activities_list($activities['data']);
-
-			// fill the general varibles of the template
+			$this->show_activities_list($activities['data'], $activities['cant']);
+			
 			$this->t->set_var(array(
-				'message'				=> implode('<br>', $this->message),
-				'form_filtering_action'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_useractivities.form'),
-				'filter_process'		=> $this->filter_process,
-				'sort'					=> $this->sort,
-				'order'					=> $this->order,
+				'filter_activity'	=> $this->filter_activity,
+				'filter_process'	=> $this->filter_process,
 			));
-
-			$this->translate_template('user_activities');
-			$this->t->pparse('output', 'user_activities');
-			$GLOBALS['phpgw']->common->phpgw_footer();
+			
+			$this->fill_form_variables();
+			$this->finish();
 		}
 
-		function show_activities_list($activities_data)
+		function show_activities_list(&$activities_data, $total_number)
 		{
-			//echo "activities_data: <pre>";print_r($activities_data);echo "<pre>";
-			$filters = array(
-				'filter_process'	=> $this->filter_process,
+			//_debug_array($activities_data);
+			//warning header names are header_[name or alias of the column in the query without a dot]
+			//this is necessary for sorting
+			$header_array = array(
+				'wf_procname'	=> lang('Process'),
+				'wf_name'  	=> lang('Activity'),
 			);
-			$this->t->set_var(array(
-				'header_process'	=> $this->nextmatchs->show_sort_order($this->sort, 'wf_procname', $this->order, 'index.php', lang('Process'), $filters),
-				'header_activity'	=> $this->nextmatchs->show_sort_order($this->sort, 'wf_name', $this->order, 'index.php', lang('Activity'), $filters),
-			));
+			$this->fill_nextmatchs($header_array,$total_number);
 
 			$this->t->set_block('user_activities', 'block_activities_list', 'activities_list');
 			foreach ($activities_data as $activity)
 			{
-				$act_name = '';
-				if ($activity['wf_instances'] > 0) $act_name = '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&filter_process='. $activity['wf_p_id'] .'&filter_activity='. $activity['wf_activity_id']) .'">';
-				$act_name .= $activity['wf_name'];
-				if ($activity['wf_instances'] > 0) $act_name .= '</a>';
-
+				// for standalone or start activities we make arrows to execute the activity
 				if ($activity['wf_is_interactive'] == 'y' && ($activity['wf_type'] == 'start' || $activity['wf_type'] == 'standalone'))
 				{
-					$arrow = '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.run_activity.go&activity_id='. $activity['wf_activity_id']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'next') .'" alt="'. lang('run activity') .'" title="'. lang('run activity') .'" /></a>';
+					$arrow = '<a href="'. $GLOBALS['phpgw']->link('/index.php', array(
+							'menuaction'	=> 'workflow.run_activity.go',
+							'activity_id'	=> $activity['wf_activity_id'],
+						)) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'next') .'" alt="'. lang('run activity') .'" title="'. lang('run activity') .'" /></a>';
 				}
 				else
 				{
-					$arrow = '';
+					//we use the normally empty arrow to show number of instances
+					$arrow = '('.$activity['wf_instances'].')';
 				}
+				//create the activity name with a link if there are some instances to see
+				$act_name = '';
+				if ($activity['wf_instances'] > 0) $act_name = '<a href="'. $GLOBALS['phpgw']->link('/index.php', array(
+						'menuaction'		=> 'workflow.ui_userinstances.form',
+						'filter_process'	=> $activity['wf_p_id'],
+						'filter_activity'	=> $activity['wf_activity_id'],
+					)) .'">';
+				$act_name .= $activity['wf_name'];
+				if ($activity['wf_instances'] > 0) $act_name .= '</a>';
+
 				$this->t->set_var(array(
-					'act_wf_procname'		=> $activity['wf_procname'],
+					'act_wf_procname'	=> $activity['wf_procname'],
 					'act_proc_version'	=> $activity['wf_version'],
-					'act_icon'			=> $this->act_icon($activity['wf_type'],$activity['wf_is_interactive']),
-					'act_name'			=> $act_name,
-					'run_act'			=> $arrow,
-					'act_instances'		=> $activity['wf_instances'],
+					'act_icon'		=> $this->act_icon($activity['wf_type'],$activity['wf_is_interactive']),
+					'act_name'		=> $act_name,
+					'run_act'		=> $arrow,
 					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
 				));
 				$this->t->parse('activities_list', 'block_activities_list', true);
 			}
-			if (!count($activities_data)) $this->t->set_var('activities_list', '<tr><td colspan="3" align="center">'. lang('There are no user activites available') .'</td></tr>');
+			if (!($total_number)) $this->t->set_var('activities_list', '<tr><td colspan="3" align="center">'. lang('There are no user activites available') .'</td></tr>');
 		}
 
-		function show_process_select_box($processes_data)
+		function show_process_select_box(&$processes_data)
 		{
 			if (!$this->filter_process)
 			{
@@ -124,6 +134,21 @@
 			}
 			if (!count($processes_data)) $this->t->set_var('select_process', '');
 		}
-	}
 
+		function show_select_activities(&$all_activities_data)
+		{
+			$this->t->set_block('user_activities', 'block_filter_activity', 'select_activity');
+			$this->t->set_var('filter_activity_selected_all', ($this->filter_activity=='')? 'selected="selected"' : '');
+
+			foreach ($all_activities_data as $activity_data)
+			{
+				$this->t->set_var(array(
+					'filter_activity_selected'	=> ($this->filter_activity == $activity_data['wf_name'])? 'selected="selected"' : '',
+					'filter_activity_name'		=> $activity_data['wf_name']
+				));
+				$this->t->parse('select_activity', 'block_filter_activity', true);
+			}
+		}
+
+	}
 ?>
