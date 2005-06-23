@@ -315,12 +315,7 @@ class ProcessManager extends BaseManager {
       
       $actid = $am->replace_activity($pid,0,$vars);
 	  
-	  $filename = GALAXIA_PROCESSES.SEP."$wf_procname".SEP."code".SEP."activities".SEP."$actname".'.php';
-	  //echo "filename = $filename";
-      $fp = fopen($filename,"w");
-      //$fp = fopen(GALAXIA_PROCESSES.SEP."$wf_procname".SEP."code".SEP."activities".SEP."$actname".'.php',"w");
-	  
-	  //echo "code = ++++".$activity['code']."++++";
+      $fp = fopen(GALAXIA_PROCESSES.SEP."$wf_procname".SEP."code".SEP."activities".SEP."$actname".'.php',"w");
       fwrite($fp, $activity['code']);
       fclose($fp);
       if($activity['isInteractive']=='y') {
