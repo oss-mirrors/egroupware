@@ -268,7 +268,7 @@ class GUI extends Base {
                               ga.wf_is_interactive,
                               ga.wf_is_autorouted,
                               gp.wf_p_id,
-                              gp.wf_name as procname,
+                              gp.wf_name as wf_procname,
                               gp.wf_version
         from ".GALAXIA_TABLE_PREFIX."processes gp
 	INNER JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gp.wf_p_id=ga.wf_p_id
