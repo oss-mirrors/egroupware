@@ -235,6 +235,66 @@ class GUI extends Base {
 		return $retval;
 	}
 
+  //! List start activities avaible for a given user
+  function gui_list_user_start_activities($user,$offset,$maxRecords,$sort_mode,$find,$where='')
+  {
+    // FIXME: this doesn't support multiple sort criteria
+    $sort_mode = str_replace("__"," ",$sort_mode);
+
+    $mid = "where gp.wf_is_active=? and ga.wf_type=?";
+    // add group mapping, warning groups and user can have the same id
+    $groups = galaxia_retrieve_user_groups($user);
+    $mid .= " and ((gur.wf_user=? and gur.wf_account_type='u')";
+    $mid .= "		or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g'))";
+
+    $bindvars = array('y','start',$user);
+    if($find)
+    {
+      //search on activities and processes
+      $findesc = '%'.$find.'%';
+      $mid .= " and ((ga.wf_name like ?) or (ga.wf_description like ?) or (gp.wf_name like ?) or (gp.wf_description like ?))";
+      $bindvars[] = $findesc;
+      $bindvars[] = $findesc;
+      $bindvars[] = $findesc;
+      $bindvars[] = $findesc;
+    }
+    if($where) 
+    {
+      $mid.= " and ($where) ";
+    }
+
+    $query = "select distinct(ga.wf_activity_id), 
+                              ga.wf_name,
+                              ga.wf_is_interactive,
+                              ga.wf_is_autorouted,
+                              gp.wf_p_id,
+                              gp.wf_name as procname,
+                              gp.wf_version
+        from ".GALAXIA_TABLE_PREFIX."processes gp
+	INNER JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gp.wf_p_id=ga.wf_p_id
+	INNER JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_activity_id=ga.wf_activity_id
+	INNER JOIN ".GALAXIA_TABLE_PREFIX."roles gr ON gr.wf_role_id=gar.wf_role_id
+	INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
+	$mid order by $sort_mode";
+    $query_cant = "select count(distinct(ga.wf_activity_id))
+	from ".GALAXIA_TABLE_PREFIX."processes gp
+	INNER JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gp.wf_p_id=ga.wf_p_id
+	INNER JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_activity_id=ga.wf_activity_id
+	INNER JOIN ".GALAXIA_TABLE_PREFIX."roles gr ON gr.wf_role_id=gar.wf_role_id
+	INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
+	$mid";
+    $result = $this->query($query,$bindvars,$maxRecords,$offset);
+    $ret = Array();
+    while($res = $result->fetchRow()) 
+    {
+      $ret[] = $res;
+    }
+    $retval = Array();
+    $retval["data"]= $ret;
+    $retval["cant"]= $this->getOne($query_cant,$bindvars);
+    
+    return $retval;
+  }
 
   function gui_list_user_instances($user,$offset,$maxRecords,$sort_mode,$find,$where='')
   {
