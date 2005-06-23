@@ -374,30 +374,32 @@ class ProcessManager extends BaseManager {
     $oldpid = $pId;
     //retrieve process info with config rows
     $proc_info = $this->get_process($pId, true);
+    if(!($proc_info) || (count($proc_info)==0)) return false;
     $name = $proc_info['wf_name'];
-    if(!$proc_info) return false;
 
     // Now update the version
     $version = $this->_new_version($proc_info['wf_version'],$minor);
     while($this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."processes where wf_name='$name' and wf_version='$version'")) {
       $version = $this->_new_version($version,$minor);
     }
+    $oldname = $proc_info['wf_normalized_name'];
+
     // Make new versions unactive
     $proc_info['wf_version'] = $version;
     $proc_info['wf_is_active'] = 'n';
     // create a new process, but don't create start/end activities
     $pid = $this->replace_process(0, $proc_info, false);
+    if (!pid) return false;
 
     //Since we are copying a process we should copy
     //the old directory structure to the new directory
-    $oldname = $proc_info['wf_normalized_name'];
+    //oldname was saved a few lines before
     $newname = $this->_get_normalized_name($pid);
     $this->_rec_copy(GALAXIA_PROCESSES.SEP."$oldname".SEP.'code',GALAXIA_PROCESSES.SEP."$newname".SEP.'code');
-
     // And here copy all the activities & so
     $am = new ActivityManager($this->db);
-    $query = "select * from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=$oldpid";
-    $result = $this->query($query);
+    $query = "select * from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=?";
+    $result = $this->query($query, array($oldpid));
     $newaid = array();
     while($res = $result->fetchRow()) {    
       $oldaid = $res['wf_activity_id'];
@@ -408,7 +410,7 @@ class ProcessManager extends BaseManager {
     $query = "select * from ".GALAXIA_TABLE_PREFIX."transitions where wf_p_id=$oldpid";
     $result = $this->query($query);
 
-	while($res = $result->fetchRow()) { 
+    while($res = $result->fetchRow()) { 
       if (empty($newaid[$res['wf_act_from_id']]) || empty($newaid[$res['wf_act_to_id']])) {
         continue;
       }
@@ -416,8 +418,8 @@ class ProcessManager extends BaseManager {
     }
     // create roles
     $rm = new RoleManager($this->db);
-    $query = "select * from ".GALAXIA_TABLE_PREFIX."roles where wf_p_id=$oldpid";
-    $result = $this->query($query);
+    $query = "select * from ".GALAXIA_TABLE_PREFIX."roles where wf_p_id=?";
+    $result = $this->query($query, array($oldpid));
     $newrid = array();
     while($res = $result->fetchRow()) {
       if(!$rm->role_name_exists($pid,$res['wf_name'])) {
@@ -429,8 +431,8 @@ class ProcessManager extends BaseManager {
     }
     // map users to roles
     if (count($newrid) > 0) {
-      $query = "select * from ".GALAXIA_TABLE_PREFIX."user_roles where wf_p_id=$oldpid";
-      $result = $this->query($query);
+      $query = "select * from ".GALAXIA_TABLE_PREFIX."user_roles where wf_p_id=?";
+      $result = $this->query($query, array($oldpid));
       while($res = $result->fetchRow()) {
         if (empty($newrid[$res['wf_role_id']])) {
           continue;
@@ -452,6 +454,7 @@ class ProcessManager extends BaseManager {
 
     // create a graph for the new process
     $am->build_process_graph($pid);
+    
     return $pid;
   }
   
