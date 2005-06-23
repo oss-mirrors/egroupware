@@ -29,7 +29,7 @@
 			
 			//retrieve common form POST or GET values
 			$this->start		= (int)get_var('start', 'any', 0);
-			$this->order		= get_var('order','any','wf_name');
+			$this->order		= get_var('order','any','wf_procname');
 			$this->sort		= get_var('sort','any','ASC');
 			$this->sort_mode	= $this->order . '__' . $this->sort;
 			$this->search_str	= get_var('find', 'any', '');
