@@ -1,5 +1,5 @@
 <?php
-include_once(GALAXIA_LIBRARY.'/src/ProcessManager/BaseManager.php');
+include_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'BaseManager.php');
 //!! ActivityManager
 //! A class to maniplate process activities and transitions
 /*!
@@ -9,7 +9,7 @@ include_once(GALAXIA_LIBRARY.'/src/ProcessManager/BaseManager.php');
   activity belongs to some process.
 */
 class ActivityManager extends BaseManager {
-  var $error='';
+  var $error= Array();
       
   /*!
     Constructor takes a PEAR::Db object to be used
@@ -22,8 +22,24 @@ class ActivityManager extends BaseManager {
     $this->db = $db;  
   }
   
-  function get_error() {
-    return $this->error;
+  //! return errors recorded by this object
+  /*!
+  You should always call this function after operations on an ActivityManager object to test if everything seems ok
+  if you give a true parameter the result will be send as an array of errors or an empty array.
+  Else, if you do not give any parameter or give a false parameter you will obtain a single string which can be empty
+  or will contain error messages with <br /> html tags.
+  */
+  function get_error($as_array=false) 
+  {
+    if (as_array)
+    {
+      return $this->error;
+    }
+    else
+    {
+      $result_str = implode('<br />',$this->error);
+      return $result_str;
+    }
   }
   
   /*!
@@ -76,7 +92,7 @@ class ActivityManager extends BaseManager {
   {
     // No circular transitions allowed
     if($actFromId == $actToId) {
-		$this->error= tra('No circular transitions allowed.');
+		$this->error[] = tra('No circular transitions allowed.');
 		return false;
     }
     
@@ -85,29 +101,29 @@ class ActivityManager extends BaseManager {
     $a1 = $this->get_activity($actFromId);
     $a2 = $this->get_activity($actToId);
     if(!$a1 || !$a2) {
-		$this->error = tra('No activites');
+		$this->error[] = tra('No activites');
 		return false;
     }
     if($a1['wf_type'] != 'switch' && $a1['wf_type'] != 'split') {
-      if($this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."transitions where wf_act_from_id=$actFromId")) {
-        $this->error = tra('Cannot add transition only split activities can have more than one outbound transition');
+      if($this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."transitions where wf_act_from_id=$actFromId") > 1) {
+        $this->error[] = tra('Cannot add transition only split or switch activities can have more than one outbound transition');
         return false;
       }
     }
     
     // Rule: if act is standalone no transitions allowed
     if($a1['wf_type'] == 'standalone' || $a2['wf_type']=='standalone') {
-		$this->error= tra('No transitions allowed for standalone activities');
+		$this->error[] = tra('No transitions allowed for standalone activities');
 		return false;
     }
     // No inbound to start
     if($a2['wf_type'] == 'start') {
-		$this->error= tra('No inbound for start activity');
+		$this->error[] = tra('No inbound for start activity');
 		return false;
     }
     // No outbound from end
     if($a1['wf_type'] == 'end') {
-		$this->error= tra('No outbound for end activity');
+		$this->error[] = tra('No outbound for end activity');
 		return false;
     }
      
@@ -308,6 +324,13 @@ class ActivityManager extends BaseManager {
     // and Rule 7 start activities must be autorouted and interactive
     $nodes = Array();
     $endId = $this->getOne("select wf_activity_id from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=$pId and wf_type='end'");
+    if ((!isset($endId)) || ($endId=='') || ($endId == 0))
+    {
+      //no end
+      $errors[] = tra('this process has no end activity');
+      $endId = 0;
+    }
+    
     $aux['id']=$endId;
     $aux['visited']=false;
     $nodes[] = $aux;
@@ -395,7 +418,7 @@ class ActivityManager extends BaseManager {
     $serrors=$this->validate_process_sources($pId);
     $errors = array_merge($errors,$serrors);
     
-    $this->error = $errors;
+    $this->error = array_merge ($this->error, $errors);
     
     
     
@@ -428,16 +451,25 @@ class ActivityManager extends BaseManager {
     $result = $this->query($query);
     while($res = $result->fetchRow()) {          
       $actname = $res['wf_normalized_name'];
-      $source = GALAXIA_PROCESSES."/$wf_procname/code/activities/$actname".'.php';
+      $source = GALAXIA_PROCESSES.SEP.$wf_procname.SEP.'code'.SEP.'activities'.SEP.$actname.'.php';
       if (!file_exists($source)) {
+          $errors[] = tra('source code file for activity %1 is not avaible', $actname);
           continue;
       }
       $fp = fopen($source,'r');
-      $data='';
-      while(!feof($fp)) {
-        $data.=fread($fp,8192);
+      if (!$fp)
+      {
+        $errors[] = tra('source code for activity %1 is not avaible', $actname); 
       }
-      fclose($fp);
+      else
+      {
+        $data='';
+        while(!feof($fp)) 
+        {
+          $data.=fread($fp,8192);
+        }
+        fclose($fp);
+      }
       if($res['wf_type']=='standalone') {
           if(strstr($data,'$instance')) {
             $errors[] = tra('Activity %1 is standalone and is using the $instance object', $res['wf_name']);
@@ -543,11 +575,11 @@ class ActivityManager extends BaseManager {
     // And we have to remove the user and compiled files
     // for this activity
     $wf_procname = $proc_info['wf_normalized_name'];
-    unlink(GALAXIA_PROCESSES."/$wf_procname/code/activities/$actname".'.php'); 
-    if (file_exists(GALAXIA_PROCESSES."/$wf_procname/code/templates/$actname".'.tpl')) {
-      @unlink(GALAXIA_PROCESSES."/$wf_procname/code/templates/$actname".'.tpl'); 
+    unlink(GALAXIA_PROCESSES.SEP.$wf_procname.SEP.'code'.SEP.'activities'.SEP.$actname.'.php'); 
+    if (file_exists(GALAXIA_PROCESSES.SEP.$wf_procname.SEP.'code'.SEP.'templates'.SEP.$actname.'.tpl')) {
+      @unlink(GALAXIA_PROCESSES.SEP.$wf_procname.SEP.'code'.SEP.'templates'.$actname.'.tpl'); 
     }
-    unlink(GALAXIA_PROCESSES."/$wf_procname/compiled/$actname".'.php'); 
+    unlink(GALAXIA_PROCESSES.SEP.$wf_procname.SEP.'compiled'.SEP.$actname.'.php'); 
     return true;
   }
   
@@ -594,18 +626,18 @@ class ActivityManager extends BaseManager {
       // remove the old compiled file and recompile
       // the activity
       
-      $user_file_old = GALAXIA_PROCESSES.'/'.$proc_info['wf_normalized_name'].'/code/activities/'.$oldname.'.php';
-      $user_file_new = GALAXIA_PROCESSES.'/'.$proc_info['wf_normalized_name'].'/code/activities/'.$newname.'.php';
+      $user_file_old = GALAXIA_PROCESSES.SEP.$proc_info['wf_normalized_name'].SEP.'code'.SEP.'activities'.SEP.$oldname.'.php';
+      $user_file_new = GALAXIA_PROCESSES.SEP.$proc_info['wf_normalized_name'].SEP.'code'.SEP.'activities'.SEP.$newname.'.php';
       rename($user_file_old, $user_file_new);
 
-      $user_file_old = GALAXIA_PROCESSES.'/'.$proc_info['wf_normalized_name'].'/code/templates/'.$oldname.'.tpl';
-      $user_file_new = GALAXIA_PROCESSES.'/'.$proc_info['wf_normalized_name'].'/code/templates/'.$newname.'.tpl';
+      $user_file_old = GALAXIA_PROCESSES.SEP.$proc_info['wf_normalized_name'].SEP.'code'.SEP.'templates'.SEP.$oldname.'.tpl';
+      $user_file_new = GALAXIA_PROCESSES.SEP.$proc_info['wf_normalized_name'].SEP.'code'.SEP.'templates'.SEP.$newname.'.tpl';
       if ($user_file_old != $user_file_new) {
         @rename($user_file_old, $user_file_new);
       }
 
       
-      $compiled_file = GALAXIA_PROCESSES.'/'.$proc_info['wf_normalized_name'].'/compiled/'.$oldname.'.php';    
+      $compiled_file = GALAXIA_PROCESSES.SEP.$proc_info['wf_normalized_name'].SEP.'compiled'.SEP.$oldname.'.php';    
       unlink($compiled_file);
       $this->compile_activity($pId,$activityId);
       
@@ -644,12 +676,12 @@ class ActivityManager extends BaseManager {
       // Should create the code file
 	  if ($create_files) {
 		  $wf_procname = $proc_info["wf_normalized_name"];
-		  $fw = fopen(GALAXIA_PROCESSES."/$wf_procname/code/activities/".$vars['wf_normalized_name'].'.php','w');
+		  $fw = fopen(GALAXIA_PROCESSES.SEP.$wf_procname.SEP.'code'.SEP.'activities'.SEP.$vars['wf_normalized_name'].'.php','w');
 			fwrite($fw,'<'.'?'.'php'."\n".'?'.'>');
 			fclose($fw);
 			
 			 if($vars['wf_is_interactive']=='y') {
-				$fw = fopen(GALAXIA_PROCESSES."/$wf_procname/code/templates/".$vars['wf_normalized_name'].'.tpl','w');
+				$fw = fopen(GALAXIA_PROCESSES.SEP.$wf_procname.SEP.'code'.SEP.'templates'.SEP.$vars['wf_normalized_name'].'.tpl','w');
 				if (defined('GALAXIA_TEMPLATE_HEADER') && GALAXIA_TEMPLATE_HEADER) {
 				  fwrite($fw,GALAXIA_TEMPLATE_HEADER . "\n");
 				}
@@ -729,66 +761,104 @@ class ActivityManager extends BaseManager {
     return $result;
   }
   
-  /*!
-  Compiles activity
-  */
+  //!Compiles activity and returns an array containing error messages
   function compile_activity($pId, $activityId)
   {
+    $errors = Array();
     $act_info = $this->get_activity($activityId);
        $actname = $act_info['wf_normalized_name'];
     $pm = new ProcessManager($this->db);
     $proc_info = $pm->get_process($pId);
-    $compiled_file = GALAXIA_PROCESSES.'/'.$proc_info['wf_normalized_name'].'/compiled/'.$act_info['wf_normalized_name'].'.php';    
-    $template_file = GALAXIA_PROCESSES.'/'.$proc_info['wf_normalized_name'].'/code/templates/'.$actname.'.tpl';    
-    $user_file = GALAXIA_PROCESSES.'/'.$proc_info['wf_normalized_name'].'/code/activities/'.$actname.'.php';
-    $pre_file = GALAXIA_LIBRARY.'/compiler/'.$act_info['wf_type'].'_pre.php';
-    $pos_file = GALAXIA_LIBRARY.'/compiler/'.$act_info['wf_type'].'_pos.php';
+    $compiled_file = GALAXIA_PROCESSES.SEP.$proc_info['wf_normalized_name'].SEP.'compiled'.SEP.$act_info['wf_normalized_name'].'.php';
+    $template_file = GALAXIA_PROCESSES.SEP.$proc_info['wf_normalized_name'].SEP.'code'.SEP.'templates'.SEP.$actname.'.tpl';
+    $user_file = GALAXIA_PROCESSES.SEP.$proc_info['wf_normalized_name'].SEP.'code'.SEP.'activities'.SEP.$actname.'.php';
+    $pre_file = GALAXIA_LIBRARY.SEP.'compiler'.SEP.$act_info['wf_type'].'_pre.php';
+    $pos_file = GALAXIA_LIBRARY.SEP.'compiler'.SEP.$act_info['wf_type'].'_pos.php';
     $fw = fopen($compiled_file,"wb");
     
-    // First of all add an include to to the shared code
-    $shared_file = GALAXIA_PROCESSES.'/'.$proc_info['wf_normalized_name'].'/code/shared.php';    
+    // First of all add an include to the shared code
+    $shared_file = GALAXIA_PROCESSES.SEP.$proc_info['wf_normalized_name'].SEP.'code'.SEP.'shared.php';
     
     fwrite($fw, '<'."?php include_once('$shared_file'); ?".'>'."\n");
     
     // Before pre shared
-    $fp = fopen(GALAXIA_LIBRARY.'/compiler/_shared_pre.php',"rb");
-    while (!feof($fp)) {
+    $fp = fopen(GALAXIA_LIBRARY.SEP.'compiler'.SEP.'_shared_pre.php',"rb");
+    if (!$fp)
+    {
+      $errors[] = tra('pre-shared code is not avaible');
+    }
+    else
+    {
+      while (!feof($fp))
+      {
         $data = fread($fp, 4096);
         fwrite($fw,$data);
+      }
+      fclose($fp);
     }
-    fclose($fp);
 
     // Now get pre and pos files for the activity
     $fp = fopen($pre_file,"rb");
-    while (!feof($fp)) {
+    if (!$fp)
+    {
+      $errors[] = tra('pre-activity %1 code is not avaible', $act_info['wf_type']);
+    }
+    else
+    {
+      while (!feof($fp)) 
+      {
         $data = fread($fp, 4096);
         fwrite($fw,$data);
+      }
+      fclose($fp);
     }
-    fclose($fp);
     
     // Get the user data for the activity 
-    $fp = fopen($user_file,"rb");    
-    while (!feof($fp)) {
+    $fp = fopen($user_file,"rb");
+    if (!$fp)
+    {
+      $errors[] = tra('activity %1 code is not avaible', $actname);
+    }
+    else
+    {
+      while (!feof($fp)) 
+      {
         $data = fread($fp, 4096);
         fwrite($fw,$data);
+      }
+      fclose($fp);
     }
-    fclose($fp);
 
     // Get pos and write
     $fp = fopen($pos_file,"rb");
-    while (!feof($fp)) {
-        $data = fread($fp, 4096);
-        fwrite($fw,$data);
+    if (!$fp)
+    {
+      $errors[] = tra('post activity %1 code is not avaible', $act_info['wf_type']);
     }
-    fclose($fp);
+    else
+    {
+      while (!feof($fp)) 
+      {
+          $data = fread($fp, 4096);
+          fwrite($fw,$data);
+      }
+      fclose($fp);
+    }
 
     // Shared pos
-    $fp = fopen(GALAXIA_LIBRARY.'/compiler/_shared_pos.php',"rb");
-    while (!feof($fp)) {
-        $data = fread($fp, 4096);
-        fwrite($fw,$data);
+    $fp = fopen(GALAXIA_LIBRARY.SEP.'compiler'.SEP.'_shared_pos.php',"rb");
+    if (!$fp)
+    {
+      $errors[] = tra('post shared code is not avaible');
     }
-    fclose($fp);
+    else
+    {
+      while (!feof($fp)) {
+          $data = fread($fp, 4096);
+          fwrite($fw,$data);
+      }
+      fclose($fp);
+    }
 
     fclose($fw);
 
@@ -803,12 +873,12 @@ class ActivityManager extends BaseManager {
     }
     if($act_info['wf_is_interactive']!='y' && file_exists($template_file)) {
       @unlink($template_file);
-      if (GALAXIA_TEMPLATES && file_exists(GALAXIA_TEMPLATES.'/'.$proc_info['wf_normalized_name']."/$actname.tpl")) {
-        @unlink(GALAXIA_TEMPLATES.'/'.$proc_info['wf_normalized_name']."/$actname.tpl");
+      if (GALAXIA_TEMPLATES && file_exists(GALAXIA_TEMPLATES.SEP.$proc_info['wf_normalized_name'].SEP.$actname.'.tpl')) {
+        @unlink(GALAXIA_TEMPLATES.SEP.$proc_info['wf_normalized_name'].SEP.$actname.'.tpl');
       }
     }
     if (GALAXIA_TEMPLATES && file_exists($template_file)) {
-      @copy($template_file,GALAXIA_TEMPLATES.'/'.$proc_info['wf_normalized_name']."/$actname.tpl");
+      @copy($template_file,GALAXIA_TEMPLATES.SEP.$proc_info['wf_normalized_name'].SEP.$actname.'.tpl');
     }
   }
   
@@ -900,7 +970,7 @@ class ActivityManager extends BaseManager {
   
   /*!
   \private
-  Labels nodes 
+  Labels nodes. Return false if something was wrong 
   */  
   function _label_nodes($pId)
   {
@@ -910,15 +980,20 @@ class ActivityManager extends BaseManager {
     $nodes = Array();
     // the end activity id
     $endId = $this->getOne("select wf_activity_id from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=$pId and wf_type='end'");
+    if ((!isset($endId)) || ($endId=='') || ($endId == 0))
+    {
+      //no end
+      return false;
+    }
+    
     // and the number of total nodes (=activities)
     $cant = $this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=$pId");
     $nodes[] = $endId;
     $label = $cant;
     $num = $cant;
     
-    $query = "update ".GALAXIA_TABLE_PREFIX."activities set wf_flow_num=$cant+1 where wf_p_id=$pId";
-    $this->query($query);
-    
+    $query = "update ".GALAXIA_TABLE_PREFIX."activities set wf_flow_num=? where wf_p_id=?";
+    $this->query($query,array($cant+1,$pId));
     $seen = array();
     while(count($nodes)) {
       $newnodes = Array();
@@ -947,6 +1022,7 @@ class ActivityManager extends BaseManager {
     
     //$query = "update ".GALAXIA_TABLE_PREFIX."activities set flowNum=0 where flowNum=$cant+1";
     //$this->query($query);
+    return true;
   }
     
 }
