@@ -111,7 +111,7 @@ class GUI extends Base {
   /*
     $user is the real user id
   */
-  function gui_list_user_activities($user,$offset,$maxRecords,$sort_mode,$find,$where='')
+  function gui_list_user_activities($user,$offset,$maxRecords,$sort_mode,$find,$where='', $remove_activities_without_instances=false)
   {
     // FIXME: this doesn't support multiple sort criteria
     //$sort_mode = $this->convert_sortmode($sort_mode);
@@ -132,7 +132,15 @@ class GUI extends Base {
     if($where) {
       $mid.= " and ($where) ";
     }
-    
+    if ($remove_activities_without_instances)
+    {
+      $more_tables = "INNER JOIN ".GALAXIA_TABLE_PREFIX."instance_activities gia ON gia.wf_activity_id=gar.wf_activity_id
+                      INNER JOIN ".GALAXIA_TABLE_PREFIX."instances gi ON gia.wf_instance_id=gi.wf_instance_id";
+    }
+    else
+    {
+	$more_tables = "";
+    }
     $query = "select distinct(ga.wf_activity_id),                     
                      ga.wf_name,
                      ga.wf_type,
@@ -148,6 +156,7 @@ class GUI extends Base {
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_activity_id=ga.wf_activity_id
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."roles gr ON gr.wf_role_id=gar.wf_role_id
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
+                $more_tables
                 $mid order by $sort_mode";
               
     $query_cant = "select count(distinct(ga.wf_activity_id))
@@ -156,6 +165,7 @@ class GUI extends Base {
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_activity_id=ga.wf_activity_id
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."roles gr ON gr.wf_role_id=gar.wf_role_id
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
+                $more_tables
                 $mid ";
     $result = $this->query($query,$bindvars,$maxRecords,$offset);
     $cant = $this->getOne($query_cant,$bindvars);
