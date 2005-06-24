@@ -41,11 +41,10 @@
 	$file = Array();
 	$menu_title = lang('%1 Menu', $apptitle);
 	$file['New Instance']         	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_useropeninstance.form');
-	//$file['Global activities']     	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_useropenticket.form')
+	$file['Global activities']     	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_useractivities.form&show_globals=1');
+	$file['My Processes']	 	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_userprocesses.form');
+	$file['My Activities']		= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_useractivities.form');
 	$file['My Instances']		= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_userinstances.form');
-	//$file['All Instances']		= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_userinstances.form');
-	$file['My Activities']	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_useractivities.form');
-	$file['My Processes'] 	= $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_userprocesses.form');
 
 	display_sidebox($appname,$menu_title,$file);
 }
