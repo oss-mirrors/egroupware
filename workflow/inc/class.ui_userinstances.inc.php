@@ -1,213 +1,167 @@
 <?php
 
-	include(dirname(__FILE__) . SEP . 'class.workflow.inc.php');
+	include(dirname(__FILE__) . SEP . 'class.bo_user_forms.inc.php');
 
-	class ui_userinstances extends workflow
+	class ui_userinstances extends bo_user_forms
 	{
 		var $public_functions = array(
 			'form'	=> true,
 		);
 
 		var $GUI;
-		var $link_data;
-		var $sort;
-		var $sort_mode;
-		var $order;
-		var $start;
-		var $offset;
-		var $search_str;
+		var $filter_process;
+		var $filter_activity;
+		var $filter_activity_name;
+		var $filter_user;
+		var $advanced_search;
+		var $show_advanced_actions;
+		var $add_exception_instances;
+		var $add_completed_instances;
+		var $add_aborted_instances;
+		var $remove_active_instances;
+		var $filter_act_status;
+		var $total_records;
+		var $filter_instance;
 		
 		function ui_userinstances()
 		{
-			parent::workflow();
+			parent::bo_user_forms('user_instances');
 			$this->GUI =& CreateObject('workflow.workflow_gui');
 		}
 
 		function form()
 		{
 		//TODO: break it into small pieces
-			// enable nextmatchs
-			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('User Instances');
-			$GLOBALS['phpgw_info']['flags']['enable_nextmatchs_class'] = True;
 			//enable preferences
 			$GLOBALS['phpgw']->preferences->read_repository();
-			$myPrefs = $GLOBALS['phpgw_info']['user']['preferences'];
-			// number of rows allowed
-		        if ($GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'] > 0) {
-				$offset = $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
-			}
-			else{
-				$offset = 15;
-			}
-			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
-			
-			//template
-			$this->t->set_file('user_instances', 'user_instances.tpl');
+			$myPrefs =& $GLOBALS['phpgw_info']['user']['preferences']['workflow'];
 			
 			//Retrieve form args
 			// FILTER INSTANCE
 			//this filter make all other filters unavaible
-			$filter_instance	= get_var('filter_instance','any','');
-			//echo "<br>filter_instance::".$filter_instance;
-			if ((int)$filter_instance > 0)
+			$this->filter_instance	= get_var('filter_instance','any','');
+			if ((int)$this->filter_instance > 0)
 			{
-				$filter_process 	= '';
-				$filter_activity 	= 0;
-				$filter_activity_name 	= '';
-				$filter_user		= '';
-				$this->search_str	= '';
-				$advanced_search  	= true;
-				$show_advanced_actions	= get_var('show_advanced_actions', 'any', false); 
-				//echo "<br>show advanced actions::".$show_advanced_actions;
-				if (!$show_advanced_actions)
+				$this->filter_process 		= '';
+				$this->filter_activity 		= 0;
+				$this->filter_activity_name 	= '';
+				$this->filter_user		= '';
+				$this->search_str		= '';
+				$this->advanced_search  	= true;
+				$this->show_advanced_actions	= get_var('show_advanced_actions', 'any', false); 
+				if (!$this->show_advanced_actions)
 				{
 					// check the Preferences of the workflow where the user can ask for theses actions
-					$show_advanced_actions= $myPrefs['workflow']['wf_instances_show_advanced_actions'];
+					$this->show_advanced_actions= $myPrefs['wf_instances_show_advanced_actions'];
 				}
-				$add_exception_instances 	= true; 
-				$add_completed_instances 	= true; 
-				$add_aborted_instances 		= true; 
-				$remove_active_instances 	= false; 
-				$filter_act_status		= false;
+				//we want this instance no matter in what state
+				$this->add_exception_instances 	= true; 
+				$this->add_completed_instances 	= true; 
+				$this->add_aborted_instances	= true; 
+				$this->remove_active_instances 	= false; 
+				$this->filter_act_status	= false;
 			}
 			else //we have no filter_instance, we check the real form args
 			{
-				$filter_process		= get_var('filter_process', 'any', '');
-				//echo "<br>filter_process::".$filter_process;
+				$this->filter_process		= get_var('filter_process', 'any', '');
 					// we can filter activity by id (the list of activity call us with it) or by name
-				$filter_activity	= get_var('filter_activity', 'any', 0);
-				//echo "<br>filter_activity::".$filter_activity;
-				$filter_activity_name	= get_var('filter_activity_name', 'any', '');
-				//echo "<br>filter_activity_name::".$filter_activity_name;
-				$filter_user		= get_var('filter_user', 'any', '');
-				//echo "<br>filter_user::".$filter_user;
-				$this->search_str		= get_var('search_str', 'any', '');
-				//echo "<br>search_str::".$this->search_str;
-				$advanced_search  	= get_var('advanced_search', 'any', false);
-				if (!$advanced_search)
+				$this->filter_activity		= get_var('filter_activity', 'any', 0);
+				$this->filter_activity_name	= get_var('filter_activity_name', 'any', '');
+				$this->filter_user		= get_var('filter_user', 'any', '');
+				$this->advanced_search  	= get_var('advanced_search', 'any', false);
+				if (!$this->advanced_search)
 				{
 					// check the Preferences of the workflow where the user can ask for the advanced mode
-					$advanced_search = $myPrefs['workflow']['wf_instances_show_advanced_mode'];
+					$this->advanced_search = $myPrefs['wf_instances_show_advanced_mode'];
 				}
-				//echo "<br>advanced::".$advanced_search;
-			
-				if ($advanced_search)
+				if ($this->advanced_search)
 				{
-					$add_exception_instances	= get_var('add_exception_instances', 'any', false); 
-					//echo "<br>add exception instances::".$add_exception_instances;
-					$add_completed_instances	= get_var('add_completed_instances', 'any', false); 
-					//echo "<br>add completed instances::".$add_completed_instances;
-					$add_aborted_instances		= get_var('add_aborted_instances', 'any', false); 
-					//echo "<br>add aborted instances::".$add_aborted_instances;
-					$remove_active_instances	= get_var('remove_active_instances', 'any', false); 
-					//echo "<br>remove_active instances::".$remove_active_instances;
-					$filter_act_status		= get_var('filter_act_status', 'any', ''); 
-					//echo "filter_act_status: ".$filter_act_status;
-					$show_advanced_actions		= get_var('show_advanced_actions', 'any', false); 
-					//echo "<br>show advanced actions::".$show_advanced_actions;
-					if (!$show_advanced_actions)
+					$this->add_exception_instances	= get_var('add_exception_instances', 'any', false); 
+					$this->add_completed_instances	= get_var('add_completed_instances', 'any', false); 
+					$this->add_aborted_instances	= get_var('add_aborted_instances', 'any', false); 
+					$this->remove_active_instances	= get_var('remove_active_instances', 'any', false); 
+					$this->filter_act_status	= get_var('filter_act_status', 'any', ''); 
+					$this->show_advanced_actions	= get_var('show_advanced_actions', 'any', false); 
+					if (!$this->show_advanced_actions)
 					{
 						// check the Preferences of the workflow where the user can ask for theses actions
-						$show_advanced_actions= $myPrefs['workflow']['wf_instances_show_advanced_actions'];
+						$this->show_advanced_actions= $myPrefs['wf_instances_show_advanced_actions'];
 					}
 				} 
 				else 
 				{
-					$add_exception_instances 	= false; 
-					$add_completed_instances 	= false; 
-					$add_aborted_instances 		= false; 
-					$remove_active_instances 	= false; 
-					$filter_act_status		= false;
-					$show_advanced_actions		= false; 
+					$this->add_exception_instances 	= false; 
+					$this->add_completed_instances 	= false; 
+					$this->add_aborted_instances 	= false; 
+					$this->remove_active_instances 	= false; 
+					$this->filter_act_status	= false;
+					$this->show_advanced_actions	= false; 
 				}
 			}
 			
 			//2nd form vars
 			$activity_id		= get_var('aid', 'any', 0);
-			//echo "<br>activity id::".$activity_id;
 			$instance_id		= get_var('iid', 'any', 0);
-			//echo "<br>instance id::".$instance_id;
-			$this->start		= get_var('start', 'any', 0);
-			//echo "<br>start::".$this->start;
-			$exception_comment	= get_var('exception_comment', 'any', '');
-			//echo "<br>comment exception::".$exception_comment;
 			// get user actions on the form
 			$askGrab=get_var('grab','any',0);
-			//echo "<br>grab::".$askGrab;
 			$askRelease=get_var('release','any',0);
-			//echo "<br>release::".$askRelease;
 			$askAbort=get_var('abort','any',0);
-			//echo "<br>abort::".$askAbort;
 			$askSend=get_var('send','any',0);
-			//echo "<br>send::".$askSend;
 			$askException=get_var('exception','any',0);
-			//echo "<br>exception::".$askException;
 			$askResume=get_var('resume','any',0);
-			//echo "<br>resume::".$askResume;
 			
-			// check preferences where the user can disable the view ot the priority column
-			$show_view_column= $myPrefs['workflow']['wf_instances_show_view_column'];
+			// check preferences where the user can disable the view of the priority column
+			$show_view_column= $myPrefs['wf_instances_show_view_column'];
 			//echo "<br>show_view_column::".$show_view_column;
-			$show_priority_column= $myPrefs['workflow']['wf_instances_show_priority_column'];
+			$show_priority_column= $myPrefs['wf_instances_show_priority_column'];
 			//echo "<br>show_priority_column::".$show_priority_column;
 			
+			//overwrite default sort order behaviour
 			// get sort mode data, done after preference to handle priority yes/no
 			$this->order		= get_var('order', 'any', ($show_priority_column)? 'wf_priority' : 'wf_instance_id');
-			//echo "<br>order::".$this->order;
 			$this->sort		= get_var('sort', 'any', ($show_priority_column)? 'desc' : 'asc');
-			//echo "<br>sort::".$this->sort;
 			$this->sort_mode	= $this->order . '__' . $this->sort;	
-			//echo "<br>sort_mode::".$this->sort_mode;
 
-			// this is not a POST or GET var, is defined in global prefs
-			$this->offset		= $offset;
-			//echo "<br>GLOBAL offset::".$this->offset;
-			
 		        // we have 2 different filters on activities, keeping only one
 		        // we keep only activity_name as a valid filter, when asking for a particular id we assume that de process id
 			// is set as well and we only keep the activity name
 			// if someone sends us an activity id without the process id we could show him activities with the same name
 			// on other processes (so with other id).
-			if ($filter_activity != 0)
+			if ($this->filter_activity != 0)
 			{
 				$tmpactivity =& CreateObject('workflow.workflow_baseactivity');
-				$tmpact = $tmpactivity->getActivity($filter_activity);
-				$filter_activity_name = $tmpact->getName();
+				$tmpact = $tmpactivity->getActivity($this->filter_activity);
+				$this->filter_activity_name = $tmpact->getName();
 				unset($tmpact);unset($tmpactivity);
 			}
 			$this->link_data = array
 			(
-				'menuaction' 			=> 'workflow.ui_userinstances.form',	
-				'filter_process' 		=> $filter_process,
-				'filter_activity_name' 		=> $filter_activity_name,
-				'filter_user' 			=> $filter_user,
-				'advanced_search' 		=> $advanced_search,
-				'add_exception_instances' 	=> $add_exception_instances,
-				'add_completed_instances' 	=> $add_completed_instances,
-				'add_aborted_instances' 	=> $add_aborted_instances,
-				'remove_active_instances' 	=> $remove_active_instances,
-				'filter_act_status'		=> $filter_act_status,
-				'show_advanced_actions'		=> $show_advanced_actions,
+				'filter_process' 		=> $this->filter_process,
+				'filter_activity_name' 		=> $this->filter_activity_name,
+				'filter_user' 			=> $this->filter_user,
+				'advanced_search' 		=> $this->advanced_search,
+				'add_exception_instances' 	=> $this->add_exception_instances,
+				'add_completed_instances' 	=> $this->add_completed_instances,
+				'add_aborted_instances' 	=> $this->add_aborted_instances,
+				'remove_active_instances' 	=> $this->remove_active_instances,
+				'filter_act_status'		=> $this->filter_act_status,
+				'show_advanced_actions'		=> $this->show_advanced_actions,
 				'search_str' 			=> $this->search_str,
 				'activity_id' 			=> $activity_id,
 				'instance_id' 			=> $instance_id,
 			);
 
-
-
                         // handling actions asked by the user on the form---------------------
 			$GLOBALS['phpgw']->accounts->get_account_name($GLOBALS['phpgw_info']['user']['account_id'],$lid,$user_fname,$user_lname);
 
-			//wf_message contains ui error messages
-			$wf_message="";
+			//$this->message contains an array of ui error messages
 			if ($askException)
 			{
 			        //TODO: add  a $system_comments = lang('exception raised by %1 %2: %3',$user_fname, $user_lname,$exception_comment);
 			        // to the instance activity history
 				if (!$this->GUI->gui_exception_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
-					$wf_message=lang("You don't have the rights necessary to exception instance %1",$instance_id);
+					$this->message[]=lang("You don't have the rights necessary to exception instance %1",$instance_id);
 				}
 			}
 
@@ -216,9 +170,9 @@
 			{
 			        //TODO: add a $system_comments = lang('exception resumed by %1 %2: %3',$user_fname, $user_lname,$exception_comment);
 			        // to the instance activity history  
-				if (!$this->GUI->gui_resume_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id,system_comments)) 
+				if (!$this->GUI->gui_resume_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
-					$wf_message=lang("You are not allowed to resume instance %1",$instance_id);
+					$this->message[]=lang("You are not allowed to resume instance %1",$instance_id);
 				}
 			}
 
@@ -227,7 +181,7 @@
 			{
 				if (!$this->GUI->gui_abort_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
-					$wf_message=lang("You are not allowed to abort instance %1",$instance_id);
+					$this->message[]=lang("You are not allowed to abort instance %1",$instance_id);
 				}
 			}
 
@@ -236,7 +190,7 @@
 			{
 				if (!$this->GUI->gui_release_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
-					$wf_message=lang("You are not allowed to release instance %1",$instance_id);
+					$this->message[]=lang("You are not allowed to release instance %1",$instance_id);
 				}
 			}
 
@@ -244,7 +198,7 @@
 			if ($askGrab)
 			{
 				if (!$this->GUI->gui_grab_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) {
-					$wf_message=lang("You are not allowed to grab instance %1",$instance_id);
+					$this->message[]=lang("You are not allowed to grab instance %1",$instance_id);
 				}
 			}
 
@@ -253,163 +207,84 @@
 			{
 				if (!$this->GUI->gui_send_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
-					$wf_message=lang("You are not allowed to send instance %1",$instance_id);
+					$this->message[]=lang("You are not allowed to send instance %1",$instance_id);
 				}
 			}
 
 
 		    // handling widgets on the form -------------------------------------------
-		    $where = '';
-		    $wheres = array();
-
+		    $this->where = '';
 		    // retrieve all user processes info - used by the 'select processes'
-		    $all_processes = $this->GUI->gui_list_user_processes($GLOBALS['phpgw_info']['user']['account_id'],0, -1, 'wf_procname__asc', '', $where);
-			//echo "all_processes: <pre>";print_r($all_processes);echo "</pre>";
-			//echo "filter_act_status: <pre>";print_r($filter_act_status);echo "</pre>";
+		    $all_processes =& $this->GUI->gui_list_user_processes($GLOBALS['phpgw_info']['user']['account_id'],0, -1, 'wf_procname__asc', '', $this->where);
 
 		    //(regis) adding a request for data in a select activity block
 		    // we want only activities avaible for the selected process (filter on process to limit number of results)
 		    // but when we are in advanced search mode we are not recomputing the search at every change on the processes select
 		    // or on the activity select, so we can't recompute the select activity list every time the process changes
 		    // in fact in this case we need __All__ avaible activities, but only in this case.
-		    $where = '';
+		    $this->where = '';
 		    $wheres = array();
-		    if (!($advanced_search)) 
+		    if (!($this->advanced_search))
 		    {
-			    if(!($filter_process=='')) 
+			    if(!($this->filter_process==''))
 			    {
-			    	$wheres[] = "gp.wf_p_id=" .$filter_process. "";
+			    	$wheres[] = "gp.wf_p_id=" .$this->filter_process. "";
 			    }
 		    }
-		    if( count($wheres) > 0 ) 
+		    if( count($wheres) > 0 )
 		    {
-		   	$where = implode(' and ', $wheres);
+		   	$this->where = implode(' and ', $wheres);
 		    }
   
 		
 		    // retrieve all user activities info (with the selected process) for the select
-		    $all_activities = $this->GUI->gui_list_user_activities_by_unique_name($GLOBALS['phpgw_info']['user']['account_id'], 0, -1, 'ga.wf_name__asc', '', $where);
+		    $all_activities =& $this->GUI->gui_list_user_activities_by_unique_name($GLOBALS['phpgw_info']['user']['account_id'], 0, -1, 'ga.wf_name__asc', '', $this->where);
 
-		    // there're 4 principal filters, process, activity (id/name), user and search --------------
-		    // nothing to prepare for search, let's look the 3 others...
-		    $where = '';
-		    $wheres = array();
-		    $or_wheres = array();
-		    if(!($filter_process==''))
-		    {  
-		        // warning, need to filter process on instance table, not activity
-		    	$wheres[] = "gi.wf_p_id=" .$filter_process. "";
-		    }
-		    if(!($filter_activity_name==''))
-		    {  
-			$wheres[] = "ga.wf_name='" .$filter_activity_name. "'";
-		    }
-		    if(!($filter_user==''))
-		    {
-			$wheres[] = "gia.wf_user='".$filter_user."'";
-		    }  
-		    
-		    // now adding special advanced search options or default values--------------------
-		    
-		    // TODO this should maybe go elsewhere, in a bo_ something or the engine
-		    
-		    //if we want only one instance
-		    if ($filter_instance)
-		    {
-		    	$wheres[] = "(gi.wf_instance_id='".$filter_instance."')";
-		    }
-
-		    //instance selection :: instances can be active|exception|aborted|completed
-		    if ($remove_active_instances) 
-		    {
-		    	// no active instances, it's an AND
-			$wheres[] = "(gi.wf_status<>'active')";
-		    } 
-		    else 
-		    {
-			// default: we need active instances it's an OR with further instance selection	
-			$or_wheres[]= "(gi.wf_status='active')";
-		    }
-		    // others are in OR mode
-		    if ($add_exception_instances) 
-		    {
-			$or_wheres[] = "(gi.wf_status='exception')";
-		    }
-		    if ($add_aborted_instances) 
-		    {
-			$or_wheres[] = "(gi.wf_status='aborted')";
-		    } 
-		    if ($add_completed_instances) 
-		    {
-		    	$or_wheres[] = "(gi.wf_status='completed')";
-		    }
-		    $wheres[] = "(".implode(' or ', $or_wheres).")";
-	
-		    //activities selection :: activities are running OR completed OR NULL (for aborted instances for example) 
-		    // and by default we keep all activities
-		    if ($filter_act_status =='running') 
-		    {
-		    	$wheres[] = "(gia.wf_status='running')"; 
-		    } 
-		    elseif ($filter_act_status =='completed') 
-		    { 
-			$wheres[] = "(gia.wf_status='completed')"; 
-		    } 
-		    elseif ($filter_act_status =='empty') 
-		    { 
-		    	// we do not want completed or running activities
-			$wheres[] = "(gia.wf_status is NULL)"; 
-		    }
-
-		    if( count($wheres) > 0 ) 
-		    {
-		        $where = implode(' and ', $wheres);
-			//echo "<hr>where: <pre>";print_r($where);echo "</pre>";
-		    }
+		    //filling our query special string with all our filters
+		    $this->fill_where_data();
 
 		    // retrieve user instances
-		    $instances = $this->GUI->gui_list_user_instances($GLOBALS['phpgw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str,$where);
+		    $instances =& $this->GUI->gui_list_user_instances($GLOBALS['phpgw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str,$this->where);
 		    $this->total_records = $instances['cant'];
 		    //echo "instances: <pre>";print_r($instances);echo "</pre>";
 		    
 		    
 		    //fill selection zones and vars------------------------------------------
-		    $this->t->set_var('wf_message',$wf_message);
-		    $this->t->set_var('advanced_search', ($advanced_search)? 'checked="checked"' : '');
-		    $this->t->set_var('filters_on_change', ($advanced_search)? '' : 'onChange="this.form.submit();"');
+		    $this->t->set_var('advanced_search', ($this->advanced_search)? 'checked="checked"' : '');
+		    $this->t->set_var('filters_on_change', ($this->advanced_search)? '' : 'onChange="this.form.submit();"');
 		    $this->t->set_var('start',0);// comming back again to start point
 		    // 3 selects 
-		    $this->show_select_user($filter_user);	
-		    $this->show_select_process($all_processes['data'], $filter_process);
-		    $this->show_select_activity($all_activities['data'], $filter_activity_name);
+		    $this->show_select_user($this->filter_user);	
+		    $this->show_select_process($all_processes['data'], $this->filter_process);
+		    $this->show_select_activity($all_activities['data'], $this->filter_activity_name);
 		    // the filter on instance_id, depends on preferences
-		    $this->show_filter_instance($filter_instance, $myPrefs['workflow']['wf_instances_show_instance_search']);
-		    $this->t->set_var('filter_instance_id',$filter_instance);
+		    $this->show_filter_instance($this->filter_instance, $myPrefs['wf_instances_show_instance_search']);
+		    $this->t->set_var('filter_instance_id',$this->filter_instance);
 		    // to keep informed of the 4 select values the second form (actions in the list)
 		    // need additional vars4
-		    $this->t->set_var('filter_user_id_set',$filter_user);
-		    $this->t->set_var('filter_process_id_set',$filter_process);
-		    $this->t->set_var('filter_activity_name_set',$filter_activity_name);
-		    $this->t->set_var('filter_act_status_set',$filter_act_status);
+		    $this->t->set_var('filter_user_id_set',$this->filter_user);
+		    $this->t->set_var('filter_process_id_set',$this->filter_process);
+		    $this->t->set_var('filter_activity_name_set',$this->filter_activity_name);
+		    $this->t->set_var('filter_act_status_set',$this->filter_act_status);
 		    // and the same for all checkboxes
-		    $this->t->set_var('advanced_search_set', $advanced_search);
-		    $this->t->set_var('add_exception_instances_set', $add_exception_instances);
-		    $this->t->set_var('add_completed_instances_set', $add_completed_instances);
-		    $this->t->set_var('add_aborted_instances_set', $add_aborted_instances);
-		    $this->t->set_var('remove_active_instances_set', $remove_active_instances);
-		    $this->t->set_var('show_advanced_actions_set', $show_advanced_actions);
+		    $this->t->set_var('advanced_search_set', $this->advanced_search);
+		    $this->t->set_var('add_exception_instances_set', $this->add_exception_instances);
+		    $this->t->set_var('add_completed_instances_set', $this->add_completed_instances);
+		    $this->t->set_var('add_aborted_instances_set', $this->add_aborted_instances);
+		    $this->t->set_var('remove_active_instances_set', $this->remove_active_instances);
+		    $this->t->set_var('show_advanced_actions_set', $this->show_advanced_actions);
 		    // a LINK css for showing priority levels
 		    $this->t->set_var('priority_css', ($show_priority_column)? '<LINK href="'.$GLOBALS['phpgw']->link('/workflow/templates/default/css/priority.css').'"  type="text/css" rel="StyleSheet">':'');
 		    // back to the first form, the advanced zone
-		    if ($advanced_search) 
+		    if ($this->advanced_search) 
 		    {
 		        $this->t->set_file('Advanced_table_tpl','user_instances_advanced.tpl');
-		     	$this->t->set_var('add_exception_instances', ($add_exception_instances)? 'checked="checked"' : '');
-		     	$this->t->set_var('add_completed_instances', ($add_completed_instances)? 'checked="checked"' : '');
-		     	$this->t->set_var('add_aborted_instances', ($add_aborted_instances)? 'checked="checked"' : '');
-		     	$this->t->set_var('remove_active_instances', ($remove_active_instances)? 'checked="checked"' : '');
-		     	$this->show_select_act_status($filter_act_status);
-		     	$this->t->set_var('show_advanced_actions', ($show_advanced_actions)? 'checked="checked"' : '');
+		     	$this->t->set_var('add_exception_instances', ($this->add_exception_instances)? 'checked="checked"' : '');
+		     	$this->t->set_var('add_completed_instances', ($this->add_completed_instances)? 'checked="checked"' : '');
+		     	$this->t->set_var('add_aborted_instances', ($this->add_aborted_instances)? 'checked="checked"' : '');
+		     	$this->t->set_var('remove_active_instances', ($this->remove_active_instances)? 'checked="checked"' : '');
+		     	$this->show_select_act_status($this->filter_act_status);
+		     	$this->t->set_var('show_advanced_actions', ($this->show_advanced_actions)? 'checked="checked"' : '');
 		     	$this->translate_template('Advanced_table_tpl');
 		     	$this->t->parse('Advanced_table', 'Advanced_table_tpl');
 		    } 
@@ -421,35 +296,20 @@
 		    $this->t->set_var('lang_Confirm_delete',lang('Confirm Delete'));
 		    // and the view column defined in preferences
 		    $this->t->set_var('header_view',($show_view_column)? '<td>'.lang('View').'</td><td>':'<td colspan="2">');
-
+		    
 		    // Fill the final list of the instances we choosed in the template
-		    $this->show_list_instances($instances['data'], $show_advanced_actions,$show_view_column, $show_priority_column);
+		    $this->show_list_instances($instances['data'], $this->show_advanced_actions,$show_view_column, $show_priority_column);
 
-
-		    // fill the general variables of the template
-		    $this->t->set_var(array(
-			'message'	=> implode('<br>', $this->message),
-			'form_action'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form'),
-			'search_str'	=> $this->search_str,
-		    ));
-
-		    $this->translate_template('user_instances');
-		    $this->t->pparse('output', 'user_instances');
-		    $GLOBALS['phpgw']->common->phpgw_footer();
+		    $this->show_user_tabs($this->class_name);
+		    $this->fill_form_variables();
+		    $this->finish();
 		}
 
 
 
-		function show_list_instances($instances_data, $show_advanced_actions = false, $show_view_column=true, $show_priority_column=true)
+		function show_list_instances(&$instances_data, $show_advanced_actions = false, $show_view_column=true, $show_priority_column=true)
 		{
-
 			//------------------------------------------- nextmatch --------------------------------------------
-			// left and right nextmatchs arrows
-			$this->t->set_var('left',$this->nextmatchs->left(
-				$link,$this->start,$this->total_records,$this->link_data));
-			$this->t->set_var('right',$this->nextmatchs->right(
-				$link,$this->start,$this->total_records,$this->link_data));
-			//show table headers with sort
 			//warning header names are header_[name or alias of the column in the query without a dot]
 			//this is necessary for sorting
 			$header_array = array(
@@ -461,7 +321,8 @@
 				'wf_name'	=> lang('Activity'),
 				'wf_user'	=> lang('User'),
 				'wf_act_status'	=> lang('Act. Status')
-			       );
+			);
+			
 			if ($show_priority_column)
 			{
 				$header_array['wf_priority'] = lang('Pr.');
@@ -470,25 +331,9 @@
 			{
 				$this->t->set_var('header_wf_priority','');
 			}
-			foreach($header_array as $col => $translation) 
-			{
-				$this->t->set_var('header_'.$col,$this->nextmatchs->show_sort_order(
-					$this->sort,$col,$this->order,'/index.php',$translation,$this->link_data));
-			}
-			
-			// info about number of rows
-			if (($this->total_records) > $this->offset)	
-			{
-				$this->t->set_var('lang_showing',lang('showing %1 - %2 of %3',
-					1+$this->start,
-					(($this->start+$this->offset) > ($this->total_records))? $this->total_records : $this->start+$this->offset,
-					$this->total_records));
-			}
-			else 
-			{
-				$this->t->set_var('lang_showing', lang('showing %1',$this->total_records));
-			}
-			// --------------------------------------- end nextmatch ------------------------------------------
+			$this->fill_nextmatchs($header_array,$this->total_records);
+
+
 
 			$this->t->set_block('user_instances', 'block_list_instances', 'list_instances');
 			foreach ($instances_data as $instance)
@@ -678,7 +523,7 @@
 				$this->t->parse('list_instances', 'block_list_instances', true);
 			}
 				
-			if (!count($instances_data)) $this->t->set_var('list_instances', '<tr><td colspan="8" align="center">'. lang('There are no instances available') .'</td></tr>');
+			if ($this->total_records==0) $this->t->set_var('list_instances', '<tr><td colspan="8" align="center">'. lang('There are no instances available') .'</td></tr>');
 		}
 
 		function showPriority($priority, $show_priority_column=true)
@@ -767,5 +612,86 @@
 				$this->t->set_var(array( 'filter_instance_zone' => ''));
 			}
 		}
+		
+		//! fille the $this->where string taking care of all the filters and checkboxes actionned
+		function fill_where_data()
+		{
+		    // there're 4 principal filters, process, activity (id/name), user and search --------------
+		    // nothing to prepare for search, let's look the 3 others...
+		    $this->where = '';
+		    $wheres = array();
+		    $or_wheres = array();
+		    if(!($this->filter_process==''))
+		    {
+		        // warning, need to filter process on instance table, not activity
+		    	$wheres[] = "gi.wf_p_id=" .$this->filter_process. "";
+		    }
+		    if(!($this->filter_activity_name==''))
+		    {
+			$wheres[] = "ga.wf_name='" .$this->filter_activity_name. "'";
+		    }
+		    if(!($this->filter_user==''))
+		    {
+			$wheres[] = "gia.wf_user='".$this->filter_user."'";
+		    }
+		    
+		    // now adding special advanced search options or default values--------------------
+		    // TODO this should maybe go elsewhere, in a bo_ something or the engine
+		    
+		    //if we want only one instance
+		    if ($this->filter_instance)
+		    {
+		    	$wheres[] = "(gi.wf_instance_id='".$this->filter_instance."')";
+		    }
+		    
+		    //instance selection :: instances can be active|exception|aborted|completed
+		    if ($this->remove_active_instances) 
+		    {
+		    	// no active instances, it's an AND
+			$wheres[] = "(gi.wf_status<>'active')";
+		    }
+		    else 
+		    {
+			// default: we need active instances it's an OR with further instance selection	
+			$or_wheres[]= "(gi.wf_status='active')";
+		    }
+		    // others are in OR mode
+		    if ($this->add_exception_instances) 
+		    {
+			$or_wheres[] = "(gi.wf_status='exception')";
+		    }
+		    if ($this->add_aborted_instances) 
+		    {
+			$or_wheres[] = "(gi.wf_status='aborted')";
+		    }
+		    if ($this->add_completed_instances) 
+		    {
+		    	$or_wheres[] = "(gi.wf_status='completed')";
+		    }
+		    $wheres[] = "(".implode(' or ', $or_wheres).")";
+		    
+		    //activities selection :: activities are running OR completed OR NULL (for aborted instances for example) 
+		    // and by default we keep all activities
+		    if ($this->filter_act_status =='running') 
+		    {
+		    	$wheres[] = "(gia.wf_status='running')"; 
+		    }
+		    elseif ($this->filter_act_status =='completed') 
+		    {
+			$wheres[] = "(gia.wf_status='completed')"; 
+		    }  
+		    elseif ($this->filter_act_status =='empty') 
+		    {
+		    	// we do not want completed or running activities
+			$wheres[] = "(gia.wf_status is NULL)"; 
+		    }
+		    
+		    if( count($wheres) > 0 ) 
+		    {
+		        $this->where = implode(' and ', $wheres);
+			//echo "<hr>where: <pre>";print_r($this->where);echo "</pre>";
+		    }
+	    }
+
 	}
 ?>

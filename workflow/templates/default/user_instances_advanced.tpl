@@ -1,5 +1,5 @@
-<table style="border: 1px solid black;width:100%;">
-	<tr class="th">
+<table style="border: opx;width:100%;">
+	<tr class="row_on">
 		<td colspan="4">
 			{lang_Instances_selection}
 		</td>
@@ -10,7 +10,7 @@
 			{lang_Actions}
 		</td>	
 	</tr>
-	<tr class="th">
+	<tr class="row_off">
 		<td >
 			<input type="checkbox" name="add_exception_instances" {add_exception_instances} />
 			{lang_Add_instances_in_exception}
