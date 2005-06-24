@@ -1,7 +1,7 @@
 <?php
-	include(dirname(__FILE__) . SEP . 'class.bo_workflow_forms.inc.php');
+	include(dirname(__FILE__) . SEP . 'class.bo_user_forms.inc.php');
 
-	class ui_useropeninstance extends bo_workflow_forms
+	class ui_useropeninstance extends bo_user_forms
 	{
 		var $public_functions = array(
 			'form'	=> true
@@ -11,7 +11,7 @@
 
 		function ui_useropeninstance()
 		{
-			parent::bo_workflow_forms('user_openinstance');
+			parent::bo_user_forms('user_openinstance');
 			$this->GUI = CreateObject('workflow.workflow_gui');
 		}
 
@@ -24,6 +24,7 @@
 			);
 			
 			$this->fill_table($activities['data'], $activities['cant']);
+			$this->show_user_tabs($this->class_name);
 			$this->fill_form_variables();
 			$this->finish();
 		}

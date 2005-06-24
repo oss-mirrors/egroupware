@@ -1,8 +1,8 @@
 <?php
 
-	include(dirname(__FILE__) . SEP . 'class.bo_workflow_forms.inc.php');
+	include(dirname(__FILE__) . SEP . 'class.bo_user_forms.inc.php');
 
-	class ui_userprocesses extends bo_workflow_forms
+	class ui_userprocesses extends bo_user_forms
 	{
 		var $public_functions = array(
 			'form'	=> true
@@ -12,7 +12,7 @@
 
 		function ui_userprocesses()
 		{
-			parent::bo_workflow_forms('user_processes');
+			parent::bo_user_forms('user_processes');
 			$this->GUI	=& CreateObject('workflow.workflow_gui');
 		}
 
@@ -28,7 +28,7 @@
 
 			// fill the table
 			$this->fill_table($processes['data'],$processes['cant']);
-			
+			$this->show_user_tabs($this->class_name);
 			$this->fill_form_variables();
 			$this->finish();
 		}

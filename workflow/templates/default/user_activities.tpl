@@ -3,6 +3,7 @@
 <input type="hidden" name="start" value="0" />
 <input type="hidden" name="sort" value="{sort}" />
 <input type="hidden" name="order" value="{order}" />
+{user_tabs}
 <table style="border: 0;width:100%;" cellspacing="0">
 	<tr class="th">
 		<td colspan="3" style="font-size: 120%; font-weight:bold; border-bottom:3px solid white;">
@@ -40,9 +41,9 @@
 <input type="hidden" name="find" value="{search_str}" />
 <input type="hidden" name="sort" value="{sort}" />
 <input type="hidden" name="order" value="{order}" />
+<input type="hidden" name="show_globals" value="{show_globals}" />
 <input type="hidden" name="filter_process" value="{filter_process}" />
 <input type="hidden" name="filter_activity" value="{filter_activity}" />
-
 <table style="border: 0;width:100%;">
         <tr><td colspan="2">
         <table style="border: 0px;width:100%; margin:0 auto">

@@ -1,27 +1,34 @@
 <?php
-	include(dirname(__FILE__) . SEP . 'class.bo_workflow_forms.inc.php');
+	include(dirname(__FILE__) . SEP . 'class.bo_user_forms.inc.php');
 
-	class ui_useractivities extends bo_workflow_forms
+	class ui_useractivities extends bo_user_forms
 	{
 		var $public_functions = array(
 			'form'	=> true
 		);
 
+		// true or false, decide if the form is the 'show global activities form' or 'show avaible acvtivities with instances form'
+		var $show_globals;
+		
 		var $GUI;
 
 		var $filter_process;
 		
 		var $filter_activity;
+
 		
 		function ui_useractivities()
 		{
-			parent::bo_workflow_forms('user_activities');
+			parent::bo_user_forms('user_activities');
 			$this->GUI =& CreateObject('workflow.workflow_gui');
 		}
 
 		function form()
 		{
-
+			// when show_globals is on we show only standalone activities
+			// else we only show activities with instances avaible
+			$this->show_globals	= get_var('show_globals', 'any', 0);
+			
 			$this->filter_process   = get_var('filter_process', 'any', '');
 			//echo '<br>filter_process:'.$this->filter_process;
 			$this->filter_activity  = get_var('filter_activity', 'any', '');
@@ -29,17 +36,33 @@
 			
 			if ($this->filter_process) $this->wheres[] = 'gp.wf_p_id=' . $this->filter_process;
 			if ($this->filter_activity) $this->wheres[] = "ga.wf_name='" . $this->filter_activity."'";
+			if ($this->show_globals) 
+			{
+				//we want only standalone activities
+				$this->wheres[] = "ga.wf_type='standalone'";
+				$withoutzero = false;
+				//this will filter the activities select list
+				$select_wheres = " ga.wf_type='standalone'";
+			}
+			else
+			{
+				//we need only activities with instances avaible, start and standalone activities are left out then
+				$withoutzero = true;
+				//this will filter the activities select list
+				$select_wheres = " (ga.wf_type<>'standalone') and (ga.wf_type<>'start') ";
+			}
 			$this->wheres = implode(' and ', $this->wheres);
 			//echo "<br>wheres:".$this->wheres;
 			$this->link_data = array(
+				'show_globals'		=> $this->show_globals,
 				'find'			=> $this->search_str,
 				'filter_process'	=> $this->filter_process,
 				'filter_activity'	=> $this->filter_activity,
 			);
 			
 			$all_processes =& $this->GUI->gui_list_user_processes($GLOBALS['phpgw_info']['user']['account_id'], 0, -1, 'wf_procname__asc', '', '');
-			$all_activities =&  $this->GUI->gui_list_user_activities_by_unique_name($GLOBALS['phpgw_info']['user']['account_id'], 0, -1, 'ga.wf_name__asc', '', '');
-			$activities =& $this->GUI->gui_list_user_activities($GLOBALS['phpgw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str, $this->wheres);
+			$all_activities =&  $this->GUI->gui_list_user_activities_by_unique_name($GLOBALS['phpgw_info']['user']['account_id'], 0, -1, 'ga.wf_name__asc', '', $select_wheres);
+			$activities =& $this->GUI->gui_list_user_activities($GLOBALS['phpgw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str, $this->wheres, $withoutzero);
 
 			// show process select box
 			$this->show_process_select_box($all_processes['data']);
@@ -50,9 +73,20 @@
 			$this->show_activities_list($activities['data'], $activities['cant']);
 			
 			$this->t->set_var(array(
+				'show_globals'		=> $this->show_globals,
 				'filter_activity'	=> $this->filter_activity,
 				'filter_process'	=> $this->filter_process,
 			));
+			
+			//for the tabs this form can be viewed as two different forms
+			if ($this->show_globals)
+			{
+				$this->show_user_tabs('userglobalactivities');
+			}
+			else
+			{
+				$this->show_user_tabs($this->class_name);
+			}
 			
 			$this->fill_form_variables();
 			$this->finish();
@@ -149,6 +183,6 @@
 				$this->t->parse('select_activity', 'block_filter_activity', true);
 			}
 		}
-
+		
 	}
 ?>
