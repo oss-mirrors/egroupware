@@ -8,7 +8,9 @@
 			'form'	=> true,
 		);
 
+		// communication with the workflow engine
 		var $GUI;
+		//filters
 		var $filter_process;
 		var $filter_activity;
 		var $filter_activity_name;
@@ -20,8 +22,21 @@
 		var $add_aborted_instances;
 		var $remove_active_instances;
 		var $filter_act_status;
-		var $total_records;
 		var $filter_instance;
+		//used by nextmatchs
+		var $total_records;
+		//all preferences
+		var $myPrefs;
+		//columns preferences
+		var $show_id_column;
+		var $show_instStatus_column;
+		var $show_instName_column;
+		var $show_priority_column;
+		var $show_procname_column;
+		var $show_actStatus_column;
+		var $show_owner_column;
+		var $show_view_column;
+		var $nb_columns;
 		
 		function ui_userinstances()
 		{
@@ -31,10 +46,9 @@
 
 		function form()
 		{
-		//TODO: break it into small pieces
 			//enable preferences
 			$GLOBALS['phpgw']->preferences->read_repository();
-			$myPrefs =& $GLOBALS['phpgw_info']['user']['preferences']['workflow'];
+			$this->myPrefs =& $GLOBALS['phpgw_info']['user']['preferences']['workflow'];
 			
 			//Retrieve form args
 			// FILTER INSTANCE
@@ -52,7 +66,7 @@
 				if (!$this->show_advanced_actions)
 				{
 					// check the Preferences of the workflow where the user can ask for theses actions
-					$this->show_advanced_actions= $myPrefs['wf_instances_show_advanced_actions'];
+					$this->show_advanced_actions= $this->myPrefs['wf_instances_show_advanced_actions'];
 				}
 				//we want this instance no matter in what state
 				$this->add_exception_instances 	= true; 
@@ -72,7 +86,7 @@
 				if (!$this->advanced_search)
 				{
 					// check the Preferences of the workflow where the user can ask for the advanced mode
-					$this->advanced_search = $myPrefs['wf_instances_show_advanced_mode'];
+					$this->advanced_search = $this->myPrefs['wf_instances_show_advanced_mode'];
 				}
 				if ($this->advanced_search)
 				{
@@ -85,7 +99,7 @@
 					if (!$this->show_advanced_actions)
 					{
 						// check the Preferences of the workflow where the user can ask for theses actions
-						$this->show_advanced_actions= $myPrefs['wf_instances_show_advanced_actions'];
+						$this->show_advanced_actions= $this->myPrefs['wf_instances_show_advanced_actions'];
 					}
 				} 
 				else 
@@ -110,16 +124,14 @@
 			$askException=get_var('exception','any',0);
 			$askResume=get_var('resume','any',0);
 			
-			// check preferences where the user can disable the view of the priority column
-			$show_view_column= $myPrefs['wf_instances_show_view_column'];
-			//echo "<br>show_view_column::".$show_view_column;
-			$show_priority_column= $myPrefs['wf_instances_show_priority_column'];
-			//echo "<br>show_priority_column::".$show_priority_column;
+			// check preferences where the user can disable some columns
+			// we need to know which one for order in queries
+			$this->read_column_preferences();
 			
 			//overwrite default sort order behaviour
-			// get sort mode data, done after preference to handle priority yes/no
-			$this->order		= get_var('order', 'any', ($show_priority_column)? 'wf_priority' : 'wf_instance_id');
-			$this->sort		= get_var('sort', 'any', ($show_priority_column)? 'desc' : 'asc');
+			// get sort mode data, done after preferences to handle priority yes/no
+			$this->order		= get_var('order', 'any', ($this->show_priority_column)? 'wf_priority' : 'wf_instance_id');
+			$this->sort		= get_var('sort', 'any', ($this->show_priority_column)? 'desc' : 'asc');
 			$this->sort_mode	= $this->order . '__' . $this->sort;	
 
 		        // we have 2 different filters on activities, keeping only one
@@ -258,7 +270,7 @@
 		    $this->show_select_process($all_processes['data'], $this->filter_process);
 		    $this->show_select_activity($all_activities['data'], $this->filter_activity_name);
 		    // the filter on instance_id, depends on preferences
-		    $this->show_filter_instance($this->filter_instance, $myPrefs['wf_instances_show_instance_search']);
+		    $this->show_filter_instance($this->myPrefs['wf_instances_show_instance_search']);
 		    $this->t->set_var('filter_instance_id',$this->filter_instance);
 		    // to keep informed of the 4 select values the second form (actions in the list)
 		    // need additional vars4
@@ -274,7 +286,7 @@
 		    $this->t->set_var('remove_active_instances_set', $this->remove_active_instances);
 		    $this->t->set_var('show_advanced_actions_set', $this->show_advanced_actions);
 		    // a LINK css for showing priority levels
-		    $this->t->set_var('priority_css', ($show_priority_column)? '<LINK href="'.$GLOBALS['phpgw']->link('/workflow/templates/default/css/priority.css').'"  type="text/css" rel="StyleSheet">':'');
+		    $this->t->set_var('priority_css', ($this->show_priority_column)? '<LINK href="'.$GLOBALS['phpgw']->link('/workflow/templates/default/css/priority.css').'"  type="text/css" rel="StyleSheet">':'');
 		    // back to the first form, the advanced zone
 		    if ($this->advanced_search) 
 		    {
@@ -295,47 +307,34 @@
 		    //some lang text in javascript
 		    $this->t->set_var('lang_Confirm_delete',lang('Confirm Delete'));
 		    // and the view column defined in preferences
-		    $this->t->set_var('header_view',($show_view_column)? '<td>'.lang('View').'</td><td>':'<td colspan="2">');
 		    
 		    // Fill the final list of the instances we choosed in the template
-		    $this->show_list_instances($instances['data'], $this->show_advanced_actions,$show_view_column, $show_priority_column);
+		    $this->show_list_instances($instances['data'], $this->show_advanced_actions);
 
 		    $this->show_user_tabs($this->class_name);
 		    $this->fill_form_variables();
 		    $this->finish();
 		}
 
-
-
-		function show_list_instances(&$instances_data, $show_advanced_actions = false, $show_view_column=true, $show_priority_column=true)
+		//! handle the table containing all instances
+		function show_list_instances(&$instances_data, $show_advanced_actions = false)
 		{
 			//------------------------------------------- nextmatch --------------------------------------------
+			//block for the header of the table
+			$this->t->set_block('user_instances', 'block_list_headers', 'list_headers');
+			//block for colums in the header
+			$this->t->set_block('user_instances', 'block_header_column', 'header_column');
 			//warning header names are header_[name or alias of the column in the query without a dot]
 			//this is necessary for sorting
-			$header_array = array(
-				'wf_instance_id'=> lang('id'),
-				'wf_owner'	=> lang('Owner'),
-				'insname'	=> lang('Name'),
-				'wf_status'	=> lang('Inst. Status'),
-				'wf_procname'	=> lang('Process'),
-				'wf_name'	=> lang('Activity'),
-				'wf_user'	=> lang('User'),
-				'wf_act_status'	=> lang('Act. Status')
-			);
-			
-			if ($show_priority_column)
-			{
-				$header_array['wf_priority'] = lang('Pr.');
-			}
-			else
-			{
-				$this->t->set_var('header_wf_priority','');
-			}
+			$header_array =& $this->get_instance_header();
+
 			$this->fill_nextmatchs($header_array,$this->total_records);
 
-
-
+			//block for each row
 			$this->t->set_block('user_instances', 'block_list_instances', 'list_instances');
+			//block for colums in row
+			$this->t->set_block('user_instances', 'block_instance_column', 'instance_column');
+			
 			foreach ($instances_data as $instance)
 			{
 			// all theses actions (most of them --monitor and run are GET links--) are handled by a javascript function 
@@ -384,7 +383,7 @@
 					$this->t->set_var('send', '');
 				}
 
-				if ($show_advanced_actions) {
+				if ($this->show_advanced_actions) {
 				// Resume exception instance
 					if (isset($actions['resume']))
 					{
@@ -458,21 +457,198 @@
 					$this->t->set_var('abort', '');
 					$this->t->set_var('monitor', '');
 				}
-				$GLOBALS['phpgw']->accounts->get_account_name($instance['wf_owner'],$lid,$fname_owner,$lname_owner);
-				$GLOBALS['phpgw']->accounts->get_account_name($instance['wf_user'],$lid,$fname_user,$lname_user);
-				if ($instance['wf_user'] == "*") 
-				{ // case for non assigned instances
-				  $shownuser = "*";
-				}
-				elseif ($instance['wf_user'] == "") 
-				{ // case for aborted instances
-				  $shownuser = lang('none');
-				}
-				else 
-				{ // all others
-				  $shownuser = $fname_user . ' ' . $lname_user;
-				}
+
+				$this->show_instance_row($instance);
 				
+
+				// finally parse this row
+				$this->t->parse('list_instances', 'block_list_instances', true);
+			}
+			//hide our working header and row columns
+			$this->t->set_var(array(
+				'instance_column'	=> '',
+				'header_column'		=> '',
+			));
+				
+			if ($this->total_records==0) $this->t->set_var('list_instances', '<tr><td colspan="'.$this->nb_columns.'" align="center">'. lang('There are no instances available') .'</td></tr>');
+		}
+
+		//! read user preferences and set all $this->show_xxxx_column vars, the nb_columns var and force some columns if needed
+		function read_column_preferences()
+		{
+			//_debug_array($this->myPrefs);
+			$this->show_id_column = $this->myPrefs['wf_instances_show_instance_id_column'];
+			$this->show_instStatus_column = $this->myPrefs['wf_instances_show_instance_status_column'];
+			$this->show_instName_column = $this->myPrefs['wf_instances_show_instance_name_column'];
+			$this->show_priority_column = $this->myPrefs['wf_instances_show_priority_column'];
+			$this->show_procname_column = $this->myPrefs['wf_instances_show_process_name_column'];
+			$this->show_actStatus_column = $this->myPrefs['wf_instances_show_activity_status_column'];
+			$this->show_owner_column = $this->myPrefs['wf_instances_show_owner_column'];
+			$this->show_view_column = $this->myPrefs['wf_instances_show_view_column'];
+
+			// now we must check actual filters and force certain columns, for example if we show aborted instances
+			// we must show instance status
+			if (($this->advanced_search) && ($this->add_exception_instances || $this->add_completed_instances 
+				|| $this->add_aborted_instances || $this->remove_active_instances))
+			{
+				$this->show_instStatus_column = true;
+			}
+			// with filter activity status better to see activity status
+			if ($this->filter_act_status)
+			{
+				$this->show_actStatus_column = true;
+			}
+			// with filter instance better to see instance id
+			if ($this->filter_instance)
+			{
+				$this->show_id_column = true;
+			}
+			// total number of columns is user+activity+actions+others
+			$this->nb_columns = 3 + $this->show_view_column + $this->show_owner_column + $this->show_actStatus_column 
+				+ $this->show_procname_column + $this->show_priority_column + $this->show_instName_column + $this->show_instStatus_column
+				+ $this->show_id_column;
+			// if recent was made (column added) test it to prevent the user
+			if (!(isset($this->myPrefs['wf_instances_show_process_name_column'])))
+			{
+				$preferences = lang('preferences');
+				$preferenceslink = '<a href="'.$GLOBALS['phpgw']->link('/preferences/preferences.php','appname=workflow').'" />'.$preferences.'</a>';
+				$this->message[] = lang('there are some undefined preferences associated with this form : %1', $preferenceslink);
+			}
+		}
+		
+		//! set the headers columns in the template and return an array containing columns aviable for nextmatchs sorting functions.
+		function get_instance_header()
+		{
+			$result = Array();
+			
+			//Id
+			if($this->show_id_column)
+			{
+				$result['wf_instance_id'] = lang('id');
+				$this->t->set_var(array(
+					'column_header'	=> 'wf_instance_id',
+				));
+				$this->t->parse('columns_header','block_header_column',true);
+			}
+
+			// Status Instance
+			if($this->show_instStatus_column)
+			{
+				$result['wf_status'] = lang('Inst. Status');
+				$this->t->set_var(array(
+					'column_header'	=> 'wf_status',
+				));
+				$this->t->parse('columns_header','block_header_column',true);
+			}
+			
+			//Priority
+			if($this->show_priority_column)
+			{
+				$result['wf_priority'] =  lang('Pr.');
+				$this->t->set_var(array(
+					'column_header'	=> 'wf_priority',
+				));
+				$this->t->parse('columns_header','block_header_column',true);
+			}
+
+			// Instance Name
+			if($this->show_instName_column)
+			{
+				$result['insname'] = lang('Name');
+				$this->t->set_var(array(
+					'column_header'	=> 'insname',
+				));
+				$this->t->parse('columns_header','block_header_column',true);
+			}
+			
+			
+			// Process Name
+			if($this->show_procname_column)
+			{
+				$result['wf_procname'] = lang('Process');
+				$this->t->set_var(array(
+					'column_header'	=> 'wf_procname',
+				));
+				$this->t->parse('columns_header','block_header_column',true);
+			}
+			
+			
+			// Activity. Always show this information.
+			$result['wf_name'] = lang('Activity');
+			$this->t->set_var(array(
+					'column_header'	=> 'wf_name',
+			));
+			$this->t->parse('columns_header','block_header_column',true);
+			
+			// Activity Status
+			if($this->show_actStatus_column)
+			{
+				$result['wf_act_status'] = lang('Act. Status');
+				$this->t->set_var(array(
+					'column_header'	=> 'wf_act_status',
+				));
+				$this->t->parse('columns_header','block_header_column',true);
+			}
+			
+			// Owner
+			if($this->show_owner_column)
+			{
+				$result['wf_owner'] = lang('Owner');
+				$this->t->set_var(array(
+					'column_header'	=> 'wf_owner',
+				));
+				$this->t->parse('columns_header','block_header_column',true);
+			}
+			
+			// User. Always show this information.
+			$result['wf_user'] = lang('User');
+			$this->t->set_var(array(
+				'column_header'	=> 'wf_user',
+			));
+			$this->t->parse('columns_header','block_header_column',true);
+
+			// View column
+			if($this->show_view_column)
+			{
+				$this->t->set_var(array(
+					'column_header'	=> 'view'
+				));
+				$this->t->set_var(array(
+					'header_view'	=> lang('View'),
+				));
+				$this->t->parse('columns_header','block_header_column',true);
+			}
+			// parse the header row
+			$this->translate_template('block_list_headers');
+			$this->t->parse('list_headers', 'block_list_headers', true);
+			
+			//retrun the array containing headers avaible for sorting/nextmatchs
+			return $result;
+		}
+		
+		//! complete an instance row depending on preferences variables. Activity name and user are always shown
+		function show_instance_row(&$instance)
+		{
+			// Re-Init variables in template
+			$this->t->set_var(array(
+				'column_value'	=> '',
+				'class_column'	=> '',
+				'columns'	=> '',
+			));
+			
+			//Id
+			if($this->show_id_column)
+			{
+				$this->t->set_var(array(
+					'column_value'	=> $instance['wf_instance_id'],
+					'class_column'	=> 'class="col_Id"',
+				));
+				$this->t->parse('columns','block_instance_column',true);
+			}
+
+			// Status Instance
+			if($this->show_instStatus_column)
+			{
 				// managing 4 types of instance status in a graphical manner
 				if ($instance['wf_status'] == 'active') 
 				{
@@ -490,56 +666,110 @@
 				{
 					$graphical_status = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'completed') .'" alt="'. lang('completed') .'" title="'. lang('completed') .'" />';				
 				}
-				
-				
 				$this->t->set_var(array(
-					'instance_id'		=> $instance['wf_instance_id'],
-					'owner'			=> $fname_owner . ' ' . $lname_owner,
-					'insname'		=> $instance['insname'],
-					'status'		=> $graphical_status,
-					'wf_procname'		=> $instance['wf_procname'],
-					'version'		=> $instance['wf_version'],
-					'act_icon'		=> $this->act_icon($instance['wf_type'],$instance['wf_is_interactive']),
-					'name'			=> $instance['wf_name'],
-					'user'			=> $shownuser,
-					'act_status'		=> $instance['wf_act_status'],
-					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color)
+					'column_value'	=> $graphical_status,
+					'class_column'	=> 'class="inst_status_"'.$instance['wf_status'].'"',
 				));
-
-				// the priority column defined in preferences
-				$this->showPriority($instance['wf_priority'],$show_priority_column);
-				// and the view column defined in preferences
-				if ($show_view_column)
-				{
-					$mylink=$GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_userviewinstance.form&iid='.$instance['wf_instance_id']);
-					$this->t->set_var('column_view','<td align="center"><a href="'.$mylink.'">'.lang('View').'</a></td><td>');
-				}
-				else
-				{
-					$this->t->set_var('column_view','<td colspan="2">');
-				}
-
-				// finally parse this list
-				$this->t->parse('list_instances', 'block_list_instances', true);
-			}
-				
-			if ($this->total_records==0) $this->t->set_var('list_instances', '<tr><td colspan="8" align="center">'. lang('There are no instances available') .'</td></tr>');
-		}
-
-		function showPriority($priority, $show_priority_column=true)
-		{
-			if ($show_priority_column)
-			{
-				$this->t->set_var(array('priority' 		=> $priority));
-				$this->t->set_var(array('class_priority' 	=> 'class="priority_'.$priority.'"'));
-			}
-			else
-			{
-				$this->t->set_var(array('priority' 		=> ''));
-				$this->t->set_var(array('class_priority' 	=> ''));
+				$this->t->parse('columns','block_instance_column',true);
 			}
 			
+			//Priority
+			if($this->show_priority_column)
+			{
+				$this->t->set_var(array(
+					'column_value'	=> $instance['wf_priority'],
+					'class_column'	=> 'class="priority_'.$instance['wf_priority'].'"',
+				));
+				$this->t->parse('columns','block_instance_column',true);
+			}
+
+			// Instance Name
+			if($this->show_instName_column)
+			{
+				$this->t->set_var(array(
+					'column_value'	=> $instance['insname'].':'.$instance['wf_version'],
+					'class_column'	=> 'class="col_name"',
+				));
+				$this->t->parse('columns','block_instance_column',true);
+			}
+			
+			// Process Name
+			if($this->show_procname_column)
+			{
+				$this->t->set_var(array(
+					'column_value'	=> $instance['wf_procname'],
+					'class_column'	=> 'class="procname_'.$instance['wf_procname'].'"',
+				));
+				$this->t->parse('columns','block_instance_column',true);
+			}
+			
+			// Activity. Always show this information.
+			$act_icon = $this->act_icon($instance['wf_type'],$instance['wf_is_interactive']);
+			$this->t->set_var(array(
+				'column_value'	=> $act_icon.$instance['wf_name'],
+				'class_column'	=> 'class="activity_'.$instance['wf_name'].'"',
+			));
+			$this->t->parse('columns','block_instance_column',true);
+			
+			// Activity Status
+			if($this->show_actStatus_column)
+			{
+				$this->t->set_var(array(
+					'column_value'	=> $act_icon.$instance['wf_act_status'],
+					'class_column'	=> 'class="activity_status_'.$instance['wf_act_status'].'"',
+				));
+				$this->t->parse('columns','block_instance_column',true);
+			}
+			
+			// Owner
+			if($this->show_owner_column)
+			{
+				$GLOBALS['phpgw']->accounts->get_account_name($instance['wf_owner'],$lid,$fname_owner,$lname_owner);
+				$this->t->set_var(array(
+					'column_value'	=> $fname_owner . ' ' . $lname_owner,
+					'class_column'	=> 'class="instance_owner_'.$instance['wf_owner'].'"',
+				));
+				$this->t->parse('columns','block_instance_column',true);
+			}
+			
+			// User. Always show this information.
+			$GLOBALS['phpgw']->accounts->get_account_name($instance['wf_user'],$lid,$fname_user,$lname_user);
+			if ($instance['wf_user'] == "*") 
+			{ // case for non assigned instances
+			  $shownuser = "*";
+			}
+			elseif ($instance['wf_user'] == "") 
+			{ // case for aborted instances
+			  $shownuser = lang('none');
+			}
+			else 
+			{ // all others
+			  $shownuser = $fname_user . ' ' . $lname_user;
+			}
+			$this->t->set_var(array(
+				'column_value'	=> $shownuser,
+				'class_column'	=> 'class="instance_user_'.$instance['wf_user'].'"',
+			));
+			$this->t->parse('columns','block_instance_column',true);
+
+			// View column
+			if($this->show_view_column)
+			{
+				$mylink=$GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_userviewinstance.form&iid='.$instance['wf_instance_id']);
+				$this->t->set_var(array(
+					'column_value'	=> '<a href="'.$mylink.'">'.lang('View').'</a>',
+					'class_column'	=> 'class="col_view"',
+				));
+				$this->t->parse('columns','block_instance_column',true);
+			}
+
+			
+ 			$this->t->set_var(array(
+				'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color)
+			));
+
 		}
+
 
 		function show_select_process($all_processes_data, $filter_process)
 		{
@@ -597,13 +827,16 @@
 		}
 
 		//! show the 'filter instances by id' button in the last row of the list of instances		
-		function show_filter_instance($filter_instance, $show_it=false)
+		function show_filter_instance($show_it=false)
 		{
 			$this->t->set_block('user_instances', 'block_filter_instances', 'filter_instance_zone');
 
 			if ($show_it)
 			{
-				$this->t->set_var('filter_instance_id',$filter_instance);
+				$this->t->set_var(array(
+					'filter_instance_id'	=> $this->filter_instance,
+					'nb_columns'		=> $this->nb_columns,
+				));
 				$this->translate_template('block_filter_instances');
 				$this->t->parse('filter_instance_zone', 'block_filter_instances', true);
 			}
@@ -613,7 +846,7 @@
 			}
 		}
 		
-		//! fille the $this->where string taking care of all the filters and checkboxes actionned
+		//! fill the $this->where string taking care of all the filters and checkboxes actionned
 		function fill_where_data()
 		{
 		    // there're 4 principal filters, process, activity (id/name), user and search --------------

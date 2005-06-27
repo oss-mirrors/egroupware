@@ -3,7 +3,7 @@
 {user_tabs}
 <form name="userInstancesForm" action="{form_action}" method="post">
 <input type="hidden" name="start" value="0" />
-<table style="border: 0;width:100%;">
+<table style="border: 0;width:100%;" cellspacing="0">
 	<tr class="th">
 		<td style="font-size: 120%; font-weight:bold; width=100%">
 			{lang_List_of_instances}
@@ -125,60 +125,34 @@
 	}
 </script>
 <table style="border: 0;width:100%;">
+	<!-- BEGIN block_header_column -->
+		<td>
+		  {header_{column_header}}
+		</td>
+	<!-- END block_header_column -->
+	<!-- BEGIN block_list_headers -->
 	<tr class="th" style="font-weight:bold">
-		<td>{header_wf_instance_id}</td>
-		<td>{header_wf_status}</td>
-		<td>{header_wf_priority}</td>
-		<td>{header_insname}</td>
-		<td>{header_wf_procname}</td>
-		<td>{header_wf_name}</td>
-		<td>{header_wf_act_status}</td>
-		<td>{header_wf_owner}</td>
-		<td>{header_wf_user}</td>
-		{header_view}
-		{lang_Action}</td>
+		{columns_header}
+		<td>{lang_Action}</td>
 	</tr>
+	<!-- END block_list_headers -->
+	<!-- BEGIN block_instance_column -->
+		<td {class_column}>
+		  {column_value}
+		</td>
+	<!-- END block_instance_column -->
 	<!-- BEGIN block_list_instances -->
 	<tr bgcolor="{color_line}">
-		<td>
-		  {instance_id}
-		</td>
-		<td>
-		  {status}
-		</td>
-		<td {class_priority}>
-		  {priority}
-		</td>
-		<td>
-		  {insname}
-		</td>
-		<td>
-		  {wf_procname} {version}
-		</td>
-		<td>
-		  {act_icon} {name}
-		</td>
-		<td>
-		  {act_status}
-		</td>
-		<td>
-		  {owner}
-		</td>
-		<td>
-		  {user}
-		</td>
-		{column_view}
-		
+		{columns}
+		<td class="col_action">
 	  		 {run} {send} {grab_or_release} {exception} {resume} {abort} {monitor}
 		</td>
 	</tr>
 	<!-- END block_list_instances -->
 	<!-- BEGIN block_filter_instances -->
 	<tr>
-			<td colspan="2" class="row_off"><div style='text-align:right;'>
+			<td colspan="{nb_columns}" class="row_off"><div style='text-align:left;'>
 				<input size="5" type="text" name="filter_instance" value="{filter_instance_id}"/>
-			</div></td>
-			<td colspan="9" class="row_on"><div style='text-align:left;'>
 				<input type="submit" name="filter" value="{lang_filter_instance_by_id}" />
 				<span class="filter_instance_comment">{lang_warning_this_filter_override_all_others_filters}</span>
 			</div></td>
