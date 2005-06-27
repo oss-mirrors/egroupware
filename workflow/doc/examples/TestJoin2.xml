@@ -1,13 +1,13 @@
 <process>
   <name>TestJoin2</name>
   <isValid>y</isValid>
-  <version>1.2</version>
-  <isActive>n</isActive>
+  <version>1.3</version>
+  <isActive>y</isActive>
    <description>Testing join activities</description>
-  <lastModif>14/06/2005 [04:22:58]</lastModif>
+  <lastModif>27/06/2005 [11:53:04]</lastModif>
   <sharedCode><![CDATA[<?php
 //***************************************************************************
-//* copyleft Regis Leroy at glconseil dot com                               *
+//* copyleft Regis dot Leroy at glconseil dot com                               *
 //* This program is free software; you can redistribute it and/or modify it *
 //*  under the terms of the GNU General Public License as published by the  *
 //*  Free Software Foundation; either version 2 of the License, or (at your *
@@ -15,6 +15,11 @@
 //***************************************************************************
 ?>  ]]></sharedCode>
   <configs>
+    <config>
+      <wf_config_name>display_please_wait_message</wf_config_name>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>1</wf_config_value_int>
+    </config>
     <config>
       <wf_config_name>use_automatic_parsing</wf_config_name>
       <wf_config_value></wf_config_value>
@@ -37,7 +42,7 @@
     </config>
     <config>
       <wf_config_name>font_size</wf_config_name>
-      <wf_config_value>25</wf_config_value>
+      <wf_config_value>10</wf_config_value>
       <wf_config_value_int></wf_config_value_int>
     </config>
   </configs>
@@ -46,7 +51,7 @@
       <name>Report</name>
       <type>standalone</type>
       <description>standalone activity used to make a report of the tests</description>
-      <lastModif>14/06/2005 [04:22:58]</lastModif>
+      <lastModif>14/06/2005 [07:29:59]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>n</isAutoRouted>
       <roles>
@@ -104,8 +109,9 @@ $where = implode(' and ', $wheres);
 $inst_list = $this->GUI->gui_list_user_instances($GLOBALS['phpgw_info']['user']['account_id'], -1,-1, $sort_mode, '',$where);
 //_debug_array($inst_list['data']);
 report_show_instances($inst_list['data'], $this->wf_template);
+
 //Submit options we want
-$GLOBALS['workflow']['submit_array']['ActClose'] = lang('Close');
+$this->submit_array['ActClose'] = lang('Close');
 }
 
 ?>      ]]></code>      <template><![CDATA[<!--******************** ROWS ********************* -->
@@ -134,7 +140,7 @@ $GLOBALS['workflow']['submit_array']['ActClose'] = lang('Close');
       <name>end</name>
       <type>end</type>
       <description>default end activity</description>
-      <lastModif>14/06/2005 [04:22:58]</lastModif>
+      <lastModif>14/06/2005 [07:29:59]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -146,7 +152,7 @@ $GLOBALS['workflow']['submit_array']['ActClose'] = lang('Close');
       <type>activity</type>
       <description>non interactive auto-routed activity.
 add &quot;Tagged&quot; string at the end of PROPERTY_ONE and PROPERTY_TWO</description>
-      <lastModif>14/06/2005 [04:22:58]</lastModif>
+      <lastModif>14/06/2005 [07:29:59]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -157,7 +163,7 @@ add &quot;Tagged&quot; string at the end of PROPERTY_ONE and PROPERTY_TWO</descr
       <name>After-Join</name>
       <type>activity</type>
       <description>Interactive activity after the join to check PROPERTY_ONE and PROPERTY_TWO values</description>
-      <lastModif>14/06/2005 [04:22:58]</lastModif>
+      <lastModif>14/06/2005 [07:29:59]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -182,14 +188,22 @@ foreach ($array_vars as $prop => $value)
   $array_vars[$prop] = get_var($prop,'any',$instance->get($prop));
 }
 //user commands   ****************
-$ActNextStage = get_var('ActNextStage','post',false);
-$ActClose = get_var('ActClose','post',false);
+$ActNextStage = get_var('ActNextStage','POST',false);
+$ActClose = get_var('ActClose','POST',false);
+$ActNothing = get_var('ActNothing', 'POST',false);
 
 //--------------------------------------
 //
 // handling results from the form
 //
 //--------------------------------------
+
+if ($ActNothing)
+{ 
+  // to test the please wait message
+  // waiting 30 seconds...
+  sleep(30);
+}
 
 if (($ActNextStage) || ($ActClose)) 
 {
@@ -225,13 +239,14 @@ else
     $template->set_var(array($prop => $array_vars[$prop]));
   }
 // submit options we want
-$GLOBALS['workflow']['submit_array']['ActNextStage'] = lang('going to next stage');
-$GLOBALS['workflow']['submit_array']['ActClose'] = lang('Close and get back later');
-$GLOBALS['workflow']['submit_array']['ActNothing'] = lang('loop for fun');
+$this->submit_array['ActNextStage'] = lang('going to next stage');
+$this->submit_array['ActClose'] = lang('Close and get back later');
+$this->submit_array['ActNothing'] = lang('long loop for fun');
 //special Cancel Value we wont get back here
-$GLOBALS['workflow']['submit_array']['__Cancel'] = lang('Quit Without Saving');
+$this->submit_array['__Cancel'] = lang('Quit Without Saving');
   //priority levels we want
-$GLOBALS['workflow']['priority_array'] = array( 1 => lang('1 - low'),
+$this->priority_array = array( 
+        1 => lang('1 - low'),
         2 => lang('2 - medium'),
         3 => lang('3 - medium but better'),
         4 => lang('4 - high'),
@@ -251,7 +266,7 @@ $GLOBALS['workflow']['priority_array'] = array( 1 => lang('1 - low'),
       <name>joiner</name>
       <type>join</type>
       <description>Join activities from left and right and then permits a send to  the end activity when both are Ok</description>
-      <lastModif>14/06/2005 [04:22:58]</lastModif>
+      <lastModif>14/06/2005 [07:29:59]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>n</isAutoRouted>
       <roles>
@@ -263,7 +278,7 @@ $GLOBALS['workflow']['priority_array'] = array( 1 => lang('1 - low'),
       <name>right branch</name>
       <type>activity</type>
       <description>interactive activity on the right branch</description>
-      <lastModif>14/06/2005 [04:22:58]</lastModif>
+      <lastModif>14/06/2005 [07:29:59]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -331,12 +346,13 @@ else
     $template->set_var(array($prop => $array_vars[$prop]));
   }
 // submit options we want
-$GLOBALS['workflow']['submit_array']['ActNextStage'] = lang('going to next stage');
-$GLOBALS['workflow']['submit_array']['ActClose'] = lang('Close and get back later');
+$this->submit_array['ActNextStage'] = lang('going to next stage');
+$this->submit_array['ActClose'] = lang('Close and get back later');
 //special Cancel Value we wont get back here
-$GLOBALS['workflow']['submit_array']['__Cancel'] = lang('Quit Without Saving');
+$this->submit_array['__Cancel'] = lang('Quit Without Saving');
   //priority levels we want
-$GLOBALS['workflow']['priority_array'] = array( 1 => lang('1 - low'),
+$this->priority_array = array( 
+        1 => lang('1 - low'),
         2 => lang('2 - medium'),
         3 => lang('3 - medium but better'),
         4 => lang('4 - high'),
@@ -363,7 +379,7 @@ $GLOBALS['workflow']['priority_array'] = array( 1 => lang('1 - low'),
       <name>left branch</name>
       <type>activity</type>
       <description>interactive form activity on the left branch</description>
-      <lastModif>14/06/2005 [04:22:58]</lastModif>
+      <lastModif>14/06/2005 [07:29:59]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -431,12 +447,12 @@ else
     $template->set_var(array($prop => $array_vars[$prop]));
   }
 // submit options we want
-$GLOBALS['workflow']['submit_array']['ActNextStage'] = lang('going to next stage');
-$GLOBALS['workflow']['submit_array']['ActClose'] = lang('Close and get back later');
+$this->submit_array['ActNextStage'] = lang('going to next stage');
+$this->submit_array['ActClose'] = lang('Close and get back later');
 //special Cancel Value we wont get back here
-$GLOBALS['workflow']['submit_array']['__Cancel'] = lang('Quit Without Saving');
+$this->submit_array['__Cancel'] = lang('Quit Without Saving');
   //priority levels we want
-$GLOBALS['workflow']['priority_array'] = array( 1 => lang('1 - low'),
+$this->priority_array = array( 1 => lang('1 - low'),
         2 => lang('2 - medium'),
         3 => lang('3 - medium but better'),
         4 => lang('4 - high'),
@@ -464,35 +480,18 @@ $GLOBALS['workflow']['priority_array'] = array( 1 => lang('1 - low'),
       <name>splitter</name>
       <type>split</type>
       <description>splitt the workflow in 2 branches</description>
-      <lastModif>14/06/2005 [04:22:58]</lastModif>
+      <lastModif>14/06/2005 [07:29:59]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
       </roles>
       <code><![CDATA[<?php
-?>      ]]></code>    </activity>
-    <activity>
-      <name>auto logger</name>
-      <type>activity</type>
-      <description>log some infos about the state of this process after the start</description>
-      <lastModif>14/06/2005 [04:22:58]</lastModif>
-      <isInteractive>n</isInteractive>
-      <isAutoRouted>y</isAutoRouted>
-      <roles>
-      </roles>
-      <code><![CDATA[<?php
-// saving some properties to retain the state we have just after starting
-$value = $instance->getName();
-$instance->set('auto_logger_NAME_START',$value);
-$value = $instance->getPriority();
-$instance->set('auto_logger_PRIORITY_START',$value);
-$instance->set('auto_logger_USER_START',$GLOBALS['user']);
 ?>      ]]></code>    </activity>
     <activity>
       <name>start the test</name>
       <type>start</type>
       <description>start activity for this test</description>
-      <lastModif>14/06/2005 [04:22:58]</lastModif>
+      <lastModif>14/06/2005 [07:29:59]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -515,8 +514,6 @@ if ($ActNextStage)
      $instance->complete();
      // the 'wf_name' and 'wf_priority' special properties are saved in
      // start_pos.php when completing
-$instance->setName('toto');
-$instance->setPriority($_REQUEST['wf_priority']);
 } 
 else 
 {
@@ -527,11 +524,12 @@ else
 //
 //--------------------------------------
    // submit options we want
-   $GLOBALS['workflow']['submit_array']['ActNextStage'] = lang('Create this instance');
+   $this->submit_array['ActNextStage'] = lang('Create this instance');
    //Special cancel value
-   $GLOBALS['workflow']['submit_array']['__Cancel'] = lang('Cancel');
+   $this->submit_array['__Cancel'] = lang('Cancel');
    //priority levels we want
-   $GLOBALS['workflow']['priority_array'] = array( 1 => lang('1 - low'),
+   $this->priority_array = array( 
+        1 => lang('1 - low'),
         2 => lang('2 - medium'),
         3 => lang('3 - medium but better'),
         4 => lang('4 - high'),
@@ -548,23 +546,36 @@ else
   </tr>
 
 </table>      ]]></template>    </activity>
+    <activity>
+      <name>auto logger</name>
+      <type>activity</type>
+      <description>log some infos about the state of this process after the start</description>
+      <lastModif>14/06/2005 [07:29:59]</lastModif>
+      <isInteractive>n</isInteractive>
+      <isAutoRouted>y</isAutoRouted>
+      <roles>
+      </roles>
+      <code><![CDATA[<?php
+// saving some properties to retain the state we have just after starting
+$value = $instance->getName();
+$instance->set('auto_logger_NAME_START',$value);
+$value = $instance->getPriority();
+$instance->set('auto_logger_PRIORITY_START',$value);
+$instance->set('auto_logger_USER_START',$GLOBALS['user']);
+?>      ]]></code>    </activity>
   </activities>
   <transitions>
      <transition>
-       <from>joiner</from>
-       <to>After-Join</to>
-     </transition>
-     <transition>
-       <from>auto logger</from>
-       <to>splitter</to>
-     </transition>
-     <transition>
-       <from>start the test</from>
-       <to>auto logger</to>
-     </transition>
-     <transition>
        <from>Automatik</from>
        <to>end</to>
+     </transition>
+     <transition>
+       <from>After-Join</from>
+       <to>Automatik</to>
+     </transition>
+     <transition>
+       <from>joiner</from>
+       <to>After-Join</to>
      </transition>
      <transition>
        <from>right branch</from>
@@ -575,16 +586,20 @@ else
        <to>joiner</to>
      </transition>
      <transition>
-       <from>After-Join</from>
-       <to>Automatik</to>
-     </transition>
-     <transition>
        <from>splitter</from>
        <to>left branch</to>
      </transition>
      <transition>
        <from>splitter</from>
        <to>right branch</to>
+     </transition>
+     <transition>
+       <from>start the test</from>
+       <to>auto logger</to>
+     </transition>
+     <transition>
+       <from>auto logger</from>
+       <to>splitter</to>
      </transition>
   </transitions>
 </process>
