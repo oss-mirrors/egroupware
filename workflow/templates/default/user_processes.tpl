@@ -1,6 +1,6 @@
 <div style="color:red; text-align:center">{message}</div>
 {user_tabs}
-<table style="border: 0;width:100%;">
+<table style="border: 0;width:100%;" cellspacing="0">
 	<tr class="th">
 		<td colspan="3" style="font-size: 120%; font-weight:bold">
 			{lang_List_of_processes}
