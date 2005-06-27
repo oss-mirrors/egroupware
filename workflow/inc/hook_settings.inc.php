@@ -12,6 +12,13 @@
 	/* $Id$ */
 	
 	// ui_userinstance preferences
+	create_select_box('Starting page','startpage',array(
+		'workflow.ui_userprocesses' 	=> 'My processes',
+		'workflow.ui_useractivities'	=> 'My activities',
+		'workflow.ui_userinstances'	=> 'My instances',
+		'workflow.ui_useropeninstance'	=> 'Open Instances'),
+		'This is the first screen shown when you click on the workflow application icon');
+	show_list(lang('Global Workflow Preferences'));
 	create_check_box('Column Instance Id in instance lists','wf_instances_show_instance_id_column','Do you want the instance id column on instances lists. This is the unique identifier of an instance',1);
 	create_check_box('Column Priority in instance lists','wf_instances_show_priority_column','Do you want the priority column on instances lists. Priority can be set with activities forms',1);
 	create_check_box('Column Instance Status in instance lists','wf_instances_show_instance_status_column','Do you want the instance status on instances lists. The instance status is usefull to disting beteween aborted, completed, exception or active instances',1);
