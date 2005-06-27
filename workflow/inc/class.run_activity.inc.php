@@ -28,9 +28,12 @@
 		var $process_name;
 		var $process_version;
 		var $activity_name;
-		// theses 2 vars aren't avaible for the user code, they're set only after this user code was executed
+		var $user_name;
+		// theses 4 vars aren't avaible for the user code, they're set only after this user code was executed
 		var $instance_id=0;
 		var $instance_name='';
+		var $instance_owner=0;
+		var $owner_name='';
 		// array used by automatic parsing:
 		var $priority_array = Array();
 		var $submit_array = Array();
@@ -102,12 +105,15 @@
 			$this->process_name	= $this->process->getName();
 			$this->process_version	= $this->process->getVersion();
 			$this->activity_name	= $activity->getName();
+			$this->user_name	= $GLOBALS['phpgw']->accounts->id2name($GLOBALS['user']);
+			
 			//we set them in $GLOBALS['workflow'] as well
 			$GLOBALS['workflow']['wf_process_id'] 		=& $this->process_id;
 			$GLOBALS['workflow']['wf_activity_id'] 		=& $this->activity_id;
 			$GLOBALS['workflow']['wf_process_name']		=& $this->process_name;
 			$GLOBALS['workflow']['wf_process_version']	=& $this->process_version;
 			$GLOBALS['workflow']['wf_activity_name']	=& $this->activity_name;
+			$GLOBALS['workflow']['wf_user_name']		=& $this->user_name;
 			
 			//FIXME: useless, we remove it
 			// run the shared code (just in case because each activity is supposed to include it)
@@ -116,6 +122,20 @@
 			// run the activity
 			if (!$auto && $activity->isInteractive())
 			{
+				//get configuration options with default values if no init was done before
+				$myconf = array(
+					'display_please_wait_message'		=> 0,
+					'use_automatic_parsing' 		=> 1,
+					'show_activity_title' 			=> 1,
+					'show_multiple_submit_as_select' 	=> 0,
+				);
+				$this->conf =& $this->process->getConfigValues($myconf);
+				// if process conf says so we display a please wait message unti the activity form is shown
+				if ($this->conf['display_please_wait_message'])
+				{
+					$this->show_wait_message();
+				}
+
 				$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Running Activity');
 				$GLOBALS['phpgw']->common->phpgw_header();
 				echo parse_navbar();
@@ -124,6 +144,7 @@
 				// but $GLOBALS['phpgw']->template will also be available, in case global scope for this is needed
 				// and we have as well the $this->wf_template for the same template
 				$template =& CreateObject('phpgwapi.Template', GALAXIA_PROCESSES.SEP);
+				
 				$template->set_file('template', $this->process->getNormalizedName().SEP.'code'.SEP.'templates'.SEP.$activity->getNormalizedName().'.tpl');
 				$GLOBALS['phpgw']->template =& $template;
 				$this->wf_template =& $template;
@@ -140,8 +161,12 @@
 			//Now that the instance is ready we can catch some others usefull vars
 			$this->instance_id	= $instance->getInstanceId();
 			$this->instance_name	= $instance->getName();
+			$this->instance_owner	= $instance->getOwner();
+			$this->owner_name	= $GLOBALS['phpgw']->accounts->id2name($this->instance_owner);
 			$GLOBALS['workflow']['wf_instance_id'] 	=& $this->instance_id;
 			$GLOBALS['workflow']['wf_instance_name']=& $this->instance_name;
+			$GLOBALS['workflow']['wf_instance_owner']=& $this->instance_owner;
+			$GLOBALS['workflow']['wf_owner_name']=& $this->owner_name;
 
 			
 			// TODO: process instance comments
@@ -185,6 +210,16 @@
 			}
 		}
 		
+		//! show a waiting message using css to hide it on onLoad events. You can enable/disable it in process configuration
+		function show_wait_message()
+		{
+			$this->t->set_file('wait_message', 'wait_message.tpl');
+			$this->translate_template('wait_message');
+			$this->t->pparse('output', 'wait_message');
+			ob_flush();
+			flush();
+		}
+
 		//! show the page avaible when completing an activity
 		function show_completed_page()
 		{
@@ -249,13 +284,6 @@
 		//! show the activity form with automated parts if needed
 		function show_form()
 		{
-			//get configuration options with default values if no init was done before
-			$myconf = array(
-				'use_automatic_parsing' 		=> 1,
-				'show_activity_title' 			=> 1,
-				'show_multiple_submit_as_select' 	=> 0,
-			);
-			$this->conf =& $this->process->getConfigValues($myconf);
 			
 			//set a global template for interactive activities
 			$this->t->set_file('run_activity','run_activity.tpl');

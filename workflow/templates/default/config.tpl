@@ -53,6 +53,20 @@
 		<td>&nbsp;<b>{lang_Running_activities_options}</b></font></td>
 		<td colspan="2" class="row_off">&nbsp;</td>
 	</tr>
+	<tr class="row_on">
+		<td width="60%" class="td_left">
+			{lang_a_please_wait_message_is_shown_when_loading_the_activity_form_usefull_for_long_tasks}
+		</td>
+		<td width="20%" class="td_right">
+			{lang_display_please_wait_message}:
+		</td>
+		<td width="20%" class="td_right">
+			<select name="newsettings[display_please_wait_message]">
+                               	<option value="False" {selected_display_please_wait_message_False}>{lang_No}</option>
+                                <option value="True" {selected_display_please_wait_message_True}>{lang_Yes}</option>
+       	                </select>
+		</td>
+	</tr>
 	<tr class="row_off">
 		<td width="60%" class="td_left">
 			{lang_if_automatic_parsing_is_disabled_next_options_will_be_useless}
