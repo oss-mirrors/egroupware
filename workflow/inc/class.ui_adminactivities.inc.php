@@ -14,6 +14,10 @@
 		var $activity_manager;
 
 		var $role_manager;
+		
+		var $where2;
+		var $sort_mode2;
+		
 
 		function ui_adminactivities()
 		{
@@ -51,6 +55,8 @@
 			$activity_id		= (int)get_var('activity_id', 'any', 0);
 			$name				= get_var('name', 'any', '');
 			
+			// TODO: finish the interform interaction.  "saving" filter values as hidden input from the other form
+			
 			$description		= get_var('description', 'any', '');
 			$type				= get_var('type', 'any', '');
 			$is_interactive		= get_var('is_interactive', 'any', '');
@@ -58,10 +64,10 @@
 			$default_user           = get_var('default_user', 'any', '');
 			$userole			= get_var('userole', 'POST', '');
 			$where				= get_var('where', array('GET', 'POST'), '');
-			$where2				= get_var('where2', 'any', '');
+			$this->where2		= get_var('where2', 'any', '');
 			$find				= get_var('find', 'any', '');
 			$find2				= get_var('find2', 'any', '');
-			$sort_mode2			= get_var('sort_mode2', 'any', '');
+			$this->sort_mode2	= get_var('sort_mode2', 'any', '');
 			$filter_tran_name	= get_var('filter_tran_name', 'any', '');
 			$this->order		= get_var('order', 'GET', 'wf_flow_num');
 			$this->sort			= get_var('sort', 'GET', 'asc');
@@ -130,8 +136,40 @@
 				$activity_roles = $this->activity_manager->get_activity_roles($activity_id);
 			}
 
+			// fill type filter select box
+			$activity_types = array('start', 'end', 'activity', 'switch', 'split', 'join', 'standalone');
+			$filter_type = get_var('filter_type', 'any', '');
+			$this->show_select_filter_type($activity_types, $filter_type);
+			
+			$filter_interactive		= get_var('filter_interactive', 'any', '');
+			$activity_interactive = array('y' => lang('Interactive'), 'n'=>lang('Automatic'));
+			$this->show_select_filter_interactive($activity_interactive, $filter_interactive);
+			
+			$filter_autoroute		= get_var('filter_autoroute', 'any', '');
+			$activity_autoroute = array('y' => lang('Auto Routed'), 'n'=>lang('Manual'));
+			$this->show_select_filter_autoroute($activity_autoroute, $filter_autoroute);
+			
+		    $where = '';
+		    $wheres = array();
+		    if( !($filter_type == '') ) 
+		    {
+		    	$wheres[] = "wf_type = '" .$filter_type. "'";
+		    }
+		    if( !($filter_interactive == '') ) 
+		    {
+		    	$wheres[] = "wf_is_interactive = '" .$filter_interactive. "'";
+		    }
+		    if( !($filter_autoroute == '') ) 
+		    {
+		    	$wheres[] = "wf_is_autorouted = '" .$filter_autoroute. "'";
+		    }
+		    if( count($wheres) > 0 ) 
+		    {
+				$where = implode(' and ', $wheres);
+		    }
+ 			
 			$proc_info = $this->process_manager->get_process($this->wf_p_id);
-			$process_activities = $this->activity_manager->list_activities($this->wf_p_id, 0, -1, $this->sort_mode, $this->find, $where);
+			$process_activities = $this->activity_manager->list_activities($this->wf_p_id, 0, -1, $this->sort_mode, $find, $where);
 			//echo "process_activities: <pre>";print_r($process_activities);echo "</pre>";
 			if ($activity_id) $this->search_transitions_act($process_activities, $activity_id);
 			$process_roles = $this->role_manager->list_roles($this->wf_p_id, 0, -1, 'wf_name__asc', '');
@@ -172,9 +210,9 @@
 				'form_list_transitions_action'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
 				'p_id'					=> $this->wf_p_id,
 				'where'					=> $where,
-				'where2'				=> $where2,
+				'where2'				=> $this->where2,
 				'sort_mode'				=> $this->sort_mode,
-				'sort_mode2'			=> $sort_mode2,
+				'sort_mode2'			=> $this->sort_mode2,
 				'find'					=> $find,
 				'activity_id'			=> $activity_info['wf_activity_id'],
 				'new_act_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
@@ -197,9 +235,8 @@
 			// show process activities table
 			$this->show_process_activities($process_activities['data']);
 
-			// fill type select box
-			$types = array('start', 'end', 'activity', 'switch', 'split', 'join', 'standalone');
-			foreach ($types as $type)
+			
+			foreach ($activity_types as $type)
 			{
 				$this->t->set_var(array(
 					'type_value'	=> $type,
@@ -271,7 +308,51 @@
 			$this->t->pparse('output', 'admin_activities');
 			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
+		
+		function show_select_filter_type($all_activity_types, $filter_type)
+		{
+			$this->t->set_block('admin_activities', 'block_select_filter_type', 'select_filter_type');
+			$this->t->set_var('selected_filter_type_all', (!($filter_type))? 'selected="selected"' : '');
 
+			foreach ($all_activity_types as $type)
+			{
+				$this->t->set_var(array(
+					'selected_filter_type'	=> ($filter_type == $type)? 'selected="selected"' : '',
+					'filter_type_name'		=> $type
+				));
+				$this->t->parse('select_filter_type', 'block_select_filter_type', true);
+			}
+		}
+		function show_select_filter_interactive($all_activity_interactive, $filter_interactive)
+		{
+			$this->t->set_block('admin_activities', 'block_select_filter_interactive', 'select_filter_interactive');
+			$this->t->set_var('selected_filter_interactive_all', (!($filter_interactive))? 'selected="selected"' : '');
+
+			foreach ($all_activity_interactive as $value=>$name)
+			{
+				$this->t->set_var(array(
+					'selected_filter_interactive'	=> ($filter_interactive == $value)? 'selected="selected"' : '',
+					'filter_interactive_name'		=> $name,
+					'filter_interactive_value'		=> $value
+				));
+				$this->t->parse('select_filter_interactive', 'block_select_filter_interactive', true);
+			}
+		}
+		function show_select_filter_autoroute($all_activity_autoroute, $filter_autoroute)
+		{
+			$this->t->set_block('admin_activities', 'block_select_filter_autoroute', 'select_filter_autoroute');
+			$this->t->set_var('selected_filter_autoroute_all', (!($filter_autoroute))? 'selected="selected"' : '');
+
+			foreach ($all_activity_autoroute as $value=>$name)
+			{
+				$this->t->set_var(array(
+					'selected_filter_autoroute'	=> ($filter_autoroute == $value)? 'selected="selected"' : '',
+					'filter_autoroute_name'		=> $name,
+					'filter_autoroute_value'		=> $value
+				));
+				$this->t->parse('select_filter_autoroute', 'block_select_filter_autoroute', true);
+			}
+		}
 		function update_activities(&$process_activities, $activities_inter, $activities_route)
 		{
 			//echo "activities_data: <pre>";print_r($activities_data);echo "</pre>";
@@ -331,10 +412,10 @@
 				'form_process_activities_action'=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
 				'left_arrow'		=> $this->nextmatchs->left('index.php', $this->start, $this->total),
 				'right_arrow'		=> $this->nextmatchs->right('index.php', $this->start, $this->total),
-				'header_name'		=> $this->nextmatchs->show_sort_order($this->sort, 'name', $this->order, 'index.php', lang('Name'), array('p_id'=>$this->wf_p_id)),
-				'header_type'		=> $this->nextmatchs->show_sort_order($this->sort, 'type', $this->order, 'index.php', lang('type'), array('p_id'=>$this->wf_p_id)),
-				'header_interactive'	=> $this->nextmatchs->show_sort_order($this->sort, 'is_interactive', $this->order, 'index.php', lang('Interactive'),  array('p_id'=>$this->wf_p_id)),
-				'header_route'		=> $this->nextmatchs->show_sort_order($this->sort, 'is_autorouted', $this->order, 'index.php', lang('Auto routed'),  array('p_id'=>$this->wf_p_id)),
+				'header_name'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_name', $this->order, 'index.php', lang('Name'), array('p_id'=>$this->wf_p_id)),
+				'header_type'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_type', $this->order, 'index.php', lang('Type'), array('p_id'=>$this->wf_p_id)),
+				'header_interactive'	=> $this->nextmatchs->show_sort_order($this->sort, 'wf_is_interactive', $this->order, 'index.php', lang('Interactive'),  array('p_id'=>$this->wf_p_id)),
+				'header_route'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_is_autorouted', $this->order, 'index.php', lang('Auto routed'),  array('p_id'=>$this->wf_p_id)),
 				'header_default_user'	=> lang('Default User')
 			));
 			$this->translate_template('block_process_activities');
@@ -381,10 +462,10 @@
 				$this->t->set_var(array(
 					'trans_actFromId'	=> $transition['wf_act_from_id'],
 					'trans_actToId'		=> $transition['wf_act_to_id'],
-					'trans_href_from'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&p_id='. $this->wf_p_id .'&find='. $find .'&where='. $where .'&sort_mode'. $this->sort_mode .'&activity_id='. $transition['actFromId']),
+					'trans_href_from'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&p_id='. $this->wf_p_id .'&find='. $find .'&where='. $where .'&sort_mode='. $this->sort_mode .'&activity_id='. $transition['wf_act_from_id']),
 					'trans_actFromName'	=> $transition['wf_act_from_name'],
 					'trans_arrow'		=> $GLOBALS['phpgw']->common->image('workflow', 'next'),
-					'trans_href_to'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&p_id='. $this->wf_p_id .'&find='. $find .'&where='. $where .'&sort_mode'. $this->sort_mode .'&activity_id='. $transition['actToId']),
+					'trans_href_to'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&p_id='. $this->wf_p_id .'&find='. $find .'&where='. $where .'&sort_mode='. $this->sort_mode .'&activity_id='. $transition['wf_act_to_id']),
 					'trans_actToName'	=> $transition['wf_act_to_name'],
 					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
 				));
