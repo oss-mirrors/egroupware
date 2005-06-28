@@ -16,6 +16,7 @@
 		'workflow.ui_userprocesses' 	=> 'My processes',
 		'workflow.ui_useractivities'	=> 'My activities',
 		'workflow.ui_userinstances'	=> 'My instances',
+		'workflow.ui_useractivities2'	=> 'Global activities',
 		'workflow.ui_useropeninstance'	=> 'Open Instances'),
 		'This is the first screen shown when you click on the workflow application icon');
 	show_list(lang('Global Workflow Preferences'));

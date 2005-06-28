@@ -23,12 +23,20 @@
 			$this->GUI =& CreateObject('workflow.workflow_gui');
 		}
 
-		function form()
+		function form($force_show_globals=false)
 		{
 			// when show_globals is on we show only standalone activities
 			// else we only show activities with instances avaible
-			$this->show_globals	= get_var('show_globals', 'any', 0);
-			
+			// force_show_globals can be true when called with ExecMethod, for example by ../index.php
+			if ($force_show_globals)
+			{
+				$this->show_globals = true;
+			}
+			else
+			{
+				$this->show_globals   = get_var('show_globals', 'any', 0);
+			}
+			//echo '<br>show_globals:'.$this->show_globals;			
 			$this->filter_process   = get_var('filter_process', 'any', '');
 			//echo '<br>filter_process:'.$this->filter_process;
 			$this->filter_activity  = get_var('filter_activity', 'any', '');

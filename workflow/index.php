@@ -12,10 +12,25 @@
         if (!isset($startscreen))
         {
         	$startscreen='workflow.ui_userprocesses';
+        	$form_args = Array();
         }
-	$obj = CreateObject($startscreen);
-	$obj->form();
+        else
+        {
+        	if ($startscreen == 'workflow.ui_useractivities2')
+        	{
+        		$startscreen = 'workflow.ui_useractivities';
+        		$form_args = 1;
+        	}
+        	else
+        	{
+        		$form_args = array();
+        	}
+        }
+        ExecMethod($startscreen.'.form',$form_args);
+        
+//	$obj = CreateObject($startscreen);
+//	$obj->form();
 
-	$GLOBALS['phpgw']->common->phpgw_footer();
+//	$GLOBALS['phpgw']->common->phpgw_footer();
 
 ?>
