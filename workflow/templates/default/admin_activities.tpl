@@ -31,14 +31,14 @@
 	  <td><textarea name="description" rows="4" cols="60">{description}</textarea></td>
 	</tr>
 	<tr class="row_on">  
-	  <td>{lang_Type}</td>
-	  <td>
-	  <select name="type">
-	  <!-- BEGIN block_select_type -->
-		<option value="{type_value}" {type_selected}>{type_name}</option>
-	  <!-- END block_select_type -->
-	  </select>
-	  </td>
+	<td>{lang_Type}</td>
+		<td>
+			<select name="type">
+				<!-- BEGIN block_select_type -->
+					<option value="{type_value}" {type_selected}>{type_name}</option>
+				<!-- END block_select_type -->
+			</select>
+		</td>
 	</tr>
 	<tr class="row_off">
          <td>{lang_Properties}</td>
@@ -142,30 +142,29 @@
 	{left_arrow}
 	<td style="text-align:center">
 		{lang_Type}:
-			<select name="filter_type">
-			  <option value="">{lang_all}</option>
-			  <option value="start">{lang_start}</option>
-			  <option value="end" >{lang_end}</option>		  
-			  <option value="activity" >{lang_activity}</option>		  
-			  <option value="switch" >{lang_switch}</option>		  
-			  <option value="split" >{lang_split}</option>		  
-			  <option value="join" >{lang_join}</option>		  
-			  <option value="standalone" >{lang_standalone}</option>		  
+			<select name="filter_type" >
+				<option {selected_filter_type_all} value="">{lang_All}</option>
+				<!-- BEGIN block_select_filter_type -->
+				<option {selected_filter_type} value="{filter_type_name}">{filter_type_name}</option>
+				<!-- END block_select_filter_type -->
 			</select>
 		{lang_Interactivity}:
 			<select name="filter_interactive">
-				<option value="">{lang_all}</option>
-				<option value="y">{lang_Interactive}</option>
-				<option value="n">{lang_Automatic}</option>
+				<option {selected_filter_interactive_all} value="">{lang_All}</option>
+				<!-- BEGIN block_select_filter_interactive -->
+				<option {selected_filter_interactive} value="{filter_interactive_value}">{filter_interactive_name}</option>
+				<!-- END block_select_filter_interactive -->
 			</select>
 		{lang_Routing}:
 			<select name="filter_autoroute">
-				<option value="">{lang_all}</option>
-				<option value="y">{lang_Auto_routed}</option>
-				<option value="n">{lang_Manual}</option>
+				<option {selected_filter_autoroute_all} value="">{lang_All}</option>
+				<!-- BEGIN block_select_filter_autoroute -->
+				<option {selected_filter_autoroute} value="{filter_autoroute_value}">{filter_autoroute_name}</option>
+				<!-- END block_select_filter_autoroute -->
 			</select>
+		{lang_Search}:&nbsp;
 		<input size="18" type="text" name="find" value="{find}" />
-		<input type="submit" name="filter" value="{lang_Search}" />
+		<input type="submit" name="filter" value="{lang_Filter}" />
 	</td>
 	{right_arrow}
 </tr>
