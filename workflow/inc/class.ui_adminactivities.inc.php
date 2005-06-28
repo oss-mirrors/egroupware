@@ -131,9 +131,9 @@
 			}
 			else
 			{
-				$activity_info = $this->activity_manager->get_activity($activity_id);
-				//echo "activity_info: <pre>";print_r($activity_info);echo "</pre>";
-				$activity_roles = $this->activity_manager->get_activity_roles($activity_id);
+				$activity_info =& $this->activity_manager->get_activity($activity_id);
+				//_debug_array($activity_info);
+				$activity_roles =& $this->activity_manager->get_activity_roles($activity_id);
 			}
 
 			// fill type filter select box
@@ -168,9 +168,8 @@
 				$where = implode(' and ', $wheres);
 		    }
  			
-			$proc_info = $this->process_manager->get_process($this->wf_p_id);
-			$process_activities = $this->activity_manager->list_activities($this->wf_p_id, 0, -1, $this->sort_mode, $find, $where);
-			//echo "process_activities: <pre>";print_r($process_activities);echo "</pre>";
+			$proc_info =& $this->process_manager->get_process($this->wf_p_id);
+			$process_activities =& $this->activity_manager->list_activities($this->wf_p_id, 0, -1, $this->sort_mode, $find, $where);
 			if ($activity_id) $this->search_transitions_act($process_activities, $activity_id);
 			$process_roles = $this->role_manager->list_roles($this->wf_p_id, 0, -1, 'wf_name__asc', '');
 			$process_transitions = $this->activity_manager->get_process_transitions($this->wf_p_id, $filter_tran_name);
@@ -213,7 +212,8 @@
 				'where2'				=> $this->where2,
 				'sort_mode'				=> $this->sort_mode,
 				'sort_mode2'			=> $this->sort_mode2,
-				'find'					=> $find,
+				'find'				=> $find,
+				'find2'				=> $find2,
 				'activity_id'			=> $activity_info['wf_activity_id'],
 				'new_act_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
 				'name'					=> $activity_info['wf_name'],
@@ -338,6 +338,7 @@
 				$this->t->parse('select_filter_interactive', 'block_select_filter_interactive', true);
 			}
 		}
+		
 		function show_select_filter_autoroute($all_activity_autoroute, $filter_autoroute)
 		{
 			$this->t->set_block('admin_activities', 'block_select_filter_autoroute', 'select_filter_autoroute');
@@ -353,6 +354,7 @@
 				$this->t->parse('select_filter_autoroute', 'block_select_filter_autoroute', true);
 			}
 		}
+		
 		function update_activities(&$process_activities, $activities_inter, $activities_route)
 		{
 			//echo "activities_data: <pre>";print_r($activities_data);echo "</pre>";
