@@ -20,6 +20,7 @@
 		var $wf_template;
 		// The instance object we will manipulate
 		var $instance;
+		var $activity_type;
 		// then we retain all usefull vars as members, to make them avaible in user's source code
 		// theses are data which can be set before the user code and which are not likely to change because of the user code
 		var $db;
@@ -100,6 +101,7 @@
 			$db 				=& $this->db;
 			$GLOBALS['workflow']['db']	=& $this->db;
 			//set some other usefull vars (note that $instance is empty at this time)
+			$this->activity_type	= $activity->getType();
 			$this->process_id 	= $activity->getProcessId();
 			$this->activity_id 	= $activity_id;
 			$this->process_name	= $this->process->getName();
@@ -108,6 +110,7 @@
 			$this->user_name	= $GLOBALS['phpgw']->accounts->id2name($GLOBALS['user']);
 			
 			//we set them in $GLOBALS['workflow'] as well
+			$GLOBALS['workflow']['wf_activity_type']		=& $this->activity_type;
 			$GLOBALS['workflow']['wf_process_id'] 		=& $this->process_id;
 			$GLOBALS['workflow']['wf_activity_id'] 		=& $this->activity_id;
 			$GLOBALS['workflow']['wf_process_name']		=& $this->process_name;
@@ -152,6 +155,7 @@
 				// They will also have at their disposition theses array, used for automatic parsing
 				$GLOBALS['workflow']['priority_array']	=& $this->priority_array;
 				$GLOBALS['workflow']['submit_array']	=& $this->submit_array;
+				
 			}
 			//echo "<br><br><br><br><br>Including $source <br>In request: <pre>";print_r($_REQUEST);echo "</pre>";
 			//[__leave_activity] is setted if needed in the xxx_pre code or by the user in his code
@@ -233,7 +237,7 @@
 
 			$this->translate_template('activity_completed');
 			$this->t->pparse('output', 'activity_completed');
-			$GLOBALS['phpgw']->common->phpgw_footer();
+			$this->show_after_running_page();
 		}
 		
 		//! show the page avaible when leaving an activity (with a Cancel or Quit button)
@@ -271,16 +275,79 @@
 			else
 			{
 				$this->t->set_var(array(
-					'release_text'	=> lang('It seems this activity for this instance is not avaible for you anymore.'),
+					'release_text'	=> lang('It seems this activity for this instance is not assigned to you anymore.'),
 					'release_button'=> '',
 				));
 
 			}
 			$this->translate_template('leaving_activity');
 			$this->t->pparse('output', 'leaving_activity');
-			$GLOBALS['phpgw']->common->phpgw_footer();
+			$this->show_after_running_page();
 		}
 		
+		//! show the bottom of end run_activity interactive pages with links to user_instance form
+		/*!
+		for start activities we link back to user_openinstance form
+		and for standalone activities we loop back to global activities form
+		*/
+		function show_after_running_page()
+		{
+			$this->t->set_file('after_running', 'after_running.tpl');
+			
+			//prepare the links form
+			$link_data_proc = array(
+				'menuaction'		=> 'workflow.ui_userinstances.form',
+				'filter_process'	=> $this->process_id,
+			);
+			$link_data_inst = array(
+				'menuaction'		=> 'workflow.ui_userinstances.form',
+				'filter_instance'	=> $this->instance_id,
+			);
+			if ($this->activity_type == 'start')
+			{
+				$activitytxt = lang('get back to instance creation');
+				$act_button_name = lang('New instance');
+				$link_data_act = array(
+					'menuaction'		=> 'workflow.ui_useropeninstance.form',
+				);
+			}
+			elseif  ($this->activity_type == 'standalone')
+			{
+				$activitytxt = lang('get back to global activities');
+				$act_button_name = lang('Global activities');
+				$link_data_act = array(
+					'menuaction'		=> 'workflow.ui_useractivities.form',
+					'show_globals'		=> true,
+				);
+			}
+			else
+			{
+				$activitytxt = lang('go to same activities for other instances of this process');
+				$act_button_name = lang('activity %1', $this->activity_name);
+				$link_data_act = array(
+					'menuaction'		=> 'workflow.ui_userinstances.form',
+					'filter_process'        => $this->process_id,
+					'filter_activity_name'	=> $this->activity_name,
+				);
+			}
+			$button='<img src="'. $GLOBALS['phpgw']->common->image('workflow', 'next')
+				.'" alt="'.lang('go').'" title="'.lang('go').'" width="16" >';
+			$this->t->set_var(array(
+				'same_instance_text'	=> ($this->activity_type=='standalone')? '-' : lang('go to the actual state of this instance'),
+				'same_activities_text'	=> $activitytxt,
+				'same_process_text'	=> lang('go to same process activities'),
+				'same_instance_button'	=> ($this->activity_type=='standalone')? '-' : '<a href="'.$GLOBALS['phpgw']->link('/index.php',$link_data_inst).'">'
+					.$button.lang('instance %1', ($this->instance_name=='')? $this->instance_id: $this->instance_name).'</a>',
+				'same_activities_button'=> '<a href="'.$GLOBALS['phpgw']->link('/index.php',$link_data_act).'">'
+					.$button.$act_button_name.'</a>',
+				'same_process_button'	=> '<a href="'.$GLOBALS['phpgw']->link('/index.php',$link_data_proc).'">'
+					.$button.lang('process %1', $this->process_name).'</a>',
+			));
+			$this->translate_template('after_running');
+			$this->t->pparse('output', 'after_running');
+			$GLOBALS['phpgw']->common->phpgw_footer();
+		}
+
 		//! show the activity form with automated parts if needed
 		function show_form()
 		{
@@ -303,6 +370,7 @@
 			//draw the activity submit buttons	
 			$this->parse_submit();
 			
+			$this->translate_template('run_activity');
 			$this->t->pparse('output', 'run_activity');
 			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
