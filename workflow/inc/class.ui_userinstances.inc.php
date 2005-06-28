@@ -687,7 +687,7 @@
 			if($this->show_instName_column)
 			{
 				$this->t->set_var(array(
-					'column_value'	=> $instance['insname'].':'.$instance['wf_version'],
+					'column_value'	=> $instance['insname'],
 					'class_column'	=> 'class="col_name"',
 				));
 				$this->t->parse('columns','block_instance_column',true);
@@ -697,7 +697,7 @@
 			if($this->show_procname_column)
 			{
 				$this->t->set_var(array(
-					'column_value'	=> $instance['wf_procname'],
+					'column_value'	=> $instance['wf_procname'].':'.$instance['wf_version'],
 					'class_column'	=> 'class="procname_'.$instance['wf_procname'].'"',
 				));
 				$this->t->parse('columns','block_instance_column',true);
