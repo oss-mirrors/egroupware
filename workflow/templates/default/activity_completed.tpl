@@ -5,11 +5,11 @@
 	</td>
 </tr>
 <tr>
-	<td class="th">{lang_Process}:
+	<td class="th">{lang_Process:}</td>
 	<td>{wf_procname} {procversion}</td>
 </tr>
 <tr>
-	<td class="th">{lang_Activity}:
+	<td class="th">{lang_Activity:}</td>
 	<td>{actname}</td>
 </tr>
 </table>
