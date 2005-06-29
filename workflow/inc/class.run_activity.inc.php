@@ -110,7 +110,7 @@
 			$this->user_name	= $GLOBALS['phpgw']->accounts->id2name($GLOBALS['user']);
 			
 			//we set them in $GLOBALS['workflow'] as well
-			$GLOBALS['workflow']['wf_activity_type']		=& $this->activity_type;
+			$GLOBALS['workflow']['wf_activity_type']	=& $this->activity_type;
 			$GLOBALS['workflow']['wf_process_id'] 		=& $this->process_id;
 			$GLOBALS['workflow']['wf_activity_id'] 		=& $this->activity_id;
 			$GLOBALS['workflow']['wf_process_name']		=& $this->process_name;
@@ -131,6 +131,7 @@
 					'use_automatic_parsing' 		=> 1,
 					'show_activity_title' 			=> 1,
 					'show_multiple_submit_as_select' 	=> 0,
+					'show_activity_info_zone' 		=> 1,
 				);
 				$this->conf =& $this->process->getConfigValues($myconf);
 				// if process conf says so we display a please wait message unti the activity form is shown
@@ -208,7 +209,6 @@
 						//the activity is not completed and the user doesn't want to leave
 						// we loop on the form
 						$this->show_form();
-
 					}
 				}
 			}
@@ -265,7 +265,7 @@
 				);
 				$releasetxt = lang('release activity for this instance');
 				$this->t->set_var(array(
-					'release_text'	=> lang('This activity for this instance is actually assigned to you.'),
+					'release_text'	=> lang('This activity for this instance is actually avaible for you.'),
 					'release_button'=> '<a href="'.$GLOBALS['phpgw']->link('/index.php',$link_array)
 						.'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'fix')
 						.'" alt="'.$releasetxt.'" title="'.$releasetxt.'" width="16" >'
@@ -355,6 +355,9 @@
 			//set a global template for interactive activities
 			$this->t->set_file('run_activity','run_activity.tpl');
 			
+			//set the css style files links
+			$this->set_css_links();
+			
 			// draw the activity's title zone
 			$this->parse_title($this->activity_name);
 			
@@ -370,9 +373,32 @@
 			//draw the activity submit buttons	
 			$this->parse_submit();
 			
+			//draw the info zone
+			$this->parse_info_zone();
+			
 			$this->translate_template('run_activity');
 			$this->t->pparse('output', 'run_activity');
 			$GLOBALS['phpgw']->common->phpgw_footer();
+		}
+		
+		//! set the href link for the css file, searching for themes specifics stylesheet if any
+		function set_css_links()
+		{
+			$css_file = $GLOBALS['egw_info']['server']['webserver_url'].SEP.'workflow'.SEP.'templates'
+					.SEP.$GLOBALS['egw_info']['server']['template_set'].SEP.'css'.SEP.'run_activity.css';
+			if(file_exists($css_file))
+			{
+				$this->t->set_var(array(
+					'run_activity_css_link' => $css_file,
+				));
+			}
+			else
+			{
+				$this->t->set_var(array(
+					'run_activity_css_link' => $GLOBALS['egw_info']['server']['webserver_url'].SEP.'workflow'
+						.SEP.'templates'.SEP.'default'.SEP.'css'.SEP.'run_activity.css',
+				));
+			}
 		}
 		
 		//!Parse the title in the activity form, the user can decide if he want this title to be shown or not
@@ -533,5 +559,32 @@
 				$this->t->parse('submit_zone', 'block_submit_zone', true);
 			}
 		}
+	
+		//!Parse the activity info zone in the activity form, the user can decide if he want it or not
+		function parse_info_zone()
+		{
+			$this->t->set_block('run_activity', 'workflow_info_zone', 'info_zone');
+			
+			if (($this->conf['use_automatic_parsing']) && ($this->conf['show_activity_info_zone']))
+			{
+				$this->t->set_var(array(
+					'wf_process_name'	=> $this->process_name,
+					'wf_process_version'	=> $this->process_version,
+					'wf_instance_id'	=> $this->instance_id,
+					'wf_instance_name'	=> $this->instance_name,
+					'wf_owner'		=> $this->owner_name,
+					'wf_activity_name'	=> $this->activity_name,
+					'wf_user_name'		=> $this->user_name,
+					'wf_date'		=> $GLOBALS['phpgw']->common->show_date(),
+				));
+				$this->translate_template('workflow_info_zone');
+				$this->t->parse('info_zone', 'workflow_info_zone', true);
+			}
+			else
+			{
+				$this->t->set_var(array( 'info_zone' => ''));
+			}
+		}
+
 	}
 ?>

@@ -86,9 +86,11 @@
 			// this will serve to show config values and to save them
 			$known_config_items= array(
 						'Running activities options'		=> 'title',
+						'display_please_wait_message'		=> 'yesno',
 						'use_automatic_parsing'		 	=> 'yesno',
 						'show_activity_title' 			=> 'yesno',
 						'show_multiple_submit_as_select'	=> 'yesno',
+						'show_activity_info_zone'		=> 'yesno',
 						'Graphic options'			=> 'title',
 						'draw_roles'				=> 'yesno',
 						'font_size'				=> 'text',
