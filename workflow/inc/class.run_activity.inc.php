@@ -134,7 +134,7 @@
 					'show_activity_info_zone' 		=> 1,
 				);
 				$this->conf =& $this->process->getConfigValues($myconf);
-				// if process conf says so we display a please wait message unti the activity form is shown
+				// if process conf says so we display a please wait message until the activity form is shown
 				if ($this->conf['display_please_wait_message'])
 				{
 					$this->show_wait_message();
@@ -214,14 +214,24 @@
 			}
 		}
 		
-		//! show a waiting message using css to hide it on onLoad events. You can enable/disable it in process configuration
+		//! show a waiting message using css and script to hide it on onLoad events. 
+		/*!
+		You can enable/disable it in process configuration.
+		Css for the please wait message is defined in app.css, a css automatically included by egroupware
+		*/
 		function show_wait_message()
 		{
-			$this->t->set_file('wait_message', 'wait_message.tpl');
-			$this->translate_template('wait_message');
-			$this->t->pparse('output', 'wait_message');
-			ob_flush();
-			flush();
+			if(!@is_object($GLOBALS['phpgw']->js))
+			{
+				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+			}
+			$GLOBALS['phpgw_info']['flags']['java_script'] .= '<script type="text/javascript">
+				document.write(\'<DIV id="loading"><BR><BR>Please wait, task in progress ...*</DIV>\');
+				function hide_loading()
+				{
+					document.getElementById("loading").style.display="none";
+				}</script>';
+			$GLOBALS['phpgw']->js->set_onload('hide_loading();');
 		}
 
 		//! show the page avaible when completing an activity
