@@ -72,7 +72,8 @@
 					'username'    => $_POST['xusername'],
 					'password'    => $_POST['xpassword']
 				),
-				$is->server['server_url']
+				$is->server['server_url'],
+				True
 			);
 		}
 		else
@@ -83,10 +84,11 @@
 					'username'    => $_POST['xusername'],
 					'password'    => $_POST['xpassword']
 				),
-				$is->server['server_url']
+				$is->server['server_url'],
+				True
 			);
 		}
-		/* _debug_array($is->result); */
+		//_debug_array($is->result);
 		$xserver_name = $is->result['domain'];
 		$xsessionid = $is->result['sessionid'];
 		$xkp3       = $is->result['kp3'];
@@ -98,7 +100,8 @@
 				'sessionid' => $xsessionid,
 				'kp3'       => $xkp3
 			),
-			$is->server['server_url']
+			$is->server['server_url'],
+			True
 		);
 		$xsessionid = '';
 		$xkp3       = '';
@@ -153,13 +156,14 @@
 			'addressbook.boaddressbook.search',array(
 				'start' => 1,
 				'limit' => 5,
-				//'fields' => array('n_given','n_family','cat_id','bday','last_mod'),
+				//'fields' => array('n_given','n_family','cat_id','bday','last_mod','custom1'),
 				'query'  => '',
 				'filter' => '',
 				'sort'   => '',
 				'order'  => ''
 			),
-			$is->server['server_url']
+			$is->server['server_url'],
+			True
 		);
 	}
 	elseif($_POST['infolog'])
@@ -176,7 +180,8 @@
 				'sort'   => '',
 				'order'  => ''
 			),
-			$is->server['server_url']
+			$is->server['server_url'],
+			True
 		);
 	}
 	elseif($_POST['calendar'])
@@ -189,7 +194,8 @@
 				'start' => date('Y-m-d').'T00:00:00',
 				'end'   => date('Y-m-d').'T00:00:00',
 			),
-			$is->server['server_url']
+			$is->server['server_url'],
+			True
 		);
 	}
 
