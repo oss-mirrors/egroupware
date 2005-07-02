@@ -1,9 +1,14 @@
 <!-- BEGIN iframe -->
+<script>
+document.body.style.overflow='hidden';
+//document.getElementById('divAppbox').style.marginLeft='100px';
+</script>
 <style>
 body
 {
-height:100%
+/*height:100%*/
 }
+
 #subNorm
 {
 	background-image:url({imgDir}goto.png); 
@@ -25,21 +30,26 @@ height:100%
 	left: 0; 
 	right: 0; 
 	bottom: 0;
-	top: 90px; 
-	
+	top: 75px; 
+	margin:0px;
+/*	_height:100%;
+*/	
 	/*_top:110px;*/
-	_top:0px;
+/*	_top:0px;
 	_width:100%;
-	_height:100%;
 	_margin-top: 120px;
+	*/
 	/*_: 120px;*/
    background-color: #FFF;
 }
 #menudiv
 {
-	background-color:#c4c4c4; 
-	padding: 5px; 
-	height: 25px;
+	background-color:#eeeeee; 
+width:100%;
+padding: 0px 5px 0px 5px; 
+height: 25px;
+top:40px;
+position:static;
 }
 .form
 {
@@ -57,7 +67,6 @@ height:100%
 </style>
 
 <div id ="menudiv">
-
 <form action="javascript: submitform();" class="form" id="formNorm">
 url:<input type="text" name="inurl" id="inurl" value="http://www.egroupware.org" size="60" >
 <input id="subNorm" type="submit" value="">
