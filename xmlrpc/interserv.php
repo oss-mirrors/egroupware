@@ -119,11 +119,11 @@
 		if($xsessionid & $_POST['xappname'])
 		{
 			$method_str = $_POST['xappname'] . '.bo' . $_POST['xappname'] . '.list_methods';
-			$server_id ? $is->send($method_str,'xmlrpc',$is->server['server_url']) : '';
+			$server_id ? $is->send($method_str,'xmlrpc',$is->server['server_url'], True) : '';
 		}
 		else
 		{
-			$server_id ? $is->send('system.listMethods','',$is->server['server_url']) : '';
+			$server_id ? $is->send('system.listMethods','',$is->server['server_url'], True) : '';
 		}
 	}
 	elseif($_POST['apps'])
@@ -131,21 +131,21 @@
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
 
-		$is->send('system.listApps','',$is->server['server_url']);
+		$is->send('system.listApps','',$is->server['server_url'],True);
 	}
 	elseif($_POST['users'])
 	{
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
 
-		$is->send('system.listUsers','',$is->server['server_url']);
+		$is->send('system.listUsers','',$is->server['server_url'],True);
 	}
 	elseif($_POST['bogus'])
 	{
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
 
-		$is->send('system.bogus','',$is->server['server_url']);
+		$is->send('system.bogus','',$is->server['server_url'],True);
 	}
 	elseif($_POST['addressbook'])
 	{
