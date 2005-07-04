@@ -263,3 +263,116 @@ function setLocatieSoort () {
 }
 
 
+/*
+* @function jinnHideFields
+* @abstract hides all given id's
+ */
+function jinnHideFields()
+{
+	param=jinnHideFields.arguments; 
+	if (param.length)
+	{
+		for (var i=0; i < param.length; i++) 
+		{
+			if(document.getElementById(param[i]))
+			{
+				document.getElementById(param[i]).style.display='none'	
+			}
+			//to make it easier for users ;)
+			if(document.getElementById('TR'+param[i]))
+			{
+				document.getElementById('TR'+param[i]).style.display='none';	
+
+			}
+		}
+	}
+}
+
+/*
+* @function jinnShowFields
+* @abstract unhides all given id's
+ */
+function jinnShowFields()
+{
+	param=jinnShowFields.arguments; 
+	if (param.length)
+	{
+		for (var i=0; i < param.length; i++) 
+		{
+			if(document.getElementById(param[i]))
+			{
+				document.getElementById(param[i]).style.display=''	
+			}
+			//to make it easier for users ;)
+			if(document.getElementById('TR'+param[i]))
+			{
+				document.getElementById('TR'+param[i]).style.display='';	
+
+			}
+		}
+	}
+}
+
+/*
+* @function jinnShowHideFields
+* @abstract used by selectbox plugin to hide fields based on just selected value
+* @example  jinnShowHideFields(self,'Show','two:lang_code,title','three:type')
+*/
+function jinnShowHideFields()
+{
+	param=jinnShowHideFields.arguments; 
+	if (param.length)
+	{
+		var selval=param[0].options[param[0].selectedIndex].value;
+		var field_arr2 = new Array();
+		for (var i=2; i < param.length; i++) 
+		{
+			var option_arr = param[i].split(':');
+
+			if(selval == option_arr[0])
+			{
+				var field_arr = option_arr[1].split(',');
+				for (var ii=0; ii < field_arr.length; ii++) 
+				{
+					field_arr[ii]='\''+field_arr[ii]+'\'';
+				}
+				eval('jinn'+param[1]+'Fields('+field_arr.join(',')+')');
+						}
+						}
+						}
+						}
+
+
+function jinnIgnoreSpaces(string) {
+   var temp = "";
+   string = '' + string;
+   splitstring = string.split(" ");
+   for(i = 0; i < splitstring.length; i++)
+	  temp += splitstring[i];
+   return temp;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

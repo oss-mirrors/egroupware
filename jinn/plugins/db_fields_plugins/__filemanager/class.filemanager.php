@@ -350,7 +350,7 @@
 					{
 						$image_info = getimagesize($upload_path . SEP. $img_path);
 						$text = '<b>'.$img_path.'</b>';
-						if(is_array($image_info))
+						if(is_array($image_info)&& $image_info['mime'] != 'application/x-shockwave-flash')
 						{
 							//process as image
 
@@ -408,6 +408,10 @@
 									}
 								 }
 						}
+                        			elseif($image_info['mime'] == 'application/x-shockwave-flash')
+                        			{
+                            				$input .= $this->show_slot($edit, 'swflash', $name, $img_path, $this->unknown_style, $span_id, $text);
+                        			}
 						else
 						{
 							//process as unknown filetype
@@ -445,6 +449,23 @@
 						$input .= '<img name="'.$name.'" src="'.$src.'" alt="preview" '.$style.' />';
 						$input .= '<span id="'.$span_id.'"></span>';
 						break;
+					case 'swflash':
+						$file_spec = @GetImageSize($this->local_bo->cur_upload_path().$src);						
+						$file_width = ($file_spec[0]>=$file_spec[1]) ? 80 : round($file_spec[0]/($file_spec[1]/80)) ;
+						$file_height = ($file_spec[1]>=$file_spec[0]) ? 80 : round($file_spec[1]/($file_spec[0]/80)) ;
+						$input .= '<script language="JavaScript" type="text/JavaScript" src="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__filemanager/popups/flash.js"></script>';
+						$input .= '<script language="JavaScript" type="text/JavaScript">';
+						$input .= 'if(flashcompattest()==true)';
+			        		$input .= '{';
+						$input .= '	writeFlash('.$file_width.','.$file_height.',\''.$this->local_bo->cur_upload_url().$src.'\',\''.$name.'\');';
+        					$input .= '}';
+						$input .= 'else';
+						$input .= '{';
+						$input .= '	document.write(\'<img name="swflash" src="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/flash.png" alt="preview" '.$style.' />\');';
+						$input .= '}';
+						$input .= '</script>';						
+						$input .= '<span id="'.$span_id.'">'.$text.'</span>';
+						break;
 					case 'unknown':
 						$input .= '<img name="'.$name.'" src="'.$src.'" alt="file of unknown type" '.$style.' />';
 						$input .= '<span id="'.$span_id.'">'.$text.'</span>';
@@ -466,6 +487,23 @@
 						break;
 					case 'image':
 						$input .= '<img src="'.$src.'" alt="preview" '.$style.' />';
+						break;
+					case 'swflash':
+						$file_spec = @GetImageSize($this->local_bo->cur_upload_path().$src);						
+						$file_width = ($file_spec[0]>=$file_spec[1]) ? 80 : round($file_spec[0]/($file_spec[1]/80)) ;
+						$file_height = ($file_spec[1]>=$file_spec[0]) ? 80 : round($file_spec[1]/($file_spec[0]/80)) ;
+						$input .= '<script language="JavaScript" type="text/JavaScript" src="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__filemanager/popups/flash.js"></script>';
+						$input .= '<script language="JavaScript" type="text/JavaScript">';
+						$input .= 'if(flashcompattest()==true)';
+			        		$input .= '{';
+						$input .= '	writeFlash('.$file_width.','.$file_height.',\''.$this->local_bo->cur_upload_url().$src.'\',\''.$name.'\');';
+        					$input .= '}';
+						$input .= 'else';
+						$input .= '{';
+						$input .= '	document.write(\'<img name="swflash" src="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/flash.png" alt="preview" '.$style.' />\');';
+						$input .= '}';
+						$input .= '</script>';						
+						$input .= '<span id="'.$span_id.'">'.$text.'</span>';
 						break;
 					case 'unknown':
 						$input .= '<img src="'.$src.'" alt="file of unknown type" '.$style.' />'.$text;
@@ -543,7 +581,7 @@
 					eval(cmd);
 				}
 			}
-			
+
 			function onSave(fileurl, filetype)
 			{
 				//access the CURRENT_... hidden fields to find out which slot to use

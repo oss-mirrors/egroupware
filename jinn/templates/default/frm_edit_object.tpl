@@ -15,7 +15,7 @@
 <table border="0" style="background-color:#ffffff;border:solid 1px #cccccc;">
 		<tr>
 			<td>{lang_fields}</td><td>			
-			{lang_field_plugin}</td><td>{lang_plugin_conf}</td><td>{lang_afc}</td><td>{lang_mandatory}</td><td>{lang_show_by_default_listview}</td><td>{lang_position}</td>
+			{lang_field_plugin}</td><td>{lang_plugin_conf}</td><td>{lang_afc}</td><td>{lang_mandatory}</td><td>{lang_show_by_default_listview}</td><td>{lang_show_by_default_form}</td><td>{lang_position}</td>
 		</tr>
 <!-- END plugins_header -->
 
@@ -41,6 +41,10 @@
 	<td>
 	<input type="hidden" name="FIELD_{field_name}_DEF" value="0">
 	<input type="checkbox" name="FIELD_{field_name}_DEF" style="color:red" value="1"{default}>
+	</td>	
+	<td>
+	<input type="hidden" name="FIELD_{field_name}_SHW" value="0">
+	<input type="checkbox" name="FIELD_{field_name}_SHW" style="color:red" value="1"{show_frm}>
 	</td>
 	<td>
 	<input type="text" name="FIELD_{field_name}_POS" value="{position}">

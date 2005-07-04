@@ -11,7 +11,7 @@
 
    // In the future these settings go to the plugin file 
 
-   /* $id$ */
+   /* $Id$ */
 
    create_section('Image Plugin');
 
@@ -36,6 +36,7 @@
    );
 
    create_select_box('Max. number of previews in form','max_prev',$max_prev,'When a lot of images are attached to a record, the form can load very slow. You can set a maximum number of images that is show in the form.');
+
 
    create_section('WYSIWYG plugin');
 

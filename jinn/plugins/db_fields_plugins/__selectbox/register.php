@@ -41,7 +41,8 @@
    (
 	  'Keys_seperated_by_commas'=>array('one,two,three','area',''),
 	  'Value_seperated_by_commas'=>array('one,two,three','area',''),
-	  'Activate_hidden_fields'=>array('two:emailaddress,three:phonenumber','area',''),
+	  'Show_fields'=>array('','area',''),
+	  'Hide_fields'=>array('','area',''),
 	  'Default_value'=>array('one','text',''),
 	  'Empty_option_available'=> array(array('yes','no'),'select','')
    );

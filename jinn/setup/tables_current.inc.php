@@ -94,7 +94,8 @@
 				'field_plugins' => array('type' => 'text'),
 				'field_mandatory' => array('type' => 'int','precision' => '4'),
 				'field_position' => array('type' => 'varchar','precision' => '10'),
-				'field_show_default' => array('type' => 'int','precision' => '4')
+				'field_show_default' => array('type' => 'int','precision' => '4'),
+				'field_form_visible' => array('type' => 'int','precision' => '4')
 			),
 			'pk' => array('field_id'),
 			'fk' => array(),

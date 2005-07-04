@@ -356,7 +356,6 @@
 			   $this->template->set_var('lang_field_plugins',lang('Field Plugins'));
 			   $this->template->parse('out','plugins_header');
 
-
 			   foreach($fields as $field)
 			   {
 				  unset($sets);
@@ -390,6 +389,7 @@
 
 						 $this->template->set_var('mandatory',(($plugin_conf_arr[field_mandatory]==1) ? ' checked' : ''));
 						 $this->template->set_var('default',(($plugin_conf_arr[field_show_default]==1) ? ' checked' : ''));
+						 $this->template->set_var('show_frm',(($plugin_conf_arr[field_form_visible]==1) ? ' checked' : ''));
 						 $this->template->set_var('position',$plugin_conf_arr[field_position]);
 					}
 					else
@@ -397,6 +397,7 @@
 							//default values:
 						 $this->template->set_var('mandatory', '');
 						 $this->template->set_var('default', ' checked');
+						 $this->template->set_var('show_frm', ' checked');
 						 $this->template->set_var('position', '');
 					}
 				  }
@@ -451,6 +452,7 @@
 					 $this->template->set_var('lang_plugin_conf',lang('configure field plugin'));
 					 $this->template->set_var('lang_name_and_help',lang('name and help info'));
 					 $this->template->set_var('lang_mandatory',lang('mandatory'));
+					 $this->template->set_var('lang_show_by_default_form',lang('Show in form'));
 					 $this->template->set_var('lang_show_by_default_listview',lang('show by default_listview'));
 					 $this->template->set_var('lang_position',lang('field position'));
 					 $this->template->set_var('popup_onclick_plug',$popup_onclick_plug);

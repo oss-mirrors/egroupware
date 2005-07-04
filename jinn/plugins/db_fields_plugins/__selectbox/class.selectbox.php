@@ -54,7 +54,19 @@
 				$keys=$pos_values;
 			 }
 	
-			 $input='<select name="'.$field_name.'">';
+
+			 if($config[Show_fields])
+			 {
+				$onchange.='jinnShowHideFields('.$field_name.',\'Show\','.$config[Show_fields].');';	
+
+			 }
+			 if($config[Hide_fields])
+			 {
+				$onchange.='jinnShowHideFields('.$field_name.',\'Hide\','.$config[Hide_fields].');';	
+			 }
+
+			 
+				$input='<select onChange="'.$onchange.'" id="'.$field_name.'" name="'.$field_name.'">';
 				if($config['Empty_option_available']=='yes') $input.='<option>';
 				$i=0;
 				foreach($pos_values as $pos_val) 

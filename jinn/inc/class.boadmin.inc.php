@@ -496,14 +496,17 @@
 					 $mandatory=$field[value];
 					 break;
 				  case 'DEF': //show in listview by default?
-					 $show_default=$field[value];
-					 break;
+				  $show_default=$field[value];
+				  break;
+			   case 'SHW': //show in formview by default?
+				  $show_in_form=$field[value];
+				  break;
 				  case 'POS': //position of field in listview
 					 $position=$field[value];
 
 					 //BEWARE: if new properties are added, make sure the LAST one ends with saving the record!
 					 //POS is the last field, so now update the object field record:
-					 $status=$this->so->save_field($this->where_value,$field[name],$conf_serialed_string,$mandatory,$show_default,$position);
+					 $status=$this->so->save_field($this->where_value,$field[name],$conf_serialed_string,$mandatory,$show_default, $show_in_form,$position);
 					 break;
 				  default:
 					 break;

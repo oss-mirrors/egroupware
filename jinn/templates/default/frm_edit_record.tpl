@@ -27,12 +27,14 @@ return true;
 <!-- END js -->
 
 <!-- BEGIN table_header -->
-<table align="" cellspacing="2" cellpadding="2" style="background-color:#ffffff;border:solid 1px #cccccc;width:570px;">
+<table align="" cellspacing="2" cellpadding="2" style="background-color:#ffffff;border:solid 1px #cccccc;width:100%;margin:0px 10px 0px 10px;">
 <!-- END table_header -->
 
 <!-- BEGIN rows -->
-<tr><td bgcolor="{row_color}" valign="top" nowrap="nowrap">{fieldname}&nbsp;{tipmouseover}</td>
-<td bgcolor="{row_color}">{input}</td></tr>
+<tr id="TR{fieldname}">
+	<td style="width:100px;background-color:#eeeeee" valign="top" nowrap="nowrap">{display_name}&nbsp;{tipmouseover}</td>
+	<td bgcolor="#eeeeee">{input}</td>
+</tr>
 <!-- END rows -->
 
 <!-- BEGIN many_to_many -->
@@ -73,7 +75,7 @@ return true;
 
 
 <!-- BEGIN form_buttons -->
-	<table style="background-color:#ffffff">
+	<table style="background-color:#ffffff;margin:0px 10px 0px 10px;">
 		<tr>
 		<td><input type="submit" name="reopen" value="{save_button}"></td>
 <td><input type="{save_and_add_new_button_submit}" {save_and_add_new_button_onclick} name="add_new" value="{save_and_add_new_button}"></td>
@@ -87,6 +89,11 @@ return true;
 <!-- BEGIN form_footer -->
 {hiddenfields}
 {jsmandatory}
+
+<script language="JavaScript">
+{jshidefields}
+</script>
+
 </form>
 <!-- END form_footer -->
 

@@ -22,7 +22,7 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
    */
 
-   /* $id$ */
+   /* $Id$ */
 
    class sojinn
    {
@@ -65,6 +65,7 @@
 		 $this->phpgw_db->next_record();
 
 		 $this->site_db =& new egw_db();
+		// $this->site_db 				= CreateObject('phpgwapi.db');
 
 		 // if servertype is develment use dev site settings else use normal settings
 		 if($this->config["server_type"]=='dev' && $this->phpgw_db->f('dev_site_db_name'))
@@ -93,6 +94,7 @@
 	  function test_db_conn($data)
 	  {
 		 $this->test_db =& new egw_db();
+		// $this->test_db = CreateObject('phpgwapi.db');
 
 		 // if servertype is develment use dev site settings else use normal settings
 		 if($this->config["server_type"]=='dev' && $data[dev_site_db_name])
@@ -1876,7 +1878,7 @@
 		 return $status;
 	  }
 
-	  function save_field($object_ID,$fieldname,$conf_serialed_string,$mandatory,$show_default,$position)
+	  function save_field($object_ID,$fieldname,$conf_serialed_string,$mandatory,$show_default,$show_in_form,$position)
 	  {
 		if(!$object_ID) $object_ID=-1;
 		$sql="SELECT * FROM egw_jinn_obj_fields WHERE field_parent_object=$object_ID AND field_name='$fieldname'";
@@ -1890,7 +1892,7 @@
 			// test if conf is set is not and new plugin is the same as old plugin don't save 
 			if(is_array($old_setting) AND ($old_setting[name]==$new_setting[name]) AND !is_array($new_setting[conf]) )
 			{
-				$sql="UPDATE egw_jinn_obj_fields SET field_mandatory='$mandatory', field_show_default='$show_default', field_position='$position' WHERE (field_parent_object=$object_ID) AND (field_name='$fieldname')";
+				$sql="UPDATE egw_jinn_obj_fields SET field_mandatory='$mandatory', field_show_default='$show_default', field_form_visible='$show_in_form',field_position='$position' WHERE (field_parent_object=$object_ID) AND (field_name='$fieldname')";
 			}
 			else
 			{

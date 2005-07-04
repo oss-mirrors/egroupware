@@ -53,7 +53,7 @@
 	  'Zip_file_box'=> array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
 	  'Max_image_width' => array('','text','maxlength=4 size=4'),
 	  'Max_image_height' => array('','text','maxlength=4 size=4'),
-	  'Filetype' => array(array('image', 'all'),'select','maxlength=8 size=8'),
+	  'Filetype' => array(array('image','swflash', 'all'),'select','maxlength=8 size=8'),
 	  'Image_filetype' => array(array('png','gif','jpg'),'select','maxlength=3 size=3'),
 	  'Generate_thumbnail' => array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
 	  'Max_thumbnail_width' => array('100','text','maxlength=3 size=3'),

@@ -52,6 +52,7 @@
 	  var $jstips;
 	  var $jsmandatory;	//stores javascript calls that set specific fields to be checked if filled in
 	  var $hiddenfields; //stores hidden inputs for rendering outside the form tables
+	  var $jshidden;
 	  
 	  var $db_ftypes;
 
@@ -561,6 +562,13 @@
 				$this->jsmandatory .= '<script language="JavaScript">document.frm.' . $input_name . '.mandatory=true;</script>';
 			}
 
+
+			if(!$field_conf_arr[field_form_visible])
+			{
+			   $this->jshidden[] ="'".'TR'.$fprops[name]."'";
+			}
+
+			// FIXME code below is depreciated
 			/* if there is something to render to this */
 			if($input!='__disabled__')
 			{
@@ -580,11 +588,12 @@
 			   $GLOBALS['phpgw_info']['theme']['row_off']='#eeeeee';
 			   if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on']) $row_color=$GLOBALS['phpgw_info']['theme']['row_off'];
 			   else $row_color=$GLOBALS['phpgw_info']['theme']['row_on'];
-
+			   
 			   $this->template->set_var('row_color',$row_color);
 			   $this->template->set_var('input',$input);
 			   $this->template->set_var('tipmouseover',$tipmouseover);
-			   $this->template->set_var('fieldname',$display_name);
+			   $this->template->set_var('display_name',$display_name);
+			   $this->template->set_var('fieldname',$fprops[name]);
 			   
 			   $this->template->parse('row','rows',true);
 			}
@@ -626,6 +635,14 @@
 
 	  function render_footer()
 	  {
+		 if(is_array($this->jshidden))
+		 {
+			$param=implode(',',$this->jshidden);
+			$jinnHideFields="jinnHideFields($param);";
+		 }
+
+		 $this->template->set_var('jshidefields',$jinnHideFields);
+		 
 		 $this->template->set_block('frm_edit_record','form_footer','form_footer');
 		 $this->template->parse('form_footer','form_footer');
 	  }
@@ -686,7 +703,7 @@
 					 {
 						$input.='<br/>- <i>'.$option[name].'</i>';
 					 }
-
+					 
 					 $this->template->set_var('row_color',$row_color);
 					 $this->template->set_var('tipmouseover',$tipmouseover);
 					 $this->template->set_var('input',$input);

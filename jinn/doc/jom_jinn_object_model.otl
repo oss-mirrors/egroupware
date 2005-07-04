@@ -1,0 +1,19 @@
+JOM, JiNN Object Model
+version 0.1
+author Pim Snel
+abstract
+:this document must decribe the entities in JiNN so we can develop a scripting
+:language
+:
+:its a very very early draft
+
+	entities
+		sites
+		(host profiles)
+		(apps)
+		objects
+		fields
+
+	examples
+		sites.object.field.value="string"
+		sites.object.field.visible=true
