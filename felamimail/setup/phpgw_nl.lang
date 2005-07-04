@@ -153,7 +153,7 @@ mark messages as	felamimail	nl	Markeer geselecteerde berichten als
 mark selected as flagged	felamimail	nl	Markeer geselecteerde als 'gemarkeerd'
 mark selected as read	felamimail	nl	Markeer geselecteerde als 'gelezen'
 mark selected as unflagged	felamimail	nl	Markeer geselecteerde als 'niet gemarkeerd'
-mark selected as unread	felamimail	nl	Markeer geselecteerde als 'niet gezelezen
+mark selected as unread	felamimail	nl	Markeer geselecteerde als 'niet gelezen'
 match	felamimail	nl	Overeenkomstige
 medium gray	felamimail	nl	Grijs
 message highlighting	felamimail	nl	
