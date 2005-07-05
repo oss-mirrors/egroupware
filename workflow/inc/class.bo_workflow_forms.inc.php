@@ -1,5 +1,5 @@
 <?php
-	include(dirname(__FILE__) . SEP . 'class.workflow.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.workflow.inc.php');
 	
 	class bo_workflow_forms extends workflow
 	{
@@ -22,6 +22,8 @@
 		var $form_action;
 		//related to template_name, name of the child class
 		var $class_name;
+		// message shown in red in top of forms
+		var $message=Array();
 		
 		function bo_workflow_forms($template_name)
 		{
