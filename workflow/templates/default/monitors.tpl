@@ -1,9 +1,10 @@
-<div style="color:red; text-align:center">{message}</div>
-
-<table style="border: 1px solid black;width:70%;margin:0 auto" cellspacing="0">
+<LINK href="{monitors_css_link}"  type="text/css" rel="StyleSheet">
+<div class="monitor_message">{message}</div>
+{monitor_tabs}
+<table class="monitor_table_header">
 	<tr class="th">
-		<td colspan="3" style="font-size: 120%; font-weight:bold; border-bottom:3px solid white;">
-			{lang_Monitoring}
+		<td colspan="3" class="monitor_header_title">
+			{lang_List_of_monitors}
 		</td>
 	</tr>
 	<tr class="row_on">

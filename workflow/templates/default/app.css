@@ -1,3 +1,4 @@
+/********************* WAIT WHILE LOADING BOX *************/
 #loading {
 	width: 400px;
 	height: 50px;
@@ -9,3 +10,45 @@
 	text-align: center;
 	border: 1px solid black;
 }
+
+/********************* INSTANCE STATUS COLOR *************/
+.wf_active
+{
+        color: green;
+}
+a.wf_active
+{
+        color: green;
+}
+.wf_completed
+{
+        color: black;
+}
+a.wf_completed
+{
+        color: black;
+}
+.wf_aborted
+{
+        color: grey;
+}
+a.wf_aborted
+{
+        color: grey;
+}
+.wf_exception
+{
+        color: red;
+}
+a.wf_exception
+{
+        color: red;
+}
+
+/********************* MESSAGE *************/
+.message
+{
+        color: red;
+        text-align: center;
+}
+

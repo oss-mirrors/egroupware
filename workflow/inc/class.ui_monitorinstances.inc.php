@@ -1,6 +1,6 @@
 <?php
 
-	include(dirname(__FILE__) . SEP . 'class.monitor.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.monitor.inc.php');
 
 	class ui_monitorinstances extends monitor
 	{
@@ -32,6 +32,7 @@
 			$this->filter_act_status	= get_var('filter_act_status', 'any', '');
 			$this->filter_user		= get_var('filter_user', 'any', '');
 
+			$this->show_monitor_tabs($this->class_name);
 			//echo "order: <pre>";print_r($this->order);echo "</pre>";
 
 			$this->link_data['search_str'] = $this->search_str;
@@ -127,7 +128,7 @@
 						'inst_user'		=> $GLOBALS['phpgw']->common->grab_owner_name($instance['wf_user']), 
 						'inst_procname'		=> $instance['wf_procname'],
 						'inst_version'		=> $instance['wf_version'],
-						'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
+						'class_alternate_row'	=> $this->nextmatchs->alternate_row_color($tr_color, true),
 						'inst_act_status'	=>$instance['wf_act_status']
 					));
 					$this->t->parse('inst_table', 'block_inst_table', true);

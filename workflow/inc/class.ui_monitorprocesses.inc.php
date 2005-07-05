@@ -1,6 +1,6 @@
 <?php
 
-	include(dirname(__FILE__) . SEP . 'class.monitor.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.monitor.inc.php');
 
 	class ui_monitorprocesses extends monitor
 	{
@@ -40,6 +40,8 @@
 			);
 			$processes_list	=& $this->process_monitor->monitor_list_processes($this->start, $this->offset, $this->sort_mode, $this->search_str, $this->wheres);
 
+
+			$this->show_monitor_tabs($this->class_name);
 			$this->show_filter_process();
 			$this->show_filter_active($this->filter_active);
 			$this->show_filter_valid($this->filter_valid);
@@ -105,7 +107,7 @@
 					'process_inst_abort'		=> $process['aborted_instances'],
 					'process_href_inst_excep'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $process['wf_p_id'] .'&filter_status=exception'),
 					'process_inst_excep'		=> $process['exception_instances'],
-					'color_line'				=> $this->nextmatchs->alternate_row_color($tr_color),
+					'class_alternate_row'		=> $this->nextmatchs->alternate_row_color($tr_color, true),
 				));
 				$this->t->parse('listing', 'block_listing', true);
 			}

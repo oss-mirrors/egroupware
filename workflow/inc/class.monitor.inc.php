@@ -1,6 +1,6 @@
 <?php
 
-	include(dirname(__FILE__) . SEP . 'class.bo_workflow_forms.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.bo_workflow_forms.inc.php');
 
 	class monitor extends bo_workflow_forms
 	{
@@ -130,8 +130,48 @@
 				'href_exception_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=exception'),
 				'stats_exception_instances'	=> lang('%1 exception',$stats['exception_instances']),
 			));
+			//stylesheet
+			$this->t->set_var(array(
+ 			 	'monitors_css_link' => $this->get_css_link('monitors.css'),
+			));
+
 			$this->translate_template('monitor_stats_tpl');
 			return $this->t->parse('monitor_stats', 'monitor_stats_tpl');
 		}
+		
+		function show_monitor_tabs($activtab)
+		{
+			$this->t->set_file('monitor_tabs_tpl', 'monitor_tabs.tpl');
+			//stylesheet
+			$this->t->set_var(array(
+ 			 	'monitor_css_link' => $this->get_css_link('monitor_tabs.css'),
+			));
+			
+			$improc	= $GLOBALS['phpgw']->common->image('workflow', 'monitorprocess');
+			$imacti	= $GLOBALS['phpgw']->common->image('workflow', 'monitoractivity');
+			$iminst	= $GLOBALS['phpgw']->common->image('workflow', 'monitorinstance');
+			$imwork	= $GLOBALS['phpgw']->common->image('workflow', 'monitor');
+
+			//tab class, depends on active form
+			$this->t->set_var(array(
+				'class_tab_monitor_processes' 	=> ($activtab=='monitorprocesses')? 'active_tab': 'inactive_tab',
+				'class_tab_monitor_activities'	=> ($activtab=='monitoractivities')? 'active_tab': 'inactive_tab',
+				'class_tab_monitor_instances'	=> ($activtab=='monitorinstances')? 'active_tab': 'inactive_tab',
+				'class_tab_monitor_workitems'	=> ($activtab=='monitorworkitems')? 'active_tab': 'inactive_tab',
+				'class_tab_monitors'		=> ($activtab=='monitors')? 'active_tab': 'inactive_tab',
+				'link_monitors'			=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitors.form'),
+				'link_monitor_processes'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitorprocesses.form'),
+				'link_monitor_workitems'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitorworkitems.form'),
+				'link_monitor_activities'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitoractivities.form'),
+				'link_monitor_instances'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_monitorinstances.form'),
+				'img_monitor_processes'		=> '<img src="'.$improc.'" alt="{lang_monitor_processes}" title="{lang_monitor_processes}">',
+				'img_monitor_activities'	=> '<img src="'.$imacti.'" alt="{lang_monitor_activities}" title="{lang_monitor_activities}">',
+				'img_monitor_instances'		=> '<img src="'.$iminst.'" alt="{lang_monitor_instances}" title="{lang_monitor_instances}">',
+				'img_monitor_workitems'		=> '<img src="'.$imwork.'" alt="{lang_monitor_workitems}" title="{lang_monitor_workitems}">',
+			));
+			$this->translate_template('monitor_tabs_tpl');
+                        return $this->t->parse('monitor_tabs', 'monitor_tabs_tpl');
+		}
+
 	}
 ?>

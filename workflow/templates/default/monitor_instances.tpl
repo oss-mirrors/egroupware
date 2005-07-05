@@ -1,40 +1,21 @@
-<div style="color:red; text-align:center">{message}</div>
-
+<LINK href="{monitors_css_link}"  type="text/css" rel="StyleSheet">
+<div class="message">{message}</div>
+{monitor_tabs}
 <form action="{form_action}" method="post">
 <input type="hidden" name="start" value="0" />
 <input type="hidden" name="sort" value="{sort}" />
 <input type="hidden" name="order" value="{order}" />
-<table style="border: 1px solid black;width:100%;" cellspacing="0">
+<table class="monitor_table_header">
 	<tr class="th">
-		<td colspan="7" style="font-size: 120%; font-weight:bold; border-bottom:3px solid white;">
+		<td class="monitor_header_title" colspan="8">
 			{lang_List_of_instances}
 		</td>
 	</tr>
-	<tr class="th">
-		<td align="center">
-			{lang_Process}
+	<tr class="row_off">
+		<td class="filter_label_cell">
+			{lang_Process:}
 		</td>
-		<td align="center">
-			{lang_Activity}
-		</td>
-		<td align="center">
-			{lang_Status}
-		</td>
-		<td align="center">
-			{lang_Act._Status}
-		</td>
-		<td align="center">
-			{lang_User}
-		</td>
-		<td align="center">
-			{lang_Search}
-		</td>
-		<td >
-			&nbsp;
-		</td>	
-	</tr>
-	<tr class="th">
-		<td align="center">
+		<td class="filter_action_cell">
 			<select name="filter_process">
 			<option {filter_process_selected_all} value="">{lang_All}</option>
 			<!-- BEGIN block_filter_process -->
@@ -42,7 +23,10 @@
 			<!-- END block_filter_process -->
 			</select>
 		</td>
-		<td align="center"> 
+		<td class="filter_label_cell">
+			{lang_Activity:}
+		</td>
+		<td class="filter_action_cell" colspan="3"> 
 			<select name="filter_activity">
 			<option {filter_activity_selected_all} value="">{lang_All}</option>
 			<!-- BEGIN block_filter_activity -->
@@ -50,7 +34,10 @@
 			<!-- END block_filter_activity -->
 			</select>
 		</td>
-		<td align="center">
+		<td class="filter_label_cell">
+			{lang_Status:}
+		</td>
+		<td class="filter_action_cell">
 			<select name="filter_status">
 			<option {filter_status_selected_all} value="">{lang_All}</option>
 			<!-- BEGIN block_filter_status -->
@@ -58,14 +45,22 @@
 			<!-- END block_filter_status -->
 			</select>
 		</td>
-		<td align="center">
+	</tr>
+	<tr class="row_off">
+		<td class="filter_label_cell">
+			{lang_Act._Status:}
+		</td>
+		<td class="filter_action_cell">
 			<select name="filter_act_status">
 				<option value="" {filter_act_status_selected_all}>{lang_All}</option>
 				<option value="running" {filter_act_status_running}>{lang_running}</option>
 				<option value="completed" {filter_act_status_completed}>{lang_completed}</option>
 			</select>
 		</td>
-		<td align="center">
+		<td class="filter_label_cell">
+			{lang_User:}
+		</td>
+		<td class="filter_action_cell">
 			<select name="filter_user">
 			<option {filter_user_selected_all} value="">{lang_All}</option>
 			<!-- BEGIN block_filter_user -->
@@ -73,10 +68,13 @@
 			<!-- END block_filter_user -->
 			</select>
 		</td>
-		<td align="center">
+		<td class="filter_label_cell">
+			{lang_Search:}
+		</td>
+		<td class="filter_action_cell">
 			<input size="8" type="text" name="search_str" value="{search_str}" />
 		</td>
-		<td align="center">	
+		<td class="filter_action_cell" colspan="2">	
 			<input type="submit" name="filter" value="{lang_filter}" />
 		</td>
 	</tr>
@@ -89,52 +87,51 @@
 <input type="hidden" name="sort" value="{sort}" />
 <input type="hidden" name="order" value="{order}" />
 <input type="hidden" name="filter_process" value="{filter_process_up}" />
-<table style="border: 1px solid black;width:100%;">
-	<tr>
-		<td colspan="8">
-		        <table style="border: 0px;width:100%; margin:0 auto">
-				<tr class="th" style="font-weight:bold">
-		                	{left}
-			        	<td><div align="center">{lang_showing}</div></td>
-			                {right}
-		        	</tr>
-			</table>
-		</td>
+<table class="monitor_table_list">
+	<tr><td colspan="8">
+        <table class="table_showing_rows">
+		<tr class="tr_showing_rows">
+                	{left}
+	        	<td><div align="center">{lang_showing}</div></td>
+	                {right}
+        	</tr>
+	</table>
+	</td>
 	</tr>
 	<tr class="th" style="font-weight:bold">
-		<td>{header_wf_instance_id}</td>
-		<td>{header_wf_instance_name}</td>
-		<td>{header_wf_procname}</td>
-		<td>{header_wf_activity_name}</td>
-		<td>{header_wf_status}</td>
-		<td>{header_wf_act_status}</td>
-		<td>{header_wf_owner}</td>
-		<td>{header_wf_user}</td>
+		<th class="th_mi_instanceid">{header_wf_instance_id}</th>
+		<th class="th_mi_name">{header_wf_instance_name}</th>
+		<th class="th_mi_procname">{header_wf_procname}</th>
+		<th class="th_mi_actname">{header_wf_activity_name}</th>
+		<th class="th_mi_status">{header_wf_status}</th>
+		<th class="th_mi_actstatus">{header_wf_act_status}</th>
+		<th class="th_mi_owner">{header_wf_owner}</th>
+		<th class="th_mi_user">{header_wf_user}</th>
 	</tr>
 	<!-- BEGIN block_inst_table -->
-	<tr bgcolor="{color_line}">
-		<td>
+	<tr class="{class_alternate_row}">
+		<td class="td_mi_instanceid">
 		  <a href="{inst_id_href}">{inst_id}</a>
 		</td>
-		<td style="text-align:center;">
+		<td class="td_mi_name">
 			{instance_name}
 		</td>
-		<td style="text-align:center;">
+		<td class="td_mi_procname">
 			{inst_procname}&nbsp;{inst_version}
 		</td>
-		<td style="text-align:center;">
+		<td class="td_mi_actname">
 			{activity_name}
 		</td>
-		<td style="text-align:center;">
+		<td class="td_mi_status">
 			{inst_status}
 		</td>
-		<td style="text-align:center;">
+		<td class="td_mi_actstatus">
 			{inst_act_status}
 		</td>
-		<td style="text-align:center;">
+		<td class="td_mi_owner">
 			{inst_owner}
 		</td>
-		<td style="text-align:center;">
+		<td class="td_mi_user">
 			{inst_user}
 		</td>
 	</tr>

@@ -1,6 +1,6 @@
 <?php
 
-	include(dirname(__FILE__) . SEP . 'class.monitor.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.monitor.inc.php');
 
 	class ui_monitoractivities extends monitor
 	{
@@ -27,6 +27,7 @@
 			$this->filter_is_interactive	= get_var('filter_is_interactive', 'any', '');
 			$this->filter_is_autorouted	= get_var('filter_is_autorouted', 'any', '');
 			$this->filter_type		= get_var('filter_type', 'any', '');
+			$this->show_monitor_tabs($this->class_name);
 			
 			$this->link_data['search_str'] = $this->search_str;
 			if ($this->filter_is_interactive) 
@@ -131,7 +132,7 @@
 						'completed_instances'		=> $activity['completed_instances'],
 						'aborted_instances'		=> $activity['aborted_instances'],
 						'exception_instances'		=> $activity['exception_instances'],
-						'color_line'			=> $this->nextmatchs->alternate_row_color($tr_color),
+						'class_alternate_row'		=> $this->nextmatchs->alternate_row_color($tr_color, true),
 					));
 					$this->t->parse('act_table', 'block_act_table', true);
 				}

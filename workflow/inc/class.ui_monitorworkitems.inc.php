@@ -1,6 +1,6 @@
 <?php
 
-	include(dirname(__FILE__) . SEP . 'class.monitor.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.monitor.inc.php');
 
 	class ui_monitorworkitems extends monitor
 	{
@@ -25,6 +25,8 @@
 			//get our own filters
 			$this->filter_user		= (int)get_var('filter_user', 'any', 0);
 			$this->filter_instance		= (int)get_var('filter_instance', 'any', 0);
+			
+			$this->show_monitor_tabs($this->class_name);
 			
 			//echo "order: <pre>";print_r($this->order);echo "</pre>";
 			//echo "sort_mode: <pre>";print_r($this->sort_mode);echo "</pre>";
@@ -111,13 +113,9 @@
 					'wi_adm_inst_href'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $workitem['wf_instance_id']),
 					'wi_inst_id'		=> $workitem['wf_instance_id'],
 					'wi_order_id'		=> $workitem['wf_order_id'],
-					//'wi_started'		=> $workitem['wf_started'],
 					'wi_started'		=> $GLOBALS['phpgw']->common->show_date($workitem['wf_started'] - ((60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])),
 					'wi_duration'		=> $this->time_diff($workitem['wf_duration']),
-					//'wi_duration'		=> $workitem['wf_duration'],
-					//'wi_user'			=> $workitem['wf_user'],
-					//'wi_user'		=> $GLOBALS['phpgw']->common->grab_owner_name($workitem['wf_user']), 
-					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
+					'class_alternate_row'	=> $this->nextmatchs->alternate_row_color($tr_color, true),
 				));
 				if( $workitem['wf_user'] == '*') {
 					$this->t->set_var('wi_user', $workitem['wf_user']);

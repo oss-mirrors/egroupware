@@ -1,40 +1,21 @@
-<div style="color:red; text-align:center">{message}</div>
-
+<LINK href="{monitors_css_link}"  type="text/css" rel="StyleSheet">
+<div class="message">{message}</div>
+{monitor_tabs}
 <form id="filterf" action="{form_action}" method="post">
 <input type="hidden" name="start" value="0" />
 <input type="hidden" name="sort" value="{sort}" />
 <input type="hidden" name="order" value="{order}" />
-<table style="border: 1px solid black;width:100%;" cellspacing="0">
+<table class="monitor_table_header">
 	<tr class="th">
-		<td colspan="7" style="font-size: 120%; font-weight:bold; border-bottom:3px solid white;">
+		<td class="monitor_header_title" colspan="8">
 			{lang_List_of_activities}
 		</td>
 	</tr>
-	<tr class="th">
-		<td align="center">
-			{lang_Process}
+	<tr class="row_off">
+		<td class="filter_label_cell">
+			{lang_Process:}&nbsp;
 		</td>
-		<td align="center">
-			{lang_Activity}
-		</td>
-		<td align="center">
-			{lang_Type}
-		</td>
-		<td align="center">
-			{lang_Interactive}
-		</td>
-		<td align="center">
-			{lang_Routing}
-		</td>
-		<td align="center">
-			{lang_Search}
-		</td>
-		<td >
-			&nbsp;
-		</td>	
-	</tr>
-	<tr class="th">
-		<td align="center">
+		<td class="filter_action_cell">
 			<select name="filter_process">
 			<option {filter_process_selected_all} value="">{lang_All}</option>
 			<!-- BEGIN block_filter_process -->
@@ -42,21 +23,19 @@
 			<!-- END block_filter_process -->
 			</select>
 		</td>
-		<td align="center">
-			<select name="filter_activity">
-			<option {filter_activity_selected_all} value="">{lang_All}</option>
-			<!-- BEGIN block_filter_activity -->
-			<option {filter_activity_selected} value="{filter_activity_value}">{filter_activity_name}</option>
-			<!-- END block_filter_activity -->
-			</select>
+		<td class="filter_label_cell">
+			{lang_Type:}&nbsp;
 		</td>
-		<td align="center">
+		<td class="filter_action_cell">
 			<select name="filter_type">
 				<option {filter_type_selected_all} value="">{lang_All}</option>
 				<!-- BEGIN block_filter_type -->
 				<option {filter_type_selected} value="{filter_types}">{filter_type}</option>
 				<!-- END block_filter_type -->
 			</select>
+		</td>
+		<td class="filter_label_cell">
+			{lang_Interactive:}&nbsp;
 		</td>
 		<td align="center">
 			<select name="filter_is_interactive">
@@ -65,17 +44,36 @@
 				<option value="n" {filter_interac_selected_n}>{lang_Automatic}</option>
 			</select>
 		</td>
-		<td align="center">
+		<td class="filter_label_cell">
+			{lang_Routing:}&nbsp;
+		</td>
+		<td class="filter_action_cell">
 			<select name="filter_is_autorouted">
 				<option {filter_route_selected_all} value="">{lang_All}</option>
 				<option value="n" {filter_route_selected_n}>{lang_Manual}</option>
 				<option value="y" {filter_route_selected_y}>{lang_Automatic}</option>
 			</select>
 		</td>
-		<td align="center">
+	</tr>
+	<tr class="row_off">
+		<td class="filter_label_cell">
+			{lang_Activity:}&nbsp;
+		</td>
+		<td colspan="4" class="filter_action_cell">
+			<select name="filter_activity">
+			<option {filter_activity_selected_all} value="">{lang_All}</option>
+			<!-- BEGIN block_filter_activity -->
+			<option {filter_activity_selected} value="{filter_activity_value}">{filter_activity_name}</option>
+			<!-- END block_filter_activity -->
+			</select>
+		</td>
+		<td class="filter_label_cell">
+			{lang_Search:}&nbsp;
+		</td>
+		<td class="filter_action_cell">
 			<input size="8" type="text" name="search_str" value="{search_str}" />
 		</td>
-		<td align="center">	
+		<td class="filter_action_cell">	
 			<input type="submit" name="filter" value="{lang_Filter}" />
 		</td>
 	</tr>
@@ -87,11 +85,11 @@
 <input type="hidden" name="search_str" value="{search_str}" />
 <input type="hidden" name="sort" value="{sort}" />
 <input type="hidden" name="order" value="{order}" />
-<table style="border: 1px solid black;width:100%;">
+<table class="monitor_table_list">
 	<tr>
 		<td colspan="7">
-		        <table style="border: 0px;width:100%; margin:0 auto">
-				<tr class="th" style="font-weight:bold">
+		        <table class="table_showing_rows">
+				<tr class="tr_showing_rows">
 		                	{left}
 			        	<td><div align="center">{lang_showing}</div></td>
 			                {right}
@@ -100,43 +98,43 @@
 		</td>
 	</tr>
 	<tr class="th" style="font-weight:bold">
-		<td>{header_wf_procname}</td>
-		<td>{header_wf_name}</td>
-		<td>&nbsp;</td>
-		<td>{header_wf_type}</td>
-		<td align="center">{header_wf_is_interactive}</td>
-		<td align="center">{header_wf_is_autorouted}</td>
-		<td align="center">{lang_Instances}</td>
+		<th class="th_ma_procname">{header_wf_procname}</th>
+		<th class="th_ma_name">{header_wf_name}</th>
+		<th class="th_ma_logo">&nbsp;</th>
+		<th class="th_ma_type">{header_wf_type}</th>
+		<th class="th_ma_interactive">{header_wf_is_interactive}</th>
+		<th class="th_ma_autorouted">{header_wf_is_autorouted}</th>
+		<th class="th_ma_instances">{lang_Instances}</th>
 	</tr>
 	<!-- BEGIN block_act_table -->
-	<tr bgcolor="{color_line}">
-		<td>
+	<tr class="{class_alternate_row}">
+		<td class="td_ma_procname">
 		  {act_process}&nbsp;{act_process_version}
 		</td>
-		<td>
+		<td class="td_ma_name">
 		  <a href="{act_href}">{act_name}</a> {act_run}
 		</td>
-		<td style="text-align:center;">
+		<td  class="td_ma_logo">
 			{act_icon}
 		</td>
-		<td style="text-align:left;">
+		<td class="td_ma_type">
 			{act_type}
 		</td>
 		
-		<td style="text-align:center;">
+		<td class="td_ma_interactive">
 			{act_is_interactive}
 		</td>
-		<td style="text-align:center;">
+		<td class="td_ma_autorouted">
 			{act_is_autorouted}
 		</td>
 		
-		<td style="text-align:right;">
-			<table width="100%">
+		<td class="td_ma_instances">
+			<table class=table_ma_instances_stats>
 			<tr>
-				 <td style="text-align:right;"><a style="color:green;" href="{act_active_href}">{active_instances}</a></td>
-				 <td style="text-align:right;"><a style="color:black;" href="{act_completed_href}">{completed_instances}</a></td>
-				 <td style="text-align:right;"><a style="color:grey;" href="{act_aborted_href}">{aborted_instances}</a></td>
-				 <td style="text-align:right;"><a style="color:red;" href="{act_exception_href}">{exception_instances}</a></td>
+				 <td class="td_ma_in_instances"><a class="wf_active" href="{act_active_href}">{active_instances}</a></td>
+				 <td class="td_ma_in_instances"><a class="wf_completed" href="{act_completed_href}">{completed_instances}</a></td>
+				 <td class="td_ma_in_instances"><a class="wf_aborted" href="{act_aborted_href}">{aborted_instances}</a></td>
+				 <td class="td_ma_in_instances"><a class="wf_exception" href="{act_exception_href}">{exception_instances}</a></td>
 			</tr>
 			</table>
 		</td>
