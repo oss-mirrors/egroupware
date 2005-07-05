@@ -37,7 +37,7 @@
 				die("Please upgrade this application to be able to use it");
 			}
 
-			$this->t		= $GLOBALS['phpgw']->template;
+			$this->t		=& $GLOBALS['phpgw']->template;
 			$this->wf_p_id		= (int)get_var('p_id', 'any', 0);
 			$this->start		= (int)get_var('start', 'any', 0);
 			$this->search_str	= get_var('find', 'any', '');
@@ -161,7 +161,7 @@
 			$valid = $activity_manager->validate_process_activities($this->wf_p_id);
 			if (!$valid)
 			{
-				$errors = $activity_manager->get_error();
+				$errors = $activity_manager->get_error(false);
 				$error_str = '<b>' . lang('The following items must be corrected to be able to activate this process').':</b><br/><small><ul>';
 				foreach ($errors as $error)
 				{
@@ -241,6 +241,22 @@
 			header("content-type: $mimetype");
 			header('content-length: ' . strlen($out));
 			echo $out;
+		}
+		
+		//! get the href link for the css file, searching for themes specifics stylesheet if any
+		function get_css_link($css_name)
+		{
+			$css_file = $GLOBALS['egw_info']['server']['webserver_url'].SEP.'workflow'.SEP.'templates'
+					.SEP.$GLOBALS['egw_info']['server']['template_set'].SEP.'css'.SEP.$css_name;
+			if(file_exists($css_file))
+			{
+				return $css_file;
+			}
+			else
+			{
+				return $GLOBALS['egw_info']['server']['webserver_url'].SEP.'workflow'
+						.SEP.'templates'.SEP.'default'.SEP.'css'.SEP.$css_name;
+			}
 		}
 	}
 ?>
