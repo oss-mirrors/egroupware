@@ -1,5 +1,5 @@
 <?php
-	include(dirname(__FILE__) . SEP . 'class.bo_workflow_forms.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.bo_workflow_forms.inc.php');
 
 	class bo_user_forms extends bo_workflow_forms
 	{
@@ -12,7 +12,7 @@
 		{
 			$this->t->set_file('user_tabs_tpl', 'user_tabs.tpl');
 			//stylesheet
-			$this->t->set_var('link_tab_css', $GLOBALS['phpgw']->link('/workflow/templates/default/css/user_tabs.css'));
+			$this->t->set_var('link_tab_css', $this->get_css_link('user_tabs.css'));
 			//tab class, depends on active form
 			$this->t->set_var(array(
 				'class_tab_new_instances' 	=> ($activtab=='useropeninstance')? 'active_tab': 'inactive_tab',
