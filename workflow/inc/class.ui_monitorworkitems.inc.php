@@ -20,6 +20,7 @@
 		{
 			//overrite monitor default sort values
 			$this->order			= get_var('order', 'any', 'wf_item_id');
+			$this->sort			= get_var('sort', 'any', 'DESC');
 			$this->sort_mode		= $this->order . '__'. $this->sort;
 			
 			//get our own filters
@@ -100,15 +101,17 @@
 			$this->fill_nextmatchs($header_array,$total_number);
 
 			$this->t->set_block('monitor_workitems', 'block_workitems_table', 'workitems_table');
+			$this->t->set_var(array('header_details'=> lang('details')));
 
 			foreach ($workitems_data as $workitem)
 			{
+				$link_view_workitem = $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_viewworkitem.form&itemId='. $workitem['wf_item_id']);
 				$this->t->set_var(array(
-					'wi_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_viewworkitem.form&itemId='. $workitem['wf_item_id']),
-					'wi_id'				=> $workitem['wf_item_id'],
+					'wi_href'		=> $link_view_workitem,
+					'wi_id'			=> $workitem['wf_item_id'],
 					'wi_wf_procname'	=> $workitem['wf_procname'],
 					'wi_version'		=> $workitem['wf_version'],
-					'act_icon'			=> $this->act_icon($workitem['wf_type'],$workitem['wf_is_interactive']),
+					'act_icon'		=> $this->act_icon($workitem['wf_type'],$workitem['wf_is_interactive']),
 					'wi_actname'		=> $workitem['wf_act_name'],
 					'wi_adm_inst_href'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $workitem['wf_instance_id']),
 					'wi_inst_id'		=> $workitem['wf_instance_id'],
@@ -116,6 +119,7 @@
 					'wi_started'		=> $GLOBALS['phpgw']->common->show_date($workitem['wf_started'] - ((60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])),
 					'wi_duration'		=> $this->time_diff($workitem['wf_duration']),
 					'class_alternate_row'	=> $this->nextmatchs->alternate_row_color($tr_color, true),
+					'link_view_details'	=> '<a href="'.$link_view_workitem.'">'.lang('view details').'</a>',
 				));
 				if( $workitem['wf_user'] == '*') {
 					$this->t->set_var('wi_user', $workitem['wf_user']);
@@ -148,17 +152,6 @@
 				}
 				$this->t->parse('filter_user', 'block_filter_user', true);
 			}
-		}
-		function time_diff($to) {
-			$days = (int)($to/(24*3600));
-			$to = $to - ($days*(24*3600));
-			$hours = (int)($to/3600);
-			$to = $to - ($hours*3600);
-			$min = date("i", $to);
-			$to = $to - ($min*60);			
-			$sec = date("s", $to);
-
-			return "$days days, $hours:$min:$sec";
 		}
 	}
 ?>

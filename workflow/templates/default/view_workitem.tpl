@@ -1,5 +1,6 @@
-<div style="color:red; text-align:center">{message}</div>
-
+<LINK href="{monitors_css_link}"  type="text/css" rel="StyleSheet">
+<div class="message">{message}</div>
+{monitor_tabs}
 <table width="100%">
 	<tr>
 		<td style="width:50%" valign="top">
@@ -51,7 +52,7 @@
 					<td>{lang_Value}</td>
 				</tr>
 				<!-- BEGIN block_properties -->
-				<tr bgcolor="{color_line}">
+				<tr class="{class_alternate_row}">
 					<td>
 					 <b>{key}</b>
 					 </td>

@@ -151,6 +151,9 @@
 			$imacti	= $GLOBALS['phpgw']->common->image('workflow', 'monitoractivity');
 			$iminst	= $GLOBALS['phpgw']->common->image('workflow', 'monitorinstance');
 			$imwork	= $GLOBALS['phpgw']->common->image('workflow', 'monitor');
+			
+			//special case for ui_viewworkitem, we set ui_monitor_workitems as active tab
+			if ($activtab=='viewworkitem') $activtab='monitorworkitems';
 
 			//tab class, depends on active form
 			$this->t->set_var(array(
@@ -172,6 +175,20 @@
 			$this->translate_template('monitor_tabs_tpl');
                         return $this->t->parse('monitor_tabs', 'monitor_tabs_tpl');
 		}
+
+		//! return a given duration in human readable form, usefull for workitems duration
+		function time_diff($to) {
+			$days = (int)($to/(24*3600));
+			$to = $to - ($days*(24*3600));
+			$hours = (int)($to/3600);
+			$to = $to - ($hours*3600);
+			$min = date("i", $to);
+			$to = $to - ($min*60);			
+			$sec = date("s", $to);
+
+			return lang('%1 days, %2:%3:%4',$days,$hours,$min,$sec);
+		}
+
 
 	}
 ?>

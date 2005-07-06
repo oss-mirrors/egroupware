@@ -202,6 +202,10 @@ th.th_mw_itemid
 {
 	text-align:left;
 }
+th.th_mw_details
+{
+	text-align:left;
+}
 th.th_mw_procname
 {
 	text-align:left;
@@ -219,6 +223,11 @@ td.td_mw_itemid
 {
 	text-align:left;
 }
+td.td_mw_details
+{
+	text-align:left;
+}
+
 td.td_mw_procname
 {
 	text-align:left;

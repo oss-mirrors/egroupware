@@ -72,7 +72,7 @@
 <input type="hidden" name="sort" value="{sort}" />
 <input type="hidden" name="order" value="{order}" />
 <table class="monitor_table_list">
-	<tr><td colspan="8">
+	<tr><td colspan="9">
         <table class="table_showing_rows">
 		<tr class="tr_showing_rows">
                 	{left}
@@ -84,6 +84,7 @@
 	</tr>
 	<tr class="th" style="font-weight:bold">
 		<th class="th_mw_itemid">{header_wf_item_id}</th>
+		<th class="th_mw_details">{header_details}</th>
 		<th class="th_mw_procname">{header_wf_procname}</th>
 		<th class="th_mw_actname">{header_wf_act_name}</th>
 		<th class="th_mw_instanceid">{header_wf_instance_id}</th>
@@ -97,11 +98,14 @@
 		<td class="td_mw_itemid">
 			<a href="{wi_href}">{wi_id}</a>
 		</td>
-		<td class="td_mw_procname">  
+		<td class="td_mw_details">
+			{link_view_details}
+		</td>
+		<td class="td_mw_procname">
 			{wi_wf_procname} {wi_version}
 		</td>
 		<td class="td_mw_actname">
-			{act_icon} {wi_actname} 
+			{act_icon} {wi_actname}
 		</td>
 		<td class="td_mw_instanceid">
 		  <a href="{wi_adm_inst_href}">{wi_inst_id}</a>
