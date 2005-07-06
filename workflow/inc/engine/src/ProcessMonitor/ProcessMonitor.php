@@ -1,24 +1,26 @@
 <?php
-include_once(GALAXIA_LIBRARY.'/src/common/Base.php');
+require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'common'.SEP.'Base.php');
 //!! ProcessMonitor
 //! ProcessMonitor class
 /*!
 This class provides methods for use in typical monitoring scripts
+A first part are methods for cleaning up instances and workitems associated with a process
+A second part are methods to obtains information about the actual state or histroy of the process
 */
 class ProcessMonitor extends Base {
 
   //! return statistics about all processes handled by the engine.
   /*!
-  result is an array of this form:
-  array(
-    [active_processes] => number
-    [processes] => number (total number of processes)
-    [running_processes] => number
-    [active_instances] => number
-    [completed_instances] => number
-    [exception_instances] => number
-    [aborted_instances] => number
-  )
+  * result is an array of this form:
+  * array(
+  *   [active_processes] => number
+  *   [processes] => number (total number of processes)
+  *   [running_processes] => number
+  *   [active_instances] => number
+  *   [completed_instances] => number
+  *   [exception_instances] => number
+  *   [aborted_instances] => number
+  * )
   */
   function monitor_stats() {
     $res = Array();
@@ -39,44 +41,96 @@ class ProcessMonitor extends Base {
     $res['aborted_instances'] = isset($status['aborted']) ? $status['aborted'] : 0;
     return $res;
   }
-  
+
+  //! no need for an update function here. function update_instance_status Deprecated @deprecated
+  /*
   function update_instance_status($iid,$status) {
     $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_status`=? where `wf_instance_id`=?";
     $this->query($query,array($status,$iid));
   }
+  */
   
+  //! no need for an update function here. function update_instance_activity_status Deprecated @deprecated
+  /*
   function update_instance_activity_status($iid,$activityId,$status) {
     $query = "update `".GALAXIA_TABLE_PREFIX."instance_activities` set `wf_status`=? where `wf_instance_id`=? and `wf_activity_id`=?";
     $this->query($query,array($status,$iid,$activityId));
   }
+  */
   
-  function remove_instance($iid) {
+  //! definitively remove an instance from the database. DANGEROUS
+  /*!
+  * The instance will be removed but all workitems (history) will be removed as well and all actual activities
+  * and properties of this instance as well.
+  * @param iid is the instance id
+  * @return true if everything was ok, false in the other case (and nothing was done)
+  */
+  function remove_instance($iid) 
+  {
+    // start a transaction
+    $this->db->StartTrans();
     $query = "delete from `".GALAXIA_TABLE_PREFIX."workitems` where `wf_instance_id`=?";
     $this->query($query,array($iid));
     $query = "delete from `".GALAXIA_TABLE_PREFIX."instance_activities` where `wf_instance_id`=?";
     $this->query($query,array($iid));
     $query = "delete from `".GALAXIA_TABLE_PREFIX."instances` where `wf_instance_id`=?";
-    $this->query($query,array($iid));  
+    $this->query($query,array($iid));
+    // perform commit (return true) or Rollback (return false)
+    return $this->db->CompleteTrans();
+
   }
   
-  function remove_aborted() {
-    $query="select `wf_instance_id` from `".GALAXIA_TABLE_PREFIX."instances` where `wf_status`=?";
-    $result = $this->query($query,array('aborted'));
-    while($res = $result->fetchRow()) {  
+  //! definitively remove __all__ aborted instance from the database. DANGEROUS
+  /*!
+  * All aborted instances will be removed but all workitems (history) associated with theses instances as well
+  * you can limit this behaviour to one process by specifying a process id.
+  * @param process_id is a process id you can give to limit this function to only one process. 
+  * Aborted instances from other processes wont be removed
+  * @return true if everything was ok, false in the other case (and nothing was done)
+  */
+  function remove_aborted($pId=0) 
+  {
+    if (!(pId))
+    {
+      $whereand = '';
+      $bindvars = array('aborted');
+    }
+    else
+    {
+      $whereand = 'and wf_p_id = ?';
+      $bindvars = array('aborted', $pId);
+    }
+    $query="select `wf_instance_id` from `".GALAXIA_TABLE_PREFIX."instances` where `wf_status`=?".$whereand;
+    // start a transaction
+    $this->db->StartTrans();
+    $result = $this->query($query,$bindvars);
+    while($res = $result->fetchRow()) 
+    {  
       $iid = $res['wf_instance_id'];
       $query = "delete from `".GALAXIA_TABLE_PREFIX."instance_activities` where `wf_instance_id`=?";
       $this->query($query,array($iid));
       $query = "delete from `".GALAXIA_TABLE_PREFIX."workitems` where `wf_instance_id`=?";
       $this->query($query,array($iid));  
     }
-    $query = "delete from `".GALAXIA_TABLE_PREFIX."instances` where `wf_status`=?";
-    $this->query($query,array('aborted'));
+    $query = "delete from `".GALAXIA_TABLE_PREFIX."instances` where `wf_status`=?".$whereand;
+    $this->query($query,$bindvars);
+    // perform commit (return true) or Rollback (return false)
+    return $this->db->CompleteTrans();
   }
 
+  //! definitively remove __all__ instance/history of a process from the database. VERY DANGEROUS
+  /*!
+  * For a given process, all instances, in all states, completed, aborted, exception, running...  will be removed 
+  * and all workitems (history) or activities actually running  associated with theses instances as well.
+  * @param process_id is the id of the process for which we will remove theses things
+  * @return true if everything was ok, false in the other case (and nothing was done)
+  */
   function remove_all($pId) {
     $query="select `wf_instance_id` from `".GALAXIA_TABLE_PREFIX."instances` where `wf_p_id`=?";
+    // start a transaction
+    $this->db->StartTrans();
     $result = $this->query($query,array($pId));
-    while($res = $result->fetchRow()) {  
+    while($res = $result->fetchRow()) {
       $iid = $res['wf_instance_id'];
       $query = "delete from `".GALAXIA_TABLE_PREFIX."instance_activities` where `wf_instance_id`=?";
       $this->query($query,array($iid));
@@ -85,6 +139,8 @@ class ProcessMonitor extends Base {
     }
     $query = "delete from `".GALAXIA_TABLE_PREFIX."instances` where `wf_p_id`=?";
     $this->query($query,array($pId));
+    // perform commit (return true) or Rollback (return false)
+    return $this->db->CompleteTrans();
   }
 
   //! list all process
@@ -297,6 +353,7 @@ class ProcessMonitor extends Base {
     return $ret;
   }
   
+  //! list all activities
   function monitor_list_all_activities($sort_mode = 'wf_name_asc', $where = '') {
     if (!empty($where)) {
       $where = " where ($where) ";
@@ -311,6 +368,7 @@ class ProcessMonitor extends Base {
     return $ret;
   }
   
+  //! list instances status we have in the database. 
   function monitor_list_statuses() {
     $query = "select distinct(`wf_status`) from `".GALAXIA_TABLE_PREFIX."instances`";
     $result = $this->query($query);
@@ -321,6 +379,7 @@ class ProcessMonitor extends Base {
     return $ret;
   }
   
+  //! list all users associated with instances avaible in the actual database
   function monitor_list_users() {
     $query = "select distinct(`wf_user`) from `".GALAXIA_TABLE_PREFIX."instance_activities`";
     $result = $this->query($query);
@@ -331,6 +390,7 @@ class ProcessMonitor extends Base {
     return $ret;
   }
 
+  //! list all user associated with workitems avaible in the actual database
   function monitor_list_wi_users() {
     $query = "select distinct(`wf_user`) from `".GALAXIA_TABLE_PREFIX."workitems`";
     $result = $this->query($query);
@@ -341,7 +401,7 @@ class ProcessMonitor extends Base {
     return $ret;
   }
 
-  
+  //! list all intance owner we have in the actual databse
   function monitor_list_owners() {
     $query = "select distinct(`wf_owner`) from `".GALAXIA_TABLE_PREFIX."instances`";
     $result = $this->query($query);
@@ -352,7 +412,7 @@ class ProcessMonitor extends Base {
     return $ret;
   }
   
-  
+  //! list all activity types we have in the actual database (used activity types)
   function monitor_list_activity_types() {
     $query = "select distinct(`wf_type`) from `".GALAXIA_TABLE_PREFIX."activities`";
     $result = $this->query($query);
@@ -363,6 +423,10 @@ class ProcessMonitor extends Base {
     return $ret;  
   }
   
+  //! return an array containing information about a given workitem
+  /*!
+  * @param itemId is the workitem Id
+  */
   function monitor_get_workitem($itemId) {
     $query = "select gw.`wf_order_id`,ga.`wf_name`,ga.`wf_type`,ga.`wf_is_interactive`,gp.`wf_name` as `wf_wf_procname`,gp.`wf_version`,";
     $query.= "gw.`wf_item_id`,gw.`wf_properties`,gw.`wf_user`,`wf_started`,`wf_ended`-`wf_started` as wf_duration ";
@@ -373,7 +437,10 @@ class ProcessMonitor extends Base {
     return $res;
   }
 
-  // List workitems per instance, remove workitem, update_workitem
+  //! List workitems per instance 
+  /*!
+  *
+  */
   function monitor_list_workitems($offset,$maxRecords,$sort_mode,$find,$where='',$wherevars=array()) {
     $mid = '';
     if ($where) {
