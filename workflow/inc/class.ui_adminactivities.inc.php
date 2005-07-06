@@ -54,21 +54,21 @@
 			
 			$activity_id		= (int)get_var('activity_id', 'any', 0);
 			$name				= get_var('name', 'any', '');
-			
-			// TODO: finish the interform interaction.  "saving" filter values as hidden input from the other form
+						
+			// TODO: not all variables below are still required.  clean up
 			
 			$description		= get_var('description', 'any', '');
 			$type				= get_var('type', 'any', '');
 			$is_interactive		= get_var('is_interactive', 'any', '');
 			$is_autorouted		= get_var('is_autorouted', 'any', '');
-			$default_user           = get_var('default_user', 'any', '');
+			$default_user       = get_var('default_user', 'any', '');
 			$userole			= get_var('userole', 'POST', '');
 			$where				= get_var('where', array('GET', 'POST'), '');
 			$this->where2		= get_var('where2', 'any', '');
 			$find				= get_var('find', 'any', '');
 			$find2				= get_var('find2', 'any', '');
 			$this->sort_mode2	= get_var('sort_mode2', 'any', '');
-			$filter_tran_name	= get_var('filter_tran_name', 'any', '');
+			$filter_trans_from	= get_var('filter_trans_from', 'any', '');
 			$this->order		= get_var('order', 'GET', 'wf_flow_num');
 			$this->sort			= get_var('sort', 'GET', 'asc');
 			$this->sort_mode	= $this->order . '__'. $this->sort;
@@ -77,11 +77,22 @@
 
 			// *************************************   START OF OPERATIONS COMMANDED BY THIS SAME FORM ******************
 
+			// TODO: rolenames need to be valid.  Add a validity checking function
 			// add role to process roles
 			if (isset($_POST['addrole']))
 			{
-				$this->add_process_role($_POST['rolename']);
-				$this->message[] = lang('Role added to process');
+				if( isset($_POST['rolename']) ) 
+				{
+					$rolename = trim($_POST['rolename']);
+					if( strlen($rolename) > 0 ) {
+						$this->add_process_role($_POST['rolename']);
+						$this->message[] = lang('Role added to process');
+					}
+					else 
+					{
+						$this->message[] = lang('Invalid role name');						
+					}
+				}
 			}
 
 			// remove activity role
@@ -91,6 +102,7 @@
 				$this->message[] = lang('Activity role removed');
 			}
 
+			// TODO: activityname need to be valid.  Add a validity checking function
 			// save activity
 			if (isset($_POST['save_act']))
 			{
@@ -104,7 +116,11 @@
 			// delete activity
 			if (isset($_POST['delete_act']))
 			{
-				if ($this->delete_activities(array_keys($_POST['activities']))) $this->message[] = lang('Deletion successful');
+				_debug_array($_POST);
+				if( isset($_POST['activities']) ) 
+				{
+					if ($this->delete_activities(array_keys($_POST['activities']))) $this->message[] = lang('Deletion successful');
+				}
 			}
 
 			// add transitions
@@ -132,7 +148,6 @@
 			else
 			{
 				$activity_info =& $this->activity_manager->get_activity($activity_id);
-				//_debug_array($activity_info);
 				$activity_roles =& $this->activity_manager->get_activity_roles($activity_id);
 			}
 
@@ -167,18 +182,21 @@
 		    {
 				$where = implode(' and ', $wheres);
 		    }
- 			
+			
 			$proc_info =& $this->process_manager->get_process($this->wf_p_id);
 			$process_activities =& $this->activity_manager->list_activities($this->wf_p_id, 0, -1, $this->sort_mode, $find, $where);
 			if ($activity_id) $this->search_transitions_act($process_activities, $activity_id);
-			$process_roles = $this->role_manager->list_roles($this->wf_p_id, 0, -1, 'wf_name__asc', '');
-			$process_transitions = $this->activity_manager->get_process_transitions($this->wf_p_id, $filter_tran_name);
+			$process_roles = $this->role_manager->list_roles($this->wf_p_id, 0, -1, 'wf_name__asc', '');			
+			$filtered_transition_activities =& $this->activity_manager->list_activities($this->wf_p_id, 0, -1, $this->sort_mode, ''/*$find*/, ''/*$where*/);
 
 			// update activities
 			if (isset($_POST['update_act']))
 			{
-				$this->update_activities($process_activities, array_keys($_POST['activity_inter']), array_keys($_POST['activity_route']));
-				$this->message[] = lang('Activities updated');
+				if( is_array($process_activities['data']) && count($process_activities['data']) > 0 )
+				{
+					$this->update_activities($process_activities, array_keys($_POST['activity_inter']), array_keys($_POST['activity_route']));
+					$this->message[] = lang('Activities updated');
+				}
 			}
 
 			// activate process
@@ -225,12 +243,20 @@
 				'img_transition'                => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition.gif') .'" alt="'. lang('transitions') .'" />',
 				'img_transition_add'            => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition_add.gif') .'" alt="'. lang('add transition') .'" />',
 				'img_transition_delete'         => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition_remove.gif') .'" alt="'. lang('delete transition') .'" />',
-				'add_trans_from'		=> $this->build_select_transition('add_tran_from[]', $process_activities['data'], true, false, 'from'),
-				'add_trans_to'			=> $this->build_select_transition('add_tran_to[]', $process_activities['data'], true, false, 'to'),
-				'filter_trans_from'		=> $this->build_select_transition('filter_tran_name', $process_activities['data'], false, true),
-				'add_a_trans_from'		=> $this->build_select_transition('wf_act_from_id', $process_activities['data'], false, false),
-				'add_a_trans_to'		=> $this->build_select_transition('wf_act_to_id', $process_activities['data'], false, false),
+				'add_trans_from'		=> $this->build_select_transition('add_tran_from[]', $filtered_transition_activities['data'], true, false, 'from'),
+				'add_trans_to'			=> $this->build_select_transition('add_tran_to[]', $filtered_transition_activities['data'], true, false, 'to'),
+				'add_a_trans_from'		=> $this->build_select_transition('wf_act_from_id', $filtered_transition_activities['data'], false, false),
+				'add_a_trans_to'		=> $this->build_select_transition('wf_act_to_id', $filtered_transition_activities['data'], false, false),
 			));
+
+			if( $filter_trans_from ) {
+				$this->t->set_var('filter_trans_from', $this->build_select_transition_filtered('filter_trans_from', $filtered_transition_activities['data'], false, true, $filter_trans_from));
+				$this->t->set_var('filter_trans_from_value', $filter_trans_from);
+			}
+			else {
+				$this->t->set_var('filter_trans_from', $this->build_select_transition_filtered('filter_trans_from', $filtered_transition_activities['data'], false, true, false));				
+				$this->t->set_var('filter_trans_from_value', '');
+			}
 
 			// show process activities table
 			$this->show_process_activities($process_activities['data']);
@@ -300,6 +326,10 @@
 
 			// fill list of transitions table
 			$this->show_transitions_table($process_transitions);
+			$this->t->set_var('filter_type_value', $filter_type);
+			$this->t->set_var('filter_interactive_value', $filter_interactive);
+			$this->t->set_var('filter_autoroute_value', $filter_autoroute);
+			$this->t->set_var('find_value', $find);
 
 			// create graph
 			$this->activity_manager->build_process_graph($this->wf_p_id);
@@ -357,9 +387,6 @@
 		
 		function update_activities(&$process_activities, $activities_inter, $activities_route)
 		{
-			//echo "activities_data: <pre>";print_r($activities_data);echo "</pre>";
-			//echo "activities_inter: <pre>";print_r($activities_inter);echo "</pre>";
-			//echo "activities_route: <pre>";print_r($activities_route);echo "</pre>";
 			$num_activities = count($process_activities['data']);
 			for ($i=0; $i < $num_activities; $i++)
 			{
@@ -404,7 +431,6 @@
 				$process_activities['data'][$i]['to'] = $this->activity_manager->transition_exists($this->wf_p_id, $act_id, $id)? 'y' : 'n';
 				$process_activities['data'][$i]['from'] = $this->activity_manager->transition_exists($this->wf_p_id, $id, $act_id)? 'y' : 'n';
 			}
-			//echo "process_activities after adding transition: <pre>";print_r($process_activities);echo "</pre>";
 		}
 
 		function show_process_activities($process_activities_data)
@@ -414,48 +440,64 @@
 				'form_process_activities_action'=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
 				'left_arrow'		=> $this->nextmatchs->left('index.php', $this->start, $this->total),
 				'right_arrow'		=> $this->nextmatchs->right('index.php', $this->start, $this->total),
-				'header_name'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_name', $this->order, 'index.php', lang('Name'), array('p_id'=>$this->wf_p_id)),
-				'header_type'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_type', $this->order, 'index.php', lang('Type'), array('p_id'=>$this->wf_p_id)),
-				'header_interactive'	=> $this->nextmatchs->show_sort_order($this->sort, 'wf_is_interactive', $this->order, 'index.php', lang('Interactive'),  array('p_id'=>$this->wf_p_id)),
-				'header_route'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_is_autorouted', $this->order, 'index.php', lang('Auto routed'),  array('p_id'=>$this->wf_p_id)),
-				'header_default_user'	=> lang('Default User')
 			));
 			$this->translate_template('block_process_activities');
 
-			foreach ($process_activities_data as $activity)
+			$this->t->set_block('admin_activities', 'block_process_activities_header', 'process_activities_header');
+			$this->t->set_block('admin_activities', 'block_process_activities_footer', 'process_activities_footer');
+			if( is_array($process_activities_data) && count($process_activities_data) > 0 )
 			{
-				if($activity['wf_default_user'] == '*' )
-				{
-					$act_default_user = lang('All');
-				}
-				else if($activity['wf_default_user'] != '*')
-				{
-					$act_default_user = $GLOBALS['phpgw']->accounts->id2name($activity['wf_default_user']);
-				}
-				
 				$this->t->set_var(array(
-					'act_activity_id'	=> $activity['wf_activity_id'],
-					'act_flowNum'		=> $activity['wf_flow_num'],
-					'act_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&p_id='. $this->wf_p_id .'&find='. $find .'&where='. $where .'&sort_mode='. $this->sort_mode .'&activity_id='. $activity['wf_activity_id']),
-					'act_name'			=> $activity['wf_name'],
-					'no_roles'			=> ($activity['wf_roles'] < 1)? '<small>('.lang('no roles').')</small>' : '',
-					'act_icon'			=> $this->act_icon($activity['wf_type'],$activity['wf_is_interactive']),
-					'act_inter_checked'	=> ($activity['wf_is_interactive'] == 'y')? 'checked="checked"' : '',
-					'act_route_checked'	=> ($activity['wf_is_autorouted'] == 'y')? 'checked="checked"' : '',
-					'act_default_user'      => $act_default_user,
-					'act_href_edit'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $this->wf_p_id .'&activity_id='. $activity['wf_activity_id']),
-					'act_template'		=> ($activity['wf_is_interactive'] == 'y')? '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $this->wf_p_id .'&activity_id='. $activity['wf_activity_id'] .'&template=1') .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'template') .'" alt="' .lang('template') .'" title="' . lang('template') .'" /></a>' : '',
-					'img_code'		=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
-					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
-
+					'header_name'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_name', $this->order, 'index.php', lang('Name'), array('p_id'=>$this->wf_p_id)),
+					'header_type'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_type', $this->order, 'index.php', lang('Type'), array('p_id'=>$this->wf_p_id)),
+					'header_interactive'	=> $this->nextmatchs->show_sort_order($this->sort, 'wf_is_interactive', $this->order, 'index.php', lang('Interactive'),  array('p_id'=>$this->wf_p_id)),
+					'header_route'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_is_autorouted', $this->order, 'index.php', lang('Auto routed'),  array('p_id'=>$this->wf_p_id)),
+					'header_default_user'	=> lang('Default User')
 				));
-				$this->t->parse('process_activities', 'block_process_activities', True);
+				$this->translate_template('block_process_activities_header');
+				$this->t->parse('process_activities_header', 'block_process_activities_header', True);
+				foreach ($process_activities_data as $activity)
+				{
+					if($activity['wf_default_user'] == '*' )
+					{
+						$act_default_user = lang('All');
+					}
+					else if($activity['wf_default_user'] != '*')
+					{
+						$act_default_user = $GLOBALS['phpgw']->accounts->id2name($activity['wf_default_user']);
+					}
+					
+					$this->t->set_var(array(
+						'act_activity_id'	=> $activity['wf_activity_id'],
+						'act_flowNum'		=> $activity['wf_flow_num'],
+						'act_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&p_id='. $this->wf_p_id .'&find='. $find .'&where='. $where .'&sort_mode='. $this->sort_mode .'&activity_id='. $activity['wf_activity_id']),
+						'act_name'			=> $activity['wf_name'],
+						'no_roles'			=> ($activity['wf_roles'] < 1)? '<small>('.lang('no roles').')</small>' : '',
+						'act_icon'			=> $this->act_icon($activity['wf_type'],$activity['wf_is_interactive']),
+						'act_inter_checked'	=> ($activity['wf_is_interactive'] == 'y')? 'checked="checked"' : '',
+						'act_route_checked'	=> ($activity['wf_is_autorouted'] == 'y')? 'checked="checked"' : '',
+						'act_default_user'      => $act_default_user,
+						'act_href_edit'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $this->wf_p_id .'&activity_id='. $activity['wf_activity_id']),
+						'act_template'		=> ($activity['wf_is_interactive'] == 'y')? '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $this->wf_p_id .'&activity_id='. $activity['wf_activity_id'] .'&template=1') .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'template') .'" alt="' .lang('template') .'" title="' . lang('template') .'" /></a>' : '',
+						'img_code'		=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
+						'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
+	
+					));
+					$this->t->parse('process_activities', 'block_process_activities', True);
+				}
+				$this->translate_template('block_process_activities_footer');
+				$this->t->parse('process_activities_footer', 'block_process_activities_footer', True);
+			}
+			else 
+			{
+				$this->t->set_var('process_activities_header', '');
+				$this->t->set_var('process_activities', '<tr><td colspan="7" align="center">'. lang('There are no processes with the current filter')  .'</td></tr>');
+				$this->t->set_var('process_activities_footer', '');
 			}
 		}
 
 		function show_transitions_table($process_transitions)
 		{
-			//echo "process transitions: <pre>";print_r($process_transitions);echo "</pre>";
 			$this->t->set_block('admin_activities', 'block_transitions_table', 'transitions_table');
 			$this->translate_template('block_transitions_table');
 
@@ -481,9 +523,32 @@
 			//echo "process_activities_data: <pre>";print_r($process_activities_data);echo "</pre>";
 			$select_str = "<select name='$var_name'" . (($multiple)? " multiple='multiple' size='5'" : "" ) . ">";
 			if ($show_all) $select_str .= '<option value="">'. lang('All') .'</option>';
+			
 			foreach ($process_activities_data as $activity)
 			{
 				if ($from_or_to && isset($activity[$from_or_to]) && $activity[$from_or_to] == 'y')
+				{
+					_debug_array($activity);
+					_debug_array($from_or_to);
+					$selected = 'selected="selected"';
+				}
+				else
+				{
+					$selected = '';
+				}
+				$select_str .= '<option value="'. $activity['wf_activity_id'] .'" '. $selected .'>'. $activity['wf_name'] .'</option>';
+			}
+			$select_str .= "</select>\n";
+			return $select_str;
+		}
+		function build_select_transition_filtered($var_name, $process_activities_data, $multiple=false, $show_all=true, $from=false)
+		{
+			$select_str = "<select name='$var_name'" . (($multiple)? " multiple='multiple' size='5'" : "" ) . ">";
+			if ($show_all) $select_str .= '<option value="">'. lang('All') .'</option>';
+			
+			foreach ($process_activities_data as $activity)
+			{
+				if ($from && $activity['wf_activity_id'] == $from )
 				{
 					$selected = 'selected="selected"';
 				}
@@ -564,12 +629,18 @@
 
 		function delete_transitions($transitions)
 		{
-			foreach (array_keys($transitions) as $transition)
-			{
-				$parts = explode('_', $transition);
-				$this->activity_manager->remove_transition($parts[0], $parts[1]);
+			if( is_array($transitions) && count($transitions) > 0 ) {
+				foreach (array_keys($transitions) as $transition)
+				{
+					$parts = explode('_', $transition);
+					$this->activity_manager->remove_transition($parts[0], $parts[1]);
+				}
+				$this->message[] = lang('Transitions removed successfully');
 			}
-			$this->message[] = lang('Transitions removed successfully');
+			else 
+			{
+				$this->message[] = lang('Select a transition to remove');
+			}
 		}
 
 		function add_transition($from, $to)
@@ -578,7 +649,8 @@
 			{
 				return lang('New transition added');
 			}
-			return lang("Couldn't add transition"). '; '. $this->activity_manager->get_error();
+			$error_msg =  $this->activity_manager->get_error();
+			return lang("Couldn't add transition"). '; '. $error_msg[0];
 		}
 
 		function show_graph()
