@@ -16,6 +16,10 @@
 <input type="hidden" name="find" value="{find}" />
 <input type="hidden" name="where" value="{where}" />
 <input type="hidden" name="sort_mode" value="{sort_mode}" />
+<input type="hidden" name="filter_type" value="{filter_type_value}" />
+<input type="hidden" name="filter_interactive" value="{filter_interactive_value}" />
+<input type="hidden" name="filter_autoroute" value="{filter_autoroute_value}" />
+<input type="hidden" name="filter_trans_from" value="{filter_trans_from_value}" />
 <table style="border: 1px solid black;width:100%; margin-bottom:10px">
 	<tr class="th">
 		<td colspan="2" style="font-size: 120%; font-weight:bold">
@@ -137,6 +141,7 @@
 <input type="hidden" name="activity_id" value="{activity_id}" />
 <input type="hidden" name="where2" value="{where2}" />
 <input type="hidden" name="sort_mode2" value="{sort_mode2}" />
+<input type="hidden" name="filter_trans_from" value="{filter_trans_from_value}" />
 <table width="100%" cellpadding="0" cellspacing="0">
 <tr class="th">
 	{left_arrow}
@@ -179,8 +184,13 @@
 <input type="hidden" name="sort_mode2" value="{sort_mode2}" />
 <input type="hidden" name="p_id" value="{p_id}" />
 <input type="hidden" name="activity_id" value="{activity_id}" />
+				<input type="hidden" name="filter_type" value="{filter_type_value}" />
+				<input type="hidden" name="filter_interactive" value="{filter_interactive_value}" />
+				<input type="hidden" name="filter_autoroute" value="{filter_autoroute_value}" />
+<input type="hidden" name="filter_trans_from" value="{filter_trans_from_value}" />
 <div style="position:relative">
 <table border="0" width="100%">
+<!-- BEGIN block_process_activities_header -->
 <tr class="th" style="font-weight:bold">
 	<td style="width: 20px;" align="center">#</td>
 	<td style="width: 40%;">{header_name}</a></td>
@@ -190,6 +200,7 @@
 	<td align="center">{header_default_user}</a></td>
 	<td width="70px">{lang_Action}</td>
 </tr>
+<!-- END block_process_activities_header -->
 <!-- BEGIN block_process_activities -->
 <tr bgcolor="{color_line}">
 	<td style="text-align:center;">
@@ -218,12 +229,14 @@
 	</td>
 </tr>
 <!-- END block_process_activities -->
+<!-- BEGIN block_process_activities_footer -->
 <tr class="th">
 <td colspan="7">
 	<input type="submit" name="update_act" value="{lang_update}" />
 	<input style="position:absolute; right:5px" type="submit" name="delete_act" value="{lang_Delete_selected}" />
 </td>
 </tr>
+<!-- END block_process_activities_footer -->
 </table>
 </div>
 </form>	
@@ -238,19 +251,24 @@
 	<tr>
 		<td width="50%">
 			<form action="{form_list_transitions_action}" method="post">
-			<input type="hidden" name="p_id" value="{p_id}" />
-			<input type="hidden" name="activity_id" value="{activity_id}" />
-			<input type="hidden" name="find" value="{find2}" />
-			<input type="hidden" name="where" value="{where2}" />
-			<input type="hidden" name="sort_mode" value="{sort_mode}" />
-			<input type="hidden" name="where2" value="{where2}" />
-			<input type="hidden" name="sort_mode2" value="{sort_mode2}" />
+				<input type="hidden" name="p_id" value="{p_id}" />
+				<input type="hidden" name="activity_id" value="{activity_id}" />
+				<input type="hidden" name="find" value="{find2}" />
+				<input type="hidden" name="where" value="{where2}" />
+				<input type="hidden" name="sort_mode" value="{sort_mode}" />
+				<input type="hidden" name="where2" value="{where2}" />
+				<input type="hidden" name="sort_mode2" value="{sort_mode2}" />
+				<input type="hidden" name="filter_type" value="{filter_type_value}" />
+				<input type="hidden" name="filter_interactive" value="{filter_interactive_value}" />
+				<input type="hidden" name="filter_autoroute" value="{filter_autoroute_value}" />
+				<input type="hidden" name="find" value="{find_value}" />
 			<table border="0" width="100%">
 				<tr class="th">
 					<td>
 						<span style="font-weight:bold; margin-right:15px">{lang_List_of_transitions}</span>{lang_From}: {filter_trans_from}
 					</td>
 					<td>
+						<input type="submit" name="filter" value="{lang_Filter}" />
 					</td>
 				</tr>
 				<!-- BEGIN block_transitions_table -->
@@ -283,6 +301,11 @@
 			<input type="hidden" name="sort_mode" value="{sort_mode}" />
 			<input type="hidden" name="where2" value="{where2}" />
 			<input type="hidden" name="sort_mode2" value="{sort_mode2}" />
+			<input type="hidden" name="filter_type" value="{filter_type_value}" />
+			<input type="hidden" name="filter_interactive" value="{filter_interactive_value}" />
+			<input type="hidden" name="filter_autoroute" value="{filter_autoroute_value}" />
+			<input type="hidden" name="filter_trans_from" value="{filter_trans_from_value}" />
+			<input type="hidden" name="find" value="{find_value}" />
 			<table class="normal" width="100%">
 			<tr class="th" style="font-weight:bold">
 				<td colspan="2">
