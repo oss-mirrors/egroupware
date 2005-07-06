@@ -1,5 +1,5 @@
 <?php
-include_once(GALAXIA_LIBRARY.'/src/common/Observable.php');
+require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'common'.SEP.'Observable.php');
 //!! Abstract class representing the base of the API
 //! An abstract class representing the API base
 /*!
@@ -7,16 +7,16 @@ This class is derived by all the API classes so they get the
 database connection, database methods and the Observable interface.
 */
 class Base extends Observable {
-  var $db;  // The ADODB object used to access the database
+  var $db;  // The database abstraction object used to access the database
 	var $num_queries = 0;
 
-  // Constructor receiving a ADODB database object.
-  function Base($db)
+  // Constructor receiving a database abstraction object.
+  function Base(&$db)
   {
     if(!$db) {
       die("Invalid db object passed to Base constructor");
     }
-    $this->db = $db;
+    $this->db = &$db;
   }
 
 	// copied from tikilib.php
@@ -25,7 +25,7 @@ class Base extends Observable {
 
 		// Galaxia needs to be call ADOdb in associative mode
 		$this->db->SetFetchMode(ADODB_FETCH_ASSOC);
-
+		
 		if ($numrows == -1 && $offset == -1)
 			$result = $this->db->Execute($query, $values);
 		else
@@ -36,6 +36,7 @@ class Base extends Observable {
 		return $result;
 	}
 
+	
 	function getOne($query, $values = null, $reporterrors = true) {
 		$this->convert_query($query);
 		$result = $this->db->SelectLimit($query, 1, 0, $values);
@@ -55,9 +56,10 @@ class Base extends Observable {
 
 		trigger_error($ADODB_LASTDB . " error:  " . $this->db->ErrorMsg(). " in query:<br/>" . $query . "<br/>", E_USER_WARNING);
 		// only for debugging.
-		print_r($values);
+		//print_r($values);
 		//echo "<br/>";
-		die;
+		// DO NOT DIE, if transactions are there, they will do things in a better way
+		//die;
 	}
 
 	// functions to support DB abstraction
