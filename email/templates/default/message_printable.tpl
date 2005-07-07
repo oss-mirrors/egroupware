@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- the above line just began message_printable.tpl -->
 <html>
   <head>
@@ -8,9 +8,9 @@
   <meta name="keywords" content="AngleMail for eGroupWare">
   <style type="text/css">
    <!--
-   A:link {text-decoration:none;}
-   A:visted {text-decoration:none;}
-   A:active {text-decoration:none;}
+   a:link {text-decoration:none;}
+   a:visted {text-decoration:none;}
+   a:active {text-decoration:none;}
    body {
 	margin-top: 0px; 
 	margin-right: 0px; 
@@ -20,15 +20,15 @@
 	background-color: #ffffff;
 	color: #000000;
    }
-   TD {
+   td {
 	text-align: left;
 	vertical-align: top;
    }
-   TD.fullname { 
+   td.fullname { 
 	font-weight: bold;
 	font-size: 110%;
    }
-   TD.partinfo { 
+   td.partinfo { 
 	font-size: small;
 	border: 1px dotted black;
 	padding: 0px;

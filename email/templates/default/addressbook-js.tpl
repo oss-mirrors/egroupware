@@ -1,18 +1,18 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
      
   <meta http-equiv="CONTENT-TYPE"
 	 content="text/html; charset={charset}">
   <title>{title}</title>
-  <STYLE TYPE="text/css">
-  	SELECT { font-size: {widget_font_size};}
-	INPUT{ font-size: {widget_font_size};}
-  	TEXTAREA { font-size: {widget_font_size};}
+  <style type="text/css">
+  	select { font-size: {widget_font_size};}
+	input { font-size: {widget_font_size};}
+  	textarea { font-size: {widget_font_size};}
 	 body { margin-top: 0px; margin-right: 0px; margin-left: 0px; font-family: "Arial", Helvetica, sans-serif; }
 	#wait { visibility:hidden;}
 	
-</STYLE>
+</style>
   <script src="{include_link}"> 
 
   

@@ -1,22 +1,22 @@
 <!-- $Id$ -->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML LANG="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
 <head>
 <title>{site_title}</title>
 <meta http-equiv="content-type" content="text/html; charset={charset}">
-<STYLE type="text/css">
-   A {text-decoration:none;}
+<style type="text/css">
+   a {text-decoration:none;}
    <!--
-   A:link {text-decoration:none;}
-   A:visted {text-decoration:none;}
-   A:active {text-decoration:none;}
+   a:link {text-decoration:none;}
+   a:visted {text-decoration:none;}
+   a:active {text-decoration:none;}
    body {margin-top: 0px; margin-right: 0px; margin-left: 0px;}
    td {text-decoration:none;}
    tr {text-decoration:none;}
    table {text-decoration:none;}
    center {text-decoration:none;}
    -->
-</STYLE>
+</style>
 </head>
 <body bgcolor="#FFFFFF">
 <center>

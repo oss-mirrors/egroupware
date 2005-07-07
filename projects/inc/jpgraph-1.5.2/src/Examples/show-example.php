@@ -1,5 +1,5 @@
 <?php $target = urldecode($HTTP_GET_VARS['target']); ?>
-<!doctype html public "-//W3C//DTD HTML 4.0 Frameset//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Frameset//EN">
 <html>
 <head>
 <title> Test suite for JpGraph - <?php echo $target; ?></title>

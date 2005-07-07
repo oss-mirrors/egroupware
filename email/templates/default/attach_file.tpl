@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
   <meta http-equiv="Content-Type" content="text/html"; charset="{charset}">
@@ -7,9 +7,9 @@
   <meta name="keywords" content="AngleMail for eGroupWare">
   <style type="text/css">
    <!--
-   A:link {text-decoration:none;}
-   A:visted {text-decoration:none;}
-   A:active {text-decoration:none;}
+   a:link {text-decoration:none;}
+   a:visted {text-decoration:none;}
+   a:active {text-decoration:none;}
    body { font-family: "{font_family}"; }
    center { text-decoration:none; }
    -->
