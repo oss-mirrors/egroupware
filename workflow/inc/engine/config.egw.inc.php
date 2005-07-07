@@ -9,7 +9,7 @@ if (!defined('GALAXIA_TABLE_PREFIX')) {
     define('GALAXIA_TABLE_PREFIX', 'egw_wf_');
 }
 
-// Directory containing the Galaxia library, e.g. lib/Galaxia
+// Directory containing the Galaxia library, e.g. this directory
 if (!defined('GALAXIA_LIBRARY')) {
     define('GALAXIA_LIBRARY', dirname(__FILE__));
 }
@@ -92,9 +92,10 @@ if (!function_exists('galaxia_show_error')) {
     }
 }
 
-  // Specify how to retrieve an array containing all groups id the actual user is member of
+
   if (!function_exists('galaxia_retrieve_user_groups')) 
   {
+    //! Specify how to retrieve an array containing all groups id for a given user
     function galaxia_retrieve_user_groups($user=0) 
     {
       if (!($user == $GLOBALS['phpgw_info']['user']['account_id'])) 
@@ -102,7 +103,7 @@ if (!function_exists('galaxia_show_error')) {
         //we are asking groups membership for another user than the actually loaded in memory.
         $other_account =& CreateObject('phpgwapi.accounts',$user,'u');
         $memberships = $other_account->membership($user);
-        unset($account);
+        unset($other_account);
       }
       else
       {
@@ -119,8 +120,49 @@ if (!function_exists('galaxia_show_error')) {
       return $user_groups;
     }
   }
-   
 
+
+  if (!function_exists('galaxia_retrieve_group_users')) 
+  {
+    //! Specify how to retrieve an array containing all users id for a given group id
+    /*!*
+    * @param $group the group id
+    * @param $add_names false by default, if true we add user names in the result
+    * return an array with all users id or an associative array with names associated with ids if $add_names is true
+    */
+    function galaxia_retrieve_group_users($group, $add_names=false) 
+    {
+      $members = $GLOBALS['phpgw']->accounts->member($group);
+      foreach((array)$members as $key => $value)
+      {
+        if ($add_names)
+        {
+          $group_users[$value['account_id']] = $value['account_name'];
+        }
+        else
+        {
+          $group_users[]=($value['account_id']);
+        }
+      }
+      
+      return $group_users;
+    }
+  }
+
+  if (!function_exists('galaxia_retrieve_name')) 
+  {
+    //! Specify how to retrieve the name of an user with is Id
+    /*!*
+    * @param $user the user or group id
+    * return the name of the user
+    */
+    function galaxia_retrieve_name($user) 
+    {
+      $username = $GLOBALS['phpgw']->accounts->id2name($user);
+      return $username;
+    }
+  }
+   
 // Specify how to execute a non-interactive activity (for use in src/API/Instance.php)
 if (!function_exists('galaxia_execute_activity')) {
     function galaxia_execute_activity($activityId = 0, $iid = 0, $auto = 1)
