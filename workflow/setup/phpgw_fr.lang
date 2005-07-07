@@ -1,0 +1,298 @@
+#	workflow	fr	#
+%1 aborted	workflow	fr	%1 interrompues
+%1 active	workflow	fr	%1 actives
+%1 completed	workflow	fr	%1 complétées
+%1 configuration	workflow	fr	%1 Configuration
+%1 days, %2:%3:%4	workflow	fr	%1 jours, %2:%3:%4
+%1 exception	workflow	fr	%1 exception
+%1 menu	workflow	fr	%1 Menu
+%1 monitoring	workflow	fr	%1 Surveillance
+%1 processes (%2 active) (%3 being_run)	workflow	fr	%1 processus (%2 actifs) (%3 en cours)
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	fr	le répertoire /workflow n'existe pas et n'a pas pu être créé, s'il vous plaît demandez à l'administrateur de vérifier la configuration globale de l'application.
+a please wait message is shown when loading the activity form usefull for long tasks	admin	fr	un message de type: 'patientez s'il vous plaît' est affiché quand le formulaire d'activité se charge, utile pour les tâches longues.
+abort instance	workflow	fr	interrompre l'instance
+aborted	workflow	fr	interrompue
+act	workflow	fr	act
+act. status	workflow	fr	Statut Act.
+actions right options	admin	fr	Options sur les Droits des Actions
+activate	workflow	fr	activer
+active	workflow	fr	active
+activities	workflow	fr	Activités
+activities updated	workflow	fr	Activités mises à jour
+activity	workflow	fr	activité
+activity  status	workflow	fr	Statut de l'activité
+activity %1	workflow	fr	activité %1
+activity %1 is interactive but has no role assigned	workflow	fr	L'activité %1 est interactive mais elle ne dispose d'aucune assignation de rôle
+activity %1 is interactive so it must use the $instance->complete() method	workflow	fr	L'activité %1 est interactive, elle doit donc utiliser la méthode $instance->complete()
+activity %1 is non-interactive and non-autorouted but has no role assigned	workflow	fr	L'activité %1 n'est ni interactive, ni auto-transmise mais elle ne dispose d'aucune assignation de rôle
+activity %1 is non-interactive so it must not use the $instance->complete() method	workflow	fr	L'activité %1 n'est pas interactive, elle ne doit donc pas utiliser la méthode $instance->complete()
+activity %1 is standalone and is using the $instance object	workflow	fr	L'activité %1 est en fonctionnement isolé et elle utilise l'objet $instance
+activity %1 is standalone but has transitions	workflow	fr	L'activité %1 est isolée mais elle possède des transitions
+activity %1 is switch so it must use $instance->setnextactivity($actname) method	workflow	fr	L'activité %1 est une condition donc elle doit utiliser la méthode $instance->setNextActivity($actname)
+activity completed	workflow	fr	Activitée terminée
+activity name already exists	workflow	fr	Nom déjà utilisé pour une activité
+activity role removed	workflow	fr	Suppression de rôle sur l'activité
+activity saved	workflow	fr	Activitée sauvegardée
+add a transition	workflow	fr	Ajouter une transition
+add new	workflow	fr	Nouveau
+add or edit a process	workflow	fr	Ajouter ou Editer un processus
+add or edit an activity	workflow	fr	Ajouter ou Editer une activité
+add property	workflow	fr	Ajouter une propriété
+add role	workflow	fr	Ajouter un rôle
+add role to process	workflow	fr	Ajouter un rôle au processus
+add transition	workflow	fr	Ajouter une transition
+add transitions	workflow	fr	Ajouter des transitions
+add transitions from	workflow	fr	Activité de départ
+add transitions to	workflow	fr	Activité d'arrivée
+admin instance	workflow	fr	Aministration des instances
+admin process activities	workflow	fr	Administration des activités du processus
+admin process roles	workflow	fr	Administration des rôles du processus
+admin processes	workflow	fr	Administration des processus
+admin processes sources	workflow	fr	Administration des sources des processus
+administer processes	workflow	fr	Administrer les processus
+all	workflow	fr	Tout
+always show advanced actions	workflow	fr	Toujours montrer les actions avancées
+always show advanced mode	workflow	fr	Toujours montrer le mode avancé
+auto routed	workflow	fr	Auto transmise
+automatic	workflow	fr	Automatique
+base directory does not exist, please ask adminstrator to check the global configuration	workflow	fr	Le répertoire de stockage n'existe pas, veuillez contacter l'administrateur pour qu'il vérifie la configuration globale
+being run	workflow	fr	en cours d'éxécution
+by running theses links you will create new instances of the related process.	workflow	fr	En cliquant sur ces liens vous allez créer de nouvelles instances des processus relatifs.
+cannot add transition. only split activities can have more than one outbound transition	workflow	fr	Impossible de créée la transition. Seule les activités de type découpées (split) peuvent avoir plusieurs transitions sortantes.
+circular reference found. some activity has a transition leading to itself	workflow	fr	Attention Référence circulaire. Une activité dispose de transitions qui permettent de revenir sur elle-même
+code	workflow	fr	code
+column activity status in instance lists	workflow	fr	Colonne Statut de l'activité dans la liste d'instances
+column instance id in instance lists	workflow	fr	Colonn Id de l'instance dans la liste d'instances
+column instance name in instance lists	workflow	fr	Colonne Nom de l'instance dans la liste d'instances
+column instance status in instance lists	workflow	fr	Colonne Statut de l'instance dans la liste d'instances
+column owner in instance lists	workflow	fr	Colonne Propriétaire dans la liste d'instances
+column priority in instance lists	workflow	fr	Colonne Priorité dans la liste d'instances
+column process name in instance lists	workflow	fr	Colonne Nom du processus dans la liste d'instances
+column view in instance lists	workflow	fr	Colonne Voir dans la liste d'instances
+complete	workflow	fr	terminer
+completed	workflow	fr	Terminé
+confirm delete	workflow	fr	Confirmez-vous la suppression?
+consult %1 to get the default values:	workflow	fr	Consultez %1 pour avoir les valeurs par défaut
+couldn't add transition	workflow	fr	Impossible d'ajouter une transition
+create	workflow	fr	Créer
+created	workflow	fr	Créée
+default settings for processes	admin	fr	configuration par défaut pour les processus
+default user	workflow	fr	Utilisateur par défaut
+delete selected	workflow	fr	Supprimer la sélection
+delete transition	workflow	fr	supprimer la transition
+deletion successful	workflow	fr	Suppression Réussie
+delition successful	workflow	fr	Suppression Réussie
+description	workflow	fr	Description
+display please wait message	admin	fr	afficher un message de patience
+don't move	workflow	fr	Ne pas déplacer
+draw roles	admin	fr	afficher les rôles
+draw roles on the graph beside activity name like [that]	admin	fr	affiche les roles sur le graphique sous les noms d'activités comme [cela]
+draw select next user	admin	fr	afficher la sélection de l'utilisateur suivant
+duration	workflow	fr	Durée
+end	workflow	fr	fin
+end activity is not reachable from start activity	workflow	fr	L'activité de fin ne peut pas être atteinte par l'activité de départ
+enter an activity name	workflow	fr	Entrez un nom d'activité
+error: removing was not done	workflow	fr	erreur, la suppression ne s'est pas faite
+exception	workflow	fr	exception
+exception instance	workflow	fr	instance en exception
+exceptions	workflow	fr	exceptions
+export	workflow	fr	Exporter
+fatal error: nextactivity does not match any candidate in autorouting switch activity	workflow	fr	Erreur Fatale : Dans une activité Condition auto-routée nextActivity ne correspond à aucune activité candidate
+fatal error: non-deterministic decision for autorouting activity	workflow	fr	Erreur Fatale : Décision non-déterministe pour une activité auto-routée
+fatal error: setting next activity to an unexisting activity	workflow	fr	Erreur Fatale : L'activité suivante est affectée à une action inexistante
+fatal error: trying to send an instance to an activity but no transition found	workflow	fr	Erreur Fatale : Impossible d'envoyer une instance à une activité car aucune transition n'a été trouvée
+filter	workflow	fr	Filtre
+font size	admin	fr	taille de fonte
+from	workflow	fr	Depuis
+get back to global activities	workflow	fr	retourner aux activités globales
+get back to instance creation	workflow	fr	retourner à la création d'instance
+global activities	workflow	fr	Activités Globales
+global workflow preferences	workflow	fr	Préférences Globales du Workflow
+go to same activities for other instances of this process	workflow	fr	aller à la même activité pour d'autres instances de ce processus
+go to same process activities	workflow	fr	aller aux activités du même processus
+go to the actual state of this instance	workflow	fr	aller à l'état actuel de l'instance
+grab instance	workflow	fr	capturer l'instance
+grant access to the administration of workflow elements	workflow	fr	Permettre l'accès à l'administration des éléments du workflow
+grant access to the monitoring of workflow elements	workflow	fr	Permettre l'accès au monitorage des éléments du workflow
+graph	workflow	fr	Graphique
+graphic options	admin	fr	Options du graphique
+group	workflow	fr	Groupe
+id	workflow	fr	Id
+if automatic parsing is disabled next options will be useless	admin	fr	si l'analyse automatique n'est pas activée les options suivantes seront inutiles
+if user is in a role for an activity he will have the right to abort the related instance	admin	fr	Si l'utilisateur est dans un des rôles d'une activité il aura le droit d'interrompre l'instance relative à cette activité.
+if user is in a role for an activity he will have the right to exception or resume the related instance	admin	fr	Si l'utilisateur est dans un des rôles d'une activité il aura le droit de passer en exception l'instance relative à cette activité.
+if user is in a role for an activity he will have the right to release (un-assign) the related instance	admin	fr	Si l'utilisateur est dans un des rôles d'une activité il aura le droit de libérer (désassigner) l'instance relative à cette activité.
+import aborted	workflow	fr	Importation abandonnée
+import successfull	workflow	fr	Importation réussie
+inactive	workflow	fr	Inactive
+inst.	workflow	fr	inst.
+inst. status	workflow	fr	Statut inst.
+instance	workflow	fr	Instance
+instance %1	workflow	fr	instance %1
+instance not found	workflow	fr	Instance non trouvée
+instance properties	workflow	fr	Propriétés de l'instance
+instance: %1 (process: %2)	workflow	fr	Instance: %1 (Processus: %2)
+instances	workflow	fr	Instances
+interactive	workflow	fr	Interactive
+interactivity	workflow	fr	Interactivité
+invalid	workflow	fr	Invalide
+invalid process	workflow	fr	Processus invalide
+is active	workflow	fr	est actif
+it seems this activity for this instance is not assigned to you anymore.	workflow	fr	Il semble que cette activité, pour cette instance, ne vous est plus assignée.
+join	workflow	fr	joindre
+list of activities	workflow	fr	Liste des activités
+list of all activities with, for each,  counters of instances by status	workflow	fr	liste de toutes les activités avec, pour chacune, des compteurs d'instances par statut
+list of all history items made by instances while they travel in the workflow with information about duration and date	workflow	fr	liste de tous les éléments d'historique laissés par les instances pendant leur parcours du workflosw, avec des informations sur la durée et la date.
+list of all instances with info about current status and activities and link to administration of theses instances	workflow	fr	liste de toutes les instances avec des informations sur le statut courant et les activités, et un lien vers l'administration de ces instances
+list of instances	workflow	fr	Liste des instances
+list of mappings	workflow	fr	Liste des mappings
+list of processes	workflow	fr	Liste des processus
+list of processes (%1)	workflow	fr	Liste des processus (%1)
+list of processes with status and validity and, for each, counters of instances by status	workflow	fr	liste des processus avec statut et validité et, pour chacun, des compteurs d'instances par statut
+list of transitions	workflow	fr	Liste des transitions
+list of workitems	workflow	fr	Liste des éléments de travail
+manual	workflow	fr	Manuel
+map	workflow	fr	mapper
+map users/groups to roles	workflow	fr	Mapper les utilisateurs/groupes vers les rôles
+mappings deleted	workflow	fr	mappings effacés
+monitor activities	workflow	fr	Moniteur d'activités
+monitor instance	workflow	fr	monitorer l'instance
+monitor instances	workflow	fr	Moniteur d'instances
+monitor processes	workflow	fr	Moniteur de processus
+monitor work items	workflow	fr	Moniteur des éléments de travail
+monitoring	workflow	fr	monitorer
+my activities	workflow	fr	Mes activités
+my instances	workflow	fr	Mes instances
+my processes	workflow	fr	Mes processus
+name	workflow	fr	Nom
+new instance	workflow	fr	Nouvelle instance
+new major	workflow	fr	Nouvelle version majeure
+new major version created	workflow	fr	nouvelle version majeure créée
+new mapping added	workflow	fr	Nouveau mapping ajouté
+new minor	workflow	fr	Nouvelle version mineure
+new minor version created	workflow	fr	nouvelle version mineure créée
+new transition added	workflow	fr	Nouvelle transition ajoutée
+no activity indicated	workflow	fr	Aucune activité indiquée
+no assignation	workflow	fr	aucune assignation
+no instance indicated	workflow	fr	Aucune instance indiquée
+no process indicated	workflow	fr	Aucun processus indiqué
+no properties defined	workflow	fr	Aucune propriété définie
+no roles	workflow	fr	Pas de rôles
+no roles asociated with this activity	workflow	fr	Aucun rôle associé à cette activité
+no work item indicated	workflow	fr	Aucun élément de travail indiqué
+or import a process	workflow	fr	Ou importer un processus
+owner	workflow	fr	Propriétaire
+owner of the instance will have the right to abort the instance at any time	admin	fr	le propriétaire de l'instance aura le droit d'interrompre l'instance à tout moment.
+owner of the instance will have the right to exception or resume the instance at any time	admin	fr	le propriétaire de l'instance aura le droit de passer l'instance en exception ou de la remettre en cours à tout moment.
+owner of the instance will have the right to release (un-assign) an activity assigned to an user	admin	fr	le propriétaire de l'instance aura le droit de libérer (désassigner) une activité de l'instance assignée à un utilisateur.
+ownership give abort right	admin	fr	la propriété donne le droit d'interrompre
+ownership give exception right	admin	fr	la propriété donne le droit d'exception
+ownership give release right	admin	fr	la propriété donne le droit de libération
+pr.	workflow	fr	Pr.
+priority level:	workflow	fr	Niveau de Priorité:
+process	workflow	fr	Processus
+process %1	workflow	fr	processus %1
+process %d has been activated	workflow	fr	Le processus %d a été activé
+process %d has been deactivated	workflow	fr	Le processus %d a été désactivé
+process %s %s imported	workflow	fr	Processus %s %s importé
+process %s has been created	workflow	fr	Le processus %s a été créée
+process %s has been updated	workflow	fr	Le processus %s a été mis à jour
+process %s removed	workflow	fr	Processus %s supprimé
+process activities	workflow	fr	Activités du processus
+process does not have a start activity	workflow	fr	Le processus n'a pas d'activité de départ
+process does not have exactly one end activity	workflow	fr	Le processus ne dispose pas d'exactement une fin
+process form	workflow	fr	Formulaire du Processus
+process name already exists	workflow	fr	Le nom du processus est déjà utilisé
+process roles	workflow	fr	Rôles du processus
+process saved	workflow	fr	Processus enregistré
+process transitions	workflow	fr	Transitions du processus
+processes	workflow	fr	Les processus
+properties	workflow	fr	Propriétés
+property	workflow	fr	Propriété
+release activity for this instance	workflow	fr	libérer l'activité pour cette instance
+release instance	workflow	fr	libérer l'instance
+role %1 is not mapped	workflow	fr	Le rôle %1 n'est pas mappé
+role added to process	workflow	fr	Rôle ajouté au processus
+role give abort right	admin	fr	le rôle donne les droits d'interruption
+role give exception right	admin	fr	le rôle donne les droits d'exception
+role give release right	admin	fr	le rôle donne les droits de libération
+role not saved (maybe a name collision)	workflow	fr	Rôle non enregistré (peut-être une collision de noms)
+role saved	workflow	fr	Rôle sauvegardé
+roles	workflow	fr	Rôles
+roles assigned to this activity	workflow	fr	Rôles attribués à cette activité
+roles deleted	workflow	fr	Rôles supprimés
+routing	workflow	fr	Mode de routage
+run	workflow	fr	démarrer
+run activity	workflow	fr	démarrer l'activité
+run instance	workflow	fr	éxécuter l'instance
+run instance form	workflow	fr	éxécuter le formulaire de l'instance
+running	workflow	fr	En cours
+running activities options	admin	fr	Options d'éxécution des activités
+running activity	workflow	fr	Activité en cours
+search instance filter in the bottom of instance lists	workflow	fr	Filtre de recherche d'instance dans le bas des listes d'instances
+select source	workflow	fr	Choisir la source
+send all to	workflow	fr	Envoyer à tous
+send instance	workflow	fr	envoyer l'instance
+shared code	workflow	fr	Code partagé du processus
+should we always give you the advanced search row on instances lists?	workflow	fr	Devons nous toujours vous afficher la ligne de recherche avancée dans les listes d'instances?
+show activity info zone	admin	fr	montrer la zone d'information de l'activité
+show activity title	admin	fr	montrer le titre de l'activité
+show code	workflow	fr	montrer le code
+show multiple submit as select	admin	fr	montrer les multiples boutons de validation dans une liste déroulante
+show template	workflow	fr	montrer le template
+size of the font used on the graph 12 should be a good default value	admin	fr	taille de la fonte utilisée sur le graphique. 12 devrait être une bonne valeur par défaut.
+something was wrong while creating the new major version	workflow	fr	Quelque chose s'est mal passé pendant la création de la nouvelle version majeure.
+something was wrong while creating the new minor version	workflow	fr	Quelque chose s'est mal passé pendant la création de la nouvelle version mineure.
+source saved	workflow	fr	Source sauvegardée
+split	workflow	fr	découpé
+standalone	workflow	fr	isolé
+start	workflow	fr	Départ
+started	workflow	fr	Démarré
+starting page	workflow	fr	Page de démarrage
+status	workflow	fr	Statut
+stop	workflow	fr	Fin
+switch	workflow	fr	Condition
+switch construct	workflow	fr	Constructeur de Condition
+template	workflow	fr	template
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	fr	Le répertoire de stockage des fichiers du workflow (/workflow) n'existe pas et ne peut être créée. Veuillez demander à l'administrateur de vérifier le configuration globale
+the following items must be corrected to be able to activate this process	workflow	fr	Les éléments suivants doivents être corrigés pour pouvoir activer ce processus
+the label you want	workflow	fr	l'étiquette désirée
+there are no activities available	workflow	fr	Il n'y a aucune activité disponible
+there are no config value defined	workflow	fr	il n'y a pas de valeur de configuration définies
+there are no instances available	workflow	fr	Il n'y a aucune instance disponible
+there are no mappings defined for this process	workflow	fr	Il n'y a aucun mapping défini pour ce processus
+there are no process available	workflow	fr	Il n'y a aucun processus disponible
+there are no processes	workflow	fr	Il n'y a aucun processus
+there are no processes available	workflow	fr	Il n'y a aucun processus disponible
+there are no processes defined	workflow	fr	Il n'y a aucun processus défini
+there are no properties available	workflow	fr	Il n'y a aucune propriété disponible
+there are no roles defined for this process	workflow	fr	Il n'y a aucun rôle défini pour ce processus
+there are no transitions defined	workflow	fr	il n'y a aucune transition définie
+there are no user activites available	workflow	fr	Il n'y a aucune activité utilisateur disponible
+there are no workitems available	workflow	fr	Il n'y a aucun élément de travail disponible
+there are some undefined preferences associated with this form : %1	workflow	fr	il y a quelques préférences non définies associées à ce formulaire : %1
+this activity for this instance is actually avaible for you.	workflow	fr	Cette activité pour cette intsnace est actuellement disponible pour vous.
+this will display an activity footer when any activity is runned with workflow engine related informations	admin	fr	Cela va afficher un pied de page aux activités lorsqu'elles seront éxécutées contenant des informations relatives au moteur de workflow.
+to	workflow	fr	Vers
+transitions	workflow	fr	transitions
+transitions removed successfully	workflow	fr	Transitions supprimées avec succès
+type	workflow	fr	type
+update	workflow	fr	Mettre à jour
+upload file	workflow	fr	Télécharger fichier
+user	workflow	fr	Utilisateur
+user activities	workflow	fr	Activités utilisateur
+user instances	workflow	fr	Instances utilisateur
+user processes	workflow	fr	Processus utilisateur
+user/group	workflow	fr	Utilisateur/Groupe
+users/groups	workflow	fr	Utilisateurs/Groupes
+valid	workflow	fr	Valider
+valid process	workflow	fr	Valider le processus
+value	workflow	fr	Valeur
+version	workflow	fr	Version
+view details	workflow	fr	voir détails
+workflow	common	fr	Workflow
+workflow configuration	admin	fr	Configuration du workflow
+workflow site configuration	workflow	fr	Configuration du site pour le workflow
+workitem information	workflow	fr	Information sur l'élément de travail
+workitems	workflow	fr	Eléments de travail
+you have not permission to execute this activity	workflow	fr	Vous n'avez pas les droits nécéssaires pour exécuter cette activité
