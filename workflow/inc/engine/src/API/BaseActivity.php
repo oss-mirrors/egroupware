@@ -1,5 +1,5 @@
 <?php
-include_once (GALAXIA_LIBRARY.'/src/common/Base.php');
+require_once (GALAXIA_LIBRARY.SEP.'src'.SEP.'common'.SEP.'Base.php');
 //!! Abstract class representing activities
 //! An abstract class representing activities
 /*!
@@ -114,8 +114,7 @@ class BaseActivity extends Base {
     return $ret;
   }
 
-  /*! Returns an Array of asociative arrays with roleId and name
-  for the given user */  
+  //! Returns an Array of associative arrays with roleId and names
   function getActivityRoleNames() {
     $aid = $this->activityId;
     $query = "select gr.`wf_role_id`, `wf_name` from `".GALAXIA_TABLE_PREFIX."activity_roles` gar, `".GALAXIA_TABLE_PREFIX."roles` gr where gar.`wf_role_id`=gr.`wf_role_id` and gar.`wf_activity_id`=?";
@@ -219,7 +218,7 @@ class BaseActivity extends Base {
   }
 
   /*! Gets default user id associated with this activity as he's recorded
-  there's no check about valifity of this user.
+  there's no check about validity of this user.
   */
   function getDefaultUser() {
     return $this->defaultUser;
@@ -234,11 +233,14 @@ class BaseActivity extends Base {
     }
     $this->defaultUser = $default_user;
   }
-  
+
+  //! DEPRECATED: unused function. old API, do not use it. return always false
   /*! Checks if a user has a certain role (by name) for this activity,
       e.g. $isadmin = $activity->checkUserRole($user,'admin'); */
   function checkUserRole($user,$rolename) 
   {
+    return false;
+    /*
     $aid = $this->activityId;
     // add group mapping, warning groups and user can have the same id
     $groups = galaxia_retrieve_user_groups($user);
@@ -261,41 +263,19 @@ class BaseActivity extends Base {
     else
     {
       return false;
-    }
+    }*/
   }
 
-  /*! Checks if a user has a access to this activity,
-  to do so it checks if the user is in the users having the roles associated with the activity
-  or if he is in the groups having roles associated with the activity
-  TODO: add ownerships behaviour
+  //! Checks if a user has a access to this activity,
+  /*!
+  To do so it checks if the user is in the users having the roles associated with the activity
+  or if he is in the groups having roles associated with the activity.
   */
   function checkUserAccess($user) 
   {
     $aid = $this->activityId;
-    
-    // add group mapping, warning groups and user can have the same id
-    $groups = galaxia_retrieve_user_groups($user);
-        
-    $result= $this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."activity_roles gar, 
-        ".GALAXIA_TABLE_PREFIX."user_roles gur, 
-        ".GALAXIA_TABLE_PREFIX."roles gr 
-        where gar.wf_role_id=gr.wf_role_id 
-        and gur.wf_role_id=gr.wf_role_id
-        and gar.wf_activity_id=? 
-        and ( (gur.wf_user=? and gur.wf_account_type='u') 
-              or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g') 
-            )"
-        ,array($aid, $user));
-    if ($result >= 1)
-    {
-      //echo "<br>Access granted for ".$user;
-      return true;
-    }
-    else
-    {
-      //echo "<br>Access denied for ".$user;
-      return false;
-    }
+    $wf_security = new WfSecurity($this->db);
+    return $wf_security->checkUserAccess($user, $aid);
   }
 
 }
