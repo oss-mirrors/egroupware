@@ -1,5 +1,5 @@
 <?php
-include_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'BaseManager.php');
+require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'BaseManager.php');
 //!! ActivityManager
 //! A class to maniplate process activities and transitions
 /*!
@@ -780,17 +780,13 @@ class ActivityManager extends BaseManager {
     //if we had a user and if asked we'll try to see if he has really access granted
     elseif ( (!($result=='*')) && $performAccessCheck)
     {
-      // load activity
-      $base_activity =& CreateObject('workflow.workflow_baseactivity');
-      $activity =& $base_activity->getActivity($activityId);
+      $wf_security = new WfSecurity($this->db);
       // perform the check
-      if (!($activity->checkUserAccess($result)))
+      if (!($wf_security->checkUserAccess($result,$activityId)))
       {
         // bad check, we ignore this default_user
         $result='*';
       }
-      unset ($activity);
-      unset ($base_activity);
     }
     return $result;
   }
@@ -813,7 +809,7 @@ class ActivityManager extends BaseManager {
     // First of all add an include to the shared code
     $shared_file = GALAXIA_PROCESSES.SEP.$proc_info['wf_normalized_name'].SEP.'code'.SEP.'shared.php';
     
-    fwrite($fw, '<'."?php include_once('$shared_file'); ?".'>'."\n");
+    fwrite($fw, '<'."?php require_once('$shared_file'); ?".'>'."\n");
     
     // Before pre shared
     $fp = fopen(GALAXIA_LIBRARY.SEP.'compiler'.SEP.'_shared_pre.php',"rb");
