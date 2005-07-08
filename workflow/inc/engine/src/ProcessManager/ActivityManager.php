@@ -220,8 +220,13 @@ class ActivityManager extends BaseManager {
 	*/
   function get_process_activities_with_transitions($pId)
   {
-	$query = "select distinct a1.wf_name as wf_name, a1.wf_activity_id as wf_activity_id from ".GALAXIA_TABLE_PREFIX."transitions gt,".GALAXIA_TABLE_PREFIX."activities a1, ".GALAXIA_TABLE_PREFIX."activities a2 where gt.wf_act_from_id = a1.wf_activity_id and gt.wf_act_to_id = a2.wf_activity_id and gt.wf_p_id = $pId order by a1.wf_flow_num";
-    $result = $this->query($query);
+    $query = "select distinct a1.wf_name as wf_name, a1.wf_activity_id as wf_activity_id, a1.wf_flow_num
+      from ".GALAXIA_TABLE_PREFIX."transitions gt
+      INNER JOIN ".GALAXIA_TABLE_PREFIX."activities a1 ON gt.wf_act_from_id = a1.wf_activity_id 
+      INNER JOIN ".GALAXIA_TABLE_PREFIX."activities a2 ON gt.wf_act_to_id = a2.wf_activity_id 
+      where gt.wf_p_id = ? 
+      order by a1.wf_flow_num";
+    $result = $this->query($query, array($pId));
     $ret = Array();
     while($res = $result->fetchRow()) {  
       $ret[] = $res;
@@ -229,7 +234,7 @@ class ActivityManager extends BaseManager {
     $retval = Array();
     $retval["data"] = $ret;
     $retval["cant"] = count($ret);
-	return $retval;
+    return $retval;
   }
   /*!
    Builds the graph 
