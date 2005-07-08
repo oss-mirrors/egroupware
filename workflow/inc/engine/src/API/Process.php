@@ -1,5 +1,5 @@
 <?php
-include_once (GALAXIA_LIBRARY.'/src/common/Base.php');
+require_once (GALAXIA_LIBRARY.SEP.'src'.SEP.'common'.SEP.'Base.php');
 //!! Process.php
 //! A class representing a process
 /*!
@@ -20,7 +20,7 @@ class Process extends Base {
   }
   
   /*!
-  Loads a process form the database
+  Loads a process from the database
   */
   function getProcess($pId) {
     $query = "select * from `".GALAXIA_TABLE_PREFIX."processes` where `wf_p_id`=?";
@@ -32,7 +32,7 @@ class Process extends Base {
     $this->normalizedName = $res['wf_normalized_name'];
     $this->version = $res['wf_version'];
     $this->pId = $res['wf_p_id'];
-    //config is load only on the first getConfigValue call
+    //config is load only on the first getConfigValues call
   }
   
   /*!

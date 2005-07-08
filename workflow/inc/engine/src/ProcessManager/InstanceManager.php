@@ -1,5 +1,5 @@
 <?php
-include_once(GALAXIA_LIBRARY.'/src/ProcessManager/BaseManager.php');
+require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'BaseManager.php');
 //!! InstanceManager
 //! A class to maniplate instances
 /*!

@@ -1,5 +1,5 @@
 <?php
-include_once (GALAXIA_LIBRARY.'/src/common/Base.php');
+require_once (GALAXIA_LIBRARY.SEP.'src'.SEP.'common'.SEP.'Base.php');
 //!! Role.php
 //! A class representing a role.
 /*!

@@ -1,5 +1,5 @@
 <?php
-include_once(GALAXIA_LIBRARY.'/src/common/Base.php');
+require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'common'.SEP.'Base.php');
 //!! Abstract class representing the base of the API
 //! An abstract class representing the API base
 /*!
