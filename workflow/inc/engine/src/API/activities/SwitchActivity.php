@@ -1,5 +1,5 @@
 <?php
-include_once(GALAXIA_LIBRARY.'/src/API/BaseActivity.php');
+require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'BaseActivity.php');
 //!! SwitchActivity
 //! SwitchActivity class
 /*!
