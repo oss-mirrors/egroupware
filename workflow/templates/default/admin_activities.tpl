@@ -248,7 +248,7 @@
 			{img_transition}{lang_Process_transitions}
 		</td>
 	</tr>
-	<tr>
+	<tr valign="top">
 		<td width="50%">
 			<form action="{form_list_transitions_action}" method="post">
 				<input type="hidden" name="p_id" value="{p_id}" />
@@ -283,12 +283,14 @@
 					</td>
 				</tr>
 				<!-- END block_transitions_table -->
+				<!-- BEGIN block_transitions_table_footer -->
 				<tr class="th">
 					<td align="right">
 						{img_transition_delete}
 					</td>
 					<td style="text-align:right;"><input type="submit" name="delete_tran" value="{lang_Delete_selected}" /></td>
 				</tr>
+				<!-- END block_transitions_table_footer -->
 				</table>
 			</form>		
 		</td>
