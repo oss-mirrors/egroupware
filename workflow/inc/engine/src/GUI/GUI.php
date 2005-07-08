@@ -1,6 +1,5 @@
 <?php
-include_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'common'.SEP.'Base.php');
-include_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'Process.php');
+require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'common'.SEP.'Base.php');
 //!! GUI
 //! A GUI class for use in typical user interface scripts
 /*!
@@ -8,7 +7,8 @@ This class provides methods for use in typical user interface scripts
 */
 class GUI extends Base {
 
-  var $processesConfig = Array();
+  //security object used to obtain access for the user on certain actions from the engine
+  var $wf_security;
 
   /*!
   List user processes, user processes should follow one of these conditions:
@@ -170,6 +170,7 @@ class GUI extends Base {
     $result = $this->query($query,$bindvars,$maxRecords,$offset);
     $cant = $this->getOne($query_cant,$bindvars);
     $ret = Array();
+    $removed_instances = 0;
     while($res = $result->fetchRow()) {
       // Get instances per activity
       $res['wf_instances']=$this->getOne("select count(distinct(gi.wf_instance_id))
@@ -496,7 +497,6 @@ class GUI extends Base {
     } 
     else 
     {
-      include_once(GALAXIA_LIBRARY.'/src/API/Instance.php');
       $instance = new Instance($this->db);
       $instance->getInstance($instanceId);
       if (!empty($instance->instanceId)) 
@@ -584,7 +584,6 @@ class GUI extends Base {
     } 
     else 
     {
-      include_once(GALAXIA_LIBRARY.'/src/API/Instance.php');
       $instance =& new Instance($this->db);
       $instance->getInstance($instanceId);
       $instance->complete($activityId,false);
@@ -614,8 +613,28 @@ class GUI extends Base {
     }
   }
   
+  //! grab the instance for this activity and user if the security object agreed
   function gui_grab_instance($user,$activityId,$instanceId)
   {
+/*    if (!(isset($this->wf_security)))
+    {
+      $this->wf_security = new WfSecurity($this->db);
+    }
+    if (!($this->wf_security->checkUserAction($user,$activityId, $instanceId,'grab')))
+    {
+      $this->errors = ($this->wf_security->geterrors());
+      return false;
+    }
+    else
+    {
+      //the security OK said everything was fine
+          $query = "update ".GALAXIA_TABLE_PREFIX."instance_activities
+                set wf_user = ? 
+                where wf_instance_id=? and wf_activity_id=?";
+        $this->query($query, array($user,$instanceId,$activityId));
+        return true;
+    }
+*/
     // Grab is ok if we are already the user or if the user is * and we've got the role
     // we check as well if we are in a group which has the role
     $groups = galaxia_retrieve_user_groups($user);
@@ -657,8 +676,6 @@ class GUI extends Base {
   have theses datas you should give as well theses fields: 
   process id, activity type,  activity interactivity (y/n), activity routage (y/n), activity status, instance owner, 
   instance status and  finally the current user of this activity.
-  This function will as well load process configuration which could have some impact on the rights. 
-  Theses config data will be cached during the existence of this GUI object.
   The result is an array of this form:
   array('action name' => 'action description')
   'actions names' are: 'grab', 'release', 'run', 'send', 'view', 'exception', 'resume', 'monitor' and 'admin'
@@ -681,23 +698,6 @@ class GUI extends Base {
   function getUserActions($user, $instanceId, $activityId, $pId=0, $actType='not_set', $actInteractive='not_set', $actAutorouted='not_set', $actStatus='not_set', $instanceOwner=0, $instanceStatus='not_set', $currentUser='not_set') 
   {
     $result= array();//returned array
-    $stopflow=false;//true when the instance is in a state where the flow musn't advance
-                    //ie: we can't send or run it
-    $deathflow=false;//true when the instance is in a state where the flow will never advance anymore
-                    //ie: we can't send, run, grab, release, exception or resume it
-    $associated_instance=true;//false when no instance is associated with the activity
-                    // ie: we cannot send, grab, release, exception, resume or view the instance but we can run
-                    // it covers standalone activities and start activities not completed
-    $_run  = false;
-    $_send = false;
-    $_grab = false;
-    $_release = false;
-    $_abort = false;
-    $_view = false;
-    $_resume = false;
-    $_exception = false;
-    $_monitor = false;
-    $_admin = false;
 
     //check if we have all the args and retrieve the ones whe did not have:
     if ((!($pId)) ||
@@ -735,145 +735,15 @@ class GUI extends Base {
           break;
         }
       }
-      //if the activity_id can't be find we return emty actions
+      //if the activity_id can't be find we return empty actions
       if (!($find)) return $result;
     }
     
-    //check if we already have the config values for this processId
-    if (!(isset($this->processesConfig[$pId])))
+    if (!(isset($this->wf_security)))
     {
-      //define conf values we need
-      $arrayConf=array(
-        'ownership_give_abort_right'		=>1,
-        'ownership_give_exception_right'	=>1,
-        'ownership_give_release_right'		=>1,
-        'role_give_abort_right'           	=>0,
-        'role_give_release_right'		=>0,
-        'role_give_exception_right'		=>0,
-      );
-      //check theses values for this process and store the result for this object life duration
-      $myProcess =& new Process($this->db);
-      $myProcess->getProcess($pId);
-      $this->processesConfig[$pId] =& $myProcess->getConfigValues($arrayConf);
-      unset($myProcess);
+      $this->wf_security = new WfSecurity($this->db);
     }
-    
-    // check the instance status
-    // 'completed' => no action except 'view' or 'abort'
-    // 'aborted' =>  no action except 'view'
-    // 'active' => ok first add 'exception'    
-    // 'exception' => first add 'resume', no 'run' or 'send' after
-    $_view = true;
-    if ($instanceStatus == 'aborted')
-    {
-      $deathflow=true;
-    }
-    else
-    {
-      // first check ABORT
-      if ( ($user==$currentUser) ||
-           (($user==$instanceOwner)&&($this->processesConfig[$pId]['ownership_give_abort_right'])) ||
-           ($this->processesConfig[$pId]['role_give_abort_right']))
-      {// we are the assigned user 
-       //OR we are the owner and it gives rights
-       //OR we have the role and it gives rights
-       $_abort =true;
-      }
-      // now handle resume and exception but before detect completed instances
-      if ($instanceStatus == 'completed')
-      {
-        $deathflow=true;
-      }
-      else
-      {
-        if ($instanceStatus == 'exception')
-        {
-          $stopflow = true;
-          if ( ($user==$currentUser) ||
-               (($user==$instanceOwner)&&($this->processesConfig[$pId]['ownership_give_exception_right'])) ||
-               ($this->processesConfig[$pId]['role_give_exception_right']))
-          {// we are the assigned user OR we are the owner and it gives rights
-            $_resume = true;
-          }
-        }
-        elseif ($instanceStatus == 'active')
-        {
-          //handle rules about ownership
-          if ( ($user==$currentUser) ||
-              (($user==$instanceOwner)&&($this->processesConfig[$pId]['ownership_give_exception_right'])) ||
-              ($this->processesConfig[$pId]['role_give_exception_right']))
-          {// we are the assigned user OR we are the owner and it gives rights
-            $_exception = true;
-          }
-        }
-      }
-    }
-  
-    //now we check the activity
-    // start (only uncompleted) and standalone activities have no instance associated.
-    // If we are not in a 'stop' or 'death' flow we can check interactivity
-    // interactive -> run
-    // not interactive -> send (except for 'standalone')
-    // if we are not in a 'death flow' we can add grab and release actions
-    if ( ($actType=='standalone') || (($actType=='start') && (!($actStatus=='completed'))) )
-    {
-      $associated_instance=false;
-      // there's no instance to view in fact
-      $_view = false;
-    }
-    if (($actInteractive=='y') && (!($deathflow)))
-    {
-      if ($associated_instance)
-      {
-          if ($currentUser=='*')
-          {
-            $_grab = true;
-          }
-          else
-          {
-            if ( ($user==$currentUser) ||
-               (($user==$instanceOwner)&&($this->processesConfig[$pId]['ownership_give_release_right'])) ||
-               ($this->processesConfig[$pId]['role_give_release_right']))
-            {// we are the assigned user 
-             //OR we are the owner and it gives rights
-             //OR we have the role and it gives rights
-              $_release = true;
-            }
-          }
-      }
-      if (($actStatus=='running') && !($stopflow) && !($deathflow))
-      {
-        if (($currentUser=='*') || ($currentUser==$user))
-        {
-          $_run = true;
-        }
-      }
-    }
-    //for non autorouted activities we'll have to send, useless on standalone but usefull for start
-    //activities which can be sended if completed and of course for all other activities
-    if ($actAutorouted=='n')
-    {
-      if ($associated_instance)
-      {
-        if (($actStatus=='completed') && !($stopflow) && !($deathflow))
-        {
-          $_send = true;
-        }
-      }
-    }
-    
-    //build final array
-    if ($_run) $result['run']=tra('Execute this activity');
-    if ($_send) $result['send']=tra('Send this instance to the next activity');
-    if ($_grab) $result['grab']=tra('Assign me this activity');
-    if ($_release) $result['release']=tra('Release access to this activity');
-    if ($_abort) $result['abort']=tra('Abort this instance');
-    if ($_view) $result['view']=tra('View this instance');
-    if ($_resume) $result['resume']=tra('Resume this exception instance');
-    if ($_exception) $result['exception']=tra('Exception this instance');
-    if ($_monitor) $result['monitor']=tra('Monitor this instance');
-    if ($_admin) $result['admin']=tra('Admin this instance');
-    
+    $result =& $this->wf_security->getUserActions($user, $instanceId, $activityId, $pId, $actType, $actInteractive, $actAutorouted, $actStatus, $instanceOwner, $instanceStatus, $currentUser);
     return $result;
   }
 
