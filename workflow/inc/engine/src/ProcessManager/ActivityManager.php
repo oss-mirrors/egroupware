@@ -31,15 +31,12 @@ class ActivityManager extends BaseManager {
   */
   function get_error($as_array=false) 
   {
-    if (as_array)
+    if ($as_array)
     {
       return $this->error;
     }
-    else
-    {
-      $result_str = implode('<br />',$this->error);
-      return $result_str;
-    }
+    $result_str = implode('<br />',$this->error);
+    return $result_str;
   }
   
   /*!
@@ -162,9 +159,9 @@ class ActivityManager extends BaseManager {
   function get_process_transitions($pId,$actid=0)
   {
     if(!$actid) {
-        $query = "select a1.wf_name as wf_act_from_name, a2.wf_name as wf_act_to_name, wf_act_from_id, wf_act_to_id from ".GALAXIA_TABLE_PREFIX."transitions gt,".GALAXIA_TABLE_PREFIX."activities a1, ".GALAXIA_TABLE_PREFIX."activities a2 where gt.wf_act_from_id = a1.wf_activity_id and gt.wf_act_to_id = a2.wf_activity_id and gt.wf_p_id = $pId";
+        $query = "select a1.wf_name as wf_act_from_name, a2.wf_name as wf_act_to_name, wf_act_from_id, wf_act_to_id from ".GALAXIA_TABLE_PREFIX."transitions gt,".GALAXIA_TABLE_PREFIX."activities a1, ".GALAXIA_TABLE_PREFIX."activities a2 where gt.wf_act_from_id = a1.wf_activity_id and gt.wf_act_to_id = a2.wf_activity_id and gt.wf_p_id = $pId order by a1.wf_flow_num";
     } else {
-        $query = "select a1.wf_name as wf_act_from_name, a2.wf_name as wf_act_to_name, wf_act_from_id, wf_act_to_id from ".GALAXIA_TABLE_PREFIX."transitions gt,".GALAXIA_TABLE_PREFIX."activities a1, ".GALAXIA_TABLE_PREFIX."activities a2 where gt.wf_act_from_id = a1.wf_activity_id and gt.wf_act_to_id = a2.wf_activity_id and gt.wf_p_id = $pId and (wf_act_from_id = $actid)";
+        $query = "select a1.wf_name as wf_act_from_name, a2.wf_name as wf_act_to_name, wf_act_from_id, wf_act_to_id from ".GALAXIA_TABLE_PREFIX."transitions gt,".GALAXIA_TABLE_PREFIX."activities a1, ".GALAXIA_TABLE_PREFIX."activities a2 where gt.wf_act_from_id = a1.wf_activity_id and gt.wf_act_to_id = a2.wf_activity_id and gt.wf_p_id = $pId and (wf_act_from_id = $actid)  order by a1.wf_flow_num";
     }
     $result = $this->query($query);
     $ret = Array();
@@ -188,7 +185,7 @@ class ActivityManager extends BaseManager {
   */
   function get_process_activities($pId)
   {
-       $query = "select * from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=$pId";
+    $query = "select * from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=$pId";
     $result = $this->query($query);
     $ret = Array();
     while($res = $result->fetchRow()) {  
@@ -196,7 +193,44 @@ class ActivityManager extends BaseManager {
     }
     return $ret;
   }
+	/**
+	* Returns an array of activities that can have transitions,
+	* i.e., non-standalone activities
+	* @params pId
+	* @return array of activities array, count
+	*/
+  function get_transition_activities($pId, $type_exclusion = false)
+  {
+		$where = '';
+		$wheres = array();
+		$wheres[] = "wf_type <> 'standalone'";
 
+	  if( $type_exclusion )
+	  {
+		$wheres[] = "wf_type <> '".$type_exclusion."'";		  
+	  }
+				$where = implode(' and ', $wheres);
+	  
+	return $this->list_activities($pId, 0, -1, 'wf_flow_num__asc', ''/*$find*/, $where);
+  }
+ 	/**
+	* Returns an array of activities that have transitions,
+	* @params pId
+	* @return array of activities array, count
+	*/
+  function get_process_activities_with_transitions($pId)
+  {
+	$query = "select distinct a1.wf_name as wf_name, a1.wf_activity_id as wf_activity_id from ".GALAXIA_TABLE_PREFIX."transitions gt,".GALAXIA_TABLE_PREFIX."activities a1, ".GALAXIA_TABLE_PREFIX."activities a2 where gt.wf_act_from_id = a1.wf_activity_id and gt.wf_act_to_id = a2.wf_activity_id and gt.wf_p_id = $pId order by a1.wf_flow_num";
+    $result = $this->query($query);
+    $ret = Array();
+    while($res = $result->fetchRow()) {  
+      $ret[] = $res;
+    }
+    $retval = Array();
+    $retval["data"] = $ret;
+    $retval["cant"] = count($ret);
+	return $retval;
+  }
   /*!
    Builds the graph 
   */
