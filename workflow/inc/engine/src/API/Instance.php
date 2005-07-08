@@ -1,5 +1,5 @@
 <?php
-include_once (GALAXIA_LIBRARY.'/src/common/Base.php');
+require_once (GALAXIA_LIBRARY.SEP.'src'.SEP.'common'.SEP.'Base.php');
 //!! Instance
 //! A class representing a process instance.
 /*!
@@ -87,6 +87,16 @@ class Instance extends Base {
     $this->nextUser = $user;
     $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_next_user`=? where `wf_instance_id`=?";
     $this->query($query,array($user,(int)$this->instanceId));
+  }
+
+  /*!
+  This method can be used to get the user that must perform the next 
+  activity of the process. This can be empty if no setNextUser was done before.
+  It wont return the default user but inly the user which was assigned by a setNextUser.
+  */
+  function getNextUser() 
+  {
+    return $this->nextUser;
   }
  
   /*!
@@ -369,6 +379,7 @@ class Instance extends Base {
   /*!
   \private
   Gets an activity from the list of activities of the instance
+  the result is an array describing the instance
   */
   function _get_instance_activity($activityId) {
     for($i=0;$i<count($this->activities);$i++) {
@@ -651,9 +662,17 @@ class Instance extends Base {
     
     //try to determine the user or *
     //Use the nextUser
-    if($this->nextUser) {
-      $putuser = $this->nextUser;
-    } else {
+    if($this->nextUser) 
+    {
+      //we check rights for this user on the next activity
+      $wf_security = new WfSecurity($this->db);
+      if ($wf_security->checkUserAccess($this->nextUser,$activityId))
+      {
+        $putuser = $this->nextUser;
+      }
+    }
+    if ($putuser==0)
+    {
       // If no nextUser is set, then see if only
       // one user is in the role for this activity
       // and assign ownership to him if this is the case
@@ -665,7 +684,7 @@ class Instance extends Base {
         //regis: group role mapping as an impact here, we need to count real user corresponding to this role
         // and we obtain users 'u' and groups 'g' in user_roles
         // we consider number of members on each group is subject to too much changes and so we do not even try 
-        // to look in members of the group to find is there is a unique real user candidate for this role
+        // to look in members of the group to find if there is a unique real user candidate for this role
         // you could try it if you want but it's quite complex for something not really usefull
         // if there's at least one group in the roles we then won't even try to get this unique user
         $query_group = "select count(*) from ".GALAXIA_TABLE_PREFIX."user_roles 
@@ -702,13 +721,13 @@ class Instance extends Base {
       if ($putuser==0) // no decisions yet
       {
         // then check to see if there is a default user
-        $activity_manager =& CreateObject('workflow.workflow_activitymanager');
+        $activity_manager =& new ActivityManager($this->db);
         //get_default_user will give us '*' if there is no default_user or if the default user has no role
         //mapped anymore
         $default_user = $activity_manager->get_default_user($activityId,true);
         unset($activity_manager);
         // if they were no nextUser, no unique user avaible, no default_user then we'll have '*'
-        // which will let user having the good role mapping grab this activity
+        // which will let user having the good role mapping grab this activity later
         $putuser = $default_user;
       }
     }        
@@ -813,6 +832,5 @@ class Instance extends Base {
     }
     return $ret;
   }
-
 }
 ?>
