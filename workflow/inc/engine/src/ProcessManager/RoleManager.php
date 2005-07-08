@@ -83,8 +83,7 @@ class RoleManager extends BaseManager {
   
   //!  List mappings
   /*!
-  * get a list of roles/users mappings for a given process. Can expand groups to real users in the result and can restrict
-  * the mappings to a given subset of roles
+  * get a list of roles/users mappings for a given process.
   * @param $pId Process Id. The mappings are returned for a complete process by default (see param roles_subset).
   * @param $offset first record of the returned array
   * @param $maxRecords maximum number of records for the returned array
@@ -138,31 +137,45 @@ class RoleManager extends BaseManager {
   * @param $pId Process Id. The mappings are returned for a complete process by default (see param roles_subset or activities_subset).
   * @param $expand_groups if true (false by default) we are not giving the group mappings but instead expand
   *	theses groups to real users while avoiding repeating users twice.
-  * @param $roles_subset associative array containing a list of roles for which we want to restrict the list. 
-  * This array must contain the [wf_role_id] key with role id values. empty by default
-  * @param $activities_subset associative array containing a list of activities for which we want to restrict the list. 
-  * This array must contain the [wf_activity_id] key with activity id values. empty by default
+  * @param $subset associative array containing a list of roles and/or activities for which we want to restrict the list. 
+  * empty by default.
+  * This array must contain the [wf_role_id] key with role id values to restrict roles.
+  * This array must contain the [wf_activity_id] key with activity id values to restrict activities.
   * @return an array containg for each row the user or group id and an associated name
   */
 
-  function list_mapped_users($pId,$expand_groups=false, $roles_subset=Array())  
+  function list_mapped_users($pId,$expand_groups=false, $subset=Array())  
   {
-    $whereand = ' and gur.wf_p_id=? ';
+    $whereand = ' where gur.wf_p_id=? ';
     $bindvars = Array($pId);
     
-    if (!(count($roles_subset)==0))
+    if (!(count($subset)==0))
     {
        $subset = Array();
-       foreach($roles_subset as $key => $value )
+       foreach($subset as $key => $value )
        {
-         $subset[] = $value['wf_role_id'];
+         if (isset($value['wf_role_id']))
+         {
+           $roles_subset[] = $value['wf_role_id'];
+         }
+         if (isset($value['wf_activity_id']))
+         {
+           $activities_subset[] = $value['wf_activity_id'];
+         }
        }
-       $whereand .= ' and ((gr.wf_role_id) in ('.implode($subset, ',').'))';
+       if (count($roles_subset)>0)
+       {
+         $whereand .= ' and ((gr.wf_role_id) in ('.implode($roles_subset, ',').'))';
+       }
+       if (count($activities_subset)>0)
+       {
+         $whereand .= ' and ((gar.wf_activity_id) in ('.implode($activities_subset, ',').'))';
+       }
     }
     $query = "select distinct(wf_user),wf_account_type from
-                    ".GALAXIA_TABLE_PREFIX."roles gr,
-                    ".GALAXIA_TABLE_PREFIX."user_roles gur 
-                where gr.wf_role_id=gur.wf_role_id 
+                    ".GALAXIA_TABLE_PREFIX."roles gr
+                INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gr.wf_role_id=gur.wf_role_id 
+                LEFT JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_role_id=gr.wf_role_id 
                 $whereand ";
     $result = $this->query($query,$bindvars);
     $ret = Array();
