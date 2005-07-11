@@ -8,7 +8,8 @@ database connection, database methods and the Observable interface.
 */
 class Base extends Observable {
   var $db;  // The database abstraction object used to access the database
-	var $num_queries = 0;
+  var $num_queries = 0;
+  var $error= Array(); // the error messages array
 
   // Constructor receiving a database abstraction object.
   function Base(&$db)
@@ -17,6 +18,24 @@ class Base extends Observable {
       die("Invalid db object passed to Base constructor");
     }
     $this->db = &$db;
+  }
+
+  //! return errors recorded by this object
+  /*!
+  * You should always call this function after failed operations on a workflow object to otain messages
+  * @param $as_array if true the result will be send as an array of errors or an empty array. Else, if you do not give any parameter 
+  * or give a false parameter you will obtain a single string which can be empty
+  * or will contain error messages with <br /> html tags.
+  */
+  function get_error($as_array=false) 
+  {
+    if ($as_array)
+    {
+      return $this->error;
+    }
+    $result_str = implode('<br />',$this->error);
+    $this->error= Array();
+    return $result_str;
   }
 
 	// copied from tikilib.php
@@ -30,6 +49,10 @@ class Base extends Observable {
 			$result = $this->db->Execute($query, $values);
 		else
 			$result = $this->db->SelectLimit($query, $numrows, $offset, $values);
+		if (empty($result))
+		{
+			$result = false;
+		}
 		if (!$result && $reporterrors)
 			$this->sql_error($query, $values, $result);
 		$this->num_queries++;
@@ -40,10 +63,20 @@ class Base extends Observable {
 	function getOne($query, $values = null, $reporterrors = true) {
 		$this->convert_query($query);
 		$result = $this->db->SelectLimit($query, 1, 0, $values);
-		if (!$result && $reporterrors)
+		if (empty($result))
+		{
+			$result = false;
+		}
+		if (!$result && $reporterrors )
 			$this->sql_error($query, $values, $result);
-
-		$res = $result->fetchRow();
+		if (!!$result) 
+		{
+			$res = $result->fetchRow();
+		}
+		else
+		{
+			$res = false;
+		}
 		$this->num_queries++;
 		if ($res === false)
 			return (NULL); //simulate pears behaviour
@@ -55,6 +88,7 @@ class Base extends Observable {
 		global $ADODB_LASTDB;
 
 		trigger_error($ADODB_LASTDB . " error:  " . $this->db->ErrorMsg(). " in query:<br/>" . $query . "<br/>", E_USER_WARNING);
+		$this->error[] = "they were some SQL errors in the database, please warn you admin system.";
 		// only for debugging.
 		//print_r($values);
 		//echo "<br/>";
