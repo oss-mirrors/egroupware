@@ -1,6 +1,6 @@
 <?php
 
-	include(dirname(__FILE__) . SEP . 'class.bo_user_forms.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.bo_user_forms.inc.php');
 
 	class ui_userinstances extends bo_user_forms
 	{
@@ -202,6 +202,7 @@
 			{
 				if (!$this->GUI->gui_release_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
+					$this->message[]=$this->GUI->get_error(false);
 					$this->message[]=lang("You are not allowed to release instance %1",$instance_id);
 				}
 			}
@@ -210,6 +211,7 @@
 			if ($askGrab)
 			{
 				if (!$this->GUI->gui_grab_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) {
+					$this->message[]=$this->GUI->get_error(false);
 					$this->message[]=lang("You are not allowed to grab instance %1",$instance_id);
 				}
 			}
@@ -312,6 +314,8 @@
 		    $this->show_list_instances($instances['data'], $this->show_advanced_actions);
 
 		    $this->show_user_tabs($this->class_name);
+		    //check last GUI errors messages if any
+		    $this->message[]=$this->GUI->get_error(false);
 		    $this->fill_form_variables();
 		    $this->finish();
 		}
