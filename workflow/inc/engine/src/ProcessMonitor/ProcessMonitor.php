@@ -7,7 +7,21 @@ This class provides methods for use in typical monitoring scripts
 A first part are methods for cleaning up instances and workitems associated with a process
 A second part are methods to obtains information about the actual state or histroy of the process
 */
-class ProcessMonitor extends Base {
+class ProcessMonitor extends Base 
+{
+
+  // Constructor receiving a database abstraction object.
+  function ProcessMonitor(&$db)
+  {
+    parent::Base($db);
+    // check the the actual user can really do this
+    if ( !(galaxia_user_can_monitor()))
+    {
+      unset($this);
+      galaxia_show_error('forbidden access to ProcessMonitor object');
+    }
+  }
+
 
   //! return statistics about all processes handled by the engine.
   /*!
@@ -84,12 +98,18 @@ class ProcessMonitor extends Base {
   /*!
   * All aborted instances will be removed but all workitems (history) associated with theses instances as well
   * you can limit this behaviour to one process by specifying a process id.
-  * @param process_id is a process id you can give to limit this function to only one process. 
+  * @param $process_id is a process id you can give to limit this function to only one process.
   * Aborted instances from other processes wont be removed
   * @return true if everything was ok, false in the other case (and nothing was done)
   */
   function remove_aborted($pId=0) 
   {
+    // check the the actual user can really do this
+    if ( !((galaxia_user_can_clean_instances()) || (galaxia_user_can_clean_aborted_instances())) )
+    {
+      $this->error[] = tra('user is not authorized to delete aborted instances');
+      return false;
+    }
     if (!(pId))
     {
       $whereand = '';
@@ -126,6 +146,12 @@ class ProcessMonitor extends Base {
   * @return true if everything was ok, false in the other case (and nothing was done)
   */
   function remove_all($pId) {
+    // check the the actual user can really do this
+    if ( !(galaxia_user_can_clean_instances()) )
+    {
+      $this->error[] = tra('user is not authorized to delete instances');
+      return false;
+    }
     $query="select `wf_instance_id` from `".GALAXIA_TABLE_PREFIX."instances` where `wf_p_id`=?";
     // start a transaction
     $this->db->StartTrans();
@@ -144,7 +170,9 @@ class ProcessMonitor extends Base {
   }
 
   //! list all process
-  function monitor_list_processes($offset,$maxRecords,$sort_mode,$find,$where='') {
+  function monitor_list_processes($offset,$maxRecords,$sort_mode,$find,$where='') 
+  {
+  
     $sort_mode = $this->convert_sortmode($sort_mode);
     if($find) {
       $findesc = '%'.$find.'%';
@@ -235,6 +263,7 @@ class ProcessMonitor extends Base {
 
   //!list all activities
   function monitor_list_activities($offset,$maxRecords,$sort_mode,$find,$where='') {
+  
     $sort_mode = $this->convert_sortmode($sort_mode);
     if($find) {
       $findesc = '%'.$find.'%';
