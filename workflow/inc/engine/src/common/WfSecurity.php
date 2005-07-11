@@ -8,9 +8,6 @@ require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'common'.SEP.'Base.php');
 */
 class WfSecurity extends Base {
   
-  // error messages
-  var $error= Array();
-  
   // processes config values cached for this object life duration
   // init is done at first use for each process
   var $processesConfig= Array();
@@ -26,31 +23,6 @@ class WfSecurity extends Base {
     $this->db = $db;  
   }
   
-  //! return errors recorded by this object
-  /*!
-  * @public
-  * You should always call this function after operations on an WfSecurity object to test if everything seems ok
-  * if you give a true parameter the result will be send as an array of errors or an empty array.
-  * Else, if you do not give any parameter or give a false parameter you will obtain a single string which can be empty
-  * or will contain error messages with <br /> html tags.
-  * errors are erased after you've been calling this function.
-  */
-  function get_error($as_array=false) 
-  {
-    if ($as_array)
-    {
-      $result = $this->error;
-      $this->error = Array();
-      return $result;
-    }
-    else
-    {
-      $result_str = implode('<br />',$this->error);
-      $this->error = Array();
-      return $result_str;
-    }
-  }
-
   //! load the config values for a given process
   /*!
   * config values for a given process are cached while this WfSecurity object stay alive
@@ -117,26 +89,28 @@ class WfSecurity extends Base {
     }
   }
 
-  //! Return true if a given user is authorized for a given action on a given activity/instance
+  //! Return true if actual running user is authorized for a given action on a given activity/instance
   /*!
   * @public
-  * @param $user is the user id
   * @param $activityId is the activity id, can be 0
   * @param $instanceId is the instanceId, can be 0
-  * @param $action is a string containing ONE action asked, it must be one of 'grab', 'release', exception', 'resume', 'abort', 'run', 'send', 'view', 'monitor'
+  * @param $action is a string containing ONE action asked, it must be one of 'grab', 'release', exception', 'resume', 'abort', 'run', 'send', 'view'
   * @return true if action access is granted false in other case. Errors are stored in the object.
   */
-  function checkUserAction($user,$activityId, $instanceId,$action)
+  function checkUserAction($activityId, $instanceId,$action)
   {
     //Warning: 
     //start and standalone activities have no instances associated
     //aborted and completed instances have no activities associated
-                
+    
+    $user = galaxia_retrieve_running_user();
+    
     $this->loadConfigValues($pId);
     
     //1 - load data -----------------------------------------------------------------
     $_no_activity=false;
     $_no_instance=false;
+    
     //retrieve some activity datas and process data
     if ($activityId==0)
     {
@@ -145,17 +119,22 @@ class WfSecurity extends Base {
     else
     {
       $query = "select ga.wf_activity_id, ga.wf_type, ga.wf_is_interactive, ga.wf_is_autorouted, 
-              gia.wf_instance_id, gia.wf_user, gia.wf_status, gp.wf_name as wf_procname, gp.wf_is_active
-              from ".GALAXIA_TABLE_PREFIX."instance_activities gia
-                LEFT JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gia.wf_activity_id = ga.wf_activity_id
+              gp.wf_name as wf_procname, gp.wf_is_active, gp.wf_version
+              from ".GALAXIA_TABLE_PREFIX."activities ga 
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."processes gp ON gp.wf_p_id=ga.wf_p_id
                 where ga.wf_activity_id = ?";
-      $resactivity = $this->getOne($query, array($activityId));
-      if (!(isset($resactivity)))
+      $result = $this->query($query, array($activityId));
+      $resactivity = Array();
+      if (!!$result)
+      {
+        $resactivity = $result->fetchRow();
+      }
+      if (count($resactivity)==0)
       {
         $_no_activity = true;
       }
     }
+
     //retrieve some instance and process data (need process data here as well if there is no activity)
     if ($instanceId==0)
     {
@@ -163,12 +142,16 @@ class WfSecurity extends Base {
     }
     else
     {
-      $query = "select gi.wf_instance_id, gi.wf_user, gi.wf_owner, gi.wf_status, gp.wf_name as wf_procname, gp.wf_is_active,
+      $query = "select gi.wf_instance_id, gi.wf_owner, gi.wf_status, gp.wf_name as wf_procname, gp.wf_is_active, gp.wf_version
               from ".GALAXIA_TABLE_PREFIX."instances gi
               INNER JOIN ".GALAXIA_TABLE_PREFIX."processes gp ON gp.wf_p_id=gi.wf_p_id
               where gi.wf_instance_id=?";
-      $resinstance = $this->getOne($query,array($instanceId));
-      if (!(isset($resinstance)))
+      $result = $this->query($query,array($instanceId));
+      if (!!$result)
+      {
+        $resinstance = $result->fetchRow();
+      }
+      if (count($resinstance)==0)
       {
         $_no_instance = true;
       }
@@ -178,7 +161,22 @@ class WfSecurity extends Base {
       $this->error[] = tra('no action avaible beacuse no activity and no instance are given!');
       return false;
     }
-
+    
+    //retrieve some instance/activity data
+    //if no_activity or no_instance we are with out-flow/without instances activities or with instances terminated we wont obtain anything there
+    if (!($_no_activity || $_no_instance))
+    {
+      $query = "select gia.wf_instance_id, gia.wf_user, gia.wf_status
+              from ".GALAXIA_TABLE_PREFIX."instance_activities gia
+                where gia.wf_activity_id = ? and gia.wf_instance_id = ?";
+      $result = $this->query($query, array($activityId, $instanceId));
+      $res_inst_act = Array();
+      if (!!$result)
+      {
+        $res_inst_act = $result->fetchRow();
+      }
+    }
+    
     //2 - decide which tests must be done ------------------------------------------------
     //init tests
     $_check_active_process = false; // is the process is valid?
@@ -212,7 +210,7 @@ class WfSecurity extends Base {
         // we need an instance not completed or aborted that means we need an activity
         // authorization are given to currentuser, role, never owner actually
         // TODO: add conf setting to give grab access to owner (that mean run access as well maybe)
-        // current user MUST be '*' or $user, '*' is handled by the $_check_is_in_role
+        // current user MUST be '*' or user (no matter to grab something we already have), '*' is handled by the $_check_is_in_role
         $_check_active_process	= true;
         $_check_activity	= true;
         $_check_instance	= true;
@@ -298,14 +296,6 @@ class WfSecurity extends Base {
         $_check_is_user                 = true;
         $_check_is_in_role_if_star	= true;
         break;
-      case 'monitor':
-        // process can be invalid
-        // no test on activity
-        // we need an instance, at least
-        // authorization is given to special user rights
-        $_check_instance 	= true;
-        $_bypass_user_if_admin	= true;
-        break;
     }
     
     //3- now perform asked tests ---------------------------------------------------------------------
@@ -316,7 +306,7 @@ class WfSecurity extends Base {
         //we cannot be there without instance and without activity, we now we have one activity at least
         if (!($resactivity['wf_is_active']=='y'))
         {
-          $this->error[] = tra('Process %1 is not active, action %2 is impossible', $resactivity['wf_procname'], $action);
+          $this->error[] = tra('Process %1 %2 is not active, action %3 is impossible', $resactivity['wf_procname'], $resactivity['wf_version'], $action);
           return false;
         }
       }
@@ -324,7 +314,7 @@ class WfSecurity extends Base {
       {
         if (!($resinstance['wf_is_active']=='y'))
         {
-          $this->error[] = tra('Process %1 is not active, action %2 is impossible', $resinstance['wf_procname'], $action);
+          $this->error[] = tra('Process %1 %2 is not active, action %3 is impossible', $resinstance['wf_procname'], $resactivity['wf_version'], $action);
           return false;
         }
       }
@@ -350,7 +340,7 @@ class WfSecurity extends Base {
     
     if ($_check_instance_activity) //is there a realtionship between instance and activity
     {
-      if (!($resactivity['wf_instance_id']==$resinstance['wf_instance_id']))
+      if (count($res_inst_act)==0)
       {
         $this->error[] = tra('Instance %1 is not associated with activity %2, action %3 is impossible.', $instanceId, $activityId, $action);
         return false;
@@ -373,8 +363,9 @@ class WfSecurity extends Base {
     
     // user tests ---------------
     $checks = true;
-    //is our user a special rights user?
-    if (!( ($_bypass_user_if_admin) && (galaxia_user_can_admin_instance($user)) ))
+    //is our actual workflow user a special rights user?
+    // TODO test actual workflow user diff de $user
+    if (!( ($_bypass_user_if_admin) && (galaxia_user_can_admin_instance()) ))
     {
       //if our user is the owner we ignore user tests
       if (!( ($_bypass_user_role_if_owner) && ((int)$resinstance['wf_owner']==(int)$user) ))
@@ -385,14 +376,14 @@ class WfSecurity extends Base {
           //is the actual_user our user?
           if ($_check_is_user) 
           {
-            if (!((int)$resinstance['wf_user']==(int)$user))
+            if (!((int)$res_inst_act['wf_user']==(int)$user))
             {
               //user test was false, but maybe we'll have better chance later
               $checks = false;
             }
           }
           // special '*' user
-          if ($resinstance['wf_user']=='*')
+          if ($res_inst_act['wf_user']=='*')
           {
             //is the actual <>*?
             if ($_check_is_not_star)
@@ -435,7 +426,7 @@ class WfSecurity extends Base {
   * @param $currentUser is the actual instance/activity user id or '*'.
   * @return an array of this form:
   * 	array('action name' => 'action description')
-  * 'actions names' are: 'grab', 'release', 'run', 'send', 'view', 'exception', 'resume', 'monitor' and 'admin'
+  * 'actions names' are: 'grab', 'release', 'run', 'send', 'view', 'exception', 'resume', 'monitor'
   * Some config values can change theses rules but basically here they are:
   ** 'grab'	: be the user of this activity. User has access to it and instance status is ok.
   ** 'release'	: let * be the user of this activity. Must be the actual user or the owner of the instance.
@@ -445,15 +436,17 @@ class WfSecurity extends Base {
   ** 'abort'	: abort an instance, ok when we are the user
   ** 'exception' : set the instance status to exception, need to be the user 
   ** 'resume'	: back to running when instance status was exception, need to be the user
+  ** 'monitor' : admin the instance, for special rights users
   * 'actions description' are translated explanations like 'release access to this activity'
   * This function will as well load process configuration which could have some impact on the rights. 
   * Theses config data will be cached during the existence of this WfSecurity object.
   * WARNING: this is a snapshot, the engine give you a snaphsot of the rights a user have on an instance-activity
   * at a given time, this is not meaning theses rights will still be there when the user launch the action.
-  * You should absolutely use the GUI Object to execute theses actions (except monitor and admin) and they could be rejected.
+  * You should absolutely use the GUI Object to execute theses actions (except monitor) and they could be rejected.
   * the GUI object call the checkUserAction() method of this object to check the rights at the real runtime
   * WARNING: we do not check the user access rights. If you launch this function for a list of instances obtained via a 
   * GUI object theses access rights are allready checked.
+  * In fact this function is GUI oriented, it is not granting rights
   */
   function getUserActions($user, $instanceId, $activityId, $pId, $actType, $actInteractive, $actAutorouted, $actStatus, $instanceOwner, $instanceStatus, $currentUser) 
   {
@@ -473,15 +466,15 @@ class WfSecurity extends Base {
     $_view = false;
     $_resume = false;
     $_exception = false;
-    $_monitor = false;
-    $_admin = false;
+    // this can be decided right now, it depends only on user rights
+    $_monitor = galaxia_user_can_admin_instance($user);
 
     $this->loadConfigValues($pId);
     
     // check the instance status
-    // 'completed' => no action except 'view' or 'abort'
-    // 'aborted' =>  no action except 'view'
-    // 'active' => ok first add 'exception'    
+    // 'completed' => no action except 'view' or 'abort' or 'monitor'
+    // 'aborted' =>  no action except 'view' or 'monitor'
+    // 'active' => ok first add 'exception'
     // 'exception' => first add 'resume', no 'run' or 'send' after
     $_view = true;
     if ($instanceStatus == 'aborted')
@@ -592,7 +585,6 @@ class WfSecurity extends Base {
     if ($_resume) $result['resume']=tra('Resume this exception instance');
     if ($_exception) $result['exception']=tra('Exception this instance');
     if ($_monitor) $result['monitor']=tra('Monitor this instance');
-    if ($_admin) $result['admin']=tra('Admin this instance');
     
     return $result;
   }
