@@ -93,6 +93,72 @@ if (!function_exists('galaxia_show_error')) {
 }
 
 
+if (!function_exists('galaxia_user_can_admin_process'))
+{
+  //! Specify if the user has special admin rights on processes
+  /*!
+  * @return true if the actual user has access to the processes administration. 
+  * ie. he can edit/activate/deactivate/create/destroy processes and activities
+  * warning: dangerous rights, this user can do whatever PHP can do...
+  */
+  function galaxia_user_can_admin_process()
+  {
+      return  (($GLOBALS['phpgw']->acl->check('run',1,'admin')) ||  ($GLOBALS['phpgw']->acl->check('admin_workflow',1,'workflow')));
+  }
+}
+
+if (!function_exists('galaxia_user_can_admin_instance'))
+{
+  //! Specify if the user has special admin rights on instances
+  /*!
+  * @return true if the actual user has access to the instance administration
+  * ie. he can edit and modify all properties, members, assigned users of an instance whatever the state of the instance is
+  * warning: this is clearly an administrator right
+  */
+  function galaxia_user_can_admin_instance()
+  {
+    return  (($GLOBALS['phpgw']->acl->check('run',1,'admin')) ||  ($GLOBALS['phpgw']->acl->check('admin_instance_workflow',1,'workflow')));
+  }
+}
+
+
+if (!function_exists('galaxia_user_can_clean_instances'))
+{
+  //! Specify if the user has special cleanup rights on ALL instances
+  /*!
+  * @return true if the actual user is granted access to the 'clean instances' and 'clean all instances for a process' functions
+  * warning: theses are dangerous functions!
+  */
+  function galaxia_user_can_clean_instances($user)
+  {
+    return  (($GLOBALS['phpgw']->acl->check('run',1,'admin')) ||  ($GLOBALS['phpgw']->acl->check('cleanup_workflow',1,'workflow')));
+  }
+}
+
+if (!function_exists('galaxia_user_can_clean_aborted_instances'))
+{
+  //! Specify if the actual user has special cleanup rights on aborted instances
+  /*!
+  * @return true if the user is granted access to the 'clean aborted instances' functions
+  */
+  function galaxia_user_can_clean_aborted_instances()
+  {
+    return  ((!$GLOBALS['phpgw']->acl->check('run',1,'admin')) ||  (!$GLOBALS['phpgw']->acl->check('cleanup_aborted_workflow',1,'workflow')));
+  }
+}
+
+if (!function_exists('galaxia_user_can_monitor'))
+{
+  //! Specify if the user has special monitors rights
+  /*!
+  * @return true if the actual user has access to the monitor screens (this is not sufficient for cleanup access)
+  */
+  function galaxia_user_can_monitor()
+  {
+    return  (($GLOBALS['phpgw']->acl->check('run',1,'admin')) ||  ($GLOBALS['phpgw']->acl->check('monitor_workflow',1,'workflow')));
+  }
+}
+
   if (!function_exists('galaxia_retrieve_user_groups')) 
   {
     //! Specify how to retrieve an array containing all groups id for a given user
@@ -148,6 +214,19 @@ if (!function_exists('galaxia_show_error')) {
       return $group_users;
     }
   }
+  
+  if (!function_exists('galaxia_retrieve_running_user'))
+{
+  //! returns the actual user running this PHP code
+  /*!
+  * @return the user id of the actual running user. 
+  */
+  function galaxia_retrieve_running_user()
+  {
+      return ($GLOBALS['phpgw']['user']);
+  }
+}
+
 
   if (!function_exists('galaxia_retrieve_name')) 
   {
