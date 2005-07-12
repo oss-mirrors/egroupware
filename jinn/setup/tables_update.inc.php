@@ -712,4 +712,58 @@
 		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.216';
 		return $GLOBALS['setup_info']['jinn']['currentver'];
 	}
+
+
+	$test[] = '0.8.216';
+	function jinn_upgrade0_8_216()
+	{
+		$GLOBALS['phpgw_setup']->oProc->CreateTable('egw_jinn_report',array(
+			'fd' => array(
+				'report_id' => array('type' => 'auto','nullable' => False),
+				'report_naam' => array('type' => 'varchar','precision' => '50','nullable' => False),
+				'report_object_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
+				'report_header' => array('type' => 'text'),
+				'report_body' => array('type' => 'text'),
+				'report_footer' => array('type' => 'text'),
+				'report_html' => array('type' => 'int','precision' => '1','nullable' => False,'default' => '0'),
+				'report_html_title' => array('type' => 'varchar','precision' => '25','nullable' => False)
+			),
+			'pk' => array('report_id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		));
+
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.217';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	}
+
+
+	$test[] = '0.8.217';
+	function jinn_upgrade0_8_217()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('egw_jinn_obj_fields','field_form_visible',array(
+			'type' => 'int',
+			'precision' => '4',
+			'default' => '1'
+		));
+
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.218';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	}
+
+
+	$test[] = '0.8.218';
+	function jinn_upgrade0_8_218()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('egw_jinn_report','report_object_id',array(
+			'type' => 'varchar',
+			'precision' => '20',
+			'nullable' => False,
+			'default' => '0'
+		));
+
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.219';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	}
 ?>

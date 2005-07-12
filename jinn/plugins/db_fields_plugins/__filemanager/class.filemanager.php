@@ -30,8 +30,8 @@
 	class db_fields_plugin_filemanager
 	{
 		var $javascript_inserted = false;
-		var $spacer = 'jinn/plugins/db_fields_plugins/plugin_images/spacer.png';
-		var $spacer_style = '';
+		var $spacer = 'jinn/plugins/db_fields_plugins/plugin_images/spacer.gif';
+//		var $spacer_style = 'style="height:100;width:100px"';
 		var	$unknown = "jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/unknown.gif";
 		var	$unknown_style = '';
 		var $local_bo;	//this is a reference to a bo class and needs to be set by the instanciating factory class
@@ -434,19 +434,19 @@
 				switch($type)
 				{
 					case 'path':
-						$input .= '<img name="'.$name.'" src="'.$src.'" '.$style.' />';
+					   $input .= '<img id="'.$name.'" src="'.$src.'" '.$style.' />';
 						$input .= '<span id="'.$span_id.'">'.$text.'</span>';
 						break;
 					case 'pathlink':
-						$input .= '<img name="'.$name.'" src="'.$src.'" '.$style.' />';
+						$input .= '<img id="'.$name.'" src="'.$src.'" '.$style.' />';
 						$input .= '<span id="'.$span_id.'"><a href="javascript:'.$link.'">'.$text.'</a></span>';
 						break;
 					case 'thumblink':
-						$input .= '<a href="javascript:'.$link.'"><img name="'.$name.'" src="'.$src.'" alt="preview" '.$style.' /></a>';
+						$input .= '<a href="javascript:'.$link.'"><img id="'.$name.'" src="'.$src.'" alt="preview" '.$style.' /></a>';
 						$input .= '<span id="'.$span_id.'"></span>';
 						break;
 					case 'image':
-						$input .= '<img name="'.$name.'" src="'.$src.'" alt="preview" '.$style.' />';
+						$input .= '<img id="'.$name.'" src="'.$src.'" alt="preview" '.$style.' />';
 						$input .= '<span id="'.$span_id.'"></span>';
 						break;
 					case 'swflash':
@@ -461,13 +461,13 @@
         					$input .= '}';
 						$input .= 'else';
 						$input .= '{';
-						$input .= '	document.write(\'<img name="swflash" src="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/flash.png" alt="preview" '.$style.' />\');';
+						$input .= '	document.write(\'<img id="swflash" src="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/flash.png" alt="preview" '.$style.' />\');';
 						$input .= '}';
 						$input .= '</script>';						
 						$input .= '<span id="'.$span_id.'">'.$text.'</span>';
 						break;
 					case 'unknown':
-						$input .= '<img name="'.$name.'" src="'.$src.'" alt="file of unknown type" '.$style.' />';
+						$input .= '<img id="'.$name.'" src="'.$src.'" alt="file of unknown type" '.$style.' />';
 						$input .= '<span id="'.$span_id.'">'.$text.'</span>';
 						break;
 				}
@@ -521,9 +521,9 @@
 			 /**************************************************
 			 *  javascript and hidden param for server browser *
 			 **************************************************/
-			$input.='<input type="hidden" value="" name="CURRENT_RECORD">';
-			$input.='<input type="hidden" value="" name="CURRENT_FIELD">';
-			$input.='<input type="hidden" value="" name="CURRENT_SLOT">';
+			$input.='<input type="hidden" value="" id="CURRENT_RECORD" name="CURRENT_RECORD">';
+			$input.='<input type="hidden" value="" id="CURRENT_FIELD" name="CURRENT_FIELD">';
+			$input.='<input type="hidden" value="" id="CURRENT_SLOT" name="CURRENT_SLOT">';
 			$input.='	<script language="JavaScript">
 			<!--  
 			function getLabel(type)
@@ -534,7 +534,7 @@
 			
 			function onBrowseServer(record, field, slot) 
 			{
-				//the popup will be aware of this window by the opener property
+			   //the popup will be aware of this window by the opener property
 				//when a server image is chosen, the popup will call the onSave function, passing the chosen image path
 				childWindow=open("jinn/plugins/db_fields_plugins/__filemanager/popups/insert_image.php?field=" + field,"console","resizable=no,width=580,height=440");
 				if (childWindow.opener == null)	childWindow.opener = self;
@@ -545,7 +545,6 @@
 			
 			function setSlot(record, field, slot, fileurl, thumbnail, buttontext, showfilename)
 			{
-				//alert("set Slot: " + record + ", "+ field + ", "+ slot);
 				
 				//set the img src property for preview purposes
 				//fill a hidden form input to enable processing and saving of the chosen image path on submitting the form
@@ -559,9 +558,8 @@
 				cmd = "document.frm." + record + "_IMG_EDIT_" + field + slot + ".value = \"" + fileurl + "\";";
 				eval(cmd);
 				
-				cmd = "document." + record + "_IMG_" + field + slot + ".src = \"" + thumbnail + "\";";
-				eval(cmd);
-	
+				document.getElementById( record + "_IMG_" + field + slot ).src = thumbnail;
+				
 				cmd = "document.frm." + record + "_IMG_EDIT_BUTTON_" + field + slot + ".value = \"" + buttontext + "\";";
 				eval(cmd);
 	

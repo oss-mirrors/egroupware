@@ -37,11 +37,22 @@
    </td>
    </tr>
 
-	<tr bgcolor="{row_on}">
+		<tr bgcolor="{row_on}">
    <td>
    {lang_Notice_that_JiNN_needs_ImageMagick_5.4.9_or_a_later_version}
    <br/>{lang_Path_to_convert_from_ImageMagick_(_e.g._/usr/X11R6/bin_)}:</td>
    <td><input name="newsettings[imagemagickdir]" size="30" value="{value_imagemagickdir}"></td>
+   </tr>
+<tr bgcolor="{row_on}">
+   <td>
+   {lang_Use_reports}
+   <br/>{lang_This_allows_the_users_to_use_the_report_functionalitie}:</td>
+   <td>
+   <select name="newsettings[report_on]">
+   		<option value="On" {selected_report_on_On}>On</option>
+   		<option value="Off" {selected_report_on_Off}>Off</option>
+   </select>
+   </td>
    </tr>
    <tr>
    <td colspan="2">&nbsp;</td>

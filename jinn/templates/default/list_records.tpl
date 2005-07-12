@@ -19,7 +19,7 @@
 	<td align="center" style="padding-left:20px;">
 		<form action="{menu_action}" method="post">{search_for}&nbsp;<input type="text" size="20" name="quick_filter" value="{search_string}">
 		<input type="hidden" name="quick_filter_hidden" value="1">
-		<input type="submit" value="{search}">
+		<input type='button' value='{lang_search}'>
 		</form>	
 	</td>
 	<td align="center" style="padding-left:20px;">
@@ -33,6 +33,33 @@
 	</td>
 </tr>
 </table>
+<!-- END header -->
+
+<!-- BEGIN report -->
+<br>
+<table  cellpadding="0" cellspacing="0" style="border:solid 1px #cccccc">
+<tr>
+	<td align="center" style="padding-left:20px;">
+		<form action="{report_url}" method="post" name='report_actie'>Report's&nbsp;
+		
+		<script>
+			//document.forms.frm.
+		</script>
+		
+		<select name='report' >
+		{listoptions}
+		</select>
+		<input type='button' value='{lang_merge}' onClick="parent.window.open('{report_url}&report_id='+document.report_actie.report.value +'&selvalues=' +returnSelectedCheckbox(), 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')">
+		{r_edit_button}
+		<input type='button' value='{lang_new_report}'onClick="window.open('{add_report_url}', 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')">
+		{r_new_from_button}
+		</form>	
+	</td>
+</tr>
+</table>
+<!-- END report -->
+
+<!-- BEGIN header_end -->
 
 <script language="javascript" type="text/javascript">
 <!--
@@ -130,7 +157,7 @@ parent.window.open("{popuplink}&path="+img+"&attr="+attr, "pop", options);
 <td bgcolor="{th_bg}" colspan="5"  valign="top" style="font-weight:bold;padding:3px 5px 3px 5px;">{lang_Actions}</td>
 {colnames}
 </tr>
-<!-- END header -->
+<!-- END header_end -->
 
 <!-- BEGIN column_name -->
 <td bgcolor="{colhead_bg_color}" style="font-weight:bold;padding:3px;" align="center"><a href="{colhead_order_link}">{colhead_name}&nbsp;{colhead_order_by_img}</a>{tipmouseover}</td>

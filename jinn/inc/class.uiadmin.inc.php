@@ -42,7 +42,6 @@
 		 'edit_this_jinn_site'=> True,
 		 'edit_this_jinn_site_object'=> True,
 		 'test_db_access'=> True,
-		 'upgrade_plugins'=>True,
 		 'field_help_config'=>True
 
 	  );

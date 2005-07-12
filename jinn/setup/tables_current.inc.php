@@ -95,12 +95,28 @@
 				'field_mandatory' => array('type' => 'int','precision' => '4'),
 				'field_position' => array('type' => 'varchar','precision' => '10'),
 				'field_show_default' => array('type' => 'int','precision' => '4'),
-				'field_form_visible' => array('type' => 'int','precision' => '4')
+				'field_form_visible' => array('type' => 'int','precision' => '4','default' => '1')
 			),
 			'pk' => array('field_id'),
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array('field_id')
+		),
+		'egw_jinn_report' => array(
+			'fd' => array(
+				'report_id' => array('type' => 'auto','nullable' => False),
+				'report_naam' => array('type' => 'varchar','precision' => '50','nullable' => False),
+				'report_object_id' => array('type' => 'varchar','precision' => '20','nullable' => False,'default' => '0'),
+				'report_header' => array('type' => 'text'),
+				'report_body' => array('type' => 'text'),
+				'report_footer' => array('type' => 'text'),
+				'report_html' => array('type' => 'int','precision' => '1','nullable' => False,'default' => '0'),
+				'report_html_title' => array('type' => 'varchar','precision' => '25','nullable' => False)
+			),
+			'pk' => array('report_id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
 		)
 	);
 ?>

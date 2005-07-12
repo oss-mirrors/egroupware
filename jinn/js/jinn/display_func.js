@@ -71,6 +71,30 @@ function countSelectedCheckbox()
    }
    return checkednum;
 }
+function returnSelectedCheckbox()
+{
+   checkednum=0;
+   values = '';
+   for (i=0; i<document.frm.elements.length; i++)
+   {
+	  if (document.frm.elements[i].type == "checkbox")// && document.frm.elements[i].name != chbx.name)
+	  {
+		 if (document.frm.elements[i].checked)
+		 {
+		 	if(checkednum = 0)
+			{
+				values = document.frm.elements[i].value;
+			}
+			else
+			{
+				values = ','+document.frm.elements[i].value;
+			}
+			checkednum++;
+		 }
+	  }
+   }
+   return values;
+}
 
 function saveOptions(obj,hidden_fld) { //v1.0
    //alert('hallo');

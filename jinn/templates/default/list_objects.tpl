@@ -5,7 +5,7 @@
 <table border="0" cellspacing="1" cellpadding="0" style="width:570px;">
 
 <tr style="font-weight:bold;padding:3px;">
-		<td colspan="3" valign="top" style="background-color:{bgclr};font-weight:bold;padding:3px;"><input type="button" value="{lang_add_object}" onclick="document.location.href='{link_add_object}'" style="color:white;background-color:#006699"></td>
+		<td colspan="4" valign="top" style="background-color:{bgclr};font-weight:bold;padding:3px;"><input type="button" value="{lang_add_object}" onclick="document.location.href='{link_add_object}'" style="color:white;background-color:#006699"></td>
 		{fieldnames}
 	</tr>
 <!-- END listheader -->
@@ -15,6 +15,7 @@
 <td style="background-color:{bgclr}" align="left"><a href="{link_edit}">{lang_edit}</a></td>
 <td style="background-color:{bgclr}" align="left"><a href="{link_del}" onClick="return window.confirm('confirm_del');">{lang_del}</a></td>
 <td style="background-color:{bgclr}" align="left"><a href="{link_export}">{lang_export}</a></td>
+<td style="background-color:{bgclr}" align="left"><a href="{link_upgrade}">{lang_upgrade}</a></td>
 {row}
 </tr>
 <!-- END rows -->

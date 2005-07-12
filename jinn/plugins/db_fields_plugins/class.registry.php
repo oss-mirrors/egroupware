@@ -44,7 +44,7 @@
 			$this->aliases['hidefield'] 				= 'disable';			//REPLACEMENT Alias
 			$this->aliases['disable_field'] 			= 'disable';			//REPLACEMENT Alias
 			$this->aliases['pre_string'] 				= 'preset_string';		//REPLACEMENT Alias
-			$this->aliases['imagepath'] 				= 'filemanager';		//REPLACEMENT Alias
+			#			$this->aliases['imagepath'] 				= 'filemanager';		//REPLACEMENT Alias
 			$this->aliases['htmlArea'] 					= 'htmlarea';			//REPLACEMENT Alias
 			
 		}

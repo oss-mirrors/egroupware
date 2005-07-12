@@ -34,7 +34,6 @@
 
 	  function render_form($where_key,$where_value)
 	  {
-//_debug_array('was here');	  
 		 $this->template->set_file(array
 		 (
 			'form_site' => 'frm_edit_site.tpl',

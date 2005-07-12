@@ -46,7 +46,6 @@
 				{
 				   $keys=$pos_keys;
 				}
-	
 			 }
 	
 			 if(!$keys)	
@@ -76,6 +75,7 @@
 				   $value=trim($value);
 				   
 					// quick fix for handling with 0's 
+					// todo: this is not a solution!!!!
 				   if(strval($pos_val)=='0')
 				   {
 					  $pos_val='null'; 
@@ -96,19 +96,19 @@
 	
 				   if(strval(empty($value)) && strval($pos_val)==strval($config['Default_value'])) 
 				   {
-					  $selected='SELECTED';	
+					  $selected='selected="selected"';	
 					  $value_in_list = true;
 				   }
 				   elseif(strval($value)==strval($pos_val))
 				   {
-					  $selected='SELECTED';	
+					  $selected='selected';	
 					  $value_in_list = true;
 				   }
 	
 				   $input.='<option '.$selected.' value="'.trim($pos_val).'">'.trim($keys[$i]).'</option>';
 				   $i++;
 				}
-			    if(!$value_in_list) $input.='<option SELECTED value="'.$value.'">?'.$value.'?</option>';
+				if(!$value_in_list) $input.='<option selected="selected" value="'.$value.'">?'.$value.'?</option>';
 				$input.='</select>';
 		  }	
 		  else

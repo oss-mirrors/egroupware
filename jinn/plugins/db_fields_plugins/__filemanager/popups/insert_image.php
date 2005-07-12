@@ -225,7 +225,7 @@
    
    function newFolder() 
    {
-		 childWindow=open("ImageManager/newFolder.html","newfolder","resizable=no");
+		 childWindow=open("ImageManager/newFolder.html","newfolder","height=150,width=300,resizable=yes");
 		 if (childWindow.opener == null)	childWindow.opener = self;
 }
 

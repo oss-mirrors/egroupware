@@ -23,7 +23,7 @@
 
    $setup_info['jinn']['name']		= 'jinn';
    $setup_info['jinn']['title']		= 'JiNN CMS / Database Manager';
-   $setup_info['jinn']['version']	= '0.8.216';
+   $setup_info['jinn']['version']	= '0.8.219';
    $setup_info['jinn']['app_order']	= 15;
    $setup_info['jinn']['author'] 	= 'Pim Snel';
    $setup_info['jinn']['license']  	= 'GPL';
@@ -74,7 +74,8 @@
 		 'egw_jinn_acl',
 		 'egw_jinn_sites',
 		 'egw_jinn_objects',
-		 'egw_jinn_obj_fields'
+		 'egw_jinn_obj_fields',
+		 'egw_jinn_report'
 	  );
 
 	  $setup_info['jinn']['enable']		= 1;
@@ -88,15 +89,16 @@
 		 'settings'
 	  );
 
-	 // $setup_info['jinn']['hooks']['toolbar'] = 'calendar.toolbar.toolbar';
-	 $setup_info['jinn']['hooks']['menu'] = 'jinn.hook_menu.menu';
-
-		/* Dependencies for this app to work */
+	  /* Dependencies for this app to work */
 	  $setup_info['jinn']['depends'][]	= array
 	  (
 		 'appname'  => 'phpgwapi',
 		 'versions' => Array('0.9.14','0.9.15','1.0.0','1.0.1','1.0.2')
 	  );
+
+
+
+
 
 
 

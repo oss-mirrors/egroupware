@@ -427,6 +427,13 @@
 			$object_arr=$this->bo->site_object;
 		 }
 
+		if(trim($object_arr[plugins]))
+		{
+		   $boplugin = CreateObject('jinn.boadmin');
+		   $boplugin->upgrade_plugins($object_arr[object_id],true);
+		   unset($object_arr[plugins]);
+		}
+
 		 /* get and set one to many relations */
 		 $this->relation1_array = $this->bo->extract_O2M_relations($object_arr[relations]);
 
@@ -532,6 +539,7 @@
 			   if(!$ftype) $ftype=$this->db_ftypes->complete_resolve($fprops);
 			   if(!$ftype) $ftype='string';
 
+			
 			   if(!$object_arr[plugins])
 			   {
 				  $input = $this->bo->plug->call_plugin_fi($input_name, $value, $ftype, $field_conf_arr, $attr_arr);
@@ -562,8 +570,7 @@
 				$this->jsmandatory .= '<script language="JavaScript">document.frm.' . $input_name . '.mandatory=true;</script>';
 			}
 
-
-			if(!$field_conf_arr[field_form_visible])
+			if($field_conf_arr[field_form_visible] == 0 && $field_conf_arr[field_form_visible] !="")
 			{
 			   $this->jshidden[] ="'".'TR'.$fprops[name]."'";
 			}

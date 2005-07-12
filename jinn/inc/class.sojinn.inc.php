@@ -1883,6 +1883,10 @@
 		if(!$object_ID) $object_ID=-1;
 		$sql="SELECT * FROM egw_jinn_obj_fields WHERE field_parent_object=$object_ID AND field_name='$fieldname'";
 		$this->phpgw_db->query($sql,__LINE__,__FILE__);
+		if($show_in_form == '')
+		{
+		   $show_in_form = 0;
+		}
 		if($this->phpgw_db->num_rows()>0)
 		{
 			$this->phpgw_db->next_record();
@@ -2082,5 +2086,110 @@
 
 		 return $status;
 	  }
+	  function insert_report($name, $object_id, $header, $body, $footer, $html_title, $html)
+	  {
+			 if($html == 'on')
+		 {
+			$html = 1;
+		 }
+		 else
+		 {
+			$html = 0;
+		 }
+	 $SQLfields = '`report_id` , `report_naam` , `report_object_id` , `report_header` , `report_body` , `report_footer`,`report_html`,`report_html_title`';
+		 $SQLvalues='\'\',\''.$name.'\',\''.$object_id.'\',\''.$header.'\',\''.$body.'\',\''.$footer.'\',\''.$html.'\',\''.$html_title.'\'';
+		 $SQL= 'INSERT INTO `egw_jinn_report` (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+		   
+		 if (!$this->phpgw_db->query($SQL,__LINE__,__FILE__))
+		 {
+			return 0;
+		 }
+		 else
+		 {
+			return 1;
+		 }
+
+	  }
+	  function update_report($name, $object_id, $header, $body, $footer, $html_title, $html, $report_id)
+	  {
+		 if($html == 'on')
+		 {
+			$html = 1;
+		 }
+		 else
+		 {
+			$html = 0;
+		 }
+		$SQL= 'UPDATE `egw_jinn_report` ';
+		$SQL .= 'SET `report_naam` = \''.$name;
+		$SQL .= '\',`report_header` = \''.$header;
+		$SQL .=  '\',`report_body` = \''.$body;
+		$SQL .=  '\',`report_footer` = \''.$footer;
+		$SQL .=  '\',`report_html` = \''.$html;
+		$SQL .=  '\',`report_html_title` = \''.$html_title;
+		$SQL .=  '\' WHERE `report_id` ='.$report_id.' LIMIT 1';
+		if (!$this->phpgw_db->query($SQL,__LINE__,__FILE__))
+		{
+		   return 0;
+		}
+		else
+		{
+		   return 1;
+		}
+
+	 }
+	  
+	  function delete_report($report_id)
+	  {
+		 $SQL= 'DELETE FROM `egw_jinn_report` WHERE `report_id` = '.$report_id.' LIMIT 1';
+		 if (!$this->phpgw_db->query($SQL,__LINE__,__FILE__))
+		 {
+			return 0;
+		 }
+		 else
+		 {
+			return 1;
+		 }
+
+	  }
+	  function get_report_list($id)
+	  {
+		 if($id)
+		 {
+			$SQL="SELECT report_id, report_naam  FROM egw_jinn_report WHERE report_object_id = '".$id."'" ;
+					$this->phpgw_db->query($SQL,__LINE__,__FILE__);
+			$i=0;
+			while ($this->phpgw_db->next_record())
+			{
+			   $report_arr[$i][name]=$this->phpgw_db->f('report_naam');
+			   $report_arr[$i][id]= $this->phpgw_db->f('report_id');
+			   $i++;
+			}
+			return $report_arr;
+		 }
+		 else
+		 {
+			return'';
+		 }
+	  }
+	  function get_single_report($id)
+	  {
+		 $SQL="SELECT * FROM egw_jinn_report WHERE report_id =".$id ;
+		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
+		 while ($this->phpgw_db->next_record())
+		 {
+			$report_arr[r_id]=($this->phpgw_db->f('report_id'));
+			$report_arr[r_name]=($this->phpgw_db->f('report_naam'));
+			$report_arr[r_obj_id]=($this->phpgw_db->f('report_object_id'));
+			$report_arr[r_header]=($this->phpgw_db->f('report_header'));
+			$report_arr[r_footer]=($this->phpgw_db->f('report_footer'));
+			$report_arr[r_body]=($this->phpgw_db->f('report_body'));
+			$report_arr[r_html]=($this->phpgw_db->f('report_html'));
+			$report_arr[r_html_title]=($this->phpgw_db->f('report_html_title'));
+		 }
+		 return $report_arr;
+
+	  }
+
    }
 ?>

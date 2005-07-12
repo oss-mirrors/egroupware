@@ -76,7 +76,7 @@
 			$column_header.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" valign="top"><font color="'.$GLOBALS['phpgw_info']['theme']['th_text'] .'">'.lang($display_name).'</font></td>';
 		 }
 
-		 $records=$this->bo->get_phpgw_records('egw_jinn_objects',$where_key,$where_value,$limit[start],$limit[stop],'num',"ORDER BY name ASC");
+		 $records=$this->bo->get_phpgw_records('egw_jinn_objects',$where_key,$where_value,$limit[start],$limit[stop],'name',"ORDER BY name ASC");
 
 		 $this->template->set_var('bgclr',$GLOBALS['phpgw_info']['theme']['th_bg']);
 		 $this->template->set_var('fieldnames',$column_header);
@@ -88,8 +88,10 @@
 
 			foreach($records as $recordvalues)
 			{
+
+			//   	_debug_array( $recordvalues);
 			   $where_key=$fieldnames[0];
-			   $where_value=$recordvalues[0];
+			   $where_value=$recordvalues['object_id'];
 
 			   if ($bgclr==$GLOBALS['phpgw_info']['theme']['row_off'])
 			   {
@@ -100,6 +102,18 @@
 				  $bgclr=$GLOBALS['phpgw_info']['theme']['row_off'];
 			   }
 
+			   if( $recordvalues['plugins'])
+			   {
+				  $this->template->set_var('link_upgrade',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.upgrade_plugins&object_id=$where_value"));
+				  $this->template->set_var('lang_upgrade',lang('upgrade'));
+			   }
+			   else
+			   {
+				  $this->template->set_var('link_upgrade','');
+				  $this->template->set_var('lang_upgrade','');
+				  
+				  }
+			   
 			   $this->template->set_var('bgclr',$bgclr);
 			   $this->template->set_var('link_edit',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.add_edit_object&where_key=$where_key&where_value=$where_value"));
 			   $this->template->set_var('lang_edit',lang('edit'));

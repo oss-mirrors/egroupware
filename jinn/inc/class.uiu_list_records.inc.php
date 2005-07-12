@@ -42,7 +42,7 @@
 	  {
 //_debug_array('uiu_list_records constructor called');
 		 $this->bo = CreateObject('jinn.bouser');
-
+		 $this->boreport = CreateObject('jinn.boreport');
 		 $this->template = $GLOBALS['phpgw']->template;
 
 		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
@@ -284,6 +284,8 @@
 		 ));
 
 		 $this->template->set_block('list_records','header','header');
+		 $this->template->set_block('list_records', 'report', 'report');
+		 $this->template->set_block('list_records','header_end','header_end');
 		 $this->template->set_block('list_records','column_name','column_name');
 		 $this->template->set_block('list_records','column_field','column_field');
 		 $this->template->set_block('list_records','row','row');
@@ -571,7 +573,6 @@
 
 		$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 		$this->template->set_var('table_title',$this->bo->site_object[name]);
-
 		$popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
 
 		$this->template->set_var('popuplink',$popuplink);
@@ -581,9 +582,29 @@
 			$pkey_arr=$akey_arr;
 			unset($akey_arr);
 		 }
-
+//		 print_r($this->bo->site_object);
+		 $this->template->set_var('listoptions',$this->boreport->get_report_list($this->bo->site_object[unique_id]));
+		 //$this->template->set_var('editoptions',$this->boreport->get_report_list($this->bo->site_object[object_id],3));
+		 $r_edit_button =  $output .= "<input type='button' value='".lang('Edit')."' onClick=\"if(document.report_actie.report.value.substr(0,4) != 'user'){alert('".lang('You can only edit your own templates')."');}else{parent.window.open('".$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uireport.edit_report_popup&parent_site_id='.$this->bo->site_object[parent_site_id].'&obj_id='.$this->bo->site_object['unique_id'].'&table_name='.$this->bo->site_object[table_name].'&report_id=')."'+document.report_actie.report.value, 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')}\">";		 
+		 $this->template->set_var('r_edit_button',$r_edit_button);
+		 $r_new_from_button = "<input type='button' value='".lang('New from selected')."' onClick=\"parent.window.open('".$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uireport.add_report_from_selected&obj_id='.$this->bo->site_object['unique_id'].'&parent_site_id='.$this->bo->site_object[parent_site_id].'&table_name='.$this->bo->site_object[table_name].'&report_id=')."'+document.report_actie.report.value, 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')\">";		 
+		 $this->template->set_var('r_new_from_button',$r_new_from_button);
+		 $report_url=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uireport.merge_report&obj_id='.$this->bo->site_object['unique_id']) ;
+		 //print_r($this->bo->site_object);
+		 $add_report_url = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uireport.add_report_user&parent_site_id='.$this->bo->site_object[parent_site_id].'&table_name='.$this->bo->site_object[table_name].'&preference=1&obj_id='.$this->bo->site_object['unique_id']);
+		 $this->template->set_var('lang_merge',lang('Merge'));
+		 $this->template->set_var('add_report_url',$add_report_url);
+		 $this->template->set_var('report_url',$report_url);
+		 $this->template->set_var('lang_search', lang('Search'));
+		 $this->template->set_var('lang_new_report',lang('New Report'));
 		 $this->template->parse('out','header');
 		 $this->template->pparse('out','header');
+		 if($this->bo->so->config[report_on] != 'Off')
+		 {
+		 	$this->template->pparse('out','report');
+		 }
+		 $this->template->pparse('out','header_end');
+		 
 
 		 if($record_count>0)
 		 {

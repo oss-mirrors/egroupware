@@ -36,6 +36,7 @@
 		 'update_egw_jinn_object' => True,
 		 'save_field_plugin_conf' => True,
 		 'save_field_info_conf' => True,
+		  'upgrade_plugins'=>True,
 		 'save_object_events_conf' => True
 	  );
 
@@ -566,6 +567,9 @@
 
 	  }
 
+	  /**
+	  * @param $value_reference can be 'name' or 'num'
+	  */
 	  function get_phpgw_records($table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by=false)
 	  {
 		 if (!$value_reference)
@@ -617,10 +621,18 @@
 		 return $plug_data;
 	  }
 
-	  function upgrade_plugins($object_id,$quite=false)
+	  function upgrade_plugins($object_id=false,$quite=false)
 	  {
 
-		 if($object_id) $object_arr=$this->so->get_object_values($object_id);
+		 if($object_id)
+		 {
+			$object_arr=$this->so->get_object_values($object_id);
+		 }
+		 elseif($_GET[object_id])
+		 {
+			$object_arr=$this->so->get_object_values($_GET[object_id]);
+		 }
+		 
 		 if(!is_array($object_arr)) die(lang('unexpected error'));
 
 

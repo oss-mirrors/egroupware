@@ -23,6 +23,17 @@ function debug()
 function __dlg_init() 
 {
 	//debug();
+/*	var body = document.body;
+var body_height = 0;
+//if (typeof bottom == "undefined") {
+	var div = document.createElement("div");
+	body.appendChild(div);
+	var pos = getAbsolutePos(div);
+	body_height = pos.y;*/
+//} else {
+//	var pos = getAbsolutePos(bottom);
+//	body_height = pos.y + bottom.offsetHeight;
+//}
 
 	if (!document.all) {
 		// init dialogArguments, as IE gets it
@@ -52,8 +63,18 @@ function __dlg_init()
 		window.innerHeight = body.offsetHeight;
 		window.innerWidth = body.offsetWidth;
 	} else {
+		// window.dialogWidth = body.offsetWidth + "px";
+/*		window.resizeTo(body.offsetWidth, body_height);
+		var ch = body.clientHeight;
+		var cw = body.clientWidth;
+		window.resizeBy(body.offsetWidth - cw, body_height - ch);*/
+/*		var W = body.offsetWidth;
+		var H = 2 * body_height - ch;
+		var x = (screen.availWidth - W) / 2;
+		var y = (screen.availHeight - H) / 2;
+		window.moveTo(x, y);*/
 		//var body = document.body;
-		window.resizeBy(500, 350)
+//		window.resizeBy(500, 350)
 		//window.dialogHeight = body.offsetHeight + 50 + "px";
 		//window.dialogWidth = body.offsetWidth + "px";
 	}
