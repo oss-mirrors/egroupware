@@ -532,22 +532,22 @@ class GUI extends Base {
   }
   
   //!Abort an instance - this terminates the instance with status 'aborted', and removes all running activities
-  /*!
-  Users can only abort instances they're currently running, or instances that they're the owner of
-  */
   function gui_abort_instance($user,$activityId,$instanceId)
   {
-    if(!$this->getOne("select count(*)
-                       from ".GALAXIA_TABLE_PREFIX."instance_activities gia, ".GALAXIA_TABLE_PREFIX."instances gi
-                       where gia.wf_instance_id=gi.wf_instance_id 
-                       and wf_activity_id=? and gia.wf_instance_id=? 
-                       and ((wf_user = ?) or (wf_owner = ?))",
-                       array($activityId,$instanceId, $user, $user)))
+    if (!(isset($this->wf_security)))
     {
-      return false;
-    } 
-    else 
+      $this->wf_security = new WfSecurity($this->db);
+    }
+    // start a transaction
+    $this->db->StartTrans();
+    if (!($this->wf_security->checkUserAction($activityId, $instanceId,'abort')))
     {
+      $this->error[] = ($this->wf_security->get_error());
+      $this->db->FailTrans();
+    }
+    else
+    {
+      //the security object said everything was fine
       $instance = new Instance($this->db);
       $instance->getInstance($instanceId);
       if (!empty($instance->instanceId)) 
@@ -555,34 +555,38 @@ class GUI extends Base {
           $instance->abort($activityId,$user);
       }
       unset($instance);
-      return true;
     }
+    // perform commit (return true) or Rollback (return false) if Failtrans it will automatically rollback
+    return $this->db->CompleteTrans();
   }
   
   //!Exception handling for an instance - this sets the instance status to 'exception', but keeps all running activities.
   /*!
-  The instance can be resumed afterwards via gui_resume_instance().
-  Users can only do exception handling for instances they're currently running, or instances that they're the owner of
+  * The instance can be resumed afterwards via gui_resume_instance().
   */
   function gui_exception_instance($user,$activityId,$instanceId)
   {
-    
-    if(!$this->getOne("select count(*)
-                       from ".GALAXIA_TABLE_PREFIX."instance_activities gia, ".GALAXIA_TABLE_PREFIX."instances gi
-                       where gia.wf_instance_id=gi.wf_instance_id and wf_activity_id=? and gia.wf_instance_id=? and (wf_user = ? or wf_owner = ?)",
-                       array($activityId,$instanceId,$user,$user))) 
+    if (!(isset($this->wf_security)))
     {
-      return false;
-    } 
-    else 
+      $this->wf_security = new WfSecurity($this->db);
+    }
+    // start a transaction
+    $this->db->StartTrans();
+    if (!($this->wf_security->checkUserAction($activityId, $instanceId,'exception')))
     {
+      $this->error[] = ($this->wf_security->get_error());
+      $this->db->FailTrans();
+    }
+    else
+    {
+      //the security object said everything was fine
       $query = "update ".GALAXIA_TABLE_PREFIX."instances
               set wf_status=?
-              where wf_instance_id=?
-              and wf_owner=?";
-      $this->query($query, array('exception',$instanceId, $user));
-      return true;
+              where wf_instance_id=?";
+      $this->query($query, array('exception',$instanceId));
     }
+    // perform commit (return true) or Rollback (return false) if Failtrans it will automatically rollback
+    return $this->db->CompleteTrans();
   }
 
   /*!
@@ -590,60 +594,57 @@ class GUI extends Base {
   */
   function gui_resume_instance($user,$activityId,$instanceId)
   {
-  //TODO group mapping
-    // Users can only resume instances they're currently running, or instances that they're the owner of
-    if(!$this->getOne("select count(*)
-                       from ".GALAXIA_TABLE_PREFIX."instance_activities gia, ".GALAXIA_TABLE_PREFIX."instances gi
-                       where gia.wf_instance_id=gi.wf_instance_id and wf_activity_id=? and gia.wf_instance_id=? and (wf_user in (".$user.") or wf_owner in (".$user."))",
-                       array($activityId,$instanceId))) {
-      return false;
-    } 
-    else 
+    if (!(isset($this->wf_security)))
     {
+      $this->wf_security = new WfSecurity($this->db);
+    }
+    // start a transaction
+    $this->db->StartTrans();
+    if (!($this->wf_security->checkUserAction($activityId, $instanceId,'resume')))
+    {
+      $this->error[] = ($this->wf_security->get_error());
+      $this->db->FailTrans();
+    }
+    else
+    {
+      //the security object said everything was fine
       $query = "update ".GALAXIA_TABLE_PREFIX."instances
               set wf_status=?
               where wf_instance_id=?";
       $this->query($query, array('active',$instanceId));
-      return true;
     }
+    // perform commit (return true) or Rollback (return false) if Failtrans it will automatically rollback
+    return $this->db->CompleteTrans();
   }
 
   
   function gui_send_instance($user,$activityId,$instanceId)
   {
-    // to check rights we try to see if we are setted as the current user
-    // OR if the user is '*' we check for user/group mapping rights
-    $groups = galaxia_retrieve_user_groups($user);
-    if(!(
-      ($this->getOne("select count(*)
-                      from ".GALAXIA_TABLE_PREFIX."instance_activities gia
-                      where wf_activity_id=? and wf_instance_id=? and wf_user=?",
-                      array($activityId,$instanceId, $user)))
-      ||
-      ($this->getOne("select count(*) 
-                      from ".GALAXIA_TABLE_PREFIX."instance_activities gia
-                      INNER JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_activity_id=gia.wf_activity_id
-                      INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gar.wf_role_id=gur.wf_role_id
-                      where gia.wf_instance_id=? and gia.wf_activity_id=?
-                      and gia.wf_user='*'
-                      and ( (gur.wf_user=? and gur.wf_account_type='u')
-                        or  (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g'))",
-                      array($instanceId,$activityId,$user))))
-                    ) 
-    { 
-      return false;
-    } 
-    else 
+    if (!(isset($this->wf_security)))
     {
+      $this->wf_security = new WfSecurity($this->db);
+    }
+    // start a transaction
+    $this->db->StartTrans();
+    if (!($this->wf_security->checkUserAction($activityId, $instanceId,'send')))
+    {
+      $this->error[] = ($this->wf_security->get_error());
+      $this->db->FailTrans();
+    }
+    else
+    {
+      //the security object said everything was fine
       $instance =& new Instance($this->db);
       $instance->getInstance($instanceId);
       $instance->complete($activityId,false);
       // we force the continuation of the flow
       $instance->sendAutorouted($activityId,true);
       unset($instance);
-      return true;
     }
+    // perform commit (return true) or Rollback (return false) if Failtrans it will automatically rollback
+    return $this->db->CompleteTrans();
   }
+
   
   function gui_release_instance($user,$activityId,$instanceId)
   {
@@ -695,6 +696,7 @@ class GUI extends Base {
     // perform commit (return true) or Rollback (return false) if Failtrans it will automatically rollback
     return $this->db->CompleteTrans();
   }
+
   
   //! Return avaible actions for a given user on a given activity and a given instance assuming he already have access to it.
   /*!
