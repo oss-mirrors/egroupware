@@ -38,7 +38,7 @@
 				'fmail_accountname'	=> $this->accountname,
 			);
 			
-			$this->db = $GLOBALS['phpgw']->db;
+			$this->db = clone($GLOBALS['phpgw']->db);
 			$this->db->set_app('felamimail');
 		}
 		
