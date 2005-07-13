@@ -450,9 +450,20 @@
 						$this->t->set_var('grab_or_release', '');
 					}
 
-					// Monitor instances : we always show it in advanced mode, the user action will be bloacked
-					// by acl if he has no rights on it.
-					$this->t->set_var('monitor', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $instance['wf_instance_id']).'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'monitorinstance') .'" alt="'. lang('monitor instance') .'" title="'. lang('monitor instance') .'" /></a>');
+					// Monitor instances
+					if (isset($actions['monitor']))
+					{
+						$this->t->set_var('monitor', 
+							'<a href="'. $GLOBALS['phpgw']->link('/index.php', 
+							'menuaction=workflow.ui_admininstance.form&iid='. $instance['wf_instance_id'])
+							.'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'monitorinstance') 
+							.'" alt="'. lang('monitor instance') .'" title="'
+							. lang('monitor instance') .'" /></a>');
+					}
+					else
+					{
+						$this->t->set_var('monitor','');
+					}
 				} else //not in advanced_actions mode
 				{
 					$this->t->set_var('grab_or_release', '');
