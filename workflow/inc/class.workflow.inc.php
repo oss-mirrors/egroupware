@@ -161,7 +161,7 @@
 			$valid = $activity_manager->validate_process_activities($this->wf_p_id);
 			if (!$valid)
 			{
-				$errors = $activity_manager->get_error(false);
+				$errors = $activity_manager->get_error(true);
 				$error_str = '<b>' . lang('The following items must be corrected to be able to activate this process').':</b><br/><small><ul>';
 				foreach ($errors as $error)
 				{
