@@ -94,7 +94,7 @@ class WfSecurity extends Base {
   * @public
   * @param $activityId is the activity id, can be 0
   * @param $instanceId is the instanceId, can be 0
-  * @param $action is a string containing ONE action asked, it must be one of 'grab', 'release', exception', 'resume', 'abort', 'run', 'send', 'view'
+  * @param $action is a string containing ONE action asked, it must be one of 'grab', 'release', 'exception', 'resume', 'abort', 'run', 'send', 'view'
   * @return true if action access is granted false in other case. Errors are stored in the object.
   */
   function checkUserAction($activityId, $instanceId,$action)
@@ -102,10 +102,22 @@ class WfSecurity extends Base {
     //Warning: 
     //start and standalone activities have no instances associated
     //aborted and completed instances have no activities associated
+
+    //$this->error[] = 'DEBUG: action:'.$action;
+    if ($action!='run' && $action!='send' && $action!='view' && $action!='grab' && $action!='release' && $action!='exception' && $action!='resume' && $action!='abort')
+    {
+      $this->error[] = tra('Security check: Cannot understand asked action');
+      return false;
+    }
     
     $user = galaxia_retrieve_running_user();
+    //$this->error[] = 'DEBUG: running user:'.$user;
+    if ( (!(isset($user))) || (empty($user)) )
+    {
+      $this->error[] = tra('Cannot retrieve the user running the security check');
+      return false;
+    }
     
-    $this->loadConfigValues($pId);
     
     //1 - load data -----------------------------------------------------------------
     $_no_activity=false;
@@ -119,7 +131,7 @@ class WfSecurity extends Base {
     else
     {
       $query = "select ga.wf_activity_id, ga.wf_type, ga.wf_is_interactive, ga.wf_is_autorouted, 
-              gp.wf_name as wf_procname, gp.wf_is_active, gp.wf_version
+              gp.wf_name as wf_procname, gp.wf_is_active, gp.wf_version, gp.wf_p_id
               from ".GALAXIA_TABLE_PREFIX."activities ga 
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."processes gp ON gp.wf_p_id=ga.wf_p_id
                 where ga.wf_activity_id = ?";
@@ -128,6 +140,10 @@ class WfSecurity extends Base {
       if (!!$result)
       {
         $resactivity = $result->fetchRow();
+        $pId = $resactivity['wf_p_id'];
+        //DEBUG
+        //$debugactivity = implode(",",$resactivity);
+        //$this->error[] = 'DEBUG: '. date("[d/m/Y h:i:s]").'activity:'.$debugactivity;
       }
       if (count($resactivity)==0)
       {
@@ -142,7 +158,8 @@ class WfSecurity extends Base {
     }
     else
     {
-      $query = "select gi.wf_instance_id, gi.wf_owner, gi.wf_status, gp.wf_name as wf_procname, gp.wf_is_active, gp.wf_version
+      $query = "select gi.wf_instance_id, gi.wf_owner, gi.wf_status, 
+              gp.wf_name as wf_procname, gp.wf_is_active, gp.wf_version, gp.wf_p_id
               from ".GALAXIA_TABLE_PREFIX."instances gi
               INNER JOIN ".GALAXIA_TABLE_PREFIX."processes gp ON gp.wf_p_id=gi.wf_p_id
               where gi.wf_instance_id=?";
@@ -150,6 +167,10 @@ class WfSecurity extends Base {
       if (!!$result)
       {
         $resinstance = $result->fetchRow();
+        $pId = $resactivity['wf_p_id'];
+        //DEBUG
+        //$debuginstance = implode(",",$resinstance);
+        //$this->error[] = 'DEBUG: '. date("[d/m/Y h:i:s]").'instance:'.$debuginstance;
       }
       if (count($resinstance)==0)
       {
@@ -159,6 +180,12 @@ class WfSecurity extends Base {
     if ($_no_instance && $_no_activity)
     {
       $this->error[] = tra('no action avaible beacuse no activity and no instance are given!');
+      return false;
+    }
+
+    if ($_no_activity && $_no_instance)
+    {
+      $this->error[] = tra('Action %1 is impossible if we have no activity and no instance designated for it!',$action);
       return false;
     }
     
@@ -174,8 +201,25 @@ class WfSecurity extends Base {
       if (!!$result)
       {
         $res_inst_act = $result->fetchRow();
+        //DEBUG
+        //$debuginstact = implode(",",$res_inst_act);
+        //$this->error[] = 'DEBUG: '. date("[d/m/Y h:i:s]").'instance/activity:'.$debuginstact;
+
       }
     }
+
+    //Now that we have the process we can load config values
+    //$this->error[] = 'DEBUG: load config values for process:'.$pId;
+    $this->loadConfigValues($pId);
+    //DEBUG
+    //$debuconfig = '';
+    //foreach ($this->processesConfig[$pId] as $label => $value)
+    //{
+      //$debugconfig .= ':'.$label.'=>'.$value;
+    //}
+    //$this->error[] = 'DEBUG: config:'.$debugconfig;
+
+
     
     //2 - decide which tests must be done ------------------------------------------------
     //init tests
@@ -184,15 +228,15 @@ class WfSecurity extends Base {
     $_check_instance_status = array(); //use to test some status between 'active','exception','aborted','completed'
     $_fail_on_exception = false; //no comment
     $_check_activity = false; //have we got an activity?
-    //is there a realtionship between instance and activity? this one can be decided already
+    //is there a relationship between instance and activity? this one can be decided already
     $_check_instance_activity =  !(($_no_instance) || ($_no_activity));
     $_bypass_user_role_if_owner = false; //if our user is the owner we ignore user tests
     $_bypass_user_on_non_interactive = false; //if activty is not interactive we do not perform user tests
     $_bypass_user_if_admin = false; //is our user a special rights user?
     $_check_is_user = false; //is the actual_user our user?
     $_check_is_not_star = false; //is the actual <>*?
-    $_check_is_in_role = false; //is our user in associated roles (done only if check_is_user is false)?
-    $_check_is_in_role_if_star = false; //perform the role test only if actual user is '*'
+    $_check_is_star = false; // is the actual user *?
+    $_check_is_in_role = false; //is our user in associated roles?
 
     //first have a look at the action asked
     switch($action)
@@ -210,11 +254,13 @@ class WfSecurity extends Base {
         // we need an instance not completed or aborted that means we need an activity
         // authorization are given to currentuser, role, never owner actually
         // TODO: add conf setting to give grab access to owner (that mean run access as well maybe)
-        // current user MUST be '*' or user (no matter to grab something we already have), '*' is handled by the $_check_is_in_role
+        // current user MUST be '*' or user (no matter to grab something we already have)
+        // check is star is done after check_is_user which can be false
         $_check_active_process	= true;
         $_check_activity	= true;
         $_check_instance	= true;
         $_check_is_user		= true;
+        $_check_is_star		= true;
         $_bypass_user_if_admin	= true;
         $_check_is_in_role	= true;
         break;
@@ -226,9 +272,9 @@ class WfSecurity extends Base {
         $_check_active_process	= true;
         $_check_activity        = true;
         $_check_instance        = true;
+        $_check_is_user		= true;
         $_check_is_not_star 	= true;
         $_bypass_user_if_admin	= true;
-        $_check_is_user		= true;
         if ($this->processesConfig[$pId]['role_give_release_right']) $_check_is_in_role 		= true;
         if ($this->processesConfig[$pId]['ownership_give_release_right']) $_bypass_user_role_if_owner 	= true;
         break;
@@ -282,25 +328,29 @@ class WfSecurity extends Base {
         $_fail_on_exception		= true;
         $_bypass_user_on_non_interactive = true;
         $_check_is_user			= true;
-        $_check_is_in_role_if_star	= true;
+        $_check_is_star			= true;
+        $_check_is_in_role		= true;
         break;
       case 'send':
         // we need an instance not completed or aborted that means we need an activity
         // but if we have an instance it musn't be in 'exception' as well
         // authorization are given to currentuser, maybe role, no rights for owner actually
         // run is ok if user is in role and actual user is '*'
+        // no user bypassing on admin user, admin must grab (release if needed) the instance before
         $_check_active_process          = true;
         $_check_activity                = true;
         $_fail_on_exception             = true;
         $_bypass_user_if_admin		= true;
         $_check_is_user                 = true;
-        $_check_is_in_role_if_star	= true;
+        $_check_is_star			= true;
+        $_check_is_in_role		= true;
         break;
     }
     
     //3- now perform asked tests ---------------------------------------------------------------------
     if ($_check_active_process) // require an active process?
     {
+      //$this->error[] = 'DEBUG: check active process';
       if ($_no_instance) //we need an instance or an activity to perfom the check
       {
         //we cannot be there without instance and without activity, we now we have one activity at least
@@ -322,6 +372,7 @@ class WfSecurity extends Base {
     
     if ($_check_instance)
     {
+      //$this->error[] = 'DEBUG: check instance';
       if ($_no_instance)
       {
         $this->error[] = tra('Action %1 needs and instance and instance %2 does not exists', $action, $instanceId);
@@ -331,6 +382,7 @@ class WfSecurity extends Base {
     
     if ($_check_activity)
     {
+      //$this->error[] = 'DEBUG: check activity';
       if ($_no_activity)
       {
         $this->error[] = tra('Action %1 needs and activity and activity %2 does not exists', $action, $activityId);
@@ -340,7 +392,8 @@ class WfSecurity extends Base {
     
     if ($_check_instance_activity) //is there a realtionship between instance and activity
     {
-      if (count($res_inst_act)==0)
+      //$this->error[] = 'DEBUG: check activity-instance relationship'.count($res_inst_act);
+      if ( (!isset($res_inst_act)) || empty($res_inst_act) || (count($res_inst_act)==0) )
       {
         $this->error[] = tra('Instance %1 is not associated with activity %2, action %3 is impossible.', $instanceId, $activityId, $action);
         return false;
@@ -349,6 +402,9 @@ class WfSecurity extends Base {
     
     if (!(count($_check_instance_status) == 0)) //use to test some status between 'active','exception','aborted','completed'
     {
+      //DEBUG
+      //$debug_status = implode(",",$_check_instance_status);
+      //$this->error[] = 'DEBUG: check instance status, actually :'.$resinstance['wf_status'].' need:'.$debug_status;
       if (!(in_array($resinstance['wf_status'],$_check_instance_status)))
       {
         $this->error[] = tra('Instance %1 is in %2 state, action %3 is impossible.', $instanceId, $resinstance['wf_status'], $action);
@@ -365,17 +421,22 @@ class WfSecurity extends Base {
     $checks = true;
     //is our actual workflow user a special rights user?
     // TODO test actual workflow user diff de $user
+    //$this->error[] = 'DEBUG: user can admin instance :'.galaxia_user_can_admin_instance().' bypass?:'.$_bypass_user_if_admin;
     if (!( ($_bypass_user_if_admin) && (galaxia_user_can_admin_instance()) ))
     {
       //if our user is the owner we ignore user tests
+      //$this->error[] = 'DEBUG: user is owner :'.$resinstance['wf_owner'].' bypass?:'.$_bypass_user_role_if_owner;
       if (!( ($_bypass_user_role_if_owner) && ((int)$resinstance['wf_owner']==(int)$user) ))
       {
+        //$this->error[] = 'DEBUG: no_activity:'.$_no_activity.' interactive? :'.$resactivity['wf_is_interactive'].' bypass?:'.$_bypass_user_on_non_interactive;
         //if activity is not interactive we do not perform user tests
         if (!( (!($_no_activity)) && ($_bypass_user_on_non_interactive) && ($resactivity['wf_is_interactive']=='n') ))
         {
+          //$this->error[] = 'DEBUG: no bypassing done:';
           //is the actual_user our user?
           if ($_check_is_user) 
           {
+            //$this->error[] = 'DEBUG: check user is actual instance user:'.$user.':'.$res_inst_act['wf_user'];
             if (!((int)$res_inst_act['wf_user']==(int)$user))
             {
               //user test was false, but maybe we'll have better chance later
@@ -385,6 +446,15 @@ class WfSecurity extends Base {
           // special '*' user
           if ($res_inst_act['wf_user']=='*')
           {
+            //$this->error[] = 'DEBUG: we have the special * user:';
+            //is the actual *?
+            if ($_check_is_star)
+            {
+              // redemption here
+              //$this->error[] = 'DEBUG Ok, we have a star';
+              $checks = true;
+            }
+            
             //is the actual <>*?
             if ($_check_is_not_star)
             {
@@ -393,20 +463,37 @@ class WfSecurity extends Base {
               return false;
             }
             //perform the role test only if actual user is '*'
-            if ($_check_is_in_role_if_star)
+            //$this->error[] = 'DEBUG: role checking?:'.$_check_is_in_role;
+            if ($_check_is_in_role)
             {
+              //$this->error[] = 'DEBUG: we have *, checking role of user:'.$user;
               $checks=$this->checkUserAccess($user, $activityId);
             }
           }
-          //is our user in associated roles (done only if check_is_user is false)
-          if ( (!($checks)) && (!($_check_is_in_role_if_star)) && ($_check_is_in_role))
+          else
           {
-            $checks=$this->checkUserAccess($user, $activityId);
+            //we have not *, do we need * as the actual? (done only if check_is_user is false)
+            //notice that if check_user was false and we have not the '*' user and if you do not want
+            //the check_is_star it means the user can bypass the actual user if you have a check_is_in_role ok!
+            if ( (!($checks)) && ($_check_is_star))
+            {
+              // that was necessary
+              $this->error[] = tra('Action %1 is impossible, another user is already in place', $action);
+              return false;
+            }
+            //is our user in associated roles (done even if check_is_user was true)
+            //$this->error[] = 'DEBUG: role checking?:'.$_check_is_in_role;
+            if ($_check_is_in_role)
+            {
+              //$this->error[] = 'DEBUG: we have not *, checking role for user:'.$user;
+              $checks=$this->checkUserAccess($user, $activityId);
+            }
           }
         }
       }
     }
-    return checks;
+    //$this->error[] = 'DEBUG: final check:'.$checks;
+    return $checks;
   }
 
   //! Return avaible actions for a given user on a given activity and a given instance assuming he already have access to it.
