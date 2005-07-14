@@ -223,7 +223,7 @@ if (!function_exists('galaxia_user_can_monitor'))
   */
   function galaxia_retrieve_running_user()
   {
-      return ($GLOBALS['phpgw']['user']);
+      return ($GLOBALS['phpgw_info']['user']['account_id']);
   }
 }
 
