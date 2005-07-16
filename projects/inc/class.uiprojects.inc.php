@@ -983,13 +983,13 @@
 			// check if we have edit-rights for a project, if not redirect to project-list
 			if($project_id)
 			{
-				$values = $this->boprojects->read_single_project($project_id);
+				$pro = $this->boprojects->read_single_project($project_id);
 
 				if (!$this->boprojects->edit_perms(array(
 					'action'      => 'edit',
-					'coordinator' => $values['coordinator'],
-					'main'        => $values['main'],
-					'parent'      => $values['parent'],
+					'coordinator' => $pro['coordinator'],
+					'main'        => $pro['main'],
+					'parent'      => $pro['parent'],
 				)))
 				{
 					$GLOBALS['phpgw']->redirect_link('/index.php',$link_data);
