@@ -1,12 +1,20 @@
+%1 - %2 of %3 user groups	tts	es-es	%1 - %2 de %3 grupos de usuarios
 a new ticket has been reported.	tts	es-es	Se ha creado una nueva incidencia
 accept	tts	es-es	ACEPTAR
 accept the ticket into verification process.	tts	es-es	Aceptar la incidencia en el proceso de verificación
 accepted	tts	es-es	ACEPTADA
+account active	tts	es-es	Cuenta activa
 action	tts	es-es	Acción
+add a new account.	tts	es-es	Añadir una cuenta nueva.
+add new account	tts	es-es	Añadir nueva cuenta
 add new ticket	tts	es-es	Añadir nueva incidencia
 add ticket	tts	es-es	Añadir incidencia
 additional notes	tts	es-es	Notas adicionales
 admin options	common	es-es	Opciones de administración
+anonymous user (not shown in list sessions)	tts	es-es	Usuario anónimo (no se muestra en las listas de sesiones)
+any status	tts	es-es	Cualquier estado
+application	tts	es-es	aplicación
+are you sure you want to delete this group ?	tts	es-es	¿Seguro que desea borrar este grupo?
 assign to	tts	es-es	Asignar a
 assigned from	tts	es-es	Asignado desde
 assigned to	tts	es-es	Asignado a
@@ -15,45 +23,100 @@ billable hours changed	tts	es-es	Horas facturables cambiadas
 billable hours rate	tts	es-es	Valoración de las horas facturables
 billable rate	tts	es-es	Valoración facturable
 billable rate changed	tts	es-es	Valoración facturable cambiada
+caller address	tts	es-es	Dirección del emisor
+caller address 2	tts	es-es	Dirección 2 del emisor
+caller audio file	tts	es-es	Fichero de audio del emisor
+caller email	tts	es-es	Correo del emisor
+caller name	tts	es-es	Nombre del emisor
+caller password	tts	es-es	Contraseña del emisor
+caller satisfaction	tts	es-es	Satisfacción del emisor
+caller solution	tts	es-es	Solución del emisor
+caller telephone	tts	es-es	Teléfono del emisor
+caller telephone id	tts	es-es	ID del teléfono del emisor
+caller ticket id	tts	es-es	ID del ticket del emisor
+can change password	tts	es-es	Puede cambiar la contraseña
+categories open %1	tts	es-es	Categorías abiertas %1
+categories total %1	tts	es-es	Categorías total %1
 category changed	tts	es-es	Categoría cambiada
+category description	tts	es-es	Descripción de la categoría
+category name	tts	es-es	Nombre de la categoría
+category statistic	tts	es-es	Estadística de la categoría
 check here to generate the state's id automatically or enter a particular id below.	tts	es-es	Marque la casilla para generar los identificadores de estados automáticamente o introduzca un id particular debajo.
 clear form	tts	es-es	Despejar formulario
 close the invalid ticket.	tts	es-es	Cerrar la incidencia no válida
+close with duplicate	tts	es-es	Cerrar con duplicado
 closed	tts	es-es	Cerrada
 completed	tts	es-es	COMPLETADA
+configure the cat-groups	tts	es-es	Configurar los grupos gato
+configure the escalation	tts	es-es	Configurar el escalado
 configure the states	common	es-es	Configurar los estados
 configure the transitions	common	es-es	Configurar las transiciones
+create new category and group association	tts	es-es	Crear nueva asociación de categoría y grupo
+create new escalation parameters for certain group	tts	es-es	Crear nuevos parámetros de escalado para un cierto grupo
 create new state	tts	es-es	Crear un nuevo estado
 create new ticket	tts	es-es	Crear una incidencia nueva
 create new transition	tts	es-es	Crear nueva transición
 creates a new ticket, returns ticket_id	tts	es-es	Crea una nueva incidencia y devuelve el identificador
 creates a struct of tickets	tts	es-es	Crea una estructura de incidencias
+customer satisfaction	tts	es-es	satisfacción del cliente
+date closed	tts	es-es	Fecha de cierre
 date opened	tts	es-es	Fecha de apertura
 default assign to	tts	es-es	Asignar por defecto a
 default group	tts	es-es	Grupo predeterminado
 default priority	tts	es-es	Prioridad predeterminada
+delete all records	tts	es-es	Borrar todos los registros
 delete the listed tickets.	tts	es-es	Borrar las incidencias listadas
+deleting the category and group association	tts	es-es	Borrando la categoría y asociación de grupo
 deleting the state	tts	es-es	Borrar el estado
 deleting the transition	tts	es-es	Borrar la transición
 detail	tts	es-es	Detalle
 duplicate	tts	es-es	DUPLICADA
+duplicate ticket	tts	es-es	Incidencia duplicada
+edit group acl's	tts	es-es	Editar ACL de grupo
+edit the category and group association	tts	es-es	Editar la categoría y asociación del grupo
+edit the escalation parameters for certain group	tts	es-es	Editar los parámetros de escalado para un cierto grupo
 edit the state	tts	es-es	Editar el estado
 edit the transition	tts	es-es	Editar la transición
+edit user account	tts	es-es	Editar cuenta del usuario
+email 2	tts	es-es	Correo electrónico 2
 error: the subject of the ticket is not specified.	tts	es-es	ERROR: No se indicó un asunto para la incidencia.
+escalation	tts	es-es	Escalado
+escalation email 1	tts	es-es	Correo de escalado 1
+escalation email 2	tts	es-es	Correo de escalado 2
+escalation id	tts	es-es	ID de escalado
+escalation time 1	tts	es-es	Tiempo de escalado 1
+escalation time 2	tts	es-es	Tiempo de escalado 2
+escalation time 3	tts	es-es	Tiempo de escalado 3
+expires	tts	es-es	Expira
+file space	tts	es-es	Espacio del fichero
+file space must be an integer	tts	es-es	El espacio del fichero debe ser un entero
 force	tts	es-es	Forzar
 global categories	tts	es-es	Categorías globales
 group ownership changed	tts	es-es	El propietario del grupo ha cambiado
+group statistic	tts	es-es	Estadística de grupo
+high priority	tts	es-es	Prioridad alta
+highly critical categories	tts	es-es	Categorías altamente críticas
 history	tts	es-es	Historial
+home directory	tts	es-es	Directorio de inicio
 i worked on the ticket and the work requires validation.	tts	es-es	Trabajé en la incidencia y el trabajo requiere validación.
 i worked on the ticket, but did not finish.	tts	es-es	Trabajé en la incidencia, pero no está acabada
 in progress	tts	es-es	En progreso
 initial state	tts	es-es	Estado inicial
+initiative	tts	es-es	Iniciativa
 invalid	tts	es-es	NO VALIDA
 invalidate	tts	es-es	INVALIDAR
 keep the present state [%1].	tts	es-es	Mantener el estado actual [%1]
+last login	tts	es-es	Ultima sesión
+last login from	tts	es-es	Ultima sesión desde
 latest note added	tts	es-es	Ultima nota añadida
+list of available groups per categories.	tts	es-es	Lista de los grupos disponibles por categorías.
 list of available tickets' states.	tts	es-es	Lista de los estados de las incidencias disponibles
 list of available tickets' transitions.	tts	es-es	Lista de las transiciones de las incidencias disponibles
+list of escalation parameters for certain group.	tts	es-es	Lista de los parámetros de escalado para cierto grupo
+login shell	tts	es-es	shell de inicio
+low priority	tts	es-es	Prioridad baja
+medium critical categories	tts	es-es	Categorías medianamente críticas
+medium priority	tts	es-es	Prioridad media
 missing description	tts	es-es	Falta la descripción
 morework	tts	es-es	MAS TRABAJO
 needswork	tts	es-es	NECESITA TRABAJO
@@ -62,16 +125,30 @@ new ticket	tts	es-es	Nueva incidencia
 new tickets can be put into this state.	tts	es-es	Las incidencias nuevas se pueden poner en este estado
 new value	tts	es-es	Nuevo valor
 no additional notes	tts	es-es	No hay notas adicionales
+no categories, groups found	tts	es-es	No se encontraron categorías ni grupos
+no category found	tts	es-es	No se encontró categoría
+no data found	tts	es-es	No se encontraron datos
 no duplicate	tts	es-es	SIN DUPLICAR
+no escalations found	tts	es-es	No se encontraron escalados
+no matches found	tts	es-es	No se encontraron coincidencias
 no notes for this ticket	tts	es-es	No hay notas para esta incidencia
 no states found	tts	es-es	No se encontraron estados
 no tickets found	tts	es-es	No se encontraron incidencias
 no transitions found	tts	es-es	No se encontraron transiciones
 not assigned	tts	es-es	Sin asignar
 not completed	tts	es-es	SIN COMPLETAR
+notify assignment of the high priority ticket to ticket assignee by e-mail 2	tts	es-es	notificar asignación de la incidencia de prioridad alta al asignado por el correo 2
+notify assignment of the high priority ticket to ticket group by e-mail 2	tts	es-es	notificar asignación de la incidencia de prioridad alta al grupo asignado por el correo 2
+notify assignment of the ticket to ticket assignee by e-mail	tts	es-es	notificar asignación de la incidencia al asignado por el correo
+notify assignment of the ticket to ticket assignee by e-mail 2	tts	es-es	notificar asignación de la incidencia al asignado por el correo 2
+notify assignment of the ticket to ticket group by e-mail	tts	es-es	notificar asignación de la incidencia al grupo asignado por el correo
+notify assignment of the ticket to ticket group by e-mail 2	tts	es-es	notificar asignación de la incidencia al grupo asignado por el correo 2
+notify changes of the high priority ticket to ticket assignee by e-mail 2	tts	es-es	notificar cambios de la incidencia de prioridad alta al asignado por el correo 2
 notify changes to ticket assignee by e-mail	tts	es-es	Notificar cambios por correo al asignado en la incidencia
+notify changes to ticket assignee by e-mail 2	tts	es-es	notificar cambios al asignado de la incidencia por correo 2
 notify changes to ticket group by e-mail	tts	es-es	Notificar cambios por correo al grupo en la incidencia
 notify changes to ticket owner by e-mail	tts	es-es	Notificar cambios por correo al propietario de la incidencia
+number of tickets	tts	es-es	Número de incidencias
 old value	tts	es-es	Valor anterior
 open	tts	es-es	Abierta
 open / closed	tts	es-es	Abierta / Cerrada
@@ -80,14 +157,21 @@ opened	tts	es-es	Abierta
 opened by	tts	es-es	Abierta por
 original ticket details	tts	es-es	Detalles de la inicidencia original
 perform irregular transition into the following state	tts	es-es	Realizar transición irregular en el siguiente estado
+permissions this group has	tts	es-es	Este grupo tiene los permisos
 please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	es-es	Por favor, introduzca el asunto de la incidencia. Si no, la incidencia no se almacenará.
+primary group	tts	es-es	grupo principal
 prio	tts	es-es	Prioridad
 priority	tts	es-es	Prioridad
+priority between	tts	es-es	Prioridad entre
 priority changed	tts	es-es	Prioridad modificada
+priority end	tts	es-es	Fin de la prioridad
+priority start	tts	es-es	Inicio de la prioridad
 put the preexistent ticket into the state %1.	tts	es-es	Poner la incidencia ya existente en el estado %1.
 re-assigned	tts	es-es	Reasignada
+re-enter password	tts	es-es	Confirmar contraseña
 re-opened	tts	es-es	Reabierta
 refresh every (seconds)	tts	es-es	Refrescar cada (segundos)
+remove all users from this group	tts	es-es	Eliminar todos los usuarios de este grupo
 reopen	tts	es-es	REABRIR
 reopened	tts	es-es	REABIERTA
 resolve	tts	es-es	RESOLVER
@@ -95,18 +179,31 @@ resolved	tts	es-es	RESUELTA
 returns a struct of a tickets history	tts	es-es	Devuelve una estructura del historial de la incidencia
 returns a struct of values of a single ticket	tts	es-es	Devuelve una estructura de valores de una sola incidencia
 returns the additional notes attached to a ticket	tts	es-es	Devuelve las notas adicionales adjuntas a una incidencia
+select group managers	tts	es-es	Seleccionar administradores de grupo
+select users for inclusion	tts	es-es	Seleccionar usuarios para inclusión
 selected	tts	es-es	selected
+send escalation to primary email	tts	es-es	Enviar escalado al correo principal
+send escalation to secondary email	tts	es-es	Enviar escalado al correo secundario
 show new/updated tickets on main screen	tts	es-es	mostrar incidencias nuevas o actualizadas en la pantalla principal
+solution for caller	tts	es-es	Solución para el emisor
+sorry, that group name has already been taken.	tts	es-es	Lo sentimos, ese nombre de grupo ya existe
+sorry, the above users are still a member of the group %1	tts	es-es	Lo sentimos, los usuarios de arriba todavía son miembros del grupo %1
 source state	tts	es-es	Estado de origen
 state	tts	es-es	Estado
 state changed	tts	es-es	Estado modificado
 state id	tts	es-es	Identificador del estado
 state name	tts	es-es	Nombre del estado
+statistic for all categories	tts	es-es	Estadística para todas las categorías
+statistic for all groups	tts	es-es	Estadística para todos los grupos
+status, priority	tts	es-es	estado, prioridad
 status/date closed	tts	es-es	Estado/Fecha de cierre
 subject changed	tts	es-es	El asunto ha cambiado
+submit changes	tts	es-es	enviar cambios
 target state	tts	es-es	Estado
 test	tts	es-es	PRUEBA
+that loginid has already been taken	tts	es-es	El id de usuario ya está en uso
 the closed ticket requires more work. reopen it.	tts	es-es	La incidencia cerrada necesita más trabajo. Reabrir.
+the groups must include the primary group	tts	es-es	Los grupos deben incluir el grupo primario
 the owner of the ticket was not able to confirm the issue.	tts	es-es	El propietario de la incidencia no pudo confirmar los hechos.
 the ticket has been accepted by the owner, who is about to work on it.	tts	es-es	La incidencia ha sido aceptada por el propietario, que está a punto de trabajar en ella.
 the ticket has been closed without resolution.	tts	es-es	La incidencia ha sido cerrada sin resolución.
@@ -122,12 +219,18 @@ the ticket resolution was successfully validated. close the ticket.	tts	es-es	La
 the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	es-es	La incidencia existía antes de estar definida la infraestructura de Petri Net, por lo que debe asignarle un estado.
 the ticket was found a duplicate of another ticket.	tts	es-es	La incidencia se encontró como duplicada de otra.
 the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	es-es	Las incidencias en la lista siguiente están en el estado %1. Por favor, decida lo que debe hacerse con ellas.
+the two passwords are not the same	tts	es-es	Las contraseñas no coinciden
 the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	es-es	La validación de la incidencia no fue satisfactoria. La incidencia necesita más trabajos a realizar.
+there already is a group with this name. userid's can not have the same name as a groupid	tts	es-es	Ya hay un grupo con este nombre. El id de usuario no puede tener el mismo nombre que el de un grupo
+they must be removed before you can continue	tts	es-es	Deben eliminarse antes de poder continuar
 ticket	tts	es-es	Incidencia
 ticket has been updated	tts	es-es	La incidencia ha sido actualizada
 tickets found %1	tts	es-es	Incidencias encontradas: %1
 tickets open %1	tts	es-es	Incidencias abiertas: %1
 tickets total %1	tts	es-es	Total de incidencias: %1
+time for escalation 1 (in seconds)	tts	es-es	Tiempo para escalado 1 (en segundos)
+time for escalation 2 (in seconds)	tts	es-es	Tiempo para escalado 2 (en segundos)
+time for escalation 3 (in seconds)	tts	es-es	Tiempo para escalado 3 (en segundos)
 to go back to the tts index, click <a href= %1 >here</a>	tts	es-es	Para volver al índice, pulsar <a href="%1">aquí</a>
 to go back to the tts index, click <a href= %1?sessionid=69211c0c32aa5581c5d69abdbcac4d64 >here</a>	tts	es-es	Para volver al índice del Sistema, pulse <a href="%1">aquí</a>
 to go back to the tts index, click <a href= %1?sessionid=e8b5fbb098cb6b1e628cc61a5b848229 >here</a>	tts	es-es	Para volver al índice, pulse <a href="%1">aquí</a>
@@ -148,6 +251,7 @@ transition name	tts	es-es	Nombre de la transición
 trouble ticket system	common	es-es	Sistema de notificación de incidencias
 tts	common	es-es	Sistema de notificación de incidencias
 tts preferences	tts	es-es	Sistema de notificación de incidencias - preferencias
+type of report	tts	es-es	Tipo de informe
 undefined	tts	es-es	SIN DEFINIR
 update ticket state	tts	es-es	Actualizar estado de incidencia
 updates ticket	tts	es-es	Actualiza la incidencia
@@ -156,9 +260,31 @@ verified	tts	es-es	VERIFICADA
 verify	tts	es-es	VERIFICAR
 verify the ticket to work on it.	tts	es-es	Verificar la incidencia en la que se va a trabajar.
 view all tickets	tts	es-es	Ver todas las incidencias
+view high critical categories	tts	es-es	Ver categorías altamente críticas
 view job detail	tts	es-es	Ver el detalle del trabajo
+view medium critical categories	tts	es-es	Ver categorías medianamente críticas
+view my tickets	tts	es-es	Ver mis incidencias
+view only my open tickets	tts	es-es	Ver sólo mis incidencias abiertas
 view only open tickets	tts	es-es	Ver sólo incidencias abiertas
+view statistic for all categories	tts	es-es	Ver estadística para todas las categorías
+view statistic for all groups	tts	es-es	Ver estadística para todos los grupos
+view statistic for category	tts	es-es	Ver estadística para la categoría
+view statistic for group	tts	es-es	Ver estadística para el grupo
+view tickets created by me	tts	es-es	Ver las incidencias creadas por mí
+view tickets for category	tts	es-es	Ver incidencias para la categoría
+view tickets for group	tts	es-es	Ver incidencias para el grupo
+view tickets with state	tts	es-es	Ver incidencias con el estado
+view user account	tts	es-es	Ver cuenta del usuario
+who would you like to transfer all records owned by the deleted user to?	tts	es-es	¿A quién le gustaría transferir TODOS los registros cuyo propietario es el usuario borrado?
+www request	tts	es-es	Solicitud WWW
 you can only close a ticket if it is assigned to you.	tts	es-es	Sólo puede cerrar una incidencia si está asignada a usted.
+you did not write any note! ticket can not be rejected.	tts	es-es	¡No escribió ninguna nota! No se puede rechazar la incidencia.
+you have entered an invalid expiration date	tts	es-es	La fecha de expiración introducida no es válida
+you must add at least 1 permission or group to this account	tts	es-es	Debe añadir al menos 1 permiso o grupo para esta cuenta
+you must enter a group name.	tts	es-es	Debe introducir un nombre de grupo.
+you must enter a lastname	tts	es-es	Debe introducir un apellido
+you must enter a loginid	tts	es-es	Debe introducir un nombre de usuario
+you want to delete the association between category %1 and group %2. are you sure?	tts	es-es	Desea borrar la asociación entre la categoría %1 y el grupo %2. ¿Está seguro?
 you want to delete the state %1 and associated transitions. are you sure?	tts	es-es	¿Seguro que desea borrar el estado %1 y las transiciones asociadas?
 you want to delete the state %1. are you sure?	tts	es-es	¿Está seguro de que desea borrar el estado %!?
 you want to delete the transition %1. are you sure?	tts	es-es	¿Está seguro de que desea borrar la transición %!?

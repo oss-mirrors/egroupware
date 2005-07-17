@@ -16,7 +16,9 @@ address book search	felamimail	es-es	Buscar en la libreta de direcciones
 after message body	felamimail	es-es	Después del cuerpo del mensaje
 all address books	felamimail	es-es	Todas las libretas de direcciones
 all folders	felamimail	es-es	Todas las carpetas
+all of	felamimail	es-es	todos los
 always show html emails	felamimail	es-es	Mostrar siempre los correos HTML
+any of	felamimail	es-es	cualquiera de
 anyone	felamimail	es-es	cualquiera
 as a subfolder of	felamimail	es-es	como una subcarpeta de
 attachments	felamimail	es-es	Adjuntos
@@ -31,6 +33,7 @@ body part	felamimail	es-es	Parte del cuerpo
 can't connect to inbox!!	felamimail	es-es	¡¡No se puede leer la Bandeja de entrada!!
 cc	felamimail	es-es	Cc
 change folder	felamimail	es-es	Cambiar carpeta
+check message against next rule also	felamimail	es-es	comprobar el mensaje también con la regla siguiente
 checkbox	felamimail	es-es	Casilla
 click here to log back in.	felamimail	es-es	Pulse aquí para volver a iniciar sesión
 click here to return to %1	felamimail	es-es	Pulse aquí para volver a %1
@@ -69,6 +72,7 @@ delete selected messages	felamimail	es-es	Borrar mensajes seleccionados
 deleted	felamimail	es-es	Borrado
 deleted folder successfully!	felamimail	es-es	Carpeta borrada correctamente
 disable	felamimail	es-es	Deshabilitar
+discard message	felamimail	es-es	descartar mensaje
 display message in new window	felamimail	es-es	Mostrar el mensaje en una ventana nueva
 display of html emails	felamimail	es-es	Mostrar los mensajes HTML
 display only when no plain text is available	felamimail	es-es	Mostrar sólo cuando no hay texto simple disponible
@@ -137,12 +141,14 @@ follow	felamimail	es-es	seguir
 for mail to be send - not functional yet	felamimail	es-es	Para el correo pendiente de enviar - todavía no funciona
 for received mail	felamimail	es-es	Para el correo recibido
 forward	felamimail	es-es	Reenviar
+forward to address	felamimail	es-es	reenviar a la dirección
 found	felamimail	es-es	Encontrado
 fri	felamimail	es-es	Vie
 from	felamimail	es-es	De
 from(a->z)	felamimail	es-es	De (A-> Z)
 from(z->a)	felamimail	es-es	De (Z-> A)
 full name	felamimail	es-es	Nombre completo
+greater than	felamimail	es-es	mayor que
 have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	es-es	Eche un vistazo a <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> para saber más acerca de Squirrelmail.<br>
 have a look at <a href=\"http://www.felamimail.org\" target=\"_new\">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	es-es	Eche un vistazo a <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> para saber más acerca de Squirrelmail.<br>
 header lines	felamimail	es-es	Líneas de encabezado
@@ -153,6 +159,11 @@ icons and text	felamimail	es-es	Iconos y texto
 icons only	felamimail	es-es	Sólo iconos
 identifying name	felamimail	es-es	Nombre identificativo
 if	felamimail	es-es	SI
+if from contains	felamimail	es-es	si el remitente contiene
+if mail header	felamimail	es-es	si el encabezado
+if message size	felamimail	es-es	si el tamaño del mensaje
+if subject contains	felamimail	es-es	si el asunto contiene
+if to contains	felamimail	es-es	si el destinatario contiene
 illegal folder name.  please select a different name.	felamimail	es-es	Nombre de carpeta ilegal. Por favor, seleccione un nombre distinto
 imap	felamimail	es-es	IMAP
 imap server	felamimail	es-es	Servidor IMAP
@@ -167,10 +178,13 @@ index order	felamimail	es-es	Orden del índica
 info	felamimail	es-es	Información
 invalid user name or password	felamimail	es-es	El usuario o la contraseña no son válidos
 javascript	felamimail	es-es	JavaScript
+keep a copy of the message in your inbox	felamimail	es-es	guardar una copia del mensaje en la bandeja de entrada
+kilobytes	felamimail	es-es	kilobytes
 language	felamimail	es-es	Idioma
 last name	felamimail	es-es	Apellidos
 left	felamimail	es-es	Izquierda
 less	felamimail	es-es	menos
+less than	felamimail	es-es	menor que
 let this folder contain subfolders	felamimail	es-es	Permitir a este carpeta tener subcarpetas
 light blue	felamimail	es-es	Azul claro
 light cyan	felamimail	es-es	Cyan claro
@@ -292,10 +306,12 @@ seconds	felamimail	es-es	Segundos
 select	felamimail	es-es	Seleccionar
 select all	felamimail	es-es	Seleccionar todo
 select emailprofile	felamimail	es-es	Seleccionar perfil de correo
+select folder	felamimail	es-es	seleccionar carpeta
 select home email address	felamimail	es-es	Seleccionar dirección de correo
 select work email address	felamimail	es-es	Seleccionar dirección de correo del trabajo
 select your mail server type	admin	es-es	Seleccionar el tipo de servidor de correo
 send	felamimail	es-es	Enviar
+send a reject message	felamimail	es-es	enviar un mensaje de rechazo
 sent fold	felamimail	es-es	Carpeta de enviados
 sent folder	felamimail	es-es	Carpeta de enviados
 server respond	felamimail	es-es	Respuesta del servidor
@@ -376,6 +392,7 @@ use a signature?	felamimail	es-es	¿Usar una firma?
 use addresses	felamimail	es-es	Usar direcciones
 use custom settings	felamimail	es-es	Usar opciones personalizadas
 use javascript or html addressbook?	felamimail	es-es	Usar javascript o libreta de direcciones HTML
+use regular expressions	felamimail	es-es	usar expresiones regulares
 use smtp auth	admin	es-es	Usar identificación SMTP
 users can define their own emailaccounts	admin	es-es	Los usuarios pueden definir sus propias cuentas de correo
 vacation notice	felamimail	es-es	aviso de vacaciones

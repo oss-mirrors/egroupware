@@ -1,4 +1,6 @@
+$ change	common	es-es	Cambio
 %	stocks	es-es	%
+% change	common	es-es	Cambio %
 add new stock	stocks	es-es	Añadir nueva cotización
 company name	stocks	es-es	Nombre de la empresa
 disable	stocks	es-es	desactivar
@@ -12,5 +14,3 @@ stock quote preferences	stocks	es-es	Preferencias de las cotización de mercado
 stock quotes	common	es-es	Cotizaciones del mercado
 stocks	common	es-es	Cotizaciones
 symbol	stocks	es-es	Símbolo
-$ change	common	es-es	Cambio
-% change	common	es-es	Cambio %
