@@ -169,8 +169,6 @@
 					case 'cdata':
 						$wiki_page['text'] = trim($val['value']);
 						$wiki_page = $GLOBALS['egw']->translation->convert($wiki_page,'utf-8');
-global $pagestore;
-echo "import: pagestore="; _debug_array($pagestore);
 						if ($this->write($wiki_page,False))
 						{
 							if ($debug_messages) 
