@@ -78,16 +78,25 @@ class InstanceManager extends BaseManager {
     $this->query($query); 
   }
   
-  /*!
-  remove all previous activities on this instance and create a new activity on the activity given
+  /*! remove all previous activities on this instance and create a new activity on the activity given
+  * @param $iid is the instance id
+  * @param $activityId is the activity id
+  * @param $user is '*' by default and could be an user id
+  * @param $status is 'running' by default but you could send 'completed' as well
+  * @return false if any problems was encoutered (the database is then intact). Return true if everything was ok.
+  * WARNING: if they were multiple activities ALL previous activities avaible on this instance are deleted
   */
-  function set_instance_destination($iid,$activityId)
+  function set_instance_destination($iid,$activityId, $user='*', $status='running')
   {
-    $query = "delete from ".GALAXIA_TABLE_PREFIX."instance_activities where wf_instance_id=$iid";
-    $this->query($query);
-    $query = "insert into ".GALAXIA_TABLE_PREFIX."instance_activities(wf_instance_id,wf_activity_id,wf_user,wf_status)
-    values($iid,$activityId,'*','running')";
-    $this->query($query);
+    //Start a Transaction
+    $this->db->StartTrans();
+    $query = 'delete from '.GALAXIA_TABLE_PREFIX.'instance_activities where wf_instance_id=?';
+    $this->query($query, array($iid));
+    $query = 'insert into '.GALAXIA_TABLE_PREFIX.'instance_activities(wf_instance_id,wf_activity_id,wf_user,wf_status, wf_started, wf_ended)
+    values(?,?,?,?,?,?)';
+    $this->query($query, array($iid,$activityId,'*','running',date('U'),0));
+    // perform commit (return true) or Rollback (return false)
+    return $this->db->CompleteTrans();
   }
  
   /*!
