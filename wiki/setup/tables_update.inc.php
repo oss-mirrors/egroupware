@@ -223,4 +223,19 @@
 		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.007';
 		return $GLOBALS['setup_info']['wiki']['currentver'];
 	}
+
+
+	$test[] = '1.0.0.007';
+	function wiki_upgrade1_0_0_007()
+	{
+		$GLOBALS['phpgw_setup']->oProc->RenameTable('phpgw_wiki_links','egw_wiki_links');
+		$GLOBALS['phpgw_setup']->oProc->RenameTable('phpgw_wiki_pages','egw_wiki_pages');
+		$GLOBALS['phpgw_setup']->oProc->RenameTable('phpgw_wiki_rate','egw_wiki_rate');
+		$GLOBALS['phpgw_setup']->oProc->RenameTable('phpgw_wiki_interwiki','egw_wiki_interwiki');
+		$GLOBALS['phpgw_setup']->oProc->RenameTable('phpgw_wiki_sisterwiki','egw_wiki_sisterwiki');
+		$GLOBALS['phpgw_setup']->oProc->RenameTable('phpgw_wiki_remote_pages','egw_wiki_remote_pages');
+
+		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.1.001';
+		return $GLOBALS['setup_info']['wiki']['currentver'];
+	}
 ?>

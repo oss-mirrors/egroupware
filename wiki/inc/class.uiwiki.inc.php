@@ -13,7 +13,7 @@
 
 	/* $Id$ */
 
-	require_once(PHPGW_INCLUDE_ROOT.'/wiki/inc/class.bowiki.inc.php');
+	require_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.bowiki.inc.php');
 
 	class uiwiki extends bowiki
 	{
@@ -25,7 +25,7 @@
 		{
 			$this->bowiki($_GET['wiki_id']);
 
-			$this->tpl = CreateObject('etemplate.etemplate');
+			$this->tpl =& CreateObject('etemplate.etemplate');
 
 			// should pages with wiki-syntax be converted to html automaticaly
 			switch($this->AutoconvertPages)
@@ -70,13 +70,13 @@
 			}
 			if ($pg->read() === False)	// new entry
 			{
-				$pg->lang = $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'];
+				$pg->lang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
 			}
 
 			// acl checks
 			if (!$pg->acl_check())	// no edit-rights
 			{
-				$GLOBALS['phpgw']->redirect($this->ViewURL($content));
+				$GLOBALS['egw']->redirect($this->ViewURL($content));
 			}
 			elseif (!$pg->acl_check(True))	// no read-rights
 			{
@@ -150,7 +150,7 @@
 					case 'save':
 					case 'cancel':
 						// return to view
-						$GLOBALS['phpgw']->redirect($this->ViewURL($content));
+						$GLOBALS['egw']->redirect($this->ViewURL($content));
 						break;
 				}
 			}
@@ -166,13 +166,13 @@
 				$this->tpl->disable_cells('action[convert]');
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['wiki']['title'] . ' - ' .
+			$GLOBALS['egw_info']['flags']['app_header'] = $GLOBALS['egw_info']['apps']['wiki']['title'] . ' - ' .
 				lang('edit') . ' ' . $content['name'] .
-				($content['lang'] && $content['lang'] != $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'] ?
+				($content['lang'] && $content['lang'] != $GLOBALS['egw_info']['user']['preferences']['common']['lang'] ?
 					':' . $content['lang'] : '').
 				($content['name'] != $content['title'] ? ' - ' . $content['title'] : '');
 			$this->tpl->exec('wiki.uiwiki.edit',$content,array(
-				'lang'     => array('' => lang('not set')) + $GLOBALS['phpgw']->translation->get_installed_langs(),
+				'lang'     => array('' => lang('not set')) + $GLOBALS['egw']->translation->get_installed_langs(),
 				'readable' => $acl_values,
 				'writable' => $acl_values,
 			),False,array(

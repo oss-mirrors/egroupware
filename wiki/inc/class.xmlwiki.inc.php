@@ -14,17 +14,17 @@
 
 	if (!function_exists('var2xml'))
 	{
-		if (file_exists(PHPGW_API_INC.'class.xmltool.inc.php'))
+		if (file_exists(EGW_API_INC.'class.xmltool.inc.php'))
 		{
-			include_once(PHPGW_API_INC.'class.xmltool.inc.php');
+			include_once(EGW_API_INC.'class.xmltool.inc.php');
 		}
 		else
 		{
-			include_once(PHPGW_INCLUDE_ROOT.'/etemplate/inc/class.xmltool.inc.php');
+			include_once(EGW_INCLUDE_ROOT.'/etemplate/inc/class.xmltool.inc.php');
 		}
 	}
 
-	include_once(PHPGW_INCLUDE_ROOT.'/wiki/inc/class.bowiki.inc.php');
+	include_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.bowiki.inc.php');
 
 	class xmlwiki extends bowiki
 	{
@@ -49,14 +49,14 @@
 
 			header('Content-Type: text/xml; charset=utf-8');
 
-			$xml_doc = new xmldoc();
+			$xml_doc =& new xmldoc();
 			$xml_doc->add_comment('$'.'Id$');	// to be able to comit the file
 			$xml_doc->add_comment("eGroupWare wiki-pages matching '$name%'".
 				($lang ? " and lang in(".implode(',',$lang).')':'').
 				($modified ? " modified since ".date('Y-m-d H:m:i',$modified):'').
 				", exported ".date('Y-m-d H:m:i',$exported=time())." from $_SERVER[HTTP_HOST]");
 
-			$xml_wiki = new xmlnode('wiki');
+			$xml_wiki =& new xmlnode('wiki');
 
 			foreach($this->find($name.'%','name') as $page)
 			{
@@ -76,9 +76,9 @@
 					continue;	// not modified since $modified
 				}
 
-				$page = $GLOBALS['phpgw']->translation->convert($page,$GLOBALS['phpgw']->translation->charset(),'utf-8');
+				$page = $GLOBALS['egw']->translation->convert($page,$GLOBALS['egw']->translation->charset(),'utf-8');
 
-				$xml_page = new xmlnode('page');
+				$xml_page =& new xmlnode('page');
 				foreach($page as $attr => $val)
 				{
 					if ($attr != 'text')
@@ -121,7 +121,7 @@
 			if (substr($url,0,4) == 'http')
 			{
 				// use our network class, as it deals with proxies and the proxy-config in admin->configuration
-				$network = CreateObject('phpgwapi.network');
+				$network =& CreateObject('phpgwapi.network');
 				$xmldata = $network->gethttpsocketfile($url);
 				$xmldata = strstr(implode('',$xmldata),'<?xml');	// discard everything before the start of the xml-file
 			}
@@ -168,7 +168,9 @@
 						// fall through
 					case 'cdata':
 						$wiki_page['text'] = trim($val['value']);
-						$wiki_page = $GLOBALS['phpgw']->translation->convert($wiki_page,'utf-8');
+						$wiki_page = $GLOBALS['egw']->translation->convert($wiki_page,'utf-8');
+global $pagestore;
+echo "import: pagestore="; _debug_array($pagestore);
 						if ($this->write($wiki_page,False))
 						{
 							if ($debug_messages) 

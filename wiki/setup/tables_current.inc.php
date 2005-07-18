@@ -13,7 +13,7 @@
 
 
 	$phpgw_baseline = array(
-		'phpgw_wiki_links' => array(
+		'egw_wiki_links' => array(
 			'fd' => array(
 				'wiki_id' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '0'),
 				'wiki_name' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
@@ -26,7 +26,7 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'phpgw_wiki_pages' => array(
+		'egw_wiki_pages' => array(
 			'fd' => array(
 				'wiki_id' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '0'),
 				'wiki_name' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
@@ -52,7 +52,7 @@
 				'sapdb' => False))),
 			'uc' => array()
 		),
-		'phpgw_wiki_rate' => array(
+		'egw_wiki_rate' => array(
 			'fd' => array(
 				'wiki_rate_ip' => array('type' => 'char','precision' => '20','nullable' => False,'default' => ''),
 				'wiki_rate_time' => array('type' => 'int','precision' => '4'),
@@ -65,7 +65,7 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'phpgw_wiki_interwiki' => array(
+		'egw_wiki_interwiki' => array(
 			'fd' => array(
 				'wiki_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'interwiki_prefix' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
@@ -78,7 +78,7 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'phpgw_wiki_sisterwiki' => array(
+		'egw_wiki_sisterwiki' => array(
 			'fd' => array(
 				'wiki_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'sisterwiki_prefix' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
@@ -91,7 +91,7 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'phpgw_wiki_remote_pages' => array(
+		'egw_wiki_remote_pages' => array(
 			'fd' => array(
 				'wiki_remote_page' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
 				'wiki_remote_site' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => '')

@@ -18,8 +18,8 @@
 	global $UpperPtn,$LowerPtn,$AlphaPtn,$LinkPtn,$UrlPtn,$InterwikiPtn,$MaxNesting,$MaxHeading;
 	global $EditBase,$ViewBase;
 
-	require_once(PHPGW_INCLUDE_ROOT.'/wiki/lib/defaults.php');
-	if ($GLOBALS['phpgw']->translation->charset() == 'iso-8859-1')	// allow all iso-8859-1 extra-chars
+	require_once(EGW_INCLUDE_ROOT.'/wiki/lib/defaults.php');
+	if ($GLOBALS['egw']->translation->charset() == 'iso-8859-1')	// allow all iso-8859-1 extra-chars
 	{
 		$UpperPtn = "[A-Z\xc0-\xde]";
 		$LowerPtn = "[a-z\xdf-\xff]";
@@ -28,22 +28,22 @@
 			$UpperPtn . $AlphaPtn . '*(\\/' . $UpperPtn . $AlphaPtn . '*)?';
 	}
 
-	require_once(PHPGW_INCLUDE_ROOT.'/wiki/lib/url.php');
-	require_once(PHPGW_INCLUDE_ROOT.'/wiki/lib/messages.php');
+	require_once(EGW_INCLUDE_ROOT.'/wiki/lib/url.php');
+	require_once(EGW_INCLUDE_ROOT.'/wiki/lib/messages.php');
 
 	global $pagestore,$FlgChr,$Entity;
 	$FlgChr = chr(255);                     // Flag character for parse engine.
 	$Entity = array();                      // Global parser entity list.
 
-	require_once(PHPGW_INCLUDE_ROOT.'/wiki/parse/transforms.php');
-	require_once(PHPGW_INCLUDE_ROOT.'/wiki/parse/main.php');
-	require_once(PHPGW_INCLUDE_ROOT.'/wiki/parse/macros.php');
-	require_once(PHPGW_INCLUDE_ROOT.'/wiki/parse/html.php');
-	require_once(PHPGW_INCLUDE_ROOT.'/wiki/parse/save.php');
+	require_once(EGW_INCLUDE_ROOT.'/wiki/parse/transforms.php');
+	require_once(EGW_INCLUDE_ROOT.'/wiki/parse/main.php');
+	require_once(EGW_INCLUDE_ROOT.'/wiki/parse/macros.php');
+	require_once(EGW_INCLUDE_ROOT.'/wiki/parse/html.php');
+	require_once(EGW_INCLUDE_ROOT.'/wiki/parse/save.php');
 
-	require_once(PHPGW_INCLUDE_ROOT.'/wiki/lib/category.php');
+	require_once(EGW_INCLUDE_ROOT.'/wiki/lib/category.php');
 
-	require_once(PHPGW_INCLUDE_ROOT.'/wiki/inc/class.sowiki.inc.php');
+	require_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.sowiki.inc.php');
 
 	class bowiki extends sowiki
 	{
@@ -54,10 +54,10 @@
 			global $pagestore;
 			if (!is_object($pagestore))
 			{
-				$pagestore = new sowiki($wiki_id);
+				$pagestore = new sowiki($wiki_id);	// cant use =& as global $pagestore is a reverence!
 			}
 			global $Admin,$HomePage,$InterWikiPrefix,$EnableFreeLinks,$EnableWikiLinks;
-			$c = CreateObject('phpgwapi.config','wiki');
+			$c =& CreateObject('phpgwapi.config','wiki');
 			$c->read_repository();
 			$config = $c->config_data;
 			$Admin = $config['emailadmin'];
@@ -67,8 +67,8 @@
 			$EnableWikiLinks = (isset($config['Enable_Wiki_Links'])?$config['Enable_Wiki_Links']:1);
 
 			global $Charset,$UserName;
-			$Charset = $GLOBALS['phpgw']->translation->charset();
-			$UserName = $GLOBALS['phpgw_info']['user']['account_lid'];
+			$Charset = $GLOBALS['egw']->translation->charset();
+			$UserName = $GLOBALS['egw_info']['user']['account_lid'];
 
 			$this->AutoconvertPages = $config['AutoconvertPages'];
 		}
@@ -144,7 +144,7 @@
 			if (!$needs_write) return False;	// no change => dont write it back
 
 			$page->hostname = $set_host_user ? gethostbyaddr($_SERVER['REMOTE_ADDR']) : $values['hostname'];
-			$page->username = $set_host_user ? $GLOBALS['phpgw_info']['user']['account_lid'] : $values['username'];
+			$page->username = $set_host_user ? $GLOBALS['egw_info']['user']['account_lid'] : $values['username'];
 
 			$page->write();
 			$GLOBALS['page'] = $page->as_array();	// we need this to track lang for new_link, sister_wiki, ...
@@ -242,13 +242,13 @@
 			if ($lang || @$page['lang'])
 			{
 				$args['lang'] = $lang ? $lang : @$page['lang'];
-				if ($args['lang'] == $GLOBALS['phpgw_info']['user']['prefereces']['common']['lang']) unset($args['lang']);
+				if ($args['lang'] == $GLOBALS['egw_info']['user']['prefereces']['common']['lang']) unset($args['lang']);
 			}
 			if ($version)
 			{
 				$args['version'] = $version;
 			}
-			return $GLOBALS['phpgw']->link('/index.php',$args);
+			return $GLOBALS['egw']->link('/index.php',$args);
 		}
 
 		function viewURL($page, $lang='', $version='', $full = '')
@@ -260,7 +260,7 @@
 			if ($lang || @$page['lang'])
 			{
 				$args['lang'] = $lang ? $lang : @$page['lang'];
-				if ($args['lang'] == $GLOBALS['phpgw_info']['user']['prefereces']['common']['lang']) unset($args['lang']);
+				if ($args['lang'] == $GLOBALS['egw_info']['user']['prefereces']['common']['lang']) unset($args['lang']);
 			}
 			if ($version)
 			{
@@ -270,6 +270,6 @@
 			{
 				$args['full'] = 1;
 			}
-			return $GLOBALS['phpgw']->link('/wiki/index.php',$args);
+			return $GLOBALS['egw']->link('/wiki/index.php',$args);
 		}
 	}

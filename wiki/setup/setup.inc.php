@@ -12,7 +12,7 @@
 
 	$setup_info['wiki']['name']      = 'wiki';
 	$setup_info['wiki']['title']     = 'Wiki';
-	$setup_info['wiki']['version']   = '1.0.0.007';
+	$setup_info['wiki']['version']   = '1.0.1.001';
 	$setup_info['wiki']['app_order'] = 11;
 	$setup_info['wiki']['enable']    = 1;
 
@@ -23,30 +23,29 @@
 	$setup_info['wiki']['maintainer'] = 'Ralf Becker';
 	$setup_info['wiki']['maintainer_email'] = 'RalfBecker@outdoor-training.de';
 
-	$setup_info['wiki']['tables'][] = 'phpgw_wiki_links';
-	$setup_info['wiki']['tables'][] = 'phpgw_wiki_pages';
-	$setup_info['wiki']['tables'][] = 'phpgw_wiki_rate';
-	$setup_info['wiki']['tables'][] = 'phpgw_wiki_interwiki';
-	$setup_info['wiki']['tables'][] = 'phpgw_wiki_sisterwiki';
-	$setup_info['wiki']['tables'][] = 'phpgw_wiki_remote_pages';
+	$setup_info['wiki']['tables'][] = 'egw_wiki_links';
+	$setup_info['wiki']['tables'][] = 'egw_wiki_pages';
+	$setup_info['wiki']['tables'][] = 'egw_wiki_rate';
+	$setup_info['wiki']['tables'][] = 'egw_wiki_interwiki';
+	$setup_info['wiki']['tables'][] = 'egw_wiki_sisterwiki';
+	$setup_info['wiki']['tables'][] = 'egw_wiki_remote_pages';
 	
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['wiki']['hooks'] = array(
 		'admin',
 		'sidebox_menu',
-		'manual'
 	);
 
 	/* Dependencies for this app to work */
 	$setup_info['wiki']['depends'][] = array
 	(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.14', '0.9.15','1.0.0','1.0.1')
+		'versions' => Array('1.0.0','1.0.1')
 	);
 	$setup_info['wiki']['depends'][] = array
 	(
 		'appname'  => 'etemplate',
-		'versions' => Array('0.9.14', '0.9.15','1.0.0','1.0.1')
+		'versions' => Array('1.0.0','1.0.1')
 	);
 
 

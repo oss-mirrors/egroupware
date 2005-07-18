@@ -76,12 +76,12 @@ class soWikiPage
 		$this->name = $name;
 		$this->lang = $lang;
 		$this->wiki_id = (int) $wiki_id;
-		$this->memberships = $GLOBALS['phpgw']->accounts->membership();
+		$this->memberships = $GLOBALS['egw']->accounts->membership();
 		foreach($this->memberships as $n => $data)
 		{
 			$this->memberships[$n] = (int) $data['account_id'];
 		}
-		$this->user_lang = $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'];
+		$this->user_lang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
 		$this->use_langs = array($this->user_lang,'');
 		// english as fallback, should be configurable or a pref
 		if ($this->user_lang != 'en') $this->use_langs[] = 'en';
@@ -96,7 +96,7 @@ class soWikiPage
 		// $GLOBALS['config'] is set by lib/init
 		if (!is_array($GLOBALS['config']))
 		{
-			$c = CreateObject('phpgwapi.config','wiki');
+			$c =& CreateObject('phpgwapi.config','wiki');
 			$c->read_repository();
 			$GLOBALS['config'] = $c->config_data;
 			unset($c);
@@ -120,15 +120,15 @@ class soWikiPage
 		{
 			return $filters[$filter_id];
 		}
-		$user = $GLOBALS['phpgw_info']['user']['account_id'];
+		$user = $GLOBALS['egw_info']['user']['account_id'];
 
 		$filters[] = WIKI_ACL_ALL;
 
-		if ($GLOBALS['phpgw_info']['user']['account_lid'] !=  $GLOBALS['config']['AnonymousUser'])
+		if ($GLOBALS['egw_info']['user']['account_lid'] !=  $GLOBALS['config']['AnonymousUser'])
 		{
 			$filters[] = WIKI_ACL_USER;
 		}
-		if (@$GLOBALS['phpgw_info']['user']['apps']['admin'])
+		if (@$GLOBALS['egw_info']['user']['apps']['admin'])
 		{
 			$filters[] = WIKI_ACL_ADMIN;
 		}
@@ -154,7 +154,7 @@ class soWikiPage
 	function acl_check($readable = False)
 	{
 		if (!$readable && $this->config['Anonymous_Session_Type'] != 'editable' &&
-			$GLOBALS['phpgw_info']['user']['account_lid'] == $this->config['anonymous_username'])
+			$GLOBALS['egw_info']['user']['account_lid'] == $this->config['anonymous_username'])
 		{
 			return False;	// Global config overrides page-specific setting
 		}
@@ -164,10 +164,10 @@ class soWikiPage
 				return True;
 
 			case WIKI_ACL_USER:
-				return $GLOBALS['phpgw_info']['user']['account_lid'] !=  $this->config['anonymous_username'];
+				return $GLOBALS['egw_info']['user']['account_lid'] !=  $this->config['anonymous_username'];
 
 			case WIKI_ACL_ADMIN:
-				return  isset($GLOBALS['phpgw_info']['user']['apps']['admin']);
+				return  isset($GLOBALS['egw_info']['user']['apps']['admin']);
 
 			default:
 				return in_array($acl,$this->memberships);
@@ -330,12 +330,12 @@ class soWikiPage
 class sowiki	// DB-Layer
 {
 	var $db; /* @var $db db */
-	var $LkTbl = 'phpgw_wiki_links';
-	var $PgTbl = 'phpgw_wiki_pages';
-	var $RtTbl = 'phpgw_wiki_rate';
-	var $IwTbl = 'phpgw_wiki_interwiki';
-	var $SwTbl = 'phpgw_wiki_sisterwiki';
-	var $RemTbl= 'phpgw_wiki_remote_pages';
+	var $LkTbl = 'egw_wiki_links';
+	var $PgTbl = 'egw_wiki_pages';
+	var $RtTbl = 'egw_wiki_rate';
+	var $IwTbl = 'egw_wiki_interwiki';
+	var $SwTbl = 'egw_wiki_sisterwiki';
+	var $RemTbl= 'egw_wiki_remote_pages';
 	var $ExpireLen,$Admin;
 	var $RatePeriod,$RateView,$RateSearch,$RateEdit;
 	var $wiki_id = 0;
@@ -350,9 +350,9 @@ class sowiki	// DB-Layer
 	function sowiki($wiki_id=0)
 	{
 		$this->wiki_id = (int) $wiki_id;
-		$this->user_lang = $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'];
+		$this->user_lang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
 
-		$this->db = $GLOBALS['phpgw']->db;
+		$this->db = clone($GLOBALS['egw']->db);
 		$this->db->set_app('wiki');
 		
 		global $ExpireLen,$Admin;		// this should come from the app-config later
@@ -380,7 +380,7 @@ class sowiki	// DB-Layer
 			$lang = $lang ? $lang : @$name['lang'];
 			$name = @$name['name'] ? $name['name'] : @$name['title'];
 		}
-		$page = new soWikiPage($this->db,$this->PgTbl,$name,$lang,$this->wiki_id,$this->debug);
+		$page =& new soWikiPage($this->db,$this->PgTbl,$name,$lang,$this->wiki_id,$this->debug);
 		
 		if (!$this->colNames) $this->colNames = $page->column2names();
 		
@@ -670,11 +670,11 @@ class sowiki	// DB-Layer
 	function allpages()
 	{
 		$qid = $this->db->query("SELECT t1.wiki_time,t1.wiki_name,t1.wiki_lang,t1.wiki_hostname,t1.wiki_username,t1.wiki_title,".$this->length_sql('t1.').
-		                        " AS wiki_length,t1.wiki_comment,t1.wiki_version,MAX(t2.wiki_version)" .
-		                        " FROM $this->PgTbl AS t1, $this->PgTbl AS t2" .
-		                        " WHERE t1.wiki_name = t2.wiki_name AND t1.wiki_lang=t2.wiki_lang AND t1.wiki_id=t2.wiki_id AND t1.wiki_id=".(int)$this->wiki_id.
-		                        " GROUP BY t1.wiki_name,t1.wiki_lang,t1.wiki_version,t1.wiki_time,t1.wiki_hostname,t1.wiki_username,t1.wiki_body,t1.wiki_comment,t1.wiki_title" .
-		                        " HAVING t1.wiki_version = MAX(t2.wiki_version)",__LINE__,__FILE__);
+														" AS wiki_length,t1.wiki_comment,t1.wiki_version,MAX(t2.wiki_version)" .
+														" FROM $this->PgTbl AS t1, $this->PgTbl AS t2" .
+														" WHERE t1.wiki_name = t2.wiki_name AND t1.wiki_lang=t2.wiki_lang AND t1.wiki_id=t2.wiki_id AND t1.wiki_id=".(int)$this->wiki_id.
+														" GROUP BY t1.wiki_name,t1.wiki_lang,t1.wiki_version,t1.wiki_time,t1.wiki_hostname,t1.wiki_username,t1.wiki_body,t1.wiki_comment,t1.wiki_title" .
+														" HAVING t1.wiki_version = MAX(t2.wiki_version)",__LINE__,__FILE__);
 
 		return $this->_return_pages('allpages()');
 	}
@@ -689,7 +689,7 @@ class sowiki	// DB-Layer
 	{
 		if (!$this->colNames)
 		{
-			$page = new soWikiPage($this->db,$this->PgTbl);
+			$page =& new soWikiPage($this->db,$this->PgTbl);
 			$this->colNames = $page->column2names();
 			unset($page);
 		}
@@ -733,10 +733,10 @@ class sowiki	// DB-Layer
 	function emptypages()
 	{
 		$this->db->query("SELECT t1.wiki_time,t1.wiki_name,t1.wiki_lang,t1.wiki_hostname,t1.wiki_username,0,t1.wiki_comment,t1.wiki_version,MAX(t2.wiki_version),t1.wiki_title " .
-		                 " FROM $this->PgTbl AS t1,$this->PgTbl AS t2" .
-		                 " WHERE t1.wiki_name=t2.wiki_name AND t1.wiki_lang=t2.wiki_lang AND t1.wiki_id=t2.wiki_id AND t1.wiki_id=".(int)$this->wiki_id.
-		                 " GROUP BY t1.wiki_name,t1.wiki_lang,t1.wiki_version,t1.wiki_time,t1.wiki_hostname,t1.wiki_username,t1.wiki_comment".
-		                 " HAVING t1.wiki_version = MAX(t2.wiki_version) AND t1.wiki_body IS NULL",__LINE__,__FILE__);
+										 " FROM $this->PgTbl AS t1,$this->PgTbl AS t2" .
+										 " WHERE t1.wiki_name=t2.wiki_name AND t1.wiki_lang=t2.wiki_lang AND t1.wiki_id=t2.wiki_id AND t1.wiki_id=".(int)$this->wiki_id.
+										 " GROUP BY t1.wiki_name,t1.wiki_lang,t1.wiki_version,t1.wiki_time,t1.wiki_hostname,t1.wiki_username,t1.wiki_comment".
+										 " HAVING t1.wiki_version = MAX(t2.wiki_version) AND t1.wiki_body IS NULL",__LINE__,__FILE__);
 
 		return $this->_return_pages('emptypages()');
 	}
