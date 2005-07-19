@@ -1,80 +1,97 @@
-#run_activity_zone
-{
-}
-table.table_run_activity
+#wf_run_activity_zone
 {
 	width : 100%;
-	border-spacing: 0px;
-	border : 0px;
-}
-tr.tr_run_activity
-{
-	padding: 0px;
-}
-td.td_run_activity
-{
 }
 
 /*********************  ACTIVITY ZONE *************/
-table.table_activity
+#wf_activity_playground
 {
 	border: 1px solid black;
 	width:100%;
 	margin-bottom:10px;
 }
-td.td_title
+#wf_activity_title
 {
 	font-size: 120%;
 	font-weight:bold;
 }
+#wf_activity_template
+{
+}
 
 /*********************  PRIORITY ZONE *************/
-
-tr.tr_priority_zone
+#wf_priority_zone
 {
-	padding: 0px;
+	background-color: #FFF;
+	display:inline;
 }
-td.td_priority_zone
-{
-	background_color: #D3DCE3;
-}
-table.table_priority
-{
-	border-spacing: 1px;
-	border: 0px;
-	width:100%;
-
-}
-tr.tr_priority
-{
-	padding: 0px;
-}
-td.td_priority_label
+#wf_priority_label
 {
 	text-align: right;
-	width : 10%;
+	margin: 3px;
 	background-color: #d3dce3;
 }
-td.td_priority_select
+#wf_priority_select
 {
 	text-align: left;
 }
-/*********************  SUBMIT ZONE *************/
-#workflow_submit_zone
+/********************* NEXT USER ZONE *************/
+#wf_set_next_user_zone
 {
+	background-color: #FFF;
+	display: inline;
 }
-td.td_submit_zone
+#wf_set_next_user_label
 {
 	text-align: right;
+	margin: 3px;
+	background-color: #d3dce3;
+}
+#wf_set_next_user_select
+{
+	text-align: left;
+}
+
+/********************* SET OWNER ZONE *************/
+#wf_set_owner_zone
+{
+	background-color: #FFF;
+	display: inline;
+}
+#wf_set_owner_label
+{
+	text-align: right;
+	margin: 3px;
+	background-color: #d3dce3;
+}
+#wf_set_owner_select
+{
+	text-align: left;
+}
+
+/*********************  SUBMIT ZONE *************/
+#wf_submit_zone
+{
+	text-align: right;
+	background-color: #F1F1F1;
+	width: 100%;
 }
 table.table_submit_buttons
 {
 	width: 100%;
 	border: 1px solid black;
 }
+.wf_submit_buttons_button
+{
+	font-weight:bold;
+	text-align:right;
+	background-color: #D3DCE3;
+}
+
 /*********************  WORKFLOW INFO ZONE *************/
 #workflow_info_zone
 {
+	position : relative;
 	align : center;
 	font-size:0.5em;	
 }
