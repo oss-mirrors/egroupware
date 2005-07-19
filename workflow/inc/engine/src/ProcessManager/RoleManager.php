@@ -84,7 +84,7 @@ class RoleManager extends BaseManager {
   //!  List mappings
   /*!
   * get a list of roles/users mappings for a given process.
-  * @param $pId Process Id. The mappings are returned for a complete process by default (see param roles_subset).
+  * @param $pId Process Id. The mappings are returned for a complete process.
   * @param $offset first record of the returned array
   * @param $maxRecords maximum number of records for the returned array
   * @param $sort_mode sort order for the query, like 'wf_name__ASC'
@@ -136,11 +136,11 @@ class RoleManager extends BaseManager {
   * the mappings to a given subset of roles and or activities
   * @param $pId Process Id. The mappings are returned for a complete process by default (see param roles_subset or activities_subset).
   * @param $expand_groups if true (false by default) we are not giving the group mappings but instead expand
-  *	theses groups to real users while avoiding repeating users twice.
+  * 	theses groups to real users while avoiding repeating users twice.
   * @param $subset associative array containing a list of roles and/or activities for which we want to restrict the list. 
   * empty by default.
-  * This array must contain the [wf_role_id] key with role id values to restrict roles.
-  * This array must contain the [wf_activity_id] key with activity id values to restrict activities.
+  * This array need to contains the [wf_role_name] key with role names values to restrict roles.
+  * This array need to contains the [wf_activity_name] key with activity names values to restrict activities.
   * @return an array containg for each row the user or group id and an associated name
   */
 
@@ -151,49 +151,53 @@ class RoleManager extends BaseManager {
     
     if (!(count($subset)==0))
     {
-       $subset = Array();
+       $roles_subset = Array();
+       $activities_subset =Array();
        foreach($subset as $key => $value )
        {
-         if (isset($value['wf_role_id']))
+         if ($key=='wf_role_name')
          {
-           $roles_subset[] = $value['wf_role_id'];
+           $roles_subset = $value;
          }
-         if (isset($value['wf_activity_id']))
+         if ($key=='wf_activity_name')
          {
-           $activities_subset[] = $value['wf_activity_id'];
+           $activities_subset = $value;
          }
        }
        if (count($roles_subset)>0)
        {
-         $whereand .= ' and ((gr.wf_role_id) in ('.implode($roles_subset, ',').'))';
+         $whereand .= " and ((gr.wf_name) in ('".implode($roles_subset, "','")."'))";
        }
        if (count($activities_subset)>0)
        {
-         $whereand .= ' and ((gar.wf_activity_id) in ('.implode($activities_subset, ',').'))';
+         $whereand .= " and ((ga.wf_name) in ('".implode($activities_subset, "','")."'))";
        }
     }
     $query = "select distinct(wf_user),wf_account_type from
                     ".GALAXIA_TABLE_PREFIX."roles gr
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gr.wf_role_id=gur.wf_role_id 
                 LEFT JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_role_id=gr.wf_role_id 
+                LEFT JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON ga.wf_activity_id=gar.wf_activity_id 
                 $whereand ";
     $result = $this->query($query,$bindvars);
     $ret = Array();
-    while($res = $result->fetchRow()) 
+    if (!(empty($result)))
     {
-      if (($expand_groups) && ($res['wf_account_type']=='g'))
+      while($res = $result->fetchRow()) 
       {
-        //we have a group instead of a simple user and we want real users
-          //tmpres is a fake result
-        $real_users = galaxia_retrieve_group_users($res['wf_user'], true);
-        foreach ($real_users as $key => $value)
+        if (($expand_groups) && ($res['wf_account_type']=='g'))
         {
-          $ret[$key]=$value;
+          //we have a group instead of a simple user and we want real users
+          $real_users = galaxia_retrieve_group_users($res['wf_user'], true);
+          foreach ($real_users as $key => $value)
+          {
+            $ret[$key]=$value;
+          }
         }
-      }
-      else
-      {
-        $ret[$res['wf_user']] = galaxia_retrieve_name($res['wf_user']);
+        else
+        {
+          $ret[$res['wf_user']] = galaxia_retrieve_name($res['wf_user']);
+        }
       }
     }
     return $ret;
