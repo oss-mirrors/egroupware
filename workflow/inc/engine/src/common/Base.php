@@ -88,7 +88,7 @@ class Base extends Observable {
 		global $ADODB_LASTDB;
 
 		trigger_error($ADODB_LASTDB . " error:  " . $this->db->ErrorMsg(). " in query:<br/>" . $query . "<br/>", E_USER_WARNING);
-		$this->error[] = "they were some SQL errors in the database, please warn you admin system.";
+		$this->error[] = "they were some SQL errors in the database, please warn your sysadmin.";
 		// only for debugging.
 		//print_r($values);
 		//echo "<br/>";
