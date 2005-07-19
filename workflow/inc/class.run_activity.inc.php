@@ -1,6 +1,6 @@
 <?php
 
-	include_once(dirname(__FILE__) . SEP . 'class.workflow.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.workflow.inc.php');
 
 	class run_activity extends workflow
 	{
@@ -38,6 +38,11 @@
 		// array used by automatic parsing:
 		var $priority_array = Array();
 		var $submit_array = Array();
+		// vars used by automatic parsing
+		var $display_owner=0; // if 0 draw nothing, 1 draw selected owner, else draw a select box for owner, see function descr
+		var $display_next_user=0; // if 0 draw nothing, 1 draw selected next user, else draw a select box for next_user, see function descr
+		// array of roles associated with the activity, usefull for lists of users associated with theses roles
+		var $act_role_names= Array();
 		
 		function run_activity()
 		{
@@ -89,8 +94,7 @@
 				die(lang('You have not permission to execute this activity'));
 			}
 
-			// FIXME: not used anywhere?
-			//$act_role_names = $activity->getActivityRoleNames($GLOBALS['phpgw_info']['user']['account_id'] );
+			$this->act_role_names = $activity->getActivityRoleNames();
 
 			// load code sources
 			$source = GALAXIA_PROCESSES . SEP . $this->process->getNormalizedName(). SEP . 'compiled' . SEP . $activity->getNormalizedName(). '.php';
@@ -130,6 +134,7 @@
 					'display_please_wait_message'		=> 0,
 					'use_automatic_parsing' 		=> 1,
 					'show_activity_title' 			=> 1,
+					'show_instance_name'			=> 0,
 					'show_multiple_submit_as_select' 	=> 0,
 					'show_activity_info_zone' 		=> 1,
 				);
@@ -156,12 +161,15 @@
 				// They will also have at their disposition theses array, used for automatic parsing
 				$GLOBALS['workflow']['priority_array']	=& $this->priority_array;
 				$GLOBALS['workflow']['submit_array']	=& $this->submit_array;
-				
+				// and some vars for automatic parsing as well
+				$GLOBALS['workflow']['display_owner']    =& $this->display_owner;
+				$GLOBALS['workflow']['display_next_user']=& $this->display_next_user;
 			}
 			//echo "<br><br><br><br><br>Including $source <br>In request: <pre>";print_r($_REQUEST);echo "</pre>";
 			//[__leave_activity] is setted if needed in the xxx_pre code or by the user in his code
 			//[__activity_completed] will be setted if $instance->complete() is runned
-			include_once ($source);
+			// HERE the user code is 'executed'
+			require_once ($source);
 			
 			//Now that the instance is ready we can catch some others usefull vars
 			$this->instance_id	= $instance->getInstanceId();
@@ -366,10 +374,25 @@
 			$this->t->set_file('run_activity','run_activity.tpl');
 			
 			//set the css style files links
-			$this->set_css_links();
+			$this->t->set_var(array(
+				'run_activity_css_link'	=> $this->get_css_link('run_activity.css'),
+			));
+			
 			
 			// draw the activity's title zone
 			$this->parse_title($this->activity_name);
+
+			//draw the instance_name input or label
+			// init wf_name to the requested one or the stored name
+			// the requested one handle the looping in activity form
+			$wf_name = get_var('wf_name','post',$this->instance->getName());
+			$this->parse_instance_name($wf_name);
+
+			//draw the instance_name input or label
+			// init wf_set_owner to the requested one or the stored owner
+			// the requested one handle the looping in activity form
+			$wf_set_owner = get_var('wf_set_owner','post',$this->instance->getOwner());
+			$this->parse_instance_owner($wf_set_owner);
 			
 			// draw the activity central user form
 			$this->t->set_var(array('activity_template' => $this->wf_template->parse('output', 'template')));
@@ -379,6 +402,12 @@
 			// the requested one handle the looping in activity form
 			$priority = get_var('wf_priority','post',$this->instance->getPriority());
 			$this->parse_priority($priority);
+			
+			//draw the select next_user box
+			// init next_user to the requested one or the stored one
+			// the requested one handle the looping in activity form
+			$next_user = get_var('wf_next_user','POST',$this->instance->getNextUser());
+			$this->parse_next_user($next_user);
 			
 			//draw the activity submit buttons	
 			$this->parse_submit();
@@ -391,29 +420,10 @@
 			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
 		
-		//! set the href link for the css file, searching for themes specifics stylesheet if any
-		function set_css_links()
-		{
-			$css_file = $GLOBALS['egw_info']['server']['webserver_url'].SEP.'workflow'.SEP.'templates'
-					.SEP.$GLOBALS['egw_info']['server']['template_set'].SEP.'css'.SEP.'run_activity.css';
-			if(file_exists($css_file))
-			{
-				$this->t->set_var(array(
-					'run_activity_css_link' => $css_file,
-				));
-			}
-			else
-			{
-				$this->t->set_var(array(
-					'run_activity_css_link' => $GLOBALS['egw_info']['server']['webserver_url'].SEP.'workflow'
-						.SEP.'templates'.SEP.'default'.SEP.'css'.SEP.'run_activity.css',
-				));
-			}
-		}
-		
 		//!Parse the title in the activity form, the user can decide if he want this title to be shown or not
 		/*!
-		You can give a title as a parameter. 
+		* if you do not want thuis to be displayed set your process config value for show_activity_title to false
+		* @param title is by default empty, You can give a title as a parameter. 
 		*/
 		function parse_title($title='')
 		{
@@ -430,13 +440,130 @@
 			}
 		}
 		
+		//!Parse the instance name input in the activity form, the user can decide if he want this name to be shown or not
+		/*!
+		* if you do not want this to be displayed set your process config value for show_instance_name to false
+		* @param instance_name is the name we will display. 
+		*/
+		function parse_instance_name($instance_name)
+		{
+			$this->t->set_block('run_activity', 'block_instance_name_zone', 'instance_name_zone');
+			
+			if (($this->conf['use_automatic_parsing']) && ($this->conf['show_instance_name']))
+			{
+				$this->t->set_var(array('wf_name'=> $instance_name));
+				$this->t->parse('instance_name_zone', 'block_instance_name_zone', true);
+			}
+			else
+			{
+				$this->t->set_var(array( 'instance_name_zone' => ''));
+			}
+		}
+		
+		//!Parse the set_owner select/display in the activity form, the user can decide if he want this name to be shown or not
+		/*!
+		* if $this->display_owner is 0 we draw nothing (default value) 
+		* if $this->display_owner is 1 the owner is just shown 
+		* if $this->display_owner is anything else we draw a select box
+		* this 'anything else' can be an associative array containing the 'role' and/or 'activity' key
+		* the values associated with theses keys can be strings or array of strings containing roles and/or
+		* activities's names. Users displayed in the select will then be the users having access to theses activities
+		* and users which are mapped  to theses roles (one match per user is enought to be displayed).
+		* ie: $this->display_owner = 2; will display all users mapped to roles on the process
+		* $this->display_owner = array('role' => array('Chiefs','assistant'), 'activity' => 'updating foo'); will
+		* display users having access to activity 'updating foo' AND which are mapped to 'Chief' OR 'assistant' roles
+		* of course roles and activities names must be matching the current process's roles and activities names.
+		* @param actual_owner is the selected owner in the select list we will display or the shown owner. 
+		*/
+		function parse_instance_owner($actual_owner)
+		{
+		//echo "DEBUG parse_instance_owner:actual_owner:".$actual_owner.'display_owner:'
+		//_debug_array($this->display_owner);
+			
+			//inside the select
+			$this->t->set_block('run_activity', 'block_owner_options', 'owner_options');			
+			//the select
+			$this->t->set_block('run_activity', 'block_select_owner', 'wf_select_owner');
+			// the whole area
+			$this->t->set_block('run_activity', 'block_set_owner_zone', 'set_owner_zone');
+			if ( 	(!$this->conf['use_automatic_parsing']) 
+				|| ( empty($this->display_owner) || (!($this->display_owner)) ))
+			{
+				//hide the instance owner zone
+				$this->t->set_var(array( 'set_owner_zone' => ''));
+			}
+			else
+			{
+				// a little label before the select box
+                                $this->t->set_var(array('set_owner_text' => lang('Owner:')));
+				if ((!(is_array($this->display_owner))) && ($this->display_owner==1))
+				{
+					//we will just display the owner
+					$this->t->set_var(array('wf_select_owner' => $this->owner_name));
+				}
+				else
+				{	//we will display a select
+
+					//prepare retrieval of datas
+					$subset=Array();
+					if (is_array($this->display_owner))
+					{
+						foreach($this->display_owner as $key => $value)
+						{
+							if ($key=='role')
+							{
+								if (!(is_array($value)))
+								{
+									$value = explode(';',$value);
+								}
+								$subset[wf_role_name]= $value;
+							}
+							elseif ($key=='activity')
+							{
+								if (!(is_array($value)))
+								{
+									$value = explode(';',$value);
+								}
+								$subset[wf_activity_name]= $value;
+							}
+						}
+					}
+					//we'll ask the role_manager for it
+					$role_manager =& CreateObject('workflow.workflow_rolemanager');
+					// we expand groups to real users and want users mapped for a subset of the process
+					// which is given by a user defined value
+					$authorized_users = $role_manager->list_mapped_users($this->process_id, true, $subset );
+					//first line of the select
+					$this->t->set_var(array(
+						'selected_owner_options'=> (!!$actual_owner)? 'selected="selected"' :'',
+						'lang_default_owner'	=> lang('Default owner'),
+					));
+					//other lines
+					foreach ($authorized_users as $user_id => $user_name)
+					{
+						$this->t->set_var(array(
+							'owner_option_id'		=> $user_id,
+							'owner_option_value'		=> $user_name,
+							'selected_owner_options'	=> ($user_id == $actual_owner)? 'selected="selected"' :'',
+						));
+						//show the select line
+						$this->t->parse('owner_options','block_owner_options',true);
+					}
+					//show the select
+					$this->t->parse('wf_select_owner','block_select_owner',true);
+				}
+				//show the set owner zone
+				$this->t->parse('set_owner_zone', 'block_set_owner_zone', true);
+			}
+		}
+		
 		//! Draw the priority select box in the activity form
 		/*!
-		Parse the priority select box in the activity form. The user can decide if he want this select box to be shown or not
-		by completing $this->priority_array.
-		For example like that : $this->priority_array = array(1 => '1-Low',2 =>'2', 3 => '3-High');
-		If the array is empty or the conf values says the user does not want automatic parsing no select box will be shown
-		you should give actual priority as a parameter, else priority 1 will be selected.
+		* Parse the priority select box in the activity form. The user can decide if he want this select box to be shown or not
+		* by completing $this->priority_array.
+		* For example like that : $this->priority_array = array(1 => '1-Low',2 =>'2', 3 => '3-High');
+		* If the array is empty or the conf values says the user does not want automatic parsing no select box will be shown
+		* @param actual_priority is by default at 1 and will be the selected activity level.
 		*/
 		function parse_priority($actual_priority=1)
 		{
@@ -470,7 +597,105 @@
 				$this->t->parse('priority_zone', 'block_priority_zone', true);
 			}
 		}
-		
+
+		//!Parse the next_user select/display in the activity form, the user can decide if he want this to be shown or not
+		/*!
+		* if $this->display_next_user is 0 we draw nothing (default value) 
+		* if $this->display_next_user is 1 the next_user is just shown 
+		* if $this->display_next_user is anything else we draw a select box
+		* this 'anything else' can be an associative array containing the 'role' and/or 'activity' key
+		* the values associated with theses keys can be strings or array of strings containing roles and/or
+		* activities's names. Users displayed in the select will then be the users having access to theses activities
+		* and users which are mapped to theses roles (one match per user is enought to be displayed).
+		* ie: $this->display_next_user = 2; will display all users mapped to roles on the process
+		* $this->display_next_user = array('role' => array('Chiefs','assistant'), 'activity' => 'updating foo'); will
+		* display users having access to activity 'updating foo' AND which are mapped to 'Chief' OR 'assistant' roles
+		* of course roles and activities names must be matching the current process's roles and activities names.
+		* @param actual_next_user is the selected next_user in the select list we will display or the shown next_user. 
+		*/
+		function parse_next_user($actual_next_user)
+		{
+		//echo "DEBUG parse_instance_next_user:actual_next_user:".$actual_next_user.'display_next_user:'
+		//_debug_array($this->display_next_user);
+			
+			//inside the select
+			$this->t->set_block('run_activity', 'block_next_user_options', 'next_user_options');			
+			//the select
+			$this->t->set_block('run_activity', 'block_select_next_user', 'wf_select_next_user');
+			// the whole area
+			$this->t->set_block('run_activity', 'block_set_next_user_zone', 'set_next_user_zone');
+			if ( 	(!$this->conf['use_automatic_parsing']) 
+				|| ( empty($this->display_next_user) || (!($this->display_next_user)) ))
+			{
+				//hide the instance next_user zone
+				$this->t->set_var(array( 'set_next_user_zone' => ''));
+			}
+			else
+			{
+				// a little label before the select box
+                                $this->t->set_var(array('set_next_user_text' => lang('Next user:')));
+				if ((!(is_array($this->display_next_user))) && ($this->display_next_user==1))
+				{
+					//we will just display the next_user
+					$next_user_name = $GLOBALS['phpgw']->accounts->id2name($actual_next_user);
+					$this->t->set_var(array('wf_select_next_user' => $next_user_name));
+				}
+				else
+				{	//we will display a select
+
+					//prepare retrieval of datas
+					$subset=Array();
+					if (is_array($this->display_next_user))
+					{
+						foreach($this->display_next_usery as $key => $value)
+						{
+							if ($key=='role')
+							{
+								if (!(is_array($value)))
+								{
+									$value = explode(';',$value);
+								}
+								$subset[wf_role_name]= $value;
+							}
+							elseif ($key=='activity')
+							{
+								if (!(is_array($value)))
+								{
+									$value = explode(';',$value);
+								}
+								$subset[wf_activity_name]= $value;
+							}
+						}
+					}
+					//we'll ask the role_manager for it
+					$role_manager =& CreateObject('workflow.workflow_rolemanager');
+					// we expand groups to real users and want users mapped for a subset of the process
+					// which is given by a user defined value
+					$authorized_users = $role_manager->list_mapped_users($this->process_id, true, $subset );
+					//first line of the select
+					$this->t->set_var(array(
+						'selected_next_user_options'=> (!!$actual_next_user)? 'selected="selected"' :'',
+						'lang_default_next_user'	=> lang('Default next user'),
+					));
+					//other lines
+					foreach ($authorized_users as $user_id => $user_name)
+					{
+						$this->t->set_var(array(
+							'next_user_option_id'		=> $user_id,
+							'next_user_option_value'		=> $user_name,
+							'selected_next_user_options'	=> ($user_id == $actual_next_user)? 'selected="selected"' :'',
+						));
+						//show the select line
+						$this->t->parse('next_user_options','block_next_user_options',true);
+					}
+					//show the select
+					$this->t->parse('wf_select_next_user','block_select_next_user',true);
+				}
+				//show the set next_user zone
+				$this->t->parse('set_next_user_zone', 'block_set_next_user_zone', true);
+			}
+		}
+
 		//! Draw the submit buttons on the activity form
 		/*!
 		In this function we'll draw the command buttons asked for this activity.
@@ -508,7 +733,7 @@
 					//the user didn't give us any instruction
 					// we draw a simple submit button
 					$this->t->set_var(array('submit_area',''));
-					$buttons .= '<td style="font-weight:bold; text-align=right;">';
+					$buttons .= '<td class="wf_submit_buttons_button">';
 					$buttons .= '<input name="wf_submit" type="submit" value="'.lang('Submit').'"/>';
 					$buttons .= '</td>';
 					//set the buttons
@@ -553,7 +778,7 @@
 						//draw input button for each entry
 						foreach ($this->submit_array as $submit_button_name => $submit_button_value)
 						{
-						 	$buttons .= '<td style="font-weight:bold; text-align=right;">';
+						 	$buttons .= '<td class="wf_submit_buttons_button">';
 							$buttons .= '<input name="'.$submit_button_name.'" type="submit" value="'.$submit_button_value.'"/>';
 							$buttons .= '</td>';
 						}
