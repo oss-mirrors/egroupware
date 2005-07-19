@@ -12,9 +12,9 @@ if ($GLOBALS['__activity_completed'])
   {
     $instance->setPriority((int)$_REQUEST['wf_priority']);
   }
-  if(isset($_REQUEST['wf_next_user']))
+  if(isset($_REQUEST['wf_set_next_user']))
   {
-    $instance->setNextUser((int)$_REQUEST['wf_next_user']);
+    $instance->setNextUser((int)$_REQUEST['wf_set_next_user']);
   }
   if(isset($_REQUEST['wf_set_owner']))
   {
