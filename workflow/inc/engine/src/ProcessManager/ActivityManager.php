@@ -9,7 +9,6 @@ require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'BaseManager.php
   activity belongs to some process.
 */
 class ActivityManager extends BaseManager {
-  var $error= Array();
       
   /*!
     Constructor takes a PEAR::Db object to be used
@@ -20,23 +19,6 @@ class ActivityManager extends BaseManager {
       die("Invalid db object passed to activityManager constructor");  
     }
     $this->db = $db;  
-  }
-  
-  //! return errors recorded by this object
-  /*!
-  You should always call this function after operations on an ActivityManager object to test if everything seems ok
-  if you give a true parameter the result will be send as an array of errors or an empty array.
-  Else, if you do not give any parameter or give a false parameter you will obtain a single string which can be empty
-  or will contain error messages with <br /> html tags.
-  */
-  function get_error($as_array=false) 
-  {
-    if ($as_array)
-    {
-      return $this->error;
-    }
-    $result_str = implode('<br />',$this->error);
-    return $result_str;
   }
   
   /*!
