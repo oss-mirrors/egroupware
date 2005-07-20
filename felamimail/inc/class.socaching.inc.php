@@ -38,7 +38,7 @@
 				'fmail_accountname'	=> $this->accountname,
 			);
 			
-			$this->db = clone($GLOBALS['phpgw']->db);
+			$this->db = clone($GLOBALS['egw']->db);
 			$this->db->set_app('felamimail');
 		}
 		
@@ -56,7 +56,7 @@
 				'fmail_date'			=> $_data['date'],
 				'fmail_subject'			=> $_data['subject'],
 				'fmail_sender_name'		=> $_data['sender_name'],
-				'fmail_sender_address'	=> $_data['sender_address'],
+				'fmail_sender_address'		=> $_data['sender_address'],
 				'fmail_to_name'			=> $_data['to_name'],
 				'fmail_to_address'		=> substr($_data['to_address'],0,$this->to_address_size),
 				'fmail_size'			=> $_data['size'],
@@ -64,6 +64,15 @@
 			),array_merge($this->host_account_folder,array(
 				'fmail_uid'				=> $_data['uid'],
 			)),__LINE__,__FILE__);	
+		}
+		
+		function clearCache($_folderName='')
+		{
+			$where = $this->host_account_folder;
+			if(!empty($_folderName)) 
+				$where['fmail_foldername'] = $_folderName;
+			
+			$this->db->delete($this->cache_table,$where,__LINE__, __FILE__);
 		}
 		
 		/**
@@ -141,14 +150,14 @@
 			if ($this->db->next_record())
 			{
 				return array(
-					'messages'		=> $this->db->f('fmail_messages'),
-					'recent'		=> $this->db->f('fmail_recent'),
-					'unseen'		=> $this->db->f('fmail_unseen'),
-					'uidnext'		=> $this->db->f('fmail_uidnext'),
+					'messages'	=> $this->db->f('fmail_messages'),
+					'recent'	=> $this->db->f('fmail_recent'),
+					'unseen'	=> $this->db->f('fmail_unseen'),
+					'uidnext'	=> $this->db->f('fmail_uidnext'),
 					'uidvalidity'	=> $this->db->f('fmail_uidvalidity')
 				);
 			}
-			return 0;
+			return false;
 		}
 		
 		/**
@@ -247,15 +256,16 @@
 				)),__LINE__,__FILE__);
 		}
 		
-		function updateImapStatus($_status, $firstUpdate)
+		function updateImapStatus($_status)
 		{
-			$this->db->insert($this->folder_table,array(
+			$data = array(
 					'fmail_messages'	=> $_status->messages,
 					'fmail_recent'		=> $_status->recent,
 					'fmail_unseen'		=> $_status->unseen,
 					'fmail_uidnext'		=> $_status->uidnext,
 					'fmail_uidvalidity'	=> $_status->uidvalidity,
-				),$this->host_account_folder,__LINE__,__FILE__);
+				);
+			$this->db->insert($this->folder_table,$data,$this->host_account_folder,__LINE__,__FILE__);
 		}
 	}
 ?>

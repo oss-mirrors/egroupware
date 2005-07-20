@@ -254,8 +254,12 @@
 			{
 				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
 			}
-			$GLOBALS['phpgw']->js->validate_file('foldertree','foldertree');
-			$GLOBALS['phpgw']->common->phpgw_header();
+			#$GLOBALS['phpgw']->js->validate_file('foldertree','foldertree');
+			$GLOBALS['phpgw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
+			$GLOBALS['phpgw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
+			$GLOBALS['phpgw']->js->validate_file('jscode','viewMainScreen','felamimail');
+			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
+			$GLOBALS['phpgw']->common->egw_header();
 			echo parse_navbar();
 		}
 	

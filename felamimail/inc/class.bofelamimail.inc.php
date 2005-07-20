@@ -94,6 +94,13 @@
 			
 		}
 		
+		function addACL($_folderName, $_accountName, $_acl)
+		{
+			imap_setacl($this->mbox, $_folderName, $_accountName, $_acl);
+			
+			return TRUE;
+		}
+		
 		/**
 		* hook to add account
 		*
@@ -404,26 +411,35 @@
 
 		function getFolderStatus($_folderName)
 		{
+			$retValue = array();
+			
 			// now we have the keys as values
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
-			$subscribedFolders = $this->getFolderObjects(true);
-			#print_r($subscribedFolders);
-			#print $subscribedFolders[$_folderName]." - $_folderName<br>";
-			if(isset($subscribedFolders[$_folderName]))
+			if($folderInfo = imap_getsubscribed($this->mbox,$mailboxString,$mailboxString))
 			{
-				$retValue['subscribed']	= true;
+				$delimiter = $folderInfo[0]->delimiter;
+				$retValue['subscribed'] = true;
+			}
+			elseif($folderInfo = imap_getmailboxes($this->mbox,$mailboxString,$mailboxString))
+			{
+				$delimiter = $folderInfo[0]->delimiter;
+				$retValue['subscribed'] = false;
 			}
 			else
 			{
-				$retValue['subscribed'] = false;
+				// folder does not exist
+				return false;
 			}
 			
-			// get the current IMAP counters
+			$retValue['shortName'] = array_pop(explode($delimiter, $_folderName));
+			
 			$folderStatus = imap_status($this->mbox,$mailboxString,SA_ALL);
-			
-			// merge a array and object to a array
-			$retValue = array_merge($retValue,$folderStatus);
-			
+			if($folderStatus)
+			{
+				// merge a array and object to a array
+				$retValue = array_merge($retValue,(array)$folderStatus);
+			}
+
 			return $retValue;
 		}
 		
@@ -499,17 +515,8 @@
 			}
 		}
 		
-		function reopen($_foldername)
-		{
-			// (regis) seems to be necessary/usefull to reopen in the good folder
-			//echo "<hr>reopening imap mailbox in:".$_foldername;
-			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_foldername,3,$this->bofelamimail->profileID);
-			imap_reopen ($this->mbox, $mailboxString);
-		}
-		
 		function getHeaders($_startMessage, $_numberOfMessages, $_sort)
 		{
-
 			#printf ("this->bofelamimail->getHeaders start: %s<br>",date("H:i:s",mktime()));
 
 			$caching = CreateObject('felamimail.bocaching',
@@ -521,18 +528,20 @@
 
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$this->sessionData['mailbox'],3,$this->profileID);
 			$status = imap_status ($this->mbox, $mailboxString, SA_ALL);
-			#_debug_array($status);
+			$this->reopen($this->sessionData['mailbox']);
+
 			$cachedStatus = $caching->getImapStatus();
 
 			// no data cached already?
 			// get all message informations from the imap server for this folder
-			if ($cachedStatus['uidnext'] == 0)
+			if ($cachedStatus['uidnext'] == 0 || $cachedStatus['uidnext'] > $status->uidnext)
 			{
+				//drop all cached info for this folder
+				$caching->clearCache();
 				#print "nix gecached!!<br>";
 				#print "current UIDnext :".$cachedStatus['uidnext']."<br>";
-				#print "new UIDnext :".$status->uidnext."<br>";
+				# "new UIDnext :".$status->uidnext."<br>";
 				// (regis) seems to be necessary to reopen...
-				$this->reopen($this->sessionData['mailbox']);
 				for($i=1; $i<=$status->messages; $i++)
 				{
 					@set_time_limit();// FIXME: beware no effect if in PHP safe_mode
@@ -567,19 +576,17 @@
 
 					unset($messageData);
 				}
-
-				$caching->updateImapStatus($status);
+				
+				return $caching->updateImapStatus($status);
 			}
 			// update cache, but only add new emails
 			elseif($status->uidnext != $cachedStatus['uidnext'])
 			{
-				// (regis) seems to be necessary to reopen...
-				$this->reopen($this->sessionData['mailbox']);
-
 				#print "found new messages<br>";
 				#print "new uidnext: ".$status->uidnext." old uidnext: ".$cachedStatus['uidnext']."<br>";
 				$uidRange = $cachedStatus['uidnext'].":".$status->uidnext;
 				#print "$uidRange<br>";
+				#return $uidRange;
 				$newHeaders = imap_fetch_overview($this->mbox,$uidRange,FT_UID);
 				$countNewHeaders = count($newHeaders);
 				for($i=0; $i<$countNewHeaders; $i++)
@@ -704,6 +711,8 @@
 				$retValue['header'][$count]['deleted'] = $header[0]->deleted;
 				$retValue['header'][$count]['seen'] = $header[0]->seen;
 				$retValue['header'][$count]['draft'] = $header[0]->draft;
+
+				#$retValue['header'][$count]['recent'] = $this->sessionData['mailbox'];
 				
 				$count++;
 			}
@@ -722,6 +731,14 @@
 			{
 				return 0;
 			}
+		}
+		
+		function getIMAPACL($_folderName)
+		{
+			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
+			$acl = imap_getacl ($this->mbox, $_folderName);
+			
+			return $acl;
 		}
 		
 		function getMailPreferences()
@@ -1028,6 +1045,14 @@
 			}
 		}
 		
+		function isSentFolder($_folderName)
+		{
+			if($this->mailPreferences['sentFolder'] == $_folderName)
+				return TRUE;
+			else
+				return FALSE;
+		}
+		
 		function moveMessages($_foldername, $_messageUID)
 		{
 			$caching = CreateObject('felamimail.bocaching',
@@ -1149,9 +1174,10 @@
 					$data['partID']	= $_currentPartID;
 					$data["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
 					$data["name"]		= lang("unknown");
-					for ($lcv = 0; $lcv < count($_structure->parameters); $lcv++)
+					#for ($lcv = 0; $lcv < count($_structure->parameters); $lcv++)
+					foreach ((array)$_structure->parameters as $param)
 					{
-						$param = $_structure->parameters[$lcv];
+						#$param = $_structure->parameters[$lcv];
 						switch(strtolower($param->attribute))
 						{
 							case 'name':
@@ -1296,9 +1322,11 @@
 						}
 					}
 					
-					for ($lcv = 0; $lcv < count($_structure->parameters); $lcv++)
+					#for ($lcv = 0; $lcv < count($_structure->parameters); $lcv++)
+					#{
+					#	$param = $_structure->parameters[$lcv];
+					foreach ((array)$_structure->parameters as $param)
 					{
-						$param = $_structure->parameters[$lcv];
 						switch(strtolower($param->attribute))
 						{
 							case 'name':
@@ -1321,9 +1349,11 @@
 					$_sections[$_currentPartID]["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
 					$_sections[$_currentPartID]["name"]	= lang("unknown");
 					$_sections[$_currentPartID]['type']	= 'attachment';
-					for ($lcv = 0; $lcv < count($_structure->dparameters); $lcv++)
+					#for ($lcv = 0; $lcv < count($_structure->dparameters); $lcv++)
+					#{
+					#	$param = $_structure->dparameters[$lcv];
+					foreach ((array)$_structure->dparameters as $param)
 					{
-						$param = $_structure->dparameters[$lcv];
 						switch(strtolower($param->attribute))
 						{
 							case 'filename':
@@ -1421,6 +1451,14 @@
 			
 		}
 		
+		function reopen($_foldername)
+		{
+			// (regis) seems to be necessary/usefull to reopen in the good folder
+			//echo "<hr>reopening imap mailbox in:".$_foldername;
+			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_foldername,3,$this->bofelamimail->profileID);
+			imap_reopen ($this->mbox, $mailboxString);
+		}
+		
 		function restoreSessionData()
 		{
 			$this->sessionData = $GLOBALS['phpgw']->session->appsession('session_data');
@@ -1493,6 +1531,31 @@
 			{
 				ExecMethod('emailadmin.bo.updateAccount',$_hookValues,3,$this->profileID);
 			}
+		}
+		
+		function updateSingleACL($_folderName, $_accountName, $_aclType, $_aclStatus)
+		{
+			$folderACL = $this->getIMAPACL($_folderName);
+			$userACL = $folderACL[$_accountName];
+			
+			if($_aclStatus == 'true')
+			{
+				if(strpos($userACL, $_aclType) === false)
+				{
+					$userACL .= $_aclType;
+					imap_setacl ($this->mbox, $_folderName, $_accountName, $userACL);
+				}
+			}
+			elseif($_aclStatus == 'false')
+			{
+				if(strpos($userACL, $_aclType) !== false)
+				{
+					$userACL = str_replace($_aclType,'',$userACL);
+					imap_setacl ($this->mbox, $_folderName, $_accountName, $userACL);
+				}
+			}
+			
+			return $userACL;
 		}
 		
 		/* inspired by http://de2.php.net/wordwrap

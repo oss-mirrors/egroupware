@@ -229,7 +229,7 @@ doLoad();
 			&nbsp;
 		</td>
 		<td align="center" style="font-size:10px">
-			&lt;-&nbsp;{link_previous}&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;{message}&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;{link_next}&nbsp;-&gt;&nbsp;{trash_link}
+			&lt;-&nbsp;{link_previous}&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<span id="messageCounter">{message}</span>&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;{link_next}&nbsp;-&gt;&nbsp;{trash_link}
 		</td>
 	</tr>
 	<TR>
@@ -238,22 +238,8 @@ doLoad();
 			<!-- StartFolderTree -->
 
 			<div id="divFolderTree" style="overflow:auto; width:180px; height:474px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;">
-				<table width=100% BORDER="0" style="table-layout:fixed;padding-left:2;">
-					<tr>
-						<td width="100%" valign="top" nowrap style="font-size:10px">
-							{folder_tree}
-						</td>
-					</tr>
-					<tr>
-						<td width="100%" valign="bottom" nowrap style="font-size:10px">
-							<br>
-							<p align="center">
-							<small><a href="javascript: d.openAll();">{lang_open_all}</a> | <a href="javascript: d.closeAll();">{lang_close_all}</a></small>
-							</p>
-						</td>
-					</tr>
-				</table>
 			</div>
+			{folder_tree}
 			
 		</td>
 		<td width="10" valign="middle">
@@ -319,6 +305,12 @@ doLoad();
 
 
 <!-- END main -->
+
+<!-- BEGIN message_table -->
+<table BORDER="0" style="width:98%; padding-left:2; table-layout: fixed;">
+	{message_rows}
+</table>
+<!-- END message_table -->
 
 <!-- BEGIN status_row_tpl -->
 <table WIDTH="100%" BORDER="0" CELLPADDING="1" CELLSPACING="2">

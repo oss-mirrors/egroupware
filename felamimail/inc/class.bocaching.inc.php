@@ -66,6 +66,11 @@
 			$this->socaching->addToCache($_data);
 		}
 		
+		function clearCache($_folderName='')
+		{
+			$this->socaching->clearCache($_folderName);
+		}
+		
 		function debug()
 		{
 			print "Hostname: ".$this->hostname."<br>";
@@ -116,26 +121,26 @@
 		function updateImapStatus($_status)
 		{
 			// are we updating the first time
-			if ($this->uidnext == 0)
-			{
+			#if ($this->uidnext == 0)
+			#{
+			#	$this->messages		= $_status->messages;
+			#	$this->recent 		= $_status->recent;
+			#	$this->unseen 		= $_status->unseen;
+			#	$this->uidnext 		= $_status->uidnext;
+			#	$this->uidvalidity 	= $_status->uidvalidity;
+			#
+			#	$this->socaching->updateImapStatus($_status,true);
+			#}
+			#else
+			#{
 				$this->messages		= $_status->messages;
 				$this->recent 		= $_status->recent;
 				$this->unseen 		= $_status->unseen;
 				$this->uidnext 		= $_status->uidnext;
 				$this->uidvalidity 	= $_status->uidvalidity;
 			
-				$this->socaching->updateImapStatus($_status,true);
-			}
-			else
-			{
-				$this->messages		= $_status->messages;
-				$this->recent 		= $_status->recent;
-				$this->unseen 		= $_status->unseen;
-				$this->uidnext 		= $_status->uidnext;
-				$this->uidvalidity 	= $_status->uidvalidity;
-			
-				$this->socaching->updateImapStatus($_status,false);
-			}
+				return $this->socaching->updateImapStatus($_status);
+			#}
 			
 		}
 		

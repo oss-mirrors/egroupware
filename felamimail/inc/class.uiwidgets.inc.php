@@ -54,7 +54,7 @@
 		*/
 		function uiwidgets()
 		{
-			$template = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			$template = CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->template = $template;
 			$this->template->set_file(array("body" => 'uiwidgets.tpl'));
 		}
@@ -99,21 +99,13 @@
 				}
 				$allFolders[$key] = $obj;
 			}
-
-			$folderImageDir = substr($GLOBALS['phpgw']->common->image('phpgwapi','foldertree_line.gif'),0,-19);
+			$folderImageDir = $GLOBALS['egw_info']['server']['webserver_url'].'/phpgwapi/templates/default/images/';
 			
 			// careful! "d = new..." MUST be on a new line!!!
-			$folder_tree_new = "<script type='text/javascript'>d = new dTree('d','".$folderImageDir."');d.config.inOrder=true;d.config.closeSameLevel=true;";
-			
-			// keep track of the last parent id
-			$folderID	= array();
-			$counter	= 0;
-			$folder_name	= $_topFolderName;
-			$folder_title	= $_topFolderDescription;
-			$folder_icon 	= $folderImageDir."foldertree_base.gif";
-			$parent 	= -1;
-			$folder_tree_new .= "d.add(0,-1,'$folder_name','javascript:void(0);','','','$folder_title');";
-			$counter++;
+			$folder_tree_new  = '<link rel="STYLESHEET" type="text/css" href="'.$GLOBALS['egw_info']['server']['webserver_url'].'/phpgwapi/js/dhtmlxtree/css/dhtmlXTree.css">';
+			$folder_tree_new .= "<script type='text/javascript'>\n";
+			$folder_tree_new .= "tree=new dhtmlXTreeObject('divFolderTree','100%','100%',0);\n";
+			$folder_tree_new .= "tree.setImagePath('$folderImageDir/dhtmlxtree/');\n";
 			
 			#foreach($_folders as $key => $obj)
 			foreach($allFolders as $longName => $obj)
@@ -124,9 +116,8 @@
 				$shortName = array_pop($folderParts);
 				
 				// the rest of the array is the name of the parent
-				$parentName = @implode($folderParts,$obj->delimiter);
-
-				$folderID[$longName] = $counter;
+				$parentName = implode((array)$folderParts,$obj->delimiter);
+				if(empty($parentName)) $parentName = 0;
 				
  				if( @$obj->counter->unseen > 0 )
 				{
@@ -137,161 +128,248 @@
 					$messageCount = "";
 				}
 
-				// hihglight currently selected mailbox
+                                $entryOptions = 'CHILD,CHECKED';
+
+				// highlight currently selected mailbox
 				if ($_selected == $longName)
 				{
-					$folder_name = "<font style=\"background-color: #dddddd\">$shortName$messageCount</font>";
-					$openTo = $counter;
+				        $entryOptions .= ',SELECT';
 				}
-				else
-				{
-					$folder_name = $shortName.$messageCount;
-				}
-
+				
+				$folder_name = $shortName.$messageCount;
+				
 				// give INBOX a special folder
 				if ($longName == 'INBOX')
 				{
 					$folder_icon = $folderImageDir."foldertree_felamimail_sm.png";
 					$folderOpen_icon = $folderImageDir."foldertree_felamimail_sm.png";
+					$entryOptions .= ',TOP';
 				}
 				else
 				{
 					$folder_icon = $folderImageDir."foldertree_folder.gif";
-					$folderOpen_icon = '';
 				}
 
-				$parentID = (int)$folderID[$parentName];
-				
-				// Node(id, pid, name, url, urlClick, urlOut, title, target, icon, iconOpen, open) {
-				$folder_tree_new .= "d.add($counter,$parentID,'$folder_name','#','document.$_formName.$_hiddenVar.value=\'$longName\'; document.$_formName.submit();','','$longName','','$folder_icon','$folderOpen_icon');\n";
-				$counter++;
+				$folder_tree_new .= "tree.insertNewItem('$parentName','$longName','$folder_name',onNodeSelect,0,0,0,'$entryOptions');\n";
 			}
 
-			$folder_tree_new.= "document.write(d);
-			d.openTo('$openTo','true');
+			$folder_tree_new.= "
 			</script>";
 			
 			return $folder_tree_new;
 		}
-		
-		/**
-		* create a folder tree
-		*
-		* this function will create a foldertree based on javascript
-		* on click a javascript function get called
-		*
-		* @param _folders array containing the list of folders
-		* @param _selected string containing the selected folder
-		* @param _topFolderName string containing the top folder name
-		* @param _topFolderDescription string containing the description for the top folder
-		* @param _jsFunctionName string name of the JS Function
-		*
-		* @returns the html code, to be added into the template
-		*/
-		function createHTMLFolderJS($_folders, $_selected, $_topFolderName, $_topFolderDescription, $_jsFunctionName)
+
+		function messageTable($_headers, $_isSentFolder, $_readInNewWindow)
 		{
-			$this->template->set_block('body','folderSelectTree');
-			
-			// create a list of all folders, also the ones which are not subscribed
- 			foreach($_folders as $key => $obj)
+			$this->t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			$this->t->set_file(array("body" => 'mainscreen.tpl'));
+			$this->t->set_block('body','header_row');
+			$this->t->set_block('body','message_table');
+
+			foreach((array)$_headers['header'] as $header)
 			{
-				$folderParts = explode($obj->delimiter,$key);
-				if(is_array($folderParts))
+				// create the listing of subjects
+				$maxSubjectLength = 60;
+				$maxAddressLength = 20;
+				$maxSubjectLengthBold = 50;
+				$maxAddressLengthBold = 14;
+					
+				$flags = "";
+				if(!empty($header['recent'])) $flags .= "R";
+				if(!empty($header['flagged'])) $flags .= "F";
+				if(!empty($header['answered'])) $flags .= "A";
+				if(!empty($header['deleted'])) $flags .= "D";
+				if(!empty($header['seen'])) $flags .= "S";
+
+				switch($flags)
 				{
-					$partCount = count($folderParts);
-					$string = '';
-					for($i = 0; $i < $partCount-1; $i++)
+					case "":
+						$this->t->set_var('imageName','unread_small.png');
+						$this->t->set_var('row_text',lang('new'));
+						$maxAddressLength = $maxAddressLengthBold;
+						$maxSubjectLength = $maxSubjectLengthBold;
+						break;
+					case "D":
+					case "DS":
+					case "ADS":
+						$this->t->set_var('imageName','unread_small.png');
+						$this->t->set_var('row_text',lang('deleted'));
+						break;
+					case "F":
+						$this->t->set_var('imageName','unread_flagged_small.png');
+						$this->t->set_var('row_text',lang('new'));
+						$maxAddressLength = $maxAddressLengthBold;
+						break;
+					case "FS":
+						$this->t->set_var('imageName','read_flagged_small.png');
+						$this->t->set_var('row_text',lang('replied'));
+						break;
+					case "FAS":
+						$this->t->set_var('imageName','read_answered_flagged_small.png');
+						$this->t->set_var('row_text',lang('replied'));
+						break;
+					case "S":
+					case "RS":
+						$this->t->set_var('imageName','read_small.png');
+						$this->t->set_var('row_text',lang('read'));
+						break;
+					case "R":
+						$this->t->set_var('imageName','recent_small.gif');
+						$this->t->set_var('row_text','*'.lang('recent').'*');
+						$maxAddressLength = $maxAddressLengthBold;
+						break;
+					case "RAS":
+					case "AS":
+						$this->t->set_var('imageName','read_answered_small.png');
+						$this->t->set_var('row_text',lang('replied'));
+						#$maxAddressLength = $maxAddressLengthBold;
+						break;
+					default:
+						$this->t->set_var('row_text',$flags);
+						break;
+				}
+				#_debug_array($GLOBALS[phpgw_info]);
+				if (!empty($header['subject']))
+				{
+					// make the subject shorter if it is to long
+					$fullSubject = $header['subject'];
+					#if(strlen($header['subject']) > $maxSubjectLength)
+					#{
+					#	$header['subject'] = substr($header['subject'],0,$maxSubjectLength)."...";
+					#}
+					$header['subject'] = @htmlspecialchars($header['subject'],ENT_QUOTES,$this->displayCharset);
+					if($header['attachments'] == "true")
 					{
-						if(!empty($string)) $string .= $obj->delimiter;
-						$string .= $folderParts[$i];
-						if(!$allFolders[$string])
-						{	
-							$allFolders[$string] = $obj;
-							unset($allFolders[$string]->name);
-							unset($allFolders[$string]->attributes);
-							unset($allFolders[$string]->counter);
-						}
+						$image = '<img src="'.$GLOBALS['phpgw']->common->image('felamimail','attach').'" border="0">';
+
+						$header['attachment'] = $image;
 					}
-				}
-				$allFolders[$key] = $obj;
-			}
-
-			$folderImageDir = substr($GLOBALS['phpgw']->common->image('phpgwapi','foldertree_line.gif'),0,-19);
-			
-			// careful! "d = new..." MUST be on a new line!!!
-			$folder_tree_new = "<script type='text/javascript'>d = new dTree('d','".$folderImageDir."');d.config.inOrder=true;d.config.closeSameLevel=true;";
-			
-			// keep track of the last parent id
-			$folderID	= array();
-			$counter	= 0;
-			$folder_name	= $_topFolderName;
-			$folder_title	= $_topFolderDescription;
-			$folder_icon 	= $folderImageDir."foldertree_base.gif";
-			$parent 	= -1;
-			$folder_tree_new .= "d.add(0,-1,'$folder_name','javascript:void(0);','','','$folder_title');";
-			$counter++;
-			
-			#foreach($_folders as $key => $obj)
-			foreach($allFolders as $longName => $obj)
-			{	
-				$folderParts = explode($obj->delimiter, $longName);
-				
-				//get rightmost folderpart
-				$shortName = array_pop($folderParts);
-				
-				// the rest of the array is the name of the parent
-				$parentName = @implode($folderParts,$obj->delimiter);
-
-				$folderID[$longName] = $counter;
-				
- 				if( @$obj->counter->unseen > 0 )
-				{
- 					$messageCount = "&nbsp;(".$obj->counter->unseen.")";
-				}
- 				else
- 				{
-					$messageCount = "";
-				}
-
-				// hihglight currently selected mailbox
-				if ($_selected == $longName)
-				{
-					$folder_name = "<font style=\"background-color: #dddddd\">$shortName$messageCount</font>";
-					$openTo = $counter;
+					$this->t->set_var('header_subject', $header['subject']);
+					$this->t->set_var('attachments', $header['attachment']);
+					$this->t->set_var('full_subject',@htmlspecialchars($fullSubject,ENT_QUOTES,$this->displayCharset));
 				}
 				else
 				{
-					$folder_name = $shortName.$messageCount;
+					$this->t->set_var('header_subject',@htmlentities("(".lang('no subject').")",ENT_QUOTES,$this->displayCharset));
 				}
-
-				// give INBOX a special folder
-				if ($longName == 'INBOX')
+			
+				if ($_isSentFolder)
 				{
-					$folder_icon = $folderImageDir."foldertree_felamimail_sm.png";
-					$folderOpen_icon = $folderImageDir."foldertree_felamimail_sm.png";
+					if (!empty($header['to_name']))
+					{
+						$sender_name	= $header['to_name'];
+						$full_address	= @htmlentities(
+							$header['to_name'].
+							" <".
+							$header['to_address'].
+							">",ENT_QUOTES,$this->displayCharset);
+					}
+					else
+					{
+						$sender_name	= $header['to_address'];
+						$full_address	= $header['to_address'];
+					}
+					#$this->t->set_var('lang_from',lang("to"));
 				}
 				else
 				{
-					$folder_icon = $folderImageDir."foldertree_folder.gif";
-					$folderOpen_icon = '';
+					if (!empty($header['sender_name']))
+					{
+						$sender_name	= $header['sender_name'];
+						$full_address	= @htmlentities(
+							$header['sender_name'].
+							" <".
+							$header['sender_address'].
+							">",ENT_QUOTES,$this->displayCharset);
+					}
+					else
+					{
+						$sender_name	= $header['sender_address'];
+						$full_address	= $header['sender_address'];
+					}
+					#$this->t->set_var('lang_from',lang("from"));
 				}
+				#if(strlen($sender_name) > $maxAddressLength)
+				#{
+				#	$sender_name = substr($sender_name,0,$maxAddressLength)."...";
+				#}
+				$this->t->set_var('sender_name',@htmlentities($sender_name,
+										 ENT_QUOTES,$this->displayCharset));
+				$this->t->set_var('full_address',$full_address);
+			
+				#if($GLOBALS['HTTP_GET_VARS']["select_all"] == "select_all")
+				#{
+				#		$this->t->set_var('row_selected',"checked");
+				#}
 
-				$parentID = (int)$folderID[$parentName];
+				$this->t->set_var('message_counter',$i);
+				$this->t->set_var('message_uid',$header['uid']);
+// HINT: date style should be set according to preferences!
+				$this->t->set_var('date',$header['date']);
+				$this->t->set_var('size',$this->show_readable_size($header['size']));
+
+				$linkData = array
+				(
+					'menuaction'    => 'felamimail.uidisplay.display',
+					'showHeader'	=> 'false',
+					'uid'		=> $header['uid']
+				);
+				if($_readInNewWindow)
+				{
+					$this->t->set_var('url_read_message',"javascript:displayMessage('".$GLOBALS['phpgw']->link('/index.php',$linkData)."');");
+				}
+				else
+				{
+					$this->t->set_var('url_read_message',$GLOBALS['phpgw']->link('/index.php',$linkData));
+				}
+			
+				if(!empty($header['sender_name']))
+				{
+					list($mailbox, $host) = explode('@',$header['sender_address']);
+					$senderAddress  = imap_rfc822_write_address($mailbox,
+								$host,
+								$header['sender_name']);
+					$linkData = array
+					(
+						'menuaction'    => 'felamimail.uicompose.compose',
+						'send_to'	=> base64_encode($senderAddress)
+					);
+				}
+				else
+				{
+					$linkData = array
+					(
+						'menuaction'    => 'felamimail.uicompose.compose',
+						'send_to'	=> base64_encode($header['sender_address'])
+					);
+				}
+				if($_readInNewWindow)
+				{
+					$this->t->set_var('url_compose',"javascript:displayMessage('".$GLOBALS['phpgw']->link('/index.php',$linkData)."');");
+				}
+				else
+				{
+					$this->t->set_var('url_compose',$GLOBALS['phpgw']->link('/index.php',$linkData));
+				}
 				
-				// Node(id, pid, name, url, urlClick, urlOut, title, target, icon, iconOpen, open) {
-				$folder_tree_new .= "d.add($counter,$parentID,'$folder_name','#','$_jsFunctionName(\'$longName\');','','$longName','','$folder_icon','$folderOpen_icon');\n";
-				$counter++;
+				$linkData = array
+				(
+				'menuaction'    => 'addressbook.uiaddressbook.add_email',
+					'add_email'	=> urlencode($header['sender_address']),
+					'name'		=> urlencode($header['sender_name']),
+					'referer'	=> urlencode($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'])
+				);
+				$this->t->set_var('url_add_to_addressbook',$GLOBALS['phpgw']->link('/index.php',$linkData));
+				$this->t->set_var('msg_icon_sm',$msg_icon_sm);
+				
+				$this->t->set_var('phpgw_images',PHPGW_IMAGES);
+				$this->t->set_var('row_css_class','header_row_'.$flags);
+		
+				$this->t->parse('message_rows','header_row',True);
 			}
-
-			$folder_tree_new.= "document.write(d);
-			d.openTo('$openTo','true');
-			</script>";
+			$this->t->parse("out","message_table");
 			
-			$this->template->set_var('folderTree',$folder_tree_new);
-			$this->template->set_var('lang_open_all',lang("open all"));
-			$this->template->set_var('lang_close_all',lang("close all"));
-			
-			return $this->template->fp('out','folderSelectTree');;
+			return $this->t->get('out','message_table');
 		}
 
 		/**
@@ -337,6 +415,30 @@
 			return $this->template->fp('out','multiSelectBox');
 		}
 
+		/* Returns a string showing the size of the message/attachment */
+		function show_readable_size($bytes, $_mode='short')
+		{
+			$bytes /= 1024;
+			$type = 'k';
+			
+			if ($bytes / 1024 > 1)
+			{
+				$bytes /= 1024;
+				$type = 'M';
+			}
+			
+			if ($bytes < 10)
+			{
+				$bytes *= 10;
+				settype($bytes, 'integer');
+				$bytes /= 10;
+			}
+			else
+				settype($bytes, 'integer');
+			
+			return $bytes . '&nbsp;' . $type ;
+		}
+		
 		function tableView($_headValues, $_tableWidth="100%")
 		{
 			$this->template->set_block('body','tableView');

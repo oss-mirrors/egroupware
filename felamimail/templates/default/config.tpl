@@ -1,8 +1,8 @@
 <!-- BEGIN header -->
 <form method="POST" action="{action_url}">
 <table border="0" align="center">
-   <tr class="th">
-    <th colspan="2">{title}</td>
+   <tr bgcolor="{th_bg}">
+    <td colspan="2"><font color="{th_text}">&nbsp;<b>{title}</b></font></td>
    </tr>
 <!-- END header -->
 <!-- BEGIN body -->
@@ -10,16 +10,16 @@
     <td colspan="2">&nbsp;</td>
    </tr>
 
-   <tr class="row_off">
+   <tr bgcolor="{row_off}">
     <td colspan="2">&nbsp;<b>{lang_Mail_settings}</b></td>
    </tr>
 
-   <tr class="row_on">
+   <tr bgcolor="{row_on}">
     <td>{lang_Enter_your_IMAP_mail_server_hostname_or_IP_address}:</td>
     <td><input name="newsettings[imapServer]" value="{value_imapServer}"></td>
    </tr>
 
-   <tr class="row_off">
+   <tr bgcolor="{row_off}">
     <td>{lang_Select_your_mail_server_type}:</td>
     <td>
      <select name="newsettings[imapServerMode]">
@@ -30,7 +30,7 @@
     </td>
    </tr>
 
-   <tr class="row_on">
+   <tr bgcolor="{row_on}">
     <td>IMAP server type:</td>
     <td>
      <select name="newsettings[imapServerType]">
@@ -42,12 +42,12 @@
     </td>
    </tr>
 
-   <tr class="row_off">
+   <tr bgcolor="{row_off}">
     <td>{lang_Enter_your_default_mail_domain_(_From:_user@domain_)}:</td>
     <td><input name="newsettings[mailSuffix]" value="{value_mailSuffix}"></td>
    </tr>
 
-   <tr class="row_on">
+   <tr bgcolor="{row_on}">
     <td>{lang_Mail_server_login_type}:</td>
     <td>
      <select name="newsettings[mailLoginType]">
@@ -57,7 +57,7 @@
     </td>
    </tr>
    
-   <tr class="row_off">
+   <tr bgcolor="{row_off}">
     <td>{lang_Users_can_define_their_own_emailaccounts}:</td>
     <td>
      <select name="newsettings[userDefinedAccounts]">
@@ -67,7 +67,7 @@
     </td>
    </tr>
    
-   <tr class="row_on">
+   <tr bgcolor="{row_on}">
     <td>{lang_Organization_name}:</td>
     <td><input name="newsettings[organizationName]" value="{value_organizationName}" size="30"></td>
    </tr>
@@ -76,21 +76,21 @@
    	<td colspan="2">&nbsp;</td>
    </tr>
 
-   <tr class="row_off">
+   <tr bgcolor="{row_off}">
     <td colspan="2">&nbsp;<b>{lang_SMTP_settings}</b></td>
    </tr>
 
-   <tr class="row_on">
+   <tr bgcolor="{row_on}">
     <td>{lang_Enter_your_SMTP_server_hostname_or_IP_address}:</td>
     <td><input name="newsettings[smtpServer]" value="{value_smtpServer}"></td>
    </tr>
 
-   <tr class="row_off">
+   <tr bgcolor="{row_off}">
     <td>{lang_Enter_your_SMTP_server_port}:</td>
     <td><input name="newsettings[smtpPort]" value="{value_smtpPort}"></td>
    </tr>
 
-   <tr class="row_on">
+   <tr bgcolor="{row_on}">
     <td>{lang_Use_SMTP_auth}:</td>
     <td>
      <select name="newsettings[smtpAuth]">
@@ -104,24 +104,24 @@
    	<td colspan="2">&nbsp;</td>
    </tr>
 
-   <tr class="row_off">
+   <tr bgcolor="{row_off}">
     <td colspan="2">&nbsp;<b>{lang_Sieve_settings}</b></td>
    </tr>
 
-   <tr class="row_on">
+   <tr bgcolor="{row_on}">
     <td>{lang_Enter_your_SIEVE_server_hostname_or_IP_address}:</td>
     <td><input name="newsettings[sieveServer]" value="{value_sieveServer}"></td>
    </tr>
 
-   <tr class="row_off">
+   <tr bgcolor="{row_off}">
     <td>{lang_Enter_your_SIEVE_server_port}:</td>
     <td><input name="newsettings[sievePort]" value="{value_sievePort}"></td>
    </tr>
 
 <!-- END body -->
 <!-- BEGIN footer -->
-  <tr >
-    <td class="th" colspan="2">
+  <tr bgcolor="{th_bg}">
+    <td colspan="2">
 &nbsp;
     </td>
   </tr>

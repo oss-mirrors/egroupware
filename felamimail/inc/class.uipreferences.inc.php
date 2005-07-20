@@ -18,6 +18,7 @@
 
 		var $public_functions = array
 		(
+			'addACL'	=> 'True',
 			'listFolder'	=> 'True',
 			'showHeader'	=> 'True',
 			'getAttachment'	=> 'True'
@@ -37,15 +38,37 @@
 
 		}
 		
-		function display_app_header()
+		function addACL()
+		{
+			$this->display_app_header(FALSE);
+
+			$this->t->set_file(array("body" => "preferences_manage_folder.tpl"));
+			$this->t->set_block('body','main');
+			$this->t->set_block('body','add_acl');
+
+			$this->translate();
+
+			$this->t->pparse("out","add_acl");			
+
+		}
+		
+		// $_displayNavbar false == don't display navbar
+		function display_app_header($_displayNavbar)
 		{
 			if(!@is_object($GLOBALS['phpgw']->js))
 			{
 				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
 			}
-			$GLOBALS['phpgw']->js->validate_file('foldertree','foldertree');
+			#$GLOBALS['phpgw']->js->validate_file('foldertree','foldertree');
+			$GLOBALS['phpgw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
+			$GLOBALS['phpgw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
+			$GLOBALS['phpgw']->js->validate_file('jscode','listFolder','felamimail');
+			$GLOBALS['phpgw']->js->validate_file('jscode','baseFunctions','felamimail');
+			
+			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
+			if($_displayNavbar == TRUE)
+				echo parse_navbar();
 		}
 		
 		function listFolder()
@@ -121,14 +144,14 @@
 				$folderStatus	= $this->bofelamimail->getFolderStatus($this->selectedFolder);
 			$mailPrefs	= $this->bofelamimail->getMailPreferences();
 			
-			$this->display_app_header();
+			$this->display_app_header(TRUE);
 
 			$this->t->set_file(array("body" => "preferences_manage_folder.tpl"));
 			$this->t->set_block('body','main');
 			#$this->t->set_block('body','select_row');
 			$this->t->set_block('body','folder_settings');
 			$this->t->set_block('body','mainFolder_settings');
-			$this->t->set_block('body','folder_acl');
+			#$this->t->set_block('body','folder_acl');
 
 			$this->translate();
 			
@@ -139,6 +162,12 @@
 				'menuaction'    => 'felamimail.uipreferences.listFolder'
 			);
 			$this->t->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uipreferences.addACL'
+			);
+			$this->t->set_var('url_addACL',$GLOBALS['phpgw']->link('/index.php',$linkData));
 			
 			// create the link to show folder settings
 			#$linkData = array
@@ -170,11 +199,11 @@
 			
 			switch($_GET['display'])
 			{
-				case 'acl':
-					$uiBaseClass = CreateObject('felamimail.uibaseclass');
-					#$uiBaseClass->accounts_popup('calendar');
-					$this->t->parse('settings_view','folder_acl',True);
-					break;
+				#case 'acl':
+				#	$uiBaseClass = CreateObject('felamimail.uibaseclass');
+				#	#$uiBaseClass->accounts_popup('calendar');
+				#	$this->t->parse('settings_view','folder_acl',True);
+				#	break;
 					
 				case 'settings':
 				default:
@@ -263,6 +292,9 @@
 			$this->t->set_var("lang_create",lang('create'));
 			$this->t->set_var('lang_open_all',lang("open all"));
 			$this->t->set_var('lang_close_all',lang("close all"));
+			$this->t->set_var('lang_add',lang("add"));
+			$this->t->set_var('lang_delete_selected',lang("delete selected"));
+			$this->t->set_var('lang_cancel',lang("close"));
 			
 			$this->t->set_var("th_bg",$GLOBALS['phpgw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['phpgw_info']["theme"]["bg01"]);

@@ -44,6 +44,7 @@
 		
 		function display_app_header()
 		{
+			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 		}

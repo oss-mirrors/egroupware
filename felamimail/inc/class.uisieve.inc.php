@@ -290,6 +290,7 @@
 			$GLOBALS['phpgw']->js->validate_file('tabs','tabs');
 			$GLOBALS['phpgw']->js->validate_file('jscode','editProfile','felamimail');
 			$GLOBALS['phpgw']->js->set_onload("javascript:initAll('$editMode');");
+			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 		}
