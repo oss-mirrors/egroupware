@@ -22,8 +22,8 @@ class InstanceManager extends BaseManager {
   
   function get_instance_activities($iid)
   {
-    $query = "select ga.wf_type,ga.wf_is_interactive,ga.wf_is_autorouted,gi.wf_p_id,ga.wf_activity_id,ga.wf_name,gi.wf_instance_id,gi.wf_status,gia.wf_activity_id,gia.wf_user,gi.wf_started,gia.wf_status as wf_act_status from ".GALAXIA_TABLE_PREFIX."activities ga,".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."instance_activities gia where ga.wf_activity_id=gia.wf_activity_id and gi.wf_instance_id=gia.wf_instance_id and gi.wf_instance_id=$iid";
-    $result = $this->query($query);
+    $query = "select ga.wf_type,ga.wf_is_interactive,ga.wf_is_autorouted,gi.wf_p_id,ga.wf_activity_id,ga.wf_name,gi.wf_instance_id,gi.wf_status,gia.wf_activity_id,gia.wf_user,gi.wf_started,gia.wf_status as wf_act_status from ".GALAXIA_TABLE_PREFIX."activities ga,".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."instance_activities gia where ga.wf_activity_id=gia.wf_activity_id and gi.wf_instance_id=gia.wf_instance_id and gi.wf_instance_id=?";
+    $result = $this->query($query, array($iid));
     $ret = Array();
     while($res = $result->fetchRow()) {
       // Number of active instances
@@ -34,30 +34,30 @@ class InstanceManager extends BaseManager {
 
   function get_instance($iid)
   {
-    $query = "select * from ".GALAXIA_TABLE_PREFIX."instances gi where wf_instance_id=$iid";
-    $result = $this->query($query);
+    $query = "select * from ".GALAXIA_TABLE_PREFIX."instances gi where wf_instance_id=?";
+    $result = $this->query($query, array($iid));
     $res = $result->fetchRow();
-    $res['wf_workitems']=$this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."workitems where wf_instance_id=$iid");
+    $res['wf_workitems']=$this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."workitems where wf_instance_id=?", array($iid));
     return $res;
   }
 
   function get_instance_properties($iid)
   {
-    $prop = unserialize($this->getOne("select wf_properties from ".GALAXIA_TABLE_PREFIX."instances gi where wf_instance_id=$iid"));
+    $prop = unserialize($this->getOne("select wf_properties from ".GALAXIA_TABLE_PREFIX."instances gi where wf_instance_id=?",array($iid)));
     return $prop;
   }
   
   function set_instance_properties($iid,&$prop)
   {
     $props = addslashes(serialize($prop));
-    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_properties='$props' where wf_instance_id=$iid";
-    $this->query($query);
+    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_properties=? where wf_instance_id=?";
+    $this->query($query, array($prop,$iid));
   }
   
   function set_instance_name($iid,$name)
   {
-    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_name='$name' where wf_instance_id=$iid";
-    $this->query($query);
+    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_name=? where wf_instance_id=?";
+    $this->query($query, array($name,$iid));
   }
 
   function set_instance_priority($iid,$priority)
@@ -68,14 +68,14 @@ class InstanceManager extends BaseManager {
 
   function set_instance_owner($iid,$owner)
   {
-    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_owner='$owner' where wf_instance_id=$iid";
-    $this->query($query);
+    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_owner=? where wf_instance_id=?";
+    $this->query($query, array($owner, $iid));
   }
   
   function set_instance_status($iid,$status)
   {
-    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_status='$status' where wf_instance_id=$iid";
-    $this->query($query); 
+    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_status=? where wf_instance_id=?";
+    $this->query($query, array($status,$iid)); 
   }
   
   /*! remove all previous activities on this instance and create a new activity on the activity given
@@ -104,8 +104,8 @@ class InstanceManager extends BaseManager {
   */
   function set_instance_user($iid,$activityId,$user)
   {
-    $query = "update ".GALAXIA_TABLE_PREFIX."instance_activities set wf_user=? where wf_instance_id=$iid and wf_activity_id=$activityId";
-    $this->query($query, array($user));  
+    $query = "update ".GALAXIA_TABLE_PREFIX."instance_activities set wf_user=? where wf_instance_id=? and wf_activity_id=?";
+    $this->query($query, array($user, $iid, $activityId));  
   }
 
 }    
