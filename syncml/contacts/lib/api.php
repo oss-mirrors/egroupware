@@ -53,7 +53,9 @@ function _egwcontactssync_list()
 	
 	#Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	
-	$allContacts = ExecMethod('addressbook.boaddressbook.read_entries');
+	$allContacts = ExecMethod('addressbook.vcaladdressbook.read_entries',array());
+
+	Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	foreach((array)$allContacts as $contact)
 	{
@@ -77,20 +79,21 @@ function &_egwcontactssync_listBy($action, $timestamp)
 	// todo
 	// check for acl
 	
-	#Horde::logMessage("SymcML: egwcontactssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	//Horde::logMessage("SymcML: egwcontactssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$allChangedItems = $GLOBALS['phpgw']->contenthistory->getHistory('contacts', $action, $timestamp);
 
 	if($action != 'delete')
 	{
-		$boAddressBook = CreateObject('addressbook.boaddressbook');
+		$vcalAddressBook = CreateObject('addressbook.vcaladdressbook');
+		$readAbleItems = array();
 
 		// check if we have access to the changed data
 		// need to get improved in the future
 		foreach($allChangedItems as $guid)
 		{
 			$uid = $GLOBALS['phpgw']->common->get_egwId($guid);
-			if($boAddressBook->check_perms($uid, PHPGW_ACL_READ))
+			if($vcalAddressBook->check_perms($uid, PHPGW_ACL_READ))
 			{
 				$readAbleItems[] = $guid;
 			}
@@ -127,12 +130,12 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
 	
-	$syncProfile	= _egwcontactssync_getSyncProfile();
-	$boaddressbook	= CreateObject('addressbook.boaddressbook',True);
+	$syncProfile		= _egwcontactssync_getSyncProfile();
+	$vcaladdressbook	= CreateObject('addressbook.vcaladdressbook',true);
 	
 	switch ($contentType) {
 		case 'text/x-vcard':
-			$contactId = $boaddressbook->addVCard($content,-1,0);
+			$contactId = $vcaladdressbook->addVCard($content,-1,0);
 			Horde::logMessage("SymcML: 2 egwcontactssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			break;
 			
@@ -189,25 +192,28 @@ function _egwcontactssync_export($guid, $contentType)
 		$options = array();
 	}
 	
-	$syncProfile	= _egwcontactssync_getSyncProfile();
-	$boaddressbook	= CreateObject('addressbook.boaddressbook',True);
-	$contactID	= $GLOBALS['phpgw']->common->get_egwId($guid);
+	$syncProfile		= _egwcontactssync_getSyncProfile();
+	$vcaladdressbook	= CreateObject('addressbook.vcaladdressbook',True);
+	$contactID		= $GLOBALS['phpgw']->common->get_egwId($guid);
 	
 	switch ($contentType) {
 		case 'text/x-vcard':
 
-			if($vcard = $boaddressbook->getVCard($contactID, $syncProfile))
+			if($vcard = $vcaladdressbook->getVCard($contactID, $syncProfile))
 			{
+				Horde::logMessage("SymcML: export good", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 				return $vcard;
 			}
 			else
 			{
+				Horde::logMessage("SymcML: export bad $contactID", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 				return PEAR::raiseError(_("Access Denied"));
 			}
 			
 			break;
 		
 		default:
+			Horde::logMessage("SymcML: export unsupported", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 }
@@ -239,7 +245,7 @@ function _egwcontactssync_delete($guid)
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
 	
-	return ExecMethod('addressbook.boaddressbook.delete_entry',$GLOBALS['phpgw']->common->get_egwId($guid));
+	return ExecMethod('addressbook.vcaladdressbook.delete_entry',$GLOBALS['phpgw']->common->get_egwId($guid));
 }
 
 /**
@@ -263,13 +269,13 @@ function _egwcontactssync_replace($guid, $content, $contentType)
 	#}
 
 	$contactID = $GLOBALS['phpgw']->common->get_egwId($guid);
-	$boaddressbook	= CreateObject('addressbook.boaddressbook',True);
+	$vcaladdressbook	= CreateObject('addressbook.vcaladdressbook',True);
     
 	switch ($contentType) {
 		case 'text/x-vcard':
 			#Horde::logMessage("SymcML: egwcontactssync replace id: $contactId", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-			#$result = ExecMethod('addressbook.boaddressbook.update_entry',$contact);
-			$result = $boaddressbook->addVCard($content,$contactID,0);
+			#$result = ExecMethod('addressbook.vcaladdressbook.update_entry',$contact);
+			$result = $vcaladdressbook->addVCard($content,$contactID,0);
     			
     			return $result;
     			

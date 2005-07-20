@@ -11,7 +11,7 @@
  */
 
 $_services['list'] = array(
-    'args' => array(),
+    'args' => array('startDate','endDate'),
     'type' => 'stringArray'
 );
 
@@ -47,14 +47,17 @@ $_services['replace'] = array(
  *
  * @return array  An array of GUIDs for all notes the user can access.
  */
-function _egwcalendarsync_list()
+function _egwcalendarsync_list($_startDate='', $_endDate='')
 {
 	$guids = array();
-	
+
+	$startDate	= (!empty($_startDate)?$_startDate:date('Ymd',time()-2678400));
+	$endDate	= (!empty($_endDate)?$_endDate:date('Ymd',time()+2678400));
+
 	$searchFilter = array
 	(
-		'start'		=> '20050601',
-		'end'		=> '20050701',
+		'start'		=> $startDate,
+		'end'		=> $endDate,
 		'filter'	=> 'all',
 		'daywise'	=> 0,
 	);
