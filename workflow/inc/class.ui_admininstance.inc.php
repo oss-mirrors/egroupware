@@ -1,6 +1,6 @@
 <?php
 
-	include(dirname(__FILE__) . SEP . 'class.workflow.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.workflow.inc.php');
 
 	// TODO: allow to enter comments
 
@@ -98,12 +98,50 @@
 					$this->instance_manager->set_instance_destination($iid, $_POST['sendto']);
 				}
 			}
-			
+
+			// save changes on properties
+			if (isset($_POST['saveprops']))
+			{
+				//save properties
+				$props = serialize($_POST['props']);
+				$this->instance_manager->set_instance_properties($iid,$props);
+			}
+
+			// delete a property
+			if (isset($_GET['unsetprop']))
+			{
+				//remove one and save properties
+				$arrayprops =& $this->instance_manager->get_instance_properties($iid);
+				unset($arrayprops[$_GET['unsetprop']]);
+				$props = serialize($arrayprops);
+				$this->instance_manager->set_instance_properties($iid,$props);
+			}
+
+			// add a property
+			if (isset($_POST['addprop']))
+			{
+				//add one and save properties
+				$arrayprops =& $this->instance_manager->get_instance_properties($iid);
+				$propname= $_POST['name'];
+				if (isset($arrayprops[$propname]))
+				{
+					$this->message[]=lang('property %1 already exists', $propname);
+				}
+				else
+				{
+					$arrayprops[$propname]=$_POST['value'];
+					$props = serialize($arrayprops);
+					$this->instance_manager->set_instance_properties($iid,$props);
+				}
+			}
+
+			$instance		= $this->instance_manager->get_instance($iid);
 			$instance		= $this->instance_manager->get_instance($iid);
 			$process		= $this->process_manager->get_process($instance['wf_p_id']);
 			$proc_activities	= $this->activity_manager->list_activities($instance['wf_p_id'], 0, -1, 'wf_flow_num__asc', '', '');
 			$instance_acts		= $this->instance_manager->get_instance_activities($iid);
 			$properties		= $this->instance_manager->get_instance_properties($iid);
+
 
 			if (!$iid) die(lang('No instance indicated'));
 
@@ -114,7 +152,7 @@
 
 			// fill the general variables of the template
 			$this->t->set_var(array(
-				'message'		=> implode('<br>', $this->message),
+				'message'		=> implode('<br />', $this->message),
 				'iid'			=> $iid,
 				'form_action'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form'),
 				'instance_process'	=> lang('Instance: %1 (Process: %2)', $instance['wf_instance_id'], $process['wf_name'] . ' ' . $process['wf_version']),
@@ -236,11 +274,12 @@
 					$this->t->set_var('prop_value', '<input type="text" name="props['. $key .']" value="'. $prop .'" />');
 				}
 				$this->t->set_var(array(
-					'prop_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance&iid'. $iid .'&unsetprop='. $key),
+					'prop_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $iid .'&unsetprop='. $key),
 					'img_trash'		=> $GLOBALS['phpgw']->common->image('workflow', 'trash'),
 					'prop_key'		=> $key,
 					'color_line'	=> $this->nextmatchs->alternate_row_color($tr_color),
 				));
+				$this->translate_template('block_properties');
 				$this->t->parse('properties', 'block_properties', true);
 			}
 			if (!count($props)) $this->t->set_var('properties', '<tr><td colspan="2" align="center">'. lang('There are no properties available') .'</td></tr>');
