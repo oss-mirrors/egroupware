@@ -647,7 +647,7 @@
 					$subset=Array();
 					if (is_array($this->display_next_user))
 					{
-						foreach($this->display_next_usery as $key => $value)
+						foreach($this->display_next_user as $key => $value)
 						{
 							if ($key=='role')
 							{
